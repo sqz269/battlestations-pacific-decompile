@@ -1,0 +1,2648 @@
+{
+  "goal": "GOAL16K",
+  "status": "reconstructed_registered_win32_whole_body_coff_verified_pending_primary_review",
+  "source": "src/native_tagged_leaf_bcbd_16k.cpp",
+  "header": "include/bsp/native_tagged_leaf_bcbd_16k.hpp",
+  "source_sha256": "51e1e0dcc6a0159d18034c5082a73aa6dfa916570415c2c53d594d2f0c1ebafd",
+  "header_sha256": "8e9e2326f995c9590da156f4a36e7d6dbc6b296cebc8e3bc4248fa9accc342a5",
+  "whole_source_functions": 6,
+  "whole_source_executable_bytes": 22,
+  "exact_native_whole_functions": 6,
+  "exact_native_whole_instructions": 12,
+  "entries": [
+    {
+      "address": "00bc04b0",
+      "native_name": "TRIV_body_00bc04b0",
+      "native_body_end_inclusive": "00bc04b2",
+      "native_body_bytes": "33c0c3",
+      "native_body_size": 3,
+      "native_instruction_count": 2,
+      "native_instructions": [
+        {
+          "address": "00bc04b0",
+          "mnemonic": "xor",
+          "operands": "eax, eax",
+          "size": 2
+        },
+        {
+          "address": "00bc04b2",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00bc3030",
+      "native_name": "TRIV_body_00bc3030",
+      "native_body_end_inclusive": "00bc3033",
+      "native_body_bytes": "8b4114c3",
+      "native_body_size": 4,
+      "native_instruction_count": 2,
+      "native_instructions": [
+        {
+          "address": "00bc3030",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x14]",
+          "size": 3
+        },
+        {
+          "address": "00bc3033",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00bc3080",
+      "native_name": "TRIV_body_00bc3080",
+      "native_body_end_inclusive": "00bc3083",
+      "native_body_bytes": "8b4168c3",
+      "native_body_size": 4,
+      "native_instruction_count": 2,
+      "native_instructions": [
+        {
+          "address": "00bc3080",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x68]",
+          "size": 3
+        },
+        {
+          "address": "00bc3083",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00bc3100",
+      "native_name": "TRIV_body_00bc3100",
+      "native_body_end_inclusive": "00bc3103",
+      "native_body_bytes": "8b4120c3",
+      "native_body_size": 4,
+      "native_instruction_count": 2,
+      "native_instructions": [
+        {
+          "address": "00bc3100",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x20]",
+          "size": 3
+        },
+        {
+          "address": "00bc3103",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00bc7a60",
+      "native_name": "TRIV_body_00bc7a60",
+      "native_body_end_inclusive": "00bc7a63",
+      "native_body_bytes": "8b4108c3",
+      "native_body_size": 4,
+      "native_instruction_count": 2,
+      "native_instructions": [
+        {
+          "address": "00bc7a60",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 8]",
+          "size": 3
+        },
+        {
+          "address": "00bc7a63",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00bd1830",
+      "native_name": "TRIV_body_00bd1830",
+      "native_body_end_inclusive": "00bd1832",
+      "native_body_bytes": "b001c3",
+      "native_body_size": 3,
+      "native_instruction_count": 2,
+      "native_instructions": [
+        {
+          "address": "00bd1830",
+          "mnemonic": "mov",
+          "operands": "al, 1",
+          "size": 2
+        },
+        {
+          "address": "00bd1832",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    }
+  ],
+  "original_abi_by_address": {
+    "00bc04b0": "No input register or actual stack argument is read. EAX overwritten0; all other general registers unchanged. No stack argument word is read/cleaned; plain RET consumes current return word and advances ESP4, without prologue/spill. Original unused-formal count/type spelling is not recovered solely from body. XOR sets CF=OF=SF=0, ZF=PF=1, AF undefined. Only RET reads current return slot. No pointed-data access/global/provider. No x87/SIMD instruction; FP state/FIP unchanged.",
+    "00bc3030": "Only ECX raw backing; single read at +14h, EAX result, ECX and every other general register unchanged. No stack argument word is read/cleaned; plain RET consumes current return word and advances ESP4, without prologue/spill. Original unused-formal count/type spelling is not recovered solely from body. All flags unchanged. Single current unaligned/wrapped x86 DWORD load, no backing null guard, no guessed manager class or canonical global. No x87/SIMD instruction; FP state/FIP unchanged.",
+    "00bc3080": "Only ECX raw backing; single read at +68h, EAX result, ECX and every other general register unchanged. No stack argument word is read/cleaned; plain RET consumes current return word and advances ESP4, without prologue/spill. Original unused-formal count/type spelling is not recovered solely from body. All flags unchanged. Single current unaligned/wrapped x86 DWORD load, no backing null guard or invented material-class ownership. No x87/SIMD instruction; FP state/FIP unchanged.",
+    "00bc3100": "Only ECX raw backing; single read at +20h, EAX result, ECX and every other general register unchanged. No stack argument word is read/cleaned; plain RET consumes current return word and advances ESP4, without prologue/spill. Original unused-formal count/type spelling is not recovered solely from body. All flags unchanged. Single current unaligned/wrapped x86 DWORD load, no backing null guard, count validation or vector normalization. No x87/SIMD instruction; FP state/FIP unchanged.",
+    "00bc7a60": "Only ECX raw backing; single read at +8, EAX result, ECX and every other general register unchanged. No stack argument word is read/cleaned; plain RET consumes current return word and advances ESP4, without prologue/spill. Original unused-formal count/type spelling is not recovered solely from body. All flags unchanged. Single current unaligned/wrapped x86 DWORD load, no backing null guard or invented puff type. No x87/SIMD instruction; FP state/FIP unchanged.",
+    "00bd1830": "No explicit input read. AL overwritten1, incoming EAX upper24 retained; other general registers unchanged. No stack argument word is read/cleaned; plain RET consumes current return word and advances ESP4, without prologue/spill. Original unused-formal count/type spelling is not recovered solely from body. All flags unchanged. Only RET reads current return slot. No pointed-data access/global/provider. No x87/SIMD instruction; FP state/FIP unchanged."
+  },
+  "contracts_by_address": {
+    "00bc04b0": {
+      "address": "00bc04b0",
+      "native_name": "TRIV_body_00bc04b0",
+      "native_body_end_inclusive": "00bc04b2",
+      "native_body_bytes": "33c0c3",
+      "native_body_size": 3,
+      "native_instruction_count": 2,
+      "native_instructions": [
+        {
+          "address": "00bc04b0",
+          "mnemonic": "xor",
+          "operands": "eax, eax",
+          "size": 2
+        },
+        {
+          "address": "00bc04b2",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true,
+      "operation": "Return full EAX zero via XOR EAX,EAX; RET.",
+      "proposed_interface": "extern C uint32_t cdecl bsp_tagged_bcbd_16k_00bc04b0() noexcept;",
+      "physical_inputs": "No input register or actual stack argument is read. EAX overwritten0; all other general registers unchanged.",
+      "flags": "XOR sets CF=OF=SF=0, ZF=PF=1, AF undefined.",
+      "storage": "Only RET reads current return slot. No pointed-data access/global/provider.",
+      "readiness": "ready_for_separate_Root_implementation_assignment",
+      "original_stack": "No actual stack arguments; plain RET uses current return word and advances ESP4. No prologue, spill or other stack read/write.",
+      "fp": "No x87/SIMD instruction; FP state/FIP unchanged.",
+      "fault_alias_limits": "Getter address addition is modulo uint32 without typed object extent. Faulting load leaves general registers/flags before MOV unchanged; RET retains current stack/return aliases. C++17 defined-storage behavior and measured emitted physical effects must remain explicitly distinguished. Source forms must account for full code/helper extents and flags/register/fault-prefix changes, not clip Native prefixes.",
+      "dependencies": [],
+      "uncertainty": "New operation names/raw formal interfaces are hypotheses, not recovered classes, library identities or original C++ formal-type spellings; no parent/callsite adoption claim."
+    },
+    "00bc3030": {
+      "address": "00bc3030",
+      "native_name": "TRIV_body_00bc3030",
+      "native_body_end_inclusive": "00bc3033",
+      "native_body_bytes": "8b4114c3",
+      "native_body_size": 4,
+      "native_instruction_count": 2,
+      "native_instructions": [
+        {
+          "address": "00bc3030",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x14]",
+          "size": 3
+        },
+        {
+          "address": "00bc3033",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true,
+      "operation": "Read DWORD at ECX+14h into EAX; RET.",
+      "proposed_interface": "extern C uint32_t fastcall bsp_tagged_bcbd_16k_00bc3030(const void* storage) noexcept;",
+      "physical_inputs": "Only ECX raw backing; single read at +14h, EAX result, ECX and every other general register unchanged.",
+      "flags": "All flags unchanged.",
+      "storage": "Single current unaligned/wrapped x86 DWORD load, no backing null guard, no guessed manager class or canonical global.",
+      "readiness": "ready_for_separate_Root_implementation_assignment",
+      "original_stack": "No actual stack arguments; plain RET uses current return word and advances ESP4. No prologue, spill or other stack read/write.",
+      "fp": "No x87/SIMD instruction; FP state/FIP unchanged.",
+      "fault_alias_limits": "Getter address addition is modulo uint32 without typed object extent. Faulting load leaves general registers/flags before MOV unchanged; RET retains current stack/return aliases. C++17 defined-storage behavior and measured emitted physical effects must remain explicitly distinguished. Source forms must account for full code/helper extents and flags/register/fault-prefix changes, not clip Native prefixes.",
+      "dependencies": [],
+      "uncertainty": "New operation names/raw formal interfaces are hypotheses, not recovered classes, library identities or original C++ formal-type spellings; no parent/callsite adoption claim."
+    },
+    "00bc3080": {
+      "address": "00bc3080",
+      "native_name": "TRIV_body_00bc3080",
+      "native_body_end_inclusive": "00bc3083",
+      "native_body_bytes": "8b4168c3",
+      "native_body_size": 4,
+      "native_instruction_count": 2,
+      "native_instructions": [
+        {
+          "address": "00bc3080",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x68]",
+          "size": 3
+        },
+        {
+          "address": "00bc3083",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true,
+      "operation": "Read DWORD at ECX+68h into EAX; RET.",
+      "proposed_interface": "extern C uint32_t fastcall bsp_tagged_bcbd_16k_00bc3080(const void* storage) noexcept;",
+      "physical_inputs": "Only ECX raw backing; single read at +68h, EAX result, ECX and every other general register unchanged.",
+      "flags": "All flags unchanged.",
+      "storage": "Single current unaligned/wrapped x86 DWORD load, no backing null guard or invented material-class ownership.",
+      "readiness": "ready_for_separate_Root_implementation_assignment",
+      "original_stack": "No actual stack arguments; plain RET uses current return word and advances ESP4. No prologue, spill or other stack read/write.",
+      "fp": "No x87/SIMD instruction; FP state/FIP unchanged.",
+      "fault_alias_limits": "Getter address addition is modulo uint32 without typed object extent. Faulting load leaves general registers/flags before MOV unchanged; RET retains current stack/return aliases. C++17 defined-storage behavior and measured emitted physical effects must remain explicitly distinguished. Source forms must account for full code/helper extents and flags/register/fault-prefix changes, not clip Native prefixes.",
+      "dependencies": [],
+      "uncertainty": "New operation names/raw formal interfaces are hypotheses, not recovered classes, library identities or original C++ formal-type spellings; no parent/callsite adoption claim."
+    },
+    "00bc3100": {
+      "address": "00bc3100",
+      "native_name": "TRIV_body_00bc3100",
+      "native_body_end_inclusive": "00bc3103",
+      "native_body_bytes": "8b4120c3",
+      "native_body_size": 4,
+      "native_instruction_count": 2,
+      "native_instructions": [
+        {
+          "address": "00bc3100",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x20]",
+          "size": 3
+        },
+        {
+          "address": "00bc3103",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true,
+      "operation": "Read DWORD at ECX+20h into EAX; RET.",
+      "proposed_interface": "extern C uint32_t fastcall bsp_tagged_bcbd_16k_00bc3100(const void* storage) noexcept;",
+      "physical_inputs": "Only ECX raw backing; single read at +20h, EAX result, ECX and every other general register unchanged.",
+      "flags": "All flags unchanged.",
+      "storage": "Single current unaligned/wrapped x86 DWORD load, no backing null guard, count validation or vector normalization.",
+      "readiness": "ready_for_separate_Root_implementation_assignment",
+      "original_stack": "No actual stack arguments; plain RET uses current return word and advances ESP4. No prologue, spill or other stack read/write.",
+      "fp": "No x87/SIMD instruction; FP state/FIP unchanged.",
+      "fault_alias_limits": "Getter address addition is modulo uint32 without typed object extent. Faulting load leaves general registers/flags before MOV unchanged; RET retains current stack/return aliases. C++17 defined-storage behavior and measured emitted physical effects must remain explicitly distinguished. Source forms must account for full code/helper extents and flags/register/fault-prefix changes, not clip Native prefixes.",
+      "dependencies": [],
+      "uncertainty": "New operation names/raw formal interfaces are hypotheses, not recovered classes, library identities or original C++ formal-type spellings; no parent/callsite adoption claim."
+    },
+    "00bc7a60": {
+      "address": "00bc7a60",
+      "native_name": "TRIV_body_00bc7a60",
+      "native_body_end_inclusive": "00bc7a63",
+      "native_body_bytes": "8b4108c3",
+      "native_body_size": 4,
+      "native_instruction_count": 2,
+      "native_instructions": [
+        {
+          "address": "00bc7a60",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 8]",
+          "size": 3
+        },
+        {
+          "address": "00bc7a63",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true,
+      "operation": "Read DWORD at ECX+8 into EAX; RET.",
+      "proposed_interface": "extern C uint32_t fastcall bsp_tagged_bcbd_16k_00bc7a60(const void* storage) noexcept;",
+      "physical_inputs": "Only ECX raw backing; single read at +8, EAX result, ECX and every other general register unchanged.",
+      "flags": "All flags unchanged.",
+      "storage": "Single current unaligned/wrapped x86 DWORD load, no backing null guard or invented puff type.",
+      "readiness": "ready_for_separate_Root_implementation_assignment",
+      "original_stack": "No actual stack arguments; plain RET uses current return word and advances ESP4. No prologue, spill or other stack read/write.",
+      "fp": "No x87/SIMD instruction; FP state/FIP unchanged.",
+      "fault_alias_limits": "Getter address addition is modulo uint32 without typed object extent. Faulting load leaves general registers/flags before MOV unchanged; RET retains current stack/return aliases. C++17 defined-storage behavior and measured emitted physical effects must remain explicitly distinguished. Source forms must account for full code/helper extents and flags/register/fault-prefix changes, not clip Native prefixes.",
+      "dependencies": [],
+      "uncertainty": "New operation names/raw formal interfaces are hypotheses, not recovered classes, library identities or original C++ formal-type spellings; no parent/callsite adoption claim."
+    },
+    "00bd1830": {
+      "address": "00bd1830",
+      "native_name": "TRIV_body_00bd1830",
+      "native_body_end_inclusive": "00bd1832",
+      "native_body_bytes": "b001c3",
+      "native_body_size": 3,
+      "native_instruction_count": 2,
+      "native_instructions": [
+        {
+          "address": "00bd1830",
+          "mnemonic": "mov",
+          "operands": "al, 1",
+          "size": 2
+        },
+        {
+          "address": "00bd1832",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true,
+      "operation": "MOV AL,1; RET. Upper24 EAX bits are retained, not normalized to full EAX1.",
+      "proposed_interface": "extern C uint8_t cdecl bsp_tagged_bcbd_16k_00bd1830() noexcept;",
+      "physical_inputs": "No explicit input read. AL overwritten1, incoming EAX upper24 retained; other general registers unchanged.",
+      "flags": "All flags unchanged.",
+      "storage": "Only RET reads current return slot. No pointed-data access/global/provider.",
+      "readiness": "ready_for_separate_Root_implementation_assignment",
+      "original_stack": "No actual stack arguments; plain RET uses current return word and advances ESP4. No prologue, spill or other stack read/write.",
+      "fp": "No x87/SIMD instruction; FP state/FIP unchanged.",
+      "fault_alias_limits": "Getter address addition is modulo uint32 without typed object extent. Faulting load leaves general registers/flags before MOV unchanged; RET retains current stack/return aliases. C++17 defined-storage behavior and measured emitted physical effects must remain explicitly distinguished. Source forms must account for full code/helper extents and flags/register/fault-prefix changes, not clip Native prefixes.",
+      "dependencies": [],
+      "uncertainty": "New operation names/raw formal interfaces are hypotheses, not recovered classes, library identities or original C++ formal-type spellings; no parent/callsite adoption claim."
+    }
+  },
+  "strict": {
+    "path": "local\\goal16k_tagged_leaf_bcbd\\strict.obj",
+    "sha256": "a375bf0be266398d40b769414964697b5a0d7e78bba7bcdace1ac0501998ef95",
+    "machine": "IMAGE_FILE_MACHINE_I386",
+    "complete_sections": [
+      {
+        "index": 1,
+        "name": ".drectve",
+        "size": 47,
+        "raw_offset": 620,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1051136,
+        "bytes": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+        "relocation_entries": []
+      },
+      {
+        "index": 2,
+        "name": ".debug$S",
+        "size": 184,
+        "raw_offset": 667,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1108344896,
+        "bytes": "04000000f1000000a90000006b000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d676f616c3136625f7461676765645f62355c6c6f63616c5c676f616c31366b5f7461676765645f6c6561665f626362645c7374726963742e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c657200000000",
+        "relocation_entries": []
+      },
+      {
+        "index": 3,
+        "name": ".text$mn",
+        "size": 4,
+        "raw_offset": 851,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b4114c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 4,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 855,
+        "relocation_offset": 871,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000040000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 31,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_bcbd_16k_00bc3030@4"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "name": ".text$mn",
+        "size": 4,
+        "raw_offset": 881,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b4168c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 6,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 885,
+        "relocation_offset": 901,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000040000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 32,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_bcbd_16k_00bc3080@4"
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "name": ".text$mn",
+        "size": 4,
+        "raw_offset": 911,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b4120c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 8,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 915,
+        "relocation_offset": 931,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000040000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 33,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_bcbd_16k_00bc3100@4"
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "name": ".text$mn",
+        "size": 4,
+        "raw_offset": 941,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b4108c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 10,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 945,
+        "relocation_offset": 961,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000040000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 34,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_bcbd_16k_00bc7a60@4"
+          }
+        ]
+      },
+      {
+        "index": 11,
+        "name": ".text$mn",
+        "size": 3,
+        "raw_offset": 971,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "33c0c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 12,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 974,
+        "relocation_offset": 990,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000030000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 30,
+            "type": 7,
+            "target_symbol": "_bsp_tagged_bcbd_16k_00bc04b0"
+          }
+        ]
+      },
+      {
+        "index": 13,
+        "name": ".text$mn",
+        "size": 3,
+        "raw_offset": 1000,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "b001c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 14,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 1003,
+        "relocation_offset": 1019,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000030000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 35,
+            "type": 7,
+            "target_symbol": "_bsp_tagged_bcbd_16k_00bd1830"
+          }
+        ]
+      },
+      {
+        "index": 15,
+        "name": ".chks64",
+        "size": 120,
+        "raw_offset": 1029,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 2560,
+        "bytes": "76f6abfb5648dec7c49e53ce7d7e663101d3abacb68aac356cf1da47c99da9dd7f67506f6b2359c16cf1da47c99da9dd07ad3a50b1c271e06cf1da47c99da9dd916ae10aa3fd76a46cf1da47c99da9dd4bc724f3b1d0caf45405ffa3a17ecbc6e18aacce29affcdd5405ffa3a17ecbc60000000000000000",
+        "relocation_entries": []
+      }
+    ],
+    "complete_symbols": [
+      {
+        "index": 0,
+        "name": "@comp.id",
+        "offset": 17141140,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 1,
+        "name": "@feat.00",
+        "offset": 2147549585,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 2,
+        "name": ".drectve",
+        "offset": 0,
+        "section": 1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "2f0000000000000000000000000000000000"
+      },
+      {
+        "index": 4,
+        "name": ".debug$S",
+        "offset": 0,
+        "section": 2,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "b80000000000000000000000000000000000"
+      },
+      {
+        "index": 6,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 3,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "04000000000000009292c367000001000000"
+      },
+      {
+        "index": 8,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 4,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000030005000000"
+      },
+      {
+        "index": 10,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 5,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "040000000000000068a449e4000001000000"
+      },
+      {
+        "index": 12,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 6,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000050005000000"
+      },
+      {
+        "index": 14,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 7,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "04000000000000006561e9dc000001000000"
+      },
+      {
+        "index": 16,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 8,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000070005000000"
+      },
+      {
+        "index": 18,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 9,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "0400000000000000cfcfb481000001000000"
+      },
+      {
+        "index": 20,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 10,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000090005000000"
+      },
+      {
+        "index": 22,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 11,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "03000000000000008d1fbaef000001000000"
+      },
+      {
+        "index": 24,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 12,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1000000001000000000000000b0005000000"
+      },
+      {
+        "index": 26,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 13,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "03000000000000005b5c28de000001000000"
+      },
+      {
+        "index": 28,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 14,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1000000001000000000000000d0005000000"
+      },
+      {
+        "index": 30,
+        "name": "_bsp_tagged_bcbd_16k_00bc04b0",
+        "offset": 0,
+        "section": 11,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 31,
+        "name": "@bsp_tagged_bcbd_16k_00bc3030@4",
+        "offset": 0,
+        "section": 3,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 32,
+        "name": "@bsp_tagged_bcbd_16k_00bc3080@4",
+        "offset": 0,
+        "section": 5,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 33,
+        "name": "@bsp_tagged_bcbd_16k_00bc3100@4",
+        "offset": 0,
+        "section": 7,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 34,
+        "name": "@bsp_tagged_bcbd_16k_00bc7a60@4",
+        "offset": 0,
+        "section": 9,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 35,
+        "name": "_bsp_tagged_bcbd_16k_00bd1830",
+        "offset": 0,
+        "section": 13,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 36,
+        "name": ".chks64",
+        "offset": 0,
+        "section": 15,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "780000000000000000000000000000000000"
+      }
+    ],
+    "symbol_table_offset": 1149,
+    "symbol_table_entries_including_auxiliary": 38,
+    "symbol_table_sha256": "f0a873a2ed68e828e6b05d8a8dd530c10e43de7c00b45677d94dd4c79160fcc1",
+    "string_table_bytes": "c00000005f6273705f7461676765645f626362645f31366b5f303062633034623000406273705f7461676765645f626362645f31366b5f3030626333303330403400406273705f7461676765645f626362645f31366b5f3030626333303830403400406273705f7461676765645f626362645f31366b5f3030626333313030403400406273705f7461676765645f626362645f31366b5f30306263376136304034005f6273705f7461676765645f626362645f31366b5f303062643138333000",
+    "functions": [
+      {
+        "address": "00bc04b0",
+        "symbol": {
+          "index": 30,
+          "name": "_bsp_tagged_bcbd_16k_00bc04b0",
+          "offset": 0,
+          "section": 11,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 11,
+        "whole_section_size": 3,
+        "whole_section_bytes": "33c0c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "xor",
+            "operands": "eax, eax",
+            "size": 2
+          },
+          {
+            "offset": 2,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00bc3030",
+        "symbol": {
+          "index": 31,
+          "name": "@bsp_tagged_bcbd_16k_00bc3030@4",
+          "offset": 0,
+          "section": 3,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 3,
+        "whole_section_size": 4,
+        "whole_section_bytes": "8b4114c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + 0x14]",
+            "size": 3
+          },
+          {
+            "offset": 3,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00bc3080",
+        "symbol": {
+          "index": 32,
+          "name": "@bsp_tagged_bcbd_16k_00bc3080@4",
+          "offset": 0,
+          "section": 5,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 5,
+        "whole_section_size": 4,
+        "whole_section_bytes": "8b4168c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + 0x68]",
+            "size": 3
+          },
+          {
+            "offset": 3,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00bc3100",
+        "symbol": {
+          "index": 33,
+          "name": "@bsp_tagged_bcbd_16k_00bc3100@4",
+          "offset": 0,
+          "section": 7,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 7,
+        "whole_section_size": 4,
+        "whole_section_bytes": "8b4120c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + 0x20]",
+            "size": 3
+          },
+          {
+            "offset": 3,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00bc7a60",
+        "symbol": {
+          "index": 34,
+          "name": "@bsp_tagged_bcbd_16k_00bc7a60@4",
+          "offset": 0,
+          "section": 9,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 9,
+        "whole_section_size": 4,
+        "whole_section_bytes": "8b4108c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + 8]",
+            "size": 3
+          },
+          {
+            "offset": 3,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00bd1830",
+        "symbol": {
+          "index": 35,
+          "name": "_bsp_tagged_bcbd_16k_00bd1830",
+          "offset": 0,
+          "section": 13,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 13,
+        "whole_section_size": 3,
+        "whole_section_bytes": "b001c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "al, 1",
+            "size": 2
+          },
+          {
+            "offset": 2,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      }
+    ],
+    "whole_executable_bytes": 22,
+    "nonempty_executable_sections": 6,
+    "executable_relocations": 0,
+    "total_relocations": 6,
+    "undefined_external_symbols": []
+  },
+  "registered": {
+    "path": "build\\win32\\bsp_core.dir\\Release\\native_tagged_leaf_bcbd_16k.obj",
+    "sha256": "33eec9ad9bd683513239a3031326839c90e135006bfac802c006fc88e9620acb",
+    "machine": "IMAGE_FILE_MACHINE_I386",
+    "complete_sections": [
+      {
+        "index": 1,
+        "name": ".drectve",
+        "size": 47,
+        "raw_offset": 620,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1051136,
+        "bytes": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+        "relocation_entries": []
+      },
+      {
+        "index": 2,
+        "name": ".debug$S",
+        "size": 204,
+        "raw_offset": 667,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1108344896,
+        "bytes": "04000000f1000000c000000082000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d676f616c3136625f7461676765645f62355c6275696c645c77696e33325c6273705f636f72652e6469725c52656c656173655c6e61746976655f7461676765645f6c6561665f626362645f31366b2e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c657200",
+        "relocation_entries": []
+      },
+      {
+        "index": 3,
+        "name": ".text$mn",
+        "size": 4,
+        "raw_offset": 871,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b4114c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 4,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 875,
+        "relocation_offset": 891,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000040000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 31,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_bcbd_16k_00bc3030@4"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "name": ".text$mn",
+        "size": 4,
+        "raw_offset": 901,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b4168c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 6,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 905,
+        "relocation_offset": 921,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000040000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 32,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_bcbd_16k_00bc3080@4"
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "name": ".text$mn",
+        "size": 4,
+        "raw_offset": 931,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b4120c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 8,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 935,
+        "relocation_offset": 951,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000040000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 33,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_bcbd_16k_00bc3100@4"
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "name": ".text$mn",
+        "size": 4,
+        "raw_offset": 961,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b4108c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 10,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 965,
+        "relocation_offset": 981,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000040000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 34,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_bcbd_16k_00bc7a60@4"
+          }
+        ]
+      },
+      {
+        "index": 11,
+        "name": ".text$mn",
+        "size": 3,
+        "raw_offset": 991,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "33c0c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 12,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 994,
+        "relocation_offset": 1010,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000030000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 30,
+            "type": 7,
+            "target_symbol": "_bsp_tagged_bcbd_16k_00bc04b0"
+          }
+        ]
+      },
+      {
+        "index": 13,
+        "name": ".text$mn",
+        "size": 3,
+        "raw_offset": 1020,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "b001c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 14,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 1023,
+        "relocation_offset": 1039,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000030000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 35,
+            "type": 7,
+            "target_symbol": "_bsp_tagged_bcbd_16k_00bd1830"
+          }
+        ]
+      },
+      {
+        "index": 15,
+        "name": ".chks64",
+        "size": 120,
+        "raw_offset": 1049,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 2560,
+        "bytes": "76f6abfb5648dec77d4413a98fe57d9f01d3abacb68aac356cf1da47c99da9dd7f67506f6b2359c16cf1da47c99da9dd07ad3a50b1c271e06cf1da47c99da9dd916ae10aa3fd76a46cf1da47c99da9dd4bc724f3b1d0caf45405ffa3a17ecbc6e18aacce29affcdd5405ffa3a17ecbc60000000000000000",
+        "relocation_entries": []
+      }
+    ],
+    "complete_symbols": [
+      {
+        "index": 0,
+        "name": "@comp.id",
+        "offset": 17141140,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 1,
+        "name": "@feat.00",
+        "offset": 2147549585,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 2,
+        "name": ".drectve",
+        "offset": 0,
+        "section": 1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "2f0000000000000000000000000000000000"
+      },
+      {
+        "index": 4,
+        "name": ".debug$S",
+        "offset": 0,
+        "section": 2,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "cc0000000000000000000000000000000000"
+      },
+      {
+        "index": 6,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 3,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "04000000000000009292c367000001000000"
+      },
+      {
+        "index": 8,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 4,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000030005000000"
+      },
+      {
+        "index": 10,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 5,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "040000000000000068a449e4000001000000"
+      },
+      {
+        "index": 12,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 6,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000050005000000"
+      },
+      {
+        "index": 14,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 7,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "04000000000000006561e9dc000001000000"
+      },
+      {
+        "index": 16,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 8,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000070005000000"
+      },
+      {
+        "index": 18,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 9,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "0400000000000000cfcfb481000001000000"
+      },
+      {
+        "index": 20,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 10,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000090005000000"
+      },
+      {
+        "index": 22,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 11,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "03000000000000008d1fbaef000001000000"
+      },
+      {
+        "index": 24,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 12,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1000000001000000000000000b0005000000"
+      },
+      {
+        "index": 26,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 13,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "03000000000000005b5c28de000001000000"
+      },
+      {
+        "index": 28,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 14,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1000000001000000000000000d0005000000"
+      },
+      {
+        "index": 30,
+        "name": "_bsp_tagged_bcbd_16k_00bc04b0",
+        "offset": 0,
+        "section": 11,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 31,
+        "name": "@bsp_tagged_bcbd_16k_00bc3030@4",
+        "offset": 0,
+        "section": 3,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 32,
+        "name": "@bsp_tagged_bcbd_16k_00bc3080@4",
+        "offset": 0,
+        "section": 5,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 33,
+        "name": "@bsp_tagged_bcbd_16k_00bc3100@4",
+        "offset": 0,
+        "section": 7,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 34,
+        "name": "@bsp_tagged_bcbd_16k_00bc7a60@4",
+        "offset": 0,
+        "section": 9,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 35,
+        "name": "_bsp_tagged_bcbd_16k_00bd1830",
+        "offset": 0,
+        "section": 13,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 36,
+        "name": ".chks64",
+        "offset": 0,
+        "section": 15,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "780000000000000000000000000000000000"
+      }
+    ],
+    "symbol_table_offset": 1169,
+    "symbol_table_entries_including_auxiliary": 38,
+    "symbol_table_sha256": "1a7a481c6e2db2b02b3a3f229fedbc91cd52c20a88a88bb61cd4bf21631c87cc",
+    "string_table_bytes": "c00000005f6273705f7461676765645f626362645f31366b5f303062633034623000406273705f7461676765645f626362645f31366b5f3030626333303330403400406273705f7461676765645f626362645f31366b5f3030626333303830403400406273705f7461676765645f626362645f31366b5f3030626333313030403400406273705f7461676765645f626362645f31366b5f30306263376136304034005f6273705f7461676765645f626362645f31366b5f303062643138333000",
+    "functions": [
+      {
+        "address": "00bc04b0",
+        "symbol": {
+          "index": 30,
+          "name": "_bsp_tagged_bcbd_16k_00bc04b0",
+          "offset": 0,
+          "section": 11,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 11,
+        "whole_section_size": 3,
+        "whole_section_bytes": "33c0c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "xor",
+            "operands": "eax, eax",
+            "size": 2
+          },
+          {
+            "offset": 2,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00bc3030",
+        "symbol": {
+          "index": 31,
+          "name": "@bsp_tagged_bcbd_16k_00bc3030@4",
+          "offset": 0,
+          "section": 3,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 3,
+        "whole_section_size": 4,
+        "whole_section_bytes": "8b4114c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + 0x14]",
+            "size": 3
+          },
+          {
+            "offset": 3,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00bc3080",
+        "symbol": {
+          "index": 32,
+          "name": "@bsp_tagged_bcbd_16k_00bc3080@4",
+          "offset": 0,
+          "section": 5,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 5,
+        "whole_section_size": 4,
+        "whole_section_bytes": "8b4168c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + 0x68]",
+            "size": 3
+          },
+          {
+            "offset": 3,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00bc3100",
+        "symbol": {
+          "index": 33,
+          "name": "@bsp_tagged_bcbd_16k_00bc3100@4",
+          "offset": 0,
+          "section": 7,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 7,
+        "whole_section_size": 4,
+        "whole_section_bytes": "8b4120c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + 0x20]",
+            "size": 3
+          },
+          {
+            "offset": 3,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00bc7a60",
+        "symbol": {
+          "index": 34,
+          "name": "@bsp_tagged_bcbd_16k_00bc7a60@4",
+          "offset": 0,
+          "section": 9,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 9,
+        "whole_section_size": 4,
+        "whole_section_bytes": "8b4108c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + 8]",
+            "size": 3
+          },
+          {
+            "offset": 3,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00bd1830",
+        "symbol": {
+          "index": 35,
+          "name": "_bsp_tagged_bcbd_16k_00bd1830",
+          "offset": 0,
+          "section": 13,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 13,
+        "whole_section_size": 3,
+        "whole_section_bytes": "b001c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "al, 1",
+            "size": 2
+          },
+          {
+            "offset": 2,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      }
+    ],
+    "whole_executable_bytes": 22,
+    "nonempty_executable_sections": 6,
+    "executable_relocations": 0,
+    "total_relocations": 6,
+    "undefined_external_symbols": []
+  },
+  "actual_registered_target": {
+    "project_path": "build\\win32\\bsp_core.vcxproj",
+    "project_sha256": "4ace1b6642100a6ec344f71445052a4f0cba62172f873029d53fe8c7a86c9fe9",
+    "LanguageStandard_values": [
+      "stdcpp17",
+      "stdcpp17",
+      "stdcpp17",
+      "stdcpp17"
+    ],
+    "configuration": "Release|Win32"
+  },
+  "archive": {
+    "path": "build\\win32\\Release\\bsp_core.lib",
+    "sha256": "c611c09225533c663f45c94b1a6434677fc046c043e19489d3c9de9795b979f6",
+    "member_name": "bsp_core.dir\\Release\\native_tagged_leaf_bcbd_16k.obj",
+    "member_header_offset": 20071136,
+    "member_size": 2045,
+    "member_sha256": "33eec9ad9bd683513239a3031326839c90e135006bfac802c006fc88e9620acb",
+    "unique_matches": 1,
+    "both_linker_dictionaries": [
+      {
+        "kind": "first_big_endian_symbol_dictionary",
+        "header_offset": 8,
+        "body_bytes": 10051197,
+        "body_sha256": "27b952e5979859c5abb4435a1741d775d52792fd64b472bd5829c90417d8b67d",
+        "symbol_count": 82596,
+        "all_offsets_resolve_real_archive_headers": true,
+        "selected": [
+          {
+            "symbol": "_bsp_tagged_bcbd_16k_00bc04b0",
+            "dictionary_symbol_index": 4,
+            "real_member_header_offset": 20071136,
+            "real_member_name": "bsp_core.dir\\Release\\native_tagged_leaf_bcbd_16k.obj",
+            "unique_symbol_occurrences": 1
+          },
+          {
+            "symbol": "@bsp_tagged_bcbd_16k_00bc3030@4",
+            "dictionary_symbol_index": 0,
+            "real_member_header_offset": 20071136,
+            "real_member_name": "bsp_core.dir\\Release\\native_tagged_leaf_bcbd_16k.obj",
+            "unique_symbol_occurrences": 1
+          },
+          {
+            "symbol": "@bsp_tagged_bcbd_16k_00bc3080@4",
+            "dictionary_symbol_index": 1,
+            "real_member_header_offset": 20071136,
+            "real_member_name": "bsp_core.dir\\Release\\native_tagged_leaf_bcbd_16k.obj",
+            "unique_symbol_occurrences": 1
+          },
+          {
+            "symbol": "@bsp_tagged_bcbd_16k_00bc3100@4",
+            "dictionary_symbol_index": 2,
+            "real_member_header_offset": 20071136,
+            "real_member_name": "bsp_core.dir\\Release\\native_tagged_leaf_bcbd_16k.obj",
+            "unique_symbol_occurrences": 1
+          },
+          {
+            "symbol": "@bsp_tagged_bcbd_16k_00bc7a60@4",
+            "dictionary_symbol_index": 3,
+            "real_member_header_offset": 20071136,
+            "real_member_name": "bsp_core.dir\\Release\\native_tagged_leaf_bcbd_16k.obj",
+            "unique_symbol_occurrences": 1
+          },
+          {
+            "symbol": "_bsp_tagged_bcbd_16k_00bd1830",
+            "dictionary_symbol_index": 5,
+            "real_member_header_offset": 20071136,
+            "real_member_name": "bsp_core.dir\\Release\\native_tagged_leaf_bcbd_16k.obj",
+            "unique_symbol_occurrences": 1
+          }
+        ]
+      },
+      {
+        "kind": "second_little_endian_member_symbol_dictionary",
+        "header_offset": 10051266,
+        "body_bytes": 9895681,
+        "body_sha256": "6569bbe59206123b203df85e9efcee323fb45df7d15994a68c1b7a189cb89e28",
+        "member_count": 2418,
+        "symbol_count": 82596,
+        "all_offsets_resolve_real_archive_headers": true,
+        "all_member_indexes_in_range": true,
+        "selected": [
+          {
+            "symbol": "_bsp_tagged_bcbd_16k_00bc04b0",
+            "dictionary_symbol_index": 82573,
+            "one_based_member_index": 1,
+            "real_member_header_offset": 20071136,
+            "real_member_name": "bsp_core.dir\\Release\\native_tagged_leaf_bcbd_16k.obj",
+            "unique_symbol_occurrences": 1
+          },
+          {
+            "symbol": "@bsp_tagged_bcbd_16k_00bc3030@4",
+            "dictionary_symbol_index": 81715,
+            "one_based_member_index": 1,
+            "real_member_header_offset": 20071136,
+            "real_member_name": "bsp_core.dir\\Release\\native_tagged_leaf_bcbd_16k.obj",
+            "unique_symbol_occurrences": 1
+          },
+          {
+            "symbol": "@bsp_tagged_bcbd_16k_00bc3080@4",
+            "dictionary_symbol_index": 81716,
+            "one_based_member_index": 1,
+            "real_member_header_offset": 20071136,
+            "real_member_name": "bsp_core.dir\\Release\\native_tagged_leaf_bcbd_16k.obj",
+            "unique_symbol_occurrences": 1
+          },
+          {
+            "symbol": "@bsp_tagged_bcbd_16k_00bc3100@4",
+            "dictionary_symbol_index": 81717,
+            "one_based_member_index": 1,
+            "real_member_header_offset": 20071136,
+            "real_member_name": "bsp_core.dir\\Release\\native_tagged_leaf_bcbd_16k.obj",
+            "unique_symbol_occurrences": 1
+          },
+          {
+            "symbol": "@bsp_tagged_bcbd_16k_00bc7a60@4",
+            "dictionary_symbol_index": 81718,
+            "one_based_member_index": 1,
+            "real_member_header_offset": 20071136,
+            "real_member_name": "bsp_core.dir\\Release\\native_tagged_leaf_bcbd_16k.obj",
+            "unique_symbol_occurrences": 1
+          },
+          {
+            "symbol": "_bsp_tagged_bcbd_16k_00bd1830",
+            "dictionary_symbol_index": 82574,
+            "one_based_member_index": 1,
+            "real_member_header_offset": 20071136,
+            "real_member_name": "bsp_core.dir\\Release\\native_tagged_leaf_bcbd_16k.obj",
+            "unique_symbol_occurrences": 1
+          }
+        ]
+      }
+    ]
+  },
+  "all_executable_extents_accounted": true,
+  "all_code_symbol_offsets_zero": true,
+  "code_relocations": 0,
+  "metadata_relocations": {
+    "strict": 6,
+    "registered": 6,
+    "qualification": "Each is type7 at offset0 in debug$F to own defined function; no executable relocations or undefined providers."
+  },
+  "no_NativeSize_prefix_or_hidden_helper": true,
+  "native_capture_target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "native_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "live_typed_ranges_complete_and_flow_NONE": true,
+  "discovery": {
+    "name_rows_screened": 39,
+    "whole_bodies_inspected": 18,
+    "whole_body_limit": 20,
+    "whole_native_bytes": 309,
+    "six_new_selected_functions": 6,
+    "six_new_selected_bytes": 22,
+    "whole_existing_Source_reuse_functions": 4,
+    "whole_existing_Source_reuse_bytes": 186,
+    "whole_existing_Source_reuse": [
+      {
+        "native_address": "00bd3770",
+        "existing_complete_Source": "src/native_pod8_range.cpp",
+        "existing_header": "include/bsp/native_pod8_range.hpp",
+        "existing_callable_function": "copy_native_pod8_range_00419960",
+        "actual_symbol": "?copy_native_pod8_range_00419960@bsp@@YIPAXPBX0PAXIII@Z",
+        "symbol_offset": 0,
+        "complete_executable_section_size": 44,
+        "complete_executable_section_bytes": "3bca8b4424047421568da4240000000085c0740a8b3189308b710489700483c10883c0083bca75e85ec21000",
+        "whole_native_identity": true,
+        "actual_object_path": "build\\win32\\bsp_core.dir\\Release\\native_pod8_range.obj",
+        "actual_object_sha256": "1ddd4b9015d7cee76e2f868dbec326050116cd4cb70af3079a408e8ace399ef2",
+        "unique_real_archive_provider": {
+          "name": "bsp_core.dir\\Release\\native_pod8_range.obj",
+          "offset": 40348066,
+          "size": 1388
+        },
+        "qualification": "Whole callable Source body/provider already exists for different Original entry address, not an inline fragment. Existing whole-body coverage should be mapped before claiming new independent Source implementation; no new duplicate C++ proposed."
+      },
+      {
+        "native_address": "00bd3a60",
+        "existing_complete_Source": "src/native_pod8_range.cpp",
+        "existing_header": "include/bsp/native_pod8_range.hpp",
+        "existing_callable_function": "fill_n_native_pod8_range_0041c7e0",
+        "actual_symbol": "?fill_n_native_pod8_range_0041c7e0@bsp@@YIXPAXIPBXIII@Z",
+        "symbol_offset": 0,
+        "complete_executable_section_size": 44,
+        "complete_executable_section_bytes": "85d276258b442404568da4240000000085c9740a8b3089318b700489710483ea0183c10885d277e85ec21000",
+        "whole_native_identity": true,
+        "actual_object_path": "build\\win32\\bsp_core.dir\\Release\\native_pod8_range.obj",
+        "actual_object_sha256": "1ddd4b9015d7cee76e2f868dbec326050116cd4cb70af3079a408e8ace399ef2",
+        "unique_real_archive_provider": {
+          "name": "bsp_core.dir\\Release\\native_pod8_range.obj",
+          "offset": 40348066,
+          "size": 1388
+        },
+        "qualification": "Whole callable Source body/provider already exists for different Original entry address, not an inline fragment. Existing whole-body coverage should be mapped before claiming new independent Source implementation; no new duplicate C++ proposed."
+      },
+      {
+        "native_address": "00bd3a30",
+        "existing_complete_Source": "src/native_pod8_inplace_range.cpp",
+        "existing_header": "include/bsp/native_pod8_inplace_range.hpp",
+        "existing_callable_function": "fill_native_pod8_range_0041c680",
+        "actual_symbol": "?fill_native_pod8_range_0041c680@bsp@@YAXPAXPBX1@Z",
+        "symbol_offset": 0,
+        "complete_executable_section_size": 36,
+        "complete_executable_section_bytes": "8b4424048b5424083bc274178b4c240c568b3189308b710489700483c0083bc275ef5ec3",
+        "whole_native_identity": true,
+        "actual_object_path": "build\\win32\\bsp_core.dir\\Release\\native_pod8_inplace_range.obj",
+        "actual_object_sha256": "bbf05202ae3b9c4b612b0303c6a226d8d5611374d209e1804c9f12a7c035b165",
+        "unique_real_archive_provider": {
+          "name": "bsp_core.dir\\Release\\native_pod8_inplace_range.obj",
+          "offset": 40361108,
+          "size": 978
+        },
+        "qualification": "Whole callable Source body/provider already exists for different Original entry address, not an inline fragment. Existing whole-body coverage should be mapped before claiming new independent Source implementation; no new duplicate C++ proposed."
+      },
+      {
+        "native_address": "00bd3bb0",
+        "existing_complete_Source": "src/native_pod8_inplace_range.cpp",
+        "existing_header": "include/bsp/native_pod8_inplace_range.hpp",
+        "existing_callable_function": "copy_backward_native_pod8_range_0041dac0",
+        "actual_symbol": "?copy_backward_native_pod8_range_0041dac0@bsp@@YAPAXPBX0PAX@Z",
+        "symbol_offset": 0,
+        "complete_executable_section_size": 62,
+        "complete_executable_section_bytes": "8b4c24088b54240c568b7424088bc12bc6c1f80303c003c003c0578bf88bc22bc73bf174162bd18b79f883e9083bce893c0a8b7904897c0a0475ec5f5ec3",
+        "whole_native_identity": true,
+        "actual_object_path": "build\\win32\\bsp_core.dir\\Release\\native_pod8_inplace_range.obj",
+        "actual_object_sha256": "bbf05202ae3b9c4b612b0303c6a226d8d5611374d209e1804c9f12a7c035b165",
+        "unique_real_archive_provider": {
+          "name": "bsp_core.dir\\Release\\native_pod8_inplace_range.obj",
+          "offset": 40361108,
+          "size": 978
+        },
+        "qualification": "Whole callable Source body/provider already exists for different Original entry address, not an inline fragment. Existing whole-body coverage should be mapped before claiming new independent Source implementation; no new duplicate C++ proposed."
+      }
+    ],
+    "no_new_counts_for_reused_kernels": true,
+    "separate_vtable_followup": [
+      {
+        "address": "00bd9070",
+        "native_name": "TRIV_body_00bd9070",
+        "native_body_end_inclusive": "00bd9076",
+        "native_body_bytes": "c7018083d600c3",
+        "native_body_size": 7,
+        "native_instruction_count": 2,
+        "native_instructions": [
+          {
+            "address": "00bd9070",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ecx], 0xd68380",
+            "size": 6
+          },
+          {
+            "address": "00bd9076",
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "pe_bytes_match_live": true,
+        "body_ranges_complete": true,
+        "classification": "separate_followup_not_in_K_six",
+        "original_effect": "MOV dword[ECX],00D68380; RET. Flags/registers unchanged, one raw store; no table dereference or call.",
+        "existing_callable_Source": "reset_native_vfs_date_visitor_00bd90b0 in src/native_vfs_date_route.cpp:76-78 performs same raw DWORD effect; ordinary Source ABI differs.",
+        "qualification": "Root explicitly excluded from K6 scope. Do not invent canonical table/vtable owner or promote parent closure; Root can separately map existing raw-store closure/physical binding."
+      },
+      {
+        "address": "00bd9110",
+        "native_name": "TRIV_body_00bd9110",
+        "native_body_end_inclusive": "00bd9116",
+        "native_body_bytes": "c7018083d600c3",
+        "native_body_size": 7,
+        "native_instruction_count": 2,
+        "native_instructions": [
+          {
+            "address": "00bd9110",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ecx], 0xd68380",
+            "size": 6
+          },
+          {
+            "address": "00bd9116",
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "pe_bytes_match_live": true,
+        "body_ranges_complete": true,
+        "classification": "separate_followup_not_in_K_six",
+        "original_effect": "MOV dword[ECX],00D68380; RET. Flags/registers unchanged, one raw store; no table dereference or call.",
+        "existing_callable_Source": "reset_native_vfs_date_visitor_00bd90b0 in src/native_vfs_date_route.cpp:76-78 performs same raw DWORD effect; ordinary Source ABI differs.",
+        "qualification": "Root explicitly excluded from K6 scope. Do not invent canonical table/vtable owner or promote parent closure; Root can separately map existing raw-store closure/physical binding."
+      },
+      {
+        "address": "00bd9180",
+        "native_name": "TRIV_body_00bd9180",
+        "native_body_end_inclusive": "00bd9186",
+        "native_body_bytes": "c7018083d600c3",
+        "native_body_size": 7,
+        "native_instruction_count": 2,
+        "native_instructions": [
+          {
+            "address": "00bd9180",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ecx], 0xd68380",
+            "size": 6
+          },
+          {
+            "address": "00bd9186",
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "pe_bytes_match_live": true,
+        "body_ranges_complete": true,
+        "classification": "separate_followup_not_in_K_six",
+        "original_effect": "MOV dword[ECX],00D68380; RET. Flags/registers unchanged, one raw store; no table dereference or call.",
+        "existing_callable_Source": "reset_native_vfs_date_visitor_00bd90b0 in src/native_vfs_date_route.cpp:76-78 performs same raw DWORD effect; ordinary Source ABI differs.",
+        "qualification": "Root explicitly excluded from K6 scope. Do not invent canonical table/vtable owner or promote parent closure; Root can separately map existing raw-store closure/physical binding."
+      }
+    ],
+    "MAX_FP_handoff": [
+      {
+        "address": "00bc3010",
+        "native_name": "TRIV_body_00bc3010",
+        "native_body_end_inclusive": "00bc3013",
+        "native_body_bytes": "d9412cc3",
+        "native_body_size": 4,
+        "native_instruction_count": 2,
+        "native_instructions": [
+          {
+            "address": "00bc3010",
+            "mnemonic": "fld",
+            "operands": "dword ptr [ecx + 0x2c]",
+            "size": 3
+          },
+          {
+            "address": "00bc3013",
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "pe_bytes_match_live": true,
+        "body_ranges_complete": true,
+        "classification": "assigned_disjoint_MAX_GOAL16L_by_Root",
+        "reason": "FLD m32real; RET requires x87 return/stack/status/control/exception/FIP/data-address qualification. Existing inline data or float members are not whole standalone physical-entry evidence. Keep existing BSP names for BC7AA0/BC7AB0; no routine xhigh implementation."
+      },
+      {
+        "address": "00bc7aa0",
+        "native_name": "BSP_CloudPuff_GetSortKey",
+        "native_body_end_inclusive": "00bc7aa3",
+        "native_body_bytes": "d94134c3",
+        "native_body_size": 4,
+        "native_instruction_count": 2,
+        "native_instructions": [
+          {
+            "address": "00bc7aa0",
+            "mnemonic": "fld",
+            "operands": "dword ptr [ecx + 0x34]",
+            "size": 3
+          },
+          {
+            "address": "00bc7aa3",
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "pe_bytes_match_live": true,
+        "body_ranges_complete": true,
+        "classification": "assigned_disjoint_MAX_GOAL16L_by_Root",
+        "reason": "FLD m32real; RET requires x87 return/stack/status/control/exception/FIP/data-address qualification. Existing inline data or float members are not whole standalone physical-entry evidence. Keep existing BSP names for BC7AA0/BC7AB0; no routine xhigh implementation."
+      },
+      {
+        "address": "00bc7ab0",
+        "native_name": "BSP_CloudPuff_GetSize",
+        "native_body_end_inclusive": "00bc7ab3",
+        "native_body_bytes": "d9411cc3",
+        "native_body_size": 4,
+        "native_instruction_count": 2,
+        "native_instructions": [
+          {
+            "address": "00bc7ab0",
+            "mnemonic": "fld",
+            "operands": "dword ptr [ecx + 0x1c]",
+            "size": 3
+          },
+          {
+            "address": "00bc7ab3",
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "pe_bytes_match_live": true,
+        "body_ranges_complete": true,
+        "classification": "assigned_disjoint_MAX_GOAL16L_by_Root",
+        "reason": "FLD m32real; RET requires x87 return/stack/status/control/exception/FIP/data-address qualification. Existing inline data or float members are not whole standalone physical-entry evidence. Keep existing BSP names for BC7AA0/BC7AB0; no routine xhigh implementation."
+      }
+    ],
+    "actual_hidden_call_deferrals": [
+      {
+        "address": "00bc3ec0",
+        "native_name": "TMPL_RefPtr_Reset_00bc3ec0",
+        "native_body_end_inclusive": "00bc3eea",
+        "native_body_bytes": "568bf1578b3e85ff741c8d470450ff152022ce0085c075088b178b028bcfffd0c706000000005f8bc65ec3",
+        "native_body_size": 43,
+        "native_instruction_count": 20,
+        "native_instructions": [
+          {
+            "address": "00bc3ec0",
+            "mnemonic": "push",
+            "operands": "esi",
+            "size": 1
+          },
+          {
+            "address": "00bc3ec1",
+            "mnemonic": "mov",
+            "operands": "esi, ecx",
+            "size": 2
+          },
+          {
+            "address": "00bc3ec3",
+            "mnemonic": "push",
+            "operands": "edi",
+            "size": 1
+          },
+          {
+            "address": "00bc3ec4",
+            "mnemonic": "mov",
+            "operands": "edi, dword ptr [esi]",
+            "size": 2
+          },
+          {
+            "address": "00bc3ec6",
+            "mnemonic": "test",
+            "operands": "edi, edi",
+            "size": 2
+          },
+          {
+            "address": "00bc3ec8",
+            "mnemonic": "je",
+            "operands": "0xbc3ee6",
+            "size": 2
+          },
+          {
+            "address": "00bc3eca",
+            "mnemonic": "lea",
+            "operands": "eax, [edi + 4]",
+            "size": 3
+          },
+          {
+            "address": "00bc3ecd",
+            "mnemonic": "push",
+            "operands": "eax",
+            "size": 1
+          },
+          {
+            "address": "00bc3ece",
+            "mnemonic": "call",
+            "operands": "dword ptr [0xce2220]",
+            "size": 6
+          },
+          {
+            "address": "00bc3ed4",
+            "mnemonic": "test",
+            "operands": "eax, eax",
+            "size": 2
+          },
+          {
+            "address": "00bc3ed6",
+            "mnemonic": "jne",
+            "operands": "0xbc3ee0",
+            "size": 2
+          },
+          {
+            "address": "00bc3ed8",
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [edi]",
+            "size": 2
+          },
+          {
+            "address": "00bc3eda",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edx]",
+            "size": 2
+          },
+          {
+            "address": "00bc3edc",
+            "mnemonic": "mov",
+            "operands": "ecx, edi",
+            "size": 2
+          },
+          {
+            "address": "00bc3ede",
+            "mnemonic": "call",
+            "operands": "eax",
+            "size": 2
+          },
+          {
+            "address": "00bc3ee0",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi], 0",
+            "size": 6
+          },
+          {
+            "address": "00bc3ee6",
+            "mnemonic": "pop",
+            "operands": "edi",
+            "size": 1
+          },
+          {
+            "address": "00bc3ee7",
+            "mnemonic": "mov",
+            "operands": "eax, esi",
+            "size": 2
+          },
+          {
+            "address": "00bc3ee9",
+            "mnemonic": "pop",
+            "operands": "esi",
+            "size": 1
+          },
+          {
+            "address": "00bc3eea",
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "pe_bytes_match_live": true,
+        "body_ranges_complete": true,
+        "classification": "deferred_actual_lifecycle_dependencies",
+        "indexed_callees": 0,
+        "actual_calls": [
+          "CALL [00CE2220] KERNEL32!InterlockedDecrement on pointee+4",
+          "CALL EAX, current pointee vtable slot0 with ECX pointee, no actual explicit arg"
+        ],
+        "reason": "Actual dynamically selected lifecycle/storage target set is not qualified in this bounded pass. Genuine Kernel32 InterlockedDecrement can have current SDK Source; that import itself is not a private CRT blocker. No fake virtual provider/owner or assumed destructor is introduced."
+      },
+      {
+        "address": "00bcfb20",
+        "native_name": "TMPL_OwnedPtr_DeleteReset_00bcfb20",
+        "native_body_end_inclusive": "00bcfb38",
+        "native_body_bytes": "568bf18b0e85c9740e8b018b106a01ffd2c706000000005ec3",
+        "native_body_size": 25,
+        "native_instruction_count": 12,
+        "native_instructions": [
+          {
+            "address": "00bcfb20",
+            "mnemonic": "push",
+            "operands": "esi",
+            "size": 1
+          },
+          {
+            "address": "00bcfb21",
+            "mnemonic": "mov",
+            "operands": "esi, ecx",
+            "size": 2
+          },
+          {
+            "address": "00bcfb23",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esi]",
+            "size": 2
+          },
+          {
+            "address": "00bcfb25",
+            "mnemonic": "test",
+            "operands": "ecx, ecx",
+            "size": 2
+          },
+          {
+            "address": "00bcfb27",
+            "mnemonic": "je",
+            "operands": "0xbcfb37",
+            "size": 2
+          },
+          {
+            "address": "00bcfb29",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx]",
+            "size": 2
+          },
+          {
+            "address": "00bcfb2b",
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [eax]",
+            "size": 2
+          },
+          {
+            "address": "00bcfb2d",
+            "mnemonic": "push",
+            "operands": "1",
+            "size": 2
+          },
+          {
+            "address": "00bcfb2f",
+            "mnemonic": "call",
+            "operands": "edx",
+            "size": 2
+          },
+          {
+            "address": "00bcfb31",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi], 0",
+            "size": 6
+          },
+          {
+            "address": "00bcfb37",
+            "mnemonic": "pop",
+            "operands": "esi",
+            "size": 1
+          },
+          {
+            "address": "00bcfb38",
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "pe_bytes_match_live": true,
+        "body_ranges_complete": true,
+        "classification": "deferred_actual_lifecycle_dependencies",
+        "indexed_callees": 0,
+        "actual_calls": [
+          "CALL EDX, current pointee vtable slot0 with ECX pointee and actual stack DWORD1"
+        ],
+        "reason": "Actual dynamically selected lifecycle/storage target set is not qualified in this bounded pass. Genuine Kernel32 InterlockedDecrement can have current SDK Source; that import itself is not a private CRT blocker. No fake virtual provider/owner or assumed destructor is introduced."
+      }
+    ],
+    "uninspected_zlib_names": 21,
+    "coverage_and_unique_path_checks": {
+      "proposed_paths": [
+        "src/native_tagged_leaf_bcbd_16k.cpp",
+        "include/bsp/native_tagged_leaf_bcbd_16k.hpp",
+        "docs/GOAL16K_TAGGED_LEAF_BCBD.md",
+        "reports/goal16k_tagged_leaf_bcbd.json"
+      ],
+      "checks": [
+        {
+          "root": "J:\\PROG\\battlestations-pacific-decompile-goal16b_tagged_b5",
+          "ref": "HEAD",
+          "commit": "5c8ed6e09e9e719d404518827383546e87c224cc",
+          "all_four_paths_absent": true,
+          "address_hits": [
+            "HEAD:include/bsp/water_weather_cc13.hpp:956:    virtual std::uint32_t class_manager_00bc3030(std::uint32_t cloud_class) = 0;",
+            "HEAD:include/bsp/water_weather_cc13.hpp:1242:// 00BC3410 __thiscall(ECX = class, unsigned index), RET 4: puffs[index]->slot (00BC7A60 reads +8).",
+            "HEAD:include/bsp/water_weather_cc13.hpp:1325:    // 00BC3100 puff count and 00BC3410 slot of the i-th sorted puff.",
+            "HEAD:include/bsp/water_weather_cc13.hpp:1326:    virtual std::uint32_t puff_count_00bc3100() = 0;",
+            "HEAD:include/bsp/weather_render.hpp:173:    float size{};    // puff+1Ch, read back through 00BC7AB0",
+            "HEAD:include/bsp/weather_render.hpp:247:    virtual float class_radius() = 0;     // 00BC3010 on the cloud class at +184h",
+            "HEAD:include/bsp/weather_render.hpp:250:    virtual bool wind_enabled() = 0;      // 00BBCE70 on the manager (00BC3030)",
+            "HEAD:src/water_weather_cc13.cpp:1730:    // Light 0 (00BBE653..00BBE6B2): the manager's +94h object (00BC3030, 00BBCE40), its",
+            "HEAD:src/water_weather_cc13.cpp:2269:    for (std::uint32_t i = 0; i < host.puff_count_00bc3100(); ++i) {",
+            "HEAD:src/water_weather_cc13.cpp:4071:    const std::uint32_t puffs = w3_field<std::uint32_t>(cloud_class, 0x20);  // 00BC3100",
+            "HEAD:src/water_weather_cc13.cpp:4087:        ? material_clone_construct_00b18b60(material_slot, w3_field<void*>(cloud_class, 0x68)) : nullptr;  // 00BC3080",
+            "HEAD:src/water_weather_cc13.cpp:4096:    const std::uint32_t radius_bits = w2_x87_reload_bits(w3_field<std::uint32_t>(cloud_class, 0x2C));  // 00BC3010 FLD, FSTP"
+          ]
+        },
+        {
+          "root": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator",
+          "ref": "HEAD",
+          "commit": "169408f758a645ae44ba02d4880c4cf5b22f2355",
+          "all_four_paths_absent": true,
+          "address_hits": [
+            "HEAD:include/bsp/water_weather_cc13.hpp:956:    virtual std::uint32_t class_manager_00bc3030(std::uint32_t cloud_class) = 0;",
+            "HEAD:include/bsp/water_weather_cc13.hpp:1242:// 00BC3410 __thiscall(ECX = class, unsigned index), RET 4: puffs[index]->slot (00BC7A60 reads +8).",
+            "HEAD:include/bsp/water_weather_cc13.hpp:1325:    // 00BC3100 puff count and 00BC3410 slot of the i-th sorted puff.",
+            "HEAD:include/bsp/water_weather_cc13.hpp:1326:    virtual std::uint32_t puff_count_00bc3100() = 0;",
+            "HEAD:include/bsp/weather_render.hpp:173:    float size{};    // puff+1Ch, read back through 00BC7AB0",
+            "HEAD:include/bsp/weather_render.hpp:247:    virtual float class_radius() = 0;     // 00BC3010 on the cloud class at +184h",
+            "HEAD:include/bsp/weather_render.hpp:250:    virtual bool wind_enabled() = 0;      // 00BBCE70 on the manager (00BC3030)",
+            "HEAD:src/water_weather_cc13.cpp:1730:    // Light 0 (00BBE653..00BBE6B2): the manager's +94h object (00BC3030, 00BBCE40), its",
+            "HEAD:src/water_weather_cc13.cpp:2269:    for (std::uint32_t i = 0; i < host.puff_count_00bc3100(); ++i) {",
+            "HEAD:src/water_weather_cc13.cpp:4071:    const std::uint32_t puffs = w3_field<std::uint32_t>(cloud_class, 0x20);  // 00BC3100",
+            "HEAD:src/water_weather_cc13.cpp:4087:        ? material_clone_construct_00b18b60(material_slot, w3_field<void*>(cloud_class, 0x68)) : nullptr;  // 00BC3080",
+            "HEAD:src/water_weather_cc13.cpp:4096:    const std::uint32_t radius_bits = w2_x87_reload_bits(w3_field<std::uint32_t>(cloud_class, 0x2C));  // 00BC3010 FLD, FSTP"
+          ]
+        },
+        {
+          "root": "J:\\PROG\\battlestations-pacific-decompile",
+          "ref": "HEAD",
+          "commit": "57e90435fb28b0896cfeedb8983d1af4f631af0c",
+          "all_four_paths_absent": true,
+          "address_hits": [
+            "HEAD:include/bsp/water_weather_cc13.hpp:956:    virtual std::uint32_t class_manager_00bc3030(std::uint32_t cloud_class) = 0;",
+            "HEAD:include/bsp/water_weather_cc13.hpp:1242:// 00BC3410 __thiscall(ECX = class, unsigned index), RET 4: puffs[index]->slot (00BC7A60 reads +8).",
+            "HEAD:include/bsp/water_weather_cc13.hpp:1325:    // 00BC3100 puff count and 00BC3410 slot of the i-th sorted puff.",
+            "HEAD:include/bsp/water_weather_cc13.hpp:1326:    virtual std::uint32_t puff_count_00bc3100() = 0;",
+            "HEAD:include/bsp/weather_render.hpp:173:    float size{};    // puff+1Ch, read back through 00BC7AB0",
+            "HEAD:include/bsp/weather_render.hpp:247:    virtual float class_radius() = 0;     // 00BC3010 on the cloud class at +184h",
+            "HEAD:include/bsp/weather_render.hpp:250:    virtual bool wind_enabled() = 0;      // 00BBCE70 on the manager (00BC3030)",
+            "HEAD:src/water_weather_cc13.cpp:1730:    // Light 0 (00BBE653..00BBE6B2): the manager's +94h object (00BC3030, 00BBCE40), its",
+            "HEAD:src/water_weather_cc13.cpp:2269:    for (std::uint32_t i = 0; i < host.puff_count_00bc3100(); ++i) {",
+            "HEAD:src/water_weather_cc13.cpp:4071:    const std::uint32_t puffs = w3_field<std::uint32_t>(cloud_class, 0x20);  // 00BC3100",
+            "HEAD:src/water_weather_cc13.cpp:4087:        ? material_clone_construct_00b18b60(material_slot, w3_field<void*>(cloud_class, 0x68)) : nullptr;  // 00BC3080",
+            "HEAD:src/water_weather_cc13.cpp:4096:    const std::uint32_t radius_bits = w2_x87_reload_bits(w3_field<std::uint32_t>(cloud_class, 0x2C));  // 00BC3010 FLD, FSTP"
+          ]
+        },
+        {
+          "root": "J:\\PROG\\battlestations-pacific-decompile",
+          "ref": "origin/main",
+          "commit": "57e90435fb28b0896cfeedb8983d1af4f631af0c",
+          "all_four_paths_absent": true,
+          "address_hits": [
+            "origin/main:include/bsp/water_weather_cc13.hpp:956:    virtual std::uint32_t class_manager_00bc3030(std::uint32_t cloud_class) = 0;",
+            "origin/main:include/bsp/water_weather_cc13.hpp:1242:// 00BC3410 __thiscall(ECX = class, unsigned index), RET 4: puffs[index]->slot (00BC7A60 reads +8).",
+            "origin/main:include/bsp/water_weather_cc13.hpp:1325:    // 00BC3100 puff count and 00BC3410 slot of the i-th sorted puff.",
+            "origin/main:include/bsp/water_weather_cc13.hpp:1326:    virtual std::uint32_t puff_count_00bc3100() = 0;",
+            "origin/main:include/bsp/weather_render.hpp:173:    float size{};    // puff+1Ch, read back through 00BC7AB0",
+            "origin/main:include/bsp/weather_render.hpp:247:    virtual float class_radius() = 0;     // 00BC3010 on the cloud class at +184h",
+            "origin/main:include/bsp/weather_render.hpp:250:    virtual bool wind_enabled() = 0;      // 00BBCE70 on the manager (00BC3030)",
+            "origin/main:src/water_weather_cc13.cpp:1730:    // Light 0 (00BBE653..00BBE6B2): the manager's +94h object (00BC3030, 00BBCE40), its",
+            "origin/main:src/water_weather_cc13.cpp:2269:    for (std::uint32_t i = 0; i < host.puff_count_00bc3100(); ++i) {",
+            "origin/main:src/water_weather_cc13.cpp:4071:    const std::uint32_t puffs = w3_field<std::uint32_t>(cloud_class, 0x20);  // 00BC3100",
+            "origin/main:src/water_weather_cc13.cpp:4087:        ? material_clone_construct_00b18b60(material_slot, w3_field<void*>(cloud_class, 0x68)) : nullptr;  // 00BC3080",
+            "origin/main:src/water_weather_cc13.cpp:4096:    const std::uint32_t radius_bits = w2_x87_reload_bits(w3_field<std::uint32_t>(cloud_class, 0x2C));  // 00BC3010 FLD, FSTP"
+          ]
+        }
+      ],
+      "whole_Source_query_address_count": 18,
+      "six_new_candidate_addresses": [
+        "00bc04b0",
+        "00bc3030",
+        "00bc3080",
+        "00bc3100",
+        "00bc7a60",
+        "00bd1830"
+      ],
+      "semantic_inline_fragments": [
+        {
+          "address": "00bc3030",
+          "existing": "include/bsp/water_weather_cc13.hpp:956 abstract class_manager_00bc3030; src/water_weather_cc13.cpp:1730 caller comment",
+          "classification": "Abstract dependency and caller-local fragment; no standalone physical body."
+        },
+        {
+          "address": "00bc3080",
+          "existing": "src/water_weather_cc13.cpp:4087 material_slot clone input from raw class+68",
+          "classification": "Inline caller getter expression; does not reconstruct complete standalone entry."
+        },
+        {
+          "address": "00bc3100",
+          "existing": "src/water_weather_cc13.cpp:2269 abstract puff_count_00bc3100 and4071 raw class+20 inline; header1326 abstract method",
+          "classification": "Inline and abstract-call coverage only."
+        },
+        {
+          "address": "00bc7a60",
+          "existing": "include/bsp/water_weather_cc13.hpp:1242 comment inside BC3410 declaration",
+          "classification": "Caller documentation only, not whole selected entry."
+        }
+      ]
+    },
+    "readiness_report_sha256": "bde9ff4d5a756b36e85eedc81d8ef589159267541080b8822a82295494f6a7e2",
+    "readiness_receipt_sha256": "aa61a7aff639bdd1377056e2cd3d811b1915237a1d8e7d29a39d110397bf03bf"
+  },
+  "path_absence_reverified_before_creation": [
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile-goal16b_tagged_b5",
+      "ref": "HEAD",
+      "commit": "5c8ed6e09e9e719d404518827383546e87c224cc",
+      "all_four_absent": true
+    },
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator",
+      "ref": "HEAD",
+      "commit": "169408f758a645ae44ba02d4880c4cf5b22f2355",
+      "all_four_absent": true
+    },
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile",
+      "ref": "HEAD",
+      "commit": "7c087ecd4076950b2eda86fea6a206c1c6459ce1",
+      "all_four_absent": true
+    },
+    {
+      "root": "J:\\PROG\\battlestations-pacific-decompile",
+      "ref": "origin/main",
+      "commit": "2995ccba1c0ede5bd92fc264baecab3deb2c85db",
+      "all_four_absent": true
+    }
+  ],
+  "Source_form": "Six readable ordinary C++17 definitions, no naked instructions, rejected compiler forms or compiler failures. Byte return emitted MOV AL,1/RET, preserving upper EAX and flags. Four memcpy raw getters each emitted exactly one MOV EAX,[ECX+offset]/RET. Return-zero emitted XOR EAX,EAX/RET.",
+  "setup_corrections": {
+    "preservation_wrapper": "Older B5/E/G reports omit source/header path keys; initial preserve wrapper stopped before copying/compiling, then used explicit module mapping. Full immutable preservation completed before any new Source or build. Helper script moved immediately into the owned local packet path.",
+    "compiler_failures": 0
+  },
+  "build": {
+    "started_utc": "2026-10-16T07:50:14.308600+00:00",
+    "completed_utc": "2026-10-16T07:50:32.181354+00:00",
+    "build_seconds": 17.873102300000028,
+    "exit_code": 0
+  },
+  "checks": {
+    "build_session": 94928,
+    "terminal_build_exit_code": 0,
+    "ctest_passed": 2,
+    "ctest_failed": 0,
+    "ctest_total_seconds": 7.44,
+    "names": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "new_tests": 0
+  },
+  "prior_provider_preservation": [
+    {
+      "packet": "16B",
+      "report": "reports/goal16b_tagged_leaf_b5_01.json",
+      "report_sha256": "38fbf9809c46003634c86c68db2bf3964fe69e1fb2ffe6ebb6ac4d9d65246ba6",
+      "source_header_pins_unchanged": true,
+      "unique_real_archive_members": 1,
+      "member_name": "bsp_core.dir\\Release\\native_tagged_leaf_b5_01.obj",
+      "member_header_offset": 35436820,
+      "member_size": 2236,
+      "member_sha256": "fe83ae50a82743c3a3914da44bff03f87d9f64c3085d4201e16d7574f689a54f",
+      "matches_prior_registered_actual_object": true,
+      "whole_source_functions": 7,
+      "whole_source_executable_bytes": 21
+    },
+    {
+      "packet": "16E",
+      "report": "reports/goal16e_tagged_leaf_b6_16e.json",
+      "report_sha256": "199b590225c514c44cee4e90cb33e40a604cd47b936e488fc6d722247940919a",
+      "source_header_pins_unchanged": true,
+      "unique_real_archive_members": 1,
+      "member_name": "bsp_core.dir\\Release\\native_tagged_leaf_b6_16e.obj",
+      "member_header_offset": 20076680,
+      "member_size": 1576,
+      "member_sha256": "7c6198ab8ddc07ba945b7cd507e3070e822431e369881f01a76fd97fa1668252",
+      "matches_prior_registered_actual_object": true,
+      "whole_source_functions": 4,
+      "whole_source_executable_bytes": 45
+    },
+    {
+      "packet": "16G",
+      "report": "reports/goal16g_tagged_leaf_b78.json",
+      "report_sha256": "3d1d9804c3224af48895f2d0f8787b0c09deabde39318aca3d5e7ca23e503d20",
+      "source_header_pins_unchanged": true,
+      "unique_real_archive_members": 1,
+      "member_name": "bsp_core.dir\\Release\\native_tagged_leaf_b78_16g.obj",
+      "member_header_offset": 20074702,
+      "member_size": 1917,
+      "member_sha256": "a8a6d5b6625fbe021d5a1a414ed9b97cdb0eb1969e18dfedcc31552c1cd9f48a",
+      "matches_prior_registered_actual_object": true,
+      "whole_source_functions": 7,
+      "whole_source_executable_bytes": 93
+    },
+    {
+      "packet": "16J",
+      "report": "reports/goal16j_tagged_sizes_bb.json",
+      "report_sha256": "d870089a7090b2427b467b9f0370776dc193362b7fef1731b6b4072887ab11a8",
+      "source_header_pins_unchanged": true,
+      "unique_real_archive_members": 1,
+      "member_name": "bsp_core.dir\\Release\\native_tagged_sizes_bb_16j.obj",
+      "member_header_offset": 20073242,
+      "member_size": 1400,
+      "member_sha256": "8a8596caf7f5293385e3e7a8ae393b57b3e570a24e8df77526a9cd7512162f27",
+      "matches_prior_registered_actual_object": true,
+      "whole_source_functions": 3,
+      "whole_source_executable_bytes": 93
+    }
+  ],
+  "preservation": {
+    "provenance_path": "local/goal16k_tagged_leaf_bcbd/frozen_prior/provenance.json",
+    "provenance_sha256": "e117828f55d33681b0881918f8e16a62a5ce7ccddb7835701748dcfea7e8a512",
+    "complete_copied_files": 322,
+    "complete_copied_bytes": 452017396,
+    "scope": "Full B5/E/G/J local trees including nested prior freezes, both J readiness/implementation, all K readiness33files plus receipt, Source/header/docs/reports, current strict and actual objects, full real Core archive/project/tlogs and pre-K CMake registry. Copied with full hashes before any new K Source/compile/build.",
+    "J_peer_manifest": "124168dc9032028eb95ce49e13c1318ed3c4632672ca58039940cbbdce7a0479"
+  },
+  "proposed_Root_Ghidra_annotations": [
+    {
+      "address": "00bc04b0",
+      "old_native_name": "TRIV_body_00bc04b0",
+      "suggested_name_hypothesis": "BSP_NativeTaggedBCBD_ReturnZero_00bc04b0",
+      "provisional_physical_prototype": "extern C uint32_t cdecl bsp_tagged_bcbd_16k_00bc04b0() noexcept;",
+      "comment_proposal": "Observed full3B entry: Return full EAX zero via XOR EAX,EAX; RET. No input register or actual stack argument is read. EAX overwritten0; all other general registers unchanged. No stack argument word is read/cleaned; plain RET consumes current return word and advances ESP4, without prologue/spill. Original unused-formal count/type spelling is not recovered solely from body. XOR sets CF=OF=SF=0, ZF=PF=1, AF undefined. Only RET reads current return slot. No pointed-data access/global/provider. No x87/SIMD instruction; FP state/FIP unchanged. New raw Source interface/return types are hypotheses; exact strict17 and registered Win32 complete section, no helper/code relocation, both archive dictionaries uniquely resolve real provider. No parent adoption, exact Original mapped EIP or game validation.",
+      "apply_authorization": "Root only after independent review, preserving old names/comments/prototypes. Author made no Ghidra writes."
+    },
+    {
+      "address": "00bc3030",
+      "old_native_name": "TRIV_body_00bc3030",
+      "suggested_name_hypothesis": "BSP_NativeTaggedBCBD_ReadDword14_00bc3030",
+      "provisional_physical_prototype": "extern C uint32_t fastcall bsp_tagged_bcbd_16k_00bc3030(const void* storage) noexcept;",
+      "comment_proposal": "Observed full4B entry: Read DWORD at ECX+14h into EAX; RET. Only ECX raw backing; single read at +14h, EAX result, ECX and every other general register unchanged. No stack argument word is read/cleaned; plain RET consumes current return word and advances ESP4, without prologue/spill. Original unused-formal count/type spelling is not recovered solely from body. All flags unchanged. Single current unaligned/wrapped x86 DWORD load, no backing null guard, no guessed manager class or canonical global. No x87/SIMD instruction; FP state/FIP unchanged. New raw Source interface/return types are hypotheses; exact strict17 and registered Win32 complete section, no helper/code relocation, both archive dictionaries uniquely resolve real provider. No parent adoption, exact Original mapped EIP or game validation.",
+      "apply_authorization": "Root only after independent review, preserving old names/comments/prototypes. Author made no Ghidra writes."
+    },
+    {
+      "address": "00bc3080",
+      "old_native_name": "TRIV_body_00bc3080",
+      "suggested_name_hypothesis": "BSP_NativeTaggedBCBD_ReadDword68_00bc3080",
+      "provisional_physical_prototype": "extern C uint32_t fastcall bsp_tagged_bcbd_16k_00bc3080(const void* storage) noexcept;",
+      "comment_proposal": "Observed full4B entry: Read DWORD at ECX+68h into EAX; RET. Only ECX raw backing; single read at +68h, EAX result, ECX and every other general register unchanged. No stack argument word is read/cleaned; plain RET consumes current return word and advances ESP4, without prologue/spill. Original unused-formal count/type spelling is not recovered solely from body. All flags unchanged. Single current unaligned/wrapped x86 DWORD load, no backing null guard or invented material-class ownership. No x87/SIMD instruction; FP state/FIP unchanged. New raw Source interface/return types are hypotheses; exact strict17 and registered Win32 complete section, no helper/code relocation, both archive dictionaries uniquely resolve real provider. No parent adoption, exact Original mapped EIP or game validation.",
+      "apply_authorization": "Root only after independent review, preserving old names/comments/prototypes. Author made no Ghidra writes."
+    },
+    {
+      "address": "00bc3100",
+      "old_native_name": "TRIV_body_00bc3100",
+      "suggested_name_hypothesis": "BSP_NativeTaggedBCBD_ReadDword20_00bc3100",
+      "provisional_physical_prototype": "extern C uint32_t fastcall bsp_tagged_bcbd_16k_00bc3100(const void* storage) noexcept;",
+      "comment_proposal": "Observed full4B entry: Read DWORD at ECX+20h into EAX; RET. Only ECX raw backing; single read at +20h, EAX result, ECX and every other general register unchanged. No stack argument word is read/cleaned; plain RET consumes current return word and advances ESP4, without prologue/spill. Original unused-formal count/type spelling is not recovered solely from body. All flags unchanged. Single current unaligned/wrapped x86 DWORD load, no backing null guard, count validation or vector normalization. No x87/SIMD instruction; FP state/FIP unchanged. New raw Source interface/return types are hypotheses; exact strict17 and registered Win32 complete section, no helper/code relocation, both archive dictionaries uniquely resolve real provider. No parent adoption, exact Original mapped EIP or game validation.",
+      "apply_authorization": "Root only after independent review, preserving old names/comments/prototypes. Author made no Ghidra writes."
+    },
+    {
+      "address": "00bc7a60",
+      "old_native_name": "TRIV_body_00bc7a60",
+      "suggested_name_hypothesis": "BSP_NativeTaggedBCBD_ReadDword08_00bc7a60",
+      "provisional_physical_prototype": "extern C uint32_t fastcall bsp_tagged_bcbd_16k_00bc7a60(const void* storage) noexcept;",
+      "comment_proposal": "Observed full4B entry: Read DWORD at ECX+8 into EAX; RET. Only ECX raw backing; single read at +8, EAX result, ECX and every other general register unchanged. No stack argument word is read/cleaned; plain RET consumes current return word and advances ESP4, without prologue/spill. Original unused-formal count/type spelling is not recovered solely from body. All flags unchanged. Single current unaligned/wrapped x86 DWORD load, no backing null guard or invented puff type. No x87/SIMD instruction; FP state/FIP unchanged. New raw Source interface/return types are hypotheses; exact strict17 and registered Win32 complete section, no helper/code relocation, both archive dictionaries uniquely resolve real provider. No parent adoption, exact Original mapped EIP or game validation.",
+      "apply_authorization": "Root only after independent review, preserving old names/comments/prototypes. Author made no Ghidra writes."
+    },
+    {
+      "address": "00bd1830",
+      "old_native_name": "TRIV_body_00bd1830",
+      "suggested_name_hypothesis": "BSP_NativeTaggedBCBD_ReturnByteOneRetainUpperEAX_00bd1830",
+      "provisional_physical_prototype": "extern C uint8_t cdecl bsp_tagged_bcbd_16k_00bd1830() noexcept;",
+      "comment_proposal": "Observed full3B entry: MOV AL,1; RET. Upper24 EAX bits are retained, not normalized to full EAX1. No explicit input read. AL overwritten1, incoming EAX upper24 retained; other general registers unchanged. No stack argument word is read/cleaned; plain RET consumes current return word and advances ESP4, without prologue/spill. Original unused-formal count/type spelling is not recovered solely from body. All flags unchanged. Only RET reads current return slot. No pointed-data access/global/provider. No x87/SIMD instruction; FP state/FIP unchanged. New raw Source interface/return types are hypotheses; exact strict17 and registered Win32 complete section, no helper/code relocation, both archive dictionaries uniquely resolve real provider. No parent adoption, exact Original mapped EIP or game validation.",
+      "apply_authorization": "Root only after independent review, preserving old names/comments/prototypes. Author made no Ghidra writes."
+    }
+  ],
+  "existing_correct_library_names": "No selected entry has a correct STL/CRT/zlib library name. Existing library names in excluded/reused/deferral scopes remain unchanged; six new descriptive names are explicitly hypotheses.",
+  "uncertainties": [
+    "New operation names, raw backing formal type and byte/full-word return spelling are hypotheses, not recovered Original C++ class/field/formal-type identities. Physical register/stack effects come from complete live instructions, not cached Ghidra parameter guesses.",
+    "C++ source-language defined behavior requires accessible backing bytes; integer address arithmetic/memcpy avoids guessed object extents, pointer differences, alignment and value-domain guards. Measured complete code preserves Original invalid/unaligned/wrapped addresses, load faults, flags, registers and return-slot aliases for this artifact. This does not assert identical mapped return/fault EIP placement, Native SEH/runtime compatibility, caller adoption or installed binary replacement.",
+    "Only these six new standalone entries are reconstructed. Four reused whole kernels, three vtable stores, three L/MAX FP getters and two lifecycle-dependent bodies receive no new Native reconstruction count."
+  ],
+  "new_tests": 0,
+  "ghidra_mutations": false,
+  "native_execution": false,
+  "game_validated": false,
+  "wall_clock": {
+    "first_readiness_clock_utc": "2026-10-16T07:33:51+00:00",
+    "readiness_seal_utc": "2026-10-16T07:46:08.300032+00:00",
+    "readiness_inclusive_seconds": 737.300032,
+    "scheduling_gap_seconds": 76.699968,
+    "implementation_start_utc": "2026-10-16T07:47:25+00:00",
+    "report_checkpoint_utc": "2026-10-16T07:57:28.834123+00:00",
+    "implementation_seconds_through_report": 603.834123,
+    "full_inclusive_seconds_through_report": 1417.834123,
+    "warm_build_seconds_included": 17.873102300000028,
+    "includes": "Entire bounded discovery and candidate rejection/Source reuse/deferral classification, Root coordination/scheduling, brief/leases/path rechecks, preservation setup correction and full file copying/hashing, fresh six Native bodies, C++/strict compile, normal warm configure/build/CTest, all actual/strict extents/data/symbol/reloc and both archive dictionaries/providers, report/docs/ledger/index, commit/release and final handoff preparation. Final local receipt supplies later complete author endpoint.",
+    "final_handoff_artifact": "local/goal16k_tagged_leaf_bcbd/final_handoff.json",
+    "speedup_claim": false
+  },
+  "evidence_artifact_sha256": {
+    "local\\goal16k_tagged_leaf_bcbd\\archive_dicts.py": "f87609486b8e1ad20cf2a3b34ffd8f3024ea263a815f45db7272936c23859f39",
+    "local\\goal16k_tagged_leaf_bcbd\\build.txt": "a1acbea2346b2609d18e8e3d7360cb6ac4abef638f8b2bb2b3998935b59c5c1b",
+    "local\\goal16k_tagged_leaf_bcbd\\build_timing.json": "772791f6c643ba727a25d63d8878a01db43fefca5e6d2e23e0071b98c2814700",
+    "local\\goal16k_tagged_leaf_bcbd\\capture.py": "83a7f0a274d57a659480aeb37cdc6cf00a811a344550b8021aeeb44a53cf0901",
+    "local\\goal16k_tagged_leaf_bcbd\\coff_proof.py": "b25c1a05a0679bf35fa99726383b3f26f100e7f9107573d9cf7dfd83ba66b7f1",
+    "local\\goal16k_tagged_leaf_bcbd\\compile_timing.json": "3edbe393d473d7d3be7364415552870bde5eccbd126ec56192ba9fe265f35243",
+    "local\\goal16k_tagged_leaf_bcbd\\ledger_log.txt": "249f2bdd85606861c70a060a7406a1f3968b3a4d3cce64f56c7235a3e9f50d2f",
+    "local\\goal16k_tagged_leaf_bcbd\\ledger_records.py": "0dcb988ca63e74fc4d140b8a778278ce7e4db92e16970c0b2b149a79c8146c1b",
+    "local\\goal16k_tagged_leaf_bcbd\\native_00bc04b0.txt": "9a409f8ec7debbee9979d7c61cdb5851fb54cb93ff405040017a2e2a93e08ad4",
+    "local\\goal16k_tagged_leaf_bcbd\\native_00bc3030.txt": "9e7b96ea6dc34431f5f431d91ee59f627ccf47ed3f94493af2ca729685d70a48",
+    "local\\goal16k_tagged_leaf_bcbd\\native_00bc3080.txt": "d4bd2256f1013758a030a3a9cb946c52e1351bf4f6f4c55e1ed4b57934d31ea4",
+    "local\\goal16k_tagged_leaf_bcbd\\native_00bc3100.txt": "6cc4539a2174b3bf78d96a4bb854d9f0289c6313d94f4a6a915cf6b18e1a5630",
+    "local\\goal16k_tagged_leaf_bcbd\\native_00bc7a60.txt": "aba186f25870cf59190b3c1215465d4f276ef9517d08f986858d848ef0a441f8",
+    "local\\goal16k_tagged_leaf_bcbd\\native_00bd1830.txt": "7853e3bd32947a7d8fec81e81f51cf788d07706ac2690f4e9eef7b540c5d5d2f",
+    "local\\goal16k_tagged_leaf_bcbd\\native_capture.json": "4bc96649973cfcc74fc386f168aee526448e4880bcfd739709c4c9537efefed0",
+    "local\\goal16k_tagged_leaf_bcbd\\path_checks.json": "754d751503ab6bea26bb04aea84e391f43b757ebaf62d833d5726d1665b3f7ec",
+    "local\\goal16k_tagged_leaf_bcbd\\preserve_prior.py": "5beb9b67483899f9efa8cc9641d26948db0446c07a158e8c7b10c963d6463945",
+    "local\\goal16k_tagged_leaf_bcbd\\run_build.py": "60dd4550218f62b229cc0a3148f66353506850c248df6357436705dddf481192",
+    "local\\goal16k_tagged_leaf_bcbd\\setup_corrections.json": "deeb585e27c05008a98101ff14346ba2414dfff56f707a40ef2da27a3d4b5480",
+    "local\\goal16k_tagged_leaf_bcbd\\strict.obj": "a375bf0be266398d40b769414964697b5a0d7e78bba7bcdace1ac0501998ef95",
+    "local\\goal16k_tagged_leaf_bcbd\\strict_compile.cmd": "2133a0b56e465b7024937ea1700b45d6dd48c9c2c199e006ae216a8a33d2b112",
+    "local\\goal16k_tagged_leaf_bcbd\\strict_compile.txt": "a262ddb1fd48589ad168c1db6fa3f03c806700a5df36fccd5bd30d503924388f",
+    "local\\goal16k_tagged_leaf_bcbd\\strict_proof.json": "32a4d419dccbf53ad3007dc859b15722884187dd68a4c13f6c4e772773dbf41f",
+    "local\\goal16k_tagged_leaf_bcbd\\typed_flow.json": "0a966325bce55ddc8160d27fb6637e2ad0405fb07f5bff9051914773e2a3d9d0",
+    "local\\goal16k_tagged_leaf_bcbd\\typed_flow_cli.txt": "33a469557aa4ff2fc4e54b7e7b4a6aa9715068957c4354ff6107342c773b9e67",
+    "local\\goal16k_tagged_leaf_bcbd\\validate.py": "9bb2294c05ff398e3924e10e03964aedf088b6f928fe9ea93daa9784733144d9"
+  }
+}
