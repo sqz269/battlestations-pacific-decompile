@@ -1,0 +1,55 @@
+{
+  "packet": "cc12_native_gui_page_tail_readiness_77",
+  "status": "read_only_tail_map_complete_first58b_reader_stage79_approved_in_principle",
+  "base": "d12e5827c435f4b6f12c26d90b9f3bfd4f8fb83a",
+  "document": "docs/CC12_NATIVE_GUI_PAGE_TAIL_READINESS_77.md",
+  "scope": {"source_edits": false, "ghidra_edits": false, "ledger_edits": false, "build_or_runtime": false},
+  "verified_project": "C:/Users/sqz269/bsp.gpr",
+  "verified_program": "/battlestationspacific.exe",
+  "remaining_tail": {"range": "[AC67CC,AC6879)", "bytes": 173, "original_return": "EAX same actual page; RET0C AC6876"},
+  "actual_objects": {
+    "lua_owner": "SAME72 NativeLuaStateStorage4C8h, open/EH2 at entry",
+    "globals": "actual14h=20 decimal bytes BY-VALUE constructor argument, not20h; B67980 owner/kind1/indexFFFFD8EE/opaque0/tracked0; padding preserved",
+    "reader": "actual14h; profile00/proxy04 preserved/vector begin08,end0C,capacity10; same existing NativeLuaReaderStorage",
+    "globals_consumption": "4425C0 RET14 consumes exact by-value object after copy, including C++ construction failure; no caller duplicate release/copy",
+    "lookup_scratch": "actual14h; existing raw lookup initializes unbound output, preserves opaque/padding; no registry/tracking surrogate"
+  },
+  "current_dispatch": [
+    {"site": "AC67F1/F5", "load": "CURRENT reader profile/table+04", "actual": "CE44FC+04=BD8E20"},
+    {"site": "AC6806/08/12", "load": "CURRENT page profile/table+18 AFTER enter", "actual": "D5BE38+18=AC4C50", "status": "raw whole provider missing"},
+    {"site": "AC6814/18/1F", "load": "CURRENT reader profile/table+08 AFTER properties", "actual": "CE44FC+08=BD7A20 -> BD7130"},
+    {"site": "AC6821/25", "load": "CURRENT page+4C AFTER leave", "actual": "B6D890(node,0)"}
+  ],
+  "cleanup_schedule": [
+    "EH2 through globals/reader construction; constructor owns by-value cleanup",
+    "EH5 AC67FC BEFORE enter AC6804",
+    "page properties AC6812 -> current leave AC681F -> root AC6825",
+    "reader CE44FC stamp AC682A",
+    "EH6 AC6836 BEFORE441210 AC683E",
+    "reader CE374C stamp AC6847",
+    "EH1 AC684F BEFORE actual Lua close B669A0 AC6857",
+    "same-page return/RET0C, no duplicated reader/vector/header cleanup"
+  ],
+  "genuine_existing_sources": ["native_lua_objects B67980/B669A0", "native_lua_reader4425C0/BD8E20/BD7A20/441A20/441210 successful vector domain", "native_lua_reader_support BD5790/B66FA0", "actual B6D890 node/scene domain", "NativeLuaServiceBindings Activation"],
+  "public_destruction_seam": "existing reader destructor bundles CE44FC/vector/CE374C; exact parent EH6 between first stamp and tidy needs explicit later Source scheduling treatment, not double destruction/force close",
+  "real_blockers": [
+    {"range": "[AC4C50,AC4D28)", "bytes": 216, "status": "raw whole property body absent; worker75 verified real AA7DC0/B6D890/current+78 AC59A0 dependencies"},
+    {"range": "[AAACD4,AAAECF)", "bytes": 507, "status": "raw AAA710 enumeration/children/model/list/load/header cleanup/epilogue absent"},
+    {"entry": "AA6560", "status": "semantic seven-type factory projection only; duplicates model/rollback work if substituted for raw factory"},
+    {"entry": "AA52A0", "status": "actual completed124h page required; no publication permission from pending script/reader stages"}
+  ],
+  "next79": {
+    "range": "[AC67CC,AC6806)", "bytes": 58, "later_tail_bytes": 115,
+    "new_sources": ["include/bsp/native_gui_page_reader_continuation.hpp", "src/native_gui_page_reader_continuation.cpp"],
+    "minimal_existing_change": "append awaiting_properties_continuation Phase without renumbering existing values",
+    "api_shape": "prefix acquired + SAME72 script frame + persistent NativeGuiPageReaderContinuation + genuine services/current table metadata/actual D5CB24",
+    "backing": "actual14h by-value globals + placement14h reader +14h scratch, no defaults or projections; frame guard before borrow/effects",
+    "normal_return": "AC6806/EH5, reader/Lua live, no page+18/property invocation or completed-page admission",
+    "failure": "sticky metadata first, retain actual callee state; host _Exit before graph/member/manager/CRT drain",
+    "future_tail": "independent whole-graph guard, same reader destruction once, genuine same Lua close, all borrows quiescent; CE374C/null is caller contract not authenticated history",
+    "forbidden": ["fixed own-slot/default target", "property callback bypass", "forced settlement/abandon/retry", "fake runtime providers", "CMake/Main/normal activation"],
+    "root_status": "approved in principle after77 receipt closes, fresh79 leases before Source edits"
+  },
+  "72a_audit": "sealed d12 cpp91d4ee65bcb34cd06c7504f108661ef6ac2cd40d line64 already rejects !owner_.state_04 after boundary checks; Root confirmed final guard PASS, no mutation",
+  "validation": "bounded verified Original listing/bytes and current Source review only; no new test/build/runtime proof"
+}
