@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct16_source_batch_primary_review",
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "normal_source_functions": 1,
+  "private_source_cleanup_actions": 0,
+  "native_bytes": 259,
+  "native_instructions": 81,
+  "spans": [
+    {
+      "address": "00c055b1",
+      "native_bytes": 34,
+      "instructions": 15,
+      "scope": "existing whole native body, additive Source API",
+      "live_equals_installed": true,
+      "sha256": "ee46ba523d066e7aa16ef3d636e1869ecfeab38fec0c26e9b02266b6e44f42e1"
+    },
+    {
+      "address": "00c17653",
+      "native_bytes": 197,
+      "instructions": 66,
+      "scope": "whole physical dispatcher, filter and handler",
+      "live_equals_installed": true,
+      "sha256": "60e624dd047a939340de897a25bdd15dd3b6d77b763d873c5459e1d233aa7a1f"
+    },
+    {
+      "address": "00e037b8",
+      "native_bytes": 28,
+      "instructions": 0,
+      "scope": "original scope table data, not instructions",
+      "live_equals_installed": true,
+      "sha256": "e38bb5f2547c493782a0263534c139ab2e2617847258019aa439d331f7f8d4be"
+    }
+  ],
+  "packet_reports": [
+    "reports/goal_oct16_crt_call_new_handler.json",
+    "reports/goal_oct16_crt_critical_section_dispatch.json"
+  ],
+  "typed_transfer_rows_checked": 21,
+  "typed_transfer_rows_failed": 0,
+  "independent_reviews": [
+    "Primary reviewed entire CPP/HPP and physical native schedules before build",
+    "Dispatcher keeps three separate native cells, late argument order, protected result store, captured filter/current handler code and raw memory AND-zero",
+    "New handler API skips actual size backing on decoded-null, loads only after decoder, and preserves existing API source bytes"
+  ],
+  "source_hashes": {
+    "src/native_crt_new_handler.cpp": "7d086357ec4ee166c2007b63e6d586badd0055dc424da11d5b0200d974be01a8",
+    "include/bsp/native_crt_new_handler.hpp": "0e005d5aef511ff7c38028bb3b112e73e7ffa10a0fff9d60264dfed51aa1e420",
+    "src/native_crt_critical_section_dispatch.cpp": "f07e83f08500b271d561cffafaba0cf05b1726bb611a38a835c9872e369ea6bd",
+    "include/bsp/native_crt_critical_section_dispatch.hpp": "fad58d3dd306423483e010b87e8b944d63a2a7513abfadec66652699a4d6735b"
+  },
+  "combined_build": {
+    "revision": "d9e1fce24cc7b7475668db7d14245958ef0d5237",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct16_source_batch_combined_build.log",
+    "log_sha256": "a084341f15d21c301692e308e7b8cae03f50210f38aea7fd1cbdf6fd4c434d22",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 8.9,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+    "scope": "existing regression checks; native math seeds do not execute these new bodies"
+  },
+  "project_source_counts": {
+    "native_crt_new_handler": 1,
+    "native_crt_critical_section_dispatch": 1
+  },
+  "unique_archive_objects": {
+    "native_crt_new_handler": [
+      "bsp_core.dir\\Release\\native_crt_new_handler.obj"
+    ],
+    "native_crt_critical_section_dispatch": [
+      "bsp_core.dir\\Release\\native_crt_critical_section_dispatch.obj"
+    ]
+  },
+  "archive_sha256": "035d57d79102e5cf48ef39743a617887174023689841132aa6680310f4e55f9c",
+  "new_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "Ordinary qualified Source interfaces; no original private frame, SEH4 transport, register, fault address or binary ABI identity",
+    "Existing checks passed but do not directly execute these two routines; no runtime or game validation",
+    "Critical-section platform output obeys the existing getter aligned uint32_t output contract",
+    "No heap, lock, TLS/PTD, handler startup or full CRT owner closure supplied",
+    "Compiler emits additional FWAIT at dispatcher+F8; ordinary domain excludes a pending enabled x87 exception surfaced there"
+  ],
+  "additional_Source_interfaces_to_existing_function": 1,
+  "new_native_address_records": 1,
+  "native_code_bytes": 231,
+  "native_scope_data_bytes": 28,
+  "retained_actual_objects": {
+    "native_crt_new_handler": {
+      "path": "local\\goal_oct16_source_batch_objects\\native_crt_new_handler.obj",
+      "sha256": "5adba1574dbf31a4f42e63f01df55d7a160f86e7a0265d751c1af939d21d9fd3",
+      "unique_identical_archive_bodies": 1,
+      "machine": "14c",
+      "disassembly": "local\\goal_oct16_source_batch_objects\\native_crt_new_handler.disasm.txt",
+      "symbols": "local\\goal_oct16_source_batch_objects\\native_crt_new_handler.symbols.txt"
+    },
+    "native_crt_critical_section_dispatch": {
+      "path": "local\\goal_oct16_source_batch_objects\\native_crt_critical_section_dispatch.obj",
+      "sha256": "9507eb061095d14404f4aeab23942b1747695313343da04a659af0a1589b1496",
+      "unique_identical_archive_bodies": 1,
+      "machine": "14c",
+      "disassembly": "local\\goal_oct16_source_batch_objects\\native_crt_critical_section_dispatch.disasm.txt",
+      "symbols": "local\\goal_oct16_source_batch_objects\\native_crt_critical_section_dispatch.symbols.txt"
+    }
+  },
+  "source_hashes_at_tested_revision": {
+    "src/native_crt_new_handler.cpp": "7d086357ec4ee166c2007b63e6d586badd0055dc424da11d5b0200d974be01a8",
+    "include/bsp/native_crt_new_handler.hpp": "0e005d5aef511ff7c38028bb3b112e73e7ffa10a0fff9d60264dfed51aa1e420",
+    "src/native_crt_critical_section_dispatch.cpp": "f07e83f08500b271d561cffafaba0cf05b1726bb611a38a835c9872e369ea6bd",
+    "include/bsp/native_crt_critical_section_dispatch.hpp": "cade1170837bd460ca6cc485b9a91b11e2517182136f9f75645973a3f02f687f"
+  },
+  "emitted_review": {
+    "status": "primary_entire_two_objects_passed",
+    "old_public_body_exact_bytes_and_relocation_identity_unchanged": true,
+    "old_public_body_bytes": 45,
+    "old_public_body_sha256": "6ac42f98ee3c61151e8fb600a65a6de94fdbffc6d0d72ab87168113a7551b503",
+    "old_public_Source_sha256": "4a035e0c3e90cdcfcb045def3f32eb83e4b77aa247877ed5b87bca3512bd00bc",
+    "new_handler_object_CODE_bytes": 97,
+    "new_handler_object_CODE_instructions": 46,
+    "new_raw_handler_body_bytes": 52,
+    "new_raw_handler_body_instructions": 24,
+    "dispatcher_object_CODE_bytes": 528,
+    "dispatcher_object_CODE_instructions": 199,
+    "dispatcher_CODE_sections": [
+      {
+        "bytes": 11,
+        "instructions": 6,
+        "sha256": "156602c840686d6ea80359110566c1f422c1e8eeed9664826d2f8ae9951ce5a0"
+      },
+      {
+        "bytes": 57,
+        "instructions": 22,
+        "sha256": "04678d81b4bdf6657fa24d789151b9234c5c4167e9d9e93ed21fc6b5a6766fed"
+      },
+      {
+        "bytes": 406,
+        "instructions": 142,
+        "sha256": "b89ee6489377071edd7786cf2e83eb0659d9532843a62579f1738fdd48fe187e"
+      },
+      {
+        "bytes": 19,
+        "instructions": 10,
+        "sha256": "ebb1379c4c99656ff4f2ea0b7b26654019551284302a201fafd511c6c0eddfb5"
+      },
+      {
+        "bytes": 11,
+        "instructions": 6,
+        "sha256": "bd938e409fd7adea661f129903b0c423217965673832a58652967e992d90b850"
+      },
+      {
+        "bytes": 11,
+        "instructions": 6,
+        "sha256": "bd938e409fd7adea661f129903b0c423217965673832a58652967e992d90b850"
+      },
+      {
+        "bytes": 13,
+        "instructions": 7,
+        "sha256": "571fd797538af4e555a3ab1e58bbe0fcb063c0918c7e0d93190efe90c309064d"
+      }
+    ],
+    "dispatcher_scope_data_bytes": 28,
+    "dispatcher_scope_targets": [
+      "main+106 filter",
+      "main+150 handler"
+    ],
+    "schedule": "State0+CD follows cache publish+CB; spin+E0 before pointer+EB; actualcall+F6 and resultstore+102 protected; captured filter stores+13A then compares+141; handler reload+156, SetLastError+166, AND-memory+16F; disarm+172 precedes finalread+17C",
+    "compiler_generated_FWAIT": "main+F8 after actualcall inside protected region; original x87 pending-exception/fault identity unclaimed; ordinary semantic admission excludes pending enabled x87 exception surfaced by that wait"
+  },
+  "postbuild_comment_only_header_delta": {
+    "include/bsp/native_crt_critical_section_dispatch.hpp": {
+      "tested_revision_sha256": "cade1170837bd460ca6cc485b9a91b11e2517182136f9f75645973a3f02f687f",
+      "final_sha256": "fad58d3dd306423483e010b87e8b944d63a2a7513abfadec66652699a4d6735b",
+      "reason": "Clarifies existing getter output alignment and compiler FWAIT admission; declarations and CPP unchanged"
+    }
+  },
+  "drain_request": "User requested draining current work and pausing; no follow-on implementation packets started",
+  "read_only_SEH_bridge_contract_review": {
+    "status": "primary_read_only_report_review_passed",
+    "live_native_code_and_data_bytes": 826,
+    "actual_direct_transfer_rows": 17,
+    "typed_guarded_indirect_rows": 1,
+    "physical_only_terminate_tail_rows": 1,
+    "repository_working_file_pins": 29,
+    "canonical_Git_blob_pins": 0,
+    "exact_CRLF_transport_equivalent_pins": 1,
+    "source_ready": false,
+    "new_Source_functions": 0,
+    "qualification": "Image guard remains proposal-only; no canonical OS callback, SEH4 entry, missing destructor/terminate, or owner closure"
+  }
+}

@@ -43262,6 +43262,86 @@
       "Original_ABI_compatible": false,
       "new_entry_executed": false,
       "game_validated": false
+    },
+    {
+      "id": "goal_oct16_crt_call_new_handler",
+      "done": true,
+      "state": "integrated_qualified_Source_normal_Win32_three_checks_emitted_review_passed",
+      "worker": "goal_oct15_reconstruction",
+      "function_addresses": [
+        "00c055b1"
+      ],
+      "output_files": [
+        "reports/goal_oct16_crt_call_new_handler.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct16_crt_call_new_handler.json",
+      "primary_review": "reports/goal_oct16_source_batch_primary_review.json",
+      "contract": "Additive raw-backed Source API; existing public Source and 45-byte emitted body unchanged; zero new original address records",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false,
+      "closure": "User requested current work drained and paused; no follow-on packets started"
+    },
+    {
+      "id": "goal_oct16_crt_critical_section_dispatch",
+      "done": true,
+      "state": "integrated_qualified_Source_normal_Win32_three_checks_emitted_review_passed",
+      "worker": "goal_oct15_reconstruction",
+      "function_addresses": [
+        "00c17653"
+      ],
+      "output_files": [
+        "reports/goal_oct16_crt_critical_section_dispatch.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct16_crt_critical_section_dispatch.json",
+      "primary_review": "reports/goal_oct16_source_batch_primary_review.json",
+      "contract": "Whole physical 197-byte dispatcher/filter/handler ordinary qualified Source; explicit private12, real Win32 providers, existing codec contracts and new compiler SEH; no Original SEH4/ABI/owner closure",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false,
+      "closure": "User requested current work drained and paused; no follow-on packets started"
+    },
+    {
+      "id": "goal_oct16_crt_critical_section_dispatch_feasibility",
+      "done": true,
+      "state": "integrated_bounded_read_only_feasibility_no_Source_credit",
+      "worker": "goal_oct15_reconstruction",
+      "function_addresses": [],
+      "output_files": [
+        "reports/goal_oct16_crt_critical_section_dispatch_feasibility.json"
+      ],
+      "depends_on": [],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct16_crt_critical_section_dispatch_feasibility.json",
+      "primary_review": "reports/goal_oct16_crt_critical_section_dispatch_feasibility.json",
+      "contract": "Finite physical-body feasibility audit; implementation credited only in separate dispatcher packet",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false,
+      "closure": "User requested current work drained and paused; no follow-on packets started"
+    },
+    {
+      "id": "goal_oct16_crt_seh4_bridge_contract",
+      "done": true,
+      "state": "integrated_bounded_read_only_feasibility_no_Source_credit",
+      "worker": "goal_oct15_reconstruction",
+      "function_addresses": [],
+      "output_files": [
+        "reports/goal_oct16_crt_seh4_bridge_contract.json"
+      ],
+      "depends_on": [],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct16_crt_seh4_bridge_contract.json",
+      "primary_review": "reports/goal_oct16_crt_seh4_bridge_contract.json",
+      "contract": "Read-only bridge and immediate-provider feasibility; image guard remains proposal only; missing terminate/provider closure remains explicit",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false,
+      "closure": "User requested current work drained and paused; no follow-on packets started"
     }
   ],
   "snapshot_after_analysis": {
