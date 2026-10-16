@@ -1164,7 +1164,7 @@ constexpr bool kTorpedoBotCanFireReloadBound = true;   // ON: GUNNERY 260
 //    torpedo_gyro (gun, 0|1)) and kept per gun; the launch uses the kept value.
 //    A held or refused evaluation still consumes its draws, as in the image.
 //    OFF: drawn at launch, and the evaluations that would draw are counted.
-constexpr bool kTorpedoAngleErrPerEvaluationBound = false;
+constexpr bool kTorpedoAngleErrPerEvaluationBound = true;   // ON: GUNNERY 263.1
 //  * kShipyardDeathReleaseBound: packet cc9_g34_shipyard_reidle. 008455A0, the
 //    shipyard's observer slot 08 on each unit it built (registered by AAh
 //    008437D0), runs when the unit dies (00926390): it clears the first hangar
