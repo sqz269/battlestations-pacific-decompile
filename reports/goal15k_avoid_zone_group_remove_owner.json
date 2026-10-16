@@ -1,0 +1,167 @@
+{
+  "packet": "goal15k_avoid_group_remove_owner",
+  "status": "complete_raw_source_strict_byte_normalized_realheap_source_fixture_pass_pending_primary_registered_checks",
+  "source": "src/native_avoid_zone_group_remove_owner.cpp",
+  "header": "include/bsp/native_avoid_zone_group_remove_owner.hpp",
+  "documentation": "docs/GOAL15K_AVOID_ZONE_GROUP_REMOVE_OWNER.md",
+  "base_commit": "66dad0382fd4fe45b57f0c44fe63bfa5b8b0bf3d",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "language": "x86:LE:32:default",
+    "verification": "fresh target-verifying bsp.py whole54row asm/137livebytes/body/xref/caller;installedPE allbytesmatch;no worker Ghidra writes"
+  },
+  "routines": [
+    {
+      "address": "0041d150",
+      "end": "0041d1d8",
+      "native_bytes": 137,
+      "instructions": 54,
+      "coverage": "complete",
+      "live_name_was": "FUN_0041d150",
+      "reviewed_name": "BSP_AvoidZoneGroup_RemoveOwner",
+      "source_api": "void __fastcall remove_native_avoid_zone_group_owner_0041d150(void* group,void* unused_edx,void* owner)",
+      "original_abi": "void thiscall,ECXraw14hgroup,one ownerstackword capturedonce EBP,RET4,no semanticEAX;EDXnotconsumed",
+      "source_abi": "unusedEDX adapter notOriginal input;literal raw receiver/stack/register/flags/branch body under4fixedrealcallee relocations",
+      "contract": "nullowner ordinaryCALLfullD0C0 withoriginalECX,POPEDI/POPEBP/RET4;otherwisezone+10read BEFORE nulltest,realclear/arrayfreezero/bodyfree/slotzero,currentcount+arraylastslotreplacement,ADD CURRENTcount-1,sameslotretry;nonmatchadvance4"
+    }
+  ],
+  "normal_calls": [
+    {
+      "address": "0041d17d",
+      "native": "004167c0",
+      "containing_function": "0041d150"
+    },
+    {
+      "address": "0041d189",
+      "native": "00bf6989",
+      "containing_function": "0041d150"
+    },
+    {
+      "address": "0041d198",
+      "native": "00bf65ac",
+      "containing_function": "0041d150"
+    },
+    {
+      "address": "0041d1cf",
+      "native": "0041d0c0",
+      "containing_function": "0041d150"
+    }
+  ],
+  "caller": {
+    "address": "00423671",
+    "native": "0041d150",
+    "containing_function": "00423640",
+    "operation": "ifreturnedgroupnonnull,PUSHcapturedownerESI,MOVECXgroup,CALL;calleeRET4"
+  },
+  "schemas": {
+    "group": "reuseCc13AvoidZoneNativeGroup14h:zones4,count8,capC,layer10;vtable/layer/cap unchanged",
+    "zone": "reuseAvoidZoneNativeStorage24h;associated_entity10,recordarray0/count4;matching currentheap storage"
+  },
+  "ordering": {
+    "fault": "zone+10read beforeESInulltest;no defensiveguard;matchingallocationsandallreachedrawaddressesvalid",
+    "matching": "actual167C0clear;loadcurrentzonearrayonce;nonnullfree thenzerozone0;zonefree;slotzero;reloadgroupcount/array;loadcurrentlastslot/storetocursor;ADD CURRENTcount-1",
+    "loop": "capturedslotcursor unchangedaftermatch,advance4onlynonmatch;CURRENTcount/arraymodulo32LEAendrecomputed;inactivewordsnotnormalized",
+    "nullowner": "OriginalECXunchangedbeforeordinaryCALLD0C0;nostackedcleararg/nottail;POPEDI/POPEBP/RET4",
+    "exceptions": "no localNativeEHframe/no additionalSourceguard/catch/rollback;current genuinefree/providerpolicy qualified"
+  },
+  "dependencies": [
+    {
+      "api": "clear_native_avoid_group_0041d0c0",
+      "header": "bsp/native_avoid_group_lifetime.hpp",
+      "status": "complete_accepted_registered_rawSourceGoal15D",
+      "contract": "actualECX/no stack/plainRET;clearactivezones/slots/count,retainarray/cap/layer/vtable"
+    },
+    {
+      "api": "clear_native_avoid_corner_records_004167c0",
+      "header": "bsp/native_avoid_clip_cleanup.hpp",
+      "status": "complete_accepted_registered_rawSource588c8d82844d73bd3f02efc4a8e26fa01486f2cf",
+      "contract": "CURRENTrecordarray/countperfree,zero countonly;noarrayfree"
+    },
+    {
+      "api": "singleton_lifetime_free",
+      "header": "bsp/singleton_lifetime.hpp",
+      "status": "existing_genuine_currentmatchedheapfree",
+      "native_mapping": "BF6989->BF65AC->BF9DC8 and directBF65AC",
+      "qualification": "currentCRT/exception/privateheap identity notNative"
+    }
+  ],
+  "validation": {
+    "strict_compile": "PASS MSVCx86/std:c++17/EHsc/MD/W4/WX/permissive-/fp:strict/O2",
+    "byte_comparison": {
+      "status": "PASS",
+      "native_span": "0041d150..0041d1d8",
+      "native_bytes": 137,
+      "instructions": 54,
+      "gaps": 0,
+      "native_sha256": "46d8be5b893ee9137c11a7a79adbcb2bc3961f661abe017b993923bf462d54d3",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-goal15_zone_leaf\\local\\goal15k_avoid_group_remove_owner\\native_avoid_zone_group_remove_owner.obj",
+      "object_sha256": "2677a0cb182736bca7e60d6e4b7704be27762aaca2d8ab1690aa32ac190453b2",
+      "source_bytes": 137,
+      "fixed_compared_bytes": 121,
+      "normalized_rel32_call_operands": 4,
+      "branches": 7,
+      "verified_call_operands": [
+        {
+          "source_operand_offset": 46,
+          "source_symbol": "?clear_native_avoid_corner_records_004167c0@bsp@@YIXPAX@Z",
+          "kind": 20
+        },
+        {
+          "source_operand_offset": 58,
+          "source_symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "kind": 20
+        },
+        {
+          "source_operand_offset": 73,
+          "source_symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "kind": 20
+        },
+        {
+          "source_operand_offset": 128,
+          "source_symbol": "?clear_native_avoid_group_0041d0c0@bsp@@YIXPAUCc13AvoidZoneNativeGroup@1@@Z",
+          "kind": 20
+        }
+      ],
+      "live_disk_source_body_match_except_exact_verified_calls": true,
+      "proof_limit": "ownedbody static exact normalization only;current real callees/CRT/frame/deployment/game identity distinct"
+    },
+    "source_sha256": "be6e1e14dc369692af7328b2ba63d28a8a21548ade5a6ef714de51f14dd24e80",
+    "header_sha256": "b49cad118c8ab4cd2865181832924beadb065b97a64e5158f41895e061ba20f2",
+    "report_calls": "PASS5rows:4ownednormal+1caller,0failed",
+    "whole_build": "primary integration responsibility",
+    "no_new_test_target": true,
+    "markdown_claims": "PASS1pairedclaim,0failed,0unchecked,0warnings"
+  },
+  "source_fixture": {
+    "status": "PASS actualnewobject+registeredcore,realheap/directproviders",
+    "source": "local/goal15k_avoid_group_remove_owner/remove_owner_probe.cpp",
+    "script": "local/goal15k_avoid_group_remove_owner/run_probe.cmd",
+    "log": "local/goal15k_avoid_group_remove_owner/probe.log",
+    "case": "5zones[keep0,match0,match1,keep1,match2] ->active[keep0,keep1],count2/cap5;replacementmatchrechecked,nonmatchadvance,lastmatchselfslot0copy;inactive[2]0,[3]keep1,[4]staleoldlast retained",
+    "heap": "9matchingzone/array/recordblocksnotUSED,6retainedblocksUSED;nullownerrealD0C0then6notUSED,group+arrayUSED;realSourceScalarflags1finallybothnotUSED;17trackedblocksnotglobalnoleak",
+    "retained": "array/cap5/vtable/layer-9 retainedafterbothoperations;onlyactiveclearfields reset,inactivewordsunchanged",
+    "limits": "Source fixtureonly;no forcedinvalidnull/SEH,Native differential/frame/CRT/ownerproducer/gameproof",
+    "archive_rerun": "run_probe.cmd archive drops overlayobject;primary finalregisteredcheck"
+  },
+  "history": {
+    "old_typed_source": "cc13_avoid_group_remove_owner_0041d150 in src/cc13_avoid1.cpp retained",
+    "reviewed_name_was": "BSP_AvoidZoneGroup_RemoveOwner",
+    "reviewed_name_is": "BSP_AvoidZoneGroup_RemoveOwner",
+    "live_name": "FUN_0041d150",
+    "live_proto_was": "undefined FUN_0041d150(void)",
+    "primary_annotation_proposal": "hypothesisBSP_AvoidZoneGroup_RemoveOwner withOriginalvoidthiscall(group,owner),noSourceEDX;preserve priorcomments/oldvalues/save/export",
+    "ledger": "additive rawSource function record/samename appended evidence,earlier typed/namehistory retained"
+  },
+  "registration": {
+    "source_to_register": "src/native_avoid_zone_group_remove_owner.cpp",
+    "worker_shared_metadata_writes": false
+  },
+  "limits": [
+    "All137ownedbytes/operands compareexcept4exactcalleeCALLoperands;notNativecallee/privateCRT/exception/frame/deployment/gameidentity.",
+    "No localEH/catch/rollback,defensivezoneNullguard,stablecompaction or inactive-slotnormalization.",
+    "Actualownerproducer/class/RTTI/productionadoption and Native differential remain unproved."
+  ]
+}
