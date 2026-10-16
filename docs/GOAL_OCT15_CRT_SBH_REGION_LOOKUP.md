@@ -36,15 +36,33 @@ override and effective CALL_TERMINATOR. It is the sole current reference to
 the false interior function. The full prior name/body/comment preimages and
 physical instruction schedule are retained for the authorized bounded repair.
 
-Repair is authorized but has not run: the guarded read-only script transport
-probe returned `Script execution disabled` from `/run_script_inline`. No
-mutating fallback, generic re-disassembly or byte/listing change was attempted.
-The packet's metadata/Source readiness gate remains pending safe atomic repair
-and verification. A fixed transaction must preserve the interior label/comment,
-unset only the false thunk/override, merge the whole body, retain every native
-instruction, save and read back all invariants before Source admission.
+The metadata repair is **NOT PERFORMED**. The guarded read-only transport probe
+returned `Script execution disabled` from `/run_script_inline`; no permitted
+atomic body-setting route is available. The fixed transaction and complete
+preimages remain a repair proposal with no mutation credit. Broad script-policy
+changes, restarting Ghidra, generic delete/recreate, and re-disassembly are not
+authorized. Both existing names, the formal 18-byte/25-byte bodies, false thunk,
+and CALL_RETURN override remain unchanged. No byte or instruction change is
+claimed, and the physical JMP is never counted as an actual native call.
 
-The primary will review the complete Source and eventual repair proof before
-registration and a later normal Win32 gate. No worker CMake change, build or
-new test is authorized. General Original free/malloc, heap/bootstrap, SEH and
-runtime/gameplay closure remain false; see the separate free-readiness report.
+Whole ordinary Source readiness at the actual-storage contract is independent
+of that analysis-boundary repair. Its earlier coupling to repair was a workflow
+condition, not a missing native functional dependency: the full physical
+43-byte algorithm and all 14 instruction starts have been verified. The primary
+independently accepted the entire CPP/header against the complete assembly,
+including canonical volatile count/base references and the fresh raw argument
+read before the current descriptor word. The CPP/header hashes are unchanged.
+A later primary registered normal Win32 build remains pending; the mapper's
+earlier gate supplies no validation for this Source.
+
+A purpose-built, write-locked plate-only append at `00C11D3D` preserved the
+prior plate and left the full `00C11D61` inventory comment and both names
+unchanged. The project was saved and the affected export refreshed. Fresh
+typed readback at modification 4765 confirms the formal bodies, false thunk
+and CALL_RETURN override remain unchanged. The refreshed export still covers
+the formal 18-byte entry; it is not proof of a repaired 43-byte formal body.
+No rename, byte, instruction, prototype, body or flow write was performed.
+
+No worker CMake change, build or new test is authorized. General Original
+free/malloc, heap/bootstrap, SEH and runtime/gameplay closure remain false;
+see the separate free-readiness report.
