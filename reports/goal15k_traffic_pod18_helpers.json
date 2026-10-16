@@ -1,0 +1,368 @@
+{
+  "packet": "goal15k_traffic_pod18_helpers",
+  "status": "complete_six_raw_source_strict_coff_golden_body_fixture_pass_pending_primary_registration",
+  "source": "src/native_traffic_pod18_helpers.cpp",
+  "header": "include/bsp/native_traffic_pod18_helpers.hpp",
+  "documentation": "docs/GOAL15K_TRAFFIC_POD18_HELPERS.md",
+  "base_commit": "2f6ebe1d78d0ca7c46a749889d43db0d6e1f16ae",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "language": "x86:LE:32:default",
+    "verification": "target-verifying bsp.py fullasm/bytes/typedbody/proto/xrefs/caller batch;all390live-analysis bytes equal installedPE;no mutations",
+    "typed_metadata_modification": "2757"
+  },
+  "routines": [
+    {
+      "address": "0047c4d0",
+      "end": "0047c4ee",
+      "size": 31,
+      "source": "size_native_traffic_pod18_0047c4d0",
+      "native_sha256": "a7527ac09e8bd0418808b3f8f4e3bfae58ac462e794cc0037f2dbef31ba6f47c",
+      "instructions": 13,
+      "branches": 1,
+      "fp_operations": 0,
+      "calls": [],
+      "native_bytes": 31,
+      "native_name": "STL_Vector_Size_0047c4d0",
+      "original_abi": "ECX actual header;no stack words;RET/EAX raw signed magic /24 result or0",
+      "source_api": "uint32_t __fastcall size_native_traffic_pod18_0047c4d0(const void*)",
+      "coverage": "complete_function",
+      "source_extra_binding": "actual observed physical argument words,no defaults"
+    },
+    {
+      "address": "0047fc30",
+      "end": "0047fc7c",
+      "size": 77,
+      "source": "copy_native_traffic_pod18_0047fc30",
+      "native_sha256": "72cbf44cafd88509c9f76b07d935cf9acfe0bc352f31087c1e83e79acda47140",
+      "instructions": 30,
+      "branches": 2,
+      "fp_operations": 12,
+      "calls": [],
+      "native_bytes": 77,
+      "native_name": "STL_Pod18Range_Copy_0047fc30",
+      "original_abi": "cdecl six observed physical stack DWORDs first,last,destination,duplicate-destination,tag0,tag1;only first3 read;RET/caller18h cleanup;EAX advanced destination",
+      "source_api": "void* __cdecl copy_native_traffic_pod18_0047fc30(const void*,const void*,void*,uint32_t,uint32_t,uint32_t)",
+      "coverage": "complete_function",
+      "source_extra_binding": "actual observed physical argument words,no defaults"
+    },
+    {
+      "address": "004841a0",
+      "end": "004841e8",
+      "size": 73,
+      "source": "copy_uninitialized_native_traffic_pod18_004841a0",
+      "native_sha256": "5704d3ee00bd750ef8eb905e713501f6a9e0743b146b56f6021480f778006c60",
+      "instructions": 30,
+      "branches": 3,
+      "fp_operations": 12,
+      "calls": [],
+      "native_bytes": 73,
+      "native_name": "STL_Pod18Range_UninitializedCopy_004841a0",
+      "original_abi": "ECX first,EDX last;four stacked DWORDs destination,opaque0,opaque1,tag;only destination read;RET10h/EAX advanced destination",
+      "source_api": "void* __fastcall copy_uninitialized_native_traffic_pod18_004841a0(const void*,const void*,void*,uint32_t,uint32_t,uint32_t)",
+      "coverage": "complete_function",
+      "source_extra_binding": "actual observed physical argument words,no defaults"
+    },
+    {
+      "address": "00486be0",
+      "end": "00486c25",
+      "size": 70,
+      "source": "fill_n_uninitialized_native_traffic_pod18_00486be0",
+      "native_sha256": "2334b6d2131d8a8a98ebcc1d601d140612fadfd683d2d4705e39e195c0a9ce05",
+      "instructions": 27,
+      "branches": 3,
+      "fp_operations": 12,
+      "calls": [],
+      "native_bytes": 70,
+      "native_name": "STL_Pod18Range_UninitializedFillN_00486be0",
+      "original_abi": "ECX destination,EDX uint32 count;four stacked DWORDs value,opaque0,opaque1,tag;only value read;RET10h;EAX incidental,count0 unchanged",
+      "source_api": "void __fastcall fill_n_uninitialized_native_traffic_pod18_00486be0(void*,uint32_t,const void*,uint32_t,uint32_t,uint32_t)",
+      "coverage": "complete_function",
+      "source_extra_binding": "actual observed physical argument words,no defaults"
+    },
+    {
+      "address": "0048d2f0",
+      "end": "0048d324",
+      "size": 53,
+      "source": "fill_n_native_traffic_pod18_dispatch_0048d2f0",
+      "native_sha256": "dc1c3337ac7e7c9ca48b9442e8e4d4169e4361b16a8be4bb277c1e201b1bc4b4",
+      "instructions": 22,
+      "branches": 0,
+      "fp_operations": 0,
+      "calls": [
+        {
+          "address": "0048d314",
+          "native": "00486be0",
+          "caller": "0048d2f0",
+          "source": "fill_n_uninitialized_native_traffic_pod18_00486be0",
+          "offset": 36
+        }
+      ],
+      "native_bytes": 53,
+      "native_name": "STL_inst_0048d2f0",
+      "original_abi": "ECX metadata preimage;three stack DWORDs destination,count,value;RET0Ch/EAX end;ECX restored maskedlowbyte;Original EDX not input",
+      "source_api": "void* __fastcall fill_n_native_traffic_pod18_dispatch_0048d2f0(uint32_t ecx_preimage,uint32_t unused_edx,void*,uint32_t,const void*)",
+      "coverage": "complete_function",
+      "source_extra_binding": "unused EDX placeholder only"
+    },
+    {
+      "address": "00486850",
+      "end": "004868a5",
+      "size": 86,
+      "source": "copy_native_traffic_pod18_dispatch_00486850",
+      "native_sha256": "242beef88183af66761af27145ef7366ba976f9acfc1362d5e35bfed44fb621f",
+      "instructions": 35,
+      "branches": 0,
+      "fp_operations": 0,
+      "calls": [
+        {
+          "address": "0048687e",
+          "native": "0047fc30",
+          "caller": "00486850",
+          "source": "copy_native_traffic_pod18_0047fc30",
+          "offset": 46
+        }
+      ],
+      "native_bytes": 86,
+      "native_name": "STL_TagDispatch_00486850",
+      "original_abi": "cdecl three actual incoming DWORDs first,last,destination;local8B tag preimages,only lowbytes cleared;six-word real child call;RET/EAX recomputed end",
+      "source_api": "void* __cdecl copy_native_traffic_pod18_dispatch_00486850(const void*,const void*,void*)",
+      "coverage": "complete_function",
+      "source_extra_binding": "actual observed physical argument words,no defaults"
+    }
+  ],
+  "all_actual_callers": [
+    {
+      "address": "004933fe",
+      "native": "0047c4d0",
+      "caller": "004932e0",
+      "setup": "ECX actualESIheader,no pushes"
+    },
+    {
+      "address": "00483b4e",
+      "native": "0047fc30",
+      "caller": "00483b20",
+      "setup": "six physical words first,last,destination,duplicate-destination,tag0,tag1;callerADD18h"
+    },
+    {
+      "address": "0048687e",
+      "native": "0047fc30",
+      "caller": "00486850",
+      "setup": "same six words;two actual local tag upperpreimages survive byte0 clear"
+    },
+    {
+      "address": "0048e68c",
+      "native": "004841a0",
+      "caller": "0048e670",
+      "setup": "ECXfirst/EDXlast;stackdest,entryECX,dest,maskedentryECXtag;RET10"
+    },
+    {
+      "address": "0049342e",
+      "native": "004841a0",
+      "caller": "004932e0",
+      "setup": "ECXcurrentfirst/EDXposition;stackallocation,receiver,allocation,partially maskedcounttag"
+    },
+    {
+      "address": "00493454",
+      "native": "004841a0",
+      "caller": "004932e0",
+      "setup": "ECXposition/EDXcurrentoldend;stackoutput,receiver,allocation,partially maskedcounttag"
+    },
+    {
+      "address": "0048d314",
+      "native": "00486be0",
+      "caller": "0048d2f0",
+      "setup": "ECXdest/EDXcount;stackvalue,entryECX,value,maskedentryECXtag;RET10"
+    },
+    {
+      "address": "0049343b",
+      "native": "0048d2f0",
+      "caller": "004932e0",
+      "setup": "ECXactualESI;stackactualoutput,count,local18hvalueaddress;RET0C"
+    },
+    {
+      "address": "0049352c",
+      "native": "0048d2f0",
+      "caller": "004932e0",
+      "setup": "ECXactualESI;stackcurrentoldend,remainingcount,local18hvalueaddress;RET0C"
+    },
+    {
+      "address": "0048e42a",
+      "native": "00486850",
+      "caller": "0048e400",
+      "setup": "stacksourcefirst,currentlast,destination;callerADD0C"
+    }
+  ],
+  "callers_before_source": {
+    "whole_read": [
+      "00483b20",
+      "0048e670",
+      "0048e400",
+      "004932e0",
+      "owned00486850",
+      "owned0048d2f0",
+      "stale-index00486f80"
+    ],
+    "cache_corrections": "486F80 has no4841A0 call;actualbody onlyBF67A7/live xrefs identify48E670. 49352C in4932E0 normalrange;Catch4934B4 only21B through4934C8. No Ghidra repair performed.",
+    "ret10_contract": "four actual stackedDWORDs,one read;never infer ordinaryfastcall3 from consumedwordcount",
+    "cdecl47fc30": "both actual callers push6/callerADD18h;first3read/last3unread;physicalSourcewords do not recover semantictemplate types"
+  },
+  "schedules": {
+    "size": "null first returns0 beforelastread;wrappedSUB then signedIMUL/SAR/SHR/ADD /24 magic",
+    "range_copy": "47FC30 no nullguard;4841A0 currentdest0 skips ALL6 reads/stores thenadvances;exact24/equality loops,no endpoint subtraction",
+    "fill": "count0 beforevaluewordread/EAXunchanged;source pointerloadedonce,pointed6words rereadeachiteration;currentdest0 skip thenadvance",
+    "floating": "all36 FLD/FSTP words retained,aliasread/writeorder,NaNquiet/status/rounding/CW/lowerstack;no normalization/ordinarydouble/integercopy",
+    "fill_dispatch": "actualECX saved/byte0clearedonly/full4word call;returnsECXmasked/EAXwrapped24end",
+    "copy_dispatch": "two actualuninitializedlocalDWORD upperpreimages preserved,onlybyte0cleared;all6actualwords pushedincludingduplicatedest;EAXmagicend recompute",
+    "ownership": "no allocation,CRT,callback,FS/EH guard or newcleanup inanyownedbody"
+  },
+  "verification": {
+    "strict_compile": "PASS MSVCx86/MD/O2/W4/WX/EHsc/fp:strict/permissive-",
+    "coff": {
+      "status": "PASS",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-goal15f_pod8\\local\\goal15k_traffic_pod18_helpers\\native_traffic_pod18_helpers.obj",
+      "object_sha256": "228d284f7825b52957a289ada79bfaebadd4fa95a6099d20ce5b8e64e0f9745c",
+      "machine": "I386",
+      "routines": [
+        {
+          "address": "0047c4d0",
+          "source": "size_native_traffic_pod18_0047c4d0",
+          "native_bytes": 31,
+          "source_bytes": 31,
+          "fixed_bytes": 31,
+          "call_bindings": 0,
+          "instructions": 13,
+          "branches": 1,
+          "x87_operations": 0,
+          "native_sha256": "a7527ac09e8bd0418808b3f8f4e3bfae58ac462e794cc0037f2dbef31ba6f47c",
+          "source_section_sha256": "a7527ac09e8bd0418808b3f8f4e3bfae58ac462e794cc0037f2dbef31ba6f47c"
+        },
+        {
+          "address": "0047fc30",
+          "source": "copy_native_traffic_pod18_0047fc30",
+          "native_bytes": 77,
+          "source_bytes": 77,
+          "fixed_bytes": 77,
+          "call_bindings": 0,
+          "instructions": 30,
+          "branches": 2,
+          "x87_operations": 12,
+          "native_sha256": "72cbf44cafd88509c9f76b07d935cf9acfe0bc352f31087c1e83e79acda47140",
+          "source_section_sha256": "72cbf44cafd88509c9f76b07d935cf9acfe0bc352f31087c1e83e79acda47140"
+        },
+        {
+          "address": "004841a0",
+          "source": "copy_uninitialized_native_traffic_pod18_004841a0",
+          "native_bytes": 73,
+          "source_bytes": 73,
+          "fixed_bytes": 73,
+          "call_bindings": 0,
+          "instructions": 30,
+          "branches": 3,
+          "x87_operations": 12,
+          "native_sha256": "5704d3ee00bd750ef8eb905e713501f6a9e0743b146b56f6021480f778006c60",
+          "source_section_sha256": "5704d3ee00bd750ef8eb905e713501f6a9e0743b146b56f6021480f778006c60"
+        },
+        {
+          "address": "00486be0",
+          "source": "fill_n_uninitialized_native_traffic_pod18_00486be0",
+          "native_bytes": 70,
+          "source_bytes": 70,
+          "fixed_bytes": 70,
+          "call_bindings": 0,
+          "instructions": 27,
+          "branches": 3,
+          "x87_operations": 12,
+          "native_sha256": "2334b6d2131d8a8a98ebcc1d601d140612fadfd683d2d4705e39e195c0a9ce05",
+          "source_section_sha256": "2334b6d2131d8a8a98ebcc1d601d140612fadfd683d2d4705e39e195c0a9ce05"
+        },
+        {
+          "address": "0048d2f0",
+          "source": "fill_n_native_traffic_pod18_dispatch_0048d2f0",
+          "native_bytes": 53,
+          "source_bytes": 53,
+          "fixed_bytes": 49,
+          "call_bindings": 1,
+          "instructions": 22,
+          "branches": 0,
+          "x87_operations": 0,
+          "native_sha256": "dc1c3337ac7e7c9ca48b9442e8e4d4169e4361b16a8be4bb277c1e201b1bc4b4",
+          "source_section_sha256": "e253cbfdb6503211e24f6d5add7ae125a8270971967b0925d9fa2088ba5765c7"
+        },
+        {
+          "address": "00486850",
+          "source": "copy_native_traffic_pod18_dispatch_00486850",
+          "native_bytes": 86,
+          "source_bytes": 86,
+          "fixed_bytes": 82,
+          "call_bindings": 1,
+          "instructions": 35,
+          "branches": 0,
+          "x87_operations": 0,
+          "native_sha256": "242beef88183af66761af27145ef7366ba976f9acfc1362d5e35bfed44fb621f",
+          "source_section_sha256": "b2a2c9a2695f639926628a9111deae39ac6679ed19da9984a19dda11bde32904"
+        }
+      ],
+      "total_native_bytes": 390,
+      "total_source_bytes": 390,
+      "total_fixed_bytes": 382,
+      "actual_call_bindings": 2,
+      "total_instructions": 157,
+      "total_branches": 9,
+      "total_x87_operations": 36,
+      "source_sha256": {
+        "include/bsp/native_traffic_pod18_helpers.hpp": "ab853e4570e41457ce5ec255c39e1fedac5ed2942ad2f621a28fd023d70a4dc9",
+        "src/native_traffic_pod18_helpers.cpp": "9fc6256ab9d548344863fad587902ed2d2a8d26d01d78278db96016e31360b3d"
+      },
+      "limits": "complete literal body/operand/caller physical contract;not installed replacement,Native stack preimage addresses/production/gameplay identity"
+    },
+    "call_report": "PASS tools/verify_report_calls.py:12rows/0failed,10unique sites;the2ownedcalls appear bothunder routines andallactualcallers",
+    "fixture": {
+      "status": "PASS",
+      "source": "local/goal15k_traffic_pod18_helpers/pod18_helpers_probe.cpp",
+      "command": "probe.cmd [registered-bsp_core.lib]",
+      "golden": "all6 complete captured Native bodies,only2CALLoperands rebound toactualSourcechildren;no fakecallback",
+      "actual_input": "explicit asmECX/EDX/EAX/allphysicalwords;real caller-thread-stackwindow withseededupperpreimages;realrawbacked18hdata",
+      "risks": "perword forwardoverlap+sNaNquiet/FPstatus/lowerST0retention;RET10/RETC/cdeclcleanup;count0EAX;nullskip;maskedECX and actualtagcellpayload",
+      "fixture_only": "FNINIT/FLD1/seededstack/VirtualAllocoracle are local testinput,not productionrepairs/Nativeframeidentity",
+      "source_sha256": "70570e828716caa207b250826b1f5a622fd54994541e220270983fa3fd541373",
+      "executable_sha256": "9d85410e1670330e17f2cca8f95b568488a16bb768cf2d2804acb07ab1ac119a",
+      "existing_result": "PASS six complete POD18 Source/Golden bodies, actual child calls/stack cells, x87 alias+NaN/status/lower stack, RET10/RETC and tag preimages",
+      "registered_archive_only": "pendingprimary;archiveargument replaces standaloneobject"
+    },
+    "standard_build": {
+      "status": "PASS",
+      "command": "scripts/build.ps1",
+      "ctests": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "count": 2,
+      "new_module_registered": false,
+      "scope": "existingregisteredrepository only,newhelpers strictobject/fixture separate",
+      "log": "local/goal15k_traffic_pod18_helpers/standard_build.log"
+    },
+    "native_game_differential": false,
+    "abi_compatible_dropin": false,
+    "game_validated": false
+  },
+  "source_sha256": {
+    "include/bsp/native_traffic_pod18_helpers.hpp": "ab853e4570e41457ce5ec255c39e1fedac5ed2942ad2f621a28fd023d70a4dc9",
+    "src/native_traffic_pod18_helpers.cpp": "9fc6256ab9d548344863fad587902ed2d2a8d26d01d78278db96016e31360b3d"
+  },
+  "documentation_sha256": "f3caaf93357daf0fe3d64fe4809e052094569880fdb1efe34c86866b11d81dc3",
+  "preservation": "all correct library/compiler names,oldtyped Source and historicalrecords retained;no workerGhidra/CMake/sharedregistry mutation",
+  "remaining_goal_work": [
+    "full49E560traffic",
+    "fullresize/insert/erase/settings graphs",
+    "rawlayout/world/axisproducer/productioncomposition"
+  ],
+  "uncertainty": "physicalinterfaces and actualargumentcells established,not recoveredtemplate/C++semanticmetadata types,installedreplacement or actualNativeprivateframeaddresses",
+  "helpers": {
+    "coff": "local/goal15k_traffic_pod18_helpers/verify_coff.py [registeredobject]",
+    "probe": "local/goal15k_traffic_pod18_helpers/probe.cmd [registered-bsp_core.lib]"
+  }
+}
