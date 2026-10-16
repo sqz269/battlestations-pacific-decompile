@@ -39,6 +39,9 @@
 #include <string>
 #include <vector>
 
+#include "bsp/gui_text_content.hpp"
+#include "bsp/gui_text_type_dispatch.hpp"
+
 namespace bsp {
 struct GuiLayoutWidget;
 class LocaleTables;
@@ -48,6 +51,22 @@ namespace bsp::game {
 
 class GameHostLog;
 class GameFontHost;
+
+// Explicit current owning-UCRT Source substitutions, not Original CRT parents
+// or native entry ABIs. No locale change, Original mode flag, cached result,
+// private CRT locale/PTD cast or process owner is supplied. Callers serialize
+// locale mutation and keep valid null-free terminated inputs stable throughout
+// the call. The narrow service is the actual ::_stricmp function pointer.
+GuiNativeNameCompare source_ucrt_text_name_comparer() noexcept;
+
+// The Source callback receives the actual u16 input pointers. It makes TWO
+// temporary std::wstring value copies into real wchar_t objects and finally
+// invokes ::_wcsicmp under the owning UCRT's then-current locale. Those copies
+// may allocate/throw ordinary C++ exceptions; UCRT receives their pointers,
+// not the original u16 pointers. No Original pointer/ABI, no-allocation,
+// fault/SEH or non-C Unicode/version equivalence is claimed. Creating this
+// stateless explicit profile does not activate native Text or cache a locale.
+GuiTextContentComparison source_ucrt_text_content_comparison();
 
 // One glyph quad, in the same normalised 0..1 GUI space the sprite bridge already draws
 // widget rectangles in. `left`/`top`/`right`/`bottom` are what 00ab98f0 wrote (its own
