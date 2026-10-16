@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_crt_ascii_strnicmp",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_crt_ascii_strnicmp.cpp",
+  "header": "include/bsp/native_crt_ascii_strnicmp.hpp",
+  "documentation": "docs/GOAL_OCT15_CRT_ASCII_STRNICMP.md",
+  "status": "whole_original_ascii_leaf_source_reviewed_build_pending",
+  "source_ready": true,
+  "source_ready_scope": "Whole genuine Original algorithm through new actual-argument-storage Source;primary full behavior/Source review passed,requested raw DWORD load uses explicit x86 instruction. Normal registered gate/emitted review remain pending.",
+  "base_revision": "281a34f29db74917672453a7e38ecd8ae1277b11",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00c15700",
+      "retained_library_name": "___ascii_strnicmp",
+      "source_function": "compare_native_crt_ascii_prefix_00c15700",
+      "coverage": "complete genuine Original call-free ASCII byte algorithm through actual argument storage",
+      "body_start": "00c15700",
+      "body_end_inclusive": "00c15760",
+      "body_bytes": 97,
+      "instructions": 48,
+      "basic_blocks": 16,
+      "calls": 0,
+      "live_installed_equal": true,
+      "native_hex": "558bec5756538b4d100bc9744d8b75088b7d0cb741b35ab6208d49008a260ae48a0774270ac0742383c60183c7013ae772063ae3770202e63ac772063ac3770202c63ae0750b83e90175d133c93ae07409b9ffffffff7202f7d98bc15b5e5fc9c3",
+      "native_sha256": "01469a0f156d0e6e1410b416b139e0ae9ad9153685dc825252df05f6f6536e7c",
+      "original_abi": "cdecl(left,right,unsigned count);plainRET;raw EAX exactly -1,0,+1;EBX/ESI/EDI/EBP preserved;incoming ECX/EDX unused",
+      "parameter_cells": "Native entry P+4/P+8/P+0Ch;new actual_parameters12 +0/+4/+8. Count DWORD first;zero skips pointer cells;nonzero left then right pointer DWORD once.",
+      "ordinary_source_abi": "new cdecl(const void* actual_parameters12)->int32_t;not binary-compatible Original entry"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bfae15",
+      "native": "00c15700",
+      "function": "00bfad7b",
+      "kind": "call",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "00bfaead",
+      "native": "00c15700",
+      "function": "00bfae6b",
+      "kind": "tail_jump",
+      "flow_override": "CALL_RETURN",
+      "default_flow": "UNCONDITIONAL_JUMP",
+      "effective_flow": "CALL_TERMINATOR"
+    }
+  ],
+  "schedule": [
+    "C15706 capture current count DWORD atEBP+10h. Zero reachesMOV EAX,ECX/RET before either pointer argument read.",
+    "C1570D thenC15710 capture current left/right pointer DWORDs once;all nonzero count bit patterns admitted.",
+    "C1571C capture current left BYTE;OR AH sets flags;C15720 capture current right BYTE BEFORE C15722 left-NUL branch. No short-circuit right read.",
+    "Either NUL branchesC1574B:zeroECX,compare raw captured unsigned bytes,return exact-1/0/+1. No pointer increment/fold/decrement.",
+    "Both nonzero:C15728 left pointer+1,C1572B right pointer+1,all addressesDWORD wrap.",
+    "C1572E..36 fold left unsigned41h..5Ah by+20h;C15738..40 independently fold right;all other byte values unchanged.",
+    "C15742 compares folded unsigned bytes;mismatch returns-1 ifleft<right,+1 otherwise. No arithmetic-difference return.",
+    "Only equality reachesC15746 retained count-1;nonzero repeats current-byte reads,zero returns0. No count/pointer argument reload or payload write."
+  ],
+  "storage_domain": {
+    "binding": "Stable actual_parameters12 address;only reached actual storage must be valid.",
+    "metadata": "New C++ metadata/private-frame backing disjoint from reached actual cells/payload.",
+    "aliases": "Payload may alias actual argument cells;pointer/count snapshots follow exact native captures. No parent outgoing-cell/private child-stack equivalence.",
+    "empty": "Only count DWORD required;zero skips both pointer-cell reads and payload.",
+    "nonempty": "Both reached BYTEs required even when left iszero;no string-wide validation,alignment/null/count guard or SDK substitution.",
+    "raw_DWORD_load": "MSVC x86 MOV DWORD PTR[address] via inline assembly;no typed Word alignment/alias precondition. Payload BYTE loads use volatile unsigned char."
+  },
+  "provider_closure": {
+    "complete": true,
+    "native_calls": [],
+    "SDK_dependencies": [],
+    "globals": [],
+    "locale_TLS_dependencies": [],
+    "parent_source_completion": false,
+    "excluded_parents": [
+      "00bfae6b",
+      "00bfad7b",
+      "009251f0"
+    ]
+  },
+  "caller_scope": {
+    "evidence": "local/goal_oct15_crt_ascii_strnicmp_callers.json",
+    "reviewed": "Two exact transfer sites with bounded setup/cleanup,not complete parent Source or validation/locale closure.",
+    "first": "BFAE0E PUSH[EBP+10h],BFAE11 PUSH EDI,BFAE12 PUSH[EBP+8],BFAE15 CALL;BFAE1A ADD ESP,0Ch.",
+    "second": "BFAEAB POP ESI,BFAEAC POP EBP,BFAEAD physical JMP reuses incoming3words;existing CALL_RETURN typed override preserved."
+  },
+  "annotation": {
+    "before_comments": "local/goal_oct15_crt_ascii_strnicmp_before_comments.json",
+    "before_documentation": "local/goal_oct15_crt_ascii_strnicmp_before_documentation.json",
+    "name_policy": "Preserve correct ___ascii_strnicmp library identity and all prior comments.",
+    "status": "primary whole-Source review passed;normal locked annotation/save/export/readback next after draft commit"
+  },
+  "verification": {
+    "expected_project_program_verified": true,
+    "typed_capture": "local/goal_oct15_crt_ascii_strnicmp_all_typed_flow.json",
+    "modification_number": "4778",
+    "whole97_live_installed_bytes": "passed",
+    "original_binary_copy": "local/goal_oct15_crt_ascii_strnicmp_original97.bin",
+    "all48_instructions_decoded": true,
+    "branch_targets_internal": [
+      {
+        "site": "00c1570b",
+        "target": "00c1575a",
+        "mnemonic": "je"
+      },
+      {
+        "site": "00c15722",
+        "target": "00c1574b",
+        "mnemonic": "je"
+      },
+      {
+        "site": "00c15726",
+        "target": "00c1574b",
+        "mnemonic": "je"
+      },
+      {
+        "site": "00c15730",
+        "target": "00c15738",
+        "mnemonic": "jb"
+      },
+      {
+        "site": "00c15734",
+        "target": "00c15738",
+        "mnemonic": "ja"
+      },
+      {
+        "site": "00c1573a",
+        "target": "00c15742",
+        "mnemonic": "jb"
+      },
+      {
+        "site": "00c1573e",
+        "target": "00c15742",
+        "mnemonic": "ja"
+      },
+      {
+        "site": "00c15744",
+        "target": "00c15751",
+        "mnemonic": "jne"
+      },
+      {
+        "site": "00c15749",
+        "target": "00c1571c",
+        "mnemonic": "jne"
+      },
+      {
+        "site": "00c1574f",
+        "target": "00c1575a",
+        "mnemonic": "je"
+      },
+      {
+        "site": "00c15756",
+        "target": "00c1575a",
+        "mnemonic": "jb"
+      }
+    ],
+    "no_calls_or_absolute_memory_operands": true,
+    "source_file_sha256": {
+      "src/native_crt_ascii_strnicmp.cpp": "51d082becad3bd4f7c843aecb449057e358cb243450b7a6823e434fea64204d5",
+      "include/bsp/native_crt_ascii_strnicmp.hpp": "465f73bbf2f473151fa58c2462a3a8dc9c90eab155963c71f94c8f03a4f7ba58"
+    },
+    "primary_whole_source_review": {
+      "result": "passed complete CPP/header and all97 native bytes/48 instructions;no algorithm/API mismatch",
+      "requested_adjustment": "Replace typed volatile Word dereference with accepted tiny MSVC x86 inline-assembly DWORD read,to admit unaligned/raw aliasable actual argument words without typed DWORD assumptions.",
+      "adjustment_applied": true,
+      "source_header_sha256": {
+        "src/native_crt_ascii_strnicmp.cpp": "51d082becad3bd4f7c843aecb449057e358cb243450b7a6823e434fea64204d5",
+        "include/bsp/native_crt_ascii_strnicmp.hpp": "465f73bbf2f473151fa58c2462a3a8dc9c90eab155963c71f94c8f03a4f7ba58"
+      },
+      "normal_registered_compilation_and_emitted_gate": "pending"
+    },
+    "native_behavior_primary_review": "passed all97B/48ops and2incoming;Source review separately pending",
+    "optional_flow_properties": {
+      "path": "local/goal_oct15_crt_ascii_strnicmp_tail_properties.json",
+      "result": "actual scripts-disabled error retained;typed-flow independently returned needed flow properties;no bypass or mutation"
+    },
+    "cmake_registration": "root only;no worker queue/append",
+    "normal_win32_build": "pending actual root registered gate;no worker build",
+    "emitted_object_review": "pending actual root object",
+    "new_tests": false,
+    "native_differential": "not requested or run",
+    "game_validation": "not run",
+    "typed_transfer_verifier": {
+      "command": "python tools/verify_report_calls.py reports/goal_oct15_crt_ascii_strnicmp.json docs/GOAL_OCT15_CRT_ASCII_STRNICMP.md",
+      "report_rows": 2,
+      "documentation_claims": 2,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0
+    }
+  },
+  "limits": [
+    "Whole Original byte algorithm through new actual-argument-storage interface;not native ABI/private-frame/argument-home/register/flags/fault identity.",
+    "No complete parent ASCII selection,global gate,validation,locale/TLS/errno/invalid-handler/cleanup behavior or parent completion credit.",
+    "No SDK replacement,Host callback,whole-string capture,valid-only narrowing,alignment/count/null guard or new recovery.",
+    "Runtime unexecuted;static/normal-build/emitted evidence and game proof remain separate."
+  ]
+}
