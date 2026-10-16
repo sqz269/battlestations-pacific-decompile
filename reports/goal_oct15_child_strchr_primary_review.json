@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_child_strchr_primary_review",
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "normal_source_functions": 2,
+  "private_source_cleanup_actions": 0,
+  "native_bytes": 236,
+  "native_instructions": 106,
+  "spans": [
+    {
+      "address": "00467f30",
+      "native_bytes": 41,
+      "instructions": 17,
+      "scope": "whole raw live index/signedcount/head/current44link child lookup",
+      "live_equals_installed": true,
+      "sha256": "e8ecc56fc3f7bccd5fae76938a050a4ecacd817800248dc0717cc3343355db7a"
+    },
+    {
+      "address": "00bf86e0",
+      "native_bytes": 5,
+      "instructions": 3,
+      "scope": "defined pre-entry unaligned-match return tail of Originalstrchr",
+      "live_equals_installed": true,
+      "sha256": "129f1135daa1b60c707996d1ed0561b8f4731388ee1f4732c0a27db4c5e3a907"
+    },
+    {
+      "address": "00bf86f0",
+      "native_bytes": 190,
+      "instructions": 86,
+      "scope": "whole entry-range Original byte/alignedword/re-read/mask character search;no calls/globals",
+      "live_equals_installed": true,
+      "sha256": "1196a276dcfdd74f72de4e4d6889e8a22e5bc4b24104501e0b13ccc51d4a5f3f"
+    }
+  ],
+  "packet_reports": [
+    "reports/goal_oct15_scene_node_child_at.json",
+    "reports/goal_oct15_crt_strchr.json"
+  ],
+  "typed_transfer_rows_checked": 2,
+  "typed_transfer_rows_failed": 0,
+  "independent_reviews": [
+    "Primary independently reviewed whole41B17ops and entireSource/header;indexfirst/signednegative andcountgates/head/currentlink/decrement/null schedule matched",
+    "Primary independently reviewed all89ops195B across2ranges and entireSource/header;argumentBYTEbeforepointer,alignmentBYTE,alignedDWORD,candidatereread,wrappedmasks/sign compensation/matchbeforeNUL matched;pre-entry InstructionDB and all206physicalbytes independently pinned"
+  ],
+  "source_hashes": {
+    "src/native_scene_node_child_at.cpp": "71956644bc7583c683a52ff3c6b2bd17b8c44d27d317e086505a2c0bc01de784",
+    "include/bsp/native_scene_node_child_at.hpp": "0dc75ba0d579bb03d86566fa3dc19346a42b3f3d81df6814d0378249a7f92fb1",
+    "src/native_crt_strchr.cpp": "b1a42cf89eb2d6f99d995a279779857dd9e247d99cb7afc66c1b9162de5456b4",
+    "include/bsp/native_crt_strchr.hpp": "6ae3c442d24614dbf80059f0b491dae4f5c9e6bdfdb2efb5fb253adb64c72ac1"
+  },
+  "combined_build": {
+    "revision": "1464485a955060ff1e438595b07257f5a5238c01",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct15_child_strchr_combined_build.log",
+    "log_sha256": "b494ea8f46becc03b3870c7f325beb476935a6cd2b415aebbce970538d068a15",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 9.48,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+    "scope": "existing regression checks; native math seeds do not execute these new bodies"
+  },
+  "project_source_counts": {
+    "native_scene_node_child_at": 1,
+    "native_crt_strchr": 1
+  },
+  "unique_archive_objects": {
+    "native_scene_node_child_at": [
+      "bsp_core.dir\\Release\\native_scene_node_child_at.obj"
+    ],
+    "native_crt_strchr": [
+      "bsp_core.dir\\Release\\native_crt_strchr.obj"
+    ]
+  },
+  "archive_sha256": "a6caddfea47a75be5197fa52c76b5e61c23ff833fb299d43e6f2d5680e3b9168",
+  "new_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "New explicit raw/live-frame/currentCRT Source APIs,not Original register/private-stack/argument-home/heap/FH3/fault ABI identity",
+    "The cleanup is a canonical Source guard mapping,not a new private-frame binary entry",
+    "Existing math differential seeds do not execute these new bodies; no application or game proof",
+    "No SDK replacement/callback/locale/TLS supplies Originalstrchr:entire algorithm rebuilt;Originalstrnicmp and qualified9251F0 parent remain unclosed",
+    "Source/probe ordinary input-cell interface differs from Original entry;probe supplies valid value-equivalent frames only",
+    "New routines add no cleanup actions;common cleanup limit is transitive boilerplate only"
+  ],
+  "retained_emitted_objects": {
+    "native_scene_node_child_at": {
+      "path": "local\\goal_oct15_child_strchr_objects\\native_scene_node_child_at.obj",
+      "sha256": "780da8d464cf8d966ee64d250c79c994d4009c2748286fe0dcfa7b9696f3a8d9",
+      "unique_identical_archive_bodies": 1,
+      "machine": "14c",
+      "disassembly": "local\\goal_oct15_child_strchr_objects\\native_scene_node_child_at.disasm.txt",
+      "symbols": "local\\goal_oct15_child_strchr_objects\\native_scene_node_child_at.symbols.txt"
+    },
+    "native_crt_strchr": {
+      "path": "local\\goal_oct15_child_strchr_objects\\native_crt_strchr.obj",
+      "sha256": "37a604db019ae735cd2f702a7f4737e91141b818ef28f1064517fb9652be2689",
+      "unique_identical_archive_bodies": 1,
+      "machine": "14c",
+      "disassembly": "local\\goal_oct15_child_strchr_objects\\native_crt_strchr.disasm.txt",
+      "symbols": "local\\goal_oct15_child_strchr_objects\\native_crt_strchr.symbols.txt"
+    }
+  },
+  "focused_Original_native_differential": {
+    "pairs": 72,
+    "failures": 0,
+    "original_code_bytes": 206,
+    "listed_algorithm_bytes": 195,
+    "entry_offset": 16,
+    "code_sha256": "80c4de8b7a904f4fc5015fae8e37f82934196cf010f0872fc4d36071a239d111",
+    "receipt": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_copy\\local\\goal_oct15_crt_strchr_probe.receipt.json",
+    "receipt_sha256": "65511439cd4b765cde31c542b6cf242e9c7eb77ae4233080be56ff52ec92ff62",
+    "all_artifact_hashes_independently_verified": true,
+    "all_results_independently_verified": true,
+    "actual_probe_source_setup_independently_inspected": true,
+    "embedded_asInvoker_manifest_verified": true,
+    "scope": "actual relocated Original call-free cdecl algorithm versus compiled reviewed Source on72validpaddedbuffer/needle pairs;not normal-project-object execution/generalABI/fault/game or parentclosure"
+  }
+}

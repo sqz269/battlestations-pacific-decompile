@@ -1,0 +1,300 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_qualified_node_readiness",
+  "status": "not_ready_general_original_source",
+  "source_ready": false,
+  "parent_implementation": null,
+  "parent_source_completion_credit": false,
+  "scope": "read-only full native body and bounded direct prerequisite assessment;report-only ownership",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "reported_from_revision": "61e437be028c1668df2cfd666b6b1ab122fb3c1b",
+  "parent": {
+    "address": "009251f0",
+    "name_hypothesis": "BSP_SceneNode_FindByQualifiedName",
+    "whole_body": {
+      "start": "009251f0",
+      "end_inclusive": "009252b8",
+      "bytes": 201,
+      "instructions": 90,
+      "live_installed_equal": true,
+      "sha256": "0bd803e338dc9b8dc4e7ac58e19869022345e6931f74a4b3db49411b10f9aadc",
+      "hex": "51578b7c240c8b078b5010894c24048bcfffd285c075055f59c208008b078b5010568bcfffd28b7424148bd68bc8e8ed3bb1ff85c075085e8bc75f59c20800837f5000535574786a5c56e8b1342d008bd883c40885db74678b078b50108bcfffd28d50018a0883c00184c975f78bcb2bc22bce3bc175488b078b5010518bcfffd25056e8f35b2d0083c40c85c0753033f63977507e2983c3018d6f488d64240053568bcde8972cb4ff8b4c241450e84dffffff85c0750a83c6013b77507ce133c05d5b5e5f59c20800"
+    },
+    "physical_calls": 9,
+    "direct_calls": 5,
+    "computed_calls": 4,
+    "coverage": "whole native code reviewed;no new Source implementation or original ABI/runtime credit",
+    "original_abi": "two stacked DWORDs node/name,RET8,rawEAX capturednode/recursivehit/0;incomingECX has real private-cell transport though no semantic node/name role;EBX/EBP/ESI/EDI preserved on reached paths;no outer EH or ownership action"
+  },
+  "direct_native_transfer_rows": [
+    {
+      "address": "0092521e",
+      "native": "00438e10",
+      "function": "009251f0",
+      "kind": "call"
+    },
+    {
+      "address": "0092523a",
+      "native": "00bf86f0",
+      "function": "009251f0",
+      "kind": "call"
+    },
+    {
+      "address": "00925273",
+      "native": "00bfae6b",
+      "function": "009251f0",
+      "kind": "call"
+    },
+    {
+      "address": "00925294",
+      "native": "00467f30",
+      "function": "009251f0",
+      "kind": "call"
+    },
+    {
+      "address": "0092529e",
+      "native": "009251f0",
+      "function": "009251f0",
+      "kind": "call"
+    },
+    {
+      "address": "00925aca",
+      "native": "009251f0",
+      "function": "00925a90",
+      "kind": "call"
+    }
+  ],
+  "computed_native_calls": [
+    {
+      "site": "00925201",
+      "function": "009251f0",
+      "target": "CURRENT captured node.vtable+10h",
+      "abi": "no-argument __thiscall,ECX capturednode,EAX raw name pointer",
+      "target_catalog_credit": false
+    },
+    {
+      "site": "00925214",
+      "function": "009251f0",
+      "target": "CURRENT captured node.vtable+10h",
+      "abi": "no-argument __thiscall,ECX capturednode,EAX raw name pointer",
+      "target_catalog_credit": false
+    },
+    {
+      "site": "0092524f",
+      "function": "009251f0",
+      "target": "CURRENT captured node.vtable+10h",
+      "abi": "no-argument __thiscall,ECX capturednode,EAX raw name pointer",
+      "target_catalog_credit": false
+    },
+    {
+      "site": "0092526f",
+      "function": "009251f0",
+      "target": "CURRENT captured node.vtable+10h",
+      "abi": "no-argument __thiscall,ECX capturednode,EAX raw name pointer",
+      "target_catalog_credit": false
+    }
+  ],
+  "exact_schedule": [
+    "PUSH incomingECX into actual P-4 before reading current node argument P+4. Capture node;load current vtable+10 target;write incomingECX at P-4 again;invoke captured target. First null result returns0 without name-word access.",
+    "Second independent current vtable+10 dispatch precedes current name input P+8 capture. Retain that input across compare/prefix work;left comparison is second getter result,right is retained input;zero returns original captured node. Never cache getter1 or add getter2-null guard.",
+    "Whole-name miss reads current node+50 and tests!=0,including negative values. Publish strchr outgoing char5Ch then name;invoke real Original BF86F0. No null-name shortcut. Retain separator;null returns0.",
+    "Third independent current vtable+10 call;volatile byte walk of its returned pointer without extra null guard;DWORD cursor/difference wrap. Compare length with separator-minus-retained-input bits.",
+    "Capture fourth current vtable+10 target BEFORE publishing prefix-count word. Invoke captured getter after that count push;publish its name return then retained input;Original BFAE6B must see CURRENT outgoing count after getter effects. No unordered Source call expression or cached name/count substitute.",
+    "After prefix equality,set index0 and reread current node+50 with signed>0. Increment retained separator once,capture node+48 list address. Each iteration pushes remainder then index,invokes whole ChildAt,reads CURRENT savedECX P-4,overwrites popped index cell with child result and invokes recursion even when child0.",
+    "Return nonzero recursive EAX immediately;otherwise increment retained index and compare signed against CURRENT node+50. No count snapshot,null-child skip,cycle guard,owner or lifetime inference."
+  ],
+  "actual_private_frame": {
+    "input8": "P+4..P+0B",
+    "saved_ecx4": "P-4..P-1",
+    "outgoing12": "P-20h..P-15h",
+    "outgoing_reuse": "+8=strchr char/prefix count/recursive remainder;+4=strchr name/getter4 name/ChildAt index/recursive node;+0=strnicmp input",
+    "read_proof": "after saves ESP=P-14h;push remainder,index then ChildAt RET4 leaves ESP=P-18h;925299 [ESP+14h] reads P-4 before recursive node push",
+    "domain": "distinct native ranges;stable/disjoint Source binding metadata;reached payload aliases only. No automatic native/helper/SDK/callee argument-home,return,spill,register-save,EH or compiler/private-stack equivalence."
+  },
+  "corrections": [
+    {
+      "was": "legacy header/ledger says incomingECX stored and never read",
+      "is": "925299 rereads CURRENT P-4 and forwards it to recursion;no semantic node/name parameter is inferred",
+      "evidence": "complete native201B body,ChildAt RET4 and exact stack deltas"
+    },
+    {
+      "was": "existing projection caches one name/count,guards null name,skips null child",
+      "is": "four independent dispatches,late name,current count tests,real SDK/Original primitive path and unconditional reached recursion",
+      "evidence": "925201/214/24F/26F;925216;92522F/281/2AA;92529E"
+    },
+    {
+      "was": "earlier scout suggested a complete current-SDK-only ordinary parent closure",
+      "is": "NOTready for general Original-source closure;SDK search/comparison does not reconstruct BF86F0/BFAE6B or their Original provider semantics",
+      "evidence": "Original byte/word strchr algorithm and actual locale/validation/errno/handler strnicmp bodies inspected;explicit primary boundary correction"
+    }
+  ],
+  "dependencies": [
+    {
+      "address": "00467f30",
+      "body": {
+        "start": "00467f30",
+        "end_inclusive": "00467f58",
+        "bytes": 41,
+        "instructions": 17,
+        "live_installed_equal": true,
+        "sha256": "e8ecc56fc3f7bccd5fae76938a050a4ecacd817800248dc0717cc3343355db7a",
+        "hex": "8b54240485d27c1c3951087e178b0185c0741385d2740f8b404483ea0185c075f2c2040033c0c20400"
+      },
+      "status": "whole actual leaf Source accepted,combined build pending",
+      "source": "src/native_scene_node_child_at.cpp",
+      "draft": "61d4503887dc0e32007f1b69cd95734d7f64bed7",
+      "review_annotation_metadata": "61e437be028c1668df2cfd666b6b1ab122fb3c1b",
+      "contract": "read current index first;negative skipslist;signed currentcount<=index skipshead;current head/current+44 links;no callbacks or providers"
+    },
+    {
+      "address": "00438e10",
+      "status": "existing ordinary null-aware Source with current SDK stricmp boundary;not blanket Original private CRT closure",
+      "source": "src/entity_identity.cpp",
+      "original_private_target": "00bf7fbf",
+      "original_runtime_identity": false
+    },
+    {
+      "address": "00bf86f0",
+      "status": "complete Original Source missing;genuine call-free byte/word algorithm is next independent bounded candidate",
+      "body_ranges": [
+        {
+          "start": "00bf86e0",
+          "end_inclusive": "00bf86e4",
+          "bytes": 5,
+          "instructions": 3,
+          "live_installed_equal": true,
+          "sha256": "129f1135daa1b60c707996d1ed0561b8f4731388ee1f4732c0a27db4c5e3a907",
+          "hex": "8d42ff5bc3"
+        },
+        {
+          "start": "00bf86f0",
+          "end_inclusive": "00bf87ad",
+          "bytes": 190,
+          "instructions": 86,
+          "live_installed_equal": true,
+          "sha256": "1196a276dcfdd74f72de4e4d6889e8a22e5bc4b24104501e0b13ccc51d4a5f3f",
+          "hex": "33c08a442408538bd8c1e0088b542408f7c20300000074158a0a83c2013acb74cf84c97451f7c20300000075eb0bd8578bc3c1e310560bd88b0abffffefe7e8bc18bf733cb03f003f983f1ff83f0ff33cf33c683c20481e100010181751c250001018174d32500010101750881e60000008075c45e5f5b33c0c38b42fc3ac3743684c074ef3ae3742784e474e7c1e8103ac3741584c074dc3ae3740684e474d4eb965e5f8d42ff5bc38d42fe5e5f5bc38d42fd5e5f5bc38d42fc5e5f5bc3"
+        }
+      ],
+      "body_bytes": 195,
+      "instructions": 89,
+      "physical_envelope": "[00BF86E0,00BF87AE),206B",
+      "callee_count": 0,
+      "locale_tls_dependency": false,
+      "algorithm": "capture low value BYTE before source pointer DWORD;BYTE alignment loop with increment/match-beforeNUL;aligned DWORD read,repeat-byte XOR,7EFEFEFF/81010100 masks and1010100/highbit compensation;candidate rereads same DWORD,then tests captured bytes in order with match-beforeNUL;all pointer/arithmetic wrap32;no SDK substitution",
+      "listing_note": "typed metadata confirms BF86E0 is a defined3B InstructionDB inside discontiguous function;CLI function-head disasm omits pre-entry range,so raw5B decode separately crosschecked;no repair/mutation performed"
+    },
+    {
+      "address": "00bfae6b",
+      "status": "NOTready general Original Source",
+      "body": {
+        "start": "00bfae6b",
+        "end_inclusive": "00bfaec6",
+        "bytes": 92,
+        "instructions": 35,
+        "live_installed_equal": true,
+        "sha256": "1d0fffab5715cbf9fda7cf0db33699cf23c2265d4bb4c5631cdbaee15aff90c3",
+        "hex": "558bec5633f639351cde09017539397508751fe8084d00005656565656c70016000000e85cb8ffff83c414b8ffffff7feb2739750c74dc817d10ffffff7f77d35e5de94ea8010056ff7510ff750cff7508e8bafeffff83c4105e5dc3"
+      },
+      "physical_calls": 3,
+      "tail_ascii": "00c15700",
+      "global_gate": "CURRENT0109DE1C before argument reads",
+      "zero_gate": "current pointer1 then pointer2 then unsignedcount<=7FFFFFFF;count0 still validates pointers;valid tail calls Original ASCII leaf",
+      "failure": "Original_errno BFFB8B then five pushedzero DWORDs,write returned errno cell22 AFTER pushes,call returning Original BF66EF;return7FFFFFFF if it returns",
+      "nonzero_gate": "push locale0,count,pointer2,pointer1 from current argument cells;call Original BFAD7B;no zero-gate-only narrowing",
+      "direct_prerequisites": [
+        "00bffb8b",
+        "00bf66ef",
+        "00bfad7b",
+        "00c15700"
+      ]
+    },
+    {
+      "address": "00bfad7b",
+      "name": "__strnicmp_l",
+      "body_span": "[00BFAD7B,00BFAE6B)",
+      "body_bytes": 240,
+      "status": "whole raw Source missing;not closed by current SDK or ASCII-only branch",
+      "contract": "count0 earlyreturn;otherwise actual LocaleUpdate,argument validation,ASCII leaf or per-byte original tolower_l;conditionally clear thread+70 bit2 on reached normal exits",
+      "direct_prerequisites": [
+        "00bf7e24",
+        "00bf94fa",
+        "00bffb8b",
+        "00bf66ef",
+        "00c15700"
+      ]
+    },
+    {
+      "address": "00bf7e24",
+      "name": "_LocaleUpdate",
+      "body_span": "[00BF7E24,00BF7EA6)",
+      "body_bytes": 130,
+      "status": "Original locale/TLS Source missing",
+      "direct_prerequisites": [
+        "00c01a7f",
+        "00c0522e",
+        "00c0cc02"
+      ]
+    },
+    {
+      "address": "00bf94fa",
+      "name": "__tolower_l",
+      "body_span": "[00BF94FA,00BF9611)",
+      "body_bytes": 279,
+      "status": "Original locale/multibyte/NLS Source missing",
+      "direct_prerequisites": [
+        "00bf7e24",
+        "00bfd45a",
+        "00bffb8b",
+        "00c04331",
+        "00c0f7c5"
+      ]
+    },
+    {
+      "address": "00c15700",
+      "name": "___ascii_strnicmp",
+      "body_span": "[00C15700,00C15761)",
+      "body_bytes": 97,
+      "status": "Original call-free ASCII leaf Source missing;independent candidate,not general strnicmp replacement",
+      "callee_count": 0
+    },
+    {
+      "address": "00bffb8b",
+      "body_span": "[00BFFB8B,00BFFB9E)",
+      "body_bytes": 19,
+      "status": "only qualified borrowed runtime/errno fragment exists;no whole Original TLS provider closure",
+      "source": "src/legacy_crt_math.cpp",
+      "original_direct_prerequisite": "00c051b7"
+    },
+    {
+      "address": "00bf66ef",
+      "body_span": "[00BF66EF,00BF6713)",
+      "body_bytes": 36,
+      "status": "whole Original five-word handler/Watson provider ABI not closed;existing readiness/zero-arm qualifications do not establish general transport",
+      "direct_prerequisites": [
+        "00c04fde",
+        "00c04ef3",
+        "00bf65bb",
+        "current decoded indirect handler"
+      ],
+      "reference": "docs/CC12_NATIVE_CRT_FIVE_ZERO_ARGUMENT_TARGET_ABI_READINESS.md"
+    }
+  ],
+  "scope_boundaries": [
+    "No9251F0 Source implementation,annotation,address claim or Source-completion credit.",
+    "Only separate ChildAt Source packet is implemented;readiness file has report-only lease.",
+    "Actual generic vtable dispatch transports borrowed current targets;no invented callback,resolver,type owner or recovered target catalog.",
+    "No pool/allocator/matrix/EH carrier dependency in this parent;future actual valid reached storage/stack resources and ownership remain separate.",
+    "SDK-only existing projections and hypothetical boundary composition are qualified semantic alternatives,not general Original-source readiness.",
+    "No new tests/build/probes/native execution or Original ABI/private-frame/fault/game proof by this report."
+  ],
+  "evidence": {
+    "whole_parent": "local/goal_oct15_qualified_scene_node_scout_typed_flow.json",
+    "parent_transfers": "local/goal_oct15_qualified_scene_node_scout_transfers.json",
+    "original_crt_bodies": "local/goal_oct15_qualified_node_original_crt_scout_typed_flow.json",
+    "direct_prerequisites": "local/goal_oct15_qualified_node_original_crt_direct_prerequisites.json",
+    "original_crt_body_modification": 3199,
+    "project_program_verified": true
+  }
+}
