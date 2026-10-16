@@ -1,0 +1,181 @@
+{
+  "packet": "oct15_twentythird_outer_integration",
+  "status": "primary_reviewed_Source_integrated_Main_default_build_checked_annotations_saved",
+  "component_pin": "1cd1b586a003bc039fc941a85bf986e1f3d4d149",
+  "tested_source_pin": "6fda80a7a8a279943b2bdb0aebc95894bfa9ab69",
+  "scope": {
+    "ordinary_entries": [
+      "004dc1c0",
+      "004dca30"
+    ],
+    "whole_owned_bytes": 122,
+    "whole_owned_starts": 42,
+    "read_only_support_bytes": 14,
+    "read_only_support_starts": 3,
+    "no_global_unique_coverage_increment_claimed": true
+  },
+  "primary_review": {
+    "path": "local/oct15_outer_tidy_twentythird_primary_review.json",
+    "sha256": "7b85f360a09f2b6df6eb3a51372c537e32383bd0b45d4aa0b8b394d9e24e5b10",
+    "evidence": {
+      "pin": "1cd1b586a003bc039fc941a85bf986e1f3d4d149",
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "owned_bytes": 122,
+      "owned_starts": 42,
+      "read_only_support_bytes": 14,
+      "read_only_support_starts": 3,
+      "units": [
+        {
+          "address": "004dc1c0",
+          "bytes": 61,
+          "starts": 21,
+          "sha256": "29a874b13fb8a8e816eccc7eaa3f6048a87850d4c2ac444278851c522664c8c4",
+          "raw_hex": "51568bf18b4e0485c9741a8b4424048b56085056e8d787ffff8b4e0451e8caa3710083c404c7460400000000c7460800000000c7460c000000005e59c3",
+          "PE_equals_live": true
+        },
+        {
+          "address": "004dca30",
+          "bytes": 61,
+          "starts": 21,
+          "sha256": "255e37f9e74f608edb097d8ef30b93c8ba52a431ddb906b27aef601fe2716304",
+          "raw_hex": "51568bf18b4e0485c9741a8b4424048b56085056e8677fffff8b4e0451e85a9b710083c404c7460400000000c7460800000000c7460c000000005e59c3",
+          "PE_equals_live": true
+        },
+        {
+          "address": "00c7ec88",
+          "bytes": 14,
+          "starts": 3,
+          "sha256": "25945b463f101c9d52941bf2580e0d2521699ba96206f62d64b62ac8ee83e5ef",
+          "raw_hex": "8b4df081c1d0040000e99add85ff",
+          "PE_equals_live": true
+        }
+      ],
+      "host_steps": [
+        {
+          "address": "004dc1d4",
+          "native": "004d49b0",
+          "kind": "call"
+        },
+        {
+          "address": "004dc1dd",
+          "native": "00bf65ac",
+          "kind": "call"
+        },
+        {
+          "address": "004dca44",
+          "native": "004d49b0",
+          "kind": "call"
+        },
+        {
+          "address": "004dca4d",
+          "native": "00bf65ac",
+          "kind": "call"
+        },
+        {
+          "address": "00c7ec91",
+          "native": "004dca30",
+          "kind": "tail_jump"
+        }
+      ],
+      "source_hashes": {
+        "src/native_dword_vector_outer_tidy.cpp": "658f0ba9f39de7a3193afd4c8baede1076e536d69893d5a4be5dcbeda175ba56",
+        "include/bsp/native_dword_vector_outer_tidy.hpp": "6d493a30d12f09eaeaac9615ae0df99b51715debf8ecb6c02f8b1f7d4d1ee521",
+        "docs/OCT15_NATIVE_DWORD_VECTOR_OUTER_TIDY.md": "08dd64e9d1afee4d67064eff8977a39b99e0424488ffd301b2eaca1a872b3135",
+        "reports/oct15_native_dword_vector_outer_tidy.json": "209d91b2e10efb5ad7b27c1a92fa47f0c37e6ce238ba3cfc1071a19b77cf8078"
+      },
+      "provider_hashes": {
+        "src/native_dword_vector_destroy_range.cpp": "809a56a3efba2e6aea9e76cb40871c491c2d7f03b495da3480c4076b73a8ab00",
+        "include/bsp/native_dword_vector_destroy_range.hpp": "0ba209d14c599cbe8bc325a96c7034e6be68172b498dfdcb3a09f7792825b792",
+        "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      "checks": [
+        "Full Source/header, both complete Native61B/21-start bodies and all36 actual CMake instructions independently read.",
+        "Native entry PUSH ECX proves both dead child metadata words contain headerbits; Source preserves them exactly.",
+        "Initialbegin zero skips end/range/free but both paths always clear4/8/C in order.",
+        "Nonnull initialbegin captures currentend and delegates actual accepted4D49B0 with captured endpoints.",
+        "After range, CURRENT outerbegin is reloaded and unconditionally freed even if nowzero; no capturedbegin substitute.",
+        "Second Source delegates first only after full normalized61-byte equivalence and identical actual call target proof.",
+        "Explicit fastcall/unconsumedEDX/plainRET Sourcevoid limits incidentalEAX, privateframe, currentCRT, fault, ABI and game claims.",
+        "All122 owned PE/live bytes42 starts plus14B/3 support starts match current Ghidra; supportaction is not promoted.",
+        "Actual CMake110B/36 instructions preserve alias schedule and exact accepted service relocations; no EH/stub/callback.",
+        "Immutable pin Source/header/report/docs and four accepted provider hashes verified; no new tests or runtime claims."
+      ],
+      "actual_CMake_bytes": 110,
+      "actual_CMake_starts": 36,
+      "findings": []
+    }
+  },
+  "host_steps": [
+    {
+      "address": "004dc1d4",
+      "native": "004d49b0",
+      "kind": "call"
+    },
+    {
+      "address": "004dc1dd",
+      "native": "00bf65ac",
+      "kind": "call"
+    },
+    {
+      "address": "004dca44",
+      "native": "004d49b0",
+      "kind": "call"
+    },
+    {
+      "address": "004dca4d",
+      "native": "00bf65ac",
+      "kind": "call"
+    },
+    {
+      "address": "00c7ec91",
+      "native": "004dca30",
+      "kind": "tail_jump"
+    }
+  ],
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "platform": "MSVC Win32 Release",
+    "default_registration": true,
+    "existing_suites": "3/3 passed",
+    "ctest_seconds": 13.82,
+    "log": "local/oct15_twentythird_outer_final_union_build.log",
+    "log_sha256": "8d0b11fb67038b4856176d5182dbff836c9e7c446464374c1660d1499dd9753b",
+    "new_tests": 0,
+    "actual_CMake_object_bytes": 110,
+    "actual_CMake_object_instructions": 36,
+    "new_Native_execution": false,
+    "original_binary_ABI_proven": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "annotations_saved": 2,
+    "receipt": "local/ghidra-annotations-20261016T025331Z.json",
+    "receipt_sha256": "0489c62ff548c81bf4846e78931ddc7ea5f71f8ee6fa68675fae217df7b9df02",
+    "prior_comments_names_and_preimages_preserved": true,
+    "affected_exports_refreshed": [
+      "004dc1c0",
+      "004dca30"
+    ]
+  },
+  "provenance": {
+    "predecessor_c563_destroy_range_now_published_Main": true,
+    "frozen_worker_original_Main_absence_statement_retained_as_historical": true,
+    "append_only_CMake_registry_not_leased": true,
+    "actual_CMake_conflict_resolved_by_registry_union": true
+  },
+  "limits": [
+    "Actual currentCRT/raw range interfaces and private compiler frames do not establish original ABI, CRT heap identity, FH3/SEH/fault or game equivalence.",
+    "Native ambient EAX/ECX/flags are excluded from Sourcevoid; second Source unused EDX canonicalization is qualified.",
+    "Read-only compiler action C7EC88 keeps physical tailjump and preexisting CALL_RETURN override; no action implementation or parent promotion.",
+    "Existing suites cover older math/tool behavior, not these new raw routines. No new runtime or game claim."
+  ],
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "tip": "verified separately after receipt publication; no self reference"
+  }
+}

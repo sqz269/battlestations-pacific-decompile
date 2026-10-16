@@ -1,5 +1,6 @@
 #include "bsp/gui_layout_finished.hpp"
 #include "bsp/gui_clip_box.hpp"
+#include "bsp/gui_text_runtime_factory.hpp"
 #include <stdexcept>
 #include <typeinfo>
 
@@ -20,6 +21,9 @@ void dispatch_gui_layout_finished24(GuiWidgetOwner& owner) {
         // Group is not final. An arbitrary derived companion does not prove
         // that its native current slot still points at the base RET.
         base_target = typeid(implementation) == typeid(GuiGroupTypeImplementation);
+        break;
+    case GuiWidgetType::Text:
+        base_target = dynamic_cast<GuiTextRuntimeImplementation*>(&implementation) != nullptr;
         break;
     case GuiWidgetType::Icon:
         base_target = dynamic_cast<GuiIconTypeImplementation*>(&implementation) != nullptr;

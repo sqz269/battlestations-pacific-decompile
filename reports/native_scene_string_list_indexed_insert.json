@@ -1,0 +1,857 @@
+{
+  "schema": "bsp.native-scene-string-list-indexed-insert.v1",
+  "status": "complete_ordinary_Source_strict_compile_existing_build_pass_pending_integrator_registration_and_Main_gate",
+  "Source_bodies_implemented": 1,
+  "Source_registered": false,
+  "Source_independent_and_Main_admission_pending": true,
+  "routine": {
+    "entry": "0094F2F0",
+    "coverage": "complete_normal_body",
+    "begin": "0094F2F0",
+    "end_exclusive": "0094F39F",
+    "bytes": 175,
+    "instructions": 61,
+    "sha256": "787b9a3800948a0295a991348590d05e32ed940e7bbb308659ce27da45216f78",
+    "Original_name_is_hypothesis": true,
+    "excluded_outcomes": "Allocator-null/OOM/overflow/fault/throw/private EH outside admitted normal-success composition."
+  },
+  "declaration": "std::int32_t insert_native_scene_string_list_indexed_0094f2f0(void* actual_list12, void* actual_record8, std::int32_t native_index, std::uint32_t native_flags, NativeStringRawPoolContext& raw);",
+  "result_contract": "Explicitly NEW ordinary signed32 Source exposure of the measured clamped EAX only; no recovered Original return type/caller meaning, no physical native ABI. Return the captured clamped result, with NO return-count reread.",
+  "context_contract": "Caller prepares the exact retained bsp::game::game_native_string_process().raw_context() before entry; real01090AA8/01090AA4/01090AA0 publications and lifetime/generation remain valid through final retirement. No implicit process getter, replacement context, cached pool, NativeStringStorage noexcept adapter, global/TLS/FS/host/callback protocol.",
+  "Original_ABI": "ECX actual list12; entryESP+4 actual record8, +8 signed32 index, +0C DWORD flags; low byte observed; RET0C. EBX/ESI/EDI preserved, EBP untouched; private FS0 registration removed on normal exit.",
+  "normal_schedule": [
+    {
+      "step": 1,
+      "sites": [
+        "0094F309",
+        "0094F30C",
+        "0094F312"
+      ],
+      "action": "Read current count then capacity; invoke the existing growth only for equality. Growth precedes the low-byte flag test and any copy provider."
+    },
+    {
+      "step": 2,
+      "sites": [
+        "0094F317",
+        "0094F31E",
+        "0094F326",
+        "0094F345"
+      ],
+      "action": "After growth, flag lowBYTE0 copies through exact current allocate(object,8,8) and raw00426060(actual fresh header,actual source,raw). All255 nonzero low bytes adopt the supplied pointer including null; high24 ignored. Capture the returned actual copied header or supplied adopted pointer."
+    },
+    {
+      "step": 3,
+      "sites": [
+        "0094F350",
+        "0094F354",
+        "0094F356",
+        "0094F358",
+        "0094F35A"
+      ],
+      "action": "Only after growth/copy, interpret native_index signed. If negative, clamp0 and SKIP the upper-bound count read; do not unconditionally preload count for clamping."
+    },
+    {
+      "step": 4,
+      "sites": [
+        "0094F35C",
+        "0094F35F",
+        "0094F361",
+        "0094F363"
+      ],
+      "action": "For nonnegative index only, read current signed count and clamp an above-count index to that late count. Retain the resulting signed32 value as the proposed Source result."
+    },
+    {
+      "step": 5,
+      "sites": [
+        "0094F365",
+        "0094F368",
+        "0094F36A"
+      ],
+      "action": "Independently reload current signed count into the shift cursor, including the negative-index path. If cursor<=clamped index, skip shifting."
+    },
+    {
+      "step": 6,
+      "sites": [
+        "0094F370",
+        "0094F372",
+        "0094F376",
+        "0094F379",
+        "0094F37C",
+        "0094F37E",
+        "0094F380"
+      ],
+      "action": "Each descending iteration reloads current slots, captures source pointer at slots[cursor-1] and exact destination slots[cursor], decrements cursor, and then stores the captured pointer at that destination. Native comparison occurs before the MOV and JG after it; preserve the signed continuation and decrement-before-store. Do not reread count per iteration, cache the base for the whole loop, bulk-memmove, duplicate/copy/destroy existing string records, or recompute a captured destination later."
+    },
+    {
+      "step": 7,
+      "sites": [
+        "0094F382",
+        "0094F384",
+        "0094F387"
+      ],
+      "action": "Reload slots once more; store the selected raw8 at the captured clamped index; then increment CURRENT count by DWORD read/add/write. No count-return load. Capture/preserve the clamped result, disarm only the fresh-copy-header guard after slot/count publication, then return that result."
+    }
+  ],
+  "direct_Original_calls": [
+    {
+      "address": "0094F312",
+      "native": "0094F010",
+      "function": "0094F2F0",
+      "contract": "Equality-only current raw12 growth before flag test."
+    },
+    {
+      "address": "0094F326",
+      "native": "00BF681B",
+      "function": "0094F2F0",
+      "contract": "Copy path eight-byte allocation; Original null/OOM outcomes excluded."
+    },
+    {
+      "address": "0094F345",
+      "native": "00426060",
+      "function": "0094F2F0",
+      "contract": "Copy path actual fresh raw8/source raw8 construction."
+    }
+  ],
+  "current_Source_providers": [
+    {
+      "role": "growth",
+      "Source": "grow_native_scene_string_list_storage_0094f010(actual_list12)",
+      "status": "Existing accepted integrated/registered/Main-passed storage provider; direct current pins stable."
+    },
+    {
+      "role": "fresh copy header allocation",
+      "Source": "singleton_lifetime_allocate({SingletonAllocationKind::object,8,8})",
+      "status": "Current canonical heap binding; nonnull or throw. Original allocator-null path excluded."
+    },
+    {
+      "role": "actual raw8 copy",
+      "Source": "copy_construct_native_string_header_00426060(fresh8,actual_source8,raw)",
+      "status": "Accepted raw-context overload, including its qualified current memmove/nonzero-copy policy and genuine raw getter routes."
+    },
+    {
+      "role": "current C++ guard cleanup",
+      "Source": "singleton_lifetime_free(captured_fresh8)",
+      "status": "Header only, matching current heap."
+    },
+    {
+      "role": "subsequent populated-list retirement contract",
+      "Source": "clear_native_scene_string_list_0094f3e0 / retire_native_scene_string_list_0094f540",
+      "status": "Source3 registered, independently/primarily accepted and required Main/archive gate passed in Main1e1bab38b. Clear/retire are lifecycle dependencies, not direct insertion callees."
+    }
+  ],
+  "mandatory_domain": [
+    "Actual aligned writable live raw12 constructed by genuine0094EFB0 and accepted growth, slots+0/count+4/capacity+8. Coherent0<=count<=capacity<=3fffffff; capacity>=64,multiple64; genuine nonnull slot allocation exactly4*capacity bytes. Full insertion growth requires oldcapacity<=3fffffbf.",
+    "Every signed32 input index and DWORD flag pattern is allowed under coherent nonnegative count/storage bounds. Count+1, cursor/index*4 and all reached addresses remain nonwrapping and accessible. Initial slots[0,count) are initialized; spare destination slot[count] need only be writable, not initialized before the first store.",
+    "Copy borrows a nonnull coherent actual raw8 whose header/data remain live across growth and copying; borrowing an existing list record is allowed if disjointness/lifetime holds. Fresh copied output is distinct and list-owned on successful publication.",
+    "Adoption permits null or a genuine unique separately allocated current-heap raw8 with exclusive nonnull-data ownership. No stack/inline/synthetic/duplicate ownership or aliases into list/slot/private-frame storage. Existing owned header/data identity and order are preserved by shifting pointers; transient pointer duplicates during shifting are not independently retired.",
+    "Nonnull data length+1 is the exact positive nonwrapping allocation size; sizes1..149 require the valid canonical pool generation/size class, sizes>=150 require matching current CRT provenance. The genuine retained context/gate/publications and required manager/deletion bindings outlive insertion and all dependent records through final retirement.",
+    "All reached providers return normally with genuine positive resources available. No faults, throws, asynchronous SEH, overflow/OOM, callback/new-handler mutation, aliases, reentry, concurrency, trim/drain/teardown or pool-generation/lifetime replacement. Flat Win32/ES and DF-clear storage-provider preconditions remain. These are admission conditions, not new runtime repairs."
+  ],
+  "separate_current_CPP_guard": {
+    "policy": "Copy branch only: after exact raw8 allocation, guard that captured fresh header; canonical-free only it on current C++ copy exception. Disarm after final slot/count publication and captured-result preservation. Public API remains potentially throwing.",
+    "never_release": [
+      "copied string data",
+      "adopted record",
+      "existing shifted records",
+      "slot allocation",
+      "raw12 list header"
+    ],
+    "Source_policy_only": true,
+    "Original_private_EH_credit": 0,
+    "no_source_rollback": "No invented rollback of earlier growth/capacity or partial shifts/publication. Failure paths remain outside admitted normal composition."
+  },
+  "Original_private_EH": {
+    "handler": "00CA8CEB",
+    "descriptor": "00DDCA60",
+    "unwind_map": "00DDCA58",
+    "cleanup": "00CA8CE0",
+    "measured": "Handler10B/2 instructions loadsDDCA60 then jumpsBF6B43. Descriptor36B has magic19930522/maxState1/mapDDCA58; map8B=(-1,CA8CE0). Cleanup11B/5 instructions reads private[EBP+0C], pushes it, callsBF65AC, popsECX,RET; no data destructor.",
+    "interpretation": "Intended header-only cleanup interpretation; saved private-frame pointer identity, dispatch/establisher mapping, all-throw/fault ordering and native cleanup equivalence remain UNPROVED. The stronger copy_failure wording in sibling readiness is qualified by Root verified_inputs.DATA.json.",
+    "excluded": "Original allocator-null/OOM/CRT/EH/SEH/fault outcomes, full stack/register/flags ABI, dispatcher/frame identity, startup/runtime/game validation. No literal handler/stub/private frame replication."
+  },
+  "application_qualification": "Accepted fresh caller/xref evidence found no direct callers. This does not prove absence of all indirect callers and supplies no actual create/pass/retire/producer schedule. Application/runtime closure remains separate from the bounded helper.",
+  "out_of_scope": [
+    "CString0041E870",
+    "calling append0094F270",
+    "new constructors/pools/hosts/globals/TLS",
+    "application caller or raw8 producer invention",
+    "008F3270 application ownership closure",
+    "comparator/sort/empty-role repairs",
+    "Original private-EH/failure/physical-ABI credit"
+  ],
+  "evidence": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListIndexedInsertSource01",
+    "own_thread_uuid": "01a1427a-8c61-74c1-8cc8-146aab471285",
+    "own_authoring_parent": "2bbcd20d18c8c48c73f9615cb0a0b3cd718c58d7",
+    "own_precompile": "precompile_inputs.json",
+    "own_actual_compiler_closure": "compiler_declared_inputs.json",
+    "own_complete_COFF": "complete_COFF.json",
+    "own_COFF_contract_audit": "COFF_contract_audit.json",
+    "original_external_reference": "Original_reuse.json",
+    "separate_current_Main_providers": "provider_Main_gate.json",
+    "original_saved_evidence_is_not_own_tool_provenance": true,
+    "genuine_own_transport_pairs": "genuine_Source_tool_receipts.json",
+    "genuine_own_prefix": "own_Source_tool_trace.jsonl",
+    "four_Git_blobs": "four_Git_blobs.json",
+    "sealed_manifest": "root_manifest.json",
+    "prior_family_counts": [
+      60,
+      39,
+      70,
+      195,
+      9
+    ],
+    "accepted_Original_family_count": 29,
+    "postcompile_authored_support_tool_qualification": "Every recorded precompile compiler/header/tool/provider/build pin is rechecked by its exact recorded role; this never asserts that all subsequently authored analysis scripts existed before compile.",
+    "prefix_qualification": "Exact raw tool invocation/result records only, with original byte/line bounds, own UUID and full actual source-prefix SHA256; internal reasoning is not copied."
+  },
+  "validation": {
+    "strict_compile": {
+      "attempts": 1,
+      "returncode": 0,
+      "compiler": "MSVC 19.51.36244.0 Win32 HostX86/x86",
+      "options": "/std:c++17 /MD /O2 /Ob2 /Oy- /W4 /WX /EHsc /Gy /GL- /fp:strict",
+      "actual_sourceDependencies": true,
+      "actual_inputs": 105,
+      "prospective_candidates": 132,
+      "all_actual_inputs_freshly_pre_pinned": true,
+      "source_changed_after_compile": false,
+      "new_TU_registered": false,
+      "receipt": "strict_compile.result.json"
+    },
+    "normal_build": {
+      "attempts": 1,
+      "command": "./scripts/build.ps1",
+      "returncode": 0,
+      "checks": [
+        {
+          "name": "reconstructed_math",
+          "passed": true
+        },
+        {
+          "name": "tool_tests",
+          "passed": true
+        }
+      ],
+      "total_tests": 2,
+      "failed": 0,
+      "new_TU_in_build": false,
+      "receipt": "normal_build.result.json"
+    },
+    "worker_checker": {
+      "tool": "python -B tools/verify_report_calls.py",
+      "status": "passed",
+      "targets": [
+        "reports/native_scene_string_list_indexed_insert.json",
+        "docs/NATIVE_SCENE_STRING_LIST_INDEXED_INSERT.md"
+      ],
+      "returncode": 0,
+      "report_call_rows_checked": 3,
+      "report_failed": 0,
+      "markdown_addresses_cited": 17,
+      "markdown_call_claims_checked": 3,
+      "markdown_failed": 0,
+      "markdown_unchecked": 0,
+      "markdown_warnings": 0,
+      "coverage": "Exact three measured direct Original CALL sites/callees and containing entry; no semantic/control-flow/ABI/EH/provider/runtime proof.",
+      "first_receipt": "call_checks.result.json",
+      "final_receipt": "final_call_checks_after_review.result.json",
+      "repeat_reason": "Final verification after recording checker facts and precise decoded-row/provenance qualifications; no Source/compiler/build replay."
+    },
+    "preflight_corrections": [
+      "First preservation reader expected relative_path; accepted sibling uses relative. Fixed before any compiler invocation; failed script preserved."
+    ],
+    "static_audit_corrections": [
+      "First unused-COMDAT assertion also counted associative frame-debug reference. Corrected to runtime incoming relocations, preserving debug-reference qualification; no Source or object changed."
+    ],
+    "no_compile_build_replay": true,
+    "new_tests_or_probes": 0,
+    "new_body_executed": false,
+    "Ghidra_mutations": 0,
+    "analysis_corrections": "analysis_corrections.json"
+  },
+  "emitted_object": {
+    "schema": "bsp.indexed-insert.complete-object-semantic-audit.v1",
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListIndexedInsertSource01\\native_scene_string_list_indexed_insert.obj",
+      "bytes": 4791,
+      "sha256": "6661578da198786ca5af25a1eb1beef1617193064c3b26edc1ec32a73df16093"
+    },
+    "complete_parser": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListIndexedInsertSource01\\complete_COFF.json",
+      "bytes": 117797,
+      "sha256": "32ac2c5c54d57a99652155ec4f9b0f770dc921bbc182383c13eb5f1bc860afd7"
+    },
+    "full_listing": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListIndexedInsertSource01\\complete_COFF_listing.txt",
+      "bytes": 10694,
+      "sha256": "737a3e5c553027af24a19e64266c65189b0617a44cbd5bbcc8fc2f1f308a2b1a"
+    },
+    "all_19_sections": {
+      "1": {
+        "name": ".drectve",
+        "raw_bytes": 415,
+        "relocations": 0,
+        "instruction_rows": 0,
+        "section_symbol_aux": [
+          {
+            "length": 415,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 0,
+            "associated_section": 0,
+            "selection": 0,
+            "reserved": 0,
+            "high_number": 0
+          }
+        ]
+      },
+      "2": {
+        "name": ".debug$S",
+        "raw_bytes": 248,
+        "relocations": 0,
+        "instruction_rows": 0,
+        "section_symbol_aux": [
+          {
+            "length": 248,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 0,
+            "associated_section": 0,
+            "selection": 0,
+            "reserved": 0,
+            "high_number": 0
+          }
+        ]
+      },
+      "3": {
+        "name": ".bss",
+        "raw_bytes": 4,
+        "relocations": 0,
+        "instruction_rows": 0,
+        "section_symbol_aux": [
+          {
+            "length": 4,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 0,
+            "associated_section": 0,
+            "selection": 2,
+            "reserved": 0,
+            "high_number": 0
+          }
+        ]
+      },
+      "4": {
+        "name": ".text$mn",
+        "raw_bytes": 14,
+        "relocations": 0,
+        "instruction_rows": 7,
+        "section_symbol_aux": [
+          {
+            "length": 14,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 3458861746,
+            "associated_section": 0,
+            "selection": 2,
+            "reserved": 0,
+            "high_number": 0
+          }
+        ]
+      },
+      "5": {
+        "name": ".text$mn",
+        "raw_bytes": 14,
+        "relocations": 0,
+        "instruction_rows": 7,
+        "section_symbol_aux": [
+          {
+            "length": 14,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 3458861746,
+            "associated_section": 0,
+            "selection": 2,
+            "reserved": 0,
+            "high_number": 0
+          }
+        ]
+      },
+      "6": {
+        "name": ".text$mn",
+        "raw_bytes": 14,
+        "relocations": 0,
+        "instruction_rows": 7,
+        "section_symbol_aux": [
+          {
+            "length": 14,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 3458861746,
+            "associated_section": 0,
+            "selection": 2,
+            "reserved": 0,
+            "high_number": 0
+          }
+        ]
+      },
+      "7": {
+        "name": ".text$mn",
+        "raw_bytes": 17,
+        "relocations": 0,
+        "instruction_rows": 8,
+        "section_symbol_aux": [
+          {
+            "length": 17,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 1228197899,
+            "associated_section": 0,
+            "selection": 2,
+            "reserved": 0,
+            "high_number": 0
+          }
+        ]
+      },
+      "8": {
+        "name": ".text$mn",
+        "raw_bytes": 17,
+        "relocations": 0,
+        "instruction_rows": 8,
+        "section_symbol_aux": [
+          {
+            "length": 17,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 1228197899,
+            "associated_section": 0,
+            "selection": 2,
+            "reserved": 0,
+            "high_number": 0
+          }
+        ]
+      },
+      "9": {
+        "name": ".text$mn",
+        "raw_bytes": 14,
+        "relocations": 0,
+        "instruction_rows": 7,
+        "section_symbol_aux": [
+          {
+            "length": 14,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 3141422442,
+            "associated_section": 0,
+            "selection": 2,
+            "reserved": 0,
+            "high_number": 0
+          }
+        ]
+      },
+      "10": {
+        "name": ".text$mn",
+        "raw_bytes": 14,
+        "relocations": 1,
+        "instruction_rows": 7,
+        "section_symbol_aux": [
+          {
+            "length": 14,
+            "relocations": 1,
+            "line_numbers": 0,
+            "checksum": 3752730496,
+            "associated_section": 0,
+            "selection": 2,
+            "reserved": 0,
+            "high_number": 0
+          }
+        ]
+      },
+      "11": {
+        "name": ".debug$F",
+        "raw_bytes": 16,
+        "relocations": 1,
+        "instruction_rows": 0,
+        "section_symbol_aux": [
+          {
+            "length": 16,
+            "relocations": 1,
+            "line_numbers": 0,
+            "checksum": 0,
+            "associated_section": 10,
+            "selection": 5,
+            "reserved": 0,
+            "high_number": 0
+          }
+        ]
+      },
+      "12": {
+        "name": ".text$mn",
+        "raw_bytes": 7,
+        "relocations": 0,
+        "instruction_rows": 2,
+        "section_symbol_aux": [
+          {
+            "length": 7,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 3230392746,
+            "associated_section": 0,
+            "selection": 2,
+            "reserved": 0,
+            "high_number": 0
+          }
+        ]
+      },
+      "13": {
+        "name": ".debug$F",
+        "raw_bytes": 16,
+        "relocations": 1,
+        "instruction_rows": 0,
+        "section_symbol_aux": [
+          {
+            "length": 16,
+            "relocations": 1,
+            "line_numbers": 0,
+            "checksum": 0,
+            "associated_section": 12,
+            "selection": 5,
+            "reserved": 0,
+            "high_number": 0
+          }
+        ]
+      },
+      "14": {
+        "name": ".text$mn",
+        "raw_bytes": 265,
+        "relocations": 6,
+        "instruction_rows": 98,
+        "section_symbol_aux": [
+          {
+            "length": 265,
+            "relocations": 6,
+            "line_numbers": 0,
+            "checksum": 1192101306,
+            "associated_section": 0,
+            "selection": 1,
+            "reserved": 0,
+            "high_number": 0
+          }
+        ]
+      },
+      "15": {
+        "name": ".text$x",
+        "raw_bytes": 52,
+        "relocations": 5,
+        "instruction_rows": 19,
+        "section_symbol_aux": [
+          {
+            "length": 52,
+            "relocations": 5,
+            "line_numbers": 0,
+            "checksum": 586021412,
+            "associated_section": 14,
+            "selection": 5,
+            "reserved": 0,
+            "high_number": 0
+          }
+        ]
+      },
+      "16": {
+        "name": ".text$mn",
+        "raw_bytes": 70,
+        "relocations": 0,
+        "instruction_rows": 34,
+        "section_symbol_aux": [
+          {
+            "length": 70,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 2343340613,
+            "associated_section": 0,
+            "selection": 1,
+            "reserved": 0,
+            "high_number": 0
+          }
+        ]
+      },
+      "17": {
+        "name": ".sxdata",
+        "raw_bytes": 4,
+        "relocations": 0,
+        "instruction_rows": 0,
+        "section_symbol_aux": [
+          {
+            "length": 4,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 3802027855,
+            "associated_section": 0,
+            "selection": 0,
+            "reserved": 0,
+            "high_number": 0
+          }
+        ]
+      },
+      "18": {
+        "name": ".xdata$x",
+        "raw_bytes": 44,
+        "relocations": 2,
+        "instruction_rows": 0,
+        "section_symbol_aux": [
+          {
+            "length": 44,
+            "relocations": 2,
+            "line_numbers": 0,
+            "checksum": 2818040300,
+            "associated_section": 14,
+            "selection": 5,
+            "reserved": 0,
+            "high_number": 0
+          }
+        ]
+      },
+      "19": {
+        "name": ".chks64",
+        "raw_bytes": 152,
+        "relocations": 0,
+        "instruction_rows": 0,
+        "section_symbol_aux": [
+          {
+            "length": 152,
+            "relocations": 0,
+            "line_numbers": 0,
+            "checksum": 0,
+            "associated_section": 0,
+            "selection": 0,
+            "reserved": 0,
+            "high_number": 0
+          }
+        ]
+      }
+    },
+    "all_4791_file_bytes_accounted": true,
+    "primary_symbols": 43,
+    "auxiliary_slots": 19,
+    "total_symbol_slots": 62,
+    "string_table_bytes": 1342,
+    "string_count": 22,
+    "relocations": {
+      "DIR32_0006": 5,
+      "DIR32NB_0007": 2,
+      "REL32_0014": 9,
+      "SECREL_000B": 0
+    },
+    "code": {
+      "sections": 11,
+      "bytes": 498,
+      "decoded_rows": 204,
+      "alignment_or_padding_rows": [
+        {
+          "section": 14,
+          "offset": 154,
+          "bytes": "660f1f440000",
+          "mnemonic": "nop"
+        },
+        {
+          "section": 14,
+          "offset": 203,
+          "bytes": "0f1f440000",
+          "mnemonic": "nop"
+        },
+        {
+          "section": 15,
+          "offset": 8,
+          "bytes": "cc",
+          "mnemonic": "int3"
+        },
+        {
+          "section": 15,
+          "offset": 9,
+          "bytes": "cc",
+          "mnemonic": "int3"
+        },
+        {
+          "section": 15,
+          "offset": 10,
+          "bytes": "cc",
+          "mnemonic": "int3"
+        },
+        {
+          "section": 15,
+          "offset": 11,
+          "bytes": "cc",
+          "mnemonic": "int3"
+        },
+        {
+          "section": 15,
+          "offset": 12,
+          "bytes": "cc",
+          "mnemonic": "int3"
+        },
+        {
+          "section": 15,
+          "offset": 13,
+          "bytes": "90",
+          "mnemonic": "nop"
+        },
+        {
+          "section": 15,
+          "offset": 14,
+          "bytes": "90",
+          "mnemonic": "nop"
+        }
+      ],
+      "non_NOP_INT3_rows": 195,
+      "entry_section14": {
+        "bytes": 265,
+        "decoded_rows": 98,
+        "non_NOP_INT3_rows": 96
+      },
+      "unused_emitted_COMDAT_sections": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        12,
+        16
+      ],
+      "unused_bytes": 167,
+      "unused_qualification": "No runtime code/data relocation targets these sections. Disarm still has its own associative .debug$F reference; unused does not claim absent or already linker-discarded.",
+      "all_code_reachable_claim": false,
+      "handler_metadata_entry": {
+        "section": 15,
+        "offset": 13
+      },
+      "funclet_entry": {
+        "section": 15,
+        "offset": 0
+      },
+      "parser_cfg_limit": "Generic parser roots only section start and function-typed symbols; EH metadata roots are independently resolved here. Other decoded offsets are not automatically dead code."
+    },
+    "normal_memory_schedule": [
+      "section14+34 count load, +37 capacity load; +3C unequal branch skips growth+40, flag lowBYTE test+45 only afterwards.",
+      "Copy builds kind3/object +8native/+8host request, allocation+64, captures fresh EAX at [EBP-20] +69, state0 +6F, raw-context copy+76.",
+      "Copy native index load+7B; negative+87/89 skips upper-count load+8B; separate cursor load+93. Adopt equivalents+B1/B8/BA/BC/C4.",
+      "Copy+A0 and adoption+D0 loops reload slots every iteration; destination LEA then pure local DEC then source volatile load and destination volatile store. Signed CMP/JG uses captured clamped index. No count reload inside either loop.",
+      "Join+DF reloads slots. +E1 captures clamped index in EAX; +E3 publishes selected pointer; +E6/E9/EA reads/increments/writes current count. No return-count reread.",
+      "Source orders captured source/destination then decrement then store. Compiler moves pure LEA/DEC and result-register assignment without changing actual volatile memory access/publication order. This normal-domain optimization proves no native register/flags/instruction/fault identity."
+    ],
+    "current_CPP_cleanup": {
+      "fresh_header_frame_offset": "EBP-20",
+      "armed_after_allocation_before_copy": true,
+      "current_state0_store": "section14+6F",
+      "funclet": "section15+0 LEA ECX,[EBP-20]; tail JMP guard destructor",
+      "destructor": "section10 reads captured header, null-checks, calls only singleton_lifetime_free",
+      "descriptor": "section18+8 magic19930522/maxState1/unwind map section18+0; map(-1,funclet section15+0)",
+      "normal_disarm": "Source disarms after publication; compiler eliminates the explicit disarm/destructor on the nonthrowing normal suffix and unregisters FS0 at section14+F0.",
+      "no_data_adopted_existing_slots_or_list_cleanup": true,
+      "no_growth_or_shift_rollback": true,
+      "Original_EH_credit": 0
+    },
+    "GS": {
+      "cookie_load": "section14+14",
+      "frame_cookie": "[EBP-10] XOR EBP",
+      "normal_check": "section14+100",
+      "handler_cookie_checks": [
+        "section15+1B",
+        "section15+25"
+      ],
+      "handler": "section15+2F tail JMP current CxxFrameHandler3"
+    },
+    "SafeSEH": {
+      "section17_symbol_index": 51,
+      "resolved_section": 15,
+      "resolved_offset": 13,
+      "Original_credit": 0
+    },
+    "frame_debug": {
+      "sections": [
+        11,
+        13
+      ],
+      "layout": "16-byte FPO records: RVA relocation, procedure size, locals, parameters, flags",
+      "procedure_sizes": [
+        14,
+        7
+      ],
+      "locals_params_flags_zero": true,
+      "relocation": "IMAGE_REL_I386_DIR32NB (0007), not SECREL (000B)"
+    },
+    "CodeView": {
+      "signature": 4,
+      "subsection": 241,
+      "record_types": [
+        "S_OBJNAME 1101",
+        "S_COMPILE3 113C"
+      ],
+      "objname": "J:\\PROG\\battlestations-pacific-decompile-cc12_string_key_comparator_oct15\\local\\WholeSceneStringListIndexedInsertSource01\\native_scene_string_list_indexed_insert.obj",
+      "raw_compile_fields": [
+        8705,
+        7,
+        19,
+        51,
+        36244,
+        0,
+        19,
+        51,
+        36244,
+        0
+      ],
+      "frontend_backend": "19.51.36244.0",
+      "compiler": "Microsoft (R) Optimizing Compiler",
+      "compile_flags_0x2201_retained_without_claim_of_all_bits_semantics": true
+    },
+    "directives": "   /FAILIFMISMATCH:\"_MSC_VER=1900\" /FAILIFMISMATCH:\"_ITERATOR_DEBUG_LEVEL=0\" /FAILIFMISMATCH:\"RuntimeLibrary=MD_DynamicRelease\" /DEFAULTLIB:\"msvcprt\" /FAILIFMISMATCH:\"_CRT_STDIO_ISO_WIDE_SPECIFIERS=0\" /alternatename:__Avx2WmemEnabled=__Avx2WmemEnabledWeakValue /FAILIFMISMATCH:\"annotate_string=0\" /FAILIFMISMATCH:\"annotate_vector=0\" /FAILIFMISMATCH:\"annotate_optional=0\" /DEFAULTLIB:\"MSVCRT\" /DEFAULTLIB:\"OLDNAMES\" ",
+    "bss": {
+      "section": 3,
+      "virtual_bytes": 4,
+      "no_raw_file_bytes": true,
+      "symbol": "__Avx2WmemEnabledWeakValue",
+      "SDK_alternatename_directive": true,
+      "no_list_state_or_new_owner": true
+    },
+    "checksums": {
+      "chks64_bytes": 152,
+      "opaque_words": 19,
+      "section_aux_values_retained": true,
+      "internal_checksum_algorithms_not_independently_validated": true,
+      "external_SHA256_covers_all_actual_bytes": true
+    },
+    "no_CRT_initializer": true,
+    "no_new_body_execution": true,
+    "no_ABI_Original_EH_or_game_claim": true,
+    "decoded_row_qualification": {
+      "total_decoded": 204,
+      "CC_alignment_rows": 5,
+      "NOP_instructions": 4,
+      "non_CC_function_instructions": 199,
+      "non_NOP_INT3_rows": 195,
+      "public_instructions_including_NOP": 98,
+      "current_EH_and_guard_instructions_including_NOP": 21,
+      "other_unused_helper_instructions": 80,
+      "prior_audit_field_alignment_or_padding_rows": "A syntactic list of nine NOP or INT3 rows; the four NOP rows are still decoded instructions. Only five CC bytes at section15 offsets8..12 are classified here as CC alignment."
+    }
+  },
+  "frame_pointer_default": {
+    "path": "MSBuild/Microsoft/VC/v180/Platforms/Win32/Platform.Common.props",
+    "line": 22,
+    "setting": "OmitFramePointers=false if unset",
+    "fresh_precompile_pin": true,
+    "source_specific_CMake_option_added": false
+  },
+  "verification_limits": [
+    "Existing build checks do not execute the unregistered new body.",
+    "Fresh tool and source hash closure is not a hermetic OS loader/environment proof.",
+    "Current compiler EH/GS/frame/SafeSEH evidence supplies no Original private EH or full physical ABI credit.",
+    "Whole ordinary Source coverage does not admit excluded Original failure outcomes.",
+    "Main registration/archive identity and independent admission remain integrator responsibilities."
+  ],
+  "Original_ABI_compatible": false,
+  "Original_private_CRT_EH_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false
+}
