@@ -152,3 +152,27 @@ This contract awaits primary review. Source/API authorization is false and both
 credit counters are zero; overall frexp Source remains blocked by its original
 provider set. Normal ownership is retained until explicit queued handoff;
 both old and new local preservation leases remain separate.
+
+## Primary and independent readiness admission
+
+Primary and independent Sol/max reviews accepted the whole39-byte/16-instruction
+static evidence, including all bytes, complete typed rows, raw WAIT/FNSTCW bundle,
+physical ABI/memory order and x87 qualifications. The primary independently
+authenticated36 genuine new-phase author pairs, the complete982-line Original
+prefix,1674 runtime inputs and139 before-decode module origins. The peer's
+separate final manifest and provenance are recorded in the report; external
+author/primary execution remains external to that reviewer.
+
+The complete ordinary stack trace also includes PUSH EBP at entryS-4 before
+PUSH ECX atS-8, and epilogue saved-EBP/return-address reads. For arbitrary
+interference, algebra uses the actual separate M1/M2/N/local/final-old-word
+reads. Combining local high ECX with the stored oldCW assumes those local bytes
+remain unchanged between the relevant reads. No arbitrary-handler preservation
+or full-status restoration is implied.
+
+The accepted Source classifier is separate existing coverage. This readiness
+adds zero Source/Native credit and grants no Source/API authorization. Overall
+frexp Source remains blocked by separately tracked binding, conversion and
+provider obligations; the original seven-provider set is not a numeric count of
+missing Source implementations. This metadata-only admission compiles no C++,
+runs no new tests and establishes no target/runtime/game validation.
