@@ -1,0 +1,342 @@
+{
+  "packet": "goal15o_tagged_leaf_b4_02",
+  "generated_utc": "2026-10-16T02:07:55.970192+00:00",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "coff_sha256": "a41e1e9ff806b55e81960c05a9d5219e258174cfee441fbe80d60ee1c44596a7",
+  "strict_flags": "/nologo /std:c++20 /MD /O2 /W4 /WX /fp:strict /Gy /c /Iinclude",
+  "strict_compile_seconds": 1.9001669883728027,
+  "evidence_and_compile_seconds": 6.592782974243164,
+  "whole_functions": 8,
+  "whole_native_bytes": 29,
+  "whole_native_instructions": 16,
+  "coff_relocations": 0,
+  "functions": [
+    {
+      "address": "00b401c0",
+      "native_length": 4,
+      "native_hex": "8b4108c3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": true,
+      "coff_symbol": "@bsp_tagged_b4_00b401c0@4",
+      "coff_section": 3,
+      "coff_section_size": 4,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": true,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 8]",
+          "hex": "8b4108"
+        },
+        {
+          "offset": 3,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b401c0 TRIV_body_00b401c0",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15o_tagged_leaf_b4_02/00b401c0_lookup.txt"
+    },
+    {
+      "address": "00b40300",
+      "native_length": 3,
+      "native_hex": "8b01c3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": true,
+      "coff_symbol": "@bsp_tagged_b4_00b40300@4",
+      "coff_section": 5,
+      "coff_section_size": 3,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": true,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx]",
+          "hex": "8b01"
+        },
+        {
+          "offset": 2,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b40300 TRIV_body_00b40300",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15o_tagged_leaf_b4_02/00b40300_lookup.txt"
+    },
+    {
+      "address": "00b40310",
+      "native_length": 3,
+      "native_hex": "8b01c3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": true,
+      "coff_symbol": "@bsp_tagged_b4_00b40310@4",
+      "coff_section": 7,
+      "coff_section_size": 3,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": true,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx]",
+          "hex": "8b01"
+        },
+        {
+          "offset": 2,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b40310 TRIV_body_00b40310",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15o_tagged_leaf_b4_02/00b40310_lookup.txt"
+    },
+    {
+      "address": "00b40490",
+      "native_length": 3,
+      "native_hex": "8bc1c3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": true,
+      "coff_symbol": "@bsp_tagged_b4_00b40490@4",
+      "coff_section": 9,
+      "coff_section_size": 3,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": true,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, ecx",
+          "hex": "8bc1"
+        },
+        {
+          "offset": 2,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b40490 TRIV_body_00b40490",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15o_tagged_leaf_b4_02/00b40490_lookup.txt"
+    },
+    {
+      "address": "00b40510",
+      "native_length": 4,
+      "native_hex": "8b4108c3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": true,
+      "coff_symbol": "@bsp_tagged_b4_00b40510@4",
+      "coff_section": 11,
+      "coff_section_size": 4,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": true,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 8]",
+          "hex": "8b4108"
+        },
+        {
+          "offset": 3,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b40510 TRIV_body_00b40510",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15o_tagged_leaf_b4_02/00b40510_lookup.txt"
+    },
+    {
+      "address": "00b40550",
+      "native_length": 4,
+      "native_hex": "8b4150c3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": true,
+      "coff_symbol": "@bsp_tagged_b4_00b40550@4",
+      "coff_section": 13,
+      "coff_section_size": 4,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": true,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x50]",
+          "hex": "8b4150"
+        },
+        {
+          "offset": 3,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b40550 TRIV_body_00b40550",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15o_tagged_leaf_b4_02/00b40550_lookup.txt"
+    },
+    {
+      "address": "00b40560",
+      "native_length": 4,
+      "native_hex": "8b411cc3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": true,
+      "coff_symbol": "@bsp_tagged_b4_00b40560@4",
+      "coff_section": 15,
+      "coff_section_size": 4,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": true,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x1c]",
+          "hex": "8b411c"
+        },
+        {
+          "offset": 3,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b40560 TRIV_body_00b40560",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15o_tagged_leaf_b4_02/00b40560_lookup.txt"
+    },
+    {
+      "address": "00b40570",
+      "native_length": 4,
+      "native_hex": "8b4110c3",
+      "live_ghidra_equals_installed_pe": true,
+      "actual_coff_equals_whole_native_body": true,
+      "coff_symbol": "@bsp_tagged_b4_00b40570@4",
+      "coff_section": 17,
+      "coff_section_size": 4,
+      "coff_symbol_offset": 0,
+      "coff_whole_section_size_equals_native": true,
+      "coff_relocations": 0,
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x10]",
+          "hex": "8b4110"
+        },
+        {
+          "offset": 3,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "live_xrefs": "No references found to address: 00b40570 TRIV_body_00b40570",
+      "live_callers": "No callers found for function: null",
+      "lookup_evidence_file": "local/goal15o_tagged_leaf_b4_02/00b40570_lookup.txt"
+    }
+  ],
+  "scope": {
+    "band": "00b40000..00b4ffff",
+    "prequalified_bodies_revalidated": 8,
+    "new_uninspected_bodies_screened": 0,
+    "selected_whole_routines": 8,
+    "prior_discovery_bodies": 12,
+    "prior_discovery_deferred": 4,
+    "discovery_origin": "local/goal15m_tagged_leaf_b4_next/readiness.json; read-only work during prior packet baseline wait, charged to that packet handoff time",
+    "cmake_registered": false,
+    "new_tests": 0,
+    "ghidra_mutations": 0,
+    "first_packet_four_files_unchanged_from": "14e2d9f001c37ffed4c4af380b5812e9649d68f5",
+    "main_merged_before_revalidation": "c5bde9e8bb30e8f9664a1d7793fa24f3cbcec428",
+    "worker_merge_before_source": "530cd91583f9db3cb316c751a1bee6a1cb2e8317",
+    "prior_function_shard_sha256": "5de65489c891b311ad1f35c293bc5c9ec2e7aa20cc87d6c1d0786840dec0530e",
+    "coverage": "Current Main index/lookup had no function or fragment records. Case-insensitive exact optional-0x/leading-zero address searches in src/include/third_party had no matches before edits. All eight unleased before exact claim.",
+    "uncertainty": "Names/field interpretations remain hypotheses. Known xrefs/callers do not establish unused status; live function:null caller endpoint is inconclusive. No class, ownership, indirect-caller, gameplay or replacement-installation claim.",
+    "other_discovery_dispositions": [
+      {
+        "addresses": [
+          "00b401a0",
+          "00b401b0"
+        ],
+        "disposition": "deferred separate ordered triple-zero-store family; no source/ledger edits"
+      },
+      {
+        "addresses": [
+          "00b403f0"
+        ],
+        "disposition": "deferred real ECX+[ESP+4] input/RET4 copy shape; no fictional fastcall/class adaptation"
+      },
+      {
+        "addresses": [
+          "00b40580"
+        ],
+        "disposition": "deferred full-EAX canonical boolean comparison; requires separate exact-operand/flags compiler proof"
+      }
+    ]
+  },
+  "timing": {
+    "timing_capture_utc": "2026-10-16T02:05:32.458006+00:00",
+    "first_source_creation_utc": "2026-10-16T02:06:55.243176+00:00",
+    "orientation_merge_index_requalification_to_source_seconds": 82.78516912460327,
+    "source_to_passing_whole_body_proof_seconds": 60.72701644897461,
+    "strict_compile_seconds": 1.9001669883728027,
+    "source_proof_and_evidence_seconds": 6.592782974243164,
+    "total_handoff_lower_bound_seconds": 298.00549364089966,
+    "start_limit": "Timing capture directory was created after the required initial brief; its measured 5.0942071s and preceding setup are additional. Final handoff includes baseline build, waiting, docs, ledger/index work, commit and release, recorded separately at handoff.",
+    "build_receipt_utc": "2026-10-16T02:10:30.463500+00:00",
+    "full_handoff_scope": "Includes Main merge/index, refreshed qualification, source/proof, documentation, ledger/index and warm-cache baseline through this receipt. Final commit/release actual handoff time is retained separately under ignored handoff.json. Initial required brief/setup before timing capture is additional."
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "result": "passed",
+    "module_registered": false,
+    "strict_module_result": "passed",
+    "baseline_covers_module": false,
+    "log": "local/goal15o_tagged_leaf_b4_02/baseline_build.log",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "receipt_utc": "2026-10-16T02:10:30.463500+00:00",
+    "warm_cache": true,
+    "baseline_checkout_commit": "530cd91583f9db3cb316c751a1bee6a1cb2e8317",
+    "baseline_start_utc": "2026-10-16T02:06:58.081151+00:00",
+    "baseline_final_output_utc": "2026-10-16T02:09:25.117676+00:00",
+    "baseline_elapsed_seconds_to_final_output": 147.03652429580688,
+    "elapsed_scope": "Recorded immediately before launching required script through its final output write; source proof/doc/ledger work overlapped this warm-cache build. Module is unregistered; independent strict object is module coverage."
+  },
+  "source_sha256": "ce966b8f23d95ba48ad52b62c891a490407e90e38386d73b4968c0242d3fe8fd",
+  "header_sha256": "f397f9b0df83db60e9dd88df16dffa5070510dec20e722251ea59a93aba4d7c6",
+  "evidence_artifacts": {
+    "directory": "local/goal15o_tagged_leaf_b4_02/",
+    "verifier": "local/goal15o_b4_proof.py",
+    "note": "Fresh live bytes/disassembly/xrefs and actual full COFF extents; no cached-query reuse for this packet proof. One local verifier-generation command failed PowerShell quoting before execution; corrected file-based generation succeeded without source changes."
+  }
+}

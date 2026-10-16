@@ -1,0 +1,112 @@
+{
+  "packet": "cc12_native_gui_raw_path_lifetime_integration_74",
+  "compiled_source_commit": "3b78af96f5523917c739f250862b238b0f54287c",
+  "status": "reviewed_whole_raw_path_and_layer_parents_plus_explicit_script_fragment_registered_combined_win32_build_passed_no_activation",
+  "packets": [
+    {
+      "packet": 71,
+      "worker_commit": "76eb01c2bdc9375ad92517a426ee3c363ca7b88a",
+      "primary_source_review": "pass",
+      "unchanged_worker_sources": [
+        {
+          "path": "include/bsp/native_gui_script_paths.hpp",
+          "git_blob": "949763d75780c9cf5f2446f2c64c0ce4ad0a0fac",
+          "sha256": "6a42ad475751a4f4dbc4aaef535acd2f10665847b61d13b9fda7b02b47b9e69d"
+        },
+        {
+          "path": "src/native_gui_script_paths.cpp",
+          "git_blob": "2288261cb510f935e19b2ecbcfd7c63584b5644c",
+          "sha256": "482117fb0ebacc8c712ee7ddcc574456813eb3619f64d35da53fb254dc144c68"
+        }
+      ]
+    },
+    {
+      "packet": 72,
+      "worker_commit": "d12e5827c435f4b6f12c26d90b9f3bfd4f8fb83a",
+      "primary_source_review": "pass",
+      "unchanged_worker_sources": [
+        {
+          "path": "include/bsp/native_gui_page_script_continuation.hpp",
+          "git_blob": "8aa641fb961f06ec1ad05c0938fde2f15e5e04ad",
+          "sha256": "52a382d94505c540759406e542ce055e0abc282922e68acd576aee92192b84dd"
+        },
+        {
+          "path": "src/native_gui_page_script_continuation.cpp",
+          "git_blob": "91d4ee65bcb34cd06c7504f108661ef6ac2cd40d",
+          "sha256": "3981f2536368206c093386669bcf878d2e05492366ec60893a1964b17fa60a1c"
+        },
+        {
+          "path": "include/bsp/native_gui_page_construction.hpp",
+          "git_blob": "b62bb9e8e6e7f5d8fac3e3197a00d940d5a5c58e",
+          "sha256": "9b75027cb64d0db7e839b0a8b81f49d677a38ac3e89d154d2a9b45f211fbfe4f"
+        },
+        {
+          "path": "src/native_gui_page_construction.cpp",
+          "git_blob": "1cc63b66183aaa20f129a01975ac6483682599fe",
+          "sha256": "066059cba6487f666d38bbacebb8af793dcb8e0b211e51f38ab0c7241eebe185"
+        }
+      ]
+    },
+    {
+      "packet": 73,
+      "worker_commit": "ca06a073867dbd1b540f172625602745377804fc",
+      "primary_source_review": "pass",
+      "unchanged_worker_sources": [
+        {
+          "path": "include/bsp/native_gui_layer_lifetime.hpp",
+          "git_blob": "7d29b828741486e329bab6dc36f56e76046966ef",
+          "sha256": "6f11c207f01e600294d3eb0949fa07bc0b8536ee319b87a62f212205cafcc2de"
+        },
+        {
+          "path": "src/native_gui_layer_lifetime.cpp",
+          "git_blob": "94929aa398362a53b65c2782e03f5485d5deab16",
+          "sha256": "3be310af8d9dc37823fbb0990af097ea28d0cc38cb2878a8c353eab0ebe63e38"
+        }
+      ]
+    }
+  ],
+  "registration": {
+    "target": "bsp_core",
+    "new_units": [
+      "src/native_gui_script_paths.cpp",
+      "src/native_gui_layer_lifetime.cpp",
+      "src/native_gui_page_script_continuation.cpp"
+    ],
+    "normal_host_activation": false
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "configuration": "MSVC Win32 Release",
+    "ctest_passed": 3,
+    "ctest_total": 3,
+    "ctest_seconds": 12.96,
+    "frozen_inputs": 23,
+    "known_warning": "Existing LNK4006 spawn_request_id_matches duplicate in Lua objects; unrelated and unchanged"
+  },
+  "native_evidence": {
+    "71": "Whole AC5600/AC5770 normal relocated pair over real raw string providers, stack/FS and handoff checks; 23 mechanical call rows verified",
+    "72": "Exactly AC6714..AC67CC184B, source/assembly review and direct compile only; same real Lua/path services, returns Lua-open EH2/unpublishable",
+    "73": "Whole AC5480/AA38F0:2 normal controlled-manager/scene Original pairs over genuine empty base/pools;2 separate Source-only flags/throw cases;0 mechanical call rows, full listing and relocation reviewed manually"
+  },
+  "primary_original_byte_review": {
+    "installed_hash": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "unchanged": true,
+    "all_4_copied_whole_bodies_match_installed_original": true,
+    "71_literal_bytes_match": true
+  },
+  "limits": [
+    "New Source interfaces and ordinary C++ exception contracts are not Original ABI/FH3/SEH parity",
+    "72 does not create a reader, invoke AC4C50/AAA710, complete or publish a page; same actual4C8h Lua owner remains open pending genuine tail",
+    "73 still requires genuine manager/store and scene services; controlled comparisons do not prove a populated subtree",
+    "No new normal game run or native Text/Screen activation in74; prior68 startup evidence remains tied to its exact19c78db compiled commit",
+    "No gameplay proof or additional Original address credit is claimed"
+  ],
+  "evidence": {
+    "archive": "local/cc12_native_gui_raw_path_lifetime_integration_74/evidence_family.zip",
+    "archive_sha256": "52e9041bf59aecf5fe92fbb557c85624b59b7dbaad946519f77e9259e8a36c5b",
+    "manifest_sha256": "b1416d5045fbe624d6e06677dd503f6372e2cc17844e595bad72f47f33d80d0f",
+    "payloads": 87,
+    "payload_hashes_verified": true
+  }
+}

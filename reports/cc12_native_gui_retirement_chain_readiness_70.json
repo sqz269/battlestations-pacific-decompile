@@ -1,0 +1,112 @@
+{
+  "packet": "cc12_native_gui_retirement_chain_readiness_70",
+  "status": "read_only_original_chain_traced_raw_layer_lifetime_proposed",
+  "requested_root_baseline": "f025c2315d3e370a7730839e898cad438a4e3d70",
+  "merged_worker_baseline": "5cd52d190156c24a600886015b88da2ed59723c2",
+  "merge_exit_code": 0,
+  "packet67_retained_as_ancestor": "14598b9753952c046353d9bae24bf3b1c85cc466",
+  "observed_utc": "2026-10-16T02:39:49Z",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-native_crt_wcsicmp_locale_48",
+  "ghidra": {"project": "C:/Users/sqz269/bsp.gpr", "program": "/battlestationspacific.exe", "batch_queries": "verified BSP wrappers only", "mutations": false},
+  "live_slots": [
+    {"profile": "00d5be38", "slot": "20", "word_address": "00d5be58", "target": "00aa8320"},
+    {"profile": "00d5be38", "slot": "04", "word_address": "00d5be3c", "target": "00aa38f0"},
+    {"profile": "00d5d058", "slot": "20", "word_address": "00d5d078", "target": "00aa8320"},
+    {"profile": "00d5d058", "slot": "04", "word_address": "00d5d05c", "target": "00ace620"},
+    {"profile": "00d5c130", "slot": "04", "word_address": "00d5c134", "target": "00aa9a90"}
+  ],
+  "page_handle_policy_example": {
+    "address": "00518250",
+    "read": "actual outgoing page+04",
+    "equal_one": "004C12B0 then AA31F0 with reloaded handle",
+    "otherwise": "capture current page, CURRENT [CE2220](page+04), current0 on zero",
+    "final_action": "clear caller handle after reached callback",
+    "not_universal": "00517D90 instead directly calls AA31F0 for its owned nonnull pages"
+  },
+  "manager_delete": {
+    "address": "00aa31f0",
+    "existing_raw_source": "src/native_gui_page_registry.cpp",
+    "schedule": ["remove first matching raw manager vector pointer", "shift following entries and reduce end", "CURRENT page20 at AA326A", "reload page profile", "CURRENT page04(1) at AA3276"],
+    "page_count_decrement_or_gate": false,
+    "required_provider": "NativeGuiPageLifetimeHost"
+  },
+  "child_and_ancestor": {
+    "aa8320": "child current20 recursion, then Text glyph/shadow and main drawable release",
+    "aa9730": "existing whole raw body: base stamp, scene release, repeat current first child04(1), own parent detach, remaining scene/timed/container/base cleanup",
+    "child_progress": "child destructor must remove itself; no fallback erase/count progress",
+    "aa9730_child_call": "AA9790..AA9797 current04(1), no count check",
+    "own_parent_link": "raw widget+70, node detach/root operations, A9BD50(parent+64,&child), then clear+70",
+    "a9bd50": "existing whole raw ALL-match list removal; node free/list count decrement only, no payload release",
+    "widget_count_decrement_or_gate": false,
+    "child_to_parent_reference_increment": false,
+    "slot_closure": "matching pool return after scalar destruction; no ancestor lifetime barrier established"
+  },
+  "scalar_paths": [
+    {"address": "00aa38f0", "abi": "ECX page, flags DWORD, EAX original identity, RET4", "bytes": 28, "schedule": "AC5480, THEN flags low-byte bit0 selects AC4C40 pool return", "count_gate": false},
+    {"address": "00ace620", "abi": "ECX ClipBox, flags DWORD, EAX original identity, RET4", "schedule": "stampD5D058, AA9730, THEN flags bit0 selects ACE4A0(SAME widget,poolF8C13C)", "count_gate": false},
+    {"address": "00aa9a90", "schedule": "AA9730 then flags&1 AA75F0 pool return", "count_gate": false}
+  ],
+  "material_and_text_count": {
+    "b18a40": "retains exact selected source_owner0C iff retain byte10D and pointer are nonzero",
+    "b192f0": "release effect/textures, then retained owner, then parameters",
+    "text_identity": "existing companion borrows SAME actual Text+04, no alternate owner/count",
+    "direct_scalar_delete": "AB8EE0 and parent delete04 bypass count",
+    "clipbox_ancestor_retain_from_parameter_source": false,
+    "blanket_count_greater_than_one_gate_valid": false,
+    "last_external_consumer_boundary_established": false
+  },
+  "raw_frontier": {
+    "address": "00ac5480",
+    "range_half_open": ["00ac5480", "00ac5555"],
+    "bytes": 213,
+    "instructions": 59,
+    "sha256": "2cb0bad65eab265c6073b983ed4dd6ddbae9b949fa33981a8d9721a5515eb7f4",
+    "complete_hex": "6aff683688cb0064a100000000506489250000000051568bf189742404c70638bed50080bef400000000c744241001000000742ee8f7bd9fff8b8ef0000000518bc8e869f6fdff8b8eec00000085c9743de87acd0a00c786ec00000000000000eb2c578bbeec00000085ff74208d570452ff152022ce0085c075088b078b108bcfffd2c786ec000000000000005f8b860401000085c0c64424100074198b8e000100006a0183c1015150e8914795ff8bc8e8dabf10008bcec7442410ffffffffe8eb41feff8b4c24085e64890d0000000083c410c3",
+    "abi": "ECX actual124h page, no stack arguments, RET; new Source ABI required",
+    "source_now": "typed GuiLayerImage/GuiScreenLayerState/GuiScreenSceneRuntime successful-call composition only",
+    "not_missing_algorithm": "normal logic is analyzed; missing unit is faithful raw page storage/call/unwind implementation",
+    "key_timing": ["stampD5BE38 then byteF4 gate and state1", "manager getter BEFORE live F0 load", "reload EC AFTER store removal", "shared scene captured before current decrement and current0 read after decrement", "clear pageEC AFTER scene callback", "capture104 then state0 before name-return getter", "captured data/size/1 survive419CC0 forBD1510", "no normal clear of F0/100/104", "state-1 BEFORE AA9730"],
+    "native_eh": {
+      "handler": "00cb8836",
+      "func_info": "00def7dc",
+      "magic": "19930522",
+      "max_state": 2,
+      "unwind_map": "00def7cc",
+      "entries": [
+        {"state": 0, "to_state": -1, "action": "00cb8820", "body": "ECX=[EBP-10], JMP AA9730"},
+        {"state": 1, "to_state": 0, "action": "00cb8828", "body": "ECX=[EBP-10]+100, JMP41DD20"}
+      ],
+      "source_exception_equivalence_claimed": false
+    }
+  },
+  "one_proposed_packet": {
+    "functions": ["00ac5480", "00aa38f0"],
+    "whole_parent_and_wrapper_bytes": 241,
+    "new_source_files": ["include/bsp/native_gui_layer_lifetime.hpp", "src/native_gui_layer_lifetime.cpp"],
+    "reuse": ["whole raw AA9730", "whole raw A9BD50 via actual bindings", "actual raw string domain and41DD20", "return_native_gui_layer_slot_00ac4c40 and existing initialized layer pool"],
+    "required_explicit_services": ["actual manager getter004C12B0", "actual manager/store AA4B30", "actual scene B72250", "CURRENT CE2220 decrement and current scene0 terminal", "existing real child/timed current-profile bindings"],
+    "provider_limits": "AA4B30/B72250 currently typed owners; no arbitrary raw provider silently supplied. Existing actual NativeGuiSceneReference does not prove these call compositions.",
+    "source_scope": "whole raw normal schedule and precisely audited Source C++ unwind domain; no native FH3/hardware-fault equivalence or fake owners",
+    "excluded": ["63 loader", "69 AC6600 constructor", "current24", "normal activation", "duplicate pool/global", "complete populated subtree/consumer retirement proof"],
+    "implementation_authorized_by_this_receipt": false
+  },
+  "separate_source_admission_gap": {
+    "typed_pages": "GuiPageRegistry unique ownership",
+    "release_screen_page": "logsAA31F0 unimplemented, keeps pages loaded",
+    "menu_last_handle": "hides page and releases projected handle",
+    "menu_other_handle": "plain projected integer decrement",
+    "actual_original_page_count_transport": false,
+    "required_future_work": "real typed graph/ancestor retention and externally serialized last-consumer scheduling before retirement; no no-op token"
+  },
+  "source_sha256_at_review": {
+    "src/native_gui_widget_lifetime.cpp": "f5f10d603694dfbb354b92bc4627dfc0fd687724fc51d49de5c51f53c813c3b6",
+    "src/native_gui_widget_child_links.cpp": "cece55903975dcee6a4e58d562212b7e6362f0fa177db008c1c709d7342349b6",
+    "src/native_gui_page_registry.cpp": "e63d9d755850991af4939ea3fe8b7cdb5f6c8979168eaeb3dbe3250e583d52fe",
+    "src/gui_screen_scene_runtime.cpp": "eff9e28840198a260ab0ff56f7d3bd1b3de168af1e00fb663351c5a5ae3071f6",
+    "src/gui_layer.cpp": "ff6c4f055e1dcf37c5fd614db1c8dff034dd67c97a5ea38effdb37e25ed9a04d",
+    "src/game_hosts_frontend.cpp": "f070b50daac6be2afeb986edfcf3bbd737bb48b827c453bb9e897a04822cc247",
+    "src/game_hosts_menu.cpp": "e88a9561e5b3be250d4b0e36f4b166debb0c4f30c049dd49d7f13420f9c19b1e"
+  },
+  "checks": {"source_edits": false, "ghidra_mutation": false, "build_run": false, "tests_run": false},
+  "proof_limits": ["read-only fixed-baseline Source/live Original trace", "no completed raw Screen destructor", "no whole populated native page provider", "no ancestor retain from raw Text count", "no external consumer boundary", "no ordinary failed-load retirement", "no normal Text activation or gameplay proof"]
+}

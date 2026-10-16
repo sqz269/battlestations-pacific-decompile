@@ -89,7 +89,7 @@ void initialize_native_gui_page_00ac6600_prefix(void* page, const void* name,
         a.continuation = 0x00ac6714;
         a.phase = NativeGuiPageConstructionAcquired::Phase::awaiting_lua_continuation;
     } catch (...) {
-        // No invented raw AA9730 implementation and no premature pool return.
+        // Retention-only boundary: do not replay AA9730 or return a partial slot.
         a.phase = NativeGuiPageConstructionAcquired::Phase::failed;
         throw;
     }

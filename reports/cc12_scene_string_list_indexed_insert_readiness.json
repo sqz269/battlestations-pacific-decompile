@@ -1,9 +1,9 @@
 {
   "schema": "bsp.scene_string_list_indexed_insert_readiness.v1",
-  "status": "whole_ordinary_indexed_insert_Source_ready_no_implementation",
+  "status": "ordinary_Source_implemented_Main_gate_closed_Original_ABI_runtime_unproved",
   "Source_ready": true,
-  "Source_implemented": false,
-  "Source_credit": 0,
+  "Source_implemented": true,
+  "Source_credit": 1,
   "Root_review": {
     "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_scene_string_list_indexed_insert_readiness_primary_20261016\\verified_inputs.DATA.json",
     "bytes": 25968,
@@ -125,5 +125,9 @@
   "Original_ABI_compatible": false,
   "Original_private_CRT_EH_compatible": false,
   "new_Source_runtime_executed": false,
-  "game_validated": false
+  "game_validated": false,
+  "Source_Main_gate": {
+    "Main_validation": "reports/cc12_scene_string_list_indexed_insert_Main_validation.json",
+    "status": "whole_ordinary_explicit_context_Source_registered_Main3checks_actual_code_archive_identity_pass"
+  }
 }
