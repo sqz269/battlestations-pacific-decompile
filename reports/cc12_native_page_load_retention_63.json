@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "packet": "native_page_load_retention_63",
+  "recorded_at_utc": "2026-10-16T02:30:50.929169+00:00",
+  "classification": "Source-only opt-in ownership/failure transport; no new recovered Original body or ABI credit",
+  "root_anchor": "7e8390fecd4bfe6c46e0a9145517263d5a27d738",
+  "worker_baseline": "75c735ef190a2b5150a14b6e1b05bb33c32d8a7d",
+  "root_anchor_ancestor_verified": true,
+  "worker_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_font_retirement_review36",
+  "owned_tracked_files": [
+    "include/bsp/gui_layout_loader.hpp",
+    "src/gui_layout_loader.cpp",
+    "docs/CC12_NATIVE_PAGE_LOAD_RETENTION_63.md",
+    "reports/cc12_native_page_load_retention_63.json"
+  ],
+  "source_identities": [
+    {
+      "path": "include/bsp/gui_layout_loader.hpp",
+      "bytes": 25111,
+      "sha256": "0497e95cef5f88058d2a93c76cc4c4729b88e74f06aa19b81c992f94d26c8790",
+      "git_blob": "b16407b8bd24f8aa066ec6bc6aa708da0d552b52"
+    },
+    {
+      "path": "src/gui_layout_loader.cpp",
+      "bytes": 38441,
+      "sha256": "9622ac2c7b4495026e484ab32245cc3a42dca51e575912cb81b87358ba940fcf",
+      "git_blob": "f36c65efd1b0743e436f551165dd9923fd7c711b"
+    }
+  ],
+  "source_contract": {
+    "entry_point": "load_gui_page_retained_00aa5840(GuiPageRegistry&, GuiLayoutHost&, GuiRetainedPageLoadFailureSink&, const std::string&, int32_t, bool)",
+    "registry_insertion": "register_retained_00aa52a0(unique_ptr<GuiLayoutPage>&): reserve before sole-owner move; stable equal priorities",
+    "serialization": "Externally serialized calls/graph mutation; serialized callback nesting allowed; no reentry prohibition",
+    "pre_host_entry": [
+      "operation with copied name exists before existing-page lookup",
+      "page/root and persistent model_path owned before first VFS/model/root callback",
+      "host_entered and phase entered set before first host effect"
+    ],
+    "pending_child": "Pre-reserve layout/transform child vectors and own pending child before first create callback; transfer into root tree without allocation before subsequent callbacks",
+    "script_ownership": "Exact returned whole script table and actual owned empty property tables; nested bodies kept by whole owner; anchors declared before root and outlive root/child destruction callbacks",
+    "success": "Registry receives sole page owner only after reserve; phase complete follows successful publication; actual consumer quiescence/retirement remains caller obligation",
+    "run_exception": "Store same exception, phase failed, latch if entered, transfer SAME unique operation to required noexcept sink, then rethrow original exception",
+    "constructor_exception": "Operation/name allocation precedes lookup and can throw before an operation exists; direct propagation with no host effects",
+    "pre_entry_run_exception": "Supplied to sink but does not latch or require process retention; distinguish through observation/retention predicate",
+    "entered_failure": "Sink must retain every entered-failed operation and all borrowed host/runtime dependencies to process exit, including already-entered nested operations unwinding after latch",
+    "no_replay": "Sticky sink rejects future loads before operation allocation; no clear/reset/cancel/retry API",
+    "discard_containment": "Entered incomplete operation destructor calls std::terminate before owned graph destruction",
+    "observations": "Read-only identities/phase/entry/table count/stored exception; no mutable graph or release view",
+    "source_abi": "New C++ API and added GuiLayoutPage member change Source allocation/exception/object layout; not Original binary ABI"
+  },
+  "legacy_comparison": {
+    "result": "PASS",
+    "scope": "Entire pre-existing gui_layout_loader.cpp text, including loader/builder/registry method bodies",
+    "normalization": "Remove newly added stdexcept include and appended opt-in implementation before final namespace close",
+    "normalized_sha256": "e0ca3e5052e26d80ca4b4d2c3c64e78b6c54f351bed0fe9474e08d10ba85fc56",
+    "legacy_callers_changed": false
+  },
+  "canonical_build": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "existing_ctests": {
+      "passed": 3,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "seconds": 11.71
+    },
+    "final_build_after_source_comment_seal": true
+  },
+  "focused_probe": {
+    "case_count": 1,
+    "kind": "Source GuiLayoutHost callback fixture against production bsp_core; not a native factory",
+    "scenario": "create_widget_node receives SAME owned pending child, stores partial node/destruction hook, then throws",
+    "compiler_flags": [
+      "/std:c++17",
+      "/O2",
+      "/MD",
+      "/EHsc",
+      "/W4",
+      "/WX"
+    ],
+    "target": "Win32 x86",
+    "link_flags": [
+      "/MANIFEST:EMBED",
+      "/INCREMENTAL:NO"
+    ],
+    "linked_production_libraries": [
+      "bsp_core.lib",
+      "bsp_lua511.lib",
+      "bsp_zlib121.lib"
+    ],
+    "manifest": {
+      "resource": "RT_MANIFEST/1",
+      "execution_level": "asInvoker",
+      "ui_access": "false",
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    "compile_exit_code": 0,
+    "run_exit_code": 0,
+    "final_relinked_after_canonical_build": true,
+    "same_case_sealing_note": "Initial execution passed; same case relinked and repeated against final archive after header-comment sealing",
+    "result": "PASS source_only=1 pending_child_throw=1 same_operation_root_child_table=1 nested_table_live=1 partial_store_preserved=1 cleanup_callbacks=0 legacy_failure_hook=0 replay_blocked=1 retained_until_process_exit=1 normal_retirement_proof=0 native_Text_factory=0",
+    "preserved": [
+      "same incoming operation identity",
+      "same callback root and pending child identities",
+      "whole and nested script table owners",
+      "partial child node store"
+    ],
+    "cleanup_callbacks": 0,
+    "legacy_failure_hook_calls": 0,
+    "registry_empty_after_failure": true,
+    "subsequent_entry_rejected": true,
+    "exit_protocol": "fflush then _Exit(0), retaining interrupted graph to OS process exit"
+  },
+  "artifacts": [
+    {
+      "path": "local/cc12_native_page_load_retention_63_build.log",
+      "bytes": 12668,
+      "sha256": "40a73095dd344e70842c0076eebf78621f1d0cf3e05bd98cc991cb1d56e07037"
+    },
+    {
+      "path": "local/cc12_native_page_load_retention_63_probe.cpp",
+      "bytes": 6471,
+      "sha256": "53f661cd5fd5c8263d82101c60c3bbeca98fe42ac79a7123e98447ee32829d53"
+    },
+    {
+      "path": "local/cc12_page_retention_probe.exe",
+      "bytes": 47104,
+      "sha256": "1c3295f07c910411986349b64e30583eb859bf590e48dfc611e522194f0b642a"
+    },
+    {
+      "path": "local/cc12_page_retention_probe.obj",
+      "bytes": 174047,
+      "sha256": "bd3b61299ebc0ed58ddb7fb5912d38d531ebc7a3e1a34625cb22b9854f22c894"
+    },
+    {
+      "path": "local/cc12_page_retention_probe.log",
+      "bytes": 259,
+      "sha256": "e3006e2a41aa271e338b9eea701a99ef54ba478352fa5a25142e84e1358f5b0c"
+    },
+    {
+      "path": "local/cc12_page_retention_probe_compile.log",
+      "bytes": 46,
+      "sha256": "ecf7d6359f34874318589ba6a9a5344bb4488b568d8a265d137a0d8051eebca5"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 93473488,
+      "sha256": "05010c60dbe385ea84b1789b09ef8247f08231a4e353d92a3d2babc7140d73dd"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "bytes": 455680,
+      "sha256": "390dd5c886faa883a168c4cc60fb1c8b19dcdef4db779ca93a35608ca53c7c67"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "bytes": 72058,
+      "sha256": "f12ba334bd0d1379a526ab834667754b3ad3d2688afd57fdc20530f266b641b3"
+    }
+  ],
+  "documentation": {
+    "path": "docs/CC12_NATIVE_PAGE_LOAD_RETENTION_63.md",
+    "bytes": 6727,
+    "sha256": "c82d4b2dbf8ee32e6dd2fe54c2934680a71f7c260456184ffaa2490da4c58977"
+  },
+  "not_claimed": [
+    "concrete native GUI host or normal startup wiring",
+    "native Text activation or real factory binding",
+    "successful publication-path runtime test",
+    "nested-load runtime coverage",
+    "discarded-operation termination execution",
+    "normal graph retirement or clip/count owner closure",
+    "new Original body, Original differential execution, ABI or gameplay proof"
+  ],
+  "unchanged_scope": [
+    "legacy callers and complete legacy cpp bodies",
+    "game_hosts/game_main",
+    "CMake",
+    "native clip/refcount/teardown code",
+    "Ghidra project and ledgers",
+    "original game installation"
+  ]
+}

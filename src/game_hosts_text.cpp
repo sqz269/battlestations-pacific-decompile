@@ -28,14 +28,51 @@
 #include <atomic>
 #include <cstddef>
 #include <cstring>
+#include <cwchar>
 #include <cwctype>
 #include <exception>
+#include <limits>
 #include <new>
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 namespace bsp::game {
+
+static_assert(sizeof(void*) == 4 && sizeof(int) == 4,
+    "Text's explicit owning-UCRT Source profile targets MSVC Win32");
+static_assert(sizeof(char16_t) == 2 && sizeof(wchar_t) == 2 &&
+    (std::numeric_limits<wchar_t>::min)() == 0 &&
+    (std::numeric_limits<wchar_t>::max)() == 0xffff,
+    "UCRT wide copies preserve every unsigned UTF16 code unit");
+static_assert(std::is_same_v<GuiNativeNameCompare, decltype(&::_stricmp)>,
+    "The actual UCRT narrow comparator must have the exact Source callback ABI");
+
+namespace {
+std::wstring copy_source_ucrt_wide_units(const char16_t* text) {
+    const char16_t* end = text;
+    while (*end != u'\0') ++end;
+    return std::wstring(text, end);
+}
+
+int compare_source_ucrt_wide_current(void*, const char16_t* left, const char16_t* right) {
+    const std::wstring wide_left = copy_source_ucrt_wide_units(left);
+    const std::wstring wide_right = copy_source_ucrt_wide_units(right);
+    // Query no locale early: the real owning UCRT chooses its current state at
+    // this final call, after both value copies and any earlier Text callbacks.
+    return ::_wcsicmp(wide_left.c_str(), wide_right.c_str());
+}
+} // namespace
+
+GuiNativeNameCompare source_ucrt_text_name_comparer() noexcept {
+    return &::_stricmp;
+}
+
+GuiTextContentComparison source_ucrt_text_content_comparison() {
+    return GuiTextContentComparison::source_current(compare_source_ucrt_wide_current, nullptr);
+}
+
 namespace {
 
 // The image value of the mutable global 00e12fd4, read from the loaded executable:

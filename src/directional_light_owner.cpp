@@ -1,9 +1,11 @@
 #include "bsp/directional_light_owner.hpp"
+#include "bsp/native_directional_light_construction.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstring>
 #include <exception>
 #include <new>
 #include <stdexcept>
+#include <type_traits>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native directional light ownership requires MSVC Win32 widths.
@@ -48,7 +50,11 @@ void destroy_scene_array(NativeLightBaseOwnerView& owner) {
 }
 void finish_node_base(NativeLightBaseOwnerView& owner) {
     try {
-        destroy_native_node_00b6f440(owner.runtime, owner.node);
+        if (owner.runtime.uses_raw_name_pool())
+            destroy_native_node_00b6f440(owner.runtime, owner.node,
+                owner.runtime.require_raw_name_pool());
+        else
+            destroy_native_node_00b6f440(owner.runtime, owner.node);
     } catch (...) {
         // The node destructor completes its own cleanup unwind before throwing.
         owner.end_tail(owner.tail);
@@ -57,6 +63,15 @@ void finish_node_base(NativeLightBaseOwnerView& owner) {
     }
     owner.end_tail(owner.tail);
     owner.runtime.scenes.forget_destroyed_binding(owner.node.scene_attachment);
+}
+NativeLightStorageView materialize_raw_light(void* actual_slot) noexcept {
+    static_assert(std::is_trivially_copyable_v<NativeLightTailStorage>);
+    auto* raw = static_cast<std::byte*>(actual_slot);
+    std::array<std::byte, sizeof(NativeLightTailStorage)> bytes;
+    std::memcpy(bytes.data(), raw + 0x174, bytes.size());
+    auto& light = *::new (raw + 0x174) NativeLightTailStorage;
+    std::memcpy(&light, bytes.data(), bytes.size());
+    return {*static_cast<NativeNodeStorage*>(actual_slot), light};
 }
 }
 
@@ -86,6 +101,20 @@ NativeLightStorageView construct_native_directional_light_00b7c6b0(void* actual_
     auto storage = construct_native_light_00b7c4c0(actual_slot, slot_bytes, name, strings);
     storage.node.vtable_00 = 0x00d62fb0u; // the entire directional-only constructor
     return storage;
+}
+NativeLightStorageView construct_native_light_00b7c4c0(void* actual_slot,
+    std::size_t slot_bytes, const void* name, NativeStringRawPoolContext& strings,
+    const NativeNodeRawConstants& constants, const volatile std::uint32_t& sixty_four_cell) {
+    construct_native_light_raw_00b7c4c0(actual_slot, slot_bytes, name,
+        strings, constants, sixty_four_cell);
+    return materialize_raw_light(actual_slot);
+}
+NativeLightStorageView construct_native_directional_light_00b7c6b0(void* actual_slot,
+    std::size_t slot_bytes, const void* name, NativeStringRawPoolContext& strings,
+    const NativeNodeRawConstants& constants, const volatile std::uint32_t& sixty_four_cell) {
+    construct_native_directional_light_raw_00b7c6b0(actual_slot, slot_bytes, name,
+        strings, constants, sixty_four_cell);
+    return materialize_raw_light(actual_slot);
 }
 
 DirectionalLightOwner::DirectionalLightOwner(NativeLightStorageView storage,
