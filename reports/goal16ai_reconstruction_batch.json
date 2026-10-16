@@ -1,0 +1,610 @@
+{
+  "status": "integrated_reviewed_build_and_static_artifact_verified",
+  "utc": "2026-10-16T12:54:33.265580+00:00",
+  "Source_build_pin": "3c75ec82e3d529fd1d1809f11cfb55adc30706a1",
+  "Main_input": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+  "validation": {
+    "shared_normal_Win32_build": {
+      "source_pin": "3c75ec82e3d529fd1d1809f11cfb55adc30706a1",
+      "Main_input": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+      "start_utc": "2026-10-16T12:52:50.718208+00:00",
+      "end_utc": "2026-10-16T12:53:09.744885+00:00",
+      "wall_seconds": 19.050960399996256,
+      "exit_code": 0,
+      "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16ag_root\\publication_build.log"
+    },
+    "shared_build_counted_once": true,
+    "existing_checks": "3/3 PASS: reconstructed_math, native_math_differential, tool_tests; no new tests/probes or selected body execution",
+    "whole_Core": {
+      "sha256": "f4762bdcf013e40687d64de3eed202a62aa538cb78bf89b2855c54cdc21bb7ac",
+      "bytes": 94368290,
+      "parsed_actual_COFF_members": 2493,
+      "first_dictionary_entries": 83033,
+      "second_dictionary_entries": 83033,
+      "all_offsets_valid": true,
+      "both_whole_multisets_equal": true,
+      "bindings": [
+        {
+          "module": "native_traffic_range_erase_16h",
+          "member_offset": 84011326,
+          "whole_member_bytes": 1919,
+          "member_sha256": "42d4ad593c98f1b6036defd907334957a938613d8dfa4e4f6aa08a894b26a79a",
+          "public_symbols": [
+            "?erase_native_traffic_pod18_range_0048e400@bsp@@YIPAXPAXI0I0IPBX@Z",
+            "?erase_native_traffic_dword_range_00489110@bsp@@YIPAXPAXI0I0IPBX@Z"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_traffic_pod18_helpers",
+          "member_offset": 36161650,
+          "whole_member_bytes": 1978,
+          "member_sha256": "c5c471f4a510bc6b6ccdc26acb597ad0885b4d093b316f041c46de27cb67f0dc",
+          "public_symbols": [
+            "?size_native_traffic_pod18_0047c4d0@bsp@@YIIPBX@Z",
+            "?copy_native_traffic_pod18_0047fc30@bsp@@YAPAXPBX0PAXIII@Z",
+            "?copy_uninitialized_native_traffic_pod18_004841a0@bsp@@YIPAXPBX0PAXIII@Z",
+            "?fill_n_uninitialized_native_traffic_pod18_00486be0@bsp@@YIXPAXIPBXIII@Z",
+            "?fill_n_native_traffic_pod18_dispatch_0048d2f0@bsp@@YIPAXIIPAXIPBX@Z",
+            "?copy_native_traffic_pod18_dispatch_00486850@bsp@@YAPAXPBX0PAX@Z"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_traffic_pointer_erase",
+          "member_offset": 84013306,
+          "whole_member_bytes": 1583,
+          "member_sha256": "7c52c0879fc85111d80b815d2858390c6c7373770d47acc179f3ef20dc4a803c",
+          "public_symbols": [
+            "?erase_native_traffic_pointer_range_00488ff0@bsp@@YIPAXPAX00I0IPBX@Z"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_invalid_parameter_noinfo_call",
+          "member_offset": 84380186,
+          "whole_member_bytes": 808,
+          "member_sha256": "2296a4e057ae6261aa09a83117676bf5c9ad79ff8ff26ea167988764d9224e7d",
+          "public_symbols": [
+            "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_tagged_sizes_bb_16j",
+          "member_offset": 36680436,
+          "whole_member_bytes": 1400,
+          "member_sha256": "fa99cc1165dffe64010cc56cb5afd626717eea36d42611463c8d278040a9f7d0",
+          "public_symbols": [
+            "@bsp_tagged_sizes_bb_16j_00bb40e0@4",
+            "@bsp_tagged_sizes_bb_16j_00bb41e0@4",
+            "@bsp_tagged_sizes_bb_16j_00bba220@4"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_tagged_leaf_bcbd_16k",
+          "member_offset": 36681896,
+          "whole_member_bytes": 2045,
+          "member_sha256": "a91946377dea4d89893aab4d02d288e8a68293291aa05fa3db08359438767889",
+          "public_symbols": [
+            "_bsp_tagged_bcbd_16k_00bc04b0",
+            "@bsp_tagged_bcbd_16k_00bc3030@4",
+            "@bsp_tagged_bcbd_16k_00bc3080@4",
+            "@bsp_tagged_bcbd_16k_00bc3100@4",
+            "@bsp_tagged_bcbd_16k_00bc7a60@4",
+            "_bsp_tagged_bcbd_16k_00bd1830"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_tagged_float_bc_16l",
+          "member_offset": 36730862,
+          "whole_member_bytes": 989,
+          "member_sha256": "72898570d00b6e22f439fe8d36d309d6a4af3dfa8a41412ad8665b8e98356333",
+          "public_symbols": [
+            "@bsp_tagged_float_bc_16l_00bc3010@4",
+            "@bsp_tagged_float_bc_16l_00bc7aa0@4",
+            "@bsp_tagged_float_bc_16l_00bc7ab0@4"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_pod8_range",
+          "member_offset": 40448638,
+          "whole_member_bytes": 1388,
+          "member_sha256": "9030b9081be87cf7fb4ac71d58ca3c0853e7fb0078cbfa32779d717984dc20e8",
+          "public_symbols": [
+            "?copy_native_pod8_range_00419960@bsp@@YIPAXPBX0PAXIII@Z",
+            "?fill_n_native_pod8_range_0041c7e0@bsp@@YIXPAXIPBXIII@Z",
+            "?fill_n_native_pod8_dispatch_0041e3c0@bsp@@YIPAXIIPAXIPBX@Z",
+            "?copy_native_pod8_dispatch_0041f4e0@bsp@@YIPAXIIPBX0PAX@Z"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_pod8_inplace_range",
+          "member_offset": 40461680,
+          "whole_member_bytes": 978,
+          "member_sha256": "3dcc61f05a7921d7839558396e58f70562d9f24fb8d1f26c1ee1f6f3643abf2e",
+          "public_symbols": [
+            "?fill_native_pod8_range_0041c680@bsp@@YAXPAXPBX1@Z",
+            "?copy_backward_native_pod8_range_0041dac0@bsp@@YAPAXPBX0PAX@Z"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_zlib_raw_reset_type_bc",
+          "member_offset": 35513364,
+          "whole_member_bytes": 1047,
+          "member_sha256": "232aef4bd1d04a39f80fc97a0fa3ad81c5f140cf936cdf10f0405ead8eb11de4",
+          "public_symbols": [
+            "@bsp_native_zlib_raw_reset_00bc9650@4",
+            "@bsp_native_zlib_raw_type_00bcee90@4"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_zlib_raw_adler32_bc",
+          "member_offset": 35521576,
+          "whole_member_bytes": 1003,
+          "member_sha256": "79c4899d938fbd793c353cf2e12df4cc027dc8b1c07fc8479e2e3544eea3e394",
+          "public_symbols": [
+            "@bsp_native_zlib_raw_adler32_00bcd720@12"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_resource_reader_references",
+          "member_offset": 38356364,
+          "whole_member_bytes": 2805,
+          "member_sha256": "5116f2a5bfc256cdf1a1fb8c43cdce440f8958009c7149b057cebb5b1879bf1a",
+          "public_symbols": [
+            "?release_native_structured_node_handle_00be9ed0@bsp@@YAXPAXAAVNativeAdoptedSubstreamDispatch@1@@Z",
+            "?release_native_resource_slot_00483850@bsp@@YAPAXPAXAAVNativeAdoptedSubstreamDispatch@1@@Z"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_adopted_substream",
+          "member_offset": 48187736,
+          "whole_member_bytes": 14699,
+          "member_sha256": "0afed1dae40466466d649e8b11b490bf94bf2b1b771c09b5e5534ed09d4aea52",
+          "public_symbols": [
+            "?callable_native_adopted_substream_dispatch@bsp@@YAAAVNativeAdoptedSubstreamDispatch@1@XZ"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_zlib_raw_pqdownheap_bc",
+          "member_offset": 35514472,
+          "whole_member_bytes": 1083,
+          "member_sha256": "4e30c25c807fa3081d7a2e241d8da9c4069386887e5d38b2ad6e7ef8750792da",
+          "public_symbols": [
+            "_bsp_native_zlib_pqdownheap_frame_00bcde90"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_zlib_raw_scan_tree_bc",
+          "member_offset": 35512196,
+          "whole_member_bytes": 1107,
+          "member_sha256": "df949e8dfe99f7db7ea2895cb8e82045675cb88fd589e9eb5c245ca59c805571",
+          "public_symbols": [
+            "_bsp_native_zlib_scan_tree_frame_00bce180"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_zlib_raw_gen_bitlen_bc",
+          "member_offset": 35517828,
+          "whole_member_bytes": 1404,
+          "member_sha256": "91e76343e3f71d8dfbdb42e09682fd904229451a7b61a6c28ac360b86752f179",
+          "public_symbols": [
+            "_bsp_native_zlib_gen_bitlen_frame_00bcdf60"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_zlib_raw_longest_match_fast_bc",
+          "member_offset": 35515616,
+          "whole_member_bytes": 1097,
+          "member_sha256": "16e77bff831993b253a6ee2f4bb3549dda60b64b87597582158f026de485bcce",
+          "public_symbols": [
+            "_bsp_native_zlib_longest_match_fast_frame_00bcbb40"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_zlib_raw_bitbuffer_bc",
+          "member_offset": 35520434,
+          "whole_member_bytes": 1082,
+          "member_sha256": "61a96bed0d85f8037d693f02521636faf8a8ca58356a18ad6a00ba72655f7378",
+          "public_symbols": [
+            "@bsp_native_zlib_bi_flush_00bcef40@4",
+            "@bsp_native_zlib_bi_windup_00bcefc0@4"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_zlib_raw_gen_codes_bc",
+          "member_offset": 35516774,
+          "whole_member_bytes": 993,
+          "member_sha256": "d14d6af8ea0b2da72e488466f56db15268862c10df88ca53049ada910daad795",
+          "public_symbols": [
+            "_bsp_native_zlib_gen_codes_00bcf140"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_zlib_raw_copy_block_bc",
+          "member_offset": 35519292,
+          "whole_member_bytes": 1082,
+          "member_sha256": "6a05f519dc5aae8b9c1082eefde74115bc4426e418a41fdf6a0a154a7e76f74e",
+          "public_symbols": [
+            "_bsp_native_zlib_copy_block_frame_00bcf040"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        },
+        {
+          "module": "native_zlib_raw_tr_align_bc",
+          "member_offset": 35510852,
+          "whole_member_bytes": 1284,
+          "member_sha256": "617337dcf66fc2669a2bf7aea7d6b39bb7fcc288294e31af644e84ecabc7e461",
+          "public_symbols": [
+            "@bsp_native_zlib_tr_align_00bcf530@4"
+          ],
+          "both_full_dictionaries_match": true,
+          "unique_actual_COFF_providers": true
+        }
+      ]
+    },
+    "whole_COFF_accounting": true,
+    "whole_21_modules_Source_bytes": 7245,
+    "selected_unique_public_bindings_in_both_complete_dictionaries": 43,
+    "all_19_prior_whole_objects_6593B_byte_identical": true,
+    "proof_sha256": "d84ed1750ebfe5babe64d3b374f74a7b2aa82a143ee9159f86fd59eade01c961",
+    "actual_Source_keyed_primary_compile_proof_sha256": "b2afd78f6cf582d4b96f03462e0a365b8c487f76ba31a8d64faf183bb0485cf6"
+  },
+  "combined_tracked_Native": {
+    "whole_modules": 21,
+    "whole_Source_bytes": 7245,
+    "selected_public_bindings": 43,
+    "Native_functions": 25,
+    "Native_bytes": 2850,
+    "Native_instructions": 907,
+    "new_Native_functions": 2,
+    "new_Native_bytes": 623,
+    "new_Native_instructions": 179,
+    "new_Source_functions": 3,
+    "new_Source_bytes": 652,
+    "new_Source_instructions": 188
+  },
+  "Ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "evidence_saved_under_write_lock": true,
+    "Original_names_prototypes_and_no_return_false_unchanged": true,
+    "old_comments_preserved": true,
+    "Source_NR_and_formal_types_not_applied_to_Original": true,
+    "affected_exports_refreshed": true,
+    "index_refreshed": true,
+    "annotations_sha256": "6f56d155aa4f59e19af6a3dc90d318e8209ded5613b87c71064c471624dc8cd9",
+    "typed_sha256": "81b44251f52fb84d2bd2d80d67bc3f41266c5349064b1b64ad99a2255574cb5d"
+  },
+  "common_independent_combined_review": {
+    "receipt_sha256": "1ae9487a3d1dc4e373f0186ef960f4ab8923b0ae260c1ed3f6869e50cd240cb1",
+    "Root_freeze_receipt_sha256": "d61750e7e1fbd6cec5e98c7334edad5fc58636da852125b0ca358df20aaa3f55",
+    "Source_credit": 0,
+    "accepted_Source_snapshot": "f57d2dd5e5bdf8bd5f820651d3c9bf27a2809320",
+    "later_GUI_Main_refresh_outside_peer_snapshot": true,
+    "all21whole_objects_byte_identical_after_refresh": true,
+    "Root_full_current_Core_and_both_dictionaries_reverified": true,
+    "refresh_preservation_receipt_sha256": "7adaa23706ee3bdac8c3c59c2f1ed54243132ccf69ddfbf76d2408c04dcbf1c9",
+    "inclusive_review_through_release_seconds": 917
+  },
+  "limits": [
+    "Only static/source/build/artifact proof; three existing checks do not execute the two selected bodies. No new tests, probes, selected execution, measured dynamic faults, runtime or game result.",
+    "All raw count/header/valid-bit patterns, wrapping addressing, partial registers and actual mutable stack/data/control aliases remain admitted without guard, clamp, fake globals/providers, protected continuation or universal termination/nonvolatile/safe-return promise.",
+    "Chosen genuine Source interfaces are not recovered Original ABI/formal prototypes. Current SS and data segments, Source code/return-address placement, added setup/fetch/fault prefixes, SEH/unwind, concurrency and full Original CPU/ABI identity remain unproved. Parent caller closure remains separate."
+  ],
+  "timing_policy": {
+    "author_review_and_Root_intervals_separate": true,
+    "overlapping_intervals_not_serial_summed": true,
+    "shared_build_not_double_counted": true,
+    "all_own_helper_quoting_virtual_base_and_tlog_parser_corrections_retained": true,
+    "Root_preparation_freezing_merge_review_wait_annotations_Main_queue_refresh_and_publication_have_real_cost": true,
+    "Root_first_retained_receipt_utc": "2026-10-16T12:16:10.880002+00:00",
+    "Root_receipt_checkpoint_not_claimed_as_session_or_goal_start": true,
+    "earlier_Root_work_and_dispatch_gap_unmeasured_not_zero": true,
+    "speedup_claim": false
+  },
+  "packet": "GOAL16AI",
+  "author_pin": "9c0fb3cbd1a48bf6faa1bba1e140d919249a569e",
+  "scope": {
+    "packet": "AI",
+    "address": "00bcf530",
+    "Native_bytes": 491,
+    "Native_instructions": 130,
+    "whole_Source_bytes": 497,
+    "whole_Source_instructions": 133,
+    "Source_functions": 1,
+    "body_bytes": 497,
+    "all_ordinary_instructions_literal": true,
+    "all_branch_targets_mapped": true,
+    "inserted_MOV_offsets": [
+      220,
+      446,
+      476
+    ],
+    "calls": [
+      {
+        "Native_address": "00bcf60c",
+        "Source_CALL_offset": 222,
+        "Source_setup_offset": 220,
+        "relocation_operand": 223,
+        "whole_public_target": "@bsp_native_zlib_bi_flush_00bcef40@4"
+      },
+      {
+        "Native_address": "00bcf6ec",
+        "Source_CALL_offset": 448,
+        "Source_setup_offset": 446,
+        "relocation_operand": 449,
+        "whole_public_target": "@bsp_native_zlib_bi_flush_00bcef40@4"
+      },
+      {
+        "Native_address": "00bcf708",
+        "Source_CALL_offset": 478,
+        "Source_setup_offset": 476,
+        "relocation_operand": 479,
+        "whole_public_target": "@bsp_native_zlib_bi_flush_00bcef40@4"
+      }
+    ],
+    "branches": [
+      {
+        "Native_address": "00bcf551",
+        "Native_target": "00bcf59d",
+        "Source_offset": 33,
+        "Source_target": 109,
+        "target_includes_real_setup_if_CALL": true
+      },
+      {
+        "Native_address": "00bcf59b",
+        "Native_target": "00bcf5a6",
+        "Source_offset": 107,
+        "Source_target": 118,
+        "target_includes_real_setup_if_CALL": true
+      },
+      {
+        "Native_address": "00bcf5ba",
+        "Native_target": "00bcf603",
+        "Source_offset": 138,
+        "Source_target": 211,
+        "target_includes_real_setup_if_CALL": true
+      },
+      {
+        "Native_address": "00bcf601",
+        "Native_target": "00bcf60c",
+        "Source_offset": 209,
+        "Source_target": 220,
+        "target_includes_real_setup_if_CALL": true
+      },
+      {
+        "Native_address": "00bcf625",
+        "Native_target": "00bcf70d",
+        "Source_offset": 247,
+        "Source_target": 483,
+        "target_includes_real_setup_if_CALL": true
+      },
+      {
+        "Native_address": "00bcf63c",
+        "Native_target": "00bcf688",
+        "Source_offset": 270,
+        "Source_target": 346,
+        "target_includes_real_setup_if_CALL": true
+      },
+      {
+        "Native_address": "00bcf686",
+        "Native_target": "00bcf691",
+        "Source_offset": 344,
+        "Source_target": 355,
+        "target_includes_real_setup_if_CALL": true
+      },
+      {
+        "Native_address": "00bcf6a5",
+        "Native_target": "00bcf6ff",
+        "Source_offset": 375,
+        "Source_target": 467,
+        "target_includes_real_setup_if_CALL": true
+      }
+    ],
+    "relocations": [
+      {
+        "section": 3,
+        "offset": 223,
+        "type": 20,
+        "target": "@bsp_native_zlib_bi_flush_00bcef40@4",
+        "target_section": 0,
+        "target_value": 0,
+        "target_storage": 2
+      },
+      {
+        "section": 3,
+        "offset": 449,
+        "type": 20,
+        "target": "@bsp_native_zlib_bi_flush_00bcef40@4",
+        "target_section": 0,
+        "target_value": 0,
+        "target_storage": 2
+      },
+      {
+        "section": 3,
+        "offset": 479,
+        "type": 20,
+        "target": "@bsp_native_zlib_bi_flush_00bcef40@4",
+        "target_section": 0,
+        "target_value": 0,
+        "target_storage": 2
+      }
+    ],
+    "all_symbols": {
+      "0": {
+        "name": "@comp.id",
+        "value": 17141140,
+        "sec": -1,
+        "kind": 0,
+        "storage": 3
+      },
+      "1": {
+        "name": "@feat.00",
+        "value": 2147549585,
+        "sec": -1,
+        "kind": 0,
+        "storage": 3
+      },
+      "2": {
+        "name": ".drectve",
+        "value": 0,
+        "sec": 1,
+        "kind": 0,
+        "storage": 3
+      },
+      "4": {
+        "name": ".debug$S",
+        "value": 0,
+        "sec": 2,
+        "kind": 0,
+        "storage": 3
+      },
+      "6": {
+        "name": ".text$mn",
+        "value": 0,
+        "sec": 3,
+        "kind": 0,
+        "storage": 3
+      },
+      "8": {
+        "name": "@bsp_native_zlib_tr_align_00bcf530@4",
+        "value": 0,
+        "sec": 3,
+        "kind": 32,
+        "storage": 2
+      },
+      "9": {
+        "name": "@bsp_native_zlib_bi_flush_00bcef40@4",
+        "value": 0,
+        "sec": 0,
+        "kind": 32,
+        "storage": 2
+      },
+      "10": {
+        "name": ".chks64",
+        "value": 0,
+        "sec": 4,
+        "kind": 0,
+        "storage": 3
+      }
+    },
+    "all_sections": [
+      {
+        "name": ".drectve",
+        "size": 47,
+        "raw": 180,
+        "reloc": 0,
+        "relocs": 0,
+        "flags": 1051136
+      },
+      {
+        "name": ".debug$S",
+        "size": 204,
+        "raw": 227,
+        "reloc": 0,
+        "relocs": 0,
+        "flags": 1108344896
+      },
+      {
+        "name": ".text$mn",
+        "size": 497,
+        "raw": 431,
+        "reloc": 928,
+        "relocs": 3,
+        "flags": 1615859744
+      },
+      {
+        "name": ".chks64",
+        "size": 32,
+        "raw": 958,
+        "reloc": 0,
+        "relocs": 0,
+        "flags": 2560
+      }
+    ],
+    "full_COFF_accounting_sha256": "c6cc78825c6f0c2cdeb91485bb029f802bb533ba06b7c0b0898247e3ed0563f1",
+    "Native_sha256": "75d20e6b09af3f56f5135574075b98c836182ebec9074b9c2e9c6083a087a520",
+    "current_object_sha256": "617337dcf66fc2669a2bf7aea7d6b39bb7fcc288294e31af644e84ecabc7e461",
+    "author_whole_executable_model_equal": true
+  },
+  "authenticated_evidence": {
+    "author_receipt_sha256": "326fb55a1f74835320e106d399d28cd286f8d79c29b9db51b316423cc63ace23",
+    "peer_Root_freeze_sha256": "6320f3794642f3ea16ba51d209f84f2957328d34f6d1aee0eb573898f9bf2649",
+    "peer_review_sha256": "3d3d75c12173f0df14f18a3fea2db80da02bdd8532e738904b902bd5d385e6da",
+    "peer_seal_sha256": "609e081c81dd00338e4f483914d064faf0321c1cd42e56ca2c629007ed641565",
+    "older_referenced_history_not_recopied_or_recursively_rehashed": true
+  },
+  "interface": {
+    "public": "One genuine returning fastcall(backing) function497B133ins; no adapter/private body/borrowedESP/NR",
+    "actual_EAX_backing_ECX_EDX_flags_and_saved_alias_contract_of_whole_AD119B_flush_revalidated": true,
+    "three_static_calls_at_most_two_dynamic_on_normal_routes": true,
+    "all8branch_targets_mapped": true,
+    "first_call_common_join_lands_on_real_MOV_setup_not_CALL": true,
+    "added3MOVs6B_Native_credit": 0
+  },
+  "author_and_review_clocks": {
+    "readiness_seconds": 1072.075231,
+    "readiness_to_implementation_gap_seconds": 499.924769,
+    "implementation_inclusive_seconds": 921.535212,
+    "peer": {
+      "start_utc": "2026-10-16T11:48:49+00:00",
+      "end_utc": "2026-10-16T12:22:12.623910+00:00",
+      "inclusive_seconds": 2003.62391,
+      "start_clock_precision_seconds": 1,
+      "includes": "All work, author wait, reader corrections, final freeze/full static review/report/lease release and first complete seal; final deterministic manifest refresh immediately follows this checkpoint.",
+      "author_inclusive_seconds_separate": 921.535212,
+      "author_peer_intervals_overlap_not_serial_summed": true,
+      "speedup_claim": false
+    }
+  },
+  "nonblocking_author_command_excerpt_erratum": {
+    "sealed_registered_command_txt_and_tracked_report_command_field": "Incorrectly name LONGEST_MATCH_FASTCPP. Original author seals and tracked report preserved unchanged.",
+    "correct_author_primary_CL_command_key_zero_based_line": 4848,
+    "correct_author_primary_tlog_authenticated_by_independent_AJ": true,
+    "corrected_peer_excerpt": "local/goal16ai_root/peer/actual_AI_registered_command_from_primary_tlog.txt",
+    "Root_own_current_exact_primary_keyed_commands_verified": true,
+    "Root_actual_key_lines": {
+      "native_zlib_raw_copy_block_bc": 4978,
+      "native_zlib_raw_tr_align_bc": 4976,
+      "native_zlib_raw_bitbuffer_bc": 4956
+    },
+    "Source_correction_or_rebuild_due_to_erratum": false
+  }
+}
