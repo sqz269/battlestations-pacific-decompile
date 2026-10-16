@@ -1,0 +1,113 @@
+{
+  "packet": "oct15_thirtyfourth_reconstruction_batch",
+  "status": "primary_accepted_Source_integrated_default_Win32_checked",
+  "components": [
+    {
+      "pin": "2cc9f95f9cbe10577c5f669a60de77e5e0cff1ab",
+      "report": "reports/oct15_native_input_controller_tree_range.json",
+      "primary_receipt": "local/oct15_controller_range_final_primary.json",
+      "primary_receipt_sha256": "20a3d6c9273b9d63a72eb95e5c17018ff5c1003a9fa1ce4a155f62eacc66af53",
+      "primary_checks": 14,
+      "provider_LF_files": 46,
+      "frozen_artifacts": {
+        "src/native_input_controller_tree_range.cpp": "724e9f34c6fb6fdd2178723b7715aa81a8cc756f8978a05ba36d4852bea46165",
+        "include/bsp/native_input_controller_tree_range.hpp": "a74c31d815ee767b6c9d403b0d6db942a3929114a3f2a8f672f6b9f58d651a37",
+        "docs/OCT15_NATIVE_INPUT_CONTROLLER_TREE_RANGE.md": "3fe4b0db0243a01051c837880bd1c4cd8ced7d28e8a08d85d352cbcce2e147a8",
+        "reports/oct15_native_input_controller_tree_range.json": "8c1a023100a559aaeb05a573be817ce463d21fb29245faa98047cc080b7b2212"
+      },
+      "actual_CMake_object": "build/win32/bsp_core.dir/Release/native_input_controller_tree_range.obj",
+      "integrator_object_sha256": "2e6dd2f1703406111bdd1f8ab9c4d86d745e74b0c49ff18f86638172c4ca2691",
+      "worker_object_sha256": "4349962ab2ba5b225bf2edc349957b2f4ca2e0ea7799ca8248e96f69b198e2f4",
+      "code_bytes": 267,
+      "code_instructions": 115,
+      "code_sections": 5,
+      "code_REL32": 6,
+      "all_code_bytes_and_actual_symbolic_relocations_equal": true
+    },
+    {
+      "pin": "895294ff2a5d6dfbcb7e83542bd1e52e38dd3bb1",
+      "report": "reports/oct15_native_input_preset_tree_destroy.json",
+      "primary_receipt": "local/oct15_preset_destroy_final_primary.json",
+      "primary_receipt_sha256": "347cd6c5b62305fce022b8768afe134da0db402567041aa9f1bf9ccd5533a76e",
+      "primary_checks": 16,
+      "provider_LF_files": 34,
+      "frozen_artifacts": {
+        "src/native_input_preset_tree_destroy.cpp": "09a4c68b92f31e05c38ce81de76a76463596ec6143a483e1565c813a104bc406",
+        "include/bsp/native_input_preset_tree_destroy.hpp": "95e7688464050c7d1c3527852dcb6c8e65a3a6e6df1fdb93282ecbd0ce1ad65f",
+        "docs/OCT15_NATIVE_INPUT_PRESET_TREE_DESTROY.md": "35dcfea462aebaeb6ee6151c724c2749c7d8ad17eef175cfbf606557ea27c693",
+        "reports/oct15_native_input_preset_tree_destroy.json": "8c6582734d07e3ced20c74df9650b7e0d956b7fda73375bd6d6041e8d6445650"
+      },
+      "actual_CMake_object": "build/win32/bsp_core.dir/Release/native_input_preset_tree_destroy.obj",
+      "integrator_object_sha256": "460f1dc5611a6778f84d974e4cb8bb51158df9f2127a81862c0318c1206eb544",
+      "worker_object_sha256": "db2913e6417abcb0587b142c7003d15892fca84d2a95bbf839920caef5cb27f0",
+      "code_bytes": 251,
+      "code_instructions": 107,
+      "code_sections": 7,
+      "code_REL32": 6,
+      "all_code_bytes_and_actual_symbolic_relocations_equal": true
+    }
+  ],
+  "scope": {
+    "ordinary_entries": 4,
+    "addresses": [
+      "006a6a20",
+      "006a2060",
+      "006a24b0",
+      "006a2b00"
+    ],
+    "owned_defined_bytes": 356,
+    "owned_instructions": 145,
+    "range_envelope_excluded_NOP": 1,
+    "logical_actions_promoted": 0,
+    "global_unique_coverage_increment_claimed": false
+  },
+  "review": {
+    "primary_checks": 30,
+    "findings": [],
+    "actual_CMake_bytes": 518,
+    "actual_CMake_instructions": 222,
+    "all_final_code_and_actual_symbolic_relocations_equal_reviewed_worker_objects": true
+  },
+  "validation": {
+    "tested_combined_Source": "47c9c0775ae3dd67412e97d4d2e5e2c1da44b918",
+    "default_MSVC_Win32": true,
+    "build_log": "local/oct15_batch34_build.txt",
+    "build_log_sha256": "def600fbaa2308fd5f5cba687dc915e962a2086d883b984ae6b3c00132452bf0",
+    "existing_suites_passed": 3,
+    "ctest_seconds": 8.43,
+    "new_tests": 0,
+    "new_probes": 0,
+    "Native_packet_execution": false,
+    "JSON_transfer_rows": 20,
+    "Markdown_transfer_claims": 14,
+    "owned_call_rows": 12,
+    "readonly_transfer_rows": 8,
+    "annotations": {
+      "path": "local/ghidra-annotations-20261016T061857Z.json",
+      "sha256": "5859a1c3fa29775a19cec8ecd0661ad9bad921029f1ba45662f4adb61cc2789f",
+      "entries": 4,
+      "preimages_preserved": true
+    },
+    "refreshed_exports": 4
+  },
+  "coordination": {
+    "resolved_actual_registry_conflicts": [
+      "controller CMake registry union",
+      "preset name/reconstruction append unions"
+    ],
+    "registry_leases": false,
+    "only_owned_files_staged": true
+  },
+  "limits": [
+    "Existing suites exercise older math/tool behavior, not these new Native entries.",
+    "Controller range SourceRET18 versus NativeRET14; preset destroy SourceRET4 versus Native plainRET, with explicit borrowed RawCtx.",
+    "Range preserves current reloads, OLD-before-FIRST advancement and distinct private child iterator. Destroy captures initial head/left, then frees CURRENT postchild head and zeros head before count only on success.",
+    "Native destroy EAX-zero timing precedes stores while Source does so after stores. Private frames, register flags, fault scopes, current C++/CRT/heap, Original FH3 SEH, RawCtx ownership, binary ABI and game execution remain unproved.",
+    "No new guards, rollback, key cleanup, unresolved stubs or whole-owner promotion."
+  ],
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "Verify separately after publication; no self-reference"
+  }
+}
