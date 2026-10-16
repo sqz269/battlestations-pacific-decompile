@@ -2,32 +2,32 @@
   "goal": "GOAL16AR",
   "status": "independently_reviewed_registered_build_tested",
   "utc": "2026-10-16T14:10:24.356870+00:00",
-  "Source_build_pin": "445551c1a05eb62b4a86b69340c6bdf1ce1c501a",
-  "incorporated_Main": "5d2d049ef1bd5a18de44a6caa01d182257302925",
+  "Source_build_pin": "617fe3befb64823e2ffe25bbaf68d7951ead179d",
+  "incorporated_Main": "27955cbec38b934ce295a8892b6a897631a63fd1",
   "validation": {
     "normal_build": {
-      "source_pin": "445551c1a05eb62b4a86b69340c6bdf1ce1c501a",
-      "Main_input": "5d2d049ef1bd5a18de44a6caa01d182257302925",
-      "observed_Main_at_build": "5d2d049ef1bd5a18de44a6caa01d182257302925",
-      "start_utc": "2026-10-16T14:02:48.896344+00:00",
-      "end_utc": "2026-10-16T14:03:08.808171+00:00",
-      "wall_seconds": 19.934438299998874,
+      "source_pin": "617fe3befb64823e2ffe25bbaf68d7951ead179d",
+      "Main_input": "27955cbec38b934ce295a8892b6a897631a63fd1",
+      "observed_Main_at_build": "27955cbec38b934ce295a8892b6a897631a63fd1",
+      "start_utc": "2026-10-16T15:26:50.516035+00:00",
+      "end_utc": "2026-10-16T15:27:10.083358+00:00",
+      "wall_seconds": 19.58962430000247,
       "exit_code": 0,
-      "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16ar_root\\publication_build.log"
+      "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16ar_root\\final_publication_build.log"
     },
-    "existing_checks": "3/3 PASS,7.77s",
+    "existing_checks": "3/3 PASS,7.43s",
     "whole_Core": {
-      "sha256": "e6b949bb4eeeee3afdb16833b15e75176771d793f13fc63489c95410889c3218",
-      "bytes": 94444004,
-      "actual_COFF_members_parsed": 2501,
-      "first_dictionary_entries": 83074,
-      "second_dictionary_entries": 83074,
+      "sha256": "d9e2db8cd4c5cbbb438e9c4a5c8dc887f4539db0c5f19a4c12461ca327c4d8eb",
+      "bytes": 94448238,
+      "actual_COFF_members_parsed": 2504,
+      "first_dictionary_entries": 83079,
+      "second_dictionary_entries": 83079,
       "both_whole_multisets_equal": true,
       "all_indexes_member_offsets_valid": true,
       "bindings": [
         {
           "module": "native_traffic_range_erase_16h",
-          "member_offset": 84087040,
+          "member_offset": 84091274,
           "whole_member_bytes": 1919,
           "whole_member_sha256": "42d4ad593c98f1b6036defd907334957a938613d8dfa4e4f6aa08a894b26a79a",
           "public_symbols": [
@@ -38,7 +38,7 @@
         },
         {
           "module": "native_traffic_pod18_helpers",
-          "member_offset": 36169920,
+          "member_offset": 36170710,
           "whole_member_bytes": 1978,
           "whole_member_sha256": "c5c471f4a510bc6b6ccdc26acb597ad0885b4d093b316f041c46de27cb67f0dc",
           "public_symbols": [
@@ -53,7 +53,7 @@
         },
         {
           "module": "native_traffic_pointer_erase",
-          "member_offset": 84089020,
+          "member_offset": 84093254,
           "whole_member_bytes": 1583,
           "whole_member_sha256": "7c52c0879fc85111d80b815d2858390c6c7373770d47acc179f3ef20dc4a803c",
           "public_symbols": [
@@ -63,7 +63,7 @@
         },
         {
           "module": "native_invalid_parameter_noinfo_call",
-          "member_offset": 84455900,
+          "member_offset": 84460134,
           "whole_member_bytes": 808,
           "whole_member_sha256": "2296a4e057ae6261aa09a83117676bf5c9ad79ff8ff26ea167988764d9224e7d",
           "public_symbols": [
@@ -73,7 +73,7 @@
         },
         {
           "module": "native_tagged_sizes_bb_16j",
-          "member_offset": 36688706,
+          "member_offset": 36689496,
           "whole_member_bytes": 1400,
           "whole_member_sha256": "fa99cc1165dffe64010cc56cb5afd626717eea36d42611463c8d278040a9f7d0",
           "public_symbols": [
@@ -85,7 +85,7 @@
         },
         {
           "module": "native_tagged_leaf_bcbd_16k",
-          "member_offset": 36690166,
+          "member_offset": 36690956,
           "whole_member_bytes": 2045,
           "whole_member_sha256": "a91946377dea4d89893aab4d02d288e8a68293291aa05fa3db08359438767889",
           "public_symbols": [
@@ -100,7 +100,7 @@
         },
         {
           "module": "native_tagged_float_bc_16l",
-          "member_offset": 36739132,
+          "member_offset": 36739922,
           "whole_member_bytes": 989,
           "whole_member_sha256": "72898570d00b6e22f439fe8d36d309d6a4af3dfa8a41412ad8665b8e98356333",
           "public_symbols": [
@@ -112,7 +112,7 @@
         },
         {
           "module": "native_pod8_range",
-          "member_offset": 40456908,
+          "member_offset": 40457698,
           "whole_member_bytes": 1388,
           "whole_member_sha256": "9030b9081be87cf7fb4ac71d58ca3c0853e7fb0078cbfa32779d717984dc20e8",
           "public_symbols": [
@@ -125,7 +125,7 @@
         },
         {
           "module": "native_pod8_inplace_range",
-          "member_offset": 40469950,
+          "member_offset": 40470740,
           "whole_member_bytes": 978,
           "whole_member_sha256": "3dcc61f05a7921d7839558396e58f70562d9f24fb8d1f26c1ee1f6f3643abf2e",
           "public_symbols": [
@@ -136,7 +136,7 @@
         },
         {
           "module": "native_zlib_raw_reset_type_bc",
-          "member_offset": 35519760,
+          "member_offset": 35520550,
           "whole_member_bytes": 1047,
           "whole_member_sha256": "232aef4bd1d04a39f80fc97a0fa3ad81c5f140cf936cdf10f0405ead8eb11de4",
           "public_symbols": [
@@ -147,7 +147,7 @@
         },
         {
           "module": "native_zlib_raw_adler32_bc",
-          "member_offset": 35529846,
+          "member_offset": 35530636,
           "whole_member_bytes": 1003,
           "whole_member_sha256": "79c4899d938fbd793c353cf2e12df4cc027dc8b1c07fc8479e2e3544eea3e394",
           "public_symbols": [
@@ -157,7 +157,7 @@
         },
         {
           "module": "native_resource_reader_references",
-          "member_offset": 38364634,
+          "member_offset": 38365424,
           "whole_member_bytes": 2805,
           "whole_member_sha256": "5116f2a5bfc256cdf1a1fb8c43cdce440f8958009c7149b057cebb5b1879bf1a",
           "public_symbols": [
@@ -168,7 +168,7 @@
         },
         {
           "module": "native_adopted_substream",
-          "member_offset": 48263450,
+          "member_offset": 48267684,
           "whole_member_bytes": 14699,
           "whole_member_sha256": "0afed1dae40466466d649e8b11b490bf94bf2b1b771c09b5e5534ed09d4aea52",
           "public_symbols": [
@@ -178,7 +178,7 @@
         },
         {
           "module": "native_zlib_raw_pqdownheap_bc",
-          "member_offset": 35521686,
+          "member_offset": 35522476,
           "whole_member_bytes": 1083,
           "whole_member_sha256": "4e30c25c807fa3081d7a2e241d8da9c4069386887e5d38b2ad6e7ef8750792da",
           "public_symbols": [
@@ -188,7 +188,7 @@
         },
         {
           "module": "native_zlib_raw_scan_tree_bc",
-          "member_offset": 35518592,
+          "member_offset": 35519382,
           "whole_member_bytes": 1107,
           "whole_member_sha256": "df949e8dfe99f7db7ea2895cb8e82045675cb88fd589e9eb5c245ca59c805571",
           "public_symbols": [
@@ -198,7 +198,7 @@
         },
         {
           "module": "native_zlib_raw_gen_bitlen_bc",
-          "member_offset": 35525922,
+          "member_offset": 35526712,
           "whole_member_bytes": 1404,
           "whole_member_sha256": "91e76343e3f71d8dfbdb42e09682fd904229451a7b61a6c28ac360b86752f179",
           "public_symbols": [
@@ -208,7 +208,7 @@
         },
         {
           "module": "native_zlib_raw_longest_match_fast_bc",
-          "member_offset": 35522830,
+          "member_offset": 35523620,
           "whole_member_bytes": 1097,
           "whole_member_sha256": "16e77bff831993b253a6ee2f4bb3549dda60b64b87597582158f026de485bcce",
           "public_symbols": [
@@ -218,7 +218,7 @@
         },
         {
           "module": "native_zlib_raw_bitbuffer_bc",
-          "member_offset": 35528704,
+          "member_offset": 35529494,
           "whole_member_bytes": 1082,
           "whole_member_sha256": "61a96bed0d85f8037d693f02521636faf8a8ca58356a18ad6a00ba72655f7378",
           "public_symbols": [
@@ -229,7 +229,7 @@
         },
         {
           "module": "native_zlib_raw_gen_codes_bc",
-          "member_offset": 35524868,
+          "member_offset": 35525658,
           "whole_member_bytes": 993,
           "whole_member_sha256": "d14d6af8ea0b2da72e488466f56db15268862c10df88ca53049ada910daad795",
           "public_symbols": [
@@ -239,7 +239,7 @@
         },
         {
           "module": "native_zlib_raw_tr_align_bc",
-          "member_offset": 35517248,
+          "member_offset": 35518038,
           "whole_member_bytes": 1284,
           "whole_member_sha256": "617337dcf66fc2669a2bf7aea7d6b39bb7fcc288294e31af644e84ecabc7e461",
           "public_symbols": [
@@ -249,7 +249,7 @@
         },
         {
           "module": "native_zlib_raw_copy_block_bc",
-          "member_offset": 35527386,
+          "member_offset": 35528176,
           "whole_member_bytes": 1258,
           "whole_member_sha256": "f10eabb170ecbe84eb1d5db6c7727aed05576cdc6a45d0e1aba951322ffc77e1",
           "public_symbols": [
@@ -260,7 +260,7 @@
         },
         {
           "module": "native_zlib_raw_init_block_bc",
-          "member_offset": 35523988,
+          "member_offset": 35524778,
           "whole_member_bytes": 819,
           "whole_member_sha256": "79443825d3eedb03b65e8e1ba2708cad754927c9dd2674c79dd4941dc1f1cbcc",
           "public_symbols": [
@@ -270,7 +270,7 @@
         },
         {
           "module": "native_zlib_raw_put_short_msb_bc",
-          "member_offset": 35520868,
+          "member_offset": 35521658,
           "whole_member_bytes": 758,
           "whole_member_sha256": "4176be6e9274ba7755e13496942ab606ca18681899004d7d7623ece2b1946065",
           "public_symbols": [
@@ -280,8 +280,8 @@
         }
       ]
     },
-    "proof_sha256": "10fefcfcb824805c7c80fcf8659f887a8f95cbb3394c68df47d54009efa676dd",
-    "compiler_audit_sha256": "4130f7c3516f1c20b106d0c7fe31627a7aa5199f557f426641dfdd0d6ccf0f5c",
+    "proof_sha256": "6015d6277eaf1d47747fe9e115405eda807394349ec6f84496adabb7fc535ca5",
+    "compiler_audit_sha256": "e68d5c752cd87e4a2b73061b174f1bc8a2e0b99c96f5480bff2059c38603a15a",
     "all23_whole_objects_equal_AS_snapshot": true
   },
   "independent_peer": {
@@ -1378,7 +1378,9 @@
     },
     "overlapping_costs_not_summed": true,
     "earlier_AK_AM_AP_and_dispatch_gaps_separate": true,
-    "no_measured_speedup_claim": true
+    "no_measured_speedup_claim": true,
+    "Root_final_Main_refresh_normal_seconds": 19.58962430000247,
+    "all_actual_normal_runs_retained_not_summed_as_throughput": true
   },
   "Ghidra": {
     "project": "bsp",
@@ -1394,9 +1396,9 @@
     "index_rebuilt": true
   },
   "Root_current_Core_refresh": {
-    "Source_pin": "445551c1a05eb62b4a86b69340c6bdf1ce1c501a",
-    "incorporated_Main": "5d2d049ef1bd5a18de44a6caa01d182257302925",
-    "current_proof_sha256": "10fefcfcb824805c7c80fcf8659f887a8f95cbb3394c68df47d54009efa676dd",
+    "Source_pin": "617fe3befb64823e2ffe25bbaf68d7951ead179d",
+    "incorporated_Main": "27955cbec38b934ce295a8892b6a897631a63fd1",
+    "current_proof_sha256": "6015d6277eaf1d47747fe9e115405eda807394349ec6f84496adabb7fc535ca5",
     "all23_whole_objects_byte_identical_to_AS_snapshot": true,
     "later_Main_refresh_is_Root_verified_not_independently_re_reviewed_by_AS": true
   },
@@ -1441,5 +1443,297 @@
       "new_Source_instructions": 8,
       "old_private134_NR21_preserved": true
     }
-  ]
+  ],
+  "earlier_Root_publication_validation": {
+    "Source_pin": "445551c1a05eb62b4a86b69340c6bdf1ce1c501a",
+    "incorporated_Main": "5d2d049ef1bd5a18de44a6caa01d182257302925",
+    "validation": {
+      "normal_build": {
+        "source_pin": "445551c1a05eb62b4a86b69340c6bdf1ce1c501a",
+        "Main_input": "5d2d049ef1bd5a18de44a6caa01d182257302925",
+        "observed_Main_at_build": "5d2d049ef1bd5a18de44a6caa01d182257302925",
+        "start_utc": "2026-10-16T14:02:48.896344+00:00",
+        "end_utc": "2026-10-16T14:03:08.808171+00:00",
+        "wall_seconds": 19.934438299998874,
+        "exit_code": 0,
+        "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16ar_root\\publication_build.log"
+      },
+      "existing_checks": "3/3 PASS,7.77s",
+      "whole_Core": {
+        "sha256": "e6b949bb4eeeee3afdb16833b15e75176771d793f13fc63489c95410889c3218",
+        "bytes": 94444004,
+        "actual_COFF_members_parsed": 2501,
+        "first_dictionary_entries": 83074,
+        "second_dictionary_entries": 83074,
+        "both_whole_multisets_equal": true,
+        "all_indexes_member_offsets_valid": true,
+        "bindings": [
+          {
+            "module": "native_traffic_range_erase_16h",
+            "member_offset": 84087040,
+            "whole_member_bytes": 1919,
+            "whole_member_sha256": "42d4ad593c98f1b6036defd907334957a938613d8dfa4e4f6aa08a894b26a79a",
+            "public_symbols": [
+              "?erase_native_traffic_pod18_range_0048e400@bsp@@YIPAXPAXI0I0IPBX@Z",
+              "?erase_native_traffic_dword_range_00489110@bsp@@YIPAXPAXI0I0IPBX@Z"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_traffic_pod18_helpers",
+            "member_offset": 36169920,
+            "whole_member_bytes": 1978,
+            "whole_member_sha256": "c5c471f4a510bc6b6ccdc26acb597ad0885b4d093b316f041c46de27cb67f0dc",
+            "public_symbols": [
+              "?size_native_traffic_pod18_0047c4d0@bsp@@YIIPBX@Z",
+              "?copy_native_traffic_pod18_0047fc30@bsp@@YAPAXPBX0PAXIII@Z",
+              "?copy_uninitialized_native_traffic_pod18_004841a0@bsp@@YIPAXPBX0PAXIII@Z",
+              "?fill_n_uninitialized_native_traffic_pod18_00486be0@bsp@@YIXPAXIPBXIII@Z",
+              "?fill_n_native_traffic_pod18_dispatch_0048d2f0@bsp@@YIPAXIIPAXIPBX@Z",
+              "?copy_native_traffic_pod18_dispatch_00486850@bsp@@YAPAXPBX0PAX@Z"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_traffic_pointer_erase",
+            "member_offset": 84089020,
+            "whole_member_bytes": 1583,
+            "whole_member_sha256": "7c52c0879fc85111d80b815d2858390c6c7373770d47acc179f3ef20dc4a803c",
+            "public_symbols": [
+              "?erase_native_traffic_pointer_range_00488ff0@bsp@@YIPAXPAX00I0IPBX@Z"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_invalid_parameter_noinfo_call",
+            "member_offset": 84455900,
+            "whole_member_bytes": 808,
+            "whole_member_sha256": "2296a4e057ae6261aa09a83117676bf5c9ad79ff8ff26ea167988764d9224e7d",
+            "public_symbols": [
+              "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_tagged_sizes_bb_16j",
+            "member_offset": 36688706,
+            "whole_member_bytes": 1400,
+            "whole_member_sha256": "fa99cc1165dffe64010cc56cb5afd626717eea36d42611463c8d278040a9f7d0",
+            "public_symbols": [
+              "@bsp_tagged_sizes_bb_16j_00bb40e0@4",
+              "@bsp_tagged_sizes_bb_16j_00bb41e0@4",
+              "@bsp_tagged_sizes_bb_16j_00bba220@4"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_tagged_leaf_bcbd_16k",
+            "member_offset": 36690166,
+            "whole_member_bytes": 2045,
+            "whole_member_sha256": "a91946377dea4d89893aab4d02d288e8a68293291aa05fa3db08359438767889",
+            "public_symbols": [
+              "_bsp_tagged_bcbd_16k_00bc04b0",
+              "@bsp_tagged_bcbd_16k_00bc3030@4",
+              "@bsp_tagged_bcbd_16k_00bc3080@4",
+              "@bsp_tagged_bcbd_16k_00bc3100@4",
+              "@bsp_tagged_bcbd_16k_00bc7a60@4",
+              "_bsp_tagged_bcbd_16k_00bd1830"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_tagged_float_bc_16l",
+            "member_offset": 36739132,
+            "whole_member_bytes": 989,
+            "whole_member_sha256": "72898570d00b6e22f439fe8d36d309d6a4af3dfa8a41412ad8665b8e98356333",
+            "public_symbols": [
+              "@bsp_tagged_float_bc_16l_00bc3010@4",
+              "@bsp_tagged_float_bc_16l_00bc7aa0@4",
+              "@bsp_tagged_float_bc_16l_00bc7ab0@4"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_pod8_range",
+            "member_offset": 40456908,
+            "whole_member_bytes": 1388,
+            "whole_member_sha256": "9030b9081be87cf7fb4ac71d58ca3c0853e7fb0078cbfa32779d717984dc20e8",
+            "public_symbols": [
+              "?copy_native_pod8_range_00419960@bsp@@YIPAXPBX0PAXIII@Z",
+              "?fill_n_native_pod8_range_0041c7e0@bsp@@YIXPAXIPBXIII@Z",
+              "?fill_n_native_pod8_dispatch_0041e3c0@bsp@@YIPAXIIPAXIPBX@Z",
+              "?copy_native_pod8_dispatch_0041f4e0@bsp@@YIPAXIIPBX0PAX@Z"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_pod8_inplace_range",
+            "member_offset": 40469950,
+            "whole_member_bytes": 978,
+            "whole_member_sha256": "3dcc61f05a7921d7839558396e58f70562d9f24fb8d1f26c1ee1f6f3643abf2e",
+            "public_symbols": [
+              "?fill_native_pod8_range_0041c680@bsp@@YAXPAXPBX1@Z",
+              "?copy_backward_native_pod8_range_0041dac0@bsp@@YAPAXPBX0PAX@Z"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_reset_type_bc",
+            "member_offset": 35519760,
+            "whole_member_bytes": 1047,
+            "whole_member_sha256": "232aef4bd1d04a39f80fc97a0fa3ad81c5f140cf936cdf10f0405ead8eb11de4",
+            "public_symbols": [
+              "@bsp_native_zlib_raw_reset_00bc9650@4",
+              "@bsp_native_zlib_raw_type_00bcee90@4"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_adler32_bc",
+            "member_offset": 35529846,
+            "whole_member_bytes": 1003,
+            "whole_member_sha256": "79c4899d938fbd793c353cf2e12df4cc027dc8b1c07fc8479e2e3544eea3e394",
+            "public_symbols": [
+              "@bsp_native_zlib_raw_adler32_00bcd720@12"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_resource_reader_references",
+            "member_offset": 38364634,
+            "whole_member_bytes": 2805,
+            "whole_member_sha256": "5116f2a5bfc256cdf1a1fb8c43cdce440f8958009c7149b057cebb5b1879bf1a",
+            "public_symbols": [
+              "?release_native_structured_node_handle_00be9ed0@bsp@@YAXPAXAAVNativeAdoptedSubstreamDispatch@1@@Z",
+              "?release_native_resource_slot_00483850@bsp@@YAPAXPAXAAVNativeAdoptedSubstreamDispatch@1@@Z"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_adopted_substream",
+            "member_offset": 48263450,
+            "whole_member_bytes": 14699,
+            "whole_member_sha256": "0afed1dae40466466d649e8b11b490bf94bf2b1b771c09b5e5534ed09d4aea52",
+            "public_symbols": [
+              "?callable_native_adopted_substream_dispatch@bsp@@YAAAVNativeAdoptedSubstreamDispatch@1@XZ"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_pqdownheap_bc",
+            "member_offset": 35521686,
+            "whole_member_bytes": 1083,
+            "whole_member_sha256": "4e30c25c807fa3081d7a2e241d8da9c4069386887e5d38b2ad6e7ef8750792da",
+            "public_symbols": [
+              "_bsp_native_zlib_pqdownheap_frame_00bcde90"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_scan_tree_bc",
+            "member_offset": 35518592,
+            "whole_member_bytes": 1107,
+            "whole_member_sha256": "df949e8dfe99f7db7ea2895cb8e82045675cb88fd589e9eb5c245ca59c805571",
+            "public_symbols": [
+              "_bsp_native_zlib_scan_tree_frame_00bce180"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_gen_bitlen_bc",
+            "member_offset": 35525922,
+            "whole_member_bytes": 1404,
+            "whole_member_sha256": "91e76343e3f71d8dfbdb42e09682fd904229451a7b61a6c28ac360b86752f179",
+            "public_symbols": [
+              "_bsp_native_zlib_gen_bitlen_frame_00bcdf60"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_longest_match_fast_bc",
+            "member_offset": 35522830,
+            "whole_member_bytes": 1097,
+            "whole_member_sha256": "16e77bff831993b253a6ee2f4bb3549dda60b64b87597582158f026de485bcce",
+            "public_symbols": [
+              "_bsp_native_zlib_longest_match_fast_frame_00bcbb40"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_bitbuffer_bc",
+            "member_offset": 35528704,
+            "whole_member_bytes": 1082,
+            "whole_member_sha256": "61a96bed0d85f8037d693f02521636faf8a8ca58356a18ad6a00ba72655f7378",
+            "public_symbols": [
+              "@bsp_native_zlib_bi_flush_00bcef40@4",
+              "@bsp_native_zlib_bi_windup_00bcefc0@4"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_gen_codes_bc",
+            "member_offset": 35524868,
+            "whole_member_bytes": 993,
+            "whole_member_sha256": "d14d6af8ea0b2da72e488466f56db15268862c10df88ca53049ada910daad795",
+            "public_symbols": [
+              "_bsp_native_zlib_gen_codes_00bcf140"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_tr_align_bc",
+            "member_offset": 35517248,
+            "whole_member_bytes": 1284,
+            "whole_member_sha256": "617337dcf66fc2669a2bf7aea7d6b39bb7fcc288294e31af644e84ecabc7e461",
+            "public_symbols": [
+              "@bsp_native_zlib_tr_align_00bcf530@4"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_copy_block_bc",
+            "member_offset": 35527386,
+            "whole_member_bytes": 1258,
+            "whole_member_sha256": "f10eabb170ecbe84eb1d5db6c7727aed05576cdc6a45d0e1aba951322ffc77e1",
+            "public_symbols": [
+              "_bsp_native_zlib_copy_block_frame_00bcf040",
+              "@bsp_native_zlib_copy_block_00bcf040@16"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_init_block_bc",
+            "member_offset": 35523988,
+            "whole_member_bytes": 819,
+            "whole_member_sha256": "79443825d3eedb03b65e8e1ba2708cad754927c9dd2674c79dd4941dc1f1cbcc",
+            "public_symbols": [
+              "@bsp_native_zlib_init_block_00bcde20@4"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          },
+          {
+            "module": "native_zlib_raw_put_short_msb_bc",
+            "member_offset": 35520868,
+            "whole_member_bytes": 758,
+            "whole_member_sha256": "4176be6e9274ba7755e13496942ab606ca18681899004d7d7623ece2b1946065",
+            "public_symbols": [
+              "@bsp_native_zlib_put_short_msb_00bcb1f0@8"
+            ],
+            "both_complete_dictionaries_unique_actual_provider": true
+          }
+        ]
+      },
+      "proof_sha256": "10fefcfcb824805c7c80fcf8659f887a8f95cbb3394c68df47d54009efa676dd",
+      "compiler_audit_sha256": "4130f7c3516f1c20b106d0c7fe31627a7aa5199f557f426641dfdd0d6ccf0f5c",
+      "all23_whole_objects_equal_AS_snapshot": true
+    },
+    "Root_current_Core_refresh": {
+      "Source_pin": "445551c1a05eb62b4a86b69340c6bdf1ce1c501a",
+      "incorporated_Main": "5d2d049ef1bd5a18de44a6caa01d182257302925",
+      "current_proof_sha256": "10fefcfcb824805c7c80fcf8659f887a8f95cbb3394c68df47d54009efa676dd",
+      "all23_whole_objects_byte_identical_to_AS_snapshot": true,
+      "later_Main_refresh_is_Root_verified_not_independently_re_reviewed_by_AS": true
+    },
+    "immutable_paths": "local/goal16ar_root/publication_build_result.json,publication_proof,publication_compile remain unchanged"
+  }
 }
