@@ -1,0 +1,113 @@
+{
+  "packet": "oct16_fortyfirst_reconstruction_batch",
+  "status": "primary_accepted_two_whole_preset_pair_constructors_integrated_default_Win32_checked",
+  "components": [
+    {
+      "address": "0069e6e0",
+      "pin": "cc8197581e8cf37126cbf1ffc07d99d3a0604852",
+      "primary_receipt": "local/oct16_preset_pair_construct_primary.json",
+      "primary_receipt_sha256": "afbb3f41e042186b34ea447cfd6005686791888ba02cce2a25da71203418586d",
+      "primary_checks": 21,
+      "provider_LF_fingerprints": 12,
+      "report": "reports/oct16_input_preset_pair_construct.json",
+      "frozen_files": {
+        "docs/OCT16_INPUT_PRESET_PAIR_CONSTRUCT.md": "9c969622ee4f9183056e8c1367a9b70fda01a1a291f20f6471e2f0311abb8df1",
+        "include/bsp/native_input_preset_pair_construct.hpp": "7e861a03c50e64fa6e7327681f6c35c441031ede596cc359f6ed618fe27bc5e8",
+        "reports/oct16_input_preset_pair_construct.json": "414e4b94c1b937464d411df91f11ca22f9b8ddd4137aaed36d46f04a532bab14",
+        "src/native_input_preset_pair_construct.cpp": "95634636cc1c4ef3cceda7d3c0d80f37ed02f66278c70b404921a9e425a4ae8d"
+      },
+      "Native": {
+        "address": "0069e6e0",
+        "bytes": 99,
+        "starts": 37,
+        "sha256": "15ad6f8f8aa29d7013a9f9ec92791d625c3e67c5fb42c3c64d664d37c3da1925",
+        "fresh_PE_live_equal": true
+      },
+      "compiled_CODE_bytes": 159,
+      "compiled_CODE_starts": 67,
+      "compiled_public_bytes": 120,
+      "compiled_public_starts": 47,
+      "Root_object_sha256": "599a644f77d1785bed0ce93eb7964fb4cfbb2cd51328e0203f3e5f4255bc06ad",
+      "worker_object_sha256": "efc1240cdb38da719b8e10e45eac865795ba4dc79a9967ceb20015232ee1be82",
+      "all4code_sections_bytes_and2symbolic_relocations_equal_worker": true,
+      "Root_annotation_log": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\ghidra-annotations-20261016T080724Z.json",
+      "annotation_sha256": "500a62ce8ac3edcac4efb2849291328561c51941b452c25ea834350c5efe096b",
+      "exports_sha256": "96ae83bef6c18d45157b5115fe5a9686e95c677ad2fe1485b8cb15f51c2a5225",
+      "names_and_reconstruction_union_verified": true
+    },
+    {
+      "address": "0069e7a0",
+      "pin": "aabd4c5afb43b7a047ff549b2fbd2479f8210372",
+      "primary_receipt": "local/oct16_preset_pair_copy_construct_primary.json",
+      "primary_receipt_sha256": "14349dce3ea7b4c4cf01a91c88761051d1998ac6c140b7c3c248f0e136354e5d",
+      "primary_checks": 21,
+      "provider_LF_fingerprints": 10,
+      "report": "reports/oct16_input_preset_pair_copy_construct.json",
+      "frozen_files": {
+        "docs/OCT16_INPUT_PRESET_PAIR_COPY_CONSTRUCT.md": "d65258d3a600ae03f455535b42c0692fa34e3bca182b20875a65986294a4f869",
+        "include/bsp/native_input_preset_pair_copy_construct.hpp": "7eb86f8175741f3f9938f51ffb4e97949ec604bfaf4af9c1280cfa1445d91a67",
+        "reports/oct16_input_preset_pair_copy_construct.json": "23af98f0258dbd79cfdd2e3a331dcaf69692b18fa0c42776d8ac40102cf15105",
+        "src/native_input_preset_pair_copy_construct.cpp": "3b31823105a4eb75fe402e40edd069f5db968815d966571061b71989e476538e"
+      },
+      "Native": {
+        "address": "0069e7a0",
+        "bytes": 99,
+        "starts": 37,
+        "sha256": "dc6032f85d068043749df3d54102826ff035493bd449b88c5f098b987229f92f",
+        "fresh_PE_live_equal": true
+      },
+      "compiled_CODE_bytes": 169,
+      "compiled_CODE_starts": 70,
+      "compiled_public_bytes": 118,
+      "compiled_public_starts": 46,
+      "Root_object_sha256": "7106c0f251cb41c6c9f992c9d8d27430b051330566f91f149dd0fc687f2654be",
+      "worker_object_sha256": "e8aef7d610e7b62ede7aca1ce04c08f50927bea610f1a771b48ae38f89a6cf33",
+      "all4code_sections_bytes_and2symbolic_relocations_equal_worker": true,
+      "Root_annotation_log": "J:\\PROG\\battlestations-pacific-decompile-oct15_avoid_distance\\local\\ghidra-annotations-20261016T080642Z.json",
+      "annotation_sha256": "50c4bc22f44483063171d53fd8b01e6efc2a27db7e614ba324e95964c8929564",
+      "exports_sha256": "e27639818cc7b39e7bfb70ce6e900d57d696ff4117d348bdeb0580b44bea239e",
+      "names_and_reconstruction_union_verified": true
+    }
+  ],
+  "scope": {
+    "whole_ordinary_entries": 2,
+    "Native_defined_bytes": 198,
+    "Native_instructions": 74,
+    "Source_CODE_bytes": 328,
+    "Source_CODE_starts": 137,
+    "Source_public_bytes": 238,
+    "Source_public_starts": 93,
+    "Source_helper_bytes": 90,
+    "Source_helper_starts": 44,
+    "actual_code_relocations": 4,
+    "private_weak_BSS_bytes": 8,
+    "no_parent_or_factory_promotion": true
+  },
+  "verification": {
+    "primary_checks_total": 42,
+    "combined_tested_commit": "b0f003ace3d824eb15b1841a872441a9ed1173d5",
+    "default_build_exit": 0,
+    "existing_suites_passed": 3,
+    "seconds": 7.83,
+    "build_log_sha256": "534c6b1b65ec3b011074d3622e26050dc748623abd5e4d5bacc463f5170a629f",
+    "JSON_transfer_rows": 4,
+    "Markdown_transfer_claims": 4,
+    "saved_annotations": 2,
+    "refreshed_exports": 2,
+    "both_names_and_all_old_evidence_preserved": true
+  },
+  "shared_registry_integration": "Only actual2name/reconstruction append conflicts union-resolved with tools/merge_resolve.py; exact each-address frozen rows verified after Main merge. No shared registry leases. Both Core registrations occur once.",
+  "limits": [
+    "NativeRET8/4 versus SourceRET10h/0Ch, explicit borrowedRawCtx and actualcanonicalfeatureRef; no drop-in binary ABI claim",
+    "SourceactualCMPbeforeheaderzeros usesprivatevolatilepredicate/highbytehome reuse with retainedEDI; extraargument-slot access/privateframe/flags/faultorder remainqualified",
+    "Mappedpayload usesfive independent4Bstdbyte representations; actualemitted5DWORDload/storepairs, noFP/copyhelpercall/20Bsnapshot. Onlyheaderfields andpredicatevolatile",
+    "Existing resize internalCurrentCRTcopy/zerocopy policy andactualRawCtx/getter domain remain; outercopyactualBF7680 requiresrealfeaturetruth/lifetime/DF0/selectedSSE2/validnonwrapextents outsideactiveframes",
+    "No newtests/probes/ownedentry execution; existing3suites coveroldermath/tools. OriginalCRT/heap/FH3SEH/RTTI/fault/runtime/game remainunproved",
+    "Nativefactory69F5F0 pluscatch/action independentlyreviewed in local/oct16_preset_factory_primary_readiness.json butnotSourcepromoted; onlyE7publicationclosesitsnextgate"
+  ],
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "Verified separately after publication"
+  }
+}

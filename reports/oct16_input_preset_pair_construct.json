@@ -1,0 +1,375 @@
+{
+  "packet": "oct16_input_preset_pair_construct",
+  "utc": "2026-10-16T08:00:25.534286+00:00",
+  "status": "complete_whole_source_actual_RawCtx_resize_exact_BF7680_opaque_mapped_copy_build_checked",
+  "domain": "actual_RawCtx_resize_and_exact_BF7680_with_borrowed_feature_cell",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "authorization": "Root ONLYwhole0069E6E0/fourfiles; E7 independent/not edited.",
+  "published_gate": {
+    "Main": "9db37215372a19fc81da33accdcdd9d827634715",
+    "BF_Source": "fe6f68c599408b2e782cc7151e50dc710fd633aa"
+  },
+  "source": "src/native_input_preset_pair_construct.cpp",
+  "header": "include/bsp/native_input_preset_pair_construct.hpp",
+  "documentation": "docs/OCT16_INPUT_PRESET_PAIR_CONSTRUCT.md",
+  "source_sha256": "95634636cc1c4ef3cceda7d3c0d80f37ed02f66278c70b404921a9e425a4ae8d",
+  "header_sha256": "7e861a03c50e64fa6e7327681f6c35c441031ede596cc359f6ed618fe27bc5e8",
+  "documentation_sha256": "9c969622ee4f9183056e8c1367a9b70fda01a1a291f20f6471e2f0311abb8df1",
+  "functions": [
+    {
+      "address": "0069e6e0",
+      "name": "construct_native_input_preset_pair_0069e6e0",
+      "library_name": "STL_StringPresetPair_Construct_0069E6E0",
+      "source": "src/native_input_preset_pair_construct.cpp",
+      "header": "include/bsp/native_input_preset_pair_construct.hpp",
+      "status": "complete_whole_source_actual_RawCtx_resize_exact_BF7680_opaque_mapped_copy_build_checked",
+      "domain": "actual_RawCtx_resize_and_exact_BF7680_with_borrowed_feature_cell",
+      "original_abi": "ECXactualdestination/EDXunconsumed;stackactualkeyheader,mapped5ptr;EAXcapturedDest;RET8. SourceaddsRawCtx+actualfeatureRef/RET10.",
+      "evidence": "Hypothesis, not recoveredsymbol; preserveSTL_StringPresetPair_Construct_0069E6E0. Whole99B37/RET8/EAXcapturedDest; NativeECXdst/EDXunused/stackkeyheader,mapped5. SourceaddsactualRawCtx+borrowedactual109EEA4ref/RET10/newABI. Privatevolatile selfcompare precedes destlen/datazeros; nonself CURRENTkeylen afterzeros->actualRawresize preserve1; rereadCURRENTkeylen thenCURRENTdestlen/keydata/destdata order->actualBF7680 evenzero count. Fiveindividuallyinterleaved4B stdbyte representation copies use separate temps/fixedmemcpy, no typedpayload/FP/full20Bsnapshot. KeyheaderDWORDsvolatile; mappedordinarybyteaccess widths/interleaving actualCOFFverified. No guard/cleanup/rollback/selfrepair/callback/defaultfeature/providerchange. PublishedRawresize internalcurrentCRTpolicy qualified. Fresh974definedPE/liveB349starts/353contexts36edges inclreadonlycallees;12providerLFMainmatches. FullactualCMake159B67/public120B47/helpers39B20/2codeREL32/RET10 reviewed; privatepredicate[EBP+B] originalkeyEDI, noNativeframeidentity. DefaultWin32existing3/3pass7.66s. docs/OCT16_INPUT_PRESET_PAIR_CONSTRUCT.md;reports/oct16_input_preset_pair_construct.json. Representation/domain/privateargument/frame/flags/OriginalABI/CRT/FH3SEH/fault/heap/runtime/game boundaries retained; E7/insertion/mapindex notpromoted.",
+      "uncertainty": "SourceRET10/privatevolatilepredicate spill in deadSourcekeyargumenthome/highbyte and compilerframes/flags differ from NativeRET8. Mappedordinarybyte-representation accesses require validstorage; actualcompiledDWORDwidth/order verified, no volatilepayload/API/faultidentity claim. ExistingRawresize internalcurrentCRTcopy policy remains; actualBF requiresDF0/selectedSSE2/validnonwrapextents/liveframe exclusions andactualcanonicalfeaturetruth/lifetime. OriginalABI/CRT/FH3SEH/heap/fault/runtime/game identity unproved.",
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "99",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "0069e6e0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0069e742"
+            },
+            "length": "99"
+          }
+        ]
+      },
+      "native_bytes": 99,
+      "native_starts": 37,
+      "abi_compatible": false
+    }
+  ],
+  "fresh_native_proof": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "artifact": "local/oct16_input_preset_pair_construct_native_audit.json",
+    "sha256": "d7a86906acd9e98395f211aa25d4265a25d00f1cf20e6400e3e1e0d2d7342d09",
+    "owned_bytes": 99,
+    "owned_starts": 37,
+    "readonly_bytes": 875,
+    "readonly_starts": 312,
+    "all_current_contexts": 353,
+    "encoded_edges": 36
+  },
+  "host_steps": [
+    {
+      "address": "0069e6fe",
+      "native": "0041dd40",
+      "function": "0069e6e0",
+      "kind": "call",
+      "scope": "owned_whole_constructor"
+    },
+    {
+      "address": "0069e713",
+      "native": "00bf7680",
+      "function": "0069e6e0",
+      "kind": "call",
+      "scope": "owned_whole_constructor"
+    }
+  ],
+  "phase_contracts": [
+    "Whole99B37 typed/PE/live/fullNative read, exactNativeECX/EDXunused/stackkey,mapped/EAXdest/RET8; stored unspecified prototype preserved.",
+    "Own Source/header fully read; Source RawCtx+actualfeatureRef adds two semanticstackwords/RET10, superseding historical1fb RET0C proposal.",
+    "Private volatile self-key discriminator compared before length0/data4 zero stores, then tested; exactself leavesemptykey, no source repair/free.",
+    "Nonself CURRENTkeylen after zeros reaches actual RawCtx0041DD40 with preserve1, includingzero; no oldNativeStringStorage/AV adapter.",
+    "CURRENTkeylen reloaded afterresize, unsigned nonzero includeshighbits; captureCURRENTdestlen THENCURRENTkeydata THENCURRENTdestdata.",
+    "Actual published BF7680 used evenzero copiedcount afternonzero keytest, sameactualfeatureRef; childEAX ignored, capturedheader returned.",
+    "Five separate std::byte[4] temporaries plus fixed4B source/temp/destination memcpy pairs preserve opaque representations/indeterminate bits without typedpayload values/full20Bsnapshot.",
+    "Only keyheader raw DWORDaccesses and privatepredicate are Sourcevolatile; mappedcopies are ordinaryrepresentationaccess. ActualfiveDWORDload/store pairs retain widths/interleaving; noFP/canonicalization/vectorcopy.",
+    "No localEH/guard/keycleanup/rollback/headerrepair; child failure retains zeros/childprogress and prevents later mappedwork."
+  ],
+  "provider_fingerprints": {
+    "include/bsp/native_string.hpp": {
+      "physical_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "LF_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "published_Main_match": true
+    },
+    "src/native_string.cpp": {
+      "physical_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "LF_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "published_Main_match": true
+    },
+    "include/bsp/native_string_pool_storage.hpp": {
+      "physical_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "LF_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "published_Main_match": true
+    },
+    "src/native_string_pool_storage.cpp": {
+      "physical_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "LF_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "published_Main_match": true
+    },
+    "include/bsp/native_string_pool_owner.hpp": {
+      "physical_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "LF_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "published_Main_match": true
+    },
+    "src/native_string_pool_owner.cpp": {
+      "physical_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "LF_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "published_Main_match": true
+    },
+    "include/bsp/native_crt_memcpy.hpp": {
+      "physical_sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+      "LF_sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+      "published_Main_match": true
+    },
+    "src/native_crt_memcpy.cpp": {
+      "physical_sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+      "LF_sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+      "published_Main_match": true
+    },
+    "include/bsp/native_crt_vector_copy.hpp": {
+      "physical_sha256": "fbbe9588430ad0dbdbca984fcfb19e36a9e83cf0a903a16c0226685f9ee0dc76",
+      "LF_sha256": "fbbe9588430ad0dbdbca984fcfb19e36a9e83cf0a903a16c0226685f9ee0dc76",
+      "published_Main_match": true
+    },
+    "src/native_crt_vector_copy.cpp": {
+      "physical_sha256": "70123af959c1015e81fc495c2db74162eabfe4e5ee252211baaba2d85241ad71",
+      "LF_sha256": "70123af959c1015e81fc495c2db74162eabfe4e5ee252211baaba2d85241ad71",
+      "published_Main_match": true
+    },
+    "include/bsp/game_native_mutable_crt_data.hpp": {
+      "physical_sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "LF_sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "published_Main_match": true
+    },
+    "src/game_native_mutable_crt_data.cpp": {
+      "physical_sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+      "LF_sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+      "published_Main_match": true
+    }
+  },
+  "actual_CMake_COFF_review": {
+    "object": "build/win32/bsp_core.dir/Release/native_input_preset_pair_construct.obj",
+    "object_sha256": "efc1240cdb38da719b8e10e45eac865795ba4dc79a9967ceb20015232ee1be82",
+    "capture": "local/oct16_input_preset_pair_construct_cmake_coff_decoded.txt",
+    "capture_sha256": "ceec36a2dff4b3e640ad5c66e458c00bad91c8113b4a3ce45da73bb2d2aa520b",
+    "code_bytes": 159,
+    "instruction_count": 67,
+    "relocation_count": 2
+  },
+  "compiled_qualifications": [
+    "Full actual CMake159B67 read: public120B47+3helpers39B20, all8sections/415Bdirectives/212Bdebug/4BuninitializedBSS/64Bchecksums reviewed.",
+    "GeneratedCMP0A/privateSETE0C precede headerzeros10/16, predicateCMP1D/branch21; compilerusesdeadkeyargumenthome highbyte[EBP+B], originalkeyheldEDI. Privateframe/argument/flags/faultidentity qualified.",
+    "TwoTOTALcodeREL32 at2D/49 bind exactRawCtxresize andactualBF, callsites2C/48. No data/debugreloc/EH/helpercalls/padding; physicalRET10.",
+    "Generated4BBSS __Avx2WmemEnabledWeakValue isexistingSTLheader compilerweak compatibility data with no coderef/reloc, unrelated to real109EEA4; no invented defaultfeature.",
+    "Twelve provider LF fingerprints match publishedMain2995; RawCtx/Rawresize/currentCRTpolicy/BF/vector/featureowner unchanged; no E7/insertion/mapindex promotion."
+  ],
+  "static_review": {
+    "artifact": "local/oct16_input_preset_pair_construct_static_review.json",
+    "sha256": "ee5ece3e3a08a51ae98de0a8cab34219956faa15d01355fa97c57dd0a3b40c1b",
+    "checks_passed": 16,
+    "findings": []
+  },
+  "verification": {
+    "command": "./scripts/build.ps1",
+    "default_MSVC_Win32": true,
+    "exit_code": 0,
+    "existing_suites": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "passed": 3,
+    "failed": 0,
+    "ctest_seconds": 7.66,
+    "new_tests": 0,
+    "new_probes": 0,
+    "owned_constructor_or_copy_execution": false,
+    "warning": "Existing unrelated LNK4006 lua_spawn duplicate; no newleaf compilewarning.",
+    "canonical_calls": {
+      "command": "python tools/verify_report_calls.py reports/oct16_input_preset_pair_construct.json docs/OCT16_INPUT_PRESET_PAIR_CONSTRUCT.md",
+      "exit_code": 0,
+      "JSON_rows_checked": 2,
+      "owned_rows": 2,
+      "readonly_rows": 0,
+      "JSON_failed": 0,
+      "Markdown_claims_checked": 2,
+      "Markdown_failed": 0,
+      "Markdown_unchecked": 0,
+      "Markdown_warnings": 0
+    }
+  },
+  "ledger": {
+    "names": [
+      {
+        "address": "0069e6e0",
+        "name": "STL_StringPresetPair_Construct_0069E6E0",
+        "previous_Ghidra_name": "STL_StringPresetPair_Construct_0069E6E0",
+        "append_evidence": true,
+        "evidence": "Hypothesis, not recoveredsymbol; preserveSTL_StringPresetPair_Construct_0069E6E0. Whole99B37/RET8/EAXcapturedDest; NativeECXdst/EDXunused/stackkeyheader,mapped5. SourceaddsactualRawCtx+borrowedactual109EEA4ref/RET10/newABI. Privatevolatile selfcompare precedes destlen/datazeros; nonself CURRENTkeylen afterzeros->actualRawresize preserve1; rereadCURRENTkeylen thenCURRENTdestlen/keydata/destdata order->actualBF7680 evenzero count. Fiveindividuallyinterleaved4B stdbyte representation copies use separate temps/fixedmemcpy, no typedpayload/FP/full20Bsnapshot. KeyheaderDWORDsvolatile; mappedordinarybyteaccess widths/interleaving actualCOFFverified. No guard/cleanup/rollback/selfrepair/callback/defaultfeature/providerchange. PublishedRawresize internalcurrentCRTpolicy qualified. Fresh974definedPE/liveB349starts/353contexts36edges inclreadonlycallees;12providerLFMainmatches. FullactualCMake159B67/public120B47/helpers39B20/2codeREL32/RET10 reviewed; privatepredicate[EBP+B] originalkeyEDI, noNativeframeidentity. DefaultWin32existing3/3pass7.66s. docs/OCT16_INPUT_PRESET_PAIR_CONSTRUCT.md;reports/oct16_input_preset_pair_construct.json. Representation/domain/privateargument/frame/flags/OriginalABI/CRT/FH3SEH/fault/heap/runtime/game boundaries retained; E7/insertion/mapindex notpromoted."
+      }
+    ],
+    "functions": [
+      {
+        "address": "0069e6e0",
+        "name": "construct_native_input_preset_pair_0069e6e0",
+        "library_name": "STL_StringPresetPair_Construct_0069E6E0",
+        "source": "src/native_input_preset_pair_construct.cpp",
+        "header": "include/bsp/native_input_preset_pair_construct.hpp",
+        "status": "complete_whole_source_actual_RawCtx_resize_exact_BF7680_opaque_mapped_copy_build_checked",
+        "domain": "actual_RawCtx_resize_and_exact_BF7680_with_borrowed_feature_cell",
+        "original_abi": "ECXactualdestination/EDXunconsumed;stackactualkeyheader,mapped5ptr;EAXcapturedDest;RET8. SourceaddsRawCtx+actualfeatureRef/RET10.",
+        "evidence": "Hypothesis, not recoveredsymbol; preserveSTL_StringPresetPair_Construct_0069E6E0. Whole99B37/RET8/EAXcapturedDest; NativeECXdst/EDXunused/stackkeyheader,mapped5. SourceaddsactualRawCtx+borrowedactual109EEA4ref/RET10/newABI. Privatevolatile selfcompare precedes destlen/datazeros; nonself CURRENTkeylen afterzeros->actualRawresize preserve1; rereadCURRENTkeylen thenCURRENTdestlen/keydata/destdata order->actualBF7680 evenzero count. Fiveindividuallyinterleaved4B stdbyte representation copies use separate temps/fixedmemcpy, no typedpayload/FP/full20Bsnapshot. KeyheaderDWORDsvolatile; mappedordinarybyteaccess widths/interleaving actualCOFFverified. No guard/cleanup/rollback/selfrepair/callback/defaultfeature/providerchange. PublishedRawresize internalcurrentCRTpolicy qualified. Fresh974definedPE/liveB349starts/353contexts36edges inclreadonlycallees;12providerLFMainmatches. FullactualCMake159B67/public120B47/helpers39B20/2codeREL32/RET10 reviewed; privatepredicate[EBP+B] originalkeyEDI, noNativeframeidentity. DefaultWin32existing3/3pass7.66s. docs/OCT16_INPUT_PRESET_PAIR_CONSTRUCT.md;reports/oct16_input_preset_pair_construct.json. Representation/domain/privateargument/frame/flags/OriginalABI/CRT/FH3SEH/fault/heap/runtime/game boundaries retained; E7/insertion/mapindex notpromoted.",
+        "uncertainty": "SourceRET10/privatevolatilepredicate spill in deadSourcekeyargumenthome/highbyte and compilerframes/flags differ from NativeRET8. Mappedordinarybyte-representation accesses require validstorage; actualcompiledDWORDwidth/order verified, no volatilepayload/API/faultidentity claim. ExistingRawresize internalcurrentCRTcopy policy remains; actualBF requiresDF0/selectedSSE2/validnonwrapextents/liveframe exclusions andactualcanonicalfeaturetruth/lifetime. OriginalABI/CRT/FH3SEH/heap/fault/runtime/game identity unproved."
+      }
+    ]
+  },
+  "registration": "One bsp_core append; no shared registry lease.",
+  "frozen_artifacts": [
+    {
+      "path": "local/oct16_input_preset_pair_construct_typed.json",
+      "sha256": "264f06e3a719fd1ee59cb64e335538c58cd2a5b71584c824846740129bdcd3f6"
+    },
+    {
+      "path": "local/oct16_input_preset_pair_construct_current_starts.json",
+      "sha256": "2ccb93ffee9ebf9320570c45e2b80d809b5a9c9b06223b1494aa4ee0fdb181b1"
+    },
+    {
+      "path": "local/oct16_input_preset_pair_construct_native_audit.json",
+      "sha256": "d7a86906acd9e98395f211aa25d4265a25d00f1cf20e6400e3e1e0d2d7342d09"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_input_preset_pair_construct.obj",
+      "sha256": "efc1240cdb38da719b8e10e45eac865795ba4dc79a9967ceb20015232ee1be82"
+    },
+    {
+      "path": "local/oct16_input_preset_pair_construct_cmake_coff_review.json",
+      "sha256": "17401cbe96ff4b9fdc49612b5d097b68f1cf242ce11e400853f0bf5c117495fa"
+    },
+    {
+      "path": "local/oct16_input_preset_pair_construct_cmake_coff_decoded.txt",
+      "sha256": "ceec36a2dff4b3e640ad5c66e458c00bad91c8113b4a3ce45da73bb2d2aa520b"
+    },
+    {
+      "path": "local/oct16_input_preset_pair_construct_static_review.json",
+      "sha256": "ee5ece3e3a08a51ae98de0a8cab34219956faa15d01355fa97c57dd0a3b40c1b"
+    },
+    {
+      "path": "local/oct16_input_preset_pair_construct_ledger_records.json",
+      "sha256": "dcd3f164073da6a6daf069ecaa16b168159f3f3b710e5ceab2cbf629b85f1c70"
+    },
+    {
+      "path": "local/oct16_input_preset_pair_construct_build.log",
+      "sha256": "b2c4315199f34c54d760b59297a622bb45d974c3fc2f9705641b76260abc4f25"
+    },
+    {
+      "path": "local/oct16_input_preset_pair_construct_build_exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "local/oct15_preset_pair_constructor_readiness.json",
+      "sha256": "1fb788f527bc89b328f749ea9bbe6dd7cd55534c61b8df7ef047cd020d29ec80"
+    },
+    {
+      "path": "local/oct16_native_bf7680_vector_closure_readiness.json",
+      "sha256": "074e4e838f8bcec6f7590ae2fc293a603e1e732cddd67367f3ae336d1fe54907"
+    },
+    {
+      "path": "local/oct16_input_preset_pair_construct_prefinal_a5bc.json",
+      "sha256": "965e20532e501717ed62ad16cf9908c5d6e41aa91a6304db76c7fbafebd6fc92"
+    },
+    {
+      "path": "local/oct16_input_preset_pair_construct_prefinal_a5bc_source.cpp",
+      "sha256": "a5bc13900438cd639dd039a12fe1ba6ecf7e4f5f630a8eb991cf25090df61fb5"
+    },
+    {
+      "path": "local/oct16_input_preset_pair_construct_prefinal_a5bc_header.hpp",
+      "sha256": "e577a2ed6c05e3f597475be02649d1e3e69334e4c8a6b6bc9e27a654e4bd1729"
+    },
+    {
+      "path": "local/oct16_input_preset_pair_construct_prefinal_a5bc_object.obj",
+      "sha256": "407be637022ebaa1245434b8e2341c674d2ee0b0b90f43fc47510b5656654cbf"
+    },
+    {
+      "path": "local/oct16_input_preset_pair_construct_prefinal_a5bc_coff.json",
+      "sha256": "5f61055d47d1683f0bf7e9e736dc2ce05fb91021bb955c98b649db505b26a735"
+    },
+    {
+      "path": "local/oct16_input_preset_pair_construct_prefinal_a5bc_decoded.txt",
+      "sha256": "316784351532019296a8be14bf5cfa416573c5f44ac8a4ee3c92786a21c12c95"
+    },
+    {
+      "path": "local/oct16_input_preset_pair_construct_prefinal_a5bc_build.log",
+      "sha256": "031ec83a93bd71531582297b9c01da5ca90f658bc61f12870a70cb20ab6d681b"
+    },
+    {
+      "path": "local/oct16_input_preset_pair_construct_prefinal_a5bc_build_exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "local/oct16_input_preset_pair_construct_call_verification.txt",
+      "sha256": "e9c95a8575e6eae3021c4e6ba194789f9b7521d77fb46e46a96e8c7217f15168"
+    }
+  ],
+  "preservation": [
+    {
+      "report": "reports/oct15_input_int_string_tree_erase.json",
+      "sha256": "6c704cc197738ccde0214be0b6a449f2d54a8aee2a5c1056838393789d82bcd8",
+      "artifacts_unchanged": 15
+    },
+    {
+      "report": "reports/oct15_input_int_string_tree_range.json",
+      "sha256": "3b2d515cf6c1429ce410872e86985a48f3ab61c2ead060dcb21f1c23580d6f40",
+      "artifacts_unchanged": 13
+    },
+    {
+      "report": "reports/oct15_native_input_controller_name_pair_destroy.json",
+      "sha256": "9d857066bc0d287f7b1a4268e0e7089e73bf230282703be6f4768d4dd5390865",
+      "artifacts_unchanged": 14
+    },
+    {
+      "report": "reports/oct15_native_input_controller_tree_erase.json",
+      "sha256": "c6223451f5f6ab0941abc6669990e36b55e78bc180a5435493f1be2b623972dc",
+      "artifacts_unchanged": 14
+    },
+    {
+      "report": "reports/oct15_native_input_controller_tree_range.json",
+      "sha256": "8c1a023100a559aaeb05a573be817ce463d21fb29245faa98047cc080b7b2212",
+      "artifacts_unchanged": 13
+    },
+    {
+      "report": "reports/oct15_native_input_string_tree_lower_bounds.json",
+      "sha256": "280f5bd86a5e193b21f42a24f7c3d3e55dd8c15e44fff6cf3691a7e47e2dd9eb",
+      "artifacts_unchanged": 13
+    },
+    {
+      "report": "reports/oct15_native_input_preset_tree_predecessor.json",
+      "sha256": "f1e0db35026a9cc44bcdb0acdde50738b025285264b00d13f468963831e62c5c",
+      "artifacts_unchanged": 13
+    },
+    {
+      "report": "reports/oct16_native_crt_memcpy_bf7680.json",
+      "sha256": "5686ee823abbef5e47accf5ea7b40e0acea7f3319ffc9f7b9472df8abf6a92cd",
+      "artifacts_unchanged": 20
+    }
+  ],
+  "old_artifacts_preserved": 115,
+  "historical_prefinal": {
+    "manifest": "local/oct16_input_preset_pair_construct_prefinal_a5bc.json",
+    "status": "HISTORICAL_PREFINAL_before_volatile_discriminator_NOT_FINAL",
+    "not_final_evidence": true
+  },
+  "out_of_scope": [
+    "E7",
+    "insertion/mapindex",
+    "provider/resizer/RawCtx/featureowner changes",
+    "Ghidra mutations",
+    "push"
+  ],
+  "limits": "SourceRET10/privatevolatilepredicate spill in deadSourcekeyargumenthome/highbyte and compilerframes/flags differ from NativeRET8. Mappedordinarybyte-representation accesses require validstorage; actualcompiledDWORDwidth/order verified, no volatilepayload/API/faultidentity claim. ExistingRawresize internalcurrentCRTcopy policy remains; actualBF requiresDF0/selectedSSE2/validnonwrapextents/liveframe exclusions andactualcanonicalfeaturetruth/lifetime. OriginalABI/CRT/FH3SEH/heap/fault/runtime/game identity unproved."
+}

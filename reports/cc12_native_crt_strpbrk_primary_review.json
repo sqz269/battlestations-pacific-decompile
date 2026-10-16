@@ -1,13 +1,13 @@
 {
   "schema": "bsp.cc12.native_crt_strpbrk.primary.v1",
-  "status": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+  "status": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
   "Source_commit": "912935be2873bddc8555c03f3812ce46428f46da",
   "Source": "src/native_crt_strpbrk.cpp",
   "header": "include/bsp/native_crt_strpbrk.hpp",
   "documentation": "docs/NATIVE_CRT_STRPBRK.md",
   "Original_name_retained": "_strpbrk",
   "whole_ordinary_functions": 1,
-  "Source_credit": 0,
+  "Source_credit": 1,
   "primary_author": {
     "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strpbrk_integration_20261016\\primary_author_inputs.DATA.json",
     "bytes": 2672,
@@ -30,8 +30,8 @@
   "strict_compiler_host": "HostX86/x86, targetWin32",
   "worker_baselines": 0,
   "Main_registered": true,
-  "Main_build": "pending",
-  "actual_compiler_archive_gate": "pending",
+  "Main_build": "pass_3_existing_CTests",
+  "actual_compiler_archive_gate": "pass",
   "contract": [
     "New MSVC Win32 default potentially throwing API void* __cdecl bsp::find_native_crt_first_member_00bff1d0(void* actual_source,const void* actual_control). Keep correct Original library name _strpbrk. BYTE8, pointer/unsignedint32; unsigned byte values0..255, no Unicode/locale/codepage/case/signed-char interpretation.",
     "Require genuine live stable determinate readable control bytes through finite first NUL, always read completely before any source payload even for empty source. Source needs only reached readable bytes through first NUL or first nonzero control member; early hit requires no unused later terminator or full string extent. No null guard/count-zero exception or runtime validation.",
@@ -44,5 +44,7 @@
   ],
   "Original_ABI_compatible": false,
   "new_Source_body_executed": false,
-  "game_validated": false
+  "game_validated": false,
+  "Main_gate": "pass",
+  "Main_validation": "reports/cc12_native_crt_strpbrk_Main_validation.json"
 }
