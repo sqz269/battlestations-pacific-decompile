@@ -1,0 +1,170 @@
+{
+  "packet": "oct15_thirtyfifth_reconstruction_batch",
+  "status": "primary_and_peer_reviewed_Source_integrated_default_Win32_checked",
+  "components": [
+    {
+      "pin": "5c077abf35657c24d6f55ac6aeaff12b9b838bcf",
+      "report": "reports/oct15_device_map_full_range_binding.json",
+      "ordinary_entries": 3,
+      "owned_native": [
+        156,
+        69
+      ],
+      "new_Native_coverage": false,
+      "primary_checks": 12,
+      "independent_peer_checks": 12,
+      "Source_closure": "existing map destructors extend admitted127B provider to publishedwhole200Bactualrange"
+    },
+    {
+      "pin": "8dac2df252c66334377628deca225e1b82557984",
+      "report": "reports/oct15_native_input_controller_tree_destroy_instances.json",
+      "primary_receipt": "local/oct15_controller_destroy_primary_review.json",
+      "primary_receipt_sha256": "ff466aa5c7f4c970425a1a4c69a6ac54742e1aabcf89e0c7bb4744e0c2fd28b4",
+      "primary_checks": 14,
+      "frozen_artifacts": {
+        "src/native_input_controller_tree_destroy_instances.cpp": "fc492a1190cdff014fc1237c4e608e58636a03ad30410460df77cb93ecaf2a2a",
+        "include/bsp/native_input_controller_tree_destroy_instances.hpp": "92cba5dc9d813e6f4c8d176922d4a65d82a172ff7c825140096ce462538323ab",
+        "docs/OCT15_NATIVE_INPUT_CONTROLLER_TREE_DESTROY_INSTANCES.md": "e5432ff432c7986431b8d6a77a1c7f7bbdd8cacc9094f108af3a888586a1fda5",
+        "reports/oct15_native_input_controller_tree_destroy_instances.json": "a0c7dc01b22bdab6ce38be4dcbc097f5965ffc836fefd64ee168b633f8cc11df"
+      },
+      "provided_domain": "published actual RawCtx/currentCRT"
+    },
+    {
+      "pin": "875f09a12a1a2f0f98443ddb293ae08c7d486d1d",
+      "report": "reports/oct15_native_input_string_tree_lower_bounds.json",
+      "primary_receipt": "local/oct15_lowerbounds_primary_review.json",
+      "primary_receipt_sha256": "08b9f02e6f90a41e0cabdb7b071b12831565a3ba80cf6d238f31348439738ff5",
+      "primary_checks": 14,
+      "frozen_artifacts": {
+        "src/native_input_string_tree_lower_bounds.cpp": "6ce5dbb10d94e21d430c0cb205dac028e27bae4c041df91cea1607ba9d8bfa30",
+        "include/bsp/native_input_string_tree_lower_bounds.hpp": "291fa7bafc2f5239119fd99ac3f36b68879cd7c3175e93c0f0e1cdbf517dffbb",
+        "docs/OCT15_NATIVE_INPUT_STRING_TREE_LOWER_BOUNDS.md": "69636f057f91354740b240d3ffa14d2b141fcc7f5599085aa3013a6f662d7458",
+        "reports/oct15_native_input_string_tree_lower_bounds.json": "280f5bd86a5e193b21f42a24f7c3d3e55dd8c15e44fff6cf3691a7e47e2dd9eb"
+      },
+      "provided_domain": "existing_CRT_parent_provided_callee_domain"
+    }
+  ],
+  "scope": {
+    "ordinary_entries_touched": 8,
+    "new_complete_ordinary_entries": 5,
+    "new_complete_entry_addresses": [
+      "006a6c20",
+      "006a6e70",
+      "006a7040",
+      "0069ce30",
+      "0069cdb0"
+    ],
+    "new_complete_entry_native_bytes": 322,
+    "new_complete_entry_instructions": 141,
+    "existing_entries_with_actual_callee_domain_extension": [
+      "006a7ba0",
+      "006aa3e0",
+      "006aa420"
+    ],
+    "existing_extension_native_bytes": 156,
+    "existing_extension_instructions": 69,
+    "logical_actions_promoted": 0,
+    "global_unique_Native_coverage_increment_claimed": false
+  },
+  "review": {
+    "primary_checks": 40,
+    "independent_peer_checks": 12,
+    "peer_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_avoid_distance\\local\\oct15_device_map_full_range_peer.json",
+      "sha256": "0f870ddffb4d7197bf27a52eac80295b287365d68a168c6894653e5bcc20bcc2"
+    },
+    "findings": [],
+    "final_CMake_objects": [
+      {
+        "stem": "native_input_controller_tree_destroy_instances",
+        "integrator_sha256": "53a37c55ab795fb564b9d799262e7a698aba078de0918cb6aae240ff3e61dcd1",
+        "code_bytes": 251,
+        "instructions": 107,
+        "code_sections": 7,
+        "relocations": 6,
+        "code_and_symbolic_relocations_equal": true
+      },
+      {
+        "stem": "native_input_string_tree_lower_bounds",
+        "integrator_sha256": "7a16bc2cad3dde5a010dfcc85f3cd9f9f8d944451ca85b95d4bbc66a8618867c",
+        "code_bytes": 232,
+        "instructions": 108,
+        "code_sections": 6,
+        "relocations": 2,
+        "code_and_symbolic_relocations_equal": true
+      },
+      {
+        "stem": "native_input_device_map_cleanup",
+        "integrator_sha256": "4b4933215155dbee41746d8ec077ffcbe170e132cc8d96179143ad4bac5f4b09",
+        "code_bytes": 306,
+        "instructions": 119,
+        "code_sections": 5,
+        "relocations": 6,
+        "exact_primary_object_equal": true
+      }
+    ],
+    "total_TU_code_bytes": 789,
+    "total_TU_code_instructions": 334,
+    "code_sections": 18,
+    "total_actual_code_REL32": 14,
+    "TU_scope_includes_unchanged_clear_and_admitted_prefix": true
+  },
+  "validation": {
+    "tested_combined_Source": "1192214ee707ccac633e27683c95c222c7011e22",
+    "later_commits_Source_unchanged": true,
+    "default_MSVC_Win32": true,
+    "build_log": "local/oct15_batch35_final_build.txt",
+    "build_log_sha256": "cf4db10f6de225158511d649cb1c26ccd24f7311c1f019771472d65f02db196c",
+    "existing_suites_passed": 3,
+    "ctest_seconds": 7.82,
+    "new_tests": 0,
+    "new_probes": 0,
+    "Native_packet_execution": false,
+    "JSON_transfer_rows": 20,
+    "Markdown_transfer_claims": 16,
+    "owned_transfer_rows": 14,
+    "readonly_transfer_rows": 6,
+    "transfer_log": "local/oct15_batch35_transfers.txt",
+    "annotations": [
+      {
+        "path": "local/ghidra-annotations-20261016T063246Z.json",
+        "sha256": "4ddd45bdd367873cc305fa01e09f550b0a5e3655278e6398dcf1345d6a30c719",
+        "saved_entries": 3,
+        "preimages_preserved": true
+      },
+      {
+        "path": "local/ghidra-annotations-20261016T063720Z.json",
+        "sha256": "d3f706287df4fb9d3680ec5aeb60ab5b31ac0e3d227026d2eb1787be5d514fb5",
+        "saved_entries": 2,
+        "preimages_preserved": true
+      },
+      {
+        "path": "local/ghidra-annotations-20261016T063838Z.json",
+        "sha256": "50f7e98bfe48bfc5fad4613d5b44680c29b5ee03f86e3b1ff583cfc3469ea598",
+        "saved_entries": 3,
+        "preimages_preserved": true
+      }
+    ],
+    "refreshed_exports": 8,
+    "snapshot": "skipped unchanged76774functions",
+    "index": "rebuilt after metadata"
+  },
+  "coordination": {
+    "actual_CMake_conflicts_resolved_by_registry_union": 2,
+    "registry_leases": false,
+    "owned_files_only_staged": true,
+    "historical_Source_interfaces_and_receipts_preserved": true
+  },
+  "limits": [
+    "Existing suites exercise older math/tool behavior; no new entries were executed against Native game state.",
+    "Lowerbounds use the EXISTING CRT parent provided-callee domain with actual borrowed0109DE1C/services, not concrete OriginalCRT closure or current-stricmp/443D00/ASCII-only substitution. Native returns NODE/RET4; SourceRET0C.",
+    "Controller entries NativeplainRET/EAX0; borrowedRawCtx SourceRET4 and different EAX-zero timing; complete actual range and real8Biterators retained.",
+    "Device map Source base now calls WHOLE200B range; unchanged twoSourcealiases delegatebase. Prior admitted prefix remains narrow and intact.",
+    "No owner6AA460/logical-action/OriginalFH3SEH/private-frame/register-flags/fault/CRT/heap/ABI/game promotion; no added guards/stubs/rollback/keycleanup/defaultadapter."
+  ],
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "Verify separately after publication; no self-reference"
+  }
+}

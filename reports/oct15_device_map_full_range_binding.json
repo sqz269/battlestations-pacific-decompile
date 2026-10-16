@@ -132,7 +132,13 @@
     "new_probes": 0,
     "Native_packet_execution": false,
     "tests_cover_new_entries": false,
-    "independent_peer": "pending final receipt",
+    "independent_peer": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_avoid_distance\\local\\oct15_device_map_full_range_peer.json",
+      "sha256": "0f870ddffb4d7197bf27a52eac80295b287365d68a168c6894653e5bcc20bcc2",
+      "checks_passed": 12,
+      "findings": [],
+      "actual_object_matches": true
+    },
     "Ghidra_annotations": {
       "path": "local/ghidra-annotations-20261016T063246Z.json",
       "sha256": "4ddd45bdd367873cc305fa01e09f550b0a5e3655278e6398dcf1345d6a30c719",
@@ -149,5 +155,19 @@
     "Source/Native zero before stores is retained, but register/flags residue, private frames, OriginalCRT/FH3SEH/RTTI, faults, heap/RawCtx identity and game behavior remain unproved.",
     "The old admitted prefix retains its stable full-selection contract and historical report. Old generic AV APIs and owner bindings are not promoted. No new guard, callback, shortcut, rollback, cleanup or local EH.",
     "The actual whole range retains its published reached-storage/diagnostic/current-C++/CRT requirements; no broad concurrency proof is claimed."
+  ],
+  "primary_checks": [
+    "Three complete52B23 entries PE/live byte equality.",
+    "All69currentinstructionstarts verified.",
+    "AllthreeNativebodies equalafteronlytwoactualE8fields/44unmaskedB.",
+    "Six actualrange/free calltargets match.",
+    "Source diff exactoneinclude plusonecallee replacement; oldclear/prefix unchanged.",
+    "Initialheadthenleft captured;sameowners/capturedendpoints/private8Bout retained.",
+    "Onlychildsuccess permitsCURRENTheadfree/head4zero-before-count8zero.",
+    "Definedzero return retained; twoSourcealiases preservewholebodyreuse, SourceRET4qualified.",
+    "Four actualproviderSource/headerLF files equalcurrentpublishedMain.",
+    "All306B119 compiledcode equal preservedpreviouspublishedobject.",
+    "Onlyoneactualsymbolicrelocation changes;112B46mapcode/two11B5tailaliases separatelycounted.",
+    "DefaultWin32build3of3 andcanonical6JSON6MD passed; no packetexecution/newtests."
   ]
 }
