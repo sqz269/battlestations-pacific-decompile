@@ -1,0 +1,307 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_command_record_construct",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "base_revision": "682f3300d5151f3a2d5e194c81e6944bef36cb12",
+  "source": "src/native_scene_command_record_construct.cpp",
+  "header": "include/bsp/native_scene_command_record_construct.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_COMMAND_RECORD_CONSTRUCT.md",
+  "status": "whole_actual_storage_source_ready_win32_build_tested_with_qualified_cleanup_actions",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "004690d0",
+      "name_hypothesis_or_compiler_name_retained": "BSP_SceneCommandRecord_Construct",
+      "implementation": "construct_native_scene_command_record_004690d0",
+      "coverage": "complete actual-storage ordinary C++ construction; original FH3/private-frame ABI excluded",
+      "original_abi": "ECX captured record20; stacked owner/command/target DWORDs at P+4/P+8/P+0C; RET0Ch; EAX captured original record; EBX/EBP/ESI/EDI preserved",
+      "body_end_inclusive": "004691a3",
+      "body_ranges": [
+        {
+          "start": "004690d0",
+          "end_inclusive": "0046915c",
+          "bytes": 141
+        },
+        {
+          "start": "00469160",
+          "end_inclusive": "004691a3",
+          "bytes": 68
+        }
+      ],
+      "body_bytes": 209,
+      "envelope_bytes": 212,
+      "instructions": 85,
+      "physical_calls": 4,
+      "live_installed_equal": true,
+      "envelope_hex": "6aff68861ac60064a10000000050648925000000005153558be9568d750433c957896c2410890e894e048d7d0c894c241c890f894f048b5c24283bd98b442424c644241c0189450074158bc38d5001908a0883c00184c975f72bc233c9eb0233c051508bcee8064cfbff8b460485c0740d8b0e515350e835e5780083c40c8b74242c85f674178bc68d5001eb038d49008a0883c00184c975f72bc2eb0233c06a00508bcfe8c74bfbff8b470485c0740d8b17525650e8f6e4780083c40c8b4c24145f5e8bc55d5b64890d0000000083c410c20c00",
+      "envelope_sha256": "ae3d75ed614dd519e14bfede0598f7171ca0b6f868090e581b8273458b481527"
+    },
+    {
+      "address": "00c61a70",
+      "name_hypothesis_or_compiler_name_retained": "Unwind@00c61a70",
+      "implementation": "unwind_native_scene_command_record_command_00c61a70",
+      "coverage": "qualified whole action mapping through explicit current saved-record4; no Original action-entry ABI",
+      "original_abi": "native EBP-frame current[EBP-10h], add4 modulo32, tail JMP0041DD20; no ordinary argument/RET interface inferred",
+      "body_end_inclusive": "00c61a7a",
+      "body_ranges": [
+        {
+          "start": "00c61a70",
+          "end_inclusive": "00c61a7a",
+          "bytes": 11
+        }
+      ],
+      "body_bytes": 11,
+      "envelope_bytes": 11,
+      "instructions": 3,
+      "physical_calls": 0,
+      "live_installed_equal": true,
+      "envelope_hex": "8b4df083c104e9a5c27bff",
+      "envelope_sha256": "ded3a773d9d0e59fb61c830bd3c838fb06d2e9eaed6a5e7909dff2d0492663d6"
+    },
+    {
+      "address": "00c61a7b",
+      "name_hypothesis_or_compiler_name_retained": "Unwind@00c61a7b",
+      "implementation": "unwind_native_scene_command_record_target_00c61a7b",
+      "coverage": "qualified whole action mapping through independent current saved-record4 load; no Original action-entry ABI",
+      "original_abi": "native EBP-frame current[EBP-10h], add0Ch modulo32, tail JMP0041DD20; no ordinary argument/RET interface inferred",
+      "body_end_inclusive": "00c61a85",
+      "body_ranges": [
+        {
+          "start": "00c61a7b",
+          "end_inclusive": "00c61a85",
+          "bytes": 11
+        }
+      ],
+      "body_bytes": 11,
+      "envelope_bytes": 11,
+      "instructions": 3,
+      "physical_calls": 0,
+      "live_installed_equal": true,
+      "envelope_hex": "8b4df083c10ce99ac27bff",
+      "envelope_sha256": "747e87ba8589da6137fdcc8b3f77e535414eaacaf8ca13dc085f9d62cdc77cae"
+    }
+  ],
+  "totals": {
+    "listed_bytes": 231,
+    "envelope_bytes": 234,
+    "instructions": 91,
+    "constructor_direct_calls": 4,
+    "action_tail_jumps": 2,
+    "true_incoming_calls": 1
+  },
+  "unreachable_gap": {
+    "start": "0046915d",
+    "end_inclusive": "0046915f",
+    "bytes": 3,
+    "hex": "8d4900",
+    "coverage": "live/PE bytes verified; no executed-instruction or repair credit"
+  },
+  "host_steps": [
+    {
+      "address": "00469135",
+      "native": "0041dd40",
+      "function": "004690d0",
+      "kind": "call",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "00469146",
+      "native": "00bf7680",
+      "function": "004690d0",
+      "kind": "call",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "00469174",
+      "native": "0041dd40",
+      "function": "004690d0",
+      "kind": "call",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "00469185",
+      "native": "00bf7680",
+      "function": "004690d0",
+      "kind": "call",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "00c61a76",
+      "native": "0041dd20",
+      "function": "00c61a70",
+      "kind": "tail_jump",
+      "flow_override": "CALL_RETURN",
+      "default_flow": "UNCONDITIONAL_JUMP",
+      "effective_flow": "CALL_TERMINATOR"
+    },
+    {
+      "address": "00c61a81",
+      "native": "0041dd20",
+      "function": "00c61a7b",
+      "kind": "tail_jump",
+      "flow_override": "CALL_RETURN",
+      "default_flow": "UNCONDITIONAL_JUMP",
+      "effective_flow": "CALL_TERMINATOR"
+    },
+    {
+      "address": "00469654",
+      "native": "004690d0",
+      "function": "00469610",
+      "kind": "call",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    }
+  ],
+  "constructor_schedule": "Captured receiver written to actual saved word twice (PUSH ECX, explicit MOV) before header stores; zero command header,state0,zero target header; current command argument before current owner; state1 before owner publication. Inline volatile byte walk with DWORD cursor/difference wrap; complete raw resize preserve0; current destination data and iff nonnull current length; genuine SDK copy retains captured source. Read current target argument only after first resize/copy; repeat. EAX original captured record; no normal cleanup/global fallback.",
+  "frame_domain": "Live parameters12 at P+4..P+0F and writable saved-record4 at P-10..P-0D are distinct native regions; stable binding addresses and disjoint Source/context metadata. Reached payload aliases admitted. No original compiler/helper/child argument-home,return,spill,register-save,EH/async private aliases or binary identity.",
+  "provider_composition": "Complete actual raw 0041DD40 preserve0 and0041DD20 through NativeStringRawPoolContext. Native BF7680 actual copy uses Source-only genuine current SDK memmove tail boundary, preserving reached zero-count/null and overlap service behavior without compiler builtin. No native memmove edge,callback,provider simulation,stub,strlen snapshot,new owner or allocator added.",
+  "provider_file_sha256": {
+    "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+    "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+    "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+    "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+  },
+  "eh": {
+    "handler_read_only": "00c61a86",
+    "handler_instruction": "MOV EAX,00D8909C; JMP00BF6B43",
+    "funcinfo": "00d8909c",
+    "magic": "19930522",
+    "maxstate": 2,
+    "unwind_map": "00d8908c",
+    "map": [
+      {
+        "state": 0,
+        "to_state": -1,
+        "action": "00c61a70"
+      },
+      {
+        "state": 1,
+        "to_state": 0,
+        "action": "00c61a7b"
+      }
+    ],
+    "metadata_live_installed_equal": true,
+    "metadata_hex": "ffffffff701ac600000000007b1ac60022059319020000008c90d800000000000000000000000000000000000000000001000000",
+    "body_states": "initial -1;state0 at4690FD between headerinitializations;state1 at469110 after command/owner reads before ownerstore;no normal membercleanup",
+    "source_scope": "Ordinary noexcept(false) guard advances state before each action; target then independently current saved-word reload for command. Each public action directly propagates provider failure. Secondary failure during C++ unwind follows current compiler/runtime;no Original FH3/SEH/privateaction-entry/secondary-exception identity claim."
+  },
+  "caller": {
+    "function": "00469610",
+    "call_site": "00469654",
+    "scope": "sole current direct xref;complete native115B/34ops queue body read,allocation14h before all args,current target/command/owner and push order verified;caller Source excluded"
+  },
+  "corrections": [
+    {
+      "was": "legacy std::string record projection and virtual queue constructor service",
+      "is": "actual raw20B record,live12B input,current saved-record cleanup and real concrete raw services",
+      "evidence": "whole209B/85op constructor and two11B/3op action listings"
+    },
+    {
+      "was": "native private EH action could be treated as ordinary function ABI",
+      "is": "qualified explicit-cell action mapping only;native action reads current EBP-10h",
+      "evidence": "C61A70/C61A7B and actual FuncInfo/unwind map"
+    }
+  ],
+  "annotation": {
+    "before_comments": "local/goal_oct15_scene_command_record_construct_before_comments.json",
+    "before_documentation": "local/goal_oct15_scene_command_record_construct_before_documentation.json",
+    "locked_apply_save_export_readback": "passed; prior values logged before writes; saved project; forced all three exports; retained descriptive/Unwind@ names and all old comments",
+    "names": "retain descriptive hypothesis and correct Unwind@ names",
+    "apply_log": "local/ghidra-annotations-20261016T010234Z.json",
+    "after_comments": "local/goal_oct15_scene_command_record_construct_after_comments.json"
+  },
+  "verification": {
+    "typed_capture": "local/goal_oct15_scene_command_record_construct_typed_flow.json",
+    "typed_capture_modification": "2752",
+    "expected_project_program_verified": true,
+    "live_installed_bytes": "all 234 envelope bytes and52B EH table read-only metadata match",
+    "source_file_sha256": {
+      "src/native_scene_command_record_construct.cpp": "11fbe0e387349f85b42d33978e9b2279607c36d7ccbf7aa0e2774f75759f84a9",
+      "include/bsp/native_scene_command_record_construct.hpp": "1aa360155f04b2d29d6a1d746e059c45fd24bbe49c1f0e2dcca3b89c684adb14"
+    },
+    "primary_whole_source_review": {
+      "status": "passed complete constructor, both actions, Source/header; later header metadata wording inspected and accepted",
+      "reviewed_cpp_sha256": "11fbe0e387349f85b42d33978e9b2279607c36d7ccbf7aa0e2774f75759f84a9",
+      "reviewed_header_sha256": "91c872159229203dbc1c60ccfd3b4157d5c45688dd8b37342974cad8b8a6d3bb",
+      "current_cpp_unchanged": true,
+      "current_header_sha256": "1aa360155f04b2d29d6a1d746e059c45fd24bbe49c1f0e2dcca3b89c684adb14",
+      "header_comment_clarification_only": "stable bound addresses separated from disjoint Source/context metadata; declarations/guards/contract unchanged; exact previous-header reconstruction hash asserted",
+      "current_header_comment_clarification_accepted": true,
+      "source_and_header_hashes_asserted_unchanged_at_tested_revision": true
+    },
+    "cmake_registration": "passed exact primary unique registration; worker never queued/appended; Source once in generated project and one exact archive body",
+    "strict_win32_build_and_existing_ctest": "passed actual primary scripts/build.ps1 at efa7febae744d66c5665e61b64bf8c67d36ff3f6; MSVC Release Win32,3 enabled existing CTests,0 failed,9.55s; no duplicate worker build",
+    "compiled_object_review": {
+      "status": "passed complete retained constructor, helpers, current saved-cell actions and ordered ordinary unwind inspection",
+      "tested_revision": "efa7febae744d66c5665e61b64bf8c67d36ff3f6",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct15_command_lifetime_objects\\native_scene_command_record_construct.obj",
+      "object_bytes": 5841,
+      "object_sha256": "93de29c50ab2fd180d410ec428b916733aec87d96e2b6d22c1328d066a4265be",
+      "machine": "14c",
+      "unique_identical_archive_bodies": 1,
+      "disassembly": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct15_command_lifetime_objects\\native_scene_command_record_construct.disasm.txt",
+      "disassembly_sha256": "417744dc58c9b9df196e932b9243e2c200f33986648958a97f067404b47a601d",
+      "symbols": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct15_command_lifetime_objects\\native_scene_command_record_construct.symbols.txt",
+      "symbols_sha256": "e596bb59f770274d7232166dd9edf64e262d5f9a3ffaeefe4fcda04a10a3582a",
+      "inspection_tool": "retained dumpbin14.29.30159.0 output over exact actual MSVC Win32 object; no compiler-version inference",
+      "constructor": "Both saved stores+45/+47; command header zero+49/+4F,target zero+56/+5C; current command+63 BEFORE current owner+66; actual guard state1+72 BEFORE ownerstore+79; inline volatile bytewalks+85/+C4; preserve0 raw resize+96/+D5; current data+9B/+DA and conditional current length+A5/+E4; genuine SDK boundary+AC/+E9. Current target slot read+B7 AFTER first resize/copy. EAX captured record+F1,no normal member cleanup.",
+      "sdk_helper": "single actual JMP _memmove at+0; no new zero-count/null guard and real external symbol resolution",
+      "ordered_cleanup": "Compiler unwind funclet tails to RecordCleanup destructor. State1 check+4,advance state0+0F,current saved-word load+17,add0Ch+19,real raw destroy+1D; on return state0 check+25,advance-1+30,independent current saved-word reload+38,add4+3A,destroy+3E. Standalone public actions each load current saved word+6,add own offset+8,tail raw destructor+0F.",
+      "early_state_qualification": "Compiler eliminates Source guard state0 assignment across nonthrowing header stores and arms emitted C++ EH at+68 before real providers. This does not establish native header-fault,exact EH state/flags/register/private-frame/FH3/SEH equivalence. Source state ordering and current-provider C++ unwind scope remain qualified separately."
+    },
+    "new_tests": false,
+    "packet_native_differential": "not run",
+    "game_validation": "not run",
+    "native_transfer_rows": "7 JSON rows and7 Markdown claims passed;0failed/unchecked/warnings after unreachable-gap wording qualification",
+    "build_receipt": {
+      "revision": "efa7febae744d66c5665e61b64bf8c67d36ff3f6",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_command_lifetime_combined_build.log",
+      "log_sha256": "8d982051dfaf99fea2dc0568e06ddba017eea931ad60c8f5e6ac9f0b63258653",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 9.55,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "primary_tree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "receipt": "reports/goal_oct15_command_lifetime_primary_review.json",
+      "receipt_sha256": "68ad058165cb0f832f60dd1adc78946bc4edd51b2f0ba3479c5604914d8f9e3e",
+      "source_header_and_all_six_provider_hashes_match_own_primary_and_tested_revision": true,
+      "project_source_count": 1,
+      "unique_identical_archive_bodies": 1,
+      "unique_archive_objects": [
+        "bsp_core.dir\\Release\\native_scene_command_record_construct.obj"
+      ],
+      "archive_sha256": "59f20166ea49b3adb00bf1f3c16208f4bec28b5d3ccf41dd4682fc87331a75b4",
+      "worker_duplicate_build": false,
+      "warning": "retained unrelated LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj; no packet compile warning in actual log"
+    },
+    "source_unchanged_since_draft": "33e4b245171d8bd9d38a9558d8d729cf70c26af1; no Source/header/registration changes in this validation update"
+  },
+  "limits": [
+    "New ordinary actual-storage interface; Original register/stack/mangling/private frame/binary ABI unproved.",
+    "Only constructor and qualified two-action Source; caller queue, its allocation cleanup and pushback are not reconstructed by this packet.",
+    "Stable metadata and valid reached storage/provider domain; no hidden compiler/helper/child-stack/return/EH/register-save/spill/async alias credit.",
+    "Real current SDK and raw pool services; Original private CRT/heap/fault/SEH/FH3/secondary-exception identity unproved.",
+    "No packet-specific native execution, game proof, ownership/lifetime/CString validity or production host replacement claim."
+  ]
+}

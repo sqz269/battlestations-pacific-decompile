@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_crt_ptd_unlock_helper",
+  "status": "complete_ordinary_source_reviewed_annotated_primary_registered_Win32_three_checks_passed",
+  "source_ready": true,
+  "whole_control_flow_source_available": true,
+  "source": "src/native_crt_ptd_unlock_helper.cpp",
+  "header": "include/bsp/native_crt_ptd_unlock_helper.hpp",
+  "documentation": "docs/GOAL_OCT15_CRT_PTD_UNLOCK_HELPER.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "routines": [
+    {
+      "address": "00c051ae",
+      "end_exclusive": "00c051b7",
+      "instruction_bytes": 9,
+      "instruction_count": 4,
+      "coverage": "complete noarg cleanup helper",
+      "cpp_symbol": "unlock_native_crt_ptd_initialization_00c051ae",
+      "bytes": "6a 0c e8 7c c9 00 00 59 c3",
+      "sha256": "2fd64db3a43cdc5147db5de2bbb04b4cd8468fd7b2f4722dd30ea23aeb06f1d4",
+      "live_disk_equal": true,
+      "installed_pe_offset": 8409518,
+      "original_abi": "no incoming argument/register data;plainRET;no semantic EAX result;one cdeclcallee argument12 discarded with POP ECX"
+    }
+  ],
+  "source_sha256": "bed127cdf56c7e19b8ce0248e45779bfaf66fff9c83fb5d0deae4e08817cddbc",
+  "header_sha256": "a71f8150e2fa5240273797c2a08f5dc735565bab0fa5eea390c98ee424d0e8cd",
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "host_steps": [
+    {
+      "address": "00c051a3",
+      "native": "00c051ae",
+      "function": "00c050f8",
+      "kind": "call",
+      "contract": "no helper args;state=-2 before call;parent privateSEH transport unproved"
+    },
+    {
+      "address": "00c051b0",
+      "native": "00c11b31",
+      "function": "00c051ae",
+      "kind": "call",
+      "contract": "literal12;caller POP ECX cleans4;helper plainRET"
+    }
+  ],
+  "real_provider": {
+    "address": "00c11b31",
+    "symbol": "unlock_native_crt_canonical_00c11b31",
+    "source": "src/native_crt_canonical_unlock.cpp",
+    "header": "include/bsp/native_crt_canonical_unlock.hpp",
+    "source_sha256": "b2203a3e0def66f513f5bd0d8846a7ac21bb7e066015cf7f426d6e71165c6097",
+    "header_sha256": "161dce16976cc0c2bdc10495d5a3c733600cfc6e2d75dc07f1363e5710802cdf",
+    "full_original_bytes": "55 8b ec 8b 45 08 ff 34 c5 78 64 e1 00 ff 15 10 22 ce 00 5d c3",
+    "full_original_sha256": "79a3d82c9ad3f43182f2d65bf6c207f932615a621ab8b35db6fdcc467d324d56",
+    "full_original_size": 21,
+    "source_changed": false,
+    "provider_contract_read": true,
+    "operation": "raw fixed E16478+8*index descriptor word;actual KERNEL32 LeaveCriticalSection importCE2210",
+    "IAT_import_from_installed_PE": {
+      "dll": "KERNEL32.dll",
+      "name": "LeaveCriticalSection"
+    }
+  },
+  "admission": {
+    "actual_fixed_descriptor": "00e164d8",
+    "literal_lock_index": 12,
+    "required": "readable genuine canonical descriptor and actual initialized Win32 critical section currently owned by calling thread",
+    "no_new_lock_global_owner_callback_guard_or_recovery": true,
+    "no_synthetic_PTD": true,
+    "original_private_frame_register_fault_SEH_binary_entry_proved": false
+  },
+  "parent_boundary": {
+    "general_source_ready": false,
+    "Original_locale_TLS_errno_parity_proved": false,
+    "remaining_actual_dependencies": [
+      "C051B7 allocation/encodedgetset/PTD initialization",
+      "C0522E actual fatal transport",
+      "BF7E24 actual TLS/locale/multibyte ownership",
+      "C050F8 initialization/acquisition/privateSEH transport"
+    ],
+    "readiness_evidence": "reports/goal_oct15_crt_locale_provider_readiness.json"
+  },
+  "prior_annotations": [
+    {
+      "address": "00c051ae",
+      "annotation": {
+        "address": "00c051ae",
+        "function_name": "LIBCRT_unmatched_00c051ae",
+        "comment": "[BSP inventory 00c051ae] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      }
+    }
+  ],
+  "annotation": {
+    "status": "locked annotation applied; project saved; affected export refreshed",
+    "new_name": "BSP_CrtLock12_UnlockHelper",
+    "name_status": "descriptive hypothesis, not recovered library/compiler symbol",
+    "prior_value_log": "local/ghidra-annotations-20261016T004822Z.json",
+    "changes": [
+      {
+        "address": "00c051ae",
+        "before": {
+          "address": "00c051ae",
+          "function_name": "LIBCRT_unmatched_00c051ae",
+          "comment": "[BSP inventory 00c051ae] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+        },
+        "after": {
+          "address": "00c051ae",
+          "name": "BSP_CrtLock12_UnlockHelper",
+          "evidence": "Whole 9B/4ops [00C051AE,00C051B7): no-argument PUSH 0Ch/CALL canonical __unlock/POP ECX/RET helper; actual literal lock12 selects existing E164D8 initialized critical section owned by current thread. Complete ordinary Source src/native_crt_ptd_unlock_helper.cpp delegates unchanged canonical provider. Caller C050F8 role is provisional; descriptive hypothesis, not recovered library symbol. Preserve prior LIBCRT_unmatched_00c051ae and inventory comment. No PTD/FLS/locale/fatal/private-SEH or binary-entry readiness credit; report goal_oct15_crt_ptd_unlock_helper.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "export": "exports/bsp/functions/00c051ae/decompiled.c"
+  },
+  "source_registration": "unique deferred Source append in cmake/startup.cmake; first/unheld queue turn consumed and released before build; no exclusive file lease",
+  "validation": {
+    "independent_review": {
+      "reviewer": "primary integrator",
+      "result": "passed full 9B/4ops helper, complete Source/header and real 21B canonical provider",
+      "source_sha256": "bed127cdf56c7e19b8ce0248e45779bfaf66fff9c83fb5d0deae4e08817cddbc",
+      "header_sha256": "a71f8150e2fa5240273797c2a08f5dc735565bab0fa5eea390c98ee424d0e8cd",
+      "source_unchanged": true
+    },
+    "build": {
+      "command": "scripts/build.ps1",
+      "revision": "327b2ecfb6f58caa5d05a9f435efa01398128efc",
+      "exit_code": 0,
+      "target": "MSVC Win32 Release",
+      "log": "local/goal_oct15_crt_ptd_unlock_helper_build.log",
+      "log_sha256": "e9d4f4b8ca7630c40c16636bb7a5acc26501c48f1caa7eac31408b1073e92093",
+      "existing_checks": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "passed": 2,
+      "failed": 0,
+      "test_seconds": 10.07,
+      "native_differential_enabled": false
+    },
+    "report_call_verification": {
+      "typed_rows": 2,
+      "failed": 0,
+      "documentation_claims": 2,
+      "unchecked": 0,
+      "warnings": 0
+    },
+    "new_tests": 0,
+    "native_differential_fixture": false,
+    "game_validated": false,
+    "emitted_object": {
+      "path": "local/goal_oct15_crt_ptd_unlock_helper_retained.obj",
+      "sha256": "7cc0492ea2c95a97431e73f186c5909526276554316d7acaab416a78a3207585",
+      "disassembly": "local/goal_oct15_crt_ptd_unlock_helper_object.txt",
+      "disassembly_sha256": "7a55bf56481bf3b046c269d4072a18e061894e94ac9b009688303e3220cb536b",
+      "whole_text_size": 9,
+      "bytes": "6a 0c e8 00 00 00 00 59 c3",
+      "relocation": {
+        "offset": 3,
+        "type": "IMAGE_REL_I386_REL32",
+        "symbol": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z"
+      },
+      "whole_native_body_equal_after_call_rel32_normalization": true,
+      "public_symbol_occurrences_in_bsp_core_lib": 1,
+      "binary_entry_private_ABI_or_game_proved": false
+    },
+    "primary_combined_build": {
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "receipt": "reports/goal_oct15_command_lifetime_primary_review.json",
+      "receipt_sha256": "68ad058165cb0f832f60dd1adc78946bc4edd51b2f0ba3479c5604914d8f9e3e",
+      "revision": "efa7febae744d66c5665e61b64bf8c67d36ff3f6",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_command_lifetime_combined_build.log",
+      "log_sha256": "8d982051dfaf99fea2dc0568e06ddba017eea931ad60c8f5e6ac9f0b63258653",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 9.55,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "existing_checks_scope": "regression checks; native math seeds do not execute these new bodies"
+    },
+    "primary_emitted_object": {
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "path": "local/goal_oct15_command_lifetime_objects/native_crt_ptd_unlock_helper.obj",
+      "sha256": "386bdd1432fabead92aedeb895850f1615dfde9805624c2c05553adb060c33e8",
+      "disassembly": "local/goal_oct15_command_lifetime_objects/native_crt_ptd_unlock_helper.disasm.txt",
+      "disassembly_sha256": "327a7c95629b9b8a52bb4c429810d3a34beaa901cb517221056e3279b3ac8a79",
+      "symbols": "local/goal_oct15_command_lifetime_objects/native_crt_ptd_unlock_helper.symbols.txt",
+      "symbols_sha256": "3b316f82a53aa2c832fe84e63961df98d75bbc95a32aeae3fa13f7da41566c88",
+      "public_symbol": "?unlock_native_crt_ptd_initialization_00c051ae@bsp@@YAXXZ",
+      "entry_text_size": 9,
+      "entry_text_sha256": "191e167e65b007d24349c95b6422e5f8070b22b9d7a7f54264933717a921869e",
+      "unique_identical_archive_bodies": 1,
+      "whole_entry_inspected": true,
+      "private_ABI_or_binary_entry_proved": false,
+      "whole_native_body_equal_after_call_rel32_normalization": true,
+      "call_relocation_target": "unlock_native_crt_canonical_00c11b31(int), literal12"
+    }
+  },
+  "qualification": "Whole9B noarg helper via real unchanged complete canonical unlock12;valid actual initialized/owned CS domain. Ordinary Source only,no manufactured naked-ASM identity/privateABI or PTD/FLS/locale/fatal/SEH/game closure."
+}

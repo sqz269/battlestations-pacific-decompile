@@ -1,0 +1,534 @@
+{
+  "packet": "goal_oct15_scene_command_record_destroy",
+  "status": "whole_ordinary_actual_storage_Source_primary_reviewed_registered_Win32_three_checks_emitted_schedule_passed",
+  "code_complete": true,
+  "ordinary_normal_code_complete": true,
+  "source_ready": true,
+  "readiness_gate": "satisfied_for_three_whole_ordinary_Source_APIs;standalone_action_separately_qualified",
+  "source": "src/native_scene_command_record_destroy.cpp",
+  "header": "include/bsp/native_scene_command_record_destroy.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_COMMAND_RECORD_DESTROY.md",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "language": "x86:LE:32:default",
+    "installed_binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "annotation": "FinalwriteLockedannotationpreservednativecorrectnames/commentsandallpriorvalues;projectsaved;4exportsrefreshed;4nativenames/finalqualifiedevidencereadback"
+  },
+  "routines": [
+    {
+      "address": "00469010",
+      "name": "destroy_native_scene_command_record_00469010",
+      "native_name_preserved": "BSP_SceneRecord_DestructFields",
+      "coverage": "whole_ordinary_actual_raw_storage_control_flow",
+      "original_abi": "ECXrecord/unusedEDX/plainRET/semanticvoid",
+      "bytes": 119,
+      "instructions": 38,
+      "end_inclusive": "00469086",
+      "original_hex": "6aff685b1ac60064a100000000506489250000000051568bf1897424048b461085c0c74424100000000074168b4e0c6a0183c1015150e8750cfbff8bc8e8be8476008b460885c0c7442410ffffffff74168b76046a0183c6015650e8500cfbff8bc8e8998476008b4c24085e64890d0000000083c410c3",
+      "original_sha256": "36bc39c4ccaa3a93f05dc2de6413f4248e773b6a8aa1fa9ac64292c83af15470",
+      "original_ABI_compatible": false,
+      "game_validated": false,
+      "source_ready": true,
+      "qualified_action_mapping_ready": false
+    },
+    {
+      "address": "00c61a50",
+      "name": "unwind_native_scene_command_record_00c61a50",
+      "native_name_preserved": "Unwind@00c61a50",
+      "coverage": "qualified_whole_cleanup_action_mapping",
+      "original_abi": "CURRENTnative[EBP-10]+4/tailJMP41DD20;Sourceexplicitsavedthis4/context",
+      "bytes": 11,
+      "instructions": 3,
+      "end_inclusive": "00c61a5a",
+      "original_hex": "8b4df083c104e9c5c27bff",
+      "original_sha256": "e385aa3367707e9f669484ea8cd3c9a3a7eac61237f05ad544c196fbac8f7122",
+      "original_ABI_compatible": false,
+      "game_validated": false,
+      "source_ready": false,
+      "qualified_action_mapping_ready": true
+    },
+    {
+      "address": "00469b00",
+      "name": "scalar_delete_native_scene_command_record_00469b00",
+      "native_name_preserved": "CG_scalar_deleting_dtor_00469b00",
+      "coverage": "whole_ordinary_actual_raw_storage_control_flow",
+      "original_abi": "ECXrecord/unusedEDX/LIVEflags4/RET4/EAXcapturedrawrecord",
+      "bytes": 30,
+      "instructions": 11,
+      "end_inclusive": "00469b1d",
+      "original_hex": "568bf1e808f5fffff644240801740956e897ca780083c4048bc65ec20400",
+      "original_sha256": "1a41802a6c4cdf4a7ad8b33ed6bfc96d9b7fe471c90faa115b0965c3b89bcaf1",
+      "original_ABI_compatible": false,
+      "game_validated": false,
+      "source_ready": true,
+      "qualified_action_mapping_ready": false
+    },
+    {
+      "address": "0046a090",
+      "name": "delete_native_scene_command_record_pointer_0046a090",
+      "native_name_preserved": "BSP_SceneRecordPtr_Delete",
+      "coverage": "whole_ordinary_actual_raw_storage_control_flow",
+      "original_abi": "ECXslot4/unusedEDX/plainRET/semanticvoid",
+      "bytes": 35,
+      "instructions": 15,
+      "end_inclusive": "0046a0b2",
+      "original_hex": "56578bf98b3785f674168bcee86fefffff56e805c5780083c404c707000000005f5ec3",
+      "original_sha256": "8989b28e440d62ee6b864f6d0390dca06b72a3ffff8f27ec1e142aa7484b675f",
+      "original_ABI_compatible": false,
+      "game_validated": false,
+      "source_ready": true,
+      "qualified_action_mapping_ready": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00469046",
+      "native": "00419cc0",
+      "kind": "call",
+      "function": "00469010",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "0046904d",
+      "native": "00bd1510",
+      "kind": "call",
+      "function": "00469010",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "0046906b",
+      "native": "00419cc0",
+      "kind": "call",
+      "function": "00469010",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "00469072",
+      "native": "00bd1510",
+      "kind": "call",
+      "function": "00469010",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "00c61a56",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "function": "00c61a50",
+      "flow_override": "CALL_RETURN",
+      "default_flow": "UNCONDITIONAL_JUMP",
+      "effective_flow": "CALL_TERMINATOR"
+    },
+    {
+      "address": "00469b03",
+      "native": "00469010",
+      "kind": "call",
+      "function": "00469b00",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "00469b10",
+      "native": "00bf65ac",
+      "kind": "call",
+      "function": "00469b00",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "0046a09c",
+      "native": "00469010",
+      "kind": "call",
+      "function": "0046a090",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "0046a0a2",
+      "native": "00bf65ac",
+      "kind": "call",
+      "function": "0046a090",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "0046aa0c",
+      "native": "00469010",
+      "kind": "call",
+      "function": "0046a9f0",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    }
+  ],
+  "typed_metadata": {
+    "path": "local\\goal_oct15_scene_command_record_destroy_typed.json",
+    "responses": 14,
+    "verified_project_program": true,
+    "analysis_or_flow_repair": false
+  },
+  "raw_frame": {
+    "saved_this4": "ExplicitactualcellwrittenatnativePUSHECX9025andstore9029;actionrereadsCURRENTcell",
+    "scalar_flags4": "Explicitactualnativeinputbacking;lateBYTEreadmask01/bit0aftercore",
+    "pointer_slot4": "Capturecellandrecordonce;realchild/freecapturedrecord;THENwritezeroCAPTUREDcell",
+    "binding_metadata": "Stable/disjointfromallreachedrawaccesses;actualrecord/cells/providerpublicationsretaintheirrawschedules",
+    "excluded_aliases": "Noimplicitcompiler/privateFH3/outgoingargumenthomeidentity"
+  },
+  "raw_schedule": [
+    "savedthisrecordtwice;capturedata10;arm0;nonnullCURRENTlenC+1wrap;actualget;returncaptureddata/size",
+    "afterfirstreleasefreshCURRENTdata8;disarmminus1;nonnullCURRENTlen4+1wrap;actualget;returncaptureddata/size",
+    "Noheader/ownerreset;nullskipslength/get/return;getbeforeeachreturnevenlarge/disabled",
+    "scalarcorethenCURRENTflagsBYTEbit0;optionalcurrentCRTfreecapturedrecord;returncapturedrawvalue",
+    "slot/recordcaptureonce;nullskipsall;realcore/freecapturedrecord;zerocapturedslotlast"
+  ],
+  "EH": {
+    "handler": "00c61a5b",
+    "FuncInfo": "00d89068",
+    "FuncInfo_hex": "22059319010000006090d80000000000000000000000000000000000",
+    "unwind_map": "00d89060",
+    "unwind_map_hex": "ffffffff501ac600",
+    "action": "state0->minus1viaC61A50;CURRENTsavedthis+4->actualrawheaderdestroy41DD20",
+    "normal": "Firstdatareadbeforearm;seconddatareadbeforedisarm;lengthreadsfollowtheirconditionalstates",
+    "qualification": "ordinaryC++cleanupmappingonly;OriginalFH3/SEH/privateframe/secondarycleanupthrow/faulttransportunproved",
+    "ordinary_Cpp_exception_behavior": "ArmedfirstreleaseCppthrow->CURRENTsavedthisaction;disarmedsecondphaseCppthrowescapeswithoutaction;cleanupthrowduringunwindusesordinaryCpptermination;noWin32SEH/OriginalFH3transportpromise"
+  },
+  "actual_providers": {
+    "getter": "Actualraw419CC0publications/manager/current__finally",
+    "pool_return": "WholeactualBD1510;unusedmode1/actualshutdowngate/livepoolbranches",
+    "header_cleanup": "Existingactualraw41DD20CURRENTsavedthis+4",
+    "free": "Existingconcrete singleton_lifetime_free->std::free/currentCRT;noOriginalheapidentity"
+  },
+  "provider_Source_hashes": {
+    "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+    "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+    "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+    "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+  },
+  "source_hashes": {
+    "src/native_scene_command_record_destroy.cpp": {
+      "bytes_sha256": "b0bee8b49e3c529aef5ce711bf09d458b175b6eceed61c70d77b639ffec0e8af",
+      "normalized_lf_sha256": "b0bee8b49e3c529aef5ce711bf09d458b175b6eceed61c70d77b639ffec0e8af"
+    },
+    "include/bsp/native_scene_command_record_destroy.hpp": {
+      "bytes_sha256": "16273d338e13cebb5987d45f004b8f91962a1205e566f414f1507750170cbe5c",
+      "normalized_lf_sha256": "16273d338e13cebb5987d45f004b8f91962a1205e566f414f1507750170cbe5c"
+    }
+  },
+  "incoming": {
+    "core_calls": 3,
+    "sites": [
+      "00469b03",
+      "0046a09c",
+      "0046aa0c"
+    ],
+    "all_setups_read": true,
+    "scalar_wrapper_xrefs": 0,
+    "pointer_wrapper_xrefs": 0,
+    "limits": "Noindirect/applicationcallercoverageinferred;externalclear/producernotowned"
+  },
+  "validation": {
+    "complete_owned_native_bytes": 195,
+    "complete_owned_instructions": 67,
+    "live_equals_installed_PE": true,
+    "typed_unique_transfers": 10,
+    "owned_native_calls": 8,
+    "qualified_action_tail_JMPs": 1,
+    "additional_external_incoming_calls": 1,
+    "build": {
+      "revision": "efa7febae744d66c5665e61b64bf8c67d36ff3f6",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_command_lifetime_combined_build.log",
+      "log_sha256": "8d982051dfaf99fea2dc0568e06ddba017eea931ad60c8f5e6ac9f0b63258653",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 9.55,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "actual_tree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "worker_build_run": false,
+      "worker_build_superseded_by_explicit_primary_combined_build": true,
+      "receipt": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\reports\\goal_oct15_command_lifetime_primary_review.json",
+      "receipt_sha256": "68ad058165cb0f832f60dd1adc78946bc4edd51b2f0ba3479c5604914d8f9e3e"
+    },
+    "registration": {
+      "source_inclusion_count": 1,
+      "registered_by": "primary_integrator",
+      "build_revision": "efa7febae744d66c5665e61b64bf8c67d36ff3f6",
+      "unique_object": [
+        "bsp_core.dir\\Release\\native_scene_command_record_destroy.obj"
+      ]
+    },
+    "new_tests": 0,
+    "direct_new_entry_execution": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "application_adoption": false,
+    "report_calls": "10uniquerowschecked,0failed;docs18addresses10claims0failed/unchecked/warnings",
+    "independent_primary_review": {
+      "reviewed_commit": "5d6eceae9",
+      "result": "passed_no_Source_changes_requested",
+      "scope": "Complete195B67ops+wholeSource/header+actualrawproviderreview;bothsavedstores/target-arm-length-get-return/freshcommand-disarm-length/lateBYTEbit0/capturedslot-recordfree-zero",
+      "reviewed_normalized_lf_sha256": {
+        "src/native_scene_command_record_destroy.cpp": "b0bee8b49e3c529aef5ce711bf09d458b175b6eceed61c70d77b639ffec0e8af",
+        "include/bsp/native_scene_command_record_destroy.hpp": "16273d338e13cebb5987d45f004b8f91962a1205e566f414f1507750170cbe5c"
+      },
+      "hashes_asserted_unchanged": true
+    },
+    "accepted_Source_provider_hashes_unchanged": true,
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\build\\win32\\Release\\bsp_core.lib",
+      "sha256": "59f20166ea49b3adb00bf1f3c16208f4bec28b5d3ccf41dd4682fc87331a75b4",
+      "exact_matching_object_members": 1
+    },
+    "emitted_object": {
+      "machine": "014c",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct15_command_lifetime_objects\\native_scene_command_record_destroy.obj",
+      "object_sha256": "302275b98813bbaa43c7bb028388600a353e1515454cf53068cad6850bb9a136",
+      "functions": [
+        {
+          "Source": "destroy_native_scene_command_record_00469010",
+          "symbol": "?destroy_native_scene_command_record_00469010@bsp@@YAXPAX0AAUNativeStringRawPoolContext@1@@Z",
+          "bytes": 191,
+          "instructions": 72,
+          "calls": [
+            {
+              "offset": 97,
+              "mnemonic": "call",
+              "target": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+            },
+            {
+              "offset": 112,
+              "mnemonic": "call",
+              "target": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+            },
+            {
+              "offset": 150,
+              "mnemonic": "call",
+              "target": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+            },
+            {
+              "offset": 165,
+              "mnemonic": "call",
+              "target": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+            }
+          ],
+          "listing": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_erase\\local\\goal_oct15_command_record_00469010_COFF.txt"
+        },
+        {
+          "Source": "unwind_native_scene_command_record_00c61a50",
+          "symbol": "?unwind_native_scene_command_record_00c61a50@bsp@@YAXPBXAAUNativeStringRawPoolContext@1@@Z",
+          "bytes": 20,
+          "instructions": 8,
+          "calls": [
+            {
+              "offset": 15,
+              "mnemonic": "jmp",
+              "target": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+            }
+          ],
+          "listing": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_erase\\local\\goal_oct15_command_record_00c61a50_COFF.txt"
+        },
+        {
+          "Source": "scalar_delete_native_scene_command_record_00469b00",
+          "symbol": "?scalar_delete_native_scene_command_record_00469b00@bsp@@YAPAXPAXABUNativeSceneCommandRecordScalarDeleteFrame@1@AAUNativeStringRawPoolContext@1@@Z",
+          "bytes": 50,
+          "instructions": 23,
+          "calls": [
+            {
+              "offset": 20,
+              "mnemonic": "call",
+              "target": "?destroy_native_scene_command_record_00469010@bsp@@YAXPAX0AAUNativeStringRawPoolContext@1@@Z"
+            },
+            {
+              "offset": 36,
+              "mnemonic": "call",
+              "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+            }
+          ],
+          "listing": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_erase\\local\\goal_oct15_command_record_00469b00_COFF.txt"
+        },
+        {
+          "Source": "delete_native_scene_command_record_pointer_0046a090",
+          "symbol": "?delete_native_scene_command_record_pointer_0046a090@bsp@@YAXPAX0AAUNativeStringRawPoolContext@1@@Z",
+          "bytes": 45,
+          "instructions": 20,
+          "calls": [
+            {
+              "offset": 21,
+              "mnemonic": "call",
+              "target": "?destroy_native_scene_command_record_00469010@bsp@@YAXPAX0AAUNativeStringRawPoolContext@1@@Z"
+            },
+            {
+              "offset": 27,
+              "mnemonic": "call",
+              "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+            }
+          ],
+          "listing": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_erase\\local\\goal_oct15_command_record_0046a090_COFF.txt"
+        }
+      ]
+    },
+    "reviewed_built_Source_and_all_provider_hashes_unchanged": true,
+    "emitted_raw_schedule_review": "AllfourSourcefunctionsinspected;savedcellwrites/data10-firstrelease-freshdata8/lateBYTEbit0/capturedrecordslotfree-zero;noOriginalprivateEHregisterABIidentitycredit",
+    "emitted_raw_schedule_detail": {
+      "core": "Source191B72ops: savedcellstores3A/3C;targetdata48;armedBYTE4E;lenC59/get61/return70;freshcommanddata80;disarmBYTE86;len48E/get96/returnA5",
+      "scalar": "Source50B23ops:realchild14;lateflagsBYTE19/test01at1E;free24;returncapturedEDI2C",
+      "pointer": "Source45B20ops:capturedslotEDI5/recordESI8;child15/free1B;store0CAPTUREDslotEDI23",
+      "action": "Source20B8ops:CURRENTsavedthisload6/add4at8/tailactualheaderdestroyF",
+      "private_limit": "CompilerprivateEHstate0store41precedestargetdata48;actualboolarm4Efollowstargetdata. NoOriginalprivateFH3/SEH/fault-transportidentitycredit"
+    },
+    "final_locked_annotation_save_export_readback": true
+  },
+  "limits": [
+    "OrdinaryactualstorageSourceonly;qualifiedseparatecleanupmappingnotOriginalFH3/SEH/privateframe/heapidentity",
+    "Actualpool/context/allocation/lock/lifetimecontractsapplywhereaccessed;noclone/duplicate/text/graphdomainintroduced",
+    "NoHost/callback/stub/newowner/headerreset/flagDWORDsnapshot/slotpointeereload/extraSemanticreturnclaim",
+    "NoOriginalbinaryABI/nativeentrydifferential/application/gameproof",
+    "NormalthreeAPIswholeordinarySource-ready;standalonecleanupactionqualified;compiled/archivechecksnotnewentryexecutionorOriginalheap/FH3/privateABI/gameproof"
+  ],
+  "annotation_prior_values": [
+    {
+      "address": "00469010",
+      "before": {
+        "address": "00469010",
+        "function_name": "BSP_SceneRecord_DestructFields",
+        "comment": "[BSP reconstruction 00469010]\ncc13-mopup1: returns the NativeString blocks of the scene record (+10h ...) to the sized pool under an EH frame; callers CG_scalar_deleting_dtor_00469b00 / BSP_SceneDatabase_ClearPendingReferences"
+      },
+      "after": {
+        "address": "00469010",
+        "name": "BSP_SceneRecord_DestructFields",
+        "evidence": "cc13-mopup1: returns the NativeString blocks of the scene record (+10h ...) to the sized pool under an EH frame; callers CG_scalar_deleting_dtor_00469b00 / BSP_SceneDatabase_ClearPendingReferences | Complete119B/38op whole_ordinary_actual_raw_storage_control_flow overactualrawpool/header/currentCRTproviders. data10capture/arm0/firstrelease/freshdata8/disarm/length4;CURRENTsavedthis+4cleanup;noheader/ownerreset. ScalarLIVEBYTEflagsmask01bit0afterchild/capturedrawrecord;pointercapturesslot/recordonce,child/freeTHENzerocapturedslot. Explicitnativecells/stablemetadata;195BlivePE67ops/10typedtransfers;OriginalFH3/privateABI/heap/gameunproved. docs/GOAL_OCT15_SCENE_COMMAND_RECORD_DESTROY.md"
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00469b00",
+      "before": {
+        "address": "00469b00",
+        "function_name": "CG_scalar_deleting_dtor_00469b00"
+      },
+      "after": {
+        "address": "00469b00",
+        "name": "CG_scalar_deleting_dtor_00469b00",
+        "evidence": "Complete30B/11op whole_ordinary_actual_raw_storage_control_flow overactualrawpool/header/currentCRTproviders. data10capture/arm0/firstrelease/freshdata8/disarm/length4;CURRENTsavedthis+4cleanup;noheader/ownerreset. ScalarLIVEBYTEflagsmask01bit0afterchild/capturedrawrecord;pointercapturesslot/recordonce,child/freeTHENzerocapturedslot. Explicitnativecells/stablemetadata;195BlivePE67ops/10typedtransfers;OriginalFH3/privateABI/heap/gameunproved. docs/GOAL_OCT15_SCENE_COMMAND_RECORD_DESTROY.md"
+      },
+      "status": "applied"
+    },
+    {
+      "address": "0046a090",
+      "before": {
+        "address": "0046a090",
+        "function_name": "BSP_SceneRecordPtr_Delete",
+        "comment": "[BSP reconstruction 0046a090]\ncc13-mopup1: if *p: BSP_SceneRecord_DestructFields, _free, *p = 0"
+      },
+      "after": {
+        "address": "0046a090",
+        "name": "BSP_SceneRecordPtr_Delete",
+        "evidence": "cc13-mopup1: if *p: BSP_SceneRecord_DestructFields, _free, *p = 0 | Complete35B/15op whole_ordinary_actual_raw_storage_control_flow overactualrawpool/header/currentCRTproviders. data10capture/arm0/firstrelease/freshdata8/disarm/length4;CURRENTsavedthis+4cleanup;noheader/ownerreset. ScalarLIVEBYTEflagsmask01bit0afterchild/capturedrawrecord;pointercapturesslot/recordonce,child/freeTHENzerocapturedslot. Explicitnativecells/stablemetadata;195BlivePE67ops/10typedtransfers;OriginalFH3/privateABI/heap/gameunproved. docs/GOAL_OCT15_SCENE_COMMAND_RECORD_DESTROY.md"
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00c61a50",
+      "before": {
+        "address": "00c61a50",
+        "function_name": "Unwind@00c61a50"
+      },
+      "after": {
+        "address": "00c61a50",
+        "name": "Unwind@00c61a50",
+        "evidence": "Complete11B/3op qualified_whole_cleanup_action_mapping overactualrawpool/header/currentCRTproviders. data10capture/arm0/firstrelease/freshdata8/disarm/length4;CURRENTsavedthis+4cleanup;noheader/ownerreset. ScalarLIVEBYTEflagsmask01bit0afterchild/capturedrawrecord;pointercapturesslot/recordonce,child/freeTHENzerocapturedslot. Explicitnativecells/stablemetadata;195BlivePE67ops/10typedtransfers;OriginalFH3/privateABI/heap/gameunproved. docs/GOAL_OCT15_SCENE_COMMAND_RECORD_DESTROY.md"
+      },
+      "status": "applied"
+    }
+  ],
+  "normal_source_functions": 3,
+  "private_source_cleanup_actions": 1,
+  "annotation_final_prior_values": {
+    "path": "local\\ghidra-annotations-20261016T011558Z.json",
+    "sha256": "700b19e04603e6c65f150e11c8a185e92d0031eab5015ddca76f87bd6a9f0880",
+    "prior_values": [
+      {
+        "address": "00469010",
+        "before": {
+          "address": "00469010",
+          "function_name": "BSP_SceneRecord_DestructFields",
+          "comment": "[BSP reconstruction 00469010]\ncc13-mopup1: returns the NativeString blocks of the scene record (+10h ...) to the sized pool under an EH frame; callers CG_scalar_deleting_dtor_00469b00 / BSP_SceneDatabase_ClearPendingReferences\n\n[BSP reconstruction 00469010] update\ncc13-mopup1: returns the NativeString blocks of the scene record (+10h ...) to the sized pool under an EH frame; callers CG_scalar_deleting_dtor_00469b00 / BSP_SceneDatabase_ClearPendingReferences | Complete119B/38op whole_ordinary_actual_raw_storage_control_flow overactualrawpool/header/currentCRTproviders. data10capture/arm0/firstrelease/freshdata8/disarm/length4;CURRENTsavedthis+4cleanup;noheader/ownerreset. ScalarLIVEBYTEflagsmask01bit0afterchild/capturedrawrecord;pointercapturesslot/recordonce,child/freeTHENzerocapturedslot. Explicitnativecells/stablemetadata;195BlivePE67ops/10typedtransfers;OriginalFH3/privateABI/heap/gameunproved. docs/GOAL_OCT15_SCENE_COMMAND_RECORD_DESTROY.md"
+        },
+        "after": {
+          "address": "00469010",
+          "name": "BSP_SceneRecord_DestructFields",
+          "evidence": "cc13-mopup1: returns the NativeString blocks of the scene record (+10h ...) to the sized pool under an EH frame; callers CG_scalar_deleting_dtor_00469b00 / BSP_SceneDatabase_ClearPendingReferences | Complete119B/38op whole_ordinary_actual_raw_storage_control_flow overactualrawpool/header/currentCRTproviders. data10capture/arm0/firstrelease/freshdata8/disarm/length4;CURRENTsavedthis+4cleanup;noheader/ownerreset. ScalarLIVEBYTEflagsmask01bit0afterchild/capturedrawrecord;pointercapturesslot/recordonce,child/freeTHENzerocapturedslot. Explicitnativecells/stablemetadata;195BlivePE67ops/10typedtransfers;OriginalFH3/privateABI/heap/gameunproved. docs/GOAL_OCT15_SCENE_COMMAND_RECORD_DESTROY.md | Independentcomplete195B67ops/Source/header/providerreview5d6eceae9passed;allaccepted/builtSource/providerhashesunchanged. Primaryscripts/build.ps1MSVCReleaseWin32atefa7febae744d66c5665e61b64bf8c67d36ff3f6passed3existingchecks9.55s;uniqueregistered/archiveobject;all4emittedSourceschedulesinspected. ThreeordinaryactualstorageSourceAPIsready;standaloneC61A50actionqualifiedCURRENTsavedthis+4;noOriginalheap/FH3/privateABI/SEH/gamecredit. LateBYTEflagsmask01bit0;capturedrecord/slot;noheader/ownerreset;195BlivePE67ops/10typedrows. docs/GOAL_OCT15_SCENE_COMMAND_RECORD_DESTROY.md"
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00469b00",
+        "before": {
+          "address": "00469b00",
+          "function_name": "CG_scalar_deleting_dtor_00469b00",
+          "comment": "[BSP reconstruction 00469b00]\nComplete30B/11op whole_ordinary_actual_raw_storage_control_flow overactualrawpool/header/currentCRTproviders. data10capture/arm0/firstrelease/freshdata8/disarm/length4;CURRENTsavedthis+4cleanup;noheader/ownerreset. ScalarLIVEBYTEflagsmask01bit0afterchild/capturedrawrecord;pointercapturesslot/recordonce,child/freeTHENzerocapturedslot. Explicitnativecells/stablemetadata;195BlivePE67ops/10typedtransfers;OriginalFH3/privateABI/heap/gameunproved. docs/GOAL_OCT15_SCENE_COMMAND_RECORD_DESTROY.md"
+        },
+        "after": {
+          "address": "00469b00",
+          "name": "CG_scalar_deleting_dtor_00469b00",
+          "evidence": "Complete30B/11op whole_ordinary_actual_raw_storage_control_flow overactualrawpool/header/currentCRTproviders. data10capture/arm0/firstrelease/freshdata8/disarm/length4;CURRENTsavedthis+4cleanup;noheader/ownerreset. ScalarLIVEBYTEflagsmask01bit0afterchild/capturedrawrecord;pointercapturesslot/recordonce,child/freeTHENzerocapturedslot. Explicitnativecells/stablemetadata;195BlivePE67ops/10typedtransfers;OriginalFH3/privateABI/heap/gameunproved. docs/GOAL_OCT15_SCENE_COMMAND_RECORD_DESTROY.md | Independentcomplete195B67ops/Source/header/providerreview5d6eceae9passed;allaccepted/builtSource/providerhashesunchanged. Primaryscripts/build.ps1MSVCReleaseWin32atefa7febae744d66c5665e61b64bf8c67d36ff3f6passed3existingchecks9.55s;uniqueregistered/archiveobject;all4emittedSourceschedulesinspected. ThreeordinaryactualstorageSourceAPIsready;standaloneC61A50actionqualifiedCURRENTsavedthis+4;noOriginalheap/FH3/privateABI/SEH/gamecredit. LateBYTEflagsmask01bit0;capturedrecord/slot;noheader/ownerreset;195BlivePE67ops/10typedrows. docs/GOAL_OCT15_SCENE_COMMAND_RECORD_DESTROY.md"
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0046a090",
+        "before": {
+          "address": "0046a090",
+          "function_name": "BSP_SceneRecordPtr_Delete",
+          "comment": "[BSP reconstruction 0046a090]\ncc13-mopup1: if *p: BSP_SceneRecord_DestructFields, _free, *p = 0\n\n[BSP reconstruction 0046a090] update\ncc13-mopup1: if *p: BSP_SceneRecord_DestructFields, _free, *p = 0 | Complete35B/15op whole_ordinary_actual_raw_storage_control_flow overactualrawpool/header/currentCRTproviders. data10capture/arm0/firstrelease/freshdata8/disarm/length4;CURRENTsavedthis+4cleanup;noheader/ownerreset. ScalarLIVEBYTEflagsmask01bit0afterchild/capturedrawrecord;pointercapturesslot/recordonce,child/freeTHENzerocapturedslot. Explicitnativecells/stablemetadata;195BlivePE67ops/10typedtransfers;OriginalFH3/privateABI/heap/gameunproved. docs/GOAL_OCT15_SCENE_COMMAND_RECORD_DESTROY.md"
+        },
+        "after": {
+          "address": "0046a090",
+          "name": "BSP_SceneRecordPtr_Delete",
+          "evidence": "cc13-mopup1: if *p: BSP_SceneRecord_DestructFields, _free, *p = 0 | Complete35B/15op whole_ordinary_actual_raw_storage_control_flow overactualrawpool/header/currentCRTproviders. data10capture/arm0/firstrelease/freshdata8/disarm/length4;CURRENTsavedthis+4cleanup;noheader/ownerreset. ScalarLIVEBYTEflagsmask01bit0afterchild/capturedrawrecord;pointercapturesslot/recordonce,child/freeTHENzerocapturedslot. Explicitnativecells/stablemetadata;195BlivePE67ops/10typedtransfers;OriginalFH3/privateABI/heap/gameunproved. docs/GOAL_OCT15_SCENE_COMMAND_RECORD_DESTROY.md | Independentcomplete195B67ops/Source/header/providerreview5d6eceae9passed;allaccepted/builtSource/providerhashesunchanged. Primaryscripts/build.ps1MSVCReleaseWin32atefa7febae744d66c5665e61b64bf8c67d36ff3f6passed3existingchecks9.55s;uniqueregistered/archiveobject;all4emittedSourceschedulesinspected. ThreeordinaryactualstorageSourceAPIsready;standaloneC61A50actionqualifiedCURRENTsavedthis+4;noOriginalheap/FH3/privateABI/SEH/gamecredit. LateBYTEflagsmask01bit0;capturedrecord/slot;noheader/ownerreset;195BlivePE67ops/10typedrows. docs/GOAL_OCT15_SCENE_COMMAND_RECORD_DESTROY.md"
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c61a50",
+        "before": {
+          "address": "00c61a50",
+          "function_name": "Unwind@00c61a50",
+          "comment": "[BSP reconstruction 00c61a50]\nComplete11B/3op qualified_whole_cleanup_action_mapping overactualrawpool/header/currentCRTproviders. data10capture/arm0/firstrelease/freshdata8/disarm/length4;CURRENTsavedthis+4cleanup;noheader/ownerreset. ScalarLIVEBYTEflagsmask01bit0afterchild/capturedrawrecord;pointercapturesslot/recordonce,child/freeTHENzerocapturedslot. Explicitnativecells/stablemetadata;195BlivePE67ops/10typedtransfers;OriginalFH3/privateABI/heap/gameunproved. docs/GOAL_OCT15_SCENE_COMMAND_RECORD_DESTROY.md"
+        },
+        "after": {
+          "address": "00c61a50",
+          "name": "Unwind@00c61a50",
+          "evidence": "Complete11B/3op qualified_whole_cleanup_action_mapping overactualrawpool/header/currentCRTproviders. data10capture/arm0/firstrelease/freshdata8/disarm/length4;CURRENTsavedthis+4cleanup;noheader/ownerreset. ScalarLIVEBYTEflagsmask01bit0afterchild/capturedrawrecord;pointercapturesslot/recordonce,child/freeTHENzerocapturedslot. Explicitnativecells/stablemetadata;195BlivePE67ops/10typedtransfers;OriginalFH3/privateABI/heap/gameunproved. docs/GOAL_OCT15_SCENE_COMMAND_RECORD_DESTROY.md | Independentcomplete195B67ops/Source/header/providerreview5d6eceae9passed;allaccepted/builtSource/providerhashesunchanged. Primaryscripts/build.ps1MSVCReleaseWin32atefa7febae744d66c5665e61b64bf8c67d36ff3f6passed3existingchecks9.55s;uniqueregistered/archiveobject;all4emittedSourceschedulesinspected. ThreeordinaryactualstorageSourceAPIsready;standaloneC61A50actionqualifiedCURRENTsavedthis+4;noOriginalheap/FH3/privateABI/SEH/gamecredit. LateBYTEflagsmask01bit0;capturedrecord/slot;noheader/ownerreset;195BlivePE67ops/10typedrows. docs/GOAL_OCT15_SCENE_COMMAND_RECORD_DESTROY.md"
+        },
+        "status": "applied"
+      }
+    ]
+  }
+}
