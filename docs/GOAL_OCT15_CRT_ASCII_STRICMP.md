@@ -58,10 +58,19 @@ The full53 live bytes match the installed PE. The report pins complete bytes,
 Source/header hashes, original ABI, prior library name/comment and typed rows.
 Correct library name `___ascii_stricmp` is preserved. Locked annotation saved
 the original project and refreshed the export, preserving prior values in
-`local/ghidra-annotations-20261016T000422Z.json`. Primary independent full24-op
+`local/ghidra-annotations-20261016T000422Z.json`. Final saved annotation/export
+adds the build receipt, preserving prior values in
+`local/ghidra-annotations-20261016T001418Z.json`. Primary independent full24-op
 and complete Source/header review passed at `5ed8c0888`, with hashes asserted
 unchanged. A unique CMake registration was appended when the file was unheld
 and this packet's queue was first; its queue was removed immediately without
-an exclusive whole-file lease. Normal registered Win32 build is pending. No new
-tests, native differential execution, parent locale equivalence or game claim
-is made.
+an exclusive whole-file lease. Normal registered MSVC Win32 build passed at
+`ca8e6a52a`; both enabled existing checks passed in 7.80 seconds. Optional native
+differential fixtures were not enabled. The emitted72B leaf reads unsigned
+left/right bytes at+10/+24, tests left zero at+39 before equality at+3D and has
+no external call relocations. Pure register arithmetic is scheduled differently
+by the compiler; no Original private-register/fault identity is claimed. Its
+public symbol occurs once in the production archive. Ordinary `source_ready`
+applies only to this complete intrinsic leaf, while parent locale/readiness
+remains unproved. No new tests, native differential execution, parent locale
+equivalence or game claim is made.

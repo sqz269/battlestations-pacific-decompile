@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "packet": "goal_oct15_crt_ascii_stricmp",
-  "status": "complete_intrinsic_raw_leaf_Source_draft_registered_build_pending",
-  "source_ready": false,
+  "status": "complete_ordinary_raw_intrinsic_leaf_all_BYTE_values_MSVC_Win32_checked",
+  "source_ready": true,
   "whole_control_flow_source_available": true,
   "source": "src/native_crt_ascii_stricmp.cpp",
   "header": "include/bsp/native_crt_ascii_stricmp.hpp",
@@ -97,15 +97,29 @@
     }
   ],
   "annotation": {
-    "status": "PASS locked library-name preservation;prior values recorded;project saved;export refreshed",
-    "prior_values_log": "local\\ghidra-annotations-20261016T000422Z.json",
-    "prior_values_log_sha256": "17e2282fb39f5251f37df48dddb4e22880c13bc9dc7017e51c28398e4ab9ac5e",
+    "status": "PASS final locked library-name preservation;project saved;export refreshed",
+    "prior_values_logs": [
+      "local\\ghidra-annotations-20261016T000422Z.json",
+      "local\\ghidra-annotations-20261016T001418Z.json"
+    ],
+    "final_prior_values_log_sha256": "71881414803cc8fa1e66b97c4b63949dff76170ac219f12b42f48accb78abb44",
     "project_saved": true,
     "exports_refreshed": true
   },
   "source_registration": "Unique cmake/startup.cmake append only when unheld and own queue first;own queue immediately consumed;no exclusive whole-file lease",
   "validation": {
-    "build": "pending normal registered MSVCWin32 or primary combined gate",
+    "build": {
+      "command": "scripts/build.ps1",
+      "revision": "ca8e6a52a",
+      "platform": "MSVC Win32",
+      "result": "PASS",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_crt_ascii_stricmp_build.log",
+      "log_sha256": "e7ca993c87a38e02baad3f8e852bc318cc462bb70a69f68b220d1068ad9dbcc2",
+      "warnings": [
+        "existing unrelated LNK4006 duplicate spawn_request_id_matches"
+      ]
+    },
     "independent_review": {
       "reviewer": "primary /root",
       "revision": "5ed8c0888",
@@ -119,7 +133,34 @@
     "new_tests": 0,
     "native_differential_fixture": false,
     "original_binary_entry_ABI_compatible": false,
-    "game_validated": false
+    "game_validated": false,
+    "existing_ctests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "seconds": 7.8,
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "optional_native_differential_enabled": false
+    },
+    "emitted_object": {
+      "object": "local/goal_oct15_crt_ascii_stricmp.obj",
+      "object_sha256": "5a3398dbcd47538cc28eb0a8beec1a0bbeb07b697759019b68350f064a00c1b4",
+      "dump": "local\\goal_oct15_crt_ascii_stricmp_object.txt",
+      "dump_sha256": "7196c9698c72df63fd8ce26e98cdd8c58460c367dccc40d174e4510827f145ea",
+      "code_bytes": 72,
+      "instruction_count": 32,
+      "code_sha256": "d08057d3e21da5e64ad4aa7e1983f20d67d084ac2ad79c903b89085e398d6569",
+      "external_call_relocations": 0,
+      "result": "PASS complete emitted body;unsigned left/right BYTE loads+10/+24 before leftzero+39/equality+3D;wrapping effective cursors;no SDK calls",
+      "pure_register_arithmetic_order": "compiler may move pure cursor/fold arithmetic;ordinary-C++ read/value behavior established,no Original private-register/fault order identity claimed",
+      "archive_public_symbol_count": 1,
+      "archive_symbol_receipt": "local\\goal_oct15_crt_ascii_stricmp_archive_symbols.txt",
+      "archive_symbol_receipt_sha256": "151541ece0c3ec09922d718072d86e5b1d7cb5704930154e383c509e9b135c55"
+    },
+    "diff_check": "PASS"
   },
   "qualification": "Whole53B/24-op intrinsic leaf for all BYTE values at valid reached ordinary-C++ Win32 storage. No SDK/locale/global/callback/stub dependency. Source API not Original private argument-home/register/fault/SEH/binary entry or game proof;parent generalLocale/readiness unchanged."
 }
