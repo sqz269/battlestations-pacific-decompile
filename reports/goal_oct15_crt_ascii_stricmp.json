@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_crt_ascii_stricmp",
+  "status": "complete_intrinsic_raw_leaf_Source_draft_registered_build_pending",
+  "source_ready": false,
+  "whole_control_flow_source_available": true,
+  "source": "src/native_crt_ascii_stricmp.cpp",
+  "header": "include/bsp/native_crt_ascii_stricmp.hpp",
+  "documentation": "docs/GOAL_OCT15_CRT_ASCII_STRICMP.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "routines": [
+    {
+      "address": "00bf7eb7",
+      "end_exclusive": "00bf7eec",
+      "instruction_bytes": 53,
+      "instruction_count": 24,
+      "coverage": "complete intrinsic raw-byte leaf,all BYTE values",
+      "library_name": "___ascii_stricmp",
+      "cpp_symbol": "compare_native_crt_ascii_strings_00bf7eb7",
+      "original_abi": "cdecl two stacked pointers;plainRET;EAX signedint;preserves ESI/EDI;right arg captured before left",
+      "bytes": "8b 54 24 08 56 8b 74 24 08 57 0f b6 06 8d 48 bf 46 83 f9 19 77 03 83 c0 20 0f b6 0a 8d 79 bf 42 83 ff 19 77 03 83 c1 20 85 c0 74 04 3b c1 74 da 5f 2b c1 5e c3",
+      "sha256": "7e5823046cef634a0ef6fed149abc1c7db3f092b8af301b9397e15696e25c086",
+      "live_disk_equal": true,
+      "installed_pe_file_offset": 8355511,
+      "direct_calls": 0,
+      "indirect_calls": 0
+    }
+  ],
+  "source_sha256": "3fe3b237b778e9500e30c11dbbb43f295c24915a2836bd097ceec04760125368",
+  "header_sha256": "b62a16f1efbfc03d33e61eb33250885af5ccca224303f8f8cd959883dc97a3e9",
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "host_steps": [
+    {
+      "address": "00bf7f72",
+      "native": "00bf7eb7",
+      "function": "00bf7eec",
+      "kind": "call",
+      "contract": "left current[EBP+8],right EDI;twoPOP ECX clean8;result retained"
+    },
+    {
+      "address": "00bf7ff8",
+      "native": "00bf7eb7",
+      "function": "00bf7fbf",
+      "kind": "tail_jump",
+      "contract": "actualJMP after POP ESI/EBP;inherited two cdecl pointers/plainRET"
+    },
+    {
+      "address": "00c01384",
+      "native": "00bf7eb7",
+      "function": "00c0115a",
+      "kind": "call",
+      "contract": "left currentEDI,rightD6967C;TEST result then twoPOP ECX clean8"
+    },
+    {
+      "address": "00c0139a",
+      "native": "00bf7eb7",
+      "function": "00c0115a",
+      "kind": "call",
+      "contract": "left currentEDI,rightD69678;TEST result then twoPOP ECX clean8"
+    }
+  ],
+  "named_incomplete_dependencies": [],
+  "admission": {
+    "all_byte_values_intrinsic": true,
+    "required": [
+      "valid reached ordinary-C++ raw bytes/lifetime",
+      "stable/disjoint pointer binding metadata",
+      "normalreturn at reached mismatch or foldedleftNUL"
+    ],
+    "no_ASCII_only_input_restriction": true,
+    "no_new_guard_or_normalization": true,
+    "input_aliases": "admitted;volatile left then right read with no writes",
+    "native_argument_home_aliases_proved": false,
+    "fault_SEH_identity_proved": false,
+    "concurrent_data_races_proved": false
+  },
+  "native_schedule": [
+    "capture originalrightpointer before originalleftpointer;ordinary Source receives bound values,not native argument homes",
+    "volatile unsignedleftBYTE;unsigned value-41;left cursor+1 modulo32;fold only range<=19",
+    "volatile unsignedrightBYTE;unsigned value-41;right cursor+1 modulo32;fold only range<=19",
+    "foldedleft==0 exits before equality;nonzero equality loops;return signed difference[-255,255]"
+  ],
+  "parent_boundary": {
+    "general_parent_locale_parity_proved": false,
+    "property_provider_general_source_ready": false,
+    "note": "Complete real callee only;no initial-locale-only parent implementation;Originaltoupper/locale/TLS/errno/table/Win32 mapping transport and SDK EOF scheduling gap remain open"
+  },
+  "prior_annotations": [
+    {
+      "address": "00bf7eb7",
+      "annotation": {
+        "address": "00bf7eb7",
+        "function_name": "___ascii_stricmp",
+        "comment": "Library Function - Single Match\n ___ascii_stricmp\n\nLibrary: Visual Studio 2005 Release"
+      }
+    }
+  ],
+  "annotation": {
+    "status": "PASS locked library-name preservation;prior values recorded;project saved;export refreshed",
+    "prior_values_log": "local\\ghidra-annotations-20261016T000422Z.json",
+    "prior_values_log_sha256": "17e2282fb39f5251f37df48dddb4e22880c13bc9dc7017e51c28398e4ab9ac5e",
+    "project_saved": true,
+    "exports_refreshed": true
+  },
+  "source_registration": "queued goal_oct15_crt_ascii_stricmp_registration;no shared registry write yet",
+  "validation": {
+    "build": "pending normal registered MSVCWin32 or primary combined gate",
+    "independent_review": "pending",
+    "report_call_verification": "PASS4 typed transfers includingtailJMP and4 documentation claims;0failures/unchecked/warnings",
+    "new_tests": 0,
+    "native_differential_fixture": false,
+    "original_binary_entry_ABI_compatible": false,
+    "game_validated": false
+  },
+  "qualification": "Whole53B/24-op intrinsic leaf for all BYTE values at valid reached ordinary-C++ Win32 storage. No SDK/locale/global/callback/stub dependency. Source API not Original private argument-home/register/fault/SEH/binary entry or game proof;parent generalLocale/readiness unchanged."
+}
