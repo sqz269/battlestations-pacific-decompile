@@ -1,0 +1,584 @@
+{
+  "batch": "GOAL15O",
+  "status": "20whole_tagged_functions_registered_build_full_executable_section_identity_verified",
+  "validated_source_commit": "dede5bd1a2a651b5a38c9308528ca035ee343dba",
+  "worker_commits": [
+    "55b69604d6f07e39df30f808e5099463afb6f889",
+    "762e649018b6b495d553f46076b9b8f13d055f6b"
+  ],
+  "coverage": {
+    "whole_functions": 20,
+    "native_body_bytes_excluding_alignment": 74,
+    "instructions": 40,
+    "dword_readers": 19,
+    "unsigned_identity": 1,
+    "calls": 0,
+    "globals": 0,
+    "branches": 0,
+    "x87": 0,
+    "relocations": 0,
+    "masked_bytes": 0
+  },
+  "registered_full_executable_coff_evidence": {
+    "status": "PASS",
+    "whole_functions": 20,
+    "whole_native_and_actual_comdat_bytes": 74,
+    "normalized_operands": 0,
+    "relocations": 0,
+    "proofs": [
+      {
+        "module": "native_tagged_leaf_b3_03",
+        "object": "build\\win32\\bsp_core.dir\\Release\\native_tagged_leaf_b3_03.obj",
+        "object_sha256": "0df67f23430414f38fdbef3e13a57c05ddea65906f26644c72f598333a8a3d03",
+        "functions": 12,
+        "bytes": 45,
+        "undefined_externals": [],
+        "routines": [
+          {
+            "address": "00b3cd00",
+            "symbol": "?native_tagged_b3_read_dword_18_00b3cd00@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_18_00b3cd00",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4118c3",
+            "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941"
+          },
+          {
+            "address": "00b3ce90",
+            "symbol": "?native_tagged_b3_read_dword_30_00b3ce90@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_30_00b3ce90",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4130c3",
+            "sha256": "c8cc0b90c656bd6a43ec1c5684c1a494142d2fce4803153d9b1a0944cad7e281"
+          },
+          {
+            "address": "00b3d090",
+            "symbol": "?native_tagged_b3_read_dword_24_00b3d090@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_24_00b3d090",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4124c3",
+            "sha256": "e27121b8816e0aef2ed29676899d26e79f66af7e5ee5aed902be7208122bb635"
+          },
+          {
+            "address": "00b3d0a0",
+            "symbol": "?native_tagged_b3_read_dword_28_00b3d0a0@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_28_00b3d0a0",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4128c3",
+            "sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90"
+          },
+          {
+            "address": "00b3d0b0",
+            "symbol": "?native_tagged_b3_read_dword_2c_00b3d0b0@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_2c_00b3d0b0",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b412cc3",
+            "sha256": "4d8bbabf4078fb522f1b7e5fa9e993af5e9c941d53117c673ecfde3a5feca5c7"
+          },
+          {
+            "address": "00b3d100",
+            "symbol": "?native_tagged_b3_read_dword_04_00b3d100@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_04_00b3d100",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4104c3",
+            "sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f"
+          },
+          {
+            "address": "00b3d380",
+            "symbol": "?native_tagged_b3_read_dword_04_00b3d380@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_04_00b3d380",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4104c3",
+            "sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f"
+          },
+          {
+            "address": "00b3d390",
+            "symbol": "?native_tagged_b3_read_dword_00b3d390@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_00b3d390",
+            "whole_comdat_bytes": 3,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b01c3",
+            "sha256": "19d200194d49b34530548575f37a1bb4203ee60f18d42f0084e86b7a8c899faa"
+          },
+          {
+            "address": "00b3d3c0",
+            "symbol": "?native_tagged_b3_read_dword_04_00b3d3c0@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_04_00b3d3c0",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4104c3",
+            "sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f"
+          },
+          {
+            "address": "00b3d3d0",
+            "symbol": "?native_tagged_b3_read_dword_00b3d3d0@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_00b3d3d0",
+            "whole_comdat_bytes": 3,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b01c3",
+            "sha256": "19d200194d49b34530548575f37a1bb4203ee60f18d42f0084e86b7a8c899faa"
+          },
+          {
+            "address": "00b3d400",
+            "symbol": "?native_tagged_b3_read_dword_04_00b3d400@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_04_00b3d400",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4104c3",
+            "sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f"
+          },
+          {
+            "address": "00b3d410",
+            "symbol": "?native_tagged_b3_read_dword_00b3d410@bsp@@YIIPBX@Z",
+            "source": "native_tagged_b3_read_dword_00b3d410",
+            "whole_comdat_bytes": 3,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b01c3",
+            "sha256": "19d200194d49b34530548575f37a1bb4203ee60f18d42f0084e86b7a8c899faa"
+          }
+        ]
+      },
+      {
+        "module": "native_tagged_leaf_b4_02",
+        "object": "build\\win32\\bsp_core.dir\\Release\\native_tagged_leaf_b4_02.obj",
+        "object_sha256": "d575a185d18e73a5e864aff95e6afa226d9d5c11e496d1504937ef373b77fa78",
+        "functions": 8,
+        "bytes": 29,
+        "undefined_externals": [],
+        "routines": [
+          {
+            "address": "00b401c0",
+            "symbol": "@bsp_tagged_b4_00b401c0@4",
+            "source": "@bsp_tagged_b4_00b401c0@4",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4108c3",
+            "sha256": "916ae10aa3fd76a4d5b25b2fb66e9df0fd04957c7ab10930268d1ed7808be689"
+          },
+          {
+            "address": "00b40300",
+            "symbol": "@bsp_tagged_b4_00b40300@4",
+            "source": "@bsp_tagged_b4_00b40300@4",
+            "whole_comdat_bytes": 3,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b01c3",
+            "sha256": "19d200194d49b34530548575f37a1bb4203ee60f18d42f0084e86b7a8c899faa"
+          },
+          {
+            "address": "00b40310",
+            "symbol": "@bsp_tagged_b4_00b40310@4",
+            "source": "@bsp_tagged_b4_00b40310@4",
+            "whole_comdat_bytes": 3,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b01c3",
+            "sha256": "19d200194d49b34530548575f37a1bb4203ee60f18d42f0084e86b7a8c899faa"
+          },
+          {
+            "address": "00b40490",
+            "symbol": "@bsp_tagged_b4_00b40490@4",
+            "source": "@bsp_tagged_b4_00b40490@4",
+            "whole_comdat_bytes": 3,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8bc1c3",
+            "sha256": "58367ffa2a0179375018fa0f5c26da24391e42ebe0ed8fdda35a21fc7bdc396f"
+          },
+          {
+            "address": "00b40510",
+            "symbol": "@bsp_tagged_b4_00b40510@4",
+            "source": "@bsp_tagged_b4_00b40510@4",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4108c3",
+            "sha256": "916ae10aa3fd76a4d5b25b2fb66e9df0fd04957c7ab10930268d1ed7808be689"
+          },
+          {
+            "address": "00b40550",
+            "symbol": "@bsp_tagged_b4_00b40550@4",
+            "source": "@bsp_tagged_b4_00b40550@4",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4150c3",
+            "sha256": "58e7369c57f4c2e5078496dcbdb6cec15f32eb29799a5b214cce0fc70a736beb"
+          },
+          {
+            "address": "00b40560",
+            "symbol": "@bsp_tagged_b4_00b40560@4",
+            "source": "@bsp_tagged_b4_00b40560@4",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b411cc3",
+            "sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5"
+          },
+          {
+            "address": "00b40570",
+            "symbol": "@bsp_tagged_b4_00b40570@4",
+            "source": "@bsp_tagged_b4_00b40570@4",
+            "whole_comdat_bytes": 4,
+            "symbol_offset": 0,
+            "relocations": 0,
+            "bytes": "8b4110c3",
+            "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62"
+          }
+        ]
+      }
+    ]
+  },
+  "fresh_live_captures": [
+    {
+      "address": "00b3cd00",
+      "size": 4,
+      "path": "local\\goal15o_live\\00b3cd00.txt",
+      "sha256": "43c99a4d0ddbc9967c1e6d211e4dc46b37590270e46d20096b47f3f9860d8b72"
+    },
+    {
+      "address": "00b3ce90",
+      "size": 4,
+      "path": "local\\goal15o_live\\00b3ce90.txt",
+      "sha256": "09bb284e9ff968860328ca11dc5f4375e791c43c1274a7d9306dd705913d3e53"
+    },
+    {
+      "address": "00b3d090",
+      "size": 4,
+      "path": "local\\goal15o_live\\00b3d090.txt",
+      "sha256": "8b90e6e7cd10ec85a631095efa7d9d5a1608c68ef65acb7329b135039fba028c"
+    },
+    {
+      "address": "00b3d0a0",
+      "size": 4,
+      "path": "local\\goal15o_live\\00b3d0a0.txt",
+      "sha256": "483d247deab94bd764806928c78cd5b7a9047255ec5f50bf8c9380e275573a8c"
+    },
+    {
+      "address": "00b3d0b0",
+      "size": 4,
+      "path": "local\\goal15o_live\\00b3d0b0.txt",
+      "sha256": "719ad411f95d814afe78211f8966e5751ceb71443d6c1daabaa6a77b74b77ea3"
+    },
+    {
+      "address": "00b3d100",
+      "size": 4,
+      "path": "local\\goal15o_live\\00b3d100.txt",
+      "sha256": "6c083631a6eade1d2b96f7ac0a4a29997284eaaad199a708cd5a51771fcaccf6"
+    },
+    {
+      "address": "00b3d380",
+      "size": 4,
+      "path": "local\\goal15o_live\\00b3d380.txt",
+      "sha256": "cf28a2cc74b386246cf4e64ad9f837d7e388e4df4c6c59c11a190ca516bfd08e"
+    },
+    {
+      "address": "00b3d390",
+      "size": 3,
+      "path": "local\\goal15o_live\\00b3d390.txt",
+      "sha256": "7d90d73067fc518611f8d5ca76834649be6273a39d1edbcad8272bf14c349151"
+    },
+    {
+      "address": "00b3d3c0",
+      "size": 4,
+      "path": "local\\goal15o_live\\00b3d3c0.txt",
+      "sha256": "7e3b193a60160e531a63a1c63939f3a6397fd80b4af3ed914e898e34286ab9ad"
+    },
+    {
+      "address": "00b3d3d0",
+      "size": 3,
+      "path": "local\\goal15o_live\\00b3d3d0.txt",
+      "sha256": "eb404a92feeae949aa8b34b37789dbe1d36ab948b72c5081e8351f556b73f97d"
+    },
+    {
+      "address": "00b3d400",
+      "size": 4,
+      "path": "local\\goal15o_live\\00b3d400.txt",
+      "sha256": "8e57462daab578b9faa80b03456378e964eb6ccf6983c3e2226f282e6e5add95"
+    },
+    {
+      "address": "00b3d410",
+      "size": 3,
+      "path": "local\\goal15o_live\\00b3d410.txt",
+      "sha256": "adf65e60015839f69de511afc2f4da7958440662edf362dacde0ad3b1e45e8a3"
+    },
+    {
+      "address": "00b401c0",
+      "size": 4,
+      "path": "local\\goal15o_live\\00b401c0.txt",
+      "sha256": "72a672e76e373c145e62b3a80f2173f8f4e33c2043e0cd9c06fb29e69c32a488"
+    },
+    {
+      "address": "00b40300",
+      "size": 3,
+      "path": "local\\goal15o_live\\00b40300.txt",
+      "sha256": "eefac1e63ddf3072999603a2b42d98fc3494727f8f91bd091d4d43e756bd945e"
+    },
+    {
+      "address": "00b40310",
+      "size": 3,
+      "path": "local\\goal15o_live\\00b40310.txt",
+      "sha256": "eda2ae510b7dfebf5dcf98ef1224ae9b9dc00c65de786c0ccfb9b86b33f9cefd"
+    },
+    {
+      "address": "00b40490",
+      "size": 3,
+      "path": "local\\goal15o_live\\00b40490.txt",
+      "sha256": "76d5e5cb1fc0774ca04de22c6af1df31e2e2b61d08467018d6caf04d077907f2"
+    },
+    {
+      "address": "00b40510",
+      "size": 4,
+      "path": "local\\goal15o_live\\00b40510.txt",
+      "sha256": "7b8121eefe8918ea356908bc3547484bb26e7030053a0b07e6017a884db6c180"
+    },
+    {
+      "address": "00b40550",
+      "size": 4,
+      "path": "local\\goal15o_live\\00b40550.txt",
+      "sha256": "5c324627e531775da4f655c6137b928808ce5dab6dcd088c8b40691a6536265c"
+    },
+    {
+      "address": "00b40560",
+      "size": 4,
+      "path": "local\\goal15o_live\\00b40560.txt",
+      "sha256": "a084a1f959ad85f4493273fa1a541551f807550a6894d93ad0aac95580be90c8"
+    },
+    {
+      "address": "00b40570",
+      "size": 4,
+      "path": "local\\goal15o_live\\00b40570.txt",
+      "sha256": "5402c5f4e99e82f93920d559c17a8f79e45ccfa145e2d2d62024ccb835ec2f28"
+    }
+  ],
+  "build": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "all_passed": true,
+    "checks": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "log": "local/goal15o_registered_build.log"
+  },
+  "call_checks": {
+    "claims": 0,
+    "failures": 0,
+    "unchecked": 0,
+    "warnings": 0,
+    "log": "local/goal15o_call_checks.log"
+  },
+  "new_tests": 0,
+  "runtime_fixture_added": false,
+  "test_scope": "Whole simple instruction identities need no new runtime cases; actual registered objects verified separately from worker baseline builds",
+  "independent_reviews": {
+    "artifacts": [
+      "local/goal15o_b3_review/review_summary.json",
+      "local/goal15o_b4_review/review_summary.json"
+    ],
+    "all_passed": true,
+    "functions": 20,
+    "bytes": 74,
+    "scope": "Entire pinned Source/header/doc/report, every actual executable COMDAT extent/symboloffset/Native-PE-live body and operand/hash, fresh typed metadata/xrefs/DATA slots, prior Source coverage and retained timing arithmetic; no test/build/probe/verifier reruns"
+  },
+  "discovery": {
+    "b3": {
+      "uninspected_at_start": 52,
+      "new_whole_bodies_inspected": 20,
+      "complete_source_coverage_checks": 12,
+      "verified_missing_and_completed_source_bodies": 12,
+      "deferred_this_packet": {
+        "00b3c4f0": "plain RET, outside selected reader family/capacity",
+        "00b3c500": "plain RET, outside selected reader family/capacity",
+        "00b3c510": "plain RET, outside selected reader family/capacity",
+        "00b3ccf0": "LEA ECX+10h, outside selected twelve reader entries",
+        "00b3d110": "same11-byte zero-three-word pattern deferred in packet02; no new C++ experiment",
+        "00b3d4c0": "RET4 with no consumed input; separate Source cleanup-boundary review",
+        "00b3d4d0": "RET4 with no consumed input; separate Source cleanup-boundary review",
+        "00b3d4e0": "XOR AL,AL preserves upper EAX; no full-EAX-zero substitution"
+      },
+      "remaining_uninspected": 32,
+      "cumulative_inventory": {
+        "initial_candidates": 79,
+        "actual_bodies_inspected": 47,
+        "completed_source_bodies": 29,
+        "complete_native_body_bytes": 120,
+        "deferred_bodies": 18,
+        "uninspected": 32
+      },
+      "candidate_index_alone_proves_missing": false,
+      "existing_library_names_changed": 0
+    },
+    "b4": {
+      "band": "00b40000..00b4ffff",
+      "prequalified_bodies_revalidated": 8,
+      "new_uninspected_bodies_screened": 0,
+      "selected_whole_routines": 8,
+      "prior_discovery_bodies": 12,
+      "prior_discovery_deferred": 4,
+      "discovery_origin": "local/goal15m_tagged_leaf_b4_next/readiness.json; read-only work during prior packet baseline wait, charged to that packet handoff time",
+      "cmake_registered": false,
+      "new_tests": 0,
+      "ghidra_mutations": 0,
+      "first_packet_four_files_unchanged_from": "14e2d9f001c37ffed4c4af380b5812e9649d68f5",
+      "main_merged_before_revalidation": "c5bde9e8bb30e8f9664a1d7793fa24f3cbcec428",
+      "worker_merge_before_source": "530cd91583f9db3cb316c751a1bee6a1cb2e8317",
+      "prior_function_shard_sha256": "5de65489c891b311ad1f35c293bc5c9ec2e7aa20cc87d6c1d0786840dec0530e",
+      "coverage": "Current Main index/lookup had no function or fragment records. Case-insensitive exact optional-0x/leading-zero address searches in src/include/third_party had no matches before edits. All eight unleased before exact claim.",
+      "uncertainty": "Names/field interpretations remain hypotheses. Known xrefs/callers do not establish unused status; live function:null caller endpoint is inconclusive. No class, ownership, indirect-caller, gameplay or replacement-installation claim.",
+      "other_discovery_dispositions": [
+        {
+          "addresses": [
+            "00b401a0",
+            "00b401b0"
+          ],
+          "disposition": "deferred separate ordered triple-zero-store family; no source/ledger edits"
+        },
+        {
+          "addresses": [
+            "00b403f0"
+          ],
+          "disposition": "deferred real ECX+[ESP+4] input/RET4 copy shape; no fictional fastcall/class adaptation"
+        },
+        {
+          "addresses": [
+            "00b40580"
+          ],
+          "disposition": "deferred full-EAX canonical boolean comparison; requires separate exact-operand/flags compiler proof"
+        }
+      ]
+    },
+    "tags_or_missing_records_alone_prove_missing_source": false
+  },
+  "timing": {
+    "b3_historical_worker": {
+      "start_utc": "2026-10-16T02:05:18+00:00",
+      "start_basis": "initial clock reading before brief/Main merge",
+      "ready_utc": "2026-10-16T02:17:17.235636+00:00",
+      "full_qualification_to_handoff_prep_seconds": 719.236,
+      "includes": "brief, Main merge/index, all20 body qualifications, implementation, full-extent audit, build wait, docs/ledgers/review/handoff preparation",
+      "first_successful_strict_extent_proof_seconds": 316.508,
+      "final_strengthened_audit_seconds": 459.729,
+      "current_warm_build_seconds": 138.231,
+      "previous_warm_build_seconds": 22.544,
+      "comparison_limit": "Main GUI/host changes caused additional rebuild; not an isolated causal benchmark"
+    },
+    "b4_historical_worker": {
+      "timing_capture_utc": "2026-10-16T02:05:32.458006+00:00",
+      "first_source_creation_utc": "2026-10-16T02:06:55.243176+00:00",
+      "orientation_merge_index_requalification_to_source_seconds": 82.78516912460327,
+      "source_to_passing_whole_body_proof_seconds": 60.72701644897461,
+      "strict_compile_seconds": 1.9001669883728027,
+      "source_proof_and_evidence_seconds": 6.592782974243164,
+      "total_handoff_lower_bound_seconds": 298.00549364089966,
+      "start_limit": "Timing capture directory was created after the required initial brief; its measured 5.0942071s and preceding setup are additional. Final handoff includes baseline build, waiting, docs, ledger/index work, commit and release, recorded separately at handoff.",
+      "build_receipt_utc": "2026-10-16T02:10:30.463500+00:00",
+      "full_handoff_scope": "Includes Main merge/index, refreshed qualification, source/proof, documentation, ledger/index and warm-cache baseline through this receipt. Final commit/release actual handoff time is retained separately under ignored handoff.json. Initial required brief/setup before timing capture is additional."
+    },
+    "b4_final_handoff": {
+      "commit": "762e649018b6b495d553f46076b9b8f13d055f6b",
+      "handoff_utc": "2026-10-16T02:11:09.322436+00:00",
+      "full_handoff_lower_bound_seconds": 336.86435103416443,
+      "initial_brief_measured_seconds_additional": 5.0942071,
+      "full_handoff_plus_measured_brief_lower_bound_seconds": 341.95855813416443,
+      "scope": "Timing capture before Main merge through commit/release; includes requalification, implementation/proof/docs/ledger and warm-cache baseline. Earlier setup remains additional."
+    },
+    "primary_integration": "Additional independent review, actual registered build/proof, saved annotations, exports, receipt and Main integration; not included in worker measurements",
+    "comparison": "Historical differing packet/Main/cache measurements, not a controlled throughput benchmark"
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved_under_write_lock": true,
+    "operation_hypotheses": 20,
+    "physical_prototypes": 20,
+    "before_and_after_retained": "local/goal15h_annotations_00b3cd00.json",
+    "names_comments_history": "local/ghidra-annotations-20261016T023518Z.json",
+    "fresh_saved_typed_body_metadata": "local/goal15o_saved_typed_flow.json",
+    "exports": {
+      "status": "PASS",
+      "addresses": [
+        "00b3cd00",
+        "00b3ce90",
+        "00b3d090",
+        "00b3d0a0",
+        "00b3d0b0",
+        "00b3d100",
+        "00b3d380",
+        "00b3d390",
+        "00b3d3c0",
+        "00b3d3d0",
+        "00b3d400",
+        "00b3d410",
+        "00b401c0",
+        "00b40300",
+        "00b40310",
+        "00b40490",
+        "00b40510",
+        "00b40550",
+        "00b40560",
+        "00b40570"
+      ],
+      "count": 20
+    },
+    "snapshot_and_index": "forced saved snapshot and refreshed index after20exports",
+    "type_scope": "Single physical ECX argument and uintEAX; Original owningclass/C++convention/noexcept remain unknown"
+  },
+  "source_sha256": {
+    "src\\native_tagged_leaf_b3_03.cpp": "d666862dfbd45f211f4ee266d7f1d48c8e0f9b06e0b118ff28def4384ef12294",
+    "include\\bsp\\native_tagged_leaf_b3_03.hpp": "567eb6dcd51de1bb4872fee663318cb22349c23a23419b393aeb368d5eab261e",
+    "src\\native_tagged_leaf_b4_02.cpp": "ce966b8f23d95ba48ad52b62c891a490407e90e38386d73b4968c0242d3fe8fd",
+    "include\\bsp\\native_tagged_leaf_b4_02.hpp": "f397f9b0df83db60e9dd88df16dffa5070510dec20e722251ea59a93aba4d7c6"
+  },
+  "artifact_sha256": {
+    "local/goal15o_registered_proof.json": "a62e0449f077b719d6ca8401c4eaaedcc1b4428423740a10e153f1b57612dac6",
+    "local/goal15o_registered_build.log": "865bbf1c679e0ee65b7aaa42e1351eda93260a93f7e54d57790f98f854f998d5",
+    "local/goal15o_exports.json": "040abdabda3e47b3106aa0b27a7c5566e9ee1561f0dbe93ccc22e320e143f168",
+    "local/goal15o_exports.log": "341687a354354ee02bbb5df8cf752910cb4d1db705d4d460cf3a32a8dbda6535",
+    "local/goal15o_live.json": "6ee6299e455bbed2442a5cd718022a0002955e7aa8dfb2a858706fb7b6e4fd0f",
+    "local/goal15o_saved_typed_flow.json": "e774ef1cacc8394452b9be8bd9d89124094f6965fffe5b15eb763323974fda6a",
+    "local/goal15h_annotations_00b3cd00.json": "290b2a24b24b45688cd069a43e446600ad57a84f0492263593b8389a006c6a19",
+    "local/ghidra-annotations-20261016T023518Z.json": "7e9f87ccd193d4236798c73ccbabab29b36602155fa5b7863c9c333d2fd39458",
+    "local/goal15o_call_checks.log": "d1c0cdf600428bec527ff07b5fd0a35baee9fd6f8db0176350400ec321aeb8b5",
+    "local/goal15o_name_updates.log": "14f537fd467ce0741c62e08adaedc35e00365e233b7f048e62cd0a3f0b27b1ff",
+    "local/goal15o_prototypes.json": "ce3a86f1ae6d1603f9d80e66efab8eedf7000121cce1627f165e504606e71da1",
+    "local/goal15o_verify_registered.py": "f45b9ee8372397ea2b4ab080cf17be06b0e28b4a7ab283940ef25b4d192920b7",
+    "local/goal15o_annotations.py": "db905c7f06142a33d69a6c70d3da129c80b3f1b42bc7665f8d7cbb92b0396e22",
+    "local/goal15o_receipt.py": "d8d42a5dc51d85ba45ed9003f2bb62a1025e58592872e3ffe94242bc216d6fa6",
+    "build/win32/Release/bsp_core.lib": "532dc8c451a14002a7bcb781be1290f0429862d973d685d1b9d3fdfb41bc1e9f",
+    "local/goal15o_tagged_leaf_b4_02/handoff.json": "d240a72a8a15a9111df89a589c48cec5eff88692464087d0f6003efb9bad7e28",
+    "reports/goal15o_tagged_leaf_b3_03.json": "78f3222bfeefd7e73405f9145f28d0c7ccb143b6f289a297d6b08ebcee76e38b",
+    "reports/goal15o_tagged_leaf_b4_02.json": "7d78aabc0c3d512335acd32bea0d1e38fc6fb25610303ba012757407d2fab39b",
+    "local/goal15o_b3_review/review_summary.json": "c09a03e064eec9a849c71fb6bf4662b4f105be099513e5c12bafc058cf30a02d",
+    "local/goal15o_b4_review/review_summary.json": "41535df3c331740aa52bf6b1e92d4ee0b4fda319b426f7c7d80c1c0a65ff2090"
+  },
+  "limits": [
+    "Readers require actual backed four-byte spans; no new guards,classes or fakeproviders",
+    "Five B3DATA pointer anchors are verified facts but region/class/field meanings are hypotheses",
+    "No known xrefs or callerfunction:null does not establish unused status/indirectclosure",
+    "Source/fixedcompiler emission not linked-address identity/folding, productioncalleradoption, installed replacement, NativebinaryABI or gameplay proof",
+    "Worker baseline2check builds excluded newmodules; primary registered3check build and actual objects cover inclusion",
+    "Deferred sweep bodies and previous custom48D2F0formal/wholetraffic-layout-world gates remain open"
+  ],
+  "goal_status": "active; continuing systematic range sweep and broader reconstruction"
+}
