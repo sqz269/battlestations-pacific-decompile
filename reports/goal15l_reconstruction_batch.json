@@ -1,0 +1,352 @@
+{
+  "batch": "GOAL15L",
+  "status": "four_whole_source_routines_registered_build_and_archive_fixtures_verified",
+  "normal_call_sites": [
+    {
+      "address": "004c2312",
+      "native": "00bf681b",
+      "containing_function": "004c2310"
+    },
+    {
+      "address": "004cf49c",
+      "native": "00408720",
+      "containing_function": "004cf450"
+    },
+    {
+      "address": "004cf4b1",
+      "native": "00411700",
+      "containing_function": "004cf450"
+    },
+    {
+      "address": "004cf4c8",
+      "native": "00bf6885",
+      "containing_function": "004cf450"
+    },
+    {
+      "address": "0041d17d",
+      "native": "004167c0",
+      "containing_function": "0041d150"
+    },
+    {
+      "address": "0041d189",
+      "native": "00bf6989",
+      "containing_function": "0041d150"
+    },
+    {
+      "address": "0041d198",
+      "native": "00bf65ac",
+      "containing_function": "0041d150"
+    },
+    {
+      "address": "0041d1cf",
+      "native": "0041d0c0",
+      "containing_function": "0041d150"
+    }
+  ],
+  "validated_source_commit": "d2862706ffad84011a1cb3c5ee0230c09005ab81",
+  "worker_commits": {
+    "world": "5d14e47652b96c83a4d7229ae4e6955f89960ed7",
+    "remove": "31fe1de8f2f8f6213d8ec3cd63e0e7bcbca17f27"
+  },
+  "native_coverage": {
+    "whole_functions": 4,
+    "bytes": 394,
+    "instructions": 125,
+    "world_bytes": 257,
+    "world_instructions": 71,
+    "remove_bytes": 137,
+    "remove_instructions": 54
+  },
+  "registered_evidence": {
+    "world": {
+      "native": {
+        "004c2310": {
+          "length": 51,
+          "hex": "6a0ce80445730083c40485c074068b4c240489088d480485c974068b54240889118d480885c974088b54240c8b128911c20c00",
+          "sha256": "813206cc931e396f344c5a175221dcab3edcb644093ffbc72c0515bbe062f350",
+          "live_matches_installed_pe": true
+        },
+        "004cf450": {
+          "length": 147,
+          "hex": "64a1000000008b5424046aff68c85bc60050648925000000008b410883ec4456beffffff3f2bf03bf25e73516a1068f838ce008d4c2408c74424200f000000c744241c00000000c644240c00e87f92f3ff8d0424508d4c2420c744245000000000e84a22f4ff68983fd8008d4c242051c74424246092d600e8b873720003c28941088b4c244464890d0000000083c450c20400",
+          "sha256": "c7402ab07c79eb36f8c260d74da4eb641b76f91510e238c71cb8c9c293709462",
+          "live_matches_installed_pe": true
+        },
+        "004b6c40": {
+          "length": 59,
+          "hex": "8b44240485c0741c83f8027417d98124710000d8a130710000d95c2404d9442404c20400d98128710000d8a11c710000d95c2404d9442404c20400",
+          "sha256": "fd55373ac8f399424320738cb2ba26cc19e8c3ff9791bc0fc9eda282412e2733",
+          "live_matches_installed_pe": true
+        },
+        "00c65bc8": {
+          "length": 10,
+          "hex": "b8bce5d800e9710ff9ff",
+          "sha256": "4b4947aa5bd3efb2580f51a1ae4d5328596822d33508a170b34a7555a5b15cb4",
+          "live_matches_installed_pe": true
+        },
+        "00c65bc0": {
+          "length": 8,
+          "hex": "8d4db0e908177aff",
+          "sha256": "d0c2448ce18c4ab14405d6d3e9d9367465e92278f3d1fb50e05a8eb142b15952",
+          "live_matches_installed_pe": true
+        },
+        "00d8e5b4": {
+          "length": 8,
+          "hex": "ffffffffc05bc600",
+          "sha256": "7a7ed4fce43bf7e55c6d49833b3e1f81f2b7a9051f047a38896549b1bc66ba1d",
+          "live_matches_installed_pe": true
+        },
+        "00d8e5bc": {
+          "length": 36,
+          "hex": "2205931901000000b4e5d800000000000000000000000000000000000000000001000000",
+          "sha256": "0bcbc13bd2d72a05c86045199b8988ff3db76f7278d03078d409cd0c74c859f1",
+          "live_matches_installed_pe": true
+        }
+      },
+      "source": {
+        "?allocate_native_world_border_node_004c2310@bsp@@YGPAXIIPBI@Z": {
+          "length": 51,
+          "hex": "6a0ce80000000083c40485c074068b4c240489088d480485c974068b54240889118d480885c974088b54240c8b128911c20c00",
+          "sha256": "57c3a10fa9e65695622c202059d491accfd78f1421284ea00c0a775eeabed74c",
+          "relocations": [
+            {
+              "offset": 3,
+              "type": 20,
+              "target": "?allocate_world_border_bytes@?A0x31fd4cbd@bsp@@YAPAXI@Z"
+            }
+          ]
+        },
+        "?increment_native_world_border_count_004cf450@bsp@@YIXPAX0I@Z": {
+          "length": 65,
+          "hex": "558bec8b510883ec0cb8ffffff3f2bc2568b75083bc6720d8d04328941085e8be55dc2040068000000008d4df4e80000000068000000008d45f450e800000000cc",
+          "sha256": "793e12828460d30f08e519ffe87195644250705dbc14c6ba31da14b175c228a4",
+          "relocations": [
+            {
+              "offset": 38,
+              "type": 6,
+              "target": "??_C@_0BB@MOGOBHAF@list?$DMT?$DO?5too?5long@"
+            },
+            {
+              "offset": 46,
+              "type": 20,
+              "target": "??0length_error@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 51,
+              "type": 6,
+              "target": "__TI3?AVlength_error@std@@"
+            },
+            {
+              "offset": 60,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            }
+          ]
+        },
+        "?span_native_world_border_004b6c40@bsp@@YIMPBXPAXI@Z": {
+          "length": 59,
+          "hex": "8b44240485c0741c83f8027417d98124710000d8a130710000d95c2404d9442404c20400d98128710000d8a11c710000d95c2404d9442404c20400",
+          "sha256": "fd55373ac8f399424320738cb2ba26cc19e8c3ff9791bc0fc9eda282412e2733",
+          "relocations": []
+        },
+        "?allocate_world_border_bytes@?A0x31fd4cbd@bsp@@YAPAXI@Z": {
+          "length": 58,
+          "hex": "558bec83ec10a10000000033c58945fc8b45088945f48945f88d45f050c745f003000000e8000000008b4dfc83c40433cde8000000008be55dc3",
+          "sha256": "7b121d1cbda959af3f6bfc76d0e9390da02b20036100aa2023f449029e9c915c",
+          "relocations": [
+            {
+              "offset": 7,
+              "type": 6,
+              "target": "___security_cookie"
+            },
+            {
+              "offset": 37,
+              "type": 20,
+              "target": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+            },
+            {
+              "offset": 50,
+              "type": 20,
+              "target": "@__security_check_cookie@4"
+            }
+          ]
+        }
+      },
+      "literal_node_span_match_worker_reviewed_strict_objects": true,
+      "registered_cpp_review": "All65B count/24instructions and58B allocator bridge/20instructions independently read; retained EBP frames and current TI3 exception metadata differ from worker strict TI2 frame-omitted build; actual message/ctor/ThrowInfo/throw/cookie/service operands verified, actual archive fixture catches current length_error",
+      "all_relocation_addends_zero": true
+    },
+    "remove": {
+      "status": "PASS",
+      "native_span": "0041d150..0041d1d8",
+      "native_bytes": 137,
+      "instructions": 54,
+      "gaps": 0,
+      "native_sha256": "46d8be5b893ee9137c11a7a79adbcb2bc3961f661abe017b993923bf462d54d3",
+      "object": "build\\win32\\bsp_core.dir\\Release\\native_avoid_zone_group_remove_owner.obj",
+      "object_sha256": "2161003896ed20b4c0ded268ab2b17631ff33737cef7f7dddee7682e4937d9e6",
+      "source_bytes": 137,
+      "fixed_compared_bytes": 121,
+      "normalized_rel32_call_operands": 4,
+      "branches": 7,
+      "verified_call_operands": [
+        {
+          "source_operand_offset": 46,
+          "source_symbol": "?clear_native_avoid_corner_records_004167c0@bsp@@YIXPAX@Z",
+          "kind": 20
+        },
+        {
+          "source_operand_offset": 58,
+          "source_symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "kind": 20
+        },
+        {
+          "source_operand_offset": 73,
+          "source_symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "kind": 20
+        },
+        {
+          "source_operand_offset": 128,
+          "source_symbol": "?clear_native_avoid_group_0041d0c0@bsp@@YIXPAUCc13AvoidZoneNativeGroup@1@@Z",
+          "kind": 20
+        }
+      ],
+      "normal_calls": [
+        {
+          "address": "0041d17d",
+          "native": "004167c0",
+          "containing_function": "0041d150"
+        },
+        {
+          "address": "0041d189",
+          "native": "00bf6989",
+          "containing_function": "0041d150"
+        },
+        {
+          "address": "0041d198",
+          "native": "00bf65ac",
+          "containing_function": "0041d150"
+        },
+        {
+          "address": "0041d1cf",
+          "native": "0041d0c0",
+          "containing_function": "0041d150"
+        }
+      ],
+      "live_disk_source_body_match_except_exact_verified_calls": true,
+      "proof_limit": "ownedbody static exact normalization only;current real callees/CRT/frame/deployment/game identity distinct"
+    }
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "checks": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "all_passed": true,
+    "log": "local/goal15l_registered_build.log"
+  },
+  "call_checks": {
+    "report_rows": 17,
+    "markdown_claims": 5,
+    "failed": 0,
+    "unchecked": 0,
+    "log": "local/goal15l_call_checks.log"
+  },
+  "final_archive_only_fixtures": {
+    "world": {
+      "receipt": "local/goal15l_world_probe_result.json",
+      "receipt_sha256": "bc8b1a85cb7c4a26151ede8f59e840b1bf35391126bf9fd9e697f1ef9feb7a3b",
+      "kind": "Source fixture linked against registered archive and real current services",
+      "manifest_embedded": true,
+      "exit_code": 0,
+      "stdout": "PASS: genuine allocator node; admitted/wrapped/rejected counts; 36 full-native x87 comparisons (ST0, actual argument spill, CW/SW, RET4 stack)\n",
+      "stderr": "",
+      "sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15j_world_helpers\\world_border_probe.cpp": "9c66d9ec99df8c8e894e1cafd0296ea861769df3c3bf39b1966fe592e7621ef6",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15l_world_probe.obj": "3fd6c0887b6d0299f24fcbd464c8ecec073d01804cd2fe989d099f6b6435386e",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15l_world_probe.exe": "c84e4761615d4685fb61d8d927b82cd98e81b6cc7961cc76a1028ac092b3b9a9",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "326c7f344c936b9609e83b36b6b35495b019118c89dbcaed3890912de04c2d8d",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+      }
+    },
+    "remove": {
+      "receipt": "local/goal15l_remove_probe_result.json",
+      "receipt_sha256": "97a03c593fa074426fec633a47a6c7dd5860ad7a68df67db1e8d4db0e9376e55",
+      "kind": "Source fixture linked against registered archive and real current services",
+      "manifest_embedded": true,
+      "exit_code": 0,
+      "stdout": "PASS Source remove-owner: consecutive replacement matches/nonmatches/null-owner delegate;all15 zone blocks freed,retained metadata/inactive words preserved,real scalar frees group+array\n",
+      "stderr": "",
+      "sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15k_avoid_group_remove_owner\\remove_owner_probe.cpp": "f0d794830c0b3a7cb99851332bd1d45c8f168155b741109254f305b13796ad40",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15l_remove_probe.obj": "e934a75575ce6395deb04de5e2c7394dd5e7318a088f8bde7ea730d8591e15b6",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15l_remove_probe.exe": "54ac4bcc48d9b38f77bc65e608fccd4c49ac6bfbd46f1f7a196845f9f53b3ba3",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "326c7f344c936b9609e83b36b6b35495b019118c89dbcaed3890912de04c2d8d",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+      }
+    }
+  },
+  "review": {
+    "primary": "Whole Source/header/docs and Native count/remove listings, literal node/span bodies, complete fixture code and actual providers reviewed; registered COFF and fresh live/installed evidence checked",
+    "independent": "zone_leaf_max independently verified all257 world bytes/71 rows, actual COFF and all8 zero-addend relocations across3 entries and allocator bridge, currentSDK/FH3 evidence, fixture59B Native body and artifact hashes; no blocking defect"
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "locked_write": true,
+    "old_values": "local/goal15h_annotations_004c2310.json",
+    "annotation_history": "local/ghidra-annotations-20261016T010817Z.json",
+    "original_inputs": "node stdcall3actualwords/RET0C; count/span thiscall ECX+1word/RET4; remove thiscall ECX+owner/RET4; Source EDX excluded",
+    "count_flow_flag": "dry-run verified returning-to-returning; no flag mutation needed",
+    "exports": [
+      "004c2310",
+      "004cf450",
+      "004b6c40",
+      "0041d150",
+      "00423640",
+      "004c71c0",
+      "004d5bd0",
+      "004d62c0"
+    ],
+    "snapshot_index": "forced saved snapshot and index refreshed after exports"
+  },
+  "source_inputs_sha256": {
+    "src\\native_world_border_helpers.cpp": "130e576e9ff7d913bda450379e63e47efb0fd71c5c59b42927e7bdc4e841a376",
+    "include\\bsp\\native_world_border_helpers.hpp": "ef4dc011598b415a4eb3e25b37caeeb828c5ec991c1bd3fbe3af93aab24fc2a1",
+    "src\\native_avoid_zone_group_remove_owner.cpp": "be6e1e14dc369692af7328b2ba63d28a8a21548ade5a6ef714de51f14dd24e80",
+    "include\\bsp\\native_avoid_zone_group_remove_owner.hpp": "b49cad118c8ab4cd2865181832924beadb065b97a64e5158f41895e061ba20f2"
+  },
+  "registered_objects_sha256": {
+    "build\\win32\\bsp_core.dir\\Release\\native_world_border_helpers.obj": "80e192ea32f9c4179f4dbf52657586dd9fbb4d58ba9b398315bc380042e23142",
+    "build\\win32\\bsp_core.dir\\Release\\native_avoid_zone_group_remove_owner.obj": "2161003896ed20b4c0ded268ab2b17631ff33737cef7f7dddee7682e4937d9e6"
+  },
+  "artifacts_sha256": {
+    "build/win32/Release/bsp_core.lib": "326c7f344c936b9609e83b36b6b35495b019118c89dbcaed3890912de04c2d8d",
+    "local/goal15l_registered_build.log": "b63e4750e17b82c0ce28609d2265b328b8b1da4f5c615dbe5a06a44dfcb5556b",
+    "local/goal15j_world_helpers/byte_audit.json": "907f15fa0a743bddea5de20b87a1f42aca1bb0588d94139f06fa4b6e19510b09",
+    "local/goal15k_avoid_group_remove_owner/byte_receipt.json": "a84a2958ce6fc4fd2c3d662325b1a478032d8c9be8dce84224a43abca97a58c1",
+    "local/goal15l_remove_live.txt": "0bdc7480022dc0fe3f104ba6f162fe658a6526a86af8e73c6840c98d7e58153b",
+    "local/goal15h_annotations_004c2310.json": "d9ad6618a9370cfa92a44a35baddd7ec265625033efc3e5864a5ae0103635398",
+    "local/ghidra-annotations-20261016T010817Z.json": "b0a487c1139cec99e4f87004afd4a777ef05c012f7f861e0632c14fc4caf8cb5",
+    "local/goal15l_call_checks.log": "06f0586dd5699d0e9a8565b2a008df93740d85197edfef0c11f4bae5ff5bbaa7",
+    "local/goal15l_receipt.py": "81506427ec91568cccadb579288b294ad503eeb82b6a677df2ab9c730a74ff08",
+    "local/goal15j_world_helpers/audit_helpers.py": "5f64d2773441113ca30b8caa882aefa4ca389d71820904311d3a85379c6a66d1",
+    "local/goal15k_avoid_group_remove_owner/verify_bytes.py": "ac37724c7bcb1466a7519076fe27b2ac8fa3da5dba3615965f776a46ea8d6a7a",
+    "local/link_goal15c_probe.py": "cb0fbd2395a809b7ca0bff1937412910cafbe33d819073c31cc2637a2f8ad455"
+  },
+  "limits": [
+    "CurrentSDK count operation is not147B instruction/frame/legacy-string/allocation/RTTI/FH3/privateCRT identity",
+    "Count Source reads header before addition; Native argument read first; exact input fault/read order unclaimed",
+    "Node/remove concrete current free/allocation providers differ from Native privateCRT identity",
+    "Span36 standalone installed-body comparisons do not prove saved FPU-IP or unmasked-exception behavior or production gameplay",
+    "Source heap fixture preserves original stale slots/pre-null dereference; invalid-address SEH cases not forced",
+    "Whole map writer/layout/traffic, canonical world/entity production composition and authored-global producers remain open",
+    "No binary deployment, whole Native ABI drop-in or gameplay proof"
+  ]
+}

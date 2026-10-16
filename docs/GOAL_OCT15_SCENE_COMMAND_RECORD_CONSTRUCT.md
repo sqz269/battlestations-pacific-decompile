@@ -117,8 +117,39 @@ in the report. Source/header and provider hashes identify this draft.
 The primary independently reviewed the whole native body, both actions and
 complete Source/header; no implementation mismatch was found. A later header
 comment only clarifies stable binding addresses versus disjoint metadata.
-The actual normal MSVC Win32 `scripts/build.ps1`, enabled existing checks and
-focused emitted-object review are pending. Registration/build will use the
-primary's combined gate; this worker has no registry queue. No new tests are added. Build
-or static evidence will not establish packet-specific native execution,
-original ABI, result ownership/lifetime or game validation.
+The actual primary normal `scripts/build.ps1` passed at
+`efa7febae744d66c5665e61b64bf8c67d36ff3f6`: MSVC Release Win32, all three
+enabled existing CTests, zero failures, 9.55 seconds. No duplicate worker build
+was run. Registration is unique, with this Source once in the generated project
+and one identical archive body. Reviewed Source/header and all six concrete
+provider hashes match the own tree, primary tree and tested revision. The exact
+immutable primary receipt/log hashes are retained in this report. The build
+retains the unrelated Lua `spawn_request_id_matches` LNK4006 duplicate-symbol
+warning; no packet compilation warning occurred.
+
+The exact retained object is 5,841 bytes, SHA256
+`93de29c50ab2fd180d410ec428b916733aec87d96e2b6d22c1328d066a4265be`.
+Full constructor/helper/action and compiler-unwind disassembly was inspected.
+Both saved stores are at `+45/+47`, current command/owner reads at `+63/+66`,
+actual guard state1 before owner store at `+72/+79`, raw resize at `+96/+D5`
+and genuine SDK boundary at `+AC/+E9`. Current data and conditional length are
+read after each resize; the target slot is not read until `+B7`, after the
+first copy. The captured original record returns through EAX at `+F1`.
+The SDK tail resolves to external `_memmove` without an extra count/null guard.
+
+The emitted unwind funclet dispatches to the real ordinary guard destructor.
+It advances state0 before reading current saved-record at `+17`, adds0Ch and
+destroys target at `+1D`; after return it advances -1 and independently reloads
+current saved-record at `+38`, adds4 and destroys command at `+3E`. Standalone
+ordinary action functions each retain their own current saved-word load before
+the raw destructor tail. The compiler removes the Source guard's earlier state0
+assignment across nonthrowing header stores and arms emitted C++ EH before the
+real providers. This gives no native header-fault, exact-state/flags/register,
+private-frame, FH3 or SEH equivalence. Constructor SourceReady applies to the
+whole ordinary current-provider body; the two native action mappings remain
+separately qualified.
+
+No Source, header, registration or tests changed for this validation update.
+The existing native math seeds do not execute this packet. Build and static
+evidence establish neither packet-specific native execution nor original ABI,
+result ownership/lifetime, private heap or game validation.

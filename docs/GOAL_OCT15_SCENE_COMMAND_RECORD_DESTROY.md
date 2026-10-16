@@ -83,6 +83,11 @@ current saved-this cell. Once disarmed, a second-getter exception escapes
 without that action. If cleanup itself throws during C++ unwinding, ordinary
 C++ termination behavior applies. This guard does not promise cleanup for
 Win32/SEH faults under the current build or Original FH3 secondary-throw rules.
+The emitted core's Boolean guard arm follows the target-data capture and its
+disarm follows the fresh command-data capture. A separate compiler-private EH
+state write occurs before the first data read; it has no Original private-state
+or fault-transport credit. Raw capture, length, provider and publication order
+matches the Source contract.
 
 All new APIs explicitly borrow the saved-this backing. The scalar frame also
 borrows actual flags4 backing; only its first byte is read, after child return.
@@ -104,7 +109,11 @@ Guarded analysis checks C:/Users/sqz269/bsp.gpr and program
 typed transfer rows, actual provider hashes and prior annotation values.
 Locked annotation/save/export/readback and primary complete-Source review
 passed. The primary accepted draft5d6eceae9 with unchanged Source hashes and
-will register it at the earlier integrator turn and provide the combined normal
-MSVC Win32 gate. The redundant worker registration was unqueued; no worker
-build or CMake change is claimed. No new tests, native entry execution,
-application adoption or game validation is claimed.
+registered it once at efa7febae744d66c5665e61b64bf8c67d36ff3f6. Its normal
+scripts/build.ps1 MSVC Release Win32 gate passed all three existing checks
+in 9.55 seconds. The report pins the exact primary receipt/log hashes and
+unique archived object. All four emitted Source functions were inspected
+for their raw capture/publication schedules; provider hashes are unchanged.
+Three ordinary APIs are Source-ready, with the cleanup action separately
+qualified. No worker build, new tests, native entry execution, Original
+heap/FH3/private ABI, application adoption or game validation is claimed.
