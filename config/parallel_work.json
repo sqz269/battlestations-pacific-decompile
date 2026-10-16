@@ -42226,6 +42226,162 @@
       "primary_review": "reports/cc12_native_crt_strrchr_primary_review.json",
       "Main_build_gate": "pending",
       "actual_compiler_archive_gate": "pending"
+    },
+    {
+      "id": "goal_oct15_scene_node_child_at",
+      "done": true,
+      "state": "whole_ordinary_actual_storage_Source_independently_reviewed_registered_Win32_three_checks_emitted_and_Main_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00467f30"
+      ],
+      "output_files": [
+        "src/native_scene_node_child_at.cpp",
+        "include/bsp/native_scene_node_child_at.hpp",
+        "docs/GOAL_OCT15_SCENE_NODE_CHILD_AT.md",
+        "reports/goal_oct15_scene_node_child_at.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "primary_review": "reports/goal_oct15_child_strchr_primary_review.json",
+      "code_revision": "b594573593f5fcf2eddb02e2d777ab2eb2f27d62",
+      "integrated_main_revision": "4d42e7ab62e2cbad24a0f91c4edbc19295f432ef",
+      "contract": "Whole41B17ops original-index-first/signedcount/head/current44link raw lookup;no callbacks/SDK/extra guards",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "normal_project_object_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_crt_strchr",
+      "done": true,
+      "state": "whole_ordinary_actual_storage_Source_independently_reviewed_registered_Win32_three_checks_emitted_and_Main_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00bf86f0"
+      ],
+      "output_files": [
+        "src/native_crt_strchr.cpp",
+        "include/bsp/native_crt_strchr.hpp",
+        "docs/GOAL_OCT15_CRT_STRCHR.md",
+        "reports/goal_oct15_crt_strchr.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "primary_review": "reports/goal_oct15_child_strchr_primary_review.json",
+      "code_revision": "b594573593f5fcf2eddb02e2d777ab2eb2f27d62",
+      "integrated_main_revision": "4d42e7ab62e2cbad24a0f91c4edbc19295f432ef",
+      "contract": "Whole195B89ops in2ranges,original byte/alignedDWORD/reread/mask algorithm;no SDK/calls/globals/locale substitute",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": true,
+      "normal_project_object_entry_executed": false,
+      "game_validated": false,
+      "focused_Original_and_Source_probe_pairs": 72,
+      "focused_probe_failures": 0,
+      "probe_scope": "valid padded buffers with4alignments/3templates/6needles;actualcallfreeOriginalrelocated206B vs compiledSource;not genericABI/fault/parentclosure"
+    },
+    {
+      "id": "goal_oct15_crt_os_error_map",
+      "done": true,
+      "state": "whole_ordinary_actual_storage_Source_independently_reviewed_registered_Win32_three_checks_emitted_and_Main_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00bffb50"
+      ],
+      "output_files": [
+        "src/native_crt_os_error_map.cpp",
+        "include/bsp/native_crt_os_error_map.hpp",
+        "docs/GOAL_OCT15_CRT_OS_ERROR_MAP.md",
+        "reports/goal_oct15_crt_os_error_map.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "primary_review": "reports/goal_oct15_mapper_primary_review.json",
+      "code_revision": "b594573593f5fcf2eddb02e2d777ab2eb2f27d62",
+      "integrated_main_revision": "4d42e7ab62e2cbad24a0f91c4edbc19295f432ef",
+      "contract": "Whole59B23ops captured error/progressive actual45-pair/currentmatchedvalue/unsignedwrapped fallback mapper;no errno/TLS/SDK substitute",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "normal_project_object_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_qualified_node_readiness",
+      "done": true,
+      "state": "bounded_read_only_actual_native_readiness_audit_completed_no_Source_credit",
+      "worker": "goal_oct15_reconstruction",
+      "function_addresses": [],
+      "output_files": [
+        "reports/goal_oct15_scene_qualified_node_readiness.json"
+      ],
+      "depends_on": [],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_scene_qualified_node_readiness.json",
+      "integrated_main_revision": "4d42e7ab62e2cbad24a0f91c4edbc19295f432ef",
+      "contract": "Whole201B90ops9CALLs qualified-name parent schedule/frame and genuine Original strnicmp/locale/errno dependencies;new ChildAt/Originalstrchr do not close parent",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_crt_malloc_readiness",
+      "done": true,
+      "state": "bounded_read_only_actual_native_readiness_audit_completed_no_Source_credit",
+      "worker": "goal_oct15_reconstruction",
+      "function_addresses": [],
+      "output_files": [
+        "reports/goal_oct15_crt_malloc_readiness.json"
+      ],
+      "depends_on": [],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_crt_malloc_readiness.json",
+      "integrated_main_revision": "4d42e7ab62e2cbad24a0f91c4edbc19295f432ef",
+      "contract": "Read-only308B117ops mallocfrontier plus181B75ops heapselector/owner;33truecallrows;actual lock/malloc/free/errno/PTD and getter failure SCCs;no newSource/heapownership credit",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_crt_free_readiness",
+      "done": true,
+      "state": "bounded_read_only_actual_native_readiness_audit_completed_no_Source_credit",
+      "worker": "goal_oct15_reconstruction",
+      "function_addresses": [],
+      "output_files": [
+        "reports/goal_oct15_crt_free_readiness.json"
+      ],
+      "depends_on": [],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_crt_free_readiness.json",
+      "integrated_main_revision": "4d42e7ab62e2cbad24a0f91c4edbc19295f432ef",
+      "contract": "Read-only whole free physical/SEH/current argument frontier;actual lock/errno/PTD/heap owner SCCs;C11B5E old missing-start blocker retracted;regionrepair proposal was UNAPPROVED at scout capture and separate subsequent packet owns any later repair",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_crt_invalid_handler_readiness",
+      "done": true,
+      "state": "bounded_read_only_actual_native_readiness_audit_completed_no_Source_credit",
+      "worker": "goal_oct15_reconstruction",
+      "function_addresses": [],
+      "output_files": [
+        "reports/goal_oct15_crt_invalid_handler_readiness.json"
+      ],
+      "depends_on": [],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json",
+      "integrated_main_revision": "4d42e7ab62e2cbad24a0f91c4edbc19295f432ef",
+      "contract": "Read-only whole811B291ops invalid-handler/errno/PTD/getter-cache/nullablecalloc frontier;24true direct/tail and20computed transfers;finite genuine decoder/getter/handler and heap/lock SCCs require coordinated wholeSource work,not stubs/callback/SDK/selected-path substitutions",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {

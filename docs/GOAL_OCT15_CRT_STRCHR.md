@@ -105,6 +105,38 @@ recorded prior values in `local/ghidra-annotations-20261016T015108Z.json`
 and `local/ghidra-annotations-20261016T015720Z.json`,saved the project and
 refreshed exports/readback. The final readback retains the original library
 comment and both evidence stages. Whole Original algorithm Source
-is ready through its new interface;the actual primary combined registered
-normal Win32 build/emitted-object gate remains pending. No worker CMake queue
-or duplicate normal build is used.
+is ready through its new interface. The primary actual registered normal
+MSVC Release Win32 build at`1464485a955060ff1e438595b07257f5a5238c01`
+passed all three existing CTests in9.48 seconds. The immutable root receipt is
+`reports/goal_oct15_child_strchr_primary_review.json`,SHA256
+`1ed1d387b08fd81d72273546821687943a650e6ccf4c7e42dd3a7ee7f77ddd4c`;
+its actual build-log SHA256 is
+`b494ea8f46becc03b3870c7f325beb476935a6cd2b415aebbce970538d068a15`.
+No worker CMake queue or duplicate normal build is used. Existing regression
+checks do not execute these new bodies;the72-pair probe is separate.
+
+The whole actual normal emitted object and symbols were reviewed. Its public
+function is194B/84 instructions;four helpers8B/8B/10B/10B bring total text to
+230B. The1495B object SHA256 is
+`37a604db019ae735cd2f702a7f4737e91141b818ef28f1064517fb9652be2689`.
+There are no calls,relocations or undefined external symbols. BYTE value
+capture precedes pointer DWORD capture;unaligned payload reads remain BYTE,
+with match-before-NUL. The aligned first DWORD and actual candidate DWORD
+reread remain distinct. All candidate/zero masks and original-sum sign
+compensation are emitted. Candidate bytes come from the captured second
+word,and each match branch precedes its NUL branch. EAX returns raw bits/zero.
+
+Compiler differences include a shifted-byte loop instead of Original unrolled
+partial-register tests,new frame/register/branch/return layouts,and a retained
+needle store into the compiler-private argument-home byte`[EBP+0Bh]`. The new
+explicit-cell Source interface requires that compiler-private backing remain
+disjoint from reached storage;no Original home/frame alias equivalence follows.
+The194 contiguous emitted bytes are distinct from195 discontiguous Original
+listed bytes. Neither build nor fixture adds general Original ABI,register/
+flags,fault,game,ownership or parent009251F0 closure credit.
+
+Final gate evidence was appended through the normal Ghidra write lock,with
+prior values logged in`local/ghidra-annotations-20261016T021938Z.json`.
+The project was saved,exports forced fresh,and final readback verified
+the existing names and old comments in
+`local/goal_oct15_child_strchr_final_comments.json`.

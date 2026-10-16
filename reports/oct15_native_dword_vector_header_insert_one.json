@@ -1,0 +1,223 @@
+{
+  "packet": "oct15_native_dword_vector_header_insert_one",
+  "status": "complete_actual_Source_build_checked_CurrentCpp_diagnostic_qualified_pending_immutable_primary_review",
+  "utc": "2026-10-16T03:44:30.207532+00:00",
+  "address": "006988f0",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "initial_accepted_local_Main": "f3f4c75392fb7a0a1b6e7facab21ef3c9a0f05cf",
+  "base_published_Main": "f3cf8a3c6d322b232af943c442ce4d1f3fc38ae1",
+  "parent_Source_pin": "8180c34d839f8fd356ebfe50545f2a65585af388",
+  "publication": "Root confirmed exact Main/originf3cf publication; parent is fully primary accepted/published.",
+  "source": "src/native_dword_vector_header_insert_one.cpp",
+  "header": "include/bsp/native_dword_vector_header_insert_one.hpp",
+  "documentation": "docs/OCT15_NATIVE_DWORD_VECTOR_HEADER_INSERT_ONE.md",
+  "source_sha256": {
+    "src/native_dword_vector_header_insert_one.cpp": "07e19187a3064bf2e6f3244b8b3adf94225b2b71100848d56451b7db74821190",
+    "include/bsp/native_dword_vector_header_insert_one.hpp": "a3692ec4803e46950868438ec588896d2621f79efb1209b85e0accb3490315cc"
+  },
+  "provider_source_sha256": {
+    "include/bsp/native_dword_vector_insertn_owner.hpp": "54a9402070f71e0874a2292a4308bcb0981ba7703c4d2c0f9432f4cbd3cdd243",
+    "src/native_dword_vector_insertn_owner.cpp": "ab8e7ac8c2bdc9d3666b6c32bd4d218218d737d06b946e724eb045c340994489",
+    "include/bsp/native_invalid_parameter_noinfo_call.hpp": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+    "src/native_invalid_parameter_noinfo_call.cpp": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b"
+  },
+  "preserved_prior_source_sha256": {
+    "include/bsp/native_input_configuration_modifiers.hpp": "c278175616b649216b700b186d389b05ce18e5977d46c1d66f2f68926f63cf49",
+    "src/native_input_configuration_modifiers.cpp": "4348a7f4dd27a47121f2eac2477a32ce4d8c872055b1b354fe0679b264b2919d"
+  },
+  "routine": {
+    "address": "006988f0",
+    "original_name": "STL_Vector_InsertOne_006988f0",
+    "cpp_name": "insert_native_dword_vector_header_one_006988f0",
+    "coverage": "whole139B/57current starts;5actualCALLs; no localEH/action",
+    "original_ABI": {
+      "receiver": "ECX raw receiver; incomingEDX unconsumed. Direct reads receiver+4 begin/+8 end; parentchild consumes actual same raw16B header, including capacity+0C. No direct opaque+0/C access in wrapper.",
+      "entry_physical_stack_words": [
+        {
+          "entry_offset": "ESP+04",
+          "meaning": "raw8B output pair address; Native loaded only at0069896A"
+        },
+        {
+          "entry_offset": "ESP+08",
+          "meaning": "iterator-owner pointer bits; capturedEBP at006988F3 after3 pushes"
+        },
+        {
+          "entry_offset": "ESP+0C",
+          "meaning": "position pointer; Native loaded for index at00698928 and again for parentcall00698935"
+        },
+        {
+          "entry_offset": "ESP+10",
+          "meaning": "fill-header pointer; Native loaded00698931 after preliminary diagnostics"
+        }
+      ],
+      "callee_pop": "RET10h at00698978; current complete range006988F0..0069897A,139B57instructions",
+      "normal_return": "EAX raw output-pair pointer, explicitly loaded0069896A and preserved through final stores; no EAX result from child698400 is consumed.",
+      "stack_producer_proof": "After PUSH ECX/EBX/EBP, [ESP+14]=entryESP+08 captures owner; after PUSH ESI/EDI, [ESP+20]=entry+0C position and [ESP+24]=entry+10 fill; [ESP+18]=entry+04 output. PUSH EBP/position/1/fill schedule makes actual childfour stacked owner/position/count/fill words.",
+      "other_registers": "Native preserves EBX/EBP/ESI/EDI. Entry ECX is pushed as private local and popped toECX; Source ambient register/flag/private-stack identity unproved.",
+      "local_EH": "No FS registration, state stores, lexical catch, owned temporary, cleanup action, rethrow or conditionalfree in whole139B body. No local unwind dependency. Exceptions/failures propagate from children; no parentSource assumptions."
+    },
+    "Source_ABI": "void* __fastcall(void*receiver,uint32_t unused_edx,void*output,void*iterator_owner,void*position,constvoid*fill_header)"
+  },
+  "native_body": {
+    "ranges": [
+      {
+        "start": "006988f0",
+        "end_inclusive": "0069897a",
+        "bytes": 139
+      }
+    ],
+    "sha256": "7383c7208ef15da8a5ba24c68c8a04fa19e20d1d687ff176946571c1321b24f2",
+    "PE_live_equal": true,
+    "current_starts": 57
+  },
+  "host_steps": [
+    {
+      "function": "006988f0",
+      "address": "00698916",
+      "native": "00bf6713",
+      "scope": "owned whole function",
+      "evidence": "FullPE/live body/exact current instruction and target; direct accepted Source API"
+    },
+    {
+      "function": "006988f0",
+      "address": "00698923",
+      "native": "00bf6713",
+      "scope": "owned whole function",
+      "evidence": "FullPE/live body/exact current instruction and target; direct accepted Source API"
+    },
+    {
+      "function": "006988f0",
+      "address": "00698940",
+      "native": "00698400",
+      "scope": "owned whole function",
+      "evidence": "FullPE/live body/exact current instruction and target; direct accepted Source API"
+    },
+    {
+      "function": "006988f0",
+      "address": "0069894d",
+      "native": "00bf6713",
+      "scope": "owned whole function",
+      "evidence": "FullPE/live body/exact current instruction and target; direct accepted Source API"
+    },
+    {
+      "function": "006988f0",
+      "address": "00698965",
+      "native": "00bf6713",
+      "scope": "owned whole function",
+      "evidence": "FullPE/live body/exact current instruction and target; direct accepted Source API"
+    }
+  ],
+  "contracts": [
+    {
+      "phase": "initial",
+      "steps": [
+        "Capture iteratorowner bits intoEBP first. Capture receiver inESI; load initialbegin receiver+4 once intoEBX.",
+        "If initialbegin==0, index=0 without loading initialend or diagnosing owner.",
+        "Otherwise load initialend receiver+8 once; compute SAR4(wrap(initialend-initialbegin)). If this value==0, index=0 and skip both initial diagnostics even if endpoints differ by admitted sub16B/wrapped bits.",
+        "If SAR result!=0, unsigned compare CAPTURED initialbegin/initialend; report BF6713 if begin>end.",
+        "After any returning first diagnostic, compare CAPTURED owner bits with0 and receiver; if invalid report BF6713. Both reports may execute; do not add noreturn or return guard.",
+        "After reports return, index=SAR4(wrap(late Native position argument-initialbegin CAPTURED before reports)); never refresh initialbegin for this index."
+      ]
+    },
+    {
+      "phase": "actual InsertCount",
+      "steps": [
+        "Native loads fill pointer toEDX, position toEAX; pushes fill, literal1,position,capturedowner; ECX receiver; CALL00698400.",
+        "Proposed Source calls exact future actual698400(receiver,0u,ownerbits,position,1u,fill). Canonical unusedEDX0 is qualified; Native incoming childEDX equals fill pointer bits but is unconsumed.",
+        "Ignore childEAX residues. Actual parent8180 is primary accepted/published inMainf3cf; invoke it directly, no callback/model/oldinsert_row substitute."
+      ]
+    },
+    {
+      "phase": "post-insert diagnostics and output",
+      "steps": [
+        "Load newbegin receiver+4 ONCE toEBX after child returns. Compare with CURRENT receiver+8; if unsigned newbegin>end call BF6713.",
+        "Keep CAPTURED newbegin across a returning diagnostic. Result=wrap(newbegin+(index<<4)).",
+        "Load CURRENT receiver+8 and compare result>end first. If true report once and SKIP lower-bound currentbegin read. Otherwise load CURRENT receiver+4 and report if result<begin.",
+        "Keep result across that returning diagnostic. Native now loads outputpair argument; store output+4=result before output+0=receiver. Return output addressEAX.",
+        "No extra reload, revalidation, outputpair snapshot, failure repair, header reset or rollback."
+      ]
+    }
+  ],
+  "bindings": {
+    "00698400": "insert_native_dword_vector_header_count_00698400(receiver,0u,captured_owner,position,1u,fill_header)",
+    "00bf6713": "invoke_native_invalid_parameter_00bf6713(); actual SDK CurrentCpp policy, no noexcept/noreturn"
+  },
+  "ownership_and_failure": "No caller-owned temp/allocation/EH. Childprogress propagates; postchild report failure leaves mutation/outputunwritten. No rollback or helper cleanup.",
+  "output_alias_order": "Retain capturedresult across diagnostic; raw output+4result BEFORE output+0receiver; return exact outputbits EAX.",
+  "Source_private_frame": "Original output/position/fill stackword late reloads and registersave aliases are not reconstructed by C++ parameter/private storage. Canonical childunusedEDX0 excludes Native fillptr-in-EDX identity.",
+  "CMake_registration": {
+    "file": "cmake/startup.cmake",
+    "policy": "local append only perCOORDINATION93-95; no sharedregistry lease/queue"
+  },
+  "prior_provenance": "No replacement of native_input_configuration_modifiers bounded append/internalinsert_row or old Hook/storage domains; no00698980/configurationowner Source claim.",
+  "verification": {
+    "fresh_PE_live": true,
+    "exact57current_starts": true,
+    "all5native_CALLs": true,
+    "provider_fingerprints": true,
+    "required_default_build": "scripts/build.ps1 exit0, defaultMSVCWin32/nooverlay",
+    "actual_CMake_COFF": "14checks pass;all221physicalB98starts/5actualREL32 reviewed",
+    "report_and_Markdown_calls": {
+      "report_checked": 5,
+      "Markdown_checked": 5,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0
+    },
+    "new_tests": 0,
+    "Ghidra_mutations": false,
+    "packet_native_or_game_execution": false,
+    "existing_suites": {
+      "passed": 3,
+      "failed": 0,
+      "total_seconds": 14.08,
+      "tests": {
+        "reconstructed_math": 0.36,
+        "native_math_differential": 0.06,
+        "tool_tests": 13.54
+      },
+      "scope": "Existing suites, not directwrapper/nativeABI/game execution"
+    },
+    "build_log": "local\\oct15_dword_vector_header_insert_one_build.log",
+    "build_log_sha256": "be5b83e238b524f164854f2e66eb6f1159812c82b6f22be297a404687840b9f4",
+    "final_fresh_utc": "2026-10-16T03:56:25.899390+00:00",
+    "frozen_ignored_artifacts_sha256": {
+      "local/oct15_native_dword_vector_header_insert_one_evidence.json": "5f6e63e9dce42a1b7e8e66822062440221880c2a6c265e91f9b26b86ad3b6328",
+      "local/oct15_dword_vector_header_insert_one_coff.json": "67fa2d4cadba95e1c346c470a68d6ad513ab3881491121951bc6a8a0f86e6fc2",
+      "local/oct15_dword_vector_header_insert_one_call_checks.txt": "618f71d820e351dc8a33aadddabfd76e74d55750fbf89bf2a2353677fb7d256d",
+      "local/oct15_dword_vector_header_insert_one_build.log": "be5b83e238b524f164854f2e66eb6f1159812c82b6f22be297a404687840b9f4",
+      "local/oct15_dword_vector_header_insert_one_ledger_actions.json": "c6743eea80567917ee32951d09961c1bc32ac062325d7fe48490eb6cc8b8bae6"
+    },
+    "git_diff_check": "passed"
+  },
+  "limits": [
+    "CurrentSDK invalidparameter policy differs from originalBF66EF globals/debugger/handler/Watson behavior",
+    "OriginalCRT/heap/newhandler/RTTI/FH3/SEH/fault/privateframe/register/flags/binaryABI/game behavior unproved",
+    "All reached raw accesses must be valid; public alias order preserved without inventedguards/model/countbridge/callback/noexceptbridge"
+  ],
+  "ignored_native_evidence": "local/oct15_native_dword_vector_header_insert_one_evidence.json",
+  "Source_COFF": {
+    "evidence": "local\\oct15_dword_vector_header_insert_one_coff.json",
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\build\\win32\\bsp_core.dir\\Release\\native_dword_vector_header_insert_one.obj",
+      "sha256": "d73c3563cbb4a2ece0f16ac8067098f39248c30cc184f72d45f5f6d40b89c4b7",
+      "bytes": 1857,
+      "machine": "I386"
+    },
+    "physical_code_bytes": 221,
+    "instruction_starts": 98,
+    "main_bytes": 159,
+    "main_starts": 65,
+    "other5bytes": 62,
+    "other5starts": 33,
+    "relocations": 5,
+    "passed_checks": 14,
+    "failed_checks": 0,
+    "all_code_inspected": true,
+    "localEH": false,
+    "index_optimization": "U32(SAR4(d)<<4) == U32(SHR4(d)<<4) == (d & FFFFFFF0) for every32-bitd; observed only finalbyteoffset, not Nativeintermediate index/register/flags identity.",
+    "limits": "Sourceprivateargument reloads/frames/registers/flags/asynchronous/fault/SEH/originalCRT-handler policy/binaryABI/game unproved."
+  },
+  "ignored_native_evidence_sha256": "5f6e63e9dce42a1b7e8e66822062440221880c2a6c265e91f9b26b86ad3b6328"
+}
