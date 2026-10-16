@@ -1,7 +1,19 @@
 {
   "batch": "GOAL15M",
   "status": "seven_whole_source_functions_registered_build_and_archive_fixtures_verified_one_custom_ghidra_formal_signature_pending",
-  "validated_source_commit": "6fedca6876f7be2dd7abe6052e9e040c6a245b0c",
+  "owned_call_sites": [
+    {
+      "address": "0048d314",
+      "native": "00486be0",
+      "caller": "0048d2f0"
+    },
+    {
+      "address": "0048687e",
+      "native": "0047fc30",
+      "caller": "00486850"
+    }
+  ],
+  "validated_source_commit": "532df717fa8bf88071d5e4f6769c5684a7bf565d",
   "worker_commits": {
     "pod18": "53755cf86549e6d1fe3369b9b48342f6e39e1f62",
     "lookup": "29a7f65dba6f6677e130c277373c11b3ca31508d"
@@ -444,7 +456,7 @@
   "final_archive_only_fixtures": {
     "pod18": {
       "receipt": "local/goal15m_pod18_probe_result.json",
-      "receipt_sha256": "2dd4de35654c452d96806ae21ca8ad18b049cc3c1e847f305d4574ae45a160a8",
+      "receipt_sha256": "6ae818a65e8d24133a5ae5ecca63ed3197c9b46d842a0acbf3ba35fa39b38d88",
       "kind": "Source fixture linked against registered archive and real current services",
       "manifest_embedded": true,
       "exit_code": 0,
@@ -452,16 +464,16 @@
       "stderr": "",
       "sha256": {
         "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15k_traffic_pod18_helpers\\pod18_helpers_probe.cpp": "70570e828716caa207b250826b1f5a622fd54994541e220270983fa3fd541373",
-        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15m_pod18_probe.obj": "1dab3541df5682570270960b1e01fc711cbc0c0def2394b23b268ff662eec91c",
-        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15m_pod18_probe.exe": "09102e1c45fe4ceb62979c3c0085ee0a2ef08d427d8bc48450ef26f59889c829",
-        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "416bbbe6dca4dfbb838d04dd70acfa224c7aac493f4a34e26fafb47836b92f5a",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15m_pod18_probe.obj": "1d15f2695916742b1c76d0df54d84eeff860736efce551e4e68db23c58bb0a2f",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15m_pod18_probe.exe": "b47b49156a25ee032d65fde12e8d7a30a55b22c32f3c6b3e2f3177ba1ab51727",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "5617e5946adb173b050b8698848d2818109ca761ce955224233c14e01b9edb97",
         "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
         "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
       }
     },
     "lookup": {
       "receipt": "local/goal15m_lookup_probe_result.json",
-      "receipt_sha256": "73447dd0011b3c815ff8bf8850c829536261c535f36f631f2e4618eb0b19f265",
+      "receipt_sha256": "ee3b621fcadf9c58e1062dbe05387e765d745dbf4758818f0b8e7f2b7bb42fae",
       "kind": "Source fixture linked against registered archive and real current services",
       "manifest_embedded": true,
       "exit_code": 0,
@@ -469,9 +481,9 @@
       "stderr": "",
       "sha256": {
         "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15l_avoid_manager_group_lookup\\manager_group_lookup_probe.cpp": "5600e20f804089f957aed0516739536deb3408064dfb97893bd730b284a07fd7",
-        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15m_lookup_probe.obj": "0777d3b0a8ac80a7a3b15d8b8a141c3b05282f67f40c0ab7e7ebb665d2eef20a",
-        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15m_lookup_probe.exe": "aae6b16386468a72a643a0532fc7ab2b9fcead3ec1347127f9420848044cd5d6",
-        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "416bbbe6dca4dfbb838d04dd70acfa224c7aac493f4a34e26fafb47836b92f5a",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15m_lookup_probe.obj": "c1ccb02c516ffd8809344d8d3bb17f8ca6ccf9039825a785415f3a60b52e9a26",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15m_lookup_probe.exe": "2b7e7ba93e7d4d729ef64ac172a493ae988892762a7649895f2418712c0db24a",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "5617e5946adb173b050b8698848d2818109ca761ce955224233c14e01b9edb97",
         "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
         "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
       }
@@ -480,6 +492,7 @@
   "golden_literal_full_native_bodies_verified": 7,
   "call_checks": {
     "worker_report_rows": 34,
+    "primary_report_rows": 2,
     "markdown_claims": 2,
     "failed": 0,
     "unchecked": 0,
@@ -535,7 +548,7 @@
   },
   "review": {
     "primary": "Read full7Nativebodies, publicSource/header/fixturecode, generation/verifier logic and final COFF; all456fresh live/installed bytes and7Goldenliterals checked; actualarchive fixtures/realSourcechildren checked",
-    "independent": "POD18 independent review by world_helpers_max; see final review evidence artifact when delivered"
+    "independent": "world_helpers_max CLOSED PASS, scoped to6POD18helpers at53755cf8: full390Native/Source/COFF/Goldenbytes,2exactrelocations,10freshxrefsites/allcallersetups/370savedinstructionstarts,58localartifacthashes; fixturecode/savedPASSlog inspected only, no newtest/build/probe/verifier runs or sharedmutations. Excludes lookup and primary execution. Handoff/receipt retained underlocal/goal15l_pod18_review"
   },
   "source_inputs_sha256": {
     "src\\native_traffic_pod18_helpers.cpp": "9fc6256ab9d548344863fad587902ed2d2a8d26d01d78278db96016e31360b3d",
@@ -544,9 +557,9 @@
     "include\\bsp\\native_avoid_manager_group_lookup.hpp": "ac6e6172f59ed68023d2efe884f083b275c84e2d28406c297e17598cbb7575f3"
   },
   "artifact_sha256": {
-    "build/win32/Release/bsp_core.lib": "416bbbe6dca4dfbb838d04dd70acfa224c7aac493f4a34e26fafb47836b92f5a",
-    "local/goal15m_registered_build.log": "8726a4ff8ed62e2686697c163d27f69521f3cd04ed1434f9f76248eac72a49c1",
-    "local/goal15m_call_checks.log": "992c4ac3f41d81191ae56897e4072f8f3d5b5c1df3b4658eaae5b08ef8646b6d",
+    "build/win32/Release/bsp_core.lib": "5617e5946adb173b050b8698848d2818109ca761ce955224233c14e01b9edb97",
+    "local/goal15m_registered_build.log": "23db3c6c0ce25fd4cd71d39dcdc4a64afada2fb9ee1cd40191f5e50b8fc5e8c2",
+    "local/goal15m_call_checks.log": "399de29fa7329a4d0558bcf28d913f79570eabd5004d29d93e98d344658c5557",
     "local/goal15m_exports.json": "5c22457d1a8a6b21c6bd6712cee83eb73c20f27258aa47ef9244b7deb74a630d",
     "local/goal15m_exports.log": "312e53a207f40ef091c63f6866f8707a45c0b9c7ad6896150c5d1dcc33497fa9",
     "local/goal15k_traffic_pod18_helpers/coff_receipt.json": "8d3d58fc1c6c05b34a09d885ccbce392e9e920f68807471d3e33b4d6e4946daa",
@@ -558,10 +571,14 @@
     "local/ghidra-annotations-20261016T013457Z.json": "4f333d7e43dbe593643c5fc715f35f8c3020aa45d56007d33e7de21d620a13b0",
     "local/ghidra-annotations-20261016T013753Z.json": "bfef618125f039e5b4b87048fd2970304e0f3e2c120203d1340c4f8f78d417a3",
     "local/goal15m_48d2f0_flow_probe.json": "1bc8d557b301b65f656ab804580487805c3c272bf7aea67eedfdaf5820475ec0",
-    "local/goal15m_receipt.py": "f59c28086d8e8b9cf2981cb5801b36419219825e888a1f657bfd1ddd00c8f73b",
+    "local/goal15m_receipt.py": "825db016da6e32b65e86142382c41bb0a2c44d00c7e9a5c41571f453e4bb183d",
     "local/goal15k_traffic_pod18_helpers/verify_coff.py": "d80d8a9268ef8ae147e039036d0b33741be6f0d57acd876a6f4dd73f044e04ce",
     "local/goal15l_avoid_manager_group_lookup/verify_bytes.py": "2aecc16f26cfd53ea7cb9769ed3766e4b1880d4f64586a73b1c06dad45130225",
-    "local/link_goal15c_probe.py": "cb0fbd2395a809b7ca0bff1937412910cafbe33d819073c31cc2637a2f8ad455"
+    "local/link_goal15c_probe.py": "cb0fbd2395a809b7ca0bff1937412910cafbe33d819073c31cc2637a2f8ad455",
+    "local/goal15l_pod18_review/HANDOFF.md": "51a8ba1a806cdfa4b39cb194bc24b2bb89f8360efd63d62531b93e003ba77272",
+    "local/goal15l_pod18_review/receipt.json": "563b2a983b45e017c29a8ad1381cf7499da1329f0deca8a39b988d501faa0f0a",
+    "local/goal15l_pod18_review/review.py": "59308d40aeea255abbc9801cb27f9fc9ed26fd15395dcf0380366c48ce6b06cd",
+    "local/goal15l_pod18_review/finalize.py": "575f4e041139f09af7f3425867f95033dfb06a563573858444112ddadfb22830"
   },
   "open_work": [
     "48D2F0 formal custom-storage Ghidra annotation",

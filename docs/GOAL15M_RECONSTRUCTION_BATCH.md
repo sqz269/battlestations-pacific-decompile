@@ -13,8 +13,9 @@ signed count once, returns current slot0 even for nonpositive count, selects fir
 equality or last physical qualifying index, and reloads the chosen raw slot.
 Existing typed projections and mandatory caller bindings remain distinct.
 
-Primary and independent review inspect complete physical bodies, installed/live
-bytes, actual emitted COFF and the small captured-Native-body fixtures. Registered
+Primary review covers all seven entries; independent review covers the six
+range helpers. Both inspect complete physical bodies, installed/live bytes,
+actual emitted COFF and the small captured-Native-body fixtures. Registered
 build, archive-only fixture and operand evidence is in
 `reports/goal15m_reconstruction_batch.json`. Worker baseline builds leave these
 new modules unregistered and are recorded separately from primary validation.
