@@ -1177,15 +1177,27 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         log.notef("native Dyn convex pool CRT CC89C0: atexit=%d storage=process_actual38h",
             convex_atexit);
     } catch (const std::exception& failure) {
-        std::fprintf(stderr, "bsp_game: native pool startup failed: %s\n", failure.what());
-        log.notef("native pool startup failed: %s", failure.what());
         if (text_pool_process && text_pool_process->native_operation_interrupted()) {
-            log.note("interrupted GUI Text pool startup; retaining raw pool/list state without CRT cleanup");
-            log.close();
+            try {
+                log.notef("native pool startup failed: %s", failure.what());
+                log.note("interrupted GUI Text pool startup; retaining raw pool/list state without CRT cleanup");
+                log.close();
+            } catch (...) { std::fputs("bsp_game: GUI Text pool requires process retention\n", stderr); }
             std::_Exit(2);
         }
+        std::fprintf(stderr, "bsp_game: native pool startup failed: %s\n", failure.what());
+        log.notef("native pool startup failed: %s", failure.what());
         log.close();
         return 1;
+    } catch (...) {
+        if (text_pool_process && text_pool_process->native_operation_interrupted()) {
+            try {
+                log.note("unknown interrupted GUI Text pool startup; retaining raw pool/list state without CRT cleanup");
+                log.close();
+            } catch (...) { std::fputs("bsp_game: GUI Text pool requires process retention\n", stderr); }
+            std::_Exit(2);
+        }
+        throw;
     }
 
     // docs/X87_CONTROL_WORD.md establishes statically that the CRT startup sets
