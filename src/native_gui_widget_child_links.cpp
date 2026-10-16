@@ -4,6 +4,7 @@
 #include "bsp/singleton_lifetime.hpp"
 #include <cstdlib>
 #include <cstring>
+#include <stdexcept>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Raw widget child links require MSVC Win32.
@@ -45,6 +46,34 @@ std::uint32_t native_gui_widget_type_for_key_00aa2490(const NativeString& key,
     };
     for (const auto& entry : classes)
         if (_stricmp(suffix, entry.name) == 0) return entry.id;
+    return 0;
+}
+
+NativeGuiWidgetTypeKeyContext::NativeGuiWidgetTypeKeyContext(const char* empty,
+    const char* underscore, const NativeGuiWidgetTypeLiteralViews& literals,
+    NativeGuiWidgetTypeNameCompare compare)
+    : empty_(empty), underscore_(underscore), class_literals_(literals),
+      compare_(compare) {
+    if (!empty_ || !underscore_ || !compare_)
+        throw std::invalid_argument("Widget type inputs require literals and a comparer");
+    for (const auto* literal : class_literals_)
+        if (!literal)
+            throw std::invalid_argument("Widget type inputs require all class literals");
+}
+
+std::uint32_t native_gui_widget_type_for_key_00aa2490(const NativeString& key,
+    const NativeGuiWidgetTypeKeyContext& context) {
+    const char* captured = key.data();
+    if (!captured) captured = context.empty_;
+    const auto cut = reverse_find_native_string_bytes_004bcb80(
+        key, context.underscore_, 0x7fffffff);
+    const char* const suffix = captured + (cut + 1u);
+    static constexpr std::uint32_t ids[] = {
+        6, 3, 2, 5, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
+    };
+    for (std::size_t i = 0; i < context.class_literals_.size(); ++i)
+        if (context.compare_(suffix, context.class_literals_[i]) == 0)
+            return ids[i];
     return 0;
 }
 
