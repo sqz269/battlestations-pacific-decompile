@@ -1,9 +1,9 @@
 {
   "batch": 49,
-  "status": "Source_integrated_in_staging_build_checked_annotation_saved_pending_main_publication",
+  "status": "Source_accepted_integrated_build_checked_annotation_saved",
   "Source_pin": "340cd1eb1bf9aee6eec41904a7686a49e746eb53",
   "staging_Source_merge": "982f37b83bb2ddeb5eb7fbd8fe66ecfa76f08efe",
-  "tested_commit": "982f37b83bb2ddeb5eb7fbd8fe66ecfa76f08efe",
+  "tested_commit": "dfe6fa8f3b724a18c29644817ed523975c04f7cf",
   "routine": "00c05070",
   "Native_scope": {
     "owned_bytes": 50,
@@ -1023,11 +1023,11 @@
     "whole_object_identity_claimed": false
   },
   "verification": {
-    "build_log": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_batch49_build.txt",
-    "build_log_sha256": "2f4da94228b9b8b01b8103db0ade4dde306701cc62d7fc157291afcc171e4dab",
+    "build_log": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_batch49_final_build.txt",
+    "build_log_sha256": "22d8469529a4ab9454efa9cf0cd5243328c2847ee6cdf8e5c6dc844f85df3987",
     "passed": 3,
     "failed": 0,
-    "seconds": 8.42,
+    "seconds": 7.89,
     "transfer_log": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_batch49_transfers.txt",
     "transfer_log_sha256": "97f35ddbc9254029b50d19619eae6a0180ad569fd4083d94452d04986820eb0c",
     "direct_calls_checked": 1,
@@ -1045,5 +1045,17 @@
     "C050F8 initializer and logical finallyC051AE; actual lock/error/SEH4 runtime",
     "C11B5E lazy lock initializer, BFBA09 fatal reporter, installed C07C90 handler",
     "PTD allocator/free, __mtinit bootstrap, actual TLS/encoded cells, locale BF7EEC"
-  ]
+  ],
+  "separate_saved_name_correspondence": {
+    "metadata_only_descendant": "28fe172f7ed7d7159610862c225f343a57584ec3",
+    "implementation_pin_unchanged": "340cd1eb1bf9aee6eec41904a7686a49e746eb53",
+    "receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\oct16_tls_getter_name_ledger_addendum.json",
+    "sha256": "7b172b8ce65b564ec83a25b8514cde45a09a4877d4a4969d19b31da38c9f7f40",
+    "changed_paths": [
+      "config/names/00c00000.jsonl"
+    ],
+    "old_evidence_exact_prefix": true,
+    "new_name": "BSP_CRT_SelectThreadDataGetter",
+    "Source_quartet_and_prototype_unchanged": true
+  }
 }
