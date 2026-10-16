@@ -1,0 +1,393 @@
+{
+  "packet": "cc12_native_gui_widget_type_inputs_81",
+  "status": "explicit_required_actual_literal_comparer_profile_source_identity_order_checked_canonical_build_passed",
+  "baseline": "9bc71b4b10fdaa858c1352481c0fb1bee86ad1b7",
+  "checked_merge_exit": 0,
+  "completed_utc": "2026-10-16T04:03:37.544132+00:00",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48",
+  "source": [
+    "include/bsp/native_gui_widget_child_links.hpp",
+    "src/native_gui_widget_child_links.cpp"
+  ],
+  "api": {
+    "context": "NativeGuiWidgetTypeKeyContext",
+    "overload": "native_gui_widget_type_for_key_00aa2490(const NativeString&, const NativeGuiWidgetTypeKeyContext&)",
+    "required": [
+      "actual empty00F8BC60 pointer",
+      "actual underscore00CE7890 pointer",
+      "SAME const std::array<const char*,17>& in native order",
+      "explicit int(__cdecl*)(const char*,const char*) comparer"
+    ],
+    "nondefault": true,
+    "constructor_preflight": "nonnull metadata checks only outside raw operation; ordinary Source invalid_argument; no string-content scan/CRT/locale query",
+    "body_order": [
+      "capture actual key.data once",
+      "ifnull use required empty pointer",
+      "real raw Source004BCB80(SAME key,actual underscore,7FFFFFFF)",
+      "one suffix captured+unsigned(cut+1)",
+      "same suffix on left, corresponding required literal pointer on right",
+      "fixed17 IDs/order, firstzero return, allmisses0"
+    ],
+    "lifetime": "context, SAME literal-array/pointer identities, terminated literal bytes and valid actual NativeString/header backing remain live/stable through externally serialized provider/locale changes",
+    "copies_or_string_views": false,
+    "default_or_fallback_comparer": false,
+    "new_literal_or_CRT_owner": false,
+    "exceptions": "ordinary Source constructor/provider failures propagate; no new cleanup or Native FH3/SEH/private-stack/binary-ABI promise"
+  },
+  "legacy": {
+    "three_arg_body_bytes_identical": true,
+    "body_sha256": "16189bea32542c7cdb994246e15fef454a1f121a6dc9d1381eae21ba357f8da1",
+    "all_unrelated_helper_tail_bytes_identical": true,
+    "tracked_raw_callers": "declaration/definition only at baseline; logical std::string_view classifier is separate",
+    "old_reconstruction_status_and_fields": "preserved exactly; new packet81 metadata nested separately",
+    "prior_Original_comparison_scope": "existing bounded legacy overload only, not transferred to new profile"
+  },
+  "Original": {
+    "original_range_half_open": [
+      "00aa2490",
+      "00aa265a"
+    ],
+    "original_bytes": 458,
+    "original_instructions": 163,
+    "original_sha256": "6791bd5ad0db17abc38d5b4ec550396352321e20cef12e5ed5e73977b705cb23",
+    "complete_hex": "568b710485f67505be60bcf80068ffffff7f689078ce00e8d4a6a1ff8d74300168c88ece0056e8045b150083c40885c07507b8060000005ec36878c7ce0056e8eb5a150083c40885c07507b8030000005ec3688056d00056e8d25a150083c40885c07507b8020000005ec36804bed50056e8b95a150083c40885c07507b8050000005ec368fcbdd50056e8a05a150083c40885c07507b8040000005ec368f0bdd50056e8875a150083c40885c07507b8070000005ec368e8bdd50056e86e5a150083c40885c07507b8080000005ec368e0bdd50056e8555a150083c40885c07507b8090000005ec36864bbce0056e83c5a150083c40885c07507b80a0000005ec368d8bdd50056e8235a150083c40885c07507b80b0000005ec368ccbdd50056e80a5a150083c40885c07507b80c0000005ec368c4bdd50056e8f159150083c40885c07507b80d0000005ec368fca3ce0056e8d859150083c40885c07507b80e0000005ec368bcbdd50056e8bf59150083c40885c07507b80f0000005ec368b4bdd50056e8a659150083c40885c07507b8100000005ec368acbdd50056e88d59150083c40885c07507b8110000005ec368a0bdd50056e87459150083c408f7d81bc083e0ee83c0125ec3",
+    "live_Ghidra_matches_installed_PE": true,
+    "literal_data_evidence": "installed PE preimages at operands independently verified by the whole live Original byte/listing match",
+    "class_literal_order": [
+      {
+        "index": 0,
+        "literal": "Icon",
+        "original_address": "00ce8ec8",
+        "id": 6,
+        "literal_push": "00aa24b0",
+        "compare_call": "00aa24b6"
+      },
+      {
+        "index": 1,
+        "literal": "Text",
+        "original_address": "00cec778",
+        "id": 3,
+        "literal_push": "00aa24c9",
+        "compare_call": "00aa24cf"
+      },
+      {
+        "index": 2,
+        "literal": "Group",
+        "original_address": "00d05680",
+        "id": 2,
+        "literal_push": "00aa24e2",
+        "compare_call": "00aa24e8"
+      },
+      {
+        "index": 3,
+        "literal": "Progbar",
+        "original_address": "00d5be04",
+        "id": 5,
+        "literal_push": "00aa24fb",
+        "compare_call": "00aa2501"
+      },
+      {
+        "index": 4,
+        "literal": "Line",
+        "original_address": "00d5bdfc",
+        "id": 4,
+        "literal_push": "00aa2514",
+        "compare_call": "00aa251a"
+      },
+      {
+        "index": 5,
+        "literal": "Scrollbar",
+        "original_address": "00d5bdf0",
+        "id": 7,
+        "literal_push": "00aa252d",
+        "compare_call": "00aa2533"
+      },
+      {
+        "index": 6,
+        "literal": "Grid",
+        "original_address": "00d5bde8",
+        "id": 8,
+        "literal_push": "00aa2546",
+        "compare_call": "00aa254c"
+      },
+      {
+        "index": 7,
+        "literal": "Model",
+        "original_address": "00d5bde0",
+        "id": 9,
+        "literal_push": "00aa255f",
+        "compare_call": "00aa2565"
+      },
+      {
+        "index": 8,
+        "literal": "Movie",
+        "original_address": "00cebb64",
+        "id": 10,
+        "literal_push": "00aa2578",
+        "compare_call": "00aa257e"
+      },
+      {
+        "index": 9,
+        "literal": "Listbox",
+        "original_address": "00d5bdd8",
+        "id": 11,
+        "literal_push": "00aa2591",
+        "compare_call": "00aa2597"
+      },
+      {
+        "index": 10,
+        "literal": "AnimIcon",
+        "original_address": "00d5bdcc",
+        "id": 12,
+        "literal_push": "00aa25aa",
+        "compare_call": "00aa25b0"
+      },
+      {
+        "index": 11,
+        "literal": "Curve",
+        "original_address": "00d5bdc4",
+        "id": 13,
+        "literal_push": "00aa25c3",
+        "compare_call": "00aa25c9"
+      },
+      {
+        "index": 12,
+        "literal": "Sound",
+        "original_address": "00cea3fc",
+        "id": 14,
+        "literal_push": "00aa25dc",
+        "compare_call": "00aa25e2"
+      },
+      {
+        "index": 13,
+        "literal": "Button",
+        "original_address": "00d5bdbc",
+        "id": 15,
+        "literal_push": "00aa25f5",
+        "compare_call": "00aa25fb"
+      },
+      {
+        "index": 14,
+        "literal": "ClipBox",
+        "original_address": "00d5bdb4",
+        "id": 16,
+        "literal_push": "00aa260e",
+        "compare_call": "00aa2614"
+      },
+      {
+        "index": 15,
+        "literal": "Section",
+        "original_address": "00d5bdac",
+        "id": 17,
+        "literal_push": "00aa2627",
+        "compare_call": "00aa262d"
+      },
+      {
+        "index": 16,
+        "literal": "FrameBox",
+        "original_address": "00d5bda0",
+        "id": 18,
+        "literal_push": "00aa2640",
+        "compare_call": "00aa2646"
+      }
+    ],
+    "original_abi": "ECX actual8h key header, EDX unused, no stack args, EAX ID, RET; captured data before real004BCB80; same captured ESI suffix through17cdeclBF7FBF calls",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "original_direct_call_sites": [
+    {
+      "address": "00aa24a7",
+      "native": "004bcb80",
+      "function": "00aa2490"
+    },
+    {
+      "address": "00aa24b6",
+      "native": "00bf7fbf",
+      "function": "00aa2490"
+    },
+    {
+      "address": "00aa24cf",
+      "native": "00bf7fbf",
+      "function": "00aa2490"
+    },
+    {
+      "address": "00aa24e8",
+      "native": "00bf7fbf",
+      "function": "00aa2490"
+    },
+    {
+      "address": "00aa2501",
+      "native": "00bf7fbf",
+      "function": "00aa2490"
+    },
+    {
+      "address": "00aa251a",
+      "native": "00bf7fbf",
+      "function": "00aa2490"
+    },
+    {
+      "address": "00aa2533",
+      "native": "00bf7fbf",
+      "function": "00aa2490"
+    },
+    {
+      "address": "00aa254c",
+      "native": "00bf7fbf",
+      "function": "00aa2490"
+    },
+    {
+      "address": "00aa2565",
+      "native": "00bf7fbf",
+      "function": "00aa2490"
+    },
+    {
+      "address": "00aa257e",
+      "native": "00bf7fbf",
+      "function": "00aa2490"
+    },
+    {
+      "address": "00aa2597",
+      "native": "00bf7fbf",
+      "function": "00aa2490"
+    },
+    {
+      "address": "00aa25b0",
+      "native": "00bf7fbf",
+      "function": "00aa2490"
+    },
+    {
+      "address": "00aa25c9",
+      "native": "00bf7fbf",
+      "function": "00aa2490"
+    },
+    {
+      "address": "00aa25e2",
+      "native": "00bf7fbf",
+      "function": "00aa2490"
+    },
+    {
+      "address": "00aa25fb",
+      "native": "00bf7fbf",
+      "function": "00aa2490"
+    },
+    {
+      "address": "00aa2614",
+      "native": "00bf7fbf",
+      "function": "00aa2490"
+    },
+    {
+      "address": "00aa262d",
+      "native": "00bf7fbf",
+      "function": "00aa2490"
+    },
+    {
+      "address": "00aa2646",
+      "native": "00bf7fbf",
+      "function": "00aa2490"
+    }
+  ],
+  "live_report_call_verification": {
+    "exit_code": 0,
+    "checked": 18,
+    "failed": 0,
+    "scope": "Original direct CALL instruction sites only, separate from new Source overload/provider execution"
+  },
+  "build": {
+    "canonical_scripts_build_ps1": "PASS exit0",
+    "existing_CTests": {
+      "passed": 3,
+      "failed": 0
+    },
+    "new_TU_canonical_compile_seen": true,
+    "fresh_production_object": "PASS MSVC Win32 /MD /O2 /W4 /WX /Gy",
+    "existing_warning": "unrelated spawn_request_id_matches LNK4006 duplicate symbol unchanged",
+    "probe_link": "fresh production object plus actual canonical bsp_core/Lua/zlib/system libraries, no dummy link stubs",
+    "probe_machine": "I386",
+    "probe_manifest": "embedded asInvoker",
+    "persistent_tests_added": 0
+  },
+  "focused_case": {
+    "count": 1,
+    "result": "PASS",
+    "key": "root_section_gRoUp",
+    "expected_id": 2,
+    "calls": 3,
+    "order": [
+      "Icon",
+      "Text",
+      "Group"
+    ],
+    "same_captured_suffix_pointer": true,
+    "same_borrowed_literal_identities": true,
+    "key_header_unchanged": true,
+    "real_key": "actual NativeString object via existing assign_0041e870 and existing crt_string_storage, explicit release_to after comparison",
+    "literal_domain": "explicit stable Source char arrays/pointer array; not Original fixed-VA literal owner proof",
+    "comparer": "transparent pointer/order observer returns real ::_stricmp result, never manufactures a match/miss",
+    "provider_identity": "actual &_stricmp, same function returned by61 source_ucrt_text_name_comparer; compile-time exact pointer-type assertion passes",
+    "actual_probe_import": [
+      {
+        "module": "api-ms-win-crt-string-l1-1-0.dll",
+        "symbol": "_stricmp"
+      }
+    ],
+    "default_constructibility_assertion": "nondefault context compile assertion passes",
+    "locale_mutation": false,
+    "native_differential_cases": 0,
+    "other_branches": "fixed remaining IDs/order and null/notfound gates inspected; no new dynamic case expansion"
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "queries": "verified BSP wrappers each batch",
+    "mutation": "established AA2490 only; existing descriptive name and earlier evidence preserved, new evidence appended under annotation write lock/history/save",
+    "history": "local/ghidra-annotations-20261016T040059Z.json",
+    "saved": true,
+    "exports_refreshed": [
+      "00aa2490"
+    ],
+    "callee_library_name": "__stricmp retained"
+  },
+  "ledger_integrity": {
+    "only_owned_AA2490_name_evidence_and_nested_function_metadata_changed": true,
+    "all_other_rows_identical": true
+  },
+  "review": {
+    "primary_API": "PASS",
+    "primary_full_Source_diff": "PASS",
+    "Source_unchanged_since_primary_review": true
+  },
+  "sha256": {
+    "include/bsp/native_gui_widget_child_links.hpp": "88b5d1ef38f6a26acd595b867011cb8758d6f3d4fbf013ab52d37081c503ec62",
+    "src/native_gui_widget_child_links.cpp": "764ab5a60741c5d2649d9f289bb871474ddd1301a1f21e6b86c30667d3aa47c3",
+    "docs/CC12_NATIVE_GUI_WIDGET_TYPE_INPUTS_81.md": "2790b6b4d7c9f9a2a04be9cd150f1d2aa7ce3a40ea46154c2131f680fc2338f3",
+    "local/cc12_native_gui_widget_type_inputs_81_probe.cpp": "a1ef70446ef5cbe0d7e5a56041fac26c03d2a59f786d101de8be62e61a6c03cb",
+    "local/cc12_native_gui_widget_type_inputs_81_probe.cmd": "92b7bb30b7a786b95e307cf1716eb87f7d2d72e3f331c6be777134fdb8c7c058",
+    "local/cc12_native_gui_widget_type_inputs_81.obj": "3d89012ce5329aab52c689dcfdfa5f326073d1df351de5cc9bf746cb480bb771",
+    "local/cc12_native_gui_widget_type_inputs_81_probe.obj": "aeb9a0a19cc37009f5f8599584de570afd99b20852c833f1f2d6ee235aa62d49",
+    "local/cc12_native_gui_widget_type_inputs_81_probe.exe": "e8c492bcaddd19c0bafa259a3a35d882d30ed0bf81d2667ded5fbded2b606459",
+    "local/cc12_native_gui_widget_type_inputs_81_probe.log": "da62c87a336ea9c37014ee0d1c0e4693abf81033db16787ece69a09245b5a7b9",
+    "local/cc12_native_gui_widget_type_inputs_81_build.log": "a9dfca3ea7da24404b9cd0c48962d3ad746eb59b9275fe7f9355a90d03faa108",
+    "local/cc12_native_gui_widget_type_inputs_81_evidence.py": "9f6bfd1fa3d6eb56102a0de07ae0e51bfcb8a8ed982178a87d083d10b3036028",
+    "local/cc12_native_gui_widget_type_inputs_81_evidence.json": "bd633686402eca72f52b082f222282f4b974e0c2b07750e10957da7464ebf010",
+    "local/cc12_native_gui_widget_type_inputs_81_aa2490_disasm.log": "f431ef8d7bef3fcbecdb38bc1eabf86312f567b436615b6013976926fd6bc2ba",
+    "local/cc12_native_gui_widget_type_inputs_81_aa2490_proto.log": "5256d68857a4574a2fa94739fddc68eedcbfcae208f0bfa80ae01245432d90f9",
+    "local/cc12_native_gui_widget_type_inputs_81_live_bytes.log": "73d7e88a6fee8e76dae100e9ad378cea99fc436a1f74f40b0cca38a2d28ae334",
+    "local/cc12_native_gui_widget_type_inputs_81_ledger.py": "05e9e2971fc72ca8f944b3e80a07cb81bec4ddcbba2c3db20a3bf042e5209de9",
+    "local/cc12_native_gui_widget_type_inputs_81_ledger_log.json": "72b3b4bc630263a26292b3b59a20fdcf469e8aecbe579fe71f578316eafc7172",
+    "local/cc12_native_gui_widget_type_inputs_81_annotation.log": "ec2a1c5068a6c75e1023b1b7a0dad59fe0a688b7f177ce973560f82b60ff0545",
+    "local/cc12_native_gui_widget_type_inputs_81_export.log": "2647a95633a3b5244cd2ac66746b6833793ddf728548fb767910679306073f78",
+    "local/ghidra-annotations-20261016T040059Z.json": "138fc244d49ef228d5e3f85aecb1eba9c6d9827999a805b816986c5f81fad3ef",
+    "local/cc12_native_gui_widget_type_inputs_81_report_calls.log": "860fd0ecd72b24466af5d088ea4dc134df5dbf9a4b0943bea48d41dc646d85bd"
+  },
+  "excluded": [
+    "Original live CRT locale/PTD/error/invalid-parameter ownership",
+    "supplied production Original literal owner or automatic default profile",
+    "new Native differential or outer Original ABI replacement",
+    "non-C CRT/version equivalence",
+    "all-type factory/tree/loader/current24/lifetime admission",
+    "normal native Text activation",
+    "CMake/Main changes",
+    "gameplay/drawing validation"
+  ]
+}
