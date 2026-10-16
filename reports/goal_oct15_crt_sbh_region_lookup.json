@@ -293,7 +293,7 @@
   },
   "repair_plan": {
     "fixed_script": "local/BspSbhRegionRepair.java",
-    "fixed_script_sha256": "59fda9a416d34bd12bcc41347d214df6c062a224eee8e51a8862e8bcf3bbf26c",
+    "fixed_script_sha256": "28685ff7463bf185bbb60f0d6a6089e12c8f0b75fc0e6df01e2bee50bc92f959",
     "lock": "coordination.ghidra_lock plus owned3D/61 leases; guardedClient and insideJava project/path/language/base verification",
     "atomicity": "One Program transaction; exact preconditions before changes; failures rollback, no save on failure.",
     "capture_before": "All43byte-address comments/symbols/references, all14InstructionDB starts and flow flags, both formalbodies/names/signatures/variables/flags, exact43bytes.",
@@ -305,7 +305,10 @@
       "Verifyall14unchangedInstructionDB lengths/bytes, allownedby3D, correctJMP/ref,4trueentrycalls/noexternalinteriorcalls, signatureunchanged,61label/commenthistorypreserved.",
       "Commitonlyallinvariants; guarded saveaftertransaction thenfreshtyped/bytes/xref/commentreadback/affectedexport."
     ],
-    "excluded": "No generic clear-flow/disassembly/recreation fallback; ghidra_flow_repair --apply is disabled, ghidra_define_function is not the required atomic-preservingroute."
+    "excluded": "No generic clear-flow/disassembly/recreation fallback; ghidra_flow_repair --apply is disabled, ghidra_define_function is not the required atomic-preservingroute.",
+    "guarded_driver": "local/goal_oct15_sbh_region_repair_driver.py",
+    "guarded_driver_sha256": "cb417f03a60c40f2e3249aaf34d1d0192a2510b6be10dee00bc675692d79ca55",
+    "execution_status": "Neither fixed Java nor driver has executed; no compiled-script or mutation credit. Driver requires successful preflight with identical script hash before apply, holds coordination write lock and saves only verified committed success."
   },
   "repair_transport": {
     "status": "BLOCKED,no mutation attempted",
