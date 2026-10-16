@@ -1,0 +1,2387 @@
+{
+  "packet": "oct15_input_int_string_tree_leaves",
+  "status": "complete_ordinary_fixed_nil19_raw_source_default_Win32_and_actual_COFF_checked",
+  "utc": "2026-10-16T03:45:38.216117+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "accepted_published_Main": "4d758e463a636d5be69254bf4abdbf0c1b8746e0",
+  "source": "src/native_input_int_string_tree_leaves.cpp",
+  "header": "include/bsp/native_input_int_string_tree_leaves.hpp",
+  "documentation": "docs/OCT15_INPUT_INT_STRING_TREE_LEAVES.md",
+  "source_sha256": "11c72b8fb99909f1b70725a7f2d92908cabb762152141c199378a7c7cd8fcfa9",
+  "header_sha256": "cc38b1ef93856547740db5fec81507da6a4d3985797a6f185bd3ed8d0083aa0e",
+  "documentation_sha256": "e38cbee503595dbb43696b8a1647d9c68bd421b44cbc8d87db9d1c81517450a8",
+  "functions": [
+    {
+      "entry": "0069ae50",
+      "Source_name": "increment_native_input_int_string_tree_iterator_0069ae50",
+      "native_library_identity": "STL_TreeIter_Inc_0069ae50",
+      "scope": "whole99B/38starts",
+      "ABI": "ECXactualiterator/unusedEDX,no stackedargs,plainRET or restoredESI diagnostic tail; Sourcevoid/EAXresidue qualified"
+    },
+    {
+      "entry": "0069a780",
+      "Source_name": "rotate_native_input_int_string_tree_right_0069a780",
+      "native_library_identity": "STL_Tree_Rotate_0069a780",
+      "scope": "whole82B/30starts",
+      "ABI": "ECXtree/unusedEDX,stacknode,RET4;Sourcevoid/NativeEAXpivotresidue qualified"
+    },
+    {
+      "entry": "0069c300",
+      "Source_name": "rotate_native_input_int_string_tree_left_0069c300",
+      "native_library_identity": "STL_Tree_Lrotate_IntKey_N1C_0069c300",
+      "scope": "whole78B/30starts",
+      "ABI": "ECXtree/unusedEDX,stacknode,RET4;Sourcevoid/NativeEAXpivotresidue qualified"
+    },
+    {
+      "entry": "0069aac0",
+      "Source_name": "maximum_native_input_int_string_node_0069aac0",
+      "native_library_identity": "STL_Tree_Max_0069aac0",
+      "scope": "whole25definedB/10starts,28Benvelope and3Bundefinedpadding unpromoted",
+      "ABI": "ECXsubtree,EDXunconsumed,RET/EAXselectednode;Sourcefastcall1semanticargument"
+    },
+    {
+      "entry": "0069aae0",
+      "Source_name": "minimum_native_input_int_string_node_0069aae0",
+      "native_library_identity": "STL_Tree_Min_0069aae0",
+      "scope": "whole27B/10starts",
+      "ABI": "ECXsubtree,EDXunconsumed,RET/EAXselectednode;Sourcefastcall1semanticargument"
+    }
+  ],
+  "native_blocks": [
+    {
+      "address": "0069ae50",
+      "start": "0069ae50",
+      "end_inclusive": "0069aeb2",
+      "bytes": 99,
+      "instruction_count": 38,
+      "bytes_hex": "568bf1833e007505e8b6b855008b46048078190074065ee9a7b855008b480880791900751a8b0180781900750d8d49008bc88b018078190074f6894e045ec38b40048078190075168b4e043b4808750e8946048bd08b42048078190074ea8946045ec3",
+      "sha256": "c6732552a056555278a6e1d4ad955c744c1f7f1bba709499542c5b0e600d302a",
+      "live_equals_PE": true,
+      "role": "owned_whole_defined",
+      "function": "0069ae50"
+    },
+    {
+      "address": "0069a780",
+      "start": "0069a780",
+      "end_inclusive": "0069a7d1",
+      "bytes": 82,
+      "instruction_count": 30,
+      "bytes_hex": "8b5424048b02568b700889328b7008807e190075038956048b72048970048b49043b51045e750c894104895008894204c204008b4a043b5108750c894108895008894204c204008901895008894204c20400",
+      "sha256": "e42b0897d23d00413aefba0f2366246f1aae06cad9b22bfcdbe23fa0d8ffe502",
+      "live_equals_PE": true,
+      "role": "owned_whole_defined",
+      "function": "0069a780"
+    },
+    {
+      "address": "0069c300",
+      "start": "0069c300",
+      "end_inclusive": "0069c34d",
+      "bytes": 78,
+      "instruction_count": 30,
+      "bytes_hex": "8b5424048b4208568b308972088b30807e190075038956048b72048970048b49043b51045e750b8941048910894204c204008b4a043b11750a89018910894204c204008941088910894204c20400",
+      "sha256": "0439f0befe0245fd4352ce96b0a1925cf906071c3d97d0d6b31232037d4a02b4",
+      "live_equals_PE": true,
+      "role": "owned_whole_defined",
+      "function": "0069c300"
+    },
+    {
+      "address": "0069aac0",
+      "start": "0069aac0",
+      "end_inclusive": "0069aacc",
+      "bytes": 13,
+      "instruction_count": 5,
+      "bytes_hex": "8bc18b5008807a19007510eb03",
+      "sha256": "3a1bbca3bb182dbeb5b0fb9ff3eb9806be36b22809657214ac4708f2b17360ec",
+      "live_equals_PE": true,
+      "role": "owned_whole_defined",
+      "function": "0069aac0"
+    },
+    {
+      "address": "0069aad0",
+      "start": "0069aad0",
+      "end_inclusive": "0069aadb",
+      "bytes": 12,
+      "instruction_count": 5,
+      "bytes_hex": "8bc28b5008807a190074f5c3",
+      "sha256": "d22ea349a556989b89594d6f9b92aefdba08c2b2918d5b1ca90616d0452ead51",
+      "live_equals_PE": true,
+      "role": "owned_whole_defined",
+      "function": "0069aac0"
+    },
+    {
+      "address": "0069aae0",
+      "start": "0069aae0",
+      "end_inclusive": "0069aafa",
+      "bytes": 27,
+      "instruction_count": 10,
+      "bytes_hex": "8bc18b10807a190075108d9b000000008bc28b10807a190074f6c3",
+      "sha256": "b9b972cb8e9c9c854d087b568d5dc0f6cfa90558c3ce70ab4726e69ddef04613",
+      "live_equals_PE": true,
+      "role": "owned_whole_defined",
+      "function": "0069aae0"
+    },
+    {
+      "address": "00bf6713",
+      "start": "00bf6713",
+      "end_inclusive": "00bf6722",
+      "bytes": 16,
+      "instruction_count": 9,
+      "bytes_hex": "33c05050505050e8d0ffffff83c414c3",
+      "sha256": "cd349dae43dbf63016fe6ea9339dab15c59041e3224e48cf8a53004224b45e77",
+      "live_equals_PE": true,
+      "role": "readonly_accepted_diagnostic_provider",
+      "function": "00bf6713"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0069ae58",
+      "native": "00bf6713",
+      "function": "0069ae50",
+      "role": "owned"
+    },
+    {
+      "address": "0069ae67",
+      "native": "00bf6713",
+      "function": "0069ae50",
+      "role": "owned",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00bf671a",
+      "native": "00bf66ef",
+      "function": "00bf6713",
+      "role": "readonly_provider"
+    }
+  ],
+  "typed_scope": {
+    "functions": {
+      "0069ae50": {
+        "entry": {
+          "space": "ram",
+          "offset": "0069ae50"
+        },
+        "name": "STL_TreeIter_Inc_0069ae50",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "99",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "0069ae50"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "0069aeb2"
+              },
+              "length": "99"
+            }
+          ]
+        }
+      },
+      "0069a780": {
+        "entry": {
+          "space": "ram",
+          "offset": "0069a780"
+        },
+        "name": "STL_Tree_Rotate_0069a780",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "82",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "0069a780"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "0069a7d1"
+              },
+              "length": "82"
+            }
+          ]
+        }
+      },
+      "0069c300": {
+        "entry": {
+          "space": "ram",
+          "offset": "0069c300"
+        },
+        "name": "STL_Tree_Lrotate_IntKey_N1C_0069c300",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "78",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "0069c300"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "0069c34d"
+              },
+              "length": "78"
+            }
+          ]
+        }
+      },
+      "0069aac0": {
+        "entry": {
+          "space": "ram",
+          "offset": "0069aac0"
+        },
+        "name": "STL_Tree_Max_0069aac0",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 2,
+          "returned_range_count": 2,
+          "address_count": "25",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "0069aac0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "0069aacc"
+              },
+              "length": "13"
+            },
+            {
+              "start": {
+                "space": "ram",
+                "offset": "0069aad0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "0069aadb"
+              },
+              "length": "12"
+            }
+          ]
+        }
+      },
+      "0069aae0": {
+        "entry": {
+          "space": "ram",
+          "offset": "0069aae0"
+        },
+        "name": "STL_Tree_Min_0069aae0",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "27",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "0069aae0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "0069aafa"
+              },
+              "length": "27"
+            }
+          ]
+        }
+      },
+      "00bf6713": {
+        "entry": {
+          "space": "ram",
+          "offset": "00bf6713"
+        },
+        "name": "LIBCRT_unmatched_00bf6713",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "16",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00bf6713"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00bf6722"
+              },
+              "length": "16"
+            }
+          ]
+        }
+      }
+    },
+    "modification": "4370",
+    "verified_before": [
+      {
+        "project_name": "bsp",
+        "current_folder": "/",
+        "folders": [],
+        "files": [
+          {
+            "name": "battlestationspacific.exe",
+            "path": "/battlestationspacific.exe",
+            "content_type": "Program",
+            "version": 5764,
+            "is_read_only": false,
+            "is_versioned": false
+          }
+        ]
+      },
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "executable_format": "Portable Executable (PE)",
+        "language": "x86:LE:32:default",
+        "compiler": "windows",
+        "address_size": 32,
+        "image_base": "00400000",
+        "min_address": "00400000",
+        "max_address": "ffdfffff",
+        "memory_size": 14876380,
+        "function_count": 76774,
+        "symbol_count": 160587,
+        "data_type_count": 795,
+        "creation_date": "Mon May 04 16:56:25 PDT 2026",
+        "memory_block_count": 6,
+        "address_spaces": [
+          {
+            "name": "ram",
+            "start": "00000000",
+            "end": "ffffffff",
+            "size": 4294967296,
+            "addressable_unit_size": 1,
+            "size_bytes": 4294967296,
+            "address_size_bits": 32,
+            "is_default": true
+          }
+        ],
+        "has_multiple_address_spaces": false
+      }
+    ],
+    "verified_after": [
+      {
+        "project_name": "bsp",
+        "current_folder": "/",
+        "folders": [],
+        "files": [
+          {
+            "name": "battlestationspacific.exe",
+            "path": "/battlestationspacific.exe",
+            "content_type": "Program",
+            "version": 5764,
+            "is_read_only": false,
+            "is_versioned": false
+          }
+        ]
+      },
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "executable_format": "Portable Executable (PE)",
+        "language": "x86:LE:32:default",
+        "compiler": "windows",
+        "address_size": 32,
+        "image_base": "00400000",
+        "min_address": "00400000",
+        "max_address": "ffdfffff",
+        "memory_size": 14876380,
+        "function_count": 76774,
+        "symbol_count": 160587,
+        "data_type_count": 795,
+        "creation_date": "Mon May 04 16:56:25 PDT 2026",
+        "memory_block_count": 6,
+        "address_spaces": [
+          {
+            "name": "ram",
+            "start": "00000000",
+            "end": "ffffffff",
+            "size": 4294967296,
+            "addressable_unit_size": 1,
+            "size_bytes": 4294967296,
+            "address_size_bits": 32,
+            "is_default": true
+          }
+        ],
+        "has_multiple_address_spaces": false
+      }
+    ]
+  },
+  "fresh_native_proof": {
+    "owned_defined_bytes": 311,
+    "owned_starts": 118,
+    "readonly_provider_bytes": 16,
+    "readonly_provider_starts": 9,
+    "fresh_defined_bytes": 327,
+    "fresh_starts": 127,
+    "failed_starts": 0,
+    "padding": {
+      "address": "0069aacd",
+      "bytes": 3,
+      "hex": "8d4900",
+      "PE_equals_live": true,
+      "current_instructions_absent": true,
+      "unpromoted": true
+    },
+    "local_EH": false,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "current_instruction_starts": [
+    "0069ae50",
+    "0069ae51",
+    "0069ae53",
+    "0069ae56",
+    "0069ae58",
+    "0069ae5d",
+    "0069ae60",
+    "0069ae64",
+    "0069ae66",
+    "0069ae67",
+    "0069ae6c",
+    "0069ae6f",
+    "0069ae73",
+    "0069ae75",
+    "0069ae77",
+    "0069ae7b",
+    "0069ae7d",
+    "0069ae80",
+    "0069ae82",
+    "0069ae84",
+    "0069ae88",
+    "0069ae8a",
+    "0069ae8d",
+    "0069ae8e",
+    "0069ae8f",
+    "0069ae92",
+    "0069ae96",
+    "0069ae98",
+    "0069ae9b",
+    "0069ae9e",
+    "0069aea0",
+    "0069aea3",
+    "0069aea5",
+    "0069aea8",
+    "0069aeac",
+    "0069aeae",
+    "0069aeb1",
+    "0069aeb2",
+    "0069a780",
+    "0069a784",
+    "0069a786",
+    "0069a787",
+    "0069a78a",
+    "0069a78c",
+    "0069a78f",
+    "0069a793",
+    "0069a795",
+    "0069a798",
+    "0069a79b",
+    "0069a79e",
+    "0069a7a1",
+    "0069a7a4",
+    "0069a7a5",
+    "0069a7a7",
+    "0069a7aa",
+    "0069a7ad",
+    "0069a7b0",
+    "0069a7b3",
+    "0069a7b6",
+    "0069a7b9",
+    "0069a7bb",
+    "0069a7be",
+    "0069a7c1",
+    "0069a7c4",
+    "0069a7c7",
+    "0069a7c9",
+    "0069a7cc",
+    "0069a7cf",
+    "0069c300",
+    "0069c304",
+    "0069c307",
+    "0069c308",
+    "0069c30a",
+    "0069c30d",
+    "0069c30f",
+    "0069c313",
+    "0069c315",
+    "0069c318",
+    "0069c31b",
+    "0069c31e",
+    "0069c321",
+    "0069c324",
+    "0069c325",
+    "0069c327",
+    "0069c32a",
+    "0069c32c",
+    "0069c32f",
+    "0069c332",
+    "0069c335",
+    "0069c337",
+    "0069c339",
+    "0069c33b",
+    "0069c33d",
+    "0069c340",
+    "0069c343",
+    "0069c346",
+    "0069c348",
+    "0069c34b",
+    "0069aac0",
+    "0069aac2",
+    "0069aac5",
+    "0069aac9",
+    "0069aacb",
+    "0069aad0",
+    "0069aad2",
+    "0069aad5",
+    "0069aad9",
+    "0069aadb",
+    "0069aae0",
+    "0069aae2",
+    "0069aae4",
+    "0069aae8",
+    "0069aaea",
+    "0069aaf0",
+    "0069aaf2",
+    "0069aaf4",
+    "0069aaf8",
+    "0069aafa",
+    "00bf6713",
+    "00bf6715",
+    "00bf6716",
+    "00bf6717",
+    "00bf6718",
+    "00bf6719",
+    "00bf671a",
+    "00bf671f",
+    "00bf6722"
+  ],
+  "raw_contracts": {
+    "successor": "CURRENTowner0 check; returningBF6713 then CURRENTnode4 read; nil19 diagnostic thenreturnwithoutadvance. Rightminimum orparentclimb withCURRENTiterator.node reloadbeforecomparison andparentpublishbeforeparent.parentread. Onlynode4 written; noowneridentityvalidation.",
+    "right_rotation": "Capturedpivot=node.left;node.left=pivot.right;REREADpivot.right afterstore;nil19 branch/conditionalchild.parent=node;CURRENTnode.parent->pivot.parent;ONCEcapturedCURRENThead/root test;elseREREADnode.parent thenrightFIRST sidecomparison/store;finalpivot.right=node thennode.parent=pivot.",
+    "left_rotation": "Capturedpivot=node.right;node.right=pivot.left;REREADpivot.left afterstore;nil19 branch/conditionalchild.parent=node;CURRENTnode.parent->pivot.parent;ONCEcapturedCURRENThead/root test;elseREREADnode.parent thenleftFIRST sidecomparison/store;finalpivot.left=node thennode.parent=pivot.",
+    "minmax": "Readcurrentchild right8/left0, testthatnil19, advanceonlyifreal, rereadnextcurrentchild; returnselectedactualnodeEAX. Noinitialnodeguard/headerwrites. Max3Bpadding remainsundefined/unpromoted.",
+    "physical_Source_boundary": "Retained fastcallphysicalshapes/RET values are checked in actual CMake COFF, not a drop-in Native binary replacement. Void successor/rotations do notpromise NativeEAX/flags/EDX orprivate-frame residue."
+  },
+  "provider_fingerprints": {
+    "include/bsp/native_invalid_parameter_noinfo_call.hpp": {
+      "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "accepted_published_Main": "4d758e463a636d5be69254bf4abdbf0c1b8746e0",
+      "matches_blob_LF_normalized": true
+    },
+    "src/native_invalid_parameter_noinfo_call.cpp": {
+      "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "accepted_published_Main": "4d758e463a636d5be69254bf4abdbf0c1b8746e0",
+      "matches_blob_LF_normalized": true
+    }
+  },
+  "actual_diagnostic_binding": "Only accepted invoke_native_invalid_parameter_00bf6713, noargs/currentSDK policy. It preserves qualified five-unused-zero-stackword schedule but uses actualSource SDKAPI rather than NativeBF66EF encodedhandler/debug/Watson delivery. No new provider, callback, handlerinstallation, noexcept/noreturnpromise, runtimeframe identity orfaulttranslation.",
+  "frozen_readiness": {
+    "path": "local\\oct15_input_int_string_partial_erase_readiness.json",
+    "sha256": "c2909630344ffd06fd27d912ff4c20312019c7b8c39e50ef9202dcc35971255d",
+    "unchanged": true
+  },
+  "accepted_leaf_byte_comparisons": [
+    {
+      "target": "0069a780",
+      "accepted_Native_candidate": "00869810",
+      "whole_envelope_bytes": 82,
+      "actual_differences": [
+        {
+          "offset": 17,
+          "target": "19",
+          "candidate": "15",
+          "reason": "nil19_vs15"
+        }
+      ],
+      "no_other_byte_differences": true,
+      "instruction_offsets_sizes_mnemonics_equal": true,
+      "direct_Source_delegate_valid": false,
+      "reason": "Accepted leaf hardcodes nil15; requested target reads nil19. No changed-layout bridge or byte-patched helper."
+    },
+    {
+      "target": "0069c300",
+      "accepted_Native_candidate": "0086a2f0",
+      "whole_envelope_bytes": 78,
+      "actual_differences": [
+        {
+          "offset": 17,
+          "target": "19",
+          "candidate": "15",
+          "reason": "nil19_vs15"
+        }
+      ],
+      "no_other_byte_differences": true,
+      "instruction_offsets_sizes_mnemonics_equal": true,
+      "direct_Source_delegate_valid": false,
+      "reason": "Accepted leaf hardcodes nil15; requested target reads nil19. No changed-layout bridge or byte-patched helper."
+    },
+    {
+      "target": "0069aac0",
+      "accepted_Native_candidate": "008697b0",
+      "whole_envelope_bytes": 28,
+      "actual_differences": [
+        {
+          "offset": 7,
+          "target": "19",
+          "candidate": "15",
+          "reason": "nil19_vs15"
+        },
+        {
+          "offset": 23,
+          "target": "19",
+          "candidate": "15",
+          "reason": "nil19_vs15"
+        }
+      ],
+      "no_other_byte_differences": true,
+      "instruction_offsets_sizes_mnemonics_equal": true,
+      "direct_Source_delegate_valid": false,
+      "reason": "Accepted leaf hardcodes nil15; requested target reads nil19. No changed-layout bridge or byte-patched helper."
+    },
+    {
+      "target": "0069aae0",
+      "accepted_Native_candidate": "008697d0",
+      "whole_envelope_bytes": 27,
+      "actual_differences": [
+        {
+          "offset": 6,
+          "target": "19",
+          "candidate": "15",
+          "reason": "nil19_vs15"
+        },
+        {
+          "offset": 22,
+          "target": "19",
+          "candidate": "15",
+          "reason": "nil19_vs15"
+        }
+      ],
+      "no_other_byte_differences": true,
+      "instruction_offsets_sizes_mnemonics_equal": true,
+      "direct_Source_delegate_valid": false,
+      "reason": "Accepted leaf hardcodes nil15; requested target reads nil19. No changed-layout bridge or byte-patched helper."
+    },
+    {
+      "target": "0069ae50",
+      "accepted_Native_candidate": "00869a20",
+      "whole_envelope_bytes": 99,
+      "actual_differences": [
+        {
+          "offset": 9,
+          "target": "b6",
+          "candidate": "e6",
+          "reason": "resolved_BF6713_rel32"
+        },
+        {
+          "offset": 10,
+          "target": "b8",
+          "candidate": "cc",
+          "reason": "resolved_BF6713_rel32"
+        },
+        {
+          "offset": 11,
+          "target": "55",
+          "candidate": "38",
+          "reason": "resolved_BF6713_rel32"
+        },
+        {
+          "offset": 18,
+          "target": "19",
+          "candidate": "15",
+          "reason": "nil19_vs15"
+        },
+        {
+          "offset": 24,
+          "target": "a7",
+          "candidate": "d7",
+          "reason": "resolved_BF6713_rel32"
+        },
+        {
+          "offset": 25,
+          "target": "b8",
+          "candidate": "cc",
+          "reason": "resolved_BF6713_rel32"
+        },
+        {
+          "offset": 26,
+          "target": "55",
+          "candidate": "38",
+          "reason": "resolved_BF6713_rel32"
+        },
+        {
+          "offset": 33,
+          "target": "19",
+          "candidate": "15",
+          "reason": "nil19_vs15"
+        },
+        {
+          "offset": 41,
+          "target": "19",
+          "candidate": "15",
+          "reason": "nil19_vs15"
+        },
+        {
+          "offset": 54,
+          "target": "19",
+          "candidate": "15",
+          "reason": "nil19_vs15"
+        },
+        {
+          "offset": 68,
+          "target": "19",
+          "candidate": "15",
+          "reason": "nil19_vs15"
+        },
+        {
+          "offset": 90,
+          "target": "19",
+          "candidate": "15",
+          "reason": "nil19_vs15"
+        }
+      ],
+      "no_other_byte_differences": true,
+      "instruction_offsets_sizes_mnemonics_equal": true,
+      "direct_Source_delegate_valid": false,
+      "reason": "Accepted leaf hardcodes nil15; requested target reads nil19. No changed-layout bridge or byte-patched helper."
+    },
+    {
+      "target": "0069ae50",
+      "accepted_Native_candidate": "005531f0",
+      "whole_envelope_bytes": 99,
+      "actual_differences": [
+        {
+          "offset": 9,
+          "target": "b6",
+          "candidate": "16",
+          "reason": "resolved_BF6713_rel32"
+        },
+        {
+          "offset": 10,
+          "target": "b8",
+          "candidate": "35",
+          "reason": "resolved_BF6713_rel32"
+        },
+        {
+          "offset": 11,
+          "target": "55",
+          "candidate": "6a",
+          "reason": "resolved_BF6713_rel32"
+        },
+        {
+          "offset": 18,
+          "target": "19",
+          "candidate": "15",
+          "reason": "nil19_vs15"
+        },
+        {
+          "offset": 24,
+          "target": "a7",
+          "candidate": "07",
+          "reason": "resolved_BF6713_rel32"
+        },
+        {
+          "offset": 25,
+          "target": "b8",
+          "candidate": "35",
+          "reason": "resolved_BF6713_rel32"
+        },
+        {
+          "offset": 26,
+          "target": "55",
+          "candidate": "6a",
+          "reason": "resolved_BF6713_rel32"
+        },
+        {
+          "offset": 33,
+          "target": "19",
+          "candidate": "15",
+          "reason": "nil19_vs15"
+        },
+        {
+          "offset": 41,
+          "target": "19",
+          "candidate": "15",
+          "reason": "nil19_vs15"
+        },
+        {
+          "offset": 54,
+          "target": "19",
+          "candidate": "15",
+          "reason": "nil19_vs15"
+        },
+        {
+          "offset": 68,
+          "target": "19",
+          "candidate": "15",
+          "reason": "nil19_vs15"
+        },
+        {
+          "offset": 90,
+          "target": "19",
+          "candidate": "15",
+          "reason": "nil19_vs15"
+        }
+      ],
+      "no_other_byte_differences": true,
+      "instruction_offsets_sizes_mnemonics_equal": true,
+      "direct_Source_delegate_valid": false,
+      "reason": "Accepted leaf hardcodes nil15; requested target reads nil19. No changed-layout bridge or byte-patched helper."
+    }
+  ],
+  "preservation": {
+    "existing_STL_library_names_and_evidence": true,
+    "typed_AV_domains_unchanged": true,
+    "no_nil15_99_Source_delegate_or_layout_bridge": true,
+    "no_template_direction_context_or_count_model": true,
+    "no_payload_ownership_or_allocation": true,
+    "excluded": "No6A07D0/C7F050/6A1B70/6A2BB0/C7F200/6AA460 Source orledger ownership; frozen readiness entries are evidenceonly.",
+    "Ghidra_mutation": false,
+    "push": false
+  },
+  "registration": {
+    "path": "cmake/startup.cmake",
+    "line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_input_int_string_tree_leaves.cpp)",
+    "isolated_append": true,
+    "shared_append_registry_lease": false,
+    "policy": "Currentdocs/COORDINATION93-95: neverlease sharedappend-only registries; exactownaddress/fileleases only."
+  },
+  "verification": {
+    "required_command": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release",
+    "new_tests": 0,
+    "build_status": "passed",
+    "actual_CMake_COFF_status": "full_review_passed",
+    "ad_hoc_probe": "Independent Win32 cl/c/O2/Ob2/EHsc object only, noexe. FullactualCMake code/relocs separatelyreviewed; successor/min/max byte-identical, rotations/helpers differinownEBPframes.",
+    "exit_code": 0,
+    "existing_suites": [
+      {
+        "name": "reconstructed_math",
+        "passed": true,
+        "seconds": 0.27
+      },
+      {
+        "name": "native_math_differential",
+        "passed": true,
+        "seconds": 0.05
+      },
+      {
+        "name": "tool_tests",
+        "passed": true,
+        "seconds": 12.3
+      }
+    ],
+    "total_test_seconds": 12.7,
+    "build_elapsed_seconds": 489.1945121,
+    "build_log": "local/oct15_input_int_string_tree_leaves_build.txt",
+    "build_log_sha256": "fd8cd45d8e4cfb8bdf01868275a7e6a35a61d2c01eec3b23c0a498801d145c3f",
+    "exact_local_build_Source": {
+      "base_HEAD": "4d758e463a636d5be69254bf4abdbf0c1b8746e0",
+      "source_sha256": "11c72b8fb99909f1b70725a7f2d92908cabb762152141c199378a7c7cd8fcfa9",
+      "header_sha256": "cc38b1ef93856547740db5fec81507da6a4d3985797a6f185bd3ed8d0083aa0e",
+      "CMake_sha256": "32d29c9b7d17ee58d3ef851257db20703116cda3fd036b4a756cc7407500e832",
+      "only_Cxx_change_from_base": "new ownedleafTU/header plusoneisolatedregistration; no Main merge during/afterbuild",
+      "later_changes": "docs/report/address-onlyledgers only, notcompiled Source"
+    },
+    "coff_actual": {
+      "scope": "full actual CMake Release object",
+      "utc": "2026-10-16T03:43:58.586222+00:00",
+      "object": "build\\win32\\bsp_core.dir\\Release\\native_input_int_string_tree_leaves.obj",
+      "object_sha256": "172805f795cd2186be8d7616b84866a65d1847e804bd8499c88cfaa9ddca6bb2",
+      "capture": "local/oct15_input_int_string_tree_leaves_cmake_coff.txt",
+      "capture_sha256": "973f767e8a9fcbc3f5a42318c6ba84dc1bcbe1438a5e164952f53104f5ae1607",
+      "functions": [
+        {
+          "name": "?address@?A0x2acfc3c9@bsp@@YAIPBX@Z",
+          "bytes": 8,
+          "instruction_starts": 5,
+          "hex": "558bec8b45085dc3",
+          "sha256": "d5a2b635b0bbb254914f2641e4508361a0c95686c0422dcebeb3abbcca7f1d2b",
+          "instructions": [
+            {
+              "offset": 0,
+              "size": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "size": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "size": 3,
+              "hex": "8b4508",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 6,
+              "size": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 7,
+              "size": 1,
+              "hex": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ],
+          "relocations": []
+        },
+        {
+          "name": "?increment_native_input_int_string_tree_iterator_0069ae50@bsp@@YIXPAXI@Z",
+          "bytes": 99,
+          "instruction_starts": 39,
+          "hex": "568bf18b0685c07505e8000000008b5604807a190074065ee9000000008b4a088079190075198b0180781900750c66908bc88b008078190074f6894e045ec38b5204807a190075168b4e048b42083bc8750c8956048b5204807a190074ea8956045ec3",
+          "sha256": "fba4eee87f9d471bc0f179dc92106b9853351a93c4f6a92b24ecb996cf9f4096",
+          "instructions": [
+            {
+              "offset": 0,
+              "size": 1,
+              "hex": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "offset": 1,
+              "size": 2,
+              "hex": "8bf1",
+              "mnemonic": "mov",
+              "operands": "esi, ecx"
+            },
+            {
+              "offset": 3,
+              "size": 2,
+              "hex": "8b06",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esi]"
+            },
+            {
+              "offset": 5,
+              "size": 2,
+              "hex": "85c0",
+              "mnemonic": "test",
+              "operands": "eax, eax"
+            },
+            {
+              "offset": 7,
+              "size": 2,
+              "hex": "7505",
+              "mnemonic": "jne",
+              "operands": "0xe"
+            },
+            {
+              "offset": 9,
+              "size": 5,
+              "hex": "e800000000",
+              "mnemonic": "call",
+              "operands": "0xe"
+            },
+            {
+              "offset": 14,
+              "size": 3,
+              "hex": "8b5604",
+              "mnemonic": "mov",
+              "operands": "edx, dword ptr [esi + 4]"
+            },
+            {
+              "offset": 17,
+              "size": 4,
+              "hex": "807a1900",
+              "mnemonic": "cmp",
+              "operands": "byte ptr [edx + 0x19], 0"
+            },
+            {
+              "offset": 21,
+              "size": 2,
+              "hex": "7406",
+              "mnemonic": "je",
+              "operands": "0x1d"
+            },
+            {
+              "offset": 23,
+              "size": 1,
+              "hex": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "offset": 24,
+              "size": 5,
+              "hex": "e900000000",
+              "mnemonic": "jmp",
+              "operands": "0x1d"
+            },
+            {
+              "offset": 29,
+              "size": 3,
+              "hex": "8b4a08",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [edx + 8]"
+            },
+            {
+              "offset": 32,
+              "size": 4,
+              "hex": "80791900",
+              "mnemonic": "cmp",
+              "operands": "byte ptr [ecx + 0x19], 0"
+            },
+            {
+              "offset": 36,
+              "size": 2,
+              "hex": "7519",
+              "mnemonic": "jne",
+              "operands": "0x3f"
+            },
+            {
+              "offset": 38,
+              "size": 2,
+              "hex": "8b01",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ecx]"
+            },
+            {
+              "offset": 40,
+              "size": 4,
+              "hex": "80781900",
+              "mnemonic": "cmp",
+              "operands": "byte ptr [eax + 0x19], 0"
+            },
+            {
+              "offset": 44,
+              "size": 2,
+              "hex": "750c",
+              "mnemonic": "jne",
+              "operands": "0x3a"
+            },
+            {
+              "offset": 46,
+              "size": 2,
+              "hex": "6690",
+              "mnemonic": "nop",
+              "operands": ""
+            },
+            {
+              "offset": 48,
+              "size": 2,
+              "hex": "8bc8",
+              "mnemonic": "mov",
+              "operands": "ecx, eax"
+            },
+            {
+              "offset": 50,
+              "size": 2,
+              "hex": "8b00",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [eax]"
+            },
+            {
+              "offset": 52,
+              "size": 4,
+              "hex": "80781900",
+              "mnemonic": "cmp",
+              "operands": "byte ptr [eax + 0x19], 0"
+            },
+            {
+              "offset": 56,
+              "size": 2,
+              "hex": "74f6",
+              "mnemonic": "je",
+              "operands": "0x30"
+            },
+            {
+              "offset": 58,
+              "size": 3,
+              "hex": "894e04",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 4], ecx"
+            },
+            {
+              "offset": 61,
+              "size": 1,
+              "hex": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "offset": 62,
+              "size": 1,
+              "hex": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            },
+            {
+              "offset": 63,
+              "size": 3,
+              "hex": "8b5204",
+              "mnemonic": "mov",
+              "operands": "edx, dword ptr [edx + 4]"
+            },
+            {
+              "offset": 66,
+              "size": 4,
+              "hex": "807a1900",
+              "mnemonic": "cmp",
+              "operands": "byte ptr [edx + 0x19], 0"
+            },
+            {
+              "offset": 70,
+              "size": 2,
+              "hex": "7516",
+              "mnemonic": "jne",
+              "operands": "0x5e"
+            },
+            {
+              "offset": 72,
+              "size": 3,
+              "hex": "8b4e04",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [esi + 4]"
+            },
+            {
+              "offset": 75,
+              "size": 3,
+              "hex": "8b4208",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [edx + 8]"
+            },
+            {
+              "offset": 78,
+              "size": 2,
+              "hex": "3bc8",
+              "mnemonic": "cmp",
+              "operands": "ecx, eax"
+            },
+            {
+              "offset": 80,
+              "size": 2,
+              "hex": "750c",
+              "mnemonic": "jne",
+              "operands": "0x5e"
+            },
+            {
+              "offset": 82,
+              "size": 3,
+              "hex": "895604",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 4], edx"
+            },
+            {
+              "offset": 85,
+              "size": 3,
+              "hex": "8b5204",
+              "mnemonic": "mov",
+              "operands": "edx, dword ptr [edx + 4]"
+            },
+            {
+              "offset": 88,
+              "size": 4,
+              "hex": "807a1900",
+              "mnemonic": "cmp",
+              "operands": "byte ptr [edx + 0x19], 0"
+            },
+            {
+              "offset": 92,
+              "size": 2,
+              "hex": "74ea",
+              "mnemonic": "je",
+              "operands": "0x48"
+            },
+            {
+              "offset": 94,
+              "size": 3,
+              "hex": "895604",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 4], edx"
+            },
+            {
+              "offset": 97,
+              "size": 1,
+              "hex": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "offset": 98,
+              "size": 1,
+              "hex": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ],
+          "relocations": [
+            {
+              "offset": 10,
+              "symbol": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ",
+              "type": 20
+            },
+            {
+              "offset": 25,
+              "symbol": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ",
+              "type": 20
+            }
+          ]
+        },
+        {
+          "name": "?is_nil@?A0x2acfc3c9@bsp@@YA_NPBX@Z",
+          "bytes": 15,
+          "instruction_starts": 7,
+          "hex": "558bec8b4508807819000f95c05dc3",
+          "sha256": "470a0b11f14773dd1b89187b396cf55a9eab41b948a4b535faf463add40a7435",
+          "instructions": [
+            {
+              "offset": 0,
+              "size": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "size": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "size": 3,
+              "hex": "8b4508",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 6,
+              "size": 4,
+              "hex": "80781900",
+              "mnemonic": "cmp",
+              "operands": "byte ptr [eax + 0x19], 0"
+            },
+            {
+              "offset": 10,
+              "size": 3,
+              "hex": "0f95c0",
+              "mnemonic": "setne",
+              "operands": "al"
+            },
+            {
+              "offset": 13,
+              "size": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 14,
+              "size": 1,
+              "hex": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ],
+          "relocations": []
+        },
+        {
+          "name": "?maximum_native_input_int_string_node_0069aac0@bsp@@YIPAXPAX@Z",
+          "bytes": 30,
+          "instruction_starts": 10,
+          "hex": "8b41088078190075120f1f80000000008bc88b40088078190074f58bc1c3",
+          "sha256": "8ea5c5caaf8cb14bc3c4db0d946463e35fba011523f3b2940ff6def3a8ad1d17",
+          "instructions": [
+            {
+              "offset": 0,
+              "size": 3,
+              "hex": "8b4108",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ecx + 8]"
+            },
+            {
+              "offset": 3,
+              "size": 4,
+              "hex": "80781900",
+              "mnemonic": "cmp",
+              "operands": "byte ptr [eax + 0x19], 0"
+            },
+            {
+              "offset": 7,
+              "size": 2,
+              "hex": "7512",
+              "mnemonic": "jne",
+              "operands": "0x1b"
+            },
+            {
+              "offset": 9,
+              "size": 7,
+              "hex": "0f1f8000000000",
+              "mnemonic": "nop",
+              "operands": "dword ptr [eax]"
+            },
+            {
+              "offset": 16,
+              "size": 2,
+              "hex": "8bc8",
+              "mnemonic": "mov",
+              "operands": "ecx, eax"
+            },
+            {
+              "offset": 18,
+              "size": 3,
+              "hex": "8b4008",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [eax + 8]"
+            },
+            {
+              "offset": 21,
+              "size": 4,
+              "hex": "80781900",
+              "mnemonic": "cmp",
+              "operands": "byte ptr [eax + 0x19], 0"
+            },
+            {
+              "offset": 25,
+              "size": 2,
+              "hex": "74f5",
+              "mnemonic": "je",
+              "operands": "0x10"
+            },
+            {
+              "offset": 27,
+              "size": 2,
+              "hex": "8bc1",
+              "mnemonic": "mov",
+              "operands": "eax, ecx"
+            },
+            {
+              "offset": 29,
+              "size": 1,
+              "hex": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ],
+          "relocations": []
+        },
+        {
+          "name": "?minimum_native_input_int_string_node_0069aae0@bsp@@YIPAXPAX@Z",
+          "bytes": 21,
+          "instruction_starts": 9,
+          "hex": "8b0180781900750a8bc88b008078190074f68bc1c3",
+          "sha256": "0d5a48bc8447563aaa7be6135ff126eca4406873d150327c1012a0c0f9864d80",
+          "instructions": [
+            {
+              "offset": 0,
+              "size": 2,
+              "hex": "8b01",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ecx]"
+            },
+            {
+              "offset": 2,
+              "size": 4,
+              "hex": "80781900",
+              "mnemonic": "cmp",
+              "operands": "byte ptr [eax + 0x19], 0"
+            },
+            {
+              "offset": 6,
+              "size": 2,
+              "hex": "750a",
+              "mnemonic": "jne",
+              "operands": "0x12"
+            },
+            {
+              "offset": 8,
+              "size": 2,
+              "hex": "8bc8",
+              "mnemonic": "mov",
+              "operands": "ecx, eax"
+            },
+            {
+              "offset": 10,
+              "size": 2,
+              "hex": "8b00",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [eax]"
+            },
+            {
+              "offset": 12,
+              "size": 4,
+              "hex": "80781900",
+              "mnemonic": "cmp",
+              "operands": "byte ptr [eax + 0x19], 0"
+            },
+            {
+              "offset": 16,
+              "size": 2,
+              "hex": "74f6",
+              "mnemonic": "je",
+              "operands": "8"
+            },
+            {
+              "offset": 18,
+              "size": 2,
+              "hex": "8bc1",
+              "mnemonic": "mov",
+              "operands": "eax, ecx"
+            },
+            {
+              "offset": 20,
+              "size": 1,
+              "hex": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ],
+          "relocations": []
+        },
+        {
+          "name": "?pointer@?A0x2acfc3c9@bsp@@YAPAXI@Z",
+          "bytes": 8,
+          "instruction_starts": 5,
+          "hex": "558bec8b45085dc3",
+          "sha256": "d5a2b635b0bbb254914f2641e4508361a0c95686c0422dcebeb3abbcca7f1d2b",
+          "instructions": [
+            {
+              "offset": 0,
+              "size": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "size": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "size": 3,
+              "hex": "8b4508",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 6,
+              "size": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 7,
+              "size": 1,
+              "hex": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ],
+          "relocations": []
+        },
+        {
+          "name": "?put@?A0x2acfc3c9@bsp@@YAXPAXII@Z",
+          "bytes": 17,
+          "instruction_starts": 8,
+          "hex": "558bec8b4d0c8b45088b55108914085dc3",
+          "sha256": "cdb70beb04767abdb190d475687cb3d73f5a60446387ee001a9169bd0ce2b7eb",
+          "instructions": [
+            {
+              "offset": 0,
+              "size": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "size": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "size": 3,
+              "hex": "8b4d0c",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ebp + 0xc]"
+            },
+            {
+              "offset": 6,
+              "size": 3,
+              "hex": "8b4508",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 9,
+              "size": 3,
+              "hex": "8b5510",
+              "mnemonic": "mov",
+              "operands": "edx, dword ptr [ebp + 0x10]"
+            },
+            {
+              "offset": 12,
+              "size": 3,
+              "hex": "891408",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + ecx], edx"
+            },
+            {
+              "offset": 15,
+              "size": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 16,
+              "size": 1,
+              "hex": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ],
+          "relocations": []
+        },
+        {
+          "name": "?rotate_native_input_int_string_tree_left_0069c300@bsp@@YIXPAXI0@Z",
+          "bytes": 89,
+          "instruction_starts": 39,
+          "hex": "558bec8b5508568b72088b068942088b068078190075038950048b42048946048b49048b41043bd0750d89710489168972045e5dc204008b4a048b013bd0750c893189168972045e5dc2040089710889168972045e5dc20400",
+          "sha256": "b734e189fd35dc5785961a94b34905077854ccec7b0e350d484376df379d36dd",
+          "instructions": [
+            {
+              "offset": 0,
+              "size": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "size": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "size": 3,
+              "hex": "8b5508",
+              "mnemonic": "mov",
+              "operands": "edx, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 6,
+              "size": 1,
+              "hex": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "offset": 7,
+              "size": 3,
+              "hex": "8b7208",
+              "mnemonic": "mov",
+              "operands": "esi, dword ptr [edx + 8]"
+            },
+            {
+              "offset": 10,
+              "size": 2,
+              "hex": "8b06",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esi]"
+            },
+            {
+              "offset": 12,
+              "size": 3,
+              "hex": "894208",
+              "mnemonic": "mov",
+              "operands": "dword ptr [edx + 8], eax"
+            },
+            {
+              "offset": 15,
+              "size": 2,
+              "hex": "8b06",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esi]"
+            },
+            {
+              "offset": 17,
+              "size": 4,
+              "hex": "80781900",
+              "mnemonic": "cmp",
+              "operands": "byte ptr [eax + 0x19], 0"
+            },
+            {
+              "offset": 21,
+              "size": 2,
+              "hex": "7503",
+              "mnemonic": "jne",
+              "operands": "0x1a"
+            },
+            {
+              "offset": 23,
+              "size": 3,
+              "hex": "895004",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 4], edx"
+            },
+            {
+              "offset": 26,
+              "size": 3,
+              "hex": "8b4204",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [edx + 4]"
+            },
+            {
+              "offset": 29,
+              "size": 3,
+              "hex": "894604",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 4], eax"
+            },
+            {
+              "offset": 32,
+              "size": 3,
+              "hex": "8b4904",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ecx + 4]"
+            },
+            {
+              "offset": 35,
+              "size": 3,
+              "hex": "8b4104",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ecx + 4]"
+            },
+            {
+              "offset": 38,
+              "size": 2,
+              "hex": "3bd0",
+              "mnemonic": "cmp",
+              "operands": "edx, eax"
+            },
+            {
+              "offset": 40,
+              "size": 2,
+              "hex": "750d",
+              "mnemonic": "jne",
+              "operands": "0x37"
+            },
+            {
+              "offset": 42,
+              "size": 3,
+              "hex": "897104",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ecx + 4], esi"
+            },
+            {
+              "offset": 45,
+              "size": 2,
+              "hex": "8916",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi], edx"
+            },
+            {
+              "offset": 47,
+              "size": 3,
+              "hex": "897204",
+              "mnemonic": "mov",
+              "operands": "dword ptr [edx + 4], esi"
+            },
+            {
+              "offset": 50,
+              "size": 1,
+              "hex": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "offset": 51,
+              "size": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 52,
+              "size": 3,
+              "hex": "c20400",
+              "mnemonic": "ret",
+              "operands": "4"
+            },
+            {
+              "offset": 55,
+              "size": 3,
+              "hex": "8b4a04",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [edx + 4]"
+            },
+            {
+              "offset": 58,
+              "size": 2,
+              "hex": "8b01",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ecx]"
+            },
+            {
+              "offset": 60,
+              "size": 2,
+              "hex": "3bd0",
+              "mnemonic": "cmp",
+              "operands": "edx, eax"
+            },
+            {
+              "offset": 62,
+              "size": 2,
+              "hex": "750c",
+              "mnemonic": "jne",
+              "operands": "0x4c"
+            },
+            {
+              "offset": 64,
+              "size": 2,
+              "hex": "8931",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ecx], esi"
+            },
+            {
+              "offset": 66,
+              "size": 2,
+              "hex": "8916",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi], edx"
+            },
+            {
+              "offset": 68,
+              "size": 3,
+              "hex": "897204",
+              "mnemonic": "mov",
+              "operands": "dword ptr [edx + 4], esi"
+            },
+            {
+              "offset": 71,
+              "size": 1,
+              "hex": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "offset": 72,
+              "size": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 73,
+              "size": 3,
+              "hex": "c20400",
+              "mnemonic": "ret",
+              "operands": "4"
+            },
+            {
+              "offset": 76,
+              "size": 3,
+              "hex": "897108",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ecx + 8], esi"
+            },
+            {
+              "offset": 79,
+              "size": 2,
+              "hex": "8916",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi], edx"
+            },
+            {
+              "offset": 81,
+              "size": 3,
+              "hex": "897204",
+              "mnemonic": "mov",
+              "operands": "dword ptr [edx + 4], esi"
+            },
+            {
+              "offset": 84,
+              "size": 1,
+              "hex": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "offset": 85,
+              "size": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 86,
+              "size": 3,
+              "hex": "c20400",
+              "mnemonic": "ret",
+              "operands": "4"
+            }
+          ],
+          "relocations": []
+        },
+        {
+          "name": "?rotate_native_input_int_string_tree_right_0069a780@bsp@@YIXPAXI0@Z",
+          "bytes": 93,
+          "instruction_starts": 39,
+          "hex": "558bec8b5508568b328b460889028b46088078190075038950048b42048946048b49048b41043bd0750e8971048956088972045e5dc204008b4a048b41083bd0750e8971088956088972045e5dc2040089318956088972045e5dc20400",
+          "sha256": "9739f0649f7313097b119f9594022c67a02a5224b29f29af51703a38d6bf61b9",
+          "instructions": [
+            {
+              "offset": 0,
+              "size": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "size": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "size": 3,
+              "hex": "8b5508",
+              "mnemonic": "mov",
+              "operands": "edx, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 6,
+              "size": 1,
+              "hex": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "offset": 7,
+              "size": 2,
+              "hex": "8b32",
+              "mnemonic": "mov",
+              "operands": "esi, dword ptr [edx]"
+            },
+            {
+              "offset": 9,
+              "size": 3,
+              "hex": "8b4608",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esi + 8]"
+            },
+            {
+              "offset": 12,
+              "size": 2,
+              "hex": "8902",
+              "mnemonic": "mov",
+              "operands": "dword ptr [edx], eax"
+            },
+            {
+              "offset": 14,
+              "size": 3,
+              "hex": "8b4608",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esi + 8]"
+            },
+            {
+              "offset": 17,
+              "size": 4,
+              "hex": "80781900",
+              "mnemonic": "cmp",
+              "operands": "byte ptr [eax + 0x19], 0"
+            },
+            {
+              "offset": 21,
+              "size": 2,
+              "hex": "7503",
+              "mnemonic": "jne",
+              "operands": "0x1a"
+            },
+            {
+              "offset": 23,
+              "size": 3,
+              "hex": "895004",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 4], edx"
+            },
+            {
+              "offset": 26,
+              "size": 3,
+              "hex": "8b4204",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [edx + 4]"
+            },
+            {
+              "offset": 29,
+              "size": 3,
+              "hex": "894604",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 4], eax"
+            },
+            {
+              "offset": 32,
+              "size": 3,
+              "hex": "8b4904",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ecx + 4]"
+            },
+            {
+              "offset": 35,
+              "size": 3,
+              "hex": "8b4104",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ecx + 4]"
+            },
+            {
+              "offset": 38,
+              "size": 2,
+              "hex": "3bd0",
+              "mnemonic": "cmp",
+              "operands": "edx, eax"
+            },
+            {
+              "offset": 40,
+              "size": 2,
+              "hex": "750e",
+              "mnemonic": "jne",
+              "operands": "0x38"
+            },
+            {
+              "offset": 42,
+              "size": 3,
+              "hex": "897104",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ecx + 4], esi"
+            },
+            {
+              "offset": 45,
+              "size": 3,
+              "hex": "895608",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 8], edx"
+            },
+            {
+              "offset": 48,
+              "size": 3,
+              "hex": "897204",
+              "mnemonic": "mov",
+              "operands": "dword ptr [edx + 4], esi"
+            },
+            {
+              "offset": 51,
+              "size": 1,
+              "hex": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "offset": 52,
+              "size": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 53,
+              "size": 3,
+              "hex": "c20400",
+              "mnemonic": "ret",
+              "operands": "4"
+            },
+            {
+              "offset": 56,
+              "size": 3,
+              "hex": "8b4a04",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [edx + 4]"
+            },
+            {
+              "offset": 59,
+              "size": 3,
+              "hex": "8b4108",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ecx + 8]"
+            },
+            {
+              "offset": 62,
+              "size": 2,
+              "hex": "3bd0",
+              "mnemonic": "cmp",
+              "operands": "edx, eax"
+            },
+            {
+              "offset": 64,
+              "size": 2,
+              "hex": "750e",
+              "mnemonic": "jne",
+              "operands": "0x50"
+            },
+            {
+              "offset": 66,
+              "size": 3,
+              "hex": "897108",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ecx + 8], esi"
+            },
+            {
+              "offset": 69,
+              "size": 3,
+              "hex": "895608",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 8], edx"
+            },
+            {
+              "offset": 72,
+              "size": 3,
+              "hex": "897204",
+              "mnemonic": "mov",
+              "operands": "dword ptr [edx + 4], esi"
+            },
+            {
+              "offset": 75,
+              "size": 1,
+              "hex": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "offset": 76,
+              "size": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 77,
+              "size": 3,
+              "hex": "c20400",
+              "mnemonic": "ret",
+              "operands": "4"
+            },
+            {
+              "offset": 80,
+              "size": 2,
+              "hex": "8931",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ecx], esi"
+            },
+            {
+              "offset": 82,
+              "size": 3,
+              "hex": "895608",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 8], edx"
+            },
+            {
+              "offset": 85,
+              "size": 3,
+              "hex": "897204",
+              "mnemonic": "mov",
+              "operands": "dword ptr [edx + 4], esi"
+            },
+            {
+              "offset": 88,
+              "size": 1,
+              "hex": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "offset": 89,
+              "size": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 90,
+              "size": 3,
+              "hex": "c20400",
+              "mnemonic": "ret",
+              "operands": "4"
+            }
+          ],
+          "relocations": []
+        },
+        {
+          "name": "?word@?A0x2acfc3c9@bsp@@YAIPBXI@Z",
+          "bytes": 14,
+          "instruction_starts": 7,
+          "hex": "558bec8b4d0c8b45088b04085dc3",
+          "sha256": "968c17a0375a47c786e584c230018ee9ddbb72bfbd8b42d8ffe49fefcecff650",
+          "instructions": [
+            {
+              "offset": 0,
+              "size": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "size": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "size": 3,
+              "hex": "8b4d0c",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ebp + 0xc]"
+            },
+            {
+              "offset": 6,
+              "size": 3,
+              "hex": "8b4508",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 9,
+              "size": 3,
+              "hex": "8b0408",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [eax + ecx]"
+            },
+            {
+              "offset": 12,
+              "size": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 13,
+              "size": 1,
+              "hex": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ],
+          "relocations": []
+        }
+      ],
+      "all_code_bytes": 394,
+      "all_instruction_starts": 168,
+      "public_code_bytes": 332,
+      "public_instruction_starts": 136,
+      "code_REL32_count": 2,
+      "noncode_debug_relocation_count": 3,
+      "noncode_relocations": [
+        {
+          "section": ".debug$F",
+          "bytes": 16,
+          "hex": "00000000630000000000000000000301",
+          "relocations": [
+            {
+              "offset": 0,
+              "symbol": "?increment_native_input_int_string_tree_iterator_0069ae50@bsp@@YIXPAXI@Z",
+              "type": 7
+            }
+          ]
+        },
+        {
+          "section": ".debug$F",
+          "bytes": 16,
+          "hex": "000000001e0000000000000000000000",
+          "relocations": [
+            {
+              "offset": 0,
+              "symbol": "?maximum_native_input_int_string_node_0069aac0@bsp@@YIPAXPAX@Z",
+              "type": 7
+            }
+          ]
+        },
+        {
+          "section": ".debug$F",
+          "bytes": 16,
+          "hex": "00000000150000000000000000000000",
+          "relocations": [
+            {
+              "offset": 0,
+              "symbol": "?minimum_native_input_int_string_node_0069aae0@bsp@@YIPAXPAX@Z",
+              "type": 7
+            }
+          ]
+        }
+      ],
+      "checks": [
+        "All five public Source interfaces and compiler private helpers inspected; actual CMake code394B/168starts,public332B/136starts,Win32machine014C.",
+        "Successor first raw owner0 load/test precedes CALL at09; postdiagnostic CURRENT node4 is loaded onlyat0E, so a returning handler can change node.",
+        "Currentnode nil19 branches to restoredESI then real TAILJMP at18 to accepted Source diagnostic. Returning handler does not advance; no extra owner==tree/nullnode guard.",
+        "Right minimum path reads right8/nil19,thenleft0/nil19 progressively and publishes selectednode once. Only iterator.node4 is written.",
+        "Parent climb reloads CURRENT iterator.node4 at48 before parent.right8 at4B; matchedparent is published at52 BEFORE parent.parent4 reload55. Final selectedparent store5E remains.",
+        "Right rotation node.left store0C is followed by pivot.right REREAD0E andnil19test11; conditionalchild.parent store17 remains.",
+        "Left rotation node.right store0C is followed by pivot.left REREAD0F andnil19test11; conditionalchild.parent store17 remains.",
+        "Bothrotations read CURRENT node.parent1A,publishpivot.parent1D,then ONCEcapture CURRENThead20 androotread23. No frozeninitialhead or extraheadreload.",
+        "Nonroot right reloads node.parent38 then reads parent.right3B FIRST; left reloads parent37 thenparent.left3A FIRST. Allthree branches retain exact linkstore followedby pivotchild andnodeparent stores.",
+        "Bothrotations have three RET4 arms,restoreESI/owncompilerEBP,read stackednode EBP+8,neverread incomingEDX. EAX is incidentalSourcevoid,not Nativepivot result.",
+        "Maximum/minimum keep currentnodeECX whileloading CURRENT child intoEAX,readthatnil19 andadvance; finalMOVEAX,ECX returnsselectednode/plainRET. No initialnodeguard/headerwrites.",
+        "Compiler maximum7-byteNOP is its own Sourcealignment,no memory access; it doesnotpromote Nativeundefined3B orclaim Nativepadding/flags/register bytes.",
+        "Every code relocation is oneof2REL32 references toaccepted invokeBF6713; otherfourpublicfunctions andallprivatehelpers are callee-free. No unresolvedstub/callback/nil15or99 delegate.",
+        "All3 noncode relocations are DIR32NB in.debug$F compilerfunction-metadata sections forsuccessor/min/max; notcalls/providers orNativeframe/runtimebindings.",
+        "Privatehelpers fullyinspected: address/pointer8B5starts each,word14B7,put17B8,is_nil15B7. Volatile DWORD/BYTE accesses present; no layoutobject/context oradditionalmemory effects.",
+        "ActualCMake differsfromindependent probe inrotation andprivatehelper EBPframes/prologues/epilogues; allgraphread/writeorders andRETshapes checked independently inactual. Successor/min/max bytes AREidentical (3functions); fullobject isNOT byte-identical.",
+        "Compiler EBP is its own frame only; noNativeframe reader, nativeSEH/FH3registration, keycleanup, allocator, count/headermodel ornewguard.",
+        "Requireddefaultbuild passed3/3 existing suites in12.70s; Source/storage/staticproof is notNativebinaryABI/gamevalidation and existingdifferentialsuite ismathonly."
+      ],
+      "findings": [],
+      "probe_comparison": {
+        "scope": "independentWin32cl/c/O2/Ob2/EHsc only,noexe",
+        "probe_object": "local\\oct15_input_int_string_tree_leaves_probe.obj",
+        "probe_object_sha256": "d52111f4a10f06352d1327ed05f5f3008fbc4e999236a9f7d22731fd5f90088a",
+        "all_code_bytes": 372,
+        "all_starts": 143,
+        "functions": [
+          {
+            "name": "?address@?A0x2acfc3c9@bsp@@YAIPBX@Z",
+            "actual_bytes": 8,
+            "probe_bytes": 5,
+            "byte_identical": false
+          },
+          {
+            "name": "?increment_native_input_int_string_tree_iterator_0069ae50@bsp@@YIXPAXI@Z",
+            "actual_bytes": 99,
+            "probe_bytes": 99,
+            "byte_identical": true
+          },
+          {
+            "name": "?is_nil@?A0x2acfc3c9@bsp@@YA_NPBX@Z",
+            "actual_bytes": 15,
+            "probe_bytes": 12,
+            "byte_identical": false
+          },
+          {
+            "name": "?maximum_native_input_int_string_node_0069aac0@bsp@@YIPAXPAX@Z",
+            "actual_bytes": 30,
+            "probe_bytes": 30,
+            "byte_identical": true
+          },
+          {
+            "name": "?minimum_native_input_int_string_node_0069aae0@bsp@@YIPAXPAX@Z",
+            "actual_bytes": 21,
+            "probe_bytes": 21,
+            "byte_identical": true
+          },
+          {
+            "name": "?pointer@?A0x2acfc3c9@bsp@@YAPAXI@Z",
+            "actual_bytes": 8,
+            "probe_bytes": 5,
+            "byte_identical": false
+          },
+          {
+            "name": "?put@?A0x2acfc3c9@bsp@@YAXPAXII@Z",
+            "actual_bytes": 17,
+            "probe_bytes": 16,
+            "byte_identical": false
+          },
+          {
+            "name": "?rotate_native_input_int_string_tree_left_0069c300@bsp@@YIXPAXI0@Z",
+            "actual_bytes": 89,
+            "probe_bytes": 84,
+            "byte_identical": false
+          },
+          {
+            "name": "?rotate_native_input_int_string_tree_right_0069a780@bsp@@YIXPAXI0@Z",
+            "actual_bytes": 93,
+            "probe_bytes": 88,
+            "byte_identical": false
+          },
+          {
+            "name": "?word@?A0x2acfc3c9@bsp@@YAIPBXI@Z",
+            "actual_bytes": 14,
+            "probe_bytes": 12,
+            "byte_identical": false
+          }
+        ],
+        "whole_object_byte_identical": false
+      }
+    },
+    "test_scope": "Existing3suites only; native differential isseededmath, no subtree/leaf/game/binaryABI differential claim.",
+    "existing_build_warning": "LNK4006 spawn_request_id_matches duplicate from existing lua_binding_spawn.obj/lua_spawn_new.obj; unrelated acceptedMainSource, not introduced by new leaves.",
+    "transfer_checker": {
+      "JSON_rows": 3,
+      "JSON_failed": 0,
+      "Markdown_claims": 2,
+      "Markdown_failed": 0,
+      "Markdown_unchecked": 0,
+      "Markdown_warnings": 0
+    }
+  },
+  "limits": [
+    "Valid reached rawstorage/sentinels required, including allcontinuationsafterreturningdiagnostics. No null/cycle/bounds/newowner guard, callback, allocation/heap/provider/model, rollback orlocalEH is added.",
+    "CurrentCpp/SDK/CRT and compiler privateframes differ fromOriginal handler/FH3/SEH/RTTI/fault/runtime/register/stackaliases. Source/static/build/COFF proof doesnotestablish NativebinaryABI, applicationadoption orgameplay.",
+    "Descriptive int/string/node/key names remainhypotheses; existing correctSTL identity/provenance and realnarrower AVcontracts are preserved."
+  ],
+  "ledger": {
+    "names": "config/names/00690000.jsonl",
+    "reconstruction": "config/reconstruction/00690000.jsonl",
+    "only_addresses": [
+      "0069ae50",
+      "0069a780",
+      "0069c300",
+      "0069aac0",
+      "0069aae0"
+    ],
+    "existing_names_and_evidence_preserved": true,
+    "whole_function_records": 5,
+    "index_refreshed": true
+  }
+}

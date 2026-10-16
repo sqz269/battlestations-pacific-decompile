@@ -1,0 +1,299 @@
+{
+  "packet": "goal15q_tagged_x87_b4_01",
+  "generated_utc": "2026-10-16T03:06:23.877164+00:00",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "scope_started_utc": "2026-10-16T03:01:08.592+00:00",
+  "target_verification": "Every fresh bsp.py ghidra command calls Client.verify: project bsp, program /battlestationspacific.exe, x86:LE:32:default, image base 00400000. Configured project_file was checked; no Ghidra writes.",
+  "installed_pe": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "machine": "I386",
+    "image_base": "00400000",
+    "image_size": 14872576,
+    "timestamp": 1245831434
+  },
+  "functions": [
+    {
+      "address": "00b40040",
+      "name": "bsp_tagged_x87_b4_00b40040",
+      "coverage": "complete",
+      "old_ghidra_name": "TRIV_body_00b40040",
+      "old_ghidra_signature": "undefined TRIV_body_00b40040(void)",
+      "native_start": "00b40040",
+      "native_end": "00b40046",
+      "native_length": 7,
+      "native_rva": "00740040",
+      "installed_file_offset": 7602240,
+      "native_hex": "d981f8010000c3",
+      "native_instruction_count": 2,
+      "live_equals_installed_complete_body": true,
+      "source": "src/native_tagged_x87_leaf_b4_01.cpp",
+      "contract": "One actual ECX backing-storage input; FLD m32real [ECX+0x1f8] pushes x87 ST0; plain RET, no EDX or stacked argument consumed.",
+      "original_abi": "ECX backing storage, x87 ST0 floating result, plain RET. Source uses one const void* __fastcall parameter and float return; no original C++ class/signature recovered.",
+      "classification": "Complete literal-instruction Source; fixed-compiler whole-body identity. Original call-site ABI adoption and game behavior remain unproved.",
+      "live_proto": "00b40040 TRIV_body_00b40040  undefined TRIV_body_00b40040(void)  body 00b40040 - 00b40046",
+      "live_xrefs": "No references found to address: 00b40040 TRIV_body_00b40040",
+      "source_float_return_is_interface_hypothesis": true,
+      "general_register_and_flags_effects": "The measured FLD/RET body does not write general registers other than normal RET control/ESP effects, and does not write EFLAGS.",
+      "x87_semantic_scope": "Identical FLD m32real and RET instructions; inherits control/status/masks and original memory-load/return fault paths. Normal load pushes new ST0 and shifts prior logical stack entries below it; exceptional full-stack/NaN/denormal handling is that of FLD. No extra FP operation/store/wait or status/control reset. Undefined x87 condition flags are not asserted preserved. Code placement still affects absolute saved FPU instruction and exception instruction addresses."
+    }
+  ],
+  "source_coverage_before": {
+    "lookup": "local/goal15q_tagged_x87_b4_01/lookup_before.txt",
+    "no_reconstruction_record": true,
+    "no_src_or_include_address_match": true,
+    "existing_tag": "trivial_body (high, rename) TRIV_body_00b40040"
+  },
+  "strict": {
+    "flags": "/nologo /std:c++20 /MD /O2 /W4 /WX /fp:strict /Gy /c /Iinclude",
+    "compile_seconds": 3.295732999991742,
+    "compiler_log": "local/goal15q_tagged_x87_b4_01/strict_compile.log",
+    "coff": {
+      "path": "local\\goal15q_tagged_x87_b4_01\\strict_module.obj",
+      "sha256": "cc4385a0fec82d8193e5cbd8407ba5036c85eb6a4a34ba1b4e30818f8dd0793e",
+      "machine": "IMAGE_FILE_MACHINE_I386",
+      "symbol": "@bsp_tagged_x87_b4_00b40040@4",
+      "symbol_offset": 0,
+      "function_section": 3,
+      "whole_function_section_size": 7,
+      "whole_function_section_hex": "d981f8010000c3",
+      "body_equals_whole_live_and_installed_native": true,
+      "all_nonempty_executable_sections_accounted": true,
+      "nonempty_executable_sections": [
+        {
+          "index": 3,
+          "name": ".text$mn",
+          "size": 7,
+          "raw_offset": 415,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744
+        }
+      ],
+      "executable_relocations": 0,
+      "all_section_relocations": 0,
+      "instructions": [
+        {
+          "address": "00b40040",
+          "size": 6,
+          "hex": "d981f8010000",
+          "mnemonic": "fld",
+          "operands": "dword ptr [ecx + 0x1f8]"
+        },
+        {
+          "address": "00b40046",
+          "size": 1,
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    }
+  },
+  "retained_prior_failed_forms": {
+    "forms": [
+      "float-return memcpy-to-local",
+      "float-return direct backing read"
+    ],
+    "native_hex": "d981f8010000c3",
+    "strict_float_return_hex": "518b81f8010000890424d9042459c3",
+    "origin_packet": "goal15p_tagged_leaf_b4_03",
+    "origin_commit": "b178277d2fb1d58a02c8e0a0e3ca5ca638d58922",
+    "artifacts": [
+      {
+        "origin": "J:\\PROG\\battlestations-pacific-decompile-goal15m_tagged_b4\\local\\goal15p_tagged_leaf_b4_03\\attempt01_float_memcpy\\module.obj",
+        "retained": "local\\goal15q_tagged_x87_b4_01\\prior_failures\\attempt01_float_memcpy\\module.obj",
+        "sha256": "b1ecd48d5dcd8603f0aa8e1fe8d7a6e7891231cd69c05cd6d2e2f3a976405a77"
+      },
+      {
+        "origin": "J:\\PROG\\battlestations-pacific-decompile-goal15m_tagged_b4\\local\\goal15p_tagged_leaf_b4_03\\attempt01_float_memcpy\\module.asm",
+        "retained": "local\\goal15q_tagged_x87_b4_01\\prior_failures\\attempt01_float_memcpy\\module.asm",
+        "sha256": "9ff75ff52f4f2558099df20bfe069a34503ae2b84aebf8199122428e80a57c24"
+      },
+      {
+        "origin": "J:\\PROG\\battlestations-pacific-decompile-goal15m_tagged_b4\\local\\goal15p_tagged_leaf_b4_03\\attempt01_float_memcpy\\strict_compile.log",
+        "retained": "local\\goal15q_tagged_x87_b4_01\\prior_failures\\attempt01_float_memcpy\\strict_compile.log",
+        "sha256": "f1fe302a1020fefca27cf3e3a7c227841cbbd17ec86968a058ed732cf0fd6bbf"
+      },
+      {
+        "origin": "J:\\PROG\\battlestations-pacific-decompile-goal15m_tagged_b4\\local\\goal15p_tagged_leaf_b4_03\\attempt02_float_direct\\module.obj",
+        "retained": "local\\goal15q_tagged_x87_b4_01\\prior_failures\\attempt02_float_direct\\module.obj",
+        "sha256": "930cfb93dfd73497f623efc3532a9be9bc55a704e3329e5c3c258b9bae7343ec"
+      },
+      {
+        "origin": "J:\\PROG\\battlestations-pacific-decompile-goal15m_tagged_b4\\local\\goal15p_tagged_leaf_b4_03\\attempt02_float_direct\\module.asm",
+        "retained": "local\\goal15q_tagged_x87_b4_01\\prior_failures\\attempt02_float_direct\\module.asm",
+        "sha256": "1765928f9fcdc87375ead116b25fc413cc1c1407988c4ae2050681c04a026522"
+      },
+      {
+        "origin": "J:\\PROG\\battlestations-pacific-decompile-goal15m_tagged_b4\\local\\goal15p_tagged_leaf_b4_03\\attempt02_float_direct\\strict_compile.log",
+        "retained": "local\\goal15q_tagged_x87_b4_01\\prior_failures\\attempt02_float_direct\\strict_compile.log",
+        "sha256": "f1fe302a1020fefca27cf3e3a7c227841cbbd17ec86968a058ed732cf0fd6bbf"
+      }
+    ],
+    "limitation": "Rejected for extra stack-mediated load/store instructions; not part of the accepted Source body.",
+    "whole_coff_rechecked": {
+      "attempt01_float_memcpy": {
+        "symbol": "@bsp_tagged_b4_00b40040@4",
+        "symbol_offset": 0,
+        "whole_section_size": 15,
+        "whole_section_hex": "518b81f8010000890424d9042459c3",
+        "relocations": 0,
+        "exact_native_whole_body": false
+      },
+      "attempt02_float_direct": {
+        "symbol": "@bsp_tagged_b4_00b40040@4",
+        "symbol_offset": 0,
+        "whole_section_size": 15,
+        "whole_section_hex": "518b81f8010000890424d9042459c3",
+        "relocations": 0,
+        "exact_native_whole_body": false
+      }
+    }
+  },
+  "qualification": {
+    "source_complete": true,
+    "strict_whole_object_identity": true,
+    "registered_build": true,
+    "no_new_routine_tests_or_probes": true,
+    "original_callsite_abi_adoption": false,
+    "game_validated": false,
+    "deployed": false,
+    "registered_whole_object_identity": true
+  },
+  "scope_clock_provenance": "Worker session creation timestamp, before initial commentary, brief, memory pass, worktree setup and all qualification/build steps.",
+  "first_explicit_clock_capture_utc": "2026-10-16T03:01:48+00:00",
+  "architecture_reference": {
+    "title": "Intel SDM Vol. 2, FLD",
+    "url": "https://cdrdv2-public.intel.com/774492/325383-sdm-vol-2abcd.pdf",
+    "scope": "Architecture reference only. Runtime behavior not measured; no claim of absolute x87 instruction-pointer identity at a new placement."
+  },
+  "prior_comments": [],
+  "ghidra_mutation_deferred_to_integrator": true,
+  "mechanical_call_check": {
+    "command": "python tools/verify_report_calls.py reports/goal15q_tagged_x87_b4_01.json",
+    "call_rows": 0,
+    "failures": 0,
+    "exit_code": 0,
+    "explanation": "The complete leaf has no calls; no invented callee rows."
+  },
+  "registered_build": {
+    "started_utc": "2026-10-16T03:06:33.196562+00:00",
+    "completed_utc": "2026-10-16T03:28:23.894763+00:00",
+    "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1",
+    "seconds": 1310.655874300006,
+    "exit_code": 0,
+    "log": "local/goal15q_tagged_x87_b4_01/registered_build.log",
+    "project_entry": {
+      "Include": "J:\\PROG\\battlestations-pacific-decompile-goal15q_b4_x87\\src\\native_tagged_x87_leaf_b4_01.cpp"
+    },
+    "release_compile_settings": {
+      "AdditionalIncludeDirectories": "J:\\PROG\\battlestations-pacific-decompile-goal15q_b4_x87\\include;J:\\PROG\\battlestations-pacific-decompile-goal15q_b4_x87\\build\\win32\\_deps\\lua511-src\\src;J:\\PROG\\battlestations-pacific-decompile-goal15q_b4_x87\\build\\win32\\_deps\\zlib121-src;%(AdditionalIncludeDirectories)",
+      "AdditionalOptions": "%(AdditionalOptions) /external:I \"J:/PROG/battlestations-pacific-decompile-goal15q_b4_x87/build/win32/_deps/dxsdk_d3dx-src/build/native/include\"",
+      "AssemblerListingLocation": "$(IntDir)",
+      "BasicRuntimeChecks": "Default",
+      "BufferSecurityCheck": null,
+      "CallingConvention": null,
+      "ExceptionHandling": "Sync",
+      "ExternalWarningLevel": "TurnOffAllWarnings",
+      "FloatingPointModel": "Strict",
+      "ForceConformanceInForLoopScope": null,
+      "InlineFunctionExpansion": "AnySuitable",
+      "LanguageStandard": "stdcpp17",
+      "MinimalRebuild": null,
+      "Optimization": "MaxSpeed",
+      "PrecompiledHeader": "NotUsing",
+      "RemoveUnreferencedCodeData": null,
+      "RuntimeLibrary": "MultiThreadedDLL",
+      "SupportJustMyCode": null,
+      "TreatWChar_tAsBuiltInType": null,
+      "TreatWarningAsError": "true",
+      "UseFullPaths": "false",
+      "WarningLevel": "Level4",
+      "PreprocessorDefinitions": "%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"",
+      "ObjectFileName": "$(IntDir)",
+      "DebugInformationFormat": "\n      ",
+      "ScanSourceForModuleDependencies": "false"
+    },
+    "coff": {
+      "path": "build\\win32\\bsp_core.dir\\Release\\native_tagged_x87_leaf_b4_01.obj",
+      "sha256": "ab884131e619d1b21b01aac5601231a565eba054bbd363d66567bb47d6356dc9",
+      "machine": "IMAGE_FILE_MACHINE_I386",
+      "symbol": "@bsp_tagged_x87_b4_00b40040@4",
+      "symbol_offset": 0,
+      "function_section": 3,
+      "whole_function_section_size": 7,
+      "whole_function_section_hex": "d981f8010000c3",
+      "body_equals_whole_live_and_installed_native": true,
+      "all_nonempty_executable_sections_accounted": true,
+      "nonempty_executable_sections": [
+        {
+          "index": 3,
+          "name": ".text$mn",
+          "size": 7,
+          "raw_offset": 431,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744
+        }
+      ],
+      "executable_relocations": 0,
+      "all_section_relocations": 0,
+      "instructions": [
+        {
+          "address": "00b40040",
+          "size": 6,
+          "hex": "d981f8010000",
+          "mnemonic": "fld",
+          "operands": "dword ptr [ecx + 0x1f8]"
+        },
+        {
+          "address": "00b40046",
+          "size": 1,
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    "whole_strict_and_registered_executable_sections_identical": true,
+    "tests": "All checks performed by scripts/build.ps1 passed; no new routine tests or probe executable.",
+    "existing_test_result_lines": [
+      "1/2 Test #1: reconstructed_math ...............   Passed    0.29 sec",
+      "2/2 Test #2: tool_tests .......................   Passed   14.04 sec",
+      "100% tests passed, 0 tests failed out of 2",
+      "Total Test time (real) =  14.37 sec"
+    ]
+  },
+  "reviewed_name_hypothesis": "BSP_NativeTaggedB4_LoadFloat01F8_00b40040",
+  "evidence_worktree": "J:\\PROG\\battlestations-pacific-decompile-goal15q_b4_x87",
+  "source_file_sha256": {
+    "include/bsp/native_tagged_x87_leaf_b4_01.hpp": "f19c257a93b304fcca60cbf1b4b434846ea995a627435f46d1bb7cfbaefb52c1",
+    "src/native_tagged_x87_leaf_b4_01.cpp": "e433ce3dd82435c7efdd126af41a3243498326d8bbc69b9345403f51d128e86e"
+  },
+  "cmake_registration": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_tagged_x87_leaf_b4_01.cpp)",
+  "worker_checklist": {
+    "path": "docs/WORKER_VERIFICATION_CHECKLIST.md",
+    "body_coverage": "complete",
+    "calls": "none",
+    "layout_semantics": "unknown; only measured raw backing read",
+    "runtime_claims": "none",
+    "register_evidence": "whole literal listing and COFF",
+    "call_checker": "0 call rows checked, 0 failed"
+  },
+  "precommit_evidence_completed_utc": "2026-10-16T03:29:10.233820+00:00",
+  "precommit_full_elapsed_seconds": 1681.641844,
+  "timing_scope": "Elapsed starts at worker session creation before initial brief/setup, includes all qualification, source, strict compilation, full registered build, evidence review and report work through this timestamp. Final commit/release/handoff elapsed is supplied in the worker handoff."
+}

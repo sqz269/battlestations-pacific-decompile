@@ -1,0 +1,1265 @@
+{
+  "packet": "native_gui_raw_factory_readiness_78",
+  "scope": "read-only Original AA6560 dispatcher and case-provider readiness; no Source implementation",
+  "generated_utc": "2026-10-16T03:48:36.514271+00:00",
+  "reviewed_main": "008099d7881c8d0e6b157d8c9ec2ac54ade02d71",
+  "reviewed_worktree_head": "38f9ec231d48d2b1707a28ec7cc7f1236935e5a2",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "verification": "Each bsp.py ghidra batch calls existing client verification before querying; no mutation or boundary repair."
+  },
+  "original": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "unchanged": true
+  },
+  "dispatcher": {
+    "entry": "00AA6560",
+    "exclusive_end": "00AA65F4",
+    "bytes": 148,
+    "instructions": 42,
+    "original_abi": "ECX=uint32 type id, EDX=optional actual source, EAX=result, RET; every valid case MOV ECX,EDX then tail-jumps; no own allocation/EH",
+    "selection": "uint32(type-1)>17 returns null without reading source; otherwise actual18-DWORD table AA65F4",
+    "table_bytes": 72,
+    "no_new_original_symbol": true
+  },
+  "cases": [
+    {
+      "type": 1,
+      "name": "Screen",
+      "table_cell": "00AA65F4",
+      "case_entry": "00AA6573",
+      "tail_site": "00AA6575",
+      "factory_entry": "00AA3BD0",
+      "requested_ecx_bytes": 292,
+      "allocate_entry": "00AC51A0",
+      "default_entry": "00AA3840",
+      "copy_entry": "00AC6040",
+      "source_readiness": "raw default exists; generic raw copy schedule requires live strings/scalars/scene bindings; whole factory uncomposed"
+    },
+    {
+      "type": 2,
+      "name": "Group",
+      "table_cell": "00AA65F8",
+      "case_entry": "00AA657A",
+      "tail_site": "00AA657C",
+      "factory_entry": "00AA12F0",
+      "requested_ecx_bytes": 236,
+      "allocate_entry": "00AC76D0",
+      "default_entry": "00AC6F50",
+      "copy_entry": "00AC6FA0",
+      "source_readiness": "complete raw factory for existing supported canonical Model26/3E,parent0 copy domain"
+    },
+    {
+      "type": 3,
+      "name": "Text",
+      "table_cell": "00AA65FC",
+      "case_entry": "00AA6581",
+      "tail_site": "00AA6583",
+      "factory_entry": "00AA1380",
+      "requested_ecx_bytes": 500,
+      "allocate_entry": "00AB79E0",
+      "default_entry": "00AB9650",
+      "copy_entry": "00ABB2C0",
+      "source_readiness": "canonical companion factory owns real raw8 prefix only; raw08..1F3 unconstructed, unsuitable for whole raw AAA710"
+    },
+    {
+      "type": 4,
+      "name": "Line",
+      "table_cell": "00AA6600",
+      "case_entry": "00AA6596",
+      "tail_site": "00AA6598",
+      "factory_entry": "00AA1530",
+      "requested_ecx_bytes": 260,
+      "allocate_entry": "00AC2380",
+      "default_entry": "00AC2D00",
+      "copy_entry": "00AC2D60",
+      "source_readiness": "address-labelled raw-storage default/copy functions; required base/vector host uncomposed"
+    },
+    {
+      "type": 5,
+      "name": "Progbar",
+      "table_cell": "00AA6604",
+      "case_entry": "00AA658F",
+      "tail_site": "00AA6591",
+      "factory_entry": "00AA14A0",
+      "requested_ecx_bytes": 320,
+      "allocate_entry": "00AB2B60",
+      "default_entry": "00AC77C0",
+      "copy_entry": "00AC7840",
+      "source_readiness": "raw-storage schedules require real Icon ctor/copy host; shared Icon physical stride13C is not requested140"
+    },
+    {
+      "type": 6,
+      "name": "Icon",
+      "table_cell": "00AA6608",
+      "case_entry": "00AA6588",
+      "tail_site": "00AA658A",
+      "factory_entry": "00AA1410",
+      "requested_ecx_bytes": 312,
+      "allocate_entry": "00AB2B60",
+      "default_entry": "00AB5C60",
+      "copy_entry": "00AB5D30",
+      "source_readiness": "retained semantic default; raw copy schedule requires base/state/rebuild host; no closed raw default provider found"
+    },
+    {
+      "type": 7,
+      "name": "Scrollbar",
+      "table_cell": "00AA660C",
+      "case_entry": "00AA659D",
+      "tail_site": "00AA659F",
+      "factory_entry": "00AA15C0",
+      "requested_ecx_bytes": 252,
+      "allocate_entry": "00AC84F0",
+      "default_entry": "00AC7C20",
+      "copy_entry": "00AC7CB0",
+      "source_readiness": "raw-storage default/copy schedules over required base host; canonical raw adapter uncomposed"
+    },
+    {
+      "type": 8,
+      "name": "Grid",
+      "table_cell": "00AA6610",
+      "case_entry": "00AA65A4",
+      "tail_site": "00AA65A6",
+      "factory_entry": "00AA1650",
+      "requested_ecx_bytes": 292,
+      "allocate_entry": "00AC9EA0",
+      "default_entry": "00ACB0A0",
+      "copy_entry": "00ACB3F0",
+      "source_readiness": "raw-storage schedules require base/column-copy/Visual_Group resolution host"
+    },
+    {
+      "type": 9,
+      "name": "Model",
+      "table_cell": "00AA6614",
+      "case_entry": "00AA65AB",
+      "tail_site": "00AA65AD",
+      "factory_entry": "00AA16E0",
+      "requested_ecx_bytes": 284,
+      "allocate_entry": "00ACC490",
+      "default_entry": "00ACC740",
+      "copy_entry": "00ACCF70",
+      "source_readiness": "raw-storage schedules require base/raw strings/LoadModel owner host"
+    },
+    {
+      "type": 10,
+      "name": "Movie",
+      "table_cell": "00AA6618",
+      "case_entry": "00AA65B2",
+      "tail_site": "00AA65B4",
+      "factory_entry": "00AA1770",
+      "requested_ecx_bytes": 304,
+      "allocate_entry": "00AAD990",
+      "default_entry": "00AAFE20",
+      "copy_entry": "00AAFFF0",
+      "source_readiness": "existing fields use std::string/vector projection; not actual raw130 body"
+    },
+    {
+      "type": 11,
+      "name": "Listbox",
+      "table_cell": "00AA661C",
+      "case_entry": "00AA65B9",
+      "tail_site": "00AA65BB",
+      "factory_entry": "00AA64B0",
+      "requested_ecx_bytes": 380,
+      "allocate_entry": "00A9B7E0",
+      "default_entry": "00A9DF40",
+      "copy_entry": "00AA5B40",
+      "source_readiness": "raw pool engine exists; no canonical process publication owner found; default companion partial; raw copy requires list/string-vector host"
+    },
+    {
+      "type": 12,
+      "name": "AnimIcon",
+      "table_cell": "00AA6620",
+      "case_entry": "00AA65C0",
+      "tail_site": "00AA65C2",
+      "factory_entry": "00AA2340",
+      "requested_ecx_bytes": 324,
+      "allocate_entry": "00AD3960",
+      "default_entry": "00AD2D50",
+      "copy_entry": "00AA1C60",
+      "source_readiness": "raw copy schedule requires real Icon copy; no closed raw default provider found"
+    },
+    {
+      "type": 13,
+      "name": "Curve",
+      "table_cell": "00AA6624",
+      "case_entry": "00AA65C7",
+      "tail_site": "00AA65C9",
+      "factory_entry": "00AA1800",
+      "requested_ecx_bytes": 320,
+      "allocate_entry": "00ABC790",
+      "default_entry": "00ABE030",
+      "copy_entry": "00ABE100",
+      "source_readiness": "raw-storage default/copy schedules over required base/member host"
+    },
+    {
+      "type": 14,
+      "name": "Sound",
+      "table_cell": "00AA6628",
+      "case_entry": "00AA65CE",
+      "tail_site": "00AA65D0",
+      "factory_entry": "00AA1890",
+      "requested_ecx_bytes": 264,
+      "allocate_entry": "00ACD7F0",
+      "default_entry": "00ACDB30",
+      "copy_entry": "00ACDBA0",
+      "source_readiness": "raw-storage schedules require base/ref/string host; copy deliberately default-constructs base"
+    },
+    {
+      "type": 15,
+      "name": "Button",
+      "table_cell": "00AA662C",
+      "case_entry": "00AA65D5",
+      "tail_site": "00AA65D7",
+      "factory_entry": "00AA4440",
+      "requested_ecx_bytes": 252,
+      "allocate_entry": "00AAC260",
+      "default_entry": "00AAC6F0",
+      "copy_entry": "00AA3C60",
+      "source_readiness": "raw-storage schedules require base, actual F8BD38 registry for default, raw strings for copy"
+    },
+    {
+      "type": 16,
+      "name": "ClipBox",
+      "table_cell": "00AA6630",
+      "case_entry": "00AA65DC",
+      "tail_site": "00AA65DE",
+      "factory_entry": "00AA1920",
+      "requested_ecx_bytes": 268,
+      "allocate_entry": "00ACEA10",
+      "default_entry": "00ACE0A0",
+      "copy_entry": "00ACE0F0",
+      "source_readiness": "retained semantic wrappers only today; tiny raw adapters can reuse real AA9390/AA9520 without derived stores"
+    },
+    {
+      "type": 17,
+      "name": "Section",
+      "table_cell": "00AA6634",
+      "case_entry": "00AA65E3",
+      "tail_site": "00AA65E5",
+      "factory_entry": "00AA19B0",
+      "requested_ecx_bytes": 300,
+      "allocate_entry": "00ABF080",
+      "default_entry": "00ABF420",
+      "copy_entry": "00ABF5B0",
+      "source_readiness": "canonical derived companion and own-part copy projection; full actual raw constructor uncomposed"
+    },
+    {
+      "type": 18,
+      "name": "FrameBox",
+      "table_cell": "00AA6638",
+      "case_entry": "00AA65EA",
+      "tail_site": "00AA65EC",
+      "factory_entry": "00AA1A40",
+      "requested_ecx_bytes": 284,
+      "allocate_entry": "00AD0280",
+      "default_entry": "00AD2600",
+      "copy_entry": "00AD27A0",
+      "source_readiness": "retained field/state-copy projection; no full actual raw constructor provider found"
+    }
+  ],
+  "tail_jumps_verified": [
+    {
+      "address": "00AA6575",
+      "native": "00AA3BD0",
+      "kind": "tail_jump",
+      "function": "00AA6560"
+    },
+    {
+      "address": "00AA657C",
+      "native": "00AA12F0",
+      "kind": "tail_jump",
+      "function": "00AA6560"
+    },
+    {
+      "address": "00AA6583",
+      "native": "00AA1380",
+      "kind": "tail_jump",
+      "function": "00AA6560"
+    },
+    {
+      "address": "00AA6598",
+      "native": "00AA1530",
+      "kind": "tail_jump",
+      "function": "00AA6560"
+    },
+    {
+      "address": "00AA6591",
+      "native": "00AA14A0",
+      "kind": "tail_jump",
+      "function": "00AA6560"
+    },
+    {
+      "address": "00AA658A",
+      "native": "00AA1410",
+      "kind": "tail_jump",
+      "function": "00AA6560"
+    },
+    {
+      "address": "00AA659F",
+      "native": "00AA15C0",
+      "kind": "tail_jump",
+      "function": "00AA6560"
+    },
+    {
+      "address": "00AA65A6",
+      "native": "00AA1650",
+      "kind": "tail_jump",
+      "function": "00AA6560"
+    },
+    {
+      "address": "00AA65AD",
+      "native": "00AA16E0",
+      "kind": "tail_jump",
+      "function": "00AA6560"
+    },
+    {
+      "address": "00AA65B4",
+      "native": "00AA1770",
+      "kind": "tail_jump",
+      "function": "00AA6560"
+    },
+    {
+      "address": "00AA65C2",
+      "native": "00AA2340",
+      "kind": "tail_jump",
+      "function": "00AA6560"
+    },
+    {
+      "address": "00AA65C9",
+      "native": "00AA1800",
+      "kind": "tail_jump",
+      "function": "00AA6560"
+    },
+    {
+      "address": "00AA65D0",
+      "native": "00AA1890",
+      "kind": "tail_jump",
+      "function": "00AA6560"
+    },
+    {
+      "address": "00AA65D7",
+      "native": "00AA4440",
+      "kind": "tail_jump",
+      "function": "00AA6560"
+    },
+    {
+      "address": "00AA65DE",
+      "native": "00AA1920",
+      "kind": "tail_jump",
+      "function": "00AA6560"
+    },
+    {
+      "address": "00AA65E5",
+      "native": "00AA19B0",
+      "kind": "tail_jump",
+      "function": "00AA6560"
+    },
+    {
+      "address": "00AA65EC",
+      "native": "00AA1A40",
+      "kind": "tail_jump",
+      "function": "00AA6560"
+    }
+  ],
+  "calls_verified": [
+    {
+      "address": "00AA3BEE",
+      "native": "00AC51A0",
+      "function": "00AA3BD0",
+      "role": "allocate"
+    },
+    {
+      "address": "00AA3C0A",
+      "native": "00AC6040",
+      "function": "00AA3BD0",
+      "role": "copy"
+    },
+    {
+      "address": "00AA3C2D",
+      "native": "00AA3840",
+      "function": "00AA3BD0",
+      "role": "default"
+    },
+    {
+      "address": "00AA130E",
+      "native": "00AC76D0",
+      "function": "00AA12F0",
+      "role": "allocate"
+    },
+    {
+      "address": "00AA132A",
+      "native": "00AC6FA0",
+      "function": "00AA12F0",
+      "role": "copy"
+    },
+    {
+      "address": "00AA134D",
+      "native": "00AC6F50",
+      "function": "00AA12F0",
+      "role": "default"
+    },
+    {
+      "address": "00AA139E",
+      "native": "00AB79E0",
+      "function": "00AA1380",
+      "role": "allocate"
+    },
+    {
+      "address": "00AA13BA",
+      "native": "00ABB2C0",
+      "function": "00AA1380",
+      "role": "copy"
+    },
+    {
+      "address": "00AA13DD",
+      "native": "00AB9650",
+      "function": "00AA1380",
+      "role": "default"
+    },
+    {
+      "address": "00AA154E",
+      "native": "00AC2380",
+      "function": "00AA1530",
+      "role": "allocate"
+    },
+    {
+      "address": "00AA156A",
+      "native": "00AC2D60",
+      "function": "00AA1530",
+      "role": "copy"
+    },
+    {
+      "address": "00AA158D",
+      "native": "00AC2D00",
+      "function": "00AA1530",
+      "role": "default"
+    },
+    {
+      "address": "00AA14BE",
+      "native": "00AB2B60",
+      "function": "00AA14A0",
+      "role": "allocate"
+    },
+    {
+      "address": "00AA14DA",
+      "native": "00AC7840",
+      "function": "00AA14A0",
+      "role": "copy"
+    },
+    {
+      "address": "00AA14FD",
+      "native": "00AC77C0",
+      "function": "00AA14A0",
+      "role": "default"
+    },
+    {
+      "address": "00AA142E",
+      "native": "00AB2B60",
+      "function": "00AA1410",
+      "role": "allocate"
+    },
+    {
+      "address": "00AA144A",
+      "native": "00AB5D30",
+      "function": "00AA1410",
+      "role": "copy"
+    },
+    {
+      "address": "00AA146D",
+      "native": "00AB5C60",
+      "function": "00AA1410",
+      "role": "default"
+    },
+    {
+      "address": "00AA15DE",
+      "native": "00AC84F0",
+      "function": "00AA15C0",
+      "role": "allocate"
+    },
+    {
+      "address": "00AA15FA",
+      "native": "00AC7CB0",
+      "function": "00AA15C0",
+      "role": "copy"
+    },
+    {
+      "address": "00AA161D",
+      "native": "00AC7C20",
+      "function": "00AA15C0",
+      "role": "default"
+    },
+    {
+      "address": "00AA166E",
+      "native": "00AC9EA0",
+      "function": "00AA1650",
+      "role": "allocate"
+    },
+    {
+      "address": "00AA168A",
+      "native": "00ACB3F0",
+      "function": "00AA1650",
+      "role": "copy"
+    },
+    {
+      "address": "00AA16AD",
+      "native": "00ACB0A0",
+      "function": "00AA1650",
+      "role": "default"
+    },
+    {
+      "address": "00AA16FE",
+      "native": "00ACC490",
+      "function": "00AA16E0",
+      "role": "allocate"
+    },
+    {
+      "address": "00AA171A",
+      "native": "00ACCF70",
+      "function": "00AA16E0",
+      "role": "copy"
+    },
+    {
+      "address": "00AA173D",
+      "native": "00ACC740",
+      "function": "00AA16E0",
+      "role": "default"
+    },
+    {
+      "address": "00AA178E",
+      "native": "00AAD990",
+      "function": "00AA1770",
+      "role": "allocate"
+    },
+    {
+      "address": "00AA17AA",
+      "native": "00AAFFF0",
+      "function": "00AA1770",
+      "role": "copy"
+    },
+    {
+      "address": "00AA17CD",
+      "native": "00AAFE20",
+      "function": "00AA1770",
+      "role": "default"
+    },
+    {
+      "address": "00AA235E",
+      "native": "00AD3960",
+      "function": "00AA2340",
+      "role": "allocate"
+    },
+    {
+      "address": "00AA237A",
+      "native": "00AA1C60",
+      "function": "00AA2340",
+      "role": "copy"
+    },
+    {
+      "address": "00AA239D",
+      "native": "00AD2D50",
+      "function": "00AA2340",
+      "role": "default"
+    },
+    {
+      "address": "00AA181E",
+      "native": "00ABC790",
+      "function": "00AA1800",
+      "role": "allocate"
+    },
+    {
+      "address": "00AA183A",
+      "native": "00ABE100",
+      "function": "00AA1800",
+      "role": "copy"
+    },
+    {
+      "address": "00AA185D",
+      "native": "00ABE030",
+      "function": "00AA1800",
+      "role": "default"
+    },
+    {
+      "address": "00AA18AE",
+      "native": "00ACD7F0",
+      "function": "00AA1890",
+      "role": "allocate"
+    },
+    {
+      "address": "00AA18CA",
+      "native": "00ACDBA0",
+      "function": "00AA1890",
+      "role": "copy"
+    },
+    {
+      "address": "00AA18ED",
+      "native": "00ACDB30",
+      "function": "00AA1890",
+      "role": "default"
+    },
+    {
+      "address": "00AA445E",
+      "native": "00AAC260",
+      "function": "00AA4440",
+      "role": "allocate"
+    },
+    {
+      "address": "00AA447A",
+      "native": "00AA3C60",
+      "function": "00AA4440",
+      "role": "copy"
+    },
+    {
+      "address": "00AA449D",
+      "native": "00AAC6F0",
+      "function": "00AA4440",
+      "role": "default"
+    },
+    {
+      "address": "00AA193E",
+      "native": "00ACEA10",
+      "function": "00AA1920",
+      "role": "allocate"
+    },
+    {
+      "address": "00AA195A",
+      "native": "00ACE0F0",
+      "function": "00AA1920",
+      "role": "copy"
+    },
+    {
+      "address": "00AA197D",
+      "native": "00ACE0A0",
+      "function": "00AA1920",
+      "role": "default"
+    },
+    {
+      "address": "00AA19CE",
+      "native": "00ABF080",
+      "function": "00AA19B0",
+      "role": "allocate"
+    },
+    {
+      "address": "00AA19EA",
+      "native": "00ABF5B0",
+      "function": "00AA19B0",
+      "role": "copy"
+    },
+    {
+      "address": "00AA1A0D",
+      "native": "00ABF420",
+      "function": "00AA19B0",
+      "role": "default"
+    },
+    {
+      "address": "00AA1A5E",
+      "native": "00AD0280",
+      "function": "00AA1A40",
+      "role": "allocate"
+    },
+    {
+      "address": "00AA1A7A",
+      "native": "00AD27A0",
+      "function": "00AA1A40",
+      "role": "copy"
+    },
+    {
+      "address": "00AA1A9D",
+      "native": "00AD2600",
+      "function": "00AA1A40",
+      "role": "default"
+    }
+  ],
+  "undefined_listbox_wrapper": {
+    "entry": "00AA64B0",
+    "exclusive_end": "00AA6534",
+    "bytes": 132,
+    "no_ghidra_function_start": true,
+    "live_instruction_context_verified": [
+      "00AA64B0",
+      "00AA64CE",
+      "00AA64EA",
+      "00AA650D",
+      "00AA6533"
+    ],
+    "calls": [
+      {
+        "site": "00AA64CE",
+        "target": "00A9B7E0"
+      },
+      {
+        "site": "00AA64EA",
+        "target": "00AA5B40"
+      },
+      {
+        "site": "00AA650D",
+        "target": "00A9DF40"
+      }
+    ],
+    "normal_contract": "same132-byte normalized schedule as other17; ECX optional source, requested17C; allocation null returns0; no Ghidra repair attempted",
+    "standard_call_verifier_exclusion": "No function exists at AA64B0, so its jump/calls are recorded with site/target rather than falsely attributed to AA6560. Live instruction-context and exact live/disk bytes independently checked.",
+    "eh": {
+      "handler": "00CB7350",
+      "info": "00DEDB94",
+      "map": "00DEDB84",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00CB7340"
+        },
+        {
+          "state": 1,
+          "next": -1,
+          "action": "00CB7348"
+        }
+      ],
+      "action_contract": "both load captured slot[EBP-10] and tailA9B330; independently inspected live, no private FH3 equivalence claimed"
+    }
+  },
+  "shared_factory_schedule": {
+    "all_18_normalized_identical": true,
+    "normalized_sha256": "3ecd808f8758a9ad6ceb2ab36381c032acc3b9090600836b38f8d2ecdcd93a6b",
+    "masked_fields_only": [
+      "EH handler imm32",
+      "requested size imm32",
+      "three direct CALL rel32 operands"
+    ],
+    "contract": "capture source before allocator; allocate once; null allocation returns0; nonnull source selects copy(destination,source), null selects default(destination); return constructor EAX unchanged",
+    "no_model_or_virtual_hooks": "No new model allocation, child-list publication,74/18/78, semantic owner creation or successful-payload destructor in these wrappers."
+  },
+  "pool_traits": [
+    {
+      "traits": "GuiWidgetPoolTraits",
+      "publication": "0x00F8BC94",
+      "stride": 240,
+      "payload": 236,
+      "slots_per_slab": 64
+    },
+    {
+      "traits": "GuiButtonPoolTraits",
+      "publication": "0x00F8BD00",
+      "stride": 256,
+      "payload": 252,
+      "slots_per_slab": 64
+    },
+    {
+      "traits": "GuiMoviePoolTraits",
+      "publication": "0x00F8BD4C",
+      "stride": 308,
+      "payload": 304,
+      "slots_per_slab": 4
+    },
+    {
+      "traits": "GuiIconPoolTraits",
+      "publication": "0x00F8BDA0",
+      "stride": 316,
+      "payload": 312,
+      "slots_per_slab": 64
+    },
+    {
+      "traits": "GuiCurvePoolTraits",
+      "publication": "0x00F8BE5C",
+      "stride": 324,
+      "payload": 320,
+      "slots_per_slab": 64
+    },
+    {
+      "traits": "GuiSectionPoolTraits",
+      "publication": "0x00F8BEAC",
+      "stride": 304,
+      "payload": 300,
+      "slots_per_slab": 8
+    },
+    {
+      "traits": "GuiLinePoolTraits",
+      "publication": "0x00F8BEFC",
+      "stride": 264,
+      "payload": 260,
+      "slots_per_slab": 32
+    },
+    {
+      "traits": "GuiScrollbarPoolTraits",
+      "publication": "0x00F8C004",
+      "stride": 256,
+      "payload": 252,
+      "slots_per_slab": 16
+    },
+    {
+      "traits": "GuiGridPoolTraits",
+      "publication": "0x00F8C050",
+      "stride": 296,
+      "payload": 292,
+      "slots_per_slab": 16
+    },
+    {
+      "traits": "GuiModelPoolTraits",
+      "publication": "0x00F8C09C",
+      "stride": 288,
+      "payload": 284,
+      "slots_per_slab": 8
+    },
+    {
+      "traits": "GuiSoundPoolTraits",
+      "publication": "0x00F8C0EC",
+      "stride": 268,
+      "payload": 264,
+      "slots_per_slab": 16
+    },
+    {
+      "traits": "GuiClipBoxPoolTraits",
+      "publication": "0x00F8C13C",
+      "stride": 272,
+      "payload": 268,
+      "slots_per_slab": 16
+    },
+    {
+      "traits": "GuiFrameBoxPoolTraits",
+      "publication": "0x00F8C188",
+      "stride": 288,
+      "payload": 284,
+      "slots_per_slab": 16
+    },
+    {
+      "traits": "GuiAnimIconPoolTraits",
+      "publication": "0x00F8C1D4",
+      "stride": 328,
+      "payload": 324,
+      "slots_per_slab": 4
+    }
+  ],
+  "pool_contract": {
+    "same_domain": "GameNativeGuiWidgetPoolProcess<T> uses game_native_physical_pool_process().allocator_list_domain_00e188b4(); explicit once-only startup required; no normal startup activation added",
+    "special_pools": [
+      {
+        "type": 1,
+        "publication": "00F8BF50",
+        "payload": 292,
+        "stride": 296,
+        "owner": "GameNativeGuiLayerPoolProcess"
+      },
+      {
+        "type": 2,
+        "publication": "00F8BFA0",
+        "payload": 236,
+        "stride": 240,
+        "owner": "GameNativeGuiGroupPoolProcess"
+      },
+      {
+        "type": 3,
+        "publication": "00F8BDF0",
+        "payload": 500,
+        "stride": 504,
+        "owner": "existing Text process/NativeGuiTextPool"
+      },
+      {
+        "type": 11,
+        "publication": "00F8BC10",
+        "payload": 380,
+        "stride": 384,
+        "owner": "NativeGuiListboxPool engine exists; no canonical process publication owner found in game sources"
+      }
+    ],
+    "progbar_caution": "Type5 requests140 but uses exact IconF8BDA0 pool stride13C, trailer+138; do not repair by malloc140 or invent a larger pool."
+  },
+  "smallest_next_source_packet": {
+    "number": 83,
+    "proposal_only": true,
+    "files": [
+      "include/bsp/native_gui_clip_box_factory.hpp",
+      "src/native_gui_clip_box_factory.cpp"
+    ],
+    "addresses": [
+      "00ACE0A0",
+      "00ACE0F0"
+    ],
+    "optional_factory_address": "00AA1920",
+    "constructor_contract": "real AA9390(type16) or real AA9520, then actual D5D058 stamp; preserve all derivedEC..108/unwritten base bytes; no C++ owner projection",
+    "factory_condition": "Root must approve confirmed callee-owned cleanup/independent retained-model distinction before any factory catch/slot-return implementation",
+    "whole_dispatcher_not_proposed": true,
+    "root_approval": "Approved as separate83 after78 closes, including factory only under exact callee-cleanup and independent-retained-Model distinction; no source leased or edited in78."
+  },
+  "clipbox_failure_seam": {
+    "handler": "00CB6F50",
+    "info": "00DED5A8",
+    "max_state": 2,
+    "map": "00DED598",
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00CB6F40"
+      },
+      {
+        "state": 1,
+        "next": -1,
+        "action": "00CB6F48"
+      }
+    ],
+    "actions": "load captured slot[EBP-10], tail ACE610; actual F8C13C pool slot return",
+    "source_default": "AA9390 catches its only sentinel-allocation exception, finishes noexcept ref-base cleanup, rethrows; no later callbacks",
+    "source_copy": "AA9520 catch invokes noexcept unwind_copy (timed pointers/list/ref by state; cleanup throws terminate), clears native state, then rethrows",
+    "retained_graph": "Model clone can retain independent actual destination/model_owner/creators after completed construction. AA9520 writes destination+4C only after successful clone, then transfers creator without later throwing callback. Caller must retain model diagnostics and same owner domains; slot return is not whole graph cleanup. No blanket guarantee for arbitrary callbacks outside their existing transactional contract.",
+    "verified_transfers": [
+      {
+        "address": "00ACE0A5",
+        "native": "00AA9390",
+        "function": "00ACE0A0"
+      },
+      {
+        "address": "00ACE0F8",
+        "native": "00AA9520",
+        "function": "00ACE0F0"
+      },
+      {
+        "address": "00CB6F43",
+        "native": "00ACE610",
+        "function": "00CB6F40",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00CB6F4B",
+        "native": "00ACE610",
+        "function": "00CB6F48",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00ACEA15",
+        "native": "00ACE8D0",
+        "function": "00ACEA10",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00ACE616",
+        "native": "00ACE4A0",
+        "function": "00ACE610"
+      }
+    ]
+  },
+  "source_inputs": [
+    {
+      "path": "include/bsp/gui_widgets_cc13.hpp",
+      "git_blob": "81088d8540ff25ed650ec6850738994ca3b0e06b",
+      "sha256": "e0f2e49f4ab9df474ce1d83e42f9196701b4713ab5faaa5e9b8c5c68f25afbba"
+    },
+    {
+      "path": "src/gui_widgets_cc13.cpp",
+      "git_blob": "407da2a0257f753ac97856c4fb5a347fc6cd8373",
+      "sha256": "6655f5b173ce995cd861db830fa83574114ab7b4685d6c737d14c01e7dee1920"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_pools_cc13.hpp",
+      "git_blob": "759fba46de564d4d09549b0f3950bf2bbfc4f718",
+      "sha256": "fd2be32f59443f79787b5006a628b9d0f78597b4d4dff62d09dbc65831c1fed3"
+    },
+    {
+      "path": "src/native_gui_widget_pools_cc13.cpp",
+      "git_blob": "18a2efa93a00c8e48d79003e8af0ed4fbc5f80b3",
+      "sha256": "e9fa3a2f4e8d0f644d601aa974bab567f8cd36e5c9ea958ae06aacaca4b5e925"
+    },
+    {
+      "path": "include/bsp/native_gui_group_factory.hpp",
+      "git_blob": "213217cc8733eb1fc746ad39defae103bacff0e4",
+      "sha256": "4966a4b47350e81f12fa8575c7f8afbcfb017b7d9e95a231db7b9f03e3aedb95"
+    },
+    {
+      "path": "src/native_gui_group_factory.cpp",
+      "git_blob": "e89b2627f940a15604314227823e8c72d360d07e",
+      "sha256": "f6f5f124a16de6878f770e6e499d165235136dfb97f4e64dc79e6095135552f2"
+    },
+    {
+      "path": "include/bsp/native_gui_page_default.hpp",
+      "git_blob": "a824090c30b109d5bc8da4aa404f99372dbcdf75",
+      "sha256": "9ff585b8f10ef3cf6eda763e4060755a93f77d8838581b652b58de0949a3c3e5"
+    },
+    {
+      "path": "include/bsp/native_gui_layer_storage.hpp",
+      "git_blob": "99cb0ca271607fbb7e205daada7a52a623118a22",
+      "sha256": "ac8aeee4c4c6b3a6d6fa014531e0de748ec56055ee4784247487f150189329f7"
+    },
+    {
+      "path": "include/bsp/gui_text_runtime_factory.hpp",
+      "git_blob": "cbde84045f9c2085f6cc34b7e258f5def78e2b36",
+      "sha256": "14eed96de460d87cef6089e9c4582374b8aa3119e1a2e15f90ad2672b058b61e"
+    },
+    {
+      "path": "include/bsp/native_gui_text_identity.hpp",
+      "git_blob": "002c6855b1de966a5a690fca0914971c4683a227",
+      "sha256": "6de31247104e9d98b5b369846bd8c743058c14aeae8ce0520ce15fd3926335a6"
+    },
+    {
+      "path": "include/bsp/cc13_seg87.hpp",
+      "git_blob": "199cb6d97006a6ae88db8703879faaf4b64017e6",
+      "sha256": "f6fcc3d37decb4e24874ac1f6c9c80ce1c65f5c8ffef90f8fad91a7915929264"
+    },
+    {
+      "path": "include/bsp/gui_listbox_runtime.hpp",
+      "git_blob": "249568acd678f06dbadc7a682d317981e44500bc",
+      "sha256": "52fe8497d8a87b7f84de6ec7ea8c71b8895093d35ad327d8610c697d7b474b0a"
+    },
+    {
+      "path": "include/bsp/gui_clip_box.hpp",
+      "git_blob": "58842d2e83ca4039c37f2502e5e8311155a4d352",
+      "sha256": "59bd6209449492ca023206669e31ea5c2c4f21b662c65530b9a10476403457df"
+    },
+    {
+      "path": "src/gui_clip_box.cpp",
+      "git_blob": "5f1ed8d6449996db4424857a930b87e247e9ba82",
+      "sha256": "a2ee7d4a88035ec121d2f6f618a554cdd3207b32095ea43e8857386c2ab81807"
+    },
+    {
+      "path": "src/gui_widget_owner.cpp",
+      "git_blob": "79a11550d42126d8009bc506d566faf559f514fe",
+      "sha256": "36a974b52b5f3036c66d4afec46839edf864dc9158bcc766a6576fc8e6335132"
+    },
+    {
+      "path": "src/gui_type_dispatch.cpp",
+      "git_blob": "61d3115b64e5e94aefab0cd107c28e00b27d8d9f",
+      "sha256": "a0cac573ee0fd632a5f2a66246d26ad4c822048f34e742e4992ab14229ae9a72"
+    },
+    {
+      "path": "include/bsp/engine_seg49_64_78_cc13.hpp",
+      "git_blob": "351954cc88347723a69a70a8575f0cd8a2ab3985",
+      "sha256": "69d5acd8ab7248eb912e90b9b574c4bdad5072dd76f3b3f7e7a5375e1147a275"
+    },
+    {
+      "path": "include/bsp/gui_section_runtime.hpp",
+      "git_blob": "23467f32b584cee424a77f9b2619f8c029efadd3",
+      "sha256": "6ada5676f1a447ee9246fb694532ff6af072d4dd0dc82af6f0c4552550d6713a"
+    },
+    {
+      "path": "include/bsp/gui_framebox.hpp",
+      "git_blob": "6a739abea827bc2db8dddeb8ca74f286fee8bab4",
+      "sha256": "ec5c437d8a2bfb51abf5b7dab2b69da05b6fc50fe74ef6fd26c3808c85e755a5"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_copy_storage.hpp",
+      "git_blob": "8867180c85381dcbd78e63dfb510ca5ba74a8ef2",
+      "sha256": "dd3d8b700a9dda51037bf2722a893402ebd2ae3d3358ad83fd3358325f57d307"
+    },
+    {
+      "path": "src/native_gui_widget_copy_storage.cpp",
+      "git_blob": "cdecd59b10e8617d2c2db3d67e17113658b9a62a",
+      "sha256": "66f5f04b8e71d79eba7e1791e57924a2679ef630fa4bffc80bb0f8b22d9367ae"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_base_storage.hpp",
+      "git_blob": "61c72c99fab59f5c86da392495d7bae5381607cf",
+      "sha256": "35748704f96ed477f2f55f01edf5a8e598f1995955f847343f94327dc495faab"
+    },
+    {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "git_blob": "997a33c5ac7bbf7b57e133feb53b91163e7308b5",
+      "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_model_clone.hpp",
+      "git_blob": "0f257e4a05a8874c1c0698ff353ab71918d8af50",
+      "sha256": "36e1a035e9b1785450cb83314b91e457a89e3b4fb14d0945b3d0f866fb655fd7"
+    },
+    {
+      "path": "src/native_gui_widget_model_clone.cpp",
+      "git_blob": "2b123bea7261a126e57be6a125f0a32e57cd0ce0",
+      "sha256": "142b07987b5624d6f36a53c77d544b4c4844b22579cdf75ea353c7a34be58dc5"
+    }
+  ],
+  "verified_live_disk_ranges": [
+    {
+      "start": "00AA6560",
+      "bytes": 148,
+      "sha256": "1bb0d52c372cba3ed8219100366ad915c02e90ededba2ac80c0e3ed3c9b5d27a",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00AA65F4",
+      "bytes": 72,
+      "sha256": "f2aed7883488594c932320d76f542b88353656d208cd16a07f9c8ffad6bfc91c",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00AA3BD0",
+      "bytes": 132,
+      "sha256": "0d7c80d6b47e8cce2f6be6dd9708dc515aaf76efbf76728fc25d99cc45056171",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00AA12F0",
+      "bytes": 132,
+      "sha256": "a9edbd7a48814ab9c740f4dfa99efdb329c720802422276def792614e1005855",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00AA1380",
+      "bytes": 132,
+      "sha256": "a5c9dc2bf00e31b6ed7d2e136f8242bc10d4756c27ce4cea5f6e93087f41d8f5",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00AA1530",
+      "bytes": 132,
+      "sha256": "adcc1ff50574d337b48e4a98b7a6846f3457a71d4d6d3edafc55c3a0a3cf8890",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00AA14A0",
+      "bytes": 132,
+      "sha256": "9fd5601833eadaca93d6ec06f99c39752493a4927b003fc75aeb96189b28b5c1",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00AA1410",
+      "bytes": 132,
+      "sha256": "4337ba8abc790ce7053d670a3e4c3686609475362f6f267a0c3cbfaf2f9b0cb5",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00AA15C0",
+      "bytes": 132,
+      "sha256": "1990565bcfa24604a8623a269e8ab886d99c615477f60a0ed3b6d2b5a0549005",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00AA1650",
+      "bytes": 132,
+      "sha256": "d0a39b5ead7885ecf431f2c57416b359d40e893792684179eef61732cb41b409",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00AA16E0",
+      "bytes": 132,
+      "sha256": "4a44effcce51828fcc7ee91a91a364ecebe8079b4278d90f79bd99f60dac2122",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00AA1770",
+      "bytes": 132,
+      "sha256": "d120e07d1f545d7fa2b124790f4e1de83011b1b0aece131babc20691387b654d",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00AA64B0",
+      "bytes": 132,
+      "sha256": "859d8394e922f76e2390f589189d939b09330cc4d0ad74d84019d03b75684f18",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00AA2340",
+      "bytes": 132,
+      "sha256": "7e3144699eb7578d35d320a79beb89ae7e73e760d50e9e9995da6f91459c1bdf",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00AA1800",
+      "bytes": 132,
+      "sha256": "ff0baf4d38c0e838af99fcbeefc1c5f2ef56e4c8390ed7acd7d860a1438c7759",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00AA1890",
+      "bytes": 132,
+      "sha256": "c4132b8ca80597e51535490cf29719830958dd50aaca0f7dfc34b4406a549d9e",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00AA4440",
+      "bytes": 132,
+      "sha256": "3dc0ba522f57c9dfdc69769416338b4760104e9abbbd244f724424a078562cf0",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00AA1920",
+      "bytes": 132,
+      "sha256": "802a3c3a872c6b5806353e3d06cf833b1dd005268b9ddca37e288fb1c4173a06",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00AA19B0",
+      "bytes": 132,
+      "sha256": "7c3c3593f6d18d844723709d7294fdbb8304bd6e4268f3df9bf971c27cb86f25",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00AA1A40",
+      "bytes": 132,
+      "sha256": "873fe97644427b09b861847cf503a7b1022290c977868449e3dac4874963f809",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00ACE0A0",
+      "bytes": 20,
+      "sha256": "d9ac8bdb38fa5f7b45971c7d04155d684ae6fc732cdd41b6329375398d9040ff",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00ACE0F0",
+      "bytes": 25,
+      "sha256": "b6583c3549252f2578c9e7f4fc5c039101ea03765c6166deec6c63d2c513f922",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00DED598",
+      "bytes": 16,
+      "sha256": "357357eaba919c64e60aabce053ad11ad9515eb57baa2943f46ad930ec43e25f",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00DED5A8",
+      "bytes": 36,
+      "sha256": "dfcd2e3d747708630f1e0574c72694cfac4a224d097e3777fbe9d5d96aeb8287",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00CB6F40",
+      "bytes": 8,
+      "sha256": "432394fdc2ea52c97aac385731190ec997271edb42bb2607b125b13f26c12b14",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00CB6F48",
+      "bytes": 8,
+      "sha256": "563f4f5af5f9a6231360170b94eb4e61443ac4bc2eb6b9c060a1252164cf25d6",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00CB6F50",
+      "bytes": 10,
+      "sha256": "31edd733e73d75cb7e1088096bcb494040872841d7e498d2146ae06c8a0f5f3a",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00ACEA10",
+      "bytes": 10,
+      "sha256": "c6efd526a44e59f492b9609f8adc44627277446725f6019a9f0482ca7ee07bb8",
+      "live_equals_original_disk": true
+    },
+    {
+      "start": "00ACE610",
+      "bytes": 12,
+      "sha256": "9029251c5c098bc983e854758db7ca5b749ef2493091d832fb7b6394d40693fc",
+      "live_equals_original_disk": true
+    }
+  ],
+  "verification": {
+    "no_source_changes": true,
+    "no_ghidra_changes": true,
+    "no_tests_or_build_or_runtime": true,
+    "no_native_text_activation": true,
+    "no_original_binary_replacement_abi_claim": true,
+    "private_fh3_cleanup_throw_equivalence": false,
+    "constructor_bodies": "Presence/API readiness reviewed; other-case constructor internals not newly re-audited as complete bodies."
+  },
+  "report_call_verifier": {
+    "command": "python tools/verify_report_calls.py reports/cc12_native_gui_raw_factory_readiness_78.json docs/CC12_NATIVE_GUI_RAW_FACTORY_READINESS_78.md",
+    "checked": 74,
+    "failed": 0,
+    "exit_code": 0,
+    "undefined_listbox_transfers_excluded_with_explicit_independent_evidence": true
+  },
+  "documentation": {
+    "path": "docs/CC12_NATIVE_GUI_RAW_FACTORY_READINESS_78.md",
+    "sha256": "5a9e90c9a85888e0699afd1341f883f0d7c7868938ffeb31c3640d652eace0ba"
+  }
+}
