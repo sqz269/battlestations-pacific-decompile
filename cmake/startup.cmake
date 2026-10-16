@@ -134,6 +134,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_crt_lock10_
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_crt_memchr.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_crt_memcmp.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_crt_strcspn.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_crt_strncpy.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_crt_strpbrk.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_crt_strrchr.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_crt_strspn.cpp)
