@@ -583,7 +583,7 @@ void shadow_map_update_view_from_camera_00a8f3b0(Large3Host& host, void* owner, 
         const float* const dy = &at<float>(owner, 0x3C);
         float clamped[3];
         float t;
-        if (!(*dy < 0.0f)) {   // COMISS + JC: below or unordered goes to the min side
+        if (*dy >= 0.0f) {   // COMISS + JC: below or unordered (NaN) goes to the min side
             t = static_cast<float>(host.tangent_00412e20(kShadowElevationAngle));
             clamped[0] = at<float>(owner, 0x38);
             clamped[1] = static_cast<float>(host.max_float_by_ref_00415550(dy, &t));
