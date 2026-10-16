@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_crt_os_error_map",
-  "status": "whole_ordinary_actual_table_Source_locked_annotated_exported_primary_review_build_pending",
+  "status": "whole_ordinary_actual_table_Source_independently_reviewed_locked_exported_primary_build_pending",
   "code_complete": true,
   "source_ready": true,
   "readiness_gate": "All native control flow is represented over a borrowed binding to the actual 45 mutable pairs. No missing callees; standalone Source readiness does not close Original free or runtime ownership.",
@@ -80,7 +80,7 @@
   },
   "storage": {
     "actual_table": "00e15880..00e159e7 inclusive,45 pairs,90 DWORDs,360B",
-    "binding": "const volatile uint32_t* actual_pairs90 borrowed from actual Original table; no table contents copied or invented.",
+    "binding": "const volatile uint32_t* actual_pairs90 borrows actual Original 90-DWORD table layout; only reached reads must be valid, no whole-table readability condition. No contents copied/invented. Added Source binding/bookkeeping stable and disjoint from reached table storage; no native guards added.",
     "reads": "Captured error compared against each reached current first word in order; first match reads current second word only then.",
     "writes": "none",
     "extra_guards": "none"
@@ -108,7 +108,7 @@
   },
   "source_hashes": {
     "src/native_crt_os_error_map.cpp": "ffb5b4aacda596c9607122b73f0aa512d1a043b85e1e157b2012fe8a02ef000e",
-    "include/bsp/native_crt_os_error_map.hpp": "3b44c2b35fa5b1c9227507a018b04ecbc87c3dd22db10507cce1b0f6d79cbecd"
+    "include/bsp/native_crt_os_error_map.hpp": "171c8174aa2c3b0f85042afbc29ffb234e2a05c1c0fc122fa42c7a1049e154fa"
   },
   "annotation_prior_values": [
     {
@@ -118,7 +118,15 @@
     }
   ],
   "validation": {
-    "independent_review": "pending",
+    "independent_review": {
+      "reviewer": "primary integrator",
+      "result": "PASSED",
+      "scope": "Whole59B23ops assembly and complete Source/header; captured input, progressive45 currentfirstword reads, matched CURRENTsecondword, both unsigned modulo fallback intervals matching CMP/SBB/AND.",
+      "cpp_sha256": "ffb5b4aacda596c9607122b73f0aa512d1a043b85e1e157b2012fe8a02ef000e",
+      "reviewed_header_sha256": "3b44c2b35fa5b1c9227507a018b04ecbc87c3dd22db10507cce1b0f6d79cbecd",
+      "current_header_sha256": "171c8174aa2c3b0f85042afbc29ffb234e2a05c1c0fc122fa42c7a1049e154fa",
+      "header_change": "Only requested comment clarification: 90-cell actual layout, reached reads only, stable/disjoint added Source metadata. No code/signature change."
+    },
     "annotation_save_export_readback": "passed; prior comment preserved, write-locked rename/comment/save, live readback and forced affected export",
     "registration": "pending primary combined gate; no worker CMake change/queue",
     "build": "pending primary normal MSVC Win32 build; no worker build claimed",
@@ -131,7 +139,8 @@
       "command": "python tools/verify_report_calls.py reports/goal_oct15_crt_os_error_map.json",
       "rows": 4,
       "failed": 0
-    }
+    },
+    "build_exclusion": "Prior primary Character/Child build9.48s predates mapper registration and is not mapper validation. Await actual later registered primary gate."
   },
   "limits": [
     "No SDK/errno/TLS substitute, host table, immutable snapshot or invented callback.",

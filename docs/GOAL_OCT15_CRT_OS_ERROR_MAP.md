@@ -9,8 +9,11 @@ The native cdecl entry captures its one DWORD input from `[ESP+4]`. It compares
 that captured value against each reached current first table word in order,
 for at most 45 entries. The first match reads and returns that entry's current
 second word. The implementation neither snapshots the table nor supplies a
-replacement table. Its extra `actual_pairs90` argument must bind the actual
-90 readable DWORD cells; `volatile` retains progressive reached reads.
+replacement table. Its extra `actual_pairs90` argument binds the actual
+90-DWORD layout; only reached reads must be valid, so an early match requires
+no later table reads. The added Source binding and bookkeeping must remain
+stable and disjoint from reached table storage. `volatile` retains progressive
+reached reads. These are Source metadata conditions, not new native guards.
 
 On no match, unsigned DWORD subtraction/comparison maps the inclusive interval
 `13h..24h` to 13. Otherwise the inclusive interval `BCh..CAh` maps to 8 and all
@@ -34,8 +37,11 @@ capture was accepted at modification 3445. No analysis or repair was performed.
 The Source draft is complete. Write-locked annotation preserved the original
 inventory comment and prior name, appended the bounded evidence, saved the
 project, and refreshed the affected shared export. Live comment readback
-confirmed preservation. Independent review, registration, the primary's normal
-Win32 build and existing checks remain pending. No new tests are added.
+confirmed preservation. The primary independently accepted the full 59-byte
+assembly and complete Source/header schedule, including both unsigned fallback
+intervals and the matched entry's current second-word read. Registration, the
+primary's normal Win32 build and existing checks remain pending. No new tests
+are added; an earlier unrelated primary build does not validate this mapper.
 The added table binding and C++ signature have no drop-in
 Original ABI, original compiler-frame, fault/SEH or runtime execution credit.
 This mapper closes no Original heap, errno/PTD, lock/bootstrap or full `_free`
