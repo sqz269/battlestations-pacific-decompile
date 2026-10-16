@@ -1,0 +1,32 @@
+{
+  "packet": "goal15j_traffic_receiver_repair",
+  "status": "typed_host_receiver_corrected_pending_registered_build",
+  "address": "0049f260",
+  "source": "src/cc13_left8_seg8.cpp",
+  "header_unchanged": "include/bsp/cc13_left8_seg8.hpp",
+  "name": "traffic_refresh_if_set_0049f260",
+  "native_span_bytes": 13,
+  "native_bytes_hex": "8b490c85c97405e9f4f2ffffc3",
+  "live_installed_pe_match": true,
+  "native_instruction_count": 5,
+  "original_abi": "ECX outerpointer;no stack input;RET;conditionaltail49E560 receives CURRENT inner=[outer+C];no semantic EAX established",
+  "calls": [
+    {
+      "address": "0049f267",
+      "native": "0049e560",
+      "transfer": "JMP"
+    }
+  ],
+  "before": "tested innercell but forwarded outerobject",
+  "after": "capture inner DWORD once;nonnull capturedinner forwarded;null skips hostcall",
+  "new_raw_source_entry": false,
+  "existing_host_boundary_retained": true,
+  "new_tests": 0,
+  "ghidra_old_values": "local/goal15h_annotations_0049f260.json",
+  "verification": "whole Native13B/fiveinstructions read plus live/disk equality and focused changedSource inspection;registered build pending",
+  "limits": [
+    "Existing injected Left8Host interface,not genuine raw49E560 implementation",
+    "Not whole4D5BD0 map/boundsproducer or production worldwiring",
+    "No NativeABI/game/runtimeclaim"
+  ]
+}
