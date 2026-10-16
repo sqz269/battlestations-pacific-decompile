@@ -1,0 +1,604 @@
+{
+  "packet": "cc12_native_gui_frame_box_raw_state_readiness_148",
+  "status": "read_only_complete_whole_raw_state_open_existing_providers_mapped",
+  "source_ready": false,
+  "source_implemented": false,
+  "new_body_credit": false,
+  "baseline": "9f81f799522c920d35123b7b0ecc3890f75f995b",
+  "dependency_merge_exit_code": 0,
+  "parallel_unintegrated_work_excluded": [
+    "147 constructed hook",
+    "149 StateAt"
+  ],
+  "original": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_disk_spans": 28,
+    "live_disk_bytes": 2523
+  },
+  "functions": [
+    {
+      "address": "00ad0d80",
+      "name_preserved": "BSP_GuiFrameBox_RebuildGeometry",
+      "exclusive_end": "00ad1581",
+      "bytes": 2049,
+      "instruction_starts": 630,
+      "abi": "ECX raw Box; stack lowWORD signed index; RET4 at AD157E",
+      "direct_call_instructions": 51,
+      "indirect_call_instructions": 17,
+      "new_source": false
+    },
+    {
+      "address": "00acec40",
+      "name_preserved": "STL_inst_00acec40",
+      "exclusive_end": "00acec7b",
+      "bytes": 59,
+      "instruction_starts": 24,
+      "abi": "ECX raw vector header; stack DWORD index; EAX raw record; RET4",
+      "new_source": false
+    },
+    {
+      "address": "00aa6870",
+      "name_preserved": "BSP_GuiWidget_SetColor",
+      "exclusive_end": "00aa68ea",
+      "bytes": 122,
+      "instruction_starts": 44,
+      "abi": "ECX actual widget; stack original RGBA pointer; RET4",
+      "new_source": false
+    }
+  ],
+  "calls": [
+    {
+      "address": "00ad0daf",
+      "native": "00b74640",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0dbc",
+      "native": "00b72b20",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0dd2",
+      "native": "0041e870",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0e0e",
+      "native": "00419cc0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0e15",
+      "native": "00bd1510",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0e33",
+      "native": "00b73bb0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0e68",
+      "native": "00b73260",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0e85",
+      "native": "00b72b40",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0e8e",
+      "native": "00533fa0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0eb2",
+      "native": "00449af0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0ee2",
+      "native": "00535320",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0eef",
+      "native": "00b732c0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0f26",
+      "native": "0041dd40",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0f41",
+      "native": "00bf7680",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0f5f",
+      "native": "00b18b20",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0fd5",
+      "native": "00b18aa0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad10f2",
+      "native": "00aa9f10",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad10fc",
+      "native": "00b18a40",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad1158",
+      "native": "00bf6713",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad116d",
+      "native": "00b189f0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad1260",
+      "native": "00acec40",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad1508",
+      "native": "00aa7220",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad1514",
+      "native": "00b864c0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad1538",
+      "native": "00b865a0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad1547",
+      "native": "00b73c60",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00acec69",
+      "native": "00bf6713",
+      "function": "00acec40",
+      "kind": "call"
+    },
+    {
+      "address": "00aa6892",
+      "native": "00b74650",
+      "function": "00aa6870",
+      "kind": "call"
+    },
+    {
+      "address": "00aa68a0",
+      "native": "00b74640",
+      "function": "00aa6870",
+      "kind": "call"
+    },
+    {
+      "address": "00aa68a7",
+      "native": "00b72b40",
+      "function": "00aa6870",
+      "kind": "call"
+    },
+    {
+      "address": "00aa68b7",
+      "native": "00b74640",
+      "function": "00aa6870",
+      "kind": "call"
+    },
+    {
+      "address": "00aa68be",
+      "native": "00b732c0",
+      "function": "00aa6870",
+      "kind": "call"
+    },
+    {
+      "address": "00aa68ca",
+      "native": "00b179f0",
+      "function": "00aa6870",
+      "kind": "call"
+    },
+    {
+      "address": "00cb90f3",
+      "native": "0041dd20",
+      "function": "00cb90f0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb911b",
+      "native": "0041dd20",
+      "function": "00cb9118",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb9123",
+      "native": "0041dd20",
+      "function": "00cb9120",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb90fb",
+      "native": "0041dd20",
+      "function": "00cb90f8",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb9103",
+      "native": "0041dd20",
+      "function": "00cb9100",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb910b",
+      "native": "0041dd20",
+      "function": "00cb9108",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb9113",
+      "native": "0041dd20",
+      "function": "00cb9110",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb912d",
+      "native": "00bf6b43",
+      "function": "00cb9128",
+      "kind": "tail_jump"
+    }
+  ],
+  "selected_call_scope": "One first direct call per25 distinct AD0D80 targets; all6 direct AA6870 getter calls; ACEC40 invalid shim; all7 name action tails and FH3 selector. Other calls remain full decoded byte evidence.",
+  "tables": {
+    "framebox": {
+      "profile": "00d5d130",
+      "slot50": "00aa6870",
+      "slot7c": "00acf9b0",
+      "slot80": "00ad0d80"
+    },
+    "renderer": {
+      "profile": "00d5f0a8",
+      "slot38": "00b317e0",
+      "slot40": "00b2f710",
+      "slot5c": "00b287c0"
+    },
+    "logical_vertex": {
+      "profile": "00d61d6c",
+      "slot10": "00b49980",
+      "slot14": "00b49a80"
+    },
+    "qualification": "Canonical numeric table data; current-vptr receiver/target remains runtime captured. No Original-code invocation."
+  },
+  "current_read_schedule": [
+    "Capture model4C, store initial WORD EC, capture Model geometry and mesh/stream0.",
+    "Cold renderer38/5C captures are distinct; release stream before declaration.",
+    "Current section count; capture old section then material; actual names and borrowed widget94/A4/B4/C4.",
+    "Current F4/null-gated F8 and signed currentEC validation; BF6713 may return; reload currentF4 after it.",
+    "Captured first record resource enters B189F0; AFTER callback read SAME captured record14/18/C/10 x87 fields.",
+    "Current74/current100/currentEC choose a SECOND current header selection through ACEC40.",
+    "Captured second record size pointer/current widget size reaches current7C; then real mapped color writes.",
+    "Current stream14 unlock, AA7220, material/layout publication, section release, THEN current widget50."
+  ],
+  "eh": {
+    "handler_entry": "00cb9128",
+    "dispatch_jump": "00cb912d",
+    "func_info": "00df048c",
+    "unwind_map": "00df04b0",
+    "max_state": 7,
+    "states": [
+      {
+        "state": 0,
+        "to": -1,
+        "action": "00cb90f0",
+        "header_offset": "EBP-28"
+      },
+      {
+        "state": 1,
+        "to": -1,
+        "action": "00cb9118",
+        "header_offset": "EBP-1C"
+      },
+      {
+        "state": 2,
+        "to": -1,
+        "action": "00cb9120",
+        "header_offset": "EBP-14"
+      },
+      {
+        "state": 3,
+        "to": -1,
+        "action": "00cb90f8",
+        "header_offset": "EBP-30"
+      },
+      {
+        "state": 4,
+        "to": -1,
+        "action": "00cb9100",
+        "header_offset": "EBP-30"
+      },
+      {
+        "state": 5,
+        "to": -1,
+        "action": "00cb9108",
+        "header_offset": "EBP-30"
+      },
+      {
+        "state": 6,
+        "to": -1,
+        "action": "00cb9110",
+        "header_offset": "EBP-30"
+      }
+    ],
+    "actions": "Only real41DD20 raw-name cleanup; names disarmed before normal getter/return.",
+    "no_caller_level_rollback": [
+      "stream unlock",
+      "section/material/declaration refs",
+      "state vector",
+      "widget"
+    ],
+    "new_section_flag": {
+      "set_site": "00ad0e80",
+      "clear_site": "00ad0f0d",
+      "backing": "consumed original stack argument lowBYTE",
+      "is_eh_state": false
+    },
+    "limits": "Callee-owned unwind remains separate. PrivateFH3/SEH/x87 delivery and C++ cleanup escape are not equated."
+  },
+  "actual_source_coverage": [
+    {
+      "stage": "raw model and mesh getters",
+      "available": true,
+      "source": [
+        "src/gui_widget_owner.cpp:47",
+        "src/native_mesh_buffer_fields.cpp:99",
+        "src/native_mesh_remaining_fields.cpp:41",
+        "src/native_mesh_subset_loading.cpp:216"
+      ],
+      "contract": "Actual Model tail/mesh storage, supported genuine type/layout; preserve current versus captured receivers."
+    },
+    {
+      "stage": "raw mesh stream and section publication",
+      "available": true,
+      "source": [
+        "include/bsp/native_mesh_owner.hpp",
+        "include/bsp/native_mesh_section.hpp"
+      ],
+      "contract": "Same canonical actual resource counter/owner and initialized mesh/section pool domains."
+    },
+    {
+      "stage": "renderer38 declaration",
+      "available": true,
+      "source": [
+        "include/bsp/native_vertex_declaration_cache.hpp",
+        "include/bsp/gui_text_native_renderer.hpp"
+      ],
+      "contract": "Captured actual D5F0A8/B317E0 receiver and current raw name; canonical cache/VFS/string/declaration services."
+    },
+    {
+      "stage": "renderer5C stream creation",
+      "available": true,
+      "source": [
+        "include/bsp/gui_text_native_renderer.hpp:43",
+        "include/bsp/native_logical_vertex_owner.hpp:89"
+      ],
+      "contract": "Captured B287C0 target/receiver; same physical/device/pool/owners; fresh persistent acquired metadata."
+    },
+    {
+      "stage": "stream10/14 mapping",
+      "available": true,
+      "source": [
+        "include/bsp/native_logical_buffer_mapping.hpp"
+      ],
+      "contract": "Current actual D61D6C B49980/B49A80 profile; same renderer/synchronization/physical contexts; no arbitrary dispatch."
+    },
+    {
+      "stage": "material factory/parameters/texture/owner",
+      "available": true,
+      "source": [
+        "include/bsp/native_material_factory.hpp",
+        "src/gui_text_material.cpp:79",
+        "src/gui_text_material.cpp:89",
+        "include/bsp/native_material_parameters.hpp",
+        "include/bsp/native_mesh_texture_field.hpp",
+        "include/bsp/native_material_owner.hpp:74"
+      ],
+      "contract": "Real actual raw name/source/pool/effect/resource domains; acquired effects/creators survive failure."
+    },
+    {
+      "stage": "raw header inequality",
+      "available": true,
+      "source": [
+        "src/native_physical_file_date.cpp:77"
+      ],
+      "contract": "Current header fields; nonempty/nonempty uses current SDK _stricmp, not Original locale/TLS ownership."
+    },
+    {
+      "stage": "publication AD150D..AD155C and concrete layout",
+      "available": true,
+      "source": [
+        "src/gui_native_geometry.cpp:552",
+        "include/bsp/gui_text_native_layout.hpp:48",
+        "src/gui_text_native_layout.cpp:138"
+      ],
+      "contract": "Existing concrete B48CE0/B2F710 same-registry/tree/pool service; admission failures retained; no replay."
+    },
+    {
+      "stage": "actual state count AD2720",
+      "available": true,
+      "source": [
+        "src/gui_widgets_cc13.cpp:727"
+      ],
+      "contract": "Existing raw F4/F8 null-begin/signedwrapped count body; no duplicate Source claim."
+    },
+    {
+      "stage": "current7C raw geometry receiver",
+      "available": false,
+      "existing_source": [
+        "src/gui_framebox.cpp:208",
+        "include/bsp/gui_framebox.hpp:61"
+      ],
+      "missing": "Whole ACF9B0 actual widget/stream/size-pointer/state/resource/float schedule; current Source returns semantic array."
+    },
+    {
+      "stage": "current50 raw color receiver",
+      "available": false,
+      "existing_source": [
+        "src/gui_material_binding.cpp:98"
+      ],
+      "missing": "Actual raw widget entry/order/alias API; current Source writes GuiWidgetOwner layout then real material diffuse."
+    },
+    {
+      "stage": "raw ancestor clip and retained actual widget",
+      "available": false,
+      "existing_source": [
+        "include/bsp/gui_native_clip_parameters.hpp:22"
+      ],
+      "missing": "AA9F10 currently requires canonical retained GuiWidgetOwner/runtime/type/ancestor fields. No raw11Ch cast or fake lifetime token; B18A40 needs SAME actual+04 owner/terminal domain."
+    }
+  ],
+  "domain": {
+    "box_payload_bytes": 284,
+    "box_slot_bytes": 288,
+    "hidden_pool_id": 284,
+    "same_pool": "00f8c188",
+    "state_record_bytes": 44,
+    "reads_capacity_or_proxy": false,
+    "does_copy_or_destroy_records": false,
+    "existing_metadata": "111/128/138 one-shot domains unchanged; no failed103, rolled-back, consumed or orphaned storage becomes selectable.",
+    "retention": "Prehold rawBox, original/captured/current backing, texture/Model/material/stream/layout creators and all providers before callbacks. No late discovery, metadata allocation, fake retain, replay/reset/abandonment or invented cleanup."
+  },
+  "follow_on_candidates": [
+    {
+      "address": "00acec40",
+      "scope": "whole59B raw record accessor",
+      "ready_for_separate_source_api_review": true,
+      "proposed_api": "void* native_gui_frame_box_record_at_00acec40(void* actual_vector_header, std::uint32_t index)",
+      "proposed_files": [
+        "include/bsp/native_gui_frame_box_records.hpp",
+        "src/native_gui_frame_box_records.cpp"
+      ],
+      "contract": "Live valid4/8 raw header/backings, DWORD modulo address/count arithmetic, captured count input, null-begin skipend, real BF6713 once, currentbegin reload even after returning handler. No record payload/ref effects.",
+      "provider_limit": "Real currentSDK invalid-parameter shim exists; Native handler globals/fault/ABI not claimed."
+    },
+    {
+      "address": "00aa6870",
+      "scope": "whole122B raw color storage provider",
+      "ready_for_separate_source_api_review": true,
+      "proposed_files": [
+        "include/bsp/native_gui_widget_color_storage.hpp",
+        "src/native_gui_widget_color_storage.cpp"
+      ],
+      "contract": "Interleaved raw DWORD copies, model4C timing, current model/mesh/element/material getter chain, second original-source reread. Raw HasGeometry projection and genuine storage domains need explicit API review; no typed owner, array snapshot, FP conversion, retain or dirty flag."
+    }
+  ],
+  "verification": {
+    "calls": {
+      "report_rows": 40,
+      "doc_claims": 10,
+      "failures": 0,
+      "log": "local/cc12_native_gui_frame_box_raw_state_readiness_148/call_verification.txt",
+      "scope": "Selected direct edges only; whole51direct/17indirect body decoded separately."
+    },
+    "source_current_inputs": 60,
+    "source_cmake_ledger_unchanged": true,
+    "ghidra_mutations": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "native_execution": false,
+    "private_abi": false,
+    "game_validation": false
+  },
+  "artifacts": [
+    {
+      "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_RAW_STATE_READINESS_148.md",
+      "bytes": 12389,
+      "sha256": "9cb2ecd014ea869af79a4cf3f0e92ede553c09d34779ed49ec9f9d3d3b50b686"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_raw_state_readiness_148/native_bytes.json",
+      "bytes": 12987,
+      "sha256": "2217fb0bbc3613fe3094c8000ba8f0d42d089045da81142ce35b04e1065b5791"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_raw_state_readiness_148/body_call_instructions.json",
+      "bytes": 9160,
+      "sha256": "518c919f11e1cdd4ac508893dc6616076cb3585de8526643de7bcb4b2bb62a79"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_raw_state_readiness_148/source_inputs.json",
+      "bytes": 19252,
+      "sha256": "1f9596ee2c31f85f39dc719f5dc49da192300114d9dcefbf1ca171c3ae862362"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_raw_state_readiness_148/unchanged_source.txt",
+      "bytes": 78,
+      "sha256": "a300d7df723d362e5203e463ce92bd7df108ea04791e6097af0b52bd063be5e6"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_raw_state_readiness_148/dependency_merge.log",
+      "bytes": 5984,
+      "sha256": "9406a42d0dbc301f2d17cd80136c4aa0c8b70c18b10f44eb8c0ccf6c14ff5bd8"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_raw_state_readiness_148/verified_backend.txt",
+      "bytes": 39,
+      "sha256": "80c724ed8328690aaaa502d9ad6954b39390cfb6e51d488c4eeade41ef707ad0"
+    },
+    {
+      "path": "local/cc12_native_gui_frame_box_raw_state_readiness_148/collect_evidence.py",
+      "bytes": 8751,
+      "sha256": "d553c99cc6e3ad9b3fda9fbf5812a66c2234edf6b3af458a1bee33145d2d75dd"
+    }
+  ],
+  "private_manifest": {
+    "path": "local/cc12_native_gui_frame_box_raw_state_readiness_148/manifest.json",
+    "sha256": "3915ff3abe49b519902203eb7ee3b4bda9b29393a3f0d4dea27a3953528ea89f",
+    "item_count": 143,
+    "total_bytes": 1304519
+  },
+  "limits": "Read-only current-state provider readiness. No Source body, actual application composition, owner or activation established."
+}
