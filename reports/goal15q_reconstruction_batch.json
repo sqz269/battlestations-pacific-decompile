@@ -1,0 +1,256 @@
+{
+  "batch": "GOAL15Q",
+  "status": "one_whole90B_traffic_erase_Source_registered_build_fixture_review_and_saved_annotation_complete",
+  "validated_source_commit": "7eaf2f4fc2e832bc79fe74d054f4b361e1347181",
+  "worker_Source_pin": "2bc75e51669ad85c6c19ec73ac409c3705dbabd4",
+  "coverage": {
+    "whole_functions": 1,
+    "Native_body_bytes": 90,
+    "instructions": 37,
+    "fixed_bytes_equal": 82,
+    "true_CALL_operand_bytes": 8,
+    "registered_executable_bytes": 278,
+    "SDK_bridge_and_COMDAT_bytes": 188
+  },
+  "body_and_provider_proof": {
+    "entire_entry_bytes": 90,
+    "fixed_bytes_equal": 82,
+    "actual_call_operand_bytes": 8,
+    "instruction_count": 37,
+    "bridge_and_sdk_bytes_accounted": 188,
+    "all_code_bytes_accounted": 278
+  },
+  "actual_archive": {
+    "path": "build\\win32\\Release\\bsp_core.lib",
+    "sha256": "d51fbd56c12bc672612bf22af837d796e602cc5b7150212c31c96588394f1a19",
+    "whole_members_checked": [
+      {
+        "member": "bsp_core.dir/Release/native_traffic_pointer_erase.obj",
+        "bytes": 1583,
+        "whole_object_sha256": "7c52c0879fc85111d80b815d2858390c6c7373770d47acc179f3ef20dc4a803c"
+      },
+      {
+        "member": "bsp_core.dir/Release/native_invalid_parameter_noinfo_call.obj",
+        "bytes": 808,
+        "whole_object_sha256": "2296a4e057ae6261aa09a83117676bf5c9ad79ff8ff26ea167988764d9224e7d"
+      }
+    ]
+  },
+  "registered_object": "build\\win32\\bsp_core.dir\\Release\\native_traffic_pointer_erase.obj",
+  "registered_object_sha256": "7c52c0879fc85111d80b815d2858390c6c7373770d47acc179f3ef20dc4a803c",
+  "build": {
+    "command": "./scripts/build.ps1",
+    "all_passed": true,
+    "checks": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "log": "local/goal15q_registered_build.log"
+  },
+  "fixture": {
+    "archive_only_real_providers": true,
+    "Source_and_captured_Native90_both_pass": true,
+    "cases": [
+      "actual out argument overwritten by realcopy; lateout reload,EAX/RET14/endpublish,oldout unchanged",
+      "negative SAR(-1),no copy,first-4 endpublish"
+    ],
+    "linked_code_checked_against_registered_COFF": {
+      "exe_sha256": "2ee8387d1b30c86a72cca0eb0e687b090de4d0dadc346a272554c2794fd59259",
+      "map_sha256": "79d8f3e4006732291d63d7b6f2fd0f3e36f883d44c89ea2a518a3c83ad7f0a82",
+      "functions": [
+        {
+          "symbol": "?erase_native_traffic_pointer_range_00488ff0@bsp@@YIPAXPAX00I0IPBX@Z",
+          "address": "00402850",
+          "length": 90,
+          "sha256": "64d786c77f4478534f242018f985f4de131220d508b1df48c5d5554588614bdb",
+          "bindings": [
+            {
+              "offset": 20,
+              "type": 20,
+              "target_symbol": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ",
+              "resolved_address": "004028b0"
+            },
+            {
+              "offset": 64,
+              "type": 20,
+              "target_symbol": "?move_traffic_pointer_words@?A0xbac85e8a@bsp@@YAHPAXIPBXI@Z",
+              "resolved_address": "004027b0"
+            }
+          ],
+          "all_nonrelocated_bytes_equal": true
+        },
+        {
+          "symbol": "_memmove_s",
+          "address": "004027b0",
+          "length": 94,
+          "sha256": "9ce3e5c6984737250a387bc99326a419ad5baa5f383a0b7b2dda7a09c04fcac0",
+          "bindings": [
+            {
+              "offset": 19,
+              "type": 6,
+              "target_symbol": "__imp___errno",
+              "resolved_address": "00404144"
+            },
+            {
+              "offset": 31,
+              "type": 6,
+              "target_symbol": "__imp___invalid_parameter_noinfo",
+              "resolved_address": "00404140"
+            },
+            {
+              "offset": 56,
+              "type": 6,
+              "target_symbol": "__imp___errno",
+              "resolved_address": "00404144"
+            },
+            {
+              "offset": 68,
+              "type": 6,
+              "target_symbol": "__imp___invalid_parameter_noinfo",
+              "resolved_address": "00404140"
+            },
+            {
+              "offset": 83,
+              "type": 20,
+              "target_symbol": "_memmove",
+              "resolved_address": "0040366a"
+            }
+          ],
+          "all_nonrelocated_bytes_equal": true
+        },
+        {
+          "symbol": "?move_traffic_pointer_words@?A0xbac85e8a@bsp@@YAHPAXIPBXI@Z",
+          "address": "004027b0",
+          "length": 94,
+          "sha256": "9ce3e5c6984737250a387bc99326a419ad5baa5f383a0b7b2dda7a09c04fcac0",
+          "bindings": [
+            {
+              "offset": 19,
+              "type": 6,
+              "target_symbol": "__imp___errno",
+              "resolved_address": "00404144"
+            },
+            {
+              "offset": 31,
+              "type": 6,
+              "target_symbol": "__imp___invalid_parameter_noinfo",
+              "resolved_address": "00404140"
+            },
+            {
+              "offset": 56,
+              "type": 6,
+              "target_symbol": "__imp___errno",
+              "resolved_address": "00404144"
+            },
+            {
+              "offset": 68,
+              "type": 6,
+              "target_symbol": "__imp___invalid_parameter_noinfo",
+              "resolved_address": "00404140"
+            },
+            {
+              "offset": 83,
+              "type": 20,
+              "target_symbol": "_memmove",
+              "resolved_address": "0040366a"
+            }
+          ],
+          "all_nonrelocated_bytes_equal": true
+        }
+      ]
+    },
+    "diagnostic_handler_runtime_mutation_tested": false,
+    "diagnostic_order_evidence": "Full public instruction correspondence; no handler experiment claimed"
+  },
+  "independent_review": {
+    "status": "READY_for_bounded_Source_integration_under_qualified_current_CRT_boundaries",
+    "blocking_findings": [],
+    "source_pin": "2bc75e51669ad85c6c19ec73ac409c3705dbabd4",
+    "manifest_sha256": "26d0d65062facda0dafd043f328ec3e352a93590ab7a0a404402cf32af356b7c",
+    "scope": "All326fresh live/PE bytes,whole strict274/registered278COFF,genuine SDK providers/ABI/order/callers,linked retained fixture,51worker artifacts independently verified; no test/build/probe/supplied-verifier reruns"
+  },
+  "annotation": {
+    "name": "STL_EraseDwordRange_00488ff0",
+    "previous_name": "STL_inst_00488ff0",
+    "name_is_operation_hypothesis_STL_identity_retained": true,
+    "physical_signature": "void * __thiscall STL_EraseDwordRange_00488ff0(void * this, void * out, uint first_owner, void * first, uint last_owner, void * last)",
+    "automatic_ECX_receiver_plus5stackwords": true,
+    "Source_only_EDX_not_added_to_Original": true,
+    "transient_duplicate_receiver_corrected_with_both_attempts_retained": true,
+    "recent_live_thiscall_signatures_audited": 13,
+    "saved_under_write_lock": true,
+    "exports": [
+      "00488ff0",
+      "00489af0",
+      "00495ae0"
+    ],
+    "snapshot_index": "forced saved snapshot and refreshed index afterthreeexports"
+  },
+  "call_checks": {
+    "call_rows": 4,
+    "document_claims": 2,
+    "failed": 0,
+    "unchecked": 0,
+    "warnings": 0,
+    "log": "local/goal15q_call_checks.log"
+  },
+  "remaining_readiness": {
+    "00493120": {
+      "native_bytes": 436,
+      "source_record": false,
+      "direct_children": {
+        "0047e970": "85B tagged; no exact Source; current allocation operation available; error path needs closure/policy",
+        "00486800": "30B tagged leaf; no Source",
+        "00486820": "47B tagged; no Source; current memmove_s available",
+        "0048d660": "48B tagged; no Source; current memmove_s available",
+        "0048e4a0": "46B tagged leaf; no Source",
+        "00490240": "105B tagged; no exact Source; legacy string/logic-error/throw path remains explicit",
+        "00bf65ac": "genuine singleton_lifetime_free current CRT service fragment; private CRT identity separate"
+      }
+    },
+    "next_candidate": "four whole copy/fill entries, 171B total; ABI/caller/alias review required before Source",
+    "remaining_gates": [
+      "whole00495AE0 resize including actual fill-cell growth schedule",
+      "whole00493120 insertion and six unclosed exact children",
+      "whole0049E560 traffic placement",
+      "whole004C71C0 layout",
+      "whole004D5BD0 parent",
+      "authored mutable-global producers"
+    ]
+  },
+  "source_sha256": {
+    "src/native_traffic_pointer_erase.cpp": "ba9473c78d7f12692d6bb975cbd343b5c243eff56bbae993c7a9004db6132981",
+    "include/bsp/native_traffic_pointer_erase.hpp": "10e98be859ece5e3c67da6776f362e419754f5a8339049f61148be273b2c6f76"
+  },
+  "artifact_sha256": {
+    "local/goal15q_registered_build.log": "179bb55f83ac76ed0bfdde3800f35a80667d589d5757cfa0378c207cf302c0d5",
+    "local/goal15q_archive_fixture_build.log": "e6f0c35d242d5dc0791141e700dbe679f3b2cc8942ba90123f41d6a75a626088",
+    "local/goal15q_byte_audit.log": "06345f2e07d3723a1bce1042fa5cc2dc9523a9b94461a061902b92526ac90e58",
+    "local/goal15q_exports.log": "2286492328b8249e7a42b00afe24f73f75eb43f4821165994d64428c9fd78653",
+    "local/goal15q_saved_typed_flow.json": "914413d72c3d55988acdfc64717f20b62665da657639b787a8e65ccdb68a9352",
+    "local/goal15q_recent_thiscall_proto_audit.txt": "53d442f62d028372a45900915c7554ac002eaae58f23577b349b29c2ed101929",
+    "local/goal15q_488ff0_initial_annotation_attempt.json": "33ccc25ad7eb6be5cfc75786472c6e2bdc2f9ccb575f8be6993d274765c06fef",
+    "local/goal15h_annotations_00488ff0.json": "552b22154c48f985f3c3fd475d330fd854232aef9a2e4befa5b1393234053876",
+    "local/ghidra-annotations-20261016T033254Z.json": "498a71fe658e3b0078afe5b4731db39740ffe9e842b7b620313cb11615672d12",
+    "local/ghidra-annotations-20261016T033415Z.json": "cbd987c76cee456aa77c4deaabf78c3da8f2178627fc945e12fd27509f86dbeb",
+    "local/goal15q_erase_review/review.json": "9f7eaf5fbb7097a715df4d81cfa616a3aa53201b13aa3d1142fc9b1c6dfa7587",
+    "local/goal15q_erase_review/MANIFEST.json": "26d0d65062facda0dafd043f328ec3e352a93590ab7a0a404402cf32af356b7c",
+    "local\\goal15p_traffic_pointer_erase\\byte_audit.json": "82ffc6870a858fc5ad659bc50acf8f2a56b50ee242d48b724c6e17c22a675da2",
+    "local\\goal15p_traffic_pointer_erase\\provider_library.json": "5dd627dd05b82f013fcdf71ba49dfc15a6cbd1ee11e4e6ca416c6e095a1753ea",
+    "local\\goal15p_traffic_pointer_erase\\fixture.txt": "5cad4b356a898d6c60189fbac5e04ff352c8dc6732fc20960c3886dddf0b3350",
+    "local\\goal15p_traffic_pointer_erase\\traffic_pointer_erase_probe.exe": "2ee8387d1b30c86a72cca0eb0e687b090de4d0dadc346a272554c2794fd59259",
+    "local\\goal15p_traffic_pointer_erase\\traffic_pointer_erase_probe.map": "79d8f3e4006732291d63d7b6f2fd0f3e36f883d44c89ea2a518a3c83ad7f0a82",
+    "local/goal15q_receipt.py": "0b64b4bbf0f61133c55333ba3b45767fb0414d2ae56214a2270b363f5dfa7773",
+    "docs/GOAL15Q_RECONSTRUCTION_BATCH.md": "8a6115c8f48acb5b1d8b5860e0f87472b7c47297a7e8fc4d7376241c6221753b",
+    "reports/goal15p_traffic_pointer_erase.json": "5d8a8ea7a1fe4114b3dd71708395152b7942247f5ff88fc4b77d6d15c93be43f",
+    "local/goal15q_call_checks.log": "05d150a29a212c1ae1956c0455425bf431ff9bd118270e8ef9d7d22baf4dd9b9"
+  },
+  "limits": [
+    "Current SDK invalidparameter/memmove_s/errno/handler policy is genuine but not Original private CRT identity",
+    "No Original C++class/convention,completebinaryABI,Nativeplacement/instructionaddressidentity,productioncaller adoption or gameproof",
+    "Parent493120/495AE0/49E560/layout/world and allocator/error helpers remain open",
+    "Separate x87 getter and fourcopy/fill packets are not counted here"
+  ],
+  "goal_status": "active; continuing full reconstruction objective"
+}

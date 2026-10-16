@@ -2,8 +2,10 @@
 
 `erase_native_traffic_pointer_range_00488ff0` reconstructs the complete original
 `00488FF0..00489049` (90 bytes, 37 instructions). It uses the actual receiver,
-five actual caller argument cells, and current SDK services. The retained
-Ghidra/library name is `STL_inst_00488ff0`; the Source name describes behavior,
+five actual caller argument cells, and current SDK services. The prior generic
+Ghidra name was `STL_inst_00488ff0`. The primary's provisional operation name
+`STL_EraseDwordRange_00488ff0` retains its established STL family identity.
+Neither is a recovered Original symbol; the Source name describes behavior,
 not a recovered game symbol or class. This packet does not reconstruct resize,
 insertion, traffic placement, or the world-layout parent.
 
