@@ -1,0 +1,1049 @@
+{
+  "batch": 49,
+  "status": "Source_integrated_in_staging_build_checked_annotation_saved_pending_main_publication",
+  "Source_pin": "340cd1eb1bf9aee6eec41904a7686a49e746eb53",
+  "staging_Source_merge": "982f37b83bb2ddeb5eb7fbd8fe66ecfa76f08efe",
+  "tested_commit": "982f37b83bb2ddeb5eb7fbd8fe66ecfa76f08efe",
+  "routine": "00c05070",
+  "Native_scope": {
+    "owned_bytes": 50,
+    "owned_starts": 16,
+    "calls": 3,
+    "read_only_producer_bytes": 15,
+    "read_only_producer_starts": 4
+  },
+  "Source_API": "cdecl three borrowed references caller-pop12; Native zero inputs/plainRET",
+  "qualified_domain": "Same actual existing decode context/index/getter IAT; actual current encoded getter cell and setter IAT. Cache hit returns early; miss decodes and re-reads current index before setter. Setter BOOL ignored; retained decoded result returned even null.",
+  "primary_frozen": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_tls_getter_primary_frozen.json",
+    "sha256": "b3aa34ff32efdae0e7c7dd3ae81b18b49f5e7208752ddcdacd615459cc999a92",
+    "checks": 22
+  },
+  "worker_frozen": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\oct16_native_crt_tls_getter_selector_frozen_pin.json",
+    "sha256": "4d35a2dc7abc5f7226b90fc2bfef501c2a3fbdcda76e3e2cfc817f2c9736f823"
+  },
+  "annotation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_movie_factory\\local\\oct16_tls_getter_selector_annotation_receipt.json",
+    "sha256": "b1278cecea4d87f3830377619b89dc8f39b06bb012901c71d9fb04117a947157",
+    "receipt": {
+      "packet": "oct16_native_crt_tls_getter_selector_closeout",
+      "verified_pre_post_typed": {
+        "pre": {
+          "command_output": "Retained complete typed metadata capture: local/oct16_tls_getter_closeout.json\nAccepted 1 typed metadata responses at modification 6881. No analysis or repair performed.\n",
+          "capture": {
+            "schema": 1,
+            "endpoint": "get_flow_metadata",
+            "read_only": true,
+            "utc": "2026-10-16T11:00:45.795961+00:00",
+            "requested_addresses": [
+              "00c05070"
+            ],
+            "max_ranges": 4096,
+            "verified_before": [
+              {
+                "project_name": "bsp",
+                "current_folder": "/",
+                "folders": [],
+                "files": [
+                  {
+                    "name": "battlestationspacific.exe",
+                    "path": "/battlestationspacific.exe",
+                    "content_type": "Program",
+                    "version": 5859,
+                    "is_read_only": false,
+                    "is_versioned": false
+                  }
+                ]
+              },
+              {
+                "name": "battlestationspacific.exe",
+                "path": "/battlestationspacific.exe",
+                "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+                "executable_format": "Portable Executable (PE)",
+                "language": "x86:LE:32:default",
+                "compiler": "windows",
+                "address_size": 32,
+                "image_base": "00400000",
+                "min_address": "00400000",
+                "max_address": "ffdfffff",
+                "memory_size": 14876380,
+                "function_count": 76774,
+                "symbol_count": 160741,
+                "data_type_count": 795,
+                "creation_date": "Mon May 04 16:56:25 PDT 2026",
+                "memory_block_count": 6,
+                "address_spaces": [
+                  {
+                    "name": "ram",
+                    "start": "00000000",
+                    "end": "ffffffff",
+                    "size": 4294967296,
+                    "addressable_unit_size": 1,
+                    "size_bytes": 4294967296,
+                    "address_size_bits": 32,
+                    "is_default": true
+                  }
+                ],
+                "has_multiple_address_spaces": false
+              }
+            ],
+            "verified_after": [
+              {
+                "project_name": "bsp",
+                "current_folder": "/",
+                "folders": [],
+                "files": [
+                  {
+                    "name": "battlestationspacific.exe",
+                    "path": "/battlestationspacific.exe",
+                    "content_type": "Program",
+                    "version": 5859,
+                    "is_read_only": false,
+                    "is_versioned": false
+                  }
+                ]
+              },
+              {
+                "name": "battlestationspacific.exe",
+                "path": "/battlestationspacific.exe",
+                "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+                "executable_format": "Portable Executable (PE)",
+                "language": "x86:LE:32:default",
+                "compiler": "windows",
+                "address_size": 32,
+                "image_base": "00400000",
+                "min_address": "00400000",
+                "max_address": "ffdfffff",
+                "memory_size": 14876380,
+                "function_count": 76774,
+                "symbol_count": 160741,
+                "data_type_count": 795,
+                "creation_date": "Mon May 04 16:56:25 PDT 2026",
+                "memory_block_count": 6,
+                "address_spaces": [
+                  {
+                    "name": "ram",
+                    "start": "00000000",
+                    "end": "ffffffff",
+                    "size": 4294967296,
+                    "addressable_unit_size": 1,
+                    "size_bytes": 4294967296,
+                    "address_size_bits": 32,
+                    "is_default": true
+                  }
+                ],
+                "has_multiple_address_spaces": false
+              }
+            ],
+            "responses": [
+              {
+                "address": "00c05070",
+                "url": "http://127.0.0.1:8089/get_flow_metadata?address=00c05070&program=battlestationspacific.exe&max_ranges=4096",
+                "http_status": 200,
+                "transport_error": null,
+                "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"modification_number_before\":\"6881\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c05071\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c05071\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"name\":\"LIBCRT_unmatched_00c05070\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"50\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"00c050a1\"},\"length\":\"50\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"6881\"}",
+                "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA3MCJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6IjY4ODEiLCJsaXN0aW5nIjp7Imluc3RydWN0aW9uX2F0Ijp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA3MCJ9LCJsZW5ndGgiOjEsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfSwiaW5zdHJ1Y3Rpb25fY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwNzAifSwibGVuZ3RoIjoxLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwNzAifSwibGVuZ3RoIjoxLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9jb250YWluaW5nIjp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA3MCJ9LCJsZW5ndGgiOjEsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfX0sImluc3RydWN0aW9uX2Zsb3ciOnsiZmxvd19vdmVycmlkZSI6Ik5PTkUiLCJkZWZhdWx0X2Zsb3ciOnsibmFtZSI6IkZBTExfVEhST1VHSCIsImlzX2NhbGwiOmZhbHNlLCJpc19qdW1wIjpmYWxzZSwiaXNfY29uZGl0aW9uYWwiOmZhbHNlLCJpc19jb21wdXRlZCI6ZmFsc2UsImlzX3Rlcm1pbmFsIjpmYWxzZX0sImVmZmVjdGl2ZV9mbG93Ijp7Im5hbWUiOiJGQUxMX1RIUk9VR0giLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6ZmFsc2V9LCJkZWZhdWx0X2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwNzEifSwiZWZmZWN0aXZlX2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwNzEifSwiZmFsbHRocm91Z2hfb3ZlcnJpZGRlbiI6ZmFsc2UsImRlZmF1bHRfdGFyZ2V0cyI6W10sImVmZmVjdGl2ZV90YXJnZXRzIjpbXX0sImZ1bmN0aW9uX2F0X3F1ZXJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwNzAifSwiZnVuY3Rpb25fY29udGFpbmluZ19xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA1MDcwIn0sImZ1bmN0aW9ucyI6W3siZW50cnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA3MCJ9LCJuYW1lIjoiTElCQ1JUX3VubWF0Y2hlZF8wMGMwNTA3MCIsIm5vX3JldHVybiI6ZmFsc2UsImlzX3RodW5rIjpmYWxzZSwidGh1bmtfdGFyZ2V0X3JlY3Vyc2l2ZSI6ZmFsc2UsImRpcmVjdF90aHVua190YXJnZXQiOm51bGwsImJvZHkiOnsicmFuZ2VfY291bnQiOjEsInJldHVybmVkX3JhbmdlX2NvdW50IjoxLCJhZGRyZXNzX2NvdW50IjoiNTAiLCJjb21wbGV0ZSI6dHJ1ZSwicmFuZ2VzIjpbeyJzdGFydCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA1MDcwIn0sImVuZF9pbmNsdXNpdmUiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTBhMSJ9LCJsZW5ndGgiOiI1MCJ9XX19XSwiZGlyZWN0X2NhbGxfdGFyZ2V0cyI6W10sIm1vZGlmaWNhdGlvbl9udW1iZXJfYWZ0ZXIiOiI2ODgxIn0=",
+                "raw_sha256": "a6dd9d7000c315b92f07b9402136fdb190be553139a5ad8127b5e223a698963c"
+              }
+            ],
+            "validation": {
+              "accepted": true,
+              "state": "accepted",
+              "errors": []
+            },
+            "modification_number": "6881"
+          }
+        },
+        "post": {
+          "command_output": "Retained complete typed metadata capture: local/oct16_tls_getter_closeout.json\nAccepted 1 typed metadata responses at modification 6884. No analysis or repair performed.\n",
+          "capture": {
+            "schema": 1,
+            "endpoint": "get_flow_metadata",
+            "read_only": true,
+            "utc": "2026-10-16T11:02:01.016238+00:00",
+            "requested_addresses": [
+              "00c05070"
+            ],
+            "max_ranges": 4096,
+            "verified_before": [
+              {
+                "project_name": "bsp",
+                "current_folder": "/",
+                "folders": [],
+                "files": [
+                  {
+                    "name": "battlestationspacific.exe",
+                    "path": "/battlestationspacific.exe",
+                    "content_type": "Program",
+                    "version": 5860,
+                    "is_read_only": false,
+                    "is_versioned": false
+                  }
+                ]
+              },
+              {
+                "name": "battlestationspacific.exe",
+                "path": "/battlestationspacific.exe",
+                "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+                "executable_format": "Portable Executable (PE)",
+                "language": "x86:LE:32:default",
+                "compiler": "windows",
+                "address_size": 32,
+                "image_base": "00400000",
+                "min_address": "00400000",
+                "max_address": "ffdfffff",
+                "memory_size": 14876380,
+                "function_count": 76774,
+                "symbol_count": 160741,
+                "data_type_count": 795,
+                "creation_date": "Mon May 04 16:56:25 PDT 2026",
+                "memory_block_count": 6,
+                "address_spaces": [
+                  {
+                    "name": "ram",
+                    "start": "00000000",
+                    "end": "ffffffff",
+                    "size": 4294967296,
+                    "addressable_unit_size": 1,
+                    "size_bytes": 4294967296,
+                    "address_size_bits": 32,
+                    "is_default": true
+                  }
+                ],
+                "has_multiple_address_spaces": false
+              }
+            ],
+            "verified_after": [
+              {
+                "project_name": "bsp",
+                "current_folder": "/",
+                "folders": [],
+                "files": [
+                  {
+                    "name": "battlestationspacific.exe",
+                    "path": "/battlestationspacific.exe",
+                    "content_type": "Program",
+                    "version": 5860,
+                    "is_read_only": false,
+                    "is_versioned": false
+                  }
+                ]
+              },
+              {
+                "name": "battlestationspacific.exe",
+                "path": "/battlestationspacific.exe",
+                "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+                "executable_format": "Portable Executable (PE)",
+                "language": "x86:LE:32:default",
+                "compiler": "windows",
+                "address_size": 32,
+                "image_base": "00400000",
+                "min_address": "00400000",
+                "max_address": "ffdfffff",
+                "memory_size": 14876380,
+                "function_count": 76774,
+                "symbol_count": 160741,
+                "data_type_count": 795,
+                "creation_date": "Mon May 04 16:56:25 PDT 2026",
+                "memory_block_count": 6,
+                "address_spaces": [
+                  {
+                    "name": "ram",
+                    "start": "00000000",
+                    "end": "ffffffff",
+                    "size": 4294967296,
+                    "addressable_unit_size": 1,
+                    "size_bytes": 4294967296,
+                    "address_size_bits": 32,
+                    "is_default": true
+                  }
+                ],
+                "has_multiple_address_spaces": false
+              }
+            ],
+            "responses": [
+              {
+                "address": "00c05070",
+                "url": "http://127.0.0.1:8089/get_flow_metadata?address=00c05070&program=battlestationspacific.exe&max_ranges=4096",
+                "http_status": 200,
+                "transport_error": null,
+                "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"modification_number_before\":\"6884\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c05071\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c05071\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"name\":\"BSP_CRT_SelectThreadDataGetter\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"50\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"00c050a1\"},\"length\":\"50\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"6884\"}",
+                "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA3MCJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6IjY4ODQiLCJsaXN0aW5nIjp7Imluc3RydWN0aW9uX2F0Ijp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA3MCJ9LCJsZW5ndGgiOjEsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfSwiaW5zdHJ1Y3Rpb25fY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwNzAifSwibGVuZ3RoIjoxLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwNzAifSwibGVuZ3RoIjoxLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9jb250YWluaW5nIjp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA3MCJ9LCJsZW5ndGgiOjEsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfX0sImluc3RydWN0aW9uX2Zsb3ciOnsiZmxvd19vdmVycmlkZSI6Ik5PTkUiLCJkZWZhdWx0X2Zsb3ciOnsibmFtZSI6IkZBTExfVEhST1VHSCIsImlzX2NhbGwiOmZhbHNlLCJpc19qdW1wIjpmYWxzZSwiaXNfY29uZGl0aW9uYWwiOmZhbHNlLCJpc19jb21wdXRlZCI6ZmFsc2UsImlzX3Rlcm1pbmFsIjpmYWxzZX0sImVmZmVjdGl2ZV9mbG93Ijp7Im5hbWUiOiJGQUxMX1RIUk9VR0giLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6ZmFsc2V9LCJkZWZhdWx0X2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwNzEifSwiZWZmZWN0aXZlX2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwNzEifSwiZmFsbHRocm91Z2hfb3ZlcnJpZGRlbiI6ZmFsc2UsImRlZmF1bHRfdGFyZ2V0cyI6W10sImVmZmVjdGl2ZV90YXJnZXRzIjpbXX0sImZ1bmN0aW9uX2F0X3F1ZXJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwNzAifSwiZnVuY3Rpb25fY29udGFpbmluZ19xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA1MDcwIn0sImZ1bmN0aW9ucyI6W3siZW50cnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA3MCJ9LCJuYW1lIjoiQlNQX0NSVF9TZWxlY3RUaHJlYWREYXRhR2V0dGVyIiwibm9fcmV0dXJuIjpmYWxzZSwiaXNfdGh1bmsiOmZhbHNlLCJ0aHVua190YXJnZXRfcmVjdXJzaXZlIjpmYWxzZSwiZGlyZWN0X3RodW5rX3RhcmdldCI6bnVsbCwiYm9keSI6eyJyYW5nZV9jb3VudCI6MSwicmV0dXJuZWRfcmFuZ2VfY291bnQiOjEsImFkZHJlc3NfY291bnQiOiI1MCIsImNvbXBsZXRlIjp0cnVlLCJyYW5nZXMiOlt7InN0YXJ0Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwNzAifSwiZW5kX2luY2x1c2l2ZSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA1MGExIn0sImxlbmd0aCI6IjUwIn1dfX1dLCJkaXJlY3RfY2FsbF90YXJnZXRzIjpbXSwibW9kaWZpY2F0aW9uX251bWJlcl9hZnRlciI6IjY4ODQifQ==",
+                "raw_sha256": "2c23090d088bc29efbd1577b03c88c8d1667470c5b35cdf3207df8c5166cf4bd"
+              }
+            ],
+            "validation": {
+              "accepted": true,
+              "state": "accepted",
+              "errors": []
+            },
+            "modification_number": "6884"
+          }
+        }
+      },
+      "pre_comments": "[\n {\n  \"address\": \"00c05070\",\n  \"annotation\": {\n   \"address\": \"00c05070\",\n   \"function_name\": \"LIBCRT_unmatched_00c05070\",\n   \"comment\": \"[BSP inventory 00c05070] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)\"\n  }\n }\n]\n",
+      "pre_prototype": "Function: LIBCRT_unmatched_00c05070 at 00c05070\nSignature: undefined LIBCRT_unmatched_00c05070(void)\nEntry: 00c05070\nBody: 00c05070 - 00c050a1\n{\n \"function_name\": \"LIBCRT_unmatched_00c05070\",\n \"address\": \"00c05070\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 16,\n \"basic_block_count\": 3,\n \"edge_count\": 3,\n \"call_count\": 1,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 2,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"BSP_CRT_DecodePointerCurrentState\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [],\n \"basic_block_hashes\": [\n  \"192b046daecca9a7655130564b5883232fdd2c0fb491933da93704f2de580bc1\",\n  \"09488d3a625159cd5cc52ea208fd9eda098c144cfcd0ee2f71d93c820010bff9\",\n  \"dd55f02ed36af1f75c958b9e1e29603d365dc7ef81a4309c535043206a083910\"\n ]\n}\n",
+      "native_before": {
+        "address": "00c05070",
+        "bytes": 50,
+        "bytes_hex": "56ff35005be100ff15bc20ce008bf085f6751bff3538de0901e850ffffff598bf056ff35005be100ff15b420ce008bc65ec3",
+        "SHA256": "c56216e301258d74d1f73f4e30645d811c2e7a3cda5bef15b09e94735394ba81",
+        "PE_live_equal": true,
+        "instruction_count": 16,
+        "instructions": [
+          {
+            "address": "00c05070",
+            "bytes": "56",
+            "size": 1,
+            "mnemonic": "push",
+            "op_str": "esi"
+          },
+          {
+            "address": "00c05071",
+            "bytes": "ff35005be100",
+            "size": 6,
+            "mnemonic": "push",
+            "op_str": "dword ptr [0xe15b00]"
+          },
+          {
+            "address": "00c05077",
+            "bytes": "ff15bc20ce00",
+            "size": 6,
+            "mnemonic": "call",
+            "op_str": "dword ptr [0xce20bc]"
+          },
+          {
+            "address": "00c0507d",
+            "bytes": "8bf0",
+            "size": 2,
+            "mnemonic": "mov",
+            "op_str": "esi, eax"
+          },
+          {
+            "address": "00c0507f",
+            "bytes": "85f6",
+            "size": 2,
+            "mnemonic": "test",
+            "op_str": "esi, esi"
+          },
+          {
+            "address": "00c05081",
+            "bytes": "751b",
+            "size": 2,
+            "mnemonic": "jne",
+            "op_str": "0xc0509e"
+          },
+          {
+            "address": "00c05083",
+            "bytes": "ff3538de0901",
+            "size": 6,
+            "mnemonic": "push",
+            "op_str": "dword ptr [0x109de38]"
+          },
+          {
+            "address": "00c05089",
+            "bytes": "e850ffffff",
+            "size": 5,
+            "mnemonic": "call",
+            "op_str": "0xc04fde"
+          },
+          {
+            "address": "00c0508e",
+            "bytes": "59",
+            "size": 1,
+            "mnemonic": "pop",
+            "op_str": "ecx"
+          },
+          {
+            "address": "00c0508f",
+            "bytes": "8bf0",
+            "size": 2,
+            "mnemonic": "mov",
+            "op_str": "esi, eax"
+          },
+          {
+            "address": "00c05091",
+            "bytes": "56",
+            "size": 1,
+            "mnemonic": "push",
+            "op_str": "esi"
+          },
+          {
+            "address": "00c05092",
+            "bytes": "ff35005be100",
+            "size": 6,
+            "mnemonic": "push",
+            "op_str": "dword ptr [0xe15b00]"
+          },
+          {
+            "address": "00c05098",
+            "bytes": "ff15b420ce00",
+            "size": 6,
+            "mnemonic": "call",
+            "op_str": "dword ptr [0xce20b4]"
+          },
+          {
+            "address": "00c0509e",
+            "bytes": "8bc6",
+            "size": 2,
+            "mnemonic": "mov",
+            "op_str": "eax, esi"
+          },
+          {
+            "address": "00c050a0",
+            "bytes": "5e",
+            "size": 1,
+            "mnemonic": "pop",
+            "op_str": "esi"
+          },
+          {
+            "address": "00c050a1",
+            "bytes": "c3",
+            "size": 1,
+            "mnemonic": "ret",
+            "op_str": ""
+          }
+        ],
+        "raw_BSP_output": "00c05070  56 ff 35 00 5b e1 00 ff 15 bc 20 ce 00 8b f0 85  V.5.[..... .....\n00c05080  f6 75 1b ff 35 38 de 09 01 e8 50 ff ff ff 59 8b  .u..58....P...Y.\n00c05090  f0 56 ff 35 00 5b e1 00 ff 15 b4 20 ce 00 8b c6  .V.5.[..... ....\n00c050a0  5e c3  ^.\n"
+      },
+      "post_comments": "[\n {\n  \"address\": \"00c05070\",\n  \"annotation\": {\n   \"address\": \"00c05070\",\n   \"function_name\": \"BSP_CRT_SelectThreadDataGetter\",\n   \"comment\": \"[BSP inventory 00c05070] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)\\n\\n[BSP reconstruction 00c05070]\\nWhole C05070[50B/16 current starts], qualified supplied-context ordinary Source src/native_crt_tls_getter_selector.cpp; provisional select_native_crt_ptd_getter_00c05070. Preserve existing saved library-provisional name/comment. Native zero-arg cdecl/plainRET/EAXpointer; Source adds SAME NativeCrtPointerDecodeContext, actual encoded109DE38 reference and current TlsSetValue IAT CE20B4 reference (caller12). Initial index before current getter IAT; nonnull cache skips miss. Late encoded read/actual C04FDE, discard outgoing-word writeback; capture result, reread CURRENT index before actual setter IAT, ignoreBOOL and return capture evennull. No owner/default/callback/subclass/fallback/guard/retry/EH/LastError/noexcept. Original runtime/CRT/TLS/locale/frame/fault/binaryABI/game unproved. See reports/oct16_native_crt_tls_getter_selector.json and docs/OCT16_NATIVE_CRT_TLS_GETTER_SELECTOR.md; SourceCPP04988820/HPP2f14cd78; actual CMake60B32 reviewed.\"\n  }\n }\n]\n",
+      "post_prototype": "Function: BSP_CRT_SelectThreadDataGetter at 00c05070\nSignature: undefined BSP_CRT_SelectThreadDataGetter(void)\nEntry: 00c05070\nBody: 00c05070 - 00c050a1\n{\n \"function_name\": \"BSP_CRT_SelectThreadDataGetter\",\n \"address\": \"00c05070\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 16,\n \"basic_block_count\": 3,\n \"edge_count\": 3,\n \"call_count\": 1,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 2,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"BSP_CRT_DecodePointerCurrentState\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [],\n \"basic_block_hashes\": [\n  \"192b046daecca9a7655130564b5883232fdd2c0fb491933da93704f2de580bc1\",\n  \"09488d3a625159cd5cc52ea208fd9eda098c144cfcd0ee2f71d93c820010bff9\",\n  \"dd55f02ed36af1f75c958b9e1e29603d365dc7ef81a4309c535043206a083910\"\n ]\n}\n",
+      "native_after": {
+        "address": "00c05070",
+        "bytes": 50,
+        "bytes_hex": "56ff35005be100ff15bc20ce008bf085f6751bff3538de0901e850ffffff598bf056ff35005be100ff15b420ce008bc65ec3",
+        "SHA256": "c56216e301258d74d1f73f4e30645d811c2e7a3cda5bef15b09e94735394ba81",
+        "PE_live_equal": true,
+        "instruction_count": 16,
+        "instructions": [
+          {
+            "address": "00c05070",
+            "bytes": "56",
+            "size": 1,
+            "mnemonic": "push",
+            "op_str": "esi"
+          },
+          {
+            "address": "00c05071",
+            "bytes": "ff35005be100",
+            "size": 6,
+            "mnemonic": "push",
+            "op_str": "dword ptr [0xe15b00]"
+          },
+          {
+            "address": "00c05077",
+            "bytes": "ff15bc20ce00",
+            "size": 6,
+            "mnemonic": "call",
+            "op_str": "dword ptr [0xce20bc]"
+          },
+          {
+            "address": "00c0507d",
+            "bytes": "8bf0",
+            "size": 2,
+            "mnemonic": "mov",
+            "op_str": "esi, eax"
+          },
+          {
+            "address": "00c0507f",
+            "bytes": "85f6",
+            "size": 2,
+            "mnemonic": "test",
+            "op_str": "esi, esi"
+          },
+          {
+            "address": "00c05081",
+            "bytes": "751b",
+            "size": 2,
+            "mnemonic": "jne",
+            "op_str": "0xc0509e"
+          },
+          {
+            "address": "00c05083",
+            "bytes": "ff3538de0901",
+            "size": 6,
+            "mnemonic": "push",
+            "op_str": "dword ptr [0x109de38]"
+          },
+          {
+            "address": "00c05089",
+            "bytes": "e850ffffff",
+            "size": 5,
+            "mnemonic": "call",
+            "op_str": "0xc04fde"
+          },
+          {
+            "address": "00c0508e",
+            "bytes": "59",
+            "size": 1,
+            "mnemonic": "pop",
+            "op_str": "ecx"
+          },
+          {
+            "address": "00c0508f",
+            "bytes": "8bf0",
+            "size": 2,
+            "mnemonic": "mov",
+            "op_str": "esi, eax"
+          },
+          {
+            "address": "00c05091",
+            "bytes": "56",
+            "size": 1,
+            "mnemonic": "push",
+            "op_str": "esi"
+          },
+          {
+            "address": "00c05092",
+            "bytes": "ff35005be100",
+            "size": 6,
+            "mnemonic": "push",
+            "op_str": "dword ptr [0xe15b00]"
+          },
+          {
+            "address": "00c05098",
+            "bytes": "ff15b420ce00",
+            "size": 6,
+            "mnemonic": "call",
+            "op_str": "dword ptr [0xce20b4]"
+          },
+          {
+            "address": "00c0509e",
+            "bytes": "8bc6",
+            "size": 2,
+            "mnemonic": "mov",
+            "op_str": "eax, esi"
+          },
+          {
+            "address": "00c050a0",
+            "bytes": "5e",
+            "size": 1,
+            "mnemonic": "pop",
+            "op_str": "esi"
+          },
+          {
+            "address": "00c050a1",
+            "bytes": "c3",
+            "size": 1,
+            "mnemonic": "ret",
+            "op_str": ""
+          }
+        ],
+        "raw_BSP_output": "00c05070  56 ff 35 00 5b e1 00 ff 15 bc 20 ce 00 8b f0 85  V.5.[..... .....\n00c05080  f6 75 1b ff 35 38 de 09 01 e8 50 ff ff ff 59 8b  .u..58....P...Y.\n00c05090  f0 56 ff 35 00 5b e1 00 ff 15 b4 20 ce 00 8b c6  .V.5.[..... ....\n00c050a0  5e c3  ^.\n"
+      },
+      "current_starts_after": {
+        "command_output": "Saved the full instruction-context response for 16 addresses to local/oct16_tls_getter_closeout.json\n",
+        "capture": {
+          "00c05070": {
+            "address": "00c05070",
+            "instruction": "PUSH ESI",
+            "context_before": [],
+            "context_after": [],
+            "mnemonic": "PUSH",
+            "patterns_detected": [
+              "stack_operation"
+            ]
+          },
+          "00c05071": {
+            "address": "00c05071",
+            "instruction": "PUSH dword ptr [0x00e15b00]",
+            "context_before": [],
+            "context_after": [],
+            "mnemonic": "PUSH",
+            "patterns_detected": [
+              "stack_operation"
+            ]
+          },
+          "00c05077": {
+            "address": "00c05077",
+            "instruction": "CALL dword ptr [0x00ce20bc]",
+            "context_before": [],
+            "context_after": [],
+            "mnemonic": "CALL",
+            "patterns_detected": [
+              "control_flow"
+            ]
+          },
+          "00c0507d": {
+            "address": "00c0507d",
+            "instruction": "MOV ESI,EAX",
+            "context_before": [],
+            "context_after": [],
+            "mnemonic": "MOV",
+            "patterns_detected": [
+              "data_access"
+            ]
+          },
+          "00c0507f": {
+            "address": "00c0507f",
+            "instruction": "TEST ESI,ESI",
+            "context_before": [],
+            "context_after": [],
+            "mnemonic": "TEST",
+            "patterns_detected": [
+              "comparison"
+            ]
+          },
+          "00c05081": {
+            "address": "00c05081",
+            "instruction": "JNZ 0x00c0509e",
+            "context_before": [],
+            "context_after": [],
+            "mnemonic": "JNZ",
+            "patterns_detected": [
+              "control_flow"
+            ]
+          },
+          "00c05083": {
+            "address": "00c05083",
+            "instruction": "PUSH dword ptr [0x0109de38]",
+            "context_before": [],
+            "context_after": [],
+            "mnemonic": "PUSH",
+            "patterns_detected": [
+              "stack_operation"
+            ]
+          },
+          "00c05089": {
+            "address": "00c05089",
+            "instruction": "CALL 0x00c04fde",
+            "context_before": [],
+            "context_after": [],
+            "mnemonic": "CALL",
+            "patterns_detected": [
+              "control_flow"
+            ]
+          },
+          "00c0508e": {
+            "address": "00c0508e",
+            "instruction": "POP ECX",
+            "context_before": [],
+            "context_after": [],
+            "mnemonic": "POP",
+            "patterns_detected": [
+              "stack_operation"
+            ]
+          },
+          "00c0508f": {
+            "address": "00c0508f",
+            "instruction": "MOV ESI,EAX",
+            "context_before": [],
+            "context_after": [],
+            "mnemonic": "MOV",
+            "patterns_detected": [
+              "data_access"
+            ]
+          },
+          "00c05091": {
+            "address": "00c05091",
+            "instruction": "PUSH ESI",
+            "context_before": [],
+            "context_after": [],
+            "mnemonic": "PUSH",
+            "patterns_detected": [
+              "stack_operation"
+            ]
+          },
+          "00c05092": {
+            "address": "00c05092",
+            "instruction": "PUSH dword ptr [0x00e15b00]",
+            "context_before": [],
+            "context_after": [],
+            "mnemonic": "PUSH",
+            "patterns_detected": [
+              "stack_operation"
+            ]
+          },
+          "00c05098": {
+            "address": "00c05098",
+            "instruction": "CALL dword ptr [0x00ce20b4]",
+            "context_before": [],
+            "context_after": [],
+            "mnemonic": "CALL",
+            "patterns_detected": [
+              "control_flow"
+            ]
+          },
+          "00c0509e": {
+            "address": "00c0509e",
+            "instruction": "MOV EAX,ESI",
+            "context_before": [],
+            "context_after": [],
+            "mnemonic": "MOV",
+            "patterns_detected": [
+              "data_access"
+            ]
+          },
+          "00c050a0": {
+            "address": "00c050a0",
+            "instruction": "POP ESI",
+            "context_before": [],
+            "context_after": [],
+            "mnemonic": "POP",
+            "patterns_detected": [
+              "stack_operation"
+            ]
+          },
+          "00c050a1": {
+            "address": "00c050a1",
+            "instruction": "RET",
+            "context_before": [],
+            "context_after": [],
+            "mnemonic": "RET",
+            "patterns_detected": []
+          }
+        }
+      },
+      "calls_after": {
+        "command_output": "Retained complete typed metadata capture: local/oct16_tls_getter_closeout.json\nAccepted 3 typed metadata responses at modification 6884. No analysis or repair performed.\n",
+        "capture": {
+          "schema": 1,
+          "endpoint": "get_flow_metadata",
+          "read_only": true,
+          "utc": "2026-10-16T11:02:02.822520+00:00",
+          "requested_addresses": [
+            "00c05077",
+            "00c05089",
+            "00c05098"
+          ],
+          "max_ranges": 4096,
+          "verified_before": [
+            {
+              "project_name": "bsp",
+              "current_folder": "/",
+              "folders": [],
+              "files": [
+                {
+                  "name": "battlestationspacific.exe",
+                  "path": "/battlestationspacific.exe",
+                  "content_type": "Program",
+                  "version": 5860,
+                  "is_read_only": false,
+                  "is_versioned": false
+                }
+              ]
+            },
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+              "executable_format": "Portable Executable (PE)",
+              "language": "x86:LE:32:default",
+              "compiler": "windows",
+              "address_size": 32,
+              "image_base": "00400000",
+              "min_address": "00400000",
+              "max_address": "ffdfffff",
+              "memory_size": 14876380,
+              "function_count": 76774,
+              "symbol_count": 160741,
+              "data_type_count": 795,
+              "creation_date": "Mon May 04 16:56:25 PDT 2026",
+              "memory_block_count": 6,
+              "address_spaces": [
+                {
+                  "name": "ram",
+                  "start": "00000000",
+                  "end": "ffffffff",
+                  "size": 4294967296,
+                  "addressable_unit_size": 1,
+                  "size_bytes": 4294967296,
+                  "address_size_bits": 32,
+                  "is_default": true
+                }
+              ],
+              "has_multiple_address_spaces": false
+            }
+          ],
+          "verified_after": [
+            {
+              "project_name": "bsp",
+              "current_folder": "/",
+              "folders": [],
+              "files": [
+                {
+                  "name": "battlestationspacific.exe",
+                  "path": "/battlestationspacific.exe",
+                  "content_type": "Program",
+                  "version": 5860,
+                  "is_read_only": false,
+                  "is_versioned": false
+                }
+              ]
+            },
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+              "executable_format": "Portable Executable (PE)",
+              "language": "x86:LE:32:default",
+              "compiler": "windows",
+              "address_size": 32,
+              "image_base": "00400000",
+              "min_address": "00400000",
+              "max_address": "ffdfffff",
+              "memory_size": 14876380,
+              "function_count": 76774,
+              "symbol_count": 160741,
+              "data_type_count": 795,
+              "creation_date": "Mon May 04 16:56:25 PDT 2026",
+              "memory_block_count": 6,
+              "address_spaces": [
+                {
+                  "name": "ram",
+                  "start": "00000000",
+                  "end": "ffffffff",
+                  "size": 4294967296,
+                  "addressable_unit_size": 1,
+                  "size_bytes": 4294967296,
+                  "address_size_bits": 32,
+                  "is_default": true
+                }
+              ],
+              "has_multiple_address_spaces": false
+            }
+          ],
+          "responses": [
+            {
+              "address": "00c05077",
+              "url": "http://127.0.0.1:8089/get_flow_metadata?address=00c05077&program=battlestationspacific.exe&max_ranges=4096",
+              "http_status": 200,
+              "transport_error": null,
+              "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"00c05077\"},\"modification_number_before\":\"6884\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05077\"},\"length\":6,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05077\"},\"length\":6,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05077\"},\"length\":6,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05077\"},\"length\":6,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"COMPUTED_CALL\",\"is_call\":true,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":true,\"is_terminal\":false},\"effective_flow\":{\"name\":\"COMPUTED_CALL\",\"is_call\":true,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":true,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c0507d\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c0507d\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[{\"space\":\"EXTERNAL\",\"offset\":\"00000104\"}]},\"function_at_query\":null,\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"name\":\"BSP_CRT_SelectThreadDataGetter\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"50\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"00c050a1\"},\"length\":\"50\"}]}}],\"direct_call_targets\":[{\"address\":{\"space\":\"EXTERNAL\",\"offset\":\"00000104\"},\"default_target\":false,\"effective_target\":true,\"function_at_target\":{\"entry\":{\"space\":\"EXTERNAL\",\"offset\":\"00000104\"},\"name\":\"TlsGetValue\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null}}],\"modification_number_after\":\"6884\"}",
+              "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA3NyJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6IjY4ODQiLCJsaXN0aW5nIjp7Imluc3RydWN0aW9uX2F0Ijp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA3NyJ9LCJsZW5ndGgiOjYsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfSwiaW5zdHJ1Y3Rpb25fY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwNzcifSwibGVuZ3RoIjo2LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwNzcifSwibGVuZ3RoIjo2LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9jb250YWluaW5nIjp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA3NyJ9LCJsZW5ndGgiOjYsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfX0sImluc3RydWN0aW9uX2Zsb3ciOnsiZmxvd19vdmVycmlkZSI6Ik5PTkUiLCJkZWZhdWx0X2Zsb3ciOnsibmFtZSI6IkNPTVBVVEVEX0NBTEwiLCJpc19jYWxsIjp0cnVlLCJpc19qdW1wIjpmYWxzZSwiaXNfY29uZGl0aW9uYWwiOmZhbHNlLCJpc19jb21wdXRlZCI6dHJ1ZSwiaXNfdGVybWluYWwiOmZhbHNlfSwiZWZmZWN0aXZlX2Zsb3ciOnsibmFtZSI6IkNPTVBVVEVEX0NBTEwiLCJpc19jYWxsIjp0cnVlLCJpc19qdW1wIjpmYWxzZSwiaXNfY29uZGl0aW9uYWwiOmZhbHNlLCJpc19jb21wdXRlZCI6dHJ1ZSwiaXNfdGVybWluYWwiOmZhbHNlfSwiZGVmYXVsdF9mYWxsdGhyb3VnaCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA1MDdkIn0sImVmZmVjdGl2ZV9mYWxsdGhyb3VnaCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA1MDdkIn0sImZhbGx0aHJvdWdoX292ZXJyaWRkZW4iOmZhbHNlLCJkZWZhdWx0X3RhcmdldHMiOltdLCJlZmZlY3RpdmVfdGFyZ2V0cyI6W3sic3BhY2UiOiJFWFRFUk5BTCIsIm9mZnNldCI6IjAwMDAwMTA0In1dfSwiZnVuY3Rpb25fYXRfcXVlcnkiOm51bGwsImZ1bmN0aW9uX2NvbnRhaW5pbmdfcXVlcnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA3MCJ9LCJmdW5jdGlvbnMiOlt7ImVudHJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwNzAifSwibmFtZSI6IkJTUF9DUlRfU2VsZWN0VGhyZWFkRGF0YUdldHRlciIsIm5vX3JldHVybiI6ZmFsc2UsImlzX3RodW5rIjpmYWxzZSwidGh1bmtfdGFyZ2V0X3JlY3Vyc2l2ZSI6ZmFsc2UsImRpcmVjdF90aHVua190YXJnZXQiOm51bGwsImJvZHkiOnsicmFuZ2VfY291bnQiOjEsInJldHVybmVkX3JhbmdlX2NvdW50IjoxLCJhZGRyZXNzX2NvdW50IjoiNTAiLCJjb21wbGV0ZSI6dHJ1ZSwicmFuZ2VzIjpbeyJzdGFydCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA1MDcwIn0sImVuZF9pbmNsdXNpdmUiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTBhMSJ9LCJsZW5ndGgiOiI1MCJ9XX19XSwiZGlyZWN0X2NhbGxfdGFyZ2V0cyI6W3siYWRkcmVzcyI6eyJzcGFjZSI6IkVYVEVSTkFMIiwib2Zmc2V0IjoiMDAwMDAxMDQifSwiZGVmYXVsdF90YXJnZXQiOmZhbHNlLCJlZmZlY3RpdmVfdGFyZ2V0Ijp0cnVlLCJmdW5jdGlvbl9hdF90YXJnZXQiOnsiZW50cnkiOnsic3BhY2UiOiJFWFRFUk5BTCIsIm9mZnNldCI6IjAwMDAwMTA0In0sIm5hbWUiOiJUbHNHZXRWYWx1ZSIsIm5vX3JldHVybiI6ZmFsc2UsImlzX3RodW5rIjpmYWxzZSwidGh1bmtfdGFyZ2V0X3JlY3Vyc2l2ZSI6ZmFsc2UsImRpcmVjdF90aHVua190YXJnZXQiOm51bGx9fV0sIm1vZGlmaWNhdGlvbl9udW1iZXJfYWZ0ZXIiOiI2ODg0In0=",
+              "raw_sha256": "a61b8934ca1dcc85ce3e4779f8103006dcec67154160b5110588d02cb27ccd5a"
+            },
+            {
+              "address": "00c05089",
+              "url": "http://127.0.0.1:8089/get_flow_metadata?address=00c05089&program=battlestationspacific.exe&max_ranges=4096",
+              "http_status": 200,
+              "transport_error": null,
+              "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"00c05089\"},\"modification_number_before\":\"6884\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05089\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05089\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05089\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05089\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"UNCONDITIONAL_CALL\",\"is_call\":true,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"UNCONDITIONAL_CALL\",\"is_call\":true,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c0508e\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c0508e\"},\"fallthrough_overridden\":false,\"default_targets\":[{\"space\":\"ram\",\"offset\":\"00c04fde\"}],\"effective_targets\":[{\"space\":\"ram\",\"offset\":\"00c04fde\"}]},\"function_at_query\":null,\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"name\":\"BSP_CRT_SelectThreadDataGetter\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"50\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"00c050a1\"},\"length\":\"50\"}]}}],\"direct_call_targets\":[{\"address\":{\"space\":\"ram\",\"offset\":\"00c04fde\"},\"default_target\":true,\"effective_target\":true,\"function_at_target\":{\"entry\":{\"space\":\"ram\",\"offset\":\"00c04fde\"},\"name\":\"BSP_CRT_DecodePointerCurrentState\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null}}],\"modification_number_after\":\"6884\"}",
+              "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA4OSJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6IjY4ODQiLCJsaXN0aW5nIjp7Imluc3RydWN0aW9uX2F0Ijp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA4OSJ9LCJsZW5ndGgiOjUsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfSwiaW5zdHJ1Y3Rpb25fY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwODkifSwibGVuZ3RoIjo1LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwODkifSwibGVuZ3RoIjo1LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9jb250YWluaW5nIjp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA4OSJ9LCJsZW5ndGgiOjUsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfX0sImluc3RydWN0aW9uX2Zsb3ciOnsiZmxvd19vdmVycmlkZSI6Ik5PTkUiLCJkZWZhdWx0X2Zsb3ciOnsibmFtZSI6IlVOQ09ORElUSU9OQUxfQ0FMTCIsImlzX2NhbGwiOnRydWUsImlzX2p1bXAiOmZhbHNlLCJpc19jb25kaXRpb25hbCI6ZmFsc2UsImlzX2NvbXB1dGVkIjpmYWxzZSwiaXNfdGVybWluYWwiOmZhbHNlfSwiZWZmZWN0aXZlX2Zsb3ciOnsibmFtZSI6IlVOQ09ORElUSU9OQUxfQ0FMTCIsImlzX2NhbGwiOnRydWUsImlzX2p1bXAiOmZhbHNlLCJpc19jb25kaXRpb25hbCI6ZmFsc2UsImlzX2NvbXB1dGVkIjpmYWxzZSwiaXNfdGVybWluYWwiOmZhbHNlfSwiZGVmYXVsdF9mYWxsdGhyb3VnaCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA1MDhlIn0sImVmZmVjdGl2ZV9mYWxsdGhyb3VnaCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA1MDhlIn0sImZhbGx0aHJvdWdoX292ZXJyaWRkZW4iOmZhbHNlLCJkZWZhdWx0X3RhcmdldHMiOlt7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDRmZGUifV0sImVmZmVjdGl2ZV90YXJnZXRzIjpbeyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA0ZmRlIn1dfSwiZnVuY3Rpb25fYXRfcXVlcnkiOm51bGwsImZ1bmN0aW9uX2NvbnRhaW5pbmdfcXVlcnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA3MCJ9LCJmdW5jdGlvbnMiOlt7ImVudHJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwNzAifSwibmFtZSI6IkJTUF9DUlRfU2VsZWN0VGhyZWFkRGF0YUdldHRlciIsIm5vX3JldHVybiI6ZmFsc2UsImlzX3RodW5rIjpmYWxzZSwidGh1bmtfdGFyZ2V0X3JlY3Vyc2l2ZSI6ZmFsc2UsImRpcmVjdF90aHVua190YXJnZXQiOm51bGwsImJvZHkiOnsicmFuZ2VfY291bnQiOjEsInJldHVybmVkX3JhbmdlX2NvdW50IjoxLCJhZGRyZXNzX2NvdW50IjoiNTAiLCJjb21wbGV0ZSI6dHJ1ZSwicmFuZ2VzIjpbeyJzdGFydCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA1MDcwIn0sImVuZF9pbmNsdXNpdmUiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTBhMSJ9LCJsZW5ndGgiOiI1MCJ9XX19XSwiZGlyZWN0X2NhbGxfdGFyZ2V0cyI6W3siYWRkcmVzcyI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA0ZmRlIn0sImRlZmF1bHRfdGFyZ2V0Ijp0cnVlLCJlZmZlY3RpdmVfdGFyZ2V0Ijp0cnVlLCJmdW5jdGlvbl9hdF90YXJnZXQiOnsiZW50cnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNGZkZSJ9LCJuYW1lIjoiQlNQX0NSVF9EZWNvZGVQb2ludGVyQ3VycmVudFN0YXRlIiwibm9fcmV0dXJuIjpmYWxzZSwiaXNfdGh1bmsiOmZhbHNlLCJ0aHVua190YXJnZXRfcmVjdXJzaXZlIjpmYWxzZSwiZGlyZWN0X3RodW5rX3RhcmdldCI6bnVsbH19XSwibW9kaWZpY2F0aW9uX251bWJlcl9hZnRlciI6IjY4ODQifQ==",
+              "raw_sha256": "732497eb44431d7962953f8aa6c2c12fb931fe45f03759bf5e2728d10e0053a8"
+            },
+            {
+              "address": "00c05098",
+              "url": "http://127.0.0.1:8089/get_flow_metadata?address=00c05098&program=battlestationspacific.exe&max_ranges=4096",
+              "http_status": 200,
+              "transport_error": null,
+              "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"00c05098\"},\"modification_number_before\":\"6884\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05098\"},\"length\":6,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05098\"},\"length\":6,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05098\"},\"length\":6,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c05098\"},\"length\":6,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"COMPUTED_CALL\",\"is_call\":true,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":true,\"is_terminal\":false},\"effective_flow\":{\"name\":\"COMPUTED_CALL\",\"is_call\":true,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":true,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c0509e\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c0509e\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[{\"space\":\"EXTERNAL\",\"offset\":\"00000102\"}]},\"function_at_query\":null,\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"name\":\"BSP_CRT_SelectThreadDataGetter\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"50\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"00c05070\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"00c050a1\"},\"length\":\"50\"}]}}],\"direct_call_targets\":[{\"address\":{\"space\":\"EXTERNAL\",\"offset\":\"00000102\"},\"default_target\":false,\"effective_target\":true,\"function_at_target\":{\"entry\":{\"space\":\"EXTERNAL\",\"offset\":\"00000102\"},\"name\":\"TlsSetValue\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null}}],\"modification_number_after\":\"6884\"}",
+              "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA5OCJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6IjY4ODQiLCJsaXN0aW5nIjp7Imluc3RydWN0aW9uX2F0Ijp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA5OCJ9LCJsZW5ndGgiOjYsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfSwiaW5zdHJ1Y3Rpb25fY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwOTgifSwibGVuZ3RoIjo2LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwOTgifSwibGVuZ3RoIjo2LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9jb250YWluaW5nIjp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA5OCJ9LCJsZW5ndGgiOjYsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfX0sImluc3RydWN0aW9uX2Zsb3ciOnsiZmxvd19vdmVycmlkZSI6Ik5PTkUiLCJkZWZhdWx0X2Zsb3ciOnsibmFtZSI6IkNPTVBVVEVEX0NBTEwiLCJpc19jYWxsIjp0cnVlLCJpc19qdW1wIjpmYWxzZSwiaXNfY29uZGl0aW9uYWwiOmZhbHNlLCJpc19jb21wdXRlZCI6dHJ1ZSwiaXNfdGVybWluYWwiOmZhbHNlfSwiZWZmZWN0aXZlX2Zsb3ciOnsibmFtZSI6IkNPTVBVVEVEX0NBTEwiLCJpc19jYWxsIjp0cnVlLCJpc19qdW1wIjpmYWxzZSwiaXNfY29uZGl0aW9uYWwiOmZhbHNlLCJpc19jb21wdXRlZCI6dHJ1ZSwiaXNfdGVybWluYWwiOmZhbHNlfSwiZGVmYXVsdF9mYWxsdGhyb3VnaCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA1MDllIn0sImVmZmVjdGl2ZV9mYWxsdGhyb3VnaCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA1MDllIn0sImZhbGx0aHJvdWdoX292ZXJyaWRkZW4iOmZhbHNlLCJkZWZhdWx0X3RhcmdldHMiOltdLCJlZmZlY3RpdmVfdGFyZ2V0cyI6W3sic3BhY2UiOiJFWFRFUk5BTCIsIm9mZnNldCI6IjAwMDAwMTAyIn1dfSwiZnVuY3Rpb25fYXRfcXVlcnkiOm51bGwsImZ1bmN0aW9uX2NvbnRhaW5pbmdfcXVlcnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTA3MCJ9LCJmdW5jdGlvbnMiOlt7ImVudHJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDUwNzAifSwibmFtZSI6IkJTUF9DUlRfU2VsZWN0VGhyZWFkRGF0YUdldHRlciIsIm5vX3JldHVybiI6ZmFsc2UsImlzX3RodW5rIjpmYWxzZSwidGh1bmtfdGFyZ2V0X3JlY3Vyc2l2ZSI6ZmFsc2UsImRpcmVjdF90aHVua190YXJnZXQiOm51bGwsImJvZHkiOnsicmFuZ2VfY291bnQiOjEsInJldHVybmVkX3JhbmdlX2NvdW50IjoxLCJhZGRyZXNzX2NvdW50IjoiNTAiLCJjb21wbGV0ZSI6dHJ1ZSwicmFuZ2VzIjpbeyJzdGFydCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA1MDcwIn0sImVuZF9pbmNsdXNpdmUiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwNTBhMSJ9LCJsZW5ndGgiOiI1MCJ9XX19XSwiZGlyZWN0X2NhbGxfdGFyZ2V0cyI6W3siYWRkcmVzcyI6eyJzcGFjZSI6IkVYVEVSTkFMIiwib2Zmc2V0IjoiMDAwMDAxMDIifSwiZGVmYXVsdF90YXJnZXQiOmZhbHNlLCJlZmZlY3RpdmVfdGFyZ2V0Ijp0cnVlLCJmdW5jdGlvbl9hdF90YXJnZXQiOnsiZW50cnkiOnsic3BhY2UiOiJFWFRFUk5BTCIsIm9mZnNldCI6IjAwMDAwMTAyIn0sIm5hbWUiOiJUbHNTZXRWYWx1ZSIsIm5vX3JldHVybiI6ZmFsc2UsImlzX3RodW5rIjpmYWxzZSwidGh1bmtfdGFyZ2V0X3JlY3Vyc2l2ZSI6ZmFsc2UsImRpcmVjdF90aHVua190YXJnZXQiOm51bGx9fV0sIm1vZGlmaWNhdGlvbl9udW1iZXJfYWZ0ZXIiOiI2ODg0In0=",
+              "raw_sha256": "6858ef8b6e5087d55b0e9d86bc442baf9f6d72d56727de71cca4f6a2c74bd996"
+            }
+          ],
+          "validation": {
+            "accepted": true,
+            "state": "accepted",
+            "errors": []
+          },
+          "modification_number": "6884"
+        }
+      },
+      "annotation": {
+        "authorized_in_memory_name_override": {
+          "before": "LIBCRT_unmatched_00c05070",
+          "after": "BSP_CRT_SelectThreadDataGetter",
+          "frozen_ledger_not_edited": true
+        },
+        "tool": "ghidra_annotate.apply_entries under coordination.ghidra_lock; exact one selected frozen-ledger entry with Root-authorized provisional name override",
+        "tool_log": "local/oct16_tls_getter_annotation_log.txt",
+        "full_name_comment_preimages": "local/ghidra-annotations-20261016T110126Z.json",
+        "independent_preimages": "local/oct16_tls_getter_preimages.json",
+        "prototype_before": "Function: LIBCRT_unmatched_00c05070 at 00c05070\nSignature: undefined LIBCRT_unmatched_00c05070(void)\nEntry: 00c05070\nBody: 00c05070 - 00c050a1\n{\n \"function_name\": \"LIBCRT_unmatched_00c05070\",\n \"address\": \"00c05070\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 16,\n \"basic_block_count\": 3,\n \"edge_count\": 3,\n \"call_count\": 1,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 2,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"BSP_CRT_DecodePointerCurrentState\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [],\n \"basic_block_hashes\": [\n  \"192b046daecca9a7655130564b5883232fdd2c0fb491933da93704f2de580bc1\",\n  \"09488d3a625159cd5cc52ea208fd9eda098c144cfcd0ee2f71d93c820010bff9\",\n  \"dd55f02ed36af1f75c958b9e1e29603d365dc7ef81a4309c535043206a083910\"\n ]\n}\n",
+        "prototype_after": "Function: BSP_CRT_SelectThreadDataGetter at 00c05070\nSignature: undefined BSP_CRT_SelectThreadDataGetter(void)\nEntry: 00c05070\nBody: 00c05070 - 00c050a1\n{\n \"function_name\": \"BSP_CRT_SelectThreadDataGetter\",\n \"address\": \"00c05070\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 16,\n \"basic_block_count\": 3,\n \"edge_count\": 3,\n \"call_count\": 1,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 2,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"BSP_CRT_DecodePointerCurrentState\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [],\n \"basic_block_hashes\": [\n  \"192b046daecca9a7655130564b5883232fdd2c0fb491933da93704f2de580bc1\",\n  \"09488d3a625159cd5cc52ea208fd9eda098c144cfcd0ee2f71d93c820010bff9\",\n  \"dd55f02ed36af1f75c958b9e1e29603d365dc7ef81a4309c535043206a083910\"\n ]\n}\n",
+        "full_observed_signature_and_metric_text_equal_except_name": true,
+        "no_type_or_abi_mutation_endpoint": true,
+        "old_comment_prefix_characters": 188,
+        "old_comment_prefix_exact": true,
+        "project_saved": true,
+        "tool_log_SHA256": "0d9cb44dcf0b38a0096a67b40f6cd791ffdbdf7887ef20145c9e083bd4191ee7",
+        "full_name_comment_preimages_SHA256": "4d2a77dc14f52f92777d4c7f94e851f14bfae55ef5172e37a0dbc1d79a0e1d23",
+        "independent_preimages_SHA256": "e98cc57148066876b2b738074e9463142d660c73706217dcdc8c23cb62bdc31d"
+      },
+      "exports": {
+        "log": "local/oct16_tls_getter_exports.txt",
+        "log_SHA256": "1bb282e176585b39b83ae9ed3d68c29a2977842fa0cafc69530b638335de74b2",
+        "count": 1,
+        "whole_bytes": 50,
+        "instruction_starts": 16,
+        "files": {
+          "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c05070\\metadata.json": {
+            "bytes": 325,
+            "SHA256": "12950c85971653c1c9922dd2388399bb868d7b2bb7292c839a910defe8614578"
+          },
+          "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c05070\\assembly.txt": {
+            "bytes": 434,
+            "SHA256": "3b678fb7ce444e4ce2f23636dccf93301486371337b52301d9754f1783a9fa1a"
+          },
+          "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c05070\\decompiled.c": {
+            "bytes": 1521,
+            "SHA256": "7deb2d643f76fcad03e4d4494b6fb799eaa5e6cc9178cec77c9b60d4d09cd9c3"
+          }
+        },
+        "all_exported_starts_equal_current_Native": true,
+        "prototype_after_export": "Function: BSP_CRT_SelectThreadDataGetter at 00c05070\nSignature: undefined BSP_CRT_SelectThreadDataGetter(void)\nEntry: 00c05070\nBody: 00c05070 - 00c050a1\n{\n \"function_name\": \"BSP_CRT_SelectThreadDataGetter\",\n \"address\": \"00c05070\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 16,\n \"basic_block_count\": 3,\n \"edge_count\": 3,\n \"call_count\": 1,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 2,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"BSP_CRT_DecodePointerCurrentState\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [],\n \"basic_block_hashes\": [\n  \"192b046daecca9a7655130564b5883232fdd2c0fb491933da93704f2de580bc1\",\n  \"09488d3a625159cd5cc52ea208fd9eda098c144cfcd0ee2f71d93c820010bff9\",\n  \"dd55f02ed36af1f75c958b9e1e29603d365dc7ef81a4309c535043206a083910\"\n ]\n}\n"
+      },
+      "three_actual_calls": {
+        "direct": {
+          "site": "00c05089",
+          "target": "00c04fde"
+        },
+        "IATs": {
+          "00ce20bc": {
+            "dll": "KERNEL32.dll",
+            "name": "TlsGetValue",
+            "bytes": "0e78a000",
+            "SHA256": "477dd9af5e09b4681ff8bc3e387ced2ea9a492850605a397b899ed1c84856e55",
+            "PE_live_equal": true
+          },
+          "00ce20b4": {
+            "dll": "KERNEL32.dll",
+            "name": "TlsSetValue",
+            "bytes": "2878a000",
+            "SHA256": "a81f1f21b683872c6cf46e74460ad4740f0c3f638b40e5d2c2f0d6a7cf8e3225",
+            "PE_live_equal": true
+          }
+        },
+        "indirect_sites": {
+          "00c05077": "00ce20bc",
+          "00c05098": "00ce20b4"
+        },
+        "all_current_calls_typed_no_override": true
+      },
+      "preservation": {
+        "frozen_receipt": {
+          "path": "local\\oct16_native_crt_tls_getter_selector_frozen_pin.json",
+          "SHA256": "4d35a2dc7abc5f7226b90fc2bfef501c2a3fbdcda76e3e2cfc817f2c9736f823"
+        },
+        "seven_files": {
+          "cmake/startup.cmake": {
+            "bytes": 267558,
+            "SHA256": "685cd2ecd59b4eac71cac33cab92c1e0f8ff0d2c6f09151c69928dd6c2ead401",
+            "LF_SHA256": "685cd2ecd59b4eac71cac33cab92c1e0f8ff0d2c6f09151c69928dd6c2ead401",
+            "git_blob": "2fb0cf810f984c253aa20afdf457e2517d755e40"
+          },
+          "config/names/00c00000.jsonl": {
+            "bytes": 46100,
+            "SHA256": "b789e1a8fdc745f5f0d79e894dc20d7192224f7f4b3312fd3a8a02f866d0f13d",
+            "LF_SHA256": "b789e1a8fdc745f5f0d79e894dc20d7192224f7f4b3312fd3a8a02f866d0f13d",
+            "git_blob": "f476556892008de13e5720e8fb62ee771d3cd022"
+          },
+          "config/reconstruction/00c00000.jsonl": {
+            "bytes": 52747,
+            "SHA256": "8aaa4294fcd7210d1b6b29d161e3d43a0b6160a2528a74827378ecc1721e2330",
+            "LF_SHA256": "8aaa4294fcd7210d1b6b29d161e3d43a0b6160a2528a74827378ecc1721e2330",
+            "git_blob": "a578a7183ff61e326204521d64581fd8607312fe"
+          },
+          "docs/OCT16_NATIVE_CRT_TLS_GETTER_SELECTOR.md": {
+            "bytes": 3593,
+            "SHA256": "1e220edec92cb85c4e305bc8c56ab60152811246895d274ff9fd0d8067f25fc3",
+            "LF_SHA256": "1e220edec92cb85c4e305bc8c56ab60152811246895d274ff9fd0d8067f25fc3",
+            "git_blob": "63f712a6a01d6720f99f67a27f21cbf549f4a2e8"
+          },
+          "include/bsp/native_crt_tls_getter_selector.hpp": {
+            "bytes": 1859,
+            "SHA256": "2f14cd789a46fd4773e4afadba3e5f1640acab53d13ada18228765d66f9be14d",
+            "LF_SHA256": "2f14cd789a46fd4773e4afadba3e5f1640acab53d13ada18228765d66f9be14d",
+            "git_blob": "f2eb7b4292ddebcfb8367a5798bb44e15884602b"
+          },
+          "reports/oct16_native_crt_tls_getter_selector.json": {
+            "bytes": 15823,
+            "SHA256": "dbdd9e25c28b65f5246b997595a58db78555f7766abcd276b030c11da5d3a712",
+            "LF_SHA256": "dbdd9e25c28b65f5246b997595a58db78555f7766abcd276b030c11da5d3a712",
+            "git_blob": "4937e65425bf807de89892b252956389e8122fbe"
+          },
+          "src/native_crt_tls_getter_selector.cpp": {
+            "bytes": 1288,
+            "SHA256": "04988820a0774e61bf65b32bc78a2c768c8c5344db701d19380c5aef85f8cc61",
+            "LF_SHA256": "04988820a0774e61bf65b32bc78a2c768c8c5344db701d19380c5aef85f8cc61",
+            "git_blob": "95801c31cd5874635b6df5ba9bc4771ceacacbd7"
+          }
+        },
+        "seven_artifacts": {
+          "local/oct16_native_crt_tls_getter_selector_native_audit.json": {
+            "bytes": 63390,
+            "SHA256": "9c95a9120c37f1fb3dcbe2554cdccc058a064fb9432399e62b5efb19a063d628"
+          },
+          "local/oct16_native_crt_tls_getter_selector_actual_COFF.json": {
+            "bytes": 10783,
+            "SHA256": "1511f4705376da743bc7fa476b39eee8650093b61558647eed2dba2dafbdb34f"
+          },
+          "local/oct16_native_crt_tls_getter_selector_actual_COFF_decoded.txt": {
+            "bytes": 1616,
+            "SHA256": "12eab868e080403db446816d8290c1bb3b8a12c01a48c76c8eeeb72ce61d067d"
+          },
+          "local/oct16_native_crt_tls_getter_selector_build.log": {
+            "bytes": 3811,
+            "SHA256": "ab43ce69fd8c2da2771266843365acec5257c0b37e5ffee03ab2e27399e59d84"
+          },
+          "local/oct16_native_crt_tls_getter_selector_commit_message.txt": {
+            "bytes": 568,
+            "SHA256": "55508edeb026ca3a6370fc9f1f3e8f6c9fd895206c7201ecb44087033c0883ec"
+          },
+          "local/oct16_secure_memmove_original_before_tls_getter.obj": {
+            "bytes": 971,
+            "SHA256": "2c8796be76e4ba53b644d7d6d4ba96f9c95f1e889434d0b3c94487e84a8b4c84"
+          },
+          "local/oct16_secure_memmove_original_before_tls_getter.json": {
+            "bytes": 711,
+            "SHA256": "53012693d0dc32d9bc757aa41478a9518d3e1a988ced6d3ec5d238b605c97d11"
+          }
+        },
+        "precommit": {
+          "path": "local\\oct16_native_crt_tls_getter_selector_precommit.json",
+          "SHA256": "f7173131af431becbe9bf36443bf44db3acbeb7e3600ab804818dbc7d1402e98"
+        }
+      },
+      "Root_seals": {
+        "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_tls_getter_primary.json": {
+          "SHA256": "ca7216d21ed3d233e840af1b97f18fd691c97d9d98040707684fc18c2f1a1f7f",
+          "checks": 15
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_tls_getter_primary_frozen.json": {
+          "SHA256": "b3aa34ff32efdae0e7c7dd3ae81b18b49f5e7208752ddcdacd615459cc999a92",
+          "checks": 22
+        }
+      },
+      "UTC": "2026-10-16T11:02:48.631628+00:00",
+      "Source_pin": "340cd1eb1bf9aee6eec41904a7686a49e746eb53",
+      "status": "complete exact one-entry locked annotation/save/force-export; frozen Source unchanged",
+      "Source_lease": "retained pending Root publication; release immediately on publication notice",
+      "limits": "No Source/doc/report/ledger/prototype/type/Main/push change; no runtime ownership, Original ABI/SEH/fault or game promotion."
+    }
+  },
+  "actual_integrator_COFF": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\build\\win32\\bsp_core.dir\\Release\\native_crt_tls_getter_selector.obj",
+    "sha256": "756b8a0031a51a92c2542d02c22b5defa8b8684fa41f1c4ea485b8a984de74fa",
+    "CODE_bytes": 60,
+    "instructions": 32,
+    "REL32": 1,
+    "CODE_and_symbolic_relocations_equal_worker": true,
+    "whole_object_identity_claimed": false
+  },
+  "verification": {
+    "build_log": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_batch49_build.txt",
+    "build_log_sha256": "2f4da94228b9b8b01b8103db0ade4dde306701cc62d7fc157291afcc171e4dab",
+    "passed": 3,
+    "failed": 0,
+    "seconds": 8.42,
+    "transfer_log": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_batch49_transfers.txt",
+    "transfer_log_sha256": "97f35ddbc9254029b50d19619eae6a0180ad569fd4083d94452d04986820eb0c",
+    "direct_calls_checked": 1,
+    "IAT_calls_separately_PE_checked": 2,
+    "Markdown_calls_checked": 1,
+    "suites_execute_new_body": false
+  },
+  "limits": [
+    "No concrete TLS/PTD/bootstrap/encoded-pointer/errno/handler/locale/heap runtime owner reconstructed.",
+    "Existing CurrentSDK/provided-callee APIs remain; no default shadow owner, retry, LastError repair, catch, rollback or noexcept adapter.",
+    "Original ABI/private frames/register/fault/FH3/SEH/runtime/game remain unproved.",
+    "Read-only initializer329B105/28EH and other runtime investigations are prerequisite evidence, not Source credit for this50B leaf."
+  ],
+  "remaining_prerequisites": [
+    "C050F8 initializer and logical finallyC051AE; actual lock/error/SEH4 runtime",
+    "C11B5E lazy lock initializer, BFBA09 fatal reporter, installed C07C90 handler",
+    "PTD allocator/free, __mtinit bootstrap, actual TLS/encoded cells, locale BF7EEC"
+  ]
+}
