@@ -293,7 +293,13 @@
   "limits": [
     "No new implementation in192; Source187 supplies four whole entries, readonly183/191 supply contracts only",
     "Existing checks and address-only linking do not execute the four new target bodies or prove Native private ABI/runtime/gameplay",
-    "Prior Source/header closure694 inputs remains byte-identical after Main refresh; no new emitted-code review needed because all19 old actual objects preserve all code/ordered symbolic relocations",
+    "All692 previously frozen src/include files and CMakeLists remain byte-identical; startup.cmake adds five already-published registrations. All19 relevant Core objects preserve all code and ordered symbolic relocations.",
     "Existing unrelated Lua LNK4006 duplicate is qualified; no new tests/runtime probes added"
-  ]
+  ],
+  "Source_comparison_scope": {
+    "unchanged_src_include_files": 692,
+    "unchanged_CMakeLists": true,
+    "startup_cmake_expected_published_registration_additions": 5,
+    "total_original_frozen_Source_header_config_inputs": 694
+  }
 }
