@@ -92,8 +92,9 @@ native transfer rows/Markdown claims pass without failures or unchecked claims;
 twelve fresh typed child sites have normal fallthrough and no overrides.
 Independent primary review of both complete native bodies and whole
 Source/header passed; the recorded Source/header and canonical provider hashes
-were asserted unchanged before recording that review. Unique CMake registration
-and the normal Win32 build remain pending; no CMake request is queued while the
-primary finishes the preceding batch promotion. No new tests are
+were asserted unchanged before recording that review. The unique CMake line
+was appended at our first queue turn after an immediate unleased check. Our
+queue request was removed before building; no exclusive registry lease was
+taken. The actual normal Win32 build and focused object review remain pending. No new tests are
 added; packet-specific native execution, original ABI and game validation are
 unproved.
