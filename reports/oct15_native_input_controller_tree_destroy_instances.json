@@ -1,0 +1,338 @@
+{
+  "packet": "oct15_native_input_controller_tree_destroy_instances",
+  "status": "complete_ordinary_source_build_tested_current_cpp_crt_boundary",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline": "be9d456136a32ae538e1e38e84404cc2882ed07f",
+  "source": "src/native_input_controller_tree_destroy_instances.cpp",
+  "header": "include/bsp/native_input_controller_tree_destroy_instances.hpp",
+  "documentation": "docs/OCT15_NATIVE_INPUT_CONTROLLER_TREE_DESTROY_INSTANCES.md",
+  "source_sha256": {
+    "src/native_input_controller_tree_destroy_instances.cpp": "fc492a1190cdff014fc1237c4e608e58636a03ad30410460df77cb93ecaf2a2a",
+    "include/bsp/native_input_controller_tree_destroy_instances.hpp": "92cba5dc9d813e6f4c8d176922d4a65d82a172ff7c825140096ce462538323ab",
+    "docs/OCT15_NATIVE_INPUT_CONTROLLER_TREE_DESTROY_INSTANCES.md": "e5432ff432c7986431b8d6a77a1c7f7bbdd8cacc9094f108af3a888586a1fda5"
+  },
+  "routines": [
+    {
+      "address": "006a6c20",
+      "name": "destroy_native_input_controller_tree_006a6c20",
+      "library_identity_preserved": "STL_Tree_Destroy_006a6c20",
+      "source": "src/native_input_controller_tree_destroy_instances.cpp",
+      "header": "include/bsp/native_input_controller_tree_destroy_instances.hpp",
+      "status": "complete_ordinary_source_build_tested_current_cpp_crt_boundary",
+      "native_body": {
+        "start": "006a6c20",
+        "end_inclusive": "006a6c53",
+        "bytes": 52,
+        "starts": 23,
+        "gaps": 0
+      },
+      "original_ABI": {
+        "ECX": "actual12B tree",
+        "EDX": "unconsumed",
+        "stack_words": [],
+        "RET": "plain",
+        "EAX": "DWORD0 beforestores",
+        "local_EH": "none"
+      },
+      "Source_ABI": "uint32 __fastcall(tree,uint32 unusedEDX,NativeStringRawPoolContext&), RET4; canonical childEDX0",
+      "binary_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "006a6e70",
+      "name": "destroy_native_input_controller_tree_006a6e70",
+      "library_identity_preserved": "STL_Tree_Destroy_006a6e70",
+      "source": "src/native_input_controller_tree_destroy_instances.cpp",
+      "header": "include/bsp/native_input_controller_tree_destroy_instances.hpp",
+      "status": "complete_ordinary_source_build_tested_current_cpp_crt_boundary",
+      "native_body": {
+        "start": "006a6e70",
+        "end_inclusive": "006a6ea3",
+        "bytes": 52,
+        "starts": 23,
+        "gaps": 0
+      },
+      "original_ABI": {
+        "ECX": "actual12B tree",
+        "EDX": "unconsumed",
+        "stack_words": [],
+        "RET": "plain",
+        "EAX": "DWORD0 beforestores",
+        "local_EH": "none"
+      },
+      "Source_ABI": "uint32 __fastcall(tree,uint32 unusedEDX,NativeStringRawPoolContext&), RET4; canonical childEDX0",
+      "binary_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "006a7040",
+      "name": "destroy_native_input_controller_tree_006a7040",
+      "library_identity_preserved": "STL_Tree_Destroy_006a7040",
+      "source": "src/native_input_controller_tree_destroy_instances.cpp",
+      "header": "include/bsp/native_input_controller_tree_destroy_instances.hpp",
+      "status": "complete_ordinary_source_build_tested_current_cpp_crt_boundary",
+      "native_body": {
+        "start": "006a7040",
+        "end_inclusive": "006a7073",
+        "bytes": 52,
+        "starts": 23,
+        "gaps": 0
+      },
+      "original_ABI": {
+        "ECX": "actual12B tree",
+        "EDX": "unconsumed",
+        "stack_words": [],
+        "RET": "plain",
+        "EAX": "DWORD0 beforestores",
+        "local_EH": "none"
+      },
+      "Source_ABI": "uint32 __fastcall(tree,uint32 unusedEDX,NativeStringRawPoolContext&), RET4; canonical childEDX0",
+      "binary_ABI_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "006a6c20",
+      "address": "006a6c36",
+      "native": "006a6a20",
+      "kind": "call",
+      "scope": "owned",
+      "evidence": "Whole52B PE/live body plus exact currentstart/actualE8; one canonical row."
+    },
+    {
+      "function": "006a6c20",
+      "address": "006a6c3f",
+      "native": "00bf65ac",
+      "kind": "call",
+      "scope": "owned",
+      "evidence": "Whole52B PE/live body plus exact currentstart/actualE8; one canonical row."
+    },
+    {
+      "function": "006a6e70",
+      "address": "006a6e86",
+      "native": "006a6a20",
+      "kind": "call",
+      "scope": "owned",
+      "evidence": "Whole52B PE/live body plus exact currentstart/actualE8; one canonical row."
+    },
+    {
+      "function": "006a6e70",
+      "address": "006a6e8f",
+      "native": "00bf65ac",
+      "kind": "call",
+      "scope": "owned",
+      "evidence": "Whole52B PE/live body plus exact currentstart/actualE8; one canonical row."
+    },
+    {
+      "function": "006a7040",
+      "address": "006a7056",
+      "native": "006a6a20",
+      "kind": "call",
+      "scope": "owned",
+      "evidence": "Whole52B PE/live body plus exact currentstart/actualE8; one canonical row."
+    },
+    {
+      "function": "006a7040",
+      "address": "006a705f",
+      "native": "00bf65ac",
+      "kind": "call",
+      "scope": "owned",
+      "evidence": "Whole52B PE/live body plus exact currentstart/actualE8; one canonical row."
+    },
+    {
+      "function": "006a2b00",
+      "address": "006a2b16",
+      "native": "006a1aa0",
+      "kind": "call",
+      "scope": "read_only_published_preset_reference",
+      "evidence": "Whole52B PE/live body plus exact currentstart/actualE8; one canonical row."
+    },
+    {
+      "function": "006a2b00",
+      "address": "006a2b1f",
+      "native": "00bf65ac",
+      "kind": "call",
+      "scope": "read_only_published_preset_reference",
+      "evidence": "Whole52B PE/live body plus exact currentstart/actualE8; one canonical row."
+    }
+  ],
+  "Source_derivation": {
+    "cpp": "src/native_input_controller_tree_destroy_instances.cpp",
+    "hpp": "include/bsp/native_input_controller_tree_destroy_instances.hpp",
+    "cpp_sha256": "fc492a1190cdff014fc1237c4e608e58636a03ad30410460df77cb93ecaf2a2a",
+    "hpp_sha256": "92cba5dc9d813e6f4c8d176922d4a65d82a172ff7c825140096ce462538323ab",
+    "lines": 69,
+    "reference_pin": "895294ff2a5d6dfbcb7e83542bd1e52e38dd3bb1",
+    "reference_cpp_LF_sha256": "09a4c68b92f31e05c38ce81de76a76463596ec6143a483e1565c813a104bc406",
+    "only_literal_Source_replacements": [
+      [
+        "native_input_preset_tree_destroy.hpp",
+        "native_input_controller_tree_destroy_instances.hpp"
+      ],
+      [
+        "native_input_preset_tree_range.hpp",
+        "native_input_controller_tree_range.hpp"
+      ],
+      [
+        "destroy_native_input_preset_tree_006a2060",
+        "destroy_native_input_controller_tree_006a6c20"
+      ],
+      [
+        "destroy_native_input_preset_tree_006a24b0",
+        "destroy_native_input_controller_tree_006a6e70"
+      ],
+      [
+        "destroy_native_input_preset_tree_006a2b00",
+        "destroy_native_input_controller_tree_006a7040"
+      ],
+      [
+        "NativeInputPresetTreeIterator",
+        "NativeInputControllerTreeIterator"
+      ],
+      [
+        "erase_native_input_preset_tree_range_006a1aa0",
+        "erase_native_input_controller_tree_range_006a6a20"
+      ]
+    ],
+    "CMake_append": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_input_controller_tree_destroy_instances.cpp)"
+  },
+  "published_provider_LF_blob_sha256": {
+    "src/native_input_controller_tree_range.cpp": "724e9f34c6fb6fdd2178723b7715aa81a8cc756f8978a05ba36d4852bea46165",
+    "include/bsp/native_input_controller_tree_range.hpp": "a74c31d815ee767b6c9d403b0d6db942a3929114a3f2a8f672f6b9f58d651a37",
+    "src/native_input_controller_tree_erase.cpp": "cbfa81c681aef5bb2f07ee56ce85118e25f2b44872e897204549a1e68d46ad8f",
+    "include/bsp/native_input_controller_tree_erase.hpp": "de4cf3f09015875738440254ec55dc91c0b52a30de85405bf4ddefe591fd95dc",
+    "src/native_input_preset_tree_destroy.cpp": "09a4c68b92f31e05c38ce81de76a76463596ec6143a483e1565c813a104bc406",
+    "include/bsp/native_input_preset_tree_destroy.hpp": "95e7688464050c7d1c3527852dcb6c8e65a3a6e6df1fdb93282ecbd0ce1ad65f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/native_input_settings_tree_cleanup.cpp": "d8be9c5d9613ee258a06fe42a6696269a13a60f53a8a4e1d75aa2e4292feab30",
+    "include/bsp/native_input_settings_tree_cleanup.hpp": "db6fdb5d7c26f1bd416693464823e29c97bce248e987da5d033d626b4603c875"
+  },
+  "ancestry_verified": [
+    "2cc9f95f9cbe10577c5f669a60de77e5e0cff1ab",
+    "895294ff2a5d6dfbcb7e83542bd1e52e38dd3bb1"
+  ],
+  "contracts": {
+    "capture": "head thenhead.left; sameowners/capturedendpoints/privateignored8Bout to actualwhole6A6A20; real8Bcarrier+borrowedRawCtx.",
+    "post_success": "Reload CURRENT head for currentfree; +4zero before+8zero; returnDWORD0.",
+    "failure": "Childprogress retained before ownfree/stores; no guard/keycleanup/rollback/localEH.",
+    "private_ABI": "SourcecontextRET4, canonicalchildEDX0, SourceEAXzeroafterstores versusNativebefore; frames/args/flags unproved."
+  },
+  "verification": {
+    "native": {
+      "owned_bytes": 156,
+      "owned_starts": 69,
+      "owned_CALLs": 6,
+      "reference_bytes": 52,
+      "reference_starts": 23,
+      "reference_CALLs": 2,
+      "all_current_starts": 92,
+      "gaps": 0,
+      "only_two_verified_E8_operands_normalized": true
+    },
+    "build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "target": "MSVC Win32",
+      "log": "local/oct15_native_input_controller_tree_destroy_instances_build.log",
+      "log_sha256": "6f8a74a8c123d1773c15aa3106725b3590b98fbb1367c966e3ccd77dc517eee9",
+      "existing_suites": [
+        {
+          "name": "reconstructed_math",
+          "seconds": 0.23,
+          "result": "pass"
+        },
+        {
+          "name": "native_math_differential",
+          "seconds": 0.03,
+          "result": "pass"
+        },
+        {
+          "name": "tool_tests",
+          "seconds": 9.61,
+          "result": "pass"
+        }
+      ],
+      "total_seconds": 9.94,
+      "new_tests": 0,
+      "scope": "Existing suites do not execute these new bodies; no probe/native/game/ABI validation."
+    },
+    "COFF": {
+      "receipt": "local/oct15_native_input_controller_tree_destroy_instances_coff.json",
+      "receipt_sha256": "0ed230bd46b964915e31a9fe4838c73c2975a34115b3ba0176e062e14db720c7",
+      "object_path": "build/win32/bsp_core.dir/Release/native_input_controller_tree_destroy_instances.obj",
+      "object_sha256": "3c680c5ab7061184e6745db9c25983b1f1c8f95852f401915f91afd8918dd63b",
+      "object_bytes": 2646,
+      "code_bytes": 251,
+      "starts": 107,
+      "public_bytes": 201,
+      "public_starts": 81,
+      "helper_bytes": 50,
+      "helper_starts": 26,
+      "code_REL32": 6,
+      "noncode_relocs": 0,
+      "padding": 0,
+      "checks_passed": 12,
+      "full_actual_read": true
+    },
+    "report_calls": {
+      "status": "pass",
+      "checked": 8,
+      "owned": 6,
+      "reference": 2,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "log": "local/oct15_native_input_controller_tree_destroy_instances_report_calls.txt",
+      "log_sha256": "23d29697dd4355e8fe9a8d61fa8757f9249c17055ee5545a675cab88fc3f8163"
+    },
+    "Markdown_calls": {
+      "status": "pass",
+      "checked": 8,
+      "owned": 6,
+      "reference": 2,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "log": "local/oct15_native_input_controller_tree_destroy_instances_markdown_calls.txt",
+      "log_sha256": "9817ee7febf17d0c039841dabfe7de2d290a557befe4b551ac81a6a799bcf127"
+    },
+    "git_diff": {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "own_only": true,
+      "preserved_prior_names_records": true,
+      "one_CMake_append": true
+    },
+    "index_if_stale_exit_code": 0
+  },
+  "Source_COFF": {
+    "receipt": "local/oct15_native_input_controller_tree_destroy_instances_coff.json",
+    "receipt_sha256": "0ed230bd46b964915e31a9fe4838c73c2975a34115b3ba0176e062e14db720c7",
+    "object_path": "build/win32/bsp_core.dir/Release/native_input_controller_tree_destroy_instances.obj",
+    "object_sha256": "3c680c5ab7061184e6745db9c25983b1f1c8f95852f401915f91afd8918dd63b",
+    "object_bytes": 2646,
+    "code_bytes": 251,
+    "starts": 107,
+    "public_bytes": 201,
+    "public_starts": 81,
+    "helper_bytes": 50,
+    "helper_starts": 26,
+    "code_REL32": 6,
+    "noncode_relocs": 0,
+    "padding": 0,
+    "checks_passed": 12,
+    "full_actual_read": true
+  },
+  "ignored_native_evidence": "local/oct15_native_input_controller_tree_destroy_instances_evidence.json",
+  "ignored_native_evidence_sha256": "40c377720a28f18748f5e6a8c9bc3b4dd65a403c6105f69c647ae6526d821665",
+  "preserved_prior": "Historical b9 owner/e92 member receipts and append/leaf/422 pins preserved; no ownerbinding, EBP helper, newcontext/global/model/provider/callback or old Source/fixture changes.",
+  "limits": [
+    "Valid reached actualstorage/matching currentCRT/borrowedpool ownership.",
+    "RawvolatileDWORD/unsigned32wrap; new Sourcearguments/privateframes/registerflags differ.",
+    "OriginalCRT/heap/FH3/RTTI/SEH/fault/cleanupfailure/binaryABI/game equivalence unproved.",
+    "Existing3suites do not execute newentries; no newtests/probes/nativeexecution."
+  ]
+}
