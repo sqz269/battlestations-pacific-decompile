@@ -153,8 +153,11 @@ struct GameFrontendSummary {
 // 00aeeaf0. Every value it uses is authored data; none of its drawing is recovered.
 class GameFrontendHost {
 public:
+    // Borrow the application's one queried Source capability. Its owner must
+    // outlive this frontend, its layouts and every retained conversion user.
     GameFrontendHost(GameHostLog& log, GameVfsHost& vfs, GameScriptHost& scripts,
-        GameFontHost& fonts, IDirect3DDevice9& device, bool widescreen);
+        GameFontHost& fonts, IDirect3DDevice9& device, bool widescreen,
+        const bool& gui_sse2_conversion);
     ~GameFrontendHost();
     GameFrontendHost(const GameFrontendHost&) = delete;
     GameFrontendHost& operator=(const GameFrontendHost&) = delete;

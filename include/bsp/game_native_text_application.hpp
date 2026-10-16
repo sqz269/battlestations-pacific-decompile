@@ -25,11 +25,12 @@ struct GameNativeTextApplicationBindings {
     NativeMaterialParameterAccess& parameters;
     const GuiMaterialBindingServices& style;
     NativeFontResourceOwners& fonts;
-    FontRegistryStartup*& published_registry_00f8bf44;
-    SingletonLifetimeManager& singleton_lifetime;
+    GuiTextFontRegistryAccess font_registry;
     const LocaleTables& locale;
     LocaleTextRuntimeHost& locale_runtime;
-    const std::int32_t& crt_locale_changed_0109de1c;
+    GuiTextContentComparison content_comparison;
+    // Required for borrowed-cell mode. Source-current mode obtains its
+    // required/preflighted comparator from content_comparison and may pass null.
     int (*compare_current_locale_00c0392a)(const char16_t*, const char16_t*);
     GuiNativeNameCompare compare_names_00bf7fbf;
     const bool& crt_sse2_conversion;

@@ -31,6 +31,7 @@ struct IGameExplorer;
 #include <cstdio>
 #include <functional>
 #include <memory>
+#include <optional>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -674,6 +675,10 @@ public:
     GameLocaleHost* locale_host() const noexcept { return locale_; }
     GameFontHost* font_host() const noexcept { return fonts_; }
     GameFrontendHost* frontend_host() const noexcept { return frontend_; }
+    // Serialized Source GUI capability. Sample once on first actual request;
+    // this SAME bool survives frontend/font retirement and the shared drain.
+    // It is not the Original0109EEA4 cell or a recovered CRT selector owner.
+    const bool& gui_sse2_conversion() const noexcept;
     GameMenuHost* menu_host() const noexcept { return menu_; }
     GameDecalTable* decal_table() const noexcept { return decals_; }
     const ObjectHandleResolverSlots& object_handle_resolvers() const noexcept { return object_resolvers_; }
@@ -689,6 +694,9 @@ public:
     void* volatile& input_backend_publication() noexcept { return input_backend_00f8bbf4_; }
 
 private:
+    // Declared before all potential borrowers: its engaged bool also survives
+    // their reverse-order member destruction. Disengaged has no exposed value.
+    mutable std::optional<bool> gui_sse2_conversion_;
     void run_initialize_phases(const char* mode);
     void release_platform_window() noexcept;
     void exit_if_native_platform_incomplete() noexcept;
