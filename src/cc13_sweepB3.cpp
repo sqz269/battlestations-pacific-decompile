@@ -195,7 +195,7 @@ void cc13_sweepB3_session_row_update_ping_icons_00578580(void* row, float ping, 
     for (std::uint32_t i = 0; i < 5; ++i) {
         const float threshold = at<float>(host.lobby_option_registry_00576b10(), 0xA4 + 4 * i);
         const char* name = *static_cast<const char**>(host.image_global(0x00E0874C + 4 * i));
-        const bool lit = !(ping < threshold);
+        const bool lit = ping >= threshold;   // FCOMI + JB: below or unordered (NaN) hides
         with_c_string(name, static_cast<std::uint32_t>(std::strlen(name)), host, [&](Cc13SweepBNativeString* text) {
             void* icon = host.widget_find_child_00aa7e00(row, text, 1);
             host.widget_vcall_34_set_visible(icon, lit ? 1 : 0);
