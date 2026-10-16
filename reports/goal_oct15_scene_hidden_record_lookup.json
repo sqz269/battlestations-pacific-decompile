@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_hidden_record_lookup",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "base_revision": "4699151a4f4baaa597e819477b3930d6cd8f85fb",
+  "source": "src/native_scene_hidden_record_lookup.cpp",
+  "header": "include/bsp/native_scene_hidden_record_lookup.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_LOOKUP.md",
+  "status": "whole_actual_raw_source_independently_reviewed_registered_build_pending",
+  "routines": [
+    {
+      "address": "004691b0",
+      "name_hypothesis_retained": "BSP_SceneDatabase_FindHiddenEntityRecord",
+      "body_end_inclusive": "0046923d",
+      "body_bytes": 142,
+      "instructions": 54,
+      "physical_calls": 7,
+      "implementation": "find_native_scene_hidden_record_004691b0",
+      "coverage": "complete_actual_raw_source_with_live_input4_distinct_private_header8_output8_and_accepted_concrete_providers",
+      "original_abi": "ECX database,EDX unused;firstinstruction captures nameDWORD at entryESP+4 before framewrites;RET4;EBX/ESI/EDI preserved;inputP+4,headerP-10h,outputP-8 distinct;raw EAX mapped DWORD or0;no nominal record/ownership inference",
+      "live_installed_equal": true,
+      "live_hex": "8b44240483ec1056578bf1508d4c240ce8ab56fbff8d4c2408518d54241483c618528bcee8f7faffff8b44240c85c074178b4c24086a0183c1015150e8cf0afbff8bc8e8188376008b7c241085ff538b5e0474043bfe7405e806d578008b7424183bf35b750a5f33c05e83c410c2040085ff7505e8ead478003b77047505e8e0d478008b46145f5e83c410c20400",
+      "sha256": "32b17b7016c3e9857dbd7c69aec940efaafb491480c62a39f71396abe3886313"
+    },
+    {
+      "address": "00469480",
+      "name_hypothesis_retained": "BSP_SceneDatabase_HasHiddenEntityRecord",
+      "body_end_inclusive": "004694ed",
+      "body_bytes": 110,
+      "instructions": 43,
+      "physical_calls": 5,
+      "implementation": "has_native_scene_hidden_record_00469480",
+      "coverage": "complete_actual_raw_source_with_live_input4_distinct_private_header8_output8_and_accepted_concrete_providers",
+      "original_abi": "ECX database,EDX unused;firstinstruction captures nameDWORD at entryESP+4 before framewrites;RET4;EBX/ESI/EDI preserved;inputP+4,headerP-10h,outputP-8 distinct;AL0/1 only;upper EAX not canonical DWORD bool",
+      "live_installed_equal": true,
+      "live_hex": "8b44240483ec105356578bf1508d4c2410e8da53fbff8b5e1c8d4c240c5183c6188d542418528bcee823f8ffff8bf88b0785c074043bc67405e855d27800395f048b4424100f95c385c074178b4c240c6a0183c1015150e8e407fbff8bc8e82d8076005f5e8ac35b83c410c20400",
+      "sha256": "825ae00212fa398ed72c4232ca19e6e8258221545dc75cbc782a1209655468b5"
+    }
+  ],
+  "coverage_totals": {
+    "bytes": 252,
+    "instructions": 97,
+    "physical_calls": 12
+  },
+  "host_steps": [
+    {
+      "address": "004691c0",
+      "native": "0041e870",
+      "function": "004691b0",
+      "kind": "call"
+    },
+    {
+      "address": "004691d4",
+      "native": "00468cd0",
+      "function": "004691b0",
+      "kind": "call"
+    },
+    {
+      "address": "004691ec",
+      "native": "00419cc0",
+      "function": "004691b0",
+      "kind": "call"
+    },
+    {
+      "address": "004691f3",
+      "native": "00bd1510",
+      "function": "004691b0",
+      "kind": "call"
+    },
+    {
+      "address": "00469208",
+      "native": "00bf6713",
+      "function": "004691b0",
+      "kind": "call"
+    },
+    {
+      "address": "00469224",
+      "native": "00bf6713",
+      "function": "004691b0",
+      "kind": "call"
+    },
+    {
+      "address": "0046922e",
+      "native": "00bf6713",
+      "function": "004691b0",
+      "kind": "call"
+    },
+    {
+      "address": "00469491",
+      "native": "0041e870",
+      "function": "00469480",
+      "kind": "call"
+    },
+    {
+      "address": "004694a8",
+      "native": "00468cd0",
+      "function": "00469480",
+      "kind": "call"
+    },
+    {
+      "address": "004694b9",
+      "native": "00bf6713",
+      "function": "00469480",
+      "kind": "call"
+    },
+    {
+      "address": "004694d7",
+      "native": "00419cc0",
+      "function": "00469480",
+      "kind": "call"
+    },
+    {
+      "address": "004694de",
+      "native": "00bd1510",
+      "function": "00469480",
+      "kind": "call"
+    },
+    {
+      "address": "0094477d",
+      "native": "004691b0",
+      "function": "00944680",
+      "kind": "call"
+    },
+    {
+      "address": "008a9f1b",
+      "native": "00469480",
+      "function": "008a9e10",
+      "kind": "call"
+    }
+  ],
+  "mapped_result_schedule": "input first;ctor;Find;CURRENT keydata then iffnonnull CURRENT length+1mod32/getter/return. AFTERfree capture current outputowner then current maphead evenif owner0 before report. CURRENT outputnode captured only after firstreport. End returns0;unequal retains owner/node through second/third returning reports,current ownerhead beforethird and current node+14 afterthird;raw DWORD result.",
+  "membership_schedule": "input first;ctor;capture head BEFORE Find;capture actualchild EAX output pointer;read owner once,returnable report;compare CURRENT result+4 to capturedhead;CURRENT keydata read then SETNZbyte retained across normal conditional currentlength+1/pool release. No mappedword test;AL0/1 only,upper EAX unspecified.",
+  "frame_domain": "input4/header8/output8 bind distinct native ranges P+4/P-10h/P-8;Source metadata/bindings stable/disjoint;payload aliases admitted where reached actualstorage/provider domains valid. No callerprezero,implicit compiler/native/helper/child argument-slot/return/EH/spill/registersave/async aliases or binary identity.",
+  "provider_composition": "Actual 41E870 constructor,complete raw68CD0 Find,real raw419CC0/BD1510 and current returnable BF6713. Existing provider domains inherited;no callback/stub/provider simulation or new owner. Ordinary release helper adds no native edge;normal explicit cleanup only,flat native bodies have no outer FH3/RAII action.",
+  "provider_file_sha256": {
+    "src/native_scene_record_map_lookup.cpp": "6f89f4c1eb4ed7d9f1525fe7a6a61bfff0aaa8e696e13bfb790abb10a1d827d9",
+    "include/bsp/native_scene_record_map_lookup.hpp": "ba282aecd238acd53945b68d326ec2c132337830202e0e98172588579fa39e38",
+    "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+    "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+    "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+    "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+    "src/native_invalid_parameter_noinfo_call.cpp": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+    "include/bsp/native_invalid_parameter_noinfo_call.hpp": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613"
+  },
+  "callers": {
+    "live_direct_sites_per_entry": 1,
+    "contexts": "local/goal_oct15_hidden_record_queries_callers.json",
+    "scope": "bounded actual setups/continuations only;Spawn stores EAX at94478D,FindHiddenEntity stores AL at8A9F24;no complete callers/extra ABI credit"
+  },
+  "corrections": [
+    {
+      "was": "older seg6 mapped-word projection captures outputnode before the first report",
+      "is": "node read only after that returning report",
+      "evidence": "00469208 report then0046920D currentnode read"
+    },
+    {
+      "was": "vector view contains delegates find!=nullptr",
+      "is": "native membership tests node versus capturedhead,so matched mapped0 can still produceAL1",
+      "evidence": "00469496 headcapture;004694BE iteratornodecompare;no mapped+14 read in complete110B"
+    }
+  ],
+  "annotation": {
+    "before_comments": "local/goal_oct15_scene_hidden_record_lookup_before_comments.json",
+    "before_documentation": "local/goal_oct15_scene_hidden_record_lookup_before_documentation.json",
+    "names": "retain existing descriptive hypotheses and old values/comments/evidence/correct library names",
+    "locked_apply_save": "passed;two owned retained hypotheses,prior values logged,full prior comments/evidence preserved,tool write lock/project save",
+    "refreshed_exports": "passed;both owned exports forced after annotation",
+    "readback": "passed;retained names/full prior comments/first-input evidence verified in local/goal_oct15_scene_hidden_record_lookup_after_comments.json",
+    "log": "local/ghidra-annotations-20261015T235614Z.json"
+  },
+  "verification": {
+    "project_program_guard": "bsp.py Client.verify every live batch;C:/Users/sqz269/bsp.gpr,/battlestationspacific.exe,x86:LE:32:default,image00400000",
+    "whole_assembly_abi_and_actual_provider_source": "passed complete97-op bodies and actual constructor/Find/raw pool/CRT interfaces;all ten provider files unchanged through main sync",
+    "live_installed_bytes": "passed whole252B including complete RET4 tails;no padding included",
+    "typed_body_receipt": "local/goal_oct15_hidden_record_queries_scout_typed_flow.json;read-only accepted modification2351",
+    "typed_native_transfers": "passed;14 JSON rows/14 Markdown claims;0failed/unchecked/warnings",
+    "source_file_sha256": {
+      "src/native_scene_hidden_record_lookup.cpp": "23842b3f9a225c1028682912ce61dfdf468e3df405cae187ae5d29d9b835913d",
+      "include/bsp/native_scene_hidden_record_lookup.hpp": "78ed3b8e9053f0de152cf2a4835852fd43b64beffdcb3e35b1709ae770c802b2"
+    },
+    "cmake_registration": "passed unique append at first queue turn after immediate unleased check;own queue removed before build;no exclusive registry lease",
+    "strict_win32_build_and_existing_ctest": "pending actual worker normal scripts/build.ps1 after registration and queue release",
+    "compiled_object_review": "pending",
+    "new_tests": false,
+    "packet_native_differential": "not run",
+    "game_validation": "not run",
+    "direct_call_typed_flow": "passed;12 actual calls/normal fallthrough/no terminal or override;read-only modification2494;local/goal_oct15_scene_hidden_record_lookup_direct_call_flow.json",
+    "primary_independent_review": {
+      "status": "passed complete97-op native body and whole Source/header review;no mismatch or implementation edits",
+      "draft_revision": "9230b9ccebde99ec38203ccd29df3498146eab42",
+      "source_hashes_asserted": {
+        "src/native_scene_hidden_record_lookup.cpp": "23842b3f9a225c1028682912ce61dfdf468e3df405cae187ae5d29d9b835913d",
+        "include/bsp/native_scene_hidden_record_lookup.hpp": "78ed3b8e9053f0de152cf2a4835852fd43b64beffdcb3e35b1709ae770c802b2"
+      },
+      "scope": "first input capture,distinct frame,B0 release-owner-head-returning report-current node-ownerhead-mappedword;480 preFindhead/actualchild EAX/currentnodecompare beforedata/captured AL across cleanup"
+    }
+  },
+  "limits": [
+    "New ordinary raw interfaces,not Original register/stack/mangling/binary replacements;AL only for membership,raw DWORD for mapped result.",
+    "Explicit distinct input/header/output and stable metadata;payload aliases admitted;no hidden native/compiler/helper/child-argument/return/EH/registersave/spill/async aliases.",
+    "Actual current CRT/pool lifetime/storage/provider domains;Original private CRT,EH/SEH/fault/handler identity remains unproved.",
+    "No outer RAII cleanup on child/report failure;only complete explicit normal-release branches;no guards,callbacks,stubs or owned record/string type invented.",
+    "No production projection replacement,packet-specific native execution,game proof or result CString/ownership/lifetime inference."
+  ]
+}
