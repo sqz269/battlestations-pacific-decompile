@@ -1,0 +1,70 @@
+{
+  "packet": "cc12_native_gui_directional_pool_process_62",
+  "compiled_source_commit": "f4ea5840accdde8ba042a33845352a7ca7baee1b",
+  "base_main": "c5bde9e8bb30e8f9664a1d7793fa24f3cbcec428",
+  "status": "canonical_source_process_owner_and_guarded_explicit_startup_reviewed_win32_build_passed_not_host_activated",
+  "source_files": [
+    {
+      "path": "include/bsp/game_native_resource_pools.hpp",
+      "git_blob": "cdfe43926c2bc175abe9c78f622c4e3f38d2ae22",
+      "sha256": "56bdc1c58abeefe43d5f7a420b706a98d3409755972b0252340e00d5b6b2179e"
+    },
+    {
+      "path": "src/game_native_resource_pools.cpp",
+      "git_blob": "1d6397153606f48b03b151c3fb42633ce20e6260",
+      "sha256": "ffb01415f1d849c8111fe32fab58f3e406dbe512c0d44330547d2d5b20d8cf97"
+    },
+    {
+      "path": "include/bsp/directional_light_pool.hpp",
+      "git_blob": "96fb32fbdb5a4fba62bbfc963d449de8f425396b",
+      "sha256": "e70e8f0b7fd9f71c5e565e13e01bac45321504fc6d76912677e3f30ed6e48510"
+    },
+    {
+      "path": "src/directional_light_pool.cpp",
+      "git_blob": "578ca1e39356ef83ae1a3515106bcd31ac68d3f7",
+      "sha256": "979f62fffe2df06c6528155031b42d15ae83808de8284a12ee9925d217a405e0"
+    }
+  ],
+  "independent_source_review": {
+    "reviewer": "native_text_owner_readiness_36",
+    "verdict": "pass",
+    "reviewed_header_blob_prefix": "cdfe43926",
+    "reviewed_cpp_blob_prefix": "1d6397153",
+    "extra_tests_by_reviewer": false
+  },
+  "owner": {
+    "storage": "DirectionalLightPoolStorage directional_light_storage_01090154_",
+    "companion": "DirectionalLightPool directional_light_",
+    "storage_bytes": 56,
+    "allocator_domain": "existing game_native_physical_pool_process E188B4",
+    "cold_constructor": "dispatch metadata binding only; no native list membership or critical section",
+    "initializer": "initialize_directional_light_once_00cd8080",
+    "accessor": "directional_light_pool_01090154",
+    "atexit": "existing static CD8080 registers actual CE0EB0 through std::atexit",
+    "state": "threw before bind/init; returned only after registration returns; cache exact zero or nonzero status; no replay after throw",
+    "destruction": "existing callback before process/member destruction; allocator process constructed earlier; companion C++ destructor performs no native cleanup"
+  },
+  "build": {
+    "script": "./scripts/build.ps1",
+    "exit_code": 0,
+    "tests_passed": 3,
+    "tests_total": 3,
+    "ctest_seconds": 10.79,
+    "known_unrelated_warning": "LNK4006 spawn_request_id_matches duplicate; also present in the prior post-Main build"
+  },
+  "new_tests_added": false,
+  "limits": [
+    "No newly recovered Original body or Ghidra mutation",
+    "No explicit initializer or atexit execution in a new runtime test",
+    "No normal startup wiring, directional light construction, type token, Scene/store/page manager or Screen activation",
+    "Caller must return every actual payload/companion slot before CRT pool teardown",
+    "Source process storage label is not a fixed Original VA or binary replacement ABI"
+  ],
+  "evidence": {
+    "archive": "local\\cc12_native_gui_directional_pool_process_62\\evidence_family.zip",
+    "archive_sha256": "f4fd75b840597a062b0adbf7c46b3477a63700c7e7cbf4b4e1251ad174ee521a",
+    "manifest_sha256": "4241f951cd91b182b3268522bc0f83a6b596bba8784f8dda5ab49495fa63b1b9",
+    "payloads": 14,
+    "payload_hashes_verified": true
+  }
+}
