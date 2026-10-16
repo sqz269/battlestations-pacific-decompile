@@ -50,7 +50,11 @@ implementation or completion credit is part of this leaf packet.
 Whole listing/bytes,typed body/sole true incoming metadata,and existing legacy
 Source are reviewed. Descriptive hypothesis and prior comments are preserved
 through locked annotation/save/export/readback,with exact receipts in the report.
-Source/header hashes identify the draft. Primary full Source review and the
-actual combined normal Win32 build/emitted-object gate remain pending. The
+Source/header hashes identify the draft. Primary full41B/17op assembly and
+entire Source/header review passed with hashes asserted unchanged. The other
+harness write lock was first observed held;no competing write was attempted.
+After it released,the normal locked annotation saved the project,retained the
+old name/comment and refreshed/read back the export. The actual combined normal
+Win32 build/emitted-object gate remains pending. The
 worker has no CMake queue or duplicate build. No new tests are added. Static/
 build proof will not establish Original ABI/private frame/fault/game identity.

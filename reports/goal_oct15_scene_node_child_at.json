@@ -7,7 +7,7 @@
   "source": "src/native_scene_node_child_at.cpp",
   "header": "include/bsp/native_scene_node_child_at.hpp",
   "documentation": "docs/GOAL_OCT15_SCENE_NODE_CHILD_AT.md",
-  "status": "whole_actual_storage_source_build_pending",
+  "status": "whole_actual_storage_source_primary_reviewed_annotated_build_pending",
   "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
   "routines": [
     {
@@ -44,7 +44,18 @@
   "annotation": {
     "before_comments": "local/goal_oct15_scene_node_child_at_before_comments.json",
     "before_documentation": "local/goal_oct15_scene_node_child_at_before_documentation.json",
-    "locked_apply_save_export_readback": "pending other harness live Ghidra write lock;no write attempted;retain existing descriptive hypothesis/comments"
+    "locked_apply_save_export_readback": "passed after the actual other-harness lock released; tool acquired lock normally, recorded prior values and saved; forced export/readback preserves old name/comment",
+    "initial_lock": {
+      "owner": "agent/goal15_integrator",
+      "purpose": "GOAL15H reviewed physical Original prototypes and newly discovered complete functions",
+      "claimed": "2026-10-16T01:31:02+00:00",
+      "expires": "2026-10-16T01:46:02+00:00",
+      "write_attempt_while_occupied": false,
+      "ghidra_error": null
+    },
+    "next_observed_status": "ghidra lock free",
+    "apply_log": "local/ghidra-annotations-20261016T013644Z.json",
+    "after_comments": "local/goal_oct15_scene_node_child_at_after_comments.json"
   },
   "verification": {
     "typed_capture": "local/goal_oct15_scene_node_child_at_typed_flow.json",
@@ -55,7 +66,13 @@
       "src/native_scene_node_child_at.cpp": "71956644bc7583c683a52ff3c6b2bd17b8c44d27d317e086505a2c0bc01de784",
       "include/bsp/native_scene_node_child_at.hpp": "0dc75ba0d579bb03d86566fa3dc19346a42b3f3d81df6814d0378249a7f92fb1"
     },
-    "primary_whole_source_review": "pending",
+    "primary_whole_source_review": {
+      "status": "passed complete41B/17op assembly and entire Source/header; no mismatch or Source change",
+      "source_file_sha256_asserted_unchanged": {
+        "src/native_scene_node_child_at.cpp": "71956644bc7583c683a52ff3c6b2bd17b8c44d27d317e086505a2c0bc01de784",
+        "include/bsp/native_scene_node_child_at.hpp": "0dc75ba0d579bb03d86566fa3dc19346a42b3f3d81df6814d0378249a7f92fb1"
+      }
+    },
     "cmake_registration": "root combined only;no worker queue/append",
     "strict_win32_build_and_existing_ctest": "pending actual primary combined gate;no worker duplicate build",
     "compiled_object_review": "pending",
