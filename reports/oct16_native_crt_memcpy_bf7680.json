@@ -1,0 +1,886 @@
+{
+  "packet": "oct16_native_crt_memcpy_bf7680",
+  "utc": "2026-10-16T07:35:18.713414+00:00",
+  "status": "complete_qualified_whole_source_actual_vector_provider_borrowed_feature_cell_build_checked",
+  "domain": "actual_vector_provider_borrowed_canonical_feature_cell",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "authorization": "Root explicit Source authorization ONLYBF7680 complete711definedB247/22ranges and fourfiles. Correctlibrary _memcpy retained; allproviders/readiness immutable.",
+  "published_gate": {
+    "Main": "2714745bc50a389e67f26132da0ee98ee84c8820",
+    "required_f3b_ancestor": "f3b345cf279bdcaf295b512edc7b4979b4908b1b",
+    "worker_base": "6e8c4f4f9573f7632d723377db0ef3bb14385f71"
+  },
+  "source": "src/native_crt_memcpy.cpp",
+  "header": "include/bsp/native_crt_memcpy.hpp",
+  "documentation": "docs/OCT16_NATIVE_CRT_MEMCPY_BF7680.md",
+  "source_sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+  "header_sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+  "documentation_sha256": "b41937a152d01e1511332460b86cc222f04c0ad615fbe8c243e1e8838393c57d",
+  "functions": [
+    {
+      "address": "00bf7680",
+      "name": "copy_native_crt_bytes_00bf7680",
+      "library_name": "_memcpy",
+      "source": "src/native_crt_memcpy.cpp",
+      "header": "include/bsp/native_crt_memcpy.hpp",
+      "status": "complete_qualified_whole_source_actual_vector_provider_borrowed_feature_cell_build_checked",
+      "domain": "actual_vector_provider_borrowed_canonical_feature_cell",
+      "original_abi": "Nativecdecl(D,S,DWORDn),EAXoriginalD,plainRET/caller12;SourceaddsactualfeatureRef/caller16, no binaryABIclaim.",
+      "evidence": "Complete qualified ordinary Source for correct library _memcpy, wholeBF7680:711definedB247/22ranges, 869span includes120Bsixtables+38padding, no coverage promotion. Nativecdecl(D,S,uint32)/EAXoriginalD/plainRET/caller12; Sourceaddsborrowedactualcanonical0109EEA4ref/caller16/newABI. Own247schedule with8provenselectorladders; unsigneddirection/zero/equalpointer/unaligned/unrolledtails andbackwardSTD/REP/CLD/accessorder retained. Onlyforward n>=256 readsCURRENTactualfeaturecell; nonzero/matchinglowbits restoresframe andtailsactualpublishedC0C82B, whoseactualC0C7A4/selfclosure ispublished. NoBF87delegate/stdmemmove/copycallback/global/defaultfeature/validation/cleanup. FullNative17operandfield68B+30tableword120B comparison toBF87; other681spanB equal. Fresh1778definedPE/liveB623starts/46edges includingreadonlyproviders/comparison. FullactualCMake988B316, oneTOTALcodeREL32 actualvector,8plainRET/nohelpers/padding/EH/data; allcode/reloc equalBF87reference underpublicsymbolbijection. DefaultWin32 existing3/3pass7.58s;18staticchecks/38selectordomains verified. docs/OCT16_NATIVE_CRT_MEMCPY_BF7680.md;reports/oct16_native_crt_memcpy_bf7680.json. Sourceextraparam/flags/ladders/tablecodefaultPC/privateframe/OriginalABI/FH3SEH/heap/runtime/game unproved; DF0/SSE2selected/actualfeaturetruth-lifetime/validnonwrapbacking/liveframe constraints explicit. PEvirtualzero/Ghidra0 not runtimefeatureproof; CPUstartupwriter andconstructor Source notpromoted.",
+      "uncertainty": "New fourth actualfeature reference/caller16 differs Nativecaller12. Eight selector ladders replace native table reads; arithmeticflags/nativecode/table/faultPC/privateargumentframes/OriginalABI/FH3SEH/heap/runtime/game identity unproved. RequiresDF0, selectedSSE2CPUOSsupport, validnonwrappingextents excludingactiveframes andactualcanonicalfeaturecell truth/lifetime. PEvirtualzero/Ghidra0 doesnotprove runtimeflag; no startupwriter or constructor Source claim.",
+      "body": {
+        "range_count": 22,
+        "returned_range_count": 22,
+        "address_count": "711",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf7680"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf76e2"
+            },
+            "length": "99"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf76e4"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf7702"
+            },
+            "length": "31"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf7704"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf770a"
+            },
+            "length": "7"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf7718"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf7740"
+            },
+            "length": "41"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf7744"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf7766"
+            },
+            "length": "35"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf7768"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf7784"
+            },
+            "length": "29"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf77a8"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf77f1"
+            },
+            "length": "74"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf7804"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf780a"
+            },
+            "length": "7"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf780c"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf7816"
+            },
+            "length": "11"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf7818"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf7828"
+            },
+            "length": "17"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf782c"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf7842"
+            },
+            "length": "23"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf7844"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf7869"
+            },
+            "length": "38"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf786c"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf7874"
+            },
+            "length": "9"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf7878"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf7896"
+            },
+            "length": "31"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf78a4"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf78c4"
+            },
+            "length": "33"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf78c8"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf78ee"
+            },
+            "length": "39"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf78f0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf7920"
+            },
+            "length": "49"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf7944"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf798d"
+            },
+            "length": "74"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf79a0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf79a6"
+            },
+            "length": "7"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf79a8"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf79b4"
+            },
+            "length": "13"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf79b8"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf79ca"
+            },
+            "length": "19"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf79cc"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf79e4"
+            },
+            "length": "25"
+          }
+        ]
+      },
+      "native_defined_bytes": 711,
+      "native_starts": 247,
+      "span_bytes": 869,
+      "tables_bytes": 120,
+      "padding_bytes": 38,
+      "abi_compatible": false,
+      "complete_qualified_behavior_source": true,
+      "native_instruction_ABI_identity": false
+    }
+  ],
+  "fresh_native_proof": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "artifact": "local/oct16_native_crt_memcpy_bf7680_full_audit.json",
+    "sha256": "bb92f95f16ca0ada62bdf9439172172071806a442756e9b226a47a26cf68d3f2",
+    "owned_defined_bytes": 711,
+    "owned_starts": 247,
+    "readonly_defined_bytes": 1067,
+    "readonly_starts": 376,
+    "all_current_starts": 623,
+    "all_encoded_edges": 46,
+    "comparison": {
+      "delta": "00001160",
+      "complete_range_layout_equal": true,
+      "range_count_each": 22,
+      "declared_operand_fields": [
+        {
+          "site": "00bf76c2",
+          "comparison_site": "00bf8822",
+          "offset": 67,
+          "bytes": 4,
+          "kind": "same_external_vector_target_different_rel32"
+        },
+        {
+          "site": "00bf76dc",
+          "comparison_site": "00bf883c",
+          "offset": 95,
+          "bytes": 4,
+          "kind": "absolute_indexed_table_base_rebased_1160"
+        },
+        {
+          "site": "00bf76f5",
+          "comparison_site": "00bf8855",
+          "offset": 120,
+          "bytes": 4,
+          "kind": "absolute_indexed_table_base_rebased_1160"
+        },
+        {
+          "site": "00bf76fc",
+          "comparison_site": "00bf885c",
+          "offset": 127,
+          "bytes": 4,
+          "kind": "absolute_indexed_table_base_rebased_1160"
+        },
+        {
+          "site": "00bf7704",
+          "comparison_site": "00bf8864",
+          "offset": 135,
+          "bytes": 4,
+          "kind": "absolute_indexed_table_base_rebased_1160"
+        },
+        {
+          "site": "00bf773a",
+          "comparison_site": "00bf889a",
+          "offset": 189,
+          "bytes": 4,
+          "kind": "absolute_indexed_table_base_rebased_1160"
+        },
+        {
+          "site": "00bf7760",
+          "comparison_site": "00bf88c0",
+          "offset": 227,
+          "bytes": 4,
+          "kind": "absolute_indexed_table_base_rebased_1160"
+        },
+        {
+          "site": "00bf777e",
+          "comparison_site": "00bf88de",
+          "offset": 257,
+          "bytes": 4,
+          "kind": "absolute_indexed_table_base_rebased_1160"
+        },
+        {
+          "site": "00bf77eb",
+          "comparison_site": "00bf894b",
+          "offset": 366,
+          "bytes": 4,
+          "kind": "absolute_indexed_table_base_rebased_1160"
+        },
+        {
+          "site": "00bf7863",
+          "comparison_site": "00bf89c3",
+          "offset": 486,
+          "bytes": 4,
+          "kind": "absolute_indexed_table_base_rebased_1160"
+        },
+        {
+          "site": "00bf786e",
+          "comparison_site": "00bf89ce",
+          "offset": 497,
+          "bytes": 4,
+          "kind": "absolute_indexed_table_base_rebased_1160"
+        },
+        {
+          "site": "00bf7889",
+          "comparison_site": "00bf89e9",
+          "offset": 524,
+          "bytes": 4,
+          "kind": "absolute_indexed_table_base_rebased_1160"
+        },
+        {
+          "site": "00bf7890",
+          "comparison_site": "00bf89f0",
+          "offset": 531,
+          "bytes": 4,
+          "kind": "absolute_indexed_table_base_rebased_1160"
+        },
+        {
+          "site": "00bf78be",
+          "comparison_site": "00bf8a1e",
+          "offset": 577,
+          "bytes": 4,
+          "kind": "absolute_indexed_table_base_rebased_1160"
+        },
+        {
+          "site": "00bf78e8",
+          "comparison_site": "00bf8a48",
+          "offset": 619,
+          "bytes": 4,
+          "kind": "absolute_indexed_table_base_rebased_1160"
+        },
+        {
+          "site": "00bf791a",
+          "comparison_site": "00bf8a7a",
+          "offset": 669,
+          "bytes": 4,
+          "kind": "absolute_indexed_table_base_rebased_1160"
+        },
+        {
+          "site": "00bf7987",
+          "comparison_site": "00bf8ae7",
+          "offset": 778,
+          "bytes": 4,
+          "kind": "absolute_indexed_table_base_rebased_1160"
+        }
+      ],
+      "code_operand_mask_bytes": 68,
+      "table_words": 30,
+      "table_bytes": 120,
+      "tables": [
+        {
+          "address": "00bf770c",
+          "comparison_address": "00bf886c",
+          "bytes": 12,
+          "targets": [
+            "00bf7718",
+            "00bf7744",
+            "00bf7768"
+          ],
+          "comparison_targets": [
+            "00bf8878",
+            "00bf88a4",
+            "00bf88c8"
+          ]
+        },
+        {
+          "address": "00bf7788",
+          "comparison_address": "00bf88e8",
+          "bytes": 32,
+          "targets": [
+            "00bf77eb",
+            "00bf77d8",
+            "00bf77d0",
+            "00bf77c8",
+            "00bf77c0",
+            "00bf77b8",
+            "00bf77b0",
+            "00bf77a8"
+          ],
+          "comparison_targets": [
+            "00bf894b",
+            "00bf8938",
+            "00bf8930",
+            "00bf8928",
+            "00bf8920",
+            "00bf8918",
+            "00bf8910",
+            "00bf8908"
+          ]
+        },
+        {
+          "address": "00bf77f4",
+          "comparison_address": "00bf8954",
+          "bytes": 16,
+          "targets": [
+            "00bf7804",
+            "00bf780c",
+            "00bf7818",
+            "00bf782c"
+          ],
+          "comparison_targets": [
+            "00bf8964",
+            "00bf896c",
+            "00bf8978",
+            "00bf898c"
+          ]
+        },
+        {
+          "address": "00bf7898",
+          "comparison_address": "00bf89f8",
+          "bytes": 12,
+          "targets": [
+            "00bf78a4",
+            "00bf78c8",
+            "00bf78f0"
+          ],
+          "comparison_targets": [
+            "00bf8a04",
+            "00bf8a28",
+            "00bf8a50"
+          ]
+        },
+        {
+          "address": "00bf7924",
+          "comparison_address": "00bf8a84",
+          "bytes": 32,
+          "targets": [
+            "00bf7944",
+            "00bf794c",
+            "00bf7954",
+            "00bf795c",
+            "00bf7964",
+            "00bf796c",
+            "00bf7974",
+            "00bf7987"
+          ],
+          "comparison_targets": [
+            "00bf8aa4",
+            "00bf8aac",
+            "00bf8ab4",
+            "00bf8abc",
+            "00bf8ac4",
+            "00bf8acc",
+            "00bf8ad4",
+            "00bf8ae7"
+          ]
+        },
+        {
+          "address": "00bf7990",
+          "comparison_address": "00bf8af0",
+          "bytes": 16,
+          "targets": [
+            "00bf79a0",
+            "00bf79a8",
+            "00bf79b8",
+            "00bf79cc"
+          ],
+          "comparison_targets": [
+            "00bf8b00",
+            "00bf8b08",
+            "00bf8b18",
+            "00bf8b2c"
+          ]
+        }
+      ],
+      "all_nonmasked_span_bytes_equal": 681,
+      "equal_unmasked_code_bytes": 643,
+      "equal_padding_bytes": 38
+    }
+  },
+  "host_steps": [
+    {
+      "address": "00bf76c2",
+      "native": "00c0c82b",
+      "function": "00bf7680",
+      "kind": "tail_jump",
+      "scope": "owned_complete_BF7680"
+    }
+  ],
+  "readonly_support_steps": [
+    {
+      "address": "00c0c878",
+      "native": "00c0c7a4",
+      "function": "00c0c82b",
+      "kind": "call",
+      "scope": "readonly_published_vector_provider"
+    },
+    {
+      "address": "00c0c8da",
+      "native": "00c0c82b",
+      "function": "00c0c82b",
+      "kind": "call",
+      "scope": "readonly_published_vector_provider"
+    }
+  ],
+  "actual_provider_closure": {
+    "vector": {
+      "address": "00c0c82b",
+      "Native_bytes": 227,
+      "Native_starts": 94,
+      "typed_ranges": 1,
+      "header": "include/bsp/native_crt_vector_copy.hpp",
+      "source": "src/native_crt_vector_copy.cpp",
+      "API": "void* __cdecl copy_native_crt_vector_00c0c82b(void*,const void*,uint32_t)",
+      "status": "Published complete exact naked MSVC Win32 Source, independently full Source/header/Native read here.",
+      "ABI": "cdecl3DWORDs; EAX originalD; caller12cleanup; original1Ch locals, save EBP/EBX/ESI/EDI. No stack realignment or EH. Actual calls push threeDWORDs and ADDESP0C after return.",
+      "branches": [
+        "Source and destination use signed32 remainder modulo16 via CDQ/XOR/SUB/AND/XOR/SUB, not simply unsignedlowbits.",
+        "Both signedremainders0: count remainder modulo128, positive bulk calls actualC0C7A4; then REP MOVSB remaining tail. Alignedzero skips both memory operations.",
+        "Equal nonzero signedremainders: prefix16-r copied via REP MOVSB before actual selfCALL with advancedpointers/reducedcount; prefix1..15 for positive pointer representations,17..31 for negative. Original parent size>=256 guarantees enough prefix. Direct short/zero equal-misaligned calls gain NO new guard.",
+        "Unequal signedremainders: REP MOVSD then REP MOVSB remainder, even when parent unsignedlowbits matched across different sign halves.",
+        "Every success restores original destination EAX; preserves nonvolatiles, no modeled/intrinsic substitution for actual call/recursion."
+      ],
+      "required_domain": "DF0; valid nonwrapping forward-safe ordinary buffers excluding active argument/return/provider frames; prefix<=count; SSE2 CPU/OS support whenever engine is selected. Native faults/partialwrites remain, no Source frame/fault-PC/ABI/game identity proof."
+    },
+    "engine": {
+      "address": "00c0c7a4",
+      "defined_bytes": 129,
+      "starts": 35,
+      "span_bytes": 135,
+      "typed_ranges": 2,
+      "gap": "C0C7BE..C0C7C3 six-byte LEAEBX,[EBX] padding, skipped by actualC0C7BC JMP; Source retains emittedbytes.",
+      "API": "void __cdecl copy_native_crt_aligned_128_chunks_00c0c7a4(void*,const void*,uint32_t)",
+      "ABI": "cdecl3DWORDs/plainRET/caller12;8localbytes; incomingEAX/EDX/EBX preserved, EBP/ESI/EDI restored; ECX/XMM0..7 clobbered, DF unchanged, no semantic return added.",
+      "schedule": "Unconditional count>>7 loop: four alignedMOVDQA reads, fourstores, nextfourreads, nextfourstores; +128 pointerupdates/DECcounter. No zero/short guard. Caller supplies positive multiple128 and16-byte aligned valid forward-safe buffers/actualSSE2."
+    },
+    "feature": {
+      "address": "0109eea4",
+      "mapped_PE_Ghidra_bytes": "00000000",
+      "PE_origin": {
+        "section": ".data",
+        "section_RVA": "00a08000",
+        "virtual_size": 2719452,
+        "raw_size": 65536,
+        "cell_RVA": "00c9eea4",
+        "origin": "PE virtual tail loader zero-fill; no on-disk four-byte datum"
+      },
+      "runtime_value_NOT_proved": true,
+      "read_sites": [
+        "00bf76a8",
+        "00bf8808"
+      ],
+      "existing_accessor": "GameNativeMutableCrtData::feature_word() in game_native_mutable_crt_data.hpp/.cpp returns volatileuint32& to actual0109EEA4.",
+      "ownership": "Existing GameNativeCanonicalDataOwner/MutableCrtData owns canonical mapping, loader-zero initialcell and lifetime; caller borrows that SAMEstableactualcell. No new global/defaultvalue/feature owner is proposed.",
+      "current_value_limit": "Ghidra mappedimage0 and PEvirtualzero-fill are initialanalysis evidence only, NOT livegame/runtimeflag truth. Do not assume permanentlyzero or forcezero to skipvector.",
+      "writer_frontier": "NativeWRITE C27B81 is MOV[109EEA4],EAX after CALLC27B1C in logical C27B7C..C27B88 initializer; currentGhidra encloses it in __get_sse2_info. Startupdetector/writer is not a copycallee and is NOT Source-closed/renamed/repaired here. Runtimeflagtruth/SSE2support andmappinglifetime remaincaller obligations.",
+      "writer_context": "local/oct16_bf7680_feature_writer_context.json",
+      "writer_context_sha256": "f20d2fb182b57eabe9b0ac01a91696ec92b19b47f478ea7695451f43114f6e25"
+    },
+    "OriginalCPUstartup_Source_promoted": false
+  },
+  "provider_fingerprints": {
+    "include/bsp/native_crt_vector_copy.hpp": {
+      "physical_sha256": "fbbe9588430ad0dbdbca984fcfb19e36a9e83cf0a903a16c0226685f9ee0dc76",
+      "LF_sha256": "fbbe9588430ad0dbdbca984fcfb19e36a9e83cf0a903a16c0226685f9ee0dc76",
+      "published_Main_match": true
+    },
+    "src/native_crt_vector_copy.cpp": {
+      "physical_sha256": "70123af959c1015e81fc495c2db74162eabfe4e5ee252211baaba2d85241ad71",
+      "LF_sha256": "70123af959c1015e81fc495c2db74162eabfe4e5ee252211baaba2d85241ad71",
+      "published_Main_match": true
+    },
+    "include/bsp/native_crt_memmove.hpp": {
+      "physical_sha256": "aba1275c66afdc0ec47e60f5575bdc432749df4df17ae84e269d6f0ac383030b",
+      "LF_sha256": "aba1275c66afdc0ec47e60f5575bdc432749df4df17ae84e269d6f0ac383030b",
+      "published_Main_match": true
+    },
+    "src/native_crt_memmove.cpp": {
+      "physical_sha256": "cac10f04aa1fc1443dc985c106b7de76465e5ee21ecc901f68cbc8a4fba7b997",
+      "LF_sha256": "cac10f04aa1fc1443dc985c106b7de76465e5ee21ecc901f68cbc8a4fba7b997",
+      "published_Main_match": true
+    },
+    "include/bsp/game_native_mutable_crt_data.hpp": {
+      "physical_sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "LF_sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "published_Main_match": true
+    },
+    "src/game_native_mutable_crt_data.cpp": {
+      "physical_sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+      "LF_sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+      "published_Main_match": true
+    }
+  },
+  "actual_CMake_COFF_review": {
+    "object": "build/win32/bsp_core.dir/Release/native_crt_memcpy.obj",
+    "object_sha256": "e5756d480e0a811def5a6df4fafa5306fdb2af2a4254ab90ef8c6360cf1b1187",
+    "capture": "local/oct16_native_crt_memcpy_bf7680_cmake_coff_decoded.txt",
+    "capture_sha256": "9255de121ee2b0d9a45cb47418ac6290960aee4aad6c7f42c538d5d2b091a426",
+    "code_bytes": 988,
+    "instruction_count": 316,
+    "relocation_count": 1
+  },
+  "compiled_reference": {
+    "artifact": "local/oct16_native_crt_memcpy_bf7680_compiled_comparison.json",
+    "sha256": "0cdae0dfef6468fb9ffd5bcc7b446d0bbbb6972e19c486fd4d6613aeebeaa881",
+    "reference_object": "build/win32/bsp_core.dir/Release/native_crt_memmove.obj",
+    "reference_object_sha256": "4dece9e9193df158eb40798324cadc9a2f5fd4fff570418f8c433a084093cdc2",
+    "entire_code_and_symbolic_relocation_equal": true,
+    "public_symbol_bijection": {
+      "own": "?copy_native_crt_bytes_00bf7680@bsp@@YAPAXPAXPBXIADI@Z",
+      "reference": "?move_native_crt_bytes_00bf87e0@bsp@@YAPAXPAXPBXIADI@Z"
+    },
+    "selector_cases": 38,
+    "selector_domains": 8,
+    "Source_complete_bijection": "Only own include/error/entry/library comment and all internal Native labels/comments -1160; actual vector provider unchanged."
+  },
+  "static_review_checks": {
+    "artifact": "local/oct16_native_crt_memcpy_bf7680_static_review.json",
+    "sha256": "899064386e66b98dbf034e7c774aeab0f54c4fb1723e922faa0656a7910c15fa",
+    "passed": 18,
+    "findings": []
+  },
+  "verification": {
+    "command": "./scripts/build.ps1",
+    "default_MSVC_Win32": true,
+    "exit_code": 0,
+    "existing_suites": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "passed": 3,
+    "failed": 0,
+    "ctest_seconds": 7.58,
+    "new_tests": 0,
+    "new_probes": 0,
+    "Source_body_execution": false,
+    "pre_existing_warning": "LNK4006 duplicate bsp::spawn_request_id_matches in lua_binding_spawn/lua_spawn_new; no newleaf compilewarning.",
+    "canonical_calls": {
+      "command": "python tools/verify_report_calls.py reports/oct16_native_crt_memcpy_bf7680.json docs/OCT16_NATIVE_CRT_MEMCPY_BF7680.md",
+      "exit_code": 0,
+      "JSON_rows_checked": 3,
+      "owned_rows": 1,
+      "readonly_rows": 2,
+      "JSON_failed": 0,
+      "Markdown_claims_checked": 3,
+      "Markdown_failed": 0,
+      "Markdown_unchecked": 0,
+      "Markdown_warnings": 0
+    },
+    "execution_scope": "Owned BF7680/vector/engine copy bodies; default math suites do not constitute copy runtime proof.",
+    "owned_copy_Native_execution": false
+  },
+  "ledger": {
+    "names": [
+      {
+        "address": "00bf7680",
+        "name": "_memcpy",
+        "previous_Ghidra_name": "_memcpy",
+        "append_evidence": true,
+        "evidence": "Complete qualified ordinary Source for correct library _memcpy, wholeBF7680:711definedB247/22ranges, 869span includes120Bsixtables+38padding, no coverage promotion. Nativecdecl(D,S,uint32)/EAXoriginalD/plainRET/caller12; Sourceaddsborrowedactualcanonical0109EEA4ref/caller16/newABI. Own247schedule with8provenselectorladders; unsigneddirection/zero/equalpointer/unaligned/unrolledtails andbackwardSTD/REP/CLD/accessorder retained. Onlyforward n>=256 readsCURRENTactualfeaturecell; nonzero/matchinglowbits restoresframe andtailsactualpublishedC0C82B, whoseactualC0C7A4/selfclosure ispublished. NoBF87delegate/stdmemmove/copycallback/global/defaultfeature/validation/cleanup. FullNative17operandfield68B+30tableword120B comparison toBF87; other681spanB equal. Fresh1778definedPE/liveB623starts/46edges includingreadonlyproviders/comparison. FullactualCMake988B316, oneTOTALcodeREL32 actualvector,8plainRET/nohelpers/padding/EH/data; allcode/reloc equalBF87reference underpublicsymbolbijection. DefaultWin32 existing3/3pass7.58s;18staticchecks/38selectordomains verified. docs/OCT16_NATIVE_CRT_MEMCPY_BF7680.md;reports/oct16_native_crt_memcpy_bf7680.json. Sourceextraparam/flags/ladders/tablecodefaultPC/privateframe/OriginalABI/FH3SEH/heap/runtime/game unproved; DF0/SSE2selected/actualfeaturetruth-lifetime/validnonwrapbacking/liveframe constraints explicit. PEvirtualzero/Ghidra0 not runtimefeatureproof; CPUstartupwriter andconstructor Source notpromoted."
+      }
+    ],
+    "functions": [
+      {
+        "address": "00bf7680",
+        "name": "copy_native_crt_bytes_00bf7680",
+        "library_name": "_memcpy",
+        "source": "src/native_crt_memcpy.cpp",
+        "header": "include/bsp/native_crt_memcpy.hpp",
+        "status": "complete_qualified_whole_source_actual_vector_provider_borrowed_feature_cell_build_checked",
+        "domain": "actual_vector_provider_borrowed_canonical_feature_cell",
+        "original_abi": "Nativecdecl(D,S,DWORDn),EAXoriginalD,plainRET/caller12;SourceaddsactualfeatureRef/caller16, no binaryABIclaim.",
+        "evidence": "Complete qualified ordinary Source for correct library _memcpy, wholeBF7680:711definedB247/22ranges, 869span includes120Bsixtables+38padding, no coverage promotion. Nativecdecl(D,S,uint32)/EAXoriginalD/plainRET/caller12; Sourceaddsborrowedactualcanonical0109EEA4ref/caller16/newABI. Own247schedule with8provenselectorladders; unsigneddirection/zero/equalpointer/unaligned/unrolledtails andbackwardSTD/REP/CLD/accessorder retained. Onlyforward n>=256 readsCURRENTactualfeaturecell; nonzero/matchinglowbits restoresframe andtailsactualpublishedC0C82B, whoseactualC0C7A4/selfclosure ispublished. NoBF87delegate/stdmemmove/copycallback/global/defaultfeature/validation/cleanup. FullNative17operandfield68B+30tableword120B comparison toBF87; other681spanB equal. Fresh1778definedPE/liveB623starts/46edges includingreadonlyproviders/comparison. FullactualCMake988B316, oneTOTALcodeREL32 actualvector,8plainRET/nohelpers/padding/EH/data; allcode/reloc equalBF87reference underpublicsymbolbijection. DefaultWin32 existing3/3pass7.58s;18staticchecks/38selectordomains verified. docs/OCT16_NATIVE_CRT_MEMCPY_BF7680.md;reports/oct16_native_crt_memcpy_bf7680.json. Sourceextraparam/flags/ladders/tablecodefaultPC/privateframe/OriginalABI/FH3SEH/heap/runtime/game unproved; DF0/SSE2selected/actualfeaturetruth-lifetime/validnonwrapbacking/liveframe constraints explicit. PEvirtualzero/Ghidra0 not runtimefeatureproof; CPUstartupwriter andconstructor Source notpromoted.",
+        "uncertainty": "New fourth actualfeature reference/caller16 differs Nativecaller12. Eight selector ladders replace native table reads; arithmeticflags/nativecode/table/faultPC/privateargumentframes/OriginalABI/FH3SEH/heap/runtime/game identity unproved. RequiresDF0, selectedSSE2CPUOSsupport, validnonwrappingextents excludingactiveframes andactualcanonicalfeaturecell truth/lifetime. PEvirtualzero/Ghidra0 doesnotprove runtimeflag; no startupwriter or constructor Source claim."
+      }
+    ]
+  },
+  "registration": "One bsp_core append, no shared registry leases.",
+  "frozen_artifacts": [
+    {
+      "path": "local/oct16_native_crt_memcpy_bf7680_typed.json",
+      "sha256": "f3394e5ff25cd3e0b1677ccde3360a7e363ed364eae6629ae7aa61feeee27bb3"
+    },
+    {
+      "path": "local/oct16_native_crt_memcpy_bf7680_current_starts.json",
+      "sha256": "8dfd847072ec07e342b712ff7330b8b3c64d5af2b88c2b5f74e2b1c2a6ab2c5c"
+    },
+    {
+      "path": "local/oct16_native_crt_memcpy_bf7680_full_audit.json",
+      "sha256": "bb92f95f16ca0ada62bdf9439172172071806a442756e9b226a47a26cf68d3f2"
+    },
+    {
+      "path": "local/oct16_native_crt_memcpy_bf7680_summary.json",
+      "sha256": "2b868fb3ab93edc7d724ad8e62086de447da16819cf002cf2b2daad9319e026a"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_crt_memcpy.obj",
+      "sha256": "e5756d480e0a811def5a6df4fafa5306fdb2af2a4254ab90ef8c6360cf1b1187"
+    },
+    {
+      "path": "local/oct16_native_crt_memcpy_bf7680_cmake_coff_review.json",
+      "sha256": "6c8a14c8d6e4c6fe69afa2c4f94f4a75cdac2d396db7831a07a0858765f07ae0"
+    },
+    {
+      "path": "local/oct16_native_crt_memcpy_bf7680_cmake_coff_decoded.txt",
+      "sha256": "9255de121ee2b0d9a45cb47418ac6290960aee4aad6c7f42c538d5d2b091a426"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_crt_memmove.obj",
+      "sha256": "4dece9e9193df158eb40798324cadc9a2f5fd4fff570418f8c433a084093cdc2"
+    },
+    {
+      "path": "local/oct16_native_crt_memcpy_bf7680_BF87_reference_coff_review.json",
+      "sha256": "dbace2f68de64e63a4ea1484eec68376330b193a68a9eea1c4a5055a49b16dc1"
+    },
+    {
+      "path": "local/oct16_native_crt_memcpy_bf7680_BF87_reference_coff_decoded.txt",
+      "sha256": "f7a4c8005ea239a6567715e70c1c5ce973b07a39b31e98d151870850f4f257b8"
+    },
+    {
+      "path": "local/oct16_native_crt_memcpy_bf7680_compiled_comparison.json",
+      "sha256": "0cdae0dfef6468fb9ffd5bcc7b446d0bbbb6972e19c486fd4d6613aeebeaa881"
+    },
+    {
+      "path": "local/oct16_native_crt_memcpy_bf7680_static_review.json",
+      "sha256": "899064386e66b98dbf034e7c774aeab0f54c4fb1723e922faa0656a7910c15fa"
+    },
+    {
+      "path": "local/oct16_native_crt_memcpy_bf7680_ledger_records.json",
+      "sha256": "8f146f896f00705c299a5f9726d56d79c347bfe7f4013c75b14eafe1917c85bb"
+    },
+    {
+      "path": "local/oct16_native_crt_memcpy_bf7680_build.log",
+      "sha256": "1dfe64b7377e2ad036e91ba7402c7eed6e8a4b4e635873071be44aac12ce70f8"
+    },
+    {
+      "path": "local/oct16_native_crt_memcpy_bf7680_build_exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "local/oct16_native_bf7680_vector_closure_readiness.json",
+      "sha256": "074e4e838f8bcec6f7590ae2fc293a603e1e732cddd67367f3ae336d1fe54907"
+    },
+    {
+      "path": "local/oct16_native_bf7680_vector_closure_full_audit.json",
+      "sha256": "ff9fa5386087141e8fd144e3d58d26ea31e37f0ca646f6fd14d53886dbbd1135"
+    },
+    {
+      "path": "local/oct15_preset_pair_constructor_readiness.json",
+      "sha256": "1fb788f527bc89b328f749ea9bbe6dd7cd55534c61b8df7ef047cd020d29ec80"
+    },
+    {
+      "path": "local/oct15_preset_pair_constructor_full_native_audit.json",
+      "sha256": "c018853eb6bf5c9ddeaab9bb30334743496949a993513a940e91a340cac6ed62"
+    },
+    {
+      "path": "local/oct16_native_crt_memcpy_bf7680_call_verification.txt",
+      "sha256": "065ceb3818bdee01dd120e0c26c0fd4d53759f78760e72fec58be69a7ece1bfb"
+    }
+  ],
+  "preservation": {
+    "old95artifacts": [
+      {
+        "report": "reports/oct15_input_int_string_tree_erase.json",
+        "sha256": "6c704cc197738ccde0214be0b6a449f2d54a8aee2a5c1056838393789d82bcd8",
+        "artifacts_unchanged": 15
+      },
+      {
+        "report": "reports/oct15_input_int_string_tree_range.json",
+        "sha256": "3b2d515cf6c1429ce410872e86985a48f3ab61c2ead060dcb21f1c23580d6f40",
+        "artifacts_unchanged": 13
+      },
+      {
+        "report": "reports/oct15_native_input_controller_name_pair_destroy.json",
+        "sha256": "9d857066bc0d287f7b1a4268e0e7089e73bf230282703be6f4768d4dd5390865",
+        "artifacts_unchanged": 14
+      },
+      {
+        "report": "reports/oct15_native_input_controller_tree_erase.json",
+        "sha256": "c6223451f5f6ab0941abc6669990e36b55e78bc180a5435493f1be2b623972dc",
+        "artifacts_unchanged": 14
+      },
+      {
+        "report": "reports/oct15_native_input_controller_tree_range.json",
+        "sha256": "8c1a023100a559aaeb05a573be817ce463d21fb29245faa98047cc080b7b2212",
+        "artifacts_unchanged": 13
+      },
+      {
+        "report": "reports/oct15_native_input_string_tree_lower_bounds.json",
+        "sha256": "280f5bd86a5e193b21f42a24f7c3d3e55dd8c15e44fff6cf3691a7e47e2dd9eb",
+        "artifacts_unchanged": 13
+      },
+      {
+        "report": "reports/oct15_native_input_preset_tree_predecessor.json",
+        "sha256": "f1e0db35026a9cc44bcdb0acdde50738b025285264b00d13f468963831e62c5c",
+        "artifacts_unchanged": 13
+      }
+    ],
+    "constructor_frozen": "1fb788f527bc89b328f749ea9bbe6dd7cd55534c61b8df7ef047cd020d29ec80",
+    "closure_frozen": "074e4e838f8bcec6f7590ae2fc293a603e1e732cddd67367f3ae336d1fe54907",
+    "constructor_Source_still_unauthorized": true,
+    "provider_modifications": false
+  },
+  "out_of_scope": [
+    "C0vector/engine Source edits",
+    "BF87 Source edits",
+    "constructor/resizer/featureowner edits",
+    "CPUstartupwriter",
+    "Ghidra mutation",
+    "push",
+    "caller promotion"
+  ],
+  "limits": "New fourth actualfeature reference/caller16 differs Nativecaller12. Eight selector ladders replace native table reads; arithmeticflags/nativecode/table/faultPC/privateargumentframes/OriginalABI/FH3SEH/heap/runtime/game identity unproved. RequiresDF0, selectedSSE2CPUOSsupport, validnonwrappingextents excludingactiveframes andactualcanonicalfeaturecell truth/lifetime. PEvirtualzero/Ghidra0 doesnotprove runtimeflag; no startupwriter or constructor Source claim."
+}
