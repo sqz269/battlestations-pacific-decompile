@@ -334,7 +334,8 @@ struct GameNativeRendererApplication::Impl {
     void* volatile lua_publication{};
     // Preserve the Win32 slot while borrowing the one live Native-global cell.
     void* volatile& system_publication{native_shader_system_registry_cell_0108fe94()};
-    NativeShaderStateDefinitionsStorage* volatile definitions{};
+    NativeShaderStateDefinitionsStorage* volatile& definitions{
+        native_shader_state_definitions_cell_0108fe90()};
     void* volatile entry_cache_publication{};
     NativeRenderEntryCacheContext entry_cache;
     volatile std::uint8_t frame_flag{},device_lost{};
