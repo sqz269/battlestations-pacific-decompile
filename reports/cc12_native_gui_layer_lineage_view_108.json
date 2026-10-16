@@ -1,0 +1,186 @@
+{
+  "packet": "cc12_native_gui_layer_lineage_view_108",
+  "status": "source_live_input_capability_build_tested",
+  "readiness": "explicit input capability only; actual Layer producer and lifetime authority remain open",
+  "baseline": {
+    "merge_target": "d15ba1ba6d9faec2b71e73fa0d4c5dd30c56bda2",
+    "merge_exit_code": 0,
+    "merged_worktree_head": "98c8cc6cbeac42c301eef8f0fef244488bc5c071",
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48",
+    "main_modified": false
+  },
+  "original": {
+    "address": "00aa38b0",
+    "end_exclusive": "00aa38d8",
+    "bytes": 40,
+    "instructions": 12,
+    "calls": 0,
+    "live_equals_disk": true,
+    "body_sha256": "0a40e1d1e3b89248d0082369363f10f5c299108fabd79de001948e49f6771d05",
+    "exe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "exe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000"
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "queries": "verified tools/bsp.py ghidra wrappers",
+    "owned_annotation_addresses": [
+      "00aa38b0"
+    ],
+    "established_name_preserved": "BSP_GuiLayer_IsKindOf",
+    "write_transport": "tools/ghidra_annotate.py --apply --addresses 00aa38b0; locked, history recorded, project saved",
+    "history_original": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\local\\ghidra-annotations-20261016T060137Z.json",
+    "history_copy": {
+      "path": "local/cc12_native_gui_layer_lineage_view_108_annotation_history.json",
+      "bytes": 1957,
+      "sha256": "d17850195683d5959f6d64169540a9c311f5679e936586926eaed142827e0e74"
+    },
+    "refreshed_exports": [
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aa38b0\\assembly.txt",
+        "path": "local/cc12_native_gui_layer_lineage_view_108_exports/assembly.txt",
+        "bytes": 312,
+        "sha256": "54074119bf5dd46c87991e0751bcd17b16831bb437ca27ace6fcb5150067e8ba"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aa38b0\\decompiled.c",
+        "path": "local/cc12_native_gui_layer_lineage_view_108_exports/decompiled.c",
+        "bytes": 705,
+        "sha256": "584506788114c30f448b3a030e50a8cc73e491f69f935372aca050cc4dfda30a"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aa38b0\\metadata.json",
+        "path": "local/cc12_native_gui_layer_lineage_view_108_exports/metadata.json",
+        "bytes": 268,
+        "sha256": "f21ae924b2d033e8c818481ef2f6697832633ff038932ba114daaef81d370dd1"
+      }
+    ],
+    "preservation": {
+      "names_unowned_rows_unchanged": true,
+      "old_name_preserved": true,
+      "old_name_evidence_prefix_preserved": true,
+      "reconstruction_unowned_rows_unchanged": true,
+      "old_typed_record_unchanged": true,
+      "exactly_one_new_raw_record": true,
+      "old_live_comment_prefix_preserved": true,
+      "new_evidence_in_live_comment": true
+    }
+  },
+  "source_hashes": [
+    {
+      "path": "include/bsp/gui_widgets_cc13.hpp",
+      "bytes": 92980,
+      "sha256": "2a889c7f79cdfa87e99283c4b0286eed4911845410425a38918cb39aeecb63b7"
+    },
+    {
+      "path": "src/gui_widgets_cc13.cpp",
+      "bytes": 75116,
+      "sha256": "20312bdde0d2a577300c6431ea53a54aaaaf6c05c3c6670dc655c20864bb74da"
+    }
+  ],
+  "ledger_hashes": [
+    {
+      "path": "config/names/00aa0000.jsonl",
+      "bytes": 174908,
+      "sha256": "659d6d2ea4f676df6952cdee5fa4866f3326cf7ad25741e0c0a1752fc54d4c83"
+    },
+    {
+      "path": "config/reconstruction/00aa0000.jsonl",
+      "bytes": 221137,
+      "sha256": "f27dec8d7c5b6468485da9c51be8eb820ec17bda19a440b46dda522ad05303c0"
+    }
+  ],
+  "document": {
+    "path": "docs/CC12_NATIVE_GUI_LAYER_LINEAGE_VIEW_108.md",
+    "bytes": 5050,
+    "sha256": "2734cfaecd73a1628061b81ea1d188c1f130f2d529e591bf6d097759833d209a"
+  },
+  "source_contract": {
+    "typed_api": "Existing gui_type_is_kind_of(const GuiTypeDescriptor<Depth>&, uint32_t) noexcept signature and behavior preserved.",
+    "shared_implementation": "One detail::gui_type_ids_contain indexed scan serves typed and borrowed live-ID overloads.",
+    "raw_api": "Noninline native_gui_layer_is_kind_of_00aa38b0(const volatile uint32_t (&)[3], uint32_t) noexcept; required borrowed exact three words.",
+    "input_authority": "Same genuinely initialized, live actual Layer lineage in intended type domain; lifetime spans call; accesses externally serialized with actual producer.",
+    "reads": "Sequential current uint32_t reads, stop at first equality; zero is a valid matching ID; no later-word read after early hit.",
+    "no_new_provider": [
+      "no copy or descriptor snapshot",
+      "no descriptor-name read",
+      "no counter",
+      "no initializer",
+      "no owner or private parallel authority",
+      "no default",
+      "no callback"
+    ],
+    "source_abi_limit": "Ordinary Source array-reference/id arguments and C++ bool; does not reproduce unused Original receiver, [ESP+4] single argument, AL-only result or RET4.",
+    "volatile_limit": "Individual current reads only, not C++ synchronization or ownership."
+  },
+  "optimized_scan": {
+    "artifact": "local/cc12_native_gui_layer_lineage_view_108_scan.txt",
+    "current_read_offset": "10",
+    "current_read": "cmp dword ptr [edx+eax*4],ecx",
+    "early_hit_offset": "13: je 1E",
+    "miss_only_increment": "15: inc eax",
+    "bound": "16: cmp eax,3; 19: jb 10",
+    "success": "1E: mov al,1; 20: ret",
+    "no_match": "1B: xor al,al; 1D: ret",
+    "root_source_review": "PASS",
+    "root_optimized_review": "PASS"
+  },
+  "build": {
+    "strict_compile": {
+      "exit_code": 0,
+      "target": "MSVC Win32",
+      "flags": "/std:c++17 /EHsc /MD /O2 /W4 /WX /Gy /Zc:inline /DNDEBUG /Iinclude /c",
+      "object": "local/cc12_native_gui_layer_lineage_view_108.obj",
+      "log": "local/cc12_native_gui_layer_lineage_view_108_object.log"
+    },
+    "canonical": {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1",
+      "exit_code": 0,
+      "log": "local/cc12_native_gui_layer_lineage_view_108_build.log",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_total_seconds": 9.5,
+      "checks": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ]
+    },
+    "actual_registered_tu_and_archive_symbol": {
+      "archive": "build/win32/Release/bsp_core.lib",
+      "symbol_lines": [
+        "37022F2 ?native_gui_layer_is_kind_of_00aa38b0@gui_widgets_cc13@bsp@@YA_NAAY02$$CDII@Z"
+      ],
+      "registration": [
+        {
+          "path": "cmake/startup.cmake",
+          "line": 764,
+          "text": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/gui_widgets_cc13.cpp)"
+        },
+        {
+          "path": "build/win32/bsp_core.vcxproj",
+          "line": 1417,
+          "text": "<ClCompile Include=\"J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\gui_widgets_cc13.cpp\" />"
+        }
+      ]
+    },
+    "new_tests": 0,
+    "wrapper_executed": false,
+    "native_body_executed": false,
+    "native_differential_added": false,
+    "no_post_seal_build": true
+  },
+  "call_map": {
+    "direct_calls": 0,
+    "rows": [],
+    "verifier_run": false,
+    "reason": "Original leaf has no calls; zero call-map rows are not a behavioral proof."
+  },
+  "remaining": [
+    "Actual Layer initialization at 00CD73F0 and same retained 00F8BF88 authority are not implemented or admitted here.",
+    "No upper Page adapter, concrete producer, production graph admission or normal Text activation.",
+    "No Original binary ABI, initialization, lifetime, live gameplay or Native execution claim."
+  ],
+  "artifact_manifest": "local/cc12_native_gui_layer_lineage_view_108_artifact_manifest.json"
+}
