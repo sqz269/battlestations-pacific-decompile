@@ -44,7 +44,9 @@ first,then current index;ChildAt RET4 consumes the index alone. The remaining
 word becomes the recursive name argument after the same index word is reused
 for the returned child. This is caller evidence only. The parent201B/90op
 qualified-name lookup remains NOT ready for general Original-source closure:
-its Original CRT search/prefix dependencies remain incomplete. No parent Source
+its Original prefix-comparison and runtime dependencies remain incomplete.
+The separate genuine Original character-search leaf is now complete and
+fixture/build tested;that does not close this parent. No parent Source
 implementation or completion credit is part of this leaf packet.
 
 Whole listing/bytes,typed body/sole true incoming metadata,and existing legacy
@@ -54,7 +56,30 @@ Source/header hashes identify the draft. Primary full41B/17op assembly and
 entire Source/header review passed with hashes asserted unchanged. The other
 harness write lock was first observed held;no competing write was attempted.
 After it released,the normal locked annotation saved the project,retained the
-old name/comment and refreshed/read back the export. The actual combined normal
-Win32 build/emitted-object gate remains pending. The
-worker has no CMake queue or duplicate build. No new tests are added. Static/
-build proof will not establish Original ABI/private frame/fault/game identity.
+old name/comment and refreshed/read back the export. The actual primary combined normal MSVC Release Win32 build at
+`1464485a955060ff1e438595b07257f5a5238c01` passed all three existing CTests
+in9.48 seconds. The immutable primary receipt SHA256 is
+`1ed1d387b08fd81d72273546821687943a650e6ccf4c7e42dd3a7ee7f77ddd4c`.
+No worker CMake edit,duplicate build or new test was used. Existing checks do
+not execute this new body.
+
+The complete actual emitted object and symbols were reviewed:the public
+function is54B/28 instructions,and its three8B/8B/14B helpers bring total text
+to84B. The1224B object SHA256 is
+`780da8d464cf8d966ee64d250c79c994d4009c2748286fe0dcfa7b9696f3a8d9`.
+All payload accesses are DWORD loads. Index is read first;count is read once
+and compiled as negative-count JS plus unsigned JBE;head and each+44h link
+remain current. Link-null testing follows each retained-index decrement. Raw
+node bits/zero return in EAX. All helpers were reviewed;there are no emitted
+calls,relocations or undefined external symbols.
+
+The emitted54B public body has a new cdecl(list,index-cell) frame/plain RET,
+compared with the Original41B ECX/stack-index body/RET4. Register/branch/frame
+layout and helper COMDATs differ. This is whole actual-storage Source ready
+through its new interface,not Original ABI/private-frame/fault/game identity.
+
+Final gate evidence was appended through the normal Ghidra write lock,with
+prior values logged in`local/ghidra-annotations-20261016T021938Z.json`.
+The project was saved,exports forced fresh,and final readback verified
+the existing names and old comments in
+`local/goal_oct15_child_strchr_final_comments.json`.
