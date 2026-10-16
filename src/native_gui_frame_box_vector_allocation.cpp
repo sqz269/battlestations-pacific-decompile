@@ -19,3 +19,13 @@ void* __fastcall allocate_native_gui_frame_box_records_00acef10(
 }
 
 } // namespace bsp
+
+#include "bsp/native_singleton_vector_allocation.hpp"
+
+namespace bsp {
+
+[[noreturn]] void __cdecl throw_native_gui_frame_box_vector_length_error_00ad1810() {
+    native_singleton_length_error_00bd0590();
+}
+
+} // namespace bsp
