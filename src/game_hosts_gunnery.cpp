@@ -1153,6 +1153,18 @@ constexpr bool kTorpedoBotReadyGateBound = true;   // ON: GUNNERY_OPEN_ITEMS 161
 //    this step's 0072D130 countdown: the order of the bot and gun ticks inside
 //    one step is not read). OFF: the window only, and the refusals are counted.
 constexpr bool kTorpedoBotCanFireReloadBound = true;   // ON: GUNNERY 260
+//  * kTorpedoAngleErrPerEvaluationBound: packet g48_angle_err (GUNNERY 263).
+//    008FFF20 draws the AngleErr jitter on every evaluating tick that passes
+//    the ready gate and the friendly-crossing walk: 00900830 00BD2F10(ECX=1,
+//    AngleErr row) and 0090083E 00BD2FC0(ECX=1) & 1 for the sign, both BEFORE
+//    the unit+634h bit-2 inhibit (0090087C) and the launch-zone test
+//    (0090088E), and 007311B0 carries the result in the shot order; the launch
+//    takes the order the last evaluation issued. The host drew the pair once,
+//    at shot creation. ON: the pair is drawn at the evaluation (same keys,
+//    torpedo_gyro (gun, 0|1)) and kept per gun; the launch uses the kept value.
+//    A held or refused evaluation still consumes its draws, as in the image.
+//    OFF: drawn at launch, and the evaluations that would draw are counted.
+constexpr bool kTorpedoAngleErrPerEvaluationBound = false;
 //  * kShipyardDeathReleaseBound: packet cc9_g34_shipyard_reidle. 008455A0, the
 //    shipyard's observer slot 08 on each unit it built (registered by AAh
 //    008437D0), runs when the unit dies (00926390): it clears the first hangar
@@ -2201,8 +2213,13 @@ struct GameGunneryHost::Impl {
         // What 00900476..00900526 left for the gyro run line (007311B0).
         std::array<float, 2> lead_xz{{0.0f, 0.0f}};
         float snap_radians{0.0f};
+        // kTorpedoAngleErrPerEvaluationBound: the signed AngleErr (degrees) the
+        // last evaluation drew at 00900830..0090084F, carried by 007311B0.
+        float angle_err_deg{0.0f};
+        bool angle_err_drawn{false};
     };
     std::map<std::size_t, TorpedoThink> torpedo_think_by_gun;
+    unsigned long long torpedo_angle_err_evaluations{0};   // kTorpedoAngleErrPerEvaluationBound
     unsigned long long torpedo_think_holds{0}, torpedo_think_evals{0};
     unsigned long long torpedo_ready_reload_refusals{0};   // kTorpedoBotCanFireReloadBound
     unsigned long long torpedo_zone_tests{0}, torpedo_zone_holds{0};  // kTorpedoLaunchZoneBound
@@ -8505,12 +8522,28 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             }
             done("TorpedoBot::friendly_crossing_scan_008fff20", 0x0090058au);
         }
+        if (want_fire && !torpedo_think_hold && !player_seat && torpedo_gun
+            && gun.category == bsp::kUnitGunneryTorpedoCategory) {
+            // 008FFF20 00900807..00900876: the AngleErr pair, before the inhibit
+            // and the launch-zone test (kTorpedoAngleErrPerEvaluationBound).
+            ++torpedo_angle_err_evaluations;
+            if constexpr (kTorpedoAngleErrPerEvaluationBound) {
+                int level = units.skill_level(owner_unit);
+                if (level < 0 || level > 5) level = 1;
+                const float magnitude = draw(Draw::torpedo_gyro, g, 0,
+                    kTorpedoAngleErr[level][0], kTorpedoAngleErr[level][1]);
+                const float sign = draw(Draw::torpedo_gyro, g, 1, 0.0f, 1.0f) < 0.5f
+                    ? -1.0f : 1.0f;
+                TorpedoThink& think = torpedo_think_by_gun[g];
+                think.angle_err_deg = sign * magnitude;
+                think.angle_err_drawn = true;
+            }
+        }
         if (kTorpedoLaunchZoneBound && want_fire && !torpedo_think_hold
             && gun.category == bsp::kUnitGunneryTorpedoCategory) {
             // 008FFF20 0090088E..009008EB: the gun-to-lead line against the layer-5
-            // avoid zones. LABELLED: the image draws the AngleErr jitter
-            // (00900830..00900876) before this test; the host draws it at launch, so
-            // a held tick draws nothing here.
+            // avoid zones. The image draws the AngleErr jitter (00900830..00900876)
+            // before this test: kTorpedoAngleErrPerEvaluationBound above.
             const GameAvoidZoneRuntime* zones = ship_ai != nullptr
                 ? ship_ai->avoid_zone_runtime() : nullptr;
             if (zones != nullptr && zones->ready()) {
@@ -9070,13 +9103,22 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 {{muzzle[0], muzzle[2]}}, torpedo_lead_xz, axis, torpedo_snap_radians);
             const float dx = run_end[0] - muzzle[0], dz = run_end[1] - muzzle[2];
             if (dx != 0.0f || dz != 0.0f) {
-                int level = units.skill_level(owner_unit);
-                if (level < 0 || level > 5) level = 1;
-                const float magnitude = draw(Draw::torpedo_gyro, g, 0,
-                    kTorpedoAngleErr[level][0], kTorpedoAngleErr[level][1]);
-                // 0090083E 00BD2FC0 & 1 -> +1 or -1 (0090084A..0090084F).
-                const float sign = draw(Draw::torpedo_gyro, g, 1, 0.0f, 1.0f) < 0.5f
-                    ? -1.0f : 1.0f;
+                float magnitude = 0.0f, sign = 1.0f;
+                const auto kept = torpedo_think_by_gun.find(g);
+                if (kTorpedoAngleErrPerEvaluationBound && kept != torpedo_think_by_gun.end()
+                    && kept->second.angle_err_drawn) {
+                    // The pair the last evaluation drew (007311B0's order).
+                    magnitude = std::fabs(kept->second.angle_err_deg);
+                    sign = kept->second.angle_err_deg < 0.0f ? -1.0f : 1.0f;
+                } else {
+                    int level = units.skill_level(owner_unit);
+                    if (level < 0 || level > 5) level = 1;
+                    magnitude = draw(Draw::torpedo_gyro, g, 0,
+                        kTorpedoAngleErr[level][0], kTorpedoAngleErr[level][1]);
+                    // 0090083E 00BD2FC0 & 1 -> +1 or -1 (0090084A..0090084F).
+                    sign = draw(Draw::torpedo_gyro, g, 1, 0.0f, 1.0f) < 0.5f
+                        ? -1.0f : 1.0f;
+                }
                 if constexpr (kGunAimDegreePrecisionBound) {
                     // 00900513..00900526: the run heading is stored as a float first.
                     const float run = static_cast<float>(std::atan2(static_cast<double>(dx),
@@ -15534,6 +15576,10 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery torpedo ready reload refusals=%llu bound=%d "
             "(0090042F vtable[1D0h](1) -> 0085A830 -> 00729A80(1), packet g47_torpedo_canfire)",
             host.torpedo_ready_reload_refusals, kTorpedoBotCanFireReloadBound ? 1 : 0);
+        host.log.notef("summary mission gunnery torpedo angle-error evaluations=%llu launches=%llu "
+            "bound=%d (00900830/0090083E drawn per evaluation, packet g48_angle_err)",
+            host.torpedo_angle_err_evaluations, host.torpedo_gyro_launches,
+            kTorpedoAngleErrPerEvaluationBound ? 1 : 0);
         host.log.notef("summary mission gunnery torpedo swim entity impacts=%llu (swimming rounds that "
             "struck an entity, 0084BC60)", host.torpedo_swim_entity_impacts);
         host.log.notef("summary mission gunnery bullet throw cone=%llu fan=%llu zero=%llu "

@@ -15293,3 +15293,87 @@ None is robust. Observations for the successor:
   A beam shot at a 12.6 m/s target from 1.6 km therefore passes astern of it; only a parked target (Fuso in `tl`) or a
   bow-on geometry is hit reliably.
 - Yamashiro has about 90k health; the BBs' fire takes it to 19-57k by 1200 s before they die.
+
+## 262. A `lead` aim for the harness torpedo order, and a USN15 bow-on ambush (cc9-gunnery48, 2026-10-16)
+
+**The aid** (`330782c2c`). `torpedo <ship> at <target> lead` aims the player's torpedo group at the TorpedoBot's own
+intercept point instead of the target's current position. The point is `008FBB00` with the unit's first tube's
+WaterTravelSpeed and the target's velocity, the solver the AI tubes use. LABELLED harness aid, like the bomb sight's
+`on <target>`: a player aims by eye, and this aims by the image's solver. Orders without `lead` are unchanged. The log
+line reads `player torpedo group fire: ... yaw=<deg> (lead)`. In `local\g48_plan.py`, a `torp` target `Yamashiro+lead`
+emits the suffix.
+
+**The ambush.** USN15 fails when an enemy comes within 3000 m of JapanGoTo (0, 12000). Yamashiro's track runs along
+x of about -300 and reaches z = 9000 at about 1415 s, so it must die before then. Bow-on geometry does not depend on
+the lead: a torpedo fired straight down Yamashiro's track meets it head on. So the nine non-Fuso-phase Fletchers (01, 07,
+08, 12, 14, 22, 26, 27, 28) form a line across the track and fire southwards from their starboard or port beam:
+- at 850 s they go to x 80..720 (dx 80) at z = 7000 (`aa`; z = 7600 in `ab`);
+- at 950 s they go to x -620..20, arriving westbound, so Yamashiro lies on their port beam;
+- from 1050 s there are three `torp` rounds of 100 frames each, at `Yamashiro+lead` (`ac`: plain `Yamashiro`);
+- at 1350 s they go to (-3000, 10000).
+
+The rest is `tl`.
+
+On current main, Fletcher 01, 07 and 08 die at 755-780 s, before the line forms, so six of the nine fire.
+
+32000-frame runs on export `local\g48_p1` (`330782c2c`), reference env:
+
+| Plan | Reference | 20,3 | 20,5 |
+| --- | --- | --- | --- |
+| `aa` (z 7000, lead) | Yamashiro dies 1321 s (Fletcher-class26) | 1171 s (Fletcher-class24) | 1126 s (Fletcher-class14) |
+| `ab` (z 7600, lead) | 1065 s (Fubuki-class07 friendly torpedo) | 1218 s (Fletcher-class12) | 1212 s (Minneapolis) |
+| `ac` (z 7000, no lead) | 1139 s (Fubuki-class07) | 1201 s (Minneapolis) | (see 262.1) |
+
+In every run, five of the six BBs die, as they did in `tl`.
+
+In `aa` the ambush lands eight torpedo hits on Yamashiro, at 1110 s and 1135 s (bullet class 62, about 1370 health each
+directly, with flooding after). Yamashiro dies in each of the eight runs. 262.1 has the full-length checks.
+
+## 263. GUNNERY 260 residuals: AngleErr per evaluation (bound OFF), the sub-depth held trigger, the `unit+634h` inhibit writer (cc9-gunnery48, 2026-10-16)
+
+**AngleErr per evaluation (`kTorpedoAngleErrPerEvaluationBound`, OFF).** The image draws the gyro jitter on the
+evaluating tick, not at the launch. The listing for `00900807..00900888`:
+
+1. `00900830` calls `00BD2F10(ECX=1, AngleErr row [00E1998C + bot+34h*14h] +0Ch/+10h)`.
+2. `0090083E` calls `00BD2FC0(ECX=1)`, and `& 1` gives the sign (`0090084A..0090084F`, -1 or +1).
+3. `00900872` adds sign * magnitude * pi / 180 to the run heading at `[ESP+24h]`.
+4. Only after that: the inhibit test, `0090087A..00900888` (`[gun+3F0h]+634h` bit 2 -> `00900970`).
+5. Then the launch-zone test (`0090088E`), and the shot order `007311B0` that carries the heading.
+
+So every evaluation that passes the ready gate and the friendly-crossing walk consumes the two stream-1 draws, including
+one that the inhibit or the zone then refuses. The launch takes the order the last evaluation issued. The host drew the
+pair once, at shot creation (`kTorpedoGyroHeadingBound`).
+
+The binding: ON draws the pair at the evaluation, between the crossing walk and the zone test, with the same keys
+(`torpedo_gyro`, (gun, 0|1)). It keeps the pair per gun in `TorpedoThink`, and the launch uses the kept pair. OFF draws at
+the launch and counts the evaluations that would draw (`summary mission gunnery torpedo angle-error evaluations=`).
+LABELLED: the AI path only. A player-seat tube takes its order heading from the message, and neither side draws for it.
+
+**Predictions (written before the pairs).**
+- OFF: `evaluations` >= `launches` on every mission with AI torpedo tubes, and both are 0 elsewhere.
+- ON: the same evaluation count. Each AI torpedo's gyro heading gets a different jitter, because each key now advances
+  once per evaluation, not once per launch. Under `BSP_GUNNERY_RNG_STREAMS=1`, only the `torpedo_gyro` keys move. AI
+  torpedo hits, and the deaths that follow from them, may move. Missions without AI torpedo tubes are identical.
+
+Pairs: JM06 `jm06_s49_j6_s`, USN15 (the 262 plan), USN12 `usn12_g45_u12_e7`.
+
+**Sub-depth held trigger (`009000FC..00900117`): left as a residual, not bound.** bot+64h is set for a submarine owner.
+When `008527E0` says the sub is too deep, the tick returns before the think timer and the trigger, so a latch raised
+earlier stays raised. The host refuses category 7 at target selection (`kSubmarineCategoryGateBound`), which drops the
+trigger instead. A held latch can only fire while `0085A830`'s window and reload allow it. The launch path would also
+need the swim depth `0072C970`, which is not modelled (GUNNERY 152). Reach: AI submarines that dive while a tube is
+latched. No pair is planned until a mission shows one (counter: none yet).
+
+**`unit+634h` bit-2 inhibit writer: no host route.** A byte scan finds the writers of `unit+634h`:
+
+| Pattern | Hits |
+| --- | --- |
+| `83 ?? 34 06 00 00` | only `00465290` (AND, `BSP_MovieAction_SetGunFireEnabled_Run`) and `00465350` (OR, `..._Disabled_Run`) |
+| `81 ?? 34 06 00 00` | `00465386` (the `All` OR) |
+| `89 ?? 34 06 00 00` | the unit constructor `0095CE0B`, and three ship-CLASS stores (`00831840`, `00963380`, `00963600`: a different object) |
+
+So bit 2 is set only by the scene action `aSetGunFireDisabled "Torpedo"`. The host runs no scene action lists:
+`src/engine_movie_actions.cpp` holds the descriptor table and the mask helpers, and no game host calls them. A search
+of this installation's 259 `.scn` files for the ASCII names found nothing. That negative is vacuous: no action name
+(`aTurnGun`, `aParticleEffect`, `aDont_Move`) occurs in them in ASCII either. The constant `inhibited = false` stays,
+LABELLED. Wiring the writer needs a scene-action executor, which is outside this lane.
