@@ -40,9 +40,10 @@ bytes; its SHA-256 is
 
 ## Admission and runtime limits
 
-Source binding identities and backing-pointer identity remain valid and stable,
-disjoint from Source metadata. The actual referenced contents remain mutable
-through real providers. Only a nonnull decoded handler requires four readable
+Added binding/bookkeeping, including compiler-private argument and temporary
+backing, remains valid and stable and disjoint from reached actual size/native
+cells. Real native contents retain admitted aliasing and reentrancy, and remain
+mutable through real providers. Only a nonnull decoded handler requires four readable
 size bytes and compatible callable native code. Inline assembly supplies the
 raw x86 DWORD load, with no null/alignment/range guard or input normalization.
 Decoded null permits absent backing and skips its read entirely.
@@ -64,15 +65,23 @@ Baseline HPP SHA-256:
 The entire old method's exact raw Source bytes, excluding its following newline,
 remain present unchanged; SHA-256:
 `4a035e0c3e90cdcfcb045def3f32eb83e4b77aa247877ed5b87bca3512bd00bc`.
-The additions are 25 CPP lines and 21 HPP lines, with no removed lines.
+The additions preserve the entire existing method and public declaration.
 
 The new report records before/after file hashes, the complete native body,
 current direct/indirect transfer evidence, and seven true incoming CALL sites.
 The three BFDE-range sites belong to current formal owner `00BFDCEC`, rather
 than an inferred enclosing function at `00BFDE30`.
 
-Primary full native/Source review is pending at this draft. Annotation and the
-normal combined Win32/whole-object check follow that review. The emitted check
-must independently compare the old public body with its published body, as
-well as verify the extension. No CMake append, worker build or new test is
+Primary full native/Source review passed. Its requested header-comment
+clarification was applied without changing the CPP or API. Correct library
+identity `__callnewh` and all captured prior Source53 comment text were retained
+through the write-locked annotation tool, which recorded prior values and saved
+the project; affected exports were refreshed. The ledger extends the same
+Original address and record with one additional Source interface.
+
+The normal combined Win32/whole-object check remains pending with the primary.
+It must independently compare the old public body with its immutable published
+actual COFF object, SHA-256
+`0266e6b2d3cfe7fc43822facfa18b1784b835731c1d964fff31908f52981259c`,
+as well as verify the extension. No CMake append, worker build or new test is
 authorized or performed; the translation unit is already registered.

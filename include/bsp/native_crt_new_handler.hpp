@@ -35,10 +35,12 @@ std::int32_t __cdecl invoke_native_crt_new_handler_00c055b1(
 // one unchecked x86 DWORD read (including unaligned storage), invoke the actual
 // decoded int32 __cdecl(uint32) handler and normalize its full result to0/1.
 //
-// The backing pointer and borrowed binding identities remain valid/stable and
-// disjoint from Source metadata. Their referenced native contents may change
-// through real providers. Only the nonnull-handler path requires four readable
-// backing bytes; no null/alignment/range guard or input normalization is added.
+// Added binding/bookkeeping, including compiler-private argument/temporary
+// backing, remains valid/stable and disjoint from reached actual size/native
+// cells. Real native contents retain admitted aliasing/reentrancy and may
+// change through real providers. A decoded null permits null/absent size
+// backing. Only the nonnull-handler path requires four readable backing bytes;
+// no null/alignment/range guard or input normalization is added.
 // Inherited decode/module-gate services and actual callable-handler contracts
 // apply. No new handler/provider, owner, TLS state, cleanup or SDK policy.
 // This NEW Source ABI does not reproduce the Original parameter/decoder-slot

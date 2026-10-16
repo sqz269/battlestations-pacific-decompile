@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "goal_oct16_crt_call_new_handler",
-  "status": "draft_additive_actual_raw_size_backing_API_primary_review_and_combined_gate_pending",
+  "status": "primary_reviewed_additive_actual_raw_size_API_annotated_saved_exported_normal_combined_gate_pending",
   "new_Original_functions": 0,
   "new_Source_APIs": 1,
   "mapped_Original_addresses": [
@@ -17,8 +17,8 @@
   "Source_API": "call_native_crt_new_handler_00c055b1",
   "prior_API_preserved": "invoke_native_crt_new_handler_00c055b1",
   "source_sha256": "7d086357ec4ee166c2007b63e6d586badd0055dc424da11d5b0200d974be01a8",
-  "header_sha256": "b6b59679c51cfa60a86a63ceb8c4a75d75e79fdb89a6b33b65f0d9a88969c9dd",
-  "documentation_sha256": "70baf1c3d1009c0f09f50160d7f063e0b32c9bf9c2ea995ebb1eb43f6a40697f",
+  "header_sha256": "0e005d5aef511ff7c38028bb3b112e73e7ffa10a0fff9d60264dfed51aa1e420",
+  "documentation_sha256": "eb9d461bd73f3616e9c409f183217c24749d95a5aedcbe877e5c0d3cd3b1b846",
   "original_library_name": "__callnewh",
   "original_abi": "cdecl oneDWORDsize argument atentryESP+4, caller-pop4/plainRET, fullEAX exact0/1. Current globalencodedhandler is decoded BEFORE any sizewordread; NULL skips sizeaccess. No local EH.",
   "Source_abi": "New cdecl(constvoid*actual_size_argument4,constNativeCrtPointerDecodeContext&,constvolatileuint32&actualencoded109DE44),3words/caller12. Stable backingpointer/refidentities, explicit reached rawDWORDstorage; not Originalentry/argument/outgoingslot/register/fault/SEH ABI.",
@@ -57,7 +57,7 @@
       "Nonnull performs one uncheckedx86 DWORDread of CURRENT actual_size_argument4 backing, includingunalignedstorage.",
       "Invoke actual decoded int32 __cdecl(uint32) handler with capturedword; return fullsignedint32 result!=0?1:0, retainingallnonzero bitpatterns."
     ],
-    "domain": "Binding/pointeridentities stable/disjointfrom Source metadata; actual contents remain mutable through realproviders. Only nonNULLdecodedhandler path requires4readablebackingbytes+actualcallablecompatiblecode. No null/alignment/rangeguard, normalization, fake default/owner/nonNULLseededassumption. Inherited actual decoder context/modulegate/nativeprovider contracts apply.",
+    "domain": "Added binding/bookkeeping including compiler-private argument/temporary backing remains valid/stable and disjoint from reached actual size/native cells. Real native contents retain admitted aliasing/reentrancy/mutation. DecodedNULL permits null/absent backing; only nonnull handler requires4readablebytes and actualcallablecompatiblecode. No guards/normalization/SDK/defaultowner.",
     "propagation": "No catch/noexcept/retry/cleanup/lock/errno/LastErrorrepair. No new std::new_handler policy or genericcallbackfield. Decoder/handler sideeffects and failures propagate under their existing contracts.",
     "decoder_slot": "Existingdecoder writes its own actual firstcallee argument word on selectedtransform paths then returnscurrentword. Parentusesreturnedpointer/discards temporary; addedcontext/physicalslot/metadataqualification remains open."
   },
@@ -192,13 +192,37 @@
     "sha256": "b0fd724c9b991f2f2ea227a6adbeb307af86113a0422d2a8adee5e10a573a995"
   },
   "annotation": {
-    "status": "pending primaryreview; preservecorrectlibraryname__callnewh andallpriorcomments/Source53evidence",
+    "status": "applied_after_primary_review_through_ghidra_annotate_write_lock_saved_and_exports_refreshed",
+    "library_name": "__callnewh",
+    "prior_name_unchanged": true,
+    "entire_captured_prior_comment_preserved": true,
     "prior_capture": "local/goal_oct16_crt_call_new_handler_prior_comments.txt",
-    "prior_capture_sha256": "6f84ec8afaed8e014c8781bbcf618b18abeeb6c6e71f0e39c4069e5e8d61ad55"
+    "prior_capture_sha256": "6f84ec8afaed8e014c8781bbcf618b18abeeb6c6e71f0e39c4069e5e8d61ad55",
+    "write_log": "local/ghidra-annotations-20261016T160521Z.json",
+    "write_log_sha256": "e86a1f01b6d8f437e4987bca2a7ed6c344495ae265c0204bc14db833165391fc",
+    "after_capture": "local/goal_oct16_callnewh_after_comments.txt",
+    "after_capture_sha256": "05c04f613ed0d048ec66d881572b0624c8b3509a660b9c31e8583984951a4543",
+    "post_annotation_native_bytes_unchanged": true,
+    "export_refresh": "local/goal_oct16_callnewh_export_refresh.txt"
   },
-  "Source_ledger": "Pendingprimaryreview. Preserveexistingmapping/aliases;1Originaladdress,0newOriginalfunctions,1additionalSourceAPI. No duplicateOriginalcompletion.",
+  "Source_ledger": {
+    "same_original_address": "00c055b1",
+    "existing_record_name_unchanged": "invoke_native_crt_new_handler_00c055b1",
+    "existing_fields_preserved": "All prior fields retained; evidence appended; additional_Source_interfaces holds newrawAPI with gatependingstatus. No second function record or Originalcompletion.",
+    "new_Original_functions": 0,
+    "additional_Source_APIs": 1,
+    "prior_record": "local/goal_oct16_callnewh_prior_reconstruction_record.json",
+    "prior_record_sha256": "a14003e213545d799d05bb9978e934764df25c0410be05b221be72aa893e7d1e",
+    "name_shard": "config/names/00c00000.jsonl",
+    "reconstruction_shard": "config/reconstruction/00c00000.jsonl"
+  },
   "validation": {
-    "primary_review": "pending",
+    "primary_review": {
+      "status": "passed_whole34B15_native_and_entire_CPP_HPP",
+      "accepted_CPP_sha256": "7d086357ec4ee166c2007b63e6d586badd0055dc424da11d5b0200d974be01a8",
+      "final_HPP_sha256": "0e005d5aef511ff7c38028bb3b112e73e7ffa10a0fff9d60264dfed51aa1e420",
+      "header_comment_clarification": "Requestedonlycommentclarification applied, noCPP/APIchange; explicitprivateargument/temporarybackingdisjointness and admittedrealalias/reentrancy/absentbackingNULLpath."
+    },
     "registered_normal_Win32_combined_gate": "pending primary; existingTUalreadyregistered,noCMakeappend",
     "whole_object_review": "pending: allactualmethods+oldpublicbodyunchanged+newlateunalignedread/NULLskip/cdeclcall/fullnormalization",
     "worker_build": "notrun perexplicitprimaryinstruction",
@@ -207,7 +231,7 @@
       "checked": 8,
       "failed": 0
     },
-    "diff_check": "git diff --check passed"
+    "diff_check": "git diff --check and git diff --cached --check passed"
   },
   "ownership": {
     "packet": "goal_oct16_crt_call_new_handler",
