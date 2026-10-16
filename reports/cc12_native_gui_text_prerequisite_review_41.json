@@ -1,0 +1,95 @@
+{
+  "packet": "native_gui_text_prerequisite_review_41",
+  "kind": "independent_read_only_source_prerequisite_review",
+  "status": "source_contract_pass",
+  "remaining_blocking_source_findings": [],
+  "reviewed_merged_commit": "07c72d19b50a1e576f3c6e4e2f6edf2941660063",
+  "inspected_root": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator",
+  "component_commits": {
+    "host_wiring": "ab0ddbce9f28822f602c9a7ae42483934d12c8e0",
+    "entered_exception_containment": "3429ff668f46a3355bd2ca2b34e2c67d456619ba",
+    "process_37": "de08e5308a6242e22296d5bd0b60047c9baf6c08",
+    "state_38": "86b767ab4c4eae4b4044a6d2bbc36cb9407d0167",
+    "complete_type_headers_and_entry_boundary": "07c72d19b50a1e576f3c6e4e2f6edf2941660063"
+  },
+  "source_blobs": {
+    "src/game_main.cpp": "65a1a0db50d2ae420e9114a898771a060d7072a2",
+    "src/game_hosts.cpp": "a9dbd6db939a085e27f3797194c25b269a215001",
+    "src/game_hosts_text.cpp": "100b7df174476daa44e129edbde13dc20a3e79e1",
+    "cmake/startup.cmake": "dcef1a26ebff8f251832eb70eafca1856f3466e4",
+    "include/bsp/game_native_gui_text_process.hpp": "f00ee0d19c0ad67736751df12451f1e4b1e7f1ef",
+    "src/game_native_gui_text_process.cpp": "bbddde0782ae85e048f5cbc5ca4d5afd46ce6996",
+    "include/bsp/game_native_gui_text_state.hpp": "1d5a5d3ceebf618fa6beeda9d09c9d5b8b0e1806",
+    "src/game_native_gui_text_state.cpp": "256293ad3740e894ecade510d0a7e514768f0fd2"
+  },
+  "startup_order": {
+    "text_pool_before_existing_particle_subset": true,
+    "pool_pointer_retained_before_native_entry": true,
+    "real_atexit_result_preserved_and_logged": true,
+    "nonzero_atexit_result_rolls_back_pool": false,
+    "type_initialization_after_pool_return": true,
+    "type_initialization_before_fonts": true,
+    "canonical_inputs": ["vfs.native_owners().types()", "vfs.native_types().light_types()"],
+    "same_existing_counter_publication_and_root_guard_cells": true,
+    "second_counter_or_root_owner_created": false,
+    "absolute_Original_CRT_timing_or_numeric_ID_order_claimed": false,
+    "Source_late_bootstrap_explicit_in_comment_and_log": true
+  },
+  "failure_and_replay": {
+    "pool_attempt_state_set_before_native_effects": true,
+    "type_attempt_state_set_before_native_effects": true,
+    "failed_or_reentrant_initialization_rejected": true,
+    "completed_repeat_requires_same_type_domain": true,
+    "completed_pool_repeat_returns_cached_status": true,
+    "interrupted_predicate_metadata_only": true,
+    "main_checks_interrupted_before_diagnostics": true,
+    "main_standard_and_unknown_exceptions_contained": true,
+    "interrupted_main_diagnostics_wrapped_before_unconditional_Exit2": true,
+    "unknown_noninterrupted_pool_failure_terminates_at_existing_entry_boundary": true,
+    "interrupted_type_diagnostics_wrapped_before_unconditional_Exit1": true,
+    "new_guessed_native_cleanup_or_rollback": false,
+    "runtime_failure_injection_performed": false
+  },
+  "CRT_lifetime": {
+    "canonical_allocator_list_constructed_before_text_process": true,
+    "text_process_constructed_before_pool_atexit_registration": true,
+    "pool_callback_runs_before_companion_and_list_destruction": true,
+    "callback_uses_same_initialized_pool": true,
+    "callback_dereferences_stored_VFS_counter_or_root_pointers": false,
+    "lineage_accessors_read_process_owned_arrays": true,
+    "default_process_destructor_dereferences_VFS": false,
+    "pool_destruction_destroys_Text_payloads": false,
+    "future_native_Text_slots_and_borrowers_must_close_before_callback": true
+  },
+  "shared_state": {
+    "out_of_line_provider_definitions": 1,
+    "state_source_target_registrations": 1,
+    "process_source_target_registrations": 1,
+    "state_target": "bsp_game",
+    "private_constructor_and_deleted_copy": true,
+    "retained_process_lifetime": true,
+    "state_depends_on_VFS_or_mapped_data_lifetime": false,
+    "sprite_vertical_scale_reads_shared_backing": true,
+    "old_sprite_only_scale_constant_removed": true,
+    "white_color_initialized_by_host_logging": false,
+    "live_cached_run_invalidation_established": false,
+    "all_future_native_GUI_material_clip_Text_consumers_wired": false
+  },
+  "reviewer_actions": {
+    "source_inspection": true,
+    "dependency_blobs_verified_after_merge": true,
+    "source_mutation": false,
+    "Ghidra_query_or_mutation": false,
+    "build_or_tests_run": false,
+    "game_run": false,
+    "new_tests_added": false,
+    "owned_reports_only": true
+  },
+  "not_established": [
+    "Combined canonical build or test completion",
+    "Actual startup or CRT retirement execution for prerequisite41",
+    "Native Text factory, glyph buffers, effects, or rendering activation",
+    "Complete gameplay, Original CRT schedule/IDs, or complete Original ABI",
+    "Concurrent callback/allocator-list safety or native failure/SEH equivalence"
+  ]
+}
