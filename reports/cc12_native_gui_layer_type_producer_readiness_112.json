@@ -1,0 +1,424 @@
+{
+  "packet": "cc12_native_gui_layer_type_producer_readiness_112",
+  "status": "bounded_read_only_source_composition_ready",
+  "baseline": {
+    "own_head": "5b9c49d30aee469fdce81e8f911d20b18bdd5071",
+    "merged_published_main": "4b2507b6889c6da63fb48fede8505539131894cb",
+    "merge_exit_code": 0,
+    "prior_owned_commit": "fc1a761ac760a07b41a0e5b4a586e77ecdd5eac6",
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48"
+  },
+  "scope": "Whole CD73F0 plus immediate accepted counter/Element contracts; no query-algorithm or unrelated class-profile re-audit.",
+  "original": {
+    "exe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "exe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000",
+    "ranges": [
+      {
+        "address": "00cd73f0",
+        "length": 79,
+        "role": "whole Layer initializer",
+        "sha256": "834216a540048a72140a02574ae495b1bb4fd04b913064b25bb89f850862c343",
+        "live_equals_disk": true,
+        "preimage_backing": "file bytes",
+        "artifact": "local/cc12_native_gui_layer_type_producer_readiness_112_original_00cd73f0.bin"
+      },
+      {
+        "address": "006fac20",
+        "length": 181,
+        "role": "accepted counter getter contract",
+        "sha256": "70526b13aa54e4afb188a2aeb0facac4a3e61c6770e787563b2c8e5d68a8d678",
+        "live_equals_disk": true,
+        "preimage_backing": "file bytes",
+        "artifact": "local/cc12_native_gui_layer_type_producer_readiness_112_original_006fac20.bin"
+      },
+      {
+        "address": "00aa8200",
+        "length": 62,
+        "role": "accepted Element parent initializer contract",
+        "sha256": "56e41a59971357fe207d7a10d8ea4b7fa3d70f1618a33fc86c01be75a93ad5ca",
+        "live_equals_disk": true,
+        "preimage_backing": "file bytes",
+        "artifact": "local/cc12_native_gui_layer_type_producer_readiness_112_original_00aa8200.bin"
+      },
+      {
+        "address": "00d5cb0c",
+        "length": 10,
+        "role": "Layer name literal including NUL",
+        "sha256": "665125abbfb85b89b64cd44d11f98a605b7c89514a12ee0d9b193d3756e6078c",
+        "live_equals_disk": true,
+        "preimage_backing": "file bytes",
+        "artifact": "local/cc12_native_gui_layer_type_producer_readiness_112_original_00d5cb0c.bin"
+      },
+      {
+        "address": "00f8bf48",
+        "length": 1,
+        "role": "Layer guard preimage",
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "live_equals_disk": true,
+        "preimage_backing": "PE loader virtual zero-fill",
+        "artifact": "local/cc12_native_gui_layer_type_producer_readiness_112_original_00f8bf48.bin"
+      },
+      {
+        "address": "00f8bf88",
+        "length": 16,
+        "role": "Layer descriptor preimage",
+        "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb",
+        "live_equals_disk": true,
+        "preimage_backing": "PE loader virtual zero-fill",
+        "artifact": "local/cc12_native_gui_layer_type_producer_readiness_112_original_00f8bf88.bin"
+      },
+      {
+        "address": "00f8bc80",
+        "length": 1,
+        "role": "Element guard preimage",
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "live_equals_disk": true,
+        "preimage_backing": "PE loader virtual zero-fill",
+        "artifact": "local/cc12_native_gui_layer_type_producer_readiness_112_original_00f8bc80.bin"
+      },
+      {
+        "address": "00f8bc88",
+        "length": 12,
+        "role": "Element descriptor preimage",
+        "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+        "live_equals_disk": true,
+        "preimage_backing": "PE loader virtual zero-fill",
+        "artifact": "local/cc12_native_gui_layer_type_producer_readiness_112_original_00f8bc88.bin"
+      },
+      {
+        "address": "0109db7c",
+        "length": 16,
+        "role": "counter publication, root guard and root descriptor preimages",
+        "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb",
+        "live_equals_disk": true,
+        "preimage_backing": "PE loader virtual zero-fill",
+        "artifact": "local/cc12_native_gui_layer_type_producer_readiness_112_original_0109db7c.bin"
+      },
+      {
+        "address": "00ce349c",
+        "length": 4,
+        "role": "CRT initializer array slot for Layer CD73F0",
+        "sha256": "6bbbdb1964caea6b87c51c1e88c1e637f18fefac17454f4378567dd30e09ecfe",
+        "live_equals_disk": true,
+        "preimage_backing": "file bytes",
+        "artifact": "local/cc12_native_gui_layer_type_producer_readiness_112_original_00ce349c.bin"
+      }
+    ],
+    "range_count": 10,
+    "total_bytes": 382,
+    "note": "Ghidra analysis-memory preimages matched unchanged installed PE/loader image; these are not observations of a running game or successful initializer execution."
+  },
+  "whole_layer_initializer": {
+    "entry": "00cd73f0",
+    "end_exclusive": "00cd743f",
+    "bytes": 79,
+    "instructions": 16,
+    "direct_calls": 2,
+    "local_exception_frame": false,
+    "cleanup_or_atexit_in_body": false,
+    "original_abi": "No stack arguments, current ECX overwritten/unused as input, void/plain RET; no full Source member ABI equivalence asserted.",
+    "crt_reference": {
+      "slot": "00ce349c",
+      "value": "00cd73f0",
+      "meaning": "Observed actual data reference; not proof that whole CRT sequence ran."
+    },
+    "ordered_effects": [
+      {
+        "site": "00cd73f0 / 00cd73f7",
+        "effect": "Read BYTE F8BF48 and skip all work on any nonzero guard."
+      },
+      {
+        "site": "00cd73f9",
+        "effect": "Prepare actual Element target F8BC88 in ECX."
+      },
+      {
+        "site": "00cd73fe",
+        "effect": "Store BYTE F8BF48 = 1."
+      },
+      {
+        "site": "00cd7405",
+        "effect": "Store DWORD F8BF94 = D5CB0C (cGuiLayer NUL literal)."
+      },
+      {
+        "site": "00cd740f",
+        "effect": "Invoke actual AA8200 Element initializer on captured target."
+      },
+      {
+        "site": "00cd7414 / 00cd7419",
+        "effect": "Capture CURRENT Element own ID then CURRENT Element root ID; both loads before either Layer parent store."
+      },
+      {
+        "site": "00cd741f / 00cd7424",
+        "effect": "Store captured Element own/root IDs to F8BF8C/F8BF90 in order."
+      },
+      {
+        "site": "00cd742a",
+        "effect": "Invoke SAME shared counter getter 6FAC20."
+      },
+      {
+        "site": "00cd742f / 00cd7432",
+        "effect": "Load returned owner+4 as n and form n+1 modulo 32 bits."
+      },
+      {
+        "site": "00cd7435",
+        "effect": "Store n+1 to SAME returned owner+4."
+      },
+      {
+        "site": "00cd7438 / 00cd743e",
+        "effect": "Publish n to F8BF88 only after counter store, then plain RET."
+      }
+    ]
+  },
+  "primary_calls": [
+    {
+      "address": "00cd740f",
+      "native": "00aa8200",
+      "function": "00cd73f0",
+      "role": "Actual Element target ECX=F8BC88; guard/name already stored."
+    },
+    {
+      "address": "00cd742a",
+      "native": "006fac20",
+      "function": "00cd73f0",
+      "role": "SAME counter getter after both captured Layer parent stores."
+    }
+  ],
+  "immediate_contracts": {
+    "element": {
+      "entry": "00aa8200",
+      "end_exclusive": "00aa823e",
+      "bytes": 62,
+      "instructions": 17,
+      "source": "Existing gui_type_initialize<2> + GameNativeGuiTextProcess canonical AA8200 adapter",
+      "schedule": "Guard read/captured ECX target; guard=1; target+8 name; SAME root initializer; CURRENT root ID -> target+4; real counter getter; owner+4 increment before target+0 publication. Nonzero guard skips effects.",
+      "new_reconstruction_needed": false
+    },
+    "counter": {
+      "entry": "006fac20",
+      "end_exclusive": "006facd5",
+      "bytes": 181,
+      "instructions": 48,
+      "source": "TypeIdCounterLifetime::get_006fac20",
+      "schedule": "First publication load fast return; captured shared-manager section; enter/recheck; 8B allocate/init; publication; second manager getter; CURRENT publication registration; captured-section release; final publication reload.",
+      "requires": "Same retained manager/counter publication/deletion authority and genuine live nonnull returned 8B counter owner at use.",
+      "new_reconstruction_needed": false,
+      "boundary": "Existing accepted Source CRT / shared manager / exception domain; lower providers and Native EH helpers not newly audited."
+    }
+  },
+  "partial_completion": [
+    {
+      "point": "guard nonzero at entry",
+      "effect": "Native returns without checking completeness or running dependencies."
+    },
+    {
+      "point": "AA8200 exits exceptionally",
+      "effect": "Layer guard/name stores already executed; CD73F0 has not performed either Layer parent or own-ID publication; Element/root/counter effects may be partial; no rollback."
+    },
+    {
+      "point": "6FAC20 exits exceptionally",
+      "effect": "Layer guard/name and both parent stores already executed; counter publication/registration may be partial; own-ID publication not yet performed by CD73F0; no rollback."
+    },
+    {
+      "point": "normal completion",
+      "effect": "Same returned counter increment precedes final Layer own-ID publication; no cleanup, decrement or registration in this function."
+    }
+  ],
+  "provider_matrix": [
+    {
+      "role": "type counter / publication / shared deletion",
+      "current_api": "GameNativeVfsApplication::owners().types() / host native_owners().types()",
+      "authority": "NativeVfsOwnerServices::types_ constructed from SAME SoundLifetimeAccess and cells_.type_counter_0109db7c; app cells refer to host manager_01090aa0",
+      "source": [
+        "include/bsp/native_vfs_owner_services.hpp:49",
+        "src/native_vfs_owner_services.cpp:17",
+        "src/native_vfs_owner_services.cpp:29",
+        "src/game_native_vfs_application.cpp:53",
+        "src/game_native_vfs_application.cpp:82"
+      ],
+      "ready": "existing real Source provider; retain same VFS/host/services through uses and shared drain; no second counter"
+    },
+    {
+      "role": "root guard / descriptor",
+      "current_api": "GameNativeVfsApplication::types().light_types() / host native_types().light_types()",
+      "authority": "SAME GameNativeTypeStorage root_guard_0109db80_ and root_0109db84_ references, borrowed by LightTypeBootstrap",
+      "source": [
+        "src/game_native_type_storage.cpp:8",
+        "include/bsp/game_native_type_storage.hpp:37",
+        "include/bsp/game_native_type_storage.hpp:82",
+        "src/light_type_bootstrap.cpp:68"
+      ],
+      "ready": "existing canonical Source root; no second root owner or default descriptor"
+    },
+    {
+      "role": "Element guard / descriptor and initializer",
+      "current_api": "GameNativeGuiTextProcess existing AA8200 helper and element_lineage_00f8bc88()",
+      "authority": "SAME private element_guard_00f8bc80_ / element_00f8bc88_; existing completed Text startup binds counter/root identities",
+      "source": [
+        "src/game_native_gui_text_process.cpp:32",
+        "src/game_native_gui_text_process.cpp:75",
+        "src/game_native_gui_text_process.cpp:112",
+        "include/bsp/game_native_gui_text_process.hpp:65"
+      ],
+      "ready": "existing Source composition; requires completed same-domain Text startup for proposed narrow Layer admission"
+    },
+    {
+      "role": "Layer guard / descriptor / completion exposure",
+      "current_api": null,
+      "authority": "absent from existing process; no matching initializer/getter or class backing member in current Source",
+      "source": [
+        "include/bsp/game_native_gui_text_process.hpp:63",
+        "src/game_native_gui_text_process.cpp:124"
+      ],
+      "ready": "FIRST missing Source composition; one sole Layer role can extend existing owner"
+    },
+    {
+      "role": "Layer query live input",
+      "current_api": "packet108 native_gui_layer_is_kind_of_00aa38b0(required const volatile uint32_t (&)[3], uint32_t)",
+      "authority": "caller supplies SAME completed lineage; algorithm not repeated in112",
+      "source": [
+        "reports/cc12_native_gui_layer_lineage_view_108.json"
+      ],
+      "ready": "existing explicit input capability; no query-only parallel array"
+    }
+  ],
+  "storage_authority": {
+    "native": "Separate actual guard F8BF48 and descriptor F8BF88..F8BF97; name word F8BF94; loader-zero preimages verified, not successful initialization.",
+    "current_source": "Existing process has sole Source Element/Text backing members, expressly not fixed-address Original memory. No Layer member currently exists.",
+    "proposed_source": "One sole canonical Layer backing role in THAT process; returned view refers to SAME member only after completion. No independent query array or copied IDs.",
+    "lifetime": "Borrowed same VFS counter/root/services must survive all initializer callbacks/consumers/shared drain. Retained process pointers do not retain that graph. External serialization and no late initializer after domain retirement required.",
+    "native_fixed_va_owner_provided": false
+  },
+  "next_source_packet": {
+    "kind": "small explicit existing-process Layer-role extension, not new query algorithm",
+    "files": [
+      "include/bsp/game_native_gui_text_process.hpp",
+      "src/game_native_gui_text_process.cpp"
+    ],
+    "addresses": [
+      "00cd73f0"
+    ],
+    "proposed_api": [
+      "initialize_layer_type_once_00cd73f0(TypeIdCounterLifetime&, LightTypeBootstrapStorage)",
+      "const volatile uint32_t (&layer_lineage_00f8bf88() const)[3]"
+    ],
+    "pure_preflight": "Require completed pool AND Text startup. Compare exact retained counter object, root descriptor and root guard identities before any Native effect. Completed repeat may return only for same domain. Reject entered failure/reentry.",
+    "required_schedule": "Mark Source attempt entered, then exact guard/name/actual AA8200 helper/BOTH current Element captures/parent stores/real counter getter/same-owner increment/own-ID publication; mark returned only at end.",
+    "capture_order_limit": "Existing generic per-word parent-copy loop alone is not exact proof of both loads preceding either store. Use precise private Layer-body current captures/stores rather than widening shared API.",
+    "exposure": "Only complete returned Layer role yields SAME const-volatile three-word reference; include Layer entered-failure state in native_operation_interrupted(). Loader-zero words never substitute for completed descriptor.",
+    "registration": "Existing cpp is already a bsp_game source at cmake/startup.cmake:2133. No new TU or registration needed.",
+    "not_authorized": [
+      "normal-host invocation",
+      "second counter or root",
+      "fixed/default numeric IDs",
+      "parallel query descriptor",
+      "new pool or owner",
+      "new CRT or atexit registration",
+      "Original ABI/fixed-VA claim",
+      "upper Page adapter or production activation"
+    ],
+    "proof_boundary": "New ordinary Source API and failure metadata, over admitted Source authority. Does not reproduce Original absolute CRT timing/numeric ID order, machine ABI or Native EH."
+  },
+  "source_hashes": [
+    {
+      "path": "include/bsp/game_native_gui_text_process.hpp",
+      "sha256": "c0f0dd4bba7bab733eec89f43a8b7f47578f0601dd1c02ab365887d77b30322c",
+      "bytes": 4145,
+      "copy": "local/cc12_native_gui_layer_type_producer_readiness_112_source/include/bsp/game_native_gui_text_process.hpp"
+    },
+    {
+      "path": "src/game_native_gui_text_process.cpp",
+      "sha256": "eab92c37b8b7487e12edf0e79b580621dc4c4f5e5cba2700952caef5b6d19b8b",
+      "bytes": 5875,
+      "copy": "local/cc12_native_gui_layer_type_producer_readiness_112_source/src/game_native_gui_text_process.cpp"
+    },
+    {
+      "path": "include/bsp/gui_widgets_cc13.hpp",
+      "sha256": "2a889c7f79cdfa87e99283c4b0286eed4911845410425a38918cb39aeecb63b7",
+      "bytes": 92980,
+      "copy": "local/cc12_native_gui_layer_type_producer_readiness_112_source/include/bsp/gui_widgets_cc13.hpp"
+    },
+    {
+      "path": "include/bsp/light_type_bootstrap.hpp",
+      "sha256": "7856c5bbb320d6d5e1dd0df2f4969314cd2d7365134741702e187a901456333f",
+      "bytes": 3214,
+      "copy": "local/cc12_native_gui_layer_type_producer_readiness_112_source/include/bsp/light_type_bootstrap.hpp"
+    },
+    {
+      "path": "src/light_type_bootstrap.cpp",
+      "sha256": "6384bd3d557e9c9378e9ea54994d3defcccf2814d9918f371fd461cbeed0e6ef",
+      "bytes": 5880,
+      "copy": "local/cc12_native_gui_layer_type_producer_readiness_112_source/src/light_type_bootstrap.cpp"
+    },
+    {
+      "path": "include/bsp/game_native_vfs_application.hpp",
+      "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f",
+      "bytes": 3022,
+      "copy": "local/cc12_native_gui_layer_type_producer_readiness_112_source/include/bsp/game_native_vfs_application.hpp"
+    },
+    {
+      "path": "src/game_native_vfs_application.cpp",
+      "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "bytes": 8470,
+      "copy": "local/cc12_native_gui_layer_type_producer_readiness_112_source/src/game_native_vfs_application.cpp"
+    },
+    {
+      "path": "include/bsp/native_vfs_owner_services.hpp",
+      "sha256": "2df162f0937d2c9b34c790609d92c3e41ef8cc6ae49977ec0fcd6e07b699a128",
+      "bytes": 3548,
+      "copy": "local/cc12_native_gui_layer_type_producer_readiness_112_source/include/bsp/native_vfs_owner_services.hpp"
+    },
+    {
+      "path": "src/native_vfs_owner_services.cpp",
+      "sha256": "1df19acedaa8505b0bc1d0fd4279a514a73f4a1db5cf63300c53f89e9cb1ed6c",
+      "bytes": 1236,
+      "copy": "local/cc12_native_gui_layer_type_producer_readiness_112_source/src/native_vfs_owner_services.cpp"
+    },
+    {
+      "path": "include/bsp/game_native_type_storage.hpp",
+      "sha256": "fc659c2705ef9899c150106ce1bfb7291fc23046f689528f6ec379d48d4d7337",
+      "bytes": 7900,
+      "copy": "local/cc12_native_gui_layer_type_producer_readiness_112_source/include/bsp/game_native_type_storage.hpp"
+    },
+    {
+      "path": "src/game_native_type_storage.cpp",
+      "sha256": "87958d36dc6c7480e73992698c3c9dac86bc153f7033fc0e55a9833fd2ea5b4b",
+      "bytes": 5640,
+      "copy": "local/cc12_native_gui_layer_type_producer_readiness_112_source/src/game_native_type_storage.cpp"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "sha256": "c33d647e332f75566313a855a24a2bcb50fc1c383fc74398f3cbe5429c2b762c",
+      "bytes": 150204,
+      "copy": "local/cc12_native_gui_layer_type_producer_readiness_112_source/src/game_hosts.cpp"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "dcc4c0e9d9f1900cab9aba9bbea550f1de737e529d634099f471abf1f90da3ce",
+      "bytes": 262188,
+      "copy": "local/cc12_native_gui_layer_type_producer_readiness_112_source/cmake/startup.cmake"
+    }
+  ],
+  "verification": {
+    "call_map": {
+      "command": "python tools/verify_report_calls.py reports/cc12_native_gui_layer_type_producer_readiness_112.json",
+      "exit_code": 0,
+      "checked_rows": 2,
+      "failed_rows": 0,
+      "scope": "Only the two whole-CD73F0 direct calls; no callee-EH/ABI/runtime proof."
+    },
+    "source_changes": false,
+    "cmake_changes": false,
+    "ledger_changes": false,
+    "ghidra_writes": false,
+    "build_run": false,
+    "tests_run": false,
+    "probe_run": false,
+    "native_execution": false
+  },
+  "document": {
+    "path": "docs/CC12_NATIVE_GUI_LAYER_TYPE_PRODUCER_READINESS_112.md",
+    "sha256": "79a69acf247c2443ea9a5caf7c87c3590840a36c3438c8cbe89611bace2dc0a3"
+  },
+  "artifact_manifest": "local/cc12_native_gui_layer_type_producer_readiness_112_artifact_manifest.json"
+}
