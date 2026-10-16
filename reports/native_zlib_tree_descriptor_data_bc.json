@@ -37,8 +37,8 @@
     },
     {
       "path": "docs/NATIVE_ZLIB_TREE_DESCRIPTOR_DATA_BC.md",
-      "bytes": 9231,
-      "sha256": "f1c18b14374621822dd083bcd985ba7b870802ee2c534aea017147fef38b3a77"
+      "bytes": 10046,
+      "sha256": "6670dcaf47e51d4fd72802da9d19664861facad8784c648b73360d4d4bcdd8eb"
     }
   ],
   "actual_new_variant_compile": {
@@ -582,5 +582,42 @@
     "failed": 0,
     "DATA_not_function_warnings": 8,
     "explanation": "All eight warning locations are genuine DATA extents, intentionally recorded as fragments and never fabricated as functions. Zero eligible call rows are not independent DATA proof; BB whole-object/Core/compiler review provides that evidence."
+  },
+  "Root_post_peer_Main_refresh": {
+    "Source_build_pin": "5adcc0e1297dd2094c446e34324caf7b564a799b",
+    "incorporated_Main": "cb9f0ff28d20deae8348abf8d8b87d8f23f6f24c",
+    "normal_build": {
+      "source_pin": "5adcc0e1297dd2094c446e34324caf7b564a799b",
+      "Main_input": "cb9f0ff28d20deae8348abf8d8b87d8f23f6f24c",
+      "observed_Main_at_build": "cb9f0ff28d20deae8348abf8d8b87d8f23f6f24c",
+      "start_utc": "2026-10-16T15:45:40.350307+00:00",
+      "end_utc": "2026-10-16T15:46:26.964881+00:00",
+      "wall_seconds": 46.6418338999938,
+      "exit_code": 0,
+      "log": "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal16at_root\\publication_build.log"
+    },
+    "existing_checks": "3/3 PASS,7.00s",
+    "actual_DATA_whole_object_byte_identical_to_BB_snapshot": true,
+    "all23_prior_AR_whole_objects_unchanged": true,
+    "current_Core": {
+      "bytes": 94504032,
+      "sha256": "0e081cb4b93732503c81acd0b1cd3a9f333620237f407bd4272392a4235d3041",
+      "actual_COFF_members_parsed": 2506,
+      "first_dictionary_entries": 83128,
+      "second_dictionary_entries": 83128,
+      "both_full_dictionary_multisets_equal": true,
+      "all_names_point_to_actual_defined_members": true,
+      "unique_actual_whole_DATA_member": 35526080,
+      "four_unique_strong_DATA_symbols": [
+        "_bsp_native_zlib_static_bl_desc_00e14734",
+        "_bsp_native_zlib_static_d_desc_00e14720",
+        "_bsp_native_zlib_static_l_desc_00e1470c",
+        "_bsp_native_zlib_tree_ro_region_00d677c0"
+      ]
+    },
+    "current_proof_sha256": "7a539437294c67900407245c7687bde407d9c9da654572b04b672981121c0ade",
+    "compiler_proof_sha256": "1a13e924647f8986e5b9055aad5ec1a57ad2ee0af51634b71befbd729781dba8",
+    "current_Core_independently_re_reviewed_by_BB": false,
+    "scope": "Root verifies the refreshed current whole Core and both dictionaries beyond BB Source22ba snapshot; exact Source/header and entire selected DATA object retain the independently accepted physical contract."
   }
 }
