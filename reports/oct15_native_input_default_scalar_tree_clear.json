@@ -1,0 +1,328 @@
+{
+  "packet": "oct15_native_input_default_scalar_tree_clear",
+  "status": "whole_Source_default_Win32_primary_and_independent_peer_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_input_default_scalar_tree_clear.cpp",
+  "header": "include/bsp/native_input_default_scalar_tree_clear.hpp",
+  "documentation": "docs/OCT15_NATIVE_INPUT_DEFAULT_SCALAR_TREE_CLEAR.md",
+  "tested_source_pin": "9fc0c7bf25b5befc6646bdda621d99a395656eb1",
+  "source_sha256": {
+    "src/native_input_default_scalar_tree_clear.cpp": "29f1ba308ba368e7cb606c6189048e51a69e7b47f66ea1e9b18cb801596286b6",
+    "include/bsp/native_input_default_scalar_tree_clear.hpp": "2caa11af8c6be3e7535c9004a268cd1d192ce2a39c70ec425c968c4be3b23259"
+  },
+  "original_abi": "Native ECX actual12Btree; incomingEDX unconsumed; no stack inputs/plainRET, incidentalEAX. Sourcefastcall(actualTree,uint32unusedEDX) semanticvoid preserves consumed shape, not recovered original C++ convention/mangling. Current saved prototype is untyped; assembly establishes actual consumed inputs.",
+  "native_blocks": [
+    {
+      "address": "0069dc70",
+      "bytes": 43,
+      "starts": 16,
+      "sha256": "cbe987cb77e235af269afc895c5e0c33be965ff63175ebd7468ce790b34347f3",
+      "PE_equals_live": true
+    },
+    {
+      "address": "00555660",
+      "bytes": 43,
+      "starts": 16,
+      "sha256": "a2175beff0dc81c28b81e19f3f6b91852f67db55cde3f30ace161a2dc116377d",
+      "PE_equals_live": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0069dc7c",
+      "native": "0069d3f0"
+    },
+    {
+      "address": "0055566c",
+      "native": "00554f10"
+    }
+  ],
+  "evidence_accounting": {
+    "owned_bytes": 43,
+    "owned_starts": 16,
+    "read_only_reference_bytes": 43,
+    "reference_starts": 16,
+    "no_global_unique_coverage_increment_over_prior_domains_claimed": true
+  },
+  "raw_contract": [
+    "Capture CURRENT tree+4 head, then head+4 root; actual published d81 subtree Source gets original tree and root.",
+    "Only on return: reload headA/root4=self; capture headB BEFORE count8=0, store headBleft0=self; reload headC AFTERleftstore and store headCright8=self.",
+    "No sentinel free, mapped release, extra writes, fallback, rollback, guard or local catch. Actual rawnil15/currentCRT subtree contract applies."
+  ],
+  "provider_fingerprints": {
+    "include/bsp/native_input_default_scalar_subtree.hpp": "48ff24253ae649e8274f3cc22029c4c2e0ae73a594e67dd165bb94a559a84d84",
+    "src/native_input_default_scalar_subtree.cpp": "f610bd48c247a4d193ed345f274bd6ffeb1098d4f6ebb00ea4c1f0296f35791f",
+    "include/bsp/native_input_int_subtrees.hpp": "e4b32740b888f83614a100871c9a87a412da554decfb691c85362b3c9c4f11bf",
+    "src/native_input_int_subtrees.cpp": "a42030f5284b6b3dc3f62352d64f08a8bdceb87cc9d445f7ad468d95cd29fc9c",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "actual_Source_dependency": {
+    "entry": "0069d3f0",
+    "pin": "d81dbfc2a256483f5a31b01a25669eb216be03ac",
+    "published_batch25_Main": "f3cf8a3c6d322b232af943c442ce4d1f3fc38ae1",
+    "api": "destroy_native_input_default_scalar_subtree_0069d3f0(tree,0,root)",
+    "real_implementation": "Whole accepted actual554F10 rawservice, original recursive-origin/privateframe differences alreadyqualified"
+  },
+  "fresh_native_and_COFF_audit": {
+    "path": "local/oct15_default_scalar_clear_native_coff_audit.json",
+    "sha256": "87c8ed183b0d8471785613c6c75bde180e32dce9bf51ba21e540288bfc535c7d"
+  },
+  "actual_CMake_COFF": {
+    "path": "build/win32/bsp_core.dir/Release/native_input_default_scalar_tree_clear.obj",
+    "sha256": "60e2b8a9bd976e6f8327e7b011a89784e928efccd77d47cb0bd0837b0c92c0d1",
+    "machine": "I386",
+    "sections": [
+      {
+        "section": 3,
+        "name": ".text$mn",
+        "bytes": 43,
+        "raw_hex": "568bf133d28b46048b400450e8000000008b46048940048b4604c746080000000089008b46045e894008c3",
+        "symbols": [
+          {
+            "name": "?clear_native_input_default_scalar_tree_0069dc70@bsp@@YIXPAXI@Z",
+            "value": 0,
+            "section": 3,
+            "type": 32,
+            "storage": 2
+          }
+        ],
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "offset": 1,
+            "mnemonic": "mov",
+            "operands": "esi, ecx"
+          },
+          {
+            "offset": 3,
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "offset": 5,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 4]"
+          },
+          {
+            "offset": 8,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [eax + 4]"
+          },
+          {
+            "offset": 11,
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "offset": 12,
+            "mnemonic": "call",
+            "operands": "0x11"
+          },
+          {
+            "offset": 17,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 4]"
+          },
+          {
+            "offset": 20,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 4], eax"
+          },
+          {
+            "offset": 23,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 4]"
+          },
+          {
+            "offset": 26,
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 8], 0"
+          },
+          {
+            "offset": 33,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax], eax"
+          },
+          {
+            "offset": 35,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 4]"
+          },
+          {
+            "offset": 38,
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "offset": 39,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 8], eax"
+          },
+          {
+            "offset": 42,
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ],
+        "relocations": [
+          {
+            "offset": 13,
+            "kind": 20,
+            "symbol": "?destroy_native_input_default_scalar_subtree_0069d3f0@bsp@@YIXPAXI0@Z",
+            "target_section": 0,
+            "target_value": 0,
+            "raw_addend": 0
+          }
+        ]
+      },
+      {
+        "section": 5,
+        "name": ".text$mn",
+        "bytes": 10,
+        "raw_hex": "558bec8b45088b005dc3",
+        "symbols": [
+          {
+            "name": "?load_word@?A0x9a50bf2b@bsp@@YAII@Z",
+            "value": 0,
+            "section": 5,
+            "type": 32,
+            "storage": 3
+          }
+        ],
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 6,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [eax]"
+          },
+          {
+            "offset": 8,
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 9,
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ],
+        "relocations": []
+      },
+      {
+        "section": 6,
+        "name": ".text$mn",
+        "bytes": 13,
+        "raw_hex": "558bec8b45088b4d0c89085dc3",
+        "symbols": [
+          {
+            "name": "?store_word@?A0x9a50bf2b@bsp@@YAXII@Z",
+            "value": 0,
+            "section": 6,
+            "type": 32,
+            "storage": 3
+          }
+        ],
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 6,
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp + 0xc]"
+          },
+          {
+            "offset": 9,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax], ecx"
+          },
+          {
+            "offset": 11,
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 12,
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ],
+        "relocations": []
+      }
+    ]
+  },
+  "primary_checks": [
+    "Complete Source/header, all16 ownedNative and16 reference instructions, all29 actualCMake instructions independently read.",
+    "Initial CURRENT treehead4/root4 feed exact actual published69D3F0; opaqueTree forwards unchanged, unusedEDX0 qualified.",
+    "After childsuccess CURRENT head/rootself reset precedes SECONDheadcapture, then treecount0, capturedleftself, THIRDheadcapture/rightself; no sharedhead snapshot.",
+    "Volatile DWORD captures and stores retain progressive public aliases and wrapping32-bit addresses; no direct treeopaque0/count-before-capture reorder.",
+    "No node/model/callback/provider/pool/context/guard/cleanup/rollback/localEH; childexception precedes all reset stores.",
+    "Fresh86PE/liveB32currentstarts; entire43-byte candidate/reference equal after ONLY verified subtreeE8 operand normalization; reference projection not used as Sourceprovider.",
+    "ActualCmakepublic43B16+helpers23B13 exact soleREL32 accepted69D3F0, XOREdx0/plainRET and reset sequence verified; publicEBPframe absent/privatehelpers ownEBPframes.",
+    "SourcefinalheadinEAX/POPESI-before-rightstore differs NativeESI/popafter; equalpublicbyte/count totals do not imply byteidentity/privateframe/flags/EAX/fault/CRT/ABI/game equivalence."
+  ],
+  "independent_peer": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_avoid_distance\\local\\oct15_native_input_default_scalar_tree_clear_peer_review.json",
+    "sha256": "dcf5e05ab9dc0e268b82d9fc7df9572685d04c090fafb28ad37b47e5305fff79",
+    "checks": 12,
+    "findings": [],
+    "scope": "entire Source/header, fresh43B16Native, actual66B29Cmakeobject and provider closure; no new build/execution inferred"
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "platform": "MSVC Win32 Release defaultCMake",
+    "existing_suites": "3/3 passed",
+    "ctest_seconds": 13.32,
+    "log": "local/oct15_default_scalar_clear_initial_build.log",
+    "log_sha256": "91da6c8d8f7cb9ad2afe657bcf2e3aada386ea03d0805bfabfa8741b767305d7",
+    "new_tests": 0,
+    "Native_execution": false,
+    "original_binary_ABI_proven": false,
+    "game_validated": false
+  },
+  "preservation": {
+    "correct_library_identity": "STL_Tree_Clear_IntKey_N18B_0069dc70",
+    "reference555660_only_table_projection_not_a_reused_RawSource_clear": true,
+    "prior_Source_and_AV_domains_unchanged": true,
+    "no_Ghidra_prototype_or_body_repair": true
+  },
+  "limits": [
+    "Accessible valid raw tree/sentinel storage must remain writable throughout subtree/free/resets; finite actual subtree ownership and currentCRT domain required.",
+    "Sourcepublic captures/stores followNative, privateargument/frame aliases and asynchronous mutation excluded.",
+    "CanonicaldeadEDX/Sourcevoid exclude incidentalEAX/register/flag/privateframe/originalC++ABI identities. CurrentCRT/free/FH3/SEH/fault/stackexhaustion/game remain unproved.",
+    "Existing suites cover older math/tool behavior; compile/static proof is not Nativeexecution or game proof. No new test for this small direct reset routine."
+  ]
+}
