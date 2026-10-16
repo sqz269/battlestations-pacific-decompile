@@ -1218,9 +1218,14 @@
       "attempt05_direct_zero_stores",
       "attempt06_unsigned_arithmetic"
     ],
-    "total_working_lower_bound_seconds": 1698.866492509842,
+    "total_working_lower_bound_seconds": 1604.273599,
     "scope": "Capture before initial brief through this report includes all qualification, failed/successful strict attempts, scope steering, source changes, both overlapping registered builds, docs and ledger writes. Final index/check/commit/release handoff follows; earlier message/setup before capture is additional.",
-    "report_finalized_utc": "2026-10-16T02:56:46.108296+00:00"
+    "report_finalized_utc": "2026-10-16T02:56:46.108296+00:00",
+    "superseded_elapsed_sample": {
+      "seconds": 1698.866492509842,
+      "endpoint": "Unrecorded later interim endpoint; not established as matching report_finalized_utc"
+    },
+    "primary_correction": "Elapsed corrected to the recorded capture/report_finalized timestamp interval. Old unanchored sample retained above; final ignored handoff independently records1798.5428seconds and is separate."
   },
   "source_sha256": "2c14da119423368790ef3118d2e601e185e202045ab4cfaa7f8a60b266a1c010",
   "header_sha256": "e5e0201df436a347149bd20b0863e3a7241b758a7ad92462b57c9c6136ff4515",
