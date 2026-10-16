@@ -30,3 +30,11 @@ void* construct_native_gui_frame_box_default_00ad2600(
     return destination;
 }
 } // namespace bsp
+
+namespace bsp {
+std::uint16_t __fastcall native_gui_frame_box_current_state_bits_00ad26d0(
+    const void* actual_frame_box) noexcept {
+    return *reinterpret_cast<const volatile std::uint16_t*>(
+        static_cast<const std::byte*>(actual_frame_box) + 0xec);
+}
+} // namespace bsp
