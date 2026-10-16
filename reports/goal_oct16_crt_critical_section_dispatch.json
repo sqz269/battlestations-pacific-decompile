@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "packet": "goal_oct16_crt_critical_section_dispatch",
-  "status": "whole_qualified_Source_draft_primary_review_pending_build_pending",
+  "status": "whole_ordinary_Source_qualified_MSWIN32_SEH_registered_build_emitted_verified_Original_runtime_unproved",
   "created_utc": "2026-10-16T16:08:34.284145+00:00",
   "base_worker": "771ec5377dcca8dfa138b1c19e641c7e4d00562e",
   "observed_main": "f15d284e15512a563fde30122b0c036e70d2ac12",
-  "source_ready": false,
+  "source_ready": true,
   "general_source_ready": false,
   "parent_Original_lock_heap_SCC_ready": false,
   "ordinary_whole_Source_draft_complete": true,
@@ -196,16 +196,16 @@
     },
     "hpp": {
       "path": "include/bsp/native_crt_critical_section_dispatch.hpp",
-      "sha256": "cade1170837bd460ca6cc485b9a91b11e2517182136f9f75645973a3f02f687f"
+      "sha256": "fad58d3dd306423483e010b87e8b944d63a2a7513abfadec66652699a4d6735b"
     },
     "doc": {
       "path": "docs/GOAL_OCT16_CRT_CRITICAL_SECTION_DISPATCH.md",
-      "sha256": "8b44d21e0a838507657a87a331015f890a7c6c2030b30978ef37d01d27d1a2a6"
+      "sha256": "87bb6d9495bf3db758148b26b189747ec9cbbe163859610344abd8bb585369fa"
     }
   },
   "feasibility_report": {
     "path": "reports\\goal_oct16_crt_critical_section_dispatch_feasibility.json",
-    "sha256": "04b5e46851f45765a6a209ff9d15f8895168d2d976029dec741bab16bc5eb20c",
+    "sha256": "ef3bc75d08d797ced6d58ad6afffc046e5dad0be81a6de0b893e343da0795bde",
     "primary_API_decision": "Corrected private12 explicitly approved; private8 rejected because native platform/code cells differ."
   },
   "actual_entry_and_storage_contract": {
@@ -218,7 +218,9 @@
     "actual_private12": "Contiguous raw native order above, mutable alias-capable reached storage; only zero platform+8 before decoder. Result+4 and code+0 are not eagerly zeroed or cached.",
     "metadata": "Added context/reference identities and compiler bookkeeping/SEH state must be stable/disjoint from actual parameter/private cells and reached payload. Actual native cells may alias reached payload/global words at the admitted provider contracts; do not freeze their contents or impose new whole-region guards.",
     "native_ABI": "Original cdecl2words/plainRET/EAXBOOLbits with nativeSEH4 frame. Proposed API is ordinary new C++ with additional bindings; no Original register/stack/privateframe/fault/codepointer identity.",
-    "entry_approval": "Approved by primary before Source/address claim; Source packet now owns entry and four files."
+    "entry_approval": "Approved by primary before Source/address claim; Source packet now owns entry and four files.",
+    "alignment": "actual_private12 must be DWORD-aligned; platform+8 is passed as uint32_t* to the existing ordinary typed-store OS-platform getter. No arbitrary unaligned platform-output admission; raw argument helpers retain their raw DWORD behavior.",
+    "x87_emitted_admission": "The actual MSVC public body contains additional FWAIT at+F8 immediately after selectedcall, insideprotectedregion. Qualified ordinary admission excludes a pending enabled x87 exception this wait could surface there, including one left by selectedinitializer; Originalx87pending/fault identity unproved."
   },
   "read_write_schedule": [
     "Raw zero platform(private+8) before actual encodedcache read/decode, even cache hit. Keep selected decoded raw pointer captured separately.",
@@ -968,26 +970,28 @@
     "No new generic callback or SDKCRT allocator/errno/invalidhandler. The only selectedcall is the actual native decoded/resolved target or concrete accepted C17643 provider.",
     "Source fallback code pointer is relocated genuine Source entry; cache encoding and subsequent raw target reuse must be consistent with that admitted environment. It does not claim numerical OriginalC17643 pointer identity or Originalmodule/codeplacement.",
     "MSVC compiler SEH registration, ExceptionPointers, savedESP/state and compilerprivate storage differ from OriginalC07C00/C07C90/E037B8 frame. Exposedprivate12 represents only three actual mutablepayloadcells, not fake writes into original SEH state or private frame.",
-    "No C++destructible automatic objects in the __try function; MSVC C2712 and actual emitted filter/call/volatile read schedules require later normalregisteredbuild review. No compile test is authorized at this feasibility stage.",
-    "Raw x86 loads/stores/RMW should support reachedunalignedDWORD storage without C++uninitialized-read/overflow narrowing. Preserve live raw aliases including initialplatformzero/finalresultread. Only added metadata/privatecompilerbacking disjoint.",
-    "Real C0000017 behavior is supplied by actual Windows SEH; actual sourcecode/faultaddresses, asyncdelivery details, OriginalSEH4/privateunwind/stackhomes/registerflags/ABI/game identity remain unproved."
+    "Real C0000017 behavior is supplied by actual Windows SEH; actual sourcecode/faultaddresses, asyncdelivery details, OriginalSEH4/privateunwind/stackhomes/registerflags/ABI/game identity remain unproved.",
+    "actual_private12 must be DWORD-aligned; platform+8 is passed as uint32_t* to the existing ordinary typed-store OS-platform getter. No arbitrary unaligned platform-output admission; raw argument helpers retain their raw DWORD behavior. Handler RMW may read uninitialized raw bytes; only added metadata/privatecompilerbacking disjoint.",
+    "The actual MSVC public body contains additional FWAIT at+F8 immediately after selectedcall, insideprotectedregion. Qualified ordinary admission excludes a pending enabled x87 exception this wait could surface there, including one left by selectedinitializer; Originalx87pending/fault identity unproved.",
+    "MSVCSEH compilation and entireactualCOFFscope/code review passed; this is not dispatcherentry execution, OriginalSEH4/privateABI/runtime/game proof."
   ],
   "Source_implementation_properties": {
     "actual_parameters": "Ordered fresh raw spin load thenpointer load after every preparationcall, inside__try; no snapshotkey/contextdata or countguards.",
     "actual_private": "ZeroONLYplatform initially. Normalresultstore insideprotectedregion; filtercode publish/capturedcompare; freshhandlercode/currentresult reads; rawANDzero onhandler.",
     "alias_domain": "Actualparams/private12 mayalias reachedpayload/globalword referents at admitted provider contracts. Addedbindingidentity/compilerSEH bookkeeping disjoint; no extraFrozenstateowner.",
     "registered_target": "Real decodedcurrentcache or GetProcAddress result; realfallbackcalls existing C17643 Source at relocatedaddress; encode exactly selectedpointer and retainrawselected value.",
-    "MSVC_transport": "No noexcept helper barriers, C++destructibleautomaticobjects, catchall or syntheticthrow. Genuine Windows __try/__except controls exactC0000017 path. Actual compiler/protectedrange proof remains pendingemittedreview."
+    "MSVC_transport": "ActualMSVCWin32SEH/entire7CODEobject reviewed; preparationoutside, lateargs/call/resultstoreprotected, exactfilter/currenthandler/RMW. No noexcept barrier/C++destructibleautos/catchall/substitutecallback. AdditionalFWAIT+F8 admission explicit, Originalframe/fault identityfalse.",
+    "inherited_getter_alignment": "actual_private12 must be DWORD-aligned; platform+8 is passed as uint32_t* to the existing ordinary typed-store OS-platform getter. No arbitrary unaligned platform-output admission; raw argument helpers retain their raw DWORD behavior."
   },
   "formal_metadata_limits": {
     "entry_name_preserved": true,
-    "mutation_performed": false,
+    "mutation_performed": true,
     "formal147B_not_whole197B": true,
     "filter_handler_defined_in_InstructionDB": false,
     "body_or_flow_repair": false,
     "script_policy_change": false,
     "proto_repair": false,
-    "annotation": "Not performed before primaryfullSource review."
+    "annotation": "Library name retained and prior comment preserved as exactprefix; evidence appended underlock, saved/readback/exported. No body/flow/prototype repair."
   },
   "fresh_capture_receipts": [
     {
@@ -1012,21 +1016,358 @@
     }
   ],
   "validation": {
-    "Source_review": "pending primary wholeSource review",
-    "registered_build": "NOT RUN/pending; noCMake registration yet",
-    "emitted_Source_inspection": "pending actual registeredobject",
+    "Source_review": "passed primary fullSource/main/filter/handler; typedgetter alignment clarified with CPP unchanged",
+    "registered_build": {
+      "revision": "d9e1fce24cc7b7475668db7d14245958ef0d5237",
+      "command": "scripts/build.ps1",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 8.9,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "log": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct16_source_batch_combined_build.log",
+      "log_sha256": "a084341f15d21c301692e308e7b8cae03f50210f38aea7fd1cbdf6fd4c434d22",
+      "primary_receipt_path": "reports/goal_oct16_source_batch_primary_review.json",
+      "receipt_hash_not_pinned": "Primary requested path-only to avoid circular evidence pin; immutable log/revision/object hashes independently retained.",
+      "tested_cpp_sha256": "f07e83f08500b271d561cffafaba0cf05b1726bb611a38a835c9872e369ea6bd",
+      "tested_header_sha256": "cade1170837bd460ca6cc485b9a91b11e2517182136f9f75645973a3f02f687f",
+      "current_header_sha256": "fad58d3dd306423483e010b87e8b944d63a2a7513abfadec66652699a4d6735b",
+      "postgate_delta": "Comments only in header; CPP and headernoncommenttext equal testedrevision. No redundantbuild.",
+      "worker_builds": 0,
+      "new_tests": 0,
+      "dispatcher_entry_execution": false,
+      "Original_ABI_runtime_game": false
+    },
+    "emitted_Source_inspection": "passed all7CODE528B/199ops, 14publicrelocs, realSourceSEHscope/filter/handler, rawpayloadread/write/RMW, explicitaddedFWAITadmission",
     "report_call_verifier": {
       "command": "python tools/verify_report_calls.py reports/goal_oct16_crt_critical_section_dispatch.json",
       "checked": 13,
       "failed": 0,
-      "passed": true
+      "passed": true,
+      "stage": "finalgate+emitted+annotationmetadata"
     },
-    "JSON_parse": "passed; scope/Source hashes/13 nativeCALL rows asserted",
-    "diff_check": "passed in owned staged draft before commit",
+    "JSON_parse": "passed final Source/header/doc pins, Sourcequalification gates, 13native rows and saved formalbody/flow/readback checks",
+    "diff_check": "passed final owned staged diff beforecommit",
     "new_tests": 0,
     "new_builds": 0,
     "Source_entry_native_execution": false,
+    "Original_ABI_runtime_game": false,
+    "annotation_readback": "passed finaloldcommentexactprefix/libraryname and savedexport; noformal/body/flow/protorepair",
+    "no_worker_CMake_build_tests": true,
+    "index": "rebuilt with owned naming/function rows"
+  },
+  "next_gate": "Primary integration/publication of existingpacket only. Userdrain/pause: no new work; retainleases untilpublicationack thenrelease/stop.",
+  "primary_review": {
+    "result": "passed full CPP/header and allphysical main/filter/handler; noCPPchange requested",
+    "reviewed_cpp_sha256": "f07e83f08500b271d561cffafaba0cf05b1726bb611a38a835c9872e369ea6bd",
+    "reviewed_original_header_sha256": "cade1170837bd460ca6cc485b9a91b11e2517182136f9f75645973a3f02f687f",
+    "qualified_header_sha256": "fad58d3dd306423483e010b87e8b944d63a2a7513abfadec66652699a4d6735b",
+    "qualification_change": "Postgate header comments add typedgetterDWORDalignment and actual compilerFWAIT admission. CPP and all noncommentheadertext unchanged from testedrevision."
+  },
+  "annotation": {
+    "command": "python tools/ghidra_annotate.py --apply --addresses 00C17653",
+    "lock": "coordination.ghidra_lock taken by purpose-built annotate tool",
+    "project_saved": true,
+    "prior_function_name": "___crtInitCritSecAndSpinCount",
+    "current_function_name": "___crtInitCritSecAndSpinCount",
+    "prior_comment": "Library Function - Single Match\n ___crtInitCritSecAndSpinCount\n\nLibrary: Visual Studio 2005 Release",
+    "exact_prior_comment_prefix_preserved": true,
+    "prior_values_recorded_before_mutation": true,
+    "log": {
+      "path": "local\\ghidra-annotations-20261016T161513Z.json",
+      "sha256": "b42db0617ea5dd530f9dc7c99917fb0a2ed0f5bc6efc497698e813919f323298"
+    },
+    "readback": {
+      "path": "local/goal_oct16_crt_critical_section_dispatch_after_comments.txt",
+      "sha256": "4c6ce287712c2fddd133ed4fb8fca0aa48517b818545f605508a008e42005021"
+    },
+    "post_typed": {
+      "path": "local\\goal_oct16_crt_critical_section_dispatch_postannotation_typed.json",
+      "sha256": "9e82d5e4a12501e1a14c73dd70b284400d24f59d40729321034a17e3aa1b1056",
+      "modification": "7035"
+    },
+    "unchanged": [
+      "library name",
+      "formal147B/3ranges",
+      "body/flow/prototype",
+      "no filter/handler InstructionDB functions",
+      "CPP"
+    ],
+    "mutations": "same-name rename request and append-only plate evidence; save; no listing/body/flow/prototype edits",
+    "final_gate_update": {
+      "command": "python tools/ghidra_annotate.py --apply --addresses 00C17653",
+      "lock": "purposebuilt tool coordination.ghidra_lock",
+      "saved": true,
+      "prior_complete_comment_prefix_preserved": true,
+      "library_name_unchanged": true,
+      "log": {
+        "path": "local/ghidra-annotations-20261016T162505Z.json",
+        "sha256": "d2b5d2b90558a6e726656ddc08d79f5c592bc9b41297f25842e9e5ecb6a145c2"
+      },
+      "comments": {
+        "path": "local/goal_oct16_crt_critical_section_dispatch_final_comments.txt",
+        "sha256": "f3b5f91c9d9c1e49bb8bd649ef7a031b59d55e564bd8ee40396af23f969ae13b"
+      },
+      "typed": {
+        "path": "local/goal_oct16_crt_critical_section_dispatch_final_typed.json",
+        "sha256": "821ac20a50c9be86100b12641f6b838adccb215140b9d235a5c3431ed03f09e7"
+      },
+      "physical_or_formal_body_flow_proto_changes": false
+    }
+  },
+  "refreshed_export": {
+    "command": "python tools/bsp.py ghidra export 00C17653",
+    "shared_root": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c17653",
+    "files": {
+      "assembly.txt": "3288308ab49b9ed249a12bc3163b442378fb0b822345e89ddd970d0919fb6f89",
+      "decompiled.c": "81dbe78d008272aa55284b5abf18674828d32f34ee36e3e648f373e988ae8552",
+      "metadata.json": "cccd708f0b94151018ee91f6c5475e0a5954ad39680d20c9c6bc44f57a83c8f0"
+    },
+    "coverage": "Current formal147B export only; physical197B proof remains separate, no inflated export/repair credit.",
+    "final_gate_evidence_refreshed": true
+  },
+  "drain_instruction": "User requested finish ongoing work and pause: finish only this current annotation/evidence commit; no new packet. Root handles existing normal gate/integration; leases retained until integration.",
+  "ordinary_qualified_Source_ready": true,
+  "primary_normal_gate": {
+    "revision": "d9e1fce24cc7b7475668db7d14245958ef0d5237",
+    "command": "scripts/build.ps1",
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 8.9,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "log": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct16_source_batch_combined_build.log",
+    "log_sha256": "a084341f15d21c301692e308e7b8cae03f50210f38aea7fd1cbdf6fd4c434d22",
+    "primary_receipt_path": "reports/goal_oct16_source_batch_primary_review.json",
+    "receipt_hash_not_pinned": "Primary requested path-only to avoid circular evidence pin; immutable log/revision/object hashes independently retained.",
+    "tested_cpp_sha256": "f07e83f08500b271d561cffafaba0cf05b1726bb611a38a835c9872e369ea6bd",
+    "tested_header_sha256": "cade1170837bd460ca6cc485b9a91b11e2517182136f9f75645973a3f02f687f",
+    "current_header_sha256": "fad58d3dd306423483e010b87e8b944d63a2a7513abfadec66652699a4d6735b",
+    "postgate_delta": "Comments only in header; CPP and headernoncommenttext equal testedrevision. No redundantbuild.",
+    "worker_builds": 0,
+    "new_tests": 0,
+    "dispatcher_entry_execution": false,
     "Original_ABI_runtime_game": false
   },
-  "next_gate": "Primary review exactSource/hash/physical66ops, then rootassigns registration/normalbuild/annotation work. NoCMake/workerbuild/tests/annotation performed in draftstage."
+  "emitted_review": {
+    "result": "passed full actual retainedCOFF/SEH/symbol/relocation review, independently matched primaryreview",
+    "object": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct16_source_batch_objects\\native_crt_critical_section_dispatch.obj",
+    "object_sha256": "9507eb061095d14404f4aeab23942b1747695313343da04a659af0a1589b1496",
+    "disassembly": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct16_source_batch_objects\\native_crt_critical_section_dispatch.disasm.txt",
+      "sha256": "b350d0c8ededa6182e7a751fcbb04755b28809f7bab881381d0ef664b78a0fca"
+    },
+    "symbols": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct16_source_batch_objects\\native_crt_critical_section_dispatch.symbols.txt",
+      "sha256": "d8974c4a80cc4367cd968c154facd19593c14c6e344fd701ecf897faf81a440e"
+    },
+    "review_artifact": {
+      "path": "local/goal_oct16_crt_critical_section_dispatch_coff_review.json",
+      "sha256": "59fa149f453f85891bfa21dd866468ace016a5b53009c7f07d530b03df446340"
+    },
+    "code_bytes": 528,
+    "code_instructions": 199,
+    "all_CODE_bodies": [
+      {
+        "name": "?and_zero_raw_word@?A0xa262c2db@bsp@@YAXPAX@Z",
+        "instructions": 6,
+        "bytes": 11
+      },
+      {
+        "name": "?filter_no_memory@?A0xa262c2db@bsp@@YAHPAU_EXCEPTION_POINTERS@@PAX@Z",
+        "instructions": 22,
+        "bytes": 57
+      },
+      {
+        "name": "?initialize_native_crt_critical_section_dispatch_00c17653@bsp@@YAHPBXPAXACIABUNativeCrtPointerDecodeContext@1@ABUNativeCrtPointerEncodeContext@1@ABUNativeCrtPointerDecodeSupportContext@1@@Z",
+        "instructions": 142,
+        "bytes": 406
+      },
+      {
+        "name": "?read_raw_word@?A0xa262c2db@bsp@@YAIPBX@Z",
+        "instructions": 10,
+        "bytes": 19
+      },
+      {
+        "name": "?word_address@?A0xa262c2db@bsp@@YAPAXPAXI@Z",
+        "instructions": 6,
+        "bytes": 11
+      },
+      {
+        "name": "?word_address@?A0xa262c2db@bsp@@YAPBXPBXI@Z",
+        "instructions": 6,
+        "bytes": 11
+      },
+      {
+        "name": "?write_raw_word@?A0xa262c2db@bsp@@YAXPAXI@Z",
+        "instructions": 7,
+        "bytes": 13
+      }
+    ],
+    "public_main": {
+      "bytes": 406,
+      "instructions": 142,
+      "relocations": [
+        {
+          "offset": 6,
+          "symbol": "__sehtable$?initialize_native_crt_critical_section_dispatch_00c17653@bsp@@YAHPBXPAXACIABUNativeCrtPointerDecodeContext@1@ABUNativeCrtPointerEncodeContext@1@ABUNativeCrtPointerDecodeSupportContext@1@@Z",
+          "type": "0x6",
+          "symbol_value": 0
+        },
+        {
+          "offset": 11,
+          "symbol": "__except_handler4",
+          "type": "0x6",
+          "symbol_value": 0
+        },
+        {
+          "offset": 29,
+          "symbol": "___security_cookie",
+          "type": "0x6",
+          "symbol_value": 0
+        },
+        {
+          "offset": 89,
+          "symbol": "?native_crt_decode_pointer_00c04fde@bsp@@YAPAXPAXABUNativeCrtPointerDecodeContext@1@@Z",
+          "type": "0x14",
+          "symbol_value": 0
+        },
+        {
+          "offset": 107,
+          "symbol": "?get_native_crt_osplatform_00bfbab2@bsp@@YAHPAIABUNativeCrtPointerDecodeSupportContext@1@@Z",
+          "type": "0x14",
+          "symbol_value": 0
+        },
+        {
+          "offset": 124,
+          "symbol": "?invoke_native_crt_canonical_watson_00bf65bb@bsp@@YAXPB_W00II@Z",
+          "type": "0x14",
+          "symbol_value": 0
+        },
+        {
+          "offset": 146,
+          "symbol": "?initialize_native_crt_critical_section_without_spin_00c17643@bsp@@YGHPAXI@Z",
+          "type": "0x6",
+          "symbol_value": 0
+        },
+        {
+          "offset": 153,
+          "symbol": "??_C@_0N@MDJJJHMB@kernel32?4dll@",
+          "type": "0x6",
+          "symbol_value": 0
+        },
+        {
+          "offset": 159,
+          "symbol": "__imp__GetModuleHandleA@4",
+          "type": "0x6",
+          "symbol_value": 0
+        },
+        {
+          "offset": 168,
+          "symbol": "??_C@_0CG@PKBDLMEO@InitializeCriticalSectionAndSpin@",
+          "type": "0x6",
+          "symbol_value": 0
+        },
+        {
+          "offset": 175,
+          "symbol": "__imp__GetProcAddress@8",
+          "type": "0x6",
+          "symbol_value": 0
+        },
+        {
+          "offset": 182,
+          "symbol": "?initialize_native_crt_critical_section_without_spin_00c17643@bsp@@YGHPAXI@Z",
+          "type": "0x6",
+          "symbol_value": 0
+        },
+        {
+          "offset": 196,
+          "symbol": "?native_crt_encode_pointer_00c04f67@bsp@@YAPAXPAXABUNativeCrtPointerEncodeContext@1@@Z",
+          "type": "0x14",
+          "symbol_value": 0
+        },
+        {
+          "offset": 360,
+          "symbol": "__imp__SetLastError@4",
+          "type": "0x6",
+          "symbol_value": 0
+        }
+      ],
+      "payload_offsets": {
+        "platformzero": "4D",
+        "cache_read": "55",
+        "decoder": "58",
+        "osplatform": "6A",
+        "Watson": "7B",
+        "freshplatform": "86",
+        "GetModuleHandleA": "9D",
+        "GetProcAddress": "AD",
+        "encoder": "C3",
+        "cachepublication": "CB",
+        "state0": "CD",
+        "spinload": "E0",
+        "pointerload": "EB",
+        "selectedcall": "F6",
+        "extraFWAIT": "F8",
+        "normalresultstore": "102",
+        "filterpublication": "13A",
+        "filtercapturedcompare": "141",
+        "handlerfreshcode": "156",
+        "SetLastError": "166",
+        "handlerANDmemory0": "16F",
+        "disarm": "172",
+        "finalcurrentresult": "17C"
+      },
+      "filter": "ActualExceptionPointers->record->capturedcode, rawcodepublish, compare compilerprivate capturedcode not currentpayload.",
+      "handler": "Currentcode reload after stackrestore; conditionalactualSetLastError8; oneinlineDWORD AND-memory0; currentfinalresultread afterdisarm."
+    },
+    "helpers": "All6 retainedhelperbodies read in full; noCALLs/relocations. AND11B oneANDDWORD+6; standalonefilter57B pointer+9/recordcode+17/store+28/capturedEDXcompare+2C. read19B singleDWORDload; write13B singleDWORDstore; two11B addresshelpers unsignedADDwrap. Publicinlines these operations; standalonebodies not separately credited as nativeentries.",
+    "SEH_sections": [
+      {
+        "section": 10,
+        "name": ".xdata$x",
+        "bytes": 28,
+        "code": false,
+        "data": "feffffff00000000b4ffffff00000000feffffff0000000000000000",
+        "relocations": [
+          {
+            "offset": 20,
+            "symbol": "$LN12",
+            "type": "0x6",
+            "symbol_value": 262
+          },
+          {
+            "offset": 24,
+            "symbol": "$LN13",
+            "type": "0x6",
+            "symbol_value": 336
+          }
+        ]
+      },
+      {
+        "section": 13,
+        "name": ".sxdata",
+        "bytes": 4,
+        "code": false,
+        "data": "23000000",
+        "relocations": []
+      }
+    ],
+    "SEH_decoding": "Source28Bscope header{-2,0,-76,0}, state0 enclosing-2; DIR32+14->$LN12 public+106, DIR32+18->$LN13 public+150. .sxdata word23 refers to newcompiler __except_handler4. NativeE037B8 headercookieoffset-52/Originalhandler distinct.",
+    "compiler_bookkeeping": "Public uses currentcompilersecurity_cookie/newFS0frame. Reuses Sourceargumenthomes[EBP+C]/[EBP+10] and private[EBP-24/-20/-1C] as pointers/capturedtemps. Those are disjoint newbookkeeping, NOT exposednativeprivate12 or Originalframe/homealias credit.",
+    "extra_x87_WAIT": "The actual MSVC public body contains additional FWAIT at+F8 immediately after selectedcall, insideprotectedregion. Qualified ordinary admission excludes a pending enabled x87 exception this wait could surface there, including one left by selectedinitializer; Originalx87pending/fault identity unproved.",
+    "archive": "Primary verified one identicalactualarchivebody for this exact retainedobject, uniqueproject/archiveentry. No linkforcing/newprobe or sourceentryexecution."
+  }
 }
