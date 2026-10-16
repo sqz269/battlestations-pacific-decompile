@@ -1,0 +1,822 @@
+{
+  "schema": "bsp.native-array-unwind.readiness.v1",
+  "function": "00BF7C10",
+  "library_name": "__ArrayUnwind",
+  "status": "bounded_static_readiness_complete_source_blocked",
+  "source_ready": false,
+  "source_authorized": false,
+  "source_credit": 0,
+  "credits": {
+    "source": 0,
+    "build": 0,
+    "fixture": 0,
+    "physical_abi": 0,
+    "caller": 0,
+    "native_runtime": 0,
+    "original_game": 0,
+    "gameplay": 0
+  },
+  "worktree_head_at_start": "d8aed8dedc66d4742db728e47fc31d74259f59c4",
+  "exact_scope": {
+    "body_ranges": [
+      [
+        "00BF7C10",
+        "00BF7C32"
+      ],
+      [
+        "00BF7C5F",
+        "00BF7C6D"
+      ]
+    ],
+    "range_bytes": [
+      35,
+      15
+    ],
+    "body_bytes": 50,
+    "instructions": 14,
+    "convex_span_bytes_not_body": 94,
+    "excluded_gap": [
+      "00BF7C33",
+      "00BF7C5E"
+    ],
+    "gap_bytes": 44,
+    "gap_bytes_read": false,
+    "scope_window": [
+      "00E02D10",
+      "00E02D2B"
+    ],
+    "scope_bytes": 28,
+    "scope_dwords": [
+      "fffffffe",
+      "00000000",
+      "ffffffcc",
+      "00000000",
+      "fffffffe",
+      "00bf7c33",
+      "00bf7c5c"
+    ],
+    "scope_window_derivation": "Observed PUSH E02D10 and try level0; existing qualified EH4 16-byte header plus one 12-byte record. Complete typed table/dispatch not proven."
+  },
+  "original_binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "mtime_ns": 1720895268000000000
+  },
+  "static_verification": {
+    "segments": [
+      {
+        "va": "00bf7c10",
+        "bytes": 35,
+        "rva": "007f7c10",
+        "raw_offset": 8354832,
+        "section": ".text",
+        "sha256": "559fdf17a348560cbdf52be3ba4004ba148d06161554a79617f81667c2a2edf2"
+      },
+      {
+        "va": "00bf7c5f",
+        "bytes": 15,
+        "rva": "007f7c5f",
+        "raw_offset": 8354911,
+        "section": ".text",
+        "sha256": "4af3063f0cade93530b73cf458ec0573e02be550c821a0319263940da8448db4"
+      }
+    ],
+    "scope": {
+      "va": "00e02d10",
+      "bytes": 28,
+      "rva": "00a02d10",
+      "raw_offset": 10497296,
+      "section": ".rdata",
+      "sha256": "13b250649cda11fb96dd4ce8f9fda3173195e2d0550eba9477bec70a0fa688b9"
+    },
+    "decoder_version": "5.0.7",
+    "all_selected_bytes_listing_boundaries_mnemonics_and_typed_flows_equal": true,
+    "rows": [
+      {
+        "address": "00bf7c10",
+        "bytes": "6a14",
+        "length": 2,
+        "decoded": "push 0x14",
+        "live_listing": "PUSH 0x14",
+        "flags": {
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "targets": [],
+        "fallthrough": "00bf7c12",
+        "flow_override": "NONE"
+      },
+      {
+        "address": "00bf7c12",
+        "bytes": "68102de000",
+        "length": 5,
+        "decoded": "push 0xe02d10",
+        "live_listing": "PUSH 0xe02d10",
+        "flags": {
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "targets": [],
+        "fallthrough": "00bf7c17",
+        "flow_override": "NONE"
+      },
+      {
+        "address": "00bf7c17",
+        "bytes": "e8e4ff0000",
+        "length": 5,
+        "decoded": "call 0xc07c00",
+        "live_listing": "CALL 0x00c07c00",
+        "flags": {
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "targets": [
+          "00c07c00"
+        ],
+        "fallthrough": "00bf7c1c",
+        "flow_override": "NONE"
+      },
+      {
+        "address": "00bf7c1c",
+        "bytes": "8365fc00",
+        "length": 4,
+        "decoded": "and dword ptr [ebp - 4], 0",
+        "live_listing": "AND dword ptr [EBP + -0x4],0x0",
+        "flags": {
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "targets": [],
+        "fallthrough": "00bf7c20",
+        "flow_override": "NONE"
+      },
+      {
+        "address": "00bf7c20",
+        "bytes": "ff4d10",
+        "length": 3,
+        "decoded": "dec dword ptr [ebp + 0x10]",
+        "live_listing": "DEC dword ptr [EBP + 0x10]",
+        "flags": {
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "targets": [],
+        "fallthrough": "00bf7c23",
+        "flow_override": "NONE"
+      },
+      {
+        "address": "00bf7c23",
+        "bytes": "783a",
+        "length": 2,
+        "decoded": "js 0xbf7c5f",
+        "live_listing": "JS 0x00bf7c5f",
+        "flags": {
+          "is_call": false,
+          "is_jump": true,
+          "is_conditional": true,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "targets": [
+          "00bf7c5f"
+        ],
+        "fallthrough": "00bf7c25",
+        "flow_override": "NONE"
+      },
+      {
+        "address": "00bf7c25",
+        "bytes": "8b4d08",
+        "length": 3,
+        "decoded": "mov ecx, dword ptr [ebp + 8]",
+        "live_listing": "MOV ECX,dword ptr [EBP + 0x8]",
+        "flags": {
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "targets": [],
+        "fallthrough": "00bf7c28",
+        "flow_override": "NONE"
+      },
+      {
+        "address": "00bf7c28",
+        "bytes": "2b4d0c",
+        "length": 3,
+        "decoded": "sub ecx, dword ptr [ebp + 0xc]",
+        "live_listing": "SUB ECX,dword ptr [EBP + 0xc]",
+        "flags": {
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "targets": [],
+        "fallthrough": "00bf7c2b",
+        "flow_override": "NONE"
+      },
+      {
+        "address": "00bf7c2b",
+        "bytes": "894d08",
+        "length": 3,
+        "decoded": "mov dword ptr [ebp + 8], ecx",
+        "live_listing": "MOV dword ptr [EBP + 0x8],ECX",
+        "flags": {
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "targets": [],
+        "fallthrough": "00bf7c2e",
+        "flow_override": "NONE"
+      },
+      {
+        "address": "00bf7c2e",
+        "bytes": "ff5514",
+        "length": 3,
+        "decoded": "call dword ptr [ebp + 0x14]",
+        "live_listing": "CALL dword ptr [EBP + 0x14]",
+        "flags": {
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "targets": [],
+        "fallthrough": "00bf7c31",
+        "flow_override": "NONE"
+      },
+      {
+        "address": "00bf7c31",
+        "bytes": "ebed",
+        "length": 2,
+        "decoded": "jmp 0xbf7c20",
+        "live_listing": "JMP 0x00bf7c20",
+        "flags": {
+          "is_call": false,
+          "is_jump": true,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "targets": [
+          "00bf7c20"
+        ],
+        "fallthrough": null,
+        "flow_override": "NONE"
+      },
+      {
+        "address": "00bf7c5f",
+        "bytes": "c745fcfeffffff",
+        "length": 7,
+        "decoded": "mov dword ptr [ebp - 4], 0xfffffffe",
+        "live_listing": "MOV dword ptr [EBP + -0x4],0xfffffffe",
+        "flags": {
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "targets": [],
+        "fallthrough": "00bf7c66",
+        "flow_override": "NONE"
+      },
+      {
+        "address": "00bf7c66",
+        "bytes": "e8daff0000",
+        "length": 5,
+        "decoded": "call 0xc07c45",
+        "live_listing": "CALL 0x00c07c45",
+        "flags": {
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "targets": [
+          "00c07c45"
+        ],
+        "fallthrough": "00bf7c6b",
+        "flow_override": "NONE"
+      },
+      {
+        "address": "00bf7c6b",
+        "bytes": "c21000",
+        "length": 3,
+        "decoded": "ret 0x10",
+        "live_listing": "RET 0x10",
+        "flags": {
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": true
+        },
+        "targets": [],
+        "fallthrough": null,
+        "flow_override": "NONE"
+      }
+    ]
+  },
+  "direct_calls": [
+    {
+      "address": "00BF7C17",
+      "native": "00C07C00",
+      "function": "00BF7C10",
+      "role": "SEH4 prolog with local size14h and scope E02D10; qualified existing contract only"
+    },
+    {
+      "address": "00BF7C66",
+      "native": "00C07C45",
+      "function": "00BF7C10",
+      "role": "Normal epilog after try level=-2; requires actual balanced frame ESP"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00BF7C2E",
+      "native": "indirect:[EBP+14h]",
+      "function": "00BF7C10",
+      "input_register": "ECX = updated destination home",
+      "explicit_stack_argument_bytes": 0,
+      "caller_stack_adjustment_bytes": 0,
+      "required_callback_return_stack": "Balanced: consume its return address and no additional caller arguments",
+      "return_value_consumed": false,
+      "real_provider_reviewed": false
+    }
+  ],
+  "physical_frame": {
+    "provenance": "Existing qualified SEH4 frame contract instantiated for observed local size14h; no provider-body reread",
+    "entry_esp": "E",
+    "parent_ebp": "F=E-4",
+    "saved_esp": "P=F-34h",
+    "saved_registers": {
+      "EBX": "F-28h",
+      "ESI": "F-2Ch",
+      "EDI": "F-30h"
+    },
+    "cookie": "F-34h",
+    "registration": "F-10h",
+    "encoded_scope": "F-8",
+    "try_level": "F-4",
+    "epilog_requirement": "ESP=P before helper; restores ESP=F+4",
+    "outer_ret_immediate": "10h",
+    "outer_callee_cleanup_bytes": 16
+  },
+  "physical_argument_home_hypotheses": [
+    {
+      "home": "F+8",
+      "meaning": "current end/destination pointer"
+    },
+    {
+      "home": "F+0Ch",
+      "meaning": "raw DWORD stride"
+    },
+    {
+      "home": "F+10h",
+      "meaning": "raw DWORD count; metadata declares signed int"
+    },
+    {
+      "home": "F+14h",
+      "meaning": "destructor entry"
+    }
+  ],
+  "ordered_body_contract": [
+    "Set try level0 with AND [F-4],0.",
+    "DEC the physical [F+10h] count modulo 2^32, then JS tests the resulting sign bit without testing overflow.",
+    "If post-decrement sign is clear, load destination into ECX, subtract current stride modulo 2^32, and store updated destination before the callback.",
+    "Indirect transfer through current [F+14h], with destination in ECX and no explicit pushed stack arguments; ignore returned value.",
+    "Loop back and reread mutable count/home/stride/callback state. Stable-value/nonaliasing/provider-preservation contracts are not established.",
+    "When post-decrement sign is set, set try level=-2, run qualified epilog, and RET10h."
+  ],
+  "count_cases_under_stable_valid_homes": [
+    {
+      "initial_raw": "00000001..7FFFFFFF",
+      "destructor_transfers": "initial unsigned count",
+      "final_count": "FFFFFFFF"
+    },
+    {
+      "initial_raw": "00000000",
+      "destructor_transfers": "0",
+      "final_count": "FFFFFFFF"
+    },
+    {
+      "initial_raw": "80000000",
+      "destructor_transfers": "2147483648",
+      "first_post_decrement": "7FFFFFFF",
+      "final_count": "FFFFFFFF",
+      "qualification": "Signed INT_MIN wraps and enters loop; JS is not signed <=0 or an overflow check."
+    },
+    {
+      "initial_raw": "80000001..FFFFFFFF",
+      "destructor_transfers": "0",
+      "final_count": "initial raw count minus one modulo 2^32"
+    }
+  ],
+  "arithmetic_qualification": "Instruction-derived consequences only, never executed or emulated as a test. An ordinary signed C++ INT_MIN decrement would add undefined-behavior semantics. Stable positive stride/end-pointer inputs imply reverse order; arbitrary raw stride, wrap, zero stride, validity and frame mutation remain explicit obligations.",
+  "exception_boundary": {
+    "state_before_destructor": "Try level0, count already decremented, destination home already updated to attempted element.",
+    "scope_filter_candidate": "00BF7C33",
+    "scope_handler_candidate": "00BF7C5C",
+    "actual_dispatch_proven": false,
+    "filter_handler_body_reviewed": false,
+    "selected_body_has_direct_terminate_transfer": false,
+    "terminate_transition_proven": false,
+    "qualification": "A provider exception requires actual SEH/filter/handler/frame and terminate ownership. The two scope targets have no current Ghidra function or instruction; do not invent or repair their bodies."
+  },
+  "dependency_entry_metadata": [
+    {
+      "entry": "00bf7c33",
+      "function_at_query": null,
+      "function_containing_query": null,
+      "functions": [],
+      "entry_instruction_flow": null,
+      "entry_listing_metadata": {
+        "instruction_at": null,
+        "instruction_containing": null,
+        "code_unit_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00bf7c33"
+          },
+          "length": 1,
+          "java_class": "ghidra.program.database.code.DataDB",
+          "kind": "data",
+          "defined": false
+        },
+        "code_unit_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00bf7c33"
+          },
+          "length": 1,
+          "java_class": "ghidra.program.database.code.DataDB",
+          "kind": "data",
+          "defined": false
+        }
+      },
+      "counter_before": "6618",
+      "counter_after": "6618",
+      "provider_body_read": false
+    },
+    {
+      "entry": "00bf7c5c",
+      "function_at_query": null,
+      "function_containing_query": null,
+      "functions": [],
+      "entry_instruction_flow": null,
+      "entry_listing_metadata": {
+        "instruction_at": null,
+        "instruction_containing": null,
+        "code_unit_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00bf7c5c"
+          },
+          "length": 1,
+          "java_class": "ghidra.program.database.code.DataDB",
+          "kind": "data",
+          "defined": false
+        },
+        "code_unit_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00bf7c5c"
+          },
+          "length": 1,
+          "java_class": "ghidra.program.database.code.DataDB",
+          "kind": "data",
+          "defined": false
+        }
+      },
+      "counter_before": "6618",
+      "counter_after": "6618",
+      "provider_body_read": false
+    },
+    {
+      "entry": "00c07a75",
+      "function_at_query": {
+        "space": "ram",
+        "offset": "00c07a75"
+      },
+      "function_containing_query": {
+        "space": "ram",
+        "offset": "00c07a75"
+      },
+      "functions": [
+        {
+          "entry": {
+            "space": "ram",
+            "offset": "00c07a75"
+          },
+          "name": "terminate",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 2,
+            "returned_range_count": 2,
+            "address_count": "44",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "00c07a75"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00c07a94"
+                },
+                "length": "32"
+              },
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "00c07a9c"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00c07aa7"
+                },
+                "length": "12"
+              }
+            ]
+          }
+        }
+      ],
+      "entry_instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c07a77"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c07a77"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "entry_listing_metadata": {
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00c07a75"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00c07a75"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00c07a75"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00c07a75"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        }
+      },
+      "counter_before": "6618",
+      "counter_after": "6618",
+      "provider_body_read": false
+    }
+  ],
+  "named_but_incomplete_dependencies": [
+    {
+      "name": "__SEH_prolog4 / __SEH_epilog4",
+      "entries": [
+        "00C07C00",
+        "00C07C45"
+      ],
+      "boundary": "Existing qualified frame formulas only",
+      "next_contract": "Actual frame, FS registration, cookie and dispatcher composition"
+    },
+    {
+      "name": "scope filter/handler candidates",
+      "entries": [
+        "00BF7C33",
+        "00BF7C5C"
+      ],
+      "boundary": "Undefined length-one DataDB; no function/instruction, genuine proto errors",
+      "next_contract": "Root ownership/listing decision, then separately owned complete behavior and exceptional transitions"
+    },
+    {
+      "name": "destructor provider",
+      "entries": [],
+      "boundary": "Opaque ECX-only transfer shape",
+      "next_contract": "Real identity, stack/register/frame preservation, alias/mutation and exception behavior"
+    },
+    {
+      "name": "terminate",
+      "entries": [
+        "00C07A75"
+      ],
+      "boundary": "Entry metadata only; non-thunk, no_return=false, 44-byte split metadata body",
+      "next_contract": "Actual exceptional transition and termination/nonreturn behavior; false metadata flag is not proof of returning semantics"
+    },
+    {
+      "name": "callers",
+      "entries": [
+        "00BF7CB9",
+        "00BF7D1E",
+        "00BF9AE7"
+      ],
+      "boundary": "Indexed labels supplied by Root only; no caller bodies queried",
+      "next_contract": "Actual argument validity and provider/frame ownership"
+    }
+  ],
+  "prospective_interface": {
+    "implemented": false,
+    "requirements": [
+      "Four mutable physical homes in observed order",
+      "Raw modulo-2^32 count decrement and pointer subtraction",
+      "Post-decrement sign-bit branch including INT_MIN wrap case",
+      "Destination home updated before ECX-only destructor",
+      "Balanced actual callback stack/frame/register contract",
+      "Whole actual exception/termination providers",
+      "Outer callee cleanup of16bytes"
+    ],
+    "qualification": "A normal-only loop is insufficient for whole-entry Source credit."
+  },
+  "capture_batches": [
+    {
+      "stem": "metadata01",
+      "rows": 1,
+      "counter_pairs": [
+        [
+          "6616",
+          "6616"
+        ]
+      ]
+    },
+    {
+      "stem": "owned_body02",
+      "rows": 1,
+      "counter_pairs": [
+        [
+          "6616",
+          "6616"
+        ]
+      ]
+    },
+    {
+      "stem": "all_flows03",
+      "rows": 14,
+      "counter_pairs": [
+        [
+          "6616",
+          "6616"
+        ]
+      ]
+    },
+    {
+      "stem": "scope04",
+      "rows": 1,
+      "counter_pairs": [
+        [
+          "6616",
+          "6616"
+        ]
+      ]
+    },
+    {
+      "stem": "dependencies05",
+      "rows": 3,
+      "counter_pairs": [
+        [
+          "6618",
+          "6618"
+        ]
+      ]
+    }
+  ],
+  "counter_qualification": "Per-batch equal counters6616 or6618 only; no cross-batch/global Ghidra database immutability claim.",
+  "preservation": {
+    "old_own_sealed_files": 314,
+    "old_external_handoff_files": 338,
+    "earlier_sealed_files": 339,
+    "total_files": 991,
+    "working_references": 7,
+    "before_stage": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_eh_vector_copy_finish_oct16\\local\\NativeArrayUnwindReadiness01\\before_stage.json",
+      "bytes": 184168,
+      "sha256": "a56fa168f796cb00fef10be18f5ae6c98e124fa4af1ec272c230f233953a3e33"
+    },
+    "prior_snapshot": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_eh_vector_copy_finish_oct16\\local\\NativeArrayUnwindReadiness01\\prior_families_before.json",
+      "bytes": 397129,
+      "sha256": "06a4c689f7083eeea4254b98a22e46916e7ddaf857c21c39ff1e8369ccf412aa"
+    }
+  },
+  "evidence": {
+    "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_eh_vector_copy_finish_oct16\\local\\NativeArrayUnwindReadiness01",
+    "complete_body_before_analysis": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_eh_vector_copy_finish_oct16\\local\\NativeArrayUnwindReadiness01\\complete_body_before_analysis.json",
+      "bytes": 1888,
+      "sha256": "9d73fe1df6ca41d65e99fcacef41ee55691bd69ecf350b82a673ade73638b58f"
+    },
+    "static_verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_eh_vector_copy_finish_oct16\\local\\NativeArrayUnwindReadiness01\\static_verification.json",
+      "bytes": 8382,
+      "sha256": "47bb2b921521cda3b4e5d1f569ed1169d14ab60da3a2f6ed4ffe0a46621f403e"
+    },
+    "dependency_verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_eh_vector_copy_finish_oct16\\local\\NativeArrayUnwindReadiness01\\dependency_verification.json",
+      "bytes": 5881,
+      "sha256": "33200bcadcf2b7f3941418bb73729118784718af57c243f036b503e86a9744a0"
+    },
+    "checker_receipt": "local/NativeArrayUnwindReadiness01/checker_receipt.json",
+    "own_authentication": "local/NativeArrayUnwindReadiness01/own_authentication.json",
+    "root_manifest": "local/NativeArrayUnwindReadiness01/root_manifest.json"
+  },
+  "genuine_failures_retained": [
+    "First preservation script assumed legacy root manifest rows contained mtime_ns. The original script and actual KeyError are retained; v2 verifies those older families against their already sealed full byte/hash/mtime snapshots.",
+    "Both authorized scope-target proto queries report no function; no repair, body invention or fallback."
+  ],
+  "no_performed_work": {
+    "source": false,
+    "compiler": false,
+    "build": false,
+    "tests": false,
+    "probes": false,
+    "target_execution": false,
+    "provider_body_expansion": false,
+    "caller_body_expansion": false,
+    "sdk_comparison": false,
+    "ghidra_mutation": false,
+    "shared_metadata_ledger_cmake_main": false,
+    "push": false
+  },
+  "next_decision": "Keep Source readiness and authorization false. Review distinct provider and missing scope-target ownership contracts before any Source proposal.",
+  "Root_scope_precision": {
+    "full_PE_read_for_hash_and_mapping": true,
+    "targeted_gap_capture_listing_decode": false,
+    "author_frozen_family_unchanged": true,
+    "qualification": "gap_read=false refers to selected capture/decode, not fullfilehashread"
+  }
+}

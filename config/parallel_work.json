@@ -42749,6 +42749,40 @@
       "actual_compiler_archive_gate": "pass",
       "Main_validation": "reports/cc12_native_crt_strspn_Main_validation.json",
       "whole_ordinary_function_credit": 1
+    },
+    {
+      "id": "cc12_native_crt_wcscspn_00c0382c",
+      "done": false,
+      "state": "whole_ordinary_Original_readiness_primary_peer_pass_Source_authorized_compiler_Main_pending",
+      "source_ready": true,
+      "function_addresses": [
+        "00c0382c"
+      ],
+      "code_ranges": [
+        "00c0382c-00c0386d"
+      ],
+      "output_files": [
+        "include/bsp/native_crt_wcscspn.hpp",
+        "src/native_crt_wcscspn.cpp",
+        "docs/NATIVE_CRT_WCSCSPN.md",
+        "reports/native_crt_wcscspn.json"
+      ],
+      "depends_on": [],
+      "prerequisite_packets": [],
+      "readiness": "reports/cc12_native_crt_wcscspn_readiness.json",
+      "contract": [
+        "New default potentially throwing MSVCWin32 unsigned int __cdecl bsp::count_native_crt_wide_prefix_excluding_00c0382c(const void* actual_source,const void* actual_control), pointer/unsignedint32, byte8/little-endian WORD16. Correct Original libraryname _wcscspn retained; descriptive API and size_t interpretation hypotheses, no Unicode scalar/locale/case/normalization.",
+        "First read exactly one sourceWORD NUL guard. Initial sourceNUL returns0 without any controlpayload/access or cursoradvance; no controlstorage required and controlmaybenull. Source always requires genuine first2bytes. Physicalcontrolargumenthome binding excluded from ordinarynewinterface.",
+        "Only after nonzero initialsourceguard, read firstcontrolWORD exactlyonce and cache throughout. Each sourceiteration tests cachedvalue/resets actualcontrolcursor. Cachedcontrol0 skips currentSourcevaluereread and alltailreads, but still scans allsourceguards to reachedNUL; no emptycontrolreturn0 shortcut.",
+        "For cachednonzero control, reread currentSourceWORD once and retain for this search. Compare cachedfirstcontrol then each reachedtailWORD. Each mismatch advances realcontrolcursor twice byonebyte then oneWORD read; tailNUL test before equality, nonzero compare, matchstops immediately. Never reload firstcontrolWORD; tailWORDs reread on nextsource search.",
+        "After unsuccessful search or cachedcontrol0, advance source twicebyonebyte and count oneunit; read nextsourceWORD guard, stopNUL beforeadvance/value-reread; nonzero restarts cachedcontroltest. A matchedsourceunit is not advanced/counted. Keep exact orderedexternalWORD reads and earlystop; privatecount timing only ordinary stable faultfree frameexcluded qualification.",
+        "Return exact32bit nativeSUB/SAR result with unsigned expression n|((n&0x40000000U)<<1), where n is traversedsourceunits. No signed pointer subtraction/conversion/shift, inventedINTMAX/signeddistancecap or promise giantallocations exist. Nativeoriginalsourcehome reload/physicalaliases excluded, not silently asserted reproduced.",
+        "Every actually reached guard/value/tailWORD has2genuine live stable determinate readable inrange bytes and a finite reached stop. Every actual byteadvance nonwrapping withinoronepast sameactualallocation, neveronepastread. No padding/fullunusedsourceNUL/controlterminator afterearlymatch. Arbitrary16bitcodeunits, rawunaligned/interior/prefix/read-only/inputoverlap/identity/ordinarycallerstack permitted; no fakewchar/uint16objectlifetime/alignment.",
+        "Exclude Originalornew calleeprivateframe/savedregister/returnaddress/argumenthome/blockselfalias, faults/MMIO/concurrentmutation/lifetimechange/segmentprotocol; ordinary Win32flatDS/SS32bitstack. No OriginalphysicalABI/caller/runtime/game credit.",
+        "Prospective mechanism only: private target-specific addressedMOVZX WORD16 helper over actualrawbyteaddresses, fullyinitialized zeroextendeduint32result; separatelysequenced actualhelpercalls preserve completeWORD schedule/cache/rereads; genuine bytecursors + freshunsignedunitcount. Source may use explicit MSVCWin32 inlineassembly for rawWORD primitive; no inventedwideobject cast/dereference, SDK/memcpy/provider/global/TLS/bitmap/table/runtimeguard/emptycontrolshortcut/fallback/callerbinding. Future actualstrict/Main artifacts must independently verify EVERYpublic/privatehelper byte, widths/order, allcalls/relocations/providerbindings, privateABI/frame/GS/metadata and boundedunsignedreturn.",
+        "Only4canonicalSource/header/doc/reportoutputs after entry/full66B/4filelease and fresh current beforepins. One genuine strictMSVCWin32 compile with actualSource/header dependency closure; Root+independentSource/wholeobject and separate actualnormalregisteredMain/Core/archive/peer gates. No matchingrecompile/workerbaseline/newtests/probes/bodyexecution/SDKcomparison or oldcompilerprovenance adoption."
+      ],
+      "Main_gate": "pending_Source_independent_strict_and_registered_Main_actual_variant_archive_review"
     }
   ],
   "snapshot_after_analysis": {
