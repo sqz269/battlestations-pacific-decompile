@@ -233,6 +233,13 @@ public:
     const NativeFontResourceOwners& native_font_resources() const noexcept {
         return services_.properties.font_names.fonts;
     }
+    // Metadata-only current identity from the SAME font lookup profile. Never
+    // invokes its lazy getter, allocates a registry or changes publication.
+    // Null is honest for an unpublished legacy profile. Borrowed owners and
+    // legacy cells must remain alive; callers serialize identity inspection.
+    FontRegistryStartup* native_font_registry() const noexcept {
+        return services_.properties.font_names.registry.existing_registry();
+    }
 private:
     friend class GuiTextRuntimeImplementation;
     friend class GuiTextRuntimeCopyOperation;

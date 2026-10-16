@@ -1,0 +1,129 @@
+{
+  "packet": "cc12_native_gui_combined_55",
+  "compiled_source_commit": "f9dd0d899d2fd6082adfee779f5a843420574847",
+  "status": "three_source_packets_reviewed_combined_win32_build_and_existing_normal_startup_shutdown_passed_native_Text_inactive",
+  "packets": [
+    {
+      "packet": 52,
+      "worker_commit": "699a2d3ec80e0e5ed8424323a8ea81cfbee2655c",
+      "primary_source_review": "pass",
+      "unchanged_worker_blobs": [
+        {
+          "path": "include/bsp/gui_text_content.hpp",
+          "git_blob": "9660c18c9fc23fe8dfff0ac7e5a4525d6cf36ecb",
+          "sha256": "8f2198eb3e3c761abac885b62b0c0576f1c44e7e40315a706fa53109544d5b81"
+        },
+        {
+          "path": "src/gui_text_content.cpp",
+          "git_blob": "739ea43d46fd7ebaeb89df4e53f8d06721bfb876",
+          "sha256": "bf41cef8a8d3f041abc1452499a4c9b7e20fc5deb23cd61baf34d7b5364eab9b"
+        },
+        {
+          "path": "include/bsp/game_native_text_application.hpp",
+          "git_blob": "5f851d623d9ba3ccb08c3c70b104eb49e322d098",
+          "sha256": "751f51f0b099f43bef1c117fb52779992518ff172a1ca6073db2506a3cc48f1e"
+        },
+        {
+          "path": "src/game_hosts_text.cpp",
+          "git_blob": "0624da0c137e814af43dcbd6dda2a6799758a659",
+          "sha256": "d298a6c7164573445fe3e3501d972ca7791a1ca3c75429115bc7fd24bd569a8e"
+        }
+      ]
+    },
+    {
+      "packet": 53,
+      "worker_commit": "e2df385944045e6d54960fa9b37f5531af1b21e6",
+      "primary_source_review": "pass",
+      "unchanged_worker_blobs": [
+        {
+          "path": "include/bsp/game_hosts_fonts.hpp",
+          "git_blob": "ea14ba4320ee753509e775c1e0b065708feed57c",
+          "sha256": "d0ba378c31910c2957410487920fa4f6bea56f1f9f0c41430250e234f758855d"
+        },
+        {
+          "path": "src/game_hosts_fonts.cpp",
+          "git_blob": "17514530de1c33e593d0043b2e5701add0c27ebc",
+          "sha256": "90b1012cade7f668f9497124ee398d3bc363a6c2aa9f2fac1c79c8ac34d69064"
+        }
+      ]
+    },
+    {
+      "packet": 54,
+      "worker_commit": "bfc0a461b5bbb7a67afaffb816705bd2dd12c7a0",
+      "primary_source_review": "pass",
+      "unchanged_worker_blobs": [
+        {
+          "path": "include/bsp/game_hosts.hpp",
+          "git_blob": "5ab79e2968f0291bc32e167521186458e061baa5",
+          "sha256": "0def461fa9c4c0ef778179b0a0115c08a04cbce26e60ec53e55fd3d7582d8e47"
+        },
+        {
+          "path": "src/game_hosts.cpp",
+          "git_blob": "0fa0a4fb0e25c79febfc0a8a4ba2edecc08db41d",
+          "sha256": "c33d647e332f75566313a855a24a2bcb50fc1c383fc74398f3cbe5429c2b762c"
+        },
+        {
+          "path": "include/bsp/game_hosts_frontend.hpp",
+          "git_blob": "60a60727e6c50ff74b3ff7597978756495ab54fe",
+          "sha256": "ca0fe1125a56bc8348005f64cfb1df866ed50dadd99564a249aec7758f93430c"
+        },
+        {
+          "path": "src/game_hosts_frontend.cpp",
+          "git_blob": "c11cb2a3eff0df8de4749fa2be6314d354898519",
+          "sha256": "f070b50daac6be2afeb986edfcf3bbd737bb48b827c453bb9e897a04822cc247"
+        }
+      ]
+    }
+  ],
+  "build": {
+    "script": "./scripts/build.ps1",
+    "exit_code": 0,
+    "tests_passed": 3,
+    "tests_total": 3,
+    "ctest_seconds": 8.9,
+    "frozen_inputs": 77
+  },
+  "runtime": {
+    "case": "runtime_01",
+    "exit_code": 0,
+    "exe_sha256": "7d3a09c4162e86b5c2c3a59440942bc8850eeda24310a25be4f22c923e9331b3",
+    "resolution": [
+      800,
+      600
+    ],
+    "ticks": 2,
+    "presents": 1,
+    "presents_skipped": 1,
+    "native_fonts": 6,
+    "sprite_text_glyph_quads": 55,
+    "fonts_retired_before_shared_drain": true,
+    "renderer_worker_joined": true,
+    "final_COM": {
+      "device": 0,
+      "api": 0
+    },
+    "screenshot_visually_inspected": true,
+    "native_Text_factory_or_drawing_activated": false,
+    "locale_current_profile_executed_by_normal_host": false,
+    "font_export_bind_profile_executed_by_normal_host": false,
+    "shared_SSE2_owner_used_by_existing_frontend": true,
+    "gameplay_validated": false,
+    "launcher_checkout_HEAD_is_not_compiler_provenance": true
+  },
+  "limits": [
+    "52 focused controlled Source callback probe is not the actual UCRT provider or Original CRT ABI",
+    "53 export/bind containment has Source/build review, without successful real Text factory binding or constructor-failure runtime proof",
+    "54 is one Source hardware capability owner, not Original0109EEA4 identity or conversion ABI",
+    "Normal runtime still uses the existing sprite Text bridge; native Text, Screen/camera/store, and gameplay proof remain outstanding"
+  ],
+  "original_installed_exe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "original_unchanged_after_run": true,
+  "evidence": {
+    "directory": "local\\cc12_native_gui_combined_55",
+    "archive": "local\\cc12_native_gui_combined_55\\evidence_family.zip",
+    "archive_sha256": "1bb7ba91912944d4ae81244155596c4be9f277f66df16af28c1b2df71b3dbd84",
+    "manifest_sha256": "7ce5f2ecf810cd6111338e24603a9da880d2b6c2d189ee691ebbf045a0b7d329",
+    "payloads": 87,
+    "payload_hashes_verified": true
+  }
+}

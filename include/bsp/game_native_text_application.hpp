@@ -25,8 +25,7 @@ struct GameNativeTextApplicationBindings {
     NativeMaterialParameterAccess& parameters;
     const GuiMaterialBindingServices& style;
     NativeFontResourceOwners& fonts;
-    FontRegistryStartup*& published_registry_00f8bf44;
-    SingletonLifetimeManager& singleton_lifetime;
+    GuiTextFontRegistryAccess font_registry;
     const LocaleTables& locale;
     LocaleTextRuntimeHost& locale_runtime;
     GuiTextContentComparison content_comparison;
