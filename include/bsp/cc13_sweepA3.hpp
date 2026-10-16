@@ -319,6 +319,34 @@ struct SweepA3Host : cc13_sweepA2::SweepA2Host {
     virtual void game_destroy_world_containers_004d2b10(void* game) = 0;
     // 007F8180 BSP_GameParticipant_ReleaseReferences, __thiscall(ECX = participant).
     virtual void game_participant_release_references_007f8180(void* participant) = 0;
+
+    // --- engine movie parse (004602C0) -------------------------------------------
+    // 00BDF4C0 BSP_VFS_ResolveExistingName, __thiscall(ECX = [0109CEEC],
+    // string* path), RET 4, AL.
+    virtual bool vfs_resolve_existing_name_00bdf4c0(void* vfs, Raw path) = 0;
+    // 008D9CF0 BSP_SceneTokenizer_Construct, __thiscall(ECX = 838h block,
+    // NativeString path by value (callee-owned), const char* delimiters),
+    // RET 0Ch, EAX = tokenizer.
+    virtual void* scene_tokenizer_construct_008d9cf0(void* block, Raw path, const char* delimiters) = 0;
+    // 0045DDA0, __thiscall(ECX = movie): clears the movie before a parse.
+    virtual void engine_movie_reset_0045dda0(void* movie) = 0;
+    // 0045EFB0 BSP_EngineMovie_CreateTrack, __thiscall(ECX = movie,
+    // NativeString name by value), RET 8, EAX = track.
+    virtual void* engine_movie_create_track_0045efb0(void* movie, Raw name) = 0;
+    // 0045D8A0 BSP_MovieTrack_SetEntityPath, __thiscall(ECX = track,
+    // NativeString by value), RET 8.
+    virtual void movie_track_set_entity_path_0045d8a0(void* track, Raw path) = 0;
+    // 0045E5E0 BSP_MovieAnimation_ReadAction, __thiscall(ECX = movie,
+    // tokenizer, track), RET 8.
+    virtual void movie_animation_read_action_0045e5e0(void* movie, void* tokenizer, void* track) = 0;
+    // 00460120 STL vector<track*> insert-one, __thiscall(ECX = vector,
+    // iterator* result, container, where, const value*), RET 10h (vendor).
+    virtual void track_vector_insert_one_00460120(Raw vector, void* result, void* container, void* where,
+                                                  const void* value) = 0;
+    // [[track]+8](track): the track finishes its setup.
+    virtual void vcall_track_finish_8(void* track) = 0;
+    // 0045C5B0 BSP_EngineMovie_Rewind, __thiscall(ECX = movie).
+    virtual void engine_movie_rewind_0045c5b0(void* movie) = 0;
 };
 
 // ============================ segment 3 ====================================
@@ -329,6 +357,7 @@ void panel_sequence_describe_properties_0044b5b0(Raw sequence, void* sink, Sweep
 void movie_spline_read_point_0045eca0(void* tokenizer, void* owner, SweepA3Host& host);
 void engine_movie_stop_0045f600(Raw movie, SweepA3Host& host);
 void movie_track_bind_entities_00456dd0(Raw track, SweepA3Host& host);
+void engine_movie_parse_file_004602c0(Raw movie, Raw path, SweepA3Host& host);
 // The eight NativeStrings arrive by value (the callee releases them).
 Raw movie_action_type_construct_0045d480(Raw record, Raw name, Raw refer_label, std::uint8_t refer_flag,
                                          Raw num1_label, std::uint8_t num1_flag, Raw num2_label,

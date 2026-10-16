@@ -11,9 +11,9 @@ not recovered symbols. Status of every reconstruction below: reconstructed
 and build-tested (MSVC Win32, compiled into `bsp_core`); none is
 fixture-tested, ABI-compatible or game-validated.
 
-Outcome counts for this pass (18 of the 33 listed bodies other than
-004A0D20 closed): 15 reconstructed, 1 existing implementation recorded,
-1 out of scope (STL), 1 cc9 lane; 15 left (listed at the end).
+Outcome counts for this pass (19 of the 33 listed bodies other than
+004A0D20 closed): 16 reconstructed, 1 existing implementation recorded,
+1 out of scope (STL), 1 cc9 lane; 14 left (listed at the end).
 
 ## Method
 
@@ -51,6 +51,7 @@ Outcome counts for this pass (18 of the 33 listed bodies other than
 | 0050B440 | `tactical_library_rebuild_entry_list_0050b440` | `__thiscall(ECX screen)`, plain RET | Clears +444h (00505DE0); the 99999 selection guard (00A9CA00, +28h text, atol); then pushes the entries (004FB090 / [+5B0h] for id -1) of every record id not seen before (0050AD00, 00441F30). The found byte is never reset. |
 | 005220C0 | `unit_line_of_sight_from_viewer_005220c0` | stdcall-shaped (unit), RET 4, AL | Rays from the viewer [[00E188A8]+1ED4h] (009043A0 with 004B4B00's vehicle ignored, mask 44h): direct, then four lifted by 4..16 (only the last counts), then for kind 6 one lifted by [[unit+538h]+A8h] * 0.5; a ray passes with no hit, a self hit or a hit within 8 units. |
 | 00456DD0 | `movie_track_bind_entities_00456dd0` | `__thiscall(ECX track)`, plain RET | 00925180 for +120h (squadron -> +3D0h, +11Ch, byte +61h) or an unshown warning string; per ReferPath action, +14h = 00925180(+18h) and another unshown warning string; the track's own iterator +114h/+118h with its checks. |
+| 004602C0 | `engine_movie_parse_file_004602c0` | `__thiscall(ECX movie, path*)`, RET 4 | 00BDF4C0 on a path copy (miss -> movie+60h = 5); tokenizer 008D9CF0 in operator new(838h) with ";{}=:(,)"; Animations { Movielen, AspectR, per Animation: Entitypath (strcpy_s 400h buffer) -> 0045EFB0 track, PointList (0045D8A0, 0045ECA0 per Point), ActionList (0045E5E0 per Action), track appended to +64h (inline or 00460120) }; tokenizer deleted, each track's slot +8, 0045C5B0. |
 | 00443090 | `device_class_resolve_from_lua_00443090` | `__fastcall(ECX id, DL retain)`, EAX, plain RET | docs/NATIVE_DEVICE_CLASS_RESOLUTION_ORCH4.md's schedule: cached slot (+ InterlockedIncrement when DL), else DeviceClass[id].Type -> Got = true -> seven Type branches (allocation sizes and vptrs as that doc lists), class slot +8 reads the row, +6Ch = id, publish; unmatched -> 0. |
 | 0045D480 | `movie_action_type_construct_0045d480` | `__thiscall(ECX record; 8 strings by value, 6 flags)`, RET 58h | Zeroes the eight strings, assigns them with the flags interleaved as the image stores them, releases the eight by-value arguments. |
 | 0044B5B0 | `panel_sequence_describe_properties_0044b5b0` | `__thiscall(ECX sequence, sink)`, RET 4 | Property writes through the sink's +0Ch with the 00BD5680 default checks, the "sequence" and "panelStates" groups (+4 / +8). The tag-3 frame slots keep the previous entry's upper bytes, as in the image. |
@@ -89,7 +90,6 @@ picks it up.
 - 0046B730 (272 instructions): not attempted; the engine-movie kill pass, register-mangled pseudocode, partly modelled by cc9 (game_hosts_script_orders.hpp).
 - 00526180 (274 instructions): not attempted; the in-place cycle-list refresh with inlined observer-handle vector erase and sort (00526720 calls it through a host hook).
 - 00487A70 (260 instructions, vtable slot at 00CE6854): not attempted; x87-heavy debris integration with matrix builds and ref-counted point effects.
-- 004602C0 BSP_EngineMovie_ParseFile (367 instructions): not attempted (context budget).
 - 00447510 BSP_GameDynamicsList_Add (377 instructions): not attempted (context budget).
 - 004E2200 BSP_Game_RunConsoleCommandQueue (378 instructions): not attempted (context budget).
 - 004E3AA0 BSP_Game_OnInit (387 instructions): not attempted (context budget).

@@ -431,6 +431,108 @@ void movie_track_bind_entities_00456dd0(Raw track, SweepA3Host& host) {
     }
 }
 
+// 004602C0 BSP_EngineMovie_ParseFile, __thiscall(ECX = movie, const
+// NativeString* path), RET 4; sole caller 004CCE50. A local copy of the path
+// (inline assignment) is checked with 00BDF4C0([0109CEEC], &copy); a miss
+// sets movie+60h = 5. Otherwise a tokenizer is built in operator new(838h)
+// (008D9CF0 with a by-value copy of the ARGUMENT's text, "" 00E18511 when
+// null, and the delimiters ";{}=:(,)" 00CE4F40; null when the allocation
+// failed, then used unguarded as in the image) and the file is read:
+// Animations { (0045DDA0 resets the movie) Movielen = float -> movie+0,
+// AspectR = token -> a temporary assigned to movie+58h, then per Animation:
+// { Entitypath = token (strcpy_s into a 400h frame buffer), 0045EFB0(movie,
+// buffer by value) -> track, PointList { 0045D8A0(track, buffer by value),
+// every Point through 0045ECA0(tokenizer, track) (this packet), } ActionList
+// { every Action through 0045E5E0(movie, tokenizer, track) } }, the track
+// appended to movie+64h (inline when capacity remains, else 00460120; first >
+// last reported) } and the closing "}". The tokenizer is deleted (slot 0,
+// flag 1), every track's slot +8 runs (checked index), 0045C5B0 rewinds the
+// movie and the AspectR temporary is released. The path copy is released on
+// both arms.
+void engine_movie_parse_file_004602c0(Raw movie, Raw path, SweepA3Host& host) {
+    alignas(4) std::uint8_t copy_storage[8] = {};
+    const Raw copy{copy_storage};
+    assign_string(copy, path, host);
+    if (!host.vfs_resolve_existing_name_00bdf4c0(host.global_pointer(0x0109ceec), copy)) {
+        movie.at<std::int32_t>(0x60) = 5;
+        release_string(copy, host);
+        return;
+    }
+    void* tokenizer = nullptr;
+    if (void* const block = host.operator_new_00bf681b(0x838); block != nullptr) {
+        const char* source = static_cast<const char*>(path.ptr(4));
+        if (source == nullptr) source = literal(0x00e18511, host);
+        alignas(4) std::uint8_t by_value_storage[8];
+        const Raw by_value{by_value_storage};
+        host.native_string_construct_0041e870(by_value, source);
+        tokenizer = host.scene_tokenizer_construct_008d9cf0(block, by_value, literal(0x00ce4f40, host));
+    }
+    const auto expect = [&](std::uint32_t token) { host.scene_tokenizer_expect_008d9930(tokenizer, literal(token, host)); };
+    const auto peek_is = [&](std::uint32_t token) {
+        return host.cstring_compare_insensitive_00438e10(host.scene_tokenizer_peek_token_008d8a70(tokenizer),
+                                                         literal(token, host)) == 0;
+    };
+    std::uint8_t ok = 0;
+    expect(0x00ce4f34);  // "Animations"
+    expect(0x00ce4d38);  // "{"
+    host.engine_movie_reset_0045dda0(movie.p);
+    expect(0x00ce4f28);  // "Movielen"
+    host.scene_tokenizer_read_008d9980(tokenizer);
+    movie.at<float>(0) = host.scene_tokenizer_read_float_008d9b40(tokenizer, &ok);
+    expect(0x00ce4f20);  // "AspectR"
+    host.scene_tokenizer_read_008d9980(tokenizer);
+    alignas(4) std::uint8_t aspect_storage[8];
+    const Raw aspect{aspect_storage};
+    host.native_string_construct_0041e870(aspect, host.scene_tokenizer_read_008d9980(tokenizer));
+    assign_string(Raw{movie.field(0x58)}, aspect, host);
+    while (peek_is(0x00ce4f14)) {  // "Animation"
+        expect(0x00ce4f14);
+        expect(0x00ce4d38);
+        expect(0x00ce4f08);  // "Entitypath"
+        host.scene_tokenizer_read_008d9980(tokenizer);
+        char buffer[0x400];
+        strcpy_s(buffer, sizeof buffer, host.scene_tokenizer_read_008d9980(tokenizer));
+        alignas(4) std::uint8_t name_storage[8];
+        construct_literal(Raw{name_storage}, buffer, static_cast<std::uint32_t>(std::strlen(buffer)), host);
+        void* track = host.engine_movie_create_track_0045efb0(movie.p, Raw{name_storage});
+        expect(0x00ce4efc);  // "PointList"
+        expect(0x00ce4d38);
+        alignas(4) std::uint8_t entity_storage[8];
+        construct_literal(Raw{entity_storage}, buffer, static_cast<std::uint32_t>(std::strlen(buffer)), host);
+        host.movie_track_set_entity_path_0045d8a0(track, Raw{entity_storage});
+        while (peek_is(0x00ce4eac)) movie_spline_read_point_0045eca0(tokenizer, track, host);  // "Point"
+        expect(0x00ce4cd4);  // "}"
+        expect(0x00ce4ef0);  // "ActionList"
+        expect(0x00ce4d38);
+        while (peek_is(0x00ce4e6c)) host.movie_animation_read_action_0045e5e0(movie.p, tokenizer, track);  // "Action"
+        expect(0x00ce4cd4);
+        expect(0x00ce4cd4);
+        const Raw tracks{movie.field(0x64)};
+        const auto first = tracks.at<std::uintptr_t>(4);
+        const std::uint32_t count =
+            first == 0 ? 0 : static_cast<std::uint32_t>(static_cast<std::int32_t>(tracks.at<std::uintptr_t>(8) - first) >> 2);
+        if (first != 0 &&
+            count < static_cast<std::uint32_t>(static_cast<std::int32_t>(tracks.at<std::uintptr_t>(0xc) - first) >> 2)) {
+            *reinterpret_cast<void**>(tracks.at<std::uintptr_t>(8)) = track;
+            tracks.at<std::uintptr_t>(8) += 4;
+        } else {
+            void* const last = tracks.ptr(8);
+            if (first > reinterpret_cast<std::uintptr_t>(last)) host.invalid_parameter_noinfo_00bf6713();
+            alignas(4) std::uint8_t result[8];
+            host.track_vector_insert_one_00460120(tracks, result, tracks.p, last, &track);
+        }
+    }
+    expect(0x00ce4cd4);
+    if (tokenizer != nullptr) host.vcall_destroy_0(tokenizer, 1);
+    for (std::uint32_t i = 0; remap_index_valid(movie, 0x68, i); ++i) {
+        if (!remap_index_valid(movie, 0x68, i)) host.invalid_parameter_noinfo_00bf6713();
+        host.vcall_track_finish_8(static_cast<void**>(movie.ptr(0x68))[i]);
+    }
+    host.engine_movie_rewind_0045c5b0(movie.p);
+    release_string(aspect, host);
+    release_string(copy, host);
+}
+
 // 0045D480 BSP_MovieActionType_Construct, __thiscall(ECX = 58h record; eight
 // NativeStrings by value and six byte flags in dword slots, in the order of
 // the parameters), RET 58h, EAX = record; sole caller 00460B80 (through
