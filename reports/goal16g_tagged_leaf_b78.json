@@ -1,0 +1,2897 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "native_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "entries": [
+    {
+      "address": "00b726a0",
+      "native_name": "TRIV_body_00b726a0",
+      "native_body_end_inclusive": "00b726a6",
+      "native_body_bytes": "8d8198000000c3",
+      "native_body_size": 7,
+      "native_instruction_count": 2,
+      "native_instructions": [
+        {
+          "address": "00b726a0",
+          "mnemonic": "lea",
+          "operands": "eax, [ecx + 0x98]",
+          "size": 6
+        },
+        {
+          "address": "00b726a6",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00b72b30",
+      "native_name": "TRIV_body_00b72b30",
+      "native_body_end_inclusive": "00b72b33",
+      "native_body_bytes": "8b4150c3",
+      "native_body_size": 4,
+      "native_instruction_count": 2,
+      "native_instructions": [
+        {
+          "address": "00b72b30",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x50]",
+          "size": 3
+        },
+        {
+          "address": "00b72b33",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00b87080",
+      "native_name": "STL_inst_00b87080",
+      "native_body_end_inclusive": "00b87088",
+      "native_body_bytes": "85c974048b028901c3",
+      "native_body_size": 9,
+      "native_instruction_count": 5,
+      "native_instructions": [
+        {
+          "address": "00b87080",
+          "mnemonic": "test",
+          "operands": "ecx, ecx",
+          "size": 2
+        },
+        {
+          "address": "00b87082",
+          "mnemonic": "je",
+          "operands": "0xb87088",
+          "size": 2
+        },
+        {
+          "address": "00b87084",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx]",
+          "size": 2
+        },
+        {
+          "address": "00b87086",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], eax",
+          "size": 2
+        },
+        {
+          "address": "00b87088",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00b87110",
+      "native_name": "STL_inst_00b87110",
+      "native_body_end_inclusive": "00b8711e",
+      "native_body_bytes": "85c9740a8b0289018b5204895104c3",
+      "native_body_size": 15,
+      "native_instruction_count": 7,
+      "native_instructions": [
+        {
+          "address": "00b87110",
+          "mnemonic": "test",
+          "operands": "ecx, ecx",
+          "size": 2
+        },
+        {
+          "address": "00b87112",
+          "mnemonic": "je",
+          "operands": "0xb8711e",
+          "size": 2
+        },
+        {
+          "address": "00b87114",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx]",
+          "size": 2
+        },
+        {
+          "address": "00b87116",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], eax",
+          "size": 2
+        },
+        {
+          "address": "00b87118",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [edx + 4]",
+          "size": 3
+        },
+        {
+          "address": "00b8711b",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 4], edx",
+          "size": 3
+        },
+        {
+          "address": "00b8711e",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00b875e0",
+      "native_name": "STL_inst_00b875e0",
+      "native_body_end_inclusive": "00b875f2",
+      "native_body_bytes": "8b44240485c074088b4c24088b118910c20800",
+      "native_body_size": 19,
+      "native_instruction_count": 7,
+      "native_instructions": [
+        {
+          "address": "00b875e0",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]",
+          "size": 4
+        },
+        {
+          "address": "00b875e4",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "size": 2
+        },
+        {
+          "address": "00b875e6",
+          "mnemonic": "je",
+          "operands": "0xb875f0",
+          "size": 2
+        },
+        {
+          "address": "00b875e8",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 8]",
+          "size": 4
+        },
+        {
+          "address": "00b875ec",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ecx]",
+          "size": 2
+        },
+        {
+          "address": "00b875ee",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax], edx",
+          "size": 2
+        },
+        {
+          "address": "00b875f0",
+          "mnemonic": "ret",
+          "operands": "8",
+          "size": 3
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00b87610",
+      "native_name": "STL_inst_00b87610",
+      "native_body_end_inclusive": "00b87628",
+      "native_body_bytes": "8b44240485c0740e8b4c24088b1189108b4904894804c20800",
+      "native_body_size": 25,
+      "native_instruction_count": 9,
+      "native_instructions": [
+        {
+          "address": "00b87610",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]",
+          "size": 4
+        },
+        {
+          "address": "00b87614",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "size": 2
+        },
+        {
+          "address": "00b87616",
+          "mnemonic": "je",
+          "operands": "0xb87626",
+          "size": 2
+        },
+        {
+          "address": "00b87618",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 8]",
+          "size": 4
+        },
+        {
+          "address": "00b8761c",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ecx]",
+          "size": 2
+        },
+        {
+          "address": "00b8761e",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax], edx",
+          "size": 2
+        },
+        {
+          "address": "00b87620",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ecx + 4]",
+          "size": 3
+        },
+        {
+          "address": "00b87623",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 4], ecx",
+          "size": 3
+        },
+        {
+          "address": "00b87626",
+          "mnemonic": "ret",
+          "operands": "8",
+          "size": 3
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    },
+    {
+      "address": "00b88b50",
+      "native_name": "STL_inst_00b88b50",
+      "native_body_end_inclusive": "00b88b5d",
+      "native_body_bytes": "8bc133c989480489480889480cc3",
+      "native_body_size": 14,
+      "native_instruction_count": 6,
+      "native_instructions": [
+        {
+          "address": "00b88b50",
+          "mnemonic": "mov",
+          "operands": "eax, ecx",
+          "size": 2
+        },
+        {
+          "address": "00b88b52",
+          "mnemonic": "xor",
+          "operands": "ecx, ecx",
+          "size": 2
+        },
+        {
+          "address": "00b88b54",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 4], ecx",
+          "size": 3
+        },
+        {
+          "address": "00b88b57",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 8], ecx",
+          "size": 3
+        },
+        {
+          "address": "00b88b5a",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 0xc], ecx",
+          "size": 3
+        },
+        {
+          "address": "00b88b5d",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "pe_bytes_match_live": true,
+      "body_ranges_complete": true
+    }
+  ],
+  "packet": "goal16g_tagged_leaf_b78",
+  "generated_utc": "2026-10-16T06:57:25.082861+00:00",
+  "base_commit": "b6c81768933b2028429c74521383fc68ebff074e",
+  "source_sha256": "44c8fda63838bf71bab5acb7fc320004ed406d80b8414f74da37350469f0682d",
+  "header_sha256": "2787ce6fcff0fee01207eba17c73d51da841f9b98616780b24fcadb2ccea28ea",
+  "strict_flags": "/nologo /std:c++17 /MD /O2 /W4 /WX /fp:strict /Gy /c /Iinclude",
+  "strict": {
+    "path": "local\\goal16g_tagged_b78\\strict.obj",
+    "sha256": "148e827f51d16482a7cd3c70ae372b465f4fd00857bad5c3b784f02a3d165c82",
+    "machine": "IMAGE_FILE_MACHINE_I386",
+    "complete_sections": [
+      {
+        "index": 1,
+        "name": ".drectve",
+        "size": 47,
+        "raw_offset": 540,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1051136,
+        "bytes": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+        "relocation_entries": []
+      },
+      {
+        "index": 2,
+        "name": ".debug$S",
+        "size": 176,
+        "raw_offset": 587,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1108344896,
+        "bytes": "04000000f1000000a300000065000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d676f616c3136625f7461676765645f62355c6c6f63616c5c676f616c3136675f7461676765645f6237385c7374726963742e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c65720000",
+        "relocation_entries": []
+      },
+      {
+        "index": 3,
+        "name": ".text$mn",
+        "size": 7,
+        "raw_offset": 763,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8d8198000000c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 4,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 770,
+        "relocation_offset": 786,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000070000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 26,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_b78_16g_00b726a0@4"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "name": ".text$mn",
+        "size": 4,
+        "raw_offset": 796,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b4150c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 6,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 800,
+        "relocation_offset": 816,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000040000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 27,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_b78_16g_00b72b30@4"
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "name": ".text$mn",
+        "size": 9,
+        "raw_offset": 826,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "85c974048b028901c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 8,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 835,
+        "relocation_offset": 851,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000090000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 28,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_b78_16g_00b87080@8"
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "name": ".text$mn",
+        "size": 15,
+        "raw_offset": 861,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "85c9740a8b0289018b5204895104c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 10,
+        "name": ".text$mn",
+        "size": 14,
+        "raw_offset": 876,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8bc133c989480489480889480cc3",
+        "relocation_entries": []
+      },
+      {
+        "index": 11,
+        "name": ".text$mn",
+        "size": 19,
+        "raw_offset": 890,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b44240485c074088b4c24088b118910c20800",
+        "relocation_entries": []
+      },
+      {
+        "index": 12,
+        "name": ".text$mn",
+        "size": 25,
+        "raw_offset": 909,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b44240485c0740e8b4c24088b1189108b4904894804c20800",
+        "relocation_entries": []
+      },
+      {
+        "index": 13,
+        "name": ".chks64",
+        "size": 104,
+        "raw_offset": 934,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 2560,
+        "bytes": "76f6abfb5648dec77464f62b9b5fdf19471465c19d5c37249959c4f31c29b83758e7369c57f4c2e56cf1da47c99da9ddbe4ac95d5e36436c66ad325a32b5f2a34bdca4aaf83f5a4a4a1d018163bfff9e8de44ff1239c580049dff3d634b58ca00000000000000000",
+        "relocation_entries": []
+      }
+    ],
+    "complete_symbols": [
+      {
+        "index": 0,
+        "name": "@comp.id",
+        "offset": 17141140,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 1,
+        "name": "@feat.00",
+        "offset": 2147549585,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 2,
+        "name": ".drectve",
+        "offset": 0,
+        "section": 1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "2f0000000000000000000000000000000000"
+      },
+      {
+        "index": 4,
+        "name": ".debug$S",
+        "offset": 0,
+        "section": 2,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "b00000000000000000000000000000000000"
+      },
+      {
+        "index": 6,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 3,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "070000000000000094b336df000001000000"
+      },
+      {
+        "index": 8,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 4,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000030005000000"
+      },
+      {
+        "index": 10,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 5,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "04000000000000009318d6f3000001000000"
+      },
+      {
+        "index": 12,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 6,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000050005000000"
+      },
+      {
+        "index": 14,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 7,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "09000000000000007e643053000001000000"
+      },
+      {
+        "index": 16,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 8,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000070005000000"
+      },
+      {
+        "index": 18,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 9,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "0f0000000000000070d97672000001000000"
+      },
+      {
+        "index": 20,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 10,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "0e0000000000000037578cc0000001000000"
+      },
+      {
+        "index": 22,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 11,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1300000000000000e434eae3000001000000"
+      },
+      {
+        "index": 24,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 12,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1900000000000000276e8b22000001000000"
+      },
+      {
+        "index": 26,
+        "name": "@bsp_tagged_b78_16g_00b726a0@4",
+        "offset": 0,
+        "section": 3,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 27,
+        "name": "@bsp_tagged_b78_16g_00b72b30@4",
+        "offset": 0,
+        "section": 5,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 28,
+        "name": "@bsp_tagged_b78_16g_00b87080@8",
+        "offset": 0,
+        "section": 7,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 29,
+        "name": "@bsp_tagged_b78_16g_00b87110@8",
+        "offset": 0,
+        "section": 9,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 30,
+        "name": "_bsp_tagged_b78_16g_00b875e0@8",
+        "offset": 0,
+        "section": 11,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 31,
+        "name": "_bsp_tagged_b78_16g_00b87610@8",
+        "offset": 0,
+        "section": 12,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 32,
+        "name": "@bsp_tagged_b78_16g_00b88b50@4",
+        "offset": 0,
+        "section": 10,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 33,
+        "name": ".chks64",
+        "offset": 0,
+        "section": 13,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "680000000000000000000000000000000000"
+      }
+    ],
+    "symbol_table_offset": 1038,
+    "symbol_table_entries_including_auxiliary": 35,
+    "symbol_table_sha256": "74e23802d17f4a02946d095dbee0aaf792a760fb20bd93facc455e3b19556690",
+    "string_table_bytes": "dd000000406273705f7461676765645f6237385f3136675f3030623732366130403400406273705f7461676765645f6237385f3136675f3030623732623330403400406273705f7461676765645f6237385f3136675f3030623837303830403800406273705f7461676765645f6237385f3136675f30306238373131304038005f6273705f7461676765645f6237385f3136675f30306238373565304038005f6273705f7461676765645f6237385f3136675f3030623837363130403800406273705f7461676765645f6237385f3136675f3030623838623530403400",
+    "functions": [
+      {
+        "address": "00b726a0",
+        "symbol": {
+          "index": 26,
+          "name": "@bsp_tagged_b78_16g_00b726a0@4",
+          "offset": 0,
+          "section": 3,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 3,
+        "whole_section_size": 7,
+        "whole_section_bytes": "8d8198000000c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "lea",
+            "operands": "eax, [ecx + 0x98]",
+            "size": 6
+          },
+          {
+            "offset": 6,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00b72b30",
+        "symbol": {
+          "index": 27,
+          "name": "@bsp_tagged_b78_16g_00b72b30@4",
+          "offset": 0,
+          "section": 5,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 5,
+        "whole_section_size": 4,
+        "whole_section_bytes": "8b4150c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + 0x50]",
+            "size": 3
+          },
+          {
+            "offset": 3,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00b87080",
+        "symbol": {
+          "index": 28,
+          "name": "@bsp_tagged_b78_16g_00b87080@8",
+          "offset": 0,
+          "section": 7,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 7,
+        "whole_section_size": 9,
+        "whole_section_bytes": "85c974048b028901c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "test",
+            "operands": "ecx, ecx",
+            "size": 2
+          },
+          {
+            "offset": 2,
+            "mnemonic": "je",
+            "operands": "8",
+            "size": 2
+          },
+          {
+            "offset": 4,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edx]",
+            "size": 2
+          },
+          {
+            "offset": 6,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ecx], eax",
+            "size": 2
+          },
+          {
+            "offset": 8,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00b87110",
+        "symbol": {
+          "index": 29,
+          "name": "@bsp_tagged_b78_16g_00b87110@8",
+          "offset": 0,
+          "section": 9,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 9,
+        "whole_section_size": 15,
+        "whole_section_bytes": "85c9740a8b0289018b5204895104c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "test",
+            "operands": "ecx, ecx",
+            "size": 2
+          },
+          {
+            "offset": 2,
+            "mnemonic": "je",
+            "operands": "0xe",
+            "size": 2
+          },
+          {
+            "offset": 4,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edx]",
+            "size": 2
+          },
+          {
+            "offset": 6,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ecx], eax",
+            "size": 2
+          },
+          {
+            "offset": 8,
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [edx + 4]",
+            "size": 3
+          },
+          {
+            "offset": 11,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ecx + 4], edx",
+            "size": 3
+          },
+          {
+            "offset": 14,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00b875e0",
+        "symbol": {
+          "index": 30,
+          "name": "_bsp_tagged_b78_16g_00b875e0@8",
+          "offset": 0,
+          "section": 11,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 11,
+        "whole_section_size": 19,
+        "whole_section_bytes": "8b44240485c074088b4c24088b118910c20800",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esp + 4]",
+            "size": 4
+          },
+          {
+            "offset": 4,
+            "mnemonic": "test",
+            "operands": "eax, eax",
+            "size": 2
+          },
+          {
+            "offset": 6,
+            "mnemonic": "je",
+            "operands": "0x10",
+            "size": 2
+          },
+          {
+            "offset": 8,
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esp + 8]",
+            "size": 4
+          },
+          {
+            "offset": 12,
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [ecx]",
+            "size": 2
+          },
+          {
+            "offset": 14,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax], edx",
+            "size": 2
+          },
+          {
+            "offset": 16,
+            "mnemonic": "ret",
+            "operands": "8",
+            "size": 3
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00b87610",
+        "symbol": {
+          "index": 31,
+          "name": "_bsp_tagged_b78_16g_00b87610@8",
+          "offset": 0,
+          "section": 12,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 12,
+        "whole_section_size": 25,
+        "whole_section_bytes": "8b44240485c0740e8b4c24088b1189108b4904894804c20800",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esp + 4]",
+            "size": 4
+          },
+          {
+            "offset": 4,
+            "mnemonic": "test",
+            "operands": "eax, eax",
+            "size": 2
+          },
+          {
+            "offset": 6,
+            "mnemonic": "je",
+            "operands": "0x16",
+            "size": 2
+          },
+          {
+            "offset": 8,
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esp + 8]",
+            "size": 4
+          },
+          {
+            "offset": 12,
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [ecx]",
+            "size": 2
+          },
+          {
+            "offset": 14,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax], edx",
+            "size": 2
+          },
+          {
+            "offset": 16,
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ecx + 4]",
+            "size": 3
+          },
+          {
+            "offset": 19,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 4], ecx",
+            "size": 3
+          },
+          {
+            "offset": 22,
+            "mnemonic": "ret",
+            "operands": "8",
+            "size": 3
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00b88b50",
+        "symbol": {
+          "index": 32,
+          "name": "@bsp_tagged_b78_16g_00b88b50@4",
+          "offset": 0,
+          "section": 10,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 10,
+        "whole_section_size": 14,
+        "whole_section_bytes": "8bc133c989480489480889480cc3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, ecx",
+            "size": 2
+          },
+          {
+            "offset": 2,
+            "mnemonic": "xor",
+            "operands": "ecx, ecx",
+            "size": 2
+          },
+          {
+            "offset": 4,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 4], ecx",
+            "size": 3
+          },
+          {
+            "offset": 7,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 8], ecx",
+            "size": 3
+          },
+          {
+            "offset": 10,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0xc], ecx",
+            "size": 3
+          },
+          {
+            "offset": 13,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      }
+    ],
+    "whole_executable_bytes": 93,
+    "nonempty_executable_sections": 7,
+    "executable_relocations": 0,
+    "total_relocations": 3,
+    "undefined_external_symbols": []
+  },
+  "registered": {
+    "path": "build\\win32\\bsp_core.dir\\Release\\native_tagged_leaf_b78_16g.obj",
+    "sha256": "a8a6d5b6625fbe021d5a1a414ed9b97cdb0eb1969e18dfedcc31552c1cd9f48a",
+    "machine": "IMAGE_FILE_MACHINE_I386",
+    "complete_sections": [
+      {
+        "index": 1,
+        "name": ".drectve",
+        "size": 47,
+        "raw_offset": 540,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1051136,
+        "bytes": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+        "relocation_entries": []
+      },
+      {
+        "index": 2,
+        "name": ".debug$S",
+        "size": 204,
+        "raw_offset": 587,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1108344896,
+        "bytes": "04000000f1000000bf00000081000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d676f616c3136625f7461676765645f62355c6275696c645c77696e33325c6273705f636f72652e6469725c52656c656173655c6e61746976655f7461676765645f6c6561665f6237385f3136672e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c65720000",
+        "relocation_entries": []
+      },
+      {
+        "index": 3,
+        "name": ".text$mn",
+        "size": 7,
+        "raw_offset": 791,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8d8198000000c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 4,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 798,
+        "relocation_offset": 814,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000070000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 26,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_b78_16g_00b726a0@4"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "name": ".text$mn",
+        "size": 4,
+        "raw_offset": 824,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b4150c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 6,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 828,
+        "relocation_offset": 844,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000040000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 27,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_b78_16g_00b72b30@4"
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "name": ".text$mn",
+        "size": 9,
+        "raw_offset": 854,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "85c974048b028901c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 8,
+        "name": ".debug$F",
+        "size": 16,
+        "raw_offset": 863,
+        "relocation_offset": 879,
+        "relocations": 1,
+        "characteristics": 1108348992,
+        "bytes": "00000000090000000000000000000000",
+        "relocation_entries": [
+          {
+            "offset": 0,
+            "symbol_index": 28,
+            "type": 7,
+            "target_symbol": "@bsp_tagged_b78_16g_00b87080@8"
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "name": ".text$mn",
+        "size": 15,
+        "raw_offset": 889,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "85c9740a8b0289018b5204895104c3",
+        "relocation_entries": []
+      },
+      {
+        "index": 10,
+        "name": ".text$mn",
+        "size": 14,
+        "raw_offset": 904,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8bc133c989480489480889480cc3",
+        "relocation_entries": []
+      },
+      {
+        "index": 11,
+        "name": ".text$mn",
+        "size": 19,
+        "raw_offset": 918,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b44240485c074088b4c24088b118910c20800",
+        "relocation_entries": []
+      },
+      {
+        "index": 12,
+        "name": ".text$mn",
+        "size": 25,
+        "raw_offset": 937,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 1615859744,
+        "bytes": "8b44240485c0740e8b4c24088b1189108b4904894804c20800",
+        "relocation_entries": []
+      },
+      {
+        "index": 13,
+        "name": ".chks64",
+        "size": 104,
+        "raw_offset": 962,
+        "relocation_offset": 0,
+        "relocations": 0,
+        "characteristics": 2560,
+        "bytes": "76f6abfb5648dec7b582aaf01da80c44471465c19d5c37249959c4f31c29b83758e7369c57f4c2e56cf1da47c99da9ddbe4ac95d5e36436c66ad325a32b5f2a34bdca4aaf83f5a4a4a1d018163bfff9e8de44ff1239c580049dff3d634b58ca00000000000000000",
+        "relocation_entries": []
+      }
+    ],
+    "complete_symbols": [
+      {
+        "index": 0,
+        "name": "@comp.id",
+        "offset": 17141140,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 1,
+        "name": "@feat.00",
+        "offset": 2147549585,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 2,
+        "name": ".drectve",
+        "offset": 0,
+        "section": 1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "2f0000000000000000000000000000000000"
+      },
+      {
+        "index": 4,
+        "name": ".debug$S",
+        "offset": 0,
+        "section": 2,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "cc0000000000000000000000000000000000"
+      },
+      {
+        "index": 6,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 3,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "070000000000000094b336df000001000000"
+      },
+      {
+        "index": 8,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 4,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000030005000000"
+      },
+      {
+        "index": 10,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 5,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "04000000000000009318d6f3000001000000"
+      },
+      {
+        "index": 12,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 6,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000050005000000"
+      },
+      {
+        "index": 14,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 7,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "09000000000000007e643053000001000000"
+      },
+      {
+        "index": 16,
+        "name": ".debug$F",
+        "offset": 0,
+        "section": 8,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "100000000100000000000000070005000000"
+      },
+      {
+        "index": 18,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 9,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "0f0000000000000070d97672000001000000"
+      },
+      {
+        "index": 20,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 10,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "0e0000000000000037578cc0000001000000"
+      },
+      {
+        "index": 22,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 11,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1300000000000000e434eae3000001000000"
+      },
+      {
+        "index": 24,
+        "name": ".text$mn",
+        "offset": 0,
+        "section": 12,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "1900000000000000276e8b22000001000000"
+      },
+      {
+        "index": 26,
+        "name": "@bsp_tagged_b78_16g_00b726a0@4",
+        "offset": 0,
+        "section": 3,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 27,
+        "name": "@bsp_tagged_b78_16g_00b72b30@4",
+        "offset": 0,
+        "section": 5,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 28,
+        "name": "@bsp_tagged_b78_16g_00b87080@8",
+        "offset": 0,
+        "section": 7,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 29,
+        "name": "@bsp_tagged_b78_16g_00b87110@8",
+        "offset": 0,
+        "section": 9,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 30,
+        "name": "_bsp_tagged_b78_16g_00b875e0@8",
+        "offset": 0,
+        "section": 11,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 31,
+        "name": "_bsp_tagged_b78_16g_00b87610@8",
+        "offset": 0,
+        "section": 12,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 32,
+        "name": "@bsp_tagged_b78_16g_00b88b50@4",
+        "offset": 0,
+        "section": 10,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "auxiliary_bytes": ""
+      },
+      {
+        "index": 33,
+        "name": ".chks64",
+        "offset": 0,
+        "section": 13,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "auxiliary_bytes": "680000000000000000000000000000000000"
+      }
+    ],
+    "symbol_table_offset": 1066,
+    "symbol_table_entries_including_auxiliary": 35,
+    "symbol_table_sha256": "77b7403a2ce2a7b958646e1990c7070e21676750315f06d1bbdd779cae62e4dc",
+    "string_table_bytes": "dd000000406273705f7461676765645f6237385f3136675f3030623732366130403400406273705f7461676765645f6237385f3136675f3030623732623330403400406273705f7461676765645f6237385f3136675f3030623837303830403800406273705f7461676765645f6237385f3136675f30306238373131304038005f6273705f7461676765645f6237385f3136675f30306238373565304038005f6273705f7461676765645f6237385f3136675f3030623837363130403800406273705f7461676765645f6237385f3136675f3030623838623530403400",
+    "functions": [
+      {
+        "address": "00b726a0",
+        "symbol": {
+          "index": 26,
+          "name": "@bsp_tagged_b78_16g_00b726a0@4",
+          "offset": 0,
+          "section": 3,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 3,
+        "whole_section_size": 7,
+        "whole_section_bytes": "8d8198000000c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "lea",
+            "operands": "eax, [ecx + 0x98]",
+            "size": 6
+          },
+          {
+            "offset": 6,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00b72b30",
+        "symbol": {
+          "index": 27,
+          "name": "@bsp_tagged_b78_16g_00b72b30@4",
+          "offset": 0,
+          "section": 5,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 5,
+        "whole_section_size": 4,
+        "whole_section_bytes": "8b4150c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + 0x50]",
+            "size": 3
+          },
+          {
+            "offset": 3,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00b87080",
+        "symbol": {
+          "index": 28,
+          "name": "@bsp_tagged_b78_16g_00b87080@8",
+          "offset": 0,
+          "section": 7,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 7,
+        "whole_section_size": 9,
+        "whole_section_bytes": "85c974048b028901c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "test",
+            "operands": "ecx, ecx",
+            "size": 2
+          },
+          {
+            "offset": 2,
+            "mnemonic": "je",
+            "operands": "8",
+            "size": 2
+          },
+          {
+            "offset": 4,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edx]",
+            "size": 2
+          },
+          {
+            "offset": 6,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ecx], eax",
+            "size": 2
+          },
+          {
+            "offset": 8,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00b87110",
+        "symbol": {
+          "index": 29,
+          "name": "@bsp_tagged_b78_16g_00b87110@8",
+          "offset": 0,
+          "section": 9,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 9,
+        "whole_section_size": 15,
+        "whole_section_bytes": "85c9740a8b0289018b5204895104c3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "test",
+            "operands": "ecx, ecx",
+            "size": 2
+          },
+          {
+            "offset": 2,
+            "mnemonic": "je",
+            "operands": "0xe",
+            "size": 2
+          },
+          {
+            "offset": 4,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edx]",
+            "size": 2
+          },
+          {
+            "offset": 6,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ecx], eax",
+            "size": 2
+          },
+          {
+            "offset": 8,
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [edx + 4]",
+            "size": 3
+          },
+          {
+            "offset": 11,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ecx + 4], edx",
+            "size": 3
+          },
+          {
+            "offset": 14,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00b875e0",
+        "symbol": {
+          "index": 30,
+          "name": "_bsp_tagged_b78_16g_00b875e0@8",
+          "offset": 0,
+          "section": 11,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 11,
+        "whole_section_size": 19,
+        "whole_section_bytes": "8b44240485c074088b4c24088b118910c20800",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esp + 4]",
+            "size": 4
+          },
+          {
+            "offset": 4,
+            "mnemonic": "test",
+            "operands": "eax, eax",
+            "size": 2
+          },
+          {
+            "offset": 6,
+            "mnemonic": "je",
+            "operands": "0x10",
+            "size": 2
+          },
+          {
+            "offset": 8,
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esp + 8]",
+            "size": 4
+          },
+          {
+            "offset": 12,
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [ecx]",
+            "size": 2
+          },
+          {
+            "offset": 14,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax], edx",
+            "size": 2
+          },
+          {
+            "offset": 16,
+            "mnemonic": "ret",
+            "operands": "8",
+            "size": 3
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00b87610",
+        "symbol": {
+          "index": 31,
+          "name": "_bsp_tagged_b78_16g_00b87610@8",
+          "offset": 0,
+          "section": 12,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 12,
+        "whole_section_size": 25,
+        "whole_section_bytes": "8b44240485c0740e8b4c24088b1189108b4904894804c20800",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esp + 4]",
+            "size": 4
+          },
+          {
+            "offset": 4,
+            "mnemonic": "test",
+            "operands": "eax, eax",
+            "size": 2
+          },
+          {
+            "offset": 6,
+            "mnemonic": "je",
+            "operands": "0x16",
+            "size": 2
+          },
+          {
+            "offset": 8,
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esp + 8]",
+            "size": 4
+          },
+          {
+            "offset": 12,
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [ecx]",
+            "size": 2
+          },
+          {
+            "offset": 14,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax], edx",
+            "size": 2
+          },
+          {
+            "offset": 16,
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ecx + 4]",
+            "size": 3
+          },
+          {
+            "offset": 19,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 4], ecx",
+            "size": 3
+          },
+          {
+            "offset": 22,
+            "mnemonic": "ret",
+            "operands": "8",
+            "size": 3
+          }
+        ],
+        "whole_native_byte_identity": true
+      },
+      {
+        "address": "00b88b50",
+        "symbol": {
+          "index": 32,
+          "name": "@bsp_tagged_b78_16g_00b88b50@4",
+          "offset": 0,
+          "section": 10,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        "section_index": 10,
+        "whole_section_size": 14,
+        "whole_section_bytes": "8bc133c989480489480889480cc3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "eax, ecx",
+            "size": 2
+          },
+          {
+            "offset": 2,
+            "mnemonic": "xor",
+            "operands": "ecx, ecx",
+            "size": 2
+          },
+          {
+            "offset": 4,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 4], ecx",
+            "size": 3
+          },
+          {
+            "offset": 7,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 8], ecx",
+            "size": 3
+          },
+          {
+            "offset": 10,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0xc], ecx",
+            "size": 3
+          },
+          {
+            "offset": 13,
+            "mnemonic": "ret",
+            "operands": "",
+            "size": 1
+          }
+        ],
+        "whole_native_byte_identity": true
+      }
+    ],
+    "whole_executable_bytes": 93,
+    "nonempty_executable_sections": 7,
+    "executable_relocations": 0,
+    "total_relocations": 3,
+    "undefined_external_symbols": []
+  },
+  "archive": {
+    "path": "build\\win32\\Release\\bsp_core.lib",
+    "sha256": "16efca5586f3c67ec7a31e49cd7e6ef226e4929b591bf96f1a0a6799062f25e9",
+    "member_name": "bsp_core.dir\\Release\\native_tagged_leaf_b78_16g.obj",
+    "member_header_offset": 20070378,
+    "member_size": 1917,
+    "member_sha256": "a8a6d5b6625fbe021d5a1a414ed9b97cdb0eb1969e18dfedcc31552c1cd9f48a",
+    "unique_member_matches": 1,
+    "matches_registered_object": true
+  },
+  "original_abi_by_address": {
+    "00b726a0": "ECX all uint32 address bits -> EAX=(ECX+98h) modulo2^32; no dereference, flags/registers except EAX unchanged; plainRET.",
+    "00b72b30": "ECX raw backing -> EAX=dword[ECX+50h] with x86 address wrap and unaligned input permitted; other registers/flags unchanged; plainRET.",
+    "00b87080": "ECX destination and EDX source are both consumed fastcall arguments. TEST ECX; null skips all source/data access and preserves incoming EAX. Nonnull: read word0 into EAX, store to destination. TEST flags retained; plainRET.",
+    "00b87110": "ECX destination/EDX source; TEST destination. Null skips all data accesses. Nonnull: read0->EAX/store0, THEN read source+4->EDX/store destination+4. EAX=word0,EDX=word1; partial overlap, return-stack alias and literal fault prefixes retained; plainRET.",
+    "00b875e0": "Actual two stack DWORDs: destination[ESP+4],source[ESP+8], no consumed ECX receiver. EAX=destination; TEST. Null skips even source argument slot load. Nonnull: ECX=source,EDX=word0,store0. RET8 pops return slot plus8bytes; TEST flags retained.",
+    "00b87610": "Same two actual stack words and RET8. EAX=destination; null skips source argument slot and all data reads. Nonnull: ECX=source,read0->EDX/store0,THEN read source+4->ECX/store+4. EDX=word0,ECX=word1; aliases/fault prefixes and TEST flags retained.",
+    "00b88b50": "ECX backing copied to EAX, XOR ECX to0 BEFORE first store; ordered dword zeros at EAX+4,+8,+Ch. Returns EAX=backing, ECX=0, preserves EDX and XOR flags through stores/plainRET; no added null guard."
+  },
+  "source_forms": {
+    "ordinary_cpp17": [
+      "00b726a0",
+      "00b72b30",
+      "00b87080"
+    ],
+    "literal_msvc32": [
+      "00b87110",
+      "00b875e0",
+      "00b87610",
+      "00b88b50"
+    ]
+  },
+  "whole_source_functions": 7,
+  "whole_source_executable_bytes": 93,
+  "exact_native_whole_functions": 7,
+  "exact_native_whole_bytes": 93,
+  "exact_native_whole_instructions": 38,
+  "rejected_cpp_registers": {
+    "coff": {
+      "path": "local\\goal16g_tagged_b78\\rejected_cpp_registers\\strict.obj",
+      "sha256": "9f0ae85e2b5e960e94bef6a59b839eab9d58c4f4057d603fa378358713b72399",
+      "machine": "IMAGE_FILE_MACHINE_I386",
+      "complete_sections": [
+        {
+          "index": 1,
+          "name": ".drectve",
+          "size": 47,
+          "raw_offset": 660,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1051136,
+          "bytes": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+          "relocation_entries": []
+        },
+        {
+          "index": 2,
+          "name": ".debug$S",
+          "size": 176,
+          "raw_offset": 707,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1108344896,
+          "bytes": "04000000f1000000a300000065000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d676f616c3136625f7461676765645f62355c6c6f63616c5c676f616c3136675f7461676765645f6237385c7374726963742e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c65720000",
+          "relocation_entries": []
+        },
+        {
+          "index": 3,
+          "name": ".text$mn",
+          "size": 7,
+          "raw_offset": 883,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "8d8198000000c3",
+          "relocation_entries": []
+        },
+        {
+          "index": 4,
+          "name": ".debug$F",
+          "size": 16,
+          "raw_offset": 890,
+          "relocation_offset": 906,
+          "relocations": 1,
+          "characteristics": 1108348992,
+          "bytes": "00000000070000000000000000000000",
+          "relocation_entries": [
+            {
+              "offset": 0,
+              "symbol_index": 32,
+              "type": 7,
+              "target_symbol": "@bsp_tagged_b78_16g_00b726a0@4"
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "name": ".text$mn",
+          "size": 4,
+          "raw_offset": 916,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "8b4150c3",
+          "relocation_entries": []
+        },
+        {
+          "index": 6,
+          "name": ".debug$F",
+          "size": 16,
+          "raw_offset": 920,
+          "relocation_offset": 936,
+          "relocations": 1,
+          "characteristics": 1108348992,
+          "bytes": "00000000040000000000000000000000",
+          "relocation_entries": [
+            {
+              "offset": 0,
+              "symbol_index": 33,
+              "type": 7,
+              "target_symbol": "@bsp_tagged_b78_16g_00b72b30@4"
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "name": ".text$mn",
+          "size": 9,
+          "raw_offset": 946,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "85c974048b028901c3",
+          "relocation_entries": []
+        },
+        {
+          "index": 8,
+          "name": ".debug$F",
+          "size": 16,
+          "raw_offset": 955,
+          "relocation_offset": 971,
+          "relocations": 1,
+          "characteristics": 1108348992,
+          "bytes": "00000000090000000000000000000000",
+          "relocation_entries": [
+            {
+              "offset": 0,
+              "symbol_index": 34,
+              "type": 7,
+              "target_symbol": "@bsp_tagged_b78_16g_00b87080@8"
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "name": ".text$mn",
+          "size": 15,
+          "raw_offset": 981,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "85c9740a8b0289018b4204894104c3",
+          "relocation_entries": []
+        },
+        {
+          "index": 10,
+          "name": ".debug$F",
+          "size": 16,
+          "raw_offset": 996,
+          "relocation_offset": 1012,
+          "relocations": 1,
+          "characteristics": 1108348992,
+          "bytes": "000000000f0000000000000000000000",
+          "relocation_entries": [
+            {
+              "offset": 0,
+              "symbol_index": 35,
+              "type": 7,
+              "target_symbol": "@bsp_tagged_b78_16g_00b87110@8"
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "name": ".text$mn",
+          "size": 14,
+          "raw_offset": 1022,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "8bc133c989480489480889480cc3",
+          "relocation_entries": []
+        },
+        {
+          "index": 12,
+          "name": ".text$mn",
+          "size": 19,
+          "raw_offset": 1036,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "8b44240485c074088b4c24088b098908c20800",
+          "relocation_entries": []
+        },
+        {
+          "index": 13,
+          "name": ".debug$F",
+          "size": 16,
+          "raw_offset": 1055,
+          "relocation_offset": 1071,
+          "relocations": 1,
+          "characteristics": 1108348992,
+          "bytes": "00000000130000000000000002000000",
+          "relocation_entries": [
+            {
+              "offset": 0,
+              "symbol_index": 36,
+              "type": 7,
+              "target_symbol": "_bsp_tagged_b78_16g_00b875e0@8"
+            }
+          ]
+        },
+        {
+          "index": 14,
+          "name": ".text$mn",
+          "size": 25,
+          "raw_offset": 1081,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 1615859744,
+          "bytes": "8b44240485c0740e8b5424088b0a89088b4a04894804c20800",
+          "relocation_entries": []
+        },
+        {
+          "index": 15,
+          "name": ".debug$F",
+          "size": 16,
+          "raw_offset": 1106,
+          "relocation_offset": 1122,
+          "relocations": 1,
+          "characteristics": 1108348992,
+          "bytes": "00000000190000000000000002000000",
+          "relocation_entries": [
+            {
+              "offset": 0,
+              "symbol_index": 37,
+              "type": 7,
+              "target_symbol": "_bsp_tagged_b78_16g_00b87610@8"
+            }
+          ]
+        },
+        {
+          "index": 16,
+          "name": ".chks64",
+          "size": 128,
+          "raw_offset": 1132,
+          "relocation_offset": 0,
+          "relocations": 0,
+          "characteristics": 2560,
+          "bytes": "76f6abfb5648dec77464f62b9b5fdf19471465c19d5c37249959c4f31c29b83758e7369c57f4c2e56cf1da47c99da9ddbe4ac95d5e36436c66ad325a32b5f2a35119164ed90b6a313dca15595b925b234a1d018163bfff9efc06e5fd25e5101ee65bca644ad54451bfde00bda44885ea983d1a99e1a0b2a30000000000000000",
+          "relocation_entries": []
+        }
+      ],
+      "complete_symbols": [
+        {
+          "index": 0,
+          "name": "@comp.id",
+          "offset": 17141140,
+          "section": -1,
+          "type": 0,
+          "storage_class": 3,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        {
+          "index": 1,
+          "name": "@feat.00",
+          "offset": 2147549585,
+          "section": -1,
+          "type": 0,
+          "storage_class": 3,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        {
+          "index": 2,
+          "name": ".drectve",
+          "offset": 0,
+          "section": 1,
+          "type": 0,
+          "storage_class": 3,
+          "auxiliary_count": 1,
+          "auxiliary_bytes": "2f0000000000000000000000000000000000"
+        },
+        {
+          "index": 4,
+          "name": ".debug$S",
+          "offset": 0,
+          "section": 2,
+          "type": 0,
+          "storage_class": 3,
+          "auxiliary_count": 1,
+          "auxiliary_bytes": "b00000000000000000000000000000000000"
+        },
+        {
+          "index": 6,
+          "name": ".text$mn",
+          "offset": 0,
+          "section": 3,
+          "type": 0,
+          "storage_class": 3,
+          "auxiliary_count": 1,
+          "auxiliary_bytes": "070000000000000094b336df000001000000"
+        },
+        {
+          "index": 8,
+          "name": ".debug$F",
+          "offset": 0,
+          "section": 4,
+          "type": 0,
+          "storage_class": 3,
+          "auxiliary_count": 1,
+          "auxiliary_bytes": "100000000100000000000000030005000000"
+        },
+        {
+          "index": 10,
+          "name": ".text$mn",
+          "offset": 0,
+          "section": 5,
+          "type": 0,
+          "storage_class": 3,
+          "auxiliary_count": 1,
+          "auxiliary_bytes": "04000000000000009318d6f3000001000000"
+        },
+        {
+          "index": 12,
+          "name": ".debug$F",
+          "offset": 0,
+          "section": 6,
+          "type": 0,
+          "storage_class": 3,
+          "auxiliary_count": 1,
+          "auxiliary_bytes": "100000000100000000000000050005000000"
+        },
+        {
+          "index": 14,
+          "name": ".text$mn",
+          "offset": 0,
+          "section": 7,
+          "type": 0,
+          "storage_class": 3,
+          "auxiliary_count": 1,
+          "auxiliary_bytes": "09000000000000007e643053000001000000"
+        },
+        {
+          "index": 16,
+          "name": ".debug$F",
+          "offset": 0,
+          "section": 8,
+          "type": 0,
+          "storage_class": 3,
+          "auxiliary_count": 1,
+          "auxiliary_bytes": "100000000100000000000000070005000000"
+        },
+        {
+          "index": 18,
+          "name": ".text$mn",
+          "offset": 0,
+          "section": 9,
+          "type": 0,
+          "storage_class": 3,
+          "auxiliary_count": 1,
+          "auxiliary_bytes": "0f000000000000009b78866d000001000000"
+        },
+        {
+          "index": 20,
+          "name": ".debug$F",
+          "offset": 0,
+          "section": 10,
+          "type": 0,
+          "storage_class": 3,
+          "auxiliary_count": 1,
+          "auxiliary_bytes": "100000000100000000000000090005000000"
+        },
+        {
+          "index": 22,
+          "name": ".text$mn",
+          "offset": 0,
+          "section": 11,
+          "type": 0,
+          "storage_class": 3,
+          "auxiliary_count": 1,
+          "auxiliary_bytes": "0e0000000000000037578cc0000001000000"
+        },
+        {
+          "index": 24,
+          "name": ".text$mn",
+          "offset": 0,
+          "section": 12,
+          "type": 0,
+          "storage_class": 3,
+          "auxiliary_count": 1,
+          "auxiliary_bytes": "130000000000000062cbc299000001000000"
+        },
+        {
+          "index": 26,
+          "name": ".debug$F",
+          "offset": 0,
+          "section": 13,
+          "type": 0,
+          "storage_class": 3,
+          "auxiliary_count": 1,
+          "auxiliary_bytes": "1000000001000000000000000c0005000000"
+        },
+        {
+          "index": 28,
+          "name": ".text$mn",
+          "offset": 0,
+          "section": 14,
+          "type": 0,
+          "storage_class": 3,
+          "auxiliary_count": 1,
+          "auxiliary_bytes": "1900000000000000fb40c370000001000000"
+        },
+        {
+          "index": 30,
+          "name": ".debug$F",
+          "offset": 0,
+          "section": 15,
+          "type": 0,
+          "storage_class": 3,
+          "auxiliary_count": 1,
+          "auxiliary_bytes": "1000000001000000000000000e0005000000"
+        },
+        {
+          "index": 32,
+          "name": "@bsp_tagged_b78_16g_00b726a0@4",
+          "offset": 0,
+          "section": 3,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        {
+          "index": 33,
+          "name": "@bsp_tagged_b78_16g_00b72b30@4",
+          "offset": 0,
+          "section": 5,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        {
+          "index": 34,
+          "name": "@bsp_tagged_b78_16g_00b87080@8",
+          "offset": 0,
+          "section": 7,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        {
+          "index": 35,
+          "name": "@bsp_tagged_b78_16g_00b87110@8",
+          "offset": 0,
+          "section": 9,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        {
+          "index": 36,
+          "name": "_bsp_tagged_b78_16g_00b875e0@8",
+          "offset": 0,
+          "section": 12,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        {
+          "index": 37,
+          "name": "_bsp_tagged_b78_16g_00b87610@8",
+          "offset": 0,
+          "section": 14,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        {
+          "index": 38,
+          "name": "@bsp_tagged_b78_16g_00b88b50@4",
+          "offset": 0,
+          "section": 11,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "auxiliary_bytes": ""
+        },
+        {
+          "index": 39,
+          "name": ".chks64",
+          "offset": 0,
+          "section": 16,
+          "type": 0,
+          "storage_class": 3,
+          "auxiliary_count": 1,
+          "auxiliary_bytes": "800000000000000000000000000000000000"
+        }
+      ],
+      "symbol_table_offset": 1260,
+      "symbol_table_entries_including_auxiliary": 41,
+      "symbol_table_sha256": "a7233e988f923d2998da7bb5851c963d9efd607abadd1934d9f37bb39ea3c2f7",
+      "string_table_bytes": "dd000000406273705f7461676765645f6237385f3136675f3030623732366130403400406273705f7461676765645f6237385f3136675f3030623732623330403400406273705f7461676765645f6237385f3136675f3030623837303830403800406273705f7461676765645f6237385f3136675f30306238373131304038005f6273705f7461676765645f6237385f3136675f30306238373565304038005f6273705f7461676765645f6237385f3136675f3030623837363130403800406273705f7461676765645f6237385f3136675f3030623838623530403400",
+      "functions": [
+        {
+          "address": "00b726a0",
+          "symbol": {
+            "index": 32,
+            "name": "@bsp_tagged_b78_16g_00b726a0@4",
+            "offset": 0,
+            "section": 3,
+            "type": 32,
+            "storage_class": 2,
+            "auxiliary_count": 0,
+            "auxiliary_bytes": ""
+          },
+          "section_index": 3,
+          "whole_section_size": 7,
+          "whole_section_bytes": "8d8198000000c3",
+          "instructions": [
+            {
+              "offset": 0,
+              "mnemonic": "lea",
+              "operands": "eax, [ecx + 0x98]",
+              "size": 6
+            },
+            {
+              "offset": 6,
+              "mnemonic": "ret",
+              "operands": "",
+              "size": 1
+            }
+          ],
+          "whole_native_byte_identity": true
+        },
+        {
+          "address": "00b72b30",
+          "symbol": {
+            "index": 33,
+            "name": "@bsp_tagged_b78_16g_00b72b30@4",
+            "offset": 0,
+            "section": 5,
+            "type": 32,
+            "storage_class": 2,
+            "auxiliary_count": 0,
+            "auxiliary_bytes": ""
+          },
+          "section_index": 5,
+          "whole_section_size": 4,
+          "whole_section_bytes": "8b4150c3",
+          "instructions": [
+            {
+              "offset": 0,
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ecx + 0x50]",
+              "size": 3
+            },
+            {
+              "offset": 3,
+              "mnemonic": "ret",
+              "operands": "",
+              "size": 1
+            }
+          ],
+          "whole_native_byte_identity": true
+        },
+        {
+          "address": "00b87080",
+          "symbol": {
+            "index": 34,
+            "name": "@bsp_tagged_b78_16g_00b87080@8",
+            "offset": 0,
+            "section": 7,
+            "type": 32,
+            "storage_class": 2,
+            "auxiliary_count": 0,
+            "auxiliary_bytes": ""
+          },
+          "section_index": 7,
+          "whole_section_size": 9,
+          "whole_section_bytes": "85c974048b028901c3",
+          "instructions": [
+            {
+              "offset": 0,
+              "mnemonic": "test",
+              "operands": "ecx, ecx",
+              "size": 2
+            },
+            {
+              "offset": 2,
+              "mnemonic": "je",
+              "operands": "8",
+              "size": 2
+            },
+            {
+              "offset": 4,
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [edx]",
+              "size": 2
+            },
+            {
+              "offset": 6,
+              "mnemonic": "mov",
+              "operands": "dword ptr [ecx], eax",
+              "size": 2
+            },
+            {
+              "offset": 8,
+              "mnemonic": "ret",
+              "operands": "",
+              "size": 1
+            }
+          ],
+          "whole_native_byte_identity": true
+        },
+        {
+          "address": "00b87110",
+          "symbol": {
+            "index": 35,
+            "name": "@bsp_tagged_b78_16g_00b87110@8",
+            "offset": 0,
+            "section": 9,
+            "type": 32,
+            "storage_class": 2,
+            "auxiliary_count": 0,
+            "auxiliary_bytes": ""
+          },
+          "section_index": 9,
+          "whole_section_size": 15,
+          "whole_section_bytes": "85c9740a8b0289018b4204894104c3",
+          "instructions": [
+            {
+              "offset": 0,
+              "mnemonic": "test",
+              "operands": "ecx, ecx",
+              "size": 2
+            },
+            {
+              "offset": 2,
+              "mnemonic": "je",
+              "operands": "0xe",
+              "size": 2
+            },
+            {
+              "offset": 4,
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [edx]",
+              "size": 2
+            },
+            {
+              "offset": 6,
+              "mnemonic": "mov",
+              "operands": "dword ptr [ecx], eax",
+              "size": 2
+            },
+            {
+              "offset": 8,
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [edx + 4]",
+              "size": 3
+            },
+            {
+              "offset": 11,
+              "mnemonic": "mov",
+              "operands": "dword ptr [ecx + 4], eax",
+              "size": 3
+            },
+            {
+              "offset": 14,
+              "mnemonic": "ret",
+              "operands": "",
+              "size": 1
+            }
+          ],
+          "whole_native_byte_identity": false
+        },
+        {
+          "address": "00b875e0",
+          "symbol": {
+            "index": 36,
+            "name": "_bsp_tagged_b78_16g_00b875e0@8",
+            "offset": 0,
+            "section": 12,
+            "type": 32,
+            "storage_class": 2,
+            "auxiliary_count": 0,
+            "auxiliary_bytes": ""
+          },
+          "section_index": 12,
+          "whole_section_size": 19,
+          "whole_section_bytes": "8b44240485c074088b4c24088b098908c20800",
+          "instructions": [
+            {
+              "offset": 0,
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esp + 4]",
+              "size": 4
+            },
+            {
+              "offset": 4,
+              "mnemonic": "test",
+              "operands": "eax, eax",
+              "size": 2
+            },
+            {
+              "offset": 6,
+              "mnemonic": "je",
+              "operands": "0x10",
+              "size": 2
+            },
+            {
+              "offset": 8,
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [esp + 8]",
+              "size": 4
+            },
+            {
+              "offset": 12,
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ecx]",
+              "size": 2
+            },
+            {
+              "offset": 14,
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax], ecx",
+              "size": 2
+            },
+            {
+              "offset": 16,
+              "mnemonic": "ret",
+              "operands": "8",
+              "size": 3
+            }
+          ],
+          "whole_native_byte_identity": false
+        },
+        {
+          "address": "00b87610",
+          "symbol": {
+            "index": 37,
+            "name": "_bsp_tagged_b78_16g_00b87610@8",
+            "offset": 0,
+            "section": 14,
+            "type": 32,
+            "storage_class": 2,
+            "auxiliary_count": 0,
+            "auxiliary_bytes": ""
+          },
+          "section_index": 14,
+          "whole_section_size": 25,
+          "whole_section_bytes": "8b44240485c0740e8b5424088b0a89088b4a04894804c20800",
+          "instructions": [
+            {
+              "offset": 0,
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esp + 4]",
+              "size": 4
+            },
+            {
+              "offset": 4,
+              "mnemonic": "test",
+              "operands": "eax, eax",
+              "size": 2
+            },
+            {
+              "offset": 6,
+              "mnemonic": "je",
+              "operands": "0x16",
+              "size": 2
+            },
+            {
+              "offset": 8,
+              "mnemonic": "mov",
+              "operands": "edx, dword ptr [esp + 8]",
+              "size": 4
+            },
+            {
+              "offset": 12,
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [edx]",
+              "size": 2
+            },
+            {
+              "offset": 14,
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax], ecx",
+              "size": 2
+            },
+            {
+              "offset": 16,
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [edx + 4]",
+              "size": 3
+            },
+            {
+              "offset": 19,
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 4], ecx",
+              "size": 3
+            },
+            {
+              "offset": 22,
+              "mnemonic": "ret",
+              "operands": "8",
+              "size": 3
+            }
+          ],
+          "whole_native_byte_identity": false
+        },
+        {
+          "address": "00b88b50",
+          "symbol": {
+            "index": 38,
+            "name": "@bsp_tagged_b78_16g_00b88b50@4",
+            "offset": 0,
+            "section": 11,
+            "type": 32,
+            "storage_class": 2,
+            "auxiliary_count": 0,
+            "auxiliary_bytes": ""
+          },
+          "section_index": 11,
+          "whole_section_size": 14,
+          "whole_section_bytes": "8bc133c989480489480889480cc3",
+          "instructions": [
+            {
+              "offset": 0,
+              "mnemonic": "mov",
+              "operands": "eax, ecx",
+              "size": 2
+            },
+            {
+              "offset": 2,
+              "mnemonic": "xor",
+              "operands": "ecx, ecx",
+              "size": 2
+            },
+            {
+              "offset": 4,
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 4], ecx",
+              "size": 3
+            },
+            {
+              "offset": 7,
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 8], ecx",
+              "size": 3
+            },
+            {
+              "offset": 10,
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 0xc], ecx",
+              "size": 3
+            },
+            {
+              "offset": 13,
+              "mnemonic": "ret",
+              "operands": "",
+              "size": 1
+            }
+          ],
+          "whole_native_byte_identity": true
+        }
+      ],
+      "whole_executable_bytes": 93,
+      "nonempty_executable_sections": 7,
+      "executable_relocations": 0,
+      "total_relocations": 6,
+      "undefined_external_symbols": []
+    },
+    "timing": {
+      "strict_compile_seconds": 1.3473183999885805,
+      "exit_code": 0
+    },
+    "rejection": {
+      "strict_whole_executable_sections": 7,
+      "strict_whole_executable_bytes": 93,
+      "exact_native_entries": 4,
+      "exact_native_bytes": 34,
+      "mismatched_addresses": [
+        "00b87110",
+        "00b875e0",
+        "00b87610"
+      ],
+      "reason": "Memory order and flags preserved, but actual EAX/ECX/EDX allocations differ from Native full register/fault-prefix contract",
+      "compiler_failure": false,
+      "initial_cmd_launch_failure": "Forward-slash batch path caused cmd to execute local; no compiler ran; rerun via absolute Windows batch path"
+    }
+  },
+  "strict_compile": {
+    "strict_compile_seconds": 1.420140399990487,
+    "exit_code": 0
+  },
+  "build": {
+    "started_utc": "2026-10-16T06:41:55.8403589Z",
+    "completed_utc": "2026-10-16T06:42:14.2203579Z",
+    "build_seconds": 18.3770982,
+    "exit_code": 0
+  },
+  "prior_current_archive_providers": [
+    {
+      "packet": "16B",
+      "unique_member_matches": 1,
+      "member_name": "bsp_core.dir\\Release\\native_tagged_leaf_b5_01.obj",
+      "member_header_offset": 35432496,
+      "member_size": 2236,
+      "member_sha256": "fe83ae50a82743c3a3914da44bff03f87d9f64c3085d4201e16d7574f689a54f",
+      "matches_prior_registered_object": true,
+      "old_source_header_report_pins_unchanged": true,
+      "whole_source_functions": 7,
+      "whole_source_executable_bytes": 21
+    },
+    {
+      "packet": "16E",
+      "unique_member_matches": 1,
+      "member_name": "bsp_core.dir\\Release\\native_tagged_leaf_b6_16e.obj",
+      "member_header_offset": 20072356,
+      "member_size": 1576,
+      "member_sha256": "7c6198ab8ddc07ba945b7cd507e3070e822431e369881f01a76fd97fa1668252",
+      "matches_prior_registered_object": true,
+      "old_source_header_report_pins_unchanged": true,
+      "whole_source_functions": 4,
+      "whole_source_executable_bytes": 45
+    }
+  ],
+  "prior_16e_freeze": {
+    "path": "local/goal16g_tagged_b78/frozen_16e/provenance.json",
+    "sha256": "61e5c347572973b3ba4ead0d9ba90f0b9bb41d2ca9768583814eaf773656bcd1",
+    "before_any_new_build": true
+  },
+  "coverage": {
+    "b7_indexed_functions": 482,
+    "b7_tag_only_candidates": 41,
+    "b8_indexed_functions": 502,
+    "b8_tag_only_candidates": 121,
+    "discovery_native_bodies_inspected": 35,
+    "selected_standalone_source_bodies_absent_at_base_root_main": true,
+    "unique_four_paths_absent_at_creation_main": "6ba7840dbc06f840ecbaae94b4067ca987632b42",
+    "existing_b726a0_inline_caller_fragment": "src/terrain_particles_cc13.cpp:2520 inside AE5160 computes at(geometry(),98h); it is not a standalone B726A0 body or physical entry, does not establish every ECX bit pattern; caller unchanged and not counted again.",
+    "other_source_coverage": "No complete selected standalone bodies found in base, Root or Main. Related raw POD8 range helpers have larger range/cleanup contracts, not these scalar entry bodies. No named partial dependency was promoted: all selected bodies are call-free with no global/provider dependency.",
+    "other_candidates": "Unselected B7/B8 guards/CRT-current-policy, absolute globals/vtable owners, ABI-sensitive scalar helpers and range reuse candidates remain individually unqualified; no blanket Source absence or common blocker asserted."
+  },
+  "wall_clock": {
+    "discovery_start_utc": "2026-10-16T06:17:24+00:00",
+    "required_reported_discovery_end_utc": "2026-10-16T06:34:05+00:00",
+    "discovery_reported_seconds": 1001,
+    "implementation_start_utc": "2026-10-16T06:36:57+00:00",
+    "scheduling_gap_seconds": 172,
+    "report_checkpoint_utc": "2026-10-16T06:57:25.082861+00:00",
+    "implementation_seconds_through_checkpoint": 1228.082861,
+    "inclusive_seconds_from_first_discovery_clock": 2401.082861,
+    "final_handoff_artifact": "local/goal16g_tagged_b78/final_handoff.json",
+    "includes": "All discovery/qualification, scope correction, scheduling gap, brief/index/leases/path checks, artifact preservation, setup command correction, both full strict attempts including rejected register form, final warm build/CTest, report/docs/ledger/index/commit/release/author review handoff. Final artifact supplies later complete author endpoint. Root integration/review duration after author handoff remains Root accounting.",
+    "speedup_claim": false
+  },
+  "new_tests": 0,
+  "ghidra_mutations": false,
+  "native_execution": false,
+  "game_validated": false,
+  "uncertainties": [
+    "Operation names/new formal C++ interfaces are hypotheses, not recovered class/field ownership or original return-type spelling.",
+    "Whole instruction identity establishes measured entry-body physical effects, not Native code placement/return/fault EIP addresses, caller ABI adoption, installed replacement, native execution or game validation."
+  ],
+  "checks": {
+    "build_exit_code": 0,
+    "ctest_passed": 2,
+    "ctest_failed": 0,
+    "ctest_total_seconds": 7.78,
+    "names": [
+      "reconstructed_math",
+      "tool_tests"
+    ]
+  },
+  "report_call_verification": {
+    "json_rows_checked": 0,
+    "json_failed": 0,
+    "markdown_claims_checked": 0,
+    "markdown_failed": 0,
+    "markdown_unchecked": 0,
+    "warnings": 0
+  },
+  "evidence_artifact_sha256": {
+    "local\\goal16g_tagged_b78\\build.txt": "b9186eecd48919661320fa9cefc9195e133fbdec63e1cc384fc312eae2542c8a",
+    "local\\goal16g_tagged_b78\\build_timing.json": "fe099750590c319f397fcbf5e3841d3d82a9fa970c95b4346d41fb2937a451b8",
+    "local\\goal16g_tagged_b78\\capture.py": "f181c67431016d36f8d99d61cc7ee790902297db0e044fcd2d8ae85afbb0c4e1",
+    "local\\goal16g_tagged_b78\\coff_proof.py": "1971618148f19879dc5791ca6c376940596a6f3290c3263eac6a410b89e3d6b3",
+    "local\\goal16g_tagged_b78\\compile_timing.json": "cf828f8bf948b2b07a14cb8beb50975ecb3ec977e9415605fe201ab942c6ed49",
+    "local\\goal16g_tagged_b78\\ledger_log.txt": "087ce04ab46ba71048b7a6c251a334de75b6515e0accec54daffa21ed610b7b5",
+    "local\\goal16g_tagged_b78\\ledger_records.py": "496ba8e0c88f825922f9c011b10a65bc90813fc3992c3e422115101eff45f09c",
+    "local\\goal16g_tagged_b78\\native_00b726a0.txt": "6a97b4d469a39123d49bf67e8a9688e33c5267ad90a43f19156d1ced73553792",
+    "local\\goal16g_tagged_b78\\native_00b72b30.txt": "b124176a59b929d21bd87d41f5aabf9bfe90cabdd75af63400009222de397a7d",
+    "local\\goal16g_tagged_b78\\native_00b87080.txt": "060a0016489e644ce80143f22e479431a2a38e43acd0c770d2d2f757aef9d9b3",
+    "local\\goal16g_tagged_b78\\native_00b87110.txt": "9dd5566d5bc6bd8a7164fb7ba5c5693bfc80ec083be7baa6ddaab71e5ce7c8be",
+    "local\\goal16g_tagged_b78\\native_00b875e0.txt": "9009762d8cd7cd3ec0c92fdd1a1b678ca7500c7081ee3270e98bf7c4d8f11bda",
+    "local\\goal16g_tagged_b78\\native_00b87610.txt": "22b3a90ee5c7ed3d9e52070ab0784fb5807df3dfcd21b550d1e4f163c4ec506c",
+    "local\\goal16g_tagged_b78\\native_00b88b50.txt": "e4dddb838f39196f6e9b8a0aa919e804ea8cde1ba7eff9d387674e35bde0264a",
+    "local\\goal16g_tagged_b78\\native_capture.json": "5f8014413d092b2f74c36a2ebe76d58a42127e7cf9c8be2f1cc737e8ba2d701b",
+    "local\\goal16g_tagged_b78\\preserve_16e.py": "0da802e0a4fd8dd639d82e858fbd76c71f847fb58305e52399e0dade590f8007",
+    "local\\goal16g_tagged_b78\\strict.obj": "148e827f51d16482a7cd3c70ae372b465f4fd00857bad5c3b784f02a3d165c82",
+    "local\\goal16g_tagged_b78\\strict_compile.cmd": "e206cd2f3bb4a8ec07e5130ca7b3faa9f69196ee28cac935bc6c2644e76fc507",
+    "local\\goal16g_tagged_b78\\strict_compile.txt": "d443d73dae83f1d0c001877c339d089d23f3a9494fb3c5c6310767417e06fba8",
+    "local\\goal16g_tagged_b78\\typed_flow.json": "3ac009d8ad43f6825904b4ea416d41164ea1fa4d90efa7969f4508d56a50acc9",
+    "local\\goal16g_tagged_b78\\typed_flow_cli.txt": "21126ca244666e49b4b0d959e0dd834496e1abc1c015a42ae28e696773929de9",
+    "local\\goal16g_tagged_b78\\validate.py": "c48fe1667c52b0a4600a92897a73989ffa8632f3a940e1e0250c9626e1a4aeeb",
+    "local\\goal16g_tagged_b78\\rejected_cpp_registers\\compile_timing.json": "e983263fce786a65f51ae64d486a0a68ed8b216206e2c700c1445bc8f58eb2bd",
+    "local\\goal16g_tagged_b78\\rejected_cpp_registers\\header.hpp": "2787ce6fcff0fee01207eba17c73d51da841f9b98616780b24fcadb2ccea28ea",
+    "local\\goal16g_tagged_b78\\rejected_cpp_registers\\rejection.json": "d7e93c67dd0dbcec52f8aaf752825e49731881609cc05fec7d8d2897c9a7ec01",
+    "local\\goal16g_tagged_b78\\rejected_cpp_registers\\source.cpp": "0ad102526de504f26faf22294db764030b5490b61e5236e846e111055b0f040d",
+    "local\\goal16g_tagged_b78\\rejected_cpp_registers\\strict.obj": "9f0ae85e2b5e960e94bef6a59b839eab9d58c4f4057d603fa378358713b72399",
+    "local\\goal16g_tagged_b78\\rejected_cpp_registers\\strict_compile.txt": "d443d73dae83f1d0c001877c339d089d23f3a9494fb3c5c6310767417e06fba8"
+  },
+  "post_validation_artifact_sha256": {
+    "docs/GOAL16G_TAGGED_LEAF_B78.md": "24811b5bae8703864901bd356b8fa33da2b649a4b635d74b5480321f37e31e7f",
+    "local/goal16g_tagged_b78/ledger_log.txt": "087ce04ab46ba71048b7a6c251a334de75b6515e0accec54daffa21ed610b7b5"
+  }
+}

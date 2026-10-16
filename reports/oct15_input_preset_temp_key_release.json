@@ -1,0 +1,366 @@
+{
+  "schema": 1,
+  "packet": "oct15_native_input_preset_temp_key_release",
+  "status": "complete_ordinary_raw_context_Source_default_Win32_checked_primary_frozen_pin_review_pending",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_input_preset_temp_key_release.cpp",
+  "header": "include/bsp/native_input_preset_temp_key_release.hpp",
+  "documentation": "docs/OCT15_INPUT_PRESET_TEMP_KEY_RELEASE.md",
+  "routines": [
+    {
+      "address": "0069e090",
+      "name": "release_native_input_preset_temp_key_0069e090",
+      "preserved_Original_name": "BSP_NativeString_ReleaseStorage_0069e090",
+      "kind": "function",
+      "coverage": "completeordinary0069E090..0069E0ACinclusive29definedB12starts,onecompletebodyrange;no flow/listingrepair",
+      "original_abi": "ECXactual8Bpooledheader;EDXunconsumed/overwritten;noStack/plainRET;conditionalEAXresidue,noSemanticreturnproved. Existingundefined(void) prototypeincomplete,asmgoverns.",
+      "Source_abi": "voidfastcall(header,uint32deadEDX,borrowedrealRawCtx&),RET4/newABI;intentionallyNOTnoexcept."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0069e0a0",
+      "native": "00419cc0",
+      "kind": "call",
+      "function": "0069e090"
+    },
+    {
+      "address": "0069e0a7",
+      "native": "00bd1510",
+      "kind": "call",
+      "function": "0069e090"
+    }
+  ],
+  "readonly_reference_steps": [
+    {
+      "address": "0041dd30",
+      "native": "00419cc0",
+      "kind": "call",
+      "function": "0041dd20"
+    },
+    {
+      "address": "0041dd37",
+      "native": "00bd1510",
+      "kind": "call",
+      "function": "0041dd20"
+    }
+  ],
+  "readonly_action_steps": [
+    {
+      "address": "00c7f103",
+      "native": "0069e090",
+      "kind": "tail_jump",
+      "function": "00c7f100"
+    }
+  ],
+  "schedule": [
+    "CaptureDATA DWORD4 BEFORE anylengthread. Data0skipCURRENTLENGTH0/getter/return/contextFIELDS. Contextobjectargumentstillvalid/forwarded.",
+    "Nonnull:captureCURRENTlength0+1 unsignedDWORDwrap andsaveddata beforeactualgetter419CC0;getterrequiredeverytimeincludinglarge/disabledsmall/wrappedsize0;actualBD1510 receivescaptureddatasize.",
+    "Noheaderreadsaftergetter,reset/clear/free/newguard/retry/rollback/localcatch/duplicatebody. Do notoverwriteprovider-inducedheaderchanges."
+  ],
+  "actual_binding": {
+    "callee": "void destroy_native_string_header_0041dd20(void*,NativeStringRawPoolContext&)",
+    "source": "src/native_string.cpp",
+    "header": "include/bsp/native_string.hpp",
+    "proof": "Full29B reference/candidate identicalafterONLYtwoverifiedE8operands8B;21untouchedbytesincludingbranch/loads/stack/RET exact.",
+    "RawCtx": "NativeStringRawPoolContext borrows NativeStringPoolStorage*volatile&actual_published_01090AA8, volatileuint32&actual_small_returns_disabled_01090AA4, and void*volatile&actual_manager_publication_01090AA0. Ownsnone; mustbind applicationactual canonicalcells/lifetimes and existingrawmanager deletion domain. No newglobal/provider/cache/getter/state.",
+    "order": "ExistingSource capturesdata+4, conditionalCURRENTlen0+1 before RawStringPoolAccess.release. That calls existingrawmanager-overload native_string_pool_get_or_create_00419cc0(pub,manager), then return_native_string_pool_00bd1510(pool,data,size,actualgate). Getter before large/gatedreturns retained; data0 skips allcontextfield/provider reads.",
+    "domain": "ExistingactualRawCtx/currentCPP/currentCRT/rawmanagerpublicationdomain;not virtualNativeStringStorage,hostpool,defaultprovider,newglobal/context orcallback."
+  },
+  "exception_return_limits": {
+    "failure": "Existingrawgetterallocation/registrationfailurepropagatesbeforepoolreturnwithitsprogress preserved;newwrapperintentionallyNOTnoexcept,nocatch/conversion/cleanup. CallerownssecondarycleanupCPPpolicy,notthisordinaryentry.",
+    "return": "Native data0 leavesambientEAX; nonnullproviderresidue. Sourcevoid doesnotforge0/pointer/bool return; no FH3callee-return consumptionclaim.",
+    "Original_EH": "Whole29B hasno localFS/state/catch/cleanup. C7F100runtimeEBP-28h target isreadonlyevidenceONLY;no logicalactionSource,EBPreader,fakeframe,OriginalFH3/SEH/faultclaim."
+  },
+  "existing_generic_domain": {
+    "API": "void release_pooled_string_at0_0069e090(void* object,NativeStringStorage& strings) noexcept; settings_seg29_cc13.hpp/.cpp.",
+    "contract": "NativeStringStorage::release isnoexcept and canbehost/sizedpoolpolicy; ActualNativeStringPoolStorage adapter invokesgetter INSIDE that preexistingnoexcept boundary, so an escapingC++getterfailure terminates. This remainsvalidnarrowerprovidedstoragecontract; do not replaceoverload,remove noexcept or promote it asrawgetterfailuretransport.",
+    "Source_and_report_unchanged": true,
+    "old_reconstruction_record_preserved_distinct_new_name": {
+      "address": "0069e090",
+      "name": "BSP_NativeString_ReleaseStorage_0069e090",
+      "source": "src/settings_seg29_cc13.cpp",
+      "header": "include/bsp/settings_seg29_cc13.hpp",
+      "documentation": "docs/CC13_SEG29.md",
+      "status": "reconstructed_build_tested",
+      "coverage": "complete normal path; through NativeStringStorage::release(chars, len + 1)",
+      "original_abi": "__thiscall RET",
+      "abi_compatible": false,
+      "game_validated": false,
+      "notes": "Provisional hypothesis, not a recovered symbol. cc13-seg29, docs/CC13_SEG29.md. C++ release_pooled_string_at0_0069e090. string {len +0, chars +4}: when chars is non-null, 00419CC0 then 00BD1510(chars, len + 1, 1). Simplifications: through NativeStringStorage::release(chars, len + 1).",
+      "kind": "function"
+    }
+  },
+  "corrections": [
+    {
+      "was": "Hypothesis, not a recovered symbol. Returns the string buffer at +0 (length +4) to the sized storage pool. Unwind caller only. Doc: docs/CC13_BAND_0067_0073.md.",
+      "is": "Hypothesis, not a recovered symbol. Actual8B pooledheader has lengthDWORD+0 and dataDWORD+4. Capturedata first; null skipslength/storage; otherwise wrappingCURRENTlength+1 and actual00419CC0/00BD1510 return. Noheaderwrites/reset. Currentsolexref isC7F100unwind action. Preserve oldNativeStringStorage/noexcept Source and distinguish dedicatedRawCtxmaythrowservice.",
+      "evidence": "Bothcomplete29B initialMOV EDX,[ECX+4] thenconditionalMOV EAX,[ECX],publishedRawCtx/oldgenericSourceagree. Earlierproseonlyreversedoffsets;oldSourcecorrect.",
+      "preserved_name": "BSP_NativeString_ReleaseStorage_0069e090",
+      "preimage": {
+        "path": "local\\oct15_preset_temp_key_release_preimages.json",
+        "sha256": "d3140f4ddfa720d835d6ca477e10cd0a998eae20cfab6e96544ab00ce3ca108b"
+      },
+      "policy": "AppendexplicitCORRECTIONkeepingoldtext/name andoldgenericSource/status;RootsoleGhidrawriter."
+    }
+  ],
+  "Native_evidence": {
+    "path": "local/oct15_preset_temp_key_release_Source_native_deep.json",
+    "sha256": "2ee5a9115d7e5ce64ac0a63359d2a9598dbbdebd608d7bc4b0a619daf23aa2b1",
+    "typed_modification": "5777",
+    "PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "counts": {
+      "owned_bytes": 29,
+      "owned_starts": 12,
+      "readonly_reference_bytes": 29,
+      "readonly_reference_starts": 12,
+      "readonly_action_bytes": 8,
+      "readonly_action_starts": 2,
+      "fresh_total_bytes": 66,
+      "fresh_total_starts": 26,
+      "owned_CALLs": 2,
+      "readonly_CALLs": 2,
+      "readonly_tailJMPs": 1
+    },
+    "whole_body_normalization": {
+      "whole_bytes": 29,
+      "masked_bytes": 8,
+      "untouched_identical_bytes": 21,
+      "masks": [
+        {
+          "operand_offset": 17,
+          "bytes": 4,
+          "candidate_site": "0069e0a0",
+          "reference_site": "0041dd30",
+          "both_actual_targets": "00419cc0"
+        },
+        {
+          "operand_offset": 24,
+          "bytes": 4,
+          "candidate_site": "0069e0a7",
+          "reference_site": "0041dd37",
+          "both_actual_targets": "00bd1510"
+        }
+      ],
+      "normalized_sha256": "c04eb96c4aa5bdeebf14ced964b8c6c4f03dcff5046d2e9108870f4473b3804c",
+      "all_other_bytes_identical": true
+    },
+    "current_starts": {
+      "path": "local/oct15_preset_temp_key_release_Source_current_starts.json",
+      "sha256": "1bc95adca53ea82f4c210c23868c75b88a83f3415b50f25bdd307d34ab2aec8a",
+      "count": 26,
+      "all_current_mnemonics_and_targets_match": true
+    }
+  },
+  "actual_CMake_COFF": {
+    "object": "build\\win32\\bsp_core.dir\\Release\\native_input_preset_temp_key_release.obj",
+    "sha256": "4d6d7fd641a622993040b09f69dc338ec5f374e96d1db9f30f33380757f79316",
+    "complete_code_bytes": 19,
+    "complete_code_instructions": 8,
+    "code_functions": 1,
+    "code_padding": 0,
+    "all_relocations": [
+      {
+        "offset": 8,
+        "type": 20,
+        "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+      }
+    ],
+    "compiler_BSS": {
+      "declared_bytes": 4,
+      "file_backed": false,
+      "referenced_by_code": false
+    },
+    "checks": [
+      {
+        "check": "EntireactualCMakecode19B8/onefunction decoded; no hiddenhelper,deadcode or padding.",
+        "passed": true
+      },
+      {
+        "check": "Publicfastcall(header,uint32unusedEDX,RawCtx&) decoratedsymbol/RET4 matchesSourceinterface; no NativeplainRET identityclaim.",
+        "passed": true
+      },
+      {
+        "check": "ONLYrelocation type20/publicoperand+8 bindsREALNativeStringRawPoolContext&41DD20 overload,notNativeStringStorage/noexceptadapter.",
+        "passed": true
+      },
+      {
+        "check": "Stackcontext load/push thenECXheaderpush; cdeclcallee cleanupADDesp8 thenSourceRET4; unusedincomingEDX notread.",
+        "passed": true
+      },
+      {
+        "check": "No ownheaderloads/stores/getter/free/guard/reset/duplicatebody/catch; completeeffects inheritedfromprovedpublishedservice.",
+        "passed": true
+      },
+      {
+        "check": "No localFH3/SEH/state/unwind cleanup metadata or exceptionconversion; RawCtxgetterfailurepropagates inexistingCPPdomain.",
+        "passed": true
+      },
+      {
+        "check": "Oneunreferenced4BcompilerBSS correctlyuninitialized/notfilebacked; solecoderelocation iscallee, no newapplicationglobal/context.",
+        "passed": true
+      },
+      {
+        "check": "ConditionalEAXresidue excludedbySourcevoid; Sourceprivateframes/argumenttiming/RawCtxadditionalword/OriginalABI explicitlyqualified.",
+        "passed": true
+      }
+    ],
+    "findings": []
+  },
+  "actual_CMake_COFF_deep": {
+    "path": "local/oct15_preset_temp_key_release_COFF_deep.json",
+    "sha256": "382da62f5faf108ec530813c9c18ca67e2371bc3116a511e7747a00d029901f2"
+  },
+  "provider_fingerprints": [
+    {
+      "path": "src/native_string.cpp",
+      "physical_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "LF_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "fetched_origin_Main_LF_equal": true
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "physical_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "LF_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "fetched_origin_Main_LF_equal": true
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "physical_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "LF_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "fetched_origin_Main_LF_equal": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "physical_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "LF_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "fetched_origin_Main_LF_equal": true
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "physical_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "LF_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "fetched_origin_Main_LF_equal": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "physical_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "LF_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "fetched_origin_Main_LF_equal": true
+    },
+    {
+      "path": "src/settings_seg29_cc13.cpp",
+      "physical_sha256": "7a882cf94ad8bc30120e0a953d7cb0af729d017593f31b1929205c266f43df24",
+      "LF_sha256": "7a882cf94ad8bc30120e0a953d7cb0af729d017593f31b1929205c266f43df24",
+      "fetched_origin_Main_LF_equal": true
+    },
+    {
+      "path": "include/bsp/settings_seg29_cc13.hpp",
+      "physical_sha256": "71eac28bfcc7cf1ffdecf63e96e342107450c69bf50a0fd7eabfbd19007a0946",
+      "LF_sha256": "71eac28bfcc7cf1ffdecf63e96e342107450c69bf50a0fd7eabfbd19007a0946",
+      "fetched_origin_Main_LF_equal": true
+    },
+    {
+      "path": "docs/NATIVE_STRING_RAW_POOL_CONTEXT.md",
+      "physical_sha256": "7ed7edbf2bfe9b695d2b604eb35473d86dc1595e7f4c72a6b04de7529679912b",
+      "LF_sha256": "7ed7edbf2bfe9b695d2b604eb35473d86dc1595e7f4c72a6b04de7529679912b",
+      "fetched_origin_Main_LF_equal": true
+    }
+  ],
+  "prior_immutable_pins": [
+    {
+      "pin": "4f5fb0a41df31d2ce6d27b540095a28c99e87bc2",
+      "freeze": "local/oct15_preset_iterator_equal_freeze.json",
+      "freeze_sha256": "a300f527ba1164b7f1a3f0191abfd9892d040687a718810972db73b755f5768b",
+      "four_owned_files_unchanged": {
+        "src/native_input_preset_iterator_equal.cpp": "1056e9b67c6a038e9182017a1e7894709575c7f06ac6808f0cbd31225a2fdf04",
+        "include/bsp/native_input_preset_iterator_equal.hpp": "c6a408b7f557daab0e8882b048089854b96e5332a269650d36c14e086d0e86dd",
+        "docs/OCT15_INPUT_PRESET_ITERATOR_EQUAL.md": "6edd5cbb0638c88cc63936f0ee5b50f4e8327b257a436bbec4ef0028a4e5c824",
+        "reports/oct15_input_preset_iterator_equal.json": "e163d1511f9db39ed939262cdd62e82b9196fb66af74ba674df88ead7594f809"
+      },
+      "published_ancestor": true,
+      "note": "SharedaggregateCMake/ledgerfiles legitimatelyadvanceonMain; onlyfrozenownedfilesassertedunchanged."
+    },
+    {
+      "pin": "895294ff2a5d6dfbcb7e83542bd1e52e38dd3bb1",
+      "freeze": "local/oct15_native_input_preset_tree_destroy_freeze.json",
+      "freeze_sha256": "3dce3d660132b5df087eb05e3afe7d0fece53aa0b87cfe29bd99d3f688b1c8e4",
+      "four_owned_files_unchanged": {
+        "src/native_input_preset_tree_destroy.cpp": "09a4c68b92f31e05c38ce81de76a76463596ec6143a483e1565c813a104bc406",
+        "include/bsp/native_input_preset_tree_destroy.hpp": "95e7688464050c7d1c3527852dcb6c8e65a3a6e6df1fdb93282ecbd0ce1ad65f",
+        "docs/OCT15_NATIVE_INPUT_PRESET_TREE_DESTROY.md": "35dcfea462aebaeb6ee6151c724c2749c7d8ad17eef175cfbf606557ea27c693",
+        "reports/oct15_native_input_preset_tree_destroy.json": "8c6582734d07e3ced20c74df9650b7e0d956b7fda73375bd6d6041e8d6445650"
+      },
+      "published_ancestor": true,
+      "note": "SharedaggregateCMake/ledgerfiles legitimatelyadvanceonMain; onlyfrozenownedfilesassertedunchanged."
+    }
+  ],
+  "prior_readiness": {
+    "path": "local/oct15_preset_temp_key_release_readiness.json",
+    "sha256": "d9223c8679aebb69783a7d5828ab39618a511a456b344bf1f017f22a7b3df7d8",
+    "proof_sha256": "a1dea5587bf57ec2bbe4f3f4d82c5286a32a58b6d9b24f1ccabbe92be11efc25"
+  },
+  "source_fingerprints": {
+    "src/native_input_preset_temp_key_release.cpp": "553724d244c2984cefad49063f939687295a2d4b4c7f8b56eaaab1d1664e0a99",
+    "include/bsp/native_input_preset_temp_key_release.hpp": "d621cfec62095d28c6b6b65e945f05f2ab1f709e9f90290bf7ba26fc7270dbf0",
+    "docs/OCT15_INPUT_PRESET_TEMP_KEY_RELEASE.md": "8ba7da3949565cec38fb77f41157540aae4440ee462a5e60f709cf15f68b4e9f"
+  },
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVCWin32Release/default",
+      "exit_code": 0,
+      "published_base": "70b20c1bbc488f552f708b2614fcf34ded741586",
+      "log": "local\\oct15_preset_temp_key_release_build.log",
+      "log_sha256": "49de77e513f6528cf2cd482d60fc7375a983f95be52c8a71e16dda587e3a4740",
+      "existing_suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "passed": 3,
+      "failed": 0,
+      "ctest_seconds": 7.42,
+      "tests_cover_new_entry": false,
+      "new_tests": 0,
+      "new_probes": 0,
+      "Native_execution": false
+    },
+    "primary_review": "FrozenSourcepinprimaryreviewpending;Rootindependentlyreadall12NativeinstructionsandacceptedreadinessbeforeSourceauthorization.",
+    "transfer_verifier": {
+      "command": "python tools/verify_report_calls.py reports/oct15_input_preset_temp_key_release.json docs/OCT15_INPUT_PRESET_TEMP_KEY_RELEASE.md",
+      "JSON_rows": 5,
+      "Markdown_claims": 5,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "log": "local\\oct15_preset_temp_key_release_transfers.txt",
+      "log_sha256": "c647d530276d3ea290ba63afd51b3f151aa127d469c0251fbc760092f8cada11"
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "exit_code": 0
+    },
+    "index": "bsp.py index --if-stale completed after ownedledger append"
+  },
+  "limits": [
+    "Matchingactualcanonicalcontextpublication/gate/rawmanagercells/ownedreachedstorage/currentCRTandthreadassumptions;contextobjectvalidondata0evenwhenfieldaccessesskipped.",
+    "NewSourcefastcallRawCtxstackword/RET4,calleeprivateframes/incomingargumentaliases/registerflags/conditionalEAX versusNativeplainRETqualified.",
+    "OriginalCRT/heap/FH3SEH/RTTI/fault/stackexhaustion/binaryABI/gameidentity unproved.",
+    "OldgenericStorage/noexceptAPIandreportunchanged;nomapEH/C7F100logicaleffect/pair/hint/map-index/parentpromotion."
+  ],
+  "coordination": {
+    "address_lease": "oct15_native_input_preset_temp_key_release",
+    "owned_addresses": [
+      "0069e090"
+    ],
+    "readonly_C7F100_not_owned": true,
+    "local_CMake": "Exactlyoneauthorizedbsp_coreSourceappend,noregistrylease.",
+    "Ghidra_mutations": false,
+    "push": false
+  }
+}
