@@ -40,6 +40,14 @@ for the loop condition and CURRENT head for a reached next iteration. It does
 not use the decrement result as a cached loop condition or zero/repair the
 header after the loop.
 
+The emitted ordinary function has117 bytes/52 instructions. Its common next
+load is placed before the pure previous-pointer branch test; the raw
+previous→next→selected-store order and read count remain unchanged. The
+private node-argument push precedes the count store, which still precedes the
+actual free edge. Implicit outgoing homes and Original instruction, register
+or flag identity are not credited. Every reached raw field access and ordered
+publication was inspected in the retained object.
+
 | Native transfer | Role |
 | --- | --- |
 | 0046AA0C CALL 00469010 | Actual captured-record destructor |
@@ -79,6 +87,11 @@ report retains five true transfers, both incoming setups, original ABI,
 provider hashes and prior native annotation values. Correct native name and
 comments are preserved with locked save/export/readback. Complete primary
 Source review accepted f480f28a8 without changes; accepted Source and provider
-hashes were asserted unchanged. The primary will merge/register at its queued
-turn and supply the actual combined normal MSVC Win32 gate. There is no worker
-CMake queue, worker build, new test or native-entry execution claim.
+hashes were asserted unchanged. The primary registered this Source once at
+280da46334585045bf516ad2d54b90e2d53f35d0 and ran scripts/build.ps1: MSVC Release
+Win32 passed all three existing checks in 9.89 seconds. The report pins the
+immutable primary receipt/log hashes and unique archived object. The whole
+emitted function was inspected for every raw capture, reload, ordered store
+and provider edge. All accepted Source and ten provider hashes remain
+unchanged. No worker build, new test, Original heap/FH3/private ABI,
+native-entry execution, application or game credit is claimed.
