@@ -18136,3 +18136,45 @@ Branch `agent/cc9-ships44`. Commits this session: 95c1e4e48 (256), c749c72c5/b51
 - **BSM09**: runs to EndMission at 917.90 s with no orders (257). It is ready as the kCarrierRunwayFailureBound pair row.
 - Not bound: the 006F47F0 device loop (no device health in the host), the D6h broadcast, and the capture warning
   00977DA0 (presentation).
+
+## 260. BSM09 runway-failure pair and win; seg 43 band gaps; submarine wake draws (cc9-ships53, 2026-10-16; lead items 1-3)
+
+**Item 1, BSM09 kCarrierRunwayFailureBound pair: gameplay identical, mission WON with no orders.** OFF = pair_export
+2edfb11a3 with the switch false (`local\s53_rf0`), ON = tree 2edfb11a3. Reference env, 36000 frames, no orders
+(`local\s53_rf0_b9` / `s53_rf1_b9`). pair_diff 1: deaths 125/125, death rows, plane death modes, unit and native
+tables identical; only the SetFailure line's arm (0 -> 10) and the known ship-ai-free refill counter move. The arm is
+taken in ON (mission frame 897, bsm_09:1203, `00758750 72h runway on deck=yes`), but it has nothing to stop:
+Lexington's deck has stock 0 in all four slots (`air ops deck classes ... stock=101x0,113x0,108x0,101x0`), there is no
+Lexington squadron in either log, and the script scuttles it (AddWaterLoad x6, OverrideHP 0.01, luaLexLost). So "stops
+launching" is vacuous on BSM09; the mechanism row stays ESMP03 (OCEAN_WAVE_FIELD 36).
+EndMission at 917.90 s is a WIN: lua_Think primary 1 (this installation's bsm_09_battle_of_the_coral_sea.lua,
+2024-07-13, lines 521-536) fires when Zuikaku's GetHpPercentage <= 0.1 (the US AI's strikes took it from 8000 hp);
+it completes primary 1 and plays RETREATING, whose callback luaMissionComplete (t=921.85) completes every objective and
+calls luaMissionCompletedNew("Enemy carriers are retreating - Mission Complete"). Summary MissionStatus=true. The exec
+guard refused sus_prog.exe. Sent to cc9-lua62 for WINS_TABLE; no win plan is needed.
+
+**Item 2, seg 43 band 00778820..0077D270 (cc13-sweepB's cc9 list): no live gameplay gap.** Host grep per address
+(`local\s53_band_grep.py`). Not referenced by any host and why:
+- 0077A080 / 0077C880 (FORMATION_SET build and send): 0077C880 calls 0077C7B0, which only sends to peers in session
+  mode 1 (the peer list at +2A8h) and to the secondary peer in mode 2; offline it sends nothing.
+- 0077D270 (unit OnKilled, vtable +7Ch) is modelled through 00929B60/00929800 (cc9_entity_dead). Its unmodelled part,
+  `LastBanto` via 0077CD80, is read only by jm03/jm06/jm09/jm10 as the end-camera entity passed to
+  luaMissionFailedNew (presentation). Its recon-slot dirty marks (BSP_Recon_MarkSlotDirty over the three +1F0h records) were not traced.
+- 0077B050 (vtable +D4h, resolves the command target position into a caller record): data references only, no direct
+  caller; 00779EB0 and 0077A4B0 / 0077A510: no references (byte census 0). 00778820: only 00780120, the network entity
+  message dispatcher.
+The rest of the band is network/session/replication code or already hosted (IsFormationFollower, FormationLeader,
+SharesUnitGroup, MayFollowTarget, HandOverLeadership, ReleaseMember, SnapshotMembers, RequestJoinFormation).
+
+**Item 3, the section-258 label resolved; submarine wake draws bound OFF.** 00855420 (the submarine's motion, slot +8h
+of the +310h sub-object) calls 00825F20 first at 0085542F, so a sinking submarine runs 00825F20's sink block like any
+ship. The 00933BB0 call at 008546FC is a different site in 00854650: when the hull y unit+100h is in (-15.0
+[00CE3D58], -3.0 [00CE3D50]) and below unit+11D8h, 008546DF/008546E4 takes one 00BD2FC0 on stream 1, and on
+u32 % 15 == 0 calls 00933BB0 on [unit+1018h] (one more draw, two on 1 in 5). No double draw; this pick was unbound.
+unit+11D8h's only writer found in seg 53 is the constructor's 0 (00853630), so the test is y < 0 (LABELLED).
+`kSubmarineWakeDrawsBound` (src/game_hosts_gunnery.cpp, `submarine_wake_draws_008546df`, Draw::sink_effects key 2),
+called by the units host after the periscope arm once per force step (LABELLED order). The summary line
+`submarine wake draws` counts eligible ticks in OFF too.
+**Predictions.** Reference mode (STREAMS=1): inert, pair_diff 1. Default mode (STREAMS=0) USNOS a7: moves from the
+first tick a submarine's hull y is between -15 and -3 m (a periscope-depth Gato), so earlier than the 32.7 s of the
+sink-draw pair; missions without submarines identical.

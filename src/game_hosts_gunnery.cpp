@@ -155,10 +155,22 @@ constexpr bool kDamageSmokeDrawsBound = true;
 // ON by docs/SHIP_AI_OPEN_ITEMS.md 258: default-mode pairs USN01, USN02 and USNOS
 // move from the first sinking (Gato 29.75 s on USNOS), as a stream-1 consumer
 // must; reference runs (BSP_GUNNERY_RNG_STREAMS=1) are unaffected. LABELLED: a
-// submarine's sink block also reaches both here; the image's submarine update
-// calls 00933BB0 itself at 008546FC, and whether it also runs 00825F20's block
-// was not read.
+// submarine's sink block also reaches both here. The image's submarine motion
+// 00855420 calls 00825F20 first (0085542F), so a sinking submarine runs this
+// block too; the submarine update's own 00933BB0 call (008546FC) is a separate
+// site (kSubmarineWakeDrawsBound), not a second draw of this one.
 constexpr bool kShipSystemsSinkDrawsBound = true;
+// Packet s53_sub_wake_draws (docs/SHIP_AI_OPEN_ITEMS.md 260). 00854650, the
+// submarine update, before its periscope arm: when the hull y unit+100h is in
+// (-15.0 [00CE3D58], -3.0 [00CE3D50]) and below unit+11D8h, one 00BD2FC0 on
+// stream 1 (008546DF MOV ECX,1 / 008546E4), and on u32 % 15 == 0 the 00933BB0
+// spray on [unit+1018h] (008546FC), which draws as in the sink block. LABELLED:
+// unit+11D8h has only the constructor's 0 as a writer found (00853630), so the
+// test is y < 0; the units host takes the pick once per force step after the
+// periscope arm, not in the unit update; `% 15 == 0` is `draw < 1/15`. Inert
+// under BSP_GUNNERY_RNG_STREAMS=1 (Draw::sink_effects key 2). True: the draws are
+// taken. False: recorded only (before).
+constexpr bool kSubmarineWakeDrawsBound = false;
 // Packet cc9_cb_gunfire_gate (docs/GUNNERY_OPEN_ITEMS.md 125): a hit's AddDamage is
 // victim->vtable[1ACh] (008778C6, 00877A2E in 008777D0), and for a CommandBuilding
 // (vtable 00CFB028) that slot is 006F1F20, which damages only while +7D8h == 0.0
@@ -2865,6 +2877,9 @@ struct GameGunneryHost::Impl {
     unsigned long long sink_spray_calls{0};
     unsigned long long sink_draws{0};
     unsigned long long sink_effects{0};
+    // Packet s53_sub_wake_draws: 008546E4 picks taken and the 00933BB0 calls they chose.
+    unsigned long long sub_wake_picks{0};
+    unsigned long long sub_wake_sprays{0};
     unsigned long long smoke_expired_held{0};
     std::size_t smoke_units{0};
     float smoke_first_respawn{-1.0f};
@@ -14599,6 +14614,22 @@ void GameGunneryHost::ship_systems_sink_draws_00933da0_00933bb0(std::size_t unit
     }
 }
 
+void GameGunneryHost::submarine_wake_draws_008546df(std::size_t unit_index, float hull_y) {
+    Impl& host = *impl_;
+    if (unit_index >= host.unit_state.size()) return;
+    // 0085468C..008546DD: -15.0 < y, y < -3.0, y < unit+11D8h (0 here).
+    if (!(hull_y > -15.0f) || !(hull_y < -3.0f) || !(hull_y < 0.0f)) return;
+    ++host.sub_wake_picks;   // OFF: the ticks that would draw
+    if (!kSubmarineWakeDrawsBound) {
+        host.record("SubmarineUnit::wake_pick_draw", 0x008546e4u);
+        return;
+    }
+    const float u = host.draw(Impl::Draw::sink_effects, unit_index, 2, 0.0f, 1.0f);
+    if (!(u < 1.0f / 15.0f)) return;                                 // 008546F4
+    ++host.sub_wake_sprays;
+    ship_systems_sink_draws_00933da0_00933bb0(unit_index, false, true);   // 008546FC
+}
+
 int GameGunneryHost::plane_spin_side_800(std::size_t unit_index) const {
     if (!kPlaneSpinSideBound || unit_index >= impl_->plane_spin_side_800.size()) return -1;
     return impl_->plane_spin_side_800[unit_index];
@@ -15821,6 +15852,9 @@ void GameGunneryHost::report() {
                 "spray_calls=%llu draws=%llu effects=%llu (00933DA0 / 00933BB0, stream 1, "
                 "packet s52_sink_draws)", kShipSystemsSinkDrawsBound ? 1 : 0,
                 host.sink_grid_calls, host.sink_spray_calls, host.sink_draws, host.sink_effects);
+            host.log.notef("summary mission submarine wake draws bound=%d picks=%llu sprays=%llu "
+                "(008546E4 / 008546FC, stream 1, packet s53_sub_wake_draws)",
+                kSubmarineWakeDrawsBound ? 1 : 0, host.sub_wake_picks, host.sub_wake_sprays);
         }
         {
             const Impl::ShipDeathCounts& d = host.ship_death;

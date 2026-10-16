@@ -1184,6 +1184,10 @@ public:
     // draws are taken only when kShipSystemsSinkDrawsBound is on.
     void ship_systems_sink_draws_00933da0_00933bb0(std::size_t unit_index,
         bool grid_00933da0, bool spray_00933bb0);
+    // Packet s53_sub_wake_draws: 00854650's stream-1 pick (008546E4) for a
+    // submarine whose hull y is in (-15, -3), and on 1 in 15 the 00933BB0 spray
+    // (008546FC); the draws are taken only when kSubmarineWakeDrawsBound is on.
+    void submarine_wake_draws_008546df(std::size_t unit_index, float hull_y);
     // unit+36Ch, the maximum health, for a writer outside this host: 006F38E0's
     // CommandBuilding level-up stores HP[level] / 100 * class HP there and leaves
     // the current health alone (SHIP_AI 169). No-op for an unbuilt index.

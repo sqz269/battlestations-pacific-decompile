@@ -10111,6 +10111,11 @@ public:
         }
         if (kSubmarineAirBound) run_submarine_air_and_crush(dt, dead);
         if (kSubmarinePeriscopeOutBound) run_submarine_periscope_00854650(dt);
+        // Packet s53_sub_wake_draws: 00854650's 008546DF..008546FC pick on the hull y.
+        if (owner_.gunnery != nullptr) {
+            owner_.gunnery->submarine_wake_draws_008546df(slot_.process_index,
+                slot_.motion.position[1]);
+        }
         return bsp::OceanVec3{};
     }
 
