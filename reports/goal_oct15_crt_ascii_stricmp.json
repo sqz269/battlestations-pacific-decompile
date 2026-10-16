@@ -103,10 +103,18 @@
     "project_saved": true,
     "exports_refreshed": true
   },
-  "source_registration": "queued goal_oct15_crt_ascii_stricmp_registration;no shared registry write yet",
+  "source_registration": "Unique cmake/startup.cmake append only when unheld and own queue first;own queue immediately consumed;no exclusive whole-file lease",
   "validation": {
     "build": "pending normal registered MSVCWin32 or primary combined gate",
-    "independent_review": "pending",
+    "independent_review": {
+      "reviewer": "primary /root",
+      "revision": "5ed8c0888",
+      "result": "PASS full53B/24ops and complete Source/header;exact unsigned reads/folds/cursors,right read evenleftNUL,leftzero-beforeequal,signeddifference/allBYTEvalues",
+      "source_sha256": "3fe3b237b778e9500e30c11dbbb43f295c24915a2836bd097ceec04760125368",
+      "header_sha256": "b62a16f1efbfc03d33e61eb33250885af5ccca224303f8f8cd959883dc97a3e9",
+      "unchanged_hashes_asserted": true,
+      "qualification": "ordinary Source API only;Original private argument-home/fault/SEH/register/binary entry and parent locale parity unproved"
+    },
     "report_call_verification": "PASS4 typed transfers includingtailJMP and4 documentation claims;0failures/unchecked/warnings",
     "new_tests": 0,
     "native_differential_fixture": false,

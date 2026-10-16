@@ -58,8 +58,10 @@ The full53 live bytes match the installed PE. The report pins complete bytes,
 Source/header hashes, original ABI, prior library name/comment and typed rows.
 Correct library name `___ascii_stricmp` is preserved. Locked annotation saved
 the original project and refreshed the export, preserving prior values in
-`local/ghidra-annotations-20261016T000422Z.json`. Normal registered Win32 build
-and peer-review receipts are pending. CMake registration is queued behind
-existing owners/waiters. No new
+`local/ghidra-annotations-20261016T000422Z.json`. Primary independent full24-op
+and complete Source/header review passed at `5ed8c0888`, with hashes asserted
+unchanged. A unique CMake registration was appended when the file was unheld
+and this packet's queue was first; its queue was removed immediately without
+an exclusive whole-file lease. Normal registered Win32 build is pending. No new
 tests, native differential execution, parent locale equivalence or game claim
 is made.
