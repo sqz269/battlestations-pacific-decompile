@@ -7,7 +7,7 @@
   "source": "src/native_scene_node_child_at.cpp",
   "header": "include/bsp/native_scene_node_child_at.hpp",
   "documentation": "docs/GOAL_OCT15_SCENE_NODE_CHILD_AT.md",
-  "status": "whole_actual_storage_source_primary_reviewed_annotated_build_pending",
+  "status": "whole_actual_storage_source_reviewed_registered_build_passed",
   "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
   "routines": [
     {
@@ -55,7 +55,17 @@
     },
     "next_observed_status": "ghidra lock free",
     "apply_log": "local/ghidra-annotations-20261016T013644Z.json",
-    "after_comments": "local/goal_oct15_scene_node_child_at_after_comments.json"
+    "after_comments": "local/goal_oct15_scene_node_child_at_after_comments.json",
+    "final_validation_annotation": {
+      "result": "passed",
+      "log": "local/ghidra-annotations-20261016T021938Z.json",
+      "prior_values_logged": true,
+      "normal_write_lock_acquired": true,
+      "project_saved": true,
+      "forced_export_refreshed": true,
+      "readback": "local/goal_oct15_child_strchr_final_comments.json",
+      "names_and_all_prior_comments_preserved": true
+    }
   },
   "verification": {
     "typed_capture": "local/goal_oct15_scene_node_child_at_typed_flow.json",
@@ -73,9 +83,121 @@
         "include/bsp/native_scene_node_child_at.hpp": "0dc75ba0d579bb03d86566fa3dc19346a42b3f3d81df6814d0378249a7f92fb1"
       }
     },
-    "cmake_registration": "root combined only;no worker queue/append",
-    "strict_win32_build_and_existing_ctest": "pending actual primary combined gate;no worker duplicate build",
-    "compiled_object_review": "pending",
+    "cmake_registration": "root combined registration;one project occurrence and one identical archive object verified in immutable primary receipt;no worker CMake edits/queue or duplicate build",
+    "strict_win32_build_and_existing_ctest": {
+      "revision": "1464485a955060ff1e438595b07257f5a5238c01",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_child_strchr_combined_build.log",
+      "log_sha256": "b494ea8f46becc03b3870c7f325beb476935a6cd2b415aebbce970538d068a15",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 9.48,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "executed_in_worktree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "worker_duplicate_build": false,
+      "immutable_primary_receipt": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\reports\\goal_oct15_child_strchr_primary_review.json",
+      "immutable_primary_receipt_sha256": "1ed1d387b08fd81d72273546821687943a650e6ccf4c7e42dd3a7ee7f77ddd4c",
+      "source_and_header_sha256_reasserted": {
+        "src/native_scene_node_child_at.cpp": "71956644bc7583c683a52ff3c6b2bd17b8c44d27d317e086505a2c0bc01de784",
+        "include/bsp/native_scene_node_child_at.hpp": "0dc75ba0d579bb03d86566fa3dc19346a42b3f3d81df6814d0378249a7f92fb1",
+        "src/native_crt_strchr.cpp": "b1a42cf89eb2d6f99d995a279779857dd9e247d99cb7afc66c1b9162de5456b4",
+        "include/bsp/native_crt_strchr.hpp": "6ae3c442d24614dbf80059f0b491dae4f5c9e6bdfdb2efb5fb253adb64c72ac1"
+      },
+      "project_source_count": 1,
+      "identical_archive_object_count": 1,
+      "tested_archive_sha256": "a6caddfea47a75be5197fa52c76b5e61c23ff833fb299d43e6f2d5680e3b9168"
+    },
+    "compiled_object_review": {
+      "machine": "014c",
+      "text_bytes": 84,
+      "function_sections": [
+        {
+          "name": "?child_at_native_scene_node_list_00467f30@bsp@@YAPAXPAXPBX@Z",
+          "section_index": 4,
+          "bytes": 54,
+          "instructions": 28,
+          "code_sha256": "b3aeca7c0218caab980dc21a00bab024cf3e5aaa28552625207e1ea1dddfcd8f",
+          "relocations": 0,
+          "calls": 0,
+          "decoded_all_bytes": true
+        },
+        {
+          "name": "?address@?A0xafc75bb9@bsp@@YAIPBX@Z",
+          "section_index": 3,
+          "bytes": 8,
+          "instructions": 5,
+          "code_sha256": "d5a2b635b0bbb254914f2641e4508361a0c95686c0422dcebeb3abbcca7f1d2b",
+          "relocations": 0,
+          "calls": 0,
+          "decoded_all_bytes": true
+        },
+        {
+          "name": "?pointer@?A0xafc75bb9@bsp@@YAPAXI@Z",
+          "section_index": 5,
+          "bytes": 8,
+          "instructions": 5,
+          "code_sha256": "d5a2b635b0bbb254914f2641e4508361a0c95686c0422dcebeb3abbcca7f1d2b",
+          "relocations": 0,
+          "calls": 0,
+          "decoded_all_bytes": true
+        },
+        {
+          "name": "?read@?A0xafc75bb9@bsp@@YAIII@Z",
+          "section_index": 6,
+          "bytes": 14,
+          "instructions": 7,
+          "code_sha256": "968c17a0375a47c786e584c230018ee9ddbb72bfbd8b42d8ffe49fefcecff650",
+          "relocations": 0,
+          "calls": 0,
+          "decoded_all_bytes": true
+        }
+      ],
+      "undefined_external_symbols": [],
+      "artifacts": {
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct15_child_strchr_objects\\native_scene_node_child_at.obj",
+          "bytes": 1224,
+          "sha256": "780da8d464cf8d966ee64d250c79c994d4009c2748286fe0dcfa7b9696f3a8d9"
+        },
+        "disassembly": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct15_child_strchr_objects\\native_scene_node_child_at.disasm.txt",
+          "bytes": 3267,
+          "sha256": "04dd2b653f786c0ed66b0b957c7d897922554cf2f4d677166320da9678246ce4"
+        },
+        "symbols": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct15_child_strchr_objects\\native_scene_node_child_at.symbols.txt",
+          "bytes": 2304,
+          "sha256": "8b97bc3a7cc3c919208a25cc803a7be6238a414fc84e3bdc2fddc03ccd13225a"
+        }
+      },
+      "whole_disassembly_and_symbols_reviewed": true,
+      "result": "passed full public body and every emitted helper",
+      "access_return_algorithm_findings": [
+        "Whole 54-byte/28-instruction public function plus all three helper COMDATs reviewed;84 total text bytes,zero calls/relocations/undefined externals.",
+        "0006 reads current actual index DWORD before receiver access;000A negative branch skips count;000F reads count DWORD at list+8.",
+        "Signed count<=nonnegative index is emitted as negative-count JS then unsigned JBE;this retains the full signed condition without another payload read.",
+        "001A reads current head DWORD;zero head returns zero;zero index returns captured raw head without a node dereference.",
+        "0024 reads current node+44h DWORD,0027 decrements retained index,0028/2A tests current link for zero before remaining-index test/repeat.",
+        "Both plain-RET tails return selected pointer bits or zero in EAX;no payload writes or provider calls.",
+        "All emitted address/pointer/read helpers reviewed (8,8,14 bytes);main inlines their operations. No native transfer claim comes from these Source helper definitions."
+      ],
+      "compiler_differences": [
+        "New C++ cdecl(list,index-cell) and plain RET differ from native ECX receiver plus stacked signed index and RET4.",
+        "54 emitted public-function bytes versus41 Original bytes;frame,register allocation,split count branch and return layout differ.",
+        "Compiler stack/helper COMDATs are separate from reached actual backing;no native/private argument-home or fault/register/flags/game equivalence."
+      ],
+      "supporting_static_review": "local/goal_oct15_child_strchr_emitted_review.json",
+      "supporting_static_review_sha256": "6320a80cd27956f9ef82e979e7a7342391f7d214a097ffbf801d39ddc7dd3874",
+      "normal_gate_vs_probe": "This is the actual normal registered project object. Separate approved strchr probe compiled its own exact reviewed Source object;its72fixture evidence is not a claim that existing CTests execute these bodies."
+    },
     "new_tests": false,
     "packet_native_differential": "not run",
     "game_validation": "not run"
@@ -85,5 +207,7 @@
     "Only whole ChildAt leaf;no9251F0/925A90/AAB0 Source completion or Original CRT reconstruction credit.",
     "Reached actual-storage domain and Source metadata separation;no hidden private-frame/child-argument/native fault/register/flags equivalence.",
     "Borrowed raw result;no class,ownership,lifetime or game/runtime proof."
-  ]
+  ],
+  "source_ready": true,
+  "source_ready_scope": "Whole actual-storage ordinary Source with verified access/return schedule;Original private ABI,fault,game and009251F0 parent completion remain unclaimed."
 }

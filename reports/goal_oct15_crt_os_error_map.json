@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_crt_os_error_map",
-  "status": "whole_ordinary_actual_table_Source_independently_reviewed_locked_exported_primary_build_pending",
+  "status": "whole_ordinary_actual_table_Source_independently_reviewed_registered_normal_Win32_three_existing_checks_passed",
   "code_complete": true,
   "source_ready": true,
   "readiness_gate": "All native control flow is represented over a borrowed binding to the actual 45 mutable pairs. No missing callees; standalone Source readiness does not close Original free or runtime ownership.",
@@ -125,12 +125,51 @@
       "cpp_sha256": "ffb5b4aacda596c9607122b73f0aa512d1a043b85e1e157b2012fe8a02ef000e",
       "reviewed_header_sha256": "3b44c2b35fa5b1c9227507a018b04ecbc87c3dd22db10507cce1b0f6d79cbecd",
       "current_header_sha256": "171c8174aa2c3b0f85042afbc29ffb234e2a05c1c0fc122fa42c7a1049e154fa",
-      "header_change": "Only requested comment clarification: 90-cell actual layout, reached reads only, stable/disjoint added Source metadata. No code/signature change."
+      "header_change": "Only requested comment clarification: 90-cell actual layout, reached reads only, stable/disjoint added Source metadata. No code/signature change.",
+      "header_change_primary_accepted": true
     },
     "annotation_save_export_readback": "passed; prior comment preserved, write-locked rename/comment/save, live readback and forced affected export",
-    "registration": "pending primary combined gate; no worker CMake change/queue",
-    "build": "pending primary normal MSVC Win32 build; no worker build claimed",
-    "existing_tests": "pending primary gate",
+    "registration": {
+      "primary_registered": true,
+      "project_source_count": 1,
+      "unique_archive_object": [
+        "bsp_core.dir\\Release\\native_crt_os_error_map.obj"
+      ],
+      "worker_CMake_change_or_queue": false
+    },
+    "build": {
+      "performed_by": "primary integrator, not worker",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "revision": "b594573593f5fcf2eddb02e2d777ab2eb2f27d62",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_mapper_combined_build.log",
+      "log_sha256": "e81c7f96a5eb036f1c9c5f8ce0a71e604e6ad45c4aeb4c11cbbdfcd2aed00f3b",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 8.76,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "immutable_receipt": "reports/goal_oct15_mapper_primary_review.json",
+      "immutable_receipt_sha256": "0bd37761bed3f7fb1af45e15d488c30edf7a363a50c49db1b30a6c27328b6bc8"
+    },
+    "existing_tests": {
+      "passed": 3,
+      "failed": 0,
+      "seconds": 8.76,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "scope": "Existing regression checks; math differential seeds do not execute this new mapper."
+    },
     "new_tests": 0,
     "new_entry_execution": false,
     "original_ABI": false,
@@ -140,7 +179,8 @@
       "rows": 4,
       "failed": 0
     },
-    "build_exclusion": "Prior primary Character/Child build9.48s predates mapper registration and is not mapper validation. Await actual later registered primary gate."
+    "build_exclusion": "Earlier unrelated Character/Child9.48s gate remains excluded; mapper credit comes only from actual registered b594573593f5fcf2eddb02e2d777ab2eb2f27d62 primary gate retained here.",
+    "worker_build": false
   },
   "limits": [
     "No SDK/errno/TLS substitute, host table, immutable snapshot or invented callback.",
@@ -174,5 +214,36 @@
     "export": "bsp ghidra export 00BFFB50 --force refreshed shared exports/bsp/functions/00bffb50",
     "other_addresses_changed": false,
     "flow_or_body_repair": false
+  },
+  "normal_source_functions": 1,
+  "emitted_review": {
+    "result": "PASSED complete actual normal-build object inspection",
+    "retained_object": {
+      "path": "local\\goal_oct15_mapper_objects\\native_crt_os_error_map.obj",
+      "sha256": "fcaf892735453b5a50c1f4a1044fbcfba5e0572334bc5d332c5b2e15cf4f4291",
+      "unique_identical_archive_bodies": 1,
+      "machine": "14c",
+      "disassembly": "local\\goal_oct15_mapper_objects\\native_crt_os_error_map.disasm.txt",
+      "symbols": "local\\goal_oct15_mapper_objects\\native_crt_os_error_map.symbols.txt"
+    },
+    "object_sha256": "fcaf892735453b5a50c1f4a1044fbcfba5e0572334bc5d332c5b2e15cf4f4291",
+    "disassembly_sha256": "995a46c1e96f46a16d3a4762856830bb9c72fd24dfdad1f1b23e12f2b2a9df51",
+    "symbols_sha256": "5ea0e2db6fadf58e0efb362cd3d5d956d6d0abfbd8b1b1d38f46799881957656",
+    "code_extent": "75B/33ops .text$mn offset0..4A inclusive; zero calls and zero code relocations",
+    "symbol": "?map_native_crt_os_error_00bffb50@bsp@@YAIIPDI@Z, one positive external definition in retained object",
+    "archive": {
+      "sha256_at_gate": "bea1d3cf675b52f9502b1b4e67faa9c61f45b43f5b19a8006fcfe96c3549984d",
+      "unique_identical_archive_bodies": 1,
+      "source": "immutable primary receipt; no forced linker reference/new execution"
+    },
+    "schedule": [
+      "03 captures error inEDX;09 captures added table binding inESI;06 zeros scanindexEAX.",
+      "10 compares only current firstword[ESI+index*8];13 computes pairaddress without reading secondword;16 branchesmatch.",
+      "18 incrementsindex,19 compares45,1C unsignedJB repeats; no laterpair read aftermatch.",
+      "45 alone loads matched CURRENTsecondword[ECX+4], then returns; no snapshot or repeatedfirstword.",
+      "1E/21/24 unsigned wrapped(error-13h)<=11h selects13;2E/39/3C/3E/40 emits native-style CMP/SBB/AND/ADD fallback8or22.",
+      "No SDK/errno/TLS/provider/callback edge or tablewrite; all returningpaths restore Source frame. Added frame/tableargument differ from Original ABI."
+    ],
+    "limits": "Compilation/archive identity and static emitted schedule only; no new entry execution, native differential case, Original ABI/heap/startup/SEH/game proof."
   }
 }
