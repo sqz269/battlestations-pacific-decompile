@@ -1,0 +1,144 @@
+{
+  "packet": "cc12_native_gui_layer_glyph_integration_115",
+  "status": "reviewed_registered_combined_win32_build_existing_tests_static_link_pass",
+  "compiled_commit": "5b3f8d34d6823234a6ce410fc5c13436ed9207c4",
+  "workers": {
+    "113": {
+      "commit": "cf8f48aee32759e328ff31e41a498de478997add",
+      "source_paths": [
+        "include/bsp/native_gui_text_glyph_children.hpp",
+        "src/native_gui_text_glyph_children.cpp"
+      ],
+      "whole_entry": "00ab80c0",
+      "root_source_original_optimized_review": "PASS",
+      "root_complete_doc_review": "PASS",
+      "strict_win32_compile": "PASS",
+      "worker_existing_checks": "2/2; new TU unregistered during worker build",
+      "verified_direct_call_rows": 6,
+      "failed_call_rows": 0,
+      "root_call_rows_independently_rechecked": true,
+      "manifest_artifacts_captured": 57,
+      "manifest_sha256": "899c78b32eebddf6fba9121cdcbae4af54d796bc7d92ce5e1bfa90a1869733be"
+    },
+    "114": {
+      "commit": "153e0e120050efd8017c723f528e786e141a427d",
+      "source_paths": [
+        "include/bsp/game_native_gui_text_process.hpp",
+        "src/game_native_gui_text_process.cpp"
+      ],
+      "whole_entry": "00cd73f0",
+      "root_source_original_optimized_review": "PASS",
+      "root_complete_doc_review": "PASS",
+      "strict_win32_compile": "PASS",
+      "worker_existing_checks": "3/3 in8.17s; existing bsp_game TU compiled",
+      "verified_direct_call_rows": 2,
+      "failed_call_rows": 0,
+      "root_call_rows_independently_rechecked": true,
+      "manifest_artifacts_captured": 69,
+      "manifest_sha256": "c8fe2aedeac43330fdfecb190a1a5136b6059eaf19359f3ec2e54e8d2b45899f"
+    }
+  },
+  "readiness": {
+    "116": {
+      "commit": "56e94a25a3a88692f213eb20094235f19546b9d5",
+      "root_complete_doc_review": "PASS",
+      "manifest_artifacts_captured": 24,
+      "manifest_sha256": "f11d582b6cf27c8b5c9caaa1e168200c6632bdb6993892e5a6dcb3e282d6a72e",
+      "native_body_execution": false,
+      "report_rows": 3,
+      "doc_call_claims": 2,
+      "failed": 0,
+      "expected_doc_warnings": 1,
+      "warning": "AD2320 undefined entry; real five-byte tail and target separately checked; no repair",
+      "complete_report_capture": "workers/116_complete/capture_manifest.json",
+      "initial_convenience_export_capture": "interrupted and retained separately; not used as completed evidence",
+      "result": "Raw FrameBox tidy readiness over real111 and preprepared per-record metadata; no Source tidy implementation"
+    }
+  },
+  "source": [
+    {
+      "packet": "113",
+      "path": "include/bsp/native_gui_text_glyph_children.hpp",
+      "git_blob": "c5a7a2dc5aea299663866f07cb661d94c14c237a",
+      "sha256": "441e4a25ab536b115d87bdc2de81778eda2dc4d47f61faced68485f1cc4e8b11",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "113",
+      "path": "src/native_gui_text_glyph_children.cpp",
+      "git_blob": "025cdd3d7fde5bb7b8b9e215da4d604c6d3a5407",
+      "sha256": "cf9454f0b8e09ccd1fc9eeb7250daca7cccab0ad6b25969fd511b09968018081",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "114",
+      "path": "include/bsp/game_native_gui_text_process.hpp",
+      "git_blob": "2f85c4faead42a7a295d2f4ba5d6345334759244",
+      "sha256": "215be8dcc255664c7f50a75ea9287012d1b8090ba860f111d341983819419e47",
+      "unchanged_from_reviewed_worker": true
+    },
+    {
+      "packet": "114",
+      "path": "src/game_native_gui_text_process.cpp",
+      "git_blob": "66234fe46a716dab05525201c260eea39da426f4",
+      "sha256": "84fe56b3b40589a831dfbdf57d289d9f85dc91ef41bb5a239b81e43d462c8f2f",
+      "unchanged_from_reviewed_worker": true
+    }
+  ],
+  "root_build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "checks": "3/3",
+    "seconds": 7.85
+  },
+  "static_link": {
+    "compiled_commit": "5b3f8d34d6823234a6ce410fc5c13436ed9207c4",
+    "build_and_minimal_main_exit_code": 0,
+    "raw_function_bodies_executed": false,
+    "explicit_worker_object_linked": false,
+    "kind": "Force entry addresses from actual final core archive and final canonical bsp_game process object",
+    "production_objects": [
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_gui_text_process.obj",
+        "sha256": "cfae69bc435741b7fc71217020dab2942e25eaa84c4009fb474537df1103ee7e"
+      }
+    ],
+    "PE32_asInvoker": true,
+    "exe_sha256": "48d5c5857b90542bf6948daccb7d2c9da6dca8c929e8223fed18016a8a2c7d40",
+    "libraries": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "e6dc4302d6878a612a50a903299a23240aff1bf5fda79b770163b096f2e8da0a"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "sha256": "e6ebb089df7828a43ecdd6e705dddb4cea95b38ffe1fabbd47152fec8834db30"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "sha256": "838261efe3cdd86663e25ecbcd9e825ee51203e71491954864316d4d0dfb6062"
+      }
+    ]
+  },
+  "root_source_and_header_inputs_copied": 60,
+  "archive": {
+    "path": "local/cc12_native_gui_layer_glyph_integration_115/evidence_family.zip",
+    "sha256": "eee23f7c607b52c49df05b59267ac9a837a64c10ad70765ce5d45bb6ac5b2236",
+    "payload_count": 380,
+    "manifest": "local/cc12_native_gui_layer_glyph_integration_115/manifest.json",
+    "manifest_sha256": "5622c6b96739edb6b89e6f744ace3c3e62507c3bdf09ad434d226fc017f20e85",
+    "all_archived_payload_hashes_rechecked": true,
+    "nested_worker_manifests_included": true
+  },
+  "limits": [
+    "Address-only probe executes no reconstructed bodies; no new behavioral tests or game run",
+    "Core glyph entry and canonical bsp_game Layer methods have distinct production registration and link origins",
+    "Worker113 TU was separately strict-compiled; Root performs actual Core registration",
+    "No Native FH3/SEH, Original CRT/IAT identity or drop-in ABI proof",
+    "Caller retains complete actual graph and recursive frames independently before callbacks and failure",
+    "Public glyph diagnostics do not own graph or enforce an uneditable one-shot capability",
+    "Actual Text recursion and arbitrary current child terminals remain required providers",
+    "Layer lineage is completion-gated Source storage, not Original fixed-VA/CRT timing/absolute-ID authority",
+    "No normal-host activation, upper Page composition, full populated retirement or gameplay proof"
+  ]
+}
