@@ -1,0 +1,137 @@
+{
+  "packet": "cc12_native_gui_page_script_continuation_72",
+  "status": "partial_source_fragment_strict_direct_win32_compile_root_source_review_existing_build_checks_passed_no_runtime",
+  "dependency71": "76eb01c2bdc9375ad92517a426ee3c363ca7b88a",
+  "worker_dependency_merge": "56e46e68b87c34856c7face9a5230ec0569f1e52",
+  "document": "docs/CC12_NATIVE_GUI_PAGE_SCRIPT_CONTINUATION_72.md",
+  "owned_sources": [
+    {
+      "path": "include/bsp/native_gui_page_script_continuation.hpp",
+      "git_blob": "8aa641fb961f06ec1ad05c0938fde2f15e5e04ad",
+      "sha256": "52a382d94505c540759406e542ce055e0abc282922e68acd576aee92192b84dd"
+    },
+    {
+      "path": "src/native_gui_page_script_continuation.cpp",
+      "git_blob": "91d4ee65bcb34cd06c7504f108661ef6ac2cd40d",
+      "sha256": "3981f2536368206c093386669bcf878d2e05492366ec60893a1964b17fa60a1c"
+    },
+    {
+      "path": "include/bsp/native_gui_page_construction.hpp",
+      "git_blob": "b62bb9e8e6e7f5d8fac3e3197a00d940d5a5c58e",
+      "sha256": "9b75027cb64d0db7e839b0a8b81f49d677a38ac3e89d154d2a9b45f211fbfe4f"
+    },
+    {
+      "path": "src/native_gui_page_construction.cpp",
+      "git_blob": "1cc63b66183aaa20f129a01975ac6483682599fe",
+      "sha256": "066059cba6487f666d38bbacebb8af793dcb8e0b211e51f38ab0c7241eebe185"
+    }
+  ],
+  "original": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "parent": "[AC6600,AC6879),633B, ECX actual124h page; stack name-header/node/flag(low byte); EAX same; RET0C",
+    "implemented_fragment_only": "[AC6714,AC67CC),184B",
+    "input_boundary": "existing raw prefix awaiting_lua_continuation at AC6714/native EH1",
+    "output_boundary": "awaiting_reader_continuation at AC67CC/native EH2; interpreter OPEN, unfinished page",
+    "sequence": [
+      "B66BD0 actual4C8h owner",
+      "state2 BEFORE B6A020(mask65)",
+      "41E870 actual Common by-value8h -> genuine71 AC5600 -> state3 -> B69D40(flag0)",
+      "DATA capture AC675F BEFORE state2 -> CURRENT len+1 -> fresh getter AC677A/BD1510 AC6781",
+      "genuine71 AC5770(actual page+100) -> state4 -> B69D40(flag0)",
+      "DATA capture AC67A5 BEFORE state2 -> CURRENT len+1 -> fresh getter AC67C0/BD1510 AC67C7"
+    ],
+    "not_implemented": [
+      "AC67CC reader/globals continuation",
+      "AC4C50",
+      "AAA710 later children/epilogue",
+      "whole parent EH/SEH",
+      "page completion/publication"
+    ]
+  },
+  "api_and_backing": {
+    "entry": "continue_native_gui_page_scripts_00ac6714",
+    "frame": "NativeGuiPageScriptContinuation",
+    "context": "NativeGuiPageScriptContext",
+    "storage": "REAL NativeLuaStateStorage4C8h uninitialized preimage; exact8h Common by-value and SAME8h typed path; actual71 retained frames",
+    "materialization": "user-provided constructor avoids blanket4C8h zeroing; union delays NativeString default construction until snapshot/restore of SAME8h; Win32/layout/width assertions",
+    "private_limits": "native-private scratch aliases, transient materialization stores, FH3/SEH and stack-byte parity excluded",
+    "providers": [
+      "existing RAW-MANAGER ActualNativeStringPoolStorage",
+      "SAME raw publication/gate/manager context for71 paths",
+      "actual NativeLuaServiceBindings/bootstrap/files and application VFS",
+      "actual literals D5CB64/D5CB18/CFD2C8"
+    ],
+    "identity_limit": "hidden actual-pool adapter identity remains caller obligation, not authenticated by this API",
+    "release_limit": "existing adapter noexcept release domain not widened to raw getter exception transport",
+    "activation_limit": "Source service binding restoration only, not Lua C frame/handler/CRT restoration",
+    "prefix_change": "append awaiting_reader_continuation preserving old Phase values; stale comments only otherwise",
+    "correction69": "path data capture BEFORE state2; current length/getter AFTER state2"
+  },
+  "lifetime": {
+    "entered_failure": "sticky metadata-only marker; same actual interpreter/headers/adoption/cleanup state retained; no caller unwind, pool return, reset, retry or close",
+    "guard_order": "entered/failed tested FIRST before any possibly interrupted owner.state04 read/member destruction",
+    "normal_pending": "destructor refuses while SAME own state04 nonnull",
+    "borrow": "only normal AC67CC/EH2 prefix and still-open SAME owner",
+    "future_tail": "must independently guard whole graph before borrow; retain storage/providers through genuine B669A0 close and reader/graph quiescence",
+    "eventual_disposal": "allowed once actual state04 cleared by genuine future tail under caller contract; no authenticated-history or mark-complete/abandon API",
+    "serialization": "external GUI serialization including reentry",
+    "host_failure": "_Exit before dependency/member/manager/CRT drain; no interrupted Lua restoration claim"
+  },
+  "annotation": {
+    "verified_project_program": true,
+    "new_fragment_ledger": "config/reconstruction/00ac0000.jsonl: AC6600 fragment only",
+    "name_evidence": "config/names/00ac0000.jsonl: appended; BSP_GuiLayer_ConstructFromScript retained",
+    "canonical_tool": "tools/ghidra_annotate.py --apply --addresses 00ac6600",
+    "write_lock_and_save": true,
+    "history": "local/ghidra-annotations-20261016T031556Z.json",
+    "refreshed_export": "exports/bsp/functions/00ac6600",
+    "prototype_or_body_repair": false
+  },
+  "validation": {
+    "primary_source_review": "Root PASS full new files, minimal prefix changes and69 correction against exact Original listing",
+    "direct_compile": {
+      "exit_code": 0,
+      "target": "MSVC Win32",
+      "flags": "/std:c++17 /EHsc /MD /O2 /W4 /WX",
+      "units": [
+        "src/native_gui_page_script_continuation.cpp",
+        "src/native_gui_page_construction.cpp"
+      ],
+      "log": "local/cc12_native_gui_page_script_continuation_72/compile.log"
+    },
+    "repository_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "ctest_passed": 2,
+      "ctest_total": 2,
+      "log": "local/cc12_native_gui_page_script_continuation_72/build.log",
+      "scope": "existing registered units/checks; new unit not registered/linked until Root CMake integration"
+    },
+    "diff_check": "git diff --check passed",
+    "new_runtime_test": false,
+    "fake_provider_or_script": false,
+    "artifacts_sha256": {
+      "compile.cmd": "856090794d79e0bad90037d5db7820a95479216ab26f77e0fc52d6359a556fff",
+      "compile.log": "78edf19dc9f4b6d5c2c073fb55d8eb0cf542249d1b16bea6052c1c9a0d8a6b50",
+      "build.log": "f61b21158db1e3f38f32308ec67f4914c85d00db330989710085065a8dcb2673",
+      "native_gui_page_script_continuation.obj": "79be9fc0a375966ef2a137fa055927edc00eeeb8b0efe23f5e3b5685c414163e",
+      "native_gui_page_construction.obj": "e3a4c264093352e45cbc6a2b776e9b59f8a6fc4c271803df46e69d52f6539eb3"
+    },
+    "authentic_application_runtime": "not run; real full application script-stage composition not established in this packet"
+  },
+  "not_changed": [
+    "CMake/main",
+    "normal host activation",
+    "loader/current24",
+    "camera/directional bodies",
+    "process pools",
+    "game/audio/installation"
+  ],
+  "remaining": [
+    "Root CMake registration/link/combined build",
+    "real reader/property/children tail and raw retirement",
+    "genuine full-page admission before AA52A0",
+    "authentic application runtime proof"
+  ]
+}
