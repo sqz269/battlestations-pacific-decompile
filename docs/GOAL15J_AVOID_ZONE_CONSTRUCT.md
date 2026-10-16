@@ -42,8 +42,8 @@ to zone+C before its actual word is reused for signed pointcount, and the actual
 path word is reloaded inside the point loop and again before association.
 
 The zone fields are pointer0/count4/capacity8/layerC/association10/bounds14..20.
-The constructor initially zeros only pointer/count/capacity and association, then
-stores layer. A path whose point list is null or has signed count zero skips point
+The constructor first zeros pointer/count/capacity, then reads the actual layer
+and path words, publishes layer at +C, and clears association at +10. A path whose point list is null or has signed count zero skips point
 construction and leaves the bounds unwritten. Subsequent clip behavior is retained;
 no synthetic safe-empty branch is added. Backing and alias relationships remain
 the caller's responsibility.
