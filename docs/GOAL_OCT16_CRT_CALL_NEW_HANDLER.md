@@ -79,9 +79,36 @@ through the write-locked annotation tool, which recorded prior values and saved
 the project; affected exports were refreshed. The ledger extends the same
 Original address and record with one additional Source interface.
 
-The normal combined Win32/whole-object check remains pending with the primary.
-It must independently compare the old public body with its immutable published
-actual COFF object, SHA-256
+The primary's default `scripts/build.ps1` Release Win32 gate passed at
+`d9e1fce24cc7b7475668db7d14245958ef0d5237`; all three existing checks passed
+in 8.90 seconds. The tested CPP/HPP hashes equal the current Source hashes.
+These regression checks do not execute the new helper's handler branches.
+
+Independent whole-object inspection passed. The old public method's exact
+45 CODE bytes / 22 instructions and sole decoder REL32 relocation at offset
+`0D` equal the immutable published actual COFF object, SHA-256
 `0266e6b2d3cfe7fc43822facfa18b1784b835731c1d964fff31908f52981259c`,
-as well as verify the extension. No CMake append, worker build or new test is
-authorized or performed; the translation unit is already registered.
+whose verified archive is in the movie-factory worktree's
+`local/accepted_source53_crt_objects/` directory. Historical evidence was not
+changed.
+
+The retained current object has SHA-256
+`5adba1574dbf31a4f42e63f01df55d7a160f86e7a0265d751c1af939d21d9fd3`.
+Its complete CODE is exactly the old method plus the new 52-byte / 24-instruction
+API: 97 bytes / 46 instructions total, two decoder REL32 relocations, no other
+CODE helpers, EH/BSS/runtime data, padding or unclassified file gaps. The
+linker directives, compiler debug metadata and checksum section are classified.
+
+The new body captures decoded EAX into ECX before decoder-argument cleanup.
+Its null return precedes both the size-pointer load and the raw DWORD read.
+The nonnull path reads the current backing at `+1F`, stores the captured size
+in compiler-private `[EBP+10]` at `+21`, pushes it and invokes the captured ECX
+handler at `+27`. That temporary reuses the dead Source encoded-reference
+argument word; it does not store through the actual global reference. This
+illustrates the explicit private-bookkeeping disjointness admission. After
+caller cleanup, NEG/SBB/NEG normalizes the complete EAX result to zero or one.
+
+The report pins the read-only independent COFF parser and full-object receipt.
+No CMake append, worker build or new test was performed; the translation unit
+was already registered. Qualified ordinary Source readiness is established;
+the runtime, Original entry/SEH/ABI and owner-closure limits above remain open.
