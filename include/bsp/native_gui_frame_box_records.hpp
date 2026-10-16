@@ -122,3 +122,106 @@ void release_native_gui_frame_box_record_00ad0860(void* actual_record,
     NativeRenderActualOwners& actual_owners, NativeStringRawPoolContext& actual_strings,
     NativeGuiFrameBoxRecordReleaseOperation& operation);
 } // namespace bsp
+
+
+#include <cstddef>
+
+namespace bsp {
+enum class NativeGuiFrameBoxVectorTidyPhase : std::uint8_t {
+    fresh, entered, returned, failed
+};
+
+// Required preparation owns ONLY Source scheduling metadata, never a vector,
+// allocation, resource, registry, pool or retained graph. No default/copy/move.
+// Construct outside the failing scope, BEFORE entry/callbacks, over one stable
+// array of distinct fresh111 operations for the exact constructed2Ch range.
+// A null expected first uses null expected end and an empty span WITHOUT any
+// raw-header snapshot; actual null begin later skips the actual end read.
+// Known header/constructed-range/metadata regions and fresh phases are checked.
+// Constructor validation precedes its first metadata field store; this does
+// not restore object lifetimes or legalize invalid C++ placement.
+// Full backing extents, live storage, matching SDK heap, resource/provider/
+// scratch disjointness and independent ownership remain caller proofs.
+// Providers/external callbacks cannot mutate this operation or its prepared
+//111 metadata; only this engine and its direct111 calls advance that metadata.
+// Access is externally serialized. Captured pointers are diagnostics, possibly
+// stale after release/free. No reset, retry, rollback or automatic graph cleanup.
+// Entered/failed destruction terminates using metadata only; fresh/returned
+// destruction reads metadata only. These are explicit NEW Source rules, not
+// Original object/destructor/FH3 behavior. A different operation cannot replay
+// the same released/interrupted vector lifetime.
+class NativeGuiFrameBoxVectorTidyOperation final {
+public:
+    NativeGuiFrameBoxVectorTidyOperation(void* actual_header, void* expected_first,
+        void* expected_end, NativeGuiFrameBoxRecordReleaseOperation* fresh_records,
+        std::size_t record_count);
+    ~NativeGuiFrameBoxVectorTidyOperation() noexcept;
+    NativeGuiFrameBoxVectorTidyOperation(const NativeGuiFrameBoxVectorTidyOperation&) = delete;
+    NativeGuiFrameBoxVectorTidyOperation& operator=(const NativeGuiFrameBoxVectorTidyOperation&) = delete;
+    NativeGuiFrameBoxVectorTidyOperation(NativeGuiFrameBoxVectorTidyOperation&&) = delete;
+    NativeGuiFrameBoxVectorTidyOperation& operator=(NativeGuiFrameBoxVectorTidyOperation&&) = delete;
+
+    NativeGuiFrameBoxVectorTidyPhase phase() const noexcept { return phase_; }
+    void* header_identity() const noexcept { return header_; }
+    void* expected_first_identity() const noexcept { return expected_first_; }
+    void* expected_end_identity() const noexcept { return expected_end_; }
+    std::size_t prepared_record_count() const noexcept { return record_count_; }
+    void* captured_first_identity() const noexcept { return captured_first_; }
+    void* captured_end_identity() const noexcept { return captured_end_; }
+    bool end_captured() const noexcept { return end_captured_; }
+    void* cursor_identity() const noexcept { return cursor_; }
+    std::size_t completed_records() const noexcept { return completed_; }
+    void* free_identity() const noexcept { return free_identity_; }
+    bool free_entered() const noexcept { return free_entered_; }
+    bool free_returned() const noexcept { return free_returned_; }
+    bool header_cleared() const noexcept { return header_cleared_; }
+private:
+    friend void tidy_native_gui_frame_box_vector_00ad21b0(void*, NativeRenderActualOwners&,
+        NativeStringRawPoolContext&, NativeGuiFrameBoxVectorTidyOperation&);
+    void* const header_;
+    void* const expected_first_;
+    void* const expected_end_;
+    NativeGuiFrameBoxRecordReleaseOperation* const records_;
+    const std::size_t record_count_;
+    NativeGuiFrameBoxVectorTidyPhase phase_{};
+    void* captured_first_{};
+    void* captured_end_{};
+    void* cursor_{};
+    std::size_t completed_{};
+    void* free_identity_{};
+    bool end_captured_{}, free_entered_{}, free_returned_{}, header_cleared_{};
+};
+
+// Whole AD21B0 [AD21B0,AD21F6), ECX actual16B header, RET. AD2320 is the
+// existing undefined five-byte tail to it. These Source APIs add explicit
+// services/preparation; neither reproduces Original binary/private-EH ABI.
+// Header+0 is untouched; +4/+8/+C are actual raw DWORD cells, not std::vector.
+// Borrow SAME actual owners/strings and ONLY111's genuine registered2D family.
+// All records are successfully constructed owners; a failed103 record is NOT
+// eligible. AD1910 committed-prefix rollback is a separate unprovided caller.
+//
+// Caller independently retains the full graph, captured record backing, any
+// current matching SDK-free allocation, header and prepared metadata BEFORE
+// entry and through all applicable actions. Header/metadata cannot be inside
+// freed backing. Later header changes do not revoke captured range lifetime.
+// CURRENT header+4 after callbacks must be null or a valid std::free-compatible
+// Source allocation base; no Original/private/foreign heap or new/delete/pool
+// compatibility is inferred. Do not discover retention from container links.
+//
+// Fresh/identity/known-region/metadata preflight rejections precede raw effects
+// and leave the operation fresh. Then mark entered and capture begin once;
+// capture end ONLY for nonnull begin. Prepared-range mismatch is sticky entered
+// Source failure before any record callback, not an Original validation rule.
+// Forward111, advance ONLY after return; current begin reload then concrete
+// matching SDK free (even null), then +4/+8/+C zeros. No cached-begin extra free.
+// On any escaping C++ exception retain the failed operation/graph; do not retry
+// a record, free the buffer, or zero the header. Scheduling flags are not a
+// Native instruction/exception-origin claim. Inherit111's atomic/noexcept/
+// compiler-EH limits; SDK free and /EHsc do not supply Native CRT/FH3/SEH proof.
+void tidy_native_gui_frame_box_vector_00ad21b0(void* actual_header,
+    NativeRenderActualOwners& actual_owners, NativeStringRawPoolContext& actual_strings,
+    NativeGuiFrameBoxVectorTidyOperation& operation);
+void cleanup_native_gui_frame_box_vector_00ad2320(void* actual_header,
+    NativeRenderActualOwners& actual_owners, NativeStringRawPoolContext& actual_strings,
+    NativeGuiFrameBoxVectorTidyOperation& operation); // SAME operation, one attempt.
+} // namespace bsp
