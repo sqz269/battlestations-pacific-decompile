@@ -15,7 +15,6 @@ public:
     virtual void* manager_004c12b0() = 0;
     virtual void remove_camera_store_00aa4b30(void* actual_manager,
         void* actual_store) = 0;
-    virtual void release_scene_00b72250(void* actual_scene) = 0;
     // Side-effect-free metadata lookup, not an Original call. Resolve the
     // captured numeric CURRENT profile to its SAME live table (>=1 DWORD).
     // The returned table and these bindings must survive terminal retirement.
@@ -34,6 +33,16 @@ struct NativeGuiLayerLifetimeContext {
     NativeGuiLayerReferenceDecrement const volatile& actual_decrement_00ce2220;
 };
 
+// Whole B72250[28B]: ECX nonnull actual scene, no stack args; current CE2220
+// decrement at aligned live LONG+04, nonzero RET or CURRENT profile/table0
+// tail-dispatch at zero. The SAME raw prefix/table/terminal and context-lifetime
+// contracts below apply. No typed NativeGuiSceneOwner conversion or extra
+// count is used. No scene storage is read after terminal retirement. Source
+// C++ return/call/exception ABI does not promise the Original tail-jump ABI.
+// This leaf adds no cleanup; failure propagates to its caller's cleanup state.
+void release_native_gui_scene_storage_00b72250(void* actual_scene,
+    NativeGuiLayerLifetimeContext&);
+
 // Whole AC5480[213B]: ECX actual124h page, no stack args, RET. Requires its
 // genuinely constructed raw base/containers and initialized reached derived
 // fields, not an unfinished AC6600 prefix or a cast from a typed companion.
@@ -44,7 +53,8 @@ struct NativeGuiLayerLifetimeContext {
 // the reads and post-callback EC clear retain the Original schedule. No scene
 // storage is read after its zero callback. Active page storage survives calls.
 //
-// Normal name return uses the existing raw419CC0/BD1510 domain, no header
+// The owned arm uses the whole raw B72250 above; shared decrement stays
+// inline at its native site. Normal name return uses raw419CC0/BD1510, no header
 // clearing. Ordinary Source C++ unwind: state1 ->41DD20(page+100) ->AA9730;
 // state0 ->AA9730; state-1 ->no repeated cleanup. Cleanup failure terminates.
 // An entered failure is not restartable; caller retains raw slot/unresolved
