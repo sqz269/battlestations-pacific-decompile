@@ -3,10 +3,10 @@
 
 namespace bsp {
 //00A9E0A0, ECX widget ignored, RET/1. This is the actual current+24 target
-//in Base/Screen/Group/Icon/FrameBox tables, not an unresolved callback stub.
+//in Base/Screen/Group/Text/Icon/FrameBox tables, not an unresolved callback stub.
 void base_gui_layout_finished24_00a9e0a0(GuiWidgetOwner&) noexcept;
 
-// Recovered live-profile+24 for Screen1/Group2/Icon6/ClipBox16/FrameBox18
+// Recovered live-profile+24 for Screen1/Group2/Text3/Icon6/ClipBox16/FrameBox18
 // companions. Type tags must agree with the SAME owner's concrete companion.
 // ClipBox calls its existing00ACE120 over its one layout/derived field set;
 // unknown types or mismatched companions fail explicitly.

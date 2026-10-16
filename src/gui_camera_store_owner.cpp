@@ -5,6 +5,7 @@
 #include <memory>
 #include <new>
 #include <stdexcept>
+#include <utility>
 
 namespace bsp {
 static_assert(sizeof(NativeGuiSceneStorage) == 0x24);
@@ -25,6 +26,16 @@ void retire_camera(void*, NativeCameraReference& reference) noexcept {
     auto* owner = &reference.camera_owner();
     delete &reference;
     delete owner;
+}
+bool valid_raw_camera_profiles(const NativeCameraEnvironment& environment) noexcept {
+    const auto* camera = environment.vtable_00d62cf0;
+    const auto* node = environment.vtable_00d62c88;
+    return camera && node && camera[0] == 0x00bd30e0u && camera[1] == 0x00b71fe0u &&
+        camera[0x18 / 4] == 0x00b6f310u && camera[0x30 / 4] == 0x00b71400u &&
+        camera[0x34 / 4] == 0x00b71460u && camera[0x54 / 4] == 0x00b6ee10u &&
+        node[0] == 0x00bd30e0u && node[1] == 0x00b6f8d0u &&
+        node[0x18 / 4] == 0x00b6f310u && node[0x30 / 4] == 0x00b6dae0u &&
+        node[0x34 / 4] == 0x00b6e870u && node[0x54 / 4] == 0x00b6ee10u;
 }
 void copy_scene_name(NativeNodeDestructionRuntime& nodes, NativeString& destination,
     const NativeString& source) {
@@ -158,6 +169,55 @@ NativeCameraReference* allocate_native_gui_camera(
         environment.pool_0108ffb0.return_raw_slot_00b711e0(raw);
         throw;
     }
+}
+GuiCameraRawAllocation::~GuiCameraRawAllocation() {
+    // Runs before viewport_admission_'s destructor can cancel retained state.
+    if (native_operation_interrupted()) std::terminate();
+}
+NativeCameraReference* allocate_native_gui_camera(NativeCameraEnvironment& environment,
+    GuiCameraRawAllocation& frame, const void* actual_name_header,
+    const NativeNodeRawConstants& constants, NativeViewportRegistry::Admission&& admission) {
+    if (frame.stage_ != GuiCameraRawAllocation::Stage::ready)
+        throw std::logic_error("raw GUI camera allocation cannot reenter or replay a used frame");
+    if (!actual_name_header || !valid_raw_camera_profiles(environment) ||
+        !environment.nodes.node_virtual_0c || !environment.crt.dispatch_bypass_0109dd78 ||
+        !environment.crt.except_00c27489 ||
+        &environment.nodes.scenes != &environment.nodes.attachments.scenes ||
+        &constants.one_00d7a24c != &environment.viewport.one_bits_00d7a24c)
+        throw std::invalid_argument("raw GUI camera requires actual header, CRT/profiles, shared runtimes and one-cell identity");
+    environment.nodes.require_raw_name_pool(); // Pure domain admission, no getter.
+    auto& registry = admission.require_registry();
+    const auto* const record = admission.storage_identity();
+    if (&environment.viewport_views != &registry || !record ||
+        record->phase() != NativeViewportRegistry::Phase::reserved)
+        throw std::invalid_argument("raw GUI camera requires its installed resolver and actual reserved viewport record");
+    // All rejection above leaves the caller token intact. Retain its ACTUAL
+    // record before moving it; no redundant record/token pairing is accepted.
+    frame.actual_name_header_ = actual_name_header;
+    frame.viewport_record_ = record;
+    frame.viewport_admission_ = std::move(admission);
+    frame.stage_ = GuiCameraRawAllocation::Stage::pool_entered;
+    frame.actual_slot_ = environment.pool_0108ffb0.allocate_raw_slot_00b71770();
+    if (!frame.actual_slot_) throw std::bad_alloc();
+    frame.stage_ = GuiCameraRawAllocation::Stage::slot_acquired;
+    frame.owner_ = new NativeCameraOwner(frame.actual_slot_, NativeCameraPool::slot_bytes, environment);
+    frame.stage_ = GuiCameraRawAllocation::Stage::owner_prepared;
+    frame.stage_ = GuiCameraRawAllocation::Stage::constructor_entered;
+    construct_native_camera_00b71a80(*frame.owner_, frame.actual_name_header_, constants,
+        std::move(frame.viewport_admission_));
+    frame.stage_ = GuiCameraRawAllocation::Stage::constructor_returned;
+    frame.reference_ = new NativeCameraReference(*frame.owner_, {nullptr, retire_camera});
+    auto* const result = frame.reference_;
+    // No provider/callback follows handoff. Record identity remains borrowed
+    // metadata until caller quiescence; no retired native field is read here.
+    frame.actual_name_header_ = nullptr;
+    frame.actual_slot_ = nullptr;
+    frame.owner_ = nullptr;
+    frame.reference_ = nullptr;
+    frame.stage_ = GuiCameraRawAllocation::Stage::published;
+    return result;
+    // No catch/rollback. Existing native prefix/viewport cleanup states are
+    // consumed only by their recovered callees, never replayed by this caller.
 }
 GuiCameraStore* create_gui_camera_store_00aa5070(GuiCameraStoreMap& stores,
     NativeCameraReference& camera, NativeGuiSceneOwner& scene, const GuiCameraStoreKey& key) {
