@@ -1,0 +1,468 @@
+{
+  "packet": "goal16fgi_primary_integration",
+  "status": "independently_reviewed_reconstructed_build_tested_Ghidra_saved_for_Main_integration",
+  "generated_utc": "2026-10-16T07:24:04.251523+00:00",
+  "validated_Source_commit": "abcbfe6214585c99201ac55c2b3faa40aa4fd65e",
+  "Main_input": "f3b345cf279bdcaf295b512edc7b4979b4908b1b",
+  "counts": {
+    "complete_functions": 24,
+    "Native_bytes": 327,
+    "Source_entry_bytes": 327,
+    "Native_instructions": 129,
+    "Source_instructions": 129,
+    "exact_whole_bodies": 21,
+    "exact_Native_bytes": 171,
+    "qualified_complete_bodies": 3,
+    "qualified_Native_bytes": 156,
+    "qualified_Source_bytes": 156,
+    "complete_Source_modules_in_primary_proof": 4,
+    "complete_Source_module_bytes": 344,
+    "existing_genuine_SDK_provider_bytes": 17
+  },
+  "per_packet": [
+    {
+      "packet": "GOAL16F",
+      "functions": 2,
+      "Native_bytes": 173,
+      "Source_bytes": 169,
+      "instructions": 66
+    },
+    {
+      "packet": "GOAL16G",
+      "functions": 7,
+      "Native_bytes": 93,
+      "Source_bytes": 93,
+      "instructions": 38
+    },
+    {
+      "packet": "GOAL16I",
+      "functions": 15,
+      "Native_bytes": 61,
+      "Source_bytes": 65,
+      "instructions": 25
+    }
+  ],
+  "entries": [
+    {
+      "address": "00b726a0",
+      "packet": "GOAL16G",
+      "coverage": "complete",
+      "Native_bytes": 7,
+      "Source_bytes": 7,
+      "instructions": 2,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "@bsp_tagged_b78_16g_00b726a0@4",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "00b72b30",
+      "packet": "GOAL16G",
+      "coverage": "complete",
+      "Native_bytes": 4,
+      "Source_bytes": 4,
+      "instructions": 2,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "@bsp_tagged_b78_16g_00b72b30@4",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "00b87080",
+      "packet": "GOAL16G",
+      "coverage": "complete",
+      "Native_bytes": 9,
+      "Source_bytes": 9,
+      "instructions": 5,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "@bsp_tagged_b78_16g_00b87080@8",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "00b87110",
+      "packet": "GOAL16G",
+      "coverage": "complete",
+      "Native_bytes": 15,
+      "Source_bytes": 15,
+      "instructions": 7,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "@bsp_tagged_b78_16g_00b87110@8",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "00b875e0",
+      "packet": "GOAL16G",
+      "coverage": "complete",
+      "Native_bytes": 19,
+      "Source_bytes": 19,
+      "instructions": 7,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "_bsp_tagged_b78_16g_00b875e0@8",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "00b87610",
+      "packet": "GOAL16G",
+      "coverage": "complete",
+      "Native_bytes": 25,
+      "Source_bytes": 25,
+      "instructions": 9,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "_bsp_tagged_b78_16g_00b87610@8",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "00b88b50",
+      "packet": "GOAL16G",
+      "coverage": "complete",
+      "Native_bytes": 14,
+      "Source_bytes": 14,
+      "instructions": 6,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "@bsp_tagged_b78_16g_00b88b50@4",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "00b94b20",
+      "packet": "GOAL16I",
+      "coverage": "complete",
+      "Native_bytes": 1,
+      "Source_bytes": 3,
+      "instructions": 1,
+      "whole_body_exact": false,
+      "actual_Source_symbol": "_bsp_tagged_b9bb_00b94b20",
+      "qualification": "Complete Native C3 maps to complete Source C20000; same ordinary ESP+4/register/flags/FP effects, two extraSourcecodefetch bytes/fault/placement/fullABI/caller/game excluded."
+    },
+    {
+      "address": "00b96e50",
+      "packet": "GOAL16I",
+      "coverage": "complete",
+      "Native_bytes": 3,
+      "Source_bytes": 3,
+      "instructions": 1,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "_bsp_tagged_b9bb_00b96e50@4",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "00b9a1c0",
+      "packet": "GOAL16I",
+      "coverage": "complete",
+      "Native_bytes": 3,
+      "Source_bytes": 3,
+      "instructions": 1,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "_bsp_tagged_b9bb_00b9a1c0@4",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "00b9a3d0",
+      "packet": "GOAL16I",
+      "coverage": "complete",
+      "Native_bytes": 7,
+      "Source_bytes": 7,
+      "instructions": 2,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "@bsp_tagged_b9bb_00b9a3d0@4",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "00b9a4b0",
+      "packet": "GOAL16I",
+      "coverage": "complete",
+      "Native_bytes": 4,
+      "Source_bytes": 4,
+      "instructions": 2,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "@bsp_tagged_b9bb_00b9a4b0@4",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "00b9a500",
+      "packet": "GOAL16I",
+      "coverage": "complete",
+      "Native_bytes": 4,
+      "Source_bytes": 4,
+      "instructions": 2,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "@bsp_tagged_b9bb_00b9a500@4",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "00ba7170",
+      "packet": "GOAL16I",
+      "coverage": "complete",
+      "Native_bytes": 4,
+      "Source_bytes": 4,
+      "instructions": 2,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "@bsp_tagged_b9bb_00ba7170@4",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "00ba7180",
+      "packet": "GOAL16I",
+      "coverage": "complete",
+      "Native_bytes": 4,
+      "Source_bytes": 4,
+      "instructions": 2,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "@bsp_tagged_b9bb_00ba7180@4",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "00ba7190",
+      "packet": "GOAL16I",
+      "coverage": "complete",
+      "Native_bytes": 4,
+      "Source_bytes": 4,
+      "instructions": 2,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "@bsp_tagged_b9bb_00ba7190@4",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "00bb8ff0",
+      "packet": "GOAL16I",
+      "coverage": "complete",
+      "Native_bytes": 3,
+      "Source_bytes": 3,
+      "instructions": 1,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "_bsp_tagged_b9bb_00bb8ff0@12",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "00bbb620",
+      "packet": "GOAL16I",
+      "coverage": "complete",
+      "Native_bytes": 5,
+      "Source_bytes": 5,
+      "instructions": 2,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "_bsp_tagged_b9bb_00bbb620@16",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "00bbb630",
+      "packet": "GOAL16I",
+      "coverage": "complete",
+      "Native_bytes": 1,
+      "Source_bytes": 3,
+      "instructions": 1,
+      "whole_body_exact": false,
+      "actual_Source_symbol": "_bsp_tagged_b9bb_00bbb630",
+      "qualification": "Complete Native C3 maps to complete Source C20000; same ordinary ESP+4/register/flags/FP effects, two extraSourcecodefetch bytes/fault/placement/fullABI/caller/game excluded."
+    },
+    {
+      "address": "00bbce40",
+      "packet": "GOAL16I",
+      "coverage": "complete",
+      "Native_bytes": 7,
+      "Source_bytes": 7,
+      "instructions": 2,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "@bsp_tagged_b9bb_00bbce40@4",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "00bbce50",
+      "packet": "GOAL16I",
+      "coverage": "complete",
+      "Native_bytes": 4,
+      "Source_bytes": 4,
+      "instructions": 2,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "@bsp_tagged_b9bb_00bbce50@4",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "00bbce70",
+      "packet": "GOAL16I",
+      "coverage": "complete",
+      "Native_bytes": 7,
+      "Source_bytes": 7,
+      "instructions": 2,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "@bsp_tagged_b9bb_00bbce70@4",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "0043ec30",
+      "packet": "GOAL16F",
+      "coverage": "complete",
+      "Native_bytes": 19,
+      "Source_bytes": 19,
+      "instructions": 9,
+      "whole_body_exact": true,
+      "actual_Source_symbol": "?size_native_traffic_dwords_0043ec30@bsp@@YIIPBX@Z",
+      "qualification": "Complete Native and Source entry byte identity; formal Original declaration, class, placement, caller adoption and game ABI remain unproved."
+    },
+    {
+      "address": "004809f0",
+      "packet": "GOAL16F",
+      "coverage": "complete",
+      "Native_bytes": 154,
+      "Source_bytes": 150,
+      "instructions": 57,
+      "whole_body_exact": false,
+      "actual_Source_symbol": "?normalize_native_traffic_weights_004809f0@bsp@@YIIPAX@Z",
+      "qualification": "Full154B/57instruction Native normalizer maps to150B/57 Source instructions; Source LEA ESP,[ESP] is4B shorter, branches target same instruction ordinals, six true calls bind size+currentSDK. Codefetch/addresses/returnslot aliases/savedFIP/privateCRT/EH/parent/game limits explicit."
+    }
+  ],
+  "author_pins": {
+    "GOAL16F": "a123c8557d373cf743312a8d876de04821dc0723",
+    "GOAL16G": "7cdda43fd6a47a393962c0da3e12813f686f2994",
+    "GOAL16I": "7e16728711ad5da93ae034d87fc9ee06d1b024c2"
+  },
+  "independent_reviews": [
+    {
+      "packet": "GOAL16F",
+      "path": "local/goal16f_root/review/review.json",
+      "sha256": "8869a4318bbdda9df0b8535766617fcb95e7ad31fd27176009fa4eb658c61cef",
+      "status": "READY",
+      "no_execution_by_reviewer": true
+    },
+    {
+      "packet": "GOAL16G",
+      "path": "local/goal16g_root/review/artifact_review.json",
+      "sha256": "6e039b6b45b11bc081af139d64f0fb432fe17c7cbe4806201a11412b844940a1",
+      "status": "READY",
+      "no_execution_by_reviewer": true
+    },
+    {
+      "packet": "GOAL16I",
+      "path": "local/goal16i_root/review/artifact_review.json",
+      "sha256": "9c3cacf8d85dd8d861c7ee3cd1e29ee3356e3536d27281027d1d42d7f5398544",
+      "status": "READY",
+      "no_execution_by_reviewer": true
+    }
+  ],
+  "primary_validation": {
+    "final_build": {
+      "started_utc": "2026-10-16T07:21:22.0849376Z",
+      "ended_utc": "2026-10-16T07:21:40.0902265Z",
+      "elapsed_seconds": 18.0021787,
+      "exit_code": 0,
+      "source_pin": "abcbfe6214585c99201ac55c2b3faa40aa4fd65e",
+      "Main_input": "f3b345cf279bdcaf295b512edc7b4979b4908b1b"
+    },
+    "existing_checks": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "earlier_combined_build": {
+      "started_utc": "2026-10-16T07:00:28.4542246Z",
+      "ended_utc": "2026-10-16T07:00:57.1165487Z",
+      "elapsed_seconds": 28.6586453,
+      "exit_code": 0,
+      "source_pin": "d36f9d8b559b85a205a8ff4447bd0b5b4229ed6c"
+    },
+    "prepublication_746_build": {
+      "started_utc": "2026-10-16T07:13:32.8744064Z",
+      "ended_utc": "2026-10-16T07:13:50.3654476Z",
+      "elapsed_seconds": 17.4873609,
+      "exit_code": 0,
+      "source_pin": "746fa988ab1f61a3e360784bb6fffc1a8bb02636",
+      "Main_input": "7c1ec64696280365b64c4caad5caed07ef49c3c8"
+    },
+    "repeated_build_reason": "Foreign Main C++ and CMake registrations advanced after each isolated Source snapshot; final build includes reserved publication input. No fixture/Native rerun by primary.",
+    "full_instruction_proof": {
+      "path": "local/goal16f_root/combined_proof/proof.json",
+      "sha256": "560920f229f2e558860627a6fc29863129731698bc91b6e10a179c3abf2994f4"
+    },
+    "final_actual_provider_proof": {
+      "path": "local/goal16f_root/final_proof/proof.json",
+      "sha256": "48f8e4382bb7add1c89de97b4d3f45006d554e8f9a62aa79751da7959c40121c"
+    },
+    "four_actual_objects_unchanged": true,
+    "actual_final_archive_sha256": "8475e08ef066d67c702d70f33d28180ec63d9393ceec2f5d74edaeaa1fd3a06a",
+    "both_real_archive_linker_dictionaries_bind_all_public_providers": true,
+    "three_new_TU_registrations_once": true,
+    "whole_executable_extent_accounted": true,
+    "new_tests": 0,
+    "new_probe_fixture_or_Native_execution": false,
+    "actual_final_registered_objects": [
+      {
+        "module": "native_traffic_weight_normalize",
+        "sha256": "b0853c13a6d54972fd04410e7269082c82c16877a23c0cccaf7c9fbae2de523f"
+      },
+      {
+        "module": "native_invalid_parameter_noinfo_call",
+        "sha256": "2296a4e057ae6261aa09a83117676bf5c9ad79ff8ff26ea167988764d9224e7d"
+      },
+      {
+        "module": "native_tagged_leaf_b78_16g",
+        "sha256": "167c03b8113c64bb04373e5fcfc287061aa1dd02cab7b9687cb7f180d97b567a"
+      },
+      {
+        "module": "native_tagged_leaf_b9bb_16i",
+        "sha256": "5139a3a4283db2fd705a4bf286621b4162d95dea24469d19175abdf42ad7fd29"
+      }
+    ],
+    "final_existing_check_seconds": 7.78,
+    "final_existing_checks_all_PASS": true
+  },
+  "annotations": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "write_lock": true,
+    "saved": true,
+    "physical_prototypes_only": true,
+    "formal_Original_declarations_and_classes_unrecovered": true,
+    "Source_only_unused_EDX_not_in_Original_metadata": true,
+    "old_states_and_comments": "local/goal15h_annotations_0043ec30.json",
+    "history": "local/ghidra-annotations-20261016T070753Z.json",
+    "final_typed_metadata": "local/goal16f_root/saved_typed_flow.json",
+    "modification_number": 6191,
+    "complete_entries": 24,
+    "complete_bytes": 327,
+    "no_return_false_all": true,
+    "final_prototypes": "local/goal16f_root/saved_prototypes.txt",
+    "affected_exports_refreshed": true,
+    "forced_snapshot_and_index_completed": true,
+    "correct_existing_library_name_retained": "STL_Vector_Size_0043ec30",
+    "names_and_formal_types_provisional": true
+  },
+  "retained_corrections": [
+    "F Native7-byte LEA cannot be forced with assembler align/symbolic-displacement attempts; full rejects retained. Accepted Source3-byte same-effective-address LEA, all57normalizer instructions/branch ordinals and actual sixCALLs mapped, no rawbyte emission or clipping.",
+    "F provisional145ad2d73 had trailing EOF blanks; finala123... removes only those blanks. Firstbuild/onefixture retained; strict/registered refresh only, no secondfixture/relink. FinalFobject differs originalfixtureobject only COFFtimestamp bytes4/5; all code/data/symbol/reloc inputs unchanged. Genuine diagnostic object fully byte-identical.",
+    "G first complete93B C++ object has4exact34B and3register-different59B. All93 retained; final literal schedules restore EAX/ECX/EDX/load/store/fault effects and all7 whole bodies match.",
+    "I first nakedRET65B and final ordinary65B forms both emitC20000 for B94B20/BBB630 versusNativeC3. Two complete Source interfaces remain explicitly qualified; no omitted bytes/helper or compiler/raw-opcode workaround.",
+    "I metadata parser learned decimal Capstone offset8; refreshed index before checking firstsix already-written address records, then appended remainingnine without duplication. Source/objects/build unaffected.",
+    "Primary Core registration-count check initially searched startup.cmake for the already-existing SDK module, which is registered elsewhere; corrected to exactly the3new TUs. Actual unique SDK archive provider and all current symbol bindings were independently checked."
+  ],
+  "runtime_evidence": {
+    "GOAL16F": "Exactly one author Source/capturedNative154 frame-alias fixture using original real Core and six genuine Source call bindings. Data spans actual savedEDI/savedESI/sum cell; float32-spilled accumulation33554432, outputs.5/2^-25/1, actual popped registers/EAX3/EDXdata/plainRET,CW037F/SW0020 observed. No diagnostic or otherFP/parent path executed. Final Sourcecode/provider identity to this original fixture independently proved.",
+    "GOAL16G": "Static complete body identities/physical ABI+alias schedule inspection; no execution.",
+    "GOAL16I": "Static complete body/RET0 mapping and actual provider inspection; no execution."
+  },
+  "timing": {
+    "F_author_inclusive_seconds": 1402.292493,
+    "F_review_postfreeze_seconds": 1034.62,
+    "G_author_discovery_to_handoff_seconds": 2580.795879,
+    "G_discovery_seconds": 1001,
+    "G_schedule_gap_seconds": 172,
+    "G_implementation_to_handoff_seconds": 1407.795879,
+    "G_review_postfreeze_seconds": 503.013034,
+    "I_author_conservative_floor_to_receipt_seconds": 919.597531,
+    "I_review_postfreeze_seconds": 415.383735,
+    "scope": "Overlapping worker/reviewer intervals are separate, not a sum of batch wall time; classification/readiness/repair/build/metadata/handoff overhead is retained. Pre-author traffic readiness is separate. No controlled throughput speedup or game-validation rate inferred."
+  },
+  "remaining": [
+    "Original formal C++ declarations/classes, Source placement, caller/game adoption and full binary/fault/unwind ABI unproved even for entry-byte identities.",
+    "F private BF66EF/handler/Watson/CRT/FH3/RTTI/SEH identity and C++ exception propagation through naked parent remain open.",
+    "F empty/malformed/negative/wrapped ranges, zero-sum, diagnostics, NaN/infinity/denormal, alternate rounding/precision, unmasked exceptions and deeper x87 stack states unexecuted. No FP-state repair or guard added.",
+    "I seven canonical global owner/publication bindings remain deferred; other non-TRIV tagged band candidates are separate work. G inline AE5160 caller fragment is preserved and not counted as another new body.",
+    "Following H erase/J size work and larger physical parents remain separate; this packet does not complete the reconstruction goal."
+  ],
+  "batch_claim_validator": {
+    "report_call_rows": 0,
+    "doc_call_claims": 0,
+    "failures": 0,
+    "warnings": 0,
+    "unchecked": 0,
+    "scope": "Batch summary has no literal call-row claims. Full instruction/branch/sixCALL/provider proof and author call reports/independent reviews carry call evidence.",
+    "log": "local/goal16f_root/batch_claim_checks.log"
+  }
+}
