@@ -1,0 +1,368 @@
+{
+  "packet": "oct16_native_checked_dword_memmove_copy",
+  "status": "complete_ordinary_CurrentSDK_source_build_and_actual_COFF_reviewed_pending_frozen_pin_acceptance",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "published_baseline": "2f48232d4d90fd7dc781bff81682b2e8fe9ba2c0",
+  "source": "src/native_checked_dword_memmove_copy.cpp",
+  "header": "include/bsp/native_checked_dword_memmove_copy.hpp",
+  "documentation": "docs/OCT16_CHECKED_DWORD_MEMMOVE_COPY.md",
+  "source_sha256": "69f307ec54a52ab527c407603334b441462d952114b25ce461f23f6d847e66c2",
+  "header_sha256": "6dc093263daa1dceff40c3c6791203eee7b972bc95796d88c1ae78fe894c7bac",
+  "routines": [
+    {
+      "address": "00440c70",
+      "name": "copy_native_checked_dword_memmove_00440c70",
+      "original_library_name_preserved": "STL_Copy_00440c70",
+      "coverage": "complete ordinary00440c70..00440c9f within explicitly authorized CurrentSDK memmove_s domain",
+      "Native_bytes": 48,
+      "Native_instruction_starts": 18,
+      "original_abi": "three stacked DWORDs first,last,destination; incoming ECX/EDX unconsumed then overwritten; RET0Ch; EAX independently captured result",
+      "Source_abi": "void* __stdcall (const void* first,const void* last,void* destination)",
+      "own_Native_EH": false
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00440c70",
+      "address": "00440c92",
+      "native": "00bf67a7",
+      "kind": "call",
+      "scope": "owned ordinary",
+      "contract": "_memmove_s(destination,bytes,first,bytes); explicitly authorized direct current SDK effect; NativeCRT bodyidentity unproved"
+    }
+  ],
+  "read_only_producer_calls": [
+    {
+      "function": "00441860",
+      "address": "0044191e",
+      "native": "00440c70",
+      "kind": "call",
+      "scope": "bounded read-only external producer; no parent reconstruction"
+    },
+    {
+      "function": "00441860",
+      "address": "0044193d",
+      "native": "00440c70",
+      "kind": "call",
+      "scope": "bounded read-only external producer; no parent reconstruction"
+    },
+    {
+      "function": "00441860",
+      "address": "004419a0",
+      "native": "00440c70",
+      "kind": "call",
+      "scope": "bounded read-only external producer; no parent reconstruction"
+    },
+    {
+      "function": "00441860",
+      "address": "004419e8",
+      "native": "00440c70",
+      "kind": "call",
+      "scope": "bounded read-only external producer; no parent reconstruction"
+    }
+  ],
+  "contract": {
+    "input_capture": "Native reads last then first then destination before arithmetic. Source by-value/private-frame alias and compiler load reordering remain qualified.",
+    "arithmetic": "DWORD last-first wraps; SAR2 reconstructed from logical shift and sign-fill bits; bytes=words*4 wraps; result=destination+bytes wraps",
+    "condition": "only SAR words==0 skips SDK. Positive subword delta1..3 can skip; nonzero negative counts still call SDK with unsigned wrapped bytes.",
+    "flag_origin": "Native JZ retains SAR flags across LEA*4/PUSH/LEA ESI; output zero is not a skip predicate",
+    "call": "direct ::memmove_s(destination,bytes,first,bytes), errno ignored; no signed-positive validation or count/pointer model",
+    "return": "capture wrapped result BEFORE SDK and return it on all returning paths, independent of errno/callee EAX",
+    "ownership": "no header/allocator/context/payload cleanup or rollback; no additional semantic inputs and no noexcept bridge"
+  },
+  "SDK_boundary": {
+    "native_library_name": "_memmove_s",
+    "Native_address": "00bf67a7",
+    "existing_record": "NativeGameClassCleanupCalls::class_memmove_00bf67a7, status existing_host_substitution_labelled",
+    "exact_published_effect": "(void)memmove_s(destination,bytes,source,bytes), no positive filter",
+    "Source_proof": "src/native_game_class_cleanup.cpp:90",
+    "binding": "same direct currentSDK effect, not a new callback/provider object or OriginalCRT implementation",
+    "do_not_reuse": "move_native_scene_dword_range_00467d90 rejects signed-negative words and is not this body",
+    "Original_CRT": "BF67A7 validation, underlying Native_memmove/feature/CRT/fault identity remains unproved; no function record/annotation for BF67A7 added"
+  },
+  "Native_scope": {
+    "owned": {
+      "bytes": 48,
+      "starts": 18,
+      "body_ranges": 1,
+      "CALLs": 1,
+      "all_PE_live_and_current_starts_equal": true
+    },
+    "read_only_producers": {
+      "CALL_bytes": 20,
+      "CALL_starts": 4,
+      "instruction_context": "five before/five after each site; actual three stacked inputs and ignored incoming ECX setup, not full00441860 argument provenance or Source closure"
+    },
+    "prior_readiness": "local/oct16_input_settings_actual_table_loader_frontier.json",
+    "prior_readiness_sha256": "6f7555040e0dd05788bdf71bedf9abf3132cf4f5454a2b19ad4cfcd92c404efb",
+    "audit": "local/oct16_checked_dword_memmove_copy_native_audit.json",
+    "audit_sha256": "be64c97e60d52e76c1904d0bf153370ea6b94c0ba96a694da7c174dcd49ba8da"
+  },
+  "provider_LF_fingerprints": {
+    "include/bsp/lua_numeric.hpp": "a8de255e2aaaad540cec67717e7d0efd7cc5f50d206bdd2137cabe1ed81acf60",
+    "include/bsp/native_crt_memcpy.hpp": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+    "include/bsp/native_input_preset_pair_construct.hpp": "7e861a03c50e64fa6e7327681f6c35c441031ede596cc359f6ed618fe27bc5e8",
+    "include/bsp/native_input_settings_startup.hpp": "c4b150b7b268106691e6ae51161aa9c3cf1320db38d798a445cce595d750afef",
+    "include/bsp/native_input_settings_tables.hpp": "0bb85f38b2d3241f1a926aa007ed941960119e2d926134fb96e868b6060cd5b7",
+    "include/bsp/native_lua_bootstrap.hpp": "9a27332cc4f9d6010251439c6512ec8e183f78726133c6080f1c8ec09a5d4bc1",
+    "include/bsp/native_lua_file_loading.hpp": "a0435cdc3005ca852c88e7d7840239b77ae58981c56fbee07fc4be9997cd8c23",
+    "include/bsp/native_lua_objects.hpp": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d",
+    "include/bsp/native_scene_dword_erase_range.hpp": "40b52fccce54daba3b420024dd3deadb30e8684c2e01aaae2c770178f1df0e82",
+    "include/bsp/native_scene_dword_move.hpp": "61294c3eb1ce7b42553587bbdfd206a3fbbf129dd15770a66e1da98a8ac9e9f2",
+    "src/frontend_seg12_17_cc13.cpp": "a501a9c6c1dccc42cf8f5ec7386f7fde3dd1fbd4b40c7450884897ccc5ebf418",
+    "src/game_native_string_process.cpp": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b",
+    "src/gui_lua_reader.cpp": "d7bd22187f235cd436005f676dcc2eca13492661a9e67ed89c157fb6267f0293",
+    "src/gui_lua_runtime.cpp": "26837a78aca1ad98ad6264edb6dc1390fd4a3ab64887ec3b61d52a3da1febf84",
+    "src/lua_numeric.cpp": "4c19ba962c8964626d224a273a416794d1330efcca1ef953ca359f28f28f585c",
+    "src/lua_object.cpp": "701f811b7fac58ab7b6f6cb405e5a665bb09cffcdbb7173a7c79d21c398312cb",
+    "src/lua_state_owner.cpp": "631135c79fcd9f2ab39e7d147383ae5642ccbdcc0763b4117781163c96cfa602",
+    "src/mission_lua_bindings.cpp": "476bf85fb33dda4786e2ccfb9a68e80712babf96e013c90746aa800f3b402874",
+    "src/native_checked_bit_iterators.cpp": "8185786c4dcca2fccf8abb5fa29b41cd4a46bdfacc068f8d4c0cf41999193bb7",
+    "src/native_checked_string_storage.cpp": "e89d4814effbaa6ce46b9146d7cc605a9c50e1ec04630faf8e299758b7c6bf33",
+    "src/native_crt_memcpy.cpp": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+    "src/native_dword_vector_insert_append.cpp": "99ecc4072a3c90f685313de3e72a0a8db83fba99372be16655b5cfbc8993f2ef",
+    "src/native_group_vector_erase_resize.cpp": "35c5342e5b0bad93a7f26d5baab4b3d1609906e61836f82b02291815caf6a95d",
+    "src/native_input_configuration_modifiers.cpp": "4348a7f4dd27a47121f2eac2477a32ce4d8c872055b1b354fe0679b264b2919d",
+    "src/native_input_controller_name_pair_destroy.cpp": "543b1363dd2163c5ad5e7010a899ae55fa4c0b0d6549937b7075a3fa03e0efce",
+    "src/native_input_device_index.cpp": "20a0a25573a72ebc619393c43d5ab6cc4e70d9980ff9fe76cda64455ed8dda36",
+    "src/native_input_device_record_destroy.cpp": "6edbd35b0b1ba90b743d491fc6a64e32231a620a4df5b649f0e5b7d96491427f",
+    "src/native_input_device_runtime.cpp": "eef85878ca5d1013deae564da17d6dad109b97c7d36205e197652ee910f875e9",
+    "src/native_input_device_subtree.cpp": "09d75e5d63fb4a21d1e9a3fd383bfe1fc0a2409458be389dc60b1f8e8a5f253e",
+    "src/native_input_int_string_tree_range.cpp": "f60e51ce99db26e353ebe09110c47df780a0a5ae1c18c7f6e12f12515146d09a",
+    "src/native_input_nested_int_subtree.cpp": "58cb26317ee04a06913cb205cf0ac8a0d6ada8e8cd981790314ba988864ecd13",
+    "src/native_input_preset_pair_construct.cpp": "95634636cc1c4ef3cceda7d3c0d80f37ed02f66278c70b404921a9e425a4ae8d",
+    "src/native_input_scalar_tree_range.cpp": "14a938ba450949ac48efe947d30cb7e3c5f307da280b1e9a3f6eb423a8ddc691",
+    "src/native_input_scale_maps.cpp": "f2ea13287dd81f4c366cc023e15f76b8db009c007975de430bdec1ddfc795aff",
+    "src/native_input_settings_startup.cpp": "3eaac7eb73b055b6e73736c30115cb9c6650d2f8d6894005b2f420ab98137f2c",
+    "src/native_input_settings_tables.cpp": "81774adaad7b63eb2e9b025c202d80d674e9776d4afe632207161e3f0f5f7ee3",
+    "src/native_input_settings_tree_cleanup.cpp": "d8be9c5d9613ee258a06fe42a6696269a13a60f53a8a4e1d75aa2e4292feab30",
+    "src/native_input_settings_tree_insertion.cpp": "ebd83749d995ca16a7affcfd9bf0637383ccb172cd71e37d2ab5c26036b72ba4",
+    "src/native_input_settings_vector_storage.cpp": "18076a91677d150d9e9fff82502718d355f3be58839c0c6003bc75035f38f9e5",
+    "src/native_input_string_tree_lower_bounds.cpp": "6ce5dbb10d94e21d430c0cb205dac028e27bae4c041df91cea1607ba9d8bfa30",
+    "src/native_input_vector_map_index.cpp": "b64dfd5cf10dcf9e51b5f8e7a264a603efa29bc6b25cc5057dd83a6e847c7fd7",
+    "src/native_invalid_parameter_noinfo_call.cpp": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+    "src/native_lua_bootstrap.cpp": "51770315b0b6decf49a9eb7ac5da9d2574c37e2547e36d07cc6843f017360ffa",
+    "src/native_lua_file_loading.cpp": "5429158efe57f0c14d3829562ee38ca63ab8c526f3282476d419babdeac959ac",
+    "src/native_lua_objects.cpp": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5",
+    "src/native_outer_vector_resize.cpp": "34616740be7236db1002e4d43c1f0c5313e20d4c26f82d7af4ad4708c62b9a25",
+    "src/native_physical_file_date.cpp": "6ad9b3bff2280f3c27889ba13ef785a236a2f34e2d733b83bcc92ad20a8a55d0",
+    "src/native_scene_dword_erase_range.cpp": "95fada1a5a0b8c7717764c7357372ef10d66c21396818685a4c55f83ff0c3e50",
+    "src/native_scene_dword_move.cpp": "25534e8fd6f7db5d904832ca623ae9ade05f0c05a3f9848e1cb625b519a83386",
+    "src/native_soldier_loop_lengths.cpp": "603fe0285277401e7c76588ee40d6552e843a96db5ce00d9374dd8801aeffbb5",
+    "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+    "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "src/native_string_vector_append.cpp": "3466e182a77d60aed1f36695c69a3c4433cfe096b7e6709d8cc26e83259ef99f",
+    "src/native_string_vector_erase.cpp": "d04a2cd0e49f15a4ff94fb143a036777026b14ff9ad39369019636046f32f18b",
+    "src/native_string_vector_resize.cpp": "4a7c42d8be7d51f78fa25aca249d610c4ebb4bdfaed3a811a0f4a71d3a974a38",
+    "src/native_vfs_date_leaf_providers.cpp": "8a3615bec143538b10b50448e9e44948f3f36374b33cdc6878ad50de27f36559",
+    "src/panel_sequence.cpp": "f846cd3437c8f08ca82f28e2b32fe9206601e9b6d44f9e67a7966590bb75ba37",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "src/weather_config.cpp": "865d859eaac9e50dc0498fe85bfbda382a6d188b57e37cfe68cebf976e4e7697",
+    "src/native_game_class_cleanup.cpp": "b2bddd47b55db619fc2e2f345fce67a1c9d8f9c3af3d3a434a2937289bff877c",
+    "include/bsp/native_game_class_cleanup.hpp": "9be5dd2f28906897af1707d56a385bb1a597c6479037a7f0be71f5c13fcdfd76",
+    "include/bsp/native_input_keyboard_apply.hpp": "ec75a29772850bbbb67655a13c98dbbd7ef7670261d7bc15807c8659f3e036c1",
+    "include/bsp/native_input_deadline_map_lookup_adapter.hpp": "0757c7ead04ea0fbfae79037364338494994e995f322bf032667c0af178ecfab"
+  },
+  "actual_CMake_COFF": {
+    "object": "build/win32/bsp_core.dir/Release/native_checked_dword_memmove_copy.obj",
+    "sha256": "60eb5665fa2522ccc496e5d05493f080bdb09869c08149f0de3441a353dec56a",
+    "object_bytes": 1222,
+    "code_bytes": 191,
+    "instructions": 70,
+    "CODE_sections": 2,
+    "public": {
+      "bytes": 97,
+      "instructions": 37,
+      "RET0c_paths": 2
+    },
+    "SDK_private_helper": {
+      "bytes": 94,
+      "instructions": 33,
+      "scope": "separate SDK-emitted generic memmove_s body; unreferenced by inlined public body, includes ERANGE0x22 path; not authored framework/OriginalBF67A7"
+    },
+    "relocations": 8,
+    "relocation_symbols": {
+      "errno_DIR32": 3,
+      "invalid_parameter_DIR32": 3,
+      "memmove_REL32": 2
+    },
+    "return_capture": "LEA ESI at public+25 before errno/invalid/_memmove calls; MOV EAX,ESI at+44/+5A",
+    "skip": "public+28 JZ uses OR-derived SAR-equivalent words flags; additional TESTbytes at+2A is SDKinline zero check",
+    "SDK_paths": "public equal destsize/count excludes ERANGE; NULL dest/source sets errnoEINVAL and invokes current SDKinvalid reporting, then returns captured result if reporting returns. Full SDK helper zero/EINVAL/ERANGE/memmove paths reviewed.",
+    "compiler_qualification": "destination argument load occurs after private SAR arithmetic, unlike original load order; private argument/fault/frame aliases unproved",
+    "padding_bytes": 0,
+    "embedded_code_data_bytes": 0,
+    "EH_metadata_bytes": 0,
+    "BSS_bytes": 0,
+    "noncode": [
+      {
+        "section": 1,
+        "name": ".drectve",
+        "stored_bytes": 47,
+        "sha256": "76f6abfb5648dec7620f01bab90d05b2f12009fdd2084740e3feedfdb4bad2ab"
+      },
+      {
+        "section": 2,
+        "name": ".debug$S",
+        "stored_bytes": 212,
+        "sha256": "26399db77ae676b4eb42cf7fff298d836e7781245e8d5ce8a2f583d0ea453ded"
+      },
+      {
+        "section": 5,
+        "name": ".chks64",
+        "stored_bytes": 40,
+        "sha256": "19c401b06fd43a912eec8aca1e5adb52630e96900bb6f8ecdcc679febde5ceeb"
+      }
+    ],
+    "review_checks": [
+      {
+        "check": "actual default Win32 CMake I386 object, all191B70instructions in2CODE fully decoded/read",
+        "pass": true
+      },
+      {
+        "check": "public stdcall3input symbol and bothRET0c paths verified",
+        "pass": true
+      },
+      {
+        "check": "wrapped last-first exact unsignedSAR2 bit expansion; no signedoverflow/pointerdiff",
+        "pass": true
+      },
+      {
+        "check": "public firstJZ uses SAR-equivalentOR flags across MOV/PUSH/LEAs",
+        "pass": true
+      },
+      {
+        "check": "allnonzero negative word bits reach SDK; no signedpositive guard",
+        "pass": true
+      },
+      {
+        "check": "wrappedESI result captured@25 before anySDK call and returned on allreturning paths",
+        "pass": true
+      },
+      {
+        "check": "SDKpublic bytezero/null checks anderrnoEINVAL+returninginvalidhandler reviewed",
+        "pass": true
+      },
+      {
+        "check": "public current_memmove getsdestination/source/wrappedbytes; errno/callreturn ignored",
+        "pass": true
+      },
+      {
+        "check": "all94B33SDKhelper instructions inclzero/EINVAL/ERANGE/memmove/return paths reviewed",
+        "pass": true
+      },
+      {
+        "check": "all8relocations mapped:3errnoDIR32+3invalidDIR32+2memmoveREL32",
+        "pass": true
+      },
+      {
+        "check": "allnoncode directives/debug/checksum data retained; noBSS/padding/EH/tables",
+        "pass": true
+      },
+      {
+        "check": "compilerprivateframe anddestinationload afterSAR qualified, noOriginalstack/faultclaim",
+        "pass": true
+      }
+    ],
+    "audit": "local/oct16_checked_dword_memmove_copy_actual_COFF.json",
+    "audit_sha256": "ec516782251c8c00aaf48edda5dded528051e6ccc1d3393a7f4bb8c959dfeccc",
+    "decoded": "local/oct16_checked_dword_memmove_copy_actual_COFF_decoded.txt",
+    "decoded_sha256": "a1c5bcce4571edeae9faa4f1467945d8612e0512692e99a73ee648b1977dc480"
+  },
+  "verification": {
+    "default_build": {
+      "command": "./scripts/build.ps1",
+      "target": "MSVC Win32 Release default",
+      "exit_code": 0,
+      "existing_suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "passed": 3,
+      "failed": 0,
+      "seconds": 7.53,
+      "log": "local/oct16_checked_dword_memmove_copy_build.log",
+      "log_sha256": "005d59e94727b7906545086b520cf2fc6ea31fff378daa0fa0135ef8206f293a",
+      "scope": "existing suites do not execute this new helper; no new tests/probes/Native execution",
+      "warning": "existing spawn_request_id_matches duplicate LNK4006, unrelated to new helper"
+    },
+    "JSON_calls": {
+      "owned": 1,
+      "read_only_producers": 4,
+      "checked": 5,
+      "failed": 0,
+      "exit": 0
+    },
+    "Markdown_calls": {
+      "owned": 1,
+      "read_only_producers": 4,
+      "checked": 5,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "exit": 0
+    },
+    "index": {
+      "if_stale_rebuilt": true,
+      "exit": 0
+    },
+    "diff_check": {
+      "exit": 0
+    }
+  },
+  "primary_preliminary_attributed": {
+    "reviewer": "root",
+    "checks": 15,
+    "findings": 0,
+    "receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_checked_dword_copy_primary.json",
+    "sha256": "8c0cd9ecc4df0872c9400ee00902f34eef9448e2106b8f2a3bff61326c74386d",
+    "scope": "fullSource/header/currentNative48B18/all64providers/entire191B70object+8relocs; immutable Source-pin seal remains separate/pending"
+  },
+  "preservation": {
+    "existing_Source_headers_unchanged": 64,
+    "readiness17checks_immutable": true,
+    "constructor_head_previous_artifacts": "preserved exactly; no Source beyond this leaf modified",
+    "no_OriginalCRT_or_parent_promotion": [
+      "00BF67A7",
+      "00441860",
+      "00492210",
+      "006A7BE0",
+      "006AB6B0"
+    ]
+  },
+  "limits": [
+    "whole ordinary CurrentSDK Source and Native/current-byte/COFF/build proof only",
+    "not Original binary/register/flag/privateargument/privateframe/CRT/heap/FH3/SEH/fault/runtime/gameplay equivalence",
+    "actual SDK errno/invalid-handler/memmove effects are explicitly accepted substitutions, not reconstruction of OriginalBF67A7",
+    "raw DWORD arithmetic does not grant arbitrary pointer/lifetime validity; actual SDK policy and normal ABI/frame domain remain required",
+    "no clipping to positive counts, no modern container/pointerdiff/callback/default feature/model or provider bridge",
+    "no new tests/probes/Native execution; existing3suites are not a helper fixture"
+  ],
+  "documentation_sha256": "042abc30bef3d5599c30224f2f5f163fe0fbf66b65114d90951e116c20806686",
+  "preserved_prior_frozen_artifacts": {
+    "local/oct16_input_settings_actual_table_loader_frontier.json": "6f7555040e0dd05788bdf71bedf9abf3132cf4f5454a2b19ad4cfcd92c404efb",
+    "local/oct16_input_settings_raw_constructor_readiness.json": "24f83ae50b1cbdec8b253414a8ca517e85c544294c18d5aade2ce98d884f56c0",
+    "local/oct16_input_tree_head_builders_frozen_pin.json": "c5b9fedafcf75adde42a25d542997b86c1ac0070dce8947487dc8499f9bc3afe",
+    "local/oct16_tree_head_builders_closeout_receipt.json": "db6bef1457a1f11d8c25697dde3ea4cb3ea4a39c400c71b7053daad40edea511",
+    "local/oct16_tree_head_builders_exports.txt": "f4c1e8b245bc91111ec592f5b93facdc0fd5cb3d5ebce67160bf744d62996271"
+  },
+  "owned_ledger_and_registration_diff": {
+    "config/reconstruction/00440000.jsonl": {
+      "added": 1,
+      "removed": 0,
+      "only_owned_address": true
+    },
+    "cmake/startup.cmake": {
+      "appended_Source_registration": 1,
+      "removed": 0
+    },
+    "config/names/00440000.jsonl": {
+      "added": 1,
+      "removed": 0,
+      "only_owned_address": true
+    }
+  }
+}
