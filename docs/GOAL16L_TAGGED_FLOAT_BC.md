@@ -1,8 +1,11 @@
 # GOAL16L: three complete physical x87 getters
 
-Status: **STRICT_PREPARED_NORMAL_BUILD_PENDING**. This preparation has not run
-the normal CMake build. It makes no registered-object, Core archive, final
-reconstruction-ledger, drop-in ABI, caller-adoption or game-validation claim.
+Status: **READY_WHOLE_REGISTERED_NORMAL_BUILD_CORE_VERIFIED**. B4 authored
+and froze the strict-prepared Source; the warm successor ran the actual normal
+CMake build and existing checks, verified the entire registered object/Core
+member, and only then recorded the three owned ledger entries. Independent
+review, Original ABI/declaration recovery, caller adoption and game validation
+remain separate.
 
 | Original entry | Complete Native and strict body | Read offset |
 | --- | --- | --- |
@@ -31,7 +34,7 @@ wrapping effective address ECX plus the stated offset. The inherited x87
 control/status/tags/TOP/stack, SNaN and denormal processing, pending exceptions,
 masked/unmasked exceptions and stack-fault behavior remain the actual `FLD`
 instruction behavior. Exceptional cases are not reduced to normal-value
-semantics or assumed always to push. GPRs and EFLAGS are preserved, with plain
+semantics or assumed always to push. EAX/EBX/ECX/EDX/ESI/EDI/EBP and EFLAGS are preserved, with plain
 `RET` consuming the return slot on normal completion (ESP +4).
 
 The first-instruction memory and FP fault schedule is retained statically.
@@ -58,11 +61,67 @@ Source and evidence hashes, complete bodies and capture details are recorded in
 `reports/goal16l_tagged_float_bc.json` and
 `local/goal16l_tagged_float_bc/strict_proof.json`.
 
-The review worktree has no build directory or CMake cache. A warm-worktree
-successor must run `scripts/build.ps1` and the existing checks, prove the full
-actual registered object and unique Core member in both linker directories,
-and only then close exact three-address ledgers and final metadata. No new
-tests, probe executable, Native execution or Ghidra writes were performed.
-The frozen post-commit receipt records the inclusive preparation clock from
-2026-10-16 07:43:27 UTC; subsequent build and independent review clocks must be
-added by their owners. No speedup claim is made.
+The preparation worktree was cold and ran no normal build, tests, probes or
+Native execution. Its exact preparation commit
+3825b0b29567da39813e21bffa1230f07b7117a2 was cherry-picked alone onto the
+genuinely warm H baseff4f6b0d3da512726037e131b33865e1be146b39 as77c174bb6.
+Source/header remain byte-identical modulo line endings to the prepared blobs;
+no Source or header changes followed successful compilation/build.
+
+The CMake append conflict was preserved in all three stages. The prescribed
+merge_resolve tool refuses cherry-picks, so Root was informed and the exact
+warm file plus B4's ONE original registration line was retained manually.
+An initial guard assumed another registration spelling and failed before a
+write; reading the actual frozen registration fixed the guard. No unrelated
+Main registrations or Sources entered this warm build. Initial output lease
+overlap was queued until B4 explicitly released; no addresses/files were
+claimed beforehand. All transfer/classification/wait costs are included.
+
+One normal warm scripts/build.ps1 invocation passed in17.2918530s
+(2026-10-16T08:08:08.5373803Z..2026-10-16T08:08:25.8319642Z); existing reconstructed_math0.20s and
+tool_tests6.91s passed. No new tests/probes or getter/Native execution. Native
+reference seeds are not enabled in this worker; Root's later three-check build
+is separate. The actual C++17/O2/Oy-/MD/W4/WX/fp:strict/EHsc command and complete
+TLOG/project/Source/header inputs are frozen.
+
+The actual registered object is993B with exactly THREE complete executable
+sections4B each, all public symbols at0: entire12B/six instructions equals the
+strict/live/installed bytes. All object sections, raw symbols/aux/string table,
+metadata and directives are retained. There are ZERO relocations in ANY
+section, ZERO undefined symbols, ZERO extra helpers and ZERO writable globals.
+The strict object is965B; the registered debug metadata section is208B rather
+than180B, accounting for the28-byte size difference. Code remains exactly12B.
+
+Actual registered SHA256 `6b2c2f2537af1683747858422854fb2878a37728061dff03c0fc6b15e93a04da`.
+Actual whole Core archive SHA256 `eefc40b60a65269028c1d62e674105f7c2be1fb2c044d8b8dc55da100237c3bf`. The entire993B member
+occurs uniquely at headeroffset20054476; BOTH MS archive linker dictionaries
+independently map all three exact public names to that one payload. All2397
+prior Core objects remain whole-byte unchanged; only this new object was added.
+This proves actual registered archive inclusion, not that unused getter code
+was adopted into a final executable or that callers executed it.
+
+All H/F/Z prior625 receipt artifacts/all629 H-directory files, the actual prior
+Core, all2397 objects and11 tracking logs were preserved before build. B4's
+complete preparation directory, five exact commit blobs and41-file manifest
+are frozen. Initial lease wait/CMake refusal/guard correction are retained;
+there were no Source/strict/normal-build rejections or reruns in warm closure.
+
+B4 preparation ran07:43:27..08:00:53.091542Z, inclusive1046.091542s, including
+strict1.6912838s. Warm author closure starts07:57:57Z beforebrief/preservation
+and ends at final receipt sealing after commit/release. These intervals
+overlap176.091542s; do not add them as serial throughput. Final HANDOFF/receipt
+record exact separate clocks and overall pipeline elapsed. Administrative
+B4 release/dispatch after its seal was unmeasured by B4 but lies within the
+warm closure interval. No speedup claim.
+
+Only three exact owned name/function ledger appends follow actual build/Core
+proof, retaining TRIV_body_00bc3010/BSP_CloudPuff_GetSortKey/BSP_CloudPuff_GetSize.
+Physical-only Original prototype/comment proposals are ignored local evidence;
+Root owns Ghidra writes, preserved originals, independent review and integration.
+No Original class, float-versus-double spelling or full physical ABI is recovered.
+
+Ledger bookkeeping: ordinary add-name refused the two existing reviewed names;
+CLI --append-evidence retained their exact names and original hypothesis text.
+An initial diagnostic import also encountered the already-added first name;
+there are exactly three new function records, with no duplicate function rows
+or Source/build changes. This correction is included in closure timing.

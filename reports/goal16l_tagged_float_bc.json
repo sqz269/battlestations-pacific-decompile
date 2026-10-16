@@ -1,6 +1,6 @@
 {
   "packet": "GOAL16L",
-  "status": "STRICT_PREPARED_NORMAL_BUILD_PENDING",
+  "status": "READY_WHOLE_REGISTERED_NORMAL_BUILD_CORE_VERIFIED",
   "base_pin": "ed1e3b330943315ac4c793d61dd90b4c883c9f9d",
   "addresses": [
     "00bc3010",
@@ -198,27 +198,22 @@
       "BSP_CloudPuff_GetSize"
     ],
     "Ghidra_changes": false,
-    "ledger_changes": false
+    "ledger_changes": "only three exact owned function/name appends after actual build/Core proof"
   },
   "registration": {
-    "CMake_append_only": {
-      "path": "cmake/startup.cmake",
-      "only_append": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_tagged_float_bc_16l.cpp)\n",
-      "before_sha256": "02ea2ddf93b1fdaaaf3bb030d63faa65a3bb3546a9b2e9d8574997b0bd2c643f",
-      "after_sha256": "52b53931ab054c56f23f8f650958b17d51c090b84e2518c53f93f87d335f3959"
-    },
-    "normal_build": false,
-    "cache_preexisting": false,
-    "actual_registered_object": null,
-    "actual_Core_archive": null,
-    "unique_provider_both_link_directories": null
+    "status": "actual_normal_CMake_target_and_Core_archive_verified",
+    "CMake": "exact warm base plus one original B4 registration line",
+    "actual_registered_object": "build/win32/bsp_core.dir/Release/native_tagged_float_bc_16l.obj",
+    "whole_object_bytes": 993,
+    "whole_object_SHA256": "6b2c2f2537af1683747858422854fb2878a37728061dff03c0fc6b15e93a04da",
+    "whole_executable_bytes": 12,
+    "archive_SHA256": "eefc40b60a65269028c1d62e674105f7c2be1fb2c044d8b8dc55da100237c3bf",
+    "both_MS_linker_directories": "three unique public names map to the unique entire993B object member"
   },
   "transfer_remaining": [
-    "cherry-pick prep into leased warm worktree; preserve prep inputs",
-    "normal scripts/build.ps1 and existing checks; retain terminal result",
-    "independent complete actual registered object and Core archive member/both linker dictionaries proof",
-    "then append exact three ledger records and preserve correct names; primary alone may annotate Ghidra under lock",
-    "independent peer review by a reviewer other than this author"
+    "Root independent review by an author other than B4",
+    "Root optional physical-only Ghidra annotation and integration",
+    "Original declaration/class/fullABI/game/adoption and exceptional-mode runtime proof remain separate"
   ],
   "evidence_dir": "local/goal16l_tagged_float_bc",
   "new_tests_or_probes": false,
@@ -228,10 +223,160 @@
     "strict_seconds": 1.6912837999989279,
     "prep_report_utc": "2026-10-16T07:59:58.632961+00:00",
     "inclusive_final_prep_clock": "recorded in post-commit frozen receipt; includes all qualification, strict compile, edits, corrections and packaging; build/review transfer remains pending",
-    "speedup_claim": false
+    "speedup_claim": false,
+    "B4_final_prep_start_utc": "2026-10-16T07:43:27Z",
+    "B4_final_prep_end_utc": "2026-10-16T08:00:53.091542Z",
+    "B4_inclusive_prep_seconds": 1046.091542,
+    "normal_build_author_start_utc": "2026-10-16T07:57:57Z",
+    "normal_build_author_inclusive_end": "final receipt after commit/release/sealing",
+    "overlap_seconds_at_closure_start": 176.091542,
+    "no_serial_throughput_sum": "B4 preparation overlaps normal-build author preservation/wait; report separate intervals and end-to-end elapsed, never their sum as serial throughput"
   },
   "references": [
     "https://learn.microsoft.com/en-us/cpp/cpp/fastcall?view=msvc-160",
     "https://cdrdv2-public.intel.com/868137/325462-089-sdm-vol-1-2abcd-3abcd-4.pdf"
+  ],
+  "preparation_status": "STRICT_PREPARED_NORMAL_BUILD_PENDING",
+  "normal_build_author": "/root/traffic_erase_review",
+  "preparation_author": "/root/b4_leaf_16a_review",
+  "transfer": {
+    "exact_B4_preparation_pin": "3825b0b29567da39813e21bffa1230f07b7117a2",
+    "B4_base": "ed1e3b330943315ac4c793d61dd90b4c883c9f9d",
+    "warm_base": "ff4f6b0d3da512726037e131b33865e1be146b39",
+    "exact_cherry_picked_preparation": "77c174bb644bf1b3b75c7571d8f10c83d207d031",
+    "Source_header_changed_after_prep": false,
+    "CMake_resolution": {
+      "prescribed_merge_resolve_attempted": true,
+      "prescribed_tool_refused_cherry_pick": true,
+      "refusal": "not in a merge, so index stage 1 is not the merge base; resolve cherry-pick by hand",
+      "Root_informed": true,
+      "normal_build_not_started_with_conflict": true,
+      "reason": "Keep exact warm-base bytes plus only owned L append; do not import unrelated Main registrations outside five-file cherry-pick",
+      "whole_warm_base_CMake_sha256": "588a1e72ba45ffb75356ecc2bae47c89dcebe0aa449091bc76a3dd5b580ff3b0",
+      "preserved_conflict_sha256": "702a1413cbdf59c6c495d902eb6a9abdeafb7d4562f3921bd49c7f4e02ce94a5",
+      "final_exact_one_append_sha256": "e196147c7ef417f7de9cd20c4be83b350f6d78f134a285aba6bb1512fdfcb5b6",
+      "L_line_occurrences": 1,
+      "final_CMake_bytes": 258277
+    }
+  },
+  "registered": {
+    "Native_whole_bytes": 12,
+    "Native_whole_instructions": 6,
+    "strict_whole_executable_bytes": 12,
+    "registered_whole_executable_bytes": 12,
+    "public_offsets": [
+      0,
+      0,
+      0
+    ],
+    "executable_sections": 3,
+    "executable_relocations": 0,
+    "all_section_metadata_relocations": 0,
+    "undefined_symbols": 0,
+    "extra_helpers": 0,
+    "new_writable_globals": 0,
+    "strict_object_bytes": 965,
+    "registered_object_bytes": 993,
+    "strict_object_sha256": "b8e46da80db1f8158097082d7241678b06691553df783571ff01b4ce4d6ced22",
+    "registered_object_sha256": "6b2c2f2537af1683747858422854fb2878a37728061dff03c0fc6b15e93a04da",
+    "archive_sha256": "eefc40b60a65269028c1d62e674105f7c2be1fb2c044d8b8dc55da100237c3bf",
+    "actual_unique_whole_archive_member": {
+      "header_offset": 20054476,
+      "bytes": 993,
+      "sha256": "6b2c2f2537af1683747858422854fb2878a37728061dff03c0fc6b15e93a04da",
+      "archive_name": "/0"
+    },
+    "public_symbols_unique_in_both_linker_directories": 3,
+    "prior_Core_objects_unchanged": 2397,
+    "fresh_live_installed_bytes": 12,
+    "target_execution_by_this_static_audit": false
+  },
+  "normal_build": {
+    "start_utc": "2026-10-16T08:08:08.5373803Z",
+    "end_utc": "2026-10-16T08:08:25.8319642Z",
+    "elapsed_seconds": 17.291853,
+    "result": "PASS",
+    "command": "./scripts/build.ps1",
+    "invocations": 1,
+    "checks": [
+      {
+        "name": "reconstructed_math",
+        "seconds": 0.2,
+        "result": "PASS"
+      },
+      {
+        "name": "tool_tests",
+        "seconds": 6.91,
+        "result": "PASS"
+      }
+    ],
+    "Native_reference_seeds": "not enabled in worker; Root three-check build separate",
+    "tests_or_probes_added": false,
+    "Native_getter_execution": false
+  },
+  "normal_compile_inputs": {
+    "frozen": [
+      {
+        "path": "src/native_tagged_float_bc_16l.cpp",
+        "bytes": 762,
+        "sha256": "efbf8dc759ff1c26f588b1e79b319f66d93ece646a13e5fb8deaa001dd8046b4"
+      },
+      {
+        "path": "include/bsp/native_tagged_float_bc_16l.hpp",
+        "bytes": 694,
+        "sha256": "2637bd9ed406d2bd5182f5f44800691e15cbd8282ee795feb4f92226eb5399c1"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 360287,
+        "sha256": "3c796f0b1b06bc1048521abcf498ee37354d43080e06c0f6800428bb401f5907"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.command.1.tlog",
+        "bytes": 4410054,
+        "sha256": "53acc2116bdf698693704877b104d0cc4e843e8c05fbeeafcd63da232d40f7df"
+      }
+    ],
+    "actual_registered_compile_commands": [
+      {
+        "source_marker": "^J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15Z_TRAFFIC_RESIZE\\SRC\\NATIVE_TAGGED_FLOAT_BC_16L.CPP",
+        "actual_command": "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15Z_TRAFFIC_RESIZE\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15Z_TRAFFIC_RESIZE\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15Z_TRAFFIC_RESIZE\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15Z_TRAFFIC_RESIZE\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-goal15z_traffic_resize/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-GOAL15Z_TRAFFIC_RESIZE\\SRC\\NATIVE_TAGGED_FLOAT_BC_16L.CPP"
+      }
+    ],
+    "CMake_exact_warm_base_plus_one_B4_registration": true
+  },
+  "normal_build_corrections": [
+    {
+      "was": "Initial output-only lease overlapped B4 active L lease",
+      "is": "Queued; no address/Source/output mutations before explicit B4 release, then claimed exact three addresses/four new paths/local output",
+      "evidence": "Root and B4 explicit release handoff; initial wait included in closure clock"
+    },
+    {
+      "was": "Exact preparation cherry-pick conflicts at CMake append; prescribed merge_resolve refuses cherry-pick context",
+      "is": "Root notified, all three stages/refusal retained; manual resolution is exact warm CMake bytes plus the ONE original B4 line, no unrelated Main registration",
+      "evidence": "CMake_resolution.json and three stage files; build only after clean cherry-pick"
+    },
+    {
+      "was": "Initial manual guard assumed this stream standard absolute target_sources spelling",
+      "is": "Guard rejected before write; use exact verified B4 registration.json only_append line, which includes DEFER DIRECTORY",
+      "evidence": "No Source/normalbuild failure or rerun; final one-append hash proved before build"
+    },
+    {
+      "was": "Initial read inspected not-yet-present/unprovided HANDOFF/doc path during transfer",
+      "is": "Used actual final five-file preparation commit, receipt and41-file prepared_bundle manifest; all verified and frozen",
+      "evidence": "No missing required input; no Source/build change"
+    },
+    {
+      "was": "Plain add-name for the two pre-existing reviewed CloudPuff names was refused; an initial diagnostic import also hit the already-added first name",
+      "is": "Used CLI --append-evidence for the two existing names, retaining their exact names and prior hypothesis evidence. First new name/function was already recorded once; no duplicate function rows or Source/build changes",
+      "evidence": "ledger_add_name_00bc7aa0.txt and current three owned name/function diffs; all costs included"
+    }
+  ],
+  "normal_build_limits": [
+    "Whole12B/6 instruction body equality and actual normal build/Core registration; no Native or Source getter runtime/exception/FP-mode probe, no caller/game adoption.",
+    "ECX is actual raw memory base, no incoming EDX or stack argument, plainRET. New float-fastcall declaration is a chosen interface; Original class/float-versus-double/convention declaration remain unrecovered.",
+    "FLD m32real retains actual inherited x87 stack/control/status/tags/TOP, pending exception and masked/unmasked/stack-fault behavior. No normalization, helper, writable provider/global, domain restriction or environment reset; no fabricated exceptional runtime results.",
+    "Normal-completion own GPR preservation excludes ESP, which RET advances4; EFLAGS unchanged. Absolute fault EIP/saved x87FIP and Source code placement differ, so no full Original CPU-address/physicalABI identity.",
+    "Prior caller inline software NaN quieting and abstract interfaces remain unchanged and are not complete standalone providers of these getters."
   ]
 }
