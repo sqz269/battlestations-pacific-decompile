@@ -69,6 +69,9 @@ maps every Native instruction to its retained operation or explicit current
 SDK frame/exception boundary. It claims neither byte equivalence for this
 147-byte body nor identical legacy string/object allocation schedules,
 failure sites, FH3 frames, RTTI, ThrowInfo, throw/unwind ABI or private CRT.
+The emitted Source count entry reads header+8 before loading the incoming
+addition word; Native loads that argument first. Both reads precede publication
+and external calls. Their exact read/fault order is not claimed equivalent.
 
 The old descriptive name `STL_xlen_throw_004cf450` misleadingly excluded its
 returning increment path. The reviewed name is
