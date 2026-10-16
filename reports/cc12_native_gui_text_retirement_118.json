@@ -1,0 +1,917 @@
+{
+  "packet": "cc12_native_gui_text_retirement118",
+  "recorded_utc": "2026-10-16T06:58:50.344276+00:00",
+  "checked_baseline": "cf8f48aee32759e328ff31e41a498de478997add",
+  "scope": "whole raw AB8250 plusAB8EE0 only; no lower-helper/typed changes or production activation",
+  "analysis_target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_batches": "verifying bsp ghidra wrappers; no import",
+    "installed_Original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "Original_bodies": [
+    {
+      "entry": "0x00AB8250",
+      "end_exclusive": "0x00AB83D0",
+      "bytes": 384,
+      "instructions": 113,
+      "Original_ABI": "ECX actual Text/no args/RET atAB83CF; preserves EBX/ESI/EDI; EAX unspecified; FH3 handlerCB7EEC",
+      "complete_live_Original_bytes_equal": true,
+      "live_saved_Original_starts_match": true,
+      "sha256_Original_and_live_bytes": "31f5d388cb4a4c17792463ee0c5b316009db74ba127599919d9915dcc2b850cc"
+    },
+    {
+      "entry": "0x00AB8EE0",
+      "end_exclusive": "0x00AB8F00",
+      "bytes": 32,
+      "instructions": 11,
+      "Original_ABI": "ECX SAME Text/stack flags DWORD; EAX SAME identity/RET4 atAB8EFD; ESI preserved; late LOW BYTE test",
+      "complete_live_Original_bytes_equal": true,
+      "live_saved_Original_starts_match": true,
+      "sha256_Original_and_live_bytes": "6c4abe4b629538eed67c9070b40b96532c19f2d78a8db49ecd0d9b309668cead"
+    }
+  ],
+  "calls": [
+    {
+      "function": "0x00AB8250",
+      "address": "0x00AB82AF",
+      "native": "0x00B6DFA0",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB8250",
+      "address": "0x00AB82BC",
+      "native": "0x00AB80C0",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB8250",
+      "address": "0x00AB82DD",
+      "native": "0x00419CC0",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB8250",
+      "address": "0x00AB82E4",
+      "native": "0x00BD1510",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB8250",
+      "address": "0x00AB8305",
+      "native": "0x00419CC0",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB8250",
+      "address": "0x00AB830C",
+      "native": "0x00BD1510",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB8250",
+      "address": "0x00AB832E",
+      "native": "0x00419CC0",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB8250",
+      "address": "0x00AB8335",
+      "native": "0x00BD1510",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB8250",
+      "address": "0x00AB8345",
+      "native": "0x00BF65AC",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB8250",
+      "address": "0x00AB837B",
+      "native": "0x00419CC0",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB8250",
+      "address": "0x00AB8382",
+      "native": "0x00BD1510",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB8250",
+      "address": "0x00AB83A3",
+      "native": "0x00419CC0",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB8250",
+      "address": "0x00AB83AA",
+      "native": "0x00BD1510",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB8250",
+      "address": "0x00AB83B9",
+      "native": "0x00AA9730",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB8EE0",
+      "address": "0x00AB8EE3",
+      "native": "0x00AB8250",
+      "kind": "call"
+    },
+    {
+      "function": "0x00AB8EE0",
+      "address": "0x00AB8EF5",
+      "native": "0x00AB75A0",
+      "kind": "call"
+    },
+    {
+      "function": "0x00CB7E90",
+      "address": "0x00CB7E93",
+      "native": "0x00AA9730",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xaa9730"
+    },
+    {
+      "function": "0x00CB7E98",
+      "address": "0x00CB7EA1",
+      "native": "0x00436430",
+      "kind": "tail_jump",
+      "instruction": "jmp 0x436430"
+    },
+    {
+      "function": "0x00CB7EA6",
+      "address": "0x00CB7EAF",
+      "native": "0x0041DD20",
+      "kind": "tail_jump",
+      "instruction": "jmp 0x41dd20"
+    },
+    {
+      "function": "0x00CB7EB4",
+      "address": "0x00CB7EBD",
+      "native": "0x005D6CF0",
+      "kind": "tail_jump",
+      "instruction": "jmp 0x5d6cf0"
+    },
+    {
+      "function": "0x00CB7EC2",
+      "address": "0x00CB7ECB",
+      "native": "0x00436430",
+      "kind": "tail_jump",
+      "instruction": "jmp 0x436430"
+    },
+    {
+      "function": "0x00CB7ED0",
+      "address": "0x00CB7ED9",
+      "native": "0x0041DD20",
+      "kind": "tail_jump",
+      "instruction": "jmp 0x41dd20"
+    },
+    {
+      "function": "0x00CB7EDE",
+      "address": "0x00CB7EE7",
+      "native": "0x0041DD20",
+      "kind": "tail_jump",
+      "instruction": "jmp 0x41dd20"
+    },
+    {
+      "function": "0x00CB7EEC",
+      "address": "0x00CB7EF1",
+      "native": "0x00BF6B43",
+      "kind": "tail_jump",
+      "instruction": "jmp 0x00bf6b43"
+    }
+  ],
+  "indirect_call_sites": [
+    {
+      "function": "0x00AB8250",
+      "site": "0x00AB828D",
+      "instruction": "dword ptr [0xce2220]"
+    },
+    {
+      "function": "0x00AB8250",
+      "site": "0x00AB829D",
+      "instruction": "eax"
+    }
+  ],
+  "status": "complete raw success-destructor/scalar bodies for declared genuine provider domain; strict Win32 compiled and existing baseline checks passed; Root registration pending",
+  "API": {
+    "destructor": "destroy_native_gui_text_storage_00ab8250(void*,Context&,Acquired&)",
+    "scalar": "delete_native_gui_text_storage_00ab8ee0(void*,const volatile DWORD&caller_flags_word,Context&,ScalarAcquired&)",
+    "new_Cpp_ABI": true,
+    "Native_drop_in_ABI_proved": false
+  },
+  "provider_domain": {
+    "same_graph": "borrow SAME existing85/93 section resources, raw base context,113 glyph context and actual Text pool",
+    "preflight_authenticated": "same Node runtime/glyph bindings/canonical owner registry/raw Node name mode/raw+semantic string process/effect owner services/current decrement-cell references",
+    "known_region_limit": "whole transitive backing/creator/frame disjointness and lifetime plus canonical profile aliases/pool provenance remain caller/provider bindings",
+    "shader": "at828D capture CURRENT CE2220 once then decrement actual+04; observedzero capture CURRENT raw profile, SAME existing live cache/creator table alias then CURRENT slot0; knownD5E534/D61A00:BD30E0 via genuine existing actual-zero dispatcher with NO second decrement",
+    "shader_boundary": "unknown profile/target or registry failure after observedzero remains Source host/provider failure with alreadyzero diagnostics; no fake target/default table/copy array/native-origin inference",
+    "canonical_shader_terminal_failure_policy": "NativeMaterialEffectReference zero terminal is noexcept/terminating; its destruction failures cannot unwind into Text cleanup. Preterminal profile/registry/identity Source errors can enter Text cleanup after already-consumed decrement.",
+    "shadow": "CURRENT188 after shader/clear -> real B6DFA0 SAME resources.parenting.node.trees and persistent acquired record; post-return clear onlynonnull",
+    "glyphs": "whole113 SAME raw Text/nodes/bindings; nonempty raw Text current-child scalar recursion remains genuinely required",
+    "strings": "captured DATA -> consume volatile outerstate -> conditional CURRENT len -> fresh419CC0 -> BD1510 SAME process/currentmask, no header/data reread or zero",
+    "vector": "real5D6CF0 at194 while state3; captures begin once inside helper, no extra payload read/state2; same SourceCRT",
+    "base": "whole raw AA9730 afterstate-1; required current child/timed/parent/model profiles unchanged",
+    "scalar": "flags ADDRESS only preflight; AFTER destructor only CURRENT LOW BYTE load at stable callerDWORD address; bit0 SAME actual pool/slab/trailer return; SAME pointerbits; no count test/decrement"
+  },
+  "normal_string_schedule": [
+    {
+      "header_offset": "0x1C8",
+      "encoding": "narrow",
+      "data_capture": "0x00AB82C1",
+      "state_store": "0x00AB82C9",
+      "state": 5,
+      "nonnull_length_capture": "0x00AB82D0",
+      "getter_call": "0x00AB82DD",
+      "return_call": "0x00AB82E4",
+      "bytes": "current_length+1 wrapping DWORD"
+    },
+    {
+      "header_offset": "0x1C0",
+      "encoding": "narrow",
+      "data_capture": "0x00AB82E9",
+      "state_store": "0x00AB82F1",
+      "state": 4,
+      "nonnull_length_capture": "0x00AB82F8",
+      "getter_call": "0x00AB8305",
+      "return_call": "0x00AB830C",
+      "bytes": "current_length+1 wrapping DWORD"
+    },
+    {
+      "header_offset": "0x1A4",
+      "encoding": "wide",
+      "data_capture": "0x00AB8311",
+      "state_store": "0x00AB8319",
+      "state": 3,
+      "nonnull_length_capture": "0x00AB8320",
+      "getter_call": "0x00AB832E",
+      "return_call": "0x00AB8335",
+      "bytes": "current_length*2+2 wrapping DWORD"
+    },
+    {
+      "header_offset": "0xF4",
+      "encoding": "narrow",
+      "data_capture": "0x00AB835F",
+      "state_store": "0x00AB8367",
+      "state": 1,
+      "nonnull_length_capture": "0x00AB836E",
+      "getter_call": "0x00AB837B",
+      "return_call": "0x00AB8382",
+      "bytes": "current_length+1 wrapping DWORD"
+    },
+    {
+      "header_offset": "0xEC",
+      "encoding": "wide",
+      "data_capture": "0x00AB8387",
+      "state_store": "0x00AB838F",
+      "state": 0,
+      "nonnull_length_capture": "0x00AB8395",
+      "getter_call": "0x00AB83A3",
+      "return_call": "0x00AB83AA",
+      "bytes": "current_length*2+2 wrapping DWORD"
+    }
+  ],
+  "EH": {
+    "evidence": "accepted109 whole FuncInfo/map/funclets with SAME installedOriginal hash; normal two bodies freshly verified",
+    "native_map": {
+      "handler": "0x00CB7EEC",
+      "handler_end_exclusive": "0x00CB7EF6",
+      "FuncInfo": "0x00DEECAC",
+      "magic": "0x19930522",
+      "maxState": 7,
+      "unwindMap": "0x00DEECD0",
+      "try_blocks": 0,
+      "IP_map_entries": 0,
+      "EH_flags": 1,
+      "entries": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "funclet": "0x00CB7E90",
+          "end_exclusive": "0x00CB7E98",
+          "receiver": "[EBP-10]",
+          "receiver_offset": 0,
+          "target": "0x00AA9730"
+        },
+        {
+          "state": 1,
+          "next_state": 0,
+          "funclet": "0x00CB7E98",
+          "end_exclusive": "0x00CB7EA6",
+          "receiver": "[EBP-10]",
+          "receiver_offset": 236,
+          "target": "0x00436430"
+        },
+        {
+          "state": 2,
+          "next_state": 1,
+          "funclet": "0x00CB7EA6",
+          "end_exclusive": "0x00CB7EB4",
+          "receiver": "[EBP-10]",
+          "receiver_offset": 244,
+          "target": "0x0041DD20"
+        },
+        {
+          "state": 3,
+          "next_state": 2,
+          "funclet": "0x00CB7EB4",
+          "end_exclusive": "0x00CB7EC2",
+          "receiver": "[EBP-10]",
+          "receiver_offset": 404,
+          "target": "0x005D6CF0"
+        },
+        {
+          "state": 4,
+          "next_state": 3,
+          "funclet": "0x00CB7EC2",
+          "end_exclusive": "0x00CB7ED0",
+          "receiver": "[EBP-10]",
+          "receiver_offset": 420,
+          "target": "0x00436430"
+        },
+        {
+          "state": 5,
+          "next_state": 4,
+          "funclet": "0x00CB7ED0",
+          "end_exclusive": "0x00CB7EDE",
+          "receiver": "[EBP-10]",
+          "receiver_offset": 448,
+          "target": "0x0041DD20"
+        },
+        {
+          "state": 6,
+          "next_state": 5,
+          "funclet": "0x00CB7EDE",
+          "end_exclusive": "0x00CB7EEC",
+          "receiver": "[EBP-10]",
+          "receiver_offset": 456,
+          "target": "0x0041DD20"
+        }
+      ],
+      "normal_active_states": [
+        -1,
+        6,
+        5,
+        4,
+        3,
+        1,
+        0,
+        -1
+      ],
+      "no_shader_shadow_or_glyph_rollback_funclet": true,
+      "vector_exception_limit": "state3 is still armed during normal inline free/clears; Native throwing free would still reach vector tidy; Source CRT free is nonthrowing",
+      "projection_plan": "consume next-state/action before each genuine unwind call; record completed actions; second cleanup exception terminates",
+      "origin_caveat": "85 provider_call denotes a provider boundary, NOT Native exception origin; host metadata/registry failures can follow consumed raw effects",
+      "native_private_ABI_not_claimed": true,
+      "data_hashes": {
+        "FuncInfo36": "2533dc9f4fe71dd7754793470a3517502d429c4bd5edcb63a159c7f4774fdaff",
+        "unwindMap56": "0d86dc1cadde0784dbb942d541a02cf0fc30066e23b31d5b132b94c9ddf6ef84",
+        "funclets92": "6652e8968f365840ab76dc1f92247919846ea81ee5debd5582a79a4426b1c8c8",
+        "handler10": "65f37017db856e7d71c74e357a499d9f85979684c8153454e44bdc2514ee20cd"
+      }
+    },
+    "normal_states": [
+      -1,
+      6,
+      5,
+      4,
+      3,
+      1,
+      0,
+      -1
+    ],
+    "unwind": "consume each reverse state/action before genuine helper; cleanup escape terminates; no shader/shadow rollback/glyph completion/retry",
+    "Source_origin_limit": "C++ catch/boundary scheduling does not prove Native FH3/SEH/private frames or arbitrary provider-failure equivalence"
+  },
+  "retention": {
+    "before_callbacks": "hold complete independent85/93 creators/canonical records/services/raw backing/current tables and distinct prepared recursive frames",
+    "diagnostics": "plain trivially destructible public records own no graph, clean nothing, cannot enforce uneditable identity; caller must never reset/assign/replay reached state",
+    "progress": "shader current function/result/profile/target and zero progress, shadow/glyph nested state, separate disarmed/normal entered/returned/unwind consumed masks, base/scalar flags/pool progress",
+    "ended_payload": "base or terminal may end lifetime; retained aliases can dangle, never rediscover ownership from dead fields or automatically release failed creators/slot",
+    "count_is_not_barrier": "held material1->2->1 is not forced scalar/ancestor barrier"
+  },
+  "optimized": {
+    "Root_Source_API_review": "PASS",
+    "Root_optimized_review": "PASS",
+    "main_lines": [
+      1304,
+      1867
+    ],
+    "shader_lines": [
+      1368,
+      1547
+    ],
+    "current188_glyph_lines": [
+      1548,
+      1618
+    ],
+    "five_member_call_arguments": [
+      1620,
+      1738
+    ],
+    "shared_DATA_state_conditional_len": [
+      3074,
+      3246
+    ],
+    "vector_and_finalbase_lines": [
+      1680,
+      1785
+    ],
+    "seven_state_unwind_lines": [
+      3256,
+      3535
+    ],
+    "scalar_lines": [
+      1877,
+      1994
+    ],
+    "worker_inspection": "current CE2220 reached load not preflight snapshot; DATA/store/len and late BYTE order; vectorstate3/no2; consumed-before-call dispatch confirmed",
+    "differences": [
+      "nonnullshader comparison emits AFTER state6store, raw shadercapture beforestate6; invariant test/no intervening Native call",
+      "pure Source metadata getters/outlined cleanup/new signatures and compiler-generated C++ EH differ from Native instructions/flags/ABI",
+      "known current canonical profiles/noexcept/source storage limits are not arbitrary mutable IAT/private CRT equivalence"
+    ]
+  },
+  "compile": {
+    "command": "cl /c /std:c++17 /EHsc /MD /O2 /W4 /WX /fp:strict /FAs /Iinclude src/native_gui_text_retirement.cpp",
+    "exit": 0,
+    "source": {
+      "path": "src/native_gui_text_retirement.cpp",
+      "sha256": "60993aaade168fe8ec23468d787a61093c51b200a49e1a193663b560a0384bd3"
+    },
+    "header": {
+      "path": "include/bsp/native_gui_text_retirement.hpp",
+      "sha256": "2744353d2ae4c9041b2980360cdf3e499aae28cb1446519dc4ca7064e6e3a300"
+    },
+    "object": {
+      "path": "local/native_gui_text_retirement_118.obj",
+      "sha256": "6de84aa17ee4c0fd60b22283dfaa6dcba767efef31569f061ab1333b7ce9314d"
+    },
+    "assembly": {
+      "path": "local/native_gui_text_retirement_118.asm",
+      "sha256": "72048670a50e62017a0bc7106c5bfe26b9a1897ecf2332d71a0c07457a0cbedf"
+    },
+    "log": {
+      "path": "local/text_retirement118_strict_compile.log",
+      "sha256": "2a241a8d1cf6f7ab75d48c4778ddd5cea47123af89f11aceb072e57b187da527"
+    },
+    "first_failure": "missing wide-string declaration include, actual header added; original log retained"
+  },
+  "canonical_build": {
+    "command": "./scripts/build.ps1",
+    "exit": 0,
+    "passed": 2,
+    "failed": 0,
+    "checks": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "log": {
+      "path": "local/text_retirement118_existing_build.log",
+      "sha256": "dcc06dafc1b4001ceaf327d5de4f20a8332333514f92546609c6de2bb8fca917"
+    },
+    "project": {
+      "path": "build/win32/bsp_core.vcxproj",
+      "sha256": "e7f4a5eafaf03469f68f0669564ebf39bb46570dce6715c456e8d6673bec42fb"
+    },
+    "executable": {
+      "path": "build/win32/Release/bsp_game.exe",
+      "sha256": "0f7cc850c72228b2a56400f0649b7aab01faa7fcfad1c4d48c2ec24337d11095"
+    },
+    "ctest_log": {
+      "path": "build/win32/Testing/Temporary/LastTest.log",
+      "sha256": "bcbdb6814d5eabd902af879da8b0d3d73de94eddb704d419f2848f44adac75fd"
+    },
+    "new_TU_registered_or_linked": false,
+    "limit": "new TU separately strict-compiled; Root owns future registration and combined link/build proof"
+  },
+  "source_hashes": [
+    {
+      "path": "include/bsp/native_gui_text_retirement.hpp",
+      "sha256": "2744353d2ae4c9041b2980360cdf3e499aae28cb1446519dc4ca7064e6e3a300"
+    },
+    {
+      "path": "src/native_gui_text_retirement.cpp",
+      "sha256": "60993aaade168fe8ec23468d787a61093c51b200a49e1a193663b560a0384bd3"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43"
+    },
+    {
+      "path": "include/bsp/native_material_effect_owner.hpp",
+      "sha256": "197df420b08345803c36b5ef20cfaa725ccfa02c8ccc4a3fbfb76adada7bdedf"
+    },
+    {
+      "path": "src/native_material_effect_owner.cpp",
+      "sha256": "1a19bafced64bda09691cdbd0d7254ce000afb976144fb1cb01936377d16698b"
+    },
+    {
+      "path": "include/bsp/native_material_effect_cache.hpp",
+      "sha256": "56d1930a80ad2ed90883c1f52f26f36ec51c50c6294a844dd64258949d103ff4"
+    },
+    {
+      "path": "include/bsp/native_material_effect_loading.hpp",
+      "sha256": "58a70009ee0df21341679430f1b0d88deedaf0602aef81d40b6aaef13d0dbfb9"
+    },
+    {
+      "path": "include/bsp/native_node_tree_retirement.hpp",
+      "sha256": "7826147682ef91780670172a270214c5f164ba92696f76c06ecc4d3e8387f07f"
+    },
+    {
+      "path": "src/native_node_tree_retirement.cpp",
+      "sha256": "f58325714135577e4a2baefdefea81b45fd1d5bfaa912d83b02d38637466fbf5"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "sha256": "f9fe331e898de066b05cde5aba9bae1bb5e0dfccdceedb9cb8c85a286be3d286"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "sha256": "f5f10d603694dfbb354b92bc4627dfc0fd687724fc51d49de5c51f53c813c3b6"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30"
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b"
+    },
+    {
+      "path": "include/bsp/gui_text_factory.hpp",
+      "sha256": "5aad1ef48c9c29b28ffd17178f20446ab8277508dd39a0b69cf23760adcfb657"
+    },
+    {
+      "path": "src/gui_text_factory.cpp",
+      "sha256": "bde7d1a4130a2ba7d71381143daa58c26d050200638bd7f4f8a60b35579b03c8"
+    },
+    {
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "sha256": "2263f0a5cf044e3040c7f3f024a8d9899df1e7f0277db512f4db7d59976510f7"
+    },
+    {
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "sha256": "9cb60be1d88a03d4136ca9fe34243c8b980199192300456819bf2a46778a6200"
+    },
+    {
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "sha256": "39d2a14672dc90e8605c47fb267d59510639dc445d4caf28a48d79d172d89562"
+    },
+    {
+      "path": "src/native_gui_text_default_storage.cpp",
+      "sha256": "38e7aafba69bfe959bd3f45111c9e85074d646eaacfa6c718e2b1530c30b55d7"
+    },
+    {
+      "path": "include/bsp/native_wide_string.hpp",
+      "sha256": "d9499a98a3379366390eac87f3b6bca7ebb452e8e19e96d3e7a354295c6e8bc0"
+    },
+    {
+      "path": "src/native_wide_string.cpp",
+      "sha256": "319fd69f6ba6700dbcc3dec688166ad3a1492137e844299e8067fd067c130fd7"
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_children.hpp",
+      "sha256": "441e4a25ab536b115d87bdc2de81778eda2dc4d47f61faced68485f1cc4e8b11"
+    },
+    {
+      "path": "src/native_gui_text_glyph_children.cpp",
+      "sha256": "cf9454f0b8e09ccd1fc9eeb7250daca7cccab0ad6b25969fd511b09968018081"
+    },
+    {
+      "path": "include/bsp/gui_text_content.hpp",
+      "sha256": "8f2198eb3e3c761abac885b62b0c0576f1c44e7e40315a706fa53109544d5b81"
+    },
+    {
+      "path": "src/gui_text_content.cpp",
+      "sha256": "bf41cef8a8d3f041abc1452499a4c9b7e20fc5deb23cd61baf34d7b5364eab9b"
+    },
+    {
+      "path": "include/bsp/gui_text_lifetime.hpp",
+      "sha256": "62a1fa7ecd030206c4a10fbdd838e1bec331ba28f81628c5dc3013ec847fd4d4"
+    },
+    {
+      "path": "src/gui_text_lifetime.cpp",
+      "sha256": "f85233209473db33be801eca99713889ce7eb932ab37d0c0222d9b23173bc1be"
+    }
+  ],
+  "preserved113_packet_artifacts": [
+    {
+      "path": "local/native_gui_text_glyph_children_113.obj",
+      "sha256": "69734d7dca3c6bb19599992c6e225e1739ea7d159790e47d64b867c4c443daad"
+    },
+    {
+      "path": "local/native_gui_text_glyph_children_113.asm",
+      "sha256": "fb6169f22a6b059152af5a08ab32c996e6396d0f7e1420e03e739c14ae144946"
+    },
+    {
+      "path": "local/text_glyph113_strict_compile.log",
+      "sha256": "fbe2bb94b22326ebf8706635af5f6d8aa2b72d44f6cdbb72f9783852ba6e9543"
+    },
+    {
+      "path": "local/text_glyph113_existing_build.log",
+      "sha256": "ec94b5e9829748fb8291dbad812a76949010ebe48404ea04bf5bfd5c1235a075"
+    },
+    {
+      "path": "local/text_glyph113_baseline_merge.log",
+      "sha256": "f592fa2c4807101318b19ee74525eb4678bdd45ab587133c4d6a000f65fd4ced"
+    },
+    {
+      "path": "local/text_glyph113_baseline_ff_attempt.log",
+      "sha256": "a8bba5a907902a519b965870afcfa591e8864c3faca1f66fac2609c5c6506a23"
+    },
+    {
+      "path": "local/text_glyph113_strict_compile.cmd",
+      "sha256": "7ca3610eefb438c7c2b2721e2b28e0799379428c4b815b2eed250ed0198c82ed"
+    },
+    {
+      "path": "local/text_glyph113_strict_command_attempt.log",
+      "sha256": "b9aad066b1b8b2cb9ae40f33ecc5c0018dfce42575377474db8bc4d6ab0fc6ee"
+    },
+    {
+      "path": "local/text_glyph113_live_bytes.txt",
+      "sha256": "0cb4e424c40f8fba18a05c83c7dbfe6cf80c82c0134eb3bcd48eb5720d0e176b"
+    },
+    {
+      "path": "local/text_glyph113_live_proto.txt",
+      "sha256": "c7a7c9bef890870da603efaa634552ef58275902f58010072a74718c06d79ea6"
+    },
+    {
+      "path": "local/text_glyph113_live_asm.txt",
+      "sha256": "b41a3ae360e6c5aedd0e52698084d023de5019bf1c557997c5ad7f58e14f4b61"
+    },
+    {
+      "path": "local/text_glyph113_prior_ghidra_comments.json",
+      "sha256": "fd12cf128650b97460c11436d34585db174b49e8365de4769a7799b9bae373fb"
+    },
+    {
+      "path": "local/text_glyph113_prior_ledger_lookup.txt",
+      "sha256": "43006423ba556c0cb6b9c6751995ca8bc8b62d0b60ca9efd817ca59acec4347e"
+    },
+    {
+      "path": "local/text_glyph113_report_call_verification.log",
+      "sha256": "8070b5c911e8d46b832a5eb0c780837cd4225a4010f061ab59d89c24b8557641"
+    },
+    {
+      "path": "local/text_glyph113_preservation_receipt.json",
+      "sha256": "4f0c94dc7ca4388d405487d9ec82c85e2398a83b8251b810a696131c1dd21891"
+    },
+    {
+      "path": "local/text_glyph113_ghidra_annotation.log",
+      "sha256": "d5ade0e9b6e220db5a2bda88108f89e322d60a9c7dbc47e6b0174adf2861b565"
+    },
+    {
+      "path": "local/text_glyph113_export_refresh.log",
+      "sha256": "6c7daabcc0cb3d22723ecdba816e474ac6c93ddc94ec5955dadb613d2fe74ba8"
+    },
+    {
+      "path": "local/text_glyph113_final_ghidra_comments.json",
+      "sha256": "f9c749114c876f754f2125476194d892bbdc9b855826592b682a918ac47968ca"
+    },
+    {
+      "path": "local/text_glyph113_ledger_add.log",
+      "sha256": "9aec4fdfcb305acc1c3bf0708d2c340808e8b5a31247ed366570eacf667a505d"
+    },
+    {
+      "path": "local/text_glyph113_final_ledger_lookup.txt",
+      "sha256": "408d135efbcff4ba7054b9fdca83ad644b32fea99588e16c670f69e8272bf601"
+    },
+    {
+      "path": "local/text_glyph113_index_refresh.log",
+      "sha256": "7667fcdbb9d217f7a00d4800c868355666c3d498e3ff78b262dd769af3e9dbe0"
+    },
+    {
+      "path": "local/text_glyph113_export_evidence/metadata.json",
+      "sha256": "4a2c0a5acee690ae2ffb391bc046112b3cbf2b1fba15f72c9f9a44c2662b0084"
+    },
+    {
+      "path": "local/text_glyph113_export_evidence/decompiled.c",
+      "sha256": "0b0d8a6e0caddc58299a944df0f0e8459482924569ad203ebd9b3ecd65cf8d9a"
+    },
+    {
+      "path": "local/text_glyph113_export_evidence/assembly.txt",
+      "sha256": "e3a157fcf8328e415fd22007e42a74e6a8ea01805da7570b63c1f71045088b3c"
+    }
+  ],
+  "reused_receipts": [
+    {
+      "path": "reports/cc12_native_gui_text_retirement_readiness_109.json",
+      "sha256": "6ecf29e11134ce53aa8cf4358f88bcbe65cd4e44d0871a559acf50e926922d4e"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_raw_sections_85.json",
+      "sha256": "670803ccbec611ee44b63c277b5ecb414e50a467370f329979aa78afa846afc7"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_raw_default_93.json",
+      "sha256": "d9c89f153f299af3ff73463311639839fdd781dcaff1e5050843175619759b84"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_glyph_children_113.json",
+      "sha256": "28da47d45876f5ea8326350ceb9eb684eecc1eebabb0a11d891b813ace610c80"
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "local/text_retirement118_live_proto.txt",
+      "sha256": "0942af1738afda897d149035a62c2d8a9d9de850e05aab8f279de5677d6bf5c1"
+    },
+    {
+      "path": "local/text_retirement118_destroy_live_bytes.txt",
+      "sha256": "c3bbf0a5505c8f1cab116f86ec7f5e216f49d9ed4e6363a616dc2395c06d26e2"
+    },
+    {
+      "path": "local/text_retirement118_scalar_live_bytes.txt",
+      "sha256": "9f89870f9c9bb2fbcff9d4fb0490013ad1cbeacb4b975167415c233c19fa4913"
+    },
+    {
+      "path": "local/text_retirement118_destroy_live_asm.txt",
+      "sha256": "be105018d5ab2bc3a6064c89a8a27ba336cf2d5910d263e52a1e982044cd0f60"
+    },
+    {
+      "path": "local/text_retirement118_scalar_live_asm.txt",
+      "sha256": "1cff640bb0635aada0222f3400d5d24076fe869dfd81ff4e75e0df4f93690b1a"
+    },
+    {
+      "path": "local/text_retirement118_prior_ghidra_comments.json",
+      "sha256": "b9bfe85818e710d7006e273e7c3bbd42643555b8e28714a01e29a7b429ecfd00"
+    },
+    {
+      "path": "local/text_retirement118_prior_destroy_lookup.txt",
+      "sha256": "e9c0706b42fbc10e9588fc5942b079f2fa679a6d809d72868961adfa01ad92f0"
+    },
+    {
+      "path": "local/text_retirement118_prior_scalar_lookup.txt",
+      "sha256": "df49f4caed8f6cb5bde353a8f1097e037e44435c9268cd024f1dfddb471026bd"
+    },
+    {
+      "path": "local/text_retirement118_strict_compile.cmd",
+      "sha256": "c1083041e3d52ad54dfe9ac5c68f564ae6e06d9c9957f3478f1c00668d3117b6"
+    },
+    {
+      "path": "local/text_retirement118_strict_compile_missing_include.log",
+      "sha256": "2297c0c35542e9e1d7b83827bfd1c142d85cccd220821e345f51a101928817e8"
+    },
+    {
+      "path": "local/build_text_retirement118_report.py",
+      "sha256": "923a6a0df7cdef1724e1ed90b66b12e9ea0eae7d6ce044b1b45e3e6d7677e1ab"
+    },
+    {
+      "path": "local/text_retirement118_report_call_verification.log",
+      "sha256": "6c2d961f97508ab35a9f85c16cbd775fa3aee565b2f259cd06186f630ab8b154"
+    },
+    {
+      "path": "local/ghidra-annotations-20261016T065718Z.json",
+      "sha256": "98d96626c224348f4efbf49f6cd6a60d66ea57176a7667c565b17a98d2a6b817"
+    },
+    {
+      "path": "local/text_retirement118_preservation_receipt.json",
+      "sha256": "e81aa1ab454294df432e8cf37204e96b57632b60cdb94d4cca670f20ad4937a9"
+    },
+    {
+      "path": "local/text_retirement118_ghidra_annotation.log",
+      "sha256": "8e1db791ffbc07af4415d90d19bae33b864a871fe64681d400fa555f78fdcc7a"
+    },
+    {
+      "path": "local/text_retirement118_export_refresh.log",
+      "sha256": "457b68454443087bd064e76ea48615b9b7009befa915ff9da6d8da33a4b17d28"
+    },
+    {
+      "path": "local/text_retirement118_index_refresh.log",
+      "sha256": "74ae85876c0dbce8e523828dfe38fd9f7a9ff76d4795cf43843537c30f930048"
+    },
+    {
+      "path": "local/text_retirement118_final_ghidra_comments.json",
+      "sha256": "144a7876ce02d8b7d62ff105f2c228dfa947f2c3fc2d88ec4b34a6b531d31a8b"
+    },
+    {
+      "path": "local/text_retirement118_prior_ghidra_comments_capped.log",
+      "sha256": "747019422ab04e7201931ec91dba289922de954fece9bfa34676ce2d4909e698"
+    },
+    {
+      "path": "local/text_retirement118_final_ghidra_comments_capped.log",
+      "sha256": "e175761c152b8992e18cd2c8bb4363b27f6cb288a71695fb3d948f0ef30fb002"
+    },
+    {
+      "path": "local/text_retirement118_ledger_add.log",
+      "sha256": "9ef541660113c3d001301dc589a38568697881bbd933e3054f49b74db7d200ba"
+    },
+    {
+      "path": "local/text_retirement118_final_destroy_lookup.txt",
+      "sha256": "6c0eb60388fcb47ec6aad91cbd6b734e409a99ed4067360a6ffba65a1d7e5a73"
+    },
+    {
+      "path": "local/text_retirement118_final_scalar_lookup.txt",
+      "sha256": "1b7a5260e256741c92a6bf7f764638ebdb022b0e44b91eb4d9c3bb529fc1b407"
+    },
+    {
+      "path": "local/add_text_retirement118_records.py",
+      "sha256": "9d617840ce99a6c2a3fc6bb8b404a5248202d8f72532ff14f4ba77a8125d9123"
+    },
+    {
+      "path": "local/seal_text_retirement118_receipt.py",
+      "sha256": "4113a2bf55eb3ba7961b928b5bfd78913bd95e2eba2fafd534d6b9f7cc92d4d0"
+    }
+  ],
+  "validation": {
+    "report_call_rows_checked": 24,
+    "report_call_rows_failed": 0,
+    "Source85_93_101_113_and_old_typed_unchanged": true,
+    "CMake_changed": false,
+    "new_tests_probes_raw_execution": 0,
+    "Native_ABI_CRT_FH3_SEH_or_game_proved": false,
+    "nonempty_Text_recursive_binding_or_production_activation": false,
+    "direct_rows_not_coverage_proof": "complete384/32B with113/11 live/Original starts independently checked;24 rows include16 normal direct calls plus8 reused109 live EH tails, indirect shader/current services separate"
+  },
+  "owned_files": [
+    "include/bsp/native_gui_text_retirement.hpp",
+    "src/native_gui_text_retirement.cpp",
+    "docs/CC12_NATIVE_GUI_TEXT_RETIREMENT_118.md",
+    "reports/cc12_native_gui_text_retirement_118.json"
+  ],
+  "publication": {
+    "owned_addresses_only": [
+      "00ab8250",
+      "00ab8ee0"
+    ],
+    "locked_tool": "tools/ghidra_annotate.py --apply --addresses 00ab8250 00ab8ee0",
+    "prior_history": {
+      "path": "local/ghidra-annotations-20261016T065718Z.json",
+      "sha256": "98d96626c224348f4efbf49f6cd6a60d66ea57176a7667c565b17a98d2a6b817"
+    },
+    "saved": true,
+    "prior_comments_and_existing_names_preserved": true,
+    "owned_exports_refreshed": true,
+    "index_refreshed": true,
+    "prior_typed_prefix_records_unchanged": true,
+    "ledger": [
+      {
+        "path": "config/names/00ab0000.jsonl",
+        "sha256": "9cc5528b3d81959ca4b66814cb6e5367ff7a50e03a0eadce547e979ef2c076ea"
+      },
+      {
+        "path": "config/reconstruction/00ab0000.jsonl",
+        "sha256": "deb7ce15892d1b80147a869ff467b810cd01764f58315a1828707c073fca6157"
+      }
+    ],
+    "exact_owned_rows": {
+      "path": "local/text_retirement118_preservation_receipt.json",
+      "sha256": "e81aa1ab454294df432e8cf37204e96b57632b60cdb94d4cca670f20ad4937a9"
+    },
+    "Root_owns_future_registration_and_combined_build": true,
+    "no_future_build_or_reuse_before_Root_capture": true
+  },
+  "frozen_export_evidence": [
+    {
+      "path": "local/text_retirement118_export_evidence/00ab8250_metadata.json",
+      "sha256": "c6614ece9836e68fe66614a1b6eb1c1f19df7c869be24cce379094d88227f124"
+    },
+    {
+      "path": "local/text_retirement118_export_evidence/00ab8250_decompiled.c",
+      "sha256": "120d83b0a341c401e04904dc6df864c3c84b7b1712c59eed4ff9c6824fd24e05"
+    },
+    {
+      "path": "local/text_retirement118_export_evidence/00ab8250_assembly.txt",
+      "sha256": "50da668e1fa7bbd3df9db37c68a0a0604709a19f43d6010bca56fe99454bb92f"
+    },
+    {
+      "path": "local/text_retirement118_export_evidence/00ab8ee0_metadata.json",
+      "sha256": "83d37e72243f8296ea45cc7ea5f09116b6b0943d140f5d2d530f6992ebdfdf92"
+    },
+    {
+      "path": "local/text_retirement118_export_evidence/00ab8ee0_decompiled.c",
+      "sha256": "b9cecdf9d44fcf9fb13980a280bc4a4ba763d1ce7f07165cd1d915acafcf3c18"
+    },
+    {
+      "path": "local/text_retirement118_export_evidence/00ab8ee0_assembly.txt",
+      "sha256": "db11be8adbe2b0396c535c31981ab778aaef9e285b84e4b8d8c861340c004151"
+    }
+  ],
+  "sealed_utc": "2026-10-16T07:00:07.712800+00:00",
+  "final_artifact_manifest": "local/text_retirement118_final_artifact_manifest.json"
+}
