@@ -1,0 +1,442 @@
+{
+  "packet": "native_gui_clip_box_factory_83",
+  "generated_utc": "2026-10-16T04:01:22.637862+00:00",
+  "reviewed_root_source": "9bc71b4b10fdaa858c1352481c0fb1bee86ad1b7",
+  "worker_merge_baseline": "80976802260487d23325e67fb7cec47812be1586",
+  "owned_source": [
+    "include/bsp/native_gui_clip_box_factory.hpp",
+    "src/native_gui_clip_box_factory.cpp"
+  ],
+  "functions": [
+    {
+      "entry": "00ACE0A0",
+      "exclusive_end": "00ACE0B4",
+      "bytes": 20,
+      "source_function": "construct_native_gui_clip_box_default_00ace0a0",
+      "original_abi": "ECX actual destination, EAX same destination, RET"
+    },
+    {
+      "entry": "00ACE0F0",
+      "exclusive_end": "00ACE109",
+      "bytes": 25,
+      "source_function": "construct_native_gui_clip_box_copy_00ace0f0",
+      "original_abi": "ECX destination, stack actual source, EAX destination, RET4"
+    },
+    {
+      "entry": "00AA1920",
+      "exclusive_end": "00AA19A4",
+      "bytes": 132,
+      "source_function": "create_native_gui_clip_box_00aa1920",
+      "original_abi": "ECX optional actual source, EAX actual slot/null, RET"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00ACE0A5",
+      "native": "00AA9390",
+      "function": "00ACE0A0",
+      "kind": "call"
+    },
+    {
+      "address": "00ACE0F8",
+      "native": "00AA9520",
+      "function": "00ACE0F0",
+      "kind": "call"
+    },
+    {
+      "address": "00AA193E",
+      "native": "00ACEA10",
+      "function": "00AA1920",
+      "kind": "call"
+    },
+    {
+      "address": "00AA195A",
+      "native": "00ACE0F0",
+      "function": "00AA1920",
+      "kind": "call"
+    },
+    {
+      "address": "00AA197D",
+      "native": "00ACE0A0",
+      "function": "00AA1920",
+      "kind": "call"
+    },
+    {
+      "address": "00CB6F43",
+      "native": "00ACE610",
+      "function": "00CB6F40",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00CB6F4B",
+      "native": "00ACE610",
+      "function": "00CB6F48",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00ACEA15",
+      "native": "00ACE8D0",
+      "function": "00ACEA10",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00ACE616",
+      "native": "00ACE4A0",
+      "function": "00ACE610",
+      "kind": "call"
+    }
+  ],
+  "source_contract": {
+    "new_api": "Explicit borrowed C++ scalar/context/frame interfaces, not Original register ABI replacement",
+    "raw_default": "genuine AA9390(type16), then D5D058; SAME live scalar; no derived or unwritten base stores",
+    "raw_copy": "genuine raw AA9520, then D5D058; inherits fresh one-shot frame, actual canonical Model26/3E,parent0 supported domain and SAME current profiles/clone flags/geometry/stream providers",
+    "factory": "capture source before allocation; SAME initialized GameNativeGuiWidgetPoolProcess<GuiClipBoxPoolTraits>; null allocation returns null; null source default, nonnull source copy; no type check/model hookup/publication/virtual hooks",
+    "pool": {
+      "publication": "00F8C13C",
+      "payload_bytes": 268,
+      "stride_bytes": 272,
+      "slab_index_offset": 268,
+      "domain": "same E188B4 via existing physical pool process",
+      "new_pool_or_startup": false
+    },
+    "borrowed_table": {
+      "base": "00D5C0B8",
+      "entries": 19,
+      "inspected_row16": 62,
+      "live_reads_preserved": true,
+      "hardcoded_clone_flags": false
+    },
+    "default_or_null_allocation": "copy acquisition diagnostics untouched",
+    "successful_result": "actual raw creator; caller owns publication/final deletion",
+    "external_lifetime": "caller serializes storage/one-shot frame, keeps source/contexts/actual owner domains and retained independent acquisitions alive; no implicit graph retirement"
+  },
+  "failure_contract": {
+    "native_handler": "00CB6F50",
+    "native_info": "00DED5A8",
+    "native_map": "00DED598",
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00CB6F40"
+      },
+      {
+        "state": 1,
+        "next": -1,
+        "action": "00CB6F48"
+      }
+    ],
+    "native_action": "captured slot[EBP-10] -> ACE610 -> same F8C13C pool return",
+    "source_default": "only sentinel allocation can throw; actual callee catches, completes noexcept ref cleanup then rethrows",
+    "source_copy": "unwind_copy completes timed/list/ref cleanup by state, cleanup throws terminate, catch resets state then rethrows",
+    "factory_catch": "returns only failed widget slot after callee-owned cleanup; slot-return exception terminates",
+    "independent_model": "post-construction Model registration/later clone failures can preserve actual raw Model/model_owner/creators; factory does not inspect or release them. Caller retains SAME frame/services for explicit recovery. Widget+4C adoption occurs only after clone success, with no later throwing callback. Saved failed widget identity is not payload liveness.",
+    "whole_graph_cleanup": false,
+    "private_fh3_equivalence": false
+  },
+  "source_review": {
+    "reviewer": "Root independent complete header/body review",
+    "verdict": "PASS/no blockers",
+    "checks": "whole factory assembly/constructor pseudocode, actual raw base/copy catches, model-clone retained graph and post-success adoption scope",
+    "reviewed_hpp_blob": "065d5f5ba3747f4b6a3ce707abbc1a4b25ae3187",
+    "reviewed_cpp_blob": "f4a5a8892999a9c416457c1805650a2288121d45"
+  },
+  "validation": {
+    "existing_canonical_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "ctests_passed": 3,
+      "ctests_total": 3,
+      "seconds": 13.51,
+      "log": "local/cc12_native_gui_clip_box_factory_83/build.log",
+      "new_unit_registered": false
+    },
+    "direct_compile": {
+      "command_file": "local/cc12_native_gui_clip_box_factory_83/compile.cmd",
+      "flags": [
+        "/MD",
+        "/EHsc",
+        "/std:c++20",
+        "/O2",
+        "/Gy",
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/permissive-"
+      ],
+      "target": "MSVC Win32",
+      "compile_exit_code": 0,
+      "link_exit_code": 0,
+      "manifest_embedded": true,
+      "initial_link_fix": "Added canonical PowrProf after LNK2019 SetActivePwrScheme; no Source change."
+    },
+    "focused_probe": {
+      "exit_code": 0,
+      "cases": 1,
+      "scope": "whole Original20B default adapter versus Source default adapter; one native CALL rel32 atACE0A5 patched to register/stack bridge invoking genuine Source raw AA9390, same provider both sides",
+      "same_scalar": "one borrowed fixture cell initialized from audited Original D7A24C bits; not a live Original process cell ownership proof",
+      "checks": [
+        "same destination return",
+        "native ESP balanced",
+        "D5D058/type16/creator-count1",
+        "real distinct sentinel allocations and self-links",
+        "all110 destination bytes except only sentinel pointer identity normalized",
+        "all derivedEC..10F and allocator trailer preimages preserved"
+      ],
+      "cleanup": "existing empty-base timed/list/ref cleanup disposes fixture allocations only; not complete ClipBox retirement proof",
+      "unproved": [
+        "copy normal",
+        "factory normal",
+        "constructor/factory failure",
+        "native FH3/SEH or double exception",
+        "independent base implementation equivalence",
+        "game/runtime activation"
+      ]
+    }
+  },
+  "original": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "unchanged": true
+  },
+  "live_ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "verification": "existing bsp.py client verifies before each live batch"
+  },
+  "native_byte_proofs": [
+    {
+      "start": "00ACE0A0",
+      "bytes": 20,
+      "sha256": "d9ac8bdb38fa5f7b45971c7d04155d684ae6fc732cdd41b6329375398d9040ff",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00ACE0F0",
+      "bytes": 25,
+      "sha256": "b6583c3549252f2578c9e7f4fc5c039101ea03765c6166deec6c63d2c513f922",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00AA1920",
+      "bytes": 132,
+      "sha256": "802a3c3a872c6b5806353e3d06cf833b1dd005268b9ddca37e288fb1c4173a06",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00D7A24C",
+      "bytes": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00D5C0B8",
+      "bytes": 76,
+      "sha256": "47c0181aaf0d6571b65077b3c01ce8c2b61ca45492d53cfad9f59aee4eaaf1d7",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00DED598",
+      "bytes": 16,
+      "sha256": "357357eaba919c64e60aabce053ad11ad9515eb57baa2943f46ad930ec43e25f",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00DED5A8",
+      "bytes": 36,
+      "sha256": "dfcd2e3d747708630f1e0574c72694cfac4a224d097e3777fbe9d5d96aeb8287",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00CB6F40",
+      "bytes": 8,
+      "sha256": "432394fdc2ea52c97aac385731190ec997271edb42bb2607b125b13f26c12b14",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00CB6F48",
+      "bytes": 8,
+      "sha256": "563f4f5af5f9a6231360170b94eb4e61443ac4bc2eb6b9c060a1252164cf25d6",
+      "live_equals_installed_disk": true
+    },
+    {
+      "start": "00CB6F50",
+      "bytes": 10,
+      "sha256": "31edd733e73d75cb7e1088096bcb494040872841d7e498d2146ae06c8a0f5f3a",
+      "live_equals_installed_disk": true
+    }
+  ],
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_gui_clip_box_factory.hpp",
+      "git_blob": "065d5f5ba3747f4b6a3ce707abbc1a4b25ae3187",
+      "sha256": "6940c0f31ade03c32eda312438ef231cc4aa27b00c0830eb2de4f9a1636bc8fc"
+    },
+    {
+      "path": "src/native_gui_clip_box_factory.cpp",
+      "git_blob": "f4a5a8892999a9c416457c1805650a2288121d45",
+      "sha256": "cfc4ca8ae028035b8f1432172ded4e71d1c21e6d91b11e8754a073eaac1ffbf0"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_base_storage.hpp",
+      "git_blob": "61c72c99fab59f5c86da392495d7bae5381607cf",
+      "sha256": "35748704f96ed477f2f55f01edf5a8e598f1995955f847343f94327dc495faab"
+    },
+    {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "git_blob": "997a33c5ac7bbf7b57e133feb53b91163e7308b5",
+      "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_copy_storage.hpp",
+      "git_blob": "8867180c85381dcbd78e63dfb510ca5ba74a8ef2",
+      "sha256": "dd3d8b700a9dda51037bf2722a893402ebd2ae3d3358ad83fd3358325f57d307"
+    },
+    {
+      "path": "src/native_gui_widget_copy_storage.cpp",
+      "git_blob": "cdecd59b10e8617d2c2db3d67e17113658b9a62a",
+      "sha256": "66f5f04b8e71d79eba7e1791e57924a2679ef630fa4bffc80bb0f8b22d9367ae"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_model_clone.hpp",
+      "git_blob": "0f257e4a05a8874c1c0698ff353ab71918d8af50",
+      "sha256": "36e1a035e9b1785450cb83314b91e457a89e3b4fb14d0945b3d0f866fb655fd7"
+    },
+    {
+      "path": "src/native_gui_widget_model_clone.cpp",
+      "git_blob": "2b123bea7261a126e57be6a125f0a32e57cd0ce0",
+      "sha256": "142b07987b5624d6f36a53c77d544b4c4844b22579cdf75ea353c7a34be58dc5"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_pools_cc13.hpp",
+      "git_blob": "759fba46de564d4d09549b0f3950bf2bbfc4f718",
+      "sha256": "fd2be32f59443f79787b5006a628b9d0f78597b4d4dff62d09dbc65831c1fed3"
+    },
+    {
+      "path": "src/native_gui_widget_pools_cc13.cpp",
+      "git_blob": "18a2efa93a00c8e48d79003e8af0ed4fbc5f80b3",
+      "sha256": "e9fa3a2f4e8d0f644d601aa974bab567f8cd36e5c9ea958ae06aacaca4b5e925"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "local/cc12_native_gui_clip_box_factory_83/build.log",
+      "bytes": 4396,
+      "sha256": "9ab696b374e8f71c0e3e7352094292f60e2c6bdfa4a960843f30f7907e68e8ed"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_factory_83/clip_box_probe.exe",
+      "bytes": 211968,
+      "sha256": "88af45e24ff40ce7c025e0a86f5e2845eaaf583d814679ef081e4e1ee7d7888c"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_factory_83/compile.cmd",
+      "bytes": 980,
+      "sha256": "d439039e1f3859ca6164cb5d3cf31f05b7efc11a1f3c51e22c9caa6dc4866131"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_factory_83/compile.log",
+      "bytes": 44,
+      "sha256": "c1f4504f1aa3e91d16ec9abb2448f56c593179c1565d843eb829be05823a9f0d"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_factory_83/ledger_00aa1920.json",
+      "bytes": 1119,
+      "sha256": "6e4eb457bc49e1b828f1ab1ccee7da582afad22c8feb59092d804aafdb76e9cd"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_factory_83/ledger_00ace0a0.json",
+      "bytes": 1142,
+      "sha256": "860da2df01020c2752c302602664c2a52b3263ce54136b45fcca9722c07efe12"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_factory_83/ledger_00ace0f0.json",
+      "bytes": 962,
+      "sha256": "f5e947957baacc4b24e80d15951f12c50ebc384c2a9f2111b16bfbb1c538edeb"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_factory_83/native_gui_clip_box_factory.obj",
+      "bytes": 5618,
+      "sha256": "09586da9159cb9e9b39d5033fdfdcc296b9e006cdfafe02b03ffade9d288060c"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_factory_83/original_bytes.hpp",
+      "bytes": 176,
+      "sha256": "f0d8301660246a79d18ef7036b43ccb5d49adc9ced49b5c1dac91e001b477a06"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_factory_83/original_proof.json",
+      "bytes": 679,
+      "sha256": "2718835c791f903b1ce164905b35559ef218c145605911624982e3ba8f59d7f6"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_factory_83/probe.cpp",
+      "bytes": 4060,
+      "sha256": "6884cc28e29f01c0320f622ea78753ec12f318cc467057c6811dd1b201d4f9ce"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_factory_83/probe.log",
+      "bytes": 232,
+      "sha256": "c8d8baff2bd377bddcdca97857b0dab98655d800032229ec8cec39c787a355e4"
+    },
+    {
+      "path": "local/cc12_native_gui_clip_box_factory_83/probe.obj",
+      "bytes": 9795,
+      "sha256": "d0b3259e5e94d5e1a68dcae7f22b2581bde21105efb88dfd56712ad3bcd4c3da"
+    },
+    {
+      "path": "local/ghidra-annotations-20261016T035811Z.json",
+      "bytes": 5249,
+      "sha256": "ef5b8f16470f35c00c18d10b93d10314365221bc8eaafcda9e3fe501945cd6ae"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 93638156,
+      "sha256": "a7a6ac4b98136bc4244abb2ee4db4df2b743cd0c34e10bf600fae29f01b6458d"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "bytes": 455680,
+      "sha256": "390dd5c886faa883a168c4cc60fb1c8b19dcdef4db779ca93a35608ca53c7c67"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "bytes": 72058,
+      "sha256": "f12ba334bd0d1379a526ab834667754b3ad3d2688afd57fdc20530f266b641b3"
+    }
+  ],
+  "ghidra_annotations": {
+    "addresses": [
+      "00ACE0A0",
+      "00ACE0F0",
+      "00AA1920"
+    ],
+    "names_preserved": true,
+    "earlier_comments_preserved": true,
+    "history": "local/ghidra-annotations-20261016T035811Z.json",
+    "write_tool": "python tools/ghidra_annotate.py --apply --addresses 00ACE0A0 00ACE0F0 00AA1920",
+    "write_lock_and_save": true,
+    "exports_refreshed": true,
+    "index_refreshed": true
+  },
+  "ledger_records": "only owned three-address Source records plus existing-name evidence appended in00aa/00ac shards; old semantic records preserved",
+  "no_shared_source_or_cmake_edits": true,
+  "native_text_or_game_activation": false,
+  "report_call_verifier": {
+    "command": "python tools/verify_report_calls.py reports/cc12_native_gui_clip_box_factory_83.json docs/CC12_NATIVE_GUI_CLIP_BOX_FACTORY_83.md",
+    "exit_code": 0,
+    "checked": 9,
+    "failed": 0,
+    "documentation_unchecked": 0,
+    "documentation_warnings": 0
+  },
+  "documentation": {
+    "path": "docs/CC12_NATIVE_GUI_CLIP_BOX_FACTORY_83.md",
+    "sha256": "992f7ad0fcd3c2524b1515cc9a7a458e4a2237437bb1e901d3490cb7c39e4585"
+  },
+  "artifact_manifest": {
+    "path": "local/cc12_native_gui_clip_box_factory_83/manifest.json",
+    "sha256": "bdc59bf1f0eaa3bc7dc992512e43e57a466e4d94e988a9b177379f459387d2e2"
+  }
+}
