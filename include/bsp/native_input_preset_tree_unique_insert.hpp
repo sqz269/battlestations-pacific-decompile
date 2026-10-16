@@ -10,8 +10,10 @@ namespace bsp {
 class NativeCrtStricmpCallees;
 
 // Measured actual12B result carrier, not a node/container overlay. Caller owns
-// its storage/lifetime. The routine writes NODE4, BYTEflag8, OWNER0 only;
-// bytes9..B retain their caller preimages. No value initialization or snapshot.
+// its storage/lifetime. Owned publication stores touch NODE4, BYTEflag8, OWNER0
+// only; they do not write9..B. Transitive child/provider writes and alias effects
+// remain inherited, with no whole-call entry-preimage guarantee for9..B.
+// No value initialization or snapshot.
 struct NativeInputPresetTreeInsertResult {
     NativeInputPresetTreeIterator iterator_00;
     std::uint8_t inserted_08;

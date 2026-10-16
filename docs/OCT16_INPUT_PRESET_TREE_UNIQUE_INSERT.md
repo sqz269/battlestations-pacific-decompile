@@ -9,7 +9,7 @@ references and the existing CRT-parent supplied callees: six words/RET18h.
 The new interface is not an Original binary replacement.
 
 The minimal measured result embeds the published real8B iterator, followed by
-inserted BYTE8 and untouched9..B. Size12, align4, offsets, trivial copy and standard
+inserted BYTE8 and three bytes9..B unwritten by owned publication. Size12, align4, offsets, trivial copy and standard
 layout are asserted. Caller borrows actual result storage; no value initialization,
 12B snapshot or padding store. The private8B position is separate from outer12B
 output. It initializes node before owner, then is passed to actual predecessor
@@ -59,7 +59,9 @@ RET8 if RaiseException returns, a continuation not implemented by Hostthrow.
 On each child success, capture child owner, CURRENT outer output, then child node
 before any output store. Duplicate captures current output then current private
 owner and retains selected node across the comparator. Both publish node4, flag
-BYTE8, owner0 and return actual output. Bytes9..B survive even under output alias.
+BYTE8, owner0 and return actual output. These owned publication stores do not
+write9..B. Transitive child/provider progress may already modify overlapping
+storage; there is no whole-call entry-preimage guarantee under arbitrary aliases.
 
 Fresh verified bsp.gpr/program PE/live proof covers all276B/111 starts,16 encoded
 edges, five calls and115 current contexts. Both publication gates are resolved at
@@ -68,14 +70,15 @@ Main048d7dd5. All46 provider LF files match current Main. Preserved historical
 FBC0 nine frozen Git blobs/current quartet/17 artifacts/Root23+29 seals/annotations
 remain unchanged. Current shared Main ledgers/Core retain legitimate merged appends.
 
-Default MSVC Win32 build exited zero; all three existing suites passed in8.37s.
+The first default MSVC Win32 build exited zero; all three existing suites passed in8.37s.
 No new tests/probes or owned Native execution. Full actual CMake object review:
 341B/150 instructions across seven CODE sections; public262B110 plus six complete
 uncalled helpers79B40. All10 sections/684 declaredB and four code REL32 bindings
 were read. There is no EH, BSS, literal, table, data relocation, INT3 or NOP padding.
 Compiler factors both successes to one FBC0 call and two physical RET18 epilogues;
 Native retains five call sites and three RET8. Actual owner/output/node captures,
-node/BYTEflag/owner stores and padding preservation were independently verified.
+node/BYTEflag/owner stores and owned-publication exclusion of9..B were independently
+verified. Transitive writes and alias effects remain inherited.
 
 Source compiler EBP owns its frame. Original candidate uses the dead Source pair
 argument home; original pair remains separately captured. Private initial flag/
@@ -84,3 +87,11 @@ Existing supplied CRT/SDK/heap/locale/TLS/errno/feature/DF0/lifetime requirement
 private arguments/frame aliases, flags/registers, fault/partialwrite, Original
 throw/FH3SEH/RTTI/binaryABI/runtime/game identity remain unproved. Static/build
 checks do not establish Native execution or game equivalence.
+
+The descendant documentation qualification leaves CPP/API/layout/ABI unchanged.
+A separate build directory preserves the first default object and all17 frozen
+artifacts at their original paths. The normal build script logic differs only
+in buildPath; all three existing suites passed in7.54s. All seven CODE
+sections/341B150 and four symbolic relocations match the first object exactly.
+The alternative object path/debug/checksum metadata differ; whole-object byte
+identity is not claimed. First25294d9/809c and Root16/50efe remain immutable.
