@@ -42,7 +42,7 @@ in .text, .rdata and .data) with a positive control in the same run, as each row
 - Unreferenced (ledger-only): 21
 - Vendor, compiler-generated or not a function (name only): 14
 - cc9 lane (skipped): 2
-- Skipped or deferred: 41
+- Skipped or deferred: 45
 
 ## Adoption notes (gameplay hosts not edited)
 
@@ -357,11 +357,15 @@ in .text, .rdata and .data) with a positive control in the same run, as each row
 | `00957740` | 62 | BSP_Aim_ResolveRayToWorldPoint | skipped_cc9_lane | __thiscall (x87 ray/range clamp, 335 instructions) | BSP_Aim_ResolveRayToWorldPoint: x87 gunnery, substituted by the gunnery host's seat handler (game_hosts_gunnery.cpp 13144-13160, 2697); cc9 gunnery lane, skipped as instructed. |
 | `00957BD0` | 62 | FUN_00957bd0 | skipped_cc9_lane | __thiscall (x87 seat segment query, 1296 bytes) | The seat segment query; substituted by game_hosts_gunnery.cpp 13179; cc9 gunnery lane, skipped as instructed. |
 
-## Skipped or deferred (41)
+## Skipped or deferred (45)
 
 | Address | Seg | Name | Status | Original ABI | Evidence |
 |---|---|---|---|---|---|
 | `006C2400` | 30 | BSP_AirOpsHolder_DebugDrawRunwayDistances | skipped_debug_draw_too_large | __thiscall(ECX = holder, ...) | Runway-distance debug draw, 1610 listing lines; callers 009B3657 (BSP_BotTaskLand_DebugDraw) and 009CFA29 (takeoff debug draw, JMP). Skipped as in docs/CC13_SEG30.md: presentation-only debug output, too large for a faithful transcription in this sweep. |
+| `006CC800` | 30 | BSP_AirOpsStockSnapshot_Capture | skipped_deferred | (155 instructions) | BSP_AirOpsStockSnapshot_Capture: called by the AIRFIELD_CREATE (006D4CE4) and MOTHERSHIP_CREATE (0075930E) session message constructors (census); airfield_marker_seg31_32_argon.cpp 330 reaches it through a hook. Deferred in this sweep. |
+| `006CD810` | 30 | BSP_AirOps_AiLaunchTick | skipped_deferred | __fastcall(ECX = block) (205 instructions) | BSP_AirOps_AiLaunchTick: the AI's own launch (x87 timers +F4h/+F8h and a U01 draw from the shared RNG 00BD2F10, docs/CC13_RNG_STREAM_CENSUS.md); one caller 006CDD13 (006CDC70). air_operations.hpp 815-821 states the deck update does not run it. Gameplay with RNG coupling; deferred (needs an x87 pass and the cc9 lane's view on the RNG stream). |
+| `006CFAF0` | 30 | BSP_MotherShipSite_Construct | skipped_deferred | __thiscall(ECX = site, mothership), RET 4 (189 instructions) | BSP_MotherShipSite_Construct: 006CF100, the elevator platform 006FC2A0 at +44h, ref-counted model lookups (InterlockedIncrement/Decrement), a formatted node name and 006FC380 / 006FBC20. One caller 006D0A49 (006D0A10); cc13_seg30 reaches it through a hook. Deferred. |
+| `006D3F20` | 30 | BSP_AirField_ParkSpotTest | skipped_deferred | (91 instructions) | BSP_AirField_ParkSpotTest: MAirfield vtable slot (00CF8D0C, census) under the 006D32F0 lock; runs 006D2980. Deferred. |
 | `00818340` | 50 | BSP_ShipUnit_DescribeState | skipped_large_diagnostic_dump | __thiscall(ECX = ship, archive), RET 4 | The "_ship" diagnostic dump writer (482 instructions), called by the mother ship's writer 00758DC0 and the submarine writer; a long run of archive emits. Not transcribed in this sweep (size); cc13_seg41_land and gameplay_seg53_cc13 reach it through hooks. |
 | `00818970` | 50 | BSP_ShipUnit_StopWreckEffects | skipped_large | __thiscall(ECX = ship), RET | BSP_ShipUnit_StopWreckEffects (434 instructions): releases the effect handles at +BB0h, +BC0h, +BACh and the wreck effects (unit_death_sink.hpp 229). Not transcribed in this sweep (size); reached through the hook ship_stop_wreck_effects_00818970 by 00819880 here. |
 | `00818EA0` | 50 | BSP_UnitInstance_ResetPoseDependentState | skipped_large | __thiscall(ECX = unit), RET | BSP_UnitInstance_ResetPoseDependentState (334 instructions): the wake-ring refill and pose-dependent resets (ship_ai_wake_trail.hpp 91-95, unit_instance_subobjects.hpp 240). Not transcribed in this sweep (size); hooks in cc13_seg30 and the units host name it. |
