@@ -6,6 +6,6 @@ Source `c15c994d4eddc29081c1b3c4b74cbeb4bfc1ead8` passed the independent 24-chec
 
 Integrator CODE is 45 bytes/22 instructions, with one real decoder REL32 and one decoded indirect call. The full CODE and relocations equal the accepted worker object; the indirect target has separate manual proof. The immutable integrator object copy and all receipt hashes are in the accompanying JSON report.
 
-Normal Win32 build at `8868dfd2d8641eedc7096d3bca390c18164d8eb7` passed all three existing suites; these suites do not execute the new function. No new test, probe or Native execution was added.
+Normal Win32 build at `a4895c8cb195287f1ea0f7175183d622d52de54e` passed all three existing suites; these suites do not execute the new function. No new test, probe or Native execution was added.
 
 New three-argument caller12 Source interface differs from Native one argument/caller4. Original private outgoing-stack aliases, registers, flags, faults, FH3/SEH, genuine encoded-handler publication and CRT/TLS ownership remain unproved. Runtime and game validation remain open.

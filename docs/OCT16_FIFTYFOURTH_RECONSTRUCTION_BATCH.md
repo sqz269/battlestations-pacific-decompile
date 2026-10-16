@@ -6,6 +6,6 @@ Source `424a87e2a82103d137094c71146030766c277e0b` passed the independent 24-chec
 
 Integrator CODE is 41 bytes/18 instructions with one actual SDK diagnostic REL32. All 37 nonplacement bytes equal Native; the four-byte call displacement is qualified separately. CODE and relocations equal the accepted worker object. The immutable integrator object copy and all receipt hashes are in the accompanying JSON report.
 
-Normal Win32 build at `8868dfd2d8641eedc7096d3bca390c18164d8eb7` passed all three existing suites; these suites do not execute the new function. No new test, probe or Native execution was added.
+Normal Win32 build at `a4895c8cb195287f1ea0f7175183d622d52de54e` passed all three existing suites; these suites do not execute the new function. No new test, probe or Native execution was added.
 
 Current SDK BF6713 policy is the qualified published provider; Original BF66EF encoded-handler/CRT/Watson ownership is not established. Actual eight-byte iterator storage, caller stack, DF and provider nonvolatile/failure domain remain required. Private PCs, faults, FH3/SEH and complete Original ABI remain unproved. Runtime and game validation remain open.
