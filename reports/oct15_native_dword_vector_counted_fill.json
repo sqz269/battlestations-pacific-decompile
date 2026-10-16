@@ -1,0 +1,445 @@
+{
+  "packet": "oct15_native_dword_vector_counted_fill",
+  "status": "complete_source_build_tested_qualified",
+  "utc": "2026-10-16T00:56:23.193807+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "accepted_prerequisite_Main": "b8aa1de49f4b2c77c880347df52f88628574ba0f",
+  "source": "src/native_dword_vector_counted_fill.cpp",
+  "header": "include/bsp/native_dword_vector_counted_fill.hpp",
+  "documentation": "docs/OCT15_NATIVE_DWORD_VECTOR_COUNTED_FILL.md",
+  "source_sha256": {
+    "src/native_dword_vector_counted_fill.cpp": "fc71450ff7abafbe3584afc0af74f4ca3cd1444193afecc46417a0b5e11c7f70",
+    "include/bsp/native_dword_vector_counted_fill.hpp": "feef63d40f1d79acbab4dfd5d6dc4b3e512253fe3f88d8c47bc1e53bb2b50349"
+  },
+  "accepted_dependency_source_sha256": {
+    "include/bsp/native_dword_vector_copy_construct.hpp": "ecf2b1d9cb256fef9047e0b8f235c88874177fe9b1d28e4d6cc1add1a53bf693",
+    "src/native_dword_vector_copy_construct.cpp": "4de974411b51e59d30cd1b5822439ef2dd87545f58e787ff46ef3b6df1ea5336",
+    "include/bsp/native_word_vector_tidy.hpp": "76f071a110765cec357421060880e85e1213311f16d886a087439f6c26161079",
+    "src/native_word_vector_tidy.cpp": "5da425f344175e2fb4e143450d76c9184b6dfa83be36dc0c5b49b9c1d32dd998"
+  },
+  "routines": [
+    {
+      "address": "00698040",
+      "original_name": "STL_UninitFillN_WordVector16_00698040",
+      "cpp_name": "fill_native_dword_vector_counted_00698040",
+      "coverage": "complete",
+      "original_abi": "ECXoutput/EDXunsignedcount,fourstackwords source/ownerbits/valuebits/tag,RET10h; EAX incidental/nonsemantic",
+      "source_abi": "void __fastcall(void* output,uint32_t count,const void* source,uint32_t ownerbits,uint32_t valuebits,uint32_t tag)",
+      "schedule": [
+        "Capture initial/current/completedend before counttest",
+        "Count0 does not load source argument or call",
+        "Each nonnull current rereads sourceARGUMENT then actual557590 consumes CURRENT header/backing; null current skips constructor",
+        "Only after normal constructor/skip,decrement count,advance DWORDcursor10h,publish completedend"
+      ],
+      "coverage_boundary": "Whole normal110B/42starts plus linked lexicalcatch/effect-elided inertaction; new CurrentCpp/privateframe limits"
+    },
+    {
+      "address": "0069809b",
+      "original_name": "Catch_All@0069809b",
+      "coverage": "complete",
+      "Source_form": "Lexical catch only,no public helper",
+      "original_abi": "Native EBP catch: captures EBP-18 initial and EBP-14 completed; ownerEBP+C only if nonempty",
+      "schedule": [
+        "Capture completedprefix endpoints once",
+        "Nonempty prefix conditionally captures ownerbits,then forward actual4D29D0 each10h header",
+        "No cleanup of failingelement beyond constructor own scope; no nullskip/rollback",
+        "Bare CurrentCpp rethrow after prefix cleanup; originalBF6885(0,0) transport identity unproved"
+      ]
+    },
+    {
+      "address": "00698310",
+      "original_name": "STL_TagDispatch_00698310",
+      "cpp_name": "fill_native_dword_vector_counted_dispatch_00698310",
+      "coverage": "complete",
+      "original_abi": "Three stacked output/count/source inputs,RET0Ch; incomingECX only ignored owner/tag derivation,incomingEDX unconsumed",
+      "source_abi": "void* __stdcall(void* output,uint32_t count,const void* source)",
+      "schedule": [
+        "Capture output/count/sourcebits evenempty",
+        "Call actualcore with fourstackslots source,canonical owner0,duplicate sourcebits,canonical tag0",
+        "Ignore coreEAX; independently capturedoutput+(count<<4),DWORDwrap"
+      ]
+    },
+    {
+      "address": "00c7ec10",
+      "original_name": "Unwind@00c7ec10",
+      "coverage": "complete_effects_qualified_elision",
+      "Source_form": "No standalone Source function; effect-elided inert logical action in protected construction",
+      "original_abi": "EBP-private action loads saved current EBP-1C/-20,pushes both,calls literal401130 RET,ADDESP8,RET",
+      "proof": "Complete17B/7starts +1BliteralRET + exactstate1 map. Only private reads/stack effects; no destructor/free/callback invented.",
+      "limits": "Valid Source privateframes/currentCPP domain only; original private-frame aliases, faults/FH3/ambient identity unproved"
+    }
+  ],
+  "actual_dependencies": [
+    {
+      "address": "00557590",
+      "binding": "construct_native_checked_dword_vector_copy_00557590(current,0u,current_source)",
+      "status": "accepted whole actualSource; freshheader each invocation; constructor owns its own failure cleanup"
+    },
+    {
+      "address": "004d29d0",
+      "binding": "tidy_native_word_vector_range_element_004d29d0(capturedownerbits,0u,currentprefixheader)",
+      "status": "accepted distinct actualSource; owner/EDX ignored,oneheader stackword; currentCRT capturedfree then clear4/8/C"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00698040",
+      "address": "00698088",
+      "native": "00557590",
+      "evidence": "Complete owned current body and exact native target; action call effect-elided with literalRET proof"
+    },
+    {
+      "function": "0069809b",
+      "address": "006980ab",
+      "native": "004d29d0",
+      "evidence": "Complete owned current body and exact native target; action call effect-elided with literalRET proof"
+    },
+    {
+      "function": "0069809b",
+      "address": "006980bb",
+      "native": "00bf6885",
+      "evidence": "Complete owned current body and exact native target; action call effect-elided with literalRET proof"
+    },
+    {
+      "function": "00698310",
+      "address": "00698334",
+      "native": "00698040",
+      "evidence": "Complete owned current body and exact native target; action call effect-elided with literalRET proof"
+    },
+    {
+      "function": "00c7ec10",
+      "address": "00c7ec18",
+      "native": "00401130",
+      "evidence": "Complete owned current body and exact native target; action call effect-elided with literalRET proof"
+    },
+    {
+      "function": "00698400",
+      "address": "00698500",
+      "native": "00698310",
+      "evidence": "Bounded unowned producer only"
+    },
+    {
+      "function": "00698400",
+      "address": "006985d0",
+      "native": "00698310",
+      "evidence": "Bounded unowned producer only"
+    },
+    {
+      "function": "00698980",
+      "address": "006989c9",
+      "native": "00698040",
+      "evidence": "Bounded unowned producer only"
+    }
+  ],
+  "native_blocks": [
+    {
+      "function": "00698040",
+      "address": "00698040",
+      "bytes": 91,
+      "sha256": "67fdca626109ba8a86e7265239d2a00303783d939bf76898a2ff26da39a23aa8",
+      "instruction_count": 34,
+      "coverage": "complete_owned_current_body"
+    },
+    {
+      "function": "00698040",
+      "address": "006980c0",
+      "bytes": 19,
+      "sha256": "0e0eeb224a26a7d8e103c618f5f2fe4098178e065e03fc5c18128e6b93608756",
+      "instruction_count": 8,
+      "coverage": "complete_owned_current_body"
+    },
+    {
+      "function": "0069809b",
+      "address": "0069809b",
+      "bytes": 37,
+      "sha256": "2015895492fec32101de0025253723f67770fbce0eb51681586c841908130bb5",
+      "instruction_count": 15,
+      "coverage": "complete_owned_current_body"
+    },
+    {
+      "function": "00698310",
+      "address": "00698310",
+      "bytes": 54,
+      "sha256": "40d45fb4a0a7fbd495a8d4d84fabad5e9572b65b2c529de8e954d3e4a57cfd12",
+      "instruction_count": 23,
+      "coverage": "complete_owned_current_body"
+    },
+    {
+      "function": "00c7ec10",
+      "address": "00c7ec10",
+      "bytes": 17,
+      "sha256": "a8f230b2bc9088a5c5ebabf1527cbe23e360f21d2b8cdd7e7adc01a2f9fd53e2",
+      "instruction_count": 7,
+      "coverage": "complete_owned_current_body"
+    },
+    {
+      "function": "00c7ec21",
+      "address": "00c7ec21",
+      "bytes": 10,
+      "sha256": "52aa707cf8706b3f1355c9279d36697eff991cac84c8f8854c85d342d0fb9119",
+      "instruction_count": 2,
+      "coverage": "support_only"
+    },
+    {
+      "function": "00401130",
+      "address": "00401130",
+      "bytes": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "instruction_count": 1,
+      "coverage": "support_only"
+    },
+    {
+      "address": "006984f5",
+      "bytes": 30,
+      "sha256": "cc87677125148f9a88802817fbd2316531c2c142ca7ef102fcdff4c3af56d55a",
+      "instruction_count": 12,
+      "coverage": "bounded_unowned_producer"
+    },
+    {
+      "address": "006985b8",
+      "bytes": 35,
+      "sha256": "b3595e66a63430a9dadd8acad838fda303f5ea68fe92e946377e712d6bd4ff73",
+      "instruction_count": 14,
+      "coverage": "bounded_unowned_producer"
+    },
+    {
+      "address": "006989aa",
+      "bytes": 50,
+      "sha256": "1754d8755511f626b4afcdb67007f0db56730fdc50124076c9685c6330f3d5b2",
+      "instruction_count": 18,
+      "coverage": "bounded_unowned_producer"
+    }
+  ],
+  "raw_EH": {
+    "funcinfo": "00daba18",
+    "bytes": 96,
+    "contiguous_range": "00dab9dc..00daba3b",
+    "magic": "19930522",
+    "maxstate": 3,
+    "unwind_map": "00daba00",
+    "unwind": [
+      [
+        -1,
+        0
+      ],
+      [
+        0,
+        "00c7ec10"
+      ],
+      [
+        -1,
+        0
+      ]
+    ],
+    "try_map": "00dab9ec",
+    "try_fields": [
+      0,
+      1,
+      2,
+      1,
+      "00dab9dc"
+    ],
+    "catch_fields": [
+      "40",
+      0,
+      0,
+      "0069809b"
+    ],
+    "handler": "00c7ec21",
+    "handler_tail": "00bf6b43",
+    "effect_elision": "State1 action savedprivate addresses +literal401130 RET only; CurrentCpp lexicalconstruction uses no synthetic EBP/noop/dtor helper."
+  },
+  "ownership_and_EH": "State0 before counttest;state1 before nullbranch/constructor; completedend publishes only after success/advance and state0. Catch destroys only completedprefix,forward,no failingelement dtor beyond actualconstructor. CurrentCpp cleanupfailure/exception replacement behavior,hardware faults/SEH and nativeFH3 transport/frame/CRT identity are not Original proofs.",
+  "evidence_accounting": {
+    "owned_bytes": 218,
+    "owned_current_starts": 87,
+    "support_bytes": 11,
+    "support_current_starts": 3,
+    "bounded_producer_bytes": 115,
+    "bounded_producer_current_starts": 44,
+    "all_code_bytes": 344,
+    "all_current_starts": 134,
+    "raw_EH_data_bytes": 96,
+    "owned_calls": 5,
+    "support_tail_JMP": 1,
+    "unowned_producer_calls": 3
+  },
+  "producer_contracts": "Whole98310 plus direct6989C9 count1 producer prove core4stackslots.698500/6985D0 prove dispatcher3stackslots and native ownerbits derivation. Current callers698400/698980 rather than oldCatch graph labels. Producer windows115B/44starts separate from owned218B/87starts.",
+  "library_names_preserved": true,
+  "prior_provenance": "Existing native_input_configuration_modifiers and WordVectorHooks/narrower actualSource/fixtures/reports unchanged. No promotion of6980E0/698400/698980 or placement.",
+  "verification": {
+    "fresh_pe_live": true,
+    "current_starts": true,
+    "raw_EH_verified": true,
+    "report_CALL_rows": {
+      "checked": 8,
+      "failed": 0
+    },
+    "markdown_transfers": {
+      "checked": 9,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0
+    },
+    "support_tail_JMP": "independentPE/live/current typed+Markdown proof; separate from CALL-only rows",
+    "Win32_build": "scripts/build.ps1 exit0",
+    "existing_suites": {
+      "passed": 3,
+      "failed": 0,
+      "total_seconds": 9.11,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "scope": "Existing suites,not direct newcountedfill aliases/originalABI/game proof"
+    },
+    "Source_COFF": {
+      "passed": 13,
+      "failed": 0
+    },
+    "new_tests": 0,
+    "packet_native_execution": false,
+    "game_execution": false,
+    "build_log": "local/oct15_dword_counted_fill_build.log",
+    "build_log_sha256": "97d0e39f1cf52efbb34febb5da0d2002d350f8814774cdb0faa093010224ba06"
+  },
+  "ghidra_mutations": false,
+  "limits": [
+    "New MSVCWin32 Source/privateframes/CurrentCpp exception transport; no original binaryABI,CRT/FH3/RTTI/SEH/fault/nestedcleanup/game identity claim.",
+    "Canonical Source owner/tag0 replace unconsumed native ambientECX bits; no owner model. Direct parameter reads and public data aliases retained; original private argument/local stack aliases and asynchronous mutation excluded.",
+    "No allocator/provider/callback/countbridge/header overlay/modernfill/guard/selfrepair/rollback/noexcept bridge.",
+    "Every reached raw access/release and equality traversal must be valid/finite in accepted currentCRT allocation domain.",
+    "Native action private stack effects and literalRET call are effect-elided,not reimplemented as a fake public helper."
+  ],
+  "support_tail_transfers": [
+    {
+      "containing_function": "00c7ec21",
+      "instruction_address": "00c7ec26",
+      "target_address": "00bf6b43",
+      "instruction": "JMP",
+      "proof": "Full10B handler PE/live pair,exact current starts,default/effective typed target; support only,not a CALL row or Sourcebridge"
+    }
+  ],
+  "primary_precommit_review": {
+    "receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct15_counted_fill_twentyfirst_primary_review.json",
+    "receipt_sha256": "7e8b3bfff5305b6b9cda97c957e42a243a2eb5732fb4fd985a806b22f981f08f",
+    "checks_passed": 13,
+    "findings": 0,
+    "source_sha256": {
+      "src/native_dword_vector_counted_fill.cpp": "fc71450ff7abafbe3584afc0af74f4ca3cd1444193afecc46417a0b5e11c7f70",
+      "include/bsp/native_dword_vector_counted_fill.hpp": "feef63d40f1d79acbab4dfd5d6dc4b3e512253fe3f88d8c47bc1e53bb2b50349"
+    },
+    "scope": "FullCPP/header87ownedNative instructions;344PE/liveB134starts plus96BrawEH,44unowned producer instructions and4providers; final immutable/build/COFF acceptance pending"
+  },
+  "base_commit": "c27d1861b0d381aca5bad39c8505cb3e654f7585",
+  "CMake_registration": {
+    "lease": "oct15_dword_counted_fill_registration",
+    "claim_succeeded_before_mutation": true,
+    "accepted_Main_sync": "c27d1861b0d381aca5bad39c8505cb3e654f7585",
+    "merge": "fast-forward",
+    "only_own_line_appended": true,
+    "registration": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_dword_vector_counted_fill.cpp)",
+    "released_before_build": true,
+    "source_and_provider_hashes_unchanged": true
+  },
+  "Source_COFF": {
+    "status": "passed",
+    "object": "build\\win32\\bsp_core.dir\\Release\\native_dword_vector_counted_fill.obj",
+    "object_sha256": "67dece8d2ee1b970cdaafabb7b2389ac1e2f3797c174f1d2a880626db2b2a5d9",
+    "dump_sha256": "b049fca0fd561e484048afbf2a9ce259551af01651520724d874e2f3a0098dc9",
+    "machine": "014c x86",
+    "checks": [
+      "I386 fastcall core six-word signature/RET10h; stdcall3-input dispatcher/RET0Ch.",
+      "Initial/current/completed output captured before counttest and protected construction.",
+      "Count0 branch skips source argument load and child; null current skips same but joins count/advance/publication.",
+      "Nonnull each iteration reloads input source stackword; actual557590 REL32 receives currentECX/source stackword and deadEDX0.",
+      "Constructor success/skip precedes decrement, DWORD10h advance and completed-end store; repeat by unsigned count.",
+      "Lexicalcatch captures initial/completed endpoints before equality; no ownerword load or cleanup if prefixempty.",
+      "Ownerword read only nonempty; exact actual4D29D0 REL32 receives header stackword and capturedowner/deadEDX slots.",
+      "Prefix cleanup advances10h only after actualTidy return, no per-element nullskip, rollback or failing-element cleanup.",
+      "Local pointer helper inspected8B pure argument-bits return; no callback/provider/header model.",
+      "Bare CurrentCpp rethrow emits two zeros and currentCxxThrowException; compiler EH/cookie/frame differ from Original.",
+      "Native17B action/literalRET/map justify elision; compiledSource contains no401130/C7EC10 helper/reference.",
+      "Dispatcher physically forwards four slots source/owner0/duplicate sourcebits/tag0 and ignores coreEAX.",
+      "Dispatcher independently emits capturedcount SHL4 plus capturedoutput, then RET0Ch; no countbridge/extra guard."
+    ],
+    "checks_passed": 13,
+    "scope": "Focused emittedSource ABI/order and CurrentCpp lexicalcatch only; no original FH3/CRT/privateframe/fault/binaryABI/game proof. Core188B includes6INT3padding after182B live body/catch.",
+    "bodies": {
+      "core": {
+        "symbol": "?fill_native_dword_vector_counted_00698040@bsp@@YIXPAXIPBXIII@Z",
+        "bytes": 188,
+        "instruction_count": 74,
+        "sha256": "beb38c87a7c276b71cea30a5e3691570cd149624d6ad5ccdd5a5a2a657fc92a2",
+        "calls": [
+          {
+            "offset": 85,
+            "target": "?construct_native_checked_dword_vector_copy_00557590@bsp@@YIPAXPAXIPBX@Z"
+          },
+          {
+            "offset": 116,
+            "target": "?pointer@?A0x2d778833@bsp@@YAPAXI@Z"
+          },
+          {
+            "offset": 126,
+            "target": "?pointer@?A0x2d778833@bsp@@YAPAXI@Z"
+          },
+          {
+            "offset": 139,
+            "target": "?tidy_native_word_vector_range_element_004d29d0@bsp@@YIXPAXI0@Z"
+          },
+          {
+            "offset": 177,
+            "target": "__CxxThrowException@8"
+          }
+        ],
+        "internal_labels": [
+          {
+            "symbol": "__catch$?fill_native_dword_vector_counted_00698040@bsp@@YIXPAXIPBXIII@Z$0",
+            "offset": 99
+          }
+        ]
+      },
+      "dispatcher": {
+        "symbol": "?fill_native_dword_vector_counted_dispatch_00698310@bsp@@YGPAXPAXIPBX@Z",
+        "bytes": 39,
+        "instruction_count": 18,
+        "sha256": "74cdb7c1f3f49d2744204098ea3734f5f56ab3ee20a2c738d217d1fee6c0931a",
+        "calls": [
+          {
+            "offset": 21,
+            "target": "?fill_native_dword_vector_counted_00698040@bsp@@YIXPAXIPBXIII@Z"
+          }
+        ],
+        "internal_labels": []
+      },
+      "pointer_helper": {
+        "symbol": "?pointer@?A0x2d778833@bsp@@YAPAXI@Z",
+        "bytes": 8,
+        "instruction_count": 5,
+        "sha256": "d5a2b635b0bbb254914f2641e4508361a0c95686c0422dcebeb3abbcca7f1d2b",
+        "calls": [],
+        "internal_labels": []
+      },
+      "compiler_EH_handler": {
+        "symbol": "__ehhandler$?fill_native_dword_vector_counted_00698040@bsp@@YIXPAXIPBXIII@Z",
+        "bytes": 29,
+        "instruction_count": 9,
+        "sha256": "8afea02d98ad0c01a97364d71172448b65489b675b09649b09075195de9cdd27",
+        "calls": [
+          {
+            "offset": 14,
+            "target": "@__security_check_cookie@4"
+          }
+        ],
+        "internal_labels": []
+      }
+    }
+  },
+  "ignored_native_evidence": {
+    "path": "local\\oct15_native_dword_vector_counted_fill_evidence.json",
+    "sha256": "bf3368cc9a94266c189dcd203dbbcadeddeeaddd18ce31926bba993810647af8"
+  }
+}

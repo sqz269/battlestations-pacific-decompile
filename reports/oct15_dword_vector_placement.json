@@ -1,0 +1,2009 @@
+{
+  "packet": "oct15_native_dword_vector_placement",
+  "worker": "agent/oct15_avoid_distance",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_program_verified_before_analysis": true,
+  "Ghidra_mutation": false,
+  "source": "src/native_dword_vector_placement.cpp",
+  "header": "include/bsp/native_dword_vector_placement.hpp",
+  "documentation": "docs/OCT15_DWORD_VECTOR_PLACEMENT.md",
+  "owned_addresses": [
+    "00697d40",
+    "00697ec0",
+    "00c7ebd0",
+    "00c7ebf0"
+  ],
+  "source_sha256": {
+    "src/native_dword_vector_placement.cpp": "272723887b656fe15474b8c9e07ff79c8120154fc4cc18a928c7b37baffe65f4",
+    "include/bsp/native_dword_vector_placement.hpp": "bf24ed1f9ac3edc7bc3e2acd8d06f51434cbf4a1b933f441ae9accc0005e1e90"
+  },
+  "functions": [
+    {
+      "address": "00697d40",
+      "kind": "whole_ordinary_function",
+      "native_name_preserved": "STL_ConstructWordVector_00697d40",
+      "implementation": "place_native_checked_dword_vector_copy_00697d40",
+      "source_api": "void __fastcall place_native_checked_dword_vector_copy_00697d40(void* destination, const void* source);",
+      "new_name_is_hypothesis": true,
+      "native_abi": "ECXdestination,EDXsource;no stackargs;plainRET. ECX is consumed as destination,EDX is pushed only on nonnull path.",
+      "native_return": "Null destination leaves EAX=previousFS0exception-chain pointer. Nonnull leaves actual557590 EAX=originaldestination. No EAXwrite after child or onnull epilogue. Not a reliable null-returning pointer API.",
+      "ranges": [
+        {
+          "start": {
+            "space": "ram",
+            "offset": "00697d40"
+          },
+          "end_inclusive": {
+            "space": "ram",
+            "offset": "00697d7f"
+          },
+          "length": "64"
+        }
+      ],
+      "native_bytes": 64,
+      "native_instruction_starts": 17,
+      "coverage": "Complete ordinary actual wrapper/all normal paths and propagated C++ exceptions under accepted constructor/currentCRT valid raw-storage domain;compiler action effects elided only as separately proven.",
+      "status": "complete_ordinary_source_win32_build_checked_current_cpp_crt_domain"
+    },
+    {
+      "address": "00697ec0",
+      "kind": "whole_ordinary_function",
+      "native_name_preserved": "STL_ConstructWordVector_00697ec0",
+      "implementation": "place_native_checked_dword_vector_copy_00697ec0",
+      "source_api": "void __stdcall place_native_checked_dword_vector_copy_00697ec0(void* destination, const void* source);",
+      "new_name_is_hypothesis": true,
+      "native_abi": "TWO stacked inputs: entryESP+4 destination,entryESP+8 source;incomingECX/EDX not semantic inputs;RET8.",
+      "native_return": "Null EAX=previousFS0pointer;nonnull EAX=actual557590 originaldestination. Conditional residue,not a forgednullptr result.",
+      "ranges": [
+        {
+          "start": {
+            "space": "ram",
+            "offset": "00697ec0"
+          },
+          "end_inclusive": {
+            "space": "ram",
+            "offset": "00697f07"
+          },
+          "length": "72"
+        }
+      ],
+      "native_bytes": 72,
+      "native_instruction_starts": 19,
+      "coverage": "Complete ordinary actual wrapper/all normal paths and propagated C++ exceptions under accepted constructor/currentCRT valid raw-storage domain;compiler action effects elided only as separately proven.",
+      "status": "complete_ordinary_source_win32_build_checked_current_cpp_crt_domain"
+    }
+  ],
+  "fragments": [
+    {
+      "address": "00c7ebd0",
+      "kind": "effect_elided_compiler_placement_unwind_fragment",
+      "native_name_preserved": "Unwind@00c7ebd0",
+      "name": "effect_elided_placement_unwind_00c7ebd0",
+      "new_name_is_hypothesis": true,
+      "source_interface": "No public Source/nativeEBP/action interface;effect-elided in the corresponding ordinary wrapper.",
+      "original_abi": "Originalcompiler action uses privateEBP offsets,temporary two stacked words,literal401130RET,ADDESP8/RET;not an ordinary standalone SourceABI.",
+      "ranges": [
+        {
+          "start": {
+            "space": "ram",
+            "offset": "00c7ebd0"
+          },
+          "end_inclusive": {
+            "space": "ram",
+            "offset": "00c7ebe0"
+          },
+          "length": "17"
+        }
+      ],
+      "native_bytes": 17,
+      "native_instruction_starts": 7,
+      "coverage": "Whole17B/seven-instruction native action effect proof only;valid privateframe/stack/currentC++ semantics. No originalFH3/fault/ambientregister/framealias claim.",
+      "status": "complete_effect_elision_proven_compiler_unwind_fragment_win32_build_checked_current_cpp_domain"
+    },
+    {
+      "address": "00c7ebf0",
+      "kind": "effect_elided_compiler_placement_unwind_fragment",
+      "native_name_preserved": "Unwind@00c7ebf0",
+      "name": "effect_elided_placement_unwind_00c7ebf0",
+      "new_name_is_hypothesis": true,
+      "source_interface": "No public Source/nativeEBP/action interface;effect-elided in the corresponding ordinary wrapper.",
+      "original_abi": "Originalcompiler action uses privateEBP offsets,temporary two stacked words,literal401130RET,ADDESP8/RET;not an ordinary standalone SourceABI.",
+      "ranges": [
+        {
+          "start": {
+            "space": "ram",
+            "offset": "00c7ebf0"
+          },
+          "end_inclusive": {
+            "space": "ram",
+            "offset": "00c7ec00"
+          },
+          "length": "17"
+        }
+      ],
+      "native_bytes": 17,
+      "native_instruction_starts": 7,
+      "coverage": "Whole17B/seven-instruction native action effect proof only;valid privateframe/stack/currentC++ semantics. No originalFH3/fault/ambientregister/framealias claim.",
+      "status": "complete_effect_elision_proven_compiler_unwind_fragment_win32_build_checked_current_cpp_domain"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00697d6c",
+      "native": "00557590",
+      "function": "00697d40",
+      "kind": "call"
+    },
+    {
+      "address": "00697ef2",
+      "native": "00557590",
+      "function": "00697ec0",
+      "kind": "call"
+    },
+    {
+      "address": "00c7ebd8",
+      "native": "00401130",
+      "function": "00c7ebd0",
+      "kind": "call"
+    },
+    {
+      "address": "00c7ebf8",
+      "native": "00401130",
+      "function": "00c7ebf0",
+      "kind": "call"
+    },
+    {
+      "address": "00c7ebe6",
+      "native": "00bf6b43",
+      "function": "00c7ebe1",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c7ec06",
+      "native": "00bf6b43",
+      "function": "00c7ec01",
+      "kind": "tail_jump"
+    }
+  ],
+  "native_proof": {
+    "utc": "2026-10-16T00:50:30.534510+00:00",
+    "read_only": true,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "typed_capture": {
+      "schema": 1,
+      "endpoint": "get_flow_metadata",
+      "read_only": true,
+      "utc": "2026-10-16T00:49:19.134397+00:00",
+      "requested_addresses": [
+        "00697d40",
+        "00697ec0",
+        "00c7ebd0",
+        "00c7ebf0",
+        "00c7ebe1",
+        "00c7ec01",
+        "00401130"
+      ],
+      "max_ranges": 4096,
+      "verified_before": [
+        {
+          "project_name": "bsp",
+          "current_folder": "/",
+          "folders": [],
+          "files": [
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "content_type": "Program",
+              "version": 5723,
+              "is_read_only": false,
+              "is_versioned": false
+            }
+          ]
+        },
+        {
+          "name": "battlestationspacific.exe",
+          "path": "/battlestationspacific.exe",
+          "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+          "executable_format": "Portable Executable (PE)",
+          "language": "x86:LE:32:default",
+          "compiler": "windows",
+          "address_size": 32,
+          "image_base": "00400000",
+          "min_address": "00400000",
+          "max_address": "ffdfffff",
+          "memory_size": 14876380,
+          "function_count": 76774,
+          "symbol_count": 160484,
+          "data_type_count": 795,
+          "creation_date": "Mon May 04 16:56:25 PDT 2026",
+          "memory_block_count": 6,
+          "address_spaces": [
+            {
+              "name": "ram",
+              "start": "00000000",
+              "end": "ffffffff",
+              "size": 4294967296,
+              "addressable_unit_size": 1,
+              "size_bytes": 4294967296,
+              "address_size_bits": 32,
+              "is_default": true
+            }
+          ],
+          "has_multiple_address_spaces": false
+        }
+      ],
+      "verified_after": [
+        {
+          "project_name": "bsp",
+          "current_folder": "/",
+          "folders": [],
+          "files": [
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "content_type": "Program",
+              "version": 5723,
+              "is_read_only": false,
+              "is_versioned": false
+            }
+          ]
+        },
+        {
+          "name": "battlestationspacific.exe",
+          "path": "/battlestationspacific.exe",
+          "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+          "executable_format": "Portable Executable (PE)",
+          "language": "x86:LE:32:default",
+          "compiler": "windows",
+          "address_size": 32,
+          "image_base": "00400000",
+          "min_address": "00400000",
+          "max_address": "ffdfffff",
+          "memory_size": 14876380,
+          "function_count": 76774,
+          "symbol_count": 160484,
+          "data_type_count": 795,
+          "creation_date": "Mon May 04 16:56:25 PDT 2026",
+          "memory_block_count": 6,
+          "address_spaces": [
+            {
+              "name": "ram",
+              "start": "00000000",
+              "end": "ffffffff",
+              "size": 4294967296,
+              "addressable_unit_size": 1,
+              "size_bytes": 4294967296,
+              "address_size_bits": 32,
+              "is_default": true
+            }
+          ],
+          "has_multiple_address_spaces": false
+        }
+      ],
+      "responses": [
+        {
+          "address": "00697d40",
+          "url": "http://127.0.0.1:8089/get_flow_metadata?address=00697d40&program=battlestationspacific.exe&max_ranges=4096",
+          "http_status": 200,
+          "transport_error": null,
+          "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"00697d40\"},\"modification_number_before\":\"2740\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00697d40\"},\"length\":2,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00697d40\"},\"length\":2,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00697d40\"},\"length\":2,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00697d40\"},\"length\":2,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"00697d42\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"00697d42\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"00697d40\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"00697d40\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"00697d40\"},\"name\":\"STL_ConstructWordVector_00697d40\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"64\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"00697d40\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"00697d7f\"},\"length\":\"64\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"2740\"}",
+          "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDY5N2Q0MCJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6IjI3NDAiLCJsaXN0aW5nIjp7Imluc3RydWN0aW9uX2F0Ijp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDY5N2Q0MCJ9LCJsZW5ndGgiOjIsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfSwiaW5zdHJ1Y3Rpb25fY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA2OTdkNDAifSwibGVuZ3RoIjoyLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA2OTdkNDAifSwibGVuZ3RoIjoyLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9jb250YWluaW5nIjp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDY5N2Q0MCJ9LCJsZW5ndGgiOjIsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfX0sImluc3RydWN0aW9uX2Zsb3ciOnsiZmxvd19vdmVycmlkZSI6Ik5PTkUiLCJkZWZhdWx0X2Zsb3ciOnsibmFtZSI6IkZBTExfVEhST1VHSCIsImlzX2NhbGwiOmZhbHNlLCJpc19qdW1wIjpmYWxzZSwiaXNfY29uZGl0aW9uYWwiOmZhbHNlLCJpc19jb21wdXRlZCI6ZmFsc2UsImlzX3Rlcm1pbmFsIjpmYWxzZX0sImVmZmVjdGl2ZV9mbG93Ijp7Im5hbWUiOiJGQUxMX1RIUk9VR0giLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6ZmFsc2V9LCJkZWZhdWx0X2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA2OTdkNDIifSwiZWZmZWN0aXZlX2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA2OTdkNDIifSwiZmFsbHRocm91Z2hfb3ZlcnJpZGRlbiI6ZmFsc2UsImRlZmF1bHRfdGFyZ2V0cyI6W10sImVmZmVjdGl2ZV90YXJnZXRzIjpbXX0sImZ1bmN0aW9uX2F0X3F1ZXJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA2OTdkNDAifSwiZnVuY3Rpb25fY29udGFpbmluZ19xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwNjk3ZDQwIn0sImZ1bmN0aW9ucyI6W3siZW50cnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDY5N2Q0MCJ9LCJuYW1lIjoiU1RMX0NvbnN0cnVjdFdvcmRWZWN0b3JfMDA2OTdkNDAiLCJub19yZXR1cm4iOmZhbHNlLCJpc190aHVuayI6ZmFsc2UsInRodW5rX3RhcmdldF9yZWN1cnNpdmUiOmZhbHNlLCJkaXJlY3RfdGh1bmtfdGFyZ2V0IjpudWxsLCJib2R5Ijp7InJhbmdlX2NvdW50IjoxLCJyZXR1cm5lZF9yYW5nZV9jb3VudCI6MSwiYWRkcmVzc19jb3VudCI6IjY0IiwiY29tcGxldGUiOnRydWUsInJhbmdlcyI6W3sic3RhcnQiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDY5N2Q0MCJ9LCJlbmRfaW5jbHVzaXZlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA2OTdkN2YifSwibGVuZ3RoIjoiNjQifV19fV0sImRpcmVjdF9jYWxsX3RhcmdldHMiOltdLCJtb2RpZmljYXRpb25fbnVtYmVyX2FmdGVyIjoiMjc0MCJ9",
+          "raw_sha256": "264500b2ef8ab335f16817089dc33a012a40726b45a2872deae0158db43e71b1"
+        },
+        {
+          "address": "00697ec0",
+          "url": "http://127.0.0.1:8089/get_flow_metadata?address=00697ec0&program=battlestationspacific.exe&max_ranges=4096",
+          "http_status": 200,
+          "transport_error": null,
+          "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"00697ec0\"},\"modification_number_before\":\"2740\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00697ec0\"},\"length\":2,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00697ec0\"},\"length\":2,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00697ec0\"},\"length\":2,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00697ec0\"},\"length\":2,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"00697ec2\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"00697ec2\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"00697ec0\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"00697ec0\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"00697ec0\"},\"name\":\"STL_ConstructWordVector_00697ec0\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"72\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"00697ec0\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"00697f07\"},\"length\":\"72\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"2740\"}",
+          "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDY5N2VjMCJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6IjI3NDAiLCJsaXN0aW5nIjp7Imluc3RydWN0aW9uX2F0Ijp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDY5N2VjMCJ9LCJsZW5ndGgiOjIsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfSwiaW5zdHJ1Y3Rpb25fY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA2OTdlYzAifSwibGVuZ3RoIjoyLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA2OTdlYzAifSwibGVuZ3RoIjoyLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9jb250YWluaW5nIjp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDY5N2VjMCJ9LCJsZW5ndGgiOjIsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfX0sImluc3RydWN0aW9uX2Zsb3ciOnsiZmxvd19vdmVycmlkZSI6Ik5PTkUiLCJkZWZhdWx0X2Zsb3ciOnsibmFtZSI6IkZBTExfVEhST1VHSCIsImlzX2NhbGwiOmZhbHNlLCJpc19qdW1wIjpmYWxzZSwiaXNfY29uZGl0aW9uYWwiOmZhbHNlLCJpc19jb21wdXRlZCI6ZmFsc2UsImlzX3Rlcm1pbmFsIjpmYWxzZX0sImVmZmVjdGl2ZV9mbG93Ijp7Im5hbWUiOiJGQUxMX1RIUk9VR0giLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6ZmFsc2V9LCJkZWZhdWx0X2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA2OTdlYzIifSwiZWZmZWN0aXZlX2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA2OTdlYzIifSwiZmFsbHRocm91Z2hfb3ZlcnJpZGRlbiI6ZmFsc2UsImRlZmF1bHRfdGFyZ2V0cyI6W10sImVmZmVjdGl2ZV90YXJnZXRzIjpbXX0sImZ1bmN0aW9uX2F0X3F1ZXJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA2OTdlYzAifSwiZnVuY3Rpb25fY29udGFpbmluZ19xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwNjk3ZWMwIn0sImZ1bmN0aW9ucyI6W3siZW50cnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDY5N2VjMCJ9LCJuYW1lIjoiU1RMX0NvbnN0cnVjdFdvcmRWZWN0b3JfMDA2OTdlYzAiLCJub19yZXR1cm4iOmZhbHNlLCJpc190aHVuayI6ZmFsc2UsInRodW5rX3RhcmdldF9yZWN1cnNpdmUiOmZhbHNlLCJkaXJlY3RfdGh1bmtfdGFyZ2V0IjpudWxsLCJib2R5Ijp7InJhbmdlX2NvdW50IjoxLCJyZXR1cm5lZF9yYW5nZV9jb3VudCI6MSwiYWRkcmVzc19jb3VudCI6IjcyIiwiY29tcGxldGUiOnRydWUsInJhbmdlcyI6W3sic3RhcnQiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDY5N2VjMCJ9LCJlbmRfaW5jbHVzaXZlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA2OTdmMDcifSwibGVuZ3RoIjoiNzIifV19fV0sImRpcmVjdF9jYWxsX3RhcmdldHMiOltdLCJtb2RpZmljYXRpb25fbnVtYmVyX2FmdGVyIjoiMjc0MCJ9",
+          "raw_sha256": "ed320c4d6a80946f41b2597939ccd9a7494b4a533ae996498942c4b226a05ebd"
+        },
+        {
+          "address": "00c7ebd0",
+          "url": "http://127.0.0.1:8089/get_flow_metadata?address=00c7ebd0&program=battlestationspacific.exe&max_ranges=4096",
+          "http_status": 200,
+          "transport_error": null,
+          "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"00c7ebd0\"},\"modification_number_before\":\"2740\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c7ebd0\"},\"length\":3,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c7ebd0\"},\"length\":3,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c7ebd0\"},\"length\":3,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c7ebd0\"},\"length\":3,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c7ebd3\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c7ebd3\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"00c7ebd0\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"00c7ebd0\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"00c7ebd0\"},\"name\":\"Unwind@00c7ebd0\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"17\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"00c7ebd0\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"00c7ebe0\"},\"length\":\"17\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"2740\"}",
+          "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGM3ZWJkMCJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6IjI3NDAiLCJsaXN0aW5nIjp7Imluc3RydWN0aW9uX2F0Ijp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGM3ZWJkMCJ9LCJsZW5ndGgiOjMsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfSwiaW5zdHJ1Y3Rpb25fY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2ViZDAifSwibGVuZ3RoIjozLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2ViZDAifSwibGVuZ3RoIjozLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9jb250YWluaW5nIjp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGM3ZWJkMCJ9LCJsZW5ndGgiOjMsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfX0sImluc3RydWN0aW9uX2Zsb3ciOnsiZmxvd19vdmVycmlkZSI6Ik5PTkUiLCJkZWZhdWx0X2Zsb3ciOnsibmFtZSI6IkZBTExfVEhST1VHSCIsImlzX2NhbGwiOmZhbHNlLCJpc19qdW1wIjpmYWxzZSwiaXNfY29uZGl0aW9uYWwiOmZhbHNlLCJpc19jb21wdXRlZCI6ZmFsc2UsImlzX3Rlcm1pbmFsIjpmYWxzZX0sImVmZmVjdGl2ZV9mbG93Ijp7Im5hbWUiOiJGQUxMX1RIUk9VR0giLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6ZmFsc2V9LCJkZWZhdWx0X2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2ViZDMifSwiZWZmZWN0aXZlX2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2ViZDMifSwiZmFsbHRocm91Z2hfb3ZlcnJpZGRlbiI6ZmFsc2UsImRlZmF1bHRfdGFyZ2V0cyI6W10sImVmZmVjdGl2ZV90YXJnZXRzIjpbXX0sImZ1bmN0aW9uX2F0X3F1ZXJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2ViZDAifSwiZnVuY3Rpb25fY29udGFpbmluZ19xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzdlYmQwIn0sImZ1bmN0aW9ucyI6W3siZW50cnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGM3ZWJkMCJ9LCJuYW1lIjoiVW53aW5kQDAwYzdlYmQwIiwibm9fcmV0dXJuIjpmYWxzZSwiaXNfdGh1bmsiOmZhbHNlLCJ0aHVua190YXJnZXRfcmVjdXJzaXZlIjpmYWxzZSwiZGlyZWN0X3RodW5rX3RhcmdldCI6bnVsbCwiYm9keSI6eyJyYW5nZV9jb3VudCI6MSwicmV0dXJuZWRfcmFuZ2VfY291bnQiOjEsImFkZHJlc3NfY291bnQiOiIxNyIsImNvbXBsZXRlIjp0cnVlLCJyYW5nZXMiOlt7InN0YXJ0Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2ViZDAifSwiZW5kX2luY2x1c2l2ZSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzdlYmUwIn0sImxlbmd0aCI6IjE3In1dfX1dLCJkaXJlY3RfY2FsbF90YXJnZXRzIjpbXSwibW9kaWZpY2F0aW9uX251bWJlcl9hZnRlciI6IjI3NDAifQ==",
+          "raw_sha256": "84f413b54074527f53e86579d6bc27387fa985f38b1acc1509b9607003ce1872"
+        },
+        {
+          "address": "00c7ebf0",
+          "url": "http://127.0.0.1:8089/get_flow_metadata?address=00c7ebf0&program=battlestationspacific.exe&max_ranges=4096",
+          "http_status": 200,
+          "transport_error": null,
+          "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"00c7ebf0\"},\"modification_number_before\":\"2740\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c7ebf0\"},\"length\":3,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c7ebf0\"},\"length\":3,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c7ebf0\"},\"length\":3,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c7ebf0\"},\"length\":3,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c7ebf3\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c7ebf3\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"00c7ebf0\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"00c7ebf0\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"00c7ebf0\"},\"name\":\"Unwind@00c7ebf0\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"17\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"00c7ebf0\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"00c7ec00\"},\"length\":\"17\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"2740\"}",
+          "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGM3ZWJmMCJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6IjI3NDAiLCJsaXN0aW5nIjp7Imluc3RydWN0aW9uX2F0Ijp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGM3ZWJmMCJ9LCJsZW5ndGgiOjMsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfSwiaW5zdHJ1Y3Rpb25fY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2ViZjAifSwibGVuZ3RoIjozLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2ViZjAifSwibGVuZ3RoIjozLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9jb250YWluaW5nIjp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGM3ZWJmMCJ9LCJsZW5ndGgiOjMsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfX0sImluc3RydWN0aW9uX2Zsb3ciOnsiZmxvd19vdmVycmlkZSI6Ik5PTkUiLCJkZWZhdWx0X2Zsb3ciOnsibmFtZSI6IkZBTExfVEhST1VHSCIsImlzX2NhbGwiOmZhbHNlLCJpc19qdW1wIjpmYWxzZSwiaXNfY29uZGl0aW9uYWwiOmZhbHNlLCJpc19jb21wdXRlZCI6ZmFsc2UsImlzX3Rlcm1pbmFsIjpmYWxzZX0sImVmZmVjdGl2ZV9mbG93Ijp7Im5hbWUiOiJGQUxMX1RIUk9VR0giLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6ZmFsc2V9LCJkZWZhdWx0X2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2ViZjMifSwiZWZmZWN0aXZlX2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2ViZjMifSwiZmFsbHRocm91Z2hfb3ZlcnJpZGRlbiI6ZmFsc2UsImRlZmF1bHRfdGFyZ2V0cyI6W10sImVmZmVjdGl2ZV90YXJnZXRzIjpbXX0sImZ1bmN0aW9uX2F0X3F1ZXJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2ViZjAifSwiZnVuY3Rpb25fY29udGFpbmluZ19xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzdlYmYwIn0sImZ1bmN0aW9ucyI6W3siZW50cnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGM3ZWJmMCJ9LCJuYW1lIjoiVW53aW5kQDAwYzdlYmYwIiwibm9fcmV0dXJuIjpmYWxzZSwiaXNfdGh1bmsiOmZhbHNlLCJ0aHVua190YXJnZXRfcmVjdXJzaXZlIjpmYWxzZSwiZGlyZWN0X3RodW5rX3RhcmdldCI6bnVsbCwiYm9keSI6eyJyYW5nZV9jb3VudCI6MSwicmV0dXJuZWRfcmFuZ2VfY291bnQiOjEsImFkZHJlc3NfY291bnQiOiIxNyIsImNvbXBsZXRlIjp0cnVlLCJyYW5nZXMiOlt7InN0YXJ0Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2ViZjAifSwiZW5kX2luY2x1c2l2ZSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzdlYzAwIn0sImxlbmd0aCI6IjE3In1dfX1dLCJkaXJlY3RfY2FsbF90YXJnZXRzIjpbXSwibW9kaWZpY2F0aW9uX251bWJlcl9hZnRlciI6IjI3NDAifQ==",
+          "raw_sha256": "18eeaef4b84c4314a4f6f91a7c8245a0bc87e4ae36fabdec793aae1f04c2d77a"
+        },
+        {
+          "address": "00c7ebe1",
+          "url": "http://127.0.0.1:8089/get_flow_metadata?address=00c7ebe1&program=battlestationspacific.exe&max_ranges=4096",
+          "http_status": 200,
+          "transport_error": null,
+          "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"00c7ebe1\"},\"modification_number_before\":\"2740\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c7ebe1\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c7ebe1\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c7ebe1\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c7ebe1\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c7ebe6\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c7ebe6\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"00c7ebe1\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"00c7ebe1\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"00c7ebe1\"},\"name\":\"EHHandler@00c7ebe1\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"10\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"00c7ebe1\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"00c7ebea\"},\"length\":\"10\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"2740\"}",
+          "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGM3ZWJlMSJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6IjI3NDAiLCJsaXN0aW5nIjp7Imluc3RydWN0aW9uX2F0Ijp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGM3ZWJlMSJ9LCJsZW5ndGgiOjUsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfSwiaW5zdHJ1Y3Rpb25fY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2ViZTEifSwibGVuZ3RoIjo1LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2ViZTEifSwibGVuZ3RoIjo1LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9jb250YWluaW5nIjp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGM3ZWJlMSJ9LCJsZW5ndGgiOjUsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfX0sImluc3RydWN0aW9uX2Zsb3ciOnsiZmxvd19vdmVycmlkZSI6Ik5PTkUiLCJkZWZhdWx0X2Zsb3ciOnsibmFtZSI6IkZBTExfVEhST1VHSCIsImlzX2NhbGwiOmZhbHNlLCJpc19qdW1wIjpmYWxzZSwiaXNfY29uZGl0aW9uYWwiOmZhbHNlLCJpc19jb21wdXRlZCI6ZmFsc2UsImlzX3Rlcm1pbmFsIjpmYWxzZX0sImVmZmVjdGl2ZV9mbG93Ijp7Im5hbWUiOiJGQUxMX1RIUk9VR0giLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6ZmFsc2V9LCJkZWZhdWx0X2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2ViZTYifSwiZWZmZWN0aXZlX2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2ViZTYifSwiZmFsbHRocm91Z2hfb3ZlcnJpZGRlbiI6ZmFsc2UsImRlZmF1bHRfdGFyZ2V0cyI6W10sImVmZmVjdGl2ZV90YXJnZXRzIjpbXX0sImZ1bmN0aW9uX2F0X3F1ZXJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2ViZTEifSwiZnVuY3Rpb25fY29udGFpbmluZ19xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzdlYmUxIn0sImZ1bmN0aW9ucyI6W3siZW50cnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGM3ZWJlMSJ9LCJuYW1lIjoiRUhIYW5kbGVyQDAwYzdlYmUxIiwibm9fcmV0dXJuIjpmYWxzZSwiaXNfdGh1bmsiOmZhbHNlLCJ0aHVua190YXJnZXRfcmVjdXJzaXZlIjpmYWxzZSwiZGlyZWN0X3RodW5rX3RhcmdldCI6bnVsbCwiYm9keSI6eyJyYW5nZV9jb3VudCI6MSwicmV0dXJuZWRfcmFuZ2VfY291bnQiOjEsImFkZHJlc3NfY291bnQiOiIxMCIsImNvbXBsZXRlIjp0cnVlLCJyYW5nZXMiOlt7InN0YXJ0Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2ViZTEifSwiZW5kX2luY2x1c2l2ZSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzdlYmVhIn0sImxlbmd0aCI6IjEwIn1dfX1dLCJkaXJlY3RfY2FsbF90YXJnZXRzIjpbXSwibW9kaWZpY2F0aW9uX251bWJlcl9hZnRlciI6IjI3NDAifQ==",
+          "raw_sha256": "a9cbaa7251305ff7e74861120f567ea96dbc8e10f647a9261dddb1535d66af50"
+        },
+        {
+          "address": "00c7ec01",
+          "url": "http://127.0.0.1:8089/get_flow_metadata?address=00c7ec01&program=battlestationspacific.exe&max_ranges=4096",
+          "http_status": 200,
+          "transport_error": null,
+          "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"00c7ec01\"},\"modification_number_before\":\"2740\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c7ec01\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c7ec01\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c7ec01\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c7ec01\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c7ec06\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c7ec06\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"00c7ec01\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"00c7ec01\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"00c7ec01\"},\"name\":\"EHHandler@00c7ec01\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"10\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"00c7ec01\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"00c7ec0a\"},\"length\":\"10\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"2740\"}",
+          "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGM3ZWMwMSJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6IjI3NDAiLCJsaXN0aW5nIjp7Imluc3RydWN0aW9uX2F0Ijp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGM3ZWMwMSJ9LCJsZW5ndGgiOjUsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfSwiaW5zdHJ1Y3Rpb25fY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2VjMDEifSwibGVuZ3RoIjo1LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2VjMDEifSwibGVuZ3RoIjo1LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9jb250YWluaW5nIjp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGM3ZWMwMSJ9LCJsZW5ndGgiOjUsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfX0sImluc3RydWN0aW9uX2Zsb3ciOnsiZmxvd19vdmVycmlkZSI6Ik5PTkUiLCJkZWZhdWx0X2Zsb3ciOnsibmFtZSI6IkZBTExfVEhST1VHSCIsImlzX2NhbGwiOmZhbHNlLCJpc19qdW1wIjpmYWxzZSwiaXNfY29uZGl0aW9uYWwiOmZhbHNlLCJpc19jb21wdXRlZCI6ZmFsc2UsImlzX3Rlcm1pbmFsIjpmYWxzZX0sImVmZmVjdGl2ZV9mbG93Ijp7Im5hbWUiOiJGQUxMX1RIUk9VR0giLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6ZmFsc2V9LCJkZWZhdWx0X2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2VjMDYifSwiZWZmZWN0aXZlX2ZhbGx0aHJvdWdoIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2VjMDYifSwiZmFsbHRocm91Z2hfb3ZlcnJpZGRlbiI6ZmFsc2UsImRlZmF1bHRfdGFyZ2V0cyI6W10sImVmZmVjdGl2ZV90YXJnZXRzIjpbXX0sImZ1bmN0aW9uX2F0X3F1ZXJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2VjMDEifSwiZnVuY3Rpb25fY29udGFpbmluZ19xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzdlYzAxIn0sImZ1bmN0aW9ucyI6W3siZW50cnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGM3ZWMwMSJ9LCJuYW1lIjoiRUhIYW5kbGVyQDAwYzdlYzAxIiwibm9fcmV0dXJuIjpmYWxzZSwiaXNfdGh1bmsiOmZhbHNlLCJ0aHVua190YXJnZXRfcmVjdXJzaXZlIjpmYWxzZSwiZGlyZWN0X3RodW5rX3RhcmdldCI6bnVsbCwiYm9keSI6eyJyYW5nZV9jb3VudCI6MSwicmV0dXJuZWRfcmFuZ2VfY291bnQiOjEsImFkZHJlc3NfY291bnQiOiIxMCIsImNvbXBsZXRlIjp0cnVlLCJyYW5nZXMiOlt7InN0YXJ0Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjN2VjMDEifSwiZW5kX2luY2x1c2l2ZSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzdlYzBhIn0sImxlbmd0aCI6IjEwIn1dfX1dLCJkaXJlY3RfY2FsbF90YXJnZXRzIjpbXSwibW9kaWZpY2F0aW9uX251bWJlcl9hZnRlciI6IjI3NDAifQ==",
+          "raw_sha256": "f121220d2c3b65d078298fb6123e130deeea68399c97db62ddcec7ff2b9bc6e1"
+        },
+        {
+          "address": "00401130",
+          "url": "http://127.0.0.1:8089/get_flow_metadata?address=00401130&program=battlestationspacific.exe&max_ranges=4096",
+          "http_status": 200,
+          "transport_error": null,
+          "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"00401130\"},\"modification_number_before\":\"2740\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00401130\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00401130\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00401130\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00401130\"},\"length\":1,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"TERMINATOR\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":true},\"effective_flow\":{\"name\":\"TERMINATOR\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":true},\"default_fallthrough\":null,\"effective_fallthrough\":null,\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"00401130\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"00401130\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"00401130\"},\"name\":\"TRIV_body_00401130\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"1\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"00401130\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"00401130\"},\"length\":\"1\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"2740\"}",
+          "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDQwMTEzMCJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6IjI3NDAiLCJsaXN0aW5nIjp7Imluc3RydWN0aW9uX2F0Ijp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDQwMTEzMCJ9LCJsZW5ndGgiOjEsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfSwiaW5zdHJ1Y3Rpb25fY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDExMzAifSwibGVuZ3RoIjoxLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDExMzAifSwibGVuZ3RoIjoxLCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImNvZGVfdW5pdF9jb250YWluaW5nIjp7ImFkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDQwMTEzMCJ9LCJsZW5ndGgiOjEsImphdmFfY2xhc3MiOiJnaGlkcmEucHJvZ3JhbS5kYXRhYmFzZS5jb2RlLkluc3RydWN0aW9uREIiLCJraW5kIjoiaW5zdHJ1Y3Rpb24iLCJkZWZpbmVkIjpudWxsfX0sImluc3RydWN0aW9uX2Zsb3ciOnsiZmxvd19vdmVycmlkZSI6Ik5PTkUiLCJkZWZhdWx0X2Zsb3ciOnsibmFtZSI6IlRFUk1JTkFUT1IiLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6dHJ1ZX0sImVmZmVjdGl2ZV9mbG93Ijp7Im5hbWUiOiJURVJNSU5BVE9SIiwiaXNfY2FsbCI6ZmFsc2UsImlzX2p1bXAiOmZhbHNlLCJpc19jb25kaXRpb25hbCI6ZmFsc2UsImlzX2NvbXB1dGVkIjpmYWxzZSwiaXNfdGVybWluYWwiOnRydWV9LCJkZWZhdWx0X2ZhbGx0aHJvdWdoIjpudWxsLCJlZmZlY3RpdmVfZmFsbHRocm91Z2giOm51bGwsImZhbGx0aHJvdWdoX292ZXJyaWRkZW4iOmZhbHNlLCJkZWZhdWx0X3RhcmdldHMiOltdLCJlZmZlY3RpdmVfdGFyZ2V0cyI6W119LCJmdW5jdGlvbl9hdF9xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwNDAxMTMwIn0sImZ1bmN0aW9uX2NvbnRhaW5pbmdfcXVlcnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMDQwMTEzMCJ9LCJmdW5jdGlvbnMiOlt7ImVudHJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDExMzAifSwibmFtZSI6IlRSSVZfYm9keV8wMDQwMTEzMCIsIm5vX3JldHVybiI6ZmFsc2UsImlzX3RodW5rIjpmYWxzZSwidGh1bmtfdGFyZ2V0X3JlY3Vyc2l2ZSI6ZmFsc2UsImRpcmVjdF90aHVua190YXJnZXQiOm51bGwsImJvZHkiOnsicmFuZ2VfY291bnQiOjEsInJldHVybmVkX3JhbmdlX2NvdW50IjoxLCJhZGRyZXNzX2NvdW50IjoiMSIsImNvbXBsZXRlIjp0cnVlLCJyYW5nZXMiOlt7InN0YXJ0Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDExMzAifSwiZW5kX2luY2x1c2l2ZSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwNDAxMTMwIn0sImxlbmd0aCI6IjEifV19fV0sImRpcmVjdF9jYWxsX3RhcmdldHMiOltdLCJtb2RpZmljYXRpb25fbnVtYmVyX2FmdGVyIjoiMjc0MCJ9",
+          "raw_sha256": "3f4cfe74f64f0f26e49effec7b781f0db3a003f4bdf7d7a1336f5f61912c4b22"
+        }
+      ],
+      "validation": {
+        "accepted": true,
+        "state": "accepted",
+        "errors": []
+      },
+      "modification_number": "2740"
+    },
+    "typed_capture_sha256": "3c27ed97cf70c8251f43e04d9d813b56309d80b6c9b39ea24182d85408750608",
+    "original_image": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "original_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "units": [
+      {
+        "address": "00697d40",
+        "role": "owned_ordinary",
+        "native_name": "STL_ConstructWordVector_00697d40",
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "64",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00697d40"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00697d7f"
+              },
+              "length": "64"
+            }
+          ]
+        },
+        "bytes": 64,
+        "starts": 17,
+        "raw_bytes": "6aff68e1ebc70064a100000000506489250000000083ec08890c24894c240485c9c744241000000000740652e81ff8ebff8b4c240864890d0000000083c414c3",
+        "sha256": "48a37e87d85797d804e09c53893f9322d40c2bd5039acb1736975aad723fb140",
+        "PE_live_equal": true,
+        "current_starts_equal_Capstone": true,
+        "matches_accepted_readiness": true,
+        "instructions": [
+          {
+            "address": "00697d40",
+            "offset": 0,
+            "bytes": "6aff",
+            "mnemonic": "push",
+            "operands": "-1"
+          },
+          {
+            "address": "00697d42",
+            "offset": 2,
+            "bytes": "68e1ebc700",
+            "mnemonic": "push",
+            "operands": "0xc7ebe1"
+          },
+          {
+            "address": "00697d47",
+            "offset": 7,
+            "bytes": "64a100000000",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "00697d4d",
+            "offset": 13,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": "00697d4e",
+            "offset": 14,
+            "bytes": "64892500000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr fs:[0], esp"
+          },
+          {
+            "address": "00697d55",
+            "offset": 21,
+            "bytes": "83ec08",
+            "mnemonic": "sub",
+            "operands": "esp, 8"
+          },
+          {
+            "address": "00697d58",
+            "offset": 24,
+            "bytes": "890c24",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp], ecx"
+          },
+          {
+            "address": "00697d5b",
+            "offset": 27,
+            "bytes": "894c2404",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 4], ecx"
+          },
+          {
+            "address": "00697d5f",
+            "offset": 31,
+            "bytes": "85c9",
+            "mnemonic": "test",
+            "operands": "ecx, ecx"
+          },
+          {
+            "address": "00697d61",
+            "offset": 33,
+            "bytes": "c744241000000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 0x10], 0"
+          },
+          {
+            "address": "00697d69",
+            "offset": 41,
+            "bytes": "7406",
+            "mnemonic": "je",
+            "operands": "0x697d71"
+          },
+          {
+            "address": "00697d6b",
+            "offset": 43,
+            "bytes": "52",
+            "mnemonic": "push",
+            "operands": "edx"
+          },
+          {
+            "address": "00697d6c",
+            "offset": 44,
+            "bytes": "e81ff8ebff",
+            "mnemonic": "call",
+            "operands": "0x557590"
+          },
+          {
+            "address": "00697d71",
+            "offset": 49,
+            "bytes": "8b4c2408",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esp + 8]"
+          },
+          {
+            "address": "00697d75",
+            "offset": 53,
+            "bytes": "64890d00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "00697d7c",
+            "offset": 60,
+            "bytes": "83c414",
+            "mnemonic": "add",
+            "operands": "esp, 0x14"
+          },
+          {
+            "address": "00697d7f",
+            "offset": 63,
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ],
+        "transfers": [
+          {
+            "site": "00697d6c",
+            "target": "00557590",
+            "kind": "call"
+          }
+        ],
+        "command_indexes": [
+          0,
+          1
+        ]
+      },
+      {
+        "address": "00697ec0",
+        "role": "owned_ordinary",
+        "native_name": "STL_ConstructWordVector_00697ec0",
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "72",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00697ec0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00697f07"
+              },
+              "length": "72"
+            }
+          ]
+        },
+        "bytes": 72,
+        "starts": 19,
+        "raw_bytes": "6aff6801ecc70064a1000000005064892500000000518b4c2414894c2414890c2485c9c744240c00000000740a8b44241850e899f6ebff8b4c240464890d0000000083c410c20800",
+        "sha256": "b63692437160ec918b2d9a22fbc43f3899f1ed4cdcd7852f1392c2bc05b79ae4",
+        "PE_live_equal": true,
+        "current_starts_equal_Capstone": true,
+        "matches_accepted_readiness": true,
+        "instructions": [
+          {
+            "address": "00697ec0",
+            "offset": 0,
+            "bytes": "6aff",
+            "mnemonic": "push",
+            "operands": "-1"
+          },
+          {
+            "address": "00697ec2",
+            "offset": 2,
+            "bytes": "6801ecc700",
+            "mnemonic": "push",
+            "operands": "0xc7ec01"
+          },
+          {
+            "address": "00697ec7",
+            "offset": 7,
+            "bytes": "64a100000000",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "00697ecd",
+            "offset": 13,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": "00697ece",
+            "offset": 14,
+            "bytes": "64892500000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr fs:[0], esp"
+          },
+          {
+            "address": "00697ed5",
+            "offset": 21,
+            "bytes": "51",
+            "mnemonic": "push",
+            "operands": "ecx"
+          },
+          {
+            "address": "00697ed6",
+            "offset": 22,
+            "bytes": "8b4c2414",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00697eda",
+            "offset": 26,
+            "bytes": "894c2414",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 0x14], ecx"
+          },
+          {
+            "address": "00697ede",
+            "offset": 30,
+            "bytes": "890c24",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp], ecx"
+          },
+          {
+            "address": "00697ee1",
+            "offset": 33,
+            "bytes": "85c9",
+            "mnemonic": "test",
+            "operands": "ecx, ecx"
+          },
+          {
+            "address": "00697ee3",
+            "offset": 35,
+            "bytes": "c744240c00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 0xc], 0"
+          },
+          {
+            "address": "00697eeb",
+            "offset": 43,
+            "bytes": "740a",
+            "mnemonic": "je",
+            "operands": "0x697ef7"
+          },
+          {
+            "address": "00697eed",
+            "offset": 45,
+            "bytes": "8b442418",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00697ef1",
+            "offset": 49,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": "00697ef2",
+            "offset": 50,
+            "bytes": "e899f6ebff",
+            "mnemonic": "call",
+            "operands": "0x557590"
+          },
+          {
+            "address": "00697ef7",
+            "offset": 55,
+            "bytes": "8b4c2404",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esp + 4]"
+          },
+          {
+            "address": "00697efb",
+            "offset": 59,
+            "bytes": "64890d00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "00697f02",
+            "offset": 66,
+            "bytes": "83c410",
+            "mnemonic": "add",
+            "operands": "esp, 0x10"
+          },
+          {
+            "address": "00697f05",
+            "offset": 69,
+            "bytes": "c20800",
+            "mnemonic": "ret",
+            "operands": "8"
+          }
+        ],
+        "transfers": [
+          {
+            "site": "00697ef2",
+            "target": "00557590",
+            "kind": "call"
+          }
+        ],
+        "command_indexes": [
+          2,
+          3
+        ]
+      },
+      {
+        "address": "00c7ebd0",
+        "role": "owned_effect_elided_logical_unwind",
+        "native_name": "Unwind@00c7ebd0",
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "17",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c7ebd0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c7ebe0"
+              },
+              "length": "17"
+            }
+          ]
+        },
+        "bytes": 17,
+        "starts": 7,
+        "raw_bytes": "8b45ec508b4df051e8532578ff83c408c3",
+        "sha256": "989209e37be48eda7291934d1e44f9227fc6780cdb68e57fd74ff99e0d4c566a",
+        "PE_live_equal": true,
+        "current_starts_equal_Capstone": true,
+        "matches_accepted_readiness": true,
+        "instructions": [
+          {
+            "address": "00c7ebd0",
+            "offset": 0,
+            "bytes": "8b45ec",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp - 0x14]"
+          },
+          {
+            "address": "00c7ebd3",
+            "offset": 3,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": "00c7ebd4",
+            "offset": 4,
+            "bytes": "8b4df0",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp - 0x10]"
+          },
+          {
+            "address": "00c7ebd7",
+            "offset": 7,
+            "bytes": "51",
+            "mnemonic": "push",
+            "operands": "ecx"
+          },
+          {
+            "address": "00c7ebd8",
+            "offset": 8,
+            "bytes": "e8532578ff",
+            "mnemonic": "call",
+            "operands": "0x401130"
+          },
+          {
+            "address": "00c7ebdd",
+            "offset": 13,
+            "bytes": "83c408",
+            "mnemonic": "add",
+            "operands": "esp, 8"
+          },
+          {
+            "address": "00c7ebe0",
+            "offset": 16,
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ],
+        "transfers": [
+          {
+            "site": "00c7ebd8",
+            "target": "00401130",
+            "kind": "call"
+          }
+        ],
+        "command_indexes": [
+          4,
+          5
+        ]
+      },
+      {
+        "address": "00c7ebf0",
+        "role": "owned_effect_elided_logical_unwind",
+        "native_name": "Unwind@00c7ebf0",
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "17",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c7ebf0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c7ec00"
+              },
+              "length": "17"
+            }
+          ]
+        },
+        "bytes": 17,
+        "starts": 7,
+        "raw_bytes": "8b4504508b4df051e8332578ff83c408c3",
+        "sha256": "5a2961f9bb4cc3db0835e8bed747aec7bd9d287e81e8d3a91b2cb3ccb7aa6335",
+        "PE_live_equal": true,
+        "current_starts_equal_Capstone": true,
+        "matches_accepted_readiness": true,
+        "instructions": [
+          {
+            "address": "00c7ebf0",
+            "offset": 0,
+            "bytes": "8b4504",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 4]"
+          },
+          {
+            "address": "00c7ebf3",
+            "offset": 3,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": "00c7ebf4",
+            "offset": 4,
+            "bytes": "8b4df0",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp - 0x10]"
+          },
+          {
+            "address": "00c7ebf7",
+            "offset": 7,
+            "bytes": "51",
+            "mnemonic": "push",
+            "operands": "ecx"
+          },
+          {
+            "address": "00c7ebf8",
+            "offset": 8,
+            "bytes": "e8332578ff",
+            "mnemonic": "call",
+            "operands": "0x401130"
+          },
+          {
+            "address": "00c7ebfd",
+            "offset": 13,
+            "bytes": "83c408",
+            "mnemonic": "add",
+            "operands": "esp, 8"
+          },
+          {
+            "address": "00c7ec00",
+            "offset": 16,
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ],
+        "transfers": [
+          {
+            "site": "00c7ebf8",
+            "target": "00401130",
+            "kind": "call"
+          }
+        ],
+        "command_indexes": [
+          6,
+          7
+        ]
+      },
+      {
+        "address": "00c7ebe1",
+        "role": "read_only_handler",
+        "native_name": "EHHandler@00c7ebe1",
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "10",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c7ebe1"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c7ebea"
+              },
+              "length": "10"
+            }
+          ]
+        },
+        "bytes": 10,
+        "starts": 2,
+        "raw_bytes": "b88cb9da00e9587ff7ff",
+        "sha256": "82249b4df1acdfd86d3c28ed04ec283b20bb0b75a7ad9fc8edcb1af8b318a40f",
+        "PE_live_equal": true,
+        "current_starts_equal_Capstone": true,
+        "matches_accepted_readiness": true,
+        "instructions": [
+          {
+            "address": "00c7ebe1",
+            "offset": 0,
+            "bytes": "b88cb9da00",
+            "mnemonic": "mov",
+            "operands": "eax, 0xdab98c"
+          },
+          {
+            "address": "00c7ebe6",
+            "offset": 5,
+            "bytes": "e9587ff7ff",
+            "mnemonic": "jmp",
+            "operands": "0xbf6b43"
+          }
+        ],
+        "transfers": [
+          {
+            "site": "00c7ebe6",
+            "target": "00bf6b43",
+            "kind": "tail_jump"
+          }
+        ],
+        "command_indexes": [
+          8,
+          9
+        ]
+      },
+      {
+        "address": "00c7ec01",
+        "role": "read_only_handler",
+        "native_name": "EHHandler@00c7ec01",
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "10",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c7ec01"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c7ec0a"
+              },
+              "length": "10"
+            }
+          ]
+        },
+        "bytes": 10,
+        "starts": 2,
+        "raw_bytes": "b8b8b9da00e9387ff7ff",
+        "sha256": "7aee82c1d48fee632d300fcf3c991959b1008f239fb941d949e113a5ab88b48c",
+        "PE_live_equal": true,
+        "current_starts_equal_Capstone": true,
+        "matches_accepted_readiness": true,
+        "instructions": [
+          {
+            "address": "00c7ec01",
+            "offset": 0,
+            "bytes": "b8b8b9da00",
+            "mnemonic": "mov",
+            "operands": "eax, 0xdab9b8"
+          },
+          {
+            "address": "00c7ec06",
+            "offset": 5,
+            "bytes": "e9387ff7ff",
+            "mnemonic": "jmp",
+            "operands": "0xbf6b43"
+          }
+        ],
+        "transfers": [
+          {
+            "site": "00c7ec06",
+            "target": "00bf6b43",
+            "kind": "tail_jump"
+          }
+        ],
+        "command_indexes": [
+          10,
+          11
+        ]
+      },
+      {
+        "address": "00401130",
+        "role": "read_only_literal_RET",
+        "native_name": "TRIV_body_00401130",
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "1",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00401130"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00401130"
+              },
+              "length": "1"
+            }
+          ]
+        },
+        "bytes": 1,
+        "starts": 1,
+        "raw_bytes": "c3",
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "PE_live_equal": true,
+        "current_starts_equal_Capstone": true,
+        "matches_accepted_readiness": true,
+        "instructions": [
+          {
+            "address": "00401130",
+            "offset": 0,
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ],
+        "transfers": [],
+        "command_indexes": [
+          12,
+          13
+        ]
+      }
+    ],
+    "commands": [
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00697d40",
+          "--length",
+          "64"
+        ],
+        "stdout": "00697d40  6a ff 68 e1 eb c7 00 64 a1 00 00 00 00 50 64 89  j.h....d.....Pd.\r\n00697d50  25 00 00 00 00 83 ec 08 89 0c 24 89 4c 24 04 85  %.........$.L$..\r\n00697d60  c9 c7 44 24 10 00 00 00 00 74 06 52 e8 1f f8 eb  ..D$.....t.R....\r\n00697d70  ff 8b 4c 24 08 64 89 0d 00 00 00 00 83 c4 14 c3  ..L$.d..........\r\n",
+        "sha256": "ff36b48ec8ec68743e65aff261b4b473b5ff4b831ed96032787f170df10c07e7"
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "00697d40",
+          "--lines",
+          "40"
+        ],
+        "stdout": "00697d40: PUSH -0x1 \r\n00697d42: PUSH 0xc7ebe1 \r\n00697d47: MOV EAX,FS:[0x0] \r\n00697d4d: PUSH EAX \r\n00697d4e: MOV dword ptr FS:[0x0],ESP \r\n00697d55: SUB ESP,0x8 \r\n00697d58: MOV dword ptr [ESP],ECX \r\n00697d5b: MOV dword ptr [ESP + 0x4],ECX \r\n00697d5f: TEST ECX,ECX \r\n00697d61: MOV dword ptr [ESP + 0x10],0x0 \r\n00697d69: JZ 0x00697d71 \r\n00697d6b: PUSH EDX \r\n00697d6c: CALL 0x00557590 \r\n00697d71: MOV ECX,dword ptr [ESP + 0x8] \r\n00697d75: MOV dword ptr FS:[0x0],ECX \r\n00697d7c: ADD ESP,0x14 \r\n00697d7f: RET \r\n",
+        "sha256": "e9602b0d601845a3e9e2d1a59bdf7b63b0633df06534f8d9945ed9919638439b"
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00697ec0",
+          "--length",
+          "72"
+        ],
+        "stdout": "00697ec0  6a ff 68 01 ec c7 00 64 a1 00 00 00 00 50 64 89  j.h....d.....Pd.\r\n00697ed0  25 00 00 00 00 51 8b 4c 24 14 89 4c 24 14 89 0c  %....Q.L$..L$...\r\n00697ee0  24 85 c9 c7 44 24 0c 00 00 00 00 74 0a 8b 44 24  $...D$.....t..D$\r\n00697ef0  18 50 e8 99 f6 eb ff 8b 4c 24 04 64 89 0d 00 00  .P......L$.d....\r\n00697f00  00 00 83 c4 10 c2 08 00  ........\r\n",
+        "sha256": "169a98fd9f79bb45d958403971e385a66997cab6853e36a613ec9998890e2ce9"
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "00697ec0",
+          "--lines",
+          "40"
+        ],
+        "stdout": "00697ec0: PUSH -0x1 \r\n00697ec2: PUSH 0xc7ec01 \r\n00697ec7: MOV EAX,FS:[0x0] \r\n00697ecd: PUSH EAX \r\n00697ece: MOV dword ptr FS:[0x0],ESP \r\n00697ed5: PUSH ECX \r\n00697ed6: MOV ECX,dword ptr [ESP + 0x14] \r\n00697eda: MOV dword ptr [ESP + 0x14],ECX \r\n00697ede: MOV dword ptr [ESP],ECX \r\n00697ee1: TEST ECX,ECX \r\n00697ee3: MOV dword ptr [ESP + 0xc],0x0 \r\n00697eeb: JZ 0x00697ef7 \r\n00697eed: MOV EAX,dword ptr [ESP + 0x18] \r\n00697ef1: PUSH EAX \r\n00697ef2: CALL 0x00557590 \r\n00697ef7: MOV ECX,dword ptr [ESP + 0x4] \r\n00697efb: MOV dword ptr FS:[0x0],ECX \r\n00697f02: ADD ESP,0x10 \r\n00697f05: RET 0x8 \r\n",
+        "sha256": "01d5c561cf56e56f0fe01c5fb2dc4076df76494bb6a7c0f9ba73cec9ec35ccb9"
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00c7ebd0",
+          "--length",
+          "17"
+        ],
+        "stdout": "00c7ebd0  8b 45 ec 50 8b 4d f0 51 e8 53 25 78 ff 83 c4 08  .E.P.M.Q.S%x....\r\n00c7ebe0  c3  .\r\n",
+        "sha256": "522e68c285331482abdd6abe6bd0d204c3d4a40c9b3a29ab27149c9de72679a4"
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "00c7ebd0",
+          "--lines",
+          "40"
+        ],
+        "stdout": "00c7ebd0: MOV EAX,dword ptr [EBP + -0x14] \r\n00c7ebd3: PUSH EAX \r\n00c7ebd4: MOV ECX,dword ptr [EBP + -0x10] \r\n00c7ebd7: PUSH ECX \r\n00c7ebd8: CALL 0x00401130 \r\n00c7ebdd: ADD ESP,0x8 \r\n00c7ebe0: RET \r\n",
+        "sha256": "60afc4458302ad8932329c7e15fc2d7a21d417cb91d8f1d4665473c9d0eb93cc"
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00c7ebf0",
+          "--length",
+          "17"
+        ],
+        "stdout": "00c7ebf0  8b 45 04 50 8b 4d f0 51 e8 33 25 78 ff 83 c4 08  .E.P.M.Q.3%x....\r\n00c7ec00  c3  .\r\n",
+        "sha256": "265965eb2e9424d2ed3c6ef0bf4869db11b3e9f884c021d6f2983b3924fe96e2"
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "00c7ebf0",
+          "--lines",
+          "40"
+        ],
+        "stdout": "00c7ebf0: MOV EAX,dword ptr [EBP + 0x4] \r\n00c7ebf3: PUSH EAX \r\n00c7ebf4: MOV ECX,dword ptr [EBP + -0x10] \r\n00c7ebf7: PUSH ECX \r\n00c7ebf8: CALL 0x00401130 \r\n00c7ebfd: ADD ESP,0x8 \r\n00c7ec00: RET \r\n",
+        "sha256": "99fc29c8780467c2dcca4a90633ae2d94adccb4e7911969fa7967082c646afe2"
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00c7ebe1",
+          "--length",
+          "10"
+        ],
+        "stdout": "00c7ebe1  b8 8c b9 da 00 e9 58 7f f7 ff  ......X...\r\n",
+        "sha256": "0edea896b252ea25fe1fb7eff8cbf93b0e0f674de1b7ba8f7e49b3148d414e3a"
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "00c7ebe1",
+          "--lines",
+          "40"
+        ],
+        "stdout": "00c7ebe1: MOV EAX,0xdab98c \r\n00c7ebe6: JMP 0x00bf6b43 \r\n",
+        "sha256": "3e341f349e2269d0aec21a525f97561967f844db05311156aeb9c4268b2aeccf"
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00c7ec01",
+          "--length",
+          "10"
+        ],
+        "stdout": "00c7ec01  b8 b8 b9 da 00 e9 38 7f f7 ff  ......8...\r\n",
+        "sha256": "e7c5f8b5aaec65a6b275790995db25ef9059c16b5098bbf59e87ae9dd21ee64b"
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "00c7ec01",
+          "--lines",
+          "40"
+        ],
+        "stdout": "00c7ec01: MOV EAX,0xdab9b8 \r\n00c7ec06: JMP 0x00bf6b43 \r\n",
+        "sha256": "8820204eee966e20467230cf9720df5bda238449bbad6a738a7387e755a6bda5"
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00401130",
+          "--length",
+          "1"
+        ],
+        "stdout": "00401130  c3  .\r\n",
+        "sha256": "e2047fc967fda44e95c2166da84c09f7e2cbd6a9d36b76d38e29235712de5fe8"
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "00401130",
+          "--lines",
+          "40"
+        ],
+        "stdout": "00401130: RET \r\n",
+        "sha256": "360f0b7542a17e72ef054a02dd6585e52270fcec53274399278d30ec56a408bd"
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00dab984",
+          "--length",
+          "88"
+        ],
+        "stdout": "00dab984  ff ff ff ff d0 eb c7 00 22 05 93 19 01 00 00 00  ........\".......\r\n00dab994  84 b9 da 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\r\n00dab9a4  00 00 00 00 00 00 00 00 01 00 00 00 ff ff ff ff  ................\r\n00dab9b4  f0 eb c7 00 22 05 93 19 01 00 00 00 b0 b9 da 00  ....\"...........\r\n00dab9c4  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\r\n00dab9d4  00 00 00 00 01 00 00 00  ........\r\n",
+        "sha256": "13aac0bc3a42b46ab8965883fc96a16cf48b10cddcfd3ea522817118d8463109"
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "comments",
+          "00697d40",
+          "00697ec0",
+          "00c7ebd0",
+          "00c7ebf0"
+        ],
+        "stdout": "[\r\n {\r\n  \"address\": \"00697d40\",\r\n  \"annotation\": {\r\n   \"address\": \"00697d40\",\r\n   \"function_name\": \"STL_ConstructWordVector_00697d40\",\r\n   \"comment\": \"[BSP reconstruction 00697d40]\\nHypothesis, not a recovered symbol. Placement copy construct of a checked word vector (STL_CheckedWordVector_CopyConstruct_00557590) when the target is not null. No reference found. Doc: docs/CC13_BAND_0067_0073.md.\"\r\n  }\r\n },\r\n {\r\n  \"address\": \"00697ec0\",\r\n  \"annotation\": {\r\n   \"address\": \"00697ec0\",\r\n   \"function_name\": \"STL_ConstructWordVector_00697ec0\",\r\n   \"comment\": \"[BSP reconstruction 00697ec0]\\nHypothesis, not a recovered symbol. Same body as 00697D40. No reference found. Doc: docs/CC13_BAND_0067_0073.md.\"\r\n  }\r\n },\r\n {\r\n  \"address\": \"00c7ebd0\",\r\n  \"annotation\": {\r\n   \"address\": \"00c7ebd0\",\r\n   \"function_name\": \"Unwind@00c7ebd0\"\r\n  }\r\n },\r\n {\r\n  \"address\": \"00c7ebf0\",\r\n  \"annotation\": {\r\n   \"address\": \"00c7ebf0\",\r\n   \"function_name\": \"Unwind@00c7ebf0\"\r\n  }\r\n }\r\n]\r\n",
+        "sha256": "161dad8b50d029fd7ef547735f66ba720ee7049e2db7528797271c24b27988b7"
+      }
+    ],
+    "raw_EH": {
+      "address": "00dab984",
+      "bytes": 88,
+      "raw_bytes": "ffffffffd0ebc700220593190100000084b9da00000000000000000000000000000000000000000001000000fffffffff0ebc7002205931901000000b0b9da00000000000000000000000000000000000000000001000000",
+      "PE_live_equal": true,
+      "complete_two_unwind_and_FuncInfo_maps": [
+        {
+          "unwind_table": "00dab984",
+          "handler": "00c7ebe1",
+          "FuncInfo": "00dab98c",
+          "raw_bytes": "ffffffffd0ebc700220593190100000084b9da00000000000000000000000000000000000000000001000000",
+          "words": [
+            4294967295,
+            13102032,
+            429065506,
+            1,
+            14334340,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "interpretation": {
+            "magic": "19930522",
+            "maxState": 1,
+            "unwind_state0": {
+              "previous_state": -1,
+              "action": "00c7ebd0"
+            },
+            "nTryBlocks": 0,
+            "pTryBlockMap": 0,
+            "nIPMapEntries": 0,
+            "pIPtoStateMap": 0,
+            "pESTypeList": 0,
+            "EHFlags": 1
+          }
+        },
+        {
+          "unwind_table": "00dab9b0",
+          "handler": "00c7ec01",
+          "FuncInfo": "00dab9b8",
+          "raw_bytes": "fffffffff0ebc7002205931901000000b0b9da00000000000000000000000000000000000000000001000000",
+          "words": [
+            4294967295,
+            13102064,
+            429065506,
+            1,
+            14334384,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "interpretation": {
+            "magic": "19930522",
+            "maxState": 1,
+            "unwind_state0": {
+              "previous_state": -1,
+              "action": "00c7ebf0"
+            },
+            "nTryBlocks": 0,
+            "pTryBlockMap": 0,
+            "nIPMapEntries": 0,
+            "pIPtoStateMap": 0,
+            "pESTypeList": 0,
+            "EHFlags": 1
+          }
+        }
+      ]
+    },
+    "native_transfers": [
+      {
+        "function": "00697d40",
+        "site": "00697d6c",
+        "target": "00557590",
+        "kind": "call"
+      },
+      {
+        "function": "00697ec0",
+        "site": "00697ef2",
+        "target": "00557590",
+        "kind": "call"
+      },
+      {
+        "function": "00c7ebd0",
+        "site": "00c7ebd8",
+        "target": "00401130",
+        "kind": "call"
+      },
+      {
+        "function": "00c7ebf0",
+        "site": "00c7ebf8",
+        "target": "00401130",
+        "kind": "call"
+      },
+      {
+        "function": "00c7ebe1",
+        "site": "00c7ebe6",
+        "target": "00bf6b43",
+        "kind": "tail_jump"
+      },
+      {
+        "function": "00c7ec01",
+        "site": "00c7ec06",
+        "target": "00bf6b43",
+        "kind": "tail_jump"
+      }
+    ],
+    "native_comment_preimages": [
+      {
+        "address": "00697d40",
+        "annotation": {
+          "address": "00697d40",
+          "function_name": "STL_ConstructWordVector_00697d40",
+          "comment": "[BSP reconstruction 00697d40]\nHypothesis, not a recovered symbol. Placement copy construct of a checked word vector (STL_CheckedWordVector_CopyConstruct_00557590) when the target is not null. No reference found. Doc: docs/CC13_BAND_0067_0073.md."
+        }
+      },
+      {
+        "address": "00697ec0",
+        "annotation": {
+          "address": "00697ec0",
+          "function_name": "STL_ConstructWordVector_00697ec0",
+          "comment": "[BSP reconstruction 00697ec0]\nHypothesis, not a recovered symbol. Same body as 00697D40. No reference found. Doc: docs/CC13_BAND_0067_0073.md."
+        }
+      },
+      {
+        "address": "00c7ebd0",
+        "annotation": {
+          "address": "00c7ebd0",
+          "function_name": "Unwind@00c7ebd0"
+        }
+      },
+      {
+        "address": "00c7ebf0",
+        "annotation": {
+          "address": "00c7ebf0",
+          "function_name": "Unwind@00c7ebf0"
+        }
+      }
+    ],
+    "fresh_counts": {
+      "candidate_wrappers": {
+        "bytes": 136,
+        "starts": 36
+      },
+      "candidate_logical_actions": {
+        "bytes": 34,
+        "starts": 14
+      },
+      "read_only_handlers": {
+        "bytes": 20,
+        "starts": 4
+      },
+      "read_only_literal_RET": {
+        "bytes": 1,
+        "starts": 1
+      },
+      "candidate_total": {
+        "bytes": 170,
+        "starts": 50
+      },
+      "read_only_support_total": {
+        "bytes": 21,
+        "starts": 5
+      },
+      "all_code": {
+        "bytes": 191,
+        "starts": 55
+      },
+      "raw_EH_bytes": 88,
+      "CALL_or_tailJMP": 6
+    },
+    "readiness": "local/oct15_dword_vector_placement_readiness.json",
+    "readiness_sha256": "48c57dfe7be0b3f517342098ae94244844e59aecfc1cec9e7efb22fa1fe12e41",
+    "private_frame_and_noop_proof": {
+      "native_entry_stack_symbol": "Let S denote native entryESP(return-address location),not a Source EBP parameter.",
+      "697D40_slot_layout": [
+        "After registration/localreservation ESP=S-14h. Saved destination words atS-14h andS-10h;previousFS0 atS-0Ch;handler atS-8;state atS-4.",
+        "State0 explicitly armed before constructor/nullbranch. Originalruntime passes its privatefunclet frame base;C7EBD0 reads[EBP-14h] then[EBP-10h]. Those offsets correspond to the two saved placement words under the native EH frame-base convention,not arbitrarySourceEBP."
+      ],
+      "697EC0_slot_layout": [
+        "After registration/scratchword ESP=S-10h. Destination nativeargument atS+4 is read and redundantly rewritten,then saved atS-10h;source nativeargument atS+8 read only onnonnullbranch. PreviousFS0 atS-0Ch;handler atS-8;state atS-4.",
+        "C7EBF0 reads nativeprivate[EBP+4] then[EBP-10h],the argument-slot/saved placement words under that same nativefunclet-base convention. No additional objectoffset or publicframe object is justified."
+      ],
+      "exact_actions": {
+        "00c7ebd0": [
+          "MOVEAX,[EBP-14h];PUSHEAX",
+          "MOVECX,[EBP-10h];PUSHECX",
+          "CALL00401130",
+          "ADDESP8;RET"
+        ],
+        "00c7ebf0": [
+          "MOVEAX,[EBP+4];PUSHEAX",
+          "MOVECX,[EBP-10h];PUSHECX",
+          "CALL00401130",
+          "ADDESP8;RET"
+        ]
+      },
+      "elision_argument": [
+        "Both raw88B maps prove one state0 unwind action and NO try/catch scope;handler immediates identify exact matching FuncInfo and actualBF6B43 tailtarget.",
+        "Both whole17B action bodies only read privateframe words,write balanced privateargument stacktemporaries and enter literal00401130 whose complete PE/live/currentbody is ONEBYTEC3RET. It reads no arguments,does no free/destruction/callback/allocation/throw and writes no publicmemory.",
+        "Thus under admitted well-formed privateframes/validstack/nonfaulting C++ domain,placement-unwind has no public Sourceeffect and can be omitted. Constructor exceptions propagate unchanged;do not add rollback,free,guard,catch-or-return conversion.",
+        "Elision is an effect proof,not originalFH3runtime/EBP/SEH/fault/ambientregister/flags reproduction. Nativeprivate loads/temporary writes canfault oralias on invalid/frame-alias inputs,which are explicitly outside the Sourceinterfaces. No publicEBP helper,syntheticframe,uninitialized pointer evaluation or NativeFH3 emulator is proposed."
+      ],
+      "logical_Source_scope": "Two compiler placement-unwind effects fragments only;no standalone normalNativeABI/publicactionfunctions. Actualhandler entries are read-only support,not proposed Sourceownership."
+    },
+    "wrapper_contracts": {
+      "00697d40": {
+        "ordinary_body": "00697D40..00697D7F,64B/17instructions",
+        "physical_inputs": "ECXdestination,EDXsource;no stackargs;plainRET. ECX is consumed as destination,EDX is pushed only on nonnull path.",
+        "native_schedule": [
+          "PUSHstate-1,PUSHhandlerC7EBE1,MOVEAX,FS0,PUSHoldFS0,installFS0registration.",
+          "Reserve8B;store destination twice at currentESP andESP+4. TESTdestination,then armstate0 atESP+10h before nullbranch.",
+          "If destinationnull,skip all child work. Ifnonnull PUSHEDXsource,CALLactual557590 with ECXdestination;child RET4 removes source.",
+          "Restore oldFS0 throughECX,discard14h bytes,plainRET. No explicit EAXreturn synthesis."
+        ],
+        "native_return": "Null destination leaves EAX=previousFS0exception-chain pointer. Nonnull leaves actual557590 EAX=originaldestination. No EAXwrite after child or onnull epilogue. Not a reliable null-returning pointer API.",
+        "proposed_Source": "void __fastcall place_native_checked_dword_vector_copy_00697d40(void* destination, const void* source);",
+        "Source_effects": "if(destination != nullptr) invoke accepted construct_native_checked_dword_vector_copy_00557590(destination,0,source);voidresult. Source0 defines only callee ignoredEDX;no semantic ambientregisterinput."
+      },
+      "00697ec0": {
+        "ordinary_body": "00697EC0..00697F07,72B/19instructions",
+        "physical_inputs": "TWO stacked inputs: entryESP+4 destination,entryESP+8 source;incomingECX/EDX not semantic inputs;RET8.",
+        "native_schedule": [
+          "Same state/handler/oldFS0 registration with handlerC7EC01. PUSHincomingECX reserves one word then immediately overwrites that word with actual stackdestination.",
+          "Read destination from currentESP+14h and redundantly store it back to same nativeargument slot,also save atcurrentESP. TESTdestination;armstate0 atESP+0Ch before nullbranch.",
+          "Only ifnonnull read source fromcurrentESP+18h,POINTERNOTPOINTEE,PUSHsource,CALLactual557590 withECXdestination. Child RET4;no sourceobject read here.",
+          "Restore oldFS0 throughECX,discard10h privatebytes,RET8."
+        ],
+        "native_return": "Null EAX=previousFS0pointer;nonnull EAX=actual557590 originaldestination. Conditional residue,not a forgednullptr result.",
+        "proposed_Source": "void __stdcall place_native_checked_dword_vector_copy_00697ec0(void* destination, const void* source);",
+        "Source_effects": "Same conditional accepted actualconstructor invocation,with genuine two-stack-arg Sourceinterface and voidreturn. Nativeprivate argument-slot self-store is recorded,not translated into public memory access."
+      }
+    },
+    "historical_identity_correction": {
+      "old_ledger_note": "00697EC0 Same body as00697D40 is historically wrong as physical NativeABI/body statement;64B/17 registerform differs72B/19 stackform.",
+      "preserve": "Existing STL_ConstructWordVector library identities,comments,and oldSourcefunctions/WordVectorHooks remain untouched.",
+      "old_projection": {
+        "src/settings_seg29_cc13.cpp": {
+          "sha256": "7a882cf94ad8bc30120e0a953d7cb0af729d017593f31b1929205c266f43df24",
+          "relevant_lines": "void construct_word_vector_00697d40(void* destination, const void* source, WordVectorHooks& hooks) {\n    if (destination != nullptr) hooks.copy_construct_word_vector_00557590(destination, source);\n}\nvoid construct_word_vector_00697ec0(void* destination, const void* source, WordVectorHooks& hooks) {\n    if (destination != nullptr) hooks.copy_construct_word_vector_00557590(destination, source);\n}"
+        },
+        "include/bsp/settings_seg29_cc13.hpp": {
+          "sha256": "71eac28bfcc7cf1ffdecf63e96e342107450c69bf50a0fd7eabfbd19007a0946",
+          "relevant_lines": "struct WordVectorHooks {\n    virtual ~WordVectorHooks() = default;\n    // 00557590 STL_CheckedWordVector_CopyConstruct, __thiscall(dst, src) RET 4.\n    virtual void copy_construct_word_vector_00557590(void* destination, const void* source) = 0;\n};\n// 00697D40, __fastcall(ECX destination, EDX source) RET and 00697EC0, __stdcall(destination,\n// source) RET 8: placement copy-construct when the destination is non-null.\nvoid construct_word_vector_00697d40(void* destination, const void* source, WordVectorHooks& hooks);\nvoid construct_word_vector_00697ec0(void* destination, const void* source, WordVectorHooks& hooks);"
+        }
+      },
+      "scope_distinction": "Old bodies expose third WordVectorHooks& and virtual constructor callback;they are useful qualified projections,not provider-free actual ordinary physical entries. Their HEADER ALREADY correctly distinguishes fastcall registerform andstdcall RET8 form;do not mislabel that header as the erroneous ledgernote.",
+      "proposed_new_names_are_hypotheses": true
+    },
+    "accepted_source_contract": {
+      "files": {
+        "include/bsp/native_dword_vector_copy_construct.hpp": {
+          "sha256": "ecf2b1d9cb256fef9047e0b8f235c88874177fe9b1d28e4d6cc1add1a53bf693",
+          "matches_current_main": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+          "accepted_ctor_pin": "4cedeba6edda02b365a6752c5bfbdf52a68b12b8"
+        },
+        "src/native_dword_vector_copy_construct.cpp": {
+          "sha256": "4de974411b51e59d30cd1b5822439ef2dd87545f58e787ff46ef3b6df1ea5336",
+          "matches_current_main": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+          "accepted_ctor_pin": "4cedeba6edda02b365a6752c5bfbdf52a68b12b8"
+        },
+        "include/bsp/native_dword_vector_copy_primitives.hpp": {
+          "sha256": "05de7aca0352c991ffb3492dee2f6d80931b881db82517a447af88a508394da0",
+          "matches_current_main": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+          "accepted_ctor_pin": "Inherited accepted actual provider"
+        },
+        "src/native_dword_vector_copy_primitives.cpp": {
+          "sha256": "bd87e6c832595d2da9e71678b8f27c52c032c3a9578e113104155edcfbe7d993",
+          "matches_current_main": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+          "accepted_ctor_pin": "Inherited accepted actual provider"
+        },
+        "include/bsp/native_dword_vector_allocation.hpp": {
+          "sha256": "331458efd167fbabb3d2ed729fe347bc20ef4d47975833bb4612b460ad83f186",
+          "matches_current_main": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+          "accepted_ctor_pin": "Inherited accepted actual provider"
+        },
+        "src/native_dword_vector_allocation.cpp": {
+          "sha256": "d660b174b88f4e03833f50e953a988ff0c342c117a1be1a6ce20dddcc94b57de",
+          "matches_current_main": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+          "accepted_ctor_pin": "Inherited accepted actual provider"
+        },
+        "include/bsp/native_invalid_parameter_noinfo_call.hpp": {
+          "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+          "matches_current_main": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+          "accepted_ctor_pin": "Inherited accepted actual provider"
+        },
+        "src/native_invalid_parameter_noinfo_call.cpp": {
+          "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+          "matches_current_main": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+          "accepted_ctor_pin": "Inherited accepted actual provider"
+        }
+      },
+      "required_direct_header": "include/bsp/native_dword_vector_copy_construct.hpp",
+      "ctor_original_fields": "Actual16B opaque0/begin4/end8/capacityC;unowned4BDWORDbacking. Parent does not overlay/construct a hostmodel.",
+      "exception_and_returning_diagnostic_closure": [
+        "Length/allocation after destinationclears but outside childstate0 remain uncaught bychild;outerplacement action is inert so propagate. No savedallocationfree or oldbackingrepair.",
+        "First/second actualinvalidparameter handlers mayreturn;childpreserves capturedend,retains fullsavedfirst acrosssecondreport,and reloads CURRENTdestinationbegin after report. Parent adds no snapshots/reloads/rollback or sourcevalidation.",
+        "Throws during protected copy/diagnostic cause child lexically tidy CURRENTdestinationheader then barethrow;outeraction contributes no additional effect. Termination/fault/originalEH policies remain qualified.",
+        "Source self-alias/capturedcount-before-destinationclears and public validheader mutations remain exactly childcontract;no normalization.",
+        "Source0/null destination skips child entirely. No eager sourceobject read or sourcevalidation is added. NativeFS0traffic and private stack-word accesses remain outside SourceAPI proof."
+      ]
+    }
+  },
+  "native_proof_capture": "local/oct15_native_dword_vector_placement_native_audit.json",
+  "native_proof_sha256": "e3f268bc18c6d3499d2dd2f4589b301cebac4bce8bfe3d53918389c22a2cb4d2",
+  "native_audit_script": {
+    "path": "local/oct15_native_dword_vector_placement_native_audit.py",
+    "sha256": "d8cebb165e7a41857cf417ea2ed714845baa523dfde1c8ce8cbaddc1a2ae1ffa"
+  },
+  "fresh_native_coverage": {
+    "candidate_wrappers": {
+      "bytes": 136,
+      "starts": 36
+    },
+    "candidate_logical_actions": {
+      "bytes": 34,
+      "starts": 14
+    },
+    "read_only_handlers": {
+      "bytes": 20,
+      "starts": 4
+    },
+    "read_only_literal_RET": {
+      "bytes": 1,
+      "starts": 1
+    },
+    "candidate_total": {
+      "bytes": 170,
+      "starts": 50
+    },
+    "read_only_support_total": {
+      "bytes": 21,
+      "starts": 5
+    },
+    "all_code": {
+      "bytes": 191,
+      "starts": 55
+    },
+    "raw_EH_bytes": 88,
+    "CALL_or_tailJMP": 6
+  },
+  "accepted_readiness_sha256": "48c57dfe7be0b3f517342098ae94244844e59aecfc1cec9e7efb22fa1fe12e41",
+  "actual_binding": {
+    "direct_Source_callee": "construct_native_checked_dword_vector_copy_00557590(destination,0u,source)",
+    "accepted_pin": "4cedeba6edda02b365a6752c5bfbdf52a68b12b8",
+    "provider_files": {
+      "include/bsp/native_dword_vector_copy_construct.hpp": {
+        "sha256": "ecf2b1d9cb256fef9047e0b8f235c88874177fe9b1d28e4d6cc1add1a53bf693",
+        "matches_accepted_main": "ef3fed209f76e5ed1147d2296d94c97b9d331716"
+      },
+      "src/native_dword_vector_copy_construct.cpp": {
+        "sha256": "4de974411b51e59d30cd1b5822439ef2dd87545f58e787ff46ef3b6df1ea5336",
+        "matches_accepted_main": "ef3fed209f76e5ed1147d2296d94c97b9d331716"
+      },
+      "include/bsp/native_dword_vector_copy_primitives.hpp": {
+        "sha256": "05de7aca0352c991ffb3492dee2f6d80931b881db82517a447af88a508394da0",
+        "matches_accepted_main": "ef3fed209f76e5ed1147d2296d94c97b9d331716"
+      },
+      "src/native_dword_vector_copy_primitives.cpp": {
+        "sha256": "bd87e6c832595d2da9e71678b8f27c52c032c3a9578e113104155edcfbe7d993",
+        "matches_accepted_main": "ef3fed209f76e5ed1147d2296d94c97b9d331716"
+      },
+      "include/bsp/native_dword_vector_allocation.hpp": {
+        "sha256": "331458efd167fbabb3d2ed729fe347bc20ef4d47975833bb4612b460ad83f186",
+        "matches_accepted_main": "ef3fed209f76e5ed1147d2296d94c97b9d331716"
+      },
+      "src/native_dword_vector_allocation.cpp": {
+        "sha256": "d660b174b88f4e03833f50e953a988ff0c342c117a1be1a6ce20dddcc94b57de",
+        "matches_accepted_main": "ef3fed209f76e5ed1147d2296d94c97b9d331716"
+      },
+      "include/bsp/native_invalid_parameter_noinfo_call.hpp": {
+        "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+        "matches_accepted_main": "ef3fed209f76e5ed1147d2296d94c97b9d331716"
+      },
+      "src/native_invalid_parameter_noinfo_call.cpp": {
+        "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+        "matches_accepted_main": "ef3fed209f76e5ed1147d2296d94c97b9d331716"
+      }
+    },
+    "no_unresolved_stubs_callbacks_or_type_count_bridges": true,
+    "argument_contract": "Nonnull forwards original addresses;callee ignoredEDX defined0 only. EC0 actualstacksource read only onnonnull Native/Sourcebranch;no sourceobject read/guard or eager construction.",
+    "constructor_exception_and_returning_handler_contract": [
+      "Length/allocation after destinationclears but outside childstate0 remain uncaught bychild;outerplacement action is inert so propagate. No savedallocationfree or oldbackingrepair.",
+      "First/second actualinvalidparameter handlers mayreturn;childpreserves capturedend,retains fullsavedfirst acrosssecondreport,and reloads CURRENTdestinationbegin after report. Parent adds no snapshots/reloads/rollback or sourcevalidation.",
+      "Throws during protected copy/diagnostic cause child lexically tidy CURRENTdestinationheader then barethrow;outeraction contributes no additional effect. Termination/fault/originalEH policies remain qualified.",
+      "Source self-alias/capturedcount-before-destinationclears and public validheader mutations remain exactly childcontract;no normalization.",
+      "Source0/null destination skips child entirely. No eager sourceobject read or sourcevalidation is added. NativeFS0traffic and private stack-word accesses remain outside SourceAPI proof."
+    ],
+    "elided_dependency": "Literal00401130C3RET independently fresh/wholebody;compiler action has no public Sourceeffect on validframes. It is not replaced by a callback/destructor/noopstub.",
+    "original_support_boundary": "Actual00BF6B43 framehandler is nativeprivateEH support only;CurrentC++compiler exceptionpropagation,not FH3runtime emulation."
+  },
+  "logical_action_proof": {
+    "native_entry_stack_symbol": "Let S denote native entryESP(return-address location),not a Source EBP parameter.",
+    "697D40_slot_layout": [
+      "After registration/localreservation ESP=S-14h. Saved destination words atS-14h andS-10h;previousFS0 atS-0Ch;handler atS-8;state atS-4.",
+      "State0 explicitly armed before constructor/nullbranch. Originalruntime passes its privatefunclet frame base;C7EBD0 reads[EBP-14h] then[EBP-10h]. Those offsets correspond to the two saved placement words under the native EH frame-base convention,not arbitrarySourceEBP."
+    ],
+    "697EC0_slot_layout": [
+      "After registration/scratchword ESP=S-10h. Destination nativeargument atS+4 is read and redundantly rewritten,then saved atS-10h;source nativeargument atS+8 read only onnonnullbranch. PreviousFS0 atS-0Ch;handler atS-8;state atS-4.",
+      "C7EBF0 reads nativeprivate[EBP+4] then[EBP-10h],the argument-slot/saved placement words under that same nativefunclet-base convention. No additional objectoffset or publicframe object is justified."
+    ],
+    "exact_actions": {
+      "00c7ebd0": [
+        "MOVEAX,[EBP-14h];PUSHEAX",
+        "MOVECX,[EBP-10h];PUSHECX",
+        "CALL00401130",
+        "ADDESP8;RET"
+      ],
+      "00c7ebf0": [
+        "MOVEAX,[EBP+4];PUSHEAX",
+        "MOVECX,[EBP-10h];PUSHECX",
+        "CALL00401130",
+        "ADDESP8;RET"
+      ]
+    },
+    "elision_argument": [
+      "Both raw88B maps prove one state0 unwind action and NO try/catch scope;handler immediates identify exact matching FuncInfo and actualBF6B43 tailtarget.",
+      "Both whole17B action bodies only read privateframe words,write balanced privateargument stacktemporaries and enter literal00401130 whose complete PE/live/currentbody is ONEBYTEC3RET. It reads no arguments,does no free/destruction/callback/allocation/throw and writes no publicmemory.",
+      "Thus under admitted well-formed privateframes/validstack/nonfaulting C++ domain,placement-unwind has no public Sourceeffect and can be omitted. Constructor exceptions propagate unchanged;do not add rollback,free,guard,catch-or-return conversion.",
+      "Elision is an effect proof,not originalFH3runtime/EBP/SEH/fault/ambientregister/flags reproduction. Nativeprivate loads/temporary writes canfault oralias on invalid/frame-alias inputs,which are explicitly outside the Sourceinterfaces. No publicEBP helper,syntheticframe,uninitialized pointer evaluation or NativeFH3 emulator is proposed."
+    ],
+    "logical_Source_scope": "Two compiler placement-unwind effects fragments only;no standalone normalNativeABI/publicactionfunctions. Actualhandler entries are read-only support,not proposed Sourceownership."
+  },
+  "native_return_vs_Source_void": "Null retains oldFS0 EAX;nonnull retains childdestination. Neither is promoted to a Sourcepointerresult;no fabricatednullptr or ambientregistersemanticinput.",
+  "historical_identity_correction": {
+    "old_ledger_note": "00697EC0 Same body as00697D40 is historically wrong as physical NativeABI/body statement;64B/17 registerform differs72B/19 stackform.",
+    "preserve": "Existing STL_ConstructWordVector library identities,comments,and oldSourcefunctions/WordVectorHooks remain untouched.",
+    "old_projection": {
+      "src/settings_seg29_cc13.cpp": {
+        "sha256": "7a882cf94ad8bc30120e0a953d7cb0af729d017593f31b1929205c266f43df24",
+        "relevant_lines": "void construct_word_vector_00697d40(void* destination, const void* source, WordVectorHooks& hooks) {\n    if (destination != nullptr) hooks.copy_construct_word_vector_00557590(destination, source);\n}\nvoid construct_word_vector_00697ec0(void* destination, const void* source, WordVectorHooks& hooks) {\n    if (destination != nullptr) hooks.copy_construct_word_vector_00557590(destination, source);\n}"
+      },
+      "include/bsp/settings_seg29_cc13.hpp": {
+        "sha256": "71eac28bfcc7cf1ffdecf63e96e342107450c69bf50a0fd7eabfbd19007a0946",
+        "relevant_lines": "struct WordVectorHooks {\n    virtual ~WordVectorHooks() = default;\n    // 00557590 STL_CheckedWordVector_CopyConstruct, __thiscall(dst, src) RET 4.\n    virtual void copy_construct_word_vector_00557590(void* destination, const void* source) = 0;\n};\n// 00697D40, __fastcall(ECX destination, EDX source) RET and 00697EC0, __stdcall(destination,\n// source) RET 8: placement copy-construct when the destination is non-null.\nvoid construct_word_vector_00697d40(void* destination, const void* source, WordVectorHooks& hooks);\nvoid construct_word_vector_00697ec0(void* destination, const void* source, WordVectorHooks& hooks);"
+      }
+    },
+    "scope_distinction": "Old bodies expose third WordVectorHooks& and virtual constructor callback;they are useful qualified projections,not provider-free actual ordinary physical entries. Their HEADER ALREADY correctly distinguishes fastcall registerform andstdcall RET8 form;do not mislabel that header as the erroneous ledgernote.",
+    "proposed_new_names_are_hypotheses": true
+  },
+  "comment_preimages": [
+    {
+      "address": "00697d40",
+      "annotation": {
+        "address": "00697d40",
+        "function_name": "STL_ConstructWordVector_00697d40",
+        "comment": "[BSP reconstruction 00697d40]\nHypothesis, not a recovered symbol. Placement copy construct of a checked word vector (STL_CheckedWordVector_CopyConstruct_00557590) when the target is not null. No reference found. Doc: docs/CC13_BAND_0067_0073.md."
+      }
+    },
+    {
+      "address": "00697ec0",
+      "annotation": {
+        "address": "00697ec0",
+        "function_name": "STL_ConstructWordVector_00697ec0",
+        "comment": "[BSP reconstruction 00697ec0]\nHypothesis, not a recovered symbol. Same body as 00697D40. No reference found. Doc: docs/CC13_BAND_0067_0073.md."
+      }
+    },
+    {
+      "address": "00c7ebd0",
+      "annotation": {
+        "address": "00c7ebd0",
+        "function_name": "Unwind@00c7ebd0"
+      }
+    },
+    {
+      "address": "00c7ebf0",
+      "annotation": {
+        "address": "00c7ebf0",
+        "function_name": "Unwind@00c7ebf0"
+      }
+    }
+  ],
+  "correction_policy": "Append exact physicalbody/ABI correction preserving old evidence/comments/preimages and all existing WordVectorHooks/typed APIs. Header already correctly distinguishes Nativefastcall versusstdcall/RET8;onlyhistoricalsamebodywording is wrong. Root solely performs future Ghidra annotation/save/export.",
+  "Source_effect_boundary": [
+    "Only two conditional realconstructor invocations;no localcatch,free,rollback,newallocation,sourcevalidation,objectoverlay/provider or additionalguard.",
+    "No originalFS0/privateargument self-store/syntheticEBP/actionhelper translated. Nativecompilerprivate effects omitted only under validated no-op scope and admitted stack/frame/fault exclusions.",
+    "Parent range/copy/fill/assignment Source and old projectioninterfaces untouched."
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 MSVC Win32 succeeded",
+    "COFF": {
+      "method": "Direct COFFi386 section/symbol/relocation parse and Capstone5.0.7 x86-32;complete dumpbin captures. Exact external IMAGE_REL_I386_REL32 symbol plusrawaddend0 verifiesactualcallee,not placeholderzerooperand.",
+      "object": "build/win32/bsp_core.dir/Release/native_dword_vector_placement.obj",
+      "object_sha256": "8569785ff2680359096c7f50a9f4289cf8d2836b80491e6a31de911e0ea782bc",
+      "archive": "local/oct15_native_dword_vector_placement_evidence/native_dword_vector_placement.obj",
+      "machine": "IMAGE_FILE_MACHINE_I386",
+      "functions": [
+        {
+          "name": "place_native_checked_dword_vector_copy_00697d40",
+          "symbol": {
+            "name": "?place_native_checked_dword_vector_copy_00697d40@bsp@@YIXPAXPBX@Z",
+            "value": 0,
+            "section": 3,
+            "type": 32,
+            "storage": 2
+          },
+          "section": ".text$mn",
+          "bytes": "85c974085233d2e800000000c3",
+          "code_bytes": 13,
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": "85c9",
+              "mnemonic": "test",
+              "operands": "ecx, ecx"
+            },
+            {
+              "offset": 2,
+              "bytes": "7408",
+              "mnemonic": "je",
+              "operands": "0xc"
+            },
+            {
+              "offset": 4,
+              "bytes": "52",
+              "mnemonic": "push",
+              "operands": "edx"
+            },
+            {
+              "offset": 5,
+              "bytes": "33d2",
+              "mnemonic": "xor",
+              "operands": "edx, edx"
+            },
+            {
+              "offset": 7,
+              "bytes": "e800000000",
+              "mnemonic": "call",
+              "operands": "0xc"
+            },
+            {
+              "offset": 12,
+              "bytes": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ],
+          "relocations": [
+            {
+              "offset": 8,
+              "kind": 20,
+              "symbol": "?construct_native_checked_dword_vector_copy_00557590@bsp@@YIPAXPAXIPBX@Z",
+              "target_section": 0,
+              "target_value": 0,
+              "raw_addend": 0
+            }
+          ],
+          "returns": [
+            {
+              "offset": 12,
+              "bytes": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ]
+        },
+        {
+          "name": "place_native_checked_dword_vector_copy_00697ec0",
+          "symbol": {
+            "name": "?place_native_checked_dword_vector_copy_00697ec0@bsp@@YGXPAXPBX@Z",
+            "value": 0,
+            "section": 5,
+            "type": 32,
+            "storage": 2
+          },
+          "section": ".text$mn",
+          "bytes": "558bec8b4d0885c9740aff750c33d2e8000000005dc20800",
+          "code_bytes": 24,
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "bytes": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "bytes": "8b4d08",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 6,
+              "bytes": "85c9",
+              "mnemonic": "test",
+              "operands": "ecx, ecx"
+            },
+            {
+              "offset": 8,
+              "bytes": "740a",
+              "mnemonic": "je",
+              "operands": "0x14"
+            },
+            {
+              "offset": 10,
+              "bytes": "ff750c",
+              "mnemonic": "push",
+              "operands": "dword ptr [ebp + 0xc]"
+            },
+            {
+              "offset": 13,
+              "bytes": "33d2",
+              "mnemonic": "xor",
+              "operands": "edx, edx"
+            },
+            {
+              "offset": 15,
+              "bytes": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x14"
+            },
+            {
+              "offset": 20,
+              "bytes": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 21,
+              "bytes": "c20800",
+              "mnemonic": "ret",
+              "operands": "8"
+            }
+          ],
+          "relocations": [
+            {
+              "offset": 16,
+              "kind": 20,
+              "symbol": "?construct_native_checked_dword_vector_copy_00557590@bsp@@YIPAXPAXIPBX@Z",
+              "target_section": 0,
+              "target_value": 0,
+              "raw_addend": 0
+            }
+          ],
+          "returns": [
+            {
+              "offset": 21,
+              "bytes": "c20800",
+              "mnemonic": "ret",
+              "operands": "8"
+            }
+          ]
+        }
+      ],
+      "code_bytes": 37,
+      "instruction_starts": 16,
+      "no_local_CPP_EH_metadata": true,
+      "no_other_child_free_callbacks_or_unwind_helpers": true,
+      "source_sha256": {
+        "src/native_dword_vector_placement.cpp": "272723887b656fe15474b8c9e07ff79c8120154fc4cc18a928c7b37baffe65f4",
+        "include/bsp/native_dword_vector_placement.hpp": "bf24ed1f9ac3edc7bc3e2acd8d06f51434cbf4a1b933f441ae9accc0005e1e90"
+      },
+      "focused_checks": {
+        "register_wrapper": "13B/6 instructions:0000 TESTECX;0002 JE000C skips ALLchildwork onnull.0004 PUSHoriginalEDXsource BEFORE0005 XOREdx0;0007 actual557590 call with unchangedECXdestination;000C plainRET. No frame/sourceobject read or Sourcepointerresult synthesis.",
+        "stack_wrapper": "24B/10 instructions:balancedEBP frame;0003 MOVECX,[EBP+8] actualdestination.0006 TESTECX;0008 JE0014 skips000A sourceargument PUSH[EBP+0C],000D ignoredEDX0 and000F actualconstructor call. Onlydestinationargument is read beforebranch;sourceargument read ONLYnonnull.0014 POPEBP,0015 RET8.",
+        "real_child": "Each exact IMAGE_REL_I386_REL32 symbol is acceptedconstruct_native_checked_dword_vector_copy_00557590,one call per wrapper,no otherchild/provider/free/action symbol.",
+        "exception_propagation": "Complete Sourceobjects contain no local EHhandler/try/catch/unwindtable metadata and no nontriviallocals/free/rethrow calls. The actual child mayreturn,throwor terminate under its accepted CurrentCPP/CRT contract;wrappers add no interception/rollback/cleanup. Structural CurrentCPP proof only;no runtimeexceptionfixture or originalFH3/fault claim.",
+        "logical_action_elision": "No emittedpublicC7EBD0/C7EBF0/EBP/helper/401130 Nativeaction symbols. Elision licensed by complete191B/55starts+88BEH Nativeproof,not an invented empty destructor."
+      },
+      "conditional_stack_source_argument_read_proven": true,
+      "dumpbin": {
+        "local/oct15_native_dword_vector_placement_coff.asm": "989a405dc481503d67a6802d52bd85b5e0d5bb2afef49fe34f6eaa3ab5044f7a",
+        "local/oct15_native_dword_vector_placement_coff.relocations.txt": "884f8d3dd21973eb2281069193eb3058acbca501671f008b8b00074e9c5b02a2",
+        "local/oct15_native_dword_vector_placement_coff.symbols.txt": "23d6acf97e0820cfcdbb54c272ca3d9c3b6c6944ed777d9b6d2bb40f3bdb5469"
+      },
+      "limits": "CurrentSource physical interfaces/delegation/no interception only;not originalmangling/privateframe/FH3/FS0/CRT/fault/ambientEAX/binaryABI/game proof. No runtimeexception fixtureperformed."
+    },
+    "primary_review": "pending frozen-pin review",
+    "new_tests": 0,
+    "native_fixture_or_game_execution": "not performed/claimed",
+    "preliminary_primary_review": {
+      "receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct15_placement_twentyfirst_primary_review.json",
+      "sha256_at_capture": "9ca39012bcd015fe2812e4c777f3a04172e4b55d2c3531b6f6dc7eb53c26fcd6",
+      "checks": [
+        "Full Source/header and all36 ordinary plus14 logical-action Native instructions reviewed; direct accepted constructor only.",
+        "D40 consumes ECXdestination/EDXsource with no stacked inputs/plainRET; Source fastcall preserves distinct shape.",
+        "EC0 consumes two stacked addresses/RET8; source argument only read on nonnull path; Source stdcall remains distinct.",
+        "Null skips all child work; nonnull forwards original addresses to actual constructor with explicit ignoredEDX0, no source object read here.",
+        "Sourcevoid qualifies null Native oldFS0 versus nonnull child destination EAX; no forged null-return pointer API.",
+        "Both raw maps have exactly one state0 action/no try region, armed before null branch; full88EH bytes independently verified.",
+        "Both whole17B actions read only saved private placement words, call literal401130 C3RET and balance stack; admitted effect elision adds no public helper/stub/destructor.",
+        "No extra cleanup, catch/free/rollback/guard/provider/callback/allocator or nativeEBP model; child exceptions propagate under accepted CurrentCpp policy.",
+        "Fresh191 PE/live bytes/55 current starts independently checked; owned170B/50 excludes support handlers and literalRET.",
+        "Eight accepted Source/header fingerprints match Root; historical EC0 same-body correction preserves preimages/old interfaces and original ABI/FH3/CRT/fault/privateframe/game limits."
+      ],
+      "reviewed_source_sha256": {
+        "src/native_dword_vector_placement.cpp": "272723887b656fe15474b8c9e07ff79c8120154fc4cc18a928c7b37baffe65f4",
+        "include/bsp/native_dword_vector_placement.hpp": "bf24ed1f9ac3edc7bc3e2acd8d06f51434cbf4a1b933f441ae9accc0005e1e90"
+      },
+      "status": "Preliminary complete Source/header/native/EH review passed10checks;documentation/report validation still mutable and final frozen-pin review separate."
+    },
+    "build_log": "local/oct15_native_dword_vector_placement_build.log",
+    "build_log_sha256": "80bdc4a67686a9b9a870cea6c924b5cc0621f87eb3cfa872f14125ff3c68ec1f",
+    "existing_tests": {
+      "passed": 3,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "seconds": "9.06"
+    },
+    "existing_unrelated_warnings": [
+      "lua_binding_spawn.obj : warning LNK4006: \"bool __cdecl bsp::spawn_request_id_matches(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)\" (?spawn_request_id_matches@bsp@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) already defined in lua_spawn_new.obj; second definition ignored [J:\\PROG\\battlestations-pacific-decompile-oct15_avoid_distance\\build\\win32\\bsp_core.vcxproj]"
+    ],
+    "COFF_path": "local/oct15_native_dword_vector_placement_coff.json",
+    "COFF_sha256": "5ac16f387e1c40fb5852a3686d04df322af293d5312ecd8073ed42d9debb33ae",
+    "registration": {
+      "packet": "oct15_native_dword_vector_placement_cmake",
+      "scope": "Short FIFO acceptedMain sync/sole source append;release before build",
+      "prerequisite_merge": "6f35d140a43498fc148d9b7d8840d80f773fc743",
+      "accepted_main_at_merge": "c27d1861b0d381aca5bad39c8505cb3e654f7585",
+      "startup_before_sha256": "a58a6cfceb17caa5d6d3ffcf4ce360be2052c145495df0999b4ee9aceac878cf",
+      "startup_after_sha256": "fd3805cc1e99efdb4ad3d4e21764d9a5cd086a74bb1e50b55330880ce245a2df",
+      "registration_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_dword_vector_placement.cpp)",
+      "source_sha256": {
+        "include/bsp/native_dword_vector_placement.hpp": "bf24ed1f9ac3edc7bc3e2acd8d06f51434cbf4a1b933f441ae9accc0005e1e90",
+        "src/native_dword_vector_placement.cpp": "272723887b656fe15474b8c9e07ff79c8120154fc4cc18a928c7b37baffe65f4"
+      }
+    },
+    "documentation_sha256": "05182ffd3292a047ad0be2be313785c2c33b15dcb5a8243c90481e5eb605d3d2",
+    "coverage": "Existing suite/seed coverage only;no new placement/native/game equivalence.",
+    "transfer_verifier": {
+      "rows": 6,
+      "Markdown_claims": 6,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "capture": "local/oct15_native_dword_vector_placement_callcheck.txt",
+      "sha256": "1d6ed5c24c7b7688ad58c54c704713b3ae8ebfeebe57426616d4d9308d9ecbfb"
+    }
+  },
+  "limits": [
+    "NewMSVCWin32 Sourceinterfaces with CurrentC++/CRT/legacyexception semantics inherited from accepted child.",
+    "No originalFH3/RTTI/FSchain/privateframe/argumentaliases/SEH/fault/heap/CRT/ambientEAX/flags/mangling/binaryABI/game proof.",
+    "Nativeaddress names and descriptive Sourceidentities remain hypotheses;correctprior names/contracts preserved."
+  ]
+}

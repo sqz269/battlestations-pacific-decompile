@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "goal_oct15_crt_ptd_unlock_helper",
-  "status": "complete_ordinary_source_reviewed_annotated_build_verified",
+  "status": "complete_ordinary_source_reviewed_annotated_primary_registered_Win32_three_checks_passed",
   "source_ready": true,
   "whole_control_flow_source_available": true,
   "source": "src/native_crt_ptd_unlock_helper.cpp",
@@ -163,6 +163,45 @@
       "whole_native_body_equal_after_call_rel32_normalization": true,
       "public_symbol_occurrences_in_bsp_core_lib": 1,
       "binary_entry_private_ABI_or_game_proved": false
+    },
+    "primary_combined_build": {
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "receipt": "reports/goal_oct15_command_lifetime_primary_review.json",
+      "receipt_sha256": "68ad058165cb0f832f60dd1adc78946bc4edd51b2f0ba3479c5604914d8f9e3e",
+      "revision": "efa7febae744d66c5665e61b64bf8c67d36ff3f6",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_command_lifetime_combined_build.log",
+      "log_sha256": "8d982051dfaf99fea2dc0568e06ddba017eea931ad60c8f5e6ac9f0b63258653",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 9.55,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "existing_checks_scope": "regression checks; native math seeds do not execute these new bodies"
+    },
+    "primary_emitted_object": {
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "path": "local/goal_oct15_command_lifetime_objects/native_crt_ptd_unlock_helper.obj",
+      "sha256": "386bdd1432fabead92aedeb895850f1615dfde9805624c2c05553adb060c33e8",
+      "disassembly": "local/goal_oct15_command_lifetime_objects/native_crt_ptd_unlock_helper.disasm.txt",
+      "disassembly_sha256": "327a7c95629b9b8a52bb4c429810d3a34beaa901cb517221056e3279b3ac8a79",
+      "symbols": "local/goal_oct15_command_lifetime_objects/native_crt_ptd_unlock_helper.symbols.txt",
+      "symbols_sha256": "3b316f82a53aa2c832fe84e63961df98d75bbc95a32aeae3fa13f7da41566c88",
+      "public_symbol": "?unlock_native_crt_ptd_initialization_00c051ae@bsp@@YAXXZ",
+      "entry_text_size": 9,
+      "entry_text_sha256": "191e167e65b007d24349c95b6422e5f8070b22b9d7a7f54264933717a921869e",
+      "unique_identical_archive_bodies": 1,
+      "whole_entry_inspected": true,
+      "private_ABI_or_binary_entry_proved": false,
+      "whole_native_body_equal_after_call_rel32_normalization": true,
+      "call_relocation_target": "unlock_native_crt_canonical_00c11b31(int), literal12"
     }
   },
   "qualification": "Whole9B noarg helper via real unchanged complete canonical unlock12;valid actual initialized/owned CS domain. Ordinary Source only,no manufactured naked-ASM identity/privateABI or PTD/FLS/locale/fatal/SEH/game closure."

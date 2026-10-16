@@ -59,6 +59,13 @@ Primary independent review passed the complete Source/header and concrete
 provider without changes. Locked annotation retained the existing descriptive
 name, preserved the full previous comment, saved the project and refreshed
 the affected export. Both typed transfers and both documentation claims pass
-verification. Root CMake registration/combined Win32 build remains pending.
-No worker CMake queue is taken. No tests are added. Physical stack/register/fault/private ABI,
+verification. The primary registered Win32 build at `efa7febae` passed all three existing
+checks in 9.55 seconds. Its immutable receipt and log hashes are pinned in
+the report. The retained 137-byte emitted entry preserves the complete raw
+access schedule: allocation before node zeros and late payload, captured
+tail followed by the nonempty current-tail reload, and final current-count
+read after ordered publications. The exact object occurs once in the
+archive. Compiler metadata, request and security-cookie instructions are
+additional ordinary Source transport; this is not native byte or private-ABI
+identity. No worker CMake queue or duplicate registration was taken. No tests are added. Physical stack/register/fault/private ABI,
 Original allocator identity and runtime/game behavior remain unproved.
