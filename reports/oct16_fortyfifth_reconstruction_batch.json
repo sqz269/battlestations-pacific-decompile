@@ -1,0 +1,124 @@
+{
+  "packet": "oct16_fortyfifth_reconstruction_batch",
+  "status": "primary_accepted_whole_preset_insert_and_logical_message_cleanup_default_Win32_checked",
+  "Source_pin": "8ff2aab0757b8b46016c3c97aa96aef232c0283d",
+  "frozen_quartet": {
+    "src/native_input_preset_tree_insert.cpp": "2d0c990434d149baba51f1356491020c4579d74e29a2f7736d68d88090b29999",
+    "include/bsp/native_input_preset_tree_insert.hpp": "895e1fe0468b3248f5588b4784118b717130c1c1c77fc152b7907f25450fe2bc",
+    "docs/OCT16_INPUT_PRESET_TREE_INSERT.md": "fdde6845565e12c533c90879da97a400a2e954de2389c2e5fd25b07f2d7fef4e",
+    "reports/oct16_input_preset_tree_insert.json": "6f503cc71abe6f095086274831f9e59ff2d6750aa9c1fbfbf04fc80f8ca99576"
+  },
+  "scope": {
+    "whole_ordinary_entries": 1,
+    "logical_fragments": 1,
+    "Native_owned": [
+      500,
+      169
+    ],
+    "Native_readonly_support": [
+      292,
+      98
+    ],
+    "Native_bounded_data_bytes": 449,
+    "support_handlers_runtime_and_unique_hint_map_not_promoted": true
+  },
+  "primary": {
+    "receipt": "local/oct16_preset_tree_insert_primary_frozen.json",
+    "sha256": "43525b854663e9451edd8881aed9a7e4d15f4c0ad3d211b45b307f9981c91365",
+    "checks": 29,
+    "findings": [],
+    "unchanged_provider_LF_fingerprints": 34,
+    "immutable_preliminary_receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct16_preset_tree_insert_primary.json",
+    "immutable_preliminary_sha256": "51db92095c765c126f6388d4fcf857c8d4c1c72da8043e47fe315a209bbe7a4b",
+    "descriptive_preliminary_line_count_note": "The immutable preliminary manual_review text said203 lines; all205 were read in pages0..92,93..192,193..end and its fullSource hash was correct. This final seal corrects only that descriptive count."
+  },
+  "compiled": {
+    "Root_object_sha256": "bf55aa010b03a8c51505d656c3239e2d0461fbd6ba374f27d08a71c323a30220",
+    "worker_object_sha256": "ffa2d7273baa26470968b051327899282f3930a58becf434fd0787fa9a2a3d63",
+    "CODE_sections": 13,
+    "CODE_bytes": 676,
+    "CODE_entries": 262,
+    "selected_sections_with_all_EH_HostRTTI_literal": 19,
+    "selected_raw_bytes_exact": true,
+    "selected_symbolic_relocations_equal_with_only_explicit_TU_bijection": true,
+    "TU_bijection": {
+      "@?A0x76c1162b@": "@?A0xa772fafc@"
+    },
+    "function_definitions_matched": 14,
+    "SAFESEH_actual_handler": [
+      17,
+      13
+    ],
+    "comparison_limits": "Compiler debug/checksum/path bytes are not claimed equal; public EH/runtime/private-frame identity remains qualified.",
+    "CODE_marked_bytes": 676,
+    "linear_entries": 262,
+    "INT3_bytes_entries": 7,
+    "alignment_NOP_bytes": 5,
+    "alignment_NOP_entries": 1,
+    "entry_NOP_bytes_entries": 2,
+    "executable_excluding_traps_and_alignment": [
+      664,
+      254
+    ],
+    "public_raw": [
+      408,
+      155
+    ],
+    "throw_raw": [
+      111,
+      32
+    ],
+    "EH_raw": [
+      42,
+      16
+    ],
+    "helpers_action": [
+      115,
+      59
+    ],
+    "all_relocations": 28,
+    "code_relocations": 18,
+    "data_DIR32": 8,
+    "debug_DIR32NB": 2,
+    "EH_unwind_bytes": 44,
+    "host_throwinfo_array_CT_bytes": 52,
+    "host_type_descriptor_bytes": 54,
+    "literal_bytes": 20,
+    "weak_BSS_declared_bytes": 4,
+    "weak_BSS_file_bytes": 0,
+    "Host_catchables": 1,
+    "Original_catchables": 3
+  },
+  "verification": {
+    "combined_tested_commit": "81dd916825b2b3b9f75a07f49fc5f68ecf21fae6",
+    "default_build_exit": 0,
+    "existing_suites_passed": 3,
+    "seconds": 8.12,
+    "build_log_sha256": "aecb313406c82d7033b1408e34fd22cbc5c631e558e47f628b7715078cb40e58",
+    "JSON_transfer_rows": 8,
+    "Markdown_transfer_claims": 8,
+    "saved_annotations": 2,
+    "refreshed_exports": 2,
+    "closeout_receipt": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\oct16_preset_tree_insert_annotation_receipt.json",
+    "closeout_receipt_sha256": "4a87d1d9c2db2a7b14ab2fd943f74056fa9201f1b8b3e4df2e44c00eb2a3ea5a",
+    "preimages": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill\\local\\ghidra-annotations-20261016T093016Z.json",
+      "sha256": "4956117851ecab65b9894631a42ba18e0a0c0fc583b664872e78e73f519776b8"
+    },
+    "export_log": {
+      "path": "local/oct16_preset_tree_insert_exports.txt",
+      "sha256": "3a2196dbdaf16cb80dc3d34b97a6dd5d901b559a230ba4f59110e6d571d8974f",
+      "exit_code": 0
+    },
+    "owned_registry_diffs_exact": true,
+    "one_Core_registration": true,
+    "merge_required_no_conflict_resolution": true
+  },
+  "integration": "Clean owned Source merge after current Main67cbe3623. Source F5 publication gate is59d1839a/d635. Existing names/evidence prefixes and old recon records retained; generated action label saved before adding a descriptive logical-action name.",
+  "limits": "Qualified CurrentCpp owningthrow withoneHostcatchable vsOriginalthreecatchables, currentallocation/copy/providerboundary, distinctNativephysicalBF6885RET8/import-returncontinuation, privateframes/argumentaliases/DF/register/flags/fault/FH3SEH/OriginalABI/runtime/game unproved.",
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "exact_tip": "Verified separately after publication"
+  }
+}
