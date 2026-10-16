@@ -1,0 +1,50 @@
+{
+  "schema": "bsp.cc12.native_crt_strspn.primary.v1",
+  "status": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+  "Source_commit": "f75a55096ddb8f83238a7c13cd4fdd06c996904e",
+  "Source": "src/native_crt_strspn.cpp",
+  "header": "include/bsp/native_crt_strspn.hpp",
+  "documentation": "docs/NATIVE_CRT_STRSPN.md",
+  "Original_name_retained": "_strspn",
+  "whole_ordinary_functions": 1,
+  "Source_credit": 0,
+  "primary_author": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strspn_integration_20261016\\primary_author_inputs.DATA.json",
+    "bytes": 2741,
+    "sha256": "4d749373ce82be827cd32b0a5cd7045b931558d0e68271d467285cdd76fc969e"
+  },
+  "primary_peer": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strspn_integration_20261016\\primary_peer_inputs.DATA.json",
+    "bytes": 4383,
+    "sha256": "44b7b1cd3502c33560c964a38df7afb0002c34937d52aa12ea3d5dbb493e9e4c"
+  },
+  "Root_full_Source_object_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strspn_integration_20261016\\primary_Source_object_review.DATA.json",
+    "bytes": 5214,
+    "sha256": "9b5e80a010070e4454f3e34100b87443270ed12bda65fdf1b1db8aee985f9ae1"
+  },
+  "strict_compiles": 1,
+  "precompiler_failures": 2,
+  "actual_compiler_inputs": 2,
+  "before_candidates": 8102,
+  "strict_compiler_host": "HostX86/x86, targetWin32",
+  "worker_baselines": 0,
+  "Main_registered": true,
+  "Main_build": "pending",
+  "actual_compiler_archive_gate": "pending",
+  "contract": [
+    "New default potentially throwing MSVCWin32 API unsigned int __cdecl bsp::count_native_crt_prefix_in_set_00bf9840(const void* actual_source,const void* actual_control). Keep correct Original libraryname _strspn; BYTE8/pointer+unsignedint32.",
+    "Target MSVC Win32, unsigned BYTE8, pointer/unsigned int32; default potentially throwing new API. No Unicode, locale, case, codepage or signed-char interpretation.",
+    "Read the finite genuine live stable determinate readable control sequence completely through its first NUL before any source payload, including empty source. Each visited control BYTE is read once; only nonzero values set bits and duplicates retain reads/updates.",
+    "Then read each reached source BYTE once. Explicit source NUL stops before bitmap or its own pointer advance. Every nonzero byte advances the genuine source cursor before membership, including terminal nonmember; a set bit continues, a clear bit stops. Return exact unsigned32 count of preceding nonzero members, excluding the terminal byte.",
+    "Source needs only readable stable determinate bytes through a finite reached NUL or first nonzero nonmember, with no unused later terminator/full-string extent after early stop. Empty control still reads source; both pointers require their reached storage, with no null/count-zero exception.",
+    "Reached cursor advances are nonwrapping32bit and stay within/onepast the corresponding actual live allocation, including terminal nonzero source advance; never dereference onepast. Count fits unsigned32, no arbitrary INT_MAX cap or pointer subtraction.",
+    "Admit raw unaligned/interior/prefix/read-only/identical/overlapping inputs and stable ordinary caller-owned stack bytes; no padding or wider typed input objects. Overlap may visit one storage byte in both phases.",
+    "Exclude faults, invalid/indeterminate reached bytes, mutation/concurrency, MMIO/volatile protocols, lifetime changes and native callee bitmap/frame/home/saved-register self-alias or custom physical segment protocols. No fake native scratch identity/Source parameter.",
+    "Prospective mechanism only: ordered volatile unsigned BYTE inputs; eight separate genuine volatile unsigned32 scalar words with explicit zeros; byte>>5 index0..7, unsignedmask1U<<(byte&31), bounded binary selection of one actual private word. Retain explicit NUL-before-bitmap and nonzero source advance before membership. No array/aggregate GS buffer, switch/table/helper, SDK search/copy/provider/fallback, global/TLS, runtime guard or caller binding. Future actual compiler/artifact gates must verify all of this independently.",
+    "Root-authorized whole ordinary Source only: exactly4canonical outputs and own local evidence after entry/whole70Brange/4file lease. One genuine strict MSVCWin32 compile after current fresh beforepins and actual dependency closure; review full actual object/code/helper/provider/GS/frame metadata. Separate normal registered Main/Core/archive plus independent peer gates; no matching recompile, workerbaseline, newtests/probes/bodyexecution/SDKcomparison or Source5compiler evidence borrowing."
+  ],
+  "Original_ABI_compatible": false,
+  "new_Source_body_executed": false,
+  "game_validated": false
+}
