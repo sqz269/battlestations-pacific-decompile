@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_native_text_borrowed_font_registry_56",
+  "created_utc": "2026-10-16T01:56:48.459298+00:00",
+  "status": "explicit_borrowed_existing_registry_Source_profile_build_and_focused_case_passed",
+  "worker": "agent/native_crt_wcsicmp_locale_48",
+  "baseline": "f9dd0d899d2fd6082adfee779f5a843420574847",
+  "Root_Source_merge_exit_code": 0,
+  "owned_files": [
+    "include/bsp/gui_text_resource_names.hpp",
+    "src/gui_text_resource_names.cpp",
+    "include/bsp/game_native_text_application.hpp",
+    "src/game_hosts_text.cpp",
+    "docs/CC12_NATIVE_TEXT_BORROWED_FONT_REGISTRY_56.md",
+    "reports/cc12_native_text_borrowed_font_registry_56.json"
+  ],
+  "owned_Native_addresses": [],
+  "credit": {
+    "new_reconstructed_Original_functions": 0,
+    "Original_singleton_ABI": false,
+    "fixed_Original_publication": false,
+    "normal_native_Text_activation": false,
+    "game_validated": false
+  },
+  "profile": {
+    "type": "bsp::GuiTextFontRegistryAccess",
+    "construction": "No default; private mutually exclusive existing owner or actual cell/real-manager pointers; required lvalue-reference factories.",
+    "borrowed_existing": "get returns the SAME required FontRegistryStartup owner. No allocation/publication/global/copy/registration/manager or ownership transfer.",
+    "published_singleton": "get delegates unchanged to get_font_registry_007371d0 using the same live cell and real manager; no early getter from factory or services construction.",
+    "get_result": "Pointer result preserves the existing explicit nonnull check and legacy callback result semantics.",
+    "existing_registry": "Metadata-only noexcept inspector: same borrowed owner or direct current publication-cell read; honest null in null legacy cell. No lazy getter, allocation, lock, publication or registration.",
+    "no_fallback_or_duplicate_registry": true,
+    "legacy_registry_immutable": false
+  },
+  "propagation": {
+    "font_name_services_field": "GuiTextFontNameServices::registry",
+    "application_bindings_field": "GameNativeTextApplicationBindings::font_registry",
+    "services_primary_constructor": "names, registry access, actual fonts, live one",
+    "services_legacy_compatibility_constructor": "names, publication cell, real singleton manager, actual fonts, live one; original five-argument brace/call shape retained",
+    "application": "Impl passes registry access directly, without requiring legacy fields in borrowed mode.",
+    "Source_API_change": "Services are now constructor-initialized; old direct fields and the unused application aggregate layout changed. Named-member/precompiled consumers need migration/rebuild."
+  },
+  "tracked_caller_enumeration": {
+    "services_construction": [
+      "src/game_hosts_text.cpp GameNativeTextApplication::Impl font_names initializer"
+    ],
+    "services_borrowers": [
+      "include/bsp/gui_text_properties.hpp GuiTextPropertyServices",
+      "include/bsp/gui_text_glyph_child_runtime.hpp GuiTextGlyphChildTailServices"
+    ],
+    "font_name_setter_calls": [
+      "src/gui_text_properties.cpp",
+      "src/gui_text_glyph_child_runtime.cpp"
+    ],
+    "previous_getter_consumer": "src/gui_text_resource_names.cpp set_gui_text_font_name_00ab8c30",
+    "new_direct_getter_consumer": "src/gui_text_resource_names.cpp GuiTextFontRegistryAccess::get legacy branch",
+    "bindings": "One declaration, private Impl copy/parameter and two public GameNativeTextApplication constructors; no additional tracked aggregate construction found."
+  },
+  "setter_order": {
+    "checked_Source_sequence": [
+      "if (&text.font_name != &name) text.font_name = name;",
+      "auto* registry = services.registry.get();",
+      "require(registry != nullptr,",
+      "registry->find_font_00ac3570(text.font_name)"
+    ],
+    "getter_still_after_name_store_and_before_live_lookup": true,
+    "existing_null_result_check_retained": true,
+    "post_lookup_normalized_Source_text_unchanged_from_baseline": true,
+    "post_lookup_normalized_text_sha256": "fb0f45522b406407d57be9b19d36117dd38e62d4f35947e7d5c5165863f7b74c",
+    "descriptor_resource_identity_checks_unchanged": true,
+    "shader_name_setter_unchanged_from_baseline": true
+  },
+  "lifetime_contract": [
+    "Borrowed registry, stable descriptors and actual fonts/images outlive all Texts, retained callbacks, continuations and resource references using them.",
+    "Actual Source registry owner alone destroys the borrowed registry; no singleton registration or teardown ownership is manufactured.",
+    "Actual fonts are retired and native associations cleared before descriptor destruction, as already required by FontRegistryStartup.",
+    "Legacy publication storage and real manager retain existing getter lifetime requirements.",
+    "Access, publication/registry mutation and owner retirement are externally serialized; metadata is a current read, not an immutable legacy registry promise."
+  ],
+  "focused_probe": {
+    "passed": true,
+    "borrowed_same_owner": true,
+    "borrowed_requires_no_cell_or_manager": true,
+    "borrowed_profile_destruction_does_not_delete_owner": true,
+    "borrowed_no_legacy_publication_or_registration": true,
+    "legacy_live_cell_and_fast_path_preserved": true,
+    "legacy_creation_deferred_until_get": true,
+    "legacy_publish_before_registration": true,
+    "legacy_null_arm_allocates_and_registers": true,
+    "legacy_locks": 1,
+    "legacy_unlocks": 1,
+    "legacy_registrations": 1,
+    "legacy_owner_deletion_clears_publication": true,
+    "metadata_inspector_has_no_lazy_effects": true,
+    "metadata_inspector_observes_live_legacy_cell": true,
+    "services_constructor_shapes_checked": true,
+    "full_Text_or_normal_FontHost_invoked": false
+  },
+  "probe_contract": {
+    "library": "Rebuilt production build/win32/Release/bsp_core.lib",
+    "toolchain": "MSVC Win32 /O2 /MD /EHsc /W4 /WX; /link /MANIFEST:EMBED",
+    "machine": "I386",
+    "embedded_asInvoker_manifest": true,
+    "fixture": "Actual stack-owned FontRegistryStartup objects; the legacy fixture manager uses a real recursive mutex and owns/deletes its registered allocated registry.",
+    "no_dummy_factory_or_production_stub": true,
+    "full_Text_or_normal_FontHost_invoked": false,
+    "exe_sha256": "c2b68e5cac39ed8a9d520ca86d2f1ca95829cfdc49163957c2ec0d104b43da8a",
+    "private_artifacts": "local/cc12_native_text_borrowed_font_registry_56/{probe.cpp,build_probe.cmd,build_probe.log,probe_results.json,borrowed_registry_probe.exe,build_win32_final.log}"
+  },
+  "validation": {
+    "final_scripts_build_ps1_exit_code": 0,
+    "existing_ctest_passed": 3,
+    "existing_ctest_total": 3,
+    "existing_suites": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "final_build_log_sha256": "864ce003d6674d7bb50a7f7167bc9488dd35aa6ce9275e86228c063ed8dc54be",
+    "focused_production_profile_case_passed": true,
+    "new_test_framework_or_CMake_source": false,
+    "FontHost_producer_runtime_factory_edits": false,
+    "Ghidra_or_Native_ledger_mutation": false,
+    "installation_or_normal_host_activation": false,
+    "primary_Source_review": "PASS after four-file diff including inspector and exact store/get/live-lookup order"
+  },
+  "follow_on": "Packet 59 owns factory/producer identity admission using existing_registry(); not implemented in these files.",
+  "limits": [
+    "Ordinary Source borrowed-owner profile, not Original singleton ABI or fixed 00F8BF44 proof.",
+    "No new synchronization, registry ownership, destruction policy or exception/SEH recovery.",
+    "Full native Text/FontHost composition, actual runtime/game behavior and activation remain unproved."
+  ],
+  "source_sha256": {
+    "include/bsp/gui_text_resource_names.hpp": "517e8fe7c79b09c42d4f0af589e17f912e88c582e8cb322cef38260355ab2415",
+    "src/gui_text_resource_names.cpp": "dca7270d9e38c6a6507c2c367221ff8f73e3caba67b4fe8fc1ea9a0f0fb7e57a",
+    "include/bsp/game_native_text_application.hpp": "c3198f0073787c2ebd3d3d52010023ab1689123a1cd2830e0a263b1b7aa573b4",
+    "src/game_hosts_text.cpp": "f64669351591fd48bdc1506bb62781ba5f632390a83f5714170e04dc46af8b88"
+  }
+}
