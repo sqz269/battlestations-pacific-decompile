@@ -1,0 +1,1111 @@
+{
+  "packet": "cc12_native_gui_frame_box_state_storage169",
+  "kind": "function",
+  "status": "whole_raw_supported_storage_strict_compiled_existing_worker_checks_reviewed",
+  "recorded_utc": "2026-10-16T13:34:32.649841+00:00",
+  "provider_HEAD": "bc70fbe0318a96b08abd35e8e1378cbd2e8bfbdd",
+  "published165": "d072a7cd0723fc15ee08b3ee34112173d54b7472",
+  "accepted166": "ed0616852d05e23405a533a8a453d952f737018a",
+  "no168_or_Root171_staging_import": true,
+  "owned_address": "00ad0d80",
+  "owned_range": "[00ad0d80,00ad1581)",
+  "owned_files": [
+    "include/bsp/native_gui_frame_box_state_storage.hpp",
+    "src/native_gui_frame_box_state_storage.cpp",
+    "docs/CC12_NATIVE_GUI_FRAME_BOX_STATE_STORAGE_169.md",
+    "reports/cc12_native_gui_frame_box_state_storage_169.json"
+  ],
+  "original": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "bytes": 2049,
+    "instructions": 630,
+    "exclusive_end": "00ad1581",
+    "RET4_at": "00ad157e",
+    "proof": {
+      "path": "local/frame_box_state169/Original_byte_call_table_proof.json",
+      "sha256": "7b55feaddda8d705b8c623e98c7b3c1ffc7af6955bd385b9d7548dacbb77a93a"
+    },
+    "whole_body": {
+      "path": "local/frame_box_state169/Original_00ad0d80.bin",
+      "sha256": "9f8644ca13bd5b72a14c5c64e61b0745a393d57ba01a1db9fc1279a7e8644305"
+    },
+    "all_instructions": {
+      "path": "local/frame_box_state169/Original_instructions.json",
+      "sha256": "4def1913761fe1980e9cab16bafe3882eb057abdd1bb0f9983c9edd292a114de"
+    },
+    "shared_export_assembly": {
+      "path": "local/frame_box_state169/Original_assembly.txt",
+      "sha256": "503743d6d29c54a6a19095e3387e03319e6016ec48586461c7b9a70d9a718e79"
+    },
+    "all_five_live_body_EH_table_spans_match_installed": true
+  },
+  "calls": [
+    {
+      "address": "00ad0daf",
+      "native": "00b74640",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0dbc",
+      "native": "00b72b20",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0dd2",
+      "native": "0041e870",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0e0e",
+      "native": "00419cc0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0e15",
+      "native": "00bd1510",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0e33",
+      "native": "00b73bb0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0e68",
+      "native": "00b73260",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0e85",
+      "native": "00b72b40",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0e8e",
+      "native": "00533fa0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0ea0",
+      "native": "0041e870",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0eb2",
+      "native": "00449af0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0ecc",
+      "native": "00419cc0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0ed3",
+      "native": "00bd1510",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0ee2",
+      "native": "00535320",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0eef",
+      "native": "00b732c0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0f26",
+      "native": "0041dd40",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0f41",
+      "native": "00bf7680",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0f5f",
+      "native": "00b18b20",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0f7f",
+      "native": "00419cc0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0f86",
+      "native": "00bd1510",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0f9b",
+      "native": "0041dd40",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0fb6",
+      "native": "00bf7680",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0fd5",
+      "native": "00b18aa0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0ff5",
+      "native": "00419cc0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad0ffc",
+      "native": "00bd1510",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad1013",
+      "native": "0041dd40",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad102e",
+      "native": "00bf7680",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad104c",
+      "native": "00b18aa0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad106c",
+      "native": "00419cc0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad1073",
+      "native": "00bd1510",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad108a",
+      "native": "0041dd40",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad10a5",
+      "native": "00bf7680",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad10c3",
+      "native": "00b18b20",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad10e3",
+      "native": "00419cc0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad10ea",
+      "native": "00bd1510",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad10f2",
+      "native": "00aa9f10",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad10fc",
+      "native": "00b18a40",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad1158",
+      "native": "00bf6713",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad116d",
+      "native": "00b189f0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad11a1",
+      "native": "0041e870",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad11b2",
+      "native": "00535320",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad11d8",
+      "native": "00419cc0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad11df",
+      "native": "00bd1510",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad11f2",
+      "native": "0041e870",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad1203",
+      "native": "00535320",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad1228",
+      "native": "00b189f0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad1260",
+      "native": "00acec40",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad1508",
+      "native": "00aa7220",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad1514",
+      "native": "00b864c0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad1538",
+      "native": "00b865a0",
+      "function": "00ad0d80",
+      "kind": "call"
+    },
+    {
+      "address": "00ad1547",
+      "native": "00b73c60",
+      "function": "00ad0d80",
+      "kind": "call"
+    }
+  ],
+  "call_scope": {
+    "direct": 51,
+    "indirect": 17,
+    "all_direct_rows_checked": true,
+    "verification": {
+      "path": "local/frame_box_state169/report_call_verification.log",
+      "sha256": "579a7652b07979f20c766bec4af7a3be0ed83aeadcaeac5877e3041733a5550c"
+    },
+    "indirect_sites": [
+      {
+        "address": "00ad0def",
+        "bytes": "ff d2",
+        "operands": "edx"
+      },
+      {
+        "address": "00ad0e2a",
+        "bytes": "ff d2",
+        "operands": "edx"
+      },
+      {
+        "address": "00ad0e3c",
+        "bytes": "ff 15 20 22 ce 00",
+        "operands": "dword ptr [0xce2220]"
+      },
+      {
+        "address": "00ad0e4c",
+        "bytes": "ff d0",
+        "operands": "eax"
+      },
+      {
+        "address": "00ad0e52",
+        "bytes": "ff 15 20 22 ce 00",
+        "operands": "dword ptr [0xce2220]"
+      },
+      {
+        "address": "00ad0e62",
+        "bytes": "ff d0",
+        "operands": "eax"
+      },
+      {
+        "address": "00ad0e7c",
+        "bytes": "ff d0",
+        "operands": "eax"
+      },
+      {
+        "address": "00ad0f04",
+        "bytes": "ff d7",
+        "operands": "edi"
+      },
+      {
+        "address": "00ad0f12",
+        "bytes": "ff d7",
+        "operands": "edi"
+      },
+      {
+        "address": "00ad1289",
+        "bytes": "ff d0",
+        "operands": "eax"
+      },
+      {
+        "address": "00ad129a",
+        "bytes": "ff d2",
+        "operands": "edx"
+      },
+      {
+        "address": "00ad1504",
+        "bytes": "ff d0",
+        "operands": "eax"
+      },
+      {
+        "address": "00ad1523",
+        "bytes": "ff d7",
+        "operands": "edi"
+      },
+      {
+        "address": "00ad152f",
+        "bytes": "ff d0",
+        "operands": "eax"
+      },
+      {
+        "address": "00ad1550",
+        "bytes": "ff d7",
+        "operands": "edi"
+      },
+      {
+        "address": "00ad155c",
+        "bytes": "ff d0",
+        "operands": "eax"
+      },
+      {
+        "address": "00ad156a",
+        "bytes": "ff d2",
+        "operands": "edx"
+      }
+    ],
+    "limits": "Explicit CALL-site containment/target evidence only. Current numeric-table admission is separately qualified; no arbitrary dispatch/execution proof."
+  },
+  "Native_ABI": {
+    "receiver": "ECX actual FrameBox",
+    "argument": "incoming stack DWORD LOWWORD signed index; same argument LOWBYTE later becomes new-section flag",
+    "return": "RET4 at AD157E",
+    "saved": [
+      "EBX",
+      "EBP",
+      "ESI",
+      "EDI"
+    ],
+    "private_F": "entryESP-40h",
+    "EH_entry": "00cb9128",
+    "EH_jump": "00cb912d",
+    "FuncInfo": "00df048c",
+    "unwind_map": "00df04b0"
+  },
+  "Source_API": {
+    "function": "rebuild_native_gui_frame_box_state_storage_00ad0d80",
+    "arguments": [
+      "actual Box",
+      "borrowed Frame",
+      "borrowed Context",
+      "persistent Acquired"
+    ],
+    "ordinary_new_Cpp_ABI": true,
+    "same_completed163_actual_plus04_registry": true,
+    "no_new_count_or_retain_or_typed_widget": true,
+    "required_independent_graph": "Completed Box/ancestor/Model/mesh/material/effect/name/renderer/declaration/stream/map/device/layout/pool/creator/provider graph, opaque backing and distinct recursive frames held before callbacks and through failure. Public metadata/count/profile do not prove construction/lifetime authority.",
+    "private_service_identity_without_getter_is_caller_proof": true,
+    "unfinished_AD27A0_copy_admission": false
+  },
+  "frame": {
+    "native_locals": "nine caller-prepared DWORDs F10..F30; no blanket header initialization",
+    "F10_F14": "empty/parameter header, then F10 white bytes F12/F11/F10/F13",
+    "F18_F1C": "declaration header, then F18 section identity",
+    "F20": "captured mesh",
+    "F24_F28": "guifade temporary",
+    "F2C_F30": "GuiDefault temporary",
+    "F44": "stable independent original argument; read LOWWORD, later store/test only LOWBYTE",
+    "distinct_backing": [
+      "162/157 frame",
+      "AA7220 scratch",
+      "166 aligned persistent operation storage"
+    ],
+    "known_region_checks_not_transitive_lifetime_proof": true,
+    "public_diagnostics_not_uneditable_one_shot_authority": true
+  },
+  "schedule": {
+    "entry": "LOWWORD capture -> current4C capture -> WORDEC store -> real B74640(index0); capture returned mesh/F20",
+    "cold_stream": "actual name -> current renderer00/38 -> state0 -> real declaration -> captured DATA/state-1/currentLEN cleanup -> fresh current renderer00/5C -> actual54/flags1 stream -> mesh stream0 publication -> vertex release -> declaration release",
+    "map": "captured mesh stream0, current D61D6C+10=B49980(54,0,0); no automatic unlock",
+    "section": "LOWBYTE=1; genuine533FA0 or existing element0, one current CE221C capture for section retain THEN current material20 retain, LOWBYTE=0 before second call",
+    "material": "actual override header or distinct guifade/GuiDefault temporary; genuine535320/cache; completed creator and registration failures retained",
+    "parameters": "lengths17/9/10/12; source Box94/A4/B4/C4; counts1/4/4/1; current source addresses, no value snapshot",
+    "BF7680_boundary": "same qualified Source if(bytes)SDK memmove as166/raw41E870; overlap admitted, zero count omitted; no new Native CRT body/ABI credit",
+    "clip_owner": "late placement of exact166 operation in preheld independent storage -> whole AA9F10 -> real B18A40(Box,1); no early163 admission",
+    "range_stores": [
+      "08=4",
+      "0C=0",
+      "14=0",
+      "10=54",
+      "18=18"
+    ],
+    "first_record": "current BYTE100; beginF4 BEFORE signed WORDEC; signed wrapped/44 -> unsigned check; real returning BF6713; reload currentF4 using saved index; captured record texture -> B189F0 -> SAME record14/18/0C/10 x87 pairs into Box20/24/18/1C",
+    "second_record": "current74 -> four private white bytes; if enabled fresh BYTE100/signedEC -> actual153 ACEC40 -> second record0C/10/14/18 x87 pairs -> size actual second+14; other branch actualBox20",
+    "geometry": "reached current Box00/7C only D5D130/ACF9B0; real162/157/160 with actual stream/size/liveE1301C and private distinct frame",
+    "white": "one reached live D7A24C MOVSS, literal175-instruction loop, six groups of nine, repeated current34/0C/08 and negative-path38/3C/40/44 stores",
+    "finish": "current stream00/14=B49A80 unlock -> real AA7220 through SAME147/132 bridge/liveE12FC4 -> reloadF18 -> B864C0 -> current CE2220 capture ONCE -> material release -> reloadF20 -> genuine B865A0/layout -> current argument LOWBYTE append gate -> section release with SAME captured decrement -> current Box00/50=AA6870(Box50)",
+    "legacy_publication_fragment_not_called": "Its per-release CE2220 reloads and added checks do not match the whole Native captured schedule."
+  },
+  "tables": {
+    "00d5d130": {
+      "00": "00bd30e0",
+      "04": "00ad29b0",
+      "50": "00aa6870",
+      "7c": "00acf9b0",
+      "98": "00ad2750"
+    },
+    "00d5f0a8": {
+      "38": "00b317e0",
+      "5c": "00b287c0"
+    },
+    "00d61d6c": {
+      "10": "00b49980",
+      "14": "00b49a80"
+    }
+  },
+  "EH": {
+    "all_seven_actions_to_minus1": true,
+    "raw_helper": "real41DD20 with SAME raw process pool",
+    "states": [
+      {
+        "state": 0,
+        "action": "00cb90f0",
+        "header": "F18"
+      },
+      {
+        "state": 1,
+        "action": "00cb9118",
+        "header": "F24"
+      },
+      {
+        "state": 2,
+        "action": "00cb9120",
+        "header": "F2C"
+      },
+      {
+        "state": 3,
+        "action": "00cb90f8",
+        "header": "F10"
+      },
+      {
+        "state": 4,
+        "action": "00cb9100",
+        "header": "F10"
+      },
+      {
+        "state": 5,
+        "action": "00cb9108",
+        "header": "F10"
+      },
+      {
+        "state": 6,
+        "action": "00cb9110",
+        "header": "F10"
+      }
+    ],
+    "normal_order": "capture DATA -> volatile state-1 -> ifnonnull CURRENT length+1 -> getter/return",
+    "exception_order": "consume state-1 BEFORE actual41DD20; nested cleanup escape terminates by Source policy",
+    "no_resource_unmap_creator_widget_vector_or_pool_rollback": true,
+    "provider_call_is_not_Native_exception_origin_proof": true,
+    "Source_metadata_errors_keep_pending_actions_and_independent_graph": true,
+    "completed_name_returns_is_logical_even_for_null_DATA": true
+  },
+  "failure": {
+    "sticky_no_retry_reset_reentry": true,
+    "entered_failed166_lifetime_retained_without_automatic_destruction": true,
+    "retain_completed_creators_partial_loaders_registrations_parameters_publications_maps_contexts_and_backing": true,
+    "never_discover_graph_from_ended_fields": true,
+    "no_protective_retain_scalar_ancestor_or_count_barrier": true,
+    "canonical_zero_terminal_noexcept": "terminal errors terminate; preterminal registry/profile/lookup errors may escape after zero mutation",
+    "no_Native_FH3_SEH_IAT_register_CRT_hardware_FPU_or_runtime_equivalence": true
+  },
+  "strict_compile": {
+    "result": "PASS",
+    "command": {
+      "path": "local/frame_box_state169/strict_compile.cmd",
+      "sha256": "badbf97e00f84d4b7e5a0753cc24a5a64d42b5c40a8578e151504057c2be29d1"
+    },
+    "log": {
+      "path": "local/frame_box_state169/strict_compile.log",
+      "sha256": "dacaba26cb3522fcbbdaa04ac9fcf9b2d0c8cc333bcfcafc9cd1879ac08be8d9"
+    },
+    "object": {
+      "path": "local/frame_box_state169/strict.obj",
+      "sha256": "1c2b2e3850625212f18554efc6ed2ced2e3e2a93602918a116c0a9b89de59a4e"
+    },
+    "listing": {
+      "path": "local/frame_box_state169/strict.asm",
+      "sha256": "919dec1ca51d413c8180cfdf59b013550e8b8913163c382ed90c5024e90c7083"
+    },
+    "standard": "MSVC Win32 C++17 /EHsc /MD /O2 /W4 /WX /fp:strict",
+    "input_inventory_limit": "Scoped provider snapshots and final command/log/accepted166 pins are not a compiler-emitted complete include closure; no /showIncludes emitted. Root175 freezes the separate actual canonical Source closure. draft_dependencies.json belongs only to historical initial strict inputs.",
+    "actual_imported166_header_only_current_include_path": true,
+    "history_preserved": "MASM SIZE-name failure; first successful pre-memmove-qualification Source/object/100-instruction diagnostics; initial11-section50-index formatter omission retained separately."
+  },
+  "optimized": {
+    "complete_COFF": {
+      "path": "local/frame_box_state169/coff_complete.json",
+      "sha256": "5c5ea149a23a3959a1b93dad8293ac163b15a027ca011856b134ce4391b1adbe"
+    },
+    "compact50_index": {
+      "path": "local/frame_box_state169/optimized_compact50/index.json",
+      "sha256": "245a52cebfc2c68fda1631bfe5839517be180a7acd4dee1d0f53153b3a1722d8"
+    },
+    "sections": 14,
+    "bytes": 7349,
+    "instructions": 1958,
+    "includes_all_three_release_specializations": true,
+    "all_section_bytes_relocations_symbols_frozen": true,
+    "white_static_proof": {
+      "path": "local/frame_box_state169/white_COFF_correspondence.json",
+      "sha256": "ac5287a58003350a2081044f56fe12511a165e03bb5d0d7d00fe45017504c998"
+    },
+    "converter": {
+      "path": "local/frame_box_state169/disassemble_coff50.py",
+      "sha256": "72530a285d27c7f5dd81d7975804cc35ca3b18158028e5fa39eb991b17df0c43"
+    },
+    "no_compilation_or_execution_by_diagnostic_conversion": true,
+    "whole_Original_byte_or_ABI_identity": false
+  },
+  "canonical_worker_build": {
+    "baseline_HEAD": "bc70fbe0318a96b08abd35e8e1378cbd2e8bfbdd",
+    "strict_pins_unchanged_after_worker_build": true,
+    "registration": {
+      "new169_registered": false,
+      "imported166_registered": false,
+      "registered162_compiled": true,
+      "registered163_compiled": true
+    },
+    "build_exit": 0,
+    "tests": [
+      {
+        "name": "reconstructed_math",
+        "result": "PASS",
+        "seconds": 0.25
+      },
+      {
+        "name": "tool_tests",
+        "result": "PASS",
+        "seconds": 8.44
+      }
+    ],
+    "total_seconds": 8.75,
+    "unrelated_LNK4006": true,
+    "no_new_tests_probes_or_body_execution": true,
+    "log": {
+      "path": "local/frame_box_state169/canonical_build.log",
+      "sha256": "fb6252c0f28cfce4b86fdf25536d9e6dd4aaf76caa9ef3caeff16e9ffc505155"
+    },
+    "summary": {
+      "path": "local/frame_box_state169/canonical_build_summary.json",
+      "sha256": "4c0c94a30100aeab56826ad6f7fcc86c99f47dcd0f1c905f146a3e46cf81994e"
+    },
+    "scripts_build": {
+      "path": "scripts/build.ps1",
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    "registration_baseline": {
+      "path": "cmake/startup.cmake",
+      "sha256": "57f7528287dfd246466687335ae3e0a00e080e10a49f7c7ca39ffa45675c0abc"
+    },
+    "limits": "One existing worker run; new169 and imported166 TUs are unregistered. Strict compilation/reviews are separate from later primary registration/link/build. No new test/probe/body execution."
+  },
+  "source_inputs": [
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/gui_native_geometry.hpp",
+      "sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/gui_native_geometry.cpp",
+      "sha256": "1b957f0aa970eec806bd09389aaa4f21157a64013a3a5c721a0065a0a7e5f0bf"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/gui_text_native_renderer.hpp",
+      "sha256": "9ee3aeaa194ebf677efd3e96817b057d7093bf08bed72702fd44f45edee4a572"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/gui_text_native_renderer.cpp",
+      "sha256": "9f3753d2cc0232eea8dd990cc5c0e4a5f958145dbd8de35ba64860ab370c74e5"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/gui_text_native_layout.hpp",
+      "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/gui_text_native_layout.cpp",
+      "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_gui_frame_box_constructed_storage.hpp",
+      "sha256": "53accddfc423a112174fefd70cfe7188eee9262ff32a4c8a3136d687f12e2c63"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_gui_frame_box_constructed_storage.cpp",
+      "sha256": "3997dd79e9b64322e2ccf4eac52d49312a3c59b05cf890c8c01f702a0b0c0cc1"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_gui_frame_box_geometry.hpp",
+      "sha256": "a02a2c7c4cb4c538ebf41bde4dccea4fdec021c5f84501bdba40d84e83647013"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_gui_frame_box_geometry.cpp",
+      "sha256": "430483e264737af69a50d4477cfa8a9a50794e354738df2998c3a25043aeca60"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_gui_texture_normalization.hpp",
+      "sha256": "33306028223a7d3f7b2a194facd8f55c1e0bfae08ab15d88fa5f3bff5fb26bb8"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_gui_texture_normalization.cpp",
+      "sha256": "271d375501300757bc267cf9530c9126edb04f4292a1bfbf1641f213df38f2a1"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_gui_state_vector_access.hpp",
+      "sha256": "5144b8e733b80c630486834e9c6bd704023e8a4d1ead61d47557cb5ef0b30e09"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_gui_state_vector_access.cpp",
+      "sha256": "9dc5ff0a07b71be2b448570b5f8b41fe417885220607374a6f8ec8b42072676b"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_gui_widget_color_storage.hpp",
+      "sha256": "c44b97890659d2bb6103367d03a8866d9bf4b394cf4ff46b5827fb96b6ae1ff7"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_gui_widget_color_storage.cpp",
+      "sha256": "9f5a34ad3a420176737b3f1c68e64c083d13f6d24d43404be238dad2c3ce28d5"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_gui_frame_box_identity.hpp",
+      "sha256": "2e114b5f76c8c824df0313e7db7ba788b68235a46382006c5e154ef598ee141a"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_gui_frame_box_identity.cpp",
+      "sha256": "68be74199b6debd2b8bc5819dc16eed3943512c056298012699c7772496893bf"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_gui_frame_box_lifetime.hpp",
+      "sha256": "a50b604d393333a5c66efd0e660c34a5021226b94ae28e4a0a30218c3db37277"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_gui_frame_box_lifetime.cpp",
+      "sha256": "a125c2ee90feea995e72dfce1910d6bb5b60d7dd0ff5856687a28b4c22ad8be8"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_gui_widget_transform.hpp",
+      "sha256": "7ce3ccf33392eeff3e603aa43edd941a94d5cdb23d655d70a722bdb60773354d"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_gui_widget_transform.cpp",
+      "sha256": "8f2bbaa84a9b44d90ce4ae89ccdc616118b7a358fb3be90220573ac3ef7eafad"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_node_raw_transform.hpp",
+      "sha256": "99460e5aa96bac3ef0255146992d7e002e2ec5adf07ab71788221ad10c75d4de"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_node_raw_transform.cpp",
+      "sha256": "092fa6a47756bf5a8a3a18dfbbaecf468898b3c91bc5ee5235bba5a7f078e16c"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_gui_widget_position.hpp",
+      "sha256": "fd7397b1af7ba72bc335703507d4013e78298126ab8d8be5816794bcbcd40512"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_gui_widget_position.cpp",
+      "sha256": "674336c5043078be5e3ed0398f83999da3f783435a5767f7ce2abcd14142e6b6"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_material_factory.hpp",
+      "sha256": "2cf4933dc2d616674b501ff1786c95c47f3251cf7dd4deda649ca95bba0a3563"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_material_factory.cpp",
+      "sha256": "6ef1b9855e65cec8e69a1d51001733adef2073d8ed08650fff0115307ec71bcd"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_material_effect_cache.hpp",
+      "sha256": "56d1930a80ad2ed90883c1f52f26f36ec51c50c6294a844dd64258949d103ff4"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_material_effect_cache.cpp",
+      "sha256": "b5edc9b518ba2979d112ebdd03d97937307249e05a978272097020055e7072ae"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_material_parameters.hpp",
+      "sha256": "f7f512b1d9be499f1d5d750460a2a51f15628ae5bb30dd9242b675a2dae9e2a3"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_material_parameters.cpp",
+      "sha256": "b77dbb8ed134ae8d1f46f5eb331fc50b349ba6c80a2f21e38a95d6107bdf9f7b"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_material_owner.hpp",
+      "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_material_owner.cpp",
+      "sha256": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_material_pools.hpp",
+      "sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_material_pools.cpp",
+      "sha256": "52c0de304c861907c1799517e038e8383ca62829e12176eb1b48f406d163c95a"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_mesh_owner.hpp",
+      "sha256": "f0f4b0d87721717033e823aee5494a280481c6b4a02a7fd2bea51970b46d5636"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_mesh_owner.cpp",
+      "sha256": "8725dee8119cf400bf58464d6dd2dcb6771502b6edd8f527f65ec3f3c7fe40fe"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_mesh_section.hpp",
+      "sha256": "c99901d53b195ab67c0da51c7b39657f42b7b60ba1f5509eec200b6ff29f3e2e"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_mesh_section.cpp",
+      "sha256": "8f09c61b3ba5ef47c403de9769d24d9d9e6a79c1bb8668430e53fc33587ed876"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_mesh_buffer_fields.hpp",
+      "sha256": "9986bb687f4743ec06a644a824dacc91e08b48754ab1bc99572c401dd60fd16a"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_mesh_buffer_fields.cpp",
+      "sha256": "1a4cfda0124597bd48d7208fdbd974546951067e89f555534b098cf4465aaa50"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_mesh_remaining_fields.hpp",
+      "sha256": "ad9802edc73b3e59b31420f8e0bf7e4bd789c520d774f0c0837b28d8150766ae"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_mesh_remaining_fields.cpp",
+      "sha256": "8510d38e2a8e24d9d35156cf0274c3dc4590a49b6250d23221cbe0302712fa99"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_mesh_subset_loading.hpp",
+      "sha256": "283167a5d8a1d09a50d46c08df40c9c6127d0cb94e8a47b8f581f7846401cde7"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_mesh_subset_loading.cpp",
+      "sha256": "54d25cf5f9abcda9ce3f49dd0ebaff1d3d4594f9d26c2853ffa26d26feb8892d"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_logical_buffer_mapping.hpp",
+      "sha256": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_logical_buffer_mapping.cpp",
+      "sha256": "6e9b61c4928f34705e12be655d0c8e6a72bca9210a9d9a2748e43054c55d3075"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_stream_clone.hpp",
+      "sha256": "a333d180afcf21084068a671d60c34ee8e1b18ea980a6c03b115a32ce2ff3e6a"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_stream_clone.cpp",
+      "sha256": "ca2fff6a311b90c35dc926d75142e8318f72d2c3198c4420afdc2dc4250f11ab"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_string_pool_storage.hpp",
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_string_pool_storage.cpp",
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_physical_file_date.hpp",
+      "sha256": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_physical_file_date.cpp",
+      "sha256": "6ad9b3bff2280f3c27889ba13ef785a236a2f34e2d733b83bcc92ad20a8a55d0"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_invalid_parameter_noinfo_call.cpp",
+      "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/gui_text_material.hpp",
+      "sha256": "7aa9ec97e276f35187f0900bd728c331bd5170b83ee5e0c8b8b467d35f226706"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/gui_text_material.cpp",
+      "sha256": "588ed2c26ab7dd17566bd56171fa4f244a81b8a273e22c2095424dfa63b4a57f"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/gui_widget_owner.hpp",
+      "sha256": "2acc8d633c6541a4c60263aa9f94d61826096f71b50c2644f1848e240c56389f"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/gui_widget_owner.cpp",
+      "sha256": "36a974b52b5f3036c66d4afec46839edf864dc9158bcc766a6576fc8e6335132"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/game_native_readonly_data.hpp",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/game_native_readonly_data.cpp",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/game_native_string_process.hpp",
+      "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/game_native_string_process.cpp",
+      "sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/include/bsp/native_render_context.hpp",
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/src/native_render_context.cpp",
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/docs/CC12_NATIVE_GUI_GEOMETRY_IDENTITY_INTEGRATION_165.md",
+      "sha256": "62b1bc8189a556463a4de9614a47e2b4162c69a41834ae19602b075b0382319d"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/reports/cc12_native_gui_geometry_identity_integration_165.json",
+      "sha256": "55dbad476f135bf1f7c1d346871e987aa041337d621dbe77d182f8c87995dc79"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/docs/CC12_NATIVE_GUI_FRAME_BOX_RAW_STATE_READINESS_148.md",
+      "sha256": "9cb2ecd014ea869af79a4cf3f0e92ede553c09d34779ed49ec9f9d3d3b50b686"
+    },
+    {
+      "path": "local/frame_box_state169/providers165/reports/cc12_native_gui_frame_box_raw_state_readiness_148.json",
+      "sha256": "5b2fc45d4b3839f01c8d4f20ac2ebe0e3683c42348039a99de242b4c2c66a7e8"
+    },
+    {
+      "path": "local/frame_box_state169/accepted166/include/bsp/native_gui_widget_clip_storage.hpp",
+      "sha256": "dcc473b33367463f32c8291e6b5d7edea6371f0b7ad6282d9b2b12f6939c9d90"
+    },
+    {
+      "path": "local/frame_box_state169/accepted166/src/native_gui_widget_clip_storage.cpp",
+      "sha256": "6247455de5233e27ba31b8b09d1a31384c145faf9989a921ba76b6f8c544ab36"
+    },
+    {
+      "path": "local/frame_box_state169/provider_contracts/include/bsp/native_gui_frame_box_factory.hpp",
+      "sha256": "51c9ecc3f14973a9f21cc1de52a05b9d34c0f522f7fbba3cbb77eb187e773853"
+    },
+    {
+      "path": "local/frame_box_state169/provider_contracts/src/native_gui_frame_box_factory.cpp",
+      "sha256": "46124772e8af548dbd39ddf60800fa5dbb2a78efd18052c10bf85a0588a17532"
+    },
+    {
+      "path": "local/frame_box_state169/provider_contracts/include/bsp/native_gui_rectangle_writer.hpp",
+      "sha256": "68d82b664dc042ef20e62b1759852208582dcf05d59b866575fefd06d7262af1"
+    },
+    {
+      "path": "local/frame_box_state169/provider_contracts/src/native_gui_rectangle_writer.cpp",
+      "sha256": "da998d7aafdd0068dea15e65d16b954181113cd2ef6b85fd454c98c9c6a9ee4b"
+    },
+    {
+      "path": "local/frame_box_state169/provider_contracts/docs/CC12_NATIVE_GUI_FRAME_BOX_CONSTRUCTED_STORAGE_147.md",
+      "sha256": "4fb09aac8b3dd93a8aa417cdce02cef78df9b3a344d5fa364b8b9a6079411de4"
+    },
+    {
+      "path": "local/frame_box_state169/provider_contracts/docs/CC12_NATIVE_GUI_FRAME_BOX_STATE_AT_149.md",
+      "sha256": "bea3fd518f25b0e7e1d55c75927de0c0452233b7883100cb1eb0949bdec65002"
+    },
+    {
+      "path": "local/frame_box_state169/provider_contracts/docs/CC12_NATIVE_GUI_FRAME_BOX_RAW_GEOMETRY_READINESS_154.md",
+      "sha256": "9434cc2759ee1b47581514c6fffed905026644d50f670341bd3d39cb2c674573"
+    },
+    {
+      "path": "local/frame_box_state169/provider_contracts/docs/CC12_NATIVE_GUI_TEXTURE_NORMALIZATION_157.md",
+      "sha256": "ce376233717532dfc95e56916876f755d03fbc6e4f4e89317839b2679aadca44"
+    },
+    {
+      "path": "local/frame_box_state169/provider_contracts/docs/CC12_NATIVE_GUI_FRAME_BOX_GEOMETRY_162.md",
+      "sha256": "ba8d5a8cd82302305af460a5010045d8bb7f8225e2f59925fbcf9d2d73bb321e"
+    },
+    {
+      "path": "local/frame_box_state169/provider_contracts/docs/CC12_NATIVE_GUI_FRAME_BOX_IDENTITY_163.md",
+      "sha256": "cdfceb72ad6691f0a81bf51081fecea9bfaff62f3a9064bf6bfad13f72a80acc"
+    },
+    {
+      "path": "local/frame_box_state169/provider_contracts/docs/CC12_NATIVE_GUI_WIDGET_CLIP_STORAGE_166.md",
+      "sha256": "6ceda89d6f3580bdb7a8498f5c7b298b2171d9d584b3b885bd0771f97a85f7b1"
+    },
+    {
+      "path": "local/frame_box_state169/provider_contracts/reports/cc12_native_gui_widget_clip_storage_166.json",
+      "sha256": "abfe2e844eda3912eff187af24529342d888ae04520d5a9ccbc22166bcf73823"
+    }
+  ],
+  "own_Source": {
+    "header": {
+      "path": "include/bsp/native_gui_frame_box_state_storage.hpp",
+      "sha256": "3756b45ae5422719940b13124cf30d2956cefbb72c86cfad43f9d5b171a1af34"
+    },
+    "CPP": {
+      "path": "src/native_gui_frame_box_state_storage.cpp",
+      "sha256": "1ac9c99f66c4066771ce83a0e658fc4fe36d412907488ed074f60ed19e5ee90a"
+    }
+  },
+  "documentation": {
+    "path": "docs/CC12_NATIVE_GUI_FRAME_BOX_STATE_STORAGE_169.md",
+    "sha256": "fd9b5268679565946190a5b396c7d71c190c227bd36c455c382eb85d2b33b02c"
+  },
+  "reviews": {
+    "status": "PASS",
+    "record": {
+      "path": "local/frame_box_state169/Root_final_reviews.json",
+      "sha256": "22d389319099282b6468e64b3b1d2958ec7eb62c87d0752031f00205b8f42649"
+    }
+  },
+  "independent_peer174": {
+    "status": "PASS_Root_accepted_independent_critical_subset",
+    "commit": "566b3d06693290d9500ae8e396fa016db465d2dd",
+    "private_capture_receipt": {
+      "path": "local/frame_box_state169/peer174_capture_receipt.json",
+      "sha256": "fc1cc3b936cc8fe823e80d7f569a05b17c4c29c87bce95187bf49cc8764acc6b"
+    },
+    "original_manifest": {
+      "path": "local/frame_box_state169/peer174/local/cc12_native_gui_frame_box_state_asm_review_174/manifest.json",
+      "sha256": "42072fe5f3e4add3f968732ca2332370fbc0099e7a58f73919d9a568aa7badf9"
+    },
+    "receipts": [
+      {
+        "path": "local/frame_box_state169/peer174/reports/cc12_native_gui_frame_box_state_asm_review_174.json",
+        "sha256": "ba521fd6903e02eee99bffb3be3f28b5bb9fcbbad0984e70054af0ba0b7c6f97",
+        "source_provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_frame_box_state_integration_175\\workers\\174\\reports\\cc12_native_gui_frame_box_state_asm_review_174.json",
+        "peer_commit": "566b3d06693290d9500ae8e396fa016db465d2dd"
+      },
+      {
+        "path": "local/frame_box_state169/peer174/docs/CC12_NATIVE_GUI_FRAME_BOX_STATE_ASM_REVIEW_174.md",
+        "sha256": "30b9e531677a54d48468555074f6f8785894c5a036f7b2d1543989afac525523",
+        "source_provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\docs\\CC12_NATIVE_GUI_FRAME_BOX_STATE_ASM_REVIEW_174.md",
+        "peer_commit": "566b3d06693290d9500ae8e396fa016db465d2dd"
+      }
+    ],
+    "helper_proof": {
+      "path": "local/frame_box_state169/peer174/local/cc12_native_gui_frame_box_state_asm_review_174/helper_correspondence.json",
+      "sha256": "3871c3310d65fe8e98e1b81b06d52debd67e6c92d73dc236515b3e7be8a25354",
+      "captured_relative_path": "local/cc12_native_gui_frame_box_state_asm_review_174/helper_correspondence.json"
+    },
+    "scope": "Independent installed PE/final COFF proof: white589B/175starts/19branches byte-identical with zero core relocations; both eight-x87 schedules and saved-first/current-second record/+14 caller transport.",
+    "limits": "Critical subset review only; ordinary helper/private argument-frame/FPU and SDK dependency inventory qualifications remain. Not whole-parent execution, Native ABI, production admission or compiler-emitted include closure.",
+    "private_artifacts": "All90 peer manifest artifacts were copied and rehashed from immutable Root175 capture. The committed peer doc was copied from merged Root only after its sealed SHA256 matched; no peer Source or artifact was modified."
+  },
+  "annotation": {
+    "status": "complete",
+    "receipt": {
+      "path": "local/frame_box_state169/annotation_receipt.json",
+      "sha256": "116ce9c16c8c3a3ca3fa3e636992d8099c527730ce0c3ca143b7fc3d1de1e85f"
+    }
+  },
+  "ledger": {
+    "status": "complete",
+    "receipt": {
+      "path": "local/frame_box_state169/ledger_preservation_proof.json",
+      "sha256": "bd6aa220bc5c26be4b2d8af7adabe44f2ae78cbe68c9f732cd7f9299c869d0b7"
+    }
+  },
+  "final_manifest": {
+    "path": "local/frame_box_state169/final_artifact_manifest.json",
+    "hash_omitted_to_avoid_report_manifest_cycle": true
+  },
+  "limits": {
+    "only_whole_AD0D80_body": true,
+    "lower_body_duplicate_credit": false,
+    "whole_AD27A0_copy_constructor_admission_or_runtime_activation": false,
+    "old_semantic_status_name_comments_preserved": true,
+    "no_shared_Source_or_CMake_modification": true,
+    "no_new_tests_probes_or_Native_execution": true
+  }
+}
