@@ -16,8 +16,9 @@ ownership remain incomplete. It authorizes no Source implementation.
 
 Fresh typed metadata identifies exactly two body ranges totaling **50 bytes**,
 with 14 instructions. The 94-byte convex span is not the function body. The
-44-byte gap `00BF7C33` through `00BF7C5E` was neither read as bytes nor included
-in the instruction listing or independent decode. The full actual body captures
+44-byte gap `00BF7C33` through `00BF7C5E` was not captured as a selected byte
+range, listed or independently decoded. The complete PE was read for hashing
+and section mapping; that file read includes the gap bytes. The full actual body captures
 were pinned before substantive analysis; leases were extended only after the
 initial metadata confirmed ownership.
 
