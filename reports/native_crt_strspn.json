@@ -1,0 +1,329 @@
+{
+  "schema": "bsp.whole-native-crt-Source.v1",
+  "status": "whole_ordinary_Source_single_strict_compile_actual_object_review_Root_independent_Main_pending",
+  "address": "00bf9840",
+  "Original_library_name": "_strspn",
+  "coverage": "complete",
+  "owned_range_inclusive": [
+    "00bf9840",
+    "00bf9885"
+  ],
+  "owned_bytes": 70,
+  "owned_instructions": 35,
+  "body_sha256": "f250758db89da8bace57e1367e10641e50922f3a0700fe1b70a6f2e6999f4f70",
+  "Source_packet": "cc12_native_crt_strspn_00bf9840",
+  "Source_authorized": true,
+  "Source_implemented": true,
+  "Source_credit": 0,
+  "API": "unsigned int __cdecl bsp::count_native_crt_prefix_in_set_00bf9840(const void* actual_source, const void* actual_control)",
+  "default_potentially_throwing": true,
+  "target": "MSVC Win32 BYTE8/pointer+unsigned int32",
+  "routines": [
+    {
+      "address": "00bf9840",
+      "coverage": "complete",
+      "Original_name": "_strspn",
+      "calls": []
+    }
+  ],
+  "calls": [],
+  "contract": [
+    "MSVC Win32 BYTE8/pointer+unsignedint32, default potentially throwing new API; keep Original library name _strspn, no Unicode/locale/case/codepage/signed-char interpretation.",
+    "Complete finite genuine stable determinate readable control throughNUL first, even empty source; exactly one volatile unsigned BYTE per visited position. Only nonzero bits set; duplicates retain reads and updates.",
+    "Then one volatile unsigned BYTE per reached source position. Explicit NUL stops before cursor advance/bitmap. Nonzero genuine cursor++ precedes membership, including terminal nonmember. Set bit increments exact unsignedcount and continues; clear bit returns preceding-member count. Terminal byte excluded, no final reread or after-stop read.",
+    "Source needs only its reached readable prefix through first NUL or nonzero nonmember; no later terminator/full unused extent after early stop. Empty control still reads source, no null/count-zero exception, signed cap or pointer subtraction.",
+    "Reached advances are nonwrapping32bit within/onepast each actual live allocation, including terminal nonmember advance; never read onepast. Admit raw unaligned/interior/prefix/read-only/identical/overlap aliases and stable ordinary caller stack, with no padding or typed wider input ownership.",
+    "Exclude invalid/indeterminate reached storage, faults, MMIO/volatile protocols, mutation/concurrency, lifetime changes and native callee frame/home/bitmap/saved-register self-alias or physical segment protocols. No fake native scratch identity/Source parameter.",
+    "Eight separate genuine private volatile unsigned32 scalars, explicit zero stores, bounded binary private-pointer selection byte>>5 and mask1U<<(byte&31). No array/aggregate GSbuffer, switch/table/helper, SDK search/copy/provider/fallback/global/TLS/runtime validation/caller binding or Source5call."
+  ],
+  "Original_evidence": {
+    "gate": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\reports\\cc12_native_crt_strspn_readiness.json",
+      "bytes": 4851,
+      "sha256": "35078e5e15ba065f7d31b53461a762b828f20b7a3e739067c989ce1442cc2dfc"
+    },
+    "Root_accepted_author": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strspn_readiness_primary_20261016\\verified_author.DATA.json",
+      "bytes": 3392,
+      "sha256": "6d8de7cbce397430f8c35cb7c0346fbacb6d324aefa16b2796308defd4e72c16"
+    },
+    "Root_accepted_peer": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strspn_readiness_primary_20261016\\verified_peer.DATA.json",
+      "bytes": 4604,
+      "sha256": "f01b8a2d90d0dbe5f77d00a596a40bfefc03850ac7e3b2785b17fbf1ac233afc"
+    },
+    "Root_Original_notes": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_strspn_readiness_primary_20261016\\Root_original_notes.DATA.json",
+      "bytes": 1955,
+      "sha256": "cdad9dbb93213d1045709b8a8f28de0538254f5c59bfdca6f1b736f2e8492c79"
+    },
+    "prior_readiness_and_Root_peer_records_are_external_inputs_not_own_transport_provenance": true,
+    "fresh_own_static_body": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\local\\WholeNativeCrtStrspnSource01\\original_body.bin",
+      "bytes": 70,
+      "sha256": "f250758db89da8bace57e1367e10641e50922f3a0700fe1b70a6f2e6999f4f70"
+    },
+    "fresh_live_query": false,
+    "native_bitmap": "XOR EAX plus8zero PUSHes establish32bytes; AL-only loads preserve high24zero, BT/BTS indices0..255 and DWORD offsets0..28.",
+    "native_schedule": "Control home984e/whole scan9854..9861 precede source home9863. OR ECX,allones9866 and ADD986c count before each source BYTE986f. NUL9873 skips cursor/BT. Nonzero ESI++9875 before BT9878; JC987c continues members. Return EAX=ECX987e.",
+    "no_specialist_or_call_global_DF_hidden_register_blocker": true
+  },
+  "Source_mechanism": {
+    "payload": "Separately sequenced volatile unsigned BYTE reads",
+    "bitmap": "8separate genuine volatile unsigned-int scalar words, explicit zeros, bounded binary actual private-pointer selection byte>>5 and unsignedmask1U<<(byte&31)",
+    "count": "Fresh unsignedint0, increment only for set membership",
+    "source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\src\\native_crt_strspn.cpp",
+      "bytes": 2893,
+      "sha256": "d1dbad0cb05c545199d0e83ce0ef0878160f32d1ae29b64659d83a466292e16f"
+    },
+    "header": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\include\\bsp\\native_crt_strspn.hpp",
+      "bytes": 1054,
+      "sha256": "183e2badba7780af7ff8129b3090ab0c81f4c7a05052e63d98046d8cf3fdcad7"
+    },
+    "no_Source5call_or_compiler_proof_borrowed": true
+  },
+  "strict_compile": {
+    "actual_compilations": 1,
+    "exit_code": 0,
+    "argv": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\cl.exe",
+      "/nologo",
+      "/Bv",
+      "/c",
+      "/std:c++17",
+      "/O2",
+      "/W4",
+      "/WX",
+      "/permissive-",
+      "/EHsc",
+      "/MD",
+      "/showIncludes",
+      "/sourceDependencies",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\local\\WholeNativeCrtStrspnSource01\\strict.dependencies.json",
+      "/FAs",
+      "/FaJ:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\local\\WholeNativeCrtStrspnSource01\\strict.cod",
+      "/FoJ:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\local\\WholeNativeCrtStrspnSource01\\strict.obj",
+      "/IJ:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\include",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\src\\native_crt_strspn.cpp"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16",
+    "start_utc": "2026-10-16T08:00:44.013481+00:00",
+    "end_utc": "2026-10-16T08:00:44.107681+00:00",
+    "compiler_version": "19.51.36244.0",
+    "actual_host_target": "HostX86/x86",
+    "before_candidate_pins": 8102,
+    "compiler_before": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\cl.exe",
+      "bytes": 830824,
+      "sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c",
+      "mtime_ns": 1779576134591637100,
+      "links": 1,
+      "readonly": false,
+      "observed_utc": "2026-10-16T08:00:15.433525+00:00"
+    },
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\local\\WholeNativeCrtStrspnSource01\\strict.receipt.json",
+      "bytes": 20863,
+      "sha256": "b4b94e52cf99cef71dd19a99d32ac4c5ebd3b9cfa271819003af2988c2e2e177"
+    },
+    "stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\local\\WholeNativeCrtStrspnSource01\\strict.stdout.bin",
+      "bytes": 150,
+      "sha256": "d5fd9d4bc1d8ff7df5ed86ac34ec2e30370db09cd401315e3e01273e258510b5"
+    },
+    "stderr": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\local\\WholeNativeCrtStrspnSource01\\strict.stderr.bin",
+      "bytes": 1100,
+      "sha256": "99293d4c30822e13210b8d92a36a6610f1f5cabddd9393a5016c04cc05a9b6b3"
+    },
+    "actual_dependency_closure": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\local\\WholeNativeCrtStrspnSource01\\actual_dependency_closure.json",
+      "bytes": 2267,
+      "sha256": "d1cd52575bdcbb4397d31e3359dde30f218a97be7519530c2d2ec0f9e714fe41"
+    },
+    "actual_closure_files": 2,
+    "showIncludes_sourceDependencies_agree": true,
+    "all_actual_closure_inputs_genuinely_before_pinned": true,
+    "no_compiler_failure_or_replay": true,
+    "no_trial_matchingcompile_or_workerbaseline": true,
+    "current_capture_inspector_pinned_before_either_first_use": true,
+    "later_report_commit_seal_tools_have_distinct_current_stages": true,
+    "future_Main_Hostx64_Oy_minus_separate": true
+  },
+  "actual_object": {
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\local\\WholeNativeCrtStrspnSource01\\strict.obj",
+      "bytes": 1117,
+      "sha256": "e280a292564bb6b74f8201858e7495925fe41248848d20c9d0ae1d93a3b5a648"
+    },
+    "code_bytes": 294,
+    "instructions": 93,
+    "public_binding": "?count_native_crt_prefix_in_set_00bf9840@bsp@@YAIPBX0@Z",
+    "helpers": 0,
+    "calls": 0,
+    "undefined_symbols": 0,
+    "code_relocations": 0,
+    "total_relocations": 1,
+    "FPO": {
+      "offset_start": 0,
+      "procedure_bytes": 294,
+      "locals_dwords": 8,
+      "params_dwords": 2,
+      "prologue_bytes": 45,
+      "saved_registers": 3,
+      "has_SEH": false,
+      "uses_BP": false,
+      "frame_type": 0,
+      "attributes": 813
+    },
+    "complete_inventory": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\local\\WholeNativeCrtStrspnSource01\\object_inventory.json",
+      "bytes": 38298,
+      "sha256": "7f7e6b034302647d9f1e40276d40fc81218bb29d81b78243f696bb25ea579cc8"
+    },
+    "complete_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\local\\WholeNativeCrtStrspnSource01\\object_review.json",
+      "bytes": 7044,
+      "sha256": "7c29d1ddb2bd2e3df7d98993a6a77595ef5c9bf526d21c141ac5496dde594cfc"
+    },
+    "external_payload_loads": [
+      {
+        "offset": 73,
+        "width": 1,
+        "phase": "first control",
+        "instruction": "MOVZX ECX,BYTE [EDI]"
+      },
+      {
+        "offset": 165,
+        "width": 1,
+        "phase": "later control",
+        "instruction": "MOVZX ECX,BYTE [EDI]"
+      },
+      {
+        "offset": 178,
+        "width": 1,
+        "phase": "first source",
+        "instruction": "MOVZX ECX,BYTE [EDI]"
+      },
+      {
+        "offset": 277,
+        "width": 1,
+        "phase": "later source after set membership",
+        "instruction": "MOVZX ECX,BYTE [EDI]"
+      }
+    ],
+    "private_word_identity": [
+      {
+        "word": 0,
+        "final_ESP_offset": 12,
+        "control_LEA_offset": 108,
+        "source_LEA_offset": 220
+      },
+      {
+        "word": 1,
+        "final_ESP_offset": 16,
+        "control_LEA_offset": 114,
+        "source_LEA_offset": 226
+      },
+      {
+        "word": 2,
+        "final_ESP_offset": 20,
+        "control_LEA_offset": 120,
+        "source_LEA_offset": 232
+      },
+      {
+        "word": 3,
+        "final_ESP_offset": 24,
+        "control_LEA_offset": 124,
+        "source_LEA_offset": 236
+      },
+      {
+        "word": 4,
+        "final_ESP_offset": 28,
+        "control_LEA_offset": 135,
+        "source_LEA_offset": 247
+      },
+      {
+        "word": 5,
+        "final_ESP_offset": 32,
+        "control_LEA_offset": 142,
+        "source_LEA_offset": 254
+      },
+      {
+        "word": 6,
+        "final_ESP_offset": 36,
+        "control_LEA_offset": 148,
+        "source_LEA_offset": 260
+      },
+      {
+        "word": 7,
+        "final_ESP_offset": 40,
+        "control_LEA_offset": 152,
+        "source_LEA_offset": 264
+      }
+    ],
+    "index_bounds": "MOVZX ECX,BYTE gives0..255; MOV EDX,ECX then SHR EDX,5 gives0..7. Unsigned CMP4/CMP2/CMP6 partitions pairs. TEST or CMP4 or inherited CMP2/CMP6 flags feed CMOVNE for even/odd scalar. All pointer candidates are genuine LEA ESP+0C..28 addresses, no array index/table/external base.",
+    "count_order_qualification": "Actual next-source BYTE+115 precedes private count INC ESI+118. That increment counts exactly the preceding member and occurs before testing/returning on the newly read byte. This agrees on stable ordinary storage; no physical Original count-register/home/fault boundary identity is claimed.",
+    "all_code_sections_symbols_aux_strings_relocations_metadata_reviewed": true,
+    "no_cookie_globals_TLS_tables_or_provider_refs": true
+  },
+  "validation": {
+    "report_and_doc_call_checker": "Run before commit, exact receipt/result in owned family.",
+    "zero_call_rows_not_semantics": true,
+    "no_new_tests_probes_bodyexecution_SDKcomparison": true,
+    "strict_compile_and_static_artifact_only": true
+  },
+  "preservation": {
+    "new_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16",
+    "new_owner": "agent/cc12_crt_strspn_source_oct16",
+    "pinned_base": "7c087ecd4076950b2eda86fea6a206c1c6459ce1",
+    "initial_clean_unmerged0": true,
+    "old_Wn_head": "bd126bbb32804ed9f6a854939b068ab12b71ac89",
+    "old_W5_head": "e0e28d752aa3c776536b23d740c8c7d91a3b2bac",
+    "existing_sealed_files": 613,
+    "newly_consumed_peer_sealed_files": 22,
+    "total_preserved_sealed_files": 635,
+    "old_working_files": 292,
+    "new_baseline_CRT_working_files": 282,
+    "all_actual_bytes_hash_mtime_preserved": true,
+    "old_no_reset_merge_edit": true,
+    "no_moving_Main_merge": true,
+    "no_exports_junction_symlink": true,
+    "ownership_before_Source": "ownership_before_Source.json"
+  },
+  "actual_preparation_failures": {
+    "utc_recorded": "2026-10-16T07:56:19.798286+00:00",
+    "failures": [
+      {
+        "actual_tool_receipt": "f3e5b2",
+        "kind": "KeyError Original_library_name",
+        "stage": "read-only published gate projection used prior packet schema",
+        "Source_written": false,
+        "compiler_invoked": false
+      },
+      {
+        "actual_tool_receipt": "bfe237",
+        "kind": "KeyError approved_private_target_mechanism",
+        "stage": "independent read-only published gate projection used prior packet schema; contract tail was printed before error",
+        "Source_written": false,
+        "compiler_invoked": false
+      }
+    ],
+    "recovery": "Actual Source6 gate keys and remaining metadata/contract were read at c2e363; authoritative snapshot bytes were already captured. No missing subprocess/compiler receipt synthesized or replayed.",
+    "compiler_failures": []
+  },
+  "evidence_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_strspn_source_oct16\\local\\WholeNativeCrtStrspnSource01",
+  "provenance": "Only new Source6 own actual tool pairs/full own Original-prefix authentication; no previous Source5/Root/peer transport/compiler records adopted.",
+  "no_shared_CMake_registry_ledger_names_Ghidra_writes_or_push": true,
+  "Original_ABI_compatible": false,
+  "new_Source_body_executed": false,
+  "fixture_tested": false,
+  "game_validated": false,
+  "remaining_gates": [
+    "Root independent Source/compiler review",
+    "actual normal Main host/frame variant, Core/archive review",
+    "No caller/ABI/runtime/game proof from this work"
+  ]
+}
