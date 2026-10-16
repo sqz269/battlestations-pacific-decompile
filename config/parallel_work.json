@@ -42156,8 +42156,8 @@
     },
     {
       "id": "cc12_native_qsort_valid_input_kernel_00bfc350",
-      "done": false,
-      "state": "two_whole_normal_helpers_and_one_partial_valid_input_entry_Source_primary_peer_accepted_registered_Main_gate_pending",
+      "done": true,
+      "state": "two_whole_ordinary_helpers_and_partial_valid_input_qsort_entry_Main3checks_actual_object_archive_pass",
       "source_ready": true,
       "function_addresses": [
         "00bfc350",
@@ -42186,20 +42186,22 @@
       ],
       "Source_credit": 2,
       "Source_implemented": true,
-      "Main_gate": "pending_author_independent_review_registration_build_actual_artifacts",
+      "Main_gate": "pass",
       "code_revision": "2b8cd919605628680a4b975757a8ac794607566f",
       "primary_review": "reports/cc12_native_qsort_primary_review.json",
-      "Main_build_gate": "pending",
-      "actual_compiler_archive_gate": "pending",
+      "Main_build_gate": "pass",
+      "actual_compiler_archive_gate": "pass",
       "Source_whole_helpers": 2,
       "Source_partial_entries": 1,
       "partial_projection_credit": 1,
-      "renderer_composition_readiness": "reports/cc12_renderer_native_sort_composition_readiness.json"
+      "renderer_composition_readiness": "reports/cc12_renderer_native_sort_composition_readiness.json",
+      "Main_validation": "reports/cc12_native_qsort_Main_validation.json",
+      "Ghidra_existing_function_evidence_saved": true
     },
     {
       "id": "cc12_native_crt_strrchr_00bf87b0",
-      "done": false,
-      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+      "done": true,
+      "state": "whole_ordinary_Source_Main3checks_independent_actual_frame_variant_archive_pass",
       "source_ready": true,
       "function_addresses": [
         "00bf87b0"
@@ -42221,11 +42223,13 @@
       "named_incomplete_dependencies": [
         "Actualcaller/applicationbinding, OriginalphysicalABI/register/flag/segment/fault/instruction/EH/runtime/gameequivalence are outside ordinarySourcecredit."
       ],
-      "Main_gate": "pending",
+      "Main_gate": "pass",
       "code_revision": "2f2baa1b9fc4c00ef51cc7a6230a9f5519a8fc4f",
       "primary_review": "reports/cc12_native_crt_strrchr_primary_review.json",
-      "Main_build_gate": "pending",
-      "actual_compiler_archive_gate": "pending"
+      "Main_build_gate": "pass",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_native_crt_strrchr_Main_validation.json",
+      "Ghidra_existing_function_evidence_saved": true
     },
     {
       "id": "goal_oct15_scene_node_child_at",
@@ -42379,6 +42383,113 @@
       "evidence_report": "reports/goal_oct15_crt_invalid_handler_readiness.json",
       "integrated_main_revision": "4d42e7ab62e2cbad24a0f91c4edbc19295f432ef",
       "contract": "Read-only whole811B291ops invalid-handler/errno/PTD/getter-cache/nullablecalloc frontier;24true direct/tail and20computed transfers;finite genuine decoder/getter/handler and heap/lock SCCs require coordinated wholeSource work,not stubs/callback/SDK/selected-path substitutions",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "cc12_native_crt_memchr_00bfa700",
+      "done": false,
+      "state": "whole_ordinary_readiness_primary_peer_accepted_Source_authorized_not_implemented",
+      "source_ready": true,
+      "function_addresses": [
+        "00bfa700"
+      ],
+      "files": [
+        "include/bsp/native_crt_memchr.hpp",
+        "src/native_crt_memchr.cpp",
+        "docs/NATIVE_CRT_MEMCHR.md",
+        "reports/native_crt_memchr.json"
+      ],
+      "depends_on": [],
+      "prerequisite_packets": [],
+      "readiness": "reports/cc12_native_crt_memchr_readiness.json",
+      "contract": [
+        "New MSVC Win32 ordinary typed interface over the genuine passed byte storage: void* __cdecl bsp::find_native_crt_byte_00bfa700(void*, int, unsigned int). Pointer/int/count widths are32bits, byte8bits, little endian. Keep correct Original library name _memchr.",
+        "Count0 accepts any pointer including null and returns null before payload reads or target conversion. Positive count requires a determinate readable stable requested region in one genuine live allocation. Endpoint may be within or one past that allocation, admitting interior subranges and prefixes. Actual32bit extent and pointer advances do not wrap. No NUL, padding, typed uint allocation, or initially aligned base requirement.",
+        "Every int selects its low8bits. Peel one BYTE at a time until actual address4alignment, returning first actual match or null on exhaustion. Read only complete in-range aligned DWORDs; no count overread. A DWORD may include later bytes after a first match within that DWORD.",
+        "Retain unsigned32 candidate ((x+0x7efefeff)^~x)&0x81010100, x=word^repeated_target. Zero candidate continues without reread. Nonzero candidate causes one actual same-DWORD reread and register-byte comparisons in ascending address order; reject false positives. Finish with0..3 ordered BYTE tail reads. Return actual borrowed first-match pointer or null; no extra final reread.",
+        "Approve target-specific private addressed MOV32 load helper using MSVC Win32 inline assembly over genuine byte storage, and volatile unsigned BYTE loads. This avoids inventing typed uint32 object lifetime/aliasing preconditions. The mechanism remains subject to actual strict/Main object verification of load widths, order and conditional reread. No ISO-portability or Original instruction/fault ABI claim.",
+        "Use bounded unsigned count/offset/pointer state; no integer underflow-based out-of-region accesses, before-base pointers, pointer subtraction, new runtime validation, SDK memchr/memcpy/search substitute, fallback, provider, global or caller binding. Read-only payload aliases are admitted; returned pointer borrows original owner lifetime. Mutation, concurrency, faults, invalid positive-count storage and volatile/MMIO observation protocols are outside this ordinary domain.",
+        "No Source compiler flag/segment/stack/register-home parameters or physical Original ABI/EH/fault/runtime equivalence. No new tests/probes/body execution. Worker owns only the four Source files; Root owns registration, ledger, annotation and Main integration."
+      ],
+      "Main_gate": "pending_future_Source_author_peer_registration_build_actual_object_archive"
+    },
+    {
+      "id": "goal_oct15_crt_sbh_region_lookup",
+      "done": true,
+      "state": "whole_ordinary_actual_storage_Source_independently_reviewed_registered_Win32_three_checks_and_full_emitted_reviewed_Main_publication_batch",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00c11d3d"
+      ],
+      "output_files": [
+        "src/native_crt_sbh_region_lookup.cpp",
+        "include/bsp/native_crt_sbh_region_lookup.hpp",
+        "docs/GOAL_OCT15_CRT_SBH_REGION_LOOKUP.md",
+        "reports/goal_oct15_crt_sbh_region_lookup.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "primary_review": "reports/goal_oct15_region_primary_review.json",
+      "code_revision": "c606835ba8653eda14e67c47fbd2cdbb375f8ab6",
+      "main_source_revision": "c606835ba8653eda14e67c47fbd2cdbb375f8ab6",
+      "contract": "Whole43B14ops actual count/base/capturedwrappedend/liveargument/currentdescriptor lookup;currentGhidra18Bthunk+25Bfalseinterior split remains unrepaired",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false,
+      "integrated_main_revision": "7081f82404af7e5e744cdaaf7bff6c6c727f17c5",
+      "Ghidra_boundary_repaired": false,
+      "physical_native_bytes": 43,
+      "physical_native_instructions": 14,
+      "current_formal_bytes": [
+        18,
+        25
+      ],
+      "false_interior_entry": "00c11d61",
+      "boundary_limit": "bridge script execution disabled;plateonlysaved/preservednames/comments;no body/flow/listing/policychange"
+    },
+    {
+      "id": "goal_oct15_crt_ascii_strnicmp",
+      "done": true,
+      "state": "whole_ordinary_actual_storage_Source_independently_reviewed_registered_Win32_three_checks_and_full_emitted_reviewed_Main_publication_batch",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00c15700"
+      ],
+      "output_files": [
+        "src/native_crt_ascii_strnicmp.cpp",
+        "include/bsp/native_crt_ascii_strnicmp.hpp",
+        "docs/GOAL_OCT15_CRT_ASCII_STRNICMP.md",
+        "reports/goal_oct15_crt_ascii_strnicmp.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "primary_review": "reports/goal_oct15_ascii_primary_review.json",
+      "code_revision": "12523a9f6fdc6a7645f02234ae81b44e8bee173b",
+      "main_source_revision": "12523a9f6fdc6a7645f02234ae81b44e8bee173b",
+      "contract": "Whole97B48ops OriginalASCIIcomparison;countfirst/zero-beforepointers/currentleftthenrightBYTEevenleftNUL/unsignedAZfold/exactsign;noSDK/locale/parentreplacement",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_crt_startup_owner_readiness",
+      "done": true,
+      "state": "bounded_read_only_whole_physical_startup_and_support_owner_audit_no_Source_credit",
+      "worker": "goal_oct15_reconstruction",
+      "function_addresses": [],
+      "output_files": [
+        "reports/goal_oct15_crt_startup_owner_readiness.json"
+      ],
+      "depends_on": [],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_crt_startup_owner_readiness.json",
+      "contract": "Whole480B156ops startup plus604B173ops supportingowners+40Bscope;48definedtruecallrows/21computed/3physical-onlyunownedcallskeptseparate;Originalheap/TLS/FLS/encodedpointer/lock/PTD/SEH/IO/application owners remain finite jointwork",
       "Original_ABI_compatible": false,
       "new_entry_executed": false,
       "game_validated": false

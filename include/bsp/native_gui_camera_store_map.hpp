@@ -64,6 +64,46 @@ void __fastcall rotate_native_gui_camera_store_right_00aa1080(
     void* tree, void* unused_edx, void* pivot);
 void __fastcall rotate_native_gui_camera_store_left_00aa2180(
     void* tree, void* unused_edx, void* pivot);
+// Whole AA46B0[679B]: same physical erase body as accepted86E8A0 after
+// named CALL/EH operands. ECX tree, EDX unconsumed; stack output/owner/node,
+// EAX output, RET0C. By-value iterator advances, original node alone is freed,
+// current unsigned count decrements iffnonzero, then captured owner/node store.
+// No payload release or extra owner==tree check. Reuses SAME Source CRT and
+// owning invalid-iterator transport; private frames/FH3/SEH/Original heap and
+// outer binary ABI remain the accepted86E8A0 boundaries, not new guarantees.
+void* __fastcall erase_native_gui_camera_store_iterator_00aa46b0(
+    void* actual_tree, void* unused_edx, void* actual_output,
+    void* input_owner, void* input_node);
+
+// Borrowed opaque pointer identities passed only to genuine4254B0 RET. No
+// strings are read/copied or defaults supplied. Metadata remains independent
+// of retired store/node backing and stable through externally serialized calls.
+struct NativeGuiCameraStoreRemoveLiterals {
+    const char* const remove_format_00d5bf80;
+    const char* const removed_format_00d5bf54;
+    const char* const empty_00f8bc60;
+    NativeGuiCameraStoreRemoveLiterals(const char* remove_format,
+        const char* removed_format, const char* empty) noexcept
+        : remove_format_00d5bf80(remove_format),
+          removed_format_00d5bf54(removed_format), empty_00f8bc60(empty) {}
+};
+
+// Whole AA4B30[237B]: ECX manager, stack requested store, RET4/void. New Source
+// API supplies only borrowed literal metadata in addition. Actual manager+8
+// tree/head+0C, by-value iterator and overlapping private16B output/end storage;
+// preserve current head/payload checks and real checked increment. First match
+// only: CURRENT store+18 camera/node -> SAME B6D800 name header+4 -> fallback
+// empty only for genuine RET logger; free CURRENT nonnull payload through SAME
+// Source CRT, clear captured node+10 AFTER free, then whole raw erase above.
+// Valid initialized raw storage and actual NativeNodeStorage/name lifetime are
+// required, not typed map/SceneResource stand-ins. No camera/scene retain/release,
+// count gate, ownership owner, rollback or new cleanup is added. The raw tree,
+// active metadata and surviving nodes outlive reached reads and output stores.
+// Returning SDK validation follows native continuation. Private Source frames,
+// Original CRT/FH3/SEH/heap/encoded-handler and outer ABI limits remain explicit.
+void remove_native_gui_camera_store_00aa4b30(void* actual_manager,
+    void* requested_store, const NativeGuiCameraStoreRemoveLiterals&);
+
 void* allocate_native_gui_camera_store_tree_node_00aa2960(
     void* left, void* parent, void* right,
     const NativeGuiCameraStorePair*, std::uint8_t color);
