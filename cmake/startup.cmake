@@ -42,6 +42,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURC
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_render_resource_init.cpp")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_render_resource_init_continuation.cpp")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_system_constant_registry.cpp")
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_traffic_pointer_erase.cpp")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/platform_control_messages.cpp")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/platform_renderer_activation.cpp")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/window_close_transport.cpp")
