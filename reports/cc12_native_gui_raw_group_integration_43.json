@@ -1,0 +1,84 @@
+{
+  "packet": "cc12_native_gui_raw_group_route_43_integration",
+  "worker_commit": "6a4223394d9cbe59e5e88dcd52f68f9791e7cd4d",
+  "compiled_source_commit": "bc7a6a6b28f7aa0bba0bf18d3392083685a94189",
+  "status": "primary_source_review_combined_build_normal_startup_shutdown_passed_raw_route_not_host_activated",
+  "primary_source_review": {
+    "verdict": "pass",
+    "files": [
+      {
+        "path": "src/native_group_owner.cpp",
+        "git_blob": "0ac26fa2d4de01a4153260d3a08cf022ac220767"
+      },
+      {
+        "path": "include/bsp/native_group_owner.hpp",
+        "git_blob": "36c18d3249b1d9adcf70f438aefeaa122c801568"
+      },
+      {
+        "path": "src/gui_native_scene.cpp",
+        "git_blob": "4f8599d532819d4f209d282dc75bc2981fa4b49b"
+      },
+      {
+        "path": "include/bsp/gui_native_scene.hpp",
+        "git_blob": "c42e8b5710e05ae2557f14b2a327a7a5ae365d37"
+      }
+    ],
+    "scope": [
+      "Canonical raw pool and exact constant-cell identity preflight",
+      "Persistent header/slot/owner frame survives entered failure",
+      "No replay, guessed rollback, or partial/live slot return",
+      "Destructor checks interruption before members die",
+      "Semantic create_group body unchanged"
+    ],
+    "failure_or_fault_injection_executed": false
+  },
+  "build": {
+    "script": "./scripts/build.ps1",
+    "exit_code": 0,
+    "tests_passed": 3,
+    "tests_total": 3,
+    "ctest_seconds": 10.16,
+    "frozen_inputs": 68
+  },
+  "runtime": {
+    "case": "runtime_01",
+    "exe_sha256": "fb5844266ed5fbe181f8f149d79a33414c19540d4ed1e2b6a4362583580baec4",
+    "exit_code": 0,
+    "resolution": [
+      800,
+      600
+    ],
+    "ticks": 2,
+    "presents": 1,
+    "presents_skipped": 1,
+    "text_pool_lineage_and_scalars_reached": true,
+    "native_fonts": 6,
+    "sprite_text_glyph_quads": 55,
+    "fonts_retired_before_shared_drain": true,
+    "renderer_worker_joined": true,
+    "final_COM": {
+      "device": 0,
+      "api": 0
+    },
+    "screenshot_visually_inspected": true,
+    "raw_group_or_model_route_activated": false,
+    "native_Text_drawing_activated": false,
+    "gameplay_validated": false,
+    "launcher_checkout_HEAD_is_not_compiler_provenance": true
+  },
+  "limits": [
+    "Raw group lifetime probe is controlled Source evidence, not actual Screen/camera/store construction",
+    "Source APIs are not Original binary ABI/FH3/SEH/fault equivalence",
+    "Future host must preserve graph and terminate before drains on Scene interruption"
+  ],
+  "original_installed_exe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "original_unchanged_after_run": true,
+  "evidence": {
+    "directory": "local\\cc12_native_gui_raw_group_route_43_integration",
+    "archive": "local\\cc12_native_gui_raw_group_route_43_integration\\evidence_family.zip",
+    "archive_sha256": "70b0f557036a3bf066351e43a8456f30739728516f968250566ad992540389b6",
+    "manifest_sha256": "e862b39f61fe871ab9174755dadf99ab97f7359a82f2db27c1373172798a094d",
+    "payloads": 79,
+    "payload_hashes_verified": true
+  }
+}

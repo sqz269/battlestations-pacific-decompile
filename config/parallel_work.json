@@ -41627,8 +41627,8 @@
     },
     {
       "id": "cc12_scene_string_list_storage_0094efb0_0094f010",
-      "done": false,
-      "state": "whole_ordinary_raw_storage_Source_ready_no_implementation_yet",
+      "done": true,
+      "state": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
       "source_ready": true,
       "function_addresses": [
         "0094efb0",
@@ -41651,7 +41651,191 @@
       "worker": "string_key_list_readiness_oct15",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
-      "contract": "Only whole constructor0094EFB0 [0094EFB0,0094EFE1),49B18 and growth0094F010 [0094F010,0094F061),81B34. Actual caller-provided aligned writable raw12 header: slots pointer0, signed-count/DWORD4, capacity DWORD8; no class/vtable/new host or standalone container wrapper. Constructor storescapacity64 BEFORE genuine exact256-byte allocation, publishes slots then count0, leaves slots uninitialized and returns actualheader. Growth publishes wrapping capacity+64 BEFORE allocation; retain native unsignedMUL4/overflow saturation instructions, allocate exact size, capture CURRENT oldslots/count AFTER allocation, call genuine current memcpy withcount*4 even whenzero, reload oldslots aftercopy, conditionally canonical-free then clear0, finally publish capturednewslots; count untouched. Proposed independent naked fastcall entries: constructor void* actualECX returnheader/plainRET, growth actualECX/void/plainRET, no stack inputs; no semantic growthEAX claim. Bind BF55BE through genuine private CDECL size bridge to canonical singleton_lifetime_allocate with object/native_bytes==host_bytes; canonical singleton_lifetime_free and real current memcpy/#pragma function(memcpy); no new globals/callbacks/provider stubs. Ordinary successful nonthrowing serialized domain: genuine live constructor-produced raw12/uniquely owned matching-current-heap slot buffer and previous accepted growth, coherent0<=count<=oldcapacity, valid initialized reached opaque slot bytes, nonwrapping capacity+64 and4*newcapacity witholdcap<=3FFFFFBFh, positive allocatable sizes/resources, old/new/header/privateframe disjoint, valid flatES/DFclear, no alias/reentry/concurrency/fault/trim/teardown. Empty growth still calls memcpy with real nonnull old/new allocations; do not special-case it. Slots are opaque to storage helpers: no element ownership or retirement changes. Named pending actual append0094F270 population/clear0094F3E0/destructor0094F540 and actual008F3270 application create/pass/retire binding remain separate; no populated caller/class/list-owner/key-enumeration/Original privateCRT/EH/fullABI/startup/runtime/game admission. Source implementation only these2, not other3 or comparator/sort/empty-data roles."
+      "contract": "Only whole constructor0094EFB0 [0094EFB0,0094EFE1),49B18 and growth0094F010 [0094F010,0094F061),81B34. Actual caller-provided aligned writable raw12 header: slots pointer0, signed-count/DWORD4, capacity DWORD8; no class/vtable/new host or standalone container wrapper. Constructor storescapacity64 BEFORE genuine exact256-byte allocation, publishes slots then count0, leaves slots uninitialized and returns actualheader. Growth publishes wrapping capacity+64 BEFORE allocation; retain native unsignedMUL4/overflow saturation instructions, allocate exact size, capture CURRENT oldslots/count AFTER allocation, call genuine current memcpy withcount*4 even whenzero, reload oldslots aftercopy, conditionally canonical-free then clear0, finally publish capturednewslots; count untouched. Proposed independent naked fastcall entries: constructor void* actualECX returnheader/plainRET, growth actualECX/void/plainRET, no stack inputs; no semantic growthEAX claim. Bind BF55BE through genuine private CDECL size bridge to canonical singleton_lifetime_allocate with object/native_bytes==host_bytes; canonical singleton_lifetime_free and real current memcpy/#pragma function(memcpy); no new globals/callbacks/provider stubs. Ordinary successful nonthrowing serialized domain: genuine live constructor-produced raw12/uniquely owned matching-current-heap slot buffer and previous accepted growth, coherent0<=count<=oldcapacity, valid initialized reached opaque slot bytes, nonwrapping capacity+64 and4*newcapacity witholdcap<=3FFFFFBFh, positive allocatable sizes/resources, old/new/header/privateframe disjoint, valid flatES/DFclear, no alias/reentry/concurrency/fault/trim/teardown. Empty growth still calls memcpy with real nonnull old/new allocations; do not special-case it. Slots are opaque to storage helpers: no element ownership or retirement changes. Named pending actual append0094F270 population/clear0094F3E0/destructor0094F540 and actual008F3270 application create/pass/retire binding remain separate; no populated caller/class/list-owner/key-enumeration/Original privateCRT/EH/fullABI/startup/runtime/game admission. Source implementation only these2, not other3 or comparator/sort/empty-data roles. Fresh corrected150-candidate/73-tool preflight closed all81 actual compiler inputs. Two actual strict attempts: initial C2488 naked-declaration failure with no object, then corrected fresh preflight and successful strict compile. Both literal invocations/results and rejected inputs retained. One normal unregistered build passed2 existing checks; neither selected body was executed. Complete1994B strict COFF:7sections/18primary+7aux25slots,3code188B72instructions/7code relocs/0metadata relocs. Two native entries130B52 retain114literal bytes with only16CALLoperand bytes rebound. Genuine private58B20 CDECL size bridge constructs object-kind3/equalnativehost bytes and has current GS cookie/check; unused4B CRT weak BSS has no incoming relocation; no initializer. Full CodeView223B payload/OBJNAME[617,780)/COMPILE3[780,840)/zero pad[840,841), directives/stringtable/checksums/ranges independently accounted. All448 author files/fourGit blobs/genuine597-line ownprefix/12exact embedded transport objects and independent18-file peer family verified by Root. Four current Main provider pins match literally. Historical worker startup.cmake drift is explicitly separate from the required registered current Main build. Source is accepted for registration under the explicit ordinary successful raw-storage contract. Main build, actual selected Core archive identity and final reconstruction/name ledgers remain pending; no Original fullABI/privateCRT/EH/caller/listownership/application/startup/runtime/game credit.",
+      "code_revision": "87736664b93c7e128f69517527c495096c790868",
+      "primary_review": "reports/cc12_scene_string_list_storage_primary_review.json",
+      "Main_build_gate": "pass",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_scene_string_list_storage_Main_validation.json"
+    },
+    {
+      "id": "goal_oct15_crt_ascii_stricmp",
+      "done": true,
+      "state": "whole_ordinary_raw_Source_normal_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00bf7eb7"
+      ],
+      "output_files": [
+        "src/native_crt_ascii_stricmp.cpp",
+        "include/bsp/native_crt_ascii_stricmp.hpp",
+        "docs/GOAL_OCT15_CRT_ASCII_STRICMP.md",
+        "reports/goal_oct15_crt_ascii_stricmp.json"
+      ],
+      "depends_on": [],
+      "unproved_dependencies": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_crt_ascii_stricmp.json",
+      "primary_review": "reports/goal_oct15_scene_lifetime_primary_review.json",
+      "Main_build_review": "reports/goal_oct15_scene_lifetime_main_gate.json",
+      "code_revision": "efe9cc1079ab3aa1b854040ae00df88f7c5c53c4",
+      "Main_build_revision": "1837bd475d4a24e5755a92da62d9ac3767b0da48",
+      "integrated_main_revision": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+      "contract": "Complete intrinsic unsigned-BYTE comparison leaf;no SDK/locale/TLS/errno or parent-dispatch closure is implied.",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_hidden_record_lookup",
+      "done": true,
+      "state": "whole_ordinary_raw_Source_normal_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "004691b0",
+        "00469480"
+      ],
+      "output_files": [
+        "src/native_scene_hidden_record_lookup.cpp",
+        "include/bsp/native_scene_hidden_record_lookup.hpp",
+        "docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_LOOKUP.md",
+        "reports/goal_oct15_scene_hidden_record_lookup.json"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_map_lookup"
+      ],
+      "unproved_dependencies": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_hidden_record_lookup.json",
+      "primary_review": "reports/goal_oct15_scene_lifetime_primary_review.json",
+      "Main_build_review": "reports/goal_oct15_scene_lifetime_main_gate.json",
+      "code_revision": "efe9cc1079ab3aa1b854040ae00df88f7c5c53c4",
+      "Main_build_revision": "1837bd475d4a24e5755a92da62d9ac3767b0da48",
+      "integrated_main_revision": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+      "contract": "Complete raw lookup/presence Source at actual constructor/map/pool/returning currentCRT providers;first input capture,current fields,returned iterator and rawDWORD/AL schedules retained.",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_hidden_record_copy_construct",
+      "done": true,
+      "state": "qualified_whole_control_flow_Source_general_readiness_unproved_normal_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00469240",
+        "00c61a90"
+      ],
+      "output_files": [
+        "src/native_scene_hidden_entity_record_copy_construct.cpp",
+        "include/bsp/native_scene_hidden_entity_record_copy_construct.hpp",
+        "docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_COPY_CONSTRUCT.md",
+        "reports/goal_oct15_scene_hidden_record_copy_construct.json"
+      ],
+      "depends_on": [
+        "cc12_raw_native_string_duplicate_00438e40"
+      ],
+      "unproved_dependencies": [
+        {
+          "address": "008f41f0",
+          "scope": "canonical finite/stable/unshared/acyclic owning clone graph and key/payload/count/locale/FP admission;Original allocation/failure/reentry/unwind remainunproved"
+        },
+        {
+          "address": "00438e40",
+          "scope": "successful canonical nonwrapping readable NUL/disjoint copy admission;Original allocation failure/newhandler/naked unwind remainunproved"
+        }
+      ],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_scene_hidden_record_copy_construct.json",
+      "primary_review": "reports/goal_oct15_scene_lifetime_primary_review.json",
+      "Main_build_review": "reports/goal_oct15_scene_lifetime_main_gate.json",
+      "code_revision": "efe9cc1079ab3aa1b854040ae00df88f7c5c53c4",
+      "Main_build_revision": "1837bd475d4a24e5755a92da62d9ac3767b0da48",
+      "integrated_main_revision": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+      "contract": "Whole copy-constructor code and qualified cleanup;BOTH canonical clone-graph and successful duplicate-allocation admissions inherited. No unrestricted failure/alias/reentry/OriginalEH closure.",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_hidden_record_destroy",
+      "done": true,
+      "state": "qualified_whole_control_flow_Source_general_readiness_unproved_normal_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00469300",
+        "004693a0",
+        "00c61ab0"
+      ],
+      "output_files": [
+        "src/native_scene_hidden_entity_record_destroy.cpp",
+        "include/bsp/native_scene_hidden_entity_record_destroy.hpp",
+        "docs/GOAL_OCT15_SCENE_HIDDEN_RECORD_DESTROY.md",
+        "reports/goal_oct15_scene_hidden_record_destroy.json"
+      ],
+      "depends_on": [],
+      "unproved_dependencies": [
+        {
+          "target": "actual current bag.vtable.slot0",
+          "scope": "all dynamic target bodies and constructedSource-vtable ABI compatibility remainunproved"
+        },
+        {
+          "address": "00bf9dc8",
+          "scope": "Original heap/TLS/handler/failure free transport remainsunproved;matching actual currentCRT service is used"
+        }
+      ],
+      "source_ready": false,
+      "evidence_report": "reports/goal_oct15_scene_hidden_record_destroy.json",
+      "primary_review": "reports/goal_oct15_scene_lifetime_primary_review.json",
+      "Main_build_review": "reports/goal_oct15_scene_lifetime_main_gate.json",
+      "code_revision": "efe9cc1079ab3aa1b854040ae00df88f7c5c53c4",
+      "Main_build_revision": "1837bd475d4a24e5755a92da62d9ac3767b0da48",
+      "integrated_main_revision": "44224c3e7fb070ec2ec0e5e78a46088be34d02a6",
+      "contract": "Whole destructor/scalar-delete code and qualified cleanup;actual raw vtable slot dispatch,hostCRT frees,current fields,lateBYTE flags and captured freed-record bits retained;no all-dynamic-target/constructedSource-vtable or Originalheap/FH3/fault ABI proof.",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "cc12_scene_string_list_ownership_0094f270_0094f3e0_0094f540",
+      "done": false,
+      "state": "whole_ordinary_successful_explicit_context_Source_ready_no_implementation",
+      "source_ready": true,
+      "function_addresses": [
+        "0094f270",
+        "0094f3e0",
+        "0094f540"
+      ],
+      "output_files": [
+        "include/bsp/native_scene_string_list_ownership.hpp",
+        "src/native_scene_string_list_ownership.cpp",
+        "docs/NATIVE_SCENE_STRING_LIST_OWNERSHIP.md",
+        "reports/native_scene_string_list_ownership.json"
+      ],
+      "depends_on": [
+        "cc12_scene_string_list_storage_0094efb0_0094f010"
+      ],
+      "readiness_report": "reports/cc12_scene_string_list_ownership_readiness.json",
+      "missing_provider_addresses": [],
+      "named_incomplete_dependencies": [
+        "008F3270 actual raw8 producer and output-header create/pass/retire binding",
+        "0094F1B0/0094F180 comparator/sort/00F89B75 role",
+        "Private FH3 complete dispatcher/frame/unwind/fault outcomes excluded"
+      ],
+      "worker": "string_key_comparator_readiness_oct15",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "model_exception": "Append private exception registration/state and register-boundary evidence; reuse existing Astra planner.",
+      "contract": "Target MSVC Win32. Actual caller-provided aligned readable/writable raw12 header with slots pointer+0,count DWORD/signed+4,capacity DWORD+8. It must come from genuine0094EFB0 storage and accepted subsequent growth/ownership operations, not a fabricated zeroed owner object. Live storage requires 0<=count<=capacity<=0x3fffffff, with capacity at least64 and a multiple of64 as supplied by the nonwrapping constructor/grow chain; allocation is exactly4*capacity bytes and reached slots[0,count) are initialized. Empty constructed storage still has its genuine nonnull slot allocation. If append sees count==capacity, oldcapacity<=0x3fffffbf is required for the accepted +64 growth. If count<capacity, the existing slot allocation must have room for one more pointer. Count+1 and all index*4/address additions must remain in range and accessible. No overflow, saturated-allocation, negative-count ownership, invalid-capacity or memory-pressure branch is admitted. All owned raw8 headers and nonnull owned data allocations are uniquely owned and pairwise disjoint from the list header, slot allocation, temporary/private frame, and each other. Source copy may borrow a stable existing record but creates distinct owned output. Adoption must not duplicate an existing owned pointer or alias raw12/slots. Every owned raw8 header comes from the matching current singleton_lifetime_allocate(object,8,8) heap contract and is freed once by canonical free. Header storage is not NativeStringStorage pooled data. For nonnull data, length+1 is the exact original allocation size, nonwrapping and accessible. Sizes1..149 require the correct current canonical pool generation and size class; sizes>=150 require matching current CRT allocation/free provenance. Null data skips length and pool work on clear. No invented generation counter is introduced. Use genuine real pool/manager publications and gate. The real small-return gate value is preserved and read by BD1510, never forced to zero; even disabled small returns still resolve the getter first. Required pool/manager/deletion bindings must already be valid or their genuine lazy creation must complete successfully. No concurrent mutation, reentry, pool trim/drain/teardown, lifetime replacement, allocator new-handler side effects on these objects, faults, throws, access violations or failed allocations occur during an admitted operation. Small-buffer generation validity extends from allocation through final return, not merely through the individual call. All reached providers return normally; positive requested storage is genuinely available. Current compiler and CRT conventions are explicit Source bindings. Flat Win32 address/ES and DF-clear preconditions of the accepted low-level storage/copy providers remain. These are admission preconditions, not proposed new runtime checks or repairs. Implementation must retain the measured field-read/publication/free order and must not manufacture success for invalid storage. {\"append\": [\"Read current count+4 and capacity+8; call the existing growth only for equality, not >=. Growth publishes new capacity before allocating and handles its own late slot/count reads.\", \"Test (native_flags &0xffu)!=0 after growth. Low byte0 copies; every low pattern1..255 adopts. All upper24 bits are ignored. Do not substitute a bool protocol that loses the specified input domain.\", \"Adopt path captures the supplied pointer itself, including a null sentinel, with no header/data allocation and no pool operation. Ownership of a nonnull genuine raw8 record transfers to the list on successful slot publication; caller must not free it afterwards.\", \"Copy path obtains a fresh genuine raw8 allocation, then invokes the accepted raw00426060 copy constructor with the actual borrowed source header. Do not use sizeof(NativeString), a host object constructor, a temporary header copy or a virtual storage adapter.\", \"After growth/allocation/copy, read CURRENT count+4, then CURRENT slot base+0. Store the captured resulting record pointer at base+count*4, increment the DWORD count, then reread and return the stored new DWORD count. Do not capture list fields across reached providers.\"], \"clear\": [\"Read signed count. For <=0 write count0 and return; the admitted valid domain uses nonnegative counts, while the observed negative branch remains documented rather than converted to a new diagnostic.\", \"For each reached index, reload current slot base, capture raw8 record pointer and that exact slot address. A null record performs no release/free/store; it remains null.\", \"For a nonnull record call raw0041DD20, then canonical-free the same captured raw8 header. Only after free returns write zero to the CAPTURED slot address; never recompute that address from a later slot-base read.\", \"Increment index and reread CURRENT signed count for the loop comparison. Do not cache count/base for the entire loop or shrink count progressively.\", \"On normal exit write count0. Leave capacity and the slot allocation live; spare slots are not traversed or initialized.\"], \"retire\": [\"Call the new clear with the same actual raw12/context; after it returns reload CURRENT slots+0.\", \"If nonnull, canonical-free that captured slot allocation and only then zero slots+0. Keep capacity unchanged; count has been reset by clear.\", \"Do not destroy/free/zero the caller-owned raw12 header. After retirement append/growth is invalid until actual constructor reinitializes storage. Repeated retire on a still-live retired header is harmless in the admitted count0/slotsnull state.\"]} Root accepts an explicitly separate current-C++ fresh-header guard: only copy-branch allocation(object,8,8), canonical-free only that captured fresh raw8 on a C++ construction exception, disarm after successful slot/count publication and return-count read. Never release copied data/adopted header/slots/raw12 through this guard. APIs remain potentially throwing. This policy is not private FH3/frame/unwind/fault equivalence; failure outcomes remain outside admission. Genuine retained game_native_string_process raw_context only, no implicit body process getter or synthetic protocols. Whole normal-control-flow Source only; no Original physical ABI/privateFH3/fault/caller/application/startup/runtime/game closure. Application008F3270 incoming raw8 producer and actual output-header create/pass/retire remain named incomplete; comparator/sort/empty-role not solved.",
+      "provider_Main_gate": "constructor/growth Main3checks and selected Core identity passed"
     }
   ],
   "snapshot_after_analysis": {
