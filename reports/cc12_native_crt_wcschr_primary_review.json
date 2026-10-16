@@ -1,13 +1,13 @@
 {
   "schema": "bsp.cc12.native_crt_wcschr.primary.v1",
-  "status": "whole_ordinary_Source_primary_peer_accepted_registered_Main_gate_pending",
+  "status": "whole_ordinary_Source_Main3checks_primary_peer_actual_variant_archive_pass",
   "Source_commit": "9d738703d1fb3c7f3a81a1842bd609d0433868e1",
   "Source": "src/native_crt_wcschr.cpp",
   "header": "include/bsp/native_crt_wcschr.hpp",
   "documentation": "docs/NATIVE_CRT_WCSCHR.md",
   "Original_name_retained": "_wcschr",
   "whole_ordinary_functions": 1,
-  "Source_credit": 0,
+  "Source_credit": 1,
   "primary_author": {
     "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_native_crt_wcschr_integration_20261016\\primary_author_inputs.DATA.json",
     "bytes": 2535,
@@ -29,8 +29,8 @@
   "before_candidates": 9265,
   "worker_baselines": 0,
   "Main_registered": true,
-  "Main_build": "pending",
-  "actual_compiler_archive_gate": "pending",
+  "Main_build": "pass_3_existing_CTests",
+  "actual_compiler_archive_gate": "pass",
   "contract": [
     "New MSVC Win32 default potentially throwing API: void* __cdecl bsp::find_native_crt_wide_character_00bfd6c1(void* actual_string,int character). Keep correct Original library name _wcschr. BYTE8, pointer/int32, little-endian unsignedWORD16; target is low16 bits modulo65536. No Unicode scalar/surrogate/normalization/case/locale/collation semantics.",
     "Require a finite first reached unit equal to targetlow16 or NUL. Every reached2byte read, including terminalNUL reread, lies wholly inside genuine live stable determinate readable byte storage in the same actual allocation. Earlier nonzero match needs no extent or laterNUL promise. Null/invalid input outside ordinary domain; no new validation guard.",
@@ -42,5 +42,7 @@
   ],
   "Original_ABI_compatible": false,
   "new_Source_body_executed": false,
-  "game_validated": false
+  "game_validated": false,
+  "Main_gate": "pass",
+  "Main_validation": "reports/cc12_native_crt_wcschr_Main_validation.json"
 }
