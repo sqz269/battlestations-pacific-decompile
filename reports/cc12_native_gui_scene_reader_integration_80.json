@@ -1,0 +1,99 @@
+{
+  "packet": "cc12_native_gui_scene_reader_integration_80",
+  "compiled_source_commit": "9bc71b4b10fdaa858c1352481c0fb1bee86ad1b7",
+  "status": "raw_scene_leaf_and_explicit_reader_entry_registered_reviewed_combined_win32_build_passed_no_activation",
+  "packets": [
+    {
+      "packet": 76,
+      "worker_commit": "020b5ef1bba5e9c6c126b774ffa5c2b5fcc528a9",
+      "primary_source_review": "pass",
+      "unchanged_worker_sources": [
+        {
+          "path": "include/bsp/native_gui_layer_lifetime.hpp",
+          "git_blob": "2477f2e27bb3d0fa2c59042d91f0b41a2a9be73a",
+          "sha256": "dbf0d44346d847bd4c2daa86b73cdb6ec175e2553ad113ef8bbeffc444f631dd"
+        },
+        {
+          "path": "src/native_gui_layer_lifetime.cpp",
+          "git_blob": "5ceefd2a5021f3d9df7ce50bc5c78722be5a2b15",
+          "sha256": "d6d789179cd68cbd1bf66a6ebf2b1aeb4c2c29fc03155b3be335ebfdb22cf7d0"
+        }
+      ]
+    },
+    {
+      "packet": 79,
+      "worker_commit": "7ff8d1d7c6fabd4d84f9efcee50b73611bf933df",
+      "primary_source_review": "pass",
+      "unchanged_worker_sources": [
+        {
+          "path": "include/bsp/native_gui_page_reader_continuation.hpp",
+          "git_blob": "504f76d2fc89d7bf624ad663592293c80b126c19",
+          "sha256": "2ac87cb70e33d79de51d3fdfb124fc372b7a186317988e44e5f581cbe75889f0"
+        },
+        {
+          "path": "src/native_gui_page_reader_continuation.cpp",
+          "git_blob": "4b3354f30a59d8e00e20121450dfd56ab5024a25",
+          "sha256": "545edacf4b4616b7d079331d6dd8f6a11db53437e365589378af0571ee020b9a"
+        },
+        {
+          "path": "include/bsp/native_gui_page_construction.hpp",
+          "git_blob": "868fa5444ae25c491d8124346c4c32c675320cd0",
+          "sha256": "82522812905be68177eae2652d46bfef397133e6c340fe8d4260d7a053847e17"
+        },
+        {
+          "path": "include/bsp/native_gui_page_script_continuation.hpp",
+          "git_blob": "ff58c02eb7fb210a745122b5d2c26c44d0718b55",
+          "sha256": "8b72d5d21903eb532972322b2c6126a0d6a89dcae9dc052130e672d0dd882cbe"
+        },
+        {
+          "path": "include/bsp/native_lua_reader.hpp",
+          "git_blob": "61ff9514facecbca55e410c3bbf03751cc020d0e",
+          "sha256": "85e916e8388505df5d7ddb9f3fb2f53e432b592edaa7ee7b0ced937d7fee9c07"
+        }
+      ]
+    }
+  ],
+  "registration": {
+    "target": "bsp_core",
+    "new_unit": "src/native_gui_page_reader_continuation.cpp",
+    "native_Text_Screen_activation": false
+  },
+  "readiness_receipts_integrated": {
+    "75": "77c767156a2b13f5b9bc6ca8b1b98edf568e24b9",
+    "77": "8c09e86aed44c6c4c4f2ae14e5661e3fdfeb83ac"
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "configuration": "MSVC Win32 Release",
+    "ctest_passed": 3,
+    "ctest_total": 3,
+    "ctest_seconds": 14.76,
+    "frozen_inputs": 29,
+    "known_warning": "Unchanged existing LNK4006 spawn_request_id_matches duplicate in Lua objects"
+  },
+  "native_evidence": {
+    "76": "Whole B72250 now directly serves owned AC5480;2 controlled-service normal pairs execute real pool/empty base and copied whole scene leaf, plus2 separate Source-only flags/throw cases;8 direct call rows verified",
+    "79": "Exactly58B AC67CC..AC6806, SAME real4C8h owner and14h consumed globals/reader, supported current CE44FC+04 only, pending EH5; source review/direct compile/combined build, no runtime case"
+  },
+  "independent_original_review": {
+    "installed_hash": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "unchanged": true,
+    "all_3_probe_bodies_match_installed_original": true,
+    "bytes": 269
+  },
+  "limits": [
+    "Source ordinary call/return does not reproduce B72250 tail-jump ABI, Native FH3/SEH or arbitrary profile/fault behavior",
+    "76 still requires genuine manager/store/current0 providers and proves no populated subtree",
+    "79 retains live reader/Lua at unfinished AC6806; no current page+18, property/children tail, reader teardown, Lua close or publication",
+    "Actual AA6560 class constructors and AAA710 remaining507B plus AC4C50 whole raw composition remain explicit dependencies",
+    "No new game run, native Text/Screen activation, normal-host mutation, gameplay proof or additional Original address credit"
+  ],
+  "evidence": {
+    "archive": "local/cc12_native_gui_scene_reader_integration_80/evidence_family.zip",
+    "archive_sha256": "b70dcccd04467711311613c8c2261f91f535435d26bc8a566ebf9d75bafbde91",
+    "manifest_sha256": "dae89e9ed717c8d765f4272dee4b9c52f3cb0d1b8a6fa1b62340cd3fd3e5b328",
+    "payloads": 92,
+    "payload_hashes_verified": true
+  }
+}

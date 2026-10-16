@@ -1,0 +1,102 @@
+{
+  "batch": "GOAL15R",
+  "source_commit": "f6fe9567f76b57eacddb076502437a60029d3260",
+  "validated_source_integration": "8e9947377",
+  "whole_source_functions": 4,
+  "referenced_native_bytes": 171,
+  "public_source_code_bytes": 171,
+  "entire_registered_executable_code_bytes": 265,
+  "actual_sdk_code_bytes": 94,
+  "instructions": 71,
+  "entries": [
+    {
+      "entry": "00486800",
+      "whole_native_bytes": 30,
+      "whole_source_bytes": 30,
+      "instructions": 13,
+      "fixed_bytes_equal": 30,
+      "actual_call_operand_bytes": 0
+    },
+    {
+      "entry": "00486820",
+      "whole_native_bytes": 47,
+      "whole_source_bytes": 47,
+      "instructions": 19,
+      "fixed_bytes_equal": 43,
+      "actual_call_operand_bytes": 4
+    },
+    {
+      "entry": "0048d660",
+      "whole_native_bytes": 48,
+      "whole_source_bytes": 48,
+      "instructions": 18,
+      "fixed_bytes_equal": 44,
+      "actual_call_operand_bytes": 4
+    },
+    {
+      "entry": "0048e4a0",
+      "whole_native_bytes": 46,
+      "whole_source_bytes": 46,
+      "instructions": 21,
+      "fixed_bytes_equal": 46,
+      "actual_call_operand_bytes": 0
+    }
+  ],
+  "registered_object": "build\\win32\\bsp_core.dir\\Release\\native_traffic_dword_copy_fill.obj",
+  "registered_object_sha256": "9d31fc35968591794f3493b6865e8491bca9bc578f4bb55e7e9d122c9a5072a2",
+  "archive": "build\\win32\\Release\\bsp_core.lib",
+  "archive_sha256": "744a0362ccb8486b5ae11209bdb3f0f85e183b828c18d32cfbb10e85aca59b73",
+  "actual_archive_member": "bsp_core.dir/Release/native_traffic_dword_copy_fill.obj",
+  "whole_archive_member_equals_registered_object": true,
+  "source_sha256": {
+    "src/native_traffic_dword_copy_fill.cpp": "84e4e14bcf47256d8fd7bc8c9e1a825347213ceb8ec16d1ca9232c664826f2c8",
+    "include/bsp/native_traffic_dword_copy_fill.hpp": "c4de86e24e1c5d7b908d2c6196500189c8e4c74603c289e3d626b5048441b676"
+  },
+  "primary_build": {
+    "log": "local/goal15r_registered_build.log",
+    "sha256": "2b6209e144110b7f160b370e87567ac5abdafc213d55175db6eba7b1d16cc51b",
+    "existing_checks_passed": 3
+  },
+  "actual_archive_fixture": {
+    "result": "registered Source: overlapping real copy + actual third-argument alias / cdecl+stdcall cleanup PASS\ncaptured Native171/current SDK: overlapping real copy + actual third-argument alias / cdecl+stdcall cleanup PASS",
+    "provider_library": "local\\goal15r_traffic_dword_copy_fill\\provider_library.json",
+    "exe_sha256": "33593188dc651716ec2d257d7455af40dfae41d4b655e73c42565b75c83c2057",
+    "scope": "Real overlapping copies and actual third argument pointer-cell aliases, physical EAX and cdecl/stdcall cleanup, Source and captured whole Native171 bodies; real current SDK providers. No negative-count copy service, exception, game or parent runtime claim."
+  },
+  "whole_object_and_linked_code_proof": {
+    "path": "local\\goal15r_traffic_dword_copy_fill\\byte_audit.json",
+    "sha256": "1f20f1eeac470954c83d178573f5c4afb0e6b27c4cf64a01a19f89122085374a",
+    "live_installed_capture_includes_owned_171_caller_436_and_qualified_crt_91_bytes": true,
+    "entire_sections_not_prefixes": true,
+    "only_two_true_call_bindings_differ": true
+  },
+  "independent_review": {
+    "path": "local/goal15r_copy_fill_review/review.json",
+    "sha256": "b191f6ca8775362d7397ca4c5190e5fc264eb6a36c8180acacff8eef0c68de9f",
+    "status": "READY_for_bounded_whole_Source_integration_under_qualified_current_SDK_boundary",
+    "blocking_findings": []
+  },
+  "ghidra": {
+    "program": "/battlestationspacific.exe",
+    "original_name_prototype_comments": "local/goal15h_annotations_00486800.json",
+    "history": "local/ghidra-annotations-20261016T035620Z.json",
+    "saved_prototypes": [
+      "00486800 STL_Fill_00486800  void * __cdecl STL_Fill_00486800(void * first, void * last, void * value_cell)  body 00486800 - 0048681d",
+      "00486820 STL_CopyBackward_00486820  void * __cdecl STL_CopyBackward_00486820(void * first, void * last, void * destination_end)  body 00486820 - 0048684e",
+      "0048d660 STL_Copy_0048d660  void * __stdcall STL_Copy_0048d660(void * first, void * last, void * destination)  body 0048d660 - 0048d68f",
+      "0048e4a0 STL_FillN_0048e4a0  void * __stdcall STL_FillN_0048e4a0(void * first, uint count, void * value_cell)  body 0048e4a0 - 0048e4cd"
+    ],
+    "exports_refreshed": true,
+    "project_saved": true
+  },
+  "full_worker_wall_seconds": 1778,
+  "remaining_gates": [
+    "0047e970 allocation child",
+    "00490240 length failure",
+    "00493120 insertion parent",
+    "00495ae0 resize parent",
+    "0049e560 traffic",
+    "layout and world parents"
+  ],
+  "qualification": "Original consumes three actual stack words and no incoming ECX/EDX. Physical EAX returned without claiming recovered semantic Original return type; current SDK memmove_s/errno/handler/EH identity qualified. No drop-in ABI, Native-address caller adoption, parent closure or gameplay proof."
+}
