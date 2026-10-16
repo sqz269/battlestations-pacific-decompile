@@ -1,0 +1,342 @@
+{
+  "schema": 1,
+  "packet": "cc12_native_crt_wcscspn_00c0382c",
+  "status": "whole_new_ordinary_Source_sole_strict_compile_and_complete_object_review_pass_Main_and_peer_pending",
+  "coverage": "complete",
+  "Original_name_retained": "_wcscspn",
+  "address": "00C0382C",
+  "whole_range": [
+    "00C0382C",
+    "00C0386D"
+  ],
+  "Original_bytes": 66,
+  "Original_instructions": 30,
+  "Original_body_sha256": "e037e5ab5bbdd6752199a09c4260f7360e99621783fd6e6ced2e68455f3512ff",
+  "Source_ready_gate": true,
+  "Source_authorized": true,
+  "Source_implemented": true,
+  "Source_credit": 0,
+  "API": "unsigned int __cdecl bsp::count_native_crt_wide_prefix_excluding_00c0382c(const void* actual_source, const void* actual_control)",
+  "default_potentially_throwing": true,
+  "target": "MSVC Win32: 8-bit bytes, 32-bit pointer/unsignedint, little-endian unsigned WORD16 code units; no Unicode scalar/locale/case/normalization.",
+  "authoritative_gate": {
+    "commit": "3075833f591871662b03521fb254281ca15b54f5",
+    "path": "reports/cc12_native_crt_wcscspn_readiness.json",
+    "snapshot": "authoritative_gate.snapshot.json",
+    "Source_authorized": true,
+    "historical_nested_qualification": "Nested prospective/readiness wording is historical; published top-level Source authorization and Root task authorize these four files. No Main admission/credit inferred."
+  },
+  "contract": [
+    "New default potentially throwing MSVCWin32 unsigned int __cdecl bsp::count_native_crt_wide_prefix_excluding_00c0382c(const void* actual_source,const void* actual_control), pointer/unsignedint32, byte8/little-endian WORD16. Correct Original libraryname _wcscspn retained; descriptive API and size_t interpretation hypotheses, no Unicode scalar/locale/case/normalization.",
+    "First read exactly one sourceWORD NUL guard. Initial sourceNUL returns0 without any controlpayload/access or cursoradvance; no controlstorage required and controlmaybenull. Source always requires genuine first2bytes. Physicalcontrolargumenthome binding excluded from ordinarynewinterface.",
+    "Only after nonzero initialsourceguard, read firstcontrolWORD exactlyonce and cache throughout. Each sourceiteration tests cachedvalue/resets actualcontrolcursor. Cachedcontrol0 skips currentSourcevaluereread and alltailreads, but still scans allsourceguards to reachedNUL; no emptycontrolreturn0 shortcut.",
+    "For cachednonzero control, reread currentSourceWORD once and retain for this search. Compare cachedfirstcontrol then each reachedtailWORD. Each mismatch advances realcontrolcursor twice byonebyte then oneWORD read; tailNUL test before equality, nonzero compare, matchstops immediately. Never reload firstcontrolWORD; tailWORDs reread on nextsource search.",
+    "After unsuccessful search or cachedcontrol0, advance source twicebyonebyte and count oneunit; read nextsourceWORD guard, stopNUL beforeadvance/value-reread; nonzero restarts cachedcontroltest. A matchedsourceunit is not advanced/counted. Keep exact orderedexternalWORD reads and earlystop; privatecount timing only ordinary stable faultfree frameexcluded qualification.",
+    "Return exact32bit nativeSUB/SAR result with unsigned expression n|((n&0x40000000U)<<1), where n is traversedsourceunits. No signed pointer subtraction/conversion/shift, inventedINTMAX/signeddistancecap or promise giantallocations exist. Nativeoriginalsourcehome reload/physicalaliases excluded, not silently asserted reproduced.",
+    "Every actually reached guard/value/tailWORD has2genuine live stable determinate readable inrange bytes and a finite reached stop. Every actual byteadvance nonwrapping withinoronepast sameactualallocation, neveronepastread. No padding/fullunusedsourceNUL/controlterminator afterearlymatch. Arbitrary16bitcodeunits, rawunaligned/interior/prefix/read-only/inputoverlap/identity/ordinarycallerstack permitted; no fakewchar/uint16objectlifetime/alignment.",
+    "Exclude Originalornew calleeprivateframe/savedregister/returnaddress/argumenthome/blockselfalias, faults/MMIO/concurrentmutation/lifetimechange/segmentprotocol; ordinary Win32flatDS/SS32bitstack. No OriginalphysicalABI/caller/runtime/game credit.",
+    "Prospective mechanism only: private target-specific addressedMOVZX WORD16 helper over actualrawbyteaddresses, fullyinitialized zeroextendeduint32result; separatelysequenced actualhelpercalls preserve completeWORD schedule/cache/rereads; genuine bytecursors + freshunsignedunitcount. Source may use explicit MSVCWin32 inlineassembly for rawWORD primitive; no inventedwideobject cast/dereference, SDK/memcpy/provider/global/TLS/bitmap/table/runtimeguard/emptycontrolshortcut/fallback/callerbinding. Future actualstrict/Main artifacts must independently verify EVERYpublic/privatehelper byte, widths/order, allcalls/relocations/providerbindings, privateABI/frame/GS/metadata and boundedunsignedreturn.",
+    "Only4canonicalSource/header/doc/reportoutputs after entry/full66B/4filelease and fresh current beforepins. One genuine strictMSVCWin32 compile with actualSource/header dependency closure; Root+independentSource/wholeobject and separate actualnormalregisteredMain/Core/archive/peer gates. No matchingrecompile/workerbaseline/newtests/probes/bodyexecution/SDKcomparison or oldcompilerprovenance adoption."
+  ],
+  "access_schedule": [
+    {
+      "step": 1,
+      "sites": [
+        "00C0382C",
+        "00C03830"
+      ],
+      "effect": "Read native source pointer home, then exactly one unsigned WORD NUL guard at actual source. Source zero exits immediately: no control pointer-home/payload read or control cursor arithmetic."
+    },
+    {
+      "step": 2,
+      "sites": [
+        "00C03834",
+        "00C03835",
+        "00C03836",
+        "00C03837"
+      ],
+      "effect": "Original saves EBX/ESI/EDI after first source guard and before testing its preserved flags; native frame aliases are excluded from ordinary Source domain."
+    },
+    {
+      "step": 3,
+      "sites": [
+        "00C03839",
+        "00C0383D"
+      ],
+      "effect": "Only for initially nonzero source: load control pointer home once, read its first unsigned WORD once and retain it in EDI for every outer iteration."
+    },
+    {
+      "step": 4,
+      "sites": [
+        "00C03840",
+        "00C03843",
+        "00C03845"
+      ],
+      "effect": "Test cached first control WORD and reset real control cursor to control base each source iteration. Cached zero skips all source-value rereads and control-tail reads; source still advances/scans through NUL."
+    },
+    {
+      "step": 5,
+      "sites": [
+        "00C03847",
+        "00C0384A",
+        "00C0384D",
+        "00C03850"
+      ],
+      "effect": "For nonzero cached first control WORD, freshly reread current nonzero source WORD once, compare it with cached first control WORD. Match exits without advancing either cursor or rereading any payload."
+    },
+    {
+      "step": 6,
+      "sites": [
+        "00C03852",
+        "00C03853",
+        "00C03854",
+        "00C03857",
+        "00C0385A",
+        "00C0384D"
+      ],
+      "effect": "On mismatch advance control cursor twice by one byte, read one unsigned WORD, test zero before equality. Zero completes this unsuccessful search. Nonzero tail WORD compares against saved source value; match exits, otherwise repeats. Tail positions are freshly read again for each next source iteration, not cached."
+    },
+    {
+      "step": 7,
+      "sites": [
+        "00C0385C",
+        "00C0385D",
+        "00C0385E",
+        "00C03862"
+      ],
+      "effect": "After complete nonmatching control scan, or cached empty control: advance source cursor twice by one byte, increment logical traversed-unit count once, then read exactly one next-source WORD guard. Zero exits; nonzero restarts cached-control test. NUL itself is never advanced or source-value-reread."
+    },
+    {
+      "step": 8,
+      "sites": [
+        "00C03864",
+        "00C03868",
+        "00C03869",
+        "00C0386A",
+        "00C0386C",
+        "00C0386D"
+      ],
+      "effect": "Always reread native original-source pointer home for SUB, restore registers, SAR EAX by one, RET without immediate argument cleanup. New ordinary local counter/unsigned encoding can avoid pointer subtraction; no mutable argument-home/block identity is asserted."
+    }
+  ],
+  "exact_return": {
+    "traversed_code_units": "n",
+    "native": "uint32 SUB cursor-original-home, then x86 SAR by 1",
+    "unsigned_expression": "n | ((n & 0x40000000U) << 1)",
+    "mathematical_count_equal_only": "For n below 0x40000000; unrestricted genuine nonwrapping domain retained, no signed-distance/INT_MAX cap.",
+    "static_boundaries": [
+      {
+        "prefix_units": "0x3fffffff",
+        "SUB_byte_delta": "0x7ffffffe",
+        "signed_delta": 2147483646,
+        "SAR_1_bits": "0x3fffffff",
+        "new_unsigned_expression_bits": "0x3fffffff"
+      },
+      {
+        "prefix_units": "0x40000000",
+        "SUB_byte_delta": "0x80000000",
+        "signed_delta": -2147483648,
+        "SAR_1_bits": "0xc0000000",
+        "new_unsigned_expression_bits": "0xc0000000"
+      },
+      {
+        "prefix_units": "0x7fffffff",
+        "SUB_byte_delta": "0xfffffffe",
+        "signed_delta": -2,
+        "SAR_1_bits": "0xffffffff",
+        "new_unsigned_expression_bits": "0xffffffff"
+      }
+    ],
+    "extent_qualification": "No assumption that boundary-sized Win32 allocations exist; arithmetic only. Actual reached WORD/extents remain genuine and nonwrapping."
+  },
+  "mechanism": "Private target-specific addressed MOVZX WORD16 __asm primitive over genuine raw byte addresses, fully initialized uint32 result. Separate statements preserve source guard/cache/value/tail schedule. Genuine raw cursors increment twice byonebyte, bounded fresh unsigned count, unsigned SAR encoding. No typed-wide object/dereference, SDK/memcpy/provider/global/TLS/table/bitmap/runtime validation/null guard/emptycontrol shortcut/fallback/caller binding.",
+  "physical_home_qualification": "On nonempty path [ESP+20h]=entryESP+4 is reused as asm address slot: source value+46, control tail address+5E/+62, source guard address+79/+7D. EDX always retains actual sourcecursor; EBP actual controlbase. This new private/home behavior is admitted ONLY with explicit ordinary physical-home/private-frame/input alias exclusions, no Original-home identity.",
+  "ordinary_domain": "All reached two-byte WORDs genuine live stable determinate readable in-range storage and finite reached stop. Initial source guard always required; initial NUL permits any/null control. No unused suffix/terminator/padding/aligned-wide-object promise. Nonwrapping actual byte advances within/onepast each actual allocation, no onepast reads. Raw unaligned/interior/prefix/read-only/input overlap/identity and stable ordinary caller stack admitted. Original/new callee-private frame/savedreg/return-address/argument-home/block alias, fault/MMIO/concurrency/lifetime/segment protocols excluded.",
+  "build": {
+    "sole_strict_compile": true,
+    "actual_compile_count": 1,
+    "receipt": "strict.receipt.json",
+    "receipt_hash": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_wcscspn_source_oct16\\local\\WholeNativeCrtWcscspnSource01\\strict.receipt.json",
+      "bytes": 21355,
+      "sha256": "bba7b21822cd4347e3b867c1cbf9ceb93c7b34f95d14bea3dde2848edad9a0b1",
+      "mtime_ns": 1792143086348211800,
+      "links": 1,
+      "readonly": false,
+      "observed_utc": "2026-10-16T09:37:16.374358+00:00"
+    },
+    "compiler": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\cl.exe",
+      "bytes": 830824,
+      "sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c",
+      "mtime_ns": 1779576134591637100,
+      "links": 1,
+      "readonly": false,
+      "observed_utc": "2026-10-16T09:30:03.522604+00:00"
+    },
+    "compiler_version": "19.51.36244.0",
+    "host": "HostX86",
+    "target": "x86",
+    "argv": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\cl.exe",
+      "/nologo",
+      "/Bv",
+      "/c",
+      "/std:c++17",
+      "/O2",
+      "/W4",
+      "/WX",
+      "/permissive-",
+      "/fp:strict",
+      "/EHsc",
+      "/MD",
+      "/showIncludes",
+      "/sourceDependencies",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_wcscspn_source_oct16\\local\\WholeNativeCrtWcscspnSource01\\strict.dependencies.json",
+      "/FAs",
+      "/FaJ:\\PROG\\battlestations-pacific-decompile-cc12_crt_wcscspn_source_oct16\\local\\WholeNativeCrtWcscspnSource01\\strict.cod",
+      "/FoJ:\\PROG\\battlestations-pacific-decompile-cc12_crt_wcscspn_source_oct16\\local\\WholeNativeCrtWcscspnSource01\\strict.obj",
+      "/IJ:\\PROG\\battlestations-pacific-decompile-cc12_crt_wcscspn_source_oct16\\include",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_wcscspn_source_oct16\\src\\native_crt_wcscspn.cpp"
+    ],
+    "exit_code": 0,
+    "before_input_stages": {
+      "initial_named": 5566,
+      "project_header_and_wrapper_supplement": 2629,
+      "unique_union": 8194,
+      "main": "inputs_before.json",
+      "supplement": "project_include_candidates_before.json",
+      "actual_precompile_checks": [
+        "precompile_verification.json",
+        "project_candidates_precompile_verified.json"
+      ]
+    },
+    "actual_dependencies": "actual_dependency_closure.json",
+    "actual_closure_files": 2,
+    "Source_and_own_header_genuinely_before_pinned": true,
+    "SDK_headers_loaded": 0,
+    "compiler_failure": false,
+    "Source_fix_or_recompile": false,
+    "no_separate_worker_baseline": true
+  },
+  "actual_object": {
+    "bytes": 1272,
+    "sha256": "8b45e663bde41a0ad194365ec14d81ec6a57ffa5c5e83054bf2798e90797382d",
+    "code_bytes": 178,
+    "instructions": 66,
+    "public_bytes": 162,
+    "public_instructions": 59,
+    "private_bytes": 16,
+    "private_instructions": 7,
+    "sections": 7,
+    "raw_symbol_slots": 18,
+    "primary_symbols": 11,
+    "aux_slots": 7,
+    "all_code": "all_code_disassembly.txt",
+    "inventory": "object_inventory.json",
+    "whole_review": "object_review.json",
+    "metadata": "complete_metadata_review.json",
+    "payload_WORD_sites": {
+      "public": [
+        "0F",
+        "30",
+        "4A",
+        "66",
+        "81"
+      ],
+      "private": [
+        "05"
+      ]
+    },
+    "no_calls_code_relocations_undefined_providers": true,
+    "metadata_only_relocations": 2,
+    "strict_Main_frame_qualification": "Actual strict HostX86/x86 default /O2 artifact only. Future normal Main Hostx64 and /Oy- may differ; independently inspect actual Main, never force matching recompilation."
+  },
+  "preservation": {
+    "explicit_named_old_seals": 960,
+    "additional_referenced_peer_seals": 232,
+    "total_unique_old_seals": 1192,
+    "families": 36,
+    "old_working": 582,
+    "old_literal_Git": 579,
+    "old_CRLF_only_qualified": 3,
+    "new_CRT_baseline": 289,
+    "new_literal_Git": 289,
+    "new_CRLF_only": 0,
+    "all_bytes_hash_mtime_unchanged": true,
+    "no_old_checkout_merge_reset_edit": true,
+    "no_exports_junction": true
+  },
+  "current_input_proof": {
+    "stage": "Before Source commit",
+    "all_unique_8194_before_pins_unchanged": true,
+    "all_external_gate_refs_unchanged": true,
+    "state": {
+      "old_seals": 1192,
+      "old_working": 582,
+      "new_CRT_baseline": 289,
+      "all_actual_bytes_hash_mtime_unchanged": true
+    }
+  },
+  "ownership": {
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_wcscspn_source_oct16",
+    "base": "3075833f591871662b03521fb254281ca15b54f5",
+    "owner": "agent/cc12_crt_wcscspn_source_oct16",
+    "normal_Root_release": "b2f2d6",
+    "normal_claim": "ed834e",
+    "entry_and_range": "00C0382C..00C0386D",
+    "exact_outputs": [
+      "include/bsp/native_crt_wcscspn.hpp",
+      "src/native_crt_wcscspn.cpp",
+      "docs/NATIVE_CRT_WCSCSPN.md",
+      "reports/native_crt_wcscspn.json"
+    ],
+    "local_only_packet": "cc12_native_crt_wcscspn_Source9_local",
+    "hold_for_Root_queued_handoff": true
+  },
+  "actual_history": {
+    "preparation_or_compiler_failures": 0,
+    "natural_sessions": [
+      {
+        "stage": "new baseline",
+        "initial": "2a04cd",
+        "completion": "9b1d68",
+        "exit": 0
+      },
+      {
+        "stage": "initial before pins",
+        "initial": "f88b60",
+        "intermediate": "71f6f0",
+        "completion": "1dd520",
+        "exit": 0
+      },
+      {
+        "stage": "project candidate supplement",
+        "initial": "76c962",
+        "completion": "b1b0c0",
+        "exit": 0
+      }
+    ],
+    "fresh_stage_refinement": "Initial candidate stage covered actual Source/header and SDK/compiler/support; explicit /I project root and freshly created once-wrapper were added in their own genuine BEFORE-compiler stage, no trial invocation or backdated pin.",
+    "display_incidents": [
+      {
+        "receipt": "9a5ca6",
+        "exit": 0,
+        "kind": "Read-only expanded metadata projection exceeded display budget",
+        "qualification": "Actual truncated original tool result retained; no separate unavailable full child stdout is synthesized. Complete object inventory and later compact full symbol/raw metadata projections c17157/d5653b are distinct actual observations."
+      }
+    ]
+  },
+  "verification": "Required report/doc call checker follows; zero call rows do not prove semantics. Sole strict compile and complete actual artifact review do not execute the target.",
+  "remaining_gates": [
+    "Independent Source/whole-artifact review",
+    "Root registered actual normal Main build/all helpers/frame/provider/metadata/closure/Core/archive/peer gates",
+    "No Original physical ABI/runtime/game/caller proof claimed"
+  ],
+  "evidence_family": "local/WholeNativeCrtWcscspnSource01",
+  "provenance": "Only new Source9 own task paired exec transports/full own Original prefix. External prior families/Root contracts are inputs and preservation only, never borrowed compiler or tool provenance.",
+  "Original_ABI_compatible": false,
+  "new_Source_body_executed": false,
+  "game_validated": false,
+  "no_push": true
+}

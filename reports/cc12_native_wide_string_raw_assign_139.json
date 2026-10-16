@@ -1,0 +1,855 @@
+{
+  "packet": "cc12_native_wide_string_raw_assign_139",
+  "status": "actual-header real-resize provider capability compiled/checked; old typed algorithm preserved; no new-entry execution",
+  "baseline": {
+    "own_head": "0ca0434edf4b30a7ef01d1b7cad150cd01baff88",
+    "no_merge": true,
+    "before_sources": [
+      {
+        "path": "local/cc12_native_wide_string_raw_assign_139/before/include/bsp/native_wide_string.hpp",
+        "original_before_edit_identity": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_wide_string.hpp",
+        "bytes": 3513,
+        "sha256": "d9499a98a3379366390eac87f3b6bca7ebb452e8e19e96d3e7a354295c6e8bc0",
+        "role": "before-edit input"
+      },
+      {
+        "path": "local/cc12_native_wide_string_raw_assign_139/before/src/native_wide_string.cpp",
+        "original_before_edit_identity": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_wide_string.cpp",
+        "bytes": 6154,
+        "sha256": "319fd69f6ba6700dbcc3dec688166ad3a1492137e844299e8067fd067c130fd7",
+        "role": "before-edit input"
+      }
+    ],
+    "canonical_before": [
+      {
+        "path": "local/cc12_native_wide_string_raw_assign_139/before/canonical/native_wide_string.obj",
+        "original_before_edit_identity": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\build\\win32\\bsp_core.dir\\Release\\native_wide_string.obj",
+        "bytes": 3394,
+        "sha256": "19d92302505fece72a86581e2fbb1574a528be19e698ea7e5795c83a710cacf0",
+        "role": "before-edit canonical/shared build artifact; preserve before regeneration"
+      },
+      {
+        "path": "local/cc12_native_wide_string_raw_assign_139/before/canonical/bsp_core.lib",
+        "original_before_edit_identity": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 94123596,
+        "sha256": "b3fcd901a9fab1e0da0ac569ebc84db2ac88a13105f5eb22069ad618c230e004",
+        "role": "before-edit canonical/shared build artifact; preserve before regeneration"
+      },
+      {
+        "path": "local/cc12_native_wide_string_raw_assign_139/before/canonical/bsp_game.exe",
+        "original_before_edit_identity": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\build\\win32\\Release\\bsp_game.exe",
+        "bytes": 5636096,
+        "sha256": "bd2422767a13becf7d1ed8b51cfe24e4a115765399487207abb64f6fa60dab7e",
+        "role": "before-edit canonical/shared build artifact; preserve before regeneration"
+      },
+      {
+        "path": "local/cc12_native_wide_string_raw_assign_139/before/canonical/bsp_math_tests.exe",
+        "original_before_edit_identity": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\build\\win32\\Release\\bsp_math_tests.exe",
+        "bytes": 846336,
+        "sha256": "ac48828162762027a7cb5a836b242306b9510ad43d409e1f0ff878cd8a208b4e",
+        "role": "before-edit canonical/shared build artifact; preserve before regeneration"
+      },
+      {
+        "path": "local/cc12_native_wide_string_raw_assign_139/before/canonical/bsp_native_math_tests.exe",
+        "original_before_edit_identity": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\build\\win32\\Release\\bsp_native_math_tests.exe",
+        "bytes": 18432,
+        "sha256": "f912f68930884f8e0030d52ccdf4da5d141cdfa69c58614503e7ccf915fa91c3",
+        "role": "before-edit canonical/shared build artifact; preserve before regeneration"
+      },
+      {
+        "path": "local/cc12_native_wide_string_raw_assign_139/before/canonical/LastTest.log",
+        "original_before_edit_identity": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\build\\win32\\Testing\\Temporary\\LastTest.log",
+        "bytes": 2478,
+        "sha256": "1f6cf63383fc0e35f4b8f8a76b1ed3f39a28410c6f151704f8c704ebec6df6af",
+        "role": "before-edit canonical/shared build artifact; preserve before regeneration"
+      }
+    ],
+    "shared_exports_before": [
+      {
+        "path": "local/cc12_native_wide_string_raw_assign_139/shared_before/assembly.txt",
+        "original_before_edit_identity": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004c5e20\\assembly.txt",
+        "bytes": 639,
+        "sha256": "c4e775b8e3421949e8692e3384534e02653ec357d4264867b8f3159f5a7dfb27",
+        "role": "before-edit snapshot; use retained copy, current original may legitimately differ"
+      },
+      {
+        "path": "local/cc12_native_wide_string_raw_assign_139/shared_before/decompiled.c",
+        "original_before_edit_identity": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004c5e20\\decompiled.c",
+        "bytes": 751,
+        "sha256": "8df508874e5946b2ff8020fe4bee3bd2315b7a385094137681ae4d140af9098f",
+        "role": "before-edit snapshot; use retained copy, current original may legitimately differ"
+      }
+    ],
+    "preserved136_manifest": "e3861d8922a1a9a2ece8b1c00b995440a5cbce5371670f2b75c9fdb0b1b2cd3a"
+  },
+  "source": {
+    "cpp": "src/native_wide_string.cpp",
+    "declaration": "include/bsp/native_wide_string.hpp",
+    "api": "void* assign_native_wide_string_header_004c5e20(void* dst8,const void* src8,NativeStringStorage& same_storage)",
+    "same_destination_return": true,
+    "already_Core_registered": "cmake/startup.cmake:1775",
+    "CMake_change": false,
+    "Root_full_Source_and_optimized_review": "PASS; complete append and strict.asm506-587; no Source correction requested",
+    "algorithm_credit": "old typed API/algorithm retained; new actual-header and direct real provider input capability only"
+  },
+  "Original": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000"
+  },
+  "native": {
+    "body": {
+      "entry": "004c5e20",
+      "end_exclusive": "004c5e59",
+      "bytes": 57,
+      "sha256": "6741d4cc2dc99f68b8f6c489424b29e05eabf1f2167e586b5c903929eaf024b1",
+      "role": "complete normal function body",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_004c5e20.bin",
+      "instructions": 24,
+      "listing": "local/cc12_native_gui_text_rebuild_readiness_136/physical_004c5e20.txt",
+      "existing_full_listing_starts_match": true
+    },
+    "post_annotation_live_equals_captured136_and_disk": true,
+    "no_local_EH_or_cleanup": true,
+    "original_ABI": "ECX dst8B, stack src8B, EAX same dst, ESI/EDI preserved, RET4; Source ABI separate"
+  },
+  "calls": [
+    {
+      "address": "004c5e31",
+      "native": "004c53e0",
+      "function": "004c5e20"
+    }
+  ],
+  "schedule": [
+    {
+      "native_site": "004c5e28",
+      "effect": "pointer self guard before ANY header read; return SAME destination with no init/resize/release"
+    },
+    {
+      "native_site": "004c5e2c",
+      "effect": "capture source length"
+    },
+    {
+      "native_site": "004c5e31",
+      "effect": "direct existing resize_native_wide_string_header_004c53e0(dst,SAME storage,captured length,true); no generic callback"
+    },
+    {
+      "native_site": "004c5e36",
+      "effect": "read CURRENT source length after resize; zero skips both data pointer reads"
+    },
+    {
+      "native_site": "004c5e3b",
+      "effect": "capture CURRENT source data"
+    },
+    {
+      "native_site": "004c5e3e",
+      "effect": "capture CURRENT destination data only after source data"
+    },
+    {
+      "native_site": "004c5e41..004c5e50",
+      "effect": "WORD load/store/advance both by2/test captured unit; repeat through NUL, no counted memcpy replacement"
+    },
+    {
+      "native_site": "004c5e52..004c5e58",
+      "effect": "SAME destination result; Native RET4 versus new Source ABI"
+    }
+  ],
+  "domain": {
+    "header": "actual initialized DWORD-aligned8B length/data representations in existing MSVC Win32 raw-view/alias domain",
+    "backing": "valid reached WORD backing through NUL under original valid overlap/alias contract; no concurrent/destructive provider mutation outside that graph",
+    "storage": "SAME retained actual existing GameNativeStringProcess::strings() for production; no new owner/global/default or callback shim",
+    "representation": "no reinterpretation as NativeWideString/std::u16string/Text owner; physical shape alone does not prove backing provenance",
+    "self_path": "no header access/initialization/resize/release; caller still supplies a live valid Source storage reference",
+    "resize": "unchanged actual equal/zero/nonzero behavior, DWORD size wrap/allocation/preservation/current-header reads/release/pointer-length-NUL publication; no new overflow/allocation repair",
+    "failure": "no local EH/cleanup/rollback/retry; inherited allocation exception and release-noexcept Source boundaries; independently retain actual headers/backing/storage through entry/failure"
+  },
+  "strict_objects": {
+    "before": {
+      "path": "local/cc12_native_wide_string_raw_assign_139/before_strict.obj",
+      "sha256": "6d6bfadf3945f0cb7156c049fcf5179a7c1035d53edf2053e80be9afdb08d4e2",
+      "machine": "014c",
+      "functions": {
+        "?construct_native_wide_string_header_004c5e60@bsp@@YAPAXPAXPBDAAVNativeStringStorage@1@@Z": {
+          "symbol": "?construct_native_wide_string_header_004c5e60@bsp@@YAPAXPAXPBDAAVNativeStringStorage@1@@Z",
+          "bytes": 90,
+          "sha256": "42624d68752537e62e4ea5cadd51b391d8a953747dfd1a582ecfe2f712a8f4a6",
+          "relocations": [
+            {
+              "offset": 51,
+              "symbol": "?resize_native_wide_string_header_004c53e0@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z",
+              "type": 20
+            }
+          ],
+          "external_symbol": true,
+          "artifact": "local/cc12_native_wide_string_raw_assign_139/object_before_00.bin"
+        },
+        "?resize_native_wide_string_header_004c53e0@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z": {
+          "symbol": "?resize_native_wide_string_header_004c53e0@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z",
+          "bytes": 166,
+          "sha256": "99b69687620ec8d0fce569a4042f8217fdfc2670d10c737db67d404291a2ef85",
+          "relocations": [
+            {
+              "offset": 117,
+              "symbol": "_memcpy",
+              "type": 20
+            }
+          ],
+          "external_symbol": true,
+          "artifact": "local/cc12_native_wide_string_raw_assign_139/object_before_01.bin"
+        },
+        "?destroy_native_wide_string_header_00436430@bsp@@YAXPAXAAVNativeStringStorage@1@@Z": {
+          "symbol": "?destroy_native_wide_string_header_00436430@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+          "bytes": 32,
+          "sha256": "d31dbc86e4f3d1910f0bfa35c51120147c0b0686588361254d6fe33be0d66344",
+          "relocations": [],
+          "external_symbol": true,
+          "artifact": "local/cc12_native_wide_string_raw_assign_139/object_before_02.bin"
+        },
+        "?destroy_native_wide_string_header_00436430@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z": {
+          "symbol": "?destroy_native_wide_string_header_00436430@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+          "bytes": 55,
+          "sha256": "f52b6ad65ff7a1a22afb2b9919ce97ae3eb00ea1614ee2a038c96a55464d18b1",
+          "relocations": [
+            {
+              "offset": 33,
+              "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+              "type": 20
+            },
+            {
+              "offset": 44,
+              "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+              "type": 20
+            }
+          ],
+          "external_symbol": true,
+          "artifact": "local/cc12_native_wide_string_raw_assign_139/object_before_03.bin"
+        },
+        "?copy_construct_native_wide_string_header_004c8dd0@bsp@@YAPAXPAXPBXAAVNativeStringStorage@1@@Z": {
+          "symbol": "?copy_construct_native_wide_string_header_004c8dd0@bsp@@YAPAXPAXPBXAAVNativeStringStorage@1@@Z",
+          "bytes": 90,
+          "sha256": "8817300c9957daf04adb4b89cf7bc64435069c1d07355f2f09441cd22574f6e1",
+          "relocations": [
+            {
+              "offset": 38,
+              "symbol": "?resize_native_wide_string_header_004c53e0@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z",
+              "type": 20
+            }
+          ],
+          "external_symbol": true,
+          "artifact": "local/cc12_native_wide_string_raw_assign_139/object_before_04.bin"
+        },
+        "??$read_header@I@?A0x6bb3f82f@bsp@@YAIPBXI@Z": {
+          "symbol": "??$read_header@I@?A0x6bb3f82f@bsp@@YAIPBXI@Z",
+          "bytes": 12,
+          "sha256": "141fe36521c0146c800983701f3780f1e87872eba06924b50770fb794107644c",
+          "relocations": [],
+          "external_symbol": false,
+          "artifact": "local/cc12_native_wide_string_raw_assign_139/object_before_05.bin"
+        },
+        "??$read_header@PAD@?A0x6bb3f82f@bsp@@YAPADPBXI@Z": {
+          "symbol": "??$read_header@PAD@?A0x6bb3f82f@bsp@@YAPADPBXI@Z",
+          "bytes": 12,
+          "sha256": "141fe36521c0146c800983701f3780f1e87872eba06924b50770fb794107644c",
+          "relocations": [],
+          "external_symbol": false,
+          "artifact": "local/cc12_native_wide_string_raw_assign_139/object_before_06.bin"
+        },
+        "??$write_header@PAD@?A0x6bb3f82f@bsp@@YAXPAXIPAD@Z": {
+          "symbol": "??$write_header@PAD@?A0x6bb3f82f@bsp@@YAXPAXIPAD@Z",
+          "bytes": 16,
+          "sha256": "76bbadc14dccdb9d6227d26bf221f5ac30a809741438df8ba9a77bc568a30b0b",
+          "relocations": [],
+          "external_symbol": false,
+          "artifact": "local/cc12_native_wide_string_raw_assign_139/object_before_07.bin"
+        },
+        "??$write_header@I@?A0x6bb3f82f@bsp@@YAXPAXII@Z": {
+          "symbol": "??$write_header@I@?A0x6bb3f82f@bsp@@YAXPAXII@Z",
+          "bytes": 16,
+          "sha256": "76bbadc14dccdb9d6227d26bf221f5ac30a809741438df8ba9a77bc568a30b0b",
+          "relocations": [],
+          "external_symbol": false,
+          "artifact": "local/cc12_native_wide_string_raw_assign_139/object_before_08.bin"
+        }
+      }
+    },
+    "after": {
+      "path": "local/cc12_native_wide_string_raw_assign_139/strict.obj",
+      "sha256": "1ad54e803a909d9dad01fb66a4cc65a416bd1d7d4f9d9ca33bcbec65ac56d71c",
+      "machine": "014c",
+      "functions": {
+        "?construct_native_wide_string_header_004c5e60@bsp@@YAPAXPAXPBDAAVNativeStringStorage@1@@Z": {
+          "symbol": "?construct_native_wide_string_header_004c5e60@bsp@@YAPAXPAXPBDAAVNativeStringStorage@1@@Z",
+          "bytes": 90,
+          "sha256": "42624d68752537e62e4ea5cadd51b391d8a953747dfd1a582ecfe2f712a8f4a6",
+          "relocations": [
+            {
+              "offset": 51,
+              "symbol": "?resize_native_wide_string_header_004c53e0@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z",
+              "type": 20
+            }
+          ],
+          "external_symbol": true,
+          "artifact": "local/cc12_native_wide_string_raw_assign_139/object_after_00.bin"
+        },
+        "?resize_native_wide_string_header_004c53e0@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z": {
+          "symbol": "?resize_native_wide_string_header_004c53e0@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z",
+          "bytes": 166,
+          "sha256": "99b69687620ec8d0fce569a4042f8217fdfc2670d10c737db67d404291a2ef85",
+          "relocations": [
+            {
+              "offset": 117,
+              "symbol": "_memcpy",
+              "type": 20
+            }
+          ],
+          "external_symbol": true,
+          "artifact": "local/cc12_native_wide_string_raw_assign_139/object_after_01.bin"
+        },
+        "?destroy_native_wide_string_header_00436430@bsp@@YAXPAXAAVNativeStringStorage@1@@Z": {
+          "symbol": "?destroy_native_wide_string_header_00436430@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+          "bytes": 32,
+          "sha256": "d31dbc86e4f3d1910f0bfa35c51120147c0b0686588361254d6fe33be0d66344",
+          "relocations": [],
+          "external_symbol": true,
+          "artifact": "local/cc12_native_wide_string_raw_assign_139/object_after_02.bin"
+        },
+        "?destroy_native_wide_string_header_00436430@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z": {
+          "symbol": "?destroy_native_wide_string_header_00436430@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+          "bytes": 55,
+          "sha256": "f52b6ad65ff7a1a22afb2b9919ce97ae3eb00ea1614ee2a038c96a55464d18b1",
+          "relocations": [
+            {
+              "offset": 33,
+              "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+              "type": 20
+            },
+            {
+              "offset": 44,
+              "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+              "type": 20
+            }
+          ],
+          "external_symbol": true,
+          "artifact": "local/cc12_native_wide_string_raw_assign_139/object_after_03.bin"
+        },
+        "?copy_construct_native_wide_string_header_004c8dd0@bsp@@YAPAXPAXPBXAAVNativeStringStorage@1@@Z": {
+          "symbol": "?copy_construct_native_wide_string_header_004c8dd0@bsp@@YAPAXPAXPBXAAVNativeStringStorage@1@@Z",
+          "bytes": 90,
+          "sha256": "8817300c9957daf04adb4b89cf7bc64435069c1d07355f2f09441cd22574f6e1",
+          "relocations": [
+            {
+              "offset": 38,
+              "symbol": "?resize_native_wide_string_header_004c53e0@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z",
+              "type": 20
+            }
+          ],
+          "external_symbol": true,
+          "artifact": "local/cc12_native_wide_string_raw_assign_139/object_after_04.bin"
+        },
+        "?assign_native_wide_string_header_004c5e20@bsp@@YAPAXPAXPBXAAVNativeStringStorage@1@@Z": {
+          "symbol": "?assign_native_wide_string_header_004c5e20@bsp@@YAPAXPAXPBXAAVNativeStringStorage@1@@Z",
+          "bytes": 74,
+          "sha256": "821b99278014d6df87572424b60d0d8568b7f4f40c77207afb89c8e00d11aa73",
+          "relocations": [
+            {
+              "offset": 25,
+              "symbol": "?resize_native_wide_string_header_004c53e0@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z",
+              "type": 20
+            }
+          ],
+          "external_symbol": true,
+          "artifact": "local/cc12_native_wide_string_raw_assign_139/object_after_05.bin"
+        },
+        "??$read_header@I@?A0x6bb3f82f@bsp@@YAIPBXI@Z": {
+          "symbol": "??$read_header@I@?A0x6bb3f82f@bsp@@YAIPBXI@Z",
+          "bytes": 12,
+          "sha256": "141fe36521c0146c800983701f3780f1e87872eba06924b50770fb794107644c",
+          "relocations": [],
+          "external_symbol": false,
+          "artifact": "local/cc12_native_wide_string_raw_assign_139/object_after_06.bin"
+        },
+        "??$read_header@PAD@?A0x6bb3f82f@bsp@@YAPADPBXI@Z": {
+          "symbol": "??$read_header@PAD@?A0x6bb3f82f@bsp@@YAPADPBXI@Z",
+          "bytes": 12,
+          "sha256": "141fe36521c0146c800983701f3780f1e87872eba06924b50770fb794107644c",
+          "relocations": [],
+          "external_symbol": false,
+          "artifact": "local/cc12_native_wide_string_raw_assign_139/object_after_07.bin"
+        },
+        "??$write_header@PAD@?A0x6bb3f82f@bsp@@YAXPAXIPAD@Z": {
+          "symbol": "??$write_header@PAD@?A0x6bb3f82f@bsp@@YAXPAXIPAD@Z",
+          "bytes": 16,
+          "sha256": "76bbadc14dccdb9d6227d26bf221f5ac30a809741438df8ba9a77bc568a30b0b",
+          "relocations": [],
+          "external_symbol": false,
+          "artifact": "local/cc12_native_wide_string_raw_assign_139/object_after_08.bin"
+        },
+        "??$write_header@I@?A0x6bb3f82f@bsp@@YAXPAXII@Z": {
+          "symbol": "??$write_header@I@?A0x6bb3f82f@bsp@@YAXPAXII@Z",
+          "bytes": 16,
+          "sha256": "76bbadc14dccdb9d6227d26bf221f5ac30a809741438df8ba9a77bc568a30b0b",
+          "relocations": [],
+          "external_symbol": false,
+          "artifact": "local/cc12_native_wide_string_raw_assign_139/object_after_09.bin"
+        }
+      }
+    },
+    "all_old_emitted_function_count": 9,
+    "all_old_external_function_count": 5,
+    "unchanged_bodies": [
+      {
+        "symbol": "?construct_native_wide_string_header_004c5e60@bsp@@YAPAXPAXPBDAAVNativeStringStorage@1@@Z",
+        "bytes": 90,
+        "sha256": "42624d68752537e62e4ea5cadd51b391d8a953747dfd1a582ecfe2f712a8f4a6",
+        "relocations": [
+          {
+            "offset": 51,
+            "symbol": "?resize_native_wide_string_header_004c53e0@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z",
+            "type": 20
+          }
+        ],
+        "entire_body_and_symbolic_operands_identical": true
+      },
+      {
+        "symbol": "?resize_native_wide_string_header_004c53e0@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z",
+        "bytes": 166,
+        "sha256": "99b69687620ec8d0fce569a4042f8217fdfc2670d10c737db67d404291a2ef85",
+        "relocations": [
+          {
+            "offset": 117,
+            "symbol": "_memcpy",
+            "type": 20
+          }
+        ],
+        "entire_body_and_symbolic_operands_identical": true
+      },
+      {
+        "symbol": "?destroy_native_wide_string_header_00436430@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+        "bytes": 32,
+        "sha256": "d31dbc86e4f3d1910f0bfa35c51120147c0b0686588361254d6fe33be0d66344",
+        "relocations": [],
+        "entire_body_and_symbolic_operands_identical": true
+      },
+      {
+        "symbol": "?destroy_native_wide_string_header_00436430@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+        "bytes": 55,
+        "sha256": "f52b6ad65ff7a1a22afb2b9919ce97ae3eb00ea1614ee2a038c96a55464d18b1",
+        "relocations": [
+          {
+            "offset": 33,
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+            "type": 20
+          },
+          {
+            "offset": 44,
+            "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+            "type": 20
+          }
+        ],
+        "entire_body_and_symbolic_operands_identical": true
+      },
+      {
+        "symbol": "?copy_construct_native_wide_string_header_004c8dd0@bsp@@YAPAXPAXPBXAAVNativeStringStorage@1@@Z",
+        "bytes": 90,
+        "sha256": "8817300c9957daf04adb4b89cf7bc64435069c1d07355f2f09441cd22574f6e1",
+        "relocations": [
+          {
+            "offset": 38,
+            "symbol": "?resize_native_wide_string_header_004c53e0@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z",
+            "type": 20
+          }
+        ],
+        "entire_body_and_symbolic_operands_identical": true
+      },
+      {
+        "symbol": "??$read_header@I@?A0x6bb3f82f@bsp@@YAIPBXI@Z",
+        "bytes": 12,
+        "sha256": "141fe36521c0146c800983701f3780f1e87872eba06924b50770fb794107644c",
+        "relocations": [],
+        "entire_body_and_symbolic_operands_identical": true
+      },
+      {
+        "symbol": "??$read_header@PAD@?A0x6bb3f82f@bsp@@YAPADPBXI@Z",
+        "bytes": 12,
+        "sha256": "141fe36521c0146c800983701f3780f1e87872eba06924b50770fb794107644c",
+        "relocations": [],
+        "entire_body_and_symbolic_operands_identical": true
+      },
+      {
+        "symbol": "??$write_header@PAD@?A0x6bb3f82f@bsp@@YAXPAXIPAD@Z",
+        "bytes": 16,
+        "sha256": "76bbadc14dccdb9d6227d26bf221f5ac30a809741438df8ba9a77bc568a30b0b",
+        "relocations": [],
+        "entire_body_and_symbolic_operands_identical": true
+      },
+      {
+        "symbol": "??$write_header@I@?A0x6bb3f82f@bsp@@YAXPAXII@Z",
+        "bytes": 16,
+        "sha256": "76bbadc14dccdb9d6227d26bf221f5ac30a809741438df8ba9a77bc568a30b0b",
+        "relocations": [],
+        "entire_body_and_symbolic_operands_identical": true
+      }
+    ],
+    "new_symbol": "?assign_native_wide_string_header_004c5e20@bsp@@YAPAXPAXPBXAAVNativeStringStorage@1@@Z",
+    "new_real_resize_symbol": "?resize_native_wide_string_header_004c53e0@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z",
+    "complete_old_Source_prefixes": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_wide_string.hpp",
+        "old_bytes": 3513,
+        "old_sha256": "d9499a98a3379366390eac87f3b6bca7ebb452e8e19e96d3e7a354295c6e8bc0",
+        "complete_prefix_unchanged": true,
+        "new_bytes": 4565,
+        "new_sha256": "63d936e63edcf2c0f1074af9641104368aadb8e0e0a323c03884df805ee7ce2c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_wide_string.cpp",
+        "old_bytes": 6154,
+        "old_sha256": "319fd69f6ba6700dbcc3dec688166ad3a1492137e844299e8067fd067c130fd7",
+        "complete_prefix_unchanged": true,
+        "new_bytes": 7333,
+        "new_sha256": "554860ba946dd7ff86e127f62ac4c5cf0691af5bf0fdbaa7e7580d34c8f8dd7e"
+      }
+    ],
+    "optimized_lines": "strict.asm:506-587",
+    "qualification": "static unlinked Source object; no behavioral execution, Original ABI/register/CRT/fault/SEH equivalence"
+  },
+  "strict_compile": {
+    "flags": "/MD /EHsc /std:c++17 /O2 /Gy /W4 /WX /fp:strict /permissive-",
+    "before_exit": 0,
+    "after_exit": 0,
+    "commands": [
+      "local/cc12_native_wide_string_raw_assign_139/compile_before.cmd",
+      "local/cc12_native_wide_string_raw_assign_139/compile.cmd"
+    ],
+    "optimized_range": "local/cc12_native_wide_string_raw_assign_139/strict.asm:506-587",
+    "offsets": {
+      "self_cmp": "0a",
+      "self_branch": "0c",
+      "first_header_read": "0e",
+      "real_resize_call": "18",
+      "real_resize_REL32_operand": "19",
+      "current_source_length": "20",
+      "current_source_data": "25",
+      "current_destination_data": "28",
+      "WORD_load": "30",
+      "WORD_store": "3c",
+      "WORD_test": "40",
+      "same_destination_result": "45"
+    },
+    "instruction_limits": "new Source arguments/plain RET and loop padding; compiler pointer LEAs before WORD store use old destination [updated_output-2]; no Native register/stack/fault timing or private CRT/FH3/SEH ABI equivalence"
+  },
+  "canonical_build": {
+    "command": "./scripts/build.ps1",
+    "run_count": 1,
+    "exit_code": 0,
+    "registered_TU_compiled": true,
+    "log_line": 15,
+    "existing_checks": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "passed": "3/3",
+    "test_seconds": 7.77,
+    "log": "local/cc12_native_wide_string_raw_assign_139/canonical_build.log",
+    "before_and_after_outputs_frozen": true,
+    "new_tests_or_probes": false,
+    "new_entry_executed": false
+  },
+  "annotation": {
+    "only_address": "004c5e20",
+    "name_before_and_after": "BSP_WideString_Assign",
+    "method": "write-locked ghidra_annotate.py; old history retained; project saved; owned export refreshed",
+    "history": "local/cc12_native_wide_string_raw_assign_139/annotation_history.json",
+    "history_original": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\local\\ghidra-annotations-20261016T092000Z.json",
+    "preservation": {
+      "checks": {
+        "all_unowned_names_rows_unchanged": true,
+        "name_and_role_unchanged": true,
+        "earlier_name_evidence_retained": true,
+        "one_name_mapping_updated_only": true,
+        "all_unowned_reconstruction_rows_unchanged": true,
+        "one_raw_capability_record_added": true,
+        "old_typed_record_retained": true,
+        "Ghidra_unchanged_function_name": true,
+        "Ghidra_unchanged_return_type": true,
+        "Ghidra_unchanged_calling_convention": true,
+        "Ghidra_unchanged_parameters": true,
+        "Ghidra_unchanged_local_variables": true,
+        "Ghidra_unchanged_labels": true,
+        "only_owned_history_entry": true,
+        "old_Ghidra_name_retained": true,
+        "old_plate_comment_retained": true,
+        "new_evidence_in_actual_comment": true,
+        "project_saved": true,
+        "owned_export_refreshed": true,
+        "index_refreshed": true
+      },
+      "checked": 20,
+      "failed": 0,
+      "history_original": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\local\\ghidra-annotations-20261016T092000Z.json"
+    }
+  },
+  "ledger": {
+    "names": "only owned4C5E20 evidence extended; earlier name/role/evidence retained",
+    "reconstruction": "one distinct actual-header provider record appended; old typed algorithm record retained",
+    "shards": [
+      "config/names/004c0000.jsonl",
+      "config/reconstruction/004c0000.jsonl"
+    ],
+    "no_new_algorithm_recovery_claim": true
+  },
+  "source_hashes": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_wide_string.hpp",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/final_Source/include/bsp/native_wide_string.hpp",
+      "sha256": "63d936e63edcf2c0f1074af9641104368aadb8e0e0a323c03884df805ee7ce2c",
+      "bytes": 4565,
+      "role": "final owned Source, old complete prefix retained"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_wide_string.cpp",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/final_Source/src/native_wide_string.cpp",
+      "sha256": "554860ba946dd7ff86e127f62ac4c5cf0691af5bf0fdbaa7e7580d34c8f8dd7e",
+      "bytes": 7333,
+      "role": "final owned Source, old complete prefix retained"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_string.hpp",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/final_Source/include/bsp/native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "bytes": 8771,
+      "role": "unchanged actual provider or old typed API"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_string.cpp",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/final_Source/src/native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "bytes": 9121,
+      "role": "unchanged actual provider or old typed API"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_string_pool_storage.hpp",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/final_Source/include/bsp/native_string_pool_storage.hpp",
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "bytes": 2805,
+      "role": "unchanged actual provider or old typed API"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_string_pool_storage.cpp",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/final_Source/src/native_string_pool_storage.cpp",
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "bytes": 5103,
+      "role": "unchanged actual provider or old typed API"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\game_native_string_process.hpp",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/final_Source/include/bsp/game_native_string_process.hpp",
+      "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+      "bytes": 4306,
+      "role": "unchanged actual provider or old typed API"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\game_native_string_process.cpp",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/final_Source/src/game_native_string_process.cpp",
+      "sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b",
+      "bytes": 1407,
+      "role": "unchanged actual provider or old typed API"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\engine_seg4_6_9_cc13.hpp",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/final_Source/include/bsp/engine_seg4_6_9_cc13.hpp",
+      "sha256": "358e895205c893aa9e7d4b268bd0d03e1df341b61788ed849508e86235396591",
+      "bytes": 80179,
+      "role": "unchanged actual provider or old typed API"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\engine_seg4_6_9_cc13.cpp",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/final_Source/src/engine_seg4_6_9_cc13.cpp",
+      "sha256": "4af61380112228106643c62f1f331df96ed18b67e47397f6f6bac7cfe0c3a9bc",
+      "bytes": 88027,
+      "role": "unchanged actual provider or old typed API"
+    }
+  ],
+  "input_hashes": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\config\\target.json",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/inputs/config/target.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "bytes": 455,
+      "role": "unchanged tooling/registration input"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\tools\\bsp.py",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/inputs/tools/bsp.py",
+      "sha256": "133e2cf3f24f0402f6ed7d0e1dd5148c678c7ca10722633d1ec6cdc9b693a9ff",
+      "bytes": 84752,
+      "role": "unchanged tooling/registration input"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\tools\\ghidra_export.py",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/inputs/tools/ghidra_export.py",
+      "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "bytes": 14518,
+      "role": "unchanged tooling/registration input"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\tools\\ghidra_annotate.py",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/inputs/tools/ghidra_annotate.py",
+      "sha256": "aa170c357bb5e4ff20f170d77230570cdf8a1b2ee53e9b322581e1770b296bf6",
+      "bytes": 5016,
+      "role": "unchanged tooling/registration input"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\tools\\verify_report_calls.py",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/inputs/tools/verify_report_calls.py",
+      "sha256": "f3f412b6f8eaeb6c4b212e34cca6a2567c2ed4015d0a942268d752911f6913ef",
+      "bytes": 20467,
+      "role": "unchanged tooling/registration input"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\cmake\\startup.cmake",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/inputs/cmake/startup.cmake",
+      "sha256": "ae5416345c067c890b1197c25169c55745f31799c3e920580c54a205a46b1383",
+      "bytes": 265662,
+      "role": "unchanged tooling/registration input"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\build\\win32\\bsp_core.dir\\Release\\native_wide_string.obj",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/canonical_after/native_wide_string.obj",
+      "sha256": "49381806a1b8ccd4227fabf016395a4355a078fba6aae16ce794238c53cf6849",
+      "bytes": 3668,
+      "role": "frozen after canonical output; before version independently retained"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\build\\win32\\Release\\bsp_core.lib",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/canonical_after/bsp_core.lib",
+      "sha256": "ceec62a3cc871ec098c9e024e6e981c5850e129a173485d1dedcc697cb287a1b",
+      "bytes": 94124052,
+      "role": "frozen after canonical output; before version independently retained"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\build\\win32\\Release\\bsp_game.exe",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/canonical_after/bsp_game.exe",
+      "sha256": "fff422a1e6c4f0a8d445946b60ac78ec093c26646532d6de89d470f9f860cd03",
+      "bytes": 5636096,
+      "role": "frozen after canonical output; before version independently retained"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\build\\win32\\Release\\bsp_math_tests.exe",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/canonical_after/bsp_math_tests.exe",
+      "sha256": "5a26ed23c39c163596b4c5732a1f6ac5b05e3ba689796016e5de0bcf4cc60002",
+      "bytes": 846336,
+      "role": "frozen after canonical output; before version independently retained"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\build\\win32\\Release\\bsp_native_math_tests.exe",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/canonical_after/bsp_native_math_tests.exe",
+      "sha256": "d8fa9510c35920a34aa31f97b87da10402ecde52911277871a594c5d046c1961",
+      "bytes": 18432,
+      "role": "frozen after canonical output; before version independently retained"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\build\\win32\\Testing\\Temporary\\LastTest.log",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/canonical_after/LastTest.log",
+      "sha256": "6d4dbac3d1c9ca337e9574c457f0b8763683ecff84b1659435fe6f58d91b23a0",
+      "bytes": 2478,
+      "role": "frozen after canonical output; before version independently retained"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004c5e20\\assembly.txt",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/shared_after/assembly.txt",
+      "sha256": "c4e775b8e3421949e8692e3384534e02653ec357d4264867b8f3159f5a7dfb27",
+      "bytes": 639,
+      "role": "owned saved/refreshed export"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004c5e20\\decompiled.c",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/shared_after/decompiled.c",
+      "sha256": "60cb0fab9455bfb0dd031912f054c2a8365eb61ae4ed1448c4f01bf926ab7af7",
+      "bytes": 2166,
+      "role": "owned saved/refreshed export"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\config\\names\\004c0000.jsonl",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/ledger_final/config/names/004c0000.jsonl",
+      "sha256": "657d11eaf72ae0204867605dfa4aa4f050ebefb6a3f7eb43389b62bbb72ce278",
+      "bytes": 180306,
+      "role": "final shard, only owned4C5E20 row changes"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\config\\reconstruction\\004c0000.jsonl",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/ledger_final/config/reconstruction/004c0000.jsonl",
+      "sha256": "9067910915a9cf7554952941bef0654d56171631686bc905358324c758cd901a",
+      "bytes": 231606,
+      "role": "final shard, only owned4C5E20 row changes"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\local\\cc12_native_gui_text_rebuild_readiness_136\\native_audit.json",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/reused136/native_audit.json",
+      "sha256": "51c5b0bd68aa0f2e65f63c83e13fd07ebcabf0f2ec9158d24ad108b528c7537d",
+      "bytes": 31106,
+      "role": "captured136 Original/helper evidence reused, not rerun"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\local\\cc12_native_gui_text_rebuild_readiness_136\\original_004c5e20.bin",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/reused136/original_004c5e20.bin",
+      "sha256": "6741d4cc2dc99f68b8f6c489424b29e05eabf1f2167e586b5c903929eaf024b1",
+      "bytes": 57,
+      "role": "captured136 Original/helper evidence reused, not rerun"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\local\\cc12_native_gui_text_rebuild_readiness_136\\physical_004c5e20.txt",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/reused136/physical_004c5e20.txt",
+      "sha256": "2a841d359b8ea619966cf0aea6306bc5561c213f8c77460ee72c96d35dba2b97",
+      "bytes": 823,
+      "role": "captured136 Original/helper evidence reused, not rerun"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\reports\\cc12_native_gui_text_rebuild_readiness_136.json",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/reused136/report.json",
+      "sha256": "317518b0deec86fc0e4658d68e55288f789a3a52932884b7840880616748b67e",
+      "bytes": 92381,
+      "role": "captured136 readiness limits; not a new raw Text closure"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\local\\cc12_native_gui_text_rebuild_readiness_136\\artifact_manifest.json",
+      "copy": "local/cc12_native_wide_string_raw_assign_139/reused136/manifest.json",
+      "sha256": "e3861d8922a1a9a2ece8b1c00b995440a5cbce5371670f2b75c9fdb0b1b2cd3a",
+      "bytes": 71434,
+      "role": "captured136 manifest provenance"
+    }
+  ],
+  "limits": [
+    "new Source ABI and existing actual string/storage alias/failure domain only; no fixed Native invocation or drop-in binary/private CRT/FH3/SEH/fault timing compatibility",
+    "no new string owner/init/counter/global/callback/default/Noop shim/local cleanup/rollback/retry",
+    "all old typed API/provider inputs, Source file prefixes and all9 emitted functions/relocations preserved",
+    "raw ABA8D0/ABB1D0/cursor/whole-copy/Font/Text/layout/current-dispatch composition remains open per136",
+    "no binder, normal native Text activation, production capability or game-validation claim"
+  ],
+  "validation": {
+    "call_verifier": {
+      "tool": "tools/verify_report_calls.py",
+      "checked_rows": 1,
+      "failed_rows": 0,
+      "exit_code": 0,
+      "log": "local/cc12_native_wide_string_raw_assign_139/verify_calls.log"
+    },
+    "old_body_and_prefix_preservation": true,
+    "old_typed_API_changed": false,
+    "new_test_probe_or_behavior_execution": false,
+    "CMake_Main_or_normal_activation_changed": false,
+    "only_six_owned_files": true,
+    "sealed136_133_130_125_123_preserved": true
+  },
+  "documentation": {
+    "path": "docs/CC12_NATIVE_WIDE_STRING_RAW_ASSIGN_139.md",
+    "sha256": "853858ee119842399ec4da411a92386b438d565ed5e75f80a85d0f1c4acdc920"
+  },
+  "artifact_manifest": {
+    "path": "local/cc12_native_wide_string_raw_assign_139/artifact_manifest.json",
+    "report_included_no_self_hash_cycle": true,
+    "no_further_build_or_replacement_until_Root_capture": true
+  }
+}

@@ -1,0 +1,1975 @@
+{
+  "packet": "cc12_native_gui_text_rebuild_readiness_136",
+  "kind": "bounded read-only whole raw rebuild/layout readiness",
+  "baseline": {
+    "own_head": "45996dd54bcda66fe5f0c183444902eb9e0daa74",
+    "Main_head_observed_read_only": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+    "origin_Main_observed_read_only": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+    "no_merge": true,
+    "captured129_commit": "f01edb0bac0d89746162a635b9a3082f9fc14c07",
+    "Original": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "image_base": "00400000"
+    },
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "all_live_queries": "bsp.py ghidra wrappers; each Client verifies configured project/program before analysis batch"
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_each_live_batch": true
+  },
+  "verdict": {
+    "whole_raw_ABB1D0": "not implemented; missing genuine raw ABA8D0 provider",
+    "whole_raw_ABA8D0": "not implemented; typed supported-path records do not close raw receiver/operand/current-dispatch composition",
+    "one_next_candidate": "actual-header4C5E20 with direct real4C53E0 and SAME retained actual string storage",
+    "Source139_authorized_here": false,
+    "source_ready_or_production_activation_claim": false
+  },
+  "Original": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000"
+  },
+  "complete_bodies": [
+    {
+      "entry": "00abb1d0",
+      "end_exclusive": "00abb2b5",
+      "bytes": 229,
+      "sha256": "d1b88ac8fc24acb0f3bd7d21e57a7a567ff0a05e2771ff022248f52d1051b352",
+      "role": "complete normal function body",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00abb1d0.bin",
+      "instructions": 74,
+      "listing": "local/cc12_native_gui_text_rebuild_readiness_136/physical_00abb1d0.txt",
+      "existing_full_listing_starts_match": true
+    },
+    {
+      "entry": "00aba8d0",
+      "end_exclusive": "00abaec7",
+      "bytes": 1527,
+      "sha256": "81b87216443b038af05450c9d23a2348da40c546753edbba95265cdb6cea8ea8",
+      "role": "complete normal function body",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00aba8d0.bin",
+      "instructions": 451,
+      "listing": "local/cc12_native_gui_text_rebuild_readiness_136/physical_00aba8d0.txt",
+      "existing_full_listing_starts_match": true
+    },
+    {
+      "entry": "004c5e20",
+      "end_exclusive": "004c5e59",
+      "bytes": 57,
+      "sha256": "6741d4cc2dc99f68b8f6c489424b29e05eabf1f2167e586b5c903929eaf024b1",
+      "role": "complete normal function body",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_004c5e20.bin",
+      "instructions": 24,
+      "listing": "local/cc12_native_gui_text_rebuild_readiness_136/physical_004c5e20.txt",
+      "existing_full_listing_starts_match": true
+    }
+  ],
+  "calls": [
+    {
+      "address": "00abb1f9",
+      "native": "004c8dd0",
+      "function": "00abb1d0"
+    },
+    {
+      "address": "00abb20f",
+      "native": "004c5e60",
+      "function": "00abb1d0"
+    },
+    {
+      "address": "00abb22e",
+      "native": "004c53e0",
+      "function": "00abb1d0"
+    },
+    {
+      "address": "00abb262",
+      "native": "00419cc0",
+      "function": "00abb1d0"
+    },
+    {
+      "address": "00abb269",
+      "native": "00bd1510",
+      "function": "00abb1d0"
+    },
+    {
+      "address": "00abb275",
+      "native": "00aba8d0",
+      "function": "00abb1d0"
+    },
+    {
+      "address": "00abb29a",
+      "native": "00419cc0",
+      "function": "00abb1d0"
+    },
+    {
+      "address": "00abb2a1",
+      "native": "00bd1510",
+      "function": "00abb1d0"
+    },
+    {
+      "address": "00aba8ec",
+      "native": "00ab8530",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00aba8fa",
+      "native": "004c8dd0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00aba91c",
+      "native": "00a9ec30",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00aba945",
+      "native": "00c03a39",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00aba964",
+      "native": "00ab80c0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00aba96d",
+      "native": "00b74640",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00aba97b",
+      "native": "00b732c0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00aba98d",
+      "native": "004c5e20",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00aba9a7",
+      "native": "00b74640",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00aba9af",
+      "native": "00b732c0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00aba9c3",
+      "native": "00ab8400",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00aba9e4",
+      "native": "00ab8ce0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00aba9fe",
+      "native": "00b19210",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abaa2a",
+      "native": "0041e870",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abaa3c",
+      "native": "00b18b00",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abaa59",
+      "native": "00419cc0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abaa60",
+      "native": "00bd1510",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abaa6e",
+      "native": "0041e870",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abaa86",
+      "native": "00b18aa0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abaaa3",
+      "native": "00419cc0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abaaaa",
+      "native": "00bd1510",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abaab8",
+      "native": "0041e870",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abaad0",
+      "native": "00b18aa0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abaaed",
+      "native": "00419cc0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abaaf4",
+      "native": "00bd1510",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abab02",
+      "native": "0041e870",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abab1a",
+      "native": "00b18b20",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abab37",
+      "native": "00419cc0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abab3e",
+      "native": "00bd1510",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abab46",
+      "native": "00aa9f10",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abab54",
+      "native": "00b865a0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abab6a",
+      "native": "00aba270",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abab78",
+      "native": "00ab9fd0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abab91",
+      "native": "00b74640",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abab9b",
+      "native": "00b732c0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00ababa8",
+      "native": "00b73260",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00ababb2",
+      "native": "00b73bb0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00ababc1",
+      "native": "00b73b70",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00ababe7",
+      "native": "00b865a0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abac06",
+      "native": "00b189f0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abac1c",
+      "native": "00b19210",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abac24",
+      "native": "00aa9f10",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abac32",
+      "native": "0041e870",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abac48",
+      "native": "00b18b20",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abac65",
+      "native": "00419cc0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abac6c",
+      "native": "00bd1510",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abac7a",
+      "native": "0041e870",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abac92",
+      "native": "00b18b00",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abacaf",
+      "native": "00419cc0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abacb6",
+      "native": "00bd1510",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abacc4",
+      "native": "0041e870",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abacdc",
+      "native": "00b18aa0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abacf9",
+      "native": "00419cc0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abad00",
+      "native": "00bd1510",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abad0e",
+      "native": "0041e870",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abad26",
+      "native": "00b18aa0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abad43",
+      "native": "00419cc0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abad4a",
+      "native": "00bd1510",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abad58",
+      "native": "0041e870",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abad70",
+      "native": "00b18b20",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abad8d",
+      "native": "00419cc0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abad94",
+      "native": "00bd1510",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abada3",
+      "native": "00b74640",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abadaa",
+      "native": "00b732c0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abadb6",
+      "native": "00b179f0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abae6d",
+      "native": "00b6e680",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abae83",
+      "native": "00b6d890",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abaeaa",
+      "native": "00419cc0",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abaeb1",
+      "native": "00bd1510",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "004c5e31",
+      "native": "004c53e0",
+      "function": "004c5e20"
+    }
+  ],
+  "call_counts": {
+    "00abb1d0": 8,
+    "00aba8d0": 69,
+    "004c5e20": 1
+  },
+  "indirect_calls": [
+    {
+      "site": "00abab88",
+      "function": "00aba8d0",
+      "instruction": "call edx",
+      "operands": "current Text vptr, then current slot+50; same Text receiver and live Text+50 color address",
+      "known_original_table": "D5C6C8+50 atD5C718 -> AB6B50; numeric token only, no fixed Native invocation",
+      "provider_boundary": "same actual current-profile Source service, not typed Text reinterpretation"
+    },
+    {
+      "site": "00abae54",
+      "function": "00aba8d0",
+      "instruction": "call edx",
+      "operands": "fresh shadow receiver Text+188, then current vptr/current+2C; same stable local scale/scale/z float3",
+      "provider_boundary": "actual matching current-profile raw Node/Model service; captured129 existing body/provider limits remain"
+    }
+  ],
+  "physical_EH": [
+    {
+      "handler": "00cb81a0",
+      "handler_tail": "00bf6b43",
+      "funcinfo": "00def01c",
+      "words": [
+        "19930522",
+        "00000002",
+        "00def00c",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "actions": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00cb8190"
+        },
+        {
+          "state": 1,
+          "next_state": 0,
+          "action": "00cb8198"
+        }
+      ],
+      "action_bodies": [
+        {
+          "entry": "00cb8190",
+          "end_exclusive": "00cb8198",
+          "bytes": 8,
+          "sha256": "64b20afb8fce0a56f4b58b05b88d380803d3a77f7cfa398e476808bb9d7ad02f",
+          "role": "complete EH action through terminal JMP",
+          "live_equals_disk": true,
+          "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb8190.bin",
+          "physical": [
+            {
+              "site": "00cb8190",
+              "instruction": "lea ecx, [ebp - 0x14]"
+            },
+            {
+              "site": "00cb8193",
+              "instruction": "jmp 0x436430"
+            }
+          ],
+          "tail_target": "00436430"
+        },
+        {
+          "entry": "00cb8198",
+          "end_exclusive": "00cb81a0",
+          "bytes": 8,
+          "sha256": "8e91dcc442a580ba0d7ae23ad6e876a46484e20f1960b4306381d314fa4bc493",
+          "role": "complete EH action through terminal JMP",
+          "live_equals_disk": true,
+          "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb8198.bin",
+          "physical": [
+            {
+              "site": "00cb8198",
+              "instruction": "lea ecx, [ebp - 0x1c]"
+            },
+            {
+              "site": "00cb819b",
+              "instruction": "jmp 0x436430"
+            }
+          ],
+          "tail_target": "00436430"
+        }
+      ]
+    },
+    {
+      "handler": "00cb8130",
+      "handler_tail": "00bf6b43",
+      "funcinfo": "00deef20",
+      "words": [
+        "19930522",
+        "0000000a",
+        "00deef44",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "actions": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00cb80e0"
+        },
+        {
+          "state": 1,
+          "next_state": 0,
+          "action": "00cb80e8"
+        },
+        {
+          "state": 2,
+          "next_state": 0,
+          "action": "00cb80f0"
+        },
+        {
+          "state": 3,
+          "next_state": 0,
+          "action": "00cb80f8"
+        },
+        {
+          "state": 4,
+          "next_state": 0,
+          "action": "00cb8100"
+        },
+        {
+          "state": 5,
+          "next_state": 0,
+          "action": "00cb8108"
+        },
+        {
+          "state": 6,
+          "next_state": 0,
+          "action": "00cb8110"
+        },
+        {
+          "state": 7,
+          "next_state": 0,
+          "action": "00cb8118"
+        },
+        {
+          "state": 8,
+          "next_state": 0,
+          "action": "00cb8120"
+        },
+        {
+          "state": 9,
+          "next_state": 0,
+          "action": "00cb8128"
+        }
+      ],
+      "action_bodies": [
+        {
+          "entry": "00cb80e0",
+          "end_exclusive": "00cb80e8",
+          "bytes": 8,
+          "sha256": "4cdc2893a4dfdfae907c7606f90e438111f7647b70812c8b387b40fa141c9fa2",
+          "role": "complete EH action through terminal JMP",
+          "live_equals_disk": true,
+          "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb80e0.bin",
+          "physical": [
+            {
+              "site": "00cb80e0",
+              "instruction": "lea ecx, [ebp - 0x20]"
+            },
+            {
+              "site": "00cb80e3",
+              "instruction": "jmp 0x436430"
+            }
+          ],
+          "tail_target": "00436430"
+        },
+        {
+          "entry": "00cb80e8",
+          "end_exclusive": "00cb80f0",
+          "bytes": 8,
+          "sha256": "031b1ddc2a64539715d75fc5b8d26553b10ebc7edf2558ce53a691a3841356f8",
+          "role": "complete EH action through terminal JMP",
+          "live_equals_disk": true,
+          "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb80e8.bin",
+          "physical": [
+            {
+              "site": "00cb80e8",
+              "instruction": "lea ecx, [ebp - 0x18]"
+            },
+            {
+              "site": "00cb80eb",
+              "instruction": "jmp 0x41dd20"
+            }
+          ],
+          "tail_target": "0041dd20"
+        },
+        {
+          "entry": "00cb80f0",
+          "end_exclusive": "00cb80f8",
+          "bytes": 8,
+          "sha256": "7bc1c4840ce6ba3dca1e19c65c3dd20c184ff798fccfc7cc512550e90c00c1bf",
+          "role": "complete EH action through terminal JMP",
+          "live_equals_disk": true,
+          "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb80f0.bin",
+          "physical": [
+            {
+              "site": "00cb80f0",
+              "instruction": "lea ecx, [ebp - 0x18]"
+            },
+            {
+              "site": "00cb80f3",
+              "instruction": "jmp 0x41dd20"
+            }
+          ],
+          "tail_target": "0041dd20"
+        },
+        {
+          "entry": "00cb80f8",
+          "end_exclusive": "00cb8100",
+          "bytes": 8,
+          "sha256": "5665a5793ea31ad6a54fe751c3ea73ffbe5232981a4ef7e1796284a484e02cb8",
+          "role": "complete EH action through terminal JMP",
+          "live_equals_disk": true,
+          "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb80f8.bin",
+          "physical": [
+            {
+              "site": "00cb80f8",
+              "instruction": "lea ecx, [ebp - 0x18]"
+            },
+            {
+              "site": "00cb80fb",
+              "instruction": "jmp 0x41dd20"
+            }
+          ],
+          "tail_target": "0041dd20"
+        },
+        {
+          "entry": "00cb8100",
+          "end_exclusive": "00cb8108",
+          "bytes": 8,
+          "sha256": "f1b9f6edacea0316873f1f082aa1542429ed966a0f1c384850d6b5cdf96e2c7a",
+          "role": "complete EH action through terminal JMP",
+          "live_equals_disk": true,
+          "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb8100.bin",
+          "physical": [
+            {
+              "site": "00cb8100",
+              "instruction": "lea ecx, [ebp - 0x18]"
+            },
+            {
+              "site": "00cb8103",
+              "instruction": "jmp 0x41dd20"
+            }
+          ],
+          "tail_target": "0041dd20"
+        },
+        {
+          "entry": "00cb8108",
+          "end_exclusive": "00cb8110",
+          "bytes": 8,
+          "sha256": "3eacb49d906e2e509d1ac8dc1285e1f64ad1997133f7b5994278c2aa9b114f6d",
+          "role": "complete EH action through terminal JMP",
+          "live_equals_disk": true,
+          "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb8108.bin",
+          "physical": [
+            {
+              "site": "00cb8108",
+              "instruction": "lea ecx, [ebp - 0x18]"
+            },
+            {
+              "site": "00cb810b",
+              "instruction": "jmp 0x41dd20"
+            }
+          ],
+          "tail_target": "0041dd20"
+        },
+        {
+          "entry": "00cb8110",
+          "end_exclusive": "00cb8118",
+          "bytes": 8,
+          "sha256": "3c6022f5357cc679cd1552d1548cd4b61e8905d8909d172987a2ef5c3c8c3357",
+          "role": "complete EH action through terminal JMP",
+          "live_equals_disk": true,
+          "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb8110.bin",
+          "physical": [
+            {
+              "site": "00cb8110",
+              "instruction": "lea ecx, [ebp - 0x18]"
+            },
+            {
+              "site": "00cb8113",
+              "instruction": "jmp 0x41dd20"
+            }
+          ],
+          "tail_target": "0041dd20"
+        },
+        {
+          "entry": "00cb8118",
+          "end_exclusive": "00cb8120",
+          "bytes": 8,
+          "sha256": "5f8fabdd77802f5bcb53846cf7c222c79170a41eeaedfdad6de95332c1542704",
+          "role": "complete EH action through terminal JMP",
+          "live_equals_disk": true,
+          "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb8118.bin",
+          "physical": [
+            {
+              "site": "00cb8118",
+              "instruction": "lea ecx, [ebp - 0x18]"
+            },
+            {
+              "site": "00cb811b",
+              "instruction": "jmp 0x41dd20"
+            }
+          ],
+          "tail_target": "0041dd20"
+        },
+        {
+          "entry": "00cb8120",
+          "end_exclusive": "00cb8128",
+          "bytes": 8,
+          "sha256": "743abe9366d31ac8c22523251a0f5e9d38e7e7ea85f630b90dad451d2f9d5e72",
+          "role": "complete EH action through terminal JMP",
+          "live_equals_disk": true,
+          "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb8120.bin",
+          "physical": [
+            {
+              "site": "00cb8120",
+              "instruction": "lea ecx, [ebp - 0x18]"
+            },
+            {
+              "site": "00cb8123",
+              "instruction": "jmp 0x41dd20"
+            }
+          ],
+          "tail_target": "0041dd20"
+        },
+        {
+          "entry": "00cb8128",
+          "end_exclusive": "00cb8130",
+          "bytes": 8,
+          "sha256": "eb47c8400b3f80a8ce082e30c0c168ae8971f09702ec37618280d8943280e0bb",
+          "role": "complete EH action through terminal JMP",
+          "live_equals_disk": true,
+          "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb8128.bin",
+          "physical": [
+            {
+              "site": "00cb8128",
+              "instruction": "lea ecx, [ebp - 0x18]"
+            },
+            {
+              "site": "00cb812b",
+              "instruction": "jmp 0x41dd20"
+            }
+          ],
+          "tail_target": "0041dd20"
+        }
+      ]
+    }
+  ],
+  "physical_EH_spans": [
+    {
+      "entry": "00cb81a0",
+      "end_exclusive": "00cb81aa",
+      "bytes": 10,
+      "sha256": "0cd8d8d3ec1f0f85fc8bd0a82ef150bf5178831440398cce658c4ab7dd9a373d",
+      "role": "actual function-specific EH handler",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb81a0.bin"
+    },
+    {
+      "entry": "00def01c",
+      "end_exclusive": "00def040",
+      "bytes": 36,
+      "sha256": "6fed68743e31837a102bae0fb59c43d7fac050fb7d39a7197795fbd86eb42179",
+      "role": "full physical FH3 FuncInfo",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00def01c.bin"
+    },
+    {
+      "entry": "00def00c",
+      "end_exclusive": "00def01c",
+      "bytes": 16,
+      "sha256": "c8255cb71fdb057ba1041ba66fa0c85ed4b99f22939b8d2c6de3c8b93dabc257",
+      "role": "complete physical unwind map",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00def00c.bin"
+    },
+    {
+      "entry": "00cb8190",
+      "end_exclusive": "00cb8198",
+      "bytes": 8,
+      "sha256": "64b20afb8fce0a56f4b58b05b88d380803d3a77f7cfa398e476808bb9d7ad02f",
+      "role": "complete EH action through terminal JMP",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb8190.bin",
+      "physical": [
+        {
+          "site": "00cb8190",
+          "instruction": "lea ecx, [ebp - 0x14]"
+        },
+        {
+          "site": "00cb8193",
+          "instruction": "jmp 0x436430"
+        }
+      ],
+      "tail_target": "00436430"
+    },
+    {
+      "entry": "00cb8198",
+      "end_exclusive": "00cb81a0",
+      "bytes": 8,
+      "sha256": "8e91dcc442a580ba0d7ae23ad6e876a46484e20f1960b4306381d314fa4bc493",
+      "role": "complete EH action through terminal JMP",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb8198.bin",
+      "physical": [
+        {
+          "site": "00cb8198",
+          "instruction": "lea ecx, [ebp - 0x1c]"
+        },
+        {
+          "site": "00cb819b",
+          "instruction": "jmp 0x436430"
+        }
+      ],
+      "tail_target": "00436430"
+    },
+    {
+      "entry": "00cb8130",
+      "end_exclusive": "00cb813a",
+      "bytes": 10,
+      "sha256": "9158733662475dccfed8e2830148614b9cdf8f3182347d051f4f04963c4226e7",
+      "role": "actual function-specific EH handler",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb8130.bin"
+    },
+    {
+      "entry": "00deef20",
+      "end_exclusive": "00deef44",
+      "bytes": 36,
+      "sha256": "1e9f0f1929c2efe44f3753cd0df3841fb21722fc7d16dc2ee655429cb5c98125",
+      "role": "full physical FH3 FuncInfo",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00deef20.bin"
+    },
+    {
+      "entry": "00deef44",
+      "end_exclusive": "00deef94",
+      "bytes": 80,
+      "sha256": "25eb4bcdcb8f3f3556114a799a20db0e5fd108d3230784f0e75a8f539be7cb8d",
+      "role": "complete physical unwind map",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00deef44.bin"
+    },
+    {
+      "entry": "00cb80e0",
+      "end_exclusive": "00cb80e8",
+      "bytes": 8,
+      "sha256": "4cdc2893a4dfdfae907c7606f90e438111f7647b70812c8b387b40fa141c9fa2",
+      "role": "complete EH action through terminal JMP",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb80e0.bin",
+      "physical": [
+        {
+          "site": "00cb80e0",
+          "instruction": "lea ecx, [ebp - 0x20]"
+        },
+        {
+          "site": "00cb80e3",
+          "instruction": "jmp 0x436430"
+        }
+      ],
+      "tail_target": "00436430"
+    },
+    {
+      "entry": "00cb80e8",
+      "end_exclusive": "00cb80f0",
+      "bytes": 8,
+      "sha256": "031b1ddc2a64539715d75fc5b8d26553b10ebc7edf2558ce53a691a3841356f8",
+      "role": "complete EH action through terminal JMP",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb80e8.bin",
+      "physical": [
+        {
+          "site": "00cb80e8",
+          "instruction": "lea ecx, [ebp - 0x18]"
+        },
+        {
+          "site": "00cb80eb",
+          "instruction": "jmp 0x41dd20"
+        }
+      ],
+      "tail_target": "0041dd20"
+    },
+    {
+      "entry": "00cb80f0",
+      "end_exclusive": "00cb80f8",
+      "bytes": 8,
+      "sha256": "7bc1c4840ce6ba3dca1e19c65c3dd20c184ff798fccfc7cc512550e90c00c1bf",
+      "role": "complete EH action through terminal JMP",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb80f0.bin",
+      "physical": [
+        {
+          "site": "00cb80f0",
+          "instruction": "lea ecx, [ebp - 0x18]"
+        },
+        {
+          "site": "00cb80f3",
+          "instruction": "jmp 0x41dd20"
+        }
+      ],
+      "tail_target": "0041dd20"
+    },
+    {
+      "entry": "00cb80f8",
+      "end_exclusive": "00cb8100",
+      "bytes": 8,
+      "sha256": "5665a5793ea31ad6a54fe751c3ea73ffbe5232981a4ef7e1796284a484e02cb8",
+      "role": "complete EH action through terminal JMP",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb80f8.bin",
+      "physical": [
+        {
+          "site": "00cb80f8",
+          "instruction": "lea ecx, [ebp - 0x18]"
+        },
+        {
+          "site": "00cb80fb",
+          "instruction": "jmp 0x41dd20"
+        }
+      ],
+      "tail_target": "0041dd20"
+    },
+    {
+      "entry": "00cb8100",
+      "end_exclusive": "00cb8108",
+      "bytes": 8,
+      "sha256": "f1b9f6edacea0316873f1f082aa1542429ed966a0f1c384850d6b5cdf96e2c7a",
+      "role": "complete EH action through terminal JMP",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb8100.bin",
+      "physical": [
+        {
+          "site": "00cb8100",
+          "instruction": "lea ecx, [ebp - 0x18]"
+        },
+        {
+          "site": "00cb8103",
+          "instruction": "jmp 0x41dd20"
+        }
+      ],
+      "tail_target": "0041dd20"
+    },
+    {
+      "entry": "00cb8108",
+      "end_exclusive": "00cb8110",
+      "bytes": 8,
+      "sha256": "3eacb49d906e2e509d1ac8dc1285e1f64ad1997133f7b5994278c2aa9b114f6d",
+      "role": "complete EH action through terminal JMP",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb8108.bin",
+      "physical": [
+        {
+          "site": "00cb8108",
+          "instruction": "lea ecx, [ebp - 0x18]"
+        },
+        {
+          "site": "00cb810b",
+          "instruction": "jmp 0x41dd20"
+        }
+      ],
+      "tail_target": "0041dd20"
+    },
+    {
+      "entry": "00cb8110",
+      "end_exclusive": "00cb8118",
+      "bytes": 8,
+      "sha256": "3c6022f5357cc679cd1552d1548cd4b61e8905d8909d172987a2ef5c3c8c3357",
+      "role": "complete EH action through terminal JMP",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb8110.bin",
+      "physical": [
+        {
+          "site": "00cb8110",
+          "instruction": "lea ecx, [ebp - 0x18]"
+        },
+        {
+          "site": "00cb8113",
+          "instruction": "jmp 0x41dd20"
+        }
+      ],
+      "tail_target": "0041dd20"
+    },
+    {
+      "entry": "00cb8118",
+      "end_exclusive": "00cb8120",
+      "bytes": 8,
+      "sha256": "5f8fabdd77802f5bcb53846cf7c222c79170a41eeaedfdad6de95332c1542704",
+      "role": "complete EH action through terminal JMP",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb8118.bin",
+      "physical": [
+        {
+          "site": "00cb8118",
+          "instruction": "lea ecx, [ebp - 0x18]"
+        },
+        {
+          "site": "00cb811b",
+          "instruction": "jmp 0x41dd20"
+        }
+      ],
+      "tail_target": "0041dd20"
+    },
+    {
+      "entry": "00cb8120",
+      "end_exclusive": "00cb8128",
+      "bytes": 8,
+      "sha256": "743abe9366d31ac8c22523251a0f5e9d38e7e7ea85f630b90dad451d2f9d5e72",
+      "role": "complete EH action through terminal JMP",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb8120.bin",
+      "physical": [
+        {
+          "site": "00cb8120",
+          "instruction": "lea ecx, [ebp - 0x18]"
+        },
+        {
+          "site": "00cb8123",
+          "instruction": "jmp 0x41dd20"
+        }
+      ],
+      "tail_target": "0041dd20"
+    },
+    {
+      "entry": "00cb8128",
+      "end_exclusive": "00cb8130",
+      "bytes": 8,
+      "sha256": "eb47c8400b3f80a8ce082e30c0c168ae8971f09702ec37618280d8943280e0bb",
+      "role": "complete EH action through terminal JMP",
+      "live_equals_disk": true,
+      "artifact": "local/cc12_native_gui_text_rebuild_readiness_136/original_00cb8128.bin",
+      "physical": [
+        {
+          "site": "00cb8128",
+          "instruction": "lea ecx, [ebp - 0x18]"
+        },
+        {
+          "site": "00cb812b",
+          "instruction": "jmp 0x41dd20"
+        }
+      ],
+      "tail_target": "0041dd20"
+    }
+  ],
+  "operand_data": [
+    {
+      "entry": "00ce3a0c",
+      "bytes": 1,
+      "hex": "00",
+      "origin": "unchanged installed Original data; numeric operand identity, not callable host code"
+    },
+    {
+      "entry": "00cef1b8",
+      "bytes": 8,
+      "hex": "0000000000808640",
+      "origin": "unchanged installed Original data; numeric operand identity, not callable host code"
+    },
+    {
+      "entry": "00ce3800",
+      "bytes": 4,
+      "hex": "0000003f",
+      "origin": "unchanged installed Original data; numeric operand identity, not callable host code"
+    },
+    {
+      "entry": "00ce69d0",
+      "bytes": 4,
+      "hex": "000000bf",
+      "origin": "unchanged installed Original data; numeric operand identity, not callable host code"
+    },
+    {
+      "entry": "00d5c718",
+      "bytes": 4,
+      "hex": "506bab00",
+      "origin": "unchanged installed Original data; numeric operand identity, not callable host code"
+    }
+  ],
+  "ABB1D0_contract": {
+    "ABI": "ECX actual same Text, no stack args, RET atABB2B4, no meaningful EAX result; EBX/EBP/ESI/EDI saved; new Source API would not reproduce private native frame ABI",
+    "normal": [
+      "capture Text+EC header identity; real4C8DD0 constructs saved local before state0",
+      "state0 before real4C5E60 on distinct empty header using actual CE3A0C byte-NUL",
+      "capture empty data then length, compare identity, store state1, real4C53E0 with captured length/preserve1",
+      "only captured nonzero length streams WORDs through NUL into current destination data",
+      "consume1->0 before captured empty return through actual419CC0/BD1510",
+      "realABA8D0 sameText/savedHeader only after empty return",
+      "consume0->-1 before final captured saved-backing return; no success Text/child teardown"
+    ],
+    "failure": "failed local constructor never arms that local; EH map destroys completed locals only, no old-text restoration or graphics rollback; actual outer base/owner obligations remain caller-owned",
+    "old_typed_body": "gui_text_runtime_submit copies std::u16string into an outer typed continuation and swaps current text empty, then typed build_gui_text_content; this is not actual8B header storage/pooled cleanup/raw ABI"
+  },
+  "ABA8D0_contract": {
+    "ABI": "ECX actual Text; one stack actual8B UTF16 header pointer; RET4 atABAEC4; EBP/ESI saved, EBX/EDI only changed-content path",
+    "prefix": "realAB8530 before input load/copy; currentText+108/font+48 read/test before explicit state0 store atABA90B; optional uppercase reloads currentF8BC4C; exact empty gates/realC03A39 after earlier providers",
+    "null_font": "late height null guard is not permission for null at earlier unconditional BYTE+48",
+    "changed": "zero width114, realAB80C0, currentModel4C -> actual mesh/section0, actual4C5E20 before local-length empty decision",
+    "empty": "main section+18 then+10 zero, fresh shadow188/model/section then same fields zero; no inferred automatic stream retirement",
+    "nonempty": "realAB8400 capacity/current mesh; captured material; reset exact section fields; save EnsureFontShader AL in consumed argument slot; real name headers/states1..4; x87 +94/+1D4 FLD/FSTP into+1DC/+1E0; real layout before current+FC selects builder",
+    "shadow": "current Text+50 dispatch; reloadshadow188; real setters share main stream0 then currentmain+60 index; copy section fields in order; mainmaterial signedWORD+34 positive gate selects texture+10 else0; captured AL selects shadow material setup/name states5..9",
+    "material_shader_correction": "+7C atABAC16 is captured primary MATERIAL shader, not font; no raw font+7C claim",
+    "late_color_height": "material diffuse getter before currentText168..174 word copies; reread the font pointer at currentText+108 and sign-extend its lowWORD+14; x87 signedheight / double720 * currentfloat164 with floatspill; current160 chooses actual+0.5/-0.5",
+    "overlap": "saved AL and late height/scale reuse consumed incoming argument slot; local narrow-header area reused for float3 only under state0; never a second caller bool or default-zero temporary",
+    "tail": "fresh shadow currenttable+2C, then current15C/4C/188 parenting/root registration; consume state0 to-1 before saved wide return",
+    "failure": "10-state map owns one completed wide and active narrow temporary only; no acquired graphics/creator/child/unlock cleanup follows from it; prehold/retain every reached resource, context, backing and distinct recursive frame",
+    "not_proven": "native FH3/SEH/x87 control/fault timing/private spill ABI, mutable raw-font/layout binding or production execution"
+  },
+  "provider_matrix": [
+    {
+      "requirement": "saved/empty wide headers and pool return",
+      "existing": "native_wide_string raw4C8DD0/4C5E60/4C53E0/436430, actual existing GameNativeStringProcess::strings() and raw pool context",
+      "boundary": "same actual8B headers/backing, current pool/manager authority, retained storage and accepted Source failure/noexcept domain",
+      "status": "genuine lower bodies exist"
+    },
+    {
+      "requirement": "actual stored-text assignment4C5E20",
+      "existing": "engine_seg4_6_9_cc13 NativeWideString/std::function resize API; complete typed algorithm exists",
+      "boundary": "no direct actual-header plus genuine-storage entry; do not cast raw Text bytes to a typed object or inject a fake resize",
+      "status": "small ready raw-input/provider capability; no new algorithm claim"
+    },
+    {
+      "requirement": "sections/glyph children/lifetime",
+      "existing": "whole raw85 sections,113 glyph children,118 retirement and122 same-count actualText identity/owner registry",
+      "boundary": "preheld same actual resources/registry/pool/string/current-dispatch contexts and fresh persistent nested frames; this does not implement raw layout methods",
+      "status": "genuine providers within explicit admitted domain"
+    },
+    {
+      "requirement": "font association and reached raw operands",
+      "existing": "real initial Font producer, stable FontRegistryStartup descriptor identity and NativeFontResourceOwners actual image association",
+      "boundary": "raw Text+108->BYTE+48 before equality and fresh Text+108->signed WORD+14 late need a genuine correspondence; FontDescriptor/NativeFontResources C++ objects are not raw nativeFont storage",
+      "status": "existing association acknowledged; exact raw receiver/value-authority seam unclosed"
+    },
+    {
+      "requirement": "glyph buffers/renderer/layout",
+      "existing": "AB8400 complete normal path; actual renderer declaration/vertex/index adapters; concrete GuiTextNativeLayoutServices; real raw mesh/material/stream bodies",
+      "boundary": "same owner registry, current renderer/stream/layout profiles, original release ordering and retained acquired/creator frames; abstract interfaces alone are insufficient",
+      "status": "real subproviders exist; no full raw ABA composition implied"
+    },
+    {
+      "requirement": "builders/shader/material/current dispatch",
+      "existing": "single-line/wrapped/quad/material work and captured129 raw-node providers",
+      "boundary": "builder APIs still consume GuiTextLifetime/typedText and pending frames; current actualText+50/shadow+2C, stored string, font and material operand composition is not supplied by a typed cast or callback facade",
+      "status": "whole raw ABA8D0 and ABB1D0 remain named gaps"
+    },
+    {
+      "requirement": "comparison/uppercase locale authority",
+      "existing": "A9EC30 NativeWideStringHeader/LocaleTables/LocaleTextRuntimeHost and explicit owning-UCRT Source-current comparator; reconstructed C03A39/C0392A bounded services",
+      "boundary": "Source-owning UCRT then-current _wcsicmp uses wchar_t copies and its own failure/RTTI/locale domain; no real Original PTD/locale/global provider is created by these services",
+      "status": "honest supplied/Source domains only; no fake flag or current-locale default"
+    }
+  ],
+  "one_next_plan": {
+    "scope": "whole4C5E20 raw-header input/provider capability only, existing typed algorithm preserved; Root suggested later Source139 after capture/API approval",
+    "files": [
+      "include/bsp/native_wide_string.hpp",
+      "src/native_wide_string.cpp"
+    ],
+    "proposed_api": "void* assign_native_wide_string_header_004c5e20(void* dst8,const void* src8,NativeStringStorage& same_storage)",
+    "actual_service": "direct existing resize_native_wide_string_header_004c53e0 with SAME actual retained GameNativeStringProcess::strings() domain; no resize std::function/default/fake provider",
+    "ordering": [
+      "self address comparison before any header read; return same identity without initialization/release",
+      "otherwise capture source length and realresize(dst,capturedLength,preserve1)",
+      "reload current source length after resize; zero skips both data reads",
+      "nonzero captures current source data then current destination data",
+      "load WORD/store/advance both/test captured WORD/repeat through NUL",
+      "return same destination; no local cleanup/rollback"
+    ],
+    "domain": "valid actual8B headers, current reached backing through NUL, same original valid overlap/alias domain and retained actual process/storage through callbacks; inherit genuine resize/storage Source failure/noexcept contract",
+    "not_added": "no header defaults/copies/new owner/counter/global/Native call/typedText cast/callback facade; no wholeABA8D0/ABB1D0 or cursor/copy closure",
+    "ABI": "Original thiscall/RET4 proof retained, future Source API is new and does not claim drop-in Native binary or EH compatibility"
+  },
+  "source_hashes": [
+    {
+      "path": "include/bsp/native_wide_string.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_wide_string.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "112fd010ebb24daeebcc5b4717c94e1c53666d7f",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/native_wide_string.hpp",
+      "sha256": "d9499a98a3379366390eac87f3b6bca7ebb452e8e19e96d3e7a354295c6e8bc0",
+      "bytes": 3513,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/native_wide_string.hpp",
+      "git_tree_sha256": "d9499a98a3379366390eac87f3b6bca7ebb452e8e19e96d3e7a354295c6e8bc0",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "src/native_wide_string.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_wide_string.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "f89645d6ee53c285a116772c0ce2a7d3c7a9f774",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/native_wide_string.cpp",
+      "sha256": "319fd69f6ba6700dbcc3dec688166ad3a1492137e844299e8067fd067c130fd7",
+      "bytes": 6154,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/native_wide_string.cpp",
+      "git_tree_sha256": "319fd69f6ba6700dbcc3dec688166ad3a1492137e844299e8067fd067c130fd7",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_string.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "bytes": 8771,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/native_string.hpp",
+      "git_tree_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "src/native_string.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_string.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "bytes": 9121,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/native_string.cpp",
+      "git_tree_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\game_native_string_process.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "30bbfe627b4ea7b4f453ec68422363c35479a3a8",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/game_native_string_process.hpp",
+      "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+      "bytes": 4306,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/game_native_string_process.hpp",
+      "git_tree_sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\game_native_string_process.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "1c660fa6417f9fbc277b821d0ad7d83587fcbed5",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/game_native_string_process.cpp",
+      "sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b",
+      "bytes": 1407,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/game_native_string_process.cpp",
+      "git_tree_sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "include/bsp/engine_seg4_6_9_cc13.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\engine_seg4_6_9_cc13.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "16728e557deab4673a0a711f122ece96e9029beb",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/engine_seg4_6_9_cc13.hpp",
+      "sha256": "358e895205c893aa9e7d4b268bd0d03e1df341b61788ed849508e86235396591",
+      "bytes": 80179,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/engine_seg4_6_9_cc13.hpp",
+      "git_tree_sha256": "358e895205c893aa9e7d4b268bd0d03e1df341b61788ed849508e86235396591",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "src/engine_seg4_6_9_cc13.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\engine_seg4_6_9_cc13.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "4baba9bba6ded92a71ca5f2b554e613926b8378b",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/engine_seg4_6_9_cc13.cpp",
+      "sha256": "4af61380112228106643c62f1f331df96ed18b67e47397f6f6bac7cfe0c3a9bc",
+      "bytes": 88027,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/engine_seg4_6_9_cc13.cpp",
+      "git_tree_sha256": "4af61380112228106643c62f1f331df96ed18b67e47397f6f6bac7cfe0c3a9bc",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "include/bsp/gui_text_content.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\gui_text_content.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "9660c18c9fc23fe8dfff0ac7e5a4525d6cf36ecb",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/gui_text_content.hpp",
+      "sha256": "8f2198eb3e3c761abac885b62b0c0576f1c44e7e40315a706fa53109544d5b81",
+      "bytes": 10116,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/gui_text_content.hpp",
+      "git_tree_sha256": "8f2198eb3e3c761abac885b62b0c0576f1c44e7e40315a706fa53109544d5b81",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "src/gui_text_content.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\gui_text_content.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "739ea43d46fd7ebaeb89df4e53f8d06721bfb876",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/gui_text_content.cpp",
+      "sha256": "bf41cef8a8d3f041abc1452499a4c9b7e20fc5deb23cd61baf34d7b5364eab9b",
+      "bytes": 23445,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/gui_text_content.cpp",
+      "git_tree_sha256": "bf41cef8a8d3f041abc1452499a4c9b7e20fc5deb23cd61baf34d7b5364eab9b",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "include/bsp/gui_text_runtime_content.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\gui_text_runtime_content.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "81221871c96a0d00fa86770253b763283ab75a5d",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/gui_text_runtime_content.hpp",
+      "sha256": "5fe9439522d277d9ff49053a6867227dcc7562afb47f38bc900dd86f112b6992",
+      "bytes": 3852,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/gui_text_runtime_content.hpp",
+      "git_tree_sha256": "5fe9439522d277d9ff49053a6867227dcc7562afb47f38bc900dd86f112b6992",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "src/gui_text_runtime_content.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\gui_text_runtime_content.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "4431237665b93936455a733100adfe0d068103a7",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/gui_text_runtime_content.cpp",
+      "sha256": "f9d0985c5b85bbe3775d2112a9459d8f9fd605773120851a6b9d7d97a10eff58",
+      "bytes": 9534,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/gui_text_runtime_content.cpp",
+      "git_tree_sha256": "f9d0985c5b85bbe3775d2112a9459d8f9fd605773120851a6b9d7d97a10eff58",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "include/bsp/gui_text_runtime_submit.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\gui_text_runtime_submit.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "c59c513a3d9d36576b7dd372f455cf442132449e",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/gui_text_runtime_submit.hpp",
+      "sha256": "8dccf4cf326882912ad12d474f1893a6ad3065c948dcdc87238a8f2bff22dfa0",
+      "bytes": 3732,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/gui_text_runtime_submit.hpp",
+      "git_tree_sha256": "8dccf4cf326882912ad12d474f1893a6ad3065c948dcdc87238a8f2bff22dfa0",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "src/gui_text_runtime_submit.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\gui_text_runtime_submit.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "92688d358786c62a8659c0d73fe992dc2a5cd632",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/gui_text_runtime_submit.cpp",
+      "sha256": "07ba6903b0ccc9e8c24b07f9e8e0aa85bf72938f0aad1b977999e945ffb8efea",
+      "bytes": 6697,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/gui_text_runtime_submit.cpp",
+      "git_tree_sha256": "07ba6903b0ccc9e8c24b07f9e8e0aa85bf72938f0aad1b977999e945ffb8efea",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "include/bsp/gui_text_buffers.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\gui_text_buffers.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "53911d9001f31d73ae706a5dc6cd350c27749cfd",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/gui_text_buffers.hpp",
+      "sha256": "80c262bf3a456c6ac81849d8636f20a31cd6616bf974874d4d5494e89b12c2d0",
+      "bytes": 2900,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/gui_text_buffers.hpp",
+      "git_tree_sha256": "80c262bf3a456c6ac81849d8636f20a31cd6616bf974874d4d5494e89b12c2d0",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "src/gui_text_buffers.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\gui_text_buffers.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "94e485723f1303a6e15833b9e142d7982b7fe383",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/gui_text_buffers.cpp",
+      "sha256": "a729a73760e188888f45d6deb24f1bd0f7effba466f7c6394d53c2bedea38edd",
+      "bytes": 3691,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/gui_text_buffers.cpp",
+      "git_tree_sha256": "a729a73760e188888f45d6deb24f1bd0f7effba466f7c6394d53c2bedea38edd",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "include/bsp/gui_text_single_line.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\gui_text_single_line.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "f6db9ccc437534487d065686ff6628d14510c945",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/gui_text_single_line.hpp",
+      "sha256": "5a675a2f32cd822917a1b3492e0e00f4f2b88d00f13eab6371fa0d826ba2e122",
+      "bytes": 3569,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/gui_text_single_line.hpp",
+      "git_tree_sha256": "5a675a2f32cd822917a1b3492e0e00f4f2b88d00f13eab6371fa0d826ba2e122",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "src/gui_text_single_line.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\gui_text_single_line.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "e11d62f3f99a712b126f4f57598ce1efdf52a952",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/gui_text_single_line.cpp",
+      "sha256": "09fe14c9650c2bbdca921b7ae9c0ead47c4b24e4fd10dc5205bdff1319f9cc45",
+      "bytes": 7564,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/gui_text_single_line.cpp",
+      "git_tree_sha256": "09fe14c9650c2bbdca921b7ae9c0ead47c4b24e4fd10dc5205bdff1319f9cc45",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "include/bsp/gui_text_wrapped.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\gui_text_wrapped.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "b8deda4329aa37668612c291ad1d99c4c46f25b4",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/gui_text_wrapped.hpp",
+      "sha256": "6cd8f3b733e9fa093d4b2909f652c7cd2cde7b3eb7081d9c14ba3ac1f82669ed",
+      "bytes": 4800,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/gui_text_wrapped.hpp",
+      "git_tree_sha256": "6cd8f3b733e9fa093d4b2909f652c7cd2cde7b3eb7081d9c14ba3ac1f82669ed",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "src/gui_text_wrapped.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\gui_text_wrapped.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "413406795d0ffd40366f9845a2859bb7dde36454",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/gui_text_wrapped.cpp",
+      "sha256": "eec753ea08c266c1eb9d60116801cfff135f18e9abd7f72dc8fa771f995b9945",
+      "bytes": 16488,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/gui_text_wrapped.cpp",
+      "git_tree_sha256": "eec753ea08c266c1eb9d60116801cfff135f18e9abd7f72dc8fa771f995b9945",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "include/bsp/gui_text_resource_names.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\gui_text_resource_names.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "8f31f397bb6f9a0d98286395d90ead69b61057e7",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/gui_text_resource_names.hpp",
+      "sha256": "517e8fe7c79b09c42d4f0af589e17f912e88c582e8cb322cef38260355ab2415",
+      "bytes": 4676,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/gui_text_resource_names.hpp",
+      "git_tree_sha256": "517e8fe7c79b09c42d4f0af589e17f912e88c582e8cb322cef38260355ab2415",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "src/gui_text_resource_names.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\gui_text_resource_names.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "85eb4303d096bc015727ba19a4ef5cdd324bd94b",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/gui_text_resource_names.cpp",
+      "sha256": "dca7270d9e38c6a6507c2c367221ff8f73e3caba67b4fe8fc1ea9a0f0fb7e57a",
+      "bytes": 5713,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/gui_text_resource_names.cpp",
+      "git_tree_sha256": "dca7270d9e38c6a6507c2c367221ff8f73e3caba67b4fe8fc1ea9a0f0fb7e57a",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "include/bsp/native_font_resources.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_font_resources.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "5fd7d4e25176f5ef8910a417e5b6ee380ead66aa",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/native_font_resources.hpp",
+      "sha256": "86b054ccf2ae873195e803e1d97d01c31247cf4e0e174c12bcfcaf8b150e7e48",
+      "bytes": 4298,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/native_font_resources.hpp",
+      "git_tree_sha256": "86b054ccf2ae873195e803e1d97d01c31247cf4e0e174c12bcfcaf8b150e7e48",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "src/native_font_resources.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_font_resources.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "5cf3fc746c8fbf6ae0954ed996131ad4d26f8181",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/native_font_resources.cpp",
+      "sha256": "8e61d9e701b0cc181749cdac04e45be5d4931da13bce2ceda28e90d3a5a9e26b",
+      "bytes": 6097,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/native_font_resources.cpp",
+      "git_tree_sha256": "8e61d9e701b0cc181749cdac04e45be5d4931da13bce2ceda28e90d3a5a9e26b",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "include/bsp/gui_text_native_renderer.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\gui_text_native_renderer.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "45aff1d95bc11528ebff9dba43c5b8b402747f61",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/gui_text_native_renderer.hpp",
+      "sha256": "9ee3aeaa194ebf677efd3e96817b057d7093bf08bed72702fd44f45edee4a572",
+      "bytes": 2743,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/gui_text_native_renderer.hpp",
+      "git_tree_sha256": "9ee3aeaa194ebf677efd3e96817b057d7093bf08bed72702fd44f45edee4a572",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "src/gui_text_native_renderer.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\gui_text_native_renderer.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "02a68b42f6d9f7cc81e9d66c90afe3794cedbe45",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/gui_text_native_renderer.cpp",
+      "sha256": "9f3753d2cc0232eea8dd990cc5c0e4a5f958145dbd8de35ba64860ab370c74e5",
+      "bytes": 5735,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/gui_text_native_renderer.cpp",
+      "git_tree_sha256": "9f3753d2cc0232eea8dd990cc5c0e4a5f958145dbd8de35ba64860ab370c74e5",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "include/bsp/gui_text_native_layout.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\gui_text_native_layout.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "a1662c4b968404f5e717169af7df9112161ba1ac",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/gui_text_native_layout.hpp",
+      "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3",
+      "bytes": 3064,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/gui_text_native_layout.hpp",
+      "git_tree_sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "src/gui_text_native_layout.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\gui_text_native_layout.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "2df50c70e9af956403bba76a2c43281d1f63c0ef",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/gui_text_native_layout.cpp",
+      "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d",
+      "bytes": 8285,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/gui_text_native_layout.cpp",
+      "git_tree_sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_gui_text_storage_construct.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "6e54e746ae3d36b65416198b0b2386ea0ad9ced1",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/native_gui_text_storage_construct.hpp",
+      "sha256": "2263f0a5cf044e3040c7f3f024a8d9899df1e7f0277db512f4db7d59976510f7",
+      "bytes": 4912,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/native_gui_text_storage_construct.hpp",
+      "git_tree_sha256": "2263f0a5cf044e3040c7f3f024a8d9899df1e7f0277db512f4db7d59976510f7",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_gui_text_storage_construct.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "d6540adb2754bc92a07a785cb25e867909a904a4",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/native_gui_text_storage_construct.cpp",
+      "sha256": "9cb60be1d88a03d4136ca9fe34243c8b980199192300456819bf2a46778a6200",
+      "bytes": 18917,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/native_gui_text_storage_construct.cpp",
+      "git_tree_sha256": "9cb60be1d88a03d4136ca9fe34243c8b980199192300456819bf2a46778a6200",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_children.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_gui_text_glyph_children.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "c5a7a2dc5aea299663866f07cb661d94c14c237a",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/native_gui_text_glyph_children.hpp",
+      "sha256": "441e4a25ab536b115d87bdc2de81778eda2dc4d47f61faced68485f1cc4e8b11",
+      "bytes": 3622,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/native_gui_text_glyph_children.hpp",
+      "git_tree_sha256": "441e4a25ab536b115d87bdc2de81778eda2dc4d47f61faced68485f1cc4e8b11",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "src/native_gui_text_glyph_children.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_gui_text_glyph_children.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "025cdd3d7fde5bb7b8b9e215da4d604c6d3a5407",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/native_gui_text_glyph_children.cpp",
+      "sha256": "cf9454f0b8e09ccd1fc9eeb7250daca7cccab0ad6b25969fd511b09968018081",
+      "bytes": 6167,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/native_gui_text_glyph_children.cpp",
+      "git_tree_sha256": "cf9454f0b8e09ccd1fc9eeb7250daca7cccab0ad6b25969fd511b09968018081",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "include/bsp/native_gui_text_retirement.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_gui_text_retirement.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "f7f4bc555417ffc82ef47114806c8f718e792b2e",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/native_gui_text_retirement.hpp",
+      "sha256": "2744353d2ae4c9041b2980360cdf3e499aae28cb1446519dc4ca7064e6e3a300",
+      "bytes": 5468,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/native_gui_text_retirement.hpp",
+      "git_tree_sha256": "2744353d2ae4c9041b2980360cdf3e499aae28cb1446519dc4ca7064e6e3a300",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "src/native_gui_text_retirement.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_gui_text_retirement.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "839dc285c3d0f8e02af7e8fb30662809fe6eb9d0",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/native_gui_text_retirement.cpp",
+      "sha256": "60993aaade168fe8ec23468d787a61093c51b200a49e1a193663b560a0384bd3",
+      "bytes": 13327,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/native_gui_text_retirement.cpp",
+      "git_tree_sha256": "60993aaade168fe8ec23468d787a61093c51b200a49e1a193663b560a0384bd3",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_gui_text_reference.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "1dafde7cd10809d808b9c047ab6b0bd37d906528",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/native_gui_text_reference.hpp",
+      "sha256": "38f58de520071568c6d394d7be20c482c2f962a5eb5462b49e5af9fb0eb21cf8",
+      "bytes": 6122,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/native_gui_text_reference.hpp",
+      "git_tree_sha256": "38f58de520071568c6d394d7be20c482c2f962a5eb5462b49e5af9fb0eb21cf8",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "src/native_gui_text_reference.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_gui_text_reference.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "534e5353d82da296b0a9a49be1226d458837326d",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/native_gui_text_reference.cpp",
+      "sha256": "1d494c7f670bed4478837423f598d698f8e86ddb832e04b8ca9b1311e221eae7",
+      "bytes": 15134,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/native_gui_text_reference.cpp",
+      "git_tree_sha256": "1d494c7f670bed4478837423f598d698f8e86ddb832e04b8ca9b1311e221eae7",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "include/bsp/native_node_raw_transform.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\native_node_raw_transform.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "661f7f340b036a00664ec7026b58e72d7b3124cb",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/native_node_raw_transform.hpp",
+      "sha256": "53f7d50855779206ce1faff86469948e4ff4fa9c0d376d68fbba1b4a48e3884d",
+      "bytes": 407,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/native_node_raw_transform.hpp",
+      "git_tree_sha256": "53f7d50855779206ce1faff86469948e4ff4fa9c0d376d68fbba1b4a48e3884d",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "src/native_node_raw_transform.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\native_node_raw_transform.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "385cd3d10d2e31e8249a85b90cd4342a29444d51",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/native_node_raw_transform.cpp",
+      "sha256": "31a50a5e6e6efd27bb2d32851cc6836b6aabb1a924eefa384363e561deb4e257",
+      "bytes": 2873,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/native_node_raw_transform.cpp",
+      "git_tree_sha256": "31a50a5e6e6efd27bb2d32851cc6836b6aabb1a924eefa384363e561deb4e257",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": true
+    },
+    {
+      "path": "include/bsp/game_hosts_text.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\game_hosts_text.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "edc9c0893b94daea6615135f930635730280f765",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/game_hosts_text.hpp",
+      "sha256": "5109cf052d8df1f2e3209846c12da037cdc2bc6cca10920060f28f7c4dec8b3c",
+      "bytes": 7792,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/game_hosts_text.hpp",
+      "git_tree_sha256": "5109cf052d8df1f2e3209846c12da037cdc2bc6cca10920060f28f7c4dec8b3c",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "src/game_hosts_text.cpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\src\\game_hosts_text.cpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "b5ed79d19cf64d08b0b509107f2cece86e1cc297",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/src/game_hosts_text.cpp",
+      "sha256": "8e06d78bbe8541aec0219eaa32294567b86dd71ab448aa1641b217860a5904c3",
+      "bytes": 37825,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/src/game_hosts_text.cpp",
+      "git_tree_sha256": "8e06d78bbe8541aec0219eaa32294567b86dd71ab448aa1641b217860a5904c3",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "include/bsp/gui_text.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\gui_text.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "de0e59fcfbaaa26e246e601dd9d23d37ca8000f8",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/gui_text.hpp",
+      "sha256": "0bae8f4bb3f2593cd4ec286eb96219e6075e4825893542bba3c6be69da69eb88",
+      "bytes": 15565,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/gui_text.hpp",
+      "git_tree_sha256": "0bae8f4bb3f2593cd4ec286eb96219e6075e4825893542bba3c6be69da69eb88",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    },
+    {
+      "path": "include/bsp/font_data.hpp",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\include\\bsp\\font_data.hpp",
+      "origin": "unchanged own133 Source; identical to observed committed Main ignoring checkout line endings",
+      "git_commit": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+      "git_blob": "1b04d267ef910dee68c99353c639cd6acdb8da99",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/sources/include/bsp/font_data.hpp",
+      "sha256": "f7a1f433fb7f0466873da79a6da0b45944df5965fbe756715682265afd257c49",
+      "bytes": 2515,
+      "git_tree_copy": "local/cc12_native_gui_text_rebuild_readiness_136/committed_Main/include/bsp/font_data.hpp",
+      "git_tree_sha256": "f7a1f433fb7f0466873da79a6da0b45944df5965fbe756715682265afd257c49",
+      "own133_same_content_ignoring_checkout_line_endings": true,
+      "captured129_same_content_if_present": null
+    }
+  ],
+  "input_hashes": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\docs\\CC12_NATIVE_GUI_TEXT_COPY_PROVIDERS_READINESS_100.md",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/inputs/own133/docs/CC12_NATIVE_GUI_TEXT_COPY_PROVIDERS_READINESS_100.md",
+      "bytes": 11233,
+      "sha256": "c12303e5f836010daaf7368d6c4f47b27e4e7014aa0f190d9186422d675bc72c",
+      "role": "retained133 baseline input; not rerun or edited"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\reports\\cc12_native_gui_text_copy_providers_readiness_100.json",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/inputs/own133/reports/cc12_native_gui_text_copy_providers_readiness_100.json",
+      "bytes": 55974,
+      "sha256": "e2b8b09e470439b1200e76ce5b7e6eb3779d6e1a9d947461ffe1f8bbc1c5d774",
+      "role": "retained133 baseline input; not rerun or edited"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\docs\\CC12_NATIVE_GUI_TEXT_RETIREMENT_118.md",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/inputs/own133/docs/CC12_NATIVE_GUI_TEXT_RETIREMENT_118.md",
+      "bytes": 9906,
+      "sha256": "275c09cc74219709b57ff114d6360c8ced8291ea0e40b24760cbd7ca4264b121",
+      "role": "retained133 baseline input; not rerun or edited"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\reports\\cc12_native_gui_text_retirement_118.json",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/inputs/own133/reports/cc12_native_gui_text_retirement_118.json",
+      "bytes": 33912,
+      "sha256": "0c00dc6cf2c53dafb2307ed567358f40e80cc92e5d70bfcc1731bdded294cbb6",
+      "role": "retained133 baseline input; not rerun or edited"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\docs\\CC12_NATIVE_GUI_TEXT_ACTUAL_REFERENCE_122.md",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/inputs/own133/docs/CC12_NATIVE_GUI_TEXT_ACTUAL_REFERENCE_122.md",
+      "bytes": 15390,
+      "sha256": "a8c7c5dbb2cf59d5cf8135af8fd7fe9c740be1424ea8797459562f124a40c38a",
+      "role": "retained133 baseline input; not rerun or edited"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\reports\\cc12_native_gui_text_actual_reference_122.json",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/inputs/own133/reports/cc12_native_gui_text_actual_reference_122.json",
+      "bytes": 27889,
+      "sha256": "0e15353a9986ee7ed470218c750e901efe2efde0a8e2dffc2633dc5f2ef17574",
+      "role": "retained133 baseline input; not rerun or edited"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\config\\target.json",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/inputs/own133/config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "role": "retained133 baseline input; not rerun or edited"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\tools\\bsp.py",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/inputs/own133/tools/bsp.py",
+      "bytes": 84752,
+      "sha256": "133e2cf3f24f0402f6ed7d0e1dd5148c678c7ca10722633d1ec6cdc9b693a9ff",
+      "role": "retained133 baseline input; not rerun or edited"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\tools\\ghidra_export.py",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/inputs/own133/tools/ghidra_export.py",
+      "bytes": 14518,
+      "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "role": "retained133 baseline input; not rerun or edited"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_wcsicmp_locale_48\\tools\\verify_report_calls.py",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/inputs/own133/tools/verify_report_calls.py",
+      "bytes": 20467,
+      "sha256": "f3f412b6f8eaeb6c4b212e34cca6a2567c2ed4015d0a942268d752911f6913ef",
+      "role": "retained133 baseline input; not rerun or edited"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_cursor_projection_integration_134\\workers\\129_manifest\\docs\\CC12_NATIVE_GUI_TEXT_CURSOR_PROVIDERS_READINESS_129.md",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/inputs/captured129/docs/CC12_NATIVE_GUI_TEXT_CURSOR_PROVIDERS_READINESS_129.md",
+      "bytes": 15265,
+      "sha256": "53289551af192ad161bd3d1093dbd56f35eb9582f9083f1d0b19f1dc32765a1e",
+      "role": "Root134 captured129 exact receipt; repo commit f01edb0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_cursor_projection_integration_134\\workers\\129_manifest\\reports\\cc12_native_gui_text_cursor_providers_readiness_129.json",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/inputs/captured129/reports/cc12_native_gui_text_cursor_providers_readiness_129.json",
+      "bytes": 36973,
+      "sha256": "738ff8003478a0e5c65fbc513baeaa67a29003ea891e4809d1907ef0be5c73ce",
+      "role": "Root134 captured129 exact receipt; repo commit f01edb0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_cursor_projection_integration_134\\workers\\129_manifest\\capture_manifest.json",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/inputs/captured129/capture_manifest.json",
+      "bytes": 33554,
+      "sha256": "0bfb1367760c555d00498c8b5c305fccb49c2068cf7d851441da98d813331b72",
+      "role": "Root134 capture provenance"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_gui_text_constructor_readiness84\\local\\text100_rebuild_live_bytes.txt",
+      "copy": "local/cc12_native_gui_text_rebuild_readiness_136/inputs/reused100/text100_rebuild_live_bytes.txt",
+      "bytes": 1111,
+      "sha256": "1a6bc44bd13d9733482d743ea02a0aac254a93ded69e3c88be3c76534eb2bfc3",
+      "role": "sealed100 whole229B evidence; hash matches recorded100 receipt"
+    }
+  ],
+  "source_provenance": {
+    "Main_tree": "95e7002ff71e5873c8ff3fb4aa9e4118b7488440",
+    "Source_files": 42,
+    "own133_same_content": 42,
+    "captured129_same_content": 20,
+    "actual_working_bytes_and_git_tree_both_copied": true,
+    "Root129_capture": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_native_gui_cursor_projection_integration_134/workers/129_manifest",
+    "repo129": "f01edb0bac0d89746162a635b9a3082f9fc14c07",
+    "no_merge": true
+  },
+  "validation": {
+    "report_call_verifier": {
+      "tool": "tools/verify_report_calls.py",
+      "checked_rows": 78,
+      "failed_rows": 0,
+      "exit_code": 0,
+      "log": "local/cc12_native_gui_text_rebuild_readiness_136/verify_calls.log"
+    },
+    "Source_CMake_ledger_Ghidra_writes": false,
+    "export_refresh_or_listing_repair": false,
+    "build_test_probe_execution": false,
+    "new_Source139_alias_or_overload": false,
+    "current_actual_provider_production_activation": false,
+    "sealed133_130_125_123_families_preserved": true
+  },
+  "documentation": {
+    "path": "docs/CC12_NATIVE_GUI_TEXT_REBUILD_READINESS_136.md",
+    "sha256": "aaa5d3ab23609472e4e3c09c793a52934b4de4c2e88d50d7fc0db1b66b1449fc"
+  },
+  "artifact_manifest": {
+    "path": "local/cc12_native_gui_text_rebuild_readiness_136/artifact_manifest.json",
+    "report_included_no_self_hash_cycle": true,
+    "wait_for_Root_capture_before_reuse": true
+  }
+}
