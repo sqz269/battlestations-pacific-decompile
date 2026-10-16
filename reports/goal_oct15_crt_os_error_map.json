@@ -1,0 +1,178 @@
+{
+  "packet": "goal_oct15_crt_os_error_map",
+  "status": "whole_ordinary_actual_table_Source_independently_reviewed_locked_exported_primary_build_pending",
+  "code_complete": true,
+  "source_ready": true,
+  "readiness_gate": "All native control flow is represented over a borrowed binding to the actual 45 mutable pairs. No missing callees; standalone Source readiness does not close Original free or runtime ownership.",
+  "source": "src/native_crt_os_error_map.cpp",
+  "header": "include/bsp/native_crt_os_error_map.hpp",
+  "documentation": "docs/GOAL_OCT15_CRT_OS_ERROR_MAP.md",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "routines": [
+    {
+      "address": "00bffb50",
+      "name": "map_native_crt_os_error_00bffb50",
+      "prior_native_name": "LIBCRT_unmatched_00bffb50",
+      "naming": "Descriptive role hypothesis, not a recovered library symbol.",
+      "coverage": "whole_59B_23op_ordinary_actual_mutable_table_Source",
+      "bytes": 59,
+      "instructions": 23,
+      "end_inclusive": "00bffb8a",
+      "original_hex": "8b44240433c93b04cd8058e10074124183f92d72f18d48ed83f911770c6a0d58c38b04cd8458e100c30544ffffff6a0e593bc81bc023c183c008c3",
+      "original_sha256": "f84cb93a4141603ec2a535fbcf0848c7dd4836fd0b8c1be28e35025d67b3dd3b",
+      "live_PE_equal": true,
+      "original_abi": "cdecl one captured DWORD at entryESP+4; EAX DWORD result; plain RET; caller cleanup. Source adds actual-table binding and is not an Original ABI adapter.",
+      "own_native_calls": 0,
+      "source_ready": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bf9e48",
+      "native": "00bffb50",
+      "kind": "call",
+      "function": "00bf9dc8",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "00bfde6e",
+      "native": "00bffb50",
+      "kind": "call",
+      "function": "00bfdcec",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "00bfdefb",
+      "native": "00bffb50",
+      "kind": "call",
+      "function": "00bfdcec",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    },
+    {
+      "address": "00bffbbe",
+      "native": "00bffb50",
+      "kind": "call",
+      "function": "00bffbb1",
+      "flow_override": "NONE",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "UNCONDITIONAL_CALL"
+    }
+  ],
+  "typed_metadata": {
+    "path": "local/goal_oct15_crt_os_error_map_incoming_typed.json",
+    "sha256": "a73e06572b855472d95eee1bb017a49751413e579a9c162f54bf8b6ead01e15c",
+    "responses": 4,
+    "modification_number": "3445",
+    "guarded": true,
+    "repair_or_analysis": false,
+    "entry_capture": "local/goal_oct15_original_free_ready_leaf_typed.json"
+  },
+  "storage": {
+    "actual_table": "00e15880..00e159e7 inclusive,45 pairs,90 DWORDs,360B",
+    "binding": "const volatile uint32_t* actual_pairs90 borrows actual Original 90-DWORD table layout; only reached reads must be valid, no whole-table readability condition. No contents copied/invented. Added Source binding/bookkeeping stable and disjoint from reached table storage; no native guards added.",
+    "reads": "Captured error compared against each reached current first word in order; first match reads current second word only then.",
+    "writes": "none",
+    "extra_guards": "none"
+  },
+  "exact_schedule": [
+    "Capture sole input DWORD once; initialize scan index zero.",
+    "Compare current pair.first; first match returns current pair.second; otherwise increment until45.",
+    "No match: unsigned(error-0x13)<=0x11 returns13.",
+    "Otherwise unsigned(error-0xbc)<=0x0e returns8; remaining full DWORD domain returns22."
+  ],
+  "incoming": {
+    "actual_call_sites": [
+      "00bf9e48",
+      "00bfde6e",
+      "00bfdefb",
+      "00bffbbe"
+    ],
+    "containing_functions": [
+      "00bf9dc8",
+      "00bfdcec",
+      "00bffbb1"
+    ],
+    "saved_index_qualification": "Saved graph misattributes free continuation to unlock helper and other stale entries; current typed bodies and exact instructions are authoritative.",
+    "callers_changed": false
+  },
+  "source_hashes": {
+    "src/native_crt_os_error_map.cpp": "ffb5b4aacda596c9607122b73f0aa512d1a043b85e1e157b2012fe8a02ef000e",
+    "include/bsp/native_crt_os_error_map.hpp": "171c8174aa2c3b0f85042afbc29ffb234e2a05c1c0fc122fa42c7a1049e154fa"
+  },
+  "annotation_prior_values": [
+    {
+      "address": "00bffb50",
+      "function_name": "LIBCRT_unmatched_00bffb50",
+      "comment": "[BSP inventory 00bffb50] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+    }
+  ],
+  "validation": {
+    "independent_review": {
+      "reviewer": "primary integrator",
+      "result": "PASSED",
+      "scope": "Whole59B23ops assembly and complete Source/header; captured input, progressive45 currentfirstword reads, matched CURRENTsecondword, both unsigned modulo fallback intervals matching CMP/SBB/AND.",
+      "cpp_sha256": "ffb5b4aacda596c9607122b73f0aa512d1a043b85e1e157b2012fe8a02ef000e",
+      "reviewed_header_sha256": "3b44c2b35fa5b1c9227507a018b04ecbc87c3dd22db10507cce1b0f6d79cbecd",
+      "current_header_sha256": "171c8174aa2c3b0f85042afbc29ffb234e2a05c1c0fc122fa42c7a1049e154fa",
+      "header_change": "Only requested comment clarification: 90-cell actual layout, reached reads only, stable/disjoint added Source metadata. No code/signature change."
+    },
+    "annotation_save_export_readback": "passed; prior comment preserved, write-locked rename/comment/save, live readback and forced affected export",
+    "registration": "pending primary combined gate; no worker CMake change/queue",
+    "build": "pending primary normal MSVC Win32 build; no worker build claimed",
+    "existing_tests": "pending primary gate",
+    "new_tests": 0,
+    "new_entry_execution": false,
+    "original_ABI": false,
+    "game_validated": false,
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/goal_oct15_crt_os_error_map.json",
+      "rows": 4,
+      "failed": 0
+    },
+    "build_exclusion": "Prior primary Character/Child build9.48s predates mapper registration and is not mapper validation. Await actual later registered primary gate."
+  },
+  "limits": [
+    "No SDK/errno/TLS substitute, host table, immutable snapshot or invented callback.",
+    "Table binding requires actual reached readable DWORD cells; no memory-fault or concurrent mutation equivalence claim beyond explicit progressive Source reads.",
+    "Ordinary C++ Source interface does not preserve Original machine-code register/frame/fault/SEH identity.",
+    "No Original heap/lock/PTD/bootstrap/fullfree/startup/runtime/gameplay readiness credit."
+  ],
+  "annotation_changes": [
+    {
+      "address": "00bffb50",
+      "before": {
+        "address": "00bffb50",
+        "function_name": "LIBCRT_unmatched_00bffb50",
+        "comment": "[BSP inventory 00bffb50] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+      },
+      "after": {
+        "address": "00bffb50",
+        "name": "LIBCRT_MapOsErrorToErrno_00bffb50",
+        "evidence": "Hypothesis, not a recovered symbol. Whole59B23ops at00BFFB50..00BFFB8A, cdecl one captured DWORD, EAX DWORD result, plainRET. Scan actual45 mutable pairs at00E15880 in order; compare each currentfirstword and return currentsecondword on firstmatch. No match: unsigned(error-13h)<=11h returns13; else unsigned(error-BCh)<=0Eh returns8, remaining returns22. No calls/writes/errno/TLS/SDK substitution. ActualincomingCALLsites BF9E48/BFDE6E/BFDEFB/BFFBBE; savedgraph attribution stale. Complete ordinary actual-table Source in native_crt_os_error_map.cpp; added borrowedtable Sourcebinding has no OriginalABI/SEH/startup/fullfree/game credit. Source draft reviewed/build pending. reports/goal_oct15_crt_os_error_map.json."
+      },
+      "status": "applied"
+    }
+  ],
+  "annotation": {
+    "write_lock": "tools/ghidra_annotate.py coordination.ghidra_lock",
+    "address_lease": "goal_oct15_crt_os_error_map held by agent/goal_oct15_erase",
+    "project_saved": true,
+    "prior_log": "local/ghidra-annotations-20261016T020712Z.json",
+    "prior_log_sha256": "c56117d8d64a6e59dd2042474e3056e0f8e3b953851cf92fbe1fffea48dd1615",
+    "readback": "bsp ghidra comments confirmed new name, preserved full prior inventory comment and appended evidence.",
+    "export": "bsp ghidra export 00BFFB50 --force refreshed shared exports/bsp/functions/00bffb50",
+    "other_addresses_changed": false,
+    "flow_or_body_repair": false
+  }
+}

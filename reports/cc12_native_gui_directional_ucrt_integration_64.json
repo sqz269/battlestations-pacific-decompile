@@ -1,0 +1,79 @@
+{
+  "packet": "cc12_native_gui_directional_ucrt_integration_64",
+  "compiled_source_commit": "f30e0bd9348c7d9273c0639c698a728ccfd4db55",
+  "status": "reviewed_directional_lifetime_and_actual_current_UCRT_source_services_combined_win32_build_passed_no_normal_activation",
+  "unchanged_reviewed_worker_sources": [
+    {
+      "packet": 60,
+      "worker_commit": "f7c26281e9ce97e9a795c577ca98c7db63915f72",
+      "path": "include/bsp/directional_light_owner.hpp",
+      "git_blob": "508224f7ce9f60d1cfa2d0809a13be82facbc981",
+      "sha256": "4fe116553ca8fc90bad6b92dfe27c25c8a4b1987d51c8ae1e973c2a69058174e"
+    },
+    {
+      "packet": 60,
+      "worker_commit": "f7c26281e9ce97e9a795c577ca98c7db63915f72",
+      "path": "src/directional_light_owner.cpp",
+      "git_blob": "647f06962a136e2b12d1008988b1ec89d47cde3b",
+      "sha256": "cdef14e4588a1457a028c81437d8e931cb6fa3d5187957abe534972b0f5e2f6f"
+    },
+    {
+      "packet": 60,
+      "worker_commit": "f7c26281e9ce97e9a795c577ca98c7db63915f72",
+      "path": "include/bsp/directional_light_reference.hpp",
+      "git_blob": "a8fa1e42f1f227e5b57a454bc0a2312fc1bc4ade",
+      "sha256": "53094d17deb4bc18e3413b46d925210be2664d457c20e6588a3c4303102d8b0b"
+    },
+    {
+      "packet": 60,
+      "worker_commit": "f7c26281e9ce97e9a795c577ca98c7db63915f72",
+      "path": "src/directional_light_reference.cpp",
+      "git_blob": "a3123eb5739b7c629848200c3cf3ce5f3c66a1db",
+      "sha256": "64318777e6dfb034cb99f2e78e7e6eaea498b1a91c6d6a9a1aafd8754664f76c"
+    },
+    {
+      "packet": 61,
+      "worker_commit": "a339040ea858d83e1b84036c9114e8468360b70d",
+      "path": "include/bsp/game_hosts_text.hpp",
+      "git_blob": "edc9c0893b94daea6615135f930635730280f765",
+      "sha256": "5109cf052d8df1f2e3209846c12da037cdc2bc6cca10920060f28f7c4dec8b3c"
+    },
+    {
+      "packet": 61,
+      "worker_commit": "a339040ea858d83e1b84036c9114e8468360b70d",
+      "path": "src/game_hosts_text.cpp",
+      "git_blob": "b5ed79d19cf64d08b0b509107f2cece86e1cc297",
+      "sha256": "8e06d78bbe8541aec0219eaa32294567b86dd71ab448aa1641b217860a5904c3"
+    }
+  ],
+  "primary_source_review": {
+    "verdict": "pass",
+    "directional": "Full four-file diff, typed-tail final-byte preservation, raw node destructor, pointer-vector admission, persistent failure/handoff and same count checked",
+    "UCRT": "Full two-file diff, actual narrow pointer, real wchar_t value copies, final current comparison and no cached locale checked"
+  },
+  "build": {
+    "script": "./scripts/build.ps1",
+    "exit_code": 0,
+    "ctest_passed": 3,
+    "ctest_total": 3,
+    "ctest_seconds": 8.8
+  },
+  "worker_source_cases": {
+    "60": "One actual raw-string/directional pool Source lifetime case: count1/retain2/logical1/terminal0, exact name cleanup and slot reuse",
+    "61": "One real owning-UCRT private-process case: profile created in C then earlier callback changes C/non-C/C, wide -32/0/-32, actual narrow pointer -32/0; locale restored, not skipped"
+  },
+  "new_primary_tests_or_runtime": false,
+  "limits": [
+    "No newly recovered Original body or Ghidra changes",
+    "60 is a typed Source graph bridge, not Original ABI/FH3/fault-time equivalence; no entered-failure injection executed",
+    "61 uses allocating wchar_t copies and real owning UCRT, not original u16-pointer forwarding, Original CRT state, no-allocation or Unicode-version equivalence",
+    "No normal native Text/Screen activation, real full page composition, new game runtime or gameplay claim"
+  ],
+  "evidence": {
+    "archive": "local\\cc12_native_gui_directional_ucrt_integration_64\\evidence_family.zip",
+    "archive_sha256": "f3001bb63f9d15a9aef4f5f77bc3eede02ae43a0b360f73f17e0428e970d18f6",
+    "manifest_sha256": "35f761093dd2d4a18a14003a2f563c2e101f50512e27dfa8a874e2de3a07d47b",
+    "payloads": 25,
+    "payload_hashes_verified": true
+  }
+}
