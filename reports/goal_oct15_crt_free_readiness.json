@@ -182,37 +182,6 @@
     "extent": "59B23ops",
     "qualification": "Independent primitive only; no generalOriginalfreeSourceReady credit."
   },
-  "region_lookup_proposal_UNAPPROVED": {
-    "addresses": [
-      "00c11d3d",
-      "00c11d61"
-    ],
-    "whole_extent": "43B14ops C11D3D..C11D67; no actual calls",
-    "whole_live_PE_equal": true,
-    "sha256": "efe92ed21d91a645a4868b949361c61fea2c0a4c75201b12f07e6537cd6252fd",
-    "actual_incoming_call_sites": [
-      "00bf9df1",
-      "00bfdd47",
-      "00bfdd97",
-      "00c07baa"
-    ],
-    "schedule": "Capture count109ED64 before base109ED68, wrapend=base+count*20; unsignedcurrent<capturedend; readLIVEparameter4 only reachediteration; wrapped unsigned(parameter-currentdescriptor.regionbase+C)<100000h; returndescriptor or0.",
-    "proposed_Source": "find_native_crt_sbh_region_00c11d3d(const NativeCrtSbhState&,const volatile uint32_t& actual_parameter4); Source binding not Original ABI.",
-    "native_ABI": "Entry3D cdecl1DWORD/plainRET/EAXpointer; entry61 is observed interior register-state entry, not an independently inferred standard API.",
-    "current_typed_metadata": "Atmod3203 entry3D owns18B3D..4E and is thunk to61; entry61 owns25B4F..67 including loop.",
-    "flow_audit": "C11D4D actual/default UNCONDITIONAL_JUMP, effective CALL_TERMINATOR; typed InstructionDB. Onlyxref to61 is this misclassified JMP.",
-    "proposed_files": [
-      "include/bsp/native_crt_sbh_region_lookup.hpp",
-      "src/native_crt_sbh_region_lookup.cpp",
-      "docs/GOAL_OCT15_CRT_SBH_REGION_LOOKUP.md",
-      "reports/goal_oct15_crt_sbh_region_lookup.json"
-    ],
-    "gate": "Primary exact typed/physical/xref review and explicit ownership/repair authorization required. No claim, Source, metadata change or repair is authorized/performed.",
-    "local_evidence": [
-      "local/goal_oct15_original_free_ready_leaf_typed.json",
-      "local/goal_oct15_sbh_region_lookup_flow_audit.json"
-    ]
-  },
   "validation_limits": {
     "new_Source_for_free": false,
     "address_or_Ghidra_changes_for_free_or_region": false,
@@ -245,5 +214,44 @@
       "path": "local/goal_oct15_sbh_region_lookup_flow_audit.json",
       "sha256": "0c7fa926e843705bbb39c01759016fb1709a2821f18e1b512b2d65cc3bda9a8b"
     }
-  ]
+  ],
+  "region_lookup_proposal_at_read_only_scout": {
+    "addresses": [
+      "00c11d3d",
+      "00c11d61"
+    ],
+    "whole_extent": "43B14ops C11D3D..C11D67; no actual calls",
+    "whole_live_PE_equal": true,
+    "sha256": "efe92ed21d91a645a4868b949361c61fea2c0a4c75201b12f07e6537cd6252fd",
+    "actual_incoming_call_sites": [
+      "00bf9df1",
+      "00bfdd47",
+      "00bfdd97",
+      "00c07baa"
+    ],
+    "schedule": "Capture count109ED64 before base109ED68, wrapend=base+count*20; unsignedcurrent<capturedend; readLIVEparameter4 only reachediteration; wrapped unsigned(parameter-currentdescriptor.regionbase+C)<100000h; returndescriptor or0.",
+    "proposed_Source": "find_native_crt_sbh_region_00c11d3d(const NativeCrtSbhState&,const volatile uint32_t& actual_parameter4); Source binding not Original ABI.",
+    "native_ABI": "Entry3D cdecl1DWORD/plainRET/EAXpointer; entry61 is observed interior register-state entry, not an independently inferred standard API.",
+    "current_typed_metadata": "Atmod3203 entry3D owns18B3D..4E and is thunk to61; entry61 owns25B4F..67 including loop.",
+    "flow_audit": "C11D4D actual/default UNCONDITIONAL_JUMP, effective CALL_TERMINATOR; typed InstructionDB. Onlyxref to61 is this misclassified JMP.",
+    "proposed_files": [
+      "include/bsp/native_crt_sbh_region_lookup.hpp",
+      "src/native_crt_sbh_region_lookup.cpp",
+      "docs/GOAL_OCT15_CRT_SBH_REGION_LOOKUP.md",
+      "reports/goal_oct15_crt_sbh_region_lookup.json"
+    ],
+    "gate": "Primary exact typed/physical/xref review and explicit ownership/repair authorization required. No claim, Source, metadata change or repair is authorized/performed.",
+    "local_evidence": [
+      "local/goal_oct15_original_free_ready_leaf_typed.json",
+      "local/goal_oct15_sbh_region_lookup_flow_audit.json"
+    ],
+    "status_at_scout": "UNAPPROVED at the read-only scout; later bounded primary approval recorded separately below."
+  },
+  "subsequent_region_packet": {
+    "packet": "goal_oct15_crt_sbh_region_lookup",
+    "report": "reports/goal_oct15_crt_sbh_region_lookup.json",
+    "authorization": "Primary approved bounded repair+wholeSource after mapper final227aa6f36; address3D+61/filelease claimed.",
+    "current_repair": "Not run; safe script transport disabled. No Ghidra mutation or metadata-source credit from this readiness report.",
+    "general_Original_free_Source_ready": false
+  }
 }
