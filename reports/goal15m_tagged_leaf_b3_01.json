@@ -1,0 +1,393 @@
+{
+  "packet": "goal15m_tagged_leaf_b3_01",
+  "utc": "2026-10-16T01:29:43.984560+00:00",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "coff_sha256": "2c6fc250a613a9a6c73f31ea54014a6f935908ddc4b4eca869c557bd336f7172",
+  "source_sha256": "88bc45c85f076ab772b5192240e7475fffb9d5e913e19c39c2eaa79a99813572",
+  "header_sha256": "6ee1692fe2ff1a0e3ee89321ab4e6a11dc31a3635d800b9be646d85e3605c6f9",
+  "compiler_options": "/c /std:c++17 /MD /O2 /W4 /WX /EHsc /Iinclude",
+  "coff_machine": 332,
+  "coff_undefined_externals": [],
+  "routine_count": 8,
+  "native_body_bytes": 31,
+  "span_including_alignment_bytes": 116,
+  "routines": [
+    {
+      "address": "00b34300",
+      "size": 3,
+      "symbol": "?native_tagged_b3_read_dword_00b34300@bsp@@YIIPBX@Z",
+      "bytes": "8b01c3",
+      "sha256": "19d200194d49b34530548575f37a1bb4203ee60f18d42f0084e86b7a8c899faa",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "8b01",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx]"
+        },
+        {
+          "offset": 2,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_relocations": [],
+      "live_equals_installed_pe_equals_actual_coff": true,
+      "direct_live_xrefs": 0,
+      "pe_address_literal_occurrences": 0,
+      "source_name": "native_tagged_b3_read_dword_00b34300",
+      "namespace": "bsp",
+      "source_prototype": "std::uint32_t __fastcall bsp::native_tagged_b3_read_dword_00b34300(const void* base) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_ReadDword00_00b34300",
+      "previous_ghidra_name": "TRIV_body_00b34300",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_stack_argument_bytes": 0,
+      "original_stack_cleanup_bytes": 0,
+      "original_result": "EAX",
+      "owner_class": "unknown",
+      "name_interpretation": "operation hypothesis"
+    },
+    {
+      "address": "00b34310",
+      "size": 4,
+      "symbol": "?native_tagged_b3_read_dword_04_00b34310@bsp@@YIIPBX@Z",
+      "bytes": "8b4104c3",
+      "sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "8b4104",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 4]"
+        },
+        {
+          "offset": 3,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_relocations": [],
+      "live_equals_installed_pe_equals_actual_coff": true,
+      "direct_live_xrefs": 0,
+      "pe_address_literal_occurrences": 0,
+      "source_name": "native_tagged_b3_read_dword_04_00b34310",
+      "namespace": "bsp",
+      "source_prototype": "std::uint32_t __fastcall bsp::native_tagged_b3_read_dword_04_00b34310(const void* base) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_ReadDword04_00b34310",
+      "previous_ghidra_name": "TRIV_body_00b34310",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_stack_argument_bytes": 0,
+      "original_stack_cleanup_bytes": 0,
+      "original_result": "EAX",
+      "owner_class": "unknown",
+      "name_interpretation": "operation hypothesis"
+    },
+    {
+      "address": "00b34320",
+      "size": 4,
+      "symbol": "?native_tagged_b3_read_byte_0c_00b34320@bsp@@YIEPBX@Z",
+      "bytes": "8a410cc3",
+      "sha256": "f82485647da88f1345396046db25899cbf8e6fe84b931a28e4691b98a1ca10b1",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "8a410c",
+          "mnemonic": "mov",
+          "operands": "al, byte ptr [ecx + 0xc]"
+        },
+        {
+          "offset": 3,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_relocations": [],
+      "live_equals_installed_pe_equals_actual_coff": true,
+      "direct_live_xrefs": 0,
+      "pe_address_literal_occurrences": 0,
+      "source_name": "native_tagged_b3_read_byte_0c_00b34320",
+      "namespace": "bsp",
+      "source_prototype": "std::uint8_t __fastcall bsp::native_tagged_b3_read_byte_0c_00b34320(const void* base) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_ReadByte0C_00b34320",
+      "previous_ghidra_name": "TRIV_body_00b34320",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_stack_argument_bytes": 0,
+      "original_stack_cleanup_bytes": 0,
+      "original_result": "AL only; upper EAX preserved",
+      "owner_class": "unknown",
+      "name_interpretation": "operation hypothesis"
+    },
+    {
+      "address": "00b34330",
+      "size": 4,
+      "symbol": "?native_tagged_b3_read_dword_10_00b34330@bsp@@YIIPBX@Z",
+      "bytes": "8b4110c3",
+      "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "8b4110",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x10]"
+        },
+        {
+          "offset": 3,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_relocations": [],
+      "live_equals_installed_pe_equals_actual_coff": true,
+      "direct_live_xrefs": 0,
+      "pe_address_literal_occurrences": 0,
+      "source_name": "native_tagged_b3_read_dword_10_00b34330",
+      "namespace": "bsp",
+      "source_prototype": "std::uint32_t __fastcall bsp::native_tagged_b3_read_dword_10_00b34330(const void* base) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_ReadDword10_00b34330",
+      "previous_ghidra_name": "TRIV_body_00b34330",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_stack_argument_bytes": 0,
+      "original_stack_cleanup_bytes": 0,
+      "original_result": "EAX",
+      "owner_class": "unknown",
+      "name_interpretation": "operation hypothesis"
+    },
+    {
+      "address": "00b34340",
+      "size": 4,
+      "symbol": "?native_tagged_b3_address_04_00b34340@bsp@@YIII@Z",
+      "bytes": "8d4104c3",
+      "sha256": "4181cb1fec090d6487f323c8ce84a17ff37429613d7843b4f5f40f5eae266b77",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "8d4104",
+          "mnemonic": "lea",
+          "operands": "eax, [ecx + 4]"
+        },
+        {
+          "offset": 3,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_relocations": [],
+      "live_equals_installed_pe_equals_actual_coff": true,
+      "direct_live_xrefs": 0,
+      "pe_address_literal_occurrences": 0,
+      "source_name": "native_tagged_b3_address_04_00b34340",
+      "namespace": "bsp",
+      "source_prototype": "std::uint32_t __fastcall bsp::native_tagged_b3_address_04_00b34340(std::uint32_t base) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_Address04_00b34340",
+      "previous_ghidra_name": "TRIV_body_00b34340",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_stack_argument_bytes": 0,
+      "original_stack_cleanup_bytes": 0,
+      "original_result": "EAX",
+      "owner_class": "unknown",
+      "name_interpretation": "operation hypothesis"
+    },
+    {
+      "address": "00b34350",
+      "size": 4,
+      "symbol": "?native_tagged_b3_read_dword_20_00b34350@bsp@@YIIPBX@Z",
+      "bytes": "8b4120c3",
+      "sha256": "07ad3a50b1c271e07fb57fb47d2f0e77f3342d41bfa410990cb1320a45035fb2",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "8b4120",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x20]"
+        },
+        {
+          "offset": 3,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_relocations": [],
+      "live_equals_installed_pe_equals_actual_coff": true,
+      "direct_live_xrefs": 0,
+      "pe_address_literal_occurrences": 0,
+      "source_name": "native_tagged_b3_read_dword_20_00b34350",
+      "namespace": "bsp",
+      "source_prototype": "std::uint32_t __fastcall bsp::native_tagged_b3_read_dword_20_00b34350(const void* base) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_ReadDword20_00b34350",
+      "previous_ghidra_name": "TRIV_body_00b34350",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_stack_argument_bytes": 0,
+      "original_stack_cleanup_bytes": 0,
+      "original_result": "EAX",
+      "owner_class": "unknown",
+      "name_interpretation": "operation hypothesis"
+    },
+    {
+      "address": "00b34360",
+      "size": 4,
+      "symbol": "?native_tagged_b3_read_dword_14_00b34360@bsp@@YIIPBX@Z",
+      "bytes": "8b4114c3",
+      "sha256": "01d3abacb68aac3537badfe563d0e21d0244fb61db1d805bcef8f455407fad96",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "8b4114",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x14]"
+        },
+        {
+          "offset": 3,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_relocations": [],
+      "live_equals_installed_pe_equals_actual_coff": true,
+      "direct_live_xrefs": 0,
+      "pe_address_literal_occurrences": 0,
+      "source_name": "native_tagged_b3_read_dword_14_00b34360",
+      "namespace": "bsp",
+      "source_prototype": "std::uint32_t __fastcall bsp::native_tagged_b3_read_dword_14_00b34360(const void* base) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_ReadDword14_00b34360",
+      "previous_ghidra_name": "TRIV_body_00b34360",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_stack_argument_bytes": 0,
+      "original_stack_cleanup_bytes": 0,
+      "original_result": "EAX",
+      "owner_class": "unknown",
+      "name_interpretation": "operation hypothesis"
+    },
+    {
+      "address": "00b34370",
+      "size": 4,
+      "symbol": "?native_tagged_b3_address_18_00b34370@bsp@@YIII@Z",
+      "bytes": "8d4118c3",
+      "sha256": "8b91dec277a1e45d013282c013b573b4b19b5d0d9edca7cc20469f39bd16cb54",
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "8d4118",
+          "mnemonic": "lea",
+          "operands": "eax, [ecx + 0x18]"
+        },
+        {
+          "offset": 3,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "coff_relocations": [],
+      "live_equals_installed_pe_equals_actual_coff": true,
+      "direct_live_xrefs": 0,
+      "pe_address_literal_occurrences": 0,
+      "source_name": "native_tagged_b3_address_18_00b34370",
+      "namespace": "bsp",
+      "source_prototype": "std::uint32_t __fastcall bsp::native_tagged_b3_address_18_00b34370(std::uint32_t base) noexcept",
+      "proposed_ghidra_name": "BSP_NativeTaggedB3_Address18_00b34370",
+      "previous_ghidra_name": "TRIV_body_00b34370",
+      "original_register_input": [
+        "ECX"
+      ],
+      "original_stack_argument_bytes": 0,
+      "original_stack_cleanup_bytes": 0,
+      "original_result": "EAX",
+      "owner_class": "unknown",
+      "name_interpretation": "operation hypothesis"
+    }
+  ],
+  "status": "complete_live_installed_PE_and_strict_Win32_actual_COFF_whole_body_identical_no_runtime",
+  "source": "src/native_tagged_leaf_b3_01.cpp",
+  "header": "include/bsp/native_tagged_leaf_b3_01.hpp",
+  "evidence_doc": "docs/GOAL15M_TAGGED_LEAF_B3_01.md",
+  "discovery": {
+    "screening_candidates": 79,
+    "actual_complete_bodies_inspected": 11,
+    "verified_missing_qualified_complete_bodies": 8,
+    "deferred_other_families": [
+      "00b33e50",
+      "00b343b0",
+      "00b3ff30"
+    ],
+    "not_inspected": 68,
+    "candidate_index_alone_proves_missing": false,
+    "existing_complete_typed_or_raw_source_found": 0,
+    "existing_library_names_changed": 0
+  },
+  "effort": {
+    "qualification_and_implementation_start_utc": "2026-10-16T01:22:41.810640+00:00",
+    "measured_finish_utc": "2026-10-16T01:32:14.096079+00:00",
+    "elapsed_seconds": 572.285,
+    "measurement_start": "worktree creation, before first body qualification",
+    "pre_worktree_brief_and_memory_orientation": "short, not timed; excluded explicitly",
+    "qualification_and_implementation_to_initial_ready_seconds": 572.285,
+    "all_qualification_source_emission_check_seconds": 422.174,
+    "handoff_ready_utc": "2026-10-16T01:46:15.194156+00:00",
+    "wall_seconds_to_handoff_ready_including_parallel_baseline_build": 1413.384
+  },
+  "runtime_fixture_added": false,
+  "game_validated": false,
+  "installed": false,
+  "c_make_registration": "primary integrator pending",
+  "ghidra_mutation": false,
+  "original_cpp_calling_convention": "unknown; machine contract ECX input/plain RET is established",
+  "calling_contract_emission": "exact whole-byte identity at fixed compiler/settings",
+  "caller_limit": "No live references and no PE address literals observed; not proof of unused or indirect caller closure",
+  "full_repository_build": {
+    "command": "./scripts/build.ps1",
+    "log": "local/goal15m_tagged_leaf_b3_01/build.log",
+    "result": "passed",
+    "new_source_compiled_core_inclusion": false,
+    "exit_code": 0,
+    "ctest": {
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_seconds": 10.37
+    },
+    "start_utc": "2026-10-16T01:27:18.304661+00:00",
+    "finish_utc": "2026-10-16T01:45:27.867957+00:00",
+    "elapsed_seconds": 1089.563
+  },
+  "reproduction": {
+    "compile": "cmd.exe /d /c local\\goal15m_tagged_leaf_b3_01\\compile.cmd",
+    "audit": "python local/goal15m_tagged_leaf_b3_01/audit.py",
+    "artifact_root": "J:\\PROG\\battlestations-pacific-decompile-goal15m_tagged_b3\\local\\goal15m_tagged_leaf_b3_01"
+  }
+}
