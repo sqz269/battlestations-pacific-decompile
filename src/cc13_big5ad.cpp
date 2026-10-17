@@ -893,18 +893,19 @@ void cc13_big5ad_hud_map_screen_update_unit_icon_005adda0(void* screen, void* ic
                         for (std::uint32_t k = 0; k < 4; ++k) {
                             // 005AFC69: show/hide lamp k by its flag (the image passes the
                             // flag's whole stack dword; only the byte is modelled), frame
-                            // 0 when lit, else 5..8 (9 for a kind-8 unit's fourth lamp).
+                            // Frame k (0..3, 4 for a kind-8 unit's fourth lamp) when lit, else 5..8 (9).
                             const Byte on = lamp[k];
                             host.widget_vcall_34_set_visible(*vec_checked_at(lamps, k, host), on);
                             std::int32_t frame;
                             void* lamp_widget;
                             if (k < 3) {
                                 lamp_widget = *vec_checked_at(lamps, k, host);
-                                frame = on != 0 ? 0 : static_cast<std::int32_t>(5 + k);
+                                // NEG flag / SBB / AND -5 / ADD 5+k: lit -> k, unlit -> 5+k.
+                                frame = static_cast<std::int32_t>(5 + k) - (on != 0 ? 5 : 0);
                             } else {
                                 const bool kind8 = host.entity_vcall_5c_is_kind(unit, 8);
                                 lamp_widget = *host.pointer_vector_at_004391a0(lamps, 3);
-                                frame = on != 0 ? 0 : (kind8 ? 9 : 8);
+                                frame = (kind8 ? 9 : 8) - (on != 0 ? 5 : 0);
                             }
                             host.widget_vcall_88(lamp_widget, frame, 0, 1.0f);
                             if (on != 0) {
@@ -1283,17 +1284,19 @@ void cc13_big5ad_hud_map_screen_update_unit_icon_005adda0(void* screen, void* ic
                 std::int32_t frame;
                 if (k == 0) {
                     vec_checked_at(lamps, 0, host);
+                    // NEG/SBB/AND -5/ADD 5+k: lit -> k, unlit -> 5+k. The two lamp blocks use this
+                    // pattern at 005AFCCA.. and 005B1941.. (ADD 5/6/7, then 9 or 8).
                     frame = f18e != 0 ? 0 : 5;
                 } else if (k == 1) {
                     vec_checked_at(lamps, 1, host);
-                    frame = f18d != 0 ? 0 : 6;
+                    frame = f18d != 0 ? 1 : 6;
                 } else if (k == 2) {
                     vec_checked_at(lamps, 2, host);
-                    frame = f18f != 0 ? 0 : 7;
+                    frame = f18f != 0 ? 2 : 7;
                 } else {
                     const bool kind8 = host.entity_vcall_5c_is_kind(unit, 8);
                     vec_checked_at(lamps, 3, host);
-                    frame = f190 != 0 ? 0 : (kind8 ? 9 : 8);
+                    frame = (kind8 ? 9 : 8) - (f190 != 0 ? 5 : 0);
                 }
                 host.widget_vcall_88(static_cast<void**>(ptr(lamps, 4))[k], frame, 0, 1.0f);
                 const float* const lamp_size = host.gui_widget_get_size_00aa6740(*vec_checked_at(lamps, 0, host));
