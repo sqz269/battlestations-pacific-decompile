@@ -1350,4 +1350,135 @@ void cc13_pkt642_hud_markers_update_target_section_callout_00640d70(void* marker
     }
 }
 
+// ---------------------------------------------------------------------------
+// 005F0CD0 BSP_OptionsScreen_RefreshHelpLine
+// ---------------------------------------------------------------------------
+namespace {
+
+constexpr std::uint32_t kCommandBar = 0x00E1930Cu;  // dword: the main-menu command bar
+constexpr std::uint32_t kHelpMode = 0x00E19650u;    // dword: the options help-line mode
+
+// The inlined literal build of this function: {0, null}, 0041DD40(&s,
+// length, 1), then 00BF7680(data, literal, length + 1) when data is set.
+Cc13SweepBNativeString help_literal(std::uint32_t address, std::uint32_t length, Cc13Pkt642Host& host) {
+    Cc13SweepBNativeString text;
+    build_literal(text, address, length, host);
+    return text;
+}
+
+Cc13SweepBNativeString help_assigned(std::uint32_t address, Cc13Pkt642Host& host) {
+    Cc13SweepBNativeString text{};
+    host.native_string_assign_0041e870(&text, literal(address, host));
+    return text;
+}
+
+void rebuild_bar(const Cc13SweepB2Host::CommandTriple (&triples)[5], Cc13Pkt642Host& host) {
+    host.command_bar_rebuild_0054b530(*static_cast<void**>(host.image_global(kCommandBar)), triples);
+}
+
+constexpr std::uint32_t kCmdA2 = 0xFFFFFFA2u;  // PUSH -5Eh
+constexpr std::uint32_t kCmdA7 = 0xFFFFFFA7u;  // PUSH -59h
+constexpr std::uint32_t kCmdB3 = 0xFFFFFFB3u;  // PUSH -4Dh
+constexpr std::uint32_t kCmdAF = 0xFFFFFFAFu;  // PUSH -51h
+constexpr std::uint32_t kCmdA3 = 0xFFFFFFA3u;  // PUSH -5Dh
+
+}  // namespace
+
+// __fastcall(ECX = options screen, not read), RET; EBP frame aligned to 8,
+// SEH 00C75BB9 (states for each temporary string). Three rebuilds of the
+// command bar [00E1930C] (0054B530, five {command dword, NativeString*,
+// placement} triples, 15 pushed dwords): blank labels, the default
+// cancel/change/navigate/default/accept set, then the set for the mode
+// [00E19650] (0, 4 or 7; any other mode stops after the second).
+void cc13_pkt642_options_screen_refresh_help_line_005f0cd0(void* screen, Cc13Pkt642Host& host) {
+    (void)screen;
+    {
+        // 005F0CF4: five " " labels (00CE3A90) built at E+30h, 24h, 1Ch, 14h, 0Ch.
+        Cc13SweepBNativeString s30 = help_literal(0x00CE3A90u, 1, host);
+        Cc13SweepBNativeString s24 = help_literal(0x00CE3A90u, 1, host);
+        Cc13SweepBNativeString s1c = help_literal(0x00CE3A90u, 1, host);
+        Cc13SweepBNativeString s14 = help_literal(0x00CE3A90u, 1, host);
+        Cc13SweepBNativeString s0c = help_literal(0x00CE3A90u, 1, host);
+        const Cc13SweepB2Host::CommandTriple triples[5] = {
+            {0, &s0c, 1}, {0, &s14, 1}, {0, &s1c, 1}, {0, &s24, 1}, {0, &s30, 1}};
+        rebuild_bar(triples, host);
+        release_string(s0c, host);
+        release_string(s14, host);
+        release_string(s1c, host);
+        release_string(s24, host);
+        release_string(s30, host);
+    }
+    // 005F0F14: E+2Fh = the 00F88A30 byte, read before the second build.
+    const std::uint8_t layout = *static_cast<std::uint8_t*>(host.image_global(0x00F88A30u));
+    std::uint32_t slot_0c;  // the dword at E+0Ch, reused by mode 4 below
+    {
+        Cc13SweepBNativeString s0c = help_literal(0x00CEBE80u, 0x0e, host);  // globals.cancel
+        Cc13SweepBNativeString s14 = help_literal(0x00CEB410u, 0x0e, host);  // globals.change
+        Cc13SweepBNativeString s1c = help_literal(0x00CEB394u, 0x10, host);  // globals.navigate
+        Cc13SweepBNativeString s24 = help_literal(0x00CF392Cu, 0x0f, host);  // globals.default
+        Cc13SweepBNativeString s30 = help_literal(0x00CED4D4u, 0x0e, host);  // globals.accept
+        const Cc13SweepB2Host::CommandTriple triples[5] = {
+            {kCmdA2, &s30, 0}, {kCmdA7, &s24, 1}, {kCmdB3, &s1c, 1}, {kCmdAF, &s14, 1}, {kCmdA3, &s0c, 2}};
+        rebuild_bar(triples, host);
+        release_string(s30, host);
+        release_string(s24, host);
+        release_string(s1c, host);
+        release_string(s14, host);
+        release_string(s0c, host);
+        slot_0c = s0c.length;
+    }
+
+    const std::uint32_t mode = *static_cast<std::uint32_t*>(host.image_global(kHelpMode));
+    if (mode == 7) {
+        // 005F1160.
+        Cc13SweepBNativeString s38 = help_assigned(0x00CEBE80u, host);  // globals.cancel
+        Cc13SweepBNativeString s80 = help_assigned(0x00CEB410u, host);  // globals.change
+        Cc13SweepBNativeString s50 = help_assigned(0x00CEB394u, host);  // globals.navigate
+        Cc13SweepBNativeString s90 = help_assigned(kEmptyString, host);
+        Cc13SweepBNativeString s60 = help_assigned(0x00CED4D4u, host);  // globals.accept
+        const Cc13SweepB2Host::CommandTriple triples[5] = {
+            {kCmdA2, &s60, 0}, {0, &s90, 1}, {kCmdB3, &s50, 1}, {kCmdAF, &s80, 1}, {kCmdA3, &s38, 2}};
+        rebuild_bar(triples, host);
+        release_string(s60, host);
+        release_string(s90, host);
+        release_string(s50, host);
+        release_string(s80, host);
+        release_string(s38, host);
+    } else if (mode == 4) {
+        // 005F12DA: only the low byte of the E+0Ch dword is rewritten (0A5h
+        // with the layout byte set, else 0AFh); the pushed dword keeps the
+        // upper bytes of the earlier string length stored there.
+        const std::uint8_t command = static_cast<std::uint8_t>((layout != 0 ? 0xf6 : 0) + 0xaf);
+        slot_0c = (slot_0c & 0xFFFFFF00u) | command;
+        Cc13SweepBNativeString s58 = help_assigned(layout != 0 ? 0x00CF3920u /* FE.layout */ : 0x00CEB410u, host);
+        Cc13SweepBNativeString s48 = help_assigned(0x00CEBE80u, host);  // globals.cancel
+        Cc13SweepBNativeString s40 = help_assigned(0x00CEB394u, host);  // globals.navigate
+        Cc13SweepBNativeString s70 = help_assigned(0x00CF392Cu, host);  // globals.default
+        Cc13SweepBNativeString sa0 = help_assigned(0x00CED4D4u, host);  // globals.accept
+        const Cc13SweepB2Host::CommandTriple triples[5] = {
+            {kCmdA2, &sa0, 0}, {kCmdA7, &s70, 1}, {kCmdB3, &s40, 1}, {slot_0c, &s58, 1}, {kCmdA3, &s48, 2}};
+        rebuild_bar(triples, host);
+        release_string(sa0, host);
+        release_string(s70, host);
+        release_string(s40, host);
+        release_string(s48, host);
+        release_string(s58, host);
+    } else if (mode == 0) {
+        // 005F146A.
+        Cc13SweepBNativeString sa8 = help_assigned(0x00CEB3A8u, host);  // globals.back
+        Cc13SweepBNativeString s98 = help_assigned(kEmptyString, host);
+        Cc13SweepBNativeString s88 = help_assigned(kEmptyString, host);
+        Cc13SweepBNativeString s78 = help_assigned(0x00CEB394u, host);  // globals.navigate
+        Cc13SweepBNativeString s68 = help_assigned(0x00CEB3ECu, host);  // globals.select
+        const Cc13SweepB2Host::CommandTriple triples[5] = {
+            {kCmdA2, &s68, 0}, {kCmdB3, &s78, 1}, {0, &s88, 1}, {0, &s98, 1}, {kCmdA3, &sa8, 2}};
+        rebuild_bar(triples, host);
+        release_string(s68, host);
+        release_string(s78, host);
+        release_string(s88, host);
+        release_string(s98, host);
+        release_string(sa8, host);
+    }
+}
+
 }  // namespace bsp

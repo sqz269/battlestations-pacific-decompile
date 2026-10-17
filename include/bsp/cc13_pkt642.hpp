@@ -184,4 +184,9 @@ void cc13_pkt642_options_screen_commit_005f65c0(void* screen, Cc13Pkt642Host& ho
 // through 0063C620.
 void cc13_pkt642_hud_markers_update_target_section_callout_00640d70(void* markers, Cc13Pkt642Host& host);
 
+// 005F0CD0 BSP_OptionsScreen_RefreshHelpLine, __fastcall(ECX = options
+// screen, not read), RET: three command-bar rebuilds (0054B530), the last
+// chosen by the help mode [00E19650].
+void cc13_pkt642_options_screen_refresh_help_line_005f0cd0(void* screen, Cc13Pkt642Host& host);
+
 }  // namespace bsp
