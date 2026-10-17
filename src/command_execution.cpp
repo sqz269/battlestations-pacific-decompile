@@ -250,10 +250,25 @@ void clear_override_command_0071e610(CommandQueueState& state, CommandExecutionH
 
 void set_override_command_0071e7f0(CommandQueueState& state, std::uint32_t command,
                                    const CommandParams& params, CommandExecutionHost& host) {
-    // 0071E7FF..0071E814: the same command with the same target is a no-op.
+    // 0071E7FD..0071E81B: the same command with the same target is a no-op, where
+    // "the same target" is 0071E200(new params, director+18Ch): both descriptors
+    // resolve to the same object (00521EA0) and their points, the 00F87574 zero
+    // vector when byte +1 is clear, lie within a squared distance of 1.0 (x87 at
+    // 0071E27B, dz*dz + dx*dx + dy*dy <= 1.0). cc13-verify1 finding.
     if (state.mode == CommandMode::kOverride && state.override_slot.command == command &&
         host.resolve_target(state.override_slot.params) == host.resolve_target(params)) {
-        return;
+        const CommandParams& a = params;
+        const CommandParams& b = state.override_slot.params;
+        const float bx = b.has_position ? b.position_x : 0.0f;
+        const float by = b.has_position ? b.position_y : 0.0f;
+        const float bz = b.has_position ? b.position_z : 0.0f;
+        const float ax = a.has_position ? a.position_x : 0.0f;
+        const float ay = a.has_position ? a.position_y : 0.0f;
+        const float az = a.has_position ? a.position_z : 0.0f;
+        const float dz = az - bz;
+        const float dx = ax - bx;
+        const float dy = ay - by;
+        if (dz * dz + dx * dx + dy * dy <= 1.0f) return;
     }
     if (!host.command_accepts_target(command, params)) {
         return;
