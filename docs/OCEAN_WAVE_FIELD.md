@@ -1918,3 +1918,397 @@ passes on each):
 `p13_vc_equip.py` (a class's DefaultEquipment and Equipments from this installation's vehicleclasses.lua),
 `p13_e8_loadout.py`, `p13_e8_dd_first.py`; exes `p13_m3` (57ecc76a4), `p13_off_rc` / `p13_rc` / `p13_off_nb` / `p13_nb`
 (the pairs).
+
+## 50. USNOS plane #4.4|.-IV: a retired plane is still a neighbour: `kStockReturnDestroyBytesBound` (cc9-physics14, 2026-10-17; lead item 1)
+
+### 50.1 The chain, measured (diagnostic builds of cd47de824, not committed)
+
+USNOS 14000-15200 mission frames with `cc9-ships44\local\s55_os_r0.txt`; logs `local\p14_diag{,2,4,5,6}_usnos.log`.
+
+1. **The runway exit starts in the flare.** Each #4.x level bomber touches down with its nose 0.27-0.41 rad left of its
+   track. The track stays on the runway axis (-1.11 against holder+88h -1.0995). At touchdown the wheel friction turns
+   the velocity onto the nose, and the plane rolls off at about 20 degrees. Park is fast (`v` > 1.5 x MoveSpd) and steers
+   along the axis (009B273A JE 009B28BF: `sx` = 0), so the yaw saturates and still loses. #4.4|.-IV crosses
+   x = -17.5 (half of the 35 m holder) at 11 m/s and the land task aborts. #1.4|.-II lands with an error of 0.005 and
+   taxis into its hangar. On cd47de824 both #4.4|.-III and -IV leave the runway.
+2. **The pilot is overridden.** In the flare the planner asks pitch -1 and yaw +1. Each think, 0099BF30 (`gunfire_repair`)
+   replaces the command block with pitch +1.1 and yaw -1.1 (by the bank's sign), because 0099B940 finds a band
+   covering [-1, 1] in both sets. Pitch runs to 0.46 (command 0.1047) and the heading by -0.3 rad in 3 s.
+3. **The bands.**
+   - Terrain avoidance 0099F1C0 puts pitch bands [-1.1, 0.3-0.56] on every lander, #1.4|.-II included. Its search never
+     fails.
+   - The #4.x planes also get vehicle avoidance 007DF4F0 bands in both sets. They widen to [-2.0, 2.0] by the threshold.
+   - The neighbour is #1.4|.-II on every #4.4 line: closing, d = 154 -> 30 m, at (-8005.9, 5.2, -8923.8), the
+     touchdown zone. Its `+900h` is 1, `+904h` set and `+C00h` clear.
+4. **#1.4|.-II was retired at 396.18 s.** It taxied into the hangar, and the stock return
+   (007CE6CA C7h -> 007CC8B0 -> 007F1CA0) set flight state 1 and called Kill(plane, 5). The host kept its `+5Fh` and
+   `+60h` bytes clear. The vehicle arm's neighbour refresh (007E11D0 as the host carries it) keeps any slot whose
+   state is active and whose `+5Eh`/`+60h` are clear. So the retired plane stayed listed, and every later lander
+   avoided it.
+
+### 50.2 The image: Kill sets the bytes at once
+
+- `00926D90` Kill (disk listing): `00926DF3` +5Fh = 1. With +60h clear (`00926DEF`), vtable[70h](1) at `00926E05`.
+- The plane's vtable[70h] is `0077D1A0` (the dword at `00D066A8` and at `00D19D98`). It tail-calls `00926C80` Destroy at
+  `0077D243`, which stores +60h = 1 at `00926CD5` before anything is queued.
+- The host's C3Ah death path already sets +60h (and the flush's +5Dh) at once (`kPlaneDeathFlagsBound`). The
+  ship kill-depth path sets +5Fh and +60h. The stock return set neither.
+- No avoidance or neighbour test in the image keys on `+C00h` or visibility. `007DF96C`-`007DF9A9` skips only
+  `pilot+260h` and non-planes. So the image removes the retired plane through these bytes, not through the hide.
+
+### 50.3 The binding
+
+`kStockReturnDestroyBytesBound` (`src/game_hosts_units.cpp`), committed **OFF**. With it ON, the stock return sets
++5Fh = 1 and, when +60h is clear, +60h = 1 and the flush's +5Dh (`state->simulate`), after its Kill. The retired
+plane then fails the neighbour refresh's in-world test and leaves the list at the next 3 s refresh. Summary line:
+`summary stock return destroy bytes bound= destroys=`.
+
+### 50.4 Predictions (ON against OFF, both from the commit that carries this section; written before the runs)
+
+1. **USNOS** (s55_os_r0.txt, 150000 frames):
+   - `destroys` equals the stock returns of the row.
+   - No #4.x vehicle-avoidance band against a retired plane. The #4.x flares keep the planner's pitch and yaw, and the
+     touchdown heading errors fall from 0.27-0.41 to under 0.05.
+   - No `plane ground contact lost` and no ground re-takeoff for a #4.x bomber. #4.4|.-IV parks and is retired, so
+     PhOneAttackers no longer keeps a live member below the sea.
+   - `pair_diff` 3. Every death row that moves involves a plane that landed after the first stock return, or the
+     phase it closes.
+2. **JM05 9000** (landing control, airfield and carrier stock returns): `destroys` > 0, `pair_diff` 1 or 3. Any moved
+   landing is one whose approach crossed a retired plane's spot.
+3. **USN01 3000** (control): `destroys` 0 unless a plane is stowed before 3000 frames; `pair_diff` 0 or 1.
+4. **Mechanism failure:** a retired plane still listed after the next refresh. Also a failure: any change on a row
+   with no stock return, or a lander that still gets bands against a plane with +60h set.
+
+### 50.5 Answers to the lead's three questions
+
+- **(a) Why park lets it leave the runway.** Park's band clamp (009B276A-009B2851) applies only when slow. A fast plane
+  steers straight down the axis, as the image does. The plane leaves because it touched down yawed 0.41 rad by the
+  avoidance override (50.1).
+- **(b) Abort's on-ground arm** (009B0E74-009B0F93) is transcribed behind `kLandAbortGroundArmBound` (SQUADRON_LAND_TASK
+  5v). With the ground re-takeoff ON (5br) it runs one tick per grounded abort. It does not close this row.
+- **(c) Why the plane under the sea does not die.**
+  - A state-4 plane has no water or terrain test in the image. `007CBFA0` calls no water sampler. `007CB7F0` is reached
+    only from `007CC2F0` (state 7) and from the control-mode slot 28h (`007CC2D0`).
+  - A `.text` scan for slot-28h calls through `+72Ch` finds none. The same scan for slot 24h finds `007CBD6B`, so the
+    scan works. Tool: `local\p14_slot_call_scan.py`.
+  - The takeoff run's arm D (`h = 0 > y`) returns every step once the plane is below 0, which leaves it level near
+    -105 m.
+  - That is the image's law as read. The fix belongs upstream (50.3).
+
+### 50.6 Measured, and the verdict: ON
+
+Both sides are builds of 201a1cbf1. OFF is `local\p14_off_sd` (the tree build). ON is `local\p14_sd`
+(`--flip kStockReturnDestroyBytesBound=true`, SHA-256 3132DB9463CF). The rows ran in the reference environment, and a
+300-frame USN01 smoke of OFF exited 0.
+
+| row | `pair_diff` | stock returns OFF / ON | `destroys` ON | runway exits (#4.x) OFF / ON |
+| --- | --- | --- | --- | --- |
+| USNOS 150000, s55_os_r0.txt (`local\p14{off,on}_os.log`) | 3 | 3 / 10 | 10 | 4.4\|.-III, 4.4\|.-IV / 4.4\|.-IV, 4.5\|.-III, 4.5\|.-IV |
+| JM05 9000 (`local\p14{off,on}_jm05.log`) | 1 | 0 / 0 | 0 | - |
+| USN01 3000 (`local\p14{off,on}_u01.log`) | 1 | 0 / 0 | 0 | - |
+
+**The predictions:**
+1. **USNOS.**
+   - `destroys` = the stock returns (10 = 10): **held**.
+   - #4.4|.-III now parks and is retired at 747.44 s (OFF: it left the runway at 725.00 s).
+   - #4.4 and #4.4|.-II are retired as before, and #4.5|.-IV is retired at 1432.32 s. Ten stock returns against three.
+   - **Missed:** #4.4|.-IV still touches down 0.404 rad off the axis and leaves the runway at 735.49 s. #4.5|.-III and
+     -IV leave it at 973 and 985 s. They relaunch (re-takeoff) and land again until they are lost.
+   - In IV's flare the planes ahead are live: #4.4|.-II taxis until 742.19 s and #4.4|.-III until 747.44 s. So the
+     remaining yaw comes from avoiding live taxiing planes, not retired ones. That is a different mechanism (50.7).
+   - On this base #4.4|.-IV dies at 958.79 s (OFF) and 959.59 s (ON). It no longer flies at -105 m to the end on either
+     side.
+   - Neither side ends the mission with these orders. Deaths: 325 -> 322 rows, 68 changed.
+2. **JM05 9000:** failed as a premise. This base has no stock return on the row (sends 0 on both sides), so it is a
+   no-reach control. It returned 1, as predicted for a row with no stock return.
+3. **USN01:** held (1).
+4. **No mechanism failure.** Every stock return set the bytes, and none of the retired planes is avoided again
+   (USNOS 4.4|.-III parks).
+
+**Verdict: `kStockReturnDestroyBytesBound = true`.** The mechanism matches the image as read (50.2). The touchdown
+miss is recorded and belongs to 50.7.
+
+### 50.7 Open: a lander still avoids planes taxiing on the runway
+
+- In the image, the vehicle arm walks every listed neighbour (`007DF96C`-`007DF9A9`), and the land task's mask is FFh.
+  So a lander whose flare closes on a taxiing plane gets the same bands in the image, unless the landing sequencer
+  keeps the runway clear first.
+- The host lets a wingman start its final about 10 s behind the previous lander, which still taxis for 20-30 s.
+- Next: read the sequencer's hold against the runway's occupants (`006C7960` mode 3 -> 4, `006BED60`, the occupancy
+  vector `+34h`). 48.1 found no hold in `006BED60`, so read the corridor test and `rec+8` next.
+
+### 50.8 The sequencer's runway hold, read (read-only)
+
+`006C7960` gives mode 4 when the corridor test `006C3B10` holds, the deck is usable (`006BED60`) and `rec+8 > 0`.
+`006C3F80` computes `rec+8`:
+- From the other airborne landers' path gaps (`F = 1.2 FollowDistTime`).
+- With none (k = 0), from the site clock `site+40h`. It is restamped at each touchdown (`007CB5F0` ->
+  `006CE230`): `+8h = 00419010(0.75 FDT, 0.01, FDT, 1.0, site + tp)`, zeroed while `tp < 0.25 FDT` and
+  `site < 0.4 FDT`.
+So the image spaces landers by time since the last touchdown. Nothing reads the runway's occupants. A wingman can
+start its final while the previous plane still taxis, in the image as in the host, and the vehicle arm then avoids
+the taxiing plane. 50.7 may therefore be image behaviour.
+
+Still to compare against the image:
+- the host's taxi time: II and III need 20-30 s to clear the strip at about 7 m/s, through park's path speed
+  `RunwayYawTurnSpdLimit/1`;
+- the touchdown point.
+Neither has a known host difference.
+
+## 51. 0085E4D0's own tail: the up pick and 0085D3D0: `kRotateAboutAxisImageTailBound` (cc9-physics14, 2026-10-17; lead item 2)
+
+### 51.1 The image (disk listing)
+
+- **Up reference** (`0085E58F`-`0085E6C7`). `|c|` is `c` when `c > 0`, else `-0.0f - c`.
+  - When `|x| > |y|` and `|x| > |z|`, `XMM6` (y) takes 1.0 (`0085E62F`): up = (0,1,0).
+  - Else when `|y| > |x|` and `|y| > |z|`: up = (0,0,1) (`0085E6BD`).
+  - Else up = (1,0,0) (`0085E6C7`).
+  - The host picked (1,0,0) or (0,0,1) by `|z| > |x|` and never (0,1,0). In exact arithmetic the frame choice cancels in
+    `L x RotZ x transpose(L)`, so only the rounding moves.
+- **0085D3D0 at `0085E85F`**, run on the result after row 3 is restored. Its listing:
+  - normalise row 0 (`00419440`, `inv = L > 0 ? 1/L : 0`);
+  - `d = (a.y b.y + a.x b.x) + a.z b.z` (`0085D44E`-`0085D472`);
+  - `b -= a d` (`0085D494`-`0085D4AD`), then normalise row 1;
+  - row 2 = row0 x row1 (`004F9B30`), then normalise row 2.
+  The host stopped before it, so the pose was never re-orthonormalised by this step.
+- **Precision.** 0085E4D0's callers 007C18B0, 007D9F60 and 00901C20 run on the main thread (24-bit) or on a 53-bit
+  worker (docs/CC13_FPU_PRECISION.md). The host takes the 24-bit form here, the same as cc13's standalone
+  `src/cc13_front4.cpp`: the length's squares and sums, and every 0085D3D0 product and sum, rounded to float.
+
+### 51.2 The binding
+
+`kRotateAboutAxisImageTailBound` (`include/bsp/plane_advance_pose.hpp`), committed **OFF**. ON:
+- `rotation_axis_angle_0085e4d0` takes the per-op float length and the image's up pick;
+- `rotate_about_axis_0085e4d0` ends with a local `0085D3D0` (`src/plane_advance_pose.cpp`, bsp_core; cc13's copy in
+  `gameplay_seg53_cc13.cpp` is bsp_game only).
+Both callers move: the plane pose step (`game_hosts_units.cpp` `rotate_pose_0085e4d0`) and the GunBot intercept
+(`game_hosts_gunnery.cpp` 3215, 00901E7A). Neither draws from 00BD2F10.
+
+### 51.3 Predictions (ON against OFF, both from the commit carrying this section; written before the runs)
+
+1. **Every row with planes moves** (`pair_diff` 3). Each plane step's pose changes at the float-rounding level, and
+   the re-orthonormalisation removes the drift that accumulates without it. Positions diverge slowly. Shot and kill
+   timings shift, and the AA kills are RNG-coupled (shared stream).
+2. **No regime change.** The landings, releases and plane deaths per row stay within a few of OFF. A changed regime
+   would be a mechanism failure: a plane losing control, NaN poses, or every plane of a squadron missing.
+3. **Rows:** USN01 3000, JM05 9000, USN04 4500. BSM01 3000 (no planes before 3000 frames) is the control: exit 0 or 1.
+
+### 51.4 Measured, and the verdict: ON
+
+Both sides are builds of 169839289. OFF is `local\p14_off_rt` (the tree build). ON is `local\p14_rt`
+(`--flip kRotateAboutAxisImageTailBound=true`). Reference environment. Logs are `local\p14rt{off,on}_<row>.log`.
+
+| row | `pair_diff` | death rows | plane deaths OFF / ON | NaN |
+| --- | --- | --- | --- | --- |
+| USN01 3000 | 3 | 33 = 33, 2 changed | 5 / 5 | none |
+| JM05 9000 | 3 | 44 = 44, 21 changed; Shokaku (OFF) and Zuikaku (ON) swap | 26 / 26 | none |
+| USN04 4500 | 3 | 51 = 51, 27 changed | 51 / 51 | none |
+| BSM01 3000 (control) | 1 | 0 | - | none |
+
+1. **Held:** every row with planes moves (3), at the timing level.
+2. **Held:** no regime change. The plane death counts are equal on every row, and no NaN appears. The JM05 carrier
+   swap is a moved attack timing on the shared stream.
+3. **Held:** the control returned 1.
+
+**Verdict: `kRotateAboutAxisImageTailBound = true`.** It is the image's own tail, and every row keeps its regime.
+
+## 52. 007CBA50, the plane water step: what is left (cc9-physics14, 2026-10-17; lead item 3, read-only)
+
+- **Powerlost (`007CBE02`).** `kPlaneWaterPowerLostBound` (ON) routes it as a death. The C3Ah hook skips
+  `007CA8A0`'s draw when `plane_water_powerlost_raised` is set (`game_hosts_units.cpp`, "A water powerlost calls
+  007BBFA0 directly"). The image's chain is `007BBFA0` -> message 66h -> `007D0B80`:
+  - stop the engines and set C39h;
+  - the tail sets C3Ah and calls vt[70h](1), Destroy, so +60h;
+  - no Kill and no draw.
+  The host's `kill_unit_00926d90(self, 1)` differs only in the Kill bookkeeping (+5Fh and the kill cause). The plane
+  is dead on both, and no shared-RNG draw is taken on either. Nothing gameplay-visible is left to bind.
+- **The stay test (`007CBC6A`-`007CBD6D`, listing read).**
+  - It runs only when the height above the water exceeds class+508h + 1.5 and `unit+770h` is set.
+  - Each 12-byte point of the class vector `+5BCh`/`+5C0h` is put through the world matrix `+CCh` (`004142E0`), and
+    `0078CF20` samples the sea at it. A point below the surface jumps to `007CBE6C`: the plane stays on the water.
+  - With none below, it calls `(+72Ch)->vt[24h](0)` (`007CBD6B`) and lifts off.
+  - The host carries neither the point vector (it is loaded with the model, like the class+50h box) nor a producer of
+    `+770h`. So its lift-off is the 1.5 m test alone.
+  - Binding this needs the model's points. It is left with the other mesh-bound items (48.1's deck crash). Not bound.
+- **The splash and the +911h latch.** They are presentation only. Not bound.
+
+## 53. State after cc9-physics14's first pass (2026-10-17, at about 55% context)
+
+**Commits on agent/cc9-physics1.** The full `scripts/build.ps1` with tests passes on each.
+- 201a1cbf1 / 8acd39e3f: `kStockReturnDestroyBytesBound`, ON (50).
+- 169839289 / ae5f2e9a5: `kRotateAboutAxisImageTailBound`, ON (51).
+- 18c41f797, 1b52714e4: 50.8 and 52 (read-only), and the section order.
+
+**Open, in order.**
+1. **50.7: landers avoiding taxiing planes.** USNOS #4.4|.-IV and #4.5|.-III/-IV still touch down yawed and leave the
+   runway. 50.8 reads the sequencer as image-faithful, so compare the taxi time and the touchdown point against the
+   image next.
+2. **The free-attack tick 009F8470 (48.3).** It needs the squadron director's override layer: 0071D980 ->
+   0071E7F0, the director host's 00836D67 arm, and `director+188h`. It touches `game_hosts_commands.cpp`,
+   `command_execution.cpp` and the units host's squadron command path. Size it as a fresh worker's packet.
+3. **007DC830's extra forces (CC13_FRONT3 5).** The stall block needs `r = forward / StallSpd < StallRangeMax` (1.6);
+   a landing flare at 36-39 m/s against 20.56 stays above it. ctl+94h is the wreck/water gate. Neither moves a
+   live landing.
+4. **The bag > 0 rack with no loadout entry (46).** It needs the model's BSPGun platform slots against each
+   Equipments entry. Start with a census.
+5. **The catapult adapter (`Seg33aHost`, 37).**
+
+**Tools in `local\`.**
+- `p14_slot_call_scan.py <exe> <disp> <slot> [--ptr]`: virtual calls through a member at `+disp`.
+- `p14_track.py <csv> <t0> <t1>`: the track heading from a plane CSV.
+- `p14_chain.ps1 -Exe -Prefix -Rows 'M:frames,...'`: sequential rows in the reference environment.
+- The diagnostic edits (`p14_diag_*.py`, applied to a scratch build only) print the vehicle-avoidance neighbour,
+  the band sources and the planner yaw inputs in a land final.
+
+## 54. A positive bag keeps a rack's constructor round: `kRackPositiveBagRoundBound` (cc9-physics14, 2026-10-17; lead item 5, 46's open item)
+
+### 54.1 The image (`006E3350`-`006E3402`, disk listing)
+
+- With an owner answering IsKindOf(0Fh) and `+C54h` (the bag) > 0, it walks `009552E0(bag)`'s entries. An entry whose
+  ammo `[+8h]+8h` > 0 and whose key `[+8h]+4h` equals the rack's key (`[+3F4h]+6Ch`, `006E33AA`-`006E33B6`) gets SetAmmo
+  (`vt[1BCh]`) and the reload time (`vt[1C0h]`).
+- Every path then reaches `006E33E3`. Unless `[+C0h]+4 == 3` (unread, taken as not met), it tail-jumps `vt[224h]`, which
+  attaches the next round.
+- A rack with no entry in the bag therefore keeps the ammo its constructor `006E3C00` stored, 1, and attaches one
+  round. 46 bound this for bag 0 in the 007B9140 answer only.
+
+### 54.2 Reach (census build, not committed: `local\p14bag_<row>.log`)
+
+- **ESMP08 40000 frames, `esmp08_p12_e8_rb`:** 31 planes. All are B6N Jill (class 163) with bag 1.
+  - Equipments[1] loads slot 50 with platform 122. Slot 51 is only in Equipments[2] (platform 87).
+  - So the slot-51 rack keeps the default device (bullet class 2Bh) and, in the image, one round. The host gives it none.
+- **USN04 4500:** none.
+
+### 54.3 The binding
+
+`kRackPositiveBagRoundBound` (`src/game_hosts_units.cpp`), committed **OFF**. With it ON, such a single rack gets
+authored ammo 1:
+- in `ordnance_racks` (the 007B9140 answer and 007EDAD0's kinds);
+- in `plane_rack_census` (`rack_authored_per_rack`, which seeds the release counts).
+Summary line: `summary rack positive bag round bound= rounds=`.
+
+### 54.4 Predictions (ON against OFF; written before the runs)
+
+1. **ESMP08 (rb):** `rounds` > 0.
+   - Each Jill's slot-51 rack holds a 2Bh round, so its torpedo release issues a second round. The squadron is not
+     spent after its first drop: 009F8160/007ED790 still finds a round.
+   - Torpedo releases rise, and US ship damage moves. `pair_diff` 3.
+2. **USN04 4500 and USN01 3000:** `rounds` 0, exit 0 or 1.
+3. **Mechanism failure:** a counted round on a rack whose loadout has an entry, or on a bag-0 plane (46's path).
+
+### 54.5 Measured, and the verdict: ON
+
+Both sides are builds of cd85205bb. OFF is `local\p14_off_br` and ON is `local\p14_br` (the flip). Reference
+environment. Logs are `local\p14br{off,on}_<row>.log`.
+
+| row | `pair_diff` | `rounds` ON | outcome OFF / ON |
+| --- | --- | --- | --- |
+| ESMP08 140000, `esmp08_p12_e8_rb` | 3 | 877 | completed 5444.78 s / completed 3959.94 s (both log the sus_prog.exe refusal) |
+| USN04 4500 | 1 | 0 | - |
+| USN01 3000 | 3 | 50 | death rows identical (33); shots 2040 -> 2051, hits 1073 -> 1063 |
+
+1. **ESMP08: held.** `rounds` > 0. After one drop each Jill's second rack still holds its round. Zuiho_sqn03's rack
+   line reads `drops=1 ammo=1` ON against `ammo=0` OFF. OFF latches `spent ordnance` at 396.93 s; ON has no latch.
+   - Each run still releases one torpedo per rack run (`drops=1`). The "second round issued" part of the prediction
+     did not show in these lines.
+   - The row still completes, earlier.
+2. **USN04: held** (0, exit 1). **USN01: failed as a premise.** The H6K Mavis squadrons Mav1-Mav5 carry a positive bag
+   with a rack that has no entry (50 rounds counted). The row moves only in shots and hits; the death rows are
+   identical.
+3. **No mechanism failure.** `rack_positive_bag_round` acts only when the bag is > 0 and the loadout has no entry for
+   the rack (`ammo < 0`), so a rack with an entry and the bag-0 path are untouched by construction.
+
+**Verdict: `kRackPositiveBagRoundBound = true`.** It is 006E3350's walk as read. ESMP08 keeps its completion and USN01
+keeps its death table.
+
+
+### 54.6 Follow-up: JM05 9000 under 54's flip
+
+The same OFF and ON builds of cd85205bb (`local\p14br{off,on}_jm05.log`).
+- `rounds` = 44 ON: JM05 has positive-bag planes with racks that have no loadout entry.
+- `pair_diff` 3. Death rows 44 -> 58: 15 only ON (two Fubukis, USS Perkins, a Clemson, two troop transports,
+  SecondaryAirfieldEntity 01_sqn16 x3, Yorktown/Lexington wingmen) and 1 only OFF (Zuikaku).
+- So 54 moves JM05 9000 strongly, as 55.4 inferred. The verdict stands (mechanism held), and the row needs re-timing.
+
+## 55. 007DC830's stall block: `kFreeFlightStallForceBound` (cc9-physics14, 2026-10-17; lead item 5, 007DC830 wiring)
+
+### 55.1 The image (cc13's `src/cc13_front3.cpp` reading, spot-checked at `007DC998`-`007DC9B1`)
+
+After the core law (`007DC86E`):
+- r = `007D99C0` / StallSpd.
+- When StallRangeMax > r, or the plane is dead (+5Dh):
+  - m = `00419010(StallRangeMin, 1, StallRangeMax, 0, r)`. A dead plane takes the larger of m and t, where t is the
+    DeadMeat StallMul ramp (or the SpinStallMul ramp when spinning) on +C3Ch.
+  - g = `00419010(OnPitch, 1, OffPitch, 0, pitch)`. The spot-check confirms the argument order: x1 = `00F87358`
+    (SpinStallMulOffPitch) with y1 = 0.
+  - d = clamp(+908h - 1, 0, 1).
+  - When f = g m d > 0: `007DAFD0(ctl; (0,0,1), (0,-1,0), f x StallRotAccel (desc+17Ch), step, 1.5)`, a nose-down kick.
+- The host ran the core law alone.
+
+### 55.2 The binding
+
+`kFreeFlightStallForceBound` (`src/game_hosts_units.cpp`), committed **OFF**.
+- ON, `free_flight_stall_force_007dc830` runs after the core law in the free-flight arm (`007CC2F0`) and in the
+  ground-roll arm's free branch (`007DCCF0`).
+- The kick is the host's `water_angular_kick_007dafd0` on the world angular velocity. That velocity comes from the
+  body rates through the pose rows and goes back the same way, as `water_law_tail` does.
+- LABELLED:
+  - the dying spin `ctl+F0h..F8h` (its constructor draw is not hosted) and `ctl+94h` are not carried;
+  - spinning is C36h or C37h (the host has no C38h);
+  - StallRotAccel is read per class (`read_vehicle_class_number`, fallback 0, the descriptor's zero).
+- Summary line: `summary free flight stall force bound= steps= kicks=`.
+
+### 55.3 Predictions (ON against OFF; written before the runs)
+
+1. **The kicks happen** where planes fly below 1.6 x StallSpd nose-up: climb-outs after lift-off, slow dogfight turns, and
+   dying planes (the DeadMeat ramp). `kicks` > 0 on every row with planes. The landing flare stays above 1.6 x StallSpd
+   (36-39 m/s against 20.56 for the Liz), so landings barely move.
+2. **Moves:** USN01 3000, JM05 9000 and USN04 4500 move (`pair_diff` 3). Dying planes pitch down sooner, which moves the
+   wreck impact points. The plane death counts stay equal or close.
+3. **Mechanism failure:** a live plane above StallRangeMax x StallSpd getting a kick, or a NaN pose.
+
+### 55.4 Measured, and the verdict: ON
+
+Both sides are builds of b8f7a3c42. OFF is `local\p14_off_sf` and ON is `local\p14_sf` (the flip). Reference environment.
+Logs are `local\p14sf{off,on}_<row>.log`.
+
+| row | `pair_diff` | kicks / steps ON | death rows OFF -> ON | plane deaths OFF -> ON | NaN |
+| --- | --- | --- | --- | --- | --- |
+| USN01 3000 | 1 | 366 / 15236 | 33 = 33, identical | 5 = 5 | none |
+| JM05 9000 | 3 | 2246 / 165650 | 58 -> 44 (15 only OFF, 1 only ON: Shokaku) | 34 -> 26 | none |
+| USN04 4500 | 3 | 6952 / 130081 | 51 = 51, all changed | 51 = 51 | none |
+
+1. **Held:** kicks on every row with planes, and only below StallRangeMax x StallSpd or for a dead plane (the gate is
+   the listing's).
+2. **Held, with a large JM05 move.**
+   - On JM05 the OFF side sinks two Fubukis, USS Perkins, a Clemson and two troop transports. It also loses three
+     SecondaryAirfieldEntity 01_sqn16 planes and two Yorktown/Lexington wingmen. ON keeps them and sinks Shokaku.
+   - The OFF base already differs from the 51.4 runs (44 rows then, 58 now). 8b02bc7ac (54) is the only flip between
+     them, and its pair did not run JM05. So **54's JM05 effect is unmeasured**, and ON here lands back on 44 rows.
+   - USN04 moves at the timing level with equal counts.
+3. **No mechanism failure:** no NaN, and no kick outside the gate.
+
+**Verdict: `kFreeFlightStallForceBound = true`.** It is 007DC830's block as read. JM05 9000 moves at exit 3; reference
+rows with planes need re-timing on the new base.
+
+## 56. Handoff (cc9-physics14, 2026-10-17, at about 65% context)
+
+**Commits on agent/cc9-physics1 since 53** (the full `scripts/build.ps1` with tests passes on each):
+- cd85205bb / 8b02bc7ac: `kRackPositiveBagRoundBound`, ON (54; 54.6 records its JM05 move);
+- b8f7a3c42 / 724fb3a6c: `kFreeFlightStallForceBound`, ON (55);
+- this commit: 54.6 and this section.
+Four switches are flipped in this pass: 50 (stock return bytes), 51 (0085E4D0's tail), 54 and 55. Rows with planes move
+on all four. JM05 9000 moves strongly under 54, and under 55 it lands back on 44 death rows. ESMP08 rb completes at
+3959.94 s with 54 ON (5444.78 s OFF).
+
+**Open, in order** (53's items 3 and 4 are done):
+1. **The free-attack tick 009F8470 (48.3).** It needs the director override layer. Make it a fresh worker's whole packet.
+2. **50.7: landers avoiding taxiing wingmen.** It is probably the image's own behaviour (50.8). Compare the taxi time
+   and the touchdown point if USNOS needs it.
+3. **007DC830's remaining terms:**
+   - the dying spin `ctl+F0h..F8h`, which needs `007D7EA0`'s construction draw `U(DeadMeat RotationMin, RotationMax)`
+     on the shared stream (CC13_GPR_48 162, RNG census `007D7F90`);
+   - `ctl+94h` (the wreck/water gate, 007CE0DB-007CE1D9);
+   - spin-left C38h.
+4. **The catapult adapter (`Seg33aHost`, 37).**
+5. The mesh-bound items: the deck crash's class+50h box (48.1) and 007CBA50's hull points (52).

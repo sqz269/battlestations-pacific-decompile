@@ -136,9 +136,73 @@ void orthonormalize_up_first_0085dad0(AdvanceMatrix& m) {
     normalize3(row0);
 }
 
+// 0085D3D0 BSP_Matrix_OrthonormalizeFromRowX (body 0085D3D0-0085D5C6),
+// __fastcall(float m[16] ECX), plain RET: normalise row 0, take row 0's
+// component out of row 1, normalise row 1, row 2 = row0 x row1 (004F9B30),
+// normalise row 2. normalise is 00419440's length, inv = L > 0 ? 1/L : 0, each
+// component times inv. Every product and sum is rounded to float (24-bit
+// precision control); the dot is (y*y' + x*x') + z*z' as the listing orders it.
+static void orthonormalize_from_row_x_0085d3d0(AdvanceMatrix& m) {
+    const auto f = [](double v) { return static_cast<float>(v); };
+    const auto normalise = [&](float* r) {
+        const float s = f(static_cast<double>(f(static_cast<double>(f(static_cast<double>(r[0]) * r[0]))
+            + f(static_cast<double>(r[1]) * r[1]))) + f(static_cast<double>(r[2]) * r[2]));
+        const float len = f(std::sqrt(static_cast<double>(s)));
+        const float inv = len > 0.0f ? f(1.0 / static_cast<double>(len)) : 0.0f;
+        r[0] = f(static_cast<double>(r[0]) * inv);
+        r[1] = f(static_cast<double>(r[1]) * inv);
+        r[2] = f(static_cast<double>(r[2]) * inv);
+    };
+    float* const a = m.row(0);
+    float* const b = m.row(1);
+    float* const c = m.row(2);
+    normalise(a);
+    const float d = f(static_cast<double>(f(static_cast<double>(f(static_cast<double>(a[1]) * b[1]))
+        + f(static_cast<double>(a[0]) * b[0]))) + f(static_cast<double>(a[2]) * b[2]));
+    b[0] = f(static_cast<double>(b[0]) - f(static_cast<double>(a[0]) * d));
+    b[1] = f(static_cast<double>(b[1]) - f(static_cast<double>(a[1]) * d));
+    b[2] = f(static_cast<double>(b[2]) - f(static_cast<double>(d) * a[2]));
+    normalise(b);
+    c[0] = f(static_cast<double>(f(static_cast<double>(a[1]) * b[2])) - f(static_cast<double>(a[2]) * b[1]));
+    c[1] = f(static_cast<double>(f(static_cast<double>(a[2]) * b[0])) - f(static_cast<double>(a[0]) * b[2]));
+    c[2] = f(static_cast<double>(f(static_cast<double>(a[0]) * b[1])) - f(static_cast<double>(a[1]) * b[0]));
+    normalise(c);
+}
+
 RotationAxisAngle rotation_axis_angle_0085e4d0(const float w[3]) {
     RotationAxisAngle out;
     copy3(out.axis, w);
+    if constexpr (kRotateAboutAxisImageTailBound) {
+        // 0085E4D6..0085E506: each square and each sum rounded to float.
+        const auto f = [](double v) { return static_cast<float>(v); };
+        const float len2 = f(static_cast<double>(f(static_cast<double>(f(static_cast<double>(w[0]) * w[0]))
+            + f(static_cast<double>(w[1]) * w[1]))) + f(static_cast<double>(w[2]) * w[2]));
+        const float len = static_cast<double>(len2) > kRotationLengthSqFloor_00ce3820
+                              ? f(std::sqrt(static_cast<double>(len2)))
+                              : 0.0f;
+        out.angle = len;
+        if (kRotationAngleFloor_00d7a350 > static_cast<double>(len)) {
+            out.rotates = false;
+            return out;
+        }
+        out.rotates = true;
+        out.axis[0] = w[0] / len;
+        out.axis[1] = w[1] / len;
+        out.axis[2] = w[2] / len;
+        // 0085E58F..0085E6C7: |c| = c when c > 0, else -0.0f - c; every compare
+        // takes the not-greater arm on NaN.
+        const auto mag = [](float c) { return c > 0.0f ? c : -0.0f - c; };
+        const float ax = mag(out.axis[0]), ay = mag(out.axis[1]), az = mag(out.axis[2]);
+        out.up_reference[0] = out.up_reference[1] = out.up_reference[2] = 0.0f;
+        if (ax > ay && ax > az) {
+            out.up_reference[1] = 1.0f;                       // 0085E62F
+        } else if (ay > ax && ay > az) {
+            out.up_reference[2] = 1.0f;                       // 0085E6BD
+        } else {
+            out.up_reference[0] = 1.0f;                       // 0085E6C7
+        }
+        return out;
+    }
 
     // 0085E4F0..0085E506: (x*x + y*y) + z*z, rounded once to float.
     const float len2 = static_cast<float>(static_cast<double>(w[0]) * w[0] +
@@ -237,6 +301,9 @@ bool rotate_about_axis_0085e4d0(AdvanceMatrix& out, const AdvanceMatrix& in,
     out.m[12] = in.m[12];
     out.m[13] = in.m[13];
     out.m[14] = in.m[14];
+    if constexpr (kRotateAboutAxisImageTailBound) {
+        orthonormalize_from_row_x_0085d3d0(out);   // 0085E85F
+    }
     return true;
 }
 

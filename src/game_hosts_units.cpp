@@ -2906,7 +2906,7 @@ struct GameUnitsHost::Impl {
     void plane_stock_return_c7h_007cc8b0(GameUnitSlot& p);
     unsigned long long stock_return_sends{0}, stock_return_adds{0}, stock_return_no_deck{0};
     unsigned long long stock_return_no_squadron{0}, stock_return_slot_returns{0};
-    unsigned long long stock_return_site_leaves{0};
+    unsigned long long stock_return_site_leaves{0}, stock_return_destroys{0};
     unsigned long long stock_return_queue_erases{0}, stock_return_queue_misses{0};
     unsigned long long squadron_kill_queue_kills{0}, squadron_kill_queue_erases{0};
     unsigned long long land_retire_leader_calls{0}, land_retire_queue_erases{0};
@@ -4153,6 +4153,7 @@ struct GameUnitsHost::Impl {
             r.generator_ammo = read_equipment_ammo(type_id, platform_key, 1);
             if (type == "BombPlatform") {
                 r.single_index = singles++;
+                r.authored_ammo = rack_positive_bag_round(s, r.authored_ammo);
             } else if (type == "MultiBombPlatform") {
                 r.multi = true;
             } else {
@@ -6035,6 +6036,15 @@ struct GameUnitsHost::Impl {
     // last plane's slot return 006C5950, and Kill(plane, 5). False: the stowed
     // plane stays alive on the site vector and the elevator re-takes it.
     static constexpr bool kStowedPlaneStockReturnBound = true;   // ON by its pairs (SHIP_AI 200.2)
+    // Packet cc9_p14_stock_return_destroy (docs/OCEAN_WAVE_FIELD.md 50). True: the
+    // stock return's Kill(plane, 5) sets the entity bytes the image's Kill sets at
+    // once: 00926DF3 +5Fh = 1, and with +60h clear vtable[70h] 0077D1A0 -> 0077D243
+    // 00926C80 Destroy -> 00926CD5 +60h = 1; the flush's +5Dh store (0092639B) is
+    // taken in the same step, as the C3Ah death path does. A retired plane then
+    // leaves every in-world test (the 007E11D0 neighbour refresh of the vehicle
+    // avoidance 007DF4F0 among them). False: the retired plane keeps +5Fh/+60h
+    // clear and stays listed as a neighbour.
+    static constexpr bool kStockReturnDestroyBytesBound = true;   // ON: mechanism held, outcome miss recorded (OCEAN_WAVE_FIELD 50.6)
     // Packet cc9_stock_return_queue_erase (docs/SHIP_AI_OPEN_ITEMS.md 204). True: the
     // last plane's slot return 006C5950 first erases the squadron's landing-queue
     // record at the block (006C59A4-006C59DC: find at +98h, 14h stride, count +9Ch;
@@ -6627,6 +6637,35 @@ struct GameUnitsHost::Impl {
     // ON: OCEAN_WAVE_FIELD 46.1 (ESMP08 dive-bomb releases 1 -> 100, every
     // +3Dh end after the squadron's drops; USN04 gameplay identical).
     static constexpr bool kRackConstructorRoundBound = true;
+    // Packet cc9_p14_bag_rack_round (docs/OCEAN_WAVE_FIELD.md 54). True: a single
+    // rack (BombPlatform) of a plane whose carried bag is positive, with no entry for
+    // the rack's platform key in that loadout, keeps its constructor round: 006E3350
+    // walks 009552E0's entries and calls SetAmmo (vt[1BCh]) only on a key match
+    // (006E33AA-006E33B6), then attaches the next round (006E33FE vt[224h]) with the
+    // ammo 006E3C00 stored, 1. Both the 007B9140 answer and the release seed see it.
+    // False: such a rack holds nothing. LABELLED: single racks only, as for bag 0.
+    static constexpr bool kRackPositiveBagRoundBound = true;   // ON by its pairs (OCEAN_WAVE_FIELD 54.5)
+    // Packet cc9_p14_stall_force (docs/OCEAN_WAVE_FIELD.md 55). True: after the core
+    // law, the free-flight step 007DC830 (007CC2F0's arm and 007DCCF0's fallback) adds
+    // its stall block: r = 007D99C0 / StallSpd; when StallRangeMax > r or the plane is
+    // dead, m = 00419010(StallRangeMin, 1, StallRangeMax, 0, r) (a dead plane takes the
+    // DeadMeat StallMul or SpinStallMul ramp on +C3Ch when larger), g = 00419010(OnPitch,
+    // 1, OffPitch, 0, pitch), d = clamp(+908h - 1, 0, 1), and with f = g m d > 0 the
+    // 007DAFD0 kick at the nose (0,0,1) toward (0,-1,0) of f x StallRotAccel (desc+17Ch),
+    // limit 1.5. False: the core law alone. LABELLED: the dying spin ctl+F0h..F8h (its
+    // constructor draw is not hosted) and ctl+94h (the wreck/water gate) are not carried.
+    static constexpr bool kFreeFlightStallForceBound = true;   // ON by its pairs (OCEAN_WAVE_FIELD 55.4)
+    unsigned long long stall_force_steps{0}, stall_force_kicks{0};
+    unsigned long long rack_positive_bag_rounds{0};
+    int rack_positive_bag_round(const GameUnitSlot& s, int ammo) {
+        if constexpr (kRackPositiveBagRoundBound && bsp::kPlaneSceneEquipmentBound) {
+            if (s.bag_equipment > 0 && ammo < 0) {
+                ++rack_positive_bag_rounds;
+                return 1;   // 006E3C20 MOV EAX,1, kept by 006E3350's walk
+            }
+        }
+        return ammo;
+    }
     // Packet p13_neighbour_clock_draws (docs/OCEAN_WAVE_FIELD.md 47). The unit+C50h
     // constructor 007E1E20 starts its three clocks with stream-1 draws (00BD2F10,
     // ECX = 1, at 007E1F94 / 007E1FB9 / 007E1FE1): +7Ch = U(0, 3) + 3,
@@ -14937,6 +14976,19 @@ void GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0(GameUnitSlot& p) {
     note_kill_cause(p.process_index, 5);   // 007F1D53 PUSH 5: KillReason "landed" (00E0CF04)
     p.plane_death_removed = true;
     if (gunnery != nullptr) gunnery->kill_unit_00926d90(p.process_index, 5);
+    if constexpr (kStockReturnDestroyBytesBound) {
+        // 00926D90 Kill: +5Fh = 1 (00926DF3); +60h clear, so vtable[70h] 0077D1A0
+        // tail-calls 00926C80 Destroy, +60h = 1 (00926CD5). The flush's +5Dh
+        // (0092639B) is taken at once, as the death path's is.
+        if (p.scene_removed_005f == 0) {
+            p.scene_removed_005f = 1;
+            if (p.scene_pending_destroy_0060 == 0) {
+                p.scene_pending_destroy_0060 = 1;
+                if (p.state != nullptr) p.state->simulate = 1;
+                ++stock_return_destroys;
+            }
+        }
+    }
     log.notef("  stock return: %s back into %s's stock (class %d -> %d) at %.2f s, squadron %s, "
         "slots returned %zu (007CE6CA C7h -> 007CC8B0 -> 007F1CA0 -> Kill 5, packet "
         "cc9_stowed_plane_stock_return)", p.row.name.c_str(),
@@ -19253,6 +19305,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                         }
                         run_core_law_007db680(step, false);
+                        free_flight_stall_force_007dc830(step);   // 007DC830's tail
                         // 007C6500 BSP_PlaneTickElement_AdvancePose, tick-element
                         // slot +4h of all nine plane vtables, is where the native
                         // publishes a plane's pose, and it is a DIFFERENT element
@@ -28568,7 +28621,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 ++unit_.rack_single_count;
                                 // The platform's authored rounds (packet
                                 // cc9_dive_bomb_carried_rounds). -1 when absent.
-                                const int ammo = owner_.rack_equipment_ammo(unit_, type_id, pkey);
+                                const int ammo = owner_.rack_positive_bag_round(unit_,
+                                    owner_.rack_equipment_ammo(unit_, type_id, pkey));
                                 if (ammo > 0) unit_.rack_rounds_authored += ammo;
                                 unit_.rack_authored_per_rack.push_back(ammo);
                                 // Packet cc9_rack_bullet_kind. LABELLED: the class's
@@ -35397,6 +35451,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 owner_.log_ground_contact_loss(unit_);
                             }
                             run_core_law_007db680(step, false);
+                            free_flight_stall_force_007dc830(step);   // 007DCCF0 -> 007DC830
                         } else {
                             ++unit_.ground_law_steps;
                             run_core_law_007db680(step, true);
@@ -35732,6 +35787,84 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // the pose rows and handed back the same way. The horizontal
                     // speed (vtable[+34h]) is the world velocity with y zeroed;
                     // unit+674h, the degenerate-axis fallback, is pose row 0.
+                    // 007DC878-007DCB40 (the block after 007DC86E's core law), packet
+                    // cc9_p14_stall_force. The x87 keeps g*m*d and f*desc+17Ch wide and
+                    // rounds each once (docs/CC13_FRONT3.md). The world angular velocity
+                    // ctl+24h is taken through the pose rows, as water_law_tail does.
+                    void free_flight_stall_force_007dc830(float step) {
+                        if constexpr (!GameUnitsHost::Impl::kFreeFlightStallForceBound) {
+                            (void)step;
+                            return;
+                        } else {
+                        if (!owner_.lua.plane_globals_loaded() || !(unit_.plane_stall_spd > 0.0f)) return;
+                        const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                        const auto interp = bsp::clamped_interpolate_00419010;
+                        const float* const fr = unit_.motion.pose_row2;
+                        const float* const wv = unit_.plane_world_velocity;
+                        const float fwd = fr[0] * wv[0] + fr[1] * wv[1] + fr[2] * wv[2];   // 007D99C0
+                        const float r = static_cast<float>(static_cast<double>(fwd) /
+                            static_cast<double>(unit_.plane_stall_spd));                  // 007DC878-007DC886
+                        const bool dead = unit_.plane_death_c3a
+                            || (unit_.state != nullptr && unit_.state->simulate != 0);      // unit+5Dh
+                        ++owner_.stall_force_steps;
+                        if (!(g.dynamics_spd_multipliers_stall_range_max > r) && !dead) return;   // 007DC894
+                        float m = interp(g.dynamics_spd_multipliers_stall_range_min, 1.0f,
+                            g.dynamics_spd_multipliers_stall_range_max, 0.0f, r);          // 007DC8C9
+                        const bool spinning = unit_.plane_death_c36 || unit_.plane_spin_right_c37;
+                        if (dead) {
+                            const float t = spinning
+                                ? interp(0.0f, 0.0f, g.dynamics_dead_meat_spin_stall_mul_time,
+                                         g.dynamics_dead_meat_spin_stall_mul, unit_.plane_lost_drag_timer_c3c)
+                                : interp(0.0f, 0.0f, g.dynamics_dead_meat_stall_mul_time,
+                                         g.dynamics_dead_meat_stall_mul, unit_.plane_lost_drag_timer_c3c);
+                            if (!(m > t)) m = t;                                           // 007DC955-007DC961
+                        }
+                        if (!(m > 0.0f)) return;                                           // 007DC970
+                        const float pitch = unit_.plane_pitch_angle_c64;
+                        float gp;
+                        if (!dead) {
+                            gp = interp(g.dynamics_spd_multipliers_stall_on_pitch, 1.0f,
+                                        g.dynamics_spd_multipliers_stall_off_pitch, 0.0f, pitch);   // 00F87318/00F87314
+                        } else if (spinning) {
+                            gp = interp(g.dynamics_dead_meat_spin_stall_mul_on_pitch, 1.0f,
+                                        g.dynamics_dead_meat_spin_stall_mul_off_pitch, 0.0f, pitch);
+                        } else {
+                            gp = interp(g.dynamics_dead_meat_stall_mul_on_pitch, 1.0f,
+                                        g.dynamics_dead_meat_stall_mul_off_pitch, 0.0f, pitch);
+                        }
+                        float d = static_cast<float>(static_cast<double>(unit_.plane_airborne_908) - 1.0);  // 007DCA2B
+                        if (0.0f > d) d = 0.0f;
+                        else if (d > 1.0f) d = 1.0f;
+                        const float f = static_cast<float>(static_cast<double>(gp) * m * d);   // 007DCA6E
+                        if (!(f > 0.0f)) return;                                           // 007DCA82
+                        // desc+17Ch StallRotAccel (007D21FB); an unauthored row keeps the
+                        // descriptor's zero. Cached per class (LABELLED).
+                        static std::map<int, float> stall_rot_accel_by_class;
+                        auto it = stall_rot_accel_by_class.find(unit_.row.type_id);
+                        if (it == stall_rot_accel_by_class.end()) {
+                            it = stall_rot_accel_by_class.emplace(unit_.row.type_id,
+                                owner_.lua.read_vehicle_class_number(unit_.row.type_id,
+                                    "StallRotAccel", 0.0f)).first;
+                        }
+                        const float force = static_cast<float>(static_cast<double>(f) * it->second);
+                        const bsp::PlaneWaterPose pose = water_pose();
+                        float w[3];
+                        for (int c = 0; c < 3; ++c) {
+                            w[c] = pose.rows[0][c] * unit_.plane_body_angular[0]
+                                + pose.rows[1][c] * unit_.plane_body_angular[1]
+                                + pose.rows[2][c] * unit_.plane_body_angular[2];
+                        }
+                        const float nose[3] = {0.0f, 0.0f, 1.0f};
+                        const float down[3] = {0.0f, -1.0f, 0.0f};                          // 00D7A260
+                        bsp::water_angular_kick_007dafd0(w, pose, nose, down, force, step, 1.5f,
+                            pose.rows[0]);                                                  // 007DCAE6, 1.5f 00CE380C
+                        for (int r2 = 0; r2 < 3; ++r2) {
+                            unit_.plane_body_angular[r2] = pose.rows[r2][0] * w[0]
+                                + pose.rows[r2][1] * w[1] + pose.rows[r2][2] * w[2];
+                        }
+                        ++owner_.stall_force_kicks;
+                        }
+                    }
                     void water_law_tail(float step, float forward_speed) {
                         const bsp::PlaneWaterPose pose = water_pose();
                         float w[3];
@@ -38675,6 +38808,15 @@ void GameUnitsHost::report() {
         host.stock_return_sends, host.stock_return_adds, host.stock_return_no_deck,
         host.stock_return_no_squadron, host.stock_return_slot_returns,
         host.stock_return_site_leaves);
+    host.log.notef("summary free flight stall force bound=%d steps=%llu kicks=%llu (007DC830 -> "
+        "007DAFD0, packet cc9_p14_stall_force)", Impl::kFreeFlightStallForceBound ? 1 : 0,
+        host.stall_force_steps, host.stall_force_kicks);
+    host.log.notef("summary rack positive bag round bound=%d rounds=%llu (006E3350 -> 006E3C00, "
+        "packet cc9_p14_bag_rack_round)", Impl::kRackPositiveBagRoundBound ? 1 : 0,
+        host.rack_positive_bag_rounds);
+    host.log.notef("summary stock return destroy bytes bound=%d destroys=%llu (00926D90 -> "
+        "0077D1A0 -> 00926C80, packet cc9_p14_stock_return_destroy)",
+        Impl::kStockReturnDestroyBytesBound ? 1 : 0, host.stock_return_destroys);
     host.log.notef("summary stock return queue erase bound=%d erases=%llu misses=%llu "
         "(006C59A4 -> 006BF7F0, packet cc9_stock_return_queue_erase)",
         Impl::kStockReturnQueueEraseBound ? 1 : 0, host.stock_return_queue_erases,
