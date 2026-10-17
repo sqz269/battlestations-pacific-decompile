@@ -107,6 +107,16 @@ reconstructed. 004391A0 and 005A0B20 are std::vector instantiations (bound per r
 - The doubled index checks the image inlines before each vector access are reproduced through
   `vec_checked_at`/`panel` (one per access site).
 
+## 00BA2FF0 ocean beams: NaN arms (second packet item)
+
+`src/water_render.cpp` is a cc13 file (cc13_water1 / cc13-water2), so it was fixed in place. Every float
+compare of 00BA2FF0 was checked against its jump: the birth and death tests (COMISS / JC at 00BA3216
+and 00BA3226) are taken on unordered input, so they are now `!(x >= 0.0f)`; the fade-out test (COMISS
+/ JC at 00BA37AA) skips on unordered input, so it is now `death >= 0.0f`. The camera (00BA304C),
+previous clock (00BA3076), clock-past-death (00BA3236), band (00BA33E1..00BA3401), survival
+(00BA349B), distance (00BA356D), normal (00BA3719), fade-in (00BA3786), fade-out window (00BA37B6)
+and axis (00BA3892) compares already matched. Ledger record replaced; docs/CC13_WATER_RENDER.md notes it.
+
 ## Direct call sites (from the listing)
 
 The 318 direct calls, grouped by callee, for `tools/verify_report_calls.py`:
