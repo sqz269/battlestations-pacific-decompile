@@ -700,3 +700,16 @@ mechanism is in the cd761bb52 section above).
     planes down; d without them loses 20,3 and 20,5 to one or more surviving Nells). Completed 410.02 s (reference),
     370.03 s (20,3), 430.02 s (20,5), 400.03 s (20,7), guard in all four (`local\l64_u1_f_on[_j3|_j5|_j7].log`).
   - LOMP06 `lomp06_l64_l6_a`: identical on the flipped exe (completed 345.84 s, 0 retires, `local\l64_l6_a_on.log`).
+  - **JM08 row: `config/win_orders/jm08_l64_j8_e.txt`** (cc9-lua64, flipped exe). On current main the C47 wave
+    (PRCPJM08.lua 1186-1278, this installation, mtime 2024-08-26: five C47 squadrons of four with
+    `PilotSetTarget(CommandBuilding)`; CheckPrim3 needs all of them dead) and the bomber waves before it wear
+    Headquarter 01 down to zero health, which neutralizes it (party 2) and fires CheckHQ's Fail ("The HQ has been
+    destroyed!", w1 on main: failed 2247.12 s). e is lua62's generator (`cc9-lua52\local\l62_j8_mod.py`, w1's options
+    with `--torp-start 6000 --torp-period 300`), then `local\l64_j8_c47.py --from 38800 --launch-classes 150,154` (every
+    C47 squadron plane first in the Ki-43 Oscar 01 / Gekko 01 target lists, and a launch line per C47 squadron ahead
+    of each class 150/154 launch) and `local\l64_j8_nols.py` (no landing ships in those two fighters' lists, so they
+    stop dying to landing-ship AA around 1570-1680 s and are alive for the waves). Completed 2142.66 s (reference,
+    all 20 C47s down) and 2881.39 s (20,3), guard in both; **20,5 and 20,7 lose the HQ** (failed 1995.87 s and
+    1242.14 s). Logs `cc9-lua52\local\l64_j8_e_on[_j3|_j5|_j7].log`. Variants b, c, d (same logs dir) each won one
+    seed only: the HQ's survival against the waves and Fubuki/Isokaze living long enough to torpedo the landing
+    ships are the two knife-edges.
