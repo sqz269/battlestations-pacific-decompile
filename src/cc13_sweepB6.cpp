@@ -1599,6 +1599,51 @@ void cc13_sweepB6_movcam_begin_path_walk_007a5a00(void* camera, float start, std
 }
 
 // ---------------------------------------------------------------------------
+// 005FA0F0 BSP_HudOrderScreen_BindLayout
+// ABI: __thiscall(ECX = order screen), plain RET; EBP frame aligned to 8, EH
+// frame (handler 00C76800, state 0 around each name; unwinding not
+// modelled). No direct caller: vtable 00CF3B7C slot +14h (the dword at
+// 00CF3B90, the only absolute reference).
+// Twenty bindings in the image's order, each: the name is built from its
+// literal (0041DD40 + 00BF7680), the field = 00AA7E00([screen+8], &name, 1),
+// the name released. Nothing else runs. No RNG draws.
+void cc13_sweepB6_hud_order_screen_bind_layout_005fa0f0(void* screen, Cc13SweepB6Host& host) {
+    struct Binding {
+        std::uint32_t literal;
+        std::uint32_t length;
+        std::size_t field;
+    };
+    static const Binding kBindings[] = {
+        {0x00CED94Cu, 0x19, 0x0C},  // ship_plane_agressive_Icon
+        {0x00CED930u, 0x19, 0x10},  // ship_plane_defensive_Icon
+        {0x00CF3C7Cu, 0x14, 0x14},  // plane_formation_Icon
+        {0x00CF3C68u, 0x13, 0x18},  // ship_formation_Icon
+        {0x00CF3C50u, 0x14, 0x1C},  // ship_plane_move_Icon
+        {0x00CF3C3Cu, 0x11, 0x20},  // plane_attack_Icon
+        {0x00CF3C28u, 0x10, 0x24},  // ship_attack_Icon
+        {0x00CF3C18u, 0x0E, 0x28},  // ship_sell_Icon
+        {0x00CF3C00u, 0x14, 0x2C},  // ship_leave_form_Icon
+        {0x00CF3BECu, 0x12, 0x30},  // plane_retreat_Icon
+        {0x00CF3BD8u, 0x12, 0x34},  // plane_landing_Icon
+        {0x00CED854u, 0x11, 0x3C},  // repair_glass_Icon
+        {0x00CED840u, 0x11, 0x40},  // repair_frame_Icon
+        {0x00CED8D8u, 0x0B, 0x38},  // cancel_Icon
+        {0x00CED8C4u, 0x13, 0x44},  // repair_hl_west_Icon
+        {0x00CED8B0u, 0x13, 0x48},  // repair_hl_east_Icon
+        {0x00CED898u, 0x14, 0x4C},  // repair_hl_north_Icon
+        {0x00CED880u, 0x14, 0x50},  // repair_hl_south_Icon
+        {0x00CED868u, 0x15, 0x54},  // repair_hl_middle_Icon
+        {0x00CED834u, 0x09, 0x58},  // info_Text
+    };
+    for (const Binding& binding : kBindings) {
+        Cc13SweepBNativeString name;
+        build_literal(name, binding.literal, binding.length, host);
+        at<void*>(screen, binding.field) = host.widget_find_child_00aa7e00(at<void*>(screen, 8), &name, 1);
+        release_string(name, host);
+    }
+}
+
+// ---------------------------------------------------------------------------
 // 0065D220 BSP_HudSupportManager_RebindSlots
 // ABI: __thiscall(ECX = support-manager screen), plain RET; EBP frame aligned
 // to 8, EH frame (handler 00C7B0FE, states 0..11h over the name strings;

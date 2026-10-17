@@ -203,6 +203,11 @@ void cc13_sweepB6_options_screen_build_settings_page_005f24d0(void* screen, cons
                                                               const std::int32_t* row_kinds, bool list_pages,
                                                               Cc13SweepB6Host& host);
 
+// 005FA0F0 BSP_HudOrderScreen_BindLayout: __thiscall(ECX = order screen),
+// RET. Binds the twenty order-screen widgets +0Ch..+58h to the named
+// children of the page +8h (vtable 00CF3B7C slot +14h).
+void cc13_sweepB6_hud_order_screen_bind_layout_005fa0f0(void* screen, Cc13SweepB6Host& host);
+
 // ---------------------------------------------------------------------------
 // Segment 27
 // ---------------------------------------------------------------------------
