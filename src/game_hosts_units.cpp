@@ -37617,6 +37617,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // +4A4h = 0 and the Lua self release are records;
                         // 00928F1C..00928F2C vt[134h], the list unlink.
                         host.record("Entity::on_killed_lua_self_00928c80", 0x00928c80u);
+                        host.lua.on_entity_killed_00928c80(index);   // p16_truly_dead
                         host.world_lists_unlink_unit_00928f24(slot);
                     }
                     slot.kill_depth_at = host.summary.simulated_seconds;
@@ -39469,6 +39470,7 @@ bool GameUnitsHost::kill_and_remove_00814595(std::size_t index) {
         slot.scene_removed_005f = flags.removed;
         slot.row.active = flags.active;
         host.record("Entity::on_killed_lua_self_00928c80", 0x00928c80u);
+        host.lua.on_entity_killed_00928c80(index);   // p16_truly_dead
         host.world_lists_unlink_unit_00928f24(slot);
     }
     host.log.notef("ship death message: unit=%s kamikaze Kill(1) and removal t=%.2f "

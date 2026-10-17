@@ -6336,6 +6336,25 @@ int GameMissionLuaHost::run_truly_dead_00899500(lua_State* state, int argument_c
     return 1;
 }
 
+// Packet p16_truly_dead. 00928C80's Lua half: gated on the cached key (00928C9B, an
+// attached entity), 00928D04 sets self.Ptr = lightuserdata(0). The entity id is the
+// units-host index + 1 (kMissionLuaEntityKeyFormat).
+void GameMissionLuaHost::on_entity_killed_00928c80(std::size_t unit_index) {
+    if constexpr (!kLuaTrulyDeadOnKilledBound) {
+        static_cast<void>(unit_index);
+    } else {
+        lua_State* state = state_;
+        if (state == nullptr) return;
+        const int top = ::lua_gettop(state);
+        if (push_resolved_entity_by_id(state, static_cast<int>(unit_index + 1))) {
+            ::lua_pushlightuserdata(state, nullptr);
+            ::lua_setfield(state, -2, "Ptr");
+            ++summary_.truly_dead_ptr_nulled;
+        }
+        ::lua_settop(state, top);
+    }
+}
+
 // Packet cc9_set_submarine_depth_level. 00893F40 SetSubmarineDepthLevel(entity, level):
 // argument 0 through 00888AA0, argument 1 as an integer; a request for 1 becomes 0 when
 // +122Ch (periscopeState) is 2 or +1214h (the periscope node) is null; then 008528B0.
@@ -9574,6 +9593,8 @@ void GameMissionLuaHost::report_mission_script_state() {
         "is_calls=%llu is_true=%llu (008AC2B0, 008AC420, packet p16_lua_natives)",
         kLuaUntouchableClearBound ? 1 : 0, summary_.untouchable_remove_calls,
         summary_.untouchable_cleared, summary_.untouchable_is_calls, summary_.untouchable_is_true);
+    log_.notef("summary mission truly dead ptr_nulled=%llu bound=%d (00928C80, packet "
+        "p16_truly_dead)", summary_.truly_dead_ptr_nulled, kLuaTrulyDeadOnKilledBound ? 1 : 0);
     log_.notef("summary mission generate object calls=%llu repeat=%llu respawned_dead=%llu "
         "every_call=%llu bound=%d (00944FD0, packet p16_lua_natives)", summary_.generate_object_calls,
         summary_.generate_object_repeat, summary_.generate_object_respawned,

@@ -2643,3 +2643,31 @@ Planes converging on one MoveTo point within 3 km stack in 30 m bands above 120 
 **Predictions.** Carrier landings under way aim up to 10 s of ship travel ahead (a 15 m/s carrier: up
 to 150 m), so final approaches line up on where the deck will be; fewer wave-offs and go-arounds. On a
 carrier deck the roll-out brakes at 1.0, so planes stop shorter; airfield landings are unchanged.
+
+## 65. Lua natives from cc13 verify5 (cc9-physics16, 2026-10-17; lead item 5)
+
+- **R6, `kLuaUntouchableClearBound`.** RemoveUntouchableUnit 008AC2B0: 00888AA0 (008AC3AF),
+  vtable[140h] (008AC3D0), `MOV byte [EAX+1D4h],0` (008AC3D6). IsUnitUntouchable 008AC420 pushes
+  vtable[140h]() != null && +1D4h != 0. jm05:1242 hands a captured PT boat to the player and releases it;
+  usn_06:1023 gates its release on IsUnitUntouchable (nil before).
+- **R5, `kGenerateObjectEveryCallBound`.** 0046D930 has no already-created arm; every call instantiates.
+  usn_03:1621-1636 (PRCP01) makes Max Kate/Val pairs per pass instead of moving one pair.
+- **R3, `kLuaTrulyDeadOnKilledBound`** (with `kLuaTrulyDeadBound`). The two units-host sites that apply
+  the kill list's drain and record 00928C80 (the KillDepth drain and the row-15 removal) now call
+  `GameMissionLuaHost::on_entity_killed_00928c80`, which sets the self table's `Ptr` to lightuserdata(0)
+  as 00928D04 does. **LABELLED:** the last-position table (00928D49..00928E7E) is not written.
+- **Census `:3689`, `kSpawnPlacementMapBoundsBound`.** 00941D30's 0071C4F0 test reads this host's own
+  Map bounds (`border_bounds_`), so a SpawnNew member outside the map takes the retry / requeue arms.
+- **R1, R2, R4** are the existing `kLuaIsInBorderZoneBound`, `kLuaSquadronSetReleaseAltBound` and
+  `kLuaSquadronLandAndKillBound`; they are paired here with R5 and R6.
+- **R7 is not bound, and verify5's reading is corrected.** 007BC0AA-007BC10C take the engine index from
+  Lua argument 2 through 00B66290 (lua_tonumber, then 00BF7420 ftol); only an explicit -1, or a call with
+  no argument frame (007CA8A0's death chooser), draws `NextU32` on stream 1 (007BC0FC). LOMP08:902 and
+  LOMP09:1157 pass two arguments, so the index is 0 and nothing is drawn. The effect is message 65h ->
+  007EB0B0 destroying that engine (CC13_GPR_47 1.3 step 6); this host has no per-engine model, so the arm
+  stays a record.
+
+**Predictions.** USN02 / JM05: a released unit becomes targetable again (fire at it resumes). PRCP01:
+more Kate/Val strikers per wave; JM06: the Lexington-exit failure check becomes reachable; USN01: Val 1/2
+dive altitude capped at 700 m for the rest of the mission; usn_03 squadrons land and are removed.
+TrulyDead: JM06's Yamato completion test and commandhelpers' loser-unit choice see sunk hulls removed.
