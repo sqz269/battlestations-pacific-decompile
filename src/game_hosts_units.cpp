@@ -2670,6 +2670,9 @@ struct GameUnitsHost::Impl {
         // whether 0084E595's moveto-self is the squadron's current order.
         std::uint32_t ended_stage2_command{0};
         bool moveto_self{false};
+        // Packet cc9_p12_land_target_gone: the land target (unit index + 1) whose
+        // loss latched +3Ch, so one lost site latches once.
+        std::size_t land_gone_site{0};
     };
     unsigned long long moveto_self_issues{0}, moveto_self_placed{0};
     std::map<std::string, SpentOrdnanceRtb> spent_rtb;
@@ -5913,6 +5916,10 @@ struct GameUnitsHost::Impl {
     // stays until its squadron head is released (006C7540), so a dead plane's
     // record keeps its last mode and path and holds the survivors' spacing at 0.
     static constexpr bool kAirOpsQueueCompactBound = true;  // ON: mechanism (docs/OCEAN_WAVE_FIELD.md 39.1)
+    // Packet cc9_p12_land_target_gone (docs/OCEAN_WAVE_FIELD.md section 41): 009F8160's
+    // land arm (009F8295-009F82D5). False: a squadron whose land target sank keeps
+    // its land command and circles the wreck.
+    static constexpr bool kSquadronLandTargetGoneBound = false;
     // Packet cc9_landing_follower_spacing (docs/SQUADRON_LAND_TASK.md section 5r):
     // the landed byte plane+904h in the sequencer. 006C7960's first arm (mode 4,
     // +4h = -1.0 (00D7A260), +8h = 1.0, before the airborne test), 006C3B10's
@@ -15732,6 +15739,52 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
         const std::size_t leader = sq.flight_leader();
         if (leader == bsp::kPlaneSquadronNoUnit || leader >= h.slots.size()) continue;
         Impl::SpentOrdnanceRtb& st = h.spent_rtb[sq.name];
+        if constexpr (Impl::kSquadronLandTargetGoneBound) {
+            // 009F8160's land arm (009F8295-009F82D5): with the current command
+            // `land` 00E08FA0, +3Ch = 1 unless the resolved target exists with
+            // +5Eh and +5Dh clear and either 00927C90(0) is false or the target's
+            // +54h is the squadron's. LABELLED: the current command is the leader's
+            // class; a `returntobase` the host keeps as such stands for the `land`
+            // 007F1940 issues from its resolution (007F1000 / 007EF8B0), with that
+            // resolution's site as the target; +5Dh is state->simulate or the
+            // gunnery death, +5Eh scene_destroyed_005e; 00927C90 is the
+            // multiplayer test, false here. One latch per lost site: the B5 that
+            // follows starts a fresh cycle (the image's latch outlives it, its
+            // reset is unread).
+            const GameUnitSlot& lead = *h.slots[leader];
+            std::size_t site = h.slots.size();
+            bool land = false;
+            if (lead.attack_command_class == 0x00E08FA0u) {
+                land = true;
+                const std::size_t t = lead.land_command_target_plus_one != 0
+                    ? lead.land_command_target_plus_one : lead.command_target_plus_one;
+                if (t != 0) site = t - 1u;
+            } else if (lead.attack_command_class == 0x00E08F98u) {
+                for (const Impl::ReturnToBaseCensus& e : h.rtb_census) {
+                    if (e.squadron != sq.name || (e.last_arm != 1 && e.last_arm != 2)) continue;
+                    land = true;
+                    site = h.air_ops_owner_unit(e.last_site);
+                }
+            }
+            if (land) {
+                const GameUnitSlot* ts = site < h.slots.size() ? h.slots[site].get() : nullptr;
+                const bool gone = ts == nullptr || (ts->state != nullptr && ts->state->simulate != 0)
+                    || ts->scene_destroyed_005e != 0 || gun->unit_dead(site);
+                const std::size_t key = site < h.slots.size() ? site + 1u : 0u;
+                if (gone && st.land_gone_site != key) {
+                    st = Impl::SpentOrdnanceRtb{};
+                    st.land_gone_site = key;
+                    st.latch_3c = true;
+                    st.latch_at = now;
+                    st.command = lead.attack_command_class;
+                    ++h.spent_rtb_latches;
+                    h.log.notef("land target gone: squadron \"%s\" (command %08X, site %s) latched "
+                        "+3Ch at %.2f s (009F82D5, packet cc9_p12_land_target_gone)", sq.name.c_str(),
+                        st.command, ts != nullptr ? ts->row.name.c_str() : "-",
+                        static_cast<double>(now));
+                }
+            }
+        }
         if (st.issued) continue;
         const std::uint32_t command = h.slots[leader]->attack_command_class;
         // 009F8160, the ordnance arm (009F81C8-009F8205).
