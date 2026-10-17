@@ -649,6 +649,8 @@ struct GameUnitSlot {
     bool drop_kamikaze_task_installed{false};
     bool torpedo_install_refused_class{false};   // packet cc9_dkz_spent_rtb, logged once
     std::size_t dkz_target_plus_one{0};
+    std::size_t db_task_target_plus_one{0};        // task+440h, kAttackTaskTargetRetireBound
+    std::size_t torpedo_task_target_plus_one{0};   // task+4C4h, kAttackTaskTargetRetireBound
     bsp::DropKamikazeTask dkz;
     bsp::PilotAttackMode dkz_attack_mode_370{bsp::PilotAttackMode::kForced};
     float dkz_alt_398{0.0f};
@@ -2704,6 +2706,7 @@ struct GameUnitsHost::Impl {
         return bsp::drop_kamikaze_should_break_off_009ae1b0(bi);
     }
     unsigned long long retest_dead_targets{0}, retest_ends{0};   // kSquadronDeadTargetRetestBound
+    unsigned long long attack_task_target_retires{0};   // kAttackTaskTargetRetireBound
     // Packet cc9_ship_exit_zone (docs/SHIP_AI_OPEN_ITEMS.md 232; cc13-ver7 Finding 1,
     // docs/CC13_VER_7.md). 00826D70 is vtable slot +1D8h of every ship class, which
     // 00953CC0 (called at 00825FAC, the head of the ship motion tick) runs at 00953D98
@@ -6267,6 +6270,16 @@ struct GameUnitsHost::Impl {
     // goes. True: a level-bomb task whose command target is cleared retires. False:
     // the arm returns early and the task freezes in its last state (USNOS wave 2).
     static constexpr bool kLevelBombTargetClearedRetireBound = true;   // ON: SQUADRON_LAND_TASK 5hv.6
+    // Packet cc9_l64_attack_task_retire (SQUADRON_LAND_TASK 5hw). The same vt[40h]
+    // rule in the dive-bomb (009C8060, +440h), torpedo (009D3EF0, +4C4h) and
+    // drop-kamikaze (009AE140, +440h) tasks: valid only while the command's resolved
+    // target is the task's own; 0099A4C0 (0099AE7E, every think) pops a task that
+    // answers 0 and 0099A170 builds a new one for the current command, which needs a
+    // target for all three classes. True: a cleared target retires the task (no new
+    // one), and a changed target retires it and installs a fresh one. False: the
+    // arms return early on a cleared target (frozen) and keep the old task on a new
+    // target (dive bomb, torpedo).
+    static constexpr bool kAttackTaskTargetRetireBound = false;
     // Packet cc9_l63_lb_stick_delay (SQUADRON_LAND_TASK 5hv.3). 007C1FB0's tail: the
     // stick time is the longest rack's 006E4170 span plus BombDelay (class+1F4h) x
     // max(0, n - 1) over the n kind-25h racks. True: the term is added. False: the
@@ -24434,6 +24447,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.row.name.c_str(), why,
                             static_cast<double>(owner_.summary.simulated_seconds));
                     }
+                    // kAttackTaskTargetRetireBound: one line per retired task.
+                    void attack_task_retire_log(const char* task, const char* vt40) {
+                        ++owner_.attack_task_target_retires;
+                        owner_.log.notef("  %s task %s: retired, the command target is not the "
+                            "task's (%s) at %.2f s", task, unit_.row.name.c_str(), vt40,
+                            static_cast<double>(owner_.summary.simulated_seconds));
+                    }
                     // 009B8B50, the task's vtable[64h].
                     void run_level_bomb_task_arm_009b8b50(float dt) {
                         using LS = bsp::LevelBombState;
@@ -25513,7 +25533,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.dkz.state = bsp::DropKamikazeState::kNone;
                             return;
                         }
-                        if (unit_.command_target_plus_one == 0) return;
+                        if (unit_.command_target_plus_one == 0) {
+                            // 009AE140: the resolved target (null) is not +440h.
+                            if (GameUnitsHost::Impl::kAttackTaskTargetRetireBound &&
+                                unit_.drop_kamikaze_task_installed) {
+                                unit_.drop_kamikaze_task_installed = false;
+                                unit_.dkz.state = bsp::DropKamikazeState::kNone;
+                                attack_task_retire_log("drop-kamikaze", "009AE140");
+                            }
+                            return;
+                        }
                         DkzHost h(*this);
                         if (!unit_.drop_kamikaze_task_installed ||
                             unit_.dkz_target_plus_one != unit_.command_target_plus_one) {
@@ -25561,8 +25590,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.attack_command_class)) {
                             return;
                         }
+                        if constexpr (GameUnitsHost::Impl::kAttackTaskTargetRetireBound) {
+                            // 009C8060 (vt[40h]) through 0099A4C0: the task goes when
+                            // the resolved command target is not +440h, and 0099A170's
+                            // dive-bomb arm builds a new one only with a target.
+                            if (unit_.dive_bomb_task_installed &&
+                                unit_.db_task_target_plus_one != unit_.command_target_plus_one) {
+                                unit_.dive_bomb_task_installed = false;
+                                unit_.dive_bomb_state = bsp::DiveBombState::kNone;
+                                attack_task_retire_log("dive-bomb", "009C8060");
+                            }
+                            if (unit_.command_target_plus_one == 0) return;
+                        }
                         if (!unit_.dive_bomb_task_installed) {
                             unit_.dive_bomb_task_installed = true;
+                            unit_.db_task_target_plus_one = unit_.command_target_plus_one;
                             unit_.db_profile_activation_pending = true;   // 0099AEB3
                             // 009C7710 leaves +310h on the moveto/follow pair
                             // 007B8AD0 picks: 009C7777 CALL / 009C777C TEST AL,AL
@@ -27632,6 +27674,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // 007B93F0) under a PilotSetTarget-class order.
                     void run_torpedo_task_arm_009d4850(float dt) {
                         const bsp::OrdnanceKindSet set{unit_.ordnance_mask};
+                        // kAttackTaskTargetRetireBound: a retarget re-installs under
+                        // the same command class, so the class's ordnance pick below
+                        // is not asked again.
+                        bool retargeted = false;
+                        if constexpr (GameUnitsHost::Impl::kAttackTaskTargetRetireBound) {
+                            // 009D3EF0 (vt[40h]) through 0099A4C0: the resolved
+                            // command target is not +4C4h.
+                            if (unit_.torpedo_task_installed &&
+                                unit_.torpedo_task_target_plus_one != unit_.command_target_plus_one) {
+                                unit_.torpedo_task_installed = false;
+                                unit_.torpedo_state = bsp::TorpedoState::kNone;
+                                attack_task_retire_log("torpedo", "009D3EF0");
+                                retargeted = unit_.command_target_plus_one != 0;
+                            }
+                        }
                         if (unit_.command_target_plus_one == 0) return;
                         if (!unit_.torpedo_task_installed) {
                             // cc8_torpedo_retire. The kind 2Bh test is an
@@ -27660,7 +27717,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 2 -> 5 regression: the same log shows 009D4C10
                             // true on exactly ONE tick per aircraft, arm tick 0
                             // in moveto at 4183 m, and false at the drop.
-                            if (!bsp::ordnance_has_torpedo_2bh(set)) return;
+                            if (!retargeted && !bsp::ordnance_has_torpedo_2bh(set)) return;
                             // Packet cc9_dkz_spent_rtb: 0099A170 builds MakeTorpedo
                             // only for the director's 00E08F18; a BettyOhka (racks
                             // 2Bh and 2Fh) under dropkamikaze gets that task alone.
@@ -27677,6 +27734,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 return;
                             }
                             unit_.torpedo_task_installed = true;
+                            unit_.torpedo_task_target_plus_one = unit_.command_target_plus_one;
                             // 009D3050 leaves +310h on the moveto/follow pair
                             // 009D2DA0 registered; 009D24E0 leaves +98h at -1.
                             // FED, packet cc8_follow_enter. 009D30B7 CALL 007B8AD0
@@ -38323,6 +38381,9 @@ void GameUnitsHost::report() {
             host.log.notef("summary mission squadron retest bound=%d dead_targets=%llu ends=%llu "
                 "(009F8160 / 009F7C90, cc9-gunnery38)", bsp::kSquadronDeadTargetRetestBound ? 1 : 0,
                 host.retest_dead_targets, host.retest_ends);
+            host.log.notef("summary attack task target retire bound=%d retires=%llu (009C8060 / "
+                "009D3EF0 / 009AE140, packet cc9_l64_attack_task_retire)",
+                GameUnitsHost::Impl::kAttackTaskTargetRetireBound ? 1 : 0, host.attack_task_target_retires);
             for (const auto& e : host.spent_rtb) {
                 if (!e.second.latch_3c) continue;
                 host.log.notef("  spent %-24s command=%08X latched=%.2f ended=%.2f issued=%.2f "
