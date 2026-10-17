@@ -2353,8 +2353,10 @@ reader and is clear, so `007EDAC0` is false; 007ED7E0 / 007ED8D0 / 007EDA10 / 00
 - **The dying spin.** Inside the stall block's `m > 0` arm, after the stall kick, a dead plane (`+5Dh` re-read at
   `007DCAF2`) adds `step * ctl+F0h..F8h` to `ctl+24h..2Ch` (`007DCAF9`-`007DCB40`; each product stored as a float first).
   `ctl+24h` is the world angular velocity (CC13_GPR_48: the parent-frame rotation carries it with `ctl+18h`).
-  `ctl+F0h..F8h` is set once by the controller constructor 007D7EA0: `m = U(RotationMin, RotationMax)` (`007D7F90`;
-  Dynamics/DeadMeat `+250h`/`+254h`) times `00439950`'s direction (`z = U(-1, 1)`, `phi = U(0, 2 pi)`), three stream-1 draws.
+  `ctl+F0h..F8h` is set once by the controller constructor 007D7EA0: `m = U(+250h, +254h)` (`007D7F90`). Both
+  fields hold Dynamics/DeadMeat/RotationMin, DEG(10): the loader pushes the RotationMin key twice and RotationMax is never
+  read (GAME_TUNING_SINGLETON "Keys the loader reads"), so the magnitude is 10 degrees/s and only the direction is drawn. It
+  multiplies `00439950`'s direction (`z = U(-1, 1)`, `phi = U(0, 2 pi)`), three stream-1 draws.
 - **The wreck lift** (`007DCB4B`-`007DCCCB`), outside the stall block, with `ctl+94h` set: `v` = the world velocity with
   `y = 0`; `h = 00419010(0, 4, 69.444443, 20, |v|)`; `u = max(0, 1 - |+C64h|)`; `q = min(1, |+C68h| * 0.8 + 0.6)`; the
   `007DAFD0` kick at `(0,0,1)` toward `(0,-1,0)` of `q u h`, limit `1000.0f` (`00CE3804`).
@@ -2398,3 +2400,21 @@ environment, `--stop-after-end 40`. Logs `local\p15sp{off,on}_<row>.log` with ma
 **Verdict: both ON.** `kFreeFlightDyingSpinBound` is 007DC830's `007DCAF9` arm with 007D7EA0's draw (keyed stream,
 labelled); `kFreeFlightWreckLiftBound` is `007DCB4B` as read and has no reach in these rows. USN04 and JM05 move at
 the timing level with equal death counts; reference rows with plane deaths need re-timing on the new base.
+
+## 59. 50.7 closed: landers avoiding taxiing wingmen is the image's behaviour (cc9-physics15, 2026-10-17; lead item 4, read-only)
+
+- **Spacing.** 50.8: `006C7960`'s mode 4 needs `rec+8 > 0`, which `006C3F80` derives from the other landers' path gaps
+  or, with none, from the time since the last touchdown (`site+40h`, restamped by `007CB5F0` -> `006CE230`). Nothing in
+  the sequencer reads the runway's occupants, so a wingman starts its final while the previous plane still taxis.
+- **The taxi itself** is the land task's park phase as read in SQUADRON_LAND_TASK (`009B24F3`-`009B270D`): the speed
+  request `00419010(5 base, base, 10 base, max(base, 0.6 StallRangeMax StallSpd), dz)` with `base` = AirField/MoveSpd
+  (Pilot/Landing/ParkVelocity on a carrier), `0.85 v` beyond 100 m, and below `1.5 base` the turn distance
+  `qd = (1.5 / rate) RunwayYawTurnSpdLimit/1` with the speed set to RunwayYawTurnSpdLimit/1 inside `qd + 30`. The host's
+  arm (`src/game_hosts_units.cpp`, the land task's park step) carries each term with its address; no host
+  difference was found in the taxi speed or the path join.
+- **The avoidance** a lander then gets from a taxiing plane is the vehicle arm's (`007DF96C`-`007DF9A9`, every listed
+  neighbour, mask FFh), as 50.7 says.
+
+So a lander touching down yawed while a wingman taxis is what the image's own sequencer, taxi law and vehicle arm
+produce together. The touchdown point was not compared against the image (no image run is possible here); nothing read
+in this pass points at it. **Closed**, no binding. If USNOS #4.4/#4.5 needs a different outcome, that is a re-plan of the row.
