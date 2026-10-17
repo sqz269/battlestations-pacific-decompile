@@ -25,6 +25,7 @@
 // the host reports no hit, which is the path approach+AAh == 0 forces anyway.
 
 #include "bsp/torpedo_approach_update.hpp"
+#include "bsp/const_exact_image_bits.hpp"
 
 namespace bsp {
 
@@ -63,9 +64,9 @@ inline constexpr float kTurnRadiusBias = 200.0f;    // 00CE4D70, 009D198C
 // The sector-probe arm, 009D19B9-009D1B64.
 inline constexpr float kProbeTimeScale = 72.0f;     // 00CF0058, 009D19B9
 inline constexpr float kProbeGateX0 = 1.5f;         // 00CE380C
-inline constexpr float kProbeGateY0 = 0.872665f;    // 00D05B40
+inline constexpr float kProbeGateY0 = kConstExactImageBitsBound ? 0x1.becde6p-1f : 0.872665f;    // 00D05B40; image bits 3F5F66F3 at 00D05B40
 inline constexpr float kProbeGateX1 = 3.0f;         // 00CE3854
-inline constexpr float kProbeGateY1 = 0.349066f;    // 00CE398C
+inline constexpr float kProbeGateY1 = kConstExactImageBitsBound ? 0x1.657186p-2f : 0.349066f;    // 00CE398C; image bits 3EB2B8C3 at 00CE398C
 
 // The release threshold, 009D1D54-009D1DED.
 inline constexpr float kTurnFactorSlope = 1.6f;     // 00CE3D48, 009D1D66
@@ -84,8 +85,8 @@ inline constexpr float kPitchRangeBias = 1200.0f;   // 00D1FAF8, 009D1E5A
 // of it: 009D1E98 FCHS makes the quotient NEGATIVE whenever the aircraft is
 // above the altitude floor, and a lower bound of +0.05625 turned every descent
 // command into a 3.2-degree climb. docs/TORPEDO_RELEASE_TIMER.md.
-inline constexpr float kPitchClampLo = -1.3962634f;  // 00D21318 as a float, -DEG(80)
-inline constexpr float kPitchClampHi = 0.872665f;   // 00D057E0 / 00D05B40
+inline constexpr float kPitchClampLo = kConstExactImageBitsBound ? -0x1.657186p+0f : -1.3962634f;  // 00D21318 as a float, -DEG(80); image bits BFB2B8C3 at 00D21318
+inline constexpr float kPitchClampHi = kConstExactImageBitsBound ? 0x1.becde6p-1f : 0.872665f;   // 00D057E0 / 00D05B40; image bits 3F5F66F3 at 00D057E0 m64 3FEBECDE60000000 / 00D05B40
 
 // The throttle chain, 009D1BDB-009D1CD7.
 inline constexpr float kBankFoldX0 = -1.0f;         // 00D7A260

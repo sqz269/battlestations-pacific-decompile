@@ -38,6 +38,7 @@
 #include <vector>
 
 #include "bsp/lua_spawn_new.hpp"   // SpawnPlacementEntity, spawn_member_placement_legal_00941d30
+#include "bsp/const_exact_image_bits.hpp"
 
 namespace bsp {
 
@@ -74,7 +75,7 @@ inline constexpr int kSpawnBorderWalkTurns = 2;                // 009434F7 MOV E
 inline constexpr float kSpawnGiveUpHeight = 10.0f;             // 00CE38B8, the (0,10,0) exit
 inline constexpr float kSpawnProbeGroundDefault = -1000.0f;    // 00D7A240 float
 inline constexpr double kSpawnDegreesToRadians = 3.141592653589793 / 180.0;  // 00CE3D28 / 00CE3D20
-inline constexpr double kSpawnQuarterTurn = 1.5707963267948966;              // 00CE3830 double
+inline constexpr double kSpawnQuarterTurn = kConstExactImageBitsBound ? 0x1.921fb6p+0 : 1.5707963267948966;              // 00CE3830 double; image bits 3FF921FB60000000 at 00CE3830
 
 // 00941D30's radius block as 00942CB0 builds it on its stack (00942D68..
 // 00942E09): +0 100, +4 2000, +8 own-party vertical 100 (00CE3D08), +Ch other-party

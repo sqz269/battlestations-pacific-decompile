@@ -1107,6 +1107,14 @@ constexpr bool kReconTeamListsBound = true;
 //    never reached 00863990. OFF: that pre-filter. Packet
 //    cc9_recon_contact_kinds, docs/AA_LETHALITY_AUDIT.md section 14.
 constexpr bool kReconContactAllKindsBound = true;  // ON: AA_LETHALITY_AUDIT 14.4
+//  * kReconSurfaceSetBranchBound: 00922DC0 (MOV DL,1; JMP 00922C80) reaches
+//    00922C80's set arm after the +5Dh, 0Fh, 18h, ship, 45h, 46h and 1Ch arms:
+//    00922D3F-00922D54 008DDF90 over [00E188A8]+21A4h+[+18ECh]*4 (slot 0 here,
+//    LABELLED as in the ship-AI host), and 00922D5B JNZ 00922D0E returns 1 when
+//    the set holds the entity (008DDFA9: an IsKindOf(5) entity is looked up as
+//    itself). True: `in_set || tail`. False: the tail alone, the earlier host
+//    rule. Packet cc13-fix4, docs/CC13_FIX34.md.
+constexpr bool kReconSurfaceSetBranchBound = false;
 //  * kGunneryClassArmsBound: 00862820's arms after the liveness bytes and the
 //    rank (00862843..008628CA). Category 7 needs IsKindOf(6) and not
 //    IsKindOf(0Eh). A kind-8 target then goes through 00852820 (world y +100h
@@ -1462,7 +1470,27 @@ constexpr bool kLandMasterDamageBound = true;  // ON: USN01, IJN08 pairs, mechan
 //    "not dead" (+5Ch taken set, +5Eh/+60h clear); the 7Dh arm's 00982C50 notice
 //    (0095AD26..0095AD52, kinds 45h/46h) and 00958A30's +728h repair-timer arm are
 //    not hosted. OFF: recorded, nothing runs; the gate answers false.
-constexpr bool kShipyardDestructionRuleBound = true;  // ON: JM08/LOMP10/USN01 gameplay identical, arm matches (GUNNERY 270.1)
+constexpr bool kShipyardDestructionRuleBound = true;
+//  * kInferiorFailureArmBound: packet cc9_g51_inferior_failure (GUNNERY 272.4).
+//    00958A30, the vtable[1B0h] of every LandFort (00CFF3F8), airfield (006D0D40 JMP),
+//    shipyard (00D0B770), land vehicle and unit base, with +71Ch set (006F5CC0 adopts
+//    kinds 1Bh/45h/46h; 006F5E9B) never destroys at health 0. The first break
+//    (00958A7A..00958BC2, +720h clear): vtable[194h]("InferiorFailure") -> 7Dh ->
+//    +720h (guns gated at 0072D1C1); +728h = owner class +190h (CommandBuildingGlobals
+//    SingleInvincibleTime in single player), or +18Ch (ShipYardRepairTime) for kinds
+//    45h/46h; a CapturePost LandFort (class+174h, 00749210) hands its CommandBuilding
+//    vtable[1ACh](class+194h CapturePostDamage) = 006F1F20. Later zero writes with
+//    +728h <= 0 re-seed it (00958BF4..00958CBE). 0095DA00 refuses damage while +71Ch
+//    and +728h > 0; 00956600 counts +728h down; health back at max (the building's
+//    repair) sends 7Eh (vtable[19Ch]), clearing +720h and +728h (00958D43..00958D94).
+//    LABELLED: vtable[204h](45h/46h) of a 1Bh fort is read as its kind; +358h as clear;
+//    vtable[1B4h] (damage-state visuals) and the 00982C50 notice are presentation.
+//    False: only the land masters are kept alive at health 0, nothing else runs.
+constexpr bool kInferiorFailureArmBound = true;  // ON: mechanism matches, JM08 now completes (GUNNERY 272.4)
+// CommandBuildingGlobals.SingleInvincibleTime in this installation's
+// commandbuildingglobals.lua (mtime 2024-07-13): 20, stored at +4Ch by 006F7670 and
+// copied to class+190h by 006F4360 in game mode 0.
+constexpr float kInferiorFailureSingleInvincibleTime = 20.0f;  // ON: JM08/LOMP10/USN01 gameplay identical, arm matches (GUNNERY 270.1)
 //  * kOverrideHpHealthZeroBound: OverrideHP (008C1930) writes the health through
 //    00877B90, whose changed write runs vtable[1B0h] -> 00958A30, so a value at or
 //    below 0 destroys the unit (docs/CC13_VER_5.md D3). True: the host's health-zero
@@ -1954,6 +1982,8 @@ struct GameGunneryHost::Impl {
     // One entry per created unit, index aligned with GameUnitsHost.
     struct UnitState {
         GameGunneryUnitRow row;
+        // unit+728h, the InferiorFailure window (packet cc9_g51_inferior_failure).
+        float inferior_timer_728{0.0f};
         // The gunnery pass object at unit+6DCh, as its live fields.
         bool attached{false};
         bool enabled{false};             // pass+58h
@@ -2928,6 +2958,10 @@ struct GameGunneryHost::Impl {
         unsigned long long section_deaths{0}, hand_offs_skipped_cause{0}, die_calls{0};
         unsigned long long die_unhosted{0}, master_kills{0}, kept_alive{0};
     } land_master;
+    struct InferiorFailureCounts {
+        unsigned long long first_breaks{0}, rearms{0}, refusals{0}, restores{0};
+        unsigned long long capture_post_hits{0}, capture_post_refused{0};
+    } inferior;
     unsigned long long airfield_sub_entity_asks{0};   // packet cc9_airfield_sub_entities
     unsigned long long airfield_sub_entities_listed{0};
     unsigned long long scatter_drops{0};           // packet cc9_bomb_drop_scatter
@@ -3969,6 +4003,12 @@ struct GameGunneryHost::Impl {
     void apply_impact_blast(std::size_t shooter, std::size_t gun_row, int team_id,
         const float point[3], const float direction[3], bool ignore_falloff = false);
     void kill_unit(std::size_t victim);
+    // Packet cc9_g51_inferior_failure (kInferiorFailureArmBound).
+    void inferior_failure_health_zero_00958a30(std::size_t victim, std::size_t owner);
+    float inferior_failure_seconds_00958ae8(std::size_t victim, std::size_t owner);
+    bool inferior_failure_refuses_0095da00(std::size_t unit);
+    void inferior_failure_health_restored_00958d43(std::size_t unit);
+    void step_inferior_failure_timers_00956600(float dt);
     // Packet cc9_land_master_damage (kLandMasterDamageBound).
     void build_land_masters_00744a20();
     void forward_land_master_damage_0074715a(std::size_t section, float amount);
@@ -7084,8 +7124,10 @@ public:
     }
     bool unit_is_surface_target(std::size_t index) override {
         // 00922DC0's thunk into 00922C80, filled from the same facts the ship
-        // AI's target_is_surface_00922dc0 fills. The set branch 008DDF90 is not
-        // built in this process, so its tail is taken, as there.
+        // AI's target_is_surface_00922dc0 fills. The set branch 008DDF90 asks
+        // the objective set the mission Lua fills (game_objective_sets(), which
+        // the ship-AI and chooser hosts ask too); it is taken only under
+        // kReconSurfaceSetBranchBound, otherwise the tail alone answers.
         bsp::EntityTargetFacts tf;
         tf.present = true;
         tf.not_engageable = owner_.units.unit_flag_005d(index);
@@ -7103,6 +7145,18 @@ public:
         tf.world_y = py;
         const bsp::SurfaceTargetAnswer answer = bsp::entity_is_surface_target_00922c80(tf);
         if (answer == bsp::SurfaceTargetAnswer::kUnreadSetBranch) {
+            if constexpr (kReconSurfaceSetBranchBound) {
+                // 008DDF93: an empty set answers 0; 008DDFA9 IsKindOf(5) looks
+                // the entity up as itself; the 18h arm cannot run (rejected
+                // above); 008DDF00 is the find.
+                bool in_set = false;
+                if (owner_.units.unit_is_kind_of(index, 0x05)) {
+                    const std::vector<std::size_t> set =
+                        bsp::game::game_objective_sets().units_in_slot(0);
+                    in_set = std::find(set.begin(), set.end(), index) != set.end();
+                }
+                if (in_set) return true;                  // 00922D5B JNZ 00922D0E
+            }
             return bsp::entity_surface_target_tail_00922c80(tf, true);
         }
         return answer == bsp::SurfaceTargetAnswer::kYes;
@@ -11317,6 +11371,9 @@ public:
             // same amount. LABELLED order: before this section's own write.
             owner_.forward_land_master_damage_0074715a(victim_, damage);
         }
+        // 0095DA00 (the base call of 007470B0 / the airfield's slot): +71Ch set and
+        // +728h > 0 refuse the damage.
+        if (owner_.inferior_failure_refuses_0095da00(victim_)) return false;
         bsp::UnitHealth health;
         health.current_health = owner_.unit_state[victim_].health;
         health.max_health = owner_.unit_state[victim_].max_health;
@@ -12927,6 +12984,16 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
     // reaches 006F3270, which neutralizes it. The ship AI host answers false
     // unless kCommandBuildingCaptureBound is on.
     if (ship_ai != nullptr && ship_ai->command_building_health_zero_006f3270(victim)) return;
+    if constexpr (kInferiorFailureArmBound) {
+        // 00958A30 with +71Ch set: health 0 breaks the unit instead of destroying it.
+        if (explicit_kill_cause == 0) {
+            const std::size_t owner = units.parent_link_71c(victim);
+            if (owner < unit_state.size()) {
+                inferior_failure_health_zero_00958a30(victim, owner);
+                return;
+            }
+        }
+    }
     if constexpr (kLandMasterDamageBound) {
         // 00958A30 with +71Ch set: health 0 does not destroy (00958A52 arm). Only for
         // the land masters, and only on the health-zero paths.
@@ -13244,6 +13311,7 @@ void GameGunneryHost::Impl::forward_land_master_damage_0074715a(std::size_t sect
 void GameGunneryHost::Impl::land_master_add_damage_0095da00(std::size_t master, float amount) {
     UnitState& state = unit_state[master];
     if (state.dead) return;
+    if (inferior_failure_refuses_0095da00(master)) return;
     bsp::UnitHealth health;
     health.current_health = state.health;
     health.max_health = state.max_health;
@@ -14064,6 +14132,96 @@ bool GameGunneryHost::Impl::shipyard_complete(bsp::ShipyardState& yard) {
 // False: the row's `active` and the gunnery death (dead || health <= 0).
 constexpr bool kShipyardHangarGateBytesBound = true;  // ON: JM08 gameplay identical, faithful (GUNNERY 272.2)
 
+float GameGunneryHost::Impl::inferior_failure_seconds_00958ae8(std::size_t victim,
+                                                              std::size_t owner) {
+    // 00958AE8: owner class +190h, SingleInvincibleTime in game mode 0 (006F4360).
+    float seconds = kInferiorFailureSingleInvincibleTime;
+    // 00958B0C..00958B80: kinds 46h and 45h (and a 1Bh fort whose vtable[204h]
+    // answers them, LABELLED: read as its kind) take owner class +18Ch, the
+    // ShipYardRepairTime (InferiorRepairTime, integer, when absent; default 200).
+    if (units.unit_is_kind_of(victim, 0x46) || units.unit_is_kind_of(victim, 0x45)) {
+        const int type = unit_state[owner].row.type_id;
+        const float inferior_time = static_cast<float>(static_cast<int>(
+            lua.read_vehicle_class_number(type, "InferiorRepairTime", 200.0f)));
+        seconds = lua.read_vehicle_class_number(type, "ShipYardRepairTime", inferior_time);
+    }
+    return seconds;
+}
+
+void GameGunneryHost::Impl::inferior_failure_health_zero_00958a30(std::size_t victim,
+                                                                   std::size_t owner) {
+    UnitState& s = unit_state[victim];
+    if (!units.inferior_failure_720(victim)) {
+        // 00958A7A..00958BC2, the first break. vtable[194h]("InferiorFailure", 0):
+        // 00953DA0 (006D2210 for an airfield, which falls through to it) routes 7Dh,
+        // and 0095AD0A sets +720h.
+        units.set_inferior_failure_720(victim);
+        s.inferior_timer_728 = inferior_failure_seconds_00958ae8(victim, owner);
+        ++inferior.first_breaks;
+        log.notef("inferior failure: unit=%s owner=%s first break t=%.2f window=%.1f "
+            "(00958A30, packet cc9_g51_inferior_failure)", s.row.name.c_str(),
+            unit_state[owner].row.name.c_str(), static_cast<double>(clock_seconds),
+            static_cast<double>(s.inferior_timer_728));
+        // 00958B8C..00958BC2: IsKindOf(1Bh) and class+174h (CapturePost, 00749210):
+        // owner->vtable[1ACh](owner class +194h, CapturePostDamage, default 1000).
+        if (units.unit_is_kind_of(victim, 0x1B)
+            && lua.read_vehicle_class_boolean(s.row.type_id, "CapturePost", false)) {
+            const int owner_type = unit_state[owner].row.type_id;
+            const float amount = static_cast<float>(static_cast<int>(
+                lua.read_vehicle_class_number(owner_type, "CapturePostDamage", 1000.0f)));
+            // 006F1F20: refused while the building's +7D8h runs, else 007470B0.
+            if (ship_ai != nullptr && units.unit_is_kind_of(owner, 0x1c)
+                && !ship_ai->command_building_hit_gate_006f1f20(owner, amount)) {
+                ++inferior.capture_post_refused;
+            } else {
+                ++inferior.capture_post_hits;
+                land_master_add_damage_0095da00(owner, amount);
+            }
+        }
+        done("InferiorFailure::first_break_00958a7a", 0x00958a7au);
+        return;
+    }
+    // 00958BE0..00958CBE: broken and still at zero; +358h (LABELLED: clear) and
+    // +728h <= 0 re-seed the window.
+    if (!(s.inferior_timer_728 > 0.0f)) {
+        s.inferior_timer_728 = inferior_failure_seconds_00958ae8(victim, owner);
+        ++inferior.rearms;
+        done("InferiorFailure::rearm_00958bf4", 0x00958bf4u);
+    }
+}
+
+bool GameGunneryHost::Impl::inferior_failure_refuses_0095da00(std::size_t unit) {
+    if (!kInferiorFailureArmBound || unit >= unit_state.size()) return false;
+    // 0095DA06: +71Ch set and +728h above [00D7A218].
+    if (!(unit_state[unit].inferior_timer_728 > 0.0f)) return false;
+    if (units.parent_link_71c(unit) >= unit_state.size()) return false;
+    ++inferior.refusals;
+    return true;
+}
+
+void GameGunneryHost::Impl::inferior_failure_health_restored_00958d43(std::size_t unit) {
+    if (!kInferiorFailureArmBound || unit >= unit_state.size()) return;
+    UnitState& s = unit_state[unit];
+    // 00958CD0..00958D94: +720h set and health at or above the maximum: vtable[19Ch]
+    // ("InferiorFailure") -> 7Eh clears +720h and +728h.
+    if (!units.inferior_failure_720(unit) || s.health < s.max_health) return;
+    if (units.parent_link_71c(unit) >= unit_state.size()) return;
+    units.clear_inferior_failure_720(unit);
+    s.inferior_timer_728 = 0.0f;
+    ++inferior.restores;
+    log.notef("inferior failure: unit=%s restored t=%.2f (00958D43 -> 7Eh, packet "
+        "cc9_g51_inferior_failure)", s.row.name.c_str(), static_cast<double>(clock_seconds));
+}
+
+void GameGunneryHost::Impl::step_inferior_failure_timers_00956600(float dt) {
+    // 00956600: +728h -= the scaled delta, floored at 0.
+    for (UnitState& s : unit_state) {
+        if (!(s.inferior_timer_728 > 0.0f)) continue;
+        const float left = s.inferior_timer_728 - dt;
+        s.inferior_timer_728 = left < 0.0f ? 0.0f : left;
+    }
+}
+
 bool GameGunneryHost::Impl::ship_in_shipyard_hangar_0081de10(std::size_t ship) {
     // 0081DE10, __fastcall(unit). 0081DE31: unit+1130h > 0 answers 1 at once. LABELLED:
     // the host keeps no +1130h (the shipyard-launch sentinel), so that arm never fires.
@@ -14588,6 +14746,9 @@ void GameGunneryHost::fixed_step(float step_seconds) {
                   || kComponentFailureBound) {
         host.run_damage_control(step_seconds);
     }
+    if constexpr (kInferiorFailureArmBound) {
+        host.step_inferior_failure_timers_00956600(step_seconds);
+    }
     // The rows are complete for this step here, after every per-unit pass and
     // the aim, fire and projectile passes have run. 00A08460 BSP_Ai_TargetWeight
     // reads the target's hit points and the attacker's barrels, and the AI
@@ -14781,6 +14942,7 @@ void GameGunneryHost::repair_unit_to_fraction(std::size_t unit_index, float frac
     const float healed = fraction * state.max_health + state.health;
     state.health = healed < state.max_health ? healed : state.max_health;
     state.row.health = state.health;
+    impl_->inferior_failure_health_restored_00958d43(unit_index);
 }
 
 void GameGunneryHost::set_unit_armour_0368(std::size_t unit_index, float value) {
@@ -15113,6 +15275,7 @@ void GameGunneryHost::apply_script_damage_0095da00(std::size_t unit_index, float
     if (unit_index >= host.unit_state.size()) return;
     GameGunneryHost::Impl::UnitState& state = host.unit_state[unit_index];
     if (state.dead) return;
+    if (host.inferior_failure_refuses_0095da00(unit_index)) return;   // 0095DA00 +71Ch/+728h
     bsp::UnitHealth health;
     health.current_health = state.health;
     health.max_health = state.max_health;
@@ -16303,6 +16466,14 @@ void GameGunneryHost::report() {
                 c.sections, c.masters, c.party_adoptions, c.forwards, c.section_deaths,
                 c.hand_offs_skipped_cause, c.die_calls, c.die_unhosted, c.master_kills,
                 c.kept_alive, kLandMasterDamageBound ? 1 : 0);
+        }
+        if (kInferiorFailureArmBound) {
+            const Impl::InferiorFailureCounts& c = host.inferior;
+            host.log.notef("summary mission gunnery inferior failure first_breaks=%llu "
+                "rearms=%llu refusals=%llu restores=%llu capture_post_hits=%llu "
+                "capture_post_refused=%llu (00958A30 / 0095DA00, packet "
+                "cc9_g51_inferior_failure)", c.first_breaks, c.rearms, c.refusals,
+                c.restores, c.capture_post_hits, c.capture_post_refused);
         }
         if (host.airfield_destroy_kills != 0) {
             host.log.notef("summary mission gunnery airfield destroy kills=%llu (006D41EF -> "

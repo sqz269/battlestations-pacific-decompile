@@ -656,7 +656,15 @@ PlaneFollowGeometry plane_follow_geometry_009bfee0(
         const float floor_candidate = in.leader_pos[1] + in.band_floor_offset;
         float floor_v =
             (floor_candidate <= in.state_88) ? floor_candidate : in.state_88;
-        if (in.run_phase_a) {
+        if (in.band_floor_image) {
+            // 009C16E5-009C1725: a = float(block+4 + leaderY), b = state+88h;
+            // FCOMIP a,b; JBE -> a, so b only when a > b ordered.
+            floor_v = (floor_candidate > in.state_88) ? in.state_88 : floor_candidate;
+            // 009C1734-009C175A: c = float(leaderY - 120.0 double); FCOMIP c,L;
+            // JBE keeps L, so c only when c > L ordered.  No branch skips it.
+            const float lower = F(in.leader_pos[1] - kBandHalfHeight);
+            if (lower > floor_v) floor_v = lower;
+        } else if (in.run_phase_a) {
             // 009C1734-009C175A: and never below leaderY - 120.
             const float lower = F(in.leader_pos[1] - kBandHalfHeight);
             if (!(lower <= floor_v)) floor_v = lower;

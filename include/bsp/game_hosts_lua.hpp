@@ -1176,6 +1176,9 @@ public:
     // src/vehicle_class_fields.cpp lists the other float fields at 009623A9's
     // sibling offsets; this reader serves all of them.
     float read_vehicle_class_number(int index, const char* key, float fallback);
+    // `VehicleClass[index][key]` as a boolean; `fallback` unless the field is a Lua
+    // boolean (BSP_LuaReference_GetBooleanOrDefault, e.g. 00749210's CapturePost).
+    bool read_vehicle_class_boolean(int index, const char* key, bool fallback);
 
     // `VehicleClass[index][key][nested_key]` as a number; `fallback` when any
     // level is absent or the leaf is not a number. Packet cc9_buoyancy_elements

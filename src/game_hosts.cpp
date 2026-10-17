@@ -1121,9 +1121,11 @@ void GameFrameHost::game_on_move(float seconds) {
     // 004e4a40's front-end branch at 004e4b9d runs for game states 1, 2 and 4, and
     // BSP_Game_UpdateInterfaceOnly 004c40f0 runs for everything else; that split is
     // bsp::front_end_screen_pump_site. The simulation spine the branch falls through to
-    // at 004e4d32 is not reconstructed.
+    // at 004e4d32 is reconstructed and runs through
+    // GameMissionFrameHost::run_mission_frame_004e4a40 (game_hosts_mission_frame.cpp), which
+    // menu_->frame drives; game_frame_control.cpp holds the timing block 004E4D3E..004E4D94
+    // and mission_state_frame.cpp holds 004E4DF4..004E551E.
     log_.implemented("ApplicationFrameHost::game_on_move", "004e4a40");
-    log_.unimplemented("GameFrameControl::simulation_spine", "004e4d32");
     // Native 004E4A79 calls the close processor before the front-end update.
     // Bind the actual online publication and current game state; an unavailable
     // confirmation owner is an explicit source boundary, never permission to exit.

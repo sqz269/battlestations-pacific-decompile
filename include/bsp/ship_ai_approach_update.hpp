@@ -34,6 +34,7 @@
 
 #include "bsp/ship_ai_attackmove_substates.hpp"
 #include "bsp/ship_ai_bearing_rating.hpp"
+#include "bsp/const_exact_image_bits.hpp"
 
 namespace bsp {
 
@@ -197,11 +198,11 @@ inline constexpr float kApproachGunFractionNear = 0.5f;   // 00CE3800, 009E7057
 inline constexpr float kApproachGunFractionFar = 0.75f;   // 00CEE07C, 009E7043
 inline constexpr double kApproachNoTargetLow = 800.0;     // 00CE3948, 009E7079
 inline constexpr double kApproachNoTargetHigh = 1200.0;   // 00D1FAF8, 009E7095
-inline constexpr double kApproachTargetRangeHigh = 0.85;  // 00CF0B58, 009E708D
-inline constexpr double kApproachLeaderShrink = 0.8;      // 00CE3D40, 009E70B4
-inline constexpr double kApproachLeaderFloor = 0.9;       // 00D7A390, 009E70C2
-inline constexpr double kApproachCruiseLow = 0.92;        // 00D04308, 009E714E
-inline constexpr double kApproachCruiseHigh = 0.98;       // 00D219C8, 009E715A
+inline constexpr double kApproachTargetRangeHigh = kConstExactImageBitsBound ? 0x1.b33334p-1 : 0.85;  // 00CF0B58, 009E708D; image bits 3FEB333340000000 at 00CF0B58
+inline constexpr double kApproachLeaderShrink = kConstExactImageBitsBound ? 0x1.99999ap-1 : 0.8;      // 00CE3D40, 009E70B4; image bits 3FE99999A0000000 at 00CE3D40
+inline constexpr double kApproachLeaderFloor = kConstExactImageBitsBound ? 0x1.cccccc0p-1 : 0.9;       // 00D7A390, 009E70C2; image bits 3FECCCCCC0000000 at 00D7A390
+inline constexpr double kApproachCruiseLow = kConstExactImageBitsBound ? 0x1.d70a3ep-1 : 0.92;        // 00D04308, 009E714E; image bits 3FED70A3E0000000 at 00D04308
+inline constexpr double kApproachCruiseHigh = kConstExactImageBitsBound ? 0x1.f5c29p-1 : 0.98;       // 00D219C8, 009E715A; image bits 3FEF5C2900000000 at 00D219C8
 inline constexpr float kApproachScanStep = 50.0f;         // 00D19BDC, 009E71C3
 inline constexpr double kApproachScanStepScale = 0.5;     // 00D7A280, 009E71D7
 inline constexpr double kApproachSideCurveScale = 0.5;    // 00D7A280, 009E744B
@@ -237,10 +238,10 @@ inline constexpr float kApproachEvadeIdle = -1.0f;        // 00D7A260, 009E75B4
 inline constexpr float kApproachBearingGain = 1.0f;       // 00D7A24C, 009E74EC
 
 // 009E76D0
-inline constexpr double kApproachPhaseRate = 0.2;         // 00CE3D10, 009E76DA
+inline constexpr double kApproachPhaseRate = kConstExactImageBitsBound ? 0x1.99999ap-3 : 0.2;         // 00CE3D10, 009E76DA; image bits 3FC99999A0000000 at 00CE3D10
 inline constexpr double kApproachWobbleAmplitude = 0.0;   // 00D7A258, 009E7C4C
 inline constexpr float kApproachRejectPenaltyBase = -0.0f; // 00D7A208, 009E780A
-inline constexpr double kApproachSlotKeepThreshold = 0.85; // 00CF0B58, 009E7814
+inline constexpr double kApproachSlotKeepThreshold = kConstExactImageBitsBound ? 0x1.b33334p-1 : 0.85; // 00CF0B58, 009E7814; image bits 3FEB333340000000 at 00CF0B58
 inline constexpr float kApproachReverseWindowX0 = 0.2f;   // 00CE54A0, 009E7E5F
 inline constexpr float kApproachReverseWindowY0 = 400.0f; // 00CFD710, 009E7E55
 inline constexpr float kApproachReverseWindowX1 = 1.2f;   // 00CE3814, 009E7E4B
@@ -250,7 +251,7 @@ inline constexpr float kApproachReverseWindowY1 = 50.0f;  // 00CEB4D4, 009E7E41
 inline constexpr double kApproachThrottleUnsetKnee = 1000.0; // 00CE47A0, 009E6AC8
 inline constexpr float kApproachThrottleSeedX0 = 0.5235987901687622f; // 00CEC724 (pi/6)
 inline constexpr float kApproachThrottleSeedY0 = 1.0f;    // FLD1 at 009E6B03
-inline constexpr float kApproachThrottleSeedX1 = 1.2217304706573486f; // 00CE3988 (70 deg)
+inline constexpr float kApproachThrottleSeedX1 = kConstExactImageBitsBound ? 0x1.38c356p+0f : 1.2217304706573486f; // 00CE3988 (70 deg); image bits 3F9C61AB at 00CE3988
 inline constexpr float kApproachThrottleSeedY1 = 0.5f;    // 00CE3800, 009E6AEF
 inline constexpr double kApproachStopWindow = 50.0;       // 00CE3938, 009E6BB2
 inline constexpr float kApproachCreepFloor = 0.25f;       // 00CE3868, 009E6C1C
@@ -270,7 +271,7 @@ inline constexpr double kApproachAsternDivisor = 40.0;    // 00D7A378, 009E6E10
 // 009E5E90
 inline constexpr double kApproachSlotHalfWidth = 0.05235987901687622; // 00D1A8A0 (pi/60)
 inline constexpr double kApproachSlotDivisor = 60.0;      // 00CE3D68, 009E5EC4
-inline constexpr double kApproachTurnDeadband = -0.1;     // 00CE3928, 009E5F1F
+inline constexpr double kApproachTurnDeadband = kConstExactImageBitsBound ? -0x1.99999ap-4 : -0.1;     // 00CE3928, 009E5F1F; image bits BFB99999A0000000 at 00CE3928
 inline constexpr float kApproachMaxTurnStep = 2.6179940700531006f; // 00D1FED0 (150 deg)
 inline constexpr int kApproachBlockedSlotCost = 60;       // 009E5F7F, 009E5FAB
 
