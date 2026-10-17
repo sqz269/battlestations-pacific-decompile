@@ -744,3 +744,11 @@ mechanism is in the cd761bb52 section above).
   - BSM01 20,3 is again HenryPT killed by Sacramento's killer_cat 6 blast (1503.09 s), then the script's own nil
     index at commandhelpers.lua:5991 (see the BSM01 note above). Two seeds now show a US ship's blast killing the
     player's PT boat near MiniSub: a gunnery question.
+- **ESMP08 row: `esmp08_p12_e8_rb`** (cc9-physics13, OCEAN_WAVE_FIELD 47.2; recorded by cc9-lua64). On
+  agent/cc9-physics1 57ecc76a4 (kRackConstructorRoundBound and kNeighbourClockDrawsBound ON): completed 3984.96 s
+  (reference), 4707.67 s (20,3), 3966.89 s (20,5), 3261.21 s (20,7), guard on all four
+  (`cc9-physics1\local\p13e8c_rb_<ref|j3|j5|j7>.log`). The 654daf00e re-time above (retire flip ON, rack round
+  not yet merged) completes the reference only (5808.36 s).
+- **USN15 `usn15_g50_u15_nn` is not the reference row** (cc9-gunnery50, GUNNERY_OPEN_ITEMS 269, exe f4d7658e6):
+  EndMission and guard at 20,3 3229.07 s, 20,5 3289.13 s, 20,7 3068.92 s, but the reference seed and 20,11 do not
+  win (Fuso, torpedo-only, survives); variant nm wins ref / 20,3 / 20,7 but not 20,5. `s45_u15_l2` stays the row.
