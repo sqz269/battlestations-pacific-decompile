@@ -1158,6 +1158,10 @@ public:
     // 0088E000): the party multiplier, the invincibility floor and the death funnel,
     // as a hit's damage takes them. No caller yet (packet cc9_difficulty_multipliers).
     void apply_script_damage_0095da00(std::size_t unit_index, float amount);
+    // Packet p16_torpedo_stock_property: 00815850 for a ship, the value
+    // GetProperty(ship, "TorpedoStock") pushes. False for an index the host
+    // does not hold.
+    bool torpedo_stock_total_00815850(std::size_t unit_index, std::int32_t& total) const;
     float unit_invincibility(std::size_t unit_index) const noexcept;
     // Packet cc9_ship_fire_stance: the weapon director arm of UnitSetFireStance
     // 008A6490 / UnitHoldFire 008A6AC0 (stance 0) for a ship: 0071BE80, whose

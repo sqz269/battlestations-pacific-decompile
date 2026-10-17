@@ -133,6 +133,23 @@ inline constexpr bool kGetPropertyClassReadersBound = true;  // ON: lead ruling 
 // 007EDAD0's integer through GameUnitsHost::squadron_ammo_type_007edad0. Only a
 // squadron serves the key. False: no value, so a script's `~= 0` test passes.
 inline constexpr bool kGetPropertySquadronAmmoTypeBound = true;  // ON 2026-09-30: controls identical, USNRM01 moved (5ci)
+// Packet p16_torpedo_stock_property (docs/OCEAN_WAVE_FIELD.md section 61). True:
+// a ship's GetProperty answers "TorpedoStock" (_stricmp 00BF7FBF at 00815891,
+// so any case) the way 00815870 does: s = unit+104Ch; s < 0 pushes s, else
+// 00810E90 (the loaded torpedo tubes) + s, through 00B664B0. 00815870 sits at
+// vtable+138h of the eight ship vtables and is the mother ship's 00758340's
+// first call, so every IsKindOf(6) unit serves it; no other entity does.
+// The value is GameGunneryHost::torpedo_stock_total_00815850. False: no value,
+// so jm08.lua's `torp < 12` raises on nil and aborts its PT loop.
+inline constexpr bool kGetPropertyTorpedoStockBound = false;
+// Same packet. True: a squadron's GetProperty answers "state" (00425850 at
+// 007EF20E) as 007EF1C0 does: over the +3CCh planes at +3D0h it counts those
+// whose control mode (plane+72Ch)->vtable[38h] answers true (A; 0074E210, the
+// mode +1D4h == 7, which this host keeps as +900h) and the rest (B); it pushes
+// 2 when B is 0 (an empty squadron included), else 1 when A > 0, else 0.
+// commandhelpers.lua's luaAirstrikeManager_think attacks only on `state == 2`.
+// False: no value (nil), so that test never passes.
+inline constexpr bool kGetPropertySquadronStateBound = false;
 
 // Packet cc9_lua_kill (docs/LUA_BINDING_MISSION.md, "Kill, 008AC5C0"). The Lua
 // native Kill(entity [, hard]) resolves argument 0 (00888AA0) and takes cause 1,
@@ -875,6 +892,13 @@ struct GameMissionLuaSummary {
     unsigned long long get_property_ammotype_asked{0};
     unsigned long long get_property_ammotype_served{0};
     unsigned long long get_property_ammotype_zero{0};
+    // Packet p16_torpedo_stock_property.
+    unsigned long long get_property_torpedo_stock_asked{0};
+    unsigned long long get_property_torpedo_stock_served{0};
+    unsigned long long get_property_torpedo_stock_not_ship{0};
+    unsigned long long get_property_squadron_state_asked{0};
+    unsigned long long get_property_squadron_state_served{0};
+    unsigned long long get_property_squadron_state_two{0};
     // Packet cc9_lua_kill: Kill calls, units killed, calls with no units-host
     // slot, calls on an already dead unit, squadron calls.
     unsigned long long kill_calls{0};

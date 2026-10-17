@@ -2506,3 +2506,30 @@ re-timing on the new base.
 **Tools in `local\`.** `p15_kind_names.py` (00E0CD80's names from the disk image), `p15_vt.py <va> <n>` (a vtable's
 slots from disk), `p15_cl_check.ps1` (one-file compile check), `p15_census_sum.py <logs>` (the free-attack census),
 `p15_edit_*.py` (the edits as applied).
+
+## 61. GetProperty "TorpedoStock" and the squadron "state" (cc9-physics16, 2026-10-17; lead item 1)
+
+**Image.** `00815870` (vtable+138h of the eight ship vtables, and `00758340`'s first call for the
+mother ship) runs `00779BB0`, then `_stricmp(key, "TorpedoStock")` at `00815891` (string `00D09484`),
+and pushes `00815850`'s value through `00B664B0`. `00815850-00815867`: `s = unit+104Ch`;
+`TEST ESI,ESI / JL 00815864` pushes `s` when negative, else `00810E90() + s` (the loaded torpedo
+tubes). `007EF1C0` (PlaneSquadronGen `00D087C0` +138h): after `ammoType`, `00425850(key, "state")`
+at `007EF20E`; over the `+3CCh` planes at `+3D0h` it counts A = `(plane+72Ch)->vtable[38h]()` true
+(the free-flight control mode, `0074E210`: `+1D4h == 7`, kept by this host as `+900h`) and B = the
+rest; pushes 2 when B == 0 (an empty squadron too), else 1 when A > 0, else 0.
+
+**Host.** `kGetPropertyTorpedoStockBound` (`include/bsp/game_hosts_lua.hpp`) answers for every
+`IsKindOf(6)` unit through `GameGunneryHost::torpedo_stock_total_00815850`. Pass C (`008201B8`) sets
+every ship's spare at load; this host sets it at the first shot, so an unset ship answers what pass C
+leaves (MaxTorpedoStock, or the tube count when the unload loop is off). **LABELLED:** a
+ShipSetTorpedoStock queued this frame answers `max(stock, 0)`, which is spare + loaded after
+`0081F8B0` on both arms. `kGetPropertySquadronStateBound` answers `state` for a squadron slot.
+`WingCount` has no GetProperty reader: `00CF8840` is read only as a bag key (`007F4735`, `006C50EE`,
+`0084521A`, `006EC979`, `006FED65`, `0094BCD8`, `0094C0D1`), and the two scripts that name it do so
+in a comment.
+
+**Predictions (OFF -> ON).** JM08: `luaJM8Checktorp` stops raising on `torp < 12` (nil), so the US PT
+loop reaches `NavigatorAttackMove` and `luaSetScriptTarget` for each idle PT; the PTs attack, and
+`ReloadTorpedoes` (`008C3CE0`, not bound in the host) is called and recorded. Missions using
+commandhelpers' airstrike manager (`luaAirstrikeManager_think`) issue attack orders when every member
+of the squadron is in free flight. No other key moves.
