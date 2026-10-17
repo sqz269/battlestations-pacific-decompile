@@ -1607,3 +1607,29 @@ Export of 5f839f749 with the switch flipped (`local\p12_we`, exe 5B737877E477) a
 The gate is evaluated on every ESMP08 solver call and never answers "near": no solver user flies within 500 m of
 that map's edge. The binding computes what the image computes there, so it is **flipped ON**; the pull itself is
 unexercised in these rows (a row with solver users near an edge would show `near > 0` and moved headings).
+
+## 43. 009F8160's fighter arm: `kFighterSpentEndBound` (cc9-physics12, 2026-10-16; lead item 3, seg-68 note 7.3)
+
+**The question section 41 left open, answered.** This installation's Zero (vehicleclasses.lua class 150, autoload,
+mtime 2026-05-09: `DefaultEquipment = 0`; `Equipments[1]` gives rack slots 50/51 one round each, platform 89) is
+launched by the ESMP08 plans with `equipment=0`, so its racks hold no round. 007EEC50 still answers `divebomb` for a ship
+target: 007EE8F0's divebomb arm asks 007ED7E0, which reads each rack slot's descriptor for the loadout
+(`slot->vtable[220h](loadout)`, ATTACK_COMMANDS "The six ordnance queries"), a type question, not a round count. So the
+image gives these Zeros divebomb exactly as the host does, and 009F8160 then finds 007ED790 (any member can drop) false:
+for a non-fighter it latches +3Ch (the host's spent-ordnance RTB), for a fighter (`[sq+35Ch]->vtable[18h](13h)`) it
+sets +3Dh (009F81F6-009F81FC, then 009F8412), and 009F7C90's +3Dh arm (009F7D01-009F7D45) ends the command with
+0071E430(current, 1) once 007EE720 agrees (the dive task's vtable[20h] is 007B40F0, `MOV AL,1`). The host did nothing
+for fighters, so these Zeros kept diving on ships with guns only.
+
+**The binding (game_hosts_units.cpp, committed OFF).** In `run_spent_ordnance_rtb_0084e010`'s squadron loop, after the
+ordnance arm: a fighter-kind leader with one of the seven ordnance classes, the reload gate open and no live member
+holding a rack round has its command ended through `end_command_0071e430(leader, command, true)`, each live member's
+rows retired and resolved target cleared, and `ended_stage2_command` set so the existing 0084E4B1/0084E595 moveto-self
+step treats it as the image's stage 2. Labelled as the dead-target retest models the same arm: 007EE720 taken true, the
+kind-1Ch moveto re-issue not modelled; one end per command class. Logs `fighter spent: ... +3Dh`.
+
+**Predictions (before any ON run).** OFF: identical. ON: ESMP08 ends every bombless Zero squadron's divebomb within a
+tick of its first think (the census saw them from about 113 s), then each gets the moveto-self hold at its own position;
+those Zeros stop diving on US ships, so US ship damage and the deaths of the Zeros to ship AA fall, and Zero kills of
+attacking US planes may rise (they now hold near the fleet). ESMP08 gameplay moves from about 113 s. USN04 (no IJN
+fighter with an ordnance class in the logs read) is expected identical.
