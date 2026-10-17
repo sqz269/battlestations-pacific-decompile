@@ -17347,3 +17347,58 @@ Done this session:
    Grep the installation's Lua for roman-suffixed names, bind OFF, and pair on a convoy and a multi-wing mission.
 5. Entry-point IsFunction: 0045F440/0045F520 test lua_type == 6. The host's global_is_defined
    (game_hosts_lua.cpp:9573) tests !nil.
+
+## 5hv. Level-bomb wingmen frozen after the dead-target retest (cc9-lua63, 2026-10-16)
+
+### 5hv.1 Cause (USNOS wave 2, `cc9-ships44\local\s52_d_a7.log`, exe 25fbdcba0)
+
+- Squadron `plane #4.4` (leader plus `|.-2/-3/-4`, LevelBomb on TroopTrans4) releases at 416-443 s. TroopTrans4
+  dies at 443.62 s; `kSquadronDeadTargetRetestBound` runs 0071E430 and clears every live member's
+  `command_target_plus_one` (`squadron retest: "plane #4.4" target TroopTrans4 dead at 443.62 s`).
+- The three wingmen's level-bomb arms stop there: each shows `ticks=1235` (320.20 s + 1235 x 0.1 s = 443.7 s) in
+  the summary, `-2` and `-4` frozen in goaway and `-3` in release. The host arm
+  (`run_level_bomb_task_arm_009b8b50`) returns early on a cleared target while the class is still levelbomb, so
+  the task is neither ticked nor retired. The plane keeps its last steering plan, which is the dead-straight
+  southbound course lua62 saw: goaway's heading 009B5760/009B5845 never runs again.
+- The squadron latches at 444.86 s (`spent ordnance ... latched`) but never reaches B5: 009F7C90's "every member
+  breaks off" reads each wingman's stale `lb_break_off_now` (0, frozen), so `ended` never becomes true and no
+  `returntobase` is issued. #4.5 and #4.6, whose target lived, did reach B5 at 443.67 and 450.46 s.
+- Image: 009B81F0 (the task's vt[40h], asked on 0099B740's cadence) returns 1 only when the current command is
+  levelbomb/00E08F78 and (+440h == 0 or the resolved command target == +440h), 009B8238..009B824F. +440h is the
+  target the factory 009B9030 passed (EDX) to 009B7990. A cleared target resolves to null, so the answer is 0 and
+  the task goes; the member then has no task, and 009F7C90 counts it as broken off.
+- Neither the squadron +370h nor +440h is cleared by the image after a release: the latch is the command's, and
+  the exit is the task's retirement, not a state change inside it.
+
+### 5hv.2 Bind (`kLevelBombTargetClearedRetireBound`, committed OFF)
+
+True: a level-bomb arm that finds its command target cleared retires the task (`lb_retire`). The same early
+return exists in the strafe, kamikaze, drop-kamikaze, torpedo and dogfight arms; their vt[40h] tests were not read
+here and they are left as they are.
+
+Predictions on USNOS a7 (`local\l63_os_a7.txt`, a copy of ships44's `s51_os_a7.txt`): ON logs three `retired, the
+command target is not +440h` lines for `plane #4.4|.-2/-3/-4` at about 443.7 s, then a B5 for `plane #4.4`, and the
+wingmen turn back instead of flying south. Rows whose level-bomb targets never die mid-run are identical.
+
+### 5hv.3 Stick time BombDelay term (`kLevelBombStickBombDelayBound`, committed OFF)
+
+007C1FB0 walks the plane's children (+48h, next +44h), keeps the largest vt[1F8h] (006E4170, RepeatTime x max(0,
+rounds - 1)) over those answering IsKindOf(25h), counts them (EDI), and returns `float(BombDelay x max(0, n - 1) +
+longest)` (007C200D `FLD [class+1F4h]`, `FIMUL`, `FADD`, `FSTP float`). The host's `lb_rack_timing_007c1fb0` had the
+longest span only. True adds the term, computed in double and rounded once. The host's n is its BombPlatform rack
+count (LABELLED: kind 25h is the rack class, docs/RELEASE_ISSUE_STAGE.md). It feeds approach+A8h (U(0.3, 0.65) x it)
+and the prepare arm's A8h (x 0.85). Prediction: identical for one-rack planes (USNOS wave 2 logs `racks=1`); a
+multi-rack level bomber releases later in its aim window.
+
+### 5hv.4 Squadron-wide ordnance queries (`kSquadronMemberOrdnanceBound`, committed OFF)
+
+007EE8F0 (AttackCommandApplies) asks 007ED7E0 (2Ah via 007B9320), 007ED830 (31h), 007ED880 (2Fh) and 007ED8D0 (2Bh).
+Each is `for i < [sq+3CCh]: if 007B9xxx(ECX = [sq+3D0h+4i], loadout) return 1` (007ED837..007ED870 for 007ED830), so
+the answer is "any member". The host's feasibility (game_hosts_script_orders.cpp, `in.has_*_ordnance`) read the
+ordered unit only. Since `kRackLiveOrdnanceMaskBound` makes `unit_ordnance` live (an emptied rack stops answering),
+the two differ once the leader has dropped and a wingman has not. True ORs each predicate over the live members of
+the ordered unit's squadron record. Prediction: identical unless an order or retarget reaches a squadron whose leader
+is spent and a wingman is not.
+- 5hu update (lead, final assignment): the C47 Class.ID packet (queue item 2) moved to cc9-ships54. The lua lane keeps
+  goaway (item 1), then rows/re-time, Roman names, IsFunction. ships54 takes the seg 67 ship-AI sub-band
+  009D6000-009F6060 only; this lane holds nothing there.

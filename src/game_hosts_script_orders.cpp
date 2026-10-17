@@ -141,6 +141,13 @@ inline constexpr bool kThinkDelayInWalkBound = true;   // ON: SQUADRON_LAND_TASK
 // through entity_issue_command like the other navigator orders. False leaves
 // it an unimplemented record, as before.
 inline constexpr bool kLuaNavigatorStopBound = true;  // ON: SQUADRON_LAND_TASK 5hb
+// Packet cc9_l63_member_ordnance (SQUADRON_LAND_TASK 5hv.4). 007EE8F0's ordnance
+// queries 007ED7E0 / 007ED830 / 007ED880 / 007ED8D0 each loop the squadron's
+// +3CCh members at +3D0h and answer on the first member that holds the kind
+// (007ED850 `MOV ECX,[EDI]`). True: each answer is the OR over the ordered unit's
+// live squadron members (gunnery liveness stands for +3CCh membership, LABELLED).
+// False: the ordered unit (slot 0) alone, as before.
+inline constexpr bool kSquadronMemberOrdnanceBound = false;
 // Packet cc13-fix5 (docs/CC13_FIX_5.md section 7). True binds NavigatorCruise
 // 008A75C0: NavigatorStop's twin, 0077D600(entity, cruise 00E08F70, zeroed
 // descriptor, 1) at 008A7729 (bsp::navigator_cruise_order_008a75c0), through
@@ -1567,6 +1574,22 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
     in.has_general_bomb_ordnance = bsp::ordnance_has_general_bomb_2ah(set);
     in.has_drop_kamikaze_ordnance = bsp::ordnance_has_drop_kamikaze_2fh(set);
     in.has_torpedo_ordnance = bsp::ordnance_has_torpedo_2bh(set);
+    if constexpr (kSquadronMemberOrdnanceBound) {
+        const bsp::PlaneSquadronHostRecord* sq =
+            bsp::plane_squadron_registry().find_by_member_unit(unit_index);
+        auto* const gun = units_.gunnery();
+        if (sq != nullptr) {
+            for (const std::size_t m : sq->member_units) {
+                if (m == bsp::kPlaneSquadronNoUnit || m >= units_.count() || m == unit_index) continue;
+                if (gun != nullptr && gun->unit_dead(m)) continue;
+                const bsp::OrdnanceKindSet ms{units_.unit_ordnance(m)};
+                in.has_level_bomb_ordnance |= bsp::ordnance_has_paratrooper_31h(ms);
+                in.has_general_bomb_ordnance |= bsp::ordnance_has_general_bomb_2ah(ms);
+                in.has_drop_kamikaze_ordnance |= bsp::ordnance_has_drop_kamikaze_2fh(ms);
+                in.has_torpedo_ordnance |= bsp::ordnance_has_torpedo_2bh(ms);
+            }
+        }
+    }
     // Packet cc9_kamikaze_ship_blocked: 007EEB64..007EEB8A. 00827F70 on the
     // target's class, then 00604A50 on the slot-0 plane (the ordered unit, as
     // the self queries above take it): kind 17h with PilotFires clear.
