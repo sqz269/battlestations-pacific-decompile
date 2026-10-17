@@ -295,7 +295,7 @@ constexpr bool kVehicleClassRowIdBound = true;
 // and 0045F520 gate the entry-point call on 00B66200 (BSP_LuaObject_IsFunction:
 // lua_type == 6), not on "not nil". True: global_is_defined answers whether the
 // global is a function. False: any non-nil value counts, as before.
-constexpr bool kEntryPointIsFunctionBound = false;
+constexpr bool kEntryPointIsFunctionBound = true;   // ON: SQUADRON_LAND_TASK 5hv.8
 
 // Packet cc9_lua49_checkpoint (docs/CC13_PROFILE_SAVE.md; docs/SQUADRON_LAND_TASK.md
 // 5fk). SaveCheckpoint 008ACB70: argument 0 to 00438A00 on the profile
