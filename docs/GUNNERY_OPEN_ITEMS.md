@@ -15607,3 +15607,10 @@ The only native counts that move are the auto-target thinks (one more or one few
 gameplay divergence is a fire-target pick: at ship-AI step 10150 Samidare holds `fire=Charles` in ON only, the
 listing being identical before it. That is the predicted mechanism (the think phase moves a target pick), so the
 switch is flipped ON. USN12 still wins.
+
+### 266.5 `kShipExitZoneRoleGateBound` flipped ON (inert on the paired rows)
+
+Pair `g49_p1` / `g49_xon` (`fad263ffb`, `local\g49_q2.jobs`): JM06 `jm06_s49_j6_s` and USN12 `usn12_g45_u12_e7` are
+gameplay identical. JM06 sends four ships out of the map (Fletcher-class 08/09, US Tanker 02, Lexington-class 01),
+all with open role words, and the OFF census (`has no open role word`) is empty on both rows, so the gate never
+refuses there. The mechanism is the image's (0081BEFA), so the switch is ON.
