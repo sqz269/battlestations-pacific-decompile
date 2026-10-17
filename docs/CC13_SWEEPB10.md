@@ -113,3 +113,16 @@ does the C++.
   logic is small: run SCRIPTS/datatables/DLC.lua, walk DLCTable, compare the host DLC masks
   (+170h / +174h) with the client's, and build the localized "globals." name list (00A9FAD0) of the
   missing packs. Recorded as library-dominated; no C++ in this pass.
+
+## Not reached in this pass (no record)
+
+Each is a large body; sizes are listing lines / x87 instructions / calls from the exports:
+0060ABD0 (1578 / 274 / 191; the player plane control frame with two stream-1 RNG draws at 0060B0CF /
+0060B101 per `docs/CC13_FE_7.md`, which asked for a cc9 ownership decision first), 007A91A0 (1815 / 845 /
+46 callees, the MovCam step), 00670020 (2147 / 125 / 261), 00822C20 (2069 / 136 / 190), 00627960 (2287
+instructions, no Ghidra export), 005DB050 (4159 / 45 / 620: binds, then the scene-record map icons with
+radar-shot textures) and 005ADDA0 (5027 / 841 / 450).
+
+## Reconstructed
+
+00538F80, 005B45C0, 005A3210, 00617470.
