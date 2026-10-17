@@ -262,6 +262,9 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // the COTP-IJN spawn tables call it. Handled only with
     // kShipSetTorpedoStockBound.
     {"ShipSetTorpedoStock", 0x0089eee0u},
+    // Packet p17_reload_torpedoes: commandhelpers.lua 3531/3595/14801, jm03:1486,
+    // jm07, jm08, jm11. Handled only with kReloadTorpedoesBound.
+    {"ReloadTorpedoes", 0x008c3ce0u},
     {"SetRoleAvailable", 0x008ab850u},
     // Packet cc_lua_binding_audit: the delayed-call scheduler and the four state
     // queries usn_2_java's objective checker reads. src/lua_binding_mission.cpp
@@ -626,6 +629,7 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     if (std::strcmp(binding->name, "SetFireTarget") == 0) return kScriptFireTargetBound;
     if (std::strcmp(binding->name, "TorpedoEnable") == 0) return kShipDirectorEnablesBound;
     if (std::strcmp(binding->name, "ShipSetTorpedoStock") == 0) return kShipSetTorpedoStockBound;
+    if (std::strcmp(binding->name, "ReloadTorpedoes") == 0) return kReloadTorpedoesBound;
     if (std::strcmp(binding->name, "FillPathPoints") == 0) return kFillPathPointsBound;
     if (std::strcmp(binding->name, "Scoring_GetPlayerShotDown") == 0) {
         return kScoringPlayerShotDownBound;
@@ -4047,6 +4051,16 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             queue_ship_set_torpedo_stock_0089eee0(row.unit_index, stock);
             log_.notef("  ShipSetTorpedoStock: %s stock=%d (0089EEE0, queued for 0081F8B0)",
                 row.unit.c_str(), stock);
+        }
+    } else if (std::strcmp(binding->name, "ReloadTorpedoes") == 0) {
+        // 008C3CE0: 008C3DE0 00888AA0 resolves argument 0 (a second argument is
+        // never read); the device loop 008C3E00-008C3E47 runs in the gunnery host.
+        // LABELLED: queued for its next fixed step. A null entity would fault at
+        // 008C3DF7 in the image; the host drops it.
+        if (subject != nullptr && row.unit_index < units_.count()) {
+            queue_reload_torpedoes_008c3ce0(row.unit_index);
+            log_.notef("  ReloadTorpedoes: %s (008C3CE0, queued for 0072CF00 on every tube)",
+                row.unit.c_str());
         }
     } else if (std::strcmp(binding->name, "RepairEnable") == 0) {
         bsp::RepairEnableArm arm = bsp::RepairEnableArm::kLocalFieldWrite;

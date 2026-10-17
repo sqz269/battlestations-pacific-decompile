@@ -376,7 +376,7 @@ inline constexpr bool kGenerateObjectRespawnsDeadBound = true;   // ON: SQUADRON
 // the deviation goes: every call instantiates, as 0046D930 does, live earlier instance
 // or not (usn_03:1621-1636 makes Max Kate/Val pairs; ijn_23 FinalJP1..3 three each).
 // False: kGenerateObjectRespawnsDeadBound's narrowed deviation.
-inline constexpr bool kGenerateObjectEveryCallBound = false;
+inline constexpr bool kGenerateObjectEveryCallBound = true;   // ON: PRCP01 pair (OCEAN_WAVE_FIELD 66)
 // Packet p16_lua_natives (cc13 verify5, census `:3689`). True: SpawnNew's placement
 // walk 00941D30 refuses a member outside the map through 0071C4F0 on this host's
 // own Map bounds (border_bounds_, loaded by set_world_border_zones), so the image's
