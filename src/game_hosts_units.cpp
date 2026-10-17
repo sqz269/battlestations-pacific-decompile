@@ -5914,7 +5914,7 @@ struct GameUnitsHost::Impl {
     // 006CDC70's compaction of the landing records at block+A8h. False: a record
     // stays until its squadron head is released (006C7540), so a dead plane's
     // record keeps its last mode and path and holds the survivors' spacing at 0.
-    static constexpr bool kAirOpsQueueCompactBound = false;
+    static constexpr bool kAirOpsQueueCompactBound = true;  // ON: mechanism (docs/OCEAN_WAVE_FIELD.md 39.1)
     // Packet cc9_landing_follower_spacing (docs/SQUADRON_LAND_TASK.md section 5r):
     // the landed byte plane+904h in the sequencer. 006C7960's first arm (mode 4,
     // +4h = -1.0 (00D7A260), +8h = 1.0, before the airborne test), 006C3B10's
