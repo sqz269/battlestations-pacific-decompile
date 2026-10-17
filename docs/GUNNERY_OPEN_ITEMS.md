@@ -15812,3 +15812,27 @@ marker writers. The switch binds the writer and the fixed-step gate; the other r
    the airfield stops at that time.
 3. LOMP10 (`lomp10_p3_l10_b`) moves only if a shipyard hangar dies before the end (calls=1 on `l61rt_l10_j3`).
 4. Missions with neither event (USN12, USN15) are identical.
+
+### 270.1 Pairs and flip: ON
+
+Exports of `c4abff61c`: OFF `local\g50_soff`, ON `local\g50_son` (`kShipyardDestructionRuleBound=true`), reference
+form, `--stop-after-end 40`, logs `local\g50_<soff|son>_<j8|l10|u1>.log` with manifests.
+
+| Row | Frames | OFF | ON | `pair_diff` |
+| --- | --- | --- | --- | --- |
+| JM08 `jm08_s45_j8_m10` | 80000 | no end | no end | 1, gameplay identical |
+| LOMP10 `lomp10_p3_l10_b` | 32000 | completed 1048.45 s | completed 1048.45 s | 1, gameplay identical |
+| USN01 `usn01_p8_u1_i` | 26000 | completed 1280.12 s | completed 1280.12 s | 0, identical |
+
+1. **Held.** JM08: `PTHangar 01` dies at 1094.09 s, `Shipyard 01` survives the 1e10 (parent `Headquarter 01`), and ON
+   logs `shipyard destruction rule: unit=Shipyard 01 hangars=1 arm=inferior_failure`. Nothing after it moves: the
+   shipyard fires no gun later.
+2. **Held, no reach.** USN01's `Airfield2` takes the inferior arm at 65.80 s on both builds; its guns fire nothing after
+   that, so the new gate changes nothing.
+3. **Held.** LOMP10: `CB4_SY_Hangar` dies at 1045.99 s and `CB4_SY` takes the inferior arm; the mission completes 2.5 s
+   later on both builds.
+4. Not run: USN12/USN15 have no land master.
+
+Verdict: the mechanism matches and the rows are inert, so the switch is ON. Side notes for the keeper: JM08
+`jm08_s45_j8_m10` has no mission end by 4000 s on `c4abff61c` (both builds), and USN01 `usn01_p8_u1_i` completes at
+1280.12 s here against 365.03 s on `g49_aon_u1` (`829cac9fc`).

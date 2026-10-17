@@ -1461,7 +1461,7 @@ constexpr bool kLandMasterDamageBound = true;  // ON: USN01, IJN08 pairs, mechan
 //    "not dead" (+5Ch taken set, +5Eh/+60h clear); the 7Dh arm's 00982C50 notice
 //    (0095AD26..0095AD52, kinds 45h/46h) and 00958A30's +728h repair-timer arm are
 //    not hosted. OFF: recorded, nothing runs; the gate answers false.
-constexpr bool kShipyardDestructionRuleBound = false;
+constexpr bool kShipyardDestructionRuleBound = true;  // ON: JM08/LOMP10/USN01 gameplay identical, arm matches (GUNNERY 270.1)
 //  * kOverrideHpHealthZeroBound: OverrideHP (008C1930) writes the health through
 //    00877B90, whose changed write runs vtable[1B0h] -> 00958A30, so a value at or
 //    below 0 destroys the unit (docs/CC13_VER_5.md D3). True: the host's health-zero
