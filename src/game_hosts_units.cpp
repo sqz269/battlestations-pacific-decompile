@@ -17367,8 +17367,16 @@ void GameUnitsHost::run_director_steps_00836920() {
             // references), so this is the same choice milestone 2m already made
             // for the `cruise` begin: immediately, on the director step.
             host.commands.begin_current_command_00835c70(index, px, pz);
+            // Packet s53_path_multileg: unit->vtable[50h] (006DFD60, unit+1050h)
+            // and [unit+740h]->vtable[48h] for 007ADD70's heading and force.
+            GameShipAiHost* const ai = host.ship_ai;
             host.commands.advance_path_cursor_00836bf0(index, px, pz,
-                unit_hull_length_09c8(index), unit_class_turn_radius_0520(index));
+                unit_hull_length_09c8(index), unit_class_turn_radius_0520(index),
+                slot.hull_heading_1050,
+                [ai, index](float x, float z) {
+                    return ai != nullptr && ai->goal_reached_009da590(index, x, z);
+                },
+                !unit_is_kind_of(index, 0x0f) && !unit_is_kind_of(index, 0x18));
         }
         if (outcome.reissued == bsp::DirectorDefaultCommand::None) continue;
         // The idle tail's own choice becomes the unit's standing command when

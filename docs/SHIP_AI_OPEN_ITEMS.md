@@ -18214,3 +18214,48 @@ only (`UnitInstance::spawn_wake`). Read for binding, not bound:
   unimplemented stub in game_hosts_fixed_step.cpp). A world box makes the count depend on the heading at the moment
   both ends go under. GUNNERY_OPEN_ITEMS 99.3 declined this binding; 258 and 260 bound the sibling draws, so binding
   it would complete the set, with the class hull box (`class_hull_box`) z extent as a labelled stand-in.
+
+## 261. 007ADD70 path-cursor follow step bound OFF (cc9-ships53, 2026-10-17; lead item 1b)
+
+`kPathCursorFollowStepBound` (include/bsp/ship_ai_path_cursor.hpp), `ship_ai_path_follow_step_007add70`
+(src/ship_ai_path_cursor.cpp). This is a port of cc13-sweepB4's `cc13_sweepB4_path_cursor_follow_step_007add70` onto
+the host's cursor and point vector. cc13's function cannot be called directly: its `Cc13SweepB4Host` inherits about
+480 pure virtuals from the sweepB chain. Its documented divergence is kept: step 0 outside modes 1..3.
+**The arm's arguments (00836BF0..00836D05, traced from the listing):** ECX is 0071BFF0(director, 0). The arguments are:
+- pos: the unit position from 00427EB0.
+- radius: min(unit+9C8h * 2.5, turn radius * 1.2), as before.
+- count: the AL of slot 0's vt[+0Ch] 0071FC40, stored as a byte at [ESP+10h]. The upper three bytes are uninitialised
+  stack and only matter outside modes 1..3 (LABELLED as 0).
+- heading: unit->vtable[50h] (006DFD60, unit+1050h).
+- factor: 0.5 [00CE3800].
+- force: the AL of [unit+740h]->vtable[48h](current point). That is 009F3CE0 -> [ai+2264h]->vtable[2Ch]; the
+  moveonpath state's slot is 009DAB10 -> 009DA590 (arrival latch +2FEh and within 80 of the latched goal; it clears
+  the latch otherwise). It is called on every arm step, so the latch clear is a side effect of the arm.
+**What this means.** 0071FC40 is true only for a USER path (points held in the slot's own +40h vector:
+`user_path_attached_0071fc40`). Every authored-path moveonpath therefore has count byte 0, and its scan limit is
+clamped to 1. The multi-leg advance applies only to player-drawn paths. For authored paths ON changes three things:
+- the radius test becomes strict;
+- the 0.5 lookahead narrows the reach to (0.5 |sin(heading - bearing)| + 0.5) * radius, so a point dead ahead must
+  come within half the radius;
+- a set arrival latch forces one advance.
+The host's `GameShipAiHost::goal_reached_009da590` serves the force. The true answer's 0071D810(2)/`finished` block at
+00836D0E is still not hosted, as before (009E59C0's own finish handles it).
+**Squadrons.** 0084E010's arm (0084E3A8) differs. Its radius is max(class[+35Ch]+26Ch * 1.2, tuning+370h), times
+1.5 unless the leader's party slot is 8 or 00927F10 holds. Its factor is 0.4 [00CE7804], its force is 0, and its
+heading is the leader's (+3D0h) vt[50h]. The host runs the ship arm for plane units too (JM06's PBY Catalina 01:
+0 advances over 115 km). ON leaves kinds 0Fh/18h on the one-leg stand-in; the squadron arm is the next step.
+**Predictions.** Authored-path ships (JM08 Gyoraitei on Shipyard1Path, JM06 transports and IJN subs, USN10, USN04,
+BSM09 Shokaku's path1): advances happen later when the point is ahead, and earlier when the arrival latch is set
+on the current point. The leg sequences stay the same, since the limit is 1. Rows move where a path ship's track
+matters. The summary line `path follow step` counts calls, lookahead misses, forced advances and multi-leg steps.
+Multi-leg should be 0 without user paths.
+**Measured; flipped ON.** OFF = tree 9a99c6533, ON = `local\s53_pf` (pair_export). Reference env.
+| row | ON calls / lookahead misses / forced / multi-leg | pair_diff | first moved | end OFF -> ON |
+|---|---|---|---|---|
+| JM06 36000 fr (`s53_p0_j6` / `s53_p1_j6`) | 99915 / 2811 / 0 / 0 | 3 | US Cargo Transport 02 178.21 -> 178.51 s; Hospital Ship 01 dies ON | none -> none |
+| USN10 24000 fr (`s53_p0_u10` / `s53_p1_u10`) | 51470 / 2260 / 100 / 0 | 3 (deaths identical, track moved) | unit table only | failed 825.32 both |
+| JM08 40000 fr, `local\s52_j8_b3.txt` (`s53_p0_j8` / `s53_p1_j8`) | 4213 / 75 / 6 / 0 | 3 | Medium Bunker, Concrete 02 65.45 -> 63.95 s | failed 1144.04 -> **completed 1329.87 s** |
+The prediction held: no multi-leg step without user paths. The authored-path rows move only through the 0.5
+lookahead (later advances with the point ahead) and the arrival-latch force. **JM08 on `s52_j8_b3` now WINS**:
+"Mission Completed - Guadalacanal is safe from invasion!" at 1329.87 s, Headquarter 01; the exec guard refused
+sus_prog.exe. Before, it failed at 1144.04 s. Sent to cc9-lua62.

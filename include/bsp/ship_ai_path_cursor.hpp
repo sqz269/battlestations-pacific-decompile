@@ -129,6 +129,40 @@ void ship_ai_path_cursor_start_007b1c50(ShipAiPathCursor& cursor, int follow_mod
 int ship_ai_path_nearest_index_007b1100(const float* points_xyz, int point_count,
                                         float x, float z);
 
+// 007ADD70 BSP_EntityCommand_PathCursorFollowStep, `bool __thiscall(cursor)(
+// const float* pos, float radius, int count, float heading, float factor,
+// bool force)`, RET 18h. Packet s53_path_multileg. A port of cc13-sweepB4's
+// cc13_sweepB4_path_cursor_follow_step_007add70 (src/cc13_sweepB4.cpp, whose
+// comment carries the listing addresses) onto this cursor and the host's point
+// vector, because its Cc13SweepB4Host has several hundred unrelated pure
+// virtuals. Modes 1/2 scan count - index forward or index backwards; mode 3
+// count - 2; any other mode `count` with step 0 (the image's step is an
+// uninitialised stack slot there; Lua supplies 1..3 only). A zero low byte of
+// `count` clamps the limit to 1. The scan stops at the first point strictly
+// inside the radius (squares, float); with 0 < factor < 1 the hit is re-tested
+// against ((1 - factor) * |sin(00438B10(heading, bearing))| + factor) * radius,
+// bearing = pi/2 - atan2(dz, dx) wrapped to [0, 2pi). A hit at pass p takes
+// p + 1 advances through 007ADCC0, re-testing the SIMPLE end before each; no
+// hit takes none (force false) or one (force true). True only when the end
+// test stops the loop before any advance. No RNG.
+// True: the director's `moveonpath` arm (00836BF0) runs this step with the
+// image's arguments (count = the 0071FC40 attached byte, heading unit+1050h,
+// factor 0.5 [00CE3800], force [unit+740h]->vtable[48h]). False: the host's
+// one-point, one-leg stand-in with a non-strict radius and no force (before).
+// docs/SHIP_AI_OPEN_ITEMS.md 261. ON by mechanism: JM06, USN10 and JM08 pairs
+// move through the lookahead and force with no multi-leg step (authored paths).
+inline constexpr bool kPathCursorFollowStepBound = true;
+
+struct ShipAiPathFollowStep {
+    bool answer{false};
+    int limit{0};          // the scan limit after the clamp
+    int hit_pass{-1};      // the pass that stayed inside, -1 for none
+    int advances{0};       // 007ADCC0 advances taken
+};
+ShipAiPathFollowStep ship_ai_path_follow_step_007add70(ShipAiPathCursor& cursor,
+    const float* points_xyz, int point_count, float pos_x, float pos_z, float radius,
+    std::int32_t count, float heading, float factor, bool force);
+
 }  // namespace bsp
 
 #endif  // BSP_SHIP_AI_PATH_CURSOR_HPP

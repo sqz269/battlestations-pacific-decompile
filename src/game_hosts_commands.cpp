@@ -210,6 +210,12 @@ struct GameCommandsHost::Impl {
     std::vector<GameCommandUnit> units;
     std::vector<GameFireTargetRequest> fire_target_requests;   // cc9_weapon_director_fire_target
     std::vector<GameDirector> directors;
+    // Packet s53_path_multileg: 007ADD70 calls, the hits its 0.5 lookahead
+    // turned away, advances taken by force alone, and steps of two or more legs.
+    unsigned long long path_follow_calls{0};
+    unsigned long long path_follow_lookahead_misses{0};
+    unsigned long long path_follow_forced{0};
+    unsigned long long path_follow_multi_leg{0};
     // Packet cc9_target_release.
     const GameCommandTargetFactsSource* target_facts{nullptr};
     // Packet cc9_director_target_checks: the entity's +5Dh as 0071D712 reads
@@ -3212,7 +3218,8 @@ bool GameCommandsHost::path_final_point_007b1350(std::size_t unit_index, float o
 }
 
 bool GameCommandsHost::advance_path_cursor_00836bf0(std::size_t unit_index,
-    float unit_x, float unit_z, float unit_radius, float turn_radius) {
+    float unit_x, float unit_z, float unit_radius, float turn_radius, float heading,
+    const std::function<bool(float, float)>& goal_reached, bool ship_arm) {
     Impl& host = *impl_;
     if (unit_index >= host.directors.size()) return false;
     GameDirector& director = host.directors[unit_index];
@@ -3242,6 +3249,40 @@ bool GameCommandsHost::advance_path_cursor_00836bf0(std::size_t unit_index,
     if (index < 0) index = 0;
     if (index >= count) index = count - 1;
     const std::array<float, 3>& point = director.path_points[static_cast<std::size_t>(index)];
+    if (bsp::kPathCursorFollowStepBound && ship_arm) {
+        // Packet s53_path_multileg. 00836C92 the current point; 00836CC2 its
+        // force byte from [unit+740h]->vtable[48h]; 00836C42..00836C76 the
+        // count byte, slot 0's vt[+0Ch] 0071FC40 (LABELLED: the upper three
+        // bytes are uninitialised stack in the image and 0 here; they are read
+        // only outside modes 1..3); 00836CC4 factor 0.5 [00CE3800]; 00836CE2
+        // the heading, unit->vtable[50h].
+        const bool force = goal_reached ? goal_reached(point[0], point[2]) : false;
+        const std::int32_t attached = user_path_attached_0071fc40(unit_index) ? 1 : 0;
+        const bsp::ShipAiPathFollowStep r = bsp::ship_ai_path_follow_step_007add70(
+            director.path_cursor, director.path_points.front().data(), count, unit_x, unit_z,
+            radius, attached, heading, 0.5f, force);
+        host.done("WeaponDirector::path_follow_00836bf0", 0x00836bf0u);
+        host.done("EntityCommand::path_follow_step_007add70", 0x007add70u);
+        ++host.path_follow_calls;
+        if (r.hit_pass < 0) {
+            const float ddx = point[0] - unit_x;
+            const float ddz = point[2] - unit_z;
+            if (static_cast<float>(static_cast<double>(ddz) * ddz + static_cast<double>(ddx) * ddx)
+                < static_cast<float>(static_cast<double>(radius) * radius)) {
+                ++host.path_follow_lookahead_misses;
+            }
+            if (force && r.advances > 0) ++host.path_follow_forced;
+        }
+        if (r.advances > 1) ++host.path_follow_multi_leg;
+        director.path_advances += r.advances;
+        if (r.advances > 0 && director.path_visited.size() < 512) {
+            director.path_visited.push_back(director.path_cursor.index_08);
+        }
+        if (r.advances > 0) {
+            host.done("WeaponDirector::path_cursor_advance_007adcc0", 0x007adcc0u);
+        }
+        return r.answer;
+    }
     const float dx = point[0] - unit_x;
     const float dz = point[2] - unit_z;
     // 007ADDDE FMUL ST0 squares the radius and 007ADE4D-007ADE55 squares the
@@ -3686,6 +3727,10 @@ void GameCommandsHost::report() {
             }
         }
     }
+    host.log.notef("summary mission path follow step bound=%d calls=%llu lookahead_misses=%llu "
+        "forced=%llu multi_leg=%llu (007ADD70 from 00836D05, packet s53_path_multileg)",
+        bsp::kPathCursorFollowStepBound ? 1 : 0, host.path_follow_calls,
+        host.path_follow_lookahead_misses, host.path_follow_forced, host.path_follow_multi_leg);
     host.log.notef("summary mission commands units=%zu resolved=%zu issued=%zu pushed=%zu "
         "current=%zu latched=%zu with_thrust=%zu ai_groups=%zu ai_forwards=%zu steps=%llu",
         host.summary.units, host.summary.resolved, host.summary.issued, host.summary.pushed,

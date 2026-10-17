@@ -12273,6 +12273,19 @@ void GameShipAiHost::set_navigator_enabled_0011(std::size_t unit_index, bool ena
     host.done("ShipAi::navigator_enable_0011", 0x008a7060u);
 }
 
+bool GameShipAiHost::goal_reached_009da590(std::size_t unit_index, float x, float z) {
+    Impl& host = *impl_;
+    if (unit_index >= host.controllers.size()) return false;
+    Impl::Controller& ctl = host.controllers[unit_index];
+    if (!ctl.nav_block_built) return false;
+    const bsp::ShipAiPathPlanBlock& live = (ctl.plan_front == 0) ? ctl.plan_a : ctl.plan_b;
+    const bsp::ShipAiPathArrivalResult arrival = bsp::ship_ai_path_arrival_009da590(
+        ctl.goal.flag_2fe, x, z, live.latched_goal_x, live.latched_goal_z);
+    if (arrival.clears_latch) ctl.goal.flag_2fe = false;  // 009DA5F6
+    host.done("ShipAi::path_follow_goal_reached_009da590", 0x009da590u);
+    return arrival.reached;
+}
+
 bool GameShipAiHost::unit_big_landing_ship_0808(std::size_t unit_index) const {
     return impl_->big_landing_ship_of(unit_index);
 }

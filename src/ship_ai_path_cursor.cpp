@@ -1,5 +1,9 @@
 #include "bsp/ship_ai_path_cursor.hpp"
 
+#include <cmath>
+
+#include "bsp/unit_rudder.hpp"
+
 namespace bsp {
 
 // 007ADC60-007ADCBD.
@@ -103,6 +107,94 @@ int ship_ai_path_nearest_index_007b1100(const float* points_xyz, int point_count
         }
     }
     return best;
+}
+
+// 007ADD70-007AE01A, ported from cc13_sweepB4_path_cursor_follow_step_007add70
+// (its comment carries the per-instruction reading). The point count is read
+// once (007ADD84); the path cannot change inside the call here.
+ShipAiPathFollowStep ship_ai_path_follow_step_007add70(ShipAiPathCursor& cursor,
+    const float* points_xyz, int point_count, float pos_x, float pos_z, float radius,
+    std::int32_t count, float heading, float factor, bool force) {
+    ShipAiPathFollowStep out;
+    const bool has_path = points_xyz != nullptr;
+    // 007ADF90 / 007AE002: null path, count <= 0, or the SIMPLE end point.
+    auto at_end = [&]() {
+        return !ship_ai_path_advance_allowed_007adfac(cursor, has_path, point_count);
+    };
+    int index = cursor.index_08;
+    const bool forward = cursor.forward_10;
+    int step = 0;   // the image leaves it uninitialised outside modes 1..3
+    int limit;
+    if (cursor.follow_mode_0c == kShipAiPathFollowSimple
+        || cursor.follow_mode_0c == kShipAiPathFollowPingPong) {
+        step = forward ? 1 : -1;
+        limit = forward ? point_count - index : index;
+    } else if (cursor.follow_mode_0c == kShipAiPathFollowCircle) {
+        limit = point_count - 2;
+        step = forward ? 1 : -1;
+    } else {
+        limit = count;
+    }
+    const float radius_sq = static_cast<float>(static_cast<double>(radius) * radius);
+    if ((count & 0xFF) == 0 && limit > 1) limit = 1;     // 007ADDD9 / 007ADDE8
+    out.limit = limit;
+    if (limit <= 0) {                                    // 007ADDFA
+        out.answer = at_end();
+        return out;
+    }
+    bool hit = false;   // BL
+    int advances = 0;
+    for (int pass = 0; pass < limit; ++pass) {
+        // cursor vtable +4h(out, index). LABELLED: the host clamps an index
+        // outside the point vector; the image reads whatever the path answers.
+        int at = index;
+        if (at < 0) at = 0;
+        if (point_count > 0 && at >= point_count) at = point_count - 1;
+        const float px = has_path && point_count > 0 ? points_xyz[at * 3 + 0] : 0.0f;
+        const float pz = has_path && point_count > 0 ? points_xyz[at * 3 + 2] : 0.0f;
+        const float dx = px - pos_x;
+        const float dz = pz - pos_z;
+        const float dist_sq =
+            static_cast<float>(static_cast<double>(dz) * dz + static_cast<double>(dx) * dx);
+        hit = radius_sq > dist_sq;
+        index += step;
+        if (index >= point_count) {
+            index = 0;
+        } else if (index < 0) {
+            index += point_count;
+        }
+        if (!hit) continue;
+        if (factor > 0.0f && 1.0f > factor) {            // 007ADEAF-007ADF44
+            float a = static_cast<float>(std::atan2(static_cast<double>(dz),
+                static_cast<double>(dx)));
+            a = static_cast<float>(1.5707963705062866 - a);              // 00CE3830
+            if (0.0f > a) a = static_cast<float>(a + 6.2831854820251465);  // 00CE3828
+            const float turn = wrapped_angle_subtract_00438b10(heading, a);
+            const float s = static_cast<float>(std::sin(static_cast<double>(turn)));
+            const float reach = static_cast<float>(
+                ((1.0 - factor) * std::fabs(s) + factor) * static_cast<double>(radius));
+            hit = static_cast<double>(reach) * reach > dist_sq;
+            if (!hit) continue;
+        }
+        out.hit_pass = pass;
+        advances = pass + 1;                             // 007ADF6B
+        break;
+    }
+    if (!hit) {
+        if (!force) return out;
+        advances = 1;
+        hit = true;
+    }
+    for (;;) {                                           // 007ADF90-007ADFF0
+        if (at_end()) {
+            out.answer = hit ? at_end() : false;         // 007ADFFE / 007AE002
+            return out;
+        }
+        hit = false;
+        cursor.index_08 = ship_ai_path_next_index_007adcc0(cursor, point_count);
+        ++out.advances;
+        if (--advances <= 0) return out;
+    }
 }
 
 }  // namespace bsp
