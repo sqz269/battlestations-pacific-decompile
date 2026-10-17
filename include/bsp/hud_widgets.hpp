@@ -17,6 +17,7 @@
 #include <vector>
 
 #include "bsp/main_menu_command_bar.hpp"
+#include "bsp/const_exact_image_bits.hpp"
 
 namespace bsp {
 
@@ -68,8 +69,8 @@ inline constexpr std::array<std::string_view, 5> kHudScoringPingIcons{
     "ping_1_Icon", "ping_2_Icon", "ping_3_Icon", "ping_4_Icon", "ping_5_Icon"};
 
 inline constexpr float kHudScoringListboxSpacing = 0.0225f;  // 00CF4C34 -> listbox+12Ch
-inline constexpr double kHudScoringRowStep = 0.03;           // 00CEB690 (double)
-inline constexpr double kHudScoringTeamGap = 0.015;          // 00CEE6C8 (double)
+inline constexpr double kHudScoringRowStep = kConstExactImageBitsBound ? 0x1.eb851ep-6 : 0.03;           // 00CEB690 (double); image bits 3F9EB851E0000000 at 00CEB690
+inline constexpr double kHudScoringTeamGap = kConstExactImageBitsBound ? 0x1.eb851ep-7 : 0.015;          // 00CEE6C8 (double); image bits 3F8EB851E0000000 at 00CEE6C8
 
 // Command-bar action bytes carried in the first byte of a button's name
 // (widget+F0h) and passed to 0054B530.

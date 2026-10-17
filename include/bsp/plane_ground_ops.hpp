@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include "bsp/const_exact_image_bits.hpp"
 
 // Projection of the plane's ground, water, takeoff and landing behaviour: the eight-value
 // state enum at unit+900h, the ground-roll arm 007CBFA0 -> 007DCCF0, the water-surface arm
@@ -102,7 +103,7 @@ inline constexpr float kPlaneGroundSpawnedAirborneClock = 3600.0f;// 00CFDEB0
 inline constexpr float kPlaneGroundStateChangeStamp = -1.0f;      // 00D7A260
 inline constexpr float kPlaneGroundLiftOffEpsilon = 0.1f;         // 00D7A3A0, a double
 inline constexpr float kPlaneGroundLandedYawScale = 0.5f;         // 00D7A280, a double
-inline constexpr float kPlaneGroundYawTurnNumerator = 0.872665f;  // 00D057E0, DEG(50)
+inline constexpr float kPlaneGroundYawTurnNumerator = kConstExactImageBitsBound ? 0x1.becde6p-1f : 0.872665f;  // 00D057E0, DEG(50); image bits 3F5F66F3 at 00D057E0 m64 3FEBECDE60000000
 inline constexpr float kPlaneGroundWireDeckShortLen = 160.0f;     // 00D04A10
 inline constexpr float kPlaneGroundWireDeckShortMul = 1.4f;       // 00D06874
 inline constexpr float kPlaneGroundWireDeckLongLen = 250.0f;      // 00CE77B0

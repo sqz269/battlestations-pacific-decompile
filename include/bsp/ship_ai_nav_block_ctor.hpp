@@ -25,6 +25,7 @@
 #include <cstdint>
 
 #include "bsp/unit_rudder.hpp"
+#include "bsp/const_exact_image_bits.hpp"
 
 namespace bsp {
 
@@ -44,7 +45,7 @@ inline constexpr double kShipAiNavBlockStopSeconds = 1.5; // 00CE3D78
 
 // 009E4507, the double at 00CE65D0.  The share of the hull length that
 // competes with the speed term for the stop radius.
-inline constexpr double kShipAiNavBlockStopHullShare = 0.4; // 00CE65D0
+inline constexpr double kShipAiNavBlockStopHullShare = kConstExactImageBitsBound ? 0x1.99999ap-2 : 0.4; // 00CE65D0; image bits 3FD99999A0000000 at 00CE65D0
 
 // 009E44DB, the double at 00CF1748.  blk+3E4h, the half-hull scale the sector
 // shapes divide (docs/SHIP_AI_SECTOR_SCAN.md calls it `E`).
@@ -57,7 +58,7 @@ inline constexpr double kShipAiNavBlockShoulderHullShare = 0.25; // 00D7A348
 // 009E4587 compares against the double at 00D218B8 and 009E4593 substitutes the
 // float at 00D218B0.  Both are 4 degrees per second; the class MaxRotAngle can
 // never enter the block below it.
-inline constexpr double kShipAiNavBlockYawFloorCompare = 0.06981317009776831; // 00D218B8
+inline constexpr double kShipAiNavBlockYawFloorCompare = kConstExactImageBitsBound ? 0x1.1df46ap-4 : 0.06981317009776831; // 00D218B8; image bits 3FB1DF46A0000000 at 00D218B8
 inline constexpr float kShipAiNavBlockYawFloor = 0.06981317f;                 // 00D218B0
 
 // 009E461F compares against the double at 00CF8850 and 009E462B substitutes the

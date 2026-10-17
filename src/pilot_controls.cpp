@@ -156,7 +156,9 @@ float player_turn_command_00519520(float error, float tolerance) noexcept {
 
 float player_pitch_command_00519520(float error) noexcept {
     // The gate is 00CEC728 = -0.5236f and 00CEC724 = 0.5236f; inside it the command is the
-    // error over 00CEC730 = 2.0, clamped. The tangent term is multiplied by 00D7A258 = 0.0.
+    // error over the qword 00CEC730 (005196E6 FDIV; pi/6 widened, 3FE0C15240000000; the host
+    // keeps 2.0, the low dword, unless kPilotPitchInputScaleImageBound), clamped. The tangent
+    // term is multiplied by 00D7A258 = 0.0.
     if (error < -kPilotPitchHalfRange) {
         return kPilotAxisLow;
     }

@@ -25,6 +25,7 @@
 
 #include "bsp/approach_target_ref.hpp"
 #include "bsp/near_field_probe.hpp"
+#include "bsp/const_exact_image_bits.hpp"
 
 namespace bsp {
 
@@ -57,7 +58,7 @@ inline constexpr float kReleaseDelayHigh = 0.65f;      // 00D07FC4
 inline constexpr float kDropAltSeed = 1200.0f;         // 00CFD714 -> +B0h
 inline constexpr float kAttackDistLow = 1.6f;          // 00D06BB4, x class+268h -> +B4h
 inline constexpr float kAttackDistHigh = 1.8f;         // 00CF4848
-inline constexpr double kInRangeScale = 1.4;           // 00D045F0 -> +B8h, +BCh
+inline constexpr double kInRangeScale = kConstExactImageBitsBound ? 0x1.666666p+0 : 1.4;           // 00D045F0 -> +B8h, +BCh; image bits 3FF6666660000000 at 00D045F0
 // 009B7C90, the approach update.
 inline constexpr double kFallTimeBias = 0.15000000596046448;   // 00CE6618
 inline constexpr double kLatchRelease = 1.100000023841858;     // 00CE3DF0
