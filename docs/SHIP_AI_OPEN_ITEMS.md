@@ -18427,6 +18427,14 @@ the arm radius before the state's own finish ends the command. Where one lands, 
 before and the next queued command (or the default) starts sooner. Candidates: JM06 transports, USN10, JM08
 (Gyoraitei on Shipyard1Path), BSM09. Rows without such a path stay gameplay identical (0/1).
 
+**Measured; flipped ON.** OFF = tree 0fedfbfcf (identical gameplay to c078ee48f OFF), ON = `local\s54_pf` (pair_export), reference env.
+| row | ON answers / raises | pair_diff | what moved | end OFF -> ON |
+|---|---|---|---|---|
+| JM06 36000 fr (`s54_p0_j6` / `s54_p1_j6`) | 1 / 1 | 1 | PBY Catalina 01's CatalinaPatrolPath ends at its last point (11 advances both; travelled 112 km -> 28.9 km), one more queue advance and one `finished` report | none -> none |
+| USN10 24000 fr (`s54_r0_u10` / `s54_p1_u10`) | 0 / 0 | 1 (ship ai free refills noise) | nothing | failed 825.32 s both |
+| JM08 40000 fr, `local\s52_j8_b3.txt` (`s54_p0_j8` / `s54_p1_j8`) | 2 / 2 | 3 | Gyoraitei #Y10 leaves moveonpath for stop at ship-AI step 11740 instead of 11750; deaths 199 -> 197 from 889 s on | completed 1329.87 -> **completed 1336.88 s**; exec guard refused sus_prog.exe |
+The prediction held: rare answers, each at a non-looping path's end, ending the command a step or more before the state's own finish. JM08 stays a win. Flipped by mechanism.
+
 ## 268. Seg 59 helpers: 008FB890, 00902290 reconstructed; 00901C20 and 008FF640 checked (cc9-ships54, 2026-10-17; lead item 3)
 
 Reach was checked with a rel32 and absolute-dword scan of the PE (`local\s54_rel.py`, `bsp.py scan-bytes`). The
