@@ -18469,3 +18469,70 @@ scans also find 00901C20's eight known callers, so a negative result means somet
   sites. The rotating-target half (0085E4D0) has no host form; it is left recorded, as before.
 - **008FF640** (BSP_Entity_HullDistanceToPoint_Provisional): no rel32 call, no jump and no absolute dword
   reference anywhere in the image. It is unreached, so it is not reconstructed.
+
+## 269. Seg 67 ship sub-band survey; the 00957740 lead is not what the host says (cc9-ships54, 2026-10-17; lead item 5)
+
+**Survey.** I took the ship-AI sub-band 009D6000..009F6060 (`local\s54_cover.py` over the range listing, then
+rel32 and absolute-dword scans with `local\s54_rel.py` and `local\s54_abs.py`). It has 119 unrecorded
+non-library entries. The reached ship-AI gameplay is already hosted (path nodes, goal vector, attackmove, sub
+attack, brain pre-pass, AutoTarget). What is left:
+- **Dead**: 009DE280, 009E7FA0, 009DE1B0 and 009DABF0 have no reference. 009D9440 calls only itself (009D94DC,
+  009D9533) and nothing else calls it. 009D9390's only caller is at 009DA008, past the end of 009D9E50 (009D9F8C), in a
+  body with no record. I did not trace that body's reach.
+- **Object machinery**: observer-member destructors, EH funclet targets (009E5110 / 009E5130 / 009E5460 / 009E8C10
+  are reached only from 00CB07CE..00CB0CCA), STL helpers, and the debug draws.
+- **009E2D10 / 009E2DC0 / 009E2F10**: slot 1 of the small observer vtables 00D21868 / 00D21880 / 00D21898, which
+  is the observed-object-destroyed notice. 009E2F10 serves the goal record at brain+0AF8h: it turns the stored
+  offset into a world point (+18h, +24h = 1) and unlinks. It has no reach on the goal vector, because 009E2FB0
+  rewrites the triple at 009F1473 before 009DBCC0 reads it at 009F156B on every pre-pass.
+Nothing in this sub-band was worth binding.
+
+**The finding, for the gunnery lane.** Reading 00957740 for item 3 shows the host's seat-artillery comment
+(game_hosts_gunnery.cpp, the 009578C3 note) is wrong about the non-ship hits. With [dev+3FCh] == 0 and a hit
+entity (a kind-1Eh hit is first resolved through 00923810(1)), the speed is [[dev+3F8h]+34h]+5Ch * +50h and the
+shooter velocity is [esp+18h]->vtable[34h] when [dev+3F4h]+95h is set, else zero. Then:
+- **Kind 6 (ship)**: 00902290 (268). The out becomes lead_aim + Ry * (hit - target_pos), where Ry is the turn
+  matrix (00427C90 subtract, 004142E0 transform, 00957969..009579AD, stored at 00957B24). So the hit point on the
+  hull turns with the ship.
+- **Any other kind**: 00901C20 (00957A00). Then 00957A05..00957A4B ADDS (lead_aim - target_pos) to the hit
+  point through 0042AEB0 BSP_Vector3f_AddInPlace before the JMP to 00957B3C. The out is the hit point shifted by
+  the lead, not the raw hit point.
+The host records only the kind-6 branch (`artillery_hit_lead`) and uses the raw hit for both. I have not
+measured the reach of the other-kind branch (for example a camera ray on a plane or a land unit).
+
+## 270. VehicleClass row ID/Got, kVehicleClassRowIdBound (cc9-ships54, 2026-10-17; lead top item)
+
+**The gap.** Mission scripts test `unit.Class.ID` (and `squadron.Class.ID`) in about 120 script files of this
+installation, including global/commandhelpers.lua (12 sites: 4354, 13037, 16419, 16512..16552, 17746, 18743),
+the JM, COTP, USN, LOMP and ESMP missions, siege and the training grounds. Neither `Class` table has an `ID`:
+the rows of this installation's scripts/datatables/autoload/vehicleclasses.lua (modified 2026-05-09) author none,
+and the host seeds `Class` = VehicleClass[class_index] as loaded. lua62 saw the effect on JM08 w1: the
+`Class.ID == 118/108/136` tests (B-25 / SBD / C47) never match, Mission.Dakota stays empty, and the mission
+completes about 4 s after wave 3 spawns.
+**The image's writer.** 00964790 BSP_VehicleClass_GetOrCreate (src/vehicle_class.cpp has the body; the game host
+does not run it) reads VehicleClass[classIndex] on a cache miss, where classIndex = registry+10h[typeId]. It
+resolves a non-zero LandingShip class first (009648E7). Then it writes row.ID = classIndex (009648EC..0096490C,
+00B67460 with EDI) and row.Got = true (00964938..00964959, 00B673A0). These are the factory's only writes to the
+table. The "ID" string 00CE59B4 has 19 code references; the others are other tables (00928B9D is the thisTable
+slot's own `ID` key text).
+**Bound OFF**: `kVehicleClassRowIdBound` (src/game_hosts_lua.cpp, `mark_vehicle_class_row_00964790`). The first
+time a class row is seeded as a unit's `Class` (the 00928A00 seed, 009292B0's bind, and the scene-load slot), the
+row gets ID = class_index and Got = true, with a LandingShip class marked first. The summary line is
+`vehicle class rows marked`. LABELLED: the host's identity type map stands in for registry+10h, and the seed points
+stand in for the factory's call sites. The ship's second recursion (descriptor +0C0h != -1) is not modelled.
+**Predictions.** Every mission marks one row per spawned class. Scripts that branch on `Class.ID` now take the
+authored branch. JM08 w1 moves: wave-3 C47s are found (Mission.Dakota filled), so the completion that came
+about 4 s after wave 3 must wait for the Dakota logic. Wins may move either way. USN01 (usn_1_pearl: 2 sites)
+and JM06 (jm06: 6 sites) move where their branches are reached; otherwise only the `Got` / `ID` reads change.
+**Measured; flipped ON.** OFF = tree 9514fc2e0, ON = `local\s54_ci` (pair_export), reference env, win-row orders.
+| row | pair_diff | what moved | end OFF -> ON |
+|---|---|---|---|
+| JM08 110000 fr, `jm08_l62_j8_w1` (`s54_c0_j8` / `s54_c1_j8`) | 3 | PRCPJM08.lua's luaBomberWaveSpawned2 now targets the B-25s (118) at the airfield and the SBDs (108) at the command building; luaBomberWaveSpawned3 fills Mission.Dakota with the C47s (136), and CheckPrim3 waits for them. Units 559 -> 568, deaths 198 -> 260 | completed 1468.01 s -> **none in 5500 s** (the wave-3 C47s are never all killed) |
+| USN01 26000 fr, `usn01_p8_u1_i` (`s54_c0_u1` / `s54_c1_u1`) | 3 | usn_1_pearl.lua's `Class.ID == 162 / 313` branches now set the squadrons' travel/attack altitudes; the Nell deaths move, deaths 80 -> 77 | completed 365.03 -> **completed 360.04 s** |
+| JM06 50000 fr, `jm06_p12_j6_a4` (`s54_c0_j6` / `s54_c1_j6`) | 0 | nothing | none -> none |
+The mechanism is the one predicted: the authored `Class.ID` branches run (a USN01 300-frame smoke marks 34 rows). Flipped. JM08's w1 plan won only because
+the Dakota check passed on an empty table; it needs a re-plan that shoots down the wave-3 C47s (sent to lua63).
+**Side observation (not this switch):** JM06 `jm06_p12_j6_a4` does not win in 50000 frames on 9514fc2e0, on
+0fedfbfcf (`s54_rr_j6`) or on ships53's control export e8d6d0a83 (`s54_wo_j6`): EndMission never true, 18 deaths
+each time. WINS_TABLE records a4 winning at 2226.05 s on 25fbdcba0, so something between 25fbdcba0 and e8d6d0a83
+moved it. Sent to lua63.

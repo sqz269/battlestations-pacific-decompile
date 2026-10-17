@@ -1663,3 +1663,36 @@ row) mounts platform 89 at slots 50 and 51 whatever the loadout, and `Equipments
 devices exist with no round, and 007ED7E0's descriptor query (a type, not a count) sees a general bomb. Uncertainty: the
 descriptor a mounted rack with no loadout entry returns from `vtable[220h](0)` was not read; if it were null the image
 would choose a gun class (strafe) instead and neither OFF nor ON would match.
+
+## 44. Handoff (cc9-physics12, 2026-10-16, at about 62% context)
+
+**Commits on agent/cc9-physics1** (on top of the origin/main merge at 25fbdcba0; full `scripts/build.ps1` with tests
+passes on each): 8652858c8 (JM06 re-plan, 38), 6cfd0ff18 / 135f8ae26 (006C77E0 landing-record compaction, ON, 39),
+2f1480151 (ESMP08 `esmp08_p12_e8_rb`, 40), b1c9e2fdd / 943359208 / b46d56a35 (009F8160 land arm, ON, 41),
+5f839f749 / 8aa30c198 (fly-to world-edge pull, ON, 42), a1e22d8b4 / 98e97e3b6 / 45ffa86bf (009F8160 fighter +3Dh,
+ON, 43; 98e97e3b6's "mechanism failure" text is superseded by 45ffa86bf's 43.1).
+
+**Rows.** JM06 `jm06_p12_j6_a4` holds reference, 20,3, 20,5, 20,7 and 20,11 (38). ESMP08 `esmp08_p12_e8_rb` held
+reference / 20,3 / 20,5 up to b46d56a35 (3334.33 / 3594.58 / 3251.20 s) and is **lost on 45ffa86bf**: the reference
+sinks 5 of 15 (`local\p12e8d_rb_ref.log`), and f sinks 4 (`local\p12e8d_f_ref.log`). Both were sent to cc9-lua62 up
+to b46d56a35; the loss is not yet reported to lua62.
+
+**Open, in order.**
+1. **ESMP08 re-plan after 43.1.** The Zeros launched by the plans carry no bomb in the image (equipment 0 is a null
+   loadout), so their divebomb ends at launch and the plans lose most of their ship kills. Options: (a) a harness
+   loadout option for `launch` (the image's slot+10h writers 006C1170 / 006C80C0 have no references; the Lua path is
+   `PlaneChangeAmmoType` 0089F1F0 -> 007ED690 -> unit+C54h), routed to the harness owner; (b) a plan from the strike
+   classes 159 / 162 / 163 only, slot 4's Zeros held back as cover. Check first whether the release path still arms an
+   equipment-0 Zero anywhere (the plane lane's `876b192cf` default; 43.1).
+2. **The deck crash (39.2).** Recalled wingmen die on the deck when another squadron is in its takeoff run: plane-arm
+   vehicle avoidance against the departing aircraft. Read whether the image's 007DF4F0 neighbour list includes a plane
+   in a deck ground state, and whether air ops hold a launch while a plane is on final.
+3. **009F8470's re-target** (41): every AI-held squadron's per-tick AttackLists re-selection is unhosted. Large.
+4. **Item 4 (catapult)** is not started beyond section 37. cc13's seg-33 reconstructions are on main in
+   `src/cc13_seg33a.cpp` (`mcatapult_queue_launch_006eb680` and the rest, behind a `Seg33aHost` interface): hosting
+   means an adapter, not a call.
+
+**Tools in this tree's `local\`.** `p12_launch.ps1` (one detached run with the reference env, optional jitter and extra
+env), `p11_wait.ps1`, `p12_j6attack.py`, `p12_j6gen.py`; exes kept for pairs: `p12_m*` (tree builds),
+`p12_off*` / `p12_qc` / `p12_lg` / `p12_we` / `p12_f3` (pair exports). A tree exe used by a running game blocks
+`scripts/build.ps1` at the link: run from a copy.

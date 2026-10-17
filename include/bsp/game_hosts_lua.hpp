@@ -850,6 +850,7 @@ struct GameMissionLuaSummary {
     std::vector<std::string> created_scripts;
     std::vector<GameMissionEntryPointRun> created_script_runs;
     std::size_t self_table_entities{0};   // thisTable slots 00928a00 would build
+    std::size_t class_rows_marked{0};     // VehicleClass rows given ID/Got (009648ED)
     std::size_t party_mirrors{0};         // slots 00928f50's mirror wrote `Party` on
     unsigned long long entity_resolves{0};  // 0089903c's resolved arm
     unsigned long long native_calls{0};
@@ -1914,6 +1915,10 @@ private:
     // Ids attached by the load-time attach (attach_scene_entities_00928a00).
     std::set<int> load_attached_;
     std::set<int> init_all_attached_;
+    // Packet s54_class_id (kVehicleClassRowIdBound): the class rows 00964790's
+    // miss path has written `ID` / `Got` on, once each (its cache stands in).
+    std::set<int> vehicle_class_rows_marked_;
+    void mark_vehicle_class_row_00964790(int class_index);
     bool init_active_00f899a5_{false};
     bool error_replay_{false};
     bool avoid_all_ship_collision_{};
