@@ -2418,3 +2418,47 @@ the timing level with equal death counts; reference rows with plane deaths need 
 So a lander touching down yawed while a wingman taxis is what the image's own sequencer, taxi law and vehicle arm
 produce together. The touchdown point was not compared against the image (no image run is possible here); nothing read
 in this pass points at it. **Closed**, no binding. If USNOS #4.4/#4.5 needs a different outcome, that is a re-plan of the row.
+
+### 57.2 The binding (`kSquadronFreeAttackOverrideBound`, `include/bsp/game_hosts_commands.hpp`, committed OFF)
+
+- **The override layer** is ships56's (219b1d3c0, `send_override_command_0071d980`, `raise_override_stage_0071d9e0`,
+  0071EB60's override arm, 0071C130(0)). It now runs for either sender: `kDirectorOverrideLayerBound =
+  kAutoTargetOverrideBound || kSquadronFreeAttackOverrideBound`; the ship tick's step 14 and 00836D67 stay on
+  `kAutoTargetOverrideBound` alone.
+- **0071E7F0's repeat test** (cc13-verify1): the early return needs `0071E200(new, director+18Ch)`, the same resolved
+  object AND a squared distance `<= 1.0` between the two points (the `00F87574` zero vector when byte `+1` is clear;
+  x87 at `0071E27B`). The host compared the resolved objects only, so it refused a moved entity's and every positional
+  override. Only the override path reads it.
+- **Per squadron and step** (`run_squadron_free_attack_009f8470`, called from `run_spent_ordnance_rtb_0084e010` after
+  009F8160 / 009F7C90 and before B5):
+  1. The live override's target removed (0071DDB0's override arm -> 0071EDD0): a squadron target moves to its next
+     live flight leader (the override is re-sent on it), anything else ends it (0071D9E0(2)). LABELLED: tested per step
+     on the gunnery death, not at the destroy flush.
+  2. The override cleared (the leader's mode is no longer 2): the other members' overrides are cleared too (the host's
+     members each hold one; the image has one block), the override rows are retired, and 0099A170 builds the head
+     command's task again (the moveto task restarts).
+  3. The tick (57.1). Its 0071D9E0(2) goes to every live member; its 0071D980 goes to every live member's director,
+     and each member that took it gets the class's task (0099A170), its command target and a retired moveto task.
+- LABELLED, besides 57.1: 009F85EB..009F8615 (a `stop` head is cleared and replaced by a moveto to the squadron's own
+  position before the send) is counted (`moveto_self`) and not issued, so after the override the head is still `stop`;
+  0071F290 arm 5 (0084DDA0 -> 0071F600, the override's begin) is not run, the send having just passed 0071D6D0;
+  0084E010's `+50h == 1 -> 0071D9E0(2)` is not carried (no host path ends an override at stage 1).
+- `BSP_FREE_ATTACK_CENSUS=1` runs the tick and logs each squadron's stop reason when it changes, with nothing sent.
+
+### 57.3 Reach (census, a local build of the edits, `local\p15fc_<row>.log`)
+
+| row | squadrons | first-stop counts (mode / no_target / same_target / override) | first would-be override |
+| --- | --- | --- | --- |
+| USN04 4500 | 21 | 21 / 29 / 4 / 40 | 63.0 s: Zero #1.2 (moveto head) dogfights Lexington sqn01; the US fighters (stop head) dogfight the Zeros from 70.7 s |
+| JM05 9000 (300 s) | 19 | 19 / 22 / 0 / 11 | 88.8 s: MainAirfieldEntity 01_sqn01 strafes Japan Troop Transport 03 |
+| ESMP08 6000 | 12 | 12 / 12 / 0 / 0 | none within 300 s |
+| BSM01 6000 | 2 | 2 / 2 / 0 / 0 | none within 300 s |
+
+### 57.4 Predictions (ON against OFF; written before the runs)
+
+- USN04 and JM05 move from the first override (about 63 s and 89 s): fighters on a moveto or stop head turn on enemy
+  squadrons in sensor range (dogfight 00E08F58), the strike squadron strafes. Death rows before then are identical.
+- ESMP08 and BSM01: identical for the census window; later moves only if a squadron with a moveto/stop/moveonpath head
+  and ordnance or a fighter class meets a detected enemy.
+- Counters: `sends` = overrides installed; `cleared` follows each dead target or ended attack; no member may hold
+  mode 2 after its leader's override cleared.

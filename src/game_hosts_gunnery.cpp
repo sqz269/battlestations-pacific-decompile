@@ -89,6 +89,7 @@
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/plane_release_ver_cc13.hpp"
 #include "bsp/seg59_ship_lead_s54.hpp"
+#include "bsp/unit_rudder.hpp"
 
 namespace bsp::game {
 namespace {
@@ -4044,6 +4045,7 @@ struct GameGunneryHost::Impl {
     struct ReconSlotTriples {
         int side{0};
         std::array<std::vector<std::size_t>, 5> lists{};
+        std::vector<bool> enemy_squadron_record;   // parallel to lists[1]
     };
     std::vector<ReconSlotTriples> recon_triples;
     unsigned long long recon_triple_builds{0};
@@ -7225,6 +7227,56 @@ private:
 
 }  // namespace
 
+// Packet p15_free_attack_tick. 00804350 over the recon pass's own reads:
+// 008043C0 the observer's table (null answers false), 00804400..00804430 the
+// denominator float(float(m*m) * sig) * float(vis*vis) with sig the target's
+// ReconModifier squared when IsKindOf(5), m the 008E6430 factor and vis
+// [game+21C4h]+74h; then rows i*8+j for i, j in 0..6 (008045E8 / 008045F8 CMP 7),
+// row i == 4 divided again by the sonar multiplier squared (008044DD); an entry
+// admits when quotient <= +4h and its +10h bit is in the mask, and a +18h entry
+// also needs |00438B10(atan2(dx, dz), heading)| <= +14h.
+bool GameGunneryHost::sensors_detect_unit_00804350(std::size_t observer, std::size_t target,
+                                                   std::uint32_t mask) {
+    GunneryReconSensorPassHost host(*impl_);
+    if (observer >= host.unit_count() || target >= host.unit_count()) return false;
+    std::size_t rows_count = 0;
+    const bsp::GunneryReconSensorRow* rows = host.unit_sensor_rows(observer, rows_count);
+    if (rows == nullptr) return false;
+    const float signature = host.unit_is_unit_base(target) ? host.unit_recon_modifier_sq(target)
+                                                           : bsp::kGunneryReconModifierSqDefault;
+    const float m = host.unit_environment_factor(observer);
+    const float vis = host.simplified_recon_multiplier();
+    const float m2s = (m * m) * signature;
+    const float denominator = m2s * (vis * vis);
+    float tx = 0.0f, tz = 0.0f, ox = 0.0f, oz = 0.0f;
+    host.unit_world_xz(target, tx, tz);
+    host.unit_world_xz(observer, ox, oz);
+    const float dx = tx - ox;
+    const float dz = tz - oz;
+    const float sum = dz * dz + dx * dx;
+    const float ratio = static_cast<float>(static_cast<double>(sum) / denominator);
+    const float sonar = host.simplified_sonar_multiplier();
+    for (int i = 0; i < 7; ++i) {
+        const float divisor = i == 4 ? sonar * sonar : 1.0f;
+        for (int j = 0; j < 7; ++j) {
+            const std::size_t r = static_cast<std::size_t>(i * 8 + j);
+            if (r >= rows_count) continue;
+            const bsp::GunneryReconSensorRow& row = rows[r];
+            const double quotient = static_cast<double>(ratio) / static_cast<double>(divisor);
+            for (std::size_t e = 0; e < row.count; ++e) {
+                const bsp::ReconSensorEntry& entry = row.entries[e];
+                if (quotient > static_cast<double>(entry.max_normalized_distance_sq)) continue;
+                if ((mask & (1u << (static_cast<unsigned>(entry.mask_bit) & 31u))) == 0u) continue;
+                if (!entry.bearing_limited) return true;
+                const float off = bsp::wrapped_angle_subtract_00438b10(std::atan2(dx, dz),
+                                                                       host.unit_heading(observer));
+                if (!(std::fabs(off) > entry.max_bearing_error)) return true;
+            }
+        }
+    }
+    return false;
+}
+
 void GameGunneryHost::Impl::step_recon_sensor_pass_008073c0(float frame_dt) {
     // 008079B0 BSP_Recon_ServicePeriodicRefresh's countdown at [00F874B8]:
     // subtract the frame delta, return while it is still positive, otherwise
@@ -7407,6 +7459,7 @@ void GameGunneryHost::Impl::publish_recon_triples_008073c0() {
                 if (found == arr.end()) continue;
                 for (const Rec& r : found->second) {
                     if (r.level == 2) t.lists[which == 0 ? 1 : 2].push_back(r.unit);
+                    if (r.level == 2 && which == 0) t.enemy_squadron_record.push_back(id == 0x18);
                     else if (r.level == 1) (which == 0 ? unknown_enemy : unknown_neutral).push_back(r.unit);
                     if (id == 0x18 && r.level == 2 && which == 0) ++recon_group_enemy_identified;
                     if (id == 0x18 && r.level == 1) ++recon_group_unknown;
@@ -7437,6 +7490,18 @@ void GameGunneryHost::Impl::publish_recon_triples_008073c0() {
     }
     ++recon_triple_builds;
     done("Recon::publish_triples_008073c0", 0x00807529u);
+}
+
+bool GameGunneryHost::recon_enemy_contacts(int side, std::vector<std::size_t>& units,
+    std::vector<bool>& squadron_record) const {
+    units.clear();
+    squadron_record.clear();
+    const Impl::ReconSlotTriples* t = impl_->recon_triples_for(side);
+    if (t == nullptr) return false;
+    units = t->lists[1];
+    squadron_record = t->enemy_squadron_record;
+    squadron_record.resize(units.size(), false);
+    return true;
 }
 
 bool GameGunneryHost::recon_triple_units(int side, int triple,
