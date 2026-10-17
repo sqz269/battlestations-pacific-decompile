@@ -87,6 +87,14 @@ inline constexpr int kAttachField = 0x1FC;  // 007DA30A, the attached branch onl
 // 1e-8 (0085E50A and 0085E53C).
 inline constexpr double kRotationLengthSqFloor_00ce3820 = 1e-10;
 inline constexpr double kRotationAngleFloor_00d7a350 = 1e-8;
+// Packet cc9_p14_rotate_tail (docs/OCEAN_WAVE_FIELD.md 51). True:
+// rotate_about_axis_0085e4d0 runs the image's whole body. The up reference is
+// (0,1,0) when |x| dominates (0085E62F), (0,0,1) when |y| does (0085E6BD), else
+// (1,0,0) (0085E6C7). The result goes through 0085D3D0 (0085E85F). The length, the
+// angle and 0085D3D0 are rounded to float at every operation (24-bit precision
+// control, docs/CC13_FPU_PRECISION.md). False: the |z| > |x| X/Z pick, no
+// 0085D3D0, and the double-held length.
+inline constexpr bool kRotateAboutAxisImageTailBound = false;
 
 // 00D7A218 is 0.0f, 00D7A24C is 1.0f, 00D7A208 is -0.0f. All three are recorded
 // in docs/TICK_ELEMENT_OVERRIDES.md:41 and re-read here.

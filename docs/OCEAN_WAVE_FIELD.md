@@ -1994,3 +1994,41 @@ plane then fails the neighbour refresh's in-world test and leaves the list at th
   - The takeoff run's arm D (`h = 0 > y`) returns every step once the plane is below 0, which leaves it level near
     -105 m.
   - That is the image's law as read. The fix belongs upstream (50.3).
+
+## 51. 0085E4D0's own tail: the up pick and 0085D3D0: `kRotateAboutAxisImageTailBound` (cc9-physics14, 2026-10-17; lead item 2)
+
+### 51.1 The image (disk listing)
+
+- **Up reference** (`0085E58F`-`0085E6C7`). `|c|` is `c` when `c > 0`, else `-0.0f - c`.
+  - When `|x| > |y|` and `|x| > |z|`, `XMM6` (y) takes 1.0 (`0085E62F`): up = (0,1,0).
+  - Else when `|y| > |x|` and `|y| > |z|`: up = (0,0,1) (`0085E6BD`).
+  - Else up = (1,0,0) (`0085E6C7`).
+  - The host picked (1,0,0) or (0,0,1) by `|z| > |x|` and never (0,1,0). In exact arithmetic the frame choice cancels in
+    `L x RotZ x transpose(L)`, so only the rounding moves.
+- **0085D3D0 at `0085E85F`**, run on the result after row 3 is restored. Its listing:
+  - normalise row 0 (`00419440`, `inv = L > 0 ? 1/L : 0`);
+  - `d = (a.y b.y + a.x b.x) + a.z b.z` (`0085D44E`-`0085D472`);
+  - `b -= a d` (`0085D494`-`0085D4AD`), then normalise row 1;
+  - row 2 = row0 x row1 (`004F9B30`), then normalise row 2.
+  The host stopped before it, so the pose was never re-orthonormalised by this step.
+- **Precision.** 0085E4D0's callers 007C18B0, 007D9F60 and 00901C20 run on the main thread (24-bit) or on a 53-bit
+  worker (docs/CC13_FPU_PRECISION.md). The host takes the 24-bit form here, the same as cc13's standalone
+  `src/cc13_front4.cpp`: the length's squares and sums, and every 0085D3D0 product and sum, rounded to float.
+
+### 51.2 The binding
+
+`kRotateAboutAxisImageTailBound` (`include/bsp/plane_advance_pose.hpp`), committed **OFF**. ON:
+- `rotation_axis_angle_0085e4d0` takes the per-op float length and the image's up pick;
+- `rotate_about_axis_0085e4d0` ends with a local `0085D3D0` (`src/plane_advance_pose.cpp`, bsp_core; cc13's copy in
+  `gameplay_seg53_cc13.cpp` is bsp_game only).
+Both callers move: the plane pose step (`game_hosts_units.cpp` `rotate_pose_0085e4d0`) and the GunBot intercept
+(`game_hosts_gunnery.cpp` 3215, 00901E7A). Neither draws from 00BD2F10.
+
+### 51.3 Predictions (ON against OFF, both from the commit carrying this section; written before the runs)
+
+1. **Every row with planes moves** (`pair_diff` 3). Each plane step's pose changes at the float-rounding level, and
+   the re-orthonormalisation removes the drift that accumulates without it. Positions diverge slowly. Shot and kill
+   timings shift, and the AA kills are RNG-coupled (shared stream).
+2. **No regime change.** The landings, releases and plane deaths per row stay within a few of OFF. A changed regime
+   would be a mechanism failure: a plane losing control, NaN poses, or every plane of a squadron missing.
+3. **Rows:** USN01 3000, JM05 9000, USN04 4500. BSM01 3000 (no planes before 3000 frames) is the control: exit 0 or 1.
