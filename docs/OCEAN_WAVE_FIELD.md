@@ -1633,3 +1633,23 @@ tick of its first think (the census saw them from about 113 s), then each gets t
 those Zeros stop diving on US ships, so US ship damage and the deaths of the Zeros to ship AA fall, and Zero kills of
 attacking US planes may rise (they now hold near the fleet). ESMP08 gameplay moves from about 113 s. USN04 (no IJN
 fighter with an ordnance class in the logs read) is expected identical.
+
+### 43.1 The pair: mechanism failure, stays OFF
+
+Export of a1e22d8b4 with the switch flipped (`local\p12_f3`, exe C266B7A303BC) against that commit's build
+(`local\p12_offf3`); reference env; logs `local\p12f3_<on|off>_<e8|u4>.log`, diff `local\p12f3_diff_e8.txt`.
+
+| Row | pair_diff | Note |
+| --- | --- | --- |
+| USN04 45000 | 1, gameplay identical | no fighter end |
+| ESMP08 60000 (`esmp08_p12_e8_rb`) | 3, moved hard | 45 ends; dive-bomb-task releases 128 -> 5, US ships sunk 14 -> 5 by 3000 s |
+
+**The premise was wrong.** The OFF run shows these Zeros releasing bombs (`bomb from Chiyoda_sqn13|.-2 impact ...`,
+equipment 0): Lua's `Equipments[1]` is the first loadout, so `equipment=0` carries the two 60 kg rounds. The host's
+`plane_holds_rack_round_007b9140` (game_hosts_units.cpp, under `kPlaneSceneEquipmentBound` with a carried index) answers
+"no round" for them from launch, while the release path seeds and drops their bombs. So the census line of section 41
+("spent ... fighter=1" at 113 s) and this binding's trigger are the host predicate's error, not the image's 007ED790,
+which would see the rounds and set nothing. **Mechanism failure: the switch stays OFF.** The fix belongs to the rack-round
+reader (the plane lane): with a carried bag index, the authored loadout looked up must be `Equipments[index + 1]`, and the
+same reader feeds the non-fighter +3Ch latch, so any squadron launched with equipment 0 whose class authors only
+`Equipments[1]` latches its RTB too early (to check). Once the reader is right, this switch can be re-paired.
