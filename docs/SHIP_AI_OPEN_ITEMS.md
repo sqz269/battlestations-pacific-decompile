@@ -18559,3 +18559,14 @@ and other-kind hits where the camera ray meets planes or land units. The aim poi
 over the flight time, so the player unit's Function 2/3/4/6 gun turns move. A gun fires on this aim only when its
 seat is player-held (the trigger) or when its bot fires on the gun's angles, so outcomes move where those guns
 fire at ships.
+**Measured; flipped ON.** OFF = tree 49eff26c7, ON = `local\s54_sl` (pair_export, rebuilt after a transient
+CMake stamp lock), reference env.
+| row | ON ship / turned / other / adds_speed | pair_diff | end |
+|---|---|---|---|
+| USN10 24000 fr (`s54_l0_u10` / `s54_l1_u10`) | 4081 / 4081 / 0 / 0 | 1 | failed 825.32 s both |
+| USNOS 30000 fr, `local\s51_os_a7.txt` (`s54_l0_os` / `s54_l1_os`) | 2802 / 2802 / 0 / 0 | 1 | none both |
+| BSM09 36000 fr (`s54_l0_b9` / `s54_l1_b9`) | 2725 / 2045 / 5 / 0 | 1 | EndMission nil at 914.90 s both |
+The ship-lead counts equal the old `artillery_hit_lead` records, so the branch is the one the image takes. The
+aims move (BSM09 `gunnery aim` steps 189131 -> 189127), but no player-unit gun fires on them in these rows: the
+player is idle and the seat trigger needs a player-held seat. No device of these player units sets AddsSpeed.
+Flipped by mechanism.

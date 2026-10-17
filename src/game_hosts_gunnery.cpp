@@ -1137,8 +1137,9 @@ constexpr bool kGunBotRetargetReleaseBound = true;
 //    hit lead (009578C3..00957A50) on the player-seat artillery aim: a ship hit
 //    (IsKindOf 6) leads through 00902290 and the hit offset turns with it; any
 //    other entity hit is shifted by 00901C20's (lead - target). OFF: the raw
-//    hit point (the ship branch recorded).
-constexpr bool kSeatArtilleryLeadBound = false;
+//    hit point (the ship branch recorded). ON by mechanism: USN10, USNOS a7 and
+//    BSM09 gameplay identical, the ship leads equal the old record counts.
+constexpr bool kSeatArtilleryLeadBound = true;
 //  * kPlayerWeaponGroupFireBound: packet cc9_player_weapon_group_fire. Message
 //    79h's group 5 arm (0095A441): the player's depth-charge launchers take
 //    the 99h-held byte as their trigger, and GameGunneryHost::
