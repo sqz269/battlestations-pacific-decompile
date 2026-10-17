@@ -15883,3 +15883,24 @@ meaningless `run_dir`), `g50_scnscan.py`. Exports: `g50_p1` (`f4d7658e6`), `g50_
 Also: cc9-physics14 is live and will touch `rotate_about_axis_0085e4d0`, which the GunBot intercept in
 `game_hosts_gunnery.cpp` uses. Vendor-library bodies stay BIND, unless gameplay is blocked and a binding cannot serve
 (record the reason in the doc and the ledger).
+
+## 272. cc9-gunnery51 (2026-10-17)
+
+### 272.1 Recon records, `00806840` (packet `cc9_g51_recon_records`)
+
+`cc0c2017d`, `kReconDetectionRecordsBound` OFF; details and predictions in docs/RECON_SENSOR_PASS.md "Records". The
+finding that matters: the image's pre-pass reset (`00807462..0080749A`) walks the class-18h plane-squadron list only, so
+a unit's detection value carries across passes. A target identified once stays identified while any entry of any
+observer still applies (the entry clamp `cap - current` goes negative and `00806840` keeps only a gain above 0.0f).
+cc13's other points: det+28h (observer) is kept (only reader: HUD warning `009741E0`), the delegate is fired from the
+records, and the skip path publishes the record. The three slots are always covered (`004E0537` builds 0, 1, 2).
+Pairs: `g51_r0` / `g51_r1` (USN04 idle, LOMP06 `l50_l6_q6`, ESMP08 `g38_ord_e8`, USNOS `s45_os_k` to 3000 s).
+
+### 272.2 Shipyard hangar gate bytes, `00848410` (packet `cc9_g51_shipyard_gate`)
+
+`00848410` (`00848458..0084846D`) and `00844CE0` keep a hangar object only when +5Ch is set and +5Dh, +60h, +5Eh are
+clear. `shipyard_hangars_usable` used the row's `active` and the gunnery death (`dead || health <= 0`) and never read
++5Dh/+60h. `kShipyardHangarGateBytesBound` (OFF) reads the four bytes through the units host's `0043F080` test
+(`unit_alive_and_visible`). **Prediction:** gameplay-identical on JM08 unless a hangar object is torn down or destroyed
+on a frame where the two readings differ (the gunnery death leads the destroyed byte, or a pending-destroy object still
+has health); the `shipyard` walk/build counters are the place to look.

@@ -13993,6 +13993,12 @@ bool GameGunneryHost::Impl::shipyard_complete(bsp::ShipyardState& yard) {
     return true;
 }
 
+// Packet cc9_g51_shipyard_gate (docs/GUNNERY_OPEN_ITEMS.md section 272). 00848410
+// and 00844CE0 keep a hangar object only when +5Ch is set and +5Dh, +5Eh and +60h are
+// clear. True: shipyard_hangars_usable reads those four bytes (unit_alive_and_visible).
+// False: the row's `active` and the gunnery death (dead || health <= 0).
+constexpr bool kShipyardHangarGateBytesBound = false;
+
 bool GameGunneryHost::Impl::ship_in_shipyard_hangar_0081de10(std::size_t ship) {
     // 0081DE10, __fastcall(unit). 0081DE31: unit+1130h > 0 answers 1 at once. LABELLED:
     // the host keeps no +1130h (the shipyard-launch sentinel), so that arm never fires.
@@ -14057,10 +14063,18 @@ std::vector<bool> GameGunneryHost::Impl::shipyard_hangars_usable(
     // 00844CE0's four bytes on the hangar object: +5Ch set, +5Dh, +5Eh (dead)
     // and +60h clear. LABELLED: this process has the row's `active` (+5Ch) and
     // the gunnery death; +5Dh and +60h have no host field and read as clear.
+    // kShipyardHangarGateBytesBound: the four bytes themselves, through the units
+    // host's 0043F080 reading (unit_alive_and_visible: +5Ch active, +5Dh torn down,
+    // +5Eh destroyed, +60h pending destroy), the same test 00848410 makes at
+    // 00848458..0084846D.
     std::vector<bool> usable(yard.hangars.size(), false);
     for (std::size_t h = 0; h < yard.hangars.size(); ++h) {
         const std::size_t obj = unit_by_name(yard.hangars[h].object);
         if (obj >= units.count()) continue;
+        if (kShipyardHangarGateBytesBound) {
+            usable[h] = units.unit_alive_and_visible(obj);
+            continue;
+        }
         const GameUnitRow* row = units.unit_row(obj);
         const bool dead = obj < unit_state.size()
             && (unit_state[obj].dead || unit_state[obj].health <= 0.0f);
