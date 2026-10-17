@@ -2221,6 +2221,15 @@ environment. Logs are `local\p14br{off,on}_<row>.log`.
 **Verdict: `kRackPositiveBagRoundBound = true`.** It is 006E3350's walk as read. ESMP08 keeps its completion and USN01
 keeps its death table.
 
+
+### 54.6 Follow-up: JM05 9000 under 54's flip
+
+The same OFF and ON builds of cd85205bb (`local\p14br{off,on}_jm05.log`).
+- `rounds` = 44 ON: JM05 has positive-bag planes with racks that have no loadout entry.
+- `pair_diff` 3. Death rows 44 -> 58: 15 only ON (two Fubukis, USS Perkins, a Clemson, two troop transports,
+  SecondaryAirfieldEntity 01_sqn16 x3, Yorktown/Lexington wingmen) and 1 only OFF (Zuikaku).
+- So 54 moves JM05 9000 strongly, as 55.4 inferred. The verdict stands (mechanism held), and the row needs re-timing.
+
 ## 55. 007DC830's stall block: `kFreeFlightStallForceBound` (cc9-physics14, 2026-10-17; lead item 5, 007DC830 wiring)
 
 ### 55.1 The image (cc13's `src/cc13_front3.cpp` reading, spot-checked at `007DC998`-`007DC9B1`)
@@ -2281,3 +2290,25 @@ Logs are `local\p14sf{off,on}_<row>.log`.
 
 **Verdict: `kFreeFlightStallForceBound = true`.** It is 007DC830's block as read. JM05 9000 moves at exit 3; reference
 rows with planes need re-timing on the new base.
+
+## 56. Handoff (cc9-physics14, 2026-10-17, at about 65% context)
+
+**Commits on agent/cc9-physics1 since 53** (the full `scripts/build.ps1` with tests passes on each):
+- cd85205bb / 8b02bc7ac: `kRackPositiveBagRoundBound`, ON (54; 54.6 records its JM05 move);
+- b8f7a3c42 / 724fb3a6c: `kFreeFlightStallForceBound`, ON (55);
+- this commit: 54.6 and this section.
+Four switches are flipped in this pass: 50 (stock return bytes), 51 (0085E4D0's tail), 54 and 55. Rows with planes move
+on all four. JM05 9000 moves strongly under 54, and under 55 it lands back on 44 death rows. ESMP08 rb completes at
+3959.94 s with 54 ON (5444.78 s OFF).
+
+**Open, in order** (53's items 3 and 4 are done):
+1. **The free-attack tick 009F8470 (48.3).** It needs the director override layer. Make it a fresh worker's whole packet.
+2. **50.7: landers avoiding taxiing wingmen.** It is probably the image's own behaviour (50.8). Compare the taxi time
+   and the touchdown point if USNOS needs it.
+3. **007DC830's remaining terms:**
+   - the dying spin `ctl+F0h..F8h`, which needs `007D7EA0`'s construction draw `U(DeadMeat RotationMin, RotationMax)`
+     on the shared stream (CC13_GPR_48 162, RNG census `007D7F90`);
+   - `ctl+94h` (the wreck/water gate, 007CE0DB-007CE1D9);
+   - spin-left C38h.
+4. **The catapult adapter (`Seg33aHost`, 37).**
+5. The mesh-bound items: the deck crash's class+50h box (48.1) and 007CBA50's hull points (52).
