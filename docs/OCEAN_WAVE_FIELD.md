@@ -2257,3 +2257,27 @@ After the core law (`007DC86E`):
 2. **Moves:** USN01 3000, JM05 9000 and USN04 4500 move (`pair_diff` 3). Dying planes pitch down sooner, which moves the
    wreck impact points. The plane death counts stay equal or close.
 3. **Mechanism failure:** a live plane above StallRangeMax x StallSpd getting a kick, or a NaN pose.
+
+### 55.4 Measured, and the verdict: ON
+
+Both sides are builds of b8f7a3c42. OFF is `local\p14_off_sf` and ON is `local\p14_sf` (the flip). Reference environment.
+Logs are `local\p14sf{off,on}_<row>.log`.
+
+| row | `pair_diff` | kicks / steps ON | death rows OFF -> ON | plane deaths OFF -> ON | NaN |
+| --- | --- | --- | --- | --- | --- |
+| USN01 3000 | 1 | 366 / 15236 | 33 = 33, identical | 5 = 5 | none |
+| JM05 9000 | 3 | 2246 / 165650 | 58 -> 44 (15 only OFF, 1 only ON: Shokaku) | 34 -> 26 | none |
+| USN04 4500 | 3 | 6952 / 130081 | 51 = 51, all changed | 51 = 51 | none |
+
+1. **Held:** kicks on every row with planes, and only below StallRangeMax x StallSpd or for a dead plane (the gate is
+   the listing's).
+2. **Held, with a large JM05 move.**
+   - On JM05 the OFF side sinks two Fubukis, USS Perkins, a Clemson and two troop transports. It also loses three
+     SecondaryAirfieldEntity 01_sqn16 planes and two Yorktown/Lexington wingmen. ON keeps them and sinks Shokaku.
+   - The OFF base already differs from the 51.4 runs (44 rows then, 58 now). 8b02bc7ac (54) is the only flip between
+     them, and its pair did not run JM05. So **54's JM05 effect is unmeasured**, and ON here lands back on 44 rows.
+   - USN04 moves at the timing level with equal counts.
+3. **No mechanism failure:** no NaN, and no kick outside the gate.
+
+**Verdict: `kFreeFlightStallForceBound = true`.** It is 007DC830's block as read. JM05 9000 moves at exit 3; reference
+rows with planes need re-timing on the new base.

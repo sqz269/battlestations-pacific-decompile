@@ -6654,7 +6654,7 @@ struct GameUnitsHost::Impl {
     // 007DAFD0 kick at the nose (0,0,1) toward (0,-1,0) of f x StallRotAccel (desc+17Ch),
     // limit 1.5. False: the core law alone. LABELLED: the dying spin ctl+F0h..F8h (its
     // constructor draw is not hosted) and ctl+94h (the wreck/water gate) are not carried.
-    static constexpr bool kFreeFlightStallForceBound = false;
+    static constexpr bool kFreeFlightStallForceBound = true;   // ON by its pairs (OCEAN_WAVE_FIELD 55.4)
     unsigned long long stall_force_steps{0}, stall_force_kicks{0};
     unsigned long long rack_positive_bag_rounds{0};
     int rack_positive_bag_round(const GameUnitSlot& s, int ammo) {
