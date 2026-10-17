@@ -29,6 +29,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <string>
 
 namespace bsp {
 
@@ -167,6 +168,14 @@ bool squadron_wing_count_fits_array_007f4b55(std::int32_t wing_count) noexcept;
 inline constexpr char kSquadronNameSeparator = '|';
 extern const char kSquadronSingleWingSuffix[];  // 00CF100C, "|"
 extern const char kSquadronMultiWingSuffix[];   // 00CF8038, "|.-"
+// Packet cc9_l63_roman_names (docs/SQUADRON_LAND_TASK.md 5hv.5). 00742A70 writes
+// the member number in roman numerals (tables 00E0CC68, "N/A" outside 1..3999);
+// 007F49EF uses it for a wing plane's "|.-" suffix and 007438F6 for a land convoy
+// member's "-" suffix. True: both host names use it ("plane #4.4|.-II",
+// "<convoy>-III"). False: decimal digits, as before.
+inline constexpr bool kRomanMemberNamesBound = false;
+// cc13's land_convoy_member_name_00742a70 (src/cc13_seg41_land.cpp) as text.
+std::string roman_member_number_00742a70(std::int32_t n);
 // Writes the suffix (not the squadron name) for wing `index` of `wing_count`.
 // Returns the number of characters written, or -1 when the buffer is too small.
 int squadron_plane_name_suffix_007f4926(std::int32_t wing_count, std::int32_t index,

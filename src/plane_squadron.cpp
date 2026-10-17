@@ -7,8 +7,12 @@
 #include "bsp/plane_squadron.hpp"
 
 #include "bsp/air_operations.hpp"
+#include "bsp/cc13_seg41_land.hpp"
 
+#include <cstdint>
 #include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 namespace bsp {
 
@@ -45,6 +49,42 @@ bool squadron_wing_count_fits_array_007f4b55(std::int32_t wing_count) noexcept {
     return wing_count >= 1 && wing_count <= kSquadronMaxPlanes;
 }
 
+namespace {
+// cc13's 00742A70 over a malloc-backed stand-in for the native string
+// ({length, data} as two 32-bit words, the Win32 layout cc13's file assumes).
+class RomanNativeStrings final : public cc13_seg41::NativeStringHost {
+public:
+    void assign_0041e870(std::int32_t* string, const char* text) override {
+        const std::size_t n = std::strlen(text);
+        char* data = static_cast<char*>(std::malloc(n + 1));
+        std::memcpy(data, text, n + 1);
+        string[0] = static_cast<std::int32_t>(n);
+        string[1] = static_cast<std::int32_t>(reinterpret_cast<std::uintptr_t>(data));
+    }
+    void resize_0041dd40(std::int32_t* string, std::uint32_t size, std::uint32_t) override {
+        char* old = reinterpret_cast<char*>(static_cast<std::uintptr_t>(static_cast<std::uint32_t>(string[1])));
+        char* data = static_cast<char*>(std::realloc(old, size + 1u));
+        data[size] = '\0';
+        string[0] = static_cast<std::int32_t>(size);
+        string[1] = static_cast<std::int32_t>(reinterpret_cast<std::uintptr_t>(data));
+    }
+    void memcpy_00bf7680(void* destination, const void* source, std::size_t bytes) override {
+        std::memcpy(destination, source, bytes);
+    }
+    void release_00419cc0_00bd1510(void* data, std::size_t) override { std::free(data); }
+};
+}  // namespace
+
+std::string roman_member_number_00742a70(std::int32_t n) {
+    RomanNativeStrings host;
+    std::int32_t out[2] = {0, 0};
+    cc13_seg41::land_convoy_member_name_00742a70(out, n, host);
+    char* data = reinterpret_cast<char*>(static_cast<std::uintptr_t>(static_cast<std::uint32_t>(out[1])));
+    std::string text = data != nullptr ? std::string(data, static_cast<std::size_t>(out[0])) : std::string();
+    std::free(data);
+    return text;
+}
+
 int squadron_plane_name_suffix_007f4926(std::int32_t wing_count, std::int32_t index,
                                         char* out, std::size_t capacity) noexcept {
     if (out == nullptr || capacity == 0) {
@@ -60,8 +100,11 @@ int squadron_plane_name_suffix_007f4926(std::int32_t wing_count, std::int32_t in
         return 1;
     }
     // 007F49EF: Assign("|.-"), then 00742A70(index + 1) and a second concat.
-    const int written = std::snprintf(out, capacity, "%s%d", kSquadronMultiWingSuffix,
-                                      static_cast<int>(index) + 1);
+    const int written = kRomanMemberNamesBound
+        ? std::snprintf(out, capacity, "%s%s", kSquadronMultiWingSuffix,
+                        roman_member_number_00742a70(static_cast<int>(index) + 1).c_str())
+        : std::snprintf(out, capacity, "%s%d", kSquadronMultiWingSuffix,
+                        static_cast<int>(index) + 1);
     if (written < 0 || static_cast<std::size_t>(written) >= capacity) {
         return -1;
     }

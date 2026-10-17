@@ -2719,7 +2719,9 @@ struct GameUnitsHost::Impl {
     // unit+188h.. is 9 (open) or the local player's slot. True: that gate, the local
     // slot being kLocalPlayerSlot (0) as elsewhere in this host. False: every exit is
     // sent, as before. Kill(4) runs either way.
-    static constexpr bool kShipExitZoneRoleGateBound = false;
+    // ON (GUNNERY 266.5): JM06 and USN12 gameplay identical; every ship that left
+    // the map on them had an open role word, so the gate never refused.
+    static constexpr bool kShipExitZoneRoleGateBound = true;
     unsigned long long ship_exit_role_gated{0};
     unsigned long long ship_exit_calls{0}, ship_exit_counting{0}, ship_exit_warnings{0},
         ship_exit_kills{0};
@@ -6264,12 +6266,12 @@ struct GameUnitsHost::Impl {
     // member's command target, the image's next validity check returns 0 and the task
     // goes. True: a level-bomb task whose command target is cleared retires. False:
     // the arm returns early and the task freezes in its last state (USNOS wave 2).
-    static constexpr bool kLevelBombTargetClearedRetireBound = false;
+    static constexpr bool kLevelBombTargetClearedRetireBound = true;   // ON: SQUADRON_LAND_TASK 5hv.6
     // Packet cc9_l63_lb_stick_delay (SQUADRON_LAND_TASK 5hv.3). 007C1FB0's tail: the
     // stick time is the longest rack's 006E4170 span plus BombDelay (class+1F4h) x
     // max(0, n - 1) over the n kind-25h racks. True: the term is added. False: the
     // longest span alone, as before (equal for one-rack planes).
-    static constexpr bool kLevelBombStickBombDelayBound = false;
+    static constexpr bool kLevelBombStickBombDelayBound = true;   // ON: SQUADRON_LAND_TASK 5hv.6
     // Packet cc9-gunnery38 (docs/CC13_AUDIT13_RECENT_FLIPS.md O1). The strafe
     // cruise profile 009CD020, run once per activation (the install and each
     // time the strafe task resurfaces after a tightturn or flikflak retires),
@@ -12057,7 +12059,10 @@ std::size_t GameUnitsHost::build_land_convoy_roster_00743450(
         const int type = convoy.convoy_slots[slot];
         if (type < 1) continue;                                   // 0074379C
         GameSceneEntityRecord member;
-        member.name = convoy.name + "-" + std::to_string(slot + 1);  // 007438F6, 00742A70
+        member.name = convoy.name + "-" +  // 007438F6, 00742A70
+            (bsp::kRomanMemberNamesBound
+                ? bsp::roman_member_number_00742a70(static_cast<std::int32_t>(slot + 1))
+                : std::to_string(slot + 1));
         member.class_name = "LandFort";
         member.class_id = 0x1b;
         member.type_table = "LandVehicleClasses";
