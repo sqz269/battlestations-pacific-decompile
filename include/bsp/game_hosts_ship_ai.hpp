@@ -879,6 +879,19 @@ public:
     // when the unit is not one of the capture buildings (out untouched).
     bool command_building_capture_fraction_006f1f90(std::size_t unit_index,
                                                     float& out) const;
+    // Packet cc13-fix13 (GetCommandBuildingLevel 0089B6D0): the building's current
+    // +770h Level as this host keeps it (006F2780's scene value, then 006F38E0's
+    // level-ups and resets). Read-only; false when the unit is not one of the
+    // capture buildings or they are not built yet (out untouched).
+    bool command_building_level_0770(std::size_t unit_index, std::int32_t& out) const;
+    // Packet cc13-fix13 (SetCommandBuildingOwnerPlayer 008A8D90): message D3h with
+    // +1Ch = player and byte +20h = 1 delivered to the building, i.e. 006F4D10 with
+    // slot `player` and the announcements skipped, then the same side change,
+    // party mirror, repair and D4h level 0 the capture tick's flip applies. False
+    // (nothing done) while kCommandBuildingCaptureBound is off, for a unit that is
+    // not a capture building, or for a player slot 0..7 with no published party.
+    bool command_building_set_owner_player_006f4d10(std::size_t unit_index,
+                                                    std::int32_t player);
     // Packet cc9_cb_hit_gate_entry (SHIP_AI 165, GUNNERY_OPEN_ITEMS 125): a
     // CommandBuilding's vtable[1ACh] 006F1F20 for a caller's damage amount. False
     // while +7D8h != 0.0 (006F1F2B..006F1F36: the hit does nothing); otherwise
