@@ -47,7 +47,7 @@ checked-iterator tests (`_invalid_parameter_noinfo`) are kept at the image's poi
 | `007CDF20` | `plane_attach_lua_and_read_type_007cdf20` | RET 0. 0077E830; Equipment / Type from the bag (kind 1) or the record (kind 2, squadron insert 007ED0D0); 007CDC70; the kind-25h rack array +974h. |
 | `007CFA30` | `plane_class_base_destruct_007cfa30` | RET 0. The plane vehicle-class destructor body, member by member, then 0095F1C0. |
 
-Deferred pass-one bodies reconstructed in this pass (6):
+Deferred pass-one bodies reconstructed in this pass (9):
 
 | Address | C++ | What it does |
 |---|---|---|
@@ -57,6 +57,9 @@ Deferred pass-one bodies reconstructed in this pass (6):
 | `007C2880` | `plane_send_control_state_message_007c2880` | __thiscall(plane; holder, force), RET 8. The skip test, then 007BDD30 (RET 64h, the 3Ch 007D8330 block by value) to [holder]; 00779F80 always. |
 | `007C29F0` | `plane_send_sync_message_007c29f0` | __thiscall(plane; owner), RET 4. 007BDD30(plane, record, 0, 1, ...) to the host through 00779F90. |
 | `007C4850` | `plane_class_derive_flight_constants_007c4850` | __thiscall(class), AL. Three refusals with their messages, the zero defaults, the drag / climb / attitude constants, the bounds extent +500h / +508h, tail 00951F20. |
+| `007C6820` | `plane_drive_actuator_channels_007c6820` | __thiscall(plane; dt), RET 4. 00956600, 007E27B0, the +C0Ch latch, the dead +A18h / +A24h stores then zeroes, the +A1Ch / +A28h blends, the LOD flag +C48h (00B70490, vtable[48h], 007C1180), 007DE9A0, the bay channel +60h and gear channel +28h writes, 007C4DD0, then 007C3700 below 30 m or +C34h = 1. |
+| `007CD5E0` | `plane_scan_model_part_records_007cd5e0` | RET 0. For each {record, node} of root+7Ch: name split at the first space (00711C30, 00408120, 0070F900, 004CDBE0, 00408720), kind 007E1D80, angle default 15 / 30 deg or the parsed degrees (atof), 007DDD60 record into plane+D9Ch[kind][count]. |
+| `007D0820` | `plane_hide_other_mesh_holders_007d0820` | RET 0. Collects engine / rotor / control-surface / cockpit nodes (0071AD50, 00506DD0, 007D06A0, 007D05E0); every other child of [[+4A4h]+34h] not named "MeshHolder" gets 00B6DA70(0, 0) and vtable[2Ch](100000 x3). |
 
 Per-function uncertainty:
 - `007C21D0`: the image keeps one 0.0 on the x87 stack across the passes and passes it to both
@@ -66,6 +69,12 @@ Per-function uncertainty:
   are stale (the callees read bytes); passed zero-extended. 007C29F0 runs no destructor on its
   message after the send, and neither does the C++.
 - `007C4850`: extended-precision quotients formed in double; `[+50h]+28h` is read without a test.
+- `007C6820`: the two blends and the LOD term are formed in double; 007C4DD0 stays a host hook
+  (not reconstructed yet).
+- `007D0820`: the image passes "rotor" (00CEB8EC) to 007D06A0 after "rotor_still" too; kept.
+  007D06A0 is a host hook (cc13_seg47 deferred it).
+- `007CD5E0`: the MSVC string helpers (00408120, 0070F900, 004CDBE0, 00408720) are host hooks
+  (vendor STL); the inline destructors (free when capacity >= 16) and strlen are written out.
 - `007C18B0`: double-formed sums of squares (see above); the image negates the heading twice
   before 00B646E0 (a no-op, not modelled as two operations).
 - `007CDF20`: the image passes the whole `Type` dword to 00964790 in ECX; pass one's host method
@@ -113,5 +122,7 @@ Skipped, vendor STL (ruling 2b): `007CD2F0` (an `uninitialized_fill_n` of 10h-by
 {reference, float[3]} elements, identical to 007CD370) and `007CDDB0` (its wrapper returning
 `first + n`).
 
-Still deferred from pass one (large bodies): `007BEEE0`, `007C4DD0`, `007C7A40`, `007C8A80`,
-`007C9860`, `007BE9B0`, `007C6820`, `007D0820`, `007CD5E0`.
+Still deferred from pass one (large bodies, one packet each): `007BEEE0` (18C0h, the step
+pose commit), `007C4DD0` (CF0h, engine effects), `007C7A40` (1040h, PLANE_SYNC write),
+`007C8A80` (650h, PLANE_SYNC read), `007C9860` (B90h, save to archive), `007BE9B0` (530h,
+the local point event with x87 and matrix work; read to 007BEC48 only).

@@ -218,6 +218,51 @@ struct Seg47bHost : cc13_seg47::Seg47Host {
     virtual float plane_class_level_flight_speed_007c47f0(Raw cls) = 0;
     // 00951F20 BSP_VehicleClass_DeriveConstantsDefault, __thiscall(ECX = class), AL (reached by a tail jump).
     virtual bool vehicle_class_derive_constants_default_00951f20(Raw cls) = 0;
+    // --- 007C6820 tick ---------------------------------------------------------------
+    // 00956600 BSP_UnitInstance_UpdateTimers, __thiscall(ECX = unit; dt), RET 4.
+    virtual void unit_instance_update_timers_00956600(Raw unit, float dt) = 0;
+    // 007E27B0 BSP_Plane_UpdateDamageEffects, __thiscall(ECX = [plane+E80h]; dt), RET 4.
+    virtual void plane_update_damage_effects_007e27b0(Raw object, float dt) = 0;
+    // 00B70490 BSP_Camera_GetViewProjectionMatrix, __thiscall(ECX = camera), EAX = matrix*.
+    virtual void* camera_view_projection_matrix_00b70490(Raw camera) = 0;
+    // model->vtable[48h](), __thiscall(ECX = model), EAX = its bounding sphere.
+    virtual void* model_vcall_bounding_sphere_48(Raw model) = 0;
+    // 007C1180 BSP_Sphere_TransformAffine, __thiscall(ECX = sphere; out sphere, matrix), RET 8.
+    virtual void sphere_transform_affine_007c1180(void* sphere, float* out, const void* matrix) = 0;
+    // 007DE9A0 BSP_ActuatorBlock_PushPartAnimFrame, __thiscall(ECX = [plane+DECh]), RET 0.
+    virtual void actuator_block_push_part_anim_frame_007de9a0(Raw block) = 0;
+    // 007B91C0 BSP_WeaponController_HasOrdnanceOfKind, __thiscall(ECX = plane; kind, flag), RET 8, AL.
+    virtual bool weapon_controller_has_ordnance_of_kind_007b91c0(Raw plane, std::int32_t kind,
+                                                                std::int32_t flag) = 0;
+    // 007C4DD0 BSP_Plane_UpdateEngineEffects, __thiscall(ECX = plane; dt), RET 4.
+    virtual void plane_update_engine_effects_007c4dd0(Raw plane, float dt) = 0;
+    // --- 007D0820 ------------------------------------------------------------------
+    // 0071AD50 BSP_Model_FindNoteNode, __thiscall(ECX = node; const char* name), RET 4, EAX.
+    virtual void* model_find_node_0071ad50(Raw node, const char* name) = 0;
+    // 00506DD0 STL checked vector<void*>::push_back, __thiscall(ECX = vector; const value*), RET 4.
+    virtual void ptr_vector_push_back_00506dd0(void* vector, void* const* value) = 0;
+    // 007D05E0 BSP_Node_AppendChildrenByNamePrefix / 007D06A0 (the numbered-name variant,
+    // deferred by cc13_seg47), (ECX = node, EDX = const char* name; vector*), RET 4.
+    virtual void node_append_children_by_name_007d05e0(Raw node, const char* name, void* vector) = 0;
+    virtual void node_append_numbered_children_007d06a0(Raw node, const char* prefix, void* vector) = 0;
+    // 00B6D800 BSP_Node_GetNameHeader, __thiscall(ECX = node), EAX = const NativeString*.
+    virtual Raw node_name_00b6d800(Raw node) = 0;
+    // --- 007CD5E0: MSVC std::string {+4 buffer/pointer, +14h size, +18h capacity} ---------
+    // 00711C30 BSP_PartNamedRecord_CopyLegacyName, __thiscall(ECX = record; out string), RET 4, EAX = out.
+    virtual Raw part_named_record_copy_name_00711c30(void* record, Raw out) = 0;
+    // 0070F900 string::find_first_of(const char*, pos, count), __thiscall, RET 0Ch, EAX.
+    virtual std::uint32_t legacy_string_find_first_of_0070f900(Raw string, const char* set, std::uint32_t pos,
+                                                               std::uint32_t count) = 0;
+    // 004CDBE0 string::substr into out, __thiscall(ECX = string; out, pos, count), RET 0Ch, EAX = out.
+    virtual Raw legacy_string_substring_004cdbe0(Raw string, Raw out, std::uint32_t pos, std::uint32_t count) = 0;
+    // 00408720 BSP_CharacterString_AssignCounted, __thiscall(ECX = string; const char*, count), RET 8.
+    virtual void character_string_assign_counted_00408720(Raw string, const char* text, std::uint32_t count) = 0;
+    // 007E1D80 BSP_PlaneControlSurface_IndexFromName, __thiscall(ECX = string), EAX.
+    virtual std::int32_t plane_control_surface_index_from_name_007e1d80(Raw string) = 0;
+    // 00BFA66C _atof, __cdecl(const char*), ST0 (vendor CRT).
+    virtual double atof_00bfa66c(const char* text) = 0;
+    // 007DDD60 BSP_PartRecordRef_Construct, __thiscall(ECX = memory; kind, node, angle), RET 0Ch, EAX.
+    virtual void* part_record_ref_construct_007ddd60(void* memory, std::int32_t kind, void* node, float angle) = 0;
     // 0085F990 BSP_DebugDraw_LineRgbaFloats, __fastcall(ECX = p0, EDX = p1; rgba0 16 bytes, rgba1 16 bytes by value).
     virtual void debug_draw_line_rgba_0085f990(const float* p0, const float* p1, const float* rgba0,
                                                const float* rgba1) = 0;
@@ -252,6 +297,12 @@ void plane_send_sync_message_007c29f0(Seg47bHost& host, Raw plane, void* owner);
 void plane_update_bow_wave_effect_007c3700(Seg47bHost& host, Raw plane);
 // 007C39B0, (ECX = plane, EDX = target), RET 0. Debug draw; unreferenced in the image.
 void plane_debug_draw_gun_lead_007c39b0(Seg47bHost& host, Raw plane, Raw target);
+// 007C6820, __thiscall(ECX = plane; float dt), RET 4: the per-step actuator/effect drive.
+void plane_drive_actuator_channels_007c6820(Seg47bHost& host, Raw plane, float dt);
+// 007CD5E0, __thiscall(ECX = plane), RET 0.
+void plane_scan_model_part_records_007cd5e0(Seg47bHost& host, Raw plane);
+// 007D0820, __thiscall(ECX = plane), RET 0.
+void plane_hide_other_mesh_holders_007d0820(Seg47bHost& host, Raw plane);
 // 007C6E10, __thiscall(ECX = plane), RET 0, EAX = 0 / 1 / 2.
 std::int32_t plane_stall_warning_level_007c6e10(Seg47bHost& host, Raw plane);
 // 007C74A0 / 007C75A0, __thiscall(ECX = plane), RET 0.

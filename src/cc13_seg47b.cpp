@@ -767,6 +767,270 @@ void plane_debug_draw_gun_lead_007c39b0(Seg47bHost& host, Raw plane, Raw target)
     host.debug_draw_wire_sphere_00860be0(p2, red, 3.0f, red, 0);
 }
 
+// 007C6820, __thiscall(ECX = plane; float dt), RET 4.
+// 00956600(plane; dt); 007E27B0([+E80h]; dt) when set; +C0Ch latches to 1 when
+// (+72Ch)->vtable[38h]() answers or +900h == 6. With +A9Dh: K = the 34h-byte
+// tuning block +84h (copied), +A18h = (float)(+9E4h K[2] + +9ECh K[5]) and
+// +A24h = (float)(-+9E8h K[3] + +9ECh K[6]); both are then zeroed
+// unconditionally (the stores above are dead but made). r1 = min((float)(dt /
+// +A20h), 1) (FCOMI/JBE: NaN kept); +A1Ch += (0 - +A1Ch) r1; r2 = min((float)(dt
+// / +A2Ch), 1) (JA: NaN kept); +A28h += (0 - +A28h) r2. LOD: model = [[[+360h]
+// +160h]+0Ch]; 007C1180(model->vtable[48h](); &s, 00B70490([game+19FCh]));
+// depth = s.z > 0.01f (00D7A238) ? s.z : 0.01f; f = (float)(1 - cam+4Ch x
+// |(float)(tuning+0Ch / depth)|) clamped to [0, 1]; +C48h = tuning+8 > f.
+// 007DE9A0([+DECh]) when set. Unless +520h: channel +60h of [+DECh] is set to
+// 1.0 when 007B91C0(plane; 2Fh, 0) answers, else to the bay byte (the
+// [plane + [00F876B8]*8 + 9C3h] byte when any of +DF0h, +C25h, +C20h is set,
+// else 0); channel +28h is set to 1.0 with +C1Ch = 1 when (+72Ch)->vtable[38h]()
+// is false and (+900h != 6 or class+198h == 0.0), else to byte +C1Ch; each
+// channel write marks its dirty byte and the block's +11h as the image does.
+// Then 007C4DD0(plane; dt), the pose refresh, and 007C3700(plane) when 30.0
+// (double 00CE7630) > y +100h, else +C34h = 1 (when clear).
+// Simplification: the two blends are formed in double.
+void plane_drive_actuator_channels_007c6820(Seg47bHost& host, Raw plane, float dt) {
+    host.unit_instance_update_timers_00956600(plane, dt);
+    if (plane.ptr(0xE80) != nullptr) host.plane_update_damage_effects_007e27b0(plane.deref(0xE80), dt);
+    if (plane.at<std::uint8_t>(0xC0C) == 0) {
+        if (host.control_mode_vcall_38(plane.sub(0x72C)) || plane.at<std::int32_t>(0x900) == 6) {
+            plane.at<std::uint8_t>(0xC0C) = 1;
+        }
+    }
+    if (plane.at<std::uint8_t>(0xA9D) != 0) {
+        const Raw tuning = host.ai_tuning_0042e740();
+        const float b9ec = plane.at<float>(0x9EC);
+        float k[13];
+        std::memcpy(k, tuning.field(0x84), sizeof k);
+        plane.at<float>(0xA18) = static_cast<float>(static_cast<double>(plane.at<float>(0x9E4)) * k[2] +
+                                                    static_cast<double>(b9ec) * k[5]);
+        plane.at<float>(0xA24) = static_cast<float>(-static_cast<double>(plane.at<float>(0x9E8)) * k[3] +
+                                                    static_cast<double>(b9ec) * k[6]);
+    }
+    plane.at<float>(0xA24) = 0.0f;
+    plane.at<float>(0xA18) = 0.0f;
+    float r1 = dt / plane.at<float>(0xA20);
+    if (r1 > 1.0f) r1 = 1.0f;
+    const float a1c = plane.at<float>(0xA1C);
+    plane.at<float>(0xA1C) = static_cast<float>(
+        (static_cast<double>(plane.at<float>(0xA18)) - a1c) * r1 + a1c);
+    float r2 = dt / plane.at<float>(0xA2C);
+    if (r2 > 1.0f) r2 = 1.0f;
+    const float a28 = plane.at<float>(0xA28);
+    plane.at<float>(0xA28) = static_cast<float>(
+        (static_cast<double>(plane.at<float>(0xA24)) - a28) * r2 + a28);
+    const Raw holder = plane.deref(0x360);
+    const Raw node = holder ? holder.deref(0x160) : Raw{nullptr};
+    const Raw model = node.deref(0xC);
+    const Raw game = raw(host.global_pointer(0x00E188A8u));
+    void* const matrix = host.camera_view_projection_matrix_00b70490(game.deref(0x19FC));
+    float sphere[4];
+    host.sphere_transform_affine_007c1180(host.model_vcall_bounding_sphere_48(model), sphere, matrix);
+    const float depth = sphere[2] > 0.01f ? sphere[2] : 0.01f;
+    const float ratio = host.ai_tuning_0042e740().at<float>(0xC) / depth;
+    float f = static_cast<float>(1.0 - static_cast<double>(game.deref(0x19FC).at<float>(0x4C)) * std::fabs(ratio));
+    if (0.0f > f) {
+        f = 0.0f;
+    } else if (f > 1.0f) {
+        f = 1.0f;
+    }
+    plane.at<std::uint8_t>(0xC48) = host.ai_tuning_0042e740().at<float>(8) > f ? 1 : 0;
+    if (plane.ptr(0xDEC) != nullptr) host.actuator_block_push_part_anim_frame_007de9a0(plane.deref(0xDEC));
+    if (plane.at<std::uint8_t>(0x520) != 0) return;
+    std::uint8_t bay = 0;
+    if (plane.at<std::uint8_t>(0xDF0) != 0 || plane.at<std::uint8_t>(0xC25) != 0 ||
+        plane.at<std::int32_t>(0xC20) != 0) {
+        const std::uint16_t index = *static_cast<const std::uint16_t*>(host.global_address(0x00F876B8u));
+        bay = plane.at<std::uint8_t>(index * 8 + 0x9C3);
+    }
+    const auto set_one = [](Raw block, std::size_t channel) {
+        if (!(block.at<std::uint8_t>(channel + 1) == 1 && block.at<float>(channel + 4) == 1.0f)) {
+            block.at<float>(channel + 4) = 1.0f;
+            block.at<std::uint8_t>(channel + 1) = 1;
+            block.at<std::uint8_t>(channel + 8) = 1;
+        }
+        if (block.at<std::uint8_t>(channel + 8) != 0) block.at<std::uint8_t>(0x11) = 1;
+    };
+    const auto set_byte = [](Raw block, std::size_t channel, std::uint8_t value) {
+        if (block.at<std::uint8_t>(channel + 1) != value) {
+            block.at<std::uint8_t>(channel + 1) = value;
+            block.at<std::uint8_t>(channel + 8) = 1;
+        }
+        if (block.at<std::uint8_t>(channel + 8) != 0) block.at<std::uint8_t>(0x11) = 1;
+    };
+    if (host.weapon_controller_has_ordnance_of_kind_007b91c0(plane, 0x2F, 0)) {
+        set_one(plane.deref(0xDEC), 0x60);
+    } else {
+        set_byte(plane.deref(0xDEC), 0x60, bay);
+    }
+    const bool flying = host.control_mode_vcall_38(plane.sub(0x72C));
+    if (!flying && (plane.at<std::int32_t>(0x900) != 6 || plane.deref(0x538).at<float>(0x198) == 0.0f)) {
+        plane.at<std::uint8_t>(0xC1C) = 1;
+        set_one(plane.deref(0xDEC), 0x28);
+    } else {
+        set_byte(plane.deref(0xDEC), 0x28, plane.at<std::uint8_t>(0xC1C));
+    }
+    host.plane_update_engine_effects_007c4dd0(plane, dt);
+    refresh_pose(host, plane);
+    if (30.0 > static_cast<double>(plane.at<float>(0x100))) {
+        plane_update_bow_wave_effect_007c3700(host, plane);
+        return;
+    }
+    if (plane.at<std::uint8_t>(0xC34) == 0) plane.at<std::uint8_t>(0xC34) = 1;
+}
+
+// 007CD5E0, __thiscall(ECX = plane), RET 0, SEH frame. root = [[plane+360h]
+// +160h] (nothing when either is null). For each 8-byte entry {record, node}
+// of the checked vector root+7Ch (first +80h, last +84h): A = 00408120(name
+// from 00711C30(record; &T)), T freed; pos = A.find_first_of(" " 00CE3A90, 0,
+// 1); B = A.substr(0, pos); C = 00408720(B.c_str(), strlen); kind =
+// 007E1D80(&C); C freed. Unless kind == 5: angle = 0.2617994f (00D05AA8)
+// for kinds 2 and 3, else 0.5235988f (00CEC724); when pos != npos, D =
+// A.substr(pos + 1, npos) and angle = (float)((float)atof(D) x pi (double
+// 00CE3D28) / 180.0), D freed; rec = 00BF681B(50h) then 007DDD60(rec; kind,
+// node, angle) (null when the allocation failed); plane+D9Ch[kind*4 +
+// count] = rec with count = plane+DDCh[kind], which is incremented (no bound
+// test). B and A are freed (B reset to empty first, as the image does). Each
+// string's inline destructor frees its block when capacity >= 16.
+void plane_scan_model_part_records_007cd5e0(Seg47bHost& host, Raw plane) {
+    const Raw holder = plane.deref(0x360);
+    if (!holder) return;
+    const Raw root = holder.deref(0x160);
+    if (!root) return;
+    const auto tidy = [&](Raw s) {
+        if (s.at<std::uint32_t>(0x18) >= 16) host.operator_delete_00bf65ac(s.ptr(4));
+    };
+    const auto c_str = [](Raw s) -> const char* {
+        return s.at<std::uint32_t>(0x18) >= 16 ? static_cast<const char*>(s.ptr(4))
+                                               : reinterpret_cast<const char*>(s.field(4));
+    };
+    const auto make_empty = [](Raw s) {
+        s.at<std::uint32_t>(0x18) = 15;
+        s.at<std::uint32_t>(0x14) = 0;
+        s.at<char>(4) = 0;
+    };
+    const Raw entries = root.sub(0x7C);
+    std::uint8_t* it = static_cast<std::uint8_t*>(entries.ptr(4));
+    if (it > static_cast<std::uint8_t*>(entries.ptr(8))) host.invalid_parameter_00bf6713();
+    for (;;) {
+        std::uint8_t* const end = static_cast<std::uint8_t*>(entries.ptr(8));
+        if (static_cast<std::uint8_t*>(entries.ptr(4)) > end) host.invalid_parameter_00bf6713();
+        if (it == end) break;
+        alignas(4) std::uint8_t a_storage[0x1C] = {};
+        alignas(4) std::uint8_t b_storage[0x1C] = {};
+        alignas(4) std::uint8_t t_storage[0x1C] = {};
+        const Raw a{a_storage};
+        const Raw b{b_storage};
+        const Raw t{t_storage};
+        make_empty(a);
+        check_before_end(host, it, static_cast<std::uint8_t*>(entries.ptr(8)));
+        void* const node = Raw{it}.ptr(4);
+        check_before_end(host, it, static_cast<std::uint8_t*>(entries.ptr(8)));
+        const Raw name = host.part_named_record_copy_name_00711c30(Raw{it}.ptr(0), t);
+        host.string_assign_00408120(a, name, 0, 0xFFFFFFFFu);
+        tidy(t);
+        const std::uint32_t pos = host.legacy_string_find_first_of_0070f900(a, " ", 0, 1);
+        host.legacy_string_substring_004cdbe0(a, b, 0, pos);
+        const char* const head = c_str(b);
+        make_empty(t);
+        host.character_string_assign_counted_00408720(t, head, static_cast<std::uint32_t>(std::strlen(head)));
+        const std::int32_t kind = host.plane_control_surface_index_from_name_007e1d80(t);
+        tidy(t);
+        if (kind != 5) {
+            float angle = (kind == 2 || kind == 3) ? 0.2617993950843811f : 0.5235987901687622f;
+            if (pos != 0xFFFFFFFFu) {
+                const Raw tail = host.legacy_string_substring_004cdbe0(a, t, pos + 1, 0xFFFFFFFFu);
+                const float parsed = static_cast<float>(host.atof_00bfa66c(c_str(tail)));
+                angle = static_cast<float>(static_cast<double>(parsed) * 3.1415927410125732 / 180.0);
+                tidy(t);
+            }
+            void* const memory = host.operator_new_00bf681b(0x50);
+            void* const record = memory != nullptr ? host.part_record_ref_construct_007ddd60(memory, kind, node, angle)
+                                                   : nullptr;
+            std::int32_t& count = plane.at<std::int32_t>(0xDDC + kind * 4);
+            plane.ptr(0xD9C + (kind * 4 + count) * 4) = record;
+            count += 1;
+        }
+        tidy(b);
+        make_empty(b);
+        tidy(a);
+        check_before_end(host, it, static_cast<std::uint8_t*>(entries.ptr(8)));
+        it += 8;
+    }
+}
+
+// 007D0820, __thiscall(ECX = plane), RET 0, SEH frame. A stack vector V
+// {+4 first, +8 last, +0Ch end} collects the kept nodes under root =
+// [[plane+360h]+160h] (0 when +360h is null): 0071AD50 finds of "engine",
+// "rotor", "rotor_still", "rotor_still_dam", "aileron_l", "aileron_r",
+// "kulsocockpit", "belsocockpit" (each pushed with 00506DD0 when found),
+// 007D06A0(root, "rotor"), 007D06A0(root, "rotor") again (the image passes
+// 00CEB8EC both times), 007D06A0(root, "rotor_still_dam"), 007D05E0 for
+// "fuselage", "lwing", "rwing", "elevator", "rudder", in the image's order.
+// Then for each child of [[plane+4A4h]+34h] (siblings +3Ch) not in V: a
+// NativeString "MeshHolder" (0041DD40(&s; 10, 1), memcpy of 11 bytes)
+// is compared with 00B6D800(child) case-insensitively (an empty name differs
+// from it); a different name hides the child: 00B6DA70(child; 0.0f, 0) and
+// child->vtable[2Ch]({100000, 100000, 100000}) (00CE4BC8). The string is
+// released; V's block is freed with 00BF65AC. The checked-iterator tests are
+// kept (the container-identity test compares V with itself).
+void plane_hide_other_mesh_holders_007d0820(Seg47bHost& host, Raw plane) {
+    alignas(4) std::uint8_t v_storage[0x10] = {};
+    const Raw v{v_storage};
+    const Raw holder = plane.deref(0x360);
+    const Raw root = holder ? holder.deref(0x160) : Raw{nullptr};
+    const auto find_push = [&](const char* name) {
+        void* const found = host.model_find_node_0071ad50(root, name);
+        if (found != nullptr) host.ptr_vector_push_back_00506dd0(v_storage, &found);
+    };
+    find_push("engine");
+    find_push("rotor");
+    host.node_append_numbered_children_007d06a0(root, "rotor", v_storage);
+    find_push("rotor_still");
+    host.node_append_numbered_children_007d06a0(root, "rotor", v_storage);
+    find_push("rotor_still_dam");
+    host.node_append_numbered_children_007d06a0(root, "rotor_still_dam", v_storage);
+    host.node_append_children_by_name_007d05e0(root, "fuselage", v_storage);
+    host.node_append_children_by_name_007d05e0(root, "lwing", v_storage);
+    host.node_append_children_by_name_007d05e0(root, "rwing", v_storage);
+    find_push("aileron_l");
+    find_push("aileron_r");
+    host.node_append_children_by_name_007d05e0(root, "elevator", v_storage);
+    host.node_append_children_by_name_007d05e0(root, "rudder", v_storage);
+    find_push("kulsocockpit");
+    find_push("belsocockpit");
+    for (Raw child = plane.deref(0x4A4).deref(0x34); child; child = child.deref(0x3C)) {
+        void** const last = static_cast<void**>(v.ptr(8));
+        if (static_cast<void**>(v.ptr(4)) > last) host.invalid_parameter_00bf6713();
+        if (static_cast<void**>(v.ptr(4)) > static_cast<void**>(v.ptr(8))) host.invalid_parameter_00bf6713();
+        void** it = static_cast<void**>(v.ptr(4));
+        if (it > static_cast<void**>(v.ptr(8))) host.invalid_parameter_00bf6713();
+        void** const end = static_cast<void**>(v.ptr(8));
+        while (it != end && *it != child.p) ++it;
+        bool hide = false;
+        if (it == last) {
+            alignas(4) std::uint8_t s_storage[8] = {};
+            const Raw s{s_storage};
+            host.native_string_resize_0041dd40(s, 10, 1);
+            if (s.ptr(4) != nullptr) host.memcpy_00bf7680(s.ptr(4), "MeshHolder", s.at<std::uint32_t>(0) + 1);
+            const Raw name = host.node_name_00b6d800(child);
+            if (name.at<std::uint32_t>(0) == 0) {
+                hide = s.at<std::uint32_t>(0) != 0;
+            } else if (s.at<std::uint32_t>(0) == 0) {
+                hide = true;
+            } else {
+                hide = host.stricmp_00bf7fbf(static_cast<const char*>(name.ptr(4)),
+                                             static_cast<const char*>(s.ptr(4))) != 0;
+            }
+            native_string_release(host, s);
+        }
+        if (hide) {
+            host.scene_node_set_visibility_factor_00b6da70(child, 0.0f, 0);
+            const float far_away[3] = {100000.0f, 100000.0f, 100000.0f};
+            host.scene_node_vcall_set_scale_2c(child, far_away);
+        }
+    }
+    if (v.ptr(4) != nullptr) host.operator_delete_00bf65ac(v.ptr(4));
+}
+
 // 007C6E10, __thiscall(ECX = plane), RET 0. 0 unless (plane+72Ch)->vtable[38h]()
 // answers; r = (float)(plane->vtable[38h]() / class(+538h)+184h); 2 when
 // tuning(0042E740)+22Ch > r, else 1 when tuning+230h > r (both FCOMI/JBE, so
