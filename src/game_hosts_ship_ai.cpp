@@ -11086,9 +11086,18 @@ public:
         // gated class, which is every ship of this mission.
         const bsp::WeaponDirectorState defaults{};
         owner_.done("AutoTarget::director_allow_move", 0x009f5614u);
-        const std::uint32_t command = owner_.units.director_current_command_0071be40(index_);
+        std::uint32_t command = owner_.units.director_current_command_0071be40(index_);
         int kind = 0;
-        if (command != 0u) {
+        if (kAutoTargetOverrideBound) {
+            // Packet s56_autotarget_override: 009F561E reads [director+54h], slot 0,
+            // not the current command, which is the override once one is installed.
+            command = owner_.units.commands().director_slot_command(index_, 0);
+            if (const bsp::EntityOrderCommandClass* klass
+                    = bsp::entity_order_command_class_by_address(command)) {
+                kind = klass->category;   // 009F562A, vtable[0Ch]
+            }
+            owner_.done("AutoTarget::command_slot_kind", 0x009f562au);
+        } else if (command != 0u) {
             owner_.record_slot("AutoTarget::command_slot_kind", "00e08f70+vtable0c");
         }
         // Packet cc9_ship_fire_stance (routed from gunnery13): the gunnery
@@ -11101,7 +11110,13 @@ public:
         owner_.done("AutoTarget::selection_enabled", 0x009f5610u);
         return enabled;
     }
-    void send_command_state(void*, int) override {
+    void send_command_state(void*, int state) override {
+        if (kAutoTargetOverrideBound) {
+            // Packet s56_autotarget_override: 009F5F41, 0071D9E0(director, 2).
+            owner_.units.commands().raise_override_stage_0071d9e0(index_, state);
+            owner_.done("AutoTarget::send_command_state", 0x0071d9e0u);
+            return;
+        }
         owner_.record("AutoTarget::send_command_state", 0x0071d9e0u);
     }
     void* director_current_target() override {
@@ -11120,6 +11135,11 @@ public:
         }
     }
     int director_command_state() override {
+        if (kAutoTargetOverrideBound) {
+            // Packet s56_autotarget_override: [director+30h], 009F5E69 / 009F5F2F.
+            owner_.done("AutoTarget::director_command_state", 0x009f5e69u);
+            return owner_.units.commands().director_mode_0030(index_);
+        }
         owner_.record("AutoTarget::director_command_state", 0x009f5e69u);
         return 0;
     }
@@ -11212,6 +11232,10 @@ public:
                     if (owner_.units.unit_is_kind_of(other,
                             config.priority[entry].entity_kind)) {
                         candidate.entity_kind_matches = static_cast<int>(entry);
+                        // Packet s56_autotarget_override: 009F5CF9 009F5860 hands
+                        // back this entry, and 009F5D02 stores its +0h byte.
+                        candidate.issue_move_flag
+                            = kAutoTargetOverrideBound && config.priority[entry].flag;
                         break;
                     }
                 }
@@ -11265,6 +11289,12 @@ public:
         return scan;
     }
     void* resolve_command_target_object() override {
+        if (kAutoTargetOverrideBound) {
+            // Packet s56_autotarget_override: 009F5EC4, 00521EA0 on director+18Ch.
+            owner_.done("AutoTarget::resolve_command_target", 0x00521ea0u);
+            return reinterpret_cast<void*>(static_cast<std::uintptr_t>(
+                owner_.units.commands().override_target_handle(index_)));
+        }
         owner_.record("AutoTarget::resolve_command_target", 0x00521ea0u);
         return nullptr;
     }
@@ -11326,10 +11356,18 @@ public:
         row_.target_blocked.clear();
         return true;
     }
-    void issue_command(std::uint32_t, void*) override {
-        owner_.record("AutoTarget::issue_attackmove", 0x0071d980u);
+    void issue_command(std::uint32_t command, void* target) override {
         ++row_.attackmove_issues;
         ++owner_.summary.attackmove_issues;
+        if (kAutoTargetOverrideBound) {
+            // Packet s56_autotarget_override: 009F5EF8, 0071D980(attackmove, ct).
+            // build_command_target carried the one-based handle through 00465080.
+            owner_.units.commands().send_override_command_0071d980(index_, command,
+                static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(target)));
+            owner_.done("AutoTarget::issue_attackmove", 0x0071d980u);
+            return;
+        }
+        owner_.record("AutoTarget::issue_attackmove", 0x0071d980u);
     }
     void set_fire_target(void* entity, bool force) override {
         if constexpr (kWeaponDirectorFireTargetBound) {
