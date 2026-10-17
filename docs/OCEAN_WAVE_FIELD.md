@@ -2093,3 +2093,41 @@ Both sides are builds of 169839289. OFF is `local\p14_off_rt` (the tree build). 
 3. **Held:** the control returned 1.
 
 **Verdict: `kRotateAboutAxisImageTailBound = true`.** It is the image's own tail, and every row keeps its regime.
+
+### 50.8 The sequencer's runway hold, read (read-only)
+
+`006C7960` gives mode 4 when the corridor test `006C3B10` holds, the deck is usable (`006BED60`) and `rec+8 > 0`.
+`006C3F80` computes `rec+8`:
+- From the other airborne landers' path gaps (`F = 1.2 FollowDistTime`).
+- With none (k = 0), from the site clock `site+40h`. It is restamped at each touchdown (`007CB5F0` ->
+  `006CE230`): `+8h = 00419010(0.75 FDT, 0.01, FDT, 1.0, site + tp)`, zeroed while `tp < 0.25 FDT` and
+  `site < 0.4 FDT`.
+So the image spaces landers by time since the last touchdown. Nothing reads the runway's occupants. A wingman can
+start its final while the previous plane still taxis, in the image as in the host, and the vehicle arm then avoids
+the taxiing plane. 50.7 may therefore be image behaviour.
+
+Still to compare against the image:
+- the host's taxi time: II and III need 20-30 s to clear the strip at about 7 m/s, through park's path speed
+  `RunwayYawTurnSpdLimit/1`;
+- the touchdown point.
+Neither has a known host difference.
+
+## 52. 007CBA50, the plane water step: what is left (cc9-physics14, 2026-10-17; lead item 3, read-only)
+
+- **Powerlost (`007CBE02`).** `kPlaneWaterPowerLostBound` (ON) routes it as a death. The C3Ah hook skips
+  `007CA8A0`'s draw when `plane_water_powerlost_raised` is set (`game_hosts_units.cpp`, "A water powerlost calls
+  007BBFA0 directly"). The image's chain is `007BBFA0` -> message 66h -> `007D0B80`:
+  - stop the engines and set C39h;
+  - the tail sets C3Ah and calls vt[70h](1), Destroy, so +60h;
+  - no Kill and no draw.
+  The host's `kill_unit_00926d90(self, 1)` differs only in the Kill bookkeeping (+5Fh and the kill cause). The plane
+  is dead on both, and no shared-RNG draw is taken on either. Nothing gameplay-visible is left to bind.
+- **The stay test (`007CBC6A`-`007CBD6D`, listing read).**
+  - It runs only when the height above the water exceeds class+508h + 1.5 and `unit+770h` is set.
+  - Each 12-byte point of the class vector `+5BCh`/`+5C0h` is put through the world matrix `+CCh` (`004142E0`), and
+    `0078CF20` samples the sea at it. A point below the surface jumps to `007CBE6C`: the plane stays on the water.
+  - With none below, it calls `(+72Ch)->vt[24h](0)` (`007CBD6B`) and lifts off.
+  - The host carries neither the point vector (it is loaded with the model, like the class+50h box) nor a producer of
+    `+770h`. So its lift-off is the 1.5 m test alone.
+  - Binding this needs the model's points. It is left with the other mesh-bound items (48.1's deck crash). Not bound.
+- **The splash and the +911h latch.** They are presentation only. Not bound.
