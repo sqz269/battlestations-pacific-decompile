@@ -17676,3 +17676,36 @@ change is these two switches; USNOS calls no EntityTurnToEntity, so it is this o
 
 Mechanism as predicted; flipped ON. `kTurnToEntityMemberPlaneArmBound` stays OFF: no row reaches the squadron arm now
 (BSM01 stalls before the Jap squadron spawns, 5ib), so no run has shown which index a squadron argument resolves to.
+
+## 5ib. kSquadronMemberOrdnanceBound against cc13's 007ED790..007EDA10 loops (cc9-lua65, 2026-10-17)
+
+cc13 seg48 (e75e1e1b9, src/cc13_seg48.cpp `any_member`): all eight loops are one body, `for i < [sq+3CCh]: if
+pred([sq+3D0h+4i], loadout) return 1`, no liveness test (a dead plane leaves +3CCh through 007F3970). The chooser's
+member OR (007ED7E0 / 830 / 880 / 8D0) matches it, with gunnery liveness standing for +3CCh membership (labelled, 5hv.4).
+007ED790 (007B9140 per member) is already looped over the live members in game_hosts_units.cpp's 009F8160 arms. Not
+extended: 007ED970 (rocket, 007B9480 also needs descriptor +E0h > 0) and 007EDA10 (depth charge, kind 2Ch) are never
+fed to the chooser at all (`has_rocket_ordnance` / `has_depth_charge_ordnance` stay false; OrdnanceKindSet has no
+rocket or depth-charge predicate), and 007ED920 / 007ED9C0 belong to the unbound rocket task (CC13_ROCKET_TASK.md).
+Feeding them is the rocket / depth-charge packet, not a loop extension; no WINS row has a plane with rockets or depth
+charges ordered at a submarine (none of the re-time logs' choose lines name a submarine target).
+
+## 5ic. The depth-charge task glue lands OFF; JM06 reaches it (cc9-lua65, 2026-10-17)
+
+docs/CC13_DEPTH_CHARGE_TASK.md 8 says no mission on cc9's run list reaches the task. JM06 does: in `l65rt_j6_ref.log`
+(and 20,3) the US Lexington-class 01 Helldiver squadrons (class 38 SB2C, `plane equipment ... bag=2`) get 34
+PilotSetTarget orders at a submarine (caps `target_class=8 submarine=1`). This installation's vehicleclasses.lua
+(mtime 2026-05-09) gives the Helldiver Equipments[2] = two platform-77 slots, and classtables/arcade/deviceclasses.lua
+ArcadeTable[77] is "DC platform US" (BombPlatform, bullet 55): depth charges. The host's chooser never fed
+has_depth_charge_ordnance, so 007EEC50 fell through to strafe (`choose: 007EEC50 -> 00e08f40`, gb=0 because 2Ch is in
+007B9320's exclusions); the image picks depthcharge 00E08F38 and 0099A170 builds 009A6970's task.
+
+cc13's section-7 diff (against b571eaa62) is applied by a three-way merge (`local\l65_dc_prep.ps1`,
+`local\l65_dc_resolve.py`): the units-host adapter `run_depth_charge_task_arm_009a66c0` next to the kamikaze adapters,
+its arm call after the drop-kamikaze arm, the slot fields, and the chooser feed. One change to cc13's diff: the feed
+also ORs kind 2Ch over the live squadron members (007EDA10 is the same +3D0h loop as the four kSquadronMemberOrdnanceBound
+queries, 5ib). Everything stays behind `bsp::kDepthChargeTaskBound` (include/bsp/depth_charge_task_cc13.hpp, OFF).
+
+Prediction (JM06 reference and 20,3, the WINS row `jm06_p12_j6_c1`): the Lexington Helldivers' PilotSetTarget at the
+submarine chooses 00E08F38 instead of strafe, installs the kind-1 task, and drops depth charges on the player's
+submarine; the player submarine takes depth-charge damage, so the row may move or lose. USN21 (cc13's confirmed reach,
+the Jakes) moves too.
