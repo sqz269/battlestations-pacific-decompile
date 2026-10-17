@@ -18,9 +18,22 @@ Usage:
     python tools/const_width_sweep.py include/bsp/foo.hpp [more.hpp ...]
     python tools/const_width_sweep.py --all          # every header under include/bsp
     python tools/const_width_sweep.py --all --full   # one line per constant, not just misses
+    python tools/const_width_sweep.py --all --exact  # bit-exact against each load site
 
 Exit code is 1 when any constant mismatches its declared width.
+
+--exact has no tolerance. For every constant whose address has load sites, it
+takes the bits the compiler stores for the declared type (a float literal is
+rounded once, from the decimal, to float) and the bits the image holds at the
+width each load reads, widens both the way the load widens (FLD m32 -> the
+float's exact value), and reports any difference with its ulp distance. The
+right-hand side may be a decimal or hex literal, a static_cast of one, or
+literal arithmetic; anything naming another identifier is counted as unparsed.
+A double declared as the decimal of a float the image widens (0.85 where the
+image's FLD m32 gives 0.8500000238418579) is flagged as such. Exit code 1 on any
+mismatch; the whole list goes to local/output/const_exact.txt.
 """
+import fractions
 import glob
 import json
 import os
@@ -114,7 +127,249 @@ def load_site_index():
     return index
 
 
+EXACT_PATTERN = re.compile(
+    r"\bconstexpr\s+(float|double)\s+(\w+)\s*=\s*([^;]+);\s*//\s*([0-9A-Fa-f]{8})\b")
+TOKEN = re.compile(
+    r"\s*(?:(0[xX][0-9A-Fa-f]*\.?[0-9A-Fa-f]*[pP][-+]?[0-9]+)([fF]?)"
+    r"|([0-9]+\.?[0-9]*(?:[eE][-+]?[0-9]+)?|\.[0-9]+(?:[eE][-+]?[0-9]+)?)([fF]?)"
+    r"|(static_cast\s*<\s*(?:float|double)\s*>)|([-+*/()]))")
+
+
+def round_f32(value):
+    """Round an exact Fraction (or double) to the nearest float, ties to even.
+
+    Going through a double first can round twice; this rounds the exact value
+    once, which is what the compiler does for a float literal.
+    """
+    if isinstance(value, float) and value == 0:
+        return value  # a Fraction would drop the sign of -0.0
+    exact = fractions.Fraction(value)
+    near = struct.unpack("<f", struct.pack("<f", float(exact)))[0]
+    bits = struct.unpack("<I", struct.pack("<f", near))[0]
+    best = None
+    for b in (bits - 1, bits, bits + 1):
+        b &= 0xFFFFFFFF
+        cand = struct.unpack("<f", struct.pack("<I", b))[0]
+        if cand != cand or cand in (float("inf"), float("-inf")):
+            continue
+        err = abs(fractions.Fraction(cand) - exact)
+        key = (err, b & 1)
+        if best is None or key < best[0]:
+            best = (key, cand)
+    return best[1]
+
+
+def eval_literal_expr(text):
+    """(value, type) of literal arithmetic as C++ types it, or None.
+
+    float op float stays float (rounded per operation); anything with a double
+    is double. An identifier, call or unknown token gives None.
+    """
+    toks = []
+    pos = 0
+    text = text.strip()
+    while pos < len(text):
+        m = TOKEN.match(text, pos)
+        if not m or m.end() == pos:
+            return None
+        hexlit, hexsuf, declit, decsuf, cast, op = m.groups()
+        if hexlit:
+            v = fractions.Fraction(float.fromhex(hexlit))
+            toks.append(("num", (round_f32(v), "float") if hexsuf
+                         else (float(v), "double")))
+        elif declit:
+            v = fractions.Fraction(declit)
+            toks.append(("num", (round_f32(v), "float") if decsuf
+                         else (float(v), "double")))
+        elif cast:
+            toks.append(("cast", "float" if "float" in cast else "double"))
+        else:
+            toks.append(("op", op))
+        pos = m.end()
+
+    def arith(a, op, b):
+        ty = "float" if a[1] == b[1] == "float" else "double"
+        x, y = fractions.Fraction(a[0]), fractions.Fraction(b[0])
+        r = {"+": x + y, "-": x - y, "*": x * y, "/": x / y}[op]
+        return (round_f32(r), ty) if ty == "float" else (float(r), ty)
+
+    idx = [0]
+
+    def peek():
+        return toks[idx[0]] if idx[0] < len(toks) else (None, None)
+
+    def take():
+        idx[0] += 1
+        return toks[idx[0] - 1]
+
+    def unary():
+        kind, val = peek()
+        if kind == "op" and val in "+-":
+            take()
+            v = unary()
+            return v if val == "+" else (-v[0], v[1])
+        if kind == "num":
+            take()
+            return val
+        if kind == "cast":
+            take()
+            if take() != ("op", "("):
+                raise ValueError
+            v = expr()
+            if take() != ("op", ")"):
+                raise ValueError
+            return (round_f32(v[0]), "float") if val == "float" else (float(v[0]), "double")
+        if (kind, val) == ("op", "("):
+            take()
+            v = expr()
+            if take() != ("op", ")"):
+                raise ValueError
+            return v
+        raise ValueError
+
+    def term():
+        v = unary()
+        while peek()[0] == "op" and peek()[1] in "*/":
+            v = arith(v, take()[1], unary())
+        return v
+
+    def expr():
+        v = term()
+        while peek()[0] == "op" and peek()[1] in "+-":
+            v = arith(v, take()[1], term())
+        return v
+
+    try:
+        v = expr()
+    except (ValueError, IndexError, ZeroDivisionError):
+        return None
+    return v if idx[0] == len(toks) else None
+
+
+def ordered(bits, width):
+    """Map float bits onto a monotonic integer line for ulp distances."""
+    sign = 1 << (width * 8 - 1)
+    return bits + sign if bits & sign == 0 else (sign << 1) - 1 - bits
+
+
+def ulps(a, b, width):
+    fmt, ifmt = ("<f", "<I") if width == 4 else ("<d", "<Q")
+    ba = struct.unpack(ifmt, struct.pack(fmt, a))[0]
+    bb = struct.unpack(ifmt, struct.pack(fmt, b))[0]
+    return abs(ordered(ba, width) - ordered(bb, width))
+
+
+def exact_main(argv):
+    args = [a for a in argv if not a.startswith("--")]
+    if "--all" in argv:
+        args = sorted(glob.glob(os.path.join("include", "bsp", "*.hpp")))
+    if not args:
+        print(__doc__)
+        return 2
+
+    sections = load_image()
+    index = load_site_index()
+    parsed = unparsed = unreferenced = checked = 0
+    rows = []
+    for path in args:
+        with open(path, encoding="utf-8", errors="replace") as fh:
+            for line_no, line in enumerate(fh, 1):
+                m = EXACT_PATTERN.search(line)
+                if not m:
+                    continue
+                decl, name, rhs, addr_text = m.groups()
+                value = eval_literal_expr(rhs)
+                if value is None:
+                    unparsed += 1
+                    continue
+                parsed += 1
+                # What the compiler stores: the literal converted to the
+                # declared type (a double literal into a float rounds once).
+                host = round_f32(value[0]) if decl == "float" else float(value[0])
+                addr = int(addr_text, 16)
+                raw = read8(sections, addr)
+                sites = index.get(addr, [])
+                if raw is None or not sites:
+                    unreferenced += 1
+                    continue
+                by_width = {}
+                for va, mn, size in sites:
+                    if size in (4, 8):
+                        by_width.setdefault(size, []).append((va, mn))
+                for size, wsites in sorted(by_width.items()):
+                    checked += 1
+                    if size == 4:
+                        img = struct.unpack("<f", raw[:4])[0]
+                        img_bits = "%08X" % struct.unpack("<I", raw[:4])[0]
+                    else:
+                        img = struct.unpack("<d", raw)[0]
+                        img_bits = "%016X" % struct.unpack("<Q", raw)[0]
+                    if img == host and (img != 0 or
+                                        struct.pack("<d", img) == struct.pack("<d", host)):
+                        continue
+                    if decl == "float":
+                        host_bits = "%08X" % struct.unpack("<I", struct.pack("<f", host))[0]
+                    else:
+                        host_bits = "%016X" % struct.unpack("<Q", struct.pack("<d", host))[0]
+                    # Distance in the image's width when the host value fits
+                    # it exactly, else in doubles (both widen exactly).
+                    if size == 4 and decl == "float":
+                        dist = ulps(host, img, 4)
+                        unit = "float"
+                    else:
+                        dist = ulps(host, img, 8)
+                        unit = "double"
+                    note = ""
+                    if (decl == "double" and round_f32(img) == img
+                            and round_f32(host) == img):
+                        # m32 widened by the load, or an m64 the compiler
+                        # stored from a float: either way the image's value is
+                        # a float and the header wrote its short decimal.
+                        note = ("double written as the decimal of a widened "
+                                "float: image %r" % img)
+                    elif img == 0 and host == 0:
+                        note = "signed zero"
+                    elif decl == "float" and size == 8 and round_f32(img) == img:
+                        note = ("declared float, loads read a double holding a "
+                                "float, %d float ulp" % ulps(host, img, 4))
+                    elif decl == "float" and size == 8:
+                        note = "declared float, loads read a double"
+                    elif decl == "double" and size == 4:
+                        note = "declared double, loads read a float"
+                    rows.append((path, line_no, name, decl, host, host_bits,
+                                 addr, size, img, img_bits, dist, unit,
+                                 wsites, note))
+
+    out = os.path.join("local", "output", "const_exact.txt")
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    with open(out, "w", encoding="utf-8") as fh:
+        for (path, line_no, name, decl, host, host_bits, addr, size, img,
+             img_bits, dist, unit, wsites, note) in rows:
+            shown = ", ".join("%08X %s" % (va, mn) for va, mn in wsites[:6])
+            if len(wsites) > 6:
+                shown += ", +%d more" % (len(wsites) - 6)
+            fh.write("%s:%d  %s  host %s %s (%r)  image %08X m%d %s (%r)  "
+                     "%d %s ulp  loads: %s%s\n"
+                     % (path.replace("\\", "/"), line_no, name, decl, host_bits,
+                        host, addr, size * 8, img_bits, img, dist, unit, shown,
+                        ("  [" + note + "]") if note else ""))
+    for row in rows[:40]:
+        path, line_no, name, decl, host, host_bits, addr, size, img, img_bits, dist, unit = row[:12]
+        print("%s:%d %s %s=%s image %08X m%d=%s %d %s ulp"
+              % (path.replace("\\", "/"), line_no, name, decl, host_bits, addr,
+                 size * 8, img_bits, dist, unit))
+    if len(rows) > 40:
+        print("... %d more" % (len(rows) - 40))
+    print("parsed %d constants (%d unparsed expressions), %d without load sites, "
+          "%d width checks, %d exact mismatches"
+          % (parsed, unparsed, unreferenced, checked, len(rows)))
+    print("full table: %s" % out)
+    return 1 if rows else 0
+
+
 def main(argv):
+    if "--exact" in argv:
+        return exact_main(argv)
     full = "--full" in argv
     args = [a for a in argv if not a.startswith("--")]
     if "--all" in argv:
