@@ -713,3 +713,34 @@ mechanism is in the cd761bb52 section above).
     1242.14 s). Logs `cc9-lua52\local\l64_j8_e_on[_j3|_j5|_j7].log`. Variants b, c, d (same logs dir) each won one
     seed only: the HQ's survival against the waves and Fubuki/Isokaze living long enough to torpedo the landing
     ships are the two knife-edges.
+- **Re-time on 654daf00e** (cc9-lua64, 2026-10-17; origin/main e2b768d00 with this lane's
+  kAttackTaskTargetRetireBound flip and physics13's kNeighbourClockDrawsBound ON). Export `cc9-lua52\local\l64_rt`
+  (5CDE4804F2F3), reference env, `--stop-after-end 40`; logs `cc9-lua52\local\l64rt_<row>_<ref|j3>.log` with
+  manifests, summary `local\l64_rt_sum.py`. "Was" is the 7a31a4fef re-time above or the row's own record.
+
+  | Row (plan) | frames | reference | 20,3 | was (ref / 20,3) |
+  |---|---|---|---|---|
+  | USN01 `l64_u1_f` | 26000 | completed 410.02 s | completed 395.03 s | 410.02 / 370.03 (flipped exe) |
+  | JM08 `l64_j8_e` | 110000 | **no end** | **no end** | 2142.66 / 2881.39 (flipped exe) |
+  | LOMP06 `l64_l6_a` | 16000 | completed 345.84 s | completed 354.84 s | identical |
+  | USN02 `s36_u2_p7` | 16000 | completed 200.06 s | completed 200.06 s | identical |
+  | LOMP10 `p3_l10_b` | 36000 | completed 1048.45 s | completed 1007.43 s | 1476.87 / 1433.82 |
+  | USN12 `g45_u12_e7` | 36000 | **no end** | completed 1675.51 s | 1685.52 / 1675.51 |
+  | BSM01 `p6_b1_a` | 40000 | EndMission 791.93 s, guard | loss (HenryPT 1503.09 s) | 779.93 / loss |
+  | PRCP01 `p9_p01_k` | 30000 | completed 796.28 s | **failed 1111.41 s** (usn03.obj_p2_fail) | 877.26 / 572.28 |
+  | JM06 `p12_j6_c1` | 120000 | completed 1967.79 s | completed 2259.08 s | identical to physics12's record |
+  | IJN08 `p10_i08_z` | 100000 | completed 3892.67 s | **failed 1170.02 s** (Game Over) | 3937.72 / failed 959.89 |
+  | IJN18 `s46_i18_a` | 64000 | EndMission 2002.83 s, guard | EndMission 2356.17 s, guard | 2032.86 / 2216.04 |
+  | BSM09 (no orders) | 36000 | EndMission 911.90 s, guard | EndMission 905.90 s, guard | 914.90 / failed |
+  | ESMP08 `p12_e8_rb` | 140000 | (running) | (running) | not a win |
+
+  Every completion and every winning EndMission logged the guard. New losses against the last re-time:
+  - JM08 e (both seeds): landing ships survive (ref LSM 02 and LST 01; 20,3 USTroopTransport 01 and three LSTs) and
+    the C47 wave never spawns; the neighbour-clock flip moves the plane fights. JM08 needs another re-plan; the two
+    knife-edges are in the JM08 row note above.
+  - USN12 reference: first moved death MovieBetty at 897.85 -> 897.55 s (Columbia) against `l63rt_u12_ref.log`
+    (names after the roman flip differ, so `|.-2` / `|.-III` rows appear as moved). Ships/gunnery plan.
+  - PRCP01 20,3: first moved death Kate1 at 186.41 -> 182.61 s (Cushing) against `l63rt_p01_j3.log`.
+  - BSM01 20,3 is again HenryPT killed by Sacramento's killer_cat 6 blast (1503.09 s), then the script's own nil
+    index at commandhelpers.lua:5991 (see the BSM01 note above). Two seeds now show a US ship's blast killing the
+    player's PT boat near MiniSub: a gunnery question.
