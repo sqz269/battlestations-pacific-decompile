@@ -103,7 +103,11 @@ struct Seg59aHost {
     virtual void* global_config_00432650() = 0;
     virtual void mission_player_records_reset_00916980(void* scoring) = 0;
     virtual void stats_owner_reset_00994310(void* stats_owner) = 0;
-    virtual void scoring_reset_tail_0090fa40(void* scoring) = 0;    // 0091C63B JMP
+    virtual void session_message_construct_base_0075b430(void* message, std::int32_t type) = 0;
+    // 005097D0, __thiscall(profile = game+650h, const NativeString* name), RET 4, EAX.
+    virtual std::int32_t profile_get_named_counter_005097d0(void* profile, const NativeStr* name) = 0;
+    // 00770AF0, __thiscall(session = game+1EF0h, message*), RET 4.
+    virtual void session_send_to_secondary_first_peer_00770af0(void* session, void* message) = 0;
 
     // Virtual slot 0 of the unit's interface at unit+170h (the unit's category key).
     virtual std::int32_t unit_iface170_slot0(void* iface) = 0;
@@ -155,6 +159,7 @@ std::int32_t scoring_damage_points_00911ce0(Seg59aHost& host, void* scoring, std
 
 // --- new-mission reset ---
 void scoring_reset_for_new_mission_0091c560(Seg59aHost& host, void* scoring);
+void scoring_sync_profile_counters_0090fa40(Seg59aHost& host, void* scoring);
 
 }  // namespace bsp::cc13_seg59a
 

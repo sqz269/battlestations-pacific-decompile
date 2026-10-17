@@ -569,7 +569,59 @@ void scoring_reset_for_new_mission_0091c560(Seg59aHost& host, void* scoring) {
     at<std::int32_t>(scoring, 0x1424) = local_slot;
     at<std::uint8_t>(scoring, 0x1498) = 1;
     at<float>(scoring, 0x14A0) = 0.0f;
-    host.scoring_reset_tail_0090fa40(scoring);
+    scoring_sync_profile_counters_0090fa40(host, scoring);     // 0091C63B JMP 0090FA40
+}
+
+// 0090FA40, __thiscall(ECX = scoring, never read), RET. SEH frame (handler 00CA586E), EBP frame
+// with ESP aligned to 8. Carries the profile's three RUA counters (005097D0 on the profile at
+// game+650h) into the mission, by the session mode read once at entry ([game+1FE4h]):
+//  mode 2 (client): one stack message (0075B430 base type 15h, then +4h = 1, vtable 00D035B8,
+//    +1Ch = -1 then the local slot [game+18ECh], +18h = 13h) is filled per counter with the
+//    counter name (fixed 15/15/16-byte copies at +7Ch) and its value (+188h) and sent to the
+//    first secondary peer (00770AF0 on game+1EF0h), three times, no destructor call;
+//  mode 1 (host): per counter, 0090EDE0(ECX = [game+21A0h], local slot, name, value, 0); the
+//    lookup and the grant use two separately constructed copies of the name;
+//  other modes: nothing.
+void scoring_sync_profile_counters_0090fa40(Seg59aHost& host, void* /*scoring*/) {
+    static constexpr const char kCounterRuaDu[] = "Counter_RUA_DU";     // 00D187E4, 15 bytes
+    static constexpr const char kCounterRuaDbu[] = "Counter_RUA_DBU";   // 00D187C4, 16 bytes
+    static constexpr const char* const kNames[3] = {kCounterRuaDu, kCounterRuaMu, kCounterRuaDbu};
+    static constexpr std::uint32_t kSizes[3] = {sizeof kCounterRuaDu, sizeof kCounterRuaMu, sizeof kCounterRuaDbu};
+    void* game = host.game_00e188a8();
+    const std::int32_t mode = at<std::int32_t>(game, 0x1FE4);
+    if (mode == 2) {
+        alignas(8) std::uint8_t message[kSessionMessageSize];   // [ESP+20h]
+        host.session_message_construct_base_0075b430(message, 0x15);
+        at<std::int32_t>(message, 0x04) = 1;
+        at<std::uint32_t>(message, 0x00) = 0x00D035B8u;          // message 21 vtable
+        at<std::int32_t>(message, 0x1C) = -1;
+        at<std::int32_t>(message, 0x1C) = at<std::int32_t>(host.game_00e188a8(), 0x18EC);
+        at<std::int32_t>(message, 0x18) = 0x13;
+        for (int i = 0; i < 3; ++i) {
+            std::memcpy(message + 0x7C, kNames[i], kSizes[i]);   // inline dword/word/byte moves
+            NativeStr name;
+            host.native_string_construct_0041e870(&name, kNames[i]);
+            game = host.game_00e188a8();
+            at<std::int32_t>(message, 0x188) = host.profile_get_named_counter_005097d0(add(game, 0x650), &name);
+            release(host, name);
+            host.session_send_to_secondary_first_peer_00770af0(add(host.game_00e188a8(), 0x1EF0), message);
+        }
+        return;
+    }
+    if (mode != 1) return;
+    const std::int32_t local_slot = at<std::int32_t>(game, 0x18EC);
+    for (int i = 0; i < 3; ++i) {
+        NativeStr lookup;
+        host.native_string_construct_0041e870(&lookup, kNames[i]);
+        NativeStr token;
+        host.native_string_construct_0041e870(&token, kNames[i]);
+        const std::int32_t value =
+            host.profile_get_named_counter_005097d0(add(host.game_00e188a8(), 0x650), &lookup);
+        void* const target = ptr(host.game_00e188a8(), 0x21A0);
+        scoring_grant_award_0090ede0(host, target, local_slot, &token, value, 0);
+        release(host, token);
+        release(host, lookup);
+    }
 }
 
 }  // namespace bsp::cc13_seg59a

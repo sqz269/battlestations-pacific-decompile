@@ -55,7 +55,8 @@ The `00419CC0` singleton is called without its three pushes (they are consumed b
 | 00910570 | `scoring_suicide_points_00910570` | thiscall(scoring, category, index, count), RET 0Ch | count 0 -> 1; FISTP(float(config[index] * float(float([146Ch] * count) * map1428[category]))). |
 | 00911C00 | `scoring_kill_points_00911c00` | thiscall(scoring, selector, by, target, float kills, index, byte flag), RET 18h | v = map1434[by][target]; selector 0 / 2 scales by [144Ch] / [1458h]; s = [[game+21A0h]+1478h] if flag else +1474h; FISTP(float(float(config[index] * float(v * kills)) * s)). |
 | 00911CE0 | `scoring_damage_points_00911ce0` | thiscall(scoring, by, target, selector, int damage, index, byte flag), RET 18h | v = float(damage * map1440[by][target]); selector 0 / 2 scales by [1454h] / [1460h]; FISTP(float(float(config[index] * v) * s)). |
-| 0091C560 | `scoring_reset_for_new_mission_0091c560` | thiscall(scoring), tail JMP 0090FA40 | Clears +147Ch (Resize 0,0; memcpy from 00CE3A0C), 00916980, per slot record+254h = i, record+0Ch = 2 in a session else [game+6ACh], byte +14B0h+i = 0; 00994310 on [00F8A2FC]; +1494h = +14ACh, +14A4h/+14A5h = 0, +149Ch = +14A8h, +1424h = local slot (0 offline), +1498h = 1, +14A0h = 0.0; then 0090FA40 through the host. |
+| 0091C560 | `scoring_reset_for_new_mission_0091c560` | thiscall(scoring), tail JMP 0090FA40 | Clears +147Ch (Resize 0,0; memcpy from 00CE3A0C), 00916980, per slot record+254h = i, record+0Ch = 2 in a session else [game+6ACh], byte +14B0h+i = 0; 00994310 on [00F8A2FC]; +1494h = +14ACh, +14A4h/+14A5h = 0, +149Ch = +14A8h, +1424h = local slot (0 offline), +1498h = 1, +14A0h = 0.0; then 0090FA40 (reconstructed, called directly). |
+| 0090FA40 | `scoring_sync_profile_counters_0090fa40` | thiscall(scoring never read), RET; SEH 00CA586E | Mode read once from [game+1FE4h]. Mode 2: one stack message (0075B430 base type 15h, +4h = 1, vtable 00D035B8, +1Ch = -1 then [game+18ECh], +18h = 13h), per counter Counter_RUA_DU / Counter_RUA_MU / Counter_RUA_DBU: fixed 15/15/16-byte name copy at +7Ch, +188h = 005097D0(game+650h, name), 00770AF0(game+1EF0h, &msg). Mode 1: per counter 0090EDE0(ECX = [game+21A0h], [game+18ECh], second name copy, 005097D0(game+650h, first copy), 0); grant copy released before lookup copy. Other modes: nothing. |
 
 `config` is the float vector at `00432650()+2Ch`, read with the checked `[index]` (00BF6713 when
 unallocated or index >= size, unsigned).
@@ -96,8 +97,6 @@ products in 00910570, 00911C00 and 00911CE0 would round once at the FSTP instead
 
 ## Left in the band (not reconstructed here)
 
-- 0090FA40 (the reset tail, about 740h bytes: session message 21 sends of the profile counters
-  Counter_RUA_DU / Counter_RUA_MU / Counter_RUA_DBU on a client, grants on a host).
 - 00915760 (record clear, 7C0h), 009150A0 (force refresh), 0091C650 (session message 15h
   handler), 009105F0 (16h handler), 0090ABB0 (score row send), 0091D780 (2880h), 0091A080,
   00920690, 00906430: large or session/persistence-side; not started.
