@@ -47,14 +47,10 @@ WarningRelation local_relation_00968370(WarningUnitQuery&, WarningEntity entity)
 // The three watched-entity slots of a Warning. Names are the archive keys of
 // the Warning load 009768F0 / save 0096CF10 ("shortcut", "ambient",
 // "reporter"); each slot is an observer handle whose pointer sits at +14h, set
-// by 005B7F60 (from a raw pointer) or 00523B30 (from another handle).
-struct WarningBuild {
-    std::string id;                          // Warning+4h
-    WarningEntity shortcut_24{nullptr};
-    WarningEntity ambient_3c{nullptr};
-    WarningEntity reporter_54{nullptr};
-    bool hit_reported_84{false};             // hit warning only (88h object)
-};
+// by 005B7F60 (from a raw pointer) or 00523B30 (from another handle). Both
+// unlink the old entity (006952A0) and link the new one (00694A60) when it
+// changes. The constructors below build the native object in place through
+// cc13_seg49_64_78::WarningObject (+24h shortcut, +3Ch ambient, +54h reporter).
 
 // ---------------------------------------------------------------------------
 // 00974C70: hit warning constructor. __thiscall(ECX = warning (88h),
@@ -82,7 +78,10 @@ inline constexpr std::int32_t kWarningKindAirfield = 0x45;
 inline constexpr std::int32_t kWarningKindCaptureExcluded = 0x0C; // 00977DA0 list filter
 
 // `attacker` is [hit+4]->vtable+108h(), or null when hit+4 is null.
-WarningBuild build_hit_warning_00974c70(HitWarningQuery&, WarningEntity target,
+// 00973BA0(target) base, vtable 00D1B308, +6Ch observer vtable 00D1B2F0,
+// id "hit", +84h (archive "areaexclusion") = 0, then the id tree.
+cc13_seg49_64_78::WarningObject& construct_hit_warning_00974c70(cc13_seg49_64_78::WarningObject& w,
+    cc13_seg49_64_78::WarningHost& host, HitWarningQuery&, WarningEntity target,
     WarningEntity attacker);
 
 // ---------------------------------------------------------------------------
@@ -94,7 +93,10 @@ struct KillWarningQuery : WarningUnitQuery {
     virtual std::int32_t slot_2d8(WarningEntity victim) = 0;      // victim+2D8h
 };
 
-WarningBuild build_kill_warning_009744c0(KillWarningQuery&, WarningEntity victim);
+// 00973A90 base, vtable 00D1B2CC, +6Ch = victim (raw pointer, no observer),
+// id "kill", then the id tree.
+cc13_seg49_64_78::WarningObject& construct_kill_warning_009744c0(cc13_seg49_64_78::WarningObject& w,
+    cc13_seg49_64_78::WarningHost& host, KillWarningQuery&, WarningEntity victim);
 
 // ---------------------------------------------------------------------------
 // Capture and command-building reports. Each reports one entity-less 6Ch
@@ -131,6 +133,7 @@ struct CaptureReportHost : WarningUnitQuery {
     // 004254B0 debug print.
     virtual void debug_print_004254b0(std::string_view text) = 0;
     virtual void report_message_warning_00975ac0(std::string_view id) = 0;
+    virtual std::int32_t record_state_18(WarningEntity record) = 0; // 00978A70 record+18h
     virtual void report_entity_warning_00974150(WarningEntity, std::string_view id) = 0;
 };
 
@@ -159,14 +162,23 @@ std::optional<CapturePointReport> report_capture_point_009781e0(CaptureReportHos
 
 // 00978A70: __thiscall(ECX = manager, record, unused), RET 8. No lock and no
 // guard. "hitweareunderattack" + by record+18h: 0 "commandbuildingplayer",
-// 1 "commandbuildinglast", 2 "navalsupply", other values nothing.
-std::string command_building_report_id_00978a70(std::int32_t state_18);
+// 1 "commandbuildinglast", 2 "navalsupply", other values nothing. Then reports
+// the id as one MessageWarning (00978BC7..00978BF9: operator_new(6Ch),
+// 00975AC0(id), 009763E0(manager, warning)). Returns the reported id.
+std::string report_command_building_00978a70(CaptureReportHost&, WarningEntity record);
 
 // 0096E5E0: one stack argument (an object whose vtable +10h returns a name),
-// RET 4. "Message from |." + name + "|.: " (00D1B098), resolved by 00705E00
-// (ECX = game+21DCh, second argument 1). No reference to the function exists
-// (Ghidra xrefs, absolute-dword scan).
-std::string message_from_text_0096e5e0(std::string_view name);
+// RET 4. "Message from |." (00D1B088) + name + "|.: " (00D1B098) through two
+// 004261A0 concatenations, then returns 00705E00(text, 1) on the message
+// manager game+21DCh. No reference to the function exists (Ghidra xrefs,
+// absolute-dword scan).
+struct MessageFromHost {
+    virtual ~MessageFromHost() = default;
+    virtual std::string name_10(WarningEntity speaker) = 0; // vtable +10h, char*
+    // 00705E00 (ECX = [game+21DCh]), stack (text, flag); returns the record.
+    virtual const void* resolve_message_00705e00(const std::string& text, std::int32_t flag) = 0;
+};
+const void* message_from_0096e5e0(MessageFromHost&, WarningEntity speaker);
 
 // ---------------------------------------------------------------------------
 // Persistence. 009766D0: __thiscall(ECX = archive), RET. Reads key "type"
