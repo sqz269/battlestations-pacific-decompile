@@ -2220,3 +2220,40 @@ environment. Logs are `local\p14br{off,on}_<row>.log`.
 
 **Verdict: `kRackPositiveBagRoundBound = true`.** It is 006E3350's walk as read. ESMP08 keeps its completion and USN01
 keeps its death table.
+
+## 55. 007DC830's stall block: `kFreeFlightStallForceBound` (cc9-physics14, 2026-10-17; lead item 5, 007DC830 wiring)
+
+### 55.1 The image (cc13's `src/cc13_front3.cpp` reading, spot-checked at `007DC998`-`007DC9B1`)
+
+After the core law (`007DC86E`):
+- r = `007D99C0` / StallSpd.
+- When StallRangeMax > r, or the plane is dead (+5Dh):
+  - m = `00419010(StallRangeMin, 1, StallRangeMax, 0, r)`. A dead plane takes the larger of m and t, where t is the
+    DeadMeat StallMul ramp (or the SpinStallMul ramp when spinning) on +C3Ch.
+  - g = `00419010(OnPitch, 1, OffPitch, 0, pitch)`. The spot-check confirms the argument order: x1 = `00F87358`
+    (SpinStallMulOffPitch) with y1 = 0.
+  - d = clamp(+908h - 1, 0, 1).
+  - When f = g m d > 0: `007DAFD0(ctl; (0,0,1), (0,-1,0), f x StallRotAccel (desc+17Ch), step, 1.5)`, a nose-down kick.
+- The host ran the core law alone.
+
+### 55.2 The binding
+
+`kFreeFlightStallForceBound` (`src/game_hosts_units.cpp`), committed **OFF**.
+- ON, `free_flight_stall_force_007dc830` runs after the core law in the free-flight arm (`007CC2F0`) and in the
+  ground-roll arm's free branch (`007DCCF0`).
+- The kick is the host's `water_angular_kick_007dafd0` on the world angular velocity. That velocity comes from the
+  body rates through the pose rows and goes back the same way, as `water_law_tail` does.
+- LABELLED:
+  - the dying spin `ctl+F0h..F8h` (its constructor draw is not hosted) and `ctl+94h` are not carried;
+  - spinning is C36h or C37h (the host has no C38h);
+  - StallRotAccel is read per class (`read_vehicle_class_number`, fallback 0, the descriptor's zero).
+- Summary line: `summary free flight stall force bound= steps= kicks=`.
+
+### 55.3 Predictions (ON against OFF; written before the runs)
+
+1. **The kicks happen** where planes fly below 1.6 x StallSpd nose-up: climb-outs after lift-off, slow dogfight turns, and
+   dying planes (the DeadMeat ramp). `kicks` > 0 on every row with planes. The landing flare stays above 1.6 x StallSpd
+   (36-39 m/s against 20.56 for the Liz), so landings barely move.
+2. **Moves:** USN01 3000, JM05 9000 and USN04 4500 move (`pair_diff` 3). Dying planes pitch down sooner, which moves the
+   wreck impact points. The plane death counts stay equal or close.
+3. **Mechanism failure:** a live plane above StallRangeMax x StallSpd getting a kick, or a NaN pose.
