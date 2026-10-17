@@ -551,3 +551,45 @@ mechanism is in the cd761bb52 section above).
   - JM06 s under 20,3 diverges from the 9228d13fe run at 168.11 s (Fletcher-class 09 sunk by PlayerSub 03 instead of
     surviving); still no end (cc9-physics lane item).
   - The other moves (LOMP10, LOMP06, USN12, IJN18) are timing only; every completion logged the guard.
+- **JM08 re-planned: `config/win_orders/jm08_l62_j8_w1.txt`** (cc9-lua62, 2026-10-16), replacing `jm08_p6_j8_f`
+  (kept). Exe `local\l62_rt` (25fbdcba0, 3ED7E2E69EE6), reference env, 110000 frames, `--stop-after-end 40`; the
+  gunnery flips stay ON. Logs `cc9-lua52\local\l62_j8<v>.log` with manifests.
+
+  | Condition | Result | Guard |
+  |---|---|---|
+  | reference | **completed 1954.48 s** | yes |
+  | 20,3 | **completed 1464.00 s** | yes |
+  | 20,5 | completed 1517.05 s | yes |
+  | 20,7 | failed 1138.03 s (HQ destroyed, 1 landing ship left) | - |
+
+  The plan is f post-processed by `cc9-lua52\local\l62_j8_mod.py` (arguments on its first line):
+  - Gyoraitei boats take Nevada as their top attack target from frame 8000. Nevada attack-moves the HQ and its main
+    battery is what destroyed the HQ in f (about 21000 damage dealt). The boats kill it in every seed tried
+    (535-581 s).
+  - The airfield's 152/166/167 launch lines keep only landing ships and raiders. Class 154 never killed a ship.
+  - Fubuki then Isokaze alternate `torpedo <ship> at <landing ship>` presses from frame 10600. The rotation is
+    every 400 frames, offset 290, released after 89 frames.
+  - From frame 16000 the player's own idle squadrons get a `target A | B | ...` pick every 400 frames, each after a
+    `select`. These are H6K Mavis 02/03, Ki-43 Oscar 01 and Gekko 01, which no earlier plan used. The picks list
+    the phase-2 raiders first, then the landing ships with the toughest first. In the reference run Gekko 01 sinks
+    the last one (LST 02, 1570 s).
+  - Slots 1-2 get `order 3 <raider>` retargets, and every launch group first offers the raiders. Plan f named the
+    B-17s only from frame 24000; wave 1 spawns at 18668-31810.
+
+  Mission mechanics behind the choices (prcpjm08.lua, this installation):
+  - The HQ loss is `CommandBuilding.Party == 2`. The host neutralizes the HQ when its health reaches 0.
+  - StartInvasion fires when a US ship comes within 300 m of the origin, which is the bay between the shipyard and
+    the US formation. It sends every escort and landing ship at the HQ.
+  - Under 20,3 the invasion fires at 603.85 s in every variant that drops the bombers' warship targets. Once it
+    fires, phase 1 usually completes, because the HQ guns sink the LSTs, but the HQ enters phase 2 damaged.
+  - Without the invasion, the landing ships idle about 3.5 km north of the origin after Missouri dies. Phase 1 is
+    then limited by firepower.
+  - Friendly torpedo kills between Fubuki and Isokaze decided several runs. They happened in i (reference), j3, l3, n
+    and n3; the presses stay because no plan without them completed.
+  - About 30 variants are recorded in `local\l62_j8_<v>.txt` and their logs. Reference-only wins: i1/s1 (1735.27 s) and
+    w2/w3 (1946.47 s / 1416.96 s). The only 20,3-only win is i (1295.84 s).
+  - **Possible host gap (Lua lane):** each completion comes about 4 s after wave 3 (8 C47s, class 136) spawns, with
+    no C47 shot down (w1: wave 3 at frame 39012 = 1950.6 s, completed 1954.48 s). CheckPrim3 needs every class-136
+    unit in `Mission.Dakota` dead, and luaBomberWaveSpawned3 inserts only units whose `unit.Class.ID == 136`. An
+    empty table therefore suggests `unit.Class.ID` does not read 136 on this host. This is not yet checked; if it
+    is fixed, JM08 also has to shoot down the C47s.
