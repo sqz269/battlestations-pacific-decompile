@@ -1781,3 +1781,30 @@ env; logs `local\p13rc_<on|off>_<e8|u4>.log` with manifests, diffs `local\p13rc_
 Mechanism: the first ON end (Zuiho_sqn15 at 465.86 s) follows its members' four drops (`bomb from Zuiho_sqn15|.-II/.-III`,
 two rounds each); no end precedes a squadron's drops. **Flipped ON by mechanism.** ESMP08 regains the Zeros' bombs
 that 43.1 removed, so `esmp08_p12_e8_rb` is re-timed on the ON build rather than re-planned around fighter-only Zeros.
+
+## 47. The neighbour object's three clock draws: `kNeighbourClockDrawsBound` (cc9-physics13, 2026-10-17; lead item 4, cc13 seg48)
+
+The unit+C50h constructor `007E1E20` ends (`007E1F94`-`007E1FF2`, `disasm-raw`) with three `00BD2F10` calls,
+ECX = 1 (stream 1), bounds (0, P). Each result has the period added by `FADD` and is stored by `FSTP`:
+- `+7Ch` = U(0, 3) + `+88h` 3.0;
+- `+84h` = U(0, 2) + `+8Ch` 2.0;
+- `+80h` = U(0, 1) + `+90h` 1.0.
+
+`007E2010` adds dt to all three and refreshes when `+7Ch >= +88h`. So each plane's first refresh comes at once, and its
+3 s refresh, 2 s finder and 1 s friendly re-check phases are random. The host starts them at the midpoints (4.5 / 3.0 /
+1.5) for every plane, so all planes share a phase, and it makes three fewer stream-1 draws per construction.
+
+**The binding (game_hosts_units.cpp, committed OFF).** `nb_seed_clocks` runs at a plane's first neighbour use
+(avoidance, the friendly re-check, the finder). It draws the three values from the plane's keyed stream
+(`name#nb7c`, `#nb84`, `#nb80`; the shared stream only when BSP_GUNNERY_RNG_STREAMS is off) and gives every host copy of
+`+7Ch` the one value. LABELLED: seeded at first use, not at `007D621F`'s construction; the sum is taken in float.
+`summary mission neighbour clock draws seeded=N` counts the seeds.
+
+**Predictions.**
+- OFF: identical.
+- ON: every plane that reaches 0099B670 / 007B96D0 / 007E2090 seeds once; the refresh/finder/re-check instants move
+  by up to 1.5 s, the finder's targets and the avoidance bands move with them, and plane-heavy rows (ESMP08, USN04 with
+  its strikes) move from the first fighter contact; pair_diff 3. No other keyed stream moves, because the draws are on
+  their own keys.
+- Mechanism failure: a seed count that differs from the number of distinct planes using the object, or a moved draw
+  on any other key.
