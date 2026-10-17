@@ -1107,6 +1107,14 @@ constexpr bool kReconTeamListsBound = true;
 //    never reached 00863990. OFF: that pre-filter. Packet
 //    cc9_recon_contact_kinds, docs/AA_LETHALITY_AUDIT.md section 14.
 constexpr bool kReconContactAllKindsBound = true;  // ON: AA_LETHALITY_AUDIT 14.4
+//  * kReconSurfaceSetBranchBound: 00922DC0 (MOV DL,1; JMP 00922C80) reaches
+//    00922C80's set arm after the +5Dh, 0Fh, 18h, ship, 45h, 46h and 1Ch arms:
+//    00922D3F-00922D54 008DDF90 over [00E188A8]+21A4h+[+18ECh]*4 (slot 0 here,
+//    LABELLED as in the ship-AI host), and 00922D5B JNZ 00922D0E returns 1 when
+//    the set holds the entity (008DDFA9: an IsKindOf(5) entity is looked up as
+//    itself). True: `in_set || tail`. False: the tail alone, the earlier host
+//    rule. Packet cc13-fix4, docs/CC13_FIX34.md.
+constexpr bool kReconSurfaceSetBranchBound = false;
 //  * kGunneryClassArmsBound: 00862820's arms after the liveness bytes and the
 //    rank (00862843..008628CA). Category 7 needs IsKindOf(6) and not
 //    IsKindOf(0Eh). A kind-8 target then goes through 00852820 (world y +100h
@@ -7116,8 +7124,10 @@ public:
     }
     bool unit_is_surface_target(std::size_t index) override {
         // 00922DC0's thunk into 00922C80, filled from the same facts the ship
-        // AI's target_is_surface_00922dc0 fills. The set branch 008DDF90 is not
-        // built in this process, so its tail is taken, as there.
+        // AI's target_is_surface_00922dc0 fills. The set branch 008DDF90 asks
+        // the objective set the mission Lua fills (game_objective_sets(), which
+        // the ship-AI and chooser hosts ask too); it is taken only under
+        // kReconSurfaceSetBranchBound, otherwise the tail alone answers.
         bsp::EntityTargetFacts tf;
         tf.present = true;
         tf.not_engageable = owner_.units.unit_flag_005d(index);
@@ -7135,6 +7145,18 @@ public:
         tf.world_y = py;
         const bsp::SurfaceTargetAnswer answer = bsp::entity_is_surface_target_00922c80(tf);
         if (answer == bsp::SurfaceTargetAnswer::kUnreadSetBranch) {
+            if constexpr (kReconSurfaceSetBranchBound) {
+                // 008DDF93: an empty set answers 0; 008DDFA9 IsKindOf(5) looks
+                // the entity up as itself; the 18h arm cannot run (rejected
+                // above); 008DDF00 is the find.
+                bool in_set = false;
+                if (owner_.units.unit_is_kind_of(index, 0x05)) {
+                    const std::vector<std::size_t> set =
+                        bsp::game::game_objective_sets().units_in_slot(0);
+                    in_set = std::find(set.begin(), set.end(), index) != set.end();
+                }
+                if (in_set) return true;                  // 00922D5B JNZ 00922D0E
+            }
             return bsp::entity_surface_target_tail_00922c80(tf, true);
         }
         return answer == bsp::SurfaceTargetAnswer::kYes;
