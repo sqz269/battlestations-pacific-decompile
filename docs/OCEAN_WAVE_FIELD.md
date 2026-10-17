@@ -2462,3 +2462,47 @@ in this pass points at it. **Closed**, no binding. If USNOS #4.4/#4.5 needs a di
   and ordnance or a fighter class meets a detected enemy.
 - Counters: `sends` = overrides installed; `cleared` follows each dead target or ended attack; no member may hold
   mode 2 after its leader's override cleared.
+
+### 57.5 Measured, and the verdict: ON
+
+Both sides are builds of dd056450d: OFF `local\p14_sf`, ON `local\p14_br` (the flip). Reference environment,
+`--stop-after-end 40`. Logs `local\p15fa{off,on}_<row>.log` with manifests. No NaN on any ON log.
+
+| row | `pair_diff` | sends / cleared ON | deaths OFF -> ON | first moved |
+| --- | --- | --- | --- | --- |
+| USN04 4500 | 3 | 37 / 29 | 51 -> 56 (5 US fighters only ON, Zero #8.2/.-II only OFF) | first hit 97.05 -> 90.50 s, after the first override at 63.05 s |
+| JM05 9000 (fails at 300.05 s both sides) | 3 | 2 / 0 | 44 -> 46 (Lexington sqn03 only ON) | MainAirfieldEntity 01_sqn01's strafe override (88.8 s); its deaths move from 109 s |
+| BSM01 30000 | 1 | 0 / 0 | identical | none |
+| ESMP08 30000 | 0 | 0 / 0 | identical (184) | none (every tick ends at no_target: no head is moveto/stop/moveonpath with ordnance or a fighter, or no detected contact) |
+
+1. **Held:** the moved rows move from the first override and not before; the rows with no override are identical.
+2. **Held:** on USN04 the US fighters (stop head, fire only, filter C) dogfight the escorting Zeros and the Zeros
+   (moveto head) dogfight the US squadrons; removed targets re-point or end (29 clears, 61 head tasks rebuilt).
+
+**Verdict: `kSquadronFreeAttackOverrideBound = true`.** It is 009F8470 as cc13 read it, on ships56's override layer with
+cc13-verify1's 0071E7F0 fix. USN04 and JM05 move strongly; reference rows with squadrons on moveto/stop heads need
+re-timing on the new base.
+
+## 60. Handoff (cc9-physics15, 2026-10-17, at about 72% context)
+
+**Commits on agent/cc9-physics1** (the full `scripts/build.ps1` with tests passes on each):
+- 79f8074c2: script-order accessors (permissions, 007EEC50, 0099A170 install);
+- d97c232cf / 99923ee2f: `kFreeFlightDyingSpinBound`, `kFreeFlightWreckLiftBound`, both ON (58);
+- d142cb67c: 58.1 wording, 59 (50.7 closed as image behaviour);
+- c8d1f9463: the override-layer gate `kDirectorOverrideLayerBound` and 0071E7F0's 0071E200 repeat test (cc13-verify1);
+- dd056450d / 7bc50f281: the free-attack tick 009F8470, `kSquadronFreeAttackOverrideBound`, ON (57).
+
+**Open, in order.**
+1. **The catapult adapter (`Seg33aHost`, 37).** Not started. cc13's seg33a catapult routines take raw object pointers
+   (206 host virtuals in `Seg33aHost`), so the arena approach of `src/squadron_free_attack.cpp` (fill the fields a
+   routine reads at their native offsets, record its calls) is the cheapest faithful adapter. 37's four gaps stand
+   (State 3 hold, no catapult devices, GetNumCatapulted / SetCatapultStock, shared-file hooks). Pair on JM02/JM03/JM05.
+2. **Free-attack leftovers (57.2 LABELLED):** the `stop` head's clear-and-moveto-self (009F85EB..009F8615) is counted,
+   not issued; 0071F290 arm 5 (0084DDA0) and 0084E010's `+50h == 1` raise are not carried; 00927F10 for slots other
+   than 8; leader `+C24h` (PilotFires) has no reader.
+3. **007CE040's hull-point arm** sets ctl+94h (007CE0DB-007CE1D9); it needs the class `+5B8h` hull points (mesh-bound,
+   with 48.1 and 52).
+
+**Tools in `local\`.** `p15_kind_names.py` (00E0CD80's names from the disk image), `p15_vt.py <va> <n>` (a vtable's
+slots from disk), `p15_cl_check.ps1` (one-file compile check), `p15_census_sum.py <logs>` (the free-attack census),
+`p15_edit_*.py` (the edits as applied).
