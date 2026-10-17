@@ -18476,8 +18476,9 @@ scans also find 00901C20's eight known callers, so a negative result means somet
 rel32 and absolute-dword scans with `local\s54_rel.py` and `local\s54_abs.py`). It has 119 unrecorded
 non-library entries. The reached ship-AI gameplay is already hosted (path nodes, goal vector, attackmove, sub
 attack, brain pre-pass, AutoTarget). What is left:
-- **Dead**: 009DE280, 009E7FA0, 009DE1B0 and 009DABF0 have no reference. 009D9390 and 009D9440 are reached only
-  from 009DA008 and themselves.
+- **Dead**: 009DE280, 009E7FA0, 009DE1B0 and 009DABF0 have no reference. 009D9440 calls only itself (009D94DC,
+  009D9533) and nothing else calls it. 009D9390's only caller is at 009DA008, past the end of 009D9E50 (009D9F8C), in a
+  body with no record. I did not trace that body's reach.
 - **Object machinery**: observer-member destructors, EH funclet targets (009E5110 / 009E5130 / 009E5460 / 009E8C10
   are reached only from 00CB07CE..00CB0CCA), STL helpers, and the debug draws.
 - **009E2D10 / 009E2DC0 / 009E2F10**: slot 1 of the small observer vtables 00D21868 / 00D21880 / 00D21898, which
