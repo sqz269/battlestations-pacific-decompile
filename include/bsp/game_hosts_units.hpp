@@ -59,6 +59,7 @@
 #include <vector>
 
 namespace bsp { struct HullContactEvent; }
+namespace bsp { struct PlaneSquadronHostRecord; }
 
 #include "bsp/pilot_command_path.hpp"
 #include "bsp/game_hosts_commands.hpp"
@@ -984,6 +985,10 @@ public:
     // 009F7C90's ending and 0084E010's B5 for every squadron, once per step
     // (from the head of run_landing_queue_006cd240).
     void run_spent_ordnance_rtb_0084e010();
+    // Packet p15_free_attack_tick (docs/OCEAN_WAVE_FIELD.md section 57): 009F8470's
+    // own part for one squadron, after the 009F8160 / 009F7C90 arms above.
+    void run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHostRecord& sq,
+        std::size_t leader, const std::vector<std::size_t>& alive);
     // unit+9c8h, the full hull length 0081106e / 0081fa4d produce. This process
     // builds no model box at [class+50h], so the producers' fallback applies and
     // the field is the descriptor's own +a0h `Length`.

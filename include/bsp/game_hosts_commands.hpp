@@ -212,6 +212,16 @@ inline constexpr bool kPathObjectDefaultPairBound = true;  // ON: SHIP_AI 197
 // override (its fire-target store) is left to the tick's own 00835860 at step 15.
 // False: the issue stays a record and nothing writes director+188h, as before.
 inline constexpr bool kAutoTargetOverrideBound = true;  // ON: SHIP_AI 274 (mechanism)
+// Packet p15_free_attack_tick (docs/OCEAN_WAVE_FIELD.md section 57). True: the
+// squadron free-attack tick 009F8470 sends its override (0071D980) to the members'
+// directors and the units host runs the override's life around it. False: nothing
+// sends.
+inline constexpr bool kSquadronFreeAttackOverrideBound = false;
+// The override layer itself (0071D980 / 0071E7F0, 0071D9E0 -> 0071E610, 0071EB60's
+// override arm, 0071C130(0)) runs for either sender; the ship tick's step 14 and
+// 00836D67 stay on kAutoTargetOverrideBound alone.
+inline constexpr bool kDirectorOverrideLayerBound =
+    kAutoTargetOverrideBound || kSquadronFreeAttackOverrideBound;
 
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.

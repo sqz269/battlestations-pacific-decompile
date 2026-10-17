@@ -2517,7 +2517,7 @@ public:
         return 0u;
     }
     void on_command_changed(bool primary) override {
-        if (kAutoTargetOverrideBound && !primary) {
+        if (kDirectorOverrideLayerBound && !primary) {
             // Packet s56_autotarget_override: 0071E6B5 / 0071E90E, vtable[6Ch](0) =
             // 00835BF0 with primary 0. 0071C130(0) clears the override pair +4Ch /
             // +50h, and 00835C26 clears the commanded speed (00835C4C).
@@ -2653,7 +2653,7 @@ public:
     }
 
     void raise_override_stage(int stage) override {
-        if (kAutoTargetOverrideBound) {
+        if (kDirectorOverrideLayerBound) {
             // Packet s56_autotarget_override: director+50h itself; the 5Dh clear
             // (+20h = 0) is applied by end_command_0071e430 after the state is back.
             if (!bsp::stage_raise_applies(state_.override_stage, stage)) return;
@@ -3519,7 +3519,7 @@ bool GameCommandsHost::active_command_descriptor_0071eb60(std::size_t unit_index
         // (WeaponDirector::queue_command). The descriptor is therefore the one
         // a fresh director carries, and the caller is told which arm it got.
         // Packet s56_autotarget_override: kAutoTargetOverrideBound reaches it.
-        out = kAutoTargetOverrideBound ? director.override_target : bsp::SceneCommandTarget{};
+        out = kDirectorOverrideLayerBound ? director.override_target : bsp::SceneCommandTarget{};
         return true;
     }
     return false;
@@ -3653,7 +3653,7 @@ bool GameCommandsHost::command_accepts_target_0071d6d0(std::uint32_t command,
 bool GameCommandsHost::send_override_command_0071d980(std::size_t unit_index,
     std::uint32_t command, std::uint32_t handle) {
     Impl& host = *impl_;
-    if (!kAutoTargetOverrideBound || unit_index >= host.directors.size()
+    if (!kDirectorOverrideLayerBound || unit_index >= host.directors.size()
         || unit_index >= host.units.size()) {
         return false;
     }
@@ -3700,7 +3700,7 @@ bool GameCommandsHost::send_override_command_0071d980(std::size_t unit_index,
 // 0071E610.
 void GameCommandsHost::raise_override_stage_0071d9e0(std::size_t unit_index, int stage) {
     Impl& host = *impl_;
-    if (!kAutoTargetOverrideBound || unit_index >= host.directors.size()) return;
+    if (!kDirectorOverrideLayerBound || unit_index >= host.directors.size()) return;
     GameDirector& director = host.directors[unit_index];
     if (director.override_stage >= stage) return;
     director.override_stage = stage;
