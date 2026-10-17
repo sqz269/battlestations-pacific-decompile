@@ -573,6 +573,13 @@ struct GameUnitSlot {
     bsp::DepthChargeTask dc{};
     unsigned long long dc_transitions{0};
     unsigned long long dc_releases{0};
+    // Packet cc9_l65_dc_census: arm ticks per DepthChargeState, the ticks with an
+    // aim point (+75h) and the ticks with depth charges aboard (+74h).
+    int dc_state_ticks[9]{};
+    int dc_arm_ticks{0};
+    int dc_target_ticks{0};
+    int dc_armed_ticks{0};
+    float dc_min_range_48{1.0e9f};
     // Packet cc9_strafe_arm (cc9-lua30): the strafe task (kind 0Ah, 6FCh bytes),
     // installed when 007EEC50 chose class 00E08F40, behind bsp::kStrafeTaskBound.
     // Approach fields by their 009CA4A0 offsets (approach = task+3F8h), state
@@ -26775,6 +26782,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::depth_charge_task_arm_009a66c0(unit_.dc, host, host, dt);
                         unit_.dc_transitions += static_cast<unsigned long long>(r.transitions);
                         unit_.dc_releases += static_cast<unsigned long long>(r.releases);
+                        {
+                            const int s = static_cast<int>(unit_.dc.state);
+                            if (s >= 0 && s < 9) ++unit_.dc_state_ticks[s];
+                            ++unit_.dc_arm_ticks;
+                            if (unit_.dc.ap.in_range_75) ++unit_.dc_target_ticks;
+                            if (unit_.dc.ap.has_ordnance_74) ++unit_.dc_armed_ticks;
+                            if (unit_.dc.ap.range_48 > 0.0f
+                                && unit_.dc.ap.range_48 < unit_.dc_min_range_48) {
+                                unit_.dc_min_range_48 = unit_.dc.ap.range_48;
+                            }
+                        }
                         owner_.done("BotTaskDepthCharge::arm", 0x009a66c0u);
                     }
 
@@ -41185,6 +41203,42 @@ void GameUnitsHost::report() {
         // ran, its state occupancy, the geometry the in-range latch 009C7C31
         // keys on, and the releases 009C60F1 / 009C5777 issued.
         // docs/DIVE_BOMB_TASK.md.
+        // Packet cc9_l65_dc_census: one line per plane that ran the depth-charge
+        // task (bsp::kDepthChargeTaskBound), its state occupancy, the ticks with
+        // an aim point in range (+75h) and with depth charges aboard (+74h).
+        for (const auto& slot : host.slots) {
+            if (!slot->depth_charge_task_installed) continue;
+            static const char* const kDcStateNames[9] = {
+                "moveto", "follow", "done", "attackrun", "goaway",
+                "aim", "prepare", "leave", "turnto"};
+            char states[192];
+            int n = 0;
+            states[0] = '\0';
+            for (int i = 0; i < 9; ++i) {
+                if (slot->dc_state_ticks[i] == 0) continue;
+                n += std::snprintf(states + n,
+                    (n < static_cast<int>(sizeof(states)))
+                        ? sizeof(states) - static_cast<std::size_t>(n) : 0u,
+                    "%s%s=%d", n > 0 ? " " : "", kDcStateNames[i], slot->dc_state_ticks[i]);
+                if (n >= static_cast<int>(sizeof(states))) break;
+            }
+            host.log.notef("  depthcharge %-12s arm_ticks=%d transitions=%llu states[%s] "
+                "releases=%llu in_range=%d armed=%d min_range=%.1f (009A66C0, packet "
+                "cc9_l65_dc_census)", slot->row.name.c_str(), slot->dc_arm_ticks,
+                slot->dc_transitions, states, slot->dc_releases, slot->dc_target_ticks,
+                slot->dc_armed_ticks,
+                static_cast<double>(slot->dc_min_range_48 < 1.0e8f ? slot->dc_min_range_48 : -1.0f));
+            host.log.notef("  depthcharge %-12s bay 007BBBA0: accepted=%d refused=%d | rack "
+                "006E56F0: single=%d deferred=%d drops=%d ammo=%d dropping=%d gate_refused=%d "
+                "ret_census=%d ret_idle=%d | stage 007CE9FD: issues=%d guard_blocked=%d C20h=%d",
+                slot->row.name.c_str(), slot->torpedo_bay_requests_accepted,
+                slot->torpedo_bay_requests_refused, slot->rack_single_count,
+                slot->rack_requests_deferred, slot->rack_bomb_drops, slot->rack_ammo,
+                slot->rack_dropping ? 1 : 0, slot->rack_gate_refused,
+                static_cast<int>(slot->rack_ret_census), static_cast<int>(slot->rack_ret_idle),
+                slot->torpedo_issue_stage_issues, slot->torpedo_issue_stage_guard_blocked,
+                slot->torpedo_issue_requests_c20);
+        }
         {
             static const char* const kDiveBombStateNames[10] = {
                 "moveto", "follow", "prepare", "done", "goaway",
