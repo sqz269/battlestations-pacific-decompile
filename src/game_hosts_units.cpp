@@ -674,8 +674,20 @@ struct GameUnitSlot {
     int dkz_rack{-1};                      // the rack whose bullet is a DummyKamikazePlane
     bool dkz_c25{false};                   // unit+C25h stand-in: a round left this think
     // plan+2E4h, the boost request (-> cmd+14h -> unit+A10h, docs/PILOT_PLAN_SLOT_PIPELINE.md);
-    // 0099B56C clears it every think. Recorded only: its reader 007BB7B9 is not hosted.
+    // 0099B56C clears it every think. Its reader 007BB7B9 is hosted only under
+    // kKamikazeBoostTurboBound (packet cc13-fix89 U2, docs/CC13_FIX89.md).
     bool plan_boost_2e4{false};
+    // Packet cc13-fix89 U2: the boost byte unit+9F8h (007BB6E0), its latched copy
+    // +BC8h (007B978F), the charge +E84h and its lockout +E88h, and the class's
+    // TurboTime / TurboRechargingTime / TurboStrength (desc+5FCh / +600h / +604h,
+    // 007D3CD0-007D3D50, TurboTime zeroed at 007D3DB5 unless the strength > 1).
+    bool plane_boost_9f8{false};
+    bool plane_boost_latched_bc8{false};
+    float plane_boost_charge_e84{0.0f};
+    bool plane_boost_lockout_e88{false};
+    float plane_turbo_time{0.0f};
+    float plane_turbo_recharging_time{0.0f};
+    float plane_turbo_strength{1.0f};
     // task+2E4h, the per-think avoidance mask 009A17D0 tests (bit 4 gunfire
     // detect 009A18BA, bit 2 vehicle 009A1951, bit 1 terrain 009A1974): 0FFh at
     // 00999944 before the arm; the kamikaze arms store their band (009AF54A,
@@ -806,6 +818,22 @@ struct GameUnitSlot {
     bool moveto_leg_registered{false};
     float moveto_point[3]{0.0f, 0.0f, 0.0f}; // +48h..+50h, the steer point
     float moveto_follow_stagger_74{0.0f};    // follow state +74h, -U(0, 0.6), 009C2980
+    // Packet cc13-fix89 U1 (kFollowSightSearchBound, docs/CC13_FIX89.md): the
+    // follow state's sight latch +84h and its point +78h..+80h (in the leader's
+    // frame), written by 009C211D-009C22F5 and read by the hold arm 009BF0FD.
+    // fs_countdown_74 is +74h for the follow ticks that run through
+    // run_follow_tick_009c1fd0 (the moveto follow keeps moveto_follow_stagger_74).
+    bool fs_sight_84{false};
+    float fs_sight_78[3]{0.0f, 0.0f, 0.0f};
+    float fs_countdown_74{0.0f};
+    float fs_think_dt{0.0f};                 // this think's elapsed, 009C1FD0's dt
+    // The think count, and the think of the last follow tick: a follow tick
+    // with no follow tick on the previous think is an entry (009BED80).
+    unsigned long long fs_thinks{0};
+    unsigned long long fs_last_follow_think{0};
+    // unit+914h: -1.0 from the plane constructor (007CFDDF, 00D7A260); 1.0 once
+    // a follow sight search finds a contact (009C230B). Nothing resets it.
+    float plane_formation_sight_914{-1.0f};
     bool moveto_circle_flag_18{false};       // circle state +18h, U(0,1) >= 0.5, 009C25D0
     // Part 3, the follow state: +70h the search period (0.6, 00CE3D30, set in 009C2980),
     // +74h its countdown, drawn at construction.
@@ -5765,7 +5793,31 @@ struct GameUnitsHost::Impl {
     // Dynamics/SpdMultipliers/TurboMultiplier.  The host had none of the
     // chain, so a wing member could never out-run its full-throttle leader.
     static constexpr bool kFollowTurboBound = true;  // ON: along error -65..-93% (PLANE_FOLLOW_PHASE_A 9.4)
+    // Packet cc13-fix89 U1 (docs/CC13_FIX89.md, CC13_VERIFY15 U1): the follow
+    // tick's tail 009C211D-009C232A. Every 0.6 s (+70h) while in position (+85h)
+    // and the flight leader is firing (007B8EE0, leader+C40h) or the sight is
+    // already held, it searches the side's contacts ahead of the LEADER's nose
+    // and latches +84h / +80h and unit+914h; every tick it then sets the gun
+    // controller's hold timer (approach+1Ch)+4Ch to 2.0 or 0.0. The hold arm
+    // steers at the sighted point (009BF0FD-009BF295) and a held timer makes
+    // 009FC7C0 fire on any target in range. False: the sight stays inactive
+    // and the hold timer is left alone.
+    static constexpr bool kFollowSightSearchBound = false;
     unsigned long long follow_turbo_steps{0};
+    // Packet cc13-fix89 U2 (docs/CC13_FIX89.md, CC13_VERIFY15 U2): the boost
+    // request plan+2E4h (the kamikaze states 009AC74C / 009ACD66) reaches cmd+14h
+    // (0099BF18-0099BF1E) and 007BB6E0's throttle arm 007BB79E-007BB834: for an
+    // IsKindOf(17h) plane without PilotFires (the rocket-like kamikaze, the Ohka)
+    // the boost byte unit+9F8h latches while the charge unit+E84h lasts and the
+    // throttle is binary, 9F8h ? 1.0 : 0.0; for any other plane a request forces
+    // the throttle to 1.0 and sets 9F8h while charged and not locked out. 007D9077
+    // multiplies the thrust by desc+604h TurboStrength while 9F8h is set, and
+    // 007CEB31-007CEC28 drains the charge by step / TurboTime while the latched
+    // +BC8h is set (lockout +E88h at empty) and otherwise recharges it by step /
+    // TurboRechargingTime up to 1.0 (never for the rocket-like plane). False:
+    // the request is recorded only, and every plane's throttle is analogue.
+    static constexpr bool kKamikazeBoostTurboBound = false;
+    unsigned long long boost_turbo_steps_{0};
     // kPlaneDeadMeatRollBound / kPlaneWreckForwardDragBound step counts.
     unsigned long long dead_meat_roll_steps{0};
     unsigned long long dead_meat_spin_steps{0};
@@ -8529,6 +8581,23 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         // SUBSTITUTION, labelled: state+84h/+78h come from 009C1FD0's search
         // loop 009C216D-009C22F5, read only in part; the sight stays inactive.
         in.sight_active_84 = false;
+        if constexpr (kFollowSightSearchBound) {
+            // 009BF0FD: +84h. 009BF13D / 009BF177: +78h..+80h through the
+            // leader's pose, then the member's inverse. SUBSTITUTION, labelled:
+            // the pose product is taken in double, as follow_to_body does.
+            in.sight_active_84 = unit.fs_sight_84;
+            if (in.sight_active_84) {
+                const float* m = leader.world.data();
+                const float* q = unit.fs_sight_78;
+                float w[3];
+                for (int i = 0; i < 3; ++i) {
+                    w[i] = static_cast<float>(
+                        static_cast<double>(q[0]) * m[i] + static_cast<double>(q[1]) * m[4 + i] +
+                        static_cast<double>(q[2]) * m[8 + i] + m[12 + i]);
+                }
+                follow_to_body(unit, w, false, in.sight_local);
+            }
+        }
         if constexpr (kPlaneFollowCatchupBound) {
             // 009BFEFC-009C0021, 009BFEE0's latched path: S = the station in
             // the member's frame (009BFF3B 004142E0), Lf = the leader's forward
@@ -8615,6 +8684,9 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         const bsp::PlaneFollowHoldCommand c = bsp::plane_follow_hold_command_009bee56(in);
         done("BotStateFollow::hold_arm", 0x009bee56u);
         if (c.locked) return;   // 009BF0B8-009BF0E8, never for an AI leader
+        if constexpr (kFollowSightSearchBound) {
+            if (c.clears_sight_84) unit.fs_sight_84 = false;   // 009BF295
+        }
         // 009BF6F4-009BF70B: pitch desired, slot 3 active, plan+2D0h = 0.
         unit.plan_slots[bsp::kPilotSlotPitch].desired = c.pitch_29c;
         unit.plan_slots[bsp::kPilotSlotPitch].active = 1;
@@ -8749,6 +8821,104 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     unsigned long long trail_arm_calls{0}, trail_arm_raised{0};
     unsigned long long trail_arm_enabled{0}, trail_arm_disabled{0};
     float trail_arm_min_mul{1.0f};
+
+    // Packet cc13-fix89 U1: 009C211D-009C232A, the follow tick's tail after the
+    // trail arm (docs/CC13_FIX89.md). __thiscall(state)(dt) inline in 009C1FD0.
+    //  * 009C211D-009C213B / 009C22BA: +74h -= dt while dt is below it (JB, so an
+    //    unordered compare decrements too); else +74h = (+70h - dt) + +74h, +70h
+    //    = 0.6f (00CE3D30, 009C2A05), and the search runs.
+    //  * 009C213E-009C2167: only with +85h (009BFD70's latch, this tick) and
+    //    either +84h already set or 007B8EE0(squadron+3D0h), the leader's byte
+    //    +C40h (in the firing list 00F87278 through 007C74A0 / 007C75A0).
+    //  * 009C216D-009C22E8: +78h = +7Ch = 0; the walk of [008053C0(unit+54h)]
+    //    +DE8h; each IsKindOf(5) entity's position (+FCh) in the leader's frame
+    //    (414E10, 414D10); z > 1.0f (D7A24C, COMISS/JBE), z < gun+34h * 1.2
+    //    (00CEC160 is the double of 1.2f), 0042B2F0 |(x/z, y/z, 0)| < gun+38h *
+    //    1.5 (00CE3D78); the smallest such length wins and its z goes to +80h.
+    //  * 009C22F5-009C230B: +84h = found (0 when +85h is clear or the gate
+    //    fails); found -> unit+914h = 1.0f.
+    //  * 009C2313-009C232A, every tick: gun+4Ch = +84h ? 2.0f (00CE3958) : 0.0f,
+    //    gun = [task+1Ch], the 009FC7C0 controller (unit.df_gun here).
+    // SUBSTITUTIONS, labelled: the recon contact list is every live slot of
+    // another party (recon levels are not hosted; docs/AA_TARGETING.md uses the
+    // same stand-in), the leader's +C40h is its gunFire byte +BC9h (the host's
+    // stand-in for the firing list, gunfire_detect_0099ec40), gun+34h is
+    // df_row.aim_shoot_distance and gun+38h the controller's 0.09 default, as
+    // df_gun_tick_009fc7c0 has them. x87 chains are modelled at 24-bit precision
+    // (float per operation); a 53-bit thread could differ in the last bit.
+    // Not hosted: unit+914h's readers 0072C128 / 0072C5FE (squadron-head
+    // substitution in the gun code). 009BED80's +84h clear: follow_sight_enter_009bed80.
+    static constexpr float kFollowSightPeriod70 = 0.6f;   // 00CE3D30 = 3F19999Ah
+    // 009BED80, the follow Enter: of the sight block it clears only +84h
+    // (009BEDC3) and +85h (009BEE1C; the host recomputes +85h every tick).
+    // +74h, +78h..+80h are untouched (009BED92's 009BE150 copies the
+    // parameters into [state+6Ch], not into the state). SUBSTITUTION, labelled:
+    // the host has no single enter for the follow states, so a follow tick
+    // with no follow tick on the previous think counts as an entry; a re-entry
+    // with no think between is missed, and a follow state whose tick skips a
+    // think would be cleared where the image keeps +84h.
+    void follow_sight_enter_009bed80(GameUnitSlot& unit) {
+        if (unit.fs_last_follow_think + 1 != unit.fs_thinks) {
+            unit.fs_sight_84 = false;                                     // 009BEDC3
+        }
+        unit.fs_last_follow_think = unit.fs_thinks;
+    }
+    void follow_sight_tick_009c211d(GameUnitSlot& unit, const GameUnitSlot& leader,
+                                    float dt, float& countdown_74) {
+        const float c = countdown_74;
+        if (!(dt >= c)) {
+            countdown_74 = c - dt;                                        // 009C22BA
+        } else {
+            countdown_74 = (kFollowSightPeriod70 - dt) + c;               // 009C2134-009C213B
+            bool found = false;                                           // 009C2137
+            const bool in_position_85 =
+                unit.fw_arm == 1 && unit.fw_step == summary.motion_steps;
+            if (in_position_85 && (unit.fs_sight_84 || leader.plane_gun_fire_bc9)) {
+                unit.fs_sight_78[0] = 0.0f;                               // 009C2178
+                unit.fs_sight_78[1] = 0.0f;                               // 009C2173
+                float best = 0.0f;                                        // 009C2186
+                const float reach = static_cast<float>(
+                    static_cast<double>(unit.df_row.aim_shoot_distance) * 1.2000000476837158);
+                const float cone = static_cast<float>(
+                    static_cast<double>(bsp::DogfightGunInputs{}.lateral_cap_38) * 1.5);
+                for (const auto& owned : slots) {
+                    const GameUnitSlot& o = *owned;
+                    if (o.state == nullptr || o.state->active == 0 || o.state->simulate != 0 ||
+                        o.scene_destroyed_005e != 0 || o.scene_pending_destroy_0060 != 0) {
+                        continue;
+                    }
+                    if (o.row.party == unit.row.party) continue;
+                    if (!bsp::unit_is_kind_of(o.class_id, 5)) continue;  // 009C21D7
+                    float v[3];
+                    follow_to_body(leader, o.motion.position, false, v);
+                    const float z = v[2];
+                    if (!(z > 1.0f)) continue;                            // 009C2254
+                    if (!(reach > z)) continue;                           // 009C226F
+                    const float xz = v[0] / z;                            // 009C2278
+                    const float yz = v[1] / z;                            // 009C2288
+                    const float sq = xz * xz + yz * yz;                   // 0042B2F0
+                    const float len = static_cast<double>(sq) > 1e-10
+                        ? static_cast<float>(std::sqrt(static_cast<double>(sq))) : 0.0f;
+                    if (!(cone > len)) continue;                          // 009C22A8
+                    if (!found || best > len) {                           // 009C22AA-009C22B6
+                        best = len;
+                        unit.fs_sight_78[2] = z;                          // 009C22D5
+                    }
+                    found = true;                                         // 009C22DD
+                }
+                ++follow_sight_searches_;
+            }
+            unit.fs_sight_84 = found;                                     // 009C22F5
+            if (found) {
+                unit.plane_formation_sight_914 = 1.0f;                    // 009C230B
+                ++follow_sight_found_;
+            }
+        }
+        unit.df_gun.hold_4c = unit.fs_sight_84 ? 2.0f : 0.0f;              // 009C232A
+        if (unit.fs_sight_84) ++follow_sight_held_ticks_;
+    }
+    unsigned long long follow_sight_searches_{0}, follow_sight_found_{0};
+    unsigned long long follow_sight_held_ticks_{0};
 
     // 009C207C-009C211C, in 009C1FD0 after 009BEE30. With the good-position
     // flag state+85h (009BFD70's, this tick) and a leader (state+2Ch): b =
@@ -8980,6 +9150,7 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         record("PlaneSquadron::on_plane_left_map_007f31a0", 0x007f31a0u);
     }
     bool run_follow_tick_009c1fd0(GameUnitSlot& unit, float state_8c = 1.0f) {
+        if constexpr (kFollowSightSearchBound) follow_sight_enter_009bed80(unit);
         // 009BFDA6-009BFDB2: the calling state's +8Ch. The follow state's is
         // 009BED80's 1.0 and nothing in its tick moves it (packet
         // cc9_l61_torpedo_done_formation); the level-bomb prepare passes its own.
@@ -8998,6 +9169,14 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             // 009C1FFD-009C2006: a pending or queued release returns first.
             if (!(unit.torpedo_release_pending_c25 || unit.torpedo_issue_requests_c20 > 0))
                 follow_trail_arm_009c207c(unit, *leader);
+        }
+        if constexpr (kFollowSightSearchBound) {
+            // 009C211D-009C232A, behind the same release test (009C1FFD-009C2006
+            // returns before it). SUBSTITUTION, labelled: these follow states'
+            // +74h starts at 0.0, where 009C2980 draws -U(0, 0.6) through
+            // 00BD2F10 (009C2A0A); the first tick searches and the period follows.
+            if (!(unit.torpedo_release_pending_c25 || unit.torpedo_issue_requests_c20 > 0))
+                follow_sight_tick_009c211d(unit, *leader, unit.fs_think_dt, unit.fs_countdown_74);
         }
         return true;
     }
@@ -17091,6 +17270,25 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                     host.lua.read_vehicle_class_number(row.type_id, "BSPPilotFires", 1.0f) != 0.0f;
             }
             slot->plane_bomb_delay_1f4 = host.lua.read_vehicle_class_number(row.type_id, "BombDelay", 1.0f);   // class+1F4h BombDelay, 007D2318
+            if constexpr (Impl::kKamikazeBoostTurboBound) {
+                // 007D3CB6-007D3D50: TurboTime (FLDZ), TurboRechargingTime (FLDZ),
+                // TurboStrength (FLD1); 007D3DA4-007D3DB8 zeroes TurboTime unless
+                // TurboStrength > 1.0f. TurboControlLimit (+608h) is read by
+                // 007C0F40, which is not part of this packet.
+                slot->plane_turbo_time =
+                    host.lua.read_vehicle_class_number(row.type_id, "TurboTime", 0.0f);
+                slot->plane_turbo_recharging_time =
+                    host.lua.read_vehicle_class_number(row.type_id, "TurboRechargingTime", 0.0f);
+                slot->plane_turbo_strength =
+                    host.lua.read_vehicle_class_number(row.type_id, "TurboStrength", 1.0f);
+                if (!bsp::plane_class_turbo_enabled_007d3da4(slot->plane_turbo_strength)) {
+                    slot->plane_turbo_time = 0.0f;
+                }
+                // 007D5D59-007D5D76 (BSP_Plane_ReadPropertyBag): +E84h = 1.0f when
+                // TurboTime > 0 (COMISS / JBE), else 0.0f; +E88h = 0.
+                slot->plane_boost_charge_e84 = slot->plane_turbo_time > 0.0f ? 1.0f : 0.0f;
+                slot->plane_boost_lockout_e88 = false;
+            }
             slot->plane_accel = lua_row.accel;
             // Packet cc9_dive_flight_response: the class reader scales Accel in
             // place (007D20F3-007D2127): when tuning+31Ch AccelCheatMul > 1.0,
@@ -19255,6 +19453,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     a *= owner_.lua.plane_globals()
                                         .dynamics_spd_multipliers_turbo_multiplier;
                                     ++owner_.follow_turbo_steps;
+                                }
+                            }
+                            if constexpr (GameUnitsHost::Impl::kKamikazeBoostTurboBound) {
+                                // 007D9070-007D9081: ctl+5h (unit+9F8h, 007DC86B) multiplies
+                                // by desc+604h TurboStrength. The water law clears ctl+5h
+                                // (007DCDEA) and the ground-roll law stores CL = 0 (007DCD31).
+                                if (unit_.plane_boost_9f8 && !water_.active && !ground) {
+                                    a = a * unit_.plane_turbo_strength;
+                                    ++owner_.boost_turbo_steps_;
                                 }
                             }
                             if (state.pitch < 0.0f) {
@@ -34416,6 +34623,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             float desc_radius_268() override { return pb_.unit_.plane_turn_circle_radius; }
                             bool has_director() override { return true; }
                             void enter_follow_009bed80() override {
+                                if constexpr (GameUnitsHost::Impl::kFollowSightSearchBound) {
+                                    pb_.unit_.fs_sight_84 = false;   // 009BEDC3
+                                }
                                 pb_.owner_.record("BotStateFollow::enter", 0x009bed80u);
                             }
                             void exit_follow_009bde40() override {
@@ -34536,6 +34746,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // the host's station routine does both from the registry.
                     void run_moveto_follow_tick_009c1fd0(float dt) {
                         ++unit_.moveto_follow_ticks;
+                        if constexpr (GameUnitsHost::Impl::kFollowSightSearchBound) {
+                            owner_.follow_sight_enter_009bed80(unit_);
+                        }
                         // 009C1FE2: cmd+26Ch = 2, a byte 0099D300's neutral-plan
                         // entry reads; this host keeps no such field.
                         // 009C1FEA: 009BFD70, the station. False ends the tick.
@@ -34568,7 +34781,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // and on expiry the sight search over the recon list
                         // (008053C0, vtable[5Ch](5)) that sets +84h, +80h and
                         // unit+914h; +84h then picks dir+4Ch = [00CE3958] or 0.
-                        if (dt < unit_.moveto_follow_stagger_74) {
+                        if constexpr (GameUnitsHost::Impl::kFollowSightSearchBound) {
+                            owner_.follow_sight_tick_009c211d(
+                                unit_, *leader, dt, unit_.moveto_follow_stagger_74);
+                            owner_.done("BotStateFollow::sight_search", 0x009c214au);
+                        } else if (dt < unit_.moveto_follow_stagger_74) {
                             unit_.moveto_follow_stagger_74 -= dt;
                         } else {
                             unit_.moveto_follow_stagger_74 =
@@ -34942,6 +35159,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (!bot_gated &&
                             unit_.pilot_think_accumulator_70 >= bsp::kPilotThinkInterval) {
                             const float elapsed = unit_.pilot_think_accumulator_70;
+                            if constexpr (GameUnitsHost::Impl::kFollowSightSearchBound) {
+                                unit_.fs_think_dt = elapsed;   // 009C1FD0's dt, packet cc13-fix89
+                                ++unit_.fs_thinks;
+                            }
                             unit_.pilot_think_accumulator_70 = 0.0f;   // 0099AD75
 
                             // 0099B450, seeded from the live block in the plan's
@@ -34959,6 +35180,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.plan_slots, live);
                             if constexpr (GameUnitsHost::Impl::kFollowTurboBound) {
                                 unit_.plan_turbo_2e5 = false;   // 0099B572, DL = 0 (0099B46E)
+                            }
+                            if constexpr (GameUnitsHost::Impl::kKamikazeBoostTurboBound) {
+                                // 0099B56C: plan+2E4h = DL = 0 on every think for every
+                                // plane, so a request ends with the task that raised it.
+                                unit_.plan_boost_2e4 = false;
                             }
                             // Packet cc9_plane_gunfire: the rest of 0099B450's tail
                             // (0099B4E8-0099B580) for the fields this host keeps on
@@ -35319,8 +35545,35 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.pilot_command_block[bsp::kPilotCmdPitch]);
                         unit_.plane_live_controls[2] = bsp::pilot_quantize_control_axis_007bb6e0(
                             unit_.pilot_command_block[bsp::kPilotCmdRoll]);
-                        unit_.plane_live_throttle = bsp::pilot_quantize_control_axis_007bb6e0(
-                            unit_.pilot_command_block[bsp::kPilotCmdThrottle]);
+                        if constexpr (GameUnitsHost::Impl::kKamikazeBoostTurboBound) {
+                            // 007BB79E-007BB834, the throttle arm. cmd+14h is plan+2E4h
+                            // (0099BF18-0099BF1E), taken here as 9F9h takes +2E5h.
+                            const bool request = unit_.plan_boost_2e4;
+                            const float charge = unit_.plane_boost_charge_e84;
+                            if (bsp::unit_is_kind_of(unit_.class_id, 0x17) &&
+                                !unit_.plane_pilot_fires_c24) {              // 007BB7A2-007BB7B7
+                                if (request && charge > 0.0f) {
+                                    unit_.plane_boost_9f8 = true;             // 007BB7CB
+                                } else if (charge <= 0.0f) {
+                                    unit_.plane_boost_9f8 = false;            // 007BB7DD
+                                }
+                                // 007BB816 (1.0f) or 007BB81E with XMM0 = 0 (007BB7A8),
+                                // stored at 007BB824 without the round trip.
+                                unit_.plane_live_throttle = unit_.plane_boost_9f8 ? 1.0f : 0.0f;
+                            } else if (request) {
+                                unit_.plane_boost_9f8 = charge > 0.0f &&
+                                    !unit_.plane_boost_lockout_e88;           // 007BB7F2-007BB810
+                                unit_.plane_live_throttle = 1.0f;             // 007BB816-007BB824
+                            } else {
+                                unit_.plane_boost_9f8 = false;                // 007BB82E
+                                unit_.plane_boost_lockout_e88 = false;        // 007BB834
+                                unit_.plane_live_throttle = bsp::pilot_quantize_control_axis_007bb6e0(
+                                    unit_.pilot_command_block[bsp::kPilotCmdThrottle]);
+                            }
+                        } else {
+                            unit_.plane_live_throttle = bsp::pilot_quantize_control_axis_007bb6e0(
+                                unit_.pilot_command_block[bsp::kPilotCmdThrottle]);
+                        }
                         unit_.plane_live_air_brake = bsp::pilot_quantize_control_axis_007bb6e0(
                             unit_.pilot_command_block[bsp::kPilotCmdAirBrake]);
                         if constexpr (GameUnitsHost::Impl::kFollowTurboBound) {
@@ -36263,6 +36516,33 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // with AirBrakeDrag).
                         unit_.plane_latched_throttle = unit_.plane_live_throttle;
                         unit_.plane_latched_air_brake = unit_.plane_live_air_brake;
+                        if constexpr (GameUnitsHost::Impl::kKamikazeBoostTurboBound) {
+                            unit_.plane_boost_latched_bc8 = unit_.plane_boost_9f8;   // 007B978F
+                            // 007CEB31-007CEC28 in the fixed step 007CE040 (ESI = unit+310h:
+                            // +B74h is unit+E84h, +B78h +E88h, +8B8h +BC8h, +228h the class).
+                            // SUBSTITUTION, labelled: run here, after the latch, at this
+                            // step; its order against 007CE040's other elements is not read.
+                            // The recharge factor is 008E6430(9, unit) when [00E0C978] and
+                            // [[00F88C30]+F4h] are set (007CEBAB-007CEBD1), else 1.0f; it is
+                            // taken as 1.0f, as 008E6430(6) is in the thrust. Float per
+                            // operation (24-bit precision assumed).
+                            const float tt = unit_.plane_turbo_time;
+                            if (tt > 0.0f) {                                         // 007CEB45
+                                if (unit_.plane_boost_latched_bc8) {                 // 007CEB4B
+                                    const float c = unit_.plane_boost_charge_e84 - step / tt;
+                                    unit_.plane_boost_charge_e84 = c;                // 007CEB71
+                                    if (c <= 0.0f) {                                 // 007CEB7D JB
+                                        unit_.plane_boost_lockout_e88 = true;        // 007CEB83
+                                        unit_.plane_boost_charge_e84 = 0.0f;         // 007CEC28
+                                    }
+                                } else if (!(bsp::unit_is_kind_of(unit_.class_id, 0x17) &&
+                                             !unit_.plane_pilot_fires_c24)) {        // 007CEB8F-007CEBA5
+                                    const float c = step / unit_.plane_turbo_recharging_time * 1.0f +
+                                        unit_.plane_boost_charge_e84;                // 007CEBE5-007CEBFC
+                                    unit_.plane_boost_charge_e84 = c > 1.0f ? 1.0f : c;   // 007CEC16
+                                }
+                            }
+                        }
 
                         bsp::PlaneControlUnitState state;
                         state.latched_yaw = unit_.plane_latched_controls[0];
@@ -41409,6 +41689,10 @@ void GameUnitsHost::report() {
                     "locks=%d boosts=%d (009AF510, packet cc9_lua52_kamikaze_wiring)",
                     bsp::kKamikazeTaskBound ? 1 : 0, kz_planes, kz_arm, kz_inst, k[0], k[1], k[2],
                     k[3], k[4], kz_aim, kz_lock, kz_boost);
+                if constexpr (Impl::kKamikazeBoostTurboBound) {
+                    host.log.notef("summary mission boost turbo steps=%llu (007BB6E0 9F8h -> "
+                        "007D9077 TurboStrength, packet cc13-fix89)", host.boost_turbo_steps_);
+                }
                 {
                     int shape_writes[2]{};
                     for (const auto& slot : host.slots) {
@@ -41593,6 +41877,12 @@ void GameUnitsHost::report() {
                             "(009BEE30 arms, packet cc9_plane_follow_law)", host.follow_hold_ticks_,
                             host.follow_flyto_ticks_, host.follow_torpedo_follow_ticks_,
                             done_law, done_placed);
+                        if constexpr (Impl::kFollowSightSearchBound) {
+                            host.log.notef("summary mission follow sight searches=%llu found=%llu "
+                                "held_ticks=%llu (009C211D-009C232A, packet cc13-fix89)",
+                                host.follow_sight_searches_, host.follow_sight_found_,
+                                host.follow_sight_held_ticks_);
+                        }
                     }
                     {
                         long long gd = 0, gf = 0, gr = 0, ge = 0;
