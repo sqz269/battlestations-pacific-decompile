@@ -6258,6 +6258,13 @@ struct GameUnitsHost::Impl {
     // countdown and release). True: all three run. False: the follow tick stands in
     // and only +A0h/+98h are reset on the enter, as before.
     static constexpr bool kLevelBombPrepareTickBound = true;   // ON: SQUADRON_LAND_TASK 5hs.1
+    // Packet cc9_l63_lb_target_cleared (SQUADRON_LAND_TASK 5hv). 009B81F0's target
+    // arm: the task stays valid only while +440h is 0 or the command's resolved target
+    // is +440h (009B8238..009B824F). When 009F8160's dead-target retest clears a
+    // member's command target, the image's next validity check returns 0 and the task
+    // goes. True: a level-bomb task whose command target is cleared retires. False:
+    // the arm returns early and the task freezes in its last state (USNOS wave 2).
+    static constexpr bool kLevelBombTargetClearedRetireBound = false;
     // Packet cc9-gunnery38 (docs/CC13_AUDIT13_RECENT_FLIPS.md O1). The strafe
     // cruise profile 009CD020, run once per activation (the install and each
     // time the strafe task resurfaces after a tightturn or flikflak retires),
@@ -24418,7 +24425,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 lb_retire("the command is no longer levelbomb (009B81F0)");
                             return;
                         }
-                        if (unit_.command_target_plus_one == 0) return;
+                        if (unit_.command_target_plus_one == 0) {
+                            // 009B81F0: the resolved target (null) is not +440h.
+                            if (GameUnitsHost::Impl::kLevelBombTargetClearedRetireBound &&
+                                unit_.level_bomb_task_installed)
+                                lb_retire("the command target is not +440h (009B81F0)");
+                            return;
+                        }
                         // SUBSTITUTION, labelled: 0099A170 builds a new task per
                         // order; this host sees one class and target per slot, so a
                         // new target re-installs and a repeated order does not.

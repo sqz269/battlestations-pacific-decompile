@@ -17347,3 +17347,35 @@ Done this session:
    Grep the installation's Lua for roman-suffixed names, bind OFF, and pair on a convoy and a multi-wing mission.
 5. Entry-point IsFunction: 0045F440/0045F520 test lua_type == 6. The host's global_is_defined
    (game_hosts_lua.cpp:9573) tests !nil.
+
+## 5hv. Level-bomb wingmen frozen after the dead-target retest (cc9-lua63, 2026-10-16)
+
+### 5hv.1 Cause (USNOS wave 2, `cc9-ships44\local\s52_d_a7.log`, exe 25fbdcba0)
+
+- Squadron `plane #4.4` (leader plus `|.-2/-3/-4`, LevelBomb on TroopTrans4) releases at 416-443 s. TroopTrans4
+  dies at 443.62 s; `kSquadronDeadTargetRetestBound` runs 0071E430 and clears every live member's
+  `command_target_plus_one` (`squadron retest: "plane #4.4" target TroopTrans4 dead at 443.62 s`).
+- The three wingmen's level-bomb arms stop there: each shows `ticks=1235` (320.20 s + 1235 x 0.1 s = 443.7 s) in
+  the summary, `-2` and `-4` frozen in goaway and `-3` in release. The host arm
+  (`run_level_bomb_task_arm_009b8b50`) returns early on a cleared target while the class is still levelbomb, so
+  the task is neither ticked nor retired. The plane keeps its last steering plan, which is the dead-straight
+  southbound course lua62 saw: goaway's heading 009B5760/009B5845 never runs again.
+- The squadron latches at 444.86 s (`spent ordnance ... latched`) but never reaches B5: 009F7C90's "every member
+  breaks off" reads each wingman's stale `lb_break_off_now` (0, frozen), so `ended` never becomes true and no
+  `returntobase` is issued. #4.5 and #4.6, whose target lived, did reach B5 at 443.67 and 450.46 s.
+- Image: 009B81F0 (the task's vt[40h], asked on 0099B740's cadence) returns 1 only when the current command is
+  levelbomb/00E08F78 and (+440h == 0 or the resolved command target == +440h), 009B8238..009B824F. +440h is the
+  target the factory 009B9030 passed (EDX) to 009B7990. A cleared target resolves to null, so the answer is 0 and
+  the task goes; the member then has no task, and 009F7C90 counts it as broken off.
+- Neither the squadron +370h nor +440h is cleared by the image after a release: the latch is the command's, and
+  the exit is the task's retirement, not a state change inside it.
+
+### 5hv.2 Bind (`kLevelBombTargetClearedRetireBound`, committed OFF)
+
+True: a level-bomb arm that finds its command target cleared retires the task (`lb_retire`). The same early
+return exists in the strafe, kamikaze, drop-kamikaze, torpedo and dogfight arms; their vt[40h] tests were not read
+here and they are left as they are.
+
+Predictions on USNOS a7 (`local\l63_os_a7.txt`, a copy of ships44's `s51_os_a7.txt`): ON logs three `retired, the
+command target is not +440h` lines for `plane #4.4|.-2/-3/-4` at about 443.7 s, then a B5 for `plane #4.4`, and the
+wingmen turn back instead of flying south. Rows whose level-bomb targets never die mid-run are identical.
