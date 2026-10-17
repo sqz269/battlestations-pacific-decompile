@@ -108,6 +108,43 @@ and report through 00BF6713. Unblocks the HUD fade callers 00611AE0, 00612B70, 0
 0065BD90 and 006723F0 (hook `widget_set_alpha_recursive_00aa8610` in
 `include/bsp/ingame_gui_cc13.hpp` and `include/bsp/seg25_cc13.hpp`).
 
+### 00AAA710, widget base property read (wiring blocker, segment 77)
+
+`gui_widget_read_properties_and_children_00aaa710`, `__thiscall(widget; visitor)` RET 4,
+SEH 00CB7571, through `GuiWidgetReadPropertiesHooks` (cc13-gui1's `GuiWidgetHooks` plus the
+pool pair and the visitor slots). It supersedes, for wiring, the partial projections
+`read_native_gui_widget_property_prefix_00aaa710` (`src/native_gui_widget_property_prefix.cpp`,
+[AAA710, AAABD6) only, through a caller-owned stack preimage) and
+`continue_native_gui_widget_property_interaction_00aaabd6`; neither covers the child loop.
+Each property is visitor->vtable[+0Ch](key, field, fallback), three 8-byte {tag, payload}
+pairs by value: Pos (5, +0Ch, {0,0,0}), Size (6, +20h, {0,0}), Pivot (6, +18h, {0,0}),
+Scale (6, +28h, {1,1}), Rotate (2, +48h, 0.0f), Color (8, +50h, static white
+[00F8BCE0] initialised on first use under [00F8BCF0] bit 0), LowColor (8, +0A4h,
+static {0,0,0,1} [00F8BCCC] under [00F8BCDC]), HighColor (8, +0B4h, white),
+BlendFactor (2, +0C4h, 0.0f), WideScreenAlign (0, a NativeString temporary, "").
+"Left" (__stricmp, non-null buffer only) sets +0E0h = 1, "Right" (00425850) 2, else 0;
+the temporary is released. +8 = +0Ch, and when +0E0h is set and the platform
+[0109CF04]+0Dh byte is set, +0Ch moves by 0.14166666567 (double [00D5C118]) left (1) or
+right (2). Unless widget->vtable[+5Ch]() is 1, Visible (3, +0E4h, true) then
+vtable[+34h](+0E4h byte). MouseBlock (3, +84h, false); set forces +78h = 1, clear reads
+MouseHit (3, +78h, false). Then 00AA7220. Children: a 250-pair block with tags preset to
+-1 and count 0 goes to visitor->vtable[+18h]; for each tag-0 entry the name becomes a
+NativeString (0041DD40 resize, memcpy length+1), 00AA2490 gives the type (0 skips to the
+release), cc13-gui1's 00AA6560 creates the child with a null source (no null check
+follows), a 184h model block from 00B74EB0 is constructed by 00B75030 with the name (0
+when the block is null) into child+4Ch with +138h &= ~3, a current parent is detached
+(00AA83A0), the child is inserted at the end of the +64h list (00A9B790, 00A9D480, then
+the head/prev links), child+70h = widget, 00B6E680 attaches the models, then
+child->vtable[+74h](), visitor->vtable[+4](entry), child->vtable[+18h](visitor),
+visitor->vtable[+8](), child->vtable[+78h](), and the name is released.
+Deviations: the keys are this file's literals with the image's text, not the image's
+literal addresses; the bool fallbacks set only the payload's low byte in the image (the
+other three bytes are stale stack) and are zero-extended here.
+Unblocks the type-specific readers that call it first: 00A9E400 listbox, 00AABD70
+button, 00AAD560 movie, 00AB3310 icon, 00ABB630 text, 00ABE1D0 curve, 00AC0280 section,
+00AC2DE0 line, 00AC4C50 layer, 00AC6FD0 group, 00AC85A0 scrollbar, 00AC9900 grid and
+the other four callers `bsp.py lookup 00aaa710` lists.
+
 Other GUI-band blockers in `local/output/wire_readiness.json` that were checked and not taken:
 00A966E0 BSP_TextEditor_SetActive and 00A92C40 BSP_InputManager_Update already have
 faithful typed implementations (`src/text_editor_activation.cpp`,
@@ -115,7 +152,7 @@ faithful typed implementations (`src/text_editor_activation.cpp`,
 +24h, 00A965A0, the 0.0f argument pushed before 004BEC00 and consumed by 00A92C40,
 resize(0, 0), the conditional memcpy from 00CE3A0C, +20h = 0), so they need binding, not a
 second reconstruction. 00A91020 and 00A95CB0 are in cc13-front2's packet. 00A9D9D0 is
-an STL instantiation. 00AAA710 (548 listing lines) is left for a dedicated packet.
+an STL instantiation.
 
 ## Arithmetic
 

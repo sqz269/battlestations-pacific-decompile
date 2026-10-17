@@ -4,6 +4,7 @@
 // named hook in include/bsp/cc13_gui2.hpp, invoked at the binary's call point.
 #include "bsp/cc13_gui2.hpp"
 
+#include <cstring>
 #include <xmmintrin.h>
 
 namespace bsp::cc13_gui2 {
@@ -565,6 +566,165 @@ void gui_widget_set_alpha_recursive_00aa8610(GuiWidgetAlphaHooks& host, void* wi
         if (node == at<void*>(widget, 0x68)) host.invalid_parameter_00bf6713();
         gui_widget_set_alpha_recursive_00aa8610(host, at<void*>(node, 8), alpha);
         if (node == at<void*>(widget, 0x68)) host.invalid_parameter_00bf6713();
+    }
+}
+
+namespace {
+
+NativeVariantPair pair_of(std::uint32_t tag, const void* pointer) noexcept {
+    return {tag, static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(pointer))};
+}
+NativeVariantPair pair_of_float(std::uint32_t tag, float value) noexcept {
+    std::uint32_t bits;
+    std::memcpy(&bits, &value, sizeof(bits));
+    return {tag, bits};
+}
+
+void release_narrow(cc13_gui1::NativePoolHooks& host, const NativeStringHeader& s) {
+    if (s.data != nullptr) {
+        void* const pool = host.sized_storage_pool_00419cc0();
+        host.pool_return_block_00bd1510(pool, s.data, s.length + 1, 1);
+    }
+}
+
+// The guarded first-use initialisation of the two static colours.
+float* white_colour(GuiWidgetReadPropertiesHooks& host) {
+    std::uint32_t* const guard = host.white_guard_00f8bcf0();
+    float* const white = host.white_00f8bce0();
+    if ((*guard & 1) == 0) {
+        *guard |= 1;
+        white[0] = 1.0f;
+        white[1] = 1.0f;
+        white[2] = 1.0f;
+        white[3] = 1.0f;
+    }
+    return white;
+}
+
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 00AAA710 BSP_GuiWidget_ReadPropertiesAndChildren. __thiscall(ECX = widget;
+// visitor) RET 4, SEH 00CB7571, SUB ESP,7F8h; S = ESP after the four saves
+// (visitor S+818h, EH state S+810h). Each property is visitor->vtable[+0Ch]
+// with three by-value pairs built in the outgoing area (fallback at S-8,
+// field S-10h, key S-18h, checked against ESP after each SUB). Locals: Pos
+// default float3 S+28h, the reused float2 / NativeString header S+14h..18h,
+// the X spill S+1Ch, the child block S+34h..807h, the child name temporary
+// S+20h, the node pointer S+10h, the list head S+2Ch.
+// The key strings are this file's literals with the image's text ("Pos" at
+// 00CF168C, "Size" 00CFF278, "Pivot" 00D5C228, "Scale" 00CE60AC, "Rotate"
+// 00D5C220, "Color" 00CE93F8, "LowColor" 00D5C214, "HighColor" 00D5C208,
+// "BlendFactor" 00D5C1FC, "WideScreenAlign" 00D5C1EC, "Left" 00CE92E4, "Right"
+// 00CE92DC, "Visible" 00D5C1E4, "MouseBlock" 00D5C1D8, "MouseHit" 00D5C1CC,
+// "" 00CE3A0C), not the image addresses. The bool fallbacks (tag 3) store only
+// a byte (MOV byte [pair+4]); the other three payload bytes are stale stack
+// in the image and zero here.
+// ---------------------------------------------------------------------------
+void gui_widget_read_properties_and_children_00aaa710(GuiWidgetReadPropertiesHooks& host, void* widget,
+    void* visitor) {
+    auto* const w = static_cast<unsigned char*>(widget);
+    float pos_default[3] = {0.0f, 0.0f, 0.0f};
+    host.visitor_vslot0c(visitor, pair_of(0, "Pos"), pair_of(5, w + 0x0C), pair_of(5, pos_default));
+    float vec2[2] = {0.0f, 0.0f};
+    host.visitor_vslot0c(visitor, pair_of(0, "Size"), pair_of(6, w + 0x20), pair_of(6, vec2));
+    vec2[0] = 0.0f;
+    vec2[1] = 0.0f;
+    host.visitor_vslot0c(visitor, pair_of(0, "Pivot"), pair_of(6, w + 0x18), pair_of(6, vec2));
+    vec2[0] = 1.0f;  // [00D7A24C]
+    vec2[1] = 1.0f;
+    host.visitor_vslot0c(visitor, pair_of(0, "Scale"), pair_of(6, w + 0x28), pair_of(6, vec2));
+    host.visitor_vslot0c(visitor, pair_of(0, "Rotate"), pair_of(2, w + 0x48), pair_of_float(2, 0.0f));
+    host.visitor_vslot0c(visitor, pair_of(0, "Color"), pair_of(8, w + 0x50), pair_of(8, white_colour(host)));
+    {
+        std::uint32_t* const guard = host.black_guard_00f8bcdc();
+        float* const black = host.black_00f8bccc();
+        if ((*guard & 1) == 0) {
+            *guard |= 1;
+            black[0] = 0.0f;
+            black[1] = 0.0f;
+            black[2] = 0.0f;
+            black[3] = 1.0f;
+        }
+        host.visitor_vslot0c(visitor, pair_of(0, "LowColor"), pair_of(8, w + 0xA4), pair_of(8, black));
+    }
+    host.visitor_vslot0c(visitor, pair_of(0, "HighColor"), pair_of(8, w + 0xB4), pair_of(8, white_colour(host)));
+    host.visitor_vslot0c(visitor, pair_of(0, "BlendFactor"), pair_of(2, w + 0xC4), pair_of_float(2, 0.0f));
+
+    // WideScreenAlign: "Left" (__stricmp, only for a non-null buffer) -> 1,
+    // "Right" (00425850) -> 2, else 0, at +0E0h.
+    NativeStringHeader align{0, nullptr};
+    host.visitor_vslot0c(visitor, pair_of(0, "WideScreenAlign"), pair_of(0, &align), pair_of(0, ""));
+    if (align.data != nullptr && host.stricmp_00bf7fbf(align.data, "Left") == 0)
+        at<std::uint32_t>(widget, 0xE0) = 1;
+    else if (host.native_string_equals_insensitive_00425850(&align, "Right"))
+        at<std::uint32_t>(widget, 0xE0) = 2;
+    else
+        at<std::uint32_t>(widget, 0xE0) = 0;
+    release_narrow(host, align);
+
+    // +8 keeps the authored x; with the platform's widescreen byte set, x at
+    // +0Ch moves by 0.14166666567 (double [00D5C118]) left or right.
+    const float authored_x = at<float>(widget, 0x0C);
+    at<float>(widget, 0x08) = authored_x;
+    const std::uint32_t align_mode = at<std::uint32_t>(widget, 0xE0);
+    if (align_mode != 0 && at<std::uint8_t>(host.platform_0109cf04(), 0x0D) != 0) {
+        if (align_mode == 1)
+            at<float>(widget, 0x0C) = static_cast<float>(static_cast<double>(authored_x) - 0.1416666656732559);
+        else if (align_mode == 2)
+            at<float>(widget, 0x0C) = static_cast<float>(static_cast<double>(authored_x) + 0.1416666656732559);
+    }
+
+    if (host.widget_vslot5c(widget) != 1) {
+        host.visitor_vslot0c(visitor, pair_of(0, "Visible"), pair_of(3, w + 0xE4), NativeVariantPair{3, 1});
+        host.widget_vslot34_dword(widget, at<std::uint8_t>(widget, 0xE4));
+    }
+    host.visitor_vslot0c(visitor, pair_of(0, "MouseBlock"), pair_of(3, w + 0x84), NativeVariantPair{3, 0});
+    if (at<std::uint8_t>(widget, 0x84) != 0)
+        at<std::uint8_t>(widget, 0x78) = 1;
+    else
+        host.visitor_vslot0c(visitor, pair_of(0, "MouseHit"), pair_of(3, w + 0x78), NativeVariantPair{3, 0});
+    host.recompose_local_transform_00aa7220(widget);
+
+    // 00AAACD4: children.
+    NativeVariantChildBlock block;
+    for (NativeVariantPair& entry : block.entries) entry.tag = 0xFFFFFFFFu;
+    block.count = 0;
+    host.visitor_vslot18(visitor, &block);
+    for (std::int32_t index = 0; index < block.count; ++index) {
+        const NativeVariantPair* const entry = &block.entries[index];
+        if (entry->tag != 0) continue;
+        const char* const name = reinterpret_cast<const char*>(static_cast<std::uintptr_t>(entry->payload));
+        NativeStringHeader key{0, nullptr};
+        std::uint32_t name_length = 0;
+        while (name[name_length] != '\0') ++name_length;
+        host.native_string_resize_0041dd40(&key, name_length, 1);
+        if (key.data != nullptr) host.memcpy_00bf7680(key.data, name, key.length + 1);
+        const std::uint32_t type = host.widget_type_for_key_00aa2490(&key);
+        if (type != 0) {
+            void* const child = cc13_gui1::gui_layout_create_widget_of_type_00aa6560(host, type, nullptr);
+            void* const model_block = host.model_pool_allocate_00b74eb0(0x184);
+            void* const model =
+                model_block != nullptr ? host.generated_model_construct_00b75030(model_block, &key) : nullptr;
+            at<void*>(child, 0x4C) = model;
+            if (model != nullptr) at<std::uint32_t>(model, 0x138) &= 0xFFFFFFFCu;
+            if (at<void*>(child, 0x70) != nullptr) host.detach_child_00aa83a0(at<void*>(child, 0x70), child);
+            // Inline std::list insert before end() of +64h (head +68h).
+            void* const value = child;
+            void* const head = at<void*>(widget, 0x68);
+            void* const node = host.list_buy_node_00a9b790(w + 0x64, head, at<void*>(head, 4), &value);
+            host.list_incsize_00a9d480(w + 0x64, 1);
+            at<void*>(head, 4) = node;
+            at<void*>(at<void*>(node, 4), 0) = node;
+            at<void*>(child, 0x70) = widget;
+            host.scene_node_attach_00b6e680(at<void*>(child, 0x4C), at<void*>(widget, 0x4C));
+            host.widget_vslot74(child);
+            host.visitor_vslot04(visitor, *entry);
+            host.widget_vslot18(child, visitor);
+            host.visitor_vslot08(visitor);
+            host.widget_vslot78(child);
+        }
+        release_narrow(host, key);
     }
 }
 

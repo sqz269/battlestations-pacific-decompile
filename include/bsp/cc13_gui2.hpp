@@ -171,4 +171,70 @@ struct GuiWidgetAlphaHooks {
 // alpha) RET 4.
 void gui_widget_set_alpha_recursive_00aa8610(GuiWidgetAlphaHooks& host, void* widget, float alpha);
 
+// The 8-byte {tag, payload} variant the property visitor takes by value. Tags
+// seen in 00AAA710: 0 string (key and fallback a C string, field a
+// NativeString*), 2 float (field a pointer, fallback the float bits), 3 bool
+// (field a pointer, fallback a byte), 5 float3*, 6 float2*, 8 float4*.
+struct NativeVariantPair {
+    std::uint32_t tag;
+    std::uint32_t payload;
+};
+// The child-entry block 00AAA710 builds on its stack (S+34h): 250 pairs whose
+// tags are preset to -1 (payloads left as they were), then the count at
+// +7D0h, zeroed before visitor->vtable[+18h] fills the block.
+struct NativeVariantChildBlock {
+    NativeVariantPair entries[250];
+    std::int32_t count;
+};
+static_assert(sizeof(NativeVariantPair) == 8 && sizeof(NativeVariantChildBlock) == 0x7D4);
+
+struct GuiWidgetReadPropertiesHooks : cc13_gui1::GuiWidgetHooks, cc13_gui1::NativePoolHooks {
+    // visitor->vtable[+0Ch](key, field, fallback), three pairs by value (RET 18h).
+    virtual void visitor_vslot0c(void* visitor, NativeVariantPair key, NativeVariantPair field,
+        NativeVariantPair fallback) = 0;
+    // visitor->vtable[+18h](NativeVariantChildBlock*): list the child entries.
+    virtual void visitor_vslot18(void* visitor, NativeVariantChildBlock* block) = 0;
+    // visitor->vtable[+4h](entry by value) / vtable[+8h](): enter / leave a child.
+    virtual void visitor_vslot04(void* visitor, NativeVariantPair entry) = 0;
+    virtual void visitor_vslot08(void* visitor) = 0;
+    // The two function-local static colours and their guard DWORDs (bit 0):
+    // [00F8BCE0] white {1,1,1,1} guarded by [00F8BCF0], [00F8BCCC] {0,0,0,1}
+    // guarded by [00F8BCDC].
+    virtual std::uint32_t* white_guard_00f8bcf0() = 0;
+    virtual float* white_00f8bce0() = 0;
+    virtual std::uint32_t* black_guard_00f8bcdc() = 0;
+    virtual float* black_00f8bccc() = 0;
+    // [0109CF04] the platform object; its +0Dh byte is the widescreen flag.
+    virtual void* platform_0109cf04() = 0;
+    // 00BF7FBF __stricmp (CRT, cdecl).
+    virtual int stricmp_00bf7fbf(const char* left, const char* right) = 0;
+    // 00425850 BSP_NativeString_EqualsCStringInsensitive, __thiscall(string;
+    // const char*) RET 4 -> AL.
+    virtual bool native_string_equals_insensitive_00425850(const NativeStringHeader* self,
+        const char* text) = 0;
+    // 0041DD40 BSP_NativeString_Resize, __thiscall(string; length, preserve) RET 8.
+    virtual void native_string_resize_0041dd40(NativeStringHeader* self, std::uint32_t length,
+        std::uint32_t preserve) = 0;
+    // 00BF7680 memcpy (CRT).
+    virtual void memcpy_00bf7680(void* dst, const void* src, std::uint32_t size) = 0;
+    // 00AA2490 BSP_GuiLayout_WidgetTypeForKey, __fastcall(ECX = const
+    // NativeString*) -> type tag (0 for none).
+    virtual std::uint32_t widget_type_for_key_00aa2490(const NativeStringHeader* key) = 0;
+    // 00B75030 BSP_GeneratedModel_Construct, __thiscall(block; argument) RET 4
+    // -> model. 00AAA710 passes its NativeString temporary (cc13_gui1's
+    // scene_node_construct_00b75030 is typed for a C string at 00AA6640).
+    virtual void* generated_model_construct_00b75030(void* block, const NativeStringHeader* name) = 0;
+    // widget->vtable[+5Ch]() -> type id; widget->vtable[+34h](DWORD of a byte);
+    // child->vtable[+18h](visitor); child->vtable[+78h]().
+    virtual std::uint32_t widget_vslot5c(void* widget) = 0;
+    virtual void widget_vslot34_dword(void* widget, std::uint32_t value) = 0;
+    virtual void widget_vslot18(void* widget, void* visitor) = 0;
+    virtual void widget_vslot78(void* widget) = 0;
+};
+
+// 00AAA710 BSP_GuiWidget_ReadPropertiesAndChildren, __thiscall(ECX = widget;
+// visitor) RET 4, SEH 00CB7571, frame 7F8h.
+void gui_widget_read_properties_and_children_00aaa710(GuiWidgetReadPropertiesHooks& host, void* widget,
+    void* visitor);
+
 }  // namespace bsp::cc13_gui2
