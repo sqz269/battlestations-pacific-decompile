@@ -17618,3 +17618,27 @@ yamato. The BSM01 WINS row reaches the ship and squadron arms (`l64rt_b1_ref.log
   The image's member loop takes each member's own +FCh as the translation (008A0D9B-008A0DBF), as the host does.
 - (a) an argument that is neither squadron, ship nor plane (008A0E6F vtable[88h] on, e.g., a land unit or a path
   point) stays the `008a0eb8` unimplemented record; no WINS row reaches it (JM02 `RePos` is not a WINS row).
+
+### 5hy.1 USNOS pair and flip: `kChooserSurfaceSetBranchBound` **ON**
+
+Exports of 1ebb5f062 (`local\l65_cs_off`, `local\l65_cs_on` with the switch flipped); USNOS 30000 fr, orders
+`local\l65_os_c1.txt` (cc9-ships55's `s55_os_c1.txt`), reference env; logs `local\l65rt_osoff_ref.log` /
+`local\l65rt_oson_ref.log` (manifests beside them). No mission end on either side. pair_diff 3 (moved).
+
+| | OFF | ON |
+|---|---|---|
+| set-branch answers with tail=1 (all MLandFort, in_set=0) | 9 (answered not surface) | 76 (surface) |
+| kind-7 moveto installs | 16 | 4 (non-hangar orders) |
+| dive-bomb task installs (kind 8) | 0 | 71 |
+| dive-bomb releases | 0 | 10 of 49 |
+| "Hangar, Small, 02 02" (Intrepid strikes) blast hits / damage | 0 / 0 | 14 / 120 |
+| "Hangar, Large, 08 01" (Essex strikes) | 35 / 102.4 | 35 / 102.4 (unchanged) |
+| deaths | 210 | 272 |
+
+Mechanism as predicted: every hangar launch now picks divebomb 00E08F20 and installs kind 8. Intrepid's squadrons reach
+Hangar Small 02 02, dive and release. Essex's squadrons die on the way to Hangar Large 08 01: at 368.28 s all three
+Essex_sqn03 planes, at about 1300 m, take Shimotsuke's bullet-23 flak blasts (range 190 m, 184 damage each). That is
+the gunnery lane's flak, not this switch. The death rows move a lot because the bombers now attack: new kills are
+airfield structures (bunker, storage, AA platform, houses), and later launches get different squadron numbers. Rows that
+never reach the branch are identical by construction: in the OFF re-time logs, USN01 (ref and 20,3), JM08 ref and
+LOMP06 ref log no tail=1 answer. Flipped ON by mechanism.

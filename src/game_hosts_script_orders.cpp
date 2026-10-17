@@ -159,7 +159,7 @@ inline constexpr bool kSquadronMemberOrdnanceBound = true;   // ON: SQUADRON_LAN
 // then the tail with allow_far). False: the branch answers "not surface", so
 // every ordnance class fails and a squadron ordered onto a hangar gets 007F1688's
 // moveto instead of divebomb.
-inline constexpr bool kChooserSurfaceSetBranchBound = false;
+inline constexpr bool kChooserSurfaceSetBranchBound = true;   // ON: SQUADRON_LAND_TASK 5hy.1
 // Packet cc9_l65_turn_member (SQUADRON_LAND_TASK 5hz). 008A0A10 takes its squadron
 // arm (008A0D5D vt[5Ch](18h)) only for a squadron argument. True: a member plane
 // that is not the squadron's fused leader takes the plane arm (008A0E6F, its own
