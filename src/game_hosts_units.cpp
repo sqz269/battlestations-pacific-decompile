@@ -9088,7 +9088,7 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     // centre is 0.5 x (world min + max) in XZ (009FDD8F-009FDDC5), over
     // GGame+711Ch/7124h/7128h/7130h = the Lua host's NW.x / NW.z / SE.x / SE.z.
     // False: near_edge stays false, as every host site forced it.
-    static constexpr bool kFlyToWorldEdgeBound = false;
+    static constexpr bool kFlyToWorldEdgeBound = true;  // ON: identical where reached, near arm not reached yet (docs/OCEAN_WAVE_FIELD.md 42.1)
     unsigned long long fly_to_edge_calls_{0}, fly_to_edge_near_{0};
     void fly_to_world_edge_009fdd62(bsp::FlyToSolverInputs& fin) {
         fin.world_edge.near_edge = false;

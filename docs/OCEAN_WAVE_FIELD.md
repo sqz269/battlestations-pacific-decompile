@@ -1593,3 +1593,17 @@ with margin 500 and the centre as above. A summary line counts calls and near an
 shows calls > 0 on every row with solver users; near > 0 only where a plane steering through the solver comes within
 500 m of the map edge. Rows where that never happens are gameplay identical (USN04 45000 expected identical: its
 strikes fly in open ocean). Where it happens, those planes' headings bend toward the map centre near the edge.
+
+### 42.1 The pair: gameplay identical, the near arm not reached; ON
+
+Export of 5f839f749 with the switch flipped (`local\p12_we`, exe 5B737877E477) against that commit's build
+(`local\p12_offwe`). Reference env; logs `local\p12we_<on|off>_<e8|u4>.log`.
+
+| Row | Result |
+| --- | --- |
+| ESMP08 60000 (`esmp08_p12_e8_rb`) | `pair_diff` 1, gameplay identical; ON `calls=4076 near=0` |
+| USN04 45000 | ON `calls=0 near=0` (no solver user ever runs), so identical by construction; no OFF run |
+
+The gate is evaluated on every ESMP08 solver call and never answers "near": no solver user flies within 500 m of
+that map's edge. The binding computes what the image computes there, so it is **flipped ON**; the pull itself is
+unexercised in these rows (a row with solver users near an edge would show `near > 0` and moved headings).
