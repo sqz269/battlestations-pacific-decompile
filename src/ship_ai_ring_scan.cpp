@@ -58,17 +58,19 @@ float ship_ai_ring_scan_decay_score_009e6400(float bearing,
     // 009E641D..009E6426, the sign mask, then a float reload at 009E642A.
     const float magnitude = sign_masked(wrapped);
     // 009E642E FCOMIP of the constant against the magnitude, JBE to the
-    // subtracting arm: an unordered pair takes the dividing arm.
+    // subtracting arm: an unordered pair (CF=ZF=1) takes the JBE too.
     double ramp = 0.0;
-    if (kShipAiRingScanDecayPeak <= static_cast<double>(magnitude)) {
+    if (!(static_cast<double>(magnitude) < kShipAiRingScanDecayPeak)) {
         ramp = (kShipAiRingScanDecayEdge - static_cast<double>(magnitude)) /
                kShipAiRingScanDecaySpan;
     } else {
         ramp = static_cast<double>(magnitude) / kShipAiRingScanDecaySpan;
     }
-    // 009E644C, the one float store, then 009E6450 FLD1 / FCOMIP / JBE.
+    // 009E644C, the one float store, then 009E6450 FLD1 / FCOMIP / JBE to the
+    // 009E646D store of the value itself: only an ordered ramped > 1.0 takes the
+    // 1.0 ceiling at 009E645C; a NaN (unordered, CF=ZF=1) is stored as it is.
     const float ramped = static_cast<float>(ramp);
-    if (!(static_cast<double>(ramped) <= 1.0)) {
+    if (static_cast<double>(ramped) > 1.0) {
         return kShipAiRingScanScoreCeiling;
     }
     return ramped;
