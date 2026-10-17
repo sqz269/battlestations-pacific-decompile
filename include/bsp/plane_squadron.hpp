@@ -173,7 +173,7 @@ extern const char kSquadronMultiWingSuffix[];   // 00CF8038, "|.-"
 // 007F49EF uses it for a wing plane's "|.-" suffix and 007438F6 for a land convoy
 // member's "-" suffix. True: both host names use it ("plane #4.4|.-II",
 // "<convoy>-III"). False: decimal digits, as before.
-inline constexpr bool kRomanMemberNamesBound = false;
+inline constexpr bool kRomanMemberNamesBound = true;   // ON: SQUADRON_LAND_TASK 5hv.8
 // cc13's land_convoy_member_name_00742a70 (src/cc13_seg41_land.cpp) as text.
 std::string roman_member_number_00742a70(std::int32_t n);
 // Writes the suffix (not the squadron name) for wing `index` of `wing_count`.

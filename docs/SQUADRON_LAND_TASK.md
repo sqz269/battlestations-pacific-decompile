@@ -17445,3 +17445,25 @@ LuaObjects; only a true answer copies the name and calls 00887E50 / 00887B30. 00
 `GameMissionLuaHost::global_is_defined` (game_hosts_lua.cpp) tested `!lua_isnil`. True tests `lua_isfunction`; it
 also gates the host's created-script calls, whose names are functions. This installation assigns
 `luaStageInit` / `luaEngineMovieInit` only as functions, so the prediction is identical on every row.
+
+### 5hv.8 IsFunction and roman-name pairs; both flipped
+
+Exports of 851c0e67d (`local\l63_on`: kEntryPointIsFunctionBound; `local\l63_on2`: kRomanMemberNamesBound), paired
+against the re-time reference runs of the same tree with both OFF (exe `local\l63_rt`, 7a31a4fef, 9CCCFF2E9EF3;
+WINS_TABLE 2026-10-17 re-time). Logs `cc9-lua52\local\l63rt_<tag>.log` with manifests.
+
+| Pair | OFF (re-time ref) | ON | Verdict |
+|---|---|---|---|
+| IsFunction USN02 | completed 200.06 s | completed 200.06 s | identical |
+| IsFunction LOMP06 | failed 744.09 s | failed 744.09 s | identical (every entry point `defined=1 dispatched=1`) |
+| Roman LOMP10 | completed 1476.87 s | completed 1559.95 s, guard | moved |
+| Roman USN01 | completed 699.95 s, guard | **no end** (26000 frames) | moved, win lost |
+
+- Roman mechanism: every wing plane is now `<squadron>|.-II/-III/...` (`B-25 01|.-II`, `ConTBD1|.-II`); nothing in
+  the host parses a member name, and no USN01/LOMP10 order line names one. The moves come from the per-name keyed
+  stand-in streams (`<name>#lb...` etc.; a host SUBSTITUTION for the image's shared 00BD2F10 draws): USN01's first
+  moved death is KatTBD's second plane at 166.21 -> 167.36 s, then Convoy1 (171.41 s, ScoutDauntless) survives and
+  the run never completes. A spread miss with the mechanism matching: flipped, recorded; USN01 needs a re-plan.
+- Order files that name wing planes in decimal (`usnos_s45_os_k.txt`, the USNOS a7 plan) must use the roman form
+  from this commit on.
+- IsFunction flipped (identical).

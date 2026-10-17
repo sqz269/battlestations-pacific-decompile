@@ -627,3 +627,44 @@ mechanism is in the cd761bb52 section above).
   release path's default. The re-plan waits on a lead decision (OCEAN_WAVE_FIELD 43.1, 44).
 - **JM08 `cc9-ships44\local\s52_j8_b3.txt` still wins under kPathFollowFinishBound ON** (cc9-ships54, 56734e5ec):
   completed 1329.87 -> 1336.88 s, guard logged (`cc9-ships44\local\s54_p1_j8.log`).
+- **Re-time on 7a31a4fef** (cc9-lua63, 2026-10-17 UTC; origin/main b64fd347d plus the level-bomb flips f84b3e537, so
+  kVehicleClassRowIdBound and the 5hv flips are ON; kEntryPointIsFunctionBound / kRomanMemberNamesBound still OFF).
+  Exe `cc9-lua52\local\l63_rt` (9CCCFF2E9EF3), reference env, `--stop-after-end 40`; logs
+  `cc9-lua52\local\l63rt_<row>_<ref|j3>.log` with manifests. "Was" is lua62's 25fbdcba0 re-time or the row's own record.
+
+  | Row (plan) | frames | reference | 20,3 | was (ref / 20,3) |
+  |---|---|---|---|---|
+  | JM08 `l62_j8_w1` | 110000 | **no end** | **no end** | 1954.48 / 1464.00 |
+  | JM06 `p12_j6_a4` | 120000 | **no end** | completed 2000.83 s | 2226.05 / 2343.16 |
+  | IJN08 `p10_i08_z` | 100000 | completed 3937.72 s | **failed 959.89 s** (Game Over) | 3006.81 / 3947.73 |
+  | USN12 `g45_u12_e7` | 36000 | completed 1685.52 s | completed 1675.51 s | identical |
+  | ESMP08 `p12_e8_rb` | 140000 | **no end** | **no end** | 3334.33 / 3594.58 |
+  | PRCP01 `p9_p01_k` | 30000 | completed 877.26 s | completed 572.28 s | 536.29 / 800.68 |
+  | BSM09 (no orders) | 36000 | EndMission 914.90 s, narrative complete 920.90 s | **failed 1016.88 s** (Game Over) | 917.90 / not run |
+  | USN15 `g46_u15_tl` | 144000 | no end (survives) | no end (survives) | failed 1417.31 / failed |
+  | IJN18 `s46_i18_a` | 64000 | EndMission 2032.86 s | EndMission 2216.04 s | 2183.00 / 2166.99 |
+  | BSM01 `p6_b1_a` | 40000 | EndMission 779.93 s | EndMission 1515.40 s, **no guard** | 833.92 / 875.91 |
+  | LOMP10 `p3_l10_b` | 36000 | completed 1476.87 s | completed 1433.82 s | 1293.69 / 1276.67 |
+  | USN01 `p8_u1_i` | 26000 | completed 699.95 s | completed 749.94 s | 365.03 / 360.04 |
+  | USN02 `s36_u2_p7` | 16000 | completed 200.06 s | completed 200.06 s | 200.06 / 205.06 |
+  | LOMP06 `l50_l6_q6` | 16000 | **failed 744.09 s** | **failed 611.12 s** | 374.83 / 373.83 |
+
+  Every completion and every EndMission row except BSM01 20,3 logged the guard. Losses and their first moved death
+  (`l62_deathdiff.py` against the win log):
+  - JM08 (both): Medium Bunker, Concrete 02 at 65.45 s (AA truck 07) -> 63.95 s (Patrolboat 01) against
+    `l62_j8w1.log`. kVehicleClassRowIdBound (a96d382c5) also makes CheckPrim3 wait for the C47 wave
+    (Mission.Dakota), so the plan must now shoot the C47s down; re-plan.
+  - JM06 reference: Fletcher-class 09, 168.11 s (PlayerSub 03) -> survives to 1616.8 s (PlayerSub 01); first hit
+    +3.85 s against `cc9-physics1\local\p12j6_a4_ref.log`.
+  - IJN08 20,3: Cargo1, 324.14 s (JapSub1) -> 296.9 s (JapSub2) against `l62rt_i08_j3.log`.
+  - ESMP08 (both): identical to cc9-physics12's `p12e8d_rb_ref.log` (1321 deaths each); against the `c` win
+    the first moved death is Zuiho_sqn03|.-3 at 382.23 s (Cummings) -> 382.78 s (Case).
+  - LOMP06 (both): Toba Maru (191.81 s, Narwhal) survives; Kongosan Maru moves 184.86 -> 184.76 s first.
+  - BSM01 20,3: EndMission is set in phase 3 but `lua_Think` fails at commandhelpers.lua:5991
+    (`luaObj_IsActive` on a missing objective), and no completion or guard line follows.
+  - BSM09 20,3 had never been run; it fails.
+- **Then flipped on the same tree (cc9-lua63, SQUADRON_LAND_TASK 5hv.8):** kEntryPointIsFunctionBound (identical on
+  USN02 and LOMP06) and kRomanMemberNamesBound. The roman flip keeps LOMP10 (completed 1559.95 s, guard) but **loses
+  USN01** (no end in 26000 frames; KatTBD's second plane dies 1.15 s later and Convoy1 survives), through the
+  per-name keyed stand-in streams. USN01 `p8_u1_i` needs a re-plan on the flipped tree, the plane-heavy rows' times above
+  move with the flip, and order files must name wing planes `|.-II` etc.
