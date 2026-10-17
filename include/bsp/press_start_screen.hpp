@@ -2,6 +2,7 @@
 #include <cstdint>
 
 #include "bsp/frontend_states.hpp"
+#include "bsp/const_exact_image_bits.hpp"
 
 // Press-start screen of the title state (`FE_initial`).
 //
@@ -47,7 +48,7 @@ inline constexpr const char* kSaveNameFormat = "%llx";
 
 // Prompt-alpha pulse constants read by 0067cfc8..0067d005.
 inline constexpr double kPromptPulseRate = 2.5; // 00CE3DE0
-inline constexpr double kPromptPulsePeriod = 6.283185307179586; // 00CE3828
+inline constexpr double kPromptPulsePeriod = kConstExactImageBitsBound ? 0x1.921fb6p+2 : 6.283185307179586; // 00CE3828; image bits 401921FB60000000 at 00CE3828
 inline constexpr float kPromptPulseRgb = 1.0f; // 00D7A24C
 
 // ---------------------------------------------------------------------------

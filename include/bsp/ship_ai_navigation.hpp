@@ -6,6 +6,7 @@
 
 #include "bsp/ship_ai_states.hpp"
 #include "bsp/unit_autopilot_pair.hpp"
+#include "bsp/const_exact_image_bits.hpp"
 
 namespace bsp {
 // The navigation arm of 009ED6B0 and the record the ship AI publishes into the
@@ -166,11 +167,11 @@ struct ShipAiNavResult {
 };
 
 // The literals the arm uses, from the image.
-inline constexpr double kShipAiNavBearingDeadzone = 0.1;      // 00D7A3A0, 009EE7EB
+inline constexpr double kShipAiNavBearingDeadzone = kConstExactImageBitsBound ? 0x1.99999ap-4 : 0.1;      // 00D7A3A0, 009EE7EB; image bits 3FB99999A0000000 at 00D7A3A0
 inline constexpr double kShipAiNavTurnLeadRange = 1000.0;     // 00CE47A0, 009EE83A
 inline constexpr float kShipAiNavTurnLeadCap = 1000.0f;       // 00CE3804, 009EE824
 inline constexpr double kShipAiNavPathLengthScale = 1.5;      // 00CE3D78, 009EE856
-inline constexpr double kShipAiNavQuarterTurn = 1.57079637051; // 00CE3830, 009EE8B7
+inline constexpr double kShipAiNavQuarterTurn = kConstExactImageBitsBound ? 0x1.921fb6p+0 : 1.57079637051; // 00CE3830, 009EE8B7; image bits 3FF921FB60000000 at 00CE3830
 inline constexpr double kShipAiNavNextLegMinLength2 = 100.0;  // 00D7A220, 009EE7C3
 inline constexpr float kShipAiNavCosineFloor = 0.001f;        // 00D7A23C, 009EEA64
 

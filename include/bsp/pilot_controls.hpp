@@ -3,6 +3,7 @@
 
 #include "bsp/plane_flight.hpp"  // PlaneControlInput, PlaneControlLatch, plane_control_off
 #include "bsp/unit_orders.hpp"   // UnitPlanSlot, seed_unit_plan_slot_0099b450
+#include "bsp/const_exact_image_bits.hpp"
 
 // Projection of the producers of the plane's control axes: the pilot command block at
 // unit+9FCh, the quantiser 007BB6E0 that turns it into the pilot control block unit+9E4h,
@@ -81,7 +82,7 @@ inline constexpr int kPilotQuantizeCentre = 0x80;     // 007BB71D ADD EAX,-80h
 inline constexpr float kPilotAxisLow = -1.0f;      // 00D7A260, the bipolar lower bound
 inline constexpr float kPilotAxisHigh = 1.0f;      // 00D7A24C
 inline constexpr float kPilotUnipolarLow = 0.0f;   // an immediate zero at 007CB1C7
-inline constexpr float kPilotPitchHalfRange = 0.5236f;  // 00CEC724, 30 degrees
+inline constexpr float kPilotPitchHalfRange = kConstExactImageBitsBound ? 0x1.0c1524p-1f : 0.5236f;  // 00CEC724, 30 degrees; image bits 3F060A92 at 00CEC724
 // cc13-fix67 (fix6a), OFF: 005196E6 is FDIV qword [00CEC730], whose eight bytes 3FE0C15240000000
 // are pi/6 as a widened float (0.5235988); 2.0 was the low dword read as a float. The same
 // qword scales the stick at 00519697 (FMUL) before the wrapped subtract that makes the error.

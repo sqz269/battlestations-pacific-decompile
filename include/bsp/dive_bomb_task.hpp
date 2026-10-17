@@ -18,6 +18,7 @@
 // tick 009C4A40; the attackrun tick 009C4220; the follow base tick 009C1FD0.
 
 #include "bsp/bot_task_states.hpp"
+#include "bsp/const_exact_image_bits.hpp"
 
 namespace bsp {
 
@@ -845,7 +846,7 @@ namespace dive_bomb_flyabove_constant {
 // compare loads. dive_bomb_constant::kMoveToRangeBias is the same 00D7A220.
 inline constexpr float kHeightFloor = 100.0f;            // 00CE3D08
 // 009C65C5 and 009C65CB.
-inline constexpr double kHeightScale = 0.7000000029802322;  // 00CEFFA0, qword
+inline constexpr double kHeightScale = kConstExactImageBitsBound ? 0x1.666666p-1 : 0.7000000029802322;  // 00CEFFA0, qword; image bits 3FE6666660000000 at 00CEFFA0
 inline constexpr double kHeightBias = 200.0;                // 00CE4D70, qword
 // 009C662F and 009C660B: the leave tolerance runs from 20 degrees to pi.
 inline constexpr float kLeaveToleranceLow = 0.3490658700466156f;  // 00CE398C

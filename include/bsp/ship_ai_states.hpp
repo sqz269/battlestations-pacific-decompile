@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include "bsp/const_exact_image_bits.hpp"
 
 namespace bsp {
 // The ship AI state family at vtable 00D21598 and the control block the three
@@ -205,7 +206,7 @@ bool ship_ai_direct_control_arm_009ed6b0(ShipAiControlBlock& blk, float seconds,
                                          ShipAiDirectControlHost& host);
 
 // The two literals the arm uses, from the image.
-inline constexpr double kShipAiThrottleDeadzone = 0.05;   // 00D7A270
+inline constexpr double kShipAiThrottleDeadzone = kConstExactImageBitsBound ? 0x1.99999ap-5 : 0.05;   // 00D7A270; image bits 3FA99999A0000000 at 00D7A270
 inline constexpr float kShipAiLookAheadBonus = 2000.0f;   // 00CF0DD8
 
 // ---------------------------------------------------------------------------

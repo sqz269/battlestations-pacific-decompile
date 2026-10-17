@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "bsp/mission_scene_contents.hpp"
+#include "bsp/const_exact_image_bits.hpp"
 
 // The four scene-contents steps that BSP_Game_LoadSceneContents (004D4DF0)
 // delegates to, and that bsp/mission_scene_contents.hpp still declares only as
@@ -163,7 +164,7 @@ float scene_cloud_weight_total(const std::array<float, 3>& weights) noexcept;
 // distance is at or below the double at 00CE3820 (about 9.99e-11) it uses 0.0
 // instead of calling sqrt (00BF7030). A candidate is rejected as soon as
 // placed_separation + candidate_separation > distance.
-inline constexpr double kSceneCloudDistanceEpsilon = 9.9999999392252903e-11; // 00CE3820
+inline constexpr double kSceneCloudDistanceEpsilon = kConstExactImageBitsBound ? 0x1.b7cdfd9d7bdbbp-34 : 9.9999999392252903e-11; // 00CE3820; image bits 3DDB7CDFD9D7BDBB at 00CE3820
 
 bool scene_cloud_candidate_rejected(
     const std::array<float, 3>& candidate,
