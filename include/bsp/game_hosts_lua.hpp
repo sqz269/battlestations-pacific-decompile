@@ -376,6 +376,12 @@ inline constexpr bool kGenerateObjectRespawnsDeadBound = true;   // ON: SQUADRON
 // or not (usn_03:1621-1636 makes Max Kate/Val pairs; ijn_23 FinalJP1..3 three each).
 // False: kGenerateObjectRespawnsDeadBound's narrowed deviation.
 inline constexpr bool kGenerateObjectEveryCallBound = false;
+// Packet p16_lua_natives (cc13 verify5, census `:3689`). True: SpawnNew's placement
+// walk 00941D30 refuses a member outside the map through 0071C4F0 on this host's
+// own Map bounds (border_bounds_, loaded by set_world_border_zones), so the image's
+// retry / requeue arms are reached. With no bounds loaded nothing is refused.
+// False: no member is ever outside the map.
+inline constexpr bool kSpawnPlacementMapBoundsBound = false;
 
 // docs/CC13_AUDIT_LUA51_FLIPS.md item 1c. 00988510 boxes, and 0097B8C0 matches,
 // the target as hitEntity->vtable[140h]() kept only when it answers IsKindOf(2)

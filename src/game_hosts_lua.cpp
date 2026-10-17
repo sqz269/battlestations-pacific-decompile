@@ -3706,12 +3706,16 @@ namespace {
 // Packet cc9_spawn_new_placement: what 00941D30 walks, from this process's
 // units. [[00E188A8]+19CCh]+58h is taken as every live unit; party is the row's,
 // position unit+FCh..+104h (unit_position_00fc).
-// SUBSTITUTION, labelled: 0071C4F0's world bounds are held by the zone runtime,
-// which this host does not reach, so no member is refused as outside the map.
+// 0071C4F0 tests this host's own Map bounds under kSpawnPlacementMapBoundsBound
+// (packet p16_lua_natives); without it, or with none loaded, nothing is outside.
 class SpawnPlacementUnits final : public bsp::SpawnPlacementWorld {
 public:
-    explicit SpawnPlacementUnits(const GameUnitsHost& units) : units_(units) {}
-    bool point_outside_map_0071c4f0(const float*) const override { return false; }
+    SpawnPlacementUnits(const GameUnitsHost& units, const bsp::WorldMapBounds* bounds)
+        : units_(units), bounds_(bounds) {}
+    bool point_outside_map_0071c4f0(const float* p) const override {
+        if (!kSpawnPlacementMapBoundsBound || bounds_ == nullptr || p == nullptr) return false;
+        return bsp::point_outside_world_map_0071c4f0(*bounds_, {p[0], p[1], p[2]});
+    }
     void placement_entities(std::vector<bsp::SpawnPlacementEntity>& out) const override {
         out.clear();
         for (std::size_t i = 0; i < units_.count(); ++i) {
@@ -3725,6 +3729,7 @@ public:
     }
 private:
     const GameUnitsHost& units_;
+    const bsp::WorldMapBounds* bounds_;
 };
 }  // namespace
 
@@ -3785,7 +3790,7 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
             m.class_width_a4 = row.width;
             m.has_class_extents = true;
         }
-        placement_world.emplace(script_orders_->units());
+        placement_world.emplace(script_orders_->units(), world_border_bounds());
         bsp::set_spawn_placement_world(&*placement_world);
     }
     struct ClearWorld {
