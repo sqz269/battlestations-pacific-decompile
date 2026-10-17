@@ -94,7 +94,7 @@ inline constexpr double kRotationAngleFloor_00d7a350 = 1e-8;
 // angle and 0085D3D0 are rounded to float at every operation (24-bit precision
 // control, docs/CC13_FPU_PRECISION.md). False: the |z| > |x| X/Z pick, no
 // 0085D3D0, and the double-held length.
-inline constexpr bool kRotateAboutAxisImageTailBound = false;
+inline constexpr bool kRotateAboutAxisImageTailBound = true;   // ON by its pairs (OCEAN_WAVE_FIELD 51.4)
 
 // 00D7A218 is 0.0f, 00D7A24C is 1.0f, 00D7A208 is -0.0f. All three are recorded
 // in docs/TICK_ELEMENT_OVERRIDES.md:41 and re-read here.

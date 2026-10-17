@@ -2074,3 +2074,22 @@ miss is recorded and belongs to 50.7.
 - The host lets a wingman start its final about 10 s behind the previous lander, which still taxis for 20-30 s.
 - Next: read the sequencer's hold against the runway's occupants (`006C7960` mode 3 -> 4, `006BED60`, the occupancy
   vector `+34h`). 48.1 found no hold in `006BED60`, so read the corridor test and `rec+8` next.
+
+### 51.4 Measured, and the verdict: ON
+
+Both sides are builds of 169839289. OFF is `local\p14_off_rt` (the tree build). ON is `local\p14_rt`
+(`--flip kRotateAboutAxisImageTailBound=true`). Reference environment. Logs are `local\p14rt{off,on}_<row>.log`.
+
+| row | `pair_diff` | death rows | plane deaths OFF / ON | NaN |
+| --- | --- | --- | --- | --- |
+| USN01 3000 | 3 | 33 = 33, 2 changed | 5 / 5 | none |
+| JM05 9000 | 3 | 44 = 44, 21 changed; Shokaku (OFF) and Zuikaku (ON) swap | 26 / 26 | none |
+| USN04 4500 | 3 | 51 = 51, 27 changed | 51 / 51 | none |
+| BSM01 3000 (control) | 1 | 0 | - | none |
+
+1. **Held:** every row with planes moves (3), at the timing level.
+2. **Held:** no regime change. The plane death counts are equal on every row, and no NaN appears. The JM05 carrier
+   swap is a moved attack timing on the shared stream.
+3. **Held:** the control returned 1.
+
+**Verdict: `kRotateAboutAxisImageTailBound = true`.** It is the image's own tail, and every row keeps its regime.
