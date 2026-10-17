@@ -216,7 +216,7 @@ inline constexpr bool kAutoTargetOverrideBound = false;
 // squadron free-attack tick 009F8470 sends its override (0071D980) to the members'
 // directors and the units host runs the override's life around it. False: nothing
 // sends.
-inline constexpr bool kSquadronFreeAttackOverrideBound = false;
+inline constexpr bool kSquadronFreeAttackOverrideBound = true;   // ON by its pairs (OCEAN_WAVE_FIELD 57.5)
 // The override layer itself (0071D980 / 0071E7F0, 0071D9E0 -> 0071E610, 0071EB60's
 // override arm, 0071C130(0)) runs for either sender; the ship tick's step 14 and
 // 00836D67 stay on kAutoTargetOverrideBound alone.

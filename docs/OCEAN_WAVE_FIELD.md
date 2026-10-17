@@ -2462,3 +2462,23 @@ in this pass points at it. **Closed**, no binding. If USNOS #4.4/#4.5 needs a di
   and ordnance or a fighter class meets a detected enemy.
 - Counters: `sends` = overrides installed; `cleared` follows each dead target or ended attack; no member may hold
   mode 2 after its leader's override cleared.
+
+### 57.5 Measured, and the verdict: ON
+
+Both sides are builds of dd056450d: OFF `local\p14_sf`, ON `local\p14_br` (the flip). Reference environment,
+`--stop-after-end 40`. Logs `local\p15fa{off,on}_<row>.log` with manifests. No NaN on any ON log.
+
+| row | `pair_diff` | sends / cleared ON | deaths OFF -> ON | first moved |
+| --- | --- | --- | --- | --- |
+| USN04 4500 | 3 | 37 / 29 | 51 -> 56 (5 US fighters only ON, Zero #8.2/.-II only OFF) | first hit 97.05 -> 90.50 s, after the first override at 63.05 s |
+| JM05 9000 (fails at 300.05 s both sides) | 3 | 2 / 0 | 44 -> 46 (Lexington sqn03 only ON) | MainAirfieldEntity 01_sqn01's strafe override (88.8 s); its deaths move from 109 s |
+| BSM01 30000 | 1 | 0 / 0 | identical | none |
+| ESMP08 30000 | 0 | 0 / 0 | identical (184) | none (every tick ends at no_target: no head is moveto/stop/moveonpath with ordnance or a fighter, or no detected contact) |
+
+1. **Held:** the moved rows move from the first override and not before; the rows with no override are identical.
+2. **Held:** on USN04 the US fighters (stop head, fire only, filter C) dogfight the escorting Zeros and the Zeros
+   (moveto head) dogfight the US squadrons; removed targets re-point or end (29 clears, 61 head tasks rebuilt).
+
+**Verdict: `kSquadronFreeAttackOverrideBound = true`.** It is 009F8470 as cc13 read it, on ships56's override layer with
+cc13-verify1's 0071E7F0 fix. USN04 and JM05 move strongly; reference rows with squadrons on moveto/stop heads need
+re-timing on the new base.
