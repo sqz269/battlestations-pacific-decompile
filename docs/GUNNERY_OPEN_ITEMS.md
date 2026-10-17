@@ -15923,3 +15923,32 @@ the owner's gameplay-modifier product (`008E6430(1, owner+0ACh)`, only while `[0
 and neither `00826F10` nor `008777D0` reads a party. The host's `apply_impact_blast` skips the shooter alone, the same
 rule. So a friendly ship's burst near a target does damage a friendly PT boat in the image; BSM01 20,3 is a plan
 question (keep HenryPT clear of Sacramento's target), not a gunnery fix.
+
+### 272.4 The InferiorFailure arm of `00958A30` (packet `cc9_g51_inferior_failure`, lead item 4)
+
+`kInferiorFailureArmBound` (`src/game_hosts_gunnery.cpp`), committed OFF. `00958A30` is the `vtable[1B0h]` of every
+LandFort (`00CFF3F8+1B0h`), airfield (`006D0D40`, a JMP to it), shipyard (`00D0B770`), land vehicle (`00CFFDE0`) and
+unit base (`00D1A698`); a scan for the dword finds no other vtable. With `+71Ch` set it never destroys at health 0.
+`006F5CC0` writes `+71Ch` (`006F5E9B`) on every adopted LandFort, airfield and shipyard (kinds 1Bh/45h/46h, MinLevel
+bag, within InferiorRange), and so does the garrison re-create `006F3836`. The host gave `+71Ch` only to airfields
+(the airfield rule's caller) and kept only land masters alive, so an adopted fort died at health 0.
+
+ON, for any unit whose `+71Ch` resolves (the units host's 006F5CC0 pass 1, now gated on kinds 1Bh/45h/46h):
+- **First break** (health 0, `+720h` clear; `00958A7A..00958BC2`): `+720h` set (the 7Dh chain; the gun fixed step's
+  `0072D1C1` gate then holds its guns), `+728h` = 20 s (owner class `+190h` = CommandBuildingGlobals
+  SingleInvincibleTime in single player), or ShipYardRepairTime for kinds 45h/46h (owner class `+18Ch`). A CapturePost
+  LandFort (class `+174h`, `00749210`; only VehicleClass[206] "Capture Post" in this installation's vehicleclasses.lua,
+  mtime 2026-05-09) hands its CommandBuilding `vtable[1ACh](CapturePostDamage)` (default 1000) through `006F1F20`'s gate.
+- **Re-arm** (`00958BF4..00958CBE`): a later zero write with `+728h <= 0` re-seeds the window.
+- **`0095DA00`** refuses damage while `+71Ch` and `+728h > 0` (hit path, the land-master forward, script damage).
+- **`00956600`** counts `+728h` down each fixed step; **`00958D43`**: health back at max (the CommandBuilding repair
+  `006F47F0`, which already heals garrison members) sends 7Eh, clearing `+720h` and `+728h` (`0095AD7F`).
+- LABELLED: `vtable[204h]` of a fort read as its kind; `+358h` read as clear; `vtable[1B4h]` and the `00982C50`
+  notice (kinds 45h/46h, `0095AD26..0095AD52`, the HUD warning `BSP_WarningManager_FireFailure`) are presentation.
+
+**Predictions (ON vs OFF):** gameplay moves wherever an adopted fort reaches health 0. It is kept (no death row, no
+`unit_dead`), its guns fall silent until the building heals it back to full, and Lua sees it alive. JM08's HQ (349
+members) and USN01's CB2 (42) lose far fewer garrison deaths. The garrison re-create (`kCommandBuildingGarrisonReviveBound`)
+fires less, because members no longer die. A Capture Post's break costs its building 1000 hp, so captures can come
+sooner. `summary mission gunnery inferior failure` is ON-only. Pairs: JM08 `jm08_l64_j8_e`, USN01 `usn01_p8_u1_i`,
+USNOS `s45_os_k`.
