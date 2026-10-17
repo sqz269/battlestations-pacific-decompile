@@ -7,6 +7,7 @@
 #include "bsp/game_hosts_script_orders.hpp"
 namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_hosts_mission.cpp
 #include "bsp/strafe_task.hpp"
+#include "bsp/depth_charge_task_cc13.hpp"
 #include "bsp/game_hosts_commands.hpp"
 
 #include "bsp/air_operations.hpp"
@@ -1619,6 +1620,9 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
     in.has_general_bomb_ordnance = bsp::ordnance_has_general_bomb_2ah(set);
     in.has_drop_kamikaze_ordnance = bsp::ordnance_has_drop_kamikaze_2fh(set);
     in.has_torpedo_ordnance = bsp::ordnance_has_torpedo_2bh(set);
+    // Packet cc13-depthcharge1: 007EDA10 -> 007B94F0, kind 2Ch (Type
+    // "DepthCharge"). Lands with the task, never apart from it.
+    if constexpr (bsp::kDepthChargeTaskBound) in.has_depth_charge_ordnance = set.contains(0x2c);
     if constexpr (kSquadronMemberOrdnanceBound) {
         const bsp::PlaneSquadronHostRecord* sq =
             bsp::plane_squadron_registry().find_by_member_unit(unit_index);
@@ -1632,6 +1636,9 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
                 in.has_general_bomb_ordnance |= bsp::ordnance_has_general_bomb_2ah(ms);
                 in.has_drop_kamikaze_ordnance |= bsp::ordnance_has_drop_kamikaze_2fh(ms);
                 in.has_torpedo_ordnance |= bsp::ordnance_has_torpedo_2bh(ms);
+                if constexpr (bsp::kDepthChargeTaskBound) {
+                    in.has_depth_charge_ordnance |= ms.contains(0x2c);
+                }
             }
         }
     }

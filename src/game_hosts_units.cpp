@@ -74,6 +74,8 @@
 #include "bsp/strike_approach_ver_cc13.hpp"  // packet cc9_l57_ctl_cruise_cap
 #include "bsp/kamikaze_task_cc13.hpp"   // packet cc9_lua52_kamikaze_wiring
 #include "bsp/kamikaze_task_host.hpp"
+#include "bsp/depth_charge_task_cc13.hpp"
+#include "bsp/ordnance_kinds.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_observer_runtime.hpp"
@@ -564,6 +566,13 @@ struct GameUnitSlot {
     // Packet cc9_dogfight_task: the dogfight task (kind 2), installed when
     // 007EEC50 chose class 00E08F58. docs/DOGFIGHT_TASK.md.
     bool dogfight_task_installed{false};
+    // Packet cc13-depthcharge1: the depth-charge task 009A5240, behind
+    // bsp::kDepthChargeTaskBound. docs/CC13_DEPTH_CHARGE_TASK.md 7.
+    bool depth_charge_task_installed{false};
+    std::size_t dc_target_plus_one{0};
+    bsp::DepthChargeTask dc{};
+    unsigned long long dc_transitions{0};
+    unsigned long long dc_releases{0};
     // Packet cc9_strafe_arm (cc9-lua30): the strafe task (kind 0Ah, 6FCh bytes),
     // installed when 007EEC50 chose class 00E08F40, behind bsp::kStrafeTaskBound.
     // Approach fields by their 009CA4A0 offsets (approach = task+3F8h), state
@@ -26254,6 +26263,297 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         owner_.done("BotTaskDropKamikaze::arm", 0x009ae8a0u);
                     }
 
+                    // Packet cc13-depthcharge1 (bsp::kDepthChargeTaskBound, committed
+                    // OFF): the depth-charge task, kind 1, 009A6970 -> 009A5240 and
+                    // the arm 009A66C0. src/depth_charge_task_cc13.cpp holds the task;
+                    // this adapter maps its host calls onto what the strafe arm
+                    // already reads. Every SUBSTITUTION is labelled.
+                    // docs/CC13_DEPTH_CHARGE_TASK.md 7.
+                    void run_depth_charge_task_arm_009a66c0(float dt) {
+                        if (unit_.attack_command_class != bsp::kAttackCmdDepthCharge) {
+                            unit_.depth_charge_task_installed = false;
+                            return;
+                        }
+                        if (unit_.command_target_plus_one == 0) return;
+                        struct Adapter final : bsp::DepthChargeTaskHost, bsp::DepthChargeRandom {
+                            PlaneBinding& a;
+                            float moveto_near{0.0f}, moveto_far{0.0f}, moveto_speed{0.0f};
+                            explicit Adapter(PlaneBinding& arm) : a(arm) {}
+                            float uniform_00bd2f10(const char* key, float lo, float hi) override {
+                                return a.owner_.release_altitude_draw_00bd2f10(
+                                    a.unit_.row.name + "#dc" + key, lo, hi);
+                            }
+                            bsp::DepthChargeTuning tuning() override {
+                                bsp::DepthChargeTuning t;
+                                if (a.owner_.lua.plane_globals_loaded()) {
+                                    const bsp::GameTuningBlock& g = a.owner_.lua.plane_globals();
+                                    t.aim_alt_range_1_494 = g.pilot_depth_charge_aim_alt_range_1;
+                                    t.aim_alt_range_2_498 = g.pilot_depth_charge_aim_alt_range_2;
+                                    t.maneuver_alt_range_1_49c = g.pilot_depth_charge_maneuver_alt_range_1;
+                                    t.maneuver_alt_range_2_4a0 = g.pilot_depth_charge_maneuver_alt_range_2;
+                                    t.cruising_alt_4a4 = g.pilot_depth_charge_cruising_alt;
+                                    t.fly_above_dist_4a8 = g.pilot_depth_charge_fly_above_dist;
+                                    t.attack_dist_4ac = g.pilot_depth_charge_attack_dist;
+                                    t.safe_dist_4b0 = g.pilot_depth_charge_safe_dist;
+                                    t.reference_speed_4b8 = g.pilot_depth_charge_reference_speed;
+                                    t.target_lost_time_4bc = g.pilot_depth_charge_target_lost_time;
+                                }
+                                t.angle_prepare_66c = a.owner_.strafe_cone_tuning(0x66C);
+                                t.angle_move_to_670 = a.owner_.strafe_cone_tuning(0x670);
+                                t.angle_go_away_674 = a.owner_.strafe_cone_tuning(0x674);
+                                return t;
+                            }
+                            bsp::DepthChargeRow robot_row() override {
+                                // SUBSTITUTION, labelled, as the strafe rows: this
+                                // installation's robots.lua (mtime 2025-06-01) PilotBot
+                                // DepthCharge* by line: Stun :1286-1290, SPNormal :596-600,
+                                // SPVeteran :734-738, MPNormal :872-876, MPVeteran
+                                // :1010-1014, Elite :1148-1152.
+                                static constexpr bsp::DepthChargeRow kRows[6] = {
+                                    {100.0f, 100.0f, 20.0f, 200.0f, 1.0f},   // Stun
+                                    {15.0f, 30.0f, 4.0f, 200.0f, 1.0f},      // SPNormal
+                                    {0.0f, 0.0f, 2.0f, 200.0f, 0.4f},        // SPVeteran
+                                    {15.0f, 40.0f, 5.0f, 200.0f, 1.0f},      // MPNormal
+                                    {0.0f, 10.0f, 1.0f, 200.0f, 0.5f},       // MPVeteran
+                                    {0.0f, 0.0f, 2.0f, 200.0f, 0.4f},        // Elite
+                                };
+                                const int i = a.unit_.pilot_skill_index;
+                                return (!kSkillLevelBound || i < 0 || i > 5) ? kRows[1] : kRows[i];
+                            }
+                            bsp::DepthChargeClass class_block() override {
+                                bsp::DepthChargeClass c;
+                                c.max_spd_188 = a.unit_.plane_max_spd;
+                                c.travel_speed_190 = a.owner_.retreat_squadron_speed_3a0(a.unit_);
+                                c.turn_roll_25c = a.unit_.plane_class_turn_roll;
+                                c.turn_circle_radius_268 = a.unit_.plane_turn_circle_radius;
+                                c.level_flight_speed = a.owner_.bot_desired_speed_007c47f0(a.unit_);
+                                return c;
+                            }
+                            bsp::DepthChargeControlView control() override {
+                                bsp::DepthChargeControlView v;
+                                v.attack_mode_370 = static_cast<int>(a.unit_.st_attack_mode_370);
+                                // ctl+394h. SUBSTITUTION, labelled: the script's travel
+                                // altitude when one is set, else what the activation
+                                // profile 009A6500 stores there (Pilot/DepthCharge/
+                                // CruisingAlt); ctl+3ADh is then set either way.
+                                v.alt_394 = tuning().cruising_alt_4a4;
+                                const GameUnitSlot* sq = a.owner_.squadron_slot_of(a.unit_.process_index);
+                                if (sq != nullptr && sq->sq_alt_set) v.alt_394 = sq->sq_alt_394;
+                                v.flag_3ad = true;
+                                v.alt_loadout = false;   // [00E17BF2] = 0 in single player
+                                return v;
+                            }
+                            bsp::DepthChargeLeaderView leader() override {
+                                bsp::DepthChargeLeaderView v;
+                                const bsp::PlaneSquadronHostRecord* sq =
+                                    bsp::plane_squadron_registry().find_by_member_unit(a.unit_.process_index);
+                                if (sq == nullptr) {
+                                    v.present = true;
+                                    v.is_self = true;
+                                } else {
+                                    for (const std::size_t m : sq->member_units) {
+                                        if (m == bsp::kPlaneSquadronNoUnit || m >= a.owner_.slots.size()) continue;
+                                        if (!a.owner_.unit_is_flight_leader_007b8ad0(m)) continue;
+                                        const GameUnitSlot& l = *a.owner_.slots[m];
+                                        v.present = true;
+                                        v.is_self = m == a.unit_.process_index;
+                                        v.position = {l.motion.position[0], l.motion.position[1],
+                                                      l.motion.position[2]};
+                                        v.heading_50 = l.plane_heading_c6c;
+                                        break;
+                                    }
+                                }
+                                v.arm_9c1 = 0;   // SUBSTITUTION, labelled: leader+9C1h is not hosted
+                                return v;
+                            }
+                            std::array<float, 3> unit_position() override {
+                                return {a.unit_.motion.position[0], a.unit_.motion.position[1],
+                                        a.unit_.motion.position[2]};
+                            }
+                            std::array<float, 3> unit_velocity_34() override {
+                                return {a.unit_.plane_world_velocity[0], a.unit_.plane_world_velocity[1],
+                                        a.unit_.plane_world_velocity[2]};
+                            }
+                            float unit_speed_38() override { return a.st_speed_vt38(); }
+                            float unit_heading_50() override { return a.unit_.plane_heading_c6c; }
+                            bool bomber_kind() override { return a.st_bomber_kind(); }
+                            bool flight_leader_007b8ad0() override {
+                                return a.owner_.unit_is_flight_leader_007b8ad0(a.unit_.process_index);
+                            }
+                            bool has_depth_charge_ordnance_007b94f0() override {
+                                // SUBSTITUTION, labelled: the slot's static mask.
+                                return bsp::OrdnanceKindSet{a.unit_.ordnance_mask}.contains(0x2c);
+                            }
+                            int remaining_rounds_007c1db0() override {
+                                return a.owner_.dive_bomb_rounds_remaining(a.unit_);
+                            }
+                            int parity_f876b0() override {
+                                return static_cast<int>(a.unit_.process_index);   // LABELLED stand-in
+                            }
+                            int target_spotted_count_1e8() override {
+                                const GameUnitSlot* t = a.st_target();   // LABELLED: seen while live
+                                return t != nullptr && df_slot_live(*t) ? 1 : 0;
+                            }
+                            bool target_marked_5d() override {
+                                const GameUnitSlot* t = a.st_target();
+                                return t == nullptr || !df_slot_live(*t);
+                            }
+                            bool update_target_ref_009fada0(bsp::ApproachTargetRefState&, float,
+                                                            std::array<float, 3>& point) override {
+                                const GameUnitSlot* t = a.st_target();
+                                if (t == nullptr) return false;
+                                float p[3] = {t->motion.position[0], t->motion.position[1],
+                                              t->motion.position[2]};
+                                a.owner_.aim_point_009fada0(a.unit_, *t, a.unit_.command_target_plus_one, p);
+                                point = {p[0], p[1], p[2]};
+                                return df_slot_live(*t);
+                            }
+                            void pick_target_ref_009fa260(bsp::ApproachTargetRefState&) override {}
+                            void clear_target_ref_009fb5e0(bsp::ApproachTargetRefState&) override {}
+                            bsp::NearFieldProbeResult near_field_probe_007f0280(const float e[3],
+                                                                                const float w[3]) override {
+                                // SUBSTITUTION, labelled: the squadron candidates (mode 0).
+                                return a.nf_probe_squadron_007f0280(e, w);
+                            }
+                            float fly_to_heading_009fd570(const std::array<float, 3>& point, float,
+                                                          float&, float) override {
+                                // SUBSTITUTION, labelled: straight at the point.
+                                return bsp::heading_command_009f9e40(point[0], point[2],
+                                    a.unit_.motion.position[0], a.unit_.motion.position[2]);
+                            }
+                            float heading_diff_009a19b0() override { return 0.0f; }   // LABELLED
+                            bool break_off_base_0099c230() override { return true; }  // AI aircraft
+                            bool device_drop_requested() override { return false; }   // no device
+                            void set_moveto_ranges_009bde80(float n, float f, float s) override {
+                                moveto_near = n;
+                                moveto_far = f;
+                                moveto_speed = s;
+                            }
+                            void enter_formation_state(bsp::DepthChargeState) override {}   // LABELLED, as strafe
+                            void exit_formation_state(bsp::DepthChargeState) override {}
+                            void tick_formation_state(bsp::DepthChargeState s, float, float) override {
+                                if (s != bsp::DepthChargeState::kMoveTo) {
+                                    a.st_follow_tick_009c1fd0();   // the generic follow tick
+                                    return;
+                                }
+                                // 009C18C0 with the depth-charge ranges 009A671A stored.
+                                const GameUnitSlot* t = a.st_target();
+                                float sep = 0.0f;
+                                if (t != nullptr) {
+                                    const double dx = static_cast<double>(t->motion.position[0]) -
+                                                      a.unit_.motion.position[0];
+                                    const double dz = static_cast<double>(t->motion.position[2]) -
+                                                      a.unit_.motion.position[2];
+                                    const double d2 = dx * dx + dz * dz;
+                                    sep = d2 > 1e-10 ? static_cast<float>(std::sqrt(d2)) : 0.0f;
+                                }
+                                a.st_speed(a.owner_.bot_desired_speed_007c47f0(a.unit_));
+                                if (t == nullptr) return;
+                                bsp::MoveToGlideInputs gin;
+                                gin.near_range_30 = moveto_near;
+                                gin.far_range_34 = moveto_far;
+                                gin.speed_range_38 = moveto_speed;
+                                gin.target_world_y = t->motion.position[1];
+                                gin.unit_world_y = a.unit_.motion.position[1];
+                                gin.planar_distance = sep;
+                                const bsp::MoveToGlideCommand g = bsp::move_to_glide_009c18c0(gin);
+                                a.st_cruise_pitch_009fba50(g.base, g.range_low, g.range_high, g.scale);
+                                a.unit_.plan_heading_2c0 = bsp::heading_command_009f9e40(
+                                    t->motion.position[0], t->motion.position[2],
+                                    a.unit_.motion.position[0], a.unit_.motion.position[2]);
+                                a.unit_.plan_heading_2c0_written = true;
+                                a.unit_.plan_heading_mode_2cc = 2;
+                            }
+                            void set_control_3e4(int) override {}               // LABELLED
+                            void assign_formation_indices_007ed260() override {}  // LABELLED
+                            void apply_plan(const bsp::DepthChargePlanCommand& c) override {
+                                GameUnitSlot& u = a.unit_;
+                                if (c.writes_heading_2c0) {
+                                    u.plan_heading_2c0 = c.heading_2c0;
+                                    u.plan_heading_2c0_written = true;
+                                    u.plan_heading_mode_2cc = 2;
+                                }
+                                if (c.writes_bank_2c4) {
+                                    u.plan_state.bank_target_2c4 = c.bank_2c4;
+                                    u.plan_heading_mode_2cc = 1;
+                                    u.plan_heading_2c0_written = false;
+                                }
+                                if (c.writes_turn_2c8) u.plan_state.bank_limit_2c8 = c.turn_2c8;
+                                if (c.writes_pitch_2bc) {
+                                    u.plan_state.pitch_target_2bc = c.pitch_2bc;
+                                    u.plan_state.pitch_mode_2d0 = c.pitch_mode_2d0;
+                                }
+                                if (c.writes_speed_2b4) a.st_speed(c.speed_2b4);
+                                if (c.writes_throttle) {
+                                    u.plan_slots[bsp::kPilotSlotThrottle].desired = c.throttle_278;
+                                    u.plan_slots[bsp::kPilotSlotThrottle].active = 1;
+                                    u.plan_slots[bsp::kPilotSlotAirBrake].desired = 0.0f;
+                                    u.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
+                                    u.plane_air_brake_mode_2d8 = 0;
+                                }
+                                if (c.calls_cruise_altitude_009fba50) {
+                                    a.st_cruise_pitch_009fba50(c.cruise_base, c.cruise_low,
+                                                               c.cruise_high, c.cruise_scale);
+                                }
+                                if (c.calls_pitch_command_009fb800) {
+                                    bsp::PlanePitchCommandInputs pin;
+                                    pin.desired_altitude = c.pitch_altitude;
+                                    pin.reference = c.pitch_reference;
+                                    pin.unit_world_y = u.motion.position[1];
+                                    if (a.owner_.lua.plane_globals_loaded()) {
+                                        const bsp::GameTuningBlock& gt = a.owner_.lua.plane_globals();
+                                        pin.ceiling = gt.dynamics_ceiling;
+                                        pin.climb_dist = gt.pilot_general_climb_dist;
+                                        pin.drop_dist = gt.pilot_general_drop_dist;
+                                    }
+                                    pin.class_climb_angle = u.plane_climb_angle_1ec;
+                                    pin.class_drop_angle = u.plane_drop_angle;
+                                    u.plane_commanded_pitch = bsp::pitch_command_009fb800(pin);
+                                    u.plan_state.pitch_target_2bc = u.plane_commanded_pitch;
+                                    u.plan_state.pitch_mode_2d0 = 2;
+                                }
+                                if (c.writes_cone_40) u.gun_cone_40 = c.cone_40;
+                                // 009FABE0 (the gun direction): not carried, as strafe.
+                            }
+                            void release_ordnance_007bbba0() override {
+                                a.owner_.release_ordnance_007bbba0(a.unit_);
+                            }
+                            void apply_cruise_profile_009a6500(const bsp::DepthChargeCruiseProfileWrite&) override {
+                                // LABELLED: control() already answers the profile's value.
+                            }
+                        };
+                        {
+                            // 0099993C: 0099B740 before the arm. LABELLED: squadron+370h
+                            // is kept on the strafe arm's field (one class at a time).
+                            bsp::PilotAttackModeInputs in;
+                            in.has_control_block_2fc = true;
+                            in.has_unit_2f4 = true;
+                            in.unit_is_flight_lead =
+                                owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
+                            in.task_authorises_38h = true;
+                            unit_.st_attack_mode_370 =
+                                bsp::pilot_attack_mode_0099b740(unit_.st_attack_mode_370, in);
+                        }
+                        Adapter host{*this};
+                        if (!unit_.depth_charge_task_installed ||
+                            unit_.dc_target_plus_one != unit_.command_target_plus_one) {
+                            // SUBSTITUTION as strafe: one task per class and target.
+                            bsp::depth_charge_task_construct_009a5240(unit_.dc, host, host);
+                            // 009A6500 on activation (docs/CC13_TASK_PROFILE_CADENCE.md).
+                            bsp::DepthChargeCruiseProfileInputs pin;
+                            pin.ctl_380 = -1.0f;
+                            pin.ctl_37c = -1.0f;
+                            bsp::depth_charge_cruise_profile_009a6500(unit_.dc, host, pin);
+                            unit_.depth_charge_task_installed = true;
+                            unit_.dc_target_plus_one = unit_.command_target_plus_one;
+                        }
+                        const bsp::DepthChargeArmResult r =
+                            bsp::depth_charge_task_arm_009a66c0(unit_.dc, host, host, dt);
+                        unit_.dc_transitions += static_cast<unsigned long long>(r.transitions);
+                        unit_.dc_releases += static_cast<unsigned long long>(r.releases);
+                        owner_.done("BotTaskDepthCharge::arm", 0x009a66c0u);
+                    }
+
                     void run_dive_bomb_task_arm_009c8790(float dt) {
                         // 0099A170 builds a task from the class 007EEC50
                         // chose, so the only correct test is that the class IS
@@ -34733,6 +35033,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                             if constexpr (bsp::kDropKamikazeTaskBound) {
                                 run_drop_kamikaze_task_arm_009ae8a0(elapsed);
+                            }
+                            if constexpr (bsp::kDepthChargeTaskBound) {
+                                // Packet cc13-depthcharge1: vtable[64h] 009A66C0.
+                                run_depth_charge_task_arm_009a66c0(elapsed);
                             }
                             if constexpr (bsp::kPilotMoveToTaskBound) {
                                 run_moveto_task_install_009c3000();
