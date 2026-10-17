@@ -20459,10 +20459,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // 007C0DCB vtable[210h](2Ah, 0): a torpedo and a
                                 // general bomb both answer 2Ah. With the Vals
                                 // switch the bomb carrier's rack is found too.
+                                // Packet cc9_l65_dc_walk: a depth-charge rack (2Ah
+                                // ordnance whose descriptor answers 2Ch) is one of
+                                // the walk's three answers; it lands with the
+                                // depth-charge task (bsp::kDepthChargeTaskBound).
                                 const bool holds =
                                     bsp::ordnance_has_torpedo_2bh(set) ||
                                     (GameUnitsHost::Impl::kReleaseIssueStageValsBound &&
-                                     bsp::ordnance_has_general_bomb_2ah(set));
+                                     bsp::ordnance_has_general_bomb_2ah(set)) ||
+                                    (bsp::kDepthChargeTaskBound && set.contains(0x2a) &&
+                                     set.contains(0x2c));
                                 return holds && slot_.rack_ammo > 0 && !slot_.rack_dropping;
                             }
                             return bsp::ordnance_has_torpedo_2bh(set);

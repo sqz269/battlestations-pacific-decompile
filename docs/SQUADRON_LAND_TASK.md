@@ -17709,3 +17709,14 @@ Prediction (JM06 reference and 20,3, the WINS row `jm06_p12_j6_c1`): the Lexingt
 submarine chooses 00E08F38 instead of strafe, installs the kind-1 task, and drops depth charges on the player's
 submarine; the player submarine takes depth-charge damage, so the row may move or lose. USN21 (cc13's confirmed reach,
 the Jakes) moves too.
+
+
+### 5ic.1 The rack walk answers a depth-charge rack (cc9-lua65 / cc9-lua66, 2026-10-17)
+
+lua65's census (198b47ddd, 3c86cbf05) with the switch flipped locally on JM06 (`local\l65rt_j6t_ref.log`, dirty tree)
+showed the task arming (00E08F38 chosen, 0099A170 -> 1) but the units host's rack walk (007C0DCB vtable[210h](2Ah, 0))
+answering only a torpedo or, under the Vals switch, a general bomb: `ordnance_has_general_bomb_2ah` excludes 2Ch, so a
+Helldiver's depth-charge rack (2Ah ordnance whose descriptor also answers 2Ch) was never found. The image's walk asks
+2Ah unfiltered, so the depth-charge rack is one of its answers. The walk now also answers 2Ah+2Ch under
+`bsp::kDepthChargeTaskBound` (still OFF). With it, the local ON run logs rack drops 3/7/3 for the three Helldiver
+squadrons (`depthcharge ... rack 006E56F0: drops=`), 10/25/10 release-stage issues. The pair is packet (3) of cc9-lua66.
