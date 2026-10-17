@@ -17642,3 +17642,21 @@ the gunnery lane's flak, not this switch. The death rows move a lot because the 
 airfield structures (bunker, storage, AA platform, houses), and later launches get different squadron numbers. Rows that
 never reach the branch are identical by construction: in the OFF re-time logs, USN01 (ref and 20,3), JM08 ref and
 LOMP06 ref log no tail=1 answer. Flipped ON by mechanism.
+
+## 5ia. Deck members of a null-class moveto squadron fly no command (cc9-lua65, 2026-10-17)
+
+In both USNOS runs of 5hy.1 the kind-7 moveto squadrons' wingmen fall behind without limit: the formation-seat
+distances of Essex_sqn03 (OFF) grow 632 -> 10037 m in 3200 ticks, and those of Enterprise_sqn34 (ON, still a moveto)
+grow 556 -> 6403 m. The leader flies at about 98 m/s while the wingmen stay at the carrier: 5hl L3 issued 007F1688's
+moveto to the members flying at the serve only, and the standing per-member launch order (kAutoAttackMemberOnLaunchBound)
+carried chosen classes only. In the image 007F1688-007F16AD issues the moveto to the squadron (0071ECF0), and its
++128h 007ECF80 fan-out reaches every +3D0h plane, on the deck or flying, as for a chosen class.
+
+Switch `kAutoAttackMoveToMemberLaunchBound` (src/game_hosts_script_orders.cpp, committed OFF): the standing order also
+carries the null-class moveto, so each deck member gets the moveto (`issue_command_to_members`, 00E08F68) when it is
+airborne. The same timing substitution as kAutoAttackMemberOnLaunchBound applies (at launch, not at the serve).
+
+Prediction (USNOS `l65_os_c1`, on top of 5hy ON): the four remaining kind-7 squadrons' wingmen get the moveto at
+launch (`AutoAttackTarget member at launch ... class=00E08F68`), install kind 7 in follow, and their seat distances stay
+near the formation's instead of growing; they then meet the target's AA with their leader. Rows with no null-class
+AutoAttackTarget serve are identical.

@@ -983,6 +983,7 @@ private:
         std::size_t target{0};
         std::vector<std::size_t> served;
         int age_steps{0};
+        bool moveto{false};   // 007F1688's null-class moveto, not a chosen class
     };
     std::vector<SquadronStandingAttack> standing_attacks_;
     unsigned long long standing_attack_member_orders_{0};
