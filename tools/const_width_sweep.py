@@ -28,7 +28,13 @@ rounded once, from the decimal, to float) and the bits the image holds at the
 width each load reads, widens both the way the load widens (FLD m32 -> the
 float's exact value), and reports any difference with its ulp distance. The
 right-hand side may be a decimal or hex literal, a static_cast of one, or
-literal arithmetic; anything naming another identifier is counted as unparsed.
+literal arithmetic; anything naming another identifier is counted as unparsed,
+except a switch selection `kSwitch ? <a> : <b>`: the switch's `constexpr bool`
+value is looked up under include/ and the arm the build compiles is evaluated.
+`--assume-on kA,kB` (repeatable) evaluates the ON arm of the named switches, and
+`--switch-arm on|off` forces one arm for every switch, so an OFF-bound constant
+correction can be checked before its flip:
+    python tools/const_width_sweep.py --all --exact --assume-on kConstExactImageBitsBound
 A double declared as the decimal of a float the image widens (0.85 where the
 image's FLD m32 gives 0.8500000238418579) is flagged as such. Exit code 1 on any
 mismatch; the whole list goes to local/output/const_exact.txt.
@@ -259,8 +265,62 @@ def ulps(a, b, width):
     return abs(ordered(ba, width) - ordered(bb, width))
 
 
+SWITCH_DECL = re.compile(r"\bconstexpr\s+bool\s+(\w+)\s*=\s*(true|false)\s*;")
+SWITCH_SELECT = re.compile(r"^\s*(\w+)\s*\?\s*([^:?]+?)\s*:\s*([^:?]+?)\s*$")
+
+
+def load_switches():
+    """{name: bool} for every `constexpr bool NAME = true|false;` under include/."""
+    switches = {}
+    for path in glob.glob(os.path.join("include", "**", "*.hpp"), recursive=True):
+        with open(path, encoding="utf-8", errors="replace") as fh:
+            for m in SWITCH_DECL.finditer(fh.read()):
+                switches[m.group(1)] = m.group(2) == "true"
+    return switches
+
+
+def select_arm(rhs, switches, arm, assume_on):
+    """The arm of `kSwitch ? a : b` the build (or the requested arm) selects.
+
+    Returns (expression, switch name) for a switch selection, (rhs, None) for
+    anything else, and (None, name) when the switch has no literal bool value.
+    """
+    m = SWITCH_SELECT.match(rhs)
+    if not m:
+        return rhs, None
+    name, on_arm, off_arm = m.groups()
+    if name in assume_on or arm == "on":
+        return on_arm, name
+    if arm == "off":
+        return off_arm, name
+    if name not in switches:
+        return None, name
+    return (on_arm if switches[name] else off_arm), name
+
+
+def parse_exact_args(argv):
+    """Paths, the switch arm (current|on|off) and the --assume-on names."""
+    paths, assume_on, arm = [], set(), "current"
+    it = iter(argv)
+    for a in it:
+        if a.startswith("--assume-on"):
+            value = a.split("=", 1)[1] if "=" in a else next(it, "")
+            assume_on.update(v for v in value.split(",") if v)
+        elif a.startswith("--switch-arm"):
+            arm = a.split("=", 1)[1] if "=" in a else next(it, "")
+            if arm not in ("current", "on", "off"):
+                raise SystemExit("--switch-arm takes current, on or off")
+        elif not a.startswith("--"):
+            paths.append(a)
+    return paths, arm, assume_on
+
+
 def exact_main(argv):
-    args = [a for a in argv if not a.startswith("--")]
+    args, arm, assume_on = parse_exact_args(argv)
+    switches = load_switches()
+    unknown = sorted(assume_on - set(switches))
+    if unknown:
+        print("warning: --assume-on names no constexpr bool in include/: %s" % ", ".join(unknown))
     if "--all" in argv:
         args = sorted(glob.glob(os.path.join("include", "bsp", "*.hpp")))
     if not args:
@@ -269,7 +329,8 @@ def exact_main(argv):
 
     sections = load_image()
     index = load_site_index()
-    parsed = unparsed = unreferenced = checked = 0
+    parsed = unparsed = unreferenced = checked = selected = 0
+    used_switches = set()
     rows = []
     for path in args:
         with open(path, encoding="utf-8", errors="replace") as fh:
@@ -278,7 +339,11 @@ def exact_main(argv):
                 if not m:
                     continue
                 decl, name, rhs, addr_text = m.groups()
-                value = eval_literal_expr(rhs)
+                rhs, switch = select_arm(rhs, switches, arm, assume_on)
+                if switch:
+                    selected += 1
+                    used_switches.add(switch)
+                value = eval_literal_expr(rhs) if rhs is not None else None
                 if value is None:
                     unparsed += 1
                     continue
@@ -363,6 +428,11 @@ def exact_main(argv):
     print("parsed %d constants (%d unparsed expressions), %d without load sites, "
           "%d width checks, %d exact mismatches"
           % (parsed, unparsed, unreferenced, checked, len(rows)))
+    if selected:
+        on = sorted(s for s in used_switches
+                    if s in assume_on or arm == "on" or (arm == "current" and switches.get(s)))
+        print("%d switch-selected declarations over %d switches (arm %s); evaluated ON: %s"
+              % (selected, len(used_switches), arm, ", ".join(on) if on else "none"))
     print("full table: %s" % out)
     return 1 if rows else 0
 
