@@ -2705,6 +2705,14 @@ struct GameUnitsHost::Impl {
     // runs it for every live ship. False: no ship ever leaves the map, as before.
     // ON by mechanism (cc9-ships47, SHIP_AI 232): wins identical, the JM06 probe exits.
     static constexpr bool kShipOutOfMapExitBound = true;
+    // Packet g49_exit_zone_role_gate (GUNNERY 266.3, cc13-sweepB adoption note 2).
+    // 0081BEDF..0081BF01: 0081BEB0 sends the exitzone channel 00982120(unit, 1) only
+    // when 00927C50(unit, [game+18ECh]) answers true: one of the nine role words
+    // unit+188h.. is 9 (open) or the local player's slot. True: that gate, the local
+    // slot being kLocalPlayerSlot (0) as elsewhere in this host. False: every exit is
+    // sent, as before. Kill(4) runs either way.
+    static constexpr bool kShipExitZoneRoleGateBound = false;
+    unsigned long long ship_exit_role_gated{0};
     unsigned long long ship_exit_calls{0}, ship_exit_counting{0}, ship_exit_warnings{0},
         ship_exit_kills{0};
     void note_kill_cause(std::size_t unit, int cause) {
@@ -17763,8 +17771,11 @@ public:
     }
     // SUBSTITUTION, labelled: 00811E80 routes MT_UNITEXITED (50h) and 0081BEB0 runs on
     // its delivery; the host runs the handler's body here: 0081BF0C 00982120(unit, 1),
-    // the exitzone channel (cc13's dispatcher; its game+18ECh gate 00927C50 is not
-    // modelled), then Kill(4). The Lua ExitZoneParty store is a record.
+    // the exitzone channel (cc13's dispatcher; its game+18ECh gate 00927C50 under
+    // kShipExitZoneRoleGateBound), then Kill(4). The Lua ExitZoneParty store is a
+    // record. Labelled: the game-mode-9 return (0081BED6) is not taken (004BCA50
+    // reports 8 in a single-player session unless game+614h is already 9, which this
+    // host takes as never), and 0092BD30 on [unit+1018h] (0081BF4C) is not modelled.
     void route_unit_exited_00811e80() override {
         GameGunneryHost* const gun = host_.gunnery.get();
         if (gun == nullptr || gun->unit_dead(index_)) return;
@@ -17775,8 +17786,21 @@ public:
             static_cast<double>(slot_.motion.position[0]),
             static_cast<double>(slot_.motion.position[2]),
             host_.commands.command_name_of(host_.commands.current_command_0071be40(index_)));
-        host_.lua.note_exit_zone_00982120(index_, true);
-        host_.done("ShipUnit::exit_zone_channel_0081bf0c", 0x0081bf0cu);
+        bool role_open = false;   // 00927C50(unit, game+18ECh)
+        for (int i = 0; i < bsp::kUnitRoleTableEntries; ++i) {
+            const std::int32_t w = slot_.role_permission_0188[i];
+            if (w == 9 || w == GameUnitsHost::Impl::kLocalPlayerSlot) { role_open = true; break; }
+        }
+        if (!role_open) {
+            ++host_.ship_exit_role_gated;
+            host_.log.notef("ship exit zone: unit=\"%s\" has no open role word; 0081BEB0 %s the "
+                "exitzone channel (00927C50 at 0081BEFA)", slot_.row.name.c_str(),
+                GameUnitsHost::Impl::kShipExitZoneRoleGateBound ? "skips" : "would skip");
+        }
+        if (role_open || !GameUnitsHost::Impl::kShipExitZoneRoleGateBound) {
+            host_.lua.note_exit_zone_00982120(index_, true);
+            host_.done("ShipUnit::exit_zone_channel_0081bf0c", 0x0081bf0cu);
+        }
         host_.note_kill_cause(index_, 4);
         gun->kill_unit_00926d90(index_, 4);
         host_.record("ShipUnit::exit_zone_party_lua_0081beb0", 0x0081beb0u);

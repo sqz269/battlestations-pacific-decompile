@@ -15540,3 +15540,53 @@ Uncertainty: the image builds the selector for every WeaponDirector; the host se
 second, so target picks may land one think earlier or later). Expect identical spawn tables, a new log line
 `ship ai auto-target phase draws: N controllers seeded`, small moves in first-target times and therefore in shot
 streams; no change in any count that does not depend on target timing. A moved win must trace to a target pick.
+
+### 266.1 Lead item 2: do heavy shells beat armour 130? Yes, by the direct hit; the image has no penetration path
+
+Read from the image (no runs):
+- A shell impact builds a direct record through `00470350` (`record+14h = shot->vtable[54h]()` = `006E7C60`,
+  `00BD2F10(1, DamageMin +ACh, DamageMax +B0h)`), and `00826F10` / `008777D0` subtract the target's armour once:
+  `00470510` = (`+14h` x owner modifier - armour) x weapon scale (`004705A4 FLD`, `004705A9 FSUB`, `004705AD FMUL`),
+  dispatched only when positive. The armour is `unit+368h`, or the class `vtable[24h]` underwater armour when
+  `record+0Ch < 0` (`00826F5x`). No angle, range, segment or penetration term exists in either routine, and this
+  installation's `bulletclasses.lua` (arcade, 2026-05-09) has no penetration key (its keys are listed in 266's notes:
+  DamageMin/DamageMax, Blast{BlastDamageMin, BlastDamageMax, BlastRange}, FireChance/FireDamage, WaterDamage, ...).
+- The blast (`0084BAD0` -> `004705C0`) is max(0, falloff x BlastDamage - armour). Every US blast base (5in 65,
+  6in 75, 8in 90, 14in 115, 16in 120) is under 130, so every `impact blast ... took=0.0` row is the image's law.
+- The direct hit is not zero: US 14in (DamageMin 230, DamageMax 250) does 100-120 per direct hit on armour 130,
+  16in about 150-170. `g48_u15ea_j20_3`: Fuso took 54 hits (33 of them blast rows, all 0) for 2487, about 118 per
+  direct hit, as predicted. The host matches (cc13's `docs/CC13_AUDIT_USN15_GUNNERY.md` 3 reached the same verdict).
+- The difficulty multiply (`00827056..008270B7`) and the gameplay modifiers (`008E6430`, power-ups) are hosted.
+**Verdict: faithful, no bind.** BB guns hurt Fuso little because this installation's data gives Fuso/Yamashiro
+very large HP against 100-170 per direct hit and few heavy shots land; torpedoes stay the lever for USN15.
+
+### 266.2 Lead item 3: the cc13-seg33a weapon gates (docs/CC13_SEG33A.md)
+
+- `006E3460` (rack CanFire): GUNNERY 144 holds. For a rack every `00729A80` timer gate is inert (the drop
+  `006E4D50` replaces `BSP_Gun_Fire`, so `+414h`/`+450h`/`+478h` are never written for a rack), and `vtable[210h](2Ah, 0)`
+  asks for bomb-class ordnance, which the host's ammo count stands for. The remaining conjunct, `gun+358h <= 0`, is
+  unmodelled for every gun in this host (`gun_aiming.hpp` `damage_counter`, always 0). The low-byte test of a heap
+  pointer cannot be reproduced. **No change.**
+- `006DEF30` (artillery accept): the host already solves `00955630` and lifts the solved direction into the mount
+  frame (`kAaKind6GateMountFrameBound`, ON, GUNNERY 197), which is what a non-null `[[bot+50h]+3Ch]` does, then runs
+  `0085A8B0`. `gun->vtable[1D4h](target)` = `0072F6E0` answers 1 for kinds 2-4, and for kind 6 the host runs the
+  line-of-fire query right after the gate (`line_of_fire_refuses`). **No change.**
+- `006E38E0` (session +F4h is 0 or 1): unreachable. `0071E7B4` tests `override_command()` (director+188h) first,
+  which this host answers 0, so `0071E7C9` is never reached, and the echo it guards is a record.
+- `006E8040` (throwaway entity transform): unreachable. `00817264`'s constructor stand-in returns entity 0, so there
+  is no entity to place. **No change** for either; both stay records.
+
+### 266.3 Lead item 4: cc13-sweepB
+
+- `0081DCB0` (1): the image draws before it knows the vector is empty and then faults in `00BF6713`. Both host callers
+  loop only while `stock < loaded`, with `loaded` counted by the same `timer < FLT_MAX` test, so the vector is
+  never empty there. (3): `0072CF00(barrel, FLT_MAX, 0)` skips the divide (FLT_MAX is not below `00D7A278`), writes
+  `+414h` only, and its effect tail runs only for a time <= 0, so storing FLT_MAX is the same write. **No change.**
+- `0081BEB0`: `kShipExitZoneRoleGateBound` (`src/game_hosts_units.cpp`, OFF) adds the `00927C50(unit, game+18ECh)`
+  gate on the exitzone channel (`0081BEDF..0081BF01`): a ship with no role word 9 or 0 exits without the event.
+  Scripts do close roles (`player roles Foote ... open=888888888` in USN12, three JM06 subs), so the gate can
+  bite. Both builds log `ship exit zone: unit=... has no open role word` (ON "skips", OFF "would skip").
+  Labelled and unchanged: the mode-9 return (`0081BED6`; `004BCA50` reports 8 in single player unless game+614h is
+  already 9) and `0092BD30` on `[unit+1018h]` (`0081BF4C`).
+  **Predictions:** identical gameplay on every row where no closed-role ship leaves the map; where one does, only
+  the exitzone listeners' firing changes (an objective keyed on that exit).
