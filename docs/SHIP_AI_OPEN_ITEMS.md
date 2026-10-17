@@ -18570,3 +18570,24 @@ The ship-lead counts equal the old `artillery_hit_lead` records, so the branch i
 aims move (BSM09 `gunnery aim` steps 189131 -> 189127), but no player-unit gun fires on them in these rows: the
 player is idle and the seat trigger needs a player-held seat. No device of these player units sets AddsSpeed.
 Flipped by mechanism.
+
+## 272. USNOS on current main after lua63's level-bomb retire (cc9-ships54, 2026-10-17; status)
+
+Tree 4bc3f5432 (origin/main with kLevelBombTargetClearedRetireBound ON). Runs `local\s54_o0_os` (a7, 72000 fr) and
+`local\s54_o_b1` (b1 = a7 plus escort attacks on the wave-5 boats, `local\s54_osmk.py b1`, 120000 fr), reference env,
+-Traj. Neither leaves phase 1 (MissionPhase=1 at the end, no EndMission).
+- The wave-2 level bombers now retire and die (plane #4.4 family at 987-1027 s), so 256's blocker is gone.
+- **New phase-1 blocker: wave 5's Shinyo boats** (SpawnNew serial 5, type 43, spawned about 640 s). luaShinyoSpawned
+  gives each one `NavigatorAttackMove(unit, luaPickRnd(Mission.Troops))`, and the pick includes dead transports.
+  Units #5.1/.3/.4/.5/.6/.7 drew TroopTrans2/3 (dead at 196/215 s). The host shows the command issued but never
+  current, and the boats sit in `stop` at about (6943, -1812) / (5688, -1812) / (6943, -1058) / (6943, -303) for the
+  rest of the run. lua63's l63_os_on run (older exe) killed all nine at 463-739 s because its transports 2/3 lived.
+  Open question for the image: what NavigatorAttackMove does with a dead entity, and what an idle AI Shinyo does.
+  b1's escort `attack` orders killed only #5.3 and #5.6.
+- **The early transport losses moved**: TroopTrans2/3/6 die at 196/215/242 s to the fourth member of each wave-1
+  torpedo squadron (plane #1.5/1.6/1.4|.-4), and TT5/TT4 die at 766/781 s to wave 2. Only TT1 survives. The a7 plan's
+  Enterprise fighter launches (frames 850/870) cover #1.5 and #1.6, not #1.4.
+- Portland1/2, NH and Lexington are lost to the IJN surface groups (Shima3, Shimotsuke, Ada1/3) between 1124 and
+  2147 s.
+So a7 needs a re-plan that keeps the transports alive in wave 1 and deals with the stuck Shinyos before phase 2
+can be planned (HQ2 must then be shelled to 0 against the CB self-repair).
