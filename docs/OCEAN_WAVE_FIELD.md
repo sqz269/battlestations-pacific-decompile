@@ -2131,3 +2131,31 @@ Both sides are builds of 169839289. OFF is `local\p14_off_rt` (the tree build). 
     `+770h`. So its lift-off is the 1.5 m test alone.
   - Binding this needs the model's points. It is left with the other mesh-bound items (48.1's deck crash). Not bound.
 - **The splash and the +911h latch.** They are presentation only. Not bound.
+
+## 53. State after cc9-physics14's first pass (2026-10-17, at about 55% context)
+
+**Commits on agent/cc9-physics1.** The full `scripts/build.ps1` with tests passes on each.
+- 201a1cbf1 / 8acd39e3f: `kStockReturnDestroyBytesBound`, ON (50).
+- 169839289 / ae5f2e9a5: `kRotateAboutAxisImageTailBound`, ON (51).
+- 18c41f797, 1b52714e4: 50.8 and 52 (read-only), and the section order.
+
+**Open, in order.**
+1. **50.7: landers avoiding taxiing planes.** USNOS #4.4|.-IV and #4.5|.-III/-IV still touch down yawed and leave the
+   runway. 50.8 reads the sequencer as image-faithful, so compare the taxi time and the touchdown point against the
+   image next.
+2. **The free-attack tick 009F8470 (48.3).** It needs the squadron director's override layer: 0071D980 ->
+   0071E7F0, the director host's 00836D67 arm, and `director+188h`. It touches `game_hosts_commands.cpp`,
+   `command_execution.cpp` and the units host's squadron command path. Size it as a fresh worker's packet.
+3. **007DC830's extra forces (CC13_FRONT3 5).** The stall block needs `r = forward / StallSpd < StallRangeMax` (1.6);
+   a landing flare at 36-39 m/s against 20.56 stays above it. ctl+94h is the wreck/water gate. Neither moves a
+   live landing.
+4. **The bag > 0 rack with no loadout entry (46).** It needs the model's BSPGun platform slots against each
+   Equipments entry. Start with a census.
+5. **The catapult adapter (`Seg33aHost`, 37).**
+
+**Tools in `local\`.**
+- `p14_slot_call_scan.py <exe> <disp> <slot> [--ptr]`: virtual calls through a member at `+disp`.
+- `p14_track.py <csv> <t0> <t1>`: the track heading from a plane CSV.
+- `p14_chain.ps1 -Exe -Prefix -Rows 'M:frames,...'`: sequential rows in the reference environment.
+- The diagnostic edits (`p14_diag_*.py`, applied to a scratch build only) print the vehicle-avoidance neighbour,
+  the band sources and the planner yaw inputs in a land final.
