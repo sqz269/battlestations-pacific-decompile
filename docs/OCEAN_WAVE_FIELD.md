@@ -1767,3 +1767,17 @@ constructor default.
 - ON, USN04 45000: identical or gameplay-identical (no bag-0 bomb rack is asked at 009F8160).
 - Mechanism failure: a `fighter spent` end for a squadron whose members still hold an unseeded rack round, or a
   positive-bag plane whose answer moves.
+
+### 46.1 The pair, and the verdict: ON
+
+Export of 0e9c7ad07 with the switch flipped (`local\p13_rc`) against that commit's build (`local\p13_off_rc`); reference
+env; logs `local\p13rc_<on|off>_<e8|u4>.log` with manifests, diffs `local\p13rc_diff_<e8|u4>.txt`.
+
+| Row | pair_diff | Note |
+| --- | --- | --- |
+| USN04 45000 | 1, gameplay identical | as predicted |
+| ESMP08 60000 (`esmp08_p12_e8_rb`) | 3, moved | `fighter spent` ends 46 -> 21, the first at 113.30 s -> 465.86 s; dive-bomb-task releases 1 of 162 -> 100 of 224; US ships sunk by 3000 s 4 -> 10 |
+
+Mechanism: the first ON end (Zuiho_sqn15 at 465.86 s) follows its members' four drops (`bomb from Zuiho_sqn15|.-II/.-III`,
+two rounds each); no end precedes a squadron's drops. **Flipped ON by mechanism.** ESMP08 regains the Zeros' bombs
+that 43.1 removed, so `esmp08_p12_e8_rb` is re-timed on the ON build rather than re-planned around fighter-only Zeros.

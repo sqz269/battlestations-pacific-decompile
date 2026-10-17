@@ -6609,7 +6609,9 @@ struct GameUnitsHost::Impl {
     // whose carried bag Equipment is 0 answers one round, as the release path's
     // pool fallback already seeds it. False: it answers none (authored -1), so
     // 009F8160 finds such a squadron spent before it has dropped anything.
-    static constexpr bool kRackConstructorRoundBound = false;
+    // ON: OCEAN_WAVE_FIELD 46.1 (ESMP08 dive-bomb releases 1 -> 100, every
+    // +3Dh end after the squadron's drops; USN04 gameplay identical).
+    static constexpr bool kRackConstructorRoundBound = true;
     // Packet cc9_rack_bullet_kind (SQUADRON_LAND_TASK 5eq, GUNNERY 138). True:
     // 007C0D90 decides per rack from the rack's projectile descriptor (a level
     // bomber 10h fires its plain-bomb racks together; 2Bh/2Ch/33h, or any rack
