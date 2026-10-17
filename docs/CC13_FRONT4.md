@@ -19,7 +19,7 @@ not recovered symbols. Nothing is wired. Status: reconstructed and build-tested 
 | 00B0D1C0 | `render_service_word_1cc_00b0d1c0` | `__thiscall(ECX = render service)`, RET | `[+1CCh]`. | 00BA51C0 |
 | 00B0D0D0 | `render_service_word_1d4_00b0d0d0` | `__thiscall(ECX = render service)`, RET | `[+1D4h]`. | 0093D250 |
 | 0085E4D0 | `matrix_rotate_by_angular_velocity_0085e4d0` | `__fastcall(ECX = out, EDX = in; wx, wy, wz, dt)`, RET 10h | See below. | 007C18B0, 007D9F60 |
-| 00860BE0 | `debug_draw_wire_sphere_marker_00860be0` | `__fastcall(ECX = centre, EDX = rgba[4]; radius, u32 arc rgba, u8 detailed)`, RET 0Ch | h = radius + radius; three `0085F990` axis lines from c-h to c+h (both colours the 16 bytes at EDX); three `00860AD0` circles (radius, start 0, sweep 2pi from 00CE3D9C, arc rgba, detailed ? 40h : 4 segments) about X, Y, Z. | 004169A0, 006F3CC0, 007C39B0, 0093FF10 |
+| 00860BE0 | `debug_draw_wire_sphere_marker_00860be0` | `__fastcall(ECX = centre, EDX = rgba[4]; radius, const float arc_rgba[4], u8 detailed)`, RET 0Ch | h = radius + radius; three `0085F990` axis lines from c-h to c+h (both colours the 16 bytes at EDX); three `00860AD0` circles (radius, start 0, sweep 2pi from 00CE3D9C, the arc_rgba pointer (00860AD0 passes it to 00860140 in EDX; cc13-fix15 retyped it from u32), detailed ? 40h : 4 segments) about X, Y, Z. | 004169A0, 006F3CC0, 007C39B0, 0093FF10 |
 
 Second batch (the next most-blocking callee in the report outside the keep-outs):
 
