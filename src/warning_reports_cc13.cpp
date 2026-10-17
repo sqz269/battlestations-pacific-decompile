@@ -401,20 +401,88 @@ const void* message_from_0096e5e0(MessageFromHost& host, WarningEntity speaker)
     return host.resolve_message_00705e00(text, 1);     // 0096E748
 }
 
-std::optional<WarningArchiveClass> warning_archive_class_009766d0(std::int32_t type)
+namespace {
+
+// The virtual call at 009768C7..009768CF: [[warning]+4](reader). Slot +4 of
+// each class vtable, read from the image: 00D1B4FC -> 0097B4D0,
+// 00D1B270/00D1B348/00D1B384 -> 00976C60, 00D1B2AC -> 00976E40,
+// 00D1B30C -> 00977000, 00D1B2D0/00D1B464/00D1B4B4 -> 009768F0.
+void call_load_slot(WarningArchiveFactoryHost& host, WarningObject& w,
+                    cc13_seg49_64_78::EventArchiveReader& reader)
 {
-    switch (type) {
-    case 0: return WarningArchiveClass{0, 0x7C, 0x00976230u, 0x00D1B4F8u, "string-list warning (009795B0)"};
-    case 1: return WarningArchiveClass{1, 0x84, 0x00973C20u, 0x00D1B26Cu, "entity warning (00974150)"};
-    case 2: return WarningArchiveClass{2, 0x9C, 0x00973CA0u, 0x00D1B2A8u, "recon warning (009741E0)"};
-    case 3: return WarningArchiveClass{3, 0x70, 0x00973A90u, 0x00D1B2CCu, "kill warning (009744C0)"};
-    case 4: return WarningArchiveClass{4, 0x88, 0x00973D90u, 0x00D1B308u, "hit warning (00974C70)"};
-    case 5: return WarningArchiveClass{5, 0x84, 0x00973E10u, 0x00D1B344u, "exitzone warning (00975340)"};
-    case 6: return WarningArchiveClass{6, 0x84, 0x00973E90u, 0x00D1B380u, "confirm warning (00975540)"};
-    case 7: return WarningArchiveClass{7, 0x6C, 0x009756A0u, 0x00D1B460u, "newunit warning"};
-    case 8: return WarningArchiveClass{8, 0x6C, 0x009757B0u, 0x00D1B4B0u, "powerup warning"};
-    default: return std::nullopt;
+    switch (w.vtable) {
+    case 0x00D1B4F8: host.string_list_warning_load_0097b4d0(w, reader); break;
+    case 0x00D1B26C:
+    case 0x00D1B344:
+    case 0x00D1B380: cc13_seg49_64_78::load_entity_warning_00976c60(w, reader, host); break;
+    case 0x00D1B2A8: cc13_seg49_64_78::load_recon_warning_00976e40(w, reader, host); break;
+    case 0x00D1B308: cc13_seg49_64_78::load_hit_warning_00977000(w, reader, host); break;
+    case 0x00D1B2CC:
+    case 0x00D1B460:
+    case 0x00D1B4B0: cc13_seg49_64_78::load_warning_009768f0(w, reader, host); break;
+    default: break;  // unreachable: every constructor below stores one of these nine
     }
+}
+
+} // namespace
+
+WarningObject* warning_create_from_archive_009766d0(WarningArchiveFactoryHost& host,
+                                                    cc13_seg49_64_78::EventArchiveReader& reader)
+{
+    // [ESP+0Ch] is not initialised before the read; a reader that leaves it
+    // alone hands the switch stack contents. Modelled as -1 (no class).
+    std::int32_t type = -1;
+    reader.read_10(gui_lua_key_by_name("type"),                       // 00CE4AD0
+                   gui_lua_field(GuiLuaFieldType::Int, &type));       // 00976711 vtable +10h
+    WarningObject* w = nullptr;                                       // ESI = 0 at 0097670F
+    switch (type) {
+    case 0:
+        w = host.operator_new_00bf681b(0x7C);                         // 0097671D
+        if (w != nullptr) cc13_seg49_64_78::construct_string_list_warning_for_archive_00976230(*w, host);
+        break;
+    case 2:
+        w = host.operator_new_00bf681b(0x9C);                         // 0097674B
+        if (w != nullptr) cc13_seg49_64_78::construct_recon_warning_for_archive_00973ca0(*w, host);
+        break;
+    case 3:
+        // 00973D30's body, inlined: base constructor then the class vtable.
+        w = host.operator_new_00bf681b(0x70);                         // 0097677A
+        if (w != nullptr) {
+            cc13_seg49_64_78::construct_warning_base_00973a90(*w, host);  // 00976796
+            w->vtable = 0x00D1B2CC;                                   // 0097679B
+            w->type = 3;                                              // the class's vtable +10h
+        }
+        break;
+    case 4:
+        w = host.operator_new_00bf681b(0x88);                         // 009767B7
+        if (w != nullptr) cc13_seg49_64_78::construct_hit_warning_for_archive_00973d90(*w, host);
+        break;
+    case 5:
+        w = host.operator_new_00bf681b(0x84);                         // 009767E9
+        if (w != nullptr) cc13_seg49_64_78::construct_exit_zone_warning_for_archive_00973e10(*w, host);
+        break;
+    case 1:
+        w = host.operator_new_00bf681b(0x84);                         // 0097681B
+        if (w != nullptr) cc13_seg49_64_78::construct_entity_warning_for_archive_00973c20(*w, host);
+        break;
+    case 6:
+        w = host.operator_new_00bf681b(0x84);                         // 0097684A
+        if (w != nullptr) cc13_seg49_64_78::construct_confirm_warning_for_archive_00973e90(*w, host);
+        break;
+    case 7:
+        w = host.operator_new_00bf681b(0x6C);                         // 00976872
+        if (w != nullptr) construct_new_unit_warning_009756a0(*w, host);
+        break;
+    case 8:
+        w = host.operator_new_00bf681b(0x6C);                         // 0097689A
+        if (w != nullptr) construct_powerup_warning_009757b0(*w, host, host.network_session_1fe4());
+        break;
+    default:
+        break;                                                        // 00976896 JNZ 009768C7
+    }
+    // 009768C7: no null test; a null w faults here as the native does.
+    call_load_slot(host, *w, reader);
+    return w;                                                         // 009768D6 EAX = ESI
 }
 
 } // namespace bsp

@@ -150,23 +150,34 @@ anything else nothing. It then reports the id as one 6Ch MessageWarning (`00978B
   `"Message from |." + name + "|.: "` (`00D1B088`, `00D1B098`, two `004261A0` concatenations). It
   returns `00705E00(text, 1)` with ECX = game+21DCh (`0096E748`). It takes one stack argument and
   returns with `RET 4`. `callsite_census` and Ghidra xrefs find **no reference**, so it is dead code.
-- `009766D0` `warning_archive_class_009766d0`: `__thiscall(ECX = archive)`. It reads `type` and
-  constructs:
+- `009766D0` `warning_create_from_archive_009766d0` (`BSP_Warning_CreateFromArchive`):
+  `__thiscall(ECX = reader)`, plain `RET`, returns the warning in EAX. It reads `type` through
+  reader vtable `+10h` (key `{0, 00CE4AD0}`, field `{1, &local}`, `00976711`), then compares in
+  the order 0, 2, 3, 4, 5, 1, 6, 7, 8. Each arm calls `operator_new` (`00BF681B`, host hook
+  `operator_new_00bf681b`) and, on a non-null block, the constructor directly:
 
-  | type | size | ctor | vtable | builder |
+  | type | size | ctor (called from C++) | vtable | load slot (`vtable+4`) |
   | --- | --- | --- | --- | --- |
-  | 0 | 7Ch | `00976230` | `00D1B4F8` | string-list warning (`009795B0`) |
-  | 1 | 84h | `00973C20` | `00D1B26C` | entity warning (`00974150`) |
-  | 2 | 9Ch | `00973CA0` | `00D1B2A8` | recon (`009741E0`) |
-  | 3 | 70h | `00973A90` + vtable | `00D1B2CC` | kill (`009744C0`) |
-  | 4 | 88h | `00973D90` | `00D1B308` | hit (`00974C70`) |
-  | 5 | 84h | `00973E10` | `00D1B344` | exitzone (`00975340`) |
-  | 6 | 84h | `00973E90` | `00D1B380` | confirm (`00975540`) |
-  | 7 | 6Ch | `009756A0` | | newunit |
-  | 8 | 6Ch | `009757B0` | | powerup |
+  | 0 | 7Ch | `00976230` `construct_string_list_warning_for_archive_00976230` | `00D1B4F8` | `0097B4D0`, host hook |
+  | 1 | 84h | `00973C20` `construct_entity_warning_for_archive_00973c20` | `00D1B26C` | `00976C60` `load_entity_warning_00976c60` |
+  | 2 | 9Ch | `00973CA0` `construct_recon_warning_for_archive_00973ca0` | `00D1B2A8` | `00976E40` `load_recon_warning_00976e40` |
+  | 3 | 70h | `00973A90` `construct_warning_base_00973a90` + vtable store at `0097679B` (00973D30 inlined) | `00D1B2CC` | `009768F0` `load_warning_009768f0` |
+  | 4 | 88h | `00973D90` `construct_hit_warning_for_archive_00973d90` | `00D1B308` | `00977000` `load_hit_warning_00977000` |
+  | 5 | 84h | `00973E10` `construct_exit_zone_warning_for_archive_00973e10` | `00D1B344` | `00976C60` |
+  | 6 | 84h | `00973E90` `construct_confirm_warning_for_archive_00973e90` | `00D1B380` | `00976C60` |
+  | 7 | 6Ch | `009756A0` `construct_new_unit_warning_009756a0` | `00D1B460` | `009768F0` |
+  | 8 | 6Ch | `009757B0` `construct_powerup_warning_009757b0` | `00D1B4B0` | `009768F0` |
 
-  It then calls the object's vtable `+4` (load). An unknown type leaves ESI = 0, and the native
-  calls through a null pointer at `009768C7`.
+  `009768C7` calls `[[ESI]+4](reader)`; the C++ dispatches on the stored vtable to the four
+  reconstructed load bodies. Only `0097B4D0` stays a hook (`string_list_warning_load_0097b4d0`),
+  because its reconstruction (`cc13_seg62_seg65.cpp`) works on the raw-object `Seg62Host` model,
+  not `WarningObject`. An unknown type, or a null allocation, leaves ESI = 0 and the native
+  calls through a null pointer at `009768C7`; the C++ dereferences it the same way (no guard).
+  Simplifications: the `type` local is uninitialised in the image and starts at -1 here; the
+  EH unwind (free the block if a constructor throws) is not modelled; `009757B0`'s
+  `[[00E188A8]+1FE4h]` read is taken as an argument just before the call
+  (`network_session_1fe4`). No game host reaches it: 00980380's hook
+  `Large62Host::warning_create_from_archive_009766d0` has no implementation.
 
 ## Named only (persistence and Warning internals)
 
