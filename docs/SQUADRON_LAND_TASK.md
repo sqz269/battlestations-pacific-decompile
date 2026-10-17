@@ -17436,3 +17436,12 @@ Logs `cc9-lua52\local\l63_<row>_<cond>.log` with manifests; `off` is the tree bu
   identical; no logged plane
   in any recent row has more than one kind-25h rack, so the stick term is inert today.
 - All three flipped ON by mechanism.
+
+### 5hv.7 Entry points test IsFunction (`kEntryPointIsFunctionBound`, committed OFF)
+
+0045F440 (thread-safe) and 0045F520 (forced) fetch the global (00B67980, 00B67800), ask 00B66200 and release both
+LuaObjects; only a true answer copies the name and calls 00887E50 / 00887B30. 00B66200 returns
+`lua_type(state, index) == 6` (LUA_TFUNCTION) on its bound arm (00B6621C) and false on both unbound arms.
+`GameMissionLuaHost::global_is_defined` (game_hosts_lua.cpp) tested `!lua_isnil`. True tests `lua_isfunction`; it
+also gates the host's created-script calls, whose names are functions. This installation assigns
+`luaStageInit` / `luaEngineMovieInit` only as functions, so the prediction is identical on every row.

@@ -291,6 +291,12 @@ constexpr bool kFindEntityCaseInsensitiveBound = true;
 // Class 162 / 313 squadrons' altitudes and still wins; JM06 identical.
 constexpr bool kVehicleClassRowIdBound = true;
 
+// Packet cc9_l63_entry_isfunction (docs/SQUADRON_LAND_TASK.md 5hv.7). 0045F440
+// and 0045F520 gate the entry-point call on 00B66200 (BSP_LuaObject_IsFunction:
+// lua_type == 6), not on "not nil". True: global_is_defined answers whether the
+// global is a function. False: any non-nil value counts, as before.
+constexpr bool kEntryPointIsFunctionBound = false;
+
 // Packet cc9_lua49_checkpoint (docs/CC13_PROFILE_SAVE.md; docs/SQUADRON_LAND_TASK.md
 // 5fk). SaveCheckpoint 008ACB70: argument 0 to 00438A00 on the profile
 // manager, then PushBoolean(1) (008ACB70's tail) whatever happened.
@@ -9660,7 +9666,9 @@ void GameMissionLuaHost::push_argument(const bsp::MissionLuaArgument& argument) 
 bool GameMissionLuaHost::global_is_defined(const char* name) {
     if (state_ == nullptr) return false;
     lua_getfield(state_, LUA_GLOBALSINDEX, name);
-    const bool defined = !lua_isnil(state_, -1);
+    // 00B6621C: lua_type(...) == 6 (LUA_TFUNCTION).
+    const bool defined = kEntryPointIsFunctionBound ? lua_isfunction(state_, -1)
+                                                    : !lua_isnil(state_, -1);
     ::lua_settop(state_, -2);
     log_.implemented("MissionLua::global_is_defined", "00b66200");
     return defined;
