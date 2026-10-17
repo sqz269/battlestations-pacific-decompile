@@ -15991,3 +15991,40 @@ stage the DDs north of Fuso's stop through known water (row z 10500 is water fro
 beam; (c) the 20,5 opening, where Yamashiro outlives the first torpedo round; 20,5 fails at 1422 s on every variant.
 Order generator: `local\g51_plan.py` (g50_plan.py reading start positions from `local\g51_t15_starts\`; it reproduces
 `usn15_g50_u15_nn.txt` byte for byte).
+
+### 272.6 The per-shot reload draw, `0072D520` / `0072D579` (packet `cc9_g51_reload_draw`, HIGH)
+
+`kReloadDrawBound` and `kDrawKeyCollisionFixBound`, committed OFF. `BSP_Gun_Fire 00730160` re-arms the fired barrel at
+`007309E8` (after the throw cone and the spawn) through `0072D520(gun+44Ch, 1)`. On the full arm, `0072D579` draws
+`00BD2F10(1, [[gun+3F8h]+28h], [+2Ch])`; the empty arm `0072D592` stores FLT_MAX with no draw. ShipSetTorpedoStock's
+re-arm (`0081F95A`) makes the same call per barrel. The bounds are equal for every installed gun, so the TIMER is
+unchanged and only the stream advances: one draw per re-arm, placed after the shot's throw-cone draws as in the image.
+The second switch gives `Draw::auto_target_phase` its own key (32), so it no longer shares value 30 with
+`Draw::sink_effects`.
+
+**Predictions:** under the reference env (`BSP_GUNNERY_RNG_STREAMS=1`) `kReloadDrawBound` is gameplay-identical, because the
+draws have their own key and equal bounds; the only ON-only line is `summary mission gunnery reload draws`. In the
+default shared mode every later stream-1 consumer moves (gun bots, pilot bots, dive and torpedo tasks), so expect broad
+movement. `kDrawKeyCollisionFixBound` moves the reference env wherever a unit both sinks and runs AutoTarget (the
+sink-effect and phase draws separate). Pairs: `g51_d0` (base), `g51_d1` (reload), `g51_d2` (collision); USN04 and
+JM08 under the reference env, plus `d0`/`d1` in shared mode.
+
+### 272.7 The artillery aim point kept across a retarget (packet `cc9_g51_aim_keep`, cc13-verify3)
+
+`kArtilleryAimPointKeepBound`, committed OFF. `006DF520` is the only writer of `bot+B4h`. It stores -1.0 only on the
+no-target arm, so a live-to-live retarget keeps both the timer and the body-frame point (the old point rides the new
+target's matrix for up to 5 s). The refresh is strict (`006DF6F5`: 0 > timer). The host reset both on every target
+change and refreshed at timer <= 0, which drew 1 + (1 or 3) extra stream-1 `aim_point` values per retarget. The
+stale caveat at the `kArtilleryAimPointBound` label (cc13-verify3 A2) is corrected in the same commit.
+**Prediction:** under the reference env, artillery hit points move after each retarget (`aim_point` is gun-keyed), so
+surface battles move. Pairs on USN15 `nn` (2000 s), JM06 `jm06_p12_j6_c1` and IJN08 `ijn08_p10_i08_z`.
+
+### 272.8 The AA gunner against a ship draws a hull point (packet `cc9_g51_aa_hull_point`, cc13-verify3)
+
+`kAaGunnerShipHullPointBound`, committed OFF. When AngleDiffErrorRatio > 0, `00902920`'s refresh calls
+`target->vt[100h]` (`00902BFD`; for a ship `00816650` with chance -1, weights 1, box 0.8/0.5/0.8). That makes three
+hull-box draws after U(3, 8) and before U(0, ConstAngleError), and the error is measured from the drawn point. The
+host made no box draws and measured from its own aim point. Plane targets (`0042D810`, the origin, no draw) remain
+LABELLED. Live when a category-1 AA gun on a ship engages a ship (PT boats, landing craft). **Prediction:** AA swing
+errors against small craft move; pairs on BSM01 `bsm01_p6_b1_a` and JM08 `jm08_l64_j8_e`. The tail gunner
+(`008FFBC6..008FFC03`, A6) is not touched.
