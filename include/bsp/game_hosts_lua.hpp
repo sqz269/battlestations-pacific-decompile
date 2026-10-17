@@ -141,7 +141,7 @@ inline constexpr bool kGetPropertySquadronAmmoTypeBound = true;  // ON 2026-09-3
 // first call, so every IsKindOf(6) unit serves it; no other entity does.
 // The value is GameGunneryHost::torpedo_stock_total_00815850. False: no value,
 // so jm08.lua's `torp < 12` raises on nil and aborts its PT loop.
-inline constexpr bool kGetPropertyTorpedoStockBound = false;
+inline constexpr bool kGetPropertyTorpedoStockBound = true;  // ON 2026-10-17: pairs identical in gameplay (OCEAN_WAVE_FIELD 61.1)
 // Same packet. True: a squadron's GetProperty answers "state" (00425850 at
 // 007EF20E) as 007EF1C0 does: over the +3CCh planes at +3D0h it counts those
 // whose control mode (plane+72Ch)->vtable[38h] answers true (A; 0074E210, the
@@ -149,7 +149,7 @@ inline constexpr bool kGetPropertyTorpedoStockBound = false;
 // 2 when B is 0 (an empty squadron included), else 1 when A > 0, else 0.
 // commandhelpers.lua's luaAirstrikeManager_think attacks only on `state == 2`.
 // False: no value (nil), so that test never passes.
-inline constexpr bool kGetPropertySquadronStateBound = false;
+inline constexpr bool kGetPropertySquadronStateBound = true;  // ON 2026-10-17: by mechanism, never asked (61.1)
 
 // Packet cc9_lua_kill (docs/LUA_BINDING_MISSION.md, "Kill, 008AC5C0"). The Lua
 // native Kill(entity [, hard]) resolves argument 0 (00888AA0) and takes cause 1,

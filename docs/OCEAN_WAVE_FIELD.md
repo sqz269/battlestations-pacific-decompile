@@ -2533,3 +2533,60 @@ loop reaches `NavigatorAttackMove` and `luaSetScriptTarget` for each idle PT; th
 `ReloadTorpedoes` (`008C3CE0`, not bound in the host) is called and recorded. Missions using
 commandhelpers' airstrike manager (`luaAirstrikeManager_think`) issue attack orders when every member
 of the squadron is in free flight. No other key moves.
+
+### 61.1 Pairs and flip (2026-10-17)
+
+`local\p16_ts_off` / `local\p16_ts_on` (commit ffa8b9684, both switches flipped), 12000 mission frames,
+reference env. Manifests `local\p16ts{off,on}_{jm08,jm06,jm05}.log.manifest.json`.
+
+| row | asked | served | not ship | verdict |
+| --- | --- | --- | --- | --- |
+| JM08 | 0 | 0 | 0 | gameplay identical (exit 1) |
+| JM06 | 11 | 6 | 5 | gameplay identical (exit 1) |
+| JM05 | 27 | 27 | 0 | gameplay identical (exit 1) |
+
+JM08's US PT loop (`luaJM8CheckUSNPts`) needs an enemy within 3000 m of the first PT, and no run reached
+it: neither this 600 s pair nor the 140000-frame wins run `local\p8w2_j8f9.log`, whose log has no
+`TorpedoStock` ask at all. JM06's five refusals are `luaJM6AddTorp` asking `Mission.PlayerUnit` while that
+is not an `IsKindOf(6)` unit, where the image's reader is not reached either. The squadron `state` key was
+asked by nothing: its only reader, commandhelpers' `luaAirstrikeManager_think`, is never attached by any
+script or scene in this installation. Both switches are flipped ON by mechanism; the JM08 PT attack stays
+unmeasured until a run brings the IJN fleet within 3 km of the PTs.
+
+## 62. The planner's control laws: verify12 R5, R6, R7 (cc9-physics16, 2026-10-17; lead item 2)
+
+Four OFF switches in `GameUnitsHost::Impl` (`src/game_hosts_units.cpp`), with the pure parts in
+`src/plane_ai_control.cpp`.
+
+- **`kPilotModeOneRollTuningBound` (R5).** 0099E26E-0099E39D is one arm for both roll modes. Mode 1 now
+  takes it whole: 0099E27B-0099E2B5 clamp plan+2C4h in place (`00415690`) to +-plan+2C8h when that is
+  below pi (the double `00CE3D28`); the band, gain and rate are `[EBX+40h/44h/48h]` with EBX =
+  singleton+538h (0099D47F-0099D487): SoftRollCtrl, SoftRollMul and +580h; the servo limit
+  0099E344-0099E367 is class+1A8h x float(class+1A8h / class+1BCh / WaggleLimit)
+  (`pilot_roll_servo_limit_0099e344`). Before: band 0, gain 1, rate 0, limit 1, no clamp, so every
+  mode-1 bank hold (follow, dogfight, strafe, level-bomb holds, dive glide and turndown, land and
+  takeoff halves) ran a unit-gain servo saturating at 1 rad of error instead of the image's
+  0.05-rad soft band with gain 0.7 and an offset beyond it.
+- **`kPilotSpeedCorrDivisorBound` (R6).** plan+2B8h gets its producer. 0099D756-0099D79A (every pass
+  past the centred gate): above 1.0 it falls by TrgSpeedCorrMulDecay (+5F0h, EBX+B8h) x `[ESP+6Ch]`
+  (dt / dtScale), floored at 1.0. 0099D924-0099D970 (head of the demand arm, reached only through
+  0099D8CD, while the byte plan+2B0h is clear): `00415550` max(+2B8h, `00419010`(-MinPitch, SpeedMul,
+  0, 1, unit+C64h)). 0099D99E-0099D9A3 divide the measured speed by it. **LABELLED:** the start value is
+  1.0. A census of `[reg+2B8h]` stores over 00990000-00A00000 (`local\p16_disp_writers.py`) finds only
+  009A4ECD, 009A50F6 (a task constructor family whose `+2ACh = this` store does not fit the plan block)
+  and 009B9CB2; the pilot bot (`0099A880`, 0BCh bytes) is not the planner object.
+- **`kPilotThrottleForwardSpeedBound` (R6, the measured speed).** 0099D992-0099D99E take 007D99C0
+  (ECX = unit+AB0h), the body forward speed, not |v|. The host takes v . forward row, as it already
+  does for 007D9A70's argument. **LABELLED:** the carrier-deck parent term of 007D99C0 is dropped.
+- **`kPlaneBombLoadAuthorityBound` (R7).** 007D9A70 returns 007C0F40(unit) x t^2. 007C0F40: 1.0, or
+  for the first slot of +974h whose vtable[210h](2Ah, 0) answers (007C0F72), `00419010`(0, 1, 0.8
+  (00CE74F8), class+15Ch BombControlLimit, slot vtable[214h]); x class+608h when unit+BC8h (turbo).
+  **LABELLED:** the slot test is `rack_holds_round`; a single rack's fraction (006E4130) is the host's
+  rounds left over the authored Ammo; a multi rack (006E3700) answers 1.0; the turbo arm is not taken.
+
+**Predictions (OFF -> ON).** R5: mode-1 bank holds settle softer (|roll command| below 1 near the
+target) and overshoot less; dogfight and strafe geometry move. R6: in a dive (pitch -30 deg) the speed
+hold sees the plane 1.69 x slower and opens the throttle, so dive bombers and torpedo glides dive
+faster and later level-offs move; the forward-speed term lowers the measured speed in sideslip. R7:
+loaded torpedo and bomb planes rotate at 70-90% of today's authority until release, widening their
+turns and approach geometry. Every AI plane mission moves; deaths and kill tables may move.
