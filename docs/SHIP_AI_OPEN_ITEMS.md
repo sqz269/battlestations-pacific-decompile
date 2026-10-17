@@ -18281,3 +18281,25 @@ squadron's. AI-held means every slot except the local player's.
 **Predictions.** JM06's PBY Catalina 01 (CatalinaPatrolPath, 12 points, 0 advances over 115 km with the ship arm)
 starts advancing: its radius becomes at least ClosingDist, where the ship arm took min(hull*2.5, turn*1.2). BSM01's
 PilotMoveOnPath squadrons follow their paths. Ship rows stay identical.
+
+## 263. 00935540 sinking-wreck debris draws bound OFF (cc9-ships53, 2026-10-17; lead item 2)
+
+**The box question, settled from the listing.** 00825B51 calls 00C31F90(&min [ESP+24h], &max [ESP+30h]), and that
+copies body+38h..+40h and +44h..+4Ch. 00C5715C..00C5745E (docs/DYN_COLLISION_PASS.md step 1) treats B+38h/B+44h as
+the body's LOCAL box: it turns that box into a centre and half extents and rotates them into the broad-phase proxy
+at B+60h. The extents are therefore heading-independent. 00825B56..00825B84 store max - min for x, y and z, and
+00825B9B..00825BAE push them as arguments 2..4 (argument 1 is the 00C31FC0 result, pushed last). So arg4, which
+0093557A truncates, is the local z extent, the hull length.
+**Bound.** `kSinkingWreckDebrisDrawsBound` (include/bsp/game_hosts_gunnery.hpp, bsp::game) and
+`GameGunneryHost::sinking_wreck_debris_draws_00935540`:
+- The pieces are pieces = _ftol(DebrisNumPerMeter * (int)z), with kinds 0Eh and 8 skipped, eight 00BD2F10 draws per
+  piece (MOV ECX,1 at 00935729/00935977/00935991...), on Draw::sink_effects key 3. The 00447510 pieces are not made.
+- The units host's `wake_enabled()` now answers ShipGlobals.DebrisStruct.DebrisEnabled. That is read once by a Lua
+  chunk (this installation's shipglobals.lua, 2024-07-13: true, 0.3).
+- `spawn_wake()` passes unit+C4h and the class hull box's z extent (LABELLED stand-in for B+38h..+4Ch; with no box,
+  the class Length). The gate (dead byte, one-shot, both ends below -5.0) is unit_instance.cpp's, unchanged.
+- OFF keeps `wake_enabled()` false (before).
+**Predictions.** Reference mode (STREAMS=1): inert, pair_diff 1. Default mode: moves after the first wreck whose
+two hull ends go below -5 m. That is later than the 258 sink-grid draws on the same wreck. Each such ship consumes
+about 8 * 0.3 * length draws (West Virginia, 194.85 m: 58 pieces, 464 draws). The summary line is
+`sinking wreck debris`.
