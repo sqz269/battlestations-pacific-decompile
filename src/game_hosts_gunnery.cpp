@@ -1021,12 +1021,30 @@ inline bool gun_artillery_kind_005459b0(int kind) noexcept {
 //    body-frame point with the row's SectionTargetChance and section weights
 //    (row+18h..+24h, 006DF72B-006DF743) over a box of 0.6 (00CE3D30) about the
 //    origin (00F87574, zero). Step 5 carries it to world by the target's matrix
-//    (00414D10 with target+CCh). Labelled: the ship's engine-room, magazine
-//    and fuel-tank section points are not loaded, so the section path is
-//    unavailable and every draw takes the hull box; bot+90h's stepped offset
-//    toward bot+84h is not modelled; a target change re-draws at once. OFF:
-//    the target origin raised by Height. docs/SURFACE_GUNNERY_REFERENCE.md.
+//    (00414D10 with target+CCh). The section points are loaded under
+//    kShipSectionPointsBound and bot+90h's step toward bot+84h runs under
+//    kArtilleryRangingErrorBound (cc13-verify3 A2 corrected the old caveats).
+//    OFF: the target origin raised by Height. docs/SURFACE_GUNNERY_REFERENCE.md.
 constexpr bool kArtilleryAimPointBound = true;
+//  * kArtilleryAimPointKeepBound: packet cc9_g51_aim_keep (GUNNERY 272.7,
+//    cc13-verify3). 006DF520 is the only writer of bot+B4h. It stores -1.0
+//    (00D7A260) only on the arm where vt[44h] answers no target (with +90h zeroed);
+//    a live-to-live retarget keeps the timer and the body point, so the old
+//    target's body-frame point rides the new target's matrix until the timer
+//    runs out. 006DF6D7..006DF6F5 subtract dt, then refresh only when 0 > timer
+//    (FCOMI / JBE: strict). True: as the image. False: a target change resets the
+//    timer and redraws at once, and the refresh takes timer <= 0.
+constexpr bool kArtilleryAimPointKeepBound = false;
+//  * kAaGunnerShipHullPointBound: packet cc9_g51_aa_hull_point (GUNNERY 272.8,
+//    cc13-verify3). 00902920's refresh, when row+0Ch AngleDiffErrorRatio > 0
+//    (00902B7A), calls target->vt[100h](out, chance -1.0 00D7A260, weights 1,1,1, box
+//    {0.8 00CE74F8, 0.5 00CE3800, 0.8}) at 00902BFD and measures the angle error from
+//    that point. For a ship that is 00816650: no section roll (chance <= 0) and three
+//    hull-box draws on stream 1, after U(3, 8) and before U(0, ConstAngleError). True:
+//    the three draws and the drawn hull point. False: no draws, the error from the
+//    host's aim point. LABELLED: a plane target's vt[100h] (0042D810, the origin, no
+//    draw) still measures from the host's Height-raised point.
+constexpr bool kAaGunnerShipHullPointBound = false;
 //  * kTorpedoFriendlyCrossingBound: packet cc9_torpedo_launch_gate. 008FFF20's
 //    friendly-crossing gate 0090058A..009007F6: a torpedo launch is held when
 //    another own-side ship within 2000 m would be within 0.3 * run + 200 m of
@@ -2438,6 +2456,8 @@ struct GameGunneryHost::Impl {
     };
     std::map<std::size_t, ArtilleryAimPoint> artillery_aim_by_gun;
     unsigned long long artillery_aim_points{0};
+    unsigned long long artillery_aim_kept_retargets{0};   // kArtilleryAimPointKeepBound
+    unsigned long long aa_gunner_hull_points{0};          // kAaGunnerShipHullPointBound
     unsigned long long shell_mesh_hits{0};
     // Packet cc9_plane_mesh_hit: narrowphase segment tests against a plane with a
     // mesh (every query, line-of-fire ones included), and the mesh's and the class
@@ -2645,9 +2665,18 @@ struct GameGunneryHost::Impl {
     void artillery_aim_point(std::size_t gun_index, std::size_t target, float dt,
                              float out[3], std::size_t owner = static_cast<std::size_t>(-1)) {
         ArtilleryAimPoint& st = artillery_aim_by_gun[gun_index];
-        if (st.target != target) { st.target = target; st.timer_b4 = -1.0f; }
-        st.timer_b4 -= dt;
-        if (st.timer_b4 <= 0.0f) {
+        if (!kArtilleryAimPointKeepBound && st.target != target) {
+            st.target = target;
+            st.timer_b4 = -1.0f;
+        }
+        st.timer_b4 -= dt;                                   // 006DF6D7..006DF6E9
+        const bool refresh = kArtilleryAimPointKeepBound ? (0.0f > st.timer_b4)   // 006DF6F5
+                                                         : (st.timer_b4 <= 0.0f);
+        if (kArtilleryAimPointKeepBound && st.target != target) {
+            st.target = target;
+            ++artillery_aim_kept_retargets;
+        }
+        if (refresh) {
             st.timer_b4 = 5.0f;   // TargetPointRefreshTime, 5 in every row of this installation
             const UnitState& t = unit_state[target];
             bsp::LeadAimHullExtents hull;
@@ -7940,6 +7969,11 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         float torpedo_snap_radians = 0.0f;
         // kAaLeadDistanceGateBound: |lead - muzzle|, 00901C20's outDist.
         float lead_distance = -1.0f;
+        if (kArtilleryAimPointKeepBound && !have_target) {
+            // 006DF520's no-target arm: bot+B4h = -1.0 (00D7A260).
+            const auto kept = artillery_aim_by_gun.find(g);
+            if (kept != artillery_aim_by_gun.end()) kept->second.timer_b4 = -1.0f;
+        }
         if (have_target) {
             float theirs[3];
             if (kArtilleryAimPointBound && artillery_bot_aims(gun.category, target)
@@ -8324,8 +8358,33 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                         const float* row = kAaGunnerErrorRows[aa_level];
                         float e = 0.0f;
                         if (row[0] > 0.0f) {
-                            const float ad[3] = {at[0] - muzzle[0], at[1] - muzzle[1],
-                                at[2] - muzzle[2]};
+                            float from[3] = {at[0], at[1], at[2]};
+                            if (kAaGunnerShipHullPointBound
+                                && units.unit_is_kind_of(target, bsp::kUnitGunneryKindShipBase)) {
+                                // 00902BFD -> 00816650(chance -1, weights 1, box 0.8/0.5/0.8).
+                                const UnitState& t = unit_state[target];
+                                bsp::LeadAimHullExtents hull;
+                                hull.length = t.hull_length;
+                                hull.width = t.hull_width;
+                                hull.height = t.hull_height;
+                                bsp::ShipLeadRandomDraws hd;
+                                hd.box_x = draw(Draw::aa_gunner_error, g, 0, -0.8f, 0.8f);
+                                hd.box_y = draw(Draw::aa_gunner_error, g, 0, 0.0f, 0.5f);
+                                hd.box_z = draw(Draw::aa_gunner_error, g, 0, -0.8f, 0.8f);
+                                const bsp::ShipLeadSections none{};
+                                const std::array<float, 3> body = bsp::ship_lead_point_00816650(
+                                    none, hull, {0.8f, 0.5f, 0.8f}, {0.0f, 0.0f, 0.0f}, -1.0f,
+                                    1.0f, 1.0f, 1.0f, hd, true, true, true);
+                                float tr[3], tu[3], tf[3], to[3];
+                                unit_pose(target, tr, tu, tf, to);
+                                for (int k = 0; k < 3; ++k) {
+                                    from[k] = to[k] + tr[k] * body[0] + tu[k] * body[1]
+                                        + tf[k] * body[2];
+                                }
+                                ++aa_gunner_hull_points;
+                            }
+                            const float ad[3] = {from[0] - muzzle[0], from[1] - muzzle[1],
+                                from[2] - muzzle[2]};
                             const float al = length3(ad);
                             if (al > 0.0f) {
                                 const float au[3] = {ad[0] / al, ad[1] / al, ad[2] / al};
@@ -16504,6 +16563,14 @@ void GameGunneryHost::report() {
         if (kReloadDrawBound) {
             host.log.notef("summary mission gunnery reload draws=%llu (0072D579, packet "
                 "cc9_g51_reload_draw)", host.reload_draws);
+        }
+        if (kAaGunnerShipHullPointBound) {
+            host.log.notef("summary mission gunnery aa gunner hull_points=%llu (00902BFD -> "
+                "00816650, packet cc9_g51_aa_hull_point)", host.aa_gunner_hull_points);
+        }
+        if (kArtilleryAimPointKeepBound) {
+            host.log.notef("summary mission gunnery artillery aim kept_retargets=%llu "
+                "(006DF520 bot+B4h, packet cc9_g51_aim_keep)", host.artillery_aim_kept_retargets);
         }
         if (kInferiorFailureArmBound) {
             const Impl::InferiorFailureCounts& c = host.inferior;
