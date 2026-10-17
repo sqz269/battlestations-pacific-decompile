@@ -2312,3 +2312,70 @@ on all four. JM05 9000 moves strongly under 54, and under 55 it lands back on 44
    - spin-left C38h.
 4. **The catapult adapter (`Seg33aHost`, 37).**
 5. The mesh-bound items: the deck crash's class+50h box (48.1) and 007CBA50's hull points (52).
+
+## 57. The squadron free-attack tick 009F8470: `kSquadronFreeAttackTickBound` (cc9-physics15, 2026-10-17; lead item 1)
+
+### 57.1 What runs, and where
+
+- **The tick is cc13's** (`src/cc13_seg68.cpp`, `squadron_auto_target_tick_009f8470`, CC13_SEG68 1), run unchanged.
+  `src/squadron_free_attack.cpp` fills a small byte arena per squadron and per step with the fields it reads, at their
+  native offsets: the +348h block (`+30h` mode, `+3Ch`/`+3Dh`, `+54h` slot 0, `+58h` its descriptor), the squadron
+  (`+3D0h`, `+54h`, `+370h`), the leader (`+1B0h`, `+184h`, `+C24h`), each contact (`+C8h`, `+FCh`..`+104h`), the enemy
+  chain `[slot+DE8h]` (node `+4h`/`+8h`, item `+4h`), the AttackLists block (`004D6CE0`, each vector's begin/end at
+  `+4h`/`+8h`) and the tuning record (`+594h` GuardDist). The tick's calls are recorded as a decision.
+- **Position.** `0071F290` arm 7 runs `[+38h]->vtable[4]` (009F8470) and then `vtable[7Ch]` (0084E010). The host already
+  runs 009F8470's first two calls (009F8160, 009F7C90) and 0084E010's B5 per squadron in `run_spent_ordnance_rtb_0084e010`;
+  the selection runs between them.
+- **The candidates.** The side's enemy triple (`recon_triple_units(party, 1)`) with a flag per entry for the kind-18h
+  group record 00805490 leaves (the host's unit for it is the fused leader). A plane's own class-bucket record is
+  IsKindOf(0Fh) and refused by 009F7480; the group record gets its own arena object, so IsKindOf(18h) holds and `+3D0h`
+  is the leader, as 009F7BA0 reads it.
+- **The score** asks `00804350` (sensors, mask FFh) from the own leader, now `GameGunneryHost::sensors_detect_unit_00804350`
+  over the recon pass's own rows (`i*8+j`, `i, j < 7`: `008045E8`/`008045F8` CMP 7; row `i == 4` divided by the sonar
+  multiplier squared), and 007EEC50 through the script-order host's chooser on the leader.
+- **AttackLists** are this installation's `scripts/datatables/squadronfreeattacktargets.lua` (mtime 2024-07-13, untouched
+  bulk), transcribed (LABELLED), names mapped through 00E0CD80 read from the disk image.
+- **The +3Ch/+3Dh bytes** are the script-order host's (`UnitSetFireStance`, else 0084D810's defaults:
+  Behaviour `+364h` 0 frees both; otherwise a fighter class gets fire only, anything else move only;
+  `0084D862`-`0084D8A2`, read here).
+- **0084D960**, the block's `vtable[50h]` the tick asks at 009F8584: 0 when `+3Dh` and `+3Ch` are both set, else 1.
+- **0071E4C0** (filter C's path point): slot 0 `moveonpath` gives the path's final point (`007B1350`), otherwise slot 0's
+  descriptor point (`006F7DD0`), otherwise none.
+
+LABELLED substitutions: 00927F10 for a party slot other than 8 answers player-held; leader `+C24h` (PilotFires) has no
+reader and is clear, so `007EDAC0` is false; 007ED7E0 / 007ED8D0 / 007EDA10 / 007ED880 read the members' ordnance masks;
+007EE8B0's `+361h` is the retreat exit latch the units host keeps by squadron name.
+
+## 58. 007DC830's dying spin and wreck lift: `kFreeFlightDyingSpinBound`, `kFreeFlightWreckLiftBound` (cc9-physics15, 2026-10-17; lead item 2)
+
+### 58.1 The image (cc13's `src/cc13_front3.cpp` reading of 007DC830; 007D7EA0 per CC13_GPR_48 161)
+
+- **The dying spin.** Inside the stall block's `m > 0` arm, after the stall kick, a dead plane (`+5Dh` re-read at
+  `007DCAF2`) adds `step * ctl+F0h..F8h` to `ctl+24h..2Ch` (`007DCAF9`-`007DCB40`; each product stored as a float first).
+  `ctl+24h` is the world angular velocity (CC13_GPR_48: the parent-frame rotation carries it with `ctl+18h`).
+  `ctl+F0h..F8h` is set once by the controller constructor 007D7EA0: `m = U(RotationMin, RotationMax)` (`007D7F90`;
+  Dynamics/DeadMeat `+250h`/`+254h`) times `00439950`'s direction (`z = U(-1, 1)`, `phi = U(0, 2 pi)`), three stream-1 draws.
+- **The wreck lift** (`007DCB4B`-`007DCCCB`), outside the stall block, with `ctl+94h` set: `v` = the world velocity with
+  `y = 0`; `h = 00419010(0, 4, 69.444443, 20, |v|)`; `u = max(0, 1 - |+C64h|)`; `q = min(1, |+C68h| * 0.8 + 0.6)`; the
+  `007DAFD0` kick at `(0,0,1)` toward `(0,-1,0)` of `q u h`, limit `1000.0f` (`00CE3804`).
+
+### 58.2 The binding (both committed OFF, `src/game_hosts_units.cpp`)
+
+- `kFreeFlightDyingSpinBound`: the stall block no longer returns on `f <= 0` for a dead plane; the kick still needs `f > 0`;
+  the spin is added to the world angular velocity the kick uses and goes back to the body rates once.
+  LABELLED: the three draws come from the plane's keyed stream (`name#ds_m`, `#ds_z`, `#ds_p`) at its first dying step,
+  not from stream 1 at construction (the shared stream would shift every later stream-1 consumer by three draws per plane).
+- `kFreeFlightWreckLiftBound`: `free_flight_wreck_lift_007dcb4b` after the stall block when `ctl+94h` is set. The host
+  sets `ctl+94h` only in the water arm (`007CBC02`); 007CE040's hull-point arm (`007CE0DB`-`007CE1D9`: a dead plane below
+  the altitude at `00CF3F20` with any class `+5B8h` hull point below `y = -1`) needs the mesh points and is not carried.
+- Summary line: `summary free flight dying spin bound= steps= seeds= wreck_lift_bound= wreck_lift_kicks=`.
+
+### 58.3 Predictions (ON against OFF; written before the runs)
+
+- OFF: identical by construction (the restructured stall block runs the same kick and write-back).
+- Dying spin ON: every row with planes shot down in free flight moves from the first dying step: the wreck's attitude
+  and track, so where and when it reaches the water (the plane's removal time in the death table). Ships, the scored
+  deaths and AA kills before the first plane death stay identical. `seeds` = the number of planes that died in the
+  stall block's arm; `steps` grows with each dying plane's fall.
+- Wreck lift ON: `wreck_lift_kicks` 0 or near 0 (ctl+94h is set only after a dead plane's water contact, and such a
+  plane stays in the water arm), so gameplay identical or nearly so.

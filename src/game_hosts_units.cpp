@@ -1992,6 +1992,10 @@ struct GameUnitSlot {
     // byte 007D8180 sets for a dying plane at 007CBC02, and the arm's counters.
     float plane_water_accum_90c{0.0f};
     bool plane_ctl_94{false};
+    // Packet p15_dying_spin: ctl+F0h..F8h, 007D7EA0's draw (007D7F90, 00439950),
+    // taken from the plane's keyed stream at first use.
+    float dying_spin_f0[3]{0.0f, 0.0f, 0.0f};
+    bool dying_spin_seeded{false};
     int plane_water_law_steps{0};
     int plane_water_lift_offs{0};
     int plane_water_powerlost{0};
@@ -6656,6 +6660,21 @@ struct GameUnitsHost::Impl {
     // constructor draw is not hosted) and ctl+94h (the wreck/water gate) are not carried.
     static constexpr bool kFreeFlightStallForceBound = true;   // ON by its pairs (OCEAN_WAVE_FIELD 55.4)
     unsigned long long stall_force_steps{0}, stall_force_kicks{0};
+    // Packet p15_dying_spin (docs/OCEAN_WAVE_FIELD.md section 58). True: inside the
+    // stall block's m > 0 arm, a dead plane (+5Dh re-read at 007DCAF2) adds
+    // step x ctl+F0h..F8h to its world angular velocity ctl+24h..2Ch (007DCAF9-
+    // 007DCB40, each product stored as a float first). ctl+F0h..F8h is 007D7EA0's
+    // construction draw: U(RotationMin, RotationMax) (007D7F90, Dynamics/DeadMeat
+    // +250h/+254h) times 00439950's direction (z = U(-1, 1), phi = U(0, 2 pi)), all
+    // on stream 1. LABELLED: drawn from the plane's keyed stream (`name#ds_m`,
+    // `#ds_z`, `#ds_p`) at its first dying step, not at construction. False: no spin.
+    static constexpr bool kFreeFlightDyingSpinBound = false;
+    // Packet p15_dying_spin (section 58). True: 007DCB4B-007DCCCB, with ctl+94h set:
+    // v = the world velocity with y = 0, h = 00419010(0, 4, 69.444443, 20, |v|),
+    // u = max(0, 1 - |+C64h|), q = min(1, |+C68h| * 0.8 + 0.6), and the 007DAFD0 kick
+    // at (0,0,1) toward (0,-1,0) of q u h, limit 1000. False: not carried.
+    static constexpr bool kFreeFlightWreckLiftBound = false;
+    unsigned long long dying_spin_steps{0}, dying_spin_seeds{0}, wreck_lift_kicks{0};
     unsigned long long rack_positive_bag_rounds{0};
     int rack_positive_bag_round(const GameUnitSlot& s, int ammo) {
         if constexpr (kRackPositiveBagRoundBound && bsp::kPlaneSceneEquipmentBound) {
@@ -35792,6 +35811,47 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // rounds each once (docs/CC13_FRONT3.md). The world angular velocity
                     // ctl+24h is taken through the pose rows, as water_law_tail does.
                     void free_flight_stall_force_007dc830(float step) {
+                        free_flight_stall_block_007dc894(step);
+                        if constexpr (GameUnitsHost::Impl::kFreeFlightWreckLiftBound) {
+                            if (unit_.plane_ctl_94) free_flight_wreck_lift_007dcb4b(step);
+                        }
+                    }
+                    // 007DCB4B-007DCCCB (packet p15_dying_spin, section 58).
+                    void free_flight_wreck_lift_007dcb4b(float step) {
+                        const float* const wv = unit_.plane_world_velocity;   // vtable[34h]
+                        const float v[3] = {wv[0], 0.0f, wv[2]};
+                        const float len = std::sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);   // 0042B2F0
+                        const float h = bsp::clamped_interpolate_00419010(0.0f, 4.0f,
+                            69.44444274902344f, 20.0f, len);                               // 007DCBA3
+                        const float c64 = unit_.plane_pitch_angle_c64;
+                        const float t = c64 > 0.0f ? c64 : -0.0f - c64;
+                        float u = 1.0f - t;                                                // 007DCBEB
+                        const float c68 = unit_.plane_bank_angle_c68;
+                        const float aw = c68 > 0.0f ? c68 : -0.0f - c68;
+                        const float p = static_cast<float>(static_cast<double>(aw) * 0.800000011920929
+                            + 0.6000000238418579);                                         // 007DCC0B
+                        if (0.0f > u) u = 0.0f;                                            // 007DCC23
+                        const float q = p > 1.0f ? 1.0f : p;                               // 007DCC3F
+                        const float force = static_cast<float>(static_cast<double>(q) * u * h);   // 007DCC80
+                        const bsp::PlaneWaterPose pose = water_pose();
+                        float w[3];
+                        for (int c = 0; c < 3; ++c) {
+                            w[c] = pose.rows[0][c] * unit_.plane_body_angular[0]
+                                + pose.rows[1][c] * unit_.plane_body_angular[1]
+                                + pose.rows[2][c] * unit_.plane_body_angular[2];
+                        }
+                        const float nose[3] = {0.0f, 0.0f, 1.0f};
+                        const float down[3] = {0.0f, -1.0f, 0.0f};
+                        bsp::water_angular_kick_007dafd0(w, pose, nose, down, force, step, 1000.0f,
+                            pose.rows[0]);                                                  // 007DCCCB, 00CE3804
+                        for (int r2 = 0; r2 < 3; ++r2) {
+                            unit_.plane_body_angular[r2] = pose.rows[r2][0] * w[0]
+                                + pose.rows[r2][1] * w[1] + pose.rows[r2][2] * w[2];
+                        }
+                        ++owner_.wreck_lift_kicks;
+                    }
+                    // 007DC894-007DCB40: the stall block.
+                    void free_flight_stall_block_007dc894(float step) {
                         if constexpr (!GameUnitsHost::Impl::kFreeFlightStallForceBound) {
                             (void)step;
                             return;
@@ -35836,7 +35896,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (0.0f > d) d = 0.0f;
                         else if (d > 1.0f) d = 1.0f;
                         const float f = static_cast<float>(static_cast<double>(gp) * m * d);   // 007DCA6E
-                        if (!(f > 0.0f)) return;                                           // 007DCA82
+                        const bool spin = GameUnitsHost::Impl::kFreeFlightDyingSpinBound && dead;
+                        if (!(f > 0.0f) && !spin) return;                                  // 007DCA82
                         // desc+17Ch StallRotAccel (007D21FB); an unauthored row keeps the
                         // descriptor's zero. Cached per class (LABELLED).
                         static std::map<int, float> stall_rot_accel_by_class;
@@ -35856,14 +35917,47 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         const float nose[3] = {0.0f, 0.0f, 1.0f};
                         const float down[3] = {0.0f, -1.0f, 0.0f};                          // 00D7A260
-                        bsp::water_angular_kick_007dafd0(w, pose, nose, down, force, step, 1.5f,
-                            pose.rows[0]);                                                  // 007DCAE6, 1.5f 00CE380C
+                        if (f > 0.0f) {
+                            bsp::water_angular_kick_007dafd0(w, pose, nose, down, force, step, 1.5f,
+                                pose.rows[0]);                                              // 007DCAE6, 1.5f 00CE380C
+                            ++owner_.stall_force_kicks;
+                        }
+                        if (spin) {
+                            // 007DCAF2-007DCB40: ctl+24h..2Ch += step * ctl+F0h..F8h.
+                            seed_dying_spin_007d7ea0(g);
+                            const float a = step * unit_.dying_spin_f0[0];
+                            const float b = unit_.dying_spin_f0[1] * step;
+                            const float c = step * unit_.dying_spin_f0[2];
+                            w[0] = w[0] + a;
+                            w[1] = b + w[1];
+                            w[2] = w[2] + c;
+                            ++owner_.dying_spin_steps;
+                        }
                         for (int r2 = 0; r2 < 3; ++r2) {
                             unit_.plane_body_angular[r2] = pose.rows[r2][0] * w[0]
                                 + pose.rows[r2][1] * w[1] + pose.rows[r2][2] * w[2];
                         }
-                        ++owner_.stall_force_kicks;
                         }
+                    }
+                    // 007D7EA0's dying-spin draw (007D7F90, then 0043996D / 0043998D in
+                    // 00439950), from the plane's keyed stream at first use.
+                    void seed_dying_spin_007d7ea0(const bsp::GameTuningBlock& g) {
+                        if (unit_.dying_spin_seeded) return;
+                        unit_.dying_spin_seeded = true;
+                        const std::string& name = unit_.row.name;
+                        const float m = owner_.release_altitude_draw_00bd2f10(name + "#ds_m",
+                            g.dynamics_dead_meat_rotation_min, g.dynamics_dead_meat_rotation_min_2);
+                        int k = 0;
+                        float d[3] = {0.0f, 0.0f, 0.0f};
+                        bsp::plane_wanderer_random_direction_00439950(d,
+                            [this, &name, &k](float lo, float hi) {
+                                return owner_.release_altitude_draw_00bd2f10(
+                                    name + (k++ == 0 ? "#ds_z" : "#ds_p"), lo, hi);
+                            });
+                        unit_.dying_spin_f0[0] = m * d[0];   // 007D7FBC
+                        unit_.dying_spin_f0[1] = d[1] * m;   // 007D7FAB
+                        unit_.dying_spin_f0[2] = d[2] * m;   // 007D7FB6
+                        ++owner_.dying_spin_seeds;
                     }
                     void water_law_tail(float step, float forward_speed) {
                         const bsp::PlaneWaterPose pose = water_pose();
@@ -38811,6 +38905,10 @@ void GameUnitsHost::report() {
     host.log.notef("summary free flight stall force bound=%d steps=%llu kicks=%llu (007DC830 -> "
         "007DAFD0, packet cc9_p14_stall_force)", Impl::kFreeFlightStallForceBound ? 1 : 0,
         host.stall_force_steps, host.stall_force_kicks);
+    host.log.notef("summary free flight dying spin bound=%d steps=%llu seeds=%llu wreck_lift_bound=%d "
+        "wreck_lift_kicks=%llu (007DC830 007DCAF9 / 007DCB4B, packet p15_dying_spin)",
+        Impl::kFreeFlightDyingSpinBound ? 1 : 0, host.dying_spin_steps, host.dying_spin_seeds,
+        Impl::kFreeFlightWreckLiftBound ? 1 : 0, host.wreck_lift_kicks);
     host.log.notef("summary rack positive bag round bound=%d rounds=%llu (006E3350 -> 006E3C00, "
         "packet cc9_p14_bag_rack_round)", Impl::kRackPositiveBagRoundBound ? 1 : 0,
         host.rack_positive_bag_rounds);
