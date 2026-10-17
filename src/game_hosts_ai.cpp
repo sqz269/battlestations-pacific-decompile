@@ -6263,10 +6263,26 @@ void GameAiCoordinatorHost::Impl::order_attack(void* group, void* target, float 
     }
 }
 
-GameAiCoordinatorHost::GameAiCoordinatorHost(GameHostLog& log, GameUnitsHost& units)
-    : impl_(std::make_unique<Impl>(log, units)) {}
+namespace {
+// Packet s57_follow_join: the coordinator ai_request_join_formation_0077c8d0 reaches.
+GameAiCoordinatorHost::Impl* g_live_ai_coordinator = nullptr;
+}  // namespace
 
-GameAiCoordinatorHost::~GameAiCoordinatorHost() = default;
+GameAiCoordinatorHost::GameAiCoordinatorHost(GameHostLog& log, GameUnitsHost& units)
+    : impl_(std::make_unique<Impl>(log, units)) {
+    g_live_ai_coordinator = impl_.get();
+}
+
+GameAiCoordinatorHost::~GameAiCoordinatorHost() {
+    if (g_live_ai_coordinator == impl_.get()) g_live_ai_coordinator = nullptr;
+}
+
+bool ai_request_join_formation_0077c8d0(std::size_t follower, std::size_t leader) {
+    if (g_live_ai_coordinator == nullptr) return false;
+    // The coordinator's entity handles are index + 1 (unit_index_of).
+    return g_live_ai_coordinator->tick_request_join_formation(
+        reinterpret_cast<void*>(follower + 1u), reinterpret_cast<void*>(leader + 1u));
+}
 
 void GameAiCoordinatorHost::create_00a32350() {
     Impl& host = *impl_;

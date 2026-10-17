@@ -18,6 +18,7 @@
 
 #include "bsp/game_hosts_commands.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
+#include "bsp/game_hosts_ai.hpp"
 
 #include "bsp/game_hosts.hpp"
 
@@ -1346,9 +1347,15 @@ public:
         if (chain_.pending_target.kind == 0) return 0u;
         return chain_.pending_target.object_id;
     }
-    bool target_is_kind_of_vtable5c(std::uint32_t, int) override {
-        chain_.owner.record_slot("EntityCommandArm::target_is_kind_of", "00cfc3d0+vtable5c");
-        return false;
+    bool target_is_kind_of_vtable5c(std::uint32_t target, int kind) override {
+        if (!kSceneFollowJoinBound) {
+            chain_.owner.record_slot("EntityCommandArm::target_is_kind_of", "00cfc3d0+vtable5c");
+            return false;
+        }
+        // 00816ECA, the resolved target's IsKindOf; `target` is its id, index + 1.
+        chain_.owner.done("EntityCommandArm::target_is_kind_of", 0x00816ecau);
+        if (target == 0u || target - 1u >= chain_.owner.units.size()) return false;
+        return bsp::unit_is_kind_of(chain_.owner.units[target - 1u].class_id, kind);
     }
     bool self_is_kind_of_vtable5c(int kind) override {
         if constexpr (kEntityCommandSelfKindBound) {
@@ -1361,8 +1368,19 @@ public:
             return false;
         }
     }
-    void request_join_formation_0077c8d0(std::uint32_t) override {
-        chain_.owner.record("EntityCommandArm::request_join_formation", 0x0077c8d0u);
+    void request_join_formation_0077c8d0(std::uint32_t target) override {
+        if (!kSceneFollowJoinBound) {
+            chain_.owner.record("EntityCommandArm::request_join_formation", 0x0077c8d0u);
+            return;
+        }
+        // 00816ED5 CALL 0077C8D0, ECX = this unit, the argument the kind-2 target
+        // (null when it failed 00816ECA). The coordinator owns the 00779D50 facts and
+        // the 76h join, so the request goes to it.
+        ++chain_.owner.summary.scene_follow_requests;
+        const bool joined = target != 0u
+            && ai_request_join_formation_0077c8d0(chain_.unit.index, target - 1u);
+        if (joined) ++chain_.owner.summary.scene_follow_available;
+        chain_.owner.done("EntityCommandArm::request_join_formation", 0x0077c8d0u);
     }
     void call_0064a8e0() override {
         chain_.owner.record("EntityCommandArm::follow_tail", 0x0064a8e0u);
@@ -4079,6 +4097,9 @@ void GameCommandsHost::report() {
         "clears=%llu (packet s57_override_push, 0071E6C0 tail -> 0071E2E0 -> 0071E610)",
         kAttackPushEndsOverrideBound ? 1 : 0, host.summary.override_push_echoes,
         host.summary.override_push_clears);
+    host.log.notef("summary mission scene follow join bound=%d requests=%llu available=%llu "
+        "(packet s57_follow_join, 00816ED5 -> 0077C8D0)", kSceneFollowJoinBound ? 1 : 0,
+        host.summary.scene_follow_requests, host.summary.scene_follow_available);
     host.log.notef("summary mission director clear-all bound=%d clear_all=%llu drops=%llu "
         "slot_clears_00720ca0=%llu (packet cc9_set_command_clear_all, 0071D880 / 0071D900)",
         kSetCommandClearAllMessageBound ? 1 : 0, host.summary.clear_all_calls,

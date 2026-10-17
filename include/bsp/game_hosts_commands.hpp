@@ -230,6 +230,13 @@ inline constexpr bool kDirectorOverrideLayerBound =
 // push reads +188h and the clear goes through the loopback like every 5Dh. False:
 // +188h answers 0 to the push, so an attack order leaves an AutoTarget override on.
 inline constexpr bool kAttackPushEndsOverrideBound = false;
+// Packet s57_follow_join (docs/CC13_VERIFY6.md R2, SHIP_AI_OPEN_ITEMS 278). The scene
+// command `follow` arm 00816EA6: 00521EA0, then the target's IsKindOf(2) at 00816ECA,
+// then 00816ED5 0077C8D0 (RequestJoinFormation) on this unit with that target. True:
+// the kind test answers from the class chain and the request goes to the AI
+// coordinator's 0077C8D0 (00779D50 facts, then the 76h join 0077F940). False: both are
+// records, so an authored `Command = Follow` never joins a formation.
+inline constexpr bool kSceneFollowJoinBound = false;
 
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.
@@ -340,6 +347,8 @@ struct GameCommandsSummary {
     unsigned long long override_clears{0};    // 0071E610
     unsigned long long override_push_echoes{0};   // 0071E2E0 from 0071E6C0's tail (s57)
     unsigned long long override_push_clears{0};   // the 5Dh +20h=0 receive it posts
+    unsigned long long scene_follow_requests{0};  // 00816ED5 calls (s57_follow_join)
+    unsigned long long scene_follow_available{0}; // ... the coordinator accepted
     unsigned long long loopback_clear_posts{0};    // 5Dh, 0071C730 / 0071D900
     unsigned long long loopback_delivered_in_place{0};  // switch off
     unsigned long long loopback_delivered_nested{0};    // posted inside a drain: next in it

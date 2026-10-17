@@ -18811,3 +18811,25 @@ throttle through the ring instead of slowing and holding at it; inside the stand
 becomes ((c + c*c) * 0.5 * pi + pi) * 0.5 instead of pi (equal for |offset| >= 1), moving the chosen
 bearing slot within one turn radius. Expect moved ship tracks and gunnery timings on every surface
 battle (USN12, USN15, IJN08, JM08).
+
+## 278. Scene `Command = Follow` joins the formation, kSceneFollowJoinBound (cc9-ships57, 2026-10-17; lead item 4)
+
+**Image (CC13_VERIFY6 R2).** The `follow` arm of 00816E30: 00816EA6 `CMP EBP,0E08F60`, 00816EB6 00521EA0 on the
+descriptor, 00816ECA the target's vt[5Ch](2), and 00816ED5 `CALL 0077C8D0` (RequestJoinFormation, ECX = this
+unit, argument the kind-2 target or null), then 00816EE2 0064A8E0 (a HUD ping). The commands host answered
+the kind test false and recorded 0077C8D0, so the cascade (src/entity_command_arms.cpp:50) passed target 0
+to a record: ESMP08 (`g51_r1_e8`) logs `formation join ... joined=0` and the script's `formation leader
+calls=446 found=0`.
+
+**Bind (OFF).** `kSceneFollowJoinBound` (include/bsp/game_hosts_commands.hpp). The kind test answers from the
+target's class chain (`bsp::unit_is_kind_of(class_id, 2)`, the target id being index + 1); the request goes to
+the AI coordinator's existing 0077C8D0 (`tick_request_join_formation`: 00779D50 facts, then the 76h join
+0077F940 through the loopback, kPlannerJoinLoopbackBound) through the new free function
+`ai_request_join_formation_0077c8d0` on the one live coordinator. 0064A8E0 stays a record (presentation).
+Counter: `summary mission scene follow join bound= requests= available=`.
+
+**Predictions, written before any run.** OFF identical (requests=0). ON on ESMP08 (30 authored Follow
+tokens: every destroyer and light carrier follows Iowa or Zuikaku): requests ~30 at scene load, most
+available; `formation join ... joined` > 0; the script's GetFormationLeader finds leaders (found > 0); the
+followers' idle tail issues `follow` (00836E38) instead of cruise/stop, so escorts track their leaders and
+the battle geometry moves. JM08/USN01/USN04/USN13/LOMP10 author no Follow token: identical there.
