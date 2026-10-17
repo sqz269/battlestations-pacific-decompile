@@ -6178,6 +6178,12 @@ struct GameUnitsHost::Impl {
     // Before: none of the three ran. The vehicle (0099B670) and terrain
     // (0099F1C0) arms of 009A17D0 are the two switches below.
     static constexpr bool kPilotGunfireAvoidanceBound = true;
+    // Packet cc13-fix2 (docs/CC13_FIX2.md, finding R2 of CC13_VERIFY15):
+    // 0099EFA5-0099F029, a kind-13h (MPlaneFighter) evader scales the drawn
+    // gunfire timers by f = float(1 - [[unit+DF4h]+34h] x double 0.3f), floored
+    // at 0.4f (double [00CE65D0] compare, JBE keeps f and NaN; float [00CE7804]):
+    // +3E8h *= f, +3ECh /= f. SPNormal: evade 0.7x, rest 1.43x. Before: unscaled.
+    static constexpr bool kPilotFighterGunfireScaleBound = false;
     // Packet cc9_pilot_vehicle_terrain_avoidance (docs/ATTACKER_EVASION.md
     // section 6): 009A17D0's vehicle arm 0099B670 -> 007DF4F0 over the
     // unit+C50h object's +30h list, and its terrain arm 0099F1C0 with
@@ -8121,9 +8127,26 @@ struct GameUnitsHost::Impl {
             }
             u.ga_timer_3e8 = release_altitude_draw_00bd2f10(u.row.name + "#ga", lo, hi);
             u.ga_rest_3ec = -release_altitude_draw_00bd2f10(u.row.name + "#gr", rlo, rhi);
-            // 0099EFA5-0099F038: a kind-13h plane scales both by its +DF4h
-            // factor. SUBSTITUTION, labelled: not modelled (no USN04 attacker is
-            // kind 13h in this host's class table).
+            // 0099EFA5-0099F029: a kind-13h plane (MPlaneFighter) scales both by
+            // its pilot level factor. Switch OFF: not applied (the old label:
+            // no USN04 attacker is kind 13h in this host's class table).
+            if constexpr (kPilotFighterGunfireScaleBound) {
+                if (bsp::unit_is_kind_of(u.class_id, 0x13)) {             // 0099EFB8 vtable[5Ch]
+                    // [[unit+DF4h]+34h], read live (009F9D08 reads the same index
+                    // for the approach row). The f = 1.0f arm for a null unit or
+                    // +DF4h (0099EFC0-0099EFE0) has no host counterpart.
+                    const int level = kSkillLevelBound ? u.pilot_skill_index : 1;
+                    // 0099EFE2-0099EFEF FILD, FMUL double [00CE3DC8] 0.30000001192,
+                    // FLD1, FSUBRP, FSTP float; 24-bit order (equal at 53 for 0..5).
+                    const float p = static_cast<float>(static_cast<double>(level) * 0.30000001192092896);
+                    float f = static_cast<float>(1.0 - static_cast<double>(p));
+                    // 0099EFF7-0099F00B: double [00CE65D0] 0.4f widened, FCOMPI, JBE
+                    // keeps f (NaN too); else f = float [00CE7804] 0.4f.
+                    if (0.4f > f) f = 0.4f;
+                    u.ga_timer_3e8 = u.ga_timer_3e8 * f;                   // 0099F01B
+                    u.ga_rest_3ec = u.ga_rest_3ec / f;                     // 0099F023 FDIVR
+                }
+            }
         }
         // 0099F03C-0099F081: kinds 10h and 16h, and a squadron flight leader
         // with 2+ members, take the 0099F197 arm (unit+840h = BomberVSGunfire).
