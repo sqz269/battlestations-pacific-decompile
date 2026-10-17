@@ -18469,3 +18469,32 @@ scans also find 00901C20's eight known callers, so a negative result means somet
   sites. The rotating-target half (0085E4D0) has no host form; it is left recorded, as before.
 - **008FF640** (BSP_Entity_HullDistanceToPoint_Provisional): no rel32 call, no jump and no absolute dword
   reference anywhere in the image. It is unreached, so it is not reconstructed.
+
+## 269. Seg 67 ship sub-band survey; the 00957740 lead is not what the host says (cc9-ships54, 2026-10-17; lead item 5)
+
+**Survey.** I took the ship-AI sub-band 009D6000..009F6060 (`local\s54_cover.py` over the range listing, then
+rel32 and absolute-dword scans with `local\s54_rel.py` and `local\s54_abs.py`). It has 119 unrecorded
+non-library entries. The reached ship-AI gameplay is already hosted (path nodes, goal vector, attackmove, sub
+attack, brain pre-pass, AutoTarget). What is left:
+- **Dead**: 009DE280, 009E7FA0, 009DE1B0 and 009DABF0 have no reference. 009D9390 and 009D9440 are reached only
+  from 009DA008 and themselves.
+- **Object machinery**: observer-member destructors, EH funclet targets (009E5110 / 009E5130 / 009E5460 / 009E8C10
+  are reached only from 00CB07CE..00CB0CCA), STL helpers, and the debug draws.
+- **009E2D10 / 009E2DC0 / 009E2F10**: slot 1 of the small observer vtables 00D21868 / 00D21880 / 00D21898, which
+  is the observed-object-destroyed notice. 009E2F10 serves the goal record at brain+0AF8h: it turns the stored
+  offset into a world point (+18h, +24h = 1) and unlinks. It has no reach on the goal vector, because 009E2FB0
+  rewrites the triple at 009F1473 before 009DBCC0 reads it at 009F156B on every pre-pass.
+Nothing in this sub-band was worth binding.
+
+**The finding, for the gunnery lane.** Reading 00957740 for item 3 shows the host's seat-artillery comment
+(game_hosts_gunnery.cpp, the 009578C3 note) is wrong about the non-ship hits. With [dev+3FCh] == 0 and a hit
+entity (a kind-1Eh hit is first resolved through 00923810(1)), the speed is [[dev+3F8h]+34h]+5Ch * +50h and the
+shooter velocity is [esp+18h]->vtable[34h] when [dev+3F4h]+95h is set, else zero. Then:
+- **Kind 6 (ship)**: 00902290 (268). The out becomes lead_aim + Ry * (hit - target_pos), where Ry is the turn
+  matrix (00427C90 subtract, 004142E0 transform, 00957969..009579AD, stored at 00957B24). So the hit point on the
+  hull turns with the ship.
+- **Any other kind**: 00901C20 (00957A00). Then 00957A05..00957A4B ADDS (lead_aim - target_pos) to the hit
+  point through 0042AEB0 BSP_Vector3f_AddInPlace before the JMP to 00957B3C. The out is the hit point shifted by
+  the lead, not the raw hit point.
+The host records only the kind-6 branch (`artillery_hit_lead`) and uses the raw hit for both. I have not
+measured the reach of the other-kind branch (for example a camera ray on a plane or a land unit).
