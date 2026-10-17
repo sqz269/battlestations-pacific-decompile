@@ -75,13 +75,26 @@ Vec3 pick_up(float x, float y) noexcept {
 // the bound.
 void lower(float& bound, float v) noexcept { if (!(v > bound)) bound = v; }
 void raise(float& bound, float v) noexcept { if (!(bound > v)) bound = v; }
+// One x87 arithmetic operation under the main thread's 24-bit precision
+// control (docs/CC13_FPU_PRECISION.md): the exact result rounded to float.
+// Float and float-exact double operands make the double step exact or an
+// innocuous double rounding. Used by 00A8BD20, 00A8AEB0, 00A8ECB0, 00A8B930.
+float pc24(D value) noexcept {
+    return static_cast<float>(value);
+}
+// The four operations of 00A8B930 (x87 and SSE alike round each one to float).
+float add24(float a, float b) noexcept { return pc24(D(a) + b); }
+float sub24(float a, float b) noexcept { return pc24(D(a) - b); }
+float mul24(float a, float b) noexcept { return pc24(D(a) * b); }
+float div24(float a, float b) noexcept { return pc24(D(a) / b); }
 // Square sum of 00A8C82B / 00A8D404: each square spilled to float, the first
-// two added on the x87, the result spilled.
+// two added on the x87, the result spilled. 24-bit PC: the unspilled first
+// sum rounds to float too.
 float square_length_sum(float x, float y, float z) noexcept {
     const float yy = static_cast<float>(D(y) * y);
     const float xx = static_cast<float>(D(x) * x);
     const float zz = static_cast<float>(D(z) * z);
-    return static_cast<float>((D(yy) + xx) + zz);
+    return pc24(D(pc24(D(yy) + xx)) + zz);
 }
 
 } // namespace
@@ -89,77 +102,80 @@ float square_length_sum(float x, float y, float z) noexcept {
 void build_trapezoid_homography_00a8b930(float* m, const float* p, const float* a,
     const float* b, const float* c) noexcept
 {
+    // Unreferenced (no rel32, absolute or Ghidra reference), so no caller fixes
+    // its thread; modelled at the main thread's 24-bit PC like its owner's live
+    // fits: every operation rounds to float in the image's order (x87_sym).
     // 00A8B93E..00A8B9BF: rotation rows from u = (b - c) * 0.5 (00D7A280).
-    const float ux = static_cast<float>((D(b[0]) - c[0]) * 0.5);
+    const float ux = pc24(D(sub24(b[0], c[0])) * 0.5);
     const float nux = -ux; // MOVSS 00D7A208 (-0.0f) SUBSS: exact negation
     m[4] = nux;
-    const float uy = static_cast<float>(0.5 * (D(b[1]) - c[1]));
+    const float uy = pc24(0.5 * D(sub24(b[1], c[1])));
     m[6] = 0.0f;
     m[7] = 0.0f;
     m[8] = 1.0f; // 00D7A24C
     m[0] = ux;
     m[1] = uy;
-    m[2] = static_cast<float>(D(uy) * uy + D(ux) * ux); // dead: rewritten below
+    m[2] = add24(mul24(uy, uy), mul24(ux, ux)); // dead: rewritten below
     m[3] = uy;
-    const D cross = D(ux) * uy;
-    m[5] = static_cast<float>(cross - cross); // FSUBR ST0,ST0: 0, or NaN for inf/NaN; dead
+    const float cross = mul24(ux, uy);
+    m[5] = sub24(cross, cross); // FSUBR ST0,ST0: 0, or NaN for inf/NaN; dead
     // 00A8B9C2: i = line(p, c) x line(a, b); p stays in EDX across the call.
     float i[2];
     bsp::cc13_audio::intersect_lines_2d_00a8b860(i, p, c, a, b);
-    const float m2 = static_cast<float>(-(D(i[0]) * ux + D(i[1]) * uy));
+    const float m2 = -add24(mul24(i[0], ux), mul24(i[1], uy));
     m[2] = m2;
-    const float m5 = static_cast<float>(-(D(i[0]) * uy + D(i[1]) * nux));
+    const float m5 = -add24(mul24(i[0], uy), mul24(i[1], nux));
     m[5] = m5;
     // 00A8BA13..00A8BA9F: shear factor from the transformed b and c.
     const float cy = c[1], cx = c[0], by = b[1], bx = b[0];
-    const float ta = static_cast<float>((D(cy) * uy + D(cx) * ux) + m2);
-    const float tb = static_cast<float>(m2 + (D(ux) * bx + D(by) * uy));
-    const float tc = static_cast<float>((D(cx) * uy + D(nux) * cy) + m5);
-    const float td = static_cast<float>(m5 + (D(nux) * by + D(bx) * uy));
-    const float shear = static_cast<float>(-((D(ta) + tb) / (D(tc) + td)));
-    const float r0 = static_cast<float>(D(uy) * shear + ux);
+    const float ta = add24(add24(mul24(cy, uy), mul24(cx, ux)), m2);
+    const float tb = add24(m2, add24(mul24(ux, bx), mul24(by, uy)));
+    const float tc = add24(add24(mul24(cx, uy), mul24(nux, cy)), m5);
+    const float td = add24(m5, add24(mul24(nux, by), mul24(bx, uy)));
+    const float shear = -div24(add24(ta, tb), add24(tc, td));
+    const float r0 = add24(mul24(uy, shear), ux);
     m[0] = r0;
-    const float r1 = static_cast<float>(D(shear) * nux + uy);
+    const float r1 = add24(mul24(shear, nux), uy);
     m[1] = r1;
-    const float r2 = static_cast<float>(D(shear) * m5 + m2);
+    const float r2 = add24(mul24(shear, m5), m2);
     m[2] = r2;
     // 00A8BAE6..00A8BB9B: scale rows 1 and 2 by b, then the projective step.
-    const float s1 = static_cast<float>(1.0 / (D(r2) + (D(r0) * b[0] + D(r1) * b[1])));
-    const float s2 = static_cast<float>(1.0 / ((D(uy) * b[0] + D(b[1]) * nux) + m5));
-    m[0] = static_cast<float>(D(r0) * s1);
-    m[1] = static_cast<float>(D(r1) * s1);
-    m[2] = static_cast<float>(D(s1) * r2);
-    const float q3 = static_cast<float>(D(uy) * s2);
+    const float s1 = div24(1.0f, add24(r2, add24(mul24(r0, b[0]), mul24(r1, b[1]))));
+    const float s2 = div24(1.0f, add24(add24(mul24(uy, b[0]), mul24(b[1], nux)), m5));
+    m[0] = mul24(r0, s1);
+    m[1] = mul24(r1, s1);
+    m[2] = mul24(s1, r2);
+    const float q3 = mul24(uy, s2);
     m[3] = q3;
-    const float q4 = static_cast<float>(D(s2) * nux);
+    const float q4 = mul24(s2, nux);
     m[4] = q4;
-    const float q8 = static_cast<float>(D(s2) * m5);
+    const float q8 = mul24(s2, m5);
     m[6] = q3;
     m[7] = q4;
     m[8] = q8;
-    const float q5 = static_cast<float>(1.0 + q8);
+    const float q5 = add24(1.0f, q8);
     m[5] = q5;
     // 00A8BBA6..00A8BC9C: translate so b and p are centred in y/w.
     const float py = p[1], px = p[0];
-    const float e = static_cast<float>((D(b[1]) * q4 + D(b[0]) * q3) + q5);
-    const float f = static_cast<float>((D(b[0]) * q3 + D(b[1]) * q4) + q8);
-    const float g = static_cast<float>(q5 + (D(py) * q4 + D(px) * q3));
-    const float h = static_cast<float>((D(q3) * px + D(q4) * py) + q8);
-    const float t = static_cast<float>(((D(g) / h) + (D(e) / f)) * -0.5); // 00CEC9E0
-    const float n3 = static_cast<float>(D(q3) * t + q3);
+    const float e = add24(add24(mul24(b[1], q4), mul24(b[0], q3)), q5);
+    const float f = add24(add24(mul24(b[0], q3), mul24(b[1], q4)), q8);
+    const float g = add24(q5, add24(mul24(py, q4), mul24(px, q3)));
+    const float h = add24(add24(mul24(q3, px), mul24(q4, py)), q8);
+    const float t = pc24(D(add24(div24(g, h), div24(e, f))) * -0.5); // 00CEC9E0
+    const float n3 = add24(mul24(q3, t), q3);
     m[3] = n3;
-    const float n4 = static_cast<float>(D(q4) * t + q4);
+    const float n4 = add24(mul24(q4, t), q4);
     m[4] = n4;
-    const float n5 = static_cast<float>(D(t) * q8 + q5);
+    const float n5 = add24(mul24(t, q8), q5);
     m[5] = n5;
     // 00A8BCA2..00A8BD13: scale row 2 so p lands on y/w = -1; p is reread.
     const float py2 = p[1], px2 = p[0];
-    const float wi = static_cast<float>(q8 + (D(q3) * px2 + D(q4) * py2));
-    const float wj = static_cast<float>((D(px2) * n3 + D(n4) * py2) + n5);
-    const float w = static_cast<float>(D(-wi) / wj);
-    m[3] = static_cast<float>(D(n3) * w);
-    m[4] = static_cast<float>(D(n4) * w);
-    m[5] = static_cast<float>(D(n5) * w);
+    const float wi = add24(q8, add24(mul24(q3, px2), mul24(q4, py2)));
+    const float wj = add24(add24(mul24(px2, n3), mul24(n4, py2)), n5);
+    const float w = div24(-wi, wj);
+    m[3] = mul24(n3, w);
+    m[4] = mul24(n4, w);
+    m[5] = mul24(n5, w);
 }
 
 void fit_shadow_box_view_00a8aeb0(void* owner, const float* box_min, const float* box_max,
@@ -235,8 +251,10 @@ void fit_shadow_box_view_00a8aeb0(void* owner, const float* box_min, const float
     host.set_projection_matrix(shadow_camera, multiply(ortho, mirror));
     // 00A8B4D7..00A8B56C: depth remap of the box to [0, 1].
     CameraMatrix depth = identity();
-    depth[10] = static_cast<float>(1.0 / (D(hi[2]) - lo[2]));
-    depth[14] = static_cast<float>(D(lo[2]) / (D(lo[2]) - hi[2]));
+    // 00A8B55E / 00A8B568: the differences are unspilled; 24-bit PC rounds
+    // them to float before the divide.
+    depth[10] = pc24(1.0 / D(pc24(D(hi[2]) - lo[2])));
+    depth[14] = pc24(D(lo[2]) / D(pc24(D(lo[2]) - hi[2])));
     const CameraMatrix light_view = multiply(view, depth);
     // 00A8B571..00A8B654: cascade matrix and shader matrix.
     write_matrix(owner, 0x44, host.view_projection_matrix(shadow_camera));
@@ -273,7 +291,7 @@ void fit_and_submit_shadow_slice_00a8ecb0(void* owner, float near_distance, floa
                            {-xf, -yf, f}, {xf, -yf, f}, {xf, yf, f}, {-xf, yf, f}};
     // 00A8EE73..00A8EF21: unit-scale perspective for the slice.
     CameraMatrix perspective = identity();
-    const float q = static_cast<float>(D(f) / (D(f) - n));
+    const float q = pc24(D(f) / D(pc24(D(f) - n))); // 00A8EF08: f - n unspilled, 24-bit PC
     perspective[10] = q;
     perspective[11] = 1.0f;
     perspective[14] = static_cast<float>(D(-n) * q);
@@ -384,8 +402,8 @@ void fit_shadow_cascade_00a8bd20(void* owner, float near_distance, float far_dis
     }
     // 00A8C256..00A8C46D: light view with depth remapped to [0, 1].
     CameraMatrix depth = identity();
-    depth[10] = static_cast<float>(1.0 / (D(zmax) - zmin));
-    depth[14] = static_cast<float>(D(zmin) / (D(zmin) - zmax));
+    depth[10] = pc24(1.0 / D(pc24(D(zmax) - zmin)));
+    depth[14] = pc24(D(zmin) / D(pc24(D(zmin) - zmax)));
     const CameraMatrix depth_view = multiply(light_view, depth);
     write_matrix(owner, 0x3ac + c * 0x40, depth_view);
     write(owner, 0x4ac + c * 0x10, depth_view[2]);
@@ -398,24 +416,27 @@ void fit_shadow_cascade_00a8bd20(void* owner, float near_distance, float far_dis
                                -read<float>(owner, 0x40)}; // -0.0f SUBSS
     camera = read<void*>(owner, 0x30);
     refresh_unless_valid(camera, host);
-    const float cos_gamma = static_cast<float>((D(read<float>(camera, 0x114)) * to_light[1]
-        + D(to_light[0]) * read<float>(camera, 0x110)) + D(read<float>(camera, 0x118)) * to_light[2]);
+    const float cos_gamma = pc24(D(pc24(D(pc24(D(read<float>(camera, 0x114)) * to_light[1]))
+        + pc24(D(to_light[0]) * read<float>(camera, 0x110)))) + pc24(D(read<float>(camera, 0x118)) * to_light[2]));
     const D n_factor = read<float>(owner, 0x4ec); // FSTP64 copy
-    const float sin_squared = static_cast<float>(1.0 - D(cos_gamma) * cos_gamma);
+    const float sin_squared = pc24(1.0 - D(pc24(D(cos_gamma) * cos_gamma)));
     const float sin_gamma = static_cast<float>(host.crt_sqrt(sin_squared));
     const float n_opt = static_cast<float>(n_factor / sin_gamma);
     // 00A8C52F..00A8C58B: push the slice back when n_opt reaches far/(far-near).
-    const float q = static_cast<float>(D(f) / (D(f) - n));
+    const float f_minus_n = pc24(D(f) - n);   // 00A8C541, kept on the stack for the shift
+    const float q = pc24(D(f) / f_minus_n);
     float shift = 0.0f, near_shifted = n, far_shifted = f;
     if (n_opt >= q) { // FCOMI / JB: NaN keeps the slice
-        shift = static_cast<float>(((D(f) - n) * n_opt - f) + D(1.0e-4f)); // 00D7A268
+        shift = pc24(D(pc24(D(pc24(D(f_minus_n) * n_opt)) - f)) + D(1.0e-4f)); // 00D7A268
         far_shifted = static_cast<float>(D(f) + shift);
         near_shifted = static_cast<float>(D(shift) + n);
     }
     CameraMatrix translate = identity();
     translate[14] = shift;
     // 00A8C636..00A8C6B8: inlined affine transform of C by translate, with the
-    // zero terms of the folded matrix still on the x87 stack.
+    // zero terms of the folded matrix still on the x87 stack. Every step but the
+    // final + shift adds a signed zero to a float, which is exact, so the 24-bit
+    // per-operation rounding only matters at that last add, done once here.
     for (int i = 0; i < 8; ++i) {
         const float x = corners[i][0], y = corners[i][1], z = corners[i][2];
         const D y0 = D(y) * 0.0, z0 = D(z) * 0.0, x0 = D(x) * 0.0;
@@ -430,16 +451,19 @@ void fit_shadow_cascade_00a8bd20(void* owner, float near_distance, float far_dis
     perspective[0] = static_cast<float>(twice_near / width);
     const float height = static_cast<float>(D(points[2][1]) - points[1][1]);
     perspective[5] = static_cast<float>(twice_near / height);
-    perspective[10] = static_cast<float>(D(far_shifted) / (D(far_shifted) - near_shifted));
+    perspective[10] = pc24(D(far_shifted) / D(pc24(D(far_shifted) - near_shifted)));
     perspective[11] = 1.0f;
-    perspective[14] = static_cast<float>((D(near_shifted) * far_shifted) / (D(near_shifted) - far_shifted));
+    perspective[14] = pc24(D(pc24(D(near_shifted) * far_shifted)) / D(pc24(D(near_shifted) - far_shifted)));
     const CameraMatrix shifted_perspective = multiply(translate, perspective);
     // 00A8C7B2..00A8C8DC: light direction in camera view space, normalized.
     const CameraMatrix view = host.view_matrix(read<void*>(owner, 0x30));
     const float dx = read<float>(owner, 0x38), dy = read<float>(owner, 0x3c), dz = read<float>(owner, 0x40);
-    const float vx = static_cast<float>((D(view[0]) * dx + D(view[4]) * dy) + D(view[8]) * dz);
-    const float vy = static_cast<float>((D(view[1]) * dx + D(view[5]) * dy) + D(view[9]) * dz);
-    const float vz = static_cast<float>((D(dx) * view[2] + D(dy) * view[6]) + D(dz) * view[10]);
+    auto dot3 = [](float a0, float b0, float a1, float b1, float a2, float b2) {
+        return pc24(D(pc24(D(pc24(D(a0) * b0)) + pc24(D(a1) * b1))) + pc24(D(a2) * b2));
+    };
+    const float vx = dot3(view[0], dx, view[4], dy, view[8], dz);
+    const float vy = dot3(view[1], dx, view[5], dy, view[9], dz);
+    const float vz = dot3(dx, view[2], dy, view[6], dz, view[10]);
     const float view_length = static_cast<float>(host.crt_sqrt(square_length_sum(vx, vy, vz)));
     const float view_inverse = view_length > 0.0f ? static_cast<float>(1.0 / view_length) : 0.0f;
     const Vec4 view_dir = {static_cast<float>(D(vx) * view_inverse), static_cast<float>(D(view_inverse) * vy),
@@ -533,7 +557,7 @@ void fit_shadow_cascade_00a8bd20(void* owner, float near_distance, float far_dis
         fit = {};
         fit[0] = scale_x;
         fit[5] = scale_y;
-        const float depth_scale = static_cast<float>(D(far_z) / (D(far_z) - near_z));
+        const float depth_scale = pc24(D(far_z) / D(pc24(D(far_z) - near_z)));
         fit[10] = depth_scale;
         fit[11] = 1.0f;
         fit[14] = static_cast<float>(D(-near_z) * depth_scale);

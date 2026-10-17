@@ -403,6 +403,11 @@ outside touch point goes through `OceanBeamHost`.
   (+60h/+64h/+68h) and its rate p (+6Ch..+78h). survival = exp(log(1-p) * delta): 00BFA910 is _CIlog
   (x87 path `FLDLN2; FYL2X`) and 00BFEEEC is _CIexp (name string "exp" at 00E1670A). If u3 > survival,
   death = clock + +D0h.
+- NaN (cc13-big5ad, 2026-10-17): the birth and death tests are COMISS / JC (BA3216, BA3226) and the
+  fade-out test is COMISS / JC skipping (BA37AA), so an unordered birth or death counts as below zero:
+  a NaN birth respawns, a NaN death schedules, and a NaN death skips the fade-out. The C++ tests are
+  written as `!(x >= 0)` / `x >= 0` to take those arms; the clock, band and fade comparisons were
+  already NaN-faithful.
 - Quads: the perpendicular is normalize(origin - beam) rotated, or (1, 0) at distance <= (double)0.05f.
   The top corners sit at +-(+58h) on the water height 0078C890. **That is the gameplay water height,
   including the +24h amplitude** (section 1). It is read only.

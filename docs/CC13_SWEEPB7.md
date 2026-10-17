@@ -32,6 +32,8 @@ which calls it through `second_start_scroll_006191a0`).
   `circle_HL_Icon` stored and shown.
 - Positions through vcall +44h: up arm icon -0.0f - bc+2A4h (SUBSS with 00D7A208 = -0.0f) and clone
   bc+2A4h; down arm bc+2A8h * 5.0 (double 00D7A370) - bc+2A4h for the icon and + for the clone.
+  The HUD runs on the main thread at 24-bit PC, so the `FMUL` product and the `FSUB`/`FADD` result
+  each round to float (cc13-fix14; it was one double expression rounded once).
   0065E870(bc, clone, 0.0f); +1FCh = 1.0f.
 
 ## 0078A430 BSP_NetworkPacketStatistics_FrameUpdate (segment 44)

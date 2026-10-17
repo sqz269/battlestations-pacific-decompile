@@ -562,6 +562,10 @@ std::uint32_t script_orders_squadron_intake_007f1940(std::size_t leader,
 // squadron's 007F4BA0 issues 007EEC50(target, 1, 1) at 007F15F0. `target` names a
 // unit ("" refused: order 3 needs one). Refused, with `reason`, when the switch
 // is off, no host is live, or the base, target or a free slot is missing.
+// `loadout` >= 0 is the screen's loadout ring choice (screen+334h, 0 = the default
+// entry with no loadout, n = the class's Equipments[n]), written to slot+10h by
+// 0067485D 006BA4B0 after the fill; -1 keeps 0065C9A0's default, the class's +134h
+// DefaultEquipment that 006C0F00 already stored.
 struct PlayerAirOpsLaunchResult {
     bool accepted{false};
     int slot{-1};          // 0-based slot used
@@ -569,7 +573,8 @@ struct PlayerAirOpsLaunchResult {
     std::string reason;
 };
 PlayerAirOpsLaunchResult script_orders_player_air_ops_launch(const std::string& base,
-    int slot_number, int vehicle_class, int count, const std::string& target);
+    int slot_number, int vehicle_class, int count, const std::string& target,
+    int loadout = -1);
 // Packet cc9_air_ops_held_slot_orders (bsp::kAirOpsHeldSlotOrdersBound,
 // docs/AIROPS_LAUNCH_TICK.md "Orders to a held slot"). The Support Manager's
 // order to a slot whose squadron is out (state 3) or recalled (state 4): the 82h
@@ -735,7 +740,7 @@ public:
     // a squadron launched from an ordered slot carries (007F4BA0 -> 007F15F0),
     // served once its members exist.
     PlayerAirOpsLaunchResult player_air_ops_launch(const std::string& base, int slot_number,
-        int vehicle_class, int count, const std::string& target);
+        int vehicle_class, int count, const std::string& target, int loadout = -1);
     // Packet cc9_air_ops_held_slot_orders: the entry above.
     PlayerAirOpsOrderResult player_air_ops_order(const std::string& base, int slot_number,
         int order, const std::string& target);

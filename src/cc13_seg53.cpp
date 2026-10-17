@@ -321,14 +321,14 @@ Object matrix_set_from_euler_yxz_copy_0085c220(Seg53Host& host, Object matrix,
 
 // ---------------------------------------------------------------------------
 // 00860AD0 BSP_DebugDraw_ArcAroundAxis, __fastcall(ECX = centre float[3], EDX = axis float[3];
-// float radius, float start, float sweep, rgba, segments), RET 14h. Builds a 4x4 frame with
+// float radius, float start, float sweep, const float rgba[4], segments), RET 14h. Builds a 4x4 frame with
 // rows (1,0,0,0), (ay,az,ax,0), (ax,ay,az,0), (0,0,0,1) (MOVSS copies; [00D7A24C] = 1.0f),
 // orthonormalizes it (0085DC80), puts centre in the translation row, and draws the arc
-// (00860140 with ECX = frame, EDX = rgba).
+// (00860140 with ECX = frame, EDX = the rgba pointer from the fourth stack slot, 00860B64).
 // ---------------------------------------------------------------------------
 void debug_draw_arc_around_axis_00860ad0(Seg53Host& host, const float* centre, const float* axis,
                                          float radius, float start, float sweep,
-                                         std::uint32_t rgba, std::uint32_t segments) {
+                                         const float* rgba, std::uint32_t segments) {
     float frame[16] = {1.0f,    0.0f,    0.0f,    0.0f,  //
                        axis[1], axis[2], axis[0], 0.0f,  //
                        axis[0], axis[1], axis[2], 0.0f,  //
@@ -346,7 +346,7 @@ void debug_draw_arc_around_axis_00860ad0(Seg53Host& host, const float* centre, c
 // rgba, segments).
 // ---------------------------------------------------------------------------
 void debug_draw_circle_around_axis_00860bb0(Seg53Host& host, const float* centre,
-                                            const float* axis, float radius, std::uint32_t rgba,
+                                            const float* axis, float radius, const float* rgba,
                                             std::uint32_t segments) {
     constexpr float kTwoPi_00ce3d9c = 6.28318548f;
     debug_draw_arc_around_axis_00860ad0(host, centre, axis, radius, 0.0f, kTwoPi_00ce3d9c, rgba,
@@ -1301,12 +1301,18 @@ bool gun_target_in_fire_window_0085a9a0(Seg53Host& host, Object gun, Object targ
 
 namespace {
 // One channel: FLD float, FMUL double 255.0 [00CE4B48], FISTP under a chop control word (OR
-// 0C00h), low byte kept. An out-of-range product is the integer indefinite 80000000h (byte 0).
+// 0C00h), low byte kept. The FMUL runs before the FLDCW, under the caller's control word: on
+// the main thread (24-bit PC, docs/CC13_FPU_PRECISION.md) the product is rounded to nearest
+// float, so a product just below an integer can round up to it before the chop. The OR keeps
+// the PC bits. Assumes the main thread (debug draws come from the frame); a call from a
+// 53-bit pool-worker job would chop the double product instead. Same model as cc13_big53's
+// colour_byte24 (0085FB70's inlined copy). An out-of-range product is the integer indefinite
+// 80000000h (byte 0).
 std::uint32_t colour_byte(float channel) {
-    double scaled = static_cast<double>(channel) * 255.0;
-    std::int32_t value = (scaled >= -2147483648.0 && scaled < 2147483648.0)
-                             ? static_cast<std::int32_t>(scaled)
-                             : static_cast<std::int32_t>(0x80000000u);
+    const float scaled = static_cast<float>(static_cast<double>(channel) * 255.0);
+    const std::int32_t value = (scaled >= -2147483648.0f && scaled < 2147483648.0f)
+                                   ? static_cast<std::int32_t>(scaled)
+                                   : static_cast<std::int32_t>(0x80000000u);
     return static_cast<std::uint32_t>(value) & 0xFFu;
 }
 std::uint32_t argb(float r, float g, float b, float a) {

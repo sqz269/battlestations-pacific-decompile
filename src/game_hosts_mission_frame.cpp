@@ -367,6 +367,7 @@ struct GameMissionFrameHost::Impl {
         int launch_slot{0};        // launch: 1-based slot, 0 = 006C7210's pick
         int launch_class{0};       // launch: VehicleClass id
         int launch_count{0};       // launch: planes requested
+        int launch_loadout{-1};    // launch: `loadout <n>`, -1 = the class default
         // `build <shipyard> class <id>`: the strategic map's shipyard purchase
         // 00673A10 through GameGunneryHost::shipyard_order (cc9-ships38).
         bool build{false};
@@ -2704,7 +2705,7 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
                 "<unit> <x> <z>|<navpoint> [repeat <s>]`, `<frame> takehelm <unit> "
                 "<throttle> <x> <z>|<navpoint> [stop <m>]`, `<frame> select <unit>` or `<frame> "
                 "attack|target <unit> <target> [repeat <s>]`, `<frame> launch <base> <slot> "
-                "<class> <count> <target>` or `<frame> release <unit> [on <target> [within "
+                "<class> <count> <target> [loadout <n>]` or `<frame> release <unit> [on <target> [within "
                 "<m>] [until <frame>]]` or `<frame> build <shipyard> class <id>` or `<frame> "
                 "fire <ship> group <g> [release]` or `<frame> torpedo <ship> at <target>|release` "
                 "or `<frame> order <base> <slot> <1|2|3> [target]`", line, path.c_str());
@@ -2850,7 +2851,21 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
                 continue;
             }
             order.launch = true;
-            for (std::size_t w = 6; w < words.size(); ++w) {
+            // `... <target...> loadout <n>`: the Support Manager's loadout ring
+            // choice (screen+334h -> slot+10h at 0067485D); harness input.
+            std::size_t target_end = words.size();
+            if (words.size() >= 9 && words[words.size() - 2] == "loadout") {
+                char* le = nullptr;
+                const long v = std::strtol(words.back().c_str(), &le, 10);
+                if (le == nullptr || *le != '\0' || v < 0) {
+                    host.log.notef("helm order refused: line %d of \"%s\": launch loadout "
+                        "needs a non-negative integer", line, path.c_str());
+                    continue;
+                }
+                order.launch_loadout = static_cast<int>(v);
+                target_end -= 2;
+            }
+            for (std::size_t w = 6; w < target_end; ++w) {
                 if (!order.target.empty()) order.target += ' ';
                 order.target += words[w];
             }
@@ -3306,7 +3321,7 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 }
                 const bsp::game::PlayerAirOpsLaunchResult r = bsp::game::script_orders_player_air_ops_launch(
                     order.unit, order.launch_slot, order.launch_class, order.launch_count,
-                    order.target);
+                    order.target, order.launch_loadout);
                 if (r.accepted) ++host.helm_orders_applied; else ++host.helm_orders_refused;
                 host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) launch "
                     "%s slot %d class %d count %d -> %s: slot %d, %d plane(s)%s%s",

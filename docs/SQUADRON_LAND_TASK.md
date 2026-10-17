@@ -17467,3 +17467,85 @@ WINS_TABLE 2026-10-17 re-time). Logs `cc9-lua52\local\l63rt_<tag>.log` with mani
 - Order files that name wing planes in decimal (`usnos_s45_os_k.txt`, the USNOS a7 plan) must use the roman form
   from this commit on.
 - IsFunction flipped (identical).
+
+## 5hw. Attack tasks retire on a lost or changed target; the +3Eh writer (cc9-lua64, 2026-10-17)
+
+### 5hw.1 The vt[40h] rule in the other attack tasks
+
+- 009C8060 (dive bomb), 009D3EF0 (torpedo) and 009AE140 (drop kamikaze) are the same body as 009B81F0: 2 without a
+  director (`[task+404h]`), else 1 only when `0071BE40` is the task's class (00E08F20 / 00E08F18 / 00E08F30) or
+  00E08F78, and `[task+440h]` (torpedo `[task+4C4h]`) is 0 or equals the command's resolved target
+  (`0071EB60` -> `00521EA0`). 0099A4C0 asks it on every bot think (0099AE7E, docs/CC13_BOT_TASK_CADENCE.md) and pops
+  a head that answers 0; the tail jump 0099A5EB -> 0099A170 then builds a task for the current command, and all
+  three classes need a target there (dive bomb and drop kamikaze also IsKind(2), torpedo 009229F0;
+  src/attack_commands.cpp). So a cleared target leaves the member with no task, and a new target gives it a fresh
+  task.
+- Host: the dive-bomb arm keeps its task on any target (its moveto tick returns on a null target), the torpedo arm
+  returns early on a null target before anything and keeps the task on a new target, and the drop-kamikaze arm
+  returns early on a null target (it already re-installs on a new one). After `kSquadronDeadTargetRetestBound`
+  clears a member's target (ESMP08 reference `l63rt_e8_ref.log`: 14 retests, 12 torpedo and 2 dive bomb, 9 at 420.02 s on
+  South Dakota), those members freeze in their last state, and 009F7C90 still reads their stale break-off answers.
+- `kAttackTaskTargetRetireBound` (game_hosts_units.cpp, committed OFF). True: an installed task whose recorded
+  target (`db_task_target_plus_one`, `torpedo_task_target_plus_one`, `dkz_target_plus_one`) is not the member's
+  command target retires (`<task> task <unit>: retired, the command target is not the task's (<vt40>)`), and a
+  non-null new target installs a fresh task at once. LABELLED: the torpedo re-install after a retarget skips the
+  2Bh ordnance pick (the director's class is unchanged, so 0099A170 builds MakeTorpedo again); the 00E08F78
+  acceptance and the class-change half of vt[40h] are not modelled (the dive and torpedo arms still keep their
+  task under another class, as before). Summary line `summary attack task target retire bound=<0|1> retires=<n>`.
+- Predictions (reference env, plans as the last re-time): ESMP08 `p12_e8_rb` ON logs torpedo retires for the
+  live members of the nine squadrons retested at 420.02 s, at that time or one think later, and later ones at each
+  further retest (Helldiver dive-bomb retires at 4857 s / 6793 s if the run still gets there); planes then fly
+  without a task instead of holding their last state, so the row moves after 420 s. USN04 (no orders) and JM08
+  `l62_j8_w1`: retires only where a retest or an order retarget happens; identical otherwise.
+
+### 5hw.2 The +3Eh writer is 0084DA60 (read, not bound)
+
+- 0084DA60 is slot 70h of the squadron command block's vtable 00D0BD98 (stored by 0084D849 in
+  BSP_PlaneSquadronCommandBlock_Construct), overriding 0071EDD0, `__thiscall(block)(descriptor, flag)`, `RET 8`
+  (listing 0084DA60-0084DADA). It resolves the offered descriptor, and the block's slot-0 descriptor `+58h` (flag
+  set) or override `+18Ch` (flag clear); calls 0071EDD0 with the same arguments; returns 0 when that answers 0;
+  when it answers 1 and the two objects differ it returns 1; when they are the same object it sets
+  `[[block+38h]+3Eh] = 1` unless `[[00E188A8]+1FE4h] == 2`, and returns 0.
+- Its caller is 0071DDB0, the observed-target release (GUNNERY_OPEN_ITEMS, `kDirectorTargetChecksBound`): on a
+  slot-0 target's death the descriptor IS `+58h`, so for a ship target (0071EDD0 rewrites it to the position
+  branch and answers 1) the block sets +3Eh and skips the stage raise 0071D810. A plane target with a live
+  squadron member is re-pointed by 0071EDD0 (answer 0): no +3Eh.
+- `[block+38h]` is the free-attack controller (vtable 00D21C00, CC13_SEG68 section 1); 009F840C forces +3Dh from
+  +3Eh, but only on the general path: the seven ordnance classes return or jump to 009F8412 before it, and a
+  category 1/2 command whose resolved target is null (the position branch) also jumps to 009F8412. So +3Eh adds
+  nothing for an attack order; it matters only for a non-attack-category slot-0 command whose observed target
+  dies (no such squadron command is seen in the rows).
+- Host: nothing writes +3Eh, and the host does not model 0084DA60 (the delivery `release_observed_target_0071ddb0`
+  runs the generic 0071EDD0 for every director). The ordnance classes' +3Dh is the existing retest; the strafe /
+  dogfight / settarget squadrons' 009F8412 on a null target is not hosted (`kSquadronDeadTargetRetestBound` skips
+  every non-ordnance class). Not bound in this packet; recorded as an open item.
+
+### 5hw.3 Pairs and flip (reference env; exports of 1c43edf3b: `local\l64_off` 43F25CF839C4, `local\l64_on`)
+
+Logs `cc9-lua52\local\l64_<row>_<off|on>.log` with manifests.
+
+| Row | OFF | ON | Verdict |
+|---|---|---|---|
+| USN04 (no orders, 45000 fr) | no end, 0 retests | identical, 0 retires | identical |
+| JM08 `l62_j8_w1` (110000 fr) | failed 2247.12 s (HQ neutralized) | no end; 35 retires | moved |
+| ESMP08 `p12_e8_rb` (140000 fr) | failed 6615.19 s | no end; 137 retires | moved |
+
+- ESMP08 ON matches the prediction: the first retires are the torpedo members of the squadrons the retest ends at
+  420.27 s (South Dakota), 24 between 420 and 430 s and 11 more by 450 s; the dive-bomb retires that follow are
+  retargets (the attack-order intake re-aims a squadron and the task is rebuilt for the new target). JM08's first
+  retire is `MainAirFieldEntity 01_sqn01` at 107.55 s, when the air-ops order re-aims it from USTroopTransport 06 to
+  Missouri (a fresh dive task, as 0099A170 builds); the torpedo retires at 545 s and the dive retires at 820-844 s
+  follow the retests on Nevada and the LSTs.
+- The summary `dive-bomb task: aircraft=77 releases=108` (OFF) against `41 of 41` (ON) counts only tasks still
+  installed at the end of the run, so retired tasks drop out of it; it is not a release loss.
+- Both moved rows are lost or non-wins on both sides (JM08's plan is re-planned below; ESMP08 is not a win). Flipped
+  ON by mechanism.
+
+### 5hw.4 The 007CB5F0 -> 007C3EA0 note (cc13 seg47b): unreachable here, census added
+
+007CB75F-007CB778 calls 007C3EA0 only when `[plane+1B0h]` (the pilot role's holder, `current_roles_01ac[1]`) is not
+8 and 00927F10 (`[[00E188A8]+18CCh+slot*4]+9`) is 0, i.e. a human party slot holds the plane's pilot role. The host
+writes role 1 for the local player only in the scripted helm transfer (`0077C470(unit, 2, 1)` for the controlled
+unit, a ship row); every plane keeps 8, so the call is unreachable in this host's runs, and in the image it needs the
+player to fly the plane. Not bound; `plane_touchdown_007cc440` now counts such touchdowns (`summary plane touchdown
+human pilot census=<n>`), which must stay 0.

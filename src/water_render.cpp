@@ -581,9 +581,10 @@ void update_ocean_beams_00ba2ff0(OceanBeamSystem& beams, OceanBeamHost& host, fl
     for (std::uint32_t i = 0; i < beams.count_dc; ++i) {
         OceanBeam& beam = *beams.beams_e8[i];
         bool respawn = false;
-        if (beam.birth_0c < 0.0f) {
+        // COMISS / JC at BA3216 and BA3226: below zero or unordered takes the arm.
+        if (!(beam.birth_0c >= 0.0f)) {
             respawn = true;
-        } else if (beam.death_10 < 0.0f) {
+        } else if (!(beam.death_10 >= 0.0f)) {
             // BA33B1..BA34B4.
             const float dx = beam.position[0] - origin.x;
             const float dz = beam.position[2] - origin.z;
@@ -681,7 +682,7 @@ void update_ocean_beams_00ba2ff0(OceanBeamSystem& beams, OceanBeamHost& host, fl
             alpha = static_cast<float>(age * beams.fade_in_rate_d4);
         }
         const float death = beam.death_10;
-        if (!(death < 0.0f)) {  // [00D7A218] = 0.0, COMISS / JC
+        if (death >= 0.0f) {  // [00D7A218] = 0.0, COMISS / JC at BA37AA skips below zero or unordered
             const double left_time = static_cast<double>(death) - beams.clock_f0;
             if (beams.fade_out_time_d0 > left_time) {
                 alpha = static_cast<float>(left_time * beams.fade_out_rate_d8 * alpha);

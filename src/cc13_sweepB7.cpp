@@ -84,7 +84,8 @@ void* in_game_gui(Cc13SweepB7Host& host) {
 // - Positions (vcall +44h, one float): up arm icon gets -0.0f (00D7A208) -
 //   bc+2A4h (SUBSS) and the clone bc+2A4h; down arm icon gets
 //   bc+2A8h * 5.0 (double 00D7A370) - bc+2A4h, the clone the same with +,
-//   each stored as a float; bc = [00E198C4]+BCh, re-read every time.
+//   each stored as a float; bc = [00E198C4]+BCh, re-read every time. Main
+//   thread, 24-bit PC: the product and the sum each round to float.
 // - 0065E870(ECX = bc, new clone, 0.0f); +1FCh = 1.0f (00D7A24C).
 // The name temporaries use 0041DD40 / memcpy / pool release as everywhere;
 // the EH states 0..9 track them.
@@ -189,15 +190,21 @@ void cc13_sweepB7_powerup_screen_rebuild_second_slots_006191a0(void* screen, Cc1
                                            at<float>(at<void*>(in_game_gui(host), 0xBC), 0x2A4));
         host.widget_vcall_44_set_float(at<void*>(screen, 0x58), at<float>(at<void*>(in_game_gui(host), 0xBC), 0x2A4));
     } else {
+        // FLD [bc+2A8h]; FMUL qword [00D7A370]; FSUB/FADD [bc+2A4h]; FSTP float
+        // (00619A46..00619A61, 00619A7A..00619A95). HUD code runs on the main
+        // thread at 24-bit PC (docs/CC13_FPU_PRECISION.md), so the product and
+        // the sum each round to float in that order.
         const double five = f64_bits(0x4014000000000000ull);  // 00D7A370
         void* bc = at<void*>(in_game_gui(host), 0xBC);
+        const float down_product = static_cast<float>(static_cast<double>(at<float>(bc, 0x2A8)) * five);
         host.widget_vcall_44_set_float(
             at<void*>(screen, 0x74),
-            static_cast<float>(static_cast<double>(at<float>(bc, 0x2A8)) * five - at<float>(bc, 0x2A4)));
+            static_cast<float>(static_cast<double>(down_product) - static_cast<double>(at<float>(bc, 0x2A4))));
         bc = at<void*>(in_game_gui(host), 0xBC);
+        const float up_product = static_cast<float>(static_cast<double>(at<float>(bc, 0x2A8)) * five);
         host.widget_vcall_44_set_float(
             at<void*>(screen, 0x64),
-            static_cast<float>(static_cast<double>(at<float>(bc, 0x2A8)) * five + at<float>(bc, 0x2A4)));
+            static_cast<float>(static_cast<double>(up_product) + static_cast<double>(at<float>(bc, 0x2A4))));
     }
     host.hud_support_set_large_icon_alpha_0065e870(at<void*>(in_game_gui(host), 0xBC), at<void*>(screen, clone_slot),
                                                    0.0f);

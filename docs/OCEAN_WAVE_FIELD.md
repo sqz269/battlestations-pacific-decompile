@@ -1726,3 +1726,195 @@ but `fly-to world edge calls=6534 near=0`: the off-map leg is not flown by the s
 **ESMP08 after 43.1 (still open).** Without the slot-4 lines (`local\p12_e8_rb_no4.txt`) the reference still sinks only
 5 of 15: class 150 is also allocated to slots 2 and 3 against cruisers and destroyers (the `l61_e8_alloc` ranks), so 23
 Zero squadrons still launch with divebomb and hold. A re-plan must move those slots' targets to classes 159/162/163.
+
+## 46. An equipment-0 Zero carries its racks' constructor rounds: `kRackConstructorRoundBound` (cc9-physics13, 2026-10-17; lead items 1-2)
+
+**43.1's premise corrected.** 43.1 read "equipment 0 = null loadout = no bomb". The loadout is null, but the racks
+are still loaded. The Zero's racks are default devices: the Platforms table mounts platform 89 at slots 50 and 51,
+and `0095A880`'s flag pass builds them (SQUADRON_LAND_TASK 5ey). Each rack's owner bind is `006E3350` (vtable 9Ch,
+`BSP_MBombPlatform_BindOwnerLoadout`; `disasm-raw` 006E3350-006E3402):
+- `006E3378`-`006E3386`: it reads the owner's `+C54h` and takes `JLE 006E33E3` when it is <= 0. That skips the
+  `009552E0` loadout walk and its `vtable[1BCh]` SetAmmo.
+- `006E33E3`-`006E33FE`: unless `[+C0h]+4 == 3` (unread), it tail-jumps `vtable[224h]` = `006E3E70` AttachNextRound.
+- The constructor `006E3C00` stored ammo `+484h` = orgAmmo `+488h` = 1 (`006E3C20 MOV EAX,1`, `006E3C37`, `006E3C3D`).
+- So the rack attaches one round, and `007B9140`'s `vtable[210h](2Ah)` (a round attached) answers true.
+
+5ey reached the same result for the release path, which is why `kRackUnequippedEmptyBound` stays refuted. The host's
+`plane_holds_rack_round_007b9140` disagrees: with `kPlaneSceneEquipmentBound` and bag 0, `authored_ammo` is -1 and the
+rack holds nothing until the release seed fills it. So `009F8160` (`007ED790`) finds a fresh carrier-launched Zero
+squadron spent at its first think, and 43's +3Dh end fires at launch. That is the "45 ends from 113.30 s" of 43.1.
+**43's switch stays right**: once these Zeros have dropped, the +3Dh end is the image's. Only the 007B9140 answer
+before the first drop is a host gap. Item 2's "follow 009552E0's null loadout" (no rounds) would make the gap wider,
+so it is not bound.
+
+**The binding (game_hosts_units.cpp, committed OFF).** In `plane_holds_rack_round_007b9140`, an unseeded single rack
+of a plane whose carried bag is 0 answers one round. LABELLED:
+- only bag 0. A positive bag whose loadout has no entry for a rack also keeps the constructor round in the image, but
+  the host's release seed gives that rack none. That inconsistency stays open.
+- the `[+C0h]+4 == 3` skip is taken as not met.
+
+**The harness loadout option (97b1f18b5).** `<frame> launch <base> <slot> <class> <count> <target...> loadout <n>`
+is the screen's own step. After `006C0F00`, `00673A10` calls `006BA4B0(slot, screen+334h)` at `0067485D`, which stores
+the loadout ring's choice at slot+10h. screen+334h defaults to the class's +134h (`0065C9A0`), which is what the host
+already stored, so a line without the option is unchanged. For the Zero, `loadout 1` gives the same two rounds as the
+constructor default.
+
+**Predictions (before any ON run).**
+- OFF: identical.
+- ON, ESMP08 with `esmp08_p12_e8_rb`: no `fighter spent` end before a Zero squadron has released. The Zeros' dives and
+  releases come back (dive-bomb-task releases rise from 43.1's 5 toward the OFF 128), followed by +3Dh ends after the
+  drops. US ship damage rises from 113 s. pair_diff 3.
+- ON, USN04 45000: identical or gameplay-identical (no bag-0 bomb rack is asked at 009F8160).
+- Mechanism failure: a `fighter spent` end for a squadron whose members still hold an unseeded rack round, or a
+  positive-bag plane whose answer moves.
+
+### 46.1 The pair, and the verdict: ON
+
+Export of 0e9c7ad07 with the switch flipped (`local\p13_rc`) against that commit's build (`local\p13_off_rc`); reference
+env; logs `local\p13rc_<on|off>_<e8|u4>.log` with manifests, diffs `local\p13rc_diff_<e8|u4>.txt`.
+
+| Row | pair_diff | Note |
+| --- | --- | --- |
+| USN04 45000 | 1, gameplay identical | as predicted |
+| ESMP08 60000 (`esmp08_p12_e8_rb`) | 3, moved | `fighter spent` ends 46 -> 21, the first at 113.30 s -> 465.86 s; dive-bomb-task releases 1 of 162 -> 100 of 224; US ships sunk by 3000 s 4 -> 10 |
+
+Mechanism: the first ON end (Zuiho_sqn15 at 465.86 s) follows its members' four drops (`bomb from Zuiho_sqn15|.-II/.-III`,
+two rounds each); no end precedes a squadron's drops. **Flipped ON by mechanism.** ESMP08 regains the Zeros' bombs
+that 43.1 removed, so `esmp08_p12_e8_rb` is re-timed on the ON build rather than re-planned around fighter-only Zeros.
+
+## 47. The neighbour object's three clock draws: `kNeighbourClockDrawsBound` (cc9-physics13, 2026-10-17; lead item 4, cc13 seg48)
+
+The unit+C50h constructor `007E1E20` ends (`007E1F94`-`007E1FF2`, `disasm-raw`) with three `00BD2F10` calls,
+ECX = 1 (stream 1), bounds (0, P). Each result has the period added by `FADD` and is stored by `FSTP`:
+- `+7Ch` = U(0, 3) + `+88h` 3.0;
+- `+84h` = U(0, 2) + `+8Ch` 2.0;
+- `+80h` = U(0, 1) + `+90h` 1.0.
+
+`007E2010` adds dt to all three and refreshes when `+7Ch >= +88h`. So each plane's first refresh comes at once, and its
+3 s refresh, 2 s finder and 1 s friendly re-check phases are random. The host starts them at the midpoints (4.5 / 3.0 /
+1.5) for every plane, so all planes share a phase, and it makes three fewer stream-1 draws per construction.
+
+**The binding (game_hosts_units.cpp, committed OFF).** `nb_seed_clocks` runs at a plane's first neighbour use
+(avoidance, the friendly re-check, the finder). It draws the three values from the plane's keyed stream
+(`name#nb7c`, `#nb84`, `#nb80`; the shared stream only when BSP_GUNNERY_RNG_STREAMS is off) and gives every host copy of
+`+7Ch` the one value. LABELLED: seeded at first use, not at `007D621F`'s construction; the sum is taken in float.
+`summary mission neighbour clock draws seeded=N` counts the seeds.
+
+**Predictions.**
+- OFF: identical.
+- ON: every plane that reaches 0099B670 / 007B96D0 / 007E2090 seeds once; the refresh/finder/re-check instants move
+  by up to 1.5 s, the finder's targets and the avoidance bands move with them, and plane-heavy rows (ESMP08, USN04 with
+  its strikes) move from the first fighter contact; pair_diff 3. No other keyed stream moves, because the draws are on
+  their own keys.
+- Mechanism failure: a seed count that differs from the number of distinct planes using the object, or a moved draw
+  on any other key.
+
+### 47.1 The pair, and the verdict: ON
+
+Export of 58304aea0 flipped (`local\p13_nb`) against that commit's build (`local\p13_off_nb`); reference env; logs
+`local\p13nb_<on|off>_<e8|u4>.log` with manifests, diffs `local\p13nb_diff_<e8|u4>.txt`.
+
+| Row | pair_diff | Note |
+| --- | --- | --- |
+| ESMP08 60000 (`esmp08_p12_e8_rb`) | 3 | seeded=700; first moved deaths at 442-466 s (the first fighter contacts over the fleet); deaths 632 -> 633, dive-bomb-task releases 100 -> 96, torpedo drops 38 -> 29 |
+| USN04 45000 | 3 | seeded=63; first hit 96.65 -> 98.85 s; deaths 51 both |
+
+Both rows move only from the first air contact, as predicted. The draws are on their own keys, so no other stream
+moves. **Flipped ON by mechanism.**
+
+## 48. Read-only results: the deck crash, 007DAFD0, and the scope of 009F8470 (cc9-physics13, 2026-10-17; lead items 3, 4b, 5)
+
+### 48.1 The deck crash (39.2): the image steers the same way
+
+- **The list.** `007E11D0`'s add loop walks the world list `[[00E188A8]+19CCh]+58h`. It keeps any entity answering
+  IsKindOf(6) or (0Fh), other than the owner, that is not already listed and is within R. It applies no ground-state,
+  `+900h` or `+904h` test. So a plane in its takeoff run on a deck is listed, as in the host.
+- **The landing plane runs the arm.** 009A17D0 needs `+72Ch` vtable[38h] (mode 7) or mode 6, and a plane on final is
+  airborne (mode 7). The arm also needs pilot+2E4h bit 2. The land task's per-tick `009B3EB0` sets its scratch
+  `+4ACh` = FFh (`009B3EC2`) and copies it to `+2E4h`. A displacement scan of 009A0000-009D8000 (`local\p13_disp_scan.py`)
+  finds no other write to `+4ACh`, so the mask stays FFh on final.
+- **No hold.** `006BED60` (the launch queue's readiness) tests only the runway and hangar failure bytes and the owner.
+  `006C7960`'s final mode 4 needs `006BED60`, the corridor and `rec+8 > 0`. Neither looks at a plane on the deck or
+  on final.
+- **cc13's four differences** (backlog 2026-10-14):
+  - pilot+26Ch |= 2: its only reader is the describe string `009A1A90` (`AV_VEH`), so it has no gameplay effect;
+  - unit+9B4h: the ship branch's altitude filter only;
+  - the PitchSpd fallback: the ESMP08 carrier classes author PitchSpd (vehicleclasses.lua: 150, 162 and 163 0.436332,
+    159 0.610865), so the fallback is not taken;
+  - the class+50h model box: it feeds R, the sum of the two +500h extents. This is the one difference on the crash
+    path, and binding it needs the mesh bounds the host does not load (PLANE_SUBSTITUTION_SWEEP).
+- So nothing host-only gates the deck crash at this level. Nothing was bound.
+
+### 48.2 007DAFD0's pose refresh (cc13 seg48 note)
+
+The image calls `00414DB0(unit)` first when byte unit+C8h is 0, which rebuilds the world pose from a dirty body. The
+host passes the current motion pose, which is never stale at that call. No behaviour difference; not bound.
+
+### 48.3 The free-attack tick 009F8470: scope (not started)
+
+cc13 reconstructed it in `src/cc13_seg68.cpp` (`squadron_auto_target_tick_009f8470`, the selector `009F7810`, the
+three filters, `009F7BA0` scoring, `009F9770` AttackLists rank). It sits behind `SquadronAutoTargetHost`, a raw-memory
+interface (`u8` / `u32` / `f32` at offsets), so hosting it means an adapter or a value-level port. The tick needs these
+from the host:
+- **The gate.** Director `+30h` == 1 (the queue head runs, `CommandMode::kQueueHead`), and either the leader's party
+  slot is 8 or AI-held (`00927F10`) with leader `+184h` clear, or director `+3Ch` and `+3Dh` are set with squadron
+  `+370h` == 2. In mode 2 with `+3Ch` clear it raises the override stage to 2 (`0071D9E0`).
+- **The candidates.** The party's recon slot list `[008053C0(+54h)]+DE8h` (the host's
+  `GameGunneryHost::recon_triple_units(side, 1)`), filtered by `009F7480`.
+- **The score.** `0.5 / max(1, d) + rank`, where rank is the AttackLists entry of the class 007EEC50 would choose
+  (`009F9770`; the host has `choose_attack_class_007eec50` and the `ai_target_weights` FreeAttack fields), gated by
+  sensor detection `00804350`. A new best must beat the current target's score + 0.05.
+- **The issue.** When the best differs from the current command's resolved target: `009F6D60` picks the command
+  class, nothing happens if both the current and the new class are ordnance classes, `stop` is replaced by a moveto to
+  the squadron's position, and `0071D980` sends an **override** command.
+- **The missing host layer.** The override pieces are reconstructed but not called:
+  - `set_override_command_0071e7f0` and `clear_override_command_0071e610` are in `src/command_execution.cpp`;
+  - the director host `game_hosts_commands.cpp` notes that its override arm 00836D67 "cannot fire here because
+    nothing writes director+188h";
+  - the send `0071D980` needs `[director+40h] < 0` (the auto-target hold, DIRECTOR_TARGET_GATE.md), then routes
+    MT_GAMEUNIT_SETCMD with flag 0. Its receiver `00721A40` takes the override arm at `00721B7C`.
+  Wiring those for the squadron's fused director is the largest part, and every AI squadron on every row reaches it (41).
+- Recommendation: a fresh worker packet with its own switch: the queue/override layer first (OFF, identical when
+  unused), then the tick.
+
+### 47.2 ESMP08 `esmp08_p12_e8_rb` re-timed on 57ecc76a4 (both switches ON)
+
+Exe `local\p13_m3` (tree build of 57ecc76a4); reference env, 140000 frames, `--stop-after-end 40`; logs
+`local\p13e8c_rb_<ref|j3|j5|j7>.log` with manifests; every completion logs the exec guard's sus_prog.exe refusal.
+
+| Plan | reference | 20,3 | 20,5 | 20,7 |
+| --- | --- | --- | --- | --- |
+| rb on af23c565f (`local\p13_m2`, before 47) | completed 6132.09 s | no end (Iowa, Cummings) | - | - |
+| **rb on 57ecc76a4** | **completed 3984.96 s** | **completed 4707.67 s** | **completed 3966.89 s** | **completed 3261.21 s** |
+| dd (`local\p13_e8_dd.txt`, destroyers first in each Zero group) on 57ecc76a4 | - | no end | - | - |
+
+So the row needs no re-plan: with the Zeros' rounds back (46), `esmp08_p12_e8_rb` holds the reference, 20,3, 20,5 and 20,7.
+
+## 49. Handoff (cc9-physics13, 2026-10-17, at about 55% context)
+
+**Commits on agent/cc9-physics1** (on top of the origin/main merge at f4d7658e6; the full `scripts/build.ps1` with tests
+passes on each):
+- 97b1f18b5: the harness `launch ... loadout <n>` (46);
+- 0e9c7ad07 / af23c565f: `kRackConstructorRoundBound`, ON (46, 46.1);
+- 58304aea0 / 57ecc76a4: `kNeighbourClockDrawsBound`, ON (47, 47.1);
+- 2e9ce0a2e / 8a3e67fd8: the ESMP08 re-time (47.2) and the read-only results (48).
+
+**Rows.** `esmp08_p12_e8_rb` on 57ecc76a4 holds the reference (3984.96 s), 20,3 (4707.67 s), 20,5 (3966.89 s) and 20,7
+(3261.21 s). Sent to cc9-lua64.
+
+**Open, in order.**
+1. **The free-attack tick 009F8470** (48.3): wire the override send `0071D980` -> `0071E7F0` for the squadron's fused
+   director first, behind an OFF switch that is identical while nothing sends. Then host cc13's
+   `squadron_auto_target_tick_009f8470`: filters, selector, `009F9770` rank, and the recon list via
+   `recon_triple_units`. Large, x87-light, RNG-free.
+2. **The catapult chain** (37; cc13 `src/cc13_seg33a.cpp` behind `Seg33aHost`): an adapter.
+3. **007DC830, the free-flight step** (cc13 seg48 note): every airborne plane runs it (007CC2F0 -> 007DC830 ->
+   007DB680). The host only counts it. This is the core flight law, x87-heavy; scope it as several packets.
+4. **The deck crash** stays open on the class+50h model box (48.1). It needs mesh bounds.
+5. **A positive bag with no loadout entry for a rack** (46): the image keeps the constructor's round, but the host's
+   release seed gives that rack none. Small; check the BSPGun platform list against the class's default devices first.
+
+**Tools in this tree's `local\`.** `p13_disp_scan.py` (each displacement access in a VA range, with a write/read guess),
+`p13_vc_equip.py` (a class's DefaultEquipment and Equipments from this installation's vehicleclasses.lua),
+`p13_e8_loadout.py`, `p13_e8_dd_first.py`; exes `p13_m3` (57ecc76a4), `p13_off_rc` / `p13_rc` / `p13_off_nb` / `p13_nb`
+(the pairs).

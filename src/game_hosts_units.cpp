@@ -649,6 +649,8 @@ struct GameUnitSlot {
     bool drop_kamikaze_task_installed{false};
     bool torpedo_install_refused_class{false};   // packet cc9_dkz_spent_rtb, logged once
     std::size_t dkz_target_plus_one{0};
+    std::size_t db_task_target_plus_one{0};        // task+440h, kAttackTaskTargetRetireBound
+    std::size_t torpedo_task_target_plus_one{0};   // task+4C4h, kAttackTaskTargetRetireBound
     bsp::DropKamikazeTask dkz;
     bsp::PilotAttackMode dkz_attack_mode_370{bsp::PilotAttackMode::kForced};
     float dkz_alt_398{0.0f};
@@ -2041,6 +2043,7 @@ struct GameUnitSlot {
     // with its own copy of the +7Ch clock; the finder keeps +50h separately.
     std::vector<std::size_t> nb_near_30;
     float nb_clock_30{4.5f};
+    bool nb_clocks_seeded{false};   // kNeighbourClockDrawsBound: 007E1E20's draws taken
     // Counters (diagnostic census only).
     int va_plane_ticks{0};
     int va_ship_ticks{0};
@@ -2704,6 +2707,8 @@ struct GameUnitsHost::Impl {
         return bsp::drop_kamikaze_should_break_off_009ae1b0(bi);
     }
     unsigned long long retest_dead_targets{0}, retest_ends{0};   // kSquadronDeadTargetRetestBound
+    unsigned long long attack_task_target_retires{0};   // kAttackTaskTargetRetireBound
+    unsigned long long touchdown_human_pilot{0};   // 007CB75F census (SQUADRON_LAND_TASK 5hw.4)
     // Packet cc9_ship_exit_zone (docs/SHIP_AI_OPEN_ITEMS.md 232; cc13-ver7 Finding 1,
     // docs/CC13_VER_7.md). 00826D70 is vtable slot +1D8h of every ship class, which
     // 00953CC0 (called at 00825FAC, the head of the ship motion tick) runs at 00953D98
@@ -6267,6 +6272,16 @@ struct GameUnitsHost::Impl {
     // goes. True: a level-bomb task whose command target is cleared retires. False:
     // the arm returns early and the task freezes in its last state (USNOS wave 2).
     static constexpr bool kLevelBombTargetClearedRetireBound = true;   // ON: SQUADRON_LAND_TASK 5hv.6
+    // Packet cc9_l64_attack_task_retire (SQUADRON_LAND_TASK 5hw). The same vt[40h]
+    // rule in the dive-bomb (009C8060, +440h), torpedo (009D3EF0, +4C4h) and
+    // drop-kamikaze (009AE140, +440h) tasks: valid only while the command's resolved
+    // target is the task's own; 0099A4C0 (0099AE7E, every think) pops a task that
+    // answers 0 and 0099A170 builds a new one for the current command, which needs a
+    // target for all three classes. True: a cleared target retires the task (no new
+    // one), and a changed target retires it and installs a fresh one. False: the
+    // arms return early on a cleared target (frozen) and keep the old task on a new
+    // target (dive bomb, torpedo).
+    static constexpr bool kAttackTaskTargetRetireBound = true;   // ON: SQUADRON_LAND_TASK 5hw.3
     // Packet cc9_l63_lb_stick_delay (SQUADRON_LAND_TASK 5hv.3). 007C1FB0's tail: the
     // stick time is the longest rack's 006E4170 span plus BombDelay (class+1F4h) x
     // max(0, n - 1) over the n kind-25h racks. True: the term is added. False: the
@@ -6600,6 +6615,47 @@ struct GameUnitsHost::Impl {
     // = orgAmmo +488h = 1 (006E3C20..006E3C3D), so a default rack 0095A880's flag
     // pass adds holds one round; the pool's fallback is the image's default.
     static constexpr bool kRackUnequippedEmptyBound = false;
+    // Packet p13_bag0_round (docs/OCEAN_WAVE_FIELD.md 46). 007B9140's rack walk
+    // asks each rack vtable[210h](2Ah), which answers while a round is attached.
+    // A rack's owner bind 006E3350 (vtable 9Ch) skips the loadout walk when the
+    // plane's +C54h is <= 0 (006E3386 JLE 006E33E3) and still tail-jumps
+    // vtable[224h] 006E3E70, which attaches a round from the constructor's ammo
+    // +484h = 1 (006E3C20..006E3C37). True: an unseeded single rack of a plane
+    // whose carried bag Equipment is 0 answers one round, as the release path's
+    // pool fallback already seeds it. False: it answers none (authored -1), so
+    // 009F8160 finds such a squadron spent before it has dropped anything.
+    // ON: OCEAN_WAVE_FIELD 46.1 (ESMP08 dive-bomb releases 1 -> 100, every
+    // +3Dh end after the squadron's drops; USN04 gameplay identical).
+    static constexpr bool kRackConstructorRoundBound = true;
+    // Packet p13_neighbour_clock_draws (docs/OCEAN_WAVE_FIELD.md 47). The unit+C50h
+    // constructor 007E1E20 starts its three clocks with stream-1 draws (00BD2F10,
+    // ECX = 1, at 007E1F94 / 007E1FB9 / 007E1FE1): +7Ch = U(0, 3) + 3,
+    // +84h = U(0, 2) + 2, +80h = U(0, 1) + 1 (the periods +88h, +8Ch, +90h added
+    // by FADD). True: each plane's clocks take those draws from its keyed stream
+    // (`name#nb7c` / `#nb84` / `#nb80`) at its first neighbour use, and every
+    // host copy of +7Ch takes the one value. False: the midpoints 4.5 / 3.0 / 1.5.
+    // LABELLED: seeded at first use, not at 007D621F's construction; the sum is
+    // taken in float, the image's in x87 before the FSTP.
+    // ON: OCEAN_WAVE_FIELD 47.1 (ESMP08 / USN04 move from the first fighter contact).
+    static constexpr bool kNeighbourClockDrawsBound = true;
+    void nb_seed_clocks(GameUnitSlot& u) {
+        if constexpr (kNeighbourClockDrawsBound) {
+            if (u.nb_clocks_seeded) return;
+            u.nb_clocks_seeded = true;
+            const float c7c = release_altitude_draw_00bd2f10(u.row.name + "#nb7c", 0.0f, 3.0f) + 3.0f;
+            const float c84 = release_altitude_draw_00bd2f10(u.row.name + "#nb84", 0.0f, 2.0f) + 2.0f;
+            const float c80 = release_altitude_draw_00bd2f10(u.row.name + "#nb80", 0.0f, 1.0f) + 1.0f;
+            u.nb_clock_30 = c7c;
+            u.nb_clock_70 = c7c;
+            u.nb_clock_7c = c7c;
+            u.nb_clock_84 = c84;
+            u.nb_clock_80 = c80;
+            ++nb_clock_seeds;
+        } else {
+            (void)u;
+        }
+    }
+    unsigned long long nb_clock_seeds{0};
     // Packet cc9_rack_bullet_kind (SQUADRON_LAND_TASK 5eq, GUNNERY 138). True:
     // 007C0D90 decides per rack from the rack's projectile descriptor (a level
     // bomber 10h fires its plain-bomb racks together; 2Bh/2Ch/33h, or any rack
@@ -10822,6 +10878,7 @@ void GameUnitsHost::Impl::vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt) 
         return o.state != nullptr && o.state->active != 0 && o.scene_destroyed_005e == 0 &&
                o.scene_pending_destroy_0060 == 0;
     };
+    nb_seed_clocks(u);
     u.nb_clock_30 += dt;
     if (u.nb_clock_30 >= 3.0f) {
         const double lim = static_cast<double>(radii.near_any) * radii.near_any;
@@ -11750,6 +11807,7 @@ bool GameUnitsHost::Impl::friendly_in_line_007b96d0(GameUnitSlot& u, float dt) {
         return o.state != nullptr && o.state->active != 0 && o.scene_destroyed_005e == 0 &&
                o.scene_pending_destroy_0060 == 0;
     };
+    nb_seed_clocks(u);
     u.nb_clock_70 += dt;
     if (u.nb_clock_70 >= 3.0f) {                                     // 007E204D
         // 007E11D0: drop +70h members at or beyond the friendly radius, then
@@ -13911,6 +13969,17 @@ bool GameUnitsHost::Impl::plane_touchdown_007cc440(GameUnitSlot& p) {
         static_cast<double>(l[0]), static_cast<double>(l[2]),
         static_cast<double>(airborne), p.plane_landed_904 ? 1 : 0);
     record("Plane::touchdown_007cb5f0", 0x007cb5f0u);
+    // 007CB75F-007CB778: when the pilot role's holder (+1B0h) is not 8 and
+    // 00927F10 says a human holds that party slot, the image calls 007C3EA0
+    // (land command 00E08FA0 to the squadron, 0099A600, 0077C470(2, 0), message
+    // 57h). CENSUS ONLY: this host gives role 1 to the local player only in the
+    // scripted helm transfer, so no plane reaches it (SQUADRON_LAND_TASK 5hw.4).
+    if (p.current_roles_01ac[1] != bsp::kUnitRoleTableFill
+            && p.current_roles_01ac[1] == kLocalPlayerSlot) {
+        ++touchdown_human_pilot;
+        log.notef("plane touchdown: %s pilot role held by the local player: 007C3EA0 not carried "
+            "(007CB778 census)", p.row.name.c_str());
+    }
     return true;
 }
 
@@ -17235,6 +17304,15 @@ bool GameUnitsHost::plane_holds_rack_round_007b9140(std::size_t unit_index) {
         // already the plane's own loadout and an empty one stays empty.
         const bool own_index = bsp::kPlaneSceneEquipmentBound && s.bag_equipment >= 0;
         if (g.authored_ammo < 0 && !own_index) g.authored_ammo = g.generator_ammo;
+        if constexpr (Impl::kRackConstructorRoundBound) {
+            // 006E3350 with +C54h <= 0: no loadout Ammo, the constructor's one
+            // round attached. LABELLED: only bag 0; a positive bag whose
+            // loadout has no entry for a rack also keeps the constructor's
+            // round in the image, but the release seed gives that rack none.
+            // The unread 006E33ED `[+C0h]+4 == 3` skip is taken as not met.
+            if (own_index && s.bag_equipment == 0 && g.authored_ammo < 0 && !g.multi)
+                g.authored_ammo = 1;
+        }
         if (host.rack_holds_round(s, g)) return true;
     }
     return false;
@@ -22265,6 +22343,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     const GameUnitSlot* df_finder_scan_007e2090(
                             const bsp::PlaneFinderParams& fp, float threshold,
                             const bsp::PlaneSquadronHostRecord* squadron, float noise_mid) {
+                        owner_.nb_seed_clocks(unit_);
                         const GameUnitSlot* found = nullptr;
                         if (unit_.nb_found_plus_one != 0 &&
                             unit_.nb_found_plus_one - 1 < owner_.slots.size()) {
@@ -22359,6 +22438,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     }
 
                     const GameUnitSlot* df_finder_007e2090(float dt, bsp::DogfightGunInputs& gi) {
+                        owner_.nb_seed_clocks(unit_);
                         unit_.nb_clock_7c += dt;
                         unit_.nb_clock_84 += dt;
                         const bsp::PlaneNeighbourRadii r = bsp::plane_neighbour_radii_007e11d0(3.0f);
@@ -24434,6 +24514,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.row.name.c_str(), why,
                             static_cast<double>(owner_.summary.simulated_seconds));
                     }
+                    // kAttackTaskTargetRetireBound: one line per retired task.
+                    void attack_task_retire_log(const char* task, const char* vt40) {
+                        ++owner_.attack_task_target_retires;
+                        owner_.log.notef("  %s task %s: retired, the command target is not the "
+                            "task's (%s) at %.2f s", task, unit_.row.name.c_str(), vt40,
+                            static_cast<double>(owner_.summary.simulated_seconds));
+                    }
                     // 009B8B50, the task's vtable[64h].
                     void run_level_bomb_task_arm_009b8b50(float dt) {
                         using LS = bsp::LevelBombState;
@@ -25513,7 +25600,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.dkz.state = bsp::DropKamikazeState::kNone;
                             return;
                         }
-                        if (unit_.command_target_plus_one == 0) return;
+                        if (unit_.command_target_plus_one == 0) {
+                            // 009AE140: the resolved target (null) is not +440h.
+                            if (GameUnitsHost::Impl::kAttackTaskTargetRetireBound &&
+                                unit_.drop_kamikaze_task_installed) {
+                                unit_.drop_kamikaze_task_installed = false;
+                                unit_.dkz.state = bsp::DropKamikazeState::kNone;
+                                attack_task_retire_log("drop-kamikaze", "009AE140");
+                            }
+                            return;
+                        }
                         DkzHost h(*this);
                         if (!unit_.drop_kamikaze_task_installed ||
                             unit_.dkz_target_plus_one != unit_.command_target_plus_one) {
@@ -25561,8 +25657,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.attack_command_class)) {
                             return;
                         }
+                        if constexpr (GameUnitsHost::Impl::kAttackTaskTargetRetireBound) {
+                            // 009C8060 (vt[40h]) through 0099A4C0: the task goes when
+                            // the resolved command target is not +440h, and 0099A170's
+                            // dive-bomb arm builds a new one only with a target.
+                            if (unit_.dive_bomb_task_installed &&
+                                unit_.db_task_target_plus_one != unit_.command_target_plus_one) {
+                                unit_.dive_bomb_task_installed = false;
+                                unit_.dive_bomb_state = bsp::DiveBombState::kNone;
+                                attack_task_retire_log("dive-bomb", "009C8060");
+                            }
+                            if (unit_.command_target_plus_one == 0) return;
+                        }
                         if (!unit_.dive_bomb_task_installed) {
                             unit_.dive_bomb_task_installed = true;
+                            unit_.db_task_target_plus_one = unit_.command_target_plus_one;
                             unit_.db_profile_activation_pending = true;   // 0099AEB3
                             // 009C7710 leaves +310h on the moveto/follow pair
                             // 007B8AD0 picks: 009C7777 CALL / 009C777C TEST AL,AL
@@ -27632,6 +27741,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // 007B93F0) under a PilotSetTarget-class order.
                     void run_torpedo_task_arm_009d4850(float dt) {
                         const bsp::OrdnanceKindSet set{unit_.ordnance_mask};
+                        // kAttackTaskTargetRetireBound: a retarget re-installs under
+                        // the same command class, so the class's ordnance pick below
+                        // is not asked again.
+                        bool retargeted = false;
+                        if constexpr (GameUnitsHost::Impl::kAttackTaskTargetRetireBound) {
+                            // 009D3EF0 (vt[40h]) through 0099A4C0: the resolved
+                            // command target is not +4C4h.
+                            if (unit_.torpedo_task_installed &&
+                                unit_.torpedo_task_target_plus_one != unit_.command_target_plus_one) {
+                                unit_.torpedo_task_installed = false;
+                                unit_.torpedo_state = bsp::TorpedoState::kNone;
+                                attack_task_retire_log("torpedo", "009D3EF0");
+                                retargeted = unit_.command_target_plus_one != 0;
+                            }
+                        }
                         if (unit_.command_target_plus_one == 0) return;
                         if (!unit_.torpedo_task_installed) {
                             // cc8_torpedo_retire. The kind 2Bh test is an
@@ -27660,7 +27784,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 2 -> 5 regression: the same log shows 009D4C10
                             // true on exactly ONE tick per aircraft, arm tick 0
                             // in moveto at 4183 m, and false at the drop.
-                            if (!bsp::ordnance_has_torpedo_2bh(set)) return;
+                            if (!retargeted && !bsp::ordnance_has_torpedo_2bh(set)) return;
                             // Packet cc9_dkz_spent_rtb: 0099A170 builds MakeTorpedo
                             // only for the director's 00E08F18; a BettyOhka (racks
                             // 2Bh and 2Fh) under dropkamikaze gets that task alone.
@@ -27677,6 +27801,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 return;
                             }
                             unit_.torpedo_task_installed = true;
+                            unit_.torpedo_task_target_plus_one = unit_.command_target_plus_one;
                             // 009D3050 leaves +310h on the moveto/follow pair
                             // 009D2DA0 registered; 009D24E0 leaves +98h at -1.
                             // FED, packet cc8_follow_enter. 009D30B7 CALL 007B8AD0
@@ -38323,6 +38448,11 @@ void GameUnitsHost::report() {
             host.log.notef("summary mission squadron retest bound=%d dead_targets=%llu ends=%llu "
                 "(009F8160 / 009F7C90, cc9-gunnery38)", bsp::kSquadronDeadTargetRetestBound ? 1 : 0,
                 host.retest_dead_targets, host.retest_ends);
+            host.log.notef("summary attack task target retire bound=%d retires=%llu (009C8060 / "
+                "009D3EF0 / 009AE140, packet cc9_l64_attack_task_retire)",
+                GameUnitsHost::Impl::kAttackTaskTargetRetireBound ? 1 : 0, host.attack_task_target_retires);
+            host.log.notef("summary plane touchdown human pilot census=%llu (007CB778 -> 007C3EA0, "
+                "not carried)", host.touchdown_human_pilot);
             for (const auto& e : host.spent_rtb) {
                 if (!e.second.latch_3c) continue;
                 host.log.notef("  spent %-24s command=%08X latched=%.2f ended=%.2f issued=%.2f "
@@ -40141,6 +40271,11 @@ void GameUnitsHost::report() {
                             "ship_ticks=%lld bands=%lld throttle=%lld dive_ticks=%lld "
                             "(007DF4F0, packet cc9_pilot_vehicle_terrain_avoidance)",
                             vp, vs, vb, vt, vd);
+                        if constexpr (Impl::kNeighbourClockDrawsBound) {
+                            host.log.notef("summary mission neighbour clock draws seeded=%llu "
+                                "(007E1E20 007E1F94/007E1FB9/007E1FE1, packet "
+                                "p13_neighbour_clock_draws)", host.nb_clock_seeds);
+                        }
                         if constexpr (Impl::kPlayerRoleBookkeepingBound) {
                             if (host.helm_option_on) {
                                 host.log.notef("summary mission scripted helm throttle=%.3f "
