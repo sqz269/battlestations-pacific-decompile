@@ -50,6 +50,7 @@
 #include "bsp/torpedo_aim_tick.hpp"
 #include "bsp/torpedo_goaway_tick.hpp"
 #include "bsp/plane_fly_to_solver.hpp"
+#include "bsp/cc13_seg68.hpp"
 #include "bsp/torpedo_approach_update.hpp"
 #include "bsp/torpedo_first_release.hpp"
 #include "bsp/torpedo_issue_timing.hpp"
@@ -9091,6 +9092,45 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     unsigned long long fly_to_kept_[2]{0, 0};
     unsigned long long fly_to_avoid_ticks_[2]{0, 0};
     unsigned long long fly_to_side_flips_[2]{0, 0};
+    // Packet cc9_p12_fly_to_world_edge (docs/OCEAN_WAVE_FIELD.md section 42):
+    // 009FD570's world-edge pull, 009FDD58-009FDE8B. 00681F40(lead, 500.0
+    // [00CE397C]) gates it; 009FA510(lead, 500.0) / 60.0 is the gain and the
+    // centre is 0.5 x (world min + max) in XZ (009FDD8F-009FDDC5), over
+    // GGame+711Ch/7124h/7128h/7130h = the Lua host's NW.x / NW.z / SE.x / SE.z.
+    // False: near_edge stays false, as every host site forced it.
+    static constexpr bool kFlyToWorldEdgeBound = true;  // ON: identical where reached, near arm not reached yet (docs/OCEAN_WAVE_FIELD.md 42.1)
+    unsigned long long fly_to_edge_calls_{0}, fly_to_edge_near_{0};
+    void fly_to_world_edge_009fdd62(bsp::FlyToSolverInputs& fin) {
+        fin.world_edge.near_edge = false;
+        if constexpr (!kFlyToWorldEdgeBound) return;
+        const bsp::WorldMapBounds* b = lua.world_border_bounds();
+        if (b == nullptr) return;
+        ++fly_to_edge_calls_;
+        float lead[3];
+        for (int i = 0; i < 3; ++i) {
+            // 009FD5A8-009FD61F, as the solver forms it.
+            lead[i] = fin.unit_position[i] + static_cast<float>(
+                static_cast<double>(fin.unit_lead_vector[i]) *
+                static_cast<double>(bsp::fly_to_solver::kLeadSeconds));
+        }
+        const float m = 500.0f;
+        const float x_min = b->north_west[0], z_max = b->north_west[2];
+        const float x_max = b->south_east[0], z_min = b->south_east[2];
+        // 00681F40 (00681F40-00681FB7): true below +711Ch + m or above +7128h - m
+        // in x, or above +7124h - m or below +7130h + m in z.
+        const bool near_hit = lead[0] < m + x_min || !(lead[0] <= x_max - m) ||
+            !(lead[2] <= z_max - m) || !(z_min + m <= lead[2]);
+        if (!near_hit) return;
+        ++fly_to_edge_near_;
+        fin.world_edge.near_edge = true;
+        const bsp::cc13_seg68::WorldEdges e{x_min, z_max, x_max, z_min};
+        fin.world_edge.penetration = bsp::cc13_seg68::ggame_world_edge_overrun_009fa510(
+            e, lead, m);
+        const float sx = x_max + x_min;                              // 009FDD8F-009FDD9B
+        const float sz = z_min + z_max;                              // 009FDD9F-009FDDAB
+        fin.world_edge.centre[0] = static_cast<float>(static_cast<double>(sx) * 0.5);
+        fin.world_edge.centre[1] = static_cast<float>(static_cast<double>(sz) * 0.5);
+    }
     // 00956C20's unit+460h + cat*4 for one unit, from the gunnery host's rows.
     float unit_category_damage_460(std::size_t unit_index, int category) const {
         if (gunnery == nullptr) return 0.0f;
@@ -24202,7 +24242,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             fin.obstacles = obs.empty() ? nullptr : obs.data();
                             fin.obstacle_count = obs.size();
                         }
-                        fin.world_edge.near_edge = false;
+                        owner_.fly_to_world_edge_009fdd62(fin);   // 00681F40 / 009FA510
                         const bsp::FlyToSolverResult fr =
                             bsp::fly_to_point_heading_009fd570(fin, unit_.lb_ga_side_1c);
                         unit_.lb_ga_side_1c = fr.side;
@@ -25211,7 +25251,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             fin.offset_scale = offset_scale;
                             fin.obstacles = nullptr;
                             fin.obstacle_count = 0;
-                            fin.world_edge.near_edge = false;
+                            b.owner_.fly_to_world_edge_009fdd62(fin);   // 00681F40 / 009FA510
                             const bsp::FlyToSolverResult fr = bsp::fly_to_point_heading_009fd570(fin, side);
                             side = fr.side;
                             return fr.heading;
@@ -26507,7 +26547,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             fin.obstacles = obs.empty() ? nullptr : obs.data();
                             fin.obstacle_count = obs.size();
                         }
-                        fin.world_edge.near_edge = false;
+                        owner_.fly_to_world_edge_009fdd62(fin);   // 00681F40 / 009FA510
                         const bsp::FlyToSolverResult fr =
                             bsp::fly_to_point_heading_009fd570(fin, gt.side_18);
                         if (fr.avoidance_ran) ++owner_.fly_to_avoid_ticks_[1];
@@ -29268,10 +29308,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             fin.obstacles = obs.empty() ? nullptr : obs.data();
                             fin.obstacle_count = obs.size();
                         }
-                        // 00681F40 / 009FA510 over GGame+711Ch..7130h: the world
-                        // bounds are unmodelled, and USN01's aircraft are in
-                        // open ocean rather than against a map edge.
-                        fin.world_edge.near_edge = false;
+                        owner_.fly_to_world_edge_009fdd62(fin);   // 00681F40 / 009FA510
 
                         const bsp::FlyToSolverResult fr =
                             bsp::fly_to_point_heading_009fd570(fin, g.side_2c);
@@ -39156,6 +39193,9 @@ void GameUnitsHost::report() {
             host.fly_to_rebuilds_[0], host.fly_to_kept_[0], host.fly_to_avoid_ticks_[0],
             host.fly_to_side_flips_[0], host.fly_to_rebuilds_[1], host.fly_to_kept_[1],
             host.fly_to_avoid_ticks_[1], host.fly_to_side_flips_[1]);
+        host.log.notef("summary mission fly-to world edge bound=%d calls=%llu near=%llu "
+            "(00681F40 / 009FA510, packet cc9_p12_fly_to_world_edge)",
+            Impl::kFlyToWorldEdgeBound ? 1 : 0, host.fly_to_edge_calls_, host.fly_to_edge_near_);
         host.log.notef("summary mission torpedo run time bound=%d aim_updates=%llu "
             "done_updates=%llu mean_98_aim=%.3f mean_98_done=%.3f mean_a0_aim=%.1f "
             "mean_a0_done=%.1f (009D1360, packet cc9_torpedo_run_time_update)",

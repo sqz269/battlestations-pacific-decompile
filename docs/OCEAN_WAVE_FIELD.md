@@ -1572,3 +1572,38 @@ landing pass. ON latches at that instant; the break-off and the B5 run in the sa
 site Zuiho` (3 of 4 sites pass, the sunk home excluded); the land task is installed toward Zuiho and the squadron joins
 Zuiho's queue. OFF flies on into Zuikaku's final and dies over the wreck at 1434.37 s; ON lives to 1627.96 s. The
 rest of the run moves from there (5 more deaths, 6 more units, dive releases 127 -> 128). **Flipped ON.**
+
+## 42. The fly-to solver's world-edge pull: `kFlyToWorldEdgeBound` (cc9-physics12, 2026-10-16; lead item 3, seg-68 note 7.5)
+
+009FD570 (the fly-to solver, src/plane_fly_to_solver.cpp) adds a pull toward the map centre when its lead point is
+within 500 m (00CE397C) of the world rectangle (009FDD58-009FDE8B, listing read): 00681F40 (00681F40-00681FB7, read
+whole) answers "near", 009FA510 (BSP_GGame_WorldEdgeOverrun) the largest overrun, divided by 60.0 (00CE3D68), and the
+centre is 0.5 x (GGame+7128h + 711Ch, 7130h + 7124h), each sum stored as float before the double 0.5 (009FDD8F-
+009FDDC5). The host's four solver sites (the torpedo goaway, the drop-kamikaze, the dive goaway and the moveto task)
+forced `near_edge = false` with "the world bounds are unmodelled"; they are modelled now: the Lua host's
+`world_border_bounds()` (NW.x / NW.z / SE.x / SE.z = +711Ch / +7124h / +7128h / +7130h, the mapping
+game_hosts_ship_ai.cpp and plane_retreat_task.cpp already use).
+
+**The binding (game_hosts_units.cpp, committed OFF).** `Impl::fly_to_world_edge_009fdd62(fin)` replaces the four
+forced stores: with bounds, the lead point (`unit_position + lead_vector x kLeadSeconds`, as the solver forms it) is
+tested as 00681F40 does; when near, `penetration` is cc13's `ggame_world_edge_overrun_009fa510` (src/cc13_seg68.cpp)
+with margin 500 and the centre as above. A summary line counts calls and near answers.
+
+**Predictions (before any ON run).** OFF: identical (the store is the same false). ON: `summary mission fly-to world edge`
+shows calls > 0 on every row with solver users; near > 0 only where a plane steering through the solver comes within
+500 m of the map edge. Rows where that never happens are gameplay identical (USN04 45000 expected identical: its
+strikes fly in open ocean). Where it happens, those planes' headings bend toward the map centre near the edge.
+
+### 42.1 The pair: gameplay identical, the near arm not reached; ON
+
+Export of 5f839f749 with the switch flipped (`local\p12_we`, exe 5B737877E477) against that commit's build
+(`local\p12_offwe`). Reference env; logs `local\p12we_<on|off>_<e8|u4>.log`.
+
+| Row | Result |
+| --- | --- |
+| ESMP08 60000 (`esmp08_p12_e8_rb`) | `pair_diff` 1, gameplay identical; ON `calls=4076 near=0` |
+| USN04 45000 | ON `calls=0 near=0` (no solver user ever runs), so identical by construction; no OFF run |
+
+The gate is evaluated on every ESMP08 solver call and never answers "near": no solver user flies within 500 m of
+that map's edge. The binding computes what the image computes there, so it is **flipped ON**; the pull itself is
+unexercised in these rows (a row with solver users near an edge would show `near > 0` and moved headings).
