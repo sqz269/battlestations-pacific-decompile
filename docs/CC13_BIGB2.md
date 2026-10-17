@@ -43,7 +43,7 @@ Order of work:
    +198h("InferiorFailure", 0, &flag) and with the flag stores its health (00923BE0) as h46 / h45;
    kind 9 on the local player's side (+54h == player +28h) takes the cached icon state. The gauges
    +12Ch/+130h/+134h are hidden, then: both 45h and 46h seen -> icon state 3, +134h quad
-   ((1 - h46) * 0.5, 0.7853982f, 0, 1) and +130h quad((1 - h45) * 0.5, 3.926991f, 0, 1) when their
+   ((1 - h46) * 0.5, 3F49096Ch (0.78530), 0, 1) and +130h quad((1 - h45) * 0.5, 407B50B1h (3.92680), 0, 1) when their
    flags were set, each followed by +4Ch(0.4f); only 46h -> icon state 0, +12Ch quad(1 - h46, 0,
    0, 1); else kind 9 -> icon state (cached state, or 1 when it is 0); else 45h -> icon state 2,
    +12Ch quad(1 - h45, 0, 0, 1). The list copy is tidied (005A0B80).
@@ -97,3 +97,38 @@ string construction. Strings at 00CF5148 "Mission", 00CF513C "Objectives", 00CF5
 
 Uncertain: the bool pushed to 0049F2D0 / 0049E150 is AL inside a dword whose upper bytes the image
 leaves unspecified (passed as 0/1). No 00BD2F10 draws.
+
+## 005DB050 multiplayer lobby widget binding (reconstructed)
+
+`cc13_bigB2_lobby_bind_widgets_005db050`, 4159 instructions (0C3Ch bytes), vtable 00CF23B0 slot
+18, `__thiscall(ECX = screen)`, RET. EH frame 00C74967 noted, not modelled. Read from the listing
+with a local idiom compressor (`local/bigB2_compress*.py`: inline NativeString constructions,
+pool releases and FindChild calls collapsed to one line each), and the raw listing wherever the
+pushes interleave (clone parent pushed before FindChild's arguments, the resolved-position output
+pushed before FindChild, the 7FFFFFFFh pushed for 00467CF0 left on the stack as the count of the
+following 00469840, the PUSH 1 / PUSH 0Ch of the first map loop shared by its body and exit).
+
+Order of work: the widgets of page +14h (players, settings, unlock, noseart, chat and event groups;
+names and stores in the function comment), listener 00AA6BC0 on the screen+0Ch sub-object with
+flag 1 for the frame boxes players/settings/unlock/noseart and 0 for arrows, sliders, the chat mode
+icons and the settings list; the settings scroller +30h (00683790 text box, 00683380 with
+back - slider heights, the back height held as a double and subtracted by FSUBR, rounded to float
+under 24-bit PC), the chat scroller +158h and the event scroller +0CCh (00683790, 00683380,
+006834A0 with textbox - clipbox heights). Then page +18h: Settings_Listbox +228h (byte +141h = 1,
++12Ch = 3C088889h, +130h = 3B360B61h, +134h = 0), setting_name/value texts hidden, the left/right
+arrows; selected_description_Text +22Ch last.
+
+The two map-icon lists (+1F4h under the settings group, after the settings scroller; +240h under
+page +18h, before selected_description_Text) clone "map_001_Icon" once per map record (434h bytes,
+vector at (*00E198AC)+5Ch+24h, checked iterator), name the clone "map_Icon" with the 1-based index
+(004260B0, 004261A0, vtable +2Ch), copy the template's resolved position (00AA6750, 00AA8240), set
+the shader "guidefault_noalpha.mshd" (00AB4630) and the eight state textures 0..7
+"gui/radarshots/" + base.substr(0, 14h) + one of _C, _D, _E, _ICH, _ICL, _ICM, _ICS, _S ".tga"
+(00469840, 0043C130, 004261A0, 00AB44B0 with uv {0, 0, 1, 1}), where base is the record path +20h
+after the last '/' (00467CF0, 00469840) cut before ".scn" (00BF9440). After the last record the
+template and every clone are hidden. The first list inlines its string constructions and its
+push_back (slow path: 0043DB60) and tests the record dereference twice in sequence. The second
+list builds its strings through 0041E870, appends through 0043DCA0 and nests the two tests.
+
+Constants: 00CF2318 3E088889h (the New_5_Text ellipsis width, 00ABB000(.., 1) after 00ABBE50(" ",
+1)), 00CEF0B8, 00CEE600 as above. No 00BD2F10 draws.

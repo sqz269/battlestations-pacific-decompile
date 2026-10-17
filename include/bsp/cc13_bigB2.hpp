@@ -84,6 +84,11 @@ public:
     virtual void int_sort_00623170(std::int32_t* first, std::int32_t* last, std::int32_t ideal) = 0;
     // 00773860 BSP_Session_SendGameSetupMessage: ECX = game+1EF0h, RET.
     virtual void session_send_game_setup_00773860(void* session) = 0;
+
+    // ---- multiplayer lobby widgets (segment 22, 005DB050) ----
+    // 00AB4630 BSP_GuiIcon_SetShaderName: __thiscall(ECX = icon; const
+    // NativeString*), RET 4.
+    virtual void gui_icon_set_shader_name_00ab4630(void* icon, const void* name) = 0;
 };
 
 // 00670020: support-manager screen refresh (slot strip, slot labels, the
@@ -96,5 +101,11 @@ void cc13_bigB2_hud_support_refresh_view_00670020(void* screen, Cc13BigB2Host& h
 // the game-setup message when the session is networked. __cdecl, no
 // arguments, RET.
 void cc13_bigB2_mission_objectives_rebuild_00627960(Cc13BigB2Host& host);
+
+// 005DB050 BSP_MultiGameLobbyScreen_BindWidgets (vtable 00CF23B0 slot 18):
+// binds the lobby widgets of the pages +14h and +18h, builds the two map icon
+// lists (+1F4h, +240h) from the map records and wires the three scrollers.
+// __thiscall(ECX = screen), RET.
+void cc13_bigB2_lobby_bind_widgets_005db050(void* screen, Cc13BigB2Host& host);
 
 }  // namespace bsp

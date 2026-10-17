@@ -23,6 +23,12 @@ T& at(void* base, std::size_t offset) {
     return cc13_sweepB_at<T>(base, offset);
 }
 
+float f32_bits(std::uint32_t bits) {
+    float value;
+    std::memcpy(&value, &bits, sizeof value);
+    return value;
+}
+
 void* ptr(void* base, std::size_t offset) {
     return at<void*>(base, offset);
 }
@@ -311,8 +317,8 @@ void* player_of(Cc13BigB2Host& host) {
 // each kind sets its "seen" byte. The fresh list goes through 004E8150.
 // Gauges +12Ch/+130h/+134h then +34h(0), and:
 //   45h and 46h seen: icon +88h(3, 0, 1.0); h46 -> +134h shown, quad
-//     ((1 - h46) * 0.5, [00CF6B0C] = 0.7853982f, 0, 1), +4Ch(0.4f); h45 ->
-//     +130h shown, quad((1 - h45) * 0.5, [00CF6B08] = 3.926991f, 0, 1),
+//     ((1 - h46) * 0.5, [00CF6B0C] = 3F49096Ch (0.78530), 0, 1), +4Ch(0.4f); h45 ->
+//     +130h shown, quad((1 - h45) * 0.5, [00CF6B08] = 407B50B1h (3.92680), 0, 1),
 //     +4Ch(0.4f);
 //   only 46h: icon +88h(0, 0, 1.0); h46 -> +12Ch shown, quad(1 - h46, 0, 0,
 //     1), +4Ch(0.4f);
@@ -572,9 +578,9 @@ void cc13_bigB2_hud_support_refresh_view_00670020(void* screen, Cc13BigB2Host& h
         host.widget_vcall_34_set_visible(ptr(screen, 0x12C), 0);
         host.widget_vcall_34_set_visible(ptr(screen, 0x130), 0);
         host.widget_vcall_34_set_visible(ptr(screen, 0x134), 0);
-        const float kQuarterPi = 0.785398185f;          // 00CF6B0C (3F49096Ch)
-        const float kFiveQuarterPi = 3.92699075f;       // 00CF6B08 (407B50B1h)
-        const float kGaugeFloat = 0.400000006f;         // 00CE7804 (3ECCCCCDh)
+        const float kQuarterPi = f32_bits(0x3F49096Cu);       // 00CF6B0C
+        const float kFiveQuarterPi = f32_bits(0x407B50B1u);   // 00CF6B08
+        const float kGaugeFloat = f32_bits(0x3ECCCCCDu);      // 00CE7804
         if (seen_45 && seen_46) {
             host.widget_vcall_88(ptr(screen, 0x1CC), 3, 0, 1.0f);
             if (health_46) {
@@ -1074,6 +1080,408 @@ void cc13_bigB2_mission_objectives_rebuild_00627960(Cc13BigB2Host& host) {
     if (at<std::int32_t>(game, 0x1FE4) != 0) {
         host.session_send_game_setup_00773860(addr(game, 0x1EF0));
     }
+}
+
+namespace {
+
+// A NativeString temporary built either by the inlined constructor (zero,
+// 0041DD40, memcpy length + 1) or by a 0041E870 call, as the image does at
+// that point.
+void make_string(Str& out, const char* text, bool inline_body, Cc13BigB2Host& host) {
+    if (inline_body) {
+        construct_cstring_inline(out, text, host);
+    } else {
+        host.native_string_assign_0041e870(&out, text);
+    }
+}
+
+// FindChild(parent, name, 1) with the name temporary released afterwards; the
+// result is stored to screen+store_offset (when given) before the release,
+// as the image does.
+void* bind_child(void* screen, void* parent, const char* name, std::ptrdiff_t store_offset, Cc13BigB2Host& host) {
+    Str text;
+    construct_cstring_inline(text, name, host);
+    void* const widget = host.widget_find_child_00aa7e00(parent, &text, 1);
+    if (store_offset >= 0) {
+        at<void*>(screen, static_cast<std::size_t>(store_offset)) = widget;
+    }
+    release(text, host);
+    return widget;
+}
+
+// The scroller wiring of the chat (+158h) and event (+0CCh) panes: attach the
+// text box, then the bar with length back - slider (sizes' +4h, float
+// subtraction) and the arrows, then the range textbox - clipbox.
+void wire_scroller(void* screen, std::size_t scroller, std::size_t textbox, std::size_t back, std::size_t slider,
+                   std::size_t up, std::size_t down, std::size_t clipbox, Cc13BigB2Host& host) {
+    host.gui_scroller_attach_content_00683790(
+        addr(screen, scroller), static_cast<std::int32_t>(reinterpret_cast<std::intptr_t>(ptr(screen, textbox))));
+    const float back_height = host.widget_get_size_00aa6740(ptr(screen, back))[1];
+    const float slider_height = host.widget_get_size_00aa6740(ptr(screen, slider))[1];
+    host.gui_scroller_attach_scroll_bar_00683380(addr(screen, scroller), ptr(screen, slider),
+                                                 back_height - slider_height, ptr(screen, up), ptr(screen, down));
+    const float text_height = host.widget_get_size_00aa6740(ptr(screen, textbox))[1];
+    const float clip_height = host.widget_get_size_00aa6740(ptr(screen, clipbox))[1];
+    host.gui_scroller_set_scroll_range_006834a0(addr(screen, scroller), text_height - clip_height);
+}
+
+// One map-icon list (005DB7EA for +1F4h on the settings group, 005DDC89 for
+// +240h on the page +18h): a clone of "map_001_Icon" per map record (434h
+// bytes, vector at (*00E198AC)+5Ch+24h), named "map_Icon" with the 1-based
+// index through 004260B0/004261A0 and vtable +2Ch, placed at the template's
+// resolved position, given the shader "guidefault_noalpha.mshd" and the eight
+// radar-shot textures "gui/radarshots/" + base.substr(0, 14h) + suffix, where
+// base is the record path (+20h) after the last '/' and before ".scn". The
+// template and every clone are then hidden.
+//   first_list: the +1F4h shape (inline strings, inline push_back with
+//   0043DB60, the two record dereference checks in sequence); otherwise the
+//   +240h shape (0041E870 calls, 0043DCA0, nested checks).
+void build_map_icon_list(void* screen, bool first_list, void* settings_group, Cc13BigB2Host& host) {
+    const bool inl = first_list;
+    const std::size_t list = first_list ? 0x1F4 : 0x240;
+    auto page = [&]() { return first_list ? settings_group : ptr(screen, 0x18); };
+    auto records = [&]() { return addr(ptr(ptr(host.image_global(0x00E198AC), 0), 0x5C), 0x24); };
+
+    void* iterator_container;
+    Byte* iterator_record;
+    {
+        void* const vec = records();
+        Byte* const first = static_cast<Byte*>(ptr(vec, 4));
+        if (above(first, ptr(vec, 8))) {
+            host.crt_invalid_parameter_noinfo_00bf6713();
+        }
+        iterator_container = vec;
+        iterator_record = first;
+    }
+    std::int32_t index = 1;
+    static const char* const kSuffixes[8] = {"_C.tga",   "_D.tga",   "_E.tga",   "_ICH.tga",
+                                             "_ICL.tga", "_ICM.tga", "_ICS.tga", "_S.tga"};
+    for (;;) {
+        void* const vec = records();
+        void* const last = ptr(vec, 8);
+        if (above(ptr(vec, 4), last)) {
+            host.crt_invalid_parameter_noinfo_00bf6713();
+        }
+        if (iterator_container == nullptr || iterator_container != vec) {
+            host.crt_invalid_parameter_noinfo_00bf6713();
+        }
+        Str template_name;
+        if (iterator_record == last) {
+            // Exit: hide the template (found again) and every clone.
+            make_string(template_name, "map_001_Icon", inl, host);
+            host.widget_vcall_34_set_visible(host.widget_find_child_00aa7e00(page(), &template_name, 1), 0);
+            release(template_name, host);
+            for (std::uint32_t i = 0;; ++i) {
+                void** const items = static_cast<void**>(ptr(screen, list + 4));
+                if (items == nullptr ||
+                    i >= static_cast<std::uint32_t>(static_cast<void**>(ptr(screen, list + 8)) - items)) {
+                    break;
+                }
+                if (ptr(screen, list + 4) == nullptr ||
+                    i >= static_cast<std::uint32_t>(static_cast<void**>(ptr(screen, list + 8)) -
+                                                    static_cast<void**>(ptr(screen, list + 4)))) {
+                    host.crt_invalid_parameter_noinfo_00bf6713();
+                }
+                host.widget_vcall_34_set_visible(static_cast<void**>(ptr(screen, list + 4))[i], 0);
+            }
+            return;
+        }
+
+        // Clone the template under the page and append it.
+        make_string(template_name, "map_001_Icon", inl, host);
+        void* parent = page();
+        void* clone =
+            host.widget_clone_subtree_00aab4c0(host.widget_find_child_00aa7e00(parent, &template_name, 1), parent);
+        if (first_list) {
+            void** const items = static_cast<void**>(ptr(screen, list + 4));
+            void** const end = static_cast<void**>(ptr(screen, list + 8));
+            const std::uint32_t size = items == nullptr ? 0 : static_cast<std::uint32_t>(end - items);
+            if (items != nullptr &&
+                size < static_cast<std::uint32_t>(static_cast<void**>(ptr(screen, list + 12)) - items)) {
+                *end = clone;
+                at<void**>(screen, list + 8) = end + 1;
+            } else {
+                void* const where = ptr(screen, list + 8);
+                if (above(items, where)) {
+                    host.crt_invalid_parameter_noinfo_00bf6713();
+                }
+                void* result[2];
+                host.dword_vector_insert_one_0043db60(addr(screen, list), result, addr(screen, list), where, &clone);
+            }
+        } else {
+            host.pointer_vector_push_back_0043dca0(addr(screen, list), &clone);
+        }
+        release(template_name, host);
+
+        // back(), checked.
+        void** const back_end = static_cast<void**>(ptr(screen, list + 8));
+        if (above(ptr(screen, list + 4), back_end)) {
+            host.crt_invalid_parameter_noinfo_00bf6713();
+        }
+        void** const back_slot = back_end - 1;
+        if (above(back_slot, ptr(screen, list + 8)) || above(ptr(screen, list + 4), back_slot)) {
+            host.crt_invalid_parameter_noinfo_00bf6713();
+        }
+        if (!above(ptr(screen, list + 8), back_slot)) {
+            host.crt_invalid_parameter_noinfo_00bf6713();
+        }
+        void* const icon = *back_slot;
+
+        // Name: "map_Icon" with the index.
+        {
+            Str stem;
+            make_string(stem, "map_Icon", inl, host);
+            Str number;
+            Str joined;
+            void* const lhs = host.native_string_from_int_004260b0(&number, index);
+            host.widget_vcall_2c(icon, host.native_string_concat_004261a0(lhs, &joined, &stem));
+            release(joined, host);
+            release(number, host);
+            release(stem, host);
+        }
+        // Position from the template.
+        {
+            Str name;
+            make_string(name, "map_001_Icon", inl, host);
+            float resolved[3];
+            host.widget_set_resolved_position_00aa8240(
+                icon, host.widget_get_resolved_position_00aa6750(
+                          host.widget_find_child_00aa7e00(page(), &name, 1), resolved));
+            release(name, host);
+        }
+        // base = record path after the last '/'.
+        Str separator;
+        make_string(separator, "/", inl, host);
+        if (first_list) {
+            if (iterator_container == nullptr) {
+                host.crt_invalid_parameter_noinfo_00bf6713();
+            }
+            if (!above(ptr(iterator_container, 8), iterator_record)) {
+                host.crt_invalid_parameter_noinfo_00bf6713();
+            }
+            if (!above(ptr(iterator_container, 8), iterator_record)) {
+                host.crt_invalid_parameter_noinfo_00bf6713();
+            }
+        } else {
+            if (iterator_container == nullptr) {
+                host.crt_invalid_parameter_noinfo_00bf6713();
+            }
+            if (!above(ptr(iterator_container, 8), iterator_record)) {
+                host.crt_invalid_parameter_noinfo_00bf6713();
+                if (!above(ptr(iterator_container, 8), iterator_record)) {
+                    host.crt_invalid_parameter_noinfo_00bf6713();
+                }
+            }
+        }
+        void* const path = iterator_record + 0x20;
+        Str base;
+        const std::int32_t slash = host.native_string_rfind_00467cf0(path, &separator, 0x7FFFFFFFu);
+        host.native_string_substring_00469840(path, &base, slash + 1, 0x7FFFFFFF);
+        release(separator, host);
+        // Cut at ".scn" (strstr; -1 when absent or the buffer is null).
+        {
+            std::int32_t cut = -1;
+            if (base.data != nullptr) {
+                const char* const hit = host.crt_strstr_00bf9440(base.data, ".scn");
+                if (hit != nullptr) {
+                    cut = static_cast<std::int32_t>(hit - base.data);
+                }
+            }
+            Str piece;
+            Str* const got = static_cast<Str*>(host.native_string_substring_00469840(&base, &piece, 0, cut));
+            if (&base != got) {
+                host.native_string_resize_0041dd40(&base, got->length, 1);
+                if (got->length != 0) {
+                    host.crt_memcpy_00bf7680(base.data, got->data, base.length);
+                }
+            }
+            release(piece, host);
+        }
+        {
+            Str shader;
+            make_string(shader, "guidefault_noalpha.mshd", inl, host);
+            host.gui_icon_set_shader_name_00ab4630(icon, &shader);
+            release(shader, host);
+        }
+        for (std::int32_t layer = 0; layer < 8; ++layer) {
+            Str suffix;
+            make_string(suffix, kSuffixes[layer], inl, host);
+            Str head;
+            Str prefixed;
+            Str full;
+            void* const cut = host.native_string_substring_00469840(&base, &head, 0, 0x14);
+            void* const lhs = host.native_string_prefixed_0043c130(&prefixed, "gui/radarshots/", cut);
+            void* const name = host.native_string_concat_004261a0(lhs, &full, &suffix);
+            const float uv[4] = {0.0f, 0.0f, 1.0f, 1.0f};
+            host.gui_set_state_texture_00ab44b0(icon, layer, name, uv);
+            release(full, host);
+            release(prefixed, host);
+            release(head, host);
+            release(suffix, host);
+        }
+        release(base, host);
+
+        if (!above(ptr(iterator_container, 8), iterator_record)) {
+            host.crt_invalid_parameter_noinfo_00bf6713();
+        }
+        iterator_record += 0x434;
+        ++index;
+    }
+}
+
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 005DB050 BSP_MultiGameLobbyScreen_BindWidgets (vtable 00CF23B0 slot 18)
+// __thiscall(ECX = screen), RET. 0C3Ch bytes, 4159 instructions, EH frame
+// 00C74967 (states up to 84h) noted, not modelled. Every widget name is a
+// NativeString temporary built inline (zero, 0041DD40, memcpy) up to the
+// second map list, which builds its strings through 0041E870 calls; each is
+// passed to FindChild 00AA7E00(name, 1) and released after the result is
+// stored. The listener 00AA6BC0 is the screen+0Ch sub-object.
+//
+// Page +14h: players_Group -> box_players_Text +210h, players_FrameBox +0A4h
+// (byte +78h = 1, listener flag 1); settings_Group (a local) ->
+// game_mode_var_Text +20Ch, setting_template_Group +214h (+34h(0)),
+// settings_FrameBox +8Ch (1), scroll_up2_Icon +98h, scroll_down2_Icon +9Ch,
+// scroll_slider2_FrameBox +90h (flag 0 each), setting_Clipbox +0A0h ->
+// textbox_Group (local) attached to the scroller +30h (00683790) ->
+// Settings_Listbox +94h; the scroller bar 00683380(slider, back - slider
+// heights, up, down) with scroll_back2_Icon's height (stored as a double,
+// FSUBR; rounded to float under 24-bit PC). Map list +1F4h (above). Then
+// unlock_Group -> unlock_FrameBox +20h (1), lock_Icon +24h; noseart_Group ->
+// New_5_Text set to " " (00ABBE50) and "FE.multi_lobby_noseart" ellipsized
+// at 0.13333334f (00CF2318, 00ABB000(.., 1)), noseart_FrameBox +28h (1),
+// noseart_Icon +2Ch; chat_Group +130h -> ChatModeGlobal/USA/IJN_Icon
+// +144h/+148h/+14Ch (0), chat_Clipbox +1B8h -> textbox_Group +134h ->
+// MessageTemplate_Text +1B4h, chat_FrameBox +150h (0), scroll_back_Icon
+// +140h, scroll_up_Icon +138h (0), scroll_down_Icon +13Ch (0),
+// scroll_slider_FrameBox +154h (0), scroller +158h; event_Group +0B0h ->
+// event_Clipbox +12Ch -> textbox_Group +0B4h -> MessageTemplate_Text +128h,
+// event_FrameBox +0C4h (no listener), scroll_back/up/down/slider +0C0h/
+// +0B8h/+0BCh/+0C8h (0 for the last three), scroller +0CCh. Page +18h:
+// Settings_Listbox +228h (0; byte +141h = 1, +12Ch = 0.008333334f
+// (00CEF0B8), +130h = 0.0027777778f (00CEE600), +134h = 0), setting_name_Text
+// +218h and setting_value_Text +21Ch (+34h(0) each), scroll_left/right_Icon
+// +220h/+224h (0). Map list +240h. Last, selected_description_Text +22Ch.
+//
+// Simplified: none of the arithmetic is wider than one float subtraction.
+// No 00BD2F10 draws.
+void cc13_bigB2_lobby_bind_widgets_005db050(void* screen, Cc13BigB2Host& host) {
+    void* const listener = addr(screen, 0x0C);
+
+    void* group = bind_child(screen, ptr(screen, 0x14), "players_Group", -1, host);
+    bind_child(screen, group, "box_players_Text", 0x210, host);
+    bind_child(screen, group, "players_FrameBox", 0xA4, host);
+    at<Byte>(ptr(screen, 0xA4), 0x78) = 1;
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0xA4), listener, 1);
+
+    void* const settings_group = bind_child(screen, ptr(screen, 0x14), "settings_Group", -1, host);
+    bind_child(screen, settings_group, "game_mode_var_Text", 0x20C, host);
+    bind_child(screen, settings_group, "setting_template_Group", 0x214, host);
+    host.widget_vcall_34_set_visible(ptr(screen, 0x214), 0);
+    bind_child(screen, settings_group, "settings_FrameBox", 0x8C, host);
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0x8C), listener, 1);
+    bind_child(screen, settings_group, "scroll_up2_Icon", 0x98, host);
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0x98), listener, 0);
+    bind_child(screen, settings_group, "scroll_down2_Icon", 0x9C, host);
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0x9C), listener, 0);
+    bind_child(screen, settings_group, "scroll_slider2_FrameBox", 0x90, host);
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0x90), listener, 0);
+    bind_child(screen, settings_group, "setting_Clipbox", 0xA0, host);
+    void* const textbox = bind_child(screen, ptr(screen, 0xA0), "textbox_Group", -1, host);
+    host.gui_scroller_attach_content_00683790(addr(screen, 0x30),
+                                              static_cast<std::int32_t>(reinterpret_cast<std::intptr_t>(textbox)));
+    bind_child(screen, textbox, "Settings_Listbox", 0x94, host);
+    {
+        Str name;
+        construct_cstring_inline(name, "scroll_back2_Icon", host);
+        const double back_height =
+            host.widget_get_size_00aa6740(host.widget_find_child_00aa7e00(settings_group, &name, 1))[1];
+        void* const down = ptr(screen, 0x9C);
+        void* const up = ptr(screen, 0x98);
+        const float slider_height = host.widget_get_size_00aa6740(ptr(screen, 0x90))[1];
+        const float length = static_cast<float>(back_height - static_cast<double>(slider_height));
+        host.gui_scroller_attach_scroll_bar_00683380(addr(screen, 0x30), ptr(screen, 0x90), length, up, down);
+        release(name, host);
+    }
+
+    build_map_icon_list(screen, true, settings_group, host);
+
+    group = bind_child(screen, ptr(screen, 0x14), "unlock_Group", -1, host);
+    bind_child(screen, group, "unlock_FrameBox", 0x20, host);
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0x20), listener, 1);
+    bind_child(screen, group, "lock_Icon", 0x24, host);
+
+    group = bind_child(screen, ptr(screen, 0x14), "noseart_Group", -1, host);
+    {
+        void* const text = bind_child(screen, group, "New_5_Text", -1, host);
+        host.gui_text_set_localised_cstring_00abbe50(text, " ", 1);
+        Str label;
+        construct_cstring_inline(label, "FE.multi_lobby_noseart", host);
+        host.gui_text_set_ellipsized_source_00abb000(text, &label, f32_bits(0x3E088889u), 1);  // 00CF2318
+        release(label, host);
+    }
+    bind_child(screen, group, "noseart_FrameBox", 0x28, host);
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0x28), listener, 1);
+    bind_child(screen, group, "noseart_Icon", 0x2C, host);
+
+    bind_child(screen, ptr(screen, 0x14), "chat_Group", 0x130, host);
+    bind_child(screen, ptr(screen, 0x130), "ChatModeGlobal_Icon", 0x144, host);
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0x144), listener, 0);
+    bind_child(screen, ptr(screen, 0x130), "ChatModeUSA_Icon", 0x148, host);
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0x148), listener, 0);
+    bind_child(screen, ptr(screen, 0x130), "ChatModeIJN_Icon", 0x14C, host);
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0x14C), listener, 0);
+    bind_child(screen, ptr(screen, 0x130), "chat_Clipbox", 0x1B8, host);
+    bind_child(screen, ptr(screen, 0x1B8), "textbox_Group", 0x134, host);
+    bind_child(screen, ptr(screen, 0x134), "MessageTemplate_Text", 0x1B4, host);
+    bind_child(screen, ptr(screen, 0x130), "chat_FrameBox", 0x150, host);
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0x150), listener, 0);
+    bind_child(screen, ptr(screen, 0x130), "scroll_back_Icon", 0x140, host);
+    bind_child(screen, ptr(screen, 0x130), "scroll_up_Icon", 0x138, host);
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0x138), listener, 0);
+    bind_child(screen, ptr(screen, 0x130), "scroll_down_Icon", 0x13C, host);
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0x13C), listener, 0);
+    bind_child(screen, ptr(screen, 0x130), "scroll_slider_FrameBox", 0x154, host);
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0x154), listener, 0);
+    wire_scroller(screen, 0x158, 0x134, 0x140, 0x154, 0x138, 0x13C, 0x1B8, host);
+
+    bind_child(screen, ptr(screen, 0x14), "event_Group", 0xB0, host);
+    bind_child(screen, ptr(screen, 0xB0), "event_Clipbox", 0x12C, host);
+    bind_child(screen, ptr(screen, 0x12C), "textbox_Group", 0xB4, host);
+    bind_child(screen, ptr(screen, 0xB4), "MessageTemplate_Text", 0x128, host);
+    bind_child(screen, ptr(screen, 0xB0), "event_FrameBox", 0xC4, host);
+    bind_child(screen, ptr(screen, 0xB0), "scroll_back_Icon", 0xC0, host);
+    bind_child(screen, ptr(screen, 0xB0), "scroll_up_Icon", 0xB8, host);
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0xB8), listener, 0);
+    bind_child(screen, ptr(screen, 0xB0), "scroll_down_Icon", 0xBC, host);
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0xBC), listener, 0);
+    bind_child(screen, ptr(screen, 0xB0), "scroll_slider_FrameBox", 0xC8, host);
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0xC8), listener, 0);
+    wire_scroller(screen, 0xCC, 0xB4, 0xC0, 0xC8, 0xB8, 0xBC, 0x12C, host);
+
+    bind_child(screen, ptr(screen, 0x18), "Settings_Listbox", 0x228, host);
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0x228), listener, 0);
+    at<Byte>(ptr(screen, 0x228), 0x141) = 1;
+    at<float>(ptr(screen, 0x228), 0x12C) = f32_bits(0x3C088889u);  // 00CEF0B8
+    at<float>(ptr(screen, 0x228), 0x130) = f32_bits(0x3B360B61u);  // 00CEE600
+    at<float>(ptr(screen, 0x228), 0x134) = 0.0f;
+    bind_child(screen, ptr(screen, 0x18), "setting_name_Text", 0x218, host);
+    host.widget_vcall_34_set_visible(ptr(screen, 0x218), 0);
+    bind_child(screen, ptr(screen, 0x18), "setting_value_Text", 0x21C, host);
+    host.widget_vcall_34_set_visible(ptr(screen, 0x21C), 0);
+    bind_child(screen, ptr(screen, 0x18), "scroll_left_Icon", 0x220, host);
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0x220), listener, 0);
+    bind_child(screen, ptr(screen, 0x18), "scroll_right_Icon", 0x224, host);
+    host.gui_widget_set_listener_00aa6bc0(ptr(screen, 0x224), listener, 0);
+
+    build_map_icon_list(screen, false, nullptr, host);
+
+    Str name;
+    host.native_string_assign_0041e870(&name, "selected_description_Text");
+    at<void*>(screen, 0x22C) = host.widget_find_child_00aa7e00(ptr(screen, 0x18), &name, 1);
+    release(name, host);
 }
 
 }  // namespace bsp
