@@ -18660,3 +18660,15 @@ a long `#` comment line in an order file is split by the reader into bogus order
 are 00B6DA70 BSP_SceneNode_SetVisibilityFactor(1.0f) on the periscope node and 00C47FF0 (Dyn body +2Ch |= 2, then
 DYN_Body_ClearManifolds) on [+394h]: presentation and the Dyn collision proxy, which the host does not run; not
 bound. LandFort StartFire is presentation; the seg-42 mothership family was not reached.
+**Addendum, c9/c10 (same day).** `c9` = c8's strikes plus one massed action on the Ada3/Zao3/Shima1 remnant (DM1,
+DM2, Gear1-3 rally at (3000, -4000) at 600 s, then sweep it with NH from 900 s), transports parked east (full
+`W2_REVERSAL`) and sent north only from 1700 s (`shifted(CAPTURE_NORTH, 8000)`). `c10` = c9 with Haku3/Haku4 first
+after the Takao group in the strikes and as the top priority of DM1/Gear1-3 to 5000 s.
+- `s55_aj_c9` (20,3) is the **closest run so far: no mission end in 7500 s**. HQ2 captured; Betty1-6, Haku1-4 and
+  Yamato sunk; TroopTrans5 alive at the end. Left: Musashi (FinalTrgs) and the HQ1/CB2 captures.
+- `s55_a_c9` and `s55_a_c10` (reference) both capture HQ2 and then lose the Enterprise to Haku3's guns at 2655-2657
+  s (c10 sinks Haku1/Haku2 first). `s55_aj_c10` was still running at handoff.
+- Next: move the Enterprise away from the Haku3/Haku4 track once the reinforcements spawn (about phase 2 + 900 s),
+  or escort it with DM1/Gear1-3 instead of sending them south; add Musashi to the Loui/NH sweeps; give TT5 or the
+  surviving transport a timed HQ1 then CB2 route behind NH's HQ1 shelling. Build with `python local\s55_osmk.py c11`
+  after adding the variant; the helpers (`air_mass`, `escort_sweep`, `recalls`, `shifted`, `turns`) are in that file.
