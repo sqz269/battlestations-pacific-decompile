@@ -2043,6 +2043,7 @@ struct GameUnitSlot {
     // with its own copy of the +7Ch clock; the finder keeps +50h separately.
     std::vector<std::size_t> nb_near_30;
     float nb_clock_30{4.5f};
+    bool nb_clocks_seeded{false};   // kNeighbourClockDrawsBound: 007E1E20's draws taken
     // Counters (diagnostic census only).
     int va_plane_ticks{0};
     int va_ship_ticks{0};
@@ -6622,7 +6623,37 @@ struct GameUnitsHost::Impl {
     // whose carried bag Equipment is 0 answers one round, as the release path's
     // pool fallback already seeds it. False: it answers none (authored -1), so
     // 009F8160 finds such a squadron spent before it has dropped anything.
-    static constexpr bool kRackConstructorRoundBound = false;
+    // ON: OCEAN_WAVE_FIELD 46.1 (ESMP08 dive-bomb releases 1 -> 100, every
+    // +3Dh end after the squadron's drops; USN04 gameplay identical).
+    static constexpr bool kRackConstructorRoundBound = true;
+    // Packet p13_neighbour_clock_draws (docs/OCEAN_WAVE_FIELD.md 47). The unit+C50h
+    // constructor 007E1E20 starts its three clocks with stream-1 draws (00BD2F10,
+    // ECX = 1, at 007E1F94 / 007E1FB9 / 007E1FE1): +7Ch = U(0, 3) + 3,
+    // +84h = U(0, 2) + 2, +80h = U(0, 1) + 1 (the periods +88h, +8Ch, +90h added
+    // by FADD). True: each plane's clocks take those draws from its keyed stream
+    // (`name#nb7c` / `#nb84` / `#nb80`) at its first neighbour use, and every
+    // host copy of +7Ch takes the one value. False: the midpoints 4.5 / 3.0 / 1.5.
+    // LABELLED: seeded at first use, not at 007D621F's construction; the sum is
+    // taken in float, the image's in x87 before the FSTP.
+    static constexpr bool kNeighbourClockDrawsBound = false;
+    void nb_seed_clocks(GameUnitSlot& u) {
+        if constexpr (kNeighbourClockDrawsBound) {
+            if (u.nb_clocks_seeded) return;
+            u.nb_clocks_seeded = true;
+            const float c7c = release_altitude_draw_00bd2f10(u.row.name + "#nb7c", 0.0f, 3.0f) + 3.0f;
+            const float c84 = release_altitude_draw_00bd2f10(u.row.name + "#nb84", 0.0f, 2.0f) + 2.0f;
+            const float c80 = release_altitude_draw_00bd2f10(u.row.name + "#nb80", 0.0f, 1.0f) + 1.0f;
+            u.nb_clock_30 = c7c;
+            u.nb_clock_70 = c7c;
+            u.nb_clock_7c = c7c;
+            u.nb_clock_84 = c84;
+            u.nb_clock_80 = c80;
+            ++nb_clock_seeds;
+        } else {
+            (void)u;
+        }
+    }
+    unsigned long long nb_clock_seeds{0};
     // Packet cc9_rack_bullet_kind (SQUADRON_LAND_TASK 5eq, GUNNERY 138). True:
     // 007C0D90 decides per rack from the rack's projectile descriptor (a level
     // bomber 10h fires its plain-bomb racks together; 2Bh/2Ch/33h, or any rack
@@ -10845,6 +10876,7 @@ void GameUnitsHost::Impl::vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt) 
         return o.state != nullptr && o.state->active != 0 && o.scene_destroyed_005e == 0 &&
                o.scene_pending_destroy_0060 == 0;
     };
+    nb_seed_clocks(u);
     u.nb_clock_30 += dt;
     if (u.nb_clock_30 >= 3.0f) {
         const double lim = static_cast<double>(radii.near_any) * radii.near_any;
@@ -11773,6 +11805,7 @@ bool GameUnitsHost::Impl::friendly_in_line_007b96d0(GameUnitSlot& u, float dt) {
         return o.state != nullptr && o.state->active != 0 && o.scene_destroyed_005e == 0 &&
                o.scene_pending_destroy_0060 == 0;
     };
+    nb_seed_clocks(u);
     u.nb_clock_70 += dt;
     if (u.nb_clock_70 >= 3.0f) {                                     // 007E204D
         // 007E11D0: drop +70h members at or beyond the friendly radius, then
@@ -22297,6 +22330,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     const GameUnitSlot* df_finder_scan_007e2090(
                             const bsp::PlaneFinderParams& fp, float threshold,
                             const bsp::PlaneSquadronHostRecord* squadron, float noise_mid) {
+                        owner_.nb_seed_clocks(unit_);
                         const GameUnitSlot* found = nullptr;
                         if (unit_.nb_found_plus_one != 0 &&
                             unit_.nb_found_plus_one - 1 < owner_.slots.size()) {
@@ -22391,6 +22425,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     }
 
                     const GameUnitSlot* df_finder_007e2090(float dt, bsp::DogfightGunInputs& gi) {
+                        owner_.nb_seed_clocks(unit_);
                         unit_.nb_clock_7c += dt;
                         unit_.nb_clock_84 += dt;
                         const bsp::PlaneNeighbourRadii r = bsp::plane_neighbour_radii_007e11d0(3.0f);
@@ -40221,6 +40256,11 @@ void GameUnitsHost::report() {
                             "ship_ticks=%lld bands=%lld throttle=%lld dive_ticks=%lld "
                             "(007DF4F0, packet cc9_pilot_vehicle_terrain_avoidance)",
                             vp, vs, vb, vt, vd);
+                        if constexpr (Impl::kNeighbourClockDrawsBound) {
+                            host.log.notef("summary mission neighbour clock draws seeded=%llu "
+                                "(007E1E20 007E1F94/007E1FB9/007E1FE1, packet "
+                                "p13_neighbour_clock_draws)", host.nb_clock_seeds);
+                        }
                         if constexpr (Impl::kPlayerRoleBookkeepingBound) {
                             if (host.helm_option_on) {
                                 host.log.notef("summary mission scripted helm throttle=%.3f "
