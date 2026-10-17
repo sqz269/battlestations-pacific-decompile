@@ -6622,7 +6622,8 @@ struct GameUnitsHost::Impl {
     // host copy of +7Ch takes the one value. False: the midpoints 4.5 / 3.0 / 1.5.
     // LABELLED: seeded at first use, not at 007D621F's construction; the sum is
     // taken in float, the image's in x87 before the FSTP.
-    static constexpr bool kNeighbourClockDrawsBound = false;
+    // ON: OCEAN_WAVE_FIELD 47.1 (ESMP08 / USN04 move from the first fighter contact).
+    static constexpr bool kNeighbourClockDrawsBound = true;
     void nb_seed_clocks(GameUnitSlot& u) {
         if constexpr (kNeighbourClockDrawsBound) {
             if (u.nb_clocks_seeded) return;
