@@ -112,8 +112,12 @@ inline constexpr bool kLandingShipStartLandingBound = true;
 inline constexpr bool kLandingCraftLaunchBound = true;
 
 void GameObjectiveSets::reset() noexcept {
-    for (std::size_t i = 0; i < kSlotCount; ++i) slots[i].clear();
+    for (std::size_t i = 0; i < kSlotCount; ++i) {
+        slots[i].clear();
+        members[i].clear();
+    }
     adds = unit_adds = unit_removes = rejected = 0;
+    hidden_member_skips = member_holds = 0;
 }
 
 GameObjectiveSets::Objective* GameObjectiveSets::add_objective(int slot,
@@ -149,8 +153,23 @@ GameObjectiveSets::Objective* GameObjectiveSets::add_objective(int slot,
 }
 
 bool GameObjectiveSets::add_unit(int slot, const std::string& name, std::size_t unit) {
+    const unsigned long long before = adds;
     Objective* o = add_objective(slot, name);
     if (o == nullptr) return false;
+    // 008DF36A-008DF3D7, packet cc13-fix3: after the push, the unit enters the
+    // set's +18h tree (008DE6A0, ECX = set+18h) unless the objective is hidden,
+    // +18h == 2 with +1Ch != 1 (008DF374 JNZ 008DF3DC). The insert runs for a
+    // unit the objective already lists too (008DEE50 has no duplicate test).
+    // An objective made just now by add_objective is one 008DF2FE's walk would
+    // not have found (it returns at 008DF3DC with no add), so no insert.
+    if (adds == before) {
+        if (o->kind == 2 && o->state != 1) {
+            ++hidden_member_skips;
+        } else {
+            std::vector<std::size_t>& tree = members[static_cast<std::size_t>(slot)];
+            if (std::find(tree.begin(), tree.end(), unit) == tree.end()) tree.push_back(unit);
+        }
+    }
     if (std::find(o->units.begin(), o->units.end(), unit) != o->units.end()) return false;
     o->units.push_back(unit);
     ++unit_adds;
@@ -168,10 +187,36 @@ bool GameObjectiveSets::remove_unit(int slot, const std::string& name, std::size
         if (it != o.units.end()) {
             o.units.erase(it);
             ++unit_removes;
+            erase_member_unless_held(slot, name, unit);
             return true;
         }
     }
+    // 008DF4FD runs after the walk whether or not a list held the unit.
+    erase_member_unless_held(slot, name, unit);
     return false;
+}
+
+void GameObjectiveSets::erase_member_unless_held(int slot, const std::string& name,
+    std::size_t unit) {
+    for (const Objective& o : slots[static_cast<std::size_t>(slot)]) {
+        // 008DF452-008DF48A: a name equal under 00435C40's rule (length, then
+        // _stricmp) is the erased objective itself and is not asked.
+        if (o.name.size() == name.size() && _stricmp(o.name.c_str(), name.c_str()) == 0) {
+            continue;
+        }
+        // 008DF4B2 +1Ch == 0; 008DF4C5/008DF4CB the hidden test, which with
+        // +1Ch == 0 leaves kind != 2; 008DF4E3 008DC4A0 the list test.
+        if (o.state != 0) continue;
+        if (o.kind == 2 && o.state != 1) continue;
+        if (std::find(o.units.begin(), o.units.end(), unit) != o.units.end()) {
+            ++member_holds;                               // 008DF502 JNZ 008DF5AD
+            return;
+        }
+    }
+    // 008DF532 008DEB40(set+18h, &unit). The observer drop (008DF521 006952A0)
+    // and the marker drop (008DF581 006DE3F0, an unbound marker) are not hosted.
+    std::vector<std::size_t>& tree = members[static_cast<std::size_t>(slot)];
+    tree.erase(std::remove(tree.begin(), tree.end(), unit), tree.end());
 }
 
 bool GameObjectiveSets::set_status(int slot, const std::string& name, int status) {
@@ -182,9 +227,9 @@ bool GameObjectiveSets::set_status(int slot, const std::string& name, int status
         }
         // 008E216F 008E1D30, the announcement: sound only, not modelled here.
         // 008E2177 008DFE50: every live unit of the objective goes to 008DFC00.
-        // SUBSTITUTION, labelled: the walk's early return for a hidden
-        // objective (+18h == 2) is not applied, because this host does not
-        // record the kind; on the measured missions no objective holds a unit.
+        // The walk's early return for a hidden objective (+18h == 2) applies
+        // under kObjectiveKindBound, below; OFF it is skipped because the kind
+        // is not recorded.
         if (kObjectiveKindBound && o.kind == 2) {
             // Packet cc9_objective_kind: 008DFE50 returns at 008DFE6E for a
             // hidden objective, so its units stay listed.
@@ -195,7 +240,11 @@ bool GameObjectiveSets::set_status(int slot, const std::string& name, int status
         }
         status_unit_drops += o.units.size();
         unit_removes += o.units.size();
+        // Packet cc13-fix3: each unit goes through 008DFC00 -> 008DF400 under
+        // this objective's own name before the state store at 008E2181.
+        const std::vector<std::size_t> dropped = o.units;
         o.units.clear();
+        for (const std::size_t unit : dropped) erase_member_unless_held(slot, name, unit);
         o.state = status;                                 // 008E2181
         ++status_sets;
         return true;
@@ -207,9 +256,13 @@ bool GameObjectiveSets::set_status(int slot, const std::string& name, int status
 std::vector<std::size_t> GameObjectiveSets::units_in_slot(int slot) const {
     std::vector<std::size_t> out;
     if (slot < 0 || static_cast<std::size_t>(slot) >= kSlotCount) return out;
-    for (const Objective& o : slots[static_cast<std::size_t>(slot)]) {
-        for (const std::size_t unit : o.units) {
-            if (std::find(out.begin(), out.end(), unit) == out.end()) out.push_back(unit);
+    if constexpr (kObjectiveSetHiddenMembershipBound) {
+        out = members[static_cast<std::size_t>(slot)];   // set+18h, packet cc13-fix3
+    } else {
+        for (const Objective& o : slots[static_cast<std::size_t>(slot)]) {
+            for (const std::size_t unit : o.units) {
+                if (std::find(out.begin(), out.end(), unit) == out.end()) out.push_back(unit);
+            }
         }
     }
     return out;
@@ -6746,6 +6799,14 @@ void GameAiCoordinatorHost::report() {
         host.log.notef("summary mission objective kind bound=%d hidden_objectives=%d "
             "hidden_status_holds=%llu (008DBF40 -> +18h, 008DFE6E, packet cc9_objective_kind)",
             kObjectiveKindBound ? 1 : 0, hidden, sets.hidden_status_holds);
+        std::size_t members = 0;
+        for (std::size_t k = 0; k < GameObjectiveSets::kSlotCount; ++k) {
+            members += sets.members[k].size();
+        }
+        host.log.notef("summary mission objective set membership bound=%d members=%zu "
+            "hidden_skips=%llu holds=%llu (set+18h; 008DF374, 008DF4FD; packet cc13-fix3)",
+            kObjectiveSetHiddenMembershipBound ? 1 : 0, members,
+            sets.hidden_member_skips, sets.member_holds);
     }
     host.log.notef("summary mission ai target weight queries=%llu objective_hits=%llu "
         "fort_targets=%llu non_command=%llu (00A0F810's four multipliers: 10.0 objective, "

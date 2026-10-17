@@ -174,6 +174,19 @@ inline constexpr bool kAiTargetGroupDestroyedIdleBound = true;
 
 inline constexpr bool kObjectiveKindBound = true;  // ON: identity pairs (docs/MISSION_OBJECTIVES.md 9.5)
 
+// Packet cc13-fix3 (docs/CC13_FIX34.md). Every 008DDF90 reader (00922C80's set
+// arm, 00A0F810, 00A2C450, 00A2DEF0, the HUD grey arrow) and 00A26210's walk
+// read the set's +18h tree, not the objectives' +20h unit lists. 008DF2B0
+// inserts into that tree (008DF3D7 008DE6A0, ECX = set+18h) only when the name
+// walk found the objective and it is not hidden: 008DF36A CMP [obj+18h],2 /
+// 008DF370 CMP [obj+1Ch],1 / 008DF374 JNZ past the insert. 008DF400 erases the
+// unit (008DF532 008DEB40) unless another-named objective with +1Ch == 0 and
+// not hidden still lists it (008DF4B2..008DF4E8 over 008DC4A0). Nothing
+// re-inserts when a hidden objective's state later changes (008DE6A0's only
+// other caller is the network sync 008DF000). True: units_in_slot answers that
+// tree. False: every unit any objective of the slot lists, the earlier host rule.
+inline constexpr bool kObjectiveSetHiddenMembershipBound = false;
+
 // game+21A4h..+21C0h: the eight per-player-slot objective sets 00A2C450 walks.
 // The world builds them at 004DF917 and only the mission Lua fills them, through
 // 008CD440 Objectives_Add, 008CDD60 Objectives_AddUnit and 008CE510
@@ -197,6 +210,12 @@ struct GameObjectiveSets {
         int state{0};
     };
     std::vector<Objective> slots[kSlotCount];
+    // set+18h, the set-wide unit tree 008DDF90 finds in (008DDF00). Kept in
+    // insertion order (the image's is a pointer-keyed tree). Maintained always;
+    // read only while kObjectiveSetHiddenMembershipBound.
+    std::vector<std::size_t> members[kSlotCount];
+    unsigned long long hidden_member_skips{0};  // 008DF374 jumped past 008DF3D7
+    unsigned long long member_holds{0};         // 008DF4FD found another holder
 
     unsigned long long adds{0};          // 008E1F80 reached
     unsigned long long unit_adds{0};     // 008DF2B0 pushed a unit
@@ -218,10 +237,16 @@ struct GameObjectiveSets {
     // (008E20F6's length-then-_stricmp rule) takes the state after 008DFE50
     // has handed its units to the removal 008DFC00. Returns false on no match.
     bool set_status(int slot, const std::string& name, int status);
+    // 008DF4A5..008DF532: drop `unit` from members[slot] unless an objective
+    // whose name differs from `name` (00435C40's rule) is active (+1Ch == 0),
+    // not hidden, and lists it (008DC4A0).
+    void erase_member_unless_held(int slot, const std::string& name, std::size_t unit);
     unsigned long long status_sets{0};
     unsigned long long status_misses{0};
     unsigned long long status_unit_drops{0};
-    // Every unit of every objective of this slot: what 00A2C450 walks.
+    // What 00A2C450 (through 008DDF90) asks: the set's +18h tree (members[slot])
+    // while kObjectiveSetHiddenMembershipBound, otherwise every unit of every
+    // objective of this slot.
     std::vector<std::size_t> units_in_slot(int slot) const;
     std::size_t total_units() const noexcept;
 };
