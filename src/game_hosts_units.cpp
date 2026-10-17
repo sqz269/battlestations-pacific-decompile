@@ -2708,6 +2708,7 @@ struct GameUnitsHost::Impl {
     }
     unsigned long long retest_dead_targets{0}, retest_ends{0};   // kSquadronDeadTargetRetestBound
     unsigned long long attack_task_target_retires{0};   // kAttackTaskTargetRetireBound
+    unsigned long long touchdown_human_pilot{0};   // 007CB75F census (SQUADRON_LAND_TASK 5hw.4)
     // Packet cc9_ship_exit_zone (docs/SHIP_AI_OPEN_ITEMS.md 232; cc13-ver7 Finding 1,
     // docs/CC13_VER_7.md). 00826D70 is vtable slot +1D8h of every ship class, which
     // 00953CC0 (called at 00825FAC, the head of the ship motion tick) runs at 00953D98
@@ -6280,7 +6281,7 @@ struct GameUnitsHost::Impl {
     // one), and a changed target retires it and installs a fresh one. False: the
     // arms return early on a cleared target (frozen) and keep the old task on a new
     // target (dive bomb, torpedo).
-    static constexpr bool kAttackTaskTargetRetireBound = false;
+    static constexpr bool kAttackTaskTargetRetireBound = true;   // ON: SQUADRON_LAND_TASK 5hw.3
     // Packet cc9_l63_lb_stick_delay (SQUADRON_LAND_TASK 5hv.3). 007C1FB0's tail: the
     // stick time is the longest rack's 006E4170 span plus BombDelay (class+1F4h) x
     // max(0, n - 1) over the n kind-25h racks. True: the term is added. False: the
@@ -13967,6 +13968,17 @@ bool GameUnitsHost::Impl::plane_touchdown_007cc440(GameUnitSlot& p) {
         static_cast<double>(l[0]), static_cast<double>(l[2]),
         static_cast<double>(airborne), p.plane_landed_904 ? 1 : 0);
     record("Plane::touchdown_007cb5f0", 0x007cb5f0u);
+    // 007CB75F-007CB778: when the pilot role's holder (+1B0h) is not 8 and
+    // 00927F10 says a human holds that party slot, the image calls 007C3EA0
+    // (land command 00E08FA0 to the squadron, 0099A600, 0077C470(2, 0), message
+    // 57h). CENSUS ONLY: this host gives role 1 to the local player only in the
+    // scripted helm transfer, so no plane reaches it (SQUADRON_LAND_TASK 5hw.4).
+    if (p.current_roles_01ac[1] != bsp::kUnitRoleTableFill
+            && p.current_roles_01ac[1] == kLocalPlayerSlot) {
+        ++touchdown_human_pilot;
+        log.notef("plane touchdown: %s pilot role held by the local player: 007C3EA0 not carried "
+            "(007CB778 census)", p.row.name.c_str());
+    }
     return true;
 }
 
@@ -38438,6 +38450,8 @@ void GameUnitsHost::report() {
             host.log.notef("summary attack task target retire bound=%d retires=%llu (009C8060 / "
                 "009D3EF0 / 009AE140, packet cc9_l64_attack_task_retire)",
                 GameUnitsHost::Impl::kAttackTaskTargetRetireBound ? 1 : 0, host.attack_task_target_retires);
+            host.log.notef("summary plane touchdown human pilot census=%llu (007CB778 -> 007C3EA0, "
+                "not carried)", host.touchdown_human_pilot);
             for (const auto& e : host.spent_rtb) {
                 if (!e.second.latch_3c) continue;
                 host.log.notef("  spent %-24s command=%08X latched=%.2f ended=%.2f issued=%.2f "
