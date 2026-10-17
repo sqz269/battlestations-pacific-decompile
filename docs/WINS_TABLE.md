@@ -752,3 +752,50 @@ mechanism is in the cd761bb52 section above).
 - **USN15 `usn15_g50_u15_nn` is not the reference row** (cc9-gunnery50, GUNNERY_OPEN_ITEMS 269, exe f4d7658e6):
   EndMission and guard at 20,3 3229.07 s, 20,5 3289.13 s, 20,7 3068.92 s, but the reference seed and 20,11 do not
   win (Fuso, torpedo-only, survives); variant nm wins ref / 20,3 / 20,7 but not 20,5. `s45_u15_l2` stays the row.
+- **Re-time on fe9811ba8** (cc9-lua65, 2026-10-17; main after physics14's kStockReturnDestroyBytesBound,
+  kRotateAboutAxisImageTailBound, kRackPositiveBagRoundBound and kFreeFlightStallForceBound flips). Export
+  `cc9-lua52\local\l65_cs_off` (6BABC70AC0A9: 1ebb5f062, fe9811ba8 plus this lane's switches committed OFF, gameplay
+  identical to main), reference env, `--stop-after-end 40`; logs `cc9-lua52\local\l65rt_<row>_<ref|j3>.log` with
+  manifests, summary `local\l65_rt_sum.py`, queue `local\l65_retime.ps1`. "Was" is the 654daf00e re-time above.
+
+  | Row (plan) | frames | reference | 20,3 | was (ref / 20,3) |
+  |---|---|---|---|---|
+  | USN01 `l64_u1_f` | 26000 | **no end** | completed 420.02 s | 410.02 / 395.03 |
+  | USN01 **`l65_u1_g`** (new) | 26000 | completed 435.02 s | completed 390.03 s | - |
+  | JM08 `l64_j8_e` | 110000 | **failed 1988.86 s** (HQ) | **no end** | no end / no end |
+  | JM08 **`l65_j8_p2`** (new) | 110000 | completed 2688.20 s | **no end** | - |
+  | LOMP06 `l64_l6_a` | 16000 | completed 345.84 s | completed 354.84 s | identical |
+  | USN02 `s36_u2_p7` | 16000 | completed 200.06 s | completed 200.06 s | identical |
+  | LOMP10 `p3_l10_b` | 36000 | completed 1073.47 s | completed 1293.69 s | 1048.45 / 1007.43 |
+  | USN12 `g45_u12_e7` | 36000 | completed 1680.51 s | completed 1670.50 s | no end / 1675.51 |
+  | BSM01 `p6_b1_a` | 40000 | **no end** | **no end** | EndMission 791.93 / loss |
+  | PRCP01 `p9_p01_k` | 30000 | completed 540.39 s | **no end** | 796.28 / failed 1111.41 |
+  | JM06 `p12_j6_c1` | 120000 | completed 1967.79 s | completed 2256.08 s | identical |
+  | IJN08 `p10_i08_z` | 100000 | completed 3006.81 s | completed 3026.83 s | 3892.67 / failed 1170.02 |
+  | IJN18 `s46_i18_a` | 64000 | EndMission 2152.97 s, guard | EndMission 2306.12 s, guard | 2002.83 / 2356.17 |
+  | BSM09 (no orders) | 36000 | **failed 920.90 s** (Game Over) | **failed 917.90 s** | EndMission 911.90 / 905.90 |
+  | BSM09 **`l65_b9_c`** (new) | 36000 | EndMission 483.01 s, guard | EndMission 360.04 s, guard | - |
+  | ESMP08 `p12_e8_rb` | 140000 | completed 3876.81 s | completed 3634.62 s | 5808.36 / no end |
+
+  Every completion and every winning EndMission logged the guard. New plans and losses:
+  - **USN01 `usn01_l65_u1_g`**: f with ConSBD1 on Convoy1 from 3301. The rack flip makes a dive spend both bombs
+    (`val bomb request ... rounds=2`), so f's ConSBD1 emptied its racks on Convoy5 and had nothing left for Convoy1,
+    which survived (no end).
+  - **BSM09 `bsm09_l65_b9_c`**: with no orders the controlled Yorktown steams at heading 142 into the Japanese
+    screen and Asagiri's torpedoes sink it at 872.26 s (Game Over). c launches Yorktown's SBDs (113) and TBDs (108) at
+    Zuikaku, then Shokaku, every 600 frames from 300 and turns Yorktown back at frame 14000; a carrier at or under
+    the script's hplimit fires RETREATING and EndMission (bsm_09_battle_of_the_coral_sea.lua 531-560, mtime
+    2024-07-13), as in the old no-orders win. Variant d (no turn-back) ends at the same 483.01 s on the reference seed.
+  - **JM08 `jm08_l65_j8_p2`**: e with the class 152/166/167 airfield launch groups from frame 12000 putting LST 01,
+    LST 02, LST 03, LSM 02 first (`local\l65_j8_prio.py`), and e's lines in frames [20090, 44000) copied 5320 frames
+    later (`local\l65_j8_multi.py`). Phase 1 (every landing ship dead, then PreparePhase2 -> luaBomberWave1) ends at
+    1566.60 s with e on the reference seed (983 s on 654daf00e), so e's frame-scheduled intercepts missed the B-17 #2
+    wave and it destroyed Headquarter 01. The LST priority brings phase 1 to 1249.74 s (wave at frame 25410), and the
+    copies move the intercepts there. 20,3 still never ends:
+    Fubuki and Isokaze die at 666 / 707 s, LST 01, LST 02 and LSM 02 survive, and the bombers sent at LST 01 put no
+    bomb on it. Variants that lost the reference seed: s2 (copies at +11660 only), p3 (copies at +2660..+10640),
+    p4 (p3 plus Mavis 02/03 at the landing ships from frame 6000; both Mavis die at 523 s).
+  - **BSM01** (both seeds, same in `l65rt_b1t_ref` built from this lane's tree): HenryPT's depth charge detonates
+    at 413.22 s by depth at (1465, -3007) and never hits MiniSub, whose hit listener (luaMiniSubHit) is the scripted
+    kill; on 654daf00e the charge hit at 461 s. physics-lane plan: routed to the lead.
+  - **PRCP01 20,3**: no end at 30000 frames (physics-lane plan `p9_p01_k`): routed to the lead.

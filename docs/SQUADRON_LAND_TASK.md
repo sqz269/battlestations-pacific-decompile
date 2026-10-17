@@ -17675,7 +17675,7 @@ change is these two switches; USNOS calls no EntityTurnToEntity, so it is this o
   (1253.70 s) instead of to Zao at 260 m; Midway_sqn36|.-II is new. Nothing else moved.
 
 Mechanism as predicted; flipped ON. `kTurnToEntityMemberPlaneArmBound` stays OFF: no row reaches the squadron arm now
-(BSM01 stalls before the Jap squadron spawns, 5ib), so no run has shown which index a squadron argument resolves to.
+(BSM01 stalls before the Jap squadron spawns, 5id; `l65rt_b1mmon_ref` with the switch ON is identical to `l65rt_b1t_ref` and logs only the two ship-arm calls), so no run has shown which index a squadron argument resolves to.
 
 ## 5ib. kSquadronMemberOrdnanceBound against cc13's 007ED790..007EDA10 loops (cc9-lua65, 2026-10-17)
 

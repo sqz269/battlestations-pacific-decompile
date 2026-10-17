@@ -653,35 +653,52 @@ PlaneFollowGeometry plane_follow_geometry_009bfee0(
     // water while its leader flies, and it bounds whatever the substitutions
     // above did to the steer Y.
     if (in.band_inputs_available) {
-        const float floor_candidate = in.leader_pos[1] + in.band_floor_offset;
-        float floor_v =
-            (floor_candidate <= in.state_88) ? floor_candidate : in.state_88;
-        if (in.band_floor_image) {
-            // 009C16E5-009C1725: a = float(block+4 + leaderY), b = state+88h;
-            // FCOMIP a,b; JBE -> a, so b only when a > b ordered.
-            floor_v = (floor_candidate > in.state_88) ? in.state_88 : floor_candidate;
-            // 009C1734-009C175A: c = float(leaderY - 120.0 double); FCOMIP c,L;
-            // JBE keeps L, so c only when c > L ordered.  No branch skips it.
-            const float lower = F(in.leader_pos[1] - kBandHalfHeight);
-            if (lower > floor_v) floor_v = lower;
-        } else if (in.run_phase_a) {
-            // 009C1734-009C175A: and never below leaderY - 120.
-            const float lower = F(in.leader_pos[1] - kBandHalfHeight);
-            if (!(lower <= floor_v)) floor_v = lower;
-        }
-        const float ceil_candidate = static_cast<float>(
-            static_cast<double>(in.leader_pos[1]) + kBandHalfHeight);
-        const float ceil_v = (in.band_ceiling_210 <= ceil_candidate)
-                                 ? in.band_ceiling_210
-                                 : ceil_candidate;
-        out.station_y = clamp_into_band_009c17c6(out.station_y, floor_v, ceil_v);
+        const PlaneFollowBand band = plane_follow_band_009c16d2(
+            in.leader_pos[1], in.band_floor_offset, in.state_88,
+            in.band_ceiling_210, in.band_floor_image, in.run_phase_a);
+        out.station_y = plane_follow_band_clamp_009c17c6(out.station_y, band);
         out.steer_point[1] =
-            clamp_into_band_009c17c6(out.steer_point[1], floor_v, ceil_v);
+            plane_follow_band_clamp_009c17c6(out.steer_point[1], band);
         out.band_applied = true;
     }
 
     out.produced = true;
     return out;
+}
+
+PlaneFollowBand plane_follow_band_009c16d2(float leader_y, float floor_offset,
+                                           float state_88, float ceiling_210,
+                                           bool floor_image,
+                                           bool run_phase_a) noexcept {
+    PlaneFollowBand band;
+    const float floor_candidate = leader_y + floor_offset;
+    float floor_v = (floor_candidate <= state_88) ? floor_candidate : state_88;
+    if (floor_image) {
+        // 009C16E5-009C1725: a = float(block+4 + leaderY), b = state+88h;
+        // FCOMIP a,b; JBE -> a, so b only when a > b ordered.
+        floor_v = (floor_candidate > state_88) ? state_88 : floor_candidate;
+        // 009C1734-009C175A: c = float(leaderY - 120.0 double); FCOMIP c,L;
+        // JBE keeps L, so c only when c > L ordered.  No branch skips it.
+        const float lower = F(leader_y - kBandHalfHeight);
+        if (lower > floor_v) floor_v = lower;
+    } else if (run_phase_a) {
+        // 009C1734-009C175A: and never below leaderY - 120.
+        const float lower = F(leader_y - kBandHalfHeight);
+        if (!(lower <= floor_v)) floor_v = lower;
+    }
+    // 009C1779-009C17B9: FCOMIP [210h],c; JBE -> [210h], so c only when
+    // [210h] > c ordered.  This code takes c on an unordered pair instead (a
+    // NaN leader Y); kept as it was, the geometry's OFF behaviour.
+    const float ceil_candidate = static_cast<float>(
+        static_cast<double>(leader_y) + kBandHalfHeight);
+    band.floor = floor_v;
+    band.ceiling = (ceiling_210 <= ceil_candidate) ? ceiling_210 : ceil_candidate;
+    return band;
+}
+
+float plane_follow_band_clamp_009c17c6(float v,
+                                       const PlaneFollowBand& band) noexcept {
+    return clamp_into_band_009c17c6(v, band.floor, band.ceiling);
 }
 
 }  // namespace bsp
