@@ -5919,7 +5919,7 @@ struct GameUnitsHost::Impl {
     // Packet cc9_p12_land_target_gone (docs/OCEAN_WAVE_FIELD.md section 41): 009F8160's
     // land arm (009F8295-009F82D5). False: a squadron whose land target sank keeps
     // its land command and circles the wreck.
-    static constexpr bool kSquadronLandTargetGoneBound = false;
+    static constexpr bool kSquadronLandTargetGoneBound = true;  // ON: mechanism (docs/OCEAN_WAVE_FIELD.md 41.1)
     // Packet cc9_landing_follower_spacing (docs/SQUADRON_LAND_TASK.md section 5r):
     // the landed byte plane+904h in the sequencer. 006C7960's first arm (mode 4,
     // +4h = -1.0 (00D7A260), +8h = 1.0, before the airborne test), 006C3B10's

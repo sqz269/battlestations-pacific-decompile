@@ -1554,3 +1554,21 @@ while it is inbound (Zuikaku about 1400 s, Zuiho later); their B5 re-resolves to
 ... -> land at site Chitose|Chiyoda|Zuiho`), so those planes land there instead of dying in the wreck's circle;
 ESMP08 gameplay moves from the first sinking of a carrier with inbound planes. USN04 45000: no carrier sinks with
 planes inbound, gameplay identical.
+
+### 41.1 The pair and the verdict: ON
+
+ON: an export of 943359208 with the switch flipped (`local\p12_lg`, exe of 2026-10-16 17:53); OFF: that commit's
+build (`local\p12_offb2`). Reference env, no jitter; logs `local\p12lg2_<on|off>_e8.log` (ESMP08 `p11_e8_rb.txt`,
+60000 frames) and `local\p12lg2_on_u4.log` against `local\p12lg_off_u4.log` (USN04 45000, b1c9e2fdd's OFF build, the
+same gameplay code); diff `local\p12lg2_diff_e8.txt`.
+
+| Row | pair_diff | Note |
+| --- | --- | --- |
+| USN04 45000 | 1, gameplay identical | no latch |
+| ESMP08 60000 (rb) | 3, moved | one latch: `land target gone: squadron "Zuikaku_sqn36" ... site Zuikaku latched +3Ch at 1396.94 s` |
+
+Mechanism, as predicted: Zuikaku dies at 1396.94 s with Zuikaku_sqn36 (sent home by the B5 at 1143.24 s) in its
+landing pass. ON latches at that instant; the break-off and the B5 run in the same tick, and 007F16D0 resolves `land at
+site Zuiho` (3 of 4 sites pass, the sunk home excluded); the land task is installed toward Zuiho and the squadron joins
+Zuiho's queue. OFF flies on into Zuikaku's final and dies over the wreck at 1434.37 s; ON lives to 1627.96 s. The
+rest of the run moves from there (5 more deaths, 6 more units, dive releases 127 -> 128). **Flipped ON.**
