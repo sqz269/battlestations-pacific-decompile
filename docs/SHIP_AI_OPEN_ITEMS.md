@@ -18198,3 +18198,19 @@ USNOS a7 30000 frames.
 | default mode, STREAMS=0 (`s53_w0d_os` / `s53_w1d_os`) | 4105 / 286 | 3 | deaths from 11.4 s (175 -> 160) |
 OFF counts 4119 (default) and 3999 (reference) eligible ticks. The default-mode row moves before the sink-draw row's
 32.7 s, as predicted for a pick that starts with a submerged Gato, and the reference mode is inert. Flipped ON.
+
+**Item 3 remainder, the other section-254 seg-61 sites.** 00933BB0 / 00933DA0 are now hosted (258, 260). 0092E5B0 is
+multiplayer only; 0092F930, 0093A2C0 / 0093AA00, 0093B920 and 0093BD80 draw nothing and are hosted or header-modelled.
+00935D30 (breakup) is the gunnery lane's (unit_death_sink.hpp). Left: **00935540**, the sinking-wreck debris, recorded
+only (`UnitInstance::spawn_wake`). Read for binding, not bound:
+- Gate (00825A59..00825B37): the dead byte +5Dh (the host's `state->simulate`, set at 0092639B, so the host's step 8 is
+  gated correctly: 173686 `wake_setting` calls on USNOS a7, dead units only), then ShipGlobals DebrisEnabled
+  (settings+680h; true in this installation's shipglobals.lua, 2024-07-13), the one-shot [ShipSystems+88h], and both
+  hull-end heights below -5.0 [00CFBC84]. The host's `wake_enabled()` answers false, so the arm never runs.
+- Body: ECX = unit+C4h; kinds 0Eh and 8 (submarines) spawn nothing. count = _ftol(settings+684h (0.3) * _ftol(arg4)),
+  arg4 the third of the three extents max - min of 00C31F90(body+38h..+4Ch). Per piece eight 00BD2F10 draws, confirmed
+  at 00935738, 00935985, 009359A5, 009359C9, 00935A19, 00935A81, 00935AEC and 00935B91, then 00447510.
+- Open before binding: whether body+38h..+4Ch is the body's local or world box (the host's 00C31F90 is an
+  unimplemented stub in game_hosts_fixed_step.cpp). A world box makes the count depend on the heading at the moment
+  both ends go under. GUNNERY_OPEN_ITEMS 99.3 declined this binding; 258 and 260 bound the sibling draws, so binding
+  it would complete the set, with the class hull box (`class_hull_box`) z extent as a labelled stand-in.
