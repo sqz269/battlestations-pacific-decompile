@@ -37,6 +37,80 @@ void release_wide(NativePoolHooks& host, const NativeWideStringHeader& s) {
 }  // namespace
 
 // ---------------------------------------------------------------------------
+// 00AC6600 BSP_GuiLayer_ConstructFromScript. __thiscall(ECX = page; name, node,
+// share_scene) RET 0Ch -> page, SEH 00CB8A93, frame 4E8h. Stack objects (S =
+// ESP after the four saves): reader 14h at S+18h, page copy S+2Ch, Lua owner
+// 4C8h at S+30h, path temporaries at S+10h, the by-value "_Common" string and
+// the 14h globals object in outgoing-argument slots.
+// ---------------------------------------------------------------------------
+void* gui_layer_construct_from_script_00ac6600(GuiLayerConstructHost& host, void* page,
+    const NativeStringHeader* name, void* scene_node, std::uint8_t share_scene) {
+    host.widget_base_construct_00aa9390(page, 1);                       // 00AC6627
+    at<std::uint32_t>(page, 0x000) = 0x00D5BE38;                        // 00AC6640, image vtable
+    at<std::uint32_t>(page, 0x0EC) = 0;                                 // 00AC6646
+    at<std::uint32_t>(page, 0x0F0) = 0;
+    at<std::uint8_t>(page, 0x0F5) = 0;
+    at<float>(page, 0x0F8) = 0.0f;                                      // 00AC6658 (XORPS)
+    at<std::uint32_t>(page, 0x0FC) = 0;                                 // Priority
+    auto* const page_name = &at<NativeStringHeader>(page, 0x100);
+    page_name->length = 0;                                              // 00AC666D
+    page_name->data = nullptr;
+    if (page_name != name) {                                            // 00AC663E / 6672
+        host.native_string_resize_0041dd40(page_name, name->length, 1);
+        if (name->length != 0)
+            host.memcpy_00bf7680(page_name->data, name->data, page_name->length);
+    }
+    at<std::uint32_t>(page, 0x108) = 0;                                 // 00AC66B2
+    at<std::uint32_t>(page, 0x10C) = host.image_dword(0x00D7A2F0);      // 00AC6699 / 66B8
+    at<std::uint32_t>(page, 0x110) = host.image_dword(0x00CE3804);      // 00AC66C0
+    const std::uint32_t one = host.image_dword(0x00D7A24C);             // 00AC66D0
+    at<std::uint32_t>(page, 0x114) = one;
+    at<std::uint32_t>(page, 0x118) = 0;
+    at<float>(page, 0x11C) = 0.0f;                                      // 00AC66E6
+    at<std::uint8_t>(page, 0x120) = share_scene;                        // 00AC66EE
+    at<std::uint8_t>(page, 0x121) = 0;
+    at<std::uint32_t>(page, 0x20) = one;                                // 00AC6705
+    at<std::uint32_t>(page, 0x24) = one;                                // 00AC670A
+    host.set_scene_node_00aa6720(page, scene_node);                     // 00AC670F
+
+    alignas(4) unsigned char lua_owner[0x4C8];                          // S+30h
+    host.lua_owner_construct_00b66bd0(lua_owner);                       // 00AC6718
+    host.lua_owner_open_00b6a020(lua_owner, 0x65);                      // 00AC672B
+
+    NativeStringHeader common_name;                                     // outgoing slot
+    host.native_string_assign_0041e870(&common_name, "_Common");        // 00AC673F, 00D5CB64
+    NativeStringHeader path;                                            // S+10h
+    NativeStringHeader* const common_path =
+        host.compose_screen_script_path_00ac5600(&path, common_name);  // 00AC6748
+    host.lua_owner_run_script_00b69d40(lua_owner, common_path, 0);      // 00AC675A
+    if (path.data != nullptr) {                                         // 00AC675F
+        void* const pool = host.sized_storage_pool_00419cc0();
+        host.pool_return_block_00bd1510(pool, path.data, path.length + 1, 1);
+    }
+    NativeStringHeader* const page_path = host.compose_layer_script_path_00ac5770(page, &path);  // 00AC678D
+    host.lua_owner_run_script_00b69d40(lua_owner, page_path, 0);        // 00AC67A0
+    if (path.data != nullptr) {                                         // 00AC67A5
+        void* const pool = host.sized_storage_pool_00419cc0();
+        host.pool_return_block_00bd1510(pool, path.data, path.length + 1, 1);
+    }
+
+    alignas(4) unsigned char globals[0x14];                             // outgoing 14h slot
+    host.lua_owner_get_globals_00b67980(lua_owner, globals);            // 00AC67DA
+    alignas(4) unsigned char reader[0x14];                              // S+18h
+    host.lua_reader_construct_004425c0(reader, globals);                // 00AC67E3
+    host.reader_vslot4(reader, 0, "GuiScreen");                         // 00AC6804, 00D5CB24
+    host.page_vslot18(page, reader);                                    // 00AC6812
+    host.reader_vslot8(reader);                                         // 00AC681F
+    host.node_propagate_root_00b6d890(at<void*>(page, 0x4C), 0);        // 00AC6825
+    // Inline reader destructor: two base vtables around the vector tidy.
+    at<std::uint32_t>(reader, 0) = 0x00CE44FC;                          // 00AC682A
+    host.lua_object_vector_tidy_00441210(reader + 4);                   // 00AC683E
+    at<std::uint32_t>(reader, 0) = 0x00CE374C;                          // 00AC6847
+    host.lua_owner_close_00b669a0(lua_owner);                           // 00AC6857
+    return page;
+}
+
+// ---------------------------------------------------------------------------
 // 00AA5840 BSP_GuiManager_LoadPage. __thiscall(ECX = manager; name, screen_flag,
 // add_reference), RET 0Ch, SEH 00CB71F0. Stack: ".mmod" temporary at ESP+14h,
 // the concatenated path at ESP+0Ch (base after the three saves).

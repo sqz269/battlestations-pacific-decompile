@@ -98,7 +98,7 @@ struct GuiLoadPageHost : NativePoolHooks {
     virtual void* group_construct_00b8f5e0(void* block, const NativeStringHeader* name) = 0;
     // 00AC51A0 BSP_GuiLayer_AllocateInstance (ECX = 124h) -> block; 00AC6600
     // BSP_GuiLayer_ConstructFromScript, __thiscall(block; name, scene_root,
-    // screen_flag) RET 0Ch -> page (include/bsp/gui_layer.hpp models its body).
+    // screen_flag) RET 0Ch -> page. Route to gui_layer_construct_from_script_00ac6600.
     virtual void* gui_layer_allocate_00ac51a0(std::uint32_t size) = 0;
     virtual void* gui_layer_construct_00ac6600(void* block, const NativeStringHeader* name,
         void* scene_root, std::int32_t screen_flag) = 0;
@@ -108,6 +108,54 @@ struct GuiLoadPageHost : NativePoolHooks {
     // [00CE221C] InterlockedIncrement.
     virtual void interlocked_increment_00ce221c(volatile long* value) = 0;
 };
+
+// ---------------------------------------------------------------------------
+// 00AC6600 BSP_GuiLayer_ConstructFromScript (the page constructor)
+// ---------------------------------------------------------------------------
+struct GuiLayerConstructHost : NativePoolHooks {
+    // 00AA9390 BSP_UIContext_Construct, __thiscall(page; 1) RET 4: base constructor.
+    virtual void widget_base_construct_00aa9390(void* page, std::uint32_t type) = 0;
+    virtual void native_string_resize_0041dd40(NativeStringHeader* self, std::uint32_t length,
+        std::uint32_t preserve) = 0;
+    virtual void memcpy_00bf7680(void* dst, const void* src, std::uint32_t size) = 0;
+    // The live dwords at 00D7A2F0 (0.1f, cd cc cc 3d), 00CE3804 (1000.0f,
+    // 00 00 7a 44) and 00D7A24C (1.0f, 00 00 80 3f), read at the binary's points.
+    virtual std::uint32_t image_dword(std::uint32_t address) = 0;
+    // 00AA6720, __thiscall(widget; node) RET 4 (bind_native_gui_widget_node_00aa6720).
+    virtual void set_scene_node_00aa6720(void* widget, void* node) = 0;
+    // The 4C8h Lua state owner on the stack: 00B66BD0 constructor, 00B6A020
+    // open(65h) RET 4, 00B69D40 run(const NativeString* path, 0) RET 8 (result
+    // unused), 00B67980 globals(out 14h object) RET 4, 00B669A0 close/destructor.
+    virtual void lua_owner_construct_00b66bd0(void* owner) = 0;
+    virtual void lua_owner_open_00b6a020(void* owner, std::uint32_t libraries) = 0;
+    virtual void lua_owner_run_script_00b69d40(void* owner, const NativeStringHeader* path,
+        std::uint32_t zero) = 0;
+    virtual void lua_owner_get_globals_00b67980(void* owner, void* out_object) = 0;
+    virtual void lua_owner_close_00b669a0(void* owner) = 0;
+    virtual void native_string_assign_0041e870(NativeStringHeader* out, const char* text) = 0;
+    // 00AC5600, __thiscall(out; NativeString by value, consumed) RET 8 -> out:
+    // "interface/<name>.lua" style path of a shared script.
+    virtual NativeStringHeader* compose_screen_script_path_00ac5600(NativeStringHeader* out,
+        NativeStringHeader by_value_name) = 0;
+    // 00AC5770, __thiscall(page; out) RET 4 -> out: the page's own script path.
+    virtual NativeStringHeader* compose_layer_script_path_00ac5770(void* page, NativeStringHeader* out) = 0;
+    // 004425C0, __thiscall(reader 14h; 14h Lua object by value, consumed) RET 14h.
+    virtual void lua_reader_construct_004425c0(void* reader, void* by_value_object) = 0;
+    // reader->vtable[+4h](0, "GuiScreen"), page->vtable[+18h](reader),
+    // reader->vtable[+8h]().
+    virtual void reader_vslot4(void* reader, std::uint32_t zero, const char* field) = 0;
+    virtual void page_vslot18(void* page, void* reader) = 0;
+    virtual void reader_vslot8(void* reader) = 0;
+    // 00B6D890 BSP_Node_PropagateRootRegistration, __thiscall(node; 0) RET 4.
+    virtual void node_propagate_root_00b6d890(void* node, std::uint32_t zero) = 0;
+    // 00441210 BSP_LuaObjectVector_Tidy, ECX = the reader's vector at +4.
+    virtual void lua_object_vector_tidy_00441210(void* vector) = 0;
+};
+
+// 00AC6600, __thiscall(ECX = 124h page block; const NativeString* name, scene
+// node, char share_scene) RET 0Ch -> page.
+void* gui_layer_construct_from_script_00ac6600(GuiLayerConstructHost& host, void* page,
+    const NativeStringHeader* name, void* scene_node, std::uint8_t share_scene);
 
 // 00AA5840, __thiscall(ECX = manager; const NativeString* name, int
 // screen_flag, char add_reference), RET 0Ch -> page.

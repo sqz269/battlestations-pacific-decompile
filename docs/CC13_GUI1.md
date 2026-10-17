@@ -16,13 +16,14 @@ binary's arguments. The existing fragment models are left as they are.
 Status of every routine: reconstructed and build-tested. Not fixture-tested, not ABI-compatible
 (new C++ signatures with a host argument), not game-validated. Names are hypotheses.
 
-Shared simplification: the SEH frames of 00AA5840, 00AA6640, 00AD3A80, 00ABAED0 and 00ABB000 only
+Shared simplification: the SEH frames of 00AA5840, 00AC6600, 00AA6640, 00AD3A80, 00ABAED0 and 00ABB000 only
 release temporaries or the new block when a callee throws. The hooks are not expected to throw and
 no unwind path is reproduced. No routine here draws from the shared RNG 00BD2F10.
 
 | Address | Function | Original ABI | What the code does |
 |---|---|---|---|
 | 00AA5840 | `gui_manager_load_page_00aa5840` | thiscall(manager; name, screen_flag, add_reference) RET 0Ch | Calls 00AA3140. If the page exists, InterlockedIncrement(page+4) through [00CE221C] when add_reference is set, and returns it. Otherwise builds `<name>.mmod` (0041E870 and 004261A0, releasing the suffix temp first), asks the VFS singleton [0109CEEC] whether the path exists. On a hit 00AA5840 calls 004C1400, 00B80D70 and factory vtable+8h(0, 1.0f). The model goes to manager+30h and the scene root is model+0Ch. On a miss it calls 00B8F450(188h) and 00B8F5E0(name). Then 00AC51A0(124h), 00AC6600(name, root, screen_flag), 00AA52A0(page) (also called with a null page), releases the path and returns the page. |
+| 00AC6600 | `gui_layer_construct_from_script_00ac6600` | thiscall(page; name, node, char share_scene) RET 0Ch | The page constructor. Calls 00AA9390(page, 1), then writes vtable 00D5BE38 and zeroes +0ECh..+0FCh. Copies the name to +100h. Sets +10Ch/+110h/+114h from the live dwords 00D7A2F0 (0.1f), 00CE3804 (1000.0f) and 00D7A24C (1.0f); the 1.0f also goes to +20h/+24h. Stores byte +120h = share_scene and calls 00AA6720(node). On a 4C8h Lua owner on the stack it calls 00B66BD0 and 00B6A020(65h), runs "_Common" (00AC5600, then 00B69D40) and the page script (00AC5770, then 00B69D40), releasing each path. It takes the globals with 00B67980, builds a reader with 004425C0, and calls reader vtable+4h(0, "GuiScreen"), page vtable+18h(reader) and reader vtable+8h. Then it calls 00B6D890(page+4Ch, 0), runs the inline reader destructor (vtables 00CE44FC and 00CE374C around the vector tidy), and 00AC6600 then calls 00B669A0 and returns the page. |
 | 00AAB4C0 | `gui_widget_clone_subtree_00aab4c0` | thiscall(widget; parent_clone) RET 4 | Calls 004C12B0 (result unused), then 00AA6560(type +60h, widget). Attaches the clone under parent_clone, or else under widget+70h when both the clone and that parent are non-null. Recurses over the +64h children, rereading the end node on each pass and keeping the checked-iterator 00BF6713 reports. Copies clone+0Ch..+14h onto themselves, calls 00AA7220 and 00AA70E0, and stores the saved +08h last. |
 | 00AA8240 | `gui_widget_set_resolved_position_00aa8240` | thiscall(widget; const float[3]) RET 4 | With a parent: pos - 00AA6750(parent) + (p20*p18, p24*p1C, double 0.0 at 00D7A258) goes to +0Ch..+14h. Without one: bitwise copy. Then 00AA7220 and 00AA70E0. |
 | 00AA67F0 | `gui_widget_get_local_position_00aa67f0` | thiscall RET | Returns widget+0Ch. |
@@ -55,7 +56,7 @@ Skipped:
   (each node is freed by _free) and then 00A9D9D0 calls 00A9D560 InsertRange. That is an STL
   instantiation, out of scope by the 2026-10-16 ruling. It still blocks 00A9DA60, 00A9E130 and
   00A9E230.
-- 00ABA8D0 `BSP_TextContext_UpdateUtf16Geometry` (228 instructions, plus 00AB9FD0 and 00ABA270),
-  called by the three text setters.
-- 00AC6600 `BSP_GuiLayer_ConstructFromScript` (162 instructions with a 500h-byte Lua frame), called by
-  00AA5840. Fragments exist in `src/gui_page_script.cpp` and `src/native_gui_page_*`.
+- 00ABA8D0 `BSP_TextContext_UpdateUtf16Geometry`, called by the three text setters. Skipped as too
+  large for this packet: about 228 instructions, plus its own unreconstructed callees 00AB9FD0 and
+  00ABA270. Several fragments exist (`src/gui_text_runtime_content.cpp`, `src/gui_text_content.cpp`).
+  It is now the one callee that blocks 00ABAED0, 00ABB000 and 00AB6AB0 from wiring.
