@@ -728,4 +728,56 @@ void gui_widget_read_properties_and_children_00aaa710(GuiWidgetReadPropertiesHoo
     }
 }
 
+// ---------------------------------------------------------------------------
+// 00A90F90 BSP_InputBackend_AnyDeviceHasInput. __thiscall(ECX = backend) RET
+// -> AL. For each of three groups (stride 24h) a VS2008 std::vector<device*>
+// at backend+6Ch (+4 first, +8 last): the checked iterator's construction test
+// (first <= last, else 00BF6713), then per element the loop-top test that
+// re-reads first/last, the dereference test (cursor < last) and the increment
+// test, all reporting through 00BF6713 and continuing as the image does. A
+// non-null device whose vtable[+28h]() returns nonzero returns 1.
+// ---------------------------------------------------------------------------
+bool input_backend_any_device_has_input_00a90f90(InputBackendHooks& host, void* backend) {
+    for (std::int32_t group = 0; group < 3; ++group) {
+        auto* const vector = static_cast<unsigned char*>(backend) + 0x6C + 0x24 * group;
+        void** cursor = at<void**>(vector, 4);
+        if (cursor > at<void**>(vector, 8)) host.invalid_parameter_00bf6713();
+        for (;;) {
+            void** const last = at<void**>(vector, 8);
+            if (at<void**>(vector, 4) > last) host.invalid_parameter_00bf6713();
+            if (cursor == last) break;
+            if (!(cursor < at<void**>(vector, 8))) host.invalid_parameter_00bf6713();
+            void* const device = *cursor;
+            if (device != nullptr && host.device_vslot28(device)) return true;
+            if (!(cursor < at<void**>(vector, 8))) host.invalid_parameter_00bf6713();
+            ++cursor;
+        }
+    }
+    return false;
+}
+
+// 00AA0F30: C3.
+void gui_trivial_noop_00aa0f30() noexcept {}
+
+// 00A9AC50: LEA EAX,[ECX+0FCh]; RET.
+void* gui_listbox_row_block_00a9ac50(void* listbox) noexcept {
+    return static_cast<unsigned char*>(listbox) + 0xFC;
+}
+
+// 00AB1060: MOV EAX,[00F8BDD8]; RET.
+std::uint32_t gui_widget_kind_token_00ab1060(const std::uint32_t* global_00f8bdd8) noexcept {
+    return *global_00f8bdd8;
+}
+
+// 00AD5760: MOV AL,[ECX+10h]; RET.
+std::uint8_t foliage_get_bush_shadow_allowed_00ad5760(const void* system) noexcept {
+    return *(static_cast<const std::uint8_t*>(system) + 0x10);
+}
+
+// 00ADA0C0: RET 4.
+void landscape_tick_terrain_noop_00ada0c0(void* self, std::uint32_t argument) noexcept {
+    static_cast<void>(self);
+    static_cast<void>(argument);
+}
+
 }  // namespace bsp::cc13_gui2

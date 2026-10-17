@@ -237,4 +237,31 @@ struct GuiWidgetReadPropertiesHooks : cc13_gui1::GuiWidgetHooks, cc13_gui1::Nati
 void gui_widget_read_properties_and_children_00aaa710(GuiWidgetReadPropertiesHooks& host, void* widget,
     void* visitor);
 
+// ---------------------------------------------------------------------------
+// Small GUI-band blockers (each a hook in an existing frontend/terrain host)
+// ---------------------------------------------------------------------------
+struct InputBackendHooks {
+    virtual ~InputBackendHooks() = default;
+    // device->vtable[+28h]() -> AL.
+    virtual bool device_vslot28(void* device) = 0;
+    // 00BF6713, the checked vector iterator's invalid-parameter report.
+    virtual void invalid_parameter_00bf6713() = 0;
+};
+// 00A90F90 BSP_InputBackend_AnyDeviceHasInput, __thiscall(ECX = backend) RET
+// -> AL. Three device-pointer vectors at +6Ch, +90h, +0B4h.
+bool input_backend_any_device_has_input_00a90f90(InputBackendHooks& host, void* backend);
+
+// 00AA0F30, a bare RET (no stack arguments, ECX unused).
+void gui_trivial_noop_00aa0f30() noexcept;
+// 00A9AC50, __thiscall(ECX = listbox) RET -> listbox+0FCh (the row block).
+void* gui_listbox_row_block_00a9ac50(void* listbox) noexcept;
+// 00AB1060, no arguments, RET -> the DWORD at [00F8BDD8] (the widget kind
+// token 0068DB40 compares); the caller passes that global's address.
+std::uint32_t gui_widget_kind_token_00ab1060(const std::uint32_t* global_00f8bdd8) noexcept;
+// 00AD5760 BSP_FoliageSystem_GetBushShadowAllowed, __thiscall(ECX = system)
+// RET -> AL = system+10h.
+std::uint8_t foliage_get_bush_shadow_allowed_00ad5760(const void* system) noexcept;
+// 00ADA0C0 BSP_Landscape_TickTerrainNoOp, one stack DWORD, RET 4, no effect.
+void landscape_tick_terrain_noop_00ada0c0(void* self, std::uint32_t argument) noexcept;
+
 }  // namespace bsp::cc13_gui2

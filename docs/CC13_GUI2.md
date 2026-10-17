@@ -145,6 +145,19 @@ button, 00AAD560 movie, 00AB3310 icon, 00ABB630 text, 00ABE1D0 curve, 00AC0280 s
 00AC2DE0 line, 00AC4C50 layer, 00AC6FD0 group, 00AC85A0 scrollbar, 00AC9900 grid and
 the other four callers `bsp.py lookup 00aaa710` lists.
 
+### Small GUI-band blockers
+
+Each is already a host hook in an existing reconstruction; these give the binder a target.
+
+| Address | C++ | Body | Hook it serves |
+|---|---|---|---|
+| 00A90F90 BSP_InputBackend_AnyDeviceHasInput | `input_backend_any_device_has_input_00a90f90` | three device vectors at +6Ch/+90h/+0B4h, first device whose vtable[+28h]() is nonzero returns 1; checked-iterator tests through 00BF6713 kept | `input_pending_00a90f90` (`include/bsp/frontend_menus.hpp`, caller 00560430) |
+| 00AA0F30 | `gui_trivial_noop_00aa0f30` | RET | caller 004DA780 |
+| 00A9AC50 | `gui_listbox_row_block_00a9ac50` | ECX+0FCh | `listbox_row_block_00a9ac50` and the two row-count hooks (seven callers) |
+| 00AB1060 | `gui_widget_kind_token_00ab1060` | [00F8BDD8] | `gui_widget_kind_00ab1060` (0068DB40) |
+| 00AD5760 BSP_FoliageSystem_GetBushShadowAllowed | `foliage_get_bush_shadow_allowed_00ad5760` | AL = ECX+10h | `foliage_bush_shadow_allowed_00ad5760` (00AE23F0) |
+| 00ADA0C0 BSP_Landscape_TickTerrainNoOp | `landscape_tick_terrain_noop_00ada0c0` | RET 4 | `tick_terrain_noop_00ada0c0` (00880000) |
+
 Other GUI-band blockers in `local/output/wire_readiness.json` that were checked and not taken:
 00A966E0 BSP_TextEditor_SetActive and 00A92C40 BSP_InputManager_Update already have
 faithful typed implementations (`src/text_editor_activation.cpp`,
