@@ -5926,7 +5926,7 @@ struct GameUnitsHost::Impl {
     // Packet cc9_p12_fighter_spent_3d (docs/OCEAN_WAVE_FIELD.md section 43): 009F8160's
     // fighter arm. False: a fighter squadron with an ordnance-class command and no
     // rack round keeps the command (the host did nothing for fighters).
-    static constexpr bool kFighterSpentEndBound = false;
+    static constexpr bool kFighterSpentEndBound = true;  // ON: mechanism (docs/OCEAN_WAVE_FIELD.md 43.1)
     static constexpr bool kSquadronLandTargetGoneBound = true;  // ON: mechanism (docs/OCEAN_WAVE_FIELD.md 41.1)
     // Packet cc9_landing_follower_spacing (docs/SQUADRON_LAND_TASK.md section 5r):
     // the landed byte plane+904h in the sequencer. 006C7960's first arm (mode 4,

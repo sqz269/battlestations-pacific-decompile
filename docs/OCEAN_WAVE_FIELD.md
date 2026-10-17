@@ -1634,7 +1634,7 @@ those Zeros stop diving on US ships, so US ship damage and the deaths of the Zer
 attacking US planes may rise (they now hold near the fleet). ESMP08 gameplay moves from about 113 s. USN04 (no IJN
 fighter with an ordnance class in the logs read) is expected identical.
 
-### 43.1 The pair: mechanism failure, stays OFF
+### 43.1 The pair, and the verdict: ON (a first reading of it as a mechanism failure was wrong)
 
 Export of a1e22d8b4 with the switch flipped (`local\p12_f3`, exe C266B7A303BC) against that commit's build
 (`local\p12_offf3`); reference env; logs `local\p12f3_<on|off>_<e8|u4>.log`, diff `local\p12f3_diff_e8.txt`.
@@ -1642,14 +1642,24 @@ Export of a1e22d8b4 with the switch flipped (`local\p12_f3`, exe C266B7A303BC) a
 | Row | pair_diff | Note |
 | --- | --- | --- |
 | USN04 45000 | 1, gameplay identical | no fighter end |
-| ESMP08 60000 (`esmp08_p12_e8_rb`) | 3, moved hard | 45 ends; dive-bomb-task releases 128 -> 5, US ships sunk 14 -> 5 by 3000 s |
+| ESMP08 60000 (`esmp08_p12_e8_rb`) | 3, moved hard | 45 ends from 113.30 s; dive-bomb-task releases 128 -> 5, US ships sunk by 3000 s 14 -> 5 |
 
-**The premise was wrong.** The OFF run shows these Zeros releasing bombs (`bomb from Chiyoda_sqn13|.-2 impact ...`,
-equipment 0): Lua's `Equipments[1]` is the first loadout, so `equipment=0` carries the two 60 kg rounds. The host's
-`plane_holds_rack_round_007b9140` (game_hosts_units.cpp, under `kPlaneSceneEquipmentBound` with a carried index) answers
-"no round" for them from launch, while the release path seeds and drops their bombs. So the census line of section 41
-("spent ... fighter=1" at 113 s) and this binding's trigger are the host predicate's error, not the image's 007ED790,
-which would see the rounds and set nothing. **Mechanism failure: the switch stays OFF.** The fix belongs to the rack-round
-reader (the plane lane): with a carried bag index, the authored loadout looked up must be `Equipments[index + 1]`, and the
-same reader feeds the non-fighter +3Ch latch, so any squadron launched with equipment 0 whose class authors only
-`Equipments[1]` latches its RTB too early (to check). Once the reader is right, this switch can be re-paired.
+The OFF run has these Zeros dropping bombs (`bomb from Chiyoda_sqn13|.-2 impact ...`), which first read as the rack-round
+reader being wrong. It is the other way round. The image gives an equipment index n the loadout `009552E0(class, n)`:
+entry n-1 for 0 < n <= the class's Equipments count, **null for n = 0** (SQUADRON_LAND_TASK 5df, "`[unit+C54h]`").
+Carrier launches copy class `+134h` DefaultEquipment (0 for the Zero) into the slot (006C0F00 -> 006C7490), so an
+air-ops Zero has no loadout and no bomb ("Airfield fighters carry no bombs", SHIP_AI_OPEN_ITEMS for the P-38/P-40).
+The host's `plane_holds_rack_round_007b9140` with the carried index answers that correctly; the host's bombs come from
+the release path's own default (`876b192cf`: "The release path keeps its own default", labelled "a carrier-launched Zero
+would also count as loaded"), a host substitution the image does not make. So in the image these squadrons get
+divebomb (007ED7E0 reads the rack's descriptor type), 009F8160 sets +3Dh, 009F7C90 ends it, and the squadron takes the
+stage-2 moveto-self hold: exactly the ON run. **Flipped ON by mechanism.** It costs ESMP08 most of its IJN dive
+strength (the Zeros' phantom bombs); the row is re-planned against it. The release path's default still arms an
+equipment-0 Zero on any path this switch does not end (a host gap for the plane lane: the release seed should follow
+009552E0's null loadout).
+
+Why the image still answers divebomb for an empty rack: the Zero's `Platforms` table (vehicleclasses.lua, the class-150
+row) mounts platform 89 at slots 50 and 51 whatever the loadout, and `Equipments[1]` only supplies their Ammo; so the rack
+devices exist with no round, and 007ED7E0's descriptor query (a type, not a count) sees a general bomb. Uncertainty: the
+descriptor a mounted rack with no loadout entry returns from `vtable[220h](0)` was not read; if it were null the image
+would choose a gun class (strafe) instead and neither OFF nor ON would match.
