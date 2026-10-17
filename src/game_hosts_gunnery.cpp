@@ -2882,6 +2882,10 @@ struct GameGunneryHost::Impl {
     // Packet s53_sub_wake_draws: 008546E4 picks taken and the 00933BB0 calls they chose.
     unsigned long long sub_wake_picks{0};
     unsigned long long sub_wake_sprays{0};
+    // Packet s53_wreck_debris: 00935540 calls, pieces counted, draws taken.
+    unsigned long long wreck_debris_calls{0};
+    unsigned long long wreck_debris_pieces{0};
+    unsigned long long wreck_debris_draws{0};
     unsigned long long smoke_expired_held{0};
     std::size_t smoke_units{0};
     float smoke_first_respawn{-1.0f};
@@ -14616,6 +14620,30 @@ void GameGunneryHost::ship_systems_sink_draws_00933da0_00933bb0(std::size_t unit
     }
 }
 
+void GameGunneryHost::sinking_wreck_debris_draws_00935540(std::size_t unit_index,
+    std::int32_t class_kind, float z_extent, float num_per_meter) {
+    Impl& host = *impl_;
+    if (unit_index >= host.unit_state.size()) return;
+    if (class_kind == 0x0e || class_kind == 8) return;              // 0093555B / 00935568
+    // 0093557A CVTTSS2SI the extent, 00935583 FLD settings+684h, FIMUL, 00BF7420.
+    const int length = static_cast<int>(z_extent);
+    const int pieces = static_cast<int>(static_cast<double>(num_per_meter) * length);
+    ++host.wreck_debris_calls;
+    if (pieces <= 0) return;                                        // 00935611 JLE
+    host.wreck_debris_pieces += static_cast<unsigned long long>(pieces);
+    if (!kSinkingWreckDebrisDrawsBound) {
+        host.record("UnitInstance::wreck_debris_draws", 0x00935540u);
+        return;
+    }
+    // Per piece: 00935738 the model pick, 00935985/009359A5/009359C9 the
+    // orientation, 00935A19/00935A81/00935AEC the position, 00935B91 the lifetime.
+    for (int p = 0; p < pieces; ++p) {
+        for (int k = 0; k < 8; ++k) host.draw(Impl::Draw::sink_effects, unit_index, 3, 0.0f, 1.0f);
+        host.wreck_debris_draws += 8;
+    }
+    host.record("UnitInstance::wreck_debris_pieces_00447510", 0x00447510u);
+}
+
 void GameGunneryHost::submarine_wake_draws_008546df(std::size_t unit_index, float hull_y) {
     Impl& host = *impl_;
     if (unit_index >= host.unit_state.size()) return;
@@ -15857,6 +15885,10 @@ void GameGunneryHost::report() {
             host.log.notef("summary mission submarine wake draws bound=%d picks=%llu sprays=%llu "
                 "(008546E4 / 008546FC, stream 1, packet s53_sub_wake_draws)",
                 kSubmarineWakeDrawsBound ? 1 : 0, host.sub_wake_picks, host.sub_wake_sprays);
+            host.log.notef("summary mission sinking wreck debris bound=%d calls=%llu pieces=%llu "
+                "draws=%llu (00935540, eight stream-1 draws per piece, packet s53_wreck_debris)",
+                kSinkingWreckDebrisDrawsBound ? 1 : 0, host.wreck_debris_calls,
+                host.wreck_debris_pieces, host.wreck_debris_draws);
         }
         {
             const Impl::ShipDeathCounts& d = host.ship_death;

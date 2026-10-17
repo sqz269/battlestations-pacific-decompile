@@ -18259,3 +18259,63 @@ The prediction held: no multi-leg step without user paths. The authored-path row
 lookahead (later advances with the point ahead) and the arrival-latch force. **JM08 on `s52_j8_b3` now WINS**:
 "Mission Completed - Guadalacanal is safe from invasion!" at 1329.87 s, Headquarter 01; the exec guard refused
 sus_prog.exe. Before, it failed at 1144.04 s. Sent to cc9-lua62.
+
+## 262. Squadron path-follow arm 0084E3A8 bound OFF (cc9-ships53, 2026-10-17; lead item 1b, squadron half)
+
+`kSquadronPathFollowStepBound` (include/bsp/ship_ai_path_cursor.hpp) sends plane units (kinds 0Fh/18h) through
+`ship_ai_path_follow_step_007add70` with 0084E010's arm arguments, read from the listing (0084E29F..0084E3A8):
+- Gates: queue stage +48h < 2, current command moveonpath, slot 0 (+1A4h) set.
+- radius = 00415550 max(class+26Ch * 1.2 [00CEC160], tuning+370h Pilot/MoveTo/ClosingDist).
+  - class+26Ch is the value 007DB4D0 returns, TravelSpeed / turn rate. It is stored at 007C4C27 in
+    BSP_PlaneClass_DeriveFlightConstants; the host has the rate as `plane_class_turn_rate_270_007db4d0`.
+  - The radius is multiplied by 1.5 [00CE3D78] when the leader's role-0 slot +1ACh is not 8 and 00927F10
+    (AI-held) is false.
+- pos: [block+224h] +FCh/+104h.
+- count: the 0071FC40 byte.
+- heading: [[block+224h]+3D0h]->vtable[50h].
+- factor: 0.4 [00CE7804].
+- force: 0 (PUSH EBX at 0084E381).
+- A true answer runs 0071D810(2) and the finished block (0084E3B5), not hosted, as for ships.
+LABELLED: the host fuses the squadron into its flight leader, so the leader's position and pose yaw stand for the
+squadron's. AI-held means every slot except the local player's.
+**Predictions.** JM06's PBY Catalina 01 (CatalinaPatrolPath, 12 points, 0 advances over 115 km with the ship arm)
+starts advancing: its radius becomes at least ClosingDist, where the ship arm took min(hull*2.5, turn*1.2). BSM01's
+PilotMoveOnPath squadrons follow their paths. Ship rows stay identical.
+
+## 263. 00935540 sinking-wreck debris draws bound OFF (cc9-ships53, 2026-10-17; lead item 2)
+
+**The box question, settled from the listing.** 00825B51 calls 00C31F90(&min [ESP+24h], &max [ESP+30h]), and that
+copies body+38h..+40h and +44h..+4Ch. 00C5715C..00C5745E (docs/DYN_COLLISION_PASS.md step 1) treats B+38h/B+44h as
+the body's LOCAL box: it turns that box into a centre and half extents and rotates them into the broad-phase proxy
+at B+60h. The extents are therefore heading-independent. 00825B56..00825B84 store max - min for x, y and z, and
+00825B9B..00825BAE push them as arguments 2..4 (argument 1 is the 00C31FC0 result, pushed last). So arg4, which
+0093557A truncates, is the local z extent, the hull length.
+**Bound.** `kSinkingWreckDebrisDrawsBound` (include/bsp/game_hosts_gunnery.hpp, bsp::game) and
+`GameGunneryHost::sinking_wreck_debris_draws_00935540`:
+- The pieces are pieces = _ftol(DebrisNumPerMeter * (int)z), with kinds 0Eh and 8 skipped, eight 00BD2F10 draws per
+  piece (MOV ECX,1 at 00935729/00935977/00935991...), on Draw::sink_effects key 3. The 00447510 pieces are not made.
+- The units host's `wake_enabled()` now answers ShipGlobals.DebrisStruct.DebrisEnabled. That is read once by a Lua
+  chunk (this installation's shipglobals.lua, 2024-07-13: true, 0.3).
+- `spawn_wake()` passes unit+C4h and the class hull box's z extent (LABELLED stand-in for B+38h..+4Ch; with no box,
+  the class Length). The gate (dead byte, one-shot, both ends below -5.0) is unit_instance.cpp's, unchanged.
+- OFF keeps `wake_enabled()` false (before).
+**Predictions.** Reference mode (STREAMS=1): inert, pair_diff 1. Default mode: moves after the first wreck whose
+two hull ends go below -5 m. That is later than the 258 sink-grid draws on the same wreck. Each such ship consumes
+about 8 * 0.3 * length draws (West Virginia, 194.85 m: 58 pieces, 464 draws). The summary line is
+`sinking wreck debris`.
+**Squadron arm measured; flipped ON.** OFF = tree 0cea637b5, ON = `local\s53_sq` (pair_export). Reference env.
+| row | ON squadron calls / forced | pair_diff | moved |
+|---|---|---|---|
+| JM06 36000 fr (`s53_q0_j6` / `s53_q1_j6`) | 35998 / 0 | 3 (deaths identical) | PBY Catalina 01 runs CatalinaPatrolPath 0>1>...>11 to the final leg (0 legs OFF) |
+| BSM01 20000 fr, `config/win_orders/bsm01_l50_b1_a.txt` (`s53_q0_b1` / `s53_q1_b1`) | 40000 / 15 | 3 (404 deaths both, 2 rows changed) | no EndMission in 1000 s, on BOTH sides |
+The mechanism matches: the plane now advances at the max(TravelSpeed / rate * 1.2, ClosingDist) radius. BSM01 does
+not reach its keeper EndMission (767.94 s) on either side. The keeper row has already moved on current main,
+independent of this switch, and was reported to cc9-lua62.
+**Measured; flipped ON.** OFF = pair_export e8d6d0a83 unflipped (`local\s53_wo`) for the reference row and tree
+e8d6d0a83 for the default row; ON = `local\s53_wd`. USN01 20000 frames.
+| row | ON calls / pieces / draws | pair_diff | first moved |
+|---|---|---|---|
+| reference mode, STREAMS=1 (`s53_d0r_u1` / `s53_d1r_u1`) | 7 / 359 / 2872 | 1, gameplay identical | none |
+| default mode, STREAMS=0 (`s53_d0d_u1` / `s53_d1d_u1`) | 7 / 359 / 2872 | 3 | KatSBD 204.66 -> 204.21 s (deaths 81 -> 84) |
+DebrisEnabled = 1 and DebrisNumPerMeter = 0.3 were read from this installation's shipglobals.lua. The mechanism
+matches the prediction: the reference mode is inert, and the default mode moves only after a wreck goes under.

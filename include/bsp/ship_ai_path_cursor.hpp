@@ -153,6 +153,18 @@ int ship_ai_path_nearest_index_007b1100(const float* points_xyz, int point_count
 // move through the lookahead and force with no multi-leg step (authored paths).
 inline constexpr bool kPathCursorFollowStepBound = true;
 
+// Packet s53_sqn_path: the plane squadron command block's arm, 0084E29F..0084E3A8
+// of 0084E010 (queue stage +48h < 2, current command moveonpath, slot 0 set).
+// radius = max(class+26Ch * 1.2 [00CEC160], tuning+370h Pilot/MoveTo/ClosingDist)
+// through 00415550, times 1.5 [00CE3D78] when the leader's role-0 slot +1ACh is
+// neither 8 nor AI-held (00927F10); pos = the squadron's +FCh/+104h; count = the
+// 0071FC40 byte; heading = [squadron+3D0h]->vtable[50h]; factor 0.4 [00CE7804];
+// force 0 (0084E381 PUSH EBX). True: plane units (kinds 0Fh/18h) take this arm.
+// False: they keep the ship arm's one-leg stand-in (before).
+// ON by docs/SHIP_AI_OPEN_ITEMS.md 262: JM06's PBY Catalina 01 runs its whole
+// 12-point patrol path (0 legs before); BSM01 deaths unchanged.
+inline constexpr bool kSquadronPathFollowStepBound = true;
+
 struct ShipAiPathFollowStep {
     bool answer{false};
     int limit{0};          // the scan limit after the clamp
