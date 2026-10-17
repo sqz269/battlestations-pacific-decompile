@@ -213,8 +213,9 @@ ShipTurnLeadResult seg59_ship_turn_lead_00902290(const float shooter[3],
         const float cx = off_x + tx;
         const float cy = static_cast<float>(static_cast<double>(ty) + 0.0);
         const float cz = off_z + tz;
-        // 00902690..009026AC: the yaw turned through in t': -(rate * t' / R).
-        float angle = (target.yaw_rate * lead_time) / radius;
+        // 00902690..009026AC: the yaw turned through in t', the arc run at the
+        // forward speed over the turn radius: -(speed * t' / R).
+        float angle = (target.speed_38 * lead_time) / radius;
         angle = -angle;
         // 009026B0..009026D3: 00B646E0 into a scratch, copied to the scratch and to
         // out_matrix (004134F0 twice).

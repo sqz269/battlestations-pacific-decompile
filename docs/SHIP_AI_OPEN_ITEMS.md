@@ -18536,3 +18536,26 @@ the Dakota check passed on an empty table; it needs a re-plan that shoots down t
 0fedfbfcf (`s54_rr_j6`) or on ships53's control export e8d6d0a83 (`s54_wo_j6`): EndMission never true, 18 deaths
 each time. WINS_TABLE records a4 winning at 2226.05 s on 25fbdcba0, so something between 25fbdcba0 and e8d6d0a83
 moved it. Sent to lua63.
+
+## 271. Seat-artillery hit lead, kSeatArtilleryLeadBound (cc9-ships54, 2026-10-17; lead item B)
+
+The finding is in 269. **Bound OFF** in src/game_hosts_gunnery.cpp as `seat_artillery_lead_009578c3`, called from
+the group-3 seat arm when the camera ray hits an entity:
+- **speed**: [[dev+3F8h]+34h]+5Ch * +50h, the class pair (gun.class_time_scale * class_speed for an artillery
+  class, else 1.0 * V0).
+- **shooter**: 00427EB0(dev), the gun's muzzle point.
+- **shooter velocity**: the unit's velocity when DeviceClass `AddsSpeed` (desc+95h, read at 00732BE9..00732C0E
+  through 00B662F0) is true, else zero. A new reader, `read_device_class_bool`, is in the lua host.
+- **Ship (IsKindOf 6)**: `seg59_ship_turn_lead_00902290` (268) with the target's turn efficiency +9DCh, ordered
+  rudder +984h and throttle +980h; class+520h = MaxSpeed / MaxRotAngle (00828F66); vtable[38h] = 0080E0F0, the
+  0092D730 speed; and 0082E890 through the units host. The aim is lead + Ry * (hit - target).
+- **Other entities**: 00901C20's aim, built as the AA bots' site builds it (turn average, ship vertical zeroed,
+  settings biases), and aim = hit + (lead - target).
+LABELLED: [dev+3FCh] (the fire mode) is taken as 0, the kind-1Eh resolve is not made, and the pose's forward row
+stands in for the body axis. A turning target with no positive time leaves the caller's matrix local, which is
+taken as identity. Summary line: `seat artillery lead ship / turned / other / adds_speed`.
+**Predictions.** Ship hits are counted where artillery_hit_lead was recorded (USN10 4081, USNOS 2802, BSM09 2725),
+and other-kind hits where the camera ray meets planes or land units. The aim points move by the target's travel
+over the flight time, so the player unit's Function 2/3/4/6 gun turns move. A gun fires on this aim only when its
+seat is player-held (the trigger) or when its bot fires on the gun's angles, so outcomes move where those guns
+fire at ships.

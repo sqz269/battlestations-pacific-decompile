@@ -845,6 +845,13 @@ public:
     // `derived` is 00828f20's own gate: false means one of the two keys was not
     // strictly positive and the field was never written.
     float unit_yaw_authority_0524(std::size_t index, bool& derived) const;
+    // Packet s54_seat_lead: the fields 00902290 reads off a ship target -
+    // +9DCh (turn efficiency), +984h (ordered rudder), +980h (throttle),
+    // [+538h]+520h (00828F66: MaxSpeed / MaxRotAngle) and vtable[38h] (0080E0F0,
+    // the 0092D730 speed) - and 0082E890 over the shared curve settings.
+    bool unit_turn_lead_fields_00902290(std::size_t index, float& efficiency_9dc,
+        float& rudder_984, float& throttle_980, float& radius_0520, float& speed_vt38);
+    float unit_rudder_curve_0082e890(std::size_t index, float magnitude);
     // --ai-drive <name>=<throttle>,<rudder>: the diagnostic stand-in for the
     // state steps that produce no desired throttle. Returns false when no
     // created instance carries the name.
