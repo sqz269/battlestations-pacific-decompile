@@ -6265,6 +6265,11 @@ struct GameUnitsHost::Impl {
     // goes. True: a level-bomb task whose command target is cleared retires. False:
     // the arm returns early and the task freezes in its last state (USNOS wave 2).
     static constexpr bool kLevelBombTargetClearedRetireBound = false;
+    // Packet cc9_l63_lb_stick_delay (SQUADRON_LAND_TASK 5hv.3). 007C1FB0's tail: the
+    // stick time is the longest rack's 006E4170 span plus BombDelay (class+1F4h) x
+    // max(0, n - 1) over the n kind-25h racks. True: the term is added. False: the
+    // longest span alone, as before (equal for one-rack planes).
+    static constexpr bool kLevelBombStickBombDelayBound = false;
     // Packet cc9-gunnery38 (docs/CC13_AUDIT13_RECENT_FLIPS.md O1). The strafe
     // cruise profile 009CD020, run once per activation (the install and each
     // time the strafe task resurfaces after a tightturn or flikflak retires),
@@ -23730,6 +23735,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ++rack;
                         }
                         unit_.lb_rack_repeat_e0 = repeat;
+                        if constexpr (GameUnitsHost::Impl::kLevelBombStickBombDelayBound) {
+                            // 007C200D-007C2036: + class+1F4h BombDelay x max(0, n - 1)
+                            // over the n kind-25h racks, summed on the x87 stack and
+                            // stored as a float. LABELLED: n is the BombPlatform count.
+                            const int n = static_cast<int>(rack);
+                            longest = static_cast<float>(
+                                static_cast<double>(unit_.plane_bomb_delay_1f4) * (n > 1 ? n - 1 : 0)
+                                + static_cast<double>(longest));
+                        }
                         unit_.lb_release_delay_1fc = longest;
                     }
                     // 009B9030 -> 009B7990: the task, its approach and its states.

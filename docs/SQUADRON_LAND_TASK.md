@@ -17379,3 +17379,13 @@ here and they are left as they are.
 Predictions on USNOS a7 (`local\l63_os_a7.txt`, a copy of ships44's `s51_os_a7.txt`): ON logs three `retired, the
 command target is not +440h` lines for `plane #4.4|.-2/-3/-4` at about 443.7 s, then a B5 for `plane #4.4`, and the
 wingmen turn back instead of flying south. Rows whose level-bomb targets never die mid-run are identical.
+
+### 5hv.3 Stick time BombDelay term (`kLevelBombStickBombDelayBound`, committed OFF)
+
+007C1FB0 walks the plane's children (+48h, next +44h), keeps the largest vt[1F8h] (006E4170, RepeatTime x max(0,
+rounds - 1)) over those answering IsKindOf(25h), counts them (EDI), and returns `float(BombDelay x max(0, n - 1) +
+longest)` (007C200D `FLD [class+1F4h]`, `FIMUL`, `FADD`, `FSTP float`). The host's `lb_rack_timing_007c1fb0` had the
+longest span only. True adds the term, computed in double and rounded once. The host's n is its BombPlatform rack
+count (LABELLED: kind 25h is the rack class, docs/RELEASE_ISSUE_STAGE.md). It feeds approach+A8h (U(0.3, 0.65) x it)
+and the prepare arm's A8h (x 0.85). Prediction: identical for one-rack planes (USNOS wave 2 logs `racks=1`); a
+multi-rack level bomber releases later in its aim window.
