@@ -1918,3 +1918,79 @@ passes on each):
 `p13_vc_equip.py` (a class's DefaultEquipment and Equipments from this installation's vehicleclasses.lua),
 `p13_e8_loadout.py`, `p13_e8_dd_first.py`; exes `p13_m3` (57ecc76a4), `p13_off_rc` / `p13_rc` / `p13_off_nb` / `p13_nb`
 (the pairs).
+
+## 50. USNOS plane #4.4|.-IV: a retired plane is still a neighbour: `kStockReturnDestroyBytesBound` (cc9-physics14, 2026-10-17; lead item 1)
+
+### 50.1 The chain, measured (diagnostic builds of cd47de824, not committed)
+
+USNOS 14000-15200 mission frames with `cc9-ships44\local\s55_os_r0.txt`; logs `local\p14_diag{,2,4,5,6}_usnos.log`.
+
+1. **The runway exit starts in the flare.** Each #4.x level bomber touches down with its nose 0.27-0.41 rad left of its
+   track. The track stays on the runway axis (-1.11 against holder+88h -1.0995). At touchdown the wheel friction turns
+   the velocity onto the nose, and the plane rolls off at about 20 degrees. Park is fast (`v` > 1.5 x MoveSpd) and steers
+   along the axis (009B273A JE 009B28BF: `sx` = 0), so the yaw saturates and still loses. #4.4|.-IV crosses
+   x = -17.5 (half of the 35 m holder) at 11 m/s and the land task aborts. #1.4|.-II lands with an error of 0.005 and
+   taxis into its hangar. On cd47de824 both #4.4|.-III and -IV leave the runway.
+2. **The pilot is overridden.** In the flare the planner asks pitch -1 and yaw +1. Each think, 0099BF30 (`gunfire_repair`)
+   replaces the command block with pitch +1.1 and yaw -1.1 (by the bank's sign), because 0099B940 finds a band
+   covering [-1, 1] in both sets. Pitch runs to 0.46 (command 0.1047) and the heading by -0.3 rad in 3 s.
+3. **The bands.**
+   - Terrain avoidance 0099F1C0 puts pitch bands [-1.1, 0.3-0.56] on every lander, #1.4|.-II included. Its search never
+     fails.
+   - The #4.x planes also get vehicle avoidance 007DF4F0 bands in both sets. They widen to [-2.0, 2.0] by the threshold.
+   - The neighbour is #1.4|.-II on every #4.4 line: closing, d = 154 -> 30 m, at (-8005.9, 5.2, -8923.8), the
+     touchdown zone. Its `+900h` is 1, `+904h` set and `+C00h` clear.
+4. **#1.4|.-II was retired at 396.18 s.** It taxied into the hangar, and the stock return
+   (007CE6CA C7h -> 007CC8B0 -> 007F1CA0) set flight state 1 and called Kill(plane, 5). The host kept its `+5Fh` and
+   `+60h` bytes clear. The vehicle arm's neighbour refresh (007E11D0 as the host carries it) keeps any slot whose
+   state is active and whose `+5Eh`/`+60h` are clear. So the retired plane stayed listed, and every later lander
+   avoided it.
+
+### 50.2 The image: Kill sets the bytes at once
+
+- `00926D90` Kill (disk listing): `00926DF3` +5Fh = 1. With +60h clear (`00926DEF`), vtable[70h](1) at `00926E05`.
+- The plane's vtable[70h] is `0077D1A0` (the dword at `00D066A8` and at `00D19D98`). It tail-calls `00926C80` Destroy at
+  `0077D243`, which stores +60h = 1 at `00926CD5` before anything is queued.
+- The host's C3Ah death path already sets +60h (and the flush's +5Dh) at once (`kPlaneDeathFlagsBound`). The
+  ship kill-depth path sets +5Fh and +60h. The stock return set neither.
+- No avoidance or neighbour test in the image keys on `+C00h` or visibility. `007DF96C`-`007DF9A9` skips only
+  `pilot+260h` and non-planes. So the image removes the retired plane through these bytes, not through the hide.
+
+### 50.3 The binding
+
+`kStockReturnDestroyBytesBound` (`src/game_hosts_units.cpp`), committed **OFF**. With it ON, the stock return sets
++5Fh = 1 and, when +60h is clear, +60h = 1 and the flush's +5Dh (`state->simulate`), after its Kill. The retired
+plane then fails the neighbour refresh's in-world test and leaves the list at the next 3 s refresh. Summary line:
+`summary stock return destroy bytes bound= destroys=`.
+
+### 50.4 Predictions (ON against OFF, both from the commit that carries this section; written before the runs)
+
+1. **USNOS** (s55_os_r0.txt, 150000 frames):
+   - `destroys` equals the stock returns of the row.
+   - No #4.x vehicle-avoidance band against a retired plane. The #4.x flares keep the planner's pitch and yaw, and the
+     touchdown heading errors fall from 0.27-0.41 to under 0.05.
+   - No `plane ground contact lost` and no ground re-takeoff for a #4.x bomber. #4.4|.-IV parks and is retired, so
+     PhOneAttackers no longer keeps a live member below the sea.
+   - `pair_diff` 3. Every death row that moves involves a plane that landed after the first stock return, or the
+     phase it closes.
+2. **JM05 9000** (landing control, airfield and carrier stock returns): `destroys` > 0, `pair_diff` 1 or 3. Any moved
+   landing is one whose approach crossed a retired plane's spot.
+3. **USN01 3000** (control): `destroys` 0 unless a plane is stowed before 3000 frames; `pair_diff` 0 or 1.
+4. **Mechanism failure:** a retired plane still listed after the next refresh. Also a failure: any change on a row
+   with no stock return, or a lander that still gets bands against a plane with +60h set.
+
+### 50.5 Answers to the lead's three questions
+
+- **(a) Why park lets it leave the runway.** Park's band clamp (009B276A-009B2851) applies only when slow. A fast plane
+  steers straight down the axis, as the image does. The plane leaves because it touched down yawed 0.41 rad by the
+  avoidance override (50.1).
+- **(b) Abort's on-ground arm** (009B0E74-009B0F93) is transcribed behind `kLandAbortGroundArmBound` (SQUADRON_LAND_TASK
+  5v). With the ground re-takeoff ON (5br) it runs one tick per grounded abort. It does not close this row.
+- **(c) Why the plane under the sea does not die.**
+  - A state-4 plane has no water or terrain test in the image. `007CBFA0` calls no water sampler. `007CB7F0` is reached
+    only from `007CC2F0` (state 7) and from the control-mode slot 28h (`007CC2D0`).
+  - A `.text` scan for slot-28h calls through `+72Ch` finds none. The same scan for slot 24h finds `007CBD6B`, so the
+    scan works. Tool: `local\p14_slot_call_scan.py`.
+  - The takeoff run's arm D (`h = 0 > y`) returns every step once the plane is below 0, which leaves it level near
+    -105 m.
+  - That is the image's law as read. The fix belongs upstream (50.3).

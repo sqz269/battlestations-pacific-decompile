@@ -2906,7 +2906,7 @@ struct GameUnitsHost::Impl {
     void plane_stock_return_c7h_007cc8b0(GameUnitSlot& p);
     unsigned long long stock_return_sends{0}, stock_return_adds{0}, stock_return_no_deck{0};
     unsigned long long stock_return_no_squadron{0}, stock_return_slot_returns{0};
-    unsigned long long stock_return_site_leaves{0};
+    unsigned long long stock_return_site_leaves{0}, stock_return_destroys{0};
     unsigned long long stock_return_queue_erases{0}, stock_return_queue_misses{0};
     unsigned long long squadron_kill_queue_kills{0}, squadron_kill_queue_erases{0};
     unsigned long long land_retire_leader_calls{0}, land_retire_queue_erases{0};
@@ -6035,6 +6035,15 @@ struct GameUnitsHost::Impl {
     // last plane's slot return 006C5950, and Kill(plane, 5). False: the stowed
     // plane stays alive on the site vector and the elevator re-takes it.
     static constexpr bool kStowedPlaneStockReturnBound = true;   // ON by its pairs (SHIP_AI 200.2)
+    // Packet cc9_p14_stock_return_destroy (docs/OCEAN_WAVE_FIELD.md 50). True: the
+    // stock return's Kill(plane, 5) sets the entity bytes the image's Kill sets at
+    // once: 00926DF3 +5Fh = 1, and with +60h clear vtable[70h] 0077D1A0 -> 0077D243
+    // 00926C80 Destroy -> 00926CD5 +60h = 1; the flush's +5Dh store (0092639B) is
+    // taken in the same step, as the C3Ah death path does. A retired plane then
+    // leaves every in-world test (the 007E11D0 neighbour refresh of the vehicle
+    // avoidance 007DF4F0 among them). False: the retired plane keeps +5Fh/+60h
+    // clear and stays listed as a neighbour.
+    static constexpr bool kStockReturnDestroyBytesBound = false;
     // Packet cc9_stock_return_queue_erase (docs/SHIP_AI_OPEN_ITEMS.md 204). True: the
     // last plane's slot return 006C5950 first erases the squadron's landing-queue
     // record at the block (006C59A4-006C59DC: find at +98h, 14h stride, count +9Ch;
@@ -14937,6 +14946,19 @@ void GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0(GameUnitSlot& p) {
     note_kill_cause(p.process_index, 5);   // 007F1D53 PUSH 5: KillReason "landed" (00E0CF04)
     p.plane_death_removed = true;
     if (gunnery != nullptr) gunnery->kill_unit_00926d90(p.process_index, 5);
+    if constexpr (kStockReturnDestroyBytesBound) {
+        // 00926D90 Kill: +5Fh = 1 (00926DF3); +60h clear, so vtable[70h] 0077D1A0
+        // tail-calls 00926C80 Destroy, +60h = 1 (00926CD5). The flush's +5Dh
+        // (0092639B) is taken at once, as the death path's is.
+        if (p.scene_removed_005f == 0) {
+            p.scene_removed_005f = 1;
+            if (p.scene_pending_destroy_0060 == 0) {
+                p.scene_pending_destroy_0060 = 1;
+                if (p.state != nullptr) p.state->simulate = 1;
+                ++stock_return_destroys;
+            }
+        }
+    }
     log.notef("  stock return: %s back into %s's stock (class %d -> %d) at %.2f s, squadron %s, "
         "slots returned %zu (007CE6CA C7h -> 007CC8B0 -> 007F1CA0 -> Kill 5, packet "
         "cc9_stowed_plane_stock_return)", p.row.name.c_str(),
@@ -38669,6 +38691,9 @@ void GameUnitsHost::report() {
         host.stock_return_sends, host.stock_return_adds, host.stock_return_no_deck,
         host.stock_return_no_squadron, host.stock_return_slot_returns,
         host.stock_return_site_leaves);
+    host.log.notef("summary stock return destroy bytes bound=%d destroys=%llu (00926D90 -> "
+        "0077D1A0 -> 00926C80, packet cc9_p14_stock_return_destroy)",
+        Impl::kStockReturnDestroyBytesBound ? 1 : 0, host.stock_return_destroys);
     host.log.notef("summary stock return queue erase bound=%d erases=%llu misses=%llu "
         "(006C59A4 -> 006BF7F0, packet cc9_stock_return_queue_erase)",
         Impl::kStockReturnQueueEraseBound ? 1 : 0, host.stock_return_queue_erases,
