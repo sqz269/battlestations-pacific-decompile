@@ -1012,10 +1012,15 @@ void cc13_sweepB3_hud_powerup_carousel_animate_006113a0(void* carousel, float dt
 // - When +1FCh == 0.0f (00D7A218; ordered): +210h, when non-null, vtable
 //   +4h(1) (deleted; the pointer is NOT cleared); byte +1F9h = 0; +0A0h and
 //   +0A4h vtable +34h(1) (the last as a tail jump).
+// Precision: the screen's update slot +24h (0061BEA0, vtable 00CF4DE8) runs from the GUI
+// manager update in the frame (004D8620) on the main thread, which runs at 24-bit
+// precision control (docs/CC13_FPU_PRECISION.md). Every x87 op therefore rounds to
+// float, so each chain is float per operation in the image's order (rd() below).
 void cc13_sweepB3_hud_powerup_tick_slide_00611770(void* screen, float dt, Cc13SweepB3Host& host) {
+    const auto rd = [](double x) { return static_cast<float>(x); };
     const float v = at<float>(screen, 0x1FC);
     if (v == 0.0f) return;
-    const float decayed = static_cast<float>(static_cast<double>(v) - static_cast<double>(dt) * f64_bits(0x4010000000000000ull));  // 00D7A328
+    const float decayed = rd(static_cast<double>(v) - rd(static_cast<double>(dt) * f64_bits(0x4010000000000000ull)));  // 00D7A328
     at<float>(screen, 0x1FC) = decayed;
     if (0.0f > decayed) at<float>(screen, 0x1FC) = 0.0f;
 
@@ -1025,31 +1030,43 @@ void cc13_sweepB3_hud_powerup_tick_slide_00611770(void* screen, float dt, Cc13Sw
     const bool open = at<std::uint8_t>(screen, 0x1F8) != 0;
     float acc;
     if (open) {
-        host.widget_vcall_44_set_float(slider, at<float>(support(), 0x2A8) * c() + at<float>(support(), 0x2A4));
-        host.widget_vcall_44_set_float(at<void*>(screen, 0x214),
-                                       -at<float>(support(), 0x2A4) - at<float>(support(), 0x2A8) * c());
-        host.hud_support_set_large_icon_alpha_0065e870(support(), at<void*>(screen, 0x210), c());
-        acc = static_cast<float>((static_cast<double>(c()) + f64_bits(0x3FF0000000000000ull)) *  // 00D7A210
-                                 static_cast<double>(at<float>(support(), 0x2A8)));
-    } else {
-        const double five = f64_bits(0x4014000000000000ull);  // 00D7A370
+        // 006117E1..006117EF: FLD s, FMUL c, FADD p.
         host.widget_vcall_44_set_float(
-            slider, static_cast<float>((five - static_cast<double>(c())) * static_cast<double>(at<float>(support(), 0x2A8)) +
-                                       static_cast<double>(at<float>(support(), 0x2A4))));
+            slider, rd(static_cast<double>(rd(static_cast<double>(at<float>(support(), 0x2A8)) * c())) +
+                       at<float>(support(), 0x2A4)));
+        // 00611811..00611831: FLD p, FCHS, FLD s, FMUL c, FSUBP -> -p - s*c.
         host.widget_vcall_44_set_float(
             at<void*>(screen, 0x214),
-            static_cast<float>(-static_cast<double>(at<float>(support(), 0x2A4)) -
-                               (five - static_cast<double>(c())) * static_cast<double>(at<float>(support(), 0x2A8))));
+            rd(static_cast<double>(-at<float>(support(), 0x2A4)) -
+               rd(static_cast<double>(at<float>(support(), 0x2A8)) * c())));
         host.hud_support_set_large_icon_alpha_0065e870(support(), at<void*>(screen, 0x210), c());
-        acc = (1.0f - c()) * at<float>(support(), 0x2A8);
+        // 00611862..0061187C: FLD c, FADD 1.0 (double), FMUL s.
+        acc = rd(static_cast<double>(rd(static_cast<double>(c()) + f64_bits(0x3FF0000000000000ull))) *  // 00D7A210
+                 at<float>(support(), 0x2A8));
+    } else {
+        const double five = f64_bits(0x4014000000000000ull);  // 00D7A370
+        // 00611918..00611938: FLD c, FSUBR 5.0 (double), FMUL s, FADD p.
+        host.widget_vcall_44_set_float(
+            slider, rd(static_cast<double>(rd(static_cast<double>(rd(five - c())) * at<float>(support(), 0x2A8))) +
+                       at<float>(support(), 0x2A4)));
+        // 0061195A..00611980: FLD p, FCHS, FLD c, FSUBR 5.0, FMUL s, FSUBP -> -p - (5-c)*s.
+        host.widget_vcall_44_set_float(
+            at<void*>(screen, 0x214),
+            rd(static_cast<double>(-at<float>(support(), 0x2A4)) -
+               rd(static_cast<double>(rd(five - c())) * at<float>(support(), 0x2A8))));
+        host.hud_support_set_large_icon_alpha_0065e870(support(), at<void*>(screen, 0x210), c());
+        // 006119B1..006119CE: FLD c, FLD1, FSUBRP, FMUL s.
+        acc = rd(static_cast<double>(rd(1.0 - c())) * at<float>(support(), 0x2A8));
     }
     for (std::size_t i = 0; i < 4; ++i) {
-        host.widget_vcall_44_set_float(at<void*>(screen, 0x58 + 4 * i), at<float>(support(), 0x2A4) + acc);
-        host.widget_vcall_44_set_float(at<void*>(screen, 0x68 + 4 * i), -at<float>(support(), 0x2A4) - acc);
-        acc = at<float>(support(), 0x2A8) + acc;
+        host.widget_vcall_44_set_float(at<void*>(screen, 0x58 + 4 * i),
+                                       rd(static_cast<double>(at<float>(support(), 0x2A4)) + acc));
+        host.widget_vcall_44_set_float(at<void*>(screen, 0x68 + 4 * i),
+                                       rd(static_cast<double>(-at<float>(support(), 0x2A4)) - acc));
+        acc = rd(static_cast<double>(at<float>(support(), 0x2A8)) + acc);
     }
     void* other = at<void*>(screen, open ? 0x64 : 0x58);
-    host.hud_support_set_large_icon_alpha_0065e870(support(), other, 1.0f - c());
+    host.hud_support_set_large_icon_alpha_0065e870(support(), other, rd(1.0 - c()));
     if (c() == f32_bits(0x00000000u)) {  // 00D7A218
         if (at<void*>(screen, 0x210) != nullptr) host.object_vcall_04_delete(at<void*>(screen, 0x210), 1);
         at<std::uint8_t>(screen, 0x1F9) = 0;

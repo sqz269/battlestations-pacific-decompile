@@ -177,10 +177,15 @@ bool matrix_rotate_by_angular_velocity_0085e4d0(Front4Host& host, float* out, co
                                                 float wy, float wz, float dt)
 {
     // 0085E4D6..0085E506: (wx*wx + wy*wy) + wz*wz on the x87 stack, stored as a float.
-    // Products of floats are exact in double; the sums are rounded to double here
-    // instead of the 64-bit x87 mantissa before the final float store.
-    const float length_sq = f32((static_cast<double>(wx) * wx + static_cast<double>(wy) * wy) +
-                                static_cast<double>(wz) * wz);
+    // Callers: the HUD lead marker 00640A20 and pick screen 00526A40 (main thread, 24-bit
+    // precision control), and plane / gun-bot fixed-step jobs (007C18B0, 007D9F60, 00901C20
+    // via 007CE040 / 007C6500 slots), which the frame-job pool runs on the main thread at 24
+    // bits or on a worker at 53 bits (docs/CC13_FPU_PRECISION.md). Modelled at 24 bits: every
+    // FMULP / FMUL / FADDP rounds to float, in the image's order.
+    const float wy2 = f32(static_cast<double>(wy) * wy);
+    const float wx2 = f32(static_cast<double>(wx) * wx);
+    const float wz2 = f32(static_cast<double>(wz) * wz);
+    const float length_sq = f32(static_cast<double>(f32(static_cast<double>(wx2) + wy2)) + wz2);
     // 0085E514 FCOMI / JBE: an unordered or small square takes the zero arm.
     float length = 0.0f;
     if (static_cast<double>(length_sq) > kLengthSquaredFloor_00ce3820)

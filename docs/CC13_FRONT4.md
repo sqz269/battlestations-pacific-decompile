@@ -60,7 +60,10 @@ callers with other missing callees stay blocked on those.
 
 ### 0085E4D0 in detail
 
-- len2 = (wx*wx + wy*wy) + wz*wz, stored as a float. When len2 > 1e-10 (double at 00CE3820;
+- len2 = (wx*wx + wy*wy) + wz*wz, stored as a float. The C++ rounds each product and each sum to
+  float (24-bit precision control: the HUD callers run on the main thread, the fixed-step plane and
+  gun-bot callers on the main thread or a 53-bit pool worker; cc13-fix13, docs/CC13_FPU_PRECISION.md).
+  When len2 > 1e-10 (double at 00CE3820;
   FCOMI/JBE, so NaN takes the zero arm) len = sqrt(len2) through `00BF7030`, else 0. When
   1e-8 (double at 00D7A350) > len (FCOMIP/JA) the function returns without writing `out`.
 - axis = w / len (FDIV, FDIV, FDIVR; written into the argument slots).
