@@ -217,6 +217,9 @@ struct GameCommandsHost::Impl {
     unsigned long long path_follow_forced{0};
     unsigned long long path_follow_multi_leg{0};
     unsigned long long path_follow_squadron{0};   // packet s53_sqn_path, 0084E3A8 calls
+    // Packet s54_path_finish: true answers that ran 00836D0E / 0084E3B5, and
+    // the stage raises among them that changed the stage.
+    unsigned long long path_follow_finishes{0}, path_follow_finish_raises{0};
     // Packet cc9_target_release.
     const GameCommandTargetFactsSource* target_facts{nullptr};
     // Packet cc9_director_target_checks: the entity's +5Dh as 0071D712 reads
@@ -3229,6 +3232,9 @@ bool GameCommandsHost::advance_path_cursor_00836bf0(std::size_t unit_index,
     // 00836BF0 CMP EAX,0xe08f80: the arm runs only while the director's current
     // command is `moveonpath`.
     if (director.slot_command[0] != 0x00e08f80u) return false;
+    // 00836A81 CMP [ESI+48h],2; JE 00836DC9 (packet s54_path_finish): a director
+    // whose stage reached 2 (a finish not yet drained) runs no arm.
+    if (bsp::kPathFollowFinishBound && director.stage >= 2) return false;
 
     if (director.path_last_valid) {
         const float mx = unit_x - director.path_last_x;
@@ -3288,6 +3294,25 @@ bool GameCommandsHost::advance_path_cursor_00836bf0(std::size_t unit_index,
         }
         if (r.advances > 0) {
             host.done("WeaponDirector::path_cursor_advance_007adcc0", 0x007adcc0u);
+        }
+        if (bsp::kPathFollowFinishBound && r.answer) {
+            // 00836D0E (ship) / 0084E3B5 (squadron): 0071D810(2), monotonic, whose
+            // stage 2 sends MT_GAMEUNIT_CLEARCMD (routed back here in a local
+            // session, as director_raise_primary_stage_0071d810 does), then
+            // 00984300(unit, target, moveonpath [00E08F80], "finished").
+            ++host.path_follow_finishes;
+            if (bsp::stage_raise_applies(director.stage, 2)) {
+                director.stage = 2;
+                ++host.summary.stage_raises;
+                ++host.path_follow_finish_raises;
+                host.done("WeaponDirector::raise_primary_stage", 0x0071d810u);
+                if (bsp::stage_raise_sends_message(2, kSessionModeSinglePlayer)) {
+                    host.route_clear_command(unit_index, host.player_of(unit_index));
+                }
+            } else {
+                host.done("WeaponDirector::raise_primary_stage", 0x0071d810u);
+            }
+            report_command_event_00984300(unit_index, 0x00e08f80u, "finished");
         }
         return r.answer;
     }
@@ -3741,6 +3766,11 @@ void GameCommandsHost::report() {
         bsp::kPathCursorFollowStepBound ? 1 : 0, host.path_follow_calls,
         host.path_follow_lookahead_misses, host.path_follow_forced, host.path_follow_multi_leg,
         bsp::kSquadronPathFollowStepBound ? 1 : 0, host.path_follow_squadron);
+    if constexpr (bsp::kPathFollowFinishBound) {
+        host.log.notef("summary mission path follow finish answers=%llu stage_raises=%llu "
+            "(00836D0E / 0084E3B5, packet s54_path_finish)",
+            host.path_follow_finishes, host.path_follow_finish_raises);
+    }
     host.log.notef("summary mission commands units=%zu resolved=%zu issued=%zu pushed=%zu "
         "current=%zu latched=%zu with_thrust=%zu ai_groups=%zu ai_forwards=%zu steps=%llu",
         host.summary.units, host.summary.resolved, host.summary.issued, host.summary.pushed,

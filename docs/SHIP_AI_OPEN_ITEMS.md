@@ -18393,3 +18393,28 @@ refusal in the immediate-fire slot still applies) rather than at the send.
 trigger must be held at the moment of a retarget); where a drop lands, the torpedo or charge goes 0.1-0.2 s
 later or not at all for that target. BSM01 (four depth-charge holds), USN01, USN10: gameplay identical or a
 small moved set traced to a drop.
+
+## 267. The 007ADD70 true-answer finish blocks, kPathFollowFinishBound (cc9-ships54, 2026-10-17; lead item 2)
+
+**What the image does.** Both arms test 007ADD70's answer. The ship arm checks it at 00836D0A and the squadron
+arm at 0084E3AD. True means the end test refused an advance at the last point of a non-looping path. On true
+the arm runs its finish block, 00836D0E..00836D62 (ship) or 0084E3B5.. (squadron):
+- 0071D810(2) on the director. The raise is monotonic, and reaching stage 2 sends MT_GAMEUNIT_CLEARCMD; in a local
+  session that message clears slot 0 and advances the queue.
+- 00984300 BSP_MissionEvents_ReportCommand(unit [+24Ch], a fresh target, `moveonpath` [00E08F80],
+  "finished" [00D09FD8]).
+00836A81 (CMP [ESI+48h],2; JE 00836DC9) skips every arm once the stage is 2. The squadron gate is the same
+(stage +48h < 2).
+**What the host did.** `advance_path_cursor_00836bf0` returned the answer, and its only caller (the director
+step in game_hosts_units.cpp) dropped it. A moveonpath command therefore ended only through the moveonpath state's
+own finish (009E59C0, end_command_0071e430 at 009E5C70), whose arrival test differs from the arm's radius
+(min(hull * 2.5, turn * 1.2) for a ship; max(TravelSpeed / turn * 1.2, ClosingDist), times 1.5 off AI, for a
+squadron).
+**Bound OFF**: `kPathFollowFinishBound` (include/bsp/ship_ai_path_cursor.hpp). When the switch is on and an arm's
+own switch is on, a true answer raises the stage to 2. The raise routes the clear the same way as
+director_raise_primary_stage_0071d810 (it respects kSetCommandQueueDelayBound). It also reports `finished`, and
+the arm is skipped at stage 2. Summary line `path follow finish answers / stage_raises`.
+**Predictions.** Answers are rare: they need a non-looping authored path whose last point the unit reaches inside
+the arm radius before the state's own finish ends the command. Where one lands, the command ends earlier than
+before and the next queued command (or the default) starts sooner. Candidates: JM06 transports, USN10, JM08
+(Gyoraitei on Shipyard1Path), BSM09. Rows without such a path stay gameplay identical (0/1).
