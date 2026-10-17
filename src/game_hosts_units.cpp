@@ -13689,6 +13689,11 @@ void GameUnitsHost::Impl::ensure_parent_link_71c_006f5cc0(std::size_t index) {
         // distance (per-axis float differences, entity minus building; the sum
         // stored as a float) not above FILD(R * R) (006F5DC9). The last adopter wins.
         slot.parent_link_71c = -1;
+        // 006F5D10 / 006F5D1F / 006F5D2E: only an entity answering IsKindOf 1Bh, 45h
+        // or 46h is adopted (packet cc9_g51_inferior_failure; the airfield and
+        // shipyard callers already met it).
+        if (!bsp::unit_is_kind_of(slot.class_id, 0x1B) && !bsp::unit_is_kind_of(slot.class_id, 0x45)
+            && !bsp::unit_is_kind_of(slot.class_id, 0x46)) return;
         if (slot.bag_min_level_724) {
             for (std::size_t c = 0; c < slots.size(); ++c) {
                 const GameUnitSlot& cb = *slots[c];
@@ -38397,6 +38402,13 @@ void GameUnitsHost::set_inferior_failure_720(std::size_t index) {
     if (index >= impl_->slots.size()) return;
     // 0095AD0A: MOV byte [ESI+720h], 1 on message 7Dh (00953DA0, "InferiorFailure").
     ++impl_->slots[index]->inferior_failure_steps;
+}
+
+void GameUnitsHost::clear_inferior_failure_720(std::size_t index) {
+    if (index >= impl_->slots.size()) return;
+    // 0095AD7F, message 7Eh in 0095ABE0 (vtable[19Ch], "InferiorFailure" stopped): +720h = 0 and
+    // +728h = 0 (the timer lives in the gunnery host).
+    impl_->slots[index]->inferior_failure_steps = 0;
 }
 
 std::size_t GameUnitsHost::parent_link_71c(std::size_t index) {

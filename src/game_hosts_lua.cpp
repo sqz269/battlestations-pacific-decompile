@@ -8058,6 +8058,26 @@ float GameMissionLuaHost::read_vehicle_class_number(int index, const char* key,
     return value;
 }
 
+bool GameMissionLuaHost::read_vehicle_class_boolean(int index, const char* key,
+    bool fallback) {
+    if (state_ == nullptr || index < 0 || key == nullptr) return fallback;
+    const int top = ::lua_gettop(state_);
+    bool value = fallback;
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_pushinteger(state_, index);
+        ::lua_gettable(state_, -2);
+        if (::lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, key);
+            if (::lua_type(state_, -1) == LUA_TBOOLEAN) {
+                value = ::lua_toboolean(state_, -1) != 0;
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    return value;
+}
+
 float GameMissionLuaHost::read_bullet_class_number(int index, const char* key,
     float fallback) {
     // Scripts/datatables/autoload/bulletclasses.lua publishes the selected
