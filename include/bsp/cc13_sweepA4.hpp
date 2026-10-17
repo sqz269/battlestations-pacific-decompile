@@ -325,6 +325,67 @@ struct SweepA4Host : cc13_sweepA3::SweepA3Host {
     virtual void unit_distance_record_construct_00522860(Raw record, void* unit) = 0;
     // 004B7EF0 BSP_ObserverLink_DestroyBase, __thiscall(ECX = handle).
     virtual void observer_link_destroy_base_004b7ef0(Raw handle) = 0;
+
+    // --- 00487A70 callees -----------------------------------------------------
+    // 00903860 BSP_World_GroundHeightAt, __thiscall(ECX = [[00E188A8]+19CCh],
+    // const float3*, float* out), RET 8 -> AL (unused here).
+    virtual bool world_ground_height_at_00903860(void* world, const float* point, float* out) = 0;
+    // 008685E0 BSP_PointEffect_CreateFromPosition, ECX = ref-counted out
+    // pointer, EDX = manager ([[00E188A8]+19ECh]), stack (ref-counted
+    // definition by value (already AddRef'd by the caller), const float3*,
+    // int, int), RET 10h -> EAX = the out pointer.
+    virtual void** point_effect_create_from_position_008685e0(void** out, void* manager, void* definition,
+                                                              const float* point, std::int32_t a, std::int32_t b) = 0;
+    // 004842C0 BSP_PointEffect_SetWorldPoint, __thiscall(ECX = effect, const float3*), RET 4.
+    virtual void point_effect_set_world_point_004842c0(void* effect, const float* point) = 0;
+    // 00B64640 / 00B646E0 / 00B64780 BSP_Matrix_BuildRotationX / Y / Z, ECX =
+    // out 4x4, EDX = const float* angle -> EAX = out.
+    virtual float* matrix_build_rotation_x_00b64640(float* out, const float* angle) = 0;
+    virtual float* matrix_build_rotation_y_00b646e0(float* out, const float* angle) = 0;
+    virtual float* matrix_build_rotation_z_00b64780(float* out, const float* angle) = 0;
+    // [[entity]+0D8h](entity): after the world matrix is replaced.
+    virtual void vcall_entity_matrix_changed_d8(void* entity) = 0;
+
+    // --- 0051CDE0 callees -----------------------------------------------------
+    // 00518DA0 BSP_FrontEndFrame_SetSelection, __fastcall(ECX = int).
+    virtual void front_end_frame_set_selection_00518da0(std::int32_t selection) = 0;
+    // 005189B0 BSP_FrontEndFrame_SetTitle, __thiscall(ECX = const 8-byte string*).
+    virtual void front_end_frame_set_title_005189b0(Raw title) = 0;
+    // 0051CC90 STL_BriefingPageMap_Index_0051cc90, __thiscall(ECX = map
+    // (screen+12Ch), const key*), RET 4 -> EAX = &value (vendor body).
+    virtual void** briefing_page_map_index_0051cc90(Raw map, const void* key) = 0;
+    // 00AA7E00 BSP_GuiWidget_FindChildByName, __thiscall(ECX = widget, const
+    // 8-byte string*, int), RET 8 -> EAX.
+    virtual void* gui_widget_find_child_by_name_00aa7e00(void* widget, Raw name, std::int32_t flag) = 0;
+    // 00AAA2B0 BSP_GuiWidget_FindChildByNameSuffix, __thiscall(ECX = widget,
+    // const 8-byte string*), RET 4 -> EAX.
+    virtual void* gui_widget_find_child_by_name_suffix_00aaa2b0(void* widget, Raw suffix) = 0;
+    // 00B6DA70 BSP_SceneNode_SetVisibilityFactor, __thiscall(ECX = node,
+    // float, char recurse), RET 8.
+    virtual void scene_node_set_visibility_factor_00b6da70(void* node, float value, std::int8_t recurse) = 0;
+    // 0051C5F0 STL_Vector_InsertOne_0051c5f0, __thiscall(ECX = vector of
+    // widget pointers, iterator* out, checked iterator {container, pointer} by
+    // value, void* const*), RET 10h (vendor body).
+    virtual void widget_vector_insert_0051c5f0(Raw vector, void* out_iterator, Raw iterator_container, void* where,
+                                               void* const* widget) = 0;
+    // 00A9BEC0 BSP_GuiListbox_ClearRows, __thiscall(ECX = listbox).
+    virtual void gui_listbox_clear_rows_00a9bec0(void* listbox) = 0;
+    // [[listbox]+60h](listbox, int) and [[listbox]+80h](listbox, int), RET 4.
+    virtual void vcall_listbox_60(void* listbox, std::int32_t value) = 0;
+    virtual void vcall_listbox_80(void* listbox, std::int32_t value) = 0;
+    // 00AAB4C0 BSP_GuiWidget_CloneSubtree, __thiscall(ECX = template widget,
+    // parent clone), RET 4 -> EAX = the clone.
+    virtual void* gui_widget_clone_subtree_00aab4c0(void* widget, void* parent) = 0;
+    // 00A9D750 BSP_GuiListbox_InsertRow, __thiscall(ECX = listbox, row,
+    // iterator pointer, after byte), RET 0Ch.
+    virtual void gui_listbox_insert_row_00a9d750(void* listbox, void* row, void* position, std::int32_t after) = 0;
+    // 00ABBE50 BSP_GuiText_SetLocalisedCString, __thiscall(ECX = text widget,
+    // const char*, localise flag), RET 8.
+    virtual void gui_text_set_localised_cstring_00abbe50(void* text, const char* value, std::int32_t localise) = 0;
+    // 00A9CC50 BSP_GuiListbox_ScrollBy / 00A9C7C0 BSP_GuiListbox_SelectIndex,
+    // __thiscall(ECX = listbox, int), RET 4.
+    virtual void gui_listbox_scroll_by_00a9cc50(void* listbox, std::int32_t count) = 0;
+    virtual void gui_listbox_select_index_00a9c7c0(void* listbox, std::int32_t index) = 0;
 };
 
 // The 1Ch-byte legacy (MSVC 2008) basic_string, storage only.
@@ -370,5 +431,13 @@ void movie_entity_track_update_00459020(Raw track, float time, SweepA4Host& host
 // 00526180, __thiscall(ECX = unit pick screen), plain RET: refreshes the
 // target cycle list (handles at screen+C4h) in place.
 void unit_pick_refresh_cycle_list_00526180(Raw screen, SweepA4Host& host);
+
+// 00487A70, __thiscall(ECX = debris set, float dt), RET 4; held only by the
+// vtable slot at 00CE6854.
+void debris_set_update_00487a70(Raw set, float dt, SweepA4Host& host);
+
+// 0051CDE0 BSP_BriefingScreen_Enter, __thiscall(ECX = briefing screen), plain
+// RET (slot +18h of the vtable at 00CEC948).
+void briefing_screen_enter_0051cde0(Raw screen, SweepA4Host& host);
 
 }  // namespace bsp::cc13_sweepA4

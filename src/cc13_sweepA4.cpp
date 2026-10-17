@@ -1379,4 +1379,433 @@ void unit_pick_refresh_cycle_list_00526180(Raw screen, SweepA4Host& host) {
     host.free_00bf65ac(records.ptr(4));  // 005266FE
 }
 
+// ---------------------------------------------------------------------------
+// 00487A70, the debris set update
+// __thiscall(ECX = set, float dt [ESP+234h]), RET 4 at 004881E1; slot +4h of
+// the vtable at 00CE6850 (slot 0 is 0049D630); no direct caller. EH state
+// [ESP+22Ch] covers only the effect pointer of the entity spawn.
+// set+24h/+28h: a checked vector of 4Ch records: +0h the spawned entity, +4h
+// the class (+8h vtable create, +50h gravity scale, +54h splash effect
+// definition, +58h trail effect definition, both ref-counted with the count
+// at +4h), +8h..+10h position, +14h..+1Ch velocity, +20h..+28h rotation,
+// +2Ch..+34h rotation rates, +38h..+40h their decay, +44h drag, +48h active.
+// Constants: -9.81 (double 00CE65E0), 1e-10 (double 00CE3820), 0.4 (double
+// 00CE65D0, the float widened), -100.0f (00CE65D8, the ground default),
+// 1.0f (00D7A24C). The x87 expressions were traced from the bytes with
+// local/sweepA4_x87sim.py (register forms decoded from the opcode bytes).
+// Simplification: products and sums the image keeps in x87 registers are
+// done in double and rounded where the image stores a float; the CRT sqrt
+// (00BF7030) is std::sqrt.
+// ---------------------------------------------------------------------------
+namespace {
+
+// The inlined release of a ref-counted pointer (count at +4h): when the
+// decrement reaches 0, slot 0 of its vtable.
+void release_ref(void* object, SweepA4Host& host) {
+    if (object == nullptr) return;
+    if (host.interlocked_decrement_ce2220(reinterpret_cast<volatile long*>(raw(object).field(4))) == 0)
+        host.vcall_release_slot0(object);
+}
+
+}  // namespace
+
+void debris_set_update_00487a70(Raw set, float dt, SweepA4Host& host) {
+    bool any_active = false;  // [ESP+17h]
+    std::uint32_t offset = 0; // [ESP+20h]
+    for (std::uint32_t index = 0;; ++index, offset += 0x4c) {
+        // 00487AA3..00487AF1: the bound and the checked access.
+        const auto count = [&]() -> std::uint32_t {
+            const auto first = reinterpret_cast<std::intptr_t>(set.ptr(0x24));
+            return static_cast<std::uint32_t>((reinterpret_cast<std::intptr_t>(set.ptr(0x28)) - first) / 0x4c);
+        };
+        if (set.ptr(0x24) == nullptr || index >= count()) break;
+        if (set.ptr(0x24) == nullptr || index >= count()) host.invalid_parameter_noinfo_00bf6713();
+        Raw record = raw(bytes_at(set.ptr(0x24)) + offset);
+
+        if (record.at<std::uint8_t>(0x48) == 0) {
+            // 00488180..0048819D: an inactive record kills its entity.
+            if (void* const entity = record.ptr(0); entity != nullptr) {
+                host.vcall_object_set_owner_114(entity, nullptr);
+                host.mission_entity_kill_00926d90(entity, 2);
+            }
+            record.ptr(0) = nullptr;
+            continue;
+        }
+
+        // 00487B07..00487B45: gravity (0, scale * -9.81 * dt, 0).
+        Raw cls = raw(record.ptr(4));
+        any_active = true;
+        const float fall = static_cast<float>(static_cast<double>(cls.at<float>(0x50)) * -9.8100004196167 * dt);
+        record.at<float>(0x14) = record.at<float>(0x14) + 0.0f;
+        record.at<float>(0x18) = record.at<float>(0x18) + fall;
+        record.at<float>(0x1c) = 0.0f + record.at<float>(0x1c);
+
+        // 00487B48..00487BE6: drag (COMISS / JBE: only a positive drag).
+        const float drag = record.at<float>(0x44);
+        if (drag > 0.0f) {
+            const double vx = record.at<float>(0x14), vy = record.at<float>(0x18), vz = record.at<float>(0x1c);
+            const float speed_sq = static_cast<float>(vy * vy + vx * vx + vz * vz);
+            float speed = 0.0f;  // [ESP+40h]
+            if (static_cast<double>(speed_sq) > 1e-10) speed = static_cast<float>(std::sqrt(static_cast<double>(speed_sq)));
+            const float scale = static_cast<float>(
+                (static_cast<double>(speed) - static_cast<double>(drag) * dt) / static_cast<double>(speed));
+            record.at<float>(0x14) = record.at<float>(0x14) * scale;
+            record.at<float>(0x18) = record.at<float>(0x18) * scale;
+            record.at<float>(0x1c) = scale * record.at<float>(0x1c);
+        }
+
+        // 00487BE9..00487C21: position += velocity * dt.
+        float* const position = &record.at<float>(0x08);
+        const float step_x = record.at<float>(0x14) * dt;
+        const float step_y = record.at<float>(0x18) * dt;
+        const float step_z = dt * record.at<float>(0x1c);
+        position[0] = position[0] + step_x;
+        position[1] = position[1] + step_y;
+        position[2] = step_z + position[2];
+
+        // 00487C24..00487C69: water at (x, z) and the ground under the point.
+        Raw game = raw(host.global_pointer(kGame));
+        const float water = host.game_world_sample_water_height_0078cf20(game.ptr(0x19f0), position[0], position[2]);
+        float ground = -100.0f;  // [ESP+34h]
+        host.world_ground_height_at_00903860(raw(host.global_pointer(kGame)).ptr(0x19cc), position, &ground);
+        const float y = record.at<float>(0x0c);
+        // 00487C78 / 00487C80: FCOMI then JA, so only an ordered "above".
+        if (water > y || ground > y) {
+            if (cls.ptr(0x54) != nullptr) {
+                // 00487CD2: FCOMIP water, ground / JC: below or unordered skips.
+                if (water >= ground) {
+                    const float point[3] = {position[0], water, position[2]};  // [ESP+98h]
+                    void* const manager = raw(host.global_pointer(kGame)).ptr(0x19ec);
+                    void* const definition = cls.ptr(0x54);
+                    if (definition != nullptr)
+                        host.interlocked_increment_ce221c(reinterpret_cast<volatile long*>(raw(definition).field(4)));
+                    void* created = nullptr;  // [ESP+3Ch]
+                    void* const effect = *host.point_effect_create_from_position_008685e0(&created, manager, definition,
+                                                                                          point, 0, 0);
+                    if (created != nullptr) {
+                        release_ref(created, host);
+                        created = nullptr;
+                    }
+                    if (effect != nullptr) raw(effect).at<std::uint8_t>(9) = 1;
+                }
+            }
+            record.at<std::uint8_t>(0x48) = 0;
+        }
+
+        // 00487C8A..00487DF2: each rotation rate decays toward zero by
+        // decay * dt (COMISS / JBE: a rate at or below 0, or unordered,
+        // takes the add); no clamp at zero.
+        for (std::size_t axis = 0; axis < 3; ++axis) {
+            float& rate = record.at<float>(0x2c + axis * 4);
+            const double decay = static_cast<double>(record.at<float>(0x38 + axis * 4)) * dt;
+            rate = rate > 0.0f ? static_cast<float>(static_cast<double>(rate) - decay)
+                               : static_cast<float>(decay + static_cast<double>(rate));
+        }
+        // 00487DF5..00487E29: rotation += rate * dt.
+        const float turn_x = record.at<float>(0x2c) * dt;
+        const float turn_y = record.at<float>(0x30) * dt;
+        const float turn_z = dt * record.at<float>(0x34);
+        record.at<float>(0x20) = record.at<float>(0x20) + turn_x;
+        record.at<float>(0x24) = turn_y + record.at<float>(0x24);
+        record.at<float>(0x28) = record.at<float>(0x28) + turn_z;
+
+        if (record.ptr(0) == nullptr) {
+            // 00487E36..00487E70: first frame: position += 0.4 * velocity.
+            const float lead_x = static_cast<float>(static_cast<double>(record.at<float>(0x14)) * 0.4000000059604645);
+            const float lead_y = static_cast<float>(static_cast<double>(record.at<float>(0x18)) * 0.4000000059604645);
+            const float lead_z = static_cast<float>(0.4000000059604645 * static_cast<double>(record.at<float>(0x1c)));
+            position[0] = lead_x + position[0];
+            position[1] = lead_y + position[1];
+            position[2] = position[2] + lead_z;
+            // 00487E73..00487F2F: the entity from the class, attached with an
+            // identity matrix, owned by the set, activated.
+            void* const entity = record.ptr(4) != nullptr ? host.vcall_factory_create_8(record.ptr(4)) : nullptr;
+            record.ptr(0) = entity;
+            float identity[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};  // [ESP+44h]
+            host.vcall_object_attach_98(entity, 0, raw(host.global_pointer(kGame)).ptr(0x19cc), identity);
+            host.vcall_object_set_owner_114(record.ptr(0), set.p);
+            host.vcall_object_activate_a0(record.ptr(0));
+            // 00487F31..00487FF9: with a trail definition, a point effect at
+            // the position assigned to entity+188h (ref-counted).
+            Raw cls_now = raw(record.ptr(4));
+            if (cls_now.ptr(0x58) != nullptr) {
+                void* const manager = raw(host.global_pointer(kGame)).ptr(0x19ec);
+                void* const definition = cls_now.ptr(0x58);
+                if (definition != nullptr)
+                    host.interlocked_increment_ce221c(reinterpret_cast<volatile long*>(raw(definition).field(4)));
+                void* created = nullptr;  // [ESP+28h]
+                void* const fresh = *host.point_effect_create_from_position_008685e0(&created, manager, definition,
+                                                                                     position, 0, 0);
+                Raw owner = raw(record.ptr(0));
+                void* const old = owner.ptr(0x188);
+                if (old != fresh) {
+                    owner.ptr(0x188) = fresh;
+                    if (fresh != nullptr)
+                        host.interlocked_increment_ce221c(reinterpret_cast<volatile long*>(raw(fresh).field(4)));
+                    release_ref(old, host);
+                }
+                if (created != nullptr) {
+                    release_ref(created, host);
+                    created = nullptr;
+                }
+            }
+            if (record.ptr(0) == nullptr) continue;  // 00488005
+        }
+
+        // 0048800E..0048802C: the trail follows the position.
+        Raw entity = raw(record.ptr(0));
+        if (entity.ptr(0x188) != nullptr) host.point_effect_set_world_point_004842c0(entity.ptr(0x188), position);
+
+        // 0048802F..0048814C: entity+74h = RotZ(rz) * RotX(ry) * RotY(rx) * T(position).
+        float translation[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, position[0], position[1], position[2], 1};
+        const float angles[3] = {record.at<float>(0x20), record.at<float>(0x24), record.at<float>(0x28)};  // [ESP+8Ch]
+        float rotation_y[16];   // [ESP+0E4h]
+        float rotation_x[16];   // [ESP+1A4h]
+        float rotation_z[16];   // [ESP+164h]
+        float zx[16];           // [ESP+124h]
+        float zxy[16];          // [ESP+0A4h]
+        float world[16];        // [ESP+1E4h]
+        float* const y_matrix = host.matrix_build_rotation_y_00b646e0(rotation_y, &angles[0]);
+        float* const x_matrix = host.matrix_build_rotation_x_00b64640(rotation_x, &angles[1]);
+        float* const z_matrix = host.matrix_build_rotation_z_00b64780(rotation_z, &angles[2]);
+        float* const first = host.matrix_multiply_00413920(z_matrix, zx, x_matrix);
+        host.matrix_multiply_00413920(first, zxy, y_matrix);
+        host.matrix_copy_004134f0(&raw(record.ptr(0)).at<float>(0x74), host.matrix_multiply_00413920(zxy, world, translation));
+        raw(record.ptr(0)).at<float>(0x18c) = 1.0f;
+        host.vcall_entity_matrix_changed_d8(record.ptr(0));
+    }
+    // 004881B4..004881C7: a set with no active record deletes itself.
+    if (!any_active && set.p != nullptr) host.vcall_scalar_deleting_destructor_slot0(set.p, 1);
+}
+
+// ---------------------------------------------------------------------------
+// 0051CDE0 BSP_BriefingScreen_Enter
+// __thiscall(ECX = briefing screen), plain RET at 0051DCD6; EBP-aligned
+// frame, EH state [ESP+7Ch]. Slot +18h of the vtable at 00CEC948; no direct
+// caller.
+// Screen layout used: +14h the page, +18h the list box, +1Ch the row
+// template, +20h the objectives group, +24h BG_01_Group, +28h the briefing
+// page (from the map at +12Ch keyed by +0D8h), +2Ch / +3Ch checked vectors of
+// widget pointers (objective groups, group frames), +4Ch / +50h the primary
+// and secondary counts, +54h.
+// Literals (read from the image): "BRIEFING" 00CEC8E0, "Duel_Group"
+// 00CEC8D4, "Escort_Group" 00CEC8C4, "Siege_Group" 00CEC8B8,
+// "Competitive_Group" 00CEC8A4, "Island_Capture_Group" 00CEC88C,
+// "BG_01_Group" 00CEC880, "1_pri_objective_Group" 00CEC868, "1_pri_Group"
+// 00CEC85C, "_pri_objective_Group" 00CEC844, "_pri_Group" 00CEC838,
+// "1_sec_objective_Group" 00CEC820, "1_sec_Group" 00CEC814,
+// "_sec_objective_Group" 00CEC7FC, "_sec_Group" 00CEC7F0, "PRIMARY
+// OBJECTIVE" 00CEC7DC, "SECONDARY OBJECTIVE" 00CEC7C8, "BACK" 00CEC7C0,
+// "Text" 00CEC778; 0.5f 00CE3800.
+// Quirk kept: the secondary group frame names take the PRIMARY count
+// (0051D7D6 reads +4Ch, where the objective name reads +50h).
+// ---------------------------------------------------------------------------
+namespace {
+
+// The inlined assignment from a literal of `length` characters:
+// 0041DD40(length, 0) then memcpy(data, text, length re-read) when data is set.
+void assign_native_literal(Raw string, const char* text, std::uint32_t length, SweepA4Host& host) {
+    host.native_string_resize_0041dd40(string, length, 0);
+    if (void* const data = string.ptr(4); data != nullptr) std::memcpy(data, text, string.at<std::uint32_t>(0));
+}
+
+// The inlined assignment between native strings (never the same object here).
+void assign_native(Raw target, Raw source, SweepA4Host& host) {
+    if (target.p == source.p) return;
+    host.native_string_resize_0041dd40(target, source.at<std::uint32_t>(0), 1);
+    if (source.at<std::uint32_t>(0) != 0) std::memcpy(target.ptr(4), source.ptr(4), target.at<std::uint32_t>(0));
+}
+
+// The inlined push_back on a checked vector of pointers {proxy, first, last,
+// end}: in place with spare capacity, else 0051C5F0 at end after the
+// first <= last test.
+void push_widget(Raw vector, void* const* widget, SweepA4Host& host) {
+    std::uint8_t* const first = bytes_at(vector.ptr(4));
+    const std::uintptr_t size = first == nullptr ? 0 : (bytes_at(vector.ptr(8)) - first) >> 2;
+    if (first != nullptr && size < static_cast<std::uintptr_t>((bytes_at(vector.ptr(0xc)) - first) >> 2)) {
+        *static_cast<void**>(vector.ptr(8)) = *widget;
+        vector.ptr(8) = bytes_at(vector.ptr(8)) + 4;
+        return;
+    }
+    void* const last = vector.ptr(8);
+    if (vector.ptr(4) > last) host.invalid_parameter_noinfo_00bf6713();
+    std::uint32_t out[2];
+    host.widget_vector_insert_0051c5f0(vector, out, vector, last, widget);
+}
+
+// The checked element read of a widget vector (00BF6713 when the vector is
+// null or the index is out of range).
+void* widget_at(Raw vector, std::uint32_t index, SweepA4Host& host) {
+    std::uint8_t* const first = bytes_at(vector.ptr(4));
+    if (first == nullptr || index >= static_cast<std::uint32_t>((bytes_at(vector.ptr(8)) - first) >> 2))
+        host.invalid_parameter_noinfo_00bf6713();
+    return static_cast<void**>(vector.ptr(4))[index];
+}
+
+// "<count><suffix>" assigned to target: literal, FromInt, Concat, assign,
+// then the three temporaries released.
+void numbered_name(Raw target, std::int32_t count, const char* suffix, std::uint32_t length, SweepA4Host& host) {
+    NativeStringStorage suffix_storage, number_storage, joined_storage;
+    Raw suffix_string = raw(suffix_storage.bytes);
+    Raw number = raw(number_storage.bytes);
+    Raw joined = raw(joined_storage.bytes);
+    construct_native_literal(suffix_string, suffix, length, host);
+    host.native_string_from_int_004260b0(number, count);
+    host.native_string_concat_004261a0(number, joined, suffix_string);
+    assign_native(target, joined, host);
+    release_native_string(joined, host);
+    release_native_string(number, host);
+    release_native_string(suffix_string, host);
+}
+
+}  // namespace
+
+void briefing_screen_enter_0051cde0(Raw screen, SweepA4Host& host) {
+    host.front_end_frame_set_selection_00518da0(3);
+    host.vcall_set_visible_34(screen.ptr(0x14), 1);
+    screen.at<std::uint32_t>(0x54) = 0;
+    {
+        NativeStringStorage title_storage;
+        Raw title = raw(title_storage.bytes);
+        construct_native_literal(title, "BRIEFING", 8, host);
+        host.front_end_frame_set_title_005189b0(title);
+        release_native_string(title, host);
+    }
+    void* const page = *host.briefing_page_map_index_0051cc90(raw(screen.field(0x12c)), screen.field(0xd8));
+    screen.ptr(0x28) = page;
+
+    // 0051CE9D: the multiplayer mode groups only while [00E18D91] is clear.
+    if (*static_cast<const std::uint8_t*>(host.global_address(0x00e18d91)) == 0) {
+        NativeStringStorage name_storage;  // [ESP+38h]
+        Raw name = raw(name_storage.bytes);
+        for (const char* const group :
+             {"Duel_Group", "Escort_Group", "Siege_Group", "Competitive_Group", "Island_Capture_Group"}) {
+            host.native_string_construct_0041e870(name, group);
+            host.vcall_set_visible_34(host.gui_widget_find_child_by_name_00aa7e00(screen.ptr(0x28), name, 1), 0);
+            release_native_string(name, host);
+        }
+        // 0051D045..0051D13C: the active mode's group becomes +20h.
+        const std::int32_t mode = host.game_get_effective_game_mode_004bca50(raw(host.global_pointer(kGame)));
+        const char* const group = mode == 4   ? "Duel_Group"
+                                  : mode == 5 ? "Escort_Group"
+                                  : mode == 6 ? "Siege_Group"
+                                  : mode == 7 ? "Competitive_Group"
+                                              : "Island_Capture_Group";
+        host.native_string_construct_0041e870(name, group);
+        screen.ptr(0x20) = host.gui_widget_find_child_by_name_00aa7e00(screen.ptr(0x28), name, 1);
+        if (mode == 4 || mode == 5 || mode == 6)
+            release_native_string(name, host);  // the inlined release (0051D0C3)
+        else
+            host.native_string_destroy_storage_0041dd20(name);  // 0051D137
+    } else {
+        screen.ptr(0x20) = page;  // 0051D13E
+    }
+
+    // 0051D141..0051D1D4.
+    {
+        NativeStringStorage bg_storage;
+        Raw bg = raw(bg_storage.bytes);
+        construct_native_literal(bg, "BG_01_Group", 0x0b, host);
+        screen.ptr(0x24) = host.gui_widget_find_child_by_name_00aa7e00(screen.ptr(0x20), bg, 1);
+        release_native_string(bg, host);
+    }
+    host.vcall_set_visible_34(screen.ptr(0x28), 1);
+    host.vcall_set_visible_34(screen.ptr(0x20), 1);
+    host.scene_node_set_visibility_factor_00b6da70(raw(screen.ptr(0x20)).ptr(0x4c), 1.0f, 1);
+
+    // 0051D1D9..0051D557: the primary objective groups "<n>_pri_objective_Group"
+    // with their "<n>_pri_Group" frames, n from 1 while found.
+    NativeStringStorage objective_storage, frame_storage;  // [ESP+20h], [ESP+28h]
+    Raw objective = raw(objective_storage.bytes);
+    Raw frame = raw(frame_storage.bytes);
+    construct_native_literal(objective, "1_pri_objective_Group", 0x15, host);
+    construct_native_literal(frame, "1_pri_Group", 0x0b, host);
+    screen.at<std::int32_t>(0x4c) = 1;
+    Raw groups = raw(screen.field(0x2c));
+    Raw frames = raw(screen.field(0x3c));
+    void* found = host.gui_widget_find_child_by_name_00aa7e00(screen.ptr(0x20), objective, 0);  // [ESP+10h]
+    while (found != nullptr) {
+        void* found_frame = host.gui_widget_find_child_by_name_00aa7e00(screen.ptr(0x20), frame, 1);  // [ESP+18h]
+        push_widget(groups, &found, host);
+        push_widget(frames, &found_frame, host);
+        host.vcall_set_visible_34(found, 1);
+        host.vcall_set_visible_34(found_frame, 1);
+        screen.at<std::int32_t>(0x4c) += 1;
+        numbered_name(objective, screen.at<std::int32_t>(0x4c), "_pri_objective_Group", 0x14, host);
+        numbered_name(frame, screen.at<std::int32_t>(0x4c), "_pri_Group", 0x0a, host);
+        found = host.gui_widget_find_child_by_name_00aa7e00(screen.ptr(0x20), objective, 0);
+    }
+    screen.at<std::int32_t>(0x4c) -= 1;
+
+    // 0051D55B..0051D8C2: the secondary groups, the same with the shows
+    // before the push_backs and the frame number taken from +4Ch (quirk).
+    assign_native_literal(objective, "1_sec_objective_Group", 0x15, host);
+    assign_native_literal(frame, "1_sec_Group", 0x0b, host);
+    screen.at<std::int32_t>(0x50) = 1;
+    found = host.gui_widget_find_child_by_name_00aa7e00(screen.ptr(0x20), objective, 0);
+    while (found != nullptr) {
+        void* found_frame = host.gui_widget_find_child_by_name_00aa7e00(screen.ptr(0x20), frame, 1);
+        host.vcall_set_visible_34(found, 1);
+        host.vcall_set_visible_34(found_frame, 1);
+        push_widget(groups, &found, host);
+        push_widget(frames, &found_frame, host);
+        screen.at<std::int32_t>(0x50) += 1;
+        numbered_name(objective, screen.at<std::int32_t>(0x50), "_sec_objective_Group", 0x14, host);
+        numbered_name(frame, screen.at<std::int32_t>(0x4c), "_sec_Group", 0x0a, host);
+        found = host.gui_widget_find_child_by_name_00aa7e00(screen.ptr(0x20), objective, 0);
+    }
+    void* const listbox = screen.ptr(0x18);
+    screen.at<std::int32_t>(0x50) -= 1;
+    host.gui_listbox_clear_rows_00a9bec0(listbox);
+    host.vcall_listbox_60(screen.ptr(0x18), 1);
+
+    // 0051D8D7..0051DAEB: a row per primary objective; the first is fully
+    // visible with its "Text" shown, the rest at 0.5 with it hidden.
+    // The "Text" child of objective group `index` ([ESP+10h] / [ESP+30h]).
+    const auto show_text = [&](std::uint32_t index, std::int32_t visible) {
+        NativeStringStorage text_storage;
+        Raw text = raw(text_storage.bytes);
+        construct_native_literal(text, "Text", 4, host);
+        void* const group = widget_at(groups, index, host);
+        host.vcall_set_visible_34(host.gui_widget_find_child_by_name_suffix_00aaa2b0(group, text), visible);
+        release_native_string(text, host);
+    };
+    for (std::int32_t i = 0; i < screen.at<std::int32_t>(0x4c); ++i) {
+        void* const row = host.gui_widget_clone_subtree_00aab4c0(screen.ptr(0x1c), nullptr);
+        host.gui_listbox_insert_row_00a9d750(screen.ptr(0x18), row, nullptr, 0);
+        host.gui_text_set_localised_cstring_00abbe50(row, "PRIMARY OBJECTIVE", 1);
+        if (i == 0) {
+            host.scene_node_set_visibility_factor_00b6da70(raw(widget_at(groups, 0, host)).ptr(0x4c), 1.0f, 1);
+            show_text(0, 1);
+            host.scene_node_set_visibility_factor_00b6da70(raw(widget_at(frames, 0, host)).ptr(0x4c), 1.0f, 1);
+        } else {
+            host.scene_node_set_visibility_factor_00b6da70(raw(widget_at(groups, i, host)).ptr(0x4c), 0.5f, 1);
+            show_text(i, 0);
+            host.scene_node_set_visibility_factor_00b6da70(raw(widget_at(frames, i, host)).ptr(0x4c), 0.5f, 1);
+        }
+    }
+    // 0051DAF1..0051DC2D: a row per secondary objective, all at 0.5 with the
+    // text hidden, indexed after the primaries (+4Ch re-read each time).
+    for (std::int32_t i = 0; i < screen.at<std::int32_t>(0x50); ++i) {
+        void* const row = host.gui_widget_clone_subtree_00aab4c0(screen.ptr(0x1c), nullptr);
+        host.gui_listbox_insert_row_00a9d750(screen.ptr(0x18), row, nullptr, 0);
+        host.gui_text_set_localised_cstring_00abbe50(row, "SECONDARY OBJECTIVE", 1);
+        host.scene_node_set_visibility_factor_00b6da70(
+            raw(widget_at(groups, screen.at<std::uint32_t>(0x4c) + i, host)).ptr(0x4c), 0.5f, 1);
+        show_text(screen.at<std::uint32_t>(0x4c) + i, 0);
+        host.scene_node_set_visibility_factor_00b6da70(
+            raw(widget_at(frames, screen.at<std::uint32_t>(0x4c) + i, host)).ptr(0x4c), 0.5f, 1);
+    }
+
+    // 0051DC33..0051DC77: the BACK row, scroll, select 0, slot +80h(1).
+    void* const back = host.gui_widget_clone_subtree_00aab4c0(screen.ptr(0x1c), nullptr);
+    host.gui_listbox_insert_row_00a9d750(screen.ptr(0x18), back, nullptr, 0);
+    host.gui_text_set_localised_cstring_00abbe50(back, "BACK", 1);
+    host.gui_listbox_scroll_by_00a9cc50(screen.ptr(0x18), 1);
+    host.gui_listbox_select_index_00a9c7c0(screen.ptr(0x18), 0);
+    host.vcall_listbox_80(screen.ptr(0x18), 1);
+    release_native_string(frame, host);
+    release_native_string(objective, host);
+}
+
 }  // namespace bsp::cc13_sweepA4
