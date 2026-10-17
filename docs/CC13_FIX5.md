@@ -79,7 +79,42 @@ in the copy affects the band.
 - state+88h is latched at Enter; the host reads the singleton each tick. They agree unless the
   Pilot/Follow tuning changes between Enter and the tick (it is loaded once at 007E2A20; no reload path
   was checked).
-- The catch-up inline band (`:8416`) clamps only the steer Y, as it did before; the image tail also
-  clamps the station Y there. That pre-existing difference is outside this switch.
+- The catch-up inline band clamped only the steer Y; the image tail also clamps the station Y there.
+  Closed under the same switch by fix5b below.
+
+## fix5b: the station Y and the catch-up clamp order (same switch)
+
+Two gaps a reviewer found, closed under `kFollowBandSafeAltFloorBound` (no new switch); with it OFF
+the host is unchanged.
+
+Image, re-read from the listing of `009BFEE0`:
+
+```
+009c17c6  FLD [ESP+2Ch] (Y = state+34h); FLD [ESP+38h] (L); FCOMI L,Y; FLD cap
+009c17d4  JBE 009C17E0        ; L > Y ordered -> state+34h = L (cap not tested)
+009c17e2  FCOMIP Y,cap
+009c17e4  JBE 009C17EB        ; Y > cap ordered -> cap, else Y (unordered Y passes)
+009c17f1  MOVSS [ESI+34h],XMM0
+009c17f6-009c183b             ; the same select on the steer Y, state+48h
+```
+
+The follow tick `009C1FD0` calls `009BFD70` at 009C1FEA, which rewrites the station (state+30h..38h,
+docs/PLANE_FORMATION.md), then `009BFEE0` at 009C2068, then `009BEE30` at 009C2077. So
+`009BFEE0`'s own station read (009BFF3B, the catch-up k) sees the unclamped station, and `009BEE30`'s
+read at 009BEE92 sees the clamped one.
+
+Host (`run_follow_hold_arm_009bee56`, `src/game_hosts_units.cpp`):
+
+- (a) With the switch ON, the station Y is clamped into the band before `in.station_local` is derived,
+  on the catch-up and the stand-in hold paths alike. The catch-up k keeps the pre-band station
+  (`station_local_pre_band`), as 009BFF3B does.
+- (b) The catch-up steer Y uses the image order: `L > Y` -> L without testing the cap. The OFF code
+  applied the floor then the cap, so for L > cap it returned the cap.
+- The band math is one function now: `bsp::plane_follow_band_009c16d2` and
+  `bsp::plane_follow_band_clamp_009c17c6` (`include/bsp/plane_follow_law.hpp`), which
+  `plane_follow_geometry_009bfee0`'s tail also calls (same arithmetic as before, moved). The fly-to
+  path already used the clamped `geo.station_y`.
+- Ceiling NaN arm: the image takes [210h] on an unordered pair, the helper takes leaderY + 120. Only
+  a NaN leader Y reaches it; left as it was.
 - The size of the effect depends on the formations' station Y offsets, which were not measured. No game
   run was made (none allowed in this packet).

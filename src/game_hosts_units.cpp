@@ -8494,7 +8494,27 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         // leader+9C2h[...], the published +520h: clear for an AI leader
         // (docs/BOMBER_AFTER_TASK.md 6c, provisional), so the lock never runs.
         in.leader_published_520 = false;
-        follow_to_body(unit, station.world, false, in.station_local);   // 009BEE92
+        // S for 009BFEE0's latched path (009BFF3B): the station as 009BFD70
+        // wrote it this tick (009C1FEA), before the tail clamps it.
+        float station_local_pre_band[3];
+        follow_to_body(unit, station.world, false, station_local_pre_band);
+        bsp::PlaneFollowBand band{};
+        if constexpr (kFollowBandSafeAltFloorBound) {
+            // 009C16D2-009C17B9, the band of 009BFEE0's tail (009C2068), with
+            // state+88h = SafeAlt (009BEDBB).  009C17C6-009C17F1 clamps the
+            // station Y (state+34h) into it before 009BEE30 (009C2077) reads
+            // the station at 009BEE92, on the latched and hold paths alike.
+            band = bsp::plane_follow_band_009c16d2(
+                leader.motion.position[1], gt.pilot_follow_leader_follow_alt,
+                gt.pilot_follow_safe_alt, gt.dynamics_ceiling, true, false);
+            const float station_banded[3] = {
+                station.world[0],
+                bsp::plane_follow_band_clamp_009c17c6(station.world[1], band),
+                station.world[2]};
+            follow_to_body(unit, station_banded, false, in.station_local);   // 009BEE92
+        } else {
+            for (int i = 0; i < 3; ++i) in.station_local[i] = station_local_pre_band[i];   // 009BEE92
+        }
         follow_to_body(unit, leader.motion.pose_row2, true,
                        in.leader_forward_local);                        // 009BEEED
         // SUBSTITUTION, labelled: state+84h/+78h come from 009C1FD0's search
@@ -8510,7 +8530,7 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             const float lfz = in.leader_forward_local[2];
             const double k = lfz != 0.0f
                 ? (static_cast<double>(gt.pilot_follow_followed_point_dist) -
-                   in.station_local[2]) / lfz
+                   station_local_pre_band[2]) / lfz
                 : 0.0;
             float steer[3];
             for (int i = 0; i < 3; ++i) {
@@ -8520,21 +8540,18 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             // 009C16D2-009C1846 on the steer Y, the arithmetic of
             // plane_follow_geometry_009bfee0's tail (state+88h taken as huge,
             // as at the fly-to call).
-            float floor_v = leader.motion.position[1] + gt.pilot_follow_leader_follow_alt;
             if constexpr (kFollowBandSafeAltFloorBound) {
-                // 009C16E5-009C175A: min with state+88h = SafeAlt (latched by
-                // 009BEDBB), then max with float(leaderY - 120.0); JBE arms keep
-                // the first operand when unordered.
-                if (floor_v > gt.pilot_follow_safe_alt) floor_v = gt.pilot_follow_safe_alt;
-                const float lower = static_cast<float>(
-                    static_cast<double>(leader.motion.position[1]) - 120.0);   // [00D1F3F8]
-                if (lower > floor_v) floor_v = lower;
+                // 009C17F6-009C183B on the steer Y (state+48h): L > Y -> L
+                // without testing the cap, else Y > cap -> cap, else Y.
+                steer[1] = bsp::plane_follow_band_clamp_009c17c6(steer[1], band);
+            } else {
+                const float floor_v = leader.motion.position[1] + gt.pilot_follow_leader_follow_alt;
+                const float ceil_c = static_cast<float>(
+                    static_cast<double>(leader.motion.position[1]) + 120.0);
+                const float ceil_v = gt.dynamics_ceiling < ceil_c ? gt.dynamics_ceiling : ceil_c;
+                if (steer[1] < floor_v) steer[1] = floor_v;
+                if (steer[1] > ceil_v) steer[1] = ceil_v;
             }
-            const float ceil_c = static_cast<float>(
-                static_cast<double>(leader.motion.position[1]) + 120.0);
-            const float ceil_v = gt.dynamics_ceiling < ceil_c ? gt.dynamics_ceiling : ceil_c;
-            if (steer[1] < floor_v) steer[1] = floor_v;
-            if (steer[1] > ceil_v) steer[1] = ceil_v;
             follow_to_body(unit, steer, false, in.steer_local);   // 009BF57F
         } else {
         // SUBSTITUTION, labelled: state+44h in the hold arm is 009BFEE0's own
