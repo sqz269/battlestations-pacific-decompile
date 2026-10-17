@@ -1076,4 +1076,278 @@ void cc13_pkt642_options_screen_commit_005f65c0(void* screen, Cc13Pkt642Host& ho
     }
 }
 
+// ---------------------------------------------------------------------------
+// 00640D70 BSP_InGameHudMarkers_UpdateTargetSectionCallout
+// ---------------------------------------------------------------------------
+namespace {
+
+const float kFloatMax = f32_bits(0x7F7FFFFFu);     // 00D7A248
+const float kFloatLowest = f32_bits(0xFF7FFFFFu);  // 00D7A244
+const float kPickRadius = f32_bits(0x3D23D70Au);   // 00CE3910  0.04f
+
+// The eight box corners the image stores at E+90h..E+ECh from the part's
+// endpoints a ([part+20h]) and b ([part+24h]).
+void box_corners(const float* a, const float* b, float* out) {
+    const float points[8][3] = {{a[0], a[1], a[2]}, {a[0], a[1], b[2]}, {a[0], b[1], a[2]}, {a[0], b[1], b[2]},
+                                {b[0], a[1], a[2]}, {b[0], a[1], b[2]}, {b[0], b[1], a[2]}, {b[0], b[1], b[2]}};
+    std::memcpy(out, points, sizeof points);
+}
+
+// One transformed and projected point: 00414DB0 when unit+C8h is clear,
+// 004142E0(point, out, unit+CCh), 00638E50(out, screen).
+bool project_point(void* unit, const float* point, float* world_out, float* screen, Cc13Pkt642Host& host) {
+    if (at<std::uint8_t>(unit, 0xc8) == 0) {
+        host.entity_pose_refresh_world_00414db0(unit);
+    }
+    host.vector3_transform_affine_point_004142e0(point, world_out, &at<float>(unit, 0xcc));
+    return host.hud_marker_project_and_clip_00638e50(world_out, screen);
+}
+
+}  // namespace
+
+// __thiscall(ECX = markers screen), RET; EBP frame aligned to 8, SEH
+// 00C7A37B (state 0 owns the part-pointer vector at E+50h). Base E = the
+// aligned ESP after the four register pushes. Only the first seven of the
+// eight corners feed the screen bounds in both bound loops (EBP/EDI = 7),
+// as in the image; the nearest-part pass also projects the box centre.
+void cc13_pkt642_hud_markers_update_target_section_callout_00640d70(void* markers, Cc13Pkt642Host& host) {
+    void* unit = at<void*>(markers, 0x20);  // EBX, E+28h
+    if (unit == nullptr) {
+        return;
+    }
+    if (!host.entity_vcall_5c_is_kind(at<void*>(markers, 0x20), 6)) {
+        return;
+    }
+    if (at<std::uint8_t>(host.unit_parts_object_0080e490(at<void*>(markers, 0x20)), 0x14) == 1) {
+        return;
+    }
+    unit = at<void*>(markers, 0x20);
+    void* camera = at<void*>(host.global_00e188a8(), 0x19fc);
+    float best = kFloatMax;   // E+30h
+    void* chosen = nullptr;   // E+14h
+    if ((at<std::uint8_t>(camera, 0x5c) & 2) == 0) {
+        host.transform_refresh_world_00b6db70(camera);
+    }
+    const float eye[3] = {at<float>(camera, 0x120), at<float>(camera, 0x124), at<float>(camera, 0x128)};  // E+78h
+    Cc13SweepBVectorByValue parts;  // E+50h; the proxy dword is never written
+    parts.first = nullptr;
+    parts.last = nullptr;
+    parts.end = nullptr;
+
+    void* vehicle = host.game_controlled_vehicle_004b4b00();
+    void* game = host.global_00e188a8();
+    const std::int32_t index = at<std::int32_t>(game, 0x18ec);
+    if (vehicle == nullptr || unit == nullptr ||
+        at<std::int32_t>(unit, 0x54) == at<std::int32_t>(at<void*>(game, 0x18cc + static_cast<std::size_t>(index) * 4), 0x28)) {
+        host.part_pointer_vector_tidy_0063bed0(&parts);
+        return;
+    }
+    {
+        // PUSH 5 precedes 00427EB0 (no stack arguments): it is 00804620's.
+        const float* position = host.entity_world_position_00427eb0(unit);
+        if (!host.unit_sensors_detect_point_00804620(host.game_controlled_vehicle_004b4b00(), position, 5)) {
+            host.part_pointer_vector_tidy_0063bed0(&parts);
+            return;
+        }
+    }
+
+    float corners[8][3];  // E+90h
+    float world[3];       // E+184h
+    float screen[3];      // E+68h
+    {
+        std::uint32_t iterator[2];  // E+60h {container, element}
+        std::uint32_t begin_out[2];  // E+140h
+        const std::uint32_t* begun = static_cast<const std::uint32_t*>(host.section_vector_begin_0063ac70(
+            &at<std::uint8_t>(host.entity_visual_class_00476b90(unit), 0x3c), begin_out));
+        iterator[0] = begun[0];
+        iterator[1] = begun[1];
+        for (;;) {
+            // 00640EB8: the checked iterator against end().
+            std::uint8_t* visual = static_cast<std::uint8_t*>(host.entity_visual_class_00476b90(unit));
+            const std::uint32_t end = at<std::uint32_t>(visual, 0x44);
+            void* container = visual + 0x3c;
+            if (at<std::uint32_t>(container, 4) > end) {
+                host.crt_invalid_parameter_noinfo_00bf6713();
+            }
+            if (iterator[0] == 0 || iterator[0] != static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(container))) {
+                host.crt_invalid_parameter_noinfo_00bf6713();
+            }
+            if (iterator[1] == end) {
+                break;
+            }
+            void* element = *static_cast<void**>(host.section_iterator_deref_0063ace0(iterator));
+            if (element != nullptr) {
+                void* sections = static_cast<std::uint8_t*>(element) + 8;  // ESI, E+8Ch
+                for (std::uint32_t j = 0;; ++j) {  // E+2Ch
+                    const std::uint32_t first = at<std::uint32_t>(sections, 4);
+                    if (first == 0) {
+                        break;
+                    }
+                    const std::int32_t count = static_cast<std::int32_t>(at<std::uint32_t>(sections, 8) - first) / 0x2c;
+                    if (!(j < static_cast<std::uint32_t>(count))) {
+                        break;
+                    }
+                    void* part = host.part_vector_at_00637660(sections, j);  // EDI, E+4Ch
+                    const std::int32_t type = at<std::int32_t>(part, 4);
+                    if (type != 8 && type != 5 && type != 6) {
+                        continue;
+                    }
+                    void* slot = part;
+                    host.part_pointer_vector_push_back_006403f0(&parts, &slot);
+                    const float* pa = at<float*>(part, 0x20);
+                    const float* pb = at<float*>(part, 0x24);
+                    const float a[3] = {pa[0], pa[1], pa[2]};  // E+40h
+                    const float b[3] = {pb[0], pb[1], pb[2]};  // E+34h
+                    box_corners(a, b, &corners[0][0]);
+                    float min_x = kFloatMax;     // E+18h
+                    float min_y = kFloatMax;     // E+1Ch
+                    float max_x = kFloatLowest;  // E+24h
+                    float max_y = kFloatLowest;  // E+20h
+                    for (int k = 0; k < 7; ++k) {
+                        project_point(unit, corners[k], world, screen, host);  // AL not tested
+                        const float sx = screen[0];
+                        const float sy = screen[1];
+                        if (!(max_x > sx)) max_x = sx;  // FCOMIP; JA keeps
+                        if (!(max_y > sy)) max_y = sy;
+                        if (!(sx > min_x)) min_x = sx;
+                        if (!(sy > min_y)) min_y = sy;
+                    }
+                    // 0064114D: COMISS/JBE, the screen centre inside the bounds.
+                    if (max_y > k0_5f && max_x > k0_5f && k0_5f > min_y && k0_5f > min_x) {
+                        const float sx = static_cast<float>(static_cast<double>(b[0]) + a[0]);  // E+88h
+                        const float sy = static_cast<float>(static_cast<double>(b[1]) + a[1]);  // E+84h
+                        const float sz = static_cast<float>(static_cast<double>(b[2]) + a[2]);  // E+4Ch
+                        float offset[3];
+                        offset[0] = static_cast<float>(eye[0] - static_cast<float>(sx * kHalf));
+                        offset[1] = static_cast<float>(eye[1] - static_cast<float>(sy * kHalf));
+                        offset[2] = static_cast<float>(eye[2] - static_cast<float>(kHalf * sz));
+                        const double previous = best;  // FSTP double E+140h
+                        const float length = host.vector3_length_00419440(offset);
+                        if (previous > length) {  // FCOMIP; JBE = <= or unordered
+                            float again[3];  // E+104h, the same values recomputed
+                            again[0] = static_cast<float>(eye[0] - static_cast<float>(sx * kHalf));
+                            again[1] = static_cast<float>(eye[1] - static_cast<float>(sy * kHalf));
+                            again[2] = static_cast<float>(eye[2] - static_cast<float>(kHalf * sz));
+                            best = host.vector3_length_00419440(again);
+                            chosen = part;
+                        }
+                    }
+                }
+            }
+            // 00641336: ++iterator, checked.
+            if (iterator[0] == 0) {
+                host.crt_invalid_parameter_noinfo_00bf6713();
+            }
+            if (!(iterator[1] < at<std::uint32_t>(reinterpret_cast<void*>(static_cast<std::uintptr_t>(iterator[0])), 8))) {
+                host.crt_invalid_parameter_noinfo_00bf6713();
+            }
+            iterator[1] += 8;
+        }
+    }
+
+    if (chosen == nullptr) {
+        // 00641357: no part under the centre; the projected part point (box
+        // corners and centre) nearest the screen centre within 0.04.
+        best = kFloatMax;
+        for (std::uint32_t i = 0;; ++i) {
+            const std::uint8_t* first = static_cast<const std::uint8_t*>(parts.first);
+            if (first == nullptr ||
+                !(i < static_cast<std::uint32_t>(static_cast<std::int32_t>(
+                          static_cast<const std::uint8_t*>(parts.last) - first) >> 2))) {
+                break;
+            }
+            void* part = *host.part_pointer_vector_at_00637850(&parts, i);
+            const float* pa = at<float*>(part, 0x20);
+            const float* pb = at<float*>(part, 0x24);
+            const float a[3] = {pa[0], pa[1], pa[2]};
+            const float b[3] = {pb[0], pb[1], pb[2]};
+            float points[9][3];
+            box_corners(a, b, &points[0][0]);
+            // 006413D2: FMUL forms from the bytes (DC C9 / D8 C9 / DE C9).
+            points[8][0] = static_cast<float>((static_cast<double>(b[0]) + a[0]) * kHalf);  // E+F0h
+            points[8][1] = static_cast<float>((static_cast<double>(b[1]) + a[1]) * kHalf);
+            points[8][2] = static_cast<float>(kHalf * (static_cast<double>(b[2]) + a[2]));
+            for (int k = 0; k < 9; ++k) {
+                float projected[3];  // E+158h
+                if (!project_point(unit, points[k], world, projected, host)) {
+                    continue;
+                }
+                projected[2] = 0.0f;  // E+160h (XORPS store)
+                float delta[3];       // E+104h
+                // FLD ST0; DE E2 FSUBRP ST2: 0.5 - x; then 0.5 - y; FLDZ, DC E0: 0 - 0.
+                delta[0] = static_cast<float>(kHalf - projected[0]);
+                delta[1] = static_cast<float>(kHalf - projected[1]);
+                delta[2] = 0.0f;
+                const float distance = host.vector3_length_00419440(delta);  // E+2Ch
+                if (kPickRadius > distance && best > distance) {  // both FCOMIP; JBE
+                    best = distance;
+                    chosen = *host.part_pointer_vector_at_00637850(&parts, i);
+                }
+            }
+        }
+        if (chosen == nullptr) {
+            // 006418C2: the vector's storage freed inline (not zeroed).
+            if (parts.first != nullptr) {
+                host.crt_operator_delete_00bf65ac(parts.first);
+            }
+            return;
+        }
+    }
+
+    // 006415F6: the localisation key by part type.
+    std::uint32_t key;
+    const std::int32_t type = at<std::int32_t>(chosen, 4);
+    if (type == 8) {
+        key = 0x00CECE48u;  // "ingame.sections_magazine"
+    } else if (type == 5) {
+        key = 0x00CECE24u;  // "ingame.sections_engine"
+    } else if (type == 6) {
+        key = 0x00CECE0Cu;  // "ingame.sections_fuel"
+    } else {
+        host.part_pointer_vector_tidy_0063bed0(&parts);
+        return;
+    }
+    float a[3];  // E+40h
+    float b[3];  // E+34h
+    host.hud_marker_part_endpoints_00638b20(chosen, a, b);
+    box_corners(a, b, &corners[0][0]);
+    // E+164h..E+18Fh: the four corners, then the transform output slot,
+    // whose x/y the callee reads as corners[4] (the last transformed point).
+    float block[11];
+    float min_x = kFloatMax;     // E+18h
+    float min_y = kFloatMax;     // E+1Ch
+    float max_x = kFloatLowest;  // E+20h
+    float max_y = kFloatLowest;  // E+24h
+    for (int k = 0; k < 7; ++k) {
+        project_point(unit, corners[k], &block[8], screen, host);
+        const float sx = screen[0];
+        const float sy = screen[1];
+        if (!(max_x > sx)) max_x = sx;
+        if (!(max_y > sy)) max_y = sy;
+        if (!(sx > min_x)) min_x = sx;
+        if (!(sy > min_y)) min_y = sy;
+    }
+    block[0] = min_x;
+    block[1] = min_y;
+    block[2] = min_x;
+    block[3] = max_y;
+    block[4] = max_x;
+    block[5] = max_y;
+    block[6] = max_x;
+    block[7] = min_y;
+    void* record = host.hud_markers_acquire_record_006407a0(markers, 0);
+    // 00641865: the colour argument is the 16 raw bytes of the part-pointer
+    // vector object at E+50h (proxy, first, last, end), copied as they are.
+    Cc13Pkt642Colour colour;
+    static_assert(sizeof(Cc13SweepBVectorByValue) == sizeof(Cc13Pkt642Colour) || sizeof(void*) != 4);
+    std::memcpy(&colour, &parts, sizeof colour);
+    Cc13SweepBNativeString empty;
+    host.native_string_assign_0041e870(&empty, literal(kEmptyString, host));
+    cc13_pkt642_hud_marker_emit_box_marker_0063c620(record, block, 3, 0, 1, literal(key, host), nullptr, empty, 0.0f,
+                                                    colour, 0, host);
+    if (parts.first != nullptr) {
+        host.crt_operator_delete_00bf65ac(parts.first);
+    }
+}
+
 }  // namespace bsp

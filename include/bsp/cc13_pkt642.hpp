@@ -114,6 +114,31 @@ public:
     virtual void options_screen_build_main_list_005f54f0(void* screen) = 0;
     // Screen-object vtable +60h with one dword argument.
     virtual void object_vcall_60(void* object, std::int32_t value) = 0;
+
+    // ---- target section callout 00640D70 (segment 26) ----
+    // 0080E490 BSP_UnitInstance_GetPartsObject: ECX = unit, RET, EAX.
+    virtual void* unit_parts_object_0080e490(void* unit) = 0;
+    // 00804620 BSP_Unit_SensorsDetectPoint: __fastcall(ECX = vehicle, EDX =
+    // const float[3]), stack dword, RET 4, AL.
+    virtual bool unit_sensors_detect_point_00804620(void* vehicle, const float* point, std::int32_t kind) = 0;
+    // 00476B90 BSP_Entity_GetVisualClassField160: ECX = entity, RET, EAX.
+    virtual void* entity_visual_class_00476b90(void* entity) = 0;
+    // 0063AC70 (STL vector begin, 8-byte elements): __thiscall(ECX = vector,
+    // iterator* out {container, element}), RET 4, EAX = out.
+    virtual void* section_vector_begin_0063ac70(void* vector, void* out) = 0;
+    // 0063ACE0 (STL iterator deref): ECX = iterator*, RET, EAX = element address.
+    virtual void* section_iterator_deref_0063ace0(void* iterator) = 0;
+    // 00637660 (STL vector at, 2Ch-byte parts): __thiscall(ECX = vector, index), RET 4, EAX = &part.
+    virtual void* part_vector_at_00637660(void* vector, std::uint32_t index) = 0;
+    // 006403F0 (STL vector<part*> push_back): __thiscall(ECX = vector, part* const*), RET 4.
+    virtual void part_pointer_vector_push_back_006403f0(void* vector, void* const* value) = 0;
+    // 00637850 (STL vector<part*> at): __thiscall(ECX = vector, index), RET 4, EAX = &slot.
+    virtual void** part_pointer_vector_at_00637850(void* vector, std::uint32_t index) = 0;
+    // 0063BED0 (STL vector tidy): ECX = vector.
+    virtual void part_pointer_vector_tidy_0063bed0(void* vector) = 0;
+    // 00638B20 BSP_HudMarker_GetEndpoints: __thiscall(ECX = part, float a[3]
+    // out, float b[3] out), RET 8.
+    virtual void hud_marker_part_endpoints_00638b20(void* part, float* a, float* b) = 0;
 };
 
 // 0063C620 BSP_HudMarker_EmitBoxMarker, __thiscall(ECX = marker record),
@@ -152,5 +177,11 @@ void cc13_pkt642_hud_markers_build_unit_marker_00642040(void* markers, void* uni
 // (or when +150h differs), saves to the profile and rebuilds or returns to
 // the title screen.
 void cc13_pkt642_options_screen_commit_005f65c0(void* screen, Cc13Pkt642Host& host);
+
+// 00640D70 BSP_InGameHudMarkers_UpdateTargetSectionCallout, __thiscall(ECX =
+// markers screen), RET: picks the section part of the +20h target under the
+// screen centre (or the nearest projected one) and emits its box marker
+// through 0063C620.
+void cc13_pkt642_hud_markers_update_target_section_callout_00640d70(void* markers, Cc13Pkt642Host& host);
 
 }  // namespace bsp
