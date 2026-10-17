@@ -413,6 +413,17 @@ inline constexpr bool kTorpedoSupplyTickBound = true;
 // 0081F8B0 inside the native). False: the native stays an unimplemented record.
 inline constexpr bool kShipSetTorpedoStockBound = true;
 
+// Packet p17_reload_torpedoes (docs/OCEAN_WAVE_FIELD.md section 66). True: the Lua
+// native ReloadTorpedoes(unit) (008C3CE0) walks the unit's device list ([+48h], next
+// +44h) and, for each torpedo gun (vtable[5Ch](20h) and [[gun+3F4h]+80h] == 7),
+// calls 0072CF00(gun, barrel, 0.0f, 0) on every barrel 0..[gun+448h) (008C3E32):
+// every tube is loaded and ready at once, fired tubes included, and the torpedo
+// stock is not drawn. LABELLED SUBSTITUTIONS: a torpedo gun is a gun row of
+// kUnitGunneryTorpedoCategory; the call is queued by the script host and applied at
+// the start of the gunnery host's next fixed step; 0072CF00's torpedo-model tail is
+// presentation. False: the native stays an unimplemented record.
+inline constexpr bool kReloadTorpedoesBound = false;
+
 // Packet cc9_gun_rest_angles (docs/GUN_REST_ANGLES.md). True: a targetless gun
 // follows the image's idle rule instead of commanding its rest angles every
 // tick. 008FBCE0, step 3 of every gun-bot prologue, keeps a per-bot timer
@@ -482,6 +493,9 @@ inline constexpr float kGunIdleTimerSeed = 999.0f;
 // `unit_index` is the units host's index. Process-wide, drained by
 // GameGunneryHost::fixed_step.
 void queue_ship_set_torpedo_stock_0089eee0(std::size_t unit_index, std::int32_t stock);
+// Packet p17_reload_torpedoes: a ReloadTorpedoes call (008C3CE0), applied at the next
+// fixed step under kReloadTorpedoesBound.
+void queue_reload_torpedoes_008c3ce0(std::size_t unit_index);
 // Packet cc9_bsm01_state_natives: an ExplodeToParts call (0088E1B0), applied as
 // 00935C70 over the unit's hull segments at the next fixed step.
 void queue_explode_to_parts_0088e1b0(std::size_t unit_index);
@@ -802,6 +816,10 @@ struct GameGunnerySummary {
     // non-zero `live` is the first sign that one has appeared.
     unsigned long long gun_pending_timers_expired{0};
     unsigned long long gun_pending_timers_live{0};
+    // Packet p17_reload_torpedoes: ReloadTorpedoes calls applied, and the barrels
+    // they found still reloading or empty.
+    unsigned long long reload_torpedoes_calls{0};
+    unsigned long long reload_torpedoes_barrels{0};
     unsigned long long torpedo_ranges_derived{0};
     unsigned long long torpedo_swims_started{0};   // water crossings that became a swim
     // Packet cc8_torpedo_release_spawn. Where a torpedo-carrying gun stops on
