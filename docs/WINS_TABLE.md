@@ -593,3 +593,30 @@ mechanism is in the cd761bb52 section above).
     unit in `Mission.Dakota` dead, and luaBomberWaveSpawned3 inserts only units whose `unit.Class.ID == 136`. An
     empty table therefore suggests `unit.Class.ID` does not read 136 on this host. This is not yet checked; if it
     is fixed, JM08 also has to shoot down the C47s.
+  - Confirmed afterwards in the w1 log: PilotSetTarget ran only for wave 1, whose handler calls it unconditionally.
+    Waves 2 (B-25 type 118, SBD type 108) and 3 (C47 type 136) never matched their `Class.ID` branches.
+  - **Stale exe.** w1 was timed on the 25fbdcba0 exe. Main has since turned ON the CommandBuilding step repair
+    (4285975cc), the path-cursor step (82041f5c3), AngleErr per evaluation (6c900f1e0), the auto-target phase draw
+    (fad263ffb) and the sink and sub-wake draws, and all of them move JM08. w1 must be re-timed on current main.
+    There, ships53 reports that `cc9-ships44\local\s52_j8_b3.txt` completes at 1329.87 s (reference, 40000 frames,
+    log `cc9-ships44\local\s53_p1_j8.log`; 20,3 not run).
+- **New row BSM09: a no-orders win** (cc9-ships53, recorded by cc9-lua62).
+  - Tree agent/cc9-ships44 at 2edfb11a3 (origin/main), reference env, 36000 frames, `--menu-select BSM09`, no
+    `--helm-orders`. Log `cc9-ships44\local\s53_rf1_b9.log` with its manifest.
+  - Zuikaku is driven below 10% HP by the US AI, which completes primary 1 (bsm_09_battle_of_the_coral_sea.lua:521-536).
+    EndMission comes at 917.90 s, then luaMissionCompletedNew "Enemy carriers are retreating - Mission Complete" at
+    921.85 s. The guard is logged.
+  - It runs at all only since kGenerateObjectRecordOnlyCreatorBound (b510a54fe). 20,3 has not been run.
+- **ESMP08 row is now `config/win_orders/esmp08_p12_e8_rb.txt`** (cc9-physics12, 2f1480151), replacing
+  `esmp08_l61_e8_f`.
+  - On 135f8ae26 (kAirOpsQueueCompactBound ON): reference 4684.71 s, 20,3 3594.58 s, 20,5 3251.20 s; 20,7 no end
+    (12/15).
+  - On b46d56a35 (kSquadronLandTargetGoneBound ON): reference 3334.33 s, 20,3 3594.58 s, 20,5 3251.20 s.
+  - The guard is logged in all; logs are `cc9-physics1\local\p12e8{b,c}_rb_<cond>.log`.
+- **JM06 row is now `config/win_orders/jm06_p12_j6_a4.txt`** (cc9-physics12, 8652858c8), replacing `s49_j6_s`.
+  - Plan `s` lost 20,3 to kTorpedoBotThinkTimerBound (0cc305ee0, faithful) and lost the reference under 6c900f1e0.
+  - a4 on 25fbdcba0: reference 2226.05 s, 20,3 2343.16 s, 20,5 2175.00 s, 20,7 2033.86 s, 20,11 3180.98 s; the guard
+    is logged in all.
+- **Open (ships53 report):** BSM01 `bsm01_l50_b1_a` reaches no EndMission within 20000 frames on current main
+  (`cc9-ships44\local\s53_q0_b1.log` / `s53_q1_b1.log`). The next re-time must check it at its full 40000 frames.
+- **Current main also needs a re-time** for IJN08 z, USN12, JM08, ESMP08 and PRCP01, the torpedo-sensitive rows.
