@@ -18,17 +18,23 @@ T& at(void* base, std::uint32_t offset) noexcept {
 constexpr std::uint16_t kSpace = 0x20;
 constexpr std::uint16_t kLineFeed = 0x0A;
 
+// x87 precision: these builders run on the main thread, whose control word is
+// 007Fh (24-bit) after device creation (docs/CC13_FPU_PRECISION.md), so every
+// x87 arithmetic op rounds to float. Each op below is therefore a separate
+// static_cast<float> in the image's order; loads (FLD/FILD) are exact.
+
 // FNSTCW; FLD text+20h; FMUL double 960.0 [00CEC380]; FLDCW (saved | 0C00h);
-// FISTP qword; FLDCW saved. The caller keeps the low DWORD.
+// FISTP qword; FLDCW saved. The caller keeps the low DWORD. The FMUL rounds to
+// float at 24-bit precision, so the product is rounded here before the
+// truncating store, whatever the host's own control word is.
 std::uint32_t container_width_960(float normalized_width) noexcept {
-    const double scale = 960.0;
+    const float scaled = static_cast<float>(static_cast<double>(normalized_width) * 960.0);
     std::uint16_t saved_control;
     std::uint16_t truncating_control;
     std::int64_t converted;
     __asm {
         fnstcw saved_control
-        fld normalized_width
-        fmul scale
+        fld scaled
         movzx eax, saved_control
         or eax, 0x0c00
         mov truncating_control, ax
@@ -52,6 +58,19 @@ const std::uint16_t* text_or_empty(GuiTextGeometryHooks& host, void* text) {
 // The glyph advance at glyph+12h, unsigned 16 bits (MOVZX then FILD DWORD).
 double advance_of(void* glyph) noexcept {
     return static_cast<double>(at<std::uint16_t>(glyph, 0x12));
+}
+
+// FILD DWORD of an unsigned value, then FADD 2^32 [00CE3978] when it loaded
+// negative. The FILD is exact; at 24-bit precision the FADD rounds to float.
+double fild_unsigned(std::uint32_t value) noexcept {
+    if (static_cast<std::int32_t>(value) >= 0) return static_cast<double>(value);
+    return static_cast<double>(static_cast<float>(static_cast<double>(value)));
+}
+
+// FILD advance; FMUL float scale; FADD float accumulator; each op rounded.
+float scaled_advance_sum(double advance, float scale, float accumulator) noexcept {
+    const float product = static_cast<float>(advance * static_cast<double>(scale));
+    return static_cast<float>(static_cast<double>(product) + static_cast<double>(accumulator));
 }
 
 // The first-glyph binding both builders perform once: section+20h material
@@ -114,19 +133,19 @@ void text_build_single_line_geometry_00ab9fd0(GuiTextGeometryHooks& host, void* 
     // Measure: text+114h accumulates advance * text+1D8h, stored per unit.
     for (const std::uint16_t* unit = text_or_empty(host, text); *unit != 0; ++unit) {
         void* const glyph = host.font_select_glyph_00ad4480(at<void*>(text, 0x108), *unit);
-        at<float>(text, 0x114) = static_cast<float>(
-            advance_of(glyph) * static_cast<double>(at<float>(text, 0x1D8)) +
-            static_cast<double>(at<float>(text, 0x114)));
+        at<float>(text, 0x114) =
+            scaled_advance_sum(advance_of(glyph), at<float>(text, 0x1D8), at<float>(text, 0x114));
     }
     // Alignment text+100h: 2 right, 1 centre (x 0.5 double [00D7A280]), any
     // other value keeps pen 0. The width is FILD + 2^32 [00CE3978] when
-    // negative, i.e. the unsigned value.
+    // negative, i.e. the unsigned value (rounded to float in that case).
     const std::int32_t alignment = at<std::int32_t>(text, 0x100);
     if (alignment == 2) {
-        pen = static_cast<float>(static_cast<double>(width) - static_cast<double>(at<float>(text, 0x114)));
+        pen = static_cast<float>(fild_unsigned(width) - static_cast<double>(at<float>(text, 0x114)));
     } else if (alignment == 1) {
-        pen = static_cast<float>(
-            (static_cast<double>(width) - static_cast<double>(at<float>(text, 0x114))) * 0.5);
+        const float free_width =
+            static_cast<float>(fild_unsigned(width) - static_cast<double>(at<float>(text, 0x114)));
+        pen = static_cast<float>(static_cast<double>(free_width) * 0.5);
     }
 
     const std::uint16_t* unit = text_or_empty(host, text);
@@ -146,8 +165,7 @@ void text_build_single_line_geometry_00ab9fd0(GuiTextGeometryHooks& host, void* 
             first_vertex += 4;
             indices += 6;
             ++quad_index;
-            pen = static_cast<float>(advance_of(glyph) * static_cast<double>(at<float>(text, 0x1D8)) +
-                static_cast<double>(pen));
+            pen = scaled_advance_sum(advance_of(glyph), at<float>(text, 0x1D8), pen);
             ++unit;
         } while (*unit != 0);
     }
@@ -243,10 +261,10 @@ void text_build_wrapped_geometry_00aba270(GuiTextGeometryHooks& host, void* text
                 for (;;) {
                     if (*scan == kLineFeed) break;
                     void* const glyph = host.font_select_glyph_00ad4480(at<void*>(text, 0x108), *scan);
-                    const double candidate = static_cast<double>(at<float>(text, 0x1D8)) * advance_of(glyph) +
-                        static_cast<double>(line_width);
+                    const float candidate =
+                        scaled_advance_sum(advance_of(glyph), at<float>(text, 0x1D8), line_width);
                     // FCOMI candidate, width; JA: ordered and above.
-                    if (candidate > static_cast<double>(width)) {
+                    if (static_cast<double>(candidate) > fild_unsigned(width)) {
                         if (*scan == kSpace) --scan;
                         break;
                     }
@@ -258,7 +276,7 @@ void text_build_wrapped_geometry_00aba270(GuiTextGeometryHooks& host, void* text
                         only_spaces = false;
                     }
                     ++scan;
-                    line_width = static_cast<float>(candidate);
+                    line_width = candidate;
                     if (*scan == 0) break;
                 }
                 // 00ABA4CD: back over trailing spaces, subtracting the raw
@@ -292,15 +310,16 @@ void text_build_wrapped_geometry_00aba270(GuiTextGeometryHooks& host, void* text
             const std::int32_t alignment = at<std::int32_t>(text, 0x100);
             const float space_advance_f =
                 static_cast<float>(static_cast<std::int32_t>(at<std::uint16_t>(space_glyph, 0x12)));
-            const double free_width = static_cast<double>(width - break_width);
+            const double free_width = fild_unsigned(width - break_width);
             if (alignment == 0 || (alignment == 3 && (stop == 0 || stop == kLineFeed))) {
                 space_step = space_advance_f;
                 pen = 0.0f;
             } else if (alignment == 3) {
                 if (spaces != 0) {
                     // FIDIV by (spaces - 1) with no zero guard, then FADDP of
-                    // the raw space advance.
-                    space_step = static_cast<float>(free_width / static_cast<double>(spaces - 1) +
+                    // the raw space advance; each op rounds to float.
+                    const float per_gap = static_cast<float>(free_width / static_cast<double>(spaces - 1));
+                    space_step = static_cast<float>(static_cast<double>(per_gap) +
                         static_cast<double>(at<std::uint16_t>(space_glyph, 0x12)));
                 } else {
                     space_step = 0.0f;
@@ -341,8 +360,7 @@ void text_build_wrapped_geometry_00aba270(GuiTextGeometryHooks& host, void* text
                         // D8 C9 FMUL ST0,ST1 at 00ABA755: pen gets advance *
                         // text+1D8h, the line sum gets the raw advance.
                         const double advance = advance_of(glyph);
-                        pen = static_cast<float>(static_cast<double>(at<float>(text, 0x1D8)) * advance +
-                            static_cast<double>(pen));
+                        pen = scaled_advance_sum(advance, at<float>(text, 0x1D8), pen);
                         line_sum = static_cast<float>(advance + static_cast<double>(line_sum));
                     } else {
                         pen = static_cast<float>(static_cast<double>(space_step) + static_cast<double>(pen));
@@ -358,10 +376,11 @@ void text_build_wrapped_geometry_00aba270(GuiTextGeometryHooks& host, void* text
             if (line_sum > at<float>(text, 0x114)) at<float>(text, 0x114) = line_sum;
             at<std::uint32_t>(text, 0x110) += 1;
             // ((text+10Ch + 1.0 [00D7A210]) - 0.15000000596 [00CE6618]) * height + top.
-            line_top = static_cast<float>(
-                ((static_cast<double>(at<float>(text, 0x10C)) + 1.0) - 0.15000000596046448) *
-                    static_cast<double>(font_height_f) +
-                static_cast<double>(line_top));
+            // Four x87 ops, each rounded to float at 24-bit precision.
+            const float spacing_plus_one = static_cast<float>(static_cast<double>(at<float>(text, 0x10C)) + 1.0);
+            const float spacing = static_cast<float>(static_cast<double>(spacing_plus_one) - 0.15000000596046448);
+            const float advance_y = static_cast<float>(static_cast<double>(spacing) * static_cast<double>(font_height_f));
+            line_top = static_cast<float>(static_cast<double>(advance_y) + static_cast<double>(line_top));
         } while (*line != 0);
     }
 
@@ -370,16 +389,15 @@ void text_build_wrapped_geometry_00aba270(GuiTextGeometryHooks& host, void* text
     // ST2 at 00ABA812 checked from the bytes.
     const float span = static_cast<float>(static_cast<double>(max_y) - static_cast<double>(min_y));
     at<float>(text, 0x178) = span;
-    const float raised = static_cast<float>(static_cast<double>(span) / 720.0 * static_cast<double>(0.75f));
+    // FDIV rounds the quotient to float before the FMULP (24-bit precision).
+    const float span_quotient = static_cast<float>(static_cast<double>(span) / 720.0);
+    const float raised = static_cast<float>(static_cast<double>(span_quotient) * static_cast<double>(0.75f));
     float offset = 0.0f;
     const std::int32_t vertical = at<std::int32_t>(text, 0x104);
-    if (vertical == 1) {
-        offset = static_cast<float>(
-            (static_cast<double>(0.75f) * static_cast<double>(at<float>(text, 0x24)) - static_cast<double>(raised)) *
-            0.5);
-    } else if (vertical == 2) {
-        offset = static_cast<float>(
-            static_cast<double>(0.75f) * static_cast<double>(at<float>(text, 0x24)) - static_cast<double>(raised));
+    if (vertical == 1 || vertical == 2) {
+        const float box = static_cast<float>(static_cast<double>(0.75f) * static_cast<double>(at<float>(text, 0x24)));
+        offset = static_cast<float>(static_cast<double>(box) - static_cast<double>(raised));
+        if (vertical == 1) offset = static_cast<float>(static_cast<double>(offset) * 0.5);
     }
 
     // 00ABA843: section counts from the low 16 bits of the quad index, then
@@ -521,8 +539,10 @@ void text_update_utf16_geometry_00aba8d0(GuiTextGeometryHooks& host, void* text,
             void* const font = at<void*>(text, 0x108);
             const std::int32_t height = font != nullptr ? at<std::int16_t>(font, 0x14) : 0;
             // FILD; FDIV double 720.0 [00CEF1B8]; FMUL float text+164h; FSTP float.
+            // 24-bit precision: the FDIV rounds the quotient to float first.
+            const float height_quotient = static_cast<float>(static_cast<double>(height) / 720.0);
             const float scale = static_cast<float>(
-                static_cast<double>(height) / 720.0 * static_cast<double>(at<float>(text, 0x164)));
+                static_cast<double>(height_quotient) * static_cast<double>(at<float>(text, 0x164)));
             // text+160h zero -> 0.5f [00CE3800], else -0.5f [00CE69D0].
             const float depth = at<std::int32_t>(text, 0x160) == 0 ? 0.5f : -0.5f;
             const float shadow_scale[3] = {scale, scale, depth};
