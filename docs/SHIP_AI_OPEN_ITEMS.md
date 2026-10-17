@@ -18319,3 +18319,52 @@ e8d6d0a83 for the default row; ON = `local\s53_wd`. USN01 20000 frames.
 | default mode, STREAMS=0 (`s53_d0d_u1` / `s53_d1d_u1`) | 7 / 359 / 2872 | 3 | KatSBD 204.66 -> 204.21 s (deaths 81 -> 84) |
 DebrisEnabled = 1 and DebrisNumPerMeter = 0.3 were read from this installation's shipglobals.lua. The mechanism
 matches the prediction: the reference mode is inert, and the default mode moves only after a wreck goes under.
+
+## 264. Seg 59 crew bots: torpedo and depth-charge survey, four slot bodies (cc9-ships53, 2026-10-17; lead item 3)
+
+**Survey** (`local\s53_seg59.txt`, `bsp.py range 008EE670 00922240`): 784 entries, 261 without a function record
+once STL/CG/EH stubs are excluded. By band:
+- 008EE670..008F7FFF: scene property / tokenizer / PropTree library, WinMain (008F81F0) and startup. No gameplay.
+- 008FB000..00905300: the gun bots. Unrecorded here are mostly class machinery: RobotConfig construct/destruct
+  per bot, GunBot Construct*/Read/WriteProperties* (the scene property bag, save/load), and Attach*/ClearFireTarget*.
+- 00905300..00922240: mission scoring and awards (ScoreTable, MissionScoreRecord, badges). About 90 FUN_.
+**TorpedoBot (vtable 00D182B0) and DepthChargeBot (00D18338), slot by slot.** The gameplay slots are hosted:
+- tick +0Ch: 008FFF20 HeadingAimTick (torpedo) and 008FC080 DepthChargeTick, both in src/gun_bot_ticks.cpp and
+  src/gun_bot_remainder.cpp.
+- accepts-target +1Ch: 008FC010 and 008FB590, in gameplay_seg40_59_cc13.cpp and the gunnery host.
+- set-fire-target +38h: 009035A0 (torpedo, gunnery host 00727F44) and the base 006DF170 (depth charge).
+- recompute +3Ch: 00903580 (torpedo).
+- throw multipliers +24h: 008FB550 and 008FB570.
+Reconstructed now in **src/seg59_bots_s53.cpp** (new, not wired), with ledger records:
+- 008FF2B0 / 008FF500, ClearFireTarget +30h: 0072BD50, then gun vt[1E8h](0) when the owner's role-0 slot is 8 or
+  AI-held; the torpedo body also clears +6Ch. The gunnery host's clear_bot_fire_target_00728000 already clears +6Ch
+  for torpedo guns. It does not send vt[1E8h](0); that slot's meaning (the gun's own release) was not read, so it
+  is recorded, not bound.
+- 008FF310 / 008FC060, Attach +04h: construction only.
+The property readers 008FF360 / 008FF560 and writers 008FF400 / 008FF5D0 are save/load ("thinkTimeLeft",
+"targetAngle"); a fresh mission never runs them.
+**Left for seg 59** (ship lane): the gun's vt[1E8h] meaning, to decide whether the clear's release matters. Also
+00901C20 BSP_GunBot_InterceptSolution and 00902290 (13 and 1 files mention them, but they have no function record;
+00902290's caller is 00957740 BSP_Aim_ResolveRayToWorldPoint), 008FB890 BSP_Entity_IsLiveOtherParty (caller
+006DF520 MuzzleSolutionAimTick, no host mention), and 008FF640 BSP_Entity_HullDistanceToPoint_Provisional (no direct
+caller). The pilot and tailgunner bots are physics12's.
+
+## 265. Handoff (cc9-ships53, 2026-10-17)
+
+Branch `agent/cc9-ships44`, origin/main merged at d12944a6d. No leases are held after this commit. This session's
+commits:
+- 260: 7b1fb8756 / 3c41eb1b3, sub wake draws, ON.
+- 261: 9a99c6533 / 82041f5c3, 007ADD70 ship arm, ON (JM08 s52_j8_b3 now a win).
+- 262: 0cea637b5 / 3c0045930, squadron arm, ON.
+- 263: e8d6d0a83 / 418fe366e, wreck debris draws, ON.
+- 264: 1c063c0a9, seg 59 slot bodies.
+Open:
+- **USNOS**: parked on cc9-lua62's level-bomber goaway fix (256). Re-run a7 against the step repair (257) and
+  007ADD70.
+- **BSM01 keeper** (bsm01_l50_b1_a): no EndMission in 1000 s on current main (262), reported to lua62.
+- **00836D0E / 0084E3B5**: the 007ADD70 true-answer finish blocks (0071D810(2) + `finished`) are not hosted.
+- **User paths**: 007ADD70's multi-leg scan only runs on player-drawn paths (0071FC40). No run exercises it yet.
+- **Seg 59** (264): the gun vt[1E8h] release in the bot clears; 00901C20, 00902290, 008FB890 and 008FF640 still
+  have no function record; the scoring band 00905300+ is unscoped. Scripts: `local\s53_seg59.txt` (the full range
+  listing), `local\s53_scan.py` (byte pattern scan), `local\s53_rd.py` (constants from the PE),
+  `local\s53_rows.ps1` (launcher).
