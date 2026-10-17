@@ -15904,3 +15904,19 @@ clear. `shipyard_hangars_usable` used the row's `active` and the gunnery death (
 (`unit_alive_and_visible`). **Prediction:** gameplay-identical on JM08 unless a hangar object is torn down or destroyed
 on a frame where the two readings differ (the gunnery death leads the destroyed byte, or a pending-destroy object still
 has health); the `shipyard` walk/build counters are the place to look.
+
+**Pair** (`g51_s0` / `g51_s1` at `2a14f7279`, JM08 `jm08_l64_j8_e`, reference env, `local\g51_s0_j8.log` /
+`local\g51_s1_j8.log`): GAMEPLAY identical (232 deaths, failed at 1988.86 s both; the HQ is destroyed, the plan does not
+win on this main), native table identical apart from the known ShipAiSectorScan noise. No hangar object changed state
+on a frame where the readings differ. **Flipped ON** as faithful.
+
+### 272.3 The friendly blast on BSM01 (lead item 3): the image does not filter by party either
+
+HenryPT's death to Sacramento's killer_cat 6 blast (`p6_b1_a` under 20,3, 1503-1514 s) is the image's law, not a host
+gap. `0084BAD0 BSP_Explosion_ApplyRadialDamage` gathers every record in range through `00904470` (which excludes only
+the node `sourceEntity->vtable[B0h]()` returns from the `0098C630` query) and queues each record except the one whose
+entity is the source (`0084BBCF CMP [ESI],ECX` / `JE`). `004705C0` scales by the shot's `vtable[58h]` (gun+43Ch) and
+the owner's gameplay-modifier product (`008E6430(1, owner+0ACh)`, only while `[00E0C978]` and `[[00F88C30]+94h]`),
+and neither `00826F10` nor `008777D0` reads a party. The host's `apply_impact_blast` skips the shooter alone, the same
+rule. So a friendly ship's burst near a target does damage a friendly PT boat in the image; BSM01 20,3 is a plan
+question (keep HenryPT clear of Sacramento's target), not a gunnery fix.

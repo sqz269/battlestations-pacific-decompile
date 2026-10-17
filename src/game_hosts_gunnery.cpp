@@ -13997,7 +13997,7 @@ bool GameGunneryHost::Impl::shipyard_complete(bsp::ShipyardState& yard) {
 // and 00844CE0 keep a hangar object only when +5Ch is set and +5Dh, +5Eh and +60h are
 // clear. True: shipyard_hangars_usable reads those four bytes (unit_alive_and_visible).
 // False: the row's `active` and the gunnery death (dead || health <= 0).
-constexpr bool kShipyardHangarGateBytesBound = false;
+constexpr bool kShipyardHangarGateBytesBound = true;  // ON: JM08 gameplay identical, faithful (GUNNERY 272.2)
 
 bool GameGunneryHost::Impl::ship_in_shipyard_hangar_0081de10(std::size_t ship) {
     // 0081DE10, __fastcall(unit). 0081DE31: unit+1130h > 0 answers 1 at once. LABELLED:
