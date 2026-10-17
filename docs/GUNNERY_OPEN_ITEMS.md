@@ -15864,3 +15864,22 @@ Verdict: the mechanism matches and the rows are inert, so the switch is ON. Side
 counts), `g50_alive.py <log> <t>`, `g50_track.py <traj prefix> <unit> <t0> <t1> <dt>`, `g50_watermap.py` (known-water
 map from trajectories; set `G50_TRAJ` to a few prefixes), `g50_aimcheck.py` (do not trust: it compares against the
 meaningless `run_dir`), `g50_scnscan.py`. Exports: `g50_p1` (`f4d7658e6`), `g50_soff`/`g50_son` (`c4abff61c`).
+
+**Lead items that arrived after this handoff (queued for the successor, in this order):**
+1. **(1b) Recon sensor pass `00806840`** (`gunnery_recon_detect_00806840`, `src/gunnery_recon_detection.cpp`, from cc13's
+   decoy audit): the current body is a pure model. It never writes the detection record or payload+0Ch, never passes
+   the best observer to `00805AF0` (det+28h never set or cleared), drops the level-change callback, and its skip path
+   takes the level from `prior_value` instead of det+4. It also folds in another function's drain and leaves the
+   per-target loop to its caller. Reconstruct it faithfully, bind OFF, check it composes with the ON
+   `kForcedReconSyncNotifyBound` / `kReconListenerResetCycleBound` family, pair on USNOS Haku, ESMP08 and USN04, flip by
+   mechanism, and send moved win rows to cc9-lua64. This can move USN15's JapanGoTo fail (269.1 point 7). Re-check the
+   USN15 plans after it flips, and re-time `nn`/`nm` on current main (they were timed on `f4d7658e6`).
+2. **(2b) `00848410` shipyard_hangars_usable** (game_hosts_gunnery.cpp): the image tests four bytes per hangar object
+   (+5Ch set; +5Dh, +5Eh, +60h clear). The host uses `row->active` and its own `dead || health <= 0`. Map the bytes
+   (+5Dh is the dead byte), bind OFF, pair on JM08 (Shipyard 01), flip by mechanism.
+3. **Low: friendly blast on BSM01** `p6_b1_a` 20,3: HenryPT dies at 1514.05 s to a category-6 blast from its own side's
+   Sacramento near a MiniSub, and that ends the mission. Check whether the image's blast law (`004705C0`) filters by
+   party or owner where the host does not.
+Also: cc9-physics14 is live and will touch `rotate_about_axis_0085e4d0`, which the GunBot intercept in
+`game_hosts_gunnery.cpp` uses. Vendor-library bodies stay BIND, unless gameplay is blocked and a binding cannot serve
+(record the reason in the doc and the ledger).
