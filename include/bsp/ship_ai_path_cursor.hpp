@@ -161,7 +161,9 @@ inline constexpr bool kPathCursorFollowStepBound = true;
 // 0071FC40 byte; heading = [squadron+3D0h]->vtable[50h]; factor 0.4 [00CE7804];
 // force 0 (0084E381 PUSH EBX). True: plane units (kinds 0Fh/18h) take this arm.
 // False: they keep the ship arm's one-leg stand-in (before).
-inline constexpr bool kSquadronPathFollowStepBound = false;
+// ON by docs/SHIP_AI_OPEN_ITEMS.md 262: JM06's PBY Catalina 01 runs its whole
+// 12-point patrol path (0 legs before); BSM01 deaths unchanged.
+inline constexpr bool kSquadronPathFollowStepBound = true;
 
 struct ShipAiPathFollowStep {
     bool answer{false};

@@ -18303,3 +18303,11 @@ at B+60h. The extents are therefore heading-independent. 00825B56..00825B84 stor
 two hull ends go below -5 m. That is later than the 258 sink-grid draws on the same wreck. Each such ship consumes
 about 8 * 0.3 * length draws (West Virginia, 194.85 m: 58 pieces, 464 draws). The summary line is
 `sinking wreck debris`.
+**Squadron arm measured; flipped ON.** OFF = tree 0cea637b5, ON = `local\s53_sq` (pair_export). Reference env.
+| row | ON squadron calls / forced | pair_diff | moved |
+|---|---|---|---|
+| JM06 36000 fr (`s53_q0_j6` / `s53_q1_j6`) | 35998 / 0 | 3 (deaths identical) | PBY Catalina 01 runs CatalinaPatrolPath 0>1>...>11 to the final leg (0 legs OFF) |
+| BSM01 20000 fr, `config/win_orders/bsm01_l50_b1_a.txt` (`s53_q0_b1` / `s53_q1_b1`) | 40000 / 15 | 3 (404 deaths both, 2 rows changed) | no EndMission in 1000 s, on BOTH sides |
+The mechanism matches: the plane now advances at the max(TravelSpeed / rate * 1.2, ClosingDist) radius. BSM01 does
+not reach its keeper EndMission (767.94 s) on either side. The keeper row has already moved on current main,
+independent of this switch, and was reported to cc9-lua62.
