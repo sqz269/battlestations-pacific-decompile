@@ -82,7 +82,13 @@ inline constexpr float kPilotAxisLow = -1.0f;      // 00D7A260, the bipolar lowe
 inline constexpr float kPilotAxisHigh = 1.0f;      // 00D7A24C
 inline constexpr float kPilotUnipolarLow = 0.0f;   // an immediate zero at 007CB1C7
 inline constexpr float kPilotPitchHalfRange = 0.5236f;  // 00CEC724, 30 degrees
-inline constexpr float kPilotPitchInputScale = 2.0f;    // 00CEC730, a double in the image
+// cc13-fix67 (fix6a), OFF: 005196E6 is FDIV qword [00CEC730], whose eight bytes 3FE0C15240000000
+// are pi/6 as a widened float (0.5235988); 2.0 was the low dword read as a float. The same
+// qword scales the stick at 00519697 (FMUL) before the wrapped subtract that makes the error.
+// The float 3F060A92 holds the qword's exact value, and under the main thread's 24-bit
+// precision control the image's FDIV rounds as a float divide does. ON changes the response.
+inline constexpr bool kPilotPitchInputScaleImageBound = false;
+inline constexpr float kPilotPitchInputScale = kPilotPitchInputScaleImageBound ? 0x1.0c1524p-1f : 2.0f;    // 00CEC730, a double in the image; image bits 3F060A92 at 00CEC730 m64 3FE0C15240000000
 inline constexpr float kPilotGroundSpeedGate = 1.3888889f;  // 00CF8AAC, 5 km/h in m/s
 inline constexpr float kPilotGroundTimerGate = 5.0f;    // 00CE3850
 inline constexpr float kPilotStateSevenTimer = 3600.0f; // 00CFDEB0
