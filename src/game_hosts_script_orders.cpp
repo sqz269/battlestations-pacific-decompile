@@ -7,6 +7,7 @@
 #include "bsp/game_hosts_script_orders.hpp"
 namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_hosts_mission.cpp
 #include "bsp/strafe_task.hpp"
+#include "bsp/depth_charge_task_cc13.hpp"
 #include "bsp/game_hosts_commands.hpp"
 
 #include "bsp/air_operations.hpp"
@@ -38,6 +39,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 // Packet cc8_ship_follow: 00779D50's transcription and the ship-base kind.
 #include "bsp/ship_ai_states.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"  // packet cc9_usn02_deruyter_fire
+#include "bsp/game_hosts_ai.hpp"       // packet cc9_l65_chooser_surface_set
 #include "bsp/weapon_director.hpp"     // packet g44_scan_row_write (0071D560)
 #include "bsp/unit_gunnery_pass.hpp"
 #include "bsp/recon_sensor_pass.hpp"  // packet cc9_recon_level_table
@@ -148,6 +150,31 @@ inline constexpr bool kLuaNavigatorStopBound = true;  // ON: SQUADRON_LAND_TASK 
 // live squadron members (gunnery liveness stands for +3CCh membership, LABELLED).
 // False: the ordered unit (slot 0) alone, as before.
 inline constexpr bool kSquadronMemberOrdnanceBound = true;   // ON: SQUADRON_LAND_TASK 5hv.6
+// Packet cc9_l65_chooser_surface_set (SQUADRON_LAND_TASK 5hy). 007EEC9F calls the
+// thunk 00922DC0 (DL = 1) into 00922C80; a target past the ship, airfield,
+// shipyard and 1Ch arms (an MLandFort: hangars, bunkers) reaches 008DDF90, the
+// local slot's objective set, then the tail, whose allow_far arm accepts an
+// MLandFort with FakedType 1Bh (the authored default; no row of this
+// installation's Lua sets FakedType). True: that branch is answered as
+// game_hosts_ship_ai.cpp's target_is_surface_00922dc0 answers it (slot 0's set,
+// then the tail with allow_far). False: the branch answers "not surface", so
+// every ordnance class fails and a squadron ordered onto a hangar gets 007F1688's
+// moveto instead of divebomb.
+inline constexpr bool kChooserSurfaceSetBranchBound = true;   // ON: SQUADRON_LAND_TASK 5hy.1
+// Packet cc9_l65_turn_member (SQUADRON_LAND_TASK 5hz). 008A0A10 takes its squadron
+// arm (008A0D5D vt[5Ch](18h)) only for a squadron argument. True: a member plane
+// that is not the squadron's fused leader takes the plane arm (008A0E6F, its own
+// vtable[88h] 007C9540) instead of re-posing the whole squadron. False: any
+// member re-poses every member, as before. LABELLED: the leader plane and the
+// squadron are one host unit, so a script passing the leader still turns all.
+inline constexpr bool kTurnToEntityMemberPlaneArmBound = false;
+// Packet cc9_l65_moveto_member_launch (SQUADRON_LAND_TASK 5ia). 007F1688-007F16AD
+// issues the null-class moveto to the squadron (0071ECF0), whose 007ECF80 fan-out
+// reaches every +3D0h plane, on the deck or flying. True: the standing per-member
+// launch order (kAutoAttackMemberOnLaunchBound) also carries that moveto, so a
+// deck member gets it when it is airborne. False: only the members flying at the
+// serve get it (5hl L3), and later members fly no command.
+inline constexpr bool kAutoAttackMoveToMemberLaunchBound = true;   // ON: SQUADRON_LAND_TASK 5ia.1
 // Packet cc13-fix5 (docs/CC13_FIX_5.md section 7). True binds NavigatorCruise
 // 008A75C0: NavigatorStop's twin, 0077D600(entity, cruise 00E08F70, zeroed
 // descriptor, 1) at 008A7729 (bsp::navigator_cruise_order_008a75c0), through
@@ -1560,6 +1587,25 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
     in.self_is_dogfight_excluded = units_.unit_is_kind_of(unit_index, 0x16);
     in.target_is_air = target_air;
     in.target_is_surface = target_surface == bsp::SurfaceTargetAnswer::kYes;
+    if (target_surface == bsp::SurfaceTargetAnswer::kUnreadSetBranch) {
+        // 00922D3F..00922D5B: 008DDF90 over the local slot's set (slot 0 here,
+        // LABELLED as in game_hosts_ship_ai.cpp); 008DDFA9 looks up an
+        // IsKindOf(5) entity as itself. Otherwise the tail with DL = 1.
+        bool in_set = false;
+        if (units_.unit_is_kind_of(target_index, 0x05)) {
+            const std::vector<std::size_t> set =
+                bsp::game::game_objective_sets().units_in_slot(0);
+            in_set = std::find(set.begin(), set.end(), target_index) != set.end();
+        }
+        const bool tail = bsp::entity_surface_target_tail_00922c80(tf, true);
+        if constexpr (kChooserSurfaceSetBranchBound) {
+            in.target_is_surface = in_set || tail;
+        }
+        log_.notef("  %s surface set branch: in_set=%d tail=%d land_fort=%d -> %d "
+            "(00922C80 -> 008DDF90, packet cc9_l65_chooser_surface_set%s)", label,
+            in_set ? 1 : 0, tail ? 1 : 0, tf.is_land_fort ? 1 : 0,
+            in.target_is_surface ? 1 : 0, kChooserSurfaceSetBranchBound ? "" : ", OFF");
+    }
     // [unit+3D0h] != 0, the squadron's slot-0 plane. This host models a single
     // unit rather than a squadron holding an array, and the "self" queries above
     // already read the ordered unit AS that slot-0 plane - which is the native's
@@ -1574,6 +1620,9 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
     in.has_general_bomb_ordnance = bsp::ordnance_has_general_bomb_2ah(set);
     in.has_drop_kamikaze_ordnance = bsp::ordnance_has_drop_kamikaze_2fh(set);
     in.has_torpedo_ordnance = bsp::ordnance_has_torpedo_2bh(set);
+    // Packet cc13-depthcharge1: 007EDA10 -> 007B94F0, kind 2Ch (Type
+    // "DepthCharge"). Lands with the task, never apart from it.
+    if constexpr (bsp::kDepthChargeTaskBound) in.has_depth_charge_ordnance = set.contains(0x2c);
     if constexpr (kSquadronMemberOrdnanceBound) {
         const bsp::PlaneSquadronHostRecord* sq =
             bsp::plane_squadron_registry().find_by_member_unit(unit_index);
@@ -1587,6 +1636,9 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
                 in.has_general_bomb_ordnance |= bsp::ordnance_has_general_bomb_2ah(ms);
                 in.has_drop_kamikaze_ordnance |= bsp::ordnance_has_drop_kamikaze_2fh(ms);
                 in.has_torpedo_ordnance |= bsp::ordnance_has_torpedo_2bh(ms);
+                if constexpr (bsp::kDepthChargeTaskBound) {
+                    in.has_depth_charge_ordnance |= ms.contains(0x2c);
+                }
             }
         }
     }
@@ -1694,6 +1746,45 @@ void GameScriptOrdersHost::issue_command_to_members(const std::vector<std::size_
         if (!commands_after_last_issue_delivery(install)) install();
     }
     delivery_source_ = saved_source;
+}
+
+// Packet p15_free_attack_tick: the bot side of an override 0071D980 sent or
+// cleared. 0099A170 reads the member's current command (0071BE40, the override
+// in mode 2); `command` and `target_index` are what the caller knows that read
+// answers, as the PilotSetTarget fan-out passes them.
+std::uint32_t GameScriptOrdersHost::install_command_task_0099a170(std::size_t member,
+    std::uint32_t command, std::size_t target_index) {
+    if (member >= units_.count()) return 0u;
+    const std::uint32_t target_token = target_index < units_.count()
+        ? static_cast<std::uint32_t>(target_index + 1u) : 0u;
+    ScriptOrderAttackCommandHost bots(units_, log_, command, target_token);
+    const std::uint32_t task = bsp::bot_install_command_task_0099a170(
+        static_cast<std::uint32_t>(member + 1u), bots);
+    if (task != 0u) units_.store_unit_attack_command_class(member, command);
+    return task;
+}
+
+bool script_orders_squadron_permissions_3c3d(const bsp::PlaneSquadronHostRecord& squadron,
+    bool& allow_fire, bool& allow_move) {
+    allow_fire = false;
+    allow_move = false;
+    return g_live_script_orders != nullptr
+        && g_live_script_orders->squadron_permissions_3c3d(squadron, allow_fire, allow_move);
+}
+
+std::uint32_t script_orders_choose_attack_class_007eec50(std::size_t leader,
+    std::size_t target_index, bool prefer_ordnance, bool allow_guns) {
+    return g_live_script_orders != nullptr
+        ? g_live_script_orders->choose_attack_class_for_free_attack(leader, target_index,
+              prefer_ordnance, allow_guns)
+        : 0u;
+}
+
+std::uint32_t script_orders_install_command_task_0099a170(std::size_t member,
+    std::uint32_t command, std::size_t target_index) {
+    return g_live_script_orders != nullptr
+        ? g_live_script_orders->install_command_task_0099a170(member, command, target_index)
+        : 0u;
 }
 
 std::uint32_t script_orders_squadron_intake_007f1940(std::size_t leader,
@@ -2079,11 +2170,15 @@ void GameScriptOrdersHost::run_air_ops_player_launch_queue(float step) {
             p.squadron_entity, members.size(), trow != nullptr ? trow->name.c_str() : "-",
             chosen);
         if constexpr (bsp::kAutoAttackMemberOnLaunchBound) {
-            if (chosen != 0u && record != nullptr) {
+            const bool null_moveto = kAutoAttackMoveToMemberLaunchBound
+                && bsp::kAutoAttackNullClassMoveToBound && chosen == 0u
+                && !members.empty() && target < units_.count();
+            if ((chosen != 0u || null_moveto) && record != nullptr) {
                 SquadronStandingAttack s;
                 s.squadron_entity = p.squadron_entity;
                 s.target = p.target_plus_one - 1u;
                 s.served = members;
+                s.moveto = chosen == 0u;
                 standing_attacks_.push_back(std::move(s));
             }
         }
@@ -2134,7 +2229,16 @@ void GameScriptOrdersHost::run_standing_attacks() {
                 open = true;
                 if (m >= units_.count() || !units_.unit_alive_and_visible(m)) continue;
                 const std::vector<std::size_t> one{m};
-                const std::uint32_t chosen = squadron_intake_007f1940(m, one, target);
+                std::uint32_t chosen = 0u;
+                if (s.moveto) {
+                    // 007F1688's moveto reaches this member through the same
+                    // squadron fan-out (007ECF80) as a chosen class.
+                    issue_command_to_members(one, 0x00E08F68u, target,
+                                             "ai:auto_attack moveto 007F1688 member");
+                    chosen = 0x00E08F68u;
+                } else {
+                    chosen = squadron_intake_007f1940(m, one, target);
+                }
                 s.served.push_back(m);
                 if (chosen != 0u) ++standing_attack_member_orders_;
                 const GameUnitRow* mrow = units_.unit_row(m);
@@ -2415,6 +2519,14 @@ int GameScriptOrdersHost::run_entity_turn_to_entity(GameScriptOrderRow& row) {
     const std::size_t target_index = index_of(target);
     bsp::PlaneSquadronHostRecord* squadron = row.unit_index < units_.count()
         ? bsp::plane_squadron_registry().find_by_member_unit(row.unit_index) : nullptr;
+    if constexpr (kTurnToEntityMemberPlaneArmBound) {
+        // 008A0D5D: the squadron arm is the argument's own vt[5Ch](18h). A
+        // member plane other than the fused leader answers 0Fh, not 18h, and
+        // takes 008A0E6F's vtable[88h] arm on itself alone.
+        if (squadron != nullptr && squadron->squadron_unit != row.unit_index) {
+            squadron = nullptr;
+        }
+    }
     const bool other_arm = squadron == nullptr && row.unit_index < units_.count()
         && target_index < units_.count();
     if (target_index >= units_.count() || (squadron == nullptr &&
@@ -2471,9 +2583,9 @@ int GameScriptOrdersHost::run_entity_turn_to_entity(GameScriptOrderRow& row) {
         if (member == bsp::kPlaneSquadronNoUnit) continue;
         if (units_.set_unit_world_basis_007c9540(member, &m[0], &m[4], &m[8])) ++posed;
     }
-    log_.notef("  EntityTurnToEntity: squadron %s -> %s: %zu member(s) re-posed, forward "
-        "(%.3f %.3f %.3f) (008A0A10 -> 0085DC80 -> vtable[88h] 007C9540)",
-        squadron->name.c_str(), name_of(target).c_str(), posed,
+    log_.notef("  EntityTurnToEntity: squadron %s (argument %s) -> %s: %zu member(s) re-posed, "
+        "forward (%.3f %.3f %.3f) (008A0A10 -> 0085DC80 -> vtable[88h] 007C9540)",
+        squadron->name.c_str(), row.unit.c_str(), name_of(target).c_str(), posed,
         static_cast<double>(m[8]), static_cast<double>(m[9]), static_cast<double>(m[10]));
     return 0;
 }
@@ -2522,6 +2634,22 @@ bool director_fire_permission_00836210(GameShipAiHost* ship_ai, std::size_t unit
     }
 }
 }  // namespace
+
+// Packet p15_free_attack_tick: the bytes run_unit_set_fire_stance keeps, with the
+// same fighter test (the leader's IsKindOf(13h)) for 0084D810's defaults.
+bool GameScriptOrdersHost::squadron_permissions_3c3d(
+    const bsp::PlaneSquadronHostRecord& squadron, bool& allow_fire, bool& allow_move) {
+    const std::size_t leader = squadron.member_units.empty()
+        ? bsp::kPlaneSquadronNoUnit : squadron.member_units.front();
+    const bool fighter = leader != bsp::kPlaneSquadronNoUnit &&
+        units_.unit_is_kind_of(leader, 0x13);
+    const auto found = squadron_permissions_.find(squadron.name);
+    const SquadronPermissions p = found != squadron_permissions_.end()
+        ? found->second : squadron_permissions_0084d810(squadron, fighter);
+    allow_fire = p.allow_fire;
+    allow_move = p.allow_move;
+    return true;
+}
 
 int GameScriptOrdersHost::run_unit_set_fire_stance(GameScriptOrderRow& row) {
     if constexpr (!bsp::kMissionTurnAndStanceBound) {

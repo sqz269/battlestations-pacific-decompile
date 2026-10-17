@@ -65,6 +65,7 @@
 #include "bsp/script_natives_fix5_cc13.hpp"   // packet cc13-fix5
 #include "bsp/vfs_locale_runtime.hpp"
 #include "bsp/vfs_provider_manager.hpp"
+#include "bsp/unit_kind_query.hpp"   // packet p16_torpedo_stock_property
 
 extern "C" {
 #include "lauxlib.h"
@@ -585,6 +586,11 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_add_untouchable_unit.
     const bool untouchable_row = kLuaAddUntouchableUnitBound
         && dispatch_row.address == 0x008ac140u;
+    // Packet p16_lua_natives.
+    const bool untouchable_remove_row = kLuaUntouchableClearBound
+        && dispatch_row.address == 0x008ac2b0u;
+    const bool untouchable_is_row = kLuaUntouchableClearBound
+        && dispatch_row.address == 0x008ac420u;
     // Packet cc9_submarine_air.
     const bool unlimited_air_row = kSubmarineAirBound
         && dispatch_row.address == 0x00893c00u;
@@ -638,7 +644,7 @@ int binding_trampoline(lua_State* state) {
         || land_convoy_row || launch_slot_row
         || unlimited_air_row
         || in_formation_row || leave_formation_row || travel_alt_row || border_zone_row
-        || untouchable_row
+        || untouchable_row || untouchable_remove_row || untouchable_is_row
         || truly_dead_row
         || attack_alt_row
         || ready_row
@@ -823,6 +829,13 @@ int binding_trampoline(lua_State* state) {
     if (untouchable_row) {
         if (!host->error_replay()) host->run_add_untouchable_unit_008ac140(state, argc);
         return 0;
+    }
+    if (untouchable_remove_row) {
+        if (!host->error_replay()) host->run_remove_untouchable_unit_008ac2b0(state, argc);
+        return 0;
+    }
+    if (untouchable_is_row && !host->error_replay()) {
+        return host->run_is_unit_untouchable_008ac420(state, argc);
     }
     if (border_zone_row && !host->error_replay()) {
         return host->run_get_closest_border_zone_008aecd0(state, argc);
@@ -3178,8 +3191,15 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
     // kGenerateObjectRespawnsDeadBound narrows the deviation to a live earlier
     // instance: once the script sees it Dead, the call instantiates again.
     bool respawn = false;
+    if constexpr (kGenerateObjectEveryCallBound) {
+        // Packet p16_lua_natives: 0046D930 has no already-created arm.
+        if (entry->spawned) {
+            respawn = true;
+            ++summary_.generate_object_every_call;
+        }
+    }
     if constexpr (kGenerateObjectRespawnsDeadBound) {
-        if (entry->spawned && push_resolved_entity_by_id(state, entry->entity_id)) {
+        if (!respawn && entry->spawned && push_resolved_entity_by_id(state, entry->entity_id)) {
             ::lua_getfield(state, -1, "Dead");
             respawn = ::lua_toboolean(state, -1) != 0;
             ::lua_settop(state, ::lua_gettop(state) - 2);
@@ -4968,6 +4988,71 @@ bool get_property_class_is_base_only(int class_id) noexcept {
 int GameMissionLuaHost::run_get_property_class_readers(lua_State* state, const char* key) {
     const bool wants_unitcommand = get_property_key_is(key, "unitcommand");
     const bool wants_reconlevel = get_property_key_is(key, "reconlevel");
+    if (get_property_key_is(key, "TorpedoStock")) {
+        // Packet p16_torpedo_stock_property. 00815870 (ship vtables +138h, and
+        // 00758340's first call for the mother ship): 00779BB0 first (neither
+        // of its keys), then 00815891 _stricmp(key, "TorpedoStock") == 0 ->
+        // 00815850's value -> 00B664B0 (push integer).
+        ++summary_.get_property_torpedo_stock_asked;
+        if constexpr (!kGetPropertyTorpedoStockBound) {
+            return -1;
+        } else {
+            GameUnitsHost* units = units_hooks_;
+            const int id = air_ops_entity_id(state);
+            if (units == nullptr || units->gunnery() == nullptr || id <= 0
+                || static_cast<std::size_t>(id) > units->count()) {
+                return 0;
+            }
+            const std::size_t index = static_cast<std::size_t>(id - 1);
+            std::int32_t total = 0;
+            if (!bsp::unit_kind_is_ship(units->unit_class_id(index))
+                || !units->gunnery()->torpedo_stock_total_00815850(index, total)) {
+                ++summary_.get_property_torpedo_stock_not_ship;
+                return 0;
+            }
+            ++summary_.get_property_torpedo_stock_served;
+            ::lua_pushinteger(state, static_cast<lua_Integer>(total));
+            return 1;
+        }
+    }
+    if (get_property_key_is(key, "state")) {
+        // Packet p16_torpedo_stock_property. 007EF20E 00425850(key, "state"):
+        // A counts the members whose (plane+72Ch)->vtable[38h] is true (the
+        // free-flight mode, 0074E210 +1D4h == 7, kept here as +900h), B the
+        // rest; 2 when B == 0, else (A != 0). Only a PlaneSquadronGen reaches
+        // 007EF1C0; every other entity pushes nothing for this key.
+        ++summary_.get_property_squadron_state_asked;
+        if constexpr (!kGetPropertySquadronStateBound) {
+            return -1;
+        } else {
+            GameUnitsHost* units = units_hooks_;
+            const int id = air_ops_entity_id(state);
+            if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
+                return 0;
+            }
+            const std::size_t index = static_cast<std::size_t>(id - 1);
+            const bsp::PlaneSquadronHostRecord* sq =
+                bsp::plane_squadron_registry().find_by_member_unit(index);
+            if (sq == nullptr || sq->squadron_unit != index) return 0;
+            int free_flight = 0;
+            int other = 0;
+            for (const std::size_t member : sq->member_units) {
+                int state_900 = 0;
+                bool landed = false;
+                bool enabled = false;
+                unsigned int command_class = 0;
+                if (!units->plane_order_view(member, state_900, landed, enabled, command_class)) {
+                    continue;
+                }
+                if (state_900 == 7) ++free_flight; else ++other;
+            }
+            const int value = other == 0 ? 2 : (free_flight != 0 ? 1 : 0);
+            ++summary_.get_property_squadron_state_served;
+            if (value == 2) ++summary_.get_property_squadron_state_two;
+            ::lua_pushinteger(state, static_cast<lua_Integer>(value));
+            return 1;
+        }
+    }
     if (get_property_key_is(key, "ammoType")) {
         // 007EF1C0: 00779BB0 first (neither of its keys), then
         // 007EF1CF-007EF1EB _stricmp(key, "ammoType") == 0 -> 007EDAD0 ->
@@ -6830,6 +6915,47 @@ int GameMissionLuaHost::run_add_untouchable_unit_008ac140(lua_State* state,
         valid ? 1 : 0, static_cast<double>(spawn_world_clock_));
     log_.implemented("MissionLuaNative::AddUntouchableUnit", "008ac140");
     return 0;
+}
+
+// Packet p16_lua_natives. 008AC2B0 RemoveUntouchableUnit(unit): 00888AA0 (008AC3AF),
+// vtable[140h]() (008AC3D0), byte +1D4h = 0 (008AC3D6). No return value.
+int GameMissionLuaHost::run_remove_untouchable_unit_008ac2b0(lua_State* state,
+    int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.untouchable_remove_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const bool valid = units != nullptr && id > 0
+        && static_cast<std::size_t>(id) <= units->count();
+    const GameUnitRow* row = valid ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+    bool was = false;
+    if (valid) {
+        const std::size_t index = static_cast<std::size_t>(id - 1);
+        if (index < g_unit_untouchable_1d4.size()) {
+            was = g_unit_untouchable_1d4[index];
+            g_unit_untouchable_1d4[index] = false;
+        }
+        ++summary_.untouchable_cleared;
+    }
+    log_.notef("  RemoveUntouchableUnit 008ac2b0: \"%s\" (unit %d) was=%d t=%.2f (packet "
+        "p16_lua_natives)", row != nullptr ? row->name.c_str() : "?", id, was ? 1 : 0,
+        static_cast<double>(spawn_world_clock_));
+    log_.implemented("MissionLuaNative::RemoveUntouchableUnit", "008ac2b0");
+    return 0;
+}
+
+// Packet p16_lua_natives. 008AC420 IsUnitUntouchable(unit): vtable[140h]() non-null and
+// its byte +1D4h set, pushed as a boolean (one result).
+int GameMissionLuaHost::run_is_unit_untouchable_008ac420(lua_State* state,
+    int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.untouchable_is_calls;
+    const int id = air_ops_entity_id(state);
+    const bool on = id > 0 && lua_unit_untouchable_1d4(static_cast<std::size_t>(id - 1));
+    if (on) ++summary_.untouchable_is_true;
+    ::lua_pushboolean(state, on ? 1 : 0);
+    log_.implemented("MissionLuaNative::IsUnitUntouchable", "008ac420");
+    return 1;
 }
 
 // Packet cc9_device_reload_enabled. 008C1350 SetDeviceReloadEnabled(flag): argument 0
@@ -9439,6 +9565,14 @@ void GameMissionLuaHost::report_mission_script_state() {
         "(008AC140 -> +1D4h, packet cc9_add_untouchable_unit)",
         kLuaAddUntouchableUnitBound ? 1 : 0, summary_.untouchable_calls,
         summary_.untouchable_marked);
+    log_.notef("summary mission script untouchable clear bound=%d remove_calls=%llu cleared=%llu "
+        "is_calls=%llu is_true=%llu (008AC2B0, 008AC420, packet p16_lua_natives)",
+        kLuaUntouchableClearBound ? 1 : 0, summary_.untouchable_remove_calls,
+        summary_.untouchable_cleared, summary_.untouchable_is_calls, summary_.untouchable_is_true);
+    log_.notef("summary mission generate object calls=%llu repeat=%llu respawned_dead=%llu "
+        "every_call=%llu bound=%d (00944FD0, packet p16_lua_natives)", summary_.generate_object_calls,
+        summary_.generate_object_repeat, summary_.generate_object_respawned,
+        summary_.generate_object_every_call, kGenerateObjectEveryCallBound ? 1 : 0);
     log_.notef("summary mission script formation leader bound=%d calls=%llu found=%llu "
         "other=%llu (00899AF0 -> 007788D0, packet cc9_get_formation_leader)",
         kLuaFormationLeaderBound ? 1 : 0, summary_.formation_leader_calls,
@@ -9496,6 +9630,13 @@ void GameMissionLuaHost::report_mission_script_state() {
         "(007EF1C0 -> 007EDAD0, packet cc9_get_property_ammotype)",
         kGetPropertySquadronAmmoTypeBound ? 1 : 0, summary_.get_property_ammotype_asked,
         summary_.get_property_ammotype_served, summary_.get_property_ammotype_zero);
+    log_.notef("summary mission getproperty torpedostock bound=%d asked=%llu served=%llu "
+        "not_ship=%llu; state bound=%d asked=%llu served=%llu two=%llu (00815870, 007EF1C0, "
+        "packet p16_torpedo_stock_property)",
+        kGetPropertyTorpedoStockBound ? 1 : 0, summary_.get_property_torpedo_stock_asked,
+        summary_.get_property_torpedo_stock_served, summary_.get_property_torpedo_stock_not_ship,
+        kGetPropertySquadronStateBound ? 1 : 0, summary_.get_property_squadron_state_asked,
+        summary_.get_property_squadron_state_served, summary_.get_property_squadron_state_two);
     log_.notef("summary mission airops gates: ready_calls=%llu ready_true=%llu "
         "launch_calls=%llu started=%llu queued=%llu (00895d20, 0089e3c0)",
         summary_.air_ops_ready_calls, summary_.air_ops_ready_true,

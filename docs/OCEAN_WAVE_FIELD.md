@@ -2312,3 +2312,316 @@ on all four. JM05 9000 moves strongly under 54, and under 55 it lands back on 44
    - spin-left C38h.
 4. **The catapult adapter (`Seg33aHost`, 37).**
 5. The mesh-bound items: the deck crash's class+50h box (48.1) and 007CBA50's hull points (52).
+
+## 57. The squadron free-attack tick 009F8470: `kSquadronFreeAttackTickBound` (cc9-physics15, 2026-10-17; lead item 1)
+
+### 57.1 What runs, and where
+
+- **The tick is cc13's** (`src/cc13_seg68.cpp`, `squadron_auto_target_tick_009f8470`, CC13_SEG68 1), run unchanged.
+  `src/squadron_free_attack.cpp` fills a small byte arena per squadron and per step with the fields it reads, at their
+  native offsets: the +348h block (`+30h` mode, `+3Ch`/`+3Dh`, `+54h` slot 0, `+58h` its descriptor), the squadron
+  (`+3D0h`, `+54h`, `+370h`), the leader (`+1B0h`, `+184h`, `+C24h`), each contact (`+C8h`, `+FCh`..`+104h`), the enemy
+  chain `[slot+DE8h]` (node `+4h`/`+8h`, item `+4h`), the AttackLists block (`004D6CE0`, each vector's begin/end at
+  `+4h`/`+8h`) and the tuning record (`+594h` GuardDist). The tick's calls are recorded as a decision.
+- **Position.** `0071F290` arm 7 runs `[+38h]->vtable[4]` (009F8470) and then `vtable[7Ch]` (0084E010). The host already
+  runs 009F8470's first two calls (009F8160, 009F7C90) and 0084E010's B5 per squadron in `run_spent_ordnance_rtb_0084e010`;
+  the selection runs between them.
+- **The candidates.** The side's enemy triple (`recon_triple_units(party, 1)`) with a flag per entry for the kind-18h
+  group record 00805490 leaves (the host's unit for it is the fused leader). A plane's own class-bucket record is
+  IsKindOf(0Fh) and refused by 009F7480; the group record gets its own arena object, so IsKindOf(18h) holds and `+3D0h`
+  is the leader, as 009F7BA0 reads it.
+- **The score** asks `00804350` (sensors, mask FFh) from the own leader, now `GameGunneryHost::sensors_detect_unit_00804350`
+  over the recon pass's own rows (`i*8+j`, `i, j < 7`: `008045E8`/`008045F8` CMP 7; row `i == 4` divided by the sonar
+  multiplier squared), and 007EEC50 through the script-order host's chooser on the leader.
+- **AttackLists** are this installation's `scripts/datatables/squadronfreeattacktargets.lua` (mtime 2024-07-13, untouched
+  bulk), transcribed (LABELLED), names mapped through 00E0CD80 read from the disk image.
+- **The +3Ch/+3Dh bytes** are the script-order host's (`UnitSetFireStance`, else 0084D810's defaults:
+  Behaviour `+364h` 0 frees both; otherwise a fighter class gets fire only, anything else move only;
+  `0084D862`-`0084D8A2`, read here).
+- **0084D960**, the block's `vtable[50h]` the tick asks at 009F8584: 0 when `+3Dh` and `+3Ch` are both set, else 1.
+- **0071E4C0** (filter C's path point): slot 0 `moveonpath` gives the path's final point (`007B1350`), otherwise slot 0's
+  descriptor point (`006F7DD0`), otherwise none.
+
+LABELLED substitutions: 00927F10 for a party slot other than 8 answers player-held; leader `+C24h` (PilotFires) has no
+reader and is clear, so `007EDAC0` is false; 007ED7E0 / 007ED8D0 / 007EDA10 / 007ED880 read the members' ordnance masks;
+007EE8B0's `+361h` is the retreat exit latch the units host keeps by squadron name.
+
+## 58. 007DC830's dying spin and wreck lift: `kFreeFlightDyingSpinBound`, `kFreeFlightWreckLiftBound` (cc9-physics15, 2026-10-17; lead item 2)
+
+### 58.1 The image (cc13's `src/cc13_front3.cpp` reading of 007DC830; 007D7EA0 per CC13_GPR_48 161)
+
+- **The dying spin.** Inside the stall block's `m > 0` arm, after the stall kick, a dead plane (`+5Dh` re-read at
+  `007DCAF2`) adds `step * ctl+F0h..F8h` to `ctl+24h..2Ch` (`007DCAF9`-`007DCB40`; each product stored as a float first).
+  `ctl+24h` is the world angular velocity (CC13_GPR_48: the parent-frame rotation carries it with `ctl+18h`).
+  `ctl+F0h..F8h` is set once by the controller constructor 007D7EA0: `m = U(+250h, +254h)` (`007D7F90`). Both
+  fields hold Dynamics/DeadMeat/RotationMin, DEG(10): the loader pushes the RotationMin key twice and RotationMax is never
+  read (GAME_TUNING_SINGLETON "Keys the loader reads"), so the magnitude is 10 degrees/s and only the direction is drawn. It
+  multiplies `00439950`'s direction (`z = U(-1, 1)`, `phi = U(0, 2 pi)`), three stream-1 draws.
+- **The wreck lift** (`007DCB4B`-`007DCCCB`), outside the stall block, with `ctl+94h` set: `v` = the world velocity with
+  `y = 0`; `h = 00419010(0, 4, 69.444443, 20, |v|)`; `u = max(0, 1 - |+C64h|)`; `q = min(1, |+C68h| * 0.8 + 0.6)`; the
+  `007DAFD0` kick at `(0,0,1)` toward `(0,-1,0)` of `q u h`, limit `1000.0f` (`00CE3804`).
+
+### 58.2 The binding (both committed OFF, `src/game_hosts_units.cpp`)
+
+- `kFreeFlightDyingSpinBound`: the stall block no longer returns on `f <= 0` for a dead plane; the kick still needs `f > 0`;
+  the spin is added to the world angular velocity the kick uses and goes back to the body rates once.
+  LABELLED: the three draws come from the plane's keyed stream (`name#ds_m`, `#ds_z`, `#ds_p`) at its first dying step,
+  not from stream 1 at construction (the shared stream would shift every later stream-1 consumer by three draws per plane).
+- `kFreeFlightWreckLiftBound`: `free_flight_wreck_lift_007dcb4b` after the stall block when `ctl+94h` is set. The host
+  sets `ctl+94h` only in the water arm (`007CBC02`); 007CE040's hull-point arm (`007CE0DB`-`007CE1D9`: a dead plane below
+  the altitude at `00CF3F20` with any class `+5B8h` hull point below `y = -1`) needs the mesh points and is not carried.
+- Summary line: `summary free flight dying spin bound= steps= seeds= wreck_lift_bound= wreck_lift_kicks=`.
+
+### 58.3 Predictions (ON against OFF; written before the runs)
+
+- OFF: identical by construction (the restructured stall block runs the same kick and write-back).
+- Dying spin ON: every row with planes shot down in free flight moves from the first dying step: the wreck's attitude
+  and track, so where and when it reaches the water (the plane's removal time in the death table). Ships, the scored
+  deaths and AA kills before the first plane death stay identical. `seeds` = the number of planes that died in the
+  stall block's arm; `steps` grows with each dying plane's fall.
+- Wreck lift ON: `wreck_lift_kicks` 0 or near 0 (ctl+94h is set only after a dead plane's water contact, and such a
+  plane stays in the water arm), so gameplay identical or nearly so.
+
+### 58.4 Measured, and the verdict: both ON
+
+Both sides are builds of d97c232cf: OFF `local\p14_sf` (no flip), ON `local\p14_br` (both switches). Reference
+environment, `--stop-after-end 40`. Logs `local\p15sp{off,on}_<row>.log` with manifests. No NaN on any ON log.
+
+| row | `pair_diff` | seeds / steps ON | wreck lift kicks | death rows OFF -> ON | first moved row |
+| --- | --- | --- | --- | --- | --- |
+| USN01 3000 | 1 | 5 / 638 | 0 | identical | none (gameplay identical) |
+| USN04 4500 | 3 | 40 / 5465 | 0 | 51 = 51, 20 changed | B5N Kate #4.1/.-IV, the first plane death (killer_range 954 -> 953) |
+| JM05 9000 (fails at 300.05 s both sides) | 3 | 24 / 2255 | 0 | 44 = 44, 18 changed | USS Yorktown_sqn06/.-II, the first plane death |
+
+1. **Held:** seeds only for planes that died in the stall block's arm, and nothing moves before the first plane death
+   on either moved row; the later rows move through the AA that keeps firing at the falling wrecks (killer changes).
+2. **Held:** no wreck-lift kick anywhere.
+
+**Verdict: both ON.** `kFreeFlightDyingSpinBound` is 007DC830's `007DCAF9` arm with 007D7EA0's draw (keyed stream,
+labelled); `kFreeFlightWreckLiftBound` is `007DCB4B` as read and has no reach in these rows. USN04 and JM05 move at
+the timing level with equal death counts; reference rows with plane deaths need re-timing on the new base.
+
+## 59. 50.7 closed: landers avoiding taxiing wingmen is the image's behaviour (cc9-physics15, 2026-10-17; lead item 4, read-only)
+
+- **Spacing.** 50.8: `006C7960`'s mode 4 needs `rec+8 > 0`, which `006C3F80` derives from the other landers' path gaps
+  or, with none, from the time since the last touchdown (`site+40h`, restamped by `007CB5F0` -> `006CE230`). Nothing in
+  the sequencer reads the runway's occupants, so a wingman starts its final while the previous plane still taxis.
+- **The taxi itself** is the land task's park phase as read in SQUADRON_LAND_TASK (`009B24F3`-`009B270D`): the speed
+  request `00419010(5 base, base, 10 base, max(base, 0.6 StallRangeMax StallSpd), dz)` with `base` = AirField/MoveSpd
+  (Pilot/Landing/ParkVelocity on a carrier), `0.85 v` beyond 100 m, and below `1.5 base` the turn distance
+  `qd = (1.5 / rate) RunwayYawTurnSpdLimit/1` with the speed set to RunwayYawTurnSpdLimit/1 inside `qd + 30`. The host's
+  arm (`src/game_hosts_units.cpp`, the land task's park step) carries each term with its address; no host
+  difference was found in the taxi speed or the path join.
+- **The avoidance** a lander then gets from a taxiing plane is the vehicle arm's (`007DF96C`-`007DF9A9`, every listed
+  neighbour, mask FFh), as 50.7 says.
+
+So a lander touching down yawed while a wingman taxis is what the image's own sequencer, taxi law and vehicle arm
+produce together. The touchdown point was not compared against the image (no image run is possible here); nothing read
+in this pass points at it. **Closed**, no binding. If USNOS #4.4/#4.5 needs a different outcome, that is a re-plan of the row.
+
+### 57.2 The binding (`kSquadronFreeAttackOverrideBound`, `include/bsp/game_hosts_commands.hpp`, committed OFF)
+
+- **The override layer** is ships56's (219b1d3c0, `send_override_command_0071d980`, `raise_override_stage_0071d9e0`,
+  0071EB60's override arm, 0071C130(0)). It now runs for either sender: `kDirectorOverrideLayerBound =
+  kAutoTargetOverrideBound || kSquadronFreeAttackOverrideBound`; the ship tick's step 14 and 00836D67 stay on
+  `kAutoTargetOverrideBound` alone.
+- **0071E7F0's repeat test** (cc13-verify1): the early return needs `0071E200(new, director+18Ch)`, the same resolved
+  object AND a squared distance `<= 1.0` between the two points (the `00F87574` zero vector when byte `+1` is clear;
+  x87 at `0071E27B`). The host compared the resolved objects only, so it refused a moved entity's and every positional
+  override. Only the override path reads it.
+- **Per squadron and step** (`run_squadron_free_attack_009f8470`, called from `run_spent_ordnance_rtb_0084e010` after
+  009F8160 / 009F7C90 and before B5):
+  1. The live override's target removed (0071DDB0's override arm -> 0071EDD0): a squadron target moves to its next
+     live flight leader (the override is re-sent on it), anything else ends it (0071D9E0(2)). LABELLED: tested per step
+     on the gunnery death, not at the destroy flush.
+  2. The override cleared (the leader's mode is no longer 2): the other members' overrides are cleared too (the host's
+     members each hold one; the image has one block), the override rows are retired, and 0099A170 builds the head
+     command's task again (the moveto task restarts).
+  3. The tick (57.1). Its 0071D9E0(2) goes to every live member; its 0071D980 goes to every live member's director,
+     and each member that took it gets the class's task (0099A170), its command target and a retired moveto task.
+- LABELLED, besides 57.1: 009F85EB..009F8615 (a `stop` head is cleared and replaced by a moveto to the squadron's own
+  position before the send) is counted (`moveto_self`) and not issued, so after the override the head is still `stop`;
+  0071F290 arm 5 (0084DDA0 -> 0071F600, the override's begin) is not run, the send having just passed 0071D6D0;
+  0084E010's `+50h == 1 -> 0071D9E0(2)` is not carried (no host path ends an override at stage 1).
+- `BSP_FREE_ATTACK_CENSUS=1` runs the tick and logs each squadron's stop reason when it changes, with nothing sent.
+
+### 57.3 Reach (census, a local build of the edits, `local\p15fc_<row>.log`)
+
+| row | squadrons | first-stop counts (mode / no_target / same_target / override) | first would-be override |
+| --- | --- | --- | --- |
+| USN04 4500 | 21 | 21 / 29 / 4 / 40 | 63.0 s: Zero #1.2 (moveto head) dogfights Lexington sqn01; the US fighters (stop head) dogfight the Zeros from 70.7 s |
+| JM05 9000 (300 s) | 19 | 19 / 22 / 0 / 11 | 88.8 s: MainAirfieldEntity 01_sqn01 strafes Japan Troop Transport 03 |
+| ESMP08 6000 | 12 | 12 / 12 / 0 / 0 | none within 300 s |
+| BSM01 6000 | 2 | 2 / 2 / 0 / 0 | none within 300 s |
+
+### 57.4 Predictions (ON against OFF; written before the runs)
+
+- USN04 and JM05 move from the first override (about 63 s and 89 s): fighters on a moveto or stop head turn on enemy
+  squadrons in sensor range (dogfight 00E08F58), the strike squadron strafes. Death rows before then are identical.
+- ESMP08 and BSM01: identical for the census window; later moves only if a squadron with a moveto/stop/moveonpath head
+  and ordnance or a fighter class meets a detected enemy.
+- Counters: `sends` = overrides installed; `cleared` follows each dead target or ended attack; no member may hold
+  mode 2 after its leader's override cleared.
+
+### 57.5 Measured, and the verdict: ON
+
+Both sides are builds of dd056450d: OFF `local\p14_sf`, ON `local\p14_br` (the flip). Reference environment,
+`--stop-after-end 40`. Logs `local\p15fa{off,on}_<row>.log` with manifests. No NaN on any ON log.
+
+| row | `pair_diff` | sends / cleared ON | deaths OFF -> ON | first moved |
+| --- | --- | --- | --- | --- |
+| USN04 4500 | 3 | 37 / 29 | 51 -> 56 (5 US fighters only ON, Zero #8.2/.-II only OFF) | first hit 97.05 -> 90.50 s, after the first override at 63.05 s |
+| JM05 9000 (fails at 300.05 s both sides) | 3 | 2 / 0 | 44 -> 46 (Lexington sqn03 only ON) | MainAirfieldEntity 01_sqn01's strafe override (88.8 s); its deaths move from 109 s |
+| BSM01 30000 | 1 | 0 / 0 | identical | none |
+| ESMP08 30000 | 0 | 0 / 0 | identical (184) | none (every tick ends at no_target: no head is moveto/stop/moveonpath with ordnance or a fighter, or no detected contact) |
+
+1. **Held:** the moved rows move from the first override and not before; the rows with no override are identical.
+2. **Held:** on USN04 the US fighters (stop head, fire only, filter C) dogfight the escorting Zeros and the Zeros
+   (moveto head) dogfight the US squadrons; removed targets re-point or end (29 clears, 61 head tasks rebuilt).
+
+**Verdict: `kSquadronFreeAttackOverrideBound = true`.** It is 009F8470 as cc13 read it, on ships56's override layer with
+cc13-verify1's 0071E7F0 fix. USN04 and JM05 move strongly; reference rows with squadrons on moveto/stop heads need
+re-timing on the new base.
+
+## 60. Handoff (cc9-physics15, 2026-10-17, at about 72% context)
+
+**Commits on agent/cc9-physics1** (the full `scripts/build.ps1` with tests passes on each):
+- 79f8074c2: script-order accessors (permissions, 007EEC50, 0099A170 install);
+- d97c232cf / 99923ee2f: `kFreeFlightDyingSpinBound`, `kFreeFlightWreckLiftBound`, both ON (58);
+- d142cb67c: 58.1 wording, 59 (50.7 closed as image behaviour);
+- c8d1f9463: the override-layer gate `kDirectorOverrideLayerBound` and 0071E7F0's 0071E200 repeat test (cc13-verify1);
+- dd056450d / 7bc50f281: the free-attack tick 009F8470, `kSquadronFreeAttackOverrideBound`, ON (57).
+
+**Open, in order.**
+1. **The catapult adapter (`Seg33aHost`, 37).** Not started. cc13's seg33a catapult routines take raw object pointers
+   (206 host virtuals in `Seg33aHost`), so the arena approach of `src/squadron_free_attack.cpp` (fill the fields a
+   routine reads at their native offsets, record its calls) is the cheapest faithful adapter. 37's four gaps stand
+   (State 3 hold, no catapult devices, GetNumCatapulted / SetCatapultStock, shared-file hooks). Pair on JM02/JM03/JM05.
+2. **Free-attack leftovers (57.2 LABELLED):** the `stop` head's clear-and-moveto-self (009F85EB..009F8615) is counted,
+   not issued; 0071F290 arm 5 (0084DDA0) and 0084E010's `+50h == 1` raise are not carried; 00927F10 for slots other
+   than 8; leader `+C24h` (PilotFires) has no reader.
+3. **007CE040's hull-point arm** sets ctl+94h (007CE0DB-007CE1D9); it needs the class `+5B8h` hull points (mesh-bound,
+   with 48.1 and 52).
+
+**Tools in `local\`.** `p15_kind_names.py` (00E0CD80's names from the disk image), `p15_vt.py <va> <n>` (a vtable's
+slots from disk), `p15_cl_check.ps1` (one-file compile check), `p15_census_sum.py <logs>` (the free-attack census),
+`p15_edit_*.py` (the edits as applied).
+
+## 61. GetProperty "TorpedoStock" and the squadron "state" (cc9-physics16, 2026-10-17; lead item 1)
+
+**Image.** `00815870` (vtable+138h of the eight ship vtables, and `00758340`'s first call for the
+mother ship) runs `00779BB0`, then `_stricmp(key, "TorpedoStock")` at `00815891` (string `00D09484`),
+and pushes `00815850`'s value through `00B664B0`. `00815850-00815867`: `s = unit+104Ch`;
+`TEST ESI,ESI / JL 00815864` pushes `s` when negative, else `00810E90() + s` (the loaded torpedo
+tubes). `007EF1C0` (PlaneSquadronGen `00D087C0` +138h): after `ammoType`, `00425850(key, "state")`
+at `007EF20E`; over the `+3CCh` planes at `+3D0h` it counts A = `(plane+72Ch)->vtable[38h]()` true
+(the free-flight control mode, `0074E210`: `+1D4h == 7`, kept by this host as `+900h`) and B = the
+rest; pushes 2 when B == 0 (an empty squadron too), else 1 when A > 0, else 0.
+
+**Host.** `kGetPropertyTorpedoStockBound` (`include/bsp/game_hosts_lua.hpp`) answers for every
+`IsKindOf(6)` unit through `GameGunneryHost::torpedo_stock_total_00815850`. Pass C (`008201B8`) sets
+every ship's spare at load; this host sets it at the first shot, so an unset ship answers what pass C
+leaves (MaxTorpedoStock, or the tube count when the unload loop is off). **LABELLED:** a
+ShipSetTorpedoStock queued this frame answers `max(stock, 0)`, which is spare + loaded after
+`0081F8B0` on both arms. `kGetPropertySquadronStateBound` answers `state` for a squadron slot.
+`WingCount` has no GetProperty reader: `00CF8840` is read only as a bag key (`007F4735`, `006C50EE`,
+`0084521A`, `006EC979`, `006FED65`, `0094BCD8`, `0094C0D1`), and the two scripts that name it do so
+in a comment.
+
+**Predictions (OFF -> ON).** JM08: `luaJM8Checktorp` stops raising on `torp < 12` (nil), so the US PT
+loop reaches `NavigatorAttackMove` and `luaSetScriptTarget` for each idle PT; the PTs attack, and
+`ReloadTorpedoes` (`008C3CE0`, not bound in the host) is called and recorded. Missions using
+commandhelpers' airstrike manager (`luaAirstrikeManager_think`) issue attack orders when every member
+of the squadron is in free flight. No other key moves.
+
+### 61.1 Pairs and flip (2026-10-17)
+
+`local\p16_ts_off` / `local\p16_ts_on` (commit ffa8b9684, both switches flipped), 12000 mission frames,
+reference env. Manifests `local\p16ts{off,on}_{jm08,jm06,jm05}.log.manifest.json`.
+
+| row | asked | served | not ship | verdict |
+| --- | --- | --- | --- | --- |
+| JM08 | 0 | 0 | 0 | gameplay identical (exit 1) |
+| JM06 | 11 | 6 | 5 | gameplay identical (exit 1) |
+| JM05 | 27 | 27 | 0 | gameplay identical (exit 1) |
+
+JM08's US PT loop (`luaJM8CheckUSNPts`) needs an enemy within 3000 m of the first PT, and no run reached
+it: neither this 600 s pair nor the 140000-frame wins run `local\p8w2_j8f9.log`, whose log has no
+`TorpedoStock` ask at all. JM06's five refusals are `luaJM6AddTorp` asking `Mission.PlayerUnit` while that
+is not an `IsKindOf(6)` unit, where the image's reader is not reached either. The squadron `state` key was
+asked by nothing: its only reader, commandhelpers' `luaAirstrikeManager_think`, is never attached by any
+script or scene in this installation. Both switches are flipped ON by mechanism; the JM08 PT attack stays
+unmeasured until a run brings the IJN fleet within 3 km of the PTs.
+
+## 62. The planner's control laws: verify12 R5, R6, R7 (cc9-physics16, 2026-10-17; lead item 2)
+
+Four OFF switches in `GameUnitsHost::Impl` (`src/game_hosts_units.cpp`), with the pure parts in
+`src/plane_ai_control.cpp`.
+
+- **`kPilotModeOneRollTuningBound` (R5).** 0099E26E-0099E39D is one arm for both roll modes. Mode 1 now
+  takes it whole: 0099E27B-0099E2B5 clamp plan+2C4h in place (`00415690`) to +-plan+2C8h when that is
+  below pi (the double `00CE3D28`); the band, gain and rate are `[EBX+40h/44h/48h]` with EBX =
+  singleton+538h (0099D47F-0099D487): SoftRollCtrl, SoftRollMul and +580h; the servo limit
+  0099E344-0099E367 is class+1A8h x float(class+1A8h / class+1BCh / WaggleLimit)
+  (`pilot_roll_servo_limit_0099e344`). Before: band 0, gain 1, rate 0, limit 1, no clamp, so every
+  mode-1 bank hold (follow, dogfight, strafe, level-bomb holds, dive glide and turndown, land and
+  takeoff halves) ran a unit-gain servo saturating at 1 rad of error instead of the image's
+  0.05-rad soft band with gain 0.7 and an offset beyond it.
+- **`kPilotSpeedCorrDivisorBound` (R6).** plan+2B8h gets its producer. 0099D756-0099D79A (every pass
+  past the centred gate): above 1.0 it falls by TrgSpeedCorrMulDecay (+5F0h, EBX+B8h) x `[ESP+6Ch]`
+  (dt / dtScale), floored at 1.0. 0099D924-0099D970 (head of the demand arm, reached only through
+  0099D8CD, while the byte plan+2B0h is clear): `00415550` max(+2B8h, `00419010`(-MinPitch, SpeedMul,
+  0, 1, unit+C64h)). 0099D99E-0099D9A3 divide the measured speed by it. **LABELLED:** the start value is
+  1.0. A census of `[reg+2B8h]` stores over 00990000-00A00000 (`local\p16_disp_writers.py`) finds only
+  009A4ECD, 009A50F6 (a task constructor family whose `+2ACh = this` store does not fit the plan block)
+  and 009B9CB2; the pilot bot (`0099A880`, 0BCh bytes) is not the planner object.
+- **`kPilotThrottleForwardSpeedBound` (R6, the measured speed).** 0099D992-0099D99E take 007D99C0
+  (ECX = unit+AB0h), the body forward speed, not |v|. The host takes v . forward row, as it already
+  does for 007D9A70's argument. **LABELLED:** the carrier-deck parent term of 007D99C0 is dropped.
+- **`kPlaneBombLoadAuthorityBound` (R7).** 007D9A70 returns 007C0F40(unit) x t^2. 007C0F40: 1.0, or
+  for the first slot of +974h whose vtable[210h](2Ah, 0) answers (007C0F72), `00419010`(0, 1, 0.8
+  (00CE74F8), class+15Ch BombControlLimit, slot vtable[214h]); x class+608h when unit+BC8h (turbo).
+  **LABELLED:** the slot test is `rack_holds_round`; a single rack's fraction (006E4130) is the host's
+  rounds left over the authored Ammo; a multi rack (006E3700) answers 1.0; the turbo arm is not taken.
+
+**Predictions (OFF -> ON).** R5: mode-1 bank holds settle softer (|roll command| below 1 near the
+target) and overshoot less; dogfight and strafe geometry move. R6: in a dive (pitch -30 deg) the speed
+hold sees the plane 1.69 x slower and opens the throttle, so dive bombers and torpedo glides dive
+faster and later level-offs move; the forward-speed term lowers the measured speed in sideslip. R7:
+loaded torpedo and bomb planes rotate at 70-90% of today's authority until release, widening their
+turns and approach geometry. Every AI plane mission moves; deaths and kill tables may move.
+
+## 63. MoveTo cruise altitude by ordnance and the leg manager: verify12 R1, R4 (cc9-physics16, 2026-10-17; lead item 3)
+
+- **`kMoveToCruiseByOrdnanceBound` (R1).** 009C3650 (the kind-7 task's +54h profile) picks ctl+394h by
+  ordnance exactly as 009BD6E0 does: torpedo (007B93F0, MoveOn +43Ch) +430h, depth charge (007B94F0,
+  +4B4h) +4A4h, general bomb (007B9320) LevelBomb (0047B850, +454h) +444h or DiveBomb (+4D4h) +4C0h, each
+  plus 0.6 x TravelAltRandom (009C36DD-009C36F2); otherwise 009C38D0 0047B880 then 009C38FD Small/Large
+  PlaneTravelAlt with no random term. The host calls `moveonpath_cruise_profile_009bd6e0` with the
+  channel open and discards its approach+30h draw. **LABELLED:** every member computes it at the 0.5 s
+  refresh from its own ordnance; the image's leader writes the squadron block at activation.
+  This installation: torpedo 530, dive 1330, depth charge 730, fighter 800, level bomber 1400 (MoveOn
+  false), against 830 / 830 / 830 / 830 / 1430 before, ahead of the +2Ch offset both subtract.
+- **`kMoveToLegAltitudeBound` (R4, with `bsp::kLegAltitudeManagerBound`).** 009BEC85 009FD050(+64h,
+  point) registers inside 3000 m and drops outside; while +28h > 0, 009BECA9 009BD400 and 009BECBA
+  009FC260 write the separated height to the steer point's +4Ch. Slot +58h 009C32A0 (009C32B8
+  009FD050(-1)) drops the record when the task goes. **LABELLED:** the drop is taken on the first think
+  after the host clears `moveto_task_installed`.
+
+**Predictions.** Scripted MoveTo strikes fly at their ordnance altitude: torpedo squadrons 300 m lower,
+dive bombers 500 m higher, fighters 30 m lower; time to target and the first-attack geometry move.
+Planes converging on one MoveTo point within 3 km stack in 30 m bands above 120 m.
+
+## 64. Carrier landing: the velocity lead and the touchdown brake, verify12 R2, R3 (cc9-physics16, 2026-10-17; lead item 4)
+
+- **`kCarrierLandingVelocityLeadBound` (R2).** 009AFAF0's on-ground arm: e = |00605070(A4 - unit+C6Ch)|
+  (fmod by 2pi `00CE3828`, then into [-pi, pi]); A8 += min(class+268h x 0.5 x e, A8 x 0.18 (`00D05AA0`))
+  and is stored (009AFD1A); t = min(A8 / +B1Ch, 10.0 (`00CE38B8`)); 006BCA80(out, t) adds the owner's
+  velocity x t (006BCBF8-006BCC51). **LABELLED:** holder+8Ch is 0, so the turn about the holder is the
+  identity; +B1Ch is taken as |velocity|.
+- **`kCarrierTouchdownBrakeBound` (R3).** 009B201B-009B2074: air brake 1.0 (`00D7A24C`) when the land
+  target answers vtable[5Ch](9), else 0.2 (`00CE54A0`).
+
+**Predictions.** Carrier landings under way aim up to 10 s of ship travel ahead (a 15 m/s carrier: up
+to 150 m), so final approaches line up on where the deck will be; fewer wave-offs and go-arounds. On a
+carrier deck the roll-out brakes at 1.0, so planes stop shorter; airfield landings are unchanged.

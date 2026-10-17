@@ -198,6 +198,31 @@ inline constexpr bool kClearOrdersSendBound = true;  // ON: docs/AI_CAUTIOUS_ROU
 // (00720B36 / 00720C72) is not modelled.
 inline constexpr bool kPathObjectDefaultPairBound = true;  // ON: SHIP_AI 197
 
+// Packet s56_autotarget_override, docs/SHIP_AI_OPEN_ITEMS.md section 274. True: the
+// AutoTarget tick's step 14 (009F5ED9..009F5EF8) runs. The winner's priority entry
+// carries a byte at +0h (009F5CF9 009F5860 returns the entry, 009F5D02 stores it at
+// searchState+20h = tick+30h) that every push in 009F65E0 sets except two entries;
+// the tick then sends 0071D980(attackmove, 00465080(chosen, 0.0f)), an
+// MT_GAMEUNIT_SETCMD with +20h = 0 that 00721B7C installs as the director's override
+// command through 0071E7F0 (director+188h, mode 2). 00836D67..00836DC4 ends it through
+// 0071D9E0(2) and the 5Dh clear (+20h = 0) into 0071E610 when the target is gone, dead
+// or friendly. So an AI unit idling or moving under a category-3 order attacks the
+// best enemy within 2500-3500 m. LABELLED: the SETCMD and 5Dh round trips apply in
+// place (the image routes them to the next session pump), and 00835C70's begin of the
+// override (its fire-target store) is left to the tick's own 00835860 at step 15.
+// False: the issue stays a record and nothing writes director+188h, as before.
+inline constexpr bool kAutoTargetOverrideBound = true;  // ON: SHIP_AI 274 (mechanism)
+// Packet p15_free_attack_tick (docs/OCEAN_WAVE_FIELD.md section 57). True: the
+// squadron free-attack tick 009F8470 sends its override (0071D980) to the members'
+// directors and the units host runs the override's life around it. False: nothing
+// sends.
+inline constexpr bool kSquadronFreeAttackOverrideBound = true;   // ON by its pairs (OCEAN_WAVE_FIELD 57.5)
+// The override layer itself (0071D980 / 0071E7F0, 0071D9E0 -> 0071E610, 0071EB60's
+// override arm, 0071C130(0)) runs for either sender; the ship tick's step 14 and
+// 00836D67 stay on kAutoTargetOverrideBound alone.
+inline constexpr bool kDirectorOverrideLayerBound =
+    kAutoTargetOverrideBound || kSquadronFreeAttackOverrideBound;
+
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.
 struct GameReleasedTarget {
@@ -300,6 +325,11 @@ struct GameCommandsSummary {
     // off every post is delivered where it is made (delivered_in_place).
     unsigned long long loopback_command_posts{0};  // MT_COMMAND, 0077D7BD
     unsigned long long loopback_setcmd_posts{0};   // MT_GAMEUNIT_SETCMD, 0071ED81
+    // Packet s56_autotarget_override.
+    unsigned long long override_sends{0};     // 0071D980 past its hold test
+    unsigned long long override_installs{0};  // 0071E7F0 installed director+188h
+    unsigned long long override_arm_ends{0};  // 00836DC4, the override arm's 0071D9E0(2)
+    unsigned long long override_clears{0};    // 0071E610
     unsigned long long loopback_clear_posts{0};    // 5Dh, 0071C730 / 0071D900
     unsigned long long loopback_delivered_in_place{0};  // switch off
     unsigned long long loopback_delivered_nested{0};    // posted inside a drain: next in it
@@ -562,6 +592,17 @@ public:
     // WeaponDirector::command_allowed. The torpedo / moveonpath extra tests
     // (009229F0 / 007AC9D0) are records and pass.
     bool command_accepts_target_0071d6d0(std::uint32_t command, std::uint32_t handle);
+    // Packet s56_autotarget_override. 0071D980 for the AutoTarget tick (009F5EF8):
+    // sent only while director+40h is below 0.0f (0071D99E), then 00721B7C's
+    // 0071E7F0 on the one-based unit handle. True when the override was installed.
+    bool send_override_command_0071d980(std::size_t unit_index, std::uint32_t command,
+        std::uint32_t handle);
+    // 0071D9E0: raise director+50h; reaching 2 clears the override (0071E610).
+    void raise_override_stage_0071d9e0(std::size_t unit_index, int stage);
+    // director+30h, the mode 009F5E69 and 009F5F2F read.
+    int director_mode_0030(std::size_t unit_index) const;
+    // 00521EA0 on director+18Ch (009F5EC4): the override target's handle, or 0.
+    std::uint32_t override_target_handle(std::size_t unit_index) const;
     // 0071df70's first test: the float at director+40h. See GameDirector for
     // the three producers and which of them this process reaches.
     float director_target_hold_0040(std::size_t unit_index) const;

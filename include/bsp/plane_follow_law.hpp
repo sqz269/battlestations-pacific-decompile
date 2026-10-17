@@ -261,6 +261,12 @@ struct PlaneFollowGeometryInputs {
     // False leaves both Y values unclamped and says so, rather than inventing
     // a band out of defaults.
     bool band_inputs_available = false;
+    // The image's floor exactly (cc13-fix5, docs/CC13_FIX5.md): the min and
+    // the leaderY - 120 bound (009C171B-009C175A) on every path, whatever
+    // `run_phase_a` says, with the binary's NaN arms (JBE keeps the first
+    // operand when unordered).  All three entries to the tail (009C0021,
+    // 009C123C, 009C15BB) pass 009C171B.  False keeps the older band.
+    bool band_floor_image = false;
 
     // Phase A.  When set, the image's selector picks the regime and the
     // `regime` argument is ignored.
@@ -355,6 +361,26 @@ struct PlaneFollowGeometry {
 // wants and the lead distance stands in as D (the switch-off binding).
 PlaneFollowGeometry plane_follow_geometry_009bfee0(
     const PlaneFollowGeometryInputs& in, PlaneFollowRegime regime) noexcept;
+
+// 009BFEE0's tail band, 009C16D2-009C17B9: the floor L and the cap that
+// plane_follow_geometry_009bfee0 applies, exposed so the host's other two
+// band sites (the catch-up steer point and the station Y that 009BEE30 reads)
+// use the same arithmetic.  `floor_image` and `run_phase_a` are the
+// PlaneFollowGeometryInputs flags of the same names.
+struct PlaneFollowBand {
+    float floor = 0.0f;
+    float ceiling = 0.0f;
+};
+PlaneFollowBand plane_follow_band_009c16d2(float leader_y, float floor_offset,
+                                           float state_88, float ceiling_210,
+                                           bool floor_image,
+                                           bool run_phase_a) noexcept;
+
+// 009C17C6-009C17F1 (station Y) and 009C17F6-009C183B (steer Y): L > v ->
+// L, without testing the cap; else v > cap -> cap; else v.  An unordered
+// v passes through.
+float plane_follow_band_clamp_009c17c6(float v,
+                                       const PlaneFollowBand& band) noexcept;
 
 }  // namespace bsp
 

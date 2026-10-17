@@ -7,6 +7,7 @@
 #include "bsp/ship_ai_obstacle_tables.hpp" // ShipAiObstacleSector, the sector array constants
 #include "bsp/unit_rudder.hpp"             // wrapped_angle_add/subtract, clamped_interpolate
 #include "bsp/vector_helpers.hpp"          // length_2d_00414c60
+#include "bsp/const_exact_image_bits.hpp"
 
 // 009EB660, the obstacle sector scan, and the neighbour list it walks.
 //
@@ -232,7 +233,7 @@ struct ShipAiObstacleNode {
 // most positive and the most negative bearing relative to `reference_bearing`,
 // and picks the smaller turn, after adding 25 degrees (00D1F6C0) to whichever
 // side `other_side` names. The seeds are -pi (00CE684C) and +pi (00D7A264).
-inline constexpr float kShipAiSectorSideBias = 0.43633234500884056f; // 00D1F6C0, 25 degrees
+inline constexpr float kShipAiSectorSideBias = kConstExactImageBitsBound ? 0x1.becde6p-2f : 0.43633234500884056f; // 00D1F6C0, 25 degrees; image bits 3EDF66F3 at 00D1F6C0 m64 3FDBECDE60000000
 
 struct ShipAiSectorPassChoice {
     float corner_x{0.0f}; // 009D8847 -> sector+18h at 009EBF6E

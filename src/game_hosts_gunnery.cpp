@@ -89,6 +89,7 @@
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/plane_release_ver_cc13.hpp"
 #include "bsp/seg59_ship_lead_s54.hpp"
+#include "bsp/unit_rudder.hpp"
 
 namespace bsp::game {
 namespace {
@@ -1106,6 +1107,14 @@ constexpr bool kReconTeamListsBound = true;
 //    never reached 00863990. OFF: that pre-filter. Packet
 //    cc9_recon_contact_kinds, docs/AA_LETHALITY_AUDIT.md section 14.
 constexpr bool kReconContactAllKindsBound = true;  // ON: AA_LETHALITY_AUDIT 14.4
+//  * kReconSurfaceSetBranchBound: 00922DC0 (MOV DL,1; JMP 00922C80) reaches
+//    00922C80's set arm after the +5Dh, 0Fh, 18h, ship, 45h, 46h and 1Ch arms:
+//    00922D3F-00922D54 008DDF90 over [00E188A8]+21A4h+[+18ECh]*4 (slot 0 here,
+//    LABELLED as in the ship-AI host), and 00922D5B JNZ 00922D0E returns 1 when
+//    the set holds the entity (008DDFA9: an IsKindOf(5) entity is looked up as
+//    itself). True: `in_set || tail`. False: the tail alone, the earlier host
+//    rule. Packet cc13-fix4, docs/CC13_FIX34.md.
+constexpr bool kReconSurfaceSetBranchBound = false;
 //  * kGunneryClassArmsBound: 00862820's arms after the liveness bytes and the
 //    rank (00862843..008628CA). Category 7 needs IsKindOf(6) and not
 //    IsKindOf(0Eh). A kind-8 target then goes through 00852820 (world y +100h
@@ -4076,6 +4085,7 @@ struct GameGunneryHost::Impl {
     struct ReconSlotTriples {
         int side{0};
         std::array<std::vector<std::size_t>, 5> lists{};
+        std::vector<bool> enemy_squadron_record;   // parallel to lists[1]
     };
     std::vector<ReconSlotTriples> recon_triples;
     unsigned long long recon_triple_builds{0};
@@ -7114,8 +7124,10 @@ public:
     }
     bool unit_is_surface_target(std::size_t index) override {
         // 00922DC0's thunk into 00922C80, filled from the same facts the ship
-        // AI's target_is_surface_00922dc0 fills. The set branch 008DDF90 is not
-        // built in this process, so its tail is taken, as there.
+        // AI's target_is_surface_00922dc0 fills. The set branch 008DDF90 asks
+        // the objective set the mission Lua fills (game_objective_sets(), which
+        // the ship-AI and chooser hosts ask too); it is taken only under
+        // kReconSurfaceSetBranchBound, otherwise the tail alone answers.
         bsp::EntityTargetFacts tf;
         tf.present = true;
         tf.not_engageable = owner_.units.unit_flag_005d(index);
@@ -7133,6 +7145,18 @@ public:
         tf.world_y = py;
         const bsp::SurfaceTargetAnswer answer = bsp::entity_is_surface_target_00922c80(tf);
         if (answer == bsp::SurfaceTargetAnswer::kUnreadSetBranch) {
+            if constexpr (kReconSurfaceSetBranchBound) {
+                // 008DDF93: an empty set answers 0; 008DDFA9 IsKindOf(5) looks
+                // the entity up as itself; the 18h arm cannot run (rejected
+                // above); 008DDF00 is the find.
+                bool in_set = false;
+                if (owner_.units.unit_is_kind_of(index, 0x05)) {
+                    const std::vector<std::size_t> set =
+                        bsp::game::game_objective_sets().units_in_slot(0);
+                    in_set = std::find(set.begin(), set.end(), index) != set.end();
+                }
+                if (in_set) return true;                  // 00922D5B JNZ 00922D0E
+            }
             return bsp::entity_surface_target_tail_00922c80(tf, true);
         }
         return answer == bsp::SurfaceTargetAnswer::kYes;
@@ -7281,6 +7305,56 @@ private:
 };
 
 }  // namespace
+
+// Packet p15_free_attack_tick. 00804350 over the recon pass's own reads:
+// 008043C0 the observer's table (null answers false), 00804400..00804430 the
+// denominator float(float(m*m) * sig) * float(vis*vis) with sig the target's
+// ReconModifier squared when IsKindOf(5), m the 008E6430 factor and vis
+// [game+21C4h]+74h; then rows i*8+j for i, j in 0..6 (008045E8 / 008045F8 CMP 7),
+// row i == 4 divided again by the sonar multiplier squared (008044DD); an entry
+// admits when quotient <= +4h and its +10h bit is in the mask, and a +18h entry
+// also needs |00438B10(atan2(dx, dz), heading)| <= +14h.
+bool GameGunneryHost::sensors_detect_unit_00804350(std::size_t observer, std::size_t target,
+                                                   std::uint32_t mask) {
+    GunneryReconSensorPassHost host(*impl_);
+    if (observer >= host.unit_count() || target >= host.unit_count()) return false;
+    std::size_t rows_count = 0;
+    const bsp::GunneryReconSensorRow* rows = host.unit_sensor_rows(observer, rows_count);
+    if (rows == nullptr) return false;
+    const float signature = host.unit_is_unit_base(target) ? host.unit_recon_modifier_sq(target)
+                                                           : bsp::kGunneryReconModifierSqDefault;
+    const float m = host.unit_environment_factor(observer);
+    const float vis = host.simplified_recon_multiplier();
+    const float m2s = (m * m) * signature;
+    const float denominator = m2s * (vis * vis);
+    float tx = 0.0f, tz = 0.0f, ox = 0.0f, oz = 0.0f;
+    host.unit_world_xz(target, tx, tz);
+    host.unit_world_xz(observer, ox, oz);
+    const float dx = tx - ox;
+    const float dz = tz - oz;
+    const float sum = dz * dz + dx * dx;
+    const float ratio = static_cast<float>(static_cast<double>(sum) / denominator);
+    const float sonar = host.simplified_sonar_multiplier();
+    for (int i = 0; i < 7; ++i) {
+        const float divisor = i == 4 ? sonar * sonar : 1.0f;
+        for (int j = 0; j < 7; ++j) {
+            const std::size_t r = static_cast<std::size_t>(i * 8 + j);
+            if (r >= rows_count) continue;
+            const bsp::GunneryReconSensorRow& row = rows[r];
+            const double quotient = static_cast<double>(ratio) / static_cast<double>(divisor);
+            for (std::size_t e = 0; e < row.count; ++e) {
+                const bsp::ReconSensorEntry& entry = row.entries[e];
+                if (quotient > static_cast<double>(entry.max_normalized_distance_sq)) continue;
+                if ((mask & (1u << (static_cast<unsigned>(entry.mask_bit) & 31u))) == 0u) continue;
+                if (!entry.bearing_limited) return true;
+                const float off = bsp::wrapped_angle_subtract_00438b10(std::atan2(dx, dz),
+                                                                       host.unit_heading(observer));
+                if (!(std::fabs(off) > entry.max_bearing_error)) return true;
+            }
+        }
+    }
+    return false;
+}
 
 void GameGunneryHost::Impl::step_recon_sensor_pass_008073c0(float frame_dt) {
     // 008079B0 BSP_Recon_ServicePeriodicRefresh's countdown at [00F874B8]:
@@ -7468,6 +7542,7 @@ void GameGunneryHost::Impl::publish_recon_triples_008073c0() {
                 if (found == arr.end()) continue;
                 for (const Rec& r : found->second) {
                     if (r.level == 2) t.lists[which == 0 ? 1 : 2].push_back(r.unit);
+                    if (r.level == 2 && which == 0) t.enemy_squadron_record.push_back(id == 0x18);
                     else if (r.level == 1) (which == 0 ? unknown_enemy : unknown_neutral).push_back(r.unit);
                     if (id == 0x18 && r.level == 2 && which == 0) ++recon_group_enemy_identified;
                     if (id == 0x18 && r.level == 1) ++recon_group_unknown;
@@ -7498,6 +7573,18 @@ void GameGunneryHost::Impl::publish_recon_triples_008073c0() {
     }
     ++recon_triple_builds;
     done("Recon::publish_triples_008073c0", 0x00807529u);
+}
+
+bool GameGunneryHost::recon_enemy_contacts(int side, std::vector<std::size_t>& units,
+    std::vector<bool>& squadron_record) const {
+    units.clear();
+    squadron_record.clear();
+    const Impl::ReconSlotTriples* t = impl_->recon_triples_for(side);
+    if (t == nullptr) return false;
+    units = t->lists[1];
+    squadron_record = t->enemy_squadron_record;
+    squadron_record.resize(units.size(), false);
+    return true;
 }
 
 bool GameGunneryHost::recon_triple_units(int side, int triple,
@@ -15141,6 +15228,46 @@ std::vector<GameGunneryHost::GameGunneryHitEvent> GameGunneryHost::take_hit_even
     std::vector<GameGunneryHitEvent> out;
     out.swap(impl_->hit_events);
     return out;
+}
+
+// Packet p16_torpedo_stock_property. 00815850: s = unit+104Ch; s < 0 -> s, else
+// 00810E90 + s. Pass C (008201B8) has set every ship's spare before any script
+// runs; this host makes that set at the first torpedo shot, so an unset unit
+// answers what pass C leaves: the spare + loaded tubes is MaxTorpedoStock when it
+// is at least the tube count, and the unload loop (kTorpedoSupplyTickBound)
+// brings the tubes down to it otherwise. LABELLED: a ShipSetTorpedoStock queued
+// this frame is not applied yet (the image runs 0081F8B0 inside the native), so
+// the latest queued stock answers for its unit: 0081F8B0 leaves spare + loaded
+// at max(stock, 0) on both arms, before the re-arm moves spare into the tubes.
+bool GameGunneryHost::torpedo_stock_total_00815850(std::size_t unit_index,
+                                                   std::int32_t& total) const {
+    GameGunneryHost::Impl& host = *impl_;
+    if (unit_index >= host.unit_state.size()) return false;
+    if constexpr (kShipSetTorpedoStockBound) {
+        const auto& queue = ship_torpedo_stock_queue();
+        for (auto it = queue.rbegin(); it != queue.rend(); ++it) {
+            if (it->first != unit_index) continue;
+            total = it->second < 0 ? 0 : it->second;
+            return true;
+        }
+    }
+    const GameGunneryHost::Impl::UnitState& us = host.unit_state[unit_index];
+    if (!us.torpedo_stock_set) {
+        const int loaded = host.loaded_torpedo_barrels_00810e90(unit_index);
+        if (us.max_torpedo_stock >= loaded) {
+            total = us.max_torpedo_stock;
+        } else {
+            total = kTorpedoSupplyTickBound
+                ? (us.max_torpedo_stock < 0 ? 0 : us.max_torpedo_stock) : loaded;
+        }
+        return true;
+    }
+    if (us.torpedo_spare < 0) {             // 00815859 JL
+        total = us.torpedo_spare;
+        return true;
+    }
+    total = host.loaded_torpedo_barrels_00810e90(unit_index) + us.torpedo_spare;
+    return true;
 }
 
 void GameGunneryHost::apply_script_damage_0095da00(std::size_t unit_index, float amount) {

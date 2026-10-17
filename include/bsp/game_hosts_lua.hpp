@@ -133,6 +133,23 @@ inline constexpr bool kGetPropertyClassReadersBound = true;  // ON: lead ruling 
 // 007EDAD0's integer through GameUnitsHost::squadron_ammo_type_007edad0. Only a
 // squadron serves the key. False: no value, so a script's `~= 0` test passes.
 inline constexpr bool kGetPropertySquadronAmmoTypeBound = true;  // ON 2026-09-30: controls identical, USNRM01 moved (5ci)
+// Packet p16_torpedo_stock_property (docs/OCEAN_WAVE_FIELD.md section 61). True:
+// a ship's GetProperty answers "TorpedoStock" (_stricmp 00BF7FBF at 00815891,
+// so any case) the way 00815870 does: s = unit+104Ch; s < 0 pushes s, else
+// 00810E90 (the loaded torpedo tubes) + s, through 00B664B0. 00815870 sits at
+// vtable+138h of the eight ship vtables and is the mother ship's 00758340's
+// first call, so every IsKindOf(6) unit serves it; no other entity does.
+// The value is GameGunneryHost::torpedo_stock_total_00815850. False: no value,
+// so jm08.lua's `torp < 12` raises on nil and aborts its PT loop.
+inline constexpr bool kGetPropertyTorpedoStockBound = true;  // ON 2026-10-17: pairs identical in gameplay (OCEAN_WAVE_FIELD 61.1)
+// Same packet. True: a squadron's GetProperty answers "state" (00425850 at
+// 007EF20E) as 007EF1C0 does: over the +3CCh planes at +3D0h it counts those
+// whose control mode (plane+72Ch)->vtable[38h] answers true (A; 0074E210, the
+// mode +1D4h == 7, which this host keeps as +900h) and the rest (B); it pushes
+// 2 when B is 0 (an empty squadron included), else 1 when A > 0, else 0.
+// commandhelpers.lua's luaAirstrikeManager_think attacks only on `state == 2`.
+// False: no value (nil), so that test never passes.
+inline constexpr bool kGetPropertySquadronStateBound = true;  // ON 2026-10-17: by mechanism, never asked (61.1)
 
 // Packet cc9_lua_kill (docs/LUA_BINDING_MISSION.md, "Kill, 008AC5C0"). The Lua
 // native Kill(entity [, hard]) resolves argument 0 (00888AA0) and takes cause 1,
@@ -354,6 +371,11 @@ inline constexpr bool kSimplifiedReconNativesBound = true;   // ON: SQUADRON_LAN
 // dead entity. True: a repeat call whose earlier instance is Dead (its thisTable slot)
 // makes a new entity; a live earlier instance keeps the deviation. False: as before.
 inline constexpr bool kGenerateObjectRespawnsDeadBound = true;   // ON: SQUADRON_LAND_TASK 5gl
+// Packet p16_lua_natives (docs/OCEAN_WAVE_FIELD.md section 65; cc13 verify5 R5). True:
+// the deviation goes: every call instantiates, as 0046D930 does, live earlier instance
+// or not (usn_03:1621-1636 makes Max Kate/Val pairs; ijn_23 FinalJP1..3 three each).
+// False: kGenerateObjectRespawnsDeadBound's narrowed deviation.
+inline constexpr bool kGenerateObjectEveryCallBound = false;
 
 // docs/CC13_AUDIT_LUA51_FLIPS.md item 1c. 00988510 boxes, and 0097B8C0 matches,
 // the target as hitEntity->vtable[140h]() kept only when it answers IsKindOf(2)
@@ -636,6 +658,14 @@ inline constexpr bool kLuaLandConvoySetSpeedBound = true;  // ON: lead pair; PRC
 // True: the row runs that sequence on the entity's deck. False: unimplemented.
 inline constexpr bool kLuaLaunchAirBaseSlotBound = true;  // ON: lead pair; PRCP01 completes 720.25 s ON (2026-10-13)
 inline constexpr bool kLuaAddUntouchableUnitBound = true;   // ON on identity (LUA_BINDING_MISSION)
+// Packet p16_lua_natives (docs/OCEAN_WAVE_FIELD.md section 65; cc13 verify5 R6). True:
+// RemoveUntouchableUnit 008AC2B0 clears the byte AddUntouchableUnit sets (00888AA0 at
+// 008AC3AF, vtable[140h] at 008AC3D0, `MOV byte [EAX+1D4h],0` at 008AC3D6), and
+// IsUnitUntouchable 008AC420 pushes vtable[140h]() != null && its +1D4h != 0 as a
+// boolean. LABELLED: an entity with no units-host slot is skipped (Remove) or answers
+// false (Is), as AddUntouchableUnit already does. False: both rows stay unimplemented
+// records, so a removal never happens and IsUnitUntouchable reads nil.
+inline constexpr bool kLuaUntouchableClearBound = false;
 // The +1D4h byte of units-host index `index`'s AI object, as AddUntouchableUnit
 // left it. False for every unit while kLuaAddUntouchableUnitBound is false.
 // Inert: nothing in this process reads it until the gunnery lane binds 00862440.
@@ -875,6 +905,13 @@ struct GameMissionLuaSummary {
     unsigned long long get_property_ammotype_asked{0};
     unsigned long long get_property_ammotype_served{0};
     unsigned long long get_property_ammotype_zero{0};
+    // Packet p16_torpedo_stock_property.
+    unsigned long long get_property_torpedo_stock_asked{0};
+    unsigned long long get_property_torpedo_stock_served{0};
+    unsigned long long get_property_torpedo_stock_not_ship{0};
+    unsigned long long get_property_squadron_state_asked{0};
+    unsigned long long get_property_squadron_state_served{0};
+    unsigned long long get_property_squadron_state_two{0};
     // Packet cc9_lua_kill: Kill calls, units killed, calls with no units-host
     // slot, calls on an already dead unit, squadron calls.
     unsigned long long kill_calls{0};
@@ -991,6 +1028,10 @@ struct GameMissionLuaSummary {
     unsigned long long last_catapulted_not_ship{0};
     unsigned long long untouchable_calls{0};        // packet cc9_add_untouchable_unit
     unsigned long long untouchable_marked{0};
+    unsigned long long untouchable_remove_calls{0};   // packet p16_lua_natives
+    unsigned long long untouchable_cleared{0};
+    unsigned long long untouchable_is_calls{0};
+    unsigned long long untouchable_is_true{0};
     unsigned long long formation_leader_found{0};
     unsigned long long formation_leader_other{0};   // the leader is not the argument
     unsigned long long leave_formation_calls{0};
@@ -1013,6 +1054,7 @@ struct GameMissionLuaSummary {
     unsigned long long generate_object_created{0};
     unsigned long long generate_object_repeat{0};
     unsigned long long generate_object_respawned{0};   // packet cc9_lua55_genobj
+    unsigned long long generate_object_every_call{0};  // packet p16_lua_natives
     unsigned long long generate_object_unknown{0};
     // Packet cc9_generated_entity_party.
     unsigned long long generated_party_nodes{0};
@@ -1600,6 +1642,8 @@ public:
     int run_get_last_catapulted_00892860(lua_State* state, int argument_count);
     int run_get_catapult_stock_00892de0(lua_State* state, int argument_count);
     int run_add_untouchable_unit_008ac140(lua_State* state, int argument_count);
+    int run_remove_untouchable_unit_008ac2b0(lua_State* state, int argument_count);
+    int run_is_unit_untouchable_008ac420(lua_State* state, int argument_count);
     int run_leave_formation_00899eb0(lua_State* state, int argument_count);
     // Packet cc13_natives1, under kLuaSquadronSetReleaseAltBound.
     int run_squadron_set_release_alt_008a24e0(lua_State* state, int argument_count);

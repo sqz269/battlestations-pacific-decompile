@@ -919,6 +919,17 @@ public:
     // 004C3CB0 walks 0, 1 and 3 of the player's slot. False (and `out` empty)
     // before the first rebuild or for a side with no slot.
     bool recon_triple_units(int side, int triple, std::vector<std::size_t>& out) const;
+    // Packet p15_free_attack_tick: triple 1 (the enemy chain at +DE8h) with, per
+    // entry, whether it is the kind-18h group record 00805490 leaves for a
+    // squadron (its unit is the squadron's fused leader) rather than a plane's
+    // own class-bucket record.
+    bool recon_enemy_contacts(int side, std::vector<std::size_t>& units,
+                              std::vector<bool>& squadron_record) const;
+    // Packet p15_free_attack_tick: 00804350 BSP_Unit_SensorsDetectUnit,
+    // __fastcall(ECX = observer, EDX = target, mask) RET 4, over the same sensor
+    // rows, signature and multipliers the recon pass reads.
+    bool sensors_detect_unit_00804350(std::size_t observer, std::size_t target,
+                                      std::uint32_t mask);
     // Packet cc9_initial_controlled_unit_load: the scene load's step 19 calls
     // 008073C0 on the local slot directly (004E059B), outside 008079B0's
     // periodic countdown, which it leaves untouched. SUBSTITUTION, labelled:
@@ -1147,6 +1158,10 @@ public:
     // 0088E000): the party multiplier, the invincibility floor and the death funnel,
     // as a hit's damage takes them. No caller yet (packet cc9_difficulty_multipliers).
     void apply_script_damage_0095da00(std::size_t unit_index, float amount);
+    // Packet p16_torpedo_stock_property: 00815850 for a ship, the value
+    // GetProperty(ship, "TorpedoStock") pushes. False for an index the host
+    // does not hold.
+    bool torpedo_stock_total_00815850(std::size_t unit_index, std::int32_t& total) const;
     float unit_invincibility(std::size_t unit_index) const noexcept;
     // Packet cc9_ship_fire_stance: the weapon director arm of UnitSetFireStance
     // 008A6490 / UnitHoldFire 008A6AC0 (stance 0) for a ship: 0071BE80, whose

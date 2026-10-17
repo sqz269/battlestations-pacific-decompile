@@ -182,10 +182,13 @@ struct GuiCameraPlacement {
     float target[3]{};
     float up[3]{0.0F, 1.0F, 0.0F}; // 00AA3E6B..00AA3E74 stage (0, 1, 0)
 };
-inline constexpr float kGuiCameraTargetZ = -9992.0F; // 00D19620
+// cc13-fix67 (fix6b), OFF: 00AA3E7F MOVSS xmm0,[00D19620] loads C61C4000 = -10000.0 and
+// 00AA3E87 stores it as the target z; -9992 is not the image's value. Presentation only.
+inline constexpr bool kGuiCameraTargetZImageBound = false;
+inline constexpr float kGuiCameraTargetZ = kGuiCameraTargetZImageBound ? -10000.0F : -9992.0F; // 00D19620; image bits C61C4000 at 00D19620
 
 // 00AA3E30..00AA3E93: eye = (0.5 + 0.5/width, 0.375 + 0.5/height, 0),
-// target = (eye.x, eye.y, -9992). The native divides in x87 extended precision
+// target = (eye.x, eye.y, kGuiCameraTargetZ; the image stores -10000). The native divides in x87 extended precision
 // and rounds each sum to float; this uses double and rounds once, which agrees
 // for every back-buffer size the game can set.
 GuiCameraPlacement gui_camera_placement_00aa3e00(

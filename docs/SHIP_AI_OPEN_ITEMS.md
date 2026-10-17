@@ -18672,3 +18672,67 @@ after the Takao group in the strikes and as the top priority of DM1/Gear1-3 to 5
   or escort it with DM1/Gear1-3 instead of sending them south; add Musashi to the Loui/NH sweeps; give TT5 or the
   surviving transport a timed HQ1 then CB2 route behind NH's HQ1 shelling. Build with `python local\s55_osmk.py c11`
   after adding the variant; the helpers (`air_mass`, `escort_sweep`, `recalls`, `shifted`, `turns`) are in that file.
+
+## 274. AutoTarget override attack-move, kAutoTargetOverrideBound (cc9-ships56, 2026-10-17; lead item 1)
+
+**Question.** What does a Shinyo or submarine do in the image when its `NavigatorAttackMove` target is dead
+(us_osumi.lua `luaShinyoSpawned` / `luaSubSpawned` pick `luaPickRnd(Mission.Troops)`, dead transports
+included)? In `s55_a_r0` the #5.x Shinyo group and the #6.2/#6.5 submarines sit in `stop` near x~5700 for
+the whole run.
+
+**The director half is already the image's.** 008A30D0 issues the attack-move with no liveness test
+(0077D600 at 008A3273). 00836B45's arm sees `target not live (0043f080)` and raises stage 2; the idle tail
+00836DC9 then issues `stop` (or `cruise` with a live commanded speed). The `stop` state step 009E14C0 only
+brakes. So "idle" is correct as far as the queue goes.
+
+**The gap is the AutoTarget tick 009F5DA0 step 14.** The scorer 009F5B70 keeps an iterator on the winning
+priority entry (009F5C37 stores EDI, the entry, next to the list pointer stored at 009F5BDC), and
+009F5CF9 `CALL 009F5860` (an STL bounds-checked deref, body 009F5860-009F5884) returns the entry; 009F5D02
+stores its byte +0h at searchState+20h, which is the tick's +30h. 009F65E0 pushes every entry with that
+byte set except kind 8 / 0Eh under the kind-0Dh and kind-8 owners (src/bot_fire_target.cpp). So the tick
+sends `0071D980(attackmove, 00465080(chosen, 0.0f))` for nearly every winner: 0071C830 with +20h = 0,
+which 00721A40 routes to 00721B7C `0071E7F0 SetOverrideCommand` (director+188h/+18Ch, mode 2). 009F5610
+reads slot 0 ([director+54h]) only, so a category-3 head (stop, cruise, moveto, follow, moveonpath) leaves
+the tick enabled. The override ends at 00836D67..00836DC4 (target null, not +5Ch, +5Dh/+60h/+5Eh set, or
+own side / side 2 unless a structure of side >= 2) through 0071D9E0(2) -> MT_GAMEUNIT_CLEARCMD (+20h = 0)
+-> 0071E610, which drops back to mode 1. The host left `issue_move_flag` false in its candidates and
+recorded `issue_command`, so `attackmove_issues=0` on every run (`s55_a_r0`: thinks 2759155, scans
+2534936, fire_target_sets 14833, attackmove_issues 0) and nothing ever wrote director+188h.
+
+**The bind (OFF).** `include/bsp/game_hosts_commands.hpp` `kAutoTargetOverrideBound`. Commands host: the
+override record on GameDirector, carried through queue_state_of/back, `send_override_command_0071d980`
+(hold < 0, then the reconstructed 0071E7F0 with the real 0071D6D0), the override arm in
+`director_step_00836920`, `raise_override_stage_0071d9e0` and 0071E610 in place, 0071EB60 mode 2 and
+0071BE40 with the override. Ship AI host: the entry byte, slot-0 category in 009F5610, director+30h for
+009F5E69/009F5F2F, 00521EA0 on +18Ch at 009F5EC4, and the 0071D9E0 tail of step 5. LABELLED: both
+messages apply in place, and 00835C70's begin of the override is left to the tick's own step-15
+00835860. Counters: `summary mission director override bound= sends= installs= arm_ends= clears=`
+and the existing `attackmove_issues=`.
+
+**Predictions, written before any run.** OFF: gameplay identical (all override counters 0). ON: every
+mission moves. AI units whose head is category 3 leave it for the best recon-listed enemy within 2500,
+3000 or 3500 m (by owner kind), for both parties; the controlled unit (+184h) is exempt. On USNOS the
+#5.x Shinyos and #6.x submarines should leave `stop` once a US unit comes within range (in `s55_a_r0`
+#5.1's fire target was Portland2 then Gear14 from 690 s) and go for it in the kamikaze / sub-attack
+states, so phase 1 may end earlier; the transports, being category-3 movers, also turn on anything in
+range.
+
+**Pairs (219b1d3c0, `--flip kAutoTargetOverrideBound=true`, exe `local\s56_ao_on`, reference env).**
+- USNOS `s55_os_r0`, 30000 frames (`local\s56_off_r0.log` / `s56_on_r0.log`, manifests beside them): pair_diff
+  exit 3. OFF `attackmove_issues=0`; ON 42 sends, 42 installs, 9 arm ends, 9 clears. The mechanism is the
+  predicted one: the Shinyo #6.2 leaves `stop` at frame 9240 for `kamikaze_attack` on Portland2 (then NH), #5.1
+  leaves it at 11360 for `attackmove` on Portland2, and #6.2 / #6.5 now die (only-ON rows), as do Ada3, Zao3
+  and Shima1 (NH and the Japanese cruisers take overrides on each other). fire_target_sets fall 2990 -> 42:
+  once the override names the winner, 009F5ECB returns before step 15 every think, as in the image.
+- USN02 `usn02_s36_u2_p7`, 8000 frames: exit 3, **the win is lost** (OFF completed 200.06 s with the exec
+  guard's sus_prog.exe refusal; ON no end in 400 s). Houston, parked at EscapePoint by the plan, and the
+  selected Exeter take overrides on the destroyers in range (19 installs); 17 deaths against 12.
+- LOMP06 `lomp06_l50_l6_q6`, 14000 frames, ON only: **lost**, failed at 652.11 s on Narwhal (table: completed
+  535.24 s). The selected Narwhal takes an override on Komaki Maru before its first scripted attack.
+- Neither selected ship is exempt: +184h is set only by a role-1 take (docs/SCRIPTED_HELM.md section 1), and
+  `player roles ... +184h=0` holds for every unit in these runs, so the image's idle player's ship is AI-held
+  and auto-targets too.
+
+**Decision: ON** by mechanism (house rule: a faithful fix flips even when wins are lost). Every win row needs
+a re-time or re-plan on this tree (sent to cc9-lua65). Open: the squadron free-attack tick 009F8470
+(GUNNERY_OPEN_ITEMS 48.3) sends the same 0071D980 and can now use this override layer.

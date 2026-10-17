@@ -6,6 +6,7 @@
 #include "bsp/ship_ai_navigation.hpp"   // UnitAiOrderRecord, UnitAiOrderSubRecord
 #include "bsp/ship_ai_states.hpp"       // ShipAiControlBlock, ShipAiThrottleDirection
 #include "bsp/unit_state_message.hpp"   // UnitOrderRing, UnitOrderRingSlot
+#include "bsp/const_exact_image_bits.hpp"
 
 // The hop that was missing from the ship AI chain: how the AI controller's own
 // desired throttle at blk+1D0h and desired rudder at blk+1D4h reach the order
@@ -94,10 +95,10 @@ struct ShipAiRudderLawHost {
 // `MaxRotAngleChangeRatio` (`class+4FCh`); see
 // ship_class_ai_derived_motion_00828f20 below and
 // docs/SHIP_AI_CLASS_FIELD_0524.md.
-inline constexpr double kShipAiRudderAuthorityScale = 1.2; // 00CEC160
+inline constexpr double kShipAiRudderAuthorityScale = kConstExactImageBitsBound ? 0x1.333334p+0 : 1.2; // 00CEC160; image bits 3FF3333340000000 at 00CEC160
 // 009DA2FA and 009DA31F, 00CE65D0: below this speed the rudder is zero, and
 // above it the demand ramps in over one unit of speed.
-inline constexpr double kShipAiRudderSpeedFloor = 0.4; // 00CE65D0
+inline constexpr double kShipAiRudderSpeedFloor = kConstExactImageBitsBound ? 0x1.99999ap-2 : 0.4; // 00CE65D0; image bits 3FD99999A0000000 at 00CE65D0
 // 009DA28C and 009DA2A8, the clamp on the raw demand.
 inline constexpr float kShipAiRudderLow = -1.0f;  // 00D7A260
 inline constexpr float kShipAiRudderHigh = 1.0f;  // 00D7A24C
@@ -174,7 +175,7 @@ struct ShipAiRingHop {
 
 // 009F4BB9, FLD double 00D7A270: the throttle magnitude under which the ship
 // counts as stopped, and 009F4BE1, the speed magnitude that goes with it.
-inline constexpr double kShipAiRingHopThrottleDeadband = 0.05; // 00D7A270
+inline constexpr double kShipAiRingHopThrottleDeadband = kConstExactImageBitsBound ? 0x1.99999ap-5 : 0.05; // 00D7A270; image bits 3FA99999A0000000 at 00D7A270
 inline constexpr float kShipAiRingHopSpeedDeadband = 1.0f;     // 00D7A24C
 // 009F4C12, FMUL double 00CE3D78: the per-second limit on how far either ring
 // value may move in one frame.

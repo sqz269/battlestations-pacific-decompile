@@ -17573,3 +17573,139 @@ Open, in order:
    is not hosted (5hw.2).
 4. The class-change half of the dive and torpedo tasks' vt[40h] (the task retires when the command class is no
    longer its own or 00E08F78) is not modelled; the torpedo arm still runs under a moveto.
+
+## 5hy. A squadron ordered onto a hangar: 007EEC50's surface set branch (cc9-lua65, 2026-10-17)
+
+Symptom (cc9-ships44 `local\s55_aj_c1.log`, USNOS, orders `s55_os_c1.txt` line 30 `launch Essex 0 339 3 Hangar, Large,
+08 01`): Essex_sqn03 takes off, gets `moveto task ... installed kind 7 range=0.0` and never leaves it. Every one of the
+19 structure-target launches in that run (Essex/Intrepid/Enterprise/Midway onto "Hangar, Large, 08 01", "Hangar, Small,
+02 02", "Multi Hangar 1") does the same.
+
+Cause, read from the log: the squadron intake's chooser logs `classify: target_is_surface=UNREAD-SET-BRANCH`, target
+class 27 (1Bh MLandFort), and `007EEC50 -> 00000000` with gb=1; 007F1688 then issues moveto (5hl L3). The host's chooser
+answered 00922C80's 008DDF90 branch as "not surface", so every ordnance arm failed.
+
+Image (disk listing): 007EEC9F `CALL 00922DC0`, the thunk that sets DL = 1 and jumps into 00922C80. A target that is not
+plane, squadron, ship family, airfield (45h), shipyard (46h) or 1Ch reaches 00922D3F..00922D5B, 008DDF90 over the local
+slot's objective set ([00E188A8]+21A4h+[+18ECh]*4; an IsKindOf(5) entity is looked up as itself), then the tail: with
+allow_far (DL = 1) an MLandFort answers true when its class +178h FakedType is 1Bh. FakedType's authored default is 1Bh
+(`BSP_StructureClass_ReadLuaFields`, docs/ATTACK_CAPABILITY_INPUTS.md); no Lua file of this installation sets it (621
+files searched; the hangar row is `vehicleclasses.lua` "Hangar, Large, 08_DLC3", `globals.unitclass_hangarfort`, Type
+LandFort, file mtime 2026-05-09). So the image answers "surface" for every hangar. MLandFort's class test 006F5890
+accepts {0, 1, 2, 4, 5, 1Bh}, so 0099A170's divebomb arm gate vt[5Ch](2) passes too: the image builds the dive task.
+game_hosts_ship_ai.cpp's target_is_surface_00922dc0 already answers the branch this way (kShipAiSurfaceSetBranchBound ON).
+
+Switch `kChooserSurfaceSetBranchBound` (src/game_hosts_script_orders.cpp, committed OFF): the chooser answers the branch
+with slot 0's set, then the tail with allow_far (slot 0 LABELLED, as in the ship AI). Each answer logs `<label> surface
+set branch: in_set tail land_fort -> answer`. Callers: the squadron intake 007F1940 / AutoAttackTarget, PilotSetTarget,
+and every other choose_attack_class_007eec50 caller.
+
+Prediction (USNOS `s55_os_c1` orders): every hangar launch picks divebomb (00E08F20) for the class-339 squadrons
+(gb=1), installs kind 8 instead of kind 7, and dives on the hangar; hangars take bomb damage, and the strike squadrons
+meet the airfield's AA. Rows whose squadrons never target an MLandFort are gameplay identical (control).
+
+## 5hz. cc13 audit of 008A0A10 EntityTurnToEntity (cc9-lua65, 2026-10-17)
+
+Script uses (this installation, mtime 2024-07-13): BSM01 `bsm_01_stationed_at_pearl.lua` 1139 (MiniSub, ship arm), 1197
+(HenryPT, ship arm), 1490/1499 (a spawned Val/Kate or Zero squadron, squadron arm); also BSM07, JM02/JM10/JM12/JM15,
+yamato. The BSM01 WINS row reaches the ship and squadron arms (`l64rt_b1_ref.log`: HenryPT, MiniSub, Jap #64.1..#70.1).
+- (c) any member selected the squadron arm. 008A0D5D tests the argument's own vt[5Ch](18h); a member plane answers 0Fh
+  and takes 008A0E6F (its own vtable[88h]). `kTurnToEntityMemberPlaneArmBound` (committed OFF) gives a non-leader member
+  the plane arm. LABELLED: the host fuses the squadron with its leader, so the leader argument still turns all. The
+  squadron log line now names the argument. Prediction: BSM01 identical (its arguments are squadrons).
+- (b) the squadron arm aims from the leader's position, not squadron+FCh: the existing labelled substitution (5cf,
+  docs/CONSTRUCT_WORLD.md "the squadron's position +FCh | the leader's pose"); the +FCh writer is unread. No change.
+  The image's member loop takes each member's own +FCh as the translation (008A0D9B-008A0DBF), as the host does.
+- (a) an argument that is neither squadron, ship nor plane (008A0E6F vtable[88h] on, e.g., a land unit or a path
+  point) stays the `008a0eb8` unimplemented record; no WINS row reaches it (JM02 `RePos` is not a WINS row).
+
+### 5hy.1 USNOS pair and flip: `kChooserSurfaceSetBranchBound` **ON**
+
+Exports of 1ebb5f062 (`local\l65_cs_off`, `local\l65_cs_on` with the switch flipped); USNOS 30000 fr, orders
+`local\l65_os_c1.txt` (cc9-ships55's `s55_os_c1.txt`), reference env; logs `local\l65rt_osoff_ref.log` /
+`local\l65rt_oson_ref.log` (manifests beside them). No mission end on either side. pair_diff 3 (moved).
+
+| | OFF | ON |
+|---|---|---|
+| set-branch answers with tail=1 (all MLandFort, in_set=0) | 9 (answered not surface) | 76 (surface) |
+| kind-7 moveto installs | 16 | 4 (non-hangar orders) |
+| dive-bomb task installs (kind 8) | 0 | 71 |
+| dive-bomb releases | 0 | 10 of 49 |
+| "Hangar, Small, 02 02" (Intrepid strikes) blast hits / damage | 0 / 0 | 14 / 120 |
+| "Hangar, Large, 08 01" (Essex strikes) | 35 / 102.4 | 35 / 102.4 (unchanged) |
+| deaths | 210 | 272 |
+
+Mechanism as predicted: every hangar launch now picks divebomb 00E08F20 and installs kind 8. Intrepid's squadrons reach
+Hangar Small 02 02, dive and release. Essex's squadrons die on the way to Hangar Large 08 01: at 368.28 s all three
+Essex_sqn03 planes, at about 1300 m, take Shimotsuke's bullet-23 flak blasts (range 190 m, 184 damage each). That is
+the gunnery lane's flak, not this switch. The death rows move a lot because the bombers now attack: new kills are
+airfield structures (bunker, storage, AA platform, houses), and later launches get different squadron numbers. Rows that
+never reach the branch are identical by construction: in the OFF re-time logs, USN01 (ref and 20,3), JM08 ref and
+LOMP06 ref log no tail=1 answer. Flipped ON by mechanism.
+
+## 5ia. Deck members of a null-class moveto squadron fly no command (cc9-lua65, 2026-10-17)
+
+In both USNOS runs of 5hy.1 the kind-7 moveto squadrons' wingmen fall behind without limit: the formation-seat
+distances of Essex_sqn03 (OFF) grow 632 -> 10037 m in 3200 ticks, and those of Enterprise_sqn34 (ON, still a moveto)
+grow 556 -> 6403 m. The leader flies at about 98 m/s while the wingmen stay at the carrier: 5hl L3 issued 007F1688's
+moveto to the members flying at the serve only, and the standing per-member launch order (kAutoAttackMemberOnLaunchBound)
+carried chosen classes only. In the image 007F1688-007F16AD issues the moveto to the squadron (0071ECF0), and its
++128h 007ECF80 fan-out reaches every +3D0h plane, on the deck or flying, as for a chosen class.
+
+Switch `kAutoAttackMoveToMemberLaunchBound` (src/game_hosts_script_orders.cpp, committed OFF): the standing order also
+carries the null-class moveto, so each deck member gets the moveto (`issue_command_to_members`, 00E08F68) when it is
+airborne. The same timing substitution as kAutoAttackMemberOnLaunchBound applies (at launch, not at the serve).
+
+Prediction (USNOS `l65_os_c1`, on top of 5hy ON): the four remaining kind-7 squadrons' wingmen get the moveto at
+launch (`AutoAttackTarget member at launch ... class=00E08F68`), install kind 7 in follow, and their seat distances stay
+near the formation's instead of growing; they then meet the target's AA with their leader. Rows with no null-class
+AutoAttackTarget serve are identical.
+
+### 5ia.1 USNOS pair and flip: `kAutoAttackMoveToMemberLaunchBound` **ON**
+
+Exports of cd0949fc3 (`local\l65_mm_off`; `local\l65_mm_on` with this switch and kTurnToEntityMemberPlaneArmBound
+flipped); USNOS 30000 fr, `local\l65_os_c1.txt`, reference env; logs `local\l65rt_osmmoff_ref.log` /
+`local\l65rt_osmmon_ref.log`. pair_diff 3. The OFF export reproduces `l65rt_oson_ref` exactly (identical), so the
+change is these two switches; USNOS calls no EntityTurnToEntity, so it is this one.
+
+- 10 `AutoAttackTarget member at launch ... class=00E08F68` orders (0 OFF).
+- Enterprise_sqn34's seat distances: OFF 556 -> 6403 m over 2800 ticks; ON 556/638 -> 1.9/7.9 m by tick 2000 (the
+  wingmen catch up and hold the formation).
+- Deaths 272 -> 273: Enterprise_sqn34's wingmen now die with their leader to Shimotsuke at about 800 m altitude
+  (1253.70 s) instead of to Zao at 260 m; Midway_sqn36|.-II is new. Nothing else moved.
+
+Mechanism as predicted; flipped ON. `kTurnToEntityMemberPlaneArmBound` stays OFF: no row reaches the squadron arm now
+(BSM01 stalls before the Jap squadron spawns, 5ib), so no run has shown which index a squadron argument resolves to.
+
+## 5ib. kSquadronMemberOrdnanceBound against cc13's 007ED790..007EDA10 loops (cc9-lua65, 2026-10-17)
+
+cc13 seg48 (e75e1e1b9, src/cc13_seg48.cpp `any_member`): all eight loops are one body, `for i < [sq+3CCh]: if
+pred([sq+3D0h+4i], loadout) return 1`, no liveness test (a dead plane leaves +3CCh through 007F3970). The chooser's
+member OR (007ED7E0 / 830 / 880 / 8D0) matches it, with gunnery liveness standing for +3CCh membership (labelled, 5hv.4).
+007ED790 (007B9140 per member) is already looped over the live members in game_hosts_units.cpp's 009F8160 arms. Not
+extended: 007ED970 (rocket, 007B9480 also needs descriptor +E0h > 0) and 007EDA10 (depth charge, kind 2Ch) are never
+fed to the chooser at all (`has_rocket_ordnance` / `has_depth_charge_ordnance` stay false; OrdnanceKindSet has no
+rocket or depth-charge predicate), and 007ED920 / 007ED9C0 belong to the unbound rocket task (CC13_ROCKET_TASK.md).
+Feeding them is the rocket / depth-charge packet, not a loop extension; no WINS row has a plane with rockets or depth
+charges ordered at a submarine (none of the re-time logs' choose lines name a submarine target).
+
+## 5ic. The depth-charge task glue lands OFF; JM06 reaches it (cc9-lua65, 2026-10-17)
+
+docs/CC13_DEPTH_CHARGE_TASK.md 8 says no mission on cc9's run list reaches the task. JM06 does: in `l65rt_j6_ref.log`
+(and 20,3) the US Lexington-class 01 Helldiver squadrons (class 38 SB2C, `plane equipment ... bag=2`) get 34
+PilotSetTarget orders at a submarine (caps `target_class=8 submarine=1`). This installation's vehicleclasses.lua
+(mtime 2026-05-09) gives the Helldiver Equipments[2] = two platform-77 slots, and classtables/arcade/deviceclasses.lua
+ArcadeTable[77] is "DC platform US" (BombPlatform, bullet 55): depth charges. The host's chooser never fed
+has_depth_charge_ordnance, so 007EEC50 fell through to strafe (`choose: 007EEC50 -> 00e08f40`, gb=0 because 2Ch is in
+007B9320's exclusions); the image picks depthcharge 00E08F38 and 0099A170 builds 009A6970's task.
+
+cc13's section-7 diff (against b571eaa62) is applied by a three-way merge (`local\l65_dc_prep.ps1`,
+`local\l65_dc_resolve.py`): the units-host adapter `run_depth_charge_task_arm_009a66c0` next to the kamikaze adapters,
+its arm call after the drop-kamikaze arm, the slot fields, and the chooser feed. One change to cc13's diff: the feed
+also ORs kind 2Ch over the live squadron members (007EDA10 is the same +3D0h loop as the four kSquadronMemberOrdnanceBound
+queries, 5ib). Everything stays behind `bsp::kDepthChargeTaskBound` (include/bsp/depth_charge_task_cc13.hpp, OFF).
+
+Prediction (JM06 reference and 20,3, the WINS row `jm06_p12_j6_c1`): the Lexington Helldivers' PilotSetTarget at the
+submarine chooses 00E08F38 instead of strafe, installs the kind-1 task, and drops depth charges on the player's
+submarine; the player submarine takes depth-charge damage, so the row may move or lose. USN21 (cc13's confirmed reach,
+the Jakes) moves too.

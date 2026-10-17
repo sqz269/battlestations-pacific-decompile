@@ -4,6 +4,7 @@
 #include "bsp/pilot_controls.hpp"  // PilotCommandBlock, PilotPlanSlots, pilot_command_off
 #include "bsp/plane_flight.hpp"    // PlaneControlInput
 #include "bsp/unit_orders.hpp"     // UnitPlanSlot
+#include "bsp/const_exact_image_bits.hpp"
 
 // Projection of the two producers of the plane's pilot command block unit+9FCh and of the
 // paths that write the control block unit+9E4h behind the quantiser: the pilot bot's think
@@ -105,7 +106,7 @@ inline constexpr float kPilotCmdSuppressTimer = 3.0f;   // 00CE3854, 0099AF3D
 inline constexpr float kPilotCmdForceThinkTimer = -1.0f;  // 00D7A260, 0099AEB5 / 0099AEE5
 inline constexpr float kPilotCmdRepairOvershoot = 1.1f;   // 00CE6448; 00D06BB0 is its negative
 inline constexpr float kPilotCmdThrottleFloor = 0.01f;    // 00D7A238, 0099BF30
-inline constexpr float kPilotCmdPitchZeroAngle = 0.1745329f;  // 00CE3990, ten degrees
+inline constexpr float kPilotCmdPitchZeroAngle = kConstExactImageBitsBound ? 0x1.657186p-3f : 0.1745329f;  // 00CE3990, ten degrees; image bits 3E32B8C3 at 00CE3990
 inline constexpr int kPilotCmdPilotRoleSlot = 1;        // 00519BF0's 00927F30 argument
 inline constexpr int kPilotCmdMessageKind = 0xC1;       // 007BDD30's ConstructBase argument
 inline constexpr int kPilotCmdLeaveInterfaceId = 0x24;  // 00519CC5, 004CC460's request
