@@ -376,6 +376,12 @@ inline constexpr bool kGenerateObjectRespawnsDeadBound = true;   // ON: SQUADRON
 // or not (usn_03:1621-1636 makes Max Kate/Val pairs; ijn_23 FinalJP1..3 three each).
 // False: kGenerateObjectRespawnsDeadBound's narrowed deviation.
 inline constexpr bool kGenerateObjectEveryCallBound = false;
+// Packet p16_lua_natives (cc13 verify5, census `:3689`). True: SpawnNew's placement
+// walk 00941D30 refuses a member outside the map through 0071C4F0 on this host's
+// own Map bounds (border_bounds_, loaded by set_world_border_zones), so the image's
+// retry / requeue arms are reached. With no bounds loaded nothing is refused.
+// False: no member is ever outside the map.
+inline constexpr bool kSpawnPlacementMapBoundsBound = false;
 
 // docs/CC13_AUDIT_LUA51_FLIPS.md item 1c. 00988510 boxes, and 0097B8C0 matches,
 // the target as hitEntity->vtable[140h]() kept only when it answers IsKindOf(2)
@@ -471,6 +477,13 @@ inline constexpr bool kLuaGetSubmarineOnSurfaceBound = true;  // ON: JM06 24000 
 // 00928C80 (vtable[80h], from the kill list's drain) nulls `Ptr`. True: the same
 // read on the host's self tables. False: unimplemented, nil.
 inline constexpr bool kLuaTrulyDeadBound = false;
+// Packet p16_truly_dead (docs/OCEAN_WAVE_FIELD.md section 65; cc13 verify5 R3). True:
+// where the units host drains a unit off the kill list (the KillDepth drain and the
+// row-15 removal, both recording 00928C80), the Lua half of 00928C80 runs: the self
+// table's `Ptr` becomes lightuserdata(0) (00928D04, 00B67530(self, "Ptr", null)), so
+// TrulyDead answers true from then on. LABELLED: the last-position table
+// (00928D49..00928E7E) is not written. False: `Ptr` is never nulled.
+inline constexpr bool kLuaTrulyDeadOnKilledBound = false;
 
 // Packet cc9_set_air_base_slot_count (docs/LUA_BINDING_MISSION.md, "SetAirBaseSlotCount,
 // 008963E0"). SetAirBaseSlotCount(entity, n) resizes the air-ops block's 58h slot array
@@ -1043,6 +1056,7 @@ struct GameMissionLuaSummary {
     unsigned long long untouchable_calls{0};        // packet cc9_add_untouchable_unit
     unsigned long long untouchable_marked{0};
     unsigned long long untouchable_remove_calls{0};   // packet p16_lua_natives
+    unsigned long long truly_dead_ptr_nulled{0};      // packet p16_truly_dead
     unsigned long long untouchable_cleared{0};
     unsigned long long untouchable_is_calls{0};
     unsigned long long untouchable_is_true{0};
@@ -1634,6 +1648,8 @@ public:
     int run_get_submarine_on_surface_008942c0(lua_State* state, int argument_count);
     // Packet cc13_natives1, under kLuaTrulyDeadBound.
     int run_truly_dead_00899500(lua_State* state, int argument_count);
+    // Packet p16_truly_dead: 00928C80's Lua half for units-host index `unit_index`.
+    void on_entity_killed_00928c80(std::size_t unit_index);
     // Packet cc9_set_air_base_slot_count, under kLuaSetAirBaseSlotCountBound.
     int run_set_air_base_slot_count_008963e0(lua_State* state, int argument_count);
     // Packet cc9_lua_add_air_base_stock, under kLuaAddAirBaseStockBound.

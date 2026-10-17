@@ -7333,7 +7333,7 @@ struct GameUnitsHost::Impl {
     // SoftRollCtrl, SoftRollMul and singleton+580h, and the servo limit t =
     // class+1A8h^2 / class+1BCh / WaggleLimit (0099E344-0099E367), as the mode-2
     // arm already takes them. False: band 0, gain 1, rate 0, limit 1, no clamp.
-    static constexpr bool kPilotModeOneRollTuningBound = false;
+    static constexpr bool kPilotModeOneRollTuningBound = true;  // ON 2026-10-17 (OCEAN_WAVE_FIELD 62.1)
     // Same packet (verify12 R6). True: the speed-error divisor plan+2B8h has its
     // image producer: 0099D756-0099D79A decay above 1.0 by TrgSpeedCorrMulDecay x
     // dt, and 0099D924-0099D970 raise it on the demand arm while plan+2B0h is clear
@@ -7341,12 +7341,12 @@ struct GameUnitsHost::Impl {
     // pitch)). LABELLED: the start value is 1.0 (no store to the plan block's
     // +2B8h was found; 1.0 is the decay floor and the divisor's identity). False:
     // the divisor is 1.0.
-    static constexpr bool kPilotSpeedCorrDivisorBound = false;
+    static constexpr bool kPilotSpeedCorrDivisorBound = true;  // ON 2026-10-17 (OCEAN_WAVE_FIELD 62.1)
     // Same packet (R6, the measured speed). True: 0099D99E's measured speed is
     // 007D99C0 (unit+AB0h), the body forward speed, taken as the world velocity on
     // the pose's forward row as control_authority takes it. LABELLED: 007D99C0's
     // carrier-deck parent term is dropped. False: |world velocity|.
-    static constexpr bool kPilotThrottleForwardSpeedBound = false;
+    static constexpr bool kPilotThrottleForwardSpeedBound = true;  // ON 2026-10-17 (OCEAN_WAVE_FIELD 62.1)
     // Same packet (R7). True: control authority 007D9A70 is 007C0F40(unit) x t^2:
     // the first weapon slot whose vtable[210h](2Ah, 0) answers (a rack holding a
     // round) gives Interp(0, 1, 0.8, class+15Ch BombControlLimit, its remaining
@@ -7355,7 +7355,7 @@ struct GameUnitsHost::Impl {
     // authored Ammo (orgAmmo +488h); a multi rack (006E3700) answers 1.0 while it
     // holds, its +514h entries not being modelled; the turbo arm (unit+BC8h,
     // class+608h) is never taken by an AI plane here. False: the factor is 1.0.
-    static constexpr bool kPlaneBombLoadAuthorityBound = false;
+    static constexpr bool kPlaneBombLoadAuthorityBound = true;  // ON 2026-10-17 (OCEAN_WAVE_FIELD 62.1)
     // 007B4ED0 wiring (the head-on arm and the maneuver tail's full throttle).
     // OFF, measured: run F1 drowned Yorktown-class01_sqn02 and its .-2 at |v| 51
     // after one maneuver tick left the throttle slot active in mode 0. The image
@@ -37635,6 +37635,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // +4A4h = 0 and the Lua self release are records;
                         // 00928F1C..00928F2C vt[134h], the list unlink.
                         host.record("Entity::on_killed_lua_self_00928c80", 0x00928c80u);
+                        host.lua.on_entity_killed_00928c80(index);   // p16_truly_dead
                         host.world_lists_unlink_unit_00928f24(slot);
                     }
                     slot.kill_depth_at = host.summary.simulated_seconds;
@@ -39487,6 +39488,7 @@ bool GameUnitsHost::kill_and_remove_00814595(std::size_t index) {
         slot.scene_removed_005f = flags.removed;
         slot.row.active = flags.active;
         host.record("Entity::on_killed_lua_self_00928c80", 0x00928c80u);
+        host.lua.on_entity_killed_00928c80(index);   // p16_truly_dead
         host.world_lists_unlink_unit_00928f24(slot);
     }
     host.log.notef("ship death message: unit=%s kamikaze Kill(1) and removal t=%.2f "

@@ -3712,12 +3712,16 @@ namespace {
 // Packet cc9_spawn_new_placement: what 00941D30 walks, from this process's
 // units. [[00E188A8]+19CCh]+58h is taken as every live unit; party is the row's,
 // position unit+FCh..+104h (unit_position_00fc).
-// SUBSTITUTION, labelled: 0071C4F0's world bounds are held by the zone runtime,
-// which this host does not reach, so no member is refused as outside the map.
+// 0071C4F0 tests this host's own Map bounds under kSpawnPlacementMapBoundsBound
+// (packet p16_lua_natives); without it, or with none loaded, nothing is outside.
 class SpawnPlacementUnits final : public bsp::SpawnPlacementWorld {
 public:
-    explicit SpawnPlacementUnits(const GameUnitsHost& units) : units_(units) {}
-    bool point_outside_map_0071c4f0(const float*) const override { return false; }
+    SpawnPlacementUnits(const GameUnitsHost& units, const bsp::WorldMapBounds* bounds)
+        : units_(units), bounds_(bounds) {}
+    bool point_outside_map_0071c4f0(const float* p) const override {
+        if (!kSpawnPlacementMapBoundsBound || bounds_ == nullptr || p == nullptr) return false;
+        return bsp::point_outside_world_map_0071c4f0(*bounds_, {p[0], p[1], p[2]});
+    }
     void placement_entities(std::vector<bsp::SpawnPlacementEntity>& out) const override {
         out.clear();
         for (std::size_t i = 0; i < units_.count(); ++i) {
@@ -3731,6 +3735,7 @@ public:
     }
 private:
     const GameUnitsHost& units_;
+    const bsp::WorldMapBounds* bounds_;
 };
 }  // namespace
 
@@ -3791,7 +3796,7 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
             m.class_width_a4 = row.width;
             m.has_class_extents = true;
         }
-        placement_world.emplace(script_orders_->units());
+        placement_world.emplace(script_orders_->units(), world_border_bounds());
         bsp::set_spawn_placement_world(&*placement_world);
     }
     struct ClearWorld {
@@ -6335,6 +6340,25 @@ int GameMissionLuaHost::run_truly_dead_00899500(lua_State* state, int argument_c
     ::lua_pushboolean(state, ptr == nullptr ? 1 : 0);
     log_.implemented("MissionLuaNative::TrulyDead", "00899500");
     return 1;
+}
+
+// Packet p16_truly_dead. 00928C80's Lua half: gated on the cached key (00928C9B, an
+// attached entity), 00928D04 sets self.Ptr = lightuserdata(0). The entity id is the
+// units-host index + 1 (kMissionLuaEntityKeyFormat).
+void GameMissionLuaHost::on_entity_killed_00928c80(std::size_t unit_index) {
+    if constexpr (!kLuaTrulyDeadOnKilledBound) {
+        static_cast<void>(unit_index);
+    } else {
+        lua_State* state = state_;
+        if (state == nullptr) return;
+        const int top = ::lua_gettop(state);
+        if (push_resolved_entity_by_id(state, static_cast<int>(unit_index + 1))) {
+            ::lua_pushlightuserdata(state, nullptr);
+            ::lua_setfield(state, -2, "Ptr");
+            ++summary_.truly_dead_ptr_nulled;
+        }
+        ::lua_settop(state, top);
+    }
 }
 
 // Packet cc9_set_submarine_depth_level. 00893F40 SetSubmarineDepthLevel(entity, level):
@@ -9659,6 +9683,8 @@ void GameMissionLuaHost::report_mission_script_state() {
         "is_calls=%llu is_true=%llu (008AC2B0, 008AC420, packet p16_lua_natives)",
         kLuaUntouchableClearBound ? 1 : 0, summary_.untouchable_remove_calls,
         summary_.untouchable_cleared, summary_.untouchable_is_calls, summary_.untouchable_is_true);
+    log_.notef("summary mission truly dead ptr_nulled=%llu bound=%d (00928C80, packet "
+        "p16_truly_dead)", summary_.truly_dead_ptr_nulled, kLuaTrulyDeadOnKilledBound ? 1 : 0);
     log_.notef("summary mission generate object calls=%llu repeat=%llu respawned_dead=%llu "
         "every_call=%llu bound=%d (00944FD0, packet p16_lua_natives)", summary_.generate_object_calls,
         summary_.generate_object_repeat, summary_.generate_object_respawned,
