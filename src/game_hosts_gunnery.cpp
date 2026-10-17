@@ -1121,6 +1121,15 @@ constexpr bool kGunneryClassArmsBound = true;  // ON: GUNNERY_OPEN_ITEMS 77.4
 //    launcher's angles and so never fires one (BSM01's HenryPT: assigns 496,
 //    shots 0). docs/GUNNERY_OPEN_ITEMS.md 139.
 constexpr bool kDepthChargeBotTickBound = true;  // ON: GUNNERY_OPEN_ITEMS 142
+//  * kGunBotRetargetReleaseBound: cc9-ships54, SHIP_AI_OPEN_ITEMS 266. The bot
+//    setter 006DF170 (TorpedoBot 009035A0 wraps it) calls vtable[30h] whenever
+//    the resolved target differs from the new one, a retarget as well as a
+//    clear; that slot is 008FF2B0 (TorpedoBot) / 008FF500 (DepthChargeBot),
+//    which sends the gun's vtable[1E8h](0), the trigger off, when the role slot
+//    is 8 or AI-held (008FF2C1 / 008FF511). The trigger then stays off until
+//    the bot's next evaluating think (0.2 s torpedo, 0.1 s depth charge). OFF:
+//    a retarget keeps the trigger the last think left.
+constexpr bool kGunBotRetargetReleaseBound = false;
 //  * kPlayerWeaponGroupFireBound: packet cc9_player_weapon_group_fire. Message
 //    79h's group 5 arm (0095A441): the player's depth-charge launchers take
 //    the 99h-held byte as their trigger, and GameGunneryHost::
@@ -1859,6 +1868,32 @@ struct GameGunneryHost::Impl {
     std::map<std::size_t, bsp::DepthChargeBotState> depth_charge_bot_by_gun;
     std::map<std::size_t, bool> depth_charge_trigger_by_gun;
     unsigned long long depth_charge_ticks{0}, depth_charge_holds{0};
+    // kGunBotRetargetReleaseBound: vtable[1E8h](0) sends from 008FF2B0 / 008FF500,
+    // and those that dropped a trigger that was held.
+    unsigned long long bot_release_sends{0}, bot_release_drops{0};
+    void bot_clear_release_008ff2b0(std::size_t slot) {
+        if (slot >= guns.size()) return;
+        const GameGunRow& row = guns[slot];
+        const bool torpedo = row.category == bsp::kUnitGunneryTorpedoCategory;
+        if (!torpedo && row.category != 8) return;
+        if (!slot_ai_held_00927f10(row.seat_1ac)) return;   // 008FF2C1 / 008FF511
+        ++bot_release_sends;
+        bool held = false;
+        if (torpedo) {
+            const auto it = torpedo_think_by_gun.find(slot);
+            if (it != torpedo_think_by_gun.end()) {
+                held = it->second.want_fire;
+                it->second.want_fire = false;
+            }
+        } else {
+            const auto it = depth_charge_trigger_by_gun.find(slot);
+            if (it != depth_charge_trigger_by_gun.end()) {
+                held = it->second;
+                it->second = false;
+            }
+        }
+        if (held) ++bot_release_drops;
+    }
     // Packet cc9_depth_charge_in_water (kDepthChargeInWaterBound).
     unsigned long long dc_launches{0}, dc_water_entries{0}, dc_breakups{0},
         dc_water_steps{0}, dc_contact_detonations{0}, dc_depth_detonations{0};
@@ -6599,6 +6634,11 @@ public:
         if (other < owner_.unit_state.size() && aa_target_matches(owner_.unit_state[other].row.name)) {
             ++owner_.aa_target_stats[other].assigns;
         }
+        if (kGunBotRetargetReleaseBound && row.target_unit != other + 1) {
+            // 00727F44 -> 006DF170 (via 009035A0 for a torpedo bot): a target other
+            // than the resolved one goes through vtable[30h] first (006DF18E).
+            owner_.bot_clear_release_008ff2b0(slot);
+        }
         row.target_unit = other + 1;
         row.target_name = other < owner_.unit_state.size()
             ? owner_.unit_state[other].row.name : std::string();
@@ -6707,6 +6747,8 @@ public:
         ++row.clears;
         ++state_.row.clears;
         ++owner_.summary.clears;
+        // 00728000 calls each bot's vtable[30h] unconditionally (0072800C..).
+        if constexpr (kGunBotRetargetReleaseBound) owner_.bot_clear_release_008ff2b0(slot);
         row.target_unit = 0;
         row.target_name.clear();
         row.target_is_fire_target = false;
@@ -15434,6 +15476,11 @@ void GameGunneryHost::report() {
             "player_group_fires=%llu group5_triggers=%llu (008FC080 / 0095A441, packets "
             "cc9_depth_charge_bot, cc9_player_weapon_group_fire)", host.depth_charge_ticks,
             host.depth_charge_holds, host.player_group_fires, host.player_group5_triggers);
+    }
+    if constexpr (kGunBotRetargetReleaseBound) {
+        host.log.notef("summary mission gunnery bot clear release sends=%llu drops=%llu "
+            "(008FF2B0 / 008FF500 vtable[1E8h](0), kGunBotRetargetReleaseBound)",
+            host.bot_release_sends, host.bot_release_drops);
     }
     if constexpr (kPlayerTorpedoGroupFireBound) {
         host.log.notef("summary mission gunnery player torpedo group messages=%llu trains=%llu "

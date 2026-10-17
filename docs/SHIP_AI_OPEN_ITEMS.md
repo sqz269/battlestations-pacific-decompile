@@ -18368,3 +18368,28 @@ Open:
   have no function record; the scoring band 00905300+ is unscoped. Scripts: `local\s53_seg59.txt` (the full range
   listing), `local\s53_scan.py` (byte pattern scan), `local\s53_rd.py` (constants from the PE),
   `local\s53_rows.ps1` (launcher).
+
+## 266. Bot clear release on retarget, kGunBotRetargetReleaseBound (cc9-ships54, 2026-10-17; lead item 1)
+
+**What the image does.** The gun's bot setter 006DF170 (TorpedoBot's 009035A0 wraps it, reached from
+00727F44) resolves the current target and, when it differs from the argument, calls the bot's vtable[30h]
+first (006DF18E). The gun's clear 00728000 calls each bot's vtable[30h] unconditionally (0072800C..). For
+the two ship bots that slot is 008FF2B0 (TorpedoBot) and 008FF500 (DepthChargeBot): 0072BD50, then, when the
+role slot read through bot+50h (+1ACh) is 8 or AI-held (008FF2C1 / 008FF511, 00927F10), the gun's
+vtable[1E8h](0). That slot is the fire request: 006FDC50 is vtable[1E8h](1) (GUN_SHOT_CADENCE), and the bot
+ticks raise and drop the same slot (008FC39A, 00900974). So a RETARGET drops the trigger, not only a clear,
+and it stays dropped until the bot's next evaluating think: the torpedo think holds 0.2 s (009000DD..,
+00900985 returns with the trigger untouched), the depth-charge think 0.1 s (008FC146).
+**What the host did.** The depth-charge trigger byte dropped only when the bot had no target (the bound tick,
+GUNNERY 142), and the torpedo think hold restored the last evaluation's trigger whatever the target. A
+retarget kept the trigger. The no-target case was already covered (the clear's own release).
+**Bound OFF** in src/game_hosts_gunnery.cpp: `kGunBotRetargetReleaseBound`. On a clear, and on a send whose
+target differs from the gun's current one, an AI-held torpedo (category 7) or depth-charge (8) gun drops the
+stored trigger (torpedo think `want_fire`, depth-charge trigger byte). Counted as sends / drops (drops: a held
+trigger released). LABELLED: the host's per-gun current target (row.target_unit) stands in for the bot's
+resolved +38h record, and the release goes through the next tick's request path (the class vtable[1E8h]
+refusal in the immediate-fire slot still applies) rather than at the send.
+**Predictions.** Sends in the thousands on any mission with AI torpedo or depth-charge guns; drops rare (a
+trigger must be held at the moment of a retarget); where a drop lands, the torpedo or charge goes 0.1-0.2 s
+later or not at all for that target. BSM01 (four depth-charge holds), USN01, USN10: gameplay identical or a
+small moved set traced to a drop.
