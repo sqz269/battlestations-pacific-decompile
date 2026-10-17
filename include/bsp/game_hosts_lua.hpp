@@ -414,6 +414,20 @@ inline constexpr bool kLuaSetFailureBound = true;  // ON: n1 pairs (GUNNERY 197-
 // True: run_set_dead_meat_008ac7b0 on the gunnery host's draw and death funnel
 // (the plane arm is counted, not applied). False: the row stays UNIMPLEMENTED.
 inline constexpr bool kLuaSetDeadMeatBound = false;  // OFF: committed for a USN04 pair
+// Packet cc13-fix12 (docs/CC13_FIX12.md). 008AB580 IsUnitSelectable(entity): 008AB67F
+// 00888AA0, 008AB696 MOV DL,1 / CALL 00645160 (EDX = [[00E188A8]+18ECh], then
+// 00645060(unit, team, 1)), 008AB6A4 PushBoolean; one result. True:
+// run_is_unit_selectable_008ab580 on GameHudHost::unit_selectable_00645060. False: the
+// row stays UNIMPLEMENTED and pushes nothing. Flip with kLuaGetEntitySpeedBound
+// (usn_11 / prcp_11 CheckMontR* test both in one `and`).
+inline constexpr bool kLuaIsUnitSelectableBound = false;  // OFF: committed unpaired
+// Packet cc13-fix12. 008C0820 GetEntitySpeed(entity): 008C091F 00888AA0, 008C0936
+// unit->vtable[38h]() with no null test, 008C093F FSTP float, 008C094F 00B66480;
+// one result. Slot 38h: ships 0080E0F0 (0092D730 on unit+1018h, the signed body
+// forward speed), planes 007B8E60 (FLD [unit+B1Ch]), PlaneSquadronGen 007ED470 (the
+// leader +3D0h's slot 38h). True: run_get_entity_speed_008c0820. False: UNIMPLEMENTED,
+// nothing pushed.
+inline constexpr bool kLuaGetEntitySpeedBound = false;  // OFF: committed unpaired
 inline constexpr bool kLuaSetShipSpeedBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_unit_get_attack_target (docs/LUA_BINDING_MISSION.md, "UnitGetAttackTarget,
@@ -997,6 +1011,16 @@ struct GameMissionLuaSummary {
     unsigned long long dead_meat_destroyed{0};      // else arm, vtable[70h](1)
     unsigned long long dead_meat_plane_unapplied{0};  // plane arm, not hosted
     unsigned long long dead_meat_unresolved{0};
+    unsigned long long unit_selectable_calls{0};    // packet cc13-fix12, 008AB580
+    unsigned long long unit_selectable_true{0};
+    unsigned long long unit_selectable_unresolved{0};  // no entity: pushed false
+    unsigned long long unit_selectable_no_hud{0};      // no HUD host: nothing pushed
+    unsigned long long entity_speed_calls{0};       // packet cc13-fix12, 008C0820
+    unsigned long long entity_speed_squadron{0};    // 007ED470 -> leader 007B8E60
+    unsigned long long entity_speed_ship{0};        // 0080E0F0 -> 0092D730
+    unsigned long long entity_speed_plane{0};       // 007B8E60
+    unsigned long long entity_speed_unresolved{0};  // nothing pushed
+    unsigned long long entity_speed_unmodelled{0};  // other class: nothing pushed
     unsigned long long attack_target_calls{0};
     unsigned long long attack_target_fire_arm{0};
     unsigned long long attack_target_command_arm{0};
@@ -1622,6 +1646,9 @@ public:
     int run_get_failure_0088f1d0(lua_State* state, int argument_count);
     // Packet cc13-fix11, under kLuaSetDeadMeatBound.
     int run_set_dead_meat_008ac7b0(lua_State* state, int argument_count);
+    // Packet cc13-fix12, under kLuaIsUnitSelectableBound / kLuaGetEntitySpeedBound.
+    int run_is_unit_selectable_008ab580(lua_State* state, int argument_count);
+    int run_get_entity_speed_008c0820(lua_State* state, int argument_count);
     // Packet cc9_unit_get_attack_target, under kLuaUnitGetAttackTargetBound.
     int run_unit_get_attack_target_008a6de0(lua_State* state, int argument_count);
     // Packet cc9_squadron_set_speed, under kLuaSquadronSetSpeedBound.
