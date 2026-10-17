@@ -165,6 +165,11 @@ struct GameSceneEntityRecord {
     // CommandBuildingInferior group default); 006F5DCF adopts only an entity
     // whose +724h is set.
     bool bag_min_level{false};
+    // Packet s57_garrison_min_level: the MinLevel value itself, which 006F5E4D's
+    // find answers at prop+0Ch into the garrison record +5Ch (an enum symbol of
+    // CommandBuildingLevels resolved through the library, as Dive is).
+    bool min_level_present{false};
+    std::int32_t min_level{0};
     // Packet cc9_land_convoy_members: 00743450's reads from a LandConvoy's bag,
     // merged with the library group (landconvoy.props). `convoy_slots` holds the
     // Rows * Columns slot map after the Type1..4 x Position1..4 walk: the resolved

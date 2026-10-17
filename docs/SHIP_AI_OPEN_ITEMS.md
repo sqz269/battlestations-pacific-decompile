@@ -18856,3 +18856,29 @@ advanced=`.
 `advanced` > 0 only where a ship is already past its nearest point (likely a minority: most paths are
 joined from a start position before the first point). Where advanced, the ship heads for the next point
 instead of looping back: a shorter early track on JM08 / USN04 path followers.
+
+## 280. Garrison MinLevel and the MoveTo capture range, kGarrisonMinLevelBound / kShipMoveToCaptureRangeBound (cc9-ships57, 2026-10-17; lead item 6)
+
+**MinLevel (CC13_VERIFY2 R4).** 006F5CC0 pass 1 builds each garrison record on the stack at ESP+40h; 006F5E34
+`MOV ECX,[EDI+724h]` (the member's bag clone), 006F5E3A 008F41F0, 006F5E4D 008F2260 find of 00CFB24C
+(`MinLevel`), and 006F5E56 `MOV EAX,[EAX+0Ch]` into ESP+9Ch, record+5Ch (`disasm-raw 006F5DCF`). The host
+kept only whether the find succeeds and stored 0. This installation's scenes author non-Basic values
+(us_osumi.scn 2x Advanced, 2x Medium; usn_13_battle_of_iwo_jima.scn 15x Expert; library default
+`E CommandBuildingLevels : Basic` in landfort.props / commandbuildinginferior.props; global.enums
+Expert = 3). The scene host now resolves the value like Dive (`depth_value("MinLevel", ...)`), the units
+host keeps it (`unit_inferior_min_level_0724`), and the adoption stores it in +5Ch. The kill arm
+006F36AE..006F36F0 now runs the gunnery host's `kill_unit_00926d90(member, 2)` instead of a record.
+
+**Capture range (CC13_VERIFY2 R5).** 009E5770's arrival test 009E58CE and 009E59C0's 009E5BA6 FILD the
+CommandBuilding target's +7A0h (after the 009E585F / 009E5B4x IsKindOf(1Ch) gate). Both bindings answered
+0, so the arrival arms (009E58E6..009E59A2 / 009E5BBC..009E5C7B: the "finished" report through 00984300,
+0071E430(cmd, 1), hold heading and stop) never ran for a building target. They now read
+`command_building_capture_range_07a0`.
+
+**Predictions, written before any run.** OFF identical (moveto_range_reads=0, garrison kills as before).
+ON: USNOS: the four non-Basic members are killed at adoption when their building's Level is below
+their MinLevel (garrison `kills` > 0, `kill 00926D90(2) (done)` lines), and re-created when the building
+levels up to them; USN13: up to 15 Expert members die at adoption unless their building starts at
+Expert. moveto_range_reads > 0 on missions that MoveTo a ship at a CommandBuilding (USN13 / USNOS
+landing ships), and those ships now finish the move at the capture ring (stop, `finished` report)
+instead of driving on to the building's centre.

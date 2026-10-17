@@ -825,6 +825,18 @@ inline constexpr bool kCommandBuildingLevelMaxHpBound = true;
 // re-create is still recorded); every LandFort's bag finds MinLevel through
 // landfort.props, so JM08's HQ adopts 349 members and USN01's CB2 42.
 inline constexpr bool kCommandBuildingGarrisonBound = true;
+// Packet s57_garrison_min_level (SHIP_AI_OPEN_ITEMS 280; CC13_VERIFY2 R4). True: the
+// record's +5Ch is the member's MinLevel value (006F5E3F..006F5E5D, prop+0Ch of the
+// +724h clone; this installation's .scn files author `E CommandBuildingLevels :
+// Expert` and others on CommandBuildingInferior LandForts), and the kill arm
+// 006F36AE..006F36F0 runs 00926D90(member, 2) through the gunnery host. False: +5Ch
+// is 0 and the kill is recorded.
+inline constexpr bool kGarrisonMinLevelBound = false;
+// Packet s57_moveto_capture_range (SHIP_AI_OPEN_ITEMS 280; CC13_VERIFY2 R5). True: the
+// MoveTo / MoveOnPath arrival tests (009E58CE, 009E5BA6) read a CommandBuilding
+// target's +7A0h capture range. False: 0, so the arrival arms 009E58E6 / 009E5BBC
+// never run for a building target.
+inline constexpr bool kShipMoveToCaptureRangeBound = false;
 // Packet cc9_command_building_garrison_revive (SHIP_AI_OPEN_ITEMS 185): 006F3660's
 // re-create arm (006F3703..006F3844) revives the dead member in place through the
 // gunnery host's revive_unit_garrison_006f3660, then the scene flags, the
@@ -1183,6 +1195,7 @@ struct GameShipAiHost::Impl {
     unsigned long long garrison_records{0};
     unsigned long long garrison_passes{0};
     unsigned long long garrison_kills{0};
+    unsigned long long moveto_capture_range_reads{0};   // s57_moveto_capture_range
     unsigned long long garrison_recreates{0};
     unsigned long long garrison_recreates_recorded{0};
     unsigned long long garrison_skill_pushes{0};
@@ -3446,7 +3459,15 @@ public:
         owner_.done("ShipAiMoveTo::target_position", 0x009e5879u);
         owner_.units.unit_position_00fc(static_cast<std::size_t>(target - 1u), x, y, z);
     }
-    int target_range_07a0(std::uint32_t) override {
+    int target_range_07a0(std::uint32_t target) override {
+        // target+7A0h, the CommandBuilding's capture range 006F2780 stores (packet
+        // s57_moveto_capture_range); the caller has already tested IsKindOf(1Ch).
+        if (kShipMoveToCaptureRangeBound && target != 0u) {
+            ++owner_.moveto_capture_range_reads;
+            owner_.done("ShipAiMoveTo::target_range_07a0", 0x009e58ceu);
+            return static_cast<int>(owner_.units.command_building_capture_range_07a0(
+                static_cast<std::size_t>(target - 1u)));
+        }
         owner_.record("ShipAiMoveTo::target_range_07a0", 0x009e58ceu);
         return 0;
     }
@@ -3611,7 +3632,15 @@ public:
         owner_.done("ShipAiMoveOnPath::planar_length", 0x009e5b91u);
         return bsp::length_2d_00414c60(std::array<float, 2>{dx, dz});
     }
-    int target_range_07a0(std::uint32_t) override {
+    int target_range_07a0(std::uint32_t target) override {
+        // target+7A0h, the CommandBuilding's capture range 006F2780 stores (packet
+        // s57_moveto_capture_range); the caller has already tested IsKindOf(1Ch).
+        if (kShipMoveToCaptureRangeBound && target != 0u) {
+            ++owner_.moveto_capture_range_reads;
+            owner_.done("ShipAiMoveOnPath::target_range_07a0", 0x009e5ba6u);
+            return static_cast<int>(owner_.units.command_building_capture_range_07a0(
+                static_cast<std::size_t>(target - 1u)));
+        }
         owner_.record("ShipAiMoveOnPath::target_range_07a0", 0x009e5ba6u);
         return 0;
     }
@@ -12611,6 +12640,8 @@ void GameShipAiHost::Impl::build_capture_buildings() {
                 if (static_cast<double>(d2) > static_cast<double>(r2)) continue;
                 CaptureBuilding::GarrisonRecord r;
                 r.unit = e;
+                // 006F5E4D: record+5Ch = the clone's MinLevel value.
+                if (kGarrisonMinLevelBound) r.min_level_5c = units.unit_inferior_min_level_0724(e);
                 b.garrison.push_back(r);
                 ++garrison_records;
             }
@@ -13334,10 +13365,18 @@ void GameShipAiHost::Impl::command_building_garrison_006f3660(CaptureBuilding& b
             // 006F36AE..006F36F0: 00926D90(entity, 2), unregister, +14h = 0.
             if (r.linked) {
                 ++garrison_kills;
-                record("CommandBuilding::garrison_kill_00926d90", 0x006f36cdu);
-                log.notef("command building garrison: %s member %s MinLevel %d > level %d: "
-                    "kill 00926D90(2) (recorded) (%s)", bname, name, r.min_level_5c,
-                    b.level_770, source);
+                const bool kill = kGarrisonMinLevelBound && gunnery_draws != nullptr;
+                if (kill) {
+                    gunnery_draws->kill_unit_00926d90(r.unit, 2);
+                    done("CommandBuilding::garrison_kill_00926d90", 0x006f36cdu);
+                } else {
+                    record("CommandBuilding::garrison_kill_00926d90", 0x006f36cdu);
+                }
+                if (garrison_kills <= 40) {
+                    log.notef("command building garrison: %s member %s MinLevel %d > level %d: "
+                        "kill 00926D90(2) (%s) (%s)", bname, name, r.min_level_5c,
+                        b.level_770, kill ? "done" : "recorded", source);
+                }
                 r.linked = false;
             }
             continue;
@@ -14538,6 +14577,10 @@ void GameShipAiHost::report() {
             host.garrison_records, host.garrison_passes, host.garrison_kills,
             host.garrison_recreates, host.garrison_recreates_recorded,
             host.garrison_skill_pushes, kCommandBuildingGarrisonBound ? 1 : 0);
+        host.log.notef("summary mission command building min level bound=%d moveto range bound=%d "
+            "moveto_range_reads=%llu (packets s57_garrison_min_level / s57_moveto_capture_range, "
+            "006F5E4D / 006F36CD / 009E58CE / 009E5BA6)", kGarrisonMinLevelBound ? 1 : 0,
+            kShipMoveToCaptureRangeBound ? 1 : 0, host.moveto_capture_range_reads);
         for (const Impl::CaptureBuilding& b : host.capture_buildings) {
             const GameUnitRow* row = host.units.unit_row(b.unit);
             host.log.notef("summary mission command building level unit=%s level=%d "

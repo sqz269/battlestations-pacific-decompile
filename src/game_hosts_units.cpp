@@ -1949,6 +1949,7 @@ struct GameUnitSlot {
     // unit+724h clone that 006F5DCF requires).
     std::int32_t inferior_range_7c8{200};
     bool bag_min_level_724{false};
+    std::int32_t min_level_724{0};   // the clone's MinLevel value (s57_garrison_min_level)
     // unit+71Ch as 006F5E9B writes it: 0 unresolved, -1 none, else building+1.
     int parent_link_71c{0};
     unsigned long long inferior_failure_steps{0};
@@ -17561,6 +17562,7 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         // (006F288C), and 009554C1's MinLevel find.
         slot->inferior_range_7c8 = entity.inferior_range_present ? entity.inferior_range_raw : 200;
         slot->bag_min_level_724 = entity.bag_min_level;
+        slot->min_level_724 = entity.min_level_present ? entity.min_level : 0;
 
         // Milestone 2q: 00926110, BSP_SEntity_InitAll's call of the entity's
         // vtable slot 0A0h, which for this class family is 00822C20. Only that
@@ -39790,6 +39792,10 @@ std::int32_t GameUnitsHost::command_building_inferior_range_07c8(std::size_t uni
 bool GameUnitsHost::unit_inferior_bag_0724(std::size_t unit_index) const {
     // Packet cc9_command_building_garrison: 009554DF's unit+724h clone.
     return unit_index < impl_->slots.size() && impl_->slots[unit_index]->bag_min_level_724;
+}
+
+std::int32_t GameUnitsHost::unit_inferior_min_level_0724(std::size_t unit_index) const {
+    return unit_index < impl_->slots.size() ? impl_->slots[unit_index]->min_level_724 : 0;
 }
 
 std::int32_t GameUnitsHost::command_building_capture_value_07a4(std::size_t unit_index) const {
