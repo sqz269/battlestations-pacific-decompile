@@ -1301,7 +1301,10 @@ void cc13_sweepB5_hud_map_update_marker_models_005b25d0(void* screen, float dt, 
         }
     }
 
-    float position[3] = {};  // [ESP+30h], kept across markers
+    // [ESP+30h], kept across markers. UNCERTAIN/DIVERGENT: the image never
+    // initialises this slot, so a first marker whose icon unit has +5Dh or +5Eh
+    // set reads uninitialised stack; the model starts it at 0.
+    float position[3] = {};
     for (std::uint32_t i = 0;; ++i) {
         void** first = at<void**>(screen, 0x580);
         if (first == nullptr || !(i < static_cast<std::uint32_t>(at<void**>(screen, 0x584) - first))) {

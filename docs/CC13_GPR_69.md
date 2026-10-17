@@ -51,7 +51,10 @@ With no pair, nothing is used, even a party-wide or team-wide power-up.
 
 Every comparison is a strict `>` (`FCOMI` then `JBE`), so the first of equal scores wins and a NaN
 never does. The overall seed is 0.0. The winner is used once per party think:
-`008EADA0(ECX = [00F88C30], entry, party, target)` at `00A180C9`.
+`008EADA0(ECX = [00F88C30], entry, party, target)` at `00A180C9`. The C++ pass makes that call
+itself, through `PowerupUseHost::use_item(entry, party, target)` after the scoring loop, and
+returns void like the image (cc13-fix14; it used to return the decision for the caller to fire).
+Nothing in src calls the pass yet, so no switch guards it.
 
 **`00A0F680`, the air-support score.** The class carries two flight blocks; the group's `+5638h`
 picks `class+0Ch` (non-zero) or `class+44h` (zero). One 20h-byte value record is built:

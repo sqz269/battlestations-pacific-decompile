@@ -75,13 +75,21 @@ Vec3 pick_up(float x, float y) noexcept {
 // the bound.
 void lower(float& bound, float v) noexcept { if (!(v > bound)) bound = v; }
 void raise(float& bound, float v) noexcept { if (!(bound > v)) bound = v; }
+// One x87 arithmetic operation of 00A8BD20 under the main thread's 24-bit
+// precision control (docs/CC13_FPU_PRECISION.md): the exact result rounded to
+// float. Float and float-exact double operands make the double step exact or
+// an innocuous double rounding.
+float pc24(D value) noexcept {
+    return static_cast<float>(value);
+}
 // Square sum of 00A8C82B / 00A8D404: each square spilled to float, the first
-// two added on the x87, the result spilled.
+// two added on the x87, the result spilled. 24-bit PC: the unspilled first
+// sum rounds to float too.
 float square_length_sum(float x, float y, float z) noexcept {
     const float yy = static_cast<float>(D(y) * y);
     const float xx = static_cast<float>(D(x) * x);
     const float zz = static_cast<float>(D(z) * z);
-    return static_cast<float>((D(yy) + xx) + zz);
+    return pc24(D(pc24(D(yy) + xx)) + zz);
 }
 
 } // namespace
@@ -384,8 +392,8 @@ void fit_shadow_cascade_00a8bd20(void* owner, float near_distance, float far_dis
     }
     // 00A8C256..00A8C46D: light view with depth remapped to [0, 1].
     CameraMatrix depth = identity();
-    depth[10] = static_cast<float>(1.0 / (D(zmax) - zmin));
-    depth[14] = static_cast<float>(D(zmin) / (D(zmin) - zmax));
+    depth[10] = pc24(1.0 / D(pc24(D(zmax) - zmin)));
+    depth[14] = pc24(D(zmin) / D(pc24(D(zmin) - zmax)));
     const CameraMatrix depth_view = multiply(light_view, depth);
     write_matrix(owner, 0x3ac + c * 0x40, depth_view);
     write(owner, 0x4ac + c * 0x10, depth_view[2]);
@@ -398,24 +406,27 @@ void fit_shadow_cascade_00a8bd20(void* owner, float near_distance, float far_dis
                                -read<float>(owner, 0x40)}; // -0.0f SUBSS
     camera = read<void*>(owner, 0x30);
     refresh_unless_valid(camera, host);
-    const float cos_gamma = static_cast<float>((D(read<float>(camera, 0x114)) * to_light[1]
-        + D(to_light[0]) * read<float>(camera, 0x110)) + D(read<float>(camera, 0x118)) * to_light[2]);
+    const float cos_gamma = pc24(D(pc24(D(pc24(D(read<float>(camera, 0x114)) * to_light[1]))
+        + pc24(D(to_light[0]) * read<float>(camera, 0x110)))) + pc24(D(read<float>(camera, 0x118)) * to_light[2]));
     const D n_factor = read<float>(owner, 0x4ec); // FSTP64 copy
-    const float sin_squared = static_cast<float>(1.0 - D(cos_gamma) * cos_gamma);
+    const float sin_squared = pc24(1.0 - D(pc24(D(cos_gamma) * cos_gamma)));
     const float sin_gamma = static_cast<float>(host.crt_sqrt(sin_squared));
     const float n_opt = static_cast<float>(n_factor / sin_gamma);
     // 00A8C52F..00A8C58B: push the slice back when n_opt reaches far/(far-near).
-    const float q = static_cast<float>(D(f) / (D(f) - n));
+    const float f_minus_n = pc24(D(f) - n);   // 00A8C541, kept on the stack for the shift
+    const float q = pc24(D(f) / f_minus_n);
     float shift = 0.0f, near_shifted = n, far_shifted = f;
     if (n_opt >= q) { // FCOMI / JB: NaN keeps the slice
-        shift = static_cast<float>(((D(f) - n) * n_opt - f) + D(1.0e-4f)); // 00D7A268
+        shift = pc24(D(pc24(D(pc24(D(f_minus_n) * n_opt)) - f)) + D(1.0e-4f)); // 00D7A268
         far_shifted = static_cast<float>(D(f) + shift);
         near_shifted = static_cast<float>(D(shift) + n);
     }
     CameraMatrix translate = identity();
     translate[14] = shift;
     // 00A8C636..00A8C6B8: inlined affine transform of C by translate, with the
-    // zero terms of the folded matrix still on the x87 stack.
+    // zero terms of the folded matrix still on the x87 stack. Every step but the
+    // final + shift adds a signed zero to a float, which is exact, so the 24-bit
+    // per-operation rounding only matters at that last add, done once here.
     for (int i = 0; i < 8; ++i) {
         const float x = corners[i][0], y = corners[i][1], z = corners[i][2];
         const D y0 = D(y) * 0.0, z0 = D(z) * 0.0, x0 = D(x) * 0.0;
@@ -430,16 +441,19 @@ void fit_shadow_cascade_00a8bd20(void* owner, float near_distance, float far_dis
     perspective[0] = static_cast<float>(twice_near / width);
     const float height = static_cast<float>(D(points[2][1]) - points[1][1]);
     perspective[5] = static_cast<float>(twice_near / height);
-    perspective[10] = static_cast<float>(D(far_shifted) / (D(far_shifted) - near_shifted));
+    perspective[10] = pc24(D(far_shifted) / D(pc24(D(far_shifted) - near_shifted)));
     perspective[11] = 1.0f;
-    perspective[14] = static_cast<float>((D(near_shifted) * far_shifted) / (D(near_shifted) - far_shifted));
+    perspective[14] = pc24(D(pc24(D(near_shifted) * far_shifted)) / D(pc24(D(near_shifted) - far_shifted)));
     const CameraMatrix shifted_perspective = multiply(translate, perspective);
     // 00A8C7B2..00A8C8DC: light direction in camera view space, normalized.
     const CameraMatrix view = host.view_matrix(read<void*>(owner, 0x30));
     const float dx = read<float>(owner, 0x38), dy = read<float>(owner, 0x3c), dz = read<float>(owner, 0x40);
-    const float vx = static_cast<float>((D(view[0]) * dx + D(view[4]) * dy) + D(view[8]) * dz);
-    const float vy = static_cast<float>((D(view[1]) * dx + D(view[5]) * dy) + D(view[9]) * dz);
-    const float vz = static_cast<float>((D(dx) * view[2] + D(dy) * view[6]) + D(dz) * view[10]);
+    auto dot3 = [](float a0, float b0, float a1, float b1, float a2, float b2) {
+        return pc24(D(pc24(D(pc24(D(a0) * b0)) + pc24(D(a1) * b1))) + pc24(D(a2) * b2));
+    };
+    const float vx = dot3(view[0], dx, view[4], dy, view[8], dz);
+    const float vy = dot3(view[1], dx, view[5], dy, view[9], dz);
+    const float vz = dot3(dx, view[2], dy, view[6], dz, view[10]);
     const float view_length = static_cast<float>(host.crt_sqrt(square_length_sum(vx, vy, vz)));
     const float view_inverse = view_length > 0.0f ? static_cast<float>(1.0 / view_length) : 0.0f;
     const Vec4 view_dir = {static_cast<float>(D(vx) * view_inverse), static_cast<float>(D(view_inverse) * vy),
@@ -533,7 +547,7 @@ void fit_shadow_cascade_00a8bd20(void* owner, float near_distance, float far_dis
         fit = {};
         fit[0] = scale_x;
         fit[5] = scale_y;
-        const float depth_scale = static_cast<float>(D(far_z) / (D(far_z) - near_z));
+        const float depth_scale = pc24(D(far_z) / D(pc24(D(far_z) - near_z)));
         fit[10] = depth_scale;
         fit[11] = 1.0f;
         fit[14] = static_cast<float>(D(-near_z) * depth_scale);

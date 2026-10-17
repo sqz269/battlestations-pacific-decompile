@@ -46,8 +46,16 @@ and `ShadowSingleViewHost::fit_single_view` are the intended binding points.
 
 Every arithmetic chain was taken from `tools/x87_sym.py`, which decodes the FPU operations from the
 instruction bytes, and checked against the `disasm-raw` listing, with frame offsets tracked by hand
-across pushes and callee pops. Unspilled x87 intermediates are reproduced in `double`, because the
-image runs at 53-bit precision. Each FSTP to a float slot becomes a float cast. Constants were read
+across pushes and callee pops. Unspilled x87 intermediates are reproduced in `double`, on the
+assumption that the image runs at 53-bit precision. Each FSTP to a float slot becomes a float cast.
+That assumption is wrong for the main thread, which runs at 24-bit precision control
+(docs/CC13_FPU_PRECISION.md); the cascade fit is reached from `00A8EA20` <- `00A8F3B0` <-
+`004CA440 BSP_Game_Render` / `004CCBD0` / `00503510`, all on the main thread. cc13-fix14 converted
+`00A8BD20` to per-operation float rounding in the image's order (`pc24`: the depth remap, cos
+gamma, `1 - cos^2`, `f - n` and the shift, the shifted perspective `[10]`/`[14]`, the camera-space
+light direction dot products, the shared square-length sum, and the far/near depth scale); about
+1 ulp in stored matrix entries. The other three bodies (`00A8AEB0`, `00A8ECB0`, `00A8B930`) still
+keep unspilled intermediates in `double` and need the same pass. Constants were read
 from the PE through `ghidra bytes`. Two tool limits needed hand work:
 
 - x87_sym drops `+ 0.0` terms. The inlined translate loop in BD20 at 00A8C636 adds a stack zero
