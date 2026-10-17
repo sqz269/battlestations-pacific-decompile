@@ -2482,3 +2482,27 @@ Both sides are builds of dd056450d: OFF `local\p14_sf`, ON `local\p14_br` (the f
 **Verdict: `kSquadronFreeAttackOverrideBound = true`.** It is 009F8470 as cc13 read it, on ships56's override layer with
 cc13-verify1's 0071E7F0 fix. USN04 and JM05 move strongly; reference rows with squadrons on moveto/stop heads need
 re-timing on the new base.
+
+## 60. Handoff (cc9-physics15, 2026-10-17, at about 72% context)
+
+**Commits on agent/cc9-physics1** (the full `scripts/build.ps1` with tests passes on each):
+- 79f8074c2: script-order accessors (permissions, 007EEC50, 0099A170 install);
+- d97c232cf / 99923ee2f: `kFreeFlightDyingSpinBound`, `kFreeFlightWreckLiftBound`, both ON (58);
+- d142cb67c: 58.1 wording, 59 (50.7 closed as image behaviour);
+- c8d1f9463: the override-layer gate `kDirectorOverrideLayerBound` and 0071E7F0's 0071E200 repeat test (cc13-verify1);
+- dd056450d / 7bc50f281: the free-attack tick 009F8470, `kSquadronFreeAttackOverrideBound`, ON (57).
+
+**Open, in order.**
+1. **The catapult adapter (`Seg33aHost`, 37).** Not started. cc13's seg33a catapult routines take raw object pointers
+   (206 host virtuals in `Seg33aHost`), so the arena approach of `src/squadron_free_attack.cpp` (fill the fields a
+   routine reads at their native offsets, record its calls) is the cheapest faithful adapter. 37's four gaps stand
+   (State 3 hold, no catapult devices, GetNumCatapulted / SetCatapultStock, shared-file hooks). Pair on JM02/JM03/JM05.
+2. **Free-attack leftovers (57.2 LABELLED):** the `stop` head's clear-and-moveto-self (009F85EB..009F8615) is counted,
+   not issued; 0071F290 arm 5 (0084DDA0) and 0084E010's `+50h == 1` raise are not carried; 00927F10 for slots other
+   than 8; leader `+C24h` (PilotFires) has no reader.
+3. **007CE040's hull-point arm** sets ctl+94h (007CE0DB-007CE1D9); it needs the class `+5B8h` hull points (mesh-bound,
+   with 48.1 and 52).
+
+**Tools in `local\`.** `p15_kind_names.py` (00E0CD80's names from the disk image), `p15_vt.py <va> <n>` (a vtable's
+slots from disk), `p15_cl_check.ps1` (one-file compile check), `p15_census_sum.py <logs>` (the free-attack census),
+`p15_edit_*.py` (the edits as applied).
