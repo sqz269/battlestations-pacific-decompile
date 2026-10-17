@@ -121,6 +121,18 @@ struct Front4Host {
     // 00695870 BSP_CallbackOwner_Destroy, __thiscall(ECX = owner), RET.
     virtual void callback_owner_destroy_00695870(Raw owner) = 0;
 
+    // --- AI command follower pass -------------------------------------------
+    // [[entity]+5Ch](entity, kind), __thiscall, RET 4, AL.
+    virtual bool vcall_entity_is_kind_5c(void* entity, std::uint32_t kind) = 0;
+    // 0077C8D0 BSP_Entity_RequestJoinFormation, __thiscall(ECX = entity, other), RET 4.
+    virtual void entity_request_join_formation_0077c8d0(void* entity, void* other) = 0;
+    // 009FFEB0 BSP_AiCommand_SendEmptySquadronHome, __thiscall(ECX = member), AL.
+    virtual bool ai_command_send_empty_squadron_home_009ffeb0(void* member) = 0;
+    // 00A10C20 BSP_AiGroup_LeaderPoint, __thiscall(ECX = group), EAX = const float*.
+    virtual const float* ai_group_leader_point_00a10c20(void* group) = 0;
+    // 00A02020 BSP_AiCommand_IssueMoveToMember, __fastcall(ECX = member, EDX = const point*).
+    virtual void ai_command_issue_move_to_member_00a02020(void* member, const float* point) = 0;
+
     // --- debug draw --------------------------------------------------------
     // 0085F990 BSP_DebugDraw_LineRgbaFloats, __fastcall(ECX = const p0*, EDX =
     // const p1*; float rgba0[4], float rgba1[4] by value), RET 20h.
@@ -228,5 +240,8 @@ void* plane_class_construct_base_007d1e50(Front4Host& host, Raw object);
 
 // 00A1EEF0 BSP_AiPlanner_DestructBase, __thiscall(ECX = planner), RET.
 void ai_planner_destruct_base_00a1eef0(Front4Host& host, Raw planner);
+
+// 00A10DC0 BSP_AiCommand_FollowerPass, __thiscall(ECX = command), RET.
+void ai_command_follower_pass_00a10dc0(Front4Host& host, Raw command);
 
 } // namespace bsp::cc13_front4

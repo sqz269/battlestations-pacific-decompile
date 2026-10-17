@@ -479,4 +479,42 @@ void ai_planner_destruct_base_00a1eef0(Front4Host& host, Raw planner)
     host.callback_owner_destroy_00695870(planner);  // 00A1EFA4
 }
 
+// 00A10DC0. The group is [command+4]; its member list proxy is group+563Ch
+// (sentinel [+5640h], count [+5644h]; nodes +0 next, +8 member). Runs when the
+// count is above 1 (unsigned), from the node after the first (the leader). The
+// iterator's container is captured once; each pass re-reads [command+4] for the
+// end and the container check.
+void ai_command_follower_pass_00a10dc0(Front4Host& host, Raw command)
+{
+    std::uint8_t* group = command.at<std::uint8_t*>(4);
+    if (at<std::uint32_t>(group, 0x5644) <= 1) return;  // 00A10DD4 JBE
+    std::uint8_t* const container = group + 0x563C;
+    std::uint8_t* const sentinel = at<std::uint8_t*>(group, 0x5640);
+    std::uint8_t* const first = at<std::uint8_t*>(sentinel, 0);
+    if (first == sentinel) host.invalid_parameter_00bf6713();  // 00A10DF3
+    for (std::uint8_t* node = at<std::uint8_t*>(first, 0);; node = at<std::uint8_t*>(node, 0)) {
+        group = command.at<std::uint8_t*>(4);  // 00A10E00
+        std::uint8_t* const end = at<std::uint8_t*>(group, 0x5640);
+        if (container == nullptr || container != group + 0x563C) host.invalid_parameter_00bf6713();
+        if (node == end) return;  // 00A10E1D
+        if (container == nullptr) host.invalid_parameter_00bf6713();
+        if (node == at<std::uint8_t*>(container, 4)) host.invalid_parameter_00bf6713();  // 00A10E31
+        void* const member = at<void*>(node, 8);
+        if (host.vcall_entity_is_kind_5c(member, 6)) {
+            // 00A10E48: join the formation of the list's first member.
+            std::uint8_t* const g = command.at<std::uint8_t*>(4);
+            std::uint8_t* const s = at<std::uint8_t*>(g, 0x5640);
+            std::uint8_t* const head = at<std::uint8_t*>(s, 0);
+            if (head == s) host.invalid_parameter_00bf6713();  // 00A10E5C
+            host.entity_request_join_formation_0077c8d0(member, at<void*>(head, 8));  // 00A10E67
+        } else if (host.vcall_entity_is_kind_5c(member, 0x18)) {
+            if (!host.ai_command_send_empty_squadron_home_009ffeb0(member)) {  // 00A10E83
+                const float* const point = host.ai_group_leader_point_00a10c20(command.ptr(4));  // 00A10E8F
+                host.ai_command_issue_move_to_member_00a02020(member, point);              // 00A10E98
+            }
+        }
+        if (node == at<std::uint8_t*>(container, 4)) host.invalid_parameter_00bf6713();  // 00A10EA2
+    }
+}
+
 } // namespace bsp::cc13_front4

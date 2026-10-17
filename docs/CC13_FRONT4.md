@@ -56,6 +56,12 @@ Fourth batch:
 | 007D1E50 | `plane_class_construct_base_007d1e50` | `__thiscall(ECX = this)`, RET, EAX = this | `00749050(this)`, vptrs 00D05EAC (+0) and 00D05EA8 (+6Ch), then 32 dword and 4 byte zero stores (list in the ledger record). | 8 (the plane class constructors) |
 | 00A1EEF0 | `ai_planner_destruct_base_00a1eef0` | `__thiscall(ECX = planner)`, RET | vptr 00D22D08; drains the group list at +20h: owned groups (`00A1C8B0`) get `006952A0(group, planner)`, STL remove `00A1D1D0`, group+5654h = 0; a group not owned is taken again forever, as in the binary. Then STL clear `00A16B60`, the +18h block back to `00419CC0()->00BD1510(block, [+14h]+1, 1)`, `00695870(planner)`. | 8 |
 
+| 00A10DC0 | `ai_command_follower_pass_00a10dc0` | `__thiscall(ECX = command)`, RET | Group [command+4]; runs when its count +5644h > 1; walks the member list +563Ch from the second node with the container and deref checks; kind 6 (`vfunc[5Ch]`) -> `0077C8D0(member, first member)`; else kind 18h and not `009FFEB0(member)` -> `00A02020(member, 00A10C20(group))`. | 8 |
+
+The existing model of 00A10DC0 in src/ai_command_tick.cpp (fragment record) is not this function: it adds a
+null-group guard, counters, position and avoid-zone steps, and reads the leader before the loop. It was
+not edited.
+
 "Callers it unblocks" lists the reconstructed callers whose `missing_callees` contained the target;
 callers with other missing callees stay blocked on those.
 
