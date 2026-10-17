@@ -59,7 +59,7 @@ straddle instructions, checked in the listing: 004BFC41, 00B27428, 00B60CA2, 00B
 | 00C31F90 | `body_box_00c31f90` | thiscall, RET 8 | reverse copy (record replaced, see adoption notes) |
 | 00C35300 | `body_position_00c35300` | fastcall | `B+2Ch` |
 | 00C37F10 | `body_inertia_00c37f10` | thiscall, RET 4 | `1.0 / M+54h[i]`, no zero guard |
-| 00C37F60 | `body_add_force_at_point_00c37f60` | thiscall, RET 8 | force, torque `(p - B+2Ch) x f`, wake `&= ~12h` |
+| 00C37F60 | `body_add_force_at_point_00c37f60` | thiscall, RET 8 | force, torque `(p - B+2Ch) x f` (each product rounded to float before the subtraction: 24-bit precision assumed, see docs/CC13_FPU_PRECISION.md, cc13-fix13), wake `&= ~12h` |
 | 00C56CF0 | `body_set_transform_00c56cf0` | thiscall, RET 4 / tail JMP | pose, proxy box, broad-phase slot 2 |
 | 00C32430 | `shape_local_transform_00c32430` | fastcall | `S+34h` |
 | 00C32450 | `shape_group_00c32450` | fastcall | `[S+2Ch]` |
