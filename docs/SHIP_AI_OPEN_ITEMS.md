@@ -18833,3 +18833,26 @@ tokens: every destroyer and light carrier follows Iowa or Zuikaku): requests ~30
 available; `formation join ... joined` > 0; the script's GetFormationLeader finds leaders (found > 0); the
 followers' idle tail issues `follow` (00836E38) instead of cruise/stop, so escorts track their leaders and
 the battle geometry moves. JM08/USN01/USN04/USN13/LOMP10 author no Follow token: identical there.
+
+## 279. The moveonpath join index, kPathJoinProjectionBound (cc9-ships57, 2026-10-17; lead item 5)
+
+**Image (CC13_VERIFY7 R1).** 007B1C50 handles start modes 5 (JOIN / JOIN_FORWARD), 7 (JOIN_RANDOM_DIR) and 8
+(JOIN_BACKWARDS); 6 (BEGIN) stores 0. It sets the direction byte cursor+10h, then cursor+8 = the source's
+vt+10h (007B1D24), 007B11F0 for an authored path (read whole by cc13 front: `start_index_for_position_007b11f0`,
+src/gameplay_seg46_cc13.cpp): with fewer than two points, or the nearest at the end in the travel direction,
+the nearest; else the neighbour m when s = dot(unit(p_m - p_n) on x/z via 00419260, pos - p_n) > 0
+(007B1303 JA). The host's 0071F600 build took the nearest alone, so a ship already past its nearest point
+turned back to it.
+
+**Bind (OFF).** `kPathJoinProjectionBound` (include/bsp/game_hosts_commands.hpp). The build calls
+`start_index_for_position_007b11f0` for modes 5/7/8 with the host's existing nearest index (the
+007B1100 hypothesis, 2D) and an 00419260 that follows its body (float squares, float sum, CRT sqrt to
+float, 1/r, 0 for zero; disasm-raw 00419260..004192D4). Direction: backward for 8, forward for 5 and 7
+(the 007B1CE2 draw stays unmodelled, as before). LABELLED: a kind-0 user path is projected the same way
+(its vt+10h is unverified, CC13_VERIFY7). Counter: `summary mission path join projection bound= joins=
+advanced=`.
+
+**Predictions, written before any run.** OFF identical (joins=0). ON: joins = the moveonpath builds;
+`advanced` > 0 only where a ship is already past its nearest point (likely a minority: most paths are
+joined from a start position before the first point). Where advanced, the ship heads for the next point
+instead of looping back: a shorter early track on JM08 / USN04 path followers.

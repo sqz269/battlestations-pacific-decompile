@@ -21,6 +21,7 @@
 #include "bsp/game_hosts_ai.hpp"
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/gameplay_seg46_cc13.hpp"
 
 #include "bsp/command_completion.hpp"
 #include "bsp/command_execution.hpp"
@@ -3325,8 +3326,9 @@ bool GameCommandsHost::build_path_object_0071f600(std::size_t unit_index,
         return false;
     }
     // 007B11F0's head: the nearest point, then its neighbour in the travel
-    // direction as a second candidate. The projection test that chooses between
-    // them (007B1263 onwards) was not read, so this takes the nearest alone.
+    // direction as a second candidate. With kPathJoinProjectionBound off the
+    // projection test that chooses between them (007B1263 onwards) is skipped and
+    // the nearest is taken alone.
     std::vector<float> flat;
     flat.reserve(points.size() * 3);
     for (const std::array<float, 3>& point : points) {
@@ -3334,8 +3336,44 @@ bool GameCommandsHost::build_path_object_0071f600(std::size_t unit_index,
         flat.push_back(point[1]);
         flat.push_back(point[2]);
     }
-    const int joined = bsp::ship_ai_path_nearest_index_007b1100(flat.data(),
+    int joined = bsp::ship_ai_path_nearest_index_007b1100(flat.data(),
         static_cast<int>(points.size()), unit_x, unit_z);
+    if (kPathJoinProjectionBound && director.path_start_mode >= 5
+        && director.path_start_mode <= 8 && director.path_start_mode != 6) {
+        // Packet s57_path_join (CC13_VERIFY7 R1): 007B1D24's vt+10h is 007B11F0 for an
+        // authored path; its projection test (007B1263..007B1303) picks the
+        // neighbour in the travel direction when the unit is already past the
+        // nearest point toward it. The travel direction is 007B1C50's: backward for
+        // mode 8, forward for 5 and (this host's choice of the draw) 7.
+        struct JoinSource final : bsp::gameplay_seg46_cc13::PathJoinSource {
+            const std::vector<std::array<float, 3>>& pts;
+            int nearest;
+            JoinSource(const std::vector<std::array<float, 3>>& p, int n) : pts(p), nearest(n) {}
+            int point_count() override { return static_cast<int>(pts.size()); }
+            int nearest_index(const bsp::gameplay_seg46_cc13::Vec3&) override { return nearest; }
+            bsp::gameplay_seg46_cc13::Vec3 point(int i) override {
+                const std::array<float, 3>& p = pts[static_cast<std::size_t>(i)];
+                return {p[0], p[1], p[2]};
+            }
+            // 00419260 BSP_Vector2f_ReciprocalLength: x*x and z*z each stored as
+            // float, their float sum, CRT sqrt (00BF7030) stored as float, then
+            // 1 / r stored as float, or 0 for a zero length (004192B3 FUCOMIP).
+            float reciprocal_length_00419260(float x, float z) override {
+                const float xx = static_cast<float>(static_cast<double>(x) * x);
+                const float zz = static_cast<float>(static_cast<double>(z) * z);
+                const float sum = static_cast<float>(static_cast<double>(xx) + zz);
+                const float r = static_cast<float>(std::sqrt(static_cast<double>(sum)));
+                if (r == 0.0f) return 0.0f;
+                return static_cast<float>(1.0 / static_cast<double>(r));
+            }
+        } source(points, joined);
+        const int projected = bsp::gameplay_seg46_cc13::start_index_for_position_007b11f0(
+            source, {unit_x, 0.0f, unit_z}, director.path_start_mode != 8);
+        ++host.summary.path_join_projections;
+        if (projected != joined) ++host.summary.path_join_advanced;
+        joined = projected;
+        host.done("PathSource::start_index_for_position_007b11f0", 0x007b11f0u);
+    }
     // 007B1C50. `random_forward` is only consulted for PATH_SM_JOIN_RANDOM_DIR,
     // and the draw 00BD2F10 makes is not reproduced: this host keeps forward,
     // which is what start modes 5 and 6 give anyway and what every USN04 call
@@ -4100,6 +4138,9 @@ void GameCommandsHost::report() {
     host.log.notef("summary mission scene follow join bound=%d requests=%llu available=%llu "
         "(packet s57_follow_join, 00816ED5 -> 0077C8D0)", kSceneFollowJoinBound ? 1 : 0,
         host.summary.scene_follow_requests, host.summary.scene_follow_available);
+    host.log.notef("summary mission path join projection bound=%d joins=%llu advanced=%llu "
+        "(packet s57_path_join, 007B1C50 -> 007B11F0)", kPathJoinProjectionBound ? 1 : 0,
+        host.summary.path_join_projections, host.summary.path_join_advanced);
     host.log.notef("summary mission director clear-all bound=%d clear_all=%llu drops=%llu "
         "slot_clears_00720ca0=%llu (packet cc9_set_command_clear_all, 0071D880 / 0071D900)",
         kSetCommandClearAllMessageBound ? 1 : 0, host.summary.clear_all_calls,
