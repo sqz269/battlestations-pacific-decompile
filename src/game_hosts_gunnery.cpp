@@ -1128,8 +1128,9 @@ constexpr bool kDepthChargeBotTickBound = true;  // ON: GUNNERY_OPEN_ITEMS 142
 //    which sends the gun's vtable[1E8h](0), the trigger off, when the role slot
 //    is 8 or AI-held (008FF2C1 / 008FF511). The trigger then stays off until
 //    the bot's next evaluating think (0.2 s torpedo, 0.1 s depth charge). OFF:
-//    a retarget keeps the trigger the last think left.
-constexpr bool kGunBotRetargetReleaseBound = false;
+//    a retarget keeps the trigger the last think left. ON by mechanism: BSM01,
+//    USN01 and USN10 pairs gameplay identical, 4700-26099 sends, 0 drops.
+constexpr bool kGunBotRetargetReleaseBound = true;
 //  * kPlayerWeaponGroupFireBound: packet cc9_player_weapon_group_fire. Message
 //    79h's group 5 arm (0095A441): the player's depth-charge launchers take
 //    the 99h-held byte as their trigger, and GameGunneryHost::
