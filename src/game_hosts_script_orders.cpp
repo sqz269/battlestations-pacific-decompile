@@ -167,6 +167,13 @@ inline constexpr bool kChooserSurfaceSetBranchBound = true;   // ON: SQUADRON_LA
 // member re-poses every member, as before. LABELLED: the leader plane and the
 // squadron are one host unit, so a script passing the leader still turns all.
 inline constexpr bool kTurnToEntityMemberPlaneArmBound = false;
+// Packet cc9_l65_moveto_member_launch (SQUADRON_LAND_TASK 5ia). 007F1688-007F16AD
+// issues the null-class moveto to the squadron (0071ECF0), whose 007ECF80 fan-out
+// reaches every +3D0h plane, on the deck or flying. True: the standing per-member
+// launch order (kAutoAttackMemberOnLaunchBound) also carries that moveto, so a
+// deck member gets it when it is airborne. False: only the members flying at the
+// serve get it (5hl L3), and later members fly no command.
+inline constexpr bool kAutoAttackMoveToMemberLaunchBound = true;   // ON: SQUADRON_LAND_TASK 5ia.1
 // Packet cc13-fix5 (docs/CC13_FIX_5.md section 7). True binds NavigatorCruise
 // 008A75C0: NavigatorStop's twin, 0077D600(entity, cruise 00E08F70, zeroed
 // descriptor, 1) at 008A7729 (bsp::navigator_cruise_order_008a75c0), through
@@ -2156,11 +2163,15 @@ void GameScriptOrdersHost::run_air_ops_player_launch_queue(float step) {
             p.squadron_entity, members.size(), trow != nullptr ? trow->name.c_str() : "-",
             chosen);
         if constexpr (bsp::kAutoAttackMemberOnLaunchBound) {
-            if (chosen != 0u && record != nullptr) {
+            const bool null_moveto = kAutoAttackMoveToMemberLaunchBound
+                && bsp::kAutoAttackNullClassMoveToBound && chosen == 0u
+                && !members.empty() && target < units_.count();
+            if ((chosen != 0u || null_moveto) && record != nullptr) {
                 SquadronStandingAttack s;
                 s.squadron_entity = p.squadron_entity;
                 s.target = p.target_plus_one - 1u;
                 s.served = members;
+                s.moveto = chosen == 0u;
                 standing_attacks_.push_back(std::move(s));
             }
         }
@@ -2211,7 +2222,16 @@ void GameScriptOrdersHost::run_standing_attacks() {
                 open = true;
                 if (m >= units_.count() || !units_.unit_alive_and_visible(m)) continue;
                 const std::vector<std::size_t> one{m};
-                const std::uint32_t chosen = squadron_intake_007f1940(m, one, target);
+                std::uint32_t chosen = 0u;
+                if (s.moveto) {
+                    // 007F1688's moveto reaches this member through the same
+                    // squadron fan-out (007ECF80) as a chosen class.
+                    issue_command_to_members(one, 0x00E08F68u, target,
+                                             "ai:auto_attack moveto 007F1688 member");
+                    chosen = 0x00E08F68u;
+                } else {
+                    chosen = squadron_intake_007f1940(m, one, target);
+                }
                 s.served.push_back(m);
                 if (chosen != 0u) ++standing_attack_member_orders_;
                 const GameUnitRow* mrow = units_.unit_row(m);
