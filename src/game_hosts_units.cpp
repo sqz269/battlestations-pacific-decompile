@@ -6043,7 +6043,7 @@ struct GameUnitsHost::Impl {
     // leaves every in-world test (the 007E11D0 neighbour refresh of the vehicle
     // avoidance 007DF4F0 among them). False: the retired plane keeps +5Fh/+60h
     // clear and stays listed as a neighbour.
-    static constexpr bool kStockReturnDestroyBytesBound = false;
+    static constexpr bool kStockReturnDestroyBytesBound = true;   // ON: mechanism held, outcome miss recorded (OCEAN_WAVE_FIELD 50.6)
     // Packet cc9_stock_return_queue_erase (docs/SHIP_AI_OPEN_ITEMS.md 204). True: the
     // last plane's slot return 006C5950 first erases the squadron's landing-queue
     // record at the block (006C59A4-006C59DC: find at +98h, 14h stride, count +9Ch;

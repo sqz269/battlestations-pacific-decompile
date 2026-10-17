@@ -2032,3 +2032,45 @@ Both callers move: the plane pose step (`game_hosts_units.cpp` `rotate_pose_0085
 2. **No regime change.** The landings, releases and plane deaths per row stay within a few of OFF. A changed regime
    would be a mechanism failure: a plane losing control, NaN poses, or every plane of a squadron missing.
 3. **Rows:** USN01 3000, JM05 9000, USN04 4500. BSM01 3000 (no planes before 3000 frames) is the control: exit 0 or 1.
+
+### 50.6 Measured, and the verdict: ON
+
+Both sides are builds of 201a1cbf1. OFF is `local\p14_off_sd` (the tree build). ON is `local\p14_sd`
+(`--flip kStockReturnDestroyBytesBound=true`, SHA-256 3132DB9463CF). The rows ran in the reference environment, and a
+300-frame USN01 smoke of OFF exited 0.
+
+| row | `pair_diff` | stock returns OFF / ON | `destroys` ON | runway exits (#4.x) OFF / ON |
+| --- | --- | --- | --- | --- |
+| USNOS 150000, s55_os_r0.txt (`local\p14{off,on}_os.log`) | 3 | 3 / 10 | 10 | 4.4\|.-III, 4.4\|.-IV / 4.4\|.-IV, 4.5\|.-III, 4.5\|.-IV |
+| JM05 9000 (`local\p14{off,on}_jm05.log`) | 1 | 0 / 0 | 0 | - |
+| USN01 3000 (`local\p14{off,on}_u01.log`) | 1 | 0 / 0 | 0 | - |
+
+**The predictions:**
+1. **USNOS.**
+   - `destroys` = the stock returns (10 = 10): **held**.
+   - #4.4|.-III now parks and is retired at 747.44 s (OFF: it left the runway at 725.00 s).
+   - #4.4 and #4.4|.-II are retired as before, and #4.5|.-IV is retired at 1432.32 s. Ten stock returns against three.
+   - **Missed:** #4.4|.-IV still touches down 0.404 rad off the axis and leaves the runway at 735.49 s. #4.5|.-III and
+     -IV leave it at 973 and 985 s. They relaunch (re-takeoff) and land again until they are lost.
+   - In IV's flare the planes ahead are live: #4.4|.-II taxis until 742.19 s and #4.4|.-III until 747.44 s. So the
+     remaining yaw comes from avoiding live taxiing planes, not retired ones. That is a different mechanism (50.7).
+   - On this base #4.4|.-IV dies at 958.79 s (OFF) and 959.59 s (ON). It no longer flies at -105 m to the end on either
+     side.
+   - Neither side ends the mission with these orders. Deaths: 325 -> 322 rows, 68 changed.
+2. **JM05 9000:** failed as a premise. This base has no stock return on the row (sends 0 on both sides), so it is a
+   no-reach control. It returned 1, as predicted for a row with no stock return.
+3. **USN01:** held (1).
+4. **No mechanism failure.** Every stock return set the bytes, and none of the retired planes is avoided again
+   (USNOS 4.4|.-III parks).
+
+**Verdict: `kStockReturnDestroyBytesBound = true`.** The mechanism matches the image as read (50.2). The touchdown
+miss is recorded and belongs to 50.7.
+
+### 50.7 Open: a lander still avoids planes taxiing on the runway
+
+- In the image, the vehicle arm walks every listed neighbour (`007DF96C`-`007DF9A9`), and the land task's mask is FFh.
+  So a lander whose flare closes on a taxiing plane gets the same bands in the image, unless the landing sequencer
+  keeps the runway clear first.
+- The host lets a wingman start its final about 10 s behind the previous lander, which still taxis for 20-30 s.
+- Next: read the sequencer's hold against the runway's occupants (`006C7960` mode 3 -> 4, `006BED60`, the occupancy
+  vector `+34h`). 48.1 found no hold in `006BED60`, so read the corridor test and `rec+8` next.
