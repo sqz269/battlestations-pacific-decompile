@@ -264,6 +264,8 @@ The host has two copies, and neither matches:
 | `:34472-34477` | "the non-dogfight cones are not delivered"; "a plane with no modelled task has no arm" | `kTaskGunConeBound` (ON) delivers the cones (`:32496`, `:33377`, `:33398`). `kTaskGunUntaskedPlanesBound` (ON) ticks untasked planes. Only the generic_suppress_520 ordering remains, which is MINOR. |
 | `:34647-34650` | "PilotFires ... not loaded here, so ... stays a contract" | `kPilotFiresBound` is ON and `:34653` reads it. |
 | `:35003-35008` | "[ESP+28h] and the EBX tuning block are contracts" | the tuning is loaded; this is R5. |
+| `:34628-34633` | "the two overrides 007BB920 applies are not modelled" | `kPlaneCommitCommandBound` (ON) applies both at `:34637-34660`. |
+| `:35757-35760` | "only the ground arm (007DA542) is unread, and this host never runs it" | `kPlaneGroundSteeringBound` runs 007DA380's mode-1 arm 007DA542-007DA6E3 at `:35573-35620`. |
 | `:35203-35207` | "B1Ch and AE0h have no displacement writer, so the term is taken as zero" | `kPlaneVelocityLowpassBound` (ON) computes the term at `:35208-35220`. |
 | `:35464-35470` | "(ctl+10h)->+0C0h has no identified owner so its term is zero" | `kPlaneDirectionHoldBound` (ON) supplies it at `:35486-35491`. The 007C0F40 half is R7. |
 | `:35840-35842` | "Counted, not sent: the takeoff 007C7110 is not bound" | `kBaseLaunchChainBound` (ON) sends C6h at `:35843-35870`. `:35878-35881` is in the dead OFF branch. |
@@ -289,8 +291,9 @@ The host has two copies, and neither matches:
 ## Not covered
 
 - `:20281-30451`: the attack-task bindings excluded above. Only their labels were swept.
-- `:34440-34640` (the pilot think head: retakeoff and the gun tick) was read for labels only.
-- `:35600-35830` (ground operations) was read for labels only.
+- `:34440-34640` (the pilot think head: retakeoff and the gun tick) and `:35600-35830` (ground operations)
+  were swept for labels; the two stale ones are in the table. The player-held skip 0099AF33 (`:34438`) is
+  not modelled; it applies to player-held planes only (MINOR).
 - `:36310-36540` (ship sink and wreck motion) was read for labels only, and KillDepth was checked.
 - `:38540-38960`, the public getters: these are thin accessors and were not opened one by one.
 - The arithmetic of land/line, begin, final, park and abort and of the takeoff steps (`:30881-33300`) was
