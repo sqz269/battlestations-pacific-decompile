@@ -18499,3 +18499,40 @@ shooter velocity is [esp+18h]->vtable[34h] when [dev+3F4h]+95h is set, else zero
   the lead, not the raw hit point.
 The host records only the kind-6 branch (`artillery_hit_lead`) and uses the raw hit for both. I have not
 measured the reach of the other-kind branch (for example a camera ray on a plane or a land unit).
+
+## 270. VehicleClass row ID/Got, kVehicleClassRowIdBound (cc9-ships54, 2026-10-17; lead top item)
+
+**The gap.** Mission scripts test `unit.Class.ID` (and `squadron.Class.ID`) in about 120 script files of this
+installation, including global/commandhelpers.lua (12 sites: 4354, 13037, 16419, 16512..16552, 17746, 18743),
+the JM, COTP, USN, LOMP and ESMP missions, siege and the training grounds. Neither `Class` table has an `ID`:
+the rows of this installation's scripts/datatables/autoload/vehicleclasses.lua (modified 2026-05-09) author none,
+and the host seeds `Class` = VehicleClass[class_index] as loaded. lua62 saw the effect on JM08 w1: the
+`Class.ID == 118/108/136` tests (B-25 / SBD / C47) never match, Mission.Dakota stays empty, and the mission
+completes about 4 s after wave 3 spawns.
+**The image's writer.** 00964790 BSP_VehicleClass_GetOrCreate (src/vehicle_class.cpp has the body; the game host
+does not run it) reads VehicleClass[classIndex] on a cache miss, where classIndex = registry+10h[typeId]. It
+resolves a non-zero LandingShip class first (009648E7). Then it writes row.ID = classIndex (009648EC..0096490C,
+00B67460 with EDI) and row.Got = true (00964938..00964959, 00B673A0). These are the factory's only writes to the
+table. The "ID" string 00CE59B4 has 19 code references; the others are other tables (00928B9D is the thisTable
+slot's own `ID` key text).
+**Bound OFF**: `kVehicleClassRowIdBound` (src/game_hosts_lua.cpp, `mark_vehicle_class_row_00964790`). The first
+time a class row is seeded as a unit's `Class` (the 00928A00 seed, 009292B0's bind, and the scene-load slot), the
+row gets ID = class_index and Got = true, with a LandingShip class marked first. The summary line is
+`vehicle class rows marked`. LABELLED: the host's identity type map stands in for registry+10h, and the seed points
+stand in for the factory's call sites. The ship's second recursion (descriptor +0C0h != -1) is not modelled.
+**Predictions.** Every mission marks one row per spawned class. Scripts that branch on `Class.ID` now take the
+authored branch. JM08 w1 moves: wave-3 C47s are found (Mission.Dakota filled), so the completion that came
+about 4 s after wave 3 must wait for the Dakota logic. Wins may move either way. USN01 (usn_1_pearl: 2 sites)
+and JM06 (jm06: 6 sites) move where their branches are reached; otherwise only the `Got` / `ID` reads change.
+**Measured; flipped ON.** OFF = tree 9514fc2e0, ON = `local\s54_ci` (pair_export), reference env, win-row orders.
+| row | pair_diff | what moved | end OFF -> ON |
+|---|---|---|---|
+| JM08 110000 fr, `jm08_l62_j8_w1` (`s54_c0_j8` / `s54_c1_j8`) | 3 | PRCPJM08.lua's luaBomberWaveSpawned2 now targets the B-25s (118) at the airfield and the SBDs (108) at the command building; luaBomberWaveSpawned3 fills Mission.Dakota with the C47s (136), and CheckPrim3 waits for them. Units 559 -> 568, deaths 198 -> 260 | completed 1468.01 s -> **none in 5500 s** (the wave-3 C47s are never all killed) |
+| USN01 26000 fr, `usn01_p8_u1_i` (`s54_c0_u1` / `s54_c1_u1`) | 3 | usn_1_pearl.lua's `Class.ID == 162 / 313` branches now set the squadrons' travel/attack altitudes; the Nell deaths move, deaths 80 -> 77 | completed 365.03 -> **completed 360.04 s** |
+| JM06 50000 fr, `jm06_p12_j6_a4` (`s54_c0_j6` / `s54_c1_j6`) | 0 | nothing | none -> none |
+The mechanism is the one predicted: the authored `Class.ID` branches run (a USN01 300-frame smoke marks 34 rows). Flipped. JM08's w1 plan won only because
+the Dakota check passed on an empty table; it needs a re-plan that shoots down the wave-3 C47s (sent to lua63).
+**Side observation (not this switch):** JM06 `jm06_p12_j6_a4` does not win in 50000 frames on 9514fc2e0, on
+0fedfbfcf (`s54_rr_j6`) or on ships53's control export e8d6d0a83 (`s54_wo_j6`): EndMission never true, 18 deaths
+each time. WINS_TABLE records a4 winning at 2226.05 s on 25fbdcba0, so something between 25fbdcba0 and e8d6d0a83
+moved it. Sent to lua63.
