@@ -57,6 +57,63 @@ public:
     // 0077A2F0 BSP_Unit_HealthColour: __thiscall(ECX = float out[4], float
     // fraction), RET 4, EAX = out.
     virtual const float* unit_health_colour_0077a2f0(float* out, float fraction) = 0;
+
+    // ---- options commit 005F65C0 (segment 23) ----
+    // 008D4210 BSP_Settings_VideoModeDiffers: __thiscall(ECX = settings copy, other), RET 4, AL.
+    virtual bool settings_video_mode_differs_008d4210(void* settings, void* other) = 0;
+    // 008D44C0 BSP_Settings_SetXboxCompatibilityMode: __thiscall(ECX = 00F88980, dword), RET 4.
+    virtual void settings_set_xbox_compatibility_008d44c0(void* settings, std::uint32_t value) = 0;
+    // 005F52C0: __thiscall(ECX = 00F88980, settings copy), RET 4.
+    virtual void settings_copy_from_screen_005f52c0(void* settings, void* copy) = 0;
+    // 00698A10 BSP_InputConfiguration_Load: ECX = [00E188A8]+3Ch, RET.
+    virtual void input_configuration_load_00698a10(void* configuration) = 0;
+    // 00992830 BSP_SystemOptions_ReadLanguageFromOptions: no register or stack input, RET, EAX.
+    virtual std::int32_t system_options_read_language_00992830() = 0;
+    // 009927D0 BSP_HardwareInfo_Construct: __thiscall(ECX = info, dword), RET 4.
+    virtual void hardware_info_construct_009927d0(void* info, std::int32_t language) = 0;
+    // 0098C820 / 0098C870 / 0098C810 / 0098D3D0 / 0098C7F0 / 0098C800: the
+    // hardware-info getters, ECX = info (0098D3D0 ignores it), RET, EAX.
+    virtual const char* hardware_info_gpu_model_name_0098c820(void* info) = 0;
+    virtual std::int32_t hardware_info_gpu_device_id_0098c870(void* info) = 0;
+    virtual const char* hardware_info_os_version_0098c810(void* info) = 0;
+    virtual const char* hardware_info_sound_device_name_0098d3d0(void* info) = 0;
+    virtual std::uint32_t hardware_info_cpu_speed_0098c7f0(void* info) = 0;
+    virtual std::uint32_t hardware_info_memory_size_0098c800(void* info) = 0;
+    // 005EFFA0 BSP_OptionRow_Construct: __thiscall(ECX = row, key and value
+    // native strings by value, both consumed), RET 10h, EAX = row.
+    virtual void* option_row_construct_005effa0(void* row, Cc13SweepBNativeString key,
+                                                Cc13SweepBNativeString value) = 0;
+    // 005EFDC0 BSP_OptionRow_Destruct: ECX = row.
+    virtual void option_row_destruct_005efdc0(void* row) = 0;
+    // 005F6530 (STL vector push_back): __thiscall(ECX = vector, const row*), RET 4.
+    virtual void option_row_vector_push_back_005f6530(void* vector, const void* row) = 0;
+    // 005F5F80 (STL vector tidy/destroy): ECX = vector.
+    virtual void option_row_vector_destroy_005f5f80(void* vector) = 0;
+    // 00BF7A6A sprintf (cdecl) with "%llx" and one 64-bit argument.
+    virtual std::int32_t crt_sprintf_u64_00bf7a6a(char* buffer, const char* format, std::uint64_t value) = 0;
+    // 005F1750 BSP_NativeString_FromUnsigned: __thiscall(ECX = out, dword), RET 4.
+    virtual void* native_string_from_unsigned_005f1750(void* out, std::uint32_t value) = 0;
+    // 005F1840 BSP_NativeString_ConstructSignedDecimal: __thiscall(ECX = out, int), RET 4, EAX = out.
+    virtual void* native_string_signed_decimal_005f1840(void* out, std::int32_t value) = 0;
+    // 00753570 (metrics send): __thiscall(ECX = [00E1AED4], const row vector*), RET 4.
+    virtual void metrics_send_00753570(void* metrics, const void* rows) = 0;
+    // 004C1710 BSP_MediaManager_GetOrCreate: no arguments, RET, EAX.
+    virtual void* media_manager_get_or_create_004c1710() = 0;
+    // 00A4C2D0: a one-instruction RET 4 body, __thiscall(ECX = media manager,
+    // dword); 005F6E33 pushes its 1 before calling 004C1710.
+    virtual void media_manager_ret4_00a4c2d0(void* manager, std::int32_t value) = 0;
+    // 008D6C00 BSP_Settings_SaveToProfile: __thiscall(ECX = 00F88980, callback address), RET 4.
+    virtual void settings_save_to_profile_008d6c00(void* settings, std::uint32_t callback) = 0;
+    // 00427110 BSP_NativeStringVector_Resize: __thiscall(ECX = 00F88A24, count), RET 4.
+    virtual void native_string_vector_resize_00427110(void* vector, std::uint32_t count) = 0;
+    // 004D7F90 BSP_Game_RequestReturnToTitle: ECX = [00E188A8].
+    virtual void game_request_return_to_title_004d7f90(void* game) = 0;
+    // 008D5B50 BSP_Settings_ApplyAll: ECX = 00F88980.
+    virtual void settings_apply_all_008d5b50(void* settings) = 0;
+    // 005F54F0 BSP_OptionsScreen_BuildMainList: ECX = screen.
+    virtual void options_screen_build_main_list_005f54f0(void* screen) = 0;
+    // Screen-object vtable +60h with one dword argument.
+    virtual void object_vcall_60(void* object, std::int32_t value) = 0;
 };
 
 // 0063C620 BSP_HudMarker_EmitBoxMarker, __thiscall(ECX = marker record),
@@ -89,5 +146,11 @@ void cc13_pkt642_hud_markers_build_unit_marker_00642040(void* markers, void* uni
                                                         std::uint32_t is_friendly, std::uint32_t is_target,
                                                         std::int32_t kind_a, std::int32_t kind_b,
                                                         Cc13Pkt642Host& host);
+
+// 005F65C0 (options commit), __thiscall(ECX = options screen), RET: copies
+// the screen's settings into 00F88980, sends the hardware/metrics rows once
+// (or when +150h differs), saves to the profile and rebuilds or returns to
+// the title screen.
+void cc13_pkt642_options_screen_commit_005f65c0(void* screen, Cc13Pkt642Host& host);
 
 }  // namespace bsp

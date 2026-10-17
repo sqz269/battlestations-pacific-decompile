@@ -874,4 +874,206 @@ void cc13_pkt642_hud_markers_build_unit_marker_00642040(void* markers, void* uni
     }
 }
 
+// ---------------------------------------------------------------------------
+// 005F65C0 (options commit)
+// ---------------------------------------------------------------------------
+namespace {
+
+constexpr std::uint32_t kSettings = 0x00F88980u;        // global settings object
+constexpr std::uint32_t kSettingsNames = 0x00F88A24u;   // settings +A4h, a native-string vector
+constexpr std::uint32_t kXenonManager = 0x00F8ABE8u;    // dword: the Xenon system manager
+constexpr std::uint32_t kMetrics = 0x00E1AED4u;         // dword: the metrics sender
+constexpr std::uint32_t kEmptyBuffer = 0x00E19654u;     // .bss char buffer used as ""
+constexpr std::uint32_t kCallbackVideo = 0x005F0090u;   // 008D6C00 callback when the video mode changed
+constexpr std::uint32_t kCallbackNone = 0x00BD53C0u;    // 008D6C00 callback otherwise
+
+const char* literal(std::uint32_t address, Cc13Pkt642Host& host) {
+    return static_cast<const char*>(host.image_global(address));
+}
+
+// One metrics row: the value string is built into the higher by-value slot
+// first, then the key, then 005EFFA0(row, key, value) consumes both,
+// 005F6530 appends the row and 005EFDC0 destroys it.
+void push_row(void* vector, void* row, std::uint32_t key_literal, Cc13SweepBNativeString value,
+              Cc13Pkt642Host& host) {
+    Cc13SweepBNativeString key;
+    host.native_string_assign_0041e870(&key, literal(key_literal, host));
+    const void* built = host.option_row_construct_005effa0(row, key, value);
+    host.option_row_vector_push_back_005f6530(vector, built);
+    host.option_row_destruct_005efdc0(row);
+}
+
+Cc13SweepBNativeString assigned(const char* text, Cc13Pkt642Host& host) {
+    Cc13SweepBNativeString value;
+    host.native_string_assign_0041e870(&value, text);
+    return value;
+}
+
+}  // namespace
+
+// __thiscall(ECX = options screen), RET; SEH 00C763A6, frame 4CF8h through
+// __alloca_probe (base E = entry ESP - 4D14h). The screen keeps a settings
+// copy at +D8h (+150h = copy+78h, +188h = copy+B0h, matching 00F889F8 and
+// 00F88A30 in 00F88980). Locals: the row vector E+38h {proxy, first, last,
+// end}, rows at E+20h and E+58h (10h bytes each), "none"/player id E+30h,
+// the sprintf buffer E+68h, the hardware-info object E+CCh (its +4h and +14h
+// vectors are freed inline at the end; +34h, +A34h and +B34h are char
+// buffers the CPU, VideoCard and VGADriverVersion rows read).
+void cc13_pkt642_options_screen_commit_005f65c0(void* screen, Cc13Pkt642Host& host) {
+    void* settings = host.image_global(kSettings);
+    void* copy = &at<std::uint8_t>(screen, 0xd8);
+    const bool video_changed = host.settings_video_mode_differs_008d4210(copy, settings);  // E+1Fh
+    const bool mode_changed = at<std::int32_t>(settings, 0x78) != at<std::int32_t>(screen, 0x150);  // BL
+    const std::uint32_t xbox = at<std::uint8_t>(screen, 0x188);
+    if (at<std::uint8_t>(settings, 0xb0) != xbox) {
+        host.settings_set_xbox_compatibility_008d44c0(settings, xbox);
+    }
+    host.settings_copy_from_screen_005f52c0(settings, copy);
+    host.input_configuration_load_00698a10(&at<std::uint8_t>(host.global_00e188a8(), 0x3c));
+
+    // 005F663C: the metrics rows go out once ([00F88A15] clear) or whenever
+    // settings+78h moved.
+    if (at<std::uint8_t>(settings, 0x95) == 0 || mode_changed) {
+        Cc13SweepBVectorByValue rows;  // E+38h; only first/last/end are written
+        rows.first = nullptr;
+        rows.last = nullptr;
+        rows.end = nullptr;
+        alignas(4) std::uint8_t hardware[0x4c3c];  // E+CCh..E+4D08h
+        const std::int32_t language = host.system_options_read_language_00992830();  // EDI
+        host.hardware_info_construct_009927d0(hardware, language);
+        alignas(4) std::uint8_t row[0x10];  // E+20h
+
+        push_row(&rows, row, 0x00CF3AECu /* "GameId" */, assigned(literal(0x00CF3AF4u /* "bp" */, host), host),
+                 host);
+
+        Cc13SweepBNativeString player = assigned(literal(0x00CE43ECu /* "none" */, host), host);  // E+30h
+        void* xenon = *static_cast<void**>(host.image_global(kXenonManager));
+        if (host.xenon_has_selected_user_00a3e510(xenon)) {
+            char buffer[0x64];  // E+68h
+            buffer[0] = 0;
+            const std::uint64_t xuid = host.xenon_active_xuid_00a3eb00(*static_cast<void**>(host.image_global(kXenonManager)));
+            host.crt_sprintf_u64_00bf7a6a(buffer, literal(0x00CF3AE4u /* "%llx" */, host), xuid);
+            Cc13SweepBNativeString text;  // E+14h
+            const Cc13SweepBNativeString* source =
+                static_cast<const Cc13SweepBNativeString*>(host.native_string_assign_0041e870(&text, buffer));
+            // 005F673E: the inlined assignment (self-test, resize, copy of
+            // the resized length when the source is non-empty).
+            if (&player != source) {
+                host.native_string_resize_0041dd40(&player, source->length, 1);
+                if (source->length != 0) {
+                    host.crt_memcpy_00bf7680(player.data, source->data, player.length);
+                }
+            }
+            release_string(text, host);
+        }
+        {
+            // 005F679D: the by-value copy of the player id, built in place.
+            Cc13SweepBNativeString value;
+            value.length = 0;
+            value.data = nullptr;
+            if (&value != &player) {
+                host.native_string_resize_0041dd40(&value, player.length, 1);
+                if (player.length != 0) {
+                    host.crt_memcpy_00bf7680(value.data, player.data, value.length);
+                }
+            }
+            push_row(&rows, row, 0x00CF3AD8u /* "PlayerID" */, value, host);
+        }
+        {
+            Cc13SweepBNativeString value;
+            host.native_string_from_int_004260b0(&value, language);
+            push_row(&rows, row, 0x00CF3AD0u /* "LandID" */, value, host);
+        }
+        push_row(&rows, row, 0x00CF3ACCu /* "D3D" */,
+                 assigned(host.hardware_info_gpu_model_name_0098c820(hardware), host), host);
+        {
+            const std::int32_t id = host.hardware_info_gpu_device_id_0098c870(hardware);
+            Cc13SweepBNativeString value;
+            host.native_string_from_int_004260b0(&value, id);
+            push_row(&rows, row, 0x00CF3AC4u /* "D3DID" */, value, host);
+        }
+        push_row(&rows, row, 0x00CF3AB8u /* "OSVerzion" */,
+                 assigned(host.hardware_info_os_version_0098c810(hardware), host), host);
+        push_row(&rows, row, 0x00CEA3FCu /* "Sound" */,
+                 assigned(host.hardware_info_sound_device_name_0098d3d0(hardware), host), host);
+        push_row(&rows, row, 0x00CF3AB4u /* "CPU" */,
+                 assigned(reinterpret_cast<const char*>(hardware + 0x34), host), host);
+        {
+            const std::uint32_t speed = host.hardware_info_cpu_speed_0098c7f0(hardware);
+            Cc13SweepBNativeString value;
+            host.native_string_from_unsigned_005f1750(&value, speed);
+            push_row(&rows, row, 0x00CF3AA8u /* "CPUSpeed" */, value, host);
+        }
+        {
+            const std::uint32_t memory = host.hardware_info_memory_size_0098c800(hardware);
+            Cc13SweepBNativeString value;
+            host.native_string_from_unsigned_005f1750(&value, memory);
+            push_row(&rows, row, 0x00CE3A94u /* "Memory" */, value, host);
+        }
+        push_row(&rows, row, 0x00CF3A9Cu /* "VideoCard" */,
+                 assigned(reinterpret_cast<const char*>(hardware + 0xa34), host), host);
+        push_row(&rows, row, 0x00CF3A88u /* "VGADriverVersion" */,
+                 assigned(reinterpret_cast<const char*>(hardware + 0xb34), host), host);
+
+        // 005F6C26: "<width> x <height>" from 00F88994 / 00F88998.
+        Cc13SweepBNativeString separator;  // E+14h
+        host.native_string_assign_0041e870(&separator, literal(0x00CF3A84u /* " x " */, host));
+        Cc13SweepBNativeString width;  // E+20h
+        void* width_ptr = host.native_string_signed_decimal_005f1840(
+            &width, *static_cast<std::int32_t*>(host.image_global(0x00F88994u)));
+        Cc13SweepBNativeString joined;  // E+50h
+        void* joined_ptr = host.native_string_concat_004261a0(width_ptr, &joined, &separator);
+        Cc13SweepBNativeString resolution;  // E+48h
+        host.native_string_concat_int_004263b0(joined_ptr, &resolution,
+                                               *static_cast<std::int32_t*>(host.image_global(0x00F88998u)));
+        release_string(joined, host);
+        release_string(width, host);
+        release_string(separator, host);
+        {
+            const char* text = resolution.data != nullptr ? resolution.data : literal(kEmptyBuffer, host);
+            alignas(4) std::uint8_t resolution_row[0x10];  // E+58h
+            push_row(&rows, resolution_row, 0x00CF3A78u /* "Resolution" */, assigned(text, host), host);
+        }
+        void* metrics = *static_cast<void**>(host.image_global(kMetrics));
+        if (metrics != nullptr) {
+            host.metrics_send_00753570(metrics, &rows);
+        }
+        at<std::uint8_t>(settings, 0x95) = 1;  // 00F88A15
+        release_string(resolution, host);
+        release_string(player, host);
+        // 005F6DC9: the hardware-info vectors at +14h and +4h, freed inline.
+        void* block = at<void*>(hardware, 0x14);
+        if (block != nullptr) {
+            host.crt_operator_delete_00bf65ac(block);
+        }
+        block = at<void*>(hardware, 0x4);
+        at<void*>(hardware, 0x14) = nullptr;
+        at<void*>(hardware, 0x18) = nullptr;
+        at<void*>(hardware, 0x1c) = nullptr;
+        if (block != nullptr) {
+            host.crt_operator_delete_00bf65ac(block);
+        }
+        at<void*>(hardware, 0x4) = nullptr;
+        at<void*>(hardware, 0x8) = nullptr;
+        at<void*>(hardware, 0xc) = nullptr;
+        host.option_row_vector_destroy_005f5f80(&rows);
+    }
+
+    // 005F6E33: the 1 is 00A4C2D0's argument, pushed before 004C1710 runs.
+    host.media_manager_ret4_00a4c2d0(host.media_manager_get_or_create_004c1710(), 1);
+    host.settings_save_to_profile_008d6c00(settings, video_changed ? kCallbackVideo : kCallbackNone);
+    if (at<std::uint8_t>(screen, 0x252) != 0) {
+        host.native_string_vector_resize_00427110(host.image_global(kSettingsNames), 0);
+        host.gui_manager_reset_screens_00aa0f70(host.gui_manager_get_004c12b0());
+        host.object_vcall_60(at<void*>(screen, 0x88), 0);
+        at<std::uint8_t>(at<void*>(screen, 0x88), 0x77) = 1;
+        host.widget_vcall_34_set_visible(at<void*>(screen, 0x88), 0);
+        host.game_request_return_to_title_004d7f90(host.global_00e188a8());
+        at<std::uint8_t>(screen, 0x252) = 0;
+    } else {
+        host.settings_apply_all_008d5b50(settings);
+        host.options_screen_build_main_list_005f54f0(screen);
+    }
+}
+
 }  // namespace bsp
