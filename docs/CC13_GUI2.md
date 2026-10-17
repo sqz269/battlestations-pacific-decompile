@@ -83,7 +83,7 @@ section 00B732C0(geometry, 0), 004C5E20 assigns the copy to text+0ECh. An empty 
 zeroes section+18h/+10h of the main and the shadow (text+188h) sections. A non-empty copy
 calls 00AB8400(length, geometry), resets section+8 = 4 and +0Ch/+14h/+10h/+18h = 0,
 and when 00AB8CE0 reports a shader change sets the shader (text+1ECh), copies
-text+94h/+1D4h to +1DCh/+1E0h and registers cOverbrightAlpha (float2, +1DCh), cLowColor
+text+94h/+1D4h to +1DCh/+1E0h and registers cOverbrightAlphatex (00D5C7B0; float2, +1DCh), cLowColor
 (float4, +0A4h), cHighColor (float4, +0B4h) and cBlendFactor (float, +0C4h) before
 00AA9F10. Then 00B865A0(section, geometry), the wrapped builder when text+0FCh is set,
 else the single-line one (both get the copy and the section), and text->vtable[+50h](text+50h).

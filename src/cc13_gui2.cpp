@@ -470,7 +470,7 @@ void text_update_utf16_geometry_00aba8d0(GuiTextGeometryHooks& host, void* text,
                 host.material_set_shader_00b19210(material, at<void*>(text, 0x1EC));
                 at<float>(text, 0x1DC) = at<float>(text, 0x94);
                 at<float>(text, 0x1E0) = at<float>(text, 0x1D4);
-                register_parameter(host, "cOverbrightAlpha", [&](const NativeStringHeader* name) {
+                register_parameter(host, "cOverbrightAlphatex", [&](const NativeStringHeader* name) {   // 00D5C7B0
                     host.material_register_float2_00b18b00(material, name, &at<float>(text, 0x1DC));
                 });
                 register_parameter(host, "cLowColor", [&](const NativeStringHeader* name) {
@@ -514,7 +514,7 @@ void text_update_utf16_geometry_00aba8d0(GuiTextGeometryHooks& host, void* text,
                 register_parameter(host, "cBlendFactor", [&](const NativeStringHeader* name) {
                     host.material_register_float_00b18b20(shadow_material, name, host.zero_block_00f8be54());
                 });
-                register_parameter(host, "cOverbrightAlpha", [&](const NativeStringHeader* name) {
+                register_parameter(host, "cOverbrightAlphatex", [&](const NativeStringHeader* name) {   // 00D5C7B0
                     host.material_register_float2_00b18b00(shadow_material, name, &at<float>(text, 0x1DC));
                 });
                 register_parameter(host, "cLowColor", [&](const NativeStringHeader* name) {
