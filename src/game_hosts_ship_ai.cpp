@@ -774,7 +774,9 @@ inline constexpr bool kShipAiTimerDrawsBound = true;
 // phase -(index % 20) * 0.05 with that stream-1 draw (key (unit, 0)) for
 // every controller with a built nav block; the draw source binds after
 // register_units, so the draw cannot be taken there. False: the index phase.
-inline constexpr bool kAutoTargetPhaseDrawBound = false;
+// ON by mechanism (GUNNERY 266.4): USN01, JM06 and JM08 gameplay identical;
+// USN12 moves from a fire-target pick (Samidare -> Charles) and still completes.
+inline constexpr bool kAutoTargetPhaseDrawBound = true;
 // Packet cc9_command_building_level (section 169). A CommandBuilding's level:
 //   - 006F2780 stores the scene's `Level` (0 when absent) at +770h and
 //     `LevelUpSeconds` (10 when absent) at +76Ch; the constructor clears +774h;

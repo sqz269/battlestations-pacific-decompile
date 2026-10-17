@@ -15590,3 +15590,20 @@ very large HP against 100-170 per direct hit and few heavy shots land; torpedoes
   already 9) and `0092BD30` on `[unit+1018h]` (`0081BF4C`).
   **Predictions:** identical gameplay on every row where no closed-role ship leaves the map; where one does, only
   the exitzone listeners' firing changes (an objective keyed on that exit).
+
+### 266.4 `kAutoTargetPhaseDrawBound` flipped ON (by mechanism)
+
+Pair `g49_aoff` / `g49_aon` (`829cac9fc`, reference env, `local\g49_q1.jobs`; manifests `local\g49_aon_<row>.log.manifest.json`):
+
+| Row | Verdict | Mission end OFF -> ON |
+| --- | --- | --- |
+| smoke (USN15, 300 frames) | gameplay identical; the new line `43 controllers seeded` | - |
+| USN01 `usn01_p8_u1_i` | gameplay identical | completed 365.03 s both |
+| JM06 `jm06_s49_j6_s` | gameplay identical (still no end, as since 263.1) | none both |
+| JM08 `jm08_l59_j8_r12` (110000 frames) | gameplay identical | none both |
+| USN12 `usn12_g45_u12_e7` | MOVED: deaths 136 -> 135 (Stanley lives), shots 17349 -> 20228 | completed 1680.51 -> 1685.52 s |
+
+The only native counts that move are the auto-target thinks (one more or one fewer per director). USN12's first
+gameplay divergence is a fire-target pick: at ship-AI step 10150 Samidare holds `fire=Charles` in ON only, the
+listing being identical before it. That is the predicted mechanism (the think phase moves a target pick), so the
+switch is flipped ON. USN12 still wins.
