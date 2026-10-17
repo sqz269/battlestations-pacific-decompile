@@ -221,6 +221,30 @@ public:
     virtual void tree_iterator_increment_0059f160(void* iterator) = 0;
     virtual void tree_erase_subtree_0059fdb0(void* tree, void* node) = 0;
 
+    // ---- multiplayer error screen (segment 22, 005D26D0) ----
+    // 00AA0F70 BSP_GuiManager_ResetScreens: __fastcall(ECX = manager).
+    virtual void gui_manager_reset_screens_00aa0f70(void* manager) = 0;
+    // 00531030 BSP_NativeString_ConstructByte: __thiscall(ECX = out, char), RET 4, EAX = out.
+    virtual void* native_string_construct_byte_00531030(void* out, std::int8_t value) = 0;
+    // 004C5E60 BSP_WideString_ConstructFromCString: __thiscall(ECX = out, const char*), RET 4.
+    virtual void wide_string_construct_004c5e60(void* out, const char* text) = 0;
+    // 00531130 BSP_TextContext_SetGlyphReference: __thiscall(ECX = text,
+    // wide wrapper*, listener, reference text), RET 0Ch.
+    virtual void text_context_set_glyph_reference_00531130(void* text, const void* wide, void* listener,
+                                                           void* reference) = 0;
+    // 00AB80C0 BSP_TextContext_ClearGlyphChildren: __fastcall(ECX = text).
+    virtual void text_context_clear_glyph_children_00ab80c0(void* text) = 0;
+    // 00A9BF90 BSP_GuiListbox_ClearItems: __fastcall(ECX = listbox).
+    virtual void gui_listbox_clear_items_00a9bf90(void* listbox) = 0;
+    // 00A9AC70 BSP_GuiListbox_SetInputFilter: __thiscall(ECX = listbox, filter code address), RET 4.
+    virtual void gui_listbox_set_input_filter_00a9ac70(void* listbox, std::uint32_t filter) = 0;
+    // Listbox vtable +40h: __thiscall(ECX = listbox, float), RET 4.
+    virtual void widget_vcall_40_float(void* widget, float value) = 0;
+    // 005D24F0 BSP_MultiErrorScreen_ShowMessage: __fastcall(ECX = screen).
+    virtual void multi_error_show_message_005d24f0(void* screen) = 0;
+    // Command owner vtable +1Ch: __thiscall(ECX = owner), no arguments.
+    virtual void command_owner_vcall_1c(void* owner) = 0;
+
     // ---- rewards screen (segment 26) ----
     // 00A3EB00 BSP_XenonSystemManager_GetActiveXuid: __fastcall(ECX =
     // [00F8ABE8]), EDX:EAX.
@@ -348,6 +372,10 @@ void cc13_sweepB5_hud_map_acquire_cone_model_005a9770(void* screen, const float*
 // (open/close by input, the text editor, the message rows and their fade).
 void cc13_sweepB5_multi_chat_screen_update_005d18a0(void* screen, float unused, Cc13SweepB5Host& host);
 
+// 005D26D0 BSP_MultiErrorScreen_Enter: binds the dialog widgets, sets the
+// glyph references and option texts and shows the current message.
+void cc13_sweepB5_multi_error_screen_enter_005d26d0(void* screen, Cc13SweepB5Host& host);
+
 // ---------------------------------------------------------------------------
 // Segment 23
 // ---------------------------------------------------------------------------
@@ -372,6 +400,15 @@ void cc13_sweepB5_rewards_screen_refresh_page_00621c60(void* screen, std::uint32
 // highlight widgets of the list at screen+15Ch in by dt * 4 and clears
 // screen+2B0h when the walk ends on a fully lit slot (or the list is empty).
 void cc13_sweepB5_hud_support_update_slot_highlights_0065fbf0(void* screen, float dt, Cc13SweepB5Host& host);
+
+// 00660B10 BSP_HudSupportManagerScreen_BeginScrollForward: shifts the four
+// slot widget arrays by one (down, or up when +154h is set) and clones a new
+// slot from the template +138h into the freed end.
+void cc13_sweepB5_hud_support_begin_scroll_forward_00660b10(void* screen, Cc13SweepB5Host& host);
+
+// 00661240 BSP_HudSupportManagerScreen_BeginScrollBack: the mirror of
+// 00660B10 over the second slot group (+0ACh/+0BCh/+0DCh).
+void cc13_sweepB5_hud_support_begin_scroll_back_00661240(void* screen, Cc13SweepB5Host& host);
 
 // 00668770: rebuilds the support-manager unit list (+1ECh) and the unit ->
 // marker widget map (+3FCh) from the game's unit list, then places every

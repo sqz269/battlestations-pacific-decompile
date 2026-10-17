@@ -1652,6 +1652,137 @@ void cc13_sweepB5_multi_chat_screen_update_005d18a0(void* screen, float unused, 
     }
 }
 
+// 005D26D0 BSP_MultiErrorScreen_Enter (ledger name). __thiscall(ECX = error
+// screen), RET; EBP frame aligned to 8, EH frame (handler 00C73D88, states
+// 0..0Dh). Vtable 00CF1BF4 slot +18h; no direct callers.
+//
+// Children (00AA7E00(parent, &name, 1), names built and released): +14h =
+// "Message_Text" and +18h = "MessageLower_Text" of +10h; +2Ch =
+// "dialog_BG_FrameBox" of +10h; +1Ch = "Options_Listbox" of +2Ch; +20h
+// "Yes_Text", +24h "No_Text", +28h "Accept_Text" of +1Ch. +2Ch vtable
+// +84h([00E198C4] != 0). +50h = 1, then byte [00F88A30] clear -> +50h = 0,
+// set -> 00AA0F70(004C12B0()).
+// Glyph text: 00531030(a, -5Dh), 00531030(b, -5Eh), c = 004261A0(b, out,
+// a); wide = 004C5E60(c.data, or 00E19536 when null); c, b, a released.
+// For +20h/+24h/+28h: 00531130(text, &wide, screen+0Ch, text), 00AA6BC0(
+// text, 0, 0), +1B4h = 1, +1B8h = (float)(0.0 / 960.0) (00CEC380; +0.0f),
+// +1BCh = 0.011111111f (00CED318). Then 00AB80C0 and 00ABBE50("", 1) on each.
+// Messages: the native-string vector at screen + 30h + 10h*[+50h] (+4h
+// first, +8h last; subscript checks as written): entries 0/1/2 to
+// +20h/+24h/+28h by 00ABAED0(.., 1). 00A9AC40(+1Ch, 0), vtable +60h(0),
+// 00A9BF90.
+// +54h == 4 and [00E08898] == 4: entries 3/4 to +20h/+24h, +20h/+24h shown,
+// +28h hidden, and with +50h == 0 both +20h and +24h inserted (00A9D750);
+// otherwise +20h/+24h hidden, +28h shown and, with +50h == 0, +28h
+// inserted. +50h == 0 then: +1Ch vtable +60h(1), 00A9C7C0(0),
+// 00A9AC70(006964B0), 00A9AC40(screen+8), vtable +40h(0.0f).
+// 005D24F0; the command owner [00E1930C]: +5 set -> vtable +1Ch; +4 = +5 = 0;
+// 004F83B0. The wide string is released (length * 2 + 2 bytes). No RNG.
+void cc13_sweepB5_multi_error_screen_enter_005d26d0(void* screen, Cc13SweepB5Host& host) {
+    auto find_into = [&](std::size_t slot, void* parent, std::uint32_t literal, std::uint32_t length) {
+        with_child(parent, literal, length, host, [&](void* child) { at<void*>(screen, slot) = child; });
+    };
+    find_into(0x14, at<void*>(screen, 0x10), 0x00CED36Cu, 0x0C);
+    find_into(0x18, at<void*>(screen, 0x10), 0x00CF1BACu, 0x11);
+    find_into(0x2C, at<void*>(screen, 0x10), 0x00CED2F4u, 0x12);
+    find_into(0x1C, at<void*>(screen, 0x2C), 0x00CED35Cu, 0x0F);
+    find_into(0x20, at<void*>(screen, 0x1C), 0x00CED350u, 0x08);
+    find_into(0x24, at<void*>(screen, 0x1C), 0x00CED348u, 0x07);
+    find_into(0x28, at<void*>(screen, 0x1C), 0x00CED33Cu, 0x0B);
+    host.widget_vcall_84(at<void*>(screen, 0x2C), image_pointer(host, 0x00E198C4) != nullptr ? 1 : 0);
+    at<std::int32_t>(screen, 0x50) = 1;
+    if (*static_cast<std::uint8_t*>(host.image_global(0x00F88A30u)) == 0) {
+        at<std::int32_t>(screen, 0x50) = 0;
+    } else {
+        host.gui_manager_reset_screens_00aa0f70(host.gui_manager_get_004c12b0());
+    }
+
+    Cc13SweepBNativeString wide;  // [ESP+18h], {length, wchar_t* data}
+    {
+        Cc13SweepBNativeString a;  // [ESP+30h]
+        Cc13SweepBNativeString b;  // [ESP+28h]
+        Cc13SweepBNativeString c;  // [ESP+20h]
+        void* first = host.native_string_construct_byte_00531030(&a, -0x5D);
+        void* second = host.native_string_construct_byte_00531030(&b, -0x5E);
+        const auto* joined =
+            static_cast<const Cc13SweepBNativeString*>(host.native_string_concat_004261a0(second, &c, first));
+        const char* data = joined->data != nullptr ? joined->data
+                                                   : static_cast<const char*>(host.image_global(0x00E19536u));
+        host.wide_string_construct_004c5e60(&wide, data);
+        release_string(c, host);
+        release_string(b, host);
+        release_string(a, host);
+    }
+    const float origin = static_cast<float>(0.0 / f64_bits(0x408E000000000000ull));  // 00CEC380, 960.0
+    for (std::size_t slot : {std::size_t{0x20}, std::size_t{0x24}, std::size_t{0x28}}) {
+        void* text = at<void*>(screen, slot);
+        host.text_context_set_glyph_reference_00531130(text, &wide, static_cast<std::uint8_t*>(screen) + 0xC, text);
+        host.gui_widget_set_listener_00aa6bc0(at<void*>(screen, slot), nullptr, 0);
+        void* target = at<void*>(screen, slot);
+        at<std::uint8_t>(target, 0x1B4) = 1;
+        at<float>(target, 0x1B8) = origin;
+        at<float>(target, 0x1BC) = f32_bits(0x3C360B61u);  // 00CED318
+    }
+    for (std::size_t slot : {std::size_t{0x20}, std::size_t{0x24}, std::size_t{0x28}}) {
+        host.text_context_clear_glyph_children_00ab80c0(at<void*>(screen, slot));
+        host.gui_text_set_localised_cstring_00abbe50(at<void*>(screen, slot),
+                                                     static_cast<const char*>(host.image_global(0x00CE3A0Cu)), 1);
+    }
+
+    auto message = [&](std::uint32_t entry) {
+        auto* vector = static_cast<std::uint8_t*>(screen) + 0x30 + 0x10 * at<std::int32_t>(screen, 0x50);
+        auto* first = at<std::uint8_t*>(vector, 4);
+        if (first == nullptr || !(static_cast<std::uint32_t>((at<std::uint8_t*>(vector, 8) - first) >> 3) > entry)) {
+            host.crt_invalid_parameter_noinfo_00bf6713();
+        }
+        return at<std::uint8_t*>(vector, 4) + 8 * entry;
+    };
+    host.gui_text_set_localised_source_00abaed0(at<void*>(screen, 0x20), message(0), 1);
+    host.gui_text_set_localised_source_00abaed0(at<void*>(screen, 0x24), message(1), 1);
+    host.gui_text_set_localised_source_00abaed0(at<void*>(screen, 0x28), message(2), 1);
+    host.gui_listbox_set_listener_00a9ac40(at<void*>(screen, 0x1C), nullptr);
+    host.widget_vcall_60(at<void*>(screen, 0x1C), 0);
+    host.gui_listbox_clear_items_00a9bf90(at<void*>(screen, 0x1C));
+
+    if (at<std::int32_t>(screen, 0x54) == 4 && *static_cast<std::int32_t*>(host.image_global(0x00E08898u)) == 4) {
+        host.gui_text_set_localised_source_00abaed0(at<void*>(screen, 0x20), message(3), 1);
+        host.gui_text_set_localised_source_00abaed0(at<void*>(screen, 0x24), message(4), 1);
+        host.widget_vcall_34_set_visible(at<void*>(screen, 0x20), 1);
+        host.widget_vcall_34_set_visible(at<void*>(screen, 0x24), 1);
+        host.widget_vcall_34_set_visible(at<void*>(screen, 0x28), 0);
+        if (at<std::int32_t>(screen, 0x50) == 0) {
+            host.gui_listbox_insert_row_00a9d750(at<void*>(screen, 0x1C), at<void*>(screen, 0x20), nullptr, 0);
+            host.gui_listbox_insert_row_00a9d750(at<void*>(screen, 0x1C), at<void*>(screen, 0x24), nullptr, 0);
+        }
+    } else {
+        host.widget_vcall_34_set_visible(at<void*>(screen, 0x20), 0);
+        host.widget_vcall_34_set_visible(at<void*>(screen, 0x24), 0);
+        host.widget_vcall_34_set_visible(at<void*>(screen, 0x28), 1);
+        if (at<std::int32_t>(screen, 0x50) == 0) {
+            host.gui_listbox_insert_row_00a9d750(at<void*>(screen, 0x1C), at<void*>(screen, 0x28), nullptr, 0);
+        }
+    }
+    if (at<std::int32_t>(screen, 0x50) == 0) {
+        host.widget_vcall_60(at<void*>(screen, 0x1C), 1);
+        host.listbox_select_index_00a9c7c0(at<void*>(screen, 0x1C), 0);
+        host.gui_listbox_set_input_filter_00a9ac70(at<void*>(screen, 0x1C), 0x006964B0u);
+        host.gui_listbox_set_listener_00a9ac40(at<void*>(screen, 0x1C), static_cast<std::uint8_t*>(screen) + 8);
+        host.widget_vcall_40_float(at<void*>(screen, 0x1C), 0.0f);
+    }
+
+    host.multi_error_show_message_005d24f0(screen);
+    void* owner = image_pointer(host, 0x00E1930C);
+    if (at<std::uint8_t>(owner, 5) != 0) {
+        host.command_owner_vcall_1c(owner);
+    }
+    at<std::uint8_t>(owner, 4) = 0;
+    at<std::uint8_t>(owner, 5) = 0;
+    host.frontend_screen_commit_visibility_004f83b0(owner);
+    if (wide.data != nullptr) {
+        host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), wide.data, wide.length * 2 + 2, 1);
+    }
+}
+
 // ---------------------------------------------------------------------------
 // Segment 23
 // ---------------------------------------------------------------------------
@@ -1968,6 +2099,164 @@ void cc13_sweepB5_hud_support_update_slot_highlights_0065fbf0(void* screen, floa
     if (highlight_alpha(node) == 1.0f) {
         at<std::uint8_t>(screen, 0x2B0) = 0;
     }
+}
+
+// 00660B10 BSP_HudSupportManagerScreen_BeginScrollForward (ledger name).
+// __thiscall(ECX = support-manager screen), RET; EBP frame aligned to 8, EH
+// frame (handler 00C7B4B0, states 0..9 for the child names). Sole caller
+// 00675C40 (cc9's support-manager update).
+//
+// +2C0h = 1; arrows +100h/+104h vtable +34h(1). Slot arrays (4 entries
+// each): A +7Ch (slot root), B +8Ch (icon_L_Icon), C +0CCh (circle_HL_Icon),
+// D +9Ch (number_Text), E +108h (circle_small_01_Group), F +118h
+// (circle_small_02_Group).
+// +154h clear: +13Ch/+140h = A[0]/B[0]; every array shifts down (i = 0..2:
+// x[i] = x[i+1], the six arrays interleaved per i); A[3] = 00AAB4C0(+138h,
+// 0) with vtable +34h(1); B[3] = A[3]'s "icon_L_Icon" (00CF4DDC, 0Bh) with
+// vtable +88h(3, 0, 1.0f); C[3] = "circle_HL_Icon" (00CF4DC0, 0Eh) with
+// +34h(0); B[3] vtable +44h((float)(+2A8h * 5.0 (double 00D7A370) -
+// +2A4h)); D[3] = B[3]'s "number_Text" (00CF4DD0, 0Bh); A[3] vtable
+// +44h((float)(+2A8h * 5.0 + +2A4h)); E[3] / F[3] = A[3]'s
+// "circle_small_01_Group" (00CF4DA8, 15h) / "circle_small_02_Group"
+// (00CF4D90, 15h), both +34h(0); new = A[3].
+// +154h set: +13Ch/+140h = A[3]/B[3]; every array shifts up (i = 3..1:
+// x[i] = x[i-1]); the same build into index 0, with B[0] +44h(-0.0f -
+// +2A4h) (SUBSS) and A[0] +44h(+2A4h); new = A[0].
+// Both: 0065E870(screen, new, 0.0f); +2B8h = 1.0f. No RNG draws.
+void cc13_sweepB5_hud_support_begin_scroll_forward_00660b10(void* screen, Cc13SweepB5Host& host) {
+    at<std::uint8_t>(screen, 0x2C0) = 1;
+    host.widget_vcall_34_set_visible(at<void*>(screen, 0x100), 1);
+    host.widget_vcall_34_set_visible(at<void*>(screen, 0x104), 1);
+    auto find_into = [&](std::size_t slot_offset, void* parent, std::uint32_t literal, std::uint32_t length) {
+        with_child(parent, literal, length, host, [&](void* child) { at<void*>(screen, slot_offset) = child; });
+    };
+    const bool back = at<std::uint8_t>(screen, 0x154) != 0;
+    const std::size_t arrays[6] = {0x7C, 0xCC, 0x8C, 0x108, 0x118, 0x9C};  // the image's per-i copy order
+    std::size_t index;
+    if (!back) {
+        at<void*>(screen, 0x13C) = at<void*>(screen, 0x7C);
+        at<void*>(screen, 0x140) = at<void*>(screen, 0x8C);
+        for (std::size_t i = 0; i < 3; ++i) {
+            for (std::size_t array : arrays) {
+                at<void*>(screen, array + 4 * i) = at<void*>(screen, array + 4 * (i + 1));
+            }
+        }
+        index = 3;
+    } else {
+        at<void*>(screen, 0x13C) = at<void*>(screen, 0x88);
+        at<void*>(screen, 0x140) = at<void*>(screen, 0x98);
+        for (std::size_t i = 3; i >= 1; --i) {
+            for (std::size_t array : arrays) {
+                at<void*>(screen, array + 4 * i) = at<void*>(screen, array + 4 * (i - 1));
+            }
+        }
+        index = 0;
+    }
+    const std::size_t a = 0x7C + 4 * index;
+    const std::size_t b = 0x8C + 4 * index;
+    at<void*>(screen, a) = host.widget_clone_subtree_00aab4c0(at<void*>(screen, 0x138), nullptr);
+    host.widget_vcall_34_set_visible(at<void*>(screen, a), 1);
+    find_into(b, at<void*>(screen, a), 0x00CF4DDCu, 0x0B);
+    host.widget_vcall_88(at<void*>(screen, b), 3, 0, 1.0f);
+    find_into(0xCC + 4 * index, at<void*>(screen, a), 0x00CF4DC0u, 0x0E);
+    host.widget_vcall_34_set_visible(at<void*>(screen, 0xCC + 4 * index), 0);
+    const double five = f64_bits(0x4014000000000000ull);  // 00D7A370
+    if (!back) {
+        host.widget_vcall_44_set_float(
+            at<void*>(screen, b), static_cast<float>(at<float>(screen, 0x2A8) * five - at<float>(screen, 0x2A4)));
+    } else {
+        host.widget_vcall_44_set_float(at<void*>(screen, b), f32_bits(0x80000000u) - at<float>(screen, 0x2A4));
+    }
+    find_into(0x9C + 4 * index, at<void*>(screen, b), 0x00CF4DD0u, 0x0B);
+    if (!back) {
+        host.widget_vcall_44_set_float(
+            at<void*>(screen, a), static_cast<float>(at<float>(screen, 0x2A8) * five + at<float>(screen, 0x2A4)));
+    } else {
+        host.widget_vcall_44_set_float(at<void*>(screen, a), at<float>(screen, 0x2A4));
+    }
+    find_into(0x108 + 4 * index, at<void*>(screen, a), 0x00CF4DA8u, 0x15);
+    find_into(0x118 + 4 * index, at<void*>(screen, a), 0x00CF4D90u, 0x15);
+    host.widget_vcall_34_set_visible(at<void*>(screen, 0x108 + 4 * index), 0);
+    host.widget_vcall_34_set_visible(at<void*>(screen, 0x118 + 4 * index), 0);
+    host.hud_support_set_large_icon_alpha_0065e870(screen, at<void*>(screen, a), 0.0f);
+    at<float>(screen, 0x2B8) = 1.0f;
+}
+
+// 00661240 BSP_HudSupportManagerScreen_BeginScrollBack (ledger name).
+// __thiscall(ECX = support-manager screen), RET; EBP frame aligned to 8, EH
+// frame (handler 00C7B510, states 0..9). Sole caller 00675C40.
+//
+// +2C1h = 1; arrows +0F8h/+0FCh vtable +34h(0). Slot arrays of 4: A +0ACh
+// (root), B +0BCh (icon_L_Icon), C +0DCh (circle_HL_Icon).
+// +154h clear: +14Ch/+150h/+148h = B[3]/C[3]/A[3]; C[0] vtable +34h(0);
+// shift up (i = 3..1, order A, C, B per i); A[0] = 00AAB4C0(+138h, 0) with
+// +34h(1); B[0] = its "icon_L_Icon"; B[0]'s "number_Text" +34h(0); B[0]
+// vtable +88h(3, 0, 1.0f); A[0]'s "circle_small_01_Group" and
+// "circle_small_02_Group" +34h(0); C[0] = A[0]'s "circle_HL_Icon" with
+// +34h(1); B[0] +44h(-0.0f - +2A4h) (SUBSS); A[0] +44h(+2A4h); new = A[0].
+// +154h set: +148h/+150h/+14Ch = A[0]/C[0]/B[0]; C[3] +34h(0); shift down
+// (i = 0..2, order A, C, B); the same build into index 3 with B[3]
+// +44h((float)(+2A8h * 5.0 - +2A4h)) and A[3] +44h((float)(+2A8h * 5.0 +
+// +2A4h)) (double 00D7A370); new = A[3].
+// Both: 0065E870(screen, new, 0.0f); +2BCh = 1.0f. Child names as in
+// 00660B10, each built and released around its 00AA7E00. No RNG draws.
+void cc13_sweepB5_hud_support_begin_scroll_back_00661240(void* screen, Cc13SweepB5Host& host) {
+    at<std::uint8_t>(screen, 0x2C1) = 1;
+    host.widget_vcall_34_set_visible(at<void*>(screen, 0xF8), 0);
+    host.widget_vcall_34_set_visible(at<void*>(screen, 0xFC), 0);
+    const bool back = at<std::uint8_t>(screen, 0x154) != 0;
+    const std::size_t arrays[3] = {0xAC, 0xDC, 0xBC};  // the image's per-i copy order
+    std::size_t index;
+    if (!back) {
+        at<void*>(screen, 0x14C) = at<void*>(screen, 0xC8);
+        at<void*>(screen, 0x150) = at<void*>(screen, 0xE8);
+        at<void*>(screen, 0x148) = at<void*>(screen, 0xB8);
+        host.widget_vcall_34_set_visible(at<void*>(screen, 0xDC), 0);
+        for (std::size_t i = 3; i >= 1; --i) {
+            for (std::size_t array : arrays) {
+                at<void*>(screen, array + 4 * i) = at<void*>(screen, array + 4 * (i - 1));
+            }
+        }
+        index = 0;
+    } else {
+        at<void*>(screen, 0x148) = at<void*>(screen, 0xAC);
+        at<void*>(screen, 0x150) = at<void*>(screen, 0xDC);
+        at<void*>(screen, 0x14C) = at<void*>(screen, 0xBC);
+        host.widget_vcall_34_set_visible(at<void*>(screen, 0xE8), 0);
+        for (std::size_t i = 0; i < 3; ++i) {
+            for (std::size_t array : arrays) {
+                at<void*>(screen, array + 4 * i) = at<void*>(screen, array + 4 * (i + 1));
+            }
+        }
+        index = 3;
+    }
+    const std::size_t a = 0xAC + 4 * index;
+    const std::size_t b = 0xBC + 4 * index;
+    const std::size_t c = 0xDC + 4 * index;
+    auto hide_child = [&](void* parent, std::uint32_t literal, std::uint32_t length) {
+        with_child(parent, literal, length, host, [&](void* child) { host.widget_vcall_34_set_visible(child, 0); });
+    };
+    at<void*>(screen, a) = host.widget_clone_subtree_00aab4c0(at<void*>(screen, 0x138), nullptr);
+    host.widget_vcall_34_set_visible(at<void*>(screen, a), 1);
+    with_child(at<void*>(screen, a), 0x00CF4DDCu, 0x0B, host, [&](void* child) { at<void*>(screen, b) = child; });
+    hide_child(at<void*>(screen, b), 0x00CF4DD0u, 0x0B);
+    host.widget_vcall_88(at<void*>(screen, b), 3, 0, 1.0f);
+    hide_child(at<void*>(screen, a), 0x00CF4DA8u, 0x15);
+    hide_child(at<void*>(screen, a), 0x00CF4D90u, 0x15);
+    with_child(at<void*>(screen, a), 0x00CF4DC0u, 0x0E, host, [&](void* child) { at<void*>(screen, c) = child; });
+    host.widget_vcall_34_set_visible(at<void*>(screen, c), 1);
+    if (!back) {
+        host.widget_vcall_44_set_float(at<void*>(screen, b), f32_bits(0x80000000u) - at<float>(screen, 0x2A4));
+        host.widget_vcall_44_set_float(at<void*>(screen, a), at<float>(screen, 0x2A4));
+    } else {
+        const double five = f64_bits(0x4014000000000000ull);  // 00D7A370
+        host.widget_vcall_44_set_float(
+            at<void*>(screen, b), static_cast<float>(at<float>(screen, 0x2A8) * five - at<float>(screen, 0x2A4)));
+        host.widget_vcall_44_set_float(
+            at<void*>(screen, a), static_cast<float>(at<float>(screen, 0x2A8) * five + at<float>(screen, 0x2A4)));
+    }
+    host.hud_support_set_large_icon_alpha_0065e870(screen, at<void*>(screen, a), 0.0f);
+    at<float>(screen, 0x2BC) = 1.0f;
 }
 
 // 00668770 BSP_HudSupportManagerScreen_RebuildUnitMarkers (hypothesis; ledger
