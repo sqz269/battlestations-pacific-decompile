@@ -17980,3 +17980,522 @@ with manifests; plan census `local\s51_ordsum.py <orders> [unit-regex]`. Build: 
 - **Next:** a7 = a6 + NH `attack "Capture Post 02"` 47000-51500 and `"Capture Post 04"` 52000-61000 (every 500); a8 = a7
   without TT6's 37400 redirect (TT6 stays on HQ2). Both died at renderer init (hr 0x88760868, display asleep) at
   19:18-19:32 local and must be re-run. Then: the 251 CB2/HQ2 line, the Betty member hunts (k30), jitter.
+
+## 256. USNOS phase 1 never ends; capture slot pick and CB SetParty audited; BSM09 cause; seg-61 spawner scope (cc9-ships52, 2026-10-16; lead items 1-4)
+
+Build: this tree at 25fbdcba0 (origin/main f9d36bb0e merged). Runs: reference env, `local\s52_rows.ps1` (s51_rows plus
+`-ExtraEnv`), logs `local\s52_t_<v>.log` with manifests and `-Traj` csv; helpers `local\s52_ttpos.py <csv> <unit-re>
+[period] [refs]` (sampled positions and distances), `local\s52_wave.py <log>` (SpawnNew serial 1-6 members and deaths),
+`local\s52_merge.py` (frame-sorted order merge), `local\s52_grep.py` (grep).
+
+**Item 1, USNOS.** ships51's a7/a8 (section 255) ran to 200000 frames with no end and no SetParty. NH kills Capture
+Post 04 at 2863 s, TT3 parks alive 891 m from HQ1 from about 3500 s, and HQ1 is neutral from 1689.75 s. Capture Post 04
+was therefore not the blocker. **Phase 2 never starts on current main.** The capture loop (`us_osumi.lua` 1051-1118) sits
+under `MissionPhase == 2` and `luaObj_IsActive("primary", 2)`. A `BSP_LUA_CALLBACK_TRACE` run (`local\s52_d_a7.log`, 72000
+frames) shows `luaObj_Add` called once (primary 1 only), and no Loui/Portland3/Gear19-22 GenerateObject appears in any
+a-run (k28 has them). Phase 1 ends only when `Mission.PhOneAttackers` is empty after wave 2 (:995-1011). Wave 2's
+level bombers `plane #4.4|.-2/-3/-4` (SpawnNew serial 4, 320 s) enter `LevelBomb/goaway` at 426 s, after their release on
+TT4. They stay in it for the rest of the run and fly south off the map: (-1894, -32452) at 800 s, (-40815, -97736) at 2000
+s, `local\s52_t_a7_p44.txt`. On k28 (68fe87dba) the same wingmen also entered goaway at 430 s but stayed close, and
+Enterprise_sqn03 killed them at 797-815 s. The host's 009B88F0 transition (src/plane_level_bomb_task.cpp) leaves goaway
+only when `engaged` is false or when goaway_ready holds with ordnance left. A wingman with no ordnance whose +CDh latch
+stays set never leaves. The candidate commits since k28 are the level-bomb flips 8da8304e0 and d99550ee5 (a7's summary
+for #4.4|.-2: issues=24, passthrough_releases=23). Routed to the planes lane through the lead; not established here.
+Workarounds tried: a9/a10 (`local\s52_os_a9.txt`, `a10.txt`) launch three Enterprise F2G flights at the wingmen at
+frames 7000 and 8400. The launches applied, but no wingman died. a9 failed at 4690.54 s (Enterprise <- Shima7; NH <-
+Zao3 at 2108; TT3 <- Capture Post 04 at 3062), and a10 has no end. Both also took deck slots that the later 11340/11360
+launches needed. No win is possible on this plan until the wingmen leave goaway or die.
+
+**Item 2, capture host gaps: none found.**
+- *Completion slot pick 006F70E6..006F71F5.* A slot record `[[game+18CCh]+i*4]` is eligible when `+28h == side`, or
+  `+8h == 0`, or `+9h != 0 && +0Ah == 0`. The eligible slot with the strictly largest score+landed sum wins (first eligible
+  on ties; arrays at ESP+64h/+2Ch). `004BB160` sets `+8h`, `+9h` and `+0Ah` to 1 on every record (004BB21C..004BB224), and
+  only the local record's `+9h` is cleared, so in single player eligibility is `party == side`. 006F4D10 takes the new
+  party from the chosen record's `+28h` (006F4F71..006F4F7E). Every eligible record therefore gives the side's party, as
+  the host's first-match does. A scene with `MaxPlayerNum` < 8 (one installed file has 4) would make its tail records
+  eligible through `+8h == 0` (004C6AD0). That is not reached in any mission row. The USNOS logs have no
+  `flipped to party` line at all, so no completion fired there.
+- *SetParty on a CommandBuilding.* `008A8930` asks vt+5Ch(2). CB's vt+5Ch is `006F58E0`
+  (BSP_MCommandBuilding_IsKindOf, 1 for 2), so the image takes the session-message arm: 7Fh, vtable 00D032E8, routed by
+  0077C2A0 channel 7. CB HandleMessage `006F5460` handles only D3h..D6h and passes the rest to `00744BE0` (LandFort). That
+  passes 7Fh to `0095ABE0`, whose arm `0095ADA2` calls vt+2Ch = `00951F30` -> `00928F50`. That is the endpoint the host's
+  `entity_vcall_2c` calls directly (kSetPartyUnitBound), so the Lua Party mirror runs on both. The route's only drop is
+  game state < 0Ah (0077C2A3), and mission load runs at 0Ah/0Bh (004DFB70), so nothing is dropped in a mission. Delivery
+  being synchronous is taken from docs/SESSION_MESSAGE_DISPATCH.md, not re-read.
+
+**Item 3, BSM09 start failure: cause.** `bsm_09_battle_of_the_coral_sea.lua` 1102-1173 (`luaIntroMovie7`, about 45 s)
+calls `GenerateObject("NEW_Cloud 01".."72")`. These are Hidden scene rows of class 3Dh `Cloud`, held in the spawn pool.
+`run_generate_object_00944fd0` special-cases only LandConvoy 1Ah and sends every other class to
+`create_unit_from_scene_record_0046db4b`, which makes a unit; the unit's observer projection then throws (creator 0).
+Image: 0046DB4B calls descriptor[1] = `004E9E40` for Cloud (docs/ENTITY_IDENTITY.md part 3). It reads `CloudType`, creates
+through the cloud manager `[[00E188A8]+21D0h]` vtable[8], attaches and names the entity, and makes no unit. Cloud has no
+unit creator and no lua-identity row, so a non-hidden Cloud is already recorded at load as "creator 004e9e40 is not
+reconstructed" (game_hosts_scene_contents.cpp, find_scene_unit_creator null). Only BSM09 generates clouds (installation
+scan), and no script reads the result. The fix (same answer as the load path) is in game_hosts_lua.cpp, cc9-lua62's file,
+and waits on the lead's loan decision.
+
+**Item 4, seg-61 ShipSystems spawners: scope.** Section 254 had the 00933BB0 condition backwards. In 00825F20, `this` is
+unit+310h (00825F32 `LEA ESI,[EDI-310h]`). The block 008263B0..008266B2 runs only with the dead byte unit+5Dh set
+(`this-2B3h`), that is, for a sinking ship. unit+828h (`this+518h`, the host's `sink_time_828`) counts up while it sinks.
+unit+82Ch (`this+51Ch`) counts the time both hull ends have stayed below 0 and is zeroed otherwise (00826645..0082666B).
+- `00933DA0` (call 0082668B) runs every sinking tick while sinkTime < 30.0 (`[00CE7630]` double). It walks an nx x ny grid
+  with nx = ftol(class+A4h x 1.5 / 15 + 1) and ny = ftol(class+A0h x 1.5 / 15 + 1) (`[00CE3D78]` 1.5, `[00CF3F20]` 15.0,
+  00933DC2..00933E1C). Each cell draws one `00BD2FC0` on **stream 1** (00933EB0 `MOV ECX,1`). One cell in 3000 also
+  takes two `00BD2F10` stream-1 draws and spawns a point effect.
+- `00933BB0` (call 008266AA) runs every sinking tick while unit+82Ch < 40.0 (`[00CE685C]`; `COMISS 40.0, +51Ch / JBE
+  skip`), that is, from the start of sinking. It draws one `00BD2FC0` on stream 1 (00933BB7). One call in 5 takes two
+  `00BD2F10` stream-1 draws (00933BF6, 00933C12) and spawns an effect only when the sampled point is below 0.
+- So a 200 m hull (nx about 21, ny about 3) draws about 60 stream-1 values per sinking tick for 30 s. That is gameplay-
+  relevant in the default shared-generator mode, where stream 1 also feeds the gunnery draws (docs/RANDOM_STREAMS.md), and
+  inert under `BSP_GUNNERY_RNG_STREAMS=1`, where a keyed stream decouples it. Whether 00868420 BSP_PointEffect_CreateFromMatrix (00933D65)
+  draws as well is not read. A binding would follow the damage-smoke precedent (`damage_smoke_tick_008227e0` in the
+  gunnery host, called from game_hosts_units.cpp's sink block next to `sink_time_828`, with a new `Draw` key). That needs
+  the gunnery file and the shared units file, so it is not bound here.
+
+## 257. BSM09 GenerateObject clouds bound and flipped; CommandBuilding step repair bound (cc9-ships52, 2026-10-16; lead items 3, 2b)
+
+**kGenerateObjectRecordOnlyCreatorBound (src/game_hosts_lua.cpp), ON.** A held-back row whose class has no unit
+creator and no `thisTable` identity row gets the load path's answer at GenerateObject: it is marked spawned, nothing
+is made, and the call returns no result. 004E9E40 (BSP_SceneCloud_Instantiate) is modelled in src/entity_identity.cpp
+but is not called: the host has no cloud manager `[[00E188A8]+21D0h]`. The ledger evidence was appended. Runs: OFF
+c749c72c5 (tree), ON `local\s52_on` (pair_export flip). USN01 20000 frames (`local\s52_c0_u1` / `s52_c1_u1`):
+pair_diff 1, gameplay identical (only the known ship-ai-free counter moves). BSM09 36000 frames ON (`local\s52_c1_b9`):
+past luaIntroMovie7 (72 clouds recorded), Lexington `SetFailure("RunwayFailure")` at frame 897 (bsm_09:1203, arm 10,
+the kCarrierRunwayFailureBound row), then `Mission.EndMission` at 917.90 s with no orders. The exec guard refused
+sus_prog.exe. OFF dies at about 45 s (startup failed), so BSM09 cannot be paired as a gameplay diff.
+
+**kCommandBuildingStepRepairBound (src/game_hosts_ship_ai.cpp), committed OFF at 4deaef142.** Image:
+- 006F7360 006F7432..006F755C runs every fixed step while unit+378h is set. 0087BD19 writes 1, and a CommandBuilding
+  reaches it through 006F2783 -> 007482B0 -> 007482D5 -> 00955420 -> 0087BCC0. The arm calls 006F47F0(this, this, dt,
+  class+180h) and then, per linked garrison record (+14h), 006F47F0(this, unit, dt, rate). rate is class+188h for
+  IsKindOf 45h, class+18Ch for 46h, otherwise class+184h; a 1Bh fort also ORs its vt+204h(45h/46h) answers, which is
+  LABELLED as not modelled.
+- 006F47F0: f = Repair[building+770h] (004C1D10 globals +2Ch + level*4; this installation's
+  commandbuildingglobals.lua 100/110/120/130 divided by 100) * dt / rate. When f > 0 and health < max, health =
+  min(max, f*max + health) through 00877B90. The device loop (unit+48h, IsKindOf(4), f2 = Repair*dt/GunRepairTime,
+  vt+19Ch "destroyed") has no host data and stays recorded.
+- Class rates are read per 006F4360: RepairTime and InferiorRepairTime as integers (default 200),
+  InferiorRepairTimeSingle in single player, AirField/ShipYardRepairTime. This installation's vehicleclasses.lua
+  (locally modified 2026-05-09) gives RepairTime 2400, InferiorRepairTime(Single) 1200 and Air/ShipYard 360.
+- The flip's 006F47F0(1.0, 1.0) now takes f = Repair[level], which gives the same full heal at every installed level.
+- The gunnery host's `repair_unit_to_fraction` dead-unit early return (lead's note b) cannot be reached by a
+  CommandBuilding (kill_unit returns at 006F3270 first). It could only skip a dead garrison unit's hull heal. Not
+  changed (gunnery file).
+**Predictions.** Each building heals max/2400 per second (HQ at level 3, 16800 hp: 7 hp/s). Garrison forts heal
+max/1200 per second and airfield/shipyard masters max/360. USNOS: HQ1's neutralize (1689.75 s OFF) moves later or does
+not happen, depending on NH's damage rate; garrison guns recover between hits, so capture-post kill times move.
+JM08: the HQ health line and the CheckHQ failure time move.
+**Measured; flipped ON.** Pairs: OFF = tree at 4deaef142 (`local\s52_r0_*`), ON = `local\s52_rp` (pair_export
+4deaef142 with the switch flipped, `local\s52_r1_*`). Reference env.
+| row | OFF | ON | pair_diff |
+|---|---|---|---|
+| USNOS a7 72000 fr | HQ1 neutral 1797.30 s | HQ1 neutral 1841.55 s; steps=216000 | 3 |
+| JM08 l51_j8_b3 40000 fr | Headquarter 01 neutral 1418.00, failed 1418.31 s | neutral 1143.45, failed 1144.04 s; garrison heals 8.27 M (349 members, InferiorRange 100000) | 3 |
+USNOS moves as predicted: NH's fire is spread over a healing HQ1. The first other death to move is Cargo4 at 1735 -> 1748 s.
+JM08's HQ starts above its level-0 12000 (health rises toward the level-raised max, 15889 at 900 s). But its first damage
+comes about 200 s earlier and from more hitters (`local\s52_hqhp.py`: 203 hits by 1100 s ON against 160 by 1400 s
+OFF), so it falls sooner. The first moved deaths are garrison houses healing under the Nevada/San Francisco
+bombardment from 207 s (`local\s52_deathdiff.py`), and the HQ assault time follows from those. The heal mechanism matches
+006F7360/006F47F0, so the switch is flipped. JM08 keeper plans must be re-checked against it.
+
+**Item 5, LandFort StartFire 00746320: no stream gap, effect presentation only.** 00BD2F10 -> 00BD2E60 and 00BD2FC0 ->
+00BA2C20 each consume exactly one 00BA2C20 step of the selected stream (00BD2E91 / 00BD2FC7). The host's stream-0 stand-in
+(GameGunneryHost::death_mode_draw_00bd2f10) advances its generator once per call, so the effect-pick draw at 007463C1
+keeps the stream position. Only the discarded value differs (u32 % count against a float). The +744h smoke release at
+00746338..00746384 has no producer for a capture building here: +744h is written only by 007465E0 (the death arm) and
+the D1h handler. 008689C0 is BSP_PointEffect_Create, a particle effect. The host keeps the gameplay part of +740h, the
+burning flag that 00745BE0's timer and secondary-explosion arm read, and the effect object itself has no gameplay reader
+found. Nothing bound.
+
+## 258. ShipSystems sink spawners bound and flipped (cc9-ships52, 2026-10-16; lead item 4)
+
+`kShipSystemsSinkDrawsBound` (src/game_hosts_gunnery.cpp, `Draw::sink_effects` = 30). The binding is
+`GameGunneryHost::ship_systems_sink_draws_00933da0_00933bb0`, called from game_hosts_units.cpp's sink block after the
+kill-depth test. That block now also keeps unit+82Ch (`sink_under_82c`; 00826645..0082666B). The draws are those of
+section 256 item 4: the grid nx*ny while sinkTime < 30, and 1 (+2 on 1 in 5) while unit+82Ch < 40. LABELLED: a
+00BD2FC0 is one host draw, and `% n == 0` is `draw < 1/n`. The point effects are recorded. OFF 037f7863a (tree), ON
+`local\s52_sk` (pair_export).
+| row (default mode, BSP_GUNNERY_RNG_STREAMS=0) | ON draws | pair_diff | first moved |
+|---|---|---|---|
+| USN01 20000 fr (`s52_k0_u1` / `s52_k1_u1`) | 212051 | 3 | KatTBD 172-219 s; mission completes 345.04 -> 380.03 s |
+| USN02 20000 fr (`s52_k0_u2` / `s52_k1_u2`) | 55016 | 3 | Yamakaze 57.45 -> 57.50 s |
+| USNOS a7 30000 fr (`s52_k0_os` / `s52_k1_os`) | 259184 | 3 | from 32.7 s, after Gato (first wreck, 29.75 s) |
+| USN01 reference mode, STREAMS=1 (`s52_q0_u1` / `s52_q1_u1`) | 210469 | 1, gameplay identical | none |
+Every moved row moves after the first sinking, as a stream-1 consumer must, and the reference mode is inert. Flipped ON.
+LABELLED: a submarine's sink block reaches both spawners here. The image's submarine update also calls 00933BB0
+itself (008546FC); whether submarines run 00825F20's block too was not read.
+
+## 259. Handoff (cc9-ships52, 2026-10-16)
+
+Branch `agent/cc9-ships44`. Commits this session: 95c1e4e48 (256), c749c72c5/b510a54fe (BSM09 clouds ON),
+4deaef142/4285975cc (CB step repair ON), 037f7863a/82d3aa744 (sink draws ON). No leases held. Open:
+- **USNOS**: parked on the planes lane. The wave-2 level-bomber wingmen stay in LevelBomb/goaway (256), and cc9-lua62
+  is ruling on it. Once they leave goaway or die, re-run a7 (`local\s51_os_a7.txt`). Phase 2 should then start, and
+  the capture line from k28 (251) applies. Re-check against the step repair: HQ1 now goes neutral later.
+- **JM08**: the step repair moves the HQ fall (257). Its keeper plan needs a re-run.
+- **BSM09**: runs to EndMission at 917.90 s with no orders (257). It is ready as the kCarrierRunwayFailureBound pair row.
+- Not bound: the 006F47F0 device loop (no device health in the host), the D6h broadcast, and the capture warning
+  00977DA0 (presentation).
+
+## 260. BSM09 runway-failure pair and win; seg 43 band gaps; submarine wake draws (cc9-ships53, 2026-10-16; lead items 1-3)
+
+**Item 1, BSM09 kCarrierRunwayFailureBound pair: gameplay identical, mission WON with no orders.** OFF = pair_export
+2edfb11a3 with the switch false (`local\s53_rf0`), ON = tree 2edfb11a3. Reference env, 36000 frames, no orders
+(`local\s53_rf0_b9` / `s53_rf1_b9`). pair_diff 1: deaths 125/125, death rows, plane death modes, unit and native
+tables identical; only the SetFailure line's arm (0 -> 10) and the known ship-ai-free refill counter move. The arm is
+taken in ON (mission frame 897, bsm_09:1203, `00758750 72h runway on deck=yes`), but it has nothing to stop:
+Lexington's deck has stock 0 in all four slots (`air ops deck classes ... stock=101x0,113x0,108x0,101x0`), there is no
+Lexington squadron in either log, and the script scuttles it (AddWaterLoad x6, OverrideHP 0.01, luaLexLost). So "stops
+launching" is vacuous on BSM09; the mechanism row stays ESMP03 (OCEAN_WAVE_FIELD 36).
+EndMission at 917.90 s is a WIN: lua_Think primary 1 (this installation's bsm_09_battle_of_the_coral_sea.lua,
+2024-07-13, lines 521-536) fires when Zuikaku's GetHpPercentage <= 0.1 (the US AI's strikes took it from 8000 hp);
+it completes primary 1 and plays RETREATING, whose callback luaMissionComplete (t=921.85) completes every objective and
+calls luaMissionCompletedNew("Enemy carriers are retreating - Mission Complete"). Summary MissionStatus=true. The exec
+guard refused sus_prog.exe. Sent to cc9-lua62 for WINS_TABLE; no win plan is needed.
+
+**Item 2, seg 43 band 00778820..0077D270 (cc13-sweepB's cc9 list): no live gameplay gap.** Host grep per address
+(`local\s53_band_grep.py`). Not referenced by any host and why:
+- 0077A080 / 0077C880 (FORMATION_SET build and send): 0077C880 calls 0077C7B0, which only sends to peers in session
+  mode 1 (the peer list at +2A8h) and to the secondary peer in mode 2; offline it sends nothing.
+- 0077D270 (unit OnKilled, vtable +7Ch) is modelled through 00929B60/00929800 (cc9_entity_dead). Its unmodelled part,
+  `LastBanto` via 0077CD80, is read only by jm03/jm06/jm09/jm10 as the end-camera entity passed to
+  luaMissionFailedNew (presentation). Its recon-slot dirty marks (BSP_Recon_MarkSlotDirty over the three +1F0h records) were not traced.
+- 0077B050 (vtable +D4h, resolves the command target position into a caller record): data references only, no direct
+  caller; 00779EB0 and 0077A4B0 / 0077A510: no references (byte census 0). 00778820: only 00780120, the network entity
+  message dispatcher.
+The rest of the band is network/session/replication code or already hosted (IsFormationFollower, FormationLeader,
+SharesUnitGroup, MayFollowTarget, HandOverLeadership, ReleaseMember, SnapshotMembers, RequestJoinFormation).
+
+**Item 3, the section-258 label resolved; submarine wake draws bound OFF.** 00855420 (the submarine's motion, slot +8h
+of the +310h sub-object) calls 00825F20 first at 0085542F, so a sinking submarine runs 00825F20's sink block like any
+ship. The 00933BB0 call at 008546FC is a different site in 00854650: when the hull y unit+100h is in (-15.0
+[00CE3D58], -3.0 [00CE3D50]) and below unit+11D8h, 008546DF/008546E4 takes one 00BD2FC0 on stream 1, and on
+u32 % 15 == 0 calls 00933BB0 on [unit+1018h] (one more draw, two on 1 in 5). No double draw; this pick was unbound.
+unit+11D8h's only writer found in seg 53 is the constructor's 0 (00853630), so the test is y < 0 (LABELLED).
+`kSubmarineWakeDrawsBound` (src/game_hosts_gunnery.cpp, `submarine_wake_draws_008546df`, Draw::sink_effects key 2),
+called by the units host after the periscope arm once per force step (LABELLED order). The summary line
+`submarine wake draws` counts eligible ticks in OFF too.
+**Predictions.** Reference mode (STREAMS=1): inert, pair_diff 1. Default mode (STREAMS=0) USNOS a7: moves from the
+first tick a submarine's hull y is between -15 and -3 m (a periscope-depth Gato), so earlier than the 32.7 s of the
+sink-draw pair; missions without submarines identical.
+
+**Item 4, cc13-sweepA2's 00525250 / 00523130: player input, not swapped.** The stand-in in
+src/game_hosts_mission_frame.cpp (packet cc9_player_squadron_target) is the --helm-orders harness's squadron target
+order: it drives only what the player's screen-centre pick would issue to the controlled squadron (settarget through
+0077D600 -> 007F1940). The faithful bodies in src/cc13_sweepA2.cpp run over raw image memory (the game unit list
+[game+19BCh], the screen-centre distance 00522050 and the 005220C0 screen test), which the host does not have, and the
+pick depends on where the player points the camera, which the order file names instead. Differences from the stand-in,
+recorded: the image also requires the side count >= 2 and 00804350(owner, unit, 5) (detected by the player's sensors),
+and picks attackmove 00E08F78 instead of settarget when game+19C4h is set, the player answers +5Ch(6) and allows
+"attackmove" (00522680, inlined). game+19C4h's meaning is still open (IN_MISSION_INTERFACE_RUNTIME.md 460). No
+autonomous gameplay reads the pick.
+
+**Item 3 measured; kSubmarineWakeDrawsBound flipped ON.** OFF = tree 7b1fb8756, ON = `local\s53_wk` (pair_export).
+USNOS a7 30000 frames.
+| row | ON picks / sprays | pair_diff | first moved |
+|---|---|---|---|
+| reference mode, STREAMS=1 (`s53_w0r_os` / `s53_w1r_os`) | 3999 / 275 | 1, gameplay identical | none |
+| default mode, STREAMS=0 (`s53_w0d_os` / `s53_w1d_os`) | 4105 / 286 | 3 | deaths from 11.4 s (175 -> 160) |
+OFF counts 4119 (default) and 3999 (reference) eligible ticks. The default-mode row moves before the sink-draw row's
+32.7 s, as predicted for a pick that starts with a submerged Gato, and the reference mode is inert. Flipped ON.
+
+**Item 3 remainder, the other section-254 seg-61 sites.** 00933BB0 / 00933DA0 are now hosted (258, 260). 0092E5B0 is
+multiplayer only; 0092F930, 0093A2C0 / 0093AA00, 0093B920 and 0093BD80 draw nothing and are hosted or header-modelled.
+00935D30 (breakup) is the gunnery lane's (unit_death_sink.hpp). Left: **00935540**, the sinking-wreck debris, recorded
+only (`UnitInstance::spawn_wake`). Read for binding, not bound:
+- Gate (00825A59..00825B37): the dead byte +5Dh (the host's `state->simulate`, set at 0092639B, so the host's step 8 is
+  gated correctly: 173686 `wake_setting` calls on USNOS a7, dead units only), then ShipGlobals DebrisEnabled
+  (settings+680h; true in this installation's shipglobals.lua, 2024-07-13), the one-shot [ShipSystems+88h], and both
+  hull-end heights below -5.0 [00CFBC84]. The host's `wake_enabled()` answers false, so the arm never runs.
+- Body: ECX = unit+C4h; kinds 0Eh and 8 (submarines) spawn nothing. count = _ftol(settings+684h (0.3) * _ftol(arg4)),
+  arg4 the third of the three extents max - min of 00C31F90(body+38h..+4Ch). Per piece eight 00BD2F10 draws, confirmed
+  at 00935738, 00935985, 009359A5, 009359C9, 00935A19, 00935A81, 00935AEC and 00935B91, then 00447510.
+- Open before binding: whether body+38h..+4Ch is the body's local or world box (the host's 00C31F90 is an
+  unimplemented stub in game_hosts_fixed_step.cpp). A world box makes the count depend on the heading at the moment
+  both ends go under. GUNNERY_OPEN_ITEMS 99.3 declined this binding; 258 and 260 bound the sibling draws, so binding
+  it would complete the set, with the class hull box (`class_hull_box`) z extent as a labelled stand-in.
+
+## 261. 007ADD70 path-cursor follow step bound OFF (cc9-ships53, 2026-10-17; lead item 1b)
+
+`kPathCursorFollowStepBound` (include/bsp/ship_ai_path_cursor.hpp), `ship_ai_path_follow_step_007add70`
+(src/ship_ai_path_cursor.cpp). This is a port of cc13-sweepB4's `cc13_sweepB4_path_cursor_follow_step_007add70` onto
+the host's cursor and point vector. cc13's function cannot be called directly: its `Cc13SweepB4Host` inherits about
+480 pure virtuals from the sweepB chain. Its documented divergence is kept: step 0 outside modes 1..3.
+**The arm's arguments (00836BF0..00836D05, traced from the listing):** ECX is 0071BFF0(director, 0). The arguments are:
+- pos: the unit position from 00427EB0.
+- radius: min(unit+9C8h * 2.5, turn radius * 1.2), as before.
+- count: the AL of slot 0's vt[+0Ch] 0071FC40, stored as a byte at [ESP+10h]. The upper three bytes are uninitialised
+  stack and only matter outside modes 1..3 (LABELLED as 0).
+- heading: unit->vtable[50h] (006DFD60, unit+1050h).
+- factor: 0.5 [00CE3800].
+- force: the AL of [unit+740h]->vtable[48h](current point). That is 009F3CE0 -> [ai+2264h]->vtable[2Ch]; the
+  moveonpath state's slot is 009DAB10 -> 009DA590 (arrival latch +2FEh and within 80 of the latched goal; it clears
+  the latch otherwise). It is called on every arm step, so the latch clear is a side effect of the arm.
+**What this means.** 0071FC40 is true only for a USER path (points held in the slot's own +40h vector:
+`user_path_attached_0071fc40`). Every authored-path moveonpath therefore has count byte 0, and its scan limit is
+clamped to 1. The multi-leg advance applies only to player-drawn paths. For authored paths ON changes three things:
+- the radius test becomes strict;
+- the 0.5 lookahead narrows the reach to (0.5 |sin(heading - bearing)| + 0.5) * radius, so a point dead ahead must
+  come within half the radius;
+- a set arrival latch forces one advance.
+The host's `GameShipAiHost::goal_reached_009da590` serves the force. The true answer's 0071D810(2)/`finished` block at
+00836D0E is still not hosted, as before (009E59C0's own finish handles it).
+**Squadrons.** 0084E010's arm (0084E3A8) differs. Its radius is max(class[+35Ch]+26Ch * 1.2, tuning+370h), times
+1.5 unless the leader's party slot is 8 or 00927F10 holds. Its factor is 0.4 [00CE7804], its force is 0, and its
+heading is the leader's (+3D0h) vt[50h]. The host runs the ship arm for plane units too (JM06's PBY Catalina 01:
+0 advances over 115 km). ON leaves kinds 0Fh/18h on the one-leg stand-in; the squadron arm is the next step.
+**Predictions.** Authored-path ships (JM08 Gyoraitei on Shipyard1Path, JM06 transports and IJN subs, USN10, USN04,
+BSM09 Shokaku's path1): advances happen later when the point is ahead, and earlier when the arrival latch is set
+on the current point. The leg sequences stay the same, since the limit is 1. Rows move where a path ship's track
+matters. The summary line `path follow step` counts calls, lookahead misses, forced advances and multi-leg steps.
+Multi-leg should be 0 without user paths.
+**Measured; flipped ON.** OFF = tree 9a99c6533, ON = `local\s53_pf` (pair_export). Reference env.
+| row | ON calls / lookahead misses / forced / multi-leg | pair_diff | first moved | end OFF -> ON |
+|---|---|---|---|---|
+| JM06 36000 fr (`s53_p0_j6` / `s53_p1_j6`) | 99915 / 2811 / 0 / 0 | 3 | US Cargo Transport 02 178.21 -> 178.51 s; Hospital Ship 01 dies ON | none -> none |
+| USN10 24000 fr (`s53_p0_u10` / `s53_p1_u10`) | 51470 / 2260 / 100 / 0 | 3 (deaths identical, track moved) | unit table only | failed 825.32 both |
+| JM08 40000 fr, `local\s52_j8_b3.txt` (`s53_p0_j8` / `s53_p1_j8`) | 4213 / 75 / 6 / 0 | 3 | Medium Bunker, Concrete 02 65.45 -> 63.95 s | failed 1144.04 -> **completed 1329.87 s** |
+The prediction held: no multi-leg step without user paths. The authored-path rows move only through the 0.5
+lookahead (later advances with the point ahead) and the arrival-latch force. **JM08 on `s52_j8_b3` now WINS**:
+"Mission Completed - Guadalacanal is safe from invasion!" at 1329.87 s, Headquarter 01; the exec guard refused
+sus_prog.exe. Before, it failed at 1144.04 s. Sent to cc9-lua62.
+
+## 262. Squadron path-follow arm 0084E3A8 bound OFF (cc9-ships53, 2026-10-17; lead item 1b, squadron half)
+
+`kSquadronPathFollowStepBound` (include/bsp/ship_ai_path_cursor.hpp) sends plane units (kinds 0Fh/18h) through
+`ship_ai_path_follow_step_007add70` with 0084E010's arm arguments, read from the listing (0084E29F..0084E3A8):
+- Gates: queue stage +48h < 2, current command moveonpath, slot 0 (+1A4h) set.
+- radius = 00415550 max(class+26Ch * 1.2 [00CEC160], tuning+370h Pilot/MoveTo/ClosingDist).
+  - class+26Ch is the value 007DB4D0 returns, TravelSpeed / turn rate. It is stored at 007C4C27 in
+    BSP_PlaneClass_DeriveFlightConstants; the host has the rate as `plane_class_turn_rate_270_007db4d0`.
+  - The radius is multiplied by 1.5 [00CE3D78] when the leader's role-0 slot +1ACh is not 8 and 00927F10
+    (AI-held) is false.
+- pos: [block+224h] +FCh/+104h.
+- count: the 0071FC40 byte.
+- heading: [[block+224h]+3D0h]->vtable[50h].
+- factor: 0.4 [00CE7804].
+- force: 0 (PUSH EBX at 0084E381).
+- A true answer runs 0071D810(2) and the finished block (0084E3B5), not hosted, as for ships.
+LABELLED: the host fuses the squadron into its flight leader, so the leader's position and pose yaw stand for the
+squadron's. AI-held means every slot except the local player's.
+**Predictions.** JM06's PBY Catalina 01 (CatalinaPatrolPath, 12 points, 0 advances over 115 km with the ship arm)
+starts advancing: its radius becomes at least ClosingDist, where the ship arm took min(hull*2.5, turn*1.2). BSM01's
+PilotMoveOnPath squadrons follow their paths. Ship rows stay identical.
+
+## 263. 00935540 sinking-wreck debris draws bound OFF (cc9-ships53, 2026-10-17; lead item 2)
+
+**The box question, settled from the listing.** 00825B51 calls 00C31F90(&min [ESP+24h], &max [ESP+30h]), and that
+copies body+38h..+40h and +44h..+4Ch. 00C5715C..00C5745E (docs/DYN_COLLISION_PASS.md step 1) treats B+38h/B+44h as
+the body's LOCAL box: it turns that box into a centre and half extents and rotates them into the broad-phase proxy
+at B+60h. The extents are therefore heading-independent. 00825B56..00825B84 store max - min for x, y and z, and
+00825B9B..00825BAE push them as arguments 2..4 (argument 1 is the 00C31FC0 result, pushed last). So arg4, which
+0093557A truncates, is the local z extent, the hull length.
+**Bound.** `kSinkingWreckDebrisDrawsBound` (include/bsp/game_hosts_gunnery.hpp, bsp::game) and
+`GameGunneryHost::sinking_wreck_debris_draws_00935540`:
+- The pieces are pieces = _ftol(DebrisNumPerMeter * (int)z), with kinds 0Eh and 8 skipped, eight 00BD2F10 draws per
+  piece (MOV ECX,1 at 00935729/00935977/00935991...), on Draw::sink_effects key 3. The 00447510 pieces are not made.
+- The units host's `wake_enabled()` now answers ShipGlobals.DebrisStruct.DebrisEnabled. That is read once by a Lua
+  chunk (this installation's shipglobals.lua, 2024-07-13: true, 0.3).
+- `spawn_wake()` passes unit+C4h and the class hull box's z extent (LABELLED stand-in for B+38h..+4Ch; with no box,
+  the class Length). The gate (dead byte, one-shot, both ends below -5.0) is unit_instance.cpp's, unchanged.
+- OFF keeps `wake_enabled()` false (before).
+**Predictions.** Reference mode (STREAMS=1): inert, pair_diff 1. Default mode: moves after the first wreck whose
+two hull ends go below -5 m. That is later than the 258 sink-grid draws on the same wreck. Each such ship consumes
+about 8 * 0.3 * length draws (West Virginia, 194.85 m: 58 pieces, 464 draws). The summary line is
+`sinking wreck debris`.
+**Squadron arm measured; flipped ON.** OFF = tree 0cea637b5, ON = `local\s53_sq` (pair_export). Reference env.
+| row | ON squadron calls / forced | pair_diff | moved |
+|---|---|---|---|
+| JM06 36000 fr (`s53_q0_j6` / `s53_q1_j6`) | 35998 / 0 | 3 (deaths identical) | PBY Catalina 01 runs CatalinaPatrolPath 0>1>...>11 to the final leg (0 legs OFF) |
+| BSM01 20000 fr, `config/win_orders/bsm01_l50_b1_a.txt` (`s53_q0_b1` / `s53_q1_b1`) | 40000 / 15 | 3 (404 deaths both, 2 rows changed) | no EndMission in 1000 s, on BOTH sides |
+The mechanism matches: the plane now advances at the max(TravelSpeed / rate * 1.2, ClosingDist) radius. BSM01 does
+not reach its keeper EndMission (767.94 s) on either side. The keeper row has already moved on current main,
+independent of this switch, and was reported to cc9-lua62.
+**Measured; flipped ON.** OFF = pair_export e8d6d0a83 unflipped (`local\s53_wo`) for the reference row and tree
+e8d6d0a83 for the default row; ON = `local\s53_wd`. USN01 20000 frames.
+| row | ON calls / pieces / draws | pair_diff | first moved |
+|---|---|---|---|
+| reference mode, STREAMS=1 (`s53_d0r_u1` / `s53_d1r_u1`) | 7 / 359 / 2872 | 1, gameplay identical | none |
+| default mode, STREAMS=0 (`s53_d0d_u1` / `s53_d1d_u1`) | 7 / 359 / 2872 | 3 | KatSBD 204.66 -> 204.21 s (deaths 81 -> 84) |
+DebrisEnabled = 1 and DebrisNumPerMeter = 0.3 were read from this installation's shipglobals.lua. The mechanism
+matches the prediction: the reference mode is inert, and the default mode moves only after a wreck goes under.
+
+## 264. Seg 59 crew bots: torpedo and depth-charge survey, four slot bodies (cc9-ships53, 2026-10-17; lead item 3)
+
+**Survey** (`local\s53_seg59.txt`, `bsp.py range 008EE670 00922240`): 784 entries, 261 without a function record
+once STL/CG/EH stubs are excluded. By band:
+- 008EE670..008F7FFF: scene property / tokenizer / PropTree library, WinMain (008F81F0) and startup. No gameplay.
+- 008FB000..00905300: the gun bots. Unrecorded here are mostly class machinery: RobotConfig construct/destruct
+  per bot, GunBot Construct*/Read/WriteProperties* (the scene property bag, save/load), and Attach*/ClearFireTarget*.
+- 00905300..00922240: mission scoring and awards (ScoreTable, MissionScoreRecord, badges). About 90 FUN_.
+**TorpedoBot (vtable 00D182B0) and DepthChargeBot (00D18338), slot by slot.** The gameplay slots are hosted:
+- tick +0Ch: 008FFF20 HeadingAimTick (torpedo) and 008FC080 DepthChargeTick, both in src/gun_bot_ticks.cpp and
+  src/gun_bot_remainder.cpp.
+- accepts-target +1Ch: 008FC010 and 008FB590, in gameplay_seg40_59_cc13.cpp and the gunnery host.
+- set-fire-target +38h: 009035A0 (torpedo, gunnery host 00727F44) and the base 006DF170 (depth charge).
+- recompute +3Ch: 00903580 (torpedo).
+- throw multipliers +24h: 008FB550 and 008FB570.
+Reconstructed now in **src/seg59_bots_s53.cpp** (new, not wired), with ledger records:
+- 008FF2B0 / 008FF500, ClearFireTarget +30h: 0072BD50, then gun vt[1E8h](0) when the owner's role-0 slot is 8 or
+  AI-held; the torpedo body also clears +6Ch. The gunnery host's clear_bot_fire_target_00728000 already clears +6Ch
+  for torpedo guns. It does not send vt[1E8h](0); that slot's meaning (the gun's own release) was not read, so it
+  is recorded, not bound.
+- 008FF310 / 008FC060, Attach +04h: construction only.
+The property readers 008FF360 / 008FF560 and writers 008FF400 / 008FF5D0 are save/load ("thinkTimeLeft",
+"targetAngle"); a fresh mission never runs them.
+**Left for seg 59** (ship lane): the gun's vt[1E8h] meaning, to decide whether the clear's release matters. Also
+00901C20 BSP_GunBot_InterceptSolution and 00902290 (13 and 1 files mention them, but they have no function record;
+00902290's caller is 00957740 BSP_Aim_ResolveRayToWorldPoint), 008FB890 BSP_Entity_IsLiveOtherParty (caller
+006DF520 MuzzleSolutionAimTick, no host mention), and 008FF640 BSP_Entity_HullDistanceToPoint_Provisional (no direct
+caller). The pilot and tailgunner bots are physics12's.
+
+## 265. Handoff (cc9-ships53, 2026-10-17)
+
+Branch `agent/cc9-ships44`, origin/main merged at d12944a6d. No leases are held after this commit. This session's
+commits:
+- 260: 7b1fb8756 / 3c41eb1b3, sub wake draws, ON.
+- 261: 9a99c6533 / 82041f5c3, 007ADD70 ship arm, ON (JM08 s52_j8_b3 now a win).
+- 262: 0cea637b5 / 3c0045930, squadron arm, ON.
+- 263: e8d6d0a83 / 418fe366e, wreck debris draws, ON.
+- 264: 1c063c0a9, seg 59 slot bodies.
+Open:
+- **USNOS**: parked on cc9-lua62's level-bomber goaway fix (256). Re-run a7 against the step repair (257) and
+  007ADD70.
+- **BSM01 keeper** (bsm01_l50_b1_a): no EndMission in 1000 s on current main (262), reported to lua62.
+- **00836D0E / 0084E3B5**: the 007ADD70 true-answer finish blocks (0071D810(2) + `finished`) are not hosted.
+- **User paths**: 007ADD70's multi-leg scan only runs on player-drawn paths (0071FC40). No run exercises it yet.
+- **Seg 59** (264): the gun vt[1E8h] release in the bot clears; 00901C20, 00902290, 008FB890 and 008FF640 still
+  have no function record; the scoring band 00905300+ is unscoped. Scripts: `local\s53_seg59.txt` (the full range
+  listing), `local\s53_scan.py` (byte pattern scan), `local\s53_rd.py` (constants from the PE),
+  `local\s53_rows.ps1` (launcher).
+
+## 266. Bot clear release on retarget, kGunBotRetargetReleaseBound (cc9-ships54, 2026-10-17; lead item 1)
+
+**What the image does.** The gun's bot setter 006DF170 (TorpedoBot's 009035A0 wraps it, reached from
+00727F44) resolves the current target and, when it differs from the argument, calls the bot's vtable[30h]
+first (006DF18E). The gun's clear 00728000 calls each bot's vtable[30h] unconditionally (0072800C..). For
+the two ship bots that slot is 008FF2B0 (TorpedoBot) and 008FF500 (DepthChargeBot): 0072BD50, then, when the
+role slot read through bot+50h (+1ACh) is 8 or AI-held (008FF2C1 / 008FF511, 00927F10), the gun's
+vtable[1E8h](0). That slot is the fire request: 006FDC50 is vtable[1E8h](1) (GUN_SHOT_CADENCE), and the bot
+ticks raise and drop the same slot (008FC39A, 00900974). So a RETARGET drops the trigger, not only a clear,
+and it stays dropped until the bot's next evaluating think: the torpedo think holds 0.2 s (009000DD..,
+00900985 returns with the trigger untouched), the depth-charge think 0.1 s (008FC146).
+**What the host did.** The depth-charge trigger byte dropped only when the bot had no target (the bound tick,
+GUNNERY 142), and the torpedo think hold restored the last evaluation's trigger whatever the target. A
+retarget kept the trigger. The no-target case was already covered (the clear's own release).
+**Bound OFF** in src/game_hosts_gunnery.cpp: `kGunBotRetargetReleaseBound`. On a clear, and on a send whose
+target differs from the gun's current one, an AI-held torpedo (category 7) or depth-charge (8) gun drops the
+stored trigger (torpedo think `want_fire`, depth-charge trigger byte). Counted as sends / drops (drops: a held
+trigger released). LABELLED: the host's per-gun current target (row.target_unit) stands in for the bot's
+resolved +38h record, and the release goes through the next tick's request path (the class vtable[1E8h]
+refusal in the immediate-fire slot still applies) rather than at the send.
+**Predictions.** Sends in the thousands on any mission with AI torpedo or depth-charge guns; drops rare (a
+trigger must be held at the moment of a retarget); where a drop lands, the torpedo or charge goes 0.1-0.2 s
+later or not at all for that target. BSM01 (four depth-charge holds), USN01, USN10: gameplay identical or a
+small moved set traced to a drop.
+
+**Measured; flipped ON.** OFF = tree 0fedfbfcf, ON = `local\s54_rr` (pair_export), reference env.
+| row | ON sends / drops | pair_diff | end |
+|---|---|---|---|
+| BSM01 20000 fr, bsm01_l50_b1_a (`s54_r0_b1` / `s54_r1_b1`) | 14708 / 0 | 1 | none both |
+| USN01 20000 fr (`s54_r0_u1` / `s54_r1_u1`) | 4700 / 0 | 1 | completed 345.04 s both; exec guard refused sus_prog.exe |
+| USN10 24000 fr (`s54_r0_u10` / `s54_r1_u10`) | 26099 / 0 | 1 | failed 825.32 s both |
+The prediction held: many sends and no held trigger at any retarget, so no row moves. Flipped by mechanism.
+
+## 267. The 007ADD70 true-answer finish blocks, kPathFollowFinishBound (cc9-ships54, 2026-10-17; lead item 2)
+
+**What the image does.** Both arms test 007ADD70's answer. The ship arm checks it at 00836D0A and the squadron
+arm at 0084E3AD. True means the end test refused an advance at the last point of a non-looping path. On true
+the arm runs its finish block, 00836D0E..00836D62 (ship) or 0084E3B5.. (squadron):
+- 0071D810(2) on the director. The raise is monotonic, and reaching stage 2 sends MT_GAMEUNIT_CLEARCMD; in a local
+  session that message clears slot 0 and advances the queue.
+- 00984300 BSP_MissionEvents_ReportCommand(unit [+24Ch], a fresh target, `moveonpath` [00E08F80],
+  "finished" [00D09FD8]).
+00836A81 (CMP [ESI+48h],2; JE 00836DC9) skips every arm once the stage is 2. The squadron gate is the same
+(stage +48h < 2).
+**What the host did.** `advance_path_cursor_00836bf0` returned the answer, and its only caller (the director
+step in game_hosts_units.cpp) dropped it. A moveonpath command therefore ended only through the moveonpath state's
+own finish (009E59C0, end_command_0071e430 at 009E5C70), whose arrival test differs from the arm's radius
+(min(hull * 2.5, turn * 1.2) for a ship; max(TravelSpeed / turn * 1.2, ClosingDist), times 1.5 off AI, for a
+squadron).
+**Bound OFF**: `kPathFollowFinishBound` (include/bsp/ship_ai_path_cursor.hpp). When the switch is on and an arm's
+own switch is on, a true answer raises the stage to 2. The raise routes the clear the same way as
+director_raise_primary_stage_0071d810 (it respects kSetCommandQueueDelayBound). It also reports `finished`, and
+the arm is skipped at stage 2. Summary line `path follow finish answers / stage_raises`.
+**Predictions.** Answers are rare: they need a non-looping authored path whose last point the unit reaches inside
+the arm radius before the state's own finish ends the command. Where one lands, the command ends earlier than
+before and the next queued command (or the default) starts sooner. Candidates: JM06 transports, USN10, JM08
+(Gyoraitei on Shipyard1Path), BSM09. Rows without such a path stay gameplay identical (0/1).
+
+**Measured; flipped ON.** OFF = tree 0fedfbfcf (identical gameplay to c078ee48f OFF), ON = `local\s54_pf` (pair_export), reference env.
+| row | ON answers / raises | pair_diff | what moved | end OFF -> ON |
+|---|---|---|---|---|
+| JM06 36000 fr (`s54_p0_j6` / `s54_p1_j6`) | 1 / 1 | 1 | PBY Catalina 01's CatalinaPatrolPath ends at its last point (11 advances both; travelled 112 km -> 28.9 km), one more queue advance and one `finished` report | none -> none |
+| USN10 24000 fr (`s54_r0_u10` / `s54_p1_u10`) | 0 / 0 | 1 (ship ai free refills noise) | nothing | failed 825.32 s both |
+| JM08 40000 fr, `local\s52_j8_b3.txt` (`s54_p0_j8` / `s54_p1_j8`) | 2 / 2 | 3 | Gyoraitei #Y10 leaves moveonpath for stop at ship-AI step 11740 instead of 11750; deaths 199 -> 197 from 889 s on | completed 1329.87 -> **completed 1336.88 s**; exec guard refused sus_prog.exe |
+The prediction held: rare answers, each at a non-looping path's end, ending the command a step or more before the state's own finish. JM08 stays a win. Flipped by mechanism.
+
+## 268. Seg 59 helpers: 008FB890, 00902290 reconstructed; 00901C20 and 008FF640 checked (cc9-ships54, 2026-10-17; lead item 3)
+
+Reach was checked with a rel32 and absolute-dword scan of the PE (`local\s54_rel.py`, `bsp.py scan-bytes`). The
+scans also find 00901C20's eight known callers, so a negative result means something.
+- **008FB890 BSP_Entity_IsLiveOtherParty**: __fastcall(ECX gun, EDX target), AL, body 008FB890..008FB8C9. Sole
+  caller 006DF541 (the artillery gunner tick 006DF520). It answers true when the target is non-null with +5Dh
+  clear, the gun's +3Ch parent is non-null with +5Dh clear, and 00803510(gun+54h, target+54h) != 0. The host
+  already runs it as `gun_bot_target_still_valid_008ffa20` (src/gun_bot_ticks.cpp 006DF54x). One detail: at
+  006DF533 the image skips the test and the vtable[38h](0) clear entirely when no target resolves. The host still
+  calls its clear, but SetFireTarget(0) with no current target is a no-op (006DF185), so nothing moves.
+  Reconstructed raw in src/seg59_bots_s53.cpp (`seg59_entity_is_live_other_party_008fb890`).
+- **00902290** (provisional name BSP_GunBot_TurningShipLead): __fastcall(ECX shooter pos, EDX target)(float
+  speed, shooter vel, out aim, out 4x4, out distance), RET 14h, body 00902290..0090291F. The next function,
+  00902920, follows with no padding. Sole caller 00957964 in 00957740, for a ray hit on a target answering
+  IsKindOf(6). How it works:
+  - When f = +9DCh * +984h is exactly 0, the matrix becomes identity and 00901C20 answers.
+  - Otherwise it solves the intercept time t from the horizontal relative velocity: a linear arm when the lateral
+    part is below 0.01, else the quadratic.
+  - With t > 0 it rotates the target's pose about its turn centre, C = T + R(-fz, 0, fx) with
+    R = (class+520h / f) * 0082E890(|+980h|), through the yaw -(vt38h() * (0.05 + t) / R). It does this with
+    00B646E0 and three 00413920 products, then subtracts the shooter's travel.
+  - Otherwise the out is the raw target position.
+  The out matrix is written only on the 00901C20 and lead paths.
+  **Reach**: the gunnery host's player-seat artillery block records `PlayerGunSeat::artillery_hit_lead`
+  [009578C3] for this branch: 4081 calls on USN10 (s53_p0_u10), 2802 on USNOS, 2725 on BSM09. Reconstructed in
+  src/seg59_bots_s53.cpp (`seg59_ship_turn_lead_00902290`, header include/bsp/seg59_ship_lead_s54.hpp, all-float under the main thread's 24-bit
+  policy), NOT wired. Wiring needs the target's +980h/+984h/+9DCh, class+520h and vt38h yaw rate from the ship
+  physics host, and 00957740's own 009578C3..00957A50 entry: the kind-1Eh resolve through 00923810(1), the
+  [dev+3FCh] gate, the speed [[dev+3F8h]+34h]+5Ch * +50h, and the out stores at 00957B24, which add the
+  00427EB0/00427C90/004142E0 transform. That entry is the gunnery lane's (game_hosts_gunnery.cpp 13550..).
+- **00901C20**: it already has a fragment record (`intercept_time_00901c20`, the time-of-flight half) and host
+  sites. The rotating-target half (0085E4D0) has no host form; it is left recorded, as before.
+- **008FF640** (BSP_Entity_HullDistanceToPoint_Provisional): no rel32 call, no jump and no absolute dword
+  reference anywhere in the image. It is unreached, so it is not reconstructed.
+
+## 269. Seg 67 ship sub-band survey; the 00957740 lead is not what the host says (cc9-ships54, 2026-10-17; lead item 5)
+
+**Survey.** I took the ship-AI sub-band 009D6000..009F6060 (`local\s54_cover.py` over the range listing, then
+rel32 and absolute-dword scans with `local\s54_rel.py` and `local\s54_abs.py`). It has 119 unrecorded
+non-library entries. The reached ship-AI gameplay is already hosted (path nodes, goal vector, attackmove, sub
+attack, brain pre-pass, AutoTarget). What is left:
+- **Dead**: 009DE280, 009E7FA0, 009DE1B0 and 009DABF0 have no reference. 009D9440 calls only itself (009D94DC,
+  009D9533) and nothing else calls it. 009D9390's only caller is at 009DA008, past the end of 009D9E50 (009D9F8C), in a
+  body with no record. I did not trace that body's reach.
+- **Object machinery**: observer-member destructors, EH funclet targets (009E5110 / 009E5130 / 009E5460 / 009E8C10
+  are reached only from 00CB07CE..00CB0CCA), STL helpers, and the debug draws.
+- **009E2D10 / 009E2DC0 / 009E2F10**: slot 1 of the small observer vtables 00D21868 / 00D21880 / 00D21898, which
+  is the observed-object-destroyed notice. 009E2F10 serves the goal record at brain+0AF8h: it turns the stored
+  offset into a world point (+18h, +24h = 1) and unlinks. It has no reach on the goal vector, because 009E2FB0
+  rewrites the triple at 009F1473 before 009DBCC0 reads it at 009F156B on every pre-pass.
+Nothing in this sub-band was worth binding.
+
+**The finding, for the gunnery lane.** Reading 00957740 for item 3 shows the host's seat-artillery comment
+(game_hosts_gunnery.cpp, the 009578C3 note) is wrong about the non-ship hits. With [dev+3FCh] == 0 and a hit
+entity (a kind-1Eh hit is first resolved through 00923810(1)), the speed is [[dev+3F8h]+34h]+5Ch * +50h and the
+shooter velocity is [esp+18h]->vtable[34h] when [dev+3F4h]+95h is set, else zero. Then:
+- **Kind 6 (ship)**: 00902290 (268). The out becomes lead_aim + Ry * (hit - target_pos), where Ry is the turn
+  matrix (00427C90 subtract, 004142E0 transform, 00957969..009579AD, stored at 00957B24). So the hit point on the
+  hull turns with the ship.
+- **Any other kind**: 00901C20 (00957A00). Then 00957A05..00957A4B ADDS (lead_aim - target_pos) to the hit
+  point through 0042AEB0 BSP_Vector3f_AddInPlace before the JMP to 00957B3C. The out is the hit point shifted by
+  the lead, not the raw hit point.
+The host records only the kind-6 branch (`artillery_hit_lead`) and uses the raw hit for both. I have not
+measured the reach of the other-kind branch (for example a camera ray on a plane or a land unit).

@@ -381,15 +381,67 @@ std::vector<OceanHeightTexel> ocean_wave_field_height_texels_00ba5030(
     const std::vector<std::vector<std::array<float, 6>>>& level_vertices, std::uint32_t width,
     std::uint32_t height, std::uint32_t level_count);
 
-// Projected grid mesh (projocean.mvfm): UV vertex stream and triangle-strip index fragment.
-struct OceanProjectedGrid {
-    std::vector<W1B_Vec2> uvs;              // [+FCh] x [+100h] vertices
-    std::vector<std::uint16_t> indices;     // serpentine strip
-    std::uint32_t primitive_count{0};       // index count - 2 (draw section +18h)
-    std::uint32_t index_buffer_request{0};  // first argument of factory slot 60h: W*H*2
+// Projected grid mesh (projocean.mvfm), 00BA5240 BSP_OceanWaveField_BuildProjectedGridMesh,
+// __thiscall(ECX = wave field), RET 0; callers 00BA5610 and 00BA6BD0. Listing
+// 00BA5240-00BA5609. Field reads: +FCh width W, +100h height H, +11Ch generated model,
+// +124h vertex buffer (released, then replaced), +128h vertex layout, +12Ch material,
+// +2BCh height generator. Every call goes through this host at the image's point.
+struct OceanProjectedGridHost {
+    virtual ~OceanProjectedGridHost() = default;
+    // 00B74640 BSP_GeneratedModel_GetGeometry (ECX = model)(0), RET 4 -> geometry.
+    virtual void* generated_model_get_geometry_00b74640(void* model, std::uint32_t index) = 0;
+    // 00B73C10 BSP_MeshObject_ClearDrawSectionOwners (ECX = geometry).
+    virtual void geometry_clear_draw_sections_00b73c10(void* geometry) = 0;
+    // 00B73B70 BSP_Geometry_SetIndexStream (ECX = geometry)(stream), RET 4.
+    virtual void geometry_set_index_stream_00b73b70(void* geometry, void* stream) = 0;
+    // InterlockedDecrement(object+4h) through the import [00CE2220]; when it reaches zero,
+    // object->vtable[0]() with ECX = object.
+    virtual void ref_release(void* object) = 0;
+    // The renderer [00F8D394]: vtable[38h](NativeString* name) -> vertex format (a held
+    // reference). The name is a temporary NativeString built from 00D5EDD0
+    // "projocean.mvfm" (0041DD40 resize to 0Eh, memcpy 0Fh bytes) and released through
+    // 00419CC0/00BD1510 right after the call; the temporary is folded into this hook.
+    virtual void* renderer_vertex_format_38(const char* name) = 0;
+    // vtable[5Ch](vertex count, 1, format) -> vertex buffer.
+    virtual void* renderer_create_vertex_buffer_5c(std::uint32_t count, std::uint32_t flag,
+                                                   void* format) = 0;
+    // vtable[60h](W*H*2, 1, 65h) -> index buffer.
+    virtual void* renderer_create_index_buffer_60(std::uint32_t size, std::uint32_t flag,
+                                                  std::uint32_t format) = 0;
+    // Vertex buffer vtable[10h](count, 0, 0) -> float* and vtable[14h]() (lock/unlock).
+    virtual float* vertex_buffer_lock_10(void* buffer, std::uint32_t count, std::uint32_t a,
+                                         std::uint32_t b) = 0;
+    virtual void vertex_buffer_unlock_14(void* buffer) = 0;
+    // Index buffer vtable[0Ch](0, 0, 0) -> std::uint16_t* and vtable[10h]() (lock/unlock).
+    virtual std::uint16_t* index_buffer_lock_0c(void* buffer, std::uint32_t a, std::uint32_t b,
+                                                std::uint32_t c) = 0;
+    virtual void index_buffer_unlock_10(void* buffer) = 0;
+    // 00B85EE0 BSP_DrawSectionPool_AllocateStaticSlot (ECX = 60h) -> block or null.
+    virtual void* draw_section_pool_allocate_00b85ee0(std::uint32_t size) = 0;
+    // 00B857F0 BSP_DrawSection_Construct (ECX = block) -> section.
+    virtual std::uint8_t* draw_section_construct_00b857f0(void* block) = 0;
+    // 00B864C0 BSP_DrawSection_SetMaterial (ECX = section)(material), RET 4.
+    virtual void draw_section_set_material_00b864c0(std::uint8_t* section, std::uint32_t material) = 0;
+    // 00B85B80 BSP_DrawSection_AppendVertexStream (ECX = section)(stream), RET 4.
+    virtual void draw_section_append_vertex_stream_00b85b80(std::uint8_t* section,
+                                                            std::uint32_t stream) = 0;
+    // 00BA7080 BSP_OceanHeightGenerator_GetCurrentStream (ECX = generator) -> stream.
+    virtual std::uint32_t ocean_height_generator_current_stream_00ba7080(void* generator) = 0;
+    // 00B86650 BSP_DrawSection_SetVertexLayout (ECX = section)(layout), RET 4.
+    virtual void draw_section_set_vertex_layout_00b86650(std::uint8_t* section,
+                                                         std::uint32_t layout) = 0;
+    // 00B73C60 BSP_Geometry_AppendDrawSection (ECX = geometry)(section), RET 4.
+    virtual void geometry_append_draw_section_00b73c60(void* geometry, std::uint8_t* section) = 0;
 };
-OceanProjectedGrid ocean_wave_field_projected_grid_00ba5240(std::uint32_t width,
-                                                           std::uint32_t height);
+// Writes W*H {u, v} float pairs into the locked vertex buffer (u steps by float(1/(W-1)),
+// v by float(1/(H-1)), each accumulated in float), and a serpentine strip into the locked
+// index buffer: rows 1..H-1, direction flipping every row, 16-bit stores, a closing index
+// (r-1)*W - dir + c per row. The draw section gets +8h = 5, +Ch = 0, +10h = W*H, +14h = 0,
+// +18h = indices written - 2. The index buffer request is H*W*2 while (H-1)*(2W+1)
+// indices are written (the factory's size unit is not established). The draw-section
+// block is constructed only when the pool returns one, but the field stores that follow
+// have no null test, as in the image.
+void ocean_wave_field_projected_grid_00ba5240(std::uint8_t* field, OceanProjectedGridHost& host);
 
 // Scene-colour capture predicate (+F9h flat byte, +CCh byte, colour target present).
 bool ocean_wave_field_capture_scene_color_runs_00ba51c0(bool flat_f9, bool flag_cc,
@@ -537,6 +589,8 @@ struct CoastHost {
     virtual ~CoastHost() = default;
     virtual double vector_length_00419440(float x, float y, float z) = 0;
     virtual double crt_round_00bf85b0(double x) = 0;
+    virtual void* operator_new_00bf55be(std::uint32_t bytes) = 0;  // CRT operator new
+    virtual void free_00bf6989(void* block) = 0;                   // CRT _free
 };
 struct CoastSegment {  // 1Ch
     W1B_Vec3 a{};
@@ -566,19 +620,42 @@ bool coastline_edge_crossing_00baeb20(const CoastlineState& s, const W1B_Vec3& p
                                       const W1B_Vec3& q, W1B_Vec3& out);
 CoastPoint coast_segment_construct_00baed40(CoastHost& host, const W1B_Vec3& a,
                                             const W1B_Vec3& b);
-// Container growth rules (min 32 elements, push doubles with floor 32).
-std::int32_t coast_ptr_vector_reserve_capacity_00baeeb0(std::int32_t capacity,
-                                                        std::int32_t request);
-std::int32_t coast_segment_vector_reserve_capacity_00baefb0(std::int32_t capacity,
-                                                            std::int32_t request);
-std::int32_t coast_point_vector_reserve_capacity_00baf450(std::int32_t capacity,
-                                                          std::int32_t request);
-std::int32_t coast_segment_vector_push_capacity_00baf350(std::int32_t size, std::int32_t capacity);
-std::int32_t coast_ptr_vector_push_capacity_00baf3e0(std::int32_t size, std::int32_t capacity);
-std::int32_t coast_point_vector_push_capacity_00bafc00(std::int32_t size, std::int32_t capacity);
+// The native 0Ch growable array the coast code keeps its elements in.
+template <class T>
+struct CoastNativeVector {
+    T* data{nullptr};          // +0h
+    std::int32_t size{0};      // +4h
+    std::int32_t capacity{0};  // +8h
+};
+// Reserve, __thiscall(ECX vector, int request) RET 4, nothing returned: the request is floored at
+// 20h; when it exceeds the capacity, operator new 00BF55BE(request * element size), the live
+// elements copied dword by dword (each skipped when the destination is null), _free 00BF6989 on
+// the old data, then data and capacity stored. Elements 4 (00BAEEB0), 1Ch (00BAEFB0), 2Ch
+// (00BAF450) bytes.
+void coast_ptr_vector_reserve_00baeeb0(CoastHost& host, CoastNativeVector<std::uint32_t>& v,
+                                       std::int32_t request);
+void coast_segment_vector_reserve_00baefb0(CoastHost& host, CoastNativeVector<CoastSegment>& v,
+                                           std::int32_t request);
+void coast_point_vector_reserve_00baf450(CoastHost& host, CoastNativeVector<CoastPoint>& v,
+                                         std::int32_t request);
+// Push back, __thiscall(ECX vector, const T* value) RET 4, nothing returned: when size ==
+// capacity, the own reserve with capacity*2 (20h unless above it, signed JG); then the slot
+// data+size gets *value unless its address is null (the image's TEST), and size += 1.
+// 00BAF350 segments (reserve 00BAEFB0; a/b through the EH vector copy 00453ED0 with the Vec3
+// copy constructor 00414220, then +18h), 00BAF3E0 dwords (reserve 00BAEEB0), 00BAFC00 points
+// (reserve 00BAF450; a/b as 00BAF350, +18h..+20h FLD/FSTP, +24h/+28h dword moves).
+void coast_segment_vector_push_back_00baf350(CoastHost& host, CoastNativeVector<CoastSegment>& v,
+                                             const CoastSegment& value);
+void coast_ptr_vector_push_back_00baf3e0(CoastHost& host, CoastNativeVector<std::uint32_t>& v,
+                                         const std::uint32_t& value);
+void coast_point_vector_push_back_00bafc00(CoastHost& host, CoastNativeVector<CoastPoint>& v,
+                                           const CoastPoint& value);
 void coast_ptr_vector_resize_00baf070(std::vector<std::uint32_t>& v, std::int32_t size);
-std::uint32_t pak_archive_registry_slots_push_capacity_00bb4b40(std::int32_t size,
-                                                                std::int32_t capacity);
+// 00BB4B40 (0x39 bytes), __thiscall(ECX vector {data +0h, size +4h, capacity +8h},
+// const dword* value) RET 4: when size == capacity, 00BB46F0 reserve(capacity*2, or 1 when
+// that is <= 1, signed JG); then the slot data+size*4 gets *value unless the slot address
+// is null (the image's TEST EAX,EAX), and size += 1. Returns nothing meaningful.
+void pak_archive_registry_slots_push_back_00bb4b40(void* vector, const std::uint32_t* value);
 // Returns -1 (none), 0 (matched a segment start) or 1 (matched its end); index in out_index.
 int coastline_find_nearest_segment_00baf0c0(CoastHost& host, const CoastlineState& s,
                                             const W1B_Vec3& point, std::uint32_t& out_index,

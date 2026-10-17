@@ -11,6 +11,7 @@
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_physical_index_tree.hpp"
+#include "bsp/native_pak_registry.hpp"
 #include "bsp/native_vfs_container_allocation.hpp"
 #include "bsp/native_vfs_open_logging.hpp"
 #include "bsp/sound_stream_runtime.hpp"
@@ -535,41 +536,91 @@ std::vector<OceanHeightTexel> ocean_wave_field_height_texels_00ba5030(
     return out;
 }
 
-OceanProjectedGrid ocean_wave_field_projected_grid_00ba5240(std::uint32_t width,
-                                                           std::uint32_t height) {
-    OceanProjectedGrid g;
+void ocean_wave_field_projected_grid_00ba5240(std::uint8_t* field, OceanProjectedGridHost& host) {
+    const auto word = [field](std::size_t offset) -> std::uint32_t& {
+        return *reinterpret_cast<std::uint32_t*>(field + offset);
+    };
+    const auto pointer = [](std::uint32_t value) {
+        return reinterpret_cast<void*>(static_cast<std::uintptr_t>(value));
+    };
+    void* const model = pointer(word(0x11C));
+    host.geometry_clear_draw_sections_00b73c10(
+        host.generated_model_get_geometry_00b74640(model, 0));  // 00BA5267, 00BA526E
+    host.geometry_set_index_stream_00b73b70(host.generated_model_get_geometry_00b74640(model, 0),
+                                            nullptr);  // 00BA527B, 00BA5282
+    if (word(0x124) != 0) {
+        host.ref_release(pointer(word(0x124)));  // 00BA5295..00BA52A5
+        word(0x124) = 0;                         // 00BA52A7
+    }
+    void* const format = host.renderer_vertex_format_38("projocean.mvfm");  // 00BA52F4, 00D5EDD0
+    word(0x124) = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(
+        host.renderer_create_vertex_buffer_5c(word(0x100) * word(0xFC), 1, format)));  // 00BA533B
+    if (format != nullptr) host.ref_release(format);  // 00BA533D..00BA535B
+
+    float* uv = host.vertex_buffer_lock_10(pointer(word(0x124)), word(0x100) * word(0xFC), 0,
+                                           0);  // 00BA5378
     // 00BA5389..00BA53CE: du = float(1 / u32(W-1)), dv = float(1 / u32(H-1)).
-    const float du = static_cast<float>(1.0 / static_cast<double>(u32_to_float_b(width - 1u)));
-    const float dv = static_cast<float>(1.0 / static_cast<double>(u32_to_float_b(height - 1u)));
+    const float du = static_cast<float>(1.0 / static_cast<double>(u32_to_float_b(word(0xFC) - 1u)));
+    const float dv = static_cast<float>(1.0 / static_cast<double>(u32_to_float_b(word(0x100) - 1u)));
     float v = 0.0f;
-    for (std::uint32_t r = 0; r < height; ++r) {
+    for (std::uint32_t r = 0; r < word(0x100); ++r) {
         float u = 0.0f;
-        for (std::uint32_t c = 0; c < width; ++c) {
-            g.uvs.push_back({u, v});
+        for (std::uint32_t c = 0; c < word(0xFC); ++c) {
+            uv[0] = u;  // 00BA53FE
+            uv[1] = v;  // 00BA5404
+            uv += 2;
             u = static_cast<float>(static_cast<double>(u) + du);
         }
         v = static_cast<float>(static_cast<double>(v) + dv);
     }
-    g.index_buffer_request = height * width * 2u;  // 00BA5459..00BA545E
+    host.vertex_buffer_unlock_14(pointer(word(0x124)));  // 00BA543F
+
+    const std::uint32_t height = word(0x100);
+    const std::uint32_t width = word(0xFC);
+    void* const index_buffer =
+        host.renderer_create_index_buffer_60(height * width * 2u, 1, 0x65);  // 00BA5466
+    std::uint16_t* const indices = host.index_buffer_lock_0c(index_buffer, 0, 0, 0);  // 00BA5479
     // 00BA547B..00BA5501: serpentine strip, direction flips every row; 16-bit stores.
+    std::uint32_t n = 0;
     std::int32_t dir = 1;
     for (std::uint32_t r = 1; r < height; ++r) {
         std::int32_t c = dir > 0 ? 0 : static_cast<std::int32_t>(width) - 1;
         if (c >= 0) {
             while (static_cast<std::uint32_t>(c) < width) {
-                g.indices.push_back(static_cast<std::uint16_t>(
-                    (static_cast<std::uint16_t>(r) - 1u) * width + static_cast<std::uint16_t>(c)));
-                g.indices.push_back(static_cast<std::uint16_t>(
-                    static_cast<std::uint16_t>(r) * width + static_cast<std::uint16_t>(c)));
+                indices[n++] = static_cast<std::uint16_t>(
+                    (static_cast<std::uint16_t>(r) - 1u) * width + static_cast<std::uint16_t>(c));  // 00BA54BC
+                indices[n++] = static_cast<std::uint16_t>(
+                    static_cast<std::uint16_t>(r) * width + static_cast<std::uint16_t>(c));  // 00BA54C8
                 c += dir;
                 if (c < 0) break;  // JNS
             }
         }
-        g.indices.push_back(static_cast<std::uint16_t>((r - 1u) * width - dir + c));
+        indices[n++] = static_cast<std::uint16_t>((r - 1u) * width - dir + c);  // 00BA54EC
         dir = -dir;
     }
-    g.primitive_count = static_cast<std::uint32_t>(g.indices.size()) - 2u;
-    return g;
+    host.index_buffer_unlock_10(index_buffer);  // 00BA550F
+    host.geometry_set_index_stream_00b73b70(host.generated_model_get_geometry_00b74640(model, 0),
+                                            index_buffer);  // 00BA551D, 00BA5524
+
+    void* const block = host.draw_section_pool_allocate_00b85ee0(0x60);  // 00BA552E
+    std::uint8_t* const section =
+        block != nullptr ? host.draw_section_construct_00b857f0(block) : nullptr;  // 00BA5545
+    // No null test before these stores (00BA5552..00BA556F).
+    *reinterpret_cast<std::uint32_t*>(section + 0x08) = 5;
+    *reinterpret_cast<std::uint32_t*>(section + 0x0C) = 0;
+    *reinterpret_cast<std::uint32_t*>(section + 0x10) = word(0x100) * word(0xFC);
+    *reinterpret_cast<std::uint32_t*>(section + 0x14) = 0;
+    *reinterpret_cast<std::uint32_t*>(section + 0x18) = n - 2u;
+    host.draw_section_set_material_00b864c0(section, word(0x12C));          // 00BA5583
+    host.draw_section_append_vertex_stream_00b85b80(section, word(0x124));  // 00BA5591
+    host.draw_section_append_vertex_stream_00b85b80(
+        section,
+        host.ocean_height_generator_current_stream_00ba7080(pointer(word(0x2BC))));  // 00BA559C, 00BA55A4
+    host.draw_section_set_vertex_layout_00b86650(section, word(0x128));  // 00BA55B2
+    host.geometry_append_draw_section_00b73c60(host.generated_model_get_geometry_00b74640(model, 0),
+                                               section);  // 00BA55C0, 00BA55C7
+    host.ref_release(section);       // 00BA55D2..00BA55E2
+    host.ref_release(index_buffer);  // 00BA55E4..00BA55F5
 }
 
 bool ocean_wave_field_capture_scene_color_runs_00ba51c0(bool flat_f9, bool flag_cc,
@@ -962,48 +1013,93 @@ CoastPoint coast_segment_construct_00baed40(CoastHost& host, const W1B_Vec3& a,
     return pt;
 }
 
-std::int32_t coast_ptr_vector_reserve_capacity_00baeeb0(std::int32_t capacity,
-                                                        std::int32_t request) {
+namespace {
+// The shared body of 00BAEEB0/00BAEFB0/00BAF450: floor the request at 20h (JGE), and only when
+// it exceeds the capacity (JLE skips) allocate request*sizeof(T), copy the live elements dword
+// by dword (each copy skipped when the destination address is null, as the image tests), free
+// the old block (also when null) and store the new data and capacity. The size is unchanged.
+template <class T>
+void coast_vector_reserve(CoastHost& host, CoastNativeVector<T>& v, std::int32_t request) {
     if (request < 0x20) request = 0x20;
-    return capacity < request ? request : capacity;
+    if (v.capacity >= request) return;
+    auto* const block = static_cast<T*>(
+        host.operator_new_00bf55be(static_cast<std::uint32_t>(request) * sizeof(T)));
+    T* dst = block;
+    for (std::int32_t i = 0; i < v.size; ++i, ++dst) {
+        if (dst != nullptr) std::memcpy(dst, v.data + i, sizeof(T));
+    }
+    host.free_00bf6989(v.data);
+    v.data = block;
+    v.capacity = request;
 }
-std::int32_t coast_segment_vector_reserve_capacity_00baefb0(std::int32_t capacity,
-                                                            std::int32_t request) {
-    if (request < 0x20) request = 0x20;
-    return capacity < request ? request : capacity;
+
+// The doubled request of the push helpers: capacity*2, raised to 20h unless above it (JG).
+std::int32_t coast_vector_grow_request(std::int32_t capacity) {
+    const std::int32_t doubled = capacity + capacity;
+    return doubled > 0x20 ? doubled : 0x20;
 }
-std::int32_t coast_point_vector_reserve_capacity_00baf450(std::int32_t capacity,
-                                                          std::int32_t request) {
-    if (request < 0x20) request = 0x20;
-    return capacity < request ? request : capacity;
+} // namespace
+
+void coast_ptr_vector_reserve_00baeeb0(CoastHost& host, CoastNativeVector<std::uint32_t>& v,
+                                       std::int32_t request) {
+    coast_vector_reserve(host, v, request);  // 00BAEED0 new(request*4), 00BAEEFC free
 }
-std::int32_t coast_segment_vector_push_capacity_00baf350(std::int32_t size, std::int32_t capacity) {
-    if (size != capacity) return capacity;
-    std::int32_t c = capacity * 2;
-    if (c < 0x21) c = 0x20;
-    return coast_segment_vector_reserve_capacity_00baefb0(capacity, c);
+void coast_segment_vector_reserve_00baefb0(CoastHost& host, CoastNativeVector<CoastSegment>& v,
+                                           std::int32_t request) {
+    coast_vector_reserve(host, v, request);  // 00BAEFD6 new(request*1Ch), 00BAF035 free
 }
-std::int32_t coast_ptr_vector_push_capacity_00baf3e0(std::int32_t size, std::int32_t capacity) {
-    if (size != capacity) return capacity;
-    std::int32_t c = capacity * 2;
-    if (c < 0x21) c = 0x20;
-    return coast_ptr_vector_reserve_capacity_00baeeb0(capacity, c);
+void coast_point_vector_reserve_00baf450(CoastHost& host, CoastNativeVector<CoastPoint>& v,
+                                         std::int32_t request) {
+    coast_vector_reserve(host, v, request);  // 00BAF476 new(request*2Ch), 00BAF4F1 free
 }
-std::int32_t coast_point_vector_push_capacity_00bafc00(std::int32_t size, std::int32_t capacity) {
-    if (size != capacity) return capacity;
-    std::int32_t c = capacity * 2;
-    if (c < 0x21) c = 0x20;
-    return coast_point_vector_reserve_capacity_00baf450(capacity, c);
+void coast_segment_vector_push_back_00baf350(CoastHost& host, CoastNativeVector<CoastSegment>& v,
+                                             const CoastSegment& value) {
+    if (v.size == v.capacity)                                                  // 00BAF36E
+        coast_segment_vector_reserve_00baefb0(host, v, coast_vector_grow_request(v.capacity)); // 00BAF385
+    CoastSegment* const slot = v.data + v.size;                                // 00BAF38A..00BAF398
+    if (slot != nullptr) {                                                     // 00BAF39F
+        slot->a = value.a;                // 00BAF3BB 00453ED0(slot, value, 0Ch, 2, 00414220)
+        slot->b = value.b;
+        slot->flags_18 = value.flags_18;  // 00BAF3C0
+    }
+    v.size += 1;                                                               // 00BAF3C7
+}
+void coast_ptr_vector_push_back_00baf3e0(CoastHost& host, CoastNativeVector<std::uint32_t>& v,
+                                         const std::uint32_t& value) {
+    if (v.size == v.capacity)                                                  // 00BAF3E6
+        coast_ptr_vector_reserve_00baeeb0(host, v, coast_vector_grow_request(v.capacity));    // 00BAF3F8
+    std::uint32_t* const slot = v.data + v.size;                               // 00BAF3FD..00BAF402
+    if (slot != nullptr) *slot = value;                                        // 00BAF405..00BAF40F
+    v.size += 1;                                                               // 00BAF411
+}
+void coast_point_vector_push_back_00bafc00(CoastHost& host, CoastNativeVector<CoastPoint>& v,
+                                           const CoastPoint& value) {
+    if (v.size == v.capacity)                                                  // 00BAFC1E
+        coast_point_vector_reserve_00baf450(host, v, coast_vector_grow_request(v.capacity));  // 00BAFC35
+    CoastPoint* const slot = v.data + v.size;                                  // 00BAFC3A..00BAFC40
+    if (slot != nullptr) {                                                     // 00BAFC4E
+        slot->a = value.a;                // 00BAFC60 00453ED0(slot, value, 0Ch, 2, 00414220)
+        slot->b = value.b;
+        slot->normal = value.normal;      // 00BAFC65..00BAFC74 FLD/FSTP
+        slot->u0_24 = value.u0_24;        // 00BAFC77 dword moves
+        slot->u1_28 = value.u1_28;
+    }
+    v.size += 1;                                                               // 00BAFC84
 }
 void coast_ptr_vector_resize_00baf070(std::vector<std::uint32_t>& v, std::int32_t size) {
     v.resize(static_cast<std::size_t>(size < 0 ? 0 : size), 0u);  // new slots zeroed
 }
-std::uint32_t pak_archive_registry_slots_push_capacity_00bb4b40(std::int32_t size,
-                                                                std::int32_t capacity) {
-    if (size != capacity) return static_cast<std::uint32_t>(capacity);
-    std::int32_t c = capacity * 2;
-    if (c < 2) c = 1;
-    return static_cast<std::uint32_t>(c);
+void pak_archive_registry_slots_push_back_00bb4b40(void* vector, const std::uint32_t* value) {
+    auto* const words = static_cast<std::uint32_t*>(vector);
+    std::int32_t capacity = static_cast<std::int32_t>(words[2]);
+    if (static_cast<std::int32_t>(words[1]) == capacity) {          // 00BB4B46
+        capacity += capacity;                                        // 00BB4B4B
+        if (capacity <= 1) capacity = 1;                             // 00BB4B4D, JG
+        reserve_native_pak_registry_slots_00bb46f0(vector, capacity);  // 00BB4B58
+    }
+    auto* const slot = reinterpret_cast<std::uint32_t*>(static_cast<std::uintptr_t>(words[0])) + words[1];
+    if (slot != nullptr) *slot = *value;                             // 00BB4B65..00BB4B6F
+    words[1] += 1;                                                   // 00BB4B71
 }
 
 int coastline_find_nearest_segment_00baf0c0(CoastHost& host, const CoastlineState& s,

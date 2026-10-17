@@ -17293,3 +17293,57 @@ Next, in order (the lead's queue at the pause):
    at 6800 `select Gyoraitei #Y1` is refused, which refuses its attack lines; Headquarter 01 falls at 940.94 s.
    Logs `local\l61rt_j8_ref.log` and the last win `local\l59_m4s_j8.log`.
 3. JM06 s (20,3) and the ESMP08 Zero recall belong to cc9-physics11.
+
+## 5hu. Handoff (cc9-lua62, 2026-10-16, at about 72% context)
+
+Tree `J:\PROG\battlestations-pacific-decompile-cc9-lua52` (agent/cc9-lua52), merged with origin/main 82564e764 (a full
+`scripts/build.ps1` was started on it). No runs in flight and no leases held.
+
+Done this session:
+- e40afbcbd, a14f590f1, c6b8a2eee: the eaf50b067 record, the full re-time on 25fbdcba0, and JM08
+  `jm08_l62_j8_w1`. w1 was timed on the stale 25fbdcba0 exe and is parked.
+- The next commit records the BSM09, ESMP08 rb and JM06 a4 rows and the stale-exe note.
+- Tools in `local\`:
+  - `l62_retime.ps1`: the row queue.
+  - `l62_lane.ps1`: one detached run; it refuses when 3 of my runs are active.
+  - `l62_rt_sum.py`: re-time summary.
+  - `l62_deaths.py`, `l62_deathdiff.py`: death rows and the first moved death.
+  - `l62_hqdmg.py`: HQ damage by bullet.
+  - `l62_b17.py`: JM08 raider waves.
+  - `l62_invasion.py`: JM08 StartInvasion frame.
+  - `l62_j8_mod.py`: JM08 plan post-processor.
+
+**Queue, in the lead's order.**
+1. TOP: USNOS level-bomber wingmen stuck in LevelBomb/goaway (SHIP_AI_OPEN_ITEMS 256). Findings so far:
+   - Data from `cc9-ships44\local\s52_d_a7.log` and `s52_t_a7_p44.txt`. plane #4.4|.-2 is spent at 426.47 s
+     (`racks=0 rounds=0`).
+   - It then flies a straight line south at about 62 m/s for the rest of the run.
+   - Its leader's position freezes at (2260, -9634) from 800 s, probably dead.
+   - USNOS has device reload OFF (`device reload ... now=0`), so `reload_369_e17bf2` is false and is not the latch
+     holder.
+   - Image 009B88F0 (`show 009B88F0`): engaged = task+4C5h latch || ([task+404h]+370h == 2 && task+440h != 0 &&
+     ![task+440h]+5Dh). task+404h is the SQUADRON's shared profile, not the unit.
+   - The host feeds `unit_.lb_attack_mode_370`, a per-unit copy, at game_hosts_units.cpp:24466. It feeds
+     `has_latched_target = t != nullptr`, where t is the command target, at :24469.
+   - A spent wingman whose forced-attack target stays alive therefore stays engaged. Goaway exits only through
+     goaway_ready && ordnance (009B8AC3), so it never leaves.
+   - Hypothesis to check first: who writes or clears task+440h (`param_1[0x110]`), and the squadron +370h, after a
+     member's release or its leader's death. If the image clears either one, the wingman returns to kFollow.
+   - Also check the goaway steering. level_bomb_goaway_heading_009b5845 turns toward bc_bearing, clamped, unless
+     planar_bc < kAimNearImpact; a straight course means either turn = 0 or the heading is not applied.
+   - cc13's two leads are bound to nothing yet:
+     - 007ED830 per-member ordnance loop, host leader-only at game_hosts_script_orders.cpp:1556-1567 (a lease-queue
+       file). Siblings 007ED7E0/880/8D0/970/A10/790/920/9C0.
+     - 007C1FB0 BombDelay*(n-1) term, missing at game_hosts_units.cpp:23649.
+   - Bind each OFF, pair on USNOS a7 plus a level-bomber control, and flip by mechanism.
+2. The C47 `unit.Class.ID` gap (WINS_TABLE JM08 note). Spawned waves 2/3 never match Class.ID 118/108/136. Class is
+   seeded as VehicleClass[row] (game_hosts_lua.cpp ~4120/~4520). This installation's rows have no "ID", and the C47
+   is row 110 while its spawn type is 136. Find the image's writer of the class table's ID.
+3. Re-time on current main: torpedo-sensitive rows first (IJN08 z, USN12, JM08, ESMP08 rb, PRCP01), BSM01 at its
+   full 40000 frames, and BSM09 under 20,3. Then re-plan JM08 from what holds; ships53's `s52_j8_b3` completes at
+   1329.87 s on main.
+4. Roman-numeral names: 00742A70 landed with cc13 seg41 (ba4315139), `land_convoy_member_name_00742a70` in
+   include/bsp/cc13_seg41_land.hpp. The host uses decimal at game_hosts_units.cpp:11918 and plane_squadron.cpp:62.
+   Grep the installation's Lua for roman-suffixed names, bind OFF, and pair on a convoy and a multi-wing mission.
+5. Entry-point IsFunction: 0045F440/0045F520 test lua_type == 6. The host's global_is_defined
+   (game_hosts_lua.cpp:9573) tests !nil.

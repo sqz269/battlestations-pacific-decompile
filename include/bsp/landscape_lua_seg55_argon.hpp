@@ -454,18 +454,45 @@ struct GeneratedModelMeshElement {
 };
 
 struct GeneratedModelNode {
-    bool matches_current_type{true};   // vslot +0Ch(00B74310())
+    // vslot +0Ch(00B74310()), still a field for 00881600 only; 00882420 makes the call
+    // through LandscapeHost::node_is_type_vslot0c.
+    bool matches_current_type{true};
     std::vector<std::vector<GeneratedModelMeshElement>> geometries{};
     std::vector<LandscapeConvexHull*> convex_hulls{}; // +50h..+54h
     std::vector<GeneratedModelNode*> children{};      // +34h child list walking +3Ch
 };
 
-struct TerrainGridCellDesc {
-    bool present{false};
-    int shape_kind{0};                 // +0Ch (0 or 2)
-    std::uint32_t data_ptr{0};         // +34h (kind 0) or +40h (kind 2)
-    std::uint32_t extra_2c{0};         // +2Ch (kind 2)
-    std::uint32_t extra_30{0};         // +30h (kind 2)
+// A height-field tile's block (the byte layer 00ADEA70 returns from tile+1Ch), only the
+// fields 00882AC0's grid loop reads (00883571..0088366A).
+struct TerrainTileBlock {
+    std::int32_t kind_0c{0};           // +0Ch: 0 or 2 select a shape source; others give none
+    float f_2c{0.0f};                  // +2Ch (read for kind 2)
+    float f_30{0.0f};                  // +30h (read for kind 2)
+    void* data_34{nullptr};            // +34h (kind 0)
+    void* data_40{nullptr};            // +40h (kind 2)
+};
+
+// The 64h-byte stack shape descriptor at [ESP+48h] that 00882AC0 fills for one grid tile
+// (00883571..008837CE). Every dword is stored inline; the field names are hypotheses.
+// Final values after the overwrites: +08h = 8 (0 first), +10h = 5, the 3x4 pose identity
+// (1.0f = 00D7A24C), +44h/+48h = 21h (0 first), +4Ch/+50h = 9.375f (00D0E658; 10.0f from
+// 00CE38B8 first), so 33 samples at 9.375 cover the 300-unit tile.
+struct TerrainTileShapeDesc {
+    float f_00{0.0f};                  // [ESP+48h]
+    float f_04{0.0f};                  // [ESP+4Ch]
+    std::int32_t i_08{8};              // [ESP+50h]
+    std::int32_t i_0c{0};              // [ESP+54h]
+    std::int32_t type_10{5};           // [ESP+58h]
+    float local_pose_14[12]{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+                            0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f}; // [ESP+5Ch..88h]
+    std::int32_t rows_44{0x21};        // [ESP+8Ch]
+    std::int32_t columns_48{0x21};     // [ESP+90h]
+    float row_spacing_4c{9.375f};      // [ESP+94h]
+    float column_spacing_50{9.375f};   // [ESP+98h]
+    float block_2c_54{0.0f};           // [ESP+9Ch]: block +2Ch, written for kind 2 only
+    float block_30_58{0.0f};           // [ESP+0A0h]: block +30h, written for kind 2 only
+    void* data_5c{nullptr};            // [ESP+0A4h]: block +34h / +40h, else 0
+    std::int32_t kind2_60{0};          // [ESP+0A8h]: 1 for kind 2, else 0
 };
 
 struct LandscapeState {
@@ -485,9 +512,11 @@ struct LandscapeState {
     std::uint32_t spatial_shape_count_2dc{0}; // +2DCh
     void* buf_2e0{nullptr};            // +2E0h (dword[0B8h])
     std::uint32_t vptr_344{0};         // +344h (00CEA050 collision subobject)
-    std::vector<void*> grid_bodies_374{}; // +374h..+380h
-    std::vector<void*> vec_368{};      // +368h..+370h (dwords 0DAh..0DCh)
-    std::vector<void*> vec_378{};      // +378h..+380h (dwords 0DEh..0E0h)
+    // The vector objects are at +364h and +374h (first/last/end at +4h..+0Ch); 00882AC0
+    // pushes the hull actors into +364h (008834B4) and the grid-cell actors into +374h
+    // (0088392A..00883984). The earlier separate `grid_bodies_374` modelled +374h twice.
+    std::vector<void*> vec_368{};      // +368h..+370h (dwords 0DAh..0DCh), hull actors
+    std::vector<void*> vec_378{};      // +378h..+380h (dwords 0DEh..0E0h), grid-cell actors
     Mat4x4 spatial_matrix_384{};       // +384h (900)
     std::string file_path_3c4{};       // +3C4h..+3C8h
     void* terrain_render_node_3cc{nullptr}; // +3CCh
@@ -502,6 +531,14 @@ struct LandscapeState {
     GeneratedModelNode* generated_model_420{nullptr}; // +420h
     std::string model_path_424{};      // +424h..+428h
     std::uint32_t shallow_water_handle_42c{0}; // +42Ch
+};
+
+// [00E188A8]+711Ch..+7130h as 00882AC0 reads them.
+struct LandscapeWorldBox {
+    float f_711c{0.0f};
+    float f_7124{0.0f};
+    float f_7128{0.0f};
+    float f_7130{0.0f};
 };
 
 struct LandscapeHost {
@@ -534,23 +571,45 @@ struct LandscapeHost {
     // 009287B0 BSP_GameEntity_Destruct
     virtual void destruct_game_entity_009287b0(LandscapeState& self) = 0;
     // Hooks for 00882AC0 / 00883BB0:
-    virtual TerrainHeightFieldInterface* create_height_field_00add290(const std::string& file_path) = 0;
+    // The four floats of the game's world box that 00882AC0 reads at 00883018..0088303F and
+    // 00883A21..00883A5F (x from +711Ch to +7128h, z from +7130h to +7124h).
+    virtual LandscapeWorldBox world_box_e188a8() = 0;
+    // [[00E188A8]+19ECh], read at 00882E00 as 00ADD290's last argument.
+    virtual void* game_terrain_context_19ec() = 0;
+    // operator new(0D4h) (00882DA8) then, when non-null, 00ADD290
+    // BSP_TerrainHeightField_Construct __thiscall(ECX = block, NativeString file_path by value,
+    // context), RET 0Ch; a null block gives null (00882E16).
+    virtual TerrainHeightFieldInterface* create_height_field_00add290(const std::string& file_path,
+        void* context_19ec) = 0;
+    // [0109CEEC]->vtable[8](const NativeString* path) -> bool (00882EF9).
     virtual bool vfs_file_exists(const std::string& path) = 0;
-    virtual void load_tdt_00adead0(
+    // 00ADDA60 BSP_TerrainHeightField_LoadTdt __thiscall(ECX = hf, const NativeString* tdt,
+    // const NativeString* null_tag, const NativeString* dds, float x, float z, float, float),
+    // RET 1Ch (00883A7D).
+    virtual void load_tdt_00adda60(
         TerrainHeightFieldInterface* hf,
         const std::string& tdt_path,
         const std::string& null_tag,
         const std::string& dds_path,
-        float world_size_x,
-        float world_size_z) = 0;
-    virtual GeneratedModelNode* load_terrain_mmod_007188a0(
-        LandscapeState& self,
-        const std::string& mmod_path) = 0;
-    virtual void attach_model_to_height_field_00aded10(
+        float extent_7124_7130,
+        float extent_7128_711c,
+        float arg_6,
+        float arg_7) = 0;
+    // 007188A0 BSP_Resource_LoadWithGameFactory __thiscall(ECX = NativeString* path), RET:
+    // the model resource stored at +41Ch (00882FC8).
+    virtual void* load_model_resource_007188a0(const std::string& mmod_path) = 0;
+    // [+41Ch]->vtable[8](0, 1.0f) (0088300C): the generated model stored at +420h.
+    virtual GeneratedModelNode* model_resource_instantiate_vslot8(void* resource,
+        std::int32_t arg_0, float scale) = 0;
+    // 00ADE820 BSP_TerrainHeightField_AttachModel __thiscall(ECX = hf,
+    // const NativeString* file_path, model, float x, float z, Mat4x4* entity_matrix_74), RET 14h.
+    virtual void attach_model_00ade820(
         TerrainHeightFieldInterface* hf,
+        const std::string& file_path,
         GeneratedModelNode* model,
-        float world_size_x,
-        float world_size_z) = 0;
+        float extent_7124_7130,
+        float extent_7128_711c,
+        Mat4x4* entity_matrix_74) = 0;
     // The [[00E188A8]+19F0h] block of 00882AC0 (00883062..008830BE):
     // [[00E188A8]+19F0h], the ocean wave scene (null skips the block).
     virtual void* game_ocean_scene_19f0() = 0;
@@ -561,24 +620,56 @@ struct LandscapeHost {
     virtual void node_propagate_root_registration_00b6d890(void* node, std::int32_t arg) = 0;
     // 00BA1370 BSP_OceanWaveField_AddTerrainCoverage, __thiscall(ECX = [scene+A8h], node) RET 4.
     virtual void ocean_wave_field_add_terrain_coverage_00ba1370(void* scene_19f0, void* node) = 0;
-    virtual void* create_unit_part_instance_007135c0(LandscapeState& self) = 0;
-    virtual void* create_hull_physics_body_00c31aa0(
-        LandscapeState& self,
-        LandscapeConvexHull* hull) = 0;
+    // operator new(1ACh) (008830CF) then, when non-null, 007135C0 __thiscall(ECX = block,
+    // landscape, model = [+420h]), RET 8; a null block gives null (008830F8).
+    virtual void* create_unit_part_instance_007135c0(LandscapeState& self,
+        GeneratedModelNode* model) = 0;
+    // [[00E188A8]+18h]->00C5D580(const NxActorDesc*) __thiscall, RET 4 (008834A0), on the
+    // stack descriptor 00882AC0 builds for one kind-0 hull (008831B1..00883495): the shape
+    // desc at [ESP+0F8h] ([+108h] = 4, then [+100h] = 1 and [+10Ch] = hull+0Ch) is the single
+    // entry of the shape array at [ESP+0C0h], the pose is 00C336C0(&self+CCh) into [ESP+5Ch]
+    // with hull+14h..+1Ch added to its translation (`pose` carries both), [ESP+0A4h] |= 1 and
+    // [ESP+0BCh] = the landscape. The remaining stores are inline default construction (XMM
+    // constants 00D7A24C / 00CE3804) and are the host's. The shape array is freed after the
+    // push_back (008834CD). Returns the actor.
+    virtual void* create_hull_actor_00c5d580(LandscapeState& self, LandscapeConvexHull* hull,
+        const Mat4x4& pose) = 0;
+    // 004216B0 pointer-vector push_back __thiscall(ECX = vector, void* const* element), RET 4
+    // (008834B4, vector at landscape+364h).
+    virtual void pointer_vector_push_back_004216b0(std::vector<void*>& vector, void* element) = 0;
+    // 00ADAC30 / 00ADAC40, __thiscall(hf): [hf+38h] / [hf+3Ch], the tile counts (00883513,
+    // 00883520).
     virtual int get_grid_cells_x_00adac30(TerrainHeightFieldInterface* hf) = 0;
     virtual int get_grid_cells_z_00adac40(TerrainHeightFieldInterface* hf) = 0;
-    virtual TerrainGridCellDesc get_grid_cell_00adea70(
-        TerrainHeightFieldInterface* hf,
-        int gx,
-        int gz) = 0;
-    virtual void* create_grid_cell_physics_body_00c31aa0(
-        LandscapeState& self,
-        int gx,
-        int gz,
-        float world_x,
-        float world_z,
-        const TerrainGridCellDesc& cell) = 0;
-    virtual void load_foliage_default_00b75ce0(TerrainHeightFieldInterface* hf) = 0;
+    // Inline reads of the grid loop, once per cell (00883552..0088355F): [hf+38h] (tiles
+    // across) and [[hf+40h] + index*4] (the tile pointer, null for an empty cell).
+    virtual int height_field_tiles_across_38(TerrainHeightFieldInterface* hf) = 0;
+    virtual void* height_field_tile_40(TerrainHeightFieldInterface* hf, int index) = 0;
+    // [hf+80h], [hf+84h] (0088387A, 00883884): the grid origin x and z.
+    virtual float height_field_origin_x_80(TerrainHeightFieldInterface* hf) = 0;
+    virtual float height_field_origin_z_84(TerrainHeightFieldInterface* hf) = 0;
+    // 00ADEA70 __thiscall(ECX = tile) -> [tile+1Ch], the tile's block (0088356C, and again
+    // at 0088362F for kind 2).
+    virtual TerrainTileBlock* tile_block_00adea70(void* tile) = 0;
+    // [[00E188A8]+18h]->00C5D580(const NxActorDesc*) __thiscall, RET 4 (00883921), on the
+    // actor descriptor at [ESP+168h] for one grid tile: its shape array ([ESP+1E0h] begin,
+    // [+1E4h] count, [+1E8h] = 2 capacity) is operator new(8) (008837EA) holding the single
+    // pointer to `shape` ([ESP+48h]); the pose is 00C336C0(ECX = &desc+14h = [ESP+17Ch],
+    // `pose`) at 0088390C; [ESP+1C4h] |= 1; userData [ESP+1DCh] = 0 (unlike the hull path,
+    // which stores the landscape). The other stores are inline default construction (byte
+    // [+168h] = 0, four 1.0f at [+16Ch..+178h], [+1D0h]/[+1D4h] = 1000.0f from 00CE3804, the
+    // rest 0) and are the host's. The shape array is freed (00BF6989) after the push_back
+    // (0088399D). Returns the actor.
+    virtual void* create_grid_tile_actor_00c5d580(const TerrainTileShapeDesc& shape,
+        const Mat4x4& pose) = 0;
+    // 00882420's type test (0088244D..00882457): 00B74310 BSP_GeneratedModel_GetCurrentType
+    // ([01090034]) is read first, then node->vtable[0Ch](type) __thiscall, RET 4 -> AL.
+    virtual std::int32_t generated_model_current_type_00b74310() = 0;
+    virtual bool node_is_type_vslot0c(GeneratedModelNode* node, std::int32_t type) = 0;
+    // 00ADAC90 BSP_TerrainRenderObject_LoadFoliageDefault __thiscall(ECX = hf,
+    // const NativeString* file_path), RET 4 (00883A94; the body does not read the argument).
+    virtual void load_foliage_default_00adac90(TerrainHeightFieldInterface* hf,
+        const std::string& file_path) = 0;
     // Hook for 00882420:
     // 00B6DA70 BSP_SceneNode_SetVisibilityFactor, __thiscall(ECX = node, float factor,
     // bool recursive), RET 8. Stores `factor` at node+ACh; when `recursive` repeats on each
@@ -608,7 +699,8 @@ struct LandscapeHost {
 
 // 0087F9A0 BSP_Landscape_OnHit
 // __thiscall(ECX = landscape, param_2, param_3, param_4), RET 0Ch.
-// Calls height_field->vslot_40(param_3, param_4, param_2) and 007407C0.
+// Calls height_field->vslot_40() (no arguments) and 007407C0([+168h], root, param_3, param_4,
+// param_2).
 void landscape_on_hit_0087f9a0(
     LandscapeState& self,
     std::uint32_t param_2,
@@ -737,15 +829,15 @@ void landscape_destruct_008828e0(
 
 // 00882AC0 BSP_Landscape_LoadTerrain
 // __thiscall(ECX = landscape, const NativeString* file_path), RET 4.
-// Extracts basename `F` after the last `\` or `/`, constructs heightfield at `+3D0h`
-// (00ADD290), checks VFS for `models/terrain/<F>.mmod`, loads either `.mmod` + physics
-// hulls/grid bodies or `.tdt` heightmap (00ADEAD0), loads default foliage (00B75CE0),
-// and binds terrain material parameters (00881600).
+// Extracts (and discards) the basename after the last `\` or `/`, constructs the heightfield
+// at `+3D0h` (00ADD290), checks VFS for `models/terrain/<file_path>.mmod`, then either loads
+// the `.tdt` heightmap (00ADDA60) or the model resource (+41Ch, 007188A0), its instance
+// (+420h), attaches it (00ADE820), creates hull actors (+364h) and grid-cell actors (+374h);
+// then loads default foliage (00ADAC90) and binds terrain material parameters (00881600) on
+// the render root `[+3D0h]->vslot40()`. World extents come from `world_box_e188a8()`.
 void landscape_load_terrain_00882ac0(
     LandscapeState& self,
     const std::string& file_path,
-    float world_size_x,
-    float world_size_z,
     LandscapeHost& host);
 
 // 00883BB0 BSP_Landscape_InitAttachTerrain
@@ -756,8 +848,6 @@ void landscape_load_terrain_00882ac0(
 // max.y via 00CE6840), attaches to SpatialIndex (0098BA10), and registers decal owner (00740FE0).
 void landscape_init_attach_terrain_00883bb0(
     LandscapeState& self,
-    float world_size_x,
-    float world_size_z,
     LandscapeHost& host);
 
 // ============================================================================

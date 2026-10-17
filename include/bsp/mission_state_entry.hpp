@@ -187,6 +187,13 @@ struct MissionStateEntryHost {
 bool run_mission_state_entry(MissionStateEntryState& state,
     const AudioSettings& audio_settings, MissionStateEntryHost& host);
 
+// The 18h-byte stack message 004db920 builds at [ESP+0Ch] (004dba3e) for the
+// player-count arm: the size of the tag 0Ch message class (vtable 00CE74C8).
+// +00h vtable, +04h delivery word; the rest is written by 0075b430.
+struct MissionEntrySessionMessage {
+    std::uint8_t bytes[0x18]{};
+};
+
 // One method per native call site of 004db920 that is not already a predicate
 // above.
 struct MissionDeviceWaitHost {
@@ -199,16 +206,59 @@ struct MissionDeviceWaitHost {
     // 00a92c40, not of the singleton getter 004bec00; a zero delta refreshes
     // device state without advancing hold timers.
     virtual void update_input_manager(float delta_seconds) = 0;
-    // 004dba42..004dba8f. Builds the tag 0Ch event through 0075b430, dispatches
-    // it into the session at game+1EF0h through 0076a9f0, then runs 007848f0 on
-    // session+188h, or on session+18Ch when +188h is null.
-    virtual void dispatch_session_event(int event_tag) = 0;
+    // 004dba3c..004dba42: 0075b430 BSP_SessionMessage_ConstructBase,
+    // __thiscall(ECX = &message, type), RET 4. It writes +00h..+17h; the
+    // caller then stores +4h = 1 and the vtable itself.
+    // Default: forwards to the legacy dispatch_session_event, so a host that
+    // only overrides that callback still sees one call per pass, at this point.
+    virtual void construct_session_message_0075b430(MissionEntrySessionMessage& message,
+        std::uint32_t type)
+    {
+        static_cast<void>(message);
+        dispatch_session_event(static_cast<int>(type));
+    }
+    // 004dba57..004dba68: 0076a9f0(ECX = session game+1EF0h, &message,
+    // excluded peer), RET 8. 0076a9f0 is an adjustor that loads
+    // ECX = [session+188h] and jumps to 00784790
+    // BSP_SessionTransport_BroadcastExcept; 004db920 passes 0 (no peer
+    // excluded). Default: no-op.
+    virtual void broadcast_session_message_0076a9f0(MissionEntrySessionMessage& message,
+        void* excluded_peer)
+    {
+        static_cast<void>(message);
+        static_cast<void>(excluded_peer);
+    }
+    // 004dba6d / 004dba87: the pointer at [game+1EF0h + offset], read after
+    // the broadcast (offset 188h, then 18Ch only when 188h held null).
+    // Default: null.
+    virtual void* session_transport_at(std::uint32_t offset)
+    {
+        static_cast<void>(offset);
+        return nullptr;
+    }
+    // 004dba8f: 007848f0 BSP_SessionTransport_FlushPeerBuffers,
+    // __thiscall(ECX = transport), RET. Called even when both pointers are
+    // null (the binary has no guard). Default: no-op.
+    virtual void flush_session_peers_007848f0(void* transport) { static_cast<void>(transport); }
+    // Legacy single callback for the whole 004dba3c..004dba8f block, kept so
+    // existing hosts compile; only the default construct hook above calls it.
+    // New hosts implement the four hooks above instead. Default: no-op.
+    virtual void dispatch_session_event(int event_tag) { static_cast<void>(event_tag); }
     // 004dba96, ECX = game.
     virtual void enter_mission_state() = 0;
 };
 
 // The tag 004db920 passes to 0075b430. 004dfb70 step 23 builds the same tag.
 inline constexpr int kMissionEntrySessionEventTag = 0x0C;
+// 004dba47: MOV [message+4h], 1 after the base constructor.
+inline constexpr std::uint32_t kMissionEntrySessionMessageDelivery = 1;
+// 004dba4f: the tag 0Ch message vtable (native_session_message12_profile_00ce74c8).
+inline constexpr std::uint32_t kMissionEntrySessionMessageVtable = 0x00CE74C8u;
+// 004dba7d: the vtable the inlined destructor restores before the flush.
+inline constexpr std::uint32_t kMissionEntrySessionMessageBaseVtable = 0x00CE4974u;
+// 004dba6d / 004dba87: the two transport pointers in the session object.
+inline constexpr std::uint32_t kSessionTransportOffset188 = 0x188;
+inline constexpr std::uint32_t kSessionTransportOffset18C = 0x18C;
 
 // The delta 004db920 hands to the input manager.
 inline constexpr float kDeviceWaitInputDelta = 0.0f;

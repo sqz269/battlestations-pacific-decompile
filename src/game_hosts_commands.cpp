@@ -210,6 +210,16 @@ struct GameCommandsHost::Impl {
     std::vector<GameCommandUnit> units;
     std::vector<GameFireTargetRequest> fire_target_requests;   // cc9_weapon_director_fire_target
     std::vector<GameDirector> directors;
+    // Packet s53_path_multileg: 007ADD70 calls, the hits its 0.5 lookahead
+    // turned away, advances taken by force alone, and steps of two or more legs.
+    unsigned long long path_follow_calls{0};
+    unsigned long long path_follow_lookahead_misses{0};
+    unsigned long long path_follow_forced{0};
+    unsigned long long path_follow_multi_leg{0};
+    unsigned long long path_follow_squadron{0};   // packet s53_sqn_path, 0084E3A8 calls
+    // Packet s54_path_finish: true answers that ran 00836D0E / 0084E3B5, and
+    // the stage raises among them that changed the stage.
+    unsigned long long path_follow_finishes{0}, path_follow_finish_raises{0};
     // Packet cc9_target_release.
     const GameCommandTargetFactsSource* target_facts{nullptr};
     // Packet cc9_director_target_checks: the entity's +5Dh as 0071D712 reads
@@ -3212,7 +3222,9 @@ bool GameCommandsHost::path_final_point_007b1350(std::size_t unit_index, float o
 }
 
 bool GameCommandsHost::advance_path_cursor_00836bf0(std::size_t unit_index,
-    float unit_x, float unit_z, float unit_radius, float turn_radius) {
+    float unit_x, float unit_z, float unit_radius, float turn_radius, float heading,
+    const std::function<bool(float, float)>& goal_reached, bool ship_arm,
+    float squadron_radius) {
     Impl& host = *impl_;
     if (unit_index >= host.directors.size()) return false;
     GameDirector& director = host.directors[unit_index];
@@ -3220,6 +3232,9 @@ bool GameCommandsHost::advance_path_cursor_00836bf0(std::size_t unit_index,
     // 00836BF0 CMP EAX,0xe08f80: the arm runs only while the director's current
     // command is `moveonpath`.
     if (director.slot_command[0] != 0x00e08f80u) return false;
+    // 00836A81 CMP [ESI+48h],2; JE 00836DC9 (packet s54_path_finish): a director
+    // whose stage reached 2 (a finish not yet drained) runs no arm.
+    if (bsp::kPathFollowFinishBound && director.stage >= 2) return false;
 
     if (director.path_last_valid) {
         const float mx = unit_x - director.path_last_x;
@@ -3242,6 +3257,65 @@ bool GameCommandsHost::advance_path_cursor_00836bf0(std::size_t unit_index,
     if (index < 0) index = 0;
     if (index >= count) index = count - 1;
     const std::array<float, 3>& point = director.path_points[static_cast<std::size_t>(index)];
+    const bool squadron_arm = bsp::kSquadronPathFollowStepBound && !ship_arm;
+    if ((bsp::kPathCursorFollowStepBound && ship_arm) || squadron_arm) {
+        // Packet s53_sqn_path: a plane unit takes 0084E3A8's arguments instead
+        // (radius from its caller, factor 0.4 [00CE7804], force 0).
+        const float arm_radius = squadron_arm ? squadron_radius : radius;
+        const float arm_factor = squadron_arm ? 0.4000000059604645f : 0.5f;
+        // Packet s53_path_multileg. 00836C92 the current point; 00836CC2 its
+        // force byte from [unit+740h]->vtable[48h]; 00836C42..00836C76 the
+        // count byte, slot 0's vt[+0Ch] 0071FC40 (LABELLED: the upper three
+        // bytes are uninitialised stack in the image and 0 here; they are read
+        // only outside modes 1..3); 00836CC4 factor 0.5 [00CE3800]; 00836CE2
+        // the heading, unit->vtable[50h].
+        const bool force = !squadron_arm && goal_reached ? goal_reached(point[0], point[2]) : false;
+        const std::int32_t attached = user_path_attached_0071fc40(unit_index) ? 1 : 0;
+        const bsp::ShipAiPathFollowStep r = bsp::ship_ai_path_follow_step_007add70(
+            director.path_cursor, director.path_points.front().data(), count, unit_x, unit_z,
+            arm_radius, attached, heading, arm_factor, force);
+        host.done("WeaponDirector::path_follow_00836bf0", 0x00836bf0u);
+        host.done("EntityCommand::path_follow_step_007add70", 0x007add70u);
+        ++host.path_follow_calls;
+        if (squadron_arm) ++host.path_follow_squadron;
+        if (r.hit_pass < 0) {
+            const float ddx = point[0] - unit_x;
+            const float ddz = point[2] - unit_z;
+            if (static_cast<float>(static_cast<double>(ddz) * ddz + static_cast<double>(ddx) * ddx)
+                < static_cast<float>(static_cast<double>(arm_radius) * arm_radius)) {
+                ++host.path_follow_lookahead_misses;
+            }
+            if (force && r.advances > 0) ++host.path_follow_forced;
+        }
+        if (r.advances > 1) ++host.path_follow_multi_leg;
+        director.path_advances += r.advances;
+        if (r.advances > 0 && director.path_visited.size() < 512) {
+            director.path_visited.push_back(director.path_cursor.index_08);
+        }
+        if (r.advances > 0) {
+            host.done("WeaponDirector::path_cursor_advance_007adcc0", 0x007adcc0u);
+        }
+        if (bsp::kPathFollowFinishBound && r.answer) {
+            // 00836D0E (ship) / 0084E3B5 (squadron): 0071D810(2), monotonic, whose
+            // stage 2 sends MT_GAMEUNIT_CLEARCMD (routed back here in a local
+            // session, as director_raise_primary_stage_0071d810 does), then
+            // 00984300(unit, target, moveonpath [00E08F80], "finished").
+            ++host.path_follow_finishes;
+            if (bsp::stage_raise_applies(director.stage, 2)) {
+                director.stage = 2;
+                ++host.summary.stage_raises;
+                ++host.path_follow_finish_raises;
+                host.done("WeaponDirector::raise_primary_stage", 0x0071d810u);
+                if (bsp::stage_raise_sends_message(2, kSessionModeSinglePlayer)) {
+                    host.route_clear_command(unit_index, host.player_of(unit_index));
+                }
+            } else {
+                host.done("WeaponDirector::raise_primary_stage", 0x0071d810u);
+            }
+            report_command_event_00984300(unit_index, 0x00e08f80u, "finished");
+        }
+        return r.answer;
+    }
     const float dx = point[0] - unit_x;
     const float dz = point[2] - unit_z;
     // 007ADDDE FMUL ST0 squares the radius and 007ADE4D-007ADE55 squares the
@@ -3685,6 +3759,17 @@ void GameCommandsHost::report() {
                     static_cast<double>(row.travelled), row.visited.c_str());
             }
         }
+    }
+    host.log.notef("summary mission path follow step bound=%d calls=%llu lookahead_misses=%llu "
+        "forced=%llu multi_leg=%llu squadron_bound=%d squadron=%llu (007ADD70 from 00836D05 and 0084E3A8, "
+        "packets s53_path_multileg, s53_sqn_path)",
+        bsp::kPathCursorFollowStepBound ? 1 : 0, host.path_follow_calls,
+        host.path_follow_lookahead_misses, host.path_follow_forced, host.path_follow_multi_leg,
+        bsp::kSquadronPathFollowStepBound ? 1 : 0, host.path_follow_squadron);
+    if constexpr (bsp::kPathFollowFinishBound) {
+        host.log.notef("summary mission path follow finish answers=%llu stage_raises=%llu "
+            "(00836D0E / 0084E3B5, packet s54_path_finish)",
+            host.path_follow_finishes, host.path_follow_finish_raises);
     }
     host.log.notef("summary mission commands units=%zu resolved=%zu issued=%zu pushed=%zu "
         "current=%zu latched=%zu with_thrust=%zu ai_groups=%zu ai_forwards=%zu steps=%llu",

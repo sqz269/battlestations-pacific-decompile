@@ -129,6 +129,64 @@ void ship_ai_path_cursor_start_007b1c50(ShipAiPathCursor& cursor, int follow_mod
 int ship_ai_path_nearest_index_007b1100(const float* points_xyz, int point_count,
                                         float x, float z);
 
+// 007ADD70 BSP_EntityCommand_PathCursorFollowStep, `bool __thiscall(cursor)(
+// const float* pos, float radius, int count, float heading, float factor,
+// bool force)`, RET 18h. Packet s53_path_multileg. A port of cc13-sweepB4's
+// cc13_sweepB4_path_cursor_follow_step_007add70 (src/cc13_sweepB4.cpp, whose
+// comment carries the listing addresses) onto this cursor and the host's point
+// vector, because its Cc13SweepB4Host has several hundred unrelated pure
+// virtuals. Modes 1/2 scan count - index forward or index backwards; mode 3
+// count - 2; any other mode `count` with step 0 (the image's step is an
+// uninitialised stack slot there; Lua supplies 1..3 only). A zero low byte of
+// `count` clamps the limit to 1. The scan stops at the first point strictly
+// inside the radius (squares, float); with 0 < factor < 1 the hit is re-tested
+// against ((1 - factor) * |sin(00438B10(heading, bearing))| + factor) * radius,
+// bearing = pi/2 - atan2(dz, dx) wrapped to [0, 2pi). A hit at pass p takes
+// p + 1 advances through 007ADCC0, re-testing the SIMPLE end before each; no
+// hit takes none (force false) or one (force true). True only when the end
+// test stops the loop before any advance. No RNG.
+// True: the director's `moveonpath` arm (00836BF0) runs this step with the
+// image's arguments (count = the 0071FC40 attached byte, heading unit+1050h,
+// factor 0.5 [00CE3800], force [unit+740h]->vtable[48h]). False: the host's
+// one-point, one-leg stand-in with a non-strict radius and no force (before).
+// docs/SHIP_AI_OPEN_ITEMS.md 261. ON by mechanism: JM06, USN10 and JM08 pairs
+// move through the lookahead and force with no multi-leg step (authored paths).
+inline constexpr bool kPathCursorFollowStepBound = true;
+
+// Packet s53_sqn_path: the plane squadron command block's arm, 0084E29F..0084E3A8
+// of 0084E010 (queue stage +48h < 2, current command moveonpath, slot 0 set).
+// radius = max(class+26Ch * 1.2 [00CEC160], tuning+370h Pilot/MoveTo/ClosingDist)
+// through 00415550, times 1.5 [00CE3D78] when the leader's role-0 slot +1ACh is
+// neither 8 nor AI-held (00927F10); pos = the squadron's +FCh/+104h; count = the
+// 0071FC40 byte; heading = [squadron+3D0h]->vtable[50h]; factor 0.4 [00CE7804];
+// force 0 (0084E381 PUSH EBX). True: plane units (kinds 0Fh/18h) take this arm.
+// False: they keep the ship arm's one-leg stand-in (before).
+// ON by docs/SHIP_AI_OPEN_ITEMS.md 262: JM06's PBY Catalina 01 runs its whole
+// 12-point patrol path (0 legs before); BSM01 deaths unchanged.
+inline constexpr bool kSquadronPathFollowStepBound = true;
+
+// Packet s54_path_finish: what each arm does when 007ADD70 answers true (the
+// end test refused an advance at the last point). Ship 00836D0E..00836D62 and
+// squadron 0084E3B5..: 0071D810(2) on the director, then 00984300 reports
+// `finished` [00D09FD8] for `moveonpath` [00E08F80]. With it, the arm also
+// keeps 00836A81's gate (a director at stage 2 runs no arm). True: both finish
+// blocks run (each under its arm's switch above). False: the answer is dropped
+// and the command ends only through the moveonpath state's own finish
+// (009E5C70). docs/SHIP_AI_OPEN_ITEMS.md 267. ON by mechanism: JM06 (the PBY's patrol
+// path ends; gameplay identical), USN10 (no answer; identical), JM08 (Gyoraitei #Y10
+// finishes one ship-AI step early; moved, still won at 1336.88 s).
+inline constexpr bool kPathFollowFinishBound = true;
+
+struct ShipAiPathFollowStep {
+    bool answer{false};
+    int limit{0};          // the scan limit after the clamp
+    int hit_pass{-1};      // the pass that stayed inside, -1 for none
+    int advances{0};       // 007ADCC0 advances taken
+};
+ShipAiPathFollowStep ship_ai_path_follow_step_007add70(ShipAiPathCursor& cursor,
+    const float* points_xyz, int point_count, float pos_x, float pos_z, float radius,
+    std::int32_t count, float heading, float factor, bool force);
+
 }  // namespace bsp
 
 #endif  // BSP_SHIP_AI_PATH_CURSOR_HPP

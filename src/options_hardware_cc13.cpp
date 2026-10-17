@@ -1,4 +1,5 @@
 #include "bsp/options_hardware_cc13.hpp"
+#include "bsp/engine_seg49_64_78_cc13.hpp"
 
 #include <cstring>
 #include <utility>
@@ -264,52 +265,84 @@ bool report_torpedo_00977690(WarningReportHost& host, WarningEntity entity)
     return raise_entity_warning(host, entity, kWarningIdTorpedo, kTorpedoWarningExcludedKind);
 }
 
-std::string warning_id_newunit_009756a0() { return "newunit"; }
-
-std::string warning_id_powerup_009757b0(bool network_session)
+cc13_seg49_64_78::WarningObject& construct_new_unit_warning_009756a0(cc13_seg49_64_78::WarningObject& w,
+    cc13_seg49_64_78::WarningHost& host)
 {
-    std::string id = "powerup";
-    if (network_session) id += "multi";
-    return id;
+    cc13_seg49_64_78::construct_warning_base_00973a90(w, host);  // 009756BE
+    w.vtable = 0x00D1B460;                                       // 009756D4
+    w.id = "newunit";                                            // 009756DA resize 7, memcpy 00D1B458
+    return w;
 }
 
-std::string warning_id_named_powerup_009758e0(std::string_view name, bool network_session)
+cc13_seg49_64_78::WarningObject& construct_powerup_warning_009757b0(cc13_seg49_64_78::WarningObject& w,
+    cc13_seg49_64_78::WarningHost& host, bool network_session)
 {
-    std::string id = "powerup"; // 009758E0: BSP_NativeString_ConstructPrefixedHeader
-    id += name;
-    if (network_session) id += "multi";
-    return id;
+    cc13_seg49_64_78::construct_warning_base_00973a90(w, host);  // 009757D0
+    w.vtable = 0x00D1B4B0;                                       // 009757E6
+    w.id = "powerup";                                            // 009757EC resize 7, memcpy 00D1B4A8
+    if (network_session) w.id += "multi";                        // 0097580E [[00E188A8]+1FE4h], 00CE39CC
+    return w;
 }
 
-std::string warning_id_score_00975a10() { return "score"; }
-
-std::string warning_id_exit_zone_00975340(WarningSubjectHost& host, WarningEntity entity,
-    bool exiting)
+cc13_seg49_64_78::WarningObject& construct_named_powerup_warning_009758e0(cc13_seg49_64_78::WarningObject& w,
+    cc13_seg49_64_78::WarningHost& host, const std::string& name, bool network_session)
 {
-    std::string id = "exitzone";      // 00D19074
-    if (exiting) return id;           // 009753AD
-    id += "enter";                    // 00D1B1B0
-    if (!entity) return id;           // 00975418
+    cc13_seg49_64_78::construct_warning_base_00973a90(w, host);  // 00975901
+    w.vtable = 0x00D1B4B0;                                       // 0097591C, the powerup class
+    w.id = "powerup" + name;                                     // 00975922 0043C130 (00D1B4A8 + name), 0097593C assign
+    if (network_session) w.id += "multi";                        // 00975982 [[00E188A8]+1FE4h], 00CE39CC
+    return w;
+}
+
+cc13_seg49_64_78::WarningObject& construct_score_warning_00975a10(cc13_seg49_64_78::WarningObject& w,
+    cc13_seg49_64_78::WarningHost& host)
+{
+    cc13_seg49_64_78::construct_warning_base_00973a90(w, host);  // 00975A2E
+    w.vtable = 0x00D1B4D4;                                       // 00975A44
+    w.id = "score";                                              // 00975A4A resize 5, memcpy 00D18700
+    return w;
+}
+
+cc13_seg49_64_78::WarningObject& construct_exit_zone_warning_00975340(cc13_seg49_64_78::WarningObject& w,
+    cc13_seg49_64_78::WarningHost& host, WarningSubjectHost& subject, WarningEntity entity, bool exiting)
+{
+    // 00975368: the pushed 0 is the base's ignored second argument.
+    cc13_seg49_64_78::construct_entity_warning_base_00973ba0(w, host, const_cast<void*>(entity));
+    w.vtable = 0x00D1B344;                                       // 0097537E
+    w.word_6c = 0x00D1B32C;                                      // 00975384
+    w.id = "exitzone";                                           // 0097538B, 00D19074
+    if (exiting) return w;                                       // 009753AD
+    w.id += "enter";                                             // 009753B4, 00D1B1B0
+    if (!entity) return w;                                       // 00975418
     WarningEntity owner = entity;
-    if (host.is_kind_5c(entity, 0x0F)) owner = host.plane_owner_9d4(entity); // 0097542E
-    if (owner != host.controlled_unit_e188d8()) return id;                  // 00975434
-    id += "player";                   // 00D199D0
-    if (host.is_kind_5c(entity, 6)) id += "ship"; // 009754A8, 00D186D4
-    return id;
+    if (subject.is_kind_5c(entity, 0x0F)) owner = subject.plane_owner_9d4(entity); // 00975428
+    if (owner != subject.controlled_unit_e188d8()) return w;    // 00975434
+    w.id += "player";                                            // 00975445, 00D199D0
+    if (subject.is_kind_5c(entity, 6)) w.id += "ship";           // 009754AA, 00D186D4 (00425E10)
+    return w;
 }
 
-std::string warning_id_confirm_00975540(WarningSubjectHost& host, WarningEntity entity,
-    std::string_view order)
+cc13_seg49_64_78::WarningObject& construct_confirm_warning_00975540(cc13_seg49_64_78::WarningObject& w,
+    cc13_seg49_64_78::WarningHost& host, WarningSubjectHost& subject, WarningEntity entity,
+    const std::string& order)
 {
-    if (host.is_kind_5c(entity, 6)) return "confirmship";  // 0097557F, 00D1B44C
-    if (!host.is_kind_5c(entity, 0x18)) return {};         // 009755C5
-    std::string id = "confirmplane";                       // 00D1B43C
-    id += order;
-    const std::string text(order);
-    const bool land_or_retreat = _stricmp(text.c_str(), "land") == 0 ||
-        _stricmp(text.c_str(), "retreat") == 0;            // 00975620, 00975633
-    if (land_or_retreat && host.field_3cc(entity) == 1) id += "player"; // 0097563C
-    return id;
+    // 00975568: the pushed 0 is the base's ignored second argument.
+    cc13_seg49_64_78::construct_entity_warning_base_00973ba0(w, host, const_cast<void*>(entity));
+    w.vtable = 0x00D1B380;                                   // 0097556D
+    w.word_6c = 0x00D1B368;                                  // 00975573
+    if (subject.is_kind_5c(entity, 6)) {                     // 0097558B
+        w.id = "confirmship";                                // 0097559A, 009755B3, 00D1B44C
+        return w;
+    }
+    if (!subject.is_kind_5c(entity, 0x18)) return w;         // 009755C9
+    w.id = "confirmplane";                                   // 009755DE, 00D1B43C
+    if (!order.empty()) w.id += order;                       // 009755F7, 0097560B
+    if (!subject.native_string_equals_ci_00425850(order, "land") &&      // 00975620, 00CFB614
+        !subject.native_string_equals_ci_00425850(order, "retreat"))     // 00975633, 00CFB5D4
+        return w;
+    if (subject.field_3cc(entity) != 1) return w;            // 0097563C
+    w.id += "player";                                        // 0097564E..00975683, 00D199D0
+    return w;
 }
 
 void post_friendly_fire_warning_0096e8f0(WarningHitFeedbackState& state, float clock,

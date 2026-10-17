@@ -10,6 +10,7 @@
 // 00980380..00980E50 finds no reference to 00BD2F10 or 00BD2FC0
 // (docs/CC13_WARNING_REPORTS.md, "RNG").
 
+#include "bsp/engine_seg49_64_78_cc13.hpp" // WarningHost, EventArchiveReader (009766D0)
 #include "bsp/options_hardware_cc13.hpp"
 
 #include <cstdint>
@@ -47,14 +48,10 @@ WarningRelation local_relation_00968370(WarningUnitQuery&, WarningEntity entity)
 // The three watched-entity slots of a Warning. Names are the archive keys of
 // the Warning load 009768F0 / save 0096CF10 ("shortcut", "ambient",
 // "reporter"); each slot is an observer handle whose pointer sits at +14h, set
-// by 005B7F60 (from a raw pointer) or 00523B30 (from another handle).
-struct WarningBuild {
-    std::string id;                          // Warning+4h
-    WarningEntity shortcut_24{nullptr};
-    WarningEntity ambient_3c{nullptr};
-    WarningEntity reporter_54{nullptr};
-    bool hit_reported_84{false};             // hit warning only (88h object)
-};
+// by 005B7F60 (from a raw pointer) or 00523B30 (from another handle). Both
+// unlink the old entity (006952A0) and link the new one (00694A60) when it
+// changes. The constructors below build the native object in place through
+// cc13_seg49_64_78::WarningObject (+24h shortcut, +3Ch ambient, +54h reporter).
 
 // ---------------------------------------------------------------------------
 // 00974C70: hit warning constructor. __thiscall(ECX = warning (88h),
@@ -82,7 +79,10 @@ inline constexpr std::int32_t kWarningKindAirfield = 0x45;
 inline constexpr std::int32_t kWarningKindCaptureExcluded = 0x0C; // 00977DA0 list filter
 
 // `attacker` is [hit+4]->vtable+108h(), or null when hit+4 is null.
-WarningBuild build_hit_warning_00974c70(HitWarningQuery&, WarningEntity target,
+// 00973BA0(target) base, vtable 00D1B308, +6Ch observer vtable 00D1B2F0,
+// id "hit", +84h (archive "areaexclusion") = 0, then the id tree.
+cc13_seg49_64_78::WarningObject& construct_hit_warning_00974c70(cc13_seg49_64_78::WarningObject& w,
+    cc13_seg49_64_78::WarningHost& host, HitWarningQuery&, WarningEntity target,
     WarningEntity attacker);
 
 // ---------------------------------------------------------------------------
@@ -94,7 +94,10 @@ struct KillWarningQuery : WarningUnitQuery {
     virtual std::int32_t slot_2d8(WarningEntity victim) = 0;      // victim+2D8h
 };
 
-WarningBuild build_kill_warning_009744c0(KillWarningQuery&, WarningEntity victim);
+// 00973A90 base, vtable 00D1B2CC, +6Ch = victim (raw pointer, no observer),
+// id "kill", then the id tree.
+cc13_seg49_64_78::WarningObject& construct_kill_warning_009744c0(cc13_seg49_64_78::WarningObject& w,
+    cc13_seg49_64_78::WarningHost& host, KillWarningQuery&, WarningEntity victim);
 
 // ---------------------------------------------------------------------------
 // Capture and command-building reports. Each reports one entity-less 6Ch
@@ -131,6 +134,7 @@ struct CaptureReportHost : WarningUnitQuery {
     // 004254B0 debug print.
     virtual void debug_print_004254b0(std::string_view text) = 0;
     virtual void report_message_warning_00975ac0(std::string_view id) = 0;
+    virtual std::int32_t record_state_18(WarningEntity record) = 0; // 00978A70 record+18h
     virtual void report_entity_warning_00974150(WarningEntity, std::string_view id) = 0;
 };
 
@@ -159,30 +163,51 @@ std::optional<CapturePointReport> report_capture_point_009781e0(CaptureReportHos
 
 // 00978A70: __thiscall(ECX = manager, record, unused), RET 8. No lock and no
 // guard. "hitweareunderattack" + by record+18h: 0 "commandbuildingplayer",
-// 1 "commandbuildinglast", 2 "navalsupply", other values nothing.
-std::string command_building_report_id_00978a70(std::int32_t state_18);
+// 1 "commandbuildinglast", 2 "navalsupply", other values nothing. Then reports
+// the id as one MessageWarning (00978BC7..00978BF9: operator_new(6Ch),
+// 00975AC0(id), 009763E0(manager, warning)). Returns the reported id.
+std::string report_command_building_00978a70(CaptureReportHost&, WarningEntity record);
 
 // 0096E5E0: one stack argument (an object whose vtable +10h returns a name),
-// RET 4. "Message from |." + name + "|.: " (00D1B098), resolved by 00705E00
-// (ECX = game+21DCh, second argument 1). No reference to the function exists
-// (Ghidra xrefs, absolute-dword scan).
-std::string message_from_text_0096e5e0(std::string_view name);
+// RET 4. "Message from |." (00D1B088) + name + "|.: " (00D1B098) through two
+// 004261A0 concatenations, then returns 00705E00(text, 1) on the message
+// manager game+21DCh. No reference to the function exists (Ghidra xrefs,
+// absolute-dword scan).
+struct MessageFromHost {
+    virtual ~MessageFromHost() = default;
+    virtual std::string name_10(WarningEntity speaker) = 0; // vtable +10h, char*
+    // 00705E00 (ECX = [game+21DCh]), stack (text, flag); returns the record.
+    virtual const void* resolve_message_00705e00(const std::string& text, std::int32_t flag) = 0;
+};
+const void* message_from_0096e5e0(MessageFromHost&, WarningEntity speaker);
 
 // ---------------------------------------------------------------------------
-// Persistence. 009766D0: __thiscall(ECX = archive), RET. Reads key "type"
-// (field type 1, int) and constructs the matching Warning, then calls its
-// vtable +4 (load) with the archive. An unknown type leaves the pointer null
-// and the native dereferences it (no guard at 009768C7).
+// Persistence. 009766D0 BSP_Warning_CreateFromArchive: __thiscall(ECX =
+// reader), plain RET, returns the warning in EAX. Reads key "type" (field
+// type 1, int) through reader vtable +10h, allocates the class's block with
+// operator_new, runs its archive constructor, then calls the new object's
+// vtable +4 (load) with the reader. An unknown type, or a null allocation,
+// leaves the pointer null and the native dereferences it (no guard at
+// 009768C7). No game host reaches this yet: the only caller, 00980380
+// (cc13_large62.cpp), goes through Large62Host::warning_create_from_archive_009766d0,
+// which nothing implements.
 // ---------------------------------------------------------------------------
-struct WarningArchiveClass {
-    std::int32_t type;
-    std::uint32_t size;
-    std::uint32_t constructor;   // native default constructor
-    std::uint32_t vtable;
-    std::string_view role;       // which builder fills this class
+struct WarningArchiveFactoryHost : cc13_seg49_64_78::WarningHost {
+    // 00BF681B operator_new(size), cdecl. The native returns raw storage; the
+    // hook returns storage holding a default WarningObject projection (the
+    // constructor then performs the native writes), or null.
+    virtual cc13_seg49_64_78::WarningObject* operator_new_00bf681b(std::uint32_t size) = 0;
+    // [[00E188A8]+1FE4h] != 0, which 009757B0 reads after writing the id.
+    virtual bool network_session_1fe4() = 0;
+    // Slot +4 of the string-list class (vtable 00D1B4F8) is 0097B4D0. It is
+    // reconstructed against the raw-object Seg62Host model
+    // (cc13_seg62_seg65.cpp), not WarningObject, so it stays a hook here.
+    virtual void string_list_warning_load_0097b4d0(cc13_seg49_64_78::WarningObject& warning,
+                                                   cc13_seg49_64_78::EventArchiveReader& reader) = 0;
 };
 
-std::optional<WarningArchiveClass> warning_archive_class_009766d0(std::int32_t type);
+cc13_seg49_64_78::WarningObject* warning_create_from_archive_009766d0(
+    WarningArchiveFactoryHost& host, cc13_seg49_64_78::EventArchiveReader& reader);
 
 // Archive keys of the Warning base load (009768F0) / save (0096CF10), with
 // the reader's field type codes (0 string, 1 int, 2 float, 4 entity).

@@ -309,6 +309,18 @@ inline constexpr bool kPlayerGunSeatBound = true;
 // section 7. ON by the pair in section 7.4.
 inline constexpr bool kPlayerGunSeatArtilleryBound = true;
 
+// Packet s53_wreck_debris (docs/SHIP_AI_OPEN_ITEMS.md 263). 00825A59 step 8 of
+// the unit update calls 00935540 once per dead unit (ShipSystems+88h one-shot)
+// when ShipGlobals.DebrisStruct.DebrisEnabled (settings+680h) is set and both
+// hull-end heights are below -5.0; kinds 0Eh and 8 spawn nothing, and each of
+// _ftol(DebrisNumPerMeter * (int)z extent) pieces takes eight stream-1 00BD2F10
+// draws. The z extent is the hull body's LOCAL box (B+38h/B+44h, the box the
+// broad phase rotates at 00C5715C). The pieces themselves (00447510) are not
+// made. True: the setting is read and the draws taken. False: recorded only.
+// ON by docs/SHIP_AI_OPEN_ITEMS.md 263: USN01 reference mode gameplay identical;
+// default mode moves from 204 s (7 wrecks, 359 pieces, 2872 draws).
+inline constexpr bool kSinkingWreckDebrisDrawsBound = true;
+
 // Packet cc9_player_gun_seat_segment_query. ON binds 00957D79..00957DD2 of
 // 00957BD0: with no target and the camera off the x = z = 0 axis, the
 // 1000-unit segment (00CE47A0, double) from the camera along the aim
@@ -1179,6 +1191,21 @@ public:
     // the units host's scaled delta. False when kDamageSmokeDrawsBound is off: the
     // caller keeps its record.
     bool damage_smoke_tick_008227e0(std::size_t unit_index, float delta);
+    // Packet s52_sink_draws: 00825F20's two ShipSystems spawners on a sinking ship
+    // for one motion step, 00933DA0 (grid) and/or 00933BB0 (spray); their stream-1
+    // draws are taken only when kShipSystemsSinkDrawsBound is on.
+    void ship_systems_sink_draws_00933da0_00933bb0(std::size_t unit_index,
+        bool grid_00933da0, bool spray_00933bb0);
+    // Packet s53_sub_wake_draws: 00854650's stream-1 pick (008546E4) for a
+    // submarine whose hull y is in (-15, -3), and on 1 in 15 the 00933BB0 spray
+    // (008546FC); the draws are taken only when kSubmarineWakeDrawsBound is on.
+    void submarine_wake_draws_008546df(std::size_t unit_index, float hull_y);
+    // Packet s53_wreck_debris: 00935540's stream-1 draws for one sinking wreck
+    // (eight per piece); `class_kind` is unit+C4h, `z_extent` the body's local box
+    // length (B+44h - B+38h, z), `num_per_meter` ShipGlobals DebrisNumPerMeter.
+    // Taken only when kSinkingWreckDebrisDrawsBound is on.
+    void sinking_wreck_debris_draws_00935540(std::size_t unit_index, std::int32_t class_kind,
+        float z_extent, float num_per_meter);
     // unit+36Ch, the maximum health, for a writer outside this host: 006F38E0's
     // CommandBuilding level-up stores HP[level] / 100 * class HP there and leaves
     // the current health alone (SHIP_AI 169). No-op for an unbuilt index.
@@ -1308,6 +1335,11 @@ public:
     // generator every gunnery draw uses, in call order. BSP_GUNNERY_RNG_STREAMS=1:
     // its own generator keyed by (unit), a measurement substitution.
     float ship_ai_draw(std::size_t unit_index, float low, float high);
+    // 009F6A20 (BSP_WeaponDirector_AutoTargetConstruct) at 009F6A8F: 00BD2F10(ECX=1,
+    // 0.0f, 1.0f), negated into the auto-target think countdown, once per director.
+    // Default: the shared stream-1 generator. BSP_GUNNERY_RNG_STREAMS=1: its own
+    // generator keyed by (unit), a measurement substitution. Returns the draw.
+    float auto_target_phase_draw_009f6a8f(std::size_t unit_index);
     // Packet cc9_movie_interface_and_reseed: 00BD2FD0(stream, seed) as 005CD1A0
     // makes it (005CD1B0 stream 1 = 12345, 005CD1BC stream 0 = 54321).
     // SUBSTITUTION, labelled: the image seeds MT19937 (sgenrand, docs/RANDOM_STREAMS.md);

@@ -76,6 +76,13 @@ it raw). When the arm proceeds it builds the tag `0Ch` event through `0075B430`,
 `+0h` vtable to `00CE74C8` and `+4h` to 1, dispatches it into the session through
 `0076A9F0(session, &event, 0)`, then runs `007848F0` on `session+188h`, or on `session+18Ch` when
 `+188h` is null, and falls into `004DA6C0`. `004DFB70` step 23 builds the same tag `0Ch` event.
+`run_mission_device_wait` makes each step a separate `MissionDeviceWaitHost` hook at its site:
+`construct_session_message_0075b430` (`004DBA42`), then the C++ stores `+4h = 1` and vtable
+`00CE74C8`, `broadcast_session_message_0076a9f0(message, null)` (`004DBA68`),
+`session_transport_at(188h)` and, only on null, `session_transport_at(18Ch)`, the vtable reset to
+`00CE4974`, and `flush_session_peers_007848f0(transport)` (`004DBA8F`) with no null guard. The
+hooks have defaults (the construct hook forwards to the legacy `dispatch_session_event`, the rest are
+no-ops), so a host that implements none of them still makes no session calls in this arm.
 
 ## `004DA6C0`, the entry
 

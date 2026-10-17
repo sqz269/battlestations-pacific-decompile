@@ -15261,3 +15261,349 @@ predicted mechanism (later by at most one think period plus the stagger), so the
 **Lost:** USN15 `tl` was a reference-only knife-edge (258: its 1171 s Yamashiro kill is a deterministic friendly
 Fubuki-class07 torpedo, absent under jitter); ON removes that torpedo as jitter does (gyro launches 134 -> 78), and the
 mission fails at 1417.31 s as the jitter runs did. The USN15 re-plan is queue item 2.
+
+## 261. Handoff record for cc9-gunnery47 (written by cc9-gunnery48, 2026-10-16)
+
+cc9-gunnery47 stopped without a handoff. Its state, reconstructed from this tree's `local\` and git:
+
+**Done.** `d4e7a58f1` (260, `kTorpedoBotCanFireReloadBound` OFF) and `eaf50b067` (260.1, flipped ON). Both are on
+origin/main. The flip loses USN15 `usn15_g46_u15_tl` (fails 1417.31 s).
+
+**USN15 Yamashiro variants `ya`..`yg`** (plans `local\g47_u15y?.plan`, order files `local\usn15_g47_u15_y?.txt`).
+They all ran on the **OFF** export `local\g47_off` (exe `B02D3CB60D6C`, i.e. before the 260.1 flip), with and without
+`BSP_FRAME_JITTER`. Summary from `local\g48_sum.py`:
+
+| Variant | Idea | Reference | 20,3 | 20,5 |
+| --- | --- | --- | --- | --- |
+| `ya` | `tl` + 8 Fletchers in a line x=-1900, z 4400.. (dz 250), `torp` 100 frames x3 from 1000 s | (log gone) | Yamashiro alive at 1499 s (frame cap), 5 BBs dead | failed 1422.36 s |
+| `yb` | as `ya`, one `attack Yamashiro` instead of `torp` | (log gone) | alive at the frame cap, 5 BBs dead | failed 1377.27 s |
+| `yc` | as `ya`, line x=-1300, z 4600.. | (log gone) | Yamashiro dies 1207 s (Minneapolis), 5 BBs dead | (log gone) |
+| `yd` | `tl`, BBs stand off at (-5000, 7000), no attack order | Yamashiro dies 1071 s (Fubuki-class07 friendly torpedo), 4 BBs dead | failed 1397.29 s | failed 1427.32 s |
+| `ye` | BBs attack Yamashiro from 800 s; CA on Fubuki08, CL on Fubuki07, 12 Fletchers on Fubuki06 from 750 s | failed 1397.29 s | failed 1397.29 s | Yamashiro dies 1388 s (Fletcher-class12), 5 BBs dead |
+| `yf` | `tl`, BBs stand off at (-4000, 6000) | (log gone) | failed 1427.32 s | (log gone) |
+| `yg` | `tl` BBs; CA on Fubuki08, CL on Fubuki07, 12 Fletchers on Fubuki06 from 750 s | failed 1417.31 s | failed 1442.33 s | failed 1437.33 s |
+
+None is robust. Observations for the successor:
+- The fail is `luaCheckObjs` (an enemy within 3000 m of JapanGoTo (0, 12000)). Yamashiro's track (x about -300 to -140,
+  northbound at 12.6 m/s, z 4077 at 1000 s and 6582 at 1200 s) reaches z of about 9000 at 1415 s.
+- In `ya` the beam strikers died before or while they launched, to Yamashiro's guns at 0.7-2.7 km and to the
+  Fubuki-class06/07 escorts. Their tubes snapped (`bearing=22`: the target was off the bow while they turned in).
+- `torpedo <ship> at <target>` aims at the target's CURRENT position (`player_fire_torpedo_group`,
+  `atan2(to - from)`), with no lead. The surface torpedo classes run 1852 m (class 61 at 23 m/s, class 62 at 13 m/s).
+  A beam shot at a 12.6 m/s target from 1.6 km therefore passes astern of it; only a parked target (Fuso in `tl`) or a
+  bow-on geometry is hit reliably.
+- Yamashiro has about 90k health; the BBs' fire takes it to 19-57k by 1200 s before they die.
+
+## 262. A `lead` aim for the harness torpedo order, and a USN15 bow-on ambush (cc9-gunnery48, 2026-10-16)
+
+**The aid** (`330782c2c`). `torpedo <ship> at <target> lead` aims the player's torpedo group at the TorpedoBot's own
+intercept point instead of the target's current position. The point is `008FBB00` with the unit's first tube's
+WaterTravelSpeed and the target's velocity, the solver the AI tubes use. LABELLED harness aid, like the bomb sight's
+`on <target>`: a player aims by eye, and this aims by the image's solver. Orders without `lead` are unchanged. The log
+line reads `player torpedo group fire: ... yaw=<deg> (lead)`. In `local\g48_plan.py`, a `torp` target `Yamashiro+lead`
+emits the suffix.
+
+**The ambush.** USN15 fails when an enemy comes within 3000 m of JapanGoTo (0, 12000). Yamashiro's track runs along
+x of about -300 and reaches z = 9000 at about 1415 s, so it must die before then. Bow-on geometry does not depend on
+the lead: a torpedo fired straight down Yamashiro's track meets it head on. So the nine non-Fuso-phase Fletchers (01, 07,
+08, 12, 14, 22, 26, 27, 28) form a line across the track and fire southwards from their starboard or port beam:
+- at 850 s they go to x 80..720 (dx 80) at z = 7000 (`aa`; z = 7600 in `ab`);
+- at 950 s they go to x -620..20, arriving westbound, so Yamashiro lies on their port beam;
+- from 1050 s there are three `torp` rounds of 100 frames each, at `Yamashiro+lead` (`ac`: plain `Yamashiro`);
+- at 1350 s they go to (-3000, 10000).
+
+The rest is `tl`.
+
+On current main, Fletcher 01, 07 and 08 die at 755-780 s, before the line forms, so six of the nine fire.
+
+32000-frame runs on export `local\g48_p1` (`330782c2c`), reference env:
+
+| Plan | Reference | 20,3 | 20,5 |
+| --- | --- | --- | --- |
+| `aa` (z 7000, lead) | Yamashiro dies 1321 s (Fletcher-class26) | 1171 s (Fletcher-class24) | 1126 s (Fletcher-class14) |
+| `ab` (z 7600, lead) | 1065 s (Fubuki-class07 friendly torpedo) | 1218 s (Fletcher-class12) | 1212 s (Minneapolis) |
+| `ac` (z 7000, no lead) | 1139 s (Fubuki-class07) | 1201 s (Minneapolis) | (see 262.1) |
+
+In every run, five of the six BBs die, as they did in `tl`.
+
+In `aa` the ambush lands eight torpedo hits on Yamashiro, at 1110 s and 1135 s (bullet class 62, about 1370 health each
+directly, with flooding after). Yamashiro dies in each of the eight runs. 262.1 has the full-length checks.
+
+## 263. GUNNERY 260 residuals: AngleErr per evaluation (bound OFF), the sub-depth held trigger, the `unit+634h` inhibit writer (cc9-gunnery48, 2026-10-16)
+
+**AngleErr per evaluation (`kTorpedoAngleErrPerEvaluationBound`, OFF).** The image draws the gyro jitter on the
+evaluating tick, not at the launch. The listing for `00900807..00900888`:
+
+1. `00900830` calls `00BD2F10(ECX=1, AngleErr row [00E1998C + bot+34h*14h] +0Ch/+10h)`.
+2. `0090083E` calls `00BD2FC0(ECX=1)`, and `& 1` gives the sign (`0090084A..0090084F`, -1 or +1).
+3. `00900872` adds sign * magnitude * pi / 180 to the run heading at `[ESP+24h]`.
+4. Only after that: the inhibit test, `0090087A..00900888` (`[gun+3F0h]+634h` bit 2 -> `00900970`).
+5. Then the launch-zone test (`0090088E`), and the shot order `007311B0` that carries the heading.
+
+So every evaluation that passes the ready gate and the friendly-crossing walk consumes the two stream-1 draws, including
+one that the inhibit or the zone then refuses. The launch takes the order the last evaluation issued. The host drew the
+pair once, at shot creation (`kTorpedoGyroHeadingBound`).
+
+The binding: ON draws the pair at the evaluation, between the crossing walk and the zone test, with the same keys
+(`torpedo_gyro`, (gun, 0|1)). It keeps the pair per gun in `TorpedoThink`, and the launch uses the kept pair. OFF draws at
+the launch and counts the evaluations that would draw (`summary mission gunnery torpedo angle-error evaluations=`).
+LABELLED: the AI path only. A player-seat tube takes its order heading from the message, and neither side draws for it.
+
+**Predictions (written before the pairs).**
+- OFF: `evaluations` >= `launches` on every mission with AI torpedo tubes, and both are 0 elsewhere.
+- ON: the same evaluation count. Each AI torpedo's gyro heading gets a different jitter, because each key now advances
+  once per evaluation, not once per launch. Under `BSP_GUNNERY_RNG_STREAMS=1`, only the `torpedo_gyro` keys move. AI
+  torpedo hits, and the deaths that follow from them, may move. Missions without AI torpedo tubes are identical.
+
+Pairs: JM06 `jm06_s49_j6_s`, USN15 (the 262 plan), USN12 `usn12_g45_u12_e7`.
+
+**Sub-depth held trigger (`009000FC..00900117`): left as a residual, not bound.** bot+64h is set for a submarine owner.
+When `008527E0` says the sub is too deep, the tick returns before the think timer and the trigger, so a latch raised
+earlier stays raised. The host refuses category 7 at target selection (`kSubmarineCategoryGateBound`), which drops the
+trigger instead. A held latch can only fire while `0085A830`'s window and reload allow it. The launch path would also
+need the swim depth `0072C970`, which is not modelled (GUNNERY 152). Reach: AI submarines that dive while a tube is
+latched. No pair is planned until a mission shows one (counter: none yet).
+
+**`unit+634h` bit-2 inhibit writer: no host route.** A byte scan finds the writers of `unit+634h`:
+
+| Pattern | Hits |
+| --- | --- |
+| `83 ?? 34 06 00 00` | only `00465290` (AND, `BSP_MovieAction_SetGunFireEnabled_Run`) and `00465350` (OR, `..._Disabled_Run`) |
+| `81 ?? 34 06 00 00` | `00465386` (the `All` OR) |
+| `89 ?? 34 06 00 00` | the unit constructor `0095CE0B`, and three ship-CLASS stores (`00831840`, `00963380`, `00963600`: a different object) |
+
+So bit 2 is set only by the scene action `aSetGunFireDisabled "Torpedo"`. The host runs no scene action lists:
+`src/engine_movie_actions.cpp` holds the descriptor table and the mask helpers, and no game host calls them. A search
+of this installation's 259 `.scn` files for the ASCII names found nothing. That negative is vacuous: no action name
+(`aTurnGun`, `aParticleEffect`, `aDont_Move`) occurs in them in ASCII either. The constant `inhibited = false` stays,
+LABELLED. Wiring the writer needs a scene-action executor, which is outside this lane.
+
+### 263.1 Pairs and flip
+
+The pair builds are exports of `3a6d58900`: OFF is `local\g48_aoff`, ON is `local\g48_aon`. Reference env with
+`--stop-after-end 40`. The logs are `local\g48_<aoff|aon>_<j6|u12|u15>.log`, each with its manifest.
+
+| Mission (plan) | OFF | ON | evaluations / launches OFF | ON |
+| --- | --- | --- | --- | --- |
+| JM06 `s49_j6_s` | completed 2144.97 s | **not completed by 6000 s** (MissionPhase 3) | 29 / 20 | 25 / 12 |
+| USN12 `g45_u12_e7` | completed 1685.52 s | completed 1680.51 s | 5 / 8 | 12 / 16 |
+| USN15 `g48_u15_ab`, 1600 s | Yamashiro dead | moved (deaths 37 -> 42) | 63 / 94 | 63 / 95 |
+
+`pair_diff` says MOVED on all three.
+
+The first prediction was wrong as written. `launches` counts every gyro launch: the player's group-4 launches in USN15
+(not evaluations), and each tube of a salvo. So it can exceed `evaluations`. Both counters are non-zero exactly on the
+missions with AI torpedo tubes.
+
+**Mechanism** (`BSP_TORPEDO_TUBE_TRACE=1`, JM06 to 300 s, `local\g48_<aoff|aon>_j6tr.log`). Every launch keeps its
+time; only gyro headings change:
+- PlayerSub 03's six tubes still launch at 156.10, 156.60, ... 158.86 s.
+- A tube's first launch keeps its gyro heading when only one evaluation passed before it: plat 54 is -27.2 deg in both,
+  plat 55 -11.5, PlayerSub 02's plat 52 14.9.
+- Tubes held behind the unit's 0.5 s torpedo cooldown pass more evaluations first, so they launch with a later pair:
+  plat 51 -18.7 -> -17.3, plat 50 -18.3 -> -6.4, plat 53 -33.6 -> -20.9.
+
+This is the predicted mechanism: the same launches, with jitter drawn per evaluation. So the switch is **flipped ON**.
+
+**Lost:** JM06 `jm06_s49_j6_s`. Its first sinking moves from 168.11 s to 171.96 s, and the run diverges from there. The
+JM06 re-plan goes to the wins keeper (cc9-lua62). USN12 `e7` still completes.
+
+## 264. USN15 on current main: a robust Yamashiro opening (`ib`), but no robust full win yet (cc9-gunnery48, 2026-10-16)
+
+The exe is export `local\g48_p2` (`6c900f1e0`, with the 263.1 flip), reference env, `--stop-after-end 40`. The plans are
+`local\g48_u15<name>.plan`, generated by `local\g48_plan.py` into `local\usn15_g48_u15_<name>.txt`. Summaries come from
+`local\g48_sum.py <logs>`, which gives the mission end, the key-target deaths and the BB deaths. Seeds are
+`BSP_FRAME_JITTER 20,3 / 20,5 / 20,7 / 20,11`.
+
+**Findings that shape every plan:**
+1. **The `tl` Fuso phase does not survive current main.** Even with Yamashiro dead, the full runs `faa`/`fab` (and
+   `fa`/`fb`) never kill Fuso by 7200 s. Three things kill it:
+   - the Fletchers die first;
+   - idle ships wander south after about 1500 s (Fletcher 02/08 were at (0, 200) by 2000 s in `ga`, probably chasing
+     PT boats);
+   - a column at dz 75-90 sinks its own neighbours (r = 32-430 m).
+   One `fab` run lost so many US ships that the IJN fleet manager switched to running mode (US alive < IJN alive), and
+   the run failed at 4059 s.
+2. **BB guns barely hurt Fuso or Yamashiro.** Most BB hits on them log `took=0.0`, the 130 armour. Fuso at its park
+   killed four BBs while losing about 15k (`ea`). Torpedoes are what sink both. BBs still help as a distraction:
+   Fuso died to a BB in `ga` and `eb_j20_3`, after the torpedo column had worked on it.
+3. **Fuso's path is deterministic** (this installation's `usn_15_battle_of_surigao_strait.lua` sends the right BB group
+   to IJNEdgeMove1). It runs (2152, 6019) at 1200 s, then (3144, 9499) at 1500 s, then (12453, 11680) at 2500 s, then
+   back west, and parks at (6427, 10392) from about 3300 s. Mogami parks beside it at (6463, 10436), Fubuki-class01 at
+   (6410, 10894). Fubuki-class06/07 stop for good at about (272, 6365) / (684, 6392) once Yamashiro is dead.
+4. **Ashigara** runs to its bay at (-11130, 7073), outside the US map, by about 1500 s. Late attacks on it reach it only
+   sometimes; light cruisers die there to Fubuki-class09/12 or to the out-of-map countdown (Boise, `hc_j20_3`).
+5. **The planner packs a `torp` block** (ships x rounds x (hold + 2) frames) before any later request. Orders meant for
+   inside the block slip past its end; give them frames before the block starts.
+6. **When `luaCheckObjs` stops re-arming, no fail and no win can follow.** In `bb`/`be` Yamashiro sailed to
+   (-22, 10867), well inside the 3000 m fail radius, with no fail, and those runs can then never win. Treat a run that
+   reaches the frame cap with no mission end as lost.
+
+**The Yamashiro opening `ib`** (the best one, 32000-frame runs):
+- BBs hold until 800 s, then retreat in two legs: (-2500, 8500), then (-5500, 10000) at 950 s. They do not attack
+  Yamashiro. Nachi still dies at 781-793 s.
+- The eastern small ships (`D`, light cruisers) leave for (-3000, 10500) at 940 s, before the torpedo block.
+- Thirteen Fletchers (10-15, 22-28) form a north-south column at x = -1500, z 7600 down to 5560 (dz -170), from 775 s,
+  so Yamashiro passes them on the beam.
+- From 980 s there are three rounds of `torpedo <ship> at Yamashiro lead`, held 140 frames each.
+
+| Plan | ref | 20,3 | 20,5 | 20,7 | 20,11 |
+| --- | --- | --- | --- | --- | --- |
+| `ib` (140-frame holds) | Yamashiro 1271 s, 2 BBs lost | 1253 s, 1 | 1146 s, 2 | 1253 s, 2 | 1253 s, 2 |
+| `ia` (same, 100-frame holds) | **fail 1497 s** | **fail 1467 s** | 1169 s, 3 | **fail 1472 s** | 1211 s, 2 |
+
+Earlier openings, ref / 20,3 / 20,5 only (they are all knife-edges):
+
+| Opening | Result |
+| --- | --- |
+| `aa`/`ab` (bow-on line at z 7000/7600, BBs fight as in `tl`) | 3/3 each, but 5 BBs lost |
+| `ba`..`bf` (BB variants) | 1-2 fails each |
+| `da` (beam column, firing from 1100 s, 100 frames) | 3/3 |
+| `hc` (`da` with small order shifts) | **failed 1417 s** on ref |
+
+The kill is torpedoes alone: Yamashiro is still at 89886 at 1025 s. In `hc` the column made 7 presses and scored 3
+hits, against 9 hits in `gb`. Fubuki-class06 and Yamashiro kill most of the column between 1046 and 1250 s, so the
+round-1 hit count decides the run.
+
+**Full-mission candidates (144000 frames).** All use the `da` opening plus a Fuso and an Ashigara phase:
+
+| Plan | ref | 20,3 | 20,5 |
+| --- | --- | --- | --- |
+| `ga` (CA/CL kill Fubuki07/06 at 1500/1650 s; BBs attack Fuso at 1700 s; column x=4700 dz 75; Ashigara at 4300 s) | Fuso 3762 s, Ashigara alive | Fuso alive | **EndMission 7063.28 s** |
+| `gb` (`ga` without the BB attack) | Fuso alive | Fuso alive | Fuso 3735 s, Ashigara alive |
+| `hb` (`ga` + Fletchers pinned at (-3000, 10000) from 1400 s + an early BB/CA strike on Ashigara at 1005 s) | Fuso 4192 s, Ashigara alive | Fuso alive | **EndMission 6465.63 s** |
+| `hc` (`hb` without the early strike; CA/CL attack Ashigara at 2000 s) | fail 1417 s (Yamashiro) | Fuso 3602 s, Ashigara alive | Fuso 3425 s, Ashigara alive |
+| `eb` | ref and 20,5 lost | **EndMission 6674.81 s** | lost |
+
+The early BB/CA strike on Ashigara (`ha`/`hb`) did not kill it and cost two BBs. Wins so far: `ga_j20_5`, `hb_j20_5`,
+`eb_j20_3`. None is robust, so **no row was committed and nothing was sent to the wins keeper.**
+
+**Next steps:**
+1. Build the full plan on `ib`.
+2. Pin every idle group with re-issued moves (the `goto ... 13 2000` pin in `hb`).
+3. The Fuso column: at most 9 ships, dz >= 150, z <= 10900 (the map limit is z 11000), staged at (2500, 9000) before
+   3000 s, and firing as soon as Fuso parks (about 3300 s).
+4. Ashigara: send the cruisers and the surviving Fletchers once, right after the Yamashiro phase (about 1400-1500 s),
+   so they catch it before or at the bay. Or test a beam column with `lead` on its 1000-1100 s leg,
+   (-5273, 8382) -> (-6371, 9634), before it leaves the map.
+5. Check each change on all five seeds at 32000 frames first (about 4 min per run), and only then at full length.
+
+## 265. Handoff (cc9-gunnery48, 2026-10-17, at about 70% context)
+
+**Commits on `agent/cc9-gunnery36`** (none merged by me):
+- `d988d53ec`: section 261, the gunnery47 record.
+- `330782c2c`: section 262, the harness `torpedo <ship> at <target> lead`.
+- `3a6d58900`: section 263, `kTorpedoAngleErrPerEvaluationBound` (OFF), and the `008FFF20` ledger record.
+- `6c900f1e0`: section 263.1, the flip ON. It loses JM06 `jm06_s49_j6_s`, which was reported to the lead and
+  cc9-lua62.
+- `7a0de2b33`: `GameGunneryHost::auto_target_phase_draw_009f6a8f` (Draw kind 30), not yet called.
+
+**Queue for the successor, in order:**
+1. **Seg-68 auto-target phase (lead item 2).** The gunnery side is in `7a0de2b33`. The ship-AI half is one edit in
+   `src/game_hosts_ship_ai.cpp`, cc9-ships52's file. It was sent to the lead to route or loan, and no answer had come by
+   this handoff:
+   - add `kAutoTargetPhaseDrawBound = false` after `kShipAiTimerDrawsBound`;
+   - in `GameShipAiHost::bind_gunnery`, before the brain seeding, set
+     `controllers[i].target.think_countdown = -gunnery->auto_target_phase_draw_009f6a8f(i)` for every controller with
+     `nav_block_built`.
+
+   The draw cannot go at `register_units` (about line 11984), because the draw source binds after it. Then smoke, pair
+   on USN01/USN12/JM-class rows, flip by mechanism, and re-check the moved wins with cc9-lua62.
+2. **USN15 (lead item 1)**, from section 264's next steps. The `ib` opening is the base; the Fuso and Ashigara phases
+   are open.
+3. **JM06 `jm06_s49_j6_s` re-plan**, if the lead routes it here.
+
+**Tools** in this tree's `local\`:
+
+| File | Use |
+| --- | --- |
+| `g48_plan.py` | `g46_plan.py` plus a torp target `X+lead` |
+| `g48_queue.ps1` | jobs `exe\|log\|args\|ENV=V;...`, at most 3 of this tree's runs at once |
+| `g48_sum.py` | USN15 one-line summary per log |
+| `g48_pos.py` | positions from `--trajectory-csv` files at chosen steps |
+
+The export dirs are `g48_p1` (`330782c2c`), `g48_p2` (`6c900f1e0`), and the pair builds `g48_aoff`/`g48_aon`
+(`3a6d58900`).
+
+## 266. Seg-68 auto-target phase draw bound OFF (cc9-gunnery49, 2026-10-17)
+
+`009F6A20` (the 40h-byte auto-target selector built at director+38h) stores `-00BD2F10(ECX=1, 0.0, 1.0)` into its
+think countdown +38h (`009F6A8F` CALL, `009F6A94` FCHS, `009F6A9E` FSTP [ESI+38h]). The host seeded it with
+`-(index % 20) * 0.05`. `kAutoTargetPhaseDrawBound` (src/game_hosts_ship_ai.cpp, OFF) makes
+`GameShipAiHost::bind_gunnery` take `GameGunneryHost::auto_target_phase_draw_009f6a8f(i)` (Draw kind 30, key (unit, 0),
+from `7a0de2b33`) for every controller with a built nav block. The draw is taken at bind time because the draw source
+binds after `register_units`; under `BSP_GUNNERY_RNG_STREAMS=1` the keyed stream makes the order immaterial.
+Uncertainty: the image builds the selector for every WeaponDirector; the host seeds only the controllers it registers
+(those with a nav block), which is the set whose countdown is read.
+
+**Predictions (ON vs OFF):** only the phase of each director's once-a-second auto-target think moves (at most one
+second, so target picks may land one think earlier or later). Expect identical spawn tables, a new log line
+`ship ai auto-target phase draws: N controllers seeded`, small moves in first-target times and therefore in shot
+streams; no change in any count that does not depend on target timing. A moved win must trace to a target pick.
+
+### 266.1 Lead item 2: do heavy shells beat armour 130? Yes, by the direct hit; the image has no penetration path
+
+Read from the image (no runs):
+- A shell impact builds a direct record through `00470350` (`record+14h = shot->vtable[54h]()` = `006E7C60`,
+  `00BD2F10(1, DamageMin +ACh, DamageMax +B0h)`), and `00826F10` / `008777D0` subtract the target's armour once:
+  `00470510` = (`+14h` x owner modifier - armour) x weapon scale (`004705A4 FLD`, `004705A9 FSUB`, `004705AD FMUL`),
+  dispatched only when positive. The armour is `unit+368h`, or the class `vtable[24h]` underwater armour when
+  `record+0Ch < 0` (`00826F5x`). No angle, range, segment or penetration term exists in either routine, and this
+  installation's `bulletclasses.lua` (arcade, 2026-05-09) has no penetration key (its keys are listed in 266's notes:
+  DamageMin/DamageMax, Blast{BlastDamageMin, BlastDamageMax, BlastRange}, FireChance/FireDamage, WaterDamage, ...).
+- The blast (`0084BAD0` -> `004705C0`) is max(0, falloff x BlastDamage - armour). Every US blast base (5in 65,
+  6in 75, 8in 90, 14in 115, 16in 120) is under 130, so every `impact blast ... took=0.0` row is the image's law.
+- The direct hit is not zero: US 14in (DamageMin 230, DamageMax 250) does 100-120 per direct hit on armour 130,
+  16in about 150-170. `g48_u15ea_j20_3`: Fuso took 54 hits (33 of them blast rows, all 0) for 2487, about 118 per
+  direct hit, as predicted. The host matches (cc13's `docs/CC13_AUDIT_USN15_GUNNERY.md` 3 reached the same verdict).
+- The difficulty multiply (`00827056..008270B7`) and the gameplay modifiers (`008E6430`, power-ups) are hosted.
+**Verdict: faithful, no bind.** BB guns hurt Fuso little because this installation's data gives Fuso/Yamashiro
+very large HP against 100-170 per direct hit and few heavy shots land; torpedoes stay the lever for USN15.
+
+### 266.2 Lead item 3: the cc13-seg33a weapon gates (docs/CC13_SEG33A.md)
+
+- `006E3460` (rack CanFire): GUNNERY 144 holds. For a rack every `00729A80` timer gate is inert (the drop
+  `006E4D50` replaces `BSP_Gun_Fire`, so `+414h`/`+450h`/`+478h` are never written for a rack), and `vtable[210h](2Ah, 0)`
+  asks for bomb-class ordnance, which the host's ammo count stands for. The remaining conjunct, `gun+358h <= 0`, is
+  unmodelled for every gun in this host (`gun_aiming.hpp` `damage_counter`, always 0). The low-byte test of a heap
+  pointer cannot be reproduced. **No change.**
+- `006DEF30` (artillery accept): the host already solves `00955630` and lifts the solved direction into the mount
+  frame (`kAaKind6GateMountFrameBound`, ON, GUNNERY 197), which is what a non-null `[[bot+50h]+3Ch]` does, then runs
+  `0085A8B0`. `gun->vtable[1D4h](target)` = `0072F6E0` answers 1 for kinds 2-4, and for kind 6 the host runs the
+  line-of-fire query right after the gate (`line_of_fire_refuses`). **No change.**
+- `006E38E0` (session +F4h is 0 or 1): unreachable. `0071E7B4` tests `override_command()` (director+188h) first,
+  which this host answers 0, so `0071E7C9` is never reached, and the echo it guards is a record.
+- `006E8040` (throwaway entity transform): unreachable. `00817264`'s constructor stand-in returns entity 0, so there
+  is no entity to place. **No change** for either; both stay records.
+
+### 266.3 Lead item 4: cc13-sweepB
+
+- `0081DCB0` (1): the image draws before it knows the vector is empty and then faults in `00BF6713`. Both host callers
+  loop only while `stock < loaded`, with `loaded` counted by the same `timer < FLT_MAX` test, so the vector is
+  never empty there. (3): `0072CF00(barrel, FLT_MAX, 0)` skips the divide (FLT_MAX is not below `00D7A278`), writes
+  `+414h` only, and its effect tail runs only for a time <= 0, so storing FLT_MAX is the same write. **No change.**
+- `0081BEB0`: `kShipExitZoneRoleGateBound` (`src/game_hosts_units.cpp`, OFF) adds the `00927C50(unit, game+18ECh)`
+  gate on the exitzone channel (`0081BEDF..0081BF01`): a ship with no role word 9 or 0 exits without the event.
+  Scripts do close roles (`player roles Foote ... open=888888888` in USN12, three JM06 subs), so the gate can
+  bite. Both builds log `ship exit zone: unit=... has no open role word` (ON "skips", OFF "would skip").
+  Labelled and unchanged: the mode-9 return (`0081BED6`; `004BCA50` reports 8 in single player unless game+614h is
+  already 9) and `0092BD30` on `[unit+1018h]` (`0081BF4C`).
+  **Predictions:** identical gameplay on every row where no closed-role ship leaves the map; where one does, only
+  the exitzone listeners' firing changes (an objective keyed on that exit).
+
+### 266.4 `kAutoTargetPhaseDrawBound` flipped ON (by mechanism)
+
+Pair `g49_aoff` / `g49_aon` (`829cac9fc`, reference env, `local\g49_q1.jobs`; manifests `local\g49_aon_<row>.log.manifest.json`):
+
+| Row | Verdict | Mission end OFF -> ON |
+| --- | --- | --- |
+| smoke (USN15, 300 frames) | gameplay identical; the new line `43 controllers seeded` | - |
+| USN01 `usn01_p8_u1_i` | gameplay identical | completed 365.03 s both |
+| JM06 `jm06_s49_j6_s` | gameplay identical (still no end, as since 263.1) | none both |
+| JM08 `jm08_l59_j8_r12` (110000 frames) | gameplay identical | none both |
+| USN12 `usn12_g45_u12_e7` | MOVED: deaths 136 -> 135 (Stanley lives), shots 17349 -> 20228 | completed 1680.51 -> 1685.52 s |
+
+The only native counts that move are the auto-target thinks (one more or one fewer per director). USN12's first
+gameplay divergence is a fire-target pick: at ship-AI step 10150 Samidare holds `fire=Charles` in ON only, the
+listing being identical before it. That is the predicted mechanism (the think phase moves a target pick), so the
+switch is flipped ON. USN12 still wins.

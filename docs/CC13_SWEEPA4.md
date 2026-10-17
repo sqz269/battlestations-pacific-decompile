@@ -1,0 +1,63 @@
+# CC13 sweep A4: segments 0..14 leftovers, fourth pass (cc13-sweepA4)
+
+Packet cc13-sweepA4 (2026-10-16) takes the hardest bodies docs/CC13_SWEEPA3.md
+left, smallest first. Source: `src/cc13_sweepA4.cpp`, header
+`include/bsp/cc13_sweepA4.hpp`; nothing is wired. `SweepA4Host` extends
+`cc13_sweepA3::SweepA3Host` (and so `SweepA2Host` and `SweepAHost`); their
+bindings are reused (for example `native_string_construct_0041e870`,
+`sized_storage_pool_return_block_00bd1510`, `vcall_sink_begin_4`,
+`lua_state_owner_get_globals_00b67980`, `native_string_concat_004261a0`).
+Descriptive names are hypotheses, not recovered symbols. Status of every
+reconstruction below: reconstructed and build-tested (MSVC Win32, compiled into
+`bsp_core`); none is fixture-tested, ABI-compatible or game-validated.
+
+Outcome counts: 12 of the 12 listed bodies reconstructed; 0 existing
+implementations recorded, 0 unreferenced, 0 skipped. 004D80D0 and 0046B730
+were left to cc9 as instructed and not examined.
+
+## Method
+
+- Each address was searched in `src/`, `include/` and `docs/` and with
+  `bsp.py lookup`; none had a reconstruction record or a body in `src/`.
+  004507D0 has a behavioural model in a gameplay host, noted in its row.
+- 0051FA50 has no caller in the index; a rel32 census
+  (`tools/callsite_census.py`) found the call at 0052113C in 00520FB0. 00487A70
+  is held by the vtable slot 00CE6854 (vtable 00CE6850; slot 0 is 0049D630).
+- Bodies were read from the exported listing with the stack offsets tracked at
+  every push and callee RET. x87 register forms were taken from the bytes
+  (`local/sweepA4_pe.py x`). Constants and literals were read from the PE with
+  their width (`local/sweepA4_pe.py f|d|s`). The x87 expressions of 00487A70
+  were traced with `local/sweepA4_x87sim.py`, which decodes the D8/DC/DE
+  register forms from the opcode bytes.
+- Every call the image makes happens at the same point through a named
+  `SweepA4Host` method (or an inherited one). Vendor code (STL instantiations,
+  the CRT) is called, not reconstructed; `_atol`, `strstr`, `tolower` and
+  `memcpy` are bound to the CRT directly.
+- No draw from the shared RNG 00BD2F10 occurs in any body of this packet.
+- Common simplification: SEH unwind actions are not modelled.
+
+## Reconstructed
+
+| Address | Function | ABI | Notes |
+| --- | --- | --- | --- |
+| 00447510 | `game_dynamics_list_add_00447510` | `__thiscall(ECX = list, const spec*, bool)`, RET 8 | Builds the 84h body descriptor (`DynBodyDescriptorRaw`, the layout `bsp/ship_hull_body.hpp` documents) on the stack: mass and inertia 1.0f, identity rows, max speeds 1000.0f then angular 2.0f; 00C336C0 copies the node's matrix (00B6DB70 refresh first unless node+5Ch bit 1); position += anchor through the rows; both dampings 2.0f when position.y <= 0 or unordered (COMISS / JBE), else 0; an optional shape (+8h = 4, +0Ch = 0Dh) goes into the inlined descriptor vector. 00C5D580 on `[[00E188A8]+18h]`. When `[body+70h]` is 0 the node box (vtable +4Ch, called twice into one buffer) minus the anchor goes to 00C31F60. Mass = dy*dx*dz / 10.0 from 00C31F90's extents; with the bool the descriptor velocity is divided by (mass + 1.1 - 1.0) / 1.1 before 00C37E50; 00C37F40(mass), 00C37E70 with k = mass / 5.0. The 20h record is pushed through 00447480 onto list+10h; the descriptor's shape block is freed. x87: 004479EE `DE F1` FDIVRP ST1 (ST0/ST1), 00447A01 `DE FA` FDIVP ST2, 00447A8C `D8 F9` FDIVR ST0,ST1. Sums and divides use double intermediates for the x87 extended registers. |
+| 004E2200 | `game_run_console_command_queue_004e2200` | `__thiscall(ECX = game)`, plain RET | The console queue (std::list of legacy strings at game+638h). "frames" in states 5/0Dh/8/15h requeues N-1 and "frames"; "term" / "pause" / "quit" enqueue 10h / 12h / 13h; a ".scn" path is lowered, prefixed with "universe/scenes/" when it lacks "scenes", stripped of a case-insensitive current-directory prefix, then game+2198h = "command_line_mission", 004E1D70, 004C6890(game+5F0h - 1), the optional profile read (007FF100 with continuation 00BD53C0) and request 0Ah. The inlined destructor of the command string (free only for capacity >= 10h) is kept. The `docs/GAME_FRAME_CONTROL.md` summary of this body agrees. |
+| 004E3AA0 | `game_on_init_004e3aa0` | `__thiscall(ECX = game)`, plain RET | GGame::OnInit: state 3, deletes `[00E198BC]`, then once (game+719Ch) the FileBlock scope, the four effect atlas folders and common.ats, 004D3040, the `_Common.lua` vector for 00B6D3C0, seven managers (new + constructor, stored, then their init), the loading-screen progress steps 0.12 .. 0.32 (floats from the image), the online system only when `[00F8A2FC]` is null, the two entity id tables, the singletons and 004E27E0. No null guard after operator new, as in the image. |
+| 004EA080 | `scene_class_read_stock_lists_004ea080` | `__thiscall(ECX = scene property bag)`, plain RET | The class-table row 4Dh reader. Skipped in game mode 4. JapanList stocks with party 1, then AlliedList with party 0: for each "Stock %d" with a non-zero Count, the Type and the Lua value `VehicleClass.<type>.Catapult.LaunchedClass` (default -1, used when > -1) each get 0095BA60 and 0046BE90. Quirk kept: the AlliedList loop starts at the index the JapanList loop stopped on, not 1. |
+| 004507D0 | `panel_sequence_read_properties_004507d0` | `__thiscall(ECX = panel sequence, archive)`, RET 4 | The read twin of 0044B5B0 (cc13-sweepA3). Archive slots: +0Ch read-or-default (three TaggedValues, RET 18h), +10h read, +14h has. The first command of "sequence" is a new 18h object (vtable 00CE49DC) given the front name of the list at `[[00E188A8]+21E4h]+4h`; the rest come from 0044BE50 with the image's inlined push_back or 0044E6E0. "panelStates" (only when present) pushes cleared 14h slots and reads active/name/characterID into back() after the checked-iterator tests. Uncertainty: the image writes only the low byte of a tag-3 default; the upper bytes are stale stack there and zero here. `game_hosts_script_orders.cpp` (`dialog_parse_entry`) is a behavioural model of the same data that keeps only the timing fields; not edited (gameplay host). |
+| 0045DE50 | `movie_action_create_0045de50` | `__stdcall(type, float time, NativeString comment by value)`, RET 10h | The jump table (0045E558) was decoded from the bytes; `kMovieActionFactory` lists size and constructor per index (48h for 20 ParticleEffect, none for 4). Index 4 and out-of-range types use the activate-time bits as the action pointer and write through it, as the image does. The comment is assigned to action+8h and the argument's storage released. Constructors go through one hook, `movie_action_type_construct`, keyed by the constructor address. |
+| 004E8BF0 | `scene_header_assign_004e8bf0` | `__thiscall(ECX = header, const header*)`, RET 4, EAX = header | A 149-step member-wise copy in image order (`kSceneHeaderCopy`): floats, dwords, bytes and 13 inlined native-string assigns. The table was generated from the listing summary and checked against it mechanically. Simplification: floats are copied as floats; the image's FLD/FSTP would quiet a signalling NaN. |
+| 00459020 | `movie_entity_track_update_00459020` | `__thiscall(ECX = entity track, float time)`, RET 4 | Vtable 00CE4DB8 +0Ch. Follow mode (+14Ch = 2): the parent track entity's position plus the offset at +1C8h, direction (1, 0, 1). Otherwise the position comes from 004581E0 after the member iterator (+100h) is set to begin and the time is pulled back to first-point-time - 0.1 when time + 0.1 is past it (the argument is overwritten and reaches 004560E0); the look-at target is the last point (kind 6 with +748h and time past 00458160) or the point after 00455BC0, else the path 0.099 ahead; the normalized direction is averaged with a 20-entry ring at +4h (seeded when entry 0 is zero) over 21.0, the ring shifted and appended, and (0, +-1, 0) replaced by (1, 0, 1). Unless entity+62h: a non-zero entity+64h (degrees) sets y = tan(angle) / horizontal length (the image divides: `D8 74` FDIV m32), then [[entity]+4Ch](position, direction, {sin, cos, 0, time}) and the pose invalidation over the child chain. Kind 5: +2F4h = +68h ? 0 : 1. Equality tests follow LAHF / TEST AH,44h / JP (only an ordered equal falls through). FCOS/FSIN/sqrt are the C library's in double. |
+| 00526180 | `unit_pick_refresh_cycle_list_00526180` | `__thiscall(ECX = unit pick screen)`, plain RET | The target-cycle refresh 00526720 calls. Phase 1 erases (inlined: 00524000 copy-down, slot-0 destructor, last -= 18h) every handle whose target is null or rejected by 00803D40 and moves the index at +0D4h. Phase 2 collects the accepted, not yet held units of the list at `[00E188A8]+19B8h` (005226D0 from cc13_sweepA2, called directly), appends the held targets, clears and re-sorts (00524E90), and rebuilds the handles with the index following the previous current target. The debug prints (004254B0, empty body) are kept with their arguments. 00526720 (cc13_sweepA3) still calls it through `SweepA3Host::unit_pick_refresh_cycle_list_00526180`: a direct call would need a `SweepA4Host` there, which sweepA3 cannot name without depending on this packet, so it is not a clean change; a `SweepA4Host` can implement that hook with this function. Uncertainty: the three tag dwords passed to 00524000 are stale stack in the image (0 here). |
+| 00487A70 | `debris_set_update_00487a70` | `__thiscall(ECX = debris set, float dt)`, RET 4 | Slot +4h of the vtable at 00CE6850 (no direct caller). Per 4Ch record: an inactive record kills its entity (+114h(0), 00926D90(2)); an active one gets gravity (class+50h * -9.81), optional drag (+44h; speed from sqrt only above 1e-10, no zero guard on the divide), integration, the water (0078CF20) and ground (00903860, default -100.0f) test that ends the record (+48h = 0) and, with a splash definition and water >= ground, spawns a point effect at the water surface (008685E0, effect+9 = 1, ref counts through the Interlocked imports); rotation rates decay toward zero without a clamp; on the first frame the entity is created, attached with an identity matrix, owned and activated, with an optional trail effect assigned to entity+188h; then the trail point, entity+74h = RotZ * RotX * RotY * T (angles z, y, x), +18Ch = 1.0f and vtable +0D8h. A set with no active record deletes itself. x87 traced from the opcode bytes (`local/sweepA4_x87sim.py`); intermediates in double. |
+| 0051CDE0 | `briefing_screen_enter_0051cde0` | `__thiscall(ECX = briefing screen)`, plain RET | Slot +18h of the vtable at 00CEC948. Selection 3, the page shown, the BRIEFING title, the briefing page from the map at +12Ch; while `[00E18D91]` is clear the five multiplayer mode groups are hidden and the game mode (004BCA50) picks the objectives group (+20h), else the page itself is used. The numbered objective groups and frames ("<n>_pri_objective_Group" / "<n>_pri_Group", then the "_sec_" pair) are found from 1 upward, kept in the vectors at +2Ch / +3Ch and shown; the counts end at +4Ch / +50h. The list box gets one cloned row per objective (the first primary at full visibility with its "Text" child shown, every other at 0.5 with it hidden) and a BACK row. Quirk kept: the secondary frame names are numbered with the primary count (+4Ch). The image's two release forms for the mode string (inline for modes 4-6, 0041DD20 for the rest) are both kept. |
+| 0051FA50 | `cheat_menu_screen_build_lines_0051fa50` | `__thiscall(ECX = cheat menu screen)`, plain RET | Caller 00520FB0 at 0052113C (found by a rel32 census; the index lists no caller). Builds a local native-string vector by page (screen+10h): page 0 the feature list ("Dump Memory", "Log rendernodes (On)/(Off)", "Change Party (<name or NONE>)", the debug feature profile or "No DebugFeatures", AI Debug Render, PostEffect, "Invincible: NA/yes/no", DamageDebug, ShowBoundings, Shadow, ShowOcean (always On), OceanUpdate, ShowFoliage, the two particle options, Console, PerfAnalyzer, PerfMeter, NewPerfMeter, then eight plain commands ending in Back); page 1 the key page (Execute, "Function: <screen+8h>", Shift/Ctrl/Alt On/Off, Back); any other page no lines. Then 00544540(screen+20h, lines, 0) and the vector is freed. Literals as in the image, padding included ("ShowOcean    (", "Hide particles   ("). |
+
+## Left for a later packet
+
+None of the twelve listed bodies.
+
+## Not taken (lead's instruction)
+
+- 004D80D0 calls cc9's 004C3A80; 0046B730 is the kill pass cc9 partly models.
+  Neither was examined in this pass.

@@ -251,6 +251,10 @@ struct LuaBindingAiHost {
     // table addressed by the globals 00F8AB5C and 00F8AB60. coverage: partial.
     virtual void ai_target_weight_rule_apply(const AiTargetWeightRule& rule) = 0;
 
+    // The image's 97-entry char* table at 00E0CD80 (kAiClassNameTableAddress),
+    // read directly by 00A385A0 (MOV EDX,[ESI*4+00E0CD80]); a data read, not a call.
+    virtual const char* const* ai_class_name_table_00e0cd80() = 0;
+
     // --- the global stores ------------------------------------------------
     // The four writes into the globals block, each named by its store site.
     virtual void store_party_enabled(int index, bool enabled) = 0;          // 00A37507
@@ -298,9 +302,9 @@ int lua_binding_ai_create_group(LuaBindingAiHost& host,
                                 void* const* entities,
                                 std::size_t entity_count);               // 00A38A50
 
-// The class-name lookup AISetTargetWeight performs, as a rule over the caller's
-// table. Answers the index or -1; the native search is a strcmp walk over the
-// 97 entries at 00E0CD80 that stops at the first match.
+// The class-name lookup AISetTargetWeight performs (00A385A0..00A385E3, inline
+// strcmp, no null tests on the table or its entries). Answers the index or -1;
+// the native search walks the 97 entries at 00E0CD80 and stops at the first match.
 int ai_class_index_from_name(const std::string& name,
                              const char* const* table,
                              int table_count) noexcept;

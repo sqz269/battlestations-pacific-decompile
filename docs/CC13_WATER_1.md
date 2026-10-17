@@ -140,6 +140,28 @@ keep them behind an OFF switch with a comment recording that the image shares st
    - The MSAR CRC-32 chain starts from the literal 61746973h.
 5. **Possible overflow.** 00BA5240 sizes its index buffer as H*W*2 but writes (H-1)*(2W+1)
    indices. Whether that overruns depends on the factory's size unit.
+   - Fixed by cc13-fix5 (2026-10-16): `ocean_wave_field_projected_grid_00ba5240` used to return
+     the UVs and indices as data. It now takes the wave field and an `OceanProjectedGridHost` and
+     makes every call at the image's point. In order: geometry 00B74640, 00B73C10, and 00B73B70(0);
+     release of the old +124h and its clear; renderer vtable 38h/5Ch/60h; the vertex and index
+     buffer lock/unlock; 00B85EE0/00B857F0; draw-section +8h..+18h; 00B864C0, 00B85B80 twice
+     (+124h, then 00BA7080 on +2BCh), 00B86650 and 00B73C60; then both releases. The new +124h is
+     stored. The UV and strip math is unchanged.
+   - Also fixed by cc13-fix5: 00BB4B40 is now `pak_archive_registry_slots_push_back_00bb4b40`. It
+     is the whole push_back: reserve through `reserve_native_pak_registry_slots_00bb46f0` when full
+     (capacity*2, 1 when that is <= 1), the element store (skipped only for a null slot address,
+     as in the image) and size += 1. It was previously only the capacity calculation.
+   - Fixed by cc13-fix6 (2026-10-16): the coast vector helpers had the same shape. They now work
+     on a `CoastNativeVector<T>` {data +0h, size +4h, capacity +8h}. The push_backs
+     `coast_segment_vector_push_back_00baf350`, `coast_ptr_vector_push_back_00baf3e0` and
+     `coast_point_vector_push_back_00bafc00` call their own reserve when full (capacity*2, 20h
+     unless above it). Then each stores the element (skipped only for a null slot address) and
+     does size += 1. The reserves `coast_ptr_vector_reserve_00baeeb0`,
+     `coast_segment_vector_reserve_00baefb0` and `coast_point_vector_reserve_00baf450` had been
+     capacity-only too. Each now floors the request at 20h. When the request exceeds the
+     capacity, it allocates through `CoastHost::operator_new_00bf55be`, copies the live elements
+     dword by dword, frees the old block through `CoastHost::free_00bf6989`, and stores data and
+     capacity. None has a caller in src.
 6. **Possible wrong names (not renamed).**
    - 00BBC690 `BSP_WaterTextureSource_GetDescriptor` is a runtime type-token test on 0109E9D4.
    - 00BC6430 `BSP_RefCountedRecord_Construct` is the cloud puff constructor (vtable 00D64940).

@@ -137,6 +137,42 @@ constexpr bool kAirfieldTargetSubEntitiesBound = true;
 // ON by GUNNERY 127.4: all 22 rows gameplay identical under the measurement
 // streams; USN02 respawns 1084 times, JM08 long 310.
 constexpr bool kDamageSmokeDrawsBound = true;
+// Packet s52_sink_draws (docs/SHIP_AI_OPEN_ITEMS.md 256/258): the two ShipSystems
+// effect spawners 00825F20 calls on a SINKING ship (dead byte unit+5Dh), ECX =
+// [unit+1018h]. Both draw on stream 1 (MOV ECX,1):
+//  - 00933DA0 (0082668B, while sinkTime unit+828h < 30.0 [00CE7630]): an nx x ny
+//    grid, nx = ftol(class+A4h * 1.5 / 15 + 1), ny = ftol(class+A0h * 1.5 / 15 + 1)
+//    ([00CE3D78] 1.5, [00CF3F20] 15.0); per cell one 00BD2FC0 (00933EB5), and on
+//    u32 % 3000 == 0 two 00BD2F10 (the effect point) and a point effect;
+//  - 00933BB0 (008266AA, while unit+82Ch < 40.0 [00CE685C], the time both hull
+//    ends stayed below 0): one 00BD2FC0 (00933BBC), and on u32 % 5 == 0 two
+//    00BD2F10 (00933C02, 00933C22); the effect is spawned only below the water.
+// The effects are presentation (recorded). LABELLED: the host's generator yields
+// floats, so a 00BD2FC0 is one draw and `% n == 0` is `draw < 1/n`; whether the
+// point effect create 00868420 draws as well was not read. Inert under
+// BSP_GUNNERY_RNG_STREAMS=1 (own key, Draw::sink_effects). True: the draws are
+// taken on the shared stream. False: recorded only (before).
+// ON by docs/SHIP_AI_OPEN_ITEMS.md 258: default-mode pairs USN01, USN02 and USNOS
+// move from the first sinking (Gato 29.75 s on USNOS), as a stream-1 consumer
+// must; reference runs (BSP_GUNNERY_RNG_STREAMS=1) are unaffected. LABELLED: a
+// submarine's sink block also reaches both here. The image's submarine motion
+// 00855420 calls 00825F20 first (0085542F), so a sinking submarine runs this
+// block too; the submarine update's own 00933BB0 call (008546FC) is a separate
+// site (kSubmarineWakeDrawsBound), not a second draw of this one.
+constexpr bool kShipSystemsSinkDrawsBound = true;
+// Packet s53_sub_wake_draws (docs/SHIP_AI_OPEN_ITEMS.md 260). 00854650, the
+// submarine update, before its periscope arm: when the hull y unit+100h is in
+// (-15.0 [00CE3D58], -3.0 [00CE3D50]) and below unit+11D8h, one 00BD2FC0 on
+// stream 1 (008546DF MOV ECX,1 / 008546E4), and on u32 % 15 == 0 the 00933BB0
+// spray on [unit+1018h] (008546FC), which draws as in the sink block. LABELLED:
+// unit+11D8h has only the constructor's 0 as a writer found (00853630), so the
+// test is y < 0; the units host takes the pick once per force step after the
+// periscope arm, not in the unit update; `% 15 == 0` is `draw < 1/15`. Inert
+// under BSP_GUNNERY_RNG_STREAMS=1 (Draw::sink_effects key 2). True: the draws are
+// taken. False: recorded only (before).
+// ON by docs/SHIP_AI_OPEN_ITEMS.md 260: USNOS reference mode is gameplay
+// identical; default mode moves from 11.4 s, after Gato's first eligible tick.
+constexpr bool kSubmarineWakeDrawsBound = true;
 // Packet cc9_cb_gunfire_gate (docs/GUNNERY_OPEN_ITEMS.md 125): a hit's AddDamage is
 // victim->vtable[1ACh] (008778C6, 00877A2E in 008777D0), and for a CommandBuilding
 // (vtable 00CFB028) that slot is 006F1F20, which damages only while +7D8h == 0.0
@@ -1085,6 +1121,16 @@ constexpr bool kGunneryClassArmsBound = true;  // ON: GUNNERY_OPEN_ITEMS 77.4
 //    launcher's angles and so never fires one (BSM01's HenryPT: assigns 496,
 //    shots 0). docs/GUNNERY_OPEN_ITEMS.md 139.
 constexpr bool kDepthChargeBotTickBound = true;  // ON: GUNNERY_OPEN_ITEMS 142
+//  * kGunBotRetargetReleaseBound: cc9-ships54, SHIP_AI_OPEN_ITEMS 266. The bot
+//    setter 006DF170 (TorpedoBot 009035A0 wraps it) calls vtable[30h] whenever
+//    the resolved target differs from the new one, a retarget as well as a
+//    clear; that slot is 008FF2B0 (TorpedoBot) / 008FF500 (DepthChargeBot),
+//    which sends the gun's vtable[1E8h](0), the trigger off, when the role slot
+//    is 8 or AI-held (008FF2C1 / 008FF511). The trigger then stays off until
+//    the bot's next evaluating think (0.2 s torpedo, 0.1 s depth charge). OFF:
+//    a retarget keeps the trigger the last think left. ON by mechanism: BSM01,
+//    USN01 and USN10 pairs gameplay identical, 4700-26099 sends, 0 drops.
+constexpr bool kGunBotRetargetReleaseBound = true;
 //  * kPlayerWeaponGroupFireBound: packet cc9_player_weapon_group_fire. Message
 //    79h's group 5 arm (0095A441): the player's depth-charge launchers take
 //    the 99h-held byte as their trigger, and GameGunneryHost::
@@ -1153,6 +1199,18 @@ constexpr bool kTorpedoBotReadyGateBound = true;   // ON: GUNNERY_OPEN_ITEMS 161
 //    this step's 0072D130 countdown: the order of the bot and gun ticks inside
 //    one step is not read). OFF: the window only, and the refusals are counted.
 constexpr bool kTorpedoBotCanFireReloadBound = true;   // ON: GUNNERY 260
+//  * kTorpedoAngleErrPerEvaluationBound: packet g48_angle_err (GUNNERY 263).
+//    008FFF20 draws the AngleErr jitter on every evaluating tick that passes
+//    the ready gate and the friendly-crossing walk: 00900830 00BD2F10(ECX=1,
+//    AngleErr row) and 0090083E 00BD2FC0(ECX=1) & 1 for the sign, both BEFORE
+//    the unit+634h bit-2 inhibit (0090087C) and the launch-zone test
+//    (0090088E), and 007311B0 carries the result in the shot order; the launch
+//    takes the order the last evaluation issued. The host drew the pair once,
+//    at shot creation. ON: the pair is drawn at the evaluation (same keys,
+//    torpedo_gyro (gun, 0|1)) and kept per gun; the launch uses the kept value.
+//    A held or refused evaluation still consumes its draws, as in the image.
+//    OFF: drawn at launch, and the evaluations that would draw are counted.
+constexpr bool kTorpedoAngleErrPerEvaluationBound = true;   // ON: GUNNERY 263.1
 //  * kShipyardDeathReleaseBound: packet cc9_g34_shipyard_reidle. 008455A0, the
 //    shipyard's observer slot 08 on each unit it built (registered by AAh
 //    008437D0), runs when the unit dies (00926390): it clears the first hangar
@@ -1811,6 +1869,32 @@ struct GameGunneryHost::Impl {
     std::map<std::size_t, bsp::DepthChargeBotState> depth_charge_bot_by_gun;
     std::map<std::size_t, bool> depth_charge_trigger_by_gun;
     unsigned long long depth_charge_ticks{0}, depth_charge_holds{0};
+    // kGunBotRetargetReleaseBound: vtable[1E8h](0) sends from 008FF2B0 / 008FF500,
+    // and those that dropped a trigger that was held.
+    unsigned long long bot_release_sends{0}, bot_release_drops{0};
+    void bot_clear_release_008ff2b0(std::size_t slot) {
+        if (slot >= guns.size()) return;
+        const GameGunRow& row = guns[slot];
+        const bool torpedo = row.category == bsp::kUnitGunneryTorpedoCategory;
+        if (!torpedo && row.category != 8) return;
+        if (!slot_ai_held_00927f10(row.seat_1ac)) return;   // 008FF2C1 / 008FF511
+        ++bot_release_sends;
+        bool held = false;
+        if (torpedo) {
+            const auto it = torpedo_think_by_gun.find(slot);
+            if (it != torpedo_think_by_gun.end()) {
+                held = it->second.want_fire;
+                it->second.want_fire = false;
+            }
+        } else {
+            const auto it = depth_charge_trigger_by_gun.find(slot);
+            if (it != depth_charge_trigger_by_gun.end()) {
+                held = it->second;
+                it->second = false;
+            }
+        }
+        if (held) ++bot_release_drops;
+    }
     // Packet cc9_depth_charge_in_water (kDepthChargeInWaterBound).
     unsigned long long dc_launches{0}, dc_water_entries{0}, dc_breakups{0},
         dc_water_steps{0}, dc_contact_detonations{0}, dc_depth_detonations{0};
@@ -2124,6 +2208,8 @@ struct GameGunneryHost::Impl {
         plane_crash_blast = 27, // 0084BAD0's blast for a plane's crash shot (007C0910), key (plane, 0)
         torpedo_scan_phase = 28, // 00856132, -U(0, 1) into record+518h, stream 1, key (shot serial, 0)
         ship_breakup = 29,    // 00827B4D, the breakup roll against WreckChance, stream 1, key (unit, 0)
+        sink_effects = 30,    // 00933DA0 / 00933BB0, the ShipSystems sink spawners, stream 1, key (unit, 0|1)
+        auto_target_phase = 30, // 009F6A8F, -U(0, 1) into the auto-target think countdown, stream 1, key (unit, 0)
     };
     unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
@@ -2201,8 +2287,13 @@ struct GameGunneryHost::Impl {
         // What 00900476..00900526 left for the gyro run line (007311B0).
         std::array<float, 2> lead_xz{{0.0f, 0.0f}};
         float snap_radians{0.0f};
+        // kTorpedoAngleErrPerEvaluationBound: the signed AngleErr (degrees) the
+        // last evaluation drew at 00900830..0090084F, carried by 007311B0.
+        float angle_err_deg{0.0f};
+        bool angle_err_drawn{false};
     };
     std::map<std::size_t, TorpedoThink> torpedo_think_by_gun;
+    unsigned long long torpedo_angle_err_evaluations{0};   // kTorpedoAngleErrPerEvaluationBound
     unsigned long long torpedo_think_holds{0}, torpedo_think_evals{0};
     unsigned long long torpedo_ready_reload_refusals{0};   // kTorpedoBotCanFireReloadBound
     unsigned long long torpedo_zone_tests{0}, torpedo_zone_holds{0};  // kTorpedoLaunchZoneBound
@@ -2818,6 +2909,19 @@ struct GameGunneryHost::Impl {
     unsigned long long smoke_clock_resets{0};
     unsigned long long smoke_slots_grown{0};
     unsigned long long smoke_respawns{0};
+    // Packet s52_sink_draws: calls of 00933DA0 / 00933BB0, the stream-1 draws
+    // taken, and the effects (recorded).
+    unsigned long long sink_grid_calls{0};
+    unsigned long long sink_spray_calls{0};
+    unsigned long long sink_draws{0};
+    unsigned long long sink_effects{0};
+    // Packet s53_sub_wake_draws: 008546E4 picks taken and the 00933BB0 calls they chose.
+    unsigned long long sub_wake_picks{0};
+    unsigned long long sub_wake_sprays{0};
+    // Packet s53_wreck_debris: 00935540 calls, pieces counted, draws taken.
+    unsigned long long wreck_debris_calls{0};
+    unsigned long long wreck_debris_pieces{0};
+    unsigned long long wreck_debris_draws{0};
     unsigned long long smoke_expired_held{0};
     std::size_t smoke_units{0};
     float smoke_first_respawn{-1.0f};
@@ -6531,6 +6635,11 @@ public:
         if (other < owner_.unit_state.size() && aa_target_matches(owner_.unit_state[other].row.name)) {
             ++owner_.aa_target_stats[other].assigns;
         }
+        if (kGunBotRetargetReleaseBound && row.target_unit != other + 1) {
+            // 00727F44 -> 006DF170 (via 009035A0 for a torpedo bot): a target other
+            // than the resolved one goes through vtable[30h] first (006DF18E).
+            owner_.bot_clear_release_008ff2b0(slot);
+        }
         row.target_unit = other + 1;
         row.target_name = other < owner_.unit_state.size()
             ? owner_.unit_state[other].row.name : std::string();
@@ -6639,6 +6748,8 @@ public:
         ++row.clears;
         ++state_.row.clears;
         ++owner_.summary.clears;
+        // 00728000 calls each bot's vtable[30h] unconditionally (0072800C..).
+        if constexpr (kGunBotRetargetReleaseBound) owner_.bot_clear_release_008ff2b0(slot);
         row.target_unit = 0;
         row.target_name.clear();
         row.target_is_fire_target = false;
@@ -8505,12 +8616,28 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             }
             done("TorpedoBot::friendly_crossing_scan_008fff20", 0x0090058au);
         }
+        if (want_fire && !torpedo_think_hold && !player_seat && torpedo_gun
+            && gun.category == bsp::kUnitGunneryTorpedoCategory) {
+            // 008FFF20 00900807..00900876: the AngleErr pair, before the inhibit
+            // and the launch-zone test (kTorpedoAngleErrPerEvaluationBound).
+            ++torpedo_angle_err_evaluations;
+            if constexpr (kTorpedoAngleErrPerEvaluationBound) {
+                int level = units.skill_level(owner_unit);
+                if (level < 0 || level > 5) level = 1;
+                const float magnitude = draw(Draw::torpedo_gyro, g, 0,
+                    kTorpedoAngleErr[level][0], kTorpedoAngleErr[level][1]);
+                const float sign = draw(Draw::torpedo_gyro, g, 1, 0.0f, 1.0f) < 0.5f
+                    ? -1.0f : 1.0f;
+                TorpedoThink& think = torpedo_think_by_gun[g];
+                think.angle_err_deg = sign * magnitude;
+                think.angle_err_drawn = true;
+            }
+        }
         if (kTorpedoLaunchZoneBound && want_fire && !torpedo_think_hold
             && gun.category == bsp::kUnitGunneryTorpedoCategory) {
             // 008FFF20 0090088E..009008EB: the gun-to-lead line against the layer-5
-            // avoid zones. LABELLED: the image draws the AngleErr jitter
-            // (00900830..00900876) before this test; the host draws it at launch, so
-            // a held tick draws nothing here.
+            // avoid zones. The image draws the AngleErr jitter (00900830..00900876)
+            // before this test: kTorpedoAngleErrPerEvaluationBound above.
             const GameAvoidZoneRuntime* zones = ship_ai != nullptr
                 ? ship_ai->avoid_zone_runtime() : nullptr;
             if (zones != nullptr && zones->ready()) {
@@ -9070,13 +9197,22 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 {{muzzle[0], muzzle[2]}}, torpedo_lead_xz, axis, torpedo_snap_radians);
             const float dx = run_end[0] - muzzle[0], dz = run_end[1] - muzzle[2];
             if (dx != 0.0f || dz != 0.0f) {
-                int level = units.skill_level(owner_unit);
-                if (level < 0 || level > 5) level = 1;
-                const float magnitude = draw(Draw::torpedo_gyro, g, 0,
-                    kTorpedoAngleErr[level][0], kTorpedoAngleErr[level][1]);
-                // 0090083E 00BD2FC0 & 1 -> +1 or -1 (0090084A..0090084F).
-                const float sign = draw(Draw::torpedo_gyro, g, 1, 0.0f, 1.0f) < 0.5f
-                    ? -1.0f : 1.0f;
+                float magnitude = 0.0f, sign = 1.0f;
+                const auto kept = torpedo_think_by_gun.find(g);
+                if (kTorpedoAngleErrPerEvaluationBound && kept != torpedo_think_by_gun.end()
+                    && kept->second.angle_err_drawn) {
+                    // The pair the last evaluation drew (007311B0's order).
+                    magnitude = std::fabs(kept->second.angle_err_deg);
+                    sign = kept->second.angle_err_deg < 0.0f ? -1.0f : 1.0f;
+                } else {
+                    int level = units.skill_level(owner_unit);
+                    if (level < 0 || level > 5) level = 1;
+                    magnitude = draw(Draw::torpedo_gyro, g, 0,
+                        kTorpedoAngleErr[level][0], kTorpedoAngleErr[level][1]);
+                    // 0090083E 00BD2FC0 & 1 -> +1 or -1 (0090084A..0090084F).
+                    sign = draw(Draw::torpedo_gyro, g, 1, 0.0f, 1.0f) < 0.5f
+                        ? -1.0f : 1.0f;
+                }
                 if constexpr (kGunAimDegreePrecisionBound) {
                     // 00900513..00900526: the run heading is stored as a float first.
                     const float run = static_cast<float>(std::atan2(static_cast<double>(dx),
@@ -14039,12 +14175,38 @@ bool GameGunneryHost::player_fire_torpedo_group(std::size_t unit, const std::str
     if (row == nullptr || unit >= host.unit_state.size()) return refuse("no such unit");
     if (host.unit_state[unit].dead) return refuse("the unit is dead");
     float yaw = yaw_radians;
+    bool lead_used = false;
     if (!target.empty()) {
-        const std::size_t t = host.unit_by_name(target);
+        // GUNNERY 262: `at <target> lead` stands for the player aiming ahead of
+        // a moving target. LABELLED harness aid, like the bomb sight's `on`: the
+        // aim point is the TorpedoBot's own intercept 008FBB00 (the unit's first
+        // tube's WaterTravelSpeed, the target's velocity), not a person's eye.
+        std::string name = target;
+        const bool lead = name.size() > 5 && name.compare(name.size() - 5, 5, " lead") == 0;
+        if (lead) name.resize(name.size() - 5);
+        const std::size_t t = host.unit_by_name(name);
         if (t >= host.unit_state.size()) return refuse("no unit of that name");
         float r[3], u[3], f[3], from[3], to[3];
         host.unit_pose(unit, r, u, f, from);
         host.unit_pose(t, r, u, f, to);
+        if (lead) {
+            float speed = 0.0f;
+            for (const GameGunRow& gun : host.guns) {
+                if (gun.unit_index != unit || gun.category != bsp::kUnitGunneryTorpedoCategory) continue;
+                speed = gun.water_travel_speed > 0.0f ? gun.water_travel_speed : gun.muzzle_speed;
+                break;
+            }
+            float vel[3];
+            host.unit_velocity(t, vel);
+            std::array<float, 3> aim{};
+            if (speed > 0.0f
+                && bsp::torpedo_intercept_point_008fbb00({from[0], from[1], from[2]},
+                    {to[0], to[1], to[2]}, speed, {vel[0], vel[1], vel[2]}, aim)) {
+                to[0] = aim[0];
+                to[2] = aim[2];
+                lead_used = true;
+            }
+        }
         yaw = std::atan2(to[0] - from[0], to[2] - from[2]);
     }
     std::size_t taken = 0;
@@ -14063,9 +14225,9 @@ bool GameGunneryHost::player_fire_torpedo_group(std::size_t unit, const std::str
     last = held;
     host.apply_gun_aim_message(unit, m);
     reason = m.pressed_35 ? "pressed" : (held ? "held" : "released");
-    host.log.notef("player torpedo group fire: unit=%s yaw=%.1f deg tubes=%zu %s (79h group 4 -> "
+    host.log.notef("player torpedo group fire: unit=%s yaw=%.1f deg%s tubes=%zu %s (79h group 4 -> "
         "00959C20 0095A1CC, packet cc9_player_torpedo_group)", row->name.c_str(),
-        static_cast<double>(yaw) * 57.2957795, taken, reason.c_str());
+        static_cast<double>(yaw) * 57.2957795, lead_used ? " (lead)" : "", taken, reason.c_str());
     return true;
 }
 
@@ -14455,6 +14617,90 @@ bool GameGunneryHost::damage_smoke_tick_008227e0(std::size_t unit_index, float d
         }
     }
     return true;
+}
+
+void GameGunneryHost::ship_systems_sink_draws_00933da0_00933bb0(std::size_t unit_index,
+    bool grid_00933da0, bool spray_00933bb0) {
+    Impl& host = *impl_;
+    if (unit_index >= host.unit_state.size()) return;
+    const Impl::UnitState& us = host.unit_state[unit_index];
+    if (grid_00933da0) {
+        ++host.sink_grid_calls;
+        // 00933DC2..00933E1C: class+A4h is the host's width, class+A0h its length
+        // (as in damage_smoke_tick_008227e0); _ftol truncates.
+        const int nx = static_cast<int>(static_cast<double>(us.hull_width) * 1.5 / 15.0 + 1.0);
+        const int ny = static_cast<int>(static_cast<double>(us.hull_length) * 1.5 / 15.0 + 1.0);
+        if (kShipSystemsSinkDrawsBound && nx > 0 && ny > 0) {
+            for (int i = 0; i < nx * ny; ++i) {
+                ++host.sink_draws;
+                const float u = host.draw(Impl::Draw::sink_effects, unit_index, 0, 0.0f, 1.0f);
+                if (!(u < 1.0f / 3000.0f)) continue;                 // 00933EC3
+                host.draw(Impl::Draw::sink_effects, unit_index, 0, 0.0f, 1.0f);
+                host.draw(Impl::Draw::sink_effects, unit_index, 0, 0.0f, 1.0f);
+                host.sink_draws += 2;
+                ++host.sink_effects;
+                host.record("ShipSystems::sink_grid_effect", 0x00933da0u);
+            }
+        } else {
+            host.record("ShipSystems::sink_grid_draws", 0x00933da0u);
+        }
+    }
+    if (spray_00933bb0) {
+        ++host.sink_spray_calls;
+        if (kShipSystemsSinkDrawsBound) {
+            ++host.sink_draws;
+            const float u = host.draw(Impl::Draw::sink_effects, unit_index, 1, 0.0f, 1.0f);
+            if (u < 0.2f) {                                          // 00933BCA
+                host.draw(Impl::Draw::sink_effects, unit_index, 1, 0.0f, 1.0f);
+                host.draw(Impl::Draw::sink_effects, unit_index, 1, 0.0f, 1.0f);
+                host.sink_draws += 2;
+                ++host.sink_effects;
+                host.record("ShipSystems::sink_spray_effect", 0x00933bb0u);
+            }
+        } else {
+            host.record("ShipSystems::sink_spray_draws", 0x00933bb0u);
+        }
+    }
+}
+
+void GameGunneryHost::sinking_wreck_debris_draws_00935540(std::size_t unit_index,
+    std::int32_t class_kind, float z_extent, float num_per_meter) {
+    Impl& host = *impl_;
+    if (unit_index >= host.unit_state.size()) return;
+    if (class_kind == 0x0e || class_kind == 8) return;              // 0093555B / 00935568
+    // 0093557A CVTTSS2SI the extent, 00935583 FLD settings+684h, FIMUL, 00BF7420.
+    const int length = static_cast<int>(z_extent);
+    const int pieces = static_cast<int>(static_cast<double>(num_per_meter) * length);
+    ++host.wreck_debris_calls;
+    if (pieces <= 0) return;                                        // 00935611 JLE
+    host.wreck_debris_pieces += static_cast<unsigned long long>(pieces);
+    if (!kSinkingWreckDebrisDrawsBound) {
+        host.record("UnitInstance::wreck_debris_draws", 0x00935540u);
+        return;
+    }
+    // Per piece: 00935738 the model pick, 00935985/009359A5/009359C9 the
+    // orientation, 00935A19/00935A81/00935AEC the position, 00935B91 the lifetime.
+    for (int p = 0; p < pieces; ++p) {
+        for (int k = 0; k < 8; ++k) host.draw(Impl::Draw::sink_effects, unit_index, 3, 0.0f, 1.0f);
+        host.wreck_debris_draws += 8;
+    }
+    host.record("UnitInstance::wreck_debris_pieces_00447510", 0x00447510u);
+}
+
+void GameGunneryHost::submarine_wake_draws_008546df(std::size_t unit_index, float hull_y) {
+    Impl& host = *impl_;
+    if (unit_index >= host.unit_state.size()) return;
+    // 0085468C..008546DD: -15.0 < y, y < -3.0, y < unit+11D8h (0 here).
+    if (!(hull_y > -15.0f) || !(hull_y < -3.0f) || !(hull_y < 0.0f)) return;
+    ++host.sub_wake_picks;   // OFF: the ticks that would draw
+    if (!kSubmarineWakeDrawsBound) {
+        host.record("SubmarineUnit::wake_pick_draw", 0x008546e4u);
+        return;
+    }
+    const float u = host.draw(Impl::Draw::sink_effects, unit_index, 2, 0.0f, 1.0f);
+    if (!(u < 1.0f / 15.0f)) return;                                 // 008546F4
+    ++host.sub_wake_sprays;
+    ship_systems_sink_draws_00933da0_00933bb0(unit_index, false, true);   // 008546FC
 }
 
 int GameGunneryHost::plane_spin_side_800(std::size_t unit_index) const {
@@ -15232,6 +15478,11 @@ void GameGunneryHost::report() {
             "cc9_depth_charge_bot, cc9_player_weapon_group_fire)", host.depth_charge_ticks,
             host.depth_charge_holds, host.player_group_fires, host.player_group5_triggers);
     }
+    if constexpr (kGunBotRetargetReleaseBound) {
+        host.log.notef("summary mission gunnery bot clear release sends=%llu drops=%llu "
+            "(008FF2B0 / 008FF500 vtable[1E8h](0), kGunBotRetargetReleaseBound)",
+            host.bot_release_sends, host.bot_release_drops);
+    }
     if constexpr (kPlayerTorpedoGroupFireBound) {
         host.log.notef("summary mission gunnery player torpedo group messages=%llu trains=%llu "
             "snap_failures=%llu trigger_ons=%llu trigger_offs=%llu presses=%llu "
@@ -15508,6 +15759,10 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery torpedo ready reload refusals=%llu bound=%d "
             "(0090042F vtable[1D0h](1) -> 0085A830 -> 00729A80(1), packet g47_torpedo_canfire)",
             host.torpedo_ready_reload_refusals, kTorpedoBotCanFireReloadBound ? 1 : 0);
+        host.log.notef("summary mission gunnery torpedo angle-error evaluations=%llu launches=%llu "
+            "bound=%d (00900830/0090083E drawn per evaluation, packet g48_angle_err)",
+            host.torpedo_angle_err_evaluations, host.torpedo_gyro_launches,
+            kTorpedoAngleErrPerEvaluationBound ? 1 : 0);
         host.log.notef("summary mission gunnery torpedo swim entity impacts=%llu (swimming rounds that "
             "struck an entity, 0084BC60)", host.torpedo_swim_entity_impacts);
         host.log.notef("summary mission gunnery bullet throw cone=%llu fan=%llu zero=%llu "
@@ -15671,6 +15926,17 @@ void GameGunneryHost::report() {
                 host.smoke_clock_resets, host.smoke_respawns, host.smoke_expired_held,
                 host.smoke_first_unit.empty() ? "none" : host.smoke_first_unit.c_str(),
                 static_cast<double>(host.smoke_first_respawn));
+            host.log.notef("summary mission ship systems sink draws bound=%d grid_calls=%llu "
+                "spray_calls=%llu draws=%llu effects=%llu (00933DA0 / 00933BB0, stream 1, "
+                "packet s52_sink_draws)", kShipSystemsSinkDrawsBound ? 1 : 0,
+                host.sink_grid_calls, host.sink_spray_calls, host.sink_draws, host.sink_effects);
+            host.log.notef("summary mission submarine wake draws bound=%d picks=%llu sprays=%llu "
+                "(008546E4 / 008546FC, stream 1, packet s53_sub_wake_draws)",
+                kSubmarineWakeDrawsBound ? 1 : 0, host.sub_wake_picks, host.sub_wake_sprays);
+            host.log.notef("summary mission sinking wreck debris bound=%d calls=%llu pieces=%llu "
+                "draws=%llu (00935540, eight stream-1 draws per piece, packet s53_wreck_debris)",
+                kSinkingWreckDebrisDrawsBound ? 1 : 0, host.wreck_debris_calls,
+                host.wreck_debris_pieces, host.wreck_debris_draws);
         }
         {
             const Impl::ShipDeathCounts& d = host.ship_death;
@@ -16520,6 +16786,10 @@ std::vector<GameGunneryHost::LiveTorpedo> GameGunneryHost::live_torpedoes() cons
 
 float GameGunneryHost::ship_ai_draw(std::size_t unit_index, float low, float high) {
     return impl_->draw(Impl::Draw::ship_ai_torpedo, unit_index, 0, low, high);
+}
+
+float GameGunneryHost::auto_target_phase_draw_009f6a8f(std::size_t unit_index) {
+    return impl_->draw(Impl::Draw::auto_target_phase, unit_index, 0, 0.0f, 1.0f);
 }
 
 bool GameGunneryHost::run_recon_pass_at_scene_load_004e059b() {

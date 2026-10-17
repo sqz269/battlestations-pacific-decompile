@@ -108,6 +108,7 @@
 #include <array>
 #include "bsp/pose_refresh.hpp"
 #include "bsp/rigid_body_integration.hpp"
+#include "bsp/ship_ai_path_cursor.hpp"
 #include "bsp/ship_ai_throttle_ring.hpp"
 #include "bsp/ship_ai_nav_block_ctor.hpp"
 #include "bsp/ship_ai_wake_trail.hpp"
@@ -2118,6 +2119,7 @@ struct GameUnitSlot {
     // [EDI+518h], EDI = unit+310h, at 008263CE..008263DC) and the census of a
     // wreck's hull ends against KillDepth (008265EC..00826622).
     float sink_time_828{0.0f};
+    float sink_under_82c{0.0f};   // packet s52_sink_draws: both hull ends below 0 (00826656)
     // Packet cc9_sunk_hull_shape_flag8: 00826410..0082643B cleared mask bit 8 (the terrain
     // group) on every hull shape once sinkTime passed 60 s (00C47F60).
     bool sunk_terrain_mask_cleared{false};
@@ -2711,6 +2713,14 @@ struct GameUnitsHost::Impl {
     // runs it for every live ship. False: no ship ever leaves the map, as before.
     // ON by mechanism (cc9-ships47, SHIP_AI 232): wins identical, the JM06 probe exits.
     static constexpr bool kShipOutOfMapExitBound = true;
+    // Packet g49_exit_zone_role_gate (GUNNERY 266.3, cc13-sweepB adoption note 2).
+    // 0081BEDF..0081BF01: 0081BEB0 sends the exitzone channel 00982120(unit, 1) only
+    // when 00927C50(unit, [game+18ECh]) answers true: one of the nine role words
+    // unit+188h.. is 9 (open) or the local player's slot. True: that gate, the local
+    // slot being kLocalPlayerSlot (0) as elsewhere in this host. False: every exit is
+    // sent, as before. Kill(4) runs either way.
+    static constexpr bool kShipExitZoneRoleGateBound = false;
+    unsigned long long ship_exit_role_gated{0};
     unsigned long long ship_exit_calls{0}, ship_exit_counting{0}, ship_exit_warnings{0},
         ship_exit_kills{0};
     void note_kill_cause(std::size_t unit, int cause) {
@@ -3383,6 +3393,7 @@ struct GameUnitsHost::Impl {
         bsp::dyn_body_set_linear_damping_00c37e00(s.body, 0.5f);
         // 0082507E / 00825086.
         s.sink_time_828 = 0.0f;
+        s.sink_under_82c = 0.0f;
         s.sunk_terrain_mask_cleared = false;
         ++leak_redistributions;
         done("UnitInstance::wreck_sink_block_00824fe5", 0x00824fe5u);
@@ -3723,6 +3734,36 @@ struct GameUnitsHost::Impl {
                 static_cast<double>(formacio_update_interval));
         }
         return formacio_update_interval;
+    }
+    // Packet s53_wreck_debris. ShipGlobals.DebrisStruct, as 0083B5E0's fragment
+    // stores it (0084124E boolean, default false; 00841294 number, default 0.3).
+    bool debris_enabled_settings_680() {
+        if (debris_enabled_680 < 0) {
+            const char chunk[] =
+                "local g = type(ShipGlobals) == 'table' and ShipGlobals.DebrisStruct or nil\n"
+                "if type(g) ~= 'table' then return '0 0.3' end\n"
+                "return (g.DebrisEnabled == true and '1 ' or '0 ') .. "
+                "tostring(tonumber(g.DebrisNumPerMeter) or 0.3)\n";
+            const int top = lua.lua_gettop();
+            int enabled = 0;
+            float per_meter = 0.3f;
+            if (lua.luaL_loadbuffer(chunk, static_cast<int>(std::strlen(chunk)),
+                                    "bsp_debris_struct") == 0 &&
+                lua.lua_pcall(0, 1, 0) == 0) {
+                const std::string text = lua.lua_tolstring_at_top();
+                if (text.size() >= 2) {
+                    enabled = text[0] == '1' ? 1 : 0;
+                    per_meter = static_cast<float>(std::atof(text.c_str() + 2));
+                }
+            }
+            lua.lua_settop(top);
+            debris_enabled_680 = enabled;
+            debris_num_per_meter_684 = per_meter;
+            log.notef("sinking wreck debris: DebrisStruct.DebrisEnabled = %d, DebrisNumPerMeter = "
+                "%.3f (settings+680h / +684h, packet s53_wreck_debris)", enabled,
+                static_cast<double>(per_meter));
+        }
+        return debris_enabled_680 == 1;
     }
     // 0070DB60 BSP_UnitGroup_SwapSlotsByDistance. A record until packet
     // cc9_ship_motion_tail's part 8b binds the reconstruction.
@@ -6471,6 +6512,10 @@ struct GameUnitsHost::Impl {
     unsigned long long tail_slot_swap_calls = 0;
     unsigned long long tail_expiry_calls = 0;
     float formacio_update_interval = -1.0f;   // -1 until read
+    // Packet s53_wreck_debris: ShipGlobals.DebrisStruct (0084124E / 00841294 store
+    // settings+680h / +684h; defaults false and 0.3). -1 until read.
+    int debris_enabled_680 = -1;
+    float debris_num_per_meter_684 = 0.3f;
     // Packet cc9_ship_motion_tail part 8b: 0070DB60 on the group the expired
     // leader timer names. OFF: a record.
     // ON since the USN02 / USN04 pairs: identical; both missions gate every call.
@@ -9604,10 +9649,31 @@ public:
         owner_.record("UnitInstance::smooth_intensity", 0x008227e0u);
     }
     bool wake_enabled() override {
+        // Packet s53_wreck_debris: 00825AF4 00424C40, 00825AF9 settings+680h.
+        if (bsp::game::kSinkingWreckDebrisDrawsBound) {
+            owner_.done("UnitInstance::wake_setting", 0x00424c40u);
+            return owner_.debris_enabled_settings_680();
+        }
         owner_.record("UnitInstance::wake_setting", 0x00424c40u);
         return false;
     }
-    void spawn_wake() override { owner_.record("UnitInstance::spawn_wake", 0x00935540u); }
+    void spawn_wake() override {
+        // Packet s53_wreck_debris: 00825B3E..00825BCF, ECX = unit+C4h and the
+        // hull body's local box extents (00C31F90: B+38h min, B+44h max); arg4 is
+        // the z extent. LABELLED: the class hull box the body was created from
+        // stands for B+38h..+4Ch; with no box, the class hull length.
+        GameGunneryHost* const gun = owner_.gunnery.get();
+        if (!bsp::game::kSinkingWreckDebrisDrawsBound || gun == nullptr) {
+            owner_.record("UnitInstance::spawn_wake", 0x00935540u);
+            return;
+        }
+        const GameUnitsHost::Impl::ClassHullBox& hb = owner_.class_hull_box(slot_);
+        const float z_extent = (hb.ok && hb.box.shape_count > 0)
+            ? hb.box.max.z - hb.box.min.z : slot_.motion_class.hull_length;
+        gun->sinking_wreck_debris_draws_00935540(slot_.process_index, slot_.state->class_id,
+            z_extent, owner_.debris_num_per_meter_684);
+        owner_.done("UnitInstance::spawn_wake", 0x00935540u);
+    }
     bool prop_wash_threshold_passed(float) override {
         owner_.record("UnitInstance::prop_wash_threshold", 0x00ce69d0u);
         return false;
@@ -10163,6 +10229,11 @@ public:
         }
         if (kSubmarineAirBound) run_submarine_air_and_crush(dt, dead);
         if (kSubmarinePeriscopeOutBound) run_submarine_periscope_00854650(dt);
+        // Packet s53_sub_wake_draws: 00854650's 008546DF..008546FC pick on the hull y.
+        if (owner_.gunnery != nullptr) {
+            owner_.gunnery->submarine_wake_draws_008546df(slot_.process_index,
+                slot_.motion.position[1]);
+        }
         return bsp::OceanVec3{};
     }
 
@@ -17445,8 +17516,42 @@ void GameUnitsHost::run_director_steps_00836920() {
             // references), so this is the same choice milestone 2m already made
             // for the `cruise` begin: immediately, on the director step.
             host.commands.begin_current_command_00835c70(index, px, pz);
+            // Packet s53_path_multileg: unit->vtable[50h] (006DFD60, unit+1050h)
+            // and [unit+740h]->vtable[48h] for 007ADD70's heading and force.
+            GameShipAiHost* const ai = host.ship_ai;
+            const bool plane = unit_is_kind_of(index, 0x0f) || unit_is_kind_of(index, 0x18);
+            // Packet s53_sqn_path. 0084E2B8..0084E317: class+26Ch is 007DB4D0's
+            // answer, TravelSpeed / turn rate; 00415550 keeps the larger of it *
+            // 1.2 and Pilot/MoveTo/ClosingDist; * 1.5 for a role-0 slot that is
+            // neither 8 nor AI-held. LABELLED: this host fuses the squadron into
+            // its flight leader, so the leader stands for [block+224h] (position)
+            // and its +3D0h (heading, the pose yaw); AI-held is every slot but
+            // the local player's (as 0077C470's role message does).
+            float squadron_radius = 0.0f;
+            float path_heading = slot.hull_heading_1050;
+            if (bsp::kSquadronPathFollowStepBound && plane) {
+                const float rate = host.plane_class_turn_rate_270_007db4d0(slot);
+                const float r26c = static_cast<float>(
+                    static_cast<double>(slot.plane_travel_speed) / static_cast<double>(rate));
+                const float scaled = static_cast<float>(
+                    static_cast<double>(r26c) * 1.2000000476837158);
+                const float closing = host.lua.plane_globals_loaded()
+                    ? host.lua.plane_globals().pilot_move_to_closing_dist : 0.0f;
+                squadron_radius = scaled > closing ? scaled : closing;
+                const std::int32_t role0 = slot.current_roles_01ac[0];
+                if (role0 != 8 && role0 == Impl::kLocalPlayerSlot) {
+                    squadron_radius = static_cast<float>(
+                        static_cast<double>(squadron_radius) * 1.5);
+                }
+                path_heading = Impl::pose_heading_radians(slot);
+            }
             host.commands.advance_path_cursor_00836bf0(index, px, pz,
-                unit_hull_length_09c8(index), unit_class_turn_radius_0520(index));
+                unit_hull_length_09c8(index), unit_class_turn_radius_0520(index),
+                path_heading,
+                [ai, index](float x, float z) {
+                    return ai != nullptr && ai->goal_reached_009da590(index, x, z);
+                },
+                !plane, squadron_radius);
         }
         if (outcome.reissued == bsp::DirectorDefaultCommand::None) continue;
         // The idle tail's own choice becomes the unit's standing command when
@@ -17891,8 +17996,11 @@ public:
     }
     // SUBSTITUTION, labelled: 00811E80 routes MT_UNITEXITED (50h) and 0081BEB0 runs on
     // its delivery; the host runs the handler's body here: 0081BF0C 00982120(unit, 1),
-    // the exitzone channel (cc13's dispatcher; its game+18ECh gate 00927C50 is not
-    // modelled), then Kill(4). The Lua ExitZoneParty store is a record.
+    // the exitzone channel (cc13's dispatcher; its game+18ECh gate 00927C50 under
+    // kShipExitZoneRoleGateBound), then Kill(4). The Lua ExitZoneParty store is a
+    // record. Labelled: the game-mode-9 return (0081BED6) is not taken (004BCA50
+    // reports 8 in a single-player session unless game+614h is already 9, which this
+    // host takes as never), and 0092BD30 on [unit+1018h] (0081BF4C) is not modelled.
     void route_unit_exited_00811e80() override {
         GameGunneryHost* const gun = host_.gunnery.get();
         if (gun == nullptr || gun->unit_dead(index_)) return;
@@ -17903,8 +18011,21 @@ public:
             static_cast<double>(slot_.motion.position[0]),
             static_cast<double>(slot_.motion.position[2]),
             host_.commands.command_name_of(host_.commands.current_command_0071be40(index_)));
-        host_.lua.note_exit_zone_00982120(index_, true);
-        host_.done("ShipUnit::exit_zone_channel_0081bf0c", 0x0081bf0cu);
+        bool role_open = false;   // 00927C50(unit, game+18ECh)
+        for (int i = 0; i < bsp::kUnitRoleTableEntries; ++i) {
+            const std::int32_t w = slot_.role_permission_0188[i];
+            if (w == 9 || w == GameUnitsHost::Impl::kLocalPlayerSlot) { role_open = true; break; }
+        }
+        if (!role_open) {
+            ++host_.ship_exit_role_gated;
+            host_.log.notef("ship exit zone: unit=\"%s\" has no open role word; 0081BEB0 %s the "
+                "exitzone channel (00927C50 at 0081BEFA)", slot_.row.name.c_str(),
+                GameUnitsHost::Impl::kShipExitZoneRoleGateBound ? "skips" : "would skip");
+        }
+        if (role_open || !GameUnitsHost::Impl::kShipExitZoneRoleGateBound) {
+            host_.lua.note_exit_zone_00982120(index_, true);
+            host_.done("ShipUnit::exit_zone_channel_0081bf0c", 0x0081bf0cu);
+        }
         host_.note_kill_cause(index_, 4);
         gun->kill_unit_00926d90(index_, 4);
         host_.record("ShipUnit::exit_zone_party_lua_0081beb0", 0x0081beb0u);
@@ -35764,6 +35885,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // the rest of this tick's motion does not run.
                     host.record("UnitController::clear_hull_shape_fields", 0x0092bd30u);
                     continue;
+                }
+                // Packet s52_sink_draws. 00826645..0082666B: unit+82Ch += dt while both
+                // hull ends are below 0, else 0; then 00826673..0082668B 00933DA0
+                // while sinkTime < 30.0 and 00826693..008266AA 00933BB0 while +82Ch
+                // < 40.0, both on ECX = [unit+1018h] (ShipSystems).
+                if (0.0f > end_a && 0.0f > end_b) {
+                    slot.sink_under_82c += step_seconds;
+                } else {
+                    slot.sink_under_82c = 0.0f;
+                }
+                if (host.gunnery != nullptr) {
+                    host.gunnery->ship_systems_sink_draws_00933da0_00933bb0(index,
+                        slot.sink_time_828 < 30.0f, slot.sink_under_82c < 40.0f);
                 }
             }
         }

@@ -768,6 +768,15 @@ inline constexpr bool kLandFortFireRollBound = true;
 // (HQ neutralized 1036.10, not 1034.10), five rows gameplay identical (a recorded
 // spread miss on JM05 and USN01).
 inline constexpr bool kShipAiTimerDrawsBound = true;
+// Packet g49_auto_target_phase (GUNNERY 266). 009F6A20 seeds the auto-target
+// think countdown (+38h) with -00BD2F10(ECX=1, 0.0, 1.0) at 009F6A8F (FCHS,
+// FSTP [ESI+38h]). True: GameShipAiHost::bind_gunnery replaces the index
+// phase -(index % 20) * 0.05 with that stream-1 draw (key (unit, 0)) for
+// every controller with a built nav block; the draw source binds after
+// register_units, so the draw cannot be taken there. False: the index phase.
+// ON by mechanism (GUNNERY 266.4): USN01, JM06 and JM08 gameplay identical;
+// USN12 moves from a fire-target pick (Samidare -> Charles) and still completes.
+inline constexpr bool kAutoTargetPhaseDrawBound = true;
 // Packet cc9_command_building_level (section 169). A CommandBuilding's level:
 //   - 006F2780 stores the scene's `Level` (0 when absent) at +770h and
 //     `LevelUpSeconds` (10 when absent) at +76Ch; the constructor clears +774h;
@@ -833,6 +842,30 @@ inline constexpr float kCommandBuildingHpLevel[4] = {1.00f, 1.10f, 1.20f, 1.40f}
 // (mtime 2024-07-13) SingleInvincibleTime = 20 (006F7670 stores it at +4Ch of the
 // 004C1D10 globals; 006F4360 copies +4Ch into class+190h in single player).
 inline constexpr float kCommandBuildingSingleInvincibleTime = 20.0f;
+// LABELLED: this installation's commandbuildingglobals.lua (mtime 2024-07-13)
+// RepairBasic..Expert 100/110/120/130, divided by 100 at 006F7670 into the
+// 004C1D10 globals +2Ch + level*4 that 006F47F0 reads (006F481E / 006F48CE).
+inline constexpr float kCommandBuildingRepairLevel[4] = {1.00f, 1.10f, 1.20f, 1.30f};
+// Packet s52_cb_repair (docs/SHIP_AI_OPEN_ITEMS.md 257; docs/CC13_SEG33B.md
+// 006F7360 / 006F47F0). 006F47F0 Repair(this = building, unit, dt, rate): f =
+// Repair[building+770h] * dt / rate; when 0 < f and unit health < max, health =
+// min(max, f * max + health) (00877B90). True:
+//  - 006F7432..006F755C, every fixed step while unit+378h is set (0087BD19 writes
+//    1; a CommandBuilding reaches it through 006F2783 -> 007482B0 -> 007482D5 ->
+//    00955420 -> 0087BCC0): the building heals itself with rate class+180h
+//    (RepairTime), then each linked garrison unit with class+188h (IsKindOf 45h),
+//    class+18Ch (46h) or class+184h (InferiorRepairTimeSingle in single player);
+//  - the flip's 006F47F0(this, this, 1.0, 1.0) takes f = Repair[level] instead of
+//    the constant 1.0 (the same full heal at every installed level).
+// The second loop of 006F47F0 (each IsKindOf(4) device in unit+48h, f2 = Repair *
+// dt / GunRepairTime, vt+19Ch("destroyed") on a revived one) has no host data:
+// no device carries health here. Recorded. A 1Bh garrison fort whose vt+204h
+// answers 45h/46h takes the airfield/shipyard rate in the image; LABELLED: here
+// only IsKindOf(45h/46h) picks them. False: buildings never regenerate (before).
+// ON by section 257: USNOS a7 72000 fr moves (HQ1 neutral 1797.30 -> 1841.55 s);
+// JM08 l51_j8_b3 40000 fr moves (349 garrison houses heal; the HQ falls at
+// 1143.45 instead of 1418.00 s). Mechanism matches; JM08 plans need re-checking.
+inline constexpr bool kCommandBuildingStepRepairBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -1113,6 +1146,12 @@ struct GameShipAiHost::Impl {
         bool fire_740{false};          // the fire effect pointer is set
         float fire_time_748{0.0f};
         float secondary_clock_750{0.0f};   // 00745A1A: 0 at construct
+        // Packet s52_cb_repair: 006F4360's class rates (RepairTime and the
+        // garrison rates, 200 when absent).
+        float repair_time_180{200.0f};
+        float inferior_repair_184{200.0f};
+        float airfield_repair_188{200.0f};
+        float shipyard_repair_18c{200.0f};
         // Packet cc9_command_building_garrison: the 64h-byte records at +778h.
         struct GarrisonRecord {
             std::size_t unit{0};
@@ -1175,6 +1214,11 @@ struct GameShipAiHost::Impl {
     double capture_force_at{-1.0};
     bool capture_forced{false};
     unsigned long long capture_neutralized{0};
+    // Packet s52_cb_repair: 006F7360's repair arm (steps recorded while OFF,
+    // building heals, garrison heals).
+    unsigned long long capture_repair_records{0};
+    unsigned long long capture_repair_steps{0};
+    unsigned long long capture_repair_garrison{0};
     unsigned long long capture_countdown_fires{0};
     unsigned long long capture_party_resyncs{0};
     unsigned long long capture_progress_messages{0};   // D5h routes
@@ -12238,6 +12282,19 @@ void GameShipAiHost::set_navigator_enabled_0011(std::size_t unit_index, bool ena
     host.done("ShipAi::navigator_enable_0011", 0x008a7060u);
 }
 
+bool GameShipAiHost::goal_reached_009da590(std::size_t unit_index, float x, float z) {
+    Impl& host = *impl_;
+    if (unit_index >= host.controllers.size()) return false;
+    Impl::Controller& ctl = host.controllers[unit_index];
+    if (!ctl.nav_block_built) return false;
+    const bsp::ShipAiPathPlanBlock& live = (ctl.plan_front == 0) ? ctl.plan_a : ctl.plan_b;
+    const bsp::ShipAiPathArrivalResult arrival = bsp::ship_ai_path_arrival_009da590(
+        ctl.goal.flag_2fe, x, z, live.latched_goal_x, live.latched_goal_z);
+    if (arrival.clears_latch) ctl.goal.flag_2fe = false;  // 009DA5F6
+    host.done("ShipAi::path_follow_goal_reached_009da590", 0x009da590u);
+    return arrival.reached;
+}
+
 bool GameShipAiHost::unit_big_landing_ship_0808(std::size_t unit_index) const {
     return impl_->big_landing_ship_of(unit_index);
 }
@@ -12411,6 +12468,20 @@ void GameShipAiHost::Impl::build_capture_buildings() {
                 building_row->type_id, "SmokeFireDurationMax", 0.0f);
             b.secondary_mul_170 = settings_owner->read_vehicle_class_number(
                 building_row->type_id, "SecondaryExplosionChanceMul", 0.0f);
+            // Packet s52_cb_repair: 006F4360. RepairTime and InferiorRepairTime are
+            // read as integers (00B66380); InferiorRepairTimeSingle (a float) replaces
+            // +184h in single player, Air/ShipYardRepairTime replace +188h/+18Ch.
+            const int type = building_row->type_id;
+            b.repair_time_180 = static_cast<float>(static_cast<int>(
+                settings_owner->read_vehicle_class_number(type, "RepairTime", 200.0f)));
+            const float inferior = static_cast<float>(static_cast<int>(
+                settings_owner->read_vehicle_class_number(type, "InferiorRepairTime", 200.0f)));
+            b.inferior_repair_184 = settings_owner->read_vehicle_class_number(type,
+                "InferiorRepairTimeSingle", inferior);
+            b.airfield_repair_188 = settings_owner->read_vehicle_class_number(type,
+                "AirFieldRepairTime", inferior);
+            b.shipyard_repair_18c = settings_owner->read_vehicle_class_number(type,
+                "ShipYardRepairTime", inferior);
         }
         // LABELLED: the constructor seeds +7C0h = -uniform(0, 1), a phase stagger;
         // the draw is not taken here so the shared stream stays as it was. Only
@@ -12536,6 +12607,27 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
         // the head of the capture step).
         for (CaptureBuilding& b : capture_buildings) {
             if (b.fire_740) landfort_fire_frame_00745be0(b, seconds);
+        }
+    }
+    if (gunnery_draws != nullptr) {
+        // Packet s52_cb_repair: 006F7432..006F755C, before the owned/neutral arms.
+        for (const CaptureBuilding& b : capture_buildings) {
+            const int level = b.level_770 < 0 ? 0 : (b.level_770 > 3 ? 3 : b.level_770);
+            const float repair = kCommandBuildingRepairLevel[level] * seconds;
+            if (!kCommandBuildingStepRepairBound) {
+                if (b.repair_time_180 > 0.0f) ++capture_repair_records;
+                continue;
+            }
+            gunnery_draws->repair_unit_to_fraction(b.unit, repair / b.repair_time_180);
+            ++capture_repair_steps;
+            for (const CaptureBuilding::GarrisonRecord& r : b.garrison) {
+                if (!r.linked) continue;
+                float rate = b.inferior_repair_184;
+                if (units.unit_is_kind_of(r.unit, 0x45)) rate = b.airfield_repair_188;
+                else if (units.unit_is_kind_of(r.unit, 0x46)) rate = b.shipyard_repair_18c;
+                gunnery_draws->repair_unit_to_fraction(r.unit, repair / rate);
+                ++capture_repair_garrison;
+            }
         }
     }
     if (kCommandBuildingLevelBound) {
@@ -12668,7 +12760,11 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
             // 120, 130), so the building returns to full health. The garrison slot
             // occupants (+778h) are not separate units here; the building's own
             // guns follow its party.
-            if (flip.repair) gunnery_draws->repair_unit_to_fraction(b.unit, 1.0f);
+            // Packet s52_cb_repair: f = Repair[+770h] * 1.0 / 1.0 (006F481E..006F4828),
+            // the level before the flip's D4h level 0 below.
+            const int lv = b.level_770 < 0 ? 0 : (b.level_770 > 3 ? 3 : b.level_770);
+            if (flip.repair) gunnery_draws->repair_unit_to_fraction(b.unit,
+                kCommandBuildingStepRepairBound ? kCommandBuildingRepairLevel[lv] : 1.0f);
         }
         // 006F5362..006F53A4: D4h with level 0, after the repair.
         if (kCommandBuildingLevelBound) command_building_level_006f38e0(b, 0, "flip D4h 006F5362");
@@ -13168,6 +13264,17 @@ bool GameShipAiHost::command_building_health_zero_006f3270(std::size_t unit_inde
 void GameShipAiHost::bind_gunnery(GameGunneryHost* gunnery) noexcept {
     impl_->gunnery = gunnery;
     impl_->gunnery_draws = gunnery;
+    if (kAutoTargetPhaseDrawBound && gunnery != nullptr) {
+        std::size_t seeded = 0;
+        for (std::size_t i = 0; i < impl_->controllers.size(); ++i) {
+            if (!impl_->controllers[i].nav_block_built) continue;
+            impl_->controllers[i].target.think_countdown
+                = -gunnery->auto_target_phase_draw_009f6a8f(i);
+            ++seeded;
+        }
+        impl_->log.notef("ship ai auto-target phase draws: %llu controllers seeded "
+            "(009F6A8F, stream 1)", static_cast<unsigned long long>(seeded));
+    }
     if (kShipTorpedoResponseBound && kShipTorpedoResponseImageTerms && gunnery != nullptr) {
         impl_->seed_brain_draws_009f1160();
         impl_->log.notef("ship ai brain constructor draws: %llu controllers seeded (009F1160's "
@@ -13664,6 +13771,10 @@ void GameShipAiHost::report() {
         kCommandBuildingCaptureBound ? 1 : 0, host.capture_health_zero_calls,
         host.capture_neutralized, host.capture_countdown_fires, host.capture_progress_messages,
         host.capture_flips);
+    host.log.notef("summary mission command building repair bound=%d records=%llu steps=%llu "
+        "garrison=%llu (006F7360 -> 006F47F0, packet s52_cb_repair)",
+        kCommandBuildingStepRepairBound ? 1 : 0, host.capture_repair_records,
+        host.capture_repair_steps, host.capture_repair_garrison);
     host.log.notef("summary mission landing ship ramp ground_contacts=%llu lowers=%llu "
         "landed_capture_adds=%llu bound=%d (0074AFCC..0074B0AC, 006F6A58..006F6BF8, packet "
         "cc9_landing_ramp_capture)", host.ramp_ground_contacts, host.ramp_lowers,

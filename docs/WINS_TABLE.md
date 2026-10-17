@@ -508,3 +508,115 @@ mechanism is in the cd761bb52 section above).
     3840 s, Ashigara 6326 s.
   - **Reference-only win**: 20,3 fails at 1422.31 s and 20,5 fails at 1437.33 s. Yamashiro survives under both,
     because its 1171 s kill is a deterministic Fubuki-07 friendly torpedo.
+- **eaf50b067 (kTorpedoBotCanFireReloadBound ON, GUNNERY 260.1)** (cc9-gunnery47's ON runs, recorded by cc9-lua62).
+  Exe 47A1F5820F8E, a tree build of agent/cc9-gunnery36 d4e7a58f1, reference env, `--stop-after-end 40`. Logs
+  `cc9-gunnery36\local\g47_on_<u15|j6|i8>.log` with manifests.
+  | Row | Result | Was |
+  |---|---|---|
+  | USN15 `g46_u15_tl` (144000) | **failed 1417.31 s** (Game Over) | EndMission 6331.16 s (reference-only win) |
+  | JM06 `s49_j6_s` | completed 2144.97 s, guard logged | completed 2123.95 s |
+  | IJN08 `p9_i08_w` | failed 789.93 s (Game Over, entity HQ) | failed 789.93 s (unchanged) |
+
+  The flip is faithful and stays ON; USN15 tl needs a re-plan (see the next re-time).
+- **Re-time on origin/main 25fbdcba0** (cc9-lua62, 2026-10-16). This main contains f9d36bb0e, eaf50b067 and the cc13
+  mission-picture wiring 7e2ac0fec (never paired before), plus the Codex font/text/frontend batches. Exe: tree build
+  (full `scripts/build.ps1`, tests pass) copied to `cc9-lua52\local\l62_rt\` (3ED7E2E69EE6). Reference env,
+  `--stop-after-end 40`. Logs `local\l62rt_<row>_<ref|j3>.log` with manifests; queue `local\l62_retime.ps1`, summary
+  `local\l62_rt_sum.py`, first moved death `local\l62_deathdiff.py <old> <new>`. "Was" is the 9228d13fe re-time
+  unless named.
+
+  | Row | Frames | Reference | 20,3 | Guard |
+  |---|---|---|---|---|
+  | USN02 `s36_u2_p7` | 16000 | completed 200.06 s | completed 205.06 s (was 200.06) | yes |
+  | LOMP06 `l50_l6_q6` | 16000 | completed 374.83 s (was 383.83) | completed 373.83 s (was 355.84) | yes |
+  | USN01 `p8_u1_i` | 26000 | completed 365.03 s | completed 360.04 s | yes |
+  | PRCP01 `p9_p01_k` | 30000 | completed 536.29 s | completed 800.68 s | yes |
+  | USN12 `g45_u12_e7` | 36000 | completed 1685.52 s (was 1675.51) | completed 1675.51 s | yes |
+  | LOMP10 `p3_l10_b` | 36000 | completed 1293.69 s (was 1003.43) | completed 1276.67 s (was 1245.64) | yes |
+  | BSM01 `p6_b1_a` | 40000 | EndMission 833.92 s | EndMission 875.91 s | yes |
+  | IJN18 `s46_i18_a` | 64000 | EndMission 2183.00 s (was 2162.98) | EndMission 2166.99 s | yes |
+  | IJN08 `p10_i08_z` | 100000 | completed 3006.81 s | completed 3947.73 s | yes |
+  | JM06 `s49_j6_s` | 120000 | completed 2144.97 s (= eaf50b067) | **no end** (as on 9228d13fe) | ref yes |
+  | JM08 `p6_j8_f` | 110000 | **failed 949.94 s** (was 940.94) | **no end** | - |
+  | ESMP08 `l61_e8_f` | 140000 | completed 6532.47 s (identical deaths) | 13/15 (identical deaths) | ref yes |
+  | USN15 `g46_u15_tl` | 144000 | **failed 1417.31 s** (Game Over) | **failed 1417.31 s** | - |
+
+  - IJN08 z reproduces physics10's 610dc9bfd times exactly on both conditions; it replaces w as the IJN08 row.
+  - The only new loss against the last re-time is USN15 tl, already recorded under eaf50b067. Against its win log
+    `cc9-gunnery36\local\g46_p2_u15tl.log`, the first moved death is Fletcher-class02 at 760.89 -> 761.94 s (killer
+    Nachi in both); Denver then dies at 1311.95 s instead of 779.93 s, and Yamashiro, Fuso and Ashigara survive. The
+    Japanese torpedo reload bound moved the Japanese torpedo timing, so the plan needs a re-plan (gunnery lane).
+  - JM08 f moves earlier than before: the first moved death is MainAirFieldEntity 01_sqn03|.-3 at 426.97 -> 429.87 s,
+    after the slot-4 launch at frame 8903 is now applied (was refused). It is being re-planned (next entries).
+  - JM06 s under 20,3 diverges from the 9228d13fe run at 168.11 s (Fletcher-class 09 sunk by PlayerSub 03 instead of
+    surviving); still no end (cc9-physics lane item).
+  - The other moves (LOMP10, LOMP06, USN12, IJN18) are timing only; every completion logged the guard.
+- **JM08 re-planned: `config/win_orders/jm08_l62_j8_w1.txt`** (cc9-lua62, 2026-10-16), replacing `jm08_p6_j8_f`
+  (kept). Exe `local\l62_rt` (25fbdcba0, 3ED7E2E69EE6), reference env, 110000 frames, `--stop-after-end 40`; the
+  gunnery flips stay ON. Logs `cc9-lua52\local\l62_j8<v>.log` with manifests.
+
+  | Condition | Result | Guard |
+  |---|---|---|
+  | reference | **completed 1954.48 s** | yes |
+  | 20,3 | **completed 1464.00 s** | yes |
+  | 20,5 | completed 1517.05 s | yes |
+  | 20,7 | failed 1138.03 s (HQ destroyed, 1 landing ship left) | - |
+
+  The plan is f post-processed by `cc9-lua52\local\l62_j8_mod.py` (arguments on its first line):
+  - Gyoraitei boats take Nevada as their top attack target from frame 8000. Nevada attack-moves the HQ and its main
+    battery is what destroyed the HQ in f (about 21000 damage dealt). The boats kill it in every seed tried
+    (535-581 s).
+  - The airfield's 152/166/167 launch lines keep only landing ships and raiders. Class 154 never killed a ship.
+  - Fubuki then Isokaze alternate `torpedo <ship> at <landing ship>` presses from frame 10600. The rotation is
+    every 400 frames, offset 290, released after 89 frames.
+  - From frame 16000 the player's own idle squadrons get a `target A | B | ...` pick every 400 frames, each after a
+    `select`. These are H6K Mavis 02/03, Ki-43 Oscar 01 and Gekko 01, which no earlier plan used. The picks list
+    the phase-2 raiders first, then the landing ships with the toughest first. In the reference run Gekko 01 sinks
+    the last one (LST 02, 1570 s).
+  - Slots 1-2 get `order 3 <raider>` retargets, and every launch group first offers the raiders. Plan f named the
+    B-17s only from frame 24000; wave 1 spawns at 18668-31810.
+
+  Mission mechanics behind the choices (prcpjm08.lua, this installation):
+  - The HQ loss is `CommandBuilding.Party == 2`. The host neutralizes the HQ when its health reaches 0.
+  - StartInvasion fires when a US ship comes within 300 m of the origin, which is the bay between the shipyard and
+    the US formation. It sends every escort and landing ship at the HQ.
+  - Under 20,3 the invasion fires at 603.85 s in every variant that drops the bombers' warship targets. Once it
+    fires, phase 1 usually completes, because the HQ guns sink the LSTs, but the HQ enters phase 2 damaged.
+  - Without the invasion, the landing ships idle about 3.5 km north of the origin after Missouri dies. Phase 1 is
+    then limited by firepower.
+  - Friendly torpedo kills between Fubuki and Isokaze decided several runs. They happened in i (reference), j3, l3, n
+    and n3; the presses stay because no plan without them completed.
+  - About 30 variants are recorded in `local\l62_j8_<v>.txt` and their logs. Reference-only wins: i1/s1 (1735.27 s) and
+    w2/w3 (1946.47 s / 1416.96 s). The only 20,3-only win is i (1295.84 s).
+  - **Possible host gap (Lua lane):** each completion comes about 4 s after wave 3 (8 C47s, class 136) spawns, with
+    no C47 shot down (w1: wave 3 at frame 39012 = 1950.6 s, completed 1954.48 s). CheckPrim3 needs every class-136
+    unit in `Mission.Dakota` dead, and luaBomberWaveSpawned3 inserts only units whose `unit.Class.ID == 136`. An
+    empty table therefore suggests `unit.Class.ID` does not read 136 on this host. This is not yet checked; if it
+    is fixed, JM08 also has to shoot down the C47s.
+  - Confirmed afterwards in the w1 log: PilotSetTarget ran only for wave 1, whose handler calls it unconditionally.
+    Waves 2 (B-25 type 118, SBD type 108) and 3 (C47 type 136) never matched their `Class.ID` branches.
+  - **Stale exe.** w1 was timed on the 25fbdcba0 exe. Main has since turned ON the CommandBuilding step repair
+    (4285975cc), the path-cursor step (82041f5c3), AngleErr per evaluation (6c900f1e0), the auto-target phase draw
+    (fad263ffb) and the sink and sub-wake draws, and all of them move JM08. w1 must be re-timed on current main.
+    There, ships53 reports that `cc9-ships44\local\s52_j8_b3.txt` completes at 1329.87 s (reference, 40000 frames,
+    log `cc9-ships44\local\s53_p1_j8.log`; 20,3 not run).
+- **New row BSM09: a no-orders win** (cc9-ships53, recorded by cc9-lua62).
+  - Tree agent/cc9-ships44 at 2edfb11a3 (origin/main), reference env, 36000 frames, `--menu-select BSM09`, no
+    `--helm-orders`. Log `cc9-ships44\local\s53_rf1_b9.log` with its manifest.
+  - Zuikaku is driven below 10% HP by the US AI, which completes primary 1 (bsm_09_battle_of_the_coral_sea.lua:521-536).
+    EndMission comes at 917.90 s, then luaMissionCompletedNew "Enemy carriers are retreating - Mission Complete" at
+    921.85 s. The guard is logged.
+  - It runs at all only since kGenerateObjectRecordOnlyCreatorBound (b510a54fe). 20,3 has not been run.
+- **ESMP08 row is now `config/win_orders/esmp08_p12_e8_rb.txt`** (cc9-physics12, 2f1480151), replacing
+  `esmp08_l61_e8_f`.
+  - On 135f8ae26 (kAirOpsQueueCompactBound ON): reference 4684.71 s, 20,3 3594.58 s, 20,5 3251.20 s; 20,7 no end
+    (12/15).
+  - On b46d56a35 (kSquadronLandTargetGoneBound ON): reference 3334.33 s, 20,3 3594.58 s, 20,5 3251.20 s.
+  - The guard is logged in all; logs are `cc9-physics1\local\p12e8{b,c}_rb_<cond>.log`.
+- **JM06 row is now `config/win_orders/jm06_p12_j6_a4.txt`** (cc9-physics12, 8652858c8), replacing `s49_j6_s`.
+  - Plan `s` lost 20,3 to kTorpedoBotThinkTimerBound (0cc305ee0, faithful) and lost the reference under 6c900f1e0.
+  - a4 on 25fbdcba0: reference 2226.05 s, 20,3 2343.16 s, 20,5 2175.00 s, 20,7 2033.86 s, 20,11 3180.98 s; the guard
+    is logged in all.
+- **Open (ships53 report):** BSM01 `bsm01_l50_b1_a` reaches no EndMission within 20000 frames on current main
+  (`cc9-ships44\local\s53_q0_b1.log` / `s53_q1_b1.log`). The next re-time must check it at its full 40000 frames.
+- **Current main also needs a re-time** for IJN08 z, USN12, JM08, ESMP08 and PRCP01, the torpedo-sensitive rows.
