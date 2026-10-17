@@ -38,6 +38,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 // Packet cc8_ship_follow: 00779D50's transcription and the ship-base kind.
 #include "bsp/ship_ai_states.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"  // packet cc9_usn02_deruyter_fire
+#include "bsp/game_hosts_ai.hpp"       // packet cc9_l65_chooser_surface_set
 #include "bsp/weapon_director.hpp"     // packet g44_scan_row_write (0071D560)
 #include "bsp/unit_gunnery_pass.hpp"
 #include "bsp/recon_sensor_pass.hpp"  // packet cc9_recon_level_table
@@ -148,6 +149,17 @@ inline constexpr bool kLuaNavigatorStopBound = true;  // ON: SQUADRON_LAND_TASK 
 // live squadron members (gunnery liveness stands for +3CCh membership, LABELLED).
 // False: the ordered unit (slot 0) alone, as before.
 inline constexpr bool kSquadronMemberOrdnanceBound = true;   // ON: SQUADRON_LAND_TASK 5hv.6
+// Packet cc9_l65_chooser_surface_set (SQUADRON_LAND_TASK 5hy). 007EEC9F calls the
+// thunk 00922DC0 (DL = 1) into 00922C80; a target past the ship, airfield,
+// shipyard and 1Ch arms (an MLandFort: hangars, bunkers) reaches 008DDF90, the
+// local slot's objective set, then the tail, whose allow_far arm accepts an
+// MLandFort with FakedType 1Bh (the authored default; no row of this
+// installation's Lua sets FakedType). True: that branch is answered as
+// game_hosts_ship_ai.cpp's target_is_surface_00922dc0 answers it (slot 0's set,
+// then the tail with allow_far). False: the branch answers "not surface", so
+// every ordnance class fails and a squadron ordered onto a hangar gets 007F1688's
+// moveto instead of divebomb.
+inline constexpr bool kChooserSurfaceSetBranchBound = false;
 // Packet cc13-fix5 (docs/CC13_FIX_5.md section 7). True binds NavigatorCruise
 // 008A75C0: NavigatorStop's twin, 0077D600(entity, cruise 00E08F70, zeroed
 // descriptor, 1) at 008A7729 (bsp::navigator_cruise_order_008a75c0), through
@@ -1560,6 +1572,25 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
     in.self_is_dogfight_excluded = units_.unit_is_kind_of(unit_index, 0x16);
     in.target_is_air = target_air;
     in.target_is_surface = target_surface == bsp::SurfaceTargetAnswer::kYes;
+    if (target_surface == bsp::SurfaceTargetAnswer::kUnreadSetBranch) {
+        // 00922D3F..00922D5B: 008DDF90 over the local slot's set (slot 0 here,
+        // LABELLED as in game_hosts_ship_ai.cpp); 008DDFA9 looks up an
+        // IsKindOf(5) entity as itself. Otherwise the tail with DL = 1.
+        bool in_set = false;
+        if (units_.unit_is_kind_of(target_index, 0x05)) {
+            const std::vector<std::size_t> set =
+                bsp::game::game_objective_sets().units_in_slot(0);
+            in_set = std::find(set.begin(), set.end(), target_index) != set.end();
+        }
+        const bool tail = bsp::entity_surface_target_tail_00922c80(tf, true);
+        if constexpr (kChooserSurfaceSetBranchBound) {
+            in.target_is_surface = in_set || tail;
+        }
+        log_.notef("  %s surface set branch: in_set=%d tail=%d land_fort=%d -> %d "
+            "(00922C80 -> 008DDF90, packet cc9_l65_chooser_surface_set%s)", label,
+            in_set ? 1 : 0, tail ? 1 : 0, tf.is_land_fort ? 1 : 0,
+            in.target_is_surface ? 1 : 0, kChooserSurfaceSetBranchBound ? "" : ", OFF");
+    }
     // [unit+3D0h] != 0, the squadron's slot-0 plane. This host models a single
     // unit rather than a squadron holding an array, and the "self" queries above
     // already read the ordered unit AS that slot-0 plane - which is the native's

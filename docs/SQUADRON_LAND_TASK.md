@@ -17573,3 +17573,33 @@ Open, in order:
    is not hosted (5hw.2).
 4. The class-change half of the dive and torpedo tasks' vt[40h] (the task retires when the command class is no
    longer its own or 00E08F78) is not modelled; the torpedo arm still runs under a moveto.
+
+## 5hy. A squadron ordered onto a hangar: 007EEC50's surface set branch (cc9-lua65, 2026-10-17)
+
+Symptom (cc9-ships44 `local\s55_aj_c1.log`, USNOS, orders `s55_os_c1.txt` line 30 `launch Essex 0 339 3 Hangar, Large,
+08 01`): Essex_sqn03 takes off, gets `moveto task ... installed kind 7 range=0.0` and never leaves it. Every one of the
+19 structure-target launches in that run (Essex/Intrepid/Enterprise/Midway onto "Hangar, Large, 08 01", "Hangar, Small,
+02 02", "Multi Hangar 1") does the same.
+
+Cause, read from the log: the squadron intake's chooser logs `classify: target_is_surface=UNREAD-SET-BRANCH`, target
+class 27 (1Bh MLandFort), and `007EEC50 -> 00000000` with gb=1; 007F1688 then issues moveto (5hl L3). The host's chooser
+answered 00922C80's 008DDF90 branch as "not surface", so every ordnance arm failed.
+
+Image (disk listing): 007EEC9F `CALL 00922DC0`, the thunk that sets DL = 1 and jumps into 00922C80. A target that is not
+plane, squadron, ship family, airfield (45h), shipyard (46h) or 1Ch reaches 00922D3F..00922D5B, 008DDF90 over the local
+slot's objective set ([00E188A8]+21A4h+[+18ECh]*4; an IsKindOf(5) entity is looked up as itself), then the tail: with
+allow_far (DL = 1) an MLandFort answers true when its class +178h FakedType is 1Bh. FakedType's authored default is 1Bh
+(`BSP_StructureClass_ReadLuaFields`, docs/ATTACK_CAPABILITY_INPUTS.md); no Lua file of this installation sets it (621
+files searched; the hangar row is `vehicleclasses.lua` "Hangar, Large, 08_DLC3", `globals.unitclass_hangarfort`, Type
+LandFort, file mtime 2026-05-09). So the image answers "surface" for every hangar. MLandFort's class test 006F5890
+accepts {0, 1, 2, 4, 5, 1Bh}, so 0099A170's divebomb arm gate vt[5Ch](2) passes too: the image builds the dive task.
+game_hosts_ship_ai.cpp's target_is_surface_00922dc0 already answers the branch this way (kShipAiSurfaceSetBranchBound ON).
+
+Switch `kChooserSurfaceSetBranchBound` (src/game_hosts_script_orders.cpp, committed OFF): the chooser answers the branch
+with slot 0's set, then the tail with allow_far (slot 0 LABELLED, as in the ship AI). Each answer logs `<label> surface
+set branch: in_set tail land_fort -> answer`. Callers: the squadron intake 007F1940 / AutoAttackTarget, PilotSetTarget,
+and every other choose_attack_class_007eec50 caller.
+
+Prediction (USNOS `s55_os_c1` orders): every hangar launch picks divebomb (00E08F20) for the class-339 squadrons
+(gb=1), installs kind 8 instead of kind 7, and dives on the hangar; hangars take bomb damage, and the strike squadrons
+meet the airfield's AA. Rows whose squadrons never target an MLandFort are gameplay identical (control).
