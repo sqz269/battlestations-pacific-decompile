@@ -1486,7 +1486,22 @@ constexpr bool kShipyardDestructionRuleBound = true;
 //    LABELLED: vtable[204h](45h/46h) of a 1Bh fort is read as its kind; +358h as clear;
 //    vtable[1B4h] (damage-state visuals) and the 00982C50 notice are presentation.
 //    False: only the land masters are kept alive at health 0, nothing else runs.
-constexpr bool kInferiorFailureArmBound = true;  // ON: mechanism matches, JM08 now completes (GUNNERY 272.4)
+constexpr bool kInferiorFailureArmBound = true;
+//  * kReloadDrawBound: packet cc9_g51_reload_draw (GUNNERY 272.6; docs/CC13_VERIFY3.md).
+//    BSP_Gun_Fire 00730160 re-arms the fired barrel through 0072D520(gun+44Ch, full 1)
+//    at 007309E8, after the throw cone (00730540..0073058F) and the spawn; on the full
+//    arm (vt[1F4h] has ammo, vt[1F8h] consumes) 0072D579 draws 00BD2F10(stream 1,
+//    [[gun+3F8h]+28h], [+2Ch]) and 0072CF00 stores it. The ShipSetTorpedoStock re-arm
+//    (0081F95A) takes the same call per barrel. The two bounds are equal for every
+//    installed gun (docs/GUN_SHOT_CADENCE.md row 10), so the timer value is unchanged;
+//    what moves is the shared stream, advanced once per re-arm. The empty arm
+//    (0072D592, FLT_MAX) draws nothing. True: one Draw::reload per full re-arm. False:
+//    the timer is set with no draw.
+constexpr bool kReloadDrawBound = false;
+//  * kDrawKeyCollisionFixBound: Draw::sink_effects and Draw::auto_target_phase shared
+//    the key value 30, so under BSP_GUNNERY_RNG_STREAMS=1 a unit's auto-target phase
+//    and its sink spawners read one generator. True: auto_target_phase is 32.
+constexpr bool kDrawKeyCollisionFixBound = false;  // ON: mechanism matches, JM08 now completes (GUNNERY 272.4)
 // CommandBuildingGlobals.SingleInvincibleTime in this installation's
 // commandbuildingglobals.lua (mtime 2024-07-13): 20, stored at +4Ch by 006F7670 and
 // copied to class+190h by 006F4360 in game mode 0.
@@ -2265,7 +2280,8 @@ struct GameGunneryHost::Impl {
         torpedo_scan_phase = 28, // 00856132, -U(0, 1) into record+518h, stream 1, key (shot serial, 0)
         ship_breakup = 29,    // 00827B4D, the breakup roll against WreckChance, stream 1, key (unit, 0)
         sink_effects = 30,    // 00933DA0 / 00933BB0, the ShipSystems sink spawners, stream 1, key (unit, 0|1)
-        auto_target_phase = 30, // 009F6A8F, -U(0, 1) into the auto-target think countdown, stream 1, key (unit, 0)
+        reload = 31,          // 0072D579, the full re-arm's ReloadTime draw, stream 1, key (gun, 0)
+        auto_target_phase = kDrawKeyCollisionFixBound ? 32u : 30u, // 009F6A8F, -U(0, 1) into the auto-target think countdown, stream 1, key (unit, 0)
     };
     unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
@@ -3574,6 +3590,7 @@ struct GameGunneryHost::Impl {
             && it->second.muzzle_speed > 0.0f ? &it->second : nullptr;
     }
     unsigned long long plane_gun_rounds{0};
+    unsigned long long reload_draws{0};   // kReloadDrawBound
     // Per gun index: hits landed and damage dealt, for the gunrow lines.
     std::map<std::size_t, std::pair<unsigned long long, double>> hits_by_gun;
     float draw(Draw purpose, std::size_t a, std::size_t b, float low, float high) {
@@ -3832,6 +3849,11 @@ struct GameGunneryHost::Impl {
                 if (us.torpedo_spare != 0) {       // 00810D80
                     if (us.torpedo_spare > 0) --us.torpedo_spare;   // 00810DA0
                     timer = g.reload_time;         // full: 0072CF00(barrel, reload, 1)
+                    if (kReloadDrawBound) {        // 0072D579 through 0081F95A
+                        timer = draw(Draw::reload, static_cast<std::size_t>(&g - guns.data()), 0,
+                                     g.reload_time, g.reload_time);
+                        ++reload_draws;
+                    }
                     ++rearmed;
                 }                                  // else 0072CF00(FLT_MAX): stays pinned
             }
@@ -9091,6 +9113,8 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         const SecondAmmo* mode1 = kFlakSecondAmmoCadenceBound && have_target
             ? dp_air_ammo(g, gun.category, target) : nullptr;
         if (mode1 != nullptr) ++dp_cadence_shots;
+        int reload_draw_barrel = -1;       // kReloadDrawBound: drawn after the spawn (007309E8)
+        float reload_draw_value = 0.0f;
         if (barrel >= 0 && static_cast<std::size_t>(barrel) < gun.fire.barrel_timers.size()) {
             float next_timer = mode1 != nullptr ? mode1->reload_time : gun.reload_time;
             if constexpr (kTorpedoStockBound) {
@@ -9101,6 +9125,10 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 }
             }
             gun.fire.barrel_timers[static_cast<std::size_t>(barrel)] = next_timer;
+            if (kReloadDrawBound && next_timer < FLT_MAX) {   // 0072D592's empty arm draws nothing
+                reload_draw_barrel = barrel;
+                reload_draw_value = next_timer;
+            }
         }
         gun.fire.barrel_delay_time = mode1 != nullptr ? mode1->barrel_delay_time
                                                       : gun.barrel_delay_time;   // 00730A05
@@ -9455,6 +9483,12 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         ++summary.projectiles;
         done("Projectile::launch_velocity_006e8430", 0x006e8430u);
         done("Projectile::spawn_0072bf10", 0x0072bf10u);
+        if (kReloadDrawBound && reload_draw_barrel >= 0) {
+            // 007309E8 -> 0072D520 -> 0072D579 U([+28h], [+2Ch]) -> 0072CF00.
+            gun.fire.barrel_timers[static_cast<std::size_t>(reload_draw_barrel)] =
+                draw(Draw::reload, g, 0, reload_draw_value, reload_draw_value);
+            ++reload_draws;
+        }
     }
 }
 
@@ -16466,6 +16500,10 @@ void GameGunneryHost::report() {
                 c.sections, c.masters, c.party_adoptions, c.forwards, c.section_deaths,
                 c.hand_offs_skipped_cause, c.die_calls, c.die_unhosted, c.master_kills,
                 c.kept_alive, kLandMasterDamageBound ? 1 : 0);
+        }
+        if (kReloadDrawBound) {
+            host.log.notef("summary mission gunnery reload draws=%llu (0072D579, packet "
+                "cc9_g51_reload_draw)", host.reload_draws);
         }
         if (kInferiorFailureArmBound) {
             const Impl::InferiorFailureCounts& c = host.inferior;

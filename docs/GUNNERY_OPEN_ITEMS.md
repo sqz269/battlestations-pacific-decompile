@@ -15991,3 +15991,20 @@ stage the DDs north of Fuso's stop through known water (row z 10500 is water fro
 beam; (c) the 20,5 opening, where Yamashiro outlives the first torpedo round; 20,5 fails at 1422 s on every variant.
 Order generator: `local\g51_plan.py` (g50_plan.py reading start positions from `local\g51_t15_starts\`; it reproduces
 `usn15_g50_u15_nn.txt` byte for byte).
+
+### 272.6 The per-shot reload draw, `0072D520` / `0072D579` (packet `cc9_g51_reload_draw`, HIGH)
+
+`kReloadDrawBound` and `kDrawKeyCollisionFixBound`, committed OFF. `BSP_Gun_Fire 00730160` re-arms the fired barrel at
+`007309E8` (after the throw cone and the spawn) through `0072D520(gun+44Ch, 1)`. On the full arm, `0072D579` draws
+`00BD2F10(1, [[gun+3F8h]+28h], [+2Ch])`; the empty arm `0072D592` stores FLT_MAX with no draw. ShipSetTorpedoStock's
+re-arm (`0081F95A`) makes the same call per barrel. The bounds are equal for every installed gun, so the TIMER is
+unchanged and only the stream advances: one draw per re-arm, placed after the shot's throw-cone draws as in the image.
+The second switch gives `Draw::auto_target_phase` its own key (32), so it no longer shares value 30 with
+`Draw::sink_effects`.
+
+**Predictions:** under the reference env (`BSP_GUNNERY_RNG_STREAMS=1`) `kReloadDrawBound` is gameplay-identical, because the
+draws have their own key and equal bounds; the only ON-only line is `summary mission gunnery reload draws`. In the
+default shared mode every later stream-1 consumer moves (gun bots, pilot bots, dive and torpedo tasks), so expect broad
+movement. `kDrawKeyCollisionFixBound` moves the reference env wherever a unit both sinks and runs AutoTarget (the
+sink-effect and phase draws separate). Pairs: `g51_d0` (base), `g51_d1` (reload), `g51_d2` (collision); USN04 and
+JM08 under the reference env, plus `d0`/`d1` in shared mode.
