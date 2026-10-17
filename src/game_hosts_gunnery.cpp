@@ -1477,7 +1477,7 @@ constexpr bool kShipyardDestructionRuleBound = true;
 //    LABELLED: vtable[204h](45h/46h) of a 1Bh fort is read as its kind; +358h as clear;
 //    vtable[1B4h] (damage-state visuals) and the 00982C50 notice are presentation.
 //    False: only the land masters are kept alive at health 0, nothing else runs.
-constexpr bool kInferiorFailureArmBound = false;
+constexpr bool kInferiorFailureArmBound = true;  // ON: mechanism matches, JM08 now completes (GUNNERY 272.4)
 // CommandBuildingGlobals.SingleInvincibleTime in this installation's
 // commandbuildingglobals.lua (mtime 2024-07-13): 20, stored at +4Ch by 006F7670 and
 // copied to class+190h by 006F4360 in game mode 0.

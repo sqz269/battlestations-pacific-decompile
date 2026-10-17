@@ -15952,3 +15952,14 @@ members) and USN01's CB2 (42) lose far fewer garrison deaths. The garrison re-cr
 fires less, because members no longer die. A Capture Post's break costs its building 1000 hp, so captures can come
 sooner. `summary mission gunnery inferior failure` is ON-only. Pairs: JM08 `jm08_l64_j8_e`, USN01 `usn01_p8_u1_i`,
 USNOS `s45_os_k`.
+
+**Pairs** (`g51_i0` / `g51_i1` at `376d089f6`, reference env, logs `local\g51_i{0,1}_{j8,u1,os}.log`):
+
+| mission | verdict | what moved |
+| --- | --- | --- |
+| USN01 `usn01_p8_u1_i` (30000 fr) | moved, end identical | completed at 1230.07 s on both sides; deaths 85 -> 56 (30 garrison structures such as Heavy AA, oil tanks and containers now break instead of dying); 27 first breaks, 377 re-arms, 1 restore (Containers 04 01 at 1265.81 s) |
+| JM08 `jm08_l64_j8_e` (80000 fr) | moved | **OFF fails at 1988.86 s (HQ destroyed), ON completes at 3305.80 s** (EndMission, exec-guard refusal logged); deaths 232 -> 188; 52 first breaks, 25 restores |
+| USNOS `s45_os_k` (to 3000 s) | gameplay identical | no adopted unit reached health 0 before the 1425.27 s failure |
+
+Hit records rise (USN01 2509 -> 5154, JM08 6806 -> 44303): a broken member stays a target, and `0095DA00` refuses the
+hits inside its window. Capture Post hits: 0 in all three missions. **Flipped ON** by mechanism.
