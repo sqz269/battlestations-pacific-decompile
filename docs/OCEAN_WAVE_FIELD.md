@@ -1513,3 +1513,62 @@ Logs `local\p12e8_<plan>[_j<n>].log` (first exe) and `local\p12e8b_rb_<ref|j3|j5
 every completion logs the exec guard's sus_prog.exe refusal. On 135f8ae26 the rb reference erases 6 landing records and
 moves in small ways (`pair_diff` 3 against the first exe) without moving the reference or 20,3 end time (20,5 moves 4624.95 -> 3251.20 s). Committed as
 `config/win_orders/esmp08_p12_e8_rb.txt` (rb unchanged, one header line added): it holds the reference, 20,3 and 20,5, where f holds only the reference; 20,7 is lost.
+
+## 41. 009F8160's land arm: `kSquadronLandTargetGoneBound` (cc9-physics12, 2026-10-16; lead item 3, seg-68 note)
+
+**Liveness of the seg-68 notes (CC13_SEG68 7.3-7.5), checked on this tree before binding.**
+- *Fighter out of ordnance sets +3Dh (009F81F6-009F81FC).* LIVE on ESMP08: with `BSP_SPENT_RTB_CENSUS=1`
+  (`local\p12e8_f_cen.log`) every Zero squadron (class 150, `equipment=0`, no rack round) is logged `spent, not latched
+  ... command 00E08F20 ... fighter=1` from about 113 s. In the image the +3Dh then ends that divebomb through 009F7C90.
+  Not bound yet: the host launches these Zeros with divebomb because 007EEC50 accepts divebomb through
+  `BSP_Unit_AttackCommandAppliesWithLoadout`'s loadout out-parameter, and whether the image's launch then arms the
+  squadron with that loadout (so the image's Zeros carry bombs) must be read first; binding the +3Dh alone would end
+  every such strike at launch.
+- *The 00E08FA0 arm (009F8295-009F82D5).* LIVE on ESMP08: Zuikaku sinks at 1412.80 s (`local\p12e8_ra.log`) while
+  Zuikaku_sqn35, sent home by the spent-ordnance B5 at 1166.51 s ("land at home Zuikaku"), is in its standby circle;
+  it circles the wreck until all three die at 1439.78 s. Bound below.
+- *Dogfight end for targets off the map (009F8319-009F83A8), the guard arm (009F83AD-009F8407), +3Eh forcing +3Dh.*
+  Reachable only with a retreating target off the map, a director guard distance, and an unread +3Eh writer; not
+  observed in the logs read here; not bound.
+- *The free-attack tick 009F8470.* Its re-target (009F84A5-) runs for party slot 8 or an AI-held party
+  (00927F10), or with director +3Ch/+3Dh and unit+370h == 2: every AI squadron reaches it. Not hosted, large
+  (AttackLists ranking, override command, stage-2 raise); left for its own packet.
+- *near_edge (009FA510).* Live only for aircraft inside the map-edge margin; not checked.
+
+**The land arm.** 009F8160 runs from 009F8470 every tick with the squadron's command block. With the current command
+`land` 00E08FA0 it sets +3Ch unless the resolved target exists with +5Eh and +5Dh clear and either 00927C90(0) is false
+or the target's side matches; 009F7C90 then ends the command once 007EE6B0 finds every member's task willing (the land
+task's +1Ch is the base 0099C230, true unless the in-mission interface watches the plane), and 0084E010's B5 issues
+`returntobase`, whose 007F16D0 resolution skips a sunk home and takes the nearest live site (game_hosts_units.cpp
+`record_return_to_base_007f16d0`).
+
+**The binding (game_hosts_units.cpp, committed OFF).** In `run_spent_ordnance_rtb_0084e010`'s squadron loop, before
+the B5 gate: when the leader has a land task installed (target: the task's site owner), a target that is gone (no unit, `state->simulate`, scene
+`destroyed_005e`, or dead in the gunnery host) latches +3Ch once per lost site, starting a fresh latch cycle; the
+existing break-off, B5 and 007F16D0 code then send the squadron to the nearest live site. Labelled: the installed land task standing for the current command `land` (the host keeps the class the order came from;
+a first version keyed on the class missed every returntobase-sent squadron, so no ON run of it counts), the +5Dh/+5Eh stand-ins, 00927C90 false, and the fresh cycle
+(the image's +3Ch reset is unread). Each latch logs `land target gone`.
+
+**Predictions (before any ON run).** OFF: identical. ON: ESMP08 latches for every squadron whose landing carrier sinks
+while it is inbound (Zuikaku about 1400 s, Zuiho later); their B5 re-resolves to a live carrier (`returntobase 007F16D0
+... -> land at site Chitose|Chiyoda|Zuiho`), so those planes land there instead of dying in the wreck's circle;
+ESMP08 gameplay moves from the first sinking of a carrier with inbound planes. USN04 45000: no carrier sinks with
+planes inbound, gameplay identical.
+
+### 41.1 The pair and the verdict: ON
+
+ON: an export of 943359208 with the switch flipped (`local\p12_lg`, exe of 2026-10-16 17:53); OFF: that commit's
+build (`local\p12_offb2`). Reference env, no jitter; logs `local\p12lg2_<on|off>_e8.log` (ESMP08 `p11_e8_rb.txt`,
+60000 frames) and `local\p12lg2_on_u4.log` against `local\p12lg_off_u4.log` (USN04 45000, b1c9e2fdd's OFF build, the
+same gameplay code); diff `local\p12lg2_diff_e8.txt`.
+
+| Row | pair_diff | Note |
+| --- | --- | --- |
+| USN04 45000 | 1, gameplay identical | no latch |
+| ESMP08 60000 (rb) | 3, moved | one latch: `land target gone: squadron "Zuikaku_sqn36" ... site Zuikaku latched +3Ch at 1396.94 s` |
+
+Mechanism, as predicted: Zuikaku dies at 1396.94 s with Zuikaku_sqn36 (sent home by the B5 at 1143.24 s) in its
+landing pass. ON latches at that instant; the break-off and the B5 run in the same tick, and 007F16D0 resolves `land at
+site Zuiho` (3 of 4 sites pass, the sunk home excluded); the land task is installed toward Zuiho and the squadron joins
+Zuiho's queue. OFF flies on into Zuikaku's final and dies over the wreck at 1434.37 s; ON lives to 1627.96 s. The
+rest of the run moves from there (5 more deaths, 6 more units, dive releases 127 -> 128). **Flipped ON.**
