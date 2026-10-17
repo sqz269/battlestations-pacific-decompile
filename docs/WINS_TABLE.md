@@ -668,3 +668,27 @@ mechanism is in the cd761bb52 section above).
   USN01** (no end in 26000 frames; KatTBD's second plane dies 1.15 s later and Convoy1 survives), through the
   per-name keyed stand-in streams. USN01 `p8_u1_i` needs a re-plan on the flipped tree, the plane-heavy rows' times above
   move with the flip, and order files must name wing planes `|.-II` etc.
+- **JM06 row: `config/win_orders/jm06_p12_j6_c1.txt`** (cc9-physics12, OCEAN_WAVE_FIELD 45; recorded by cc9-lua64,
+  2026-10-17). Completed 1967.79 s (reference), 2259.08 s (20,3), 1901.73 s (20,5), 2102.93 s (20,7), guard logged in
+  all four (`cc9-physics1\local\p12j6c1_<ref|j3|j5|j7>.log`, exe `cc9-physics1\local\p12_m5`, tree fedbf3c92). That
+  tree predates the roman flip, so the row still needs a run on current main.
+- **BSM01 `p6_b1_a` under 20,3 is a loss, not a host gap** (cc9-lua64, `cc9-lua52\local\l63rt_b1_j3.log`). HenryPT dies
+  at 1514.05 s (`death row`, killer Sacramento, killer_cat 6 blast, nearest ship MiniSub 319 m), so lua_Think calls
+  `luaMissionFailed` (bsm_01_stationed_at_pearl.lua 2367, this installation, mtime 2024-07-13). It sets
+  `Mission.EndMission = true` and then calls `luaObj_IsActive("secondary",1)` (line 2401), but the script's own
+  `Mission.Objectives.secondary` table is empty (lines 109-110), so commandhelpers.lua:5991 indexes nil and the
+  function stops before `luaMissionFailedNew`. The same script fails the same way on any engine; the logged
+  "EndMission" for this row is a failure, and the missing guard line is correct (no completion). The friendly-blast
+  kill is a gunnery-lane question.
+- **USN01 re-planned: `config/win_orders/usn01_l64_u1_b.txt`** (cc9-lua64, 2026-10-17, tree 1c43edf3b = origin/main
+  f4d7658e6 plus an OFF switch; exe `cc9-lua52\local\l64_off`, 43F25CF839C4; roman names ON). p8_u1_i lost Convoy1
+  (ScoutDauntless misses after the roman flip moved the per-name streams). ConSBD1 and ConSBD2 still carry bombs
+  when the dead-target retest ends their dives (Convoy5 189.21 s, Convoy3 193.76 s), so b adds
+  `3791 target ConSBD1 Convoy1 | Convoy4 | Convoy2 | Convoy3 | Convoy5 | Convoy6` and the same for ConSBD2 at 3881
+  (the first live pick). Completed 714.95 s (reference), 730.00 s (20,3), 699.95 s (20,5), 739.94 s (20,7), guard
+  in all four (`cc9-lua52\local\l64_u1_b[_j3|_j5|_j7].log`). Plan a (Convoy1 only) lost 20,3: Convoy1 died early
+  there and Convoy4 survived.
+- **LOMP06 re-planned: `config/win_orders/lomp06_l64_l6_a.txt`** (cc9-lua64, same exe). q6 kept attacking
+  Kongosan Maru after it sank at 184.76 s, and Toba Maru (sunk at 191.81 s by the Kongosan salvo in the win) now
+  survives; a sends the 3800-5800 attack lines at Toba Maru. Completed 345.84 s (reference) and 354.84 s (20,3),
+  guard in both (`cc9-lua52\local\l64_l6_a[_j3].log`).
