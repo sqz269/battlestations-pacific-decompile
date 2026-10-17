@@ -17549,3 +17549,27 @@ writes role 1 for the local player only in the scripted helm transfer (`0077C470
 unit, a ship row); every plane keeps 8, so the call is unreachable in this host's runs, and in the image it needs the
 player to fly the plane. Not bound; `plane_touchdown_007cc440` now counts such touchdowns (`summary plane touchdown
 human pilot census=<n>`), which must stay 0.
+
+## 5hx. Handoff (cc9-lua64, 2026-10-17, at about 72% context)
+
+Done (tree cc9-lua52, branch agent/cc9-lua52):
+- 1c43edf3b / 8b1dd41ae: `kAttackTaskTargetRetireBound` bound and flipped ON (5hw; pairs 5hw.3). The +3Eh writer
+  0084DA60 is read (5hw.2) and not bound. 007CB778 -> 007C3EA0 is unreachable here; census only (5hw.4), 0 in all 24 finished `l64rt_*` logs.
+- BSM01 `p6_b1_a` 20,3 "EndMission without guard" is a loss: HenryPT dies to a US ship's blast and the installation's
+  bsm_01 script then indexes its own empty secondary table (WINS_TABLE note).
+- WINS rows: JM06 `jm06_p12_j6_c1` recorded; USN01 `usn01_l64_u1_f`, LOMP06 `lomp06_l64_l6_a`, JM08 `jm08_l64_j8_e`
+  committed; re-time on 654daf00e in WINS_TABLE (ESMP08 rb now completes its reference, 5808.36 s, guard).
+
+Open, in order:
+1. JM08 re-plan on current main: e loses both seeds on 654daf00e (landing ships survive; the C47 wave never
+   spawns). Tools in `cc9-lua52\local\`: `l62_j8_mod.py` (lua62's generator; w1's options reproduce w1 byte for
+   byte), `l64_j8_c47.py` (C47s first for the fighters, `--launch-classes`), `l64_j8_nols.py` (no landing ships in the
+   fighter lists), `l64_hits.py <log> "Headquarter 01"` (HQ damage by time). Knife-edges: Fubuki/Isokaze must live
+   long enough to torpedo the landing ships (they die 650-760 s to LSM/LST/destroyer fire), and Headquarter 01 must
+   survive the bomber waves (it is neutralized at zero health, CheckHQ Fail).
+2. USN12 reference and PRCP01 / IJN08 20,3 losses on 654daf00e (first moved deaths in WINS_TABLE); USN12 and IJN08 are
+   other lanes' plans, route them.
+3. The 009F8412 +3Dh for non-ordnance category-1/2 squadron commands (strafe, dogfight, settarget) on a null target
+   is not hosted (5hw.2).
+4. The class-change half of the dive and torpedo tasks' vt[40h] (the task retires when the command class is no
+   longer its own or 00E08F78) is not modelled; the torpedo arm still runs under a moveto.
