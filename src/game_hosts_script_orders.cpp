@@ -147,7 +147,7 @@ inline constexpr bool kLuaNavigatorStopBound = true;  // ON: SQUADRON_LAND_TASK 
 // (007ED850 `MOV ECX,[EDI]`). True: each answer is the OR over the ordered unit's
 // live squadron members (gunnery liveness stands for +3CCh membership, LABELLED).
 // False: the ordered unit (slot 0) alone, as before.
-inline constexpr bool kSquadronMemberOrdnanceBound = false;
+inline constexpr bool kSquadronMemberOrdnanceBound = true;   // ON: SQUADRON_LAND_TASK 5hv.6
 // Packet cc13-fix5 (docs/CC13_FIX_5.md section 7). True binds NavigatorCruise
 // 008A75C0: NavigatorStop's twin, 0077D600(entity, cruise 00E08F70, zeroed
 // descriptor, 1) at 008A7729 (bsp::navigator_cruise_order_008a75c0), through

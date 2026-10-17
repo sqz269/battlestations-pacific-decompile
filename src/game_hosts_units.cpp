@@ -6264,12 +6264,12 @@ struct GameUnitsHost::Impl {
     // member's command target, the image's next validity check returns 0 and the task
     // goes. True: a level-bomb task whose command target is cleared retires. False:
     // the arm returns early and the task freezes in its last state (USNOS wave 2).
-    static constexpr bool kLevelBombTargetClearedRetireBound = false;
+    static constexpr bool kLevelBombTargetClearedRetireBound = true;   // ON: SQUADRON_LAND_TASK 5hv.6
     // Packet cc9_l63_lb_stick_delay (SQUADRON_LAND_TASK 5hv.3). 007C1FB0's tail: the
     // stick time is the longest rack's 006E4170 span plus BombDelay (class+1F4h) x
     // max(0, n - 1) over the n kind-25h racks. True: the term is added. False: the
     // longest span alone, as before (equal for one-rack planes).
-    static constexpr bool kLevelBombStickBombDelayBound = false;
+    static constexpr bool kLevelBombStickBombDelayBound = true;   // ON: SQUADRON_LAND_TASK 5hv.6
     // Packet cc9-gunnery38 (docs/CC13_AUDIT13_RECENT_FLIPS.md O1). The strafe
     // cruise profile 009CD020, run once per activation (the install and each
     // time the strafe task resurfaces after a tightturn or flikflak retires),

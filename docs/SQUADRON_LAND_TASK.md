@@ -17416,3 +17416,23 @@ roman `-II`-style names in the 621 .lua files), so the Lua flow is unchanged. Tw
   rows shift;
 - helm-order files that name wing planes in decimal (`usnos_s45_os_k.txt`, the USNOS a7 plan:
   `launch Enterprise 0 810 3 plane #4.4|.-2`) stop resolving and must be rewritten to `|.-II` etc. when this flips.
+
+### 5hv.6 Pairs and flips (reference env, exe pairs from 55a65cd44 / 3c2b402cf exports)
+
+Logs `cc9-lua52\local\l63_<row>_<cond>.log` with manifests; `off` is the tree build, `on` flips
+`kLevelBombTargetClearedRetireBound`, `on2` flips `kLevelBombStickBombDelayBound` and `kSquadronMemberOrdnanceBound`.
+
+| Row | off | on | on2 |
+|---|---|---|---|
+| USNOS a7 (`l63_os_a7.txt`, 72000 fr) | no end, MissionPhase=1 | **moved**: failed 1705.54 s (HQ1 Game Over), MissionPhase=2 | - |
+| BSM01 `bsm01_p6_b1_a` (40000 fr) | EndMission 779.93 s, guard logged | identical | identical |
+| LOMP10 `lomp10_p3_l10_b` (36000 fr) | completed 1476.87 s, guard logged | identical | identical |
+
+- USNOS ON matches every prediction: `retired, the command target is not +440h` for `plane #4.4|.-2/-3/-4` at
+  443.67 s, B5 for `plane #4.4` at 444.86 s (latched and ended in the same step), the wingmen die at 644.07, 779.83
+  and 780.63 s instead of leaving the map, and the phase-2 GenerateObjects (Loui1/2, Portland3, Gear19) run. 94 death
+  rows only ON, 108 only OFF: everything after phase 2 differs. The plan then loses HQ1; the re-plan is cc9-ships54's.
+- LOMP10 installs level-bomb tasks (33 in a recent log) without a retest and BSM01 installs none, so both are
+  identical; no logged plane
+  in any recent row has more than one kind-25h rack, so the stick term is inert today.
+- All three flipped ON by mechanism.
