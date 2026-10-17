@@ -1696,3 +1696,33 @@ to b46d56a35; the loss is not yet reported to lua62.
 env), `p11_wait.ps1`, `p12_j6attack.py`, `p12_j6gen.py`; exes kept for pairs: `p12_m*` (tree builds),
 `p12_off*` / `p12_qc` / `p12_lg` / `p12_we` / `p12_f3` (pair exports). A tree exe used by a running game blocks
 `scripts/build.ps1` at the link: run from a copy.
+
+## 45. JM06 re-planned again: `jm06_p12_j6_c1`; BSM01 and USNOS checks (cc9-physics12, 2026-10-16)
+
+On main with gunnery48's 6c900f1e0 (`kTorpedoAngleErrPerEvaluationBound` ON; this tree merged at fedbf3c92, exe
+`local\p12_m5`), `jm06_p12_j6_a4` completes 20,3 at 2000.83 s but not the reference: PlayerSub 01 is sunk at 1750.83 s
+by Lexington-class 01_sqn02|.-2 (damaged from 723.85 s, on its way to the 13000-frame moveto (800, -1500)); the
+Lexington dies only at 3243.79 s and phase 3 never ends. Extra Lexington torpedo or attack lines (b1, b2) cannot help
+once the sub is gone. **c1** drops that one moveto (the sub stays near (1300, -1500)); c2 sends it to (2200, -2500)
+instead.
+
+| Plan | reference | 20,3 | 20,5 | 20,7 |
+| --- | --- | --- | --- | --- |
+| a4 | no end | completed 2000.83 s | - | - |
+| c2 | completed 1970.80 s | completed 2006.83 s | no end | completed 2000.83 s |
+| **c1** (`config/win_orders/jm06_p12_j6_c1.txt`) | **completed 1967.79 s** | **completed 2259.08 s** | **completed 1901.73 s** | **completed 2102.93 s** |
+
+Logs `local\p12j6<plan>_<ref|j3|j5|j7>.log` with manifests; the guard's sus_prog.exe refusal is logged in all four c1
+runs.
+
+**BSM01.** The keeper lua62 re-timed at 833.92 s is `bsm01_p6_b1_a`, not `l50_b1_a`. On this main p6 reaches EndMission at
+779.93 s (reference) and 1515.40 s (20,3); `l50_b1_a` reaches it at 1518.36 s here and not within 2000 s on 25fbdcba0's
+exe, so there is no regression to bisect (`local\p12b1*.log`).
+
+**USNOS, the world-edge pull (42).** With ships51's `s51_os_a7` orders, wave 2's plane #4.4|.-2 still leaves the map
+(z = -20 km at 600 s, -97 km at 1990 s; the map's SE z is -17500). The level-bomb goaway does steer through 009FD570,
+but `fly-to world edge calls=6534 near=0`: the off-map leg is not flown by the solver (`local\p12os_a7.log`, `.csv`).
+
+**ESMP08 after 43.1 (still open).** Without the slot-4 lines (`local\p12_e8_rb_no4.txt`) the reference still sinks only
+5 of 15: class 150 is also allocated to slots 2 and 3 against cruisers and destroyers (the `l61_e8_alloc` ranks), so 23
+Zero squadrons still launch with divebomb and hold. A re-plan must move those slots' targets to classes 159/162/163.
