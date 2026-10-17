@@ -83,12 +83,18 @@ void body_add_force_at_point_00c37f60(void* body, const float force[3],
     // The motion pointer is reloaded at 00C37F9F, after the force stores.
     const Raw m2 = b.deref(0x4);
     // r x force, each component formed in registers and stored as float ([ESP+0Ch..14h]).
-    const float t0 = static_cast<float>(static_cast<double>(r1) * force[2] -
-                                        static_cast<double>(r2) * force[1]);
-    const float t1 = static_cast<float>(static_cast<double>(force[0]) * r2 -
-                                        static_cast<double>(r0) * force[2]);
-    const float t2 = static_cast<float>(static_cast<double>(force[1]) * r0 -
-                                        static_cast<double>(r1) * force[0]);
+    // 00C37FBA..00C38003 keep both products on the x87 stack (FMULP) and subtract them
+    // (FSUBRP). The caller 0092B350 is fixed-step slot +8h (wave 3), run by the frame-job
+    // pool on the main thread at 24-bit precision control, or on a pool worker at 53 bits
+    // (docs/CC13_FPU_PRECISION.md). Modelled at 24 bits, as the main thread and the
+    // single-thread mode run it: each FMULP rounds its product to float before the FSUBRP.
+    // At 53 bits the products would be exact and the difference rounded once.
+    const auto mul = [](float a, float b) {
+        return static_cast<float>(static_cast<double>(a) * b);
+    };
+    const float t0 = static_cast<float>(static_cast<double>(mul(r1, force[2])) - mul(r2, force[1]));
+    const float t1 = static_cast<float>(static_cast<double>(mul(force[0], r2)) - mul(r0, force[2]));
+    const float t2 = static_cast<float>(static_cast<double>(mul(force[1], r0)) - mul(r1, force[0]));
     m2.at<float>(0x44) = static_cast<float>(static_cast<double>(m2.at<float>(0x44)) + t0);
     m2.at<float>(0x48) = static_cast<float>(static_cast<double>(m2.at<float>(0x48)) + t1);
     m2.at<float>(0x4c) = static_cast<float>(static_cast<double>(m2.at<float>(0x4c)) + t2);

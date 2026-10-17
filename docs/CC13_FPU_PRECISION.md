@@ -251,6 +251,15 @@ the main thread and keeps 53 bits on a worker.
   behaviour, not the 53-bit one.
 - Main-thread presentation, camera and Lua: 24 bits.
 
+### Per-function thread checks (cc13-fix13, 2026-10-17)
+
+| Function | Reached from | Thread / precision | Reconstruction |
+| --- | --- | --- | --- |
+| `00C37F60` body add force at point | `0092B350`, fixed-step slot `+8h` (wave 3) | main 24-bit or pool worker 53-bit | float per op (24-bit), `src/cc13_dyn1.cpp` |
+| `0085E4D0` rotate by angular velocity | HUD `00526A40`, `00640A20`; fixed-step `007C18B0`, `007D9F60`, `00901C20` | HUD: main 24-bit; fixed-step: main 24 or worker 53 | float per op (24-bit), `src/cc13_front4.cpp` |
+| `00611770` powerup screen slide | update slot `+24h` (`0061BEA0`) via `004D8620` GUI frame update | main 24-bit | float per op, `src/cc13_sweepB3.cpp` |
+| `007DC830` free-flight step | `007CC2F0` / `007CBFA0` from `007CE040`, plane element slot `+8h` (wave 3) | main 24-bit or pool worker 53-bit | unchanged (frozen for cc9); still models 53 bits |
+
 ## Uncertainties
 
 1. The probe observed this machine's `d3d9.dll` and OS, not the game process. It shows that
