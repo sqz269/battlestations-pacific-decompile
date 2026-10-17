@@ -17558,8 +17558,7 @@ Done (tree cc9-lua52, branch agent/cc9-lua52):
 - BSM01 `p6_b1_a` 20,3 "EndMission without guard" is a loss: HenryPT dies to a US ship's blast and the installation's
   bsm_01 script then indexes its own empty secondary table (WINS_TABLE note).
 - WINS rows: JM06 `jm06_p12_j6_c1` recorded; USN01 `usn01_l64_u1_f`, LOMP06 `lomp06_l64_l6_a`, JM08 `jm08_l64_j8_e`
-  committed; re-time on 654daf00e in WINS_TABLE (ESMP08 rows still running when this was written:
-  `local\l64rt_e8_<ref|j3>.log`).
+  committed; re-time on 654daf00e in WINS_TABLE (ESMP08 rb now completes its reference, 5808.36 s, guard).
 
 Open, in order:
 1. JM08 re-plan on current main: e loses both seeds on 654daf00e (landing ships survive; the C47 wave never

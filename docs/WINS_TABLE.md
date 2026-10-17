@@ -732,7 +732,7 @@ mechanism is in the cd761bb52 section above).
   | IJN08 `p10_i08_z` | 100000 | completed 3892.67 s | **failed 1170.02 s** (Game Over) | 3937.72 / failed 959.89 |
   | IJN18 `s46_i18_a` | 64000 | EndMission 2002.83 s, guard | EndMission 2356.17 s, guard | 2032.86 / 2216.04 |
   | BSM09 (no orders) | 36000 | EndMission 911.90 s, guard | EndMission 905.90 s, guard | 914.90 / failed |
-  | ESMP08 `p12_e8_rb` | 140000 | (running) | (running) | not a win |
+  | ESMP08 `p12_e8_rb` | 140000 | **completed 5808.36 s**, guard | no end | physics13: 20,7 3261.21 (OCEAN_WAVE_FIELD 47.2) |
 
   Every completion and every winning EndMission logged the guard. New losses against the last re-time:
   - JM08 e (both seeds): landing ships survive (ref LSM 02 and LST 01; 20,3 USTroopTransport 01 and three LSTs) and
