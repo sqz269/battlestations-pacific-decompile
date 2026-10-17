@@ -827,6 +827,10 @@ struct GameUnitSlot {
     float fs_sight_78[3]{0.0f, 0.0f, 0.0f};
     float fs_countdown_74{0.0f};
     float fs_think_dt{0.0f};                 // this think's elapsed, 009C1FD0's dt
+    // The think count, and the think of the last follow tick: a follow tick
+    // with no follow tick on the previous think is an entry (009BED80).
+    unsigned long long fs_thinks{0};
+    unsigned long long fs_last_follow_think{0};
     // unit+914h: -1.0 from the plane constructor (007CFDDF, 00D7A260); 1.0 once
     // a follow sight search finds a contact (009C230B). Nothing resets it.
     float plane_formation_sight_914{-1.0f};
@@ -8843,8 +8847,22 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     // df_gun_tick_009fc7c0 has them. x87 chains are modelled at 24-bit precision
     // (float per operation); a 53-bit thread could differ in the last bit.
     // Not hosted: unit+914h's readers 0072C128 / 0072C5FE (squadron-head
-    // substitution in the gun code), and 009BED80's +84h clear on a re-entry.
+    // substitution in the gun code). 009BED80's +84h clear: follow_sight_enter_009bed80.
     static constexpr float kFollowSightPeriod70 = 0.6f;   // 00CE3D30 = 3F19999Ah
+    // 009BED80, the follow Enter: of the sight block it clears only +84h
+    // (009BEDC3) and +85h (009BEE1C; the host recomputes +85h every tick).
+    // +74h, +78h..+80h are untouched (009BED92's 009BE150 copies the
+    // parameters into [state+6Ch], not into the state). SUBSTITUTION, labelled:
+    // the host has no single enter for the follow states, so a follow tick
+    // with no follow tick on the previous think counts as an entry; a re-entry
+    // with no think between is missed, and a follow state whose tick skips a
+    // think would be cleared where the image keeps +84h.
+    void follow_sight_enter_009bed80(GameUnitSlot& unit) {
+        if (unit.fs_last_follow_think + 1 != unit.fs_thinks) {
+            unit.fs_sight_84 = false;                                     // 009BEDC3
+        }
+        unit.fs_last_follow_think = unit.fs_thinks;
+    }
     void follow_sight_tick_009c211d(GameUnitSlot& unit, const GameUnitSlot& leader,
                                     float dt, float& countdown_74) {
         const float c = countdown_74;
@@ -9132,6 +9150,7 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         record("PlaneSquadron::on_plane_left_map_007f31a0", 0x007f31a0u);
     }
     bool run_follow_tick_009c1fd0(GameUnitSlot& unit, float state_8c = 1.0f) {
+        if constexpr (kFollowSightSearchBound) follow_sight_enter_009bed80(unit);
         // 009BFDA6-009BFDB2: the calling state's +8Ch. The follow state's is
         // 009BED80's 1.0 and nothing in its tick moves it (packet
         // cc9_l61_torpedo_done_formation); the level-bomb prepare passes its own.
@@ -34604,6 +34623,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             float desc_radius_268() override { return pb_.unit_.plane_turn_circle_radius; }
                             bool has_director() override { return true; }
                             void enter_follow_009bed80() override {
+                                if constexpr (GameUnitsHost::Impl::kFollowSightSearchBound) {
+                                    pb_.unit_.fs_sight_84 = false;   // 009BEDC3
+                                }
                                 pb_.owner_.record("BotStateFollow::enter", 0x009bed80u);
                             }
                             void exit_follow_009bde40() override {
@@ -34724,6 +34746,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // the host's station routine does both from the registry.
                     void run_moveto_follow_tick_009c1fd0(float dt) {
                         ++unit_.moveto_follow_ticks;
+                        if constexpr (GameUnitsHost::Impl::kFollowSightSearchBound) {
+                            owner_.follow_sight_enter_009bed80(unit_);
+                        }
                         // 009C1FE2: cmd+26Ch = 2, a byte 0099D300's neutral-plan
                         // entry reads; this host keeps no such field.
                         // 009C1FEA: 009BFD70, the station. False ends the tick.
@@ -35136,6 +35161,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             const float elapsed = unit_.pilot_think_accumulator_70;
                             if constexpr (GameUnitsHost::Impl::kFollowSightSearchBound) {
                                 unit_.fs_think_dt = elapsed;   // 009C1FD0's dt, packet cc13-fix89
+                                ++unit_.fs_thinks;
                             }
                             unit_.pilot_think_accumulator_70 = 0.0f;   // 0099AD75
 
@@ -35154,6 +35180,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.plan_slots, live);
                             if constexpr (GameUnitsHost::Impl::kFollowTurboBound) {
                                 unit_.plan_turbo_2e5 = false;   // 0099B572, DL = 0 (0099B46E)
+                            }
+                            if constexpr (GameUnitsHost::Impl::kKamikazeBoostTurboBound) {
+                                // 0099B56C: plan+2E4h = DL = 0 on every think for every
+                                // plane, so a request ends with the task that raised it.
+                                unit_.plan_boost_2e4 = false;
                             }
                             // Packet cc9_plane_gunfire: the rest of 0099B450's tail
                             // (0099B4E8-0099B580) for the fields this host keeps on

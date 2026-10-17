@@ -99,8 +99,17 @@ Labelled substitutions:
 - **Initial countdown.** For the states that go through `run_follow_tick_009c1fd0`, `+74h` starts
   at 0.0 instead of `-U(0, 0.6)`, so the first tick searches. The moveto follow keeps its existing
   drawn stagger.
-- **`009BED80`'s `+84h` clear.** The clear on each re-entry is not hosted. The latch is cleared at the
-  next reload whose gate fails.
+- **`009BED80`'s `+84h` clear** (review fix). Of the sight block, the follow Enter clears only `+84h`
+  (`009BEDC3`) and `+85h` (`009BEE1C`). It leaves `+74h` and `+78h..+80h` alone, because `009BED92`'s
+  `009BE150` copies the parameters into `[state+6Ch]`, not into the state. The host has no single
+  enter for the follow states, so `follow_sight_enter_009bed80` runs at the top of both follow ticks.
+  It clears `fs_sight_84` when the previous think ran no follow tick (`fs_thinks` and
+  `fs_last_follow_think`).
+  - The moveonpath follow's explicit enter hook `enter_follow_009bed80` also clears it.
+  - A re-entry with no think between is missed.
+  - A follow state whose tick skips a think is cleared where the image keeps `+84h`.
+  - One `fs_sight_84` per unit is shared by the follow and moveto-follow states. A unit is in only one
+    of them at a time, and each entry is detected as above.
 - **Precision.** The leader-pose product for the hold arm is taken in double, as `follow_to_body`
   does. The search's x87 chains are modelled at 24-bit precision (one float rounding per operation);
   a 53-bit thread could differ in the last bit.
@@ -172,12 +181,19 @@ No `00BD2F10` draw is on this path.
 | switch and evidence comment | next to `follow_turbo_steps` |
 | class fields and the property-bag reset | the class read, after `BombDelay` |
 | the throttle arm, replacing the analogue throttle quantisation only when ON | the commit `007BB920` block |
+| `plan_boost_2e4 = false` on every think for every plane (`0099B56C`; review fix) | the generic reseed, next to `0099B572` |
 | the `+BC8h` latch and the charge step | `control_step_007da710`, after the throttle latch |
 | `a *= TurboStrength` while `9F8h`, not on water or ground | the thrust block, after the turbo multiplier |
 | `summary mission boost turbo steps=` | after the kamikaze summary |
 
 Slot fields: `plane_boost_9f8`, `plane_boost_latched_bc8`, `plane_boost_charge_e84`,
 `plane_boost_lockout_e88`, `plane_turbo_time`, `plane_turbo_recharging_time`, `plane_turbo_strength`.
+
+The reseed clear came from review. Before it, the host cleared the request only in the kamikaze and
+drop-kamikaze arms. A plane whose kamikaze task ended while a boost was requested then kept the
+request: its throttle stayed at 1.0, `9F8h` stayed set, and because the `+BC8h` latch was held, the
+charge never recharged. The clear is under the switch. With the switch OFF, `plan_boost_2e4` has no
+reader: the kamikaze summary counts `kz_boost_ticks` instead.
 
 Labelled substitutions:
 
