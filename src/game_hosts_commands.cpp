@@ -35,6 +35,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <deque>
 #include <functional>
 #include <string>
 #include <vector>
@@ -213,9 +214,12 @@ struct GameCommandsHost::Impl {
     explicit Impl(GameHostLog& log_in) : log(log_in) {}
 
     GameHostLog& log;
-    std::vector<GameCommandUnit> units;
+    // Deques, packet s57_unit_storage: descriptors and chains keep &units[i] and
+    // &directors[i] across ticks, and a spawn batch appends without moving them.
+    std::deque<GameCommandUnit> units;
     std::vector<GameFireTargetRequest> fire_target_requests;   // cc9_weapon_director_fire_target
-    std::vector<GameDirector> directors;
+    std::deque<GameDirector> directors;
+    unsigned long long unit_pointers_kept{0};   // packet s57_unit_storage census
     // Packet s53_path_multileg: 007ADD70 calls, the hits its 0.5 lookahead
     // turned away, advances taken by force alone, and steps of two or more legs.
     unsigned long long path_follow_calls{0};
@@ -1604,7 +1608,27 @@ void GameCommandsHost::register_units(std::vector<GameCommandUnit> units) {
             units[i].formation_leader = host.units[i].formation_leader;
         }
     }
-    host.units = std::move(units);
+    // Packet s57_unit_storage. Director slot descriptors (+54h + i*1Ch), the
+    // override descriptor (+18Ch), the observer pairs and every ChainState hold
+    // &units[i]; 0071E200 at 0071E70C compares those pointers. Moving a new
+    // vector in on every spawn batch left them all naming freed storage, so the
+    // table is a deque updated in place: the existing rows keep their address
+    // and only the appended rows are new. The census below counts the live
+    // descriptors that the old move-assign invalidated.
+    if (!host.units.empty()) {
+        for (const GameDirector& d : host.directors) {
+            for (const bsp::SceneCommandTarget& t : d.slot_target) {
+                if (t.object != nullptr) ++host.unit_pointers_kept;
+            }
+            if (d.override_target.object != nullptr) ++host.unit_pointers_kept;
+        }
+    }
+    const std::size_t in_place = std::min(host.units.size(), units.size());
+    for (std::size_t i = 0; i < in_place; ++i) host.units[i] = std::move(units[i]);
+    if (units.size() < host.units.size()) host.units.resize(units.size());
+    for (std::size_t i = in_place; i < units.size(); ++i) {
+        host.units.push_back(std::move(units[i]));
+    }
     // Packet cc8_ship_drive. This is called again for every batch of units the
     // mission creates - GameScriptOrdersHost calls create_units at its two
     // spawn producers and create_units ends here - and it used to `assign`,
@@ -1625,6 +1649,12 @@ void GameCommandsHost::register_units(std::vector<GameCommandUnit> units) {
                 "packet cc8_ship_drive every one of the %zu was destroyed and rebuilt here, "
                 "which emptied the command queue of every unit already in the mission each "
                 "time one was created", kept, host.units.size() - kept, kept);
+        }
+        if (host.summary.director_reregistrations <= 16) {
+            host.log.notef("unit table kept in place: re-registration %zu, %llu live descriptor "
+                "pointer(s) so far that a moved vector would have left dangling (packet "
+                "s57_unit_storage)", host.summary.director_reregistrations,
+                host.unit_pointers_kept);
         }
     }
     // 0081f273 / 0081f278 leave the pair at -1.0f, which is what
