@@ -1867,9 +1867,13 @@ from the host:
 - **The issue.** When the best differs from the current command's resolved target: `009F6D60` picks the command
   class, nothing happens if both the current and the new class are ordnance classes, `stop` is replaced by a moveto to
   the squadron's position, and `0071D980` sends an **override** command.
-- **The missing host layer.** The host has no squadron command queue or override slot (`CommandQueueState` +30h/+188h).
-  An override that runs until it is done and then gives control back to the queue head needs one. This is the largest
-  part, and every AI squadron on every row reaches it (41).
+- **The missing host layer.** The override pieces are reconstructed but not called:
+  - `set_override_command_0071e7f0` and `clear_override_command_0071e610` are in `src/command_execution.cpp`;
+  - the director host `game_hosts_commands.cpp` notes that its override arm 00836D67 "cannot fire here because
+    nothing writes director+188h";
+  - the send `0071D980` needs `[director+40h] < 0` (the auto-target hold, DIRECTOR_TARGET_GATE.md), then routes
+    MT_GAMEUNIT_SETCMD with flag 0. Its receiver `00721A40` takes the override arm at `00721B7C`.
+  Wiring those for the squadron's fused director is the largest part, and every AI squadron on every row reaches it (41).
 - Recommendation: a fresh worker packet with its own switch: the queue/override layer first (OFF, identical when
   unused), then the tick.
 
@@ -1878,10 +1882,10 @@ from the host:
 Exe `local\p13_m3` (tree build of 57ecc76a4); reference env, 140000 frames, `--stop-after-end 40`; logs
 `local\p13e8c_rb_<ref|j3|j5|j7>.log` with manifests; every completion logs the exec guard's sus_prog.exe refusal.
 
-| Plan | reference | 20,3 | 20,5 |
-| --- | --- | --- | --- |
-| rb on af23c565f (`local\p13_m2`, before 47) | completed 6132.09 s | no end (Iowa, Cummings) | - |
-| **rb on 57ecc76a4** | **completed 3984.96 s** | **completed 4707.67 s** | **completed 3966.89 s** |
-| dd (`local\p13_e8_dd.txt`, destroyers first in each Zero group) on 57ecc76a4 | - | no end | - |
+| Plan | reference | 20,3 | 20,5 | 20,7 |
+| --- | --- | --- | --- | --- |
+| rb on af23c565f (`local\p13_m2`, before 47) | completed 6132.09 s | no end (Iowa, Cummings) | - | - |
+| **rb on 57ecc76a4** | **completed 3984.96 s** | **completed 4707.67 s** | **completed 3966.89 s** | **completed 3261.21 s** |
+| dd (`local\p13_e8_dd.txt`, destroyers first in each Zero group) on 57ecc76a4 | - | no end | - | - |
 
-So the row needs no re-plan: with the Zeros' rounds back (46), `esmp08_p12_e8_rb` holds the reference, 20,3 and 20,5.
+So the row needs no re-plan: with the Zeros' rounds back (46), `esmp08_p12_e8_rb` holds the reference, 20,3, 20,5 and 20,7.
