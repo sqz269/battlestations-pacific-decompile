@@ -2719,7 +2719,9 @@ struct GameUnitsHost::Impl {
     // unit+188h.. is 9 (open) or the local player's slot. True: that gate, the local
     // slot being kLocalPlayerSlot (0) as elsewhere in this host. False: every exit is
     // sent, as before. Kill(4) runs either way.
-    static constexpr bool kShipExitZoneRoleGateBound = false;
+    // ON (GUNNERY 266.5): JM06 and USN12 gameplay identical; every ship that left
+    // the map on them had an open role word, so the gate never refused.
+    static constexpr bool kShipExitZoneRoleGateBound = true;
     unsigned long long ship_exit_role_gated{0};
     unsigned long long ship_exit_calls{0}, ship_exit_counting{0}, ship_exit_warnings{0},
         ship_exit_kills{0};
