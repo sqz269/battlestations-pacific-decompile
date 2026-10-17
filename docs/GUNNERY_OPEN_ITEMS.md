@@ -15680,3 +15680,35 @@ committed and nothing was sent to the wins keeper.**
    `ca,cl,dd` attack at 5000 s did not kill it in the other four `kl` runs.
 4. Watch the US/IJN count (`g49_count.py`): a phase that loses ships below the IJN count makes every IJN ship run to
    JapanGoTo (0, 12000) and fails the mission within about 100 s.
+
+**`km`** (`kl` with a compact Fuso group: Fletchers staged at (5000, 9000) x0.25 at 2700 s, closed to (5600, 9300)
+x0.15 at 3200 s, 5 rounds from 3300 s; seeds ref/20,5/20,7/20,11) is worse: every run fails (3189, 5370, 4180, 4344 s).
+Closing on the parked Fuso costs the group (ref: US 12 -> 4 between 3000 and 3500 s against IJN 6), the IJN fleet
+manager then runs for JapanGoTo, and Fuso ends at 42458-86737 of 90000. Fuso's guns kill whatever closes inside its
+3000 m reach faster than torpedoes from 1.3-1.9 km wear it down.
+
+## 268. Handoff (cc9-gunnery49, 2026-10-17, at about 72% context)
+
+**Commits on `agent/cc9-gunnery36`** (none merged by me):
+- `829cac9fc`: `kAutoTargetPhaseDrawBound` (OFF), the 009F6A8F draw in `GameShipAiHost::bind_gunnery` (ship-AI loan).
+- `b4fa8b40d`: `kShipExitZoneRoleGateBound` (OFF) and the read-only verdicts 266.1-266.3.
+- `fad263ffb`: 266.4, auto-target phase ON (USN12 moves via a target pick and still completes 1685.52 s).
+- `b3008b86e`: 266.5, exit-zone role gate ON (inert on JM06/USN12).
+- `4f2cd32f4`, `20ee0d85e`: section 267 (USN15) and its correction.
+
+**Closed:** lead items 1-4 of this brief. Item 2's verdict: heavy shells vs armour 130 are faithful (direct hit only,
+`00470510`; no penetration, angle or range term). Item 3 needs no host change. Item 4: `0081DCB0` unreachable or
+equivalent; `0081BEB0`'s role gate bound and ON, its mode-9 return and `0092BD30` labelled.
+
+**Open, for the successor:**
+1. **USN15** from section 267: the `kk` opening (4/5 Yamashiro), then a Fuso phase that does not trade ships below the
+   IJN count. Options not yet tried: keep the survivors out of Fuso's 3000 m and let the clock run (does the script
+   have a time limit? no fail rule found besides the two in 267); kill IJN ships of lower value first so the IJN count
+   drops and the fleet manager stays in stance 2; a single torpedo pass along Fuso's 1500-2500 s run east, while it
+   moves, instead of attacking it parked with Mogami and Fubuki-class01 beside it.
+2. JM08 `jm08_l59_j8_r12` shows no mission end at 110000 frames on both builds of 266.4 (asked of cc9-lua62).
+3. JM06 `jm06_s49_j6_s` stays lost since 263.1 (routed to the lead before).
+
+**Tools** in this tree's `local\` (g49_ prefix): `g49_queue.ps1` (as g48's, counts g49 runs), `g49_tally.py`,
+`g49_dd.py`, `g49_count.py`, `g49_ijnpos.py`, `g49_firstdiff.py <off> <on> [n] [skip] [include]`. Exports:
+`g49_aoff`/`g49_aon` (`829cac9fc`), `g49_p1` (`fad263ffb`), `g49_xon` (`fad263ffb` + the exit gate ON).
