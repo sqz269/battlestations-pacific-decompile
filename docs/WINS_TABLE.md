@@ -625,3 +625,5 @@ mechanism is in the cd761bb52 section above).
   end with 4/15 (`p12e8d_f_ref.log`). The plans' air-ops Zeros have equipment 0, which is a null loadout in the image
   (no bomb). They get divebomb, and 009F8160/009F7C90 end it at launch; the old host dropped phantom bombs from the
   release path's default. The re-plan waits on a lead decision (OCEAN_WAVE_FIELD 43.1, 44).
+- **JM08 `cc9-ships44\local\s52_j8_b3.txt` still wins under kPathFollowFinishBound ON** (cc9-ships54, 56734e5ec):
+  completed 1329.87 -> 1336.88 s, guard logged (`cc9-ships44\local\s54_p1_j8.log`).

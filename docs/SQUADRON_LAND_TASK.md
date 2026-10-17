@@ -17399,3 +17399,6 @@ ordered unit only. Since `kRackLiveOrdnanceMaskBound` makes `unit_ordnance` live
 the two differ once the leader has dropped and a wingman has not. True ORs each predicate over the live members of
 the ordered unit's squadron record. Prediction: identical unless an order or retarget reaches a squadron whose leader
 is spent and a wingman is not.
+- 5hu update (lead, final assignment): the C47 Class.ID packet (queue item 2) moved to cc9-ships54. The lua lane keeps
+  goaway (item 1), then rows/re-time, Roman names, IsFunction. ships54 takes the seg 67 ship-AI sub-band
+  009D6000-009F6060 only; this lane holds nothing there.
