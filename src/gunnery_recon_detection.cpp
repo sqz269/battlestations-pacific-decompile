@@ -217,4 +217,90 @@ GunneryReconContact gunnery_recon_detect_00806840(const GunneryReconObserver* ob
     return contact;
 }
 
+// ---------------------------------------------------------------------------
+// Packet cc9_g51_recon_records: 00805AF0, 00805BE0 and 00806840 over the record
+// ---------------------------------------------------------------------------
+
+ReconRecordLevelChange recon_record_accumulate_00805af0(ReconDetectionRecord& record,
+                                                        float value,
+                                                        bool accumulate,
+                                                        std::size_t observer) noexcept
+{
+    ReconRecordLevelChange change{};
+    change.old_level = recon_record_effective_level(record);        // 00805AF6..00805B03
+    // 00805B05..00805B48: assign or add, then clamp to [0, 1.0f].
+    record.value = recon_detection_accumulate_00805af0(record.value, value, accumulate);
+    record.level = recon_detection_level_00805b3d(record.value);    // 00805B4A..00805B70
+    // 00805B73..00805B95: swap the observer edge only when it differs.
+    if (record.observer != observer) {
+        record.observer = observer;
+    }
+    change.new_level = recon_record_effective_level(record);
+    change.changed = change.new_level != change.old_level;          // 00805BA6
+    return change;
+}
+
+ReconRecordLevelChange recon_record_reset_00805be0(ReconDetectionRecord& record) noexcept
+{
+    ReconRecordLevelChange change{};
+    change.old_level = recon_record_effective_level(record);
+    record.value = 0.0f;                                            // 00805BF9
+    record.level = ReconDetectionLevel::none;                       // 00805BFE
+    record.observer = kGunneryReconNoObserver;                      // 006952A0, +28h = 0
+    change.new_level = recon_record_effective_level(record);
+    change.changed = change.new_level != change.old_level;
+    return change;
+}
+
+void recon_run_sensor_pass_00806840(const ReconPassTarget* targets, std::size_t target_count,
+                                    const ReconPassObserver* own, std::size_t own_count,
+                                    const GunneryReconEnvironment& env, int slot, float dt,
+                                    ReconRecordPassHost& host, ReconPassScratch& scratch)
+{
+    for (std::size_t t = 0; t < target_count; ++t) {
+        const ReconPassTarget& target = targets[t];
+        ReconDetectionRecord& record = host.record(target.unit, slot);
+
+        // 00806871 and 00806883: both skips go straight to the publish, leaving
+        // the record as it is.
+        const bool skip = host.network_role() == kGunneryReconNonOriginatingRole ||
+                          record.forced;
+        if (!skip) {
+            float best_gain = 0.0f;                              // 008068A3
+            std::size_t best_observer = kGunneryReconNoObserver; // 008068A9
+            bool any_applied = false;                            // 0080689F XOR BL,BL
+            for (std::size_t o = 0; o < own_count; ++o) {
+                const ReconPassObserver& entry = own[o];
+                // 008068C2 IsKindOf(5).
+                if (!entry.observer.is_observer_class) continue;
+                if (entry.observer.rows == nullptr || entry.observer.row_count == 0) {
+                    // 008048C1: false, *outGain untouched; 008068EC still compares it.
+                    ++scratch.stale_gain_reads;
+                } else {
+                    // 00804B2F reads the cap base from the record of the OBSERVER's
+                    // party; an own-list entry's party is the slot's (008065FF).
+                    const float current = host.record(target.unit, entry.observer.party).value;
+                    const GunneryReconObservation observation =
+                        gunnery_recon_observe_008048a0(entry.observer, target.subject, env,
+                                                       current, dt);
+                    scratch.out_gain = observation.gain;
+                    any_applied = any_applied || observation.applied;    // 008068F4
+                }
+                if (scratch.out_gain > best_gain) {                     // 008068FA JBE
+                    best_gain = scratch.out_gain;
+                    best_observer = entry.unit;
+                }
+            }
+            const ReconRecordLevelChange change = any_applied
+                ? recon_record_accumulate_00805af0(record, best_gain, true, best_observer) // 0080693D
+                : recon_record_reset_00805be0(record);                                     // 00806957
+            if (change.changed) {
+                host.level_changed(target.unit, slot, change.old_level, change.new_level);
+            }
+        }
+        // 0080695C..00806981.
+        host.publish_level(target.unit, recon_record_effective_level(record));
+    }
+}
+
 } // namespace bsp

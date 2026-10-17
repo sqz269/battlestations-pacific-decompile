@@ -31,6 +31,25 @@
 
 namespace bsp {
 
+// Packet cc9_g51_recon_records (docs/RECON_SENSOR_PASS.md section "Records").
+// True: recon_sensor_pass_rebuild_008073c0 replaces recon_sensor_pass_step_008073c0.
+// Each of the three slots (004E0537 builds slots 0, 1 and 2 at load) runs its
+// scan lists through recon_run_sensor_pass_00806840 against persistent per-(unit,
+// party) records: the value carries across passes (the 00807490 reset walks only
+// the class-18h squadron list), the own arm adds 1.0f each pass (008065B0), every
+// party is covered, and the record notifications are kept for the `recon` channel.
+// False: the per-target model from a zero value, sides covered only while they
+// have a sensor-bearing observer.
+inline constexpr bool kReconDetectionRecordsBound = false;
+
+// One delegate call, [+2Ch]->vtable[0](+30h, old, new), in pass order.
+struct ReconLevelTransition {
+    std::size_t unit{0};
+    int party{0};
+    ReconDetectionLevel old_level{ReconDetectionLevel::none};
+    ReconDetectionLevel new_level{ReconDetectionLevel::none};
+};
+
 // Everything 008048A0 and 00806840 read that this process must supply. One
 // method per native read, none with a default.
 struct ReconSensorPassHost {
@@ -94,6 +113,14 @@ struct ReconSensorPassHost {
     // [00E188A8]+1FE4h. The pass is skipped entirely when this is
     // kGunneryReconNonOriginatingRole.
     virtual int network_role() = 0;
+
+    // 0080749C..00807527 for one slot (kReconDetectionRecordsBound): the units the
+    // scan files into the own, enemy and neutral arrays, each flattened in class-id
+    // bucket order with the scan order inside a bucket, as 00804E10 (own, slot+DD8h)
+    // and the 00807552 / 00807570 loops see them.
+    virtual void scan_slot_lists_008065b0(int slot, std::vector<std::size_t>& own,
+                                          std::vector<std::size_t>& enemy,
+                                          std::vector<std::size_t>& neutral) = 0;
 };
 
 // What one pass left, indexed by (side, target). Sides are kept dense in the
@@ -125,15 +152,34 @@ public:
     // Set by the step when the whole pass was skipped for the network role.
     bool suppressed_by_network_role{false};
 
+    // kReconDetectionRecordsBound census.
+    unsigned long long record_rebuilds{0};
+    unsigned long long record_targets{0};
+    unsigned long long record_own_refreshes{0};
+    unsigned long long record_carried_level{0};   // a target kept a level above what a zero start gives
+    unsigned long long record_notifications{0};
+    unsigned long long record_stale_gain_reads{0};
+
+    // The delegate calls of the latest rebuild (kReconDetectionRecordsBound).
+    const std::vector<ReconLevelTransition>& transitions() const noexcept { return transitions_; }
+
+    // The persistent record, for 00805CF0's forced writes; null when out of range.
+    ReconDetectionRecord* record(int party, std::size_t unit) noexcept;
+
 private:
     friend void recon_sensor_pass_step_008073c0(ReconSensorPassState&, float,
                                                 ReconSensorPassHost&);
+    friend void recon_sensor_pass_rebuild_008073c0(ReconSensorPassState&, float,
+                                                   ReconSensorPassHost&);
     std::size_t slot(int side, std::size_t target, bool create) noexcept;
 
     std::size_t unit_count_{0};
     std::vector<int> sides_{};
     std::vector<ReconDetectionLevel> levels_{};
     std::vector<float> values_{};
+    std::size_t record_unit_count_{0};
+    std::vector<ReconDetectionRecord> records_{};    // [party * record_unit_count_ + unit]
+    std::vector<ReconLevelTransition> transitions_{};
 };
 
 // The level a caller must assume for a target the pass has not covered. It is
@@ -180,6 +226,16 @@ inline constexpr float kReconSensorPassRefreshPeriod = 3.0f;
 // side always knows its own units and the union list admits them by rule (a).
 void recon_sensor_pass_step_008073c0(ReconSensorPassState& state, float dt,
                                      ReconSensorPassHost& host);
+
+// kReconDetectionRecordsBound: 008073C0 for slots 0, 1 and 2 over persistent
+// records. Per slot: the own arm of 008065B0 (00805AF0(1.0f, 1, null) on each own
+// record), then 00806840 over the enemy list (00807556) and the neutral list
+// (00807574). levels()/values() then read the records' effective levels for every
+// party. SUBSTITUTIONS, labelled: the class-18h squadron records the 00807490 loop
+// resets are not kept here (the host folds squadrons from member levels when it
+// publishes); one dt serves all three slots.
+void recon_sensor_pass_rebuild_008073c0(ReconSensorPassState& state, float dt,
+                                        ReconSensorPassHost& host);
 
 // Packet cc9_forced_recon_level. 00805CF0 sets a (target, observing party) record's
 // force byte (+10h = 1) and forced level (+8h); the pass then skips the sensor test

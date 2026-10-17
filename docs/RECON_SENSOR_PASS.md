@@ -180,3 +180,48 @@ in the comment above it, so the next caller cannot step the pass per frame by ac
 **The one gap is closed.** `GameMissionLuaHost::read_vehicle_class_number` exists and reads
 `ReconModifier`. In this installation only 14 of the 637 `ReconClass`-carrying rows have the
 key and all 14 are 1, so every unit still takes `kGunneryReconModifierSqDefault`.
+
+## Records (packet cc9_g51_recon_records, cc9-gunnery51, 2026-10-17)
+
+`kReconDetectionRecordsBound` (`include/bsp/recon_sensor_pass.hpp`), committed OFF. It replaces the per-target
+model with the whole of `00806840` over persistent records (`recon_run_sensor_pass_00806840`,
+`recon_record_accumulate_00805af0`, `recon_record_reset_00805be0` in `src/gunnery_recon_detection.cpp`) and a driver
+`recon_sensor_pass_rebuild_008073c0` that runs slots 0, 1 and 2.
+
+**What the image does that the OFF path does not.**
+1. **The value carries across passes.** The reset loop `00807462..0080749A` walks `[[[00E188A8]+19CCh]+13Ch]`. The
+   scan at `008074CA` indexes the per-class heads as `registry + id*0Ch + 1Ch`, so `+13Ch` is class `18h`, and only the
+   plane squadron's world-list virtual `007F10B0` joins it (`ADD ECX,138h` at `007F10C8`; the unit's `006FE620` joins
+   ids 2, 4, 5, 6, 7). Unit records are never zeroed before the pass, which corrects this doc's own claim and the
+   `prior_value` comment in `gunnery_recon_detection.hpp` (docs/GAMEPLAY_LOOSE_ENDS_1.md section 2 had it right).
+   Consequence: `008048A0` clamps each entry's gain against `cap - current` (`00804B45..00804B79`), which is negative
+   once the record is above that entry's cap, and `00806840` keeps only a strictly larger gain than 0.0f. So a target
+   identified once (value 1.0) STAYS identified while any entry of any observer still applies, even a blip-capped
+   (0.25) one; it drops only when no entry applies at all (`00806957`, 00805BE0). OFF recomputes from zero and drops
+   it to the applying entry's cap.
+2. **Every slot is covered.** `004E0537..004E0544` builds slots 0, 1 and 2 at mission load and `008079B0` rebuilds all
+   three. A party with no sensor-bearing observer publishes `none` for every scanned target. OFF leaves such a side
+   uncovered, and `level()` answers `identified` (`kReconDetectionUnknownLevel`).
+3. **Observers and targets come from the scan.** Own list = `slot+DD8h` (`00804E10` at `0080753A`), targets = the enemy
+   buckets (`00807556`) then the neutral buckets (`00807574`); the 22 ids, four gate bytes and IsKindOf(2). An
+   IsKindOf(5) own entry without a sensor table stays in the loop: `008048A0` returns false at `008048C1` without
+   writing `*outGain`, and `008068EC` still compares the stale stack slot (labelled substitution: 0.0f at the start of
+   a rebuild).
+4. **The own arm** (`008065B0`, `00805AF0(1.0f, 1, null)` on each own record) and **the delegate**
+   (`[+2Ch]->vtable[0](+30h, old, new)`, only when the effective level moved). A unit record therefore notifies on net
+   changes only; `kReconListenerResetCycleBound`'s every-pass `old -> 0 -> new` cycle applies to the class-18h squadron
+   records alone. ON, `dispatch_recon_listeners_00980e50` fires the records' own transitions instead (`game_hosts_lua.cpp`,
+   loaned for one commit).
+5. **det+28h** is kept as the winning observer's unit index; its only image reader is the HUD warning `009741E0`.
+   The skip path (`00806871` / `00806883`) leaves the record as it is and publishes `+8h` / `+4h`.
+
+**Not modelled (labelled):** the squadron records the `00807490` loop resets (the host folds squadrons from member
+levels when it publishes); one dt for all three slots.
+
+**Predictions (ON vs OFF, same tree):** not gameplay-identical. (a) `summary mission recon sensor_pass` identified
+rises and blip falls, from the hysteresis; (b) a side with no sensor-bearing observer moves from uncovered to covered;
+(c) `listener_recon_changes` falls sharply (no per-pass cycle on unit records), so a Lua `recon` listener waiting for
+`0 -> 2` fires only on a real first identification: LOMP06's `luaSeaplaneSpotted` may go silent or fire later; (d)
+gunnery contact sweeps keep identified targets longer, so fire-target picks and AutoTarget can move from the first
+pass a target falls back under a blip-capped sensor. Pairs: USNOS (`usnos_s45_os_k`), ESMP08 (`g38_ord_e8`), USN04
+(idle), LOMP06 (`lomp06_l50_l6_q6`).
