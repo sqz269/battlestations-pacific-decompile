@@ -17720,3 +17720,30 @@ Helldiver's depth-charge rack (2Ah ordnance whose descriptor also answers 2Ch) w
 2Ah unfiltered, so the depth-charge rack is one of its answers. The walk now also answers 2Ah+2Ch under
 `bsp::kDepthChargeTaskBound` (still OFF). With it, the local ON run logs rack drops 3/7/3 for the three Helldiver
 squadrons (`depthcharge ... rack 006E56F0: drops=`), 10/25/10 release-stage issues. The pair is packet (3) of cc9-lua66.
+
+## 5id. PutTo / PutFormationTo: heading, reshape and the formation arms (cc9-lua66, 2026-10-17)
+
+Packet `cc9_l66_putto`, switch `bsp::game::kPutToFormationBound` (include/bsp/game_hosts_units.hpp), committed OFF.
+Sources: docs/CC13_VERIFY4.md R4/R5, CC13_VERIFY12.md R8; the listing of 008193A0, 008196B0, 009584D0, 0047F200, 00B646E0.
+
+- **Heading, 008196B0** (vtable +11Ch): 009584D0 -> 0047F200 builds RotationY(-0.0 - heading) (00B646E0 stores
+  m[0] = cos, m[2] = -sin, the D3DX form) times the translation of the current position, so the host heading
+  atan2(row2.x, row2.z) is the negated argument. Then 00818EA0 refills the wake ring, and an occupant owner (00778890:
+  group+14h == unit, the leader) re-places every other member through vtable[118h](&00F87574, the zero vector).
+  `GameUnitsHost::set_heading_008196b0`. LABELLED: ships only (IsKindOf 6); the +BCCh 1.25 and vtable[0D8h] have no host
+  counterpart; pitch and roll are dropped as 0047F200 does.
+- **Placement, 008193A0**: a follower asked for a point with |pos|^2 <= 25.0 (00CE3880) is placed at its station
+  (0081945D-0081950A: 00810630 on the leader's wake at the record's axial column, pushed by the lateral column along
+  (-dir.z, dir.x), y = 0), i.e. `formation_station_0070d290(unit, 1, 1)`, then turned by vtable[11Ch](-0.0 -
+  wrap_2pi(pi/2 - atan2(dir.z, dir.x))) with the float-widened constants 00CE3830 / 00CE3828. A far point places nothing.
+  A leader re-places every other member at the origin (00819672). The OFF arm is unchanged (followers refused, the snap
+  a record).
+- **Reshape, 0070EFD0(shape)**: `reshape_formation_0070efd0` runs `ship_ai_formation_reshape` over the group's records
+  with ShipGlobals.Formacio.FormationShipDist (settings+42Ch). 0070EFD0 does not write group+500h, and the host's
+  column is always 0, so the rewritten column is the live one.
+- The script-orders half (PutTo with exactly three arguments, 008AA10E `cmp eax, 3`, heading = float(arg * 00CE3D28) /
+  00CE3D20 as for PutFormationTo's four; PutFormationTo's reshape before the move) follows when that file's lease frees.
+
+Prediction (USN02 `s36_u2_p7`, PRCP01, JM08 `luaJM8USFormation`): PutFormationTo at usn_02 :985 / :990 reshapes the
+group (shape 1 then 3) and its followers jump onto their stations at the new point, turned along the leader's wake;
+PutTo with a heading turns the unit and, for a leader, snaps the formation. Rows that call neither are identical.

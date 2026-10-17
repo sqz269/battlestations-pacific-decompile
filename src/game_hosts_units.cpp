@@ -122,6 +122,7 @@
 #include "bsp/ship_ai_rudder_hop.hpp"
 #include "bsp/unit_group_slot_swap.hpp"
 #include "bsp/ship_ai_path_corridor.hpp"  // ShipAiUnitGroupMember, the 34h record
+#include "bsp/ship_ai_formation.hpp"      // ship_ai_formation_reshape (0070EFD0)
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/ship_hull_body.hpp"
 #include "bsp/mmod_hull_convex_box.hpp"
@@ -3827,6 +3828,29 @@ struct GameUnitsHost::Impl {
         }
         return formacio_update_interval;
     }
+    // Packet cc9_l66_putto. ShipGlobals.Formacio.FormationShipDist (0083F06B stores
+    // it at settings+42Ch), the spacing 0070EFD0 reads at 0070EFFE.
+    float formacio_ship_dist_42c() {
+        if (formacio_ship_dist < 0.0f) {
+            const char chunk[] =
+                "local g = type(ShipGlobals) == 'table' and ShipGlobals.Formacio or nil\n"
+                "if type(g) ~= 'table' then return -1 end\n"
+                "return tonumber(g.FormationShipDist) or -1\n";
+            const int top = lua.lua_gettop();
+            float value = 0.0f;
+            if (lua.luaL_loadbuffer(chunk, static_cast<int>(std::strlen(chunk)),
+                                    "bsp_formacio_ship_dist") == 0 &&
+                lua.lua_pcall(0, 1, 0) == 0) {
+                const std::string text = lua.lua_tolstring_at_top();
+                if (!text.empty()) value = static_cast<float>(std::atof(text.c_str()));
+            }
+            lua.lua_settop(top);
+            formacio_ship_dist = value > 0.0f ? value : 0.0f;
+            log.notef("PutFormationTo: Formacio.FormationShipDist = %.3f (settings+42Ch)",
+                static_cast<double>(formacio_ship_dist));
+        }
+        return formacio_ship_dist;
+    }
     // Packet s53_wreck_debris. ShipGlobals.DebrisStruct, as 0083B5E0's fragment
     // stores it (0084124E boolean, default false; 00841294 number, default 0.3).
     bool debris_enabled_settings_680() {
@@ -6690,6 +6714,10 @@ struct GameUnitsHost::Impl {
     unsigned long long tail_slot_swap_calls = 0;
     unsigned long long tail_expiry_calls = 0;
     float formacio_update_interval = -1.0f;   // -1 until read
+    float formacio_ship_dist = -1.0f;         // packet cc9_l66_putto; -1 until read
+    unsigned long long putto_station_places = 0;   // packet cc9_l66_putto
+    unsigned long long putto_headings = 0;
+    unsigned long long putto_reshapes = 0;
     // Packet s53_wreck_debris: ShipGlobals.DebrisStruct (0084124E / 00841294 store
     // settings+680h / +684h; defaults false and 0.3). -1 until read.
     int debris_enabled_680 = -1;
@@ -38123,23 +38151,121 @@ bool GameUnitsHost::place_at_world_position_008193a0(std::size_t index, const fl
     Impl& host = *impl_;
     if (index >= host.slots.size() || host.slots[index] == nullptr) return false;
     GameUnitSlot& slot = *host.slots[index];
+    float at[3] = {pos[0], pos[1], pos[2]};
+    bool station = false;
+    FormationStation st{};
     if (unit_is_formation_follower_007788b0(index)) {
-        // 00819430 refuses a far point outright; 0081945D would replace a near
-        // one with the station. Neither placement is modelled for a follower.
-        host.record("UnitPlace::follower_arms_008193a0", 0x0081945du);
-        return false;
+        // 0081941F-00819430: |pos|^2, summed z, x, y and stored as a float, against
+        // the double 25.0 at 00CE3880; a far point places nothing at all.
+        const float r2 = pos[2] * pos[2] + pos[0] * pos[0] + pos[1] * pos[1];
+        if (!kPutToFormationBound || static_cast<double>(r2) > 25.0) {
+            host.record("UnitPlace::follower_arms_008193a0", 0x0081945du);
+            return false;
+        }
+        // 0081945D-0081950A: the station, 00810630 on the leader's wake at the
+        // record's axial column, pushed along (-dir.z, dir.x) by its lateral
+        // column, with y forced to 0 (008194C0).
+        st = formation_station_0070d290(index, 1.0f, 1.0f);
+        at[0] = st.x;
+        at[1] = 0.0f;
+        at[2] = st.z;
+        station = true;
     }
-    for (int lane = 0; lane < 3; ++lane) slot.motion.position[lane] = pos[lane];   // 009583C0
+    for (int lane = 0; lane < 3; ++lane) slot.motion.position[lane] = at[lane];   // 009583C0
     const float heading = static_cast<float>(
         std::atan2(static_cast<double>(slot.motion.pose_row2[0]),
                    static_cast<double>(slot.motion.pose_row2[2])));
     bsp::ship_ai_wake_fill_00810020(slot.wake, slot.motion.position, heading);   // 00818EA0
     host.done("UnitPlace::set_world_position_008193a0", 0x008193a0u);
+    if (station) {
+        // 008195C1-00819628: vtable[11Ch](-0.0 - wrap_2pi(pi/2 - atan2(dir.z, dir.x)))
+        // turns the follower along the wake direction at its station.
+        // The two constants are float values widened to doubles (3FF921FB60000000,
+        // 401921FB60000000).
+        float angle = static_cast<float>(1.5707963705062866 -   // 00CE3830
+            static_cast<double>(static_cast<float>(std::atan2(static_cast<double>(st.dir_z),
+                                                              static_cast<double>(st.dir_x)))));
+        if (angle < 0.0f) angle = static_cast<float>(static_cast<double>(angle) +
+                                                     6.2831854820251465);   // 00CE3828
+        ++host.putto_station_places;
+        set_heading_008196b0(index, -0.0f - angle);                         // 00D7A208
+        return true;
+    }
     if (slot.formation_group >= 0 &&
         formation_leader_0014(slot.formation_group) == index) {
-        host.record("UnitPlace::group_snap_0081963e", 0x0081963eu);
+        if constexpr (kPutToFormationBound) {
+            // 0081963E-00819694: every other member through vtable[118h](&00F87574).
+            relocate_formation_members_00819672(index);
+        } else {
+            host.record("UnitPlace::group_snap_0081963e", 0x0081963eu);
+        }
     }
     return true;
+}
+
+void GameUnitsHost::relocate_formation_members_00819672(std::size_t leader) {
+    Impl& host = *impl_;
+    const std::int32_t group = host.slots[leader]->formation_group;
+    const std::int32_t count = formation_member_count(group);                 // group+4F8h
+    static const float kOrigin[3] = {0.0f, 0.0f, 0.0f};                       // 00F87574
+    for (std::int32_t i = 0; i < count; ++i) {
+        const std::size_t m = formation_member_unit(group, i);                 // 0070D060
+        if (m == leader || m >= host.slots.size() || host.slots[m] == nullptr) continue;
+        place_at_world_position_008193a0(m, kOrigin);
+    }
+}
+
+bool GameUnitsHost::set_heading_008196b0(std::size_t index, float heading) {
+    Impl& host = *impl_;
+    if (index >= host.slots.size() || host.slots[index] == nullptr) return false;
+    GameUnitSlot& slot = *host.slots[index];
+    // LABELLED: only a ship (IsKindOf 6) is turned; a plane's or ground unit's
+    // orientation lives outside the motion rows here, so theirs stays a record.
+    if (!unit_is_kind_of(index, 6)) {
+        host.record("UnitPlace::set_heading_008196b0 (not a ship)", 0x008196b0u);
+        return false;
+    }
+    // 009584D0 -> 0047F200: RotationY(-0.0 - heading) (00B646E0: m[0] = cos, m[2] =
+    // -sin, row 2 = (sin, 0, cos)) times the translation of the current position.
+    const float yaw = -0.0f - heading;
+    const float c = static_cast<float>(std::cos(static_cast<double>(yaw)));
+    const float s = static_cast<float>(std::sin(static_cast<double>(yaw)));
+    slot.motion.pose_row0[0] = c;    slot.motion.pose_row0[1] = 0.0f; slot.motion.pose_row0[2] = -s;
+    slot.motion.pose_row1[0] = 0.0f; slot.motion.pose_row1[1] = 1.0f; slot.motion.pose_row1[2] = 0.0f;
+    slot.motion.pose_row2[0] = s;    slot.motion.pose_row2[1] = 0.0f; slot.motion.pose_row2[2] = c;
+    Impl::publish_pose(slot);
+    // 008196B0's 00818EA0: the wake ring refilled along the new heading.
+    bsp::ship_ai_wake_fill_00810020(slot.wake, slot.motion.position, yaw);
+    ++host.putto_headings;
+    host.done("UnitPlace::set_heading_008196b0", 0x008196b0u);
+    // 0081968F..: an occupant owner (00778890: the group's leader) re-places the
+    // others at the origin, so each goes to its station on the new wake.
+    if (slot.formation_group >= 0 && formation_leader_0014(slot.formation_group) == index) {
+        relocate_formation_members_00819672(index);
+    }
+    return true;
+}
+
+std::size_t GameUnitsHost::reshape_formation_0070efd0(std::size_t index, int shape) {
+    Impl& host = *impl_;
+    if (index >= host.slots.size() || host.slots[index] == nullptr) return 0;
+    const std::int32_t g = host.slots[index]->formation_group;
+    if (g < 0 || static_cast<std::size_t>(g) >= host.formation_groups.size()) return 0;
+    Impl::FormationGroup& group = host.formation_groups[static_cast<std::size_t>(g)];
+    struct Settings final : bsp::ShipAiFormationReshapeHost {
+        Impl& h;
+        explicit Settings(Impl& impl) : h(impl) {}
+        float game_settings_formation_ship_dist_00424c40() override {
+            return h.formacio_ship_dist_42c();
+        }
+    } settings{host};
+    const std::size_t written = bsp::ship_ai_formation_reshape(settings, group.members.data(),
+        static_cast<std::int32_t>(group.members.size()),
+        static_cast<std::uint32_t>(group.leader + 1u),
+        static_cast<bsp::ShipAiFormationShape>(shape));
+    ++host.putto_reshapes;
+    host.done("UnitGroup::apply_formation_shape_0070efd0", 0x0070efd0u);
+    return written;
 }
 
 bool GameUnitsHost::disable_physics_00891380(std::size_t index) {
@@ -40646,6 +40772,11 @@ void GameUnitsHost::report() {
         static_cast<unsigned long long>(host.formation_groups.size()),
         host.formation_joins, host.formation_creates, host.formation_rejoins,
         host.formation_clamped, host.formation_columns_unmeasurable);
+    if constexpr (kPutToFormationBound) {
+        host.log.notef("summary mission putto formation: station_places=%llu headings=%llu "
+            "reshapes=%llu (008193A0 / 008196B0 / 0070EFD0, packet cc9_l66_putto)",
+            host.putto_station_places, host.putto_headings, host.putto_reshapes);
+    }
     for (std::size_t g = 0; g < host.formation_groups.size(); ++g) {
         const Impl::FormationGroup& group = host.formation_groups[g];
         host.log.notef("  formation %zu leader=%s count=%zu column=%d", g,
