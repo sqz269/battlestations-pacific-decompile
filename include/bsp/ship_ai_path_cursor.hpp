@@ -172,8 +172,10 @@ inline constexpr bool kSquadronPathFollowStepBound = true;
 // keeps 00836A81's gate (a director at stage 2 runs no arm). True: both finish
 // blocks run (each under its arm's switch above). False: the answer is dropped
 // and the command ends only through the moveonpath state's own finish
-// (009E5C70). docs/SHIP_AI_OPEN_ITEMS.md 267.
-inline constexpr bool kPathFollowFinishBound = false;
+// (009E5C70). docs/SHIP_AI_OPEN_ITEMS.md 267. ON by mechanism: JM06 (the PBY's patrol
+// path ends; gameplay identical), USN10 (no answer; identical), JM08 (Gyoraitei #Y10
+// finishes one ship-AI step early; moved, still won at 1336.88 s).
+inline constexpr bool kPathFollowFinishBound = true;
 
 struct ShipAiPathFollowStep {
     bool answer{false};
