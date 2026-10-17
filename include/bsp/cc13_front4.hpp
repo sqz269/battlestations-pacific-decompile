@@ -112,10 +112,10 @@ struct Front4Host {
     virtual void debug_draw_line_rgba_floats_0085f990(const float* p0, const float* p1,
                                                       const float* rgba0, const float* rgba1) = 0;
     // 00860AD0 BSP_DebugDraw_ArcAroundAxis, __fastcall(ECX = const centre*, EDX =
-    // const axis*; float radius, float start, float sweep, u32 rgba, u32
-    // segments), RET 14h.
+    // const axis*; float radius, float start, float sweep, const float rgba[4]
+    // (passed on to 00860140 in EDX), u32 segments), RET 14h.
     virtual void debug_draw_arc_around_axis_00860ad0(const float* centre, const float* axis, float radius,
-                                                     float start, float sweep, std::uint32_t rgba,
+                                                     float start, float sweep, const float* rgba,
                                                      std::uint32_t segments) = 0;
 };
 
@@ -151,9 +151,10 @@ bool matrix_rotate_by_angular_velocity_0085e4d0(Front4Host& host, float* out, co
                                                 float wy, float wz, float dt);
 
 // 00860BE0 BSP_DebugDraw_WireSphereMarker, __fastcall(ECX = const centre*, EDX =
-// const float rgba[4]*; float radius, u32 arc rgba, u8 detailed), RET 0Ch.
+// const float rgba[4]*; float radius, const float arc_rgba[4] (PUSH EBX at 00860E27, the
+// pointer 00860AD0 hands to 00860140 in EDX), u8 detailed), RET 0Ch.
 void debug_draw_wire_sphere_marker_00860be0(Front4Host& host, const float* centre, const float* rgba,
-                                            float radius, std::uint32_t arc_rgba, std::uint8_t detailed);
+                                            float radius, const float* arc_rgba, std::uint8_t detailed);
 
 // 005CD160 BSP_MovCam_EnsureTarget, __thiscall(ECX = screen), RET, EAX = [screen+30h].
 void* movcam_ensure_target_005cd160(Front4Host& host, Raw screen);

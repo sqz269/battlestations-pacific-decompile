@@ -98,9 +98,10 @@ struct Seg53Host {
     virtual Object matrix_copy_4x4_004134f0(Object destination, Object source) = 0;
     // 0085DC80 BSP_Matrix_OrthonormalizeBasisRows, __fastcall(ECX = float m[16]), in place.
     virtual void matrix_orthonormalize_basis_rows_0085dc80(float* m) = 0;
-    // 00860140 BSP_DebugDraw_ArcInFrame, __fastcall(ECX = float frame[16], EDX = rgba; float
-    // radius, float start, float sweep, segment parameter), RET 10h.
-    virtual void debug_draw_arc_in_frame_00860140(const float* frame, std::uint32_t rgba,
+    // 00860140 BSP_DebugDraw_ArcInFrame, __fastcall(ECX = float frame[16], EDX = const float
+    // rgba[4], read as four floats at 008602AB..; float radius, float start, float sweep,
+    // segment parameter), RET 10h.
+    virtual void debug_draw_arc_in_frame_00860140(const float* frame, const float* rgba,
                                                   float radius, float start, float sweep,
                                                   std::uint32_t segments) = 0;
     // Object [00E19994]: the ArtillerySubDirectorBot config table (28h-byte level rows).
@@ -347,9 +348,9 @@ void debug_draw_screen_line_rgba_floats_00860030(Seg53Host& host, const float* r
                                                  float y0, float x1, float y1);
 void debug_draw_arc_around_axis_00860ad0(Seg53Host& host, const float* centre, const float* axis,
                                          float radius, float start, float sweep,
-                                         std::uint32_t rgba, std::uint32_t segments);
+                                         const float* rgba, std::uint32_t segments);
 void debug_draw_circle_around_axis_00860bb0(Seg53Host& host, const float* centre,
-                                            const float* axis, float radius, std::uint32_t rgba,
+                                            const float* axis, float radius, const float* rgba,
                                             std::uint32_t segments);
 
 // --- the gunnery director bridge (+4 = weapon director) byte getters ---

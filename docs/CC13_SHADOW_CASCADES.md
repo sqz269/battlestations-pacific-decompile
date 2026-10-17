@@ -54,8 +54,15 @@ That assumption is wrong for the main thread, which runs at 24-bit precision con
 `00A8BD20` to per-operation float rounding in the image's order (`pc24`: the depth remap, cos
 gamma, `1 - cos^2`, `f - n` and the shift, the shifted perspective `[10]`/`[14]`, the camera-space
 light direction dot products, the shared square-length sum, and the far/near depth scale); about
-1 ulp in stored matrix entries. The other three bodies (`00A8AEB0`, `00A8ECB0`, `00A8B930`) still
-keep unspilled intermediates in `double` and need the same pass. Constants were read
+1 ulp in stored matrix entries. cc13-fix15 gave the other three bodies the same pass:
+`00A8AEB0` is reached from `00B3C960` <- `00B156C0` <- scene render command `00B17240` (its executing thread was not traced; assumed
+the device-owning main thread) and from `0059D7B0` <- `004CA440 BSP_Game_Render`,
+so main thread; only its depth remap had unspilled chains (`00A8B55E`, `00A8B568`). `00A8ECB0`
+and `00A8B930` have no caller (rel32 scan of the PE, absolute-dword scan and Ghidra xrefs all
+empty), so no thread can be proved; they are modelled at 24 bits like the owner's live fits.
+`00A8ECB0` had one unspilled chain (`q = f/(f-n)`, `00A8EF08`); `00A8B930` is now fully
+per-operation (`add24`/`sub24`/`mul24`/`div24`, order from `tools/x87_sym.py 00A8B930`).
+Constants were read
 from the PE through `ghidra bytes`. Two tool limits needed hand work:
 
 - x87_sym drops `+ 0.0` terms. The inlined translate loop in BD20 at 00A8C636 adds a stack zero
@@ -100,7 +107,8 @@ trapezoidal-shadow-map N_T construction:
 The reconstruction keeps the dead stores to out[2] (u.x^2 + u.y^2) and out[5] (`p - p` from
 `FSUBR ST0,ST0`, which gives NaN for an infinite product). It also keeps every reread of p and b
 after earlier stores, which matters if `out` aliases an input. -u.x comes from SUBSS with
-00D7A208 = -0.0f, an exact negation.
+00D7A208 = -0.0f, an exact negation. Every multiply, add and divide rounds to float in the
+image's association order (24-bit PC assumed; the function is unreferenced).
 
 ## 00A8AEB0: box-bounded single view
 
@@ -118,7 +126,8 @@ camera comes from +30h, which the callers have just retained.
    up (0, 1, 0)). It is set on shadow camera +20h.
 4. The eight corners of [box_min, box_max] go into light space through 004142E0. Their bounds give
    projection = ortho(bounds) * diag(-1, 1, 1, 1) (00D7A260).
-5. depth = identity with [10] = 1/(zmax - zmin) and [14] = zmin/(zmin - zmax). light view =
+5. depth = identity with [10] = 1/(zmax - zmin) and [14] = zmin/(zmin - zmax), each difference
+   rounded to float before the divide (main thread, 24-bit PC). light view =
    view * depth goes to +3ACh. Its third column ([2], [6], [10], [14]) goes to +4ACh..+4B8h and
    then over +14Ch/+15Ch/+16Ch/+17Ch. The depth-scale pointer (00B6FEC0) is +4ACh.
 6. +44h = camera view-projection (00B70490), and +144h = +44h * +244h.
@@ -127,7 +136,8 @@ camera comes from +30h, which the callers have just retained.
 
 ABI: __thiscall(owner, float near, float far, int cascade), SEH frame (only for the name string),
 RET 0Ch. There is no reference. It builds the slice corners from tx = tan(fov*aspect/2) and
-ty = tan(fov/2) and a unit-scale perspective P ([10] = f/(f-n), [11] = 1, [14] = -n*[10],
+ty = tan(fov/2) and a unit-scale perspective P ([10] = f/(f-n) with f-n rounded to float first
+(24-bit PC assumed), [11] = 1, [14] = -n*[10],
 [15] = 0). It projects the corners through view*P with 00A8AC90, and then overwrites those results
 (the first product's destination is the corner array). H is a look-at from the ground point
 (x, 0, z) under the camera along the normalized horizontal forward (world +110h, 0, +118h). The

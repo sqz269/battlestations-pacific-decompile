@@ -52,11 +52,11 @@ unreferenced net-id resolver.
 | 0085BD50 | `recon_category_from_class_type_name_0085bd50` | Inlined "Destroyer" compare, then the 00425850 chain; unreferenced. |
 | 0085C0F0 | `matrix_set_look_at_copy_0085c0f0` | EDX eye passes through to 00B63F10; 004134F0 copy. |
 | 0085C220 | `matrix_set_from_euler_yxz_copy_0085c220` | EDX angles pass through to 0047C2A0; 004134F0 copy. |
-| 0085F990 | `debug_draw_line_rgba_floats_0085f990` | Chopped byte channels packed ARGB; renderer [00F8D394] slot B4h. |
+| 0085F990 | `debug_draw_line_rgba_floats_0085f990` | Byte channels packed ARGB; renderer [00F8D394] slot B4h. Each channel is FMUL double 255.0 under the caller's control word, then FISTP under chop: on the 24-bit main thread the product is rounded to float first (cc13-fix15, aligned with cc13_big53 colour_byte24), so a product just below an integer can give a byte one higher than the double-chop model. |
 | 0085FB30 | `debug_draw_line_rgba_floats_one_colour_0085fb30` | 0085F990 with one colour twice. |
 | 00860030 | `debug_draw_screen_line_rgba_floats_00860030` | Renderer slot C0h with two 2-float points. |
-| 00860AD0 | `debug_draw_arc_around_axis_00860ad0` | Frame from the axis, 0085DC80, centre as translation, 00860140. |
-| 00860BB0 | `debug_draw_circle_around_axis_00860bb0` | 00860AD0 over 0..2pi. |
+| 00860AD0 | `debug_draw_arc_around_axis_00860ad0` | Frame from the axis, 0085DC80, centre as translation, 00860140. rgba is `const float*` (the fourth stack slot, loaded into EDX at 00860B64; 00860140 reads four floats through it). |
+| 00860BB0 | `debug_draw_circle_around_axis_00860bb0` | 00860AD0 over 0..2pi; rgba `const float*` passed through. |
 
 ## Gunnery AI, director bridge, artillery bot config
 

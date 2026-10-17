@@ -253,7 +253,7 @@ bool matrix_rotate_by_angular_velocity_0085e4d0(Front4Host& host, float* out, co
 // written as c - 0 and c + 0, as the binary computes them. Both line colours are
 // the 16 bytes at EDX.
 void debug_draw_wire_sphere_marker_00860be0(Front4Host& host, const float* centre, const float* rgba,
-                                            float radius, std::uint32_t arc_rgba, std::uint8_t detailed)
+                                            float radius, const float* arc_rgba, std::uint8_t detailed)
 {
     const float h = radius + radius;
     const float cx = centre[0], cy = centre[1], cz = centre[2];
