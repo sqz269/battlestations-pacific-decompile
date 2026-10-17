@@ -1173,6 +1173,9 @@ public:
     // `DeviceClass[index][key]` as a number; `fallback` when absent. Packet
     // cc9_plane_level_bomb_task reads a bomb platform's `RepeatTime` (desc+E0h).
     float read_device_class_number(int index, const char* key, float fallback);
+    // Packet s54_seat_lead: a boolean key (00B662F0 with the default), for
+    // "AddsSpeed" = descriptor+95h (00732BE9..00732C0E).
+    bool read_device_class_bool(int index, const char* key, bool fallback);
 
     // `VehicleClass[index][key]` as a string; "" when absent. Used for the ship
     // row's `Mesh`, whose "slot" point groups 0095F500 turns into the platform

@@ -26,7 +26,8 @@ struct ShipTurnLeadTarget {
     std::array<float, 3> velocity{};   // target->vtable[34h](buf) (009023CC)
     float field_980{0.0f};   // target+980h, taken as |x| for 0082E890 (009025CE)
     float class_520{0.0f};   // [target+538h]+520h (0090260F)
-    float yaw_rate{0.0f};    // target->vtable[38h]() (00902690), a float return
+    float speed_38{0.0f};    // target->vtable[38h]() (00902690): 0080E0F0 on a ship, the
+                             // 0092D730 forward speed
 };
 
 class ShipTurnLeadHost {

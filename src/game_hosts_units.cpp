@@ -37026,6 +37026,29 @@ float GameUnitsHost::unit_yaw_authority_0524(std::size_t index, bool& derived) c
     return out.yaw_authority_0524;
 }
 
+bool GameUnitsHost::unit_turn_lead_fields_00902290(std::size_t index, float& efficiency_9dc,
+    float& rudder_984, float& throttle_980, float& radius_0520, float& speed_vt38) {
+    Impl& host = *impl_;
+    if (index >= host.slots.size()) return false;
+    const GameUnitSlot& slot = *host.slots[index];
+    efficiency_9dc = slot.motion.turn_efficiency;
+    rudder_984 = slot.motion.to_turn;
+    throttle_980 = slot.motion.throttle;
+    // 00828F66 leaves +520h at the constructor's value when its gate fails;
+    // LABELLED: that value is taken as 0.
+    const bsp::ShipClassAiDerivedMotion derived = bsp::ship_class_ai_derived_motion_00828f20(
+        slot.fields.max_rot_angle, slot.fields.max_rot_angle_change_ratio, slot.fields.max_speed);
+    radius_0520 = derived.derived ? derived.turn_radius_0520 : 0.0f;
+    speed_vt38 = unit_forward_speed_0092d730(index);
+    return true;
+}
+
+float GameUnitsHost::unit_rudder_curve_0082e890(std::size_t index, float magnitude) {
+    Impl& host = *impl_;
+    if (index >= host.slots.size()) return 0.0f;
+    UnitRudderBinding curve(host, *host.slots[index]);
+    return bsp::unit_rudder_denominator_0082e890(magnitude, curve);
+}
 bool GameUnitsHost::enable_ai_drive(const std::string& unit_name, float throttle,
     float rudder) {
     Impl& host = *impl_;

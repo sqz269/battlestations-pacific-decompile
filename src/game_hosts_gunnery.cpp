@@ -19,6 +19,7 @@
 
 #include <array>
 #include <limits>
+#include <functional>
 #include <map>
 #include <memory>
 
@@ -86,6 +87,7 @@
 #include "bsp/ship_torpedo_ver_cc13.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/plane_release_ver_cc13.hpp"
+#include "bsp/seg59_ship_lead_s54.hpp"
 
 namespace bsp::game {
 namespace {
@@ -1131,6 +1133,12 @@ constexpr bool kDepthChargeBotTickBound = true;  // ON: GUNNERY_OPEN_ITEMS 142
 //    a retarget keeps the trigger the last think left. ON by mechanism: BSM01,
 //    USN01 and USN10 pairs gameplay identical, 4700-26099 sends, 0 drops.
 constexpr bool kGunBotRetargetReleaseBound = true;
+//  * kSeatArtilleryLeadBound: cc9-ships54, SHIP_AI_OPEN_ITEMS 271. 00957740's
+//    hit lead (009578C3..00957A50) on the player-seat artillery aim: a ship hit
+//    (IsKindOf 6) leads through 00902290 and the hit offset turns with it; any
+//    other entity hit is shifted by 00901C20's (lead - target). OFF: the raw
+//    hit point (the ship branch recorded).
+constexpr bool kSeatArtilleryLeadBound = false;
 //  * kPlayerWeaponGroupFireBound: packet cc9_player_weapon_group_fire. Message
 //    79h's group 5 arm (0095A441): the player's depth-charge launchers take
 //    the 99h-held byte as their trigger, and GameGunneryHost::
@@ -2769,6 +2777,15 @@ struct GameGunneryHost::Impl {
     unsigned long long seat_artillery_guns{0};      // accepted guns, every message
     unsigned long long seat_artillery_unsolved{0};  // 00955630 returned false
     unsigned long long seat_artillery_hits{0};      // 00957740 took the segment hit
+    // kSeatArtilleryLeadBound: the 009578C3 lead taken on a ship (00902290) and
+    // on any other entity (00901C20), how many of the ship leads turned
+    // (00902290's lead path), and how many used the platform velocity.
+    unsigned long long seat_lead_ship{0}, seat_lead_other{0}, seat_lead_turned{0},
+        seat_lead_adds_speed{0};
+    std::map<int, bool> adds_speed_by_device;       // DeviceClass "AddsSpeed", desc+95h
+    void seat_artillery_lead_009578c3(const GameGunRow& gun, const UnitState& state,
+        std::size_t unit, std::size_t target, const float right[3], const float up[3],
+        const float forward[3], const float origin[3], float aim[3]);
     unsigned long long seat_artillery_turns{0};     // pending pairs a gun tick applied
     unsigned long long seat_artillery_refusals{0};  // of those, 0085ABA0 refused
     // Packet cc9_unit_death_route.
@@ -13497,6 +13514,107 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group4(std::size_t unit,
     done("PlayerGunSeat::message_group4", 0x0095a1ccu);
 }
 
+// Packet s54_seat_lead (docs/SHIP_AI_OPEN_ITEMS.md 271): 00957740's hit lead,
+// 009578C3..00957A50, for an entity hit `target`; `aim` holds the hit point.
+void GameGunneryHost::Impl::seat_artillery_lead_009578c3(const GameGunRow& gun,
+    const UnitState& state, std::size_t unit, std::size_t target, const float right[3],
+    const float up[3], const float forward[3], const float origin[3], float aim[3]) {
+    // 00957934 / 009579D8: [[dev+3F8h]+34h]+5Ch * +50h, the class pair 006E98BC
+    // rewrites for an artillery class (the constructor's 1.0 and V0 otherwise).
+    const float speed = gun.artillery_class ? gun.class_time_scale * gun.class_speed
+                                            : 1.0f * gun.muzzle_speed;
+    // 00957960 / 009579F7: 00427EB0(dev), the device's world position.
+    float muzzle[3];
+    gun_muzzle_point(gun, state, right, up, forward, origin, muzzle);
+    // 0095790E..0095792F / 009579B2..009579D3: [dev+3F4h]+95h ("AddsSpeed",
+    // 00732C0E) takes the unit's vtable[34h], else the zero vector 00F87574.
+    float shooter_vel[3] = {0.0f, 0.0f, 0.0f};
+    auto found = adds_speed_by_device.find(gun.device_class);
+    if (found == adds_speed_by_device.end()) {
+        found = adds_speed_by_device.emplace(gun.device_class,
+            lua.read_device_class_bool(gun.device_class, "AddsSpeed", false)).first;
+    }
+    if (found->second) {
+        unit_velocity(unit, shooter_vel);
+        ++seat_lead_adds_speed;
+    }
+    float tr[3], tu[3], tf[3], target_pos[3];
+    unit_pose(target, tr, tu, tf, target_pos);
+    // 00901C20's aim point, as the AA bots' site builds it (kGunInterceptBound).
+    // LABELLED: below the 2.0 speed floor (00CE3958) the target position.
+    auto intercept_00901c20 = [&](float out[3]) {
+        for (int i = 0; i < 3; ++i) out[i] = target_pos[i];
+        if (!(speed >= 2.0f)) return;
+        float v[3];
+        if (!(kAaTargetWorldVelocityBound && units.unit_linear_velocity(target, v))) {
+            const float s = units.unit_forward_speed_0092d730(target);
+            for (int i = 0; i < 3; ++i) v[i] = tf[i] * s;
+        }
+        aa_turn_average_00901c20(target, v);
+        float rel_v[3];
+        for (int i = 0; i < 3; ++i) rel_v[i] = v[i] - shooter_vel[i];
+        if (units.unit_is_kind_of(target, bsp::kUnitGunneryKindShipBase)) rel_v[1] = 0.0f;
+        const float span[3] = {target_pos[0] - muzzle[0], target_pos[1] - muzzle[1],
+                               target_pos[2] - muzzle[2]};
+        const float dist = length3(span);
+        float t = intercept_time_00901c20(span, rel_v, speed, dist);
+        t = aa_time_add_fix + t + (dist / 1000.0f) * aa_time_add_mul;
+        for (int i = 0; i < 3; ++i) out[i] = target_pos[i] + rel_v[i] * t;
+        done("GunBot::intercept_solution_00901c20", 0x00901c20u);
+    };
+    if (units.unit_is_kind_of(target, 6)) {
+        // 0095790E..009579AD: 00902290, then 00427C90 (hit - target), 004142E0
+        // by the out matrix, and lead + that at 00957991..009579AD.
+        struct LeadHost final : bsp::ShipTurnLeadHost {
+            Impl& h; std::size_t target; std::function<void(float*)> intercept;
+            LeadHost(Impl& h_, std::size_t t, std::function<void(float*)> f)
+                : h(h_), target(t), intercept(std::move(f)) {}
+            float rudder_curve_denominator_0082e890(float magnitude) override {
+                return h.units.unit_rudder_curve_0082e890(target, magnitude);
+            }
+            void intercept_solution_00901c20(const float*, float, const float*, float* out_aim,
+                                             float*) override {
+                intercept(out_aim);
+            }
+        } lead_host(*this, target, intercept_00901c20);
+        bsp::ShipTurnLeadTarget tl;
+        float speed_vt38 = 0.0f;
+        units.unit_turn_lead_fields_00902290(target, tl.field_9dc, tl.field_984,
+            tl.field_980, tl.class_520, speed_vt38);
+        tl.speed_38 = speed_vt38;   // vtable[38h] 0080E0F0: the 0092D730 speed
+        tl.pose = {tr[0], tr[1], tr[2], 0.0f, tu[0], tu[1], tu[2], 0.0f,
+                   tf[0], tf[1], tf[2], 0.0f, target_pos[0], target_pos[1], target_pos[2], 1.0f};
+        // vtable[34h] 00812090: the body axis times the same speed. LABELLED: the
+        // pose's forward row stands in for unit+94h..9Ch.
+        for (int i = 0; i < 3; ++i) tl.velocity[static_cast<std::size_t>(i)] = tf[i] * speed_vt38;
+        // LABELLED: the caller's matrix local is what 00902290 leaves when it
+        // writes none (a turning target with no positive time); identity here.
+        bsp::CameraMatrix turn{1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                               0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+        float lead[3];
+        float distance = 0.0f;
+        const bsp::ShipTurnLeadResult r = bsp::seg59_ship_turn_lead_00902290(
+            muzzle, tl, speed, shooter_vel, lead, turn, &distance, lead_host);
+        if (r.led) ++seat_lead_turned;
+        const std::array<float, 3> offset{{aim[0] - target_pos[0], aim[1] - target_pos[1],
+                                           aim[2] - target_pos[2]}};
+        std::array<float, 3> turned{};
+        bsp::transform_point_004142e0(offset, turn, turned);
+        for (int i = 0; i < 3; ++i) aim[i] = lead[i] + turned[static_cast<std::size_t>(i)];
+        ++seat_lead_ship;
+        done("PlayerGunSeat::artillery_hit_lead", 0x009578c3u);
+        return;
+    }
+    // 00957A00..00957A4B: 00901C20, then out += (lead - target) through 0042AEB0.
+    float lead[3];
+    intercept_00901c20(lead);
+    const float delta[3] = {lead[0] - target_pos[0], lead[1] - target_pos[1],
+                            lead[2] - target_pos[2]};
+    for (int i = 0; i < 3; ++i) aim[i] = delta[i] + aim[i];
+    ++seat_lead_other;
+    done("PlayerGunSeat::artillery_hit_lead_other", 0x00957a00u);
+}
+
 // Packet cc9_player_gun_seat_artillery: the group 3 arm of 00959C20
 // (00959F72..0095A1C7) for one unit. docs/PLAYER_GUN_SEAT.md section 7.
 void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
@@ -13558,14 +13676,17 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
                 ++seat_artillery_hits;
                 // 009578C3..00957A50: with [dev+3FCh] == 0 and a hit entity
                 // (a kind-1Eh hit resolved through 00923810(1) first), the lead
-                // at the round's speed [[dev+3F8h]+34h]+5Ch * +50h. Only kind 6
-                // uses it: 00957964 00902290, then the out stores at 00957B24.
-                // Any other kind runs 00901C20 (00957A00) and JMPs to 00957B3C
-                // past those stores, so its out is the raw hit point, as here.
-                // The kind-6 lead is not modelled (record); it has no reach on
-                // the reference rows, whose hits are all land (GUNNERY_OPEN_ITEMS
-                // 76.5).
-                if (any && hit_unit != 0 && units.unit_is_kind_of(hit_unit - 1, 6)) {
+                // at the round's speed [[dev+3F8h]+34h]+5Ch * +50h. Kind 6 runs
+                // 00902290 (00957964) and stores lead + Ry * (hit - target) at
+                // 00957B24. Any other kind runs 00901C20 (00957A00) and then
+                // 0042AEB0 with ECX = the out ADDS (lead - target) to the hit
+                // point before the JMP to 00957B3C (SHIP_AI_OPEN_ITEMS 269; the
+                // earlier note here, and GUNNERY_OPEN_ITEMS 76.5, read that as
+                // the raw hit point). kSeatArtilleryLeadBound.
+                if (kSeatArtilleryLeadBound && any && hit_unit != 0) {
+                    seat_artillery_lead_009578c3(gun, state, unit, hit_unit - 1, right, up,
+                                                 forward, origin, aim);
+                } else if (any && hit_unit != 0 && units.unit_is_kind_of(hit_unit - 1, 6)) {
                     record("PlayerGunSeat::artillery_hit_lead", 0x009578c3u);
                 }
             } else if (!(0.0f > dir[1])) {                         // 00957A55..00957ABF
@@ -15658,6 +15779,12 @@ void GameGunneryHost::report() {
             host.seat_artillery_guns, host.seat_artillery_unsolved, host.seat_artillery_hits,
             host.seat_artillery_turns, host.seat_artillery_refusals,
             kPlayerGunSeatArtilleryBound ? 1 : 0);
+        if constexpr (kSeatArtilleryLeadBound) {
+            host.log.notef("summary mission gunnery seat artillery lead ship=%llu turned=%llu "
+                "other=%llu adds_speed=%llu (009578C3, 00902290 / 00901C20, packet s54_seat_lead)",
+                host.seat_lead_ship, host.seat_lead_turned, host.seat_lead_other,
+                host.seat_lead_adds_speed);
+        }
         host.log.notef("summary mission gunnery death route calls=%llu reported=%llu "
             "child_triggers=%llu loss_report_calls=%llu loss_reports side0=%llu side1=%llu "
             "limbo_pages=%llu bound=%d (00959450, packet cc9_unit_death_route)",
