@@ -18249,3 +18249,13 @@ BSM09 Shokaku's path1): advances happen later when the point is ahead, and earli
 on the current point. The leg sequences stay the same, since the limit is 1. Rows move where a path ship's track
 matters. The summary line `path follow step` counts calls, lookahead misses, forced advances and multi-leg steps.
 Multi-leg should be 0 without user paths.
+**Measured; flipped ON.** OFF = tree 9a99c6533, ON = `local\s53_pf` (pair_export). Reference env.
+| row | ON calls / lookahead misses / forced / multi-leg | pair_diff | first moved | end OFF -> ON |
+|---|---|---|---|---|
+| JM06 36000 fr (`s53_p0_j6` / `s53_p1_j6`) | 99915 / 2811 / 0 / 0 | 3 | US Cargo Transport 02 178.21 -> 178.51 s; Hospital Ship 01 dies ON | none -> none |
+| USN10 24000 fr (`s53_p0_u10` / `s53_p1_u10`) | 51470 / 2260 / 100 / 0 | 3 (deaths identical, track moved) | unit table only | failed 825.32 both |
+| JM08 40000 fr, `local\s52_j8_b3.txt` (`s53_p0_j8` / `s53_p1_j8`) | 4213 / 75 / 6 / 0 | 3 | Medium Bunker, Concrete 02 65.45 -> 63.95 s | failed 1144.04 -> **completed 1329.87 s** |
+The prediction held: no multi-leg step without user paths. The authored-path rows move only through the 0.5
+lookahead (later advances with the point ahead) and the arrival-latch force. **JM08 on `s52_j8_b3` now WINS**:
+"Mission Completed - Guadalacanal is safe from invasion!" at 1329.87 s, Headquarter 01; the exec guard refused
+sus_prog.exe. Before, it failed at 1144.04 s. Sent to cc9-lua62.

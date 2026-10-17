@@ -149,8 +149,9 @@ int ship_ai_path_nearest_index_007b1100(const float* points_xyz, int point_count
 // image's arguments (count = the 0071FC40 attached byte, heading unit+1050h,
 // factor 0.5 [00CE3800], force [unit+740h]->vtable[48h]). False: the host's
 // one-point, one-leg stand-in with a non-strict radius and no force (before).
-// docs/SHIP_AI_OPEN_ITEMS.md 261.
-inline constexpr bool kPathCursorFollowStepBound = false;
+// docs/SHIP_AI_OPEN_ITEMS.md 261. ON by mechanism: JM06, USN10 and JM08 pairs
+// move through the lookahead and force with no multi-leg step (authored paths).
+inline constexpr bool kPathCursorFollowStepBound = true;
 
 struct ShipAiPathFollowStep {
     bool answer{false};
