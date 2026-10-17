@@ -211,7 +211,7 @@ inline constexpr bool kPathObjectDefaultPairBound = true;  // ON: SHIP_AI 197
 // place (the image routes them to the next session pump), and 00835C70's begin of the
 // override (its fire-target store) is left to the tick's own 00835860 at step 15.
 // False: the issue stays a record and nothing writes director+188h, as before.
-inline constexpr bool kAutoTargetOverrideBound = false;
+inline constexpr bool kAutoTargetOverrideBound = true;  // ON: SHIP_AI 274 (mechanism)
 
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.

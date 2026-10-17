@@ -18716,3 +18716,23 @@ mission moves. AI units whose head is category 3 leave it for the best recon-lis
 #5.1's fire target was Portland2 then Gear14 from 690 s) and go for it in the kamikaze / sub-attack
 states, so phase 1 may end earlier; the transports, being category-3 movers, also turn on anything in
 range.
+
+**Pairs (219b1d3c0, `--flip kAutoTargetOverrideBound=true`, exe `local\s56_ao_on`, reference env).**
+- USNOS `s55_os_r0`, 30000 frames (`local\s56_off_r0.log` / `s56_on_r0.log`, manifests beside them): pair_diff
+  exit 3. OFF `attackmove_issues=0`; ON 42 sends, 42 installs, 9 arm ends, 9 clears. The mechanism is the
+  predicted one: the Shinyo #6.2 leaves `stop` at frame 9240 for `kamikaze_attack` on Portland2 (then NH), #5.1
+  leaves it at 11360 for `attackmove` on Portland2, and #6.2 / #6.5 now die (only-ON rows), as do Ada3, Zao3
+  and Shima1 (NH and the Japanese cruisers take overrides on each other). fire_target_sets fall 2990 -> 42:
+  once the override names the winner, 009F5ECB returns before step 15 every think, as in the image.
+- USN02 `usn02_s36_u2_p7`, 8000 frames: exit 3, **the win is lost** (OFF completed 200.06 s with the exec
+  guard's sus_prog.exe refusal; ON no end in 400 s). Houston, parked at EscapePoint by the plan, and the
+  selected Exeter take overrides on the destroyers in range (19 installs); 17 deaths against 12.
+- LOMP06 `lomp06_l50_l6_q6`, 14000 frames, ON only: **lost**, failed at 652.11 s on Narwhal (table: completed
+  535.24 s). The selected Narwhal takes an override on Komaki Maru before its first scripted attack.
+- Neither selected ship is exempt: +184h is set only by a role-1 take (docs/SCRIPTED_HELM.md section 1), and
+  `player roles ... +184h=0` holds for every unit in these runs, so the image's idle player's ship is AI-held
+  and auto-targets too.
+
+**Decision: ON** by mechanism (house rule: a faithful fix flips even when wins are lost). Every win row needs
+a re-time or re-plan on this tree (sent to cc9-lua65). Open: the squadron free-attack tick 009F8470
+(GUNNERY_OPEN_ITEMS 48.3) sends the same 0071D980 and can now use this override layer.
