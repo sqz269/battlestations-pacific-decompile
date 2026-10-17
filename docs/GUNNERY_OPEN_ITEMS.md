@@ -15963,3 +15963,31 @@ USNOS `s45_os_k`.
 
 Hit records rise (USN01 2509 -> 5154, JM08 6806 -> 44303): a broken member stays a target, and `0095DA00` refuses the
 hits inside its window. Capture Post hits: 0 in all three missions. **Flipped ON** by mechanism.
+
+### 272.5 USN15 after the recon flip (lead item 5, open)
+
+Runs on `g51_r2` (`f9896cbf1`: recon records ON, inferior arm OFF, which is naval-irrelevant), reference env plus
+`BSP_FRAME_JITTER 20,<s>`, 140000 frames. Summaries come from `local\g51_sum.py <plan...> [-s seeds]` (a copy of
+g50_sum.py that reads `g51_u15<plan>[_j<s>].log`).
+
+| plan | ref | 20,3 | 20,5 | 20,7 | 20,11 |
+| --- | --- | --- | --- | --- | --- |
+| `nn` (config/win_orders/usn15_g50_u15_nn.txt) | no end (Fuso 40716 hp) | **W 3204.05** | F 1422.36 (Yamashiro survives the opening) | no end | **W 3249.09** |
+| `nm` | no end | no end | - | - | - |
+| `np` (DD staging at (3000, 10000), Fuso lines at z 10650) | **W 3054** | **W 2964** | F 1422 | no end | no end |
+| `nq` (`nn` + BB/CA attack Fuso x8 from 2900 s) | identical to `nn` (the added attacks change nothing) | identical | - | - | identical |
+
+**What the trajectories show** (`g51_t15` ref and `g51_t15_j3`, both to 3500 s, CSVs deleted after reading): Fuso
+follows the same track on both seeds and **stops at (6425, 10195) from about 2900 s** (heading -91, speed 0), so it is a
+stationary target. The failing seed's Fletchers never form the 2800 s torpedo line. At 3050 s they are scattered
+between x -2250..4230 and z 7300..10300, several with speed 0 to 1, and Fuso's guns kill six of them between 2946 and
+3166 s. Their first launch on Fuso is at 3101 s, and none of 85 launches hit. The staging goto `(4500, 8000)` at
+2300 s lies outside every known-water cell (`g50_watermap.py` over the g50/g51 trajectories), which is the likely
+reason they scatter. Moving it (`np`) moves the wins between seeds rather than adding wins.
+
+**Next for the successor:** (a) trace why `attack` orders after 2900 s do nothing (`nq` is identical to `nn` frame for
+frame on every seed read): either the packer pushes them past the frames that matter, or the order is refused; (b)
+stage the DDs north of Fuso's stop through known water (row z 10500 is water from x 4000 to 11000) and torpedo its
+beam; (c) the 20,5 opening, where Yamashiro outlives the first torpedo round; 20,5 fails at 1422 s on every variant.
+Order generator: `local\g51_plan.py` (g50_plan.py reading start positions from `local\g51_t15_starts\`; it reproduces
+`usn15_g50_u15_nn.txt` byte for byte).
