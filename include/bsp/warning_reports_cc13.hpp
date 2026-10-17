@@ -10,6 +10,7 @@
 // 00980380..00980E50 finds no reference to 00BD2F10 or 00BD2FC0
 // (docs/CC13_WARNING_REPORTS.md, "RNG").
 
+#include "bsp/engine_seg49_64_78_cc13.hpp" // WarningHost, EventArchiveReader (009766D0)
 #include "bsp/options_hardware_cc13.hpp"
 
 #include <cstdint>
@@ -181,20 +182,32 @@ struct MessageFromHost {
 const void* message_from_0096e5e0(MessageFromHost&, WarningEntity speaker);
 
 // ---------------------------------------------------------------------------
-// Persistence. 009766D0: __thiscall(ECX = archive), RET. Reads key "type"
-// (field type 1, int) and constructs the matching Warning, then calls its
-// vtable +4 (load) with the archive. An unknown type leaves the pointer null
-// and the native dereferences it (no guard at 009768C7).
+// Persistence. 009766D0 BSP_Warning_CreateFromArchive: __thiscall(ECX =
+// reader), plain RET, returns the warning in EAX. Reads key "type" (field
+// type 1, int) through reader vtable +10h, allocates the class's block with
+// operator_new, runs its archive constructor, then calls the new object's
+// vtable +4 (load) with the reader. An unknown type, or a null allocation,
+// leaves the pointer null and the native dereferences it (no guard at
+// 009768C7). No game host reaches this yet: the only caller, 00980380
+// (cc13_large62.cpp), goes through Large62Host::warning_create_from_archive_009766d0,
+// which nothing implements.
 // ---------------------------------------------------------------------------
-struct WarningArchiveClass {
-    std::int32_t type;
-    std::uint32_t size;
-    std::uint32_t constructor;   // native default constructor
-    std::uint32_t vtable;
-    std::string_view role;       // which builder fills this class
+struct WarningArchiveFactoryHost : cc13_seg49_64_78::WarningHost {
+    // 00BF681B operator_new(size), cdecl. The native returns raw storage; the
+    // hook returns storage holding a default WarningObject projection (the
+    // constructor then performs the native writes), or null.
+    virtual cc13_seg49_64_78::WarningObject* operator_new_00bf681b(std::uint32_t size) = 0;
+    // [[00E188A8]+1FE4h] != 0, which 009757B0 reads after writing the id.
+    virtual bool network_session_1fe4() = 0;
+    // Slot +4 of the string-list class (vtable 00D1B4F8) is 0097B4D0. It is
+    // reconstructed against the raw-object Seg62Host model
+    // (cc13_seg62_seg65.cpp), not WarningObject, so it stays a hook here.
+    virtual void string_list_warning_load_0097b4d0(cc13_seg49_64_78::WarningObject& warning,
+                                                   cc13_seg49_64_78::EventArchiveReader& reader) = 0;
 };
 
-std::optional<WarningArchiveClass> warning_archive_class_009766d0(std::int32_t type);
+cc13_seg49_64_78::WarningObject* warning_create_from_archive_009766d0(
+    WarningArchiveFactoryHost& host, cc13_seg49_64_78::EventArchiveReader& reader);
 
 // Archive keys of the Warning base load (009768F0) / save (0096CF10), with
 // the reader's field type codes (0 string, 1 int, 2 float, 4 entity).
