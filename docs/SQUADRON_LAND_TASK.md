@@ -17660,3 +17660,19 @@ Prediction (USNOS `l65_os_c1`, on top of 5hy ON): the four remaining kind-7 squa
 launch (`AutoAttackTarget member at launch ... class=00E08F68`), install kind 7 in follow, and their seat distances stay
 near the formation's instead of growing; they then meet the target's AA with their leader. Rows with no null-class
 AutoAttackTarget serve are identical.
+
+### 5ia.1 USNOS pair and flip: `kAutoAttackMoveToMemberLaunchBound` **ON**
+
+Exports of cd0949fc3 (`local\l65_mm_off`; `local\l65_mm_on` with this switch and kTurnToEntityMemberPlaneArmBound
+flipped); USNOS 30000 fr, `local\l65_os_c1.txt`, reference env; logs `local\l65rt_osmmoff_ref.log` /
+`local\l65rt_osmmon_ref.log`. pair_diff 3. The OFF export reproduces `l65rt_oson_ref` exactly (identical), so the
+change is these two switches; USNOS calls no EntityTurnToEntity, so it is this one.
+
+- 10 `AutoAttackTarget member at launch ... class=00E08F68` orders (0 OFF).
+- Enterprise_sqn34's seat distances: OFF 556 -> 6403 m over 2800 ticks; ON 556/638 -> 1.9/7.9 m by tick 2000 (the
+  wingmen catch up and hold the formation).
+- Deaths 272 -> 273: Enterprise_sqn34's wingmen now die with their leader to Shimotsuke at about 800 m altitude
+  (1253.70 s) instead of to Zao at 260 m; Midway_sqn36|.-II is new. Nothing else moved.
+
+Mechanism as predicted; flipped ON. `kTurnToEntityMemberPlaneArmBound` stays OFF: no row reaches the squadron arm now
+(BSM01 stalls before the Jap squadron spawns, 5ib), so no run has shown which index a squadron argument resolves to.
