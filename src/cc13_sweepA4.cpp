@@ -1812,8 +1812,8 @@ void briefing_screen_enter_0051cde0(Raw screen, SweepA4Host& host) {
 // 0051FA50 BSP_CheatMenuScreen_BuildLines
 // __thiscall(ECX = cheat menu screen), plain RET; EBP-aligned frame, EH state
 // [ESP+5Ch]. Caller 00520FB0 at 0052113C (a rel32 census; the index lists no
-// caller). The lines go into a local native-string vector at [ESP+40h]
-// (first +44h), handed to 00544540(screen+20h, &lines, 0), then 00427110(0)
+// caller). The lines go into a local native-string vector {data, count,
+// capacity} at [ESP+44h], handed to 00544540(screen+20h, &lines, 0), then 00427110(0)
 // and the block freed (00BF6989).
 // screen+10h selects the page: 0 the feature list, 1 the key-binding page,
 // anything else no lines. Literals are the image's (listed in
@@ -1850,11 +1850,13 @@ const char* on_off(bool on) { return on ? "On)" : "Off)"; }
 }  // namespace
 
 void cheat_menu_screen_build_lines_0051fa50(Raw screen, SweepA4Host& host) {
-    alignas(4) std::uint8_t lines_storage[0x10] = {};  // [ESP+40h]
+    // The vector is {data, count, capacity} at [ESP+44h]; every 004CDC20, 00544540 and 00427110 call
+    // gets that address (audit sweepA4 XB3S7: an earlier proxy slot in front of it was not the image's).
+    alignas(4) std::uint8_t lines_storage[0x0c] = {};  // [ESP+44h]
     Raw lines = raw(lines_storage);
+    lines.ptr(0) = nullptr;
     lines.ptr(4) = nullptr;
     lines.ptr(8) = nullptr;
-    lines.ptr(0xc) = nullptr;
     const std::uint32_t page = screen.at<std::uint32_t>(0x10);
     if (page == 0) {
         append_plain(lines, "Dump Memory", host);
@@ -1969,7 +1971,7 @@ void cheat_menu_screen_build_lines_0051fa50(Raw screen, SweepA4Host& host) {
     // 00520F69..00520F92.
     host.debug_text_list_set_lines_00544540(screen.field(0x20), lines, 0);
     host.native_string_vector_resize_00427110(lines, 0);
-    host.free_00bf6989(lines.ptr(4));
+    host.free_00bf6989(lines.ptr(0));   // the data block
 }
 
 }  // namespace bsp::cc13_sweepA4
