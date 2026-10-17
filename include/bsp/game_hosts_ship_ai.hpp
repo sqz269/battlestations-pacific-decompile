@@ -901,6 +901,13 @@ public:
     // +0Ch tick (009F50E0) while it is 0. Kept per unit index, so a call made
     // before the controller is registered still applies.
     void set_navigator_enabled_0011(std::size_t unit_index, bool enabled);
+    // Packet s53_path_multileg: [unit+740h]->vtable[48h](point) as 00836CC2 calls
+    // it, 009F3CE0 -> [ai+2264h]->vtable[2Ch] -> 009DAB10 -> 009DA590 on the
+    // unit's controller: true while the arrival latch +2FEh is set and the point
+    // is within 80 of the live plan's latched goal; clears the latch otherwise.
+    // LABELLED: the active state is taken to be a navigation state (both carry
+    // 009DAB10); false for a unit with no built controller.
+    bool goal_reached_009da590(std::size_t unit_index, float x, float z);
 
     // --ai-drive <name>=<throttle>,<rudder>, milestone 2o. A LABELLED
     // DIAGNOSTIC STAND-IN, not a reconstruction: eight of the nine state steps

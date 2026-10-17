@@ -468,8 +468,14 @@ public:
     bool user_path_attached_0071fc40(std::size_t unit_index) const;
     int user_path_remaining_0071d2a0(std::size_t unit_index) const;
 
+    // Packet s53_path_multileg: `heading` is unit->vtable[50h] (unit+1050h) and
+    // `goal_reached` is [unit+740h]->vtable[48h] on the current point; both are
+    // read only under kPathCursorFollowStepBound. `ship_arm` false (a plane or a
+    // squadron, whose image arm is 0084E010's with its own radius, factor 0.4 and
+    // no force) keeps the one-leg stand-in.
     bool advance_path_cursor_00836bf0(std::size_t unit_index, float unit_x, float unit_z,
-        float unit_radius, float turn_radius);
+        float unit_radius, float turn_radius, float heading = 0.0f,
+        const std::function<bool(float, float)>& goal_reached = {}, bool ship_arm = true);
 
     // Packet cc8_ship_drive. 00835C70 BSP_WeaponDirector_BeginCurrentCommand's
     // call of 0071F600 at 00835D33, which 0071F62F aims at the queue head
