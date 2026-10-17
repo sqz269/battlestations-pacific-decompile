@@ -2676,6 +2676,9 @@ struct GameUnitsHost::Impl {
         // Packet cc9_p12_land_target_gone: the land target (unit index + 1) whose
         // loss latched +3Ch, so one lost site latches once.
         std::size_t land_gone_site{0};
+        // Packet cc9_p12_fighter_spent_3d: the command a spent fighter squadron's
+        // +3Dh ended, so one command is ended once.
+        std::uint32_t fighter_ended_command{0};
     };
     unsigned long long moveto_self_issues{0}, moveto_self_placed{0};
     std::map<std::string, SpentOrdnanceRtb> spent_rtb;
@@ -5961,6 +5964,10 @@ struct GameUnitsHost::Impl {
     // Packet cc9_p12_land_target_gone (docs/OCEAN_WAVE_FIELD.md section 41): 009F8160's
     // land arm (009F8295-009F82D5). False: a squadron whose land target sank keeps
     // its land command and circles the wreck.
+    // Packet cc9_p12_fighter_spent_3d (docs/OCEAN_WAVE_FIELD.md section 43): 009F8160's
+    // fighter arm. False: a fighter squadron with an ordnance-class command and no
+    // rack round keeps the command (the host did nothing for fighters).
+    static constexpr bool kFighterSpentEndBound = true;  // ON: mechanism (docs/OCEAN_WAVE_FIELD.md 43.1)
     static constexpr bool kSquadronLandTargetGoneBound = true;  // ON: mechanism (docs/OCEAN_WAVE_FIELD.md 41.1)
     // Packet cc9_landing_follower_spacing (docs/SQUADRON_LAND_TASK.md section 5r):
     // the landed byte plane+904h in the sequencer. 006C7960's first arm (mode 4,
@@ -15904,6 +15911,44 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                 h.log.notef("spent ordnance: squadron \"%s\" latched (command %08X, %zu live) "
                     "at %.2f s (009F8205, packet cc9_squadron_spent_ordnance_rtb)",
                     sq.name.c_str(), command, alive.size(), static_cast<double>(now));
+            }
+        }
+        if constexpr (Impl::kFighterSpentEndBound) {
+            // 009F8160's ordnance arm for a fighter (009F81C8-009F81FC, 009F8412):
+            // with the seven ordnance classes, ([+369h] clear or [00E17BF2] clear)
+            // and 007ED790 false, a squadron whose class descriptor answers
+            // IsKindOf(13h) sets +3Dh instead of +3Ch. 009F7C90's +3Dh arm
+            // (009F7D01-009F7D45) then, with 007EE720 true, ends the current
+            // command: 0071E430(current, 1). LABELLED, as the dead-target retest
+            // above models the same arm: 007EE720 (each member's head task
+            // vtable[20h]; the dive and torpedo tasks answer 1) is taken as true,
+            // the kind-1Ch moveto re-issue is not modelled, and each live member's
+            // rows are retired with its resolved target cleared. One end per
+            // command class: a new order of the same class is ended again only
+            // after a different class came between.
+            if (!st.latch_3c && command != st.fighter_ended_command && reload_open
+                    && bsp::spent_ordnance_command_class_009f8160(command)
+                    && unit_is_kind_of(leader, 0x13)) {
+                bool any = false;
+                for (const std::size_t m : alive) {
+                    if (plane_holds_rack_round_007b9140(m)) { any = true; break; }
+                }
+                if (!any) {
+                    st.fighter_ended_command = command;
+                    const GameCommandCompletion done = end_command_0071e430(leader, command, true);
+                    if (done.ran) st.ended_stage2_command = command;
+                    for (const std::size_t m : alive) {
+                        h.commands.retire_ended_command_rows(m, command);
+                        h.slots[m]->command_target_plus_one = 0;
+                    }
+                    h.log.notef("fighter spent: squadron \"%s\" +3Dh, command %08X ended (%s, "
+                        "stage %d) at %.2f s (009F81FC / 009F7D3A, packet cc9_p12_fighter_spent_3d)",
+                        sq.name.c_str(), command, done.arm.empty() ? "-" : done.arm.c_str(),
+                        done.stage_after, static_cast<double>(now));
+                }
+            } else if (command != st.fighter_ended_command && st.fighter_ended_command != 0
+                       && !bsp::spent_ordnance_command_class_009f8160(command)) {
+                st.fighter_ended_command = 0;
             }
         }
         // DIAGNOSTIC (BSP_SPENT_RTB_CENSUS=1): a squadron with every live member
