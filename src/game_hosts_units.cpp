@@ -15743,28 +15743,20 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
             // 009F8160's land arm (009F8295-009F82D5): with the current command
             // `land` 00E08FA0, +3Ch = 1 unless the resolved target exists with
             // +5Eh and +5Dh clear and either 00927C90(0) is false or the target's
-            // +54h is the squadron's. LABELLED: the current command is the leader's
-            // class; a `returntobase` the host keeps as such stands for the `land`
-            // 007F1940 issues from its resolution (007F1000 / 007EF8B0), with that
-            // resolution's site as the target; +5Dh is state->simulate or the
-            // gunnery death, +5Eh scene_destroyed_005e; 00927C90 is the
-            // multiplayer test, false here. One latch per lost site: the B5 that
-            // follows starts a fresh cycle (the image's latch outlives it, its
-            // reset is unread).
+            // +54h is the squadron's. LABELLED: the leader's installed land task
+            // and its site stand for the current command `land` and its target
+            // (the host keeps the class the order came from: an explicit land, a
+            // recall, or the `land` 007F1940 issues from a returntobase
+            // resolution); +5Dh is state->simulate or the gunnery death, +5Eh
+            // scene_destroyed_005e; 00927C90 is the multiplayer test, false here.
+            // One latch per lost site: the B5 that follows starts a fresh cycle
+            // (the image's latch outlives it, its reset is unread).
             const GameUnitSlot& lead = *h.slots[leader];
             std::size_t site = h.slots.size();
             bool land = false;
-            if (lead.attack_command_class == 0x00E08FA0u) {
+            if (lead.land_task_installed && lead.land_site_plus_one != 0) {
                 land = true;
-                const std::size_t t = lead.land_command_target_plus_one != 0
-                    ? lead.land_command_target_plus_one : lead.command_target_plus_one;
-                if (t != 0) site = t - 1u;
-            } else if (lead.attack_command_class == 0x00E08F98u) {
-                for (const Impl::ReturnToBaseCensus& e : h.rtb_census) {
-                    if (e.squadron != sq.name || (e.last_arm != 1 && e.last_arm != 2)) continue;
-                    land = true;
-                    site = h.air_ops_owner_unit(e.last_site);
-                }
+                site = lead.land_site_plus_one - 1u;
             }
             if (land) {
                 const GameUnitSlot* ts = site < h.slots.size() ? h.slots[site].get() : nullptr;

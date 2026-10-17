@@ -1543,11 +1543,10 @@ task's +1Ch is the base 0099C230, true unless the in-mission interface watches t
 `record_return_to_base_007f16d0`).
 
 **The binding (game_hosts_units.cpp, committed OFF).** In `run_spent_ordnance_rtb_0084e010`'s squadron loop, before
-the B5 gate: when the leader's class is `land` (target: its land command target) or a `returntobase` whose census
-arm is home or site (target: that site's owner), a target that is gone (no unit, `state->simulate`, scene
+the B5 gate: when the leader has a land task installed (target: the task's site owner), a target that is gone (no unit, `state->simulate`, scene
 `destroyed_005e`, or dead in the gunnery host) latches +3Ch once per lost site, starting a fresh latch cycle; the
-existing break-off, B5 and 007F16D0 code then send the squadron to the nearest live site. Labelled: the
-`returntobase` stand-in for 007F1940's issued `land`, the +5Dh/+5Eh stand-ins, 00927C90 false, and the fresh cycle
+existing break-off, B5 and 007F16D0 code then send the squadron to the nearest live site. Labelled: the installed land task standing for the current command `land` (the host keeps the class the order came from;
+a first version keyed on the class missed every returntobase-sent squadron, so no ON run of it counts), the +5Dh/+5Eh stand-ins, 00927C90 false, and the fresh cycle
 (the image's +3Ch reset is unread). Each latch logs `land target gone`.
 
 **Predictions (before any ON run).** OFF: identical. ON: ESMP08 latches for every squadron whose landing carrier sinks
