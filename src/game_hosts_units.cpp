@@ -6644,7 +6644,7 @@ struct GameUnitsHost::Impl {
     // (006E33AA-006E33B6), then attaches the next round (006E33FE vt[224h]) with the
     // ammo 006E3C00 stored, 1. Both the 007B9140 answer and the release seed see it.
     // False: such a rack holds nothing. LABELLED: single racks only, as for bag 0.
-    static constexpr bool kRackPositiveBagRoundBound = false;
+    static constexpr bool kRackPositiveBagRoundBound = true;   // ON by its pairs (OCEAN_WAVE_FIELD 54.5)
     unsigned long long rack_positive_bag_rounds{0};
     int rack_positive_bag_round(const GameUnitSlot& s, int ammo) {
         if constexpr (kRackPositiveBagRoundBound && bsp::kPlaneSceneEquipmentBound) {

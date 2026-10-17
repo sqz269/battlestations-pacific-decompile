@@ -2195,3 +2195,28 @@ Summary line: `summary rack positive bag round bound= rounds=`.
    - Torpedo releases rise, and US ship damage moves. `pair_diff` 3.
 2. **USN04 4500 and USN01 3000:** `rounds` 0, exit 0 or 1.
 3. **Mechanism failure:** a counted round on a rack whose loadout has an entry, or on a bag-0 plane (46's path).
+
+### 54.5 Measured, and the verdict: ON
+
+Both sides are builds of cd85205bb. OFF is `local\p14_off_br` and ON is `local\p14_br` (the flip). Reference
+environment. Logs are `local\p14br{off,on}_<row>.log`.
+
+| row | `pair_diff` | `rounds` ON | outcome OFF / ON |
+| --- | --- | --- | --- |
+| ESMP08 140000, `esmp08_p12_e8_rb` | 3 | 877 | completed 5444.78 s / completed 3959.94 s (both log the sus_prog.exe refusal) |
+| USN04 4500 | 1 | 0 | - |
+| USN01 3000 | 3 | 50 | death rows identical (33); shots 2040 -> 2051, hits 1073 -> 1063 |
+
+1. **ESMP08: held.** `rounds` > 0. After one drop each Jill's second rack still holds its round. Zuiho_sqn03's rack
+   line reads `drops=1 ammo=1` ON against `ammo=0` OFF. OFF latches `spent ordnance` at 396.93 s; ON has no latch.
+   - Each run still releases one torpedo per rack run (`drops=1`). The "second round issued" part of the prediction
+     did not show in these lines.
+   - The row still completes, earlier.
+2. **USN04: held** (0, exit 1). **USN01: failed as a premise.** The H6K Mavis squadrons Mav1-Mav5 carry a positive bag
+   with a rack that has no entry (50 rounds counted). The row moves only in shots and hits; the death rows are
+   identical.
+3. **No mechanism failure.** `rack_positive_bag_round` acts only when the bag is > 0 and the loadout has no entry for
+   the rack (`ammo < 0`), so a rack with an entry and the bag-0 path are untouched by construction.
+
+**Verdict: `kRackPositiveBagRoundBound = true`.** It is 006E3350's walk as read. ESMP08 keeps its completion and USN01
+keeps its death table.
