@@ -261,6 +261,12 @@ struct PlaneFollowGeometryInputs {
     // False leaves both Y values unclamped and says so, rather than inventing
     // a band out of defaults.
     bool band_inputs_available = false;
+    // The image's floor exactly (cc13-fix5, docs/CC13_FIX5.md): the min and
+    // the leaderY - 120 bound (009C171B-009C175A) on every path, whatever
+    // `run_phase_a` says, with the binary's NaN arms (JBE keeps the first
+    // operand when unordered).  All three entries to the tail (009C0021,
+    // 009C123C, 009C15BB) pass 009C171B.  False keeps the older band.
+    bool band_floor_image = false;
 
     // Phase A.  When set, the image's selector picks the regime and the
     // `regime` argument is ignored.
