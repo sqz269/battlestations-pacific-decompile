@@ -2737,6 +2737,9 @@ struct GameUnitsHost::Impl {
         // whether 0084E595's moveto-self is the squadron's current order.
         std::uint32_t ended_stage2_command{0};
         bool moveto_self{false};
+        // cc13-fix1 (kSquadronCommandBuildingMoveToBound): 009F7D75 queued its moveto
+        // into the same director before that end, so 0071BE60() is 2, not 1.
+        bool building_moveto_queued{false};
         // Packet cc9_p12_land_target_gone: the land target (unit index + 1) whose
         // loss latched +3Ch, so one lost site latches once.
         std::size_t land_gone_site{0};
@@ -16717,16 +16720,16 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
     // squadron unit skip the issue; a dead target is not re-resolved (00521EA0's
     // handle table is not modelled), only its slot's class is tested.
     const auto command_building_moveto_009f7d17 = [&](const bsp::PlaneSquadronHostRecord& sq,
-                                                      std::size_t leader) {
+                                                      std::size_t leader) -> bool {
         const std::size_t t = h.slots[leader]->command_target_plus_one;
-        if (t == 0 || !unit_is_kind_of(t - 1, 0x1C)) return;
+        if (t == 0 || !unit_is_kind_of(t - 1, 0x1C)) return false;
         const bsp::EntityOrderCommandClass* klass = bsp::entity_order_command_class_by_address(
             h.commands.current_command_0071be40(leader));
-        if (klass == nullptr || (klass->category != 1 && klass->category != 2)) return;
+        if (klass == nullptr || (klass->category != 1 && klass->category != 2)) return false;
         int categories[bsp::kDirectorCommandSlotCount]{};
         if (h.commands.director_leading_slot_categories_0071df83(leader, categories,
-                bsp::kDirectorCommandSlotCount) != 1) return;
-        if (sq.squadron_unit >= h.slots.size() || gun->unit_dead(sq.squadron_unit)) return;
+                bsp::kDirectorCommandSlotCount) != 1) return false;
+        if (sq.squadron_unit >= h.slots.size() || gun->unit_dead(sq.squadron_unit)) return false;
         const std::size_t d = t - 1;
         bsp::SceneCommandTarget target;
         target.kind = 1;
@@ -16741,6 +16744,7 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
             "at %.2f s (009F7D75, packet cc13-fix1)", sq.name.c_str(),
             h.slots[d]->row.name.c_str(), klass->category, placed ? 1 : 0,
             static_cast<double>(now));
+        return placed;
     };
     for (const bsp::PlaneSquadronHostRecord& sq : bsp::plane_squadron_registry().records()) {
         std::vector<std::size_t> alive;
@@ -16831,10 +16835,14 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                 }
                 if (!any) {
                     st.fighter_ended_command = command;
+                    bool queued = false;
                     if constexpr (Impl::kSquadronCommandBuildingMoveToBound)
-                        command_building_moveto_009f7d17(sq, leader);   // 009F7D17-009F7D75
+                        queued = command_building_moveto_009f7d17(sq, leader);   // 009F7D17-009F7D75
                     const GameCommandCompletion done = end_command_0071e430(leader, command, true);
-                    if (done.ran) st.ended_stage2_command = command;
+                    if (done.ran) {
+                        st.ended_stage2_command = command;
+                        st.building_moveto_queued = queued;
+                    }
                     for (const std::size_t m : alive) {
                         h.commands.retire_ended_command_rows(m, command);
                         h.slots[m]->command_target_plus_one = 0;
@@ -16886,11 +16894,15 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
             if (any && t != 0 && t != st.retest_target && gun->unit_dead(t - 1)) {
                 st.retest_target = t;
                 ++h.retest_dead_targets;
+                bool queued = false;
                 if constexpr (Impl::kSquadronCommandBuildingMoveToBound)
-                    command_building_moveto_009f7d17(sq, leader);   // 009F7D17-009F7D75
+                    queued = command_building_moveto_009f7d17(sq, leader);   // 009F7D17-009F7D75
                 const GameCommandCompletion done = end_command_0071e430(leader, command, true);
                 if (done.ran) ++h.retest_ends;
-                if (done.ran) st.ended_stage2_command = command;   // packet cc9_l57_moveto_self
+                if (done.ran) {
+                    st.ended_stage2_command = command;   // packet cc9_l57_moveto_self
+                    st.building_moveto_queued = queued;
+                }
                 // After 0071E430 the director answers no attack class, so 0071EBF0
                 // falls to its neutral record (00E19BB4): the rows stop being current
                 // and the members' resolved target is cleared. LABELLED: the host's
@@ -16966,6 +16978,7 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                 if (current != 0x00E08F68u) {
                     st.moveto_self = false;
                     st.ended_stage2_command = 0;
+                    st.building_moveto_queued = false;
                 }
                 continue;
             }
@@ -16979,15 +16992,18 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                 || st.ended;
             in.stage_48 = stage2 ? 2 : 0;
             in.override_stage_50 = st.ended ? 2 : 0;
-            in.filled_slots_71be60 = 1;
+            // cc13-fix1: the command-building moveto queued behind the ended command
+            // is a second filled slot, so 0084E4B8 and 0084E5A6 both refuse.
+            in.filled_slots_71be60 = st.building_moveto_queued ? 2 : 1;
             in.head_arm = false;
             const bsp::SquadronStepTailPlan plan = bsp::squadron_step_tail_plan_0084e4b1(in);
             bool go = false;
             if (plan.outcome == bsp::SquadronStepTailOutcome::kMoveToSelfIfRoom) {
-                go = bsp::squadron_step_moveto_self_0084e595(1, in.stage_48);
+                go = bsp::squadron_step_moveto_self_0084e595(in.filled_slots_71be60, in.stage_48);
             } else if (plan.outcome == bsp::SquadronStepTailOutcome::kResolve
                        && st.issued && st.placed == 0) {
-                go = bsp::squadron_step_moveto_self_0084e595(1, in.stage_48);   // 0084E55B JE
+                go = bsp::squadron_step_moveto_self_0084e595(in.filled_slots_71be60,
+                                                             in.stage_48);   // 0084E55B JE
             }
             if (!go) continue;
             if (sq.squadron_unit >= h.slots.size()) continue;
