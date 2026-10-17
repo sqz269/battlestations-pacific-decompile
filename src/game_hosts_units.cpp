@@ -6600,6 +6600,16 @@ struct GameUnitsHost::Impl {
     // = orgAmmo +488h = 1 (006E3C20..006E3C3D), so a default rack 0095A880's flag
     // pass adds holds one round; the pool's fallback is the image's default.
     static constexpr bool kRackUnequippedEmptyBound = false;
+    // Packet p13_bag0_round (docs/OCEAN_WAVE_FIELD.md 46). 007B9140's rack walk
+    // asks each rack vtable[210h](2Ah), which answers while a round is attached.
+    // A rack's owner bind 006E3350 (vtable 9Ch) skips the loadout walk when the
+    // plane's +C54h is <= 0 (006E3386 JLE 006E33E3) and still tail-jumps
+    // vtable[224h] 006E3E70, which attaches a round from the constructor's ammo
+    // +484h = 1 (006E3C20..006E3C37). True: an unseeded single rack of a plane
+    // whose carried bag Equipment is 0 answers one round, as the release path's
+    // pool fallback already seeds it. False: it answers none (authored -1), so
+    // 009F8160 finds such a squadron spent before it has dropped anything.
+    static constexpr bool kRackConstructorRoundBound = false;
     // Packet cc9_rack_bullet_kind (SQUADRON_LAND_TASK 5eq, GUNNERY 138). True:
     // 007C0D90 decides per rack from the rack's projectile descriptor (a level
     // bomber 10h fires its plain-bomb racks together; 2Bh/2Ch/33h, or any rack
@@ -17235,6 +17245,15 @@ bool GameUnitsHost::plane_holds_rack_round_007b9140(std::size_t unit_index) {
         // already the plane's own loadout and an empty one stays empty.
         const bool own_index = bsp::kPlaneSceneEquipmentBound && s.bag_equipment >= 0;
         if (g.authored_ammo < 0 && !own_index) g.authored_ammo = g.generator_ammo;
+        if constexpr (Impl::kRackConstructorRoundBound) {
+            // 006E3350 with +C54h <= 0: no loadout Ammo, the constructor's one
+            // round attached. LABELLED: only bag 0; a positive bag whose
+            // loadout has no entry for a rack also keeps the constructor's
+            // round in the image, but the release seed gives that rack none.
+            // The unread 006E33ED `[+C0h]+4 == 3` skip is taken as not met.
+            if (own_index && s.bag_equipment == 0 && g.authored_ammo < 0 && !g.multi)
+                g.authored_ammo = 1;
+        }
         if (host.rack_holds_round(s, g)) return true;
     }
     return false;

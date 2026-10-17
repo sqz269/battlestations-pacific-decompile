@@ -1732,7 +1732,7 @@ void script_orders_set_class_default_arm_reader(int (*reader)(int vehicle_class)
 }
 
 PlayerAirOpsLaunchResult GameScriptOrdersHost::player_air_ops_launch(const std::string& base,
-    int slot_number, int vehicle_class, int count, const std::string& target) {
+    int slot_number, int vehicle_class, int count, const std::string& target, int loadout) {
     PlayerAirOpsLaunchResult out;
     ++player_launch_requests_;
     auto refuse = [&](const char* why) {
@@ -1793,6 +1793,17 @@ PlayerAirOpsLaunchResult GameScriptOrdersHost::player_air_ops_launch(const std::
     out.count = bsp::air_ops_fill_slot_006c0f00(*deck, slot,
         static_cast<std::uint32_t>(vehicle_class), screen_count, arm, live.data());
     if (out.count <= 0) return refuse("006C0F00 left the slot empty (no stock or plane room)");
+    // 0067484D-0067485D: 006BA4B0(slot, screen+334h) stores the loadout ring's choice
+    // at slot+10h, which 006C7490 hands the squadron as its Equipment. The screen's
+    // value defaults to the class's +134h (0065C9A0), what 006C0F00 stored above, so
+    // only a line that names a loadout changes anything. LABELLED harness input: the
+    // ring (00665F30 / 00662020) is not run; the line stands for the player's pick,
+    // and its index is not checked against the class's Equipments count.
+    if (loadout >= 0) {
+        deck->slots[static_cast<std::size_t>(slot)].class_field_134 = loadout;
+        log_.notef("player air ops launch: base=\"%s\" slot=%d loadout %d (screen+334h -> "
+            "slot+10h, 0067485D 006BA4B0; harness input)", base.c_str(), slot + 1, loadout);
+    }
     // 006748C0 00656280: 82h {slot, order 3, the target's +174h, game+18ECh};
     // 006748D7 routes it, and 006CD6C0 case 1 -> 006CD160 -> 006CCDA0(apply 1).
     // LABELLED: delivered at once; the player id is 0.
@@ -2144,14 +2155,14 @@ void GameScriptOrdersHost::run_standing_attacks() {
 }
 
 PlayerAirOpsLaunchResult script_orders_player_air_ops_launch(const std::string& base,
-    int slot_number, int vehicle_class, int count, const std::string& target) {
+    int slot_number, int vehicle_class, int count, const std::string& target, int loadout) {
     if (g_live_script_orders == nullptr) {
         PlayerAirOpsLaunchResult out;
         out.reason = "no live script-orders host";
         return out;
     }
     return g_live_script_orders->player_air_ops_launch(base, slot_number, vehicle_class,
-                                                       count, target);
+                                                       count, target, loadout);
 }
 
 int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {

@@ -1726,3 +1726,44 @@ but `fly-to world edge calls=6534 near=0`: the off-map leg is not flown by the s
 **ESMP08 after 43.1 (still open).** Without the slot-4 lines (`local\p12_e8_rb_no4.txt`) the reference still sinks only
 5 of 15: class 150 is also allocated to slots 2 and 3 against cruisers and destroyers (the `l61_e8_alloc` ranks), so 23
 Zero squadrons still launch with divebomb and hold. A re-plan must move those slots' targets to classes 159/162/163.
+
+## 46. An equipment-0 Zero carries its racks' constructor rounds: `kRackConstructorRoundBound` (cc9-physics13, 2026-10-17; lead items 1-2)
+
+**43.1's premise corrected.** 43.1 read "equipment 0 = null loadout = no bomb". The loadout is null, but the racks
+are still loaded. The Zero's racks are default devices: the Platforms table mounts platform 89 at slots 50 and 51,
+and `0095A880`'s flag pass builds them (SQUADRON_LAND_TASK 5ey). Each rack's owner bind is `006E3350` (vtable 9Ch,
+`BSP_MBombPlatform_BindOwnerLoadout`; `disasm-raw` 006E3350-006E3402):
+- `006E3378`-`006E3386`: it reads the owner's `+C54h` and takes `JLE 006E33E3` when it is <= 0. That skips the
+  `009552E0` loadout walk and its `vtable[1BCh]` SetAmmo.
+- `006E33E3`-`006E33FE`: unless `[+C0h]+4 == 3` (unread), it tail-jumps `vtable[224h]` = `006E3E70` AttachNextRound.
+- The constructor `006E3C00` stored ammo `+484h` = orgAmmo `+488h` = 1 (`006E3C20 MOV EAX,1`, `006E3C37`, `006E3C3D`).
+- So the rack attaches one round, and `007B9140`'s `vtable[210h](2Ah)` (a round attached) answers true.
+
+5ey reached the same result for the release path, which is why `kRackUnequippedEmptyBound` stays refuted. The host's
+`plane_holds_rack_round_007b9140` disagrees: with `kPlaneSceneEquipmentBound` and bag 0, `authored_ammo` is -1 and the
+rack holds nothing until the release seed fills it. So `009F8160` (`007ED790`) finds a fresh carrier-launched Zero
+squadron spent at its first think, and 43's +3Dh end fires at launch. That is the "45 ends from 113.30 s" of 43.1.
+**43's switch stays right**: once these Zeros have dropped, the +3Dh end is the image's. Only the 007B9140 answer
+before the first drop is a host gap. Item 2's "follow 009552E0's null loadout" (no rounds) would make the gap wider,
+so it is not bound.
+
+**The binding (game_hosts_units.cpp, committed OFF).** In `plane_holds_rack_round_007b9140`, an unseeded single rack
+of a plane whose carried bag is 0 answers one round. LABELLED:
+- only bag 0. A positive bag whose loadout has no entry for a rack also keeps the constructor round in the image, but
+  the host's release seed gives that rack none. That inconsistency stays open.
+- the `[+C0h]+4 == 3` skip is taken as not met.
+
+**The harness loadout option (97b1f18b5).** `<frame> launch <base> <slot> <class> <count> <target...> loadout <n>`
+is the screen's own step. After `006C0F00`, `00673A10` calls `006BA4B0(slot, screen+334h)` at `0067485D`, which stores
+the loadout ring's choice at slot+10h. screen+334h defaults to the class's +134h (`0065C9A0`), which is what the host
+already stored, so a line without the option is unchanged. For the Zero, `loadout 1` gives the same two rounds as the
+constructor default.
+
+**Predictions (before any ON run).**
+- OFF: identical.
+- ON, ESMP08 with `esmp08_p12_e8_rb`: no `fighter spent` end before a Zero squadron has released. The Zeros' dives and
+  releases come back (dive-bomb-task releases rise from 43.1's 5 toward the OFF 128), followed by +3Dh ends after the
+  drops. US ship damage rises from 113 s. pair_diff 3.
+- ON, USN04 45000: identical or gameplay-identical (no bag-0 bomb rack is asked at 009F8160).
+- Mechanism failure: a `fighter spent` end for a squadron whose members still hold an unseeded rack round, or a
+  positive-bag plane whose answer moves.
