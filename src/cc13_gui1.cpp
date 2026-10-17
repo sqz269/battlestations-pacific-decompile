@@ -279,13 +279,16 @@ void* gui_timed_entry_get_or_create_00aa8b00(GuiWidgetHooks& host, void* widget,
 }
 
 // 00AA6640 BSP_GuiWidget_CreateWithSceneNode. __fastcall(ECX = type tag, EDX =
-// node name; ctor_arg) RET 4, SEH 00CB7368 (only guards the node construction).
+// const NativeString* node name; ctor_arg) RET 4, SEH 00CB7368 (only guards the
+// node construction). EDX is kept in EDI (00AA6657) and pushed unchanged to
+// 00B75030 (00AA667E), which reads it as a NativeString; the image callers
+// (among them 0053A4D0, 005A3610, 00ACA0B0) pass a stack NativeString.
 // A null pool block passes a null node to 00AA6720.
 void* gui_widget_create_with_scene_node_00aa6640(GuiWidgetHooks& host, std::uint32_t type_tag,
-    const char* node_name, void* ctor_arg) {
+    const NativeStringHeader* node_name, void* ctor_arg) {
     void* const widget = gui_layout_create_widget_of_type_00aa6560(host, type_tag, ctor_arg);  // 00AA665D
     void* const block = host.model_pool_allocate_00b74eb0(0x184);       // 00AA6669
-    void* const node = block != nullptr ? host.scene_node_construct_00b75030(block, node_name) : nullptr;  // 00AA6681
+    void* const node = block != nullptr ? host.generated_model_construct_00b75030(block, node_name) : nullptr;  // 00AA6681
     host.set_scene_node_00aa6720(widget, node);                         // 00AA6695
     host.widget_vslot74(widget);                                        // 00AA66A1
     return widget;

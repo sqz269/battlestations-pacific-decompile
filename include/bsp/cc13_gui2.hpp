@@ -10,10 +10,11 @@
 // Reconstructed and build-tested only; nothing is wired, fixture- or
 // game-validated.
 //
-// x87: the image runs at the CRT's default 53-bit precision; each x87 step is
-// written as a double operation (one rounding to double per instruction, one
-// to float per FSTP), which matches it for normal-range values. The FISTP of
-// the container width keeps the binary's control-word sequence (inline asm).
+// x87: these routines run on the main thread, which runs at 24-bit precision
+// (control word 007Fh after device creation, docs/CC13_FPU_PRECISION.md), so
+// each x87 arithmetic op is written as its own float rounding in the image's
+// order (fix cc13-fix12). The FISTP of the container width keeps the binary's
+// control-word sequence (inline asm) on the float-rounded 960 product.
 //
 // SEH: 00ABA8D0's unwind states only release the copied wide string and the
 // parameter-name temporaries when a callee throws; the hooks are not expected
@@ -220,10 +221,9 @@ struct GuiWidgetReadPropertiesHooks : cc13_gui1::GuiWidgetHooks, cc13_gui1::Nati
     // 00AA2490 BSP_GuiLayout_WidgetTypeForKey, __fastcall(ECX = const
     // NativeString*) -> type tag (0 for none).
     virtual std::uint32_t widget_type_for_key_00aa2490(const NativeStringHeader* key) = 0;
-    // 00B75030 BSP_GeneratedModel_Construct, __thiscall(block; argument) RET 4
-    // -> model. 00AAA710 passes its NativeString temporary (cc13_gui1's
-    // scene_node_construct_00b75030 is typed for a C string at 00AA6640).
-    virtual void* generated_model_construct_00b75030(void* block, const NativeStringHeader* name) = 0;
+    // 00B75030 BSP_GeneratedModel_Construct is the inherited
+    // GuiWidgetHooks::generated_model_construct_00b75030 (NativeString name);
+    // 00AAA710 passes its NativeString temporary.
     // widget->vtable[+5Ch]() -> type id; widget->vtable[+34h](DWORD of a byte);
     // child->vtable[+18h](visitor); child->vtable[+78h]().
     virtual std::uint32_t widget_vslot5c(void* widget) = 0;

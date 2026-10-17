@@ -71,7 +71,7 @@ stream+8 + stream+10h + stride * i.
 
 Deviation: the space step at frame S+28h is written only for alignments 0..3, so an
 alignment outside that range reads an uninitialised stack slot on its first line.
-The reconstruction starts it at 0.
+The reconstruction starts it at 0 (the image's value there is whatever the stack slot held).
 
 ### 00ABA8D0, geometry update
 
@@ -169,9 +169,16 @@ an STL instantiation.
 
 ## Arithmetic
 
-Each x87 step is written as one double operation and each FSTP as a float conversion.
-That matches the image at the CRT's default 53-bit precision for normal-range values
-(not for denormal or overflowing intermediates, where x87's wider exponent differs).
+These routines run on the main thread at 24-bit x87 precision (docs/CC13_FPU_PRECISION.md),
+so every x87 arithmetic op rounds to float. The C++ writes each op as its own float
+rounding in the image's order (fix cc13-fix12, 2026-10-17): the 960 width product before
+its FISTP; the scaled-advance sums (FMUL then FADD); the unsigned FILD + 2^32 fix-up, which
+rounds when the value loaded negative; the justify FIDIV before its FADDP; the four-op line
+advance ((text+10Ch + 1.0) - 0.15) * height + top; span / 720 before the 0.75 FMULP and the
+0.75 * text+24h box before its FSUB; and 00ABA8D0's shadow scale height / 720 before the
+FMUL by text+164h. Single ops on float or small-integer inputs need no change (double then
+float rounding is exact for them). Denormal or overflowing intermediates still differ
+(x87 keeps its wider exponent under 24-bit precision control).
 The text+94h to +1DCh copies go through FLD/FSTP in the image, which would quiet a
 signalling NaN; the C++ copies the float.
 
