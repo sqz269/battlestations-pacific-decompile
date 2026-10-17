@@ -9,7 +9,9 @@
 
 #include "bsp/cc13_sweepB9.hpp"
 
+#include <cmath>
 #include <cstring>
+#include <limits>
 
 namespace bsp {
 
@@ -36,6 +38,49 @@ double f64_bits(std::uint64_t bits) {
 // to float.
 float pc24(double value) {
     return static_cast<float>(value);
+}
+
+// FILD qword; FILD qword; FDIVP under 24-bit precision control, round to
+// nearest even (control word 007Fh): both FILDs load exactly (64-bit
+// significand) and the one FDIVP rounds the exact quotient to a 24-bit
+// significand. Computed by integer long division, so it does not depend on the
+// host's control word and has no double-rounding step. A zero divisor gives the
+// masked x87 result (infinity, or NaN for 0/0); the image has no guard.
+float pc24_fild_fild_fdivp(std::int64_t numerator, std::int64_t denominator) {
+    const bool negative = (numerator < 0) != (denominator < 0);
+    const std::uint64_t a = numerator < 0 ? 0u - static_cast<std::uint64_t>(numerator)
+                                          : static_cast<std::uint64_t>(numerator);
+    const std::uint64_t b = denominator < 0 ? 0u - static_cast<std::uint64_t>(denominator)
+                                            : static_cast<std::uint64_t>(denominator);
+    if (b == 0) {
+        if (a == 0) return std::numeric_limits<float>::quiet_NaN();
+        const float inf = std::numeric_limits<float>::infinity();
+        return negative ? -inf : inf;
+    }
+    if (a == 0) return negative ? -0.0f : 0.0f;
+    // q * 2^exponent with q in [2^24, 2^25): 24 significand bits, one round
+    // bit; sticky collects every bit below.
+    std::uint64_t q = a / b;
+    std::uint64_t r = a % b;
+    int exponent = 0;
+    bool sticky = false;
+    while (q >= (std::uint64_t{1} << 25)) {
+        sticky = sticky || (q & 1u) != 0;
+        q >>= 1;
+        ++exponent;
+    }
+    while (q < (std::uint64_t{1} << 24)) {
+        const bool carry = r >= (b - r);   // 2r >= b without overflowing
+        r = carry ? r - (b - r) : r + r;
+        q = (q << 1) | (carry ? 1u : 0u);
+        --exponent;
+    }
+    sticky = sticky || r != 0;
+    std::uint64_t significand = q >> 1;
+    if ((q & 1u) != 0 && (sticky || (significand & 1u) != 0)) ++significand;
+    const float magnitude = static_cast<float>(
+        std::ldexp(static_cast<double>(significand), exponent + 1));
+    return negative ? -magnitude : magnitude;
 }
 
 // The inlined native-string release: when data is non-null, the data goes
@@ -765,8 +810,10 @@ void cc13_sweepB9_lobby_refresh_player_rows_005d73a0(void* screen, Cc13SweepB9Ho
 // 007884D0..00789552):
 // - p = [01090AB0] vtable +20h(buffer); +764930h = float(p[0] / p[1]) (FILD,
 //   FILD, DE F9 FDIVP: counter / frequency, one rounding to float under the
-//   main thread's 24-bit control; modelled as a double quotient, exact while
-//   the counter stays below 2^53, then rounded to float).
+//   main thread's 24-bit control; callers 0078A430 (from 004CA440
+//   BSP_Game_Render) and 00789560 (from the Lua binding 0088D6E0) are both
+//   main thread. Modelled by pc24_fild_fild_fdivp: the exact quotient rounded
+//   once to a 24-bit significand, nearest even).
 // - For +7649A0h, then +7649A4h: "\n" (00CE4390) and ";" (00CE5698)
 //   temporaries; a = 0043BDF0(+764930h); b = 0043BDF0(+76492Ch); c =
 //   0043C130("Time;" 00D04328, b); d = c + ";"; e = d + a; f = e + "\n";
@@ -797,7 +844,7 @@ void cc13_sweepB9_packet_stats_write_csv_row_007884d0(void* stats, Cc13SweepB9Ho
     alignas(8) std::uint8_t clock_buffer[16];
     const std::int64_t* clock =
         host.timer_vcall_20_read(*static_cast<void**>(host.image_global(0x01090AB0)), clock_buffer);
-    at<float>(stats, 0x764930) = static_cast<float>(static_cast<double>(clock[0]) / static_cast<double>(clock[1]));
+    at<float>(stats, 0x764930) = pc24_fild_fild_fdivp(clock[0], clock[1]);
 
     auto literal = [&](Cc13SweepBNativeString& text, const char* source, std::uint32_t length) {
         host.native_string_resize_0041dd40(&text, length, 1);

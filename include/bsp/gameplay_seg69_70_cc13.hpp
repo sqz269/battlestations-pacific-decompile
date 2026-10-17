@@ -212,13 +212,25 @@ std::optional<PowerupUseDecision> ai_powerup_choose_00a179e0(
     const std::vector<EngagementPair>& pairs, const std::vector<PowerupWorldUnit>& world,
     std::uint32_t game_1fe4, int local_player_team, PowerupScoreHost& host);
 
-// The whole pass: empty entries or no pair -> nullopt (00A17A3A, 00A17D41); the
-// caller fires 008EADA0(manager [00F88C30], entry, party, target) on a result.
-std::optional<PowerupUseDecision> ai_party_brain_engagement_pass_00a179e0(
+// The power-up use the pass itself performs at 00A180C9.
+class PowerupUseHost {
+public:
+    virtual ~PowerupUseHost() = default;
+    // 008EADA0 BSP_PowerUpManager_UseItem, __thiscall(manager [00F88C30],
+    // entry, party = brain+20h, target) RET 0Ch (reconstruction:
+    // powerup_seg58_argon power_up_manager_use_item_008eada0).
+    virtual void use_item(const void* entry, int party, const void* target) = 0;
+};
+
+// The whole pass, void like the image: empty entries (00A17A3A, 00A17A49) or no
+// pair (00A17D41) return without a call; otherwise, when an entry scored above
+// 0.0 (00A180B3 tests the chosen entry pointer), it calls
+// use.use_item(entry, party, target) once, after the scoring loop.
+void ai_party_brain_engagement_pass_00a179e0(
     int party, int team, const std::vector<PowerupReadyEntry>& entries,
     const std::vector<EngagementGroup>& own_team, const std::vector<EngagementGroup>& enemy_team,
     const std::vector<PowerupWorldUnit>& world, std::uint32_t game_1fe4, int local_player_team,
-    PowerupScoreHost& host);
+    PowerupScoreHost& host, PowerupUseHost& use);
 
 // ---------------------------------------------------------------------------
 // 00A163D0 BSP_Ai_InitPartyThinkSchedule (from the controller constructor

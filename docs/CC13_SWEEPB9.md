@@ -91,8 +91,10 @@ the hooks take them as booleans.
 ## 007884D0 BSP_NetworkPacketStatistics_WriteCsvRow (segment 44)
 
 `cc13_sweepB9_packet_stats_write_csv_row_007884d0`. `__fastcall(ECX = stats)`, RET; callers
-00789560 (sweepB8) and 0078A430 (sweepB7). Samples the clock (counter / frequency, one rounding to
-float, modelled as a double quotient that is exact while the counter stays below 2^53) and writes
+00789560 (sweepB8) and 0078A430 (sweepB7). Samples the clock (counter / frequency: FILD, FILD, one
+FDIVP on the main thread at 24-bit PC; cc13-fix14 models it with `pc24_fild_fild_fdivp`, the exact
+quotient rounded once to a 24-bit significand by integer long division, in place of the double
+quotient that rounded twice) and writes
 "Time;" + previous + ";" + now + "\n" to the send and receive files (vtable +5Ch(text, 0)). Each
 pending row (r from [+764994h] % 1001 while below [+764998h] % 1001, re-read after every row) sits at
 stats + 4 + r*1DE8h with the send entries at row + k*10h and the receive entries at row + EF4h +

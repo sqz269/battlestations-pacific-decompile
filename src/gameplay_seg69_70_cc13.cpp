@@ -241,17 +241,21 @@ std::optional<PowerupUseDecision> ai_powerup_choose_00a179e0(
     return chosen;
 }
 
-std::optional<PowerupUseDecision> ai_party_brain_engagement_pass_00a179e0(
+void ai_party_brain_engagement_pass_00a179e0(
     int party, int team, const std::vector<PowerupReadyEntry>& entries,
     const std::vector<EngagementGroup>& own_team, const std::vector<EngagementGroup>& enemy_team,
     const std::vector<PowerupWorldUnit>& world, std::uint32_t game_1fe4, int local_player_team,
-    PowerupScoreHost& host) {
-    if (entries.empty()) return std::nullopt;                           // 00A17A3A, 00A17A49
+    PowerupScoreHost& host, PowerupUseHost& use) {
+    if (entries.empty()) return;                                        // 00A17A3A, 00A17A49
     const std::vector<EngagementPair> pairs = ai_engagement_pairs_00a179e0(party, own_team,
                                                                            enemy_team);
-    if (pairs.empty()) return std::nullopt;                             // 00A17D41
-    return ai_powerup_choose_00a179e0(party, team, entries, pairs, world, game_1fe4,
-                                      local_player_team, host);
+    if (pairs.empty()) return;                                          // 00A17D41
+    const std::optional<PowerupUseDecision> chosen = ai_powerup_choose_00a179e0(
+        party, team, entries, pairs, world, game_1fe4, local_player_team, host);
+    // 00A180AD..00A180C9: [ESP+68h] (chosen entry) non-zero -> 008EADA0 on
+    // [00F88C30] with (entry, brain+20h, [ESP+34h] target). The list and vector
+    // frees that follow are storage only.
+    if (chosen.has_value()) use.use_item(chosen->entry, party, chosen->target);
 }
 
 // ---------------------------------------------------------------------------
