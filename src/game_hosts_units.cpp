@@ -12,6 +12,7 @@
 
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/hull_terrain_contact.hpp"
+#include "bsp/entity_orders.hpp"  // packet cc13-fix1: the command class category
 #include "bsp/avoid_zone_draft_bodies.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/submarine_model.hpp"  // packet cc9_set_submarine_depth_level
@@ -6004,6 +6005,11 @@ struct GameUnitsHost::Impl {
     // fighter arm. False: a fighter squadron with an ordnance-class command and no
     // rack round keeps the command (the host did nothing for fighters).
     static constexpr bool kFighterSpentEndBound = true;  // ON: mechanism (docs/OCEAN_WAVE_FIELD.md 43.1)
+    // Packet cc13-fix1 (docs/CC13_FIX1.md, docs/CC13_VERIFY11.md R3): 009F7C90's +3Dh
+    // arm issues moveto 00E08F68 on a CommandBuilding target before its 0071E430
+    // (009F7D17-009F7D75). Used by the fighter arm and the dead-target retest arm.
+    // False: no moveto; the command only ends.
+    static constexpr bool kSquadronCommandBuildingMoveToBound = false;
     static constexpr bool kSquadronLandTargetGoneBound = true;  // ON: mechanism (docs/OCEAN_WAVE_FIELD.md 41.1)
     // Packet cc9_landing_follower_spacing (docs/SQUADRON_LAND_TASK.md section 5r):
     // the landed byte plane+904h in the sequencer. 006C7960's first arm (mode 4,
@@ -16346,6 +16352,47 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
         !(kLuaDeviceReloadEnabledBound && lua_device_reload_enabled_00e17bf2());
     const float now = h.summary.simulated_seconds;
     std::vector<std::pair<std::size_t, std::string>> issue;
+    // Packet cc13-fix1 (Impl::kSquadronCommandBuildingMoveToBound, docs/CC13_FIX1.md):
+    // 009F7C90's +3Dh arm ahead of its 0071E430 (009F7D17-009F7D75). d =
+    // 00521EA0([sq+4]+58h), slot 0's resolved object; d->vtable[5Ch](1Ch), an
+    // MCommandBuilding (009F7D35); 0071BE40()->vtable[0Ch]() is 1 or 2 (009F7D4B /
+    // 009F7D50); 0071BE60() == 1 (009F7D5D). Then 0071ECF0(00E08F68, 004684F0(d)): a
+    // moveto with d as the object target (kind 1, id d+174h, position 00F87574 =
+    // 0,0,0, +14h 0.0). Every failed test jumps to 009F7D7B, the end, which runs
+    // either way, so the caller ends the command after this. LABELLED: [sq+4] is the
+    // squadron's command block (0084D8BD-0084D8C1 pass ESI to 009F7590), the director
+    // 0084E595's moveto-self issues into, so the moveto goes to the squadron unit as
+    // there (flags 1 as there; 0071ECF0 takes none). The four reads take the leader's
+    // director and resolved target, the proxies the host's end already uses for that
+    // director. A null current command (the image would call through it) and a dead
+    // squadron unit skip the issue; a dead target is not re-resolved (00521EA0's
+    // handle table is not modelled), only its slot's class is tested.
+    const auto command_building_moveto_009f7d17 = [&](const bsp::PlaneSquadronHostRecord& sq,
+                                                      std::size_t leader) {
+        const std::size_t t = h.slots[leader]->command_target_plus_one;
+        if (t == 0 || !unit_is_kind_of(t - 1, 0x1C)) return;
+        const bsp::EntityOrderCommandClass* klass = bsp::entity_order_command_class_by_address(
+            h.commands.current_command_0071be40(leader));
+        if (klass == nullptr || (klass->category != 1 && klass->category != 2)) return;
+        int categories[bsp::kDirectorCommandSlotCount]{};
+        if (h.commands.director_leading_slot_categories_0071df83(leader, categories,
+                bsp::kDirectorCommandSlotCount) != 1) return;
+        if (sq.squadron_unit >= h.slots.size() || gun->unit_dead(sq.squadron_unit)) return;
+        const std::size_t d = t - 1;
+        bsp::SceneCommandTarget target;
+        target.kind = 1;
+        target.position_valid = 0;
+        target.object_id = static_cast<std::uint16_t>(d + 1);
+        target.object = const_cast<void*>(unit_identity(d));
+        target.position[0] = target.position[1] = target.position[2] = 0.0f;
+        target.trailing = 0.0f;
+        const bool placed = issue_script_command(sq.squadron_unit, 0x00E08F68u, target, 1,
+            "009F7D75 moveto command building", h.slots[d]->row.name) != nullptr;
+        h.log.notef("command-building moveto: squadron \"%s\" -> \"%s\" (category %d, placed=%d) "
+            "at %.2f s (009F7D75, packet cc13-fix1)", sq.name.c_str(),
+            h.slots[d]->row.name.c_str(), klass->category, placed ? 1 : 0,
+            static_cast<double>(now));
+    };
     for (const bsp::PlaneSquadronHostRecord& sq : bsp::plane_squadron_registry().records()) {
         std::vector<std::size_t> alive;
         for (const std::size_t m : sq.member_units) {
@@ -16421,7 +16468,8 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
             // command: 0071E430(current, 1). LABELLED, as the dead-target retest
             // above models the same arm: 007EE720 (each member's head task
             // vtable[20h]; the dive and torpedo tasks answer 1) is taken as true,
-            // the kind-1Ch moveto re-issue is not modelled, and each live member's
+            // the kind-1Ch moveto re-issue is modelled only with
+            // kSquadronCommandBuildingMoveToBound (cc13-fix1), and each live member's
             // rows are retired with its resolved target cleared. One end per
             // command class: a new order of the same class is ended again only
             // after a different class came between.
@@ -16434,6 +16482,8 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                 }
                 if (!any) {
                     st.fighter_ended_command = command;
+                    if constexpr (Impl::kSquadronCommandBuildingMoveToBound)
+                        command_building_moveto_009f7d17(sq, leader);   // 009F7D17-009F7D75
                     const GameCommandCompletion done = end_command_0071e430(leader, command, true);
                     if (done.ran) st.ended_stage2_command = command;
                     for (const std::size_t m : alive) {
@@ -16473,8 +16523,9 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
         // 009F7C90's +3Dh arm (009F7D01..009F7D45; 007EE720 true for the torpedo and
         // dive tasks). LABELLED: the target is the leader's resolved command
         // target and only its death is tested (007EE8F0 is not re-asked, a null
-        // target is not taken as gone); depthcharge's 009F81C6 branch and
-        // 009F7D1D's kind-1Ch moveto re-issue are not modelled.
+        // target is not taken as gone); depthcharge's 009F81C6 branch is not
+        // modelled, and 009F7D1D's kind-1Ch moveto re-issue only with
+        // kSquadronCommandBuildingMoveToBound (cc13-fix1).
         if (bsp::kSquadronDeadTargetRetestBound && !st.latch_3c
                 && bsp::spent_ordnance_command_class_009f8160(command)
                 && command != bsp::kAttackCmdDepthCharge) {
@@ -16486,6 +16537,8 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
             if (any && t != 0 && t != st.retest_target && gun->unit_dead(t - 1)) {
                 st.retest_target = t;
                 ++h.retest_dead_targets;
+                if constexpr (Impl::kSquadronCommandBuildingMoveToBound)
+                    command_building_moveto_009f7d17(sq, leader);   // 009F7D17-009F7D75
                 const GameCommandCompletion done = end_command_0071e430(leader, command, true);
                 if (done.ran) ++h.retest_ends;
                 if (done.ran) st.ended_stage2_command = command;   // packet cc9_l57_moveto_self
