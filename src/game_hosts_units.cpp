@@ -674,8 +674,20 @@ struct GameUnitSlot {
     int dkz_rack{-1};                      // the rack whose bullet is a DummyKamikazePlane
     bool dkz_c25{false};                   // unit+C25h stand-in: a round left this think
     // plan+2E4h, the boost request (-> cmd+14h -> unit+A10h, docs/PILOT_PLAN_SLOT_PIPELINE.md);
-    // 0099B56C clears it every think. Recorded only: its reader 007BB7B9 is not hosted.
+    // 0099B56C clears it every think. Its reader 007BB7B9 is hosted only under
+    // kKamikazeBoostTurboBound (packet cc13-fix89 U2, docs/CC13_FIX89.md).
     bool plan_boost_2e4{false};
+    // Packet cc13-fix89 U2: the boost byte unit+9F8h (007BB6E0), its latched copy
+    // +BC8h (007B978F), the charge +E84h and its lockout +E88h, and the class's
+    // TurboTime / TurboRechargingTime / TurboStrength (desc+5FCh / +600h / +604h,
+    // 007D3CD0-007D3D50, TurboTime zeroed at 007D3DB5 unless the strength > 1).
+    bool plane_boost_9f8{false};
+    bool plane_boost_latched_bc8{false};
+    float plane_boost_charge_e84{0.0f};
+    bool plane_boost_lockout_e88{false};
+    float plane_turbo_time{0.0f};
+    float plane_turbo_recharging_time{0.0f};
+    float plane_turbo_strength{1.0f};
     // task+2E4h, the per-think avoidance mask 009A17D0 tests (bit 4 gunfire
     // detect 009A18BA, bit 2 vehicle 009A1951, bit 1 terrain 009A1974): 0FFh at
     // 00999944 before the arm; the kamikaze arms store their band (009AF54A,
@@ -5788,6 +5800,20 @@ struct GameUnitsHost::Impl {
     // and the hold timer is left alone.
     static constexpr bool kFollowSightSearchBound = false;
     unsigned long long follow_turbo_steps{0};
+    // Packet cc13-fix89 U2 (docs/CC13_FIX89.md, CC13_VERIFY15 U2): the boost
+    // request plan+2E4h (the kamikaze states 009AC74C / 009ACD66) reaches cmd+14h
+    // (0099BF18-0099BF1E) and 007BB6E0's throttle arm 007BB79E-007BB834: for an
+    // IsKindOf(17h) plane without PilotFires (the rocket-like kamikaze, the Ohka)
+    // the boost byte unit+9F8h latches while the charge unit+E84h lasts and the
+    // throttle is binary, 9F8h ? 1.0 : 0.0; for any other plane a request forces
+    // the throttle to 1.0 and sets 9F8h while charged and not locked out. 007D9077
+    // multiplies the thrust by desc+604h TurboStrength while 9F8h is set, and
+    // 007CEB31-007CEC28 drains the charge by step / TurboTime while the latched
+    // +BC8h is set (lockout +E88h at empty) and otherwise recharges it by step /
+    // TurboRechargingTime up to 1.0 (never for the rocket-like plane). False:
+    // the request is recorded only, and every plane's throttle is analogue.
+    static constexpr bool kKamikazeBoostTurboBound = false;
+    unsigned long long boost_turbo_steps_{0};
     // kPlaneDeadMeatRollBound / kPlaneWreckForwardDragBound step counts.
     unsigned long long dead_meat_roll_steps{0};
     unsigned long long dead_meat_spin_steps{0};
@@ -17225,6 +17251,25 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                     host.lua.read_vehicle_class_number(row.type_id, "BSPPilotFires", 1.0f) != 0.0f;
             }
             slot->plane_bomb_delay_1f4 = host.lua.read_vehicle_class_number(row.type_id, "BombDelay", 1.0f);   // class+1F4h BombDelay, 007D2318
+            if constexpr (Impl::kKamikazeBoostTurboBound) {
+                // 007D3CB6-007D3D50: TurboTime (FLDZ), TurboRechargingTime (FLDZ),
+                // TurboStrength (FLD1); 007D3DA4-007D3DB8 zeroes TurboTime unless
+                // TurboStrength > 1.0f. TurboControlLimit (+608h) is read by
+                // 007C0F40, which is not part of this packet.
+                slot->plane_turbo_time =
+                    host.lua.read_vehicle_class_number(row.type_id, "TurboTime", 0.0f);
+                slot->plane_turbo_recharging_time =
+                    host.lua.read_vehicle_class_number(row.type_id, "TurboRechargingTime", 0.0f);
+                slot->plane_turbo_strength =
+                    host.lua.read_vehicle_class_number(row.type_id, "TurboStrength", 1.0f);
+                if (!bsp::plane_class_turbo_enabled_007d3da4(slot->plane_turbo_strength)) {
+                    slot->plane_turbo_time = 0.0f;
+                }
+                // 007D5D59-007D5D76 (BSP_Plane_ReadPropertyBag): +E84h = 1.0f when
+                // TurboTime > 0 (COMISS / JBE), else 0.0f; +E88h = 0.
+                slot->plane_boost_charge_e84 = slot->plane_turbo_time > 0.0f ? 1.0f : 0.0f;
+                slot->plane_boost_lockout_e88 = false;
+            }
             slot->plane_accel = lua_row.accel;
             // Packet cc9_dive_flight_response: the class reader scales Accel in
             // place (007D20F3-007D2127): when tuning+31Ch AccelCheatMul > 1.0,
@@ -19389,6 +19434,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     a *= owner_.lua.plane_globals()
                                         .dynamics_spd_multipliers_turbo_multiplier;
                                     ++owner_.follow_turbo_steps;
+                                }
+                            }
+                            if constexpr (GameUnitsHost::Impl::kKamikazeBoostTurboBound) {
+                                // 007D9070-007D9081: ctl+5h (unit+9F8h, 007DC86B) multiplies
+                                // by desc+604h TurboStrength. The water law clears ctl+5h
+                                // (007DCDEA) and the ground-roll law stores CL = 0 (007DCD31).
+                                if (unit_.plane_boost_9f8 && !water_.active && !ground) {
+                                    a = a * unit_.plane_turbo_strength;
+                                    ++owner_.boost_turbo_steps_;
                                 }
                             }
                             if (state.pitch < 0.0f) {
@@ -35460,8 +35514,35 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.pilot_command_block[bsp::kPilotCmdPitch]);
                         unit_.plane_live_controls[2] = bsp::pilot_quantize_control_axis_007bb6e0(
                             unit_.pilot_command_block[bsp::kPilotCmdRoll]);
-                        unit_.plane_live_throttle = bsp::pilot_quantize_control_axis_007bb6e0(
-                            unit_.pilot_command_block[bsp::kPilotCmdThrottle]);
+                        if constexpr (GameUnitsHost::Impl::kKamikazeBoostTurboBound) {
+                            // 007BB79E-007BB834, the throttle arm. cmd+14h is plan+2E4h
+                            // (0099BF18-0099BF1E), taken here as 9F9h takes +2E5h.
+                            const bool request = unit_.plan_boost_2e4;
+                            const float charge = unit_.plane_boost_charge_e84;
+                            if (bsp::unit_is_kind_of(unit_.class_id, 0x17) &&
+                                !unit_.plane_pilot_fires_c24) {              // 007BB7A2-007BB7B7
+                                if (request && charge > 0.0f) {
+                                    unit_.plane_boost_9f8 = true;             // 007BB7CB
+                                } else if (charge <= 0.0f) {
+                                    unit_.plane_boost_9f8 = false;            // 007BB7DD
+                                }
+                                // 007BB816 (1.0f) or 007BB81E with XMM0 = 0 (007BB7A8),
+                                // stored at 007BB824 without the round trip.
+                                unit_.plane_live_throttle = unit_.plane_boost_9f8 ? 1.0f : 0.0f;
+                            } else if (request) {
+                                unit_.plane_boost_9f8 = charge > 0.0f &&
+                                    !unit_.plane_boost_lockout_e88;           // 007BB7F2-007BB810
+                                unit_.plane_live_throttle = 1.0f;             // 007BB816-007BB824
+                            } else {
+                                unit_.plane_boost_9f8 = false;                // 007BB82E
+                                unit_.plane_boost_lockout_e88 = false;        // 007BB834
+                                unit_.plane_live_throttle = bsp::pilot_quantize_control_axis_007bb6e0(
+                                    unit_.pilot_command_block[bsp::kPilotCmdThrottle]);
+                            }
+                        } else {
+                            unit_.plane_live_throttle = bsp::pilot_quantize_control_axis_007bb6e0(
+                                unit_.pilot_command_block[bsp::kPilotCmdThrottle]);
+                        }
                         unit_.plane_live_air_brake = bsp::pilot_quantize_control_axis_007bb6e0(
                             unit_.pilot_command_block[bsp::kPilotCmdAirBrake]);
                         if constexpr (GameUnitsHost::Impl::kFollowTurboBound) {
@@ -36404,6 +36485,33 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // with AirBrakeDrag).
                         unit_.plane_latched_throttle = unit_.plane_live_throttle;
                         unit_.plane_latched_air_brake = unit_.plane_live_air_brake;
+                        if constexpr (GameUnitsHost::Impl::kKamikazeBoostTurboBound) {
+                            unit_.plane_boost_latched_bc8 = unit_.plane_boost_9f8;   // 007B978F
+                            // 007CEB31-007CEC28 in the fixed step 007CE040 (ESI = unit+310h:
+                            // +B74h is unit+E84h, +B78h +E88h, +8B8h +BC8h, +228h the class).
+                            // SUBSTITUTION, labelled: run here, after the latch, at this
+                            // step; its order against 007CE040's other elements is not read.
+                            // The recharge factor is 008E6430(9, unit) when [00E0C978] and
+                            // [[00F88C30]+F4h] are set (007CEBAB-007CEBD1), else 1.0f; it is
+                            // taken as 1.0f, as 008E6430(6) is in the thrust. Float per
+                            // operation (24-bit precision assumed).
+                            const float tt = unit_.plane_turbo_time;
+                            if (tt > 0.0f) {                                         // 007CEB45
+                                if (unit_.plane_boost_latched_bc8) {                 // 007CEB4B
+                                    const float c = unit_.plane_boost_charge_e84 - step / tt;
+                                    unit_.plane_boost_charge_e84 = c;                // 007CEB71
+                                    if (c <= 0.0f) {                                 // 007CEB7D JB
+                                        unit_.plane_boost_lockout_e88 = true;        // 007CEB83
+                                        unit_.plane_boost_charge_e84 = 0.0f;         // 007CEC28
+                                    }
+                                } else if (!(bsp::unit_is_kind_of(unit_.class_id, 0x17) &&
+                                             !unit_.plane_pilot_fires_c24)) {        // 007CEB8F-007CEBA5
+                                    const float c = step / unit_.plane_turbo_recharging_time * 1.0f +
+                                        unit_.plane_boost_charge_e84;                // 007CEBE5-007CEBFC
+                                    unit_.plane_boost_charge_e84 = c > 1.0f ? 1.0f : c;   // 007CEC16
+                                }
+                            }
+                        }
 
                         bsp::PlaneControlUnitState state;
                         state.latched_yaw = unit_.plane_latched_controls[0];
@@ -41550,6 +41658,10 @@ void GameUnitsHost::report() {
                     "locks=%d boosts=%d (009AF510, packet cc9_lua52_kamikaze_wiring)",
                     bsp::kKamikazeTaskBound ? 1 : 0, kz_planes, kz_arm, kz_inst, k[0], k[1], k[2],
                     k[3], k[4], kz_aim, kz_lock, kz_boost);
+                if constexpr (Impl::kKamikazeBoostTurboBound) {
+                    host.log.notef("summary mission boost turbo steps=%llu (007BB6E0 9F8h -> "
+                        "007D9077 TurboStrength, packet cc13-fix89)", host.boost_turbo_steps_);
+                }
                 {
                     int shape_writes[2]{};
                     for (const auto& slot : host.slots) {
