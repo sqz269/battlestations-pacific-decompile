@@ -225,3 +225,20 @@ rises and blip falls, from the hysteresis; (b) a side with no sensor-bearing obs
 gunnery contact sweeps keep identified targets longer, so fire-target picks and AutoTarget can move from the first
 pass a target falls back under a blip-capped sensor. Pairs: USNOS (`usnos_s45_os_k`), ESMP08 (`g38_ord_e8`), USN04
 (idle), LOMP06 (`lomp06_l50_l6_q6`).
+
+**Pairs** (`g51_r0` / `g51_r1` at `cc0c2017d`, reference env; logs `local\g51_r{0,1}_{u4,l6,e8,os}.log` in
+cc9-gunnery36):
+
+| mission | verdict | what moved |
+| --- | --- | --- |
+| USN04 idle | gameplay identical | side 0 levels identical (none 401, blip 95, identified 969); side 1 (no observers) now covered: identified 3422 -> 1022, its final enemy triple 34 -> 0 |
+| LOMP06 `l50_l6_q6` | moved | blip 203827 -> 654, identified 83913 -> 373044; Narwhal sunk 743.29 -> 638.32 s; **fails in both** (744.09 s OFF, 639.12 s ON) |
+| ESMP08 `g38_ord_e8` | moved, deaths identical (959) | enemy_identified 31220 -> 31354, unknown 1012 -> 878; only candidate counts and plane ranges move; no end either side |
+| USNOS `s45_os_k` (3000 s cap) | moved | fails at 1425.27 s both; 8 Okinawa houses no longer die to ToSpawnZao's stray blast at 1389 s; late plane deaths re-timed |
+
+**Mechanism.** The host rebuilds about once per second, so OFF (value from zero each pass) gives 0.5/s * ~1 s, just under
+the 0.5 identified threshold, and most contacts sit at blip. ON integrates the value as the image does: a target in an
+applying entry's range for about two seconds is identified, and stays identified until no entry applies. That is
+prediction (a); (b) shows on USN04's side 1; (c) shows on LOMP06 (`IsListenerActive` 53400 -> 3 follows the earlier
+failure). `stale_gain_reads` is 0 in all four runs. **Flipped ON** by mechanism. LOMP06's keeper win is already lost
+on the OFF tree (reported to the lead).
