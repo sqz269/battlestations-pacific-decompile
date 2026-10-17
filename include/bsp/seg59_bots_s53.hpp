@@ -24,6 +24,8 @@ public:
     virtual void gun_bot_attach_008fbc80(void* bot, void* node) = 0;
     // entity vtable +5Ch IsKindOf, __thiscall(entity)(int kind), RET 4, AL.
     virtual bool entity_vcall_5c_is_kind_of(void* entity, std::int32_t kind) = 0;
+    // 00803510 BSP_Party_RelativeTo, __fastcall(ECX = party a, EDX = party b), EAX.
+    virtual std::int32_t party_relative_to_00803510(void* party_a, void* party_b) = 0;
 };
 
 // 008FF2B0, TorpedoBot vtable 00D182B0 +30h, __thiscall(ECX = bot), RET.
@@ -34,5 +36,9 @@ void seg59_depth_charge_bot_clear_fire_target_008ff500(void* bot, Seg59BotHost& 
 void seg59_torpedo_bot_attach_008ff310(void* bot, void* node, Seg59BotHost& host);
 // 008FC060, DepthChargeBot vtable 00D18338 +04h, __thiscall(bot)(node), RET 4.
 void seg59_depth_charge_bot_attach_008fc060(void* bot, void* node, Seg59BotHost& host);
+// 008FB890 BSP_Entity_IsLiveOtherParty (packet s54_seg59_helpers), __fastcall(ECX = gun,
+// EDX = target), RET, AL. Body 008FB890..008FB8C9. Sole caller 006DF541 (the artillery
+// gunner tick 006DF520), whose host form is gun_bot_target_still_valid_008ffa20.
+bool seg59_entity_is_live_other_party_008fb890(void* gun, void* target, Seg59BotHost& host);
 
 }  // namespace bsp

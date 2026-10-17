@@ -18460,7 +18460,7 @@ scans also find 00901C20's eight known callers, so a negative result means somet
   The out matrix is written only on the 00901C20 and lead paths.
   **Reach**: the gunnery host's player-seat artillery block records `PlayerGunSeat::artillery_hit_lead`
   [009578C3] for this branch: 4081 calls on USN10 (s53_p0_u10), 2802 on USNOS, 2725 on BSM09. Reconstructed in
-  **src/seg59_ship_lead_s54.cpp** (`seg59_ship_turn_lead_00902290`, all-float under the main thread's 24-bit
+  src/seg59_bots_s53.cpp (`seg59_ship_turn_lead_00902290`, header include/bsp/seg59_ship_lead_s54.hpp, all-float under the main thread's 24-bit
   policy), NOT wired. Wiring needs the target's +980h/+984h/+9DCh, class+520h and vt38h yaw rate from the ship
   physics host, and 00957740's own 009578C3..00957A50 entry: the kind-1Eh resolve through 00923810(1), the
   [dev+3FCh] gate, the speed [[dev+3F8h]+34h]+5Ch * +50h, and the out stores at 00957B24, which add the
