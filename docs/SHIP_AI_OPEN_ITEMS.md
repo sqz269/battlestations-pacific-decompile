@@ -18591,3 +18591,84 @@ Tree 4bc3f5432 (origin/main with kLevelBombTargetClearedRetireBound ON). Runs `l
   2147 s.
 So a7 needs a re-plan that keeps the transports alive in wave 1 and deals with the stuck Shinyos before phase 2
 can be planned (HQ2 must then be shelled to 0 against the CB self-repair).
+
+## 273. USNOS phase-2 re-plan on f4d7658e6 (cc9-ships55, 2026-10-17; lead items 1-3; HANDOFF)
+
+Tree `cc9-ships44` at f4d7658e6 (roman member names ON, level-bomb retire ON). Runs 150000 frames, reference env,
+`--stop-after-end 40`, launched by `local\s55_rows.ps1` (s54_rows copy), logs `local\s55_a_<v>.log` (reference) and
+`local\s55_aj_<v>.log` (`BSP_FRAME_JITTER 20,3`). Order files `local\s55_os_<v>.txt`, all built by
+`python local\s55_osmk.py <v>` from `local\s55_os_r0.txt` (= ships51's `s51_os_a7.txt` with `|.-2/3/4` renamed
+`|.-II/III/IV`). One-line outcomes: `local\s55_brief.ps1 <log names>`. **No variant completes; nothing committed
+but this note.** No run reached a mission end that runs luaMissionCompletedNew, so no exec-guard line is expected.
+
+**Mission-script facts that shape every plan** (this installation's us_osumi.lua and commandhelpers.lua):
+- Primary 1 ("Troop") never deactivates: `luaObj_Completed` has `--obj.Active = false` commented out, so line 983
+  fails the mission whenever every `Mission.Troops` transport is dead, in phase 2 too, after luaReinTime.
+- Phase 1 ends only when every `PhOneAttackers` member is dead (two waves: SpawnNew serials 1-3 and 4-6). Wave
+  members spawned on a dead transport (`luaPickRnd(Mission.Troops)` includes the dead) never attack: Shinyos and
+  submarines stop near their spawn point, and level-bomber squadrons fly their spawn heading forever
+  (`s55_a_c1`: plane #4.6 at z=-455 km by 7490 s, `attackmove arm ... target not live`). So any wave-1 transport
+  loss can hold phase 1 open for the whole run.
+- Capture: a NEUTRAL HQ1/HQ2/CB2 with the nearest living transport within 1500 m 3D becomes allied. With no living
+  transport line 1102 indexes nil and the luaCheckObjectives chain dies. HQs are neutralized at health 0
+  (`command building capture: unit=HQ1 neutralized`): NH's a7 order `29400 attack NH HQ1 repeat 14` did it at
+  1716 s (s55_a_c5), Gear6-12 near Multi Hangar 1 neutralized CB2 at 2211 s; HQ2 never fell (Loui1/2 too far).
+- luaAirfieldManager launches on the transports from phase 2 while an airfield is Japanese and IsReadyToSendPlanes;
+  each airfield lists one hangar (Airfield1 "Hangar, Large, 08 01", Airfield2 "Hangar, Small, 02 02", Airfield3
+  "Multi Hangar 1"), and with the hangar dead kAirfieldDestructionRuleBound stops it. a7's Portland/NH/Gear orders
+  kill all three between 1619 and 1902 s in the c5-c8 runs.
+
+**What works (keep):**
+- `Z3_TURNS`: every transport turns at 120 s (frames 2410-2460; TT2 to port). Wave-1 level bombs (releases
+  129-154 s) then miss: no transport loss in 300 s on reference or 20,3 (`s55_a_z3`, `s55_aj_z3`), against
+  TT2/3/6 lost at 211-272 s with r0.
+- `GEAR45`: Gear4/Gear5 attack sweeps over the 15 wave-2 surface units from 800 s kill the idle submarines (#6.2/#6.5
+  at 1216-1275 s in `s55_a_b4`).
+- `air_mass(2000, 14000, 3000, ..., 339)`: all four decks launch on the first live targets in priority order; the
+  Takao group (Shima4-7, Takao1, which luaMoveToPh2 sends at the Enterprise) is sunk by 600 s in every c5/c6/c8 run.
+  Single-squadron sweeps (c3/c4) lose most planes to the group's AA (Shima4 35, Shimotsuke 32, Shima6 28 kills).
+- Enterprise fighters on Betty1-6 every 75 s from 1000 s killed all six Bettys in `s55_aj_c7`.
+
+**What still kills the transports:**
+- Wave 2 level bombers (#4.4-#4.6, releases about 490-560 s) take one to three transports in most runs; the 470 s
+  reversal (`W2_REVERSAL`) and the early Enterprise fighters (`W2_FIGHTERS`, frames 7800-9400) did not stop it.
+- The Ada3/Zao3/Shima1 remnant (NH sinks Shima2/3 and Zao2 by 930 s on a7's orders) hunts the transports after
+  phase 2 and beats DM1/DM2/Gear1-3 one at a time (`s55_a_c8`); in `s55_aj_c6` DM2 alone sank all three at
+  1248-1287 s. Airfield bombers before the hangars die, Capture Post 04 / Fortress element 06 near HQ1, Yamato once
+  the Loui group is dead (luaTargetmaxxing picks YamatoFocus[1]: Loui members first, then the transports), and
+  transport-on-transport fire (TT6 -> TT3, TT1 -> TT4) take the rest.
+- Best runs: `s55_aj_c6` (HQ1 captured, Haku3/4 sunk, last transport 2727 s) and `s55_aj_c7` (all Bettys dead,
+  HQ1 captured, last transports to Yamato 2729-2767 s).
+
+**Next steps.** (a) Kill the Ada3/Zao3/Shima1 remnant in one massed action before the transports move (NH, both
+Portlands, DM1, DM2 and Gear1-5 together, plus recalled 331 waves), and keep the transports parked east until it
+is dead. (b) Keep the Loui group alive (YamatoFocus) and give it the Yamato/Musashi. (c) Then send one or two
+transports per HQ along the north coast (`CAPTURE_NORTH`), HQ2 needing NH after HQ1. (d) Re-check wave 2.
+Every order file is open-loop on absolute frames while phase 2 starts anywhere from 905 to 1300 s, so prefer
+refusal-tolerant sweeps over timed single orders.
+
+**Host faults found (sent to the lead for cc9-lua64):** (1) a level-bomber wing member that taxis off the runway
+edge in land/park (`land/abort` on-ground arm unbound) re-takes off and flies at y=-103 m forever
+(`s55_a_r0`, plane #4.4|.-IV from 736 s; it held phase 1 open until DM2 shot it down at 2046 s in `s55_a_b4`);
+(2) a player `launch` on a STRUCTURE target installs a kind-7 moveto with range 0 and the squadron then hangs
+motionless in the air (`s55_aj_c1`, Essex_sqn03 at (-669, 794, 1019) from 451 s). The harness header-line quirk:
+a long `#` comment line in an order file is split by the reader into bogus orders (`s55_os_b3` line 1).
+
+**Lead items 2 and 3.** 00902290 has one image caller (00957964 in 00957740), already wired by the seat lead (271).
+00957740's other callers are 005476BE (00547480, HUD gun-sight status, presentation) and 0095A06E/0095A4B6
+(00959C20, player group fire, which needs a player-held seat): nothing gameplay-live left. 0092BEC0's extra calls
+are 00B6DA70 BSP_SceneNode_SetVisibilityFactor(1.0f) on the periscope node and 00C47FF0 (Dyn body +2Ch |= 2, then
+DYN_Body_ClearManifolds) on [+394h]: presentation and the Dyn collision proxy, which the host does not run; not
+bound. LandFort StartFire is presentation; the seg-42 mothership family was not reached.
+**Addendum, c9/c10 (same day).** `c9` = c8's strikes plus one massed action on the Ada3/Zao3/Shima1 remnant (DM1,
+DM2, Gear1-3 rally at (3000, -4000) at 600 s, then sweep it with NH from 900 s), transports parked east (full
+`W2_REVERSAL`) and sent north only from 1700 s (`shifted(CAPTURE_NORTH, 8000)`). `c10` = c9 with Haku3/Haku4 first
+after the Takao group in the strikes and as the top priority of DM1/Gear1-3 to 5000 s.
+- `s55_aj_c9` (20,3) is the **closest run so far: no mission end in 7500 s**. HQ2 captured; Betty1-6, Haku1-4 and
+  Yamato sunk; TroopTrans5 alive at the end. Left: Musashi (FinalTrgs) and the HQ1/CB2 captures.
+- `s55_a_c9` and `s55_a_c10` (reference) both capture HQ2 and then lose the Enterprise to Haku3's guns at 2655-2657
+  s (c10 sinks Haku1/Haku2 first). `s55_aj_c10` was still running at handoff.
+- Next: move the Enterprise away from the Haku3/Haku4 track once the reinforcements spawn (about phase 2 + 900 s),
+  or escort it with DM1/Gear1-3 instead of sending them south; add Musashi to the Loui/NH sweeps; give TT5 or the
+  surviving transport a timed HQ1 then CB2 route behind NH's HQ1 shelling. Build with `python local\s55_osmk.py c11`
+  after adding the variant; the helpers (`air_mass`, `escort_sweep`, `recalls`, `shifted`, `turns`) are in that file.
