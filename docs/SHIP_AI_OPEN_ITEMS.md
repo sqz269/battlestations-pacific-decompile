@@ -18348,3 +18348,23 @@ The property readers 008FF360 / 008FF560 and writers 008FF400 / 008FF5D0 are sav
 00902290's caller is 00957740 BSP_Aim_ResolveRayToWorldPoint), 008FB890 BSP_Entity_IsLiveOtherParty (caller
 006DF520 MuzzleSolutionAimTick, no host mention), and 008FF640 BSP_Entity_HullDistanceToPoint_Provisional (no direct
 caller). The pilot and tailgunner bots are physics12's.
+
+## 265. Handoff (cc9-ships53, 2026-10-17)
+
+Branch `agent/cc9-ships44`, origin/main merged at d12944a6d. No leases are held after this commit. This session's
+commits:
+- 260: 7b1fb8756 / 3c41eb1b3, sub wake draws, ON.
+- 261: 9a99c6533 / 82041f5c3, 007ADD70 ship arm, ON (JM08 s52_j8_b3 now a win).
+- 262: 0cea637b5 / 3c0045930, squadron arm, ON.
+- 263: e8d6d0a83 / 418fe366e, wreck debris draws, ON.
+- 264: 1c063c0a9, seg 59 slot bodies.
+Open:
+- **USNOS**: parked on cc9-lua62's level-bomber goaway fix (256). Re-run a7 against the step repair (257) and
+  007ADD70.
+- **BSM01 keeper** (bsm01_l50_b1_a): no EndMission in 1000 s on current main (262), reported to lua62.
+- **00836D0E / 0084E3B5**: the 007ADD70 true-answer finish blocks (0071D810(2) + `finished`) are not hosted.
+- **User paths**: 007ADD70's multi-leg scan only runs on player-drawn paths (0071FC40). No run exercises it yet.
+- **Seg 59** (264): the gun vt[1E8h] release in the bot clears; 00901C20, 00902290, 008FB890 and 008FF640 still
+  have no function record; the scoring band 00905300+ is unscoped. Scripts: `local\s53_seg59.txt` (the full range
+  listing), `local\s53_scan.py` (byte pattern scan), `local\s53_rd.py` (constants from the PE),
+  `local\s53_rows.ps1` (launcher).
