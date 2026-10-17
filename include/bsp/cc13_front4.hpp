@@ -27,10 +27,6 @@ struct Front4Host {
     // current unit, 00E198C4 the front-end manager).
     virtual void* global_pointer(std::uint32_t address) = 0;
 
-    // --- Win32 imports -----------------------------------------------------
-    // [00CE2218] EnterCriticalSection / [00CE2210] LeaveCriticalSection, __stdcall.
-    virtual void enter_critical_section_ce2218(void* section) = 0;
-    virtual void leave_critical_section_ce2210(void* section) = 0;
 
     // --- CRT / logging -----------------------------------------------------
     // 00BF6713 LIBCRT_unmatched_00bf6713, __cdecl(), the checked-iterator failure
@@ -72,34 +68,11 @@ struct Front4Host {
     // 0085D3D0 BSP_Matrix_OrthonormalizeFromRowX, __fastcall(ECX = matrix), RET.
     virtual void matrix_orthonormalize_0085d3d0(float* matrix) = 0;
 
-    // 00419510 BSP_Vector3f_Normalize, __fastcall(ECX = out, EDX = const v*), RET, EAX = out.
-    virtual float* vector3_normalize_00419510(float* out, const float* v) = 0;
-
-    // --- session transport -------------------------------------------------
-    // 00783C80 BSP_SessionTransport_SerializeMessage, __thiscall(ECX = transport,
-    // peer, message), RET 8.
-    virtual void session_transport_serialize_message_00783c80(Raw transport, void* peer, void* message) = 0;
-
-    // --- scene properties --------------------------------------------------
-    // 008EEB10 BSP_PropertyHash64Iterator_Begin / 008EEB60 _NextCopy,
-    // __thiscall(ECX = iterator {table, entry, bucket}), RET.
-    virtual void property_hash_iterator_begin_008eeb10(void* iterator) = 0;
-    virtual void property_hash_iterator_next_008eeb60(void* iterator) = 0;
-
     // --- movie camera ------------------------------------------------------
     // 005CC000 BSP_HudMovieScreen_EnsureMovCam, __thiscall(ECX = screen), RET.
     virtual void hud_movie_screen_ensure_movcam_005cc000(Raw screen) = 0;
     // 007A6910 BSP_MovCam_SetTarget, __thiscall(ECX = movcam, target), RET 4.
     virtual void movcam_set_target_007a6910(void* movcam, void* target) = 0;
-
-    // --- plane AI ----------------------------------------------------------
-    // 0099D0A0 BSP_PilotBot_HeadingDiffCalc, __thiscall(ECX = plan, float), RET 4, ST0.
-    virtual float pilot_bot_heading_diff_0099d0a0(Raw plan, float value) = 0;
-    // [[object]+50h](object), __thiscall, no stack argument (RET, proved by the
-    // 00438AA0 RET 8 stack balance in 009A1A20), ST0.
-    virtual float vcall_heading_50(void* object) = 0;
-    // 00438AA0 BSP_Math_AddWrappedAngle, (float a, float b) on the stack, RET 8, ST0.
-    virtual float math_add_wrapped_angle_00438aa0(float a, float b) = 0;
 
     // --- class descriptors / planner teardown ------------------------------
     // 00749050 BSP_VehicleClass_ConstructBase, __thiscall(ECX = this), EAX = this.
@@ -182,23 +155,6 @@ bool matrix_rotate_by_angular_velocity_0085e4d0(Front4Host& host, float* out, co
 void debug_draw_wire_sphere_marker_00860be0(Front4Host& host, const float* centre, const float* rgba,
                                             float radius, std::uint32_t arc_rgba, std::uint8_t detailed);
 
-// 0042D0D0 BSP_Vector3f_TransformDirectionOptionalNormalize, __fastcall(ECX = out,
-// EDX = const v*; const matrix*, u8 normalize in a dword slot), RET 8, EAX = out.
-float* vector3_transform_direction_0042d0d0(Front4Host& host, float* out, const float* v, const float* matrix,
-                                            std::uint8_t normalize);
-
-// 00784790 BSP_SessionTransport_BroadcastExcept, __thiscall(ECX = transport,
-// message, excluded peer), RET 8.
-void session_transport_broadcast_except_00784790(Front4Host& host, Raw transport, void* message,
-                                                 void* excluded_peer);
-
-// 008F0D80 BSP_SceneEnumDecl_FindNameByValue, __thiscall(ECX = enum decl, value),
-// RET 4, EAX = name, the global at 00F89450 for a null name, or null.
-const char* scene_enum_decl_find_name_by_value_008f0d80(Front4Host& host, Raw decl, std::int32_t value);
-
-// 008F0DF0 BSP_SceneProperty_GetStringValue, __thiscall(ECX = property), RET.
-const char* scene_property_get_string_value_008f0df0(Front4Host& host, Raw property);
-
 // 005CD160 BSP_MovCam_EnsureTarget, __thiscall(ECX = screen), RET, EAX = [screen+30h].
 void* movcam_ensure_target_005cd160(Front4Host& host, Raw screen);
 
@@ -222,17 +178,8 @@ float fire_amount_00939f70(Raw object);
 void* unit_parts_object_0080e490(Raw unit);
 // 00BBDDF0 BSP_Atmosphere_GetCloudManager: EAX = [+3Ch].
 void* atmosphere_cloud_manager_00bbddf0(Raw atmosphere);
-// 0099B630 BSP_PilotCommand_GetPitchTargetOrLive: ST0 = [+2D0h] != 0 ? float [+2BCh]
-// : float [[+2F0h]+C64h].
-float pilot_command_pitch_target_or_live_0099b630(Raw plan);
-
-// 007788D0 BSP_Unit_FormationLeader: EAX = [+284h] ? [[+284h]+14h] : 0.
-void* unit_formation_leader_007788d0(Raw unit);
 // 0080E160 BSP_UnitInstance_WeaponDirectorDirect: EAX = [+738h].
 void* unit_weapon_director_0080e160(Raw unit);
-
-// 009A1A20 BSP_BotTask_CommandedHeading, __thiscall(ECX = plan), RET, ST0.
-float bot_task_commanded_heading_009a1a20(Front4Host& host, Raw plan);
 
 // 007D1E50, __thiscall(ECX = this), EAX = this: the plane class descriptor base
 // constructor (vptrs 00D05EAC at +0 and 00D05EA8 at +6Ch).

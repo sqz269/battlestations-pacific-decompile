@@ -21,14 +21,10 @@ not recovered symbols. Nothing is wired. Status: reconstructed and build-tested 
 | 0085E4D0 | `matrix_rotate_by_angular_velocity_0085e4d0` | `__fastcall(ECX = out, EDX = in; wx, wy, wz, dt)`, RET 10h | See below. | 007C18B0, 007D9F60 |
 | 00860BE0 | `debug_draw_wire_sphere_marker_00860be0` | `__fastcall(ECX = centre, EDX = rgba[4]; radius, u32 arc rgba, u8 detailed)`, RET 0Ch | h = radius + radius; three `0085F990` axis lines from c-h to c+h (both colours the 16 bytes at EDX); three `00860AD0` circles (radius, start 0, sweep 2pi from 00CE3D9C, arc rgba, detailed ? 40h : 4 segments) about X, Y, Z. | 004169A0, 006F3CC0, 007C39B0, 0093FF10 |
 
-Second batch (the next most-blocking callees in the report outside the keep-outs):
+Second batch (the next most-blocking callee in the report outside the keep-outs):
 
 | Address | C++ | ABI | What it does | Blocked callers |
 |---|---|---|---|---|
-| 0042D0D0 | `vector3_transform_direction_0042d0d0` | `__fastcall(ECX = out, EDX = v; matrix*, u8 normalize)`, RET 8, EAX = out | r[i] = (m[i]*vx + m[4+i]*vy) + m[8+i]*vz into a local triple through the existing naked kernel `transform_native_effect_direction_0042d0d0_no_normalize` (same arithmetic and spills); normalize: `00419510(out, &r)`, else copy. | 44 (19 with wired callers) |
-| 00784790 | `session_transport_broadcast_except_00784790` | `__thiscall(ECX = transport, message, excluded peer)`, RET 8 | Walks the checked list at transport+8 starting from the SECOND node (begin() is incremented once, failing the check on an empty list); for each peer other than the excluded one: enter [peer+4] (depth +18h), `00783C80(transport, peer, message)`, leave. | 32 |
-| 008F0D80 | `scene_enum_decl_find_name_by_value_008f0d80` | `__thiscall(ECX = decl, value)`, RET 4 | Iterates the hash at decl+4 (`008EEB10`/`008EEB60`); returns the entry name (+4) whose value (+8) matches, the global at 00F89450 when that name is null, or null. | 5 |
-| 008F0DF0 | `scene_property_get_string_value_008f0df0` | `__thiscall(ECX = property)`, RET | Type 2: +0Ch; type 4: `008F0D80([+28h], [+0Ch])`; else +1Ch or "". | 26 |
 | 005CD160 | `movcam_ensure_target_005cd160` | `__thiscall(ECX = screen)`, RET, EAX | When byte +4 is 0: `004CC460([00E198C4], 2Bh, [00E188D8])`, `005CC000(screen)`, `007A6910([screen+30h], unit)`. Returns +30h. | 23 |
 
 Third batch, one-instruction accessors (`__thiscall(ECX = object)`, RET, unless noted):
@@ -44,15 +40,12 @@ Third batch, one-instruction accessors (`__thiscall(ECX = object)`, RET, unless 
 | 00939F80 / 00939F70 | `water_amount_00939f80` / `fire_amount_00939f70` | ST0 = float [+34h] / [+38h] | 5 each |
 | 0080E490 | `unit_parts_object_0080e490` | EAX = [+1018h] | 13 |
 | 00BBDDF0 | `atmosphere_cloud_manager_00bbddf0` | EAX = [+3Ch] | 5 |
-| 0099B630 | `pilot_command_pitch_target_or_live_0099b630` | ST0 = [+2D0h] != 0 ? float [+2BCh] : float [[+2F0h]+C64h] | 10 |
 
 Fourth batch:
 
 | Address | C++ | ABI | What it does | Blocked callers |
 |---|---|---|---|---|
-| 007788D0 | `unit_formation_leader_007788d0` | `__thiscall(ECX = unit)`, RET | [+284h] ? [[+284h]+14h] : 0 | 7 |
 | 0080E160 | `unit_weapon_director_0080e160` | `__thiscall(ECX = unit)`, RET | [+738h] | 6 |
-| 009A1A20 | `bot_task_commanded_heading_009a1a20` | `__thiscall(ECX = plan)`, RET, ST0 | Mode [+2CCh] == 2: float [+2C0h]. Else offset = 0 (no plane [+2F0h]) or `0099D0A0(plan, plane+C68h)`; returns `00438AA0(plane->vfunc[50h](), offset)`. The virtual takes no stack argument (the 00438AA0 RET 8 balance proves it); a null plane reaches it unguarded. No RNG. | 8 |
 | 007D1E50 | `plane_class_construct_base_007d1e50` | `__thiscall(ECX = this)`, RET, EAX = this | `00749050(this)`, vptrs 00D05EAC (+0) and 00D05EA8 (+6Ch), then 32 dword and 4 byte zero stores (list in the ledger record). | 8 (the plane class constructors) |
 | 00A1EEF0 | `ai_planner_destruct_base_00a1eef0` | `__thiscall(ECX = planner)`, RET | vptr 00D22D08; drains the group list at +20h: owned groups (`00A1C8B0`) get `006952A0(group, planner)`, STL remove `00A1D1D0`, group+5654h = 0; a group not owned is taken again forever, as in the binary. Then STL clear `00A16B60`, the +18h block back to `00419CC0()->00BD1510(block, [+14h]+1, 1)`, `00695870(planner)`. | 8 |
 
@@ -88,6 +81,18 @@ callers with other missing callees stay blocked on those.
 | 00B179F0 | `native_material_diffuse_00b179f0` (src/gui_material_binding.cpp) | Body is `LEA EAX,[ECX+38h]; RET 4`; the C++ returns `lighting_38`, at +38h in `NativeMaterialStorage`. Unblocks 0053A8E0, 0059A860, 0059A9B0, 00B85200, 00BA9960, 00747560, 0093DE10. |
 
 | 005547D0 | `get_native_input_settings_005547d0` (src/native_input_settings_lifetime.cpp) | Same order as the body: fast return of [00E198E8]; lock of the 00415350 manager's +10h object (depth +18h); re-test; new 540h; 006AB6B0; publish; 00BD0C30 register; unlock. Blocks 20. |
+
+## Removed in the cleanup (2026-10-17)
+
+- 0042D0D0 and 00784790 duplicated cc13-front2's reconstructions (src/cc13_front2.cpp), which landed
+  first. My bodies and records were removed. front2's records are the only ones, and nothing in this file
+  called either function.
+- 009A1A20 and 0099B630 (segment 67, plane AI), 008F0D80 and 008F0DF0 (segment 59), and 007788D0 (cc9's
+  segment 43 exclusion 00778820..0077D270) are in cc9 keep-out ranges. Their bodies and records were
+  removed. No host mismatch was found:
+  - `game_hosts_commands.cpp:2291` `unit_controller_owner_007788d0` returns 0 for a unit with no formation
+    and otherwise its formation leader, which agrees with the binary's [[+284h]+14h] read (null when +284h is null).
+  - I found no host copies of 009A1A20, 0099B630, 008F0D80 or 008F0DF0 in the game_hosts files.
 
 ## Not done
 

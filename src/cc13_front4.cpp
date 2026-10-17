@@ -1,7 +1,6 @@
 // Packet cc13-front4: see include/bsp/cc13_front4.hpp and docs/CC13_FRONT4.md.
 // Each function was read from the listing; x87 operand direction from the bytes.
 #include "bsp/cc13_front4.hpp"
-#include "bsp/material_effect_plane.hpp"
 
 #include <cmath>
 #include <cstddef>
@@ -282,90 +281,6 @@ void debug_draw_wire_sphere_marker_00860be0(Front4Host& host, const float* centr
                                              segments);  // 00860EC4
 }
 
-// 0042D0D0. The three row-vector dot products (no translation) are the existing
-// naked x87 kernel of the normalize = false arm, which repeats this body's
-// arithmetic and spill order (src/material_effect_plane.cpp); here it writes the
-// body's local triple at ESP+10h, which then goes to 00419510 (normalize) or is
-// copied to `out` with MOVSS (0042D162).
-float* vector3_transform_direction_0042d0d0(Front4Host& host, float* out, const float* v, const float* matrix,
-                                            std::uint8_t normalize)
-{
-    float local[3];
-    bsp::transform_native_effect_direction_0042d0d0_no_normalize(local, v, matrix);
-    if (normalize != 0) {
-        host.vector3_normalize_00419510(out, local);  // 0042D154
-        return out;
-    }
-    out[0] = local[0];
-    out[1] = local[1];
-    out[2] = local[2];
-    return out;
-}
-
-// 00784790. The peer list is the checked std::list proxy at transport+8 (sentinel
-// [transport+0Ch]; nodes +0 next, +8 peer). Iteration starts at the node after
-// the first (00784796..007847AA increments begin() once, failing the check when the
-// list is empty). Each peer other than `excluded_peer` (when non-null) is serialized
-// under the lock object [peer+4] (a CRITICAL_SECTION with a depth count at +18h).
-void session_transport_broadcast_except_00784790(Front4Host& host, Raw transport, void* message,
-                                                 void* excluded_peer)
-{
-    std::uint8_t* const sentinel = transport.at<std::uint8_t*>(0x0C);
-    std::uint8_t* const first = at<std::uint8_t*>(sentinel, 0);
-    if (first == sentinel) host.invalid_parameter_00bf6713();  // 007847A5
-    for (std::uint8_t* node = at<std::uint8_t*>(first, 0);; node = at<std::uint8_t*>(node, 0)) {
-        // 007847B0: CMP EBP,EBP (same container) never fails.
-        if (node == transport.at<std::uint8_t*>(0x0C)) return;
-        if (node == transport.at<std::uint8_t*>(0x0C)) host.invalid_parameter_00bf6713();  // 007847C5
-        void* const peer = at<void*>(node, 8);
-        bool skip = false;
-        if (excluded_peer != nullptr) {
-            if (node == transport.at<std::uint8_t*>(0x0C)) host.invalid_parameter_00bf6713();  // 007847DA
-            skip = excluded_peer == at<void*>(node, 8);
-        }
-        if (!skip) {
-            std::uint8_t* const lock = at<std::uint8_t*>(peer, 4);
-            host.enter_critical_section_ce2218(lock);  // 007847E8
-            at<std::int32_t>(lock, 0x18) += 1;
-            host.session_transport_serialize_message_00783c80(transport, peer, message);  // 007847FC
-            std::uint8_t* const unlock = at<std::uint8_t*>(peer, 4);  // re-read at 00784801
-            at<std::int32_t>(unlock, 0x18) -= 1;
-            host.leave_critical_section_ce2210(unlock);  // 00784809
-        }
-        if (node == transport.at<std::uint8_t*>(0x0C)) host.invalid_parameter_00bf6713();  // 00784814
-    }
-}
-
-// 008F0D80. A 12-byte iterator {table = decl+4, entry, bucket} on the stack; the
-// entries are {+4 name, +8 value}.
-const char* scene_enum_decl_find_name_by_value_008f0d80(Front4Host& host, Raw decl, std::int32_t value)
-{
-    void* iterator[3];
-    iterator[0] = decl.field(4);  // 008F0D86, the other two words are written by 008EEB10
-    host.property_hash_iterator_begin_008eeb10(iterator);
-    for (void* entry = iterator[1]; entry != nullptr; entry = iterator[1]) {
-        if (at<std::int32_t>(entry, 8) == value) {
-            const char* const name = at<const char*>(entry, 4);
-            return name != nullptr ? name : static_cast<const char*>(host.global_address(0x00F89450));
-        }
-        host.property_hash_iterator_next_008eeb60(iterator);  // 008F0DA9
-    }
-    return nullptr;
-}
-
-// 008F0DF0. Type +4: 2 returns +0Ch, 4 the enum name of value +0Ch in decl +28h,
-// otherwise +1Ch or "" (00CE3A0C).
-const char* scene_property_get_string_value_008f0df0(Front4Host& host, Raw property)
-{
-    const std::int32_t type = property.at<std::int32_t>(4);
-    if (type == 2) return property.at<const char*>(0x0C);
-    if (type == 4)
-        return scene_enum_decl_find_name_by_value_008f0d80(host, Raw{property.at<std::uint8_t*>(0x28)},
-                                                           property.at<std::int32_t>(0x0C));  // 008F0E08
-    const char* const name = property.at<const char*>(0x1C);
-    return name != nullptr ? name : "";
-}
-
 // 005CD160. When the byte +4 is clear: request interface 2Bh for the current unit
 // [00E188D8] on the manager [00E198C4], build the MovCam if needed, and target it
 // at that unit (the unit read once, before the request).
@@ -394,37 +309,8 @@ float water_amount_00939f80(Raw object) { return object.at<float>(0x34); }
 float fire_amount_00939f70(Raw object) { return object.at<float>(0x38); }
 void* unit_parts_object_0080e490(Raw unit) { return unit.ptr(0x1018); }
 void* atmosphere_cloud_manager_00bbddf0(Raw atmosphere) { return atmosphere.ptr(0x3C); }
-float pilot_command_pitch_target_or_live_0099b630(Raw plan)
-{
-    if (plan.at<std::uint32_t>(0x2D0) != 0) return plan.at<float>(0x2BC);
-    return at<float>(plan.ptr(0x2F0), 0xC64);
-}
-
-void* unit_formation_leader_007788d0(Raw unit)
-{
-    void* const formation = unit.ptr(0x284);
-    return formation != nullptr ? at<void*>(formation, 0x14) : nullptr;
-}
 
 void* unit_weapon_director_0080e160(Raw unit) { return unit.ptr(0x738); }
-
-// 009A1A20. Mode [+2CCh] == 2 returns the stored heading +2C0h. Otherwise the
-// offset is 0 with no plane object [+2F0h], else 0099D0A0(plan, plane+C68h); the
-// result is 00438AA0(plane->[+50h](), offset). The plane object is re-read for the
-// virtual call and is not null-checked there (a null plane faults, as in the binary).
-float bot_task_commanded_heading_009a1a20(Front4Host& host, Raw plan)
-{
-    if (plan.at<std::int32_t>(0x2CC) == 2) return plan.at<float>(0x2C0);
-    void* const plane = plan.ptr(0x2F0);
-    float offset;
-    if (plane == nullptr)
-        offset = 0.0f;  // 009A1A40 XORPS
-    else
-        offset = host.pilot_bot_heading_diff_0099d0a0(plan, at<float>(plane, 0xC68));  // 009A1A5D
-    void* const object = plan.ptr(0x2F0);
-    const float heading = host.vcall_heading_50(object);         // 009A1A79, the offset already pushed
-    return host.math_add_wrapped_angle_00438aa0(heading, offset);  // 009A1A7F
-}
 
 // 007D1E50. Base constructor first, then the two vptrs and the zero stores in the
 // binary's order (dwords unless noted). The SEH frame has no state store; nothing
