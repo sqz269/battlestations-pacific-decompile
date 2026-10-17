@@ -17389,3 +17389,13 @@ longest span only. True adds the term, computed in double and rounded once. The 
 count (LABELLED: kind 25h is the rack class, docs/RELEASE_ISSUE_STAGE.md). It feeds approach+A8h (U(0.3, 0.65) x it)
 and the prepare arm's A8h (x 0.85). Prediction: identical for one-rack planes (USNOS wave 2 logs `racks=1`); a
 multi-rack level bomber releases later in its aim window.
+
+### 5hv.4 Squadron-wide ordnance queries (`kSquadronMemberOrdnanceBound`, committed OFF)
+
+007EE8F0 (AttackCommandApplies) asks 007ED7E0 (2Ah via 007B9320), 007ED830 (31h), 007ED880 (2Fh) and 007ED8D0 (2Bh).
+Each is `for i < [sq+3CCh]: if 007B9xxx(ECX = [sq+3D0h+4i], loadout) return 1` (007ED837..007ED870 for 007ED830), so
+the answer is "any member". The host's feasibility (game_hosts_script_orders.cpp, `in.has_*_ordnance`) read the
+ordered unit only. Since `kRackLiveOrdnanceMaskBound` makes `unit_ordnance` live (an emptied rack stops answering),
+the two differ once the leader has dropped and a wingman has not. True ORs each predicate over the live members of
+the ordered unit's squadron record. Prediction: identical unless an order or retarget reaches a squadron whose leader
+is spent and a wingman is not.
