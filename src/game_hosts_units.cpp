@@ -695,6 +695,7 @@ struct GameUnitSlot {
     float plane_turbo_time{0.0f};
     float plane_turbo_recharging_time{0.0f};
     float plane_turbo_strength{1.0f};
+    float plane_turbo_control_limit{1.0f};   // desc+608h TurboControlLimit, 007C0FDE
     // task+2E4h, the per-think avoidance mask 009A17D0 tests (bit 4 gunfire
     // detect 009A18BA, bit 2 vehicle 009A1951, bit 1 terrain 009A1974): 0FFh at
     // 00999944 before the arm; the kamikaze arms store their band (009AF54A,
@@ -7303,11 +7304,11 @@ struct GameUnitsHost::Impl {
     // (006BCBF8-006BCC51, owner vtable[34h]) x t to T. LABELLED: holder+8Ch is 0
     // (written only at construction), so the turn by +8Ch x t is the identity.
     // False: the point is T and only 009AFDA4's floor of 1.0 is kept.
-    static constexpr bool kCarrierLandingVelocityLeadBound = false;
+    static constexpr bool kCarrierLandingVelocityLeadBound = true;  // ON 2026-10-17 (OCEAN_WAVE_FIELD 66)
     // Same packet (R3). True: 009B201B-009B2074, the land-final ground half's air
     // brake is 1.0 (00D7A24C) when the land target answers vtable[5Ch](9) (a mother
     // ship), else 0.2 (00CE54A0). False: 0.2 always.
-    static constexpr bool kCarrierTouchdownBrakeBound = false;
+    static constexpr bool kCarrierTouchdownBrakeBound = true;  // ON 2026-10-17, unreached (OCEAN_WAVE_FIELD 66)
     // Packet p16_moveto_cruise (docs/OCEAN_WAVE_FIELD.md section 63; cc13 verify12
     // R1). True: the kind-7 moveto's cruise altitude ctl+394h takes 009C3650's
     // ordnance arms, the same as 009BD6E0's (moveonpath_cruise_profile_009bd6e0):
@@ -7317,7 +7318,7 @@ struct GameUnitsHost::Impl {
     // Small/LargePlaneTravelAlt with no random term. LABELLED: every member computes
     // it at the 0.5 s refresh from its own ordnance (the image's leader writes the
     // squadron block once, at activation). False: Small/Large + 0.6 x random for all.
-    static constexpr bool kMoveToCruiseByOrdnanceBound = false;
+    static constexpr bool kMoveToCruiseByOrdnanceBound = true;  // ON 2026-10-17 (OCEAN_WAVE_FIELD 66)
     // Same packet (R4). True, with bsp::kLegAltitudeManagerBound: 009BEC85 runs
     // 009FD050(+64h, point) in the moveto refresh, registering the plane with the
     // converging-leg manager inside 3000 m and dropping it outside, and while the
@@ -7325,7 +7326,7 @@ struct GameUnitsHost::Impl {
     // point's height +4Ch. Slot +58h (009C32A0, 009C32B8 009FD050(-1)) drops it when
     // the task goes. LABELLED: the drop is taken on the first think after the host
     // clears moveto_task_installed. False: only moveonpath planes register.
-    static constexpr bool kMoveToLegAltitudeBound = false;
+    static constexpr bool kMoveToLegAltitudeBound = true;  // ON 2026-10-17, unexercised (OCEAN_WAVE_FIELD 66)
     // Packet p16_planner_laws (docs/OCEAN_WAVE_FIELD.md section 62; cc13 verify12
     // R5). True: 0099D300's mode-1 roll arm (0099E26E-0099E39D) runs on the image's
     // inputs: plan+2C4h clamped in place to +-plan+2C8h when that is below pi
@@ -17281,7 +17282,9 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                 // 007D3CB6-007D3D50: TurboTime (FLDZ), TurboRechargingTime (FLDZ),
                 // TurboStrength (FLD1); 007D3DA4-007D3DB8 zeroes TurboTime unless
                 // TurboStrength > 1.0f. TurboControlLimit (+608h) is read by
-                // 007C0F40, which is not part of this packet.
+                // 007C0F40's turbo arm (007C0FCF-007C0FE4, bomb_load_factor).
+                slot->plane_turbo_control_limit =
+                    host.lua.read_vehicle_class_number(row.type_id, "TurboControlLimit", 1.0f);
                 slot->plane_turbo_time =
                     host.lua.read_vehicle_class_number(row.type_id, "TurboTime", 0.0f);
                 slot->plane_turbo_recharging_time =
@@ -36502,6 +36505,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                             in.slot_weight = fraction;
                             break;   // 007C0F76: the first such slot only
+                        }
+                        if constexpr (GameUnitsHost::Impl::kKamikazeBoostTurboBound) {
+                            // 007C0FCF-007C0FE4: x class+608h TurboControlLimit while the
+                            // latched boost byte +BC8h is set; the latch exists only with
+                            // the boost chain (cc13-fix89 U2).
+                            in.turbo = unit_.plane_boost_latched_bc8;
+                            in.turbo_scale = unit_.plane_turbo_control_limit;
                         }
                         const float f = bsp::bomb_load_factor_007c0f40(in);
                         if (f != 1.0f) ++owner_.bomb_load_authority_scaled;

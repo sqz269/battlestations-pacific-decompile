@@ -27,6 +27,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <deque>
+#include <list>
 #include <map>
 #include <set>
 #include <memory>
@@ -420,6 +421,38 @@ inline constexpr bool kLuaSetFailureBound = true;  // ON: n1 pairs (GUNNERY 197-
 // True: run_set_dead_meat_008ac7b0 on the gunnery host's draw and death funnel
 // (the plane arm is counted, not applied). False: the row stays UNIMPLEMENTED.
 inline constexpr bool kLuaSetDeadMeatBound = false;  // OFF: committed for a USN04 pair
+// Packet cc13-fix12 (docs/CC13_FIX12.md). 008AB580 IsUnitSelectable(entity): 008AB67F
+// 00888AA0, 008AB696 MOV DL,1 / CALL 00645160 (EDX = [[00E188A8]+18ECh], then
+// 00645060(unit, team, 1)), 008AB6A4 PushBoolean; one result. True:
+// run_is_unit_selectable_008ab580 on GameHudHost::unit_selectable_00645060. False: the
+// row stays UNIMPLEMENTED and pushes nothing. Flip with kLuaGetEntitySpeedBound
+// (usn_11 / prcp_11 CheckMontR* test both in one `and`).
+inline constexpr bool kLuaIsUnitSelectableBound = false;  // OFF: committed unpaired
+// Packet cc13-fix12. 008C0820 GetEntitySpeed(entity): 008C091F 00888AA0, 008C0936
+// unit->vtable[38h]() with no null test, 008C093F FSTP float, 008C094F 00B66480;
+// one result. Slot 38h: ships 0080E0F0 (0092D730 on unit+1018h, the signed body
+// forward speed), planes 007B8E60 (FLD [unit+B1Ch]), PlaneSquadronGen 007ED470 (the
+// leader +3D0h's slot 38h). True: run_get_entity_speed_008c0820. False: UNIMPLEMENTED,
+// nothing pushed.
+inline constexpr bool kLuaGetEntitySpeedBound = false;  // OFF: committed unpaired
+// Packet cc13-fix10 (docs/CC13_FIX10.md; cc9 grant 2026-10-17). 008C9730
+// AddProximityTrigger(entity, name, callback, target, range) makes a 60h trigger
+// (007505C0 / 0074FEE0: target descriptor +44h from 0088A810, +5Ch = range * range)
+// and joins it to the entity's tick element sub-list (vtable[60h], 00876020, priority
+// 2). Wave 2 of the fixed step (00875B90 -> 008759B0) runs 00750000: planar x/z test
+// of the watched entity's world translation against the target, firing when
+// +5Ch > d2; 0074FDD0 calls the Lua global callback(entity, name or nil) through
+// 00887E50 and then retires the trigger (vtable[10h] 0071C4A0), which the same walk
+// releases: one-shot. 008C5FD0 RemoveTrigger(entity, name) retires every trigger of
+// that name (0074FBB0, _stricmp) and pushes whether any matched.
+// True: both rows run here, and run_proximity_triggers_008759b0 walks the lists once
+// per fixed step after the motion step (game_hosts_mission_frame.cpp).
+// SUBSTITUTIONS (labelled at the code): host units only carry lists; unit_active()
+// stands for wave 2's +5Eh/+BDh admission; the target-gone observer (0074FFE0) and
+// 00887E50's queued arm are not modelled; the line-of-sight and squad-ordnance
+// triggers stay unbound, so RemoveTrigger answers false for their names.
+// False: both rows stay UNIMPLEMENTED and push nothing, and nothing is walked.
+inline constexpr bool kLuaProximityTriggersBound = false;  // OFF: committed for a USN04 pair
 inline constexpr bool kLuaSetShipSpeedBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_unit_get_attack_target (docs/LUA_BINDING_MISSION.md, "UnitGetAttackTarget,
@@ -951,6 +984,13 @@ struct GameMissionLuaSummary {
     unsigned long long listener_exit_zone_events{0};      // packet cc13-fix3
     unsigned long long listener_exit_zone_latched{0};
     unsigned long long listener_exit_zone_fires{0};
+    unsigned long long proximity_trigger_adds{0};          // packet cc13-fix10
+    unsigned long long proximity_trigger_unresolved{0};
+    unsigned long long proximity_trigger_checks{0};
+    unsigned long long proximity_trigger_fires{0};
+    unsigned long long proximity_trigger_callback_missing{0};
+    unsigned long long remove_trigger_calls{0};
+    unsigned long long remove_trigger_matched{0};
     unsigned long long listener_kill_dead_first{0};          // packet cc13-ver5
     unsigned long long listener_kill_not_harm{0};            // packet cc13-ver8
     unsigned long long listener_kill_grace{0};               // packet cc13-ver8
@@ -1010,6 +1050,16 @@ struct GameMissionLuaSummary {
     unsigned long long dead_meat_destroyed{0};      // else arm, vtable[70h](1)
     unsigned long long dead_meat_plane_unapplied{0};  // plane arm, not hosted
     unsigned long long dead_meat_unresolved{0};
+    unsigned long long unit_selectable_calls{0};    // packet cc13-fix12, 008AB580
+    unsigned long long unit_selectable_true{0};
+    unsigned long long unit_selectable_unresolved{0};  // no entity: pushed false
+    unsigned long long unit_selectable_no_hud{0};      // no HUD host: nothing pushed
+    unsigned long long entity_speed_calls{0};       // packet cc13-fix12, 008C0820
+    unsigned long long entity_speed_squadron{0};    // 007ED470 -> leader 007B8E60
+    unsigned long long entity_speed_ship{0};        // 0080E0F0 -> 0092D730
+    unsigned long long entity_speed_plane{0};       // 007B8E60
+    unsigned long long entity_speed_unresolved{0};  // nothing pushed
+    unsigned long long entity_speed_unmodelled{0};  // other class: nothing pushed
     unsigned long long attack_target_calls{0};
     unsigned long long attack_target_fire_arm{0};
     unsigned long long attack_target_command_arm{0};
@@ -1636,6 +1686,15 @@ public:
     int run_get_failure_0088f1d0(lua_State* state, int argument_count);
     // Packet cc13-fix11, under kLuaSetDeadMeatBound.
     int run_set_dead_meat_008ac7b0(lua_State* state, int argument_count);
+    // Packet cc13-fix12, under kLuaIsUnitSelectableBound / kLuaGetEntitySpeedBound.
+    int run_is_unit_selectable_008ab580(lua_State* state, int argument_count);
+    int run_get_entity_speed_008c0820(lua_State* state, int argument_count);
+    // Packet cc13-fix10, under kLuaProximityTriggersBound.
+    int run_add_proximity_trigger_008c9730(lua_State* state, int argument_count);
+    int run_remove_trigger_008c5fd0(lua_State* state, int argument_count);
+    // Wave 2's sub-list walk (00875B90 -> 008759B0) over the proximity triggers;
+    // the mission frame calls it once per fixed step, after the motion step.
+    void run_proximity_triggers_008759b0(float step);
     // Packet cc9_unit_get_attack_target, under kLuaUnitGetAttackTargetBound.
     int run_unit_get_attack_target_008a6de0(lua_State* state, int argument_count);
     // Packet cc9_squadron_set_speed, under kLuaSquadronSetSpeedBound.
@@ -1935,6 +1994,23 @@ private:
     std::vector<bool> listener_exit_zone_seen_;
     std::map<std::size_t, float> exit_zone_first_clock_;
     std::vector<std::pair<std::size_t, bool>> exit_zone_pending_;
+    // Packet cc13-fix10: one 0074FEE0 trigger, the fields 00750000, 0074FDD0 and
+    // 0074FBB0 read, under the image offsets.
+    struct ProximityTrigger {
+        std::string name_1c;
+        bool named_24{false};
+        std::string callback_28;
+        std::uint8_t target_kind_44{0};        // descriptor +0: 1 = entity
+        bool target_point_valid_45{false};     // descriptor +1
+        int target_id{0};                      // the entity's ID (descriptor +4)
+        float target_point[3]{0.0f, 0.0f, 0.0f};  // descriptor +8
+        float radius_sq_5c{0.0f};
+        bool expired_10{false};
+        bool enabled_11{true};
+    };
+    // Each watched unit's sub-list, in 00876020's order (all priority 2: appended).
+    std::map<std::size_t, std::list<ProximityTrigger>> proximity_triggers_;
+    void check_proximity_trigger_00750000(std::size_t unit, ProximityTrigger& trigger);
     // Packet cc13-ver8: the cause this host's Lua Kill (008AC5C0) passed, per unit; the
     // gunnery funnel does not keep it.
     std::map<std::size_t, int> lua_kill_cause_;

@@ -14120,6 +14120,17 @@ void queue_ship_set_torpedo_stock_0089eee0(std::size_t unit_index, std::int32_t 
 }
 
 namespace {
+std::vector<std::size_t>& reload_torpedoes_queue() {
+    static std::vector<std::size_t> queue;
+    return queue;
+}
+}  // namespace
+
+void queue_reload_torpedoes_008c3ce0(std::size_t unit_index) {
+    reload_torpedoes_queue().push_back(unit_index);
+}
+
+namespace {
 std::vector<std::size_t>& explode_to_parts_queue() {
     static std::vector<std::size_t> queue;
     return queue;
@@ -14800,6 +14811,24 @@ void GameGunneryHost::fixed_step(float step_seconds) {
         for (const auto& request : pending) {
             host.set_torpedo_stock_0081f8b0(request.first, request.second);
         }
+    }
+    if constexpr (kReloadTorpedoesBound) {
+        // Packet p17_reload_torpedoes: 008C3CE0's barrel loop (008C3E1E-008C3E3F),
+        // 0072CF00(gun, barrel, 0.0f, 0) on every barrel of the unit's torpedo guns.
+        std::vector<std::size_t> pending;
+        pending.swap(reload_torpedoes_queue());
+        for (const std::size_t unit : pending) {
+            for (GameGunRow& g : host.guns) {
+                if (g.unit_index != unit || g.category != bsp::kUnitGunneryTorpedoCategory) continue;
+                for (float& timer : g.fire.barrel_timers) {
+                    if (static_cast<double>(timer) > 0.0) ++host.summary.reload_torpedoes_barrels;
+                    timer = bsp::barrel_reload_write_0072cf00(0.0f, 1.0e9f, 1.0f, false).timer;
+                }
+            }
+            ++host.summary.reload_torpedoes_calls;
+        }
+    } else {
+        reload_torpedoes_queue().clear();
     }
     {
         // Packet cc9_bsm01_state_natives: the script host's ExplodeToParts calls.
@@ -16361,6 +16390,10 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery torpedo ready reload refusals=%llu bound=%d "
             "(0090042F vtable[1D0h](1) -> 0085A830 -> 00729A80(1), packet g47_torpedo_canfire)",
             host.torpedo_ready_reload_refusals, kTorpedoBotCanFireReloadBound ? 1 : 0);
+        host.log.notef("summary mission gunnery reload torpedoes calls=%llu barrels=%llu bound=%d "
+            "(008C3CE0 -> 0072CF00(b, 0.0, 0), packet p17_reload_torpedoes)",
+            host.summary.reload_torpedoes_calls, host.summary.reload_torpedoes_barrels,
+            kReloadTorpedoesBound ? 1 : 0);
         host.log.notef("summary mission gunnery torpedo angle-error evaluations=%llu launches=%llu "
             "bound=%d (00900830/0090083E drawn per evaluation, packet g48_angle_err)",
             host.torpedo_angle_err_evaluations, host.torpedo_gyro_launches,

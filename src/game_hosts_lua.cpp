@@ -25,6 +25,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
+#include "bsp/gameplay_seg41_cc13.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/ship_ai_attackmove_substates.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"  // packet cc9_unit_get_attack_target
@@ -80,6 +81,7 @@ extern "C" {
 #undef lua_getglobal
 
 #include <algorithm>
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -506,6 +508,16 @@ int binding_trampoline(lua_State* state) {
     const bool get_failure_row = kLuaSetFailureBound && dispatch_row.address == 0x0088f1d0u;
     // Packet cc13-fix11.
     const bool dead_meat_row = kLuaSetDeadMeatBound && dispatch_row.address == 0x008ac7b0u;
+    // Packet cc13-fix12.
+    const bool unit_selectable_row = kLuaIsUnitSelectableBound
+        && dispatch_row.address == 0x008ab580u;
+    const bool entity_speed_row = kLuaGetEntitySpeedBound
+        && dispatch_row.address == 0x008c0820u;
+    // Packet cc13-fix10.
+    const bool proximity_trigger_row
+        = kLuaProximityTriggersBound && dispatch_row.address == 0x008c9730u;
+    const bool remove_trigger_row
+        = kLuaProximityTriggersBound && dispatch_row.address == 0x008c5fd0u;
     // Packet cc9_unit_get_attack_target.
     const bool attack_target_row = kLuaUnitGetAttackTargetBound
         && dispatch_row.address == 0x008a6de0u;
@@ -636,6 +648,8 @@ int binding_trampoline(lua_State* state) {
     const bool handled = checkpoint_row || avoidance_setting || objective_row || get_property_row || kill_row
         || add_listener_row || remove_listener_row || listener_active_row || set_invincible_row
         || set_failure_row || get_failure_row || dead_meat_row
+        || unit_selectable_row || entity_speed_row
+        || proximity_trigger_row || remove_trigger_row
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || override_hp_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
@@ -887,6 +901,20 @@ int binding_trampoline(lua_State* state) {
     if (dead_meat_row) {
         if (!host->error_replay()) host->run_set_dead_meat_008ac7b0(state, argc);
         return 0;
+    }
+    if (unit_selectable_row && !host->error_replay()) {
+        return host->run_is_unit_selectable_008ab580(state, argc);
+    }
+    if (entity_speed_row && !host->error_replay()) {
+        return host->run_get_entity_speed_008c0820(state, argc);
+    }
+    if (proximity_trigger_row) {
+        if (!host->error_replay()) host->run_add_proximity_trigger_008c9730(state, argc);
+        return 0;
+    }
+    if (remove_trigger_row) {
+        if (host->error_replay()) return 0;
+        return host->run_remove_trigger_008c5fd0(state, argc);
     }
     if (aa_enable_row) {
         if (!host->error_replay()) host->run_aa_enable_0089c740(state, argc);
@@ -5579,6 +5607,230 @@ void GameMissionLuaHost::dispatch_exit_zone_listeners_00982120() {
     }
 }
 
+// ---------------------------------------------------------------------------
+// Packet cc13-fix10, under kLuaProximityTriggersBound (docs/CC13_FIX10.md).
+// ---------------------------------------------------------------------------
+
+// 008C9730 AddProximityTrigger(entity, name?, callback, target, range). The binding
+// reads argument 3 through 0088A810, argument 4 as a number (00B66270), makes the
+// trigger with 007505C0 (new 60h, 0074FEE0: +5Ch = range * range as a float, +11h = 1,
+// +18h = 2), reads argument 1 through 008C9350 (nil leaves the name disengaged) and
+// argument 2 through 00B662B0, stores both with 00750790 (+1Ch/+24h, +28h), and hands
+// the trigger to the list entity(0)->vtable[60h]() through 0074FAB0 -> vtable[4h]
+// 0071C470 -> 00876020, which links it after every sub-node of priority 2 or less.
+// Returns 0.
+// SUBSTITUTIONS (labelled): the list is this host's per-unit list, keyed by the
+// entity's ID; an entity that is not a unit of this host is counted unresolved and
+// nothing is stored (the image would attach to any entity's element). 0074FEE0's
+// observer on an entity target (00694A60, OnTargetGone 0074FFE0) is not kept.
+int GameMissionLuaHost::run_add_proximity_trigger_008c9730(lua_State* state,
+    int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.proximity_trigger_adds;
+    ProximityTrigger trigger;
+    // 0088A810 on argument 3 (Lua slot 4): `ID` not nil -> 00888AA0 entity, kind 1,
+    // the position left at the zero point and position_valid 0; a null entity leaves
+    // kind 0 and position_valid 0 (the zero point). `ID` nil -> 00888760 Vector3,
+    // position_valid 1.
+    bool id_nil = true;
+    int target_id = 0;
+    if (::lua_type(state, 4) == LUA_TTABLE) {
+        ::lua_getfield(state, 4, "ID");
+        const int type = ::lua_type(state, -1);
+        id_nil = type == LUA_TNIL;
+        if (type == LUA_TNUMBER || type == LUA_TSTRING) {
+            target_id = static_cast<int>(::lua_tonumber(state, -1));
+        }
+        ::lua_pop(state, 1);
+    }
+    if (!id_nil) {
+        // 00888AA0's resolve, as GameScriptOrdersHost::entity_from_argument: a unit
+        // of this host or a scene marker (NavPoint, building) the find-entity pass
+        // made; spawn_ref_entity_frame_008f8680 answers for exactly those.
+        float frame[16];
+        if (spawn_ref_entity_frame_008f8680(target_id, frame)) {
+            trigger.target_kind_44 = 1;
+            trigger.target_id = target_id;
+        }
+    } else if (::lua_type(state, 4) == LUA_TTABLE) {
+        // 00888760, read as GameScriptOrdersHost::argument_vector3 reads it.
+        static const char* const kKeys[3] = {"x", "y", "z"};
+        for (int lane = 0; lane < 3; ++lane) {
+            ::lua_getfield(state, 4, kKeys[lane]);
+            if (::lua_type(state, -1) == LUA_TNUMBER) {
+                trigger.target_point[lane] = static_cast<float>(::lua_tonumber(state, -1));
+            }
+            ::lua_pop(state, 1);
+        }
+        trigger.target_point_valid_45 = true;
+    }
+    // 00B66270 on argument 4, FSTP float; 0074FF4E FMUL ST0,ST0 then FSTP float.
+    const float range = static_cast<float>(::lua_tonumber(state, 5));
+    trigger.radius_sq_5c = bsp::gameplay_seg41_cc13::trigger_radius_squared(range);
+    // 008C9350 on argument 1: nil leaves +24h clear.
+    if (!lua_isnoneornil(state, 2)) {
+        trigger.named_24 = true;
+        trigger.name_1c = listener_string_argument(state, 2);
+    }
+    // 00B662B0 on argument 2.
+    trigger.callback_28 = listener_string_argument(state, 3);
+    // 00888AA0 on argument 0, then vtable[60h]().
+    const int id = air_ops_entity_id(state);
+    if (units_hooks_ == nullptr || id <= 0
+        || static_cast<std::size_t>(id) > units_hooks_->count()) {
+        ++summary_.proximity_trigger_unresolved;
+        log_.notef("  AddProximityTrigger 008c9730: entity id %d has no units-host slot; "
+            "trigger \"%s\" -> %s() not stored (packet cc13-fix10)", id,
+            trigger.name_1c.c_str(), trigger.callback_28.c_str());
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    const GameUnitRow* row = units_hooks_->unit_row(index);
+    log_.notef("  AddProximityTrigger 008c9730: \"%s\" name=%s%s%s -> %s() target=%s%d "
+        "range=%.1f (packet cc13-fix10)", row != nullptr ? row->name.c_str() : "?",
+        trigger.named_24 ? "\"" : "", trigger.named_24 ? trigger.name_1c.c_str() : "nil",
+        trigger.named_24 ? "\"" : "", trigger.callback_28.c_str(),
+        trigger.target_kind_44 != 0 ? "entity " : (trigger.target_point_valid_45 ? "point " : "zero "),
+        trigger.target_id, static_cast<double>(range));
+    // 00876020: every trigger is priority 2, so the new one goes to the end.
+    proximity_triggers_[index].push_back(std::move(trigger));
+    log_.implemented("MissionLuaNative::AddProximityTrigger", "008c9730");
+    return 0;
+}
+
+// 008C5FD0 RemoveTrigger(entity, name): list = entity(0)->vtable[60h]() (008C60ED),
+// name = 00B662B0 argument 1, then 0074FBB0 walks the list (+1Ch, next +0Ch): every
+// node whose vtable[8h](1) answers (the Lua trigger base 0074FCD0), whose name is
+// engaged (+24h) and equal (00435C40: same length, _stricmp) gets vtable[10h]
+// (0071C4A0: +10h = 1, +11h = 0). All matches are retired, not only the first. Pushes
+// whether any matched (00B66xxx boolean) and returns 1.
+// SUBSTITUTION (labelled): only the proximity triggers are this host's; a line-of-sight
+// or squad-ordnance trigger of the same name (both unbound) answers false here.
+int GameMissionLuaHost::run_remove_trigger_008c5fd0(lua_State* state, int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.remove_trigger_calls;
+    const int id = air_ops_entity_id(state);
+    const std::string name = listener_string_argument(state, 2);
+    bool removed = false;
+    if (id > 0) {
+        const auto found = proximity_triggers_.find(static_cast<std::size_t>(id - 1));
+        if (found != proximity_triggers_.end()) {
+            for (ProximityTrigger& trigger : found->second) {
+                if (!trigger.named_24 || !listener_key_equal(trigger.name_1c, name)) continue;
+                trigger.expired_10 = true;   // 0071C4A0
+                trigger.enabled_11 = false;
+                removed = true;
+            }
+        }
+    }
+    if (removed) ++summary_.remove_trigger_matched;
+    const GameUnitRow* row = units_hooks_ != nullptr && id > 0
+        && static_cast<std::size_t>(id) <= units_hooks_->count()
+        ? units_hooks_->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+    log_.notef("  RemoveTrigger 008c5fd0: \"%s\" \"%s\" -> %s (packet cc13-fix10)",
+        row != nullptr ? row->name.c_str() : "?", name.c_str(), removed ? "true" : "false");
+    ::lua_pushboolean(state, removed ? 1 : 0);
+    log_.implemented("MissionLuaNative::RemoveTrigger", "008c5fd0");
+    return 1;
+}
+
+// Wave 2 of the fixed step (00875B90 -> 008759B0) over each watched unit's triggers.
+// 008759B0 takes the next sub-node before it runs the current one, runs vtable[0Ch]
+// when +11h is set (00750000 for a proximity trigger), and releases the node when
+// +10h is set (unlink, vtable[0](1)). A trigger fires once: 0074FDD0 ends in
+// vtable[10h], so the same walk releases it. A trigger added by a callback is
+// appended (priority 2) and is reached in this walk only when the walk had not yet
+// taken its last node, as in the image.
+// SUBSTITUTIONS (labelled): the walk runs once per fixed step after this host's
+// motion step (the image runs it in wave 2, after wave 1's element steps and before
+// the fan-out); the units are walked in index order (the image walks the job groups'
+// element order); wave 2's admission (+5Eh clear, +BDh set) is unit_active().
+void GameMissionLuaHost::run_proximity_triggers_008759b0(float step) {
+    static_cast<void>(step);   // 00750000 is RET 4 and never reads it
+    if (units_hooks_ == nullptr || state_ == nullptr) return;
+    for (auto& entry : proximity_triggers_) {
+        const std::size_t unit = entry.first;
+        if (!units_hooks_->unit_active(unit)) continue;
+        std::list<ProximityTrigger>& list = entry.second;
+        for (auto it = list.begin(); it != list.end();) {
+            const auto next = std::next(it);
+            if (it->enabled_11) check_proximity_trigger_00750000(unit, *it);
+            if (it->expired_10) list.erase(it);
+            it = next;
+        }
+    }
+}
+
+// 00750000: the watched unit's +FCh/+104h after the pose refresh, the descriptor
+// +44h through 006F7DD0, the planar x/z test (fires when +5Ch > d2; a NaN never
+// fires). A hit calls
+// 0074FDD0: the variant vector {00884A90 entity, the name (00886A10) or nil (tag 6)},
+// 00887E50(host, 0, +28h, args, 0, -1), then vtable[10h] (0071C4A0).
+// SUBSTITUTIONS (labelled): an entity target's position is the unit's pose
+// translation or the scene marker's authored position; a target this host cannot
+// place skips the test. 00887E50's queued and `game+1FE4h == 2` arms are not
+// modelled: the call runs inline.
+void GameMissionLuaHost::check_proximity_trigger_00750000(std::size_t unit,
+    ProximityTrigger& trigger) {
+    float right[3], up[3], forward[3], watched[3];
+    if (!units_hooks_->unit_pose(unit, right, up, forward, watched)) return;
+    float target[3] = {0.0f, 0.0f, 0.0f};   // the zero point 00F87574
+    if (trigger.target_kind_44 != 0) {
+        // 006F7DD0's entity arm: (00414DB0 when +C8h is clear) then +FCh/+100h/+104h,
+        // the translation row of +CCh.
+        float frame[16];
+        if (!spawn_ref_entity_frame_008f8680(trigger.target_id, frame)) return;
+        target[0] = frame[12];
+        target[1] = frame[13];
+        target[2] = frame[14];
+    } else if (trigger.target_point_valid_45) {
+        target[0] = trigger.target_point[0];
+        target[1] = trigger.target_point[1];
+        target[2] = trigger.target_point[2];
+    }
+    ++summary_.proximity_trigger_checks;
+    // 00750042 / 0075004E: FSUB float, FSTP float.
+    const float dx = static_cast<float>(static_cast<double>(watched[0]) - target[0]);
+    const float dz = static_cast<float>(static_cast<double>(watched[2]) - target[2]);
+    // 0075005E..0075006C: (dx*dx + 0*0) + dz*dz, FSTP float. ASSUMED 24-bit precision
+    // control (each FMUL/FADD rounds to float; docs/CC13_FPU_PRECISION.md): the thread
+    // that runs wave-2 jobs is not established. Under 53 bits the sum rounds once
+    // (bsp::gameplay_seg41_cc13::proximity_check_00750000); at most one ulp apart.
+    const float dx2 = static_cast<float>(static_cast<double>(dx) * dx);
+    const float dz2 = static_cast<float>(static_cast<double>(dz) * dz);
+    const float d2 = static_cast<float>(static_cast<double>(dx2) + dz2);
+    // 00750077 FCOMIP ST0 = +5Ch, ST1 = d2; JBE skips, so an unordered compare never fires.
+    if (!(trigger.radius_sq_5c > d2)) return;
+    // 0074FDD0.
+    ++summary_.proximity_trigger_fires;
+    const GameUnitRow* row = units_hooks_->unit_row(unit);
+    log_.notef("  proximity trigger 00750000: \"%s\" %s%s%s -> %s() (packet cc13-fix10)",
+        row != nullptr ? row->name.c_str() : "?", trigger.named_24 ? "\"" : "",
+        trigger.named_24 ? trigger.name_1c.c_str() : "nil", trigger.named_24 ? "\"" : "",
+        trigger.callback_28.c_str());
+    const int top = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, trigger.callback_28.c_str());
+    if (lua_isfunction(state_, -1)) {
+        if (!push_resolved_entity_by_id(state_, static_cast<int>(unit + 1))) {
+            lua_pushnil(state_);
+        }
+        if (trigger.named_24) {
+            ::lua_pushlstring(state_, trigger.name_1c.data(), trigger.name_1c.size());
+        } else {
+            lua_pushnil(state_);
+        }
+        if (::lua_pcall(state_, 2, 0, 0) != 0) {
+            const char* message = lua_tolstring(state_, -1, nullptr);
+            note_error(message != nullptr ? message : std::string("(no message)"));
+        }
+    } else {
+        ++summary_.proximity_trigger_callback_missing;
+    }
+    ::lua_settop(state_, top);
+    trigger.expired_10 = true;   // vtable[10h], 0071C4A0
+    trigger.enabled_11 = false;
+}
+
 // 009813A0's `kill` channel: 0097B8C0 collects the callback of every subscription
 // whose condition (0096ACE0) holds, then each is called. The victim is the unit's
 // entity (id = index + 1).
@@ -7876,6 +8128,110 @@ int GameMissionLuaHost::run_get_failure_0088f1d0(lua_State* state, int argument_
     return 1;
 }
 
+// Packet cc13-fix12 (docs/CC13_FIX12.md), under kLuaIsUnitSelectableBound. 008AB580
+// IsUnitSelectable(entity), a binding with no stack arguments: 008AB67F 00888AA0
+// resolves argument 0 (ESI, null when unresolved); 008AB696 MOV DL,1 / MOV ECX,ESI /
+// CALL 00645160, which is EAX = EDX; EDX = [[00E188A8]+18ECh]; PUSH EAX; CALL 00645060
+// and adds nothing else; 008AB6A4 00B66450 PushBoolean(AL); one result. The predicate's
+// inputs (selectable_inputs_00645060) already take the local player's team and a shut
+// spectator door, which is what 00645060 does with allowSpectate 1 while game+2194h is
+// clear (0064506A..0064507C). A null unit answers false at 00645082, as an unresolved
+// argument does here. LABELLED: with no HUD host attached nothing is pushed (nil), the
+// row's behaviour while unbound; the image always answers.
+int GameMissionLuaHost::run_is_unit_selectable_008ab580(lua_State* state, int argument_count) {
+    (void)argument_count;
+    ++summary_.unit_selectable_calls;
+    std::size_t unit = 0;
+    if (!objective_argument_unit(state, 0, unit)) {
+        ++summary_.unit_selectable_unresolved;
+        ::lua_pushboolean(state, 0);
+        log_.implemented("MissionLuaNative::IsUnitSelectable", "008ab580");
+        return 1;
+    }
+    bool reached = false;
+    const bool selectable = bsp::game::hud_unit_selectable_00645060(unit, reached);
+    if (!reached) {
+        ++summary_.unit_selectable_no_hud;
+        log_.unimplemented("MissionLuaNative::IsUnitSelectable", "008ab580");
+        return 0;
+    }
+    if (selectable) ++summary_.unit_selectable_true;
+    ::lua_pushboolean(state, selectable ? 1 : 0);
+    log_.implemented("MissionLuaNative::IsUnitSelectable", "008ab580");
+    return 1;
+}
+
+namespace {
+// 007B8E60 FLD [unit+0B1Ch]. SUBSTITUTION (labelled), as the units host's own
+// leader_live_speed_007b8e60: +B1Ch is |ctl+18h| cached at 007D807C, here the
+// magnitude of the body linear velocity the free-flight step mirrors
+// plane_world_velocity into, taken when the native runs.
+bool plane_cached_speed_007b8e60(const GameUnitsHost& units, std::size_t index, float& out) {
+    float v[3] = {0.0f, 0.0f, 0.0f};
+    if (!units.unit_linear_velocity(index, v)) return false;
+    out = static_cast<float>(std::sqrt(static_cast<double>(v[0]) * v[0]
+        + static_cast<double>(v[1]) * v[1] + static_cast<double>(v[2]) * v[2]));
+    return true;
+}
+}  // namespace
+
+// Packet cc13-fix12 (docs/CC13_FIX12.md), under kLuaGetEntitySpeedBound. 008C0820
+// GetEntitySpeed(entity), a binding with no stack arguments: 008C091F 00888AA0
+// resolves argument 0; 008C0936..008C093D MOV EDX,[ESI] / MOV EAX,[EDX+38h] / CALL EAX
+// with no null test; 008C093F FSTP float (the result is a float); 008C094F 00B66480
+// pushes it; one result. Slot 38h by class, first match:
+//   PlaneSquadronGen 00D087C0 slot 00D087F8 = 007ED470: ECX = [squadron+3D0h], JMP its
+//     vtable[38h], so the leader plane's 007B8E60 (registry flight_leader(), slot 0);
+//   the nine ship vtables, 0080E0F0: ECX = [unit+1018h], JMP 0092D730, the signed body
+//     forward speed (GameUnitsHost::unit_forward_speed_0092d730);
+//   the nine plane vtables, 007B8E60: FLD [unit+0B1Ch] (plane_cached_speed_007b8e60).
+// LABELLED: an unresolved entity or a squadron with no leader faults or reads a
+// stale slot in the image; other classes' slot-38h bodies were not read. Those
+// push nothing (nil), the row's behaviour while unbound. No RNG draw.
+int GameMissionLuaHost::run_get_entity_speed_008c0820(lua_State* state, int argument_count) {
+    (void)argument_count;
+    ++summary_.entity_speed_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.entity_speed_unresolved;
+        log_.unimplemented("MissionLuaNative::GetEntitySpeed", "008c0820");
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    float speed = 0.0f;
+    const bsp::PlaneSquadronHostRecord* squadron = nullptr;
+    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+        if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == index) {
+            squadron = &r;
+            break;
+        }
+    }
+    if (squadron != nullptr) {
+        const std::size_t leader = squadron->flight_leader();   // 007ED470 +3D0h
+        if (leader == bsp::kPlaneSquadronNoUnit || leader >= units->count()
+            || !plane_cached_speed_007b8e60(*units, leader, speed)) {
+            ++summary_.entity_speed_unresolved;
+            log_.unimplemented("MissionLuaNative::GetEntitySpeed", "008c0820");
+            return 0;
+        }
+        ++summary_.entity_speed_squadron;
+    } else if (units->unit_is_kind_of(index, bsp::kUnitKindQueryShip)) {
+        speed = units->unit_forward_speed_0092d730(index);       // 0080E0F0
+        ++summary_.entity_speed_ship;
+    } else if (units->unit_is_kind_of(index, bsp::kUnitKindQueryPlane)
+               && plane_cached_speed_007b8e60(*units, index, speed)) {
+        ++summary_.entity_speed_plane;                           // 007B8E60
+    } else {
+        ++summary_.entity_speed_unmodelled;
+        log_.unimplemented("MissionLuaNative::GetEntitySpeed", "008c0820");
+        return 0;
+    }
+    ::lua_pushnumber(state, static_cast<lua_Number>(speed));     // 00B66480
+    log_.implemented("MissionLuaNative::GetEntitySpeed", "008c0820");
+    return 1;
+}
+
 // Packet cc13-fix11 (docs/CC13_FIX11.md), under kLuaSetDeadMeatBound. 008AC7B0
 // SetDeadMeat(entity), 008AC7B0-008AC9C2, a binding with no stack arguments (RET).
 // The standalone body is bsp::lua_set_dead_meat (src/options_seg56_cc13.cpp); its
@@ -9577,6 +9933,15 @@ void GameMissionLuaHost::report_mission_script_state() {
             "fires=%llu (00982120, packet cc13-fix3)", summary_.listener_exit_zone_events,
             summary_.listener_exit_zone_latched, summary_.listener_exit_zone_fires);
     }
+    if constexpr (kLuaProximityTriggersBound) {
+        log_.notef("summary mission script proximity triggers bound=1 adds=%llu "
+            "unresolved=%llu checks=%llu fires=%llu callback_missing=%llu removes=%llu "
+            "matched=%llu (008C9730 / 00750000 / 008C5FD0, packet cc13-fix10)",
+            summary_.proximity_trigger_adds, summary_.proximity_trigger_unresolved,
+            summary_.proximity_trigger_checks, summary_.proximity_trigger_fires,
+            summary_.proximity_trigger_callback_missing, summary_.remove_trigger_calls,
+            summary_.remove_trigger_matched);
+    }
     if constexpr (kKillListenerDeadFirstBound) {
         log_.notef("summary mission script kill dead-first bound=1 published=%llu "
             "(0095945B before 00959507, packet cc13-ver5)", summary_.listener_kill_dead_first);
@@ -9620,6 +9985,20 @@ void GameMissionLuaHost::report_mission_script_state() {
             "vtable[70h], packet cc13-fix11)", summary_.dead_meat_calls, summary_.dead_meat_sunk,
             summary_.dead_meat_sink_refused, summary_.dead_meat_destroyed,
             summary_.dead_meat_plane_unapplied, summary_.dead_meat_unresolved);
+    }
+    if constexpr (kLuaIsUnitSelectableBound) {
+        log_.notef("summary mission script unit selectable calls=%llu true=%llu "
+            "unresolved=%llu no_hud=%llu (008AB580 -> 00645160 / 00645060, packet "
+            "cc13-fix12)", summary_.unit_selectable_calls, summary_.unit_selectable_true,
+            summary_.unit_selectable_unresolved, summary_.unit_selectable_no_hud);
+    }
+    if constexpr (kLuaGetEntitySpeedBound) {
+        log_.notef("summary mission script entity speed calls=%llu squadron=%llu ship=%llu "
+            "plane=%llu unresolved=%llu unmodelled=%llu (008C0820 -> vtable[38h] 007ED470 / "
+            "0080E0F0 / 007B8E60, packet cc13-fix12)", summary_.entity_speed_calls,
+            summary_.entity_speed_squadron, summary_.entity_speed_ship,
+            summary_.entity_speed_plane, summary_.entity_speed_unresolved,
+            summary_.entity_speed_unmodelled);
     }
     log_.notef("summary mission script attack target bound=%d calls=%llu fire_arm=%llu "
         "command_arm=%llu pushed=%llu nil=%llu unresolved=%llu (008A6DE0, packet "
