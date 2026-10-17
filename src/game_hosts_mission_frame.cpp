@@ -860,6 +860,13 @@ public:
                 }
             }
             owner_.units->motion_step_00825f20(step);
+            if constexpr (kLuaProximityTriggersBound) {
+                // Packet cc13-fix10: wave 2's sub-list walk (00875B90 -> 008759B0)
+                // tests the Lua proximity triggers (00750000) after wave 1's element
+                // steps, and a hit's callback runs before the next step. SUBSTITUTION
+                // (labelled): once per step after this host's motion step.
+                owner_.lua.run_proximity_triggers_008759b0(step);
+            }
             if (hull_attitude_trace_interval() != 0u
                 && (owner_.units->summary().motion_steps % hull_attitude_trace_interval()) == 0u) {
                 // DIAGNOSTIC, packet cc9_ship_motion_hydro (BSP_HULL_ATTITUDE_TRACE=1):

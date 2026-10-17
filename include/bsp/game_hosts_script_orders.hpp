@@ -509,6 +509,21 @@ inline constexpr bool kLuaCapturePercentageBound = true;
 // PushFloat 00B66480 at 0089B977. True: the absolute fraction is pushed, so a side-1
 // capture reads positive (usn_14:1127 `GetCapturePercentage(unit) > 0`). False: signed.
 inline constexpr bool kLuaCapturePercentageFabsBound = true;   // ON: SQUADRON_LAND_TASK 5he.1
+// Packet cc13-fix13 (docs/CC13_FIX13.md; docs/CC13_VERIFY16.md R4). True:
+// `GetCommandBuildingLevel(entity)` 0089B6D0 pushes [entity+770h] as an integer
+// (0089B7E6 MOV, 0089B7F1 00B664B0), read from the ship-AI host's capture building record
+// (006F2780's scene Level, moved by 006F38E0), or the units host's scene value for
+// a CommandBuilding before the records are built. False: an unimplemented record
+// that pushes nothing, so JM05's `GetCommandBuildingLevel(...) >= 2`
+// (PRCPIJN/jm05.lua:2779) raises once the RadarStation is Japanese.
+inline constexpr bool kLuaGetCommandBuildingLevelBound = false;
+// Packet cc13-fix13. True: `SetCommandBuildingOwnerPlayer(entity, player)` 008A8D90
+// delivers D3h(player, byte 1) to a CommandBuilding (vtable[5Ch](1Ch) true), which
+// 006F4D10 applies as the capture flip to the player slot's party, without the
+// loss announcements (GameShipAiHost::command_building_set_owner_player_006f4d10).
+// False: an unimplemented record; the building keeps its party. JM05's three calls
+// (PRCPIJN/jm05.lua:1262/1263/1283) sit under `this.Cheat_PhaseShift` only.
+inline constexpr bool kLuaSetCommandBuildingOwnerPlayerBound = false;
 // Packet cc9_lua_mission_narrative (docs/MISSION_END.md, "The narrative queue").
 // True: MissionNarrative / MissionNarrativeEnqueue 008B0C10 enqueue (text,
 // callback, arguments) on [game+21E8h] (00734870), MissionNarrativeClear
@@ -1225,6 +1240,11 @@ private:
     // Packet cc9_lua_capture_percentage.
     std::size_t capture_percentage_calls_{0};
     std::size_t capture_percentage_unresolved_{0};
+    // Packet cc13-fix13.
+    std::size_t command_building_level_calls_{0};
+    std::size_t command_building_level_unresolved_{0};
+    std::size_t command_building_owner_calls_{0};
+    std::size_t command_building_owner_applied_{0};
     // Packet cc9_lua_mission_narrative: [game+21E8h]'s list +8h (00734870's
     // nodes: text +0Ch, callback +14h, arguments +1Ch) and the shown entry
     // +14h..+34h.

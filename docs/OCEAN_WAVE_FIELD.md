@@ -2671,3 +2671,46 @@ carrier deck the roll-out brakes at 1.0, so planes stop shorter; airfield landin
 more Kate/Val strikers per wave; JM06: the Lexington-exit failure check becomes reachable; USN01: Val 1/2
 dive altitude capped at 700 m for the rest of the mission; usn_03 squadrons land and are removed.
 TrulyDead: JM06's Yamato completion test and commandhelpers' loser-unit choice see sunk hulls removed.
+
+## 66. Pairs for sections 63-65, R7's turbo arm, ReloadTorpedoes (cc9-physics17, 2026-10-17)
+
+**Air switches (63, 64).** `local\p16_x_off` / `local\p16_x_air` (commit 7b012d81a, the four flipped together),
+reference env; manifests `local\p16x{off,air}_{usn04,jm05,usn01}.log.manifest.json` (12000 mission frames) and
+`local\p17x{off,air}_usn01w.log.manifest.json` (30000 frames, `--helm-orders` `config\win_orders\usn01_p8_u1_i.txt`).
+
+| row | counters ON | verdict |
+| --- | --- | --- |
+| USN04 | by_ordnance 1489, leads 0 | moved (3): deaths 59 -> 53, dive-bomb releases 0 of 20 -> 2 of 27 |
+| JM05 | all 0 | gameplay identical (1) |
+| USN01 | leads 583 | moved (3): KatSBD V ditches 118 m short of the led deck point (574.78 s) instead of landing; Enterprise then sinks at 596.38 s (Nell6; it had 179 hp left OFF) |
+| USN01 win orders | leads 4761 | moved (3): all 11 Enterprise landings finish 2-7 s earlier; the mission still completes at 1230.07 s on both sides; deaths 56 both |
+
+- `kMoveToCruiseByOrdnanceBound`: the cruise arms fire where 63 put them (USN04's scripted MoveTo strikes). **ON.**
+- `kMoveToLegAltitudeBound`: no row registered a leg (separations 0 everywhere). Flipped as the image's structure,
+  **ON, unexercised.**
+- `kCarrierLandingVelocityLeadBound`: the lead is 009AFC58-009AFD52 as read (disasm checked: e from vtable[50h],
+  vtable[38h] = 007B8E60 `+B1Ch`, the 0.18 cap `00D05AA0`, the 10 s cap `00CE38B8`, 00414C60 over x and z). Landings
+  line up earlier; the one ditch is recorded, not explained. **ON.**
+- `kCarrierTouchdownBrakeBound`: **unreached.** 009B1EF2's touched byte never sets in this host (`summary landing
+  plane ... touched=0` on all 13 USN01 landings, which go to the park through the ground-roll law), so the
+  land-final ground half that holds the brake does not run. **ON** (identity); the touched byte is the open item.
+
+**Lua natives (65).** `local\p16_x_lua` against `p16_x_off`, 12000 frames. PRCP01 (`local\p17x{off,lua}_prcp01`):
+moved (3), units 23 -> 95, Kate1/Val1 instantiated per pass (#2..#4), first hit -1 -> 365.23 s, failed at 456.11 s
+(Enterprise sunk) where OFF never ends. That is `kGenerateObjectEveryCallBound`: **ON** (lease on
+`game_hosts_lua.hpp` queued). USN02, JM05 and USN01: gameplay identical; no RemoveUntouchableUnit, IsInBorderZone,
+SquadronSetReleaseAlt or SquadronLandAndKill call in 600 s. This installation's callers: IsInBorderZone jm02,
+jm03:2078, jm04, jm05:4211, jm06:996, jm13; RemoveUntouchableUnit jm05:1242, jm10, jm13, bsm_09:807;
+SquadronSetReleaseAlt bsm_09:321. JM02 / JM03 pairs follow.
+
+**R7's turbo arm.** 007C0FCF-007C0FE4 multiply the bomb-load factor by class+608h TurboControlLimit while
+plane+BC8h is set. `bomb_load_factor` now takes it with cc13-fix89's latch, under `kKamikazeBoostTurboBound`
+(49575c7db).
+
+**ReloadTorpedoes 008C3CE0** (`kReloadTorpedoesBound`, OFF, 057145750). 008C3E00-008C3E47: for each device
+(`[unit+48h]`, next `+44h`) answering vtable[5Ch](20h) with `[[+3F4h]+80h] == 7`, 0072CF00(gun, b, 0.0f, 0) for
+b in 0..`[+448h)`: `[+414h][b] = 0` (0072CF88), so every tube, fired ones included, is loaded at once; the stock is
+not drawn. LABELLED: a torpedo gun is a host gun row of category 7; the call is queued and applied at the next
+gunnery fixed step; 0072CF00's torpedo-model tail is presentation. This installation's callers: commandhelpers.lua
+3531, 3595, 14801; jm03:1486 (`luaJM3ReloadTorp`); jm07:1918; jm08:774; jm11:1716 (a second argument is ignored).
+The script-orders binding is pending its lease.

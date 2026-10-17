@@ -1234,6 +1234,11 @@ struct GameShipAiHost::Impl {
     // Packet cc9_capture_generated_class_fields: class+804h / +810h for one unit.
     void read_capture_class_fields(std::size_t u);
     void capture_step(float seconds);
+    // 006F4D10's effects after command_building_flip_006f4d10 decided the party:
+    // the side change, the party mirror, the repair and the D4h level 0. Shared by
+    // the capture tick's flip and SetCommandBuildingOwnerPlayer (packet cc13-fix13).
+    void apply_capture_flip_006f4d10(CaptureBuilding& b,
+                                     const bsp::CommandBuildingFlipOutcome& flip);
     // Packet cc9_landing_ramp_capture: class+810h LandedCapturePower per unit, the
     // ramp latch's counters and the BSP_LANDER_DIAG=1 trace (env-gated).
     std::vector<std::int32_t> landed_capture_power_0810;
@@ -12789,24 +12794,29 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
             "repair=%d at t=%.2f (006F6760 -> D3h 006F4D10)", row != nullptr ? row->name.c_str()
             : "?", flip.new_party, tick.side, slot, flip.repair ? 1 : 0, capture_clock);
         ++capture_flips;
-        units.set_unit_side_0054(b.unit, flip.new_party);
-        mirror_capture_party_00928f50();   // 006F4FB8 CALL EDX, vtable[2Ch](party, ...)
-        if (gunnery_draws != nullptr) {
-            gunnery_draws->refresh_unit_side(b.unit);
-            // 006F47F0(this, 1.0, 1.0): Repair[level] / 100 is >= 1.0 at every level
-            // (this installation's commandbuildingglobals.lua, 2024-07-13: 100, 110,
-            // 120, 130), so the building returns to full health. The garrison slot
-            // occupants (+778h) are not separate units here; the building's own
-            // guns follow its party.
-            // Packet s52_cb_repair: f = Repair[+770h] * 1.0 / 1.0 (006F481E..006F4828),
-            // the level before the flip's D4h level 0 below.
-            const int lv = b.level_770 < 0 ? 0 : (b.level_770 > 3 ? 3 : b.level_770);
-            if (flip.repair) gunnery_draws->repair_unit_to_fraction(b.unit,
-                kCommandBuildingStepRepairBound ? kCommandBuildingRepairLevel[lv] : 1.0f);
-        }
-        // 006F5362..006F53A4: D4h with level 0, after the repair.
-        if (kCommandBuildingLevelBound) command_building_level_006f38e0(b, 0, "flip D4h 006F5362");
+        apply_capture_flip_006f4d10(b, flip);
     }
+}
+
+void GameShipAiHost::Impl::apply_capture_flip_006f4d10(CaptureBuilding& b,
+    const bsp::CommandBuildingFlipOutcome& flip) {
+    units.set_unit_side_0054(b.unit, flip.new_party);
+    mirror_capture_party_00928f50();   // 006F4FB8 CALL EDX, vtable[2Ch](party, ...)
+    if (gunnery_draws != nullptr) {
+        gunnery_draws->refresh_unit_side(b.unit);
+        // 006F47F0(this, 1.0, 1.0): Repair[level] / 100 is >= 1.0 at every level
+        // (this installation's commandbuildingglobals.lua, 2024-07-13: 100, 110,
+        // 120, 130), so the building returns to full health. The garrison slot
+        // occupants (+778h) are not separate units here; the building's own
+        // guns follow its party.
+        // Packet s52_cb_repair: f = Repair[+770h] * 1.0 / 1.0 (006F481E..006F4828),
+        // the level before the flip's D4h level 0 below.
+        const int lv = b.level_770 < 0 ? 0 : (b.level_770 > 3 ? 3 : b.level_770);
+        if (flip.repair) gunnery_draws->repair_unit_to_fraction(b.unit,
+            kCommandBuildingStepRepairBound ? kCommandBuildingRepairLevel[lv] : 1.0f);
+    }
+    // 006F5362..006F53A4: D4h with level 0, after the repair.
+    if (kCommandBuildingLevelBound) command_building_level_006f38e0(b, 0, "flip D4h 006F5362");
 }
 
 bool GameShipAiHost::Impl::building_health_of(std::size_t unit, float& health,
@@ -13144,6 +13154,61 @@ bool GameShipAiHost::command_building_capture_fraction_006f1f90(std::size_t unit
         return true;
     }
     return false;
+}
+
+// Packet cc13-fix13: see the header. The record's level_770 is seeded from the
+// units host's scene value at build and moved only by 006F38E0.
+bool GameShipAiHost::command_building_level_0770(std::size_t unit_index,
+                                                 std::int32_t& out) const {
+    for (const auto& b : impl_->capture_buildings) {
+        if (b.unit != unit_index) continue;
+        out = b.level_770;
+        return true;
+    }
+    return false;
+}
+
+// Packet cc13-fix13: SetCommandBuildingOwnerPlayer's D3h (008A8EE7..008A8F2A) as
+// 006F4D10 handles it with byte +20h = 1. 006F4D10 (byte 1): +7A8h = 0, +528h,
+// the cblost / cbneutralized announcements skipped (006F4D50 TEST, only byte 0
+// posts them), then slot 8 / 9 neutral (006F4F5B / 006F4F68), otherwise
+// [[game+18CCh]+slot*4]+28h as the new party (006F4F71..006F4FB8 SetPartyRace), the
+// retake test (006F4FBA..) and the D4h level 0.
+// SUBSTITUTIONS (labelled): the slot record's Party is the scene's published
+// MultiPlay.PlayerN party (scene_slot_party, the capture tick's own source under
+// kLocalPartyFromSceneBound; slot index = party while it is off); a slot with no
+// published party, or a player outside 0..9 (the image indexes past the eight
+// slot pointers), does nothing; the message is applied at the call rather than
+// through the session queue (0077C2A0 flags 7); the prior slot +7B4h reads -1 as
+// in the tick, so the retake exemption never applies.
+// NOT MODELLED (as in the capture tick's flip): the slot-8/9 arm's +7D8h =
+// float [+538h]+190h (006F50A5) and game-mode-2 +7B0h record, vtable[144h] and
+// the garrison loop (006F50CC..), the HUD selected-unit refresh, the warning
+// manager's capture-point report, 0095D3C0 and the flag node. Dispatch 006F549E..006F54A9
+// passes the message's +1Ch and byte +20h as 006F4D10's two arguments.
+bool GameShipAiHost::command_building_set_owner_player_006f4d10(std::size_t unit_index,
+                                                                std::int32_t player) {
+    Impl& host = *impl_;
+    if (!kCommandBuildingCaptureBound) return false;
+    if (!host.capture_built) host.build_capture_buildings();
+    Impl::CaptureBuilding* b = host.capture_building_of(unit_index);
+    if (b == nullptr) return false;
+    std::int32_t slot_party = 2;
+    if (player != 8 && player != 9) {
+        if (player < 0 || player > 7) return false;
+        slot_party = bsp::game::kLocalPartyFromSceneBound
+            ? bsp::game::scene_slot_party(player, -1) : player;
+        if (slot_party < 0) return false;
+    }
+    const bsp::CommandBuildingFlipOutcome flip = bsp::command_building_flip_006f4d10(
+        b->state, player, slot_party, -1);
+    const GameUnitRow* row = host.units.unit_row(b->unit);
+    host.log.notef("command building owner player: unit=%s player=%d -> party=%d repair=%d "
+        "(008A8D90 SetCommandBuildingOwnerPlayer -> D3h 006F4D10, packet cc13-fix13)",
+        row != nullptr ? row->name.c_str() : "?", player, flip.new_party,
+        flip.repair ? 1 : 0);
+    host.apply_capture_flip_006f4d10(*b, flip);
+    return true;
 }
 
 // Packet cc9_cb_hit_gate_entry: see the header. The lander bleed

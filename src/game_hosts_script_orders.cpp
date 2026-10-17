@@ -350,6 +350,10 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // Packet cc9_lua_capture_percentage: JM05.lua:5178-5216. Handled only with
     // kLuaCapturePercentageBound.
     {"GetCapturePercentage", 0x0089b840u},
+    // Packet cc13-fix13: JM05 (PRCPIJN/jm05.lua:2779, :1262/:1263/:1283). Handled
+    // only with kLuaGetCommandBuildingLevelBound / kLuaSetCommandBuildingOwnerPlayerBound.
+    {"GetCommandBuildingLevel", 0x0089b6d0u},
+    {"SetCommandBuildingOwnerPlayer", 0x008a8d90u},
     // Packet cc9_lua_mission_narrative: handled only with kLuaMissionNarrativeBound.
     {"MissionNarrative", 0x008b0c10u},
     {"MissionNarrativeEnqueue", 0x008b0c10u},
@@ -676,6 +680,12 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     }
     if (std::strcmp(binding->name, "GetCapturePercentage") == 0) {
         return kLuaCapturePercentageBound;
+    }
+    if (std::strcmp(binding->name, "GetCommandBuildingLevel") == 0) {
+        return kLuaGetCommandBuildingLevelBound;
+    }
+    if (std::strcmp(binding->name, "SetCommandBuildingOwnerPlayer") == 0) {
+        return kLuaSetCommandBuildingOwnerPlayerBound;
     }
     if (std::strcmp(binding->name, "DisplayScores") == 0 ||
         std::strcmp(binding->name, "HideScoreDisplay") == 0) {
@@ -4323,6 +4333,47 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         if (kLuaCapturePercentageFabsBound) fraction = std::fabs(fraction);   // 0089B966
         push_number_float_00b66480(fraction);
         results = state_ != nullptr ? 1 : 0;
+    } else if (std::strcmp(binding->name, "GetCommandBuildingLevel") == 0) {
+        // Packet cc13-fix13. 0089B6D0 (__fastcall, ECX the Lua state, RET): 0089B7CF
+        // 00888AA0 on argument 0, 0089B7E6 MOV ESI,[ESI+770h] with no null or class
+        // test, 0089B7F1 00B664B0 PushInteger; one result.
+        // SUBSTITUTIONS (labelled): the level is the ship-AI host's capture record
+        // (+770h as 006F2780 and 006F38E0 keep it); before the records exist, the
+        // units host's scene Level (the constructor's value, 0 for a unit that is
+        // not a CommandBuilding). An entity with no units-host slot answers 0, where
+        // the image would read +770h of a null or foreign object.
+        ++command_building_level_calls_;
+        void* entity = entity_from_argument(0);
+        const std::size_t index = index_of(entity);
+        std::int32_t level = 0;
+        GameShipAiHost* ai = units_.ship_ai();
+        if (entity == nullptr || index >= units_.count()) {
+            ++command_building_level_unresolved_;
+        } else if (ai == nullptr || !ai->command_building_level_0770(index, level)) {
+            level = units_.command_building_level_0770(index);
+        }
+        if (state_ != nullptr) lua_pushinteger(state_, static_cast<lua_Integer>(level));
+        results = state_ != nullptr ? 1 : 0;
+    } else if (std::strcmp(binding->name, "SetCommandBuildingOwnerPlayer") == 0) {
+        // Packet cc13-fix13. 008A8D90 (__fastcall, ECX the Lua state, RET): 00888AA0 on
+        // argument 0, 008A8EC1 00B66290 argument 1 as an integer, 008A8EE1
+        // vtable[5Ch](1Ch); when true, message D3h (vtable 00CFADBC, +4h = 1, word
+        // +18h = 0, byte +1Ah = 0, +1Ch = player, byte +20h = 1) routed by 008A8F2A
+        // 0077C2A0(&message, 7, 0) with ECX the entity. Returns no value.
+        // SUBSTITUTIONS (labelled): the message is applied at the call through the
+        // ship-AI host's D3h (see command_building_set_owner_player_006f4d10); a
+        // CommandBuilding test is the host's capture-record lookup; an entity with
+        // no units-host slot does nothing, where the image's vtable call would fault.
+        ++command_building_owner_calls_;
+        void* entity = entity_from_argument(0);
+        const std::size_t index = index_of(entity);
+        const int player = get_integer(1);
+        GameShipAiHost* ai = units_.ship_ai();
+        if (entity != nullptr && index < units_.count() && ai != nullptr &&
+            ai->command_building_set_owner_player_006f4d10(index, player)) {
+            ++command_building_owner_applied_;
+        }
+        results = 0;
     } else if (std::strcmp(binding->name, "CountdownTimeLeft") == 0) {
         // 008B1B40 computes the time left without testing +3Ch.
         ++countdown_time_left_reads_;
@@ -6169,6 +6220,14 @@ void GameScriptOrdersHost::report() {
             "unresolved=%zu (0089B840 -> 006F1F90, packet cc9_lua_capture_percentage)",
             kLuaCapturePercentageBound ? 1 : 0, capture_percentage_calls_,
             capture_percentage_unresolved_);
+    }
+    if (command_building_level_calls_ != 0 || command_building_owner_calls_ != 0) {
+        log_.notef("summary mission script command building level bound=%d calls=%zu "
+            "unresolved=%zu owner_player bound=%d calls=%zu applied=%zu (0089B6D0 / "
+            "008A8D90, packet cc13-fix13)", kLuaGetCommandBuildingLevelBound ? 1 : 0,
+            command_building_level_calls_, command_building_level_unresolved_,
+            kLuaSetCommandBuildingOwnerPlayerBound ? 1 : 0, command_building_owner_calls_,
+            command_building_owner_applied_);
     }
     if (rows_.empty()) return;
     log_.notef("the mission script's own orders, run through the eight reconstructed "
