@@ -2379,3 +2379,22 @@ reader and is clear, so `007EDAC0` is false; 007ED7E0 / 007ED8D0 / 007EDA10 / 00
   stall block's arm; `steps` grows with each dying plane's fall.
 - Wreck lift ON: `wreck_lift_kicks` 0 or near 0 (ctl+94h is set only after a dead plane's water contact, and such a
   plane stays in the water arm), so gameplay identical or nearly so.
+
+### 58.4 Measured, and the verdict: both ON
+
+Both sides are builds of d97c232cf: OFF `local\p14_sf` (no flip), ON `local\p14_br` (both switches). Reference
+environment, `--stop-after-end 40`. Logs `local\p15sp{off,on}_<row>.log` with manifests. No NaN on any ON log.
+
+| row | `pair_diff` | seeds / steps ON | wreck lift kicks | death rows OFF -> ON | first moved row |
+| --- | --- | --- | --- | --- | --- |
+| USN01 3000 | 1 | 5 / 638 | 0 | identical | none (gameplay identical) |
+| USN04 4500 | 3 | 40 / 5465 | 0 | 51 = 51, 20 changed | B5N Kate #4.1/.-IV, the first plane death (killer_range 954 -> 953) |
+| JM05 9000 (fails at 300.05 s both sides) | 3 | 24 / 2255 | 0 | 44 = 44, 18 changed | USS Yorktown_sqn06/.-II, the first plane death |
+
+1. **Held:** seeds only for planes that died in the stall block's arm, and nothing moves before the first plane death
+   on either moved row; the later rows move through the AA that keeps firing at the falling wrecks (killer changes).
+2. **Held:** no wreck-lift kick anywhere.
+
+**Verdict: both ON.** `kFreeFlightDyingSpinBound` is 007DC830's `007DCAF9` arm with 007D7EA0's draw (keyed stream,
+labelled); `kFreeFlightWreckLiftBound` is `007DCB4B` as read and has no reach in these rows. USN04 and JM05 move at
+the timing level with equal death counts; reference rows with plane deaths need re-timing on the new base.

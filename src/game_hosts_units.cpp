@@ -6668,12 +6668,12 @@ struct GameUnitsHost::Impl {
     // +250h/+254h) times 00439950's direction (z = U(-1, 1), phi = U(0, 2 pi)), all
     // on stream 1. LABELLED: drawn from the plane's keyed stream (`name#ds_m`,
     // `#ds_z`, `#ds_p`) at its first dying step, not at construction. False: no spin.
-    static constexpr bool kFreeFlightDyingSpinBound = false;
+    static constexpr bool kFreeFlightDyingSpinBound = true;   // ON by its pairs (OCEAN_WAVE_FIELD 58.4)
     // Packet p15_dying_spin (section 58). True: 007DCB4B-007DCCCB, with ctl+94h set:
     // v = the world velocity with y = 0, h = 00419010(0, 4, 69.444443, 20, |v|),
     // u = max(0, 1 - |+C64h|), q = min(1, |+C68h| * 0.8 + 0.6), and the 007DAFD0 kick
     // at (0,0,1) toward (0,-1,0) of q u h, limit 1000. False: not carried.
-    static constexpr bool kFreeFlightWreckLiftBound = false;
+    static constexpr bool kFreeFlightWreckLiftBound = true;   // ON by mechanism (OCEAN_WAVE_FIELD 58.4)
     unsigned long long dying_spin_steps{0}, dying_spin_seeds{0}, wreck_lift_kicks{0};
     unsigned long long rack_positive_bag_rounds{0};
     int rack_positive_bag_round(const GameUnitSlot& s, int ammo) {
