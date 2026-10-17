@@ -276,6 +276,19 @@ constexpr bool kLuaKillScriptEntityBound = true;
 // and is gameplay-identical while PilotLand stays a record; JM05 identical.
 constexpr bool kFindEntityCaseInsensitiveBound = true;
 
+// Packet s54_class_id (docs/SHIP_AI_OPEN_ITEMS.md 270). 00964790
+// BSP_VehicleClass_GetOrCreate, on a cache miss, reads VehicleClass[classIndex]
+// and writes row.ID = classIndex (009648EC..0096490C, 00B67460 with EDI) and
+// row.Got = true (00964938..00964959, 00B673A0); a non-zero LandingShip first
+// resolves that class the same way (009648E7). This installation's
+// vehicleclasses.lua authors no `ID`, so every script test `unit.Class.ID == n`
+// reads nil without it. True: the first time a class row is seeded as a unit's
+// `Class`, it gets both writes. LABELLED: the host's identity type map stands in
+// for registry+10h, and the seed points stand in for the factory's call sites;
+// the ship's second recursion (descriptor +0C0h != -1) is not modelled.
+// False: the rows stay as loaded (before).
+constexpr bool kVehicleClassRowIdBound = false;
+
 // Packet cc9_lua49_checkpoint (docs/CC13_PROFILE_SAVE.md; docs/SQUADRON_LAND_TASK.md
 // 5fk). SaveCheckpoint 008ACB70: argument 0 to 00438A00 on the profile
 // manager, then PushBoolean(1) (008ACB70's tail) whatever happened.
@@ -4128,8 +4141,39 @@ void GameMissionLuaHost::attach_wing_member_tables(std::size_t units_before,
     }
 }
 
-bool GameMissionLuaHost::attach_created_entity_00928a00(int entity_id,
-    const std::string& name, int class_index, bool seed_class, bool findable) {
+void GameMissionLuaHost::mark_vehicle_class_row_00964790(int class_index) {
+    if (!kVehicleClassRowIdBound || state_ == nullptr || class_index < 0) return;
+    if (!vehicle_class_rows_marked_.insert(class_index).second) return;   // the cache hit
+    const int base = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+    if (lua_istable(state_, -1)) {
+        lua_rawgeti(state_, -1, class_index);
+        if (lua_istable(state_, -1)) {
+            // 009648A0..009648E7: LandingShip (00CEB7BC) read as an integer; a
+            // non-zero value resolves that class first.
+            lua_getfield(state_, -1, "LandingShip");
+            const int landing = lua_isnumber(state_, -1)
+                ? static_cast<int>(::lua_tointeger(state_, -1)) : 0;
+            ::lua_settop(state_, ::lua_gettop(state_) - 1);
+            if (landing != 0) {
+                ::lua_settop(state_, base);
+                mark_vehicle_class_row_00964790(landing);
+                lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+                lua_rawgeti(state_, -1, class_index);
+            }
+            if (lua_istable(state_, -1)) {
+                lua_pushinteger(state_, class_index);   // 0096490C 00B67460
+                lua_setfield(state_, -2, "ID");
+                lua_pushboolean(state_, 1);             // 00964959 00B673A0
+                lua_setfield(state_, -2, "Got");
+                ++summary_.class_rows_marked;
+            }
+        }
+    }
+    ::lua_settop(state_, base);
+}
+
+bool GameMissionLuaHost::attach_created_entity_00928a00(int entity_id,    const std::string& name, int class_index, bool seed_class, bool findable) {
     if (state_ == nullptr || entity_id <= 0) return false;
     lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
     if (lua_isnil(state_, -1)) {
@@ -4152,6 +4196,7 @@ bool GameMissionLuaHost::attach_created_entity_00928a00(int entity_id,
     // `Class` is 009292B0's third field, not 00928A00's: a stand-in written here
     // unless the InitAll walk's pass B writes it (kSEntityInitThisTableStepsBound).
     if (seed_class && class_index >= 0) {
+        mark_vehicle_class_row_00964790(class_index);   // kVehicleClassRowIdBound
         lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
         if (lua_istable(state_, -1)) {
             lua_rawgeti(state_, -1, class_index);
@@ -4546,6 +4591,7 @@ bool GameMissionLuaHost::bind_lua_class_009292b0(int entity_id, int class_index,
         ::lua_settop(state_, base);
         return false;
     }
+    mark_vehicle_class_row_00964790(class_index);   // kVehicleClassRowIdBound
     lua_pushinteger(state_, class_index);
     lua_setfield(state_, -2, "ClassID");
     ::lua_pushstring(state_, name.c_str());
@@ -8754,6 +8800,7 @@ std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
         // installed `VehicleClass` row the autoload folder already loaded, not
         // a table this file builds: the slot is assigned the global's own row.
         if (!kSceneLoadThisTableIdentityBound && entity.class_index >= 0) {
+            mark_vehicle_class_row_00964790(entity.class_index);   // kVehicleClassRowIdBound
             lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
             if (lua_istable(state_, -1)) {
                 lua_rawgeti(state_, -1, entity.class_index);
@@ -9008,6 +9055,10 @@ void GameMissionLuaHost::report_entity_subjects() {
         "their own row address",
         distinct.size(), summary_.self_table_entities, bindings, reconstructed,
         summary_.entity_resolves);
+    if constexpr (kVehicleClassRowIdBound) {
+        log_.notef("summary mission vehicle class rows marked=%zu (00964790 ID/Got, "
+            "009648EC..00964959, packet s54_class_id)", summary_.class_rows_marked);
+    }
 }
 
 void GameMissionLuaHost::note_created_script(std::string name) {

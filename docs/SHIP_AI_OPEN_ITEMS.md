@@ -18499,3 +18499,28 @@ shooter velocity is [esp+18h]->vtable[34h] when [dev+3F4h]+95h is set, else zero
   the lead, not the raw hit point.
 The host records only the kind-6 branch (`artillery_hit_lead`) and uses the raw hit for both. I have not
 measured the reach of the other-kind branch (for example a camera ray on a plane or a land unit).
+
+## 270. VehicleClass row ID/Got, kVehicleClassRowIdBound (cc9-ships54, 2026-10-17; lead top item)
+
+**The gap.** Mission scripts test `unit.Class.ID` (and `squadron.Class.ID`) in about 120 script files of this
+installation, including global/commandhelpers.lua (12 sites: 4354, 13037, 16419, 16512..16552, 17746, 18743),
+the JM, COTP, USN, LOMP and ESMP missions, siege and the training grounds. Neither `Class` table has an `ID`:
+the rows of this installation's scripts/datatables/autoload/vehicleclasses.lua (modified 2026-05-09) author none,
+and the host seeds `Class` = VehicleClass[class_index] as loaded. lua62 saw the effect on JM08 w1: the
+`Class.ID == 118/108/136` tests (B-25 / SBD / C47) never match, Mission.Dakota stays empty, and the mission
+completes about 4 s after wave 3 spawns.
+**The image's writer.** 00964790 BSP_VehicleClass_GetOrCreate (src/vehicle_class.cpp has the body; the game host
+does not run it) reads VehicleClass[classIndex] on a cache miss, where classIndex = registry+10h[typeId]. It
+resolves a non-zero LandingShip class first (009648E7). Then it writes row.ID = classIndex (009648EC..0096490C,
+00B67460 with EDI) and row.Got = true (00964938..00964959, 00B673A0). These are the factory's only writes to the
+table. The "ID" string 00CE59B4 has 19 code references; the others are other tables (00928B9D is the thisTable
+slot's own `ID` key text).
+**Bound OFF**: `kVehicleClassRowIdBound` (src/game_hosts_lua.cpp, `mark_vehicle_class_row_00964790`). The first
+time a class row is seeded as a unit's `Class` (the 00928A00 seed, 009292B0's bind, and the scene-load slot), the
+row gets ID = class_index and Got = true, with a LandingShip class marked first. The summary line is
+`vehicle class rows marked`. LABELLED: the host's identity type map stands in for registry+10h, and the seed points
+stand in for the factory's call sites. The ship's second recursion (descriptor +0C0h != -1) is not modelled.
+**Predictions.** Every mission marks one row per spawned class. Scripts that branch on `Class.ID` now take the
+authored branch. JM08 w1 moves: wave-3 C47s are found (Mission.Dakota filled), so the completion that came
+about 4 s after wave 3 must wait for the Dakota logic. Wins may move either way. USN01 (usn_1_pearl: 2 sites)
+and JM06 (jm06: 6 sites) move where their branches are reached; otherwise only the `Got` / `ID` reads change.
