@@ -695,6 +695,7 @@ struct GameUnitSlot {
     float plane_turbo_time{0.0f};
     float plane_turbo_recharging_time{0.0f};
     float plane_turbo_strength{1.0f};
+    float plane_turbo_control_limit{1.0f};   // desc+608h TurboControlLimit, 007C0FDE
     // task+2E4h, the per-think avoidance mask 009A17D0 tests (bit 4 gunfire
     // detect 009A18BA, bit 2 vehicle 009A1951, bit 1 terrain 009A1974): 0FFh at
     // 00999944 before the arm; the kamikaze arms store their band (009AF54A,
@@ -17281,7 +17282,9 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                 // 007D3CB6-007D3D50: TurboTime (FLDZ), TurboRechargingTime (FLDZ),
                 // TurboStrength (FLD1); 007D3DA4-007D3DB8 zeroes TurboTime unless
                 // TurboStrength > 1.0f. TurboControlLimit (+608h) is read by
-                // 007C0F40, which is not part of this packet.
+                // 007C0F40's turbo arm (007C0FCF-007C0FE4, bomb_load_factor).
+                slot->plane_turbo_control_limit =
+                    host.lua.read_vehicle_class_number(row.type_id, "TurboControlLimit", 1.0f);
                 slot->plane_turbo_time =
                     host.lua.read_vehicle_class_number(row.type_id, "TurboTime", 0.0f);
                 slot->plane_turbo_recharging_time =
@@ -36502,6 +36505,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                             in.slot_weight = fraction;
                             break;   // 007C0F76: the first such slot only
+                        }
+                        if constexpr (GameUnitsHost::Impl::kKamikazeBoostTurboBound) {
+                            // 007C0FCF-007C0FE4: x class+608h TurboControlLimit while the
+                            // latched boost byte +BC8h is set; the latch exists only with
+                            // the boost chain (cc13-fix89 U2).
+                            in.turbo = unit_.plane_boost_latched_bc8;
+                            in.turbo_scale = unit_.plane_turbo_control_limit;
                         }
                         const float f = bsp::bomb_load_factor_007c0f40(in);
                         if (f != 1.0f) ++owner_.bomb_load_authority_scaled;
