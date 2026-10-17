@@ -692,3 +692,11 @@ mechanism is in the cd761bb52 section above).
   Kongosan Maru after it sank at 184.76 s, and Toba Maru (sunk at 191.81 s by the Kongosan salvo in the win) now
   survives; a sends the 3800-5800 attack lines at Toba Maru. Completed 345.84 s (reference) and 354.84 s (20,3),
   guard in both (`cc9-lua52\local\l64_l6_a[_j3].log`).
+- **After the kAttackTaskTargetRetireBound flip (8b1dd41ae; runs on the flipped export `cc9-lua52\local\l64_on`).**
+  - USN01 `usn01_l64_u1_b` loses its reference on the flip (Convoy4 survives: the retarget rebuilds ConSBD2's dive
+    task while it is diving on Convoy3). **USN01 row: `config/win_orders/usn01_l64_u1_f.txt`**: p8_u1_i with
+    ConTBD2 on Convoy4 (not Convoy3), ConSBD1 retargeted to `Convoy1 | Convoy4 | ...` after its retest, ConSBD2
+    left on Convoy3, plus usn01_p3_u1_z4's 3792 Enterprise F4F launch lines on the Nells (phase 3 needs all 18 Nell
+    planes down; d without them loses 20,3 and 20,5 to one or more surviving Nells). Completed 410.02 s (reference),
+    370.03 s (20,3), 430.02 s (20,5), 400.03 s (20,7), guard in all four (`local\l64_u1_f_on[_j3|_j5|_j7].log`).
+  - LOMP06 `lomp06_l64_l6_a`: identical on the flipped exe (completed 345.84 s, 0 retires, `local\l64_l6_a_on.log`).
