@@ -39,6 +39,7 @@ RNG: no function here draws from the shared RNG 00BD2F10.
 | Seg | Address | Name (hypothesis) | ABI | What the code does |
 |---|---|---|---|---|
 | 15 | 00528240 | BSP_ControlLayoutScreen_Enter | thiscall(screen) RET | Game +61Fh picks Main_Listbox or ingame_Listbox for +18h (00AA7E00 on +10h, names built by 0041E870) and hides the other; 00518D60(6, 0, 0, FE.opt_title_control) or 004C9680. Three rows cloned (00AAB4C0) from MainListbox_Text with the C strings at 00E08664 (00ABBE50) and inserted (00A9D750); 00A9AC40, 00A9C7C0([00E08670]), vtable +60h(1)/+80h(1), 00A9CF30(1, 1). Two 3x3 text grids: the child named [00E08674 + 0Ch*i + 4k] of [+1Ch + 4j] gets 00ABAED0(&00E18DC0[v][j][k], 1), v = i or (i == 0) with byte +28h. 0054B530 with five triples; ingame_FrameBox of +14h gets vtable +34h(game+61Fh) (see the divergence note). |
+| 15 | 0053BCC0 | BSP_FrameStats_FormatLines | thiscall(stats; rate) RET 4 | Mode +8 == 1: clears four texts, clamps rate to [0.01f, 9999.0f], prints FPS, VidM (device vtable +10h), MEM ([0109CEFC] vtable +4h) and APP/GAM/REN (_ftol(x * 1000.0)) through 0053BAB0, each onto three texts. Otherwise clears +20h..+58h and builds one line: UP/DN kilobyte counters of the session stats record (summed uint32 fields * 2^-10) and the GMsg counts when game+1FE4h is set (0053BB40 resets the record), the FPS piece in its high (>= 10) or low form, MEM, all appended by strcat_s (004F9A80 pieces) and set on +10h; then the min/max lines of +7Ch/+80h on +18h/+1Ch. |
 | 16 | 00547480 | BSP_HudWeaponGroup_GunSightStatus | thiscall(screen; unit, gun, mode, origin, aim_a, aim_b) RET 18h, EAX 0..5 | gun+490h = 0; +5Dh -> 0; 00729F10 false -> 1; screen+40h null -> 2. Kind-7 guns: 00729A40 false -> 5; heading from unit vtable +50h, w = -00438B10(aim_b, heading) wrapped to (-pi, pi] (FCOMI + JBE, FCOMIP + JB), 0085AB50(gun, w, pi/4), FLT_MAX equality -> 2, \|00438B10(r, gun+480h)\| > pi/4 -> 3 else 4. Other guns: mode 5 aims through 0042D7E0/00521370/00427EB0/00957BD0/00955830, other modes through 004B4D80/00957740/00427EB0/00955630 (false -> 2). Kind-1Ch screen unit: range test (FCOMIP + JBE) unless 005457C0 hostile, then the 0098ADD0 segment (00470470/00419510/0042E630/unit vtable +20h/004704B0; 00414260 and 004142A0 reproduced) -> gun+490h = 1 and 2 on a blocking kind-5 hit. 005472D0 -> 007F60A0 false -> 2; bearing limits 3 deg (mode 5, x87) or 5 deg (COMISS) on 00438B10 of +484h/pitch and +480h/yaw -> 3 or 4. |
 | 19 | 0056DD80 | BSP_MultiSessionBrowserScreen_RefreshFilterRows | thiscall(screen) RET | Rows i = 0..8 at +54h + 4i: nike_Icon and setting_2_Text hidden (vtable +34h(0)); i <= 4 shows nike_Icon on flag +10h+i; i == 8 passes byte +18h to nike_Icon of [+74h]; i = 5..7 show setting_2_Text and, with the flag, write 004260B0([+244h/+248h/+24Ch]) through 00ABAED0 on rows +68h/+6Ch/+70h, else 00ABBE50("globals.no", 1). |
 | 20 | 00593CA0 | BSP_MissionScoreRecord_Assign | thiscall(dst; const src*) RET 4, EAX dst | The record's member-wise copy constructor (the EH state rises as each member is built): dword/float copies, 39 member copy constructors (00590080, 00593310, 00593480, 00591D90, 0058D4B0, 0058D540, 0058AAC0, 0058B870, 0058D5D0, 0058D660, 0058D6F0, 0058F370) at their offsets, three inlined native-string copies at +254h/+25Ch/+264h (memcpy of dst.length bytes, no terminator). |
@@ -78,6 +79,13 @@ RNG: no function here draws from the shared RNG 00BD2F10.
 007A87B0, 006697E0, 00641910, 005E12A0 (sweepB4 deferred); 005AAC00, 0066A8A0 (sweepB3 set
 aside); 0081E350, 007A84D0, 0064AE20 (cc9); 0059D4A0; every sweepB..B4 cc9-lane item.
 
+## Deferred in this pass (no record)
+
+- 007A74F0 BSP_MovCam_SetPathWalkPointProperty (seg 46): a LuaPlus table reader (LuaObject
+  temporaries through 00B65F50 / 00B67080 / 00B67800 / 00B66290 and 00888AA0 handles) that
+  rebuilds the path-walk point records; left with the other Lua data-table readers, as sweepB4
+  left 005E12A0.
+
 ## cc9 lane (no record)
 
 - 00824B60 BSP_UnitInstance_OnWrecked (seg 51): the ship wreck handler; cc9's packet
@@ -87,7 +95,7 @@ aside); 0081E350, 007A84D0, 0064AE20 (cc9); 0059D4A0; every sweepB..B4 cc9-lane 
 ## Not reached in this pass (no record)
 
 In the sweepB4 order: 0061B0F0 (opened: the powerup-manager list rebuild, mostly called
-std::map / string-map work around 008E9AF0), 007A74F0, 0053BCC0, 005E2750, 005A7C20, 00623710, 005F24D0, 007A5A00, 0065D220,
+std::map / string-map work around 008E9AF0), 005E2750, 005A7C20, 00623710, 005F24D0, 007A5A00, 0065D220,
 00547A20, 005A8600, 007A5110, 005FA0F0, 00642040, 005F65C0, 006191A0, 005F0CD0, 005BE240,
 00626C50, 005A6AD0, 0065BF00, 006B9450, 00640D70, 0063C620, 0053F2D0, 0078A430, 0063D1E0,
 005A9DB0, 00789560, 006D5220, 006003A0, 005EADC0, 00776930, 005E3580, 00597870, 006179D0,

@@ -224,6 +224,154 @@ void cc13_sweepB5_control_layout_screen_enter_00528240(void* screen, Cc13SweepB5
     });
 }
 
+// 0053BCC0 BSP_FrameStats_FormatLines (ledger name). __thiscall(ECX = frame
+// stats overlay, float rate), RET 4; EBP frame aligned to 40h, no EH frame.
+// Sole caller 0053C510. The main buffer [ESP+0B0h] (210h bytes) starts empty;
+// a 128-byte scratch [ESP+30h] takes the 004F9A80 pieces.
+//
+// Mode +8 == 1: +10h/+18h/+1Ch/+14h cleared ("" through 00ABBE50(.., 1));
+// rate clamped: 0.01f (00D7A238) > rate -> 0.01f, rate > 9999.0f (00CE4C04)
+// -> 9999.0f (COMISS + JBE, NaN keeps rate); mem = (float)([0109CEFC] vtable
+// +4h * 2^-20 (double 00CEDB38), FILD signed). Lines through 0053BAB0 into
+// the main buffer, each set on three texts with 00ABBE50(.., 1): "FPS:%.1f"
+// rate (+20h/+24h/+28h); "VidM:%.1f" (uint32) device vtable +10h * 2^-20 as
+// a double (+2Ch..+34h); "MEM:%.1f" mem (+38h..+40h); "APP/GAM/REN:%dms"
+// _ftol(+68h/+6Ch/+70h * 1000.0 (00CE47A0)) (+44h..+4Ch, +50h..+58h,
+// +5Ch..+64h).
+// Other modes: +20h..+58h cleared; with the session mode game+1FE4h set,
+// the counters of [game+2078h] (or +207Ch): up = the uint32 sum of +88h,
+// +80h, ..., +50h, down = +84h, ..., +4Ch, then +90h and +8Ch, each
+// (float)(x * 2^-10 (00CEDAE8)) as A, B, C, D; "UP:_%.1fK_(%.2fK,%.2fK)  "
+// with (A + B, A, B) and "DN:_%.1fK_(%.2fK,%.2fK)  " with (C + D, C, D)
+// (doubles; the sums FADDP in double), each appended with strcat_s(main,
+// 210h, scratch); 0053BB40(stats); " GMsg:_%d,_%d,_%d   "
+// with game+217Ch, +2178h and +2174h (mode 2) or +2170h appended. FPS:
+// 0.01f > rate -> 0.01f and the low form; rate > 9999.0f -> 9999.0f, high
+// form; otherwise 10.0f (00CE38B8) > rate -> low form, else high form (NaN
+// takes the high form). High: " FPS:_%d/%.1fms    " (CVTTSS2SI rate,
+// 1000.0 / rate); low: " FPS:_%.1f/%dms  " (rate, _ftol(1000.0 / rate));
+// " MEM:_%.1fM  " ((float)(in-use * 2^-20)); main to +10h with 00ABBE50(..,
+// 0); then "min: %d fps/%dms" / "max: ..." of +7Ch / +80h ((int)v, _ftol(1000.0
+// / v)) printed over the main buffer to +18h / +1Ch. No RNG draws.
+void cc13_sweepB5_frame_stats_format_lines_0053bcc0(void* stats, float rate, Cc13SweepB5Host& host) {
+    char main_text[0x210];  // [ESP+0B0h]
+    char scratch[0x80];     // [ESP+30h]
+    main_text[0] = 0;
+    auto text = [&](std::uint32_t literal) { return static_cast<const char*>(host.image_global(literal)); };
+    const char* empty = text(0x00CE3A0Cu);
+    auto set = [&](std::size_t offset, const char* value, std::int32_t flag) {
+        host.gui_text_set_localised_cstring_00abbe50(at<void*>(stats, offset), value, flag);
+    };
+    const float low = f32_bits(0x3C23D70Au);   // 00D7A238
+    const float high = f32_bits(0x461C3C00u);  // 00CE4C04
+    const double mebi = f64_bits(0x3EB0000000000000ull);  // 00CEDB38, 2^-20
+    const double thousand = f64_bits(0x408F400000000000ull);  // 00CE47A0
+    void* tracker = image_pointer(host, 0x0109CEFCu);
+
+    if (at<std::int32_t>(stats, 8) == 1) {
+        set(0x10, empty, 1);
+        set(0x18, empty, 1);
+        set(0x1C, empty, 1);
+        set(0x14, empty, 1);
+        float clamped;  // [ESP+20h]
+        if (low > rate) {
+            clamped = low;
+        } else if (rate > high) {
+            clamped = high;
+        } else {
+            clamped = rate;
+        }
+        const float memory = static_cast<float>(host.memory_tracker_vcall_04_in_use(tracker) * mebi);  // [ESP+28h]
+        auto line = [&](std::size_t first) {
+            set(first, main_text, 1);
+            set(first + 4, main_text, 1);
+            set(first + 8, main_text, 1);
+        };
+        host.frame_stats_printf_0053bab0(main_text, text(0x00CEDB2Cu), static_cast<double>(clamped));
+        line(0x20);
+        void* device = host.renderer_get_device_00b1fef0(image_pointer(host, 0x00F8D394u));
+        const std::uint32_t texture = host.device_vcall_10_available_texture_mem(device);
+        host.frame_stats_printf_0053bab0(main_text, text(0x00CEDB20u), static_cast<double>(texture) * mebi);
+        line(0x2C);
+        host.frame_stats_printf_0053bab0(main_text, text(0x00CEDB14u), static_cast<double>(memory));
+        line(0x38);
+        host.frame_stats_printf_0053bab0(main_text, text(0x00CEDB08u), ftol_trunc(at<float>(stats, 0x68) * thousand));
+        line(0x44);
+        host.frame_stats_printf_0053bab0(main_text, text(0x00CEDAFCu), ftol_trunc(at<float>(stats, 0x6C) * thousand));
+        line(0x50);
+        host.frame_stats_printf_0053bab0(main_text, text(0x00CEDAF0u), ftol_trunc(at<float>(stats, 0x70) * thousand));
+        line(0x5C);
+        return;
+    }
+
+    for (std::size_t offset = 0x20; offset <= 0x58; offset += 4) {
+        set(offset, empty, 1);
+    }
+    if (at<std::int32_t>(image_pointer(host, 0x00E188A8), 0x1FE4) != 0) {
+        auto counters = [&]() {
+            void* game = image_pointer(host, 0x00E188A8);
+            void* record = at<void*>(game, 0x2078);
+            return record != nullptr ? record : at<void*>(game, 0x207C);
+        };
+        const double kibi = f64_bits(0x3F50000000000000ull);  // 00CEDAE8, 2^-10
+        auto sum = [&](std::size_t first) {
+            void* record = counters();
+            std::uint32_t total = 0;
+            for (std::size_t k = 0; k < 8; ++k) {
+                total += at<std::uint32_t>(record, first - 8 * k);
+            }
+            return total;
+        };
+        const float up = static_cast<float>(static_cast<double>(sum(0x88)) * kibi);     // [ESP+20h]
+        const float down = static_cast<float>(static_cast<double>(sum(0x84)) * kibi);   // [ESP+28h]
+        const float c = static_cast<float>(static_cast<double>(at<std::uint32_t>(counters(), 0x90)) * kibi);  // [ESP+24h]
+        const float d = static_cast<float>(static_cast<double>(at<std::uint32_t>(counters(), 0x8C)) * kibi);  // [ESP+2Ch]
+        host.format_string128_004f9a80(scratch, text(0x00CEDACCu), static_cast<double>(down) + up,
+                                       static_cast<double>(up), static_cast<double>(down));
+        host.crt_strcat_s_00bf97cb(main_text, 0x210, scratch);
+        host.format_string128_004f9a80(scratch, text(0x00CEDAB0u), static_cast<double>(d) + c,
+                                       static_cast<double>(c), static_cast<double>(d));
+        host.crt_strcat_s_00bf97cb(main_text, 0x210, scratch);
+        host.frame_stats_reset_accumulators_0053bb40(counters());
+        void* game = image_pointer(host, 0x00E188A8);
+        const std::int32_t first_count =
+            at<std::int32_t>(game, 0x1FE4) == 2 ? at<std::int32_t>(game, 0x2174) : at<std::int32_t>(game, 0x2170);
+        host.format_string128_004f9a80(scratch, text(0x00CEDA98u), at<std::int32_t>(game, 0x217C),
+                                       at<std::int32_t>(game, 0x2178), first_count);
+        host.crt_strcat_s_00bf97cb(main_text, 0x210, scratch);
+    }
+
+    float clamped;  // [ESP+20h]
+    bool low_form;
+    if (low > rate) {
+        clamped = low;
+        low_form = true;
+    } else if (rate > high) {
+        clamped = high;
+        low_form = false;
+    } else {
+        clamped = rate;
+        low_form = f32_bits(0x41200000u) > rate;  // 00CE38B8, 10.0f
+    }
+    if (low_form) {
+        host.format_string128_004f9a80(scratch, text(0x00CEDA38u), static_cast<double>(clamped),
+                                       ftol_trunc(thousand / clamped));
+    } else {
+        host.format_string128_004f9a80(scratch, text(0x00CEDA84u), ftol_trunc(clamped), thousand / clamped);
+    }
+    host.crt_strcat_s_00bf97cb(main_text, 0x210, scratch);
+    const float memory = static_cast<float>(host.memory_tracker_vcall_04_in_use(tracker) * mebi);
+    host.format_string128_004f9a80(scratch, text(0x00CEDA74u), static_cast<double>(memory));
+    host.crt_strcat_s_00bf97cb(main_text, 0x210, scratch);
+    set(0x10, main_text, 0);
+    for (std::size_t pass = 0; pass < 2; ++pass) {
+        const float value = at<float>(stats, pass == 0 ? 0x7C : 0x80);  // [ESP+20h]
+        const std::int32_t ms = ftol_trunc(thousand / value);
+        host.frame_stats_printf_0053bab0(main_text, text(pass == 0 ? 0x00CEDA60u : 0x00CEDA4Cu), ftol_trunc(value), ms);
+        set(pass == 0 ? 0x18 : 0x1C, main_text, 1);
+    }
+}
+
 // ---------------------------------------------------------------------------
 // Segment 16
 // ---------------------------------------------------------------------------

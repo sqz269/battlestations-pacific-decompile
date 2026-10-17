@@ -287,6 +287,23 @@ public:
     virtual float* list_iterator_value_005cf010(void* iterator) = 0;
     virtual void** chat_list_erase_005cf8a0(void* list, void** out_iterator, void* container, void* node) = 0;
 
+    // ---- frame statistics overlay (segment 15, 0053BCC0) ----
+    // 0053BAB0 BSP_FrameStats_Printf and 004F9A80 BSP_FormatString128: cdecl
+    // varargs (buffer, format, ...), the caller cleans the stack.
+    virtual void frame_stats_printf_0053bab0(char* buffer, const char* format, ...) = 0;
+    virtual void format_string128_004f9a80(char* buffer, const char* format, ...) = 0;
+    // 00BF97CB strcat_s (CRT, called): cdecl(dest, size, source), EAX.
+    virtual std::int32_t crt_strcat_s_00bf97cb(char* dest, std::uint32_t size, const char* source) = 0;
+    // 0053BB40 BSP_FrameStats_ResetAccumulators: __fastcall(ECX = stats record).
+    virtual void frame_stats_reset_accumulators_0053bb40(void* stats) = 0;
+    // 00B1FEF0 BSP_D3D9Renderer_GetDevice: __fastcall(ECX = [00F8D394]), EAX.
+    virtual void* renderer_get_device_00b1fef0(void* renderer) = 0;
+    // Device COM vtable +10h (stdcall, this on the stack): EAX = available
+    // texture memory in bytes.
+    virtual std::uint32_t device_vcall_10_available_texture_mem(void* device) = 0;
+    // [0109CEFC] vtable +4h: __thiscall(ECX = object), EAX (the memory in use, bytes).
+    virtual std::int32_t memory_tracker_vcall_04_in_use(void* tracker) = 0;
+
     // ---- control layout screen (segment 15) ----
     // 004C9680 BSP_FrontEndFrame_SelectDefault: no register or stack inputs.
     virtual void frontend_frame_select_default_004c9680() = 0;
@@ -302,6 +319,10 @@ public:
 // 00528240 BSP_ControlLayoutScreen_Enter: the control-layout options page
 // (three layout rows, two 3x3 text grids, the command bar).
 void cc13_sweepB5_control_layout_screen_enter_00528240(void* screen, Cc13SweepB5Host& host);
+
+// 0053BCC0 BSP_FrameStats_FormatLines: formats the frame-statistics overlay
+// (full mode +8 == 1, or the compact single line with the network counters).
+void cc13_sweepB5_frame_stats_format_lines_0053bcc0(void* stats, float rate, Cc13SweepB5Host& host);
 
 // ---------------------------------------------------------------------------
 // Segment 16
