@@ -17603,3 +17603,18 @@ and every other choose_attack_class_007eec50 caller.
 Prediction (USNOS `s55_os_c1` orders): every hangar launch picks divebomb (00E08F20) for the class-339 squadrons
 (gb=1), installs kind 8 instead of kind 7, and dives on the hangar; hangars take bomb damage, and the strike squadrons
 meet the airfield's AA. Rows whose squadrons never target an MLandFort are gameplay identical (control).
+
+## 5hz. cc13 audit of 008A0A10 EntityTurnToEntity (cc9-lua65, 2026-10-17)
+
+Script uses (this installation, mtime 2024-07-13): BSM01 `bsm_01_stationed_at_pearl.lua` 1139 (MiniSub, ship arm), 1197
+(HenryPT, ship arm), 1490/1499 (a spawned Val/Kate or Zero squadron, squadron arm); also BSM07, JM02/JM10/JM12/JM15,
+yamato. The BSM01 WINS row reaches the ship and squadron arms (`l64rt_b1_ref.log`: HenryPT, MiniSub, Jap #64.1..#70.1).
+- (c) any member selected the squadron arm. 008A0D5D tests the argument's own vt[5Ch](18h); a member plane answers 0Fh
+  and takes 008A0E6F (its own vtable[88h]). `kTurnToEntityMemberPlaneArmBound` (committed OFF) gives a non-leader member
+  the plane arm. LABELLED: the host fuses the squadron with its leader, so the leader argument still turns all. The
+  squadron log line now names the argument. Prediction: BSM01 identical (its arguments are squadrons).
+- (b) the squadron arm aims from the leader's position, not squadron+FCh: the existing labelled substitution (5cf,
+  docs/CONSTRUCT_WORLD.md "the squadron's position +FCh | the leader's pose"); the +FCh writer is unread. No change.
+  The image's member loop takes each member's own +FCh as the translation (008A0D9B-008A0DBF), as the host does.
+- (a) an argument that is neither squadron, ship nor plane (008A0E6F vtable[88h] on, e.g., a land unit or a path
+  point) stays the `008a0eb8` unimplemented record; no WINS row reaches it (JM02 `RePos` is not a WINS row).

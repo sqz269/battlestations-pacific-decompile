@@ -160,6 +160,13 @@ inline constexpr bool kSquadronMemberOrdnanceBound = true;   // ON: SQUADRON_LAN
 // every ordnance class fails and a squadron ordered onto a hangar gets 007F1688's
 // moveto instead of divebomb.
 inline constexpr bool kChooserSurfaceSetBranchBound = false;
+// Packet cc9_l65_turn_member (SQUADRON_LAND_TASK 5hz). 008A0A10 takes its squadron
+// arm (008A0D5D vt[5Ch](18h)) only for a squadron argument. True: a member plane
+// that is not the squadron's fused leader takes the plane arm (008A0E6F, its own
+// vtable[88h] 007C9540) instead of re-posing the whole squadron. False: any
+// member re-poses every member, as before. LABELLED: the leader plane and the
+// squadron are one host unit, so a script passing the leader still turns all.
+inline constexpr bool kTurnToEntityMemberPlaneArmBound = false;
 // Packet cc13-fix5 (docs/CC13_FIX_5.md section 7). True binds NavigatorCruise
 // 008A75C0: NavigatorStop's twin, 0077D600(entity, cruise 00E08F70, zeroed
 // descriptor, 1) at 008A7729 (bsp::navigator_cruise_order_008a75c0), through
@@ -2446,6 +2453,14 @@ int GameScriptOrdersHost::run_entity_turn_to_entity(GameScriptOrderRow& row) {
     const std::size_t target_index = index_of(target);
     bsp::PlaneSquadronHostRecord* squadron = row.unit_index < units_.count()
         ? bsp::plane_squadron_registry().find_by_member_unit(row.unit_index) : nullptr;
+    if constexpr (kTurnToEntityMemberPlaneArmBound) {
+        // 008A0D5D: the squadron arm is the argument's own vt[5Ch](18h). A
+        // member plane other than the fused leader answers 0Fh, not 18h, and
+        // takes 008A0E6F's vtable[88h] arm on itself alone.
+        if (squadron != nullptr && squadron->squadron_unit != row.unit_index) {
+            squadron = nullptr;
+        }
+    }
     const bool other_arm = squadron == nullptr && row.unit_index < units_.count()
         && target_index < units_.count();
     if (target_index >= units_.count() || (squadron == nullptr &&
@@ -2502,9 +2517,9 @@ int GameScriptOrdersHost::run_entity_turn_to_entity(GameScriptOrderRow& row) {
         if (member == bsp::kPlaneSquadronNoUnit) continue;
         if (units_.set_unit_world_basis_007c9540(member, &m[0], &m[4], &m[8])) ++posed;
     }
-    log_.notef("  EntityTurnToEntity: squadron %s -> %s: %zu member(s) re-posed, forward "
-        "(%.3f %.3f %.3f) (008A0A10 -> 0085DC80 -> vtable[88h] 007C9540)",
-        squadron->name.c_str(), name_of(target).c_str(), posed,
+    log_.notef("  EntityTurnToEntity: squadron %s (argument %s) -> %s: %zu member(s) re-posed, "
+        "forward (%.3f %.3f %.3f) (008A0A10 -> 0085DC80 -> vtable[88h] 007C9540)",
+        squadron->name.c_str(), row.unit.c_str(), name_of(target).c_str(), posed,
         static_cast<double>(m[8]), static_cast<double>(m[9]), static_cast<double>(m[10]));
     return 0;
 }
