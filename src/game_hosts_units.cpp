@@ -40039,6 +40039,16 @@ void GameUnitsHost::report() {
                 slot->dc_transitions, states, slot->dc_releases, slot->dc_target_ticks,
                 slot->dc_armed_ticks,
                 static_cast<double>(slot->dc_min_range_48 < 1.0e8f ? slot->dc_min_range_48 : -1.0f));
+            host.log.notef("  depthcharge %-12s bay 007BBBA0: accepted=%d refused=%d | rack "
+                "006E56F0: single=%d deferred=%d drops=%d ammo=%d dropping=%d gate_refused=%d "
+                "ret_census=%d ret_idle=%d | stage 007CE9FD: issues=%d guard_blocked=%d C20h=%d",
+                slot->row.name.c_str(), slot->torpedo_bay_requests_accepted,
+                slot->torpedo_bay_requests_refused, slot->rack_single_count,
+                slot->rack_requests_deferred, slot->rack_bomb_drops, slot->rack_ammo,
+                slot->rack_dropping ? 1 : 0, slot->rack_gate_refused,
+                static_cast<int>(slot->rack_ret_census), static_cast<int>(slot->rack_ret_idle),
+                slot->torpedo_issue_stage_issues, slot->torpedo_issue_stage_guard_blocked,
+                slot->torpedo_issue_requests_c20);
         }
         {
             static const char* const kDiveBombStateNames[10] = {
