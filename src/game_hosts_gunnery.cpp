@@ -15230,6 +15230,46 @@ std::vector<GameGunneryHost::GameGunneryHitEvent> GameGunneryHost::take_hit_even
     return out;
 }
 
+// Packet p16_torpedo_stock_property. 00815850: s = unit+104Ch; s < 0 -> s, else
+// 00810E90 + s. Pass C (008201B8) has set every ship's spare before any script
+// runs; this host makes that set at the first torpedo shot, so an unset unit
+// answers what pass C leaves: the spare + loaded tubes is MaxTorpedoStock when it
+// is at least the tube count, and the unload loop (kTorpedoSupplyTickBound)
+// brings the tubes down to it otherwise. LABELLED: a ShipSetTorpedoStock queued
+// this frame is not applied yet (the image runs 0081F8B0 inside the native), so
+// the latest queued stock answers for its unit: 0081F8B0 leaves spare + loaded
+// at max(stock, 0) on both arms, before the re-arm moves spare into the tubes.
+bool GameGunneryHost::torpedo_stock_total_00815850(std::size_t unit_index,
+                                                   std::int32_t& total) const {
+    GameGunneryHost::Impl& host = *impl_;
+    if (unit_index >= host.unit_state.size()) return false;
+    if constexpr (kShipSetTorpedoStockBound) {
+        const auto& queue = ship_torpedo_stock_queue();
+        for (auto it = queue.rbegin(); it != queue.rend(); ++it) {
+            if (it->first != unit_index) continue;
+            total = it->second < 0 ? 0 : it->second;
+            return true;
+        }
+    }
+    const GameGunneryHost::Impl::UnitState& us = host.unit_state[unit_index];
+    if (!us.torpedo_stock_set) {
+        const int loaded = host.loaded_torpedo_barrels_00810e90(unit_index);
+        if (us.max_torpedo_stock >= loaded) {
+            total = us.max_torpedo_stock;
+        } else {
+            total = kTorpedoSupplyTickBound
+                ? (us.max_torpedo_stock < 0 ? 0 : us.max_torpedo_stock) : loaded;
+        }
+        return true;
+    }
+    if (us.torpedo_spare < 0) {             // 00815859 JL
+        total = us.torpedo_spare;
+        return true;
+    }
+    total = host.loaded_torpedo_barrels_00810e90(unit_index) + us.torpedo_spare;
+    return true;
+}
+
 void GameGunneryHost::apply_script_damage_0095da00(std::size_t unit_index, float amount) {
     GameGunneryHost::Impl& host = *impl_;
     if (unit_index >= host.unit_state.size()) return;
