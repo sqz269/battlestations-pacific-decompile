@@ -12057,7 +12057,10 @@ std::size_t GameUnitsHost::build_land_convoy_roster_00743450(
         const int type = convoy.convoy_slots[slot];
         if (type < 1) continue;                                   // 0074379C
         GameSceneEntityRecord member;
-        member.name = convoy.name + "-" + std::to_string(slot + 1);  // 007438F6, 00742A70
+        member.name = convoy.name + "-" +  // 007438F6, 00742A70
+            (bsp::kRomanMemberNamesBound
+                ? bsp::roman_member_number_00742a70(static_cast<std::int32_t>(slot + 1))
+                : std::to_string(slot + 1));
         member.class_name = "LandFort";
         member.class_id = 0x1b;
         member.type_table = "LandVehicleClasses";

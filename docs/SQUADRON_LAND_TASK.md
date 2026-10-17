@@ -17402,3 +17402,17 @@ is spent and a wingman is not.
 - 5hu update (lead, final assignment): the C47 Class.ID packet (queue item 2) moved to cc9-ships54. The lua lane keeps
   goaway (item 1), then rows/re-time, Roman names, IsFunction. ships54 takes the seg 67 ship-AI sub-band
   009D6000-009F6060 only; this lane holds nothing there.
+
+### 5hv.5 Roman member numbers (`kRomanMemberNamesBound`, committed OFF)
+
+00742A70 (cc13 `land_convoy_member_name_00742a70`, include/bsp/cc13_seg41_land.hpp) writes 1..3999 in roman numerals
+from the tables at 00E0CC68 ("N/A" outside). 007F49EF appends it after "|.-" for a wing plane (index + 1), and
+007438F6 after "-" for a land-convoy member (slot + 1; the "-" is the strcat_s of 00CEED40 at 007438DE). The host
+wrote decimal digits in `squadron_plane_name_suffix_007f4926` (src/plane_squadron.cpp) and the convoy roster
+(game_hosts_units.cpp). True calls cc13's routine through a malloc-backed native-string stand-in
+(`roman_member_number_00742a70`). This installation's scripts never name a member by its suffix (no `|.-` and no
+roman `-II`-style names in the 621 .lua files), so the Lua flow is unchanged. Two things do move:
+- every per-name keyed stand-in stream (`<name>#lb...`, the strafe and retreat keys) of a wing plane, so plane-heavy
+  rows shift;
+- helm-order files that name wing planes in decimal (`usnos_s45_os_k.txt`, the USNOS a7 plan:
+  `launch Enterprise 0 810 3 plane #4.4|.-2`) stop resolving and must be rewritten to `|.-II` etc. when this flips.
