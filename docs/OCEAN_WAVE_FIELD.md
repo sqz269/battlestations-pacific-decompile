@@ -2591,6 +2591,24 @@ faster and later level-offs move; the forward-speed term lowers the measured spe
 loaded torpedo and bomb planes rotate at 70-90% of today's authority until release, widening their
 turns and approach geometry. Every AI plane mission moves; deaths and kill tables may move.
 
+### 62.1 Pairs and flip (2026-10-17)
+
+`local\p16_x_off` / `local\p16_x_law` (commit 7b012d81a, the four switches flipped together), 12000
+mission frames, reference env; manifests `local\p16x{off,law}_{usn04,jm05,esmp08,usn01}.log.manifest.json`.
+ON counters: USN04 mode-1 tuned 50468 thinks, divisor raised 56003, bomb-load scaled 78783; JM05 40612 /
+17061 / 110355; ESMP08 5 / 36451 / 514773. No NaN or inf in any log.
+
+| row | deaths OFF -> ON | dive-bomb releases | verdict |
+| --- | --- | --- | --- |
+| USN04 | 59 -> 53 | 0 of 20 -> 3 of 27 | moved (3) |
+| JM05 | 33 -> 34 | 5 of 10 -> 7 of 20; failed 300.05 s -> 285.05 s (carrier lost) | moved (3) |
+| ESMP08 | 36 -> 36 | 0 of 24 -> 0 of 24 | moved (3) |
+| USN01 | 52 -> 52 | 4 of 2 -> 2 of 1 | moved (3) |
+
+The movement is where section 62 put it: Kate and Val attack runs end later and lower, Corsair strafes
+shift, dive bombers release where they did not. The mechanism matches the image on every arm, so all four
+switches are flipped ON as faithful fixes; any WINS row they move is to be re-planned.
+
 ## 63. MoveTo cruise altitude by ordnance and the leg manager: verify12 R1, R4 (cc9-physics16, 2026-10-17; lead item 3)
 
 - **`kMoveToCruiseByOrdnanceBound` (R1).** 009C3650 (the kind-7 task's +54h profile) picks ctl+394h by
