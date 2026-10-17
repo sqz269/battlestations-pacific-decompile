@@ -4153,6 +4153,7 @@ struct GameUnitsHost::Impl {
             r.generator_ammo = read_equipment_ammo(type_id, platform_key, 1);
             if (type == "BombPlatform") {
                 r.single_index = singles++;
+                r.authored_ammo = rack_positive_bag_round(s, r.authored_ammo);
             } else if (type == "MultiBombPlatform") {
                 r.multi = true;
             } else {
@@ -6636,6 +6637,24 @@ struct GameUnitsHost::Impl {
     // ON: OCEAN_WAVE_FIELD 46.1 (ESMP08 dive-bomb releases 1 -> 100, every
     // +3Dh end after the squadron's drops; USN04 gameplay identical).
     static constexpr bool kRackConstructorRoundBound = true;
+    // Packet cc9_p14_bag_rack_round (docs/OCEAN_WAVE_FIELD.md 54). True: a single
+    // rack (BombPlatform) of a plane whose carried bag is positive, with no entry for
+    // the rack's platform key in that loadout, keeps its constructor round: 006E3350
+    // walks 009552E0's entries and calls SetAmmo (vt[1BCh]) only on a key match
+    // (006E33AA-006E33B6), then attaches the next round (006E33FE vt[224h]) with the
+    // ammo 006E3C00 stored, 1. Both the 007B9140 answer and the release seed see it.
+    // False: such a rack holds nothing. LABELLED: single racks only, as for bag 0.
+    static constexpr bool kRackPositiveBagRoundBound = false;
+    unsigned long long rack_positive_bag_rounds{0};
+    int rack_positive_bag_round(const GameUnitSlot& s, int ammo) {
+        if constexpr (kRackPositiveBagRoundBound && bsp::kPlaneSceneEquipmentBound) {
+            if (s.bag_equipment > 0 && ammo < 0) {
+                ++rack_positive_bag_rounds;
+                return 1;   // 006E3C20 MOV EAX,1, kept by 006E3350's walk
+            }
+        }
+        return ammo;
+    }
     // Packet p13_neighbour_clock_draws (docs/OCEAN_WAVE_FIELD.md 47). The unit+C50h
     // constructor 007E1E20 starts its three clocks with stream-1 draws (00BD2F10,
     // ECX = 1, at 007E1F94 / 007E1FB9 / 007E1FE1): +7Ch = U(0, 3) + 3,
@@ -28590,7 +28609,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 ++unit_.rack_single_count;
                                 // The platform's authored rounds (packet
                                 // cc9_dive_bomb_carried_rounds). -1 when absent.
-                                const int ammo = owner_.rack_equipment_ammo(unit_, type_id, pkey);
+                                const int ammo = owner_.rack_positive_bag_round(unit_,
+                                    owner_.rack_equipment_ammo(unit_, type_id, pkey));
                                 if (ammo > 0) unit_.rack_rounds_authored += ammo;
                                 unit_.rack_authored_per_rack.push_back(ammo);
                                 // Packet cc9_rack_bullet_kind. LABELLED: the class's
@@ -38691,6 +38711,9 @@ void GameUnitsHost::report() {
         host.stock_return_sends, host.stock_return_adds, host.stock_return_no_deck,
         host.stock_return_no_squadron, host.stock_return_slot_returns,
         host.stock_return_site_leaves);
+    host.log.notef("summary rack positive bag round bound=%d rounds=%llu (006E3350 -> 006E3C00, "
+        "packet cc9_p14_bag_rack_round)", Impl::kRackPositiveBagRoundBound ? 1 : 0,
+        host.rack_positive_bag_rounds);
     host.log.notef("summary stock return destroy bytes bound=%d destroys=%llu (00926D90 -> "
         "0077D1A0 -> 00926C80, packet cc9_p14_stock_return_destroy)",
         Impl::kStockReturnDestroyBytesBound ? 1 : 0, host.stock_return_destroys);

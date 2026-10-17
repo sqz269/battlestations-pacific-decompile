@@ -2159,3 +2159,39 @@ Both sides are builds of 169839289. OFF is `local\p14_off_rt` (the tree build). 
 - `p14_chain.ps1 -Exe -Prefix -Rows 'M:frames,...'`: sequential rows in the reference environment.
 - The diagnostic edits (`p14_diag_*.py`, applied to a scratch build only) print the vehicle-avoidance neighbour,
   the band sources and the planner yaw inputs in a land final.
+
+## 54. A positive bag keeps a rack's constructor round: `kRackPositiveBagRoundBound` (cc9-physics14, 2026-10-17; lead item 5, 46's open item)
+
+### 54.1 The image (`006E3350`-`006E3402`, disk listing)
+
+- With an owner answering IsKindOf(0Fh) and `+C54h` (the bag) > 0, it walks `009552E0(bag)`'s entries. An entry whose
+  ammo `[+8h]+8h` > 0 and whose key `[+8h]+4h` equals the rack's key (`[+3F4h]+6Ch`, `006E33AA`-`006E33B6`) gets SetAmmo
+  (`vt[1BCh]`) and the reload time (`vt[1C0h]`).
+- Every path then reaches `006E33E3`. Unless `[+C0h]+4 == 3` (unread, taken as not met), it tail-jumps `vt[224h]`, which
+  attaches the next round.
+- A rack with no entry in the bag therefore keeps the ammo its constructor `006E3C00` stored, 1, and attaches one
+  round. 46 bound this for bag 0 in the 007B9140 answer only.
+
+### 54.2 Reach (census build, not committed: `local\p14bag_<row>.log`)
+
+- **ESMP08 40000 frames, `esmp08_p12_e8_rb`:** 31 planes. All are B6N Jill (class 163) with bag 1.
+  - Equipments[1] loads slot 50 with platform 122. Slot 51 is only in Equipments[2] (platform 87).
+  - So the slot-51 rack keeps the default device (bullet class 2Bh) and, in the image, one round. The host gives it none.
+- **USN04 4500:** none.
+
+### 54.3 The binding
+
+`kRackPositiveBagRoundBound` (`src/game_hosts_units.cpp`), committed **OFF**. With it ON, such a single rack gets
+authored ammo 1:
+- in `ordnance_racks` (the 007B9140 answer and 007EDAD0's kinds);
+- in `plane_rack_census` (`rack_authored_per_rack`, which seeds the release counts).
+Summary line: `summary rack positive bag round bound= rounds=`.
+
+### 54.4 Predictions (ON against OFF; written before the runs)
+
+1. **ESMP08 (rb):** `rounds` > 0.
+   - Each Jill's slot-51 rack holds a 2Bh round, so its torpedo release issues a second round. The squadron is not
+     spent after its first drop: 009F8160/007ED790 still finds a round.
+   - Torpedo releases rise, and US ship damage moves. `pair_diff` 3.
+2. **USN04 4500 and USN01 3000:** `rounds` 0, exit 0 or 1.
+3. **Mechanism failure:** a counted round on a rack whose loadout has an entry, or on a bag-0 plane (46's path).
