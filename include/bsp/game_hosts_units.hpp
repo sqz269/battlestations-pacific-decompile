@@ -1165,6 +1165,9 @@ public:
     // (InferiorFailure); here the airfield destruction rule's inferior arm has
     // run at least once. What 00953E60 answers for "InferiorFailure".
     bool inferior_failure_720(std::size_t index) const;
+    // Packet g50_shipyard_rule: the same byte set by the shipyard's 00845AC0 arm
+    // (vtable[194h] 00953DA0 -> message 7Dh -> 0095AD0A).
+    void set_inferior_failure_720(std::size_t index);
     // Packet cc9_land_master_damage. unit+71Ch, the CommandBuilding that adopted this
     // CommandBuildingInferior unit (006F5CC0 pass 1, the airfield rule's reading),
     // computed on the first ask; count() for none.

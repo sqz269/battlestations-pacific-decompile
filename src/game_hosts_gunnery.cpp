@@ -39,6 +39,7 @@
 #include "bsp/ai_tuning_globals.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_ai.hpp"
+#include "bsp/gameplay_seg52_cc13.hpp"
 #include "bsp/gun_gravity_arc.hpp"
 #include "bsp/bullet_engagement_range.hpp"
 #include "bsp/gun_heading_snap.hpp"
@@ -1446,6 +1447,21 @@ constexpr bool kLandStructureBlastElementEntriesBound = false;
 //    scene load); a section death hands off at the end of kill_unit; the forward runs
 //    before the section's kill test. False: no master, no forward, no hand-off.
 constexpr bool kLandMasterDamageBound = true;  // ON: USN01, IJN08 pairs, mechanism matches (SHIP_AI 240)
+//  * kShipyardDestructionRuleBound: packet g50_shipyard_rule, GUNNERY 270. The
+//    shipyard's vtable[1A8h] 00845AC0 (MShipyard vtable 00D0B770, dword 00D0B918;
+//    body src/gameplay_seg52_cc13.cpp shipyard_hangars_lost_00845ac0), run by
+//    00747170 for a shipyard master that is still live after its section's 1e10:
+//    nothing while a hangar record's object is live (00845750); otherwise, adopted
+//    by a CommandBuilding (+71Ch), vtable[194h]("InferiorFailure", 0) = 00953DA0
+//    (dword 00D0B904) -> message 7Dh -> 0095AD0A sets unit+720h; not adopted,
+//    vtable[70h](1) = 0077D1A0 (dword 00D0B7E0). With it, the gun fixed step's
+//    unit+720h gate (0072D1C1, BSP_Gun_FixedStepTick) reads the byte for every unit,
+//    so the airfield rule's inferior arm (006D40F0, already ON) blocks its guns too.
+//    LABELLED: a hangar record is a section whose master is this shipyard, live is
+//    "not dead" (+5Ch taken set, +5Eh/+60h clear); the 7Dh arm's 00982C50 notice
+//    (0095AD26..0095AD52, kinds 45h/46h) and 00958A30's +728h repair-timer arm are
+//    not hosted. OFF: recorded, nothing runs; the gate answers false.
+constexpr bool kShipyardDestructionRuleBound = false;
 //  * kOverrideHpHealthZeroBound: OverrideHP (008C1930) writes the health through
 //    00877B90, whose changed write runs vtable[1B0h] -> 00958A30, so a value at or
 //    below 0 destroys the unit (docs/CC13_VER_5.md D3). True: the host's health-zero
@@ -7631,7 +7647,10 @@ public:
         row.fire.barrel_timers[static_cast<std::size_t>(index)] = write.timer;
         owner_.done("Gun::set_barrel_reload_timer_0072cf00", 0x0072cf00u);
     }
-    bool unit_fire_blocked() const override { return false; }   // unit+720h
+    bool unit_fire_blocked() const override {                    // unit+720h, 0072D1C1
+        return kShipyardDestructionRuleBound
+            && owner_.units.inferior_failure_720(owner_.guns[gun_].unit_index);
+    }
     bool gun_disabled() const override { return false; }        // gun+3B8h
     void send_fire_message_0ad(std::uint16_t) override {
         ++owner_.guns[gun_].fire_messages;
@@ -13186,9 +13205,53 @@ void GameGunneryHost::Impl::land_section_destroyed_00747170(std::size_t section)
     if (land_master_is_airfield[section]) {
         units.run_airfield_destruction_rule_006d40f0(master);   // 006D40F0
         done("LandMaster::die_airfield_006d40f0", 0x006d40f0u);
-    } else {
+    } else if (!kShipyardDestructionRuleBound) {
         ++land_master.die_unhosted;
         record("LandMaster::die_shipyard_00845ac0", 0x00845ac0u);
+    } else {
+        // 00845AC0 over the shipyard's hangar records (the sections it masters).
+        std::vector<bsp::gameplay_seg52_cc13::ShipyardHangarSlot> slots;
+        for (std::size_t s = 0; s < land_master_738.size(); ++s) {
+            if (land_master_738[s] != master) continue;
+            bsp::gameplay_seg52_cc13::ShipyardHangarSlot slot;
+            slot.has_object = true;
+            slot.object.b5c = true;
+            slot.object.dead_5d = unit_state[s].dead;
+            slots.push_back(slot);
+        }
+        struct Host final : bsp::gameplay_seg52_cc13::ShipyardHangarsLostHost {
+            Impl& impl;
+            std::size_t yard;
+            const char* arm = "hangar_live";
+            explicit Host(Impl& i, std::size_t y) : impl(i), yard(y) {}
+            void native_string_resize_0041dd40(bsp::gameplay_seg52_cc13::ShipyardNativeString& s,
+                                               std::uint32_t length, std::int32_t) override {
+                buffer.assign(length + 1, '\0');
+                s.length = length;
+                s.data = buffer.data();
+            }
+            void shipyard_vslot194(const bsp::gameplay_seg52_cc13::ShipyardNativeString*, std::int32_t) override {
+                arm = "inferior_failure";        // 00953DA0 -> 7Dh -> 0095AD0A
+                impl.units.set_inferior_failure_720(yard);
+            }
+            void shipyard_vslot70(std::int32_t recurse) override {
+                arm = "destroy";                 // 0077D1A0 (recurse not modelled)
+                static_cast<void>(recurse);
+                ++impl.airfield_destroy_kills;
+                impl.explicit_kill_cause = 1;
+                impl.kill_unit(yard);
+                impl.explicit_kill_cause = 0;
+            }
+            void* pool_singleton_00419cc0() override { return nullptr; }
+            void pool_return_block_00bd1510(void*, void*, std::uint32_t, std::int32_t) override {}
+            std::string buffer;
+        } host(*this, master);
+        bsp::gameplay_seg52_cc13::shipyard_hangars_lost_00845ac0(slots, units.parent_link_71c(master) < unit_state.size(),
+            host);
+        log.notef("shipyard destruction rule: unit=%s hangars=%zu arm=%s t=%.2f (00845AC0, "
+            "packet g50_shipyard_rule)", unit_state[master].row.name.c_str(), slots.size(),
+            host.arm, static_cast<double>(clock_seconds));
+        done("LandMaster::die_shipyard_00845ac0", 0x00845ac0u);
     }
 }
 

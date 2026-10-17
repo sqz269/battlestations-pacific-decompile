@@ -15786,3 +15786,29 @@ read every row as about 60% per seed, not as a fixed property of the seed.
   within a movie (disable at 0.0, enable at the movie's end). No game host runs an `.ema` action list (no caller of
   `src/engine_movie_actions.cpp` outside cc13 files), so the writer stays unhosted; its reach is one IJN05 cutscene.
 - **bot+64h held trigger**: unchanged (no mission shows a latched AI submarine tube).
+
+## 270. `00845AC0` shipyard destruction rule bound OFF (`kShipyardDestructionRuleBound`, cc9-gunnery50, 2026-10-17)
+
+Lead item 3 (unhosted gunnery addresses called by hosted code). `land_section_destroyed_00747170` recorded
+`LandMaster::die_shipyard_00845ac0` as UNIMPLEMENTED (calls=1 in JM08 and LOMP10 logs across the cc9 trees). The
+body is cc13's `shipyard_hangars_lost_00845ac0` (`src/gameplay_seg52_cc13.cpp`); the slots it calls were read from the
+image: MShipyard vtable `00D0B770` +194h = `00953DA0` (`BSP_Unit_SetInferiorFailureProperty`, dword `00D0B904`) and
++70h = `0077D1A0` (dword `00D0B7E0`). `00953DA0` sends message 7Dh; `BSP_Unit_HandleMessage` sets `unit+720h` at
+`0095AD0A` (`MOV byte [ESI+720h], 1`) and, for kinds 45h/46h, posts `00982C50(..., "InferiorFailure", +728h)`
+(`0095AD26..0095AD52`, not hosted).
+
+The byte's readers (`80/38/8A/0FB6 ?? 20 07 00 00` scans): `0072D1C1` `BSP_Gun_FixedStepTick` (the host's
+`unit_fire_blocked`, which answered a constant false), `00729F16` `BSP_Gun_IsOperational`, `0072B60C`
+`BSP_Gun_ApplySetDestroyedFailure`, `00958A6D/00958BDE/00958CD4` `ReactToHealthChange`, `00953E85`
+`QueryInferiorFailure`, `00897F56` `InferiorIsDisabled` and `00895E51` `IsReadyToSendPlanes` (Lua), and two HUD
+marker writers. The switch binds the writer and the fixed-step gate; the other readers keep their current state.
+
+**Predictions (written before any run):**
+1. JM08 (`jm08_s45_j8_m10`): `PTHangar 01` dies (about 1366 s on `g49_aon_j8`) while `Shipyard 01` is kept alive by
+   its parent `Headquarter 01`; ON logs `shipyard destruction rule: unit=Shipyard 01 hangars=1 arm=inferior_failure`,
+   Lua `InferiorIsDisabled` answers true for it from then, and its guns stop firing. Everything before that time is
+   identical.
+2. The airfield rule's inferior arm (ON since GUNNERY 119) now also blocks that airfield's guns. Where it runs, AA from
+   the airfield stops at that time.
+3. LOMP10 (`lomp10_p3_l10_b`) moves only if a shipyard hangar dies before the end (calls=1 on `l61rt_l10_j3`).
+4. Missions with neither event (USN12, USN15) are identical.

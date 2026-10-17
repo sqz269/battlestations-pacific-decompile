@@ -37820,6 +37820,12 @@ bool GameUnitsHost::inferior_failure_720(std::size_t index) const {
     return impl_->slots[index]->inferior_failure_steps != 0;
 }
 
+void GameUnitsHost::set_inferior_failure_720(std::size_t index) {
+    if (index >= impl_->slots.size()) return;
+    // 0095AD0A: MOV byte [ESI+720h], 1 on message 7Dh (00953DA0, "InferiorFailure").
+    ++impl_->slots[index]->inferior_failure_steps;
+}
+
 std::size_t GameUnitsHost::parent_link_71c(std::size_t index) {
     if (index >= impl_->slots.size()) return impl_->slots.size();
     impl_->ensure_parent_link_71c_006f5cc0(index);
