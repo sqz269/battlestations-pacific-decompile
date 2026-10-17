@@ -5765,6 +5765,16 @@ struct GameUnitsHost::Impl {
     // arm's steer point from 009BFEE0's latched path 009BFEFC-009C0021.
     // Before: max speed x 0.9, the stall speed, and the fly-to geometry.
     static constexpr bool kPlaneFollowCatchupBound = true;
+    // Packet cc13-fix5 (docs/CC13_FIX5.md, finding R3 of docs/CC13_VERIFY15.md):
+    // the band tail's floor as the image builds it. 009BED80 (follow Enter)
+    // copies the Pilot/Follow block (009BE150, singleton+380h) and latches
+    // state+88h = block+08h = singleton+388h Pilot/Follow/SafeAlt
+    // (009BED9A-009BEDBB); 009C16E5-009C175A takes
+    // L = max(min(leaderY + LeaderFollowAlt, state+88h), leaderY - 120.0)
+    // on every path into the tail. True: state+88h = SafeAlt and the -120 bound
+    // at the fly-to, hold and catch-up sites. False: state+88h = 1e30 (floor
+    // leaderY + LeaderFollowAlt), -120 only with Phase A at the fly-to.
+    static constexpr bool kFollowBandSafeAltFloorBound = false;
     // Packet cc9_plane_follow_law_drift (docs/PLANE_FOLLOW_LAW.md section 17).
     // True: 009BFEE0's leader turn rate is 007D7DA0 (read whole) at the fly-to
     // and the hold steer point, instead of 0.0. False: 0.0.
@@ -8409,7 +8419,16 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             // 009C16D2-009C1846 on the steer Y, the arithmetic of
             // plane_follow_geometry_009bfee0's tail (state+88h taken as huge,
             // as at the fly-to call).
-            const float floor_v = leader.motion.position[1] + gt.pilot_follow_leader_follow_alt;
+            float floor_v = leader.motion.position[1] + gt.pilot_follow_leader_follow_alt;
+            if constexpr (kFollowBandSafeAltFloorBound) {
+                // 009C16E5-009C175A: min with state+88h = SafeAlt (latched by
+                // 009BEDBB), then max with float(leaderY - 120.0); JBE arms keep
+                // the first operand when unordered.
+                if (floor_v > gt.pilot_follow_safe_alt) floor_v = gt.pilot_follow_safe_alt;
+                const float lower = static_cast<float>(
+                    static_cast<double>(leader.motion.position[1]) - 120.0);   // [00D1F3F8]
+                if (lower > floor_v) floor_v = lower;
+            }
             const float ceil_c = static_cast<float>(
                 static_cast<double>(leader.motion.position[1]) + 120.0);
             const float ceil_v = gt.dynamics_ceiling < ceil_c ? gt.dynamics_ceiling : ceil_c;
@@ -8441,6 +8460,10 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             gin.band_floor_offset = gt.pilot_follow_leader_follow_alt;
             gin.band_ceiling_210 = gt.dynamics_ceiling;
             gin.state_88 = 1.0e30f;
+            if constexpr (kFollowBandSafeAltFloorBound) {
+                gin.state_88 = gt.pilot_follow_safe_alt;   // 009BEDBB
+                gin.band_floor_image = true;
+            }
             gin.band_inputs_available = true;
             const bsp::PlaneFollowGeometry geo = bsp::plane_follow_geometry_009bfee0(
                 gin, bsp::PlaneFollowRegime::kLeadPursuit);
@@ -9030,8 +9053,16 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         // half and this host has no field for it.  A huge value
         // makes the min pick `leaderY + LeaderFollowAlt`, which
         // is the half that is named; it can only RAISE the floor
-        // relative to the image, never lower it.
+        // relative to the image, never lower it. Replaced under
+        // kFollowBandSafeAltFloorBound (docs/CC13_FIX5.md).
         gin.state_88 = 1.0e30f;
+        if constexpr (kFollowBandSafeAltFloorBound) {
+            // 009BED84-009BEDBB: follow Enter latches state+88h from the
+            // block copy's +08h = singleton+388h Pilot/Follow/SafeAlt; the
+            // tail then bounds at leaderY - 120 on every path.
+            gin.state_88 = gt.pilot_follow_safe_alt;
+            gin.band_floor_image = true;
+        }
         gin.band_inputs_available = true;
 
         // Phase A's inputs, 009C025E-009C0323: the leader's world velocity
