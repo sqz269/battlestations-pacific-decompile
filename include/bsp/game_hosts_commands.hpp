@@ -222,6 +222,14 @@ inline constexpr bool kSquadronFreeAttackOverrideBound = true;   // ON by its pa
 // 00836D67 stay on kAutoTargetOverrideBound alone.
 inline constexpr bool kDirectorOverrideLayerBound =
     kAutoTargetOverrideBound || kSquadronFreeAttackOverrideBound;
+// Packet s57_override_push (docs/CC13_VERIFY6.md R5, SHIP_AI_OPEN_ITEMS 275). 0071E6C0's
+// tail: a category 1/2 command pushed while director+188h is set (0071E7A8 / 0071E7B4),
+// with the session mode [[00E188A8]+1EF0h]+F4h = game+1FE4h at 0 or 1 (006E38E0 at
+// 0071E7C9; 1 here), runs 0071E2E0: +50h < 2 stores 2 and routes 0071C730(0, 0) on
+// flags 7, the 5Dh clear with +20h = 0 that 00721A40 answers with 0071E610. True: the
+// push reads +188h and the clear goes through the loopback like every 5Dh. False:
+// +188h answers 0 to the push, so an attack order leaves an AutoTarget override on.
+inline constexpr bool kAttackPushEndsOverrideBound = false;
 
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.
@@ -330,6 +338,8 @@ struct GameCommandsSummary {
     unsigned long long override_installs{0};  // 0071E7F0 installed director+188h
     unsigned long long override_arm_ends{0};  // 00836DC4, the override arm's 0071D9E0(2)
     unsigned long long override_clears{0};    // 0071E610
+    unsigned long long override_push_echoes{0};   // 0071E2E0 from 0071E6C0's tail (s57)
+    unsigned long long override_push_clears{0};   // the 5Dh +20h=0 receive it posts
     unsigned long long loopback_clear_posts{0};    // 5Dh, 0071C730 / 0071D900
     unsigned long long loopback_delivered_in_place{0};  // switch off
     unsigned long long loopback_delivered_nested{0};    // posted inside a drain: next in it

@@ -18736,3 +18736,46 @@ range.
 **Decision: ON** by mechanism (house rule: a faithful fix flips even when wins are lost). Every win row needs
 a re-time or re-plan on this tree (sent to cc9-lua65). Open: the squadron free-attack tick 009F8470
 (GUNNERY_OPEN_ITEMS 48.3) sends the same 0071D980 and can now use this override layer.
+## 275. Commands host unit table address-stable (cc9-ships57, 2026-10-17; lead item 1, memory safety)
+
+**Defect.** `GameCommandsHost::register_units` (src/game_hosts_commands.cpp) ran `host.units = std::move(units)`
+on every spawn batch (create_units ends there; GameScriptOrdersHost's two spawn producers and the air-ops
+launches reach it). Every `&units[i]` held across ticks then named freed storage: the director slot
+descriptors (director+54h + i*1Ch, `slot_target[i].object`), the override descriptor (+18Ch), the queued
+scene records (scene_command_record_004690d0), the observer pairs, and any ChainState (`unit&`,
+`director&`) live across a nested spawn. 0071E200 at 0071E70C (the push's repeat test) compares the slot
+object with the new descriptor's, so after a spawn a repeated order was never recognised as a repeat; the
+fire-target resolve at 00835930 walks `&units[i] == object` and could not find a stale pointer.
+
+**Fix (no switch).** `units` and `directors` are `std::deque`s; register_units assigns the existing rows in
+place and appends the new ones, so references survive. The other hosts were checked: the units host's
+slots and the AI host's groups are `unique_ptr`s, ship-AI neighbour nodes are heap allocations owned by the
+lists, and the ship-AI `controllers` / `rows` vectors are not pointed into across ticks (only by index).
+A census line `unit table kept in place: re-registration N, M live descriptor pointer(s)` counts the
+non-null descriptors that the old move-assign would have invalidated.
+
+## 276. A pushed attack order ends the override, kAttackPushEndsOverrideBound (cc9-ships57, 2026-10-17; lead item 2)
+
+**Image.** 0071E6C0 (src/cruise_command.cpp `director_push_command_slot_0071e6c0`) ends, after the slot store and
+the mode-1 set, with 0071E7A8 `command category == 1 or 2`, 0071E7B4 `[director+188h] != 0`, 0071E7C9
+`006E38E0([00E188A8]+1EF0h)`, which reads +F4h of that sub-object: 1EF0h + F4h = game+1FE4h, the session
+mode, returning true for 0 or 1. The single-player value this host reports everywhere is 1
+(`kSessionModeSinglePlayer`), so the gate passes. 0071E7D4 then calls 0071E2E0 (body 0071E2E0-0071E361):
+`[director+50h] < 2` -> store 2 and, unless game+1FE4h == 2, 0071C730(0, 0) routed with flags 7, the
+5Dh message with +20h = 0 that 00721A40 sends to 0071E610 (00721B9F JZ 00721BC5). The host answered 0 for
++188h, recorded the gate as false and the echo as a record (CC13_VERIFY6 R5), so since 274 an AutoTarget
+override survived every scripted or AI attack order pushed onto the queue.
+
+**Bind (OFF).** `kAttackPushEndsOverrideBound` (include/bsp/game_hosts_commands.hpp). DirectorBinding answers
++188h from the director, passes the gate for mode 1, and runs 0071E2E0: stage 2, then a 5Dh clear message
+with +20h = 0 through `route_clear_command`, so it goes through the loopback like every other 5Dh
+(kSetCommandQueueDelayBound); `apply_clear_command` answers +20h = 0 with 0071E610 (the same in-place body
+the 0071D9E0 path uses). Counters: `summary mission director override push-end bound= echoes= clears=`.
+
+**Predictions, written before any run.** OFF: gameplay identical, echoes=0. ON: echoes > 0 wherever an
+override is installed and an attack-category order is pushed afterwards (USNOS: the Shinyo/sub
+`NavigatorAttackMove` re-issues and the AI attack orders; USN13 likewise). Each echo drops the director
+back to mode 1 (queue). Where the queue head is category 3, the AutoTarget tick (009F5610 reads slot 0
+only) may re-install an override on its next think, so installs may rise; where the pushed order is the
+head, the unit follows the scripted target instead of its auto target. The override clears counter
+(`summary mission director override ... clears=`) rises by the echo clears.

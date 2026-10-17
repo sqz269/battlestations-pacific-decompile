@@ -1178,13 +1178,43 @@ public:
         chain_.director.mode = mode;
         chain_.owner.done("WeaponDirector::set_command_mode", 0x0071e795u);
     }
-    std::uint32_t override_command() override { return 0; }   // director+188h
+    std::uint32_t override_command() override {   // director+188h
+        return kAttackPushEndsOverrideBound ? chain_.director.override_command : 0u;
+    }
     bool session_field_f4h_is_0_or_1() override {
-        chain_.owner.record("WeaponDirector::session_echo_gate", 0x006e38e0u);
-        return false;
+        if (!kAttackPushEndsOverrideBound) {
+            chain_.owner.record("WeaponDirector::session_echo_gate", 0x006e38e0u);
+            return false;
+        }
+        // [[00E188A8]+1EF0h]+F4h is game+1FE4h, the session mode.
+        chain_.owner.done("WeaponDirector::session_echo_gate", 0x006e38e0u);
+        return kSessionModeSinglePlayer == 0 || kSessionModeSinglePlayer == 1;
     }
     void echo_command() override {
-        chain_.owner.record("WeaponDirector::echo_command", 0x0071e2e0u);
+        if (!kAttackPushEndsOverrideBound) {
+            chain_.owner.record("WeaponDirector::echo_command", 0x0071e2e0u);
+            return;
+        }
+        // 0071E2E0, body 0071E2E0-0071E361: only while +50h < 2, which it raises to 2;
+        // then, outside session mode 2, 0071C730(0, 0) routed with flags 7.
+        chain_.owner.done("WeaponDirector::echo_command", 0x0071e2e0u);
+        if (chain_.director.override_stage >= 2) return;
+        chain_.director.override_stage = 2;
+        if (kSessionModeSinglePlayer == 2) return;
+        ++chain_.owner.summary.override_push_echoes;
+        if (chain_.owner.summary.override_push_echoes <= 12) {
+            chain_.owner.log.notef("  override ended by a pushed attack order: %s, head `%s`, "
+                "override `%s` (0071E6C0 -> 0071E2E0, packet s57_override_push)",
+                chain_.unit.name.c_str(),
+                chain_.owner.life_command_name(chain_.director.slot_command[0]),
+                chain_.owner.life_command_name(chain_.director.override_command));
+        }
+        bsp::ClearCommandMessage message{};
+        message.arm = 0;
+        message.index = 0;
+        chain_.owner.done("WeaponDirector::build_clear_command", 0x0071c730u);
+        chain_.owner.route_clear_command(chain_.unit.index,
+            chain_.owner.player_of(chain_.unit.index), message);
     }
 
     // -- 00835c70's `cruise` arm -------------------------------------------
@@ -2806,6 +2836,13 @@ bool GameCommandsHost::Impl::apply_clear_command(std::size_t unit_index,
         done("GameUnitMessage::clear_every_slot", 0x00720ca0u);
         return true;
     }
+    if (kAttackPushEndsOverrideBound
+        && bsp::clear_command_action(message) == bsp::ClearCommandAction::kClearOverride) {
+        // 00721B9F JZ 00721BC5 -> 0071E610, packet s57_override_push.
+        ++summary.override_push_clears;
+        clear_override_in_place(*this, unit_index);
+        return true;
+    }
     if (bsp::clear_command_action(message) != bsp::ClearCommandAction::kClearSlot) {
         return false;
     }
@@ -4038,6 +4075,10 @@ void GameCommandsHost::report() {
         "00836D67 / 0071E610)", kAutoTargetOverrideBound ? 1 : 0,
         host.summary.override_sends, host.summary.override_installs,
         host.summary.override_arm_ends, host.summary.override_clears);
+    host.log.notef("summary mission director override push-end bound=%d echoes=%llu "
+        "clears=%llu (packet s57_override_push, 0071E6C0 tail -> 0071E2E0 -> 0071E610)",
+        kAttackPushEndsOverrideBound ? 1 : 0, host.summary.override_push_echoes,
+        host.summary.override_push_clears);
     host.log.notef("summary mission director clear-all bound=%d clear_all=%llu drops=%llu "
         "slot_clears_00720ca0=%llu (packet cc9_set_command_clear_all, 0071D880 / 0071D900)",
         kSetCommandClearAllMessageBound ? 1 : 0, host.summary.clear_all_calls,
