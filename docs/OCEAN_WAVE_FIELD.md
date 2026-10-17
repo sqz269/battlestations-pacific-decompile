@@ -1808,3 +1808,16 @@ ECX = 1 (stream 1), bounds (0, P). Each result has the period added by `FADD` an
   their own keys.
 - Mechanism failure: a seed count that differs from the number of distinct planes using the object, or a moved draw
   on any other key.
+
+### 47.1 The pair, and the verdict: ON
+
+Export of 58304aea0 flipped (`local\p13_nb`) against that commit's build (`local\p13_off_nb`); reference env; logs
+`local\p13nb_<on|off>_<e8|u4>.log` with manifests, diffs `local\p13nb_diff_<e8|u4>.txt`.
+
+| Row | pair_diff | Note |
+| --- | --- | --- |
+| ESMP08 60000 (`esmp08_p12_e8_rb`) | 3 | seeded=700; first moved deaths at 442-466 s (the first fighter contacts over the fleet); deaths 632 -> 633, dive-bomb-task releases 100 -> 96, torpedo drops 38 -> 29 |
+| USN04 45000 | 3 | seeded=63; first hit 96.65 -> 98.85 s; deaths 51 both |
+
+Both rows move only from the first air contact, as predicted. The draws are on their own keys, so no other stream
+moves. **Flipped ON by mechanism.**
