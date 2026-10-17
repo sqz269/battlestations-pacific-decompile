@@ -1480,3 +1480,36 @@ pass after the erase (final at 939.14 s) reaches the deck and dies there at 957.
 "lands on a later pass" became "reaches the deck on the next pass": the cycle is gone, and the death is the separate
 deck-crash gap of section 39. At 3000 s OFF has one landing plane alive (in abort), ON none; air-ops releases 67 -> 72, squadrons created 74 -> 78, US ship deaths the same eleven (Mobile, Grayson, Dunlap and
 Santa Fe 2-37 s earlier). The mechanism is the image's, so the switch is **flipped ON**.
+
+### 39.2 The deck crash is vehicle avoidance (diagnostic, nothing bound)
+
+A diagnostic export of 6cfd0ff18 with `kAirOpsQueueCompactBound` ON and `kPilotVehicleAvoidanceBound` OFF
+(`local\p12_qcva`, log `local\p12qcva_e8.log`, ESMP08 `p11_e8_ra` to 20000 frames; not a candidate, avoidance is the
+image's) lands all three of Chitose_sqn14 (and all of Zuikaku_sqn16) with no crash sweep on any carrier, where the ON
+build loses both Chitose wingmen on the deck. Each lost wingman's summary shows plane-arm avoidance ticks
+(`vehicle/terrain avoid ... plane=46` and `plane=78`) where the leader, which landed on an empty deck, has `plane=0`;
+both crashes happen while a new squadron is in its takeoff run on the same deck. So the landing plane is steered off
+its glide by the plane-arm bands against the departing aircraft, near the deck and at about 31 m/s, while the direction
+hold keeps forcing the velocity onto the glide path. Open: whether the image's 007DF4F0 lists a plane in a ground state
+on a carrier deck (the host's neighbour refresh takes every in-world kind 0Fh), and whether the image holds launches
+while a plane is on final. Until then the plans avoid launching from a carrier that is recovering planes only by luck.
+
+## 40. ESMP08 re-planned: `esmp08_p12_e8_rb` (cc9-physics12, 2026-10-16; lead item 2)
+
+cc9-physics11's three recall variants (`local\p11_e8_ra/rb/rc.txt`, made by `local\p11_e8recall.py` from
+`esmp08_l61_e8_f`: slot-4 Zero launches thinned to every k-th 600-frame cycle, and `order <carrier> 4 2` d frames after
+each kept launch; ra k=20 d=9000, rb k=24 d=10000, rc k=16 d=7000) on this tree. Reference env, 140000 frames,
+`--stop-after-end 40`.
+
+| Plan | Exe | reference | 20,3 | 20,5 | 20,7 |
+| --- | --- | --- | --- | --- | --- |
+| f (lua62, `cc9-lua52\local\l62rt_e8_*.log`) | 25fbdcba0-equivalent | completed 6532.47 s | no end (13/15) | - | - |
+| ra | 25fbdcba0 (`local\p12_m`) | no end (13/15: Washington, Cummings) | - | - | - |
+| rc | same | no end | - | - | - |
+| rb | same | completed 4684.71 s | completed 3594.58 s | completed 4624.95 s | - |
+| **rb** | **135f8ae26** (`local\p12_m2`, compaction ON) | **completed 4684.71 s** | **completed 3594.58 s** | **completed 3251.20 s** | no end (12/15: Washington, Fanning, Woodworth) |
+
+Logs `local\p12e8_<plan>[_j<n>].log` (first exe) and `local\p12e8b_rb_<ref|j3|j5|j7>.log` (135f8ae26), with manifests;
+every completion logs the exec guard's sus_prog.exe refusal. On 135f8ae26 the rb reference erases 6 landing records and
+moves in small ways (`pair_diff` 3 against the first exe) without moving the reference or 20,3 end time (20,5 moves 4624.95 -> 3251.20 s). Committed as
+`config/win_orders/esmp08_p12_e8_rb.txt` (rb unchanged, one header line added): it holds the reference, 20,3 and 20,5, where f holds only the reference; 20,7 is lost.
