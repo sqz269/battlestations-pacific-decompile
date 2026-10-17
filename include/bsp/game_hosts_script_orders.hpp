@@ -57,6 +57,7 @@
 #include "bsp/lua_binding_mission.hpp"
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/mission_blackout.hpp"
+#include "bsp/plane_squadron_host.hpp"
 #include "bsp/script_orders_ver_cc13.hpp"
 
 namespace bsp {
@@ -551,6 +552,19 @@ inline constexpr bool kAirOpsSceneSquadronOrdersBound = false;
 std::uint32_t script_orders_squadron_intake_007f1940(std::size_t leader,
     const std::vector<std::size_t>& members, std::size_t target_index);
 
+// Packet p15_free_attack_tick (docs/OCEAN_WAVE_FIELD.md section 57), for the one
+// live host. The +3Ch allowFire / +3Dh allowMove bytes of the squadron's +348h
+// block (the stance store, else 0084D810's defaults); 007EEC50 with the leader's
+// self queries (`prefer_ordnance` is its byte argument, `allow_guns` the int);
+// and 0099A170 for one member reading its director's current command, the class
+// stored on the unit when a task was built. False / 0 when no host is live.
+bool script_orders_squadron_permissions_3c3d(const bsp::PlaneSquadronHostRecord& squadron,
+    bool& allow_fire, bool& allow_move);
+std::uint32_t script_orders_choose_attack_class_007eec50(std::size_t leader,
+    std::size_t target_index, bool prefer_ordnance, bool allow_guns);
+std::uint32_t script_orders_install_command_task_0099a170(std::size_t member,
+    std::uint32_t command, std::size_t target_index);
+
 // Packet cc9_player_air_ops_launch (bsp::kAirOpsPlayerLaunchBound,
 // docs/AIROPS_LAUNCH_TICK.md "The player's launch"). The Support Manager screen's
 // launch 00675C40 for the one live host: 0067A5A7 006C0F00 fills slot
@@ -620,6 +634,16 @@ public:
     std::size_t drain_deferred_orders_0076c600();
     // Packet cc9_ai_squadron_settarget_intake: see
     // script_orders_squadron_intake_007f1940.
+    // Packet p15_free_attack_tick: see script_orders_squadron_permissions_3c3d.
+    bool squadron_permissions_3c3d(const bsp::PlaneSquadronHostRecord& squadron,
+        bool& allow_fire, bool& allow_move);
+    std::uint32_t choose_attack_class_for_free_attack(std::size_t leader,
+        std::size_t target_index, bool prefer_ordnance, bool allow_guns) {
+        return choose_attack_class_007eec50(leader, target_index, prefer_ordnance, allow_guns,
+                                            "FreeAttack 009F8470");
+    }
+    std::uint32_t install_command_task_0099a170(std::size_t member, std::uint32_t command,
+        std::size_t target_index);
     std::uint32_t squadron_intake_007f1940(std::size_t leader,
         const std::vector<std::size_t>& members, std::size_t target_index);
     // The intake's issue loop: `command` on a kind-1 descriptor naming the target, to

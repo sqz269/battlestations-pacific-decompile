@@ -1696,6 +1696,45 @@ void GameScriptOrdersHost::issue_command_to_members(const std::vector<std::size_
     delivery_source_ = saved_source;
 }
 
+// Packet p15_free_attack_tick: the bot side of an override 0071D980 sent or
+// cleared. 0099A170 reads the member's current command (0071BE40, the override
+// in mode 2); `command` and `target_index` are what the caller knows that read
+// answers, as the PilotSetTarget fan-out passes them.
+std::uint32_t GameScriptOrdersHost::install_command_task_0099a170(std::size_t member,
+    std::uint32_t command, std::size_t target_index) {
+    if (member >= units_.count()) return 0u;
+    const std::uint32_t target_token = target_index < units_.count()
+        ? static_cast<std::uint32_t>(target_index + 1u) : 0u;
+    ScriptOrderAttackCommandHost bots(units_, log_, command, target_token);
+    const std::uint32_t task = bsp::bot_install_command_task_0099a170(
+        static_cast<std::uint32_t>(member + 1u), bots);
+    if (task != 0u) units_.store_unit_attack_command_class(member, command);
+    return task;
+}
+
+bool script_orders_squadron_permissions_3c3d(const bsp::PlaneSquadronHostRecord& squadron,
+    bool& allow_fire, bool& allow_move) {
+    allow_fire = false;
+    allow_move = false;
+    return g_live_script_orders != nullptr
+        && g_live_script_orders->squadron_permissions_3c3d(squadron, allow_fire, allow_move);
+}
+
+std::uint32_t script_orders_choose_attack_class_007eec50(std::size_t leader,
+    std::size_t target_index, bool prefer_ordnance, bool allow_guns) {
+    return g_live_script_orders != nullptr
+        ? g_live_script_orders->choose_attack_class_for_free_attack(leader, target_index,
+              prefer_ordnance, allow_guns)
+        : 0u;
+}
+
+std::uint32_t script_orders_install_command_task_0099a170(std::size_t member,
+    std::uint32_t command, std::size_t target_index) {
+    return g_live_script_orders != nullptr
+        ? g_live_script_orders->install_command_task_0099a170(member, command, target_index)
+        : 0u;
+}
+
 std::uint32_t script_orders_squadron_intake_007f1940(std::size_t leader,
     const std::vector<std::size_t>& members, std::size_t target_index) {
     return g_live_script_orders != nullptr
@@ -2522,6 +2561,22 @@ bool director_fire_permission_00836210(GameShipAiHost* ship_ai, std::size_t unit
     }
 }
 }  // namespace
+
+// Packet p15_free_attack_tick: the bytes run_unit_set_fire_stance keeps, with the
+// same fighter test (the leader's IsKindOf(13h)) for 0084D810's defaults.
+bool GameScriptOrdersHost::squadron_permissions_3c3d(
+    const bsp::PlaneSquadronHostRecord& squadron, bool& allow_fire, bool& allow_move) {
+    const std::size_t leader = squadron.member_units.empty()
+        ? bsp::kPlaneSquadronNoUnit : squadron.member_units.front();
+    const bool fighter = leader != bsp::kPlaneSquadronNoUnit &&
+        units_.unit_is_kind_of(leader, 0x13);
+    const auto found = squadron_permissions_.find(squadron.name);
+    const SquadronPermissions p = found != squadron_permissions_.end()
+        ? found->second : squadron_permissions_0084d810(squadron, fighter);
+    allow_fire = p.allow_fire;
+    allow_move = p.allow_move;
+    return true;
+}
 
 int GameScriptOrdersHost::run_unit_set_fire_stance(GameScriptOrderRow& row) {
     if constexpr (!bsp::kMissionTurnAndStanceBound) {
