@@ -406,6 +406,14 @@ inline constexpr bool kLuaAAEnableBound = true;  // ON: identity pairs (docs/LUA
 // 00953E60 are the base pair (InferiorFailure, +720h). True: both rows run on the
 // gunnery and units hosts. False: unimplemented, nil.
 inline constexpr bool kLuaSetFailureBound = true;  // ON: n1 pairs (GUNNERY 197-199, cc9-gunnery38)
+// Packet cc13-fix11 (docs/CC13_FIX11.md). 008AC7B0 SetDeadMeat(entity), no result:
+// a plane (IsKindOf 0Fh) gets vtable[194h]("spinning", 0) at 008AC8FB; a ship
+// (IsKindOf 6) takes one stream-1 draw U(-1, 1) at 008AC94B (00BD2F10, ECX = 1)
+// into the sink pivot's x, then 008110F0 at 008AC96A (refused on +5Dh or
+// +150h > 0, else vtable[70h](1)); anything else gets vtable[70h](1) at 008AC97A.
+// True: run_set_dead_meat_008ac7b0 on the gunnery host's draw and death funnel
+// (the plane arm is counted, not applied). False: the row stays UNIMPLEMENTED.
+inline constexpr bool kLuaSetDeadMeatBound = false;  // OFF: committed for a USN04 pair
 inline constexpr bool kLuaSetShipSpeedBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_unit_get_attack_target (docs/LUA_BINDING_MISSION.md, "UnitGetAttackTarget,
@@ -983,6 +991,12 @@ struct GameMissionLuaSummary {
     unsigned long long set_failure_unresolved{0};
     unsigned long long get_failure_calls{0};        // 0088F1D0
     unsigned long long get_failure_true{0};
+    unsigned long long dead_meat_calls{0};          // packet cc13-fix11, 008AC7B0
+    unsigned long long dead_meat_sunk{0};           // ship arm, 008110F0 not refused
+    unsigned long long dead_meat_sink_refused{0};   // ship arm, +5Dh or +150h > 0
+    unsigned long long dead_meat_destroyed{0};      // else arm, vtable[70h](1)
+    unsigned long long dead_meat_plane_unapplied{0};  // plane arm, not hosted
+    unsigned long long dead_meat_unresolved{0};
     unsigned long long attack_target_calls{0};
     unsigned long long attack_target_fire_arm{0};
     unsigned long long attack_target_command_arm{0};
@@ -1606,6 +1620,8 @@ public:
     // Packet cc13_natives1, under kLuaSetFailureBound.
     int run_set_failure_0088eff0(lua_State* state, int argument_count);
     int run_get_failure_0088f1d0(lua_State* state, int argument_count);
+    // Packet cc13-fix11, under kLuaSetDeadMeatBound.
+    int run_set_dead_meat_008ac7b0(lua_State* state, int argument_count);
     // Packet cc9_unit_get_attack_target, under kLuaUnitGetAttackTargetBound.
     int run_unit_get_attack_target_008a6de0(lua_State* state, int argument_count);
     // Packet cc9_squadron_set_speed, under kLuaSquadronSetSpeedBound.
