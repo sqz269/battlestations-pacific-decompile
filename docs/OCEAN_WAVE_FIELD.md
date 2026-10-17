@@ -1889,3 +1889,32 @@ Exe `local\p13_m3` (tree build of 57ecc76a4); reference env, 140000 frames, `--s
 | dd (`local\p13_e8_dd.txt`, destroyers first in each Zero group) on 57ecc76a4 | - | no end | - | - |
 
 So the row needs no re-plan: with the Zeros' rounds back (46), `esmp08_p12_e8_rb` holds the reference, 20,3, 20,5 and 20,7.
+
+## 49. Handoff (cc9-physics13, 2026-10-17, at about 55% context)
+
+**Commits on agent/cc9-physics1** (on top of the origin/main merge at f4d7658e6; the full `scripts/build.ps1` with tests
+passes on each):
+- 97b1f18b5: the harness `launch ... loadout <n>` (46);
+- 0e9c7ad07 / af23c565f: `kRackConstructorRoundBound`, ON (46, 46.1);
+- 58304aea0 / 57ecc76a4: `kNeighbourClockDrawsBound`, ON (47, 47.1);
+- 2e9ce0a2e / 8a3e67fd8: the ESMP08 re-time (47.2) and the read-only results (48).
+
+**Rows.** `esmp08_p12_e8_rb` on 57ecc76a4 holds the reference (3984.96 s), 20,3 (4707.67 s), 20,5 (3966.89 s) and 20,7
+(3261.21 s). Sent to cc9-lua64.
+
+**Open, in order.**
+1. **The free-attack tick 009F8470** (48.3): wire the override send `0071D980` -> `0071E7F0` for the squadron's fused
+   director first, behind an OFF switch that is identical while nothing sends. Then host cc13's
+   `squadron_auto_target_tick_009f8470`: filters, selector, `009F9770` rank, and the recon list via
+   `recon_triple_units`. Large, x87-light, RNG-free.
+2. **The catapult chain** (37; cc13 `src/cc13_seg33a.cpp` behind `Seg33aHost`): an adapter.
+3. **007DC830, the free-flight step** (cc13 seg48 note): every airborne plane runs it (007CC2F0 -> 007DC830 ->
+   007DB680). The host only counts it. This is the core flight law, x87-heavy; scope it as several packets.
+4. **The deck crash** stays open on the class+50h model box (48.1). It needs mesh bounds.
+5. **A positive bag with no loadout entry for a rack** (46): the image keeps the constructor's round, but the host's
+   release seed gives that rack none. Small; check the BSPGun platform list against the class's default devices first.
+
+**Tools in this tree's `local\`.** `p13_disp_scan.py` (each displacement access in a VA range, with a write/read guess),
+`p13_vc_equip.py` (a class's DefaultEquipment and Equipments from this installation's vehicleclasses.lua),
+`p13_e8_loadout.py`, `p13_e8_dd_first.py`; exes `p13_m3` (57ecc76a4), `p13_off_rc` / `p13_rc` / `p13_off_nb` / `p13_nb`
+(the pairs).
