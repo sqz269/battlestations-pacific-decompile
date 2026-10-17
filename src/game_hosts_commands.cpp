@@ -158,6 +158,12 @@ struct GameDirector {
     // and 00817031's 3.0f is the `cleartarget` arm, which this mission never
     // issues.
     float target_hold_0040{-1.0f};
+    // Packet s56_autotarget_override: the override record director+188h (command)
+    // and +18Ch (its descriptor), and +50h, its stage. Only 0071E7F0 writes them, and
+    // only kAutoTargetOverrideBound reaches it.
+    std::uint32_t override_command{0};
+    bsp::SceneCommandTarget override_target{};
+    int override_stage{0};
     // Packet cc8_ship_moveonpath: the slot-0 path object of director+1A4h, the
     // one 0071BFF0(director, 0) answers with and the only one both 009E59C0 and
     // 00836920's `moveonpath` arm ever ask for. The native allocates ten of
@@ -1760,7 +1766,7 @@ void finish_issue_tail(GameCommandsHost::Impl& host, ChainState& chain,
     GameDirector& director = host.directors[unit_index];
     // 0071be40 with the mode 0071e6c0 set: 1 means the current command is slot 0.
     const std::uint32_t current = bsp::director_current_command_0071be40(director.mode,
-        director.slot_command[0], 0u);
+        director.slot_command[0], director.override_command);
     host.done("WeaponDirector::current_command", 0x0071be40u);
     const bsp::EntityOrderCommandClass* issued_class
         = (row.ordinal >= 0) ? bsp::entity_order_command_class_by_ordinal(row.ordinal)
@@ -2380,6 +2386,11 @@ bsp::CommandQueueState queue_state_of(const GameDirector& director) {
         state.slots[i].command = director.slot_command[i];
         state.slots[i].params = params_of_target(director.slot_target[i]);
     }
+    // Packet s56_autotarget_override: +188h..+1A3h and +50h. Zero unless
+    // kAutoTargetOverrideBound installed an override.
+    state.override_slot.command = director.override_command;
+    state.override_slot.params = params_of_target(director.override_target);
+    state.override_stage = director.override_stage;
     return state;
 }
 
@@ -2392,12 +2403,16 @@ void queue_state_back(const bsp::CommandQueueState& state, GameDirector& directo
         director.slot_command[i] = state.slots[i].command;
         director.slot_target[i] = target_of_params(state.slots[i].params, object);
     }
+    director.override_command = state.override_slot.command;
+    director.override_target = target_of_params(state.override_slot.params,
+        director.override_target.object);
+    director.override_stage = state.override_stage;
 }
 
 // bsp::CommandExecutionHost, for 00720850 only. Every method that the clear
 // path does not reach on this mission records its own address; the ones it does
 // reach are concrete.
-class QueueClearBinding final : public bsp::CommandExecutionHost {
+class QueueClearBinding : public bsp::CommandExecutionHost {
 public:
     QueueClearBinding(GameCommandsHost::Impl& owner, GameCommandUnit& unit,
                       GameDirector& director, bool player_controlled)
@@ -2501,7 +2516,16 @@ public:
         owner_.record("WeaponDirector::fire_target", 0x008364e0u);
         return 0u;
     }
-    void on_command_changed(bool) override {
+    void on_command_changed(bool primary) override {
+        if (kAutoTargetOverrideBound && !primary) {
+            // Packet s56_autotarget_override: 0071E6B5 / 0071E90E, vtable[6Ch](0) =
+            // 00835BF0 with primary 0. 0071C130(0) clears the override pair +4Ch /
+            // +50h, and 00835C26 clears the commanded speed (00835C4C).
+            override_reset = true;
+            owner_.set_commanded_speed_time(unit_.index, bsp::kCruiseSpeedSettingInactive);
+            owner_.done("WeaponDirector::clear_override_stage_pair", 0x0071c130u);
+            return;
+        }
         // 00720B56, vtable[6Ch] = 00835BF0, whose head is 0071C130.
         director_.stage = 0;
         director_.latched = false;
@@ -2547,13 +2571,50 @@ public:
     std::string cleared_command;
     int cleared_index{-1};
     int cleared_mode{-1};
+    // vtable[6Ch](0) ran: the caller zeroes director+50h after queue_state_back.
+    bool override_reset{false};
 
-private:
+protected:
     GameCommandsHost::Impl& owner_;
     GameCommandUnit& unit_;
     GameDirector& director_;
     bool player_{false};
 };
+
+// Packet s56_autotarget_override. 0071E7F0 run from 00721B7C: the same host as the
+// slot clear, except that 0071E825's acceptance test is the real 0071D6D0.
+class OverrideBinding final : public QueueClearBinding {
+public:
+    OverrideBinding(GameCommandsHost& api, GameCommandsHost::Impl& owner,
+                    GameCommandUnit& unit, GameDirector& director, bool player_controlled)
+        : QueueClearBinding(owner, unit, director, player_controlled), api_(api) {}
+
+    bool command_accepts_target(std::uint32_t command,
+                                const bsp::CommandParams& params) override {
+        const bool accepts = api_.command_accepts_target_0071d6d0(command,
+            resolve_target(params));
+        owner_.done("WeaponDirector::override_accepts_target", 0x0071e825u);
+        return accepts;
+    }
+
+private:
+    GameCommandsHost& api_;
+};
+
+// Packet s56_autotarget_override. 0071D9E0's stage-2 message, MT_GAMEUNIT_CLEARCMD
+// (+20h = 0), received by 00721A40's 5Dh arm (00721B9A): 0071E610. LABELLED: in
+// place rather than at the next session pump.
+void clear_override_in_place(GameCommandsHost::Impl& host, std::size_t unit_index) {
+    if (unit_index >= host.directors.size() || unit_index >= host.units.size()) return;
+    GameDirector& director = host.directors[unit_index];
+    bsp::CommandQueueState state = queue_state_of(director);
+    QueueClearBinding exec(host, host.units[unit_index], director, host.player_of(unit_index));
+    bsp::clear_override_command_0071e610(state, exec);
+    queue_state_back(state, director);
+    if (exec.override_reset) director.override_stage = 0;
+    ++host.summary.override_clears;
+    host.done("WeaponDirector::clear_override_command", 0x0071e610u);
+}
 
 // bsp::CommandCompletionHost, the six methods 0071E430 and its stage ladder
 // reach. The one that matters is raise_queue_stage: reaching stage 2 is what
@@ -2592,6 +2653,17 @@ public:
     }
 
     void raise_override_stage(int stage) override {
+        if (kAutoTargetOverrideBound) {
+            // Packet s56_autotarget_override: director+50h itself; the 5Dh clear
+            // (+20h = 0) is applied by end_command_0071e430 after the state is back.
+            if (!bsp::stage_raise_applies(state_.override_stage, stage)) return;
+            state_.override_stage = stage;
+            owner_.done("WeaponDirector::raise_secondary_stage", 0x0071d9e0u);
+            if (bsp::stage_raise_sends_message(stage, kSessionModeSinglePlayer)) {
+                clears_override = true;
+            }
+            return;
+        }
         if (!bsp::stage_raise_applies(override_stage_, stage)) return;
         override_stage_ = stage;
         owner_.done("WeaponDirector::raise_secondary_stage", 0x0071d9e0u);
@@ -2637,6 +2709,7 @@ public:
     }
 
     bool sends_clear_command{false};
+    bool clears_override{false};
 
 private:
     GameCommandsHost::Impl& owner_;
@@ -2699,6 +2772,7 @@ bool GameCommandsHost::Impl::apply_clear_command(std::size_t unit_index,
         }
         bsp::clear_all_command_slots_00720ca0(state, exec);
         queue_state_back(state, director);
+        if (exec.override_reset) director.override_stage = 0;
         done("GameUnitMessage::clear_every_slot", 0x00720ca0u);
         return true;
     }
@@ -2710,6 +2784,7 @@ bool GameCommandsHost::Impl::apply_clear_command(std::size_t unit_index,
     bsp::clear_command_slot_00720850(state, message.index, exec);
     done("WeaponDirector::clear_primary_command", 0x00720850u);
     queue_state_back(state, director);
+    if (exec.override_reset) director.override_stage = 0;
     ++summary.queue_advances;
     if (summary.queue_advances <= 8) {
         const bsp::EntityOrderCommandClass* promoted = class_of(director.slot_command[0]);
@@ -2789,6 +2864,8 @@ GameCommandCompletion GameCommandsHost::end_command_0071e430(std::size_t unit_in
     if (trace.restart.applies) ++host.summary.restarts;
 
     queue_state_back(state, director);
+    if (exec.override_reset) director.override_stage = 0;
+    if (completion.clears_override) clear_override_in_place(host, unit_index);
     if (director.stage > stage_before) ++host.summary.stage_raises;
     if (completion.sends_clear_command) {
         out.message_routed = true;
@@ -2997,6 +3074,29 @@ GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t uni
                 host.command_count(director));
         }
         host.life_emit(unit_index, "attackmove arm 00836b45", mission_clock, director);
+    }
+    if (kAutoTargetOverrideBound && arms_run && host.target_facts != nullptr
+        && director.override_command == bsp::kCommandAttackMove) {
+        // Packet s56_autotarget_override: the override arm 00836D67..00836DC4, EBP =
+        // [ESI+188h] (00836A93). 00521EA0 on +18Ch; a null, a target failing
+        // +5Ch / +5Dh / +60h / +5Eh, a friendly non-structure, or a structure of
+        // side 0 or 1 that is the unit's own ends it through 0071D9E0(2) at
+        // 00836DC4. Another side that is not 2 (00836DA9 JNZ) keeps it, and so does
+        // a structure of side 2 or more (00836DBE JGE).
+        const std::uint32_t target = resolve_command_target_00521ea0(director.override_target);
+        GameCommandTargetFacts facts{};
+        GameCommandTargetFacts own{};
+        bool end = target == 0u || !host.target_facts->command_target_facts(target - 1u, facts)
+            || !facts.live_0043f080;
+        if (!end && host.target_facts->command_target_facts(unit_index, own)
+            && (own.side_0054 == facts.side_0054 || facts.side_0054 == 2)) {
+            end = !facts.command_building_1c || facts.side_0054 < 2;
+        }
+        host.done("WeaponDirector::override_attackmove_arm", 0x00836d67u);
+        if (end) {
+            ++host.summary.override_arm_ends;
+            raise_override_stage_0071d9e0(unit_index, 2);   // 00836DC4
+        }
     }
 
     outcome.reissued = bsp::weapon_director_idle_reissue_00836dc9(state,
@@ -3381,7 +3481,7 @@ bool GameCommandsHost::holds_cruise(std::size_t unit_index) const {
     if (unit_index >= host.directors.size()) return false;
     const GameDirector& director = host.directors[unit_index];
     return director.latched
-        && bsp::director_current_command_0071be40(director.mode, director.slot_command[0], 0u)
+        && bsp::director_current_command_0071be40(director.mode, director.slot_command[0], director.override_command)
             == bsp::kCruiseCommandObjectAddress;
 }
 
@@ -3389,7 +3489,7 @@ std::uint32_t GameCommandsHost::current_command_0071be40(std::size_t unit_index)
     const Impl& host = *impl_;
     if (unit_index >= host.directors.size()) return 0u;
     const GameDirector& director = host.directors[unit_index];
-    return bsp::director_current_command_0071be40(director.mode, director.slot_command[0], 0u);
+    return bsp::director_current_command_0071be40(director.mode, director.slot_command[0], director.override_command);
 }
 
 // ---------------------------------------------------------------------------
@@ -3418,7 +3518,8 @@ bool GameCommandsHost::active_command_descriptor_0071eb60(std::size_t unit_index
         // it through no path: its call from 00721A40 is a record here
         // (WeaponDirector::queue_command). The descriptor is therefore the one
         // a fresh director carries, and the caller is told which arm it got.
-        out = bsp::SceneCommandTarget{};
+        // Packet s56_autotarget_override: kAutoTargetOverrideBound reaches it.
+        out = kAutoTargetOverrideBound ? director.override_target : bsp::SceneCommandTarget{};
         return true;
     }
     return false;
@@ -3542,6 +3643,81 @@ bool GameCommandsHost::command_accepts_target_0071d6d0(std::uint32_t command,
     if (resolved == 0u) return false;                  // 0071D709
     if (host.target_released_05d(resolved)) return false;  // 0071D712
     return host.command_extra_test_0071d71f(command, target);
+}
+
+// Packet s56_autotarget_override. 0071D980 BSP_WeaponDirector_SendOverrideCommand,
+// body 0071D980-0071D9DD: 0071D99E COMISS 0.0f, [director+40h]; JBE 0071D9CE skips
+// the send unless the hold is below zero. 0071C830(command, target, 0) builds
+// MT_GAMEUNIT_SETCMD with +20h = 0 and 0077C2A0 routes it (flags 7); 00721A40's 5Ch
+// arm takes 00721B7C for the zero byte: 0071E7F0(command, target).
+bool GameCommandsHost::send_override_command_0071d980(std::size_t unit_index,
+    std::uint32_t command, std::uint32_t handle) {
+    Impl& host = *impl_;
+    if (!kAutoTargetOverrideBound || unit_index >= host.directors.size()
+        || unit_index >= host.units.size()) {
+        return false;
+    }
+    GameDirector& director = host.directors[unit_index];
+    if (!(0.0f > director.target_hold_0040)) return false;   // 0071D99E
+    ++host.summary.override_sends;
+    host.done("WeaponDirector::send_override_command", 0x0071d980u);
+    // 00465080(chosen, 0.0f): kind 1, the entity's +174h id, the zero vector.
+    bsp::SceneCommandTarget target{};
+    GameCommandUnit* object = nullptr;
+    if (handle != 0u && handle - 1u < host.units.size()) {
+        object = &host.units[handle - 1u];
+        target.kind = 1;
+        target.object_id = object->object_id;
+        target.object = object;
+    }
+    bsp::CommandQueueState state = queue_state_of(director);
+    OverrideBinding exec(*this, host, host.units[unit_index], director,
+        host.player_of(unit_index));
+    bsp::set_override_command_0071e7f0(state, command, params_of_target(target), exec);
+    host.done("WeaponDirector::set_override_command", 0x0071e7f0u);
+    queue_state_back(state, director);
+    if (exec.override_reset) director.override_stage = 0;
+    const bool installed = director.mode == bsp::CruiseCommandMode::Override
+        && director.override_command == command
+        && resolve_command_target_00521ea0(director.override_target) == handle;
+    if (installed) {
+        director.override_target.object = object;
+        ++host.summary.override_installs;
+        if (host.summary.override_installs <= 24) {
+            const bsp::EntityOrderCommandClass* klass = host.class_of(command);
+            host.log.notef("  override 0071e7f0: %s takes `%s` on %s (packet "
+                "s56_autotarget_override)", host.units[unit_index].name.c_str(),
+                klass != nullptr ? klass->name : "?",
+                object != nullptr ? object->name.c_str() : "(none)");
+        }
+    }
+    return installed;
+}
+
+// 0071D9E0 BSP_WeaponDirector_RaiseOverrideStage, body 0071D9E0-0071DA4F: the stage
+// only rises (0071D9FF JGE), and reaching 2 outside session mode 2 routes
+// 0071C730(0, 0), MT_GAMEUNIT_CLEARCMD with +20h = 0, which 00721A40 answers with
+// 0071E610.
+void GameCommandsHost::raise_override_stage_0071d9e0(std::size_t unit_index, int stage) {
+    Impl& host = *impl_;
+    if (!kAutoTargetOverrideBound || unit_index >= host.directors.size()) return;
+    GameDirector& director = host.directors[unit_index];
+    if (director.override_stage >= stage) return;
+    director.override_stage = stage;
+    host.done("WeaponDirector::raise_secondary_stage", 0x0071d9e0u);
+    if (stage == 2) clear_override_in_place(host, unit_index);
+}
+
+int GameCommandsHost::director_mode_0030(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return 0;
+    return static_cast<int>(host.directors[unit_index].mode);
+}
+
+std::uint32_t GameCommandsHost::override_target_handle(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return 0u;
+    return resolve_command_target_00521ea0(host.directors[unit_index].override_target);
 }
 
 float GameCommandsHost::director_target_hold_0040(std::size_t unit_index) const {
@@ -3827,6 +4003,11 @@ void GameCommandsHost::report() {
         host.summary.loopback_setcmd_posts, host.summary.loopback_clear_posts,
         host.summary.loopback_delivered_in_place, host.summary.loopback_delivered_nested,
         host.summary.loopback_delivered_queued, host.summary.loopback_drains);
+    host.log.notef("summary mission director override bound=%d sends=%llu installs=%llu "
+        "arm_ends=%llu clears=%llu (packet s56_autotarget_override, 0071D980 / 0071E7F0 / "
+        "00836D67 / 0071E610)", kAutoTargetOverrideBound ? 1 : 0,
+        host.summary.override_sends, host.summary.override_installs,
+        host.summary.override_arm_ends, host.summary.override_clears);
     host.log.notef("summary mission director clear-all bound=%d clear_all=%llu drops=%llu "
         "slot_clears_00720ca0=%llu (packet cc9_set_command_clear_all, 0071D880 / 0071D900)",
         kSetCommandClearAllMessageBound ? 1 : 0, host.summary.clear_all_calls,
