@@ -9,6 +9,60 @@ Line numbers are against the base. "Image" means battlestationspacific.exe, read
 (scene Follow and 0077C8D0), CC13_VERIFY4 R7 (the JoinFormation +188h arm, here `:3016-3020`) and
 CC13_VER_13 D3 (capture defenders and +5Dh).
 
+**Scope after the lead's redirect.** The lead narrowed the pass to the pieces of this file that are live
+on campaign rows: `GameObjectiveSets` / Lua `Objectives_*`, `scene_slot_party` / `local_player_party`,
+and the owner-player publication. Those are in the next two sections. The planner material further down
+was done before the redirect. It is kept for a future hosted-session host and is inert on every campaign
+row. **Do not re-audit the planner for campaign rows.**
+
+## Live pieces (the lead's scope)
+
+### Result: no MISMATCH REAL in the live pieces
+
+| Piece | Verdict |
+|---|---|
+| `scene_slot_party` / `local_player_party` | MATCH |
+| owner-player publication | inert (only the coordinator reads it) |
+| `GameObjectiveSets` | 2 MISMATCH MINOR, 2 UNRESOLVED, no REAL (table below) |
+
+### `scene_slot_party` / `local_player_party` (`:1059-1068`, header `:450-462`): MATCH
+
+`game_hosts_mission.cpp:1388-1404` publishes each `Multiplay.PlayerN` block's `Party` symbol as an
+ordinal: Allied 0, Japanese 1, Neutral 2, and -1 when the block or key is absent. `local_player_party`
+is `scene_slot_party(0, 0)`.
+
+The image takes the same path (SHIP_AI_OPEN_ITEMS 125.1, re-read):
+- 004C6890 copies side block `+0h` into slot record `+28h`;
+- 004BB440 copies slot 0's party into the participant;
+- 004DFD57..004DFD77 points slot 0 at that participant;
+- 004BC890's rewrite of the parties is skipped when `game+1FE4h` = 0 (004BC8A1).
+
+So the local party is `Player1.Party` on both sides. One edge differs: with an absent `PlayerN` group
+or `Party` key, the image leaves uninitialised heap or faults (docs/SCENE_RECORD_SIDE_BLOCKS.md:85-97),
+while the host answers 0 or -1. No shipped scene lacks the key, so this is MINOR.
+
+### Owner-player publication (`:1041-1048`, `:1070-1085`): inert
+
+`g_scene_owner_players` and `g_unit_owner_players` are read only by `Impl::unit_owner_player_0180`
+(`:1797-1808`), which only the coordinator calls (`009FFD20`'s slot rule). The ship-AI host's
+`ai_set_unit_owner_player` call (game_hosts_ship_ai.cpp:13719) is a write. Nothing outside the
+coordinator reads `+180h` through this file, so the publication has no effect on a campaign row.
+
+### `GameObjectiveSets` vs 008DF2B0 (script-visible)
+
+**Where the units come from.** The objective sets do hold units on the harness missions, so this piece
+is live. docs/MISSION_OBJECTIVES.md section 3's "no objective holds a unit" was a measurement of three
+earlier run windows. The shipped scripts call `luaObj_AddUnit`, or `luaObj_Add` with a target:
+- `ijn/JM/jm08.lua:476-481`: `luaObj_Add("primary",2)` and then `luaObj_AddUnit` for every LST and cargo;
+- `usn/usn_1_marshall.lua`: 2 AddUnit and 4 Add-with-target;
+- `usn/usn_13_truk.lua`: 3 and 4;
+- `usn/LOMP/10_san_jose.lua`: 0 and 3.
+
+**Readers.** On these rows the units in slot 0 are read by three hosts:
+- the HUD grey arrow test, 008DDF90 (game_hosts_hud.cpp:3398);
+- the 00922C80 surface-set branch in the ship-AI host (game_hosts_ship_ai.cpp:7896);
+- the same branch in the script-order chooser (game_hosts_script_orders.cpp:1589).
+
 Rubric (cc13 common brief):
 - MATCH.
 - MISMATCH MINOR: edge guards, error paths, NaN-only arms, width or rounding with no decision effect,
@@ -18,7 +72,26 @@ Rubric (cc13 common brief):
   already does what the image does.
 - UNRESOLVED.
 
-## Liveness: the planner reaches no unit on any harness row
+## Why the planner is inert (do not re-audit it for campaign rows)
+
+**The writer of `game+1FE4h`.** SHIP_AI_OPEN_ITEMS 125.1 says no literal store of `game+1FE4h` was found.
+A byte scan for `89`, `C7`, `C6`, `88` and `8D` with the displacement `E4 1F 00 00` finds none either.
+
+The writer is still unidentified.
+
+A lead that did not hold up: `BSP_Session_SetMode` stores its mode at `0076FE85 MOV [ESI+F4h],EDI`, and
+`LEA ECX,[ESI+1EF0h]` occurs at 004C6ED3, 004CCCCF and 004D795C. That suggested `game+1FE4h` =
+`(game+1EF0h)+F4h`. But in the same function ESI is not `[00E188A8]+1EF0h`: it writes the game object
+separately through `[00E188A8]` (0076FD55-0076FD5B), so the identity is **not** established.
+
+What is established:
+- `BSP_MainMenuScreen_Enter` (005987F0) calls `BSP_Session_SetMode(0)`;
+- the hosting paths are 005E6F00 `BSP_MultiMainMenu_StartHosting` and 00770E40 `BSP_Session_SetModeHost`.
+
+So the inertness rests on 150.2's reading ("0 in single player"), on the absence of any literal store,
+and on the harness having no session at all. The harness rows are inert regardless, because the host
+pins `kAiCoordinatorCreatedAtLoad = false`. Whether retail campaign play builds a coordinator depends
+on this writer, and that question stays open.
 
 `kAiCoordinatorLoadGateBound` is ON and `kAiCoordinatorCreatedAtLoad` is false (`:1019-1021`).
 `GameAiCoordinatorHost::fixed_step` (`:6497-6515`) only counts `coordinator_steps_absent`. The image gate
@@ -119,17 +192,28 @@ In an island-capture or skirmish session these spawns are the AI's reinforcement
 | `kAiGroupPartyChangeRemovalBound` `:1002` | 00A2DB50 removes the member on a SetParty event. OFF, the next 00A2DDE0 eviction removes it instead. | MISMATCH MINOR (timing only; inert) |
 | `kAiCoordinatorCreatedAtLoad` `:1021` | the gate's answer | MATCH for every harness row |
 
-## Live parts: GameObjectiveSets (script-visible)
+## GameObjectiveSets vs 008DF2B0 (live; see "Live pieces" above)
 
-`GameObjectiveSets::add_unit` (`:151-158`) stands in for 008DF2B0, which 008CDD60 Objectives_AddUnit
-reaches. It was compared with 008DF2B0's bytes:
+`GameObjectiveSets::add_unit` (`:151-158`) stands in for 008DF2B0. Both 008CD440's target tail and
+008CDD60 reach 008DF2B0 through 008DF9B0. It was compared with 008DF2B0's bytes:
 
 | Item | Image (008DF2B0) | Host | Class |
 |---|---|---|---|
-| O1 | 008DF2FC-008DF2FE: the name walk ends at `JE 008DF3DC`. A missing objective adds nothing; there is no create. | `add_unit` calls `add_objective`, which creates the objective | UNRESOLVED (live only if a script adds a unit to an objective not yet added for that player slot; the Lua binding is game_hosts_lua.cpp, read-only) |
-| O2 | 008DF2CD-008DF2DF: a unit whose `+5Dh` or `+5Eh` is set is refused | no liveness gate | MISMATCH MINOR (a sunk unit can enter set 0; the readers ask about live units) |
-| O3 | 008DF358 008DEE50 appends an entry with no duplicate test (only the observer pair is deduplicated, 008DF338 / 008DF345) | duplicates are dropped | MISMATCH MINOR (one RemoveUnit takes away a unit that was added twice) |
-| O4 | 008DF345 registers the objective as the unit's observer (00694A60) | no observer, so a dead unit stays listed until a status change | UNRESOLVED (the removal callback was not read) |
+| O1 | 008DF2FC-008DF2FE: the name walk ends at `JE 008DF3DC`. A missing objective adds nothing; there is no create. | `add_unit` calls `add_objective`, which creates the objective | UNRESOLVED (see below) |
+| O2 | 008DF2CD-008DF2DF: a unit whose `+5Dh` or `+5Eh` is set is refused | no liveness gate | MISMATCH MINOR (see below) |
+| O3 | 008DF358 008DEE50 appends an entry with no duplicate test (only the observer pair is deduplicated, 008DF338 / 008DF345) | duplicates are dropped | MISMATCH MINOR (one RemoveUnit takes away a unit that was added twice; JM08's two lists are disjoint) |
+| O4 | 008DF345 registers the objective as the unit's observer (00694A60) | no observer, so a dead unit stays listed until a status change | UNRESOLVED (see below) |
+
+**O1.** `luaObj_AddUnit` (commandhelpers.lua:5826-5844) has no `luaObj_IsActive` check, and the
+objective's `ID` is authored data. A call before `luaObj_Add` therefore reaches `Objectives_AddUnit`
+with a valid name. The harness missions read add first (jm08.lua:476-478), and no ordering census of the
+other missions was made.
+
+**O2.** A sunk ship listed in a script's table can enter set 0. The three readers ask only about units
+that are live targets or pickable, so no effect was found.
+
+**O4.** The callback that removes the entry was not read. If it removes the entry, the host keeps sunk
+units in set 0 until a status change, which matters only to the same three readers.
 
 These match:
 - `set_status`: the hidden-objective early return (008DFE6E) behind `kObjectiveKindBound` ON, the state
