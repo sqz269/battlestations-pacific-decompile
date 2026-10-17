@@ -80,6 +80,7 @@ extern "C" {
 #undef lua_getglobal
 
 #include <algorithm>
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -506,6 +507,11 @@ int binding_trampoline(lua_State* state) {
     const bool get_failure_row = kLuaSetFailureBound && dispatch_row.address == 0x0088f1d0u;
     // Packet cc13-fix11.
     const bool dead_meat_row = kLuaSetDeadMeatBound && dispatch_row.address == 0x008ac7b0u;
+    // Packet cc13-fix12.
+    const bool unit_selectable_row = kLuaIsUnitSelectableBound
+        && dispatch_row.address == 0x008ab580u;
+    const bool entity_speed_row = kLuaGetEntitySpeedBound
+        && dispatch_row.address == 0x008c0820u;
     // Packet cc9_unit_get_attack_target.
     const bool attack_target_row = kLuaUnitGetAttackTargetBound
         && dispatch_row.address == 0x008a6de0u;
@@ -636,6 +642,7 @@ int binding_trampoline(lua_State* state) {
     const bool handled = checkpoint_row || avoidance_setting || objective_row || get_property_row || kill_row
         || add_listener_row || remove_listener_row || listener_active_row || set_invincible_row
         || set_failure_row || get_failure_row || dead_meat_row
+        || unit_selectable_row || entity_speed_row
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || override_hp_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
@@ -887,6 +894,12 @@ int binding_trampoline(lua_State* state) {
     if (dead_meat_row) {
         if (!host->error_replay()) host->run_set_dead_meat_008ac7b0(state, argc);
         return 0;
+    }
+    if (unit_selectable_row && !host->error_replay()) {
+        return host->run_is_unit_selectable_008ab580(state, argc);
+    }
+    if (entity_speed_row && !host->error_replay()) {
+        return host->run_get_entity_speed_008c0820(state, argc);
     }
     if (aa_enable_row) {
         if (!host->error_replay()) host->run_aa_enable_0089c740(state, argc);
@@ -7876,6 +7889,110 @@ int GameMissionLuaHost::run_get_failure_0088f1d0(lua_State* state, int argument_
     return 1;
 }
 
+// Packet cc13-fix12 (docs/CC13_FIX12.md), under kLuaIsUnitSelectableBound. 008AB580
+// IsUnitSelectable(entity), a binding with no stack arguments: 008AB67F 00888AA0
+// resolves argument 0 (ESI, null when unresolved); 008AB696 MOV DL,1 / MOV ECX,ESI /
+// CALL 00645160, which is EAX = EDX; EDX = [[00E188A8]+18ECh]; PUSH EAX; CALL 00645060
+// and adds nothing else; 008AB6A4 00B66450 PushBoolean(AL); one result. The predicate's
+// inputs (selectable_inputs_00645060) already take the local player's team and a shut
+// spectator door, which is what 00645060 does with allowSpectate 1 while game+2194h is
+// clear (0064506A..0064507C). A null unit answers false at 00645082, as an unresolved
+// argument does here. LABELLED: with no HUD host attached nothing is pushed (nil), the
+// row's behaviour while unbound; the image always answers.
+int GameMissionLuaHost::run_is_unit_selectable_008ab580(lua_State* state, int argument_count) {
+    (void)argument_count;
+    ++summary_.unit_selectable_calls;
+    std::size_t unit = 0;
+    if (!objective_argument_unit(state, 0, unit)) {
+        ++summary_.unit_selectable_unresolved;
+        ::lua_pushboolean(state, 0);
+        log_.implemented("MissionLuaNative::IsUnitSelectable", "008ab580");
+        return 1;
+    }
+    bool reached = false;
+    const bool selectable = bsp::game::hud_unit_selectable_00645060(unit, reached);
+    if (!reached) {
+        ++summary_.unit_selectable_no_hud;
+        log_.unimplemented("MissionLuaNative::IsUnitSelectable", "008ab580");
+        return 0;
+    }
+    if (selectable) ++summary_.unit_selectable_true;
+    ::lua_pushboolean(state, selectable ? 1 : 0);
+    log_.implemented("MissionLuaNative::IsUnitSelectable", "008ab580");
+    return 1;
+}
+
+namespace {
+// 007B8E60 FLD [unit+0B1Ch]. SUBSTITUTION (labelled), as the units host's own
+// leader_live_speed_007b8e60: +B1Ch is |ctl+18h| cached at 007D807C, here the
+// magnitude of the body linear velocity the free-flight step mirrors
+// plane_world_velocity into, taken when the native runs.
+bool plane_cached_speed_007b8e60(const GameUnitsHost& units, std::size_t index, float& out) {
+    float v[3] = {0.0f, 0.0f, 0.0f};
+    if (!units.unit_linear_velocity(index, v)) return false;
+    out = static_cast<float>(std::sqrt(static_cast<double>(v[0]) * v[0]
+        + static_cast<double>(v[1]) * v[1] + static_cast<double>(v[2]) * v[2]));
+    return true;
+}
+}  // namespace
+
+// Packet cc13-fix12 (docs/CC13_FIX12.md), under kLuaGetEntitySpeedBound. 008C0820
+// GetEntitySpeed(entity), a binding with no stack arguments: 008C091F 00888AA0
+// resolves argument 0; 008C0936..008C093D MOV EDX,[ESI] / MOV EAX,[EDX+38h] / CALL EAX
+// with no null test; 008C093F FSTP float (the result is a float); 008C094F 00B66480
+// pushes it; one result. Slot 38h by class, first match:
+//   PlaneSquadronGen 00D087C0 slot 00D087F8 = 007ED470: ECX = [squadron+3D0h], JMP its
+//     vtable[38h], so the leader plane's 007B8E60 (registry flight_leader(), slot 0);
+//   the nine ship vtables, 0080E0F0: ECX = [unit+1018h], JMP 0092D730, the signed body
+//     forward speed (GameUnitsHost::unit_forward_speed_0092d730);
+//   the nine plane vtables, 007B8E60: FLD [unit+0B1Ch] (plane_cached_speed_007b8e60).
+// LABELLED: an unresolved entity or a squadron with no leader faults or reads a
+// stale slot in the image; other classes' slot-38h bodies were not read. Those
+// push nothing (nil), the row's behaviour while unbound. No RNG draw.
+int GameMissionLuaHost::run_get_entity_speed_008c0820(lua_State* state, int argument_count) {
+    (void)argument_count;
+    ++summary_.entity_speed_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.entity_speed_unresolved;
+        log_.unimplemented("MissionLuaNative::GetEntitySpeed", "008c0820");
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    float speed = 0.0f;
+    const bsp::PlaneSquadronHostRecord* squadron = nullptr;
+    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+        if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == index) {
+            squadron = &r;
+            break;
+        }
+    }
+    if (squadron != nullptr) {
+        const std::size_t leader = squadron->flight_leader();   // 007ED470 +3D0h
+        if (leader == bsp::kPlaneSquadronNoUnit || leader >= units->count()
+            || !plane_cached_speed_007b8e60(*units, leader, speed)) {
+            ++summary_.entity_speed_unresolved;
+            log_.unimplemented("MissionLuaNative::GetEntitySpeed", "008c0820");
+            return 0;
+        }
+        ++summary_.entity_speed_squadron;
+    } else if (units->unit_is_kind_of(index, bsp::kUnitKindQueryShip)) {
+        speed = units->unit_forward_speed_0092d730(index);       // 0080E0F0
+        ++summary_.entity_speed_ship;
+    } else if (units->unit_is_kind_of(index, bsp::kUnitKindQueryPlane)
+               && plane_cached_speed_007b8e60(*units, index, speed)) {
+        ++summary_.entity_speed_plane;                           // 007B8E60
+    } else {
+        ++summary_.entity_speed_unmodelled;
+        log_.unimplemented("MissionLuaNative::GetEntitySpeed", "008c0820");
+        return 0;
+    }
+    ::lua_pushnumber(state, static_cast<lua_Number>(speed));     // 00B66480
+    log_.implemented("MissionLuaNative::GetEntitySpeed", "008c0820");
+    return 1;
+}
+
 // Packet cc13-fix11 (docs/CC13_FIX11.md), under kLuaSetDeadMeatBound. 008AC7B0
 // SetDeadMeat(entity), 008AC7B0-008AC9C2, a binding with no stack arguments (RET).
 // The standalone body is bsp::lua_set_dead_meat (src/options_seg56_cc13.cpp); its
@@ -9620,6 +9737,20 @@ void GameMissionLuaHost::report_mission_script_state() {
             "vtable[70h], packet cc13-fix11)", summary_.dead_meat_calls, summary_.dead_meat_sunk,
             summary_.dead_meat_sink_refused, summary_.dead_meat_destroyed,
             summary_.dead_meat_plane_unapplied, summary_.dead_meat_unresolved);
+    }
+    if constexpr (kLuaIsUnitSelectableBound) {
+        log_.notef("summary mission script unit selectable calls=%llu true=%llu "
+            "unresolved=%llu no_hud=%llu (008AB580 -> 00645160 / 00645060, packet "
+            "cc13-fix12)", summary_.unit_selectable_calls, summary_.unit_selectable_true,
+            summary_.unit_selectable_unresolved, summary_.unit_selectable_no_hud);
+    }
+    if constexpr (kLuaGetEntitySpeedBound) {
+        log_.notef("summary mission script entity speed calls=%llu squadron=%llu ship=%llu "
+            "plane=%llu unresolved=%llu unmodelled=%llu (008C0820 -> vtable[38h] 007ED470 / "
+            "0080E0F0 / 007B8E60, packet cc13-fix12)", summary_.entity_speed_calls,
+            summary_.entity_speed_squadron, summary_.entity_speed_ship,
+            summary_.entity_speed_plane, summary_.entity_speed_unresolved,
+            summary_.entity_speed_unmodelled);
     }
     log_.notef("summary mission script attack target bound=%d calls=%llu fire_arm=%llu "
         "command_arm=%llu pushed=%llu nil=%llu unresolved=%llu (008A6DE0, packet "
