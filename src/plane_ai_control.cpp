@@ -715,6 +715,34 @@ PilotBotRollDemandResult pilot_roll_bank_demand_0099e2ba(
     return out;   // 0099E340 FSTP [ESP+18h]
 }
 
+float pilot_speed_corr_decay_0099d756(float scale_2b8, float mul_decay, float dt) {
+    // 0099D766 COMISS against 1.0 (XMM3) and 0099D775 JBE: only a value above 1.0 decays.
+    if (!(scale_2b8 > 1.0f)) return scale_2b8;
+    // 0099D777-0099D787: FLD +2B8h, FLD [EBX+B8h], FMUL [ESP+6Ch], FSUBP, FSTP float.
+    const float v = static_cast<float>(static_cast<double>(scale_2b8)
+        - static_cast<double>(mul_decay) * static_cast<double>(dt));
+    // 0099D794 FCOMI 1.0 against it, 0099D798 JBE keeps it; below 1.0 stores 1.0.
+    return 1.0f <= v ? v : 1.0f;
+}
+
+float pilot_speed_corr_raise_0099d924(float scale_2b8, float min_pitch, float speed_mul,
+                                      float pitch) {
+    // 0099D938-0099D95C: 00419010(x0 = -min_pitch (XMM4 -0.0 less [EBX+B0h]),
+    // y0 = [EBX+B4h], x1 = 0 (FLDZ), y1 = 1.0 (the FLD1 left from 0099D764), x = pitch).
+    const float raise = interpolate_clamped(-0.0f - min_pitch, speed_mul, 0.0f, 1.0f, pitch);
+    // 0099D96B 00415550: the larger of the two, the stored value kept on a tie.
+    return raise > scale_2b8 ? raise : scale_2b8;
+}
+
+float pilot_roll_servo_limit_0099e344(float roll_spd_1a8, float roll_accel_1bc,
+                                      float waggle_limit) {
+    // 0099E344-0099E35F: FLD +1A8h, FLD ST0, FDIV +1BCh, FDIV [EBX], FSTP float;
+    // 0099E363 FMUL by the +1A8h left on the stack, 0099E367 FSTP float.
+    const float q = static_cast<float>(static_cast<double>(roll_spd_1a8)
+        / static_cast<double>(roll_accel_1bc) / static_cast<double>(waggle_limit));
+    return static_cast<float>(static_cast<double>(roll_spd_1a8) * static_cast<double>(q));
+}
+
 float pilot_roll_rate_limited_0099e344(float demand, float rate_limit) {
     // 0099E373-0099E390: InterpolateClamped(-limit, 1.0, +limit, -1.0, demand).
     // The endpoints are negated across the pair, so the map is falling: a

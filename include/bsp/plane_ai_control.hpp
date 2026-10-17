@@ -645,4 +645,21 @@ struct PilotBotThrottleResult {
 
 PilotBotThrottleResult pilot_plan_throttle_0099d300(const PilotBotThrottleInputs& in);
 
+// Packet p16_planner_laws (docs/OCEAN_WAVE_FIELD.md section 62): the producer of the
+// speed-error divisor plan+2B8h. 0099D756-0099D79A, on every pass past the centred
+// gate: above 1.0 (00D7A24C) it falls by TrgSpeedCorrMulDecay (singleton+5F0h,
+// EBX+B8h) x [ESP+6Ch] (dt / dtScale) and is floored at 1.0; at or below 1.0 it is
+// left alone.
+float pilot_speed_corr_decay_0099d756(float scale_2b8, float mul_decay, float dt);
+// 0099D924-0099D970, at the head of the demand arm and only while plan+2B0h is
+// clear: 00415550 max(plan+2B8h, 00419010(-TrgSpeedCorrMinPitch (singleton+5E8h),
+// TrgSpeedCorrSpeedMul (+5ECh), 0, 1, unit+C64h pitch)). A dive raises it, so
+// 0099D9A3's measured speed / plan+2B8h reads slower than the plane flies.
+float pilot_speed_corr_raise_0099d924(float scale_2b8, float min_pitch, float speed_mul,
+                                      float pitch);
+// 0099E344-0099E367, the servo limit both roll modes share: t = class+1A8h x
+// float(class+1BCh-divided class+1A8h / EBX[0] WaggleLimit), each FSTP a float.
+float pilot_roll_servo_limit_0099e344(float roll_spd_1a8, float roll_accel_1bc,
+                                      float waggle_limit);
+
 }  // namespace bsp
