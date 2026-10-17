@@ -2590,3 +2590,38 @@ hold sees the plane 1.69 x slower and opens the throttle, so dive bombers and to
 faster and later level-offs move; the forward-speed term lowers the measured speed in sideslip. R7:
 loaded torpedo and bomb planes rotate at 70-90% of today's authority until release, widening their
 turns and approach geometry. Every AI plane mission moves; deaths and kill tables may move.
+
+## 63. MoveTo cruise altitude by ordnance and the leg manager: verify12 R1, R4 (cc9-physics16, 2026-10-17; lead item 3)
+
+- **`kMoveToCruiseByOrdnanceBound` (R1).** 009C3650 (the kind-7 task's +54h profile) picks ctl+394h by
+  ordnance exactly as 009BD6E0 does: torpedo (007B93F0, MoveOn +43Ch) +430h, depth charge (007B94F0,
+  +4B4h) +4A4h, general bomb (007B9320) LevelBomb (0047B850, +454h) +444h or DiveBomb (+4D4h) +4C0h, each
+  plus 0.6 x TravelAltRandom (009C36DD-009C36F2); otherwise 009C38D0 0047B880 then 009C38FD Small/Large
+  PlaneTravelAlt with no random term. The host calls `moveonpath_cruise_profile_009bd6e0` with the
+  channel open and discards its approach+30h draw. **LABELLED:** every member computes it at the 0.5 s
+  refresh from its own ordnance; the image's leader writes the squadron block at activation.
+  This installation: torpedo 530, dive 1330, depth charge 730, fighter 800, level bomber 1400 (MoveOn
+  false), against 830 / 830 / 830 / 830 / 1430 before, ahead of the +2Ch offset both subtract.
+- **`kMoveToLegAltitudeBound` (R4, with `bsp::kLegAltitudeManagerBound`).** 009BEC85 009FD050(+64h,
+  point) registers inside 3000 m and drops outside; while +28h > 0, 009BECA9 009BD400 and 009BECBA
+  009FC260 write the separated height to the steer point's +4Ch. Slot +58h 009C32A0 (009C32B8
+  009FD050(-1)) drops the record when the task goes. **LABELLED:** the drop is taken on the first think
+  after the host clears `moveto_task_installed`.
+
+**Predictions.** Scripted MoveTo strikes fly at their ordnance altitude: torpedo squadrons 300 m lower,
+dive bombers 500 m higher, fighters 30 m lower; time to target and the first-attack geometry move.
+Planes converging on one MoveTo point within 3 km stack in 30 m bands above 120 m.
+
+## 64. Carrier landing: the velocity lead and the touchdown brake, verify12 R2, R3 (cc9-physics16, 2026-10-17; lead item 4)
+
+- **`kCarrierLandingVelocityLeadBound` (R2).** 009AFAF0's on-ground arm: e = |00605070(A4 - unit+C6Ch)|
+  (fmod by 2pi `00CE3828`, then into [-pi, pi]); A8 += min(class+268h x 0.5 x e, A8 x 0.18 (`00D05AA0`))
+  and is stored (009AFD1A); t = min(A8 / +B1Ch, 10.0 (`00CE38B8`)); 006BCA80(out, t) adds the owner's
+  velocity x t (006BCBF8-006BCC51). **LABELLED:** holder+8Ch is 0, so the turn about the holder is the
+  identity; +B1Ch is taken as |velocity|.
+- **`kCarrierTouchdownBrakeBound` (R3).** 009B201B-009B2074: air brake 1.0 (`00D7A24C`) when the land
+  target answers vtable[5Ch](9), else 0.2 (`00CE54A0`).
+
+**Predictions.** Carrier landings under way aim up to 10 s of ship travel ahead (a 15 m/s carrier: up
+to 150 m), so final approaches line up on where the deck will be; fewer wave-offs and go-arounds. On a
+carrier deck the roll-out brakes at 1.0, so planes stop shorter; airfield landings are unchanged.

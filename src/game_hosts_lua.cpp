@@ -586,6 +586,11 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_add_untouchable_unit.
     const bool untouchable_row = kLuaAddUntouchableUnitBound
         && dispatch_row.address == 0x008ac140u;
+    // Packet p16_lua_natives.
+    const bool untouchable_remove_row = kLuaUntouchableClearBound
+        && dispatch_row.address == 0x008ac2b0u;
+    const bool untouchable_is_row = kLuaUntouchableClearBound
+        && dispatch_row.address == 0x008ac420u;
     // Packet cc9_submarine_air.
     const bool unlimited_air_row = kSubmarineAirBound
         && dispatch_row.address == 0x00893c00u;
@@ -639,7 +644,7 @@ int binding_trampoline(lua_State* state) {
         || land_convoy_row || launch_slot_row
         || unlimited_air_row
         || in_formation_row || leave_formation_row || travel_alt_row || border_zone_row
-        || untouchable_row
+        || untouchable_row || untouchable_remove_row || untouchable_is_row
         || truly_dead_row
         || attack_alt_row
         || ready_row
@@ -824,6 +829,13 @@ int binding_trampoline(lua_State* state) {
     if (untouchable_row) {
         if (!host->error_replay()) host->run_add_untouchable_unit_008ac140(state, argc);
         return 0;
+    }
+    if (untouchable_remove_row) {
+        if (!host->error_replay()) host->run_remove_untouchable_unit_008ac2b0(state, argc);
+        return 0;
+    }
+    if (untouchable_is_row && !host->error_replay()) {
+        return host->run_is_unit_untouchable_008ac420(state, argc);
     }
     if (border_zone_row && !host->error_replay()) {
         return host->run_get_closest_border_zone_008aecd0(state, argc);
@@ -3179,8 +3191,15 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
     // kGenerateObjectRespawnsDeadBound narrows the deviation to a live earlier
     // instance: once the script sees it Dead, the call instantiates again.
     bool respawn = false;
+    if constexpr (kGenerateObjectEveryCallBound) {
+        // Packet p16_lua_natives: 0046D930 has no already-created arm.
+        if (entry->spawned) {
+            respawn = true;
+            ++summary_.generate_object_every_call;
+        }
+    }
     if constexpr (kGenerateObjectRespawnsDeadBound) {
-        if (entry->spawned && push_resolved_entity_by_id(state, entry->entity_id)) {
+        if (!respawn && entry->spawned && push_resolved_entity_by_id(state, entry->entity_id)) {
             ::lua_getfield(state, -1, "Dead");
             respawn = ::lua_toboolean(state, -1) != 0;
             ::lua_settop(state, ::lua_gettop(state) - 2);
@@ -6898,6 +6917,47 @@ int GameMissionLuaHost::run_add_untouchable_unit_008ac140(lua_State* state,
     return 0;
 }
 
+// Packet p16_lua_natives. 008AC2B0 RemoveUntouchableUnit(unit): 00888AA0 (008AC3AF),
+// vtable[140h]() (008AC3D0), byte +1D4h = 0 (008AC3D6). No return value.
+int GameMissionLuaHost::run_remove_untouchable_unit_008ac2b0(lua_State* state,
+    int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.untouchable_remove_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const bool valid = units != nullptr && id > 0
+        && static_cast<std::size_t>(id) <= units->count();
+    const GameUnitRow* row = valid ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+    bool was = false;
+    if (valid) {
+        const std::size_t index = static_cast<std::size_t>(id - 1);
+        if (index < g_unit_untouchable_1d4.size()) {
+            was = g_unit_untouchable_1d4[index];
+            g_unit_untouchable_1d4[index] = false;
+        }
+        ++summary_.untouchable_cleared;
+    }
+    log_.notef("  RemoveUntouchableUnit 008ac2b0: \"%s\" (unit %d) was=%d t=%.2f (packet "
+        "p16_lua_natives)", row != nullptr ? row->name.c_str() : "?", id, was ? 1 : 0,
+        static_cast<double>(spawn_world_clock_));
+    log_.implemented("MissionLuaNative::RemoveUntouchableUnit", "008ac2b0");
+    return 0;
+}
+
+// Packet p16_lua_natives. 008AC420 IsUnitUntouchable(unit): vtable[140h]() non-null and
+// its byte +1D4h set, pushed as a boolean (one result).
+int GameMissionLuaHost::run_is_unit_untouchable_008ac420(lua_State* state,
+    int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.untouchable_is_calls;
+    const int id = air_ops_entity_id(state);
+    const bool on = id > 0 && lua_unit_untouchable_1d4(static_cast<std::size_t>(id - 1));
+    if (on) ++summary_.untouchable_is_true;
+    ::lua_pushboolean(state, on ? 1 : 0);
+    log_.implemented("MissionLuaNative::IsUnitUntouchable", "008ac420");
+    return 1;
+}
+
 // Packet cc9_device_reload_enabled. 008C1350 SetDeviceReloadEnabled(flag): argument 0
 // through 00B66250 (lua_toboolean) into the byte 00E17BF2 at 008C1458. No entity, no
 // class test, no return value.
@@ -9505,6 +9565,14 @@ void GameMissionLuaHost::report_mission_script_state() {
         "(008AC140 -> +1D4h, packet cc9_add_untouchable_unit)",
         kLuaAddUntouchableUnitBound ? 1 : 0, summary_.untouchable_calls,
         summary_.untouchable_marked);
+    log_.notef("summary mission script untouchable clear bound=%d remove_calls=%llu cleared=%llu "
+        "is_calls=%llu is_true=%llu (008AC2B0, 008AC420, packet p16_lua_natives)",
+        kLuaUntouchableClearBound ? 1 : 0, summary_.untouchable_remove_calls,
+        summary_.untouchable_cleared, summary_.untouchable_is_calls, summary_.untouchable_is_true);
+    log_.notef("summary mission generate object calls=%llu repeat=%llu respawned_dead=%llu "
+        "every_call=%llu bound=%d (00944FD0, packet p16_lua_natives)", summary_.generate_object_calls,
+        summary_.generate_object_repeat, summary_.generate_object_respawned,
+        summary_.generate_object_every_call, kGenerateObjectEveryCallBound ? 1 : 0);
     log_.notef("summary mission script formation leader bound=%d calls=%llu found=%llu "
         "other=%llu (00899AF0 -> 007788D0, packet cc9_get_formation_leader)",
         kLuaFormationLeaderBound ? 1 : 0, summary_.formation_leader_calls,
