@@ -15524,3 +15524,19 @@ The early BB/CA strike on Ashigara (`ha`/`hb`) did not kill it and cost two BBs.
 
 The export dirs are `g48_p1` (`330782c2c`), `g48_p2` (`6c900f1e0`), and the pair builds `g48_aoff`/`g48_aon`
 (`3a6d58900`).
+
+## 266. Seg-68 auto-target phase draw bound OFF (cc9-gunnery49, 2026-10-17)
+
+`009F6A20` (the 40h-byte auto-target selector built at director+38h) stores `-00BD2F10(ECX=1, 0.0, 1.0)` into its
+think countdown +38h (`009F6A8F` CALL, `009F6A94` FCHS, `009F6A9E` FSTP [ESI+38h]). The host seeded it with
+`-(index % 20) * 0.05`. `kAutoTargetPhaseDrawBound` (src/game_hosts_ship_ai.cpp, OFF) makes
+`GameShipAiHost::bind_gunnery` take `GameGunneryHost::auto_target_phase_draw_009f6a8f(i)` (Draw kind 30, key (unit, 0),
+from `7a0de2b33`) for every controller with a built nav block. The draw is taken at bind time because the draw source
+binds after `register_units`; under `BSP_GUNNERY_RNG_STREAMS=1` the keyed stream makes the order immaterial.
+Uncertainty: the image builds the selector for every WeaponDirector; the host seeds only the controllers it registers
+(those with a nav block), which is the set whose countdown is read.
+
+**Predictions (ON vs OFF):** only the phase of each director's once-a-second auto-target think moves (at most one
+second, so target picks may land one think earlier or later). Expect identical spawn tables, a new log line
+`ship ai auto-target phase draws: N controllers seeded`, small moves in first-target times and therefore in shot
+streams; no change in any count that does not depend on target timing. A moved win must trace to a target pick.

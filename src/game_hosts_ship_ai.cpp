@@ -768,6 +768,13 @@ inline constexpr bool kLandFortFireRollBound = true;
 // (HQ neutralized 1036.10, not 1034.10), five rows gameplay identical (a recorded
 // spread miss on JM05 and USN01).
 inline constexpr bool kShipAiTimerDrawsBound = true;
+// Packet g49_auto_target_phase (GUNNERY 266). 009F6A20 seeds the auto-target
+// think countdown (+38h) with -00BD2F10(ECX=1, 0.0, 1.0) at 009F6A8F (FCHS,
+// FSTP [ESI+38h]). True: GameShipAiHost::bind_gunnery replaces the index
+// phase -(index % 20) * 0.05 with that stream-1 draw (key (unit, 0)) for
+// every controller with a built nav block; the draw source binds after
+// register_units, so the draw cannot be taken there. False: the index phase.
+inline constexpr bool kAutoTargetPhaseDrawBound = false;
 // Packet cc9_command_building_level (section 169). A CommandBuilding's level:
 //   - 006F2780 stores the scene's `Level` (0 when absent) at +770h and
 //     `LevelUpSeconds` (10 when absent) at +76Ch; the constructor clears +774h;
@@ -13242,6 +13249,17 @@ bool GameShipAiHost::command_building_health_zero_006f3270(std::size_t unit_inde
 void GameShipAiHost::bind_gunnery(GameGunneryHost* gunnery) noexcept {
     impl_->gunnery = gunnery;
     impl_->gunnery_draws = gunnery;
+    if (kAutoTargetPhaseDrawBound && gunnery != nullptr) {
+        std::size_t seeded = 0;
+        for (std::size_t i = 0; i < impl_->controllers.size(); ++i) {
+            if (!impl_->controllers[i].nav_block_built) continue;
+            impl_->controllers[i].target.think_countdown
+                = -gunnery->auto_target_phase_draw_009f6a8f(i);
+            ++seeded;
+        }
+        impl_->log.notef("ship ai auto-target phase draws: %llu controllers seeded "
+            "(009F6A8F, stream 1)", static_cast<unsigned long long>(seeded));
+    }
     if (kShipTorpedoResponseBound && kShipTorpedoResponseImageTerms && gunnery != nullptr) {
         impl_->seed_brain_draws_009f1160();
         impl_->log.notef("ship ai brain constructor draws: %llu controllers seeded (009F1160's "
