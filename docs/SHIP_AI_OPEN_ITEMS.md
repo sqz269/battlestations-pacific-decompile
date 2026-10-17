@@ -18754,6 +18754,14 @@ lists, and the ship-AI `controllers` / `rows` vectors are not pointed into acros
 A census line `unit table kept in place: re-registration N, M live descriptor pointer(s)` counts the
 non-null descriptors that the old move-assign would have invalidated.
 
+**Confirmed on a spawning mission.** USNOS `s55_os_r0`, 30000 frames, before b94e15a9c (`local\s57_base_osr.log`)
+against 1658578c7 (`local\s57_us_osr.log`, manifests beside them): 16 re-registrations (one unit each, the
+Shinyo / submarine spawns), 6598 descriptors that the moved vector had left dangling by the 16th. pair_diff
+exit 1, **gameplay identical** (185 deaths, 4431 hits, every death and unit row the same): the freed buffers
+still held the old bytes in these runs, so the stale compares happened to answer as the live ones do. The
+fix removes the undefined behaviour; it moves nothing on this row. (The OFF side also logged 132 lost-device
+polls, presentation only.)
+
 ## 276. A pushed attack order ends the override, kAttackPushEndsOverrideBound (cc9-ships57, 2026-10-17; lead item 2)
 
 **Image.** 0071E6C0 (src/cruise_command.cpp `director_push_command_slot_0071e6c0`) ends, after the slot store and
