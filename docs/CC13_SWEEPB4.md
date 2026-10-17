@@ -107,3 +107,23 @@ RNG: no function here draws from the shared RNG 00BD2F10 itself. 007A8DA0 calls 
   callees with it.
 - 005E12A0 BSP_MultiGameLobby_LoadWeatherTable (seg 23): a LuaPlus table reader with a 5A4h-byte
   frame of LuaObject temporaries; left with the other Lua data-table readers.
+
+## Skipped (as the packet says)
+
+005AAC00 and 0066A8A0 (mostly inlined std::set / std::list), 005A3210 and 00617470 (left for
+last; not reached), 0081E350, 007A84D0, 0064AE20 and every sweepB/B2/B3 cc9-lane item, 0059D4A0.
+
+## Not reached in this pass (no record)
+
+Smallest byte span first (span to the next function start, from local/bsp_index.sqlite):
+00547480, 005A91E0, 005F3B50, 0065FBF0, 00668770, 0056DD80, 00593CA0, 005A9770, 005A4200,
+00528240, 005B25D0, 005D18A0, 005B2D70, 00621C60, 00660B10, 0061B0F0, 00824B60, 007A74F0,
+0053BCC0, 005D26D0, 00661240, 005E2750, 005A7C20, 00623710, 005F24D0, 007A5A00, 0065D220,
+00547A20 (opened: a weapon-group sight body that runs to 0054829A with a jump table at 005482B0,
+about 2.2 KB), 005A8600, 007A5110, 005FA0F0, 00642040, 005F65C0, 006191A0, 005F0CD0, 005BE240,
+00626C50, 005A6AD0, 0065BF00, 006B9450, 00640D70, 0063C620, 0053F2D0, 0078A430, 0063D1E0,
+005A9DB0, 00789560, 006D5220, 006003A0, 005EADC0, 00776930, 005E3580, 00597870, 006179D0,
+0056F320, 005E7B10, 0067F4D0, 005D73A0, 007884D0, 00536A90, 00674B80, 005B3470, 00673A10,
+005DF510, 00538F80, 005B45C0, 0060ABD0, 007A91A0, 00670020 (about 7.5 KB, not the 267
+instructions the earlier list gives), 00822C20, 00627960, 005DB050, 005ADDA0; then 005A3210 and
+00617470.
