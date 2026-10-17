@@ -146,6 +146,67 @@ arguments); a host must pass (38Dh, 380h, 3A9h) for the cruise channel and
 (38Ch, 37Ch, 3AAh) for the second. The image calls 0042E740 once per channel;
 the existing code reads tuning through `game_tuning_float`.
 
+## Second batch: manoeuvre tasks 009BB150-009BC5C0
+
+The small pilot-bot manoeuvre tasks whose constructors, names, stream
+constructors and factories sit in 009BB150-009BC5C0: pullup (vtable 00D20568),
+tightturn (00D205E0), leavealone (00D20658, 418h bytes), barrelroll (00D206D0,
+40Ch), flikflak (00D20748, 404h) and split s (00D207C0, 404h). Their ticks
+(009B9xxx-009BAxxx) and the shared constructors 009BAFC0 / 009BA830 are in the
+excluded 009B4000-009BAFFF range and appear only as host calls. The pilot-bot
+tick 0099ACD0 calls 009BBFC0, the leavealone maker; that task's tick 009BC3A0
+is in this window. Task offsets: +2F4h the unit, +2F8h the descriptor, +3F8h the end
+condition (split s keeps its "stage" there).
+
+| address | function | notes |
+|---|---|---|
+| 009BB150, 009BB2D0, 009BB6F0, 009BB830, 009BB9F0, 009BBBE0 | *_name | slot +14h: "pullup", "tightturn", "leavealone", "barrelroll", "flikflak", "split s". |
+| 009BB160, 009BB6E0, 009BB9E0, 009BBBD0 | *_slot10 | slot +10h: 10 (pullup/tightturn/barrelroll share 009BB160), 3, 10, 10. |
+| 009BB2C0, 009BB6A0, 009BB820, 009BB9D0, 009BBBB0 | *_robots_row | slot +5Ch: 00F8A4B8, 00F8A4A8, 00F8A488, 00F8A4C8, 00F8A498. |
+| 009BB6B0, 009BB6D0, 009BBBC0 | leavealone slots +34h/+30h, split s +34h | false, false, true. |
+| 009BB6C0 | leavealone_slot38_009bb6c0 | slot +38h: word +414h > 10 (signed SETG). |
+| 009BB180 | pullup_construct_from_stream_009bb180 | 009BA830; vtable; safePitch (2, +400h), refPitch (2, +3FCh), started (3, +404h). |
+| 009BB280 | tightturn_construct_009bb280 | No Ghidra function. 009BAFC0(bot, condition); vtable; +408h = left byte; +404h = 1. |
+| 009BB2F0 | tightturn_construct_from_stream_009bb2f0 | 009BB180; vtable; left (3, +408h). |
+| 009BB640 / 009BB710 | leavealone_construct_009bb640 / _from_stream_009bb710 | 0099C6F0(bot, 0Fh) and +3F8h = condition, or 009BA830; then vtable, +3FCh..+410h = 0 except +408h = 1.0, word +414h = 0. |
+| 009BB770 | barrelroll_construct_009bb770 | 009BAFC0; vtable; sign = 0 > unit+C68h ? -1 : 1 (NaN +1); U(0.5, 1) stream 1 at 009BB7ED; +404h = 0; +408h = U * sign. |
+| 009BB850 | barrelroll_construct_from_stream_009bb850 | 009BB180; vtable; barrelRollSpeed (2, +408h), started (3, +404h). |
+| 009BBA10 | flikflak_construct_from_stream_009bba10 | 009BA830; vtable; left (3, +400h), timer (2, +3FCh). |
+| 009BBAD0 | splits_construct_009bbad0 | 0099C6F0(bot, 0Fh); vtable; +3F8h = 0; U(0, 1) stream 1 at 009BBB1E; +3FCh = U > 0.5 ? -1 : 1; +400h = level speed (007C47F0) when strictly above the unit's vtable[+38h] speed, else the unit speed. |
+| 009BBC00 | splits_construct_from_stream_009bbc00 | 0099C8B0(bot, ar, 0Fh); stage (type 1) through the archive argument's stack slot into +3F8h; sign, spd. |
+| 009BBCF0 | splits_save_009bbcf0 | Slot +60h, no Ghidra function. 0099D060; stage, sign, spd through slot +0Ch. |
+| 009BBE20 | barrelroll_make_until_far_009bbe20 | fastcall(bot, target, distance, seconds), RET 8: task 40Ch, then a timed condition (0Ch, vtable 00D1EA00, +4 = 007B5E20(bot+50h, target, distance) on a 2Ch block, +8 = [00F876A4] + seconds), then 009BB770. |
+| 009BBEF0, 009BBF60, 009BBFC0 | *_create | fastcall makers: new then 009BB770 / 009BBAD0 / 009BB640. |
+| 009BC110, 009BC180, 009BC1F0, 009BC260, 009BC2D0 | *_factory_create | new then the stream constructor. |
+| 009BC3A0 | leavealone_tick_009bc3a0 | See below. |
+
+### 009BC3A0, the leavealone tick
+
+1. task+3FCh..+410h = unit+9E4h..+9F8h (six dwords copied raw).
+2. (unit+72Ch, an embedded object) vtable[+38h]() true: +344h = 0.1, +354h = 0,
+   +408h = +408h when strictly above Pilot/General/LeaveAlonePwr (tuning+598h)
+   else the tuning value (FCOMI/JBE).
+3. false and unit+900h == 6: +344h = 0.1, +354h = 0, +408h = 0.5 > +408h ? 0 :
+   1.0 (NaN 1.0). Other unit+900h values skip step 4.
+4. +2C8h = 0, +2D0h = 1, +2C0h = 0, +2D4h = 1, +27Ch = +408h, +280h = 1,
+   +2ACh = 0, +2B0h = 1, +2DCh = 0.
+5. condition vtable[0]() true: 0099B690 (retire).
+6. unit+9D8h != 0 (a follower): word +414h += 1; else word +414h = 0 and
+   (unit+DF4h)+80h = 0.0.
+
+### Hosted (ledger only)
+
+- 009BC030 (tightturn make: new 40Ch, 009BAFC0, +408h = the caller's side
+  byte, vtable, +404h = 1) and 009BC0A0 -> 009BB910 (flikflak make and
+  constructor: 0099C6F0(bot, 0Fh), +3F8h = condition, side = U(0,1) > 0.5,
+  +3FCh = U2(0,1) + 2.0 (qword) + 0.0) are modelled as inlined field updates in
+  the units host (`st_push_tightturn` / `st_push_flikflak` in
+  src/game_hosts_units.cpp, reached from the strafe goaway gate). Checked
+  against the listing: side drawn before the timer, timer = draw + 2.0, side =
+  draw > 0.5, tightturn +404h = 1 and kind 1. No mismatch; no adoption note.
+  The host draws from keyed per-unit streams where the image uses 00BD2F10
+  stream 1 (the host's documented choice, not a defect of these functions).
+
 ## Skipped
 
 - 009A2910 (approach vtable[+4]): an adjustor thunk (`SUB ECX,3F8h; JMP 009A2F20`)
@@ -153,7 +214,12 @@ the existing code reads tuning through `game_tuning_float`.
 - 009A28D0 (moveto-or-follow predicate, no vtable slot found in 00D1F4E8): not
   located on a reachable path.
 - The CG_* deleting destructors and adjustor thunks of the window: compiler
-  generated, bound.
+  generated, bound. Likewise the `JMP 009BAF60` / `JMP 007B4030` destructor
+  thunks 009BB170, 009BB2E0, 009BB700, 009BB840, 009BBA00, 009BBBF0.
+- 009BC5C0 (leavealone describe, slot +18h): debug text built with the
+  std::string helpers; not reconstructed.
+- 009BB380, 009BB4A0, 009BB530 (tight-turn helpers on the pilot bot): not
+  read in this packet.
 
 ## Adoption notes
 

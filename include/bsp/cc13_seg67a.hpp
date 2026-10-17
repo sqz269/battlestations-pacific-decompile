@@ -199,6 +199,28 @@ public:
                                         Cc13Seg67aArchiveValue value) = 0;
     virtual void archive_vcall_10_read(void* archive, Cc13Seg67aArchiveValue name,
                                        Cc13Seg67aArchiveValue value) = 0;
+
+    // ---- manoeuvre tasks (second batch) ----
+    // 009BAFC0: __thiscall(ECX = task, bot, condition), RET 8: the pullup /
+    // conditioned-manoeuvre constructor (excluded cc9 range; called only).
+    virtual void bot_task_pullup_construct_009bafc0(void* task, void* bot, void* condition) = 0;
+    // 009BA830: __thiscall(ECX = task, bot, archive), RET 8: its stream twin.
+    virtual void bot_task_conditioned_construct_from_stream_009ba830(void* task, void* bot,
+                                                                     void* archive) = 0;
+    // 007B5E20: __thiscall(ECX = condition, a, b, distance), RET 0Ch, EAX: the
+    // distance condition constructor.
+    virtual void* distance_condition_construct_007b5e20(void* condition, void* a, void* b,
+                                                        float distance) = 0;
+    // The float at 00F876A4 (BSS; read as the clock the timed condition adds to).
+    virtual float global_float_00f876a4() = 0;
+    // 0099B690 BSP_BotTask_Retire: __thiscall(ECX = task).
+    virtual void bot_task_retire_0099b690(void* task) = 0;
+    // condition->vtable[+0](), AL.
+    virtual bool condition_vcall_00(void* condition) = 0;
+    // (unit+72Ch)->vtable[+38h]() with ECX = unit+72Ch (an embedded object), AL.
+    virtual bool unit_embedded_72c_vcall_38(void* object) = 0;
+    // unit->vtable[+38h](), float in ST0 (a speed; 009BBB56).
+    virtual float unit_vcall_38_speed(void* unit) = 0;
 };
 
 // 009A1B70: __thiscall(ECX = approach block), RET. Unreferenced copy of the three
@@ -276,5 +298,90 @@ void* close_to_ship_make_009a2f40(Cc13Seg67aHost& host, void* bot, void* ship);
 // 009A2FB0: the factory's create slot, __thiscall(ECX = factory, bot, archive),
 // RET 8, EAX. The factory pointer is unread.
 void* close_to_ship_factory_create_009a2fb0(Cc13Seg67aHost& host, void* bot, void* archive);
+
+// ---------------------------------------------------------------------------
+// Second batch: the manoeuvre tasks of window 009BB150-009BC5C0 (pullup,
+// tightturn, leavealone, barrelroll, flikflak, split s). Their ticks and the
+// shared constructors 009BAFC0 / 009BA830 lie in the excluded 009B4000-009BAFFF
+// range and are host calls. Task offsets: +2F4h the unit, +2F8h the aircraft
+// descriptor, +3F8h the end condition (leavealone, barrelroll; split s keeps
+// "stage" there). 009BC030 (tightturn make) and 009BC0A0 / 009BB910 (flikflak)
+// are hosted by game_hosts_units.cpp (ledger only, docs/CC13_SEG67A.md).
+//
+// RNG: 00BD2F10 stream 1 at 009BB7ED (barrelroll, U(0.5, 1)) and 009BBB1E
+// (split s, U(0, 1)).
+// ---------------------------------------------------------------------------
+
+// Constant slots, __thiscall(ECX = task), RET.
+const char* pullup_name_009bb150() noexcept;          // "pullup" 00D205D4, slot +14h
+std::int32_t manoeuvre_slot10_009bb160() noexcept;    // 10, slot +10h (pullup/tightturn/barrelroll)
+std::uint32_t tightturn_robots_row_009bb2c0() noexcept;  // 00F8A4B8, slot +5Ch
+const char* tightturn_name_009bb2d0() noexcept;       // "tightturn" 00D2064C
+std::uint32_t leavealone_robots_row_009bb6a0() noexcept; // 00F8A4A8
+bool leavealone_slot34_009bb6b0() noexcept;           // false
+bool leavealone_slot30_009bb6d0() noexcept;           // false
+std::int32_t leavealone_slot10_009bb6e0() noexcept;   // 3
+const char* leavealone_name_009bb6f0() noexcept;      // "leavealone" 00D206C0
+std::uint32_t barrelroll_robots_row_009bb820() noexcept; // 00F8A488
+const char* barrelroll_name_009bb830() noexcept;      // "barrelroll" 00D2073C
+std::uint32_t flikflak_robots_row_009bb9d0() noexcept;   // 00F8A4C8
+std::int32_t flikflak_slot10_009bb9e0() noexcept;     // 10
+const char* flikflak_name_009bb9f0() noexcept;        // "flikflak" 00D207B0
+std::uint32_t splits_robots_row_009bbbb0() noexcept;  // 00F8A498
+bool splits_slot34_009bbbc0() noexcept;               // true
+std::int32_t splits_slot10_009bbbd0() noexcept;       // 10
+const char* splits_name_009bbbe0() noexcept;          // "split s" 00D20828
+
+// 009BB180: __thiscall(ECX = task, bot, archive), RET 8: pullup stream
+// constructor (009BA830, vtable 00D20568, safePitch +400h, refPitch +3FCh,
+// started +404h).
+void* pullup_construct_from_stream_009bb180(Cc13Seg67aHost& host, void* task, void* bot,
+                                            void* archive);
+// 009BB280 (no Ghidra function): __thiscall(ECX = task, bot, condition, byte
+// left), RET 0Ch: tightturn constructor.
+void* tightturn_construct_009bb280(Cc13Seg67aHost& host, void* task, void* bot, void* condition,
+                                   std::uint8_t left);
+// 009BB2F0: __thiscall(ECX = task, bot, archive), RET 8.
+void* tightturn_construct_from_stream_009bb2f0(Cc13Seg67aHost& host, void* task, void* bot,
+                                               void* archive);
+// 009BB640: __thiscall(ECX = task, bot, condition), RET 8.
+void* leavealone_construct_009bb640(Cc13Seg67aHost& host, void* task, void* bot,
+                                    void* condition);
+// 009BB6C0 (no Ghidra function), slot +38h: AL = (word task+414h > 10), signed.
+bool leavealone_slot38_009bb6c0(void* task) noexcept;
+// 009BB710: __thiscall(ECX = task, bot, archive), RET 8.
+void* leavealone_construct_from_stream_009bb710(Cc13Seg67aHost& host, void* task, void* bot,
+                                                void* archive);
+// 009BB770: __thiscall(ECX = task, bot, condition), RET 8.
+void* barrelroll_construct_009bb770(Cc13Seg67aHost& host, void* task, void* bot,
+                                    void* condition);
+// 009BB850: __thiscall(ECX = task, bot, archive), RET 8.
+void* barrelroll_construct_from_stream_009bb850(Cc13Seg67aHost& host, void* task, void* bot,
+                                                void* archive);
+// 009BBA10: __thiscall(ECX = task, bot, archive), RET 8.
+void* flikflak_construct_from_stream_009bba10(Cc13Seg67aHost& host, void* task, void* bot,
+                                              void* archive);
+// 009BBAD0: __thiscall(ECX = task, bot), RET 4.
+void* splits_construct_009bbad0(Cc13Seg67aHost& host, void* task, void* bot);
+// 009BBC00: __thiscall(ECX = task, bot, archive), RET 8.
+void* splits_construct_from_stream_009bbc00(Cc13Seg67aHost& host, void* task, void* bot,
+                                            void* archive);
+// 009BBCF0 (no Ghidra function), slot +60h: __thiscall(ECX = task, archive), RET 4.
+void splits_save_009bbcf0(Cc13Seg67aHost& host, void* task, void* archive);
+// 009BBE20: __fastcall(ECX = bot, EDX = target, distance, seconds), RET 8, EAX.
+void* barrelroll_make_until_far_009bbe20(Cc13Seg67aHost& host, void* bot, void* target,
+                                         float distance, float seconds);
+// 009BBEF0 / 009BBF60 / 009BBFC0: __fastcall makers, EAX.
+void* barrelroll_create_009bbef0(Cc13Seg67aHost& host, void* bot, void* condition);
+void* splits_create_009bbf60(Cc13Seg67aHost& host, void* bot);
+void* leavealone_create_009bbfc0(Cc13Seg67aHost& host, void* bot, void* condition);
+// Factory create slots, __thiscall(ECX = factory, bot, archive), RET 8, EAX.
+void* barrelroll_factory_create_009bc110(Cc13Seg67aHost& host, void* bot, void* archive);
+void* splits_factory_create_009bc180(Cc13Seg67aHost& host, void* bot, void* archive);
+void* leavealone_factory_create_009bc1f0(Cc13Seg67aHost& host, void* bot, void* archive);
+void* tightturn_factory_create_009bc260(Cc13Seg67aHost& host, void* bot, void* archive);
+void* flikflak_factory_create_009bc2d0(Cc13Seg67aHost& host, void* bot, void* archive);
+// 009BC3A0: leavealone slot +64h, __thiscall(ECX = task, dt), RET 4 (dt unread).
+void leavealone_tick_009bc3a0(Cc13Seg67aHost& host, void* task, float dt);
 
 } // namespace bsp

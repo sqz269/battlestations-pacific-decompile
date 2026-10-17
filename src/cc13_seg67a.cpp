@@ -607,4 +607,332 @@ void* close_to_ship_factory_create_009a2fb0(Cc13Seg67aHost& host, void* bot, voi
     return close_to_ship_task_construct_from_stream_009a2e50(host, task, bot, archive);
 }
 
+// ---------------------------------------------------------------------------
+// Second batch: manoeuvre tasks 009BB150-009BC5C0.
+// ---------------------------------------------------------------------------
+namespace {
+
+constexpr std::size_t kManUnit = 0x2F4;
+constexpr std::size_t kManDescriptor = 0x2F8;
+constexpr std::size_t kManCondition = 0x3F8;
+
+constexpr std::uint32_t kPullUpVtable = 0x00D20568u;
+constexpr std::uint32_t kTightTurnVtable = 0x00D205E0u;
+constexpr std::uint32_t kLeaveAloneVtable = 0x00D20658u;
+constexpr std::uint32_t kBarrelRollVtable = 0x00D206D0u;
+constexpr std::uint32_t kFlikFlakVtable = 0x00D20748u;
+constexpr std::uint32_t kSplitSVtable = 0x00D207C0u;
+constexpr std::uint32_t kTimedConditionVtable = 0x00D1EA00u;
+constexpr std::uint32_t kManoeuvreKind = 0xF;            // PUSH 0Fh into 0099C6F0 / 0099C8B0
+
+constexpr float kOne = 1.0f;                             // [00D7A24C]
+constexpr float kHalf = 0.5f;                            // [00CE3800]
+constexpr float kLeaveAloneGain = 0.10000000149011612f;  // [00D7A2F0]
+constexpr std::size_t kTuningLeaveAlonePwr = 0x598;      // Pilot/General/LeaveAlonePwr
+
+constexpr const char* kKeySafePitch = "safePitch";       // 00D2035C
+constexpr const char* kKeyRefPitch = "refPitch";         // 00D20350
+constexpr const char* kKeyStarted = "started";           // 00D20348
+constexpr const char* kKeyLeft = "left";                 // 00D20368
+constexpr const char* kKeyBarrelRollSpeed = "barrelRollSpeed";  // 00D20374
+constexpr const char* kKeyTimer = "timer";               // 00D06BE4
+constexpr const char* kKeyStage = "stage";               // 00D20474
+constexpr const char* kKeySign = "sign";                 // 00D20830
+constexpr const char* kKeySpd = "spd";                   // 00D09548
+
+// The {0, name}/{type, &field} archive slot +10h read the stream constructors
+// repeat for every field.
+void read_field(Cc13Seg67aHost& host, void* archive, const char* key, std::int32_t type,
+                void* field) {
+    host.archive_vcall_10_read(archive, name_value(key), ref_value(type, field));
+}
+
+// The leavealone fields 009BB640 and 009BB710 both write after their base call.
+void leavealone_fields(void* task) {
+    set_vtable(task, 0x0, kLeaveAloneVtable);
+    at<std::uint32_t>(task, 0x3FC) = 0;
+    at<std::uint32_t>(task, 0x400) = 0;
+    at<std::uint32_t>(task, 0x404) = 0;
+    at<std::uint32_t>(task, 0x40C) = 0;
+    at<std::uint32_t>(task, 0x410) = 0;
+    at<float>(task, 0x408) = kOne;
+    at<std::uint16_t>(task, 0x414) = 0;
+}
+
+} // namespace
+
+const char* pullup_name_009bb150() noexcept { return "pullup"; }
+std::int32_t manoeuvre_slot10_009bb160() noexcept { return 10; }
+std::uint32_t tightturn_robots_row_009bb2c0() noexcept { return 0x00F8A4B8u; }
+const char* tightturn_name_009bb2d0() noexcept { return "tightturn"; }
+std::uint32_t leavealone_robots_row_009bb6a0() noexcept { return 0x00F8A4A8u; }
+bool leavealone_slot34_009bb6b0() noexcept { return false; }
+bool leavealone_slot30_009bb6d0() noexcept { return false; }
+std::int32_t leavealone_slot10_009bb6e0() noexcept { return 3; }
+const char* leavealone_name_009bb6f0() noexcept { return "leavealone"; }
+std::uint32_t barrelroll_robots_row_009bb820() noexcept { return 0x00F8A488u; }
+const char* barrelroll_name_009bb830() noexcept { return "barrelroll"; }
+std::uint32_t flikflak_robots_row_009bb9d0() noexcept { return 0x00F8A4C8u; }
+std::int32_t flikflak_slot10_009bb9e0() noexcept { return 10; }
+const char* flikflak_name_009bb9f0() noexcept { return "flikflak"; }
+std::uint32_t splits_robots_row_009bbbb0() noexcept { return 0x00F8A498u; }
+bool splits_slot34_009bbbc0() noexcept { return true; }
+std::int32_t splits_slot10_009bbbd0() noexcept { return 10; }
+const char* splits_name_009bbbe0() noexcept { return "split s"; }
+
+// 009BB180 (009BB180-009BB275, RET 8).
+void* pullup_construct_from_stream_009bb180(Cc13Seg67aHost& host, void* task, void* bot,
+                                            void* archive) {
+    host.bot_task_conditioned_construct_from_stream_009ba830(task, bot, archive);  // 009BB1A8
+    set_vtable(task, 0x0, kPullUpVtable);
+    read_field(host, archive, kKeySafePitch, 2, ptr(task, 0x400));    // 009BB1F0
+    read_field(host, archive, kKeyRefPitch, 2, ptr(task, 0x3FC));     // 009BB227
+    read_field(host, archive, kKeyStarted, 3, ptr(task, 0x404));      // 009BB25E
+    return task;
+}
+
+// 009BB280 (009BB280-009BB2B1, RET 0Ch). Same stores as the inlined tail of
+// 009BC030 (hosted, see the doc).
+void* tightturn_construct_009bb280(Cc13Seg67aHost& host, void* task, void* bot, void* condition,
+                                   std::uint8_t left) {
+    host.bot_task_pullup_construct_009bafc0(task, bot, condition);    // 009BB28F
+    set_vtable(task, 0x0, kTightTurnVtable);
+    at<std::uint8_t>(task, 0x408) = left;
+    at<std::uint8_t>(task, 0x404) = 1;
+    return task;
+}
+
+// 009BB2F0 (009BB2F0-009BB377, RET 8). +404h is not written here; 009BB180
+// restores it from "started".
+void* tightturn_construct_from_stream_009bb2f0(Cc13Seg67aHost& host, void* task, void* bot,
+                                               void* archive) {
+    pullup_construct_from_stream_009bb180(host, task, bot, archive);  // 009BB318
+    set_vtable(task, 0x0, kTightTurnVtable);
+    read_field(host, archive, kKeyLeft, 3, ptr(task, 0x408));         // 009BB360
+    return task;
+}
+
+// 009BB640 (009BB640-009BB69C, RET 8).
+void* leavealone_construct_009bb640(Cc13Seg67aHost& host, void* task, void* bot,
+                                    void* condition) {
+    host.bot_task_construct_base_0099c6f0(task, bot, kManoeuvreKind);  // 009BB64A
+    at<void*>(task, kManCondition) = condition;
+    leavealone_fields(task);
+    return task;
+}
+
+bool leavealone_slot38_009bb6c0(void* task) noexcept {
+    return static_cast<std::int16_t>(at<std::uint16_t>(task, 0x414)) > 10;
+}
+
+// 009BB710 (009BB710-009BB767, RET 8). The condition at +3F8h is the stream
+// base's business (009BA830).
+void* leavealone_construct_from_stream_009bb710(Cc13Seg67aHost& host, void* task, void* bot,
+                                                void* archive) {
+    host.bot_task_conditioned_construct_from_stream_009ba830(task, bot, archive);  // 009BB71F
+    leavealone_fields(task);
+    return task;
+}
+
+// 009BB770 (009BB770-009BB817, RET 8). sign = -1.0 when 0 > unit+C68h (COMISS/
+// JBE: NaN gives +1.0); U(0.5, 1.0) from 00BD2F10 stream 1 at 009BB7ED; +404h = 0
+// after the draw; +408h = float(U * sign), exact.
+void* barrelroll_construct_009bb770(Cc13Seg67aHost& host, void* task, void* bot,
+                                    void* condition) {
+    host.bot_task_pullup_construct_009bafc0(task, bot, condition);    // 009BB799
+    set_vtable(task, 0x0, kBarrelRollVtable);
+    const float sign = 0.0f > at<float>(at<void*>(task, kManUnit), 0xC68) ? kMinusOne : kOne;
+    const float draw = host.random_uniform_00bd2f10(1, kHalf, kOne);
+    at<std::uint8_t>(task, 0x404) = 0;
+    at<float>(task, 0x408) = draw * sign;
+    return task;
+}
+
+// 009BB850 (009BB850-009BB90E, RET 8).
+void* barrelroll_construct_from_stream_009bb850(Cc13Seg67aHost& host, void* task, void* bot,
+                                                void* archive) {
+    pullup_construct_from_stream_009bb180(host, task, bot, archive);  // 009BB878
+    set_vtable(task, 0x0, kBarrelRollVtable);
+    read_field(host, archive, kKeyBarrelRollSpeed, 2, ptr(task, 0x408));  // 009BB8C0
+    read_field(host, archive, kKeyStarted, 3, ptr(task, 0x404));          // 009BB8F7
+    return task;
+}
+
+// 009BBA10 (009BBA10-009BBACE, RET 8).
+void* flikflak_construct_from_stream_009bba10(Cc13Seg67aHost& host, void* task, void* bot,
+                                              void* archive) {
+    host.bot_task_conditioned_construct_from_stream_009ba830(task, bot, archive);  // 009BBA38
+    set_vtable(task, 0x0, kFlikFlakVtable);
+    read_field(host, archive, kKeyLeft, 3, ptr(task, 0x400));         // 009BBA80
+    read_field(host, archive, kKeyTimer, 2, ptr(task, 0x3FC));        // 009BBAB7
+    return task;
+}
+
+// 009BBAD0 (009BBAD0-009BBBA3, RET 4). +3F8h = 0 and the vtable before the draw;
+// 00BD2F10 stream 1 U(0, 1) at 009BBB1E; sign +3FCh = -1.0 when U > 0.5 (FCOMI/
+// JBE: NaN gives +1.0); +400h = the larger of unit vtable[+38h] and 007C47F0
+// (FCOMI/JBE: the unit speed unless the level speed is strictly larger).
+void* splits_construct_009bbad0(Cc13Seg67aHost& host, void* task, void* bot) {
+    host.bot_task_construct_base_0099c6f0(task, bot, kManoeuvreKind);  // 009BBAF6
+    set_vtable(task, 0x0, kSplitSVtable);
+    at<std::uint32_t>(task, kManCondition) = 0;
+    const float draw = host.random_uniform_00bd2f10(1, 0.0f, kOne);
+    at<float>(task, 0x3FC) = draw > kHalf ? kMinusOne : kOne;
+    const float speed = host.unit_vcall_38_speed(at<void*>(task, kManUnit));        // 009BBB56
+    const float level = host.plane_class_level_flight_speed_007c47f0(
+        at<void*>(task, kManDescriptor));                                             // 009BBB62
+    at<float>(task, 0x400) = level > speed ? level : speed;
+    return task;
+}
+
+// 009BBC00 (009BBC00-009BBCF0, RET 8). "stage" is read as type 1 into the
+// argument slot that held the archive pointer, so +3F8h keeps that pointer's
+// bits when the read leaves the slot alone.
+void* splits_construct_from_stream_009bbc00(Cc13Seg67aHost& host, void* task, void* bot,
+                                            void* archive) {
+    host.bot_task_construct_base_from_stream_0099c8b0(task, bot, archive, kManoeuvreKind);
+    set_vtable(task, 0x0, kSplitSVtable);
+    std::uint32_t stage = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(archive));
+    read_field(host, archive, kKeyStage, 1, &stage);                  // 009BBC60
+    at<std::uint32_t>(task, kManCondition) = stage;
+    read_field(host, archive, kKeySign, 2, ptr(task, 0x3FC));         // 009BBCA1
+    read_field(host, archive, kKeySpd, 2, ptr(task, 0x400));          // 009BBCD8
+    return task;
+}
+
+// 009BBCF0 (009BBCF0-009BBD91, RET 4).
+void splits_save_009bbcf0(Cc13Seg67aHost& host, void* task, void* archive) {
+    host.bot_task_save_base_0099d060(task, archive);                  // 009BBCFA
+    host.archive_vcall_0c_write(archive, name_value(kKeyStage),
+                                {1, at<std::uint32_t>(task, kManCondition)});
+    host.archive_vcall_0c_write(archive, name_value(kKeySign),
+                                {2, float_bits(at<float>(task, 0x3FC))});
+    host.archive_vcall_0c_write(archive, name_value(kKeySpd),
+                                {2, float_bits(at<float>(task, 0x400))});
+}
+
+// 009BBE20 (009BBE20-009BBEE2, RET 8). Allocation order: task (40Ch), the timed
+// condition (0Ch), then its distance sub-condition (2Ch). condition+8 =
+// float([00F876A4] + seconds), one rounding.
+void* barrelroll_make_until_far_009bbe20(Cc13Seg67aHost& host, void* bot, void* target,
+                                         float distance, float seconds) {
+    void* task = host.operator_new_00bf681b(0x40C);
+    if (task == nullptr) {
+        return nullptr;
+    }
+    void* condition = host.operator_new_00bf681b(0xC);
+    if (condition != nullptr) {
+        void* inner = host.operator_new_00bf681b(0x2C);
+        void* built = nullptr;
+        if (inner != nullptr) {
+            built = host.distance_condition_construct_007b5e20(inner, at<void*>(bot, 0x50), target,
+                                                               distance);   // 009BBE9C
+        }
+        set_vtable(condition, 0x0, kTimedConditionVtable);
+        at<void*>(condition, 0x4) = built;
+        at<float>(condition, 0x8) = host.global_float_00f876a4() + seconds;
+    }
+    return barrelroll_construct_009bb770(host, task, bot, condition);  // 009BBEC8
+}
+
+void* barrelroll_create_009bbef0(Cc13Seg67aHost& host, void* bot, void* condition) {
+    void* task = host.operator_new_00bf681b(0x40C);
+    return task != nullptr ? barrelroll_construct_009bb770(host, task, bot, condition) : nullptr;
+}
+
+void* splits_create_009bbf60(Cc13Seg67aHost& host, void* bot) {
+    void* task = host.operator_new_00bf681b(0x404);
+    return task != nullptr ? splits_construct_009bbad0(host, task, bot) : nullptr;
+}
+
+void* leavealone_create_009bbfc0(Cc13Seg67aHost& host, void* bot, void* condition) {
+    void* task = host.operator_new_00bf681b(0x418);
+    return task != nullptr ? leavealone_construct_009bb640(host, task, bot, condition) : nullptr;
+}
+
+void* barrelroll_factory_create_009bc110(Cc13Seg67aHost& host, void* bot, void* archive) {
+    void* task = host.operator_new_00bf681b(0x40C);
+    return task != nullptr ? barrelroll_construct_from_stream_009bb850(host, task, bot, archive)
+                           : nullptr;
+}
+
+void* splits_factory_create_009bc180(Cc13Seg67aHost& host, void* bot, void* archive) {
+    void* task = host.operator_new_00bf681b(0x404);
+    return task != nullptr ? splits_construct_from_stream_009bbc00(host, task, bot, archive)
+                           : nullptr;
+}
+
+void* leavealone_factory_create_009bc1f0(Cc13Seg67aHost& host, void* bot, void* archive) {
+    void* task = host.operator_new_00bf681b(0x418);
+    return task != nullptr ? leavealone_construct_from_stream_009bb710(host, task, bot, archive)
+                           : nullptr;
+}
+
+void* tightturn_factory_create_009bc260(Cc13Seg67aHost& host, void* bot, void* archive) {
+    void* task = host.operator_new_00bf681b(0x40C);
+    return task != nullptr ? tightturn_construct_from_stream_009bb2f0(host, task, bot, archive)
+                           : nullptr;
+}
+
+void* flikflak_factory_create_009bc2d0(Cc13Seg67aHost& host, void* bot, void* archive) {
+    void* task = host.operator_new_00bf681b(0x404);
+    return task != nullptr ? flikflak_construct_from_stream_009bba10(host, task, bot, archive)
+                           : nullptr;
+}
+
+// 009BC3A0 (009BC3A0-009BC55C, RET 4).
+//  1. task+3FCh..+410h = unit+9E4h..+9F8h (six dwords, raw copy).
+//  2. (unit+72Ch)->vtable[+38h]() true: +344h = 0.1, +354h = 0, +408h = the
+//     larger of +408h and tuning+598h (FCOMI/JBE: +408h only when strictly
+//     larger, NaN gives the tuning value); then step 4.
+//  3. false: only when unit+900h == 6: +344h = 0.1, +354h = 0, +408h = 0 when
+//     0.5 > +408h else 1.0 (COMISS/JBE: NaN gives 1.0); then step 4.
+//  4. +2C8h = 0, +2D0h = 1, +2C0h = 0, +2D4h = 1, +27Ch = +408h, byte +280h = 1,
+//     +2ACh = 0, byte +2B0h = 1, +2DCh = 0.
+//  5. condition->vtable[0]() true: 0099B690 (retire).
+//  6. unit+9D8h != 0: word +414h += 1; else word +414h = 0 and
+//     (unit+DF4h)+80h = 0.0.
+void leavealone_tick_009bc3a0(Cc13Seg67aHost& host, void* task, float /*dt*/) {
+    void* unit = at<void*>(task, kManUnit);
+    for (std::size_t i = 0; i < 6; ++i) {
+        at<std::uint32_t>(task, 0x3FC + 4 * i) = at<std::uint32_t>(unit, 0x9E4 + 4 * i);
+    }
+    bool apply = true;
+    if (host.unit_embedded_72c_vcall_38(ptr(unit, 0x72C))) {            // 009BC400
+        at<float>(task, 0x344) = kLeaveAloneGain;
+        at<float>(task, 0x354) = 0.0f;
+        void* tuning = host.game_tuning_singleton_0042e740();          // 009BC426
+        const float power = at<float>(task, 0x408);
+        const float floor = at<float>(tuning, kTuningLeaveAlonePwr);
+        at<float>(task, 0x408) = power > floor ? power : floor;
+    } else if (at<std::int32_t>(at<void*>(task, kManUnit), 0x900) == 6) {
+        at<float>(task, 0x344) = kLeaveAloneGain;
+        at<float>(task, 0x354) = 0.0f;
+        at<float>(task, 0x408) = kHalf > at<float>(task, 0x408) ? 0.0f : kOne;
+    } else {
+        apply = false;
+    }
+    if (apply) {
+        at<float>(task, 0x2C8) = 0.0f;
+        at<std::uint32_t>(task, 0x2D0) = 1;
+        at<float>(task, 0x2C0) = 0.0f;
+        at<std::uint32_t>(task, 0x2D4) = 1;
+        at<float>(task, 0x27C) = at<float>(task, 0x408);
+        at<std::uint8_t>(task, 0x280) = 1;
+        at<float>(task, 0x2AC) = 0.0f;
+        at<std::uint8_t>(task, 0x2B0) = 1;
+        at<std::uint32_t>(task, 0x2DC) = 0;
+    }
+    if (host.condition_vcall_00(at<void*>(task, kManCondition))) {      // 009BC50F
+        host.bot_task_retire_0099b690(task);
+    }
+    void* unit_now = at<void*>(task, kManUnit);
+    if (at<std::uint32_t>(unit_now, 0x9D8) != 0) {
+        at<std::uint16_t>(task, 0x414) = static_cast<std::uint16_t>(at<std::uint16_t>(task, 0x414) + 1);
+        return;
+    }
+    at<std::uint16_t>(task, 0x414) = 0;
+    at<float>(at<void*>(unit_now, 0xDF4), 0x80) = 0.0f;
+}
+
 } // namespace bsp
