@@ -40,7 +40,7 @@ namespace bsp {
 // party is covered, and the record notifications are kept for the `recon` channel.
 // False: the per-target model from a zero value, sides covered only while they
 // have a sensor-bearing observer.
-inline constexpr bool kReconDetectionRecordsBound = false;
+inline constexpr bool kReconDetectionRecordsBound = true;  // ON: mechanism matches (RECON_SENSOR_PASS.md "Records", pairs)
 
 // One delegate call, [+2Ch]->vtable[0](+30h, old, new), in pass order.
 struct ReconLevelTransition {

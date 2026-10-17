@@ -15896,6 +15896,9 @@ cc13's other points: det+28h (observer) is kept (only reader: HUD warning `00974
 records, and the skip path publishes the record. The three slots are always covered (`004E0537` builds 0, 1, 2).
 Pairs: `g51_r0` / `g51_r1` (USN04 idle, LOMP06 `l50_l6_q6`, ESMP08 `g38_ord_e8`, USNOS `s45_os_k` to 3000 s).
 
+**Flipped ON** after the four pairs (docs/RECON_SENSOR_PASS.md "Records", table): USN04 gameplay identical; LOMP06,
+ESMP08 and USNOS move through recon levels (most blips become identified after about two seconds of contact).
+
 ### 272.2 Shipyard hangar gate bytes, `00848410` (packet `cc9_g51_shipyard_gate`)
 
 `00848410` (`00848458..0084846D`) and `00844CE0` keep a hangar object only when +5Ch is set and +5Dh, +60h, +5Eh are
