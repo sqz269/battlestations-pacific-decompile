@@ -272,8 +272,10 @@ struct GunneryReconContact {
 // caller's convenience, not the native control flow.
 //
 // `prior_value` is the target's detection value for this slot on entry. The
-// native rebuild zeroes it for every world-list unit at 00807480..0080749A
-// before the pass, so the live caller always passes 0.0f.
+// OFF caller passes 0.0f. CORRECTION (packet cc9_g51_recon_records): the reset
+// at 00807480..0080749A walks the class-18h squadron list only, so a unit's
+// value carries across passes; recon_run_sensor_pass_00806840 below is the
+// faithful form.
 GunneryReconContact gunnery_recon_detect_00806840(const GunneryReconObserver* observers,
                                                   std::size_t observer_count,
                                                   const GunneryReconTarget& target,
@@ -290,5 +292,108 @@ constexpr bool gunnery_recon_admits_contact_008076a5(ReconDetectionLevel level) 
 {
     return !recon_triple_filter_00807647(level).remove_from_relation;
 }
+
+// ---------------------------------------------------------------------------
+// Packet cc9_g51_recon_records: the detection record itself, and 00806840 over it
+// ---------------------------------------------------------------------------
+//
+// One record per (unit, observing party) at unit + 1E8h + party * 34h. Only the
+// fields 00805AF0, 00805BE0, 00805CF0 and 00806840 touch are kept. +2Ch/+30h, the
+// change delegate and its party argument, are the host's level_changed hook.
+//
+// The value is NOT zeroed before each pass. 008073C0's reset loop
+// (00807462..0080749A) walks [[[00E188A8]+19CCh]+13Ch], the registry's class-18h
+// list: 008074CA indexes the per-class heads as registry + id*0Ch + 1Ch, so +13Ch is
+// id 18h, and only the plane squadron's world-list virtual 007F10B0 joins it (ADD
+// ECX,138h at 007F10C8; the unit's 006FE620 joins ids 2, 4, 5, 6, 7). A unit's
+// record therefore carries its value from pass to pass (docs/GAMEPLAY_LOOSE_ENDS_1.md
+// section 2, re-verified 2026-10-17).
+struct ReconDetectionRecord {
+    ReconDetectionLevel level{ReconDetectionLevel::none};         // +4h
+    ReconDetectionLevel forced_level{ReconDetectionLevel::none};  // +8h, 00805CF0
+    float value{0.0f};                                            // +0Ch
+    bool forced{false};                                           // +10h, 00805CF0
+    // +28h: the winning observer (00694A60 registers the edge, 006952A0 drops it),
+    // as a unit index. Its only reader in the image is the HUD recon warning
+    // 009741E0 (entity+210h+side*34h), so it is presentation state here.
+    std::size_t observer{kGunneryReconNoObserver};
+};
+
+// +8h when +10h is set, else +4h: the level every reader and the delegate use.
+constexpr ReconDetectionLevel recon_record_effective_level(const ReconDetectionRecord& record) noexcept
+{
+    return record.forced ? record.forced_level : record.level;
+}
+
+// What a record call reports to the delegate: [+2Ch]->vtable[0](+30h, old, new),
+// fired only when the effective level moved.
+struct ReconRecordLevelChange {
+    bool changed{false};
+    ReconDetectionLevel old_level{ReconDetectionLevel::none};
+    ReconDetectionLevel new_level{ReconDetectionLevel::none};
+};
+
+// 00805AF0 __thiscall(record, float value, bool accumulate, Unit* observer), RET 0Ch.
+// Adds (or assigns) the value to +0Ch, clamps to [0, 1.0f], writes +4h from the 0.25f
+// and 0.5f thresholds, swaps +28h, and reports the effective-level change.
+ReconRecordLevelChange recon_record_accumulate_00805af0(ReconDetectionRecord& record,
+                                                        float value,
+                                                        bool accumulate,
+                                                        std::size_t observer) noexcept;
+
+// 00805BE0 __thiscall(record), RET. Zeroes +0Ch and +4h, drops +28h, and reports the
+// effective-level change (none while +10h holds the level at +8h).
+ReconRecordLevelChange recon_record_reset_00805be0(ReconDetectionRecord& record) noexcept;
+
+// What 00806840 needs from its caller, one method per native read or write.
+struct ReconRecordPassHost {
+    virtual ~ReconRecordPassHost() = default;
+    // [00E188A8]+1FE4h, read once per target at 0080686A.
+    virtual int network_role() = 0;
+    // unit + 1E8h + slot*34h.
+    virtual ReconDetectionRecord& record(std::size_t unit, int slot) = 0;
+    // The delegate [+2Ch]->vtable[0](+30h = slot, old, new), 0077B0C0 in the image.
+    virtual void level_changed(std::size_t unit, int slot,
+                               ReconDetectionLevel old_level, ReconDetectionLevel new_level) = 0;
+    // [[node+8h]+0Ch] = effective level, 00806981.
+    virtual void publish_level(std::size_t unit, ReconDetectionLevel level) = 0;
+};
+
+// One own-list entry as 00806840's inner loop sees it. `rows == nullptr` is the
+// class with no sensor table, for which 008048A0 returns false at 008048C1 WITHOUT
+// writing *outGain.
+struct ReconPassObserver {
+    GunneryReconObserver observer{};
+    std::size_t unit{kGunneryReconNoObserver};
+};
+
+// One target-list record: the unit and what 008048A0 reads of it.
+struct ReconPassTarget {
+    std::size_t unit{kGunneryReconNoObserver};
+    GunneryReconTarget subject{};
+};
+
+// The stack slot 008048A0 writes its gain into ([ESP+14h] at 008068D3). An
+// observer with no sensor table leaves it unwritten, and 008068EC compares it
+// anyway, so it carries the last written gain from an earlier observer, an
+// earlier target or an earlier 00806840 call of the same rebuild (the caller's
+// loop at 00807552 re-enters with the same ESP and calls nothing in between).
+// SUBSTITUTION, labelled: its value before the first write of a rebuild is
+// unknown stack contents; the host starts each rebuild at 0.0f.
+struct ReconPassScratch {
+    float out_gain{0.0f};
+    unsigned long long stale_gain_reads{0};   // census: a no-table observer was compared
+};
+
+// 00806840 __thiscall(slot, List* targets, List* ownTriple), RET 8, whole. For each
+// target: unless [00E188A8]+1FE4h == 2 (00806871) or the record's +10h is set
+// (00806883), run every IsKindOf(5) own entry through 008048A0(0FFh, slot+30h) with
+// the record's CURRENT value as the cap base, keep the strictly larger gain and its
+// observer, then 00805AF0(gain, 1, observer) when any entry applied, else 00805BE0.
+// Always ends by publishing the effective level into the payload's +0Ch (0080695C).
+void recon_run_sensor_pass_00806840(const ReconPassTarget* targets, std::size_t target_count,
+                                    const ReconPassObserver* own, std::size_t own_count,
+                                    const GunneryReconEnvironment& env, int slot, float dt,
+                                    ReconRecordPassHost& host, ReconPassScratch& scratch);
 
 } // namespace bsp

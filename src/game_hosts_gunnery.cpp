@@ -7219,6 +7219,31 @@ public:
         return 0;
     }
 
+    void scan_slot_lists_008065b0(int slot, std::vector<std::size_t>& own,
+                                  std::vector<std::size_t>& enemy,
+                                  std::vector<std::size_t>& neutral) override {
+        // The same scan publish_recon_triples_008073c0 walks: the 22 ids of
+        // 00806480 through the world registry's per-class lists, the four gate
+        // bytes and IsKindOf(2), filed by 008065FF's relation, flattened in
+        // class-id bucket order.
+        std::array<int, 22> ids = bsp::kReconScannedClassIds;
+        std::sort(ids.begin(), ids.end());
+        const std::size_t count = owner_.units.count();
+        for (const int id : ids) {
+            const std::size_t n = owner_.units.world_list_size(id);
+            for (std::size_t pos = 0; pos < n; ++pos) {
+                const std::size_t u = owner_.units.world_list_entry(id, pos);
+                if (u >= count) continue;
+                if (!unit_present(u)) continue;
+                if (!owner_.units.unit_is_kind_of(u, bsp::kReconScanRequiredClassId)) continue;
+                const bsp::ReconRelation rel =
+                    bsp::recon_relation_for_008065ff(slot, owner_.units.unit_side_0054(u));
+                (rel == bsp::ReconRelation::own ? own
+                    : rel == bsp::ReconRelation::enemy ? enemy : neutral).push_back(u);
+            }
+        }
+    }
+
 private:
     GameGunneryHost::Impl& owner_;
 };
@@ -7249,7 +7274,11 @@ void GameGunneryHost::Impl::run_recon_sensor_pass_body_008073c0() {
     recon_last_pass_seconds = clock_seconds;
     resolve_recon_inputs();
     GunneryReconSensorPassHost host(*this);
-    bsp::recon_sensor_pass_step_008073c0(recon_pass, dt, host);
+    if (bsp::kReconDetectionRecordsBound) {
+        bsp::recon_sensor_pass_rebuild_008073c0(recon_pass, dt, host);
+    } else {
+        bsp::recon_sensor_pass_step_008073c0(recon_pass, dt, host);
+    }
     // The published answer per observing side, tallied over the pairs the pass
     // covered this tick.
     const std::size_t count = units.count();
@@ -15752,6 +15781,13 @@ void GameGunneryHost::report() {
             pass.detected_identified, pass.detected_none, host.recon_classes.size(),
             host.recon_classes_missing, host.recon_modifier_absent,
             pass.suppressed_by_network_role ? 1 : 0, s.contact_reject_recon_level);
+        if (bsp::kReconDetectionRecordsBound) {
+            host.log.notef("summary mission recon records rebuilds=%llu targets=%llu "
+                "own_refreshes=%llu carried_value=%llu notifications=%llu stale_gain_reads=%llu "
+                "(packet cc9_g51_recon_records)", pass.record_rebuilds, pass.record_targets,
+                pass.record_own_refreshes, pass.record_carried_level, pass.record_notifications,
+                pass.record_stale_gain_reads);
+        }
         for (const Impl::ReconSideCensus& row : host.recon_side_census) {
             host.log.notef("  recon side %d levels none=%llu blip=%llu identified=%llu",
                 row.side, row.none_level, row.blip, row.identified);

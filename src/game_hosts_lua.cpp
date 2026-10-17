@@ -5727,6 +5727,20 @@ void GameMissionLuaHost::dispatch_recon_listeners_00980e50() {
     for (const ListenerEntry& entry : listeners_) {
         if (listener_key_equal(entry.channel, "recon")) { any_recon = true; break; }
     }
+    if (bsp::kReconDetectionRecordsBound) {
+        // Packet cc9_g51_recon_records: the records' own delegate calls, in pass
+        // order. A unit record is not reset by 00807490 (that loop walks only the
+        // class-18h squadron list), so it notifies on a net change only; the own
+        // arm's 00805AF0(1.0f) notifies once, 0 -> 2. Supersedes the reset-cycle
+        // and own-step substitutions below.
+        if (!any_recon) return;
+        for (const bsp::ReconLevelTransition& t : pass.transitions()) {
+            if (t.unit >= count || gunnery->unit_dead(t.unit)) continue;   // 00980E50's live-unit gate
+            fire_recon_listeners_00980e50(t.unit, static_cast<int>(t.old_level),
+                                          static_cast<int>(t.new_level), t.party);
+        }
+        return;
+    }
     for (std::size_t u = 0; u < count; ++u) {
         const bool dead = gunnery->unit_dead(u);
         const int own = units_hooks_->unit_side_0054(u);
