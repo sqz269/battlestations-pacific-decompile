@@ -15666,16 +15666,16 @@ are still `ib`'s, built for Fletchers 01-09/16-21, most of which die in the open
 (3000, 8000) at 2700 s, an east-west line z=8700 from x=3200 (dx 150) at 3050 s, 5 torpedo rounds on Fuso from
 3300 s): identical to `kkL` through the opening (ref/20,5/20,7/20,11 no end, 20,3 fail 2774 s). On 20,5 Fuso parks at
 (6426, 10385) from about 3300 s as before, 21 presses are applied, and Fuso takes only 1592 damage in the whole run. The
-line is mostly out of torpedo reach (the category range is 1852 m; a ship at x=3200 is 3.6 km from Fuso), and the
-column ships that fired at Yamashiro may have no torpedoes left (the stock path, GUNNERY 263). Fuso then sinks the
+line is mostly out of torpedo reach (the category range is 1852 m; a ship at x=3200 is 3.6 km from Fuso). Stock is not
+the limit: each Fletcher has `MaxTorpedoStock=30` (10 loaded, 20 spare), and F01 and F05 fired their last torpedo at Fuso. Fuso then sinks the
 staged ships one by one (F21/F19/F11/F15/F22/F16 at 3213-3503 s, the CLs at 5044-5566 s). **No USN15 row is
 committed and nothing was sent to the wins keeper.**
 
 **Next steps for USN15:**
 1. Keep the `kk` opening (`local\g49_u15kk.plan`), and settle 20,3 (Yamashiro alive at 21797, no fail by 1800 s).
-2. Rebuild the Fuso phase for the survivors: only ships that have not fired (the eastern Fletchers that live, typically
-   F01/F03/F05/F19/F21) still carry torpedoes; check `torpedo stock` lines per ship before choosing. Stage them as a
-   compact group (`goto ... 0.25`) at about 1.5 km from (6426, 10385), not as a long line, and fire from about 3300 s.
+2. Rebuild the Fuso phase for whichever Fletchers survive; check each one's `torpedo stock` lines (on `kl` 20,5 the
+   column's F10 emptied its 30 in the opening). Stage
+   them as a compact group (`goto ... 0.25`) at about 1.5 km from (6426, 10385), not as a long line, and fire from about 3300 s.
 3. Ashigara: in `kk`/`kl` it dies early on some seeds (20,5: Boise at 1120 s); otherwise it is at its bay. The
    `ca,cl,dd` attack at 5000 s did not kill it in the other four `kl` runs.
 4. Watch the US/IJN count (`g49_count.py`): a phase that loses ships below the IJN count makes every IJN ship run to
