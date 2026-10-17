@@ -286,8 +286,10 @@ constexpr bool kFindEntityCaseInsensitiveBound = true;
 // `Class`, it gets both writes. LABELLED: the host's identity type map stands in
 // for registry+10h, and the seed points stand in for the factory's call sites;
 // the ship's second recursion (descriptor +0C0h != -1) is not modelled.
-// False: the rows stay as loaded (before).
-constexpr bool kVehicleClassRowIdBound = false;
+// False: the rows stay as loaded (before). ON by mechanism (SHIP_AI_OPEN_ITEMS 270):
+// JM08 w1 fills Mission.Dakota and loses its early completion; USN01 sets the
+// Class 162 / 313 squadrons' altitudes and still wins; JM06 identical.
+constexpr bool kVehicleClassRowIdBound = true;
 
 // Packet cc9_lua49_checkpoint (docs/CC13_PROFILE_SAVE.md; docs/SQUADRON_LAND_TASK.md
 // 5fk). SaveCheckpoint 008ACB70: argument 0 to 00438A00 on the profile
@@ -9055,10 +9057,6 @@ void GameMissionLuaHost::report_entity_subjects() {
         "their own row address",
         distinct.size(), summary_.self_table_entities, bindings, reconstructed,
         summary_.entity_resolves);
-    if constexpr (kVehicleClassRowIdBound) {
-        log_.notef("summary mission vehicle class rows marked=%zu (00964790 ID/Got, "
-            "009648EC..00964959, packet s54_class_id)", summary_.class_rows_marked);
-    }
 }
 
 void GameMissionLuaHost::note_created_script(std::string name) {
@@ -9268,6 +9266,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "slots_rows=%llu decks=%zu", summary_.get_property_calls, summary_.get_property_served,
         summary_.get_property_unserved, summary_.get_property_slots_rows,
         bsp::air_ops_decks().size());
+    if constexpr (kVehicleClassRowIdBound) {
+        log_.notef("summary mission vehicle class rows marked=%zu (00964790 ID/Got, "
+            "009648EC..00964959, packet s54_class_id)", summary_.class_rows_marked);
+    }
     log_.notef("summary mission script listeners bound=%d adds=%llu removes=%llu queries=%llu "
         "registered=%zu kill_deaths=%llu kill_fires=%llu attacker_filtered=%llu (008C6760 / "
         "008C6990 / 008C6BB0 / 009813A0, packet cc9_lua_listeners)", kLuaListenersBound ? 1 : 0,

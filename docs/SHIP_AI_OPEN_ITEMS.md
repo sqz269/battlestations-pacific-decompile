@@ -18524,3 +18524,15 @@ stand in for the factory's call sites. The ship's second recursion (descriptor +
 authored branch. JM08 w1 moves: wave-3 C47s are found (Mission.Dakota filled), so the completion that came
 about 4 s after wave 3 must wait for the Dakota logic. Wins may move either way. USN01 (usn_1_pearl: 2 sites)
 and JM06 (jm06: 6 sites) move where their branches are reached; otherwise only the `Got` / `ID` reads change.
+**Measured; flipped ON.** OFF = tree 9514fc2e0, ON = `local\s54_ci` (pair_export), reference env, win-row orders.
+| row | pair_diff | what moved | end OFF -> ON |
+|---|---|---|---|
+| JM08 110000 fr, `jm08_l62_j8_w1` (`s54_c0_j8` / `s54_c1_j8`) | 3 | PRCPJM08.lua's luaBomberWaveSpawned2 now targets the B-25s (118) at the airfield and the SBDs (108) at the command building; luaBomberWaveSpawned3 fills Mission.Dakota with the C47s (136), and CheckPrim3 waits for them. Units 559 -> 568, deaths 198 -> 260 | completed 1468.01 s -> **none in 5500 s** (the wave-3 C47s are never all killed) |
+| USN01 26000 fr, `usn01_p8_u1_i` (`s54_c0_u1` / `s54_c1_u1`) | 3 | usn_1_pearl.lua's `Class.ID == 162 / 313` branches now set the squadrons' travel/attack altitudes; the Nell deaths move, deaths 80 -> 77 | completed 365.03 -> **completed 360.04 s** |
+| JM06 50000 fr, `jm06_p12_j6_a4` (`s54_c0_j6` / `s54_c1_j6`) | 0 | nothing | none -> none |
+The mechanism is the one predicted: the authored `Class.ID` branches run (a USN01 300-frame smoke marks 34 rows). Flipped. JM08's w1 plan won only because
+the Dakota check passed on an empty table; it needs a re-plan that shoots down the wave-3 C47s (sent to lua63).
+**Side observation (not this switch):** JM06 `jm06_p12_j6_a4` does not win in 50000 frames on 9514fc2e0, on
+0fedfbfcf (`s54_rr_j6`) or on ships53's control export e8d6d0a83 (`s54_wo_j6`): EndMission never true, 18 deaths
+each time. WINS_TABLE records a4 winning at 2226.05 s on 25fbdcba0, so something between 25fbdcba0 and e8d6d0a83
+moved it. Sent to lua63.
