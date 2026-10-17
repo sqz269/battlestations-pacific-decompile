@@ -17519,3 +17519,33 @@ WINS_TABLE 2026-10-17 re-time). Logs `cc9-lua52\local\l63rt_<tag>.log` with mani
   runs the generic 0071EDD0 for every director). The ordnance classes' +3Dh is the existing retest; the strafe /
   dogfight / settarget squadrons' 009F8412 on a null target is not hosted (`kSquadronDeadTargetRetestBound` skips
   every non-ordnance class). Not bound in this packet; recorded as an open item.
+
+### 5hw.3 Pairs and flip (reference env; exports of 1c43edf3b: `local\l64_off` 43F25CF839C4, `local\l64_on`)
+
+Logs `cc9-lua52\local\l64_<row>_<off|on>.log` with manifests.
+
+| Row | OFF | ON | Verdict |
+|---|---|---|---|
+| USN04 (no orders, 45000 fr) | no end, 0 retests | identical, 0 retires | identical |
+| JM08 `l62_j8_w1` (110000 fr) | failed 2247.12 s (HQ neutralized) | no end; 35 retires | moved |
+| ESMP08 `p12_e8_rb` (140000 fr) | failed 6615.19 s | no end; 137 retires | moved |
+
+- ESMP08 ON matches the prediction: the first retires are the torpedo members of the squadrons the retest ends at
+  420.27 s (South Dakota), 24 between 420 and 430 s and 11 more by 450 s; the dive-bomb retires that follow are
+  retargets (the attack-order intake re-aims a squadron and the task is rebuilt for the new target). JM08's first
+  retire is `MainAirFieldEntity 01_sqn01` at 107.55 s, when the air-ops order re-aims it from USTroopTransport 06 to
+  Missouri (a fresh dive task, as 0099A170 builds); the torpedo retires at 545 s and the dive retires at 820-844 s
+  follow the retests on Nevada and the LSTs.
+- The summary `dive-bomb task: aircraft=77 releases=108` (OFF) against `41 of 41` (ON) counts only tasks still
+  installed at the end of the run, so retired tasks drop out of it; it is not a release loss.
+- Both moved rows are lost or non-wins on both sides (JM08's plan is re-planned below; ESMP08 is not a win). Flipped
+  ON by mechanism.
+
+### 5hw.4 The 007CB5F0 -> 007C3EA0 note (cc13 seg47b): unreachable here, census added
+
+007CB75F-007CB778 calls 007C3EA0 only when `[plane+1B0h]` (the pilot role's holder, `current_roles_01ac[1]`) is not
+8 and 00927F10 (`[[00E188A8]+18CCh+slot*4]+9`) is 0, i.e. a human party slot holds the plane's pilot role. The host
+writes role 1 for the local player only in the scripted helm transfer (`0077C470(unit, 2, 1)` for the controlled
+unit, a ship row); every plane keeps 8, so the call is unreachable in this host's runs, and in the image it needs the
+player to fly the plane. Not bound; `plane_touchdown_007cc440` now counts such touchdowns (`summary plane touchdown
+human pilot census=<n>`), which must stay 0.

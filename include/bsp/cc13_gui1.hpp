@@ -186,11 +186,13 @@ struct GuiWidgetHooks : NativeListHooks {
     virtual void detach_child_00aa83a0(void* parent, void* child) = 0;
     // 00B6E680, __thiscall(child node; parent node) RET 4: scene-node attach.
     virtual void scene_node_attach_00b6e680(void* child_node, void* parent_node) = 0;
-    // 00B74EB0 (ECX = 184h) -> block; 00B75030, __thiscall(block; const char*
-    // node_name) RET 4 -> node; 00AA6720, __thiscall(widget; node) RET 4 (route to
+    // 00B74EB0 (ECX = 184h) -> block; 00B75030 BSP_GeneratedModel_Construct,
+    // __thiscall(block; const NativeString* name) RET 4 -> node (it reads the
+    // length at [name] and the data at [name+4]; 00AA6640 and 00AAA710 both
+    // pass a NativeString); 00AA6720, __thiscall(widget; node) RET 4 (route to
     // bind_native_gui_widget_node_00aa6720).
     virtual void* model_pool_allocate_00b74eb0(std::uint32_t size) = 0;
-    virtual void* scene_node_construct_00b75030(void* block, const char* node_name) = 0;
+    virtual void* generated_model_construct_00b75030(void* block, const NativeStringHeader* name) = 0;
     virtual void set_scene_node_00aa6720(void* widget, void* node) = 0;
     // widget->vtable[+74h]().
     virtual void widget_vslot74(void* widget) = 0;
@@ -226,10 +228,10 @@ void gui_widget_attach_child_00aaa5a0(GuiWidgetHooks& host, void* parent, void* 
     const NativeListIterator* where);
 // 00AA8B00, __thiscall(ECX = widget; int index) RET 4 -> entry.
 void* gui_timed_entry_get_or_create_00aa8b00(GuiWidgetHooks& host, void* widget, std::int32_t index);
-// 00AA6640, __fastcall(ECX = type tag, EDX = const char* node_name; ctor_arg)
-// RET 4 -> widget.
+// 00AA6640, __fastcall(ECX = type tag, EDX = const NativeString* node_name;
+// ctor_arg) RET 4 -> widget.
 void* gui_widget_create_with_scene_node_00aa6640(GuiWidgetHooks& host, std::uint32_t type_tag,
-    const char* node_name, void* ctor_arg);
+    const NativeStringHeader* node_name, void* ctor_arg);
 
 // ---------------------------------------------------------------------------
 // Text, segment 78
