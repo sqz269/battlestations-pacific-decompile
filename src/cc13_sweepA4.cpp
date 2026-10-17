@@ -1808,4 +1808,168 @@ void briefing_screen_enter_0051cde0(Raw screen, SweepA4Host& host) {
     release_native_string(objective, host);
 }
 
+// ---------------------------------------------------------------------------
+// 0051FA50 BSP_CheatMenuScreen_BuildLines
+// __thiscall(ECX = cheat menu screen), plain RET; EBP-aligned frame, EH state
+// [ESP+5Ch]. Caller 00520FB0 at 0052113C (a rel32 census; the index lists no
+// caller). The lines go into a local native-string vector at [ESP+40h]
+// (first +44h), handed to 00544540(screen+20h, &lines, 0), then 00427110(0)
+// and the block freed (00BF6989).
+// screen+10h selects the page: 0 the feature list, 1 the key-binding page,
+// anything else no lines. Literals are the image's (listed in
+// docs/CC13_SWEEPA4.md); every "<label>(" line is built value first, then
+// the label, 004261A0(label, out, value), 004CDC20 append, and the out,
+// label and value released in that order.
+// ---------------------------------------------------------------------------
+namespace {
+
+void append_plain(Raw lines, const char* text, SweepA4Host& host) {
+    NativeStringStorage storage;
+    Raw line = raw(storage.bytes);
+    host.native_string_construct_0041e870(line, text);
+    host.native_string_vector_append_004cdc20(lines.p, line);
+    release_native_string(line, host);
+}
+
+void append_pair(Raw lines, const char* label, const char* value, SweepA4Host& host) {
+    NativeStringStorage value_storage, label_storage, joined_storage;
+    Raw value_string = raw(value_storage.bytes);
+    Raw label_string = raw(label_storage.bytes);
+    Raw joined = raw(joined_storage.bytes);
+    host.native_string_construct_0041e870(value_string, value);
+    host.native_string_construct_0041e870(label_string, label);
+    host.native_string_concat_004261a0(label_string, joined, value_string);
+    host.native_string_vector_append_004cdc20(lines.p, joined);
+    release_native_string(joined, host);
+    release_native_string(label_string, host);
+    release_native_string(value_string, host);
+}
+
+const char* on_off(bool on) { return on ? "On)" : "Off)"; }
+
+}  // namespace
+
+void cheat_menu_screen_build_lines_0051fa50(Raw screen, SweepA4Host& host) {
+    alignas(4) std::uint8_t lines_storage[0x10] = {};  // [ESP+40h]
+    Raw lines = raw(lines_storage);
+    lines.ptr(4) = nullptr;
+    lines.ptr(8) = nullptr;
+    lines.ptr(0xc) = nullptr;
+    const std::uint32_t page = screen.at<std::uint32_t>(0x10);
+    if (page == 0) {
+        append_plain(lines, "Dump Memory", host);
+        append_pair(lines, "Log rendernodes (",
+                    on_off(raw(host.debug_render_flags_get_singleton_0051f520()).at<std::uint8_t>(6) != 0), host);
+
+        // 0051FB97..0051FCA5: the party of [00E188A8]+18ECh (0..7, signed).
+        {
+            Raw game = raw(host.global_pointer(kGame));
+            const std::int32_t index = game.at<std::int32_t>(0x18ec);
+            const char* name = "NONE";
+            if (index >= 0 && index <= 7)
+                name = host.party_name_00923080(raw(game.ptr(0x18cc + index * 4)).at<std::int32_t>(0x28));
+            NativeStringStorage close_storage, name_storage, header_storage, joined_storage;
+            Raw close = raw(close_storage.bytes);
+            Raw name_string = raw(name_storage.bytes);
+            Raw header = raw(header_storage.bytes);
+            Raw joined = raw(joined_storage.bytes);
+            host.native_string_construct_0041e870(close, ")");
+            host.native_string_construct_0041e870(name_string, name);
+            const Raw prefixed = host.native_string_construct_prefixed_header_0043c130(header, "Change Party (", name_string);
+            host.native_string_concat_004261a0(prefixed, joined, close);
+            host.native_string_vector_append_004cdc20(lines.p, joined);
+            release_native_string(joined, host);
+            release_native_string(header, host);
+            release_native_string(name_string, host);
+            release_native_string(close, host);
+        }
+
+        // 0051FCAA..0051FE4C: the selected debug feature profile.
+        if (host.debug_feature_owner_get_profile_count_00be8200(host.debug_feature_owner_get_singleton_0051f460()) < 1) {
+            append_plain(lines, "No DebugFeatures", host);
+        } else {
+            NativeStringStorage close_storage, copy_storage, value_storage, label_storage, first_storage, second_storage;
+            Raw close = raw(close_storage.bytes);
+            Raw copy = raw(copy_storage.bytes);
+            Raw value = raw(value_storage.bytes);
+            Raw label = raw(label_storage.bytes);
+            Raw first = raw(first_storage.bytes);
+            Raw second = raw(second_storage.bytes);
+            host.native_string_construct_0041e870(close, ")");
+            const Raw selected =
+                host.debug_feature_owner_copy_selected_profile_name_00be8ca0(host.debug_feature_owner_get_singleton_0051f460(), copy);
+            const char* text = static_cast<const char*>(selected.ptr(4));
+            if (text == nullptr) text = static_cast<const char*>(host.global_address(0x00e18db4));
+            host.native_string_construct_0041e870(value, text);
+            host.native_string_construct_0041e870(label, "DebugFeature (");
+            host.native_string_concat_004261a0(label, first, value);
+            host.native_string_concat_004261a0(first, second, close);
+            host.native_string_vector_append_004cdc20(lines.p, second);
+            release_native_string(second, host);
+            release_native_string(first, host);
+            release_native_string(label, host);
+            release_native_string(value, host);
+            release_native_string(copy, host);
+            release_native_string(close, host);
+        }
+
+        append_pair(lines, "AI Debug Render (",
+                    on_off(raw(host.debug_feature_owner_get_singleton_0051f460()).at<std::uint8_t>(0x2c) != 0), host);
+        append_pair(lines, "PostEffect (", on_off(host.post_effect_enabled_00b0cf20(host.global_pointer(0x00f8d39c))), host);
+        // 0051FFDE..0051FFFF: COMISS player+150h, [00D7A218] / JA: "yes"
+        // only when ordered and above.
+        {
+            const char* invincible = "NA";
+            if (void* const player = host.global_pointer(0x00e188d8); player != nullptr)
+                invincible = raw(player).at<float>(0x150) > *static_cast<const float*>(host.global_address(0x00d7a218))
+                                 ? "yes"
+                                 : "no";
+            append_pair(lines, "Invincible: ", invincible, host);
+        }
+        append_pair(lines, "DamageDebug (",
+                    on_off(raw(host.singleton_00e19aac_get_or_create_0051f5e0()).at<std::uint8_t>(0x18) != 0), host);
+        append_pair(lines, "ShowBoundings (",
+                    on_off(raw(host.debug_render_flags_get_singleton_0051f520()).at<std::uint8_t>(4) != 0), host);
+        append_pair(lines, "Shadow (", on_off(raw(host.debug_render_flags_get_singleton_0051f520()).at<std::uint8_t>(5) != 0),
+                    host);
+        append_pair(lines, "ShowOcean    (", "On)", host);  // constant in the image
+        append_pair(lines, "OceanUpdate  (", on_off(*static_cast<const std::uint8_t*>(host.global_address(0x00e130b4)) != 0),
+                    host);
+        append_pair(lines, "ShowFoliage  (", on_off(*static_cast<const std::uint8_t*>(host.global_address(0x00e08658)) != 0),
+                    host);
+        append_pair(lines, "Hide particles   (",
+                    on_off(raw(host.model_effect_options_get_singleton_0051f6b0()).at<std::uint8_t>(5) != 0), host);
+        append_pair(lines, "Don't update particles (",
+                    on_off(raw(host.model_effect_options_get_singleton_0051f6b0()).at<std::uint8_t>(4) != 0), host);
+        append_pair(lines, "Console      (", on_off(raw(host.global_pointer(kGame)).at<std::uint8_t>(0x2193) != 0), host);
+        append_pair(lines, "PerfAnalyzer (", on_off(raw(host.global_pointer(kGame)).at<std::uint8_t>(0x2190) != 0), host);
+        append_pair(lines, "PerfMeter    (", on_off(raw(host.global_pointer(kGame)).at<std::uint8_t>(0x2191) != 0), host);
+        append_pair(lines, "NewPerfMeter (", on_off(raw(host.global_pointer(kGame)).at<std::uint8_t>(0x2192) != 0), host);
+        for (const char* const text :
+             {"ScriptWatchRefresh", "Next Mission Phase", "ScriptCheats", "DebugRecon", "Save", "QuitScene", "Quit", "Back"})
+            append_plain(lines, text, host);
+    } else if (page == 1) {
+        append_plain(lines, "Execute", host);
+        // 00520BD0..00520CEF: "Function: " + the number at screen+8h.
+        {
+            NativeStringStorage number_storage;
+            Raw number = raw(number_storage.bytes);
+            host.native_string_from_int_004260b0(number, screen.at<std::int32_t>(0x08));
+            const char* text = static_cast<const char*>(number.ptr(4));
+            if (text == nullptr) text = static_cast<const char*>(host.global_address(0x00e18db4));
+            append_pair(lines, "Function: ", text, host);
+            release_native_string(number, host);
+        }
+        append_pair(lines, "Shift: ", screen.at<std::uint8_t>(0x0c) != 0 ? "On" : "Off", host);
+        append_pair(lines, "Ctrl: ", screen.at<std::uint8_t>(0x0d) != 0 ? "On" : "Off", host);
+        append_pair(lines, "Alt: ", screen.at<std::uint8_t>(0x0e) != 0 ? "On" : "Off", host);
+        append_plain(lines, "Back", host);
+    }
+
+    // 00520F69..00520F92.
+    host.debug_text_list_set_lines_00544540(screen.field(0x20), lines, 0);
+    host.native_string_vector_resize_00427110(lines, 0);
+    host.free_00bf6989(lines.ptr(4));
+}
+
 }  // namespace bsp::cc13_sweepA4

@@ -386,6 +386,31 @@ struct SweepA4Host : cc13_sweepA3::SweepA3Host {
     // __thiscall(ECX = listbox, int), RET 4.
     virtual void gui_listbox_scroll_by_00a9cc50(void* listbox, std::int32_t count) = 0;
     virtual void gui_listbox_select_index_00a9c7c0(void* listbox, std::int32_t index) = 0;
+
+    // --- 0051FA50 callees -----------------------------------------------------
+    // 0051F460 / 0051F520 / 0051F5E0 / 0051F6B0, () -> EAX: the debug feature
+    // owner, the debug render flags, the [00E19AAC] singleton and the model
+    // effect options (each created on first use).
+    virtual void* debug_feature_owner_get_singleton_0051f460() = 0;
+    virtual void* debug_render_flags_get_singleton_0051f520() = 0;
+    virtual void* singleton_00e19aac_get_or_create_0051f5e0() = 0;
+    virtual void* model_effect_options_get_singleton_0051f6b0() = 0;
+    // 00BE8200 BSP_DebugFeatureOwner_GetProfileCount, __thiscall(ECX = owner) -> EAX.
+    virtual std::int32_t debug_feature_owner_get_profile_count_00be8200(void* owner) = 0;
+    // 00BE8CA0 BSP_DebugFeatureOwner_CopySelectedProfileName, __thiscall(ECX =
+    // owner, 8-byte string* out), RET 4 -> EAX = out.
+    virtual Raw debug_feature_owner_copy_selected_profile_name_00be8ca0(void* owner, Raw out) = 0;
+    // 00923080, __fastcall(ECX = index) -> EAX = [00E0CF24 + index*4] (a name).
+    virtual const char* party_name_00923080(std::int32_t index) = 0;
+    // 00B0CF20, __thiscall(ECX = [00F8D39C]) -> AL (its body is XOR AL,AL / RET).
+    virtual bool post_effect_enabled_00b0cf20(void* object) = 0;
+    // 0043C130 BSP_NativeString_ConstructPrefixedHeader, ECX = out 8-byte
+    // string, EDX = const char* prefix, stack const 8-byte string*, RET 4 ->
+    // EAX = out (out = prefix + string).
+    virtual Raw native_string_construct_prefixed_header_0043c130(Raw out, const char* prefix, Raw tail) = 0;
+    // 00544540 BSP_DebugTextList_SetLines, __thiscall(ECX = list, const
+    // native string vector*, int), RET 8.
+    virtual void debug_text_list_set_lines_00544540(void* list, Raw lines, std::int32_t flag) = 0;
 };
 
 // The 1Ch-byte legacy (MSVC 2008) basic_string, storage only.
@@ -439,5 +464,9 @@ void debris_set_update_00487a70(Raw set, float dt, SweepA4Host& host);
 // 0051CDE0 BSP_BriefingScreen_Enter, __thiscall(ECX = briefing screen), plain
 // RET (slot +18h of the vtable at 00CEC948).
 void briefing_screen_enter_0051cde0(Raw screen, SweepA4Host& host);
+
+// 0051FA50 BSP_CheatMenuScreen_BuildLines, __thiscall(ECX = cheat menu
+// screen), plain RET; caller 00520FB0 (at 0052113C).
+void cheat_menu_screen_build_lines_0051fa50(Raw screen, SweepA4Host& host);
 
 }  // namespace bsp::cc13_sweepA4

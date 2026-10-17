@@ -11,15 +11,24 @@ Descriptive names are hypotheses, not recovered symbols. Status of every
 reconstruction below: reconstructed and build-tested (MSVC Win32, compiled into
 `bsp_core`); none is fixture-tested, ABI-compatible or game-validated.
 
+Outcome counts: 12 of the 12 listed bodies reconstructed; 0 existing
+implementations recorded, 0 unreferenced, 0 skipped. 004D80D0 and 0046B730
+were left to cc9 as instructed and not examined.
+
 ## Method
 
 - Each address was searched in `src/`, `include/` and `docs/` and with
-  `bsp.py lookup`; none had a reconstruction record or a body in `src/`. Two
-  had behavioural models elsewhere, noted per function below.
+  `bsp.py lookup`; none had a reconstruction record or a body in `src/`.
+  004507D0 has a behavioural model in a gameplay host, noted in its row.
+- 0051FA50 has no caller in the index; a rel32 census
+  (`tools/callsite_census.py`) found the call at 0052113C in 00520FB0. 00487A70
+  is held by the vtable slot 00CE6854 (vtable 00CE6850; slot 0 is 0049D630).
 - Bodies were read from the exported listing with the stack offsets tracked at
   every push and callee RET. x87 register forms were taken from the bytes
   (`local/sweepA4_pe.py x`). Constants and literals were read from the PE with
-  their width (`local/sweepA4_pe.py f|d|s`).
+  their width (`local/sweepA4_pe.py f|d|s`). The x87 expressions of 00487A70
+  were traced with `local/sweepA4_x87sim.py`, which decodes the D8/DC/DE
+  register forms from the opcode bytes.
 - Every call the image makes happens at the same point through a named
   `SweepA4Host` method (or an inherited one). Vendor code (STL instantiations,
   the CRT) is called, not reconstructed; `_atol`, `strstr`, `tolower` and
@@ -42,10 +51,11 @@ reconstruction below: reconstructed and build-tested (MSVC Win32, compiled into
 | 00526180 | `unit_pick_refresh_cycle_list_00526180` | `__thiscall(ECX = unit pick screen)`, plain RET | The target-cycle refresh 00526720 calls. Phase 1 erases (inlined: 00524000 copy-down, slot-0 destructor, last -= 18h) every handle whose target is null or rejected by 00803D40 and moves the index at +0D4h. Phase 2 collects the accepted, not yet held units of the list at `[00E188A8]+19B8h` (005226D0 from cc13_sweepA2, called directly), appends the held targets, clears and re-sorts (00524E90), and rebuilds the handles with the index following the previous current target. The debug prints (004254B0, empty body) are kept with their arguments. 00526720 (cc13_sweepA3) still calls it through `SweepA3Host::unit_pick_refresh_cycle_list_00526180`: a direct call would need a `SweepA4Host` there, which sweepA3 cannot name without depending on this packet, so it is not a clean change; a `SweepA4Host` can implement that hook with this function. Uncertainty: the three tag dwords passed to 00524000 are stale stack in the image (0 here). |
 | 00487A70 | `debris_set_update_00487a70` | `__thiscall(ECX = debris set, float dt)`, RET 4 | Slot +4h of the vtable at 00CE6850 (no direct caller). Per 4Ch record: an inactive record kills its entity (+114h(0), 00926D90(2)); an active one gets gravity (class+50h * -9.81), optional drag (+44h; speed from sqrt only above 1e-10, no zero guard on the divide), integration, the water (0078CF20) and ground (00903860, default -100.0f) test that ends the record (+48h = 0) and, with a splash definition and water >= ground, spawns a point effect at the water surface (008685E0, effect+9 = 1, ref counts through the Interlocked imports); rotation rates decay toward zero without a clamp; on the first frame the entity is created, attached with an identity matrix, owned and activated, with an optional trail effect assigned to entity+188h; then the trail point, entity+74h = RotZ * RotX * RotY * T (angles z, y, x), +18Ch = 1.0f and vtable +0D8h. A set with no active record deletes itself. x87 traced from the opcode bytes (`local/sweepA4_x87sim.py`); intermediates in double. |
 | 0051CDE0 | `briefing_screen_enter_0051cde0` | `__thiscall(ECX = briefing screen)`, plain RET | Slot +18h of the vtable at 00CEC948. Selection 3, the page shown, the BRIEFING title, the briefing page from the map at +12Ch; while `[00E18D91]` is clear the five multiplayer mode groups are hidden and the game mode (004BCA50) picks the objectives group (+20h), else the page itself is used. The numbered objective groups and frames ("<n>_pri_objective_Group" / "<n>_pri_Group", then the "_sec_" pair) are found from 1 upward, kept in the vectors at +2Ch / +3Ch and shown; the counts end at +4Ch / +50h. The list box gets one cloned row per objective (the first primary at full visibility with its "Text" child shown, every other at 0.5 with it hidden) and a BACK row. Quirk kept: the secondary frame names are numbered with the primary count (+4Ch). The image's two release forms for the mode string (inline for modes 4-6, 0041DD20 for the rest) are both kept. |
+| 0051FA50 | `cheat_menu_screen_build_lines_0051fa50` | `__thiscall(ECX = cheat menu screen)`, plain RET | Caller 00520FB0 at 0052113C (found by a rel32 census; the index lists no caller). Builds a local native-string vector by page (screen+10h): page 0 the feature list ("Dump Memory", "Log rendernodes (On)/(Off)", "Change Party (<name or NONE>)", the debug feature profile or "No DebugFeatures", AI Debug Render, PostEffect, "Invincible: NA/yes/no", DamageDebug, ShowBoundings, Shadow, ShowOcean (always On), OceanUpdate, ShowFoliage, the two particle options, Console, PerfAnalyzer, PerfMeter, NewPerfMeter, then eight plain commands ending in Back); page 1 the key page (Execute, "Function: <screen+8h>", Shift/Ctrl/Alt On/Off, Back); any other page no lines. Then 00544540(screen+20h, lines, 0) and the vector is freed. Literals as in the image, padding included ("ShowOcean    (", "Hide particles   ("). |
 
 ## Left for a later packet
 
-- 0051FA50 BSP_CheatMenuScreen_BuildLines (1679 instructions).
+None of the twelve listed bodies.
 
 ## Not taken (lead's instruction)
 
