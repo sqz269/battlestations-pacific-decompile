@@ -36,12 +36,17 @@ literal was read from the PE (`tools/pe_const_read.py`).
 
 ## Reconstructed (build-tested, reconstruct-only)
 
-### `00974C70` hit warning constructor: `build_hit_warning_00974c70`
+### `00974C70` hit warning constructor: `construct_hit_warning_00974c70`
 
-`__thiscall(ECX = warning (88h), target, hit, unused)`, `RET 0Ch`. Vtables are `00D1B308` and
-`00D1B2F0`. The third argument goes to `00973BA0`, which ignores its own second argument. The only
-caller is the hit channel `00988510` (`0098997C`). `attacker` is `[hit+4]`->vtable `+108h`, or
-null.
+`__thiscall(ECX = warning (88h), target, hit, unused)`, `RET 0Ch`. The only caller is the hit
+channel `00988510` (`0098997C`). `attacker` is `[hit+4]`->vtable `+108h`, or null.
+
+The C++ builds the object in place (`cc13_seg49_64_78::WarningObject`), in listing order:
+`00973BA0(target, unused)` (the base stores `+80h` = target and links it with no null test; it
+ignores its second argument), vtable `00D1B308` (`00974CB5`), `+6Ch` observer vtable `00D1B2F0`
+(`00974CBB`), id `hit`, and byte `+84h` (archive key `areaexclusion`) = 0 (`00974CE2`). Every
+slot store below goes through `005B7F60` (or `00523B30` for the shortcut). Each unlinks the old
+entity and links the new one when the entity changes.
 
 Flags, in listing order:
 - `carrier`: attacker `+ACh` when it is kind 2.
@@ -55,17 +60,20 @@ The id starts as `hit` (`00D1B438`). The branches:
 1. Own target, attacker not local: `weareunderattack` + `ship` / `planesquadron` / `other`.
    Command buildings get `navalsupply` (not a base), `commandbuildingplayer` (owner slot `+180h` is
    local), or `commandbuildinglast` (exactly one entry of `[game+19CCh]+16Ch` has the local slot;
-   otherwise nothing). Then either `player`, or reporter = target and shortcut = reporter. Sets
-   `+84h` = 1 (`00975112`).
+   otherwise nothing). Then either `player`, or reporter = target (`00975139`) and shortcut =
+   reporter (`00975142` `00523B30`). Sets `+84h` = 1 (`00975112`).
 2. Attacker local, relation not enemy: `playermistake`. Only an own target goes on to
    `friendlyfire` + `ship` / `plane` / `other`, with reporter = target.
 3. Otherwise, only when `payload` holds: `payloadhit`, then `player` when the attacker is local.
    Otherwise it appends `plane` and `ambient` and sets ambient = carrier.
 
-### `009744C0` kill warning constructor: `build_kill_warning_009744c0`
+### `009744C0` kill warning constructor: `construct_kill_warning_009744c0`
 
-`__thiscall(ECX = warning (70h), victim)`, `RET 4`, vtable `00D1B2CC`. Its caller is the kill
-channel `009813A0`. The id starts as `kill` (`00D18A84`). `killer` is victim `+2C4h` when it is
+`__thiscall(ECX = warning (70h), victim)`, `RET 4`. Its caller is the kill channel `009813A0`.
+The object is built in place: `00973A90` base (`009744E7`), vtable `00D1B2CC` (`009744F1`), and
+`+6Ch` = victim as a plain pointer, not an observer handle (`009744F7`). Then the id is `kill`
+(`00D18A84`). The ambient and reporter stores go through `005B7F60` (`009746EB`, `009748B0`,
+`00974A41`, `00974BB8`), as in the hit warning. `killer` is victim `+2C4h` when it is
 kind 2. The branches depend on the victim's relation:
 - **Own**: `own` + `ship` / (`plane` `ambient`, ambient = victim) / `planesquadron` /
   `airfield`.
@@ -125,20 +133,23 @@ Then `0096DBB0` (ECX = `[00F8A0C4]`) validates the id. A known id prints `Captur
 and reports `00974150(point, id)` (84h). An unknown id prints
 `---WarningManager invalid Message--- %d`, passing the text pointer to `%d`, and is dropped.
 
-### `00978A70` command-building report: `command_building_report_id_00978a70`
+### `00978A70` command-building report: `report_command_building_00978a70`
 
 `__thiscall(ECX = manager, record, unused)`, `RET 8`. Its caller is `00777850` (session pump). It
-has no lock and no guard. The id is `hitweareunderattack` + by record `+18h`:
-0 `commandbuildingplayer`, 1 `commandbuildinglast`, 2 `navalsupply`, anything else nothing. It
-reports a 6Ch MessageWarning.
+has no lock and no guard. The id is `hitweareunderattack` + by record `+18h` (host read
+`record_state_18`): 0 `commandbuildingplayer`, 1 `commandbuildinglast`, 2 `navalsupply`,
+anything else nothing. It then reports the id as one 6Ch MessageWarning (`00978BC7..00978BF9`:
+`operator_new(6Ch)`, `00975AC0(id)`, `009763E0(manager, warning)`) through the host hook
+`report_message_warning_00975ac0`. The function returns the reported id.
 
 ### Smaller pieces
 
 - `009761D0` `is_entity_reportable_009761d0`: entity `+5Ch` set, `+5Dh`/`+60h`/`+5Eh` clear, and
   the manager `+D4h` map byte clear (`0077EDF0` inserts on a miss). `RET 4`.
-- `0096E5E0` `message_from_text_0096e5e0`: `"Message from |." + name + "|.: "`, resolved by
-  `00705E00` (ECX = game+21DCh, second argument 1). It takes one stack argument and returns with
-  `RET 4`. `callsite_census` and Ghidra xrefs find **no reference**, so it is dead code.
+- `0096E5E0` `message_from_0096e5e0`: name = argument vtable `+10h` (`0096E63E`), then
+  `"Message from |." + name + "|.: "` (`00D1B088`, `00D1B098`, two `004261A0` concatenations). It
+  returns `00705E00(text, 1)` with ECX = game+21DCh (`0096E748`). It takes one stack argument and
+  returns with `RET 4`. `callsite_census` and Ghidra xrefs find **no reference**, so it is dead code.
 - `009766D0` `warning_archive_class_009766d0`: `__thiscall(ECX = archive)`. It reads `type` and
   constructs:
 
@@ -213,8 +224,8 @@ made after the id is queued, in the message-record or sound layer, not here.
 
 Segment-64 report builders are done; nothing is wired. Open items:
 
-1. Host wiring. A host would call `build_hit_warning_00974c70` from the hit channel and
-   `build_kill_warning_009744c0` from the kill channel. Both channels are cc9's (`00988510`,
+1. Host wiring. A host would call `construct_hit_warning_00974c70` from the hit channel and
+   `construct_kill_warning_009744c0` from the kill channel. Both channels are cc9's (`00988510`,
    `009813A0`). It would also call the three capture/command reports from `006F29D0`/`006F6760`/
    `0074AF50`, `006F4D10` and `00777850`. These are all multiplayer or ship-capture paths.
 2. `00980380` is still named `BSP_WarningManager_LoadEventTable`, but it is the manager's archive

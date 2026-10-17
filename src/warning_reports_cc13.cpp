@@ -1,10 +1,29 @@
 #include "bsp/warning_reports_cc13.hpp"
 
+#include "bsp/engine_seg49_64_78_cc13.hpp" // WarningObject, base constructors
 #include "bsp/ship_ai_states.hpp" // party_relative_to_00803510
+
+#include <cstdint>
 
 namespace bsp {
 
 namespace {
+
+using cc13_seg49_64_78::WarningHost;
+using cc13_seg49_64_78::WarningObject;
+using cc13_seg49_64_78::WarningSlot;
+
+// 005B7F60 (ECX = slot, stack entity, RET 4) and 00523B30 (the same with the
+// entity read from another handle's +14h): nothing when unchanged; unlink the
+// old entity (006952A0), store, link the new one (00694A60).
+void set_slot(WarningHost& host, void*& current, WarningSlot slot, WarningEntity entity)
+{
+    void* const next = const_cast<void*>(entity);
+    if (current == next) return;
+    if (current != nullptr) host.observer_unlink_006952a0(current, slot);
+    current = next;
+    if (next != nullptr) host.observer_link_00694a60(next, slot);
+}
 
 // Kind suffix shared by several branches: ship / plane / other.
 const char* ship_plane_other(WarningUnitQuery& q, WarningEntity e, bool squadron_is_plane)
@@ -46,11 +65,16 @@ WarningRelation local_relation_00968370(WarningUnitQuery& q, WarningEntity entit
     return q.relation_00803ce0(entity);
 }
 
-WarningBuild build_hit_warning_00974c70(HitWarningQuery& q, WarningEntity target,
-    WarningEntity attacker)
+WarningObject& construct_hit_warning_00974c70(WarningObject& w, WarningHost& host,
+    HitWarningQuery& q, WarningEntity target, WarningEntity attacker)
 {
-    WarningBuild w;
-    w.id = "hit"; // 00D1B438, 00974CA4..00974CDC
+    // 00974C9F: 00973BA0(target, unused); the base stores +80h and links the
+    // target with no null test.
+    cc13_seg49_64_78::construct_entity_warning_base_00973ba0(w, host, const_cast<void*>(target));
+    w.vtable = 0x00D1B308;  // 00974CB5
+    w.word_6c = 0x00D1B2F0; // 00974CBB, the +6Ch observer's vtable
+    w.id = "hit";           // 00974CC2 resize 3, memcpy 00D1B438
+    w.area_exclusion = false; // 00974CE2 byte +84h = 0
 
     // 00974CF8..00974D29: the carrier (attacker+ACh) counts only when it is a
     // kind-2 object.
@@ -101,10 +125,10 @@ WarningBuild build_hit_warning_00974c70(HitWarningQuery& q, WarningEntity target
         if (target_player) {
             w.id += "player";
         } else {
-            w.reporter_54 = target;
-            w.shortcut_24 = w.reporter_54; // 00523B30(+24h <- +54h)
+            set_slot(host, w.reporter, WarningSlot::Reporter54, target);   // 00975139 005B7F60
+            set_slot(host, w.shortcut, WarningSlot::Shortcut24, w.reporter); // 00975142 00523B30
         }
-        w.hit_reported_84 = true; // 00975112
+        w.area_exclusion = true; // 00975112 byte +84h = 1
         return w;
     }
 
@@ -114,7 +138,7 @@ WarningBuild build_hit_warning_00974c70(HitWarningQuery& q, WarningEntity target
         if (relation != WarningRelation::Own) return w; // 00974E2E
         w.id += "friendlyfire";
         w.id += ship_plane_other(q, target, false);       // 00974E77..00975186
-        w.reporter_54 = target;                           // 0097519B
+        set_slot(host, w.reporter, WarningSlot::Reporter54, target); // 009751A3 005B7F60
         return w;
     }
 
@@ -127,14 +151,18 @@ WarningBuild build_hit_warning_00974c70(HitWarningQuery& q, WarningEntity target
     }
     w.id += "plane";
     w.id += "ambient";
-    w.ambient_3c = carrier; // 0097530B
+    set_slot(host, w.ambient, WarningSlot::Ambient3C, carrier); // 00975317 005B7F60
     return w;
 }
 
-WarningBuild build_kill_warning_009744c0(KillWarningQuery& q, WarningEntity victim)
+WarningObject& construct_kill_warning_009744c0(WarningObject& w, WarningHost& host,
+    KillWarningQuery& q, WarningEntity victim)
 {
-    WarningBuild w;
-    w.id = "kill"; // 00D18A84
+    cc13_seg49_64_78::construct_warning_base_00973a90(w, host); // 009744E7
+    w.vtable = 0x00D1B2CC;                                      // 009744F1
+    // 009744F7: +6Ch is the victim as a plain pointer (no observer handle).
+    w.word_6c = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(victim));
+    w.id = "kill"; // 00974506 resize 4, memcpy 00D18A84
 
     // 00974510..00974545: victim+2C4h when it is a kind-2 object.
     WarningEntity killer = q.killer_2c4(victim);
@@ -148,7 +176,7 @@ WarningBuild build_kill_warning_009744c0(KillWarningQuery& q, WarningEntity vict
         } else if (q.is_kind_5c(victim, kWarningKindPlane)) {
             w.id += "plane";
             w.id += "ambient";
-            w.ambient_3c = victim; // 009746E3
+            set_slot(host, w.ambient, WarningSlot::Ambient3C, victim); // 009746EB 005B7F60
         } else if (q.is_kind_5c(victim, kWarningKindSquadron)) {
             w.id += "planesquadron";
         } else if (q.is_kind_5c(victim, kWarningKindAirfield)) {
@@ -168,7 +196,7 @@ WarningBuild build_kill_warning_009744c0(KillWarningQuery& q, WarningEntity vict
             if (!q.is_kind_5c(victim, kWarningKindPlane)) return w;
             w.id += "plane";
             w.id += "ambient";
-            w.ambient_3c = killer; // 009748A8
+            set_slot(host, w.ambient, WarningSlot::Ambient3C, killer); // 009748B0 005B7F60
             if (killer == nullptr) return w;
             w.id += ship_plane_other(q, killer, true);
             if (player_kill) w.id += "player";
@@ -177,7 +205,7 @@ WarningBuild build_kill_warning_009744c0(KillWarningQuery& q, WarningEntity vict
         w.id += ship ? "ship" : squadron ? "planesquadron" : "airfield";
         // 00974A22..00974A33: only a killer of our own side is named.
         if (killer != nullptr && local_relation_00968370(q, killer) == WarningRelation::Own) {
-            w.reporter_54 = killer; // 00974A39
+            set_slot(host, w.reporter, WarningSlot::Reporter54, killer); // 00974A41 005B7F60
             w.id += ship_plane_other(q, killer, true);
             if (player_kill) w.id += "player";
             return w;
@@ -189,7 +217,7 @@ WarningBuild build_kill_warning_009744c0(KillWarningQuery& q, WarningEntity vict
     case WarningRelation::Neutral:
         w.id += "neutral";
         w.id += "ambient";
-        w.ambient_3c = victim; // 00974BB0
+        set_slot(host, w.ambient, WarningSlot::Ambient3C, victim); // 00974BB8 005B7F60
         if (q.is_kind_5c(victim, kWarningKindShip)) {
             w.id += "ship";
         } else if (q.is_kind_5c(victim, kWarningKindPlane)) {
@@ -350,24 +378,27 @@ std::optional<CapturePointReport> report_capture_point_009781e0(CaptureReportHos
     return r;
 }
 
-std::string command_building_report_id_00978a70(std::int32_t state_18)
+std::string report_command_building_00978a70(CaptureReportHost& host, WarningEntity record)
 {
-    std::string id = "hitweareunderattack"; // 00D1B65C
-    switch (state_18) {
-    case 0: id += "commandbuildingplayer"; break;
-    case 1: id += "commandbuildinglast"; break;
-    case 2: id += "navalsupply"; break;
+    std::string id = "hitweareunderattack"; // 00978AA1 resize 13h, 00D1B65C
+    switch (host.record_state_18(record)) { // 00978AC9
+    case 2: id += "navalsupply"; break;           // 00978AD5, 00D1B3F8
+    case 0: id += "commandbuildingplayer"; break; // 00978B13, 00D1B3E0
+    case 1: id += "commandbuildinglast"; break;   // 00978B7A, 00D1B3CC
     default: break;
     }
+    // 00978BC7..00978BF9: new 6Ch, 00975AC0(id), 009763E0(manager, warning).
+    host.report_message_warning_00975ac0(id);
     return id;
 }
 
-std::string message_from_text_0096e5e0(std::string_view name)
+const void* message_from_0096e5e0(MessageFromHost& host, WarningEntity speaker)
 {
-    std::string text = "Message from |."; // 0096E640 literal
-    text += name;
-    text += "|.: ";                           // 00D1B098
-    return text;
+    const std::string tail = "|.: ";                   // 0096E60D, 00D1B098
+    const std::string name = host.name_10(speaker);    // 0096E63E vtable +10h
+    const std::string head = "Message from |.";        // 0096E65F resize 0Fh, 00D1B088
+    const std::string text = head + name + tail;       // 0096E695, 0096E6AB 004261A0
+    return host.resolve_message_00705e00(text, 1);     // 0096E748
 }
 
 std::optional<WarningArchiveClass> warning_archive_class_009766d0(std::int32_t type)
