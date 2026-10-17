@@ -18779,3 +18779,35 @@ back to mode 1 (queue). Where the queue head is category 3, the AutoTarget tick 
 only) may re-install an override on its next think, so installs may rise; where the pushed order is the
 head, the unit follows the scripted target instead of its auto target. The override clears counter
 (`summary mission director override ... clears=`) rises by the echo clears.
+
+## 277. The ship attack-move approach, kAttackMoveApproachImageBound (cc9-ships57, 2026-10-17; lead item 3)
+
+**(b) The inverted side arm (CC13_VERIFY9 R1).** 009E73C9 `TEST BL,BL` / 009E73CE `JE 009E7400`, BL = +1208h
+(loaded at 009E7345): +1208h CLEAR goes to the general arm. The side arm (weight pi or 0, +1204h = 0 / 2)
+needs +1208h set and mode 0. `src/ship_ai_approach_update.cpp` tested `!flag_1208`, so every mode-0 scan
+took the side arm. +1208h is always clear (section 126: 009F31F3 stores vtable[22Ch] = 006DFDB0
+`XOR AL,AL`), so in the image 009E6E80 never writes +1204h, and mode 0's byte comes from the frame span
+009F275B..009F2789 (`disasm-raw 009F272D`): 2 if +1208h set; else 0 if 009E5E30 (brain+B20h non-null and
+IsKindOf(6), body 009E5E30-009E5E4E read whole) or byte [00E0E2FC] is set; else 1. [00E0E2FC] is
+NavigatorLandAttackerStop's byte (008A2A50 stores !arg), set to 1 by the mission load
+(MISSION_SCENE_LOAD.md step 4); only escort10.lua (multiplayer) calls the binding, so the single-player
+answer is 0 in every mode-0 frame. LABELLED: the byte is that constant.
+
+**(a) +490h (CC13_VERIFY2 R6).** 00956C20 seeds +490h with 10.0f and raises it to the longest range of a
+Function 2/3/4/6 gun (00956E35..00956E43); the gunnery host already keeps it (`GameGunneryUnitRow::
+artillery_max_range`). The three bindings answered 0. Its consumers are the cruise band 009E7138 (needs
++1208h set) and the two reverse-goal tests 009E7E7D / 009E76D0 (need +1209h set); the host never writes
++1209h, so the reads are expected to stay at 0 on these rows. Bound for completeness.
+
+**Mode labels.** include/bsp/ship_ai_approach_update.hpp now says what each mode is (CC13_VERIFY9: mode 2 is
+stored at 009F2022 / 009F2112 with EDI = 2 from 009F1E25; mode 0 is the ordinary ship-on-ship approach,
+mode 4 a troop lander's approach to a hostile building).
+
+**Predictions, written before any run.** OFF identical (`summary mission ship ai attackmove approach
+bound=0 range_0490_reads=0 mode0_side_writes=0/0/0`). ON: mode0_side_writes all in the 0 column;
+range_0490_reads 0. With the gate at 0 instead of 2 past the standoff, 009E6A90 applies no
+`clamp((dist - 50) / 80, 0, 2)` cap near the standoff ring, so AI ships attacking ships close at full
+throttle through the ring instead of slowing and holding at it; inside the standoff the side weight
+becomes ((c + c*c) * 0.5 * pi + pi) * 0.5 instead of pi (equal for |offset| >= 1), moving the chosen
+bearing slot within one turn radius. Expect moved ship tracks and gunnery timings on every surface
+battle (USN12, USN15, IJN08, JM08).

@@ -1771,6 +1771,10 @@ struct GameShipAiHost::Impl {
     }
     unsigned long long lander_side_byte_writes{0};
     unsigned long long lander_side_byte_changes{0};
+    // Packet s57_attackmove_approach: unit+490h reads answered from the gunnery
+    // row, and the mode-0 frame writes of +1204h by value (009F275B..009F2789).
+    unsigned long long approach_range_0490_reads{0};
+    std::array<unsigned long long, 3> mode0_side_writes{};
     unsigned long long lander_mode2_bearings{0};
     unsigned long long lander_mode2_no_target{0};
     unsigned long long lander_evade_arms{0};
@@ -4961,6 +4965,15 @@ public:
         return out;
     }
     float unit_cruise_speed_0490() override {
+        // unit+490h, 00956C20's artillery maximum range (packet s57_attackmove_approach).
+        if (kAttackMoveApproachImageBound) {
+            const GameGunneryUnitRow* row = owner_.gunnery_unit_row(index_);
+            if (row != nullptr) {
+                ++owner_.approach_range_0490_reads;
+                owner_.done("ShipAiRingScan::unit_cruise_speed_0490", 0x009e7de7u);
+                return row->artillery_max_range;
+            }
+        }
         owner_.record("ShipAiRingScan::unit_cruise_speed_0490", 0x009e7de7u);
         return 0.0f;
     }
@@ -5236,6 +5249,15 @@ public:
         return owner_.units.unit_hull_length_09c8(index_);
     }
     float unit_cruise_speed_0490() override {
+        // unit+490h, 00956C20's artillery maximum range (packet s57_attackmove_approach).
+        if (kAttackMoveApproachImageBound) {
+            const GameGunneryUnitRow* row = owner_.gunnery_unit_row(index_);
+            if (row != nullptr) {
+                ++owner_.approach_range_0490_reads;
+                owner_.done("ShipAiApproach::unit_cruise_speed_0490", 0x009e7140u);
+                return row->artillery_max_range;
+            }
+        }
         owner_.record("ShipAiApproach::unit_cruise_speed_0490", 0x009e7140u);
         return 0.0f;
     }
@@ -5568,6 +5590,15 @@ public:
         return out;
     }
     float unit_cruise_speed_0490() override {
+        // unit+490h, 00956C20's artillery maximum range (packet s57_attackmove_approach).
+        if (kAttackMoveApproachImageBound) {
+            const GameGunneryUnitRow* row = owner_.gunnery_unit_row(index_);
+            if (row != nullptr) {
+                ++owner_.approach_range_0490_reads;
+                owner_.done("ShipAiApproach::select_cruise_speed_0490", 0x009e7de7u);
+                return row->artillery_max_range;
+            }
+        }
         owner_.record("ShipAiApproach::select_cruise_speed_0490", 0x009e7de7u);
         return 0.0f;
     }
@@ -6452,14 +6483,34 @@ private:
         const Mode mode = a.mode_1234;
         if (mode != Mode::free_0) {
             // 009F2733..009F2759 and 009F278B: 1 for modes 2 and 4, 0 for 1 and 3.
-            // Mode 0 (009F275B..009F2783) is not written here: 009E6E80's side
-            // choice (009E73E8 / 009E73F4) rewrites it before 009E6CFD reads it,
-            // because +1208h is always clear (section 126).
+            // Mode 0 (009F275B..009F2783) is the arm below. With the switch off it is
+            // not written: the host's inverted 009E73C9 test made 009E6E80's side
+            // choice (009E73E8 / 009E73F4) rewrite it every scan (section 126's
+            // premise, corrected by CC13_VERIFY9 R1).
             const int side = (mode == Mode::unassigned_2 || mode == Mode::standoff_4) ? 1 : 0;
             if (side != a.speed_gate_1204) ++owner_.lander_side_byte_changes;
             a.speed_gate_1204 = side;
             ++owner_.lander_side_byte_writes;
             owner_.done("ShipAiApproach::frame_side_byte_1204", 0x009f272du);
+        } else if (kAttackMoveApproachImageBound) {
+            // 009F275B..009F2789 (packet s57_attackmove_approach). 009E6E80 takes its
+            // side arm only with +1208h set, so this is mode 0's write: 2 when +1208h
+            // is set; else 0 when 009E5E30 (brain+B20h non-null and IsKindOf(6)) is
+            // true or the byte [00E0E2FC] is set; else 1. [00E0E2FC] is
+            // NavigatorLandAttackerStop's (008A2A50 stores !arg) and the mission load
+            // sets it to 1 (docs/MISSION_SCENE_LOAD.md step 4); no installed
+            // single-player script calls the binding (escort10.lua alone), so it is 1.
+            // LABELLED: the byte is that constant, not a modelled global.
+            constexpr bool kLandAttackerStopByte = true;
+            const std::uint32_t handle = ctl_.goal_vector.raw_target_0b20;
+            const bool ship_target = handle != 0u && handle - 1u < owner_.units.count()
+                && owner_.units.unit_is_kind_of(static_cast<std::size_t>(handle - 1u), 6);
+            const int side = a.flag_1208 ? 2 : ((ship_target || kLandAttackerStopByte) ? 0 : 1);
+            if (side != a.speed_gate_1204) ++owner_.lander_side_byte_changes;
+            a.speed_gate_1204 = side;
+            ++owner_.lander_side_byte_writes;
+            ++owner_.mode0_side_writes[static_cast<std::size_t>(side)];
+            owner_.done("ShipAiApproach::frame_side_byte_1204_mode0", 0x009f275bu);
         }
         // 009F282D CMP [+1234h],2; 009F283A / 009F283F the two bytes 009E46F0 wrote.
         if (mode != Mode::unassigned_2 || a.override_11d4 || a.override_11d5) return;
@@ -14383,6 +14434,11 @@ void GameShipAiHost::report() {
         for (const auto& h : host.launch_hold_1128) {
             if (h.second > 0.0f) ++held_transports;
         }
+        host.log.notef("summary mission ship ai attackmove approach bound=%d range_0490_reads=%llu "
+            "mode0_side_writes=%llu/%llu/%llu (0/1/2) (packet s57_attackmove_approach, "
+            "009E73C9 / 009F275B / 00956C20)", kAttackMoveApproachImageBound ? 1 : 0,
+            host.approach_range_0490_reads, host.mode0_side_writes[0],
+            host.mode0_side_writes[1], host.mode0_side_writes[2]);
         host.log.notef("summary mission ship ai approach lander terms side_writes=%llu "
             "side_changes=%llu mode2_bearings=%llu mode2_no_target=%llu evade_arms=%llu "
             "evade_resets=%llu evade_gain_frames=%llu hold_reads=%llu hold_positive=%llu "
