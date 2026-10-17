@@ -15836,3 +15836,31 @@ form, `--stop-after-end 40`, logs `local\g50_<soff|son>_<j8|l10|u1>.log` with ma
 Verdict: the mechanism matches and the rows are inert, so the switch is ON. Side notes for the keeper: JM08
 `jm08_s45_j8_m10` has no mission end by 4000 s on `c4abff61c` (both builds), and USN01 `usn01_p8_u1_i` completes at
 1280.12 s here against 365.03 s on `g49_aon_u1` (`829cac9fc`).
+
+## 271. Handoff (cc9-gunnery50, 2026-10-17, at about 70% context)
+
+**Commits on `agent/cc9-gunnery36`** (none merged by me): `c66d1c8d5` (section 269, USN15, and
+`config/win_orders/usn15_g50_u15_nn.txt`), `c4abff61c` (270, `kShipyardDestructionRuleBound` OFF), `3ee2651f5`
+(270.1, ON).
+
+**Open, for the successor:**
+1. **USN15 Fuso phase** (269): the opening now kills Yamashiro, Ashigara and Nachi in every seed; Fuso decides the run
+   (~60% per seed). Ideas not tried: (a) a second torpedo group on Fuso's eastward leg (1500-1650 s, path
+   (3129, 9492) -> (4753, 10418) on every seed, within the map) from ships south of it at z~9500 x 3500-4500, which
+   would present Fuso's full beam; (b) aim at Fuso's westward approach (2550-3000 s), where 20,3 kills it head-on;
+   (c) fewer, longer holds on known survivors instead of 28 names per round (dead names cost frames). Keep the US
+   ships inside x,z in [-6500, 6500] x [-11000, 11000] (the exit-zone Kill(4)), keep the CLs out of the torpedo lines
+   (Boise took 8 US torpedoes in `nk`), and do not stack 28 ships on one point.
+2. **Keeper notes** (270.1): JM08 `jm08_s45_j8_m10` has no end by 4000 s on `c4abff61c`; USN01 `usn01_p8_u1_i` now
+   completes at 1280.12 s (was 365.03 s on `829cac9fc`).
+3. **Lead item 3 leftovers**: the `Gunnery::target_sub_entities_slot0fc` counter at `008654AC` reads UNIMPLEMENTED
+   although the body runs the image's base `00432480` (only a label; the airfield override is bound). No other gunnery
+   method shows UNIMPLEMENTED in the recent JM08/LOMP10/USN logs. 00958A30's +728h repair-timer arm (with +720h set)
+   and the 7Dh arm's `00982C50` notice are the next unhosted pieces of the inferior-failure path.
+
+**Tools** in this tree's `local\` (g50_ prefix): `g50_queue.ps1` (counts g50 runs, reads `g50_exports.txt`),
+`g50_exports.ps1`, `g50_plan.py` (copy of `g48_plan.py`), `g50_jobs.py <jobs> <export> <frames> <plans> [seeds]
+[traj]`, `g50_sum.py <plans> [-s seeds]` (end incl. EndMission wins, key deaths, Fuso/Ashigara health, torpedo hits,
+counts), `g50_alive.py <log> <t>`, `g50_track.py <traj prefix> <unit> <t0> <t1> <dt>`, `g50_watermap.py` (known-water
+map from trajectories; set `G50_TRAJ` to a few prefixes), `g50_aimcheck.py` (do not trust: it compares against the
+meaningless `run_dir`), `g50_scnscan.py`. Exports: `g50_p1` (`f4d7658e6`), `g50_soff`/`g50_son` (`c4abff61c`).
