@@ -170,7 +170,9 @@ constexpr bool kShipSystemsSinkDrawsBound = true;
 // periscope arm, not in the unit update; `% 15 == 0` is `draw < 1/15`. Inert
 // under BSP_GUNNERY_RNG_STREAMS=1 (Draw::sink_effects key 2). True: the draws are
 // taken. False: recorded only (before).
-constexpr bool kSubmarineWakeDrawsBound = false;
+// ON by docs/SHIP_AI_OPEN_ITEMS.md 260: USNOS reference mode is gameplay
+// identical; default mode moves from 11.4 s, after Gato's first eligible tick.
+constexpr bool kSubmarineWakeDrawsBound = true;
 // Packet cc9_cb_gunfire_gate (docs/GUNNERY_OPEN_ITEMS.md 125): a hit's AddDamage is
 // victim->vtable[1ACh] (008778C6, 00877A2E in 008777D0), and for a CommandBuilding
 // (vtable 00CFB028) that slot is 006F1F20, which damages only while +7D8h == 0.0

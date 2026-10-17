@@ -18178,3 +18178,23 @@ called by the units host after the periscope arm once per force step (LABELLED o
 **Predictions.** Reference mode (STREAMS=1): inert, pair_diff 1. Default mode (STREAMS=0) USNOS a7: moves from the
 first tick a submarine's hull y is between -15 and -3 m (a periscope-depth Gato), so earlier than the 32.7 s of the
 sink-draw pair; missions without submarines identical.
+
+**Item 4, cc13-sweepA2's 00525250 / 00523130: player input, not swapped.** The stand-in in
+src/game_hosts_mission_frame.cpp (packet cc9_player_squadron_target) is the --helm-orders harness's squadron target
+order: it drives only what the player's screen-centre pick would issue to the controlled squadron (settarget through
+0077D600 -> 007F1940). The faithful bodies in src/cc13_sweepA2.cpp run over raw image memory (the game unit list
+[game+19BCh], the screen-centre distance 00522050 and the 005220C0 screen test), which the host does not have, and the
+pick depends on where the player points the camera, which the order file names instead. Differences from the stand-in,
+recorded: the image also requires the side count >= 2 and 00804350(owner, unit, 5) (detected by the player's sensors),
+and picks attackmove 00E08F78 instead of settarget when game+19C4h is set, the player answers +5Ch(6) and allows
+"attackmove" (00522680, inlined). game+19C4h's meaning is still open (IN_MISSION_INTERFACE_RUNTIME.md 460). No
+autonomous gameplay reads the pick.
+
+**Item 3 measured; kSubmarineWakeDrawsBound flipped ON.** OFF = tree 7b1fb8756, ON = `local\s53_wk` (pair_export).
+USNOS a7 30000 frames.
+| row | ON picks / sprays | pair_diff | first moved |
+|---|---|---|---|
+| reference mode, STREAMS=1 (`s53_w0r_os` / `s53_w1r_os`) | 3999 / 275 | 1, gameplay identical | none |
+| default mode, STREAMS=0 (`s53_w0d_os` / `s53_w1d_os`) | 4105 / 286 | 3 | deaths from 11.4 s (175 -> 160) |
+OFF counts 4119 (default) and 3999 (reference) eligible ticks. The default-mode row moves before the sink-draw row's
+32.7 s, as predicted for a pick that starts with a submerged Gato, and the reference mode is inert. Flipped ON.
