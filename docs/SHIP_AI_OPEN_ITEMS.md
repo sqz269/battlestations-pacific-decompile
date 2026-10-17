@@ -18311,3 +18311,11 @@ about 8 * 0.3 * length draws (West Virginia, 194.85 m: 58 pieces, 464 draws). Th
 The mechanism matches: the plane now advances at the max(TravelSpeed / rate * 1.2, ClosingDist) radius. BSM01 does
 not reach its keeper EndMission (767.94 s) on either side. The keeper row has already moved on current main,
 independent of this switch, and was reported to cc9-lua62.
+**Measured; flipped ON.** OFF = pair_export e8d6d0a83 unflipped (`local\s53_wo`) for the reference row and tree
+e8d6d0a83 for the default row; ON = `local\s53_wd`. USN01 20000 frames.
+| row | ON calls / pieces / draws | pair_diff | first moved |
+|---|---|---|---|
+| reference mode, STREAMS=1 (`s53_d0r_u1` / `s53_d1r_u1`) | 7 / 359 / 2872 | 1, gameplay identical | none |
+| default mode, STREAMS=0 (`s53_d0d_u1` / `s53_d1d_u1`) | 7 / 359 / 2872 | 3 | KatSBD 204.66 -> 204.21 s (deaths 81 -> 84) |
+DebrisEnabled = 1 and DebrisNumPerMeter = 0.3 were read from this installation's shipglobals.lua. The mechanism
+matches the prediction: the reference mode is inert, and the default mode moves only after a wreck goes under.

@@ -317,7 +317,9 @@ inline constexpr bool kPlayerGunSeatArtilleryBound = true;
 // draws. The z extent is the hull body's LOCAL box (B+38h/B+44h, the box the
 // broad phase rotates at 00C5715C). The pieces themselves (00447510) are not
 // made. True: the setting is read and the draws taken. False: recorded only.
-inline constexpr bool kSinkingWreckDebrisDrawsBound = false;
+// ON by docs/SHIP_AI_OPEN_ITEMS.md 263: USN01 reference mode gameplay identical;
+// default mode moves from 204 s (7 wrecks, 359 pieces, 2872 draws).
+inline constexpr bool kSinkingWreckDebrisDrawsBound = true;
 
 // Packet cc9_player_gun_seat_segment_query. ON binds 00957D79..00957DD2 of
 // 00957BD0: with no target and the camera off the x = z = 0 axis, the
