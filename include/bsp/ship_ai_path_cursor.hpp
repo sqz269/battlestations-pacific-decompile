@@ -165,6 +165,16 @@ inline constexpr bool kPathCursorFollowStepBound = true;
 // 12-point patrol path (0 legs before); BSM01 deaths unchanged.
 inline constexpr bool kSquadronPathFollowStepBound = true;
 
+// Packet s54_path_finish: what each arm does when 007ADD70 answers true (the
+// end test refused an advance at the last point). Ship 00836D0E..00836D62 and
+// squadron 0084E3B5..: 0071D810(2) on the director, then 00984300 reports
+// `finished` [00D09FD8] for `moveonpath` [00E08F80]. With it, the arm also
+// keeps 00836A81's gate (a director at stage 2 runs no arm). True: both finish
+// blocks run (each under its arm's switch above). False: the answer is dropped
+// and the command ends only through the moveonpath state's own finish
+// (009E5C70). docs/SHIP_AI_OPEN_ITEMS.md 267.
+inline constexpr bool kPathFollowFinishBound = false;
+
 struct ShipAiPathFollowStep {
     bool answer{false};
     int limit{0};          // the scan limit after the clamp

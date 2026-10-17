@@ -18368,3 +18368,96 @@ Open:
   have no function record; the scoring band 00905300+ is unscoped. Scripts: `local\s53_seg59.txt` (the full range
   listing), `local\s53_scan.py` (byte pattern scan), `local\s53_rd.py` (constants from the PE),
   `local\s53_rows.ps1` (launcher).
+
+## 266. Bot clear release on retarget, kGunBotRetargetReleaseBound (cc9-ships54, 2026-10-17; lead item 1)
+
+**What the image does.** The gun's bot setter 006DF170 (TorpedoBot's 009035A0 wraps it, reached from
+00727F44) resolves the current target and, when it differs from the argument, calls the bot's vtable[30h]
+first (006DF18E). The gun's clear 00728000 calls each bot's vtable[30h] unconditionally (0072800C..). For
+the two ship bots that slot is 008FF2B0 (TorpedoBot) and 008FF500 (DepthChargeBot): 0072BD50, then, when the
+role slot read through bot+50h (+1ACh) is 8 or AI-held (008FF2C1 / 008FF511, 00927F10), the gun's
+vtable[1E8h](0). That slot is the fire request: 006FDC50 is vtable[1E8h](1) (GUN_SHOT_CADENCE), and the bot
+ticks raise and drop the same slot (008FC39A, 00900974). So a RETARGET drops the trigger, not only a clear,
+and it stays dropped until the bot's next evaluating think: the torpedo think holds 0.2 s (009000DD..,
+00900985 returns with the trigger untouched), the depth-charge think 0.1 s (008FC146).
+**What the host did.** The depth-charge trigger byte dropped only when the bot had no target (the bound tick,
+GUNNERY 142), and the torpedo think hold restored the last evaluation's trigger whatever the target. A
+retarget kept the trigger. The no-target case was already covered (the clear's own release).
+**Bound OFF** in src/game_hosts_gunnery.cpp: `kGunBotRetargetReleaseBound`. On a clear, and on a send whose
+target differs from the gun's current one, an AI-held torpedo (category 7) or depth-charge (8) gun drops the
+stored trigger (torpedo think `want_fire`, depth-charge trigger byte). Counted as sends / drops (drops: a held
+trigger released). LABELLED: the host's per-gun current target (row.target_unit) stands in for the bot's
+resolved +38h record, and the release goes through the next tick's request path (the class vtable[1E8h]
+refusal in the immediate-fire slot still applies) rather than at the send.
+**Predictions.** Sends in the thousands on any mission with AI torpedo or depth-charge guns; drops rare (a
+trigger must be held at the moment of a retarget); where a drop lands, the torpedo or charge goes 0.1-0.2 s
+later or not at all for that target. BSM01 (four depth-charge holds), USN01, USN10: gameplay identical or a
+small moved set traced to a drop.
+
+**Measured; flipped ON.** OFF = tree 0fedfbfcf, ON = `local\s54_rr` (pair_export), reference env.
+| row | ON sends / drops | pair_diff | end |
+|---|---|---|---|
+| BSM01 20000 fr, bsm01_l50_b1_a (`s54_r0_b1` / `s54_r1_b1`) | 14708 / 0 | 1 | none both |
+| USN01 20000 fr (`s54_r0_u1` / `s54_r1_u1`) | 4700 / 0 | 1 | completed 345.04 s both; exec guard refused sus_prog.exe |
+| USN10 24000 fr (`s54_r0_u10` / `s54_r1_u10`) | 26099 / 0 | 1 | failed 825.32 s both |
+The prediction held: many sends and no held trigger at any retarget, so no row moves. Flipped by mechanism.
+
+## 267. The 007ADD70 true-answer finish blocks, kPathFollowFinishBound (cc9-ships54, 2026-10-17; lead item 2)
+
+**What the image does.** Both arms test 007ADD70's answer. The ship arm checks it at 00836D0A and the squadron
+arm at 0084E3AD. True means the end test refused an advance at the last point of a non-looping path. On true
+the arm runs its finish block, 00836D0E..00836D62 (ship) or 0084E3B5.. (squadron):
+- 0071D810(2) on the director. The raise is monotonic, and reaching stage 2 sends MT_GAMEUNIT_CLEARCMD; in a local
+  session that message clears slot 0 and advances the queue.
+- 00984300 BSP_MissionEvents_ReportCommand(unit [+24Ch], a fresh target, `moveonpath` [00E08F80],
+  "finished" [00D09FD8]).
+00836A81 (CMP [ESI+48h],2; JE 00836DC9) skips every arm once the stage is 2. The squadron gate is the same
+(stage +48h < 2).
+**What the host did.** `advance_path_cursor_00836bf0` returned the answer, and its only caller (the director
+step in game_hosts_units.cpp) dropped it. A moveonpath command therefore ended only through the moveonpath state's
+own finish (009E59C0, end_command_0071e430 at 009E5C70), whose arrival test differs from the arm's radius
+(min(hull * 2.5, turn * 1.2) for a ship; max(TravelSpeed / turn * 1.2, ClosingDist), times 1.5 off AI, for a
+squadron).
+**Bound OFF**: `kPathFollowFinishBound` (include/bsp/ship_ai_path_cursor.hpp). When the switch is on and an arm's
+own switch is on, a true answer raises the stage to 2. The raise routes the clear the same way as
+director_raise_primary_stage_0071d810 (it respects kSetCommandQueueDelayBound). It also reports `finished`, and
+the arm is skipped at stage 2. Summary line `path follow finish answers / stage_raises`.
+**Predictions.** Answers are rare: they need a non-looping authored path whose last point the unit reaches inside
+the arm radius before the state's own finish ends the command. Where one lands, the command ends earlier than
+before and the next queued command (or the default) starts sooner. Candidates: JM06 transports, USN10, JM08
+(Gyoraitei on Shipyard1Path), BSM09. Rows without such a path stay gameplay identical (0/1).
+
+## 268. Seg 59 helpers: 008FB890, 00902290 reconstructed; 00901C20 and 008FF640 checked (cc9-ships54, 2026-10-17; lead item 3)
+
+Reach was checked with a rel32 and absolute-dword scan of the PE (`local\s54_rel.py`, `bsp.py scan-bytes`). The
+scans also find 00901C20's eight known callers, so a negative result means something.
+- **008FB890 BSP_Entity_IsLiveOtherParty**: __fastcall(ECX gun, EDX target), AL, body 008FB890..008FB8C9. Sole
+  caller 006DF541 (the artillery gunner tick 006DF520). It answers true when the target is non-null with +5Dh
+  clear, the gun's +3Ch parent is non-null with +5Dh clear, and 00803510(gun+54h, target+54h) != 0. The host
+  already runs it as `gun_bot_target_still_valid_008ffa20` (src/gun_bot_ticks.cpp 006DF54x). One detail: at
+  006DF533 the image skips the test and the vtable[38h](0) clear entirely when no target resolves. The host still
+  calls its clear, but SetFireTarget(0) with no current target is a no-op (006DF185), so nothing moves.
+  Reconstructed raw in src/seg59_bots_s53.cpp (`seg59_entity_is_live_other_party_008fb890`).
+- **00902290** (provisional name BSP_GunBot_TurningShipLead): __fastcall(ECX shooter pos, EDX target)(float
+  speed, shooter vel, out aim, out 4x4, out distance), RET 14h, body 00902290..0090291F. The next function,
+  00902920, follows with no padding. Sole caller 00957964 in 00957740, for a ray hit on a target answering
+  IsKindOf(6). How it works:
+  - When f = +9DCh * +984h is exactly 0, the matrix becomes identity and 00901C20 answers.
+  - Otherwise it solves the intercept time t from the horizontal relative velocity: a linear arm when the lateral
+    part is below 0.01, else the quadratic.
+  - With t > 0 it rotates the target's pose about its turn centre, C = T + R(-fz, 0, fx) with
+    R = (class+520h / f) * 0082E890(|+980h|), through the yaw -(vt38h() * (0.05 + t) / R). It does this with
+    00B646E0 and three 00413920 products, then subtracts the shooter's travel.
+  - Otherwise the out is the raw target position.
+  The out matrix is written only on the 00901C20 and lead paths.
+  **Reach**: the gunnery host's player-seat artillery block records `PlayerGunSeat::artillery_hit_lead`
+  [009578C3] for this branch: 4081 calls on USN10 (s53_p0_u10), 2802 on USNOS, 2725 on BSM09. Reconstructed in
+  **src/seg59_ship_lead_s54.cpp** (`seg59_ship_turn_lead_00902290`, all-float under the main thread's 24-bit
+  policy), NOT wired. Wiring needs the target's +980h/+984h/+9DCh, class+520h and vt38h yaw rate from the ship
+  physics host, and 00957740's own 009578C3..00957A50 entry: the kind-1Eh resolve through 00923810(1), the
+  [dev+3FCh] gate, the speed [[dev+3F8h]+34h]+5Ch * +50h, and the out stores at 00957B24, which add the
+  00427EB0/00427C90/004142E0 transform. That entry is the gunnery lane's (game_hosts_gunnery.cpp 13550..).
+- **00901C20**: it already has a fragment record (`intercept_time_00901c20`, the time-of-flight half) and host
+  sites. The rotating-target half (0085E4D0) has no host form; it is left recorded, as before.
+- **008FF640** (BSP_Entity_HullDistanceToPoint_Provisional): no rel32 call, no jump and no absolute dword
+  reference anywhere in the image. It is unreached, so it is not reconstructed.
