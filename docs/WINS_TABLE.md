@@ -620,3 +620,8 @@ mechanism is in the cd761bb52 section above).
 - **Open (ships53 report):** BSM01 `bsm01_l50_b1_a` reaches no EndMission within 20000 frames on current main
   (`cc9-ships44\local\s53_q0_b1.log` / `s53_q1_b1.log`). The next re-time must check it at its full 40000 frames.
 - **Current main also needs a re-time** for IJN08 z, USN12, JM08, ESMP08 and PRCP01, the torpedo-sensitive rows.
+- **ESMP08 lost under kFighterSpentEndBound ON** (cc9-physics12, 45ffa86bf on agent/cc9-physics1, faithful):
+  `esmp08_p12_e8_rb` reference no end with 5/15 sunk (`cc9-physics1\local\p12e8d_rb_ref.log`); `esmp08_l61_e8_f` no
+  end with 4/15 (`p12e8d_f_ref.log`). The plans' air-ops Zeros have equipment 0, which is a null loadout in the image
+  (no bomb). They get divebomb, and 009F8160/009F7C90 end it at launch; the old host dropped phantom bombs from the
+  release path's default. The re-plan waits on a lead decision (OCEAN_WAVE_FIELD 43.1, 44).
