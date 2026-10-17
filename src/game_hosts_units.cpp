@@ -107,6 +107,7 @@
 #include <array>
 #include "bsp/pose_refresh.hpp"
 #include "bsp/rigid_body_integration.hpp"
+#include "bsp/ship_ai_path_cursor.hpp"
 #include "bsp/ship_ai_throttle_ring.hpp"
 #include "bsp/ship_ai_nav_block_ctor.hpp"
 #include "bsp/ship_ai_wake_trail.hpp"
@@ -17370,13 +17371,39 @@ void GameUnitsHost::run_director_steps_00836920() {
             // Packet s53_path_multileg: unit->vtable[50h] (006DFD60, unit+1050h)
             // and [unit+740h]->vtable[48h] for 007ADD70's heading and force.
             GameShipAiHost* const ai = host.ship_ai;
+            const bool plane = unit_is_kind_of(index, 0x0f) || unit_is_kind_of(index, 0x18);
+            // Packet s53_sqn_path. 0084E2B8..0084E317: class+26Ch is 007DB4D0's
+            // answer, TravelSpeed / turn rate; 00415550 keeps the larger of it *
+            // 1.2 and Pilot/MoveTo/ClosingDist; * 1.5 for a role-0 slot that is
+            // neither 8 nor AI-held. LABELLED: this host fuses the squadron into
+            // its flight leader, so the leader stands for [block+224h] (position)
+            // and its +3D0h (heading, the pose yaw); AI-held is every slot but
+            // the local player's (as 0077C470's role message does).
+            float squadron_radius = 0.0f;
+            float path_heading = slot.hull_heading_1050;
+            if (bsp::kSquadronPathFollowStepBound && plane) {
+                const float rate = host.plane_class_turn_rate_270_007db4d0(slot);
+                const float r26c = static_cast<float>(
+                    static_cast<double>(slot.plane_travel_speed) / static_cast<double>(rate));
+                const float scaled = static_cast<float>(
+                    static_cast<double>(r26c) * 1.2000000476837158);
+                const float closing = host.lua.plane_globals_loaded()
+                    ? host.lua.plane_globals().pilot_move_to_closing_dist : 0.0f;
+                squadron_radius = scaled > closing ? scaled : closing;
+                const std::int32_t role0 = slot.current_roles_01ac[0];
+                if (role0 != 8 && role0 == Impl::kLocalPlayerSlot) {
+                    squadron_radius = static_cast<float>(
+                        static_cast<double>(squadron_radius) * 1.5);
+                }
+                path_heading = Impl::pose_heading_radians(slot);
+            }
             host.commands.advance_path_cursor_00836bf0(index, px, pz,
                 unit_hull_length_09c8(index), unit_class_turn_radius_0520(index),
-                slot.hull_heading_1050,
+                path_heading,
                 [ai, index](float x, float z) {
                     return ai != nullptr && ai->goal_reached_009da590(index, x, z);
                 },
-                !unit_is_kind_of(index, 0x0f) && !unit_is_kind_of(index, 0x18));
+                !plane, squadron_radius);
         }
         if (outcome.reissued == bsp::DirectorDefaultCommand::None) continue;
         // The idle tail's own choice becomes the unit's standing command when

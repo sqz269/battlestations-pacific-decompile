@@ -18259,3 +18259,25 @@ The prediction held: no multi-leg step without user paths. The authored-path row
 lookahead (later advances with the point ahead) and the arrival-latch force. **JM08 on `s52_j8_b3` now WINS**:
 "Mission Completed - Guadalacanal is safe from invasion!" at 1329.87 s, Headquarter 01; the exec guard refused
 sus_prog.exe. Before, it failed at 1144.04 s. Sent to cc9-lua62.
+
+## 262. Squadron path-follow arm 0084E3A8 bound OFF (cc9-ships53, 2026-10-17; lead item 1b, squadron half)
+
+`kSquadronPathFollowStepBound` (include/bsp/ship_ai_path_cursor.hpp) sends plane units (kinds 0Fh/18h) through
+`ship_ai_path_follow_step_007add70` with 0084E010's arm arguments, read from the listing (0084E29F..0084E3A8):
+- Gates: queue stage +48h < 2, current command moveonpath, slot 0 (+1A4h) set.
+- radius = 00415550 max(class+26Ch * 1.2 [00CEC160], tuning+370h Pilot/MoveTo/ClosingDist).
+  - class+26Ch is the value 007DB4D0 returns, TravelSpeed / turn rate. It is stored at 007C4C27 in
+    BSP_PlaneClass_DeriveFlightConstants; the host has the rate as `plane_class_turn_rate_270_007db4d0`.
+  - The radius is multiplied by 1.5 [00CE3D78] when the leader's role-0 slot +1ACh is not 8 and 00927F10
+    (AI-held) is false.
+- pos: [block+224h] +FCh/+104h.
+- count: the 0071FC40 byte.
+- heading: [[block+224h]+3D0h]->vtable[50h].
+- factor: 0.4 [00CE7804].
+- force: 0 (PUSH EBX at 0084E381).
+- A true answer runs 0071D810(2) and the finished block (0084E3B5), not hosted, as for ships.
+LABELLED: the host fuses the squadron into its flight leader, so the leader's position and pose yaw stand for the
+squadron's. AI-held means every slot except the local player's.
+**Predictions.** JM06's PBY Catalina 01 (CatalinaPatrolPath, 12 points, 0 advances over 115 km with the ship arm)
+starts advancing: its radius becomes at least ClosingDist, where the ship arm took min(hull*2.5, turn*1.2). BSM01's
+PilotMoveOnPath squadrons follow their paths. Ship rows stay identical.
