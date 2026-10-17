@@ -504,6 +504,8 @@ int binding_trampoline(lua_State* state) {
     // Packet cc13_natives1.
     const bool set_failure_row = kLuaSetFailureBound && dispatch_row.address == 0x0088eff0u;
     const bool get_failure_row = kLuaSetFailureBound && dispatch_row.address == 0x0088f1d0u;
+    // Packet cc13-fix11.
+    const bool dead_meat_row = kLuaSetDeadMeatBound && dispatch_row.address == 0x008ac7b0u;
     // Packet cc9_unit_get_attack_target.
     const bool attack_target_row = kLuaUnitGetAttackTargetBound
         && dispatch_row.address == 0x008a6de0u;
@@ -633,7 +635,7 @@ int binding_trampoline(lua_State* state) {
         && (dispatch_row.address == 0x008acb70u || dispatch_row.address == 0x008aca30u);
     const bool handled = checkpoint_row || avoidance_setting || objective_row || get_property_row || kill_row
         || add_listener_row || remove_listener_row || listener_active_row || set_invincible_row
-        || set_failure_row || get_failure_row
+        || set_failure_row || get_failure_row || dead_meat_row
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || override_hp_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
@@ -881,6 +883,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (get_failure_row && !host->error_replay()) {
         return host->run_get_failure_0088f1d0(state, argc);
+    }
+    if (dead_meat_row) {
+        if (!host->error_replay()) host->run_set_dead_meat_008ac7b0(state, argc);
+        return 0;
     }
     if (aa_enable_row) {
         if (!host->error_replay()) host->run_aa_enable_0089c740(state, argc);
@@ -7846,6 +7852,83 @@ int GameMissionLuaHost::run_get_failure_0088f1d0(lua_State* state, int argument_
     return 1;
 }
 
+// Packet cc13-fix11 (docs/CC13_FIX11.md), under kLuaSetDeadMeatBound. 008AC7B0
+// SetDeadMeat(entity), 008AC7B0-008AC9C2, a binding with no stack arguments (RET).
+// The standalone body is bsp::lua_set_dead_meat (src/options_seg56_cc13.cpp); its
+// Seg56Host has 86 pure methods this host does not implement, so its three arms
+// are carried here in the image's order:
+//   008AC8AF 00888AA0 resolves argument 0 (no null or class test);
+//   008AC8CF vtable[5Ch](0Fh), a plane: 008AC8FB vtable[194h]("spinning" 00D059EC,
+//     0), the plane's 007BBFA0;
+//   008AC92E vtable[5Ch](6), a ship: 008AC94B 00BD2F10(ECX = 1, -1.0f [00D7A260],
+//     1.0f FLD1) stored as pivot x with y = z = 0, then 008AC96A 008110F0(&pivot).
+//     008110F0 never reads the pivot (docs/UNIT_DAMAGE_AND_DEATH.md "Sink"), so the
+//     draw only advances the stream. 008110F0 returns on +5Dh (008110F7) or on
+//     +150h > 0 (00811101 COMISS / JA: a NaN does not refuse), else 00811111
+//     vtable[70h](1) = 0077D1A0, then zeroes +828h / +82Ch and releases +740h;
+//   anything else: 008AC97A vtable[70h](1).
+// 008AC980 00B66400: nothing pushed, the result count is 0.
+// SUBSTITUTIONS (labelled):
+// * the class tests are the units host's IsKindOf(0Fh) and IsKindOf(6) on the slot;
+//   a squadron's slot is fused with its wing-0 plane, so it answers as that plane
+//   rather than taking the image's else arm on the squadron object;
+// * an entity with no units-host slot is counted and nothing runs (the image would
+//   run the else arm's vtable[70h](1) on it);
+// * the plane arm is counted and NOT applied: the host runs 007BBFA0's "spinning"
+//   only inside the units host's death-mode block (007CA8A0 -> 007BBFA0 -> 007D0B80
+//   on a plane the gunnery host already killed) and has no entry for a live plane,
+//   so the arm's 007BC1F2 stream-1 U(0, 1) draw is not taken either;
+// * the draw is GameGunneryHost::death_mode_draw_00bd2f10(1, ...): by default the
+//   shared stream-1 generator in call order, as in the image; under the measurement
+//   option BSP_GUNNERY_RNG_STREAMS=1 it is keyed (death_mode, unit), which no other
+//   ship draw uses;
+// * +5Dh is the gunnery host's unit_dead() (dead, or health <= 0), +150h its stored
+//   invincibility (unit_invincibility, read whatever the floor switch says);
+// * vtable[70h](1), for the sink and for the else arm, is
+//   GameGunneryHost::destroy_unit_0077d1a0(index, 1), the host's death funnel; its
+//   own counter (summary "airfield destroy kills") includes these calls, and the
+//   0077D1E4 destroy message, +828h / +82Ch and the +740h release are not held.
+int GameMissionLuaHost::run_set_dead_meat_008ac7b0(lua_State* state, int argument_count) {
+    (void)argument_count;
+    ++summary_.dead_meat_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || units->gunnery() == nullptr || id <= 0
+        || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.dead_meat_unresolved;
+        log_.notef("  SetDeadMeat 008ac7b0: entity id %d has no units-host slot, nothing run "
+            "(packet cc13-fix11)", id);
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    GameGunneryHost& gunnery = *units->gunnery();
+    const GameUnitRow* row = units->unit_row(index);
+    const char* name = row != nullptr ? row->name.c_str() : "?";
+    if (units->unit_is_kind_of(index, 0x0F)) {                 // 008AC8CF
+        ++summary_.dead_meat_plane_unapplied;
+        log_.notef("  SetDeadMeat 008ac7b0: plane \"%s\" vtable[194h](\"spinning\", 0) not "
+            "applied, no host entry for 007BBFA0 on a live plane (packet cc13-fix11)", name);
+    } else if (units->unit_is_kind_of(index, 6)) {             // 008AC92E
+        const float pivot_x = gunnery.death_mode_draw_00bd2f10(1, index, -1.0f, 1.0f);  // 008AC94B
+        const bool refused = bsp::sink_is_refused_008110f0(gunnery.unit_dead(index),
+            gunnery.unit_invincibility(index));                // 008110F7 / 00811108
+        if (refused) {
+            ++summary_.dead_meat_sink_refused;
+        } else {
+            gunnery.destroy_unit_0077d1a0(index, 1);           // 00811111
+            ++summary_.dead_meat_sunk;
+        }
+        log_.notef("  SetDeadMeat 008ac7b0: ship \"%s\" pivot_x=%.4f sink=%s (008110F0, packet "
+            "cc13-fix11)", name, static_cast<double>(pivot_x), refused ? "refused" : "destroyed");
+    } else {
+        gunnery.destroy_unit_0077d1a0(index, 1);               // 008AC97A
+        ++summary_.dead_meat_destroyed;
+        log_.notef("  SetDeadMeat 008ac7b0: \"%s\" vtable[70h](1) (packet cc13-fix11)", name);
+    }
+    log_.implemented("MissionLuaNative::SetDeadMeat", "008ac7b0");
+    return 0;
+}
+
 int GameMissionLuaHost::run_set_invincible_00897a50(lua_State* state, int argument_count) {
     ++summary_.invincible_calls;
     float value = 0.0f;
@@ -9507,6 +9590,13 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.set_failure_applied, summary_.set_failure_other,
         summary_.set_failure_unresolved, summary_.get_failure_calls,
         summary_.get_failure_true);
+    if constexpr (kLuaSetDeadMeatBound) {
+        log_.notef("summary mission script dead meat calls=%llu sunk=%llu sink_refused=%llu "
+            "destroyed=%llu plane_unapplied=%llu unresolved=%llu (008AC7B0 -> 008110F0 / "
+            "vtable[70h], packet cc13-fix11)", summary_.dead_meat_calls, summary_.dead_meat_sunk,
+            summary_.dead_meat_sink_refused, summary_.dead_meat_destroyed,
+            summary_.dead_meat_plane_unapplied, summary_.dead_meat_unresolved);
+    }
     log_.notef("summary mission script attack target bound=%d calls=%llu fire_arm=%llu "
         "command_arm=%llu pushed=%llu nil=%llu unresolved=%llu (008A6DE0, packet "
         "cc9_unit_get_attack_target)", kLuaUnitGetAttackTargetBound ? 1 : 0,
