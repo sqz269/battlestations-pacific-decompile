@@ -3238,3 +3238,29 @@ Hungarian comment: the plane rolls to its place at this speed after landing, and
 cannot stop on the carrier's lift). physics19's commanded 2.23 m/s is therefore 009B2C1E's +2B4h = interp x speed
 with the heading-error interp near its low end (00D7A2F0 = 0.1): the creeping plane is still turning onto the
 lift line. The heading error at the stop is the next thing to log.
+
+## 80. Dogfight avoid timer, early-edge clear, land minimum speed (cc9-physics20, 2026-10-18)
+
+The lead's queue from cc13 seg67 (UNREVIEWED notes, checked here against the bytes).
+
+**009A7A50 avoid timer, `kDogfightAvoidTimerDrawBound` (OFF).** `disasm-raw 009A7D40`: on the latched arm
+(009A7D2E, +24h set), `MOVSS [esi+18h]; COMISS [00CE3958] (2.0); JBE` (009A7D52-009A7D5E), then the pair
+(1.0 FLD1, 2.0) and `CALL 00BD2F10` (009A7D72), `FSTP [esi+18h]`. ECX is 1 (the byte the latch stores from CL at
+009A7D0F). The host wrote the midpoint 1.5. True: a keyed stream-1 draw (`unit name + "#dfat"`, the host's
+00BD2F10 convention). `summary dogfight avoid timer redraws=` counts the arm in both builds.
+
+**009AAA80 early-edge clear, `kDogfightEarlyEdgeClearBound` (OFF).** Both gate failures (009AAA9C `+4D4h > 0`
+JBE, 009AAABB `1.0 > +4D8h` JBE; NaN fails both) go to 009AAC5D: `MOV ECX,[task+3FCh]; CALL 007B9740`, then
+`XOR AL,AL`. 007B9740: `ECX = [ECX+C50h]`, null returns, else tail-JMP 007E2070, which takes `esi = nb+9Ch`,
+and when `[esi+14h]` (nb+B0h, the target cache 007E2090 returns while +84h <= 2.0) is set calls 006952A0 (the
+observer unregister) and zeroes it. The two later false returns (009AAB1F, 009AAC31) go to 009AAC68 and skip the
+clear, as the host's do. True: `nb_found_plus_one = 0` on the gate failure. LABELLED: +C50h is taken to exist.
+
+**009B1300 land minimum speed, `kLandMinSpeedOwnerVelocityBound` (OFF).** `disasm-raw 009B1300`: with
+approach+30h set (009B1309), the plane's vt[34h] velocity is normalised by 0042B2F0's length (each component
+FDIV'd and stored as a float, 009B1331-009B1359), approach+30h's vt[34h] (009B1362) gives w, and
+`(w.y ny + w.x nx) + w.z nz` (009B1364-009B137C) is added to 007C47F0 (009B138E) before the max with 007C4810
+(009B13A9-009B13C0). The host had no such term anywhere (`kCarrierLandingVelocityLeadBound`'s sites are
+009AFC73-009AFD1A, the lead point, not this). True: the land target (`land_site_plus_one`) linear velocity enters.
+An airfield's is zero, so only carrier recoveries move. Prediction (USN01): the final approach's commanded speed
+rises by about the carrier's speed (16-17 m/s) for planes heading with the carrier, touchdowns shift.
