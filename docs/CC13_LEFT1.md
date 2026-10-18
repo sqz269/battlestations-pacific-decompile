@@ -59,7 +59,19 @@ None reads a game field or a game constant; the only image constants are SEH han
 
 | Address | Name | Shape |
 | --- | --- | --- |
-| `008DE6A0` | STL_SetPtr_Insert_008de6a0 | `_Tree::insert(const value&)` for a set of pointers: descend from the root (`[+4h]+4h`) while `_Isnil` (+11h) is 0, unsigned key compare (SETC / JNC), `_Dec` `008DA4A0` on the leftmost miss, `_Insert` `008DE010` (`ECX = tree`; result*, add-left, node, value*), and the pair {iterator, bool} written to the result, RET 8. The callee `008DE010` is named `STL_xlen_throw_008de010` in the ledger, but here it is the `_Insert` helper. |
+| `008DE6A0` | STL_SetPtr_Insert_008de6a0 | `_Tree::insert(const value&)` for a set of pointers: descend from the root (`[+4h]+4h`) while `_Isnil` (+11h) is 0, unsigned key compare (SETC / JNC), `_Dec` `008DA4A0` on the leftmost miss, `_Insert` `008DE010` (`ECX = tree`; result*, add-left, node, value*), and the pair {iterator, bool} written to the result, RET 8. Its callee `008DE010` is the `_Insert` helper (renamed below). |
 | `00926670` | STL_list_BuyNodeHitRecord_00926670 | `list::_Buynode(next, prev, value)`: `operator new(68h)`, the two links stored behind the null checks, the value copy-constructed at node+8h by `009253A0` under EH state 0 (handler `00CA6D40`), RET 0Ch. The call is already a hook in `src/entity_mission_seg60_argon.cpp` (`stl_list_buy_node_hit_record_00926670`). |
 | `00A17960` | STL_list_copy_construct_00a17960 | `list(const list&)`: `this+4h = 00A168A0()` (the head node), `this+8h = 0`, then `_Insert` range `00A17760`(this, begin, other.begin(), other.end()) under EH state 0 (handler `00CB1E20`), EAX = this, RET 4. |
 | `00AA9320` | STL_PopHeap_WidgetByName_00aa9320 | `_Pop_heap(first = ECX, last = EDX, ...)`: value = last[-1], last[-1] = *first, `_Adjust_heap` `00AA8120`(first, 0, last - 1 - first, value, predicate), RET 8. |
+
+## Renamed misnamed throw-site rows
+
+Both rows came from the template inventory (tag `e0030`, `stl_throw_site`). Their names are
+corrected in place in `config/tags/008d0000.jsonl` (now `stl_shape`), with names rows recording
+the old names, and in Ghidra. The neighbours `008DE200` and `008DE5F0` look like genuine throw
+stubs and are unchanged.
+
+| Address | Was | Now | Evidence |
+| --- | --- | --- | --- |
+| `008DE010` | STL_xlen_throw_008de010 | STL_Tree_Insert_008de010 | VS2008 `_Tree::_Insert(result*, add_left, where, value*)`, `ECX = tree`, RET 10h. The inlined length_error check comes first (`00408720`, `00411700`, `00BF6885`), then `_Buynode` `008DB730`, ++size, the links, and the rebalance (`008DB100` / `008DB150`). Its only caller is `008DE6A0` at `008DE6FE`; rev53U confirmed it. |
+| `008DE340` | STL_xlen_throw_008de340 | STL_Tree_EraseIterator_008de340 | VS2008 `_Tree::erase(iterator)`, `ECX = tree; result*, where {container, node}`, RET 0Ch. If where is the head (`_Isnil` +11h), it throws "invalid map/set<T> iterator" (`00411700`, `00BF6885`). Otherwise: ++where (`008DA530`), the unlink with the `_Min` / `_Max` fix-ups (`008DA440` / `008DA460`), the rebalance rotations (`008DB100` / `008DB150`), `operator delete` `00BF65AC` on the node, `if (size > 0) --size`, and the iterator written to the result. Its only caller is `008DE7E0` (STL_Tree_EraseRange). |
