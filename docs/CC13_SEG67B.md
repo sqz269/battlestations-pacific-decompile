@@ -383,3 +383,11 @@ The takeoff factory 009CFF40 now calls 009CF8E0 directly.
 | 009CF710 | takeoff approach block | base 009CD420; four embedded states prepare +50h, Takeoff +78h, SlowTakeoff +98h, parking +C0h |
 
 The task constructors 009CC230, 009D3050 and 009CF8E0 now call these bodies directly.
+
+### 3.26 Strafe and torpedo state constructors, takeoff approach base
+
+| Address | Function | Notes |
+|---|---|---|
+| 009CB500 | strafe goaway state | vtable 00D2103C; four draws from the RNG 00BD2F10 on stream 1: +30h and +3Ch from U(0, 5.0), +44h = -U(0, 1), +18h from U(0.3, 0.9) |
+| 009CAC80 / 009D06D0 | strafe and torpedo attackrun states | the 009A36A0 shape (+18h = 1.0, +1Ch = -U(0, 1), +20h = 0.0) with vtables 00D21004 / 00D212C4 |
+| 009CD420 | takeoff approach base | 009F9CE0 with 9999.0; +34h = the plane's +100h when the plane has a holder (+BF4h); +30h = 15.0, or 25.0 when the plane passes the 10h kind test; +2Ch = +30h + +34h |

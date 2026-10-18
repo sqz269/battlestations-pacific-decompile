@@ -179,13 +179,6 @@ public:
     // torpedo approach bases.
     virtual void bot_approach_strafe_construct_009ca4a0(void* block, void* arg, void* target) = 0;
     virtual void bot_approach_torpedo_construct_009d0380(void* block, void* arg, void* target) = 0;
-    // 009CD420: __thiscall(ECX = block, arg), RET 4: the takeoff approach base.
-    virtual void bot_approach_takeoff_construct_009cd420(void* block, void* arg) = 0;
-    // 009CB500 / 009CAC80 / 009D06D0: __thiscall(ECX = state, owner block), RET 4: the
-    // strafe goaway and attackrun states and the torpedo attackrun state.
-    virtual void bot_state_strafe_go_away_construct_009cb500(void* state, void* block) = 0;
-    virtual void bot_state_strafe_attack_run_construct_009cac80(void* state, void* block) = 0;
-    virtual void bot_state_torpedo_attack_run_construct_009d06d0(void* state, void* block) = 0;
     // 009BC780: __thiscall(ECX = move-on-path approach, [bot+50h]), RET 4.
     virtual void bot_approach_move_on_path_construct_009bc780(void* block, void* arg) = 0;
     // 009A3390: __thiscall(ECX = depth-charge approach, [bot+50h], target), RET 8.
@@ -819,5 +812,15 @@ void* torpedo_construct_approach_block_009d2da0(Cc13Seg67bHost& host, void* bloc
                                                 void* target);
 // 009CF710: __thiscall(ECX = block, arg), RET 4, EAX = block.
 void* takeoff_construct_approach_block_009cf710(Cc13Seg67bHost& host, void* block, void* arg);
+// 009CB500 / 009CAC80 / 009D06D0: __thiscall(ECX = state, owner block), RET 4, EAX = state.
+void* bot_state_strafe_go_away_construct_009cb500(Cc13Seg67bHost& host, void* state,
+                                                  void* block);
+void* bot_state_strafe_attack_run_construct_009cac80(Cc13Seg67bHost& host, void* state,
+                                                     void* block);
+void* bot_state_torpedo_attack_run_construct_009d06d0(Cc13Seg67bHost& host, void* state,
+                                                      void* block);
+// 009CD420: __thiscall(ECX = approach, plane), RET 4, EAX = approach.
+void* bot_approach_takeoff_construct_009cd420(Cc13Seg67bHost& host, void* approach,
+                                              void* plane);
 
 }  // namespace bsp
