@@ -17934,3 +17934,49 @@ callers are in a scene no menu id loads; GetDirection's jm01 callers need the JM
 PushFloat; 008A7DD4 the stale test (+C8h, 00414DB0) and 008A7DF2 EDX = entity+ECh (the forward row) into 0088BA30.
 Predicted when reached: JM05's luaJM5CheckObjectives stops raising after the capture; JM01's luaJM1GetFlakPos
 completes its loop, which changes the number of script `random()` draws (image-faithful).
+
+## 5il. Handoff (cc9-lua67, 2026-10-18)
+
+Done in this lane run, all on agent/cc9-lua52 and reported to the lead:
+
+- Flips:
+  - `kLuaForceFireDepthChargeBound` (5ii).
+  - `kLuaClearForcedReconLevelBound` and `kLuaSetCrewLevelBound` (5ii).
+  - cc13 fix13/fix14: GetCommandBuildingLevel, SetCommandBuildingOwnerPlayer, GetShipMaxSpeed and GetDirection
+    (5ii.2).
+  - `kSkillLevelSquadronFanOutBound` (5ij).
+  - cc13 fix20: `kLuaPlayBinkMovieBound` and `kLuaScoringSetMissionCompletedBound` (5ik).
+- WINS: the re-time on fcb6c6fa5 and the re-plans on aa5f342e6 are in docs/WINS_TABLE.md. LOMP06, JM06 and IJN18
+  have new row plans.
+
+Open, in priority order:
+
+1. **WINS rows still lost** (WINS_TABLE "Re-plans on aa5f342e6"):
+   - JM08: HQ capture by LandingShips from 984 s with every plan.
+   - USN02: Houston is held in attackmove by the AutoTarget override (a ships-lane question raised through the
+     lead).
+   - USN15: Fuso sinks the battle line (a gunnery question).
+   - IJN08: lost on the reference seed.
+   - USN12: lost under 20,3.
+   - BSM09: lost on the reference seed.
+   - BSM01: no end.
+   The run queue is `cc9-lua52\local\l67_queue.ps1`, which reads `local\l67_jobs.txt` and `local\l67_rows.txt`.
+   It runs at most 2 games, 65 s apart, through `l67_runs.ps1`. It was stopped at handoff (`local\l67_stop`
+   exists), so delete that file to restart it. w_i08 and j8f (cur exe, ref env) were still running at handoff,
+   and a j8m10 already handed to `l67_runs.ps1` may also start. Read their `local\l67r_<row>_cur_ref.log` before
+   re-queuing.
+2. **goaway/C20h (item 7)**:
+   - No WINS-row plane ends with C20h > 0.
+   - On USNOS (l65_os_c1), two dive bombers end in aimglide with C20h=1 and C25h=1.
+   - Intrepid_sqn22|.-II shows issues=1, guard_blocked=1224, ammo=2, and may be dead (c3a death guard).
+   - Inconclusive. The host 007BBBA0 still lacks the +9C3h guard.
+3. **cc13-skipped natives** (docs/CC13_FIX_5.md section 10 and the 5ii notes): SquadronSetTravelSpeed 008A0630,
+   SquadronSetHomeBase 0089E220, PutRelTo 008AA560 and SetRace 008A8720. Their bodies are modelled in
+   src/cc13_left55_seg56{a,b}.cpp but none is hosted.
+   - SquadronSetTravelSpeed needs a +3A0h/+3ACh/+388h/+38Fh quadruple on the squadron. Today every +3A0h reader
+     uses class TravelSpeed x NewTravelSpeedMul (src/game_hosts_units.cpp near 8606 and 9137). Adopt it next to
+     `set_squadron_travel_alt_0089f550` (18496), honouring the lock and timer as the alt readers do (25109, 31659,
+     33727, 35021).
+   - Before any pair, find each binary +3A0h reader's lock handling in Ghidra.
+   - Callers in this installation: COTP usn_01 and PRCPUS usn_12_indochina. These are not WINS rows, so pairs need
+     ad hoc rows.
