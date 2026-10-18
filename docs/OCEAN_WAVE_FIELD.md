@@ -2714,3 +2714,44 @@ not drawn. LABELLED: a torpedo gun is a host gun row of category 7; the call is 
 gunnery fixed step; 0072CF00's torpedo-model tail is presentation. This installation's callers: commandhelpers.lua
 3531, 3595, 14801; jm03:1486 (`luaJM3ReloadTorp`); jm07:1918; jm08:774; jm11:1716 (a second argument is ignored).
 The script-orders binding is pending its lease.
+
+## 67. Lua flips, cc13's plane switches, the catapult adapter (cc9-physics17, 2026-10-17)
+
+**Lua (65), at 49575c7db / 7b012d81a** (`local\p17hoff_*`, `local\p17htd_*`, `local\p17x{off,lua}_jm06w`):
+- `kLuaTrulyDeadBound` + `kLuaTrulyDeadOnKilledBound`: JM06 win orders (40000 frames) and USN04, gameplay identical;
+  the kill hook nulled `Ptr` 16 times on JM06; no TrulyDead call in either. **ON** (334be0e5f).
+- `kSpawnPlacementMapBoundsBound`: JM06's SpawnNew placements ran the bounds test, identical. **ON.**
+- `kLuaIsInBorderZoneBound`: 82 calls on JM06 (jm06:996), identical. **ON.**
+- `kLuaUntouchableClearBound`, `kLuaSquadronSetReleaseAltBound`, `kLuaSquadronLandAndKillBound`: no call in USN01,
+  USN02, JM02, JM03, JM05, JM06, PRCP01 (600 s, JM06 2000 s). **OFF, unexercised.**
+
+**cc13's plane switches, at 49575c7db** (`local\p17_h_{off,plane,band,gun}`, 12000 frames):
+
+| row | plane (all four) | band only | gun only |
+| --- | --- | --- | --- |
+| USN04 | moved: deaths 53 -> 52, dive releases 3 of 27 -> 2 of 34 | moved: hull hits 398 -> 638, dive 3 -> 0 | moved: deaths 53 -> 52, dive 3 -> 1 |
+| USN01 | moved: completed 554.99 s -> no end; deaths 52 -> 17 | the same numbers as the plane set | - |
+| JM08 | moved slightly (hits 7113 -> 7129) | - | - |
+| USNOS win orders, 200000 frames | failed 2326.14 s (OFF) -> failed 964.89 s | - | - |
+
+- `kFollowBandSafeAltFloorBound`: 009C16E5-009C175A checked in the listing: L = max(min(leaderY + block+4,
+  state+88h), leaderY - 120.0 (`00D1F3F8`)), state+88h = SafeAlt 60 (planeglobals.lua:498; CC13_FIX5). USN01's
+  12000-frame completion is lost with it alone. **ON** as the image's law; USN01 and USNOS are WINS work.
+- `kPilotFighterGunfireScaleBound`: 0099EFA5-0099F029 as cc13-fix2 read it; USN04 moves. **ON.**
+- `kFollowSightSearchBound`: `follow sight searches=0` on USN04, USN01 and JM08. **OFF, unexercised.**
+- `kKamikazeBoostTurboBound`: no kamikaze plane on any row (`kamikaze task ordered_planes=0`, no `_kz` unit even on
+  the 200000-frame USNOS run, which fails before the Ohka phase). **OFF, unexercised**; R7's turbo arm rides on it.
+
+**ReloadTorpedoes** (`local\p17_r_{off,torp}`, 3250f9d2f): JM08 12000 frames and JM08 `jm08_l65_j8_p2` 72000 frames,
+gameplay identical, `reload torpedoes calls=0` (luaJM8Checktorp never sees `torp < 12`; the win-orders run fails at
+1157.05 s on both sides, on this base). JM03 600 s: no call. **OFF, unexercised.**
+
+**The catapult adapter** (c246320d6, `kShipCatapultLaunchBound` OFF; `src/ship_catapult_host.cpp`, header for the
+labelled substitutions). `local\p17_c_{off,on}`: JM02 (its recon check, jm02:1268-1290, is inside a `--[[` comment in
+this installation), JM03 (luaJM3SendPlanes, only once the AI planes are gone) and USN16 3000 frames (the carriers'
+launches sit in a later init) make no ShipUseCatapult call; JM03 identical. JM06's `ShipUseCatapult(IJNSubsGrp1[1])`
+(jm06:2235, the recon intro) was not reached in 2000 s. **OFF, unexercised**; it needs a row that reaches one of those.
+
+**Open.** 64's touched byte (009B1EF2, land final never sets `+20h`, so the touchdown brake is unreached); the
+three unexercised Lua natives; `kFollowSightSearchBound` and `kKamikazeBoostTurboBound` (need a firing follow leader
+and a released Ohka); ReloadTorpedoes and the catapult need rows that reach their scripts.
