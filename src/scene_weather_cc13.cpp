@@ -19,7 +19,9 @@ struct ReaderFault : std::runtime_error {
 constexpr float kLinearizeExponent = 2.2f;   // 00CE89D8
 constexpr float kOne = 1.0f;                 // 00D7A24C
 constexpr float kSpecularGrey = 0.6f;        // 00CE3D30
-constexpr double kPi = 3.14159265358979311600;  // 00CE3D28 (double)
+// 00CE3D28 (double) = 00 00 00 60 FB 21 09 40: float pi widened to double, not
+// exact pi. FMUL double ptr [00CE3D28] at 004EB0E0 and 004EB11B.
+constexpr double kPi = 3.1415927410125732;
 constexpr double kDegrees = 180.0;           // 00CE3D20 (double)
 
 const ScenePropertyEntry* find(const ScenePropertyBagModel& model, int bag, const char* key) {
