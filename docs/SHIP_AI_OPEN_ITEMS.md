@@ -19107,3 +19107,34 @@ categories; elsewhere unchanged.
 
 **Decision: ON** by mechanism. PRCP05 moves (it is not a WINS row). The ship path (USN10's retreating
 Chokai/Hiei) is not paired here; it reads the same table entry through kShipDirectorEnablesBound.
+## 286. SetDeviceReloadTimeMul, kLuaDeviceReloadTimeMulBound (cc9-ships58, 2026-10-18; cc13 fix18)
+
+**Image.** docs/CC13_FIX18.md section 5: 008C14B0 stores the process-wide float 00E08178; the only reader is the
+rack reload slice 006E41C0 (006E41D5 FLD [00E08178] / FMUL dt / 006E41E7 FSTP float), which counts an empty
+rack's +490h down by float(mul x dt) while the device-reload byte 00E17BF2 is set.
+
+**Which rows reach it here.** As with 285, the COTP-USN usn_04 / usn_13 files fix18 names are not what this
+installation's USN04 / USN13 ids load. The ids that do load a caller: PRCP05 (PRCPUS usn_09_Leyte `:311`, 1.8),
+PRCP03 (prcp_07_tarawa `:121`, 1.5), PRCP04 (prcp_08_philsea, 1.0), JM02 (PRCPIJN prcpjm02 `:39/:43`, 3.0 / 2.0
+by difficulty). USN18 loads PRCPUS prcp_13_iwojima, which does not call it (the COTP-USN copy does). JM01 and
+JM10 are not in this installation's mission tree. The jm03 multiplier 0 is not on a reachable script either.
+
+**Prediction (fix18).** An empty rack refills in ReloadTime / mul; nothing else moves.
+
+**Pairs (54ed7cccf, `--flip kLuaDeviceReloadTimeMulBound=true`, exe `local\s58_sa_on` (rebuilt for this flip);
+OFF = the tree build; manifests beside each log).** Separate from 285 (PRCP05 OFF `s58_off1_p5` is the
+54ed7cccf build with ArtilleryEnable OFF; the other OFFs call no ArtilleryEnable).
+- PRCP05 30000 frames (`s58_off1_p5` / `s58_rt_on_p5`): exit 1. `SetDeviceReloadTimeMul 008c14b0: mul=1.8`,
+  flag=1, `summary rack device reload ... reloads=0` both sides.
+- JM02 20000 frames (`s58_off2_j2` / `s58_rt_on_j2`): exit 1; mul=2, flag=1, reloads=0 (2 bomb drops, none
+  emptied a rack that then lived on).
+- PRCP03 30000 frames (`s58_off2_p3` / `s58_rt_on_p3`): exit 1; mul=1.5, flag=1, fails at 80.60 s both sides
+  ("ran out of planes").
+- USN18 30000 frames (`s58_off2_u18` / `s58_rt_on_u18`): exit 1, no call, flag=0.
+No unordered row on hand empties a rack under the device-reload flag with a multiplier other than 1.0 (the
+reload rows SQUADRON_LAND_TASK names, PRCP01 `l55_p01_c`, never set a multiplier, so they are identical by
+construction).
+
+**Decision: ON** as a faithful binding with no reach found: the store is exercised on every caller above and
+the slice reads it exactly where the image does. A row with player-ordered bomb runs on PRCP05 / JM02 would
+show `reloads` timed at ReloadTime / mul.
