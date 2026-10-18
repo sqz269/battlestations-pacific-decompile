@@ -63,8 +63,8 @@ void cc13_small1_hud_movie_screen_enter_005cd9c0(void* screen, Cc13Small1Host& h
 
 // ---------------------------------------------------------------------------
 // 005CDB00 HudMovieScreen_Exit. ECX is not read; RET. SEH 00C73758 (not modelled).
-// Evidence: export listing 005CDB00..005CDC46. The decompile drops the game+61Dh
-// store between the two context-level calls.
+// Evidence: export listing 005CDB00..005CDC46; game+61Dh = 0 lies between the two
+// context-level calls.
 // ---------------------------------------------------------------------------
 void cc13_small1_hud_movie_screen_exit_005cdb00(Cc13Small1Host& host) {
     host.render_service_set_value224_00b0d0b0(*static_cast<void**>(host.image_global(0x00F8D39C)), 0.0f);  // 005CDB25
