@@ -3465,3 +3465,42 @@ need every 00BD2F10 caller in the host routed through one image-faithful generat
 order.
 
 Leases: `p21_stow` (src/game_hosts_units.cpp) and `p21_doc` (this doc) are released with this section.
+
+## 84. The carrier's speed in the image (read-only); ConTBD1's 604.43 s throttle cut (cc9-physics21, 2026-10-18)
+
+**(1b) Enterprise's commanded speed on USN01.** No image cap was found under 16.72 m/s:
+- MaxSpeed is 16.71944 for VehicleClass[2] "Yorktown 1944" in this installation's vehicleclasses.lua, which is
+  32.5 kn in m/s. 0080FC30 = unit+9C0h x the category-4 modifier, so the reference speed is the class maximum.
+- The leader cap 009F4DA0 is min(0070D140, 0070D0F0) / 0080FC30. Each member's 0070D100 publish (009DF6AA) is its
+  own reference x 1.25 / max(blend, 0.25), so the cap is 1.0 unless a turn blend goes above 1.25. CVGroup is
+  Enterprise + Ralph, McCall and Blue (usn_1_marshall.lua 304-334, NavigatorMoveToRange to NTRNav).
+- 009E1170's first arm stores -1.0 into *(unit+73Ch)+28h for an AI-held ship, so it has no Cruise speed.
+- MotherShip_Update 00758240 -> 006BA670 -> the launch site's vtable+08 (vtable 00CF8A58) is 006CFE40
+  `BSP_AirOpsElevatorSite_PlatformTick`, which only steps the lift (006FC480).
+- brain+AF0h is written only by the land / kamikaze / engage / lead-pursuit / tangent states.
+- The host matches: throttle 1.000 on movetopos / navigate, d32c -8.32 m per 0.5 s.
+Open: the image's terminal speed at throttle 1.0, and the host's Enterprise holding heading 0.0000 against target
+-2.5885 with rudder 0.004 throughout (ships lane).
+
+**(2b) ConTBD1's throttle cut at 604.43 s (kLandMinSpeedOwnerVelocityBound ON, dea03afaf + the env-gated trace
+`BSP_THROTTLE_TRACE`, `local\p21d2_lms_usn01.log`).** 0099D300 is not the cause. Its demand holds 0.4252 through
+604.23 s (dead band skipped, corr -0.37). The cut comes from 007DFDD3-007DFE7F, vehicle avoidance's aircraft arm,
+which sets pilot+25Ch = interp(3, 1, 15, -1, s) = -1.0 from 604.23 s on. 0099C130 then stores throttle 0.01
+(0.0079 after 007BB6E0) and air brake 1.0. The threat is ConSBD1|.-III. It touched down at 598.63 s and is taxiing
+up the deck in land/park at 20.6 m/s relative. Its vt[34h] in the host is plane_world_velocity
+(-9.80, -0.52, -16.49), the deck-relative velocity rotated into world axes. Against ConTBD1's 51 m/s, s = 32.4 < 35
+and t = 1.95 s < 2, so the arm fires. In the bytes, 007BBB70 copies unit+AC8h, and 007D9CE0 keeps that vector in
+the parent's local frame (section 75). So the image's threat velocity is the carrier-frame vector, and its
+closure differs with the carrier's heading. On current main (`local\p21c_thr_usn01.log`) the geometry differs: no
+cut, and ConTBD1 touches down at 604.63 s.
+
+**`kAvoidParentLocalVelocityBound` (OFF)**, in `avoid_velocity` (all six vehicle / terrain avoidance reads of
+vt[34h]): a parented plane answers `deck_local_vel`. Prediction: only rows with a plane on a carrier deck while
+another plane flies close by move. Avoidance against parked or taxiing deck planes changes by the carrier's heading.
+**84, result: `kAvoidParentLocalVelocityBound` ON.** USN01 `usn01_p8_u1_i.txt`, 30000 fr, exes at 4bd013e4a
+(`local\p21e_off_usn01.log` against `local\p21e_on_usn01.log`, manifests beside them). pair_diff MOVED, as
+predicted. Deaths 36 / 36 with 12 death times shifted, every one a US carrier plane (0.1-2.4 s). Stows are 19 / 19 and
+re-takeoffs 0 / 0. The aircraft-arm throttle sets on US planes go 447 -> 448. Flipped by mechanism: it is
+007BBB70's unit+AC8h in 007D9CE0's parent frame, and it is exercised. UNCERTAINTY: the other vt[34h] readers of a
+parented plane (the deck term's own parent read is the carrier's, unaffected) still take world axes. Section 75's
+whole-frame item stays open.
