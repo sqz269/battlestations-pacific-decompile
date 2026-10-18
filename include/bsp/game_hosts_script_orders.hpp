@@ -524,6 +524,23 @@ inline constexpr bool kLuaGetCommandBuildingLevelBound = false;
 // False: an unimplemented record; the building keeps its party. JM05's three calls
 // (PRCPIJN/jm05.lua:1262/1263/1283) sit under `this.Cheat_PhaseShift` only.
 inline constexpr bool kLuaSetCommandBuildingOwnerPlayerBound = false;
+// Packet cc13-fix14b (docs/CC13_FIX14.md). True: `GetShipMaxSpeed(entity)` 00890BB0
+// pushes 0080FC30(entity) as a float (00890CAF 00888AA0, no null or class test;
+// 00890CC8 0080FC30, 00890CD2 FSTP dword, 00890CD5 00B66480 PushFloat; one result).
+// 0080FC30 is [unit+9C0h] times 1.0f (00D7A24C) unless the powerups byte 00E0C978
+// and [[00F88C30]+B8h] are both set; the host answers its slot's unit+9C0h through
+// GameUnitsHost::throttle_ceiling_inputs, unscaled (the same substitution the
+// ship-AI host makes). False: an unimplemented record that pushes nothing, so
+// usn_02's `SetShipMaxSpeed(unit, GetShipMaxSpeed(unit)*1.5)` raises.
+inline constexpr bool kLuaGetShipMaxSpeedBound = false;
+// Packet cc13-fix14b. True: `GetDirection(entity)` 008A7CB0 pushes the entity's
+// world forward row (008A7DEC LEA EAX,[ESI+0CCh]; 008A7DF2 LEA EDX,[EAX+20h], i.e.
+// +ECh..+F4h) as 0088BA30's {x, y, z} table, after the 00414DB0 refresh when
+// +C8h is clear (008A7DD4). No null or class test. The host answers a units-host
+// slot from GameUnitsHost::unit_pose's forward row; a scene marker or an entity
+// with no slot pushes nothing and records UNIMPLEMENTED. False: an unimplemented
+// record that pushes nothing (jm01 / jm02 index the result and raise).
+inline constexpr bool kLuaGetDirectionBound = false;
 // Packet cc9_lua_mission_narrative (docs/MISSION_END.md, "The narrative queue").
 // True: MissionNarrative / MissionNarrativeEnqueue 008B0C10 enqueue (text,
 // callback, arguments) on [game+21E8h] (00734870), MissionNarrativeClear
@@ -1245,6 +1262,11 @@ private:
     std::size_t command_building_level_unresolved_{0};
     std::size_t command_building_owner_calls_{0};
     std::size_t command_building_owner_applied_{0};
+    // Packet cc13-fix14b.
+    std::size_t ship_max_speed_calls_{0};
+    std::size_t ship_max_speed_unresolved_{0};
+    std::size_t direction_calls_{0};
+    std::size_t direction_unresolved_{0};
     // Packet cc9_lua_mission_narrative: [game+21E8h]'s list +8h (00734870's
     // nodes: text +0Ch, callback +14h, arguments +1Ch) and the shown entry
     // +14h..+34h.
