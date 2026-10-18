@@ -1,0 +1,28 @@
+# cc9-lua68 USN02 a: the player stays on Houston (selected by the script) and clicks it to EscapePoint every 10 s (AI helm, torpedo evasion, the AutoTarget override still re-targets it) until frame 5200; once the FinalShips are sunk the player takes Houston's helm to EscapePoint at full throttle (role-1 take, 00780214, exempt from the override). Main 03d3df7f8 (export local\l68_m1): completed 475.01 s (reference) and 460.01 s (20,3), guard on both; the takehelm at 6000 / 7000 completes 495.00 / 505.00 s. The FinalShips are all sunk by 252.16 s on the reference seed, so the helm leg (Houston at (3375, -6666), 3.5 km out) meets no torpedo.
+539 select Houston
+540 moveto Houston EscapePoint
+740 moveto Houston EscapePoint
+940 moveto Houston EscapePoint
+1140 moveto Houston EscapePoint
+1340 moveto Houston EscapePoint
+1540 moveto Houston EscapePoint
+1740 moveto Houston EscapePoint
+1940 moveto Houston EscapePoint
+2140 moveto Houston EscapePoint
+2340 moveto Houston EscapePoint
+2540 moveto Houston EscapePoint
+2740 moveto Houston EscapePoint
+2940 moveto Houston EscapePoint
+3140 moveto Houston EscapePoint
+3340 moveto Houston EscapePoint
+3540 moveto Houston EscapePoint
+3740 moveto Houston EscapePoint
+3940 moveto Houston EscapePoint
+4140 moveto Houston EscapePoint
+4340 moveto Houston EscapePoint
+4540 moveto Houston EscapePoint
+4740 moveto Houston EscapePoint
+4940 moveto Houston EscapePoint
+5140 moveto Houston EscapePoint
+4400 moveto Exeter 1000 -5450
+5300 takehelm Houston 1.0 EscapePoint stop 200
