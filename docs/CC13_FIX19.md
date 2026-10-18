@@ -123,12 +123,17 @@ could be extended.
 
 ### Missions reached (this installation, `kLuaProximityTriggersBound` ON)
 
+Mission IDs (packet cc13-fix19c re-map). A menu mission runs the script its scene's `StageScript`
+(or `GameStageScript`) names, not the file its name resembles (docs/MISSION_LUA_MACHINE.md). Each
+ID below is the `["id"]` of the `scripts/datatables/missiontree.lua` entry whose `sceneFile` names
+that scene. A script that no missiontree scene names is marked **unreached**.
+
 | script | line | watched -> target | effect of the observer |
 | --- | --- | --- | --- |
-| `COTP-USN/usn_03_battle_of_santa_cruz.lua` (and `PRCPUS/`) | 961 | Hornet -> `Mission.HornetKillers[1]` (a spawned squadron), 1500 m | If that squadron is wiped out before it comes within 1500 m, the trigger retires and `luaUS03HornetStrikeIncoming` never runs from it. Before this packet the host kept testing the dead squadron's slot pose. |
-| `COTP-USN/PRCPUS/prcp_06_2ndbattle.lua` | 2546 | Hiei -> Enterprise (`GenerateObject`), 3900 m | Retired only when Enterprise is Lua-Killed or its wreck reaches KillDepth. While it sinks, the trigger still tests the wreck, as in the image. |
-| `COTP-IJN/PRCPIJN/jm02.lua`, `prcpjm02.lua` | 1123 | F2A06 -> `luaPickRnd(Mission.Bombers)` (a G3M squadron), 1500 m | As usn_03. `luaPickRnd` is script-side `math.random`, not image RNG. |
-| `COTP-USN/usn_09_leyte.lua` | 738 (807 in `PRCPUS/`) | Airfield -> Atlanta (`FindEntity`), 2100 m | As prcp_06. |
+| `COTP-USN/PRCPUS/usn_03_battle_of_santa_cruz.lua`: **PRCP01** (missiontree `COTP-USN/PRCPUS/usn_03_Battle_of_Santa_Cruz.scn`, StageScript `COTP-USN\\PRCPUS\\usn_03_battle_of_santa_cruz`). `COTP-USN/usn_03_battle_of_santa_cruz.lua`, the same line: **unreached** (no scene's StageScript names it) | 961 | Hornet -> `Mission.HornetKillers[1]` (a spawned squadron), 1500 m | If that squadron is wiped out before it comes within 1500 m, the trigger retires and `luaUS03HornetStrikeIncoming` never runs from it. Before this packet the host kept testing the dead squadron's slot pose. |
+| `COTP-USN/PRCPUS/prcp_06_2ndbattle.lua`: **unreached** (no scene's StageScript names it) | 2546 | Hiei -> Enterprise (`GenerateObject`), 3900 m | Retired only when Enterprise is Lua-Killed or its wreck reaches KillDepth. While it sinks, the trigger still tests the wreck, as in the image. |
+| `COTP-IJN/PRCPIJN/prcpjm02.lua`: **JM02** (missiontree `COTP-IJN/PRCPIJN/prcpijn_02_force_z.scn`, StageScript `COTP-IJN\\PRCPIJN\\prcpjm02`). `COTP-IJN/PRCPIJN/jm02.lua`, the same line: **unreached** (the `ijn_02_force_z` scenes name `challenge\\jm02`, `Ijn\\JM02` and `Ijn\\JM\\JM02`, and none of those scenes is in missiontree) | 1123 | F2A06 -> `luaPickRnd(Mission.Bombers)` (a G3M squadron), 1500 m | As usn_03. `luaPickRnd` is script-side `math.random`, not image RNG. |
+| `COTP-USN/PRCPUS/usn_09_leyte.lua` (line 807): **PRCP05** (StageScript `COTP-USN\\PRCPUS\\usn_09_Leyte`). `COTP-USN/usn_09_leyte.lua` (line 738): **unreached** (its scene `COTP-USN/usn_09_leyte.scn` names `USN\\usn_09_Leyte` and is not in missiontree) | 738 / 807 | Airfield -> Atlanta (`FindEntity`), 2100 m | As prcp_06. |
 
 There is no image RNG on this path. The only image calls are `00521EA0` and the retire.
 
@@ -209,11 +214,14 @@ There is no float arithmetic and no RNG (`00BD2F10` is not reached).
 
 ### Missions reached (this installation, the switch ON)
 
+Mission IDs are mapped through missiontree and the scene `StageScript`, as for the
+target-gone table above (packet cc13-fix19c).
+
 | script | line | squadron -> callback | prediction |
 | --- | --- | --- | --- |
-| `bsm/bsm_04_vengance_at_luzon.lua` | 1150, 1174 | `Mission.CurrentAttacker` -> `luaAttackerRetreat`, `luaLastAttackerDropped` | When the player's attacker has released its last round, the dialogue and retreat logic runs. In phase 4 `Mission.LastSquadDropped = true`. OFF, neither runs. |
-| `bsm/bsm_04_vengance_at_luzon.lua` | 1440 | `Mission.FortressRed` -> `luaFortressDroppedBombs` | When the B-17s' racks are empty, `luaObj_Completed("primary", 2)` and the PAYLOAD dialogue. OFF, that primary objective never completes from here. |
-| `usn/USNRM/usn_1_pearl.lua` (modded, mtime 2024-10-29) | 1507 | `Mission.OklahomaKillers` -> `luaOklahomaKillersRetreat` | When the torpedo squadron has dropped, `UnitSetFireStance(2)` and `PilotMoveToRange` to JapRetreat. OFF, it stays on its attack. |
+| `bsm/bsm_04_vengance_at_luzon.lua`: **BSM04** (StageScript `BSM\\bsm_04_vengance_at_luzon`) | 1150, 1174 | `Mission.CurrentAttacker` -> `luaAttackerRetreat`, `luaLastAttackerDropped` | When the player's attacker has released its last round, the dialogue and retreat logic runs. In phase 4 `Mission.LastSquadDropped = true`. OFF, neither runs. |
+| `bsm/bsm_04_vengance_at_luzon.lua`: **BSM04** | 1440 | `Mission.FortressRed` -> `luaFortressDroppedBombs` | When the B-17s' racks are empty, `luaObj_Completed("primary", 2)` and the PAYLOAD dialogue. OFF, that primary objective never completes from here. |
+| `usn/USNRM/usn_1_pearl.lua` (modded, mtime 2024-10-29): **USNRM01** (StageScript `USN\\USNRM\\usn_1_pearl`) | 1507 | `Mission.OklahomaKillers` -> `luaOklahomaKillersRetreat` | When the torpedo squadron has dropped, `UnitSetFireStance(2)` and `PilotMoveToRange` to JapRetreat. OFF, it stays on its attack. |
 | `global/commandhelpers.lua` | 3577, 14797 | `unit` -> `luaAutomaticReloader` (the debug reloader cheat) | Reached only through that cheat. |
 
 Each fire depends on the host's rack state. The cc9 release code empties the racks, and this
