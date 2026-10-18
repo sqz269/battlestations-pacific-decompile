@@ -194,7 +194,7 @@ STL code, allocators, `_free`, `_memmove_s` and xlen throws: `009063C0`, `009076
 
 | Address | Name (hypothesis) | Status | Notes |
 | --- | --- | --- | --- |
-| `00915760` | BSP_MissionScoreRecord_Clear | reconstructed | `mission_score_record_clear_00915760`: 25 scalar zeroes, 36 inline tree clears, two 16-bit vector erases (`00BF67A7`) and three string resets (`0041DD40`, 00915E9D). include/bsp/scoring_bodies.hpp:190 says the clear leaves slot+08h and slot+250h alone. In the binary it zeroes both (record+4 at 0091576F, byte record+24Ch at 00915E97); 008BC540 restores them afterwards. |
+| `00915760` | BSP_MissionScoreRecord_Clear | reconstructed | `mission_score_record_clear_00915760`: 25 scalar zeroes, 36 inline tree clears, two 16-bit vector erases (`00BF67A7`) and three string resets (`0041DD40`, 00915E9D). include/bsp/scoring_bodies.hpp:190 says the clear leaves slot+08h and slot+250h alone. In the binary it zeroes both (record+08h at 0091576C, dword record+250h at 009157C5; saved at 008BC6A3/008BC6A7 and restored at 008BC6C5/008BC6D5, record = mgr+slot*284h+4); 008BC540 restores them afterwards. |
 
 ## Scoring events: component failure and repair
 

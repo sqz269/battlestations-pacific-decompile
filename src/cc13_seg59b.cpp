@@ -1722,7 +1722,7 @@ void assign_native_string_inline(Seg59bHost& host, void* dst, void* src) {
 
 // ---------------------------------------------------------------------------
 // 00915760 BSP_MissionScoreRecord_Clear. __thiscall(ECX = record), RET. Callers 008BC540
-// (Scoring_ClearPlayerScore, which saves and restores record+4 and the byte +24Ch around it)
+// (Scoring_ClearPlayerScore, which saves and restores record+08h and record+250h around it)
 // and 00916980 (BSP_MissionPlayerRecords_Reset).
 // Evidence: 0091576C..00915801 dwords +8, +4, +0, floats +14h/+10h/+0Ch, then +1E0h, +1DCh,
 // +1D8h, +1D4h, +1D0h, +1CCh, +1C8h, +17Ch, +178h, +1E8h, +1E4h, +250h, +18Ch, +188h, +184h,
@@ -2118,6 +2118,8 @@ void scene_property_bag_subtract_equal_008f4290(Seg59bHost& host, void* bag, voi
 // when the sub-bag count is 0 (008F453E), other types remove directly; 008F4549 004F01F0(bag+4,
 // record). The loop (008F454E..008F4556) re-tests [it+4] with no 0047E480 call: the iterator
 // never advances, so a non-empty other spins on its first key. Reproduced as in the image.
+// The 00BF681B result is used with no null check after the guarded begin: a null allocation
+// reads [0+4], as in the image.
 // ---------------------------------------------------------------------------
 void scene_property_bag_subtract_same_type_008f4420(Seg59bHost& host, void* bag, void* other) {
     auto* const iterator = static_cast<Hash64Iterator*>(host.operator_new_00bf681b(0x0C));
@@ -2429,8 +2431,9 @@ void scene_property_bag_write_text_diff_008f7550(Seg59bHost& host, void* bag, vo
 // 008F79A0 BSP_ScenePropertyBag_RemoveMissing. __thiscall(ECX = bag, base, other), RET 8.
 // Caller: itself (008F7A6B); no absolute-dword reference.
 // Evidence: iterator {bag+4} begun (008F79CD); other != 0 -> a heap iterator 00BF681B(0Ch)
-// {other+4} begun (008F79F3) and copied over the local one (never freed; a null allocation is
-// read through, as in the image). vector<std::string> {+0, first, last, end} zeroed. Per node:
+// {other+4} begun (008F79F3) and copied over the local one (never freed). The 00BF681B result
+// is used with no null check after the guarded begin: a null allocation is read through at
+// 008F79FE, as in the image. vector<std::string> {+0, first, last, end} zeroed. Per node:
 // name = [node+4] or F89450; found = 008F7A4F 008F2260(base, name); found and type 6 ->
 // 008F7A6B 008F79A0(bag, found+0Ch, [[node+8]+0Ch]); found other type -> nothing; not found ->
 // std::string (00408720 at 008F7AA5) pushed by 008F7AB8 00849170(vector, &string), then freed.
