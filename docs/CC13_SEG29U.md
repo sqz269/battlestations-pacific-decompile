@@ -110,13 +110,20 @@ had that note before the code.
 
 ### Adoption notes (cc9 host models)
 
-1. **006BCA80 (mismatch, live on the carrier land final).** The binary leads the path point by
-   the owner's velocity (`[[holder+4]+7Ch]` vtable +34h) × t, each product stored as a float. It
-   also rotates T by holder+8Ch × t whenever that angle is not exactly zero.
-   `game_hosts_units.cpp` `land_path_point_006bca80` (~line 32125) substitutes velocity = 0 and
-   no rotation (labelled), and refuses the moving mother-ship holder elsewhere. For a carrier
-   deck, the second call (009AFD52, t ≠ 0, on the ground) therefore differs. The function does
-   not use the shared RNG 00BD2F10. team-lead had this note at once.
+1. **006BCA80 (MINOR, per-operation float rounding only; corrected 2026-10-18).** The binary
+   leads the path point by the owner's velocity (`[[holder+4]+7Ch]` vtable +34h) × t, storing
+   each product as a float before the add. It also rotates T by holder+8Ch × t when that angle
+   is not exactly zero. Its callers are 007C7329, 009AFB46 and 009AFD52.
+   - My first note called this a live mismatch. I had read only the stand-in's own comment,
+     which is stale and which cc9-physics19 is fixing.
+   - In `game_hosts_units.cpp`, `land_path_point_006bca80` (~line 32155) returns T only. Its
+     009AFD52 caller (`land_geometry_009afaf0`, ~lines 32210-32241) applies the owner-velocity ×
+     lead itself, under `kCarrierLandingVelocityLeadBound` (line 7462). That switch has been ON
+     since 2026-10-17, with leads=4761 on USN01.
+   - holder+8Ch has no writer in 006BEE40, so the rotation arm is dead in practice.
+   - The remaining delta is rounding: the host adds `p + v × lead` in double with one final
+     rounding, while the binary stores `float(v × t)` and then `float(p + that)`.
+   - The function does not use the shared RNG 00BD2F10 and does not touch +900h.
 2. **006BCA40: matches.** `landing_t_world_006bca40` (~line 15878) is T through frame +8h.
 3. **006BC960: matches** for both arms.
    - Airfield, the comment at ~line 13755: clearance 35.0 (block vtable +10h = 006CA5A0); the
@@ -124,8 +131,9 @@ had that note before the code.
    - Mother ship, the comment at ~line 13965.
    - The host takes the sums in double (labelled), which can only differ from the 24-bit
      schedule by a double rounding.
-4. **006BCD80 / 006BCE60: match.** `land_set_held_006bcd80(bool)` (~line 32746) sets every
-   matching record, as the binary does. The lock and the checked-index tests are host
+4. **006BCD80 / 006BCE60: match.** `land_set_held_006bcd80(bool)` (~line 32776) sets every
+   matching record, as the binary does. Its callers are the land/abort enter and exit
+   (009B0980 / 009B09A0), which pass true and false. The lock and the checked-index tests are host
    infrastructure.
 5. **006BD080: matches** through `landing_request_006c54c0` (~line 16448):
    - The caller 006C54C0 maps out+8h to approach+4Ch, out+0Ch (the record's +0Dh) to
@@ -133,11 +141,15 @@ had that note before the code.
      `rec.mode_10` are those fields.
    - One difference: the host takes the out+0h word (plane+174h, which 006C550A tests for
      non-zero) as always non-zero.
-6. **006BC5E0: labelled substitution** in `game_hosts_script_orders.cpp` (~line 2008). The
-   distance test (class+268h × 1.2 against the target) is not read, and only the moveto class
-   is tested. That differs only for a moveto whose point is not the squadron's own.
-7. **006BC730 (minor):** `air_operations.cpp` `air_ops_held_slot_order_006ccda0` (~line 1022)
-   - It writes `assigned_count = max(unstowed, 0)`; the binary stores 007EE5C0's value
-     unclamped.
-   - It assumes a squadron is present; the binary stores 0 without one.
-   - The state-1 write is overwritten by 006CD0EC in both.
+6. **006BC5E0: labelled substitution, confirmed at the caller.** `player_air_ops_order`
+   (`game_hosts_script_orders.cpp` ~lines 2082-2087) sets `holding` from the flight leader's
+   order class being moveto. The distance test (class+268h × 1.2 against the target) is not
+   read. That differs only for a moveto whose point is not the squadron's own.
+7. **006BC730 (MINOR, no observable difference on the host's paths).** It is reached through
+   `air_ops_held_slot_order_006ccda0` (`air_operations.cpp` ~line 1025), whose only caller is
+   `GameScriptOrdersHost::player_air_ops_order` (`game_hosts_script_orders.cpp` ~line 2090).
+   - The `max(unstowed, 0)` clamp has no effect: the caller counts the members itself, from 0
+     upward, so the value is never negative.
+   - A slot without a squadron is refused by the caller ("the slot holds no squadron this host
+     built"). The binary would store +8h = 0 and state 1 there, which 006CD0EC then overwrites
+     with state 3.
