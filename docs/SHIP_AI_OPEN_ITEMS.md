@@ -19239,3 +19239,66 @@ your runs at once, at least 60 s between launches, no build while a run is start
 while a run uses the tree exe (build in `local\s58_sa_on` through pair_export instead). Launcher:
 `local\s58_rows.ps1` (prefix s58_; copy it to s59_). OFF baselines in local\: s58_off3_os / s58_off4_os
 (USNOS 30000), s58_off4_j5 (JM05 12000), s58_st2_os (USNOS 150000 on 12f8cbb1c).
+## 290. USNOS: Loui1 and Loui2 kill each other. The host is faithful (cc9-ships59, 2026-10-18)
+
+Lead queue item 1, from 289's side note. Log `local\s58_st2_os.log` (USNOS 150000 on 12f8cbb1c, s56_os_c13 orders).
+
+**What the log shows.** Neither ship dies of a direct hit. Both die of damage control: `gunnery: damage control
+death Loui1 t=2767.57 water_total=7983 fire_total=1222`, and Loui2 at 2771.13. The death row names the other
+ship because it owns the last damaging hit, not the flooding.
+- Both ships are in `attackmove` on HQ2, stopped (`navigate_astern`, throttle 0), 344-366 m apart, with no enemy
+  ship within 5.4 km.
+- Loui1's damage starts at 2626.79 with a component failure (Explosion) at full health, in the same step as a
+  round of bullet class 9 that kills HQ2 and also strikes Loui1 (`impact blast bullet=9 on HQ2 ... health=0.0`,
+  then `on Loui1 dist=0.0`). Fires follow at 2634 and 2657, then flooding.
+- Loui2's first damage (1296.99) is an enemy-phase hit; its late hits at 2700-2771 are bullet 23 and 15 rounds
+  from Loui1 (`took` 0-11 per round against armour 130).
+- So the two ships shell HQ2 through each other's hull. The killing guns are cat 3 (Loui2, artillery) and cat 6
+  (Loui1, light artillery flak).
+
+**The image, from four earlier independent reads:**
+- The direct impact excludes only the shooter. `0084BF00` sweeps with `0098B370`, which reaches `0098ADD0` and
+  `0098AC20`; the excluded entity is compared by pointer at `0098AEE4` / `0098ACE3` and is the shooter's
+  collision root (`docs/CC13_JM08_AA_TRUCK_HQ_DAMAGE.md`, `docs/KILL_CREDIT.md`). The one side exemption in
+  `0084BF00` (weapon class 11h against a shooter of the same `+9D4h` parent) needs `[shot+0CCh]` to pass
+  `IsKindOf(0Fh)`; a shell's `[shot+0CCh]` is the projectile (class 29h), so it applies to squadron aircraft
+  guns only.
+- The blast `0084BAD0` gathers every owner in the radius and skips only the burst's source
+  (`docs/RANDOM_STREAMS.md` 5).
+- Credit `0077CE60` is written with no side comparison (same doc).
+- The fire gate. Gun `vtable[1D4h]` (`00730A20 -> 0072F6E0`) answers 1 unless `gun+42Ch` holds a predicate, which
+  `00729560` installs for weapon kinds 1, 5 and 6 only (`docs/GUNNERY_OPEN_ITEMS.md` 164.2). The ArtilleryGunnerBot
+  accept `006DEF30` for kinds 2-4 runs the arc solve and the traverse window and then that slot, so **artillery
+  has no line-of-fire test**. Kind 6 has one, and the host binds it (`kAaLineOfFireBound`, ON). Its answer is cached
+  per (gun, target) for the gun's life (164.1), so a friend that moves into the line after the first query does
+  not hold fire.
+
+**Verdict.** The host matches the image on every step that matters here: no side filter on the impact, the blast
+or the credit, and no artillery line-of-fire gate. The friendly kills are image behaviour. No switch, no code
+change. For the re-plan (item 5): keep the two Louisianas out of each other's line to HQ2. Give them attack
+positions on different bearings, or bring one in only after the other has stopped firing.
+
+## 291. cc15's `kDirectorQueueCc13BodiesBound`: pair and flip (cc9-ships59, 2026-10-18)
+
+Lead queue item 2. The switch (src/game_hosts_commands.cpp) routes four director-queue sites to
+src/gameplay_seg38_cc13.cpp: 0071C0C0 (inside `command_accepted`), 0071D780, 0071E200 and the 0071D900 slot clear.
+
+**Reach.** USN01 never reaches `command_accepted` (00835e90). USN04 does, with no orders: `local\s58_off1_u4.log`
+counts 00835e90 calls=858, 0071d780 calls=1659 and 0071e200 calls=867 in 20000 frames.
+
+**Predictions (written before the pair).** Gameplay-identical (pair_diff exit 0 or 1) on USN04 20000.
+- 0071C0C0: the host's `command != 0 && count < 10` and cc13's first-empty-slot test agree whenever the slots
+  are packed from 0, which is always true here.
+- 0071D780: both weight a slot-0 `moveonpath` by its point count, and slots 1..9 carry no path in either.
+- 0071D900: the same 5Dh record (arm 1, slot).
+- 0071E200: cc13 sums in float and accepts a sum of exactly 1.0 (`<=`, the image's FCOMIP/JA); the host sums in
+  double and uses `< 1.0`. They differ only when two targets are about 1 m apart. A repeat target in this host
+  is either the same point (sum 0) or far away, so I expect no change.
+
+**Pair (USN04 20000, reference env).** OFF `local\s59_dqoff_u4.log` (tree exe at c123ad2dc), ON
+`local\s59_dqon_u4.log` (`local\s59_dq_on`, manifests beside each log). `pair_diff` exit 1: gameplay identical,
+with 90 death rows, 181 unit-table rows and 25295 shots on both sides. The native table adds
+`EntityCommand::has_free_command_slot 0071c0c0 calls=858`, so the cc13 base test runs on every `command_accepted`.
+The only other moved line is `ship ai free: refills` 2455 -> 2394, the known avoidance-refill noise.
+**Flipped ON** by mechanism. With every site routed, the host's own `< 1.0` projection at 0071E200 is only the OFF
+arm, so no boundary fix is needed.
