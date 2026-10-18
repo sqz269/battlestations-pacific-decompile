@@ -142,7 +142,7 @@ inline constexpr bool kGroundRetakeoffBound = true;
 // origin is placed at its station and turned along the leader's wake; a leader
 // re-places every other member at the origin, 00819672). False: the heading and
 // the reshape are records, a follower is never placed and a leader moves alone.
-inline constexpr bool kPutToFormationBound = false;
+inline constexpr bool kPutToFormationBound = true;  // ON: PRCP01 pair, SQUADRON_LAND_TASK 5id.2
 
 // Packet cc9_throttle_dead_band (docs/SQUADRON_LAND_TASK.md 5bs). True: 0099D300's
 // demand arm skips the throttle increment (0099DB1F-0099DB56 JBE 0099DBCB) when
