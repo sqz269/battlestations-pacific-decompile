@@ -356,6 +356,14 @@ struct GameMissionFrameHost::Impl {
             suppress_77edf0{0}, recon_not_evaluated{0}, recon_below{0}, plane_throttled{0},
             filtered{0}, reports{0};
     } kill_warning{};
+    // The hit block of 00988510 (009895D8..00989992) under the same switch.
+    struct HitWarningCounts {
+        unsigned long long calls{0}, suppressed_d0{0}, clock{0}, flags{0},
+            recon_not_evaluated{0}, recon_below{0}, stamp_throttled{0},
+            player_controlled{0}, own_shooter{0}, plane_count{0},
+            enemy_payload_not_evaluated{0}, neutral{0}, not_reportable{0},
+            command_building_not_evaluated{0}, reports{0};
+    } hit_warning{};
     bool kill_plane_throttle_init{false};      // 00F8A0D0 bit 0
     float kill_plane_throttle_last{0.0f};      // 00F8A0CC
     std::map<std::string, std::array<unsigned long long, 4>> warning_report_outcomes{};
@@ -691,7 +699,52 @@ private:
     GameMissionFrameHost::Impl& host_;
 };
 
-// The WarningHost calls 00973A90, 009744C0 and 00974150 make: the clock and the
+// What 00974C70 asks of a hit. The image's attacker is [hit+4]->vtable[108h](),
+// the shot's attribution object; the host's hit event carries its two fields
+// this block reads as the shot's team (attacker+1Ch, attacker_player_index) and
+// the firing unit (attacker+ACh, `shooter`), so the attacker travels as the
+// shooter's entity. attacker+CCh, the weapon, is not in the event: weapon_cc
+// answers null, so the kind-2Ah payload test is false. Its only reached use is
+// the enemy-target arm, which the caller counts as not evaluated instead.
+class HitWarningQueryBinding final : public bsp::HitWarningQuery {
+public:
+    HitWarningQueryBinding(GameMissionFrameHost::Impl& host, int attacker_player_index)
+        : units_(host), attacker_player_index_(attacker_player_index) {}
+    bool is_kind_5c(bsp::WarningEntity e, std::int32_t kind) override {
+        return units_.is_kind_5c(e, kind);
+    }
+    bsp::WarningEntity plane_owner_9d4(bsp::WarningEntity e) override {
+        return units_.plane_owner_9d4(e);
+    }
+    bsp::WarningEntity controlled_unit_e188d8() override { return units_.controlled_unit_e188d8(); }
+    std::int32_t local_slot_18ec() override { return units_.local_slot_18ec(); }
+    std::int32_t local_side_id() override { return units_.local_side_id(); }
+    std::int32_t side_54(bsp::WarningEntity e) override { return units_.side_54(e); }
+    bsp::WarningRelation relation_00803ce0(bsp::WarningEntity e) override {
+        return units_.relation_00803ce0(e);
+    }
+    bool is_player_controlled_00965810(bsp::WarningEntity e) override {
+        return units_.is_player_controlled_00965810(e);
+    }
+    std::int32_t slot_1c(bsp::WarningEntity) override { return attacker_player_index_; }
+    bsp::WarningEntity carrier_ac(bsp::WarningEntity attacker) override { return attacker; }
+    bsp::WarningEntity weapon_cc(bsp::WarningEntity) override { return nullptr; }
+    // Command-building targets are counted out by the caller before 00974C70.
+    bool is_base_78c(bsp::WarningEntity) override { return unreached<bool>(); }
+    std::int32_t owner_slot_180(bsp::WarningEntity) override { return unreached<std::int32_t>(); }
+    std::int32_t count_command_buildings_of_slot(std::int32_t) override {
+        return unreached<std::int32_t>();
+    }
+
+private:
+    template <typename T> static T unreached() {
+        throw std::logic_error("00974C70 reached a command-building query");
+    }
+    KillWarningQueryBinding units_;
+    int attacker_player_index_;
+};
+
+// The WarningHost calls 00973A90, 009744C0, 00974150 and 00974C70 make: the clock and the
 // observer handles of the +3Ch/+54h/+6Ch slots. The host keeps no observer
 // lists, so a link is the slot's pointer in the object. Nothing else is reached
 // from those constructors.
@@ -2257,6 +2310,160 @@ void game_warning_report_loss_009813a0(std::size_t unit) {
     if constexpr (kWarningMessageBankCc15Bound) game_warning_kill_block_00981e07(*host, unit);
     // Teardown 0077EDF0, 006952A0, 00695870, 006E0860.
     host->record("WarningManager::loss_teardown", 0x0077edf0u);
+}
+
+void game_warning_report_hit_00989604(std::size_t victim, std::size_t shooter,
+    int attacker_player_index) {
+    if constexpr (kWarningMessageBankCc15Bound) {
+        GameMissionFrameHost::Impl* host = g_warning_owner;
+        if (host == nullptr || host->units == nullptr) return;
+        const GameUnitsHost& units = *host->units;
+        if (victim >= units.count()) return;
+        auto& counts = host->hit_warning;
+        ++counts.calls;
+        KillWarningQueryBinding query(*host);
+        const int party = local_player_party();
+        const bsp::WarningEntity raw = warning_entity_of_unit(victim);
+        // 00988546..0098859B: [esp+34h] = hitEntity->vtable[140h]() when it is a
+        // kind-2 object, a plane's squadron (the plane registry, as the hit
+        // listeners read it).
+        std::size_t outer = victim;
+        if (const bsp::PlaneSquadronHostRecord* squadron =
+                bsp::plane_squadron_registry().find_by_member_unit(victim)) {
+            if (squadron->squadron_unit != bsp::kPlaneSquadronNoUnit) outer = squadron->squadron_unit;
+        }
+        // 0098870B..00988734: [esp+17h], the shot's team +1Ch is the local slot.
+        const bool local_attacker = attacker_player_index == query.local_slot_18ec();
+        // 00988740..00988770: the relation to the hit entity. [esp+98h], a local
+        // attacker on our own unit, only drops the 0077EDF0 tests below, which
+        // have no entries here, so both arms read the same.
+        const int relation = warning_relation_00803ce0(*host, party, victim);
+        // 009895D8..009895E3: +104h is set only by 00979670 OverrideMessage,
+        // which this process does not bind, so a listener cannot set it.
+        // 00989604..0098964B / 009896CA..00989702: +D0h, slot 0, clock > 4.0.
+        if (host->warning.suppressed) {
+            ++counts.suppressed_d0;
+            return;
+        }
+        if (!bsp::warning_report_clock_allows(host->world_clock)) {
+            ++counts.clock;
+            return;
+        }
+        // 00989651..0098967A: +5Ch set, +5Dh/+60h/+5Eh clear; without own fire
+        // 0077EDF0 (no entries in this process, as at 00977690) as well.
+        const auto live = [&](std::size_t unit) {
+            bsp::SceneNodeFlags flags;
+            bool pending = false;
+            return units.unit_scene_node_flags(unit, flags)
+                && units.unit_pending_destroy_0060(unit, pending)
+                && flags.active && !flags.torn_down && !pending && !flags.destroyed;
+        };
+        if (!live(victim)) {
+            ++counts.flags;
+            return;
+        }
+        // 0098969C..00989742: the hit entity's recon record for the local party.
+        const GameGunneryHost* gunnery = units.gunnery();
+        if (gunnery == nullptr) {
+            ++counts.recon_not_evaluated;
+            return;
+        }
+        if (gunnery->recon_sensor_pass_state().level(party, victim)
+                != bsp::ReconDetectionLevel::identified) {
+            ++counts.recon_below;
+            return;
+        }
+        // 00989748..00989784, x87: manager+15Ch[hit entity]. Ahead of the clock
+        // and not a local attacker ends the block; the stamp becomes clock + 2.0
+        // (double 00D7A308) either way, before the test's branch.
+        float& stamp = host->warning_loss_stamp_15c[victim];
+        const bool throttled = stamp > host->world_clock && !local_attacker;
+        stamp = static_cast<float>(static_cast<double>(host->world_clock) + 2.0);
+        if (throttled) {
+            ++counts.stamp_throttled;
+            return;
+        }
+        std::size_t target = victim;
+        if (relation == 0) {
+            if (local_attacker) {
+                // 00989829..00989832: 00965810 on the hit entity.
+                if (query.is_player_controlled_00965810(raw)) {
+                    ++counts.player_controlled;
+                    return;
+                }
+            } else {
+                // 009897E2..009897FF: the firing unit (the image's [esp+2Ch]) is
+                // on the local party.
+                if (shooter < units.count() && units.unit_side_0054(shooter) == party) {
+                    ++counts.own_shooter;
+                    return;
+                }
+                // 00989805..00989822: a plane whose squadron (+9D4h) holds fewer
+                // than two planes (+3CCh).
+                if (query.is_kind_5c(raw, bsp::kWarningKindPlane)) {
+                    const bsp::PlaneSquadronHostRecord* squadron =
+                        bsp::plane_squadron_registry().find_by_member_unit(victim);
+                    if (squadron == nullptr || squadron->live_count() < 2) {
+                        ++counts.plane_count;
+                        return;
+                    }
+                }
+            }
+            target = outer;  // 00989838 MOV EBP,[ESP+34h]
+        } else if (relation == 1) {
+            // 0098978A..009897C9, 00989843: only a payload hit (attacker+CCh kind
+            // 2Ah) from a local-side squadron reports; the weapon is not in the
+            // host's hit event.
+            ++counts.enemy_payload_not_evaluated;
+            return;
+        } else if (relation == 2) {
+            ++counts.neutral;
+            return;
+        }
+        // 00989855..00989871: 009761D0 (the live bytes and 0077EDF0) without own
+        // fire, 009681D0 (the live bytes) with it, on the reported entity.
+        if (!live(target)) {
+            ++counts.not_reportable;
+            return;
+        }
+        // 00989877..0098994A: a command building of another slot (+180h) sends
+        // the E6h session message first; its +78Ch/+180h are not in the host.
+        if (query.is_kind_5c(warning_entity_of_unit(target), bsp::kWarningKindCommandBuilding)) {
+            ++counts.command_building_not_evaluated;
+            return;
+        }
+        // 0098994C..00989992: operator_new(88h), 00974C70(target, attacker), 009763E0.
+        HitWarningQueryBinding hit_query(*host, attacker_player_index);
+        const bsp::WarningEntity attacker =
+            shooter < units.count() ? warning_entity_of_unit(shooter) : nullptr;
+        bsp::cc13_seg49_64_78::WarningObject warning;
+        WarningObjectHostBinding warning_host(*host);
+        bsp::construct_hit_warning_00974c70(warning, warning_host, hit_query,
+            warning_entity_of_unit(target), attacker);
+        bsp::WarningRecord record;
+        record.message_id = warning.id;
+        record.applied_at = warning.validity_ref_time;  // +10h
+        record.clip_count = warning.messages.size();    // filled by vtable[3], 0097FA90
+        record.positional_speaker = static_cast<std::uint32_t>(
+            reinterpret_cast<std::uintptr_t>(warning.ambient));
+        record.flat_speaker = static_cast<std::uint32_t>(
+            reinterpret_cast<std::uintptr_t>(warning.reporter));
+        record.target_id = static_cast<std::uint32_t>(target);  // +80h
+        record.kind = 4;                // vtable 00D1B308 +10h, 00973DC0
+        record.priority = 0.0f;         // +18h, 0096F220
+        record.pending_lifetime = 5.0f; // +1Ch, 0096F230: 00CE3850
+        record.applied_lifetime = 15.0f; // +20h, 0096F240: 00CE5380
+        WarningManagerBinding binding(*host);
+        const bsp::WarningReportResult result =
+            bsp::report_warning_009763e0(host->warning, binding, record, host->world_clock);
+        ++counts.reports;
+        count_warning_report(*host, record.message_id, result);
+        host->done("WarningManager::report_hit_warning", 0x00989992u);
+    } else {
+        static_cast<void>(victim);
+        static_cast<void>(shooter);
+        static_cast<void>(attacker_player_index);
+    }
 }
 
 void game_scoring_set_real_play_time_running_00905340(bool running) {
@@ -4277,6 +4484,16 @@ void GameMissionFrameHost::report(long requested_frames) {
             kill.suppressed_d0, kill.slot, kill.clock, kill.suppress_77edf0,
             kill.recon_not_evaluated, kill.recon_below, kill.plane_throttled, kill.filtered,
             kill.reports);
+        const auto& hit = host.hit_warning;
+        host.log.notef("summary mission hit warning calls=%llu suppressed_d0=%llu clock=%llu "
+            "flags=%llu recon_not_evaluated=%llu recon_below=%llu stamp_throttled=%llu "
+            "player_controlled=%llu own_shooter=%llu plane_count=%llu "
+            "enemy_payload_not_evaluated=%llu neutral=%llu not_reportable=%llu "
+            "command_building_not_evaluated=%llu reports=%llu (009895d8..00989992)",
+            hit.calls, hit.suppressed_d0, hit.clock, hit.flags, hit.recon_not_evaluated,
+            hit.recon_below, hit.stamp_throttled, hit.player_controlled, hit.own_shooter,
+            hit.plane_count, hit.enemy_payload_not_evaluated, hit.neutral, hit.not_reportable,
+            hit.command_building_not_evaluated, hit.reports);
         for (const auto& [id, outcome] : host.warning_report_outcomes) {
             host.log.notef("summary mission warning report id %s queued=%llu duplicate=%llu "
                 "unknown=%llu other=%llu", id.c_str(), outcome[0], outcome[1], outcome[2],
