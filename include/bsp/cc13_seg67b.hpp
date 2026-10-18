@@ -215,10 +215,10 @@ public:
     virtual void gun_bot_attach_008fbc80(void* bot, void* node) = 0;
     // 009E4330 BSP_ShipAi_NavigationBlockConstruct: __thiscall(ECX = block, ship), RET 4.
     virtual void ship_ai_nav_block_construct_009e4330(void* block, void* ship) = 0;
-    // 00424C40 BSP_GameSettings_GetSingleton: cdecl, EAX = the settings record.
-    virtual void* game_settings_singleton_00424c40() = 0;
-    // 00BD1860 BSP_CriticalSection_Create: cdecl, EAX = the new lock handle.
-    virtual std::uint32_t critical_section_create_00bd1860() = 0;
+    // 009F126B..009F1401, the tail of 009F1160: bind to
+    // bsp::ship_ai_brain_produce_tail_009f126b (src/ship_ai_brain_producers.cpp). The goal
+    // defaults, the seven stream-1 draws and the critical section at brain+4h.
+    virtual void ship_ai_brain_produce_tail_009f126b(void* brain) = 0;
     // task->vtable[+28h](), RET, AL (a bot task's own predicate slot).
     virtual std::uint8_t task_vcall_28_flag(void* task) = 0;
     // task->vtable[+3Ch](), RET, EAX.
@@ -982,13 +982,11 @@ void* bot_approach_moveto_construct_009c1c30(Cc13Seg67bHost& host, void* a, void
 void* bot_task_make_retreat_009ca2b0(Cc13Seg67bHost& host, void* bot);
 // 009CA780: __fastcall(ECX = strafe approach), RET.
 void bot_approach_strafe_rearm_target_point_009ca780(Cc13Seg67bHost& host, void* a);
-// 009CC5B0: __thiscall(ECX = strafe task, state), RET 4.
-void bot_task_strafe_set_state_009cc5b0(Cc13Seg67bHost& host, void* task, void* state);
 // 009CD300: __fastcall(ECX = bot, EDX = target), RET, EAX = the new strafe task or 0.
 void* bot_task_make_strafe_009cd300(Cc13Seg67bHost& host, void* bot, void* target);
 // 009D4E30: __fastcall(ECX = bot, EDX = target), RET, EAX = the new torpedo task or 0.
 void* bot_task_make_torpedo_009d4e30(Cc13Seg67bHost& host, void* bot, void* target);
-// 009DDBA0: __fastcall(ECX = ship AI), RET: the EH cleanup of the two path plans at +60h.
+// 009DDBA0: __thiscall(ECX = ship AI), RET: the EH cleanup of the two path plans at +60h.
 void ship_ai_destruct_path_plans_009ddba0(Cc13Seg67bHost& host, void* ai);
 // 009E4F90: __thiscall(ECX = sub_attack parent, brain), RET 4, EAX = parent.
 void* ship_ai_sub_attack_construct_009e4f90(Cc13Seg67bHost& host, void* p, void* brain);

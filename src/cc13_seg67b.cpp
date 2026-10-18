@@ -4788,6 +4788,9 @@ constexpr float kGoTowards18_00cffd60 = 2000.0f;   // [00CFFD60]
 // (+F0h) in that order (009AEE52-009AEE98). RET 8, EAX = block.
 // RNG: the draws of 009AB920 and 009C2AC0 are the hooks'; then one shared-stream
 // U(0, 0.6) in each 009C2980, follow (+12Ch) first and prepare (+1C4h) second.
+// Whole body: cc9 models this construction inline in kz_install_009af720
+// (game_hosts_units.cpp ~26514, the 009AED20 note at ~26556, kz_moveto_near /
+// kz_moveto_speed_range).
 // UNCERTAINTY: EH unwinding not modelled.
 void* bot_approach_kamikaze_construct_009aed20(Cc13Seg67bHost& host, void* block, void* bot,
                                                void* target) {
@@ -4894,7 +4897,7 @@ void* bot_task_make_retreat_009ca2b0(Cc13Seg67bHost& host, void* bot) {
 // (009CA786-009CA7A0); ref+64h..+70h = row+E8h..+F4h (009CA7A7-009CA7D2); 009FA260(ECX
 // = ref) (009CA7D7); 007B7870(ECX = [a+20h], [a+70h], (a+80h, a+84h, a+88h) by value)
 // (009CA80E). Whole body: cc9 models it inline in the strafe go-towards enter (the
-// "009CA866 -> 009CA780" site) with the pick on a stand-in seed and without the
+// "009CA866 -> 009CA780" site, game_hosts_units.cpp ~24450) with the pick on a stand-in seed and without the
 // 007B7870 tail.
 void bot_approach_strafe_rearm_target_point_009ca780(Cc13Seg67bHost& host, void* a) {
     void* const row = ptr_at(a, 0x14);
@@ -4911,16 +4914,6 @@ void bot_approach_strafe_rearm_target_point_009ca780(Cc13Seg67bHost& host, void*
     host.approach_ref_pick_aim_offset_009fa260(ref);
     const float point[3] = {at<float>(a, 0x80), at<float>(a, 0x84), at<float>(a, 0x88)};
     host.opportunistic_rocket_set_target_007b7870(ptr_at(a, 0x20), ptr_at(a, 0x70), point);
-}
-
-// 009CC5B0 (009CC5B0-009CC5DE). state == [task+310h] -> nothing; else the old
-// state's vtable[8] when non-null, [task+310h] = state, state->vtable[4].
-void bot_task_strafe_set_state_009cc5b0(Cc13Seg67bHost& host, void* task, void* state) {
-    void* const old = ptr_at(task, 0x310);
-    if (state == old) return;
-    if (old != nullptr) host.object_vcall_08_noargs(old);
-    at<std::uintptr_t>(task, 0x310) = reinterpret_cast<std::uintptr_t>(state);
-    host.state_vcall_04_enter(state);
 }
 
 // 009CD300 (009CD300-009CD365). EH frame 00CB004B. t = operator new(6FCh) (009CD321);
@@ -5032,7 +5025,7 @@ void* ship_ai_attackmove_approach_construct_009e5ca0(Cc13Seg67bHost& host, void*
 // +4h (009E848B-009E84CA); s+14FCh = 1.0; s+1500h = -U(0, 1) on stream 1 (00BD2F10 at
 // 009E84F8); s+1504h = 00D05704, s+1508h = &s+14F4h, then (s+14F4h)->vtable[4]()
 // (009E84FF-009E851C). RET 4, EAX = s.
-// RNG: 009E5530's draws (the hook's), then this body's one. Every ship's brain reaches
+// RNG: 009E5530's sixty U(0, 2.0) (009E55A1), then 009E8450's one. Every ship's brain reaches
 // it through 009F39C0 (009F3AB2).
 // UNCERTAINTY: EH unwinding not modelled.
 void* ship_ai_attackmove_construct_009e8450(Cc13Seg67bHost& host, void* s, void* owner) {
@@ -5094,21 +5087,13 @@ constexpr std::uint32_t kBrainRecordAf8Vtable_00d21898 = 0x00D21898u;
 // [r] = 00D21990; 009E4330(r+8h, ship) (009F118D); r+AA8h = ship, r+AACh = [ship+538h],
 // r+AB0h = [ship+73Ch]; r+AB4h = ship->vtable[+5Ch](8) ? ship : 0 (009F11BF-009F11C9);
 // r+AB8h = [ship+738h]; r+AC4h = r+AB4h ? new(4) holding r+AB4h (null if the
-// allocation fails) : 0 (009F11DB-009F11F7). Defaults (009F11FD-009F12C7): byte +AC8h
+// allocation fails) : 0 (009F11DB-009F11F7). Defaults (009F11FD-009F1261): byte +AC8h
 // = 0; +AD0h..+AD8h, +AE0h..+AE8h = 0; +AF0h = 1.0; +AF4h = 3; +AFCh..+B04h, +B0Ch = 0;
-// byte +B08h = 1; +AF8h = 00D21898; +B20h, +B24h = 0; byte +B28h = 1; +B2Ch..+B34h =
-// the zero vector 00F87574; byte +B38h = 0.
-// RNG, stream 1, seven draws in this order: B3C = U(1, 2.0 [00CE3958]) (009F12CD,
-// spilled to a float and reloaded); B40 = -U(0, B3C) (009F12F1); B48 = -U(0, 1)
-// (009F1321); B50 = -U(0, 1) (009F1351); B58 = -U(0, 2) (009F1385); B44 = U(s+1ECh,
-// s+1F0h) (009F13B9); B4C = U(s+190h, s+194h) (009F13EB), s = 00424C40 (each range
-// reads the singleton twice; hi first). B44 = 1.0, B4C = 1.0 and B54 = 2.0 are stored
-// between the draws (B44 and B4C then overwritten). r+4h = 00BD1860() (009F13FF).
-// RET 4, EAX = r.
-// Whole body allowed: cc9 models only the seven draws, inline, with keyed per-name
-// stand-ins (game_hosts_ship_ai.cpp, seed_brain_draws_009f1160).
-// UNCERTAINTY: EH unwinding not modelled. The x87 draws pass through float stores; the
-// 24-bit model is exact here (53-bit would differ only inside 00BD2F10).
+// byte +B08h = 1; +AF8h = 00D21898.
+// 009F126B..009F1401 (the goal defaults, the seven stream-1 draws, the critical
+// section) is the existing ship_ai_brain_produce_tail_009f126b
+// (src/ship_ai_brain_producers.cpp), reached through the hook. RET 4, EAX = r.
+// UNCERTAINTY: EH unwinding not modelled.
 void* ship_ai_brain_record_construct_009f1160(Cc13Seg67bHost& host, void* r, void* ship) {
     at<std::uint32_t>(r, 0x000) = kBrainRecordVtable_00d21990;
     host.ship_ai_nav_block_construct_009e4330(ptr(r, 0x008), ship);
@@ -5143,36 +5128,7 @@ void* ship_ai_brain_record_construct_009f1160(Cc13Seg67bHost& host, void* r, voi
     at<std::uint32_t>(r, 0xB0C) = 0;
     at<std::uint8_t>(r, 0xB08) = 1;
     at<std::uint32_t>(r, 0xAF8) = kBrainRecordAf8Vtable_00d21898;
-    at<std::uint32_t>(r, 0xB20) = 0;
-    at<std::uint32_t>(r, 0xB24) = 0;
-    at<std::uint8_t>(r, 0xB28) = 1;
-    const float* const zero = host.global_vector_00f87574();
-    at<float>(r, 0xB2C) = zero[0];
-    at<float>(r, 0xB30) = zero[1];
-    at<float>(r, 0xB34) = zero[2];
-    at<std::uint8_t>(r, 0xB38) = 0;
-    const float b3c = host.random_uniform_00bd2f10(1, 1.0f, kTwo_00ce3958);
-    at<float>(r, 0xB3C) = b3c;
-    at<float>(r, 0xB40) = -host.random_uniform_00bd2f10(1, 0.0f, b3c);
-    at<float>(r, 0xB44) = kOne_00d7a24c;
-    at<float>(r, 0xB48) = -host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
-    at<float>(r, 0xB4C) = kOne_00d7a24c;
-    at<float>(r, 0xB50) = -host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
-    at<float>(r, 0xB54) = kTwo_00ce3958;
-    at<float>(r, 0xB58) = -host.random_uniform_00bd2f10(1, 0.0f, kTwo_00ce3958);
-    {
-        void* const hi_settings = host.game_settings_singleton_00424c40();
-        void* const lo_settings = host.game_settings_singleton_00424c40();
-        at<float>(r, 0xB44) = host.random_uniform_00bd2f10(
-            1, at<float>(lo_settings, 0x1EC), at<float>(hi_settings, 0x1F0));
-    }
-    {
-        void* const hi_settings = host.game_settings_singleton_00424c40();
-        void* const lo_settings = host.game_settings_singleton_00424c40();
-        at<float>(r, 0xB4C) = host.random_uniform_00bd2f10(
-            1, at<float>(lo_settings, 0x190), at<float>(hi_settings, 0x194));
-    }
-    at<std::uint32_t>(r, 0x004) = host.critical_section_create_00bd1860();
+    host.ship_ai_brain_produce_tail_009f126b(r);
     return r;
 }
 
@@ -5187,8 +5143,8 @@ void* ship_ai_brain_record_construct_009f1160(Cc13Seg67bHost& host, void* r, voi
 // 00411E70(b+B5Ch) registers, in order: "cruise", "stop", "follow", "land", "movetopos",
 // "moveonpath", "attackmove", "sub_attack", "kamikaze_attack" (009F3AEC-009F3B7E).
 // RET 4, EAX = b.
-// RNG, stream 1, in order: 009F1160's seven, 009E8450's one (after 009E5530's), then
-// 009E4F90's one, for every ship (no kind gate).
+// RNG, stream 1, in order: 009F1160's seven, 009E5530's sixty U(0, 2.0) (009E55A1),
+// then 009E8450's one, then 009E4F90's one: 69 for every ship (no kind gate).
 // Whole body allowed: cc9 models the construction inline (game_hosts_ship_ai.cpp,
 // seed_brain_draws_009f1160 with keyed per-name stand-ins, and the follow and land
 // state defaults); it cites this constructor's stores.
@@ -5271,6 +5227,8 @@ void* ship_ai_gun_bot_construct_009f3ba0(Cc13Seg67bHost& host, void* ai, void* s
 
 // 009F3F20 (009F3F20-009F3F7F). EH frame 00CB0CEB. operator new(2268h) (009F3F3E);
 // null -> EAX = 0; else 009F3BA0(t, ship) (009F3F59) and EAX = t.
+// cc9 reaches it only inline: register_generated_units (game_hosts_ship_ai.cpp ~12258,
+// the 00810DD0 -> 009F3F20 chain) and the unit+740h note at ~365.
 // UNCERTAINTY: EH unwinding (the delete on a throwing constructor) not modelled.
 void* ship_ai_allocate_brain_009f3f20(Cc13Seg67bHost& host, void* ship) {
     void* const t = host.operator_new_00bf681b(kShipAiSize_2268);

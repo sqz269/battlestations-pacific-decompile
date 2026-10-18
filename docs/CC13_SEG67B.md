@@ -534,7 +534,7 @@ The byte fields in these saves (inattackrange, insideAttackRange and bayDoorStat
 - **009C1C30**: the moveto approach constructor. It draws twice on stream 1: +2Ch = U(0, MaxAltOffset), then +58h = -U(0, 0.5). For the flight leader it seeds the arrival dwell +60h as min(planar distance, row+268h) / row+18Ch. cc9 models this inline in `run_moveto_task_install_009c3000` with per-name stand-ins, so the whole body is allowed. cc13_moveto1's `approach_moveto_construct_009c1c30` hook can route to it.
 - **009CA2B0 and 009CD300**: the retreat and strafe factories. Each calls operator new (564h and 6FCh bytes) and then the constructor. 009CD300 calls the local 009CC230.
 - **009CA780**: re-arms the strafe target reference from the strafe row, runs the 009FA260 pick, and hands the point to the opportunistic rocket (007B7870). cc9 models it inline without the 007B7870 tail.
-- **009CC5B0**: the strafe task's state set.
+- **009CC5B0**: the strafe task's state set, ledger-only. 009CC5B0-009CC5DE is the 009A56C0 instruction sequence with [ECX+310h], so it is the generic `set_state` in src/bot_task_states.cpp. The body that a129dc8a9 added was a second copy and has been removed.
 - **009D4E30**: the torpedo factory. It calls operator new (7DCh bytes) and then the local 009D3050.
 - **009DDBA0**: Ghidra matched this to the library's `~SubAllocator`, but it is game code. It runs `eh vector destructor iterator` over the ship AI's two path plans at +60h (68h bytes each, destructor 009DBDB0), and only the unwind funclets 00CB0630 and 00CB06C0 reach it.
 
@@ -542,9 +542,13 @@ The byte fields in these saves (inattackrange, insideAttackRange and bayDoorStat
 
 009E4F90 builds the sub_attack parent and its "approach" and "fire" children. 009E8450 builds the attackmove state, its approach sub-state 009E5CA0, and four further sub-states. Each constructor makes one stream-1 draw: 009E4F90 sets +CCh = -U(0, 1) at 009E5061, and 009E8450 sets +1500h = -U(0, 1) at 009E84F8.
 
-Both are reached for every ship: 00810DD0 -> 009F3F20 -> 009F3BA0 -> 009F39C0, which calls 009E8450 at 009F3AB2 and 009E4F90 at 009F3AC3 with no kind gate. In the image, every brain therefore draws 9 times: 009F1160's seven, then 009E8450's, then 009E4F90's.
+Both are reached for every ship: 00810DD0 -> 009F3F20 -> 009F3BA0 -> 009F39C0, which calls 009E8450 at 009F3AB2 and 009E4F90 at 009F3AC3 with no kind gate. In the image, every brain therefore makes 69 stream-1 draws, in this order:
+1. 009F1160's seven.
+2. 009E5530's sixty: U(0, 2.0 [00CE3958]) into each ring slot's +48h at 009E55A1, in a 60-pass loop reached through 009E8450 -> 009E5CA0.
+3. 009E8450's one.
+4. 009E4F90's one.
 
-cc9's `seed_brain_draws_009f1160` takes the seven draws. It takes the 009E4F90 draw for submarines only, with the comment "no other brain reaches sub_attack", and it never takes the 009E8450 draw. That leaves the shared stream two draws short for each surface ship and one short for each submarine at spawn. An URGENT-class adoption note was sent (submarine, shared RNG).
+cc9's `seed_brain_draws_009f1160` takes the seven draws. It takes the 009E4F90 draw for submarines only, with the comment "no other brain reaches sub_attack", and it never takes the 009E8450 draw. cc9's `ensure_approach_ring` builds the ring lazily and takes none of the sixty (ship_ai_attackmove_substates.cpp:125 sets jitter_48 = 0). So the shared stream is 62 draws short for each surface ship and 61 for each submarine at spawn. An URGENT-class adoption note was sent (submarine, shared RNG), and the lead has since sent cc9 this corrected count.
 
 Three STL instantiations are tagged library-only after their callees were read:
 - 009E48A0, the std::list destructor;
@@ -557,9 +561,9 @@ The chain 009F3F20 -> 009F3BA0 -> 009F39C0 -> 009F1160 is now four bodies:
 - 009F3F20 allocates 2268h bytes (009F3F3E) and runs 009F3BA0 on them (009F3F59); a failed allocation returns 0.
 - 009F3BA0 runs the gun-bot base 0072BBD0, builds the brain at ai+58h through 009F39C0 (009F3BE5), installs the ship-AI vtables, makes the brain's `cruise` state current (ai+2264h = ai+0BC8h, its vtable+4h at 009F3C27), and attaches through 008FBC80 to ship+310h (009F3C43).
 - 009F39C0 runs 009F1160, builds the state registry at brain+0B5Ch, the seven inline state objects, attackmove (009E8450) and sub_attack (009E4F90), then registers nine names in this order: "cruise", "stop", "follow", "land", "movetopos", "moveonpath", "attackmove", "sub_attack", "kamikaze_attack".
-- 009F1160 builds the navigation block (009E4330, hooked), the unit references, the submarine slot +0AB4h (`ship->vtable[+5Ch](8) ? ship : 0`) and its 4-byte holder at +0AC4h, the defaults, then seven stream-1 draws (009F12CD, 009F12F1, 009F1321, 009F1351, 009F1385, 009F13B9, 009F13EB) and the critical section at +4h.
+- 009F1160 builds the navigation block (009E4330, hooked), the unit references, the submarine slot +0AB4h (`ship->vtable[+5Ch](8) ? ship : 0`) and its 4-byte holder at +0AC4h, and the defaults through +0AF8h (009F1160-009F126A). 009F126B..009F1401 (the goal defaults, the seven stream-1 draws, the critical section) is the existing `ship_ai_brain_produce_tail_009f126b` (src/ship_ai_brain_producers.cpp), reached through a hook rather than restated.
 
-Whole bodies are allowed because cc9 models these constructors only inline (`seed_brain_draws_009f1160` with keyed stand-ins, the follow and land defaults, the initial cruise state). Its seven draws match the image's order and ranges; the two missing state-constructor draws are the finding of 3.42.
+Whole bodies are allowed because cc9 models these constructors only inline (`seed_brain_draws_009f1160` with keyed stand-ins, the follow and land defaults, the initial cruise state). Its seven draws match the image's order and ranges; the missing ring and state-constructor draws are the finding of 3.42.
 
 ### 3.44 Pilot-bot table slots and helpers, 00997340-0099C683 (packet cc13-seg67C)
 
@@ -639,7 +643,7 @@ There are 26 ledger-only rows (section 4 records only the group):
 | 009E8360 | `TrafficRecord{}` in `insert_traffic_record` | matches the read fields (timer -1.0, weight 1.0) |
 | 009E99A0 / 009E9AE0 | `tubes_min_reload` | matches; the host's operational test is the same constant for every tube |
 | 009E9BC0 | `torpedo_bot_range_00901ba0`'s list pick | matches |
-| 009EAA10 | `ship_ai_sub_attack_tick_009eaa90` (src/ship_ai_sub_attack.cpp) | matches; NaN arm differs (FCOMI JB takes cd - dt), unreachable with finite timers |
+| 009EAA10 | `ship_ai_sub_attack_tick_009eaa90` (src/ship_ai_sub_attack.cpp) | matches; NaN arm differs (FCOMI JB takes cd - dt), unreachable with finite timers, given a finite dt |
 | 009F30F0 | `ship_ai_approach_enter_009f3220` | matches; sixty keyed draws stand in for the stream-1 U(0, 2) at 009F314E |
 | 009F3D00 | `select_state_for_command_009f3d00` | matches |
 | 009F59F0 | `auto_target_owner_can_engage_009f59f0` (src/bot_fire_target.cpp) | matches |
