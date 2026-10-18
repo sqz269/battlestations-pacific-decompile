@@ -251,3 +251,17 @@ Ledger-only: 009AF230 is a byte-identical copy of 009A56C0 (`set_state`).
 | 009B6C10 / 009B7480 | level-bomb move-to state constructors (direct and from stream) | each makes one draw from the shared RNG; the stream form copies the reader handle and increments its count |
 
 Ledger-only: 009BC780 is spot-checked against the move-on-path model, which inlines it.
+
+### 3.12 Dive-bomb and move-to task and state bodies, the leader-velocity copy and the move-to target
+
+| Address | Function | Notes |
+|---|---|---|
+| 009C8B60 / 009C8C70 | dive-bomb task destructor body and make factory | 7E0h-byte task |
+| 009C2CA0 / 009C2D00 | dogfight move-to state constructors (direct and from stream) | vtables 00D20B24 and 00D20B0C |
+| 009C3990 / 009C3CA0 | move-to task stream constructor and load factory | draws -U(0, 1) into +54Ch from the shared RNG |
+| 009C4140 | dive-bomb attack-run state | a timed state |
+| 009C7850 | the aim-glide out-of-bombs test | !007B9320(controller, 0); this is the input behind the host's `aimglide_out_of_bombs` |
+| 009BE050 | leader-velocity copy | then 007D9C10 on unit+AB0h |
+| 009BE0F0 | move-to target from an entity | |
+
+Ledger-only: 009C9F70 is a byte-identical copy of `set_state`.
