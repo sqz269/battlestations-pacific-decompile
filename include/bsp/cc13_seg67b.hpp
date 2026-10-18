@@ -490,10 +490,18 @@ public:
                                                 const char* right) = 0;
     // 0099B6E0 (TRIV_body_0099b6e0, a lone RET): the base debug-draw slot, __fastcall(ECX = task).
     virtual void bot_task_debug_draw_base_0099b6e0(void* task) = 0;
-    // 008608B0 BSP_DebugDraw_CircleWithHeading: __thiscall(ECX = float* centre; four stack
-    // dwords), RET 10h. See 009B35E0 for what this caller passes.
-    virtual void debug_draw_circle_with_heading_008608b0(const float* centre, float first,
+    // 008608B0 BSP_DebugDraw_CircleWithHeading: __thiscall(ECX = float* centre; float radius,
+    // float x, y, z), RET 10h. It passes the radius to 00860710 with EDX = the static rgba
+    // 00F875A8 (initialised once to 1, 0.5, 0, 1 under guard 00F875B8).
+    virtual void debug_draw_circle_with_heading_008608b0(const float* centre, float radius,
                                                          float x, float y, float z) = 0;
+    // 0099B660 BSP_BotTask_UpdateCruiseProfileBase: __fastcall(ECX = task), RET; empty.
+    virtual void bot_task_update_cruise_profile_base_0099b660(void* task) = 0;
+    // 009AAC70 BSP_BotTaskDogfight_UpdateApproach: __thiscall(ECX = task+3F8h; float dt),
+    // RET 4.
+    virtual void dogfight_update_approach_009aac70(void* approach, float dt) = 0;
+    // 0099B740 BSP_BotTask_AbandonIfStale: __fastcall(ECX = task), RET.
+    virtual void bot_task_abandon_if_stale_0099b740(void* task) = 0;
     // 006C2400 BSP_AirOpsHolder_DebugDrawRunwayDistances: __fastcall(ECX = holder), RET.
     virtual void air_ops_debug_draw_runway_distances_006c2400(void* holder) = 0;
     // object->vtable[0](), RET, AL: a condition object's test.
@@ -1146,6 +1154,8 @@ void* bot_task_retreat_describe_009ca200(Cc13Seg67bHost& host, void* task, void*
 void* bot_task_strafe_describe_009cd250(Cc13Seg67bHost& host, void* task, void* out);
 // 009A79F0: __fastcall(ECX = dogfight avoid state), RET. One draw on stream 1.
 void bot_state_dogfight_avoid_enter_009a79f0(Cc13Seg67bHost& host, void* state);
+// 009AAF30: __fastcall(ECX = dogfight task), RET (tail JMP 0099B740).
+void bot_task_dogfight_update_cruise_profile_009aaf30(Cc13Seg67bHost& host, void* task);
 // 009B35E0: __fastcall(ECX = land task), RET.
 void bot_task_land_debug_draw_009b35e0(Cc13Seg67bHost& host, void* task);
 // 009B93D0: __thiscall(ECX = task; float dt, unread), RET 4.
