@@ -6684,7 +6684,7 @@ struct GameUnitsHost::Impl {
     // prepare's only. True: the done tick reads and writes its own timer and
     // each enter resets the entered state's timer to -1. False: one shared
     // timer, reset only at install, so done can release on prepare's stale arm.
-    static constexpr bool kTorpedoStateEnterTimersBound = false;
+    static constexpr bool kTorpedoStateEnterTimersBound = true;   // ON: OCEAN_WAVE_FIELD 85
     // The aim state's enter 009D15D0 (vtable 00D212FC +4h): approach+A8h = 1
     // (009D15DE), state+24h = 0 (009D15E7, the release timer 009FA3A0's +0Ch
     // enable) and state+2Ch = 0 (009D15EA, aim complete). Its exit 009D1350
@@ -6693,7 +6693,7 @@ struct GameUnitsHost::Impl {
     // torpedo_aim_timer_enabled_0c, torpedo_aim_complete_2c and
     // torpedo_approach.scan_enabled_a8. False: +2Ch stays set once set, the
     // enable carries over and +A8h stays 0.
-    static constexpr bool kTorpedoAimEnterStoresBound = false;
+    static constexpr bool kTorpedoAimEnterStoresBound = true;   // ON: OCEAN_WAVE_FIELD 85
     // Packet cc9_l61_torpedo_done_formation (SQUADRON_LAND_TASK 5ho item 2). The
     // done/prepare enter 009D2530 writes squadron+3E4h = 2 (009D254E, after
     // 009BED80's 1) and state+8Ch = 1.0 (009D2565); every wingman's follow
