@@ -1178,6 +1178,25 @@ constexpr bool kDepthChargeBotTickBound = true;  // ON: GUNNERY_OPEN_ITEMS 142
 //    a retarget keeps the trigger the last think left. ON by mechanism: BSM01,
 //    USN01 and USN10 pairs gameplay identical, 4700-26099 sends, 0 drops.
 constexpr bool kGunBotRetargetReleaseBound = true;
+//  * kTailGunnerClearReleaseBound: cc9-gunnery52 (cc13-seg59A). The +30h
+//    ClearFireTarget overrides 008FE7A0 (AAGunnerBot, gun at bot+5Ch),
+//    008FEA60 (TailGunnerBot, +68h) and 008FDBA0 (AAFlakBot, +68h) run 0072BD50
+//    and then send the gun's vtable[1E8h](0) when [[bot+50h]+1ACh] is 8 or
+//    AI-held. All three thinks (00902920, 008FFA20, 009030C0) leave by their
+//    exit without a send when the bot has no target (009029BB, 008FFAFE,
+//    00903158), so the trigger stays as the last send left it until the
+//    release. The host's AAGunner and AAFlak tests recompute the trigger every
+//    tick from have_target, which a clear empties, so they already match the
+//    release; the TailGunner test ran its 008FEF40 debounce without a target
+//    and held act_58 for the 0.3 s off-delay. True: the TailGunner keeps a gun
+//    trigger that its think sets from +58h and the release (a clear, a
+//    retarget, or the think's own dead-target drop 008FFA75) clears, and a
+//    targetless think leaves +58h/+59h/+5Ch and the trigger untouched. False:
+//    the debounce runs without a target.
+//    ON (2026-10-18, by mechanism): USN01 reference pair deaths identical, hit
+//    records 4988 -> 4991 (sends 8798, drops 11); USN04 gameplay identical
+//    (sends 1435, drops 3). local\g52_tg_*.log, d3bc814e1.
+constexpr bool kTailGunnerClearReleaseBound = true;
 //  * kSeatArtilleryLeadBound: cc9-ships54, SHIP_AI_OPEN_ITEMS 271. 00957740's
 //    hit lead (009578C3..00957A50) on the player-seat artillery aim: a ship hit
 //    (IsKindOf 6) leads through 00902290 and the hit offset turns with it; any
@@ -1982,9 +2001,26 @@ struct GameGunneryHost::Impl {
     // kGunBotRetargetReleaseBound: vtable[1E8h](0) sends from 008FF2B0 / 008FF500,
     // and those that dropped a trigger that was held.
     unsigned long long bot_release_sends{0}, bot_release_drops{0};
+    // kTailGunnerClearReleaseBound: 008FEA60's sends, and those that dropped a
+    // trigger that was on.
+    unsigned long long tail_release_sends{0}, tail_release_drops{0}, tail_targetless_holds{0};
     void bot_clear_release_008ff2b0(std::size_t slot) {
         if (slot >= guns.size()) return;
         const GameGunRow& row = guns[slot];
+        if (kTailGunnerClearReleaseBound && row.category == 1
+            && units.unit_is_kind_of(row.unit_index, bsp::kUnitGunneryKindPlaneBase)) {
+            // 008FEA60 TailGunnerBot::ClearFireTarget: 0072BD50, then
+            // [bot+68h]->vtable[1E8h](0) when [[bot+50h]+1ACh] is 8 or AI-held
+            // (008FEA71 / 008FEA77).
+            if (!slot_ai_held_00927f10(row.seat_1ac)) return;
+            ++tail_release_sends;
+            const auto it = tail_gunner_fire.find(slot);
+            if (it != tail_gunner_fire.end()) {
+                if (it->second.trigger) ++tail_release_drops;
+                it->second.trigger = false;
+            }
+            return;
+        }
         const bool torpedo = row.category == bsp::kUnitGunneryTorpedoCategory;
         if (!torpedo && row.category != 8) return;
         if (!slot_ai_held_00927f10(row.seat_1ac)) return;   // 008FF2C1 / 008FF511
@@ -2447,6 +2483,9 @@ struct GameGunneryHost::Impl {
         bool act_58{false};
         bool next_59{false};
         float delay_5c{0.0f};
+        // kTailGunnerClearReleaseBound: the gun's trigger as the last
+        // vtable[1E8h] left it (008FEFC2 sends +58h; 008FEA60 sends 0).
+        bool trigger{false};
     };
     std::map<std::size_t, TailGunnerFire> tail_gunner_fire;
     // Packet cc13-tailgun1: 008FFA20's +6Ch countdown and +70h/+74h pair per gun.
@@ -7963,6 +8002,12 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             target = gun.target_unit - 1;
             if (unit_state[target].dead || !units.unit_alive_and_visible(target)) {
                 // 008FFA20's target-validity test: a dead target is dropped.
+                // For a tail gunner the drop is 008FFA75's vtable[38h](0) =
+                // 008FEA40 -> 006DF170 -> vtable[30h] 008FEA60, the release.
+                if (kTailGunnerClearReleaseBound && gun.category == 1
+                    && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindPlaneBase)) {
+                    bot_clear_release_008ff2b0(g);
+                }
                 gun.target_unit = 0;
                 gun.target_name.clear();
                 done("GunBot::target_still_valid_008ffa20", 0x008ffa20u);
@@ -8874,6 +8919,14 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             } else if (gun.category == 1) {
                 // 008FFA20 TailGunnerBot, 008FFDBE..008FFF03, then 008FEF40.
                 TailGunnerFire& tg = tail_gunner_fire[g];
+                if (kTailGunnerClearReleaseBound && !have_target) {
+                    // 008FFAF3..008FFAFE: no target (vtable[44h] null) jumps to
+                    // the exit 008FFF17 past 008FEF40, so +58h/+59h/+5Ch hold
+                    // and the gun keeps the trigger its last send left.
+                    want_fire = tg.trigger;
+                    ++aa_test_tail;
+                    ++tail_targetless_holds;
+                } else {
                 int level = units.skill_level(owner_unit);
                 if (level < 0 || level > 5) level = 1;
                 const float shoot_range = kTailGunnerShootRange[level];   // bot+90h
@@ -8894,7 +8947,9 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     if (!(0.0f < tg.delay_5c)) tg.act_58 = tg.next_59;       // 008FEF91
                 }
                 want_fire = tg.act_58;                                       // 008FEFC2
+                tg.trigger = tg.act_58;
                 ++aa_test_tail;
+                }
             } else {
                 // 009030C0 AAFlakBot, 0090332C..009033DB: [muzzle+58h] < distance <
                 // [muzzle+60h], |dh| < 1 deg and |dv| < 1 deg (00CE3984), bit 0
@@ -16208,6 +16263,10 @@ void GameGunneryHost::report() {
             "(008FF2B0 / 008FF500 vtable[1E8h](0), kGunBotRetargetReleaseBound)",
             host.bot_release_sends, host.bot_release_drops);
     }
+    host.log.notef("summary mission gunnery tail gunner release sends=%llu drops=%llu "
+        "targetless_holds=%llu (008FEA60 vtable[1E8h](0), kTailGunnerClearReleaseBound=%d)",
+        host.tail_release_sends, host.tail_release_drops, host.tail_targetless_holds,
+        kTailGunnerClearReleaseBound ? 1 : 0);
     if constexpr (kPlayerTorpedoGroupFireBound) {
         host.log.notef("summary mission gunnery player torpedo group messages=%llu trains=%llu "
             "snap_failures=%llu trigger_ons=%llu trigger_offs=%llu presses=%llu "
