@@ -526,6 +526,127 @@ Each family also has an approach-level twin that writes the approach save plus `
 
 009AED20 builds the kamikaze approach: base 009AB920, the moveto, follow and prepare states, and the inline gotowards and aim states, then registers the five names. The kamikaze model in `src/kamikaze_task_cc13.cpp` covers this construction inline with per-name RNG stand-ins, so the whole body is allowed. The two follow constructors (009C2980) each draw U(0, 0.6) from the shared stream: follow at +12Ch first, prepare at +1C4h second. The model does not take these draws.
 
+The byte fields in these saves (inattackrange, insideAttackRange and bayDoorState) store only the low byte of the record's payload. The image leaves the upper three bytes as stack garbage; the bodies write zero there.
+
+### 3.41 Level-bomb save, moveto approach, retreat and strafe factories (packet cc13-seg67C)
+
+- **009B84E0 and 009B87B0**: the level-bomb saves. They write the ten fields that 009B4690 reads. The approach-level twin 009B8760 has no reference in the image.
+- **009C1C30**: the moveto approach constructor. It draws twice on stream 1: +2Ch = U(0, MaxAltOffset), then +58h = -U(0, 0.5). For the flight leader it seeds the arrival dwell +60h as min(planar distance, row+268h) / row+18Ch. cc9 models this inline in `run_moveto_task_install_009c3000` with per-name stand-ins, so the whole body is allowed. cc13_moveto1's `approach_moveto_construct_009c1c30` hook can route to it.
+- **009CA2B0 and 009CD300**: the retreat and strafe factories. Each calls operator new (564h and 6FCh bytes) and then the constructor. 009CD300 calls the local 009CC230.
+- **009CA780**: re-arms the strafe target reference from the strafe row, runs the 009FA260 pick, and hands the point to the opportunistic rocket (007B7870). cc9 models it inline without the 007B7870 tail.
+- **009CC5B0**: the strafe task's state set, ledger-only. 009CC5B0-009CC5DE is the 009A56C0 instruction sequence with [ECX+310h], so it is the generic `set_state` in src/bot_task_states.cpp. The body that a129dc8a9 added was a second copy and has been removed.
+- **009D4E30**: the torpedo factory. It calls operator new (7DCh bytes) and then the local 009D3050.
+- **009DDBA0**: Ghidra matched this to the library's `~SubAllocator`, but it is game code. It runs `eh vector destructor iterator` over the ship AI's two path plans at +60h (68h bytes each, destructor 009DBDB0), and only the unwind funclets 00CB0630 and 00CB06C0 reach it.
+
+### 3.42 Ship-brain state constructors and their draws (packet cc13-seg67C)
+
+009E4F90 builds the sub_attack parent and its "approach" and "fire" children. 009E8450 builds the attackmove state, its approach sub-state 009E5CA0, and four further sub-states. Each constructor makes one stream-1 draw: 009E4F90 sets +CCh = -U(0, 1) at 009E5061, and 009E8450 sets +1500h = -U(0, 1) at 009E84F8.
+
+Both are reached for every ship: 00810DD0 -> 009F3F20 -> 009F3BA0 -> 009F39C0, which calls 009E8450 at 009F3AB2 and 009E4F90 at 009F3AC3 with no kind gate. In the image, every brain therefore makes 69 stream-1 draws, in this order:
+1. 009F1160's seven.
+2. 009E5530's sixty: U(0, 2.0 [00CE3958]) into each ring slot's +48h at 009E55A1, in a 60-pass loop reached through 009E8450 -> 009E5CA0.
+3. 009E8450's one.
+4. 009E4F90's one.
+
+cc9's `seed_brain_draws_009f1160` takes the seven draws. It takes the 009E4F90 draw for submarines only, with the comment "no other brain reaches sub_attack", and it never takes the 009E8450 draw. cc9's `ensure_approach_ring` builds the ring lazily and takes none of the sixty (ship_ai_attackmove_substates.cpp:125 sets jitter_48 = 0). So the shared stream is 62 draws short for each surface ship and 61 for each submarine at spawn. An URGENT-class adoption note was sent (submarine, shared RNG), and the lead has since sent cc9 this corrected count.
+
+Three STL instantiations are tagged library-only after their callees were read:
+- 009E48A0, the std::list destructor;
+- 009E7F60, the list's _Buynode;
+- 009E8EF0, the vector's _Insert_n.
+
+### 3.43 The ship-AI allocation chain (packet cc13-seg67C)
+
+The chain 009F3F20 -> 009F3BA0 -> 009F39C0 -> 009F1160 is now four bodies:
+- 009F3F20 allocates 2268h bytes (009F3F3E) and runs 009F3BA0 on them (009F3F59); a failed allocation returns 0.
+- 009F3BA0 runs the gun-bot base 0072BBD0, builds the brain at ai+58h through 009F39C0 (009F3BE5), installs the ship-AI vtables, makes the brain's `cruise` state current (ai+2264h = ai+0BC8h, its vtable+4h at 009F3C27), and attaches through 008FBC80 to ship+310h (009F3C43).
+- 009F39C0 runs 009F1160, builds the state registry at brain+0B5Ch, the seven inline state objects, attackmove (009E8450) and sub_attack (009E4F90), then registers nine names in this order: "cruise", "stop", "follow", "land", "movetopos", "moveonpath", "attackmove", "sub_attack", "kamikaze_attack".
+- 009F1160 builds the navigation block (009E4330, hooked), the unit references, the submarine slot +0AB4h (`ship->vtable[+5Ch](8) ? ship : 0`) and its 4-byte holder at +0AC4h, and the defaults through +0AF8h (009F1160-009F126A). 009F126B..009F1401 (the goal defaults, the seven stream-1 draws, the critical section) is the existing `ship_ai_brain_produce_tail_009f126b` (src/ship_ai_brain_producers.cpp), reached through a hook rather than restated.
+
+Whole bodies are allowed because cc9 models these constructors only inline (`seed_brain_draws_009f1160` with keyed stand-ins, the follow and land defaults, the initial cruise state). Its seven draws match the image's order and ranges; the missing ring and state-constructor draws are the finding of 3.42.
+
+### 3.44 Pilot-bot table slots and helpers, 00997340-0099C683 (packet cc13-seg67C)
+
+These rows have no direct caller; most are vtable slots. Each is a body in src/cc13_seg67b.cpp:
+- **Task-list queries:** 00999A10 (does the head task block a switch), 00999B30 (any task's +28h slot) and 00999C70 (find a task by its +3Ch slot). 00999B30 has no explicit false: with no match it returns the count's low byte, which the body reproduces.
+- **Park predicate:** 00999A60, 00999A80 (scalar delete), 0099A940 and 0099A980 (the "planeID" read and write).
+- **Pointer arrays {data, count, capacity}:** 00999700 (insert at), 00999810 (grow, 2c+2), 00999CC0 (push back) and 00999D40. The ledger calls 00999D40 PushBackOdd, but it inserts at index 0. Both inserts loop without bound when count is 0 with spare capacity; the bodies store once and label it.
+- **Loading:** 0099AA20 loads the "_bot" base, then the numbered tasks, each by its "commandName" through the factory list (0099C690). Each task is pushed onto bot+58h.
+- **Seeds and constructors:** 0099A630 (observer node), 0099B2A0 (the bare five-slot seed, twin of 0099B450), 0099BDB0 (the 0C8h plan table element), 009995A0 (attach) and 0099B3D0 / 0099B3E0 (byte setters).
+- **0099C2C0** is the base command-still-valid slot. It returns 2 with no unit or command, and 1 when the director still runs the command (or runs 00E08F78 with a kind 1/2 command) and the aim point is invalid or within 100.0 of the active target; otherwise 0. The push at 0099C34E is 006F7DD0's scratch argument; 0071EB60 is a plain RET.
+- **0099C3C0** is the two-pass lead point. Pass 1 predicts with t = |T - P| / speed; pass 2 recomputes t from the predicted point and writes it at +10h. +0Ch receives the pass-2 *distance*, not the time (XMM0 is loaded before the FDIV). The byte +8h only decides whether the target's vtable[+38h] is called (and dropped) first.
+- **00997340** and **0099B1B0** are unreferenced.
+
+Ledger-only: 00999610 and 0099B710 (see the table).
+
+### 3.45 One-line table slots (packet cc13-seg67C)
+
+These are the open zero-caller rows of six instructions or fewer. Each listing was read whole, and a host that already models a row takes precedence over a new body.
+
+There are 36 bodies:
+- **Constant returns:** static bot-task factory records (00F8A370, 00F8A3E8, 00F8A438, 00F8A534), task names, retreat's kind 3, and pull-up's 10.0.
+- **Bare RETs:** 009CE290 and 009D0C00.
+- **Field slots:** 009A9C80 and 009A9D30.
+- **Leave-alone flush:** 009B9480.
+- **Adjustor thunks:** three that reach the scalar deleting destructors.
+- **Follow-or-base wait values:** 009A5D50 tests two follow states (+544h and +6E4h); 009BD2E0 and 009CA0A0 test one each.
+- **The plane+844h byte:** cleared on dive-bomb turn-down enter, set by land/final's exit 009B1E90. The cc9 land host notes that +844h is not modelled.
+- **Command-record accessors.**
+- **The order-slot address:** 009D4F70.
+- **Navigation setters:** five unreferenced ones, 009DABB0-009DABF0.
+- **Auto-target base constructor:** 009F5260.
+
+There are 35 ledger-only rows (section 4 records only the group):
+- Command-class and name constants that a host header already carries.
+- Wait values that the dogfight, land and strafe hosts model.
+- The land standby, line and park enter and exit slots.
+- The torpedo, strafe and drop-kamikaze attack-run enters.
+- The ship-AI rows 009DAB10, 009DAE20, 009E8540 and 009E6480.
+- Byte twins of existing bodies, found by a masked byte scan of every small body:
+  - 009A71C0 and 009C4200 are twins of 007B4F40 (rocket_attackrun_enter_007b4f40) and 009A3750.
+  - 009C44E0, 009C58A0 and 009C6210 are twins of 009B1E90.
+  - 009BAC60, 009C3170 and 009C9E70 are twins of the entity_orders.cpp rows 006F8C00, 006F8920 and 006F8C90.
+  - 009C3150 is a twin of 009DAE20 (kMoveToCommandClass).
+
+### 3.46 Medium rows, batch 1 (packet cc13-seg67C)
+
+Rows of 7 to 40 instructions with no host mention, depth charge and dogfight first. Before writing, each row had three checks: a rel32-masked byte-twin scan against rows that already have reconstructions, a `git grep` of every address form, and a read of the hosts that model the same task inline.
+
+There are 20 bodies:
+- **The nine Describe slots (+18h):** 009A68C0, 009AF670, 009AF890, 009B8F80, 009BDB00, 009C3A60, 009C8BC0, 009CA200 and 009CD250.
+  - All share one helper. Each calls 009A1A90 for the base name and 00411430 for the state name, using the task's own registry offset, then 007B7E70 to join them. The temporary string is released inline.
+- **009A79F0, the enter of the dogfight avoid state at vtable 00D1F8F8:**
+  - +18h = U(0.75, 1.5) x AvoidTime. This is one draw on stream 1, with 00CEE07C at [ESP] and 00CE380C at [ESP+4].
+  - It clears +24h, +1Ch and +20h.
+  - cc9's `dogfight_avoid_timer_009a7de0` computes the same timer for 009A7DE0 and 009A8020, but that function is bsp_game only. This state is not hosted.
+- **Debug draws:**
+  - 009B35E0, the land task's. Its first stack argument (+440h) moves through FLD/FSTP, so it is a float. The provisional `rgba*` in the 008608B0 ledger row does not fit this caller.
+  - 009CFA10, the takeoff task's.
+- **Maneuver slots:** 009B93D0 (conditioned tick), 009B93F0 (tight-turn slot +68h) and 009B9420 (leave-alone cruise profile).
+  - 009B93F0 computes PitchSpd x pi + 1. It is modelled at 24-bit precision; at 53-bit the product would be rounded once less.
+- **Saves:** 009B9FD0 (tight turn: pull-up plus "left"), 009BD380 (move on path) and 009C3510 (move to).
+- **Small accessors:** 009CA0C0 (retreat target position) and 009CA480 (the kind-41h cast).
+
+There are 34 ledger-only rows (section 4):
+- **Byte twins:**
+  - 009A6BF0 is a twin of 004BEAD0.
+  - 009AE0D0, 009B8180 and 009C7FF0 are twins of depth_charge_flush_009a5710.
+  - The array helpers 009B4AF0, 009B4B60, 009B4C10 and 009B4C90 are twins of 007EDD70, 007EDDE0, 006F3410 and 00B0A440.
+  - 009BD3C0 and 009C88E0 are twins of 009A2B90.
+  - 009C32D0 is a twin of set_state 009A56C0.
+  - 009CA730 is a twin of 007B4890.
+- **Inlined set_state:** 009AF2B0 is set_state with next = +654h.
+- **Hosted rows:**
+  - The still-valid tests 009A5DB0, 009A9CC0, 009AE140 and 009AF560.
+  - 009AE210, 009A35A0, 009A7F70 and 009AB1C0.
+  - The follow-state selectors 009A3160, 009A6B10, 009AB6D0, 009AB7F0 and 009B4380. Each matches the initial-state selector of its host.
+  - The target-point getters 009A6B70, 009B4670 and 009B4A30.
+  - 009B7A50, which is inlined at the tail of 009B8100.
+  - 009A4900, the drop arm of the done tick, without the 0.3 re-arm.
+  - 009B94B0, inlined in the flikflak tick.
+  - 009B8450, `bot_task_step_result` with the level-bomb attack states.
+  - 009AAF30, recorded as **partial**. `bot_task_update_cruise_profile` covers the CruisingAlt write, but not the 009AAC70(+3F8h, 0.0) call or the 0099B740 tail.
+
 ## 4. Ledger-only records (packet cc13-seg67C)
 
 | Address | Host body | Result |
@@ -533,9 +654,9 @@ Each family also has an approach-level twin that writes the approach save plus `
 | 0099B790 | `ga_insert_0099b790` | matches; the array order after a multi-merge differs, but the set of pairs is the same |
 | 0099BF30 | `gunfire_repair_0099bf30` | matches; differences only on NaN fallbacks |
 | 0099EC40 | `gunfire_detect_0099ec40` | **mismatch**: the exempt arm's +840h WandererMul store (0099F197) is missing; adoption note sent |
-| 009A7A50 | `df_avoid_common_009a7a50` | **mismatch**: the U(1, 2) redraw at 009A7D72 is a constant 1.5, and approach+100h bit 2 is not modelled; adoption note sent |
+| 009A7A50 | `df_avoid_common_009a7a50` | **mismatch**: the U(1, 2) redraw at 009A7D72 is a constant 1.5 (the image draws on shared stream 1, so the host also drops one draw from the shared sequence), and approach+100h bit 2 is not modelled; adoption note sent |
 | 009AFAF0 | `land_geometry_009afaf0` | matches; the speed divisor (vtable[38h]) is the host's \|v\| |
-| 009B1420 | `land_begin_steer_009b1420` | first third (009B1420-009B15BC) matches |
+| 009B1420 | `land_begin_steer_009b1420` | first third (009B1420-009B15BC) matches; coverage partial, 009B15C0 onward not re-read |
 | 009C7A80 | `update_dive_bomb_approach` | matches, with the host's labelled substitutions |
 | 0099B940 | `ga_band_search_0099b940` | matches; a NaN value takes the first pair in the host, while the image skips every pair |
 | 009A17D0 | `gunfire_avoidance_009a17d0` | matches; the image zeroes all of +26Ch (009A17E9), the host only its modelled bit 4 |
@@ -544,3 +665,46 @@ Each family also has an approach-level twin that writes the approach save plus `
 | 009998A0 | inline task arm in `game_hosts_units.cpp` | partial: only the vtable[64h] arm is modelled; the 0099C270 fast path, the +308h pacing of 0099B740 and the C24h gate on 009FC7C0 are not |
 | 009A57D0 | `depth_charge_entry_state` | matches |
 | 009B3900 | inline in `run_land_task_tick_009b3eb0` | matches; dt * 60.0 is rounded at 24 bits in the image and at 53 in the host; the NaN dt arms differ |
+| 009BFD70 | the +85h latch in `run_follow_law_009bfee0_009bee30` | matches; the host's distance and dot are in double, the image's at 24 bits |
+| 009C47D0 | `goaway_turn_heading_009c47d0` | matches every literal and offset the host lists (goaway class, no note needed) |
+| 009C3310 | inline moveto state rule | matches, including the NaN arm |
+| 009C3570 | inline moveto approach update | matches; the NaN arms differ, and +6Ch is the host's labelled substitution |
+| 009CA310 | inline strafe range update | matches |
+| 009CFA80 | `takeoff_altitude_floor_009cfa80` | matches, with the host's labelled layer substitution |
+| 009CFB60 | `takeoff_slow_leave_009cfb60` | matches; the host takes the first arm (+AA0h carried as 0) |
+| 009CFC70 | `takeoff_rule_009cfc70` | matches; the image returns with RET 4 |
+| 009D31B0 | `aim_hold_009d31b0` input | matches |
+| 009D57E0 | `static_zone_blocks_009d57e0` | matches |
+| 009D66B0 | the pass-side queue entry in `post_pass_side_009d8c60` | matches the message's content (observed id, side) |
+| 009D8C60 | `clear` and `post_pass_side_009d8c60` in `ship_ai_neighbour_clips.cpp` | matches |
+| 009DA0D0 / 009DDBC0 | `hold_009da0d0` / `replan_finish_009ddbc0` | matches the block copies; the station block's field mapping was not re-derived |
+| 009DA690 | the find lambda in `deliver_pass_side_messages` | matches |
+| 009DA8D0 | `tail_009da8d0` | matches; the NaN dt arms differ |
+| 009DBBC0 | `list_element_009dbbc0` | matches |
+| 009E6170 | `traffic_record_active_009e6170` | matches; the image rounds d2 to a float, the host compares in double |
+| 009E6240 | `advance_traffic_record_009e6240` | matches; the U(2, 3) draw is the host's labelled keyed stand-in |
+| 009E8360 | `TrafficRecord{}` in `insert_traffic_record` | matches the read fields (timer -1.0, weight 1.0) |
+| 009E99A0 / 009E9AE0 | `tubes_min_reload` | matches; the host's operational test is the same constant for every tube |
+| 009E9BC0 | `torpedo_bot_range_00901ba0`'s list pick | matches |
+| 009EAA10 | `ship_ai_sub_attack_tick_009eaa90` (src/ship_ai_sub_attack.cpp) | matches; NaN arm differs (FCOMI JB takes cd - dt), unreachable with finite timers, given a finite dt |
+| 009F30F0 | `ship_ai_approach_enter_009f3220` | matches; sixty keyed draws stand in for the stream-1 U(0, 2) at 009F314E |
+| 009F3D00 | `select_state_for_command_009f3d00` | matches |
+| 009F59F0 | `auto_target_owner_can_engage_009f59f0` (src/bot_fire_target.cpp) | matches |
+| 009F5D30 | `auto_target_scan_009f5d30` (src/bot_fire_target.cpp) | matches; the +1D4h skip is carried by the gunnery host's candidate build |
+| 00999610 | `kBulletThrowMul` PilotBot row (src/game_hosts_gunnery.cpp) | matches the robots row +250h; the host reads the authored values |
+| 0099B710 | inline constant true (src/game_hosts_units.cpp) | matches (`MOV AL,1 / RET`) |
+| 009A54D0, 009A99E0, 009ADDC0, 009AF060, 009B7BB0, 009BCFC0, 009BCFD0, 009BCFE0, 009C9E20, 009CC3D0, 009D3280 | command-class / name / slot constants in depth_charge_task_cc13.hpp, attack_commands.cpp, kamikaze_task_cc13.hpp, moveonpath_task_cc13.hpp, plane_retreat_task.hpp | match |
+| 009A9C60, 009B3750, 009CC8D0 | the follow-or-base wait values in game_hosts_units.cpp | match |
+| 009B0230, 009B0240, 009B02E0, 009B02F0, 009B21C0 | the land state machine in game_hosts_units.cpp | match |
+| 009ACFB0, 009CAD90, 009D0790 | the attack-run enter resets (kamikaze_task_cc13.cpp, strafe_task.hpp, game_hosts_units.cpp) | match |
+| 009DAB10, 009DAE20, 009E6480, 009E8540 | game_hosts_ship_ai.cpp, ship_ai_states.hpp, ship_ai_state_steps.cpp | match |
+| 009A6BF0, 009AE0D0, 009B8180, 009C7FF0, 009B4AF0, 009B4B60, 009B4C10, 009B4C90, 009BD3C0, 009C88E0, 009C32D0, 009CA730 | byte twins (rel32-masked) of 004BEAD0, 009A5710, 007EDD70, 007EDDE0, 006F3410, 00B0A440, 009A2B90, 009A56C0, 007B4890 | twins |
+| 009AF2B0 | `set_state` (src/bot_task_states.cpp:230), next = task+654h inlined | matches |
+| 009A5DB0, 009A9CC0, 009AE140, 009AF560 | attack_commands.cpp:359 still-valid family; kamikaze_task_cc13.hpp:291 | match |
+| 009AE210, 009A35A0, 009A7F70, 009AB1C0 | `drop_kamikaze_manual_release_009ae210`; depth_charge_task_cc13.cpp:233; `df_avoid_roll_weight_009a7f70`; `df_arm_body_009ab1c0` | match |
+| 009A3160, 009A6B10, 009AB6D0, 009AB7F0, 009B4380 | the initial-state selectors (depth_charge_task_cc13.cpp:380, `dogfight_unengaged_state_009aafa0`, `kamikaze_initial_state_009aeef0`, `drop_kamikaze_initial_state_009adbf0`, plane_level_bomb_task.cpp:121) | match |
+| 009A6B70, 009B4670, 009B4A30, 009B7A50 | dogfight_task.hpp:225; plane_level_bomb_task.hpp:176, .cpp:303 and :388 | match |
+| 009A4900 | the drop arm of `depth_charge_follow_tick_009a4940` (009A4A89-009A4ABA) | matches; 009A4900 has no 0.3 re-arm |
+| 009B94B0 | the flikflak tick, game_hosts_units.cpp:24586 | matches (one stream-1 draw) |
+| 009B8450 | `bot_task_step_result` (src/bot_tasks.cpp:120) | matches |
+| 009AAF30 | `bot_task_update_cruise_profile` (src/bot_tasks.cpp:158), kDogfightCruisingAlt | **partial**: the 009AAC70(task+3F8h, 0.0) call and the 0099B740 tail are not in that model |
