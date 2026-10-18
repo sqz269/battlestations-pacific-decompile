@@ -3497,3 +3497,10 @@ cut, and ConTBD1 touches down at 604.63 s.
 **`kAvoidParentLocalVelocityBound` (OFF)**, in `avoid_velocity` (all six vehicle / terrain avoidance reads of
 vt[34h]): a parented plane answers `deck_local_vel`. Prediction: only rows with a plane on a carrier deck while
 another plane flies close by move. Avoidance against parked or taxiing deck planes changes by the carrier's heading.
+**84, result: `kAvoidParentLocalVelocityBound` ON.** USN01 `usn01_p8_u1_i.txt`, 30000 fr, exes at 4bd013e4a
+(`local\p21e_off_usn01.log` against `local\p21e_on_usn01.log`, manifests beside them). pair_diff MOVED, as
+predicted. Deaths 36 / 36 with 12 death times shifted, every one a US carrier plane (0.1-2.4 s). Stows are 19 / 19 and
+re-takeoffs 0 / 0. The aircraft-arm throttle sets on US planes go 447 -> 448. Flipped by mechanism: it is
+007BBB70's unit+AC8h in 007D9CE0's parent frame, and it is exercised. UNCERTAINTY: the other vt[34h] readers of a
+parented plane (the deck term's own parent read is the carrier's, unaffected) still take world axes. Section 75's
+whole-frame item stays open.

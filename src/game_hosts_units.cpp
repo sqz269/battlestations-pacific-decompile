@@ -11584,7 +11584,7 @@ float avoid_radius_500(const GameUnitSlot& s) {
 // that vector in the PARENT'S LOCAL frame (section 75). True: a parented plane answers
 // deck_local_vel, the carrier-frame vector, as the bytes do. False: it answers the
 // host's world-axes rotation of the same relative velocity (plane_world_velocity).
-inline constexpr bool kAvoidParentLocalVelocityBound = false;
+inline constexpr bool kAvoidParentLocalVelocityBound = true;   // ON: OCEAN_WAVE_FIELD 84 (USN01 pair)
 
 // vtable[34h], the world velocity (for a parented plane, see above).
 void avoid_velocity(const GameUnitSlot& s, float out[3]) {
