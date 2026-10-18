@@ -547,6 +547,35 @@ public:
     // 00419010 BSP_Math_InterpolateClamped: __stdcall(x0, y0, x1, y1, x), RET 14h, ST0.
     virtual float interpolate_clamped_00419010(float x0, float y0, float x1, float y1,
                                                float x) = 0;
+    // 004B8490 BSP_FormatString256: cdecl(char* dst, fmt, ...), a 100h-byte vsprintf_s.
+    // The plain form has no variadic tail; the _f64_ints form passes one double then
+    // `count` dwords, in that order.
+    virtual void format_string256_004b8490(char* dst, const char* fmt) = 0;
+    virtual void format_string256_f64_ints_004b8490(char* dst, const char* fmt, double value,
+                                                    const std::int32_t* ints,
+                                                    std::size_t count) = 0;
+    // 007B7CC0 STL_String_AppendPtrCount: __thiscall(ECX = string; ptr, count), RET 8.
+    virtual void string_append_ptr_count_007b7cc0(void* str, const char* text,
+                                                  std::size_t count) = 0;
+    // 009D1500 BSP_BotApproachTorpedo_TimeToTarget: __fastcall(ECX = approach), RET, ST0.
+    virtual float torpedo_approach_time_to_target_009d1500(void* approach) = 0;
+    // 0051F460 BSP_DebugFeatureOwner_GetSingleton: cdecl(), EAX (+2Ch is the overlay byte).
+    virtual void* debug_feature_owner_0051f460() = 0;
+    // 00423520 BSP_AvoidZone_CornerOffsetPoint: __thiscall(ECX = zone; float* out, int
+    // index, float distance), RET 0Ch, EAX = out (two floats).
+    virtual float* avoid_zone_corner_offset_point_00423520(void* zone, float* out,
+                                                           std::int32_t index,
+                                                           float distance) = 0;
+    // 009E9910 / 009E9A50: __thiscall(ECX = brain; float horizon), RET 4, EAX: the fore
+    // or aft tubes ready within the horizon.
+    virtual std::int32_t sub_tubes_ready_fore_009e9910(void* brain, float horizon) = 0;
+    virtual std::int32_t sub_tubes_ready_aft_009e9a50(void* brain, float horizon) = 0;
+    // 004C7070 with the name and `count` dwords after the format, in push order reversed
+    // (the first dword is the first conversion after the %s).
+    virtual void diagnostic_printf_name_ints_004c7070(std::uint32_t a, float b, float c,
+                                                      const char* fmt, const char* name,
+                                                      const std::int32_t* ints,
+                                                      std::size_t count) = 0;
 };
 
 // ---- the bot-task factory list (00F8A314) ----
@@ -1281,5 +1310,38 @@ void heading_error_ramp_set_38_009e6a30(Cc13Seg67bHost& host, void* object, floa
                                         float span, float peak);
 // 009F3CC0: __fastcall(ECX = ship-AI gun bot), RET, EAX = name.
 const char* ship_ai_gun_bot_sub_state_name_009f3cc0(Cc13Seg67bHost& host, void* bot);
+
+// ---------------------------------------------------------------------------
+// Medium rows, batch 4 (docs/CC13_SEG67B.md section 3.49)
+// ---------------------------------------------------------------------------
+// 009AB220 / 009B3FF0 / 009CFDD0 / 009D4C90: __thiscall(ECX = task; string* out), RET 4,
+// EAX = out.
+void* bot_task_dogfight_describe_009ab220(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_land_describe_009b3ff0(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_takeoff_describe_009cfdd0(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_torpedo_describe_009d4c90(Cc13Seg67bHost& host, void* task, void* out);
+// 009AC7C0 / 009ACD90: __fastcall(ECX = kamikaze state), RET.
+void bot_state_kamikaze_go_towards_debug_draw_009ac7c0(Cc13Seg67bHost& host, void* state);
+void bot_state_kamikaze_aim_debug_draw_009acd90(Cc13Seg67bHost& host, void* state);
+// 009BB4A0: __fastcall(ECX = unit, EDX = float point[3]; float limit), RET 4.
+void pilot_bot_tight_turn_toward_point_009bb4a0(Cc13Seg67bHost& host, void* unit,
+                                                const float* point, float limit);
+// 009BB530: __fastcall(ECX = unit, EDX = float point[3]; float threshold, float limit),
+// RET 8.
+void pilot_bot_tight_turn_if_off_heading_009bb530(Cc13Seg67bHost& host, void* unit,
+                                                  const float* point, float threshold,
+                                                  float limit);
+// 009D9390: __thiscall(ECX = path node; float plus_distance, float minus_distance), RET 8,
+// AL.
+bool ship_ai_path_node_resolve_turn_point_009d9390(Cc13Seg67bHost& host, void* node,
+                                                   float plus_distance, float minus_distance);
+// 009E7FA0: __thiscall(ECX = brain; float heading, const float* goal, float penalty),
+// RET 0Ch.
+void ship_ai_set_navigation_goal_with_penalty_brain_009e7fa0(Cc13Seg67bHost& host, void* brain,
+                                                             float heading, const float* goal,
+                                                             float penalty);
+// 009EAAD0: __thiscall(ECX = sub-attack state machine; int x, int y), RET 8.
+void ship_ai_sub_attack_debug_text_009eaad0(Cc13Seg67bHost& host, void* sm, std::int32_t x,
+                                            std::int32_t y);
 
 }  // namespace bsp

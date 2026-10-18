@@ -6397,6 +6397,216 @@ const char* ship_ai_gun_bot_sub_state_name_009f3cc0(Cc13Seg67bHost& host, void* 
         static_cast<std::uint8_t*>(bot) + 0xBB4, s);                             // 009F3CD1
 }
 
+// ---------------------------------------------------------------------------
+// Medium rows, batch 4 (docs 3.49)
+// ---------------------------------------------------------------------------
+
+namespace {
+
+// The describe tail shared by 009AB220, 009B3FF0, 009CFDD0 and 009D4C90: the text
+// 004B8490 wrote into a 100h-byte stack buffer is measured inline (the byte loop) and
+// appended through 007B7CC0(ECX = out; buffer, length).
+void describe_append(Cc13Seg67bHost& host, void* out, const char* buffer) {
+    host.string_append_ptr_count_007b7cc0(out, buffer, std::strlen(buffer));
+}
+
+void* describe_with_speed(Cc13Seg67bHost& host, void* task, void* out, std::size_t registry) {
+    describe_with_registry(host, task, out, registry);
+    // [task+3FCh]->vtable[38h](), FSTP to a float, then widened to the double vararg.
+    const float speed = host.entity_vcall_38_float(ptr_at(task, 0x3FC));
+    char buffer[0x100];
+    host.format_string256_f64_ints_004b8490(buffer, " spd:%f", static_cast<double>(speed),
+                                            nullptr, 0);
+    describe_append(host, out, buffer);
+    return out;
+}
+
+// The statics 00F8A3F8 (white, guard bit 1 of 00F8A408) and 00F8A40C (yellow, guard bit 1
+// of 00F8A41C), lazily set to these values by both kamikaze draws.
+void kamikaze_target_sphere_draw(Cc13Seg67bHost& host, void* state) {
+    static constexpr float kWhite_00f8a3f8[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+    static constexpr float kYellow_00f8a40c[4] = {1.0f, 1.0f, 0.0f, 1.0f};
+    if (at<std::uint8_t>(host.debug_feature_owner_0051f460(), 0x2C) == 0) return;
+    float point[3] = {};
+    const float* const centre = host.approach_vcall_00_target_point(ptr_at(state, 0x4), point);
+    host.wire_sphere_00860be0(centre, kYellow_00f8a40c, 5.0f, kWhite_00f8a3f8, 1);
+}
+
+}  // namespace
+
+// 009AB220 (009AB220-009AB362): registry task+4FCh (009AB260). Then, when [task+310h] ==
+// task+6A4h, "_follow" 00D1FA2C (byte +6E0h set) or "_goaway" 00D1FA24 is formatted and
+// appended (009AB2B7-009AB30B); then "_autoaim" 00D1FA18 when byte +35Dh is set
+// (009AB310-009AB344).
+void* bot_task_dogfight_describe_009ab220(Cc13Seg67bHost& host, void* task, void* out) {
+    describe_with_registry(host, task, out, 0x4FC);
+    char buffer[0x100];
+    if (ptr_at(task, 0x310) == ptr(task, 0x6A4)) {
+        host.format_string256_004b8490(buffer,
+                                       at<std::uint8_t>(task, 0x6E0) != 0 ? "_follow" : "_goaway");
+        describe_append(host, out, buffer);
+    }
+    if (at<std::uint8_t>(task, 0x35D) != 0) {
+        host.format_string256_004b8490(buffer, "_autoaim");
+        describe_append(host, out, buffer);
+    }
+    return out;
+}
+
+// 009B3FF0 (009B3FF0-009B40F1): registry task+4B0h (009B4030), then " spd:%f" 00D20010
+// with float([task+3FCh]->vtable[38h]()) (009B4096-009B40D3).
+void* bot_task_land_describe_009b3ff0(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_speed(host, task, out, 0x4B0);
+}
+
+// 009CFDD0 (009CFDD0-009CFED1): the 009B3FF0 shape with registry task+434h (009CFE10).
+void* bot_task_takeoff_describe_009cfdd0(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_speed(host, task, out, 0x434);
+}
+
+// 009D4C90 (009D4C90-009D4DA3): registry task+530h (009D4CD0), then " dr:%f  dir:%d
+// lr:%d-%d" 00D21440 with float(009D1500(ECX = task+3F8h)), [task+45Ch], [task+460h],
+// [task+464h] (the three dwords read after the call, 009D4D3A-009D4D4A).
+void* bot_task_torpedo_describe_009d4c90(Cc13Seg67bHost& host, void* task, void* out) {
+    describe_with_registry(host, task, out, 0x530);
+    const float dr = host.torpedo_approach_time_to_target_009d1500(ptr(task, 0x3F8));  // 009D4D31
+    const std::int32_t ints[3] = {at<std::int32_t>(task, 0x45C), at<std::int32_t>(task, 0x460),
+                                  at<std::int32_t>(task, 0x464)};
+    char buffer[0x100];
+    host.format_string256_f64_ints_004b8490(buffer, " dr:%f  dir:%d lr:%d-%d",
+                                            static_cast<double>(dr), ints, 3);
+    describe_append(host, out, buffer);
+    return out;
+}
+
+// 009AC7C0 (009AC7C0-009AC86F), vtable 00D1FB98 slot: when byte
+// [0051F460()]+2Ch is set, 00860BE0(ECX = [state+4h]->vtable[0](&local), EDX = yellow
+// 00F8A40C; 5.0 [00CE3850], white 00F8A3F8, 1).
+void bot_state_kamikaze_go_towards_debug_draw_009ac7c0(Cc13Seg67bHost& host, void* state) {
+    kamikaze_target_sphere_draw(host, state);
+}
+
+// 009ACD90 (009ACD90-009ACE3F), at 00D1FBB4: the same 41 instructions as 009AC7C0.
+void bot_state_kamikaze_aim_debug_draw_009acd90(Cc13Seg67bHost& host, void* state) {
+    kamikaze_target_sphere_draw(host, state);
+}
+
+// 009BB4A0 (009BB4A0-009BB528). 00414DB0(unit) when byte unit+C8h is 0; dx = float(p[0] -
+// unit+FCh), dz = float(p[2] - unit+104h); h = unit->vtable[50h]() (before the atan2);
+// a = float(_CIatan2(dx, dz)) (ST1 = dx, ST0 = dz at 009BB4E5); d = 00438B10(a, h);
+// 009BB380(unit, p; limit, byte (0 > d)) (FCOMI + JA: unordered -> 0). Unreferenced.
+// UNCERTAINTY: std::atan2 in double stands for _CIatan2, as in 00996270.
+void pilot_bot_tight_turn_toward_point_009bb4a0(Cc13Seg67bHost& host, void* unit,
+                                                const float* point, float limit) {
+    if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);
+    const float dx = static_cast<float>(static_cast<double>(point[0]) -
+                                        static_cast<double>(at<float>(unit, 0xFC)));
+    const float dz = static_cast<float>(static_cast<double>(point[2]) -
+                                        static_cast<double>(at<float>(unit, 0x104)));
+    const float h = host.entity_vcall_50_heading(unit);                          // 009BB4D7
+    const float a = static_cast<float>(std::atan2(static_cast<double>(dx), static_cast<double>(dz)));
+    const float d = host.math_subtract_wrapped_angle_00438b10(a, h);             // 009BB4F6
+    pilot_bot_prepend_tight_turn_to_point_009bb380(host, unit, point, limit,
+                                                   0.0f > d ? 1 : 0);            // 009BB51E
+}
+
+// 009BB530 (009BB530-009BB63A). Returns at once when pi/4 [00CEDCD0] > [[unit+538h]+25Ch]
+// (unordered continues). Then the 009BB4A0 deltas, but a = float(_CIatan2(dz, dx)) (ST1 =
+// dz, ST0 = dx at 009BB584); a = float(pi/2 [00CE3830] - a); 0 > a -> a = float(a + 2pi
+// [00CE3828]); h = unit->vtable[50h]() (after the atan2); d = 00438B10(a, h); m = d > 0 ?
+// d : -0.0 - d (SUBSS); m > threshold (else return; unordered returns) ->
+// 009BB380(unit, p; limit, byte (0 > d)) (COMISS). Unreferenced.
+// UNCERTAINTY: as 009BB4A0; the double constants are applied in extended precision and
+// rounded once on the float stores.
+void pilot_bot_tight_turn_if_off_heading_009bb530(Cc13Seg67bHost& host, void* unit,
+                                                  const float* point, float threshold,
+                                                  float limit) {
+    static constexpr double kQuarterPi_00cedcd0 = 0.7853981852531433;
+    static constexpr double kHalfPi_00ce3830 = 1.5707963705062866;
+    if (kQuarterPi_00cedcd0 > static_cast<double>(at<float>(ptr_at(unit, 0x538), 0x25C))) return;
+    if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);
+    const float dx = static_cast<float>(static_cast<double>(point[0]) -
+                                        static_cast<double>(at<float>(unit, 0xFC)));
+    const float dz = static_cast<float>(static_cast<double>(point[2]) -
+                                        static_cast<double>(at<float>(unit, 0x104)));
+    float a = static_cast<float>(std::atan2(static_cast<double>(dz), static_cast<double>(dx)));
+    a = static_cast<float>(kHalfPi_00ce3830 - static_cast<double>(a));
+    if (0.0f > a) a = static_cast<float>(static_cast<double>(a) + kTwoPi_00ce3828);
+    const float h = host.entity_vcall_50_heading(unit);                          // 009BB5BA
+    const float d = host.math_subtract_wrapped_angle_00438b10(a, h);             // 009BB5CA
+    const float m = d > 0.0f ? d : -0.0f - d;
+    if (!(m > threshold)) return;                                                // 009BB60B
+    pilot_bot_prepend_tight_turn_to_point_009bb380(host, unit, point, limit,
+                                                   0.0f > d ? 1 : 0);            // 009BB630
+}
+
+// 009D9390 (009D9390-009D9430). Byte +44h set -> 0. Otherwise +44h = 1; zone = [+8h]
+// null -> 0; s = (signed char) +14h, 0 -> 0; exactly one of +28h / +2Ch and exactly one
+// of +20h / +24h must be non-zero, else 0. Then 00423520(ECX = zone; &out,
+// (s < 0) + (short) +0Ch, s > 0 ? plus_distance : minus_distance) and +18h, +1Ch =
+// out[0], out[1]; returns 1. Sole caller: 009DA008, inside the unreferenced code at
+// 009D9F90 (no Ghidra function).
+bool ship_ai_path_node_resolve_turn_point_009d9390(Cc13Seg67bHost& host, void* node,
+                                                   float plus_distance, float minus_distance) {
+    if (at<std::uint8_t>(node, 0x44) != 0) return false;
+    void* const zone = ptr_at(node, 0x8);
+    at<std::uint8_t>(node, 0x44) = 1;                                            // 009D93A5
+    if (zone == nullptr) return false;
+    const std::int8_t s = at<std::int8_t>(node, 0x14);
+    if (s == 0) return false;
+    if ((at<std::uint32_t>(node, 0x28) != 0) == (at<std::uint32_t>(node, 0x2C) != 0)) return false;
+    if ((at<std::uint32_t>(node, 0x20) != 0) == (at<std::uint32_t>(node, 0x24) != 0)) return false;
+    const float distance = s > 0 ? plus_distance : minus_distance;
+    const std::int32_t index = (s < 0 ? 1 : 0) + at<std::int16_t>(node, 0xC);
+    float out[2] = {};
+    const float* const p =
+        host.avoid_zone_corner_offset_point_00423520(zone, out, index, distance);  // 009D9411
+    at<float>(node, 0x18) = p[0];
+    at<float>(node, 0x1C) = p[1];
+    return true;
+}
+
+// 009E7FA0 (009E7FA0-009E7FBD): 009DE280(ECX = brain+8h; heading, goal, penalty), the
+// arguments re-pushed in order. Unreferenced (docs/SHIP_AI_OPEN_ITEMS.md).
+void ship_ai_set_navigation_goal_with_penalty_brain_009e7fa0(Cc13Seg67bHost& host, void* brain,
+                                                             float heading, const float* goal,
+                                                             float penalty) {
+    ship_ai_set_navigation_goal_with_penalty_009de280(host, ptr(brain, 0x8), heading, goal,
+                                                      penalty);                 // 009E7FB8
+}
+
+// 009EAAD0 (009EAAD0-009EABDA), vtable slot at 00D21974. brain = [sm+4h] (re-read per
+// call). When [sm+D4h] == sm+58h: yturn = (+BCh > 0.0) (COMISS, unordered -> 0) first;
+// aft = 009E9A50(brain, 0.0); fore = 009E9910(brain, 0.0); close = byte +90h != 0; fwdt
+// = byte +88h != 0; name = 00411430(ECX = sm+20h; [sm+D4h]); 004C7070([00E188A8],
+// float(x), float(y), "%s %d/%d, fwdt:%d, close:%d, Yturn:%d" 00D21A50, name, fore, aft,
+// fwdt, close, yturn). Otherwise the same with "%s %d/%d" 00D21A44 and name, fore, aft.
+void ship_ai_sub_attack_debug_text_009eaad0(Cc13Seg67bHost& host, void* sm, std::int32_t x,
+                                            std::int32_t y) {
+    if (ptr_at(sm, 0xD4) == ptr(sm, 0x58)) {
+        const std::int32_t yturn = at<float>(sm, 0xBC) > 0.0f ? 1 : 0;           // 009EAAEB
+        const std::int32_t aft = host.sub_tubes_ready_aft_009e9a50(ptr_at(sm, 0x4), 0.0f);
+        const std::int32_t fore = host.sub_tubes_ready_fore_009e9910(ptr_at(sm, 0x4), 0.0f);
+        const std::int32_t close = at<std::uint8_t>(sm, 0x90) != 0 ? 1 : 0;
+        const std::int32_t fwdt = at<std::uint8_t>(sm, 0x88) != 0 ? 1 : 0;
+        const char* const name =
+            host.state_registry_name_or_undefined_00411430(ptr(sm, 0x20), ptr_at(sm, 0xD4));
+        const std::int32_t ints[5] = {fore, aft, fwdt, close, yturn};
+        host.diagnostic_printf_name_ints_004c7070(
+            host.global_dword_00e188a8(), static_cast<float>(x), static_cast<float>(y),
+            "%s %d/%d, fwdt:%d, close:%d, Yturn:%d", name, ints, 5);             // 009EAB6C
+        return;
+    }
+    const std::int32_t aft = host.sub_tubes_ready_aft_009e9a50(ptr_at(sm, 0x4), 0.0f);
+    const std::int32_t fore = host.sub_tubes_ready_fore_009e9910(ptr_at(sm, 0x4), 0.0f);
+    const char* const name =
+        host.state_registry_name_or_undefined_00411430(ptr(sm, 0x20), ptr_at(sm, 0xD4));
+    const std::int32_t ints[2] = {fore, aft};
+    host.diagnostic_printf_name_ints_004c7070(host.global_dword_00e188a8(),
+                                              static_cast<float>(x), static_cast<float>(y),
+                                              "%s %d/%d", name, ints, 2);                // 009EABD0
+}
+
 // 009CFA10 (009CFA10-009CFA2E). 0099B6E0 (a RET) first; then, when [[task+3FCh]+BF4h]
 // is set, the tail JMP 006C2400(ECX = it).
 void bot_task_takeoff_debug_draw_009cfa10(Cc13Seg67bHost& host, void* task) {
