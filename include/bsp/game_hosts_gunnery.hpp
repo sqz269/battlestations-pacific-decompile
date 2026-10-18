@@ -368,6 +368,23 @@ inline constexpr bool kDeathRouteDestroyBound = true;
 // constructor's 1 (007202FD) and TorpedoEnable stays unimplemented.
 inline constexpr bool kShipDirectorEnablesBound = true;
 
+// Packet cc13-fix15 (docs/CC13_FIX15.md). The Lua native ArtilleryEnable
+// 0089C590: when the entity's vtable[114h] director exists, 0071DFD0 routes
+// session message 5Ah with sub-kind 3 (msg+20h) and the flag (msg+24h) through
+// 0077C2A0 to 00721A40, whose 5Ah arm (00721A93) calls director vtable[38h]
+// (00835610 JMP / 00835640 tail) into 0071C1E0, which stores the flag at
+// director+220h "artilleryEnabled" (0071C231). The constructor's 1 (007202FD)
+// is the default. Readers on the fire path: 008624C0 pushes it through
+// 00861CD0 into bit 1 ("may engage a non-plane") of every artillery
+// category's mask (0086258B), which 008633D0 tests before a target is
+// admitted; 009F1BC0 caches it as the ship AI's +12B9h (009F2B18, 009F2E20).
+// True: the native writes the byte into the scene director table by name and
+// the stance push reads it for non-ship units too (ships already read the
+// whole table under kShipDirectorEnablesBound, and the ship AI's +12B9h reads
+// the same table). SUBSTITUTION: stored at the call, not delivered through the
+// session. False: the native stays unimplemented and every director keeps 1.
+inline constexpr bool kLuaArtilleryEnableBound = false;
+
 // Packet cc9_torpedo_stock (docs/UNIT_WEAPON_DEVICES.md, "Torpedo stock, bound").
 // True: a ship's torpedo tubes draw on the class's MaxTorpedoStock (class+7A0h).
 // 0081F8B0 at pass C (008201B8) sets the spare unit+104Ch = stock - loaded

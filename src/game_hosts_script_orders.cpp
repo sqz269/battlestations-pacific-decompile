@@ -258,6 +258,9 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // re-enable the Japanese destroyers' torpedo director after pass B cleared
     // it. Handled only with kShipDirectorEnablesBound.
     {"TorpedoEnable", 0x0089c8f0u},
+    // Packet cc13-fix15: usn_09_leyte.lua 9-11 switch the Fortress1-3 artillery
+    // off at load. Handled only with kLuaArtilleryEnableBound.
+    {"ArtilleryEnable", 0x0089c590u},
     // Packet cc9_ship_set_torpedo_stock: bsm_01_stationed_at_pearl.lua:1790 and
     // the COTP-IJN spawn tables call it. Handled only with
     // kShipSetTorpedoStockBound.
@@ -544,6 +547,18 @@ void lua_callback_trace_hook(lua_State* state, lua_Debug* ar) {
             key, g_lua_callback_trace.clock != nullptr ? *g_lua_callback_trace.clock : -1.0f);
     }
 }
+
+// Packet cc13-fix15. 0071C225..0071C231, the sub-kind 3 arm of 0071C1E0:
+// director+220h "artilleryEnabled" = (msg+24h != 0). A name with no entry takes
+// the constructor's four 1s (007202FD) first. Returns whether the byte moved.
+bool record_director_artillery_enable_0071c231(const std::string& name, bool enabled) {
+    SceneDirectorEnables enables;
+    if (const SceneDirectorEnables* e = scene_director_enables_find(name)) enables = *e;
+    const bool changed = enables.artillery != enabled;
+    enables.artillery = enabled;
+    scene_director_enables_set(name, enables);
+    return changed;
+}
 }  // namespace
 
 GameScriptOrdersHost::GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units)
@@ -629,6 +644,7 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     if (std::strcmp(binding->name, "PilotMoveOnPath") == 0) return kPilotMoveOnPathBound;
     if (std::strcmp(binding->name, "SetFireTarget") == 0) return kScriptFireTargetBound;
     if (std::strcmp(binding->name, "TorpedoEnable") == 0) return kShipDirectorEnablesBound;
+    if (std::strcmp(binding->name, "ArtilleryEnable") == 0) return kLuaArtilleryEnableBound;
     if (std::strcmp(binding->name, "ShipSetTorpedoStock") == 0) return kShipSetTorpedoStockBound;
     if (std::strcmp(binding->name, "FillPathPoints") == 0) return kFillPathPointsBound;
     if (std::strcmp(binding->name, "Scoring_GetPlayerShotDown") == 0) {
@@ -3781,6 +3797,21 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
                        : scene_director_torpedo_writes().lua_disables);
             log_.notef("  TorpedoEnable: %s director+222h=%d changed=%d (0089C8F0 -> 0071E0D0 "
                 "-> 0071C25B)", row.unit.c_str(), enabled ? 1 : 0, changed ? 1 : 0);
+        }
+    } else if (std::strcmp(binding->name, "ArtilleryEnable") == 0) {
+        // Packet cc13-fix15. 0089C590: argument 0 through 00888AA0, the
+        // director through vtable[114h] (0089C6A8), argument 1 through 00B66250;
+        // with a director, 0071DFD0 routes message 5Ah sub-kind 3, which
+        // 0071C1E0 stores at director+220h (0071C231). A plane's vtable[114h]
+        // (0047F180) is null, so a plane is the image's no-op. SUBSTITUTION:
+        // stored at the call, not delivered through 0077C2A0.
+        const bool enabled = argument_boolean(1);
+        const bool plane = row.unit_index < units_.count() &&
+            units_.unit_is_kind_of(row.unit_index, 0x0f);
+        if (subject != nullptr && !plane && !row.unit.empty()) {
+            const bool changed = record_director_artillery_enable_0071c231(row.unit, enabled);
+            log_.notef("  ArtilleryEnable: %s director+220h=%d changed=%d (0089C590 -> 0071DFD0 "
+                "-> 0071C231)", row.unit.c_str(), enabled ? 1 : 0, changed ? 1 : 0);
         }
     } else if (std::strcmp(binding->name, "NavigatorForceTorpedo") == 0) {
         // 008A7200: argument 0 through 00888AA0; with more than one argument,
