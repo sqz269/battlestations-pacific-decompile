@@ -4024,9 +4024,9 @@ void* registry_entity_by_id(Seg59bHost& host, std::uint32_t id) {
 // ---------------------------------------------------------------------------
 // 00912A60 BSP_MissionScoreRecord_EvaluateAchievementCounters (provisional, cc9 name).
 // __fastcall(ECX = record = scoring + slot*284h + 4), RET. Callers 00914EF0 and 00920A20.
-// The cc9 host records the call only (game_hosts_mission_frame.cpp:762, "BotScheduler::think_b");
-// the second caller 00920A20 is cc9's debrief_bringup_00920a20 host, which does not call it;
-// vocabulary in bot_scheduler_output.hpp:85-105.
+// The cc9 host records the call only (game_hosts_mission_frame.cpp ~762, bot_think_pass_b_00912a60,
+// "BotScheduler::think_b"); the second caller 00920A20 is cc9's debrief_bringup_00920a20 host, which
+// does not call it; vocabulary in bot_scheduler_output.hpp:85-105.
 // Evidence (listing 00912A60..00913A61, read whole):
 //  0058B520 empties the counter map at record+84h and resets its head (00912A9A..00912ABA).
 //  Thresholds from the award table (0050FC30, +44h vector, each key an inline NativeString of
@@ -4460,7 +4460,8 @@ void send_int_tree3(Seg59bHost& host, void* message, void* tree, std::uint32_t k
 // multiplayer_session_cc13.cpp:879 hosts that loop through scoring_send_row_0090abb0 (no body).
 // The sending half of 0091C650: one stack message (0075B430 type 15h, vtable 00D035B8,
 // +4 = 1) is refilled and sent through 0076A9F0(game+1EF0h; message, 0) once per item; it is
-// never destroyed.
+// never destroyed. The EH state is set to 0 at 0090AD21 (before the first send) and stays 0 at
+// the exit, so only an exception unwind (handler 00CA550B) destroys the message.
 // Evidence (listing 0090ABB0..0090BD92, read whole):
 //  [game+1FE4h] != 1 or byte [game+218Ch] != 0 -> return. Kind 0: message+1Ch slot ([+250h]),
 //  +20h..+28h floats [+0Ch]/[+10h]/[+14h], +2Ch..+34h [+0]/[+4]/[+8], +38h..+50h [+1C8h..+1E0h],
