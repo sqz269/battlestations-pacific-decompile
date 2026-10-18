@@ -3028,3 +3028,18 @@ bow reads +0.1v more forward speed, so the stall ratio and the throttle error sh
 predicted: the same 19 touchdowns, the first four (417.87, 502.05, 521.45, 541.44 s) identical, the rest drifting
 by 0.15-12 s (KatSBD 706.25 -> 718.10); leads 7287 -> 7571, Enterprise inserts 12 / releases 5 on both; deaths 36
 on both, 15 death times shifted; neither run ends the mission in 30000 frames. Mechanism matches; flipped.
+
+**74, result: `kPlaneForwardSpeedDeckTermBound` stays OFF.** USN01 `usn01_p8_u1_i.txt`, 30000 frames:
+`local\p19a_off_usn01.log` (888960641) against `local\p19b_fwd_usn01.log` (88698c836 + the flip; both have the lead
+rounding OFF). pair_diff 3: `deck terms=16206`; carrier stows 19 -> 0, ground retakeoffs 0 -> 37, refused land/abort
+on-ground entries 0 -> 13, plane water contacts 8 -> 16, deaths 36 -> 30. The chain, ConTBD1: touchdown 553.29 s,
+land/park taxis toward z 82.6 but with the deck term the throttle's measured speed (0099D99E) reads about 1.7 m/s
+high (Enterprise at about 16.7 m/s, x 0.1), the plane creeps to a stop at z 78.2 (v 0.79, commanded 2.23) short of
+the lift, the park timer (+28h) runs out, 009B21D0 sets done, 009B37A7 enters land/abort, whose on-ground arm is
+unbound (refused), so 0099B107 pushes a re-takeoff and the plane lifts off and ditches (|v| 152.76). OFF, the same
+plane reaches z 80.6 and the lift takes it (574.18 s).
+- The mechanism itself is confirmed: 00923810(1) is `[unit+3Ch]` (the scene parent; 007C7253-007C7266 compares it
+  with the carrier's `[[holder+4]+7Ch]` before re-parenting through vtable[ACh]), so the term does apply on deck.
+- Why it stays OFF: the failure passes through an unbound arm (land/abort on the ground), and the image's carriers
+  stow their planes. Open before a flip: whether 009B22C0's park drive reaches the throttle through 0099D99E for a
+  parented plane in the image (or brakes/drives the wheels directly), and the abort on-ground arm.
