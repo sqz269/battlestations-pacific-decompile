@@ -13659,10 +13659,11 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
     // 00954A10's two angles: 00521370 on the forward row (pitch = asin of y,
     // clamped to [-1, 1]; yaw = atan2(x, z)), +30h clamped to +/-1.57
     // (00D1A640/00D1A638), then 004B4D80 rebuilds the direction.
+    // cc15-smA: a carried message (the session copy) has them at +30h/+2Ch.
     const float fy = std::max(-1.0f, std::min(1.0f, m.forward[1]));
-    float pitch = std::asin(fy);
-    const float yaw = std::atan2(m.forward[0], m.forward[2]);
-    pitch = std::max(-1.57f, std::min(1.57f, pitch));
+    float pitch = m.angles_carried ? m.pitch_30 : std::asin(fy);
+    const float yaw = m.angles_carried ? m.yaw_2c : std::atan2(m.forward[0], m.forward[2]);
+    if (!m.angles_carried) pitch = std::max(-1.57f, std::min(1.57f, pitch));
     const float dir[3] = {std::sin(yaw) * std::cos(pitch), std::sin(pitch),
                           std::cos(yaw) * std::cos(pitch)};
     // 00957D79..00957DA0: the 1000-unit segment from the camera through the
@@ -14008,9 +14009,11 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
     const bool fire_input = m.held_34 || m.pressed_35;
     // 00959FD5..00959FEB: 004B4D80(pitch +30h, yaw +2Ch). The message carries
     // the mover's forward row; the pitch clamp is 00954A10's (+/-1.57).
+    // cc15-smA: a carried message (the session copy) has them at +30h/+2Ch.
     const float fy = std::max(-1.0f, std::min(1.0f, m.forward[1]));
-    const float pitch = std::max(-1.57f, std::min(1.57f, std::asin(fy)));
-    const float yaw = std::atan2(m.forward[0], m.forward[2]);
+    const float pitch = m.angles_carried ? m.pitch_30
+                                         : std::max(-1.57f, std::min(1.57f, std::asin(fy)));
+    const float yaw = m.angles_carried ? m.yaw_2c : std::atan2(m.forward[0], m.forward[2]);
     const float dir[3] = {std::sin(yaw) * std::cos(pitch), std::sin(pitch),
                           std::cos(yaw) * std::cos(pitch)};
     float right[3], up[3], forward[3], origin[3];
