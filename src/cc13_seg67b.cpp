@@ -5873,13 +5873,13 @@ void bot_state_dogfight_avoid_enter_009a79f0(Cc13Seg67bHost& host, void* state) 
 }
 
 // 009AAF30 (009AAF30-009AAF96), dogfight task slot +54h. 0099B660 (empty) first.
-// Then the altitude block of bot_task_update_cruise_profile (src/bot_tasks.cpp:158)
+// Then the altitude block of bot_task_update_cruise_profile (src/bot_tasks.cpp ~158)
 // with the cruise offset 640h (kDogfightCruisingAlt) behind the 007B8AD0 gate, read
 // here from the listing: c = [task+404h]+37Ch; unless c+11h, when 0 > c+4h (COMISS,
 // JBE: NaN skips) and c+2Dh is clear, c+18h = tuning+640h (Pilot/Dogfight/CruisingAlt)
 // and c+31h = 1; c+2Dh = 0 either way. 0042E740 is called before the c+11h test. Then
 // 009AAC70(ECX = task+3F8h, 0.0) and the tail JMP 0099B740(task). The cc9 dogfight host
-// has not bound this slot (include/bsp/dogfight_task.hpp:59-60).
+// has not bound this slot (include/bsp/dogfight_task.hpp ~59).
 void bot_task_dogfight_update_cruise_profile_009aaf30(Cc13Seg67bHost& host, void* task) {
     host.bot_task_update_cruise_profile_base_0099b660(task);                     // 009AAF33
     if (host.unit_is_squadron_flight_leader_007b8ad0(ptr_at(task, 0x3FC))) {     // 009AAF3E
