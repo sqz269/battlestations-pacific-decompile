@@ -19050,3 +19050,143 @@ USNOS `s55_os_r0` 30000 frames against `local\s57_us_osr.log` and USN13 30000 fr
 +188h is set: the overrides sit on AI ships and squadrons that the scripts and planners do not re-order while
 the override lives. **Decision: ON** as a faithful binding with no reach on these rows; the counts stay in the
 summary line, so a row that does reach it shows `with_override > 0`.
+
+## 284. Submarine air supply, kLuaGetSubmarineAirSupplyBound + kLuaSetSubmarineAirSupplyBound (cc9-ships58, 2026-10-18; cc13 fix21 + fix17)
+
+**Image.** 008938E0 GetSubmarineAirSupply pushes float unit+127Ch; 00893A60 SetSubmarineAirSupply stores its
+argument there unclamped (00893BA1). The air model 00855250 adds/subtracts its step into +127Ch (008552BA..
+00855302) and only then clamps to 1.0 (0085537A, the 00D7A24C constant), so a value above 1.0 survives exactly
+one step's decrement less than a full tank.
+
+**Callers in this installation.** LOMP `08_lightning_strike.lua:392` `SetSubmarineAirSupply(Mission.SS, 10.0)` at
+load; `jm12.lua:1571/1585` (`luaJM12AddAirSupply`, 1.0) inside `luaJM12RelocateUnits`; `jm10.lua:1764` (get) and
+`:1862` (set, checkpoint restore). JM10 is NOT reachable here: its missiontree.lua entry is commented out
+(`--[[{ -- JM10 Attack on Sydney Harbor (BSPRM 1.1)`, missiontree.lua mtime 2025-06-02, this installation's mod),
+the rebuild logs `mission id JM10 is not in the tree` (`local\s58_off0_j10.log`), and jm10's only `luaCheckpoint`
+call (`:890`) is commented out, so the save that calls the getter never runs either.
+
+**Predictions (from fix17/fix21, written before the runs).** LOMP08: none (clamped). JM10: unreachable. Gameplay
+identical everywhere.
+
+**Pairs (fcb6c6fa5, `--flip kLuaGetSubmarineAirSupplyBound=true --flip kLuaSetSubmarineAirSupplyBound=true`, exe
+`local\s58_sa_on`; OFF = the tree's own build of fcb6c6fa5; manifests beside each log).**
+- LOMP08 12000 frames (`local\s58_off0_l8.log` / `local\s58_sa_on_l8.log`): exit 1, gameplay identical. The
+  mechanism: `SetSubmarineAirSupply: Submarine TypeB w Jake air=10.000 stored=1`, the depth trace shows
+  `air=10.000` at step 1, then 0.945 / 0.820 / ... / 0.320 against OFF's 0.944 / 0.819 / ... / 0.319: the
+  step-then-clamp order above, one decrement (0.001) ahead for the rest of the run. The fix17 "none"
+  prediction missed by that one step; the order is the image's.
+- JM12 20000 frames (`local\s58_off0_j12.log` / `local\s58_sa_on_j12.log`): exit 1, no reach (RelocateUnits is
+  not reached in the window).
+
+**Decision: both ON**, together, by mechanism. The jm10 nil-restore hazard cannot arise in this installation,
+and with the getter ON it would restore the real value anyway.
+## 285. ArtilleryEnable, kLuaArtilleryEnableBound (cc9-ships58, 2026-10-18; cc13 fix15)
+
+**Image.** docs/CC13_FIX15.md: 0089C590 -> 0071DFD0 (sub-kind 3) -> 0071C231 stores director+220h; 0086258B
+pushes it through 00861CD0 into bit 1 of each artillery category mask (bit 0, planes, untouched, so AA keeps
+firing); 009F1BC0 caches it as the ship AI's +12B9h.
+
+**Which rows reach it here.** The fix15 doc names COTP-USN usn_09 / usn_04, but this installation's USN09 menu
+id loads `usn_9_santa.lua` and USN04 loads `usn_19_coralus.lua`; neither calls the native. Mapping every
+missiontree id to the script of the same scene name (`local\s58_ae_ids.py`): PRCP05 (`COTP-USN/PRCPUS/
+usn_09_Leyte`, Fortress1-3 off at load `:9`-`:11`, `:666`, on `:2327`), USN10 (PRCPUS usn_05 Guadalcanal, 12
+ship calls), BSM02, USN20, PRCP01, PRCP07.
+
+**Predictions (fix15, before the runs).** The Leyte fortresses stop engaging ships with their artillery
+categories; elsewhere unchanged.
+
+**Pairs (54ed7cccf, `--flip kLuaArtilleryEnableBound=true`, exe `local\s58_ae_on`; OFF = the tree's build of
+54ed7cccf; reference env BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1; manifests beside each log).**
+- USN04 20000 frames (`local\s58_off1_u4.log` / `local\s58_ae_on_u4.log`): exit 1, gameplay identical, no call.
+- USN09 30000 frames (`s58_off1_u9` / `s58_ae_on_u9`, failed "Game Over" at 622.22 s both): exit 0, no call.
+- PRCP05 30000 frames (`s58_off1_p5` / `s58_ae_on_p5`): exit 3, the predicted mechanism. ON logs
+  `ArtilleryEnable: Fortress1/2/3 director+220h=0 changed=1` at load, and the one fortress gun row
+  (`gunrow 238 Fortress1 plat 1 cat 4`) goes from assigns 543 / shots 139 / hits 81 / dealt 4872.5 to
+  assigns 0 / shots 0. OFF fails at 1397.74 s (`usn09.obj_p1_failed_atlanta`: the Atlanta dies, largely to
+  the fortress); ON has no mission end in the window. Deaths 213 ON. The re-enable at `:2327` is not reached.
+
+**Decision: ON** by mechanism. PRCP05 moves (it is not a WINS row). The ship path (USN10's retreating
+Chokai/Hiei) is not paired here; it reads the same table entry through kShipDirectorEnablesBound.
+## 286. SetDeviceReloadTimeMul, kLuaDeviceReloadTimeMulBound (cc9-ships58, 2026-10-18; cc13 fix18)
+
+**Image.** docs/CC13_FIX18.md section 5: 008C14B0 stores the process-wide float 00E08178; the only reader is the
+rack reload slice 006E41C0 (006E41D5 FLD [00E08178] / FMUL dt / 006E41E7 FSTP float), which counts an empty
+rack's +490h down by float(mul x dt) while the device-reload byte 00E17BF2 is set.
+
+**Which rows reach it here.** As with 285, the COTP-USN usn_04 / usn_13 files fix18 names are not what this
+installation's USN04 / USN13 ids load. The ids that do load a caller: PRCP05 (PRCPUS usn_09_Leyte `:311`, 1.8),
+PRCP03 (prcp_07_tarawa `:121`, 1.5), PRCP04 (prcp_08_philsea, 1.0), JM02 (PRCPIJN prcpjm02 `:39/:43`, 3.0 / 2.0
+by difficulty). USN18 loads PRCPUS prcp_13_iwojima, which does not call it (the COTP-USN copy does). JM01 and
+JM10 are not in this installation's mission tree. The jm03 multiplier 0 is not on a reachable script either.
+
+**Prediction (fix18).** An empty rack refills in ReloadTime / mul; nothing else moves.
+
+**Pairs (54ed7cccf, `--flip kLuaDeviceReloadTimeMulBound=true`, exe `local\s58_sa_on` (rebuilt for this flip);
+OFF = the tree build; manifests beside each log).** Separate from 285 (PRCP05 OFF `s58_off1_p5` is the
+54ed7cccf build with ArtilleryEnable OFF; the other OFFs call no ArtilleryEnable).
+- PRCP05 30000 frames (`s58_off1_p5` / `s58_rt_on_p5`): exit 1. `SetDeviceReloadTimeMul 008c14b0: mul=1.8`,
+  flag=1, `summary rack device reload ... reloads=0` both sides.
+- JM02 20000 frames (`s58_off2_j2` / `s58_rt_on_j2`): exit 1; mul=2, flag=1, reloads=0 (2 bomb drops, none
+  emptied a rack that then lived on).
+- PRCP03 30000 frames (`s58_off2_p3` / `s58_rt_on_p3`): exit 1; mul=1.5, flag=1, fails at 80.60 s both sides
+  ("ran out of planes").
+- USN18 30000 frames (`s58_off2_u18` / `s58_rt_on_u18`): exit 1, no call, flag=0.
+No unordered row on hand empties a rack under the device-reload flag with a multiplier other than 1.0 (the
+reload rows SQUADRON_LAND_TASK names, PRCP01 `l55_p01_c`, never set a multiplier, so they are identical by
+construction).
+
+**Decision: ON** as a faithful binding with no reach found: the store is exercised on every caller above and
+the slice reads it exactly where the image does. A row with player-ordered bomb runs on PRCP05 / JM02 would
+show `reloads` timed at ReloadTime / mul.
+## 287. USNOS status on 72f90a16d, and `Dead` after TrulyDead's Ptr null, kEntityDeadAfterPtrNullBound (cc9-ships58, 2026-10-18; lead item 4)
+
+**Status run.** Tree at 72f90a16d (origin/main + 284/285), `s56_os_c13.txt`, 150000 frames, reference env
+(`local\s58_st_os.log`, manifest beside it): **no mission end in 7500 s**, MissionPhase stays 1, no phase-2
+countdown, `SpawnNew calls=3` (wave 1 only). Transports lost: TT6/TT4/TT2 to HQ2 at 2696-2769 s, TT5/TT3 to
+Ada2 at 4296/4632 s. ships57's `s57_cur_osc13` (61f4f9c9f, same orders) spawned wave 2 (serial 4) at about
+438 s, right after its last wave-1 death (437.17 s).
+
+**First failure on the mission path.** us_osumi.lua (mtime 2024-10-29) spawns wave 2 from luaCheckObjectives
+when `luaRemoveDeadsFromTable(Mission.PhOneAttackers)` is empty (`:999`), and that reads each unit's
+`value.Dead`. All 39 wave-1 units have death rows by 438 s, but the nine Shinyos #2.1-#2.9 never get
+`entity dead: ... Dead=true` (s57's run published all 39). Each Shinyo death runs the kamikaze removal
+00814595 (`ship death message: ... kamikaze Kill(1) and removal`), which since p17's 334be0e5f
+(kLuaTrulyDeadOnKilledBound ON) calls the 00928C80 hook and nulls the self table's `Ptr`; the host's
+00929800 publisher then takes the slot as not the unit's own (`Ptr == id` test) and skips it. So
+PhOneAttackers is never empty and phase 1 never ends.
+
+**Image.** 00929800 gates on the entity's cached key [this+178h] (0092981F/00929830), gets the table through
+00927B40 and sets `Dead` (00929896); it reads no `Ptr`. 00928C80 reads +178h (00928C9B) and sets
+`Ptr = 0` (00928D04) but writes no +178h. So `Dead` is published after the null in the image.
+
+**Bind (OFF).** `kEntityDeadAfterPtrNullBound` (include/bsp/game_hosts_script_orders.hpp): the publisher also
+takes a slot whose `Ptr` is null. LABELLED: a table with no `Ptr` field at all would pass too (none is
+known; the host seeds `Ptr` on every unit table).
+
+**Predictions, written before the runs.** OFF identical. ON on USNOS: nine more `entity dead` lines (the
+Shinyos, at their death times), wave 2 spawns at about 440 s, and the run follows ships55's phase-1 / phase-2
+picture from there. Any row with kamikaze boats or other units removed through 00814595 before the flush
+moves the same way (their `Dead` turns true); rows with none are identical.
+### 287 result: ON
+
+**Pair (2c3c0a897, `--flip kEntityDeadAfterPtrNullBound=true`, exe `local\s58_sa_on`; OFF = the tree build of
+2c3c0a897; USNOS `s56_os_c13.txt` 30000 frames, `local\s58_off3_os.log` / `local\s58_dn_on_os.log`, manifests
+beside them).** pair_diff exit 3, the predicted mechanism. OFF: 212 death rows, 11 never published (the nine
+Shinyos and Midway_sqn16 / sqn34), `SpawnNew calls=3`, MissionPhase 1 at the end. ON: all nine Shinyos publish
+`Dead=true` at their deaths, wave 2 spawns (serials 4-6) at 438.07 s as in s57's 61f4f9c9f run, and the run
+reaches phase 2 (`Blackout(true, "luaMoveToPh2")`); 274 death rows, one unpublished (Midway_sqn16, a squadron
+held by kSquadronDeadOnLastMemberBound). TrulyDead `ptr_nulled` 32 -> 60. No mission end in the 1500 s window.
+**Decision: ON** by mechanism. Every row with a unit removed through 00814595 before the publish (kamikaze
+boats) can move; USNOS's plan goes back to ships55's phase-2 picture (section 273).
+### 287 follow-up: USNOS status on 12f8cbb1c (lead item 4)
+
+`local\s58_st2_os.log` (12f8cbb1c tree build, `s56_os_c13.txt`, 150000 frames, reference env): **no mission end in
+7500 s**, now in phase 2 (luaMoveToPh2 at 1003.88 s; wave 2 spawned at 438 s). Transports lost: TT4 at 662 s and
+TT2 at 744 s to wave-2 level bombers (#4.4|.-II, #4.6|.-III; ships55's known problem), TT1 at 2225 s to
+Airfield2_sqn61. TT3/TT5/TT6 live to the end. HQ1 (1634 s), CB2 (2222 s) and HQ2 (2446 s, then 2 -> 0 six more
+times) are neutralized, but no transport comes within the capture range, so nothing turns allied and no phase-2
+countdown starts. Loui1 and Loui2 die at 2767/2771 s with each other as last attacker (direct hits at
+344-366 m, nearest enemy 5.4-5.8 km: shells hitting a friend in the line of fire; not investigated).
+No further host fault was found on the mission path in this run. What remains is the plan: s56_os_c13 is
+open-loop on absolute frames and does not send a transport to the neutral HQs. Re-planning from section 273's
+next steps (c9/c10 picture) is the next USNOS step.

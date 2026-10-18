@@ -138,6 +138,15 @@ void set_game_effective_difficulty_6ac(std::int32_t value) noexcept;
 // flush does in the image (009273A0 -> vtable[74h] 00926390 -> vtable[7Ch] ->
 // 00929B60 -> 00929800). False: the old behaviour, `Dead` stays false.
 inline constexpr bool kEntityDeadBound = true;
+// Packet cc9-ships58 (docs/SHIP_AI_OPEN_ITEMS.md section 287). 00929800 finds the
+// self table through the entity's cached key (+178h, 0092981F) and never reads
+// `Ptr`; 00928C80 (kLuaTrulyDeadOnKilledBound) nulls `Ptr` (00928D04) and leaves
+// +178h alone, so a unit already unlinked through the kill list still gets
+// `Dead`. True: the publisher also takes a slot whose `Ptr` is null as the
+// unit's own. False: only `Ptr == id` counts, and a unit whose `Ptr` the
+// TrulyDead hook nulled first (a kamikaze boat's 00814595 removal) never reads
+// `Dead` (USNOS: the Shinyos hold PhOneAttackers open, wave 2 never spawns).
+inline constexpr bool kEntityDeadAfterPtrNullBound = true;  // ON: USNOS pair, section 287
 // Packet cc9_squadron_dead, docs/ENTITY_DEAD_FLAG.md section 8. True: a squadron
 // fused with its wing-0 plane publishes `Dead` only once no other member still
 // flies, as 007F3970 kills the squadron entity only when +3CCh reaches 0. False:
@@ -550,12 +559,12 @@ inline constexpr bool kLuaGetDirectionBound = false;
 // step); when set, 0089ECC9 007BBBA0 with ECX the plane. No result. The host takes
 // the byte live (kind 17h, or GameUnitsHost::plane_holds_rack_round_007b9140) and
 // calls GameUnitsHost::request_ordnance_release_007bbba0.
-inline constexpr bool kLuaPlaneForceReleaseBound = false;
+inline constexpr bool kLuaPlaneForceReleaseBound = true;  // ON, unexercised (OCEAN_WAVE_FIELD 69)
 // True: `SquadronForceRelease(squadron)` 0089E850: 0089E950 00888AA0 on argument 0;
 // for each of the +3CCh members at +3D0h (slot > 4 reads null, 0089E977) the same
 // byte test and 007BBBA0 (0089E983-0089E9A0). No result. The host walks the
 // registry record's member_units (GetSquadronPlanes's lookup).
-inline constexpr bool kLuaSquadronForceReleaseBound = false;
+inline constexpr bool kLuaSquadronForceReleaseBound = true;  // ON, unexercised (OCEAN_WAVE_FIELD 69)
 // True: `PilotBomb(unit, target)` 008A4F00: 008A4FFF 00888AA0 on argument 0,
 // 008A5034 0088A810 argument 1 as a command target; 008A504C 007ED880(unit, 0)
 // true gives dropkamikaze 00E08F30, else vtable[5Ch](10h) true gives levelbomb
@@ -567,20 +576,20 @@ inline constexpr bool kLuaSquadronForceReleaseBound = false;
 // 2, 1, 0 and [this+C4h] (18h, 007F2DEC): never 10h, so a squadron gets divebomb
 // unless 007ED880 answers. The host treats a fused squadron slot (a registry
 // record's squadron_unit) as the squadron, not as its wing-0 plane.
-inline constexpr bool kLuaPilotBombBound = false;
+inline constexpr bool kLuaPilotBombBound = true;  // ON, unexercised (OCEAN_WAVE_FIELD 69)
 // True: `PlaneBombFallingTime(plane)` 008A54C0: 008A55C3 00888AA0 on argument 0;
 // 008A55D6 +C8h clear -> 00414DB0; 008A55E6 FLD [plane+100h] (world y), 008A55F2
 // 007BCC80(plane, y); 008A55FC FSTP float, 008A55FF 00B66480 PushFloat. One result.
-inline constexpr bool kLuaPlaneBombFallingTimeBound = false;
+inline constexpr bool kLuaPlaneBombFallingTimeBound = true;  // ON, unexercised (OCEAN_WAVE_FIELD 69)
 // True: `PlaneReloadBombPlatforms(squadron)` 0089F080: 0089F17F 00888AA0 on
 // argument 0, 0089F198 007ED650 (each +3CCh member at +3D0h through 007C1D80, then
 // byte squadron+3ECh = 1). No result. The host rearms each member through
 // GameUnitsHost::plane_reload_bomb_platforms_007c1d80.
-inline constexpr bool kLuaPlaneReloadBombPlatformsBound = false;
+inline constexpr bool kLuaPlaneReloadBombPlatformsBound = true;  // ON, unexercised (OCEAN_WAVE_FIELD 69)
 // True: `GetPlaneIsReloading(entity)` 008BEBE0: 008BECDF 00888AA0 on argument 0;
 // 008BED04 vtable[5Ch](0Fh) true -> 007B92E0 on the entity, else on [entity+3D0h]
 // when non-null; 008BED2A 00B66450 PushBoolean (0 when skipped). One result.
-inline constexpr bool kLuaGetPlaneIsReloadingBound = false;
+inline constexpr bool kLuaGetPlaneIsReloadingBound = true;  // ON, unexercised (OCEAN_WAVE_FIELD 69)
 // Packet cc13-fix21 (docs/CC13_FIX21.md). PARTIAL stopgap for `GetSquadTorpedoes(
 // squadron [, all])` 008BEF80: 008BF0E9 00B67930 NewTable is unconditional, then
 // the list [game+19CCh] (count +21Ch, node +224h, element [node+8]) adds each
@@ -599,8 +608,9 @@ inline constexpr bool kLuaGetSquadTorpedoesBound = false;
 // (GameUnitsHost::submarine_air_008938e0), the field SetSubmarineAirSupply
 // 00893A60 writes. LABELLED: a unit with no seeded submarine air state pushes
 // nothing (the image reads +127Ch of any entity and faults on null). False: an
-// unimplemented record that pushes nothing.
-inline constexpr bool kLuaGetSubmarineAirSupplyBound = false;
+// unimplemented record that pushes nothing. ON since cc9-ships58 (docs/SHIP_AI_OPEN_ITEMS.md
+// section 284), flipped together with kLuaSetSubmarineAirSupplyBound.
+inline constexpr bool kLuaGetSubmarineAirSupplyBound = true;
 // Packet cc9_lua_mission_narrative (docs/MISSION_END.md, "The narrative queue").
 // True: MissionNarrative / MissionNarrativeEnqueue 008B0C10 enqueue (text,
 // callback, arguments) on [game+21E8h] (00734870), MissionNarrativeClear

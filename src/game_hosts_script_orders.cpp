@@ -5724,8 +5724,12 @@ void GameScriptOrdersHost::publish_unit_deaths_00929800() {
         bool own_slot = false;
         if (lua_istable(L, -1)) {
             lua_getfield(L, -1, "Ptr");
-            own_slot = lua_touserdata(L, -1)
-                == reinterpret_cast<void*>(static_cast<std::uintptr_t>(index + 1));
+            void* const ptr = lua_touserdata(L, -1);
+            own_slot = ptr == reinterpret_cast<void*>(static_cast<std::uintptr_t>(index + 1));
+            // Packet cc9-ships58: 00928C80 has nulled this table's Ptr already.
+            if constexpr (kEntityDeadAfterPtrNullBound) {
+                if (ptr == nullptr) own_slot = true;
+            }
             lua_settop(L, lua_gettop(L) - 1);
         }
         if (own_slot) {

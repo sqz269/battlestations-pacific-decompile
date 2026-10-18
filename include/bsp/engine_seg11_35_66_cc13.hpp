@@ -892,17 +892,18 @@ bool write_hardware_value_0098d470(const char* value_name, std::uint32_t type, c
 // (0x20019), RegQueryValueExA; true only when the query succeeded AND the type matched.
 bool read_hardware_value_0098d4e0(const char* value_name, std::uint32_t expected_type, void* buffer,
                                   std::uint32_t* size);
-// 0098D570, __fastcall(ECX = name, EDX = value), RET: four bytes as the given type... the image
-// passes type 4 (REG_DWORD) with a four-byte length (the reads demand REG_QWORD).
+// 0098D570, __fastcall(ECX = name, EDX = value), RET, AL = 0098D470's answer: four bytes typed
+// REG_QWORD (0098D57C MOV EDX,0Bh; 0098D571 PUSH 4), so the REG_QWORD read 0098D5C0 accepts it.
 bool write_hardware_dword_0098d570(const char* value_name, std::uint32_t value);
 // 0098D590, __fastcall(ECX = name, EDX = text), RET: REG_SZ, strlen + 1 bytes.
 bool write_hardware_string_0098d590(const char* value_name, const char* text);
-// 0098D5C0, __fastcall(ECX = name, EDX = out), RET: an eight-byte REG_QWORD read; the low dword is
-// stored EVEN WHEN THE READ FAILED (then it is the caller's uninitialized stack, passed here as
-// scratch_low).
-void read_hardware_qword_0098d5c0(const char* value_name, std::uint32_t& out, std::uint32_t scratch_low);
-// 0098D5F0, __fastcall(ECX = name, EDX = buffer, size*), RET 4: REG_SZ read (result discarded).
-void read_hardware_string_0098d5f0(const char* value_name, char* buffer, std::uint32_t* size);
+// 0098D5C0, __fastcall(ECX = name, EDX = out), RET, AL = 0098D4E0's answer (EAX is untouched after
+// 0098D5DD): an eight-byte REG_QWORD read; the low dword is stored EVEN WHEN THE READ FAILED (then
+// it is the caller's uninitialized stack, passed here as scratch_low). 0073C3B0 sums the four
+// answers (MOVZX at 0073C415 / 0073C41D / 0073C430 / 0073C448) and needs 4 (0073C44D CMP ESI,4).
+bool read_hardware_qword_0098d5c0(const char* value_name, std::uint32_t& out, std::uint32_t scratch_low);
+// 0098D5F0, __fastcall(ECX = name, EDX = buffer, size*), RET 4, AL = 0098D4E0's answer: REG_SZ read.
+bool read_hardware_string_0098d5f0(const char* value_name, char* buffer, std::uint32_t* size);
 
 // 0098F430, __thiscall(ECX = info, path), RET 4: fopen(path, "wb"); null returns false. The options
 // text (0098E910 builds it into info+C3Ch) is built TWICE: once for strlen, once for fwrite(text,

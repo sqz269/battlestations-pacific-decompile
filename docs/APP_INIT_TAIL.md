@@ -27,15 +27,18 @@ to a host method `failed_requirements` marked "not recovered". It is recovered h
 | Routine | ABI | Behaviour |
 | --- | --- | --- |
 | 0098d4e0 `BSP_HardwareRegistry_ReadValue` | `__fastcall(ECX = value name, EDX = expected REG type)`, stack (data, &cbData), RET 8 | `RegOpenKeyExA(HKLM, SOFTWARE\Eidos\BSM_HWD, 0x20019)` then `RegQueryValueExA`; true only when the call succeeds **and** the returned type equals EDX |
-| 0098d5c0 `..._ReadQword` | `__fastcall(ECX = name, EDX = uint32 out)` | expected type 0x0b, 8-byte buffer, keeps the low dword only (0098d5e2) |
-| 0098d5f0 `..._ReadString` | `__fastcall(ECX = name, EDX = buffer)`, stack &cbData, RET 4 | expected type 1 |
+| 0098d5c0 `..._ReadQword` | `__fastcall(ECX = name, EDX = uint32 out)`, RET, AL = 0098d4e0's answer | expected type 0x0b, 8-byte buffer, stores the low dword whether or not the read succeeded (0098d5e2 / 0098d5e6); EAX is untouched after the call, and 0073c3b0 sums the four answers (MOVZX at 0073c415 / 0073c41d / 0073c430 / 0073c448, CMP ESI,4 at 0073c44d) |
+| 0098d5f0 `..._ReadString` | `__fastcall(ECX = name, EDX = buffer)`, stack &cbData, RET 4, AL = 0098d4e0's answer | expected type 1 |
 | 0098d470 `..._WriteValue` | `__fastcall(ECX = name, EDX = REG type)`, stack (data, cbData) | `RegCreateKeyExA(..., 0x20006)` then `RegSetValueExA` |
-| 0098d570 `..._WriteDword` | `__fastcall(ECX = name, EDX = value)` | writes **four** bytes |
+| 0098d570 `..._WriteDword` | `__fastcall(ECX = name, EDX = value)`, RET, AL = 0098d470's answer | writes **four** bytes typed **REG_QWORD** (0098d57c `MOV EDX,0Bh`, 0098d571 `PUSH 4`) |
 | 0098d590 `..._WriteString` | `__fastcall(ECX = name, EDX = string)` | writes `strlen + 1` bytes |
 
-The asymmetry is real and worth keeping: the reads demand `REG_QWORD` but the write-back stores
-four bytes. A key this routine wrote itself would therefore fail its own type check on the next
-run, so the eight-byte values must come from the separate hardware-detection pass.
+CORRECTION (cc13-fix23): there is no type asymmetry. The write-back stores four bytes but types
+them REG_QWORD (0098d57c `MOV EDX,0Bh`), so a key this routine wrote passes its own REG_QWORD type
+check on the next run; the read takes the four bytes as the low dword, and the high dword of its
+buffer is stack it never initialised. The earlier text said the write was REG_DWORD and would fail
+the check; the host `GameHardwareProbe::write_hardware_dword` (src/game_hosts_init_tail.cpp) still
+writes REG_DWORD and needs the same fix.
 
 ### The machine side
 

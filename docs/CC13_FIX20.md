@@ -35,8 +35,14 @@ Status: reconstructed and build-tested. Not game-validated: no ON pair was run.
   the stamp into each member's +1D0h. The loop runs up to the formation's +3CCh count, and slots
   past the fifth read as 0.
 - When entity+1ACh is below 8, virtual +5Ch(5) holds and the leader flag (BL) is clear, it passes the
-  elapsed time to 0090ED40 with ECX = `[game+21A0h]`. 0090ED40 is a per-slot float statistic
-  (`scoring_add_unit_float_0090ed40`, include/bsp/cc13_seg59a.hpp). The decompiler drops this float
+  elapsed time to 0090ED40 with ECX = `[game+21A0h]` and the slot entity+1ACh. 0090ED40
+  (`scoring_add_unit_float_0090ed40`, include/bsp/cc13_seg59a.hpp) does nothing when
+  `[game]+1FE4h == 2` (0090ED45 `CMP [EAX+1FE4h],2`, 0090ED4F `JE 0090ED8C`). Otherwise it adds it into that slot's saved
+  `unit_usage` map: record+114h (0090ED74 `LEA ECX,[slot*284h + scoring + 118h]`, the records start
+  at scoring+4h), keyed by entity+170h's vtable[0]() (the 0090E740 subscript, then a float add). 0091A080
+  merges that map into the progress record (0091AB5E `ADD ECX,114h`, 0090E740, a float add), and the
+  progress archive writes it as section `unit_usage` (`MissionProgressRecord::unit_usage_114`,
+  src/mission_progress.cpp; docs/MISSION_PROGRESS_ARCHIVE.md). The decompiler drops this float
   argument, but the listing at 00928006 shows it.
 
 The native shows no message and makes no save or profile write. The profile write happens later, in
@@ -58,7 +64,8 @@ EndScene's commit 009205E0 and the storage paths after it.
 **Divergences, labelled.**
 
 - The 00927F60 walk stays one recorded step (`MissionScoring::notify_entities`, 009064B5). The host
-  has no entity list at game+19CCh, no entity+1D0h, and no per-slot statistics for 0090ED40.
+  has no entity list at game+19CCh and no entity+1D0h, and it does not write the record's
+  `unit_usage` map (record+114h) that 0090ED40 adds into.
 - `scoring_slot` clamps a slot outside 0..7 to 0. The image has no such guard. This can only happen
   in a mode other than 0, which this process does not run.
 

@@ -3,6 +3,7 @@
 #include "bsp/game_hosts_init_tail.hpp"
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/engine_seg11_35_66_cc13.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/gui_lua_runtime.hpp"
 #include "bsp/memory_stream.hpp"
@@ -22,6 +23,11 @@ constexpr DWORD kHardwareWriteAccess = 0x20006u;
 // 0098d5f0 demands type 1 (REG_SZ) into a 0x400-byte buffer.
 constexpr DWORD kHardwareQwordType = 0x0bu;
 constexpr std::size_t kHardwareStringCapacity = 0x400;
+// True: read_stored_qword / read_stored_string call cc13's 0098d5c0 / 0098d5f0
+// (both through 0098d4e0, returning its bool). False: the host's own reads, as before.
+// Pair this on the read-only path only: never run a pair or test with
+// --hardware-probe-commit, which writes this machine's real HKLM Eidos key.
+constexpr bool kHardwareRegistryReadsCc13Bound = false;
 
 // The read half of the probe, as bsp::probe_hardware_0073c3b0 wants it. The
 // decision is not taken here: it belongs to bsp::run_hardware_probe_tail_0073c3b0,
@@ -70,6 +76,11 @@ GameHardwareProbe::GameHardwareProbe(GameHostLog& log, bool commit)
 
 bool GameHardwareProbe::read_stored_qword(const std::string& value_name,
     std::uint32_t& out) const {
+    if constexpr (kHardwareRegistryReadsCc13Bound) {
+        // 0098d5e6 stores the low dword whether or not the read succeeded; seeding
+        // the buffer with out keeps a failed read from changing it, as the host does.
+        return engine_seg11_35_66_cc13::read_hardware_qword_0098d5c0(value_name.c_str(), out, out);
+    } else {
     HKEY key = nullptr;
     if (RegOpenKeyExA(HKEY_LOCAL_MACHINE, kHardwareRegistryKey, 0, kHardwareReadAccess, &key)
         != ERROR_SUCCESS) {
@@ -86,10 +97,19 @@ bool GameHardwareProbe::read_stored_qword(const std::string& value_name,
     if (status != ERROR_SUCCESS || type != kHardwareQwordType) return false;
     out = static_cast<std::uint32_t>(value & 0xffffffffu);
     return true;
+    }
 }
 
 bool GameHardwareProbe::read_stored_string(const std::string& value_name,
     std::string& out) const {
+    if constexpr (kHardwareRegistryReadsCc13Bound) {
+        char buffer[kHardwareStringCapacity] = {};
+        std::uint32_t size = static_cast<std::uint32_t>(sizeof(buffer));
+        if (!engine_seg11_35_66_cc13::read_hardware_string_0098d5f0(value_name.c_str(), buffer, &size)) return false;
+        buffer[sizeof(buffer) - 1] = '\0';
+        out.assign(buffer);
+        return true;
+    } else {
     HKEY key = nullptr;
     if (RegOpenKeyExA(HKEY_LOCAL_MACHINE, kHardwareRegistryKey, 0, kHardwareReadAccess, &key)
         != ERROR_SUCCESS) {
@@ -105,6 +125,7 @@ bool GameHardwareProbe::read_stored_string(const std::string& value_name,
     buffer[sizeof(buffer) - 1] = '\0';
     out.assign(buffer);
     return true;
+    }
 }
 
 std::uint32_t GameHardwareProbe::current_gpu_device_id() {
@@ -188,9 +209,10 @@ void GameHardwareProbe::write_hardware_dword(const std::string& value_name,
         log_.notef("hardware write-back %s failed to open the key", value_name.c_str());
         return;
     }
-    // 0098d570 writes four bytes even though the matching read demands
-    // REG_QWORD; the asymmetry is the original's.
-    RegSetValueExA(key, value_name.c_str(), 0, REG_DWORD,
+    // 0098d570 writes four bytes typed REG_QWORD (0098d571 PUSH 4, 0098d57c MOV
+    // EDX,0Bh into 0098d470's RegSetValueExA dwType), so 0098d5c0's REG_QWORD
+    // read accepts its own write-back.
+    RegSetValueExA(key, value_name.c_str(), 0, REG_QWORD,
         reinterpret_cast<const BYTE*>(&value), sizeof(value));
     RegCloseKey(key);
 }

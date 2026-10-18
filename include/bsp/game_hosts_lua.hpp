@@ -479,7 +479,23 @@ inline constexpr bool kLuaSetCrewLevelBound = false;  // OFF: committed unpaired
 // the observer is fed from the host's Kill sites only (target_gone_00925c40); the
 // line-of-sight trigger stays unbound, so RemoveTrigger answers false for its names.
 // False: both rows stay UNIMPLEMENTED and push nothing, and nothing is walked.
-inline constexpr bool kLuaProximityTriggersBound = false;  // OFF: committed for a USN04 pair
+// ON (cc9-physics18, OCEAN_WAVE_FIELD 69-70): PRCP05's airfield trigger fires and
+// completes primary 1; USN11 / USN10 identical.
+inline constexpr bool kLuaProximityTriggersBound = true;
+// Packet p18_spawn_missing_class (cc9-physics18, docs/OCEAN_WAVE_FIELD.md 70).
+// SpawnNew 00949750 builds each groupMembers entry through 00945C30 -> 00944210, whose
+// 00964790 reads the member's class: VehicleClass[classIndex] (00B67720, a nil object
+// when the row is absent), then its `Type` through 00B67800 -> lua_gettable 00A67C20
+// -> luaV_gettable, which raises "attempt to index a nil value" on the nil row. That
+// error unwinds the SpawnNew native into the script call's protected call, so the
+// script function aborts and nothing is spawned (the members are read inside the
+// native, before 009484xx creates any). This installation's vehicleclasses.lua
+// (2026-05-09) has no row 240, which usn_09_Leyte.lua's shipyard PTs ask for.
+// True: a member whose Type has no VehicleClass row raises that error. False: the
+// member is created and the units host aborts the run at its observer projection.
+// ON (OCEAN_WAVE_FIELD 71): PRCP05 raised once at 1061.96 s (US09Think fails at
+// line 1093) and ran its 36000 frames; OFF stopped there at the observer projection.
+inline constexpr bool kSpawnNewMissingClassRaisesBound = true;
 // Packet cc13-fix19 (docs/CC13_FIX19.md). 008C9A10
 // AddSquadOrdnanceDroppedTrigger(entity, name?, callback): 00750660 makes a 34h trigger
 // (vtable 00D005C0, +11h = 1, +18h = 2), 00750790 stores the name and callback, and
@@ -496,7 +512,9 @@ inline constexpr bool kLuaProximityTriggersBound = false;  // OFF: committed for
 // host's registry; its live members (registry members the gunnery host does not
 // count dead) stand for +3D0h/+3CCh; a squadron with none is not tested.
 // False: the row stays UNIMPLEMENTED and pushes nothing.
-inline constexpr bool kLuaSquadOrdnanceDroppedTriggerBound = false;  // OFF: new, unpaired
+// ON (cc9-physics18, OCEAN_WAVE_FIELD 70): USNRM01's Oklahoma_Killers trigger fires and
+// luaOklahomaKillersRetreat runs (the mission ends 784.93 s, was 569.98 s); BSM04 identical.
+inline constexpr bool kLuaSquadOrdnanceDroppedTriggerBound = true;
 inline constexpr bool kLuaSetShipSpeedBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_unit_get_attack_target (docs/LUA_BINDING_MISSION.md, "UnitGetAttackTarget,
@@ -688,7 +706,7 @@ inline constexpr bool kLuaGetCatapultStockBound = true;   // ON: SQUADRON_LAND_T
 // 006EC8E0 -> 00957450 is not built), so a ship's count is 0, LABELLED. False: an
 // unimplemented record that pushes nothing (jm02's luaJM2CheckReconplanes compares
 // the nil `num`).
-inline constexpr bool kLuaGetNumCatapultedBound = false;
+inline constexpr bool kLuaGetNumCatapultedBound = true;  // ON with kShipCatapultLaunchBound (OCEAN_WAVE_FIELD 69)
 inline constexpr bool kLuaFormationQueryBound = true;  // ON: mechanism matched, spread miss recorded (docs/LUA_BINDING_MISSION.md)
 
 // The process-wide 00E17BF2. It is reset from the lobby flags when a mission's settings
@@ -704,7 +722,7 @@ bool lua_device_reload_enabled_00e17bf2() noexcept;
 // route the row to run_set_device_reload_time_mul_008c14b0, and the units host's rack
 // reload slice (006E57A4) scales its step by lua_device_reload_time_mul_00e08178(). False:
 // UNIMPLEMENTED, and the accessor answers 1.0.
-inline constexpr bool kLuaDeviceReloadTimeMulBound = false;  // OFF: committed unpaired
+inline constexpr bool kLuaDeviceReloadTimeMulBound = true;  // ON: cc9-ships58, SHIP_AI_OPEN_ITEMS 286
 // The process-wide float 00E08178; 1.0 while kLuaDeviceReloadTimeMulBound is false.
 float lua_device_reload_time_mul_00e08178() noexcept;
 
@@ -720,7 +738,7 @@ float lua_device_reload_time_mul_00e08178() noexcept;
 // altitude, +3ABh = 1, +3ADh = 0. 009C8920 overwrites +39Ch with 9999 once the
 // countdown and lock allow, and 009C7A80 reads it into the dive altitude. True:
 // route the row to the units host's third block. False: unimplemented.
-inline constexpr bool kLuaSquadronSetReleaseAltBound = false;
+inline constexpr bool kLuaSquadronSetReleaseAltBound = true;  // ON: BSM09 pair (OCEAN_WAVE_FIELD 69)
 // Packet cc13-fix4 (docs/CC13_VER_10.md section 4, divergence D2). 008A20E0
 // SquadronLandAndKill(squadron): 007F1B70 frees the launch slot on every carrier
 // and airfield (008A220F), then from the last plane down Kill(plane, 5 "landed")
@@ -1123,6 +1141,7 @@ struct GameMissionLuaSummary {
     unsigned long long dead_meat_destroyed{0};      // else arm, vtable[70h](1)
     unsigned long long dead_meat_plane_unapplied{0};  // plane arm, not hosted
     unsigned long long dead_meat_unresolved{0};
+    unsigned long long spawn_missing_class_raises{0};   // packet p18_spawn_missing_class
     unsigned long long unit_selectable_calls{0};    // packet cc13-fix12, 008AB580
     unsigned long long unit_selectable_true{0};
     unsigned long long unit_selectable_unresolved{0};  // no entity: pushed false
@@ -2139,6 +2158,11 @@ private:
     void fire_lua_trigger_0074fdd0(std::size_t unit, ProximityTrigger& trigger);
     std::vector<std::size_t> target_gone_pending_;   // the kill list's notices, FIFO
     std::vector<bool> target_gone_notified_;         // +5Eh: pass K ran (00926D90 idempotence)
+    // Packet cc13-fix19b: a squadron target whose registry record has held a member
+    // (+3CCh was non-zero), so a later empty record reads as 007F3970's Kill.
+    std::vector<bool> squadron_target_resolved_;
+    // Packet cc13-fix19c: target_gone_00925c40 without its fused-squadron-slot filter.
+    void target_gone_mark_(std::size_t unit_index);
     // Packet cc13-ver8: the cause this host's Lua Kill (008AC5C0) passed, per unit; the
     // gunnery funnel does not keep it.
     std::map<std::size_t, int> lua_kill_cause_;

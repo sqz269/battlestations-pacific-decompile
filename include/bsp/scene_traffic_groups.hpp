@@ -353,6 +353,12 @@ int drain_stock_class_queue(VehicleClassPreloadHost& host);
 // 00469E40. `lexer` must be positioned on the `SceneBrowserGroups` keyword.
 SceneBrowserGroupsReadResult read_browser_groups_block(SceneLexer& lexer,
     SceneBrowserGroupsHost& host);
+// 00469E40 from its `{` expect at 00469E54 on (the keyword expect 00CE56A4 is
+// 00469E48..00469E4F): for a caller whose loop has already
+// consumed the keyword (scene_file.cpp takes it with next(), where 0046EBA1
+// only peeks it through 008D8A70 before the call at 0046EBD3).
+SceneBrowserGroupsReadResult read_browser_groups_after_keyword(SceneLexer& lexer,
+    SceneBrowserGroupsHost& host);
 
 // 008F7100 then 008F6FC0 twice: .enums, then .props.
 PropLibraryLoadResult load_prop_library(const std::string& folder,

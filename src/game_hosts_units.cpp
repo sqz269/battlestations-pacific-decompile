@@ -20,6 +20,7 @@
 #include "bsp/game_hosts_scene_contents.hpp"  // packet cc9_submarine_seabed
 #include "bsp/airfield_taxi.hpp"                 // packet cc9_land_park_taxi
 #include "bsp/game_hosts_avoid_zones.hpp"
+#include "bsp/band_007a_cc13.hpp"
 #include "bsp/gameplay_seg48_cc13.hpp"
 #include "bsp/plane_flight.hpp"
 #include "bsp/plane_ground_ops.hpp"
@@ -6171,19 +6172,47 @@ struct GameUnitsHost::Impl {
     unsigned long long wing_fold_classes{0}, wing_fold_extends{0}, wing_fold_retracts{0};
     unsigned long long wing_fold_resets{0}, wing_fold_elevator_waits{0};
     unsigned long long wing_spread_prep_holds{0}, wing_spread_run_holds{0};
+    // Packet cc15-act1: the +DECh block's +44h channel (007B8D10 reads [plane+DECh]+44h)
+    // runs band_007a_cc13.cpp's 007B8D10/007B8D40, 007B8DA0/007B8DC0 and 007B8DE0 over
+    // a copy of the channel, and the dying-plane byte runs gameplay_seg48_cc13.cpp's
+    // 007D8180. Byte and UCOMISS logic only: no evaluation width changes.
+    static constexpr bool kActuatorFlagCc13BodiesBound = false;
+    static bsp::band_007a_cc13::ActuatorChannel cc13_channel(const bsp::PlaneActuatorChannel& c) {
+        return {static_cast<std::uint8_t>(c.enabled), static_cast<std::uint8_t>(c.target), c.value,
+                static_cast<std::uint8_t>(c.moving)};
+    }
+    static void store_cc13_channel(bsp::PlaneActuatorBlock& b,
+                                   const bsp::band_007a_cc13::ActuatorChannel& c,
+                                   std::uint8_t block_dirty) {
+        b.channel_a.target = c.target != 0;
+        b.channel_a.value = c.value;
+        b.channel_a.moving = c.dirty != 0;
+        b.moving_any = block_dirty != 0;
+    }
     // 007B8DC0 / 007B8DA0: the target to 1 / 0, the moving byte and +11h raised.
     static void wing_target_007b8dc0(bsp::PlaneActuatorBlock& b, bool spread) {
-        bsp::PlaneActuatorChannel& c = b.channel_a;
-        if (c.target != spread) {
-            c.target = spread;
-            c.moving = true;
+        if constexpr (kActuatorFlagCc13BodiesBound) {
+            bsp::band_007a_cc13::ActuatorChannel c = cc13_channel(b.channel_a);
+            std::uint8_t dirty = static_cast<std::uint8_t>(b.moving_any);
+            bsp::band_007a_cc13::actuator_channel_set_target_007b8da0(c, spread ? 1 : 0, dirty);
+            store_cc13_channel(b, c, dirty);
+        } else {
+            bsp::PlaneActuatorChannel& c = b.channel_a;
+            if (c.target != spread) {
+                c.target = spread;
+                c.moving = true;
+            }
+            if (c.moving) b.moving_any = true;
         }
-        if (c.moving) b.moving_any = true;
     }
     // 007B8D10 / 007B8D40: true when the channel is disabled or its value is
     // exactly 1.0 / 0.0 (UCOMISS, so a NaN answers false).
     static bool wing_at_007b8d10(const bsp::PlaneActuatorBlock& b, float end) {
-        return !b.channel_a.enabled || b.channel_a.value == end;
+        if constexpr (kActuatorFlagCc13BodiesBound) {
+            return bsp::band_007a_cc13::actuator_channel_at_value_007b8d10(cc13_channel(b.channel_a), end);
+        } else {
+            return !b.channel_a.enabled || b.channel_a.value == end;
+        }
     }
     void wing_fold_class_007eabc0(GameUnitSlot& u);
     void wing_fold_notify_007c11e0(GameUnitSlot& u);
@@ -14804,7 +14833,14 @@ void GameUnitsHost::Impl::carrier_elevator_carry_006fc0d0(LandingDeck& d) {
     // The velocity stop predates packet cc9_wing_fold and stays; 007B8DE0 at
     // 006FC15E is the wing reset: target 0 and value 0.0 at once.
     for (float& v : p.deck_local_vel) v = 0.0f;
-    if constexpr (kPlaneWingFoldElevatorBound) {
+    if constexpr (kPlaneWingFoldElevatorBound && kActuatorFlagCc13BodiesBound) {
+        bsp::PlaneActuatorChannel& c = p.actuator_block_dec.channel_a;
+        if ((c.target || c.value != 0.0f) && c.enabled && c.value != 0.0f) ++wing_fold_resets;
+        bsp::band_007a_cc13::ActuatorChannel cc = cc13_channel(c);
+        std::uint8_t dirty = static_cast<std::uint8_t>(p.actuator_block_dec.moving_any);
+        bsp::band_007a_cc13::actuator_channel_reset_to_zero_007b8de0(cc, dirty);
+        store_cc13_channel(p.actuator_block_dec, cc, dirty);
+    } else if constexpr (kPlaneWingFoldElevatorBound) {
         bsp::PlaneActuatorChannel& c = p.actuator_block_dec.channel_a;
         if (c.target || c.value != 0.0f) {
             if (c.enabled && c.value != 0.0f) ++wing_fold_resets;
@@ -37322,7 +37358,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // Step 3, 007CBBE7-007CBC14: a dying plane (unit+5Dh) whose
                         // ctl+94h is clear gets 007D8180(0) and unit+C10h = 99.0.
                         if (unit_.plane_death_c3a && !unit_.plane_ctl_94) {
-                            unit_.plane_ctl_94 = true;
+                            if constexpr (GameUnitsHost::Impl::kActuatorFlagCc13BodiesBound) {
+                                // 007D8180(0): [00E188A8] is set and game+1FE4h is 1 in this
+                                // single-player process (session_mode()), so the byte is set.
+                                bsp::gameplay_seg48_cc13::flight_controller_set_flag_94_007d8180(
+                                    unit_.plane_ctl_94, false, true, 1);
+                            } else {
+                                unit_.plane_ctl_94 = true;
+                            }
                             unit_.plane_death_timer_c10 = 99.0f;   // 00D059A0
                         }
                         // Step 4, 007CBC31: the law, around the core law.

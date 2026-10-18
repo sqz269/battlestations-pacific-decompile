@@ -1546,22 +1546,28 @@ bool read_hardware_value_0098d4e0(const char* value_name, std::uint32_t expected
 }
 
 bool write_hardware_dword_0098d570(const char* value_name, std::uint32_t value) {
-    return write_hardware_value_0098d470(value_name, REG_DWORD, &value, 4);
+    // 0098D57C MOV EDX,0Bh (REG_QWORD) with 0098D571 PUSH 4: four bytes typed REG_QWORD, so
+    // 0098D5C0's REG_QWORD read of the value succeeds. EAX is 0098D470's answer (0098D586 POP ECX).
+    return write_hardware_value_0098d470(value_name, REG_QWORD, &value, 4);
 }
 
 bool write_hardware_string_0098d590(const char* value_name, const char* text) {
     return write_hardware_value_0098d470(value_name, REG_SZ, text, static_cast<std::uint32_t>(std::strlen(text) + 1));
 }
 
-void read_hardware_qword_0098d5c0(const char* value_name, std::uint32_t& out, std::uint32_t scratch_low) {
+bool read_hardware_qword_0098d5c0(const char* value_name, std::uint32_t& out, std::uint32_t scratch_low) {
     std::uint32_t buffer[2] = {scratch_low, 0};
     std::uint32_t size = 8;
-    read_hardware_value_0098d4e0(value_name, 0x0B, buffer, &size);  // REG_QWORD; result ignored
-    out = buffer[0];
+    // 0098D5DD CALL 0098D4E0 (REG_QWORD). Nothing after it writes EAX (0098D5E2 MOV ECX,
+    // 0098D5E6 store, POP ESI, ADD ESP), so 0098D4E0's AL is this function's answer.
+    const bool ok = read_hardware_value_0098d4e0(value_name, 0x0B, buffer, &size);
+    out = buffer[0];  // 0098D5E6: stored whether or not the read succeeded
+    return ok;
 }
 
-void read_hardware_string_0098d5f0(const char* value_name, char* buffer, std::uint32_t* size) {
-    read_hardware_value_0098d4e0(value_name, REG_SZ, buffer, size);
+bool read_hardware_string_0098d5f0(const char* value_name, char* buffer, std::uint32_t* size) {
+    // 0098D5FB CALL 0098D4E0, then 0098D600 RET 4: EAX is 0098D4E0's answer.
+    return read_hardware_value_0098d4e0(value_name, REG_SZ, buffer, size);
 }
 
 bool write_default_options_file_0098f430(const char* path, OptionsTextBuilder& builder) {

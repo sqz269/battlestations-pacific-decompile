@@ -2802,3 +2802,182 @@ host must take that signal in place of the mode test.
 
 **Tools in `local\`:** `p12_launch.ps1` (one detached run with the reference env), `p11_wait.ps1`, `p17_exports*.ps1`
 (pair_export batches), and the `p17_*` export trees and logs that sections 66-67 cite.
+
+## 69. Menu rows and their scripts; pairs for fix10, fix12, fix14, fix16 (cc9-physics18, 2026-10-18)
+
+**The menu ids do not run the files the fix docs cite.** A row's script is the scene's `StageScript`
+(`missiontree.lua` sceneFile -> the `.scn` header -> `scripts/missions/<StageScript>.lua`; the run log's
+`mission script name:` line shows the same). `local\p18_reach.py <natives...>` maps every id this way and counts
+live (uncommented) call sites. In this installation USN04 runs `usn/usn_19_coralus.lua`, USN11 runs
+`COTP-USN/PRCPUS/usn_06_guadalcanal_2nd_battle.lua`, USN12 runs `usn_12_augusta`, JM13 runs `COTP-IJN/jm16.lua`
+and JM16 runs `PRCPIJN/JM14.lua`. `usn_04_defend_guadalcanal.lua`, `usn_11_protecting_iowa.lua` and `jm13.lua` are
+never loaded, so USN04 and JM13 have no `AddProximityTrigger` call (no `008c9730` row in either OFF census) and USN12
+has none of fix16's natives. Live callers by row:
+
+| native | rows (call sites) |
+| --- | --- |
+| AddProximityTrigger | USN11 (8), PRCP05 (3), PRCP08 (3), USN10 (2), PRCP01 (1), JM02 (1), PRCP07 (1) |
+| IsUnitSelectable / GetEntitySpeed | PRCP07 (11 / 11), JM05 (4 / 1), PRCP05 (3 / 0), JM01, CHG05 (the harness does not load JM01 or CHG05) |
+| GetSquadTorpedoes | PRCP07 (2, `prcp_11_patrol.lua` :1302 / :1539) |
+| GetNumCatapulted / ShipUseCatapult | LOMP01 (1 / 0), JM16 (1 / 0), JM03 (1 / 1), USN20 (0 / 9), JM02, JM06 (0 / 1) |
+| fix16's five | JM05 (PlaneForceRelease, PlaneReloadBombPlatforms), PRCP08 (SquadronForceRelease), JM01 / JM16 (GetPlaneIsReloading), PRCP07 (PlaneReloadBombPlatforms) |
+
+Pairs are same-commit exports: `local\p18_a_{off,f12,f12t,prox,cat,rel}` at fcb6c6fa5, `local\p18_b_{prox,proxf12}` at
+b62233d78 (fix19b inside the proximity switch). Logs are `local\p18<set>_<row>.log` with their `.manifest.json`.
+
+**fix14 + the catapult adapter: ON** (`kShipCatapultLaunchBound`; `kLuaGetNumCatapultedBound` is already implied
+by it at `game_hosts_lua.cpp:610/879` and only adds the summary line, so it flips when `game_hosts_lua.hpp` is free).
+- LOMP01, 24000 frames: OFF, every `GetNumCatapulted(Mission.Repulse)` returns nothing and `luaCheckReconplanes`
+  raises `attempt to compare number with nil` (`01_saving_force_z.lua:704`) inside `luaTimetable`
+  (`timetable.lua:32`), 362 times. ON it answers 0 (356 calls), the timetable entry runs on, and gameplay MOVES:
+  deaths 47 -> 53, hit records 1546 -> 1715, units 126 -> 132, three more movie camera builds, a `Countdown`, formation
+  joins 5 -> 7. That is the script running as written.
+- JM16, 24000 frames: OFF 18 calls (each raising), ON 2088; gameplay identical.
+- USN20, 24000 frames: the nine `ShipUseCatapult` carriers are refused (stock 0, no catapult class), as the image's
+  `008141E0` (`+638h > 0`) refuses them; gameplay identical.
+- LABELLED as in the header: the answer is 0 because no ship AI or script launches a catapult plane before the call.
+
+**fix10, `kLuaProximityTriggersBound`: mechanism matches; still OFF** (`game_hosts_lua.hpp` is leased by cc13-fix19c).
+- USN11 (36000 frames, fails at 285.60 s on both sides): 3 adds (`ConvoyReachedPathPoint1` on three transports),
+  14048 checks, 0 fires, `unresolved=0`; gameplay identical.
+- USN10 (fails at 1000.23 s on both sides): 1 add (`ProxiamityFlagshipEscape`, 4000 m), 12000 checks, 0 fires;
+  identical.
+- PRCP05: the trigger FIRES. `"AirField 01" "ProximityAirfield" -> luaUS09AirfieldDetected()` near mission frame
+  4241 completes primary 1 and sets `MissionPhase = 3`; OFF never leaves phase 1 and fails at 1397.74 s. ON then
+  reaches `luaUS09EM_Airfield_1` (`usn_09_Leyte.lua:1985`), whose `GenerateObject(Mission.PTTemplate.Name, "Gyoraitei
+  PT")` aborts the run near 1062 s: `unit observer creator projection is unavailable: unit=Gyoraitei PT #1.1
+  creator=00000000 (no vehicle-class descriptor; a StationaryClass row carries no Type)`. That is a spawn-host gap the
+  flip exposes, not a trigger fault. Same on the b62233d78 pair.
+- PRCP08 (fails at 378.08 s): no `AddProximityTrigger` call.
+
+**fix12 (`kLuaIsUnitSelectableBound` + `kLuaGetEntitySpeedBound`) and the GetSquadTorpedoes stopgap: OFF,
+unexercised.** No reachable row calls them: PRCP07 (36000 frames, phase 4 needs the player), JM05 (fails at
+321.05 s), PRCP05 with the proximity switch ON (to the 1062 s abort), and the old rows USN11, JM04, USN09.
+
+**fix16's five + `kLuaPilotBombBound`:** JM05 (36000 frames) and USN12 with `usn12_s38_u12_p2` (34000 frames): gameplay
+identical, none of the six natives called. **ON, unexercised**, as the lead routed (fix16 rated them safe; cc13 fix21 fixed PilotBomb's squadron class).
+
+**USN12 WINS note:** on fcb6c6fa5 OFF, `usn12_s38_u12_p2` does not complete in 34000 frames (MissionPhase 3,
+Distance 10.12 km); the table's last completion was 1539.83 s. Sent to the WINS keeper.
+
+**fix16's release MINORs: recorded, not fixed (not cheap).**
+- (a) `007BBBA0` (disasm-raw): `007BBBA6 CMP byte [EDX+60h],0` / `007BBBB0 JE 007BBC00`, so a disabled channel C
+  skips the bay writes and still reaches `007BBC00 ADD [ECX+C20h],EBX` (EBX = 1). The host's two callers
+  (`release_ordnance_007bbba0` and `release_bomb_007bbba0`, `game_hosts_units.cpp`) instead turn channel C on first.
+  The host also gates the torpedo spawn on the bay's acceptance, where the image's spawn hangs off `+C20h` on
+  every path (bay already open included). Removing the force-enable alone would stop releases on any plane whose
+  channel C is disabled, so the faithful fix is to key the spawn on the `+C20h` raise for all callers
+  (`release_ordnance_007bbba0` has eleven call sites in the shared units file). Left for the plane lane.
+- (b) The attach test has no drop-to-attach gap: `006E3FE0` tests an attached round only. Not touched.
+- `docs/ATTACK_COMMANDS.md` corrected: `PilotBomb` asks `vtable[5Ch](10h)` of its argument (`008A505C`), not of
+  the `+3D0h` object, so a squadron argument never gets `levelbomb`.
+
+**TouchdownBrake (68's open item): the stand-in is the image's call.** `009B1EF2`-`009B1F07`: ECX = the plane
+(`[[task+4]+4]`), `ADD ECX,72Ch`, `CALL [[ECX]+38h]`. The plane class stores vtable `00D06130` at `+72Ch`
+(`007D03FD MOV [EDI+72Ch],00D06130` in its destructor; the unit base stores `00CFC384` at `006FE4A9`). Slot `38h`
+(`00D06168`) is `0074E210` `BSP_PlaneControlMode_IsFreeFlight`: `CMP [ECX+1D4h],7 / SETE AL`, and `+72Ch + 1D4h` is
+the plane's `+900h`. So the call answers `+900h == 7`, which is exactly the host's `plane_control_mode_900 != 7`
+test for setting the touched byte. The brake stays unreached for the reason 68 gives (`009B3D0B` moves a plane
+whose `+900h` is 4 or 5 to land/park first); whether the image ever has `+900h` at another value (6, say; `0074E230`
+groups 7, 6, 4 and 5) during land final is the remaining question, and it is a `+900h` writer census, not this call.
+  Immediate `+900h` writers (scan-bytes `C7 86/81 00 09 00 00`): 7 at `007C6481` / `007C7183` / `007D6600` (spawn,
+  begin flying, property bag), 6 at `007C63F4` (spawn) and `007CB9E0` (session-remote only), 4 at `007C1697`
+  (FiveToFour; callers `009B22C0` approach-base, `009CD540` taxi, `009CE2C0` takeoff) and `007C7488` (remote), 5 at
+  `007C171E`, 2 at `007CC7E2` and 1 at `007CC857` (both from `007CCFA0` BSP_Plane_HandleMessage). So in single
+  player only a message arm (1 or 2) could clear the free-flight test during land final; which message, if any,
+  the landing sends is the next step.
+
+**`kLuaSquadronSetReleaseAltBound` (67's unexercised list): exercised, flip pending the `game_hosts_lua.hpp` lease.**
+`local\p18_reach.py` finds it live in BSM09 (`bsm_09_battle_of_the_coral_sea.lua:321`, `SquadronSetReleaseAlt(squad,
+220)`) and PRCP08 (3 sites). `local\p18_a_relalt` (fcb6c6fa5) against `p18_a_off`:
+- BSM09, 24000 frames (fails at 183.06 s on both sides): 5 calls, each `alt=220.0 force=0 stored=1`. The Vals'
+  `+39Ch` ceiling now holds 220 instead of 9999, so `009C7A94` caps the dive altitude and the first release comes at
+  113.2 m (OFF 229.9 m); dive-bomb-task releases 0 of 7 -> 6 of 13. Deaths 25 both. MOVED, by the mechanism.
+- PRCP08 (fails at 378.08 s on both): 1 call (`"Corsair" alt=150`), gameplay identical.
+The other two unexercised natives still have no reachable caller: SquadronLandAndKill only in PRCP01
+(`usn_03`, failed at 465.71 s with no call), UntouchableClear in no mission script. ReloadTorpedoes is live only in
+JM03's script (`PRCPIJN/JM03.lua`), not JM08's.
+- ReloadTorpedoes on JM03 for 36000 frames (`local\p18r{off,torp}_jm03`, the 3250f9d2f exports): both fail at
+  1176.02 s, no call, identical. Still OFF, unexercised.
+
+**Tool:** `python tools/mission_script_reach.py <Native> [<Native> ...]` lists every menu id whose real script (the
+scene's `StageScript`) calls one of the natives, with call-site counts; with no arguments it prints each id's script.
+
+## 70. Proximity and ordnance triggers ON; the SpawnNew missing-class raise; the kill-funnel feed (cc9-physics18, 2026-10-18)
+
+Exports at e62312da7 (main with cc13 fix19c): `local\p18_c_{off,prox,sod}`; logs `local\p18c<set>_<row>.log`.
+
+**`kLuaProximityTriggersBound` ON** (lead routing, after 69's mechanism). The squadron-target rows:
+- PRCP01 with `prcp01_l55_p01_c` (30000 frames): both complete at 986.78 s, gameplay identical. The one trigger
+  (`"Hornet"`, `FakeDiveBomberReconlistenerID...` -> `luaUS03HornetStrikeIncoming`, 1500 m, target entity 142, a
+  squadron) never fires; its target squadron goes and the trigger is retired (fix19c's poll), 57 notices.
+- JM02 (36000 frames): the trigger (`"Buffalo 06"` -> `ThisLooksBad`, 1500 m) FIRES once; gameplay identical.
+
+**`kLuaSquadOrdnanceDroppedTriggerBound` ON** (by mechanism).
+- USNRM01 (36000 frames): `AddSquadOrdnanceDroppedTrigger(Mission.OklahomaKillers, nil, "luaOklahomaKillersRetreat")`
+  (`usn_1_pearl.lua:1507`) fires once: the squadron's fire stance goes to 2 and it moves off toward `JapRetreat`.
+  MOVED: the mission fails at 784.93 s (OFF 569.98 s), deaths 343 -> 514.
+- BSM04 (fails at 84.05 s on both sides): one add (`"B-17"` -> `luaFortressDroppedBombs`), no fire; identical.
+
+**`kSpawnNewMissingClassRaisesBound` (new, OFF): PRCP05's abort.** The abort's unit is the shipyard PT of
+`usn_09_Leyte.lua` (`SpawnNew` with `["Type"] = 240`, `"Gyoraitei PT"`). This installation's
+`scripts/datatables/autoload/vehicleclasses.lua` (modified 2026-05-09) has no `VehicleClass[240]` (it jumps from
+237 to 241), so the class factory has no row. The image: `00949750` (SpawnNew's body) builds each member through
+`00945C30` -> `00944210` -> `00964790`, which takes `VehicleClass[classIndex]` (`00B67720`, a nil object) and then
+its `Type` through `00B67800` -> `00A67C20` `lua_gettable` -> `luaV_gettable` on nil, which raises `attempt to index
+a nil value`. The error unwinds the native into the script's protected call: the calling function stops and
+nothing is spawned (the members are read inside the native, before `009484xx` creates any). The host instead created
+the member with no class and aborted at the observer projection. The switch raises the same Lua error at the member
+read. Uncertain: the exact message text (no variable name is available to `luaG_typeerror` from a C call), and that
+`00964790` makes no earlier call that would fault first; the listing shows none.
+
+**`kKillFunnelTargetGoneBound` (new, OFF, `game_hosts_gunnery.cpp`).** `kill_unit_00926d90` (the host's 00926D90
+Kill entry) now feeds `GameMissionLuaHost::target_gone_00925c40` for a unit gunnery does not yet count dead
+(00926DED). It covers the Kill callers fix19 lists as unfed (plane depth kill 007CE3A7, landed remainder 00749B7B,
+SquadronLandAndKill's planes, the other 00926D90 callers). A gunfire death takes destroy (00926C80) and is not fed,
+because the image's destroy notice is the no-op slot `+8h` `0042B120`; its trigger retires when the wreck is Killed.
+
+## 71. Pair results for the SpawnNew raise and the kill-funnel feed (cc9-physics18, 2026-10-18)
+
+Base c925b2319 (prox and SquadOrdnanceDropped ON), PRCP05 (`usn_09_Leyte`), 36000 frames each.
+
+**`kSpawnNewMissingClassRaisesBound` FLIPPED ON.** OFF (`local\p18_d_off`) stops at mission clock 1061.96 s: the
+shipyard SpawnNew (`0094c480`, callback `luaUS09JapPTSpawned`) queued "Gyoraitei PT #1.1" with no class, and the
+units host failed startup at the observer projection (creator 00000000), exit 1. ON (`local\p18_d_spawn`): the same
+call raises once (`spawn missing class raises=1`), `US09Think` fails at script line 1093 with `attempt to index a
+nil value`, and the run continues to 36000 frames with exit 0; the mission does not end (`Mission.EndMission never
+true`) and has no further script failures. The flip is by mechanism (the image's `luaV_gettable` on the nil row);
+PRCP05 still cannot complete on this installation because its PTs never spawn.
+
+**`kKillFunnelTargetGoneBound` FLIPPED ON.** Pairs at c925b2319 (`local\p18_d_off` vs `local\p18_d_feed`), 24000
+frames, no helm orders. PRCP01 (`usn_03`): 8 feeds, both fail at 465.71 s (`usn03.obj_p2_fail`), pair_diff exit 1
+(gameplay identical). JM02: 0 feeds, no mission end on either, exit 1. The fed units had no live proximity trigger
+on these rows, so nothing moved; `target_gone_00925c40` notices each unit once, so a later Lua Kill or pass-K notice
+for the same unit adds nothing. Flipped by mechanism (00926D90's kill list notifies 0074FFE0 at pass K).
+
+## 72. Handoff (cc9-physics18, 2026-10-18, at about 70% context)
+
+Landed on agent/cc9-physics1 after c925b2319: 8bdea81c1 (SpawnNew missing-class raise ON), e687bff42 (kill-funnel
+target-gone feed ON). All of the lead's six-item packet is done: prox ON, PT spawn gap ON, PRCP01/JM02 prox pairs,
+SquadOrdnanceDropped ON, squadron_unit comment, gunnery-funnel feed ON. The PRCP01 prox result went to cc9-lua67
+(identical, completes 986.78 s with prcp01_l55_p01_c). Leases: only p18_catapult_flip (OCEAN_WAVE_FIELD.md,
+ship_catapult_host.hpp) is still held; release it when you take over.
+
+Open, in the lead's order (all low priority):
+1. Pair cc15's `kActuatorFlagCc13BodiesBound` (OFF on main 106f741a0, `game_hosts_units.cpp`) on
+   jm08_s45_j8_m10 for 72000 frames before the flip. cc15's manifests are in
+   `J:\PROG\battlestations-pacific-decompile-cc15-wire1\local\cc15_act1_*.manifest.json`. A 72000-frame run outlasts
+   the 600 s foreground cap: launch, then fill the wait with read-only work.
+2. cc15 held item (a), 007D99C0 forward speed. The host inlines dot(v_world, fwd) at units.cpp ~11834/11915. The image
+   returns ctl+44h + parent_local_z * (0.1 if z >= 0 else 0.8) when the plane is parented (007D9A31..007D9A5F). Put
+   it behind an OFF switch if the listing confirms it, and pair it on a carrier row. Lease units.cpp after cc15
+   releases it.
+3. Item (b): model 007D80C0's rate at 24-bit precision per op. Item (c): 007D9CE0/007D9C10 are not examined.
+4. The release MINORs from section 69. 007BBBA0 (the spawn should key on the +C20h raise for all 11 callers) is not
+   cheap.
+5. fix12 and the GetSquadTorpedoes stopgap stay OFF as unexercised (section 69).
+
+Run tools: `local\p12_launch.ps1 -Exe <exe> -Name <n> -Mission <id> -Frames <f> [-Orders <abs path>]`;
+`local\p18_wait.ps1 -Names a,b -Max 580`; export builds `local\p18_exports*.ps1`. Stagger launches by 60 s, run at
+most two, and run one build at a time. `python tools/mission_script_reach.py <Native>` maps menu ids to scripts.
+PRCP05 does not complete on this installation: VehicleClass has no row 240, so its PTs never spawn.

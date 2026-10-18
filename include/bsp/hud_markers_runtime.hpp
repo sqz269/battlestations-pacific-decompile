@@ -320,8 +320,17 @@ struct HudMarkersRuntimeHost {
     virtual void project_clip_space(const float world[3], float out_clip[4]) = 0;
     // 006422F0 -> 00803DC0, the class name the type icon and label use.
     virtual const char* unit_class_name(void* unit) = 0;
-    // 0064240B -> 0077A2F0, the health fraction the HP icon scales by.
+    // Stand-in for 0077A2F0 with the wrong shape: the image returns no float
+    // and takes no unit. No reconstructed runtime function calls this; the
+    // correctly shaped hook is unit_health_colour_0077a2f0 below
+    // (docs/CC13_FIX24.md).
     virtual float unit_health(void* unit) = 0;
+    // 0077A2F0 BSP_Unit_HealthColour, __thiscall(ECX = float out[4]; float
+    // health) RET 4 -> EAX = out: the RGBA blend of three static colours. Every
+    // marker call site (00641B6E, 00641D88, 0064240B, 0064265E, 00642865)
+    // passes the constant 1.0f (FLD1; FSTP [ESP]) and copies the four dwords
+    // at EAX into a local colour. Not called by any function in this file yet.
+    virtual const float* unit_health_colour_0077a2f0(float* out, float health) = 0;
     // 0063D42A -> 00AA7E00.
     virtual void* find_child(void* widget, const char* name) = 0;
     // 0063D1E0's SetVisible calls, widget vtable +34h.
