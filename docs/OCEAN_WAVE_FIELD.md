@@ -2880,3 +2880,9 @@ the plane's `+900h`. So the call answers `+900h == 7`, which is exactly the host
 test for setting the touched byte. The brake stays unreached for the reason 68 gives (`009B3D0B` moves a plane
 whose `+900h` is 4 or 5 to land/park first); whether the image ever has `+900h` at another value (6, say; `0074E230`
 groups 7, 6, 4 and 5) during land final is the remaining question, and it is a `+900h` writer census, not this call.
+  Immediate `+900h` writers (scan-bytes `C7 86/81 00 09 00 00`): 7 at `007C6481` / `007C7183` / `007D6600` (spawn,
+  begin flying, property bag), 6 at `007C63F4` (spawn) and `007CB9E0` (session-remote only), 4 at `007C1697`
+  (FiveToFour; callers `009B22C0` approach-base, `009CD540` taxi, `009CE2C0` takeoff) and `007C7488` (remote), 5 at
+  `007C171E`, 2 at `007CC7E2` and 1 at `007CC857` (both from `007CCFA0` BSP_Plane_HandleMessage). So in single
+  player only a message arm (1 or 2) could clear the free-flight test during land final; which message, if any,
+  the landing sends is the next step.
