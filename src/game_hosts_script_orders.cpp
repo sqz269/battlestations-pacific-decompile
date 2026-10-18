@@ -1033,13 +1033,13 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
 // the name is the carrier's plus a counter, where 004F0AD0 takes
 // [desc+DCh]+13Ch. The AutoAttackTarget is the caller's.
 std::uint32_t GameScriptOrdersHost::create_dummy_kamikaze_squadron_006fec00(
-    const bsp::DummyKamikazeSpawn& spawn, std::string& created_name) {
+    const bsp::DummyKamikazeSpawn& spawn, std::string& created_name, const char* suffix_format) {
     created_name.clear();
     if (spawn.plane_class <= 0) return 0u;
     const GameUnitRow* carrier = units_.unit_row(spawn.carrier);
     GameSceneEntityRecord record;
     char suffix[32];
-    std::snprintf(suffix, sizeof(suffix), "_kz%02u", spawn.dummy_id);
+    std::snprintf(suffix, sizeof(suffix), suffix_format, spawn.dummy_id);
     record.name = (carrier != nullptr ? carrier->name : std::string("DummyKamikaze")) + suffix;
     record.class_name = "PlaneSquadronGen";
     record.class_id = 0x18;

@@ -36,6 +36,7 @@
 
 #include "bsp/ai_target_weights.hpp"
 #include "bsp/gameplay_settings_tail.hpp"
+#include "bsp/ship_catapult_host.hpp"
 #include "bsp/world_map_bounds.hpp"
 #include "bsp/air_operations.hpp"
 #include "bsp/shipyard_production.hpp"
@@ -1114,6 +1115,15 @@ struct GameMissionLuaSummary {
     unsigned long long last_catapulted_nil{0};
     unsigned long long last_catapulted_not_ship{0};
     unsigned long long num_catapulted_calls{0};     // packet cc13-fix14b
+    // Packet p17_catapult_adapter.
+    unsigned long long use_catapult_calls{0};
+    unsigned long long use_catapult_launches{0};
+    unsigned long long use_catapult_no_catapult{0};
+    unsigned long long use_catapult_no_stock{0};
+    unsigned long long use_catapult_in_air{0};
+    unsigned long long use_catapult_spawn_failed{0};
+    unsigned long long set_catapult_stock_calls{0};
+    unsigned long long last_catapulted_live{0};
     unsigned long long num_catapulted_not_ship{0};
     unsigned long long untouchable_calls{0};        // packet cc9_add_untouchable_unit
     unsigned long long untouchable_marked{0};
@@ -1744,6 +1754,12 @@ public:
     int run_get_formation_leader_00899af0(lua_State* state, int argument_count);
     int run_get_last_catapulted_00892860(lua_State* state, int argument_count);
     int run_get_num_catapulted_00892aa0(lua_State* state, int argument_count);
+    // Packet p17_catapult_adapter, under bsp::kShipCatapultLaunchBound.
+    int run_ship_use_catapult_00891d50(lua_State* state, int argument_count);
+    int run_set_catapult_stock_00892c30(lua_State* state, int argument_count);
+    // The ship's class Catapult block and its live-pruned record (nullptr when
+    // `unit` is not a units-host slot).
+    bsp::ShipCatapultRecord* catapult_record(std::size_t unit, bsp::ShipCatapultClass& cls);
     int run_get_catapult_stock_00892de0(lua_State* state, int argument_count);
     int run_add_untouchable_unit_008ac140(lua_State* state, int argument_count);
     int run_remove_untouchable_unit_008ac2b0(lua_State* state, int argument_count);
