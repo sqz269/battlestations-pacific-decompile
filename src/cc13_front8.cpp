@@ -320,4 +320,145 @@ LuaObjectStorage* lua_object_resolve_dot_path_00b68d70(LuaObjectStorage* self, L
     return out;
 }
 
+// ---------------------------------------------------------------------------
+// 00438FE0, __thiscall(ECX = destination; source*) RET 4 -> EAX = destination.
+// Assembly 00438FE0-00438FF4: byte +4 moves (source's cleared), then dword +0.
+// ---------------------------------------------------------------------------
+void* transfer_cstring_key_00438fe0(Raw destination, Raw source) {
+    destination.at<std::uint8_t>(4) = source.at<std::uint8_t>(4);
+    source.at<std::uint8_t>(4) = 0;
+    destination.at<std::uint32_t>(0) = source.at<std::uint32_t>(0);
+    return destination.p;
+}
+
+// 006B8B10, __fastcall(ECX = registry) -> EAX: MOV EAX,[ECX+1Ch]; RET.
+std::int32_t achievement_count_006b8b10(Raw registry) { return registry.at<std::int32_t>(0x1C); }
+
+// ---------------------------------------------------------------------------
+// 00BDB2E0, __stdcall(iterator*, int selector) RET 8 (ECX unused). Assembly
+// 00BDB2E0-00BDB340: selector 0 -> node+10h, 1 -> node+1Ch, else 0; the two arms
+// first run the checked dereference (null container, node == [container+4]).
+// ---------------------------------------------------------------------------
+void* vfs_search_group_select_value_list_00bdb2e0(void* const* iterator, std::int32_t selector,
+                                                  SmallBodiesHost& host) {
+    if (selector != 0 && selector != 1) return nullptr;                                    // 00BDB2EF
+    if (iterator[0] == nullptr) host.invalid_parameter_00bf6713();
+    if (iterator[1] == Raw{static_cast<std::uint8_t*>(iterator[0])}.ptr(4)) host.invalid_parameter_00bf6713();
+    return static_cast<std::uint8_t*>(iterator[1]) + (selector == 0 ? 0x10 : 0x1C);
+}
+
+// ---------------------------------------------------------------------------
+// 0053D230, three stack dwords RET 0Ch (ECX unused). Assembly 0053D230-0053D265:
+// unit = [00E188D8]; nothing when null; when unit vslot5C(6), the y argument slot
+// is set to 0.0; then vslot118(&x) with the argument block as the float[3].
+// ---------------------------------------------------------------------------
+void hud_free_camera_forward_to_unit_0053d230(float x, float y, float z, SmallBodiesHost& host) {
+    void* const unit = host.global_pointer(0x00E188D8);
+    if (unit == nullptr) return;
+    float position[3] = {x, y, z};                                                        // the argument slots
+    if (host.unit_vslot_5c(unit, 6)) position[1] = 0.0f;                                  // 0053D24A
+    host.unit_vslot_118(host.global_pointer(0x00E188D8), position);                       // re-read 0053D250
+}
+
+// ---------------------------------------------------------------------------
+// 00B68550, __thiscall(ECX = LuaObject; out sret) RET 4. Assembly 00B68550-00B685B7:
+// type = -1 when unbound (kind 0), lua_type(L, index) for kind 2, else 5; then
+// 00B68460(ECX = out, EDX = type).
+// ---------------------------------------------------------------------------
+NativeStringImage* lua_object_get_type_name_00b68550(Raw object, NativeStringImage* out, SmallBodiesHost& host) {
+    const std::int32_t kind = object.at<std::int32_t>(4);
+    std::int32_t type;
+    if (kind == 0) {
+        type = -1;
+    } else if (kind == 2) {
+        type = host.lua_type_00a675a0(Raw{static_cast<std::uint8_t*>(object.ptr(0))}.ptr(4), object.at<std::int32_t>(8));
+    } else {
+        type = 5;
+    }
+    host.lua_type_to_name_00b68460(out, type);
+    return out;
+}
+
+// ---------------------------------------------------------------------------
+// 00A96F40, __thiscall(ECX = owner; unused dword) RET 4. Assembly 00A96F40-00A96F9F:
+// platform = [0109CF04] read once; while byte owner+4 is set and [platform+17Ch] is
+// non-zero: 00BECE90(platform; &value, &category), owner vslot0(value, category) and,
+// when it declines, 00A96750(value, category). The image pushes the two byte locals
+// as dwords whose upper bytes it never writes; the hooks receive the bytes.
+// ---------------------------------------------------------------------------
+void text_owner_dispatch_queued_events_00a96f40(Raw owner, SmallBodiesHost& host) {
+    void* const platform = host.global_pointer(0x0109CF04);
+    if (owner.at<std::uint8_t>(4) == 0) return;
+    do {
+        if (Raw{static_cast<std::uint8_t*>(platform)}.at<std::int32_t>(0x17C) == 0) return;  // 00A96F5A
+        std::uint8_t value = 0, category = 0;                                              // ESP+0Ch, ESP+08h
+        host.platform_pop_text_event_00bece90(platform, &value, &category);
+        if (!host.text_owner_vslot_0(owner.p, value, category)) {
+            host.text_owner_handle_key_fallback_00a96750(owner.p, value, category);        // 00A96F8F
+        }
+    } while (owner.at<std::uint8_t>(4) != 0);
+}
+
+// ---------------------------------------------------------------------------
+// 0050A950, __fastcall(ECX = preview) RET. Assembly 0050A950-0050AA0B: the dword
+// vector at +424h (first +428h, last +42Ch): two first > last checks, then
+// 004FCBE0(erase [first, last)); log "Rotor clear!"; for each remaining element
+// (checked index) log "Rotor %d=0x%x"; 005092E0(004FDE20()); 00504960(+5C4h; 0);
+// dword +48Ch = 0.
+// ---------------------------------------------------------------------------
+void tactical_library_preview_clear_rotors_0050a950(Raw preview, ClearAndResizeHost& host) {
+    const Raw v{preview.field(0x424)};
+    auto first = [&]() { return static_cast<std::uint32_t*>(v.ptr(4)); };
+    auto last = [&]() { return static_cast<std::uint32_t*>(v.ptr(8)); };
+    std::uint32_t* const end = last();
+    if (first() > end) host.invalid_parameter_00bf6713();                                  // 0050A966
+    std::uint32_t* const begin = first();
+    if (begin > last()) host.invalid_parameter_00bf6713();                                 // 0050A974
+    void* out = nullptr;
+    host.dword_vector_erase_range_004fcbe0(v.p, &out, v.p, begin, v.p, end);               // 0050A984
+    host.log_004254b0("Rotor clear!", nullptr, 0);                                         // 00CEB9F8
+    auto size = [&]() { return static_cast<std::uint32_t>(last() - first()); };
+    for (std::uint32_t i = 0; first() != nullptr && i < size(); ++i) {
+        if (first() == nullptr || i >= size()) host.invalid_parameter_00bf6713();          // 0050A9C3
+        const std::uint32_t args[2] = {i, first()[i]};
+        host.log_004254b0("Rotor %d=0x%x", args, 2);                                       // 00CEB598
+    }
+    host.loading_queue_stop_and_wait_005092e0(host.loading_queue_get_instance_004fde20());  // 0050A9E9
+    host.ref_ptr_array_resize_00504960(preview.field(0x5C4), 0);
+    preview.at<std::uint32_t>(0x48C) = 0;
+}
+
+// ---------------------------------------------------------------------------
+// 004DC410, __thiscall(ECX = header {data, count +4, capacity +8}; int count) RET 4;
+// EH frame 00C669C1. Assembly 004DC410-004DC4D9 (signed compares throughout):
+// count > capacity -> 004DA180(count). For i = old count .. count-1 the 2Ch record
+// data + 2Ch*i is constructed when non-null: +0/+4 = 0, the list at +8 gets
+// 004C3020's sentinel at +0Ch and size +10h = 0, then +24h/+20h/+1Ch/+18h/+14h = 0.
+// While count < header count: header count is decremented and 004D45A0 destroys
+// that record. Finally header count = count.
+// ---------------------------------------------------------------------------
+void particle_record_array_resize_004dc410(Raw header, std::int32_t count, ClearAndResizeHost& host) {
+    if (count > header.at<std::int32_t>(8)) host.resource_record_vector_reserve_004da180(header.p, count);
+    for (std::int32_t i = header.at<std::int32_t>(4); i < count; ++i) {
+        auto* const record = static_cast<std::uint8_t*>(header.ptr(0)) + 0x2C * i;
+        if (record == nullptr) continue;                                                   // 004DC45F placement test
+        const Raw r{record};
+        r.at<std::uint32_t>(0) = 0;
+        r.at<std::uint32_t>(4) = 0;
+        r.ptr(0x0C) = host.string_list_allocate_sentinel_004c3020(record + 8);             // 004DC470
+        r.at<std::uint32_t>(0x10) = 0;
+        r.at<std::uint32_t>(0x24) = 0;
+        r.at<std::uint32_t>(0x20) = 0;
+        r.at<std::uint32_t>(0x1C) = 0;
+        r.at<std::uint32_t>(0x18) = 0;
+        r.at<std::uint32_t>(0x14) = 0;
+    }
+    while (count < header.at<std::int32_t>(4)) {
+        header.at<std::int32_t>(4) -= 1;
+        host.string_alias_record_destroy_004d45a0(static_cast<std::uint8_t*>(header.ptr(0)) +
+                                                  0x2C * header.at<std::int32_t>(4));     // 004DC4BC
+    }
+    header.at<std::int32_t>(4) = count;
+}
+
 }  // namespace bsp::cc13_front8

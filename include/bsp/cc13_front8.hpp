@@ -116,4 +116,73 @@ LuaObjectStorage* lua_object_resolve_dot_path_00b68d70(LuaObjectStorage* self, L
                                                        const NativeStringImage* path, std::uint8_t* ok,
                                                        LuaDotPathHost& host);
 
+// ---------------------------------------------------------------------------
+// Small ranked blockers.
+// ---------------------------------------------------------------------------
+struct SmallBodiesHost {
+    virtual ~SmallBodiesHost() = default;
+    // The pointer stored in the image global dword at `address` ([00E188D8] the
+    // selected unit, [0109CF04] the platform).
+    virtual void* global_pointer(std::uint32_t address) = 0;
+    // 00BF6713, the checked-iterator failure; returns here.
+    virtual void invalid_parameter_00bf6713() = 0;
+    // Unit vtable +5Ch, __thiscall(ECX = unit; int) RET 4 -> AL.
+    virtual bool unit_vslot_5c(void* unit, std::int32_t arg) = 0;
+    // Unit vtable +118h, __thiscall(ECX = unit; const float[3]*) RET 4.
+    virtual void unit_vslot_118(void* unit, const float* position) = 0;
+    // 00A675A0 lua_type, ECX = lua_State*, EDX = index -> EAX (as called here).
+    virtual std::int32_t lua_type_00a675a0(void* state, std::int32_t index) = 0;
+    // 00B68460 BSP_LuaType_ToName, ECX = NativeString* out, EDX = type.
+    virtual void lua_type_to_name_00b68460(NativeStringImage* out, std::int32_t type) = 0;
+    // 00BECE90 BSP_Platform_PopTextEvent, __thiscall(ECX = platform; byte* value, byte* category) RET 8.
+    virtual void platform_pop_text_event_00bece90(void* platform, std::uint8_t* value, std::uint8_t* category) = 0;
+    // Text owner vtable slot 0, __thiscall(ECX = owner; byte value, byte category) RET 8 -> AL.
+    virtual bool text_owner_vslot_0(void* owner, std::uint8_t value, std::uint8_t category) = 0;
+    // 00A96750 BSP_TextOwner_HandleKeyFallback, __thiscall(ECX = owner; byte value, byte category) RET 8.
+    virtual void text_owner_handle_key_fallback_00a96750(void* owner, std::uint8_t value, std::uint8_t category) = 0;
+};
+
+// 00438FE0, __thiscall(ECX = destination; source*) RET 4 -> EAX = destination.
+void* transfer_cstring_key_00438fe0(Raw destination, Raw source);
+// 006B8B10, __fastcall(ECX = registry) -> EAX = [registry+1Ch].
+std::int32_t achievement_count_006b8b10(Raw registry);
+// 00BDB2E0, __stdcall(const iterator {container, node}*, int selector) RET 8 -> EAX.
+void* vfs_search_group_select_value_list_00bdb2e0(void* const* iterator, std::int32_t selector,
+                                                  SmallBodiesHost& host);
+// 0053D230, three stack dwords (a float[3] by value) RET 0Ch; ECX unused.
+void hud_free_camera_forward_to_unit_0053d230(float x, float y, float z, SmallBodiesHost& host);
+// 00B68550, __thiscall(ECX = LuaObject; NativeString* out sret) RET 4 -> EAX = out.
+NativeStringImage* lua_object_get_type_name_00b68550(Raw object, NativeStringImage* out, SmallBodiesHost& host);
+// 00A96F40, __thiscall(ECX = text owner; dword unused) RET 4.
+void text_owner_dispatch_queued_events_00a96f40(Raw owner, SmallBodiesHost& host);
+
+struct ClearAndResizeHost {
+    virtual ~ClearAndResizeHost() = default;
+    // 00BF6713, the checked-iterator failure; returns here.
+    virtual void invalid_parameter_00bf6713() = 0;
+    // 004FCBE0 STL_CheckedDwordVector_EraseRange, __thiscall(ECX = vector; out iterator*,
+    // {owner, first}, {owner, last}) RET 14h.
+    virtual void dword_vector_erase_range_004fcbe0(void* vector, void** out_iterator, void* first_owner,
+                                                   std::uint32_t* first, void* last_owner, std::uint32_t* last) = 0;
+    // 004254B0 (TRIV_body, the log printf), __cdecl(format, ...): `count` dword arguments.
+    virtual void log_004254b0(const char* format, const std::uint32_t* args, int count) = 0;
+    // 004FDE20 BSP_LoadingQueue_GetInstance -> EAX; 005092E0 BSP_LoadingQueue_StopAndWait(ECX).
+    virtual void* loading_queue_get_instance_004fde20() = 0;
+    virtual void loading_queue_stop_and_wait_005092e0(void* queue) = 0;
+    // 00504960 TMPL_RefPtrArray_Resize, __thiscall(ECX = array; int count) RET 4.
+    virtual void ref_ptr_array_resize_00504960(void* array, std::int32_t count) = 0;
+
+    // 004DA180 BSP_NativeResourceRecordVector_Reserve, __thiscall(ECX = header; int capacity) RET 4.
+    virtual void resource_record_vector_reserve_004da180(void* header, std::int32_t capacity) = 0;
+    // 004C3020 BSP_PooledStringList_AllocateSentinel (called with ECX = the list) -> EAX head.
+    virtual void* string_list_allocate_sentinel_004c3020(void* list) = 0;
+    // 004D45A0 BSP_StringAliasRecord_Destroy, __fastcall(ECX = 2Ch record).
+    virtual void string_alias_record_destroy_004d45a0(void* record) = 0;
+};
+
+// 0050A950, __fastcall(ECX = tactical-library preview) RET.
+void tactical_library_preview_clear_rotors_0050a950(Raw preview, ClearAndResizeHost& host);
+// 004DC410, __thiscall(ECX = {data, count, capacity} header; int count) RET 4.
+void particle_record_array_resize_004dc410(Raw header, std::int32_t count, ClearAndResizeHost& host);
+
 }  // namespace bsp::cc13_front8
