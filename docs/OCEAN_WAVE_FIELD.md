@@ -3408,3 +3408,60 @@ read at 007D22A6, `cc9_plane_ground_roll`) and rolling friction, under +2D8h = 1
 4. 0099C8B0's ConstructFromStream callers are not hosted (save / stream path).
 
 Leases: `p20_doc2` (this doc) is released with this handoff. The flip commit takes units.cpp for one commit.
+
+
+## 83. The stow with the deck term, ConTBD1's final, the final -> park edge, stream order (cc9-physics21, 2026-10-18)
+
+**(1) The stow with `kPlaneForwardSpeedDeckTermBound` ON: the image brakes as the host does.** 007DBEB3-007DBF0C
+(read again from the disk bytes): brake = classDesc+1E0h WheelBrake (80) x max(latched air brake [F+3Ch]+10h,
+0.6 (00CEFF98) - 26.0 (00D06880) x latched throttle [F+24h], the 007DB755 copy of unit+BBCh). The air brake is
+0099D300's negative demand (0099DC01). `ground_band_007dbeb3` and `pilot_plan_throttle_0099d300` already carry
+both, so there is no host brake fix to make. The 0.13 m/s^2 of section 82 is an artifact of trace lines 2 s
+apart. The diagnostic `kParkStowTrace` (a2690b07a, 2c5fa3ef8, OFF) logs every second park tick within 8 m of
+the target. The run `local\p21b_deck_usn01.log` (deck term ON, USN01 `usn01_p8_u1_i.txt`, 30000 fr; 1 stow, as
+in section 78) shows a roll that alternates between thrust and the brake. Each time the quantized throttle (007BB6E0,
+steps of 1/127) reaches 2/127 or less, the brake (15.2 at 2/127, 48 at 0) stops the plane within one step.
+The blocker is 0099D300's dead band, 0099DB1F-0099DB56 (00D09450 = 0.8333). The host matches it, and it uses the
+measured speed after 0099D99E's 007D99C0. A stopped parented plane measures the deck term alone, 0.1 x 16.7 = 1.67.
+That is at least 1.0. For dz < 5 m the desired speed max(0.5, dz / 2) (009B2923-009B298D, 00D7A280 = 0.5) lies
+within 0.83 of it, and the ratio stays inside [0.5, 1.5]. So the increment is skipped and the throttle freezes. Two
+examples:
+- ConTBD3, 512.15 s: f18 3.23, throttle 0.0157, brake 15.24, meas 1.672, spd 1.615. 009B260C's 3 s clock then
+  ends the park (land/abort at 512.45 s, re-takeoff).
+- Even without the freeze, the converged relative speed is dz / 2 - 0.1 x V_deck. That reaches zero at
+  dz = 0.2 x V_deck (3.34 m at 16.7 m/s), short of 006CFF70's 3.0 - |v|.
+So with these laws, which are image-exact as far as I have read them, a carrier at 16.7 m/s cannot stow by convergence. A stow
+needs V_deck under about 12.5 m/s, or an arm not yet read. The open question is the carrier's speed during recovery
+(section 81), not the brake. The deck term stays OFF.
+Side finding, recorded and not changed: a stopped plane keeps body vy = -0.736. That is one step of the 1.5 g
+gravity, 14.715 x 0.05. 007D87F6-007D8838 zeroes vy only with dyn+A4h set or dyn+94h > 0, and both are clear at
+rest. |v| then cuts 006CFF70's margin by 0.74 m.
+
+**(2) ConTBD1's final at 51 m/s.** The final speed law 009B1F2C-009B1FDF (read from the bytes) is
++2B4h = r + a+4Ch x (s - r), with s = 00419010(a+24h x ApproachDist (+4ECh), r, a+24h x PosBehind (+4F0h) x 0.4
+(00CE65D0), (r + a+5Ch) x 0.5, A8). `run_land_final_tick_009b1ed0` matches it. Nothing in 009B1ED0 or 009B1420
+refers to the deck's motion except r itself (009B1300's owner term). The glide geometry Y/Z is deck-relative. The
+pitch arm's `far_out = Z > 3 x |v|` uses vt[38h], the plane's world speed. In `local\p20d_lms_usn01.log` ConTBD1
+enters the fixed approach pitch (+0.1047, mode 1) at Z 111-150 m, against 90-105 m OFF. It crosses the runway
+start at local y 3.58 (OFF 1.22). It floats at 36 m/s with aoa 0.22: touchdown summary contact_steps=18,
+min_height 0.05, low_steps 0. WheelHeight is 0.00, because this class authors none (vehicleclasses.lua, mtime
+2026-05-09). The crash sweep 007C0910 -> 0084BF00 then takes it on Enterprise at 609.82 s. It is the bytes' law
+given the faster r. The 604.43 s event (throttle 0.008, air brake 1.0 while spd_cmd 51.45 > spd 49.4, as the
+direction hold starts) is unexplained. A first candidate is 0099DAC8's low-pass correction. Unchecked.
+
+**(3) `kLandFinalParkEdgeBound`: no row reaches 009B3DD9.** The edge needs land/final, mode 4, +20h touched, and
++900h not 7 and not 4/5 (the earlier park arm), so +900h must be 1, 2 or 6. That rules out three paths:
+- State 6 from water contact (007CB92C) skips the kill only when MinWaterSpd is 0 and up_y > 0.8. A plane with
+  MinWaterSpd 0 cannot touch down on a deck (007C71E6 needs classDesc+198h != 0).
+- Powerlost deaths gate the bot think (0099ACE1).
+- 1 and 2 are the hangar and placement states.
+A scan of the summary tails of 1315 cc9 logs from the last two days found 7222 `summary landing plane` records (the
+pattern matches with 0) and no `park_refused` above 0 (`local\p21_scan_park_refused.py`). It stays OFF, unexercised.
+
+**(4) Stream 0/1 order for `kBotTaskCtorSeedsBound` with the streams env off: not cheap, not implemented.** The
+host has no image 00BD2F10 generator with streams. `release_altitude_draw_00bd2f10` is a host LCG (one shared state,
+or one per key with BSP_GUNNERY_RNG_STREAMS), and each subsystem draws from its own helper. The image order would
+need every 00BD2F10 caller in the host routed through one image-faithful generator, called in the image's global
+order.
+
+Leases: `p21_stow` (src/game_hosts_units.cpp) and `p21_doc` (this doc) are released with this section.
