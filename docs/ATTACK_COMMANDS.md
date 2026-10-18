@@ -88,7 +88,12 @@ attack class except against structures.
 
 `IsKindOf(10h)` on the unit's `+3D0h` object is the single discriminator between `levelbomb` and
 `divebomb`: the two arms test it with opposite senses, so exactly one of the two can ever apply to
-the same unit. The same test at `008A5045` is what `luaMW_PilotBomb` uses.
+the same unit. `luaMW_PilotBomb` does **not** make the same test (corrected by cc9-physics18,
+2026-10-18, after cc13 fix21): after `007ED880(unit, 0)` (`008A504C`, true gives `dropkamikaze`),
+`008A505C`-`008A5065` call `vtable[5Ch](10h)` on the **argument** itself (`ESI`), not on its
+`+3D0h` object. For a squadron argument that is `007EFB00` (vtable `00D087C0`+5Ch), which answers
+only `18h`, 2, 1, 0 and `[this+C4h]` (`18h`, `007F2DEC`) and never `10h`, so a squadron passed to
+`PilotBomb` gets `divebomb` (`00E08F20`) unless `007ED880` answers.
 
 The torpedo depth band, `007EEA6C`..`007EEA8E`, reads the first weapon slot's descriptor through
 `007B9230`, requires its `+8h` to equal `0Ah`, and clears the surface-runner bit unless the float
@@ -303,8 +308,11 @@ the mission-script bindings are separate routines and are read here. All four re
 0's command pointer at `controller+54h` is `closetoship` it calls `007ED430(2)`. That is an
 independent confirmation of `docs/COMMAND_EXECUTION.md`'s slot-0-at-`+54h` layout.
 
-The three bomb classes the Lua binding picks are the same three `007EE8F0` discriminates with the
-same `IsKindOf(10h)` test, so script-issued and AI-issued bombing agree by construction.
+The three bomb classes the Lua binding picks are the same three `007EE8F0` discriminates, but the
+`IsKindOf(10h)` test is made on different objects: `007EE8F0` asks the unit's `+3D0h` object, and
+`PilotBomb` asks its argument (`008A505C`). For a single plane argument the two agree; for a
+squadron argument `PilotBomb` never picks `levelbomb`, so script-issued and AI-issued bombing can
+disagree (cc9-physics18 correction, 2026-10-18).
 
 ## The suppression predicate `00811F50`
 

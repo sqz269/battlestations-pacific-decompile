@@ -2859,3 +2859,15 @@ identical, none of the six natives called. **ON, unexercised**, as the lead rout
 
 **USN12 WINS note:** on fcb6c6fa5 OFF, `usn12_s38_u12_p2` does not complete in 34000 frames (MissionPhase 3,
 Distance 10.12 km); the table's last completion was 1539.83 s. Sent to the WINS keeper.
+
+**fix16's release MINORs: recorded, not fixed (not cheap).**
+- (a) `007BBBA0` (disasm-raw): `007BBBA6 CMP byte [EDX+60h],0` / `007BBBB0 JE 007BBC00`, so a disabled channel C
+  skips the bay writes and still reaches `007BBC00 ADD [ECX+C20h],EBX` (EBX = 1). The host's two callers
+  (`release_ordnance_007bbba0` and `release_bomb_007bbba0`, `game_hosts_units.cpp`) instead turn channel C on first.
+  The host also gates the torpedo spawn on the bay's acceptance, where the image's spawn hangs off `+C20h` on
+  every path (bay already open included). Removing the force-enable alone would stop releases on any plane whose
+  channel C is disabled, so the faithful fix is to key the spawn on the `+C20h` raise for all callers
+  (`release_ordnance_007bbba0` has eleven call sites in the shared units file). Left for the plane lane.
+- (b) The attach test has no drop-to-attach gap: `006E3FE0` tests an attached round only. Not touched.
+- `docs/ATTACK_COMMANDS.md` corrected: `PilotBomb` asks `vtable[5Ch](10h)` of its argument (`008A505C`), not of
+  the `+3D0h` object, so a squadron argument never gets `levelbomb`.
