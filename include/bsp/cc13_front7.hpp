@@ -237,4 +237,89 @@ struct DamageableClassReadHost {
 void damageable_class_read_lua_fields_0087ca80(Raw descriptor, LuaObjectStorage* row,
                                                DamageableClassReadHost& host);
 
+// ---------------------------------------------------------------------------
+// 005DF510: the multiplayer lobby's DLC unlock mask for a game mode.
+// ---------------------------------------------------------------------------
+// The image's 0Ch-byte string-list object: +0 (unused here), +4 head sentinel, +8 size.
+struct StringListImage {
+    std::uint32_t unused;
+    std::uint8_t* head;
+    std::uint32_t size;
+};
+static_assert(sizeof(StringListImage) == 12);
+
+struct LobbyUnlockMaskHost {
+    virtual ~LobbyUnlockMaskHost() = default;
+    // [00E188A8] the game, [00E198AC] the lobby owner.
+    virtual void* global_pointer(std::uint32_t address) = 0;
+    // 00E19605 (the empty C string) and 00CE7890 ("_") by address.
+    virtual void* global_address(std::uint32_t address) = 0;
+
+    // --- CRT (bound) ---
+    virtual void invalid_parameter_00bf6713() = 0;
+    virtual void memcpy_00bf7680(void* dest, const void* source, std::uint32_t bytes) = 0;
+    virtual std::int32_t atol_00bf8417(const char* text) = 0;
+    virtual std::int32_t stricmp_00bf7fbf(const char* a, const char* b) = 0;
+    virtual void operator_delete_00bf65ac(void* block) = 0;
+    // 00BF9640 __allshl(EDX:EAX value, CL count).
+    virtual std::uint64_t allshl_00bf9640(std::uint64_t value, std::uint8_t count) = 0;
+
+    // --- strings ---
+    virtual void native_string_resize_0041dd40(NativeStringImage* string, std::uint32_t length,
+                                               char preserve) = 0;
+    virtual void* sized_pool_00419cc0() = 0;
+    virtual void sized_pool_return_00bd1510(void* pool, void* block, std::uint32_t bytes,
+                                            std::uint32_t count) = 0;
+    // 00467CF0 BSP_NativeString_ReverseFindHeader, __thiscall(ECX = string; const NativeString*
+    // needle, limit) RET 8 -> EAX position.
+    virtual std::int32_t native_string_reverse_find_00467cf0(const NativeStringImage* string,
+                                                             const NativeStringImage* needle,
+                                                             std::uint32_t limit) = 0;
+    // 00469840 BSP_NativeString_Substring, __thiscall(ECX = string; NativeString* out
+    // (constructed), start, count) RET 0Ch.
+    virtual void native_string_substring_00469840(const NativeStringImage* string, NativeStringImage* out,
+                                                  std::uint32_t start, std::uint32_t count) = 0;
+
+    // --- string list ---
+    // 004C3020 BSP_PooledStringList_AllocateSentinel, __thiscall(ECX = list) -> EAX head.
+    virtual std::uint8_t* string_list_allocate_sentinel_004c3020(StringListImage* list) = 0;
+    // 004D05E0 BSP_PooledStringList_ClearStorage, __thiscall(ECX = list).
+    virtual void string_list_clear_storage_004d05e0(StringListImage* list) = 0;
+    // 004CE6F0, __thiscall(ECX = list; next, previous, const NativeString*) RET 0Ch -> EAX node.
+    virtual std::uint8_t* string_list_allocate_node_004ce6f0(StringListImage* list, std::uint8_t* next,
+                                                             std::uint8_t* previous,
+                                                             const NativeStringImage* value) = 0;
+    // 004CE780, __thiscall(ECX = list; dword increment) RET 4.
+    virtual void string_list_grow_count_004ce780(StringListImage* list, std::uint32_t increment) = 0;
+    // 005DF1A0 (list sort, provisional) and 005DA670 (list unique, provisional), __fastcall(ECX = list).
+    virtual void string_list_sort_005df1a0(StringListImage* list) = 0;
+    virtual void string_list_unique_005da670(StringListImage* list) = 0;
+
+    // --- Lua objects ---
+    // 00B67980, __thiscall(ECX = state owner; LuaObject* out) RET 4 -> EAX = out.
+    virtual LuaObjectStorage* lua_state_owner_get_globals_00b67980(void* owner, LuaObjectStorage* out) = 0;
+    virtual LuaObjectStorage* lua_object_get_by_name_00b67800(LuaObjectStorage* table,
+                                                              LuaObjectStorage* out,
+                                                              const char* name) = 0;
+    virtual LuaObjectStorage* lua_object_get_by_index_00b67720(LuaObjectStorage* table,
+                                                               LuaObjectStorage* out,
+                                                               std::int32_t index) = 0;
+    virtual void lua_object_destruct_00b67700(LuaObjectStorage* object) = 0;
+    virtual void lua_object_construct_00b65f50(LuaObjectStorage* object) = 0;
+    virtual bool lua_object_iteration_ended_00b66420(LuaObjectStorage* table, LuaObjectStorage* key) = 0;
+    virtual void lua_object_iterate_first_00b67080(LuaObjectStorage* table, LuaObjectStorage* key,
+                                                   LuaObjectStorage* value) = 0;
+    virtual void lua_object_iterate_next_00b67190(LuaObjectStorage* table, LuaObjectStorage* key,
+                                                  LuaObjectStorage* value) = 0;
+    virtual const char* lua_object_get_string_00b662b0(LuaObjectStorage* object) = 0;
+    // 00B660A0 BSP_LuaObject_IsString, __thiscall(ECX = object) -> AL.
+    virtual bool lua_object_is_string_00b660a0(LuaObjectStorage* object) = 0;
+    virtual NativeStringImage* lua_object_string_or_default_00b685c0(LuaObjectStorage* object,
+                                                                     NativeStringImage* out,
+                                                                     const char* fallback) = 0;
+};
+
+// 005DF510, __stdcall(int mode) RET 4 -> EDX:EAX mask; EBP frame aligned to 8, EH 00C74C1D.
+std::uint64_t lobby_dlc_unlock_mask_005df510(std::int32_t mode, LobbyUnlockMaskHost& host);
+
 }  // namespace bsp::cc13_front7

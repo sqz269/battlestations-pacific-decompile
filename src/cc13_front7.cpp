@@ -602,4 +602,244 @@ void damageable_class_read_lua_fields_0087ca80(Raw desc, LuaObjectStorage* row,
     host.lua_object_destruct_00b67700(&s94);                                              // 0087D706
 }
 
+// ---------------------------------------------------------------------------
+// 005DF510, __stdcall(int mode) RET 4 -> EDX:EAX; EBP frame (ESP aligned to 8),
+// EH handler 00C74C1D. ECX is overwritten before use. Assembly 005DF510-005E08DF
+// (1394 instructions); jump table 005E08E4 (modes 0-3 -> 005DFD26, 4 -> 005DF7D4,
+// 5 -> 005DF999, 6 -> 005DFB62, 7 -> 005DF614, above 7 -> 005E03A1).
+//  1. VehicleClass = globals([game+1A0Ch])."VehicleClass"; list A allocated
+//     (004C3020) and cleared (004D05E0).
+//  2. For each 434h-byte entry of the lobby vector ([[00E198AC]+5Ch]+24h, first +28h,
+//     last +2Ch; checked iterator re-validated every pass): for both 154h-byte sides,
+//     for the mode's dword-pair vectors (side base 18Ch + 10h*k: k = 0 mode 4,
+//     k = 1 mode 6, k = 2 mode 5, k = 3 mode 7, k = 4..7 modes 0-3), each element's
+//     name (+4, or 00E19605) is atol'd, VehicleClass[n]."Type" is copied into a
+//     local string and pushed onto list A. An unknown mode clears list A instead.
+//     The container null test runs only in the first vector loop of a side.
+//  3. Sort (005DF1A0) and unique (005DA670) list A. For each name in A, every
+//     VehicleClass row whose "Type" (00B685C0, default "0") equals it (length,
+//     then _stricmp) and whose "UnlockDLCMinimum" is a string pushes that string
+//     onto list B.
+//  4. Sort and unique B; for each "<prefix>_<n>" mask |= __allshl(1, CL = n - 1)
+//     where n = atol of the text after the last '_' (00467CF0 / 00469840).
+//  5. Both lists cleared and their sentinels deleted; VehicleClass destroyed.
+// ---------------------------------------------------------------------------
+namespace {
+
+void release_string(NativeStringImage& s, LobbyUnlockMaskHost& host) {
+    if (s.data != nullptr) {
+        void* const pool = host.sized_pool_00419cc0();
+        host.sized_pool_return_00bd1510(pool, s.data, s.length + 1, 1);
+    }
+}
+
+void copy_c_string(NativeStringImage& s, const char* text, LobbyUnlockMaskHost& host) {
+    s.length = 0;
+    s.data = nullptr;
+    host.native_string_resize_0041dd40(&s, static_cast<std::uint32_t>(std::strlen(text)), 1);
+    if (s.data != nullptr) host.memcpy_00bf7680(s.data, text, s.length + 1);
+}
+
+// The inlined push_back: node = 004CE6F0(list; head, head->prev, &value), 004CE780(1),
+// head->prev = node, node->prev->next = node.
+void list_push_back(StringListImage& list, const NativeStringImage* value, LobbyUnlockMaskHost& host) {
+    std::uint8_t* const head = list.head;
+    std::uint8_t* const node = host.string_list_allocate_node_004ce6f0(
+        &list, head, Raw{head}.at<std::uint8_t*>(4), value);
+    host.string_list_grow_count_004ce780(&list, 1);
+    Raw{head}.at<std::uint8_t*>(4) = node;
+    Raw{Raw{node}.at<std::uint8_t*>(4)}.at<std::uint8_t*>(0) = node;
+}
+
+struct LobbyIterator {
+    std::uint8_t* container;  // lobby+24h (ESP+10h)
+    std::uint8_t* entry;      // ESP+14h
+};
+
+// One dword-pair vector loop (for example 005DF626-005DF7B5).
+void append_vector_types(StringListImage& list, LuaObjectStorage* vehicle_class, const LobbyIterator& it,
+                         const Raw vector, bool null_test, LobbyUnlockMaskHost& host) {
+    auto entry_check = [&]() {
+        if (reinterpret_cast<std::uintptr_t>(it.entry) >=
+            reinterpret_cast<std::uintptr_t>(Raw{it.container}.ptr(8))) {
+            host.invalid_parameter_00bf6713();
+        }
+    };
+    auto out_of_range = [&](std::uint32_t i) {
+        const auto* const first = static_cast<std::uint8_t*>(vector.ptr(4));
+        return first == nullptr ||
+               i >= static_cast<std::uint32_t>((static_cast<std::uint8_t*>(vector.ptr(8)) - first) >> 3);
+    };
+    for (std::uint32_t i = 0;; ++i) {
+        if (null_test && it.container == nullptr) host.invalid_parameter_00bf6713();
+        entry_check();
+        if (out_of_range(i)) break;
+        entry_check();
+        if (out_of_range(i)) host.invalid_parameter_00bf6713();
+        const char* name = Raw{static_cast<std::uint8_t*>(vector.ptr(4)) + 8 * i}.at<const char*>(4);
+        if (name == nullptr) name = static_cast<const char*>(host.global_address(0x00E19605));
+        const std::int32_t index = host.atol_00bf8417(name);
+        LuaObjectStorage row, type;
+        LuaObjectStorage* const got_row = host.lua_object_get_by_index_00b67720(vehicle_class, &row, index);
+        LuaObjectStorage* const got_type = host.lua_object_get_by_name_00b67800(got_row, &type, "Type");
+        NativeStringImage text;
+        copy_c_string(text, host.lua_object_get_string_00b662b0(got_type), host);
+        list_push_back(list, &text, host);
+        release_string(text, host);
+        host.lua_object_destruct_00b67700(&type);
+        host.lua_object_destruct_00b67700(&row);
+    }
+}
+
+}  // namespace
+
+std::uint64_t lobby_dlc_unlock_mask_005df510(std::int32_t mode, LobbyUnlockMaskHost& host) {
+    LuaObjectStorage globals, vehicle_class;                                               // ESP+148h, ESP+80h
+    {
+        auto* const game = static_cast<std::uint8_t*>(host.global_pointer(0x00E188A8));
+        LuaObjectStorage* const g = host.lua_state_owner_get_globals_00b67980(game + 0x1A0C, &globals);
+        host.lua_object_get_by_name_00b67800(g, &vehicle_class, "VehicleClass");           // 005DF569
+        host.lua_object_destruct_00b67700(&globals);
+    }
+    StringListImage list_a{};                                                              // ESP+20h
+    list_a.head = host.string_list_allocate_sentinel_004c3020(&list_a);
+    list_a.size = 0;
+    host.string_list_clear_storage_004d05e0(&list_a);                                      // 005DF59F
+
+    auto lobby = [&]() {
+        return Raw{static_cast<std::uint8_t*>(Raw{static_cast<std::uint8_t*>(host.global_pointer(0x00E198AC))}.ptr(0x5C))};
+    };
+    LobbyIterator it{};
+    {
+        const Raw l = lobby();
+        it.entry = static_cast<std::uint8_t*>(l.ptr(0x28));
+        if (reinterpret_cast<std::uintptr_t>(it.entry) > reinterpret_cast<std::uintptr_t>(l.ptr(0x2C))) {
+            host.invalid_parameter_00bf6713();                                             // 005DF5B8
+        }
+        it.container = l.field(0x24);
+    }
+    for (;;) {
+        const Raw l = lobby();
+        const auto last = reinterpret_cast<std::uintptr_t>(l.ptr(0x2C));
+        if (reinterpret_cast<std::uintptr_t>(l.ptr(0x28)) > last) host.invalid_parameter_00bf6713();
+        if (it.container == nullptr || it.container != l.field(0x24)) host.invalid_parameter_00bf6713();
+        if (reinterpret_cast<std::uintptr_t>(it.entry) == last) break;                     // 005DF5FB
+
+        auto sides = [&](std::size_t base, std::size_t first_k, std::size_t count_k) {
+            for (std::size_t side = 0; side < 2; ++side) {
+                for (std::size_t k = 0; k < count_k; ++k) {
+                    const Raw vector{it.entry + base + 0x154 * side + 0x10 * (first_k + k)};
+                    append_vector_types(list_a, &vehicle_class, it, vector, k == 0, host);
+                }
+            }
+        };
+        switch (static_cast<std::uint32_t>(mode)) {
+            case 0: case 1: case 2: case 3: sides(0x18C, 4, 4); break;                    // 005DFD26
+            case 4: sides(0x18C, 0, 1); break;                                             // 005DF7D4
+            case 5: sides(0x18C, 2, 1); break;                                             // 005DF999
+            case 6: sides(0x18C, 1, 1); break;                                             // 005DFB62
+            case 7: sides(0x18C, 3, 1); break;                                             // 005DF614
+            default: host.string_list_clear_storage_004d05e0(&list_a); break;              // 005E03A1
+        }
+        if (it.container == nullptr) host.invalid_parameter_00bf6713();                     // 005E03AE
+        if (reinterpret_cast<std::uintptr_t>(it.entry) >=
+            reinterpret_cast<std::uintptr_t>(Raw{it.container}.ptr(8))) {
+            host.invalid_parameter_00bf6713();                                             // 005E03BC
+        }
+        it.entry += 0x434;
+    }
+
+    host.string_list_sort_005df1a0(&list_a);                                              // 005E03D2
+    host.string_list_unique_005da670(&list_a);
+    StringListImage list_b{};                                                              // ESP+54h
+    list_b.head = host.string_list_allocate_sentinel_004c3020(&list_b);
+    list_b.size = 0;
+    host.string_list_clear_storage_004d05e0(&list_b);                                      // 005E03FF
+
+    for (std::uint8_t* node = Raw{list_a.head}.at<std::uint8_t*>(0); node != list_a.head;) {
+        LuaObjectStorage key, value;                                                       // ESP+0A8h, ESP+94h
+        host.lua_object_construct_00b65f50(&key);
+        host.lua_object_construct_00b65f50(&value);
+        host.lua_object_iterate_first_00b67080(&vehicle_class, &key, &value);
+        while (!host.lua_object_iteration_ended_00b66420(&vehicle_class, &key)) {
+            LuaObjectStorage type, unlock;                                                 // ESP+0D0h, ESP+0BCh
+            NativeStringImage text;                                                        // ESP+44h
+            LuaObjectStorage* const got_type = host.lua_object_get_by_name_00b67800(&value, &type, "Type");
+            const NativeStringImage* const s =
+                host.lua_object_string_or_default_00b685c0(got_type, &text, "0");          // 005E04B8
+            if (node == list_a.head) host.invalid_parameter_00bf6713();                     // 005E04D7
+            const Raw entry{node};
+            bool matched = false;
+            bool unlock_live = false;
+            const std::uint32_t node_length = entry.at<std::uint32_t>(8);
+            if (s->length == node_length) {
+                std::int32_t order;
+                if (s->length == 0) {
+                    order = node_length != 0 ? -1 : 0;
+                } else if (node_length == 0) {
+                    order = 1;
+                } else {
+                    order = host.stricmp_00bf7fbf(s->data, entry.at<const char*>(0x0C));   // 005E0502
+                }
+                if (order == 0) {
+                    LuaObjectStorage* const got = host.lua_object_get_by_name_00b67800(&value, &unlock, "UnlockDLCMinimum");
+                    unlock_live = true;
+                    matched = host.lua_object_is_string_00b660a0(got);                     // 005E0540
+                }
+            }
+            if (unlock_live) host.lua_object_destruct_00b67700(&unlock);                    // 005E0571
+            release_string(text, host);                                                    // 005E0586
+            host.lua_object_destruct_00b67700(&type);                                      // 005E05CA
+            if (matched) {
+                LuaObjectStorage* const got = host.lua_object_get_by_name_00b67800(&value, &unlock, "UnlockDLCMinimum");
+                NativeStringImage copy;                                                    // ESP+30h
+                copy_c_string(copy, host.lua_object_get_string_00b662b0(got), host);
+                list_push_back(list_b, &copy, host);                                       // 005E0661
+                release_string(copy, host);
+                host.lua_object_destruct_00b67700(&unlock);
+            }
+            host.lua_object_iterate_next_00b67190(&vehicle_class, &key, &value);
+        }
+        host.lua_object_destruct_00b67700(&value);
+        host.lua_object_destruct_00b67700(&key);
+        if (node == list_a.head) host.invalid_parameter_00bf6713();                         // 005E071B
+        node = Raw{node}.at<std::uint8_t*>(0);
+    }
+
+    std::uint64_t mask = 0;                                                                // ESP+38h
+    host.string_list_sort_005df1a0(&list_b);                                              // 005E0735
+    host.string_list_unique_005da670(&list_b);
+    for (std::uint8_t* node = Raw{list_b.head}.at<std::uint8_t*>(0); node != list_b.head;) {
+        NativeStringImage separator{0, nullptr};                                           // ESP+30h
+        host.native_string_resize_0041dd40(&separator, 1, 1);                              // 005E0767
+        if (separator.data != nullptr) {
+            host.memcpy_00bf7680(separator.data, host.global_address(0x00CE7890), separator.length + 1);
+        }
+        if (node == list_b.head) host.invalid_parameter_00bf6713();                         // 005E079C
+        if (node == list_b.head) host.invalid_parameter_00bf6713();                         // 005E07AE
+        const auto* const name = reinterpret_cast<const NativeStringImage*>(node + 8);
+        const std::int32_t position = host.native_string_reverse_find_00467cf0(name, &separator, 0x7FFFFFFFu);
+        NativeStringImage suffix;                                                          // ESP+4Ch
+        host.native_string_substring_00469840(name, &suffix, static_cast<std::uint32_t>(position + 1),
+                                              0x7FFFFFFFu);                                // 005E07D4
+        release_string(separator, host);
+        const char* const digits =
+            suffix.data != nullptr ? suffix.data : static_cast<const char*>(host.global_address(0x00E19605));
+        const std::int32_t n = host.atol_00bf8417(digits);                                 // 005E0806
+        mask |= host.allshl_00bf9640(1, static_cast<std::uint8_t>(n - 1));                 // 005E081A
+        release_string(suffix, host);
+        if (node == list_b.head) host.invalid_parameter_00bf6713();                         // 005E0858
+        node = Raw{node}.at<std::uint8_t*>(0);
+    }
+
+    host.string_list_clear_storage_004d05e0(&list_b);                                      // 005E0874
+    host.operator_delete_00bf65ac(list_b.head);
+    list_b.head = nullptr;
+    host.string_list_clear_storage_004d05e0(&list_a);                                      // 005E0896
+    host.operator_delete_00bf65ac(list_a.head);
+    list_a.head = nullptr;
+    host.lua_object_destruct_00b67700(&vehicle_class);                                     // 005E08BE
+    return mask;
+}
+
 }  // namespace bsp::cc13_front7
