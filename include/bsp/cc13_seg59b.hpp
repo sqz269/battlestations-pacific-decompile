@@ -568,6 +568,12 @@ struct Seg59bHost {
     virtual std::uint32_t game_effective_mode_004bca50(void* game) = 0;
     // [00F8A2FC]->vtable[198h](), __thiscall(ECX = object), RET; AL (0091E6AE).
     virtual bool session_object_query_vt198(void* object) = 0;
+    // 005097D0 BSP_Profile_GetNamedCounter, __thiscall(ECX = game+650h, const NativeString*), RET 4; EAX.
+    virtual std::int32_t profile_get_named_counter_005097d0(void* profile, const void* name) = 0;
+    // 00574050 BSP_SessionFilter_ReadRankSetting, __thiscall(ECX = game+650h), RET; AL.
+    virtual std::uint8_t profile_rank_00574050(void* profile) = 0;
+    // 0090BF50 BSP_MissionProgress_SumMultiScores, __thiscall(ECX = [game+6B4h]), RET; EAX.
+    virtual std::int32_t mission_progress_sum_multi_scores_0090bf50(void* progress) = 0;
 };
 
 // --- Torpedo bot (vtable 00D182B0) ---------------------------------------------------------
@@ -838,15 +844,21 @@ void score_record_merge_0091a080(Seg59bHost& host, void* destination, void* sour
 struct CampaignAwardsFrame0091d780 {
     alignas(8) std::uint8_t bytes[0x8C];
 };
-// 0091D780 PARTIAL, 0091D780..0091E15E: the frame set-up and the campaign-finish awards
-// (CA_SA / CA_CUM for USN01..USN14, CA_OF / CA_CJM for IJN01..IJN14). Not a whole-body
-// replacement; 0091F2E3..0091FFFF is not reconstructed yet.
+// 0091D780 sub-range 1, 0091D780..0091E15E: the frame set-up and the campaign-finish awards
+// (CA_SA / CA_CUM for USN01..USN14, CA_OF / CA_CJM for IJN01..IJN14).
 void campaign_awards_finish_part_0091d780(Seg59bHost& host, void* record, CampaignAwardsFrame0091d780& state);
-// 0091D780 PARTIAL, 0091E15F..0091E697: the CA_IC and CA_VR mode awards on the same frame.
+// 0091D780 sub-range 2, 0091E15F..0091E697: the CA_IC and CA_VR mode awards on the same frame.
 void campaign_awards_mode_part_0091e15f(Seg59bHost& host, CampaignAwardsFrame0091d780& state);
-// 0091D780 PARTIAL, 0091E698..0091F2E2: the [00F8A2FC] gate and the Counter_CA_US / Counter_CA_JP
+// 0091D780 sub-range 3, 0091E698..0091F2E2: the [00F8A2FC] gate and the Counter_CA_US / Counter_CA_JP
 // passes. false = the gate's jump to 0091FF24; true = fall through to 0091F2E3.
 bool campaign_awards_counter_part_0091e698(Seg59bHost& host, CampaignAwardsFrame0091d780& state);
+// 0091D780 sub-range 4, 0091F2E3..0091FF23: Counter_CA_HOS / WOG / AA / FA and the RANK pass.
+void campaign_awards_rank_part_0091f2e3(Seg59bHost& host, CampaignAwardsFrame0091d780& state);
+// 0091D780 sub-range 5, 0091FF24..0091FFFF: the five frame strings released.
+void campaign_awards_teardown_0091ff24(Seg59bHost& host, CampaignAwardsFrame0091d780& state);
+// 0091D780, __fastcall(ECX = record = scoring + slot*284h + 4), RET: the whole body, sub-ranges
+// 1..5 in the image's order with the 0091FF24 jumps.
+void score_record_evaluate_campaign_awards_0091d780(Seg59bHost& host, void* record);
 
 
 }  // namespace bsp::cc13_seg59b
