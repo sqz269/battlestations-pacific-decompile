@@ -371,3 +371,20 @@ null descriptor into the tail and dereferences it, while the reconstruction stop
 ## Correction from docs/VEHICLE_CLASS_FIELDS.md
 
 Vtable slot +8h, the field reader `00960230`, is `__thiscall(descriptor, LuaObject* row)`, `RET 4`: its argument is the Lua row object itself, not a native-string out-parameter. It first calls the shared pre-reader `0087ca80`, which attributes +34h, +40h, +48h, +4Ch and +54h; the base reader's 68 key sites map to +80h..+134h. The installed `vehicleclasses.lua` has 342 distinct key paths, 231 consumed by some reader, 17 expected but never provided, 108 shipped but unread; the file balances only if `--[[` comments nest, which Lua 5.1.1 does not do, so the game likely loads a preprocessed chunk.
+
+## The 0095CA70 purge census (cc15-vcp1, `kVehicleClassPreloadCc15Bound`, OFF)
+
+This is step 1 of cc9's purge plan, and it is log only. With the switch on:
+- The scene database's +08h vector is built from the gate's 0046BF20 and from 0046BF70's stock lists. A stock entry goes to the vector when `Hidden` is set, and to the 0095C4D0 stock queue otherwise.
+- At the end of the instantiate read (0046EC77..0046ECA7), each id is resolved with 00964790(id, 1), which marks the row's `ID` and `Got`.
+- At 004E0A9B and 0045F6C1 the host counts the rows 0095CA70 would set to nil: every row whose `Got` is not true. Nothing is purged.
+
+The DeviceClass purge (004423A0) and the Bullets purge (006E9C50) are skipped, because this host keeps no `Got` marks for those tables. The game+1910h..192Ch counters (0046BE50 and the inline loop at 0046EBE6) have no host state and are taken as zero; that is uncertain.
+
+USN01, same tree: pair_diff exit 1, gameplay identical.
+- The vector holds 154 ids, all from 0046BF20. The stock lists add none, because every count on that deck is 0.
+- At 004E0A9B, 596 of 633 rows would be set to nil and 37 are kept.
+- `later_host_reads=0`: none of the 596 rows is read through a host `read_vehicle_class_*` reader later in the run.
+- One more row is marked than OFF marks over the whole run (37 against 36).
+
+Steps 2 and 3 wait for cc9's review: mark parity across 00964790's 59 callers, then the purge itself.

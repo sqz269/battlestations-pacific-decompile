@@ -1346,6 +1346,16 @@ public:
     // `Type = E ShipClasses : <symbol>` resolved to, which is the same number
     // the installed table indexes its rows by.
     GameVehicleClassRow read_vehicle_class_row(int index);
+    // cc15-vcp1 (kVehicleClassPreloadCc15Bound): the scene database's
+    // 0046EC77 resolve, which marks the row the way 00964790's miss path does.
+    void mark_scene_vehicle_class_row_00964790(int class_index) {
+        mark_vehicle_class_row_00964790(class_index);
+    }
+    // cc15-vcp1, log only: what 0095CA70 at `site` (004E0A9B or 0045F6C1)
+    // would nil, the VehicleClass rows whose Got is not true. Later reads of
+    // those rows through the read_vehicle_class_* readers are counted for the
+    // summary line. Nothing is purged.
+    void census_vehicle_class_purge_0095ca70(const char* site);
 
     // Milestone 2m. One integer field of `VehicleClass[index]`, optionally one
     // level down, for the two reads 0095c640 makes that the row above does not
@@ -2229,6 +2239,13 @@ private:
     // miss path has written `ID` / `Got` on, once each (its cache stands in).
     std::set<int> vehicle_class_rows_marked_;
     void mark_vehicle_class_row_00964790(int class_index);
+    // cc15-vcp1: the rows the last census found unmarked, with the reads
+    // of each that came after it.
+    std::map<int, std::size_t> vehicle_class_would_nil_;
+    std::size_t vehicle_class_censuses_{0};
+    std::size_t vehicle_class_rows_would_nil_{0};
+    std::size_t vehicle_class_later_reads_{0};
+    void note_vehicle_class_read(int index);
     bool init_active_00f899a5_{false};
     bool error_replay_{false};
     bool avoid_all_ship_collision_{};
