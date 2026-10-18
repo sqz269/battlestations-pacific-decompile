@@ -686,6 +686,10 @@ int binding_trampoline(lua_State* state) {
         || attack_alt_row
         || ready_row
         || simplified_row || catapult_stock_row || num_catapulted_row
+        // Packet cc13-fix21: census only. Both rows are answered by their early
+        // returns below whatever `handled` says; listing them here stops
+        // note_native_call recording them as UNIMPLEMENTED.
+        || last_catapulted_row || formation_leader_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || spawn_id_requested_row || spawn_id_remove_row
         || in_border_zone_row

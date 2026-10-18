@@ -603,6 +603,9 @@ public:
     // Packet cc9_submarine_ai_states: unit+1200h..+120Ch, bands[band] of a seeded
     // submarine (00853A90's table), and false for any other slot or band.
     bool submarine_band_y(std::size_t unit_index, int band, float& y) const;
+    // Packet cc13-fix21. unit+127Ch "air", 008938E0's read (008939F6): the slot's
+    // sub_air.air. False, `air` untouched, when the slot is not a seeded submarine.
+    bool submarine_air_008938e0(std::size_t unit_index, float& air) const;
     // Packet cc9_periscope_out. The ship AI's store of periscopeState (+122Ch,
     // 009E4DC1 / 009EA8FB), mirrored onto the seeded submarine's slot with the
     // node test 00854AF8 (+1214h) and the class's PeriscopeMoveRange (+81Ch).
