@@ -17980,3 +17980,64 @@ Open, in priority order:
    - Before any pair, find each binary +3A0h reader's lock handling in Ghidra.
    - Callers in this installation: COTP usn_01 and PRCPUS usn_12_indochina. These are not WINS rows, so pairs need
      ad hoc rows.
+
+## 5im. SquadronSetTravelSpeed 008A0630 (cc9-lua68, 2026-10-18, packet l68_travel_speed)
+
+`kLuaSquadronSetTravelSpeedBound` (include/bsp/game_hosts_units.hpp) is committed OFF with this section.
+
+**The native.** 008A0630 `SquadronSetTravelSpeed(squadron, speed[, force])`:
+- argument 1 goes through 00B66270 and is stored as a float (FSTP 008A076C);
+- argument 2 goes through 00B66250 only when 00B663F0 counts exactly 3 arguments;
+- then four stores: 008A07E2 +388h = [00CE3800] (0.5), 008A07F0 +38Fh = force, 008A07FA +3A0h = speed, 008A0802
+  +3ACh = 1.
+
+Body: src/cc13_left55_seg56a.cpp `lua_squadron_set_travel_speed`. It is the fourth timer / freeze / value / lock
+quadruple. The squadron tick 007F3BAA counts the four countdowns +37Ch..+388h down while their freeze bytes
++38Ch..+38Fh are clear (docs/TICK_ELEMENT_OVERRIDES.md).
+
+**Who else writes +3A0h** (byte scan of the disp32 forms over 007C0000-009CFFFF; MOVSS, FLD/FSTP, MOV and SIB forms
+checked):
+- 007ED590 SquadronRestoreTravelSpeed's body and 007F1FE0 (order begin): +388h = 0.5, +3A0h = class
+  [squadron+35Ch]+190h, +3ACh = 1, +38Fh = 0.
+- 007ED5D0 RefreshTravelSpeed: unless +38Fh, when +388h < 0 and +3ACh is clear, +3A0h = the class value; then +3ACh
+  = 0. Its only caller is BSP_PilotBot_Tick 0099AEA3. That call runs only when the bot's head task before 0099A4C0
+  (EDI, 0099AE6C) differs from the one after (EBX, 0099AE92), and only when plane+9D4h is set.
+
+**Readers of +3A0h:**
+- 009C185C (moveto desired speed, 009C1850);
+- 009C23BE (moveto target speed, 009C23B0);
+- 009BC909 (move-on-path tick);
+- 009C97E4 (retreat moveto tick).
+
+The host used the class value at all four. Two more host sites, 009C204C and the depth-charge class block, read
+desc+190h directly and are unchanged.
+
+**So a script speed without `force` lasts until the second head-task change of any member** that comes at least
+0.5 s after the call. The first change only clears the lock. With `force` it lasts until 007ED590 or 007F1FE0
+rewrites it. No shipped mission passes `force`.
+
+**Host (switch ON):**
+- `GameScriptOrdersHost` routes the row to `GameUnitsHost::set_squadron_travel_speed_008a0630`, which stores the
+  quadruple on the squadron's slot; the countdown is held as its expiry clock, as for the alt blocks.
+- The four readers take `squadron_speed_3a0_live`.
+- Each plane's think compares a head-task signature (the installed task kinds and the command target) with the
+  one from its previous think, and on a change runs `refresh_travel_speed_007ed5d0`. A revert logs
+  `squadron travel speed: <squadron> back to the class value`.
+
+**LABELLED differences:**
+- the change is seen at the member's next think, at most one think interval (0.09 s) late;
+- a new task of the same kind against the same target is not seen as a change;
+- 007ED590 (SquadronRestoreTravelSpeed, no shipped caller) and 007F1FE0 are not hosted.
+
+**Callers in this installation** (none passes `force`):
+- bsm_09 323 KMH(200) for each LexKillerGang squadron, right after `PilotSetTarget(squad, Lexington)`;
+- bsm_04 1417/1418/1434;
+- bsm_10 348;
+- ESMP 01/02 and LOMP 03 at 65.28;
+- LOMP 08 1019 and LOMP 11 288;
+- the COTP/PRCP scripts at 40-100.
+
+**Predictions for the pair:**
+- BSM09: the LexKillerGang squadrons fly their approach to Lexington at 55.6 m/s instead of TravelSpeed x 1.6
+  until the second task change of a member. Their attacks on Lexington come later, so Lexington's sinking moves.
+- Rows with no caller are identical: USN01, USN02, LOMP06, LOMP10, USN12, PRCP01, IJN08 and JM08 do not call it.

@@ -1111,6 +1111,15 @@ public:
         // is handed the executable's own descriptor token.
         owner_.log.unimplemented("SceneUnit::vehicle_class_descriptor", "00964790");
         if (type_id < 0) return nullptr;
+        if constexpr (kVehicleClassPreloadCc15Bound) {
+            // cc15-vcp2: the descriptor itself stays a token, but 00964790's
+            // miss path marks the row's ID and Got here, at instantiate, for the
+            // creators 004F0520..004F10B0 and 004F0AD0 (004F0B3C).
+            if (owner_.lua != nullptr) {
+                owner_.lua->mark_scene_vehicle_class_row_00964790(static_cast<int>(
+                    VehicleClassPreloadBinding(owner_).map_class_index(type_id)), "004F0520+");
+            }
+        }
         descriptor_token_ = static_cast<std::uintptr_t>(type_id) + 1u;
         return reinterpret_cast<void*>(descriptor_token_);
     }
@@ -2358,13 +2367,25 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         // reading half resolves the symbol under kSceneDeckTypeEnumBound; the
         // resolver below scans it, and a token that is not a number resolves to
         // zero. Unbound, every authored symbol scans to zero. contract.
+        // cc15-vcp2 (kVehicleClassPreloadCc15Bound): 00964790's miss path marks
+        // the row's ID and Got here as well, because this is the created path,
+        // before 004E0A9B.
         bsp::AirOpsDeck deck = bsp::air_ops_load_from_scene_006cadd0(authored,
-            [](const std::string& type, void*) -> std::uint32_t {
+            [](const std::string& type, void* context) -> std::uint32_t {
                 std::int32_t parsed = 0;
                 if (!scene_scan_int(type, parsed) || parsed < 0) return 0u;
+                if constexpr (kVehicleClassPreloadCc15Bound) {
+                    auto& host = *static_cast<GameSceneContentsHost::Impl*>(context);
+                    if (host.lua != nullptr) {
+                        host.lua->mark_scene_vehicle_class_row_00964790(static_cast<int>(
+                            VehicleClassPreloadBinding(host).map_class_index(parsed)), "007B8A80");
+                    }
+                } else {
+                    static_cast<void>(context);
+                }
                 return static_cast<std::uint32_t>(parsed);
             },
-            nullptr);
+            &owner);
         // 00895E4B tests the class through vtable+5Ch against 45h. This process
         // has no vtable to ask, and the scene class id is the same distinction.
         deck.is_airfield = klass->class_id == bsp::kAirOpsSceneClassIdAirfield;
@@ -2779,7 +2800,7 @@ void SceneContentsBinding::read_scene_file(const std::string& path,
                 VehicleClassPreloadBinding map(owner_);
                 for (const std::int32_t id : owner_.scene_class_vector) {
                     owner_.lua->mark_scene_vehicle_class_row_00964790(
-                        static_cast<int>(map.map_class_index(id)));
+                        static_cast<int>(map.map_class_index(id)), "0046EC77");
                     ++marked;
                 }
             }
