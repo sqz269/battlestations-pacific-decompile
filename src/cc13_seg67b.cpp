@@ -2103,7 +2103,8 @@ void* bot_task_make_stop_009badb0(Cc13Seg67bHost& host, void* bot) {
 // 009BACB0 (009BACB0-009BAD23). EH frame. __fastcall(ECX = bot, EDX = target; float
 // alt), RET 4: t = new(400h) (009BACD2); null -> 0; else 0099C6F0(ECX = t, bot, 0Fh)
 // (009BACEF), [t] = 00D20480 (009BACFA), +3F8h = target (009BAD00), +3FCh = alt
-// (009BAD06). The base constructor takes one 00BD2F10 draw.
+// (009BAD06). The base constructor takes two 00BD2F10 draws: stream 1 at 0099C765
+// (U(0, 1), negated, into +308h) and stream 0 at 0099C7BA (U(-1, 0) into +3E8h).
 void* bot_task_make_gain_altitude_009bacb0(Cc13Seg67bHost& host, void* bot, void* target,
                                            float alt) {
     void* const t = host.operator_new_00bf681b(0x400);
@@ -2117,7 +2118,7 @@ void* bot_task_make_gain_altitude_009bacb0(Cc13Seg67bHost& host, void* bot, void
 
 // 009BAD30 (009BAD30-009BADA8). EH frame. __fastcall(ECX = bot), RET: t = new(3FCh)
 // (009BAD4F); null -> 0; else 0099C6F0(ECX = t, bot, 0Fh) (009BAD6E), [t] = 00D20400
-// (009BAD74), +3F8h = 0 (009BAD7A). The base constructor takes one 00BD2F10 draw.
+// (009BAD74), +3F8h = 0 (009BAD7A). The base constructor takes the same two draws.
 void* bot_task_make_immelmann_009bad30(Cc13Seg67bHost& host, void* bot) {
     void* const t = host.operator_new_00bf681b(0x3FC);
     if (t == nullptr) return nullptr;

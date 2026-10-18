@@ -782,7 +782,7 @@ There are 2 bodies, the gain-altitude and Immelmann task factories:
 - **009BACB0** builds a 400h-byte task with target and altitude.
 - **009BAD30** builds a 3FCh-byte task.
 
-Both run the base constructor 0099C6F0 with kind 0Fh, which takes one 00BD2F10 draw. Both are unreferenced (image scan) and have no target-equal twin.
+Both run the base constructor 0099C6F0 with kind 0Fh, which takes two unconditional 00BD2F10 draws (stream 1 at 0099C765, U(0, 1) negated into +308h; stream 0 at 0099C7BA, U(-1, 0) into +3E8h). Both are unreferenced (image scan) and have no target-equal twin.
 
 There are 24 ledger-only rows (section 4). 20 match their hosts, with these notes:
 - 009AA9E0, 009CD0D0 and 007B7BA0 (dogfight, strafe and rocket Stop) are target-equal byte twins.
@@ -828,6 +828,19 @@ Three ledger-only rows match the host:
 - 009A80E0, the avoid-turn tick. Its two FSUB forms were read from the bytes (DE E9, DE E1).
 - 009A87F0, the maneuver enter. Its stream-1 draws (3, or 4 in the threat arm) are the host's labelled midpoint stand-ins.
 - 009A8B20, the maneuver tick. The listing was followed through 009A8D9A; the mode machine below that was checked by its constants, curves and calls. The 0071C4F0 "out" arm and the U(lo, hi) draw are the host's labels.
+
+### 3.56 Batch 10: dive goaway and the land ticks (packet cc13-seg67C)
+
+No new bodies. Three ledger-only rows, checked against the bytes:
+- **009C4A40**, the dive goaway tick. The host is `run_dive_bomb_goaway_tick_009c4a40` (game_hosts_units.cpp ~28372) with its helpers in dive_bomb_goaway_turn.cpp and dive_bomb_task.cpp.
+  - Matches in the timers, both climb curves and the -5 degree nose-down gate.
+  - The nose-down arm writes the throttle and brake clamps and returns at 009C4CB7, before the re-roll.
+  - The flag-0 re-roll takes two stream-1 draws in order: U(3, 6) at 009C4D13, then U(12, 15) at 009C4D33. The host pins both at their low ends, labelled.
+  - The bank/heading split and its clamps match.
+  - PARTIAL in one NaN arm only (sent URGENT): 009C4AF1's FCOMIP/JBE keeps ctl+398h when either ceiling operand is NaN, while the host takes the sum.
+- **009B0FE0**, land standby, against `run_land_standby_tick_009b0fe0` (~32229): matches. The FSUBP/FDIVP operand order was read from the bytes (DE EA, DE FA). No draw.
+- **009B1ED0**, land final, against `run_land_final_tick_009b1ed0` (~33027): matches the labelled host, which skips the done tests because 007B8D70 is stood in as true. No draw.
+- Both land ticks blend the +2B4h speed on x87 (DE EA, DE CA, DE C1). The binary rounds each step at 24-bit PC; the hosts use double with one final rounding, so the result can differ by about 1 ULP (sent as precision-only).
 
 ## 4. Ledger-only records (packet cc13-seg67C)
 
@@ -966,3 +979,6 @@ Three ledger-only rows match the host:
 | 009A80E0 | `df_avoid_turn_tick_009a80e0` (game_hosts_units.cpp ~23066) | matches |
 | 009A87F0 | `df_maneuver_enter_009a87f0` (game_hosts_units.cpp ~22809) | matches the labelled midpoint stand-ins (no draws) |
 | 009A8B20 | `df_maneuver_tick_009a8b20` (game_hosts_units.cpp ~22838) | matches the labelled host |
+| 009C4A40 | `run_dive_bomb_goaway_tick_009c4a40` (game_hosts_units.cpp ~28372) | PARTIAL: ceiling NaN arm; draws pinned low (labelled) |
+| 009B0FE0 | `run_land_standby_tick_009b0fe0` (game_hosts_units.cpp ~32229) | matches (24-bit vs double blend note) |
+| 009B1ED0 | `run_land_final_tick_009b1ed0` (game_hosts_units.cpp ~33027) | matches the labelled host |

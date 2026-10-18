@@ -890,7 +890,7 @@ void* bot_task_make_level_bomb_009b9030(Cc13Seg67bHost& host, void* bot, void* t
 void* bot_task_move_on_path_create_009bdbb0(Cc13Seg67bHost& host, void* bot);
 void* bot_task_make_stop_009badb0(Cc13Seg67bHost& host, void* bot);
 // 009BACB0: __fastcall(ECX = bot, EDX = target; float alt), RET 4, EAX. 009BAD30:
-// __fastcall(ECX = bot), RET, EAX. Both unreferenced; each takes one 00BD2F10 draw.
+// __fastcall(ECX = bot), RET, EAX. Both unreferenced; each takes the base's two draws.
 void* bot_task_make_gain_altitude_009bacb0(Cc13Seg67bHost& host, void* bot, void* target,
                                            float alt);
 void* bot_task_make_immelmann_009bad30(Cc13Seg67bHost& host, void* bot);
