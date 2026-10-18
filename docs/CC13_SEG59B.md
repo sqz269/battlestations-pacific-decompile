@@ -189,3 +189,9 @@ STL code, allocators, `_free`, `_memmove_s` and xlen throws: `009063C0`, `009076
 `0090DB00`, `0090E600`, `0090F2C0`, `0090F2F0`, `0090F320`, `0090F350`, `0090F4A0`, `0090F560`,
 `009102D0`, `00910370`, `00910ED0`, `00911470`, `00911DF0`, `0091CC40`, `0091CE30`, `00920DE0`,
 `008FE420` (the robot registry lower_bound) and `008F6BA0` (a std::set<std::string> insert).
+
+## Mission score record clear
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `00915760` | BSP_MissionScoreRecord_Clear | reconstructed | `mission_score_record_clear_00915760`: 25 scalar zeroes, 36 inline tree clears, two 16-bit vector erases (`00BF67A7`) and three string resets (`0041DD40`, 00915E9D). include/bsp/scoring_bodies.hpp:190 says the clear leaves slot+08h and slot+250h alone. In the binary it zeroes both (record+4 at 0091576F, byte record+24Ch at 00915E97); 008BC540 restores them afterwards. |

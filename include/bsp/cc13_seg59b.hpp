@@ -298,6 +298,12 @@ struct Seg59bHost {
     // __thiscall(ECX = list, n), RET 4.
     virtual void* alias_node_allocate_copy_004ce6f0(void* list, void* next, void* prev, const void* value) = 0;
     virtual void alias_list_grow_count_004ce780(void* list, std::uint32_t count) = 0;
+    // The std::_Tree::_Erase instantiation at `callee` (0058B520, 0058BCD0, 005914B0, 00582B00,
+    // 00592A20, 00592EA0, 00582C00, 00582C80, 00582D00, 00582B80), __thiscall(ECX = tree, root),
+    // RET 4: frees the subtree. Bound library code; the caller resets the head itself.
+    virtual void stl_tree_erase_subtree(std::uint32_t callee, void* tree, void* root) = 0;
+    // 00BF67A7 _memmove_s, __cdecl(dst, dst_size, src, count).
+    virtual void memmove_s_00bf67a7(void* dst, std::uint32_t dst_size, const void* src, std::uint32_t count) = 0;
     // 00BF79F0 _memset, __cdecl(dst, value, count).
     virtual void memset_00bf79f0(void* dst, std::int32_t value, std::uint32_t count) = 0;
     // 00950320 BSP_SceneTextChunkList_Clear, __thiscall(ECX = list).
@@ -457,6 +463,9 @@ void* watch_list_construct_009221e0(Seg59bHost& host, void* owner);
 void watch_list_destruct_00922210(Seg59bHost& host, void* owner);
 // 00922240, __thiscall(ECX = owner, NativeString by value), RET 8: move the name to the back.
 void watch_list_add_00922240(Seg59bHost& host, void* owner, void* name);
+// 00915760, __thiscall(ECX = record = scoring + slot*284h + 4), RET: zero every scalar of one
+// mission score record, empty its trees and vectors and reset its three strings.
+void mission_score_record_clear_00915760(Seg59bHost& host, void* record);
 // 008F7CF0, __thiscall(ECX = scope), RET; EAX = scope: 00BD2FE0.
 void* random_threads_scope_construct_008f7cf0(Seg59bHost& host, void* scope);
 // 008F7D20, no arguments: destroy and free the object at [01090AA0], then clear it.

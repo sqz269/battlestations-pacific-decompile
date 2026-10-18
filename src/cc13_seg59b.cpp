@@ -1697,4 +1697,99 @@ void watch_list_add_00922240(Seg59bHost& host, void* owner, void* name) {
     at<void*>(ptr(node, 0x04), 0x00) = node;
     release_native_string(host, name);
 }
+
+namespace {
+
+// One std::map / std::set clear as 00915760 inlines it: root = head->parent, the _Erase
+// instantiation `callee`(tree, root), then head->parent = head, size = 0, head->left = head,
+// head->right = head (tree = {allocator, head +4, size +8}).
+void clear_tree_inline(Seg59bHost& host, void* record, std::uint32_t offset, std::uint32_t callee) {
+    void* const tree = add(record, offset);
+    host.stl_tree_erase_subtree(callee, tree, ptr(ptr(tree, 0x04), 0x04));
+    void* const head = ptr(tree, 0x04);
+    at<void*>(head, 0x04) = head;
+    at<std::uint32_t>(tree, 0x08) = 0;
+    at<void*>(head, 0x00) = head;
+    at<void*>(head, 0x08) = head;
+}
+
+// vector<16-bit>::erase(begin, end) as 00915760 inlines it, with both checked-iterator tests.
+void clear_short_vector_inline(Seg59bHost& host, void* record, std::uint32_t first_offset) {
+    std::uint8_t* const last = static_cast<std::uint8_t*>(ptr(record, first_offset + 4));
+    if (static_cast<std::uint8_t*>(ptr(record, first_offset)) > last) host.checked_iterator_failure_00bf6713();
+    std::uint8_t* const first = static_cast<std::uint8_t*>(ptr(record, first_offset));
+    if (first > static_cast<std::uint8_t*>(ptr(record, first_offset + 4))) host.checked_iterator_failure_00bf6713();
+    if (first == last) return;
+    const std::int32_t count =
+        static_cast<std::int32_t>(static_cast<std::uint8_t*>(ptr(record, first_offset + 4)) - last) >> 1;
+    const std::uint32_t bytes = static_cast<std::uint32_t>(count) * 2u;
+    std::uint8_t* const new_last = first + bytes;
+    if (count > 0) host.memmove_s_00bf67a7(first, bytes, last, bytes);
+    at<void*>(record, first_offset + 4) = new_last;
+}
+
+// NativeString assign from another header as 00915760 inlines it: 0041DD40(dst, src.size, 1),
+// then memcpy(dst.data, src.data, dst.size) when src.size != 0.
+void assign_native_string_inline(Seg59bHost& host, void* dst, void* src) {
+    host.native_string_resize_0041dd40(dst, at<std::uint32_t>(src, 0x00), 1);
+    if (at<std::uint32_t>(src, 0x00) != 0) {
+        host.memcpy_00bf7680(ptr(dst, 0x04), ptr(src, 0x04), at<std::uint32_t>(dst, 0x00));
+    }
+}
+
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 00915760 BSP_MissionScoreRecord_Clear. __thiscall(ECX = record), RET. Callers 008BC540
+// (Scoring_ClearPlayerScore, which saves and restores record+4 and the byte +24Ch around it)
+// and 00916980 (BSP_MissionPlayerRecords_Reset).
+// Evidence: 0091576C..00915801 dwords +8, +4, +0, floats +14h/+10h/+0Ch, then +1E0h, +1DCh,
+// +1D8h, +1D4h, +1D0h, +1CCh, +1C8h, +17Ch, +178h, +1E8h, +1E4h, +250h, +18Ch, +188h, +184h,
+// +180h, +16Ch, +168h, +174h, +170h, +190h, +194h = 0, in that order. 36 inline tree clears
+// (the 00915813..00915E74 sequence below, each erase followed by the head reset); the 16-bit
+// vectors at +130h (00915B64..00915BB6) and +140h (00915D5E..00915DB0) erased in place with
+// 00BF6713 checks and 00BF67A7. Then byte +24Ch = 0 (00915E97); 00915E9D 0041DD40(+264h, 0,
+// 0); data non-null -> 00915EB2 memcpy(data, "" CE3A0C, size); +25Ch = +264h (00915ECB,
+// 00915EE0); +254h = +25Ch (00915EFA, 00915F0F).
+// ---------------------------------------------------------------------------
+void mission_score_record_clear_00915760(Seg59bHost& host, void* record) {
+    at<std::uint32_t>(record, 0x08) = 0;
+    at<std::uint32_t>(record, 0x04) = 0;
+    at<std::uint32_t>(record, 0x00) = 0;
+    at<float>(record, 0x14) = 0.0f;
+    at<float>(record, 0x10) = 0.0f;
+    at<float>(record, 0x0C) = 0.0f;
+    static constexpr std::uint32_t kScalars[] = {0x1E0, 0x1DC, 0x1D8, 0x1D4, 0x1D0, 0x1CC, 0x1C8, 0x17C,
+                                                 0x178, 0x1E8, 0x1E4, 0x250, 0x18C, 0x188, 0x184, 0x180,
+                                                 0x16C, 0x168, 0x174, 0x170, 0x190, 0x194};
+    for (const std::uint32_t offset : kScalars) at<std::uint32_t>(record, offset) = 0;
+    struct TreeClear { std::uint32_t offset; std::uint32_t callee; };
+    static constexpr TreeClear kFirst[] = {
+        {0x018, 0x0058B520}, {0x024, 0x0058B520}, {0x030, 0x0058B520}, {0x03C, 0x0058B520},
+        {0x048, 0x0058B520}, {0x054, 0x0058B520}, {0x060, 0x0058B520}, {0x204, 0x0058BCD0},
+        {0x210, 0x0058BCD0}, {0x21C, 0x0058BCD0}, {0x228, 0x0058BCD0}, {0x234, 0x0058BCD0},
+        {0x240, 0x0058BCD0}, {0x1EC, 0x0058B520}, {0x1F8, 0x0058B520}, {0x0CC, 0x005914B0},
+        {0x0D8, 0x00582B00}, {0x09C, 0x00592A20}, {0x0B4, 0x00592EA0}, {0x0A8, 0x00592A20},
+        {0x0C0, 0x00592EA0}};
+    for (const TreeClear& clear : kFirst) clear_tree_inline(host, record, clear.offset, clear.callee);
+    clear_short_vector_inline(host, record, 0x130);
+    static constexpr TreeClear kSecond[] = {
+        {0x15C, 0x00582C00}, {0x198, 0x00582C80}, {0x1A4, 0x00582C80}, {0x1BC, 0x00582D00},
+        {0x1B0, 0x00582C80}, {0x078, 0x0058B520}, {0x120, 0x0058B520}, {0x06C, 0x0058B520},
+        {0x084, 0x0058B520}, {0x090, 0x0058B520}};
+    for (const TreeClear& clear : kSecond) clear_tree_inline(host, record, clear.offset, clear.callee);
+    clear_short_vector_inline(host, record, 0x140);
+    static constexpr TreeClear kThird[] = {
+        {0x114, 0x00582B80}, {0x0E4, 0x00582B00}, {0x0F0, 0x00582B00}, {0x0FC, 0x00582B00},
+        {0x108, 0x00582B00}};
+    for (const TreeClear& clear : kThird) clear_tree_inline(host, record, clear.offset, clear.callee);
+    at<std::uint8_t>(record, 0x24C) = 0;
+    void* const text = add(record, 0x264);
+    host.native_string_resize_0041dd40(text, 0, 0);
+    if (ptr(text, 0x04) != nullptr) {
+        host.memcpy_00bf7680(ptr(text, 0x04), host.image_pointer(kEmptyString), at<std::uint32_t>(text, 0x00));
+    }
+    assign_native_string_inline(host, add(record, 0x25C), text);
+    assign_native_string_inline(host, add(record, 0x254), add(record, 0x25C));
+}
 }  // namespace bsp::cc13_seg59b
