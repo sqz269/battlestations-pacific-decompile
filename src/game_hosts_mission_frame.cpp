@@ -181,7 +181,7 @@ constexpr bool kScanProximityUnitsEntriesBound = true;
 // GameScriptOrdersHost::player_plane_moveto (the members' 00E08F68 moveto and
 // the 0099A170 install at delivery). False: the ship path, whose command row a
 // plane's bot never reads, so the squadron keeps its scene moveto (BSM09 Donald).
-constexpr bool kHelmPlaneMovetoBound = false;
+constexpr bool kHelmPlaneMovetoBound = true;   // ON: OCEAN_WAVE_FIELD 79 (BSM09 pair)
 
 // Packet cc9_construct_world_p8 (docs/CONSTRUCT_WORLD.md section 15). True:
 // 00481640's call is the walk 00487270 itself: the std::list whose sentinel is

@@ -9036,7 +9036,7 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     // +2BCh = 0.0, +2C4h = 0.0, +2CCh = 1, +2B4h = [bot+8]+190h, +2B0h = 0, +2D8h = 1.
     // True: every 009C1FD0 seam takes the arm. False: the plain follow tick runs the
     // law anyway and the moveto follow returns without the stores, as before.
-    static constexpr bool kFollowReleaseArmBound = false;
+    static constexpr bool kFollowReleaseArmBound = true;   // ON: OCEAN_WAVE_FIELD 78 (USN01 pair)
     unsigned long long follow_release_pending_ticks{0}, follow_release_arm_applied{0};
     // 009C200F-009C2059. +2B4h is [[bot+4]+8]+190h, the class's second TravelSpeed
     // slot (TravelSpeed x NewTravelSpeedMul, 007D2406; docs/PLANE_CLASS_FIELDS.md).
