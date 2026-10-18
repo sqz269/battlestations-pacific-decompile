@@ -3284,7 +3284,7 @@ constexpr float kEightHundred_00ce3950 = 800.0f;  // 44480000
 // 009AFE70 gives them.
 void* bot_approach_land_construct_composite_009b2e50(Cc13Seg67bHost& host, void* block,
                                                      void* arg1, void* arg2) {
-    host.bot_approach_land_construct_lower_009afe70(block, arg1, arg2);
+    bot_approach_land_construct_lower_009afe70(host, block, arg1, arg2);
     host.bot_state_registry_construct_00411e20(ptr(block, 0xB8));
     at<std::uint32_t>(block, 0x00) = kLandBlockVtable_00d1ff88;
     at<std::uint32_t>(block, 0xB8) = kLandRegistryVtable_00d1ff84;
@@ -4031,6 +4031,68 @@ void* bot_approach_drop_kamikaze_construct_base_from_bag_009abbe0(Cc13Seg67bHost
     read_field(host, archive, kStrInsideAttackRange_00d1fb24, 3, ptr(approach, 0xC0));
     read_field(host, archive, kStrTargetHdg_00d1fb18, 2, ptr(approach, 0xB8));
     read_field(host, archive, kStrCurrentAvoidFlag_00d1fb04, 1, ptr(approach, 0xBC));
+    return approach;
+}
+
+// ---------------------------------------------------------------------------
+// The land approach base.
+
+namespace {
+constexpr std::uint32_t kLandApproachVtable_00d1fdb8 = 0x00D1FDB8u;
+}  // namespace
+
+// 009AFE70 (BSP_BotApproachLand_ConstructLower): __thiscall(ECX = approach, plane, air
+// ops), RET 8, EAX = approach. Evidence (disk bytes): 009F9CE0(ECX = approach, plane,
+// tuning+52Ch) (009AFE74-009AFE8A); vtable 00D1FDB8, +2Ch = air ops, +30h = [air ops
+// +7Ch] (009AFE93-009AFE9F); +34h = 006C0B50(ECX = air ops, [plane+9D4h]) (009AFEA2-
+// 009AFEB6); byte +44h = 0, +4Ch = +48h = 1.0, +50h = 1 (009AFEB9-009AFEC7); +54h =
+// 00BD2F10(1, 0.9, 1.1) x tuning+4E4h (009AFECE-009AFEFB); +58h = RNG(1, 0.9, 1.1) x
+// tuning+4E0h (009AFEFE-009AFF39); +60h = 0.0, +64h = [00CE38B8] 10.0, +5Ch =
+// float(desc+18Ch x double [00CEC9D8] 0.75) (desc = [approach+8]), +A4h = 0.0, +ACh =
+// 0.5 (009AFF2B-009AFF77); +B0h = -RNG(1, 0, 0.5) (009AFF7F-009AFF8B); 00414DB0 on
+// [approach+30h] when its byte +C8h is 0, then +38h/+3Ch/+40h = its +FCh/+100h/+104h
+// (009AFF91-009AFFBC); 00414DB0 on [approach+4] when its byte +C8h is 0, then +3Ch =
+// its +100h (009AFFBF-009AFFDC); 009AFAF0(ECX = approach, 0) (009AFFDF).
+// UNCERTAINTY: 24-bit precision modelled; the 0.75 product is exact in double. RNG
+// results rounded from ST0 by the hook. EH unwinding not modelled (the body has no EH
+// frame).
+void* bot_approach_land_construct_lower_009afe70(Cc13Seg67bHost& host, void* approach,
+                                                 void* plane, void* air_ops) {
+    const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x52C);
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, plane, speed);
+    at<std::uint32_t>(approach, 0x00) = kLandApproachVtable_00d1fdb8;
+    at<std::uintptr_t>(approach, 0x2C) = reinterpret_cast<std::uintptr_t>(air_ops);
+    at<std::uint32_t>(approach, 0x30) = at<std::uint32_t>(air_ops, 0x7C);
+    at<std::uintptr_t>(approach, 0x34) =
+        host.air_ops_queue_incoming_006c0b50(air_ops, ptr_at(plane, 0x9D4));
+    at<std::uint8_t>(approach, 0x44) = 0;
+    at<float>(approach, 0x4C) = kOne_00d7a24c;
+    at<float>(approach, 0x48) = kOne_00d7a24c;
+    at<std::uint32_t>(approach, 0x50) = 1;
+    void* tuning = host.game_tuning_singleton_0042e740();
+    at<float>(approach, 0x54) =
+        host.random_uniform_00bd2f10(1, kPointNine_00ce3860, kOnePointOne_00ce6448) *
+        at<float>(tuning, 0x4E4);
+    tuning = host.game_tuning_singleton_0042e740();
+    at<float>(approach, 0x58) =
+        host.random_uniform_00bd2f10(1, kPointNine_00ce3860, kOnePointOne_00ce6448) *
+        at<float>(tuning, 0x4E0);
+    at<float>(approach, 0x60) = kZero_s15;
+    at<float>(approach, 0x64) = kTen_00ce38b8;
+    at<float>(approach, 0x5C) = static_cast<float>(
+        static_cast<double>(at<float>(ptr_at(approach, 0x8), 0x18C)) * kPointSevenFive_00cec9d8);
+    at<float>(approach, 0xA4) = kZero_s15;
+    at<float>(approach, 0xAC) = kHalf_00ce3800;
+    at<float>(approach, 0xB0) = -host.random_uniform_00bd2f10(1, 0.0f, kHalf_00ce3800);
+    void* landing = ptr_at(approach, 0x30);
+    if (at<std::uint8_t>(landing, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(landing);
+    at<float>(approach, 0x38) = at<float>(landing, 0xFC);
+    at<float>(approach, 0x3C) = at<float>(landing, 0x100);
+    at<float>(approach, 0x40) = at<float>(landing, 0x104);
+    void* owner = ptr_at(approach, 0x4);
+    if (at<std::uint8_t>(owner, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(owner);
+    at<float>(approach, 0x3C) = at<float>(owner, 0x100);
+    host.bot_approach_land_geometry_009afaf0(approach, 0);
     return approach;
 }
 

@@ -441,3 +441,19 @@ It then copies the plane's position into +D0h..+D8h and calls the aim-error redr
 ### 3.33 Drop-kamikaze approach base from a stream
 
 009ABBE0 is the stream twin of 009ABAB0. It opens the target reference from {0,"targetLock"}, sets +A4h = TravelSpeed and +A8h = 1200.0, then reads six fields: startDist +ACh, attackDist +B0h, targetDist +B4h, insideAttackRange (byte) +C0h, targetHdg +B8h and currentAvoidFlag (dword) +BCh. 009AD920 now calls it directly.
+
+### 3.34 Land approach base; the depth-charge base is an existing implementation
+
+009AFE70 builds the land approach on 009F9CE0 (tuning +52Ch) with vtable 00D1FDB8. It works as follows:
+- It keeps the air-ops object at +2Ch and its landing unit [air ops+7Ch] at +30h.
+- It queues the plane with 006C0B50 and stores the result at +34h.
+- It makes three draws from the RNG 00BD2F10 on stream 1:
+  - +54h = U(0.9, 1.1) x tuning+4E4h;
+  - +58h = U(0.9, 1.1) x tuning+4E0h;
+  - +B0h = -U(0, 0.5).
+- It copies the landing unit's position into +38h..+40h, then overwrites +3Ch with the plane's own height.
+- It finishes with the geometry pass 009AFAF0(approach, 0).
+
+009B2E50 now calls it directly.
+
+009A3390, the depth-charge approach base, was not rewritten. depth_charge_task_construct_009a5240 in src/depth_charge_task_cc13.cpp already models it inline. Its step order matches the bytes, but it computes +40h in double and rounds once. It was recorded ledger-only as an existing implementation, spot-checked.

@@ -193,9 +193,10 @@ public:
     // 009A3390: __thiscall(ECX = depth-charge approach, [bot+50h], target), RET 8.
     virtual void bot_approach_depth_charge_construct_009a3390(void* block, void* arg,
                                                               void* target) = 0;
-    // 009AFE70: __thiscall(ECX = land approach, arg1, arg2), RET 8.
-    virtual void bot_approach_land_construct_lower_009afe70(void* block, void* arg1,
-                                                            void* arg2) = 0;
+    // 006C0B50: __thiscall(ECX = air ops, arg), RET 4, EAX: queue an incoming plane.
+    virtual std::uintptr_t air_ops_queue_incoming_006c0b50(void* air_ops, void* arg) = 0;
+    // 009AFAF0: __thiscall(ECX = land approach, flag), RET 4: the approach geometry.
+    virtual void bot_approach_land_geometry_009afaf0(void* approach, std::uint32_t flag) = 0;
     // 009ABAB0: __thiscall(ECX = drop-kamikaze approach, [bot+50h], target), RET 8.
     virtual void bot_approach_drop_kamikaze_construct_base_009abab0(void* block, void* arg,
                                                                     void* target) = 0;
@@ -850,5 +851,8 @@ void* bot_approach_dogfight_construct_009a6c10(Cc13Seg67bHost& host, void* appro
 void* bot_approach_drop_kamikaze_construct_base_from_bag_009abbe0(Cc13Seg67bHost& host,
                                                                   void* approach, void* plane,
                                                                   void* archive);
+// 009AFE70: __thiscall(ECX = approach, plane, air ops), RET 8, EAX = approach.
+void* bot_approach_land_construct_lower_009afe70(Cc13Seg67bHost& host, void* approach,
+                                                 void* plane, void* air_ops);
 
 }  // namespace bsp
