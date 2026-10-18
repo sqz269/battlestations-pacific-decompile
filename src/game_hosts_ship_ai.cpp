@@ -233,7 +233,8 @@ inline constexpr bool kShipFormationSpeedBound = true;
 // null-entity record (0070D18D) lands in the projection and is discarded; the
 // host keeps +30h per unit, and a dead member has already left the group.
 // False: the inline minimum, as before.
-inline constexpr bool kShipFormationSpeedCeilingRowBound = false;
+// ON: SHIP_AI_OPEN_ITEMS 293, USN04 20000 gameplay-identical.
+inline constexpr bool kShipFormationSpeedCeilingRowBound = true;
 // 0082E850's multiplier, [00424C40+438h] Navigator.TurnMultipliers.
 // TurnMultiplierMaxSpeed[2]: the gameplay settings object is not loaded here, so
 // its documented value stands in (docs/GAMEPLAY_SETTINGS.md). LABELLED.

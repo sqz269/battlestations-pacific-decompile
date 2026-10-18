@@ -19358,3 +19358,8 @@ PRCP08 (`local\s59_traffic_ids.py`).
   comes from the device Type (GUNNERY 63 / `kGunImmediateFireSlotBound`, the G4 note in GUNNERY_OPEN_ITEMS). The test's
   only consumer modelled here, ForceFireDepthCharge 0089B9D0 (cc13-fix17), already asks the same question over the
   Type. An IsKindOf row needs per-gun class ids first.
+
+**Pair (0070D140, USN04 20000, reference env).** OFF `local\s59_ceoff_u4.log` (tree exe at d41d8186c), ON
+`local\s59_ceon_u4.log` (`local\s59_ce_on`). 009F4DA0 is reached 413285 times over groups that lose members
+(Zuiho/Takao/Mogami `formation leave` at 918-943 s). `pair_diff` exit 1: gameplay identical, with 90 death rows,
+181 unit rows and 25295 shots; only the avoidance refill counter moves. **Flipped ON.**
