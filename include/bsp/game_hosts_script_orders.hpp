@@ -218,6 +218,14 @@ inline constexpr bool kScoringPlayerShotDownBound = true;
 // function, unread), is recorded and not applied. False: the native stays an
 // unimplemented record.
 inline constexpr bool kPutToBound = true;
+// Packet l68_putrelto (docs/SQUADRON_LAND_TASK.md section 5io). True: PutRelTo
+// (008AA560) poses argument 0 at argument 2 in argument 1's frame with argument
+// 1's rotation (GameUnitsHost::put_rel_to_00819840, vtable[120h] 00819840), turns
+// it by an exactly-fourth argument through vtable[11Ch] (008196B0), and a group
+// leader re-places its members (008AA851..008AA897). False: the native stays an
+// unimplemented record. Callers on the WIN rows: PRCP01 (PRCPUS
+// usn_03_battle_of_santa_cruz.lua 1268, the Junyo group beside Chikuma).
+inline constexpr bool kPutRelToBound = false;
 // Packet cc9_squadron_member_placement (docs/SQUADRON_MEMBER_PLACEMENT.md). On a
 // PlaneSquadron, PutTo's vtable[118h] is 007F2E20: the base position set 00489760,
 // then 007F2920 (007F2E8F), which puts every member but the leader on its 007F23A0

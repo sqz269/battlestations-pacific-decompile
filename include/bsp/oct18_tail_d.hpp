@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-// New C++ interfaces for the thirteen ordinary oct18-tD entries. All names are
+// New C++ interfaces for the twelve ordinary oct18-tD entries. All names are
 // hypotheses. docs/OCT18_TD_TAIL.md records original ABIs and proof limits.
 // Raw object pointers require writable native Win32 layouts. No host is wired.
 namespace bsp::oct18_tail_d {
@@ -38,10 +38,6 @@ void binoculars_observer_released_0051e780(void* observer, void* released) noexc
 // 00680DA0: ECX=screen, stack collection, RET 4. Bind the existing STL operation.
 using CollectionPushBack = void (*)(void* collection, void* argument);
 void unit_library_collect_children_00680da0(void* screen, void* collection, CollectionPushBack push_back);
-// 009960E0: ECX=condition, stack delete flags, RET 4, EAX=original this.
-// Restores 00D05840; std::free binds the original CRT free operation.
-void* simple_timed_scalar_delete_009960e0(void* condition, std::uint8_t flags) noexcept;
-
 struct FontIterator {
     void* owner;
     void* node;

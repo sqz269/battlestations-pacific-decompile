@@ -935,3 +935,132 @@ bool ship_derive_turn_fields_thunk_00852200(void* descriptor, Host& host) {
     return host.derive_ship_turn_fields_00828f20(descriptor);
 }
 } // namespace bsp::oct18_tail_b
+
+#include "bsp/entity_mission_seg60_argon.hpp"
+namespace bsp::oct18_tail_b {
+// 0093A3F0, ECX=task, RET, ST0 float. Last matching record wins; compare
+// through the canonical CRT binding. Listing is MOVSS/FLD, with no x87 math.
+float engine_jam_seconds_0093a3f0(const void* task, Host& host) {
+    float seconds = 0.0f;
+    for (std::uint32_t index = 0;; ++index) {
+        void* begin = get<void*>(task, 0x18);
+        if (begin == nullptr || index >=
+            (get<std::uintptr_t>(task, 0x1c) - reinterpret_cast<std::uintptr_t>(begin)) / 16) break;
+        void* record = at(begin, index * 16);
+        const char* name = get<const char*>(record, 8);
+        if (name != nullptr && host.compare_case_insensitive_00bf7fbf(name, "EngineJam") == 0)
+            seconds = get<float>(record, 0xc);
+    }
+    return seconds;
+}
+// 0095C550, ECX=class id, RET. Supplied actual vector is 00F8A09C, not
+// an independent census. Keep the duplicate scan and capacity fast append.
+void append_vehicle_census_0095c550(void* vector, std::int32_t class_id, Host& host) {
+    auto cursor = get<std::uintptr_t>(vector, 4);
+    const auto end = get<std::uintptr_t>(vector, 8);
+    if (end < cursor) invalid(host);
+    while (cursor != end) {
+        if (get<std::int32_t>(reinterpret_cast<void*>(cursor), 0) == class_id) return;
+        cursor += 4;
+    }
+    const auto begin = get<std::uintptr_t>(vector, 4);
+    if (begin != 0 && (end - begin) / 4 < (get<std::uintptr_t>(vector, 0xc) - begin) / 4) {
+        put<std::int32_t>(reinterpret_cast<void*>(end), 0, class_id);
+        put<std::uintptr_t>(vector, 8, end + 4);
+    } else host.insert_census_00441f30(vector, reinterpret_cast<void*>(end), &class_id);
+}
+// 009277E0: five-byte JMP00923840, unchanged ECX. Bind the existing
+// complete raw-storage implementation rather than copy its flag writes.
+void inherit_race_activate_thunk_009277e0(void* entity) {
+    entity_mission_seg60_argon::entity_inherit_race_and_activate_00923840(entity);
+}
+// 00922DC0: MOV DL,1 / JMP00922C80, AL result. The existing source's
+// actual allow_far argument is forced to one, exactly as the native thunk.
+std::uint8_t surface_target_thunk_00922dc0(void* entity,
+                                          entity_mission_seg60_argon::Seg60Host& host) {
+    return entity_mission_seg60_argon::entity_is_surface_target_00922c80(host, entity, 1);
+}
+// 008429C0: JMP00960230, unchanged ECX descriptor / stack LuaObject row.
+// The target's original contract is __thiscall(descriptor,row), RET 4.
+void read_vehicle_fields_thunk_008429c0(void* descriptor, void* lua_row, Host& host) {
+    host.read_vehicle_fields_00960230(descriptor, lua_row);
+}
+// 00968AF0 and 00968470 have identical raw filter/parameter layouts and
+// ordered short-circuit checks. Reuse the complete checked storage body.
+bool event_subscription_matches_00968af0(const void* subscription, const void* parameters, Host& host) {
+    return recon_subscription_matches_00968470(subscription, parameters, host);
+}
+// 008EE670: ECX=nullable text, RET, EAX=00F88C50 scratch. The source API
+// supplies that actual scratch explicitly; forward aliasing/read/write order
+// is retained. Preconditions: terminated input, no lone trailing backslash,
+// and sufficient scratch storage, matching the native valid domain.
+char* decode_scene_fragment_008ee670(const char* input, char* scratch) {
+    char* output = scratch;
+    if (input != nullptr) {
+        while (*input != '\0') {
+            if (*input == '\\') {
+                const char escaped = input[1];
+                input += 2;
+                if (escaped == '\\') *output++ = '\\';
+                else if (escaped == 'n') *output++ = '\n';
+                else if (escaped == 'q') *output++ = '"';
+            } else *output++ = *input++;
+        }
+    }
+    *output = '\0';
+    return scratch;
+}
+} // namespace bsp::oct18_tail_b
+
+namespace bsp::oct18_tail_b {
+// 007F8890, __thiscall(profile,NativeString* id), RET 4, AL bool.
+// Length equality comes before the canonical CRT comparison; empty IDs need
+// neither a data pointer nor a comparison. Original list owns its string IDs.
+bool profile_owns_content_007f8890(const void* profile, const void* id, Host& host) {
+    for (void* node = get<void*>(get<void*>(profile, 0xd0), 0);
+         node != get<void*>(profile, 0xd0); node = get<void*>(node, 0)) {
+        const auto length = get<std::uint32_t>(id, 0);
+        if (get<std::uint32_t>(node, 8) == length &&
+            (length == 0 || host.compare_case_insensitive_00bf7fbf(
+                get<const char*>(node, 0xc), get<const char*>(id, 4)) == 0)) return true;
+        if (node == get<void*>(profile, 0xd0)) invalid(host);
+    }
+    return false;
+}
+// 007FB990, ECX=profile, RET. Actual pending (+7Ch) and saved (+70h)
+// string-set owners are retained. Insertion precedes iterator increment;
+// subtree erasure precedes the four empty-tree storage writes.
+void flush_pending_unlocks_007fb990(void* profile, Host& host) {
+    void* pending = at(profile, 0x7c);
+    Host::Iterator cursor{pending, get<void*>(get<void*>(pending, 4), 0)};
+    for (;;) {
+        if (cursor.owner == nullptr || cursor.owner != pending) invalid(host);
+        if (cursor.node == get<void*>(pending, 4)) break;
+        host.insert_string_set_004d0640(at(profile, 0x70), at(cursor.node, 0xc));
+        host.increment_string_tree_004be730(cursor);
+    }
+    host.erase_string_subtree_004cec60(pending, get<void*>(get<void*>(pending, 4), 4));
+    void* head = get<void*>(pending, 4);
+    put<void*>(head, 4, head);
+    put<std::uint32_t>(pending, 8, 0);
+    head = get<void*>(pending, 4);
+    put<void*>(head, 0, head);
+    head = get<void*>(pending, 4);
+    put<void*>(head, 8, head);
+}
+// 007FBE20, __thiscall(profile,NativeString* key,int value), RET 8.
+// Miss stores the value verbatim (including negatives). Hit indexes once to
+// compare, then indexes AGAIN only when raising it. Head is captured before find.
+void record_award_at_least_007fbe20(void* profile, const void* key, std::int32_t value, Host& host) {
+    void* map = at(profile, 0xa0);
+    void* head = get<void*>(profile, 0xa4);
+    const auto found = host.find_counter_004c8b80(map, key);
+    if (found.owner == nullptr || found.owner != map) invalid(host);
+    if (found.node == head) {
+        *host.index_counter_005070c0(map, key) = value;
+        return;
+    }
+    if (*host.index_counter_005070c0(map, key) < value)
+        *host.index_counter_005070c0(map, key) = value;
+}
+} // namespace bsp::oct18_tail_b

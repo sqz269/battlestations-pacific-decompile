@@ -3329,3 +3329,294 @@ void* vfs_load_whole_file_00bdc8b0(void* manager, const void* name, CWord* size_
     return bytes;
 }
 } // namespace bsp::oct18_tail_c
+
+#include "bsp/native_mpkg_directory.hpp"
+namespace bsp::oct18_tail_c {
+void archive_write_field_00bd8cd0(void* writer, GuiTaggedWord key, GuiTaggedWord value,
+    const ArchiveFieldBindings& b) {
+    b.indent_00bd6990(c_read<CWord>(writer, 4));
+    b.key_00bd7b30(c_read<CWord>(writer, 4) == 0, key);
+    b.value_00bd7f50(value);
+    b.terminator_00bd6ac0(c_read<CWord>(writer, 4) == 0);
+}
+std::uint32_t mpkg_entry_offset_00bb8a90(void* state, void* entry, const MpkgBindings& b) {
+    if (c_read<std::uint8_t>(entry, 0xc)) return c_read<CWord>(entry, 0x10);
+    c_virtual<void>(c_read<void*>(state, 0xc), 0x1c, c_read<CWord>(entry, 8), CWord{0}, CWord{0});
+    void* const source = c_read<void*>(state, 0xc); // captured before allocation
+    struct Reader { void* base; CWord reported; void* cursor; } reader;
+    static_assert(sizeof(Reader) == 0xc);
+    reader.base = b.allocate_header_00bf55be(0x1e);
+    c_virtual<void>(source, 0x24, reader.base, CWord{0x1e}, &reader.reported);
+    reader.cursor = reader.base;
+    alignas(4) unsigned char header[0x34]; // actual header; local-only fields stay unwritten
+    read_native_mpkg_header_00bb8850(&reader, header, 1);
+    const CWord offset = c_read<std::uint16_t>(header, 0x20)
+        + c_read<std::uint16_t>(header, 0x22) + CWord{0x1e} + c_read<CWord>(entry, 8);
+    c_write<CWord>(entry, 0x10, offset);
+    c_write<std::uint8_t>(entry, 0xc, 1);
+    b.free_header_00bf65ac(reader.base);
+    return offset;
+}
+void* mpkg_open_entry_00bb8be0(void* state, void* entry, CWord flags,
+    void* volatile& vfs, const MpkgBindings& b) {
+    (void)flags; // original stacked flags are unused
+    const CWord offset = mpkg_entry_offset_00bb8a90(state, entry, b);
+    if (c_read<std::uint16_t>(entry, 0x14) != 0) {
+        c_virtual<void>(c_read<void*>(state, 0xc), 0x1c, offset, CWord{0}, CWord{0});
+        void* const allocation = b.allocate_owner_00bf681b(0x34);
+        void* inflate = nullptr;
+        if (allocation) {
+            const CWord parameters[3] = {c_read<CWord>(entry, 0x10),
+                c_read<CWord>(entry, 0x18), c_read<CWord>(entry, 0x1c)};
+            inflate = b.inflate_00bbc1d0(allocation, c_read<void*>(state, 0xc), parameters, 0x4000, 0x10000);
+        }
+        void* const memory = b.memory_00bef750(inflate);
+        if (InterlockedDecrement(static_cast<volatile LONG*>(c_at(inflate, 4))) == 0)
+            c_virtual<void>(inflate, 0);
+        return memory;
+    }
+    if (c_read<CWord>(entry, 0x1c) <= 0x40000) {
+        c_virtual<void>(c_read<void*>(state, 0xc), 0x1c, offset, CWord{0}, CWord{0});
+        return b.copy_range_00bef840(c_read<void*>(state, 0xc), offset, 0, c_read<CWord>(entry, 0x1c), 0);
+    }
+    void* const reopened = c_virtual<void*>(vfs, 4, c_at(state, 4), CWord{2});
+    void* const allocation = b.allocate_owner_00bf681b(0x28);
+    if (!allocation) return nullptr; // original does not retire reopened source here
+    return b.adopted_00bf1130(allocation, reopened, offset, 0, c_read<CWord>(entry, 0x1c), 0);
+}
+void* mpkg_open_named_00bb8d60(void* state, const void* name, CWord flags,
+    void* volatile& vfs, const MpkgBindings& b) {
+    if (flags & 1) return nullptr;
+    CWord byte_offset = 0;
+    for (std::int32_t i = 0; i < c_read<std::int32_t>(state, 0x2c); ++i, byte_offset += 0x24) {
+        void* const entry = c_at(c_read<void*>(state, 0x28), byte_offset);
+        const CWord stored_length = c_read<CWord>(entry);
+        if (c_read<CWord>(name) != stored_length) continue;
+        bool match = c_read<CWord>(name) == 0;
+        if (!match) match = b.stricmp_00bf7fbf(c_read<const char*>(name, 4), c_read<const char*>(entry, 4)) == 0;
+        if (match) return mpkg_open_entry_00bb8be0(state, entry, flags, vfs, b);
+    }
+    return nullptr;
+}
+void voice_packet_00a44000(void* self, const void* packet, void* volatile& game, const VoiceBindings& b) {
+    const CWord low = c_read<CWord>(packet), high = c_read<CWord>(packet, 4);
+    if (c_read<std::uint8_t>(self, 0x84) && !b.accept_00a43f40(self, low, high)) return;
+    bool allowed = false;
+    void* const current_game = game;
+    if (current_game) {
+        if (c_read<CWord>(c_read<void*>(self, 0x2210), 0x5d4) == 0xd) allowed = true;
+        else allowed = b.state_00687860(current_game, 0x14, 0) != 0;
+    }
+    if (!c_read<CWord>(self, 0x1d28) || !allowed) return;
+    c_write<CWord>(self, 0x1f34, 0);
+    const CWord user[2] = {c_read<CWord>(packet), c_read<CWord>(packet, 4)};
+    auto count = [&]() -> CWord {
+        return static_cast<CWord>(static_cast<std::int32_t>(c_read<CWord>(packet, 0x10)
+            - c_read<CWord>(packet, 0xc)) / 10);
+    };
+    CWord offset = 0;
+    for (CWord i = 0; c_read<void*>(packet, 0xc) && i < count(); ++i, offset += 10) {
+        if (!c_read<void*>(packet, 0xc) || count() <= i) b.checked_iterator_bf6713();
+        b.incoming_00a49040(c_at(self, 0x1c24), c_at(c_read<void*>(packet, 0xc), offset), 10, user);
+    }
+}
+void voice_refresh_flags_00a44150(void* self, std::uint8_t mode, const VoiceBindings& b) {
+    bool has_remote = false;
+    void* const first_owner = c_virtual<void*>(self, 0x80);
+    void* node = c_read<void*>(c_read<void*>(first_owner, 4));
+    void* const last_owner = c_virtual<void*>(self, 0x80);
+    void* const end = c_read<void*>(last_owner, 4);
+    for (;;) {
+        if (first_owner != last_owner) b.checked_iterator_bf6713();
+        if (node == end) break;
+        if (node == c_read<void*>(first_owner, 4)) b.checked_iterator_bf6713();
+        if (c_read<std::uint8_t>(node, 0x42) == 0) {
+            if (node == c_read<void*>(first_owner, 4)) b.checked_iterator_bf6713();
+            if (c_read<CWord>(node, 0x34) == 0) has_remote = true;
+        }
+        if (node == c_read<void*>(first_owner, 4)) b.checked_iterator_bf6713();
+        node = c_read<void*>(node);
+    }
+    if (mode == 0 || (mode == 1 && !has_remote)) {
+        void* const owner = c_virtual<void*>(self, 0x80);
+        void* const head = c_read<void*>(owner, 4);
+        node = c_read<void*>(head);
+        if (node == head) b.checked_iterator_bf6713();
+        b.mute_00a49180(c_at(self, 0x1c24), c_read<std::uint8_t>(node, 0x38), mode);
+        if (mode == 1) {
+            __asm {
+                mov ecx, self
+                mov edx, dword ptr [ecx]
+                fld dword ptr [ecx + 1d40h]
+                mov eax, dword ptr [edx + 0f0h]
+                push ecx
+                fstp dword ptr [esp]
+                call eax
+            }
+        }
+    }
+}
+void text_register_clip_00ab7a40(void* self, const TextClipBindings& b) {
+    for (CWord owner_offset : {CWord{0x4c}, CWord{0x188}}) {
+        void* const model = c_read<void*>(self, owner_offset);
+        if (model && b.has_geometry_00b74650(model)) {
+            void* const geometry = b.geometry_00b74640(model, 0);
+            if (b.count_00b72b40(geometry)) {
+                void* const reloaded = b.geometry_00b74640(model, 0);
+                void* const element = b.element_00b732c0(reloaded, 0);
+                b.clip_00aa9f10(self, c_read<void*>(element, 0x20));
+            }
+        }
+    }
+    void* node = c_read<void*>(c_read<void*>(self, 0x68));
+    while (node != c_read<void*>(self, 0x68)) {
+        if (node == c_read<void*>(self, 0x68)) b.checked_iterator_bf6713();
+        c_virtual<void>(c_read<void*>(node, 8), 0x70);
+        if (node == c_read<void*>(self, 0x68)) b.checked_iterator_bf6713();
+        node = c_read<void*>(node);
+    }
+}
+void layer_read_properties_00ac4c50(void* self, void* visitor, CWord& priority,
+    const LayerReadBindings& b) {
+    c_virtual<void>(visitor, 0xc, GuiTaggedWord{0, reinterpret_cast<CWord>(b.priority_d5cb00)},
+        GuiTaggedWord{1, reinterpret_cast<CWord>(&priority)}, GuiTaggedWord{1, 0});
+    const CWord value = priority;
+    c_write<CWord>(self, 0xfc, value);
+    c_write<CWord>(self, 0x118, value);
+    c_virtual<void>(visitor, 0xc, GuiTaggedWord{0, reinterpret_cast<CWord>(b.render_order_d5caf4)},
+        GuiTaggedWord{2, reinterpret_cast<CWord>(c_at(self, 0x11c))}, GuiTaggedWord{2, 0});
+    c_virtual<void>(self, 0x78);
+    void* const root = c_read<void*>(self, 0xec);
+    b.register_root_00b6d890(c_read<void*>(self, 0x4c), root);
+    const CWord zero[3] = {};
+    b.position_00aa7dc0(self, zero);
+    b.read_base_00aaa710(self, visitor);
+}
+void gui_manager_destroy_00aa6340(void* self, CWord& singleton, const GuiDestroyBindings& b) {
+    c_write<CWord>(self, 0, 0x00d5bfcc);
+    CWord cursor = c_read<CWord>(self, 0x18);
+    if (cursor > c_read<CWord>(self, 0x1c)) b.checked_iterator_bf6713();
+    for (;;) {
+        const CWord end = c_read<CWord>(self, 0x1c);
+        if (c_read<CWord>(self, 0x18) > end) b.checked_iterator_bf6713();
+        if (cursor == end) break;
+        if (cursor >= c_read<CWord>(self, 0x1c)) b.checked_iterator_bf6713();
+        void* const slot = reinterpret_cast<void*>(cursor);
+        c_virtual<void>(c_read<void*>(slot), 0x20);
+        if (cursor >= c_read<CWord>(self, 0x1c)) b.checked_iterator_bf6713();
+        void* const page = c_read<void*>(slot);
+        if (page) c_virtual<void*>(page, 4, 1);
+        if (cursor >= c_read<CWord>(self, 0x1c)) b.checked_iterator_bf6713();
+        cursor += 4;
+    }
+    for (CWord offset : {CWord{0x28}, CWord{0x2c}}) {
+        if (offset == 0x2c) {
+            b.clear_strings_00aa51d0(c_at(self, 0x34));
+            b.free_00bf65ac(c_read<void*>(self, 0x38));
+            c_write<CWord>(self, 0x38, 0);
+        }
+        void* const owner = c_read<void*>(self, offset);
+        if (owner) { c_release_ref(owner); c_write<CWord>(self, offset, 0); }
+    }
+    void* const pages = c_read<void*>(self, 0x18);
+    if (pages) b.free_00bf65ac(pages);
+    c_write<CWord>(self, 0x18, 0);
+    c_write<CWord>(self, 0x1c, 0);
+    c_write<CWord>(self, 0x20, 0);
+    void* const tree = c_at(self, 8);
+    void* const head = c_read<void*>(self, 0xc);
+    WarningIteratorPair result;
+    b.erase_tree_00aa49e0(tree, &result, tree, c_read<void*>(head), tree, head);
+    b.free_00bf65ac(c_read<void*>(self, 0xc));
+    c_write<CWord>(self, 0xc, 0);
+    c_write<CWord>(self, 0x10, 0);
+    singleton = 0;
+    c_write<CWord>(self, 0, 0x00ce3818);
+}
+std::intptr_t platform_handle_message_00bed3b0(void* active, std::uintptr_t handle,
+    CWord message, CWord wp, std::intptr_t lp, const PlatformBindings& b) {
+    HWND const window = reinterpret_cast<HWND>(handle);
+    void* const extra = message == WM_CREATE ? nullptr : reinterpret_cast<void*>(GetWindowLongA(window, 0));
+    auto standard = [&]() -> std::intptr_t { return DefWindowProcA(window, message, wp, lp); };
+    auto z_order = [&](void* owner, HWND after) {
+        SetWindowPos(c_read<HWND>(owner, 0x30), after, 0, 0,
+            c_read<int>(owner, 0x24), c_read<int>(owner, 0x28), 0x20);
+    };
+    if (message == WM_CREATE) {
+        void* const owner = c_read<void*>(reinterpret_cast<const void*>(lp));
+        SetWindowLongA(window, 0, reinterpret_cast<LONG>(owner));
+        c_write<std::uint8_t>(owner, 0x40, 1);
+        return 0;
+    }
+    if (message == WM_SIZE) {
+        if (wp != 4 && wp != 1) {
+            if (c_read<std::uint8_t>(extra, 0xc)) z_order(extra, HWND_TOPMOST);
+            c_write<std::uint8_t>(extra, 0x40, 1);
+            c_write<std::uint8_t>(extra, 0x41, 1);
+            SetFocus(c_read<HWND>(active, 0x30));
+            SetForegroundWindow(c_read<HWND>(active, 0x30));
+        } else {
+            if (c_read<std::uint8_t>(extra, 0xc)) z_order(extra, HWND_NOTOPMOST);
+            c_write<std::uint8_t>(extra, 0x40, 0);
+            c_write<std::uint8_t>(extra, 0x41, 0);
+        }
+        return standard();
+    }
+    if (message == WM_ACTIVATE) {
+        if (static_cast<std::uint16_t>(wp) == 0) {
+            b.xinput_enable_00c2f172(0);
+            const bool reorder = c_read<std::uint8_t>(extra, 0xc) != static_cast<std::uint8_t>(wp);
+            c_write<std::uint8_t>(extra, 0x41, static_cast<std::uint8_t>(wp));
+            if (reorder) z_order(extra, HWND_NOTOPMOST);
+            b.sound_pause_00a7a480(b.sound_f8bbd8);
+            b.media_pause_00a4c2d0(b.media_get_004c1710(), 1);
+            b.gui_pause_00aa33a0(b.gui_get_004c12b0(), 1);
+        } else {
+            b.xinput_enable_00c2f172(1);
+            if (c_read<std::uint8_t>(extra, 0xc)) z_order(extra, HWND_TOPMOST);
+            c_write<std::uint8_t>(extra, 0x40, 1);
+            c_write<std::uint8_t>(extra, 0x41, 1);
+            b.gui_pause_00aa33a0(b.gui_get_004c12b0(), 0);
+            b.sound_resume_00a7a4a0(b.sound_f8bbd8);
+            b.media_pause_00a4c2d0(b.media_get_004c1710(), 0);
+            b.reload_renderer_00b24fb0(b.renderer_f8d394);
+            SetForegroundWindow(c_read<HWND>(active, 0x30));
+            SetFocus(c_read<HWND>(active, 0x30));
+            if (c_read<std::uint8_t>(active, 0xc)) {
+                void* const service = b.render_service_f8d39c;
+                if (service) b.refresh_render_service_00b0d1e0(service);
+            }
+        }
+        return standard();
+    }
+    if (message == WM_PAINT) { standard(); return 0; }
+    if (message == WM_CLOSE) { c_write<std::uint8_t>(active, 0x180, 1); return 0; }
+    if (message == WM_SETTINGCHANGE && (wp == 0x20 || wp == 0x21))
+        c_write<std::uint8_t>(active, 0x2c, 1);
+    if (message == WM_GETMINMAXINFO) {
+        c_write<CWord>(reinterpret_cast<void*>(lp), 0x18, 100);
+        c_write<CWord>(reinterpret_cast<void*>(lp), 0x1c, 100);
+    }
+    if (message == WM_SYSCOMMAND && wp == 0xf140) return 1;
+    if (message == WM_ENTERSIZEMOVE) c_write<std::uint8_t>(extra, 0x42, 0);
+    if (message == WM_EXITSIZEMOVE) c_write<std::uint8_t>(extra, 0x42, 1);
+    if ((message == WM_CHAR || message == WM_KEYDOWN) && c_read<std::uint8_t>(active, 0x170)) {
+        bool queue = message == WM_CHAR;
+        if (message == WM_CHAR && wp == 0x16) c_write<std::uint8_t>(active, 0x44, 1);
+        if (message == WM_KEYDOWN) {
+            switch (wp) {
+            case 0x26: case 0x28: case 0x25: case 0x27: case 0x24: case 9:
+            case 0x23: case 0x2e: case 0x2d: case 0x14: case 0x21: case 0x22:
+                queue = true; break;
+            default: break;
+            }
+        }
+        if (queue) {
+            const CWord payload = (reinterpret_cast<CWord>(active) & 0xffff0000U)
+                | (message == WM_KEYDOWN ? 0x100U : 0) | (wp & 0xff);
+            b.append_text_00bed370(c_at(active, 0x174), &payload);
+        }
+    }
+    return standard();
+}
+} // namespace bsp::oct18_tail_c

@@ -261,7 +261,9 @@ public:
     virtual void* factory_vcall_04_load(void* factory, void* bot, void* archive) = 0;
     // entity->vtable[+34h](float* scratch), RET 4, EAX = the velocity vector.
     virtual const float* entity_vcall_34_velocity(void* entity, float* scratch) = 0;
-    // entity->vtable[+38h](), RET, ST0 (the value is discarded by 0099C527).
+    // entity->vtable[+38h](), RET, ST0 (the value is discarded by 0099C527). For a unit
+    // this is 007B8E60 BSP_Unit_GetCachedSpeed (FLD [ECX+B1Ch]), body
+    // native_plane_cached_speed_007b8e60; 009BA2F0 reads it as the speed.
     virtual float entity_vcall_38_float(void* entity) = 0;
     // 009BE3E0 BSP_BotStateFollow_WaitValue: __fastcall(ECX = follow state), ST0.
     virtual float bot_state_follow_wait_value_009be3e0(void* state) = 0;
@@ -607,10 +609,20 @@ public:
     // heading, float pitch), RET 8. Body: bot_set_direction_from_heading_pitch_009fabe0
     // (cc13_seg68.cpp).
     virtual void bot_set_direction_009fabe0(void* direction, float heading, float pitch) = 0;
-    // unit->vtable[38h](): __thiscall(ECX = unit), RET, ST0 = the unit's current speed.
-    virtual float unit_vcall_38_speed(void* unit) = 0;
-    // 007C4810 BSP_PlaneClass_MinControlSpeed: __thiscall(ECX = class), RET, ST0.
+    // 007C4810 BSP_PlaneClass_MinControlSpeed: __thiscall(ECX = class), RET, ST0. The
+    // law is plane_min_control_speed_007c4810 (dive_bomb_aimdive_tail.hpp): tuning+28Ch
+    // x class+184h StallSpd, rounded to float.
     virtual float plane_class_min_control_speed_007c4810(void* plane_class) = 0;
+    // path->vtable[8](out, index): __thiscall(ECX = command path), RET 8; writes the
+    // index's point to out (009DB060 then zeroes out[1]).
+    virtual void path_vcall_08_point(void* path, float* out, std::int32_t index) = 0;
+    // path->vtable[0Ch](): __thiscall(ECX = command path), RET, EAX = the point count.
+    virtual std::int32_t path_vcall_0c_count(void* path) = 0;
+    // 0085FFF0 BSP_DebugDraw_ArrowRgbaFloatsOneColour: __fastcall(ECX = from, EDX = to;
+    // rgba[4] by value), RET 10h. Body: debug_draw_arrow_rgba_floats_one_colour_0085fff0
+    // (cc13_big53.hpp).
+    virtual void debug_arrow_0085fff0(const float* from, const float* to,
+                                      const float* rgba) = 0;
 };
 
 // ---- the bot-task factory list (00F8A314) ----
@@ -1285,6 +1297,18 @@ void* bot_task_retreat_target_position_009ca0c0(void* task, void* out);
 void* entity_as_kind41_009ca480(Cc13Seg67bHost& host, void* entity);
 // 009CFA10: __fastcall(ECX = takeoff task), RET.
 void bot_task_takeoff_debug_draw_009cfa10(Cc13Seg67bHost& host, void* task);
+// 009A5AF0 / 009D4230: __fastcall(ECX = task), RET.
+void bot_task_depth_charge_debug_draw_009a5af0(Cc13Seg67bHost& host, void* task);
+void bot_task_torpedo_debug_draw_009d4230(Cc13Seg67bHost& host, void* task);
+// 009DB060: __thiscall(ECX = this; two stack arguments, unread), RET 8.
+void ship_ai_debug_draw_command_path_009db060(Cc13Seg67bHost& host, void* self);
+// 009E53B0: __thiscall(ECX = node storage; a, b, std::uint32_t lifetime bits), RET 0Ch,
+// EAX = node.
+void* ship_ai_obstacle_node_construct_unregistered_009e53b0(void* node, void* a, void* b,
+                                                            std::uint32_t lifetime_bits);
+// 009E8900: __thiscall(ECX = ship-AI debug object; int x, int y), RET 8.
+void ship_ai_debug_draw_state_label_009e8900(Cc13Seg67bHost& host, void* self,
+                                             std::int32_t x, std::int32_t y);
 
 // ---- medium rows, batch 2 (docs/CC13_SEG67B.md 3.47) ----
 // 009B94E0: __thiscall(ECX = split s task; byte wrap), RET 4.

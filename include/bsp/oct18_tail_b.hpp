@@ -1,6 +1,8 @@
 #pragma once
 #include <cstdint>
 
+namespace bsp::entity_mission_seg60_argon { struct Seg60Host; }
+
 namespace bsp::oct18_tail_b {
 // Address-suffixed, source-level interfaces over genuine Win32 object storage.
 // Original receivers/stack cleanup are recorded in docs/OCT18_TAIL_B.md. These
@@ -62,6 +64,14 @@ public:
     virtual void apply_director_command_0071c1e0(void* director, void* message) = 0;
     virtual void set_gunbot_target_006df170(void* bot, void* target) = 0;
     virtual bool derive_ship_turn_fields_00828f20(void* descriptor) = 0;
+    virtual int compare_case_insensitive_00bf7fbf(const char*, const char*) = 0;
+    virtual void insert_census_00441f30(void* vector, void* end, const std::int32_t* value) = 0;
+    virtual void read_vehicle_fields_00960230(void* descriptor, void* lua_row) = 0;
+    virtual void insert_string_set_004d0640(void* set, const void* native_key) = 0;
+    virtual void increment_string_tree_004be730(Iterator&) = 0;
+    virtual void erase_string_subtree_004cec60(void* set, void* root) = 0;
+    virtual Iterator find_counter_004c8b80(void* map, const void* native_key) = 0;
+    virtual std::int32_t* index_counter_005070c0(void* map, const void* native_key) = 0;
     // The original uses the canonical CRT invalid-iterator/range handler.
     // Providers must not return from this call.
     virtual void invalid_iterator_00bf6713() = 0;
@@ -106,4 +116,17 @@ void* vehicle_class_get_or_create_007b8a80(std::uint32_t type_id, Host& host);
 void director_apply_command_thunk_00835610(void* director, void* message, Host& host);
 void gunbot_set_target_thunk_008fe790(void* bot, void* target, Host& host);
 bool ship_derive_turn_fields_thunk_00852200(void* descriptor, Host& host);
+
+float engine_jam_seconds_0093a3f0(const void* task, Host& host);
+void append_vehicle_census_0095c550(void* vector, std::int32_t class_id, Host& host);
+void inherit_race_activate_thunk_009277e0(void* entity);
+std::uint8_t surface_target_thunk_00922dc0(void* entity,
+                                          entity_mission_seg60_argon::Seg60Host& host);
+void read_vehicle_fields_thunk_008429c0(void* descriptor, void* lua_row, Host& host);
+bool event_subscription_matches_00968af0(const void* subscription, const void* parameters, Host& host);
+char* decode_scene_fragment_008ee670(const char* input, char* scratch);
+
+bool profile_owns_content_007f8890(const void* profile, const void* id, Host& host);
+void flush_pending_unlocks_007fb990(void* profile, Host& host);
+void record_award_at_least_007fbe20(void* profile, const void* key, std::int32_t value, Host& host);
 } // namespace bsp::oct18_tail_b
