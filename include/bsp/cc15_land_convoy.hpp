@@ -69,7 +69,7 @@ struct LandConvoyKillHost : LandConvoyMemberSlots {
     virtual std::int32_t convoy_kill_cause_70(std::uint8_t* convoy) = 0;
     // 00926D90 BSP_MissionEntity_Kill, __thiscall(ECX = entity, int cause),
     // RET 4. Returns at once when entity+5Fh is set; otherwise queues the
-    // entity on the kill list 00F899B4 (vtable +080h runs on a later flush).
+    // entity on the kill list 00F899B4 (vtable +080h runs later in the same 009273A0 flush, which loops until both queues are empty).
     virtual void mission_entity_kill_00926d90(std::uint8_t* entity, std::int32_t cause) = 0;
     // 00779AF0 BSP_MissionEntity_OnKilledPlayerUnit, __fastcall(ECX =
     // entity), reached by the tail JMP. Source:

@@ -21,14 +21,17 @@ The two kill entry points, from the listings:
 
 - **00926D90 Kill** (`__thiscall(entity, cause)`, RET 4): returns when +5Fh is
   set; else sets it, stores the cause in +70h (cause 7 is stored as 2) and
-  queues the entity on the kill list 00F899B4. Slot +080h runs on a later
-  flush (009273A0, CALL at 0092751F), not inside 00926D90
+  queues the entity on the kill list 00F899B4. Slot +080h runs from the flush
+  (009273A0, CALL at 0092751F), not inside 00926D90. The flush loops until
+  both queues are empty (009275BA JMP 009273C0 re-tests 00F899B0/00F899BC), so
+  an entry queued during a flush runs in that same flush
   (docs/UNIT_DAMAGE_AND_DEATH.md, death sequence step 10).
 - **Damage death of a member**: the destroy flush calls vtable +074h
   (00926390, base), which tail-jumps to vtable +07Ch. For a land vehicle that
   is 0074DB70, which ends with 00926D90(self, self+70h) at 0074DCAD. So a member
-  shot dead reaches the kill list too, and its 0074CD10 runs one flush after its
-  destroy flush.
+  shot dead reaches the kill list too, and its 0074CD10 runs on a later pass of
+  the same 009273A0 call as its destroy (corrected after cc13's review; it was
+  "one flush after").
 - **0074CD10** (member slot +080h): when member+738h is non-null,
   007422A0(ECX = member+738h, member); then JMP 00951FB0.
 
@@ -48,8 +51,8 @@ beyond ECX. Saves EBX/EBP/ESI/EDI.
    call: 00779AF0 (the player-unit on-killed override, itself tail-jumping to
    the base 00928C80) returns to 00742180's caller. Modelled as the last call.
 
-Clearing +738h first means the member's own on-killed (0074CD10, on the next
-flush) skips 007422A0, so the live count is not touched by a convoy-level kill.
+Clearing +738h first means the member's own on-killed (0074CD10, on a later
+pass of the same flush) skips 007422A0, so the live count is not touched by a convoy-level kill.
 Every member gets the convoy's cause, not its own.
 
 Seam (`LandConvoyKillHost`): member_slot_count, member_slot,
@@ -80,7 +83,8 @@ Consequences cc9 asked about:
   again. 0074CD10 never passes null (it passes ECX of its own call), so this
   matters only to a host that does.
 - The convoy kill is queued, not immediate: the convoy's slot +080h (00742180)
-  runs on the next flush. By then the members' slots are all null, so its walk
+  runs in the SAME flush, on a later pass of 009273A0's loop (009275BA JMP
+  009273C0; corrected after cc13's review, it was "the next flush"). By then the members' slots are all null, so its walk
   kills nothing and only the 00779AF0 tail runs (Lua on-killed release).
 
 Seam (`LandConvoyRemoveHost`): member_slot_count, member_slot,
@@ -137,7 +141,7 @@ missiontree mapping (scratch script local/rD_convoy_reach.py, not committed):
 
 | Rank | Menu id | Script | Convoys | What exercises the three bodies |
 |---|---|---|---|---|
-| 1 | JM05 | COTP-IJN/PRCPIJN/JM05.lua | Event5Convoy (hidden, 4 rows US apc/tank), Event3Convoy 01-03 (hidden), SecondaryLandConvoy 01 (live), RadarStationLandConvoy 01 (live) | Event 5 "Catch the convoy": GenerateObject("Event5Convoy") (3883, 007420B0 bind), then polls `Convoy.Dead` (4369) for success: the player destroying all members drives 007422A0 to zero and its 00926D90(convoy, 2), then 00742180 on the next flush. Timeout and arrival call `Kill(convoy, true)` (3687, 4162, 4380); objective 1 kills SecondaryLandConvoy 01 the same way (2841). |
+| 1 | JM05 | COTP-IJN/PRCPIJN/JM05.lua | Event5Convoy (hidden, 4 rows US apc/tank), Event3Convoy 01-03 (hidden), SecondaryLandConvoy 01 (live), RadarStationLandConvoy 01 (live) | Event 5 "Catch the convoy": GenerateObject("Event5Convoy") (3883, 007420B0 bind), then polls `Convoy.Dead` (4369) for success: the player destroying all members drives 007422A0 to zero and its 00926D90(convoy, 2), then 00742180 later in the same flush. Timeout and arrival call `Kill(convoy, true)` (3687, 4162, 4380); objective 1 kills SecondaryLandConvoy 01 the same way (2841). |
 | 2 | PRCP08 | COTP-USN/usn_12_Indochina.lua | Train (live, 8 rows: engine, wagons, turret wagon, Japanese) | `AddListener("kill","TrainKilled", entity = {Train.Members[1]})` (1939): a member kill, so each member death reaches 007422A0 (decrement); the zero-count convoy kill only when all 8 members die. Members set invincible and back (668, 917); AddDamage(Members[1], 5000) from oil tanks (1323). LandConvoyStart/Stop/SetSpeed throughout. |
 | 3 | USN20 | COTP-USN/PRCPUS/usn_16_endgame_at_kure.lua | same six as JM05 (Japanese party) | Scene only: the script never names them. The two live ones (Secondary, RadarStation) are bound by 007420B0 at load and can be shot (007422A0 per member); no script listens. |
 | 4 | IJN10 | Ijn/ijn_10_port.lua | Event3 01-03 (hidden), Secondary, RadarStation (live) | Scene only, as USN20. Its `Mission.Convoy` is a table of troop-transport ships, not a LandConvoy. |
@@ -149,9 +153,12 @@ Caveats for wiring:
 
 - `Kill(convoy, hard)` on a LandConvoy does **not** go through 00742180 first.
   The Lua Kill binding at 008AC740 tests IsKindOf 1Ah and calls 00742210
-  (BSP_EntityGroup_KillMembersVector, cause 1 or 2 from `hard`), which kills
+  (BSP_EntityGroup_KillMembersVector), which kills
   and nulls each member slot but neither clears +738h nor kills the convoy
-  (008AC753 jumps past the 00926D90 at 008AC756). On the next flush each member's
+  (008AC753 jumps past the 00926D90 at 008AC756). Its argument is
+  `cause != 0` (008AC748 CMP ESI,EBP; SETNZ). EBP is 0 from 008AC5E3 XOR EBP,EBP,
+  and ESI is the cause, 1 or 2 from `hard`, so the argument is always 1
+  (corrected after cc13's review). In the same flush, on a later pass, each member's
   0074CD10 calls 007422A0, which no longer finds it (slot nulled): no decrement,
   so the convoy is killed only if the count was already zero. The cc9 host
   (src/game_hosts_lua.cpp, the "008AC740: a LandConvoy" substitution) kills the
