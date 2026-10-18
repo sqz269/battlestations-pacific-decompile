@@ -525,14 +525,16 @@ inline constexpr bool kLuaCapturePercentageFabsBound = true;   // ON: SQUADRON_L
 // a CommandBuilding before the records are built. False: an unimplemented record
 // that pushes nothing, so JM05's `GetCommandBuildingLevel(...) >= 2`
 // (PRCPIJN/jm05.lua:2779) raises once the RadarStation is Japanese.
-inline constexpr bool kLuaGetCommandBuildingLevelBound = false;
+// ON-unexercised, body checked (cc9-lua67, SQUADRON_LAND_TASK 5ii.2).
+inline constexpr bool kLuaGetCommandBuildingLevelBound = true;
 // Packet cc13-fix13. True: `SetCommandBuildingOwnerPlayer(entity, player)` 008A8D90
 // delivers D3h(player, byte 1) to a CommandBuilding (vtable[5Ch](1Ch) true), which
 // 006F4D10 applies as the capture flip to the player slot's party, without the
 // loss announcements (GameShipAiHost::command_building_set_owner_player_006f4d10).
 // False: an unimplemented record; the building keeps its party. JM05's three calls
 // (PRCPIJN/jm05.lua:1262/1263/1283) sit under `this.Cheat_PhaseShift` only.
-inline constexpr bool kLuaSetCommandBuildingOwnerPlayerBound = false;
+// ON-unexercised, body checked (cc9-lua67, SQUADRON_LAND_TASK 5ii.2).
+inline constexpr bool kLuaSetCommandBuildingOwnerPlayerBound = true;
 // Packet cc13-fix14b (docs/CC13_FIX14.md). True: `GetShipMaxSpeed(entity)` 00890BB0
 // pushes 0080FC30(entity) as a float (00890CAF 00888AA0, no null or class test;
 // 00890CC8 0080FC30, 00890CD2 FSTP dword, 00890CD5 00B66480 PushFloat; one result).
@@ -541,7 +543,8 @@ inline constexpr bool kLuaSetCommandBuildingOwnerPlayerBound = false;
 // GameUnitsHost::throttle_ceiling_inputs, unscaled (the same substitution the
 // ship-AI host makes). False: an unimplemented record that pushes nothing, so
 // usn_02's `SetShipMaxSpeed(unit, GetShipMaxSpeed(unit)*1.5)` raises.
-inline constexpr bool kLuaGetShipMaxSpeedBound = false;
+// ON-unexercised, body checked (cc9-lua67, SQUADRON_LAND_TASK 5ii.2).
+inline constexpr bool kLuaGetShipMaxSpeedBound = true;
 // Packet cc13-fix14b. True: `GetDirection(entity)` 008A7CB0 pushes the entity's
 // world forward row (008A7DEC LEA EAX,[ESI+0CCh]; 008A7DF2 LEA EDX,[EAX+20h], i.e.
 // +ECh..+F4h) as 0088BA30's {x, y, z} table, after the 00414DB0 refresh when
@@ -549,7 +552,8 @@ inline constexpr bool kLuaGetShipMaxSpeedBound = false;
 // slot from GameUnitsHost::unit_pose's forward row; a scene marker or an entity
 // with no slot pushes nothing and records UNIMPLEMENTED. False: an unimplemented
 // record that pushes nothing (jm01 / jm02 index the result and raise).
-inline constexpr bool kLuaGetDirectionBound = false;
+// ON-unexercised, body checked (cc9-lua67, SQUADRON_LAND_TASK 5ii.2).
+inline constexpr bool kLuaGetDirectionBound = true;
 // Packet cc13-fix16 (docs/CC13_FIX16.md): six bomb-release natives, each its own
 // switch, all committed OFF. False leaves the native an unimplemented record that
 // pushes nothing, as before.
