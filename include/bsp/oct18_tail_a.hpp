@@ -3,6 +3,10 @@
 #include "bsp/classes_seg7_cc13.hpp"
 #include "bsp/cc13_seg48U.hpp"
 #include "bsp/frontend_state_machine.hpp"
+#include "bsp/entity_mission_seg60_argon.hpp"
+#include "bsp/native_damageable_class_binding.hpp"
+#include "bsp/net_entity_create_cc13.hpp"
+namespace bsp::cc13_big53 { struct Big53Host; }
 
 namespace bsp { struct NativeStringRawPoolContext; }
 
@@ -69,4 +73,75 @@ struct DialogServices {
     virtual void increment_tree_iterator_00448c10(DialogIterator& iterator) = 0;
 };
 void collect_active_dialog_ids_00450750(void* self, void* output, DialogServices& services);
+// The remaining routines use borrowed original-layout storage and explicit dependencies.
+struct GridConstants {
+    const volatile float& extent_00ce3968;
+    const volatile double& diameter_00ce3960;
+    const volatile float& multiplier_00ce3958;
+    const volatile float& default_width_00ce396c;
+};
+struct GridServices {
+    virtual ~GridServices() = default;
+    virtual void invalid_parameter_00bf6713() = 0;
+    virtual void resize_bytes_004219a0(void* vector, std::uint32_t size, std::uint8_t fill) = 0;
+};
+void terrain_layer_set_dimension_00423960(void* self, std::int32_t dimension,
+                                        const GridConstants& constants, GridServices& services);
+void reset_avoid_zone_layers_00423af0(void* self, const GridConstants& constants,
+                                   GridServices& services);
+struct PendingClassState {
+    void* vector_00f8a09c;
+    void* volatile& head_00f8a0b0;
+    std::uint32_t& count_00f8a0b4;
+};
+void clear_pending_class_ids_004c8aa0(PendingClassState& state,
+                                    const SingletonLifetimeCallbacks& callbacks);
+struct AirOpsServices {
+    virtual ~AirOpsServices() = default;
+    virtual void invalid_parameter_00bf6713() = 0;
+    virtual void remove_ready_front_006c4a70(void* container) = 0;
+    virtual void unregister_observer_006952a0(void* observed, void* observer) = 0;
+    virtual void register_observer_00694a60(void* observed, void* observer) = 0;
+    virtual void scene_enable_00922f30(void* plane, std::uint32_t enabled) = 0;
+};
+void pull_ready_plane_006c6540(void* self, std::uint32_t unused_stack_word,
+                             AirOpsServices& services);
+struct HudServices {
+    virtual ~HudServices() = default;
+    virtual void invalid_parameter_00bf6713() = 0;
+    virtual void delete_slot4(void* object, std::uint32_t flags) = 0;
+    virtual void build_marker_00642040(void* screen, void* entity, std::uint32_t a,
+        std::uint32_t b, std::uint32_t c, std::uint8_t nonzero_kind, std::uint32_t kind) = 0;
+};
+void hud_root_exit_00646c50(void* self, NativeStringRawPoolContext& strings,
+                          HudServices& services);
+void add_subunit_markers_00642b80(void* screen, void* unit, std::uint32_t a,
+                                std::uint32_t b, std::uint32_t c,
+                                std::int32_t flag, HudServices& services);
+void place_in_world_thunk_006dfe40(entity_mission_seg60_argon::Seg60Host& host,
+    void* self, void* hierarchy_parent, void* world_node, const void* matrix);
+void damageable_class_bind_thunk_006eb7c0(void* self,
+    const NativeDamageableClassBindingContext& context);
+void write_entity_create_thunk_00767d70(const net_cc13::EntityCreateMessage& message,
+    NativeBitCursor* cursor, const NativeBitNumericContext& numeric);
+void mothership_bind_model_00759120(void* self, cc13_big53::Big53Host& base,
+                                  const SingletonLifetimeCallbacks& callbacks);
+struct MovieState {
+    void* const volatile& player_00e18d48;
+    void* const volatile& sound_owner_00e198ac;
+    const char* const volatile* names_00e084b8;
+    const volatile float& value_00ceb364;
+};
+struct MovieServices {
+    virtual ~MovieServices() = default;
+    virtual void invalid_parameter_00bf6713() = 0;
+    virtual std::uint8_t is_playing_004f89a0(void* player) = 0;
+    virtual void play_004f8a20(void* player, const void* path, std::uint32_t mode,
+                              float value, std::uint32_t flag) = 0;
+    virtual void completion_004f8970(void* player, std::uint32_t image_callback) = 0;
+    virtual void request_fade_00a85c00(void* stream) = 0;
+};
+void play_library_movie_004ff580(void* self, MovieState& state,
+                               NativeStringRawPoolContext& strings, MovieServices& services);
+
 } // namespace bsp::oct18_tail_a
