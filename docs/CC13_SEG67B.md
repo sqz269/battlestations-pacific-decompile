@@ -190,3 +190,84 @@ Ledger-only spot checks:
 | 009DA880 / 009DB470 / 009DF8F0 | ship-AI node destroy, brain members, list head | the list head writes address 4 on a null allocation, as in the image |
 
 Ledger-only: 009C82D0 and 009D3E40 are byte-identical copies of 009A56C0 (`set_state`).
+
+### 3.7 Ship-AI destructors, the move-to refresh and the path-leg manager singleton
+
+| Address | Function | Notes |
+|---|---|---|
+| 009E5110 / 009E5130 / 009E5460 / 009E8C10 | ship-AI destructor bodies | 009E48A0 is the std::list destructor (library), bound through the host |
+| 009BEBA0 | `bot_approach_refresh_target_009beba0` | the whole body |
+| 009BD400 | `bot_path_leg_manager_get_body_009bd400` | a lazy singleton taken under the lifetime manager's critical section |
+
+009BEBA0 and the cc9 host's `moveto_refresh_009beba0` (game_hosts_units.cpp:31618):
+- The host is a partial model that carries its own labelled substitutions.
+- The +2Ch zeroing has the same polarity in both: `sq_lua_alt_3ad` is true exactly when byte +3ADh is 0.
+- The host does not apply the +28h leg-altitude override (009FC260). It keeps that as a record, as its comment states.
+
+### 3.8 The depth-charge task's archive, factory and load bodies
+
+| Address | Function | Notes |
+|---|---|---|
+| 009A35D0 | approach construct-from-stream | reads the "_targetLock" section into the target ref at +7Ch |
+| 009A5E60 / 009A5ED0 | approach / task saves | writes "_targetLock" and "_state_moveTo"; the state index goes through 00411450 |
+| 009A67C0 | task destructor body | |
+| 009A6820 / 009A69E0 | task construct-from-stream and load factory | the state index goes through 00411170 |
+| 009A6970 | `bot_task_make_depth_charge_009a6970` | allocates a 7BCh-byte task |
+| 009A19B0 | heading difference from the live plane | |
+| 0099B670 | vehicle avoidance dispatch | calls 007DF4F0 when unit+C50h is set |
+
+Ledger-only: 009A3FA0 (`depth_charge_in_release_window`) matches, including its NaN arm.
+
+### 3.9 Dogfight, drop-kamikaze and kamikaze destructor bodies, stream constructors and factories
+
+| Address | Function | Notes |
+|---|---|---|
+| 009AB370 / 009AEB80 / 009AF610 | task destructor bodies | each runs the approach block's destructor at +3F8h, then 007B4030 |
+| 009AB3D0 / 009AEAE0 | stream constructors (kinds 2 and 5) | 009F9980 runs before 00411170 here; in 009A6820 the order is reversed |
+| 009AB630 / 009AEC50 | load factories | 758h- and 74Ch-byte tasks |
+| 009AEBE0 / 009AF720 | make factories | the constructors are 009ADBF0 and 009AEEF0, called through the host |
+| 009A98F0 | dogfight aim "bored" test | +18h > +1Ch |
+| 009B1E30 | land target kind-9 test | |
+
+Ledger-only: 009AF230 is a byte-identical copy of 009A56C0 (`set_state`).
+
+### 3.10 Land, level-bomb, move-on-path, stop, immelmann and gain-altitude: teardown, stream and factories
+
+| Address | Function | Notes |
+|---|---|---|
+| 009B3F50 | land task destructor body | for a flight leader, retires the landing squadron (006C8800) before 009B2C80 |
+| 009B4120 / 009B4230 | land stream constructor and load factory | 009B3040 receives [bot+50h] rather than the bot |
+| 009B8E80 / 009B8EE0 / 009B90A0 / 009B9030 | level-bomb destructor body, stream constructor, load and make factories | |
+| 009BD9D0 / 009BDA30 / 009BDBB0 / 009BDC10 | move-on-path destroy, stream constructor and factories | the stream constructor draws -U(0, 1) into +51Ch from the shared RNG |
+| 009BADB0 | stop-task factory | a bare 3F8h-byte task of kind 0Fh |
+| 009BA960 / 009BAAB0 | immelmann and gain-altitude stream constructors | both read into the archive argument's own stack slot |
+| 009BD300 / 009BC7E0 | move-on-path approach save and stream constructor | keys "altOffset" and "travelAltOffset" |
+
+### 3.11 Level-bomb predicates and move-to state constructors
+
+| Address | Function | Notes |
+|---|---|---|
+| 009B7A80 / 009B7B10 / 009B7B40 | prepare-waiting, aim-release and aim-abort predicates | the release and abort tests read the squadron byte ctl+3AEh |
+| 009B6C10 / 009B7480 | level-bomb move-to state constructors (direct and from stream) | each makes one draw from the shared RNG; the stream form copies the reader handle and increments its count |
+
+Ledger-only: 009BC780 is spot-checked against the move-on-path model, which inlines it.
+
+### 3.12 Dive-bomb and move-to task and state bodies, the leader-velocity copy and the move-to target
+
+| Address | Function | Notes |
+|---|---|---|
+| 009C8B60 / 009C8C70 | dive-bomb task destructor body and make factory | 7E0h-byte task |
+| 009C2CA0 / 009C2D00 | dogfight move-to state constructors (direct and from stream) | vtables 00D20B24 and 00D20B0C |
+| 009C3990 / 009C3CA0 | move-to task stream constructor and load factory | draws -U(0, 1) into +54Ch from the shared RNG |
+| 009C4140 | dive-bomb attack-run state | a timed state |
+| 009C7850 | the aim-glide out-of-bombs test | !007B9320(controller, 0); this is the input behind the host's `aimglide_out_of_bombs` |
+| 009BE050 | leader-velocity copy | then 007D9C10 on unit+AB0h |
+| 009BE0F0 | move-to target from an entity | |
+
+Ledger-only: 009C9F70 is a byte-identical copy of `set_state`.
+
+### 3.13 Level-bomb and dive-bomb task constructors
+
+| Address | Function | Notes |
+|---|---|---|
+| 009B7990 / 009C7710 | level-bomb (kind 4) and dive-bomb (kind 8) task constructors | the base, the approach block at +3F8h, three vtables, then a flight leader starts in +4E8h / +4F0h and a member in +534h / +52Ch |
