@@ -6185,7 +6185,7 @@ struct GameUnitsHost::Impl {
     // runs band_007a_cc13.cpp's 007B8D10/007B8D40, 007B8DA0/007B8DC0 and 007B8DE0 over
     // a copy of the channel, and the dying-plane byte runs gameplay_seg48_cc13.cpp's
     // 007D8180. Byte and UCOMISS logic only: no evaluation width changes.
-    static constexpr bool kActuatorFlagCc13BodiesBound = false;
+    static constexpr bool kActuatorFlagCc13BodiesBound = true;  // ON 2026-10-18 (OCEAN_WAVE_FIELD 75)
     static bsp::band_007a_cc13::ActuatorChannel cc13_channel(const bsp::PlaneActuatorChannel& c) {
         return {static_cast<std::uint8_t>(c.enabled), static_cast<std::uint8_t>(c.target), c.value,
                 static_cast<std::uint8_t>(c.moving)};
