@@ -175,6 +175,13 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
+    // 009C1DC0: __thiscall(ECX = move-to approach block, [bot+50h], archive), RET 8.
+    virtual void bot_approach_move_to_construct_from_stream_009c1dc0(void* block, void* bot_owner,
+                                                                     void* archive) = 0;
+    // 00411E20: __thiscall(ECX = registry), the state-registry constructor.
+    virtual void bot_state_registry_construct_00411e20(void* registry) = 0;
+    // 007293D0: __thiscall(ECX = object), the tick-subnode owner base destructor.
+    virtual void tick_subnode_owner_destruct_base_007293d0(void* object) = 0;
     // vtable[34h](out) on a unit or entity: fills a 3-float vector, EAX = it.
     virtual float* object_vcall_34_get_vector(void* object, float* out) = 0;
     // 0042B2F0: __thiscall(ECX = vector), ST0 = its length.
@@ -689,5 +696,16 @@ void* pilot_bot_create_takeoff_task_009cff40(Cc13Seg67bHost& host, void* owner,
 // 009D5AE0 / 009D5B90: __thiscall(ECX = plan block), RET, AL.
 bool ship_ai_path_any_positive_side_ahead_009d5ae0(ShipAiPathPlanBlock& plan);
 bool ship_ai_path_any_negative_side_ahead_009d5b90(ShipAiPathPlanBlock& plan);
+// 009CA1A0 / 009CD1F0 / 009CFEE0 / 009D4DB0: __thiscall(ECX = task), RET.
+void bot_task_retreat_destruct_body_009ca1a0(Cc13Seg67bHost& host, void* task);
+void bot_task_strafe_destruct_body_009cd1f0(Cc13Seg67bHost& host, void* task);
+void bot_task_takeoff_destruct_body_009cfee0(Cc13Seg67bHost& host, void* task);
+void bot_task_torpedo_destruct_body_009d4db0(Cc13Seg67bHost& host, void* task);
+// 009F3E80: __thiscall(ECX = gun bot), RET.
+void ship_ai_gun_bot_destruct_body_009f3e80(Cc13Seg67bHost& host, void* bot);
+// 009C2EF0: __thiscall(ECX = block, bot, archive), RET 8, EAX = block.
+void* bot_task_move_to_construct_approach_block_from_stream_009c2ef0(Cc13Seg67bHost& host,
+                                                                     void* block, void* bot,
+                                                                     void* archive);
 
 }  // namespace bsp

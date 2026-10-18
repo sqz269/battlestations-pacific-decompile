@@ -282,3 +282,11 @@ Ledger-only: 009C9F70 is a byte-identical copy of `set_state`.
 | 009D5AE0 / 009D5B90 | plan walks for a node with a positive / negative side byte | reuse the 009D5930 direction rule; on NaN costs the image takes +1 and the shared rule takes -1 |
 
 Ledger-only (existing implementations, spot-checked against the bytes): 009B4400, 009C3DA0 and 009D02A0 (aim-error redraws); 009C23B0 (move-to target speed); 009CB650 and 009CB780 (strafe go-away re-plans); 009A86F0 (dogfight maneuver expiry); 009A9970 (avoid pick); 009B21D0 (park done test); 009B3C00 (land/begin final rule). The NaN-only differences in 009CB780 and 009B21D0 are recorded in their ledger rows.
+
+### 3.15 Task destructor bodies, the gun-bot destructor body and the move-to approach block
+
+| Address | Function | Notes |
+|---|---|---|
+| 009CA1A0 / 009CD1F0 / 009CFEE0 / 009D4DB0 | retreat, strafe, takeoff and torpedo task destructor bodies | the approach block's destructor on task+3F8h, then 007B4030 |
+| 009F3E80 | ship-AI gun-bot destructor body | +2260h sub-vtable 00D05704, the owned object at +2264h, 009E8C10 on +58h, then 007293D0 |
+| 009C2EF0 | move-to approach block from a stream | registers the moveto, follow and circle states in the registry at +70h |

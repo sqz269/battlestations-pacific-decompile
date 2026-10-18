@@ -2434,4 +2434,87 @@ bool ship_ai_path_any_negative_side_ahead_009d5b90(ShipAiPathPlanBlock& plan) {
     return ship_ai_path_walk_for_signed_node(plan, [](std::int8_t b) { return b < 0; });
 }
 
+// ---------------------------------------------------------------------------
+// Task destructor bodies, the gun-bot destructor body and the move-to approach
+// block from a stream.
+
+// 009CA1A0 (009CA1A0-009CA1F0), 009CD1F0 (009CD1F0-009CD240), 009CFEE0
+// (009CFEE0-009CFF30) and 009D4DB0 (009D4DB0-009D4E00): EH frame; the approach
+// block's destructor on (task ? task+3F8h : 0) (009CA1CD 009C9A80, 009CD21D
+// 009CBE90, 009CFF0D 009CF850, 009D4DDD 009D2390), then 007B4030(task)
+// (009CA1DC, 009CD22C, 009CFF1C, 009D4DEC).
+void bot_task_retreat_destruct_body_009ca1a0(Cc13Seg67bHost& host, void* task) {
+    bot_task_retreat_destruct_approach_block_009c9a80(
+        host, task != nullptr ? ptr(task, 0x3F8) : nullptr);
+    host.bot_task_destruct_base_007b4030(task);
+}
+
+void bot_task_strafe_destruct_body_009cd1f0(Cc13Seg67bHost& host, void* task) {
+    bot_task_strafe_destruct_approach_block_009cbe90(
+        host, task != nullptr ? ptr(task, 0x3F8) : nullptr);
+    host.bot_task_destruct_base_007b4030(task);
+}
+
+void bot_task_takeoff_destruct_body_009cfee0(Cc13Seg67bHost& host, void* task) {
+    bot_task_takeoff_destruct_approach_block_009cf850(
+        host, task != nullptr ? ptr(task, 0x3F8) : nullptr);
+    host.bot_task_destruct_base_007b4030(task);
+}
+
+void bot_task_torpedo_destruct_body_009d4db0(Cc13Seg67bHost& host, void* task) {
+    bot_task_torpedo_destruct_approach_block_009d2390(
+        host, task != nullptr ? ptr(task, 0x3F8) : nullptr);
+    host.bot_task_destruct_base_007b4030(task);
+}
+
+// 009F3E80 (009F3E80-009F3EF5). EH frame 00CB0CCF. [b+2260h] = 00D05704
+// (009F3EAF); [b+2264h]->vtable[8]() when set (009F3EC0); 009E8C10(b ? b+58h : 0)
+// (009F3ED2); 007293D0(b) (009F3EE1).
+void ship_ai_gun_bot_destruct_body_009f3e80(Cc13Seg67bHost& host, void* bot) {
+    void* const owned = ptr_at(bot, 0x2264);
+    at<std::uint32_t>(bot, 0x2260) = kBotTaskSubVtable30C;
+    if (owned != nullptr) host.object_vcall_08_noargs(owned);
+    ship_ai_brain_destruct_009e8c10(host, bot != nullptr ? ptr(bot, 0x58) : nullptr);
+    host.tick_subnode_owner_destruct_base_007293d0(bot);
+}
+
+namespace {
+constexpr std::uint32_t kMoveToBlockVtable_00d20b48 = 0x00D20B48u;
+constexpr std::uint32_t kMoveToRegistryVtable_00d20b44 = 0x00D20B44u;
+constexpr std::uint32_t kMoveToStateVtable_00d20a80 = 0x00D20A80u;
+constexpr std::uint32_t kStrMoveToMoveTo_00d20998 = 0x00D20998u;  // "moveto (moveto)"
+constexpr std::uint32_t kStrMoveToFollow_00d20988 = 0x00D20988u;  // "follow (moveto)"
+constexpr std::uint32_t kStrMoveToCircle_00d20978 = 0x00D20978u;  // "circle (moveto)"
+}  // namespace
+
+// 009C2EF0 (009C2EF0-009C2FD2). EH frame 00CAF93D. 009C1DC0(ECX = block,
+// [bot+50h], archive) (009C2F1F); 00411E20(block+70h) (009C2F2F); [block] =
+// 00D20B48, [block+70h] = 00D20B44 (009C2F3A, 009C2F40); the inline state at
+// +84h: +88h = block, +90h/+94h/+98h/+8Ch = 0, [+84h] = 00D20A80 (009C2F46-
+// 009C2F55); 009C2980(ECX = block+9Ch, block, [00CE3D08] 100.0) (009C2F73);
+// 009C25D0(ECX = block+134h, block) (009C2F84); 00411E70(block+70h, name, state)
+// for "moveto (moveto)" +84h, "follow (moveto)" +9Ch and "circle (moveto)" +134h
+// (009C2F96, 009C2FA3, 009C2FB6). Returns block.
+void* bot_task_move_to_construct_approach_block_from_stream_009c2ef0(Cc13Seg67bHost& host,
+                                                                     void* block, void* bot,
+                                                                     void* archive) {
+    host.bot_approach_move_to_construct_from_stream_009c1dc0(block, ptr_at(bot, 0x50), archive);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0x70));
+    at<std::uint32_t>(block, 0x00) = kMoveToBlockVtable_00d20b48;
+    at<std::uint32_t>(block, 0x70) = kMoveToRegistryVtable_00d20b44;
+    at<std::uintptr_t>(block, 0x88) = reinterpret_cast<std::uintptr_t>(block);
+    at<std::uint32_t>(block, 0x90) = 0;
+    at<std::uint32_t>(block, 0x94) = 0;
+    at<std::uint32_t>(block, 0x98) = 0;
+    at<std::uint32_t>(block, 0x8C) = 0;
+    at<std::uint32_t>(block, 0x84) = kMoveToStateVtable_00d20a80;
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x9C), block, kHundred_00ce3d08);
+    bot_state_move_to_circle_construct_009c25d0(host, ptr(block, 0x134), block);
+    host.state_registry_add_00411e70(ptr(block, 0x70), kStrMoveToMoveTo_00d20998, ptr(block, 0x84));
+    host.state_registry_add_00411e70(ptr(block, 0x70), kStrMoveToFollow_00d20988, ptr(block, 0x9C));
+    host.state_registry_add_00411e70(ptr(block, 0x70), kStrMoveToCircle_00d20978,
+                                     ptr(block, 0x134));
+    return block;
+}
+
 }  // namespace bsp
