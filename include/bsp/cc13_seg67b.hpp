@@ -613,6 +613,11 @@ public:
     // law is plane_min_control_speed_007c4810 (dive_bomb_aimdive_tail.hpp): tuning+28Ch
     // x class+184h StallSpd, rounded to float.
     virtual float plane_class_min_control_speed_007c4810(void* plane_class) = 0;
+    // path->vtable[8](out, index): __thiscall(ECX = command path), RET 8; writes the
+    // index's point to out (009DB060 then zeroes out[1]).
+    virtual void path_vcall_08_point(void* path, float* out, std::int32_t index) = 0;
+    // path->vtable[0Ch](): __thiscall(ECX = command path), RET, EAX = the point count.
+    virtual std::int32_t path_vcall_0c_count(void* path) = 0;
 };
 
 // ---- the bot-task factory list (00F8A314) ----
@@ -1287,6 +1292,11 @@ void* bot_task_retreat_target_position_009ca0c0(void* task, void* out);
 void* entity_as_kind41_009ca480(Cc13Seg67bHost& host, void* entity);
 // 009CFA10: __fastcall(ECX = takeoff task), RET.
 void bot_task_takeoff_debug_draw_009cfa10(Cc13Seg67bHost& host, void* task);
+// 009A5AF0 / 009D4230: __fastcall(ECX = task), RET.
+void bot_task_depth_charge_debug_draw_009a5af0(Cc13Seg67bHost& host, void* task);
+void bot_task_torpedo_debug_draw_009d4230(Cc13Seg67bHost& host, void* task);
+// 009DB060: __thiscall(ECX = this; two stack arguments, unread), RET 8.
+void ship_ai_debug_draw_command_path_009db060(Cc13Seg67bHost& host, void* self);
 
 // ---- medium rows, batch 2 (docs/CC13_SEG67B.md 3.47) ----
 // 009B94E0: __thiscall(ECX = split s task; byte wrap), RET 4.

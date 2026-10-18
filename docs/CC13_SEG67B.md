@@ -903,17 +903,17 @@ Two new bodies, both read whole from the disk bytes. Neither is hosted (git grep
 
 No new body. One ledger-only row:
 - **009C3650**, the kind-7 moveto task's vt+54h activation. Read whole (009C3650-009C394A) against three parts of `game_hosts_units.cpp`:
-  - the activation block (~32000);
-  - `moveto_refresh_009beba0` (~32053);
+  - the activation block (~32062);
+  - `moveto_refresh_009beba0` (~32115);
   - that refresh's ordnance arm through `moveonpath_cruise_profile_009bd6e0`.
 - Draws: two stream-1 draws, in order. +460h = U(tuning+368h, +36Ch) at 009C367C, then +424h = U(0, tuning+364h) at 009C36A3. The host replaces both with keyed per-unit stand-ins (`#mt68`, `#mt424`), ON under `kMoveToActivationDrawsBound`.
 - Arms: the arms and their predicates equal 009BD6E0's. The ordnance arms add 0.6 x TravelAltRandom (qword [00CEFF98]). The fighter fallback (009C38FD, 009C3936) does not add it. 0047B850 and 0047B880 were read and match `park_bomber_class_0047b850` and its negation.
 - Squadron write: the image skips the squadron cruise-altitude block (ctl = (task+404h)+37Ch) when ctl+38Dh is set. Otherwise it writes ctl+394h and ctl+3ADh only when 0 > ctl+380h and ctl+3A9h is clear, and it clears ctl+3A9h. The host matches this under `kSquadronTravelAltBound` and `kTaskProfileActivationOnlyBound`.
-- LOW, comment only: the `moveto_refresh_009beba0` header (~32048) says the fighter arm adds 0.6 x TravelAltRandom at 009C38FD; it does not. The host's default cruise keeps that term only while the plane globals are unloaded. With them loaded, the ON ordnance arm replaces it.
+- LOW, comment only: the `moveto_refresh_009beba0` header (~32103) says the fighter arm adds 0.6 x TravelAltRandom at 009C38FD; it does not. The host's default cruise keeps that term only while the plane globals are unloaded. With them loaded, the ON ordnance arm replaces it.
 
 ### 3.61 Batch 15: the flikflak tick 009B99E0 and two hook fixes (packet cc13-seg67C)
 
-- **009B99E0**, ledger-only. Read whole (009B99E0-009B9AE5) against the kind-2 arm of `st_manoeuvre_tick` (~24791). That arm runs under `kStrafeBreakoffBound`, which is ON. The host matches field for field:
+- **009B99E0**, ledger-only. Read whole (009B99E0-009B9AE5) against the kind-2 arm of `st_manoeuvre_tick` (~24853). That arm runs under `kStrafeBreakoffBound`, which is ON. The host matches field for field:
   - The timer runs down. The image redraws when the timer is ordered and not above zero, and a NaN timer is kept, as in the host.
   - Each redraw is one stream-1 U(0, 1) at 009B9A14, then (U + 2.0) + t, and the side byte is toggled. The host takes a keyed stand-in (`#stff_timer`) instead.
   - The bank target is TurnRoll x ±1.0. The pitch target is cls+1ECh. The demands are fixed.
@@ -921,6 +921,25 @@ No new body. One ledger-only row:
 - Hooks for 009BA2F0 (batch 13):
   - The speed now goes through the existing `entity_vcall_38_float` (slot +38h, 007B8E60). The duplicate `unit_vcall_38_speed` hook is dropped.
   - `plane_class_min_control_speed_007c4810` now cites its law, `plane_min_control_speed_007c4810`.
+
+### 3.62 Batch 16: the debug draws (packet cc13-seg67C)
+
+The byte twin scan masks absolute addresses only, so it misses bodies whose sole difference is their colour statics. A second scan (local/seg67C_twins_static.py) also masks the 00F8xxxx statics and local branch targets. Every listing was read whole. All five are presentation only, and none takes a draw.
+- **009A9E10** (dogfight) and **009CC8F0** (strafe), ledger-only. Each is instruction for instruction `bot_task_rocket_debug_draw_007b7290` (cc13_seg53U.cpp), 328 instructions, with only the colour statics moved. The colour values are the same. That body hard-codes 007B7290's own statics, so binding it at these addresses would need those static addresses as parameters. The file belongs to another lane.
+- **009A5AF0** `bot_task_depth_charge_debug_draw_009a5af0`. Three spheres:
+  - red at task+4E8h;
+  - white at the approach target point;
+  - green at the target's x and z, with y = task+434h + task+42Ch.
+- **009D4230** `bot_task_torpedo_debug_draw_009d4230`:
+  - A sphere at the approach target point.
+  - When task+4C4h is set, a 36-spoke fan around that unit at y = 20, one spoke every pi/18. The spoke whose index equals task+45Ch is 1000 long and the others are 700 (the compare at 009D439A is against the loop counter). Each spoke is green when its byte at task+428h+i is set and red otherwise; spoke 0 starts white.
+  - A 50-unit red heading line from the unit at task+3FCh along task+458h.
+  - The bearing step uses the widened constants [00CE3830] and [00CE3828]; FCOS/FSIN precision is noted as an uncertainty.
+- **009DB060** `ship_ai_debug_draw_command_path_009db060`:
+  - A blue-to-yellow line from the ship to the current command-path point.
+  - Yellow segments along the path from that index to the end.
+  - Every point is flattened to y = 0.
+  - New hooks: `path_vcall_08_point` and `path_vcall_0c_count`.
 
 ## 4. Ledger-only records (packet cc13-seg67C)
 
@@ -1069,5 +1088,7 @@ No new body. One ledger-only row:
 | 009C5180 | `run_dive_bomb_aimglide_tick_009c5180` (game_hosts_units.cpp ~28827) | matches; the draw is a keyed per-unit stand-in (ON); float lead margin in the image |
 | 009C58D0 | `run_dive_bomb_aimdive_tick_009c58d0` (game_hosts_units.cpp ~29350) | matches (release and constants); keyed stand-in draw (ON); LOW NaN rearm arm |
 | 009C62B0 | `run_dive_bomb_flyabove_tick_009c62b0` (game_hosts_units.cpp ~28959) | PARTIAL: exact 0.2 at 009C6BBE (near_field_probe.cpp) |
-| 009C3650 | activation block and `moveto_refresh_009beba0` (game_hosts_units.cpp ~32000, ~32053) | matches (keyed stand-in draws, ON); LOW stale fighter-arm comment |
-| 009B99E0 | kind-2 arm of `st_manoeuvre_tick` (game_hosts_units.cpp ~24791) | matches (keyed stand-in draw, ON) |
+| 009C3650 | activation block and `moveto_refresh_009beba0` (game_hosts_units.cpp ~32062, ~32115) | matches (keyed stand-in draws, ON); LOW stale fighter-arm comment |
+| 009B99E0 | kind-2 arm of `st_manoeuvre_tick` (game_hosts_units.cpp ~24853) | matches (keyed stand-in draw, ON) |
+| 009A9E10 | twin of `bot_task_rocket_debug_draw_007b7290` (cc13_seg53U.cpp) | instruction-equal; only the colour statics differ |
+| 009CC8F0 | twin of `bot_task_rocket_debug_draw_007b7290` (cc13_seg53U.cpp) | instruction-equal; only the colour statics differ |

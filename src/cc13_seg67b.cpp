@@ -7178,4 +7178,150 @@ void bot_task_takeoff_debug_draw_009cfa10(Cc13Seg67bHost& host, void* task) {
     }
 }
 
+// ---------------------------------------------------------------------------
+// Debug draws, batch 16 (docs 3.62). The colour records are lazily initialised statics
+// (guard test emitted twice); their values are passed here as equal local constants.
+// 009A9E10 and 009CC8F0 are not bodies here: both equal 007B7290
+// (bot_task_rocket_debug_draw_007b7290, cc13_seg53U.cpp) with only the 00F8xxxx
+// statics moved.
+// ---------------------------------------------------------------------------
+
+namespace {
+
+constexpr float kDebugRed[4] = {1.0f, 0.0f, 0.0f, 1.0f};
+constexpr float kDebugGreen[4] = {0.0f, 1.0f, 0.0f, 1.0f};
+constexpr float kDebugWhite[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+constexpr float kDebugBlue[4] = {0.0f, 0.0f, 1.0f, 1.0f};
+constexpr float kDebugYellow[4] = {1.0f, 1.0f, 0.0f, 1.0f};
+constexpr float kDebugMarkerRadius_00ce38b8 = 10.0f;
+constexpr float kTorpedoFanY_00ce3930 = 20.0f;
+constexpr float kTorpedoFanRadiusLong_00ce3804 = 1000.0f;
+constexpr float kTorpedoFanRadius_00d1f980 = 700.0f;
+constexpr double kTorpedoFanPi_00ce3d28 = 3.1415927410125732;      // widened float pi
+constexpr double kTorpedoFanSectors_00cee930 = 18.0;
+constexpr double kTorpedoFanHalfPi_00ce3830 = 1.5707963705062866;  // widened float pi/2
+constexpr double kTorpedoFanTwoPi_00ce3828 = 6.2831854820251465;   // widened float 2pi
+constexpr float kTorpedoHeadingLength_00ce3938 = 50.0f;
+
+// The bearing-to-angle step both 009D4230 loops use: a = float(pi/2 - a); 0 > a (FLDZ,
+// FCOMPI, JBE: unordered keeps a) -> a = float(a + 2pi).
+float debug_bearing_angle(float a) {
+    a = static_cast<float>(kTorpedoFanHalfPi_00ce3830 - static_cast<double>(a));  // DC 2D FSUBR
+    if (0.0f > a) a = static_cast<float>(static_cast<double>(a) + kTorpedoFanTwoPi_00ce3828);
+    return a;
+}
+
+void* refreshed_entity(Cc13Seg67bHost& host, void* e) {
+    if (at<std::uint8_t>(e, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(e);
+    return e;
+}
+
+}  // namespace
+
+// 009A5AF0 (009A5AF0-009A5CF4), depth-charge task slot +4h (00D1F73C): 0099B6E0; a red
+// marker at task+4E8h; a white marker at (task+3F8h)->vtable[0](&local); a green marker
+// at the target's (task+3FCh, pose refreshed at 009A5C2F) x and z with y = task+434h +
+// task+42Ch (009A5C3C FLD [EDI+3Ch], FADD [EDI+34h], EDI = task+3F8h). The target's
+// +100h is stored and then overwritten (dead). Every sphere: radius 10.0 [00CE38B8],
+// the same colour in EDX and on the stack, detailed byte 0.
+void bot_task_depth_charge_debug_draw_009a5af0(Cc13Seg67bHost& host, void* task) {
+    host.bot_task_debug_draw_base_0099b6e0(task);                                 // 009A5AF7
+    host.wire_sphere_00860be0(static_cast<const float*>(ptr(task, 0x4E8)), kDebugRed,
+                              kDebugMarkerRadius_00ce38b8, kDebugRed, 0);         // 009A5B80
+    float point[3] = {};
+    const float* const aim = host.approach_vcall_00_target_point(ptr(task, 0x3F8), point);
+    host.wire_sphere_00860be0(aim, kDebugWhite, kDebugMarkerRadius_00ce38b8, kDebugWhite,
+                              0);                                                 // 009A5C19
+    void* const t = refreshed_entity(host, ptr_at(task, 0x3FC));
+    const float marker[3] = {at<float>(t, 0xFC), at<float>(task, 0x434) + at<float>(task, 0x42C),
+                             at<float>(t, 0x104)};
+    host.wire_sphere_00860be0(marker, kDebugGreen, kDebugMarkerRadius_00ce38b8, kDebugGreen,
+                              0);                                                 // 009A5CEC
+}
+
+// 009D4230 (009D4230-009D4843), torpedo task slot +4h (00D213CC). 0099B6E0; a sphere at
+// (task+3F8h)->vtable[0](&local), EDX green, stack white, radius 10.0, detailed 0. With
+// task+4C4h null it returns there (009D42E6). Otherwise a fan of 36 spokes from C =
+// (u.x, 20.0 [00CE3930], u.z), u = task+4C4h with its pose refreshed:
+//   a_i = float(float(i x pi) / 18.0) (FILD, FMUL qword [00CE3D28], FDIV qword [00CEE930]),
+//   then the bearing step; r = task+45Ch == i ? 1000.0 [00CE3804] : 700.0 [00D1F980];
+//   P_i = (C.x + cos(a_i) r, 20.0, C.z + r sin(a_i)); line C -> P_i (0085F990, ECX = C,
+//   EDX = P_i). Spoke 0: colour0 white, colour1 = byte task+428h ? green : red. Spokes
+//   1..35: both colours = byte task+428h+i ? green : red.
+// Then a heading line from the unit at task+3FCh (pose refreshed): h = the bearing step of
+// task+458h; E = (p.x + cos(h) x 50.0, p.y + 0.0 x 50.0, p.z + 50.0 x sin(h)) ([00CE3938],
+// 009D4744 DC C9); line p -> E, red and red.
+// UNCERTAINTY: FCOS/FSIN run at extended precision (precision control does not apply);
+// std::cos/std::sin in double then the float store can differ by an ulp in rare cases.
+// The FMUL/FDIV of a_i are modelled at 24 bits; 53-bit is the alternative.
+void bot_task_torpedo_debug_draw_009d4230(Cc13Seg67bHost& host, void* task) {
+    host.bot_task_debug_draw_base_0099b6e0(task);                                 // 009D4239
+    float point[3] = {};
+    const float* const aim = host.approach_vcall_00_target_point(ptr(task, 0x3F8), point);
+    host.wire_sphere_00860be0(aim, kDebugGreen, kDebugMarkerRadius_00ce38b8, kDebugWhite,
+                              0);                                                 // 009D42D9
+    void* const u = ptr_at(task, 0x4C4);
+    if (u == nullptr) return;                                                     // 009D42E6
+    refreshed_entity(host, u);
+    const float c[3] = {at<float>(u, 0xFC), kTorpedoFanY_00ce3930, at<float>(u, 0x104)};
+    for (std::int32_t i = 0; i < 36; ++i) {
+        const float step = static_cast<float>(static_cast<float>(i) * kTorpedoFanPi_00ce3d28);
+        const float a = debug_bearing_angle(
+            static_cast<float>(static_cast<double>(step) / kTorpedoFanSectors_00cee930));
+        const float ca = static_cast<float>(std::cos(static_cast<double>(a)));    // 009D437E
+        const float sa = static_cast<float>(std::sin(static_cast<double>(a)));    // 009D4394
+        // 009D439A CMP [EBP+45Ch], EBX: EBX is i, so the spoke whose index equals
+        // task+45Ch is the long one.
+        const float r = at<std::int32_t>(task, 0x45C) == i ? kTorpedoFanRadiusLong_00ce3804
+                                                           : kTorpedoFanRadius_00d1f980;
+        const float tip[3] = {ca * r + c[0], kTorpedoFanY_00ce3930, r * sa + c[2]};
+        const bool set = at<std::uint8_t>(task, 0x428 + static_cast<std::size_t>(i)) != 0;
+        const float* const sector = set ? kDebugGreen : kDebugRed;
+        host.line_rgba_floats_0085f990(c, tip, i == 0 ? kDebugWhite : sector, sector);
+    }
+    void* const unit = refreshed_entity(host, ptr_at(task, 0x3FC));
+    const float p[3] = {at<float>(unit, 0xFC), at<float>(unit, 0x100), at<float>(unit, 0x104)};
+    const float h = debug_bearing_angle(at<float>(task, 0x458));
+    const float ch = static_cast<float>(std::cos(static_cast<double>(h)));        // 009D471B
+    const float sh = static_cast<float>(std::sin(static_cast<double>(h)));        // 009D472D
+    const float end[3] = {ch * kTorpedoHeadingLength_00ce3938 + p[0],
+                          0.0f * kTorpedoHeadingLength_00ce3938 + p[1],
+                          kTorpedoHeadingLength_00ce3938 * sh + p[2]};
+    host.line_rgba_floats_0085f990(p, end, kDebugRed, kDebugRed);                 // 009D4837
+}
+
+// 009DB060 (009DB060-009DB2A8), the ship-AI slot at 00D216A0; __thiscall(ECX = this; two
+// stack arguments, unread), RET 8. owner = this+4h; cursor = 0071BFF0(owner+AB8h, 0);
+// path = cursor+4h; null -> return (NEG/SBB/TEST 00E19B95). A second 0071BFF0 call gives
+// the index k = cursor+8h. q = path->vtable[8](&q, k) with q.y = 0; a line from the unit
+// at owner+AA8h (pose refreshed, its +FCh position) to q, colour0 blue, colour1 yellow.
+// Then while k < path->vtable[0Ch]() - 1 (signed, re-read each pass): a = point k, b =
+// point k + 1, each with y = 0; line a -> b, yellow and yellow.
+void ship_ai_debug_draw_command_path_009db060(Cc13Seg67bHost& host, void* self) {
+    void* const owner = ptr_at(self, 0x4);
+    void* const cursor = host.weapon_director_command_path_cursor_0071bff0(
+        ptr_at(owner, 0xAB8), 0);                                                 // 009DB074
+    // EDI = cursor+4h; the path pointer is re-read from it before every virtual call.
+    if (ptr_at(cursor, 0x4) == nullptr) return;                                   // 009DB08A
+    void* const cursor2 = host.weapon_director_command_path_cursor_0071bff0(
+        ptr_at(owner, 0xAB8), 0);                                                 // 009DB09B
+    std::int32_t k = at<std::int32_t>(cursor2, 0x8);
+    float q[3] = {};
+    host.path_vcall_08_point(ptr_at(cursor, 0x4), q, k);                          // 009DB0B0
+    q[1] = 0.0f;
+    void* const unit = refreshed_entity(host, ptr_at(owner, 0xAA8));
+    host.line_rgba_floats_0085f990(static_cast<const float*>(ptr(unit, 0xFC)), q, kDebugBlue,
+                                   kDebugYellow);                                 // 009DB196
+    while (k < host.path_vcall_0c_count(ptr_at(cursor, 0x4)) - 1) {
+        float a[3] = {};
+        host.path_vcall_08_point(ptr_at(cursor, 0x4), a, k);                      // 009DB1BD
+        a[1] = 0.0f;
+        ++k;
+        float b[3] = {};
+        host.path_vcall_08_point(ptr_at(cursor, 0x4), b, k);                      // 009DB1D8
+        b[1] = 0.0f;
+        host.line_rgba_floats_0085f990(a, b, kDebugYellow, kDebugYellow);         // 009DB288
+    }
+}
+
 }  // namespace bsp
