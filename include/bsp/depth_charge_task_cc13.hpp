@@ -52,7 +52,7 @@ struct PilotBotParameters;
 // depthcharge (00E08F38) flies this task. It must land together with the
 // chooser feed of has_depth_charge_ordnance (007EDA10 -> 007B94F0, kind 2Ch),
 // never before or after it. Committed OFF.
-inline constexpr bool kDepthChargeTaskBound = false;   // OFF: docs/CC13_DEPTH_CHARGE_TASK.md 7
+inline constexpr bool kDepthChargeTaskBound = true;   // ON: SQUADRON_LAND_TASK 5ie (JM06 / USN21 pairs)
 
 namespace depth_charge {
 inline constexpr std::uint32_t kCommandClass = 0x00E08F38u;   // 009A54D0, slot +3Ch

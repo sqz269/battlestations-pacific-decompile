@@ -135,6 +135,14 @@ inline constexpr bool kTakeoffTaskHeadBound = true;
 // does not lift off: a state-4 plane off the runway rectangle free-falls under
 // 007DCCF0, which is the image's law (5bq), not a host failure (5bp corrected).
 inline constexpr bool kGroundRetakeoffBound = true;
+// Packet cc9_l66_putto (docs/CC13_VERIFY4.md R4/R5, CC13_VERIFY12.md R8). The
+// PutTo / PutFormationTo family: the heading vtable[11Ch] (008196B0 ->
+// 009584D0's RotationY(-heading) at 0047F200), the reshape 0070EFD0(shape) on
+// the unit's group, and 008193A0's formation arms (a follower asked for the
+// origin is placed at its station and turned along the leader's wake; a leader
+// re-places every other member at the origin, 00819672). False: the heading and
+// the reshape are records, a follower is never placed and a leader moves alone.
+inline constexpr bool kPutToFormationBound = false;
 
 // Packet cc9_throttle_dead_band (docs/SQUADRON_LAND_TASK.md 5bs). True: 0099D300's
 // demand arm skips the throttle increment (0099DB1F-0099DB56 JBE 0099DBCB) when
@@ -1236,6 +1244,23 @@ public:
     // the motion state itself here, and vtable[0D8h] (00955970, the scene-node
     // matrix refresh) and the 1.25 at unit+0BCCh have no host counterpart.
     bool place_at_world_position_008193a0(std::size_t index, const float pos[3]);
+    // Packet cc9_l66_putto (kPutToFormationBound). 008196B0, the unit vtable slot
+    // +11Ch (BSP_UnitInstance_BroadcastRelocate, single player): 009584D0 sets the
+    // rotation to RotationY(-0.0 - heading) (0047F200 -> 00B646E0), the pose and
+    // the wake ring are refreshed (00818EA0), and a group leader re-places every
+    // other member at the origin through vtable[118h] (its station). `heading` is
+    // the image argument; the host heading atan2(row2.x, row2.z) is its negation.
+    // LABELLED: the 1.25 at +BCCh and vtable[0D8h] have no host counterpart, and
+    // the rotation drops any pitch or roll as 0047F200 does.
+    bool set_heading_008196b0(std::size_t index, float heading);
+    // 00819672-00819694 / 0081968F: the leader's loop, vtable[118h](&00F87574) on
+    // every other member of its group (0070D060 over group+4F8h).
+    void relocate_formation_members_00819672(std::size_t leader);
+    // Packet cc9_l66_putto. 0070EFD0(shape) on [unit+284h] (008AA4E0): column 0 of
+    // every member record from the shape's table (ship_ai_formation_reshape),
+    // ship_dist = ShipGlobals.Formacio.FormationShipDist (settings+42Ch).
+    // Answers the records written, 0 when the unit has no group.
+    std::size_t reshape_formation_0070efd0(std::size_t index, int shape);
     // Packet cc9_squadron_member_placement. 007F2920, which the squadron's PutTo
     // (vt[118h] 007F2E20 -> 007F2E8F) runs after the position set: every member
     // but the leader goes to its 007F23A0 station with the leader's rotation and
