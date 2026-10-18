@@ -209,6 +209,125 @@ Notes:
   - Only a type with +39h clear (not Defence, per CC13_SOLDIER_TRAFFIC.md) forwards its +1Ch
     (Damage) through 00480C20.
 
+## Batch 6
+
+| Address | Name | ABI | Notes |
+| --- | --- | --- | --- |
+| 004A0D20 | BSP_LandingTroop_DisembarkSoldiers (new name) | thiscall(troop) RET | the landing-troop update behind cc13_left8b's `landing_troop_update_004a0d20` hook: one list node and path component per soldier of each troop member, with points from the +DCh unit's frame and the troop's two paths |
+
+Notes:
+
+- **004A0D20.**
+  - The whole listing was read (2199 instructions, frame SUB 4CCh). B is ESP after PUSH EDI,
+    and every `[ESP+n]` was mapped through the pushes in flight. The only caller is
+    004A2FC0 (cc13_left8b_seg8.cpp, through its hook).
+  - The troop's members (+48h array, +4Ch count) are the soldier-type records that
+    00428420's list nodes point at (+8h). Their group is 2 when +38h is clear, else
+    (+39h != 0).
+  - Group counts ([B+88h]) are `_ftol2(int(+2Ch) * +14h + count)`, gated by +BCh, +C8h,
+    +D4h and the [+D8h]+10h / +14h counters.
+    - When the gate fails for a +38h member, the image stores 0 at counts[member index],
+      not counts[group]. Members 3.. therefore write the frame dwords after the array.
+    - Each of those dwords is rewritten before it is read. The C++ gives the array 13
+      spare dwords for these stores.
+  - With no total, the +B4h list nodes get +38h = 10.0 and +34h = 6. With +DCh set, the
+    +38h/+39h counts are re-derived without the running sum.
+  - The group weight sums (+14h) are replaced by stream-0 draws in [0, sum]. A member is
+    processed when its sum minus its weight drops below zero (COMISS/JBE: a NaN skips).
+  - Paths and the "loose" flag:
+    - Path a is [+D8h]+0 (+8 for a +39h member) plus 1E4h. Path b is [+D8h]+4 (+Ch when
+      +39h and set) plus 1E4h.
+    - The flag [B+1Bh] is clear only when path b has exactly 4 points whose ends are at
+      least 1e-10 squared and under 10.0 apart.
+  - One 40h-byte matrix is built per point of path a. Its rows 3 and 2 are sampled at the
+    knot times by 007B03C0. A knot at or past the end time +1Ch is moved to end - 0.01.
+  - Straight path b (flag clear):
+    - Path b's first point is appended as point 4, then its points are rotated so the one
+      farthest from path a's end comes first (007AD180).
+    - The farthest-point search reads the stack array [B+358h] before this member writes
+      it. That is the previous member's rotation, or uninitialised stack on the first; it
+      is zero here.
+    - The array holds 5 entries before the 007AF800 buffer at [B+3A0h]. Paths with more
+      points would overrun it in the image (not modelled). A zero divisor in the
+      `k % (count - 1)` IDIV faults in the image.
+    - The longer of the first two spans is u, the other v. The spacing is |u| / (|u| / |v|).
+  - Loose path b (flag set): u is the normalised last span of path b. The spacing is the
+    knot time of its second-last point over (+2Ch + 1) (FIDIV).
+  - Grid defaults: base -0.5 / -0.2 and step 0.5 / 0.3. With the +DCh unit, vtable +24Ch
+    points 1 and 0 give the base and the steps:
+    - x step: dx / +34h.
+    - z step: dz / ((count / +14h) / ((+30h + +34h) / 2)).
+    - Each base moves half a step (DC C9 at 004A1ADE).
+  - Per soldier (while +2Ch and the group count last):
+    - Lateral and speed draws, then a 48h node through 00488E30, _Incsize (00490130) and
+      the relink.
+    - Node fields: +1Ch slot, +24h row, +18h a new 2Ch-byte 007B28C0 component.
+    - Then one point per path-a point, through 007AD330:
+      - Two grid points in the +DCh unit's cached world matrix (rebuilt as in 00428420);
+        the second is 3.0 + |z offset| further.
+      - Or the matrix with row 1 replaced by the global at 00F8758C, orthonormalised
+        (0085DAD0). For a +39h member it is preceded by a point 2.0 back along path a's
+        first span; otherwise it is jittered along row 0 by (draw(0, 0.2) + 0.9) * lateral.
+      - Both are projected through troop+58h (00B62D10, divided by w).
+    - The step counter advances along u / spacing.
+    - Straight paths add an offset point: v scaled by draws over +20h/+24h, plus u steps,
+      added to the rotated first point.
+    - Node +3Ch is a draw over a random +8h entry's (+8h, +4h). Node +40h is the start time
+      (plus the slot's previous start after the first row), stored to the slot array by
+      CVTTSS2SI.
+    - The row length is redrawn by `_ftol2(draw(+30h, +34h + 1))`. The group count drops
+      by +14h (CVTTSS2SI).
+  - Loose paths then sort the list by value +8h (0049F6A0 with predicate 0047B9F0, passed
+    as its address).
+    - Each state-0 node gets a frame sampled along path b at `r * spacing + draw`. Past the
+      end time +1Ch, the time is end - draw (FCOMI/JBE: a NaN takes that arm).
+    - The frame is orthonormalised and jittered along row 0, plus 2u for a +38h-clear
+      member.
+    - Two points are added (pos + 2u, then pos), the direction goes to +28h..+30h, and
+      the knots are derived.
+  - Node value block [B+1B4h]: dwords +10h and +34h are not written before the copy into
+    the node.
+    - They hold the identity matrix that a previous loose member wrote there, or stale
+      stack on the first (zero here).
+    - Node +3Ch keeps that dword when the member's entry count +0Ch is zero.
+  - x87: every DE/DC operand order was read from the bytes (local check of all register-form
+    FSUB/FDIV; DC C9 at 004A1ADE, 004A2386, 004A2801 and 004A2E08). Modelled at 24 bits.
+    The thread that runs 004A2FC0 is not established, so 53-bit is an open uncertainty.
+  - The 007B28C0 constructor runs in EH state 0; if it throws, the image frees the
+    2Ch-byte block. That unwind is not modelled.
+
+## Batch 7
+
+| Address | Name | ABI | Notes |
+| --- | --- | --- | --- |
+| 0059D4A0 | BSP_HudMapIcon_PlaceWidget (cc13-ng2 name kept) | thiscall(screen; icon) RET 4 | places the icon's first widget on the HUD map by its anchor mode and corner; the body behind cc13_big5ad's `hud_map_icon_place_widget_0059d4a0` hook (the call sites 005B040C and 005B0420 lie inside 005ADDA0) |
+
+Notes:
+
+- **0059D4A0.**
+  - The depth is -2.0 when icon+28h is set, else -12.0 ([00CE7D7C] / [00CE781C]). It is kept
+    in the argument slot [B+40h].
+  - The widget is the checked front() of the vector +ECh/+F0h. 00BF6713 is called when it
+    is null or empty, before 00AA6740 and again before 00AA8240.
+  - Anchor mode +11Ch:
+    - 0: x = (+554h - +54Ch) / +30h + [00E08890], y = (+550h - +558h) / +34h + [00E08894].
+    - 1: the unit (+4h) position through vtable +C4h, read twice. y uses the first call's
+      z, x the second call's x.
+    - Any other value leaves the position [B+18h..B+20h] unset. The image applies the corner
+      offsets to stale stack (what earlier calls at the same depth in 005ADDA0 left there)
+      and passes it to 00AA8240. The C++ starts from zero.
+  - Corner +120h, by the jump table at 0059D6BC (unsigned; above 3 skips the offsets and the
+    depth step):
+    - 0: x + 0.02, y + 0.03.
+    - 1: x - (w + 0.02), y + 0.03.
+    - 2: x + 0.02, y - (h + 0.03).
+    - 3: x - (w + 0.02), y - (h + 0.03).
+    - Then z + 0.0 (the double [00D7A258], which turns -0.0 into +0.0).
+  - The pads are the doubles [00D7A2F8] and [00CEB690], which are 0.02f and 0.03f widened.
+    w and h are 00AA6740's size.
+  - x87: memory operands only, with no register DE/DC forms. Each sum is rounded at its
+    FSTP. Modelled at 24 bits; the caller is a UI path.
+
 ## Recorded, not reconstructed
 
 - **004A9BD0 BSP_PlanePartClasses_LoadGlobals.**

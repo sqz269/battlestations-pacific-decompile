@@ -384,6 +384,70 @@ public:
     // RET 0Ch.
     virtual void soldier_start_animation_004b0f80(void* soldier, const void* anim, std::int32_t random_start,
                                                   std::int32_t arg) = 0;
+
+    // ---- 004A0D20 (paths: point vector begin +8h / end +Ch, dword entries; end time +1Ch; the
+    //      knots-derived byte +18h; list nodes 48h: next +0, prev +4, value +8..+47h) ----
+    // 00BD2F10 BSP_Random_UniformFloatRange: __thiscall(ECX = stream; float lo, float hi), RET 8;
+    // ST0. Every draw here is stream 0.
+    virtual float random_uniform_float_00bd2f10(std::uint32_t stream, float lo, float hi) = 0;
+    // 00BF55BE (thunk to operator new, used for new[]) and 00BF681B operator new: cdecl(size);
+    // 00BF6989 (thunk to free): cdecl(pointer).
+    virtual void* crt_operator_new_00bf55be(std::uint32_t size) = 0;
+    virtual void* crt_operator_new_00bf681b(std::uint32_t size) = 0;
+    virtual void crt_free_00bf6989(void* p) = 0;
+    // 00415870 STL_Vector_Size: __fastcall(ECX = path); EAX = (end - begin) >> 2, 0 for a null begin.
+    virtual std::int32_t path_point_count_00415870(void* path) = 0;
+    // 007B05E0: __thiscall(ECX = path; index), RET 4; ST0 = the float at entry[index] + 18h
+    // (00BF6713 when index is out of range).
+    virtual float path_knot_time_007b05e0(void* path, std::uint32_t index) = 0;
+    // 007B03C0 BSP_CameraPath_SampleWorld: __thiscall(ECX = path; float t, float* position,
+    // float* direction, int 1), RET 10h.
+    virtual void camera_path_sample_world_007b03c0(void* path, float t, float* position, float* direction,
+                                                   std::int32_t flag) = 0;
+    // 007AFD60 BSP_CameraPath_SampleWorldLinear: __thiscall(ECX = path; float t, float* position,
+    // float* direction), RET 0Ch.
+    virtual void camera_path_sample_world_linear_007afd60(void* path, float t, float* position,
+                                                          float* direction) = 0;
+    // 007AF800 BSP_ScenePath_TransformPointToWorld: __thiscall(ECX = path; float* out, index), RET 8;
+    // EAX = the point.
+    virtual const float* scene_path_point_to_world_007af800(void* path, float* out, std::int32_t index) = 0;
+    // 007AD180 BSP_PathPoints_SetPointLocal: __thiscall(ECX = path; index, const float*), RET 8.
+    virtual void path_points_set_point_local_007ad180(void* path, std::int32_t index, const float* point) = 0;
+    // 007AD330 BSP_PathPoints_AddPointLocal: __thiscall(ECX = path component; const float*), RET 4.
+    virtual void path_points_add_point_local_007ad330(void* component, const float* point) = 0;
+    // 007AF150 BSP_CameraPath_DeriveKnots: __thiscall(ECX = path), RET.
+    virtual void camera_path_derive_knots_007af150(void* path) = 0;
+    // 007B28C0 BSP_PathComponent_Construct: __thiscall(ECX = 2Ch-byte block; dword), RET 4; EAX = ECX.
+    virtual void* path_component_construct_007b28c0(void* block, void* arg) = 0;
+    // 00488E30 STL_List_BuyNode48: (ECX = list, not read; next, prev, const value*), RET 0Ch;
+    // EAX = the new 48h node {next, prev, the 40h-byte value}.
+    virtual void* list_buy_node48_00488e30(void* list, void* next, void* prev, const void* value) = 0;
+    // 00490130 (list _Incsize, length_error over 3FFFFFFh): __thiscall(ECX = list; count), RET 4.
+    virtual void list_incsize_00490130(void* list, std::uint32_t count) = 0;
+    // 0049F6A0 (std::list::sort with a predicate; tagged CG_vector_deleting_dtor):
+    // __thiscall(ECX = list; predicate code address), RET 4.
+    virtual void list_sort_0049f6a0(void* list, std::uint32_t predicate_va) = 0;
+    // 00B62D10 BSP_Vector4f_Transform: __thiscall(ECX = float[4]; float* out, const matrix), RET 8;
+    // EAX = out.
+    virtual const float* vector4f_transform_00b62d10(const float* vector, float* out, const void* matrix) = 0;
+    // 0085DAD0 BSP_Matrix_OrthonormalizeFromRowYThenZ: __thiscall(ECX = float[16]), RET.
+    virtual void matrix_orthonormalize_0085dad0(float* matrix) = 0;
+    // 004134F0 BSP_Matrix_Copy4x4X87: __thiscall(ECX = destination; const float* source), RET 4.
+    virtual void matrix_copy_004134f0(float* destination, const float* source) = 0;
+    // The troop's +DCh unit, vtable +24Ch: __thiscall(ECX = unit; float* out, which), RET 8;
+    // EAX = a point (only [0] and [2] are read).
+    virtual const float* unit_vtable24c_point(void* unit, float* out, std::int32_t which) = 0;
+    // The three floats at 00F8758C..00F87594 (a global direction copied into the matrix row 1).
+    virtual const float* global_vector_00f8758c() = 0;
+
+    // ---- 0059D4A0 (also 00AA6740 above) ----
+    // 00AA8240 BSP_GuiWidget_SetResolvedPosition: __thiscall(ECX = widget; const float[3]), RET 4.
+    virtual void gui_widget_set_resolved_position_00aa8240(void* widget, const float* position) = 0;
+    // The icon's unit (+4h), vtable +C4h: __thiscall(ECX = unit; float out[3]), RET 4; EAX = the
+    // position.
+    virtual const float* unit_vtablec4_position(void* unit, float* out) = 0;
+    // The two floats at 00E08890 / 00E08894 (the map screen offset added after the scale).
+    virtual const float* map_offset_00e08890() = 0;
 };
 
 // 004C7AA0's 28h-byte result.
@@ -423,6 +487,13 @@ void hud_support_manager_screen_register_0066ea60(void* screen, Big1Host& host);
 
 // 00674B80 __fastcall(ECX = support manager screen), RET: the screen's Enter.
 void hud_support_manager_screen_enter_00674b80(void* screen, Big1Host& host);
+
+// 0059D4A0 __thiscall(ECX = HUD map screen; icon), RET 4. cc13_big5ad's
+// hud_map_icon_place_widget_0059d4a0 hook (callers 005B040C / 005B0420 in 005ADDA0).
+void hud_map_icon_place_widget_0059d4a0(void* screen, void* icon, Big1Host& host);
+
+// 004A0D20 __thiscall(ECX = landing troop), RET. Called only from 004A2FC0.
+void landing_troop_update_004a0d20(void* troop, Big1Host& host);
 
 // 005E12A0 __thiscall(ECX = lobby screen), RET.
 void multi_game_lobby_load_weather_table_005e12a0(void* screen, Big1Host& host);
