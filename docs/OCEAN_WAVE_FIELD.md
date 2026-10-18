@@ -3093,3 +3093,11 @@ and the releases do not, because the stage spends +C20h either way.
   into class+5E8h) when the switch is ON, with the wings arm's substitution (the live VehicleClass table at the
   first block step; every plane taken as animated). So ON: a bay-door class opens its bay at the request and a class
   without one keeps channel C shut while +C20h still rises. `bay_door_classes=` in the summary counts the enables.
+- **Pair, USN01 `usn01_p8_u1_i.txt`, 14000 frames, at d0f0d7813:** `local\p19e_off_usn01.log` against
+  `local\p19e_bay_usn01.log`. pair_diff 1, gameplay identical. Disabled-channel requests 27 -> 106 and
+  `Plane::release_spawn_deferred_to_rack` 70 -> 57 (the bay no longer accepts, so the accepted-request record is
+  rarer), while the releases themselves do not move (the stage spends +C20h). `bay_door_classes=0`: this
+  installation's VehicleClass has `PartAnims.BayDoor` on Avenger (both), Helldiver, Judy, B-17, B-25, B-29 (both),
+  D4Y (both), Gekko, Betty (three), Liz, B7A, AD-2 and a few gun rows, none of which flies in USN01 (TBD / SBD).
+  So the no-force arm matches and the enabler arm is unexercised: stays OFF until a row with one of those classes
+  releases (a late USN row with Avengers or a JM row with Bettys).
