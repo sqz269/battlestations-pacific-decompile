@@ -19363,3 +19363,22 @@ PRCP08 (`local\s59_traffic_ids.py`).
 `local\s59_ceon_u4.log` (`local\s59_ce_on`). 009F4DA0 is reached 413285 times over groups that lose members
 (Zuiho/Takao/Mogami `formation leave` at 918-943 s). `pair_diff` exit 1: gameplay identical, with 90 death rows,
 181 unit rows and 25295 shots; only the avoidance refill counter moves. **Flipped ON.**
+
+## 294. USNOS re-plan, and recon records zeroed on every spawn, kReconRecordsSurviveSpawnBound (cc9-ships59, 2026-10-18)
+
+**What blocks USNOS on the current tree (`s58_st2_os`, and c14 below).** It is not the captures. HQ2 turns allied at
+2645 s (`party 2 -> 0`), HQ1 at 2885 s and CB2 at 4240 s, so `Mission.BaseCapped` is reached. The blocker is the
+reinforcements: `luaReinTime` never runs, so `Mission.ReinDead` can never be set. ShimotSighted and BlockSighted fire
+on the same recon pass at 1025.88 s, blockade first. The Shimotsuke movie overwrites
+`Mission.MovieCallbackParameters`, so `luaBlockadeMovieEnd` (the 900 s Countdown to `luaReinTime`) is lost. Earlier
+runs (s55/s56 c9-c13) fired the same pair together with Shimotsuke first, which is why they got their reinforcements.
+
+**Why both fire together: a host fault.** Every phase-2 listener fires on its first pass after registration
+(ConvoySighted 1016.88, the pair 1025.88), each for a unit known for minutes. `recon_sensor_pass_rebuild_008073c0`
+zeroed every record whenever the unit count changed, so each launch or spawn re-notified `0 -> 2` for every known unit.
+The image keeps a unit's record for its life. Bound OFF as `kReconRecordsSurviveSpawnBound`
+(docs/RECON_SENSOR_PASS.md, "Records survive a spawn", with the predictions).
+
+**c14 (`local\s59_osmk.py`; `s59_a_c14` reference, `s59_aj_c14` 20,3).** It is c13 with Shimotsuke out of every strike
+until frame 30000, and the Loui HQ2 sweeps ended at 2500 s. Same result: the double fire at 1025.88 / 1070.92, blockade
+first, and no reinforcements. Keeping Shimotsuke unstruck cannot help while the records reset.

@@ -16292,9 +16292,11 @@ void GameGunneryHost::report() {
         if (bsp::kReconDetectionRecordsBound) {
             host.log.notef("summary mission recon records rebuilds=%llu targets=%llu "
                 "own_refreshes=%llu carried_value=%llu notifications=%llu stale_gain_reads=%llu "
-                "(packet cc9_g51_recon_records)", pass.record_rebuilds, pass.record_targets,
-                pass.record_own_refreshes, pass.record_carried_level, pass.record_notifications,
-                pass.record_stale_gain_reads);
+                "layout_growths=%llu layout_resets=%llu "
+                "(packet cc9_g51_recon_records; growth: cc9_s59_recon_growth)", pass.record_rebuilds,
+                pass.record_targets, pass.record_own_refreshes, pass.record_carried_level,
+                pass.record_notifications, pass.record_stale_gain_reads, pass.record_growths,
+                pass.record_resets);
         }
         for (const Impl::ReconSideCensus& row : host.recon_side_census) {
             host.log.notef("  recon side %d levels none=%llu blip=%llu identified=%llu",

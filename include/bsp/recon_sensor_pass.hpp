@@ -42,6 +42,16 @@ namespace bsp {
 // have a sensor-bearing observer.
 inline constexpr bool kReconDetectionRecordsBound = true;  // ON: mechanism matches (RECON_SENSOR_PASS.md "Records", pairs)
 
+// Packet cc9_s59_recon_growth (docs/RECON_SENSOR_PASS.md "Records survive a spawn").
+// The image keeps one record per (unit, party) for the unit's life, so a new unit
+// adds records and leaves every other record's value and level alone. True: when
+// the host's unit count grows, the records are carried into the larger layout
+// (unit indices are append-only) and only the new units start at zero. False: every
+// record is zeroed on any count change, so the next pass re-notifies 0 -> level for
+// every unit a side knows (each `recon` listener then fires on its first pass after
+// any spawn), as before.
+inline constexpr bool kReconRecordsSurviveSpawnBound = false;
+
 // One delegate call, [+2Ch]->vtable[0](+30h, old, new), in pass order.
 struct ReconLevelTransition {
     std::size_t unit{0};
@@ -159,6 +169,8 @@ public:
     unsigned long long record_carried_level{0};   // a target kept a level above what a zero start gives
     unsigned long long record_notifications{0};
     unsigned long long record_stale_gain_reads{0};
+    unsigned long long record_growths{0};   // kReconRecordsSurviveSpawnBound carries
+    unsigned long long record_resets{0};    // every record zeroed after the first layout
 
     // The delegate calls of the latest rebuild (kReconDetectionRecordsBound).
     const std::vector<ReconLevelTransition>& transitions() const noexcept { return transitions_; }
