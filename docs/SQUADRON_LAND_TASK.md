@@ -17888,3 +17888,16 @@ Callers: the carrier launch skill (game_hosts_lua.cpp, passes the squadron node'
 (game_hosts_script_orders.cpp) and the capture-garrison skill (game_hosts_ship_ai.cpp, ships). Prediction: ON identical
 wherever every call names a squadron's fused slot or a ship; a script SetSkillLevel on a member plane now leaves its
 siblings alone (their skill index, read by the gun bots and the dive approach, stays at its own value).
+
+### 5ij.1 Pairs and flip: `kSkillLevelSquadronFanOutBound` **ON** (cc9-lua67, 2026-10-18)
+
+Export `local\l67_sk_on` (5c0c1e452 with the switch, 9B021010E983) against `local\l67_rt` (fcb6c6fa5; the only other
+difference is kLuaForceFireDepthChargeBound, which neither row calls). USN04 no orders 9000 fr, reference: 8 squadron
+fan-outs (007ECF80) and 21 single-unit sets (006D1EB0), pair_diff 1, gameplay identical. BSM09 `bsm09_l65_b9_c` 20,3:
+20 / 10, pair_diff 1, identical, EndMission 327.04 s with the guard both ways. Both arms live and no row has a script
+SetSkillLevel on a member plane, so nothing moves. Flipped ON.
+
+### 5ii.1 `kLuaClearForcedReconLevelBound` and `kLuaSetCrewLevelBound` **ON** (unexercised, cc9-lua67, 2026-10-18)
+
+Flipped as faithful bindings with the bodies re-checked (5ii): no WINS row reaches either native (JM06's only
+ClearForcedReconLevel call is commented out; SetCrewLevel runs only in chg / multi / the commandhelpers cheat paths).

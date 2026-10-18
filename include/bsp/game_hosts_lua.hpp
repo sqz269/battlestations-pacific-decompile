@@ -445,7 +445,7 @@ inline constexpr bool kLuaGetEntitySpeedBound = false;  // OFF: committed unpair
 // run_clear_forced_recon_level_008aab90 through bsp::clear_forced_recon_level_00803b50
 // for the slot and its squadron members. False: the row stays UNIMPLEMENTED and the
 // forced table keeps the pair.
-inline constexpr bool kLuaClearForcedReconLevelBound = false;  // OFF: committed unpaired
+inline constexpr bool kLuaClearForcedReconLevelBound = true;  // ON-unexercised, body checked (SQUADRON_LAND_TASK 5ii)
 // Packet cc13-fix18 (docs/CC13_FIX18.md section 6). 00894F20 SetCrewLevel(entity, level),
 // no result: 00895022 00888AA0 argument 0, 00895053 00B66290 argument 1, 0089506C
 // 006E6210(ECX = level), 0089507C entity->vtable[128h](skill) with no null test. 006E6210
@@ -453,7 +453,7 @@ inline constexpr bool kLuaClearForcedReconLevelBound = false;  // OFF: committed
 // 2 -> 2, 3 -> 5 and anything else -> 1. True: run_set_crew_level_00894f20 writes the
 // skill index of the unit (006D1EB0) or of each member of a squadron (007ECF80) through
 // GameUnitsHost::set_unit_skill_index_006d1eb0. False: UNIMPLEMENTED.
-inline constexpr bool kLuaSetCrewLevelBound = false;  // OFF: committed unpaired
+inline constexpr bool kLuaSetCrewLevelBound = true;  // ON-unexercised, body checked (SQUADRON_LAND_TASK 5ii)
 // Packet cc13-fix10 (docs/CC13_FIX10.md; cc9 grant 2026-10-17). 008C9730
 // AddProximityTrigger(entity, name, callback, target, range) makes a 60h trigger
 // (007505C0 / 0074FEE0: target descriptor +44h from 0088A810, +5Ch = range * range)
