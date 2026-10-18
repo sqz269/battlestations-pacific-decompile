@@ -150,3 +150,21 @@ preloading with string temporaries and an SEH frame) and `008FF640`
 | `008F1010` | BSP_PropertyHash64_ForEach | reconstructed | `property_hash64_for_each_008f1010`: `008EF650` / `008EEA80` walk with an empty body. |
 | `008F02B0`, `008F02E0` | BSP_ScenePropertyDecl_Is*Letter | ledger-only | src/scene_property_bag.cpp `scene_property_type_for_letter` (lines 83..103) folds the "E" / "LUA_S" tests into the letter parse. |
 | `008F1960` | BSP_SceneReference_GetTypeLetter | ledger-only | src/scene_property_bag.cpp:70 `scene_reference_kind_letter`. |
+
+## Scene text writers, key renames and the random-thread scope
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `008EFA30` | BSP_SceneText_WriteMultiline | reconstructed | `scene_text_write_multiline_008efa30`, __stdcall(text, writer): `00BF86F0` per piece, `0094FFA0` before later pieces, quote, `008EE5F0` escape, quote; the indent at writer+8 rises after the first piece. |
+| `008F08E0` | BSP_ScenePropertyBag_ResolveReferences | reconstructed | `scene_property_bag_resolve_references_008f08e0`: `00480690` / `0047E480` walk; the callback stops being called after the first failure. |
+| `008F18B0` | BSP_PropertyMap_RenameKey | reconstructed | `property_map_rename_key_008f18b0`: `00435C40`, `0043B8B0` twice, bucket unlink, `0043B760`, `00425F40`. |
+| `008F2AA0`, `008F2AE0` | BSP_SceneNameNode_ScalarDeletingDtor(Copy) | reconstructed | Release the name, then `0043B0A0` to pool 00E17578 / 00E17540. |
+| `008F2B20` | BSP_SceneSymbol_CreateFromName | reconstructed | `00BF681B`(8), `0041E870`, `0094F270`(list, header, 1). |
+| `008F2CF0` | BSP_PropertyMap_RenameKeyCString | reconstructed | Two `0041E870` temporaries, `008F18B0`(owner+4, old, new), two releases. |
+| `008F4030` | BSP_PropertyMap_UnlinkKey | reconstructed | `0043B8B0`, bucket unlink, `0043D2D0`, count -1. |
+| `008F2540` | BSP_ScenePropertyBag_WriteText | reconstructed | `scene_property_bag_write_text_008f2540`: the "PropTree {" debug dump; every line goes to `004254B0`, a trivial body in this build. |
+| `008F1CA0` | BSP_SceneProperty_WriteText | reconstructed | `scene_property_write_text_008f1ca0`: one "name = letter value ;" line; arrays wrap 16 / 4 / 4 / 2 per line through `00439AC0`. |
+| `008F7CF0`, `008F7D80` | BSP_RandomThreadsScope_Construct / Release | reconstructed | `00BD2FE0` / `00BD3050` thread registration only; neither draws the shared RNG. |
+| `008F7D20` | BSP_SingletonLifetime_DestroyGlobal01090AA0 | reconstructed | `00BD0400`, `_free`, clear [01090AA0]. |
+| `008F67B0`, `008F6FC0`, `008F7100` | CPropTreeLibrary_Load and its folder / extension walkers | ledger-only | src/scene_traffic_groups.cpp:494 and :592. |
+| `008F7DB0` | BSP_Startup_ResolveLanguage | ledger-only | src/winmain_startup.cpp (:93, :108) behind StartupHost::resolve_language. |

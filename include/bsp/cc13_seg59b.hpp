@@ -217,7 +217,68 @@ struct Seg59bHost {
     // 008D8A70 BSP_SceneTokenizer_PeekToken, __thiscall(ECX = tokenizer).
     virtual void scene_tokenizer_peek_token_008d8a70(void* tokenizer) = 0;
     // 0094FF10, __thiscall(ECX = writer, text), RET 4: append a C string to the scene text.
-    virtual void scene_text_write_0094ff10(void* writer, const char* text) = 0;
+    virtual void* scene_text_write_0094ff10(void* writer, const char* text) = 0;
+    // 0094FFA0, __thiscall(ECX = writer, code), RET 4; EAX = writer: 0 newline, 1 one indent.
+    virtual void* scene_text_writer_manipulator_0094ffa0(void* writer, std::int32_t code) = 0;
+    // 008EE5F0 BSP_SceneText_EscapeToStaticBuffer, __fastcall(ECX = text, EDX = length); EAX.
+    virtual const char* scene_text_escape_008ee5f0(const char* text, std::uint32_t length) = 0;
+    // 00BF86F0 _strchr, __cdecl(text, ch).
+    virtual const char* strchr_00bf86f0(const char* text, std::int32_t ch) = 0;
+    // 00480690 / 0047E480 BSP_ScenePropertyBag_IteratorBegin / Next, __thiscall(ECX = iterator).
+    virtual void scene_property_bag_iterator_begin_00480690(Hash64Iterator* iterator) = 0;
+    virtual void scene_property_bag_iterator_next_0047e480(Hash64Iterator* iterator) = 0;
+    // The 008F08E0 resolver callback, __fastcall(ECX = reference name, EDX = context); EAX.
+    virtual void* call_reference_resolver(std::uintptr_t callback, void* name, void* context) = 0;
+    // 00435C40 BSP_NativeString_EqualsInsensitive, __thiscall(ECX = string, other), RET 4; AL.
+    virtual bool native_string_equals_insensitive_00435c40(const void* string, const void* other) = 0;
+    // 0043B8B0 BSP_PropertyMap_FindBorrowedKeyNode, __thiscall(ECX = map, key, uint* bucket), RET 8.
+    virtual void* property_map_find_node_0043b8b0(void* map, const void* key, std::uint32_t* bucket) = 0;
+    // 0043B760 BSP_PropertyKey_ComputeBucket, __thiscall(ECX = map, key), RET 4; EAX.
+    virtual std::uint32_t property_key_compute_bucket_0043b760(void* map, const void* key) = 0;
+    // 00425F40 BSP_NativeString_AssignHeader, __thiscall(ECX = string, other), RET 4.
+    virtual void native_string_assign_header_00425f40(void* string, const void* other) = 0;
+    // 0041E870 BSP_NativeString_Assign, __thiscall(ECX = string, text), RET 4; EAX = string.
+    virtual void* native_string_assign_0041e870(void* string, const char* text) = 0;
+    // 00419CC0 BSP_SizedStoragePool_GetSingleton (no args); 00BD1510 ReturnBlock,
+    // __thiscall(ECX = pool, data, bytes, flag), RET 0Ch.
+    virtual void* sized_pool_singleton_00419cc0() = 0;
+    virtual void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes,
+                                                  std::uint32_t flag) = 0;
+    // 0043B0A0 BSP_EnumNodePool_Return14h, __thiscall(ECX = pool, node), RET 4.
+    virtual void enum_node_pool_return_0043b0a0(void* pool, void* node) = 0;
+    // 0094F270 BSP_StringKeyList_AppendOwnedHeader, __thiscall(ECX = list, header, flag), RET 8.
+    virtual std::uint32_t string_key_list_append_owned_header_0094f270(void* list, void* header,
+                                                                      std::uint32_t flag) = 0;
+    // 0043D2D0 BSP_PropertyMapNode_Destroy, __thiscall(ECX = map, node), RET 4.
+    virtual void property_map_node_destroy_0043d2d0(void* map, void* node) = 0;
+    // 00BD2FE0 / 00BD3050 BSP_RandomThreads_Register/UnregisterCurrent, ECX passed through
+    // unread; 00BD0400 BSP_SingletonLifetime_Destroy, __thiscall(ECX = object).
+    virtual void random_threads_register_current_00bd2fe0(void* ecx) = 0;
+    virtual void random_threads_unregister_current_00bd3050(void* ecx) = 0;
+    virtual void singleton_lifetime_destroy_00bd0400(void* object) = 0;
+    // 004254B0, __cdecl(format, ...): a trivial body (the release build's compiled-out trace).
+    // The pushed argument dwords are handed over in stack order (a double is two dwords, low
+    // first), so the call site's arguments stay exact.
+    virtual void trace_printf_004254b0(const char* format, const std::uint32_t* args,
+                                       std::uint32_t count) = 0;
+    // 0041DD40 BSP_NativeString_Resize, __thiscall(ECX = string, length, flag), RET 8.
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint32_t flag) = 0;
+    // 00950130 / 00950000 / 00950050 BSP_SceneTextWriter_WriteFloat / WriteInt / WriteFormatted
+    // (unsigned), __thiscall(ECX = writer, value), RET 4; EAX = writer.
+    virtual void* scene_text_write_float_00950130(void* writer, float value) = 0;
+    virtual void* scene_text_write_int_00950000(void* writer, std::int32_t value) = 0;
+    virtual void* scene_text_write_unsigned_00950050(void* writer, std::uint32_t value) = 0;
+    // 00439AC0 BSP_String_FormatStatic, __cdecl(format, ...); EAX = static text. Arguments as
+    // pushed dwords, as for 004254B0.
+    virtual const char* string_format_static_00439ac0(const char* format, const std::uint32_t* args,
+                                                     std::uint32_t count) = 0;
+    // 008F1960 BSP_SceneReference_GetTypeLetter, __thiscall(ECX = record, string*), RET 4
+    // (hosted as scene_reference_kind_letter, src/scene_property_bag.cpp:70).
+    virtual void scene_reference_get_type_letter_008f1960(void* record, void* string) = 0;
+    // 0041DD20 BSP_NativeString_DestroyStorage, __thiscall(ECX = string).
+    virtual void native_string_destroy_storage_0041dd20(void* string) = 0;
+    // 00BF79F0 _memset, __cdecl(dst, value, count).
+    virtual void memset_00bf79f0(void* dst, std::int32_t value, std::uint32_t count) = 0;
     // 00950320 BSP_SceneTextChunkList_Clear, __thiscall(ECX = list).
     virtual void scene_text_chunk_list_clear_00950320(void* list) = 0;
     // object->vtable[0](flags), __thiscall, RET 4: the scalar deleting destructor.
@@ -333,6 +394,38 @@ std::uint32_t pointer_array_push_back_grow_008f0010(Seg59bHost& host, void* arra
 void owned_polymorphic_reset_008f0600(Seg59bHost& host, void* slot);
 // 008F1010, __thiscall(ECX = hash owner), RET: walk table +4 with the iterator copies, no body.
 void property_hash64_for_each_008f1010(Seg59bHost& host, void* owner);
+
+// 008EFA30, __stdcall(text, writer), RET 8: one quoted, escaped line per newline-split piece.
+void scene_text_write_multiline_008efa30(Seg59bHost& host, const char* text, void* writer);
+// 008F08E0, __thiscall(ECX = bag, callback, context), RET 8; AL = every callback succeeded.
+bool scene_property_bag_resolve_references_008f08e0(Seg59bHost& host, void* bag, std::uintptr_t callback,
+                                                    void* context);
+// 008F18B0, __thiscall(ECX = map, old key, new key), RET 8; AL.
+bool property_map_rename_key_008f18b0(Seg59bHost& host, void* map, void* old_key, void* new_key);
+// 008F2AA0 / 008F2AE0, __thiscall(ECX = node, flags), RET 4; EAX = node: release the name,
+// return the node to pool 00E17578 / 00E17540 when flags bit 0 is set.
+void* scene_name_node_scalar_deleting_dtor_008f2aa0(Seg59bHost& host, void* node, std::uint32_t flags);
+void* scene_name_node_scalar_deleting_dtor_008f2ae0(Seg59bHost& host, void* node, std::uint32_t flags);
+// 008F2B20, __thiscall(ECX = list, name), RET 4; EAX = 0094F270's result.
+std::uint32_t scene_symbol_create_from_name_008f2b20(Seg59bHost& host, void* list, const char* name);
+// 008F2CF0, __thiscall(ECX = owner, old name, new name), RET 8.
+void property_map_rename_key_cstring_008f2cf0(Seg59bHost& host, void* owner, const char* old_name,
+                                              const char* new_name);
+// 008F4030, __thiscall(ECX = map, key), RET 4; AL = removed.
+bool property_map_unlink_key_008f4030(Seg59bHost& host, void* map, const void* key);
+
+// 008F1CA0, __thiscall(ECX = never read, name, record, writer), RET 0Ch: one "name = <letter>
+// value ;" line of a scene property text file.
+void scene_property_write_text_008f1ca0(Seg59bHost& host, const char* name, void* record,
+                                        void* writer);
+// 008F2540, __thiscall(ECX = bag, depth), RET 4: the "PropTree {" debug dump through 004254B0.
+void scene_property_bag_write_text_008f2540(Seg59bHost& host, void* bag, std::int32_t depth);
+// 008F7CF0, __thiscall(ECX = scope), RET; EAX = scope: 00BD2FE0.
+void* random_threads_scope_construct_008f7cf0(Seg59bHost& host, void* scope);
+// 008F7D20, no arguments: destroy and free the object at [01090AA0], then clear it.
+void singleton_lifetime_destroy_global_008f7d20(Seg59bHost& host);
+// 008F7D80, __thiscall(ECX = slot), RET: 00BD3050, free [slot], clear it.
+void random_threads_scope_release_008f7d80(Seg59bHost& host, void* slot);
 
 // --- Spawn reference frame (vtable 00D16AA4: +14h observed entity, +18h 4x4 matrix) ---------
 void* spawn_ref_frame_assign_008f84a0(Seg59bHost& host, void* frame, void* other);           // RET 4

@@ -1045,4 +1045,544 @@ void property_hash64_for_each_008f1010(Seg59bHost& host, void* owner) {
     host.hash64_iterator_begin_008ef650(&iterator);
     while (iterator.node != nullptr) host.hash64_iterator_next_008eea80(&iterator);
 }
+
+namespace {
+
+// The native string release used throughout: data (+4) non-null -> 00419CC0, then
+// 00BD1510(pool; data, size (+0) + 1, 1). The header itself is left as it is.
+void release_native_string(Seg59bHost& host, void* string) {
+    if (ptr(string, 0x04) != nullptr) {
+        void* const pool = host.sized_pool_singleton_00419cc0();
+        host.sized_pool_return_block_00bd1510(pool, ptr(string, 0x04), at<std::uint32_t>(string, 0x00) + 1u, 1u);
+    }
+}
+
+// The bucket unlink shared by 008F18B0 and 008F4030: a head hit stores node->next (+0Ch) into
+// the bucket; otherwise the chain is walked to the node's predecessor (no end test, as in the
+// image) and the predecessor's link takes node->next.
+void property_map_unlink_node(void* map, std::uint32_t bucket, void* node) {
+    void* const head = ptr(map, 0x08 + bucket * 4u);
+    if (head != node) {
+        void* previous = nullptr;
+        void* cursor = head;
+        do {
+            previous = cursor;
+            cursor = ptr(cursor, 0x0C);
+        } while (cursor != node);
+        if (previous != nullptr) {
+            at<void*>(previous, 0x0C) = ptr(node, 0x0C);
+            return;
+        }
+    }
+    at<void*>(map, 0x08 + bucket * 4u) = ptr(node, 0x0C);
+}
+
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 008EFA30 BSP_SceneText_WriteMultiline. __stdcall(text, writer), RET 8 (ECX unused).
+// Evidence: null text -> return (008EFA3E). Per piece: 008EFA4F _strchr(text, 0Ah); length =
+// newline - text + 1 (008EFA5D) or strlen (inline, 008EFA70); piece 1 -> writer+8 += 1
+// (008EFA86) then 0094FFA0(writer, 0); later pieces -> 0094FFA0(writer, 0) only (008EFA94);
+// 008EFAA4 0094FF10(writer, "\"" 00CE436C); 008EFAAF 008EE5F0(text, length); 008EFAB7
+// 0094FF10(that writer, escaped); 008EFAC3 0094FF10(result, "\""); count += 1 (008EFAC8);
+// stop without a newline, else text = newline + 1 while non-null (008EFAD1). After: count > 1
+// (signed, 008EFADC) and writer+8 != 0 -> writer+8 -= 1 (008EFAF0).
+// ---------------------------------------------------------------------------
+void scene_text_write_multiline_008efa30(Seg59bHost& host, const char* text, void* writer) {
+    std::int32_t count = 0;
+    if (text == nullptr) return;
+    for (;;) {
+        const char* const newline = host.strchr_00bf86f0(text, 0x0A);
+        const std::uint32_t length = newline != nullptr
+            ? static_cast<std::uint32_t>(newline - text) + 1u
+            : static_cast<std::uint32_t>(std::strlen(text));
+        if (count == 1) {
+            at<std::uint32_t>(writer, 0x08) += 1u;
+            host.scene_text_writer_manipulator_0094ffa0(writer, 0);
+        } else if (count != 0) {
+            host.scene_text_writer_manipulator_0094ffa0(writer, 0);
+        }
+        const char* const quote = static_cast<const char*>(host.image_pointer(0x00CE436Cu));
+        void* const chained = host.scene_text_write_0094ff10(writer, quote);
+        const char* const escaped = host.scene_text_escape_008ee5f0(text, length);
+        void* const after = host.scene_text_write_0094ff10(chained, escaped);
+        host.scene_text_write_0094ff10(after, quote);
+        ++count;
+        if (newline == nullptr) break;
+        text = newline + 1;
+        if (text == nullptr) break;
+    }
+    if (count > 1 && at<std::uint32_t>(writer, 0x08) != 0) at<std::uint32_t>(writer, 0x08) -= 1u;
+}
+
+// ---------------------------------------------------------------------------
+// 008F08E0 BSP_ScenePropertyBag_ResolveReferences. __thiscall(ECX = bag, callback, context),
+// RET 8; AL. Evidence: iterator {bag+4, node, bucket} (008F08E3); 008F08EE 00480690 begin;
+// result = 1 (008F08F9). Per node, record = [node+8]: type 5 with +18h == 0 -> while the result
+// is still 1, 008F0929 callback(ECX = [record+1Ch], EDX = context), +18h = EAX, result = EAX !=
+// 0; once 0, later unresolved references are skipped (008F0937). Type 6 -> 008F0945 recursion
+// on [record+0Ch] (result ignored). 008F094E 0047E480 next while node != 0.
+// ---------------------------------------------------------------------------
+bool scene_property_bag_resolve_references_008f08e0(Seg59bHost& host, void* bag, std::uintptr_t callback,
+                                                    void* context) {
+    Hash64Iterator iterator{add(bag, 0x04), nullptr, 0};
+    host.scene_property_bag_iterator_begin_00480690(&iterator);
+    bool result = true;
+    while (iterator.node != nullptr) {
+        void* const record = ptr(iterator.node, 0x08);
+        const std::uint32_t type = at<std::uint32_t>(record, 0x04);
+        if (type == 5) {
+            if (ptr(record, 0x18) == nullptr) {
+                if (result) {
+                    void* const resolved = host.call_reference_resolver(callback, ptr(record, 0x1C), context);
+                    at<void*>(record, 0x18) = resolved;
+                    result = resolved != nullptr;
+                } else {
+                    result = false;
+                }
+            }
+        } else if (type == 6) {
+            scene_property_bag_resolve_references_008f08e0(host, ptr(record, 0x0C), callback, context);
+        }
+        host.scene_property_bag_iterator_next_0047e480(&iterator);
+    }
+    return result;
+}
+
+// ---------------------------------------------------------------------------
+// 008F18B0 BSP_PropertyMap_RenameKey. __thiscall(ECX = map, old key, new key), RET 8; AL.
+// Evidence: 008F18C0 00435C40(old, new) equal -> 1; 008F18D1 0043B8B0(map, new, &bucket)
+// found -> 0; 008F18EA 0043B8B0(map, old, &bucket) none -> 0; unlink from bucket (008F18F5..
+// 008F1919); 008F1920 0043B760(map, new); node+0Ch = bucket head, head = node (008F192B/
+// 008F1931); 008F1933 00425F40(node, new); 1.
+// ---------------------------------------------------------------------------
+bool property_map_rename_key_008f18b0(Seg59bHost& host, void* map, void* old_key, void* new_key) {
+    if (host.native_string_equals_insensitive_00435c40(old_key, new_key)) return true;
+    std::uint32_t bucket = 0;
+    if (host.property_map_find_node_0043b8b0(map, new_key, &bucket) != nullptr) return false;
+    void* const node = host.property_map_find_node_0043b8b0(map, old_key, &bucket);
+    if (node == nullptr) return false;
+    property_map_unlink_node(map, bucket, node);
+    const std::uint32_t target = host.property_key_compute_bucket_0043b760(map, new_key);
+    at<void*>(node, 0x0C) = ptr(map, 0x08 + target * 4u);
+    at<void*>(map, 0x08 + target * 4u) = node;
+    host.native_string_assign_header_00425f40(node, new_key);
+    return true;
+}
+
+// ---------------------------------------------------------------------------
+// 008F2AA0 / 008F2AE0 BSP_SceneNameNode_ScalarDeletingDtor(Copy). __thiscall(ECX = node, flags),
+// RET 4; EAX = node. Evidence: name data +4 non-null -> 00419CC0, 00BD1510(data, size+1, 1)
+// (008F2AB8 / 008F2AF8); flags & 1 -> 0043B0A0(ECX = 00E17578 / 00E17540, node) (008F2AC6 /
+// 008F2B06).
+// ---------------------------------------------------------------------------
+void* scene_name_node_scalar_deleting_dtor_008f2aa0(Seg59bHost& host, void* node, std::uint32_t flags) {
+    release_native_string(host, node);
+    if ((flags & 1u) != 0) host.enum_node_pool_return_0043b0a0(host.image_pointer(0x00E17578u), node);
+    return node;
+}
+
+void* scene_name_node_scalar_deleting_dtor_008f2ae0(Seg59bHost& host, void* node, std::uint32_t flags) {
+    release_native_string(host, node);
+    if ((flags & 1u) != 0) host.enum_node_pool_return_0043b0a0(host.image_pointer(0x00E17540u), node);
+    return node;
+}
+
+// ---------------------------------------------------------------------------
+// 008F2B20 BSP_SceneSymbol_CreateFromName. __thiscall(ECX = list, name), RET 4; EAX.
+// Evidence: 008F2B3B 00BF681B(8); non-null -> 008F2B5A 0041E870(block, name), else 0;
+// 008F2B70 0094F270(list, header, 1). The SEH state only frees the block on a throw.
+// ---------------------------------------------------------------------------
+std::uint32_t scene_symbol_create_from_name_008f2b20(Seg59bHost& host, void* list, const char* name) {
+    void* const block = host.operator_new_00bf681b(8);
+    void* const header = block != nullptr ? host.native_string_assign_0041e870(block, name) : nullptr;
+    return host.string_key_list_append_owned_header_0094f270(list, header, 1);
+}
+
+// ---------------------------------------------------------------------------
+// 008F2CF0 BSP_PropertyMap_RenameKeyCString. __thiscall(ECX = owner, old name, new name), RET 8.
+// Evidence: 008F2D14 0041E870(local A, new name); 008F2D2A 0041E870(local B, old name);
+// 008F2D41 008F18B0(ECX = owner+4, B, A) (result unused); release B (008F2D63), then A
+// (008F2D8A), each through 00419CC0 / 00BD1510.
+// ---------------------------------------------------------------------------
+void property_map_rename_key_cstring_008f2cf0(Seg59bHost& host, void* owner, const char* old_name,
+                                              const char* new_name) {
+    alignas(4) std::uint8_t new_key[8] = {};
+    alignas(4) std::uint8_t old_key[8] = {};
+    host.native_string_assign_0041e870(new_key, new_name);
+    host.native_string_assign_0041e870(old_key, old_name);
+    property_map_rename_key_008f18b0(host, add(owner, 0x04), old_key, new_key);
+    release_native_string(host, old_key);
+    release_native_string(host, new_key);
+}
+
+// ---------------------------------------------------------------------------
+// 008F4030 BSP_PropertyMap_UnlinkKey. __thiscall(ECX = map, key), RET 4; AL. Evidence:
+// 008F403F 0043B8B0(map, key, &bucket); none -> 0 (008F4095); unlink from bucket (008F4048..
+// 008F407B); 008F406B / 008F4085 0043D2D0(map, node); count +4 -= 1; 1.
+// ---------------------------------------------------------------------------
+bool property_map_unlink_key_008f4030(Seg59bHost& host, void* map, const void* key) {
+    std::uint32_t bucket = 0;
+    void* const node = host.property_map_find_node_0043b8b0(map, key, &bucket);
+    if (node == nullptr) return false;
+    property_map_unlink_node(map, bucket, node);
+    host.property_map_node_destroy_0043d2d0(map, node);
+    at<std::uint32_t>(map, 0x04) -= 1u;
+    return true;
+}
+
+// ---------------------------------------------------------------------------
+// 008F7CF0 BSP_RandomThreadsScope_Construct. __thiscall(ECX = scope), RET; EAX = scope.
+// Evidence: 008F7CF3 00BD2FE0 with ECX = scope unchanged; 008F7CF8 EAX = scope. No code xrefs.
+// ---------------------------------------------------------------------------
+void* random_threads_scope_construct_008f7cf0(Seg59bHost& host, void* scope) {
+    host.random_threads_register_current_00bd2fe0(scope);
+    return scope;
+}
+
+// ---------------------------------------------------------------------------
+// 008F7D20 BSP_SingletonLifetime_DestroyGlobal01090AA0. No arguments, RET. Evidence: [01090AA0]
+// non-null -> 008F7D2D 00BD0400(ECX = object), 008F7D33 _free 00BF65AC(object), 008F7D3B
+// [01090AA0] = 0 (that arm only). No code xrefs (an atexit-style entry).
+// ---------------------------------------------------------------------------
+void singleton_lifetime_destroy_global_008f7d20(Seg59bHost& host) {
+    void** const slot = static_cast<void**>(host.image_pointer(0x01090AA0u));
+    void* const object = *slot;
+    if (object == nullptr) return;
+    host.singleton_lifetime_destroy_00bd0400(object);
+    host.free_00bf65ac(object);
+    *slot = nullptr;
+}
+
+// ---------------------------------------------------------------------------
+// 008F7D80 BSP_RandomThreadsScope_Release. __thiscall(ECX = slot), RET. Evidence: [slot] non-null
+// -> 008F7D8A 00BD3050 with ECX = slot unchanged, 008F7D90 _free 00BF65AC([slot]), 008F7D98
+// [slot] = 0. No code xrefs.
+// ---------------------------------------------------------------------------
+void random_threads_scope_release_008f7d80(Seg59bHost& host, void* slot) {
+    void* const object = ptr(slot, 0);
+    if (object == nullptr) return;
+    host.random_threads_unregister_current_00bd3050(slot);
+    host.free_00bf65ac(object);
+    at<void*>(slot, 0) = nullptr;
+}
+
+namespace {
+
+void push_dword(std::uint32_t* args, std::uint32_t& count, std::uint32_t value) { args[count++] = value; }
+
+void push_pointer(std::uint32_t* args, std::uint32_t& count, const void* value) {
+    args[count++] = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(value));
+}
+
+// FSTP double [ESP]: the low dword sits first on the stack.
+void push_double_from_float(std::uint32_t* args, std::uint32_t& count, float value) {
+    const double widened = static_cast<double>(value);
+    std::uint64_t bits = 0;
+    std::memcpy(&bits, &widened, sizeof bits);
+    args[count++] = static_cast<std::uint32_t>(bits);
+    args[count++] = static_cast<std::uint32_t>(bits >> 32);
+}
+
+void trace(Seg59bHost& host, std::uint32_t format, const std::uint32_t* args, std::uint32_t count) {
+    host.trace_printf_004254b0(static_cast<const char*>(host.image_pointer(format)), args, count);
+}
+
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 008F2540 BSP_ScenePropertyBag_WriteText. __thiscall(ECX = bag, depth), RET 4. A debug dump:
+// every line goes to 004254B0, a trivial body in this build.
+// Evidence: iterator {bag+4} and 008F256B 00480690 begin first; indent string {0, 0} resized by
+// 008F2591 0041DD40(depth*4+4, 1); data non-null -> 008F25A6 memset(data, ' ', size); 008F25BE
+// "PropTree {\n" D164D8. Per node: record = [node+8]; "%s%s [%i]= " D164CC with indent (or
+// F89450), [node+4] (or F89450), [record+34h] (008F25F7); table 008F27F0 on [record+4]:
+// 0 "%i;\n", 1 "%f;\n" (float widened), 2 "\"%s\";\n", 3 byte +0Ch "true;\n" D164C4 /
+// "false;\n" D164BC, 4 "%i, %s:%s;\n" (value, decl+11Ch, 008F0D80(decl, value)), 5 "ref [%s];\n"
+// (+1Ch or CE3A0C), 6 008F270E recursion on +0Ch with depth+1, 7 "(%.2f, %.2f, %.2f);\n",
+// 8 "binary %X (%u bytes)\n" (+20h, +24h), 9 "floatarray %X (count=%u)\n" (+24h >> 2),
+// 0Ah "intarray ..." (+24h >> 2), 0Bh "vec3array ..." (+24h / 12), else "unknown type\n";
+// 008F2790 0047E480 next. Then "%s}\n\n" D163F4 with the indent (or F89450); release the indent
+// string through 00419CC0 / 00BD1510 (008F27D8).
+// ---------------------------------------------------------------------------
+void scene_property_bag_write_text_008f2540(Seg59bHost& host, void* bag, std::int32_t depth) {
+    Hash64Iterator iterator{add(bag, 0x04), nullptr, 0};
+    host.scene_property_bag_iterator_begin_00480690(&iterator);
+    alignas(4) std::uint8_t indent[8] = {};
+    host.native_string_resize_0041dd40(indent, static_cast<std::uint32_t>(depth) * 4u + 4u, 1);
+    char* const indent_text = static_cast<char*>(ptr(indent, 0x04));
+    if (indent_text != nullptr) host.memset_00bf79f0(indent_text, 0x20, at<std::uint32_t>(indent, 0x00));
+    const void* const empty_name = host.image_pointer(kEnumNameEmpty);
+    std::uint32_t args[8];
+    std::uint32_t count = 0;
+    trace(host, 0x00D164D8u, args, 0);
+    while (iterator.node != nullptr) {
+        void* const record = ptr(iterator.node, 0x08);
+        const void* const key = ptr(iterator.node, 0x04);
+        count = 0;
+        push_pointer(args, count, indent_text != nullptr ? static_cast<const void*>(indent_text) : empty_name);
+        push_pointer(args, count, key != nullptr ? key : empty_name);
+        push_dword(args, count, at<std::uint32_t>(record, 0x34));
+        trace(host, 0x00D164CCu, args, count);
+        count = 0;
+        switch (at<std::uint32_t>(record, 0x04)) {
+        case 0:
+            push_dword(args, count, at<std::uint32_t>(record, 0x0C));
+            trace(host, 0x00D164A0u, args, count);
+            break;
+        case 1:
+            push_double_from_float(args, count, at<float>(record, 0x0C));
+            trace(host, 0x00D164A8u, args, count);
+            break;
+        case 2:
+            push_dword(args, count, at<std::uint32_t>(record, 0x0C));
+            trace(host, 0x00D1648Cu, args, count);
+            break;
+        case 3:
+            trace(host, at<std::uint8_t>(record, 0x0C) != 0 ? 0x00D164C4u : 0x00D164BCu, args, 0);
+            break;
+        case 4: {
+            void* const decl = ptr(record, 0x28);
+            const std::uint32_t value = at<std::uint32_t>(record, 0x0C);
+            const char* const name = scene_enum_decl_find_name_008f0d80(host, decl, value);
+            push_dword(args, count, value);
+            push_pointer(args, count, add(decl, 0x11C));
+            push_pointer(args, count, name);
+            trace(host, 0x00D164B0u, args, count);
+            break;
+        }
+        case 5: {
+            const void* const name = ptr(record, 0x1C);
+            push_pointer(args, count, name != nullptr ? name : host.image_pointer(kEmptyString));
+            trace(host, 0x00D16494u, args, count);
+            break;
+        }
+        case 6:
+            scene_property_bag_write_text_008f2540(host, ptr(record, 0x0C), depth + 1);
+            break;
+        case 7:
+            push_double_from_float(args, count, at<float>(record, 0x0C));
+            push_double_from_float(args, count, at<float>(record, 0x10));
+            push_double_from_float(args, count, at<float>(record, 0x14));
+            trace(host, 0x00D16474u, args, count);
+            break;
+        case 8:
+            push_dword(args, count, at<std::uint32_t>(record, 0x20));
+            push_dword(args, count, at<std::uint32_t>(record, 0x24));
+            trace(host, 0x00D1645Cu, args, count);
+            break;
+        case 9:
+            push_dword(args, count, at<std::uint32_t>(record, 0x20));
+            push_dword(args, count, at<std::uint32_t>(record, 0x24) >> 2);
+            trace(host, 0x00D16440u, args, count);
+            break;
+        case 0x0A:
+            push_dword(args, count, at<std::uint32_t>(record, 0x20));
+            push_dword(args, count, at<std::uint32_t>(record, 0x24) >> 2);
+            trace(host, 0x00D16428u, args, count);
+            break;
+        case 0x0B:
+            push_dword(args, count, at<std::uint32_t>(record, 0x20));
+            push_dword(args, count, at<std::uint32_t>(record, 0x24) / 12u);
+            trace(host, 0x00D1640Cu, args, count);
+            break;
+        default:
+            trace(host, 0x00D163FCu, args, 0);
+            break;
+        }
+        host.scene_property_bag_iterator_next_0047e480(&iterator);
+    }
+    count = 0;
+    push_pointer(args, count, indent_text != nullptr ? static_cast<const void*>(indent_text) : empty_name);
+    trace(host, 0x00D163F4u, args, count);
+    release_native_string(host, indent);
+}
+
+namespace {
+
+// The 008F1CA0 array tail: a newline (0094FFA0(writer, 0)) and writer+8 += 1 before the first
+// element, and a newline every `per_line` elements; each element text from 00439AC0 goes out
+// through 0094FF10(writer, text).
+template <typename Element>
+void write_array_elements(Seg59bHost& host, void* writer, std::uint32_t per_line, Element element,
+                          std::uint32_t (*count_of)(Seg59bHost&, void*), void* record) {
+    std::uint32_t left_on_line = per_line;
+    for (std::uint32_t index = 0; index < count_of(host, record); ++index) {
+        if (left_on_line == 0) {
+            host.scene_text_writer_manipulator_0094ffa0(writer, 0);
+            left_on_line = per_line;
+        }
+        host.scene_text_write_0094ff10(writer, element(index));
+        --left_on_line;
+    }
+}
+
+std::uint32_t array_count_008ef7f0(Seg59bHost& host, void* record) {
+    return host.scene_property_array_count_008ef7f0(record);
+}
+
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 008F1CA0 BSP_SceneProperty_WriteText. __thiscall(ECX = never read, name, record, writer),
+// RET 0Ch. Callers 008F71E0, 008F7550 (scene property file writers).
+// Evidence: 008F1CCC 0094FF10(writer, name), 008F1CD8 " = " CF8284; table 008F2224 on
+// [record+4]:
+//  0 "I " D163E8, 008F1E0E 00950000(int); 1 "F " D163EC, 008F1DF2 00950130(float);
+//  2 "S " D163E4, 008F1E2E 008EFA30(008F0DF0(record), writer);
+//  3 "B " D163F0, 008F1D0D 008EEFE0(byte +0Ch);
+//  4 quote buffers q1 = q2 = {20h, 0}; 008F1D30 _strchr(decl+11Ch, ' ') -> q1[0] = '"';
+//    008F1D4A _strchr(008F0DF0(record), ' ') -> q2[0] = '"'; then letter [decl+118h] (or F89450),
+//    q1, decl+11Ch, q1, ":" CF00B0, q2, 008F0DF0(record), q2, chained;
+//  5 local string {0, 0}; 008F1EA4 008F1960(record, &local); its data (or F89450), " \"" D163DC;
+//    [record+18h] != 0 -> 0094FF10(writer, F89450) then "\"" with a temporary destroyed by
+//    0041DD20 (008F1EFF); else 008F0DF0(record) then "\""; 008F1F2B 0041DD20(&local);
+//  7 "V3 " D163E0, 00950130 x, " " CE3A90, y, " ", z, chained;
+//  8 "BIN " D163D4, 00950050(+24h); 16 per line "%.2hX " D163CC of each byte;
+//  9 "FA " D163C8, 00950050(008EF7F0), 4 per line "%.7f " D163C0 (float widened);
+//  0Ah "IA " D163BC, 4 per line "%11i " D163B4; 0Bh "V3A " D163AC, 2 per line
+//    "(%.7f, %.7f, %.7f) " D16398 over 12-byte elements;
+//  6 and > 0Bh write nothing here.
+// Arrays with a non-zero count (re-read through 008EF7F0 each pass) first send 0094FFA0(writer,
+// 0) and writer+8 += 1, and at 008F21EC writer+8 -= 1 when non-zero. Every case ends with
+// 0094FF10(writer, " ;" D16394) then 0094FFA0(that, 0) (008F21FE/008F2207).
+// ---------------------------------------------------------------------------
+void scene_property_write_text_008f1ca0(Seg59bHost& host, const char* name, void* record, void* writer) {
+    auto text = [&host](std::uint32_t address) { return static_cast<const char*>(host.image_pointer(address)); };
+    const char* const empty = text(kEnumNameEmpty);
+    host.scene_text_write_0094ff10(host.scene_text_write_0094ff10(writer, name), text(0x00CF8284u));
+    bool array_tail = false;
+    switch (at<std::uint32_t>(record, 0x04)) {
+    case 0:
+        host.scene_text_write_int_00950000(host.scene_text_write_0094ff10(writer, text(0x00D163E8u)),
+                                           at<std::int32_t>(record, 0x0C));
+        break;
+    case 1: {
+        const float value = at<float>(record, 0x0C);
+        host.scene_text_write_float_00950130(host.scene_text_write_0094ff10(writer, text(0x00D163ECu)), value);
+        break;
+    }
+    case 2:
+        host.scene_text_write_0094ff10(writer, text(0x00D163E4u));
+        scene_text_write_multiline_008efa30(host, scene_property_string_value_008f0df0(host, record), writer);
+        break;
+    case 3: {
+        const std::uint8_t value = at<std::uint8_t>(record, 0x0C);
+        void* const chained = host.scene_text_write_0094ff10(writer, text(0x00D163F0u));
+        scene_property_write_bool_text_008eefe0(host, chained, value != 0);
+        break;
+    }
+    case 4: {
+        void* const decl = ptr(record, 0x28);
+        char open[2] = {0x20, 0x00};
+        char value_quote[2] = {0x20, 0x00};
+        if (host.strchr_00bf86f0(static_cast<const char*>(add(decl, 0x11C)), 0x20) != nullptr) open[0] = 0x22;
+        if (host.strchr_00bf86f0(scene_property_string_value_008f0df0(host, record), 0x20) != nullptr) {
+            value_quote[0] = 0x22;
+        }
+        const char* const letter = static_cast<const char*>(ptr(decl, 0x118));
+        void* w = host.scene_text_write_0094ff10(writer, letter != nullptr ? letter : empty);
+        w = host.scene_text_write_0094ff10(w, open);
+        w = host.scene_text_write_0094ff10(w, static_cast<const char*>(add(decl, 0x11C)));
+        w = host.scene_text_write_0094ff10(w, open);
+        w = host.scene_text_write_0094ff10(w, text(0x00CF00B0u));
+        w = host.scene_text_write_0094ff10(w, value_quote);
+        w = host.scene_text_write_0094ff10(w, scene_property_string_value_008f0df0(host, record));
+        host.scene_text_write_0094ff10(w, value_quote);
+        break;
+    }
+    case 5: {
+        alignas(4) std::uint8_t letter[8] = {};
+        host.scene_reference_get_type_letter_008f1960(record, letter);
+        const char* const letter_text = static_cast<const char*>(ptr(letter, 0x04));
+        host.scene_text_write_0094ff10(host.scene_text_write_0094ff10(writer, letter_text != nullptr ? letter_text : empty),
+                                       text(0x00D163DCu));
+        if (ptr(record, 0x18) != nullptr) {
+            alignas(4) std::uint8_t temporary[8] = {};
+            host.scene_text_write_0094ff10(host.scene_text_write_0094ff10(writer, empty), text(0x00CE436Cu));
+            host.native_string_destroy_storage_0041dd20(temporary);
+        } else {
+            host.scene_text_write_0094ff10(host.scene_text_write_0094ff10(writer, scene_property_string_value_008f0df0(host, record)),
+                                           text(0x00CE436Cu));
+        }
+        host.native_string_destroy_storage_0041dd20(letter);
+        break;
+    }
+    case 7: {
+        void* w = host.scene_text_write_0094ff10(writer, text(0x00D163E0u));
+        w = host.scene_text_write_float_00950130(w, at<float>(record, 0x0C));
+        w = host.scene_text_write_0094ff10(w, text(0x00CE3A90u));
+        w = host.scene_text_write_float_00950130(w, at<float>(record, 0x10));
+        w = host.scene_text_write_0094ff10(w, text(0x00CE3A90u));
+        host.scene_text_write_float_00950130(w, at<float>(record, 0x14));
+        break;
+    }
+    case 8: {
+        host.scene_text_write_unsigned_00950050(host.scene_text_write_0094ff10(writer, text(0x00D163D4u)),
+                                                at<std::uint32_t>(record, 0x24));
+        if (at<std::uint32_t>(record, 0x24) == 0) break;
+        host.scene_text_writer_manipulator_0094ffa0(writer, 0);
+        at<std::uint32_t>(writer, 0x08) += 1u;
+        const std::uint8_t* const bytes = static_cast<const std::uint8_t*>(ptr(record, 0x20));
+        std::uint32_t left_on_line = 0x10;
+        for (std::uint32_t index = 0; index < at<std::uint32_t>(record, 0x24); ++index) {
+            if (left_on_line == 0) {
+                host.scene_text_writer_manipulator_0094ffa0(writer, 0);
+                left_on_line = 0x10;
+            }
+            const std::uint32_t args[1] = {bytes[index]};
+            host.scene_text_write_0094ff10(writer, host.string_format_static_00439ac0(text(0x00D163CCu), args, 1));
+            --left_on_line;
+        }
+        array_tail = true;
+        break;
+    }
+    case 9:
+    case 0x0A:
+    case 0x0B: {
+        const std::uint32_t kind = at<std::uint32_t>(record, 0x04);
+        const std::uint32_t label = kind == 9 ? 0x00D163C8u : kind == 0x0A ? 0x00D163BCu : 0x00D163ACu;
+        void* const chained = host.scene_text_write_0094ff10(writer, text(label));
+        host.scene_text_write_unsigned_00950050(chained, host.scene_property_array_count_008ef7f0(record));
+        if (host.scene_property_array_count_008ef7f0(record) == 0) break;
+        host.scene_text_writer_manipulator_0094ffa0(writer, 0);
+        at<std::uint32_t>(writer, 0x08) += 1u;
+        const std::uint8_t* const data = static_cast<const std::uint8_t*>(ptr(record, 0x20));
+        if (kind == 9) {
+            write_array_elements(host, writer, 4, [&](std::uint32_t index) {
+                std::uint32_t args[2];
+                std::uint32_t count = 0;
+                float value;
+                std::memcpy(&value, data + index * 4u, sizeof value);
+                push_double_from_float(args, count, value);
+                return host.string_format_static_00439ac0(text(0x00D163C0u), args, count);
+            }, array_count_008ef7f0, record);
+        } else if (kind == 0x0A) {
+            write_array_elements(host, writer, 4, [&](std::uint32_t index) {
+                std::uint32_t args[1];
+                std::memcpy(&args[0], data + index * 4u, sizeof args[0]);
+                return host.string_format_static_00439ac0(text(0x00D163B4u), args, 1);
+            }, array_count_008ef7f0, record);
+        } else {
+            write_array_elements(host, writer, 2, [&](std::uint32_t index) {
+                std::uint32_t args[6];
+                std::uint32_t count = 0;
+                float xyz[3];
+                std::memcpy(xyz, data + index * 12u, sizeof xyz);
+                push_double_from_float(args, count, xyz[0]);
+                push_double_from_float(args, count, xyz[1]);
+                push_double_from_float(args, count, xyz[2]);
+                return host.string_format_static_00439ac0(text(0x00D16398u), args, count);
+            }, array_count_008ef7f0, record);
+        }
+        array_tail = true;
+        break;
+    }
+    default:
+        break;
+    }
+    if (array_tail && at<std::uint32_t>(writer, 0x08) != 0) at<std::uint32_t>(writer, 0x08) -= 1u;
+    host.scene_text_writer_manipulator_0094ffa0(host.scene_text_write_0094ff10(writer, text(0x00D16394u)), 0);
+}
 }  // namespace bsp::cc13_seg59b
