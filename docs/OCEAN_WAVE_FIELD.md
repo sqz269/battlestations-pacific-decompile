@@ -3316,6 +3316,6 @@ input) or a ground speed hold that does not settle exactly (idle thrust / wheel 
   rounding edge. Flipped as the bytes.
 - **Item 8 remainder.** 0099B940: the image skips a pair on an unordered compare (FCOMI / JBE at 0099B977,
   FCOMIP / JA at 0099B97F); the host's `v <= lo || hi <= v` took a NaN pair as a hit. Rewritten as
-  `!(v > lo) || !(hi > v)` without a switch: identical for every ordered value, and no NaN band was seen. 009A17D0
+  `!(v > lo) || !(hi > v)` without a switch: identical for every ordered value; no run was checked for a NaN band (unpaired). 009A17D0
   zeroes the whole +26Ch dword (009A17E9); the host carries only bit 4 (`ga_flag_26c_4`), and no other bit is
   modelled or read, so nothing to bind.
