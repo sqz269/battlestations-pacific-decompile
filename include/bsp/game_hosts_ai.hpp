@@ -496,6 +496,11 @@ void ai_publish_scene_owner_players(const std::vector<std::pair<std::string, int
 // unit+180h for a unit created at run time by index, ahead of the by-name table
 // (008206F0 bags `OwnerPlayer 8` at 00821A72). Cleared by the publication above.
 void ai_set_unit_owner_player(std::size_t unit, int owner);
+// Packet s57_follow_join (docs/SHIP_AI_OPEN_ITEMS.md section 278): 0077C8D0
+// BSP_Entity_RequestJoinFormation for a caller outside the coordinator (00816ED5,
+// the scene command `follow` arm), on the one live coordinator. False when there
+// is none or the request is refused.
+bool ai_request_join_formation_0077c8d0(std::size_t follower, std::size_t leader);
 
 class GameAiCoordinatorHost {
 public:

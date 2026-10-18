@@ -52,18 +52,26 @@ struct ShipAiApproachPoint {
 // The approach mode latch at nested+1234h
 // ---------------------------------------------------------------------------
 //
-// 009F1BC0 is the only writer in this packet: 0 at 009F1FF4 and 009F211A,
-// 1 at 009F1FE2, 009F2022 and 009F2112 (EDI is loaded with 1 at 009F1F7F),
-// 3 at 009F20B4, 4 at 009F20C0. Value 2 is compared by 009E6E80 (009E7002),
-// 009E6A90 (009E6C9F) and 009F1BC0 (009F24FC, 009F282D) but is never assigned
-// in any range this packet read, so its producer is unknown.
+// 009F1BC0 is the only writer: 0 at 009F1FF4 and 009F211A, 1 at 009F1FE2
+// (EDI is 1 from 009F1F7F on the ship branch), 2 at 009F2022 and 009F2112
+// (EDI is 2 from 009F1E25 on the path into 009F2003; CC13_VERIFY9), 3 at
+// 009F20B4, 4 at 009F20C0. The enumerator names are the old labels, kept so
+// the call sites read the same; the comments are the image's meaning.
 enum class ShipAiApproachMode : int {
-    free_0 = 0,       // no engagement geometry; the range scan at 009E71A5 runs
-    hold_1 = 1,       // 009E6E80 and 009E9190 short-circuit on it
-    unassigned_2 = 2, // read by three routines, written by none that was read
-    inside_3 = 3,     // range <= target radius + 2 * turn radius (009F20A4)
-    standoff_4 = 4,   // the ordinary approach mode
+    free_0 = 0,       // the ordinary ship-on-ship approach (any ship target past the hold test)
+    hold_1 = 1,       // a submarine hold on a kind-8 target (009F1FE2); 009E6E80 / 009E9190 return
+    unassigned_2 = 2, // a building of the unit's own side, or a side-2 building a non-lander targets
+    inside_3 = 3,     // a troop lander inside target radius + max(300, 2 * turn radius) (009F20A4)
+    standoff_4 = 4,   // a troop lander's approach to a hostile building
 };
+
+// Packet s57_attackmove_approach (docs/SHIP_AI_OPEN_ITEMS.md section 277; CC13_VERIFY2 R6,
+// CC13_VERIFY9 R1). True: 009E6E80's side arm is taken only when +1208h is SET and the mode
+// is 0 (009E73C9 TEST BL,BL / JE 009E7400 to the general arm), so with +1208h always clear
+// mode 0 goes to the general arm; the host's mode-0 frame span writes +1204h as
+// 009F275B..009F2789 do; and unit+490h answers the artillery maximum range 00956C20 stores
+// (00956E35..00956E43), not 0. False: the inverted test, no mode-0 frame write, +490h = 0.
+inline constexpr bool kAttackMoveApproachImageBound = false;
 
 // ---------------------------------------------------------------------------
 // The nested object's tail state, as the seven callees read and write it

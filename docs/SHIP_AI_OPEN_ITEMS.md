@@ -18736,3 +18736,157 @@ range.
 **Decision: ON** by mechanism (house rule: a faithful fix flips even when wins are lost). Every win row needs
 a re-time or re-plan on this tree (sent to cc9-lua65). Open: the squadron free-attack tick 009F8470
 (GUNNERY_OPEN_ITEMS 48.3) sends the same 0071D980 and can now use this override layer.
+## 275. Commands host unit table address-stable (cc9-ships57, 2026-10-17; lead item 1, memory safety)
+
+**Defect.** `GameCommandsHost::register_units` (src/game_hosts_commands.cpp) ran `host.units = std::move(units)`
+on every spawn batch (create_units ends there; GameScriptOrdersHost's two spawn producers and the air-ops
+launches reach it). Every `&units[i]` held across ticks then named freed storage: the director slot
+descriptors (director+54h + i*1Ch, `slot_target[i].object`), the override descriptor (+18Ch), the queued
+scene records (scene_command_record_004690d0), the observer pairs, and any ChainState (`unit&`,
+`director&`) live across a nested spawn. 0071E200 at 0071E70C (the push's repeat test) compares the slot
+object with the new descriptor's, so after a spawn a repeated order was never recognised as a repeat; the
+fire-target resolve at 00835930 walks `&units[i] == object` and could not find a stale pointer.
+
+**Fix (no switch).** `units` and `directors` are `std::deque`s; register_units assigns the existing rows in
+place and appends the new ones, so references survive. The other hosts were checked: the units host's
+slots and the AI host's groups are `unique_ptr`s, ship-AI neighbour nodes are heap allocations owned by the
+lists, and the ship-AI `controllers` / `rows` vectors are not pointed into across ticks (only by index).
+A census line `unit table kept in place: re-registration N, M live descriptor pointer(s)` counts the
+non-null descriptors that the old move-assign would have invalidated.
+
+**Confirmed on a spawning mission.** USNOS `s55_os_r0`, 30000 frames, before b94e15a9c (`local\s57_base_osr.log`)
+against 1658578c7 (`local\s57_us_osr.log`, manifests beside them): 16 re-registrations (one unit each, the
+Shinyo / submarine spawns), 6598 descriptors that the moved vector had left dangling by the 16th. pair_diff
+exit 1, **gameplay identical** (185 deaths, 4431 hits, every death and unit row the same): the freed buffers
+still held the old bytes in these runs, so the stale compares happened to answer as the live ones do. The
+fix removes the undefined behaviour; it moves nothing on this row. (The OFF side also logged 132 lost-device
+polls, presentation only.)
+
+## 276. A pushed attack order ends the override, kAttackPushEndsOverrideBound (cc9-ships57, 2026-10-17; lead item 2)
+
+**Image.** 0071E6C0 (src/cruise_command.cpp `director_push_command_slot_0071e6c0`) ends, after the slot store and
+the mode-1 set, with 0071E7A8 `command category == 1 or 2`, 0071E7B4 `[director+188h] != 0`, 0071E7C9
+`006E38E0([00E188A8]+1EF0h)`, which reads +F4h of that sub-object: 1EF0h + F4h = game+1FE4h, the session
+mode, returning true for 0 or 1. The single-player value this host reports everywhere is 1
+(`kSessionModeSinglePlayer`), so the gate passes. 0071E7D4 then calls 0071E2E0 (body 0071E2E0-0071E361):
+`[director+50h] < 2` -> store 2 and, unless game+1FE4h == 2, 0071C730(0, 0) routed with flags 7, the
+5Dh message with +20h = 0 that 00721A40 sends to 0071E610 (00721B9F JZ 00721BC5). The host answered 0 for
++188h, recorded the gate as false and the echo as a record (CC13_VERIFY6 R5), so since 274 an AutoTarget
+override survived every scripted or AI attack order pushed onto the queue.
+
+**Bind (OFF).** `kAttackPushEndsOverrideBound` (include/bsp/game_hosts_commands.hpp). DirectorBinding answers
++188h from the director, passes the gate for mode 1, and runs 0071E2E0: stage 2, then a 5Dh clear message
+with +20h = 0 through `route_clear_command`, so it goes through the loopback like every other 5Dh
+(kSetCommandQueueDelayBound); `apply_clear_command` answers +20h = 0 with 0071E610 (the same in-place body
+the 0071D9E0 path uses). Counters: `summary mission director override push-end bound= echoes= clears=`.
+
+**Predictions, written before any run.** OFF: gameplay identical, echoes=0. ON: echoes > 0 wherever an
+override is installed and an attack-category order is pushed afterwards (USNOS: the Shinyo/sub
+`NavigatorAttackMove` re-issues and the AI attack orders; USN13 likewise). Each echo drops the director
+back to mode 1 (queue). Where the queue head is category 3, the AutoTarget tick (009F5610 reads slot 0
+only) may re-install an override on its next think, so installs may rise; where the pushed order is the
+head, the unit follows the scripted target instead of its auto target. The override clears counter
+(`summary mission director override ... clears=`) rises by the echo clears.
+
+## 277. The ship attack-move approach, kAttackMoveApproachImageBound (cc9-ships57, 2026-10-17; lead item 3)
+
+**(b) The inverted side arm (CC13_VERIFY9 R1).** 009E73C9 `TEST BL,BL` / 009E73CE `JE 009E7400`, BL = +1208h
+(loaded at 009E7345): +1208h CLEAR goes to the general arm. The side arm (weight pi or 0, +1204h = 0 / 2)
+needs +1208h set and mode 0. `src/ship_ai_approach_update.cpp` tested `!flag_1208`, so every mode-0 scan
+took the side arm. +1208h is always clear (section 126: 009F31F3 stores vtable[22Ch] = 006DFDB0
+`XOR AL,AL`), so in the image 009E6E80 never writes +1204h, and mode 0's byte comes from the frame span
+009F275B..009F2789 (`disasm-raw 009F272D`): 2 if +1208h set; else 0 if 009E5E30 (brain+B20h non-null and
+IsKindOf(6), body 009E5E30-009E5E4E read whole) or byte [00E0E2FC] is set; else 1. [00E0E2FC] is
+NavigatorLandAttackerStop's byte (008A2A50 stores !arg), set to 1 by the mission load
+(MISSION_SCENE_LOAD.md step 4); only escort10.lua (multiplayer) calls the binding, so the single-player
+answer is 0 in every mode-0 frame. LABELLED: the byte is that constant.
+
+**(a) +490h (CC13_VERIFY2 R6).** 00956C20 seeds +490h with 10.0f and raises it to the longest range of a
+Function 2/3/4/6 gun (00956E35..00956E43); the gunnery host already keeps it (`GameGunneryUnitRow::
+artillery_max_range`). The three bindings answered 0. Its consumers are the cruise band 009E7138 (needs
++1208h set) and the two reverse-goal tests 009E7E7D / 009E76D0 (need +1209h set); the host never writes
++1209h, so the reads are expected to stay at 0 on these rows. Bound for completeness.
+
+**Mode labels.** include/bsp/ship_ai_approach_update.hpp now says what each mode is (CC13_VERIFY9: mode 2 is
+stored at 009F2022 / 009F2112 with EDI = 2 from 009F1E25; mode 0 is the ordinary ship-on-ship approach,
+mode 4 a troop lander's approach to a hostile building).
+
+**Predictions, written before any run.** OFF identical (`summary mission ship ai attackmove approach
+bound=0 range_0490_reads=0 mode0_side_writes=0/0/0`). ON: mode0_side_writes all in the 0 column;
+range_0490_reads 0. With the gate at 0 instead of 2 past the standoff, 009E6A90 applies no
+`clamp((dist - 50) / 80, 0, 2)` cap near the standoff ring, so AI ships attacking ships close at full
+throttle through the ring instead of slowing and holding at it; inside the standoff the side weight
+becomes ((c + c*c) * 0.5 * pi + pi) * 0.5 instead of pi (equal for |offset| >= 1), moving the chosen
+bearing slot within one turn radius. Expect moved ship tracks and gunnery timings on every surface
+battle (USN12, USN15, IJN08, JM08).
+
+## 278. Scene `Command = Follow` joins the formation, kSceneFollowJoinBound (cc9-ships57, 2026-10-17; lead item 4)
+
+**Image (CC13_VERIFY6 R2).** The `follow` arm of 00816E30: 00816EA6 `CMP EBP,0E08F60`, 00816EB6 00521EA0 on the
+descriptor, 00816ECA the target's vt[5Ch](2), and 00816ED5 `CALL 0077C8D0` (RequestJoinFormation, ECX = this
+unit, argument the kind-2 target or null), then 00816EE2 0064A8E0 (a HUD ping). The commands host answered
+the kind test false and recorded 0077C8D0, so the cascade (src/entity_command_arms.cpp:50) passed target 0
+to a record: ESMP08 (`g51_r1_e8`) logs `formation join ... joined=0` and the script's `formation leader
+calls=446 found=0`.
+
+**Bind (OFF).** `kSceneFollowJoinBound` (include/bsp/game_hosts_commands.hpp). The kind test answers from the
+target's class chain (`bsp::unit_is_kind_of(class_id, 2)`, the target id being index + 1); the request goes to
+the AI coordinator's existing 0077C8D0 (`tick_request_join_formation`: 00779D50 facts, then the 76h join
+0077F940 through the loopback, kPlannerJoinLoopbackBound) through the new free function
+`ai_request_join_formation_0077c8d0` on the one live coordinator. 0064A8E0 stays a record (presentation).
+Counter: `summary mission scene follow join bound= requests= available=`.
+
+**Predictions, written before any run.** OFF identical (requests=0). ON on ESMP08 (30 authored Follow
+tokens: every destroyer and light carrier follows Iowa or Zuikaku): requests ~30 at scene load, most
+available; `formation join ... joined` > 0; the script's GetFormationLeader finds leaders (found > 0); the
+followers' idle tail issues `follow` (00836E38) instead of cruise/stop, so escorts track their leaders and
+the battle geometry moves. JM08/USN01/USN04/USN13/LOMP10 author no Follow token: identical there.
+
+## 279. The moveonpath join index, kPathJoinProjectionBound (cc9-ships57, 2026-10-17; lead item 5)
+
+**Image (CC13_VERIFY7 R1).** 007B1C50 handles start modes 5 (JOIN / JOIN_FORWARD), 7 (JOIN_RANDOM_DIR) and 8
+(JOIN_BACKWARDS); 6 (BEGIN) stores 0. It sets the direction byte cursor+10h, then cursor+8 = the source's
+vt+10h (007B1D24), 007B11F0 for an authored path (read whole by cc13 front: `start_index_for_position_007b11f0`,
+src/gameplay_seg46_cc13.cpp): with fewer than two points, or the nearest at the end in the travel direction,
+the nearest; else the neighbour m when s = dot(unit(p_m - p_n) on x/z via 00419260, pos - p_n) > 0
+(007B1303 JA). The host's 0071F600 build took the nearest alone, so a ship already past its nearest point
+turned back to it.
+
+**Bind (OFF).** `kPathJoinProjectionBound` (include/bsp/game_hosts_commands.hpp). The build calls
+`start_index_for_position_007b11f0` for modes 5/7/8 with the host's existing nearest index (the
+007B1100 hypothesis, 2D) and an 00419260 that follows its body (float squares, float sum, CRT sqrt to
+float, 1/r, 0 for zero; disasm-raw 00419260..004192D4). Direction: backward for 8, forward for 5 and 7
+(the 007B1CE2 draw stays unmodelled, as before). LABELLED: a kind-0 user path is projected the same way
+(its vt+10h is unverified, CC13_VERIFY7). Counter: `summary mission path join projection bound= joins=
+advanced=`.
+
+**Predictions, written before any run.** OFF identical (joins=0). ON: joins = the moveonpath builds;
+`advanced` > 0 only where a ship is already past its nearest point (likely a minority: most paths are
+joined from a start position before the first point). Where advanced, the ship heads for the next point
+instead of looping back: a shorter early track on JM08 / USN04 path followers.
+
+## 280. Garrison MinLevel and the MoveTo capture range, kGarrisonMinLevelBound / kShipMoveToCaptureRangeBound (cc9-ships57, 2026-10-17; lead item 6)
+
+**MinLevel (CC13_VERIFY2 R4).** 006F5CC0 pass 1 builds each garrison record on the stack at ESP+40h; 006F5E34
+`MOV ECX,[EDI+724h]` (the member's bag clone), 006F5E3A 008F41F0, 006F5E4D 008F2260 find of 00CFB24C
+(`MinLevel`), and 006F5E56 `MOV EAX,[EAX+0Ch]` into ESP+9Ch, record+5Ch (`disasm-raw 006F5DCF`). The host
+kept only whether the find succeeds and stored 0. This installation's scenes author non-Basic values
+(us_osumi.scn 2x Advanced, 2x Medium; usn_13_battle_of_iwo_jima.scn 15x Expert; library default
+`E CommandBuildingLevels : Basic` in landfort.props / commandbuildinginferior.props; global.enums
+Expert = 3). The scene host now resolves the value like Dive (`depth_value("MinLevel", ...)`), the units
+host keeps it (`unit_inferior_min_level_0724`), and the adoption stores it in +5Ch. The kill arm
+006F36AE..006F36F0 now runs the gunnery host's `kill_unit_00926d90(member, 2)` instead of a record.
+
+**Capture range (CC13_VERIFY2 R5).** 009E5770's arrival test 009E58CE and 009E59C0's 009E5BA6 FILD the
+CommandBuilding target's +7A0h (after the 009E585F / 009E5B4x IsKindOf(1Ch) gate). Both bindings answered
+0, so the arrival arms (009E58E6..009E59A2 / 009E5BBC..009E5C7B: the "finished" report through 00984300,
+0071E430(cmd, 1), hold heading and stop) never ran for a building target. They now read
+`command_building_capture_range_07a0`.
+
+**Predictions, written before any run.** OFF identical (moveto_range_reads=0, garrison kills as before).
+ON: USNOS: the four non-Basic members are killed at adoption when their building's Level is below
+their MinLevel (garrison `kills` > 0, `kill 00926D90(2) (done)` lines), and re-created when the building
+levels up to them; USN13: up to 15 Expert members die at adoption unless their building starts at
+Expert. moveto_range_reads > 0 on missions that MoveTo a ship at a CommandBuilding (USN13 / USNOS
+landing ships), and those ships now finish the move at the capture ring (stop, `finished` report)
+instead of driving on to the building's centre.

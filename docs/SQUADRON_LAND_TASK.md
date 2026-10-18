@@ -17709,3 +17709,62 @@ Prediction (JM06 reference and 20,3, the WINS row `jm06_p12_j6_c1`): the Lexingt
 submarine chooses 00E08F38 instead of strafe, installs the kind-1 task, and drops depth charges on the player's
 submarine; the player submarine takes depth-charge damage, so the row may move or lose. USN21 (cc13's confirmed reach,
 the Jakes) moves too.
+
+
+### 5ic.1 The rack walk answers a depth-charge rack (cc9-lua65 / cc9-lua66, 2026-10-17)
+
+lua65's census (198b47ddd, 3c86cbf05) with the switch flipped locally on JM06 (`local\l65rt_j6t_ref.log`, dirty tree)
+showed the task arming (00E08F38 chosen, 0099A170 -> 1) but the units host's rack walk (007C0DCB vtable[210h](2Ah, 0))
+answering only a torpedo or, under the Vals switch, a general bomb: `ordnance_has_general_bomb_2ah` excludes 2Ch, so a
+Helldiver's depth-charge rack (2Ah ordnance whose descriptor also answers 2Ch) was never found. The image's walk asks
+2Ah unfiltered, so the depth-charge rack is one of its answers. The walk now also answers 2Ah+2Ch under
+`bsp::kDepthChargeTaskBound` (still OFF). With it, the local ON run logs rack drops 3/7/3 for the three Helldiver
+squadrons (`depthcharge ... rack 006E56F0: drops=`), 10/25/10 release-stage issues. The pair is packet (3) of cc9-lua66.
+
+## 5id. PutTo / PutFormationTo: heading, reshape and the formation arms (cc9-lua66, 2026-10-17)
+
+Packet `cc9_l66_putto`, switch `bsp::game::kPutToFormationBound` (include/bsp/game_hosts_units.hpp), committed OFF.
+Sources: docs/CC13_VERIFY4.md R4/R5, CC13_VERIFY12.md R8; the listing of 008193A0, 008196B0, 009584D0, 0047F200, 00B646E0.
+
+- **Heading, 008196B0** (vtable +11Ch): 009584D0 -> 0047F200 builds RotationY(-0.0 - heading) (00B646E0 stores
+  m[0] = cos, m[2] = -sin, the D3DX form) times the translation of the current position, so the host heading
+  atan2(row2.x, row2.z) is the negated argument. Then 00818EA0 refills the wake ring, and an occupant owner (00778890:
+  group+14h == unit, the leader) re-places every other member through vtable[118h](&00F87574, the zero vector).
+  `GameUnitsHost::set_heading_008196b0`. LABELLED: ships only (IsKindOf 6); the +BCCh 1.25 and vtable[0D8h] have no host
+  counterpart; pitch and roll are dropped as 0047F200 does.
+- **Placement, 008193A0**: a follower asked for a point with |pos|^2 <= 25.0 (00CE3880) is placed at its station
+  (0081945D-0081950A: 00810630 on the leader's wake at the record's axial column, pushed by the lateral column along
+  (-dir.z, dir.x), y = 0), i.e. `formation_station_0070d290(unit, 1, 1)`, then turned by vtable[11Ch](-0.0 -
+  wrap_2pi(pi/2 - atan2(dir.z, dir.x))) with the float-widened constants 00CE3830 / 00CE3828. A far point places nothing.
+  A leader re-places every other member at the origin (00819672). The OFF arm is unchanged (followers refused, the snap
+  a record).
+- **Reshape, 0070EFD0(shape)**: `reshape_formation_0070efd0` runs `ship_ai_formation_reshape` over the group's records
+  with ShipGlobals.Formacio.FormationShipDist (settings+42Ch). 0070EFD0 does not write group+500h, and the host's
+  column is always 0, so the rewritten column is the live one.
+- The script-orders half (PutTo with exactly three arguments, 008AA10E `cmp eax, 3`, heading = float(arg * 00CE3D28) /
+  00CE3D20 as for PutFormationTo's four; PutFormationTo's reshape before the move) follows when that file's lease frees.
+
+Prediction (USN02 `s36_u2_p7`, PRCP01, JM08 `luaJM8USFormation`): PutFormationTo at usn_02 :985 / :990 reshapes the
+group (shape 1 then 3) and its followers jump onto their stations at the new point, turned along the leader's wake;
+PutTo with a heading turns the unit and, for a leader, snaps the formation. Rows that call neither are identical.
+
+## 5ie. `kDepthChargeTaskBound` pairs and flip: **ON** (cc9-lua66, 2026-10-17)
+
+Exports of bb5d16e51 (`local\l66_g_off` control, `local\l66_dc_on` with the switch); reference env; logs
+`local\l66r_{j6,u21}_{g_off,dc_on}_ref.log`.
+
+- **JM06 `jm06_p12_j6_c1`** (pair_diff 3): the Helldivers' `PilotSetTarget` at I-400 now choose 00E08F38 and arm 009A66C0
+  (11926 arm calls; BotTaskStrafe 14953 -> 0). Deaths 22 = 22; the mission completes at 1379.22 s in both. Lexington
+  sqn02 closes from about 3000 m to 1351 m and its .-II dies to I-400's AA at 1062.41 s instead of to Yamato at 1371.81 s;
+  I-400 fires 64 -> 474 shots. Census: sqn02 reaches aim for 24 ticks and breaks off to done (009A65F0's distance test),
+  sqn01 never leaves moveto, so no release is issued this time (lua65's dirty-tree run on the older base logged
+  10/25/10 release issues and 3/7/3 rack drops at the submarine, 5ic.1).
+- **USN21 `l65_u21_f`** (pair_diff 3): the Jake arms the task, flies turnto -> aim -> goaway and issues 28 releases
+  (`stage 007CE9FD: issues=28`), but drops nothing: `rack ... ammo=0`, because it is unequipped (bag 0) and
+  kRackUnequippedEmptyBound gives its racks no round (5ey), as for every other ordnance kind. The row moves widely
+  (deaths 231 -> 293, end 1089.94 -> 1260.10 s, both completed), all downstream of the Jake no longer strafing.
+  The exec guard logged its sus_prog.exe refusal in both runs.
+
+Mechanism as predicted up to the release (choice, arm, state machine, issue stage); the drop itself is shown only on
+the older base, and USN21's empty racks follow the shared 5ey rule. Flipped ON; a JM06 drop at the submarine is still
+to be seen on a current-base run.

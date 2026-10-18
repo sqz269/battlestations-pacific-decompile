@@ -80,3 +80,13 @@ CommandBuilding target. JM08 has HQ buildings, so try it first.
   `squadron retest:` line. The squadron unit gains a moveto row over the building.
 - **Everywhere else:** no change. A squadron whose target is not a CommandBuilding, or whose queue
   holds more than one command, behaves byte for byte as it did with the switch OFF.
+
+## The moveto-self tail (cc9-lua66, 2026-10-17)
+
+The 'Interaction with moveto-self' caveat above is wrong for the image. `0084E4B1-0084E4BF` (stage +48h == 2) and
+`0084E595-0084E5A6` both test `0071BE60()`, the director's filled slots, and 009F7D75's moveto goes into that same
+director before `0071E430` ends the command. With the moveto queued the count is 2 (or, if the end empties its slot,
+the moveto is current at stage 0 and the count 1 exceeds 0), so the image issues no moveto-self in that cycle. The host
+fixed the count at 1 and would have issued both. Now `SpentOrdnanceRtb::building_moveto_queued` records a placed
+009F7D75 moveto at the end, and the tail passes 2 to both tests (still behind `kSquadronCommandBuildingMoveToBound`).
+LABELLED: the flag clears only when the moveto-self cycle restarts or a later end reassigns it.
