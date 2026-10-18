@@ -2708,4 +2708,197 @@ float entity_hull_distance_to_point_008ff640(Seg59bHost& host, void* entity, con
     const float point[2] = {ax, az};
     return host.segment2f_point_distance_00419ab0(start, end, point);
 }
+
+// ---------------------------------------------------------------------------
+// 0090EA00 BSP_MissionScoreRecord_PublishToLua. __thiscall(ECX = record), RET. Caller 009150A0
+// (009150D3; see scoring_force_refresh_009150a0).
+// Evidence: 0090EA2D 00B67980(game+1A0Ch, &globals). key = NativeString {0, 0},
+// 0041DD40(7, 1), memcpy("scoring" CF8268, size + 1) (0090EA48 / 0090EA63); 0090EA79
+// 00B67350(&globals, &key) (scoring = nil); key released. The same key again, 0090EAE2
+// 00B67580(&globals, &key) (scoring = {}); released. 0090EB1D 00B67800(&globals, &arg, "scoring")
+// into the by-value argument of 0090EB26 0090E920(&holder, arg); 0090EB37 00908A30(record,
+// &holder). The holder's destructor is inlined: vtable 00D18784, 0090EB4D 00441210(holder+4),
+// vtable 00CE3784; then 0090EB66 00B67700(&globals).
+// ---------------------------------------------------------------------------
+void score_record_publish_to_lua_0090ea00(Seg59bHost& host, void* record) {
+    alignas(4) std::uint8_t globals[0x14];
+    host.lua_owner_get_globals_00b67980(add(game_global(host), 0x1A0C), globals);
+    const char* const scoring = image_text(host, 0x00CF8268u);
+    alignas(4) std::uint8_t key[8];
+    at<std::uint32_t>(key, 0x00) = 0;
+    at<std::uint32_t>(key, 0x04) = 0;
+    host.native_string_resize_0041dd40(key, 7, 1);
+    if (ptr(key, 0x04) != nullptr) host.memcpy_00bf7680(ptr(key, 0x04), scoring, at<std::uint32_t>(key, 0x00) + 1u);
+    host.lua_object_set_nil_00b67350(globals, key);
+    release_native_string(host, key);
+    at<std::uint32_t>(key, 0x00) = 0;
+    at<std::uint32_t>(key, 0x04) = 0;
+    host.native_string_resize_0041dd40(key, 7, 1);
+    if (ptr(key, 0x04) != nullptr) host.memcpy_00bf7680(ptr(key, 0x04), scoring, at<std::uint32_t>(key, 0x00) + 1u);
+    host.lua_object_set_new_table_00b67580(globals, key);
+    release_native_string(host, key);
+    alignas(4) std::uint8_t table[0x14];
+    host.lua_object_get_by_name_00b67800(globals, table, scoring);
+    alignas(4) std::uint8_t holder[0x14];
+    lua_object_holder_construct_0090e920(host, holder, table);
+    host.mission_score_record_write_archive_00908a30(record, holder);
+    at<std::uint32_t>(holder, 0x00) = 0x00D18784u;
+    host.lua_object_vector_tidy_00441210(add(holder, 0x04));
+    at<std::uint32_t>(holder, 0x00) = 0x00CE3784u;
+    host.lua_object_destruct_00b67700(globals);
+}
+
+// ---------------------------------------------------------------------------
+// 009105F0 BSP_ObjectiveListsMessage_Apply. __thiscall(ECX = message), RET. Caller 00777850
+// (BSP_Session_PumpReceiveQueue). The nine containers are the mission objective lists at
+// 00E196CC..00E19797 (three NativeString vectors, three vector<bool>, three int vectors, then
+// three more NativeString vectors at 00E19768 / 00E19778 / 00E19788).
+// Evidence: local NativeString {0, 0}; switch on [message+18h] through 009108C8 (above 7 ->
+// nothing). 0..5: 0041E350(&text, message+1Ch) then 00450540(list, &text) on 00E196CC /
+// 00E196DC / 00E196EC / 00E19768 / 00E19778 / 00E19788 (009106BD..00910771). 6: six counts at
+// message+11Ch..130h, each decremented before use (ADD -1, JS) so they end at -1; one shared
+// byte cursor over message+1Ch: the first three feed 0049F2D0(byte != 0) on 00E196FC /
+// 00E19710 / 00E19724, the last three 006257D0(&(int)(signed char)byte) on 00E19738 /
+// 00E19748 / 00E19758. 7: byte [message+134h] == 0 -> 00498FF0 x3, 005F6190 x3, 00622F50 x3
+// (00910649..00910699); == 1 -> 00626C50 (009106AB). The text released at the end.
+// ---------------------------------------------------------------------------
+void objective_lists_message_apply_009105f0(Seg59bHost& host, void* message) {
+    alignas(4) std::uint8_t text[8] = {};
+    void* const payload = add(message, 0x1C);
+    static constexpr std::uint32_t kStringLists[6] = {0x00E196CCu, 0x00E196DCu, 0x00E196ECu,
+                                                      0x00E19768u, 0x00E19778u, 0x00E19788u};
+    const std::uint32_t kind = at<std::uint32_t>(message, 0x18);
+    if (kind <= 5) {
+        host.native_string_assign_cstring_0041e350(text, static_cast<const char*>(payload));
+        host.native_string_vector_append_00450540(host.image_pointer(kStringLists[kind]), text);
+    } else if (kind == 6) {
+        static constexpr std::uint32_t kFlagLists[3] = {0x00E196FCu, 0x00E19710u, 0x00E19724u};
+        static constexpr std::uint32_t kIntLists[3] = {0x00E19738u, 0x00E19748u, 0x00E19758u};
+        std::uint32_t cursor = 0;
+        for (int list = 0; list < 3; ++list) {
+            std::int32_t& count = at<std::int32_t>(message, 0x11C + list * 4);
+            while ((count += -1) >= 0) {
+                const bool flag = at<std::uint8_t>(payload, cursor) != 0;
+                ++cursor;
+                host.bool_vector_push_back_0049f2d0(host.image_pointer(kFlagLists[list]), flag);
+            }
+        }
+        for (int list = 0; list < 3; ++list) {
+            std::int32_t& count = at<std::int32_t>(message, 0x128 + list * 4);
+            while ((count += -1) >= 0) {
+                const std::int32_t value = static_cast<std::int8_t>(at<std::uint8_t>(payload, cursor));
+                ++cursor;
+                host.int_vector_push_back_006257d0(host.image_pointer(kIntLists[list]), &value);
+            }
+        }
+    } else if (kind == 7) {
+        const std::uint8_t reset = at<std::uint8_t>(message, 0x134);
+        if (reset == 0) {
+            host.native_string_vector_clear_00498ff0(host.image_pointer(0x00E196CCu));
+            host.native_string_vector_clear_00498ff0(host.image_pointer(0x00E196DCu));
+            host.native_string_vector_clear_00498ff0(host.image_pointer(0x00E196ECu));
+            host.bool_vector_clear_005f6190(host.image_pointer(0x00E196FCu));
+            host.bool_vector_clear_005f6190(host.image_pointer(0x00E19710u));
+            host.bool_vector_clear_005f6190(host.image_pointer(0x00E19724u));
+            host.int_vector_clear_00622f50(host.image_pointer(0x00E19738u));
+            host.int_vector_clear_00622f50(host.image_pointer(0x00E19748u));
+            host.int_vector_clear_00622f50(host.image_pointer(0x00E19758u));
+        } else if (reset == 1) {
+            host.objective_lists_reset_00626c50();
+        }
+    }
+    release_native_string(host, text);
+}
+
+// ---------------------------------------------------------------------------
+// 0090CDD0 BSP_StringIntMap_SumNationMissions. __thiscall(ECX = owner, nation), RET 4; EAX =
+// the sum, or 0 when a key is missing. No code caller and no absolute-dword reference.
+// Evidence: prefix = "" (0041DD40(0, 1), memcpy CE3A0C); nation 1 -> 0041DD40(3, 0) and
+// memcpy("USN" CF1468, 3) (0090CE5A); nation 0 -> 0041E350("IJN" D18780) (0090CE71). key = {0,
+// 0}. For i = 1..14: i < 10 -> digit = "0" (CE43BC, 0041DD40(1, 1)) and suffix =
+// 004263B0(digit, &suffix, i) (0090CEED); else suffix = 004260B0(i) (0090CF04). joined =
+// 004261A0(prefix, &joined, suffix) (0090CF26); key = joined (0041DD40 + memcpy, 0090CF46);
+// joined released, then the live temporaries by their flag bits (4: the 004260B0 string, 2: the
+// 004263B0 string, 1: the "0" string). node = 004BF370(owner+0Ch, &key) (0090D02A); found when
+// node != head and not key < node key (empty key: less unless the node key is empty; empty node
+// key: not less; else 00BF7FBF _stricmp < 0) with the 00BF6713 checks (0090D039..0090D0B6);
+// missing -> key and prefix released, return 0 (0090D139). Found -> sum += [node+14h].
+// After the loop, key and prefix released; return sum.
+// ---------------------------------------------------------------------------
+std::int32_t string_int_map_sum_nation_missions_0090cdd0(Seg59bHost& host, void* owner, std::int32_t nation) {
+    std::int32_t sum = 0;
+    alignas(4) std::uint8_t prefix[8] = {};
+    host.native_string_resize_0041dd40(prefix, 0, 1);
+    if (ptr(prefix, 0x04) != nullptr) {
+        host.memcpy_00bf7680(ptr(prefix, 0x04), host.image_pointer(kEmptyString), at<std::uint32_t>(prefix, 0x00) + 1u);
+    }
+    if (nation == 1) {
+        host.native_string_resize_0041dd40(prefix, 3, 0);
+        if (ptr(prefix, 0x04) != nullptr) {
+            host.memcpy_00bf7680(ptr(prefix, 0x04), host.image_pointer(0x00CF1468u), at<std::uint32_t>(prefix, 0x00));
+        }
+    } else if (nation == 0) {
+        host.native_string_assign_cstring_0041e350(prefix, image_text(host, 0x00D18780u));
+    }
+    alignas(4) std::uint8_t key[8] = {};
+    void* const map = add(owner, 0x0C);
+    for (std::int32_t index = 1; index < 0x0F; ++index) {
+        alignas(4) std::uint8_t digit[8] = {};
+        alignas(4) std::uint8_t padded[8];
+        alignas(4) std::uint8_t plain[8];
+        std::uint32_t live = 0;
+        void* suffix = nullptr;
+        if (index < 10) {
+            host.native_string_resize_0041dd40(digit, 1, 1);
+            if (ptr(digit, 0x04) != nullptr) {
+                host.memcpy_00bf7680(ptr(digit, 0x04), host.image_pointer(0x00CE43BCu), at<std::uint32_t>(digit, 0x00) + 1u);
+            }
+            live |= 1;
+            suffix = host.native_string_concat_int_004263b0(digit, padded, index);
+            live |= 2;
+        } else {
+            suffix = host.native_string_from_int_004260b0(plain, index);
+            live |= 4;
+        }
+        alignas(4) std::uint8_t joined[8];
+        void* const result = host.native_string_concat_004261a0(prefix, joined, suffix);
+        if (result != key) {
+            host.native_string_resize_0041dd40(key, at<std::uint32_t>(result, 0x00), 1);
+            if (at<std::uint32_t>(result, 0x00) != 0) {
+                host.memcpy_00bf7680(ptr(key, 0x04), ptr(result, 0x04), at<std::uint32_t>(key, 0x00));
+            }
+        }
+        release_native_string(host, joined);
+        if ((live & 4) != 0) release_native_string(host, plain);
+        if ((live & 2) != 0) release_native_string(host, padded);
+        if ((live & 1) != 0) release_native_string(host, digit);
+        void* node = host.string_int_map_lower_bound_004bf370(map, key);
+        if (map == nullptr) host.checked_iterator_failure_00bf6713();
+        if (node != ptr(map, 0x04)) {
+            std::int32_t order = 0;
+            if (at<std::uint32_t>(key, 0x00) == 0) {
+                order = at<std::uint32_t>(node, 0x0C) != 0 ? -1 : 0;
+            } else if (at<std::uint32_t>(node, 0x0C) != 0) {
+                order = host.stricmp_00bf7fbf(static_cast<const char*>(ptr(key, 0x04)),
+                                              static_cast<const char*>(ptr(node, 0x10)));
+            }
+            if (order < 0) node = ptr(map, 0x04);
+        } else {
+            node = ptr(map, 0x04);
+        }
+        void* const head = ptr(map, 0x04);
+        if (map == nullptr || map != add(owner, 0x0C)) host.checked_iterator_failure_00bf6713();
+        if (node == head) {
+            release_native_string(host, key);
+            release_native_string(host, prefix);
+            return 0;
+        }
+        if (map == nullptr) host.checked_iterator_failure_00bf6713();
+        if (node == ptr(map, 0x04)) host.checked_iterator_failure_00bf6713();
+        sum += at<std::int32_t>(node, 0x14);
+    }
+    release_native_string(host, key);
+    release_native_string(host, prefix);
+    return sum;
+}
 }  // namespace bsp::cc13_seg59b

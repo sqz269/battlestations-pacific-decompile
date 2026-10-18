@@ -295,6 +295,34 @@ struct Seg59bHost {
     virtual void vector3f_transform_affine_point_004142e0(const float* source, float* out, const void* matrix) = 0;
     // 00419AB0 BSP_Segment2f_PointDistance, __fastcall(ECX = start, EDX = end, point), RET 4; ST0.
     virtual float segment2f_point_distance_00419ab0(const float* start, const float* end, const float* point) = 0;
+    // 00B67350 BSP_LuaObject_SetNil / 00B67580 BSP_LuaObject_SetNewTable, __thiscall(ECX = table,
+    // NativeString* name), RET 4.
+    virtual void lua_object_set_nil_00b67350(void* table, void* name) = 0;
+    virtual void lua_object_set_new_table_00b67580(void* table, void* name) = 0;
+    // 00908A30 BSP_MissionScoreRecord_WriteArchive, __thiscall(ECX = record, archive), RET 4
+    // (cc9 mission_progress.cpp write_mission_score_record_00908a30).
+    virtual void mission_score_record_write_archive_00908a30(void* record, void* archive) = 0;
+    // 0041E350 BSP_NativeString_AssignCString, __thiscall(ECX = string, text), RET 4.
+    virtual void* native_string_assign_cstring_0041e350(void* string, const char* text) = 0;
+    // Objective-list containers, all __thiscall(ECX = container): 00450540 append(NativeString*),
+    // 0049F2D0 vector<bool> push_back(bool), 006257D0 int push_back(const int*), and the clears
+    // 00498FF0 / 005F6190 / 00622F50 (each RET 4 when it takes an argument).
+    virtual void native_string_vector_append_00450540(void* vector, void* string) = 0;
+    virtual void bool_vector_push_back_0049f2d0(void* vector, bool value) = 0;
+    virtual void int_vector_push_back_006257d0(void* vector, const std::int32_t* value) = 0;
+    virtual void native_string_vector_clear_00498ff0(void* vector) = 0;
+    virtual void bool_vector_clear_005f6190(void* vector) = 0;
+    virtual void int_vector_clear_00622f50(void* vector) = 0;
+    // 00626C50, no register or stack input: rebuilds the objective lists from the game state.
+    virtual void objective_lists_reset_00626c50() = 0;
+    // 004263B0 BSP_NativeString_ConcatInt, __thiscall(ECX = source, out, value), RET 8; EAX = out.
+    virtual void* native_string_concat_int_004263b0(void* source, void* out, std::int32_t value) = 0;
+    // 004260B0 BSP_NativeString_FromInt, __thiscall(ECX = out, value), RET 4; EAX = out.
+    virtual void* native_string_from_int_004260b0(void* out, std::int32_t value) = 0;
+    // 004BF370 STL_CaseInsensitiveStringIntMap_LowerBound, __thiscall(ECX = map, key*), RET 4; EAX = node.
+    virtual void* string_int_map_lower_bound_004bf370(void* map, void* key) = 0;
+    // 00BF7FBF __stricmp, __cdecl(a, b).
+    virtual std::int32_t stricmp_00bf7fbf(const char* a, const char* b) = 0;
     // 00419CC0 BSP_SizedStoragePool_GetSingleton (no args); 00BD1510 ReturnBlock,
     // __thiscall(ECX = pool, data, bytes, flag), RET 0Ch.
     virtual void* sized_pool_singleton_00419cc0() = 0;
@@ -610,6 +638,15 @@ void common_resource_cache_preload_008fafc0(Seg59bHost& host, void* cache);
 // 008FF640, __fastcall(ECX = entity, EDX = p, q), RET 4; ST0: q's distance from the ship hull
 // outline placed at p (XZ distance for a null or non-ship entity).
 float entity_hull_distance_to_point_008ff640(Seg59bHost& host, void* entity, const float* p, const float* q);
+// 0090EA00, __thiscall(ECX = record), RET: Lua scoring = nil, scoring = {}, then 00908A30 writes
+// the record into it through a 0090E920 holder.
+void score_record_publish_to_lua_0090ea00(Seg59bHost& host, void* record);
+// 009105F0, __thiscall(ECX = message), RET: applies an objective-list network message (append,
+// bulk flags/ints, or reset) to the 00E196CC.. containers.
+void objective_lists_message_apply_009105f0(Seg59bHost& host, void* message);
+// 0090CDD0, __thiscall(ECX = owner, nation), RET 4; EAX: the sum of the owner+0Ch map's values for
+// "USN01".."USN14" (nation 1) or "IJN01".."IJN14" (nation 0), 0 when one is missing.
+std::int32_t string_int_map_sum_nation_missions_0090cdd0(Seg59bHost& host, void* owner, std::int32_t nation);
 // 008F7CF0, __thiscall(ECX = scope), RET; EAX = scope: 00BD2FE0.
 void* random_threads_scope_construct_008f7cf0(Seg59bHost& host, void* scope);
 // 008F7D20, no arguments: destroy and free the object at [01090AA0], then clear it.

@@ -230,3 +230,11 @@ None of these six is reached: apart from their own recursion and 008F71E0's use 
 | --- | --- | --- | --- |
 | `008FAFC0` | BSP_CommonResourceCache_Preload | reconstructed | `common_resource_cache_preload_008fafc0`: runs once, under an "IngamePrecache" file block (`00BE0A30`/`00BDCB30`). It fills 54h textures (`[00F8D394]`->vt[64h]), 9 sounds (`00A83FD0`) and 3Ch models (`007188A0`) from the tables at 00E0C988 / 00E0CAD8 / 00E0CB00, and reports `0057C1A0` progress at step / 153.0 after each item. It is live at title start: cc9's `game_entry.hpp` names the call at 004E5758 as `notify_title_ready`, but no body is hosted. |
 | `008FF640` | BSP_Entity_HullDistanceToPoint_Provisional | reconstructed | `entity_hull_distance_to_point_008ff640`: for a null or non-ship entity, the XZ distance (zero below 1e-10). For a ship, q is moved into hull space (`00B63D50` inverse built lazily, `004142E0`) and tested against an outline from hull+0A0h / +0A4h before `00419AB0`. The operand order comes from the DC/DE bytes. The model uses 24-bit precision; see the uncertainty in the source. Unreferenced. |
+
+## Scoring publish, objective-list message and nation sum
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `0090EA00` | BSP_MissionScoreRecord_PublishToLua | reconstructed | `score_record_publish_to_lua_0090ea00`: Lua `scoring = nil`, then `scoring = {}` (`00B67350`, `00B67580`), then the record is written into the table by cc9's `00908A30` through a `0090E920` holder (0090EB37). The holder's destructor is inlined. |
+| `009105F0` | BSP_ObjectiveListsMessage_Apply | reconstructed | `objective_lists_message_apply_009105f0`: a network message from `00777850` with eight cases (jump table 009108C8): append a text to one of six string lists, drain six counts of flags and ints into the 00E196FC.. containers, or clear everything / call `00626C50`. The counts in the message are left at -1, as in the image. |
+| `0090CDD0` | BSP_StringIntMap_SumNationMissions | reconstructed | `string_int_map_sum_nation_missions_0090cdd0`: sums the owner+0Ch map over "USN01".."USN14" or "IJN01".."IJN14" (`004BF370` with the `_stricmp` match), and returns 0 when a key is missing. Unreferenced. |
