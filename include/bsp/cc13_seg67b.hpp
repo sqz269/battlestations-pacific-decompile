@@ -525,6 +525,57 @@ public:
     virtual void pilot_control_clear_release_orders_007ed3c0(void* control) = 0;
     // 007BCBE0 BSP_Unit_SetQueuedReleaseOrders: __thiscall(ECX = unit; count), RET 4.
     virtual void unit_set_queued_release_orders_007bcbe0(void* unit, std::int32_t count) = 0;
+    // 00438E40 BSP_NativeString_Duplicate: __fastcall(ECX = text), RET, EAX = the heap
+    // copy (0 for a null text).
+    virtual void* string_duplicate_00438e40(const char* text) = 0;
+    // 009DA4E0 BSP_ShipAi_ClearPathPlan: __fastcall(ECX = navigator block), RET. Body:
+    // ship_ai_clear_path_plan_009da4e0 (ship_ai_state_steps.hpp).
+    virtual void ship_ai_clear_path_plan_009da4e0(void* blk) = 0;
+    // 004C7070 BSP_DiagnosticPrintf: cdecl(a, float b, float c, fmt, ...).
+    virtual void diagnostic_printf_004c7070(std::uint32_t a, float b, float c,
+                                            const char* fmt) = 0;
+    // The dword at 00E188A8, read just before the 004C7070 call.
+    virtual std::uint32_t global_dword_00e188a8() = 0;
+    // state->vtable[18h](x, y): __thiscall(ECX = state; int x, int y), RET 8.
+    virtual void state_vcall_18_debug_text(void* state, std::int32_t x, std::int32_t y) = 0;
+    // 004142E0 BSP_Vector3f_TransformAffinePoint: __thiscall(ECX = point; float* out,
+    // const matrix*), RET 8.
+    virtual void vector_transform_affine_point_004142e0(const float* point, float* out,
+                                                        const void* matrix) = 0;
+    // object->vtable[4](), RET, EAX: the released object's observed-entity getter.
+    virtual void* object_vcall_04_get(void* object) = 0;
+    // 00419010 BSP_Math_InterpolateClamped: __stdcall(x0, y0, x1, y1, x), RET 14h, ST0.
+    virtual float interpolate_clamped_00419010(float x0, float y0, float x1, float y1,
+                                               float x) = 0;
+    // 004B8490 BSP_FormatString256: cdecl(char* dst, fmt, ...), a 100h-byte vsprintf_s.
+    // The plain form has no variadic tail; the _f64_ints form passes one double then
+    // `count` dwords, in that order.
+    virtual void format_string256_004b8490(char* dst, const char* fmt) = 0;
+    virtual void format_string256_f64_ints_004b8490(char* dst, const char* fmt, double value,
+                                                    const std::int32_t* ints,
+                                                    std::size_t count) = 0;
+    // 007B7CC0 STL_String_AppendPtrCount: __thiscall(ECX = string; ptr, count), RET 8.
+    virtual void string_append_ptr_count_007b7cc0(void* str, const char* text,
+                                                  std::size_t count) = 0;
+    // 009D1500 BSP_BotApproachTorpedo_TimeToTarget: __fastcall(ECX = approach), RET, ST0.
+    virtual float torpedo_approach_time_to_target_009d1500(void* approach) = 0;
+    // 0051F460 BSP_DebugFeatureOwner_GetSingleton: cdecl(), EAX (+2Ch is the overlay byte).
+    virtual void* debug_feature_owner_0051f460() = 0;
+    // 00423520 BSP_AvoidZone_CornerOffsetPoint: __thiscall(ECX = zone; float* out, int
+    // index, float distance), RET 0Ch, EAX = out (two floats).
+    virtual float* avoid_zone_corner_offset_point_00423520(void* zone, float* out,
+                                                           std::int32_t index,
+                                                           float distance) = 0;
+    // 009E9910 / 009E9A50: __thiscall(ECX = brain; float horizon), RET 4, EAX: the fore
+    // or aft tubes ready within the horizon.
+    virtual std::int32_t sub_tubes_ready_fore_009e9910(void* brain, float horizon) = 0;
+    virtual std::int32_t sub_tubes_ready_aft_009e9a50(void* brain, float horizon) = 0;
+    // 004C7070 with the name and `count` dwords after the format, in push order reversed
+    // (the first dword is the first conversion after the %s).
+    virtual void diagnostic_printf_name_ints_004c7070(std::uint32_t a, float b, float c,
+                                                      const char* fmt, const char* name,
+                                                      const std::int32_t* ints,
+                                                      std::size_t count) = 0;
 };
 
 // ---- the bot-task factory list (00F8A314) ----
@@ -1230,5 +1281,73 @@ bool ship_ai_path_has_no_sided_node_009d5cf0(void* task);
 void target_ref_record_reset_009d5d60(Cc13Seg67bHost& host, void* record);
 // 009D6530: __thiscall(ECX = holder; object), RET 4, EAX = holder.
 void* ref_holder_construct_009d6530(Cc13Seg67bHost& host, void* holder, void* object);
+
+// ---------------------------------------------------------------------------
+// Medium rows, batch 3 (docs/CC13_SEG67B.md section 3.48)
+// ---------------------------------------------------------------------------
+// 009DA950: __fastcall(ECX = path node record), RET, EAX = record. One draw on stream 1.
+void* ship_ai_path_node_init_fields_009da950(Cc13Seg67bHost& host, void* record);
+// 009DBD60: __fastcall(ECX = object), RET, EAX = object.
+void* navigator_bot_named_object_construct_009dbd60(Cc13Seg67bHost& host, void* object);
+// 009DE1B0: __thiscall(ECX = navigator block; float throttle), RET 4.
+void ship_ai_reset_path_and_set_throttle_009de1b0(Cc13Seg67bHost& host, void* blk,
+                                                  float throttle);
+// 009DFB90: __thiscall(ECX = observer member; entity, const float* point), RET 8.
+void ship_ai_observer_member_set_observed_with_point_009dfb90(Cc13Seg67bHost& host,
+                                                              void* member, void* entity,
+                                                              const float* point);
+// 009E2C40: __thiscall(ECX = ship-AI bot; int x, int y), RET 8.
+void ship_ai_bot_debug_draw_with_state_name_009e2c40(Cc13Seg67bHost& host, void* bot,
+                                                     std::int32_t x, std::int32_t y);
+// 009E2F10: __thiscall(ECX = goal record member; released), RET 4.
+void ship_ai_goal_member_on_observed_released_009e2f10(Cc13Seg67bHost& host, void* member,
+                                                       void* released);
+// 009E69D0: __thiscall(ECX = object; float angle, float peak), RET 8.
+void heading_error_ramp_set_34_009e69d0(Cc13Seg67bHost& host, void* object, float angle,
+                                        float peak);
+// 009E6A30: __thiscall(ECX = object; float angle, float span, float peak), RET 0Ch.
+void heading_error_ramp_set_38_009e6a30(Cc13Seg67bHost& host, void* object, float angle,
+                                        float span, float peak);
+// 009F3CC0: __fastcall(ECX = ship-AI gun bot), RET, EAX = name.
+const char* ship_ai_gun_bot_sub_state_name_009f3cc0(Cc13Seg67bHost& host, void* bot);
+
+// ---------------------------------------------------------------------------
+// Medium rows, batch 4 (docs/CC13_SEG67B.md section 3.49)
+// ---------------------------------------------------------------------------
+// 009AB220 / 009B3FF0 / 009CFDD0 / 009D4C90: __thiscall(ECX = task; string* out), RET 4,
+// EAX = out.
+void* bot_task_dogfight_describe_009ab220(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_land_describe_009b3ff0(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_takeoff_describe_009cfdd0(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_torpedo_describe_009d4c90(Cc13Seg67bHost& host, void* task, void* out);
+// 009AC7C0 / 009ACD90: __fastcall(ECX = kamikaze state), RET.
+void bot_state_kamikaze_go_towards_debug_draw_009ac7c0(Cc13Seg67bHost& host, void* state);
+void bot_state_kamikaze_aim_debug_draw_009acd90(Cc13Seg67bHost& host, void* state);
+// 009BB4A0: __fastcall(ECX = unit, EDX = float point[3]; float limit), RET 4.
+void pilot_bot_tight_turn_toward_point_009bb4a0(Cc13Seg67bHost& host, void* unit,
+                                                const float* point, float limit);
+// 009BB530: __fastcall(ECX = unit, EDX = float point[3]; float threshold, float limit),
+// RET 8.
+void pilot_bot_tight_turn_if_off_heading_009bb530(Cc13Seg67bHost& host, void* unit,
+                                                  const float* point, float threshold,
+                                                  float limit);
+// 009D9390: __thiscall(ECX = path node; float plus_distance, float minus_distance), RET 8,
+// AL.
+bool ship_ai_path_node_resolve_turn_point_009d9390(Cc13Seg67bHost& host, void* node,
+                                                   float plus_distance, float minus_distance);
+// 009E7FA0: __thiscall(ECX = brain; float heading, const float* goal, float penalty),
+// RET 0Ch.
+void ship_ai_set_navigation_goal_with_penalty_brain_009e7fa0(Cc13Seg67bHost& host, void* brain,
+                                                             float heading, const float* goal,
+                                                             float penalty);
+// 009EAAD0: __thiscall(ECX = sub-attack state machine; int x, int y), RET 8.
+void ship_ai_sub_attack_debug_text_009eaad0(Cc13Seg67bHost& host, void* sm, std::int32_t x,
+                                            std::int32_t y);
+// The three former false twins of section 3.48 (docs section 3.50).
+// 009DFA60 / 009DFA90: __fastcall(ECX = owning pointer slot), RET.
+void ship_ai_path_node_delete_009dfa60(Cc13Seg67bHost& host, void* slot);
+void observed_owner_delete_009dfa90(Cc13Seg67bHost& host, void* slot);
+// 009E5220: __fastcall(ECX = list), RET, EAX = list.
+void* ship_ai_traffic_list_construct_009e5220(Cc13Seg67bHost& host, void* list);
 
 }  // namespace bsp

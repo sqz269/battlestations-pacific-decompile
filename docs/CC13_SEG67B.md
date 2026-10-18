@@ -682,6 +682,58 @@ There are 6 ledger-only rows (section 4):
   - 009D0100, the torpedo selector, in `torpedo_next_state_009d4030`.
 - 009D5990 is 009D5930 followed by `ship_ai_path_node_next_009d9ee6`.
 
+### 3.48 Medium rows, batch 3 (packet cc13-seg67C)
+
+Same checks as batch 2: the capstone twin scan, a grep of every address form, `bsp lookup`, and the hosts that model the routine inline. A scan of the image for absolute dwords and rel32 CALL/JMP targets backs each "unreferenced" note.
+
+There are 9 bodies:
+- **009DA950:** +0h = 0, then the 009D5D60 reset (one stream-1 U(0, 2) draw into +48h). Unreferenced.
+- **009DBD60:** the "NavigatorBot" named object constructor (vtables 00D17DC0, then 00D217DC; the name duplicated by 00438E40 into +8h). Unreferenced.
+- **009DE1B0:** zeroes +360h, +368h and +1C4h when +1C4h is set, resets the path plan (009DA4E0), and stores the throttle clamped to [-1, 1] at +1D4h. A NaN throttle is stored unchanged.
+- **009DFB90:** the observer member setter with a point copy (+18h..+20h). Unreferenced.
+- **009E2C40:** the ship-AI bot debug draw: 009DDCC0 on the ship AI at +60h, then the sub-state name through 004C7070 and the state's own text draw at (x, y + 15). Its only caller is the unreferenced adapter at 009E2CB0.
+- **009E2F10:** slot 1 of the brain record member vtable 00D21898 (brain+AF8h). It first turns the stored offset into a world point through the observed entity's matrix ([member+14h]+CCh) and sets +24h. Only then does it test released->vtable[4]() against [member+14h] and unlink on a match. It has no reach on the goal vector (docs/SHIP_AI_OPEN_ITEMS.md).
+- **009E69D0 / 009E6A30:** heading-error ramps. Each stores 00419010(0, peak, span, 0, |wrapped error|) at +34h (span = pi) or +38h (span from the stack). Both are unreferenced, and the owning class is unidentified.
+- **009F3CC0:** the gun bot's sub-state name (vtable 00D21AE8 slot 5), or the empty string 00CE3A0C when there is no sub-state.
+
+There are 16 ledger-only rows (section 4):
+- 13 byte twins. They twin 008FC570, 0042D870 (x2), 00465060, 006F3490, 0042EC20 (x4) and 0042E700 (x4).
+- 009DFA60, 009DFA90 and 009E5220 were first recorded here as twins of 0046A090 and 0041E1B0. They are not twins: see section 3.50.
+- 009DAE30 and 009DB7F0 copy the goal vector brain+B2Ch..B34h. The hosts read that field directly.
+- 009E9C40 is the host override `tubes_min_water_speed_0aec`.
+
+### 3.49 Medium rows, batch 4 (packet cc13-seg67C)
+
+Same checks as batch 3. A scan for absolute dwords and rel32 targets backs each "unreferenced" note and each vtable slot below.
+
+There are 11 bodies:
+- **Describes with a tail:** each appends 004B8490 text through 007B7CC0 after the base describe.
+  - 009AB220, dogfight: "_follow" or "_goaway" in the go-away state (task+6A4h), then "_autoaim".
+  - 009B3FF0 (land) and 009CFDD0 (takeoff): " spd:%f" with the unit's vtable[38h] speed.
+  - 009D4C90, torpedo: " dr:%f  dir:%d lr:%d-%d" with 009D1500 and three task dwords.
+- **009AC7C0 / 009ACD90:** the kamikaze go-towards and aim debug draws, 41 identical instructions sharing one helper.
+- **009BB4A0 / 009BB530:** the two unreferenced tight-turn wrappers over the existing 009BB380 body.
+  - 009BB4A0 takes atan2(dx, dz) and reads the heading first.
+  - 009BB530 takes atan2(dz, dx), maps it to pi/2 - a in [0, 2pi), and fires only above the threshold.
+  - std::atan2 in double stands for _CIatan2, as in 00996270.
+- **009D9390:** the path node's turn point through 00423520. Its only caller is unreferenced code at 009D9F90.
+- **009E7FA0:** the unreferenced brain wrapper of 009DE280.
+- **009EAAD0:** the sub-attack debug text. The tube counts come from 009E9910 and 009E9A50.
+
+There are 4 ledger-only rows (section 4):
+- 009C3D80 and 009C8D20 are the dive-bomb and retreat follow-state selectors, hosted where each task picks its first state.
+- 009C91A0 is 009C8D40 then 009C8F40, the host's `retreat_refresh_approach`.
+- 009D32A0 is the byte twin of 006F8290 ("torpedo").
+
+### 3.50 Three false twins corrected (packet cc13-seg67C)
+
+Three rows of section 3.48 matched a recorded body's bytes outside the rel32 operands but call a different target. The twin scan now also requires every rel32 CALL, JMP and Jcc target to be equal; a target inside the body is compared relative to the body start. The rerun over all of this packet's twin rows and over the batch 3 and 4 bodies found no other false twin.
+
+Each is now a body. An image scan finds no absolute or rel32 reference to any of them.
+- **009DFA60:** frees the owned path node through 009DA880 and 00BF65AC, then clears the slot. 0046A090 calls 00469010 instead.
+- **009DFA90:** the same shape over 0064A610, the observed-owner base destroy.
+- **009E5220:** +4h = 009DF8F0() (a 0Ch self-linked sentinel), +8h = 0. 0041E1B0 calls 0041BF50, which allocates a 10h node.
+
 ## 4. Ledger-only records (packet cc13-seg67C)
 
 | Address | Host body | Result |
@@ -745,3 +797,15 @@ There are 6 ledger-only rows (section 4):
 | 009D3E80 | byte twin (decoded rel32 masked) of 009A5710 | twin |
 | 009BC6F0, 009BDDC0, 009CA380, 009D0100 | `moveonpath_rule_state_009bd17f` (~124), `moveto_task_construct_009c3000` (~81), `st_install_009cc230` (~24579), `torpedo_next_state_009d4030` (~76) | match |
 | 009D5990 | `ship_ai_path_node_decide_direction_009d5930` then `ship_ai_path_node_next_009d9ee6` (~147) | matches |
+| 009DBD80 | byte twin (decoded rel32 masked) of 008FC570 `BSP_RobotConfig_DestructBase` (`delete_robot_descriptor`, src/robot_config.cpp) | twin |
+| 009DF980, 009E4E50 | byte twins of 0042D870 `observer_ref_set_0042d870` (src/profile_seg2_cc13.cpp) | twin |
+| 009DFA40 | byte twin of 00465060 `BSP_Unit_CastToSubmarine` (src/actions_seg5_cc13.cpp) | twin |
+| 009DFAC0 | byte twin of 006F3490 `BSP_Entity_AsKind0C` (src/cc13_seg33b_command_building.cpp) | twin |
+| 009E2CE0, 009E2D10, 009E2D90, 009E2DC0 | byte twins of 0042EC20 `observer_ref_on_observed_released_0042ec20` (src/profile_seg2_cc13.cpp) | twin |
+| 009E2E10, 009E4F50, 009E51B0, 009E5240 | byte twins of 0042E700 `observer_ref_set_0042e700` (src/profile_seg2_cc13.cpp) | twin |
+| 009DAE30, 009DB7F0 | the goal field `ShipAiApproachRetargetInputs::goal` (ship_ai_approach_update.hpp ~1086) and `brain_goal_x` (game_hosts_ship_ai.hpp ~274) | match (unreferenced getters) |
+| 009E9C40 | the host override `tubes_min_water_speed_0aec` (game_hosts_ship_ai.cpp ~9887) | matches (009E97B0 then +AECh) |
+| 009C3D80 | `dive_bomb_entry_state_009c8310` (src/dive_bomb_task.cpp ~95; DiveBombState kMoveTo 4F0h, kFollow 52Ch) | matches |
+| 009C8D20 | `install_retreat_task_009c9d00` (game_hosts_units.cpp ~9485; RetreatState kMoveTo / kFollow) | matches |
+| 009C91A0 | `retreat_refresh_approach` (game_hosts_units.cpp ~9412) over `retreat_refresh_zone_009c8d40` and `retreat_refresh_target_009c8f40` | matches |
+| 009D32A0 | byte twin (decoded rel32 masked) of 006F8290, the torpedo row of `kEntityOrderCommandClasses` (src/entity_orders.cpp ~37) | twin |
