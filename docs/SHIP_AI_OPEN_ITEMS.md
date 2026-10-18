@@ -18890,3 +18890,21 @@ levels up to them; USN13: up to 15 Expert members die at adoption unless their b
 Expert. moveto_range_reads > 0 on missions that MoveTo a ship at a CommandBuilding (USN13 / USNOS
 landing ships), and those ships now finish the move at the capture ring (stop, `finished` report)
 instead of driving on to the building's centre.
+
+## 281. Approach traffic from the recon enemy triple, kShipAiTrafficReconListBound (cc9-ships57, 2026-10-17; lead item 7b)
+
+**Image (CC13_VERIFY2 R2).** 009E9217..009E9225 walk `[008053C0(party)]+0DE8h`, the enemy triple 008073C0 publishes:
+identified (level 2) enemies only, in class-bucket order, rebuilt every 3.0 s. The host's AvoidBinding built its
+own list: every live ship or plane of another side (neutral included) at any recon level above none (blips
+included), live every call, in unit order. A blip or neutral ship within its weapon range + 200 was inserted
+(009E92D5), rated (0095EB40) and steered away from; the image never sees it.
+
+**Bind (OFF).** `kShipAiTrafficReconListBound` (src/game_hosts_ship_ai.cpp): the walk takes the gunnery host's
+`recon_triple_units(party, 1)`, the same list kAutoTargetReconCandidatesBound gives 009F5D30 (empty before the
+first rebuild, as 009F5D54's JE). The library's own kind-5 / range filters are unchanged. Counter: `summary
+mission ship ai traffic recon list bound= walks= contacts=`.
+
+**Predictions, written before any run.** OFF identical (walks=0). ON: contacts per walk fall (no blips, no
+neutrals, nothing before the first 3.0 s rebuild); ships near unidentified or neutral ships stop steering
+around them, so approach tracks move on every surface battle (USN12, USN15, IJN08, JM08); the RNG is not
+touched by the walk itself, but moved tracks move the fire timings downstream.

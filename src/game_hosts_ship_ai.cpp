@@ -182,6 +182,13 @@ inline constexpr bool kUnitRadiusBound = true;
 // (009E6170), rates its weapons against this ship through 0095EB40 (009E6240)
 // and steers away by the weighted sum. False: no candidates, as before.
 inline constexpr bool kShipAiTrafficBound = true;
+// Packet s57_traffic_recon (SHIP_AI_OPEN_ITEMS 281; CC13_VERIFY2 R2). True: 009E9217..
+// 009E9225 walk [008053C0(party)]+0DE8h, the enemy triple 008073C0 publishes
+// (identified, level 2, enemies only, class-bucket order, rebuilt every 3.0 s): the
+// gunnery host's recon_triple_units(party, 1), as kAutoTargetReconCandidatesBound
+// reads it for 009F5D30. False: every live ship or plane of another side (neutral
+// included) at any recon level above none, in unit order.
+inline constexpr bool kShipAiTrafficReconListBound = false;
 // Packet cc9_autotarget_recon_candidates, docs/AUTOTARGET_RECON_CANDIDATES.md.
 // True: the automatic target scan 009F5D30 walks the owner party's recon enemy
 // triple ([008053C0(party)]+0DE8h: identified contacts only, in bucket order).
@@ -1196,6 +1203,8 @@ struct GameShipAiHost::Impl {
     unsigned long long garrison_passes{0};
     unsigned long long garrison_kills{0};
     unsigned long long moveto_capture_range_reads{0};   // s57_moveto_capture_range
+    unsigned long long traffic_recon_walks{0};      // s57_traffic_recon, 009E9220 walks
+    unsigned long long traffic_recon_contacts{0};   // ... contacts summed
     unsigned long long garrison_recreates{0};
     unsigned long long garrison_recreates_recorded{0};
     unsigned long long garrison_skill_pushes{0};
@@ -5402,6 +5411,16 @@ public:
         if (!kShipAiTrafficBound || owner_.gunnery == nullptr) {
             owner_.record("ShipAiApproach::candidate_count_008053c0", 0x008053c0u);
             return 0;
+        }
+        if (kShipAiTrafficReconListBound) {
+            const GameUnitRow* self = owner_.units.unit_row(index_);
+            if (self == nullptr || !owner_.gunnery->recon_triple_units(self->party, 1, contacts_)) {
+                contacts_.clear();   // before the slot's first rebuild the chain is empty
+            }
+            ++owner_.traffic_recon_walks;
+            owner_.traffic_recon_contacts += contacts_.size();
+            owner_.done("ShipAiApproach::candidate_count_008053c0", 0x008053c0u);
+            return static_cast<int>(contacts_.size());
         }
         const std::vector<GameGunneryUnitRow>& rows = owner_.gunnery->unit_rows();
         const bsp::ReconSensorPassState& recon = owner_.gunnery->recon_sensor_pass_state();
@@ -14581,6 +14600,9 @@ void GameShipAiHost::report() {
             "moveto_range_reads=%llu (packets s57_garrison_min_level / s57_moveto_capture_range, "
             "006F5E4D / 006F36CD / 009E58CE / 009E5BA6)", kGarrisonMinLevelBound ? 1 : 0,
             kShipMoveToCaptureRangeBound ? 1 : 0, host.moveto_capture_range_reads);
+        host.log.notef("summary mission ship ai traffic recon list bound=%d walks=%llu contacts=%llu "
+            "(packet s57_traffic_recon, 009E9220 [008053C0(party)]+0DE8h)",
+            kShipAiTrafficReconListBound ? 1 : 0, host.traffic_recon_walks, host.traffic_recon_contacts);
         for (const Impl::CaptureBuilding& b : host.capture_buildings) {
             const GameUnitRow* row = host.units.unit_row(b.unit);
             host.log.notef("summary mission command building level unit=%s level=%d "
