@@ -4572,6 +4572,8 @@ void ship_ai_debug_draw_009ddcc0(Cc13Seg67bHost& host, void* ai) {
 // (009AA471); {0,"inattackrange"} = {3, byte a+D0h} (009AA4A8); {0,"targetfindangle"} =
 // {2, a+DCh} (009AA4E3); {0,"targetfindweight"} = {2, a+E0h} (009AA51E);
 // {0,"washittimer"} = {2, a+E8h} (009AA559). RET 4.
+// UNCERTAINTY: each byte record stores only the low byte (MOV byte [EAX+4]); the payload's
+// upper three bytes are stack garbage in the image and zero here.
 void bot_approach_dogfight_save_009aa410(Cc13Seg67bHost& host, void* a, void* archive) {
     std::uint32_t ref[3] = {};
     host.archive_writer_ref_open_00bd5010(archive, ref,
@@ -4607,6 +4609,8 @@ void bot_task_dogfight_save_009aa5c0(Cc13Seg67bHost& host, void* task, void* arc
 // {0,"attackDist"} = {2, a+B0h} (009AE37C); {0,"targetDist"} = {2, a+B4h} (009AE3B7);
 // {0,"insideAttackRange"} = {3, byte a+C0h} (009AE3EE); {0,"targetHdg"} = {2, a+B8h}
 // (009AE429); {0,"currentAvoidFlag"} = {1, a+BCh} (009AE460). RET 4.
+// UNCERTAINTY: each byte record stores only the low byte (MOV byte [EAX+4]); the payload's
+// upper three bytes are stack garbage in the image and zero here.
 void bot_approach_drop_kamikaze_save_009ae2d0(Cc13Seg67bHost& host, void* a, void* archive) {
     std::uint32_t ref[3] = {};
     host.archive_writer_ref_open_00bd5010(archive, ref, name_record(kStrTargetLockPlain_00d1fb5c));
@@ -4708,6 +4712,54 @@ void pilot_bot_retire_task_0099a660(Cc13Seg67bHost& host, void* bot, void* task)
     at<std::uint32_t>(bot, 0x5C) = n - 1;
 }
 
+// 009B84E0 (009B84E0-009B8759). The field list of 009B4690: 00BD5010 {0,"targetLock"}
+// (009B850B) + 009FACC0(ECX = a+30h, block) (009B8513); releaseTime {2,+A8h} (009B8551),
+// startDist {2,+B4h} (009B858C), releaseError {2,+C4h} (009B85C7), attackDist {2,+B8h}
+// (009B8602), targetDist {2,+BCh} (009B863D), bayDoorState {3,+CCh} (009B8674),
+// insideAttackRange {3,+CDh} (009B86AB), targetHdg {2,+C0h} (009B86E6),
+// currentAvoidFlag {1,+C8h} (009B871D), calcHitPos {5, &a+D0h} (009B8754). RET 4.
+// UNCERTAINTY: each byte record stores only the low byte (MOV byte [EAX+4]); the payload's
+// upper three bytes are stack garbage in the image and zero here.
+void bot_approach_level_bomb_save_009b84e0(Cc13Seg67bHost& host, void* a, void* archive) {
+    std::uint32_t ref[3] = {};
+    host.archive_writer_ref_open_00bd5010(archive, ref, name_record(kStrTargetLockPlain_00d1fb5c));
+    host.approach_ref_save_009facc0(ptr(a, 0x30), ref);
+    host.archive_vcall_0c_write(archive, name_record(kStrReleaseTime_00d200d8),
+                                record(2, at<std::uint32_t>(a, 0xA8)));
+    host.archive_vcall_0c_write(archive, name_record(kStrStartDist_00d1fb50),
+                                record(2, at<std::uint32_t>(a, 0xB4)));
+    host.archive_vcall_0c_write(archive, name_record(kStrReleaseError_00d200c8),
+                                record(2, at<std::uint32_t>(a, 0xC4)));
+    host.archive_vcall_0c_write(archive, name_record(kStrAttackDist_00d1fb44),
+                                record(2, at<std::uint32_t>(a, 0xB8)));
+    host.archive_vcall_0c_write(archive, name_record(kStrTargetDist_00d1fb38),
+                                record(2, at<std::uint32_t>(a, 0xBC)));
+    host.archive_vcall_0c_write(archive, name_record(kStrBayDoorState_00d200b8),
+                                record(3, at<std::uint8_t>(a, 0xCC)));
+    host.archive_vcall_0c_write(archive, name_record(kStrInsideAttackRange_00d1fb24),
+                                record(3, at<std::uint8_t>(a, 0xCD)));
+    host.archive_vcall_0c_write(archive, name_record(kStrTargetHdg_00d1fb18),
+                                record(2, at<std::uint32_t>(a, 0xC0)));
+    host.archive_vcall_0c_write(archive, name_record(kStrCurrentAvoidFlag_00d1fb04),
+                                record(1, at<std::uint32_t>(a, 0xC8)));
+    host.archive_vcall_0c_write(archive, name_record(kStrCalcHitPos_00d200ac),
+                                record(5, reinterpret_cast<std::uintptr_t>(ptr(a, 0xD0))));
+}
+
+// 009B87B0 (009B87B0-009B8815). 0099D060(ECX = task, archive) (009B87BA); 009B84E0(ECX =
+// task+3F8h, archive) (009B87C8); 00BD5010(archive, block, {0,"_state_moveTo"})
+// (009B87EF), 009BEAA0(ECX = task+3F8h+F0h, block) (009B87FA); 00411450(ECX = task+4D4h,
+// task+30Ch, archive) (009B880D). RET 4. The approach-level twin 009B8760 has no
+// reference in the image.
+void bot_task_level_bomb_save_009b87b0(Cc13Seg67bHost& host, void* task, void* archive) {
+    bot_task_save_base_0099d060(host, task, archive);
+    bot_approach_level_bomb_save_009b84e0(host, ptr(task, 0x3F8), archive);
+    std::uint32_t ref[3] = {};
+    host.archive_writer_ref_open_00bd5010(archive, ref, name_record(kStrStateMoveTo));
+    bot_approach_save_altitude_leg_009beaa0(host, ptr(task, 0x3F8 + 0xF0), ref);
+    host.bot_state_registry_write_current_00411450(ptr(task, 0x4D4), ptr(task, 0x30C), archive);
+}
+
 namespace {
 constexpr std::uint32_t kKamikazeApproachVtable_00d1fd34 = 0x00D1FD34u;
 constexpr std::uint32_t kKamikazeRegistryVtable_00d1fd30 = 0x00D1FD30u;
@@ -4775,6 +4827,109 @@ void* bot_approach_kamikaze_construct_009aed20(Cc13Seg67bHost& host, void* block
     host.state_registry_add_00411e70(reg, kStrKamikazePrepare_00d1fce8, ptr(block, 0x1C4));
     host.state_registry_add_00411e70(reg, kStrKamikazeMoveTo_00d1fcd8, ptr(block, 0xF0));
     return block;
+}
+
+// 009C1C30 (009C1C30-009C1DBB). EH frame 00CAF71B. 009F9CE0(ECX = a, unit,
+// tuning+37Ch) (009C1C68); [a] = 00D209CC; a+2Ch = U(0, tuning+540h) on stream 1
+// (009C1C8F); 004BEF00(ECX = a+30h, target->vtable[0]()) (009C1CA9), [a+30h] =
+// 00CE3CF0; a+48h..+50h = target+4h..+0Ch; a+54h = 0.5 [00CE3800]; a+58h = -U(0, 0.5)
+// on stream 1 (009C1CEE); a+60h = 0, byte a+5Ch = 0, a+68h = 50.0 [00CEB4D4]
+// (009C1CFA-009C1D0D). unit set and 007B8AD0(unit) (the flight leader): 00414DB0(unit)
+// unless byte unit+C8h; d = 00414C60(unit+FCh - a+48h, unit+104h - a+50h) (each
+// difference spilled to a float; x*x + y*y rounded to float, > double 1e-10 ? sqrt :
+// 0, JBE); t = [[a+8h]+268h]; t > d (FCOMI, JA) keeps d, else d = t (so NaN -> t);
+// a+60h = d / [[a+8h]+18Ch] (009C1D18-009C1D9A). 009BEBA0(a) (009C1D9F). RET 8, EAX = a.
+// RNG: two stream-1 draws, +2Ch then +58h, after 009F9CE0's (the hook's).
+// Whole body: cc9 models this construction inline in
+// GameUnitsHost::Impl::run_moveto_task_install_009c3000 with per-name stand-ins
+// ("#mt2c", "#mt58").
+// UNCERTAINTY: 24-bit precision modelled; EH unwinding not modelled.
+void* bot_approach_moveto_construct_009c1c30(Cc13Seg67bHost& host, void* a, void* unit,
+                                             void* target) {
+    void* tuning = host.game_tuning_singleton_0042e740();
+    host.bot_approach_construct_speed_reference_009f9ce0(a, unit, at<float>(tuning, 0x37C));
+    at<std::uint32_t>(a, 0x00) = kMoveToApproachVtable_00d209cc;
+    tuning = host.game_tuning_singleton_0042e740();
+    at<float>(a, 0x2C) = host.random_uniform_00bd2f10(1, 0.0f, at<float>(tuning, 0x540));
+    host.observer_construct_004bef00(ptr(a, 0x30), host.object_vcall_00(target));
+    at<std::uint32_t>(a, 0x30) = kObservedEndpointVtable_00ce3cf0;
+    at<float>(a, 0x48) = at<float>(target, 0x04);
+    at<float>(a, 0x4C) = at<float>(target, 0x08);
+    at<float>(a, 0x50) = at<float>(target, 0x0C);
+    at<float>(a, 0x54) = kHalf_00ce3800;
+    at<float>(a, 0x58) = -host.random_uniform_00bd2f10(1, 0.0f, kHalf_00ce3800);
+    at<float>(a, 0x60) = 0.0f;
+    at<std::uint8_t>(a, 0x5C) = 0;
+    at<float>(a, 0x68) = kFifty_00ceb4d4;
+    if (unit != nullptr && host.unit_is_squadron_flight_leader_007b8ad0(unit)) {
+        if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);
+        const float dx = at<float>(unit, 0xFC) - at<float>(a, 0x48);
+        const float dz = at<float>(unit, 0x104) - at<float>(a, 0x50);
+        const float xx = dx * dx;
+        const float zz = dz * dz;
+        const float s = xx + zz;
+        float d = static_cast<double>(s) > kTiny_00ce3820
+                      ? static_cast<float>(std::sqrt(static_cast<double>(s)))
+                      : 0.0f;
+        void* const row = ptr_at(a, 0x08);
+        const float t = at<float>(row, 0x268);
+        if (!(t > d)) d = t;
+        at<float>(a, 0x60) = d / at<float>(row, 0x18C);
+    }
+    bot_approach_refresh_target_009beba0(host, a);
+    return a;
+}
+
+// 009CA2B0 (009CA2B0-009CA30F). EH frame 00CAFDFB. t = operator new(564h) (009CA2CE);
+// null -> 0; else 009C9D00(ECX = t, bot) (009CA2E9), EAX = its result.
+// UNCERTAINTY: EH unwinding (the delete on a throwing constructor) not modelled.
+void* bot_task_make_retreat_009ca2b0(Cc13Seg67bHost& host, void* bot) {
+    void* const t = host.operator_new_00bf681b(0x564);
+    if (t == nullptr) return nullptr;
+    return host.bot_task_retreat_construct_009c9d00(t, bot);
+}
+
+// 009CA780 (009CA780-009CA814). row = [a+14h], ref = a+58h: ref+50h, +4Ch, +48h =
+// row+E4h (StrafeTargetPointSelectPrec, in that store order), byte ref+41h = 1
+// (009CA786-009CA7A0); ref+64h..+70h = row+E8h..+F4h (009CA7A7-009CA7D2); 009FA260(ECX
+// = ref) (009CA7D7); 007B7870(ECX = [a+20h], [a+70h], (a+80h, a+84h, a+88h) by value)
+// (009CA80E). Whole body: cc9 models it inline in the strafe go-towards enter (the
+// "009CA866 -> 009CA780" site) with the pick on a stand-in seed and without the
+// 007B7870 tail.
+void bot_approach_strafe_rearm_target_point_009ca780(Cc13Seg67bHost& host, void* a) {
+    void* const row = ptr_at(a, 0x14);
+    void* const ref = ptr(a, 0x58);
+    const float spread = at<float>(row, 0xE4);
+    at<float>(ref, 0x50) = spread;
+    at<float>(ref, 0x4C) = spread;
+    at<float>(ref, 0x48) = spread;
+    at<std::uint8_t>(ref, 0x41) = 1;
+    at<float>(ref, 0x64) = at<float>(row, 0xE8);
+    at<float>(ref, 0x68) = at<float>(row, 0xEC);
+    at<float>(ref, 0x6C) = at<float>(row, 0xF0);
+    at<float>(ref, 0x70) = at<float>(row, 0xF4);
+    host.approach_ref_pick_aim_offset_009fa260(ref);
+    const float point[3] = {at<float>(a, 0x80), at<float>(a, 0x84), at<float>(a, 0x88)};
+    host.opportunistic_rocket_set_target_007b7870(ptr_at(a, 0x20), ptr_at(a, 0x70), point);
+}
+
+// 009CC5B0 (009CC5B0-009CC5DE). state == [task+310h] -> nothing; else the old
+// state's vtable[8] when non-null, [task+310h] = state, state->vtable[4].
+void bot_task_strafe_set_state_009cc5b0(Cc13Seg67bHost& host, void* task, void* state) {
+    void* const old = ptr_at(task, 0x310);
+    if (state == old) return;
+    if (old != nullptr) host.object_vcall_08_noargs(old);
+    at<std::uintptr_t>(task, 0x310) = reinterpret_cast<std::uintptr_t>(state);
+    host.state_vcall_04_enter(state);
+}
+
+// 009CD300 (009CD300-009CD365). EH frame 00CB004B. t = operator new(6FCh) (009CD321);
+// null -> 0; else 009CC230(ECX = t, bot, target) (009CD33D).
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_make_strafe_009cd300(Cc13Seg67bHost& host, void* bot, void* target) {
+    void* const t = host.operator_new_00bf681b(0x6FC);
+    if (t == nullptr) return nullptr;
+    return bot_task_strafe_construct_009cc230(host, t, bot, target);
 }
 
 }  // namespace bsp

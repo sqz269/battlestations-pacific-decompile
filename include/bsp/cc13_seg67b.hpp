@@ -199,6 +199,17 @@ public:
     // [bot+50h], target), RET 8 (draws through 009AB850 and the aim errors).
     virtual void bot_approach_kamikaze_construct_base_009ab920(void* block, void* arg,
                                                                void* target) = 0;
+    // 009C9D00: __thiscall(ECX = task, bot), RET 4, EAX = task: the retreat task
+    // constructor (size 564h).
+    virtual void* bot_task_retreat_construct_009c9d00(void* task, void* bot) = 0;
+    // 009FA260 BSP_BotApproachTargetRef_PickBodyFrameAimOffset: __thiscall(ECX = target
+    // reference), RET.
+    virtual void approach_ref_pick_aim_offset_009fa260(void* ref) = 0;
+    // object->vtable[0](), no stack arguments, EAX.
+    virtual void* object_vcall_00(void* object) = 0;
+    // 004BEF00: __thiscall(ECX = observer, subject), RET 4: zeroes the observer and
+    // registers the pair (BSP_Observer_RegisterPair).
+    virtual void observer_construct_004bef00(void* observer, void* subject) = 0;
     // 009ABAB0: __thiscall(ECX = drop-kamikaze approach, [bot+50h], target), RET 8.
     virtual void bot_approach_drop_kamikaze_construct_base_009abab0(void* block, void* arg,
                                                                     void* target) = 0;
@@ -893,10 +904,23 @@ void bot_approach_drop_kamikaze_save_009ae2d0(Cc13Seg67bHost& host, void* a, voi
 void bot_task_drop_kamikaze_save_009ae4c0(Cc13Seg67bHost& host, void* task, void* archive);
 void bot_approach_land_save_009b37f0(Cc13Seg67bHost& host, void* a, void* archive);
 void bot_task_land_save_009b3b90(Cc13Seg67bHost& host, void* task, void* archive);
+void bot_approach_level_bomb_save_009b84e0(Cc13Seg67bHost& host, void* a, void* archive);
+void bot_task_level_bomb_save_009b87b0(Cc13Seg67bHost& host, void* task, void* archive);
 // 0099A660: __thiscall(ECX = pilot bot, task), RET 4 (thunk 0099A870).
 void pilot_bot_retire_task_0099a660(Cc13Seg67bHost& host, void* bot, void* task);
 // 009AED20: __thiscall(ECX = kamikaze approach, bot, target), RET 8, EAX = approach.
 void* bot_approach_kamikaze_construct_009aed20(Cc13Seg67bHost& host, void* block, void* bot,
                                                void* target);
+// 009C1C30: __thiscall(ECX = approach, unit, target descriptor), RET 8, EAX = approach.
+void* bot_approach_moveto_construct_009c1c30(Cc13Seg67bHost& host, void* a, void* unit,
+                                             void* target);
+// 009CA2B0: __fastcall(ECX = bot), RET, EAX = the new retreat task or 0.
+void* bot_task_make_retreat_009ca2b0(Cc13Seg67bHost& host, void* bot);
+// 009CA780: __fastcall(ECX = strafe approach), RET.
+void bot_approach_strafe_rearm_target_point_009ca780(Cc13Seg67bHost& host, void* a);
+// 009CC5B0: __thiscall(ECX = strafe task, state), RET 4.
+void bot_task_strafe_set_state_009cc5b0(Cc13Seg67bHost& host, void* task, void* state);
+// 009CD300: __fastcall(ECX = bot, EDX = target), RET, EAX = the new strafe task or 0.
+void* bot_task_make_strafe_009cd300(Cc13Seg67bHost& host, void* bot, void* target);
 
 }  // namespace bsp

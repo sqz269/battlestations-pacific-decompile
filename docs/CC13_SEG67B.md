@@ -526,6 +526,16 @@ Each family also has an approach-level twin that writes the approach save plus `
 
 009AED20 builds the kamikaze approach: base 009AB920, the moveto, follow and prepare states, and the inline gotowards and aim states, then registers the five names. The kamikaze model in `src/kamikaze_task_cc13.cpp` covers this construction inline with per-name RNG stand-ins, so the whole body is allowed. The two follow constructors (009C2980) each draw U(0, 0.6) from the shared stream: follow at +12Ch first, prepare at +1C4h second. The model does not take these draws.
 
+The byte fields in these saves (inattackrange, insideAttackRange and bayDoorState) store only the low byte of the record's payload. The image leaves the upper three bytes as stack garbage; the bodies write zero there.
+
+### 3.41 Level-bomb save, moveto approach, retreat and strafe factories (packet cc13-seg67C)
+
+- **009B84E0 and 009B87B0**: the level-bomb saves. They write the ten fields that 009B4690 reads. The approach-level twin 009B8760 has no reference in the image.
+- **009C1C30**: the moveto approach constructor. It draws twice on stream 1: +2Ch = U(0, MaxAltOffset), then +58h = -U(0, 0.5). For the flight leader it seeds the arrival dwell +60h as min(planar distance, row+268h) / row+18Ch. cc9 models this inline in `run_moveto_task_install_009c3000` with per-name stand-ins, so the whole body is allowed. cc13_moveto1's `approach_moveto_construct_009c1c30` hook can route to it.
+- **009CA2B0 and 009CD300**: the retreat and strafe factories. Each calls operator new (564h and 6FCh bytes) and then the constructor. 009CD300 calls the local 009CC230.
+- **009CA780**: re-arms the strafe target reference from the strafe row, runs the 009FA260 pick, and hands the point to the opportunistic rocket (007B7870). cc9 models it inline without the 007B7870 tail.
+- **009CC5B0**: the strafe task's state set.
+
 ## 4. Ledger-only records (packet cc13-seg67C)
 
 | Address | Host body | Result |
@@ -544,3 +554,11 @@ Each family also has an approach-level twin that writes the approach save plus `
 | 009998A0 | inline task arm in `game_hosts_units.cpp` | partial: only the vtable[64h] arm is modelled; the 0099C270 fast path, the +308h pacing of 0099B740 and the C24h gate on 009FC7C0 are not |
 | 009A57D0 | `depth_charge_entry_state` | matches |
 | 009B3900 | inline in `run_land_task_tick_009b3eb0` | matches; dt * 60.0 is rounded at 24 bits in the image and at 53 in the host; the NaN dt arms differ |
+| 009BFD70 | the +85h latch in `run_follow_law_009bfee0_009bee30` | matches; the host's distance and dot are in double, the image's at 24 bits |
+| 009C47D0 | `goaway_turn_heading_009c47d0` | matches every literal and offset the host lists (goaway class, no note needed) |
+| 009C3310 | inline moveto state rule | matches, including the NaN arm |
+| 009C3570 | inline moveto approach update | matches; the NaN arms differ, and +6Ch is the host's labelled substitution |
+| 009CA310 | inline strafe range update | matches |
+| 009CFA80 | `takeoff_altitude_floor_009cfa80` | matches, with the host's labelled layer substitution |
+| 009CFB60 | `takeoff_slow_leave_009cfb60` | matches; the host takes the first arm (+AA0h carried as 0) |
+| 009CFC70 | `takeoff_rule_009cfc70` | matches; the image returns with RET 4 |
