@@ -19714,8 +19714,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 007D99C0 adds to it is zero off a deck. Under the
                         // identity frame this is the world +Z the previous
                         // revision took, so the acceptance test is unmoved.
-                        state.forward_speed = owner_.plane_forward_speed_007d99c0(
-                            unit_, state.body_velocity[2]);
+                        state.forward_speed = state.body_velocity[2];
                         state.world_altitude = unit_.motion.position[1];
                         state.lost_drag_timer = unit_.plane_lost_drag_timer_c3c;
                         state.pitch = unit_.plane_pitch_angle_c64;
@@ -36906,7 +36905,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // mode 0 and the roll target is not zeroed.
                         state.controller_mode_fc = 0;
 
-                        float m = control_authority(forward_speed);
+                        // 007D9AB4 (the authority) and 007DAABD (the floor) call
+                        // 007D99C0; the ctl+6Ch stand-ins below keep ctl+44h.
+                        const float speed_99c0 = owner_.plane_forward_speed_007d99c0(unit_,
+                            forward_speed);
+                        float m = control_authority(speed_99c0);
                         // Free flight takes 007DA380's mode-0 arm, which writes
                         // the same scalar to both outputs and sets the flag to 1.
                         float f2 = m;
@@ -37064,7 +37067,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                             const float stall = unit_.plane_stall_spd > 0.0f
                                 ? unit_.plane_stall_spd : 17.5f;
-                            floor_sp = bsp::gameplay_seg48_cc13::rate_law_floor_factor_007da710(forward_speed, stall,
+                            floor_sp = bsp::gameplay_seg48_cc13::rate_law_floor_factor_007da710(speed_99c0, stall,
                                 unit_.plane_pitch_angle_c64, rmin, rmax, poff, pon);
                             ++unit_.rate_floor_steps;
                         }

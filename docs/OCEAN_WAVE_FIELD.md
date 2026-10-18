@@ -3043,3 +3043,9 @@ plane reaches z 80.6 and the lift takes it (574.18 s).
 - Why it stays OFF: the failure passes through an unbound arm (land/abort on the ground), and the image's carriers
   stow their planes. Open before a flip: whether 009B22C0's park drive reaches the throttle through 0099D99E for a
   parented plane in the image (or brakes/drives the wheels directly), and the abort on-ground arm.
+
+**74, rewired (cc9-physics19).** The first wiring fed the deck term into the whole free-flight state speed, so
+ctl+7Ch (007D80C0 latches ctl+44h, no term), the pose advance (reads ctl+7Ch) and the water law (ctl+44h) took it
+too. Now the state speed is ctl+44h again and the term reaches only 007D9AB4 (the authority, `control_authority`)
+and 007DAABD (the floor) inside `control_step_007da710`, plus 0099D99E and 007DC878 as before. The USN01 result
+above was measured with the first wiring; the stow failure ran through 0099D99E's throttle, which the rewire keeps.
