@@ -74,7 +74,9 @@ inline constexpr double kSpawnBorderTurnStep = 100.0;          // 00D7A220 doubl
 inline constexpr int kSpawnBorderWalkTurns = 2;                // 009434F7 MOV EAX,2
 inline constexpr float kSpawnGiveUpHeight = 10.0f;             // 00CE38B8, the (0,10,0) exit
 inline constexpr float kSpawnProbeGroundDefault = -1000.0f;    // 00D7A240 float
-inline constexpr double kSpawnDegreesToRadians = 3.141592653589793 / 180.0;  // 00CE3D28 / 00CE3D20
+// 00CE3D28 is float pi widened to double (00 00 00 60 FB 21 09 40), every load an m64; 00CE3D20
+// is 180.0. No reader yet; the image applies them as FMUL then FDIV, not as one folded factor.
+inline constexpr double kSpawnDegreesToRadians = 3.1415927410125732 / 180.0;  // 00CE3D28 / 00CE3D20
 inline constexpr double kSpawnQuarterTurn = kConstExactImageBitsBound ? 0x1.921fb6p+0 : 1.5707963267948966;              // 00CE3830 double; image bits 3FF921FB60000000 at 00CE3830
 
 // 00941D30's radius block as 00942CB0 builds it on its stack (00942D68..
