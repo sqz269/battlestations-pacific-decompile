@@ -6473,7 +6473,7 @@ struct GameUnitsHost::Impl {
     // 0099B740; otherwise +308h -= dt (009999B5-009999BB) and 0099B740 is skipped. The
     // task arm runs either way. True: the host's 0099B740 sites take that gate on
     // task_phase_308. False: 0099B740 on every think, as before.
-    static constexpr bool kTaskAttackModeCadenceBound = false;
+    static constexpr bool kTaskAttackModeCadenceBound = true;
     unsigned long long attack_mode_cadence_fires{0};
     unsigned long long attack_mode_cadence_skips{0};
     bool attack_mode_cadence_009998a0(GameUnitSlot& unit, float dt) {
