@@ -3693,4 +3693,251 @@ void scoring_record_hit_damage_00915f20(Seg59bHost& host, void* scoring, void* t
     const float stamp = *clock;
     at<float>(host.kill_list_index_0090e850(kills, &key), 0x00) = stamp;
 }
+
+namespace {
+
+// The checked-iterator tests 00911E80 inlines: the iterator's container must be the tree, and a
+// dereference needs a container and a node other than the container's head.
+void check_iterator_owner(Seg59bHost& host, const StlTreeIterator& it, const void* tree) {
+    if (it.container == nullptr || it.container != tree) host.checked_iterator_failure_00bf6713();
+}
+
+void check_iterator_container(Seg59bHost& host, const StlTreeIterator& it) {
+    if (it.container == nullptr) host.checked_iterator_failure_00bf6713();
+}
+
+void check_iterator_not_head(Seg59bHost& host, const StlTreeIterator& it) {
+    if (it.node == ptr(it.container, 0x04)) host.checked_iterator_failure_00bf6713();
+}
+
+// The inline NativeString(const char*) of 009124CF and later: {0, 0}, 0041DD40(length, 1), then
+// memcpy(data, text, size + 1) when data is non-null.
+void construct_native_string_inline(Seg59bHost& host, void* string, std::uint32_t text, std::uint32_t length) {
+    at<std::uint32_t>(string, 0x00) = 0;
+    at<std::uint32_t>(string, 0x04) = 0;
+    host.native_string_resize_0041dd40(string, length, 1);
+    if (ptr(string, 0x04) != nullptr) {
+        host.memcpy_00bf7680(ptr(string, 0x04), host.image_pointer(text), at<std::uint32_t>(string, 0x00) + 1u);
+    }
+}
+
+// One BO_KSS / BO_KSP pass: the largest int value (+10h) of a std::map<int, int>, from 0; the
+// value is re-read after the second dereference test only when it is not below the maximum.
+std::int32_t tree_max_value(Seg59bHost& host, void* tree) {
+    std::int32_t best = 0;
+    StlTreeIterator it{tree, ptr(ptr(tree, 0x04), 0x00)};
+    for (;;) {
+        void* const head = ptr(tree, 0x04);
+        check_iterator_owner(host, it, tree);
+        if (it.node == head) break;
+        check_iterator_container(host, it);
+        check_iterator_not_head(host, it);
+        if (!(at<std::int32_t>(it.node, 0x10) < best)) {
+            check_iterator_not_head(host, it);
+            best = at<std::int32_t>(it.node, 0x10);
+        }
+        host.tree_iterator_increment(0x0057F5F0u, &it);
+    }
+    return best;
+}
+
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 00911E80 BSP_MissionScoreRecord_EvaluateBadgeCounters (provisional, cc9 name). __fastcall(ECX =
+// record = scoring + slot*284h + 4), RET. Caller 00914EF0 (BSP_BotScheduler_Update).
+// Evidence (listing 00911E80..00912A1E, read whole):
+//  0058B520(record+78h, [[record+7Ch]+4]) then the head's parent, left and right = head and
+//  [record+80h] = 0 (00911EB4..00911ED2). 00908190 finds key 1 in the int map at record+B4h; for
+//  that node's inner map (node+10h) and each inner node's leaf map (inner+10h), every leaf adds its
+//  int (+10h) to record+78h[token of the inner key +0Ch]: jump table 00912A20 (key-1, 0..0Ch):
+//  1 BU_DM, 2 BU_PTM, 3 BU_BM, 4 BU_CM, 7 BU_VLB, 8 BU_VDB, 9 BU_VTB, 0Ah BU_FA, 0Bh BU_VR, 0Dh
+//  BU_SM, others none; each key a 0041E870 temporary released through 00419CC0 / 00BD1510.
+//  Leaf ++ 0057F4A0, inner ++ 0057F920. Then record+120h's values are assigned by key (++
+//  004FBD20); each record+15Ch entry with float +10h > [[game+21A0h]+1470h] (FXCH, FCOMIP, JBE
+//  also on unordered, 009124CD) adds 1 to BO_CV (++ 0057F580); BO_DCM += [record+168h]; BO_KSS
+//  = the largest +10h of record+1A4h, BO_KSP of record+198h (from 0, JL keeps, ++ 0057F5F0);
+//  BO_SC = [record+174h]; BO_EE = [record+190h]. These five keys are built inline (0041DD40,
+//  00BF7680 with size+1). Finally for each record+78h counter (++ 004FBD20): the award record
+//  0050FC30(key) must have a non-empty +44h vector (else 00BF6713); its [0] <= the count (JG
+//  skips, 00912931) and an inlined find in record+6Ch (004BF370 lower bound, then empty-key
+//  tests and 00BF7FBF __stricmp) that misses -> 0090EDE0([game+21A0h]; [record+250h], key, 1,
+//  0) at 009129EE.
+// Every inline checked-iterator test calls 00BF6713 at the same point; none is added or dropped.
+// x87: the one compare reads two stored floats (no rounding). No shared RNG draws.
+// ---------------------------------------------------------------------------
+void score_record_evaluate_badge_counters_00911e80(Seg59bHost& host, void* record) {
+    void* const counters = add(record, 0x78);
+    host.stl_tree_erase_subtree(0x0058B520u, counters, ptr(ptr(record, 0x7C), 0x04));
+    void* const counter_head = ptr(counters, 0x04);
+    *static_cast<void**>(add(counter_head, 0x04)) = counter_head;
+    at<std::uint32_t>(counters, 0x08) = 0;
+    *static_cast<void**>(add(ptr(counters, 0x04), 0x00)) = ptr(counters, 0x04);
+    *static_cast<void**>(add(ptr(counters, 0x04), 0x08)) = ptr(counters, 0x04);
+
+    // 00911ED5..009123E6: the three-level walk under key 1.
+    {
+        const std::int32_t one = 1;
+        void* const kills = add(record, 0xB4);
+        const StlTreeIterator outer = host.int_map_find_00908190(kills, &one);
+        void* const kills_head = ptr(kills, 0x04);
+        check_iterator_owner(host, outer, kills);
+        if (outer.node != kills_head) {
+            check_iterator_container(host, outer);
+            check_iterator_not_head(host, outer);
+            StlTreeIterator inner{add(outer.node, 0x10), ptr(ptr(outer.node, 0x14), 0x00)};
+            for (;;) {
+                check_iterator_not_head(host, outer);
+                void* const inner_head = ptr(outer.node, 0x14);
+                check_iterator_owner(host, inner, add(outer.node, 0x10));
+                if (inner.node == inner_head) break;
+                check_iterator_container(host, inner);
+                check_iterator_not_head(host, inner);
+                StlTreeIterator leaf{add(inner.node, 0x10), ptr(ptr(inner.node, 0x14), 0x00)};
+                for (;;) {
+                    check_iterator_not_head(host, inner);
+                    void* const leaf_head = ptr(inner.node, 0x14);
+                    check_iterator_owner(host, leaf, add(inner.node, 0x10));
+                    if (leaf.node == leaf_head) break;
+                    check_iterator_not_head(host, inner);
+                    std::uint32_t token = 0;
+                    switch (at<std::int32_t>(inner.node, 0x0C)) {
+                    case 1: token = 0x00D1886Cu; break;     // BU_DM
+                    case 2: token = 0x00D18824u; break;     // BU_PTM
+                    case 3: token = 0x00D1885Cu; break;     // BU_BM
+                    case 4: token = 0x00D18864u; break;     // BU_CM
+                    case 7: token = 0x00D18834u; break;     // BU_VLB
+                    case 8: token = 0x00D1883Cu; break;     // BU_VDB
+                    case 9: token = 0x00D18844u; break;     // BU_VTB
+                    case 0x0A: token = 0x00D1884Cu; break;  // BU_FA
+                    case 0x0B: token = 0x00D1882Cu; break;  // BU_VR
+                    case 0x0D: token = 0x00D18854u; break;  // BU_SM
+                    default: break;
+                    }
+                    if (token != 0) {
+                        alignas(4) std::uint8_t key[8] = {};
+                        host.native_string_assign_0041e870(key, image_text(host, token));
+                        std::int32_t* const count = host.string_int_map_index_005070c0(counters, key);
+                        check_iterator_container(host, leaf);
+                        check_iterator_not_head(host, leaf);
+                        *count += at<std::int32_t>(leaf.node, 0x10);
+                        release_native_string(host, key);
+                    }
+                    host.tree_iterator_increment(0x0057F4A0u, &leaf);
+                }
+                host.tree_iterator_increment(0x0057F920u, &inner);
+            }
+        }
+    }
+
+    // 009123EB..00912467: record+120h's counts replace the same keys.
+    {
+        void* const tree = add(record, 0x120);
+        StlTreeIterator it{tree, ptr(ptr(tree, 0x04), 0x00)};
+        for (;;) {
+            void* const head = ptr(tree, 0x04);
+            check_iterator_owner(host, it, tree);
+            if (it.node == head) break;
+            check_iterator_container(host, it);
+            check_iterator_not_head(host, it);
+            check_iterator_not_head(host, it);
+            const std::int32_t value = at<std::int32_t>(it.node, 0x14);
+            *host.string_int_map_index_005070c0(counters, add(it.node, 0x0C)) = value;
+            host.tree_iterator_increment(0x004FBD20u, &it);
+        }
+    }
+
+    // 00912469..00912556: BO_CV counts the record+15Ch entries above the scheduler threshold.
+    {
+        void* const tree = add(record, 0x15C);
+        StlTreeIterator it{tree, ptr(ptr(tree, 0x04), 0x00)};
+        for (;;) {
+            void* const head = ptr(tree, 0x04);
+            check_iterator_owner(host, it, tree);
+            if (it.node == head) break;
+            check_iterator_container(host, it);
+            check_iterator_not_head(host, it);
+            const float value = at<float>(it.node, 0x10);
+            const float threshold = at<float>(ptr(game_global(host), 0x21A0), 0x1470);
+            if (value > threshold) {
+                alignas(4) std::uint8_t key[8];
+                construct_native_string_inline(host, key, 0x00D1881Cu, 5);
+                *host.string_int_map_index_005070c0(counters, key) += 1;
+                release_native_string(host, key);
+            }
+            host.tree_iterator_increment(0x0057F580u, &it);
+        }
+    }
+
+    alignas(4) std::uint8_t key[8];
+    construct_native_string_inline(host, key, 0x00D18814u, 6);  // BO_DCM
+    *host.string_int_map_index_005070c0(counters, key) += at<std::int32_t>(record, 0x168);
+    release_native_string(host, key);
+
+    std::int32_t best = tree_max_value(host, add(record, 0x1A4));
+    construct_native_string_inline(host, key, 0x00D1880Cu, 6);  // BO_KSS
+    *host.string_int_map_index_005070c0(counters, key) = best;
+    release_native_string(host, key);
+
+    best = tree_max_value(host, add(record, 0x198));
+    construct_native_string_inline(host, key, 0x00D18804u, 6);  // BO_KSP
+    *host.string_int_map_index_005070c0(counters, key) = best;
+    release_native_string(host, key);
+
+    construct_native_string_inline(host, key, 0x00D187FCu, 5);  // BO_SC
+    *host.string_int_map_index_005070c0(counters, key) = at<std::int32_t>(record, 0x174);
+    release_native_string(host, key);
+
+    construct_native_string_inline(host, key, 0x00D187F4u, 5);  // BO_EE
+    *host.string_int_map_index_005070c0(counters, key) = at<std::int32_t>(record, 0x190);
+    release_native_string(host, key);
+
+    // 009128A6..00912A04: grant every counter that reached its award threshold and is not in the
+    // awards map at record+6Ch yet.
+    StlTreeIterator it{counters, ptr(ptr(counters, 0x04), 0x00)};
+    for (;;) {
+        void* const head = ptr(counters, 0x04);
+        check_iterator_owner(host, it, counters);
+        if (it.node == head) break;
+        check_iterator_container(host, it);
+        check_iterator_not_head(host, it);
+        void* const name = add(it.node, 0x0C);
+        void* const award = host.award_table_find_record_0050fc30(award_table(host), name);
+        void* const first = ptr(award, 0x48);
+        if (first == nullptr ||
+            (static_cast<std::int32_t>(static_cast<std::uint8_t*>(ptr(award, 0x4C)) -
+                                       static_cast<std::uint8_t*>(first)) >> 2) == 0) {
+            host.checked_iterator_failure_00bf6713();
+        }
+        check_iterator_not_head(host, it);
+        if (!(*static_cast<const std::int32_t*>(ptr(award, 0x48)) > at<std::int32_t>(it.node, 0x14))) {
+            void* const awards = add(record, 0x6C);
+            void* const awards_head = ptr(awards, 0x04);
+            check_iterator_not_head(host, it);
+            void* const lower = host.string_int_map_lower_bound_004bf370(awards, name);
+            if (awards == nullptr) host.checked_iterator_failure_00bf6713();  // 00912957, as in the image
+            StlTreeIterator found{awards, ptr(awards, 0x04)};
+            if (lower != ptr(awards, 0x04)) {
+                std::int32_t order;
+                if (at<std::uint32_t>(name, 0x00) == 0) {
+                    order = at<std::uint32_t>(lower, 0x0C) != 0 ? -1 : 0;
+                } else if (at<std::uint32_t>(lower, 0x0C) == 0) {
+                    order = 0;
+                } else {
+                    order = host.stricmp_00bf7fbf(static_cast<const char*>(ptr(name, 0x04)),
+                                                  static_cast<const char*>(ptr(lower, 0x10)));
+                }
+                if (order >= 0) found = StlTreeIterator{awards, lower};
+                else found = StlTreeIterator{awards, ptr(awards, 0x04)};
+            }
+            check_iterator_owner(host, found, awards);
+            if (found.node == awards_head) {
+                check_iterator_not_head(host, it);
+                void* const scoring = ptr(game_global(host), 0x21A0);
+                host.scoring_grant_award_0090ede0(scoring, at<std::int32_t>(record, 0x250), name, 1, 0);
+            }
+        }
+        host.tree_iterator_increment(0x004FBD20u, &it);
+    }
+}
 }  // namespace bsp::cc13_seg59b

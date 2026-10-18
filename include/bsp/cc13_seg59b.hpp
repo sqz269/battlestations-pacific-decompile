@@ -403,6 +403,13 @@ struct Seg59bHost {
     // 0090E850 kill-list operator[], __thiscall(ECX = map, const uint32* key), RET 4; EAX = &entry
     // (2Ch bytes, default-inserted on a miss).
     virtual void* kill_list_index_0090e850(void* map, const std::uint32_t* key) = 0;
+
+    // --- 00911E80 badge counters ----------------------------------------------------------------
+    // 00908190 std::map<int, ...>::find, __thiscall(ECX = map, result*, const int* key), RET 8.
+    virtual StlTreeIterator int_map_find_00908190(void* map, const std::int32_t* key) = 0;
+    // The checked iterator ++ instantiation at `callee` (0057F4A0, 0057F920, 0057F580, 0057F5F0,
+    // 004FBD20), __thiscall(ECX = it), RET. Bound library code.
+    virtual void tree_iterator_increment(std::uint32_t callee, StlTreeIterator* it) = 0;
     // 00419CC0 BSP_SizedStoragePool_GetSingleton (no args); 00BD1510 ReturnBlock,
     // __thiscall(ECX = pool, data, bytes, flag), RET 0Ch.
     virtual void* sized_pool_singleton_00419cc0() = 0;
@@ -776,6 +783,10 @@ float* score_record_add_field18_009052e0(void* scoring, std::int32_t slot, float
 // slot's score record (damage-by-class trees, BW_* weapon counters, RUA_KU / RUA_LBU awards and
 // the +1C0h kill-list entry).
 void scoring_record_hit_damage_00915f20(Seg59bHost& host, void* scoring, void* target, void* hit);
+// 00911E80, __fastcall(ECX = record = scoring + slot*284h + 4), RET: rebuilds the BU_* / BO_*
+// counter map at record+78h and grants (0090EDE0) each counter that reached its award threshold
+// and is not yet in the awards map at record+6Ch.
+void score_record_evaluate_badge_counters_00911e80(Seg59bHost& host, void* record);
 
 
 }  // namespace bsp::cc13_seg59b
