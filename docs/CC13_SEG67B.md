@@ -123,3 +123,20 @@ Two loads are seeded from the stack: the read slots in 00996C00 and 00996F50 are
 the entry `PUSH ECX` slots. Before the archive writes them they hold the pointer
 bits, and the code keeps that. 009968D0 calls `o->vtable[8]` even when no object
 was made; the image faults on that path, so the host receives a null object.
+
+### 3.3 The follow state, and the teardown bodies
+
+| Address | Function | Notes |
+|---|---|---|
+| 009C2980 | `bot_state_follow_construct_009c2980` | +74h = -U(0, 0.6), drawn from stream 1 (shared) at 009C2A0A; the float argument is unread |
+| 009BDE40 | `bot_state_follow_exit_009bde40` | 007B8A90 on the unit, then (approach+1Ch)+4Ch = 0 |
+| 009BDE80 | `bot_state_moveto_set_ranges_009bde80` | three MOVSS copies to +30h..+38h |
+| 009A3930, 009AD390, 009B55D0, 009C40F0, 009D0B20 | follow-style state destructor bodies | 006CDD70(s+18h), then 007B45F0(s) |
+| 009C2880, 009B6480, 009C70A0, 009A4680, 009ADAE0, 009A93E0, 009C9A80, 009D2390, 009CBE90, 009ACE50, 009CF850, 009BCB70 | approach-block destructors | the image's member-destructor order (see code) |
+| 009A6B90 | `bot_approach_dogfight_destruct_body_009a6b90` | 00653390, 006CDD70, 00695870 |
+| 009BAF60, 009C2920 | conditioned / moveto task destructor bodies | |
+| 009D60F0, 009D5EB0, 009DB380, 009DB3D0, 009DB420 | ship-AI observer member destructors | |
+
+The teardown bodies share one sequence interpreter (`teardown`). It keeps each
+image's call order exactly, including the null-adjusted registry cast
+(`ECX = b ? b+off : 0`) in front of 004116D0. EH state bookkeeping is not modelled.

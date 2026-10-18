@@ -540,4 +540,291 @@ void bot_condition_far_away_load_00997250(Cc13Seg67bHost& host, void* condition,
     read_field(host, archive, kStrDist2, 2, ptr(condition, 0x28));
 }
 
+
+// ---------------------------------------------------------------------------
+// States: the follow state and shared bodies.
+
+namespace {
+constexpr std::uint32_t kBotStateFollowVtable = 0x00D20AB8u;
+constexpr std::uint32_t kFollowMember18Vtable = 0x00CF89B4u;
+constexpr float kPointSix_00ce3d30 = 0.6000000238418579f;   // 3F19999A
+constexpr float kHundred_00ce3d08 = 100.0f;                 // 42C80000
+}  // namespace
+
+// 009C2980 (009C2980-009C2A52). EH frame 00CAF80B. +4h = approach; +0Ch, +10h,
+// +14h, +8h = 0; [s] = 00D20AB8; +1Ch, +20h, +24h, +2Ch = 0; byte +28h = 1;
+// +18h = 00CF89B4 (the member's vtable); +6Ch = 0042E740() + 380h; +70h = 0.6;
+// +74h = -U(0, 0.6) on stream 1 (009C2A0A, the shared generator); +88h = 100.0;
+// bytes +84h, +85h = 0; +8Ch = 1.0. The float argument is not read.
+void* bot_state_follow_construct_009c2980(Cc13Seg67bHost& host, void* state, void* approach,
+                                          float unread) {
+    (void)unread;
+    at<std::uintptr_t>(state, 0x04) = reinterpret_cast<std::uintptr_t>(approach);
+    at<std::uint32_t>(state, 0x0C) = 0;
+    at<std::uint32_t>(state, 0x10) = 0;
+    at<std::uint32_t>(state, 0x14) = 0;
+    at<std::uint32_t>(state, 0x08) = 0;
+    at<std::uint32_t>(state, 0x00) = kBotStateFollowVtable;
+    at<std::uint32_t>(state, 0x1C) = 0;
+    at<std::uint32_t>(state, 0x20) = 0;
+    at<std::uint32_t>(state, 0x24) = 0;
+    at<std::uint32_t>(state, 0x2C) = 0;
+    at<std::uint8_t>(state, 0x28) = 1;
+    at<std::uint32_t>(state, 0x18) = kFollowMember18Vtable;
+    void* const tuning = host.game_tuning_singleton_0042e740();             // 009C29DB
+    at<std::uintptr_t>(state, 0x6C) = reinterpret_cast<std::uintptr_t>(tuning) + 0x380u;
+    at<float>(state, 0x70) = kPointSix_00ce3d30;
+    const float u = host.random_uniform_00bd2f10(1, 0.0f, kPointSix_00ce3d30);   // 009C2A0A
+    at<float>(state, 0x74) = -u;
+    at<float>(state, 0x88) = kHundred_00ce3d08;
+    at<std::uint8_t>(state, 0x84) = 0;
+    at<std::uint8_t>(state, 0x85) = 0;
+    at<float>(state, 0x8C) = kOne_00d7a24c;
+    return state;
+}
+
+// 009BDE40 (009BDE40-009BDE5D). 007B8A90((s+4h)+4h) (the unit's turbo byte),
+// then ((s+4h)+1Ch)+4Ch = 0.0.
+void bot_state_follow_exit_009bde40(Cc13Seg67bHost& host, void* state) {
+    void* const approach = ptr_at(state, 4);
+    host.plane_clear_turbo_byte_007b8a90(ptr_at(approach, 4));
+    at<float>(ptr_at(approach, 0x1C), 0x4C) = 0.0f;
+}
+
+// 009BDE80 (009BDE80-009BDEA1). MOVSS copies of the three arguments to +30h,
+// +34h, +38h.
+void bot_state_moveto_set_ranges_009bde80(void* state, float a, float b, float c) {
+    std::memcpy(ptr(state, 0x30), &a, 4);
+    std::memcpy(ptr(state, 0x34), &b, 4);
+    std::memcpy(ptr(state, 0x38), &c, 4);
+}
+
+// ---------------------------------------------------------------------------
+// Teardown bodies. Each is the image's member-destructor sequence in its
+// order; EH state bookkeeping is not modelled.
+
+namespace {
+enum class Td : std::uint8_t {
+    kStateBase,   // 007B45F0(p+off)
+    kFollow,      // 006CDD70(p+off+18h), then 007B45F0(p+off)
+    kMoveTo,      // 007B65E0(p+off)
+    kRegistry,    // 004116D0(p ? p+off : null), the image's null-adjusted cast
+    kCallback,    // 00695870(p+off)
+    kVtable,      // [p] = off (a vtable address)
+    kObserver,    // 0042BCA0(p+off)
+};
+struct TdOp {
+    Td kind;
+    std::uint32_t off;
+};
+
+void teardown(Cc13Seg67bHost& host, void* p, const TdOp* ops, std::size_t n) {
+    for (std::size_t i = 0; i < n; ++i) {
+        const TdOp& o = ops[i];
+        switch (o.kind) {
+            case Td::kStateBase: host.bot_state_base_destruct_007b45f0(ptr(p, o.off)); break;
+            case Td::kFollow:
+                host.member_destruct_006cdd70(ptr(p, o.off + 0x18u));
+                host.bot_state_base_destruct_007b45f0(ptr(p, o.off));
+                break;
+            case Td::kMoveTo: host.bot_state_moveto_destruct_007b65e0(ptr(p, o.off)); break;
+            case Td::kRegistry:
+                host.state_registry_destruct_004116d0(p != nullptr ? ptr(p, o.off) : nullptr);
+                break;
+            case Td::kCallback: host.callback_owner_destroy_00695870(ptr(p, o.off)); break;
+            case Td::kVtable: at<std::uint32_t>(p, 0) = o.off; break;
+            case Td::kObserver: host.target_observer_destruct_0042bca0(ptr(p, o.off)); break;
+        }
+    }
+}
+
+template <std::size_t N>
+void teardown(Cc13Seg67bHost& host, void* p, const TdOp (&ops)[N]) {
+    teardown(host, p, ops, N);
+}
+
+constexpr TdOp kFollowBody[] = {{Td::kFollow, 0}};
+}  // namespace
+
+// 009A3930, 009AD390, 009B55D0, 009C40F0, 009D0B20: 006CDD70(s+18h) then
+// 007B45F0(s) (009A3958/009A3967, 009AD3B8/009AD3C7, 009B55F8/009B5607,
+// 009C4118/009C4127, 009D0B48/009D0B57).
+void bot_state_follow_destruct_009a3930(Cc13Seg67bHost& host, void* state) { teardown(host, state, kFollowBody); }
+void bot_state_follow_destruct_009ad390(Cc13Seg67bHost& host, void* state) { teardown(host, state, kFollowBody); }
+void bot_state_follow_destruct_009b55d0(Cc13Seg67bHost& host, void* state) { teardown(host, state, kFollowBody); }
+void bot_state_dive_bomb_destruct_members_009c40f0(Cc13Seg67bHost& host, void* state) { teardown(host, state, kFollowBody); }
+void bot_state_follow_destruct_009d0b20(Cc13Seg67bHost& host, void* state) { teardown(host, state, kFollowBody); }
+
+// 009C2880 (009C2880-009C291E): +134h base; +9Ch follow; +84h base; registry
+// +70h; [b] = 00D209CC; 0042BCA0(b+30h).
+void bot_task_moveto_destruct_approach_block_009c2880(Cc13Seg67bHost& host, void* block) {
+    static constexpr TdOp ops[] = {{Td::kStateBase, 0x134}, {Td::kFollow, 0x9C},
+                                   {Td::kStateBase, 0x84},  {Td::kRegistry, 0x70},
+                                   {Td::kVtable, 0x00D209CCu}, {Td::kObserver, 0x30}};
+    teardown(host, block, ops);
+}
+
+// 009B6480 (009B6480-009B656E).
+void bot_task_level_bomb_destruct_approach_block_009b6480(Cc13Seg67bHost& host, void* block) {
+    static constexpr TdOp ops[] = {{Td::kStateBase, 0x2E0}, {Td::kStateBase, 0x2BC},
+                                   {Td::kFollow, 0x218},    {Td::kStateBase, 0x1FC},
+                                   {Td::kStateBase, 0x1D4}, {Td::kFollow, 0x13C},
+                                   {Td::kMoveTo, 0xF0},     {Td::kRegistry, 0xDC},
+                                   {Td::kCallback, 0x30}};
+    teardown(host, block, ops);
+}
+
+// 009C70A0 (009C70A0-009C71D1).
+void bot_task_dive_bomb_destruct_approach_block_009c70a0(Cc13Seg67bHost& host, void* block) {
+    static constexpr TdOp ops[] = {{Td::kStateBase, 0x3C4}, {Td::kStateBase, 0x3A4},
+                                   {Td::kStateBase, 0x380}, {Td::kStateBase, 0x35C},
+                                   {Td::kStateBase, 0x33C}, {Td::kStateBase, 0x30C},
+                                   {Td::kFollow, 0x26C},    {Td::kFollow, 0x1CC},
+                                   {Td::kFollow, 0x134},    {Td::kMoveTo, 0xF8},
+                                   {Td::kRegistry, 0xE4},   {Td::kCallback, 0x30}};
+    teardown(host, block, ops);
+}
+
+// 009A4680 (009A4680-009A47A1).
+void bot_task_depth_charge_destruct_approach_block_009a4680(Cc13Seg67bHost& host, void* block) {
+    static constexpr TdOp ops[] = {{Td::kStateBase, 0x3A8}, {Td::kStateBase, 0x38C},
+                                   {Td::kFollow, 0x2EC},    {Td::kStateBase, 0x2CC},
+                                   {Td::kStateBase, 0x2A8}, {Td::kStateBase, 0x284},
+                                   {Td::kFollow, 0x1E4},    {Td::kFollow, 0x14C},
+                                   {Td::kMoveTo, 0x110},    {Td::kRegistry, 0xFC},
+                                   {Td::kCallback, 0x7C}};
+    teardown(host, block, ops);
+}
+
+// 009ADAE0 (009ADAE0-009ADBE1).
+void bot_task_drop_kamikaze_destruct_approach_block_009adae0(Cc13Seg67bHost& host, void* block) {
+    static constexpr TdOp ops[] = {{Td::kStateBase, 0x334}, {Td::kStateBase, 0x310},
+                                   {Td::kFollow, 0x26C},    {Td::kFollow, 0x1C8},
+                                   {Td::kStateBase, 0x1AC}, {Td::kFollow, 0x114},
+                                   {Td::kMoveTo, 0xD8},     {Td::kRegistry, 0xC4},
+                                   {Td::kCallback, 0x30}};
+    teardown(host, block, ops);
+}
+
+// 009A93E0 (009A93E0-009A94DD): the members, then 009A6B90(b) at 009A94C8.
+void bot_task_dogfight_destruct_approach_block_009a93e0(Cc13Seg67bHost& host, void* block) {
+    static constexpr TdOp ops[] = {{Td::kStateBase, 0x338}, {Td::kStateBase, 0x310},
+                                   {Td::kStateBase, 0x2EC}, {Td::kStateBase, 0x2AC},
+                                   {Td::kStateBase, 0x284}, {Td::kFollow, 0x1EC},
+                                   {Td::kFollow, 0x154},    {Td::kMoveTo, 0x118},
+                                   {Td::kRegistry, 0x104}};
+    teardown(host, block, ops);
+    bot_approach_dogfight_destruct_body_009a6b90(host, block);
+}
+
+// 009C9A80 (009C9A80-009C9B26): ends with [b] = 00D20E84.
+void bot_task_retreat_destruct_approach_block_009c9a80(Cc13Seg67bHost& host, void* block) {
+    static constexpr TdOp ops[] = {{Td::kFollow, 0xCC},     {Td::kStateBase, 0xB4},
+                                   {Td::kStateBase, 0x9C},  {Td::kStateBase, 0x80},
+                                   {Td::kRegistry, 0x6C},   {Td::kVtable, 0x00D20E84u}};
+    teardown(host, block, ops);
+}
+
+// 009D2390 (009D2390-009D249C).
+void bot_task_torpedo_destruct_approach_block_009d2390(Cc13Seg67bHost& host, void* block) {
+    static constexpr TdOp ops[] = {{Td::kFollow, 0x348},    {Td::kStateBase, 0x318},
+                                   {Td::kStateBase, 0x2E0}, {Td::kStateBase, 0x2BC},
+                                   {Td::kFollow, 0x220},    {Td::kFollow, 0x188},
+                                   {Td::kMoveTo, 0x14C},    {Td::kRegistry, 0x138},
+                                   {Td::kCallback, 0xB4}};
+    teardown(host, block, ops);
+}
+
+// 009CBE90 (009CBE90-009CBF7E).
+void bot_task_strafe_destruct_approach_block_009cbe90(Cc13Seg67bHost& host, void* block) {
+    static constexpr TdOp ops[] = {{Td::kStateBase, 0x2E0}, {Td::kStateBase, 0x298},
+                                   {Td::kStateBase, 0x278}, {Td::kStateBase, 0x254},
+                                   {Td::kFollow, 0x1BC},    {Td::kFollow, 0x124},
+                                   {Td::kMoveTo, 0xE8},     {Td::kRegistry, 0xD4},
+                                   {Td::kCallback, 0x58}};
+    teardown(host, block, ops);
+}
+
+// 009ACE50 (009ACE50-009ACF1E).
+void bot_task_kamikaze_destruct_approach_block_009ace50(Cc13Seg67bHost& host, void* block) {
+    static constexpr TdOp ops[] = {{Td::kStateBase, 0x280}, {Td::kStateBase, 0x25C},
+                                   {Td::kFollow, 0x1C4},    {Td::kFollow, 0x12C},
+                                   {Td::kMoveTo, 0xF0},     {Td::kRegistry, 0xDC},
+                                   {Td::kCallback, 0x68}};
+    teardown(host, block, ops);
+}
+
+// 009CF850 (009CF850-009CF8D3): ends with [b] = 00D21148.
+void bot_task_takeoff_destruct_approach_block_009cf850(Cc13Seg67bHost& host, void* block) {
+    static constexpr TdOp ops[] = {{Td::kStateBase, 0xC0},  {Td::kStateBase, 0x98},
+                                   {Td::kStateBase, 0x78},  {Td::kStateBase, 0x50},
+                                   {Td::kRegistry, 0x3C},   {Td::kVtable, 0x00D21148u}};
+    teardown(host, block, ops);
+}
+
+// 009BCB70 (009BCB70-009BCBF8): ends with [b] = 00D20838.
+void bot_approach_move_on_path_destroy_009bcb70(Cc13Seg67bHost& host, void* block) {
+    static constexpr TdOp ops[] = {{Td::kStateBase, 0x104}, {Td::kFollow, 0x6C},
+                                   {Td::kStateBase, 0x54},  {Td::kRegistry, 0x40},
+                                   {Td::kVtable, 0x00D20838u}};
+    teardown(host, block, ops);
+}
+
+// 009A6B90 (009A6B90-009A6BEF): 00653390(b+B8h), 006CDD70(b+A0h), 00695870(b+2Ch).
+void bot_approach_dogfight_destruct_body_009a6b90(Cc13Seg67bHost& host, void* block) {
+    host.member_destruct_00653390(ptr(block, 0xB8));
+    host.member_destruct_006cdd70(ptr(block, 0xA0));
+    host.callback_owner_destroy_00695870(ptr(block, 0x2C));
+}
+
+// 009BAF60 (009BAF7D-009BAFA8): [t] = 00D20388; +3F8h (the condition) set ->
+// its vtable[4](1); 007B4030(t).
+void bot_task_conditioned_destruct_body_009baf60(Cc13Seg67bHost& host, void* task) {
+    at<std::uint32_t>(task, 0) = 0x00D20388u;
+    void* const condition = ptr_at(task, 0x3F8);
+    if (condition != nullptr) host.object_vcall_04_delete(condition, 1);
+    host.bot_task_destruct_base_007b4030(task);
+}
+
+// 009C2920 (009C2920-009C2970): 009C2880(t ? t+3F8h : null), 007B4030(t).
+void bot_task_moveto_destruct_body_009c2920(Cc13Seg67bHost& host, void* task) {
+    bot_task_moveto_destruct_approach_block_009c2880(
+        host, task != nullptr ? ptr(task, 0x3F8) : nullptr);
+    host.bot_task_destruct_base_007b4030(task);
+}
+
+namespace {
+void observer_member_body(Cc13Seg67bHost& host, void* member, std::uint32_t vtable) {
+    at<std::uint32_t>(member, 0) = vtable;
+    void* const entity = ptr_at(member, 0x14);
+    if (entity != nullptr) host.observer_unregister_pair_006952a0(entity, member);
+    host.callback_owner_destroy_00695870(member);
+}
+}  // namespace
+
+// 009D60F0 (009D60F0-009D6147): [m] = 00D21510; +14h set -> 006952A0(+14h, m);
+// 00695870(m).
+void ship_ai_observer_member_destruct_body_009d60f0(Cc13Seg67bHost& host, void* member) {
+    observer_member_body(host, member, 0x00D21510u);
+}
+
+// 009D5EB0 (009D5EB0-009D5F07): the same with [m] = 00D214F8.
+void ship_ai_path_node_observer_destruct_body_009d5eb0(Cc13Seg67bHost& host, void* member) {
+    observer_member_body(host, member, 0x00D214F8u);
+}
+
+// 009DB380 / 009DB3D0 / 009DB420: 009D60F0(o+8), then [o] = 00D056D0.
+void ship_ai_observer_member_destruct_a_009db380(Cc13Seg67bHost& host, void* object) {
+    ship_ai_observer_member_destruct_body_009d60f0(host, ptr(object, 8));
+    at<std::uint32_t>(object, 0) = 0x00D056D0u;
+}
+void ship_ai_observer_member_destruct_b_009db3d0(Cc13Seg67bHost& host, void* object) {
+    ship_ai_observer_member_destruct_body_009d60f0(host, ptr(object, 8));
+    at<std::uint32_t>(object, 0) = 0x00D056D0u;
+}
+void ship_ai_observer_member_destruct_c_009db420(Cc13Seg67bHost& host, void* object) {
+    ship_ai_observer_member_destruct_body_009d60f0(host, ptr(object, 8));
+    at<std::uint32_t>(object, 0) = 0x00D056D0u;
+}
+
 }  // namespace bsp

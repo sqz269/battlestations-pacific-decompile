@@ -147,6 +147,25 @@ public:
                                                                  float distance) = 0;
     // 00410630: __thiscall(ECX = native string / reader), the destructor.
     virtual void native_string_destruct_00410630(void* object) = 0;
+    // Member destructors the teardown bodies call, each __thiscall(ECX = member), RET.
+    // 007B45F0: the bot-state base destructor.
+    virtual void bot_state_base_destruct_007b45f0(void* state) = 0;
+    // 006CDD70: the destructor of a follow-style state's +18h member.
+    virtual void member_destruct_006cdd70(void* member) = 0;
+    // 007B65E0: the moveto state destructor.
+    virtual void bot_state_moveto_destruct_007b65e0(void* state) = 0;
+    // 004116D0: the state-registry destructor (ECX may be null).
+    virtual void state_registry_destruct_004116d0(void* registry) = 0;
+    // 00695870 BSP_CallbackOwner_Destroy.
+    virtual void callback_owner_destroy_00695870(void* owner) = 0;
+    // 00653390: the destructor of the dogfight approach's +B8h member.
+    virtual void member_destruct_00653390(void* member) = 0;
+    // 007B4030: the bot-task base destructor.
+    virtual void bot_task_destruct_base_007b4030(void* task) = 0;
+    // 007B8A90 BSP_Plane_ClearTurboByte: __thiscall(ECX = unit), RET.
+    virtual void plane_clear_turbo_byte_007b8a90(void* unit) = 0;
+    // 0042E740 BSP_GameTuning_GetSingleton: EAX.
+    virtual void* game_tuning_singleton_0042e740() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
 
@@ -248,5 +267,48 @@ void bot_condition_turn_to_heading_load_00997110(Cc13Seg67bHost& host, void* con
                                                  void* archive);
 void bot_condition_turn_to_load_009971b0(Cc13Seg67bHost& host, void* condition, void* archive);
 void bot_condition_far_away_load_00997250(Cc13Seg67bHost& host, void* condition, void* archive);
+
+// ---- states: the follow state and the shared bodies ----
+// 009C2980: __thiscall(ECX = state, approach, float unread), RET 8, EAX = state.
+// Draw: 009C2A0A stream 1 (shared) U(0, 0.6), negated into +74h.
+void* bot_state_follow_construct_009c2980(Cc13Seg67bHost& host, void* state, void* approach,
+                                          float unread);
+// 009BDE40: __thiscall(ECX = follow state), RET.
+void bot_state_follow_exit_009bde40(Cc13Seg67bHost& host, void* state);
+// 009BDE80: __thiscall(ECX = moveto state, a, b, c), RET 0Ch.
+void bot_state_moveto_set_ranges_009bde80(void* state, float a, float b, float c);
+
+// ---- teardown bodies: __thiscall(ECX = object), RET, EH frames not modelled ----
+// Follow-style state destructor bodies, all 006CDD70(s+18h) then 007B45F0(s):
+// 009A3930, 009AD390, 009B55D0, 009C40F0, 009D0B20.
+void bot_state_follow_destruct_009a3930(Cc13Seg67bHost& host, void* state);
+void bot_state_follow_destruct_009ad390(Cc13Seg67bHost& host, void* state);
+void bot_state_follow_destruct_009b55d0(Cc13Seg67bHost& host, void* state);
+void bot_state_dive_bomb_destruct_members_009c40f0(Cc13Seg67bHost& host, void* state);
+void bot_state_follow_destruct_009d0b20(Cc13Seg67bHost& host, void* state);
+// Approach-block destructors (ECX = the block at task+3F8h).
+void bot_task_moveto_destruct_approach_block_009c2880(Cc13Seg67bHost& host, void* block);
+void bot_task_level_bomb_destruct_approach_block_009b6480(Cc13Seg67bHost& host, void* block);
+void bot_task_dive_bomb_destruct_approach_block_009c70a0(Cc13Seg67bHost& host, void* block);
+void bot_task_depth_charge_destruct_approach_block_009a4680(Cc13Seg67bHost& host, void* block);
+void bot_task_drop_kamikaze_destruct_approach_block_009adae0(Cc13Seg67bHost& host, void* block);
+void bot_task_dogfight_destruct_approach_block_009a93e0(Cc13Seg67bHost& host, void* block);
+void bot_task_retreat_destruct_approach_block_009c9a80(Cc13Seg67bHost& host, void* block);
+void bot_task_torpedo_destruct_approach_block_009d2390(Cc13Seg67bHost& host, void* block);
+void bot_task_strafe_destruct_approach_block_009cbe90(Cc13Seg67bHost& host, void* block);
+void bot_task_kamikaze_destruct_approach_block_009ace50(Cc13Seg67bHost& host, void* block);
+void bot_task_takeoff_destruct_approach_block_009cf850(Cc13Seg67bHost& host, void* block);
+void bot_approach_move_on_path_destroy_009bcb70(Cc13Seg67bHost& host, void* block);
+// 009A6B90: the dogfight approach's own members.
+void bot_approach_dogfight_destruct_body_009a6b90(Cc13Seg67bHost& host, void* block);
+// Task bodies.
+void bot_task_conditioned_destruct_body_009baf60(Cc13Seg67bHost& host, void* task);
+void bot_task_moveto_destruct_body_009c2920(Cc13Seg67bHost& host, void* task);
+// Ship-AI observer members.
+void ship_ai_observer_member_destruct_body_009d60f0(Cc13Seg67bHost& host, void* member);
+void ship_ai_path_node_observer_destruct_body_009d5eb0(Cc13Seg67bHost& host, void* member);
+void ship_ai_observer_member_destruct_a_009db380(Cc13Seg67bHost& host, void* object);
+void ship_ai_observer_member_destruct_b_009db3d0(Cc13Seg67bHost& host, void* object);
+void ship_ai_observer_member_destruct_c_009db420(Cc13Seg67bHost& host, void* object);
 
 }  // namespace bsp
