@@ -47,7 +47,8 @@ float divide_int_by_float_pc24(std::int32_t n, float d) noexcept {
 }  // namespace
 
 // ---------------------------------------------------------------------------
-// 0077B280, __cdecl, 15 stack dwords (callers ADD ESP,3Ch), -> AL. Frame: SUB ESP,30h
+// 0077B280, __cdecl, 3 + 2n stack dwords (n pairs: 007BD338 ADD ESP,44h = 7,
+// the 3Ch callers = 6, 00859A13 ADD ESP,34h = 5), -> AL. Frame: SUB ESP,30h
 // + EBP/ESI/EBX/EDI. Arguments: entity, record ({object, last tick}), byte flag, then
 // pairs {float distance, int interval} from stack argument 4. Assembly 0077B280-
 // 0077B6DD; x87 bytes read directly (DE FA at 0077B5EC is FDIVP ST(2),ST(0), i.e.
@@ -133,7 +134,7 @@ bool replication_schedule_sync_0077b280(Raw entity, void** record_arg, std::uint
                 const float s12 = p1 + p2;
                 const float p3 = object.at<float>(0xC0) * v[2];
                 const float dot = s12 + p3;                                                // 0077B45A
-                const float angle = static_cast<float>(host.stl_inst_007789d0(dot));       // 0077B46E
+                const float angle = static_cast<float>(host.safe_acos_007789d0(dot));       // 0077B46E
                 const float q = angle / host.max_float_by_ref_00415550(&floor_c4, &view_c4);  // 0077B47B
                 const float c2 = f32(0x3F99999Au);                                         // 1.2 (00CE3814)
                 float factor;
@@ -426,39 +427,6 @@ void tactical_library_preview_clear_rotors_0050a950(Raw preview, ClearAndResizeH
     host.loading_queue_stop_and_wait_005092e0(host.loading_queue_get_instance_004fde20());  // 0050A9E9
     host.ref_ptr_array_resize_00504960(preview.field(0x5C4), 0);
     preview.at<std::uint32_t>(0x48C) = 0;
-}
-
-// ---------------------------------------------------------------------------
-// 004DC410, __thiscall(ECX = header {data, count +4, capacity +8}; int count) RET 4;
-// EH frame 00C669C1. Assembly 004DC410-004DC4D9 (signed compares throughout):
-// count > capacity -> 004DA180(count). For i = old count .. count-1 the 2Ch record
-// data + 2Ch*i is constructed when non-null: +0/+4 = 0, the list at +8 gets
-// 004C3020's sentinel at +0Ch and size +10h = 0, then +24h/+20h/+1Ch/+18h/+14h = 0.
-// While count < header count: header count is decremented and 004D45A0 destroys
-// that record. Finally header count = count.
-// ---------------------------------------------------------------------------
-void particle_record_array_resize_004dc410(Raw header, std::int32_t count, ClearAndResizeHost& host) {
-    if (count > header.at<std::int32_t>(8)) host.resource_record_vector_reserve_004da180(header.p, count);
-    for (std::int32_t i = header.at<std::int32_t>(4); i < count; ++i) {
-        auto* const record = static_cast<std::uint8_t*>(header.ptr(0)) + 0x2C * i;
-        if (record == nullptr) continue;                                                   // 004DC45F placement test
-        const Raw r{record};
-        r.at<std::uint32_t>(0) = 0;
-        r.at<std::uint32_t>(4) = 0;
-        r.ptr(0x0C) = host.string_list_allocate_sentinel_004c3020(record + 8);             // 004DC470
-        r.at<std::uint32_t>(0x10) = 0;
-        r.at<std::uint32_t>(0x24) = 0;
-        r.at<std::uint32_t>(0x20) = 0;
-        r.at<std::uint32_t>(0x1C) = 0;
-        r.at<std::uint32_t>(0x18) = 0;
-        r.at<std::uint32_t>(0x14) = 0;
-    }
-    while (count < header.at<std::int32_t>(4)) {
-        header.at<std::int32_t>(4) -= 1;
-        host.string_alias_record_destroy_004d45a0(static_cast<std::uint8_t*>(header.ptr(0)) +
-                                                  0x2C * header.at<std::int32_t>(4));     // 004DC4BC
-    }
-    header.at<std::int32_t>(4) = count;
 }
 
 }  // namespace bsp::cc13_front8

@@ -45,8 +45,9 @@ struct ReplicationSyncHost {
     virtual bool player_record_has_recent_camera_state_007f7cd0(void* object) = 0;
     // 0042AE80 BSP_Vector3f_DivideByScalarInPlace, __thiscall(ECX = float[3]; float) RET 4.
     virtual void vector3_divide_in_place_0042ae80(float* v, float s) = 0;
-    // 007789D0 (STL_inst_007789d0, a clamped acos), __stdcall(float) RET 4 -> ST0.
-    virtual double stl_inst_007789d0(float x) = 0;
+    // 007789D0, game code: safe_acos_007789d0 in src/ship_ai_station_keeping.cpp
+    // (a clamped acos), __stdcall(float) RET 4 -> ST0.
+    virtual double safe_acos_007789d0(float x) = 0;
     // 00415550 BSP_Math_MaxFloatByRef, __fastcall(ECX = const float*, EDX = const float*) -> ST0.
     virtual float max_float_by_ref_00415550(const float* a, const float* b) = 0;
     // 00419010 BSP_Math_InterpolateClamped, __stdcall(x0, y0, x1, y1, x) RET 14h -> ST0 (a float).
@@ -55,9 +56,9 @@ struct ReplicationSyncHost {
     virtual std::int32_t ftol_00bf7420(double value) = 0;
 };
 
-// 0077B280, __cdecl(entity, record**, byte flag, then six {float distance, int
-// interval} pairs) -> AL; 15 stack dwords. `pairs` points at the first pair's
-// distance (stack argument 4); the image reads it without a bound, relying on the
+// 0077B280, __cdecl(entity, record**, byte flag, then n {float distance, int
+// interval} pairs) -> AL; 3 + 2n stack dwords, n varying by caller (5, 6 or 7).
+// `pairs` points at the first pair's distance (stack argument 4); the image reads it without a bound, relying on the
 // caller's last distance exceeding the measured one.
 bool replication_schedule_sync_0077b280(Raw entity, void** record, std::uint8_t flag,
                                         const std::uint32_t* pairs, ReplicationSyncHost& host);
@@ -171,18 +172,9 @@ struct ClearAndResizeHost {
     virtual void loading_queue_stop_and_wait_005092e0(void* queue) = 0;
     // 00504960 TMPL_RefPtrArray_Resize, __thiscall(ECX = array; int count) RET 4.
     virtual void ref_ptr_array_resize_00504960(void* array, std::int32_t count) = 0;
-
-    // 004DA180 BSP_NativeResourceRecordVector_Reserve, __thiscall(ECX = header; int capacity) RET 4.
-    virtual void resource_record_vector_reserve_004da180(void* header, std::int32_t capacity) = 0;
-    // 004C3020 BSP_PooledStringList_AllocateSentinel (called with ECX = the list) -> EAX head.
-    virtual void* string_list_allocate_sentinel_004c3020(void* list) = 0;
-    // 004D45A0 BSP_StringAliasRecord_Destroy, __fastcall(ECX = 2Ch record).
-    virtual void string_alias_record_destroy_004d45a0(void* record) = 0;
 };
 
 // 0050A950, __fastcall(ECX = tactical-library preview) RET.
 void tactical_library_preview_clear_rotors_0050a950(Raw preview, ClearAndResizeHost& host);
-// 004DC410, __thiscall(ECX = {data, count, capacity} header; int count) RET 4.
-void particle_record_array_resize_004dc410(Raw header, std::int32_t count, ClearAndResizeHost& host);
 
 }  // namespace bsp::cc13_front8
