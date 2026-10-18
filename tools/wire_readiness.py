@@ -42,6 +42,8 @@ import progress_board as pb  # reuse the game/non-game split and the segment cat
 ap = argparse.ArgumentParser(description='wiring readiness of reconstructed game functions')
 ap.add_argument('--list', metavar='CLASS', help='print the ready rows of one ABI class')
 ap.add_argument('--standins', action='store_true', help='print ready rows that a host file mentions, by host file')
+ap.add_argument('--frontier', metavar='LOG', help='rank unwired host stand-ins reached in this run log (native '
+                'table calls>0) by the callees-done rows their wiring would unlock')
 ap.add_argument('--limit', type=int, default=60)
 args = ap.parse_args()
 
@@ -358,6 +360,43 @@ json.dump(dict(summary=dict(counts), ready_abi=dict(abi_counts), by_category={k:
           open(out, 'w'), indent=1)
 
 ready = [r for r in rows if r['state'] == 'ready']
+if args.frontier:
+    # A root is an unwired recon row whose own address has a native-table row with calls>0 in the log, i.e. a
+    # host stand-in the run executes. Its unlock count is the callees_done_no_wired_caller rows reachable from it
+    # through unwired recon rows (top-down wiring of that subtree); blocked rows and non-recon callees stop the
+    # walk, and a row reachable from several roots counts for each.
+    calls = collections.Counter()
+    for m in re.finditer(r'^\s+\S.*?\s([0-9a-f]{8})\s+(?:concrete|UNIMPLEMENTED|\w+)\s+calls=(\d+)',
+                         Path(args.frontier).read_text(errors='replace'), re.M):
+        calls[int(m.group(1), 16)] += int(m.group(2))
+    st = {int(r['address'], 16): r for r in rows}
+    roots_ = [a for a, r in st.items() if r['state'] != 'wired' and calls[a] > 0]
+    ranked, unlocked = [], set()
+    takes = collections.defaultdict(set)  # code that takes a function's address dispatches it (tables, callbacks)
+    for v, takers in address_taken.items():
+        for t_ in takers:
+            if t_ is not None and t_ != v:
+                takes[t_].add(v)
+    for a in roots_:
+        seen, todo, done = {a}, [a], []
+        while todo:
+            x = todo.pop()
+            for c in callees[x] | takes.get(x, set()):
+                r = st.get(c)
+                if c in seen or r is None or r['state'] in ('wired', 'blocked_on_callees'):
+                    continue
+                seen.add(c); todo.append(c)
+                if r['state'] == 'callees_done_no_wired_caller':
+                    done.append(c)
+        hosts = sorted(n for n, t in host_text.items() if f'{a:08x}' in t)
+        ranked.append((len(done), a, st[a], calls[a], hosts))
+        unlocked.update(done)
+    ranked.sort(key=lambda x: (-x[0], x[1]))
+    print(f'{len(roots_)} reached unwired stand-ins unlock {len(unlocked)} distinct of '
+          f'{counts["callees_done_no_wired_caller"]} callees-done rows; columns: unlock calls state address name source hosts')
+    for n, a, r, k, h in ranked[:args.limit]:
+        print(f'{n:5} {k:6} {r["state"][:12]:12} {a:08x} {r["name"][:44]:44} {r["source"]} {",".join(h) or "-"}')
+    sys.exit(0)
 if args.list:
     sel = [r for r in ready if r['abi'] == args.list]
     print(f'{args.list}: {len(sel)} ready rows')
