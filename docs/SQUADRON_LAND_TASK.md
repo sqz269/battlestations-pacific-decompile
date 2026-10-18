@@ -17747,3 +17747,24 @@ Sources: docs/CC13_VERIFY4.md R4/R5, CC13_VERIFY12.md R8; the listing of 008193A
 Prediction (USN02 `s36_u2_p7`, PRCP01, JM08 `luaJM8USFormation`): PutFormationTo at usn_02 :985 / :990 reshapes the
 group (shape 1 then 3) and its followers jump onto their stations at the new point, turned along the leader's wake;
 PutTo with a heading turns the unit and, for a leader, snaps the formation. Rows that call neither are identical.
+
+## 5ie. `kDepthChargeTaskBound` pairs and flip: **ON** (cc9-lua66, 2026-10-17)
+
+Exports of bb5d16e51 (`local\l66_g_off` control, `local\l66_dc_on` with the switch); reference env; logs
+`local\l66r_{j6,u21}_{g_off,dc_on}_ref.log`.
+
+- **JM06 `jm06_p12_j6_c1`** (pair_diff 3): the Helldivers' `PilotSetTarget` at I-400 now choose 00E08F38 and arm 009A66C0
+  (11926 arm calls; BotTaskStrafe 14953 -> 0). Deaths 22 = 22; the mission completes at 1379.22 s in both. Lexington
+  sqn02 closes from about 3000 m to 1351 m and its .-II dies to I-400's AA at 1062.41 s instead of to Yamato at 1371.81 s;
+  I-400 fires 64 -> 474 shots. Census: sqn02 reaches aim for 24 ticks and breaks off to done (009A65F0's distance test),
+  sqn01 never leaves moveto, so no release is issued this time (lua65's dirty-tree run on the older base logged
+  10/25/10 release issues and 3/7/3 rack drops at the submarine, 5ic.1).
+- **USN21 `l65_u21_f`** (pair_diff 3): the Jake arms the task, flies turnto -> aim -> goaway and issues 28 releases
+  (`stage 007CE9FD: issues=28`), but drops nothing: `rack ... ammo=0`, because it is unequipped (bag 0) and
+  kRackUnequippedEmptyBound gives its racks no round (5ey), as for every other ordnance kind. The row moves widely
+  (deaths 231 -> 293, end 1089.94 -> 1260.10 s, both completed), all downstream of the Jake no longer strafing.
+  The exec guard logged its sus_prog.exe refusal in both runs.
+
+Mechanism as predicted up to the release (choice, arm, state machine, issue stage); the drop itself is shown only on
+the older base, and USN21's empty racks follow the shared 5ey rule. Flipped ON; a JM06 drop at the submarine is still
+to be seen on a current-base run.
