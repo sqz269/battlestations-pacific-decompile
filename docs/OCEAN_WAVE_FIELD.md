@@ -2948,3 +2948,9 @@ call raises once (`spawn missing class raises=1`), `US09Think` fails at script l
 nil value`, and the run continues to 36000 frames with exit 0; the mission does not end (`Mission.EndMission never
 true`) and has no further script failures. The flip is by mechanism (the image's `luaV_gettable` on the nil row);
 PRCP05 still cannot complete on this installation because its PTs never spawn.
+
+**`kKillFunnelTargetGoneBound` FLIPPED ON.** Pairs at c925b2319 (`local\p18_d_off` vs `local\p18_d_feed`), 24000
+frames, no helm orders. PRCP01 (`usn_03`): 8 feeds, both fail at 465.71 s (`usn03.obj_p2_fail`), pair_diff exit 1
+(gameplay identical). JM02: 0 feeds, no mission end on either, exit 1. The fed units had no live proximity trigger
+on these rows, so nothing moved; `target_gone_00925c40` notices each unit once, so a later Lua Kill or pass-K notice
+for the same unit adds nothing. Flipped by mechanism (00926D90's kill list notifies 0074FFE0 at pass K).

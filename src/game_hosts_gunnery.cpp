@@ -460,8 +460,9 @@ constexpr bool kKillFunnelCauseBound = true;
 //    destroy (00926C80, impl kill_unit) is NOT fed: the image's Destroy notice is the
 //    no-op slot +8h (0042B120). LABELLED: the host sites that call this entry with
 //    cause 1 are taken to stand for 00926D90 calls, as their comments say.
-//    OFF: as before.
-constexpr bool kKillFunnelTargetGoneBound = false;
+//    OFF: as before. ON (OCEAN_WAVE_FIELD 71): PRCP01 fed 8, JM02 fed 0; both
+//    pairs gameplay identical. Flipped by mechanism.
+constexpr bool kKillFunnelTargetGoneBound = true;
 //  * kArtilleryClassSpeedBound: packet g42_ver21_d3 (docs/CC13_VER_21.md D3).
 //    006E98BC rewrites an artillery class (sub-types 4..7) to +50h = sqrt(9.81 *
 //    Range) and +5Ch = V0 / that, and every consumer reads the rewrite: the
