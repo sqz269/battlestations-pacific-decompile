@@ -76,8 +76,9 @@ which a binding can satisfy.
    (+1Ch). It deletes +5Ch and +60h through vtable[0](1). It frees +68h's buffer with `_free`
    00BF6989 and then +68h itself, and runs operator delete on +64h without a null test.
 2. **The tree at +B0h.** For each node, the mapped object at +10h is deleted through vtable[0](1).
-   The iterator is advanced by 00862110 and the old node erased by 00863BF0. The ledger name
-   STL_xlen_throw does not fit how 00863BF0 is called here. Every checked-iterator test is kept.
+   The iterator is advanced by 00862110 and the old node erased by 00863BF0. 00863BF0 is
+   std::_Tree erase(iterator). It was renamed from STL_xlen_throw_00863bf0 to
+   STL_Tree_Erase_00863bf0 in the ledger and in Ghidra (cc13-seg53F). Every checked-iterator test is kept.
 3. **The vector at +C0h..+C8h.** It is freed and zeroed.
 4. **Tree clear and base.** The tree is cleared through 00864090, the head is freed, +B4h and +B8h
    are zeroed, and the base 007293D0 runs.
@@ -127,9 +128,32 @@ For i = 0, 1, … the function does the following:
 
 ## Adoption notes (checked at the host callers)
 
-No cc9 host function or switch matches any of the four by address, name or behaviour. I ran git
-grep over the game_hosts and cc9 files for 0077B280, build_sync_delta, 00864380, UnitGunneryAi,
-007B7290, rocket debug and 00859950.
+No cc9 host *function or switch* implements any of the four. The first version of this section said
+there was no match by address either, searching only the game_hosts and cc9 .cpp files for
+0077B280, build_sync_delta, 00864380, UnitGunneryAi, 007B7290, rocket debug and 00859950. That was
+overstated (corrected 2026-10-18, cc13-seg53F). cc9 already documents 00864380 under the class
+name **UnitGunneryPass**:
+
+- `include/bsp/unit_gunnery_pass.hpp:28` has `kUnitGunneryPassDestructAddress = 0x00864380u`.
+- `:51-52` have `kUnitGunneryPassVtable` 00D0D360 and `kUnitGunneryPassObserverVtable` 00D0D348.
+  These are the same two words this file installs. `kUnitGunneryAiVtable` / `kUnitGunneryAiVtable1C`
+  in cc13_seg53U.hpp are now defined as those constants, not duplicated.
+- `docs/UNIT_GUNNERY_PASS.md:596`, the coverage row
+  "`00864380` | `00864380-0086454F` | partial: the vtable re-install and the four member
+  destructions".
+
+**Adoption note for cc9 (UnitGunneryPass, 00864380): MINOR, documentation only.** Row 596 can point at
+`unit_gunnery_ai_destruct_00864380` (src/cc13_seg53U.cpp) for the full body 00864380-008644FA. The
+partial row stops at the four member destructions. The full body adds:
+
+- the tree at +B0h: each mapped +10h deleted through vtable[0](1), then erased node by node
+  through 00862110 and 00863BF0, now named STL_Tree_Erase;
+- the +C0h vector free;
+- 00864090 clear and head free;
+- the 007293D0 base.
+
+There is no behavioural host to compare against: the destructor is not called from host code. I
+did not edit the cc9 files.
 
 Within cc13, 007D06A0 is called through `node_append_numbered_children_007d06a0` (cc13_seg47b),
-and that hook matches this body. These are new code only. No adoption note is needed.
+and that hook matches this body. 00859950, 007B7290 and 007D06A0 are new code only.

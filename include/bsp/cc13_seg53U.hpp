@@ -11,6 +11,8 @@
 #ifndef BSP_CC13_SEG53U_HPP
 #define BSP_CC13_SEG53U_HPP
 
+#include "bsp/unit_gunnery_pass.hpp"
+
 #include <cstddef>
 #include <cstdint>
 
@@ -36,9 +38,10 @@ inline constexpr float kGunSyncTolB = 800.0f;                // float 00CE3950
 inline constexpr float kGunSyncTolC = 500.0f;                // float 00CFFD60
 inline constexpr float kGunSyncTolD = 3.402823466e+38f;      // float 00D7A248 (FLT_MAX)
 
-// 00864380: the two vtable words re-installed first.
-inline constexpr std::uint32_t kUnitGunneryAiVtable = 0x00D0D360;    // 008643A8
-inline constexpr std::uint32_t kUnitGunneryAiVtable1C = 0x00D0D348;  // 008643AF
+// 00864380: the two vtable words re-installed first are cc9's existing UnitGunneryPass constants
+// (include/bsp/unit_gunnery_pass.hpp: kUnitGunneryPassVtable / kUnitGunneryPassObserverVtable).
+inline constexpr std::uint32_t kUnitGunneryAiVtable = bsp::kUnitGunneryPassVtable;            // 008643A8
+inline constexpr std::uint32_t kUnitGunneryAiVtable1C = bsp::kUnitGunneryPassObserverVtable;  // 008643AF
 
 // 007B7290: the debug-draw statics (function-local statics in .bss with guard words) and
 // the constants they are built from.
@@ -88,8 +91,8 @@ struct Seg53UHost {
     virtual void object_delete_vslot_0(void* object, std::int32_t flags) = 0;
     // 00862110, the tree iterator ++, __thiscall(ECX = iterator {container, node}).
     virtual void tree_iterator_increment_00862110(void* iterator) = 0;
-    // 00863BF0, the tree erase(iterator), __thiscall(ECX = tree; out iterator*, container,
-    // node), RET 0Ch (ledger name STL_xlen_throw_00863bf0 does not fit this call).
+    // 00863BF0 STL_Tree_Erase (formerly STL_xlen_throw_00863bf0), the tree erase(iterator),
+    // __thiscall(ECX = tree; out iterator*, container, node), RET 0Ch.
     virtual void tree_erase_00863bf0(void* tree, void* out, void* container, void* node) = 0;
     // 00864090 STL_Tree_EraseRange, __thiscall(ECX = tree; out*, container, first, container,
     // last), RET 14h.
@@ -135,7 +138,8 @@ struct Seg53UHost {
 // 00CFE6C8): __thiscall(ECX = gun; record), RET 4.
 void gun_build_sync_delta_00859950(void* gun, void* record, Seg53UHost& host);
 
-// 00864380 BSP_UnitGunneryAi_Destruct: __thiscall(ECX = gunnery ai), plain RET.
+// 00864380 BSP_UnitGunneryAi_Destruct (cc9's UnitGunneryPass, kUnitGunneryPassDestructAddress;
+// docs/UNIT_GUNNERY_PASS.md covers it as partial): __thiscall(ECX = gunnery ai), plain RET.
 void unit_gunnery_ai_destruct_00864380(void* ai, Seg53UHost& host);
 
 // 007B7290 BSP_BotTaskRocket_DebugDraw: __fastcall(ECX = task), plain RET.
