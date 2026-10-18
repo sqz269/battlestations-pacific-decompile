@@ -3081,3 +3081,9 @@ the bay writes. **`kBayRequestNoForceEnableBound` (OFF)** keeps the channel as i
 count is 0 the pair is identical; otherwise only the bay animation and whatever reads channel C (its value) move,
 and the releases do not, because the stage spends +C20h either way.
 - MINOR (b) (the attach test has no drop-to-attach gap) is untouched.
+- **Not paired, stays OFF.** The host has no writer that enables channel C: the force-enable in these two
+  functions is the only `channel_c.enabled = true` in `src/`, and nothing in `game_hosts_units.cpp` reads channel C.
+  In the image the class's init enables it for a plane with a bay-door part (as 007EABC0 enables channel A from
+  PartAnims.Wings). So ON, every bay would stay shut, and a pair would be identical because nothing reads the
+  channel. Next step before a flip: find channel C's enabling writer in the class setup (the bay-door part's
+  PartAnims entry next to 007EABC0) and bind it; then this switch removes only the force for classes without one.
