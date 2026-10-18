@@ -175,6 +175,12 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
+    // 009CC020 / 009D2DA0: __thiscall(ECX = task+3F8h, bot, target), RET 8: the strafe
+    // and torpedo approach blocks.
+    virtual void strafe_construct_approach_block_009cc020(void* block, void* bot, void* target) = 0;
+    virtual void torpedo_construct_approach_block_009d2da0(void* block, void* bot, void* target) = 0;
+    // 009CF710: __thiscall(ECX = task+3F8h, [owner+50h]), RET 4: the takeoff approach block.
+    virtual void takeoff_construct_approach_block_009cf710(void* block, void* arg) = 0;
     // 009BC780: __thiscall(ECX = move-on-path approach, [bot+50h]), RET 4.
     virtual void bot_approach_move_on_path_construct_009bc780(void* block, void* arg) = 0;
     // 009A3390: __thiscall(ECX = depth-charge approach, [bot+50h], target), RET 8.
@@ -234,8 +240,6 @@ public:
     virtual float plane_class_min_control_speed_007c4810(void* descriptor) = 0;
     // 009B3680: __thiscall(ECX = land task, state), RET 4 (set_state copy).
     virtual void bot_task_land_switch_state_009b3680(void* task, void* state) = 0;
-    // 009CF8E0: __thiscall(ECX = task, owner, flag byte), RET 8, EAX = task.
-    virtual void* takeoff_task_construct_009cf8e0(void* task, void* owner, std::uint32_t flag) = 0;
     // 009C7710: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
     virtual void* dive_bomb_task_construct_009c7710(void* task, void* bot, void* target) = 0;
     // 009C2EF0: __thiscall(ECX = task+3F8h, bot, archive), RET 8.
@@ -795,5 +799,13 @@ void* bot_approach_depth_charge_construct_with_states_009a4dc0(Cc13Seg67bHost& h
 // 009B2E50: __thiscall(ECX = task+3F8h, arg1, arg2), RET 8, EAX = block.
 void* bot_approach_land_construct_composite_009b2e50(Cc13Seg67bHost& host, void* block,
                                                      void* arg1, void* arg2);
+// 009CC230 / 009D3050: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
+void* bot_task_strafe_construct_009cc230(Cc13Seg67bHost& host, void* task, void* bot,
+                                         void* target);
+void* bot_task_torpedo_construct_009d3050(Cc13Seg67bHost& host, void* task, void* bot,
+                                          void* target);
+// 009CF8E0: __thiscall(ECX = task, owner, flag byte), RET 8, EAX = task.
+void* bot_task_takeoff_construct_009cf8e0(Cc13Seg67bHost& host, void* task, void* owner,
+                                          std::uint32_t flag);
 
 }  // namespace bsp

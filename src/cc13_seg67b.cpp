@@ -2401,7 +2401,7 @@ void* pilot_bot_create_takeoff_task_009cff40(Cc13Seg67bHost& host, void* owner,
                                              std::uint32_t flag) {
     void* const t = host.operator_new_00bf681b(0x4D4);
     if (t == nullptr) return nullptr;
-    return host.takeoff_task_construct_009cf8e0(t, owner, flag);
+    return bot_task_takeoff_construct_009cf8e0(host, t, owner, flag);
 }
 
 namespace {
@@ -3293,6 +3293,83 @@ void* bot_approach_land_construct_composite_009b2e50(Cc13Seg67bHost& host, void*
                                               kEightHundred_00ce3950);
     land_block_tail(host, block);
     return block;
+}
+
+// ---------------------------------------------------------------------------
+// Strafe, torpedo and takeoff task constructors.
+
+namespace {
+constexpr std::uint32_t kStrafeTaskVtable_00d210e0 = 0x00D210E0u;
+constexpr std::uint32_t kStrafeApproachVtable_00d210d8 = 0x00D210D8u;
+constexpr std::uint32_t kStrafeRegistryVtable_00d210d4 = 0x00D210D4u;
+constexpr std::uint32_t kTorpedoTaskVtable_00d213c8 = 0x00D213C8u;
+constexpr std::uint32_t kTorpedoApproachVtable_00d213c0 = 0x00D213C0u;
+constexpr std::uint32_t kTorpedoRegistryVtable_00d213bc = 0x00D213BCu;
+constexpr std::uint32_t kTakeoffTaskVtable_00d21228 = 0x00D21228u;
+constexpr std::uint32_t kTakeoffApproachVtable_00d2121c = 0x00D2121Cu;
+constexpr std::uint32_t kTakeoffRegistryVtable_00d21218 = 0x00D21218u;
+constexpr float kZero_00d7a218 = 0.0f;  // 00000000
+}  // namespace
+
+// 009CC230 (009CC230-009CC2D6). EH frame. 0099C6F0(ECX = task, bot, 0Ah) (009CC256);
+// 009CC020(ECX = task+3F8h, bot, target) (009CC271); [task] = 00D210E0,
+// [task+3F8h] = 00D210D8, [task+4CCh] = 00D210D4 (009CC281-009CC28D);
+// 007B8AD0([task+3FCh]) (009CC297) ? +4E0h : +51Ch -> +310h, its vtable[4]()
+// (009CC2B7); 009F9980(ECX = task+3F8h, task) (009CC2BC). RET 8, EAX = task.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_strafe_construct_009cc230(Cc13Seg67bHost& host, void* task, void* bot,
+                                         void* target) {
+    bot_task_construct_base_0099c6f0(host, task, bot, 0x0A);
+    host.strafe_construct_approach_block_009cc020(ptr(task, 0x3F8), bot, target);
+    construct_task_tail(host, task, kStrafeTaskVtable_00d210e0, kStrafeApproachVtable_00d210d8,
+                        0x4CC, kStrafeRegistryVtable_00d210d4, 0x4E0, 0x51C);
+    return task;
+}
+
+// 009D3050 (009D3050-009D30F6). EH frame 00CB03A6. 0099C6F0(task, bot, 0Eh)
+// (009D3076); 009D2DA0(ECX = task+3F8h, bot, target) (009D3091); [task] =
+// 00D213C8, [task+3F8h] = 00D213C0, [task+530h] = 00D213BC (009D30A1-009D30AD);
+// 007B8AD0 (009D30B7) ? +544h : +580h -> +310h, enter (009D30D7); 009F9980
+// (009D30DC). RET 8, EAX = task.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_torpedo_construct_009d3050(Cc13Seg67bHost& host, void* task, void* bot,
+                                          void* target) {
+    bot_task_construct_base_0099c6f0(host, task, bot, 0x0E);
+    host.torpedo_construct_approach_block_009d2da0(ptr(task, 0x3F8), bot, target);
+    construct_task_tail(host, task, kTorpedoTaskVtable_00d213c8, kTorpedoApproachVtable_00d213c0,
+                        0x530, kTorpedoRegistryVtable_00d213bc, 0x544, 0x580);
+    return task;
+}
+
+// 009CF8E0 (009CF8E0-009CF9B3). EH frame 00CB0126. 0099C6F0(task, owner, 0Dh)
+// (009CF905); 009CF710(ECX = task+3F8h, [owner+50h]) (009CF91E); [task] =
+// 00D21228, [task+3F8h] = 00D2121C, [task+434h] = 00D21218 (009CF929-009CF935).
+// u = [task+3FCh]: byte u+904h set and u+900h == 5 (009CF93F, 009CF94D) -> +4B8h;
+// else flag byte set (009CF95E) -> +448h; else u+AA0h > [00D7A218] 0.0 (009CF975
+// COMISS JA; NaN falls to +470h) -> +490h, else +470h. That state -> +310h and its
+// vtable[4]() (009CF995); 009F9980(ECX = task+3F8h, task) (009CF99A). RET 8, EAX =
+// task.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_takeoff_construct_009cf8e0(Cc13Seg67bHost& host, void* task, void* owner,
+                                          std::uint32_t flag) {
+    bot_task_construct_base_0099c6f0(host, task, owner, 0x0D);
+    host.takeoff_construct_approach_block_009cf710(ptr(task, 0x3F8), ptr_at(owner, 0x50));
+    at<std::uint32_t>(task, 0x000) = kTakeoffTaskVtable_00d21228;
+    at<std::uint32_t>(task, 0x3F8) = kTakeoffApproachVtable_00d2121c;
+    at<std::uint32_t>(task, 0x434) = kTakeoffRegistryVtable_00d21218;
+    void* const unit = ptr_at(task, 0x3FC);
+    void* state;
+    if (at<std::uint8_t>(unit, 0x904) != 0 && at<std::int32_t>(unit, 0x900) == 5) {
+        state = ptr(task, 0x4B8);
+    } else if (static_cast<std::uint8_t>(flag) != 0) {
+        state = ptr(task, 0x448);
+    } else {
+        state = at<float>(unit, 0xAA0) > kZero_00d7a218 ? ptr(task, 0x490) : ptr(task, 0x470);
+    }
+    at<std::uintptr_t>(task, 0x310) = reinterpret_cast<std::uintptr_t>(state);
+    host.state_vcall_04_enter(state);
+    host.bot_approach_bind_to_task_009f9980(ptr(task, 0x3F8), task);
+    return task;
 }
 
 }  // namespace bsp

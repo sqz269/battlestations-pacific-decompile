@@ -363,3 +363,13 @@ The drop-kamikaze task stream constructor now calls 009AD920 directly.
 | 009B2E50 | land approach block | the move-to state targets [block+30h] with 100.0, 100.0 and 800.0 |
 
 Each shares its tail with the stream constructor of the same block; the tails are now helpers (`move_on_path_block_tail`, `depth_charge_block_tail`, `land_block_tail`, and likewise `level_bomb_block_tail`, `dogfight_block_tail`, `drop_kamikaze_block_tail`).
+
+### 3.24 Strafe, torpedo and takeoff task constructors
+
+| Address | Function | Notes |
+|---|---|---|
+| 009CC230 | strafe task (kind 0Ah) | a flight leader starts in +4E0h, a member in +51Ch |
+| 009D3050 | torpedo task (kind 0Eh) | +544h / +580h |
+| 009CF8E0 | takeoff task (kind 0Dh) | +4B8h when the plane's +904h byte is set and +900h is 5; else +448h when the flag byte is set; else +490h when unit+AA0h > 0.0, otherwise +470h |
+
+The takeoff factory 009CFF40 now calls 009CF8E0 directly.
