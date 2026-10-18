@@ -2277,4 +2277,56 @@ void* move_to_target_construct_from_entity_009be0f0(Cc13Seg67bHost& host, void* 
     return t;
 }
 
+// ---------------------------------------------------------------------------
+// Level-bomb and dive-bomb task constructors.
+
+namespace {
+constexpr std::uint32_t kDiveBombTaskVtable = 0x00D20E18u;
+constexpr std::uint32_t kDiveBombApproachVtable = 0x00D20E10u;
+constexpr std::uint32_t kDiveBombRegistryVtable = 0x00D20E0Cu;
+
+// The shared tail: [task], [task+3F8h] and [task+reg] vtables, the initial state
+// (leader ? leader_state : member_state) into +310h with its enter, then 009F9980.
+void construct_task_tail(Cc13Seg67bHost& host, void* task, std::uint32_t vt, std::uint32_t vt_ap,
+                         std::size_t reg, std::uint32_t vt_reg, std::size_t leader_state,
+                         std::size_t member_state) {
+    at<std::uint32_t>(task, 0x000) = vt;
+    at<std::uint32_t>(task, 0x3F8) = vt_ap;
+    at<std::uint32_t>(task, reg) = vt_reg;
+    void* const state = host.unit_is_squadron_flight_leader_007b8ad0(ptr_at(task, 0x3FC))
+                            ? ptr(task, leader_state)
+                            : ptr(task, member_state);
+    at<std::uintptr_t>(task, 0x310) = reinterpret_cast<std::uintptr_t>(state);
+    host.state_vcall_04_enter(state);
+    host.bot_approach_bind_to_task_009f9980(ptr(task, 0x3F8), task);
+}
+}  // namespace
+
+// 009B7990 (009B7990-009B7A36). EH frame. 0099C6F0(ECX = task, bot, 4) (009B79B6);
+// 009B75E0(ECX = task+3F8h, bot, target) (009B79D1); [task] = 00D20210, [task+3F8h]
+// = 00D2020C, [task+4D4h] = 00D20208 (009B79E1-009B79ED); 007B8AD0([task+3FCh])
+// (009B79F7) ? +4E8h : +534h -> +310h, its vtable[4]() (009B7A17); 009F9980(ECX =
+// task+3F8h, task) (009B7A1C).
+void* bot_task_level_bomb_construct_009b7990(Cc13Seg67bHost& host, void* task, void* bot,
+                                             void* target) {
+    bot_task_construct_base_0099c6f0(host, task, bot, 4);
+    host.level_bomb_approach_construct_009b75e0(ptr(task, 0x3F8), bot, target);
+    construct_task_tail(host, task, kLevelBombTaskVtable, kLevelBombApproachVtable, 0x4D4,
+                        kLevelBombRegistryVtable, 0x4E8, 0x534);
+    return task;
+}
+
+// 009C7710 (009C7710-009C77B6). EH frame. 0099C6F0(task, bot, 8) (009C7736);
+// 009C73A0(ECX = task+3F8h, bot, target) (009C7751); vtables 00D20E18 / +3F8h
+// 00D20E10 / +4DCh 00D20E0C (009C7761-009C776D); 007B8AD0 ? +4F0h : +52Ch -> +310h,
+// enter (009C7797); 009F9980 (009C779C).
+void* bot_task_dive_bomb_construct_009c7710(Cc13Seg67bHost& host, void* task, void* bot,
+                                            void* target) {
+    bot_task_construct_base_0099c6f0(host, task, bot, 8);
+    host.dive_bomb_approach_construct_009c73a0(ptr(task, 0x3F8), bot, target);
+    construct_task_tail(host, task, kDiveBombTaskVtable, kDiveBombApproachVtable, 0x4DC,
+                        kDiveBombRegistryVtable, 0x4F0, 0x52C);
+    return task;
+}
+
 }  // namespace bsp

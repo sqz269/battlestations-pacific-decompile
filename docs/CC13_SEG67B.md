@@ -265,3 +265,9 @@ Ledger-only: 009BC780 is spot-checked against the move-on-path model, which inli
 | 009BE0F0 | move-to target from an entity | |
 
 Ledger-only: 009C9F70 is a byte-identical copy of `set_state`.
+
+### 3.13 Level-bomb and dive-bomb task constructors
+
+| Address | Function | Notes |
+|---|---|---|
+| 009B7990 / 009C7710 | level-bomb (kind 4) and dive-bomb (kind 8) task constructors | the base, the approach block at +3F8h, three vtables, then a flight leader starts in +4E8h / +4F0h and a member in +534h / +52Ch |

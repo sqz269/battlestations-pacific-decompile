@@ -175,6 +175,9 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
+    // 009B75E0 / 009C73A0: __thiscall(ECX = task+3F8h, bot, target), RET 8.
+    virtual void level_bomb_approach_construct_009b75e0(void* block, void* bot, void* target) = 0;
+    virtual void dive_bomb_approach_construct_009c73a0(void* block, void* bot, void* target) = 0;
     // 009C7710: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
     virtual void* dive_bomb_task_construct_009c7710(void* task, void* bot, void* target) = 0;
     // 009C2EF0: __thiscall(ECX = task+3F8h, bot, archive), RET 8.
@@ -658,5 +661,10 @@ void plane_unit_copy_leader_velocity_009be050(Cc13Seg67bHost& host, void* unit,
 // 009BE0F0: __thiscall(ECX = target, entity), RET 4, EAX = target.
 void* move_to_target_construct_from_entity_009be0f0(Cc13Seg67bHost& host, void* t,
                                                     void* entity);
+// 009B7990 / 009C7710: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
+void* bot_task_level_bomb_construct_009b7990(Cc13Seg67bHost& host, void* task, void* bot,
+                                             void* target);
+void* bot_task_dive_bomb_construct_009c7710(Cc13Seg67bHost& host, void* task, void* bot,
+                                            void* target);
 
 }  // namespace bsp
