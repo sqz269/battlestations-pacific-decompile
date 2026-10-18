@@ -3227,3 +3227,9 @@ ship (`vt[5Ch](6)`, 0099DA05) and whose ship speed 0092D730 ([ship+1018h]) is NE
 going astern only). It also shows the image keeps the forward deck term in the measured speed on purpose, so the
 answer to the stow question lies elsewhere (the parented ctl+44h, section 75's frame question, or 009B21D0's
 timer), not in 0099D300.
+Eliminated as well: 009B260C-009B2631's clock (+28h runs down while vt[38h] < 1.0 and dz < 10) reads vt[38h] =
+|ctl+18h| (007B8E60), the parent-local relative speed in the image too (section 75), so a world-speed reading does
+not explain the image's stows. With the deck term the throttle holds measured = ParkVelocity, i.e. a relative speed
+of ParkVelocity - 0.1 x deck speed (about 0.56 m/s at 16.7 m/s), under the clock's 1.0, so the clock drains. Next
+to check: the plane's heading on the deck during the park (z < 0 takes 0.8 with the opposite sign) and the actual
+value of ParkVelocity (Pilot/Landing, tuning +4E8h) the host reads against this installation's Lua.
