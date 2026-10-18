@@ -1629,6 +1629,7 @@ struct GameUnitSlot {
     int torpedo_los_screened{0};
     int torpedo_los_clears{0};
     int torpedo_los_zero_length{0};   // a screening ship with class+A0h == 0
+    int torpedo_cruise_passes{0};     // packet p22_cruise_pass: 009D4BFC dt = 0 passes
     // The values 009D3420 produces. docs/TORPEDO_APPROACH_UPDATE.md reads that
     // routine; the reconstruction in torpedo_approach_update.hpp runs here and
     // these mirror its outputs so the arm and the census read one set.
@@ -6711,6 +6712,14 @@ struct GameUnitsHost::Impl {
     // (unit+FCh/+104h; [[C50h+4]+28h] is taken to be the plane, labelled).
     // False: -1, the old "leave +A9h alone" answer.
     static constexpr bool kTorpedoLineOfSightBound = true;   // ON: OCEAN_WAVE_FIELD 87
+    // Packet p22_cruise_pass (OCEAN_WAVE_FIELD 88). The torpedo cruise profile
+    // 009D4A70 ends its install with the +12Ch flip (009D4BAF-C8), the plan
+    // park (009D4BD0-E6), the clears of approach+60h (a float, 009D4BEE) and
+    // +64h/+68h/+6Ch, then 009D3420(approach, 0.0) (009D4BD8/009D4BDB/009D4BFC)
+    // and tail-JMP 0099B740. True: the host clears +60h, not +5Ch, and runs
+    // that dt = 0 pass at install, so the first replan and 009FADA0's dirty
+    // re-pick happen there. False: no pass; the first arm tick replans.
+    static constexpr bool kTorpedoCruisePassBound = false;
     // Packet cc9_l61_torpedo_done_formation (SQUADRON_LAND_TASK 5ho item 2). The
     // done/prepare enter 009D2530 writes squadron+3E4h = 2 (009D254E, after
     // 009BED80's 1) and state+8Ch = 1.0 (009D2565); every wingman's follow
@@ -29742,18 +29751,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // task+41Ch, the speed ratio, was not read; 1.0
                             // leaves the clamp at the tuning row itself.
                             bsp::TorpedoApproachState& ap = unit_.torpedo_approach;
-                            ap.engage_range_8c = bsp::torpedo_engage_range_009d4ac4(
+                            ap.engage_range_8c = bsp::torpedo_engage_range_009d4b63(
                                 ap.engage_range_8c,
                                 bsp::kPilotTorpedoAttackDistDefault, 1.0f);
                             ap.scan_radius_seed_88 = ap.engage_range_8c;
-                            // 009D4AE7 parks the cached plan position so the
-                            // first 009D3420 tick replans, and 009D4AF5 flips a
-                            // positive replan timer negative for the same reason.
+                            // 009D4BD0-009D4BE6 parks the cached plan position
+                            // so 009D4A70's own 009D3420 pass replans, and
+                            // 009D4BAF-009D4BC8 flips a positive replan timer
+                            // negative for the same reason. 009D4BEE-009D4BF9
+                            // clear approach+60h (float) and +64h/+68h/+6Ch.
                             ap.plan_target_x_ac = bsp::kTorpedoPlanPositionReset_00cf87d0;
                             ap.plan_target_z_b0 = bsp::kTorpedoPlanPositionReset_00cf87d0;
                             ap.forward_gap_68 = 0;
                             ap.backward_gap_6c = 0;
-                            ap.turn_offset_5c = 0.0f;
+                            if constexpr (GameUnitsHost::Impl::kTorpedoCruisePassBound) {
+                                ap.aim_heading_60 = 0.0f;
+                            } else {
+                                ap.turn_offset_5c = 0.0f;
+                            }
                             ap.home_sector_64 = 0;
                             // 009D0579-009D05C1, the approach reset: +128h = 1,
                             // +12Ch = -Random(0, 1), +130h/+131h = 0, +134h = 0.
@@ -29930,8 +29945,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 const float range =
                                     bsp::torpedo_reset_engage_range_009d0517(ap.scan_radius_seed_88);
                                 ap.range_90 = range;
-                                // 009D4AC4, which runs after the reset, clamps +8Ch.
-                                ap.engage_range_8c = bsp::torpedo_engage_range_009d4ac4(
+                                // 009D4B63, which runs after the reset, clamps +8Ch.
+                                ap.engage_range_8c = bsp::torpedo_engage_range_009d4b63(
                                     range, bsp::kPilotTorpedoAttackDistDefault, 1.0f);
                                 // 009D0581-009D0590.
                                 ap.replan_timer_12c = -owner_.release_altitude_draw_00bd2f10(
@@ -30040,6 +30055,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 "flight_lead=%d",
                                 static_cast<double>(ap.engage_range_8c),
                                 unit_.torpedo_is_flight_lead ? 1 : 0);
+                            if constexpr (GameUnitsHost::Impl::kTorpedoCruisePassBound) {
+                                // 009D4BAF-009D4BC8: a positive +12Ch becomes
+                                // -0.0 - t ([00D7A208]); the reset's -U(0, 1)
+                                // already sits at or below 0.
+                                if (ap.replan_timer_12c > 0.0f) {
+                                    ap.replan_timer_12c = -0.0f - ap.replan_timer_12c;
+                                }
+                                // 009D4BD8-009D4BFC: 009D3420(approach, 0.0).
+                                // It replans now (timer <= 0, plan parked) and
+                                // runs 009FADA0's dirty re-pick, one tick ahead
+                                // of the first arm tick.
+                                TorpedoArmBinding pass(owner_, unit_);
+                                pass.update_torpedo_approach_009d3420(nullptr, 0.0f);
+                                ++unit_.torpedo_cruise_passes;
+                            }
                         }
                         // 009D4A70's tail 0099B740, the cruise profile that
                         // also sets the engage distance.
@@ -43389,6 +43419,11 @@ void GameUnitsHost::report() {
                         slot->row.name.c_str(), slot->torpedo_los_calls,
                         slot->torpedo_los_screened, slot->torpedo_los_clears,
                         slot->torpedo_los_zero_length);
+                }
+                if (slot->torpedo_cruise_passes > 0) {
+                    host.log.notef("  torpedo %-12s cruise pass 009D4BFC=%d replans=%d "
+                        "(packet p22_cruise_pass)", slot->row.name.c_str(),
+                        slot->torpedo_cruise_passes, slot->torpedo_approach_replans);
                 }
                 if (slot->torpedo_disarmed_ticks > 0) {
                     host.log.notef("  torpedo %-12s disarmed 009D29E0: ticks=%d close=%d "

@@ -3599,3 +3599,26 @@ Predictions:
 - The mechanism is exercised where the US torpedo squadrons attack the escorted IJN groups on USN21: a screened aim floors at 30 m. Three planes show "a9 clears=1", a screen answer replaced by a clear one on a later replan, which the old OR could never undo. Zero-length = 0: every screening ship has a Length.
 - USN21 moved: torpedo drops 12 -> 8, torpedo-task releases 3 -> 1, dive-bomb-task releases 2 -> 10, deaths 299 -> 301, and the mission still completes (1325.17 s -> 1355.20 s). USN04's Kates are never screened.
 - Faithful by the bytes, so it is flipped ON. The drop loss is the image's 30 m floor, not a host defect.
+
+## 88. The 009D4A70 cruise pass (cc9-physics22, 2026-10-18)
+
+Bytes read on disk (009D4A70-009D4C0D, `disasm-raw`). The body in order:
+- 009D4A77 0099B660, then 009D4A82 007B8AD0 (flight leader). Only the leader runs 009D4A91-009D4B5D: the cruise altitude [+40Ch] (replaced by [00CE3850] when below double [00D7A370]) into the squadron control block +37Ch's three slots, with 009D4B3E MOVSS [00CE4C04] = 9999.0 into ctl+39Ch (+37Ch+20h) when its byte +12h is clear, 0 > [+8] and byte +2Fh is clear; then 009D4B57 task+46Ch = ctl+398h.
+- 009D4B63-009D4BA7, the clamp: task+484h = max(task+484h, float([tuning+434h] * task+41Ch)) (FCOMI/JBE; a NaN takes the product).
+- 009D4BAF-009D4BC8, the flip: approach = task+3F8h; when approach+12Ch > 0 it becomes [00D7A208] (-0.0) minus itself.
+- 009D4BD0-009D4BE6, the park: approach+B0h and +ACh = [00CF87D0] (999999.0).
+- 009D4BEE-009D4BF9: approach+60h = 0.0 (MOVSS from a zeroed XMM1), +6Ch, +68h, +64h = 0.
+- 009D4BD8/009D4BDB/009D4BFC: FLDZ, FSTP to the pushed slot, CALL 009D3420 with ECX = approach. Then 009D4C08 tail-JMP 0099B740.
+
+The old cites 009D4AC4, 009D4AE7, 009D4AF5 and 009D4AA9 are not instruction starts in this body; they are fixed with no switch, and `torpedo_engage_range_009d4ac4` is renamed `torpedo_engage_range_009d4b63`.
+
+**The dt = 0 pass.** 009D3420 tests dt < +12Ch (009D3640-009D3682). The reset leaves +12Ch = -U(0, 1) and the flip keeps it at or below 0, so the pass replans: +12Ch += +128h (1.0) - 0. The plan position is parked, so the plan is rebuilt there and then. 009D34BB calls 009FADA0, whose 009FAEB0 tests sub+41h and runs the re-pick 009FA260 when it is set (the constructor 009FB200, ResetAimOffset 009FA350, SetAimError 009FA380 through 009D02A0, and OnTargetDestroyed 009FAF90 set it). The timed re-pick 009FAE26-009FAE44 needs sub+60h + dt > 2.0 and cannot fire at dt = 0. In the host the first arm tick does all of this one tick later. After that tick the replan timer agrees in both (1 - U - dt).
+
+The host also cleared approach+5Ch (the scan's turn offset) where the image clears +60h. +5Ch is read by the aim heading (bearing + offset) and is only rewritten by a scan, so on a re-install without a scan the image keeps the old offset.
+
+Switch **kTorpedoCruisePassBound**, committed OFF: the +60h clear in place of +5Ch, the flip, and the pass at the end of the install (after the reset's draws, as in the image), through the same TorpedoArmBinding the arm tick uses. The per-plane line "cruise pass 009D4BFC=N replans=M" prints on ON.
+
+Predictions:
+- N = 1 per install; replans +1 per plane (the pass), and the first arm tick no longer replans.
+- The host's re-pick takes its unit draws from a per-shooter seed (`approach_target_ref_unit_draws_substitute`), not from stream 1, so moving it one call earlier moves no draw. The plan is rebuilt from the same positions (the install and the first arm tick run in the same host call). Expected: gameplay identical on USN21 and USN04 (pair_diff 0 or 1). Any movement would come from the +5Ch carry on a retarget re-install.
+- 009D4C10 break-off: a NaN range breaks off in the image (FCOMI/JA) and not in the host's >=. A NaN range needs a NaN position, so it is left as is.
