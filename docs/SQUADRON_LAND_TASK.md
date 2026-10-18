@@ -17922,3 +17922,15 @@ Export `local\l67_br_on` (fcb6c6fa5 with both switches, 7D430F3F03E7) against `l
 
 Mechanism as predicted (CC13_FIX20): nothing moves before the end; an end movie with debrief ends the scene. Flipped ON.
 A one-argument mid-mission clip (bsm_01 :2299, bsm_10 :1520, ...) was not exercised by these rows.
+
+### 5ii.2 fix13 / fix14 natives **ON** (unexercised, cc9-lua67, 2026-10-18)
+
+`kLuaGetCommandBuildingLevelBound`, `kLuaSetCommandBuildingOwnerPlayerBound`, `kLuaGetShipMaxSpeedBound` and
+`kLuaGetDirectionBound` flipped as faithful bindings with no reaching row (5ii): JM05 fails at 321.05 s before the
+RadarStation turns Japanese; SetCommandBuildingOwnerPlayer is Cheat_PhaseShift only; GetShipMaxSpeed's PRCP caller
+(JM14, prcpjm12.lua:1138 PreparePhase4) is not reached in 60000 frames with no orders (pair_diff 1) and its usn_02
+callers are in a scene no menu id loads; GetDirection's jm01 callers need the JM01 tree row. Bodies re-read:
+0089B7CF 00888AA0 / 0089B7E6 [ESI+770h] / 0089B7F1 PushInteger; 00890CC8 0080FC30 / 00890CD2 FSTP float /
+PushFloat; 008A7DD4 the stale test (+C8h, 00414DB0) and 008A7DF2 EDX = entity+ECh (the forward row) into 0088BA30.
+Predicted when reached: JM05's luaJM5CheckObjectives stops raising after the capture; JM01's luaJM1GetFlakPos
+completes its loop, which changes the number of script `random()` draws (image-faithful).
