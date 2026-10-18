@@ -1776,7 +1776,8 @@ void bot_task_kamikaze_destruct_body_009af610(Cc13Seg67bHost& host, void* task) 
 void* bot_task_dogfight_construct_from_stream_009ab3d0(Cc13Seg67bHost& host, void* task,
                                                        void* bot, void* archive) {
     bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 2);
-    host.dogfight_construct_approach_block_from_stream_009a9670(ptr(task, 0x3F8), bot, archive);
+    bot_task_dogfight_construct_approach_block_from_stream_009a9670(host, ptr(task, 0x3F8), bot,
+                                                                    archive);
     at<std::uint32_t>(task, 0x000) = kDogfightTaskVtable;
     at<std::uint32_t>(task, 0x3F8) = kDogfightApproachVtable;
     at<std::uint32_t>(task, 0x4FC) = kDogfightTask4FCVtable;
@@ -2119,15 +2120,15 @@ void level_bomb_move_to_tail(Cc13Seg67bHost& host, void* s) {
 }  // namespace
 
 // 009B6C10 (009B6C10-009B6CBF). EH frame. 009C2AC0(ECX = s, approach, target,
-// near, far, mode) (009B6C53; the three trailing arguments are re-pushed through
+// near, far, third) (009B6C53; the three trailing arguments are re-pushed through
 // FLD/FSTP); [s] = 00D201E0, [s+18h] = 00D201C8, +44h = 1.0, 009B6C8D 00BD2F10(1, 0,
 // 1), +48h = -r, +3Ch = 0, +40h = 1.0. Returns s.
 // UNCERTAINTY: the FLD/FSTP re-push quiets a signalling-NaN bit pattern; the
 // C++ passes the bits unchanged.
 void* bot_state_level_bomb_move_to_construct_009b6c10(Cc13Seg67bHost& host, void* s,
                                                       void* approach, void* target, float near_,
-                                                      float far_, std::uint32_t mode) {
-    host.bot_state_move_to_construct_009c2ac0(s, approach, target, near_, far_, mode);
+                                                      float far_, float third_) {
+    host.bot_state_move_to_construct_009c2ac0(s, approach, target, near_, far_, third_);
     level_bomb_move_to_tail(host, s);
     return s;
 }
@@ -2179,12 +2180,12 @@ void* bot_task_make_dive_bomb_009c8c70(Cc13Seg67bHost& host, void* bot, void* ta
 }
 
 // 009C2CA0 (009C2CA0-009C2CE0). 009C2AC0(ECX = s, approach, target, near, far,
-// mode) (009C2CC9; FLD/FSTP re-push); [s] = 00D20B24, [s+18h] = 00D20B0C. Returns s.
+// third) (009C2CC9; FLD/FSTP re-push); [s] = 00D20B24, [s+18h] = 00D20B0C. Returns s.
 // UNCERTAINTY: the re-push quiets a signalling-NaN bit pattern.
 void* bot_state_dogfight_move_to_construct_009c2ca0(Cc13Seg67bHost& host, void* s,
                                                     void* approach, void* target, float near_,
-                                                    float far_, std::uint32_t mode) {
-    host.bot_state_move_to_construct_009c2ac0(s, approach, target, near_, far_, mode);
+                                                    float far_, float third_) {
+    host.bot_state_move_to_construct_009c2ac0(s, approach, target, near_, far_, third_);
     at<std::uint32_t>(s, 0x00) = kDogfightMoveToVtable;
     at<std::uint32_t>(s, 0x18) = kDogfightMoveTo18Vtable;
     return s;
@@ -2312,7 +2313,7 @@ void construct_task_tail(Cc13Seg67bHost& host, void* task, std::uint32_t vt, std
 void* bot_task_level_bomb_construct_009b7990(Cc13Seg67bHost& host, void* task, void* bot,
                                              void* target) {
     bot_task_construct_base_0099c6f0(host, task, bot, 4);
-    host.level_bomb_approach_construct_009b75e0(ptr(task, 0x3F8), bot, target);
+    bot_approach_level_bomb_construct_009b75e0(host, ptr(task, 0x3F8), bot, target);
     construct_task_tail(host, task, kLevelBombTaskVtable, kLevelBombApproachVtable, 0x4D4,
                         kLevelBombRegistryVtable, 0x4E8, 0x534);
     return task;
@@ -2774,33 +2775,11 @@ constexpr std::uint32_t kLevelBombAimVtable_00d2015c = 0x00D2015Cu;
 constexpr std::uint32_t kLevelBombPrepareVtable_00d201a0 = 0x00D201A0u;
 constexpr std::uint32_t kLevelBombReleaseVtable_00d20140 = 0x00D20140u;
 constexpr std::uint32_t kLevelBombGoAwayVtable_00d2011c = 0x00D2011Cu;
-}  // namespace
 
-// 009B77C0 (009B77C0-009B7967). EH frame 00CAEFC8. 009B4690(ECX = block, [bot+50h],
-// archive) (009B77ED); 00411E20(block+DCh) (009B7800); [block] = 00D20204,
-// [block+DCh] = 00D20200 (009B7817, 009B781D); 00BD4FE0(archive, outgoing block,
-// "_state_moveTo") (009B7834) and 009B7480(ECX = block+F0h, block, that block by
-// value) (009B7840); 009C2980(ECX = block+13Ch, block, 100.0) (009B785B);
-// 009B49B0(ECX = block+1D4h, block) (009B786C). Inline state +1FCh: +200h =
-// block, +208h/+20Ch/+210h/+204h = 0, vtable 00D2015C, bytes +215h/+214h = 0
-// (009B7871-009B789F). 009C2980(ECX = block+218h, block, 100.0) (009B78BD), then
-// [+218h] = 00D201A0, byte +2B8h = 0, +2B0h = [00D7A260] -1.0 (009B78C2-009B78D6).
-// Inline state +2BCh: +2C0h = block, +2C8h/+2CCh/+2D0h/+2C4h = 0, vtable 00D20140
-// (009B78DE-009B78FC). Inline state +2E0h: +2E4h = block, +2ECh/+2F0h/+2F4h/+2E8h
-// = 0, vtable 00D2011C, +2F8h = float(2 x [[+2E4h]+8]+268h) (009B7906-009B793F,
-// FADD ST0, ST0). 009B42D0(block) (009B794C). RET 8, EAX = block.
-// The state names are the 009B42D0 registrations (LevelBomb/aim, /prepare,
-// /release, /goaway). UNCERTAINTY: EH unwinding not modelled.
-void* bot_task_level_bomb_construct_approach_block_from_stream_009b77c0(Cc13Seg67bHost& host,
-                                                                        void* block, void* bot,
-                                                                        void* archive) {
-    host.bot_approach_level_bomb_construct_from_stream_009b4690(block, ptr_at(bot, 0x50), archive);
-    host.bot_state_registry_construct_00411e20(ptr(block, 0xDC));
-    at<std::uint32_t>(block, 0x000) = kLevelBombBlockVtable_00d20204;
-    at<std::uint32_t>(block, 0x0DC) = kLevelBombRegistryVtable_00d20200;
-    std::uint32_t ref[3] = {};
-    host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrStateMoveTo));
-    bot_state_level_bomb_run_construct_from_stream_009b7480(host, ptr(block, 0xF0), block, ref);
+// The tail 009B75E0 and 009B77C0 share (009B768B-009B7792 and 009B7845-009B794C):
+// follow +13Ch, attackrun +1D4h, aim +1FCh, prepare +218h, release +2BCh, goaway
+// +2E0h, then 009B42D0.
+void level_bomb_block_tail(Cc13Seg67bHost& host, void* block) {
     bot_state_follow_construct_009c2980(host, ptr(block, 0x13C), block, kHundred_00ce3d08);
     bot_state_level_bomb_attack_run_construct_009b49b0(host, ptr(block, 0x1D4), block);
     at<std::uintptr_t>(block, 0x200) = reinterpret_cast<std::uintptr_t>(block);
@@ -2830,6 +2809,35 @@ void* bot_task_level_bomb_construct_approach_block_from_stream_009b77c0(Cc13Seg6
     const float turn = at<float>(ptr_at(ptr_at(block, 0x2E4), 0x08), 0x268);
     at<float>(block, 0x2F8) = turn + turn;
     bot_task_level_bomb_register_state_names_009b42d0(host, block);
+}
+}  // namespace
+
+// 009B77C0 (009B77C0-009B7967). EH frame 00CAEFC8. 009B4690(ECX = block, [bot+50h],
+// archive) (009B77ED); 00411E20(block+DCh) (009B7800); [block] = 00D20204,
+// [block+DCh] = 00D20200 (009B7817, 009B781D); 00BD4FE0(archive, outgoing block,
+// "_state_moveTo") (009B7834) and 009B7480(ECX = block+F0h, block, that block by
+// value) (009B7840); 009C2980(ECX = block+13Ch, block, 100.0) (009B785B);
+// 009B49B0(ECX = block+1D4h, block) (009B786C). Inline state +1FCh: +200h =
+// block, +208h/+20Ch/+210h/+204h = 0, vtable 00D2015C, bytes +215h/+214h = 0
+// (009B7871-009B789F). 009C2980(ECX = block+218h, block, 100.0) (009B78BD), then
+// [+218h] = 00D201A0, byte +2B8h = 0, +2B0h = [00D7A260] -1.0 (009B78C2-009B78D6).
+// Inline state +2BCh: +2C0h = block, +2C8h/+2CCh/+2D0h/+2C4h = 0, vtable 00D20140
+// (009B78DE-009B78FC). Inline state +2E0h: +2E4h = block, +2ECh/+2F0h/+2F4h/+2E8h
+// = 0, vtable 00D2011C, +2F8h = float(2 x [[+2E4h]+8]+268h) (009B7906-009B793F,
+// FADD ST0, ST0). 009B42D0(block) (009B794C). RET 8, EAX = block.
+// The state names are the 009B42D0 registrations (LevelBomb/aim, /prepare,
+// /release, /goaway). UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_level_bomb_construct_approach_block_from_stream_009b77c0(Cc13Seg67bHost& host,
+                                                                        void* block, void* bot,
+                                                                        void* archive) {
+    host.bot_approach_level_bomb_construct_from_stream_009b4690(block, ptr_at(bot, 0x50), archive);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xDC));
+    at<std::uint32_t>(block, 0x000) = kLevelBombBlockVtable_00d20204;
+    at<std::uint32_t>(block, 0x0DC) = kLevelBombRegistryVtable_00d20200;
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrStateMoveTo));
+    bot_state_level_bomb_run_construct_from_stream_009b7480(host, ptr(block, 0xF0), block, ref);
+    level_bomb_block_tail(host, block);
     return block;
 }
 
@@ -2949,6 +2957,73 @@ void* bot_task_depth_charge_construct_approach_block_from_stream_009a5000(Cc13Se
     plain_inline_state(block, 0x3A8, 0x00D1F684u);
     at<float>(block, 0x3C0) = kZero_s15;
     bot_task_depth_charge_register_state_names_009a3090(host, block);
+    return block;
+}
+
+// ---------------------------------------------------------------------------
+// The dogfight approach block from a stream.
+
+namespace {
+constexpr std::uint32_t kDogfightBlockVtable_00d1f9a4 = 0x00D1F9A4u;
+constexpr std::uint32_t kDogfightRegistryVtable_00d1f9a0 = 0x00D1F9A0u;
+}  // namespace
+
+// 009A9670 (009A9670-009A97E4). EH frame 00CAE456. 009A6D40(ECX = block, bot,
+// archive) (009A969A); 00411E20(block+104h) (009A96AD); [block] = 00D1F9A4,
+// [block+104h] = 00D1F9A0 (009A96C4, 009A96CA); 00BD4FE0(archive, outgoing block,
+// "_state_moveTo") (009A96E1) and 009C2D00(ECX = block+118h, block, that block
+// by value) (009A96ED); 009C2980(ECX = block+154h, block, 100.0) (009A9708) and
+// (ECX = block+1ECh) (009A9723); embedded dogfight/aim +284h 00D1F8D8
+// (009A9728-009A9746); 009A84E0(ECX = block+2ACh, block) (009A975C); 009A70E0(ECX =
+// block+2ECh, block) (009A976D); embedded avoid_roll +310h 00D1F918 and avoid_turn
+// +338h 00D1F938 (009A9772-009A97B8); 009A6A60(block) (009A97C9). RET 8, EAX =
+// block. The state names are the 009A6A60 registrations.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_dogfight_construct_approach_block_from_stream_009a9670(Cc13Seg67bHost& host,
+                                                                      void* block, void* bot,
+                                                                      void* archive) {
+    host.bot_approach_dogfight_construct_from_stream_009a6d40(block, bot, archive);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0x104));
+    at<std::uint32_t>(block, 0x000) = kDogfightBlockVtable_00d1f9a4;
+    at<std::uint32_t>(block, 0x104) = kDogfightRegistryVtable_00d1f9a0;
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrStateMoveTo));
+    bot_state_move_to_construct_from_stream_009c2d00(host, ptr(block, 0x118), block, ref);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x154), block, kHundred_00ce3d08);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x1EC), block, kHundred_00ce3d08);
+    plain_inline_state(block, 0x284, 0x00D1F8D8u);
+    bot_state_dogfight_maneuver_construct_009a84e0(host, ptr(block, 0x2AC), block);
+    bot_state_dogfight_attack_run_construct_009a70e0(host, ptr(block, 0x2EC), block);
+    plain_inline_state(block, 0x310, 0x00D1F918u);
+    plain_inline_state(block, 0x338, 0x00D1F938u);
+    bot_task_dogfight_register_state_names_009a6a60(host, block);
+    return block;
+}
+
+namespace {
+constexpr double kHundred_00d7a220 = 100.0;  // 4059000000000000
+}  // namespace
+
+// 009B75E0 (009B75E0-009B77AD). EH frame 00CAEF38. 009B44F0(ECX = block, [bot+50h],
+// target) (009B760F); 00411E20(block+DCh) (009B7622); [block] = 00D20204,
+// [block+DCh] = 00D20200 (009B766D, 009B7673); 009B6C10(ECX = block+F0h, block,
+// target, near = float(+B0h - double [00D7A220] 100.0), far = +B0h, third = +B4h)
+// (009B7627-009B7686); then the 009B77C0 tail (009B768B-009B7792). RET 8, EAX =
+// block.
+// UNCERTAINTY: `near` is rounded once at 24 bits in the image; here a double
+// difference is rounded to float. EH unwinding not modelled.
+void* bot_approach_level_bomb_construct_009b75e0(Cc13Seg67bHost& host, void* block, void* bot,
+                                                 void* target) {
+    host.bot_approach_level_bomb_construct_base_009b44f0(block, ptr_at(bot, 0x50), target);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xDC));
+    const float third = at<float>(block, 0xB4);
+    const float far_ = at<float>(block, 0xB0);
+    const float near_ = static_cast<float>(static_cast<double>(far_) - kHundred_00d7a220);
+    at<std::uint32_t>(block, 0x000) = kLevelBombBlockVtable_00d20204;
+    at<std::uint32_t>(block, 0x0DC) = kLevelBombRegistryVtable_00d20200;
+    bot_state_level_bomb_move_to_construct_009b6c10(host, ptr(block, 0xF0), block, target, near_,
+                                                    far_, third);
+    level_bomb_block_tail(host, block);
     return block;
 }
 

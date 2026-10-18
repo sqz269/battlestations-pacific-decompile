@@ -327,3 +327,12 @@ The move-on-path and level-bomb task stream constructors now call these bodies d
 | 009A5000 | depth-charge approach block from a stream | DepthCharge/done (+1E4h) and /prepare (+2ECh) share vtable 00D1F6FC; leave (+38Ch) has +3A4h = 5.0 |
 
 The land and depth-charge task stream constructors now call these bodies directly.
+
+### 3.20 Dogfight approach block from a stream and the level-bomb approach block
+
+| Address | Function | Notes |
+|---|---|---|
+| 009A9670 | dogfight approach block from a stream | eight states registered through 009A6A60 |
+| 009B75E0 | level-bomb approach block | the move-to state gets near = +B0h - 100.0, far = +B0h and a third float +B4h; the rest is the tail it shares with 009B77C0 |
+
+The trailing argument of 009C2AC0, 009B6C10 and 009C2CA0 is a float (009C2AC0 reads it with MOVSS at 009C2B27); the earlier `mode` typing is corrected in the header, the source and the two ledger records.
