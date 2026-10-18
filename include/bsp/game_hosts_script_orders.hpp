@@ -599,8 +599,9 @@ inline constexpr bool kLuaGetSquadTorpedoesBound = false;
 // (GameUnitsHost::submarine_air_008938e0), the field SetSubmarineAirSupply
 // 00893A60 writes. LABELLED: a unit with no seeded submarine air state pushes
 // nothing (the image reads +127Ch of any entity and faults on null). False: an
-// unimplemented record that pushes nothing.
-inline constexpr bool kLuaGetSubmarineAirSupplyBound = false;
+// unimplemented record that pushes nothing. ON since cc9-ships58 (docs/SHIP_AI_OPEN_ITEMS.md
+// section 284), flipped together with kLuaSetSubmarineAirSupplyBound.
+inline constexpr bool kLuaGetSubmarineAirSupplyBound = true;
 // Packet cc9_lua_mission_narrative (docs/MISSION_END.md, "The narrative queue").
 // True: MissionNarrative / MissionNarrativeEnqueue 008B0C10 enqueue (text,
 // callback, arguments) on [game+21E8h] (00734870), MissionNarrativeClear

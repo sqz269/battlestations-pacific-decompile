@@ -19050,3 +19050,33 @@ USNOS `s55_os_r0` 30000 frames against `local\s57_us_osr.log` and USN13 30000 fr
 +188h is set: the overrides sit on AI ships and squadrons that the scripts and planners do not re-order while
 the override lives. **Decision: ON** as a faithful binding with no reach on these rows; the counts stay in the
 summary line, so a row that does reach it shows `with_override > 0`.
+
+## 284. Submarine air supply, kLuaGetSubmarineAirSupplyBound + kLuaSetSubmarineAirSupplyBound (cc9-ships58, 2026-10-18; cc13 fix21 + fix17)
+
+**Image.** 008938E0 GetSubmarineAirSupply pushes float unit+127Ch; 00893A60 SetSubmarineAirSupply stores its
+argument there unclamped (00893BA1). The air model 00855250 adds/subtracts its step into +127Ch (008552BA..
+00855302) and only then clamps to 1.0 (0085537A, the 00D7A24C constant), so a value above 1.0 survives exactly
+one step's decrement less than a full tank.
+
+**Callers in this installation.** LOMP `08_lightning_strike.lua:392` `SetSubmarineAirSupply(Mission.SS, 10.0)` at
+load; `jm12.lua:1571/1585` (`luaJM12AddAirSupply`, 1.0) inside `luaJM12RelocateUnits`; `jm10.lua:1764` (get) and
+`:1862` (set, checkpoint restore). JM10 is NOT reachable here: its missiontree.lua entry is commented out
+(`--[[{ -- JM10 Attack on Sydney Harbor (BSPRM 1.1)`, missiontree.lua mtime 2025-06-02, this installation's mod),
+the rebuild logs `mission id JM10 is not in the tree` (`local\s58_off0_j10.log`), and jm10's only `luaCheckpoint`
+call (`:890`) is commented out, so the save that calls the getter never runs either.
+
+**Predictions (from fix17/fix21, written before the runs).** LOMP08: none (clamped). JM10: unreachable. Gameplay
+identical everywhere.
+
+**Pairs (fcb6c6fa5, `--flip kLuaGetSubmarineAirSupplyBound=true --flip kLuaSetSubmarineAirSupplyBound=true`, exe
+`local\s58_sa_on`; OFF = the tree's own build of fcb6c6fa5; manifests beside each log).**
+- LOMP08 12000 frames (`local\s58_off0_l8.log` / `local\s58_sa_on_l8.log`): exit 1, gameplay identical. The
+  mechanism: `SetSubmarineAirSupply: Submarine TypeB w Jake air=10.000 stored=1`, the depth trace shows
+  `air=10.000` at step 1, then 0.945 / 0.820 / ... / 0.320 against OFF's 0.944 / 0.819 / ... / 0.319: the
+  step-then-clamp order above, one decrement (0.001) ahead for the rest of the run. The fix17 "none"
+  prediction missed by that one step; the order is the image's.
+- JM12 20000 frames (`local\s58_off0_j12.log` / `local\s58_sa_on_j12.log`): exit 1, no reach (RelocateUnits is
+  not reached in the window).
+
+**Decision: both ON**, together, by mechanism. The jm10 nil-restore hazard cannot arise in this installation,
+and with the getter ON it would restore the real value anyway.
