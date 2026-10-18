@@ -520,8 +520,12 @@ int binding_trampoline(lua_State* state) {
     // Packet cc13-fix10.
     const bool proximity_trigger_row
         = kLuaProximityTriggersBound && dispatch_row.address == 0x008c9730u;
+    // Packet cc13-fix19: RemoveTrigger (0074FBB0) serves every Lua trigger kind.
     const bool remove_trigger_row
-        = kLuaProximityTriggersBound && dispatch_row.address == 0x008c5fd0u;
+        = (kLuaProximityTriggersBound || kLuaSquadOrdnanceDroppedTriggerBound)
+        && dispatch_row.address == 0x008c5fd0u;
+    const bool ordnance_trigger_row
+        = kLuaSquadOrdnanceDroppedTriggerBound && dispatch_row.address == 0x008c9a10u;
     // Packet cc9_unit_get_attack_target.
     const bool attack_target_row = kLuaUnitGetAttackTargetBound
         && dispatch_row.address == 0x008a6de0u;
@@ -665,7 +669,7 @@ int binding_trampoline(lua_State* state) {
         || set_failure_row || get_failure_row || dead_meat_row
         || unit_selectable_row || entity_speed_row
         || clear_forced_recon_row || crew_level_row
-        || proximity_trigger_row || remove_trigger_row
+        || proximity_trigger_row || remove_trigger_row || ordnance_trigger_row
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || override_hp_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
@@ -957,6 +961,10 @@ int binding_trampoline(lua_State* state) {
     if (remove_trigger_row) {
         if (host->error_replay()) return 0;
         return host->run_remove_trigger_008c5fd0(state, argc);
+    }
+    if (ordnance_trigger_row) {
+        if (!host->error_replay()) host->run_add_squad_ordnance_dropped_trigger_008c9a10(state, argc);
+        return 0;
     }
     if (aa_enable_row) {
         if (!host->error_replay()) host->run_aa_enable_0089c740(state, argc);
@@ -5666,7 +5674,8 @@ void GameMissionLuaHost::dispatch_exit_zone_listeners_00982120() {
 // SUBSTITUTIONS (labelled): the list is this host's per-unit list, keyed by the
 // entity's ID; an entity that is not a unit of this host is counted unresolved and
 // nothing is stored (the image would attach to any entity's element). 0074FEE0's
-// observer on an entity target (00694A60, OnTargetGone 0074FFE0) is not kept.
+// observer on an entity target (00694A60, OnTargetGone 0074FFE0) is the target id the
+// record keeps; target_gone_drain_009273a0 answers for it (packet cc13-fix19).
 int GameMissionLuaHost::run_add_proximity_trigger_008c9730(lua_State* state,
     int argument_count) {
     static_cast<void>(argument_count);
@@ -5748,8 +5757,9 @@ int GameMissionLuaHost::run_add_proximity_trigger_008c9730(lua_State* state,
 // engaged (+24h) and equal (00435C40: same length, _stricmp) gets vtable[10h]
 // (0071C4A0: +10h = 1, +11h = 0). All matches are retired, not only the first. Pushes
 // whether any matched (00B66xxx boolean) and returns 1.
-// SUBSTITUTION (labelled): only the proximity triggers are this host's; a line-of-sight
-// or squad-ordnance trigger of the same name (both unbound) answers false here.
+// SUBSTITUTION (labelled): only the proximity and (packet cc13-fix19) squad-ordnance
+// triggers are this host's, each stored only while its switch is on; a line-of-sight
+// trigger of the same name (unbound) answers false here.
 int GameMissionLuaHost::run_remove_trigger_008c5fd0(lua_State* state, int argument_count) {
     static_cast<void>(argument_count);
     ++summary_.remove_trigger_calls;
@@ -5798,9 +5808,206 @@ void GameMissionLuaHost::run_proximity_triggers_008759b0(float step) {
         std::list<ProximityTrigger>& list = entry.second;
         for (auto it = list.begin(); it != list.end();) {
             const auto next = std::next(it);
-            if (it->enabled_11) check_proximity_trigger_00750000(unit, *it);
+            if (it->enabled_11) {
+                // vtable[0Ch]: 00750000 (00D00580) or 007504F0 (00D005C0).
+                if (it->kind == ProximityTrigger::Kind::SquadOrdnanceDropped) {
+                    check_squad_ordnance_trigger_007504f0(unit, *it);
+                } else {
+                    check_proximity_trigger_00750000(unit, *it);
+                }
+            }
             if (it->expired_10) list.erase(it);
             it = next;
+        }
+    }
+}
+
+// Packet cc13-fix19, under kLuaSquadOrdnanceDroppedTriggerBound (docs/CC13_FIX19.md).
+// 008C9A10 AddSquadOrdnanceDroppedTrigger(entity, name?, callback). The binding makes
+// the trigger first (00750660: new 34h, vtable 00D005C0, +11h = 1, +14h = 1, +18h = 2,
+// +30h = 0), reads argument 1 through 008C9350 (nil leaves the name disengaged) and
+// argument 2 through 00B662B0, stores both with 00750790, then hands the trigger to
+// entity(0)->vtable[60h]() through 0074FAB0 -> vtable[4h] 007504C0: 00876020 (after
+// every sub-node of priority 2 or less) and +30h = element+28h. Returns 0. No
+// argument is a number, so nothing else is read.
+// SUBSTITUTIONS (labelled): the list is this host's per-unit list, as for
+// AddProximityTrigger; the entity must be a squadron of the host's registry (the
+// squadron's slot keys the list), because 007504F0 reads the squadron's member array.
+// Every use in this installation's scripts passes a squadron. Anything else is counted
+// unresolved and nothing is stored (the image would attach it and read +3CCh of a
+// non-squadron).
+int GameMissionLuaHost::run_add_squad_ordnance_dropped_trigger_008c9a10(lua_State* state,
+    int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.ordnance_trigger_adds;
+    ProximityTrigger trigger;
+    trigger.kind = ProximityTrigger::Kind::SquadOrdnanceDropped;
+    // 008C9350 on argument 1: nil leaves +24h clear.
+    if (!lua_isnoneornil(state, 2)) {
+        trigger.named_24 = true;
+        trigger.name_1c = listener_string_argument(state, 2);
+    }
+    // 00B662B0 on argument 2.
+    trigger.callback_28 = listener_string_argument(state, 3);
+    // 00888AA0 on argument 0, then vtable[60h]().
+    const int id = air_ops_entity_id(state);
+    bool squadron = false;
+    if (units_hooks_ != nullptr && id > 0
+        && static_cast<std::size_t>(id) <= units_hooks_->count()) {
+        for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+            if (r.squadron_unit == static_cast<std::size_t>(id - 1)) {
+                squadron = true;
+                break;
+            }
+        }
+    }
+    if (!squadron) {
+        ++summary_.ordnance_trigger_unresolved;
+        log_.notef("  AddSquadOrdnanceDroppedTrigger 008c9a10: entity id %d is not a squadron "
+            "of this host; trigger \"%s\" -> %s() not stored (packet cc13-fix19)", id,
+            trigger.name_1c.c_str(), trigger.callback_28.c_str());
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    const GameUnitRow* row = units_hooks_->unit_row(index);
+    log_.notef("  AddSquadOrdnanceDroppedTrigger 008c9a10: \"%s\" name=%s%s%s -> %s() "
+        "(packet cc13-fix19)", row != nullptr ? row->name.c_str() : "?",
+        trigger.named_24 ? "\"" : "", trigger.named_24 ? trigger.name_1c.c_str() : "nil",
+        trigger.named_24 ? "\"" : "", trigger.callback_28.c_str());
+    // 00876020: every Lua trigger is priority 2, so the new one goes to the end.
+    proximity_triggers_[index].push_back(std::move(trigger));
+    log_.implemented("MissionLuaNative::AddSquadOrdnanceDroppedTrigger", "008c9a10");
+    return 0;
+}
+
+// 007504F0 (vtable 00D005C0 slot 0Ch), __thiscall(trigger, float step), RET 4; the step
+// is not read. +30h (the squadron, from 007504C0) null -> vtable[10h], a silent
+// retire. Else 007ED790(ECX = +30h, 0): for i < +3CCh, 007B9140(ECX = [+3D0h + 4i], 0)
+// answers true for a kind-17h plane (MPlaneKamikaze, 007B9150) or when a rack device
+// (+974h, count +994h) answers vtable[210h](2Ah, 0) (006E3FE0: an attached round
+// whose vtable[5Ch](2Ah) is true; the flag-0 call skips the reload arm). Any true
+// keeps the trigger; all false (or no member) -> 0074FDD0: the callback, then the
+// retire. One-shot.
+// SUBSTITUTIONS (labelled): +30h is never null here (the squadron slot keys the list).
+// The squadron's live members (registry members the gunnery host does not count
+// dead, as the cc9 spent-ordnance latch reads 007ED790) stand for +3D0h/+3CCh; with
+// none the trigger is not tested, standing for the squadron's +5Eh (its Kill when
+// 007F3970 removes the last plane drains at row 15, before the next walk), so a
+// squadron that dies never fires it. The per-plane test is 007B9140's kind-17h arm
+// (unit_is_kind_of 17h) and plane_holds_rack_round_007b9140 (the rack walk; its
+// flag-1 arm needs [00E17BF2], 0 in single player, so it answers as flag 0).
+void GameMissionLuaHost::check_squad_ordnance_trigger_007504f0(std::size_t unit,
+    ProximityTrigger& trigger) {
+    const bsp::PlaneSquadronHostRecord* record = nullptr;
+    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+        if (r.squadron_unit == unit) {
+            record = &r;
+            break;
+        }
+    }
+    GameGunneryHost* gunnery = units_hooks_->gunnery();
+    if (record == nullptr || gunnery == nullptr) return;
+    std::vector<std::size_t> live;
+    for (const std::size_t m : record->member_units) {
+        if (m != bsp::kPlaneSquadronNoUnit && m < units_hooks_->count() && !gunnery->unit_dead(m))
+            live.push_back(m);
+    }
+    if (live.empty()) return;
+    ++summary_.ordnance_trigger_checks;
+    for (const std::size_t m : live) {
+        // 007ED7B3 007B9140(member, 0); 007ED7BA JNE: the first true ends the test.
+        if (units_hooks_->unit_is_kind_of(m, 0x17)) return;
+        if (units_hooks_->plane_holds_rack_round_007b9140(m)) return;
+    }
+    // 00750514 0074FDD0.
+    ++summary_.ordnance_trigger_fires;
+    const GameUnitRow* row = units_hooks_->unit_row(unit);
+    log_.notef("  squad ordnance trigger 007504f0: \"%s\" %s%s%s -> %s() live=%zu "
+        "(packet cc13-fix19)", row != nullptr ? row->name.c_str() : "?",
+        trigger.named_24 ? "\"" : "", trigger.named_24 ? trigger.name_1c.c_str() : "nil",
+        trigger.named_24 ? "\"" : "", trigger.callback_28.c_str(), live.size());
+    fire_lua_trigger_0074fdd0(unit, trigger);
+}
+
+// Packet cc13-fix19, under kLuaProximityTriggersBound. 009273A0 pass K, steps d-f
+// (009274CE..0092751F): an entity whose +5Eh is clear gets +5Eh set, then 00925C40
+// (inlined at 009274DE) hands it to 00696330, which runs slot +4h of every callback
+// owner observing it. A proximity trigger's owner sub-object (+30h, adjustor table
+// 00D00568) answers with 0074FFE0: when the notifier is 00521EA0(+44h), its command
+// target, vtable[10h] of the trigger (0071C4A0: +10h = 1, +11h = 0). No callback.
+// The walk releases the node on its next pass over the watched unit's list.
+// SUBSTITUTIONS (labelled): the notices come from the host's Kill sites that reach
+// this hook: the host's inline pass-K sites (through on_entity_killed_00928c80: the
+// ship KillDepth and kamikaze removals) and Lua Kill's victims (008AC5C0 -> 00926D90).
+// Other Kill callers are not fed (the host's gunnery funnel does not tell a Kill from
+// a Destroy). A squadron target is noticed at the drain when the host's registry
+// shows no live member, standing for 007F3970's Kill of the squadron when its last
+// plane goes. Once per unit, standing for the +5Eh test (009274C8).
+void GameMissionLuaHost::target_gone_00925c40(std::size_t unit_index) {
+    if constexpr (!kLuaProximityTriggersBound) {
+        static_cast<void>(unit_index);
+    } else {
+        if (target_gone_notified_.size() <= unit_index) {
+            target_gone_notified_.resize(unit_index + 1, false);
+        }
+        if (target_gone_notified_[unit_index]) return;
+        target_gone_notified_[unit_index] = true;
+        target_gone_pending_.push_back(unit_index);
+    }
+}
+
+void GameMissionLuaHost::target_gone_drain_009273a0() {
+    if constexpr (kLuaProximityTriggersBound) {
+        // The squadron targets first: the registry's view of 007F3970's Kill. A
+        // record that never had a member is not taken as gone.
+        for (const auto& entry : proximity_triggers_) {
+            for (const ProximityTrigger& trigger : entry.second) {
+                if (trigger.kind != ProximityTrigger::Kind::Proximity
+                    || trigger.target_kind_44 == 0 || trigger.target_id <= 0) continue;
+                const std::size_t target = static_cast<std::size_t>(trigger.target_id - 1);
+                if (target < target_gone_notified_.size() && target_gone_notified_[target]) continue;
+                GameGunneryHost* gunnery = units_hooks_ != nullptr ? units_hooks_->gunnery() : nullptr;
+                if (gunnery == nullptr) continue;
+                for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+                    if (r.squadron_unit != target) continue;
+                    bool any = false;
+                    bool live = false;
+                    for (const std::size_t m : r.member_units) {
+                        if (m == bsp::kPlaneSquadronNoUnit || m >= units_hooks_->count()) continue;
+                        any = true;
+                        if (!gunnery->unit_dead(m)) live = true;
+                    }
+                    if (any && !live) target_gone_00925c40(target);
+                    break;
+                }
+            }
+        }
+        std::vector<std::size_t> pending;
+        pending.swap(target_gone_pending_);
+        for (const std::size_t gone : pending) {
+            ++summary_.target_gone_notices;
+            const int gone_id = static_cast<int>(gone + 1);
+            for (auto& entry : proximity_triggers_) {
+                for (ProximityTrigger& trigger : entry.second) {
+                    // 0074FFE0: notifier == 00521EA0(+44h). Only a proximity trigger
+                    // with an entity target registered the observer (0074FEE0).
+                    if (trigger.kind != ProximityTrigger::Kind::Proximity
+                        || trigger.target_kind_44 == 0 || trigger.target_id != gone_id) continue;
+                    if (trigger.enabled_11) {
+                        ++summary_.target_gone_retired;
+                        const GameUnitRow* row = units_hooks_ != nullptr
+                            ? units_hooks_->unit_row(entry.first) : nullptr;
+                        log_.notef("  proximity trigger 0074ffe0: \"%s\" %s%s%s target id %d "
+                            "gone, retired (packet cc13-fix19)",
+                            row != nullptr ? row->name.c_str() : "?",
+                            trigger.named_24 ? "\"" : "",
+                            trigger.named_24 ? trigger.name_1c.c_str() : "nil",
+                            trigger.named_24 ? "\"" : "", gone_id);
+                    }
+                    trigger.expired_10 = true;   // vtable[10h], 0071C4A0
+                    trigger.enabled_11 = false;
+                }
+            }
         }
     }
 }
@@ -5852,6 +6059,15 @@ void GameMissionLuaHost::check_proximity_trigger_00750000(std::size_t unit,
         row != nullptr ? row->name.c_str() : "?", trigger.named_24 ? "\"" : "",
         trigger.named_24 ? trigger.name_1c.c_str() : "nil", trigger.named_24 ? "\"" : "",
         trigger.callback_28.c_str());
+    fire_lua_trigger_0074fdd0(unit, trigger);
+}
+
+// 0074FDD0, shared by every Lua trigger kind (packet cc13-fix19 split it out of
+// 00750000's body): the variant vector {00884A90 entity of (+4)->+28h, the name
+// (00886A10) or nil (tag 6)}, 00887E50(host, 0, +28h, args, 0, -1), then vtable[10h]
+// (0071C4A0). SUBSTITUTIONS (labelled, from packet cc13-fix10): 00887E50's queued and
+// `game+1FE4h == 2` arms are not modelled: the call runs inline.
+void GameMissionLuaHost::fire_lua_trigger_0074fdd0(std::size_t unit, ProximityTrigger& trigger) {
     const int top = ::lua_gettop(state_);
     lua_getfield(state_, LUA_GLOBALSINDEX, trigger.callback_28.c_str());
     if (lua_isfunction(state_, -1)) {
@@ -6642,6 +6858,11 @@ int GameMissionLuaHost::run_truly_dead_00899500(lua_State* state, int argument_c
 // attached entity), 00928D04 sets self.Ptr = lightuserdata(0). The entity id is the
 // units-host index + 1 (kMissionLuaEntityKeyFormat).
 void GameMissionLuaHost::on_entity_killed_00928c80(std::size_t unit_index) {
+    // Packet cc13-fix19: both callers are the host's inline pass K (009274A1..0092751F),
+    // which run step e (00925C40's observer notice, 009274DE) and step f (this
+    // vtable[80h] hook, 0092751F) back to back with nothing between, so step e's notice
+    // is queued here, first.
+    if constexpr (kLuaProximityTriggersBound) target_gone_00925c40(unit_index);
     if constexpr (!kLuaTrulyDeadOnKilledBound) {
         static_cast<void>(unit_index);
     } else {
@@ -8808,6 +9029,9 @@ int GameMissionLuaHost::run_kill_008ac5c0(lua_State* state, int argument_count) 
         // and counts the call in its water-depth census.
         if constexpr (kKillListenerHarmOnlyBound) lua_kill_cause_[unit] = cause;  // cc13-ver8
         gunnery.kill_unit_00926d90(unit, cause);
+        // Packet cc13-fix19: 00926D90 put the unit on the kill list, whose pass K
+        // notifies its observers at row 15 (target_gone_drain_009273a0).
+        if constexpr (kLuaProximityTriggersBound) target_gone_00925c40(unit);
         ++summary_.kill_units;
     }
     log_.notef("  Kill 008ac5c0: \"%s\" cause=%d victims=%zu (packet cc9_lua_kill)",
@@ -10330,6 +10554,15 @@ void GameMissionLuaHost::report_mission_script_state() {
             summary_.proximity_trigger_checks, summary_.proximity_trigger_fires,
             summary_.proximity_trigger_callback_missing, summary_.remove_trigger_calls,
             summary_.remove_trigger_matched);
+        log_.notef("summary mission script trigger target gone notices=%llu retired=%llu "
+            "(009273A0 pass K -> 0074FFE0, packet cc13-fix19)", summary_.target_gone_notices,
+            summary_.target_gone_retired);
+    }
+    if constexpr (kLuaSquadOrdnanceDroppedTriggerBound) {
+        log_.notef("summary mission script squad ordnance triggers bound=1 adds=%llu "
+            "unresolved=%llu checks=%llu fires=%llu (008C9A10 / 007504F0, packet cc13-fix19)",
+            summary_.ordnance_trigger_adds, summary_.ordnance_trigger_unresolved,
+            summary_.ordnance_trigger_checks, summary_.ordnance_trigger_fires);
     }
     if constexpr (kKillListenerDeadFirstBound) {
         log_.notef("summary mission script kill dead-first bound=1 published=%llu "
