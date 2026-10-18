@@ -3588,3 +3588,14 @@ Predictions:
 - OFF vs ON on USN21 `s46_u21_f` and USN04: calls equal the 1493 / 414 of section 85 if the rows are unchanged. `screened > 0` wherever an escort sits between the torpedo plane and its target (USN04's escorted carriers). Each screened aim floors at 30 m and holds the drop longer, so drop times and torpedo hits move on those planes.
 - a9 clears = 0 (no terrain sample exceeds 10.0 on these rows).
 - zero-length > 0 would mean a screening ship has no Length key, which disables its screen.
+
+**87, result: kTorpedoLineOfSightBound ON.** Exes built at f72a22d73 (`local\p22a_off`, `local\p22a_on` with the switch flipped). Env BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1; manifests beside each log.
+
+| row | logs | 007DF360 calls | screened | pair_diff |
+|---|---|---|---|---|
+| USN04, 40000 fr | `local\p22a_{off,on}_u04.log` | 414 over 16 Kates | 0 | 1, gameplay identical |
+| USN21 `s46_u21_f`, 80000 fr | `local\p22a_{off,on}_u21f.log` | 72 planes | 53 on 10 planes (Lexington_sqn22: 14 of 15) | 3, moved |
+
+- The mechanism is exercised where the US torpedo squadrons attack the escorted IJN groups on USN21: a screened aim floors at 30 m. Three planes show "a9 clears=1", a screen answer replaced by a clear one on a later replan, which the old OR could never undo. Zero-length = 0: every screening ship has a Length.
+- USN21 moved: torpedo drops 12 -> 8, torpedo-task releases 3 -> 1, dive-bomb-task releases 2 -> 10, deaths 299 -> 301, and the mission still completes (1325.17 s -> 1355.20 s). USN04's Kates are never screened.
+- Faithful by the bytes, so it is flipped ON. The drop loss is the image's 30 m floor, not a host defect.

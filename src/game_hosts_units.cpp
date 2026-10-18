@@ -6710,7 +6710,7 @@ struct GameUnitsHost::Impl {
     // [00D06BA0]). True: modelled over nb_near_30 with the plane's own pose
     // (unit+FCh/+104h; [[C50h+4]+28h] is taken to be the plane, labelled).
     // False: -1, the old "leave +A9h alone" answer.
-    static constexpr bool kTorpedoLineOfSightBound = false;
+    static constexpr bool kTorpedoLineOfSightBound = true;   // ON: OCEAN_WAVE_FIELD 87
     // Packet cc9_l61_torpedo_done_formation (SQUADRON_LAND_TASK 5ho item 2). The
     // done/prepare enter 009D2530 writes squadron+3E4h = 2 (009D254E, after
     // 009BED80's 1) and state+8Ch = 1.0 (009D2565); every wingman's follow
