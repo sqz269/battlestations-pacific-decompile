@@ -1348,8 +1348,10 @@ public:
     GameVehicleClassRow read_vehicle_class_row(int index);
     // cc15-vcp1 (kVehicleClassPreloadCc15Bound): the scene database's
     // 0046EC77 resolve, which marks the row the way 00964790's miss path does.
-    void mark_scene_vehicle_class_row_00964790(int class_index) {
-        mark_vehicle_class_row_00964790(class_index);
+    // `site` names the image caller this mark stands in for; the census
+    // reports it.
+    void mark_scene_vehicle_class_row_00964790(int class_index, const char* site) {
+        mark_vehicle_class_row_00964790(class_index, site);
     }
     // cc15-vcp1, log only: what 0095CA70 at `site` (004E0A9B or 0045F6C1)
     // would nil, the VehicleClass rows whose Got is not true. Later reads of
@@ -2238,10 +2240,12 @@ private:
     // Packet s54_class_id (kVehicleClassRowIdBound): the class rows 00964790's
     // miss path has written `ID` / `Got` on, once each (its cache stands in).
     std::set<int> vehicle_class_rows_marked_;
-    void mark_vehicle_class_row_00964790(int class_index);
+    void mark_vehicle_class_row_00964790(int class_index, const char* site = nullptr);
     // cc15-vcp1: the rows the last census found unmarked, with the reads
     // of each that came after it.
     std::map<int, std::size_t> vehicle_class_would_nil_;
+    // cc15-vcp2: the first marking site of each row (nullptr is a lazy mark).
+    std::map<int, const char*> vehicle_class_mark_site_;
     std::size_t vehicle_class_censuses_{0};
     std::size_t vehicle_class_rows_would_nil_{0};
     std::size_t vehicle_class_later_reads_{0};

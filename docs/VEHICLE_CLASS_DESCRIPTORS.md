@@ -388,3 +388,25 @@ USN01, same tree: pair_diff exit 1, gameplay identical.
 - One more row is marked than OFF marks over the whole run (37 against 36).
 
 Steps 2 and 3 wait for cc9's review: mark parity across 00964790's 59 callers, then the purge itself.
+### Step 2: mark parity at the reached load-time callers (cc15-vcp2, same switch)
+
+The stock queue does not mark rows. 0046EBDD runs 0095CA10, which feeds each queued class to 0095C640. 0095C640 only appends to the 00F8A09C preload list, and 004D4720 reads that list to build render-resource aliases; nothing on this path reaches 00964790. cc15-wB's census of the callers of 00964790 (59 by Ghidra, plus a rel32 scan that adds 007B8A80, 009653B0 and 00965480) puts 23 functions before 004E0A9B in a single-player load.
+
+The host now marks rows where those callers have a reached host equivalent. The census names each row's marking site:
+- `0046EC77`: the scene database vector, from step 1.
+- `007B8A80`: the air-ops deck build's resolver, on the created path only.
+- `008C92BE`: PrepareClass (008C8F70). Each numeric argument is resolved with DL=1. The binding stays unrouted, and its race/party half stays unbound.
+- `004F0520+`: the scene-unit creator seam, `vehicle_class_descriptor`. This covers the creators 004F0520..004F10B0 and 004F0AD0 (004F0B3C).
+- `00965182`: step 14 of 00964790, the ship's `Catapult.LaunchedClass`. UNCERTAIN: "ship" is taken to mean the eight ship-sized branches, Destroyer through MotherShip.
+
+PowerupClass's air-support list (008E34F0, reached only from 008E6CB0), the traffic resolve (0049D291) and the shipyard stock callers have no reached host marker, so they are not modelled.
+
+Census with the switch on, later reads of rows that would be nil'd:
+
+| mission | would_nil / kept | later_host_reads | step 1 |
+|---|---|---|---|
+| USN01 | 592 / 41 | 0 | 0 |
+| USN04 | 599 / 34 | 0 | 10382 (101, 150, 162) |
+| JM08 | 557 / 76 | 0 | 2149 (133) |
+
+On USN04, 101 is marked by `007B8A80`, and 150 and 162 by `008C92BE`. On JM08, 133 is marked by `008C92BE`. Step 3, the purge itself, still waits for cc9's review of this table.

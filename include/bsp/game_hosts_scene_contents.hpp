@@ -479,6 +479,15 @@ inline constexpr bool kEngineMovieStopRosterBound = true;
 // UNCERTAIN: the 0046BE50 / 0046EBE6 counters (game+1910h..192Ch) have no
 // host state and are taken as zero.
 //
+// Step 2 (cc15-vcp2): the same miss-path mark is also made at the other
+// load-time callers of 00964790 whose host equivalents are reached:
+// - the air-ops deck resolver 007B8A80, on the created path;
+// - PrepareClass 008C92BE, per argument;
+// - the scene-unit creator seam, 004F0520..004F10B0 and 004F0AD0;
+// - 00964790's own ship Catapult.LaunchedClass recursion, 00965182.
+// With the switch on, USN01, USN04 and JM08 read no would-nil row after
+// 004E0A9B. docs/VEHICLE_CLASS_DESCRIPTORS.md has the census.
+//
 // False: 0046BF20 and 0046BF70 stay records, as before.
 inline constexpr bool kVehicleClassPreloadCc15Bound = false;
 

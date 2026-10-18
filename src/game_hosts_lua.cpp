@@ -737,6 +737,20 @@ int binding_trampoline(lua_State* state) {
     // recover the error message, must not count a second time.
     if (!host->error_replay()) {
         host->note_native_call(static_cast<std::size_t>(row), argc, handled);
+        if constexpr (bsp::game::kVehicleClassPreloadCc15Bound) {
+            // cc15-vcp2: PrepareClass 008C8F70 (unrouted, see the orders
+            // table) ends each argument with 00964790(arg, DL=1) at 008C92BE,
+            // whose miss path marks the row's ID and Got. Only that mark is
+            // modelled here; the race/party half (resolve_global_integer) stays
+            // unbound. The registry map is the identity in this host.
+            if (dispatch_row.address == 0x008c8f70u) {
+                for (int index = 1; index <= argc; ++index) {
+                    if (lua_type(state, index) != LUA_TNUMBER) continue;
+                    host->mark_scene_vehicle_class_row_00964790(
+                        static_cast<int>(lua_tointeger(state, index)), "008C92BE");
+                }
+            }
+        }
         // Milestone 2l. Which created instance a binding was called on, read
         // off argument 1 when it is an entity table. The `ID` field is the one
         // 00928a00 seeds, so this is the same identity the native carries.
@@ -4335,9 +4349,10 @@ void GameMissionLuaHost::attach_wing_member_tables(std::size_t units_before,
     }
 }
 
-void GameMissionLuaHost::mark_vehicle_class_row_00964790(int class_index) {
+void GameMissionLuaHost::mark_vehicle_class_row_00964790(int class_index, const char* site) {
     if (!kVehicleClassRowIdBound || state_ == nullptr || class_index < 0) return;
     if (!vehicle_class_rows_marked_.insert(class_index).second) return;   // the cache hit
+    vehicle_class_mark_site_.emplace(class_index, site);
     const int base = ::lua_gettop(state_);
     lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
     if (lua_istable(state_, -1)) {
@@ -4375,6 +4390,24 @@ void GameMissionLuaHost::mark_vehicle_class_row_00964790(int class_index) {
         }
     }
     ::lua_settop(state_, base);
+    if constexpr (bsp::game::kVehicleClassPreloadCc15Bound) {
+        // cc15-vcp2: 00964790 step 14 (00965182). A ship descriptor
+        // (vtable[18h](6)) whose +0C0h, Catapult.LaunchedClass (009604AC,
+        // -1 when Catapult is not a table), is not -1 resolves that class
+        // too, with DL = 1. UNCERTAIN: the ship test is read as the eight
+        // ship-sized branches of the 22-way Type match, Destroyer to
+        // MotherShip.
+        static constexpr const char* kShipTypes[] = {"Destroyer", "Cruiser", "LandingShip",
+            "Cargo", "BattleShip", "Submarine", "TorpedoBoat", "MotherShip"};
+        const std::string type = read_vehicle_class_string(class_index, "Type");
+        bool ship = false;
+        for (const char* name : kShipTypes) ship = ship || type == name;
+        if (ship) {
+            const int launched = read_vehicle_class_integer(class_index, "Catapult",
+                "LaunchedClass", -1);
+            if (launched != -1) mark_vehicle_class_row_00964790(launched, "00965182");
+        }
+    }
 }
 
 void GameMissionLuaHost::census_vehicle_class_purge_0095ca70(const char* site) {
@@ -4402,7 +4435,13 @@ void GameMissionLuaHost::census_vehicle_class_purge_0095ca70(const char* site) {
             const int index = ::lua_type(state_, -2) == LUA_TNUMBER
                 ? static_cast<int>(::lua_tointeger(state_, -2)) : -1;
             if (got) {
-                if (kept.size() < 600) kept += " " + std::to_string(index);
+                // cc15-vcp2: the site of a scene-time mark; a bare index is a
+                // lazy host mark.
+                const auto marker = vehicle_class_mark_site_.find(index);
+                const char* at = marker != vehicle_class_mark_site_.end() ? marker->second : nullptr;
+                if (kept.size() < 900) {
+                    kept += " " + std::to_string(index) + (at != nullptr ? std::string("@") + at : "");
+                }
             } else {
                 ++would_nil;
                 vehicle_class_would_nil_.emplace(index, 0);

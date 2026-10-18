@@ -1971,6 +1971,19 @@ struct GameUnitSlot {
     bool sq_freeze_38d{false};       // +38Dh, countdown 1's freeze byte
     bool sq_lock_3a9{false};         // +3A9h
     double sq_timer_expiry_380{-1.0};
+    // Packet l68_travel_speed: the fourth quadruple, 008A0630's stores (countdown 3
+    // +388h held as its expiry clock, freeze +38Fh, +3A0h, lock +3ACh). While
+    // sq_speed_set is false +3A0h is the class's [squadron+35Ch]+190h, as 007ED590 /
+    // 007F1FE0 / 007ED5D0 write it.
+    bool sq_speed_set{false};
+    float sq_speed_3a0{0.0f};
+    bool sq_freeze_38f{false};
+    bool sq_lock_3ac{false};
+    double sq_timer_expiry_388{-1.0};
+    // A plane's head-task signature at its last think (the installed task kinds
+    // and the command target), standing in for 0099AE92's compare of the bot's
+    // head task before and after 0099A4C0.
+    std::uint64_t head_task_sig_last{0};
     bool sq_ever_set{false};
     float sq_last_cruise{0.0f};
     // Packet cc9_squadron_attack_alt: the second block 008A22B0 writes (+37Ch
@@ -6467,6 +6480,32 @@ struct GameUnitsHost::Impl {
             (void)follow_state;
         }
     }
+    // Packet p20_cadence (section 82). 009998A0's slow path runs 0099B740 only when
+    // dt >= task+308h (00999912-00999926 FCOMI / JC): then +308h = (+304h - dt) + +308h
+    // (0099992C FSUBR, 00999934 FADDP, +304h = 1.0 from 0099C75D) and 0099993C CALL
+    // 0099B740; otherwise +308h -= dt (009999B5-009999BB) and 0099B740 is skipped. The
+    // task arm runs either way. True: the host's 0099B740 sites take that gate on
+    // task_phase_308. False: 0099B740 on every think, as before.
+    static constexpr bool kTaskAttackModeCadenceBound = true;
+    unsigned long long attack_mode_cadence_fires{0};
+    unsigned long long attack_mode_cadence_skips{0};
+    bool attack_mode_cadence_009998a0(GameUnitSlot& unit, float dt) {
+        if constexpr (kTaskAttackModeCadenceBound) {
+            const float t = unit.task_phase_308;
+            if (dt < t) {
+                unit.task_phase_308 = t - dt;
+                ++attack_mode_cadence_skips;
+                return false;
+            }
+            unit.task_phase_308 = (1.0f - dt) + t;
+            ++attack_mode_cadence_fires;
+            return true;
+        } else {
+            (void)unit;
+            (void)dt;
+            return true;
+        }
+    }
     unsigned long long follow_exits{0};
     void follow_exit_009bde40(GameUnitSlot& unit) {
         ++follow_exits;
@@ -8740,6 +8779,7 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         // tuning+334h NewTravelSpeedMul (007D23F5/007D2406). The squadron's
         // class is its members' class, so the unit's own row stands in.
         float travel_scaled = unit.plane_travel_speed * travel_mul;
+        travel_scaled = squadron_speed_3a0_live(unit.process_index, travel_scaled);
         if constexpr (kMoveToTargetSpeedOverrideBound) {
             if (via_009c23b0) travel_scaled = moveto_target_speed_009c23b0(unit, travel_scaled);
         }
@@ -9298,6 +9338,54 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         if (lua.plane_globals_loaded())
             travel_mul = lua.plane_globals().dynamics_spd_multipliers_new_travel_speed_mul;
         return unit.plane_travel_speed * travel_mul;
+    }
+    // Packet l68_travel_speed: squadron+3A0h as the four readers 009C185C,
+    // 009C23BE, 009BC909 and 009C97E4 load it. Off, or with no script speed held,
+    // the class value `class_value` (the members' class stands in).
+    float squadron_speed_3a0_live(std::size_t unit, float class_value) {
+        if constexpr (kLuaSquadronSetTravelSpeedBound) {
+            const GameUnitSlot* sq = squadron_slot_of(unit);
+            if (sq != nullptr && sq->sq_speed_set) {
+                ++travel_speed_script_reads;
+                return sq->sq_speed_3a0;
+            }
+        }
+        return class_value;
+    }
+    // 007ED5D0 BSP_PlaneSquadron_RefreshTravelSpeed, from BSP_PilotBot_Tick
+    // 0099AEA3 when the member's head task changed and unit+9D4h is set. Unless
+    // +38Fh: the class value when the countdown is below zero and +3ACh is clear;
+    // then +3ACh = 0. LABELLED: the change is seen at the member's next think.
+    unsigned long long travel_speed_refreshes{0};
+    unsigned long long travel_speed_reverts{0};
+    unsigned long long travel_speed_script_reads{0};
+    void refresh_travel_speed_007ed5d0(std::size_t unit) {
+        GameUnitSlot* sq = squadron_slot_of(unit);
+        if (sq == nullptr || !sq->sq_speed_set) return;
+        ++travel_speed_refreshes;
+        if (sq->sq_freeze_38f) return;                                     // 007ED5D3
+        if (summary.simulated_seconds >= sq->sq_timer_expiry_388 && !sq->sq_lock_3ac) {
+            sq->sq_speed_set = false;                                      // 007ED5FA
+            ++travel_speed_reverts;
+            log.notef("squadron travel speed: %s back to the class value at %.2f s "
+                "(007ED5D0, packet l68_travel_speed)", sq->row.name.c_str(),
+                static_cast<double>(summary.simulated_seconds));
+        }
+        sq->sq_lock_3ac = false;                                           // 007ED600
+    }
+    static std::uint64_t head_task_signature(const GameUnitSlot& u) {
+        std::uint64_t s = 0;
+        const bool kinds[] = {u.dive_bomb_task_installed, u.dogfight_task_installed,
+            u.depth_charge_task_installed, u.strafe_task_installed,
+            u.kamikaze_task_installed, u.drop_kamikaze_task_installed,
+            u.level_bomb_task_installed, u.moveto_task_installed,
+            u.moveonpath_task_installed, u.takeoff_task_installed,
+            u.retreat_task_installed, u.land_task_installed, u.torpedo_task_installed,
+            u.torpedo_closetoship_task_installed};
+        for (std::size_t i = 0; i < sizeof(kinds) / sizeof(kinds[0]); ++i) {
+            if (kinds[i]) s |= std::uint64_t{1} << i;
+        }
+        return s | (static_cast<std::uint64_t>(u.command_target_plus_one) << 16);
     }
     // The state transition 009C9F70: the old state's exit (007B3DC0, empty for
     // all four) then the new state's enter; only moveto's 009C92F0 writes.
@@ -18718,6 +18806,21 @@ bool GameUnitsHost::set_squadron_travel_alt_0089f550(std::size_t unit_index, flo
     return true;
 }
 
+// Packet l68_travel_speed. 008A0630's four stores (008A07E2..008A0802).
+bool GameUnitsHost::set_squadron_travel_speed_008a0630(std::size_t unit_index, float speed,
+                                                       bool force) {
+    Impl& host = *impl_;
+    GameUnitSlot* sq = host.squadron_slot_of(unit_index);
+    if (sq == nullptr) return false;
+    sq->sq_timer_expiry_388 = host.summary.simulated_seconds + 0.5;  // +388h = [00CE3800]
+    sq->sq_freeze_38f = force;                                        // +38Fh
+    sq->sq_speed_3a0 = speed;                                         // +3A0h
+    sq->sq_lock_3ac = true;                                           // +3ACh = 1
+    sq->sq_speed_set = true;
+    host.done("PlaneSquadron::set_travel_speed_008a0630", 0x008a0630u);
+    return true;
+}
+
 bool GameUnitsHost::set_unlimited_air_00893c00(std::size_t unit_index, bool flag) {
     Impl& host = *impl_;
     if (unit_index >= host.slots.size()) return false;
@@ -25339,7 +25442,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // cadence (0099AE28, unread), the block is the squadron's slot,
                     // the dirty byte +3ADh is not modelled, and the 009B7C90(0) the
                     // profile re-runs is the arm's own update a moment later.
-                    void lb_cruise_profile_009b8c90(bool leader) {
+                    void lb_cruise_profile_009b8c90(bool leader, float dt) {
                         bsp::LevelBombApproach& a = unit_.lb_ap;
                         bool profile_runs = true;
                         if constexpr (kTaskProfileActivationOnlyBound) {
@@ -25380,8 +25483,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         in.has_unit_2f4 = true;
                         in.unit_is_flight_lead = leader;
                         in.task_authorises_38h = true;
-                        unit_.lb_attack_mode_370 =
-                            bsp::pilot_attack_mode_0099b740(unit_.lb_attack_mode_370, in);
+                        if (owner_.attack_mode_cadence_009998a0(unit_, dt))
+                            unit_.lb_attack_mode_370 =
+                                bsp::pilot_attack_mode_0099b740(unit_.lb_attack_mode_370, in);
                         if (leader) {
                             const auto* sqn = bsp::plane_squadron_registry().find_by_member_unit(
                                 unit_.process_index);
@@ -25926,7 +26030,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                         }
                         const bool leader = owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
-                        lb_cruise_profile_009b8c90(leader);
+                        lb_cruise_profile_009b8c90(leader, dt);
                         ++unit_.lb_arm_ticks;
                         bsp::LevelBombApproach& a = unit_.lb_ap;
                         a.step_c8 = 0xFF;                                      // 009B8B62
@@ -26196,8 +26300,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             in.has_unit_2f4 = true;
                             in.unit_is_flight_lead = leader;
                             in.task_authorises_38h = true;
-                            unit_.st_attack_mode_370 =
-                                bsp::pilot_attack_mode_0099b740(unit_.st_attack_mode_370, in);
+                            if (owner_.attack_mode_cadence_009998a0(unit_, dt))
+                                unit_.st_attack_mode_370 =
+                                    bsp::pilot_attack_mode_0099b740(unit_.st_attack_mode_370, in);
                             // squadron+370h: the leader's value, copied to its members
                             // (the same labelled ownership hole as db_attack_mode_370).
                             if (leader) {
@@ -26469,13 +26574,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // leader's value goes to its members (the strafe arm's labelled
                     // ownership of squadron+370h).
                     bsp::PilotAttackMode kz_attack_mode_0099b740(bsp::PilotAttackMode cur,
-                                                                bool leader, bool drop) {
+                                                                bool leader, bool drop, float dt) {
                         bsp::PilotAttackModeInputs in;
                         in.has_control_block_2fc = true;
                         in.has_unit_2f4 = true;
                         in.unit_is_flight_lead = leader;
                         in.task_authorises_38h = true;
-                        const bsp::PilotAttackMode m = bsp::pilot_attack_mode_0099b740(cur, in);
+                        const bsp::PilotAttackMode m = owner_.attack_mode_cadence_009998a0(unit_, dt)
+                            ? bsp::pilot_attack_mode_0099b740(cur, in) : cur;
                         if (leader) {
                             const auto* sqn = bsp::plane_squadron_registry().find_by_member_unit(
                                 unit_.process_index);
@@ -26651,7 +26757,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const bool leader =
                             owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
                         unit_.kz_attack_mode_370 =
-                            kz_attack_mode_0099b740(unit_.kz_attack_mode_370, leader, false);
+                            kz_attack_mode_0099b740(unit_.kz_attack_mode_370, leader, false, dt);
                         unit_.plan_boost_2e4 = false;                      // 0099B56C
                         const bool was_locked = unit_.kz.aim.locked_18;
                         const bsp::KamikazeArmResult r =
@@ -26973,7 +27079,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const bool leader =
                             owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
                         unit_.dkz_attack_mode_370 =
-                            kz_attack_mode_0099b740(unit_.dkz_attack_mode_370, leader, true);
+                            kz_attack_mode_0099b740(unit_.dkz_attack_mode_370, leader, true, dt);
                         unit_.plan_boost_2e4 = false;                      // 0099B56C
                         const bsp::DropKamikazeArmResult r =
                             bsp::drop_kamikaze_task_arm_009ae8a0(unit_.dkz, h, dt);
@@ -27267,8 +27373,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             in.unit_is_flight_lead =
                                 owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
                             in.task_authorises_38h = true;
-                            unit_.st_attack_mode_370 =
-                                bsp::pilot_attack_mode_0099b740(unit_.st_attack_mode_370, in);
+                            if (owner_.attack_mode_cadence_009998a0(unit_, dt))
+                                unit_.st_attack_mode_370 =
+                                    bsp::pilot_attack_mode_0099b740(unit_.st_attack_mode_370, in);
                         }
                         Adapter host{*this};
                         if (!unit_.depth_charge_task_installed ||
@@ -27521,7 +27628,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                         }
                         // 0099993C: before the task arm, once per think.
-                        run_dive_bomb_attack_mode_tick_0099b740();
+                        if (owner_.attack_mode_cadence_009998a0(unit_, dt))
+                            run_dive_bomb_attack_mode_tick_0099b740();
                         DiveBombArmBinding binding(owner_, unit_);
                         bsp::DiveBombTaskContext ctx;
                         ctx.task = &unit_;
@@ -29780,7 +29888,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         // 009D4A70's tail 0099B740, the cruise profile that
                         // also sets the engage distance.
-                        run_attack_mode_tick_0099b740();
+                        run_attack_mode_tick_0099b740(dt);
                         {
                             const int m = static_cast<int>(
                                 unit_.torpedo_attack_mode_370);
@@ -30748,7 +30856,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                     }
 
-                    void run_attack_mode_tick_0099b740() {
+                    void run_attack_mode_tick_0099b740(float dt) {
                         const bsp::PlaneSquadronHostRecord* own_sqn = nullptr;
                         if constexpr (GameUnitsHost::Impl::kTorpedoFlightLeadPerSquadronBound) {
                             // 0099B757: this unit against ctl+3D0h[0], the
@@ -30773,8 +30881,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 0099B710, which is MOV AL,1 / RET.
                         in.task_authorises_38h = true;
                         const bsp::PilotAttackMode next =
-                            bsp::pilot_attack_mode_0099b740(
-                                unit_.torpedo_attack_mode_370, in);
+                            owner_.attack_mode_cadence_009998a0(unit_, dt)
+                            ? bsp::pilot_attack_mode_0099b740(unit_.torpedo_attack_mode_370, in)
+                            : unit_.torpedo_attack_mode_370;
                         if (next != unit_.torpedo_attack_mode_370) {
                             unit_.torpedo_attack_mode_370 = next;
                             if (unit_.torpedo_attack_mode_raised_tick < 0) {
@@ -34775,7 +34884,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             owner_.retreat_enter_state(unit_, bsp::retreat_arm_009c9fb0(in));
                         }
                         // 009CA17A-009CA189: the current state's tick.
-                        const float travel = owner_.retreat_squadron_speed_3a0(unit_);
+                        const float travel = owner_.squadron_speed_3a0_live(
+                            unit_.process_index, owner_.retreat_squadron_speed_3a0(unit_));
                         switch (unit_.retreat_state) {
                         case RS::kMoveTo: {
                             ++unit_.retreat_moveto_ticks;
@@ -35202,7 +35312,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 return pb_.owner_.unit_is_flight_leader_007b8ad0(pb_.unit_.process_index);
                             }
                             float ctl_speed_3a0() override {
-                                return pb_.owner_.retreat_squadron_speed_3a0(pb_.unit_);
+                                return pb_.owner_.squadron_speed_3a0_live(pb_.unit_.process_index,
+                                    pb_.owner_.retreat_squadron_speed_3a0(pb_.unit_));
                             }
                             float desc_speed_18c() override { return pb_.unit_.plane_travel_speed; }
                             float desc_radius_268() override { return pb_.unit_.plane_turn_circle_radius; }
@@ -35754,6 +35865,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 ++unit_.fs_thinks;
                             }
                             unit_.pilot_think_accumulator_70 = 0.0f;   // 0099AD75
+                            if constexpr (kLuaSquadronSetTravelSpeedBound) {
+                                const std::uint64_t sig =
+                                    GameUnitsHost::Impl::head_task_signature(unit_);
+                                if (sig != unit_.head_task_sig_last) {   // 0099AE92
+                                    unit_.head_task_sig_last = sig;
+                                    owner_.refresh_travel_speed_007ed5d0(unit_.process_index);
+                                }
+                            }
 
                             // 0099B450, seeded from the live block in the plan's
                             // own axis order.
@@ -40935,6 +41054,9 @@ void GameUnitsHost::report() {
             host.df_early_edge_clears, Impl::kDogfightEarlyEdgeClearBound ? 1 : 0);
         host.log.notef("summary follow exit 009BDE40 calls=%llu bound=%d (packet p20_follow_exit)",
             host.follow_exits, Impl::kFollowExitClearsBound ? 1 : 0);
+        host.log.notef("summary attack mode cadence fires=%llu skips=%llu bound=%d (009998A0 "
+            "+308h gate on 0099B740, packet p20_cadence)", host.attack_mode_cadence_fires,
+            host.attack_mode_cadence_skips, Impl::kTaskAttackModeCadenceBound ? 1 : 0);
         host.log.notef("summary bot task ctor seeds=%llu bound=%d (0099C6F0 / 009C2980, packet "
             "p20_ctor_seeds)", host.bot_task_ctor_seeds, Impl::kBotTaskCtorSeedsBound ? 1 : 0);
         host.log.notef("summary land min speed owner terms=%llu bound=%d (009B1362, packet "
