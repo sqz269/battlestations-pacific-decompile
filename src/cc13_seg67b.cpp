@@ -1793,7 +1793,8 @@ void* bot_task_dogfight_construct_from_stream_009ab3d0(Cc13Seg67bHost& host, voi
 void* bot_task_drop_kamikaze_construct_from_bag_009aeae0(Cc13Seg67bHost& host, void* task,
                                                          void* bot, void* archive) {
     bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 5);
-    host.drop_kamikaze_approach_construct_from_bag_009ad920(ptr(task, 0x3F8), bot, archive);
+    bot_task_drop_kamikaze_construct_approach_block_from_stream_009ad920(host, ptr(task, 0x3F8),
+                                                                         bot, archive);
     at<std::uint32_t>(task, 0x000) = kDropKamikazeTaskVtable;
     at<std::uint32_t>(task, 0x3F8) = kDropKamikazeApproachVtable;
     at<std::uint32_t>(task, 0x4BC) = kDropKamikazeRegistryVtable;
@@ -3136,6 +3137,83 @@ void* bot_task_dive_bomb_construct_approach_block_009c73a0(Cc13Seg67bHost& host,
     bot_state_dive_bomb_attack_run_construct_009c4140(host, ptr(block, 0x3C4), block);
     register_state_names(host, block, 0xE4, kDiveBombStateNamePairs,
                          sizeof(kDiveBombStateNamePairs) / sizeof(kDiveBombStateNamePairs[0]));
+    return block;
+}
+
+// ---------------------------------------------------------------------------
+// The drop-kamikaze approach block from a stream.
+
+namespace {
+constexpr std::uint32_t kDropKamikazeBlockVtable_00d1fc60 = 0x00D1FC60u;
+constexpr std::uint32_t kDropKamikazeRegistryVtable_00d1fc5c = 0x00D1FC5Cu;
+constexpr std::uint32_t kDropKamikazeFollowLikeVtable_00d1fc08 = 0x00D1FC08u;
+
+// The tail 009AD720 and 009AD920 share (009AD7CB-009AD8E8 and 009AD9A5-009ADAC2):
+// follow +114h, the five embedded or follow-built states, then 009AB740.
+void drop_kamikaze_block_tail(Cc13Seg67bHost& host, void* block) {
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x114), block, kHundred_00ce3d08);
+    plain_inline_state(block, 0x1AC, 0x00D1FBECu);
+    at<float>(block, 0x1C4) = kZero_s15;
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x1C8), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x1C8) = kDropKamikazeFollowLikeVtable_00d1fc08;
+    at<std::uint8_t>(block, 0x268) = 0;
+    at<float>(block, 0x260) = kMinusOne_00d7a260_f;
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x26C), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x26C) = kDropKamikazeFollowLikeVtable_00d1fc08;
+    at<std::uint8_t>(block, 0x30C) = 0;
+    at<float>(block, 0x304) = kMinusOne_00d7a260_f;
+    plain_inline_state(block, 0x310, 0x00D1FC40u);
+    plain_inline_state(block, 0x334, 0x00D1FC24u);
+    at<std::uint8_t>(block, 0x34C) = 0;
+    bot_task_drop_kamikaze_register_state_names_009ab740(host, block);
+}
+}  // namespace
+
+// 009AD920 (009AD920-009ADAD9). EH frame 00CAE798. 009ABBE0(ECX = block, [bot+50h],
+// archive) (009AD94D); 00411E20(block+C4h) (009AD960); [block] = 00D1FC60,
+// [block+C4h] = 00D1FC5C (009AD977, 009AD97D); 00BD4FE0(archive, outgoing block,
+// "_state_moveTo") (009AD994) and 009C2B80(ECX = block+D8h, block, that block by
+// value) (009AD9A0); 009C2980(ECX = block+114h, block, 100.0) (009AD9BB); embedded
+// +1ACh (00D1FBEC) with +1C4h = 0.0 (009AD9C0-009AD9EB); 009C2980 at +1C8h and at
+// +26Ch, each then given vtable 00D1FC08, byte +A0h = 0 and +98h = -1.0
+// (009ADA0B-009ADA5D); embedded +310h (00D1FC40) (009ADA65-009ADA83); embedded
+// +334h (00D1FC24) with byte +34Ch = 0 (009ADA8D-009ADAB5); 009AB740(block)
+// (009ADAC2). RET 8, EAX = block. The state names are the 009AB740
+// registrations.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_drop_kamikaze_construct_approach_block_from_stream_009ad920(Cc13Seg67bHost& host,
+                                                                           void* block, void* bot,
+                                                                           void* archive) {
+    host.bot_approach_drop_kamikaze_construct_base_from_bag_009abbe0(block, ptr_at(bot, 0x50),
+                                                                     archive);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xC4));
+    at<std::uint32_t>(block, 0x000) = kDropKamikazeBlockVtable_00d1fc60;
+    at<std::uint32_t>(block, 0x0C4) = kDropKamikazeRegistryVtable_00d1fc5c;
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrStateMoveTo));
+    bot_state_construct_base_009c2b80(host, ptr(block, 0xD8), block, ref);
+    drop_kamikaze_block_tail(host, block);
+    return block;
+}
+
+// 009AD720 (009AD720-009AD903). EH frame 00CAE708. 009ABAB0(ECX = block, [bot+50h],
+// target) (009AD74F); 00411E20(block+C4h) (009AD762); [block] = 00D1FC60,
+// [block+C4h] = 00D1FC5C (009AD7AD, 009AD7B3); 009C2AC0(ECX = block+D8h, block,
+// target, float(+A8h - double [00D7A220] 100.0), +A8h, +ACh) (009AD767-009AD7C6);
+// then the tail shared with 009AD920 (009AD7CB-009AD8E8). RET 8, EAX = block.
+// UNCERTAINTY: `near` is rounded once at 24 bits in the image; here a double
+// difference is rounded to float. EH unwinding not modelled.
+void* bot_approach_drop_kamikaze_construct_009ad720(Cc13Seg67bHost& host, void* block, void* bot,
+                                                    void* target) {
+    host.bot_approach_drop_kamikaze_construct_base_009abab0(block, ptr_at(bot, 0x50), target);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xC4));
+    const float third = at<float>(block, 0xAC);
+    const float far_ = at<float>(block, 0xA8);
+    const float near_ = static_cast<float>(static_cast<double>(far_) - kHundred_00d7a220);
+    at<std::uint32_t>(block, 0x000) = kDropKamikazeBlockVtable_00d1fc60;
+    at<std::uint32_t>(block, 0x0C4) = kDropKamikazeRegistryVtable_00d1fc5c;
+    host.bot_state_move_to_construct_009c2ac0(ptr(block, 0xD8), block, target, near_, far_, third);
+    drop_kamikaze_block_tail(host, block);
     return block;
 }
 

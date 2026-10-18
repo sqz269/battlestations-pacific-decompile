@@ -345,3 +345,11 @@ The trailing argument of 009C2AC0, 009B6C10 and 009C2CA0 is a float (009C2AC0 re
 | 009C73A0 | dive-bomb approach block | ten states; DiveBomb/done (+26Ch) and /prepare (+1CCh) share vtable 00D20D28; goaway +32Ch is twice approach+B4h |
 
 The dogfight and dive-bomb task constructors now call these bodies directly.
+
+### 3.22 Drop-kamikaze approach blocks
+
+| Address | Function | Notes |
+|---|---|---|
+| 009AD720 / 009AD920 | drop-kamikaze approach block, direct and from a stream | seven states registered through 009AB740; the two follow-built states take vtable 00D1FC08 |
+
+The drop-kamikaze task stream constructor now calls 009AD920 directly.

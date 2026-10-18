@@ -175,6 +175,12 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
+    // 009ABAB0: __thiscall(ECX = drop-kamikaze approach, [bot+50h], target), RET 8.
+    virtual void bot_approach_drop_kamikaze_construct_base_009abab0(void* block, void* arg,
+                                                                    void* target) = 0;
+    // 009ABBE0: __thiscall(ECX = drop-kamikaze approach, [bot+50h], archive), RET 8.
+    virtual void bot_approach_drop_kamikaze_construct_base_from_bag_009abbe0(void* block, void* arg,
+                                                                             void* archive) = 0;
     // 009C3EA0: __thiscall(ECX = dive-bomb approach, [bot+50h], target), RET 8.
     virtual void bot_approach_dive_bomb_construct_009c3ea0(void* block, void* arg,
                                                            void* target) = 0;
@@ -245,9 +251,6 @@ public:
     virtual void* level_bomb_task_construct_009b7990(void* task, void* bot, void* target) = 0;
     // 009BCE50: __thiscall(ECX = task, bot), RET 4, EAX = task.
     virtual void* move_on_path_task_construct_009bce50(void* task, void* bot) = 0;
-    // 009AD920: __thiscall(ECX = task+3F8h, bot, archive), RET 8.
-    virtual void drop_kamikaze_approach_construct_from_bag_009ad920(void* block, void* bot,
-                                                                    void* archive) = 0;
     // 009ADBF0 / 009AEEF0: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
     virtual void* drop_kamikaze_task_construct_009adbf0(void* task, void* bot, void* target) = 0;
     virtual void* kamikaze_task_construct_009aeef0(void* task, void* bot, void* target) = 0;
@@ -767,5 +770,12 @@ void* bot_task_dogfight_construct_approach_block_009a94e0(Cc13Seg67bHost& host, 
 // 009C73A0: __thiscall(ECX = task+3F8h, bot, target), RET 8, EAX = block.
 void* bot_task_dive_bomb_construct_approach_block_009c73a0(Cc13Seg67bHost& host, void* block,
                                                            void* bot, void* target);
+// 009AD920: __thiscall(ECX = task+3F8h, bot, archive), RET 8, EAX = block.
+void* bot_task_drop_kamikaze_construct_approach_block_from_stream_009ad920(Cc13Seg67bHost& host,
+                                                                           void* block, void* bot,
+                                                                           void* archive);
+// 009AD720: __thiscall(ECX = task+3F8h, bot, target), RET 8, EAX = block.
+void* bot_approach_drop_kamikaze_construct_009ad720(Cc13Seg67bHost& host, void* block, void* bot,
+                                                    void* target);
 
 }  // namespace bsp
