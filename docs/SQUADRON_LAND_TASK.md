@@ -17780,3 +17780,10 @@ with a keyed draw (`<unit>#issue`, the host's other stream-1 draws' convention) 
 Prediction: multi-issue sequences (level-bomb sticks, multi-round racks, the torpedo stage) space 0-22% wider on
 average (mean 1.0 instead of 0.9 x BombDelay); every row with a level bomber or a multi-round rack moves slightly
 after its first issue; rows with no issue are identical.
+
+### 5id.1 The script-orders half (cc9-lua66, 2026-10-17)
+
+Under `kPutToFormationBound`: PutTo with exactly three arguments (008AA10E) and PutFormationTo with four (008AA3CA)
+call `set_heading_008196b0` with float(arg x 00CE3D28 / 00CE3D20) (`put_to_heading_radians`, 24-bit model), and
+PutFormationTo's shape 1..3 on a grouped unit runs `reshape_formation_0070efd0` before the move. OFF keeps the three
+unimplemented records. The pair follows (5id prediction).
