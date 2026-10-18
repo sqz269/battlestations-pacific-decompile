@@ -457,3 +457,9 @@ It then copies the plane's position into +D0h..+D8h and calls the aim-error redr
 009B2E50 now calls it directly.
 
 009A3390, the depth-charge approach base, was not rewritten. depth_charge_task_construct_009a5240 in src/depth_charge_task_cc13.cpp already models it inline. Its step order matches the bytes, but it computes +40h in double and rounds once. It was recorded ledger-only as an existing implementation, spot-checked.
+
+### 3.35 Land approach base from a stream
+
+009AFFF0 is the stream twin of 009AFE70. Its +ACh seed is 1.0, where the direct path seeds 0.5. It draws only +B0h = -U(0, 1) from the RNG.
+
+The landing unit comes from the archive (airBaseEntity), and the air-ops block comes from 006BCD20 on that unit. The timer pair at +ACh is read from updateLandQueueTimer, then approachAngle, approachPitch and standbyheightadd are read into +54h, +58h and +60h. The tail matches 009AFE70: the two position refreshes, then 009AFAF0. 009B3040 now calls it directly.

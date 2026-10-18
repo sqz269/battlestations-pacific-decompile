@@ -2897,7 +2897,7 @@ void land_block_tail(Cc13Seg67bHost& host, void* block) {
 void* bot_task_land_construct_approach_block_from_stream_009b3040(Cc13Seg67bHost& host,
                                                                   void* block, void* arg,
                                                                   void* archive) {
-    host.bot_approach_land_construct_from_stream_009afff0(block, arg, archive);
+    bot_approach_land_construct_from_stream_009afff0(host, block, arg, archive);
     host.bot_state_registry_construct_00411e20(ptr(block, 0xB8));
     at<std::uint32_t>(block, 0x00) = kLandBlockVtable_00d1ff88;
     at<std::uint32_t>(block, 0xB8) = kLandRegistryVtable_00d1ff84;
@@ -4084,6 +4084,77 @@ void* bot_approach_land_construct_lower_009afe70(Cc13Seg67bHost& host, void* app
     at<float>(approach, 0xA4) = kZero_s15;
     at<float>(approach, 0xAC) = kHalf_00ce3800;
     at<float>(approach, 0xB0) = -host.random_uniform_00bd2f10(1, 0.0f, kHalf_00ce3800);
+    void* landing = ptr_at(approach, 0x30);
+    if (at<std::uint8_t>(landing, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(landing);
+    at<float>(approach, 0x38) = at<float>(landing, 0xFC);
+    at<float>(approach, 0x3C) = at<float>(landing, 0x100);
+    at<float>(approach, 0x40) = at<float>(landing, 0x104);
+    void* owner = ptr_at(approach, 0x4);
+    if (at<std::uint8_t>(owner, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(owner);
+    at<float>(approach, 0x3C) = at<float>(owner, 0x100);
+    host.bot_approach_land_geometry_009afaf0(approach, 0);
+    return approach;
+}
+
+// ---------------------------------------------------------------------------
+// The land approach base from a stream.
+
+namespace {
+constexpr std::uint32_t kStrAirBaseEntity_00d1fe78 = 0x00D1FE78u;        // "airBaseEntity"
+constexpr std::uint32_t kStrUpdateLandQueueTimer_00d1fe60 = 0x00D1FE60u; // "updateLandQueueTimer"
+constexpr std::uint32_t kStrApproachAngle_00d1fe50 = 0x00D1FE50u;        // "approachAngle"
+constexpr std::uint32_t kStrApproachPitch_00d1fe40 = 0x00D1FE40u;        // "approachPitch"
+constexpr std::uint32_t kStrStandbyHeightAdd_00d1fe2c = 0x00D1FE2Cu;     // "standbyheightadd"
+}  // namespace
+
+// 009AFFF0 (BSP_BotApproachLand_ConstructFromStream): __thiscall(ECX = approach, plane,
+// archive), RET 8, EAX = approach. Evidence (disk bytes): 009F9CE0(ECX = approach, plane,
+// tuning+52Ch) (009AFFF6-009B000C); vtable 00D1FDB8, byte +44h = 0, +4Ch = +48h = 1.0,
+// +50h = 1 (009B0011-009B003A); +5Ch = float(desc+18Ch x double [00CEC9D8] 0.75), +64h
+// = [00CE38B8] 10.0, +A4h = 0.0, +ACh = 1.0 (009B003D-009B006A); +B0h = -00BD2F10(1, 0,
+// 1) (009B0068-009B0081); archive vtable[10h]({0,"airBaseEntity"}, {4, &slot}), +30h =
+// slot (009B0084-009B00B3); +2Ch = 006BCD20(ECX = slot, DL = 0) (009B00B1-009B00BB); +34h
+// = 006C0B50(ECX = +2Ch, [plane+9D4h]) (009B00BE-009B00D8); 00BD4FE0(ECX = archive, the
+// outgoing block, {0,"updateLandQueueTimer"}) (009B00F1) and 00410D80(ECX = +ACh, that
+// block) (009B00F8); reads {0,"approachAngle"} <- {2, &+54h} (009B012F),
+// {0,"approachPitch"} <- {2, &+58h} (009B0163), {0,"standbyheightadd"} <- {2, &+60h}
+// (009B0197); 00414DB0 on [approach+30h] when its byte +C8h is 0, then +38h/+3Ch/+40h =
+// its +FCh/+100h/+104h (009B0199-009B01C4); 00414DB0 on [approach+4] when its byte +C8h
+// is 0, then +3Ch = its +100h (009B01C7-009B01E4); 009AFAF0(ECX = approach, 0)
+// (009B01E7).
+// UNCERTAINTY: an unwritten "airBaseEntity" leaves a stack address in the slot in the
+// image; here the slot starts at 0. 006C0B50 runs on +2Ch without a null test, as in the
+// image. RNG result rounded from ST0 by the hook. No EH frame.
+void* bot_approach_land_construct_from_stream_009afff0(Cc13Seg67bHost& host, void* approach,
+                                                       void* plane, void* archive) {
+    const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x52C);
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, plane, speed);
+    at<std::uint32_t>(approach, 0x00) = kLandApproachVtable_00d1fdb8;
+    at<std::uint8_t>(approach, 0x44) = 0;
+    at<float>(approach, 0x4C) = kOne_00d7a24c;
+    at<float>(approach, 0x48) = kOne_00d7a24c;
+    at<std::uint32_t>(approach, 0x50) = 1;
+    at<float>(approach, 0x5C) = static_cast<float>(
+        static_cast<double>(at<float>(ptr_at(approach, 0x8), 0x18C)) * kPointSevenFive_00cec9d8);
+    at<float>(approach, 0x64) = kTen_00ce38b8;
+    at<float>(approach, 0xA4) = kZero_s15;
+    at<float>(approach, 0xAC) = kOne_00d7a24c;
+    at<float>(approach, 0xB0) = -host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    std::uintptr_t slot = 0;
+    host.archive_vcall_10_read(archive, name_record(kStrAirBaseEntity_00d1fe78),
+                               record(4, reinterpret_cast<std::uintptr_t>(&slot)));
+    at<std::uintptr_t>(approach, 0x30) = slot;
+    void* const air_ops = host.air_ops_get_block_006bcd20(reinterpret_cast<void*>(slot), false);
+    at<std::uintptr_t>(approach, 0x2C) = reinterpret_cast<std::uintptr_t>(air_ops);
+    at<std::uintptr_t>(approach, 0x34) =
+        host.air_ops_queue_incoming_006c0b50(air_ops, ptr_at(plane, 0x9D4));
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref,
+                                          name_record(kStrUpdateLandQueueTimer_00d1fe60));
+    host.time_freq_pair_read_00410d80(ptr(approach, 0xAC), ref);
+    read_field(host, archive, kStrApproachAngle_00d1fe50, 2, ptr(approach, 0x54));
+    read_field(host, archive, kStrApproachPitch_00d1fe40, 2, ptr(approach, 0x58));
+    read_field(host, archive, kStrStandbyHeightAdd_00d1fe2c, 2, ptr(approach, 0x60));
     void* landing = ptr_at(approach, 0x30);
     if (at<std::uint8_t>(landing, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(landing);
     at<float>(approach, 0x38) = at<float>(landing, 0xFC);

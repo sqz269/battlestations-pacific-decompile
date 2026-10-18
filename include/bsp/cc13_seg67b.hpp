@@ -214,9 +214,9 @@ public:
     // 009A6D40: __thiscall(ECX = dogfight approach, bot, archive), RET 8.
     virtual void bot_approach_dogfight_construct_from_stream_009a6d40(void* block, void* bot,
                                                                       void* archive) = 0;
-    // 009AFFF0: __thiscall(ECX = land approach, arg, archive), RET 8.
-    virtual void bot_approach_land_construct_from_stream_009afff0(void* block, void* arg,
-                                                                  void* archive) = 0;
+    // 006BCD20: __fastcall(ECX = entity, DL = flag), EAX: the entity's air-ops block
+    // (0 for a null entity).
+    virtual void* air_ops_get_block_006bcd20(void* entity, bool flag) = 0;
     // 009AF9A0: __thiscall(ECX = land approach), RET: registers the eight land states.
     virtual void land_approach_register_states_009af9a0(void* approach) = 0;
     // 009B4690: __thiscall(ECX = level-bomb approach, [bot+50h], archive), RET 8.
@@ -854,5 +854,8 @@ void* bot_approach_drop_kamikaze_construct_base_from_bag_009abbe0(Cc13Seg67bHost
 // 009AFE70: __thiscall(ECX = approach, plane, air ops), RET 8, EAX = approach.
 void* bot_approach_land_construct_lower_009afe70(Cc13Seg67bHost& host, void* approach,
                                                  void* plane, void* air_ops);
+// 009AFFF0: __thiscall(ECX = approach, plane, archive), RET 8, EAX = approach.
+void* bot_approach_land_construct_from_stream_009afff0(Cc13Seg67bHost& host, void* approach,
+                                                       void* plane, void* archive);
 
 }  // namespace bsp
