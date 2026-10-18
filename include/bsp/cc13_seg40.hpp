@@ -109,8 +109,8 @@ public:
     virtual void critical_section_destroy_owned_0041cc80(void* section) = 0;
     // 006B88E0 BSP_LuaVariantVector_Resize: __thiscall(ECX = vector, int), RET 4.
     virtual void lua_variant_vector_resize_006b88e0(void* vector, std::int32_t size) = 0;
-    // 00734CE0 BSP_NarrativeList_Clear: __thiscall(ECX = narrative).
-    virtual void narrative_list_clear_00734ce0(void* narrative) = 0;
+    // 00734CE0 BSP_NarrativeList_Clear: __thiscall(ECX = the list at narrative+4h).
+    virtual void narrative_list_clear_00734ce0(void* list) = 0;
 };
 
 // pi as float at 00D7A264 (bits 40490FDB) and FLT_MAX at 00CFDBF8 (bits 7F7FFFFF).

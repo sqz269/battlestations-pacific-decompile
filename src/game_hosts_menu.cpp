@@ -52,6 +52,8 @@ constexpr bool kFrontEndPointerCc13Bound = false;
 // among them its FE_frame / FE_frame_title. So pages 63 -> 67, widgets 776 -> 792 and the
 // two page scripts' Lua getters (128 -> 130) on USN01 (cc15-ls1 pair) are
 // the image's behaviour, not a host artefact.
+// cc15-ls2: the same switch runs 0057BEC0 (report_loading_progress) at both
+// report sites over that screen. A report with no screen is the image's no-op.
 constexpr bool kLoadingScreenCc13Bound = false;
 
 // 004f8710 publishes screen ids; the level-4 set the main-menu manager raises
@@ -182,6 +184,16 @@ struct GameMenuHost::Impl {
     FrontEndShellState shell_state{};
     LoadingScreenConfig loading_globals{};
     LoadingScreen loading_screen{};  // the 00E194B4 singleton's recovered fields
+    // 0057BEC0's bindings: 00CEF258 is the double 128.0 (4060000000000000h)
+    // and 0109EEA4 the CRT's SSE2 mode word, bound as GameStartupHost binds it.
+    const volatile double loading_progress_scale_00cef258{128.0};
+    const volatile std::uint32_t sse2_0109eea4{
+        IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE ? 1u : 0u};
+    // 0057BEC0 at every report: null unless 0057CB60 built the screen.
+    void report_loading_progress_0057bec0(float progress) {
+        const LoadingProgressCrtAccess crt{&loading_progress_scale_00cef258, &sse2_0109eea4};
+        report_loading_progress(loading_screen.created ? &loading_screen : nullptr, progress, crt);
+    }
     GameSingletonHost& singletons;
 
     // --- the main-menu path -------------------------------------------------
@@ -1079,8 +1091,13 @@ public:
         owner_.log.unimplemented("FrontEndManager::close_load_block", "00bdcb30");
     }
     void report_loading_progress(float progress) override {
-        static_cast<void>(progress);
-        owner_.log.unimplemented("FrontEndManager::report_loading_progress", "0057bec0");
+        if constexpr (kLoadingScreenCc13Bound) {
+            owner_.report_loading_progress_0057bec0(progress);
+            owner_.log.implemented("FrontEndManager::report_loading_progress", "0057bec0");
+        } else {
+            static_cast<void>(progress);
+            owner_.log.unimplemented("FrontEndManager::report_loading_progress", "0057bec0");
+        }
     }
     void* create_screen(std::size_t size_bytes, std::uint32_t constructor_address) override {
         // operator new(size) then the leaf constructor. None of the seven
@@ -1397,12 +1414,22 @@ public:
         }
     }
     void report_progress(float progress) override {
-        static_cast<void>(progress);
-        owner_.log.unimplemented("FrontEndShell::report_progress", "0057bec0");
+        if constexpr (kLoadingScreenCc13Bound) {
+            owner_.report_loading_progress_0057bec0(progress);
+            owner_.log.implemented("FrontEndShell::report_progress", "0057bec0");
+        } else {
+            static_cast<void>(progress);
+            owner_.log.unimplemented("FrontEndShell::report_progress", "0057bec0");
+        }
     }
     void end_loading() override {
         if constexpr (kLoadingScreenCc13Bound) {
             // 00E194B4 is null unless 0057cb60 built the screen.
+            if (owner_.loading_screen.created) {
+                owner_.log.notef("loading screen progress at end: units=%d progress=%.4f (0057bec0)",
+                    static_cast<int>(owner_.loading_screen.progress_units),
+                    static_cast<double>(owner_.loading_screen.progress));
+            }
             MenuLoadingScreenHost host(owner_);
             end_loading_screen(owner_.loading_screen.created ? &owner_.loading_screen : nullptr, host);
             owner_.log.implemented("FrontEndShell::end_loading", "0057c250");

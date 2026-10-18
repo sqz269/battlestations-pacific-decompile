@@ -272,3 +272,15 @@ which is any row with a squadron launch.
   double fire goes away. BlockSighted fires when a blockade ship is first identified, which could be earlier or
   later than 1025 s, or never if it was identified before registration and stays identified.
 Pairs: USNOS 30000 (`s59_os_c14`), USN04 20000, JM05 12000.
+
+**Pairs (8149cd537, `--flip kReconRecordsSurviveSpawnBound=true`, exe `local\s59_rg_on`; OFF = the tree build;
+reference env; manifests beside each log).**
+| row | OFF / ON logs | verdict |
+| --- | --- | --- |
+| USNOS 30000 (`s59_os_c14`) | `s59_rgoff_os` / `s59_rgon_os` | exit 3. `layout_resets` 47 -> 0, `layout_growths` 0 -> 47, `notifications` 34502 -> 2751. OFF fires ConvoySighted (Aki1, 0 -> 2), then BlockSighted (ToSpawnShima, 0 -> 2) and ShimotSighted (0 -> 2) together at 1025.88 s. ON fires only real identifications: ShimotSighted (Shimotsuke 1 -> 2) and ConvoySighted (Aki2 1 -> 2); BlockSighted does not fire in 1500 s. Deaths 274 -> 271 and 44 death rows move, from the strike targeting that follows. |
+| USN04 20000 | `s59_rgoff_u4` / `s59_rgon_u4` | exit 1, gameplay identical. resets 24 -> 0, notifications 2389 -> 645, carried_value 6526 -> 7028 |
+| JM05 12000 | `s59_rgoff_j5` / `s59_rgon_j5` | exit 1, gameplay identical. resets 17 -> 0, notifications 17123 -> 1323 |
+
+The mechanism matches every prediction. **Flipped ON.** Re-plan consequence for USNOS: BlockSighted now needs a
+blockade ship to be newly identified after about 1025 s, so the plan has to bring an allied observer to the blockade
+box (x -10300..0, z 6400..11300) only after the listener is registered.
