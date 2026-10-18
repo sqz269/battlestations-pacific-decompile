@@ -647,6 +647,41 @@ There are 33 ledger-only rows (section 4):
   - 009B94B0, inlined in the flikflak tick.
   - 009B8450, `bot_task_step_result` with the level-bomb attack states.
 
+### 3.47 Medium rows, batch 2 (packet cc13-seg67C)
+
+Each row had the same three checks as batch 1, run before writing. The twin scan now decodes instructions with capstone and masks only the rel32 of CALL, JMP and Jcc.
+
+There are 21 bodies:
+- **Flikflak roll step (009B94E0):** +294h = (-v / 2r) x (-pi/2 - pitch)^2.
+  - v is the bank, or 00438B10(pi, bank) when the argument byte is set.
+  - The ratio r = d+1A8h / d+1BCh is taken from the task descriptor at +2F8h.
+  - It is modelled at 24-bit precision. The cc9 flikflak arm of `st_manoeuvre_tick` steers by a bank target and does not call this step.
+- **Stop tick (009B95D0)** writes the plan slots.
+- **Factories:** 009BAE10 (gain altitude), 009BAE80 (immelmann) and 009BAEF0 (stop). Stop uses 0099C8B0 with kind 0Fh and vtable 00D20500.
+- **009BC6B0** registers "path", "follow" and "circle (path)".
+- **Plain state constructors:** 009BC870, 009BC8A0 and 009C6180.
+- **Circle debug draws:** 009BC9F0 and 009C2670 are the same 23 instructions and share one helper.
+- **009BCF70:** the command path cursor; it is the first half of 009BD0B0.
+- **009BD1D0:** the move-on-path debug draw. The image's two lazily initialised colours are passed as equal local constants.
+- **009BDED0:** the move-to observer setter.
+- **009C5870:** the aimdive enter. cc9 keeps no aimdive enter of its own.
+- **009C6220:** clamps a to [-b, b] and keeps a NaN a.
+- **Ship-AI path nodes:**
+  - 009D58A0, the destructor body.
+  - 009D59C0, the run end point. Its tail recursion is written as a loop.
+  - 009D5CF0, over the existing 009D5AE0 and 009D5B90 bodies.
+- **009D5D60:** the target-ref reset, with one stream-1 U(0, 2) draw.
+- **009D6530:** the ref holder.
+
+There are 6 ledger-only rows (section 4):
+- 009D3E80 is a byte twin of 009A5710.
+- The four selectors are each hosted where their task picks its first state:
+  - 009BC6F0 in `moveonpath_rule_state_009bd17f`;
+  - 009BDDC0 in `moveto_task_construct_009c3000`;
+  - 009CA380, the strafe selector, in `st_install_009cc230`;
+  - 009D0100, the torpedo selector, in `torpedo_next_state_009d4030`.
+- 009D5990 is 009D5930 followed by `ship_ai_path_node_next_009d9ee6`.
+
 ## 4. Ledger-only records (packet cc13-seg67C)
 
 | Address | Host body | Result |
@@ -707,3 +742,6 @@ There are 33 ledger-only rows (section 4):
 | 009A4900 | the drop arm of `depth_charge_follow_tick_009a4940` (009A4A89-009A4ABA) | matches; 009A4900 has no 0.3 re-arm |
 | 009B94B0 | the flikflak arm of `st_manoeuvre_tick` (game_hosts_units.cpp ~24728) | matches (one stream-1 draw) |
 | 009B8450 | `bot_task_step_result` (src/bot_tasks.cpp ~121) | matches |
+| 009D3E80 | byte twin (decoded rel32 masked) of 009A5710 | twin |
+| 009BC6F0, 009BDDC0, 009CA380, 009D0100 | `moveonpath_rule_state_009bd17f` (~124), `moveto_task_construct_009c3000` (~81), `st_install_009cc230` (~24579), `torpedo_next_state_009d4030` (~76) | match |
+| 009D5990 | `ship_ai_path_node_decide_direction_009d5930` then `ship_ai_path_node_next_009d9ee6` (~147) | matches |
