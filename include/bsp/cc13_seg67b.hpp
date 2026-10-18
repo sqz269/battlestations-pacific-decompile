@@ -175,11 +175,70 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
-    // 009B75E0 / 009C73A0: __thiscall(ECX = task+3F8h, bot, target), RET 8.
-    virtual void level_bomb_approach_construct_009b75e0(void* block, void* bot, void* target) = 0;
-    virtual void dive_bomb_approach_construct_009c73a0(void* block, void* bot, void* target) = 0;
-    // 009C7710: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
-    virtual void* dive_bomb_task_construct_009c7710(void* task, void* bot, void* target) = 0;
+    // 007BCE20: __thiscall(ECX = unit), ST0: the minimum MaxWaterHitVel over the unit's
+    // torpedo devices (FLT_MAX with none).
+    virtual float unit_min_torpedo_hit_velocity_007bce20(void* unit) = 0;
+    // 009D02A0 / 009D0160: __thiscall(ECX = torpedo approach): the aim-error redraw (draws
+    // from 00BD2F10) and the run-time seed.
+    virtual void approach_torpedo_aim_error_draw_009d02a0(void* approach) = 0;
+    virtual void approach_torpedo_reset_run_time_009d0160(void* approach) = 0;
+    // 009FB200: __thiscall(ECX = approach target ref, target), RET 4.
+    virtual void approach_target_ref_construct_009fb200(void* ref, void* target) = 0;
+    // 007C2610: __thiscall(ECX = unit), ST0: the unit's minimum kind-21 component speed.
+    virtual float unit_min_kind21_component_speed_007c2610(void* unit) = 0;
+    // 009CA3B0: __thiscall(ECX = strafe approach): the glide seed (draws from 00BD2F10).
+    virtual void bot_approach_strafe_seed_glide_009ca3b0(void* approach) = 0;
+    // 009BC780: __thiscall(ECX = move-on-path approach, [bot+50h]), RET 4.
+    virtual void bot_approach_move_on_path_construct_009bc780(void* block, void* arg) = 0;
+    // 009A3390: __thiscall(ECX = depth-charge approach, [bot+50h], target), RET 8.
+    virtual void bot_approach_depth_charge_construct_009a3390(void* block, void* arg,
+                                                              void* target) = 0;
+    // 006C0B50: __thiscall(ECX = air ops, arg), RET 4, EAX: queue an incoming plane.
+    virtual std::uintptr_t air_ops_queue_incoming_006c0b50(void* air_ops, void* arg) = 0;
+    // 009AFAF0: __thiscall(ECX = land approach, flag), RET 4: the approach geometry.
+    virtual void bot_approach_land_geometry_009afaf0(void* approach, std::uint32_t flag) = 0;
+    // 009ABAB0: __thiscall(ECX = drop-kamikaze approach, [bot+50h], target), RET 8.
+    virtual void bot_approach_drop_kamikaze_construct_base_009abab0(void* block, void* arg,
+                                                                    void* target) = 0;
+    // 009C3DA0: __thiscall(ECX = dive-bomb approach): the aim-error redraw (draws from
+    // 00BD2F10).
+    virtual void approach_dive_bomb_aim_error_draw_009c3da0(void* approach) = 0;
+    // 007F0F80: __thiscall(ECX = observer member, subject), RET 4.
+    virtual void observer_member_initialize_007f0f80(void* member, void* subject) = 0;
+    // 009FA350: __thiscall(ECX = approach target ref): reset the aim offset.
+    virtual void approach_target_ref_reset_aim_offset_009fa350(void* ref) = 0;
+    // 009B4400: __thiscall(ECX = level-bomb approach): the aim-error redraw.
+    virtual void approach_level_bomb_aim_error_draw_009b4400(void* approach) = 0;
+    // 007C1FB0: __thiscall(ECX = unit), ST0: the longest rack stick time.
+    virtual float unit_longest_rack_stick_time_007c1fb0(void* unit) = 0;
+    // 009A6D40: __thiscall(ECX = dogfight approach, bot, archive), RET 8.
+    virtual void bot_approach_dogfight_construct_from_stream_009a6d40(void* block, void* bot,
+                                                                      void* archive) = 0;
+    // 006BCD20: __fastcall(ECX = entity, DL = flag), EAX: the entity's air-ops block
+    // (0 for a null entity).
+    virtual void* air_ops_get_block_006bcd20(void* entity, bool flag) = 0;
+    // 009AF9A0: __thiscall(ECX = land approach), RET: registers the eight land states.
+    virtual void land_approach_register_states_009af9a0(void* approach) = 0;
+    // 009B4690: __thiscall(ECX = level-bomb approach, [bot+50h], archive), RET 8.
+    virtual void bot_approach_level_bomb_construct_from_stream_009b4690(void* block, void* arg,
+                                                                        void* archive) = 0;
+    // 00410D80 / 00410E00: __thiscall(ECX = time/frequency pair, 0Ch reader or writer
+    // block by value): read or write the pair; the callee destroys the block.
+    virtual void time_freq_pair_read_00410d80(void* pair, void* ref) = 0;
+    virtual void time_freq_pair_write_00410e00(void* pair, void* ref) = 0;
+    // 009DE050: __thiscall(ECX = nav block, const float* goal2d, char keep_mode,
+    // unsigned char final_leg), RET 0Ch.
+    virtual void ship_ai_set_navigation_goal_009de050(void* nav, const float* goal,
+                                                      std::uint8_t keep_mode,
+                                                      std::uint8_t final_leg) = 0;
+    // 00605070: __thiscall(ECX = float*), wraps the angle in place.
+    virtual void math_wrap_angle_in_place_00605070(float* angle) = 0;
+    // 00F8A68C: the ship-AI debug static block (colour records and guards, 64h bytes).
+    virtual std::uint8_t* ship_ai_debug_static_block_00f8a68c() = 0;
+    // 00411E20: __thiscall(ECX = registry), the state-registry constructor.
+    virtual void bot_state_registry_construct_00411e20(void* registry) = 0;
+    // 007293D0: __thiscall(ECX = object), the tick-subnode owner base destructor.
+    virtual void tick_subnode_owner_destruct_base_007293d0(void* object) = 0;
     // 009C2EF0: __thiscall(ECX = task+3F8h, bot, archive), RET 8.
     virtual void move_to_construct_approach_block_from_stream_009c2ef0(void* block, void* bot,
                                                                        void* archive) = 0;
@@ -188,34 +247,17 @@ public:
                                                                       std::int32_t arg) = 0;
     // 007D9C10: __fastcall(ECX = unit+AB0h), RET.
     virtual void plane_flight_controller_refresh_body_frame_007d9c10(void* controller) = 0;
-    // 009C2AC0: __thiscall(ECX = state, approach, target, float near, float far, mode),
+    // 009C2AC0: __thiscall(ECX = state, approach, target, float near, float far, float third),
     // RET 14h: the move-to state constructor.
     virtual void bot_state_move_to_construct_009c2ac0(void* state, void* approach, void* target,
                                                       float near_, float far_,
-                                                      std::uint32_t mode) = 0;
+                                                      float third_) = 0;
     // 006C8800: __fastcall(ECX = squadron), RET: retires the landing squadron's blocks.
     virtual void air_ops_retire_landing_squadron_006c8800(void* squadron) = 0;
     // 009B2C80: __fastcall(ECX = task+3F8h), RET: the landing approach destructor.
     virtual void landing_approach_destroy_009b2c80(void* block) = 0;
-    // 009B3040: __thiscall(ECX = task+3F8h, [bot+50h], archive), RET 8.
-    virtual void land_construct_approach_block_from_stream_009b3040(void* block, void* arg,
-                                                                    void* archive) = 0;
-    // 009B77C0: __thiscall(ECX = task+3F8h, bot, archive), RET 8.
-    virtual void level_bomb_construct_approach_block_from_stream_009b77c0(void* block, void* bot,
-                                                                          void* archive) = 0;
-    // 009B7990: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
-    virtual void* level_bomb_task_construct_009b7990(void* task, void* bot, void* target) = 0;
-    // 009BCD50: __thiscall(ECX = task+3F8h, bot, archive), RET 8.
-    virtual void move_on_path_construct_with_states_from_stream_009bcd50(void* block, void* bot,
-                                                                         void* archive) = 0;
     // 009BCE50: __thiscall(ECX = task, bot), RET 4, EAX = task.
     virtual void* move_on_path_task_construct_009bce50(void* task, void* bot) = 0;
-    // 009A9670: __thiscall(ECX = task+3F8h, bot, archive), RET 8.
-    virtual void dogfight_construct_approach_block_from_stream_009a9670(void* block, void* bot,
-                                                                        void* archive) = 0;
-    // 009AD920: __thiscall(ECX = task+3F8h, bot, archive), RET 8.
-    virtual void drop_kamikaze_approach_construct_from_bag_009ad920(void* block, void* bot,
-                                                                    void* archive) = 0;
     // 009ADBF0 / 009AEEF0: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
     virtual void* drop_kamikaze_task_construct_009adbf0(void* task, void* bot, void* target) = 0;
     virtual void* kamikaze_task_construct_009aeef0(void* task, void* bot, void* target) = 0;
@@ -235,10 +277,6 @@ public:
                                                            void* archive) = 0;
     virtual void bot_state_registry_read_current_00411170(void* registry, void* machine,
                                                           void* archive) = 0;
-    // 009A5000: __thiscall(ECX = task+3F8h, bot, archive), RET 8.
-    virtual void depth_charge_construct_approach_block_from_stream_009a5000(void* block,
-                                                                            void* bot,
-                                                                            void* archive) = 0;
     // 009A5240: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
     virtual void* depth_charge_task_construct_009a5240(void* task, void* bot, void* target) = 0;
     // 00F8A720: the path-leg manager singleton.
@@ -302,8 +340,6 @@ public:
     // 007B7870: __thiscall(ECX = opportunistic rocket, target, float[3] by value), RET 10h.
     virtual void opportunistic_rocket_set_target_007b7870(void* rocket, void* target,
                                                           const float point[3]) = 0;
-    // 009A94E0: __thiscall(ECX = task+3F8h, bot, arg), RET 8: the dogfight approach block.
-    virtual void dogfight_construct_approach_block_009a94e0(void* block, void* bot, void* arg) = 0;
     // 009F9980: __thiscall(ECX = approach, task), RET 4.
     virtual void bot_approach_bind_to_task_009f9980(void* approach, void* task) = 0;
     // 007B8AD0: __fastcall(ECX = unit), RET, AL.
@@ -624,11 +660,11 @@ void* bot_approach_move_on_path_construct_from_stream_009bc7e0(Cc13Seg67bHost& h
 bool bot_state_level_bomb_prepare_is_waiting_009b7a80(void* state);
 bool bot_state_level_bomb_aim_should_release_009b7b10(void* state);
 bool bot_state_level_bomb_aim_should_abort_009b7b40(void* state);
-// 009B6C10: __thiscall(ECX = state, approach, target, float near, float far, mode),
+// 009B6C10: __thiscall(ECX = state, approach, target, float near, float far, float third),
 // RET 14h, EAX = state.
 void* bot_state_level_bomb_move_to_construct_009b6c10(Cc13Seg67bHost& host, void* s,
                                                       void* approach, void* target, float near_,
-                                                      float far_, std::uint32_t mode);
+                                                      float far_, float third_);
 // 009B7480: __thiscall(ECX = state, approach, reader handle by value [0Ch]), RET 10h,
 // EAX = state.
 void* bot_state_level_bomb_run_construct_from_stream_009b7480(Cc13Seg67bHost& host, void* s,
@@ -637,11 +673,11 @@ void* bot_state_level_bomb_run_construct_from_stream_009b7480(Cc13Seg67bHost& ho
 void bot_task_dive_bomb_destruct_body_009c8b60(Cc13Seg67bHost& host, void* task);
 // 009C8C70: __fastcall(ECX = bot, EDX = target), RET, EAX.
 void* bot_task_make_dive_bomb_009c8c70(Cc13Seg67bHost& host, void* bot, void* target);
-// 009C2CA0: __thiscall(ECX = state, approach, target, float near, float far, mode),
+// 009C2CA0: __thiscall(ECX = state, approach, target, float near, float far, float third),
 // RET 14h, EAX = state.
 void* bot_state_dogfight_move_to_construct_009c2ca0(Cc13Seg67bHost& host, void* s,
                                                     void* approach, void* target, float near_,
-                                                    float far_, std::uint32_t mode);
+                                                    float far_, float third_);
 // 009C2D00: __thiscall(ECX = state, approach, reader handle by value), RET 10h.
 void* bot_state_move_to_construct_from_stream_009c2d00(Cc13Seg67bHost& host, void* s,
                                                        void* approach, void* handle);
@@ -666,5 +702,140 @@ void* bot_task_level_bomb_construct_009b7990(Cc13Seg67bHost& host, void* task, v
                                              void* target);
 void* bot_task_dive_bomb_construct_009c7710(Cc13Seg67bHost& host, void* task, void* bot,
                                             void* target);
+struct ShipAiPathPlanBlock;
+
+// 009CFF40: __fastcall(ECX = owner, EDX = flag), RET, EAX = task or 0.
+void* pilot_bot_create_takeoff_task_009cff40(Cc13Seg67bHost& host, void* owner,
+                                             std::uint32_t flag);
+// 009D5AE0 / 009D5B90: __thiscall(ECX = plan block), RET, AL.
+bool ship_ai_path_any_positive_side_ahead_009d5ae0(ShipAiPathPlanBlock& plan);
+bool ship_ai_path_any_negative_side_ahead_009d5b90(ShipAiPathPlanBlock& plan);
+// 009CA1A0 / 009CD1F0 / 009CFEE0 / 009D4DB0: __thiscall(ECX = task), RET.
+void bot_task_retreat_destruct_body_009ca1a0(Cc13Seg67bHost& host, void* task);
+void bot_task_strafe_destruct_body_009cd1f0(Cc13Seg67bHost& host, void* task);
+void bot_task_takeoff_destruct_body_009cfee0(Cc13Seg67bHost& host, void* task);
+void bot_task_torpedo_destruct_body_009d4db0(Cc13Seg67bHost& host, void* task);
+// 009F3E80: __thiscall(ECX = gun bot), RET.
+void ship_ai_gun_bot_destruct_body_009f3e80(Cc13Seg67bHost& host, void* bot);
+// 009C2EF0: __thiscall(ECX = block, bot, archive), RET 8, EAX = block.
+void* bot_task_move_to_construct_approach_block_from_stream_009c2ef0(Cc13Seg67bHost& host,
+                                                                     void* block, void* bot,
+                                                                     void* archive);
+struct ShipAiPathNode;
+
+// 009D5A80: __thiscall(ECX = node), RET, AL.
+bool ship_ai_path_node_subtree_complete_009d5a80(void* node);
+// 009D9440: __thiscall(ECX = node), RET, ST0.
+float ship_ai_path_node_run_heading_009d9440(ShipAiPathNode& node);
+// 009DE280: __thiscall(ECX = nav block, float heading, const float* goal, float penalty), RET 0Ch.
+void ship_ai_set_navigation_goal_with_penalty_009de280(Cc13Seg67bHost& host, void* nav,
+                                                       float heading, const float* goal,
+                                                       float penalty);
+// 009D5E10 / 009D5FD0: __cdecl(), RET, EAX = the static colour record.
+float* ship_ai_debug_colour_record_a_009d5e10(Cc13Seg67bHost& host);
+float* ship_ai_debug_colour_record_b_009d5fd0(Cc13Seg67bHost& host);
+// 009E5E30: __thiscall(ECX = nested), RET, AL.
+bool ship_ai_approach_target_is_kind_6_009e5e30(Cc13Seg67bHost& host, void* nested);
+// 009C1DC0: __thiscall(ECX = approach, arg, archive), RET 8, EAX = approach.
+void* bot_approach_move_to_construct_from_stream_009c1dc0(Cc13Seg67bHost& host, void* a,
+                                                          void* arg, void* archive);
+// 009C33D0: __thiscall(ECX = approach, archive), RET 4.
+void bot_approach_move_to_save_009c33d0(Cc13Seg67bHost& host, void* a, void* archive);
+// 009BCD50: __thiscall(ECX = task+3F8h, bot, archive), RET 8, EAX = block.
+void* bot_task_move_on_path_construct_approach_block_from_stream_009bcd50(Cc13Seg67bHost& host,
+                                                                          void* block, void* bot,
+                                                                          void* archive);
+// 009B77C0: __thiscall(ECX = task+3F8h, bot, archive), RET 8, EAX = block.
+void* bot_task_level_bomb_construct_approach_block_from_stream_009b77c0(Cc13Seg67bHost& host,
+                                                                        void* block, void* bot,
+                                                                        void* archive);
+// 009B3040: __thiscall(ECX = task+3F8h, [bot+50h], archive), RET 8, EAX = block.
+void* bot_task_land_construct_approach_block_from_stream_009b3040(Cc13Seg67bHost& host,
+                                                                  void* block, void* arg,
+                                                                  void* archive);
+// 009A5000: __thiscall(ECX = task+3F8h, bot, archive), RET 8, EAX = block.
+void* bot_task_depth_charge_construct_approach_block_from_stream_009a5000(Cc13Seg67bHost& host,
+                                                                          void* block, void* bot,
+                                                                          void* archive);
+// 009A9670: __thiscall(ECX = task+3F8h, bot, archive), RET 8, EAX = block.
+void* bot_task_dogfight_construct_approach_block_from_stream_009a9670(Cc13Seg67bHost& host,
+                                                                      void* block, void* bot,
+                                                                      void* archive);
+// 009B75E0: __thiscall(ECX = task+3F8h, bot, target), RET 8, EAX = block.
+void* bot_approach_level_bomb_construct_009b75e0(Cc13Seg67bHost& host, void* block, void* bot,
+                                                 void* target);
+// 009A94E0: __thiscall(ECX = task+3F8h, bot, arg), RET 8, EAX = block.
+void* bot_task_dogfight_construct_approach_block_009a94e0(Cc13Seg67bHost& host, void* block,
+                                                          void* bot, void* arg);
+// 009C73A0: __thiscall(ECX = task+3F8h, bot, target), RET 8, EAX = block.
+void* bot_task_dive_bomb_construct_approach_block_009c73a0(Cc13Seg67bHost& host, void* block,
+                                                           void* bot, void* target);
+// 009AD920: __thiscall(ECX = task+3F8h, bot, archive), RET 8, EAX = block.
+void* bot_task_drop_kamikaze_construct_approach_block_from_stream_009ad920(Cc13Seg67bHost& host,
+                                                                           void* block, void* bot,
+                                                                           void* archive);
+// 009AD720: __thiscall(ECX = task+3F8h, bot, target), RET 8, EAX = block.
+void* bot_approach_drop_kamikaze_construct_009ad720(Cc13Seg67bHost& host, void* block, void* bot,
+                                                    void* target);
+// 009BCC60: __thiscall(ECX = task+3F8h, bot), RET 4, EAX = block.
+void* bot_approach_move_on_path_construct_with_states_009bcc60(Cc13Seg67bHost& host, void* block,
+                                                               void* bot);
+// 009A4DC0: __thiscall(ECX = task+3F8h, bot, target), RET 8, EAX = block.
+void* bot_approach_depth_charge_construct_with_states_009a4dc0(Cc13Seg67bHost& host,
+                                                               void* block, void* bot,
+                                                               void* target);
+// 009B2E50: __thiscall(ECX = task+3F8h, arg1, arg2), RET 8, EAX = block.
+void* bot_approach_land_construct_composite_009b2e50(Cc13Seg67bHost& host, void* block,
+                                                     void* arg1, void* arg2);
+// 009CC230 / 009D3050: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
+void* bot_task_strafe_construct_009cc230(Cc13Seg67bHost& host, void* task, void* bot,
+                                         void* target);
+void* bot_task_torpedo_construct_009d3050(Cc13Seg67bHost& host, void* task, void* bot,
+                                          void* target);
+// 009CF8E0: __thiscall(ECX = task, owner, flag byte), RET 8, EAX = task.
+void* bot_task_takeoff_construct_009cf8e0(Cc13Seg67bHost& host, void* task, void* owner,
+                                          std::uint32_t flag);
+// 009CC020 / 009D2DA0: __thiscall(ECX = block, bot, target), RET 8, EAX = block.
+void* strafe_construct_approach_block_009cc020(Cc13Seg67bHost& host, void* block, void* bot,
+                                               void* target);
+void* torpedo_construct_approach_block_009d2da0(Cc13Seg67bHost& host, void* block, void* bot,
+                                                void* target);
+// 009CF710: __thiscall(ECX = block, arg), RET 4, EAX = block.
+void* takeoff_construct_approach_block_009cf710(Cc13Seg67bHost& host, void* block, void* arg);
+// 009CB500 / 009CAC80 / 009D06D0: __thiscall(ECX = state, owner block), RET 4, EAX = state.
+void* bot_state_strafe_go_away_construct_009cb500(Cc13Seg67bHost& host, void* state,
+                                                  void* block);
+void* bot_state_strafe_attack_run_construct_009cac80(Cc13Seg67bHost& host, void* state,
+                                                     void* block);
+void* bot_state_torpedo_attack_run_construct_009d06d0(Cc13Seg67bHost& host, void* state,
+                                                      void* block);
+// 009CD420: __thiscall(ECX = approach, plane), RET 4, EAX = approach.
+void* bot_approach_takeoff_construct_009cd420(Cc13Seg67bHost& host, void* approach,
+                                              void* plane);
+// 009CA4A0: __thiscall(ECX = approach, arg, target), RET 8, EAX = approach.
+void* bot_approach_strafe_construct_009ca4a0(Cc13Seg67bHost& host, void* approach, void* arg,
+                                             void* target);
+// 009D0380: __thiscall(ECX = approach, arg, target), RET 8, EAX = approach.
+void* bot_approach_torpedo_construct_009d0380(Cc13Seg67bHost& host, void* approach, void* arg,
+                                              void* target);
+// 009C3EA0: __thiscall(ECX = approach, plane, target), RET 8, EAX = approach.
+void* bot_approach_dive_bomb_construct_009c3ea0(Cc13Seg67bHost& host, void* approach,
+                                                void* plane, void* target);
+// 009B44F0: __thiscall(ECX = approach, plane, target), RET 8, EAX = approach.
+void* bot_approach_level_bomb_construct_base_009b44f0(Cc13Seg67bHost& host, void* approach,
+                                                      void* plane, void* target);
+// 009A6C10: __thiscall(ECX = approach, bot, arg), RET 8, EAX = approach.
+void* bot_approach_dogfight_construct_009a6c10(Cc13Seg67bHost& host, void* approach, void* bot,
+                                               void* arg);
+// 009ABBE0: __thiscall(ECX = approach, plane, archive), RET 8, EAX = approach.
+void* bot_approach_drop_kamikaze_construct_base_from_bag_009abbe0(Cc13Seg67bHost& host,
+                                                                  void* approach, void* plane,
+                                                                  void* archive);
+// 009AFE70: __thiscall(ECX = approach, plane, air ops), RET 8, EAX = approach.
+void* bot_approach_land_construct_lower_009afe70(Cc13Seg67bHost& host, void* approach,
+                                                 void* plane, void* air_ops);
+// 009AFFF0: __thiscall(ECX = approach, plane, archive), RET 8, EAX = approach.
+void* bot_approach_land_construct_from_stream_009afff0(Cc13Seg67bHost& host, void* approach,
+                                                       void* plane, void* archive);
 
 }  // namespace bsp

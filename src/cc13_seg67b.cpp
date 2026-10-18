@@ -3,6 +3,8 @@
 // Hypothesis names, build-tested only, nothing wired.
 
 #include "bsp/cc13_seg67b.hpp"
+#include "bsp/ship_ai_path_follower.hpp"
+#include "bsp/geometry_helpers.hpp"
 
 #include <cmath>
 #include <cstring>
@@ -1043,7 +1045,7 @@ constexpr std::uint32_t kDogfightTask4FCVtable = 0x00D1F9A8u;
 void* bot_task_dogfight_construct_009a9810(Cc13Seg67bHost& host, void* task, void* bot,
                                            void* arg) {
     bot_task_construct_base_0099c6f0(host, task, bot, 2);
-    host.dogfight_construct_approach_block_009a94e0(ptr(task, 0x3F8), bot, arg);
+    bot_task_dogfight_construct_approach_block_009a94e0(host, ptr(task, 0x3F8), bot, arg);
     at<std::uint32_t>(task, 0x000) = kDogfightTaskVtable;
     at<std::uint32_t>(task, 0x3F8) = kDogfightApproachVtable;
     at<std::uint32_t>(task, 0x4FC) = kDogfightTask4FCVtable;
@@ -1430,17 +1432,27 @@ namespace {
 constexpr float kMinusOne_00d7a260_f = -1.0f;
 }  // namespace
 
-// 00999AE0 (00999AE0-00999B2B). Walks the bot's task vector (begin +58h, count
-// +5Ch, both reloaded per step, 00999B07-00999B15); null entries are skipped. The
-// first task whose vtable[34h]() is false (00999B01) answers by a tail JMP to its
-// vtable[4Ch]() (00999B2B). With none: [00D7A260] (-1.0) (00999B17).
+// 00999AE0 (00999AE0-00999B2B). Walks the bot's task vector with a cursor taken
+// once from begin +58h (00999AE7); after each entry the end = [+58h] + 4 x [+5Ch]
+// is re-read and the loop continues while cursor != end (JNZ, 00999B07-00999B15).
+// Null entries are skipped. The first task whose vtable[34h]() is false (00999B01)
+// answers by a tail JMP to its vtable[4Ch]() (00999B2B). With none: [00D7A260]
+// (-1.0) (00999B17).
+// UNCERTAINTY: if a vtable[34h] call moved or shrank the vector, the stale cursor
+// is followed exactly as the image does (it may step past the end).
 float pilot_bot_first_task_wait_value_00999ae0(Cc13Seg67bHost& host, void* bot) {
-    for (std::uint32_t i = 0; i < at<std::uint32_t>(bot, 0x5C); ++i) {
-        void* const task = reinterpret_cast<void*>(
-            at<std::uintptr_t>(ptr_at(bot, 0x58), i * 4u));
-        if (task == nullptr) continue;
-        if (!host.object_vcall_34(task)) return host.object_vcall_4c_float(task);
-    }
+    auto end_of = [bot] {
+        return at<std::uintptr_t>(bot, 0x58) + 4u * at<std::uint32_t>(bot, 0x5C);
+    };
+    std::uintptr_t cursor = at<std::uintptr_t>(bot, 0x58);
+    if (cursor == end_of()) return kMinusOne_00d7a260_f;
+    do {
+        void* const task = *reinterpret_cast<void**>(cursor);
+        if (task != nullptr && !host.object_vcall_34(task)) {
+            return host.object_vcall_4c_float(task);
+        }
+        cursor += 4u;
+    } while (cursor != end_of());
     return kMinusOne_00d7a260_f;
 }
 
@@ -1691,8 +1703,8 @@ void bot_task_depth_charge_destruct_body_009a67c0(Cc13Seg67bHost& host, void* ta
 void* bot_task_depth_charge_construct_from_stream_009a6820(Cc13Seg67bHost& host, void* task,
                                                            void* bot, void* archive) {
     bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 1);
-    host.depth_charge_construct_approach_block_from_stream_009a5000(ptr(task, 0x3F8), bot,
-                                                                    archive);
+    bot_task_depth_charge_construct_approach_block_from_stream_009a5000(host, ptr(task, 0x3F8),
+                                                                        bot, archive);
     at<std::uint32_t>(task, 0x000) = kDepthChargeTaskVtable;
     at<std::uint32_t>(task, 0x3F8) = kDepthChargeTaskApproachVtable;
     at<std::uint32_t>(task, 0x4F4) = kDepthChargeTaskRegistryVtable;
@@ -1774,7 +1786,8 @@ void bot_task_kamikaze_destruct_body_009af610(Cc13Seg67bHost& host, void* task) 
 void* bot_task_dogfight_construct_from_stream_009ab3d0(Cc13Seg67bHost& host, void* task,
                                                        void* bot, void* archive) {
     bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 2);
-    host.dogfight_construct_approach_block_from_stream_009a9670(ptr(task, 0x3F8), bot, archive);
+    bot_task_dogfight_construct_approach_block_from_stream_009a9670(host, ptr(task, 0x3F8), bot,
+                                                                    archive);
     at<std::uint32_t>(task, 0x000) = kDogfightTaskVtable;
     at<std::uint32_t>(task, 0x3F8) = kDogfightApproachVtable;
     at<std::uint32_t>(task, 0x4FC) = kDogfightTask4FCVtable;
@@ -1790,7 +1803,8 @@ void* bot_task_dogfight_construct_from_stream_009ab3d0(Cc13Seg67bHost& host, voi
 void* bot_task_drop_kamikaze_construct_from_bag_009aeae0(Cc13Seg67bHost& host, void* task,
                                                          void* bot, void* archive) {
     bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 5);
-    host.drop_kamikaze_approach_construct_from_bag_009ad920(ptr(task, 0x3F8), bot, archive);
+    bot_task_drop_kamikaze_construct_approach_block_from_stream_009ad920(host, ptr(task, 0x3F8),
+                                                                         bot, archive);
     at<std::uint32_t>(task, 0x000) = kDropKamikazeTaskVtable;
     at<std::uint32_t>(task, 0x3F8) = kDropKamikazeApproachVtable;
     at<std::uint32_t>(task, 0x4BC) = kDropKamikazeRegistryVtable;
@@ -1894,8 +1908,8 @@ void bot_task_land_destruct_body_009b3f50(Cc13Seg67bHost& host, void* task) {
 void* bot_task_land_construct_from_stream_009b4120(Cc13Seg67bHost& host, void* task, void* bot,
                                                    void* archive) {
     bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 3);
-    host.land_construct_approach_block_from_stream_009b3040(ptr(task, 0x3F8), ptr_at(bot, 0x50),
-                                                            archive);
+    bot_task_land_construct_approach_block_from_stream_009b3040(host, ptr(task, 0x3F8),
+                                                                ptr_at(bot, 0x50), archive);
     at<std::uint32_t>(task, 0x000) = kLandTaskVtable;
     at<std::uint32_t>(task, 0x3F8) = kLandApproachVtable;
     at<std::uint32_t>(task, 0x4B0) = kLandRegistryVtable;
@@ -1927,8 +1941,8 @@ void bot_task_level_bomb_destruct_body_009b8e80(Cc13Seg67bHost& host, void* task
 void* bot_task_level_bomb_construct_from_stream_009b8ee0(Cc13Seg67bHost& host, void* task,
                                                          void* bot, void* archive) {
     bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 4);
-    host.level_bomb_construct_approach_block_from_stream_009b77c0(ptr(task, 0x3F8), bot,
-                                                                  archive);
+    bot_task_level_bomb_construct_approach_block_from_stream_009b77c0(host, ptr(task, 0x3F8),
+                                                                      bot, archive);
     at<std::uint32_t>(task, 0x000) = kLevelBombTaskVtable;
     at<std::uint32_t>(task, 0x3F8) = kLevelBombApproachVtable;
     at<std::uint32_t>(task, 0x4D4) = kLevelBombRegistryVtable;
@@ -1951,7 +1965,7 @@ void* bot_task_level_bomb_factory_create_009b90a0(Cc13Seg67bHost& host, void* bo
 void* bot_task_make_level_bomb_009b9030(Cc13Seg67bHost& host, void* bot, void* target) {
     void* const t = host.operator_new_00bf681b(0x6F8);
     if (t == nullptr) return nullptr;
-    return host.level_bomb_task_construct_009b7990(t, bot, target);
+    return bot_task_level_bomb_construct_009b7990(host, t, bot, target);
 }
 
 // 009BD9D0 (009BD9D0-009BDA20). 009BCB70(task ? task+3F8h : 0) (009BD9FD);
@@ -1971,8 +1985,8 @@ void bot_task_move_on_path_destroy_009bd9d0(Cc13Seg67bHost& host, void* task) {
 void* bot_task_move_on_path_construct_from_stream_009bda30(Cc13Seg67bHost& host, void* task,
                                                            void* bot, void* archive) {
     bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 6);
-    host.move_on_path_construct_with_states_from_stream_009bcd50(ptr(task, 0x3F8), bot,
-                                                                 archive);
+    bot_task_move_on_path_construct_approach_block_from_stream_009bcd50(host, ptr(task, 0x3F8), bot,
+                                                                        archive);
     at<std::uint32_t>(task, 0x000) = kMoveOnPathTaskVtable;
     at<std::uint32_t>(task, 0x3F8) = kMoveOnPathApproachVtable;
     at<std::uint32_t>(task, 0x438) = kMoveOnPathRegistryVtable;
@@ -2117,15 +2131,15 @@ void level_bomb_move_to_tail(Cc13Seg67bHost& host, void* s) {
 }  // namespace
 
 // 009B6C10 (009B6C10-009B6CBF). EH frame. 009C2AC0(ECX = s, approach, target,
-// near, far, mode) (009B6C53; the three trailing arguments are re-pushed through
+// near, far, third) (009B6C53; the three trailing arguments are re-pushed through
 // FLD/FSTP); [s] = 00D201E0, [s+18h] = 00D201C8, +44h = 1.0, 009B6C8D 00BD2F10(1, 0,
 // 1), +48h = -r, +3Ch = 0, +40h = 1.0. Returns s.
 // UNCERTAINTY: the FLD/FSTP re-push quiets a signalling-NaN bit pattern; the
 // C++ passes the bits unchanged.
 void* bot_state_level_bomb_move_to_construct_009b6c10(Cc13Seg67bHost& host, void* s,
                                                       void* approach, void* target, float near_,
-                                                      float far_, std::uint32_t mode) {
-    host.bot_state_move_to_construct_009c2ac0(s, approach, target, near_, far_, mode);
+                                                      float far_, float third_) {
+    host.bot_state_move_to_construct_009c2ac0(s, approach, target, near_, far_, third_);
     level_bomb_move_to_tail(host, s);
     return s;
 }
@@ -2173,16 +2187,16 @@ void bot_task_dive_bomb_destruct_body_009c8b60(Cc13Seg67bHost& host, void* task)
 void* bot_task_make_dive_bomb_009c8c70(Cc13Seg67bHost& host, void* bot, void* target) {
     void* const t = host.operator_new_00bf681b(0x7E0);
     if (t == nullptr) return nullptr;
-    return host.dive_bomb_task_construct_009c7710(t, bot, target);
+    return bot_task_dive_bomb_construct_009c7710(host, t, bot, target);
 }
 
 // 009C2CA0 (009C2CA0-009C2CE0). 009C2AC0(ECX = s, approach, target, near, far,
-// mode) (009C2CC9; FLD/FSTP re-push); [s] = 00D20B24, [s+18h] = 00D20B0C. Returns s.
+// third) (009C2CC9; FLD/FSTP re-push); [s] = 00D20B24, [s+18h] = 00D20B0C. Returns s.
 // UNCERTAINTY: the re-push quiets a signalling-NaN bit pattern.
 void* bot_state_dogfight_move_to_construct_009c2ca0(Cc13Seg67bHost& host, void* s,
                                                     void* approach, void* target, float near_,
-                                                    float far_, std::uint32_t mode) {
-    host.bot_state_move_to_construct_009c2ac0(s, approach, target, near_, far_, mode);
+                                                    float far_, float third_) {
+    host.bot_state_move_to_construct_009c2ac0(s, approach, target, near_, far_, third_);
     at<std::uint32_t>(s, 0x00) = kDogfightMoveToVtable;
     at<std::uint32_t>(s, 0x18) = kDogfightMoveTo18Vtable;
     return s;
@@ -2310,7 +2324,7 @@ void construct_task_tail(Cc13Seg67bHost& host, void* task, std::uint32_t vt, std
 void* bot_task_level_bomb_construct_009b7990(Cc13Seg67bHost& host, void* task, void* bot,
                                              void* target) {
     bot_task_construct_base_0099c6f0(host, task, bot, 4);
-    host.level_bomb_approach_construct_009b75e0(ptr(task, 0x3F8), bot, target);
+    bot_approach_level_bomb_construct_009b75e0(host, ptr(task, 0x3F8), bot, target);
     construct_task_tail(host, task, kLevelBombTaskVtable, kLevelBombApproachVtable, 0x4D4,
                         kLevelBombRegistryVtable, 0x4E8, 0x534);
     return task;
@@ -2323,10 +2337,1785 @@ void* bot_task_level_bomb_construct_009b7990(Cc13Seg67bHost& host, void* task, v
 void* bot_task_dive_bomb_construct_009c7710(Cc13Seg67bHost& host, void* task, void* bot,
                                             void* target) {
     bot_task_construct_base_0099c6f0(host, task, bot, 8);
-    host.dive_bomb_approach_construct_009c73a0(ptr(task, 0x3F8), bot, target);
+    bot_task_dive_bomb_construct_approach_block_009c73a0(host, ptr(task, 0x3F8), bot, target);
     construct_task_tail(host, task, kDiveBombTaskVtable, kDiveBombApproachVtable, 0x4DC,
                         kDiveBombRegistryVtable, 0x4F0, 0x52C);
     return task;
+}
+
+// ---------------------------------------------------------------------------
+// Land minimum speed and park-edge rule, the takeoff factory, and the ship-AI
+// plan's signed-node walks.
+
+namespace {
+constexpr float kZero_s15 = 0.0f;
+}  // namespace
+
+// 009CFF40 (009CFF40-009CFFA6). EH frame 00CB01BB. t = operator new(4D4h)
+// (009CFF61); null -> 0 (009CFF93); else 009CF8E0(ECX = t, owner, flag)
+// (009CFF7D), whose EAX is returned.
+void* pilot_bot_create_takeoff_task_009cff40(Cc13Seg67bHost& host, void* owner,
+                                             std::uint32_t flag) {
+    void* const t = host.operator_new_00bf681b(0x4D4);
+    if (t == nullptr) return nullptr;
+    return bot_task_takeoff_construct_009cf8e0(host, t, owner, flag);
+}
+
+namespace {
+// The shared walk of 009D5AE0 and 009D5B90: from plan+20h, a leaf (both links
+// null) ends it with 0; a node whose signed byte +14h passes `hit` ends it with
+// 1; an undecided node gets the 009D5930 direction rule, stored into +4h; then
+// the walk follows +24h on +1, +20h on -1, else ends with 0.
+template <typename Hit>
+bool ship_ai_path_walk_for_signed_node(ShipAiPathPlanBlock& plan, Hit hit) {
+    ShipAiPathNode* n = plan.head;
+    while (n != nullptr) {
+        if (n->link_minus == nullptr && n->link_plus == nullptr) return false;
+        if (hit(static_cast<std::int8_t>(n->field_14))) return true;
+        ship_ai_path_node_decide_direction_009d5930(*n);
+        n = ship_ai_path_node_next_009d9ee6(*n);
+    }
+    return false;
+}
+}  // namespace
+
+// 009D5AE0 (009D5AE0-009D5B87). The walk above with `hit` = signed byte +14h > 0
+// (009D5B00 CMP / JG). The direction rule is inline at 009D5B06-009D5B56.
+// UNCERTAINTY: 009D5B4F JC takes the +1 arm when the costs are unordered (NaN);
+// the shared rule ship_ai_path_node_direction_009d9e6c returns -1 there.
+bool ship_ai_path_any_positive_side_ahead_009d5ae0(ShipAiPathPlanBlock& plan) {
+    return ship_ai_path_walk_for_signed_node(plan, [](std::int8_t b) { return b > 0; });
+}
+
+// 009D5B90 (009D5B90-009D5C37). The same walk with `hit` = signed byte +14h < 0
+// (009D5BB0 CMP / JL). Inline rule 009D5BB6-009D5C06.
+// UNCERTAINTY: as 009D5AE0, the JC at 009D5BFF takes +1 on NaN costs.
+bool ship_ai_path_any_negative_side_ahead_009d5b90(ShipAiPathPlanBlock& plan) {
+    return ship_ai_path_walk_for_signed_node(plan, [](std::int8_t b) { return b < 0; });
+}
+
+// ---------------------------------------------------------------------------
+// Task destructor bodies, the gun-bot destructor body and the move-to approach
+// block from a stream.
+
+// 009CA1A0 (009CA1A0-009CA1F0), 009CD1F0 (009CD1F0-009CD240), 009CFEE0
+// (009CFEE0-009CFF30) and 009D4DB0 (009D4DB0-009D4E00): EH frame; the approach
+// block's destructor on (task ? task+3F8h : 0) (009CA1CD 009C9A80, 009CD21D
+// 009CBE90, 009CFF0D 009CF850, 009D4DDD 009D2390), then 007B4030(task)
+// (009CA1DC, 009CD22C, 009CFF1C, 009D4DEC).
+void bot_task_retreat_destruct_body_009ca1a0(Cc13Seg67bHost& host, void* task) {
+    bot_task_retreat_destruct_approach_block_009c9a80(
+        host, task != nullptr ? ptr(task, 0x3F8) : nullptr);
+    host.bot_task_destruct_base_007b4030(task);
+}
+
+void bot_task_strafe_destruct_body_009cd1f0(Cc13Seg67bHost& host, void* task) {
+    bot_task_strafe_destruct_approach_block_009cbe90(
+        host, task != nullptr ? ptr(task, 0x3F8) : nullptr);
+    host.bot_task_destruct_base_007b4030(task);
+}
+
+void bot_task_takeoff_destruct_body_009cfee0(Cc13Seg67bHost& host, void* task) {
+    bot_task_takeoff_destruct_approach_block_009cf850(
+        host, task != nullptr ? ptr(task, 0x3F8) : nullptr);
+    host.bot_task_destruct_base_007b4030(task);
+}
+
+void bot_task_torpedo_destruct_body_009d4db0(Cc13Seg67bHost& host, void* task) {
+    bot_task_torpedo_destruct_approach_block_009d2390(
+        host, task != nullptr ? ptr(task, 0x3F8) : nullptr);
+    host.bot_task_destruct_base_007b4030(task);
+}
+
+// 009F3E80 (009F3E80-009F3EF5). EH frame 00CB0CCF. [b+2260h] = 00D05704
+// (009F3EAF); [b+2264h]->vtable[8]() when set (009F3EC0); 009E8C10(b ? b+58h : 0)
+// (009F3ED2); 007293D0(b) (009F3EE1).
+void ship_ai_gun_bot_destruct_body_009f3e80(Cc13Seg67bHost& host, void* bot) {
+    void* const owned = ptr_at(bot, 0x2264);
+    at<std::uint32_t>(bot, 0x2260) = kBotTaskSubVtable30C;
+    if (owned != nullptr) host.object_vcall_08_noargs(owned);
+    ship_ai_brain_destruct_009e8c10(host, bot != nullptr ? ptr(bot, 0x58) : nullptr);
+    host.tick_subnode_owner_destruct_base_007293d0(bot);
+}
+
+namespace {
+constexpr std::uint32_t kMoveToBlockVtable_00d20b48 = 0x00D20B48u;
+constexpr std::uint32_t kMoveToRegistryVtable_00d20b44 = 0x00D20B44u;
+constexpr std::uint32_t kMoveToStateVtable_00d20a80 = 0x00D20A80u;
+constexpr std::uint32_t kStrMoveToMoveTo_00d20998 = 0x00D20998u;  // "moveto (moveto)"
+constexpr std::uint32_t kStrMoveToFollow_00d20988 = 0x00D20988u;  // "follow (moveto)"
+constexpr std::uint32_t kStrMoveToCircle_00d20978 = 0x00D20978u;  // "circle (moveto)"
+}  // namespace
+
+// 009C2EF0 (009C2EF0-009C2FD2). EH frame 00CAF93D. 009C1DC0(ECX = block,
+// [bot+50h], archive) (009C2F1F); 00411E20(block+70h) (009C2F2F); [block] =
+// 00D20B48, [block+70h] = 00D20B44 (009C2F3A, 009C2F40); the inline state at
+// +84h: +88h = block, +90h/+94h/+98h/+8Ch = 0, [+84h] = 00D20A80 (009C2F46-
+// 009C2F55); 009C2980(ECX = block+9Ch, block, [00CE3D08] 100.0) (009C2F73);
+// 009C25D0(ECX = block+134h, block) (009C2F84); 00411E70(block+70h, name, state)
+// for "moveto (moveto)" +84h, "follow (moveto)" +9Ch and "circle (moveto)" +134h
+// (009C2F96, 009C2FA3, 009C2FB6). Returns block.
+void* bot_task_move_to_construct_approach_block_from_stream_009c2ef0(Cc13Seg67bHost& host,
+                                                                     void* block, void* bot,
+                                                                     void* archive) {
+    bot_approach_move_to_construct_from_stream_009c1dc0(host, block, ptr_at(bot, 0x50), archive);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0x70));
+    at<std::uint32_t>(block, 0x00) = kMoveToBlockVtable_00d20b48;
+    at<std::uint32_t>(block, 0x70) = kMoveToRegistryVtable_00d20b44;
+    at<std::uintptr_t>(block, 0x88) = reinterpret_cast<std::uintptr_t>(block);
+    at<std::uint32_t>(block, 0x90) = 0;
+    at<std::uint32_t>(block, 0x94) = 0;
+    at<std::uint32_t>(block, 0x98) = 0;
+    at<std::uint32_t>(block, 0x8C) = 0;
+    at<std::uint32_t>(block, 0x84) = kMoveToStateVtable_00d20a80;
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x9C), block, kHundred_00ce3d08);
+    bot_state_move_to_circle_construct_009c25d0(host, ptr(block, 0x134), block);
+    host.state_registry_add_00411e70(ptr(block, 0x70), kStrMoveToMoveTo_00d20998, ptr(block, 0x84));
+    host.state_registry_add_00411e70(ptr(block, 0x70), kStrMoveToFollow_00d20988, ptr(block, 0x9C));
+    host.state_registry_add_00411e70(ptr(block, 0x70), kStrMoveToCircle_00d20978,
+                                     ptr(block, 0x134));
+    return block;
+}
+
+// ---------------------------------------------------------------------------
+// Ship-AI path node walks, the navigation goal with a penalty, and two debug
+// colour records.
+
+// 009D5A80 (009D5A80-009D5ADB). Recursive. With both +28h and +2Ch null: true
+// (009D5A8A-009D5A8F). Else for c = +28h (009D5A83): when c is set and byte
+// c+31h is set (009D5A97), true when float c+34h > [00D7A24C] 1.0 (009D5AA2
+// COMISS JA; NaN falls through) or when 009D5A80(c) is true (009D5AAB). Then
+// the same for c = +2Ch with byte c+32h and float c+38h (009D5AB4-009D5AD6).
+// Else false (009D5AD8).
+bool ship_ai_path_node_subtree_complete_009d5a80(void* node) {
+    void* const a = ptr_at(node, 0x28);
+    if (a == nullptr && ptr_at(node, 0x2C) == nullptr) return true;
+    if (a != nullptr && at<std::uint8_t>(a, 0x31) != 0) {
+        if (at<float>(a, 0x34) > kOne_00d7a24c) return true;
+        if (ship_ai_path_node_subtree_complete_009d5a80(a)) return true;
+    }
+    void* const b = ptr_at(node, 0x2C);
+    if (b != nullptr && at<std::uint8_t>(b, 0x32) != 0) {
+        if (at<float>(b, 0x38) > kOne_00d7a24c) return true;
+        if (ship_ai_path_node_subtree_complete_009d5a80(b)) return true;
+    }
+    return false;
+}
+
+// 009D9440 (009D9440-009D954B). Recursive. 009D5930(node) (009D9446), then on
+// +4h: +1 (009D944E): when +38h > 1.0 (009D945C COMISS JBE; NaN recurses), the
+// heading of (plus - node) in XZ, inlined as 00414EB0's formula (009D9465-
+// 009D94C1); else 009D9440(plus) (009D94DC). -1 (009D94EE): when +34h > 1.0
+// (009D94F8), 00414EB0 on (minus - node) (009D951F); else 009D9440(minus)
+// (009D9533). Any other direction: 0.0 (009D9545 FLDZ).
+// UNCERTAINTY: inherited from 009D5930 through ship_ai_path_node_direction_009d9e6c:
+// the image's JC takes the +1 arm on unordered (NaN) costs (009D5974, 009D5B4F,
+// 009D5BFF); the shared rule returns -1 there.
+float ship_ai_path_node_run_heading_009d9440(ShipAiPathNode& node) {
+    ship_ai_path_node_decide_direction_009d5930(node);
+    if (node.direction == 1) {
+        if (node.link_plus_length > kOne_00d7a24c) {
+            const std::array<float, 2> d{{node.link_plus->x - node.x,
+                                          node.link_plus->z - node.z}};
+            return heading_angle_00414eb0(d);
+        }
+        return ship_ai_path_node_run_heading_009d9440(*node.link_plus);
+    }
+    if (node.direction == -1) {
+        if (node.link_minus_length > kOne_00d7a24c) {
+            const std::array<float, 2> d{{node.link_minus->x - node.x,
+                                          node.link_minus->z - node.z}};
+            return heading_angle_00414eb0(d);
+        }
+        return ship_ai_path_node_run_heading_009d9440(*node.link_minus);
+    }
+    return kZero_s15;
+}
+
+// 009DE280 (009DE280-009DE2EF). 009DE050(ECX = nav, goal, 1, 0) (009DE28C); when
+// +1C4h != 3 (009DE291): +368h = +360h = 0.0 (009DE29D, 009DE2A5); +1D8h =
+// heading (009DE2B9) and 00605070(&+1D8h) wraps it (009DE2BD); +1CCh = 0
+// (009DE2C8), +1C4h = 3 (009DE2D2), +250h = +2B8h = penalty (009DE2DC, 009DE2E4).
+void ship_ai_set_navigation_goal_with_penalty_009de280(Cc13Seg67bHost& host, void* nav,
+                                                       float heading, const float* goal,
+                                                       float penalty) {
+    host.ship_ai_set_navigation_goal_009de050(nav, goal, 1, 0);
+    if (at<std::int32_t>(nav, 0x1C4) != 3) {
+        at<float>(nav, 0x368) = kZero_s15;
+        at<float>(nav, 0x360) = kZero_s15;
+    }
+    at<float>(nav, 0x1D8) = heading;
+    host.math_wrap_angle_in_place_00605070(&at<float>(nav, 0x1D8));
+    at<std::uint32_t>(nav, 0x1CC) = 0;
+    at<std::int32_t>(nav, 0x1C4) = 3;
+    at<float>(nav, 0x250) = penalty;
+    at<float>(nav, 0x2B8) = penalty;
+}
+
+// 009D5E10 (009D5E10-009D5E58) and 009D5FD0 (009D5FD0-009D6013): function-local
+// static colours. When bit 0 of the guard dword is clear (009D5E15 / 009D5FD5),
+// it is set (OR) and the record filled: A at 00F8A68C = {0.5, 0.5, 0.5, 1.0}
+// (00CE3800, 00D7A24C), guard 00F8A69C; B at 00F8A6DC = {0.0, 1.0, 1.0, 1.0},
+// guard 00F8A6EC. Returns the record's address.
+float* ship_ai_debug_colour_record_a_009d5e10(Cc13Seg67bHost& host) {
+    std::uint8_t* const block = host.ship_ai_debug_static_block_00f8a68c();
+    if ((at<std::uint8_t>(block, 0x10) & 1u) == 0) {
+        at<std::uint32_t>(block, 0x10) |= 1u;
+        at<float>(block, 0x00) = kHalf_00ce3800;
+        at<float>(block, 0x04) = kHalf_00ce3800;
+        at<float>(block, 0x08) = kHalf_00ce3800;
+        at<float>(block, 0x0C) = kOne_00d7a24c;
+    }
+    return &at<float>(block, 0x00);
+}
+
+float* ship_ai_debug_colour_record_b_009d5fd0(Cc13Seg67bHost& host) {
+    std::uint8_t* const block = host.ship_ai_debug_static_block_00f8a68c();
+    if ((at<std::uint8_t>(block, 0x60) & 1u) == 0) {
+        at<std::uint32_t>(block, 0x60) |= 1u;
+        at<float>(block, 0x50) = kZero_s15;
+        at<float>(block, 0x54) = kOne_00d7a24c;
+        at<float>(block, 0x58) = kOne_00d7a24c;
+        at<float>(block, 0x5C) = kOne_00d7a24c;
+    }
+    return &at<float>(block, 0x50);
+}
+
+// ---------------------------------------------------------------------------
+// Ship-AI approach accessors on [nested] = brain.
+
+// 009E5E30 (009E5E30-009E5E4E). t = [[nested]+B20h] (009E5E32); true when t is
+// set and t->vtable[5Ch](6) is true (009E5E43); else false.
+bool ship_ai_approach_target_is_kind_6_009e5e30(Cc13Seg67bHost& host, void* nested) {
+    void* const t = ptr_at(ptr_at(nested, 0), 0xB20);
+    return t != nullptr && host.object_vcall_5c(t, 6);
+}
+
+namespace {
+constexpr std::uint32_t kMoveToApproachVtable_00d209cc = 0x00D209CCu;
+constexpr std::uint32_t kObservedEndpointVtable_00ce3cf0 = 0x00CE3CF0u;
+constexpr float kFifty_00ceb4d4 = 50.0f;                      // 42480000
+constexpr std::uint32_t kStrClosingComplete_00d20a54 = 0x00D20A54u;  // "closingComplete"
+constexpr std::uint32_t kStrUpdateTrgPosTimer_00d20a40 = 0x00D20A40u;  // "_updateTrgPosTimer"
+constexpr std::uint32_t kStrClosingTime_00d20a34 = 0x00D20A34u;  // "closingTime"
+constexpr std::uint32_t kStrTargetPos_00d20a28 = 0x00D20A28u;    // "targetpos"
+constexpr std::uint32_t kStrTargetEntity_00d04f30 = 0x00D04F30u;  // "targetentity"
+}  // namespace
+
+// 009C1DC0 (009C1DC0-009C1FC2). EH frame 00CAF73B. 009F9CE0(ECX = a, arg,
+// tuning+37Ch) (009C1DF6, tuning = 0042E740()); [a] = 00D209CC (009C1DFE). The
+// observed endpoint at +30h: +34h/+38h/+3Ch/+44h = 0, byte +40h = 1, [+30h] =
+// 00CE3CF0 (009C1E06-009C1E1A). The timer pair: +54h = 1.0 (009C1E3D), +58h =
+// -00BD2F10(1, 0, 1) (009C1E42-009C1E51); +68h = [00CEB4D4] 50.0 (009C1E57).
+// Reads (archive->vtable[10h]): "altOffset" {2, &+2Ch} (009C1E8B),
+// "closingComplete" {3, &+5Ch} (009C1EBF); 00BD4FE0(archive, block,
+// "_updateTrgPosTimer") (009C1EE3) and 00410D80(ECX = +54h, block by value)
+// (009C1EEA); "closingTime" {2, &+60h} (009C1F21), "targetpos" {5, &+48h}
+// (009C1F55), "targetentity" {4, &e} (009C1F7D) where e is the stack slot of
+// `arg`. Then the 0099A9B0 swap of +44h to e with +30h as the observer
+// (009C1F7F-009C1FA0) and 009BEBA0(a) (009C1FA7). Returns a.
+// UNCERTAINTY: 009C1E64 and 009C1F5C (`MOV [ESP+2Ch],ESP`) overwrite the arg slot
+// with a stack address before the targetentity read, so in the image a missing key
+// leaves e = that stack address; here e starts as arg (as 009C2B80's slot). Shared
+// RNG stream 1. EH unwinding not modelled.
+void* bot_approach_move_to_construct_from_stream_009c1dc0(Cc13Seg67bHost& host, void* a,
+                                                          void* arg, void* archive) {
+    const float f = at<float>(host.game_tuning_singleton_0042e740(), 0x37C);
+    host.bot_approach_construct_speed_reference_009f9ce0(a, arg, f);
+    at<std::uint32_t>(a, 0x00) = kMoveToApproachVtable_00d209cc;
+    at<std::uint32_t>(a, 0x34) = 0;
+    at<std::uint32_t>(a, 0x38) = 0;
+    at<std::uint32_t>(a, 0x3C) = 0;
+    at<std::uint32_t>(a, 0x44) = 0;
+    at<std::uint8_t>(a, 0x40) = 1;
+    at<std::uint32_t>(a, 0x30) = kObservedEndpointVtable_00ce3cf0;
+    at<float>(a, 0x54) = kOne_00d7a24c;
+    at<float>(a, 0x58) = -host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    at<float>(a, 0x68) = kFifty_00ceb4d4;
+    read_field(host, archive, kStrAltOffset, 2, ptr(a, 0x2C));
+    read_field(host, archive, kStrClosingComplete_00d20a54, 3, ptr(a, 0x5C));
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrUpdateTrgPosTimer_00d20a40));
+    host.time_freq_pair_read_00410d80(ptr(a, 0x54), ref);
+    read_field(host, archive, kStrClosingTime_00d20a34, 2, ptr(a, 0x60));
+    read_field(host, archive, kStrTargetPos_00d20a28, 5, ptr(a, 0x48));
+    void* e = arg;
+    read_field(host, archive, kStrTargetEntity_00d04f30, 4, &e);
+    pilot_plan_set_observed_endpoint_0099a9b0(host, ptr(a, 0x30), e);
+    bot_approach_refresh_target_009beba0(host, a);
+    return a;
+}
+
+// 009C33D0 (009C33D0-009C350C). Writes (archive->vtable[0Ch]): "altOffset" {2,
+// +2Ch} (009C340F), "closingComplete" {3, byte +5Ch} (009C3443); 00BD5010(archive,
+// block, "_updateTrgPosTimer") (009C3467) and 00410E00(ECX = +54h, block by value)
+// (009C346F); "closingTime" {2, +60h} (009C34AA), "targetpos" {5, &+48h}
+// (009C34DE), "targetentity" {4, [+44h]} (009C3505). RET 4.
+// UNCERTAINTY: the byte record leaves the payload's upper three bytes as stack
+// garbage (009C3419 MOV byte); here they are zero.
+void bot_approach_move_to_save_009c33d0(Cc13Seg67bHost& host, void* a, void* archive) {
+    host.archive_vcall_0c_write(archive, name_record(kStrAltOffset),
+                                record(2, float_bits(at<float>(a, 0x2C))));
+    host.archive_vcall_0c_write(archive, name_record(kStrClosingComplete_00d20a54),
+                                record(3, at<std::uint8_t>(a, 0x5C)));
+    std::uint32_t ref[3] = {};
+    host.archive_writer_ref_open_00bd5010(archive, ref, name_record(kStrUpdateTrgPosTimer_00d20a40));
+    host.time_freq_pair_write_00410e00(ptr(a, 0x54), ref);
+    host.archive_vcall_0c_write(archive, name_record(kStrClosingTime_00d20a34),
+                                record(2, float_bits(at<float>(a, 0x60))));
+    host.archive_vcall_0c_write(archive, name_record(kStrTargetPos_00d20a28),
+                                record(5, reinterpret_cast<std::uintptr_t>(ptr(a, 0x48))));
+    host.archive_vcall_0c_write(archive, name_record(kStrTargetEntity_00d04f30),
+                                record(4, at<std::uint32_t>(a, 0x44)));
+}
+
+// ---------------------------------------------------------------------------
+// The move-on-path approach block from a stream.
+
+namespace {
+constexpr std::uint32_t kMoveOnPathBlockVtable_00d208f8 = 0x00D208F8u;
+constexpr std::uint32_t kMoveOnPathRegistryVtable_00d208f4 = 0x00D208F4u;
+constexpr std::uint32_t kMoveOnPathStateVtable_00d208bc = 0x00D208BCu;
+constexpr std::uint32_t kStrPathPath_00d20860 = 0x00D20860u;    // "path (path)"
+constexpr std::uint32_t kStrPathFollow_00d20850 = 0x00D20850u;  // "follow (path)"
+constexpr std::uint32_t kStrPathCircle_00d20840 = 0x00D20840u;  // "circle (path)"
+
+// The tail 009BCC60 and 009BCD50 share (009BCC8D-009BCD1E and 009BCD84-009BCE10):
+// the registry at +40h, the vtables, the path state +54h, follow +6Ch, circle
+// +104h and the three registrations.
+void move_on_path_block_tail(Cc13Seg67bHost& host, void* block) {
+    host.bot_state_registry_construct_00411e20(ptr(block, 0x40));
+    at<std::uint32_t>(block, 0x00) = kMoveOnPathBlockVtable_00d208f8;
+    at<std::uint32_t>(block, 0x40) = kMoveOnPathRegistryVtable_00d208f4;
+    at<std::uintptr_t>(block, 0x58) = reinterpret_cast<std::uintptr_t>(block);
+    at<std::uint32_t>(block, 0x60) = 0;
+    at<std::uint32_t>(block, 0x64) = 0;
+    at<std::uint32_t>(block, 0x68) = 0;
+    at<std::uint32_t>(block, 0x5C) = 0;
+    at<std::uint32_t>(block, 0x54) = kMoveOnPathStateVtable_00d208bc;
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x6C), block, kHundred_00ce3d08);
+    bot_state_move_on_path_circle_construct_009bc960(host, ptr(block, 0x104), block);
+    host.state_registry_add_00411e70(ptr(block, 0x40), kStrPathPath_00d20860, ptr(block, 0x54));
+    host.state_registry_add_00411e70(ptr(block, 0x40), kStrPathFollow_00d20850, ptr(block, 0x6C));
+    host.state_registry_add_00411e70(ptr(block, 0x40), kStrPathCircle_00d20840, ptr(block, 0x104));
+}
+}  // namespace
+
+// 009BCD50 (009BCD50-009BCE2B). EH frame 00CAF5D7. 009BC7E0(ECX = block,
+// [bot+50h], archive) (009BCD7F); 00411E20(block+40h) (009BCD8F); [block] =
+// 00D208F8, [block+40h] = 00D208F4 (009BCD97, 009BCD9D); the inline state at
+// +54h: +58h = block, +60h/+64h/+68h/+5Ch = 0, [+54h] = 00D208BC (009BCDA3-
+// 009BCDB2); 009C2980(ECX = block+6Ch, block, [00CE3D08] 100.0) (009BCDCD);
+// 009BC960(ECX = block+104h, block) (009BCDDE); 00411E70(block+40h, name, state)
+// for "path (path)" +54h, "follow (path)" +6Ch and "circle (path)" +104h
+// (009BCDF0, 009BCDFD, 009BCE10). RET 8, EAX = block.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_move_on_path_construct_approach_block_from_stream_009bcd50(Cc13Seg67bHost& host,
+                                                                          void* block, void* bot,
+                                                                          void* archive) {
+    bot_approach_move_on_path_construct_from_stream_009bc7e0(host, block, ptr_at(bot, 0x50),
+                                                             archive);
+    move_on_path_block_tail(host, block);
+    return block;
+}
+
+namespace {
+constexpr std::uint32_t kLevelBombBlockVtable_00d20204 = 0x00D20204u;
+constexpr std::uint32_t kLevelBombRegistryVtable_00d20200 = 0x00D20200u;
+constexpr std::uint32_t kLevelBombAimVtable_00d2015c = 0x00D2015Cu;
+constexpr std::uint32_t kLevelBombPrepareVtable_00d201a0 = 0x00D201A0u;
+constexpr std::uint32_t kLevelBombReleaseVtable_00d20140 = 0x00D20140u;
+constexpr std::uint32_t kLevelBombGoAwayVtable_00d2011c = 0x00D2011Cu;
+
+// The tail 009B75E0 and 009B77C0 share (009B768B-009B7792 and 009B7845-009B794C):
+// follow +13Ch, attackrun +1D4h, aim +1FCh, prepare +218h, release +2BCh, goaway
+// +2E0h, then 009B42D0.
+void level_bomb_block_tail(Cc13Seg67bHost& host, void* block) {
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x13C), block, kHundred_00ce3d08);
+    bot_state_level_bomb_attack_run_construct_009b49b0(host, ptr(block, 0x1D4), block);
+    at<std::uintptr_t>(block, 0x200) = reinterpret_cast<std::uintptr_t>(block);
+    at<std::uint32_t>(block, 0x208) = 0;
+    at<std::uint32_t>(block, 0x20C) = 0;
+    at<std::uint32_t>(block, 0x210) = 0;
+    at<std::uint32_t>(block, 0x204) = 0;
+    at<std::uint32_t>(block, 0x1FC) = kLevelBombAimVtable_00d2015c;
+    at<std::uint8_t>(block, 0x215) = 0;
+    at<std::uint8_t>(block, 0x214) = 0;
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x218), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x218) = kLevelBombPrepareVtable_00d201a0;
+    at<std::uint8_t>(block, 0x2B8) = 0;
+    at<float>(block, 0x2B0) = kMinusOne_00d7a260_f;
+    at<std::uintptr_t>(block, 0x2C0) = reinterpret_cast<std::uintptr_t>(block);
+    at<std::uint32_t>(block, 0x2C8) = 0;
+    at<std::uint32_t>(block, 0x2CC) = 0;
+    at<std::uint32_t>(block, 0x2D0) = 0;
+    at<std::uint32_t>(block, 0x2C4) = 0;
+    at<std::uint32_t>(block, 0x2BC) = kLevelBombReleaseVtable_00d20140;
+    at<std::uintptr_t>(block, 0x2E4) = reinterpret_cast<std::uintptr_t>(block);
+    at<std::uint32_t>(block, 0x2EC) = 0;
+    at<std::uint32_t>(block, 0x2F0) = 0;
+    at<std::uint32_t>(block, 0x2F4) = 0;
+    at<std::uint32_t>(block, 0x2E8) = 0;
+    at<std::uint32_t>(block, 0x2E0) = kLevelBombGoAwayVtable_00d2011c;
+    const float turn = at<float>(ptr_at(ptr_at(block, 0x2E4), 0x08), 0x268);
+    at<float>(block, 0x2F8) = turn + turn;
+    bot_task_level_bomb_register_state_names_009b42d0(host, block);
+}
+}  // namespace
+
+// 009B77C0 (009B77C0-009B7967). EH frame 00CAEFC8. 009B4690(ECX = block, [bot+50h],
+// archive) (009B77ED); 00411E20(block+DCh) (009B7800); [block] = 00D20204,
+// [block+DCh] = 00D20200 (009B7817, 009B781D); 00BD4FE0(archive, outgoing block,
+// "_state_moveTo") (009B7834) and 009B7480(ECX = block+F0h, block, that block by
+// value) (009B7840); 009C2980(ECX = block+13Ch, block, 100.0) (009B785B);
+// 009B49B0(ECX = block+1D4h, block) (009B786C). Inline state +1FCh: +200h =
+// block, +208h/+20Ch/+210h/+204h = 0, vtable 00D2015C, bytes +215h/+214h = 0
+// (009B7871-009B789F). 009C2980(ECX = block+218h, block, 100.0) (009B78BD), then
+// [+218h] = 00D201A0, byte +2B8h = 0, +2B0h = [00D7A260] -1.0 (009B78C2-009B78D6).
+// Inline state +2BCh: +2C0h = block, +2C8h/+2CCh/+2D0h/+2C4h = 0, vtable 00D20140
+// (009B78DE-009B78FC). Inline state +2E0h: +2E4h = block, +2ECh/+2F0h/+2F4h/+2E8h
+// = 0, vtable 00D2011C, +2F8h = float(2 x [[+2E4h]+8]+268h) (009B7906-009B793F,
+// FADD ST0, ST0). 009B42D0(block) (009B794C). RET 8, EAX = block.
+// The state names are the 009B42D0 registrations (LevelBomb/aim, /prepare,
+// /release, /goaway). UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_level_bomb_construct_approach_block_from_stream_009b77c0(Cc13Seg67bHost& host,
+                                                                        void* block, void* bot,
+                                                                        void* archive) {
+    host.bot_approach_level_bomb_construct_from_stream_009b4690(block, ptr_at(bot, 0x50), archive);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xDC));
+    at<std::uint32_t>(block, 0x000) = kLevelBombBlockVtable_00d20204;
+    at<std::uint32_t>(block, 0x0DC) = kLevelBombRegistryVtable_00d20200;
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrStateMoveTo));
+    bot_state_level_bomb_run_construct_from_stream_009b7480(host, ptr(block, 0xF0), block, ref);
+    level_bomb_block_tail(host, block);
+    return block;
+}
+
+// ---------------------------------------------------------------------------
+// The land approach block from a stream.
+
+namespace {
+constexpr std::uint32_t kLandBlockVtable_00d1ff88 = 0x00D1FF88u;
+constexpr std::uint32_t kLandRegistryVtable_00d1ff84 = 0x00D1FF84u;
+
+// An embedded land state as 009B30DD-009B31E7 lays each one out: +4h = owner
+// block, +0Ch/+10h/+14h/+8h = 0, byte +18h = 0, then the vtable.
+void land_inline_state(void* block, std::size_t off, std::uint32_t vtable) {
+    at<std::uintptr_t>(block, off + 0x04) = reinterpret_cast<std::uintptr_t>(block);
+    at<std::uint32_t>(block, off + 0x0C) = 0;
+    at<std::uint32_t>(block, off + 0x10) = 0;
+    at<std::uint32_t>(block, off + 0x14) = 0;
+    at<std::uint32_t>(block, off + 0x08) = 0;
+    at<std::uint8_t>(block, off + 0x18) = 0;
+    at<std::uint32_t>(block, off + 0x00) = vtable;
+}
+
+// The tail 009B2E50 and 009B3040 share (009B2ECE-009B3010 and 009B30C2-009B3204):
+// follow +108h, six embedded states, bytes +274h/+275h, then 009AF9A0.
+void land_block_tail(Cc13Seg67bHost& host, void* block) {
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x108), block, kHundred_00ce3d08);
+    land_inline_state(block, 0x1A0, 0x00D1FEA4u);
+    land_inline_state(block, 0x1C0, 0x00D1FEF4u);
+    land_inline_state(block, 0x1E0, 0x00D1FF14u);
+    land_inline_state(block, 0x200, 0x00D1FF44u);
+    land_inline_state(block, 0x228, 0x00D1FF60u);
+    land_inline_state(block, 0x254, 0x00D1FED4u);
+    at<std::uint8_t>(block, 0x274) = 0;
+    at<std::uint8_t>(block, 0x275) = 0;
+    host.land_approach_register_states_009af9a0(block);
+}
+}  // namespace
+
+// 009B3040 (009B3040-009B321F). EH frame 00CAEBF6. 009AFFF0(ECX = block, arg,
+// archive) (009B306A; the land task passes [bot+50h] as arg); 00411E20(block+B8h)
+// (009B307D); [block] = 00D1FF88, [block+B8h] = 00D1FF84 (009B3094, 009B309A);
+// 00BD4FE0(archive, outgoing block, "_state_moveTo") (009B30B1) and 009C2B80(ECX =
+// block+CCh, block, that block by value) (009B30BD); 009C2980(ECX = block+108h,
+// block, 100.0) (009B30D8). Six embedded states: +1A0h 00D1FEA4, +1C0h 00D1FEF4,
+// +1E0h 00D1FF14, +200h 00D1FF44, +228h 00D1FF60, +254h 00D1FED4 (009B30DD-
+// 009B31E7); bytes +274h/+275h = 0 (009B31F1, 009B31F7); 009AF9A0(block)
+// (009B3204). RET 8, EAX = block.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_land_construct_approach_block_from_stream_009b3040(Cc13Seg67bHost& host,
+                                                                  void* block, void* arg,
+                                                                  void* archive) {
+    bot_approach_land_construct_from_stream_009afff0(host, block, arg, archive);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xB8));
+    at<std::uint32_t>(block, 0x00) = kLandBlockVtable_00d1ff88;
+    at<std::uint32_t>(block, 0xB8) = kLandRegistryVtable_00d1ff84;
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrStateMoveTo));
+    bot_state_construct_base_009c2b80(host, ptr(block, 0xCC), block, ref);
+    land_block_tail(host, block);
+    return block;
+}
+
+namespace {
+// An embedded state without the byte at +18h: +4h = owner block, +0Ch/+10h/+14h/
+// +8h = 0, then the vtable (the order of 009A50EA-009A5108 and its siblings).
+void plain_inline_state(void* block, std::size_t off, std::uint32_t vtable) {
+    at<std::uintptr_t>(block, off + 0x04) = reinterpret_cast<std::uintptr_t>(block);
+    at<std::uint32_t>(block, off + 0x0C) = 0;
+    at<std::uint32_t>(block, off + 0x10) = 0;
+    at<std::uint32_t>(block, off + 0x14) = 0;
+    at<std::uint32_t>(block, off + 0x08) = 0;
+    at<std::uint32_t>(block, off + 0x00) = vtable;
+}
+
+constexpr std::uint32_t kDepthChargeBlockVtable_00d1f71c = 0x00D1F71Cu;
+constexpr std::uint32_t kDepthChargeRegistryVtable_00d1f718 = 0x00D1F718u;
+constexpr std::uint32_t kDepthChargeDonePrepareVtable_00d1f6fc = 0x00D1F6FCu;
+constexpr float kFive_00ce3850 = 5.0f;  // 40A00000
+
+// The tail 009A4DC0 and 009A5000 share (009A4E5C-009A4FD3 and 009A5085-009A51FC):
+// follow +14Ch, done +1E4h, attackrun +284h, goaway +2A8h, aim +2CCh, prepare
+// +2ECh, leave +38Ch, turnto +3A8h, then 009A3090.
+void depth_charge_block_tail(Cc13Seg67bHost& host, void* block) {
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x14C), block, kHundred_00ce3d08);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x1E4), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x1E4) = kDepthChargeDonePrepareVtable_00d1f6fc;
+    at<float>(block, 0x27C) = kMinusOne_00d7a260_f;
+    at<std::uint32_t>(block, 0x280) = 0;
+    bot_state_depth_charge_attack_run_construct_009a36a0(host, ptr(block, 0x284), block);
+    plain_inline_state(block, 0x2A8, 0x00D1F6A0u);
+    plain_inline_state(block, 0x2CC, 0x00D1F6D8u);
+    at<std::uint8_t>(block, 0x2E4) = 0;
+    at<std::uint8_t>(block, 0x2E5) = 0;
+    at<float>(block, 0x2E8) = kZero_s15;
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x2EC), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x2EC) = kDepthChargeDonePrepareVtable_00d1f6fc;
+    at<float>(block, 0x384) = kMinusOne_00d7a260_f;
+    at<std::uint32_t>(block, 0x388) = 0;
+    plain_inline_state(block, 0x38C, 0x00D1F668u);
+    at<float>(block, 0x3A4) = kFive_00ce3850;
+    plain_inline_state(block, 0x3A8, 0x00D1F684u);
+    at<float>(block, 0x3C0) = kZero_s15;
+    bot_task_depth_charge_register_state_names_009a3090(host, block);
+}
+}  // namespace
+
+// 009A5000 (009A5000-009A5217). EH frame 00CAE0D4. 009A35D0(ECX = block, [bot+50h],
+// archive) (009A502D); 00411E20(block+FCh) (009A5040); [block] = 00D1F71C,
+// [block+FCh] = 00D1F718 (009A5057, 009A505D); 00BD4FE0(archive, outgoing block,
+// "_state_moveTo") (009A5074) and 009C2B80(ECX = block+110h, block, that block by
+// value) (009A5080); 009C2980(ECX = block+14Ch, block, 100.0) (009A509B);
+// 009C2980(ECX = block+1E4h, ...) (009A50B8), then [+1E4h] = 00D1F6FC, +27Ch =
+// -1.0, +280h = 0 (009A50BD-009A50D3); 009A36A0(ECX = block+284h, block)
+// (009A50E5); embedded +2A8h 00D1F6A0 (009A50EA-009A5108); embedded +2CCh 00D1F6D8
+// with bytes +2E4h/+2E5h = 0 and +2E8h = 0.0 (009A5115-009A5149); 009C2980(ECX =
+// block+2ECh, ...) (009A5169), then [+2ECh] = 00D1F6FC, +384h = -1.0, +388h = 0
+// (009A516E-009A5184); embedded +38Ch 00D1F668 with +3A4h = [00CE3850] 5.0
+// (009A518A-009A51BA); embedded +3A8h 00D1F684 with +3C0h = 0.0 (009A51C2-
+// 009A51ED); 009A3090(block) (009A51FC). RET 8, EAX = block.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_depth_charge_construct_approach_block_from_stream_009a5000(Cc13Seg67bHost& host,
+                                                                          void* block, void* bot,
+                                                                          void* archive) {
+    bot_approach_depth_charge_construct_from_stream_009a35d0(host, block, ptr_at(bot, 0x50),
+                                                             archive);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xFC));
+    at<std::uint32_t>(block, 0x000) = kDepthChargeBlockVtable_00d1f71c;
+    at<std::uint32_t>(block, 0x0FC) = kDepthChargeRegistryVtable_00d1f718;
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrStateMoveTo));
+    bot_state_construct_base_009c2b80(host, ptr(block, 0x110), block, ref);
+    depth_charge_block_tail(host, block);
+    return block;
+}
+
+// ---------------------------------------------------------------------------
+// The dogfight approach block from a stream.
+
+namespace {
+constexpr std::uint32_t kDogfightBlockVtable_00d1f9a4 = 0x00D1F9A4u;
+constexpr std::uint32_t kDogfightRegistryVtable_00d1f9a0 = 0x00D1F9A0u;
+
+// The tail 009A94E0 and 009A9670 share (009A9560-009A9637 and 009A96F2-009A97C9):
+// follow +154h, prepare +1ECh, aim +284h, maneuver +2ACh, attackrun +2ECh,
+// avoid_roll +310h, avoid_turn +338h, then 009A6A60.
+void dogfight_block_tail(Cc13Seg67bHost& host, void* block) {
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x154), block, kHundred_00ce3d08);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x1EC), block, kHundred_00ce3d08);
+    plain_inline_state(block, 0x284, 0x00D1F8D8u);
+    bot_state_dogfight_maneuver_construct_009a84e0(host, ptr(block, 0x2AC), block);
+    bot_state_dogfight_attack_run_construct_009a70e0(host, ptr(block, 0x2EC), block);
+    plain_inline_state(block, 0x310, 0x00D1F918u);
+    plain_inline_state(block, 0x338, 0x00D1F938u);
+    bot_task_dogfight_register_state_names_009a6a60(host, block);
+}
+}  // namespace
+
+// 009A9670 (009A9670-009A97E4). EH frame 00CAE456. 009A6D40(ECX = block, bot,
+// archive) (009A969A); 00411E20(block+104h) (009A96AD); [block] = 00D1F9A4,
+// [block+104h] = 00D1F9A0 (009A96C4, 009A96CA); 00BD4FE0(archive, outgoing block,
+// "_state_moveTo") (009A96E1) and 009C2D00(ECX = block+118h, block, that block
+// by value) (009A96ED); 009C2980(ECX = block+154h, block, 100.0) (009A9708) and
+// (ECX = block+1ECh) (009A9723); embedded dogfight/aim +284h 00D1F8D8
+// (009A9728-009A9746); 009A84E0(ECX = block+2ACh, block) (009A975C); 009A70E0(ECX =
+// block+2ECh, block) (009A976D); embedded avoid_roll +310h 00D1F918 and avoid_turn
+// +338h 00D1F938 (009A9772-009A97B8); 009A6A60(block) (009A97C9). RET 8, EAX =
+// block. The state names are the 009A6A60 registrations.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_dogfight_construct_approach_block_from_stream_009a9670(Cc13Seg67bHost& host,
+                                                                      void* block, void* bot,
+                                                                      void* archive) {
+    host.bot_approach_dogfight_construct_from_stream_009a6d40(block, bot, archive);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0x104));
+    at<std::uint32_t>(block, 0x000) = kDogfightBlockVtable_00d1f9a4;
+    at<std::uint32_t>(block, 0x104) = kDogfightRegistryVtable_00d1f9a0;
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrStateMoveTo));
+    bot_state_move_to_construct_from_stream_009c2d00(host, ptr(block, 0x118), block, ref);
+    dogfight_block_tail(host, block);
+    return block;
+}
+
+namespace {
+constexpr double kHundred_00d7a220 = 100.0;  // 4059000000000000
+}  // namespace
+
+// 009B75E0 (009B75E0-009B77AD). EH frame 00CAEF38. 009B44F0(ECX = block, [bot+50h],
+// target) (009B760F); 00411E20(block+DCh) (009B7622); [block] = 00D20204,
+// [block+DCh] = 00D20200 (009B766D, 009B7673); 009B6C10(ECX = block+F0h, block,
+// target, near = float(+B0h - double [00D7A220] 100.0), far = +B0h, third = +B4h)
+// (009B7627-009B7686); then the 009B77C0 tail (009B768B-009B7792). RET 8, EAX =
+// block.
+// UNCERTAINTY: `near` is rounded once at 24 bits in the image; here a double
+// difference is rounded to float. EH unwinding not modelled.
+void* bot_approach_level_bomb_construct_009b75e0(Cc13Seg67bHost& host, void* block, void* bot,
+                                                 void* target) {
+    bot_approach_level_bomb_construct_base_009b44f0(host, block, ptr_at(bot, 0x50), target);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xDC));
+    const float third = at<float>(block, 0xB4);
+    const float far_ = at<float>(block, 0xB0);
+    const float near_ = static_cast<float>(static_cast<double>(far_) - kHundred_00d7a220);
+    at<std::uint32_t>(block, 0x000) = kLevelBombBlockVtable_00d20204;
+    at<std::uint32_t>(block, 0x0DC) = kLevelBombRegistryVtable_00d20200;
+    bot_state_level_bomb_move_to_construct_009b6c10(host, ptr(block, 0xF0), block, target, near_,
+                                                    far_, third);
+    level_bomb_block_tail(host, block);
+    return block;
+}
+
+namespace {
+constexpr float kFiveHundred_00ce397c = 500.0f;  // 43FA0000
+constexpr float kThousand_00ce3804 = 1000.0f;    // 447A0000
+}  // namespace
+
+// 009A94E0 (009A94E0-009A9652). EH frame 00CAE3C6. 009A6C10(ECX = block, bot, arg)
+// (009A950A); 00411E20(block+104h) (009A951D); [block] = 00D1F9A4, [block+104h] =
+// 00D1F9A0 (009A9544, 009A9550); 009C2CA0(ECX = block+118h, block, arg, [00CE397C]
+// 500.0, [00CE3D08] 100.0, [00CE3804] 1000.0) (009A9522-009A955B); then the tail
+// shared with 009A9670 (009A9560-009A9637). RET 8, EAX = block.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_dogfight_construct_approach_block_009a94e0(Cc13Seg67bHost& host, void* block,
+                                                          void* bot, void* arg) {
+    bot_approach_dogfight_construct_009a6c10(host, block, bot, arg);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0x104));
+    at<std::uint32_t>(block, 0x000) = kDogfightBlockVtable_00d1f9a4;
+    at<std::uint32_t>(block, 0x104) = kDogfightRegistryVtable_00d1f9a0;
+    bot_state_dogfight_move_to_construct_009c2ca0(host, ptr(block, 0x118), block, arg,
+                                                  kFiveHundred_00ce397c, kHundred_00ce3d08,
+                                                  kThousand_00ce3804);
+    dogfight_block_tail(host, block);
+    return block;
+}
+
+namespace {
+constexpr std::uint32_t kDiveBombBlockVtable_00d20e08 = 0x00D20E08u;
+constexpr std::uint32_t kDiveBombRegistryVtable_00d20e04 = 0x00D20E04u;
+constexpr std::uint32_t kDiveBombDonePrepareVtable_00d20d28 = 0x00D20D28u;
+
+// 009C7612-009C76C4: the ten registrations into block+E4h, in order.
+constexpr StateNamePair kDiveBombStateNamePairs[] = {
+    {0x00D20DF0u, 0x0F8},  // "moveto (DiveBomb)"
+    {0x00D20DDCu, 0x134},  // "follow (DiveBomb)"
+    {0x00D20DCCu, 0x26C},  // "DiveBomb/done"
+    {0x00D20DBCu, 0x30C},  // "DiveBomb/goaway"
+    {0x00D20DA8u, 0x33C},  // "DiveBomb/aimdive"
+    {0x00D20D94u, 0x35C},  // "DiveBomb/aimglide"
+    {0x00D20D80u, 0x380},  // "DiveBomb/flyabove"
+    {0x00D20D6Cu, 0x1CC},  // "DiveBomb/prepare"
+    {0x00D20D58u, 0x3A4},  // "DiveBomb/turndown"
+    {0x00D20D44u, 0x3C4},  // "DiveBomb/attackrun"
+};
+}  // namespace
+
+// 009C73A0 (009C73A0-009C76DF). EH frame 00CAFC32. 009C3EA0(ECX = block, [bot+50h],
+// target) (009C73CD); 00411E20(block+E4h) (009C73E0); [block] = 00D20E08,
+// [block+E4h] = 00D20E04 (009C740B, 009C7415); 009C2AC0(ECX = block+F8h, block,
+// target, float(+A8h - double [00D7A220] 100.0), +A8h, +B4h) (009C73E5-009C7436);
+// 009C2980(ECX = block+134h, block, 100.0) (009C7451); 009C2980 at +1CCh and at
+// +26Ch, each then given vtable 00D20D28, byte +9Ch = 0 and +98h = -1.0
+// (009C746E-009C74C2). Embedded goaway +30Ch (00D20CA0): +330h = 100.0, +328h =
+// 0.0, +32Ch = float(2 x [[+310h]+B4h]) (009C74CA-009C7523). Embedded aimdive
+// +33Ch (00D20CE8): byte +354h = 0, +358h = 0.0, byte +355h = 1 (009C7529-
+// 009C755F). Embedded aimglide +35Ch (00D20CC8): +378h = 0.0, byte +374h = 0,
+// +37Ch = [00CE3850] 5.0 (009C7566-009C75A4). Embedded flyabove +380h (00D20D04):
+// bytes +398h..+39Bh = 0, +3A0h = 0 (009C75AC-009C75D4). Embedded turndown +3A4h
+// (00D20C84) (009C75D7-009C75F5). 009C4140(ECX = block+3C4h, block) (009C760D).
+// Ten 00411E70 registrations (009C7612-009C76C4). RET 8, EAX = block.
+// UNCERTAINTY: `near` is rounded once at 24 bits in the image; here a double
+// difference is rounded to float. EH unwinding not modelled.
+void* bot_task_dive_bomb_construct_approach_block_009c73a0(Cc13Seg67bHost& host, void* block,
+                                                           void* bot, void* target) {
+    bot_approach_dive_bomb_construct_009c3ea0(host, block, ptr_at(bot, 0x50), target);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xE4));
+    const float third = at<float>(block, 0xB4);
+    const float far_ = at<float>(block, 0xA8);
+    at<std::uint32_t>(block, 0x000) = kDiveBombBlockVtable_00d20e08;
+    at<std::uint32_t>(block, 0x0E4) = kDiveBombRegistryVtable_00d20e04;
+    const float near_ = static_cast<float>(static_cast<double>(far_) - kHundred_00d7a220);
+    host.bot_state_move_to_construct_009c2ac0(ptr(block, 0xF8), block, target, near_, far_, third);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x134), block, kHundred_00ce3d08);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x1CC), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x1CC) = kDiveBombDonePrepareVtable_00d20d28;
+    at<std::uint8_t>(block, 0x268) = 0;
+    at<float>(block, 0x264) = kMinusOne_00d7a260_f;
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x26C), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x26C) = kDiveBombDonePrepareVtable_00d20d28;
+    at<std::uint8_t>(block, 0x308) = 0;
+    at<float>(block, 0x304) = kMinusOne_00d7a260_f;
+    plain_inline_state(block, 0x30C, 0x00D20CA0u);
+    const float b4 = at<float>(ptr_at(block, 0x310), 0xB4);
+    at<float>(block, 0x330) = kHundred_00ce3d08;
+    at<float>(block, 0x328) = kZero_s15;
+    at<float>(block, 0x32C) = b4 + b4;
+    plain_inline_state(block, 0x33C, 0x00D20CE8u);
+    at<std::uint8_t>(block, 0x354) = 0;
+    at<float>(block, 0x358) = kZero_s15;
+    at<std::uint8_t>(block, 0x355) = 1;
+    plain_inline_state(block, 0x35C, 0x00D20CC8u);
+    at<float>(block, 0x378) = kZero_s15;
+    at<std::uint8_t>(block, 0x374) = 0;
+    at<float>(block, 0x37C) = kFive_00ce3850;
+    plain_inline_state(block, 0x380, 0x00D20D04u);
+    at<std::uint8_t>(block, 0x398) = 0;
+    at<std::uint8_t>(block, 0x399) = 0;
+    at<std::uint8_t>(block, 0x39A) = 0;
+    at<std::uint8_t>(block, 0x39B) = 0;
+    at<std::uint32_t>(block, 0x3A0) = 0;
+    plain_inline_state(block, 0x3A4, 0x00D20C84u);
+    bot_state_dive_bomb_attack_run_construct_009c4140(host, ptr(block, 0x3C4), block);
+    register_state_names(host, block, 0xE4, kDiveBombStateNamePairs,
+                         sizeof(kDiveBombStateNamePairs) / sizeof(kDiveBombStateNamePairs[0]));
+    return block;
+}
+
+// ---------------------------------------------------------------------------
+// The drop-kamikaze approach block from a stream.
+
+namespace {
+constexpr std::uint32_t kDropKamikazeBlockVtable_00d1fc60 = 0x00D1FC60u;
+constexpr std::uint32_t kDropKamikazeRegistryVtable_00d1fc5c = 0x00D1FC5Cu;
+constexpr std::uint32_t kDropKamikazeFollowLikeVtable_00d1fc08 = 0x00D1FC08u;
+
+// The tail 009AD720 and 009AD920 share (009AD7CB-009AD8E8 and 009AD9A5-009ADAC2):
+// follow +114h, the five embedded or follow-built states, then 009AB740.
+void drop_kamikaze_block_tail(Cc13Seg67bHost& host, void* block) {
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x114), block, kHundred_00ce3d08);
+    plain_inline_state(block, 0x1AC, 0x00D1FBECu);
+    at<float>(block, 0x1C4) = kZero_s15;
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x1C8), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x1C8) = kDropKamikazeFollowLikeVtable_00d1fc08;
+    at<std::uint8_t>(block, 0x268) = 0;
+    at<float>(block, 0x260) = kMinusOne_00d7a260_f;
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x26C), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x26C) = kDropKamikazeFollowLikeVtable_00d1fc08;
+    at<std::uint8_t>(block, 0x30C) = 0;
+    at<float>(block, 0x304) = kMinusOne_00d7a260_f;
+    plain_inline_state(block, 0x310, 0x00D1FC40u);
+    plain_inline_state(block, 0x334, 0x00D1FC24u);
+    at<std::uint8_t>(block, 0x34C) = 0;
+    bot_task_drop_kamikaze_register_state_names_009ab740(host, block);
+}
+}  // namespace
+
+// 009AD920 (009AD920-009ADAD9). EH frame 00CAE798. 009ABBE0(ECX = block, [bot+50h],
+// archive) (009AD94D); 00411E20(block+C4h) (009AD960); [block] = 00D1FC60,
+// [block+C4h] = 00D1FC5C (009AD977, 009AD97D); 00BD4FE0(archive, outgoing block,
+// "_state_moveTo") (009AD994) and 009C2B80(ECX = block+D8h, block, that block by
+// value) (009AD9A0); 009C2980(ECX = block+114h, block, 100.0) (009AD9BB); embedded
+// +1ACh (00D1FBEC) with +1C4h = 0.0 (009AD9C0-009AD9EB); 009C2980 at +1C8h and at
+// +26Ch, each then given vtable 00D1FC08, byte +A0h = 0 and +98h = -1.0
+// (009ADA0B-009ADA5D); embedded +310h (00D1FC40) (009ADA65-009ADA83); embedded
+// +334h (00D1FC24) with byte +34Ch = 0 (009ADA8D-009ADAB5); 009AB740(block)
+// (009ADAC2). RET 8, EAX = block. The state names are the 009AB740
+// registrations.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_drop_kamikaze_construct_approach_block_from_stream_009ad920(Cc13Seg67bHost& host,
+                                                                           void* block, void* bot,
+                                                                           void* archive) {
+    bot_approach_drop_kamikaze_construct_base_from_bag_009abbe0(host, block, ptr_at(bot, 0x50),
+                                                                archive);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xC4));
+    at<std::uint32_t>(block, 0x000) = kDropKamikazeBlockVtable_00d1fc60;
+    at<std::uint32_t>(block, 0x0C4) = kDropKamikazeRegistryVtable_00d1fc5c;
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrStateMoveTo));
+    bot_state_construct_base_009c2b80(host, ptr(block, 0xD8), block, ref);
+    drop_kamikaze_block_tail(host, block);
+    return block;
+}
+
+// 009AD720 (009AD720-009AD903). EH frame 00CAE708. 009ABAB0(ECX = block, [bot+50h],
+// target) (009AD74F); 00411E20(block+C4h) (009AD762); [block] = 00D1FC60,
+// [block+C4h] = 00D1FC5C (009AD7AD, 009AD7B3); 009C2AC0(ECX = block+D8h, block,
+// target, float(+A8h - double [00D7A220] 100.0), +A8h, +ACh) (009AD767-009AD7C6);
+// then the tail shared with 009AD920 (009AD7CB-009AD8E8). RET 8, EAX = block.
+// UNCERTAINTY: `near` is rounded once at 24 bits in the image; here a double
+// difference is rounded to float. EH unwinding not modelled.
+void* bot_approach_drop_kamikaze_construct_009ad720(Cc13Seg67bHost& host, void* block, void* bot,
+                                                    void* target) {
+    host.bot_approach_drop_kamikaze_construct_base_009abab0(block, ptr_at(bot, 0x50), target);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xC4));
+    const float third = at<float>(block, 0xAC);
+    const float far_ = at<float>(block, 0xA8);
+    const float near_ = static_cast<float>(static_cast<double>(far_) - kHundred_00d7a220);
+    at<std::uint32_t>(block, 0x000) = kDropKamikazeBlockVtable_00d1fc60;
+    at<std::uint32_t>(block, 0x0C4) = kDropKamikazeRegistryVtable_00d1fc5c;
+    host.bot_state_move_to_construct_009c2ac0(ptr(block, 0xD8), block, target, near_, far_, third);
+    drop_kamikaze_block_tail(host, block);
+    return block;
+}
+
+// ---------------------------------------------------------------------------
+// The direct move-on-path, depth-charge and land approach blocks.
+
+// 009BCC60 (009BCC60-009BCD34). EH frame 00CAF587. 009BC780(ECX = block, [bot+50h])
+// (009BCC88); then the tail shared with 009BCD50 (009BCC8D-009BCD1E). RET 4, EAX =
+// block.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_approach_move_on_path_construct_with_states_009bcc60(Cc13Seg67bHost& host, void* block,
+                                                               void* bot) {
+    host.bot_approach_move_on_path_construct_009bc780(block, ptr_at(bot, 0x50));
+    move_on_path_block_tail(host, block);
+    return block;
+}
+
+// 009A4DC0 (009A4DC0-009A4FEE). EH frame 00CAE034. 009A3390(ECX = block, [bot+50h],
+// target) (009A4DEF); 00411E20(block+FCh) (009A4E02); [block] = 00D1F71C,
+// [block+FCh] = 00D1F718 (009A4E22, 009A4E28); d = float(+3Ch + +34h) (009A4E11-
+// 009A4E2E); 009C2AC0(ECX = block+110h, block, target, d, d, +40h) (009A4E57); then
+// the tail shared with 009A5000 (009A4E5C-009A4FD3). RET 8, EAX = block.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_approach_depth_charge_construct_with_states_009a4dc0(Cc13Seg67bHost& host,
+                                                               void* block, void* bot,
+                                                               void* target) {
+    host.bot_approach_depth_charge_construct_009a3390(block, ptr_at(bot, 0x50), target);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xFC));
+    const float third = at<float>(block, 0x40);
+    const float d = at<float>(block, 0x3C) + at<float>(block, 0x34);
+    at<std::uint32_t>(block, 0x000) = kDepthChargeBlockVtable_00d1f71c;
+    at<std::uint32_t>(block, 0x0FC) = kDepthChargeRegistryVtable_00d1f718;
+    host.bot_state_move_to_construct_009c2ac0(ptr(block, 0x110), block, target, d, d, third);
+    depth_charge_block_tail(host, block);
+    return block;
+}
+
+namespace {
+constexpr float kEightHundred_00ce3950 = 800.0f;  // 44480000
+}  // namespace
+
+// 009B2E50 (009B2E50-009B302A). EH frame 00CAEB66. 009AFE70(ECX = block, arg1,
+// arg2) (009B2E7B); 00411E20(block+B8h) (009B2E8E); [block] = 00D1FF88,
+// [block+B8h] = 00D1FF84 (009B2EB8, 009B2EC3); 009C2AC0(ECX = block+CCh, block,
+// [block+30h], 100.0, 100.0, [00CE3950] 800.0) (009B2E93-009B2EC9); then the tail
+// shared with 009B3040 (009B2ECE-009B3010). RET 8, EAX = block.
+// UNCERTAINTY: EH unwinding not modelled. The roles of arg1 and arg2 are those
+// 009AFE70 gives them.
+void* bot_approach_land_construct_composite_009b2e50(Cc13Seg67bHost& host, void* block,
+                                                     void* arg1, void* arg2) {
+    bot_approach_land_construct_lower_009afe70(host, block, arg1, arg2);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xB8));
+    at<std::uint32_t>(block, 0x00) = kLandBlockVtable_00d1ff88;
+    at<std::uint32_t>(block, 0xB8) = kLandRegistryVtable_00d1ff84;
+    host.bot_state_move_to_construct_009c2ac0(ptr(block, 0xCC), block, ptr_at(block, 0x30),
+                                              kHundred_00ce3d08, kHundred_00ce3d08,
+                                              kEightHundred_00ce3950);
+    land_block_tail(host, block);
+    return block;
+}
+
+// ---------------------------------------------------------------------------
+// Strafe, torpedo and takeoff task constructors.
+
+namespace {
+constexpr std::uint32_t kStrafeTaskVtable_00d210e0 = 0x00D210E0u;
+constexpr std::uint32_t kStrafeApproachVtable_00d210d8 = 0x00D210D8u;
+constexpr std::uint32_t kStrafeRegistryVtable_00d210d4 = 0x00D210D4u;
+constexpr std::uint32_t kTorpedoTaskVtable_00d213c8 = 0x00D213C8u;
+constexpr std::uint32_t kTorpedoApproachVtable_00d213c0 = 0x00D213C0u;
+constexpr std::uint32_t kTorpedoRegistryVtable_00d213bc = 0x00D213BCu;
+constexpr std::uint32_t kTakeoffTaskVtable_00d21228 = 0x00D21228u;
+constexpr std::uint32_t kTakeoffApproachVtable_00d2121c = 0x00D2121Cu;
+constexpr std::uint32_t kTakeoffRegistryVtable_00d21218 = 0x00D21218u;
+constexpr float kZero_00d7a218 = 0.0f;  // 00000000
+}  // namespace
+
+// 009CC230 (009CC230-009CC2D6). EH frame. 0099C6F0(ECX = task, bot, 0Ah) (009CC256);
+// 009CC020(ECX = task+3F8h, bot, target) (009CC271); [task] = 00D210E0,
+// [task+3F8h] = 00D210D8, [task+4CCh] = 00D210D4 (009CC281-009CC28D);
+// 007B8AD0([task+3FCh]) (009CC297) ? +4E0h : +51Ch -> +310h, its vtable[4]()
+// (009CC2B7); 009F9980(ECX = task+3F8h, task) (009CC2BC). RET 8, EAX = task.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_strafe_construct_009cc230(Cc13Seg67bHost& host, void* task, void* bot,
+                                         void* target) {
+    bot_task_construct_base_0099c6f0(host, task, bot, 0x0A);
+    strafe_construct_approach_block_009cc020(host, ptr(task, 0x3F8), bot, target);
+    construct_task_tail(host, task, kStrafeTaskVtable_00d210e0, kStrafeApproachVtable_00d210d8,
+                        0x4CC, kStrafeRegistryVtable_00d210d4, 0x4E0, 0x51C);
+    return task;
+}
+
+// 009D3050 (009D3050-009D30F6). EH frame 00CB03A6. 0099C6F0(task, bot, 0Eh)
+// (009D3076); 009D2DA0(ECX = task+3F8h, bot, target) (009D3091); [task] =
+// 00D213C8, [task+3F8h] = 00D213C0, [task+530h] = 00D213BC (009D30A1-009D30AD);
+// 007B8AD0 (009D30B7) ? +544h : +580h -> +310h, enter (009D30D7); 009F9980
+// (009D30DC). RET 8, EAX = task.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_torpedo_construct_009d3050(Cc13Seg67bHost& host, void* task, void* bot,
+                                          void* target) {
+    bot_task_construct_base_0099c6f0(host, task, bot, 0x0E);
+    torpedo_construct_approach_block_009d2da0(host, ptr(task, 0x3F8), bot, target);
+    construct_task_tail(host, task, kTorpedoTaskVtable_00d213c8, kTorpedoApproachVtable_00d213c0,
+                        0x530, kTorpedoRegistryVtable_00d213bc, 0x544, 0x580);
+    return task;
+}
+
+// 009CF8E0 (009CF8E0-009CF9B3). EH frame 00CB0126. 0099C6F0(task, owner, 0Dh)
+// (009CF905); 009CF710(ECX = task+3F8h, [owner+50h]) (009CF91E); [task] =
+// 00D21228, [task+3F8h] = 00D2121C, [task+434h] = 00D21218 (009CF929-009CF935).
+// u = [task+3FCh]: byte u+904h set and u+900h == 5 (009CF93F, 009CF94D) -> +4B8h;
+// else flag byte set (009CF95E) -> +448h; else u+AA0h > [00D7A218] 0.0 (009CF975
+// COMISS JA; NaN falls to +470h) -> +490h, else +470h. That state -> +310h and its
+// vtable[4]() (009CF995); 009F9980(ECX = task+3F8h, task) (009CF99A). RET 8, EAX =
+// task.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_takeoff_construct_009cf8e0(Cc13Seg67bHost& host, void* task, void* owner,
+                                          std::uint32_t flag) {
+    bot_task_construct_base_0099c6f0(host, task, owner, 0x0D);
+    takeoff_construct_approach_block_009cf710(host, ptr(task, 0x3F8), ptr_at(owner, 0x50));
+    at<std::uint32_t>(task, 0x000) = kTakeoffTaskVtable_00d21228;
+    at<std::uint32_t>(task, 0x3F8) = kTakeoffApproachVtable_00d2121c;
+    at<std::uint32_t>(task, 0x434) = kTakeoffRegistryVtable_00d21218;
+    void* const unit = ptr_at(task, 0x3FC);
+    void* state;
+    if (at<std::uint8_t>(unit, 0x904) != 0 && at<std::int32_t>(unit, 0x900) == 5) {
+        state = ptr(task, 0x4B8);
+    } else if (static_cast<std::uint8_t>(flag) != 0) {
+        state = ptr(task, 0x448);
+    } else {
+        state = at<float>(unit, 0xAA0) > kZero_00d7a218 ? ptr(task, 0x490) : ptr(task, 0x470);
+    }
+    at<std::uintptr_t>(task, 0x310) = reinterpret_cast<std::uintptr_t>(state);
+    host.state_vcall_04_enter(state);
+    host.bot_approach_bind_to_task_009f9980(ptr(task, 0x3F8), task);
+    return task;
+}
+
+// ---------------------------------------------------------------------------
+// The strafe, torpedo and takeoff approach blocks (the hooks 009CC230, 009D3050 and
+// 009CF8E0 called before batch 26).
+
+namespace {
+constexpr std::uint32_t kStrafeBlockVtable_00d210d0 = 0x00D210D0u;
+constexpr std::uint32_t kStrafeRegistryVtable_00d210cc = 0x00D210CCu;
+
+constexpr StateNamePair kStrafeStateNamePairs[] = {
+    {0x00D210BCu, 0x0E8},  // "moveto (strafe)"    009CC171
+    {0x00D210ACu, 0x124},  // "follow (strafe)"    009CC189
+    {0x00D2109Cu, 0x1BC},  // "strafe/prepare"     009CC19C
+    {0x00D21088u, 0x254},  // "strafe/gotowards"   009CC1A9
+    {0x00D2107Cu, 0x278},  // "strafe/aim"         009CC1B6
+    {0x00D2106Cu, 0x298},  // "strafe/goaway"      009CC1C9
+    {0x00D21058u, 0x2E0},  // "strafe/attackrun"   009CC1DC
+};
+
+constexpr std::uint32_t kTorpedoBlockVtable_00d213b8 = 0x00D213B8u;
+constexpr std::uint32_t kTorpedoRegistryVtable_00d213b4 = 0x00D213B4u;
+constexpr std::uint32_t kTorpedoDonePrepareVtable_00d21320 = 0x00D21320u;
+constexpr double kFifteen_00cf3f20 = 15.0;           // 402E000000000000
+constexpr float kOneHundredTwenty_00d05804 = 120.0f;  // 42F00000
+
+constexpr StateNamePair kTorpedoStateNamePairs[] = {
+    {0x00D213A0u, 0x14C},  // "moveto (torpedo)"   009D2F92
+    {0x00D2138Cu, 0x188},  // "follow (torpedo)"   009D2FAA
+    {0x00D2137Cu, 0x220},  // "torpedo/done"       009D2FBD
+    {0x00D2136Cu, 0x2E0},  // "torpedo/goaway"     009D2FCA
+    {0x00D21360u, 0x318},  // "torpedo/aim"        009D2FD7
+    {0x00D2134Cu, 0x2BC},  // "torpedo/attackrun"  009D2FEA
+    {0x00D2133Cu, 0x348},  // "torpedo/prepare"    009D2FFD
+};
+
+constexpr std::uint32_t kTakeoffBlockVtable_00d21210 = 0x00D21210u;
+constexpr std::uint32_t kTakeoffRegistryVtable_00d2120c = 0x00D2120Cu;
+
+constexpr StateNamePair kTakeoffStateNamePairs[] = {
+    {0x00D211FCu, 0x050},  // "takeoff/prepare"      009CF7E9
+    {0x00D211ECu, 0x078},  // "takeoff/Takeoff"      009CF7FB
+    {0x00D211D8u, 0x098},  // "takeoff/SlowTakeoff"  009CF80E
+    {0x00D211C8u, 0x0C0},  // "takeoff/parking"      009CF81B
+};
+}  // namespace
+
+// 009CC020 (BSP_BotTaskStrafe_ConstructApproachBlock): __thiscall(ECX = block, bot,
+// target), RET 8, EAX = block. Evidence (disk bytes): 009CA4A0(ECX = block,
+// [bot+50h], target) (009CC04F); 00411E20(ECX = block+D4h) (009CC062); vtables
+// 00D210D0 / +D4h 00D210CC (009CC0A6-009CC0AC); 009C2AC0(ECX = block+E8h, block,
+// target, near = +40h, far = +40h, third = +38h) (009CC067-009CC0B3: [esp] and
+// [esp+4] take +40h, [esp+8] takes +38h); 009C2980(block, 100.0) at +124h and +1BCh
+// with no vtable overwrite (009CC0CE, 009CC0E9). Embedded gotowards +254h (00D20FE8):
+// +26Ch = +270h = [00CE3950] 800.0, byte +274h = 0 (009CC0EE-009CC11B). Embedded aim
+// +278h (00D21020): +290h = [00CE3800] 0.5 (009CC11E-009CC143). 009CB500(ECX =
+// block+298h, block) (009CC154) and 009CAC80(ECX = block+2E0h, block) (009CC165);
+// both draw from the RNG 00BD2F10 inside their own bodies. Seven 00411E70
+// registrations into +D4h (009CC171-009CC1E3).
+// UNCERTAINTY: the floats pass through x87 FLD/FSTP; an SNaN would be quieted there
+// and is copied here. EH unwinding not modelled.
+void* strafe_construct_approach_block_009cc020(Cc13Seg67bHost& host, void* block, void* bot,
+                                               void* target) {
+    bot_approach_strafe_construct_009ca4a0(host, block, ptr_at(bot, 0x50), target);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xD4));
+    const float third = at<float>(block, 0x38);
+    const float far_ = at<float>(block, 0x40);
+    at<std::uint32_t>(block, 0x000) = kStrafeBlockVtable_00d210d0;
+    at<std::uint32_t>(block, 0x0D4) = kStrafeRegistryVtable_00d210cc;
+    host.bot_state_move_to_construct_009c2ac0(ptr(block, 0xE8), block, target, far_, far_, third);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x124), block, kHundred_00ce3d08);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x1BC), block, kHundred_00ce3d08);
+    plain_inline_state(block, 0x254, 0x00D20FE8u);
+    at<float>(block, 0x26C) = kEightHundred_00ce3950;
+    at<float>(block, 0x270) = kEightHundred_00ce3950;
+    at<std::uint8_t>(block, 0x274) = 0;
+    plain_inline_state(block, 0x278, 0x00D21020u);
+    at<float>(block, 0x290) = kHalf_00ce3800;
+    bot_state_strafe_go_away_construct_009cb500(host, ptr(block, 0x298), block);
+    bot_state_strafe_attack_run_construct_009cac80(host, ptr(block, 0x2E0), block);
+    register_state_names(host, block, 0xD4, kStrafeStateNamePairs,
+                         sizeof(kStrafeStateNamePairs) / sizeof(kStrafeStateNamePairs[0]));
+    return block;
+}
+
+// 009D2DA0 (BSP_BotTaskTorpedo_ConstructStates): __thiscall(ECX = block, bot, target),
+// RET 8, EAX = block. Evidence (disk bytes): 009D0380(ECX = block, [bot+50h], target)
+// (009D2DCF); 00411E20(ECX = block+138h) (009D2DE2); vtables 00D213B8 / +138h 00D213B4
+// (009D2DFC-009D2E02); FCOMI double [00CF3F20] 15.0 against +134h, JBE (15.0 <= +134h
+// or unordered) picks +7Ch, otherwise +80h (009D2DE7-009D2E14); 009C2AC0(ECX =
+// block+14Ch, block, target, near = far = float(+78h + +74h), third = the pick)
+// (009D2E19-009D2E57); 009C2980(block, 100.0) at +188h (009D2E72) and at +220h, the
+// latter then given vtable 00D21320 and +2B8h = -1.0 (009D2E8F-009D2EA3); 009D06D0(ECX
+// = block+2BCh, block) (009D2EB7). Embedded goaway +2E0h (00D212E0): +308h = 100.0,
+// +314h = +310h = 0.0, +300h = +2FCh = [00D05804] 120.0, +2F8h = 0.0 (009D2EBC-
+// 009D2F04). Embedded aim +318h (00D212FC): +334h = 0.5, +330h = [block+4], +338h =
+// 1.0, bytes +33Ch/+33Dh = 0, +340h = 0.0 (009D2F09-009D2F51). 009C2980(block, 100.0)
+// at +348h, then vtable 00D21320 and +3E0h = -1.0 (009D2F6C-009D2F83). Seven 00411E70
+// registrations into +138h (009D2F92-009D3004).
+// UNCERTAINTY: the sum is rounded once at 24-bit precision in the image (modelled);
+// at 53 bits it would round to double then to float. EH unwinding not modelled.
+void* torpedo_construct_approach_block_009d2da0(Cc13Seg67bHost& host, void* block, void* bot,
+                                                void* target) {
+    bot_approach_torpedo_construct_009d0380(host, block, ptr_at(bot, 0x50), target);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0x138));
+    const float elapsed = at<float>(block, 0x134);
+    at<std::uint32_t>(block, 0x000) = kTorpedoBlockVtable_00d213b8;
+    at<std::uint32_t>(block, 0x138) = kTorpedoRegistryVtable_00d213b4;
+    // JBE after FCOMI(15.0, +134h): taken when 15.0 <= +134h or the compare is unordered.
+    const bool above = kFifteen_00cf3f20 > static_cast<double>(elapsed);
+    const float third = above ? at<float>(block, 0x80) : at<float>(block, 0x7C);
+    const float sum = at<float>(block, 0x78) + at<float>(block, 0x74);
+    host.bot_state_move_to_construct_009c2ac0(ptr(block, 0x14C), block, target, sum, sum, third);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x188), block, kHundred_00ce3d08);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x220), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x220) = kTorpedoDonePrepareVtable_00d21320;
+    at<float>(block, 0x2B8) = kMinusOne_00d7a260_f;
+    bot_state_torpedo_attack_run_construct_009d06d0(host, ptr(block, 0x2BC), block);
+    plain_inline_state(block, 0x2E0, 0x00D212E0u);
+    at<float>(block, 0x308) = kHundred_00ce3d08;
+    at<float>(block, 0x314) = kZero_s15;
+    at<float>(block, 0x310) = kZero_s15;
+    at<float>(block, 0x300) = kOneHundredTwenty_00d05804;
+    at<float>(block, 0x2FC) = kOneHundredTwenty_00d05804;
+    at<float>(block, 0x2F8) = kZero_s15;
+    plain_inline_state(block, 0x318, 0x00D212FCu);
+    at<float>(block, 0x334) = kHalf_00ce3800;
+    at<std::uint32_t>(block, 0x330) = at<std::uint32_t>(block, 0x004);
+    at<float>(block, 0x338) = kOne_00d7a24c;
+    at<std::uint8_t>(block, 0x33C) = 0;
+    at<std::uint8_t>(block, 0x33D) = 0;
+    at<float>(block, 0x340) = kZero_s15;
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x348), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x348) = kTorpedoDonePrepareVtable_00d21320;
+    at<float>(block, 0x3E0) = kMinusOne_00d7a260_f;
+    register_state_names(host, block, 0x138, kTorpedoStateNamePairs,
+                         sizeof(kTorpedoStateNamePairs) / sizeof(kTorpedoStateNamePairs[0]));
+    return block;
+}
+
+// 009CF710 (BSP_TakeoffTask_ConstructStates): __thiscall(ECX = block, arg), RET 4, EAX =
+// block. Evidence (disk bytes): 009CD420(ECX = block, arg) (009CF735); 00411E20(ECX =
+// block+3Ch) (009CF745); vtables 00D21210 / +3Ch 00D2120C (009CF750-009CF756).
+// Embedded prepare +50h (00D2116C): bytes +68h/+69h = 0, +6Ch = +70h = +74h = 0.0
+// (009CF74A-009CF781). Embedded Takeoff +78h (00D211A4) (009CF786-009CF798). Embedded
+// SlowTakeoff +98h (00D21188) (009CF79F-009CF7BD). Embedded parking +C0h (00D21150):
+// byte +D8h = 0 (009CF7C7-009CF7E2). Four 00411E70 registrations into +3Ch
+// (009CF7E9-009CF822).
+// UNCERTAINTY: EH unwinding not modelled.
+void* takeoff_construct_approach_block_009cf710(Cc13Seg67bHost& host, void* block, void* arg) {
+    bot_approach_takeoff_construct_009cd420(host, block, arg);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0x3C));
+    at<std::uint32_t>(block, 0x00) = kTakeoffBlockVtable_00d21210;
+    at<std::uint32_t>(block, 0x3C) = kTakeoffRegistryVtable_00d2120c;
+    plain_inline_state(block, 0x50, 0x00D2116Cu);
+    at<std::uint8_t>(block, 0x68) = 0;
+    at<std::uint8_t>(block, 0x69) = 0;
+    at<float>(block, 0x6C) = kZero_s15;
+    at<float>(block, 0x70) = kZero_s15;
+    at<float>(block, 0x74) = kZero_s15;
+    plain_inline_state(block, 0x78, 0x00D211A4u);
+    plain_inline_state(block, 0x98, 0x00D21188u);
+    plain_inline_state(block, 0xC0, 0x00D21150u);
+    at<std::uint8_t>(block, 0xD8) = 0;
+    register_state_names(host, block, 0x3C, kTakeoffStateNamePairs,
+                         sizeof(kTakeoffStateNamePairs) / sizeof(kTakeoffStateNamePairs[0]));
+    return block;
+}
+
+// ---------------------------------------------------------------------------
+// The strafe goaway/attackrun and torpedo attackrun state constructors, and the takeoff
+// approach base.
+
+namespace {
+constexpr std::uint32_t kStrafeGoAwayVtable_00d2103c = 0x00D2103Cu;
+constexpr std::uint32_t kStrafeAttackRunVtable_00d21004 = 0x00D21004u;
+constexpr std::uint32_t kTorpedoAttackRunVtable_00d212c4 = 0x00D212C4u;
+constexpr std::uint32_t kTakeoffApproachVtable_00d21148 = 0x00D21148u;
+constexpr float kTwo_00ce3958 = 2.0f;                 // 40000000
+constexpr float kPointThree_00ce69c8 = 0.3f;          // 3E99999A
+constexpr float kPointNine_00ce3860 = 0.9f;           // 3F666666
+constexpr float kSpeedReference_00ce4c04 = 9999.0f;   // 461C3C00
+constexpr float kFifteen_00ce5380 = 15.0f;            // 41700000
+constexpr float kTwentyFive_00ce89cc = 25.0f;         // 41C80000
+}  // namespace
+
+// 009CB500 (BSP_BotStateStrafeGoAway_Construct): __thiscall(ECX = state, owner block),
+// RET 4, EAX = state. Evidence (disk bytes): +4h = block, +0Ch/+10h/+14h/+8h = 0
+// (009CB51D-009CB52F); vtable 00D2103C (009CB547); byte +24h = 0, +28h = [00CE3958]
+// 2.0, +2Ch = [00CE3850] 5.0 (009CB54F-009CB569); +30h = 00BD2F10(1, 0.0, 5.0)
+// (009CB56E-009CB573); +34h = 2.0, +38h = 5.0, +3Ch = 00BD2F10(1, 0.0, 5.0) (009CB576-
+// 009CB5AC); +40h = [00D7A24C] 1.0, +44h = -00BD2F10(1, 0.0, 1.0) (009CB5AF-009CB5D6);
+// +18h = 00BD2F10(1, [00CE69C8] 0.3, [00CE3860] 0.9) (009CB5D9-009CB5F9).
+// UNCERTAINTY: the RNG result leaves in ST0 and is rounded to float by FSTP; the host
+// hook returns a float. EH unwinding not modelled.
+// cc9 models this inline (per-name RNG stand-ins, not a named body) in
+// src/game_hosts_units.cpp around 24246 ("goaway 009CB500").
+void* bot_state_strafe_go_away_construct_009cb500(Cc13Seg67bHost& host, void* state,
+                                                  void* block) {
+    construct_state_base(state, block);
+    at<std::uint32_t>(state, 0x00) = kStrafeGoAwayVtable_00d2103c;
+    at<std::uint8_t>(state, 0x24) = 0;
+    at<float>(state, 0x28) = kTwo_00ce3958;
+    at<float>(state, 0x2C) = kFive_00ce3850;
+    at<float>(state, 0x30) = host.random_uniform_00bd2f10(1, 0.0f, kFive_00ce3850);
+    at<float>(state, 0x34) = kTwo_00ce3958;
+    at<float>(state, 0x38) = kFive_00ce3850;
+    at<float>(state, 0x3C) = host.random_uniform_00bd2f10(1, 0.0f, kFive_00ce3850);
+    at<float>(state, 0x40) = kOne_00d7a24c;
+    at<float>(state, 0x44) = -host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    at<float>(state, 0x18) =
+        host.random_uniform_00bd2f10(1, kPointThree_00ce69c8, kPointNine_00ce3860);
+    return state;
+}
+
+// 009CAC80 (BSP_BotStateStrafeAttackRun_Construct) and 009D06D0
+// (BSP_BotStateTorpedoAttackRun_Construct): __thiscall(ECX = state, owner block), RET 4,
+// EAX = state. Evidence (disk bytes): +4h = block, +0Ch/+10h/+14h/+8h = 0 (009CAC9D-
+// 009CACAF / 009D06ED-009D06FF); vtable 00D21004 (009CACC3) / 00D212C4 (009D0713); +18h
+// = [00D7A24C] 1.0 (009CACD5 / 009D0725); +1Ch = -00BD2F10(1, 0.0, 1.0) (009CACDA-
+// 009CACE4 / 009D072A-009D0734); +20h = 0.0 (009CACEB / 009D073B).
+// UNCERTAINTY: as 009CB500 for the ST0 result. EH unwinding not modelled.
+void* bot_state_strafe_attack_run_construct_009cac80(Cc13Seg67bHost& host, void* state,
+                                                     void* block) {
+    return construct_timed_state(host, state, block, kStrafeAttackRunVtable_00d21004, 0x18,
+                                 0x1C, 0x20);
+}
+
+void* bot_state_torpedo_attack_run_construct_009d06d0(Cc13Seg67bHost& host, void* state,
+                                                      void* block) {
+    return construct_timed_state(host, state, block, kTorpedoAttackRunVtable_00d212c4, 0x18,
+                                 0x1C, 0x20);
+}
+
+// 009CD420 (BSP_BotApproachTakeoff_Construct): __thiscall(ECX = approach, plane), RET 4,
+// EAX = approach. Evidence (disk bytes): 009F9CE0(ECX = approach, plane, [00CE4C04]
+// 9999.0) (009CD420-009CD433); vtable 00D21148, +34h = 0.0 (009CD43D-009CD443); when
+// plane is non-null and plane+BF4h is non-zero: 00414DB0(plane) when byte plane+C8h is
+// 0, then +34h = plane+100h (009CD448-009CD469); +30h = [00CE5380] 15.0 (009CD46C);
+// vtable[5Ch](13h) -> +30h = 15.0 (009CD479-009CD490); vtable[5Ch](10h) -> +30h =
+// [00CE89CC] 25.0 (009CD495-009CD4AC); +2Ch = float(+30h + +34h) (009CD4B1-009CD4BA).
+// The vtable calls at 009CD479 dereference the plane without the null test.
+// UNCERTAINTY: the sum is rounded once at 24-bit precision in the image (modelled).
+// cc9 models this inline in GameUnitsHost::Impl::install_takeoff_task_0099a4a0
+// (src/game_hosts_units.cpp around 15303), not as a named body.
+void* bot_approach_takeoff_construct_009cd420(Cc13Seg67bHost& host, void* approach,
+                                              void* plane) {
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, plane,
+                                                         kSpeedReference_00ce4c04);
+    at<std::uint32_t>(approach, 0x00) = kTakeoffApproachVtable_00d21148;
+    at<float>(approach, 0x34) = kZero_s15;
+    if (plane != nullptr && at<std::uint32_t>(plane, 0xBF4) != 0) {
+        if (at<std::uint8_t>(plane, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(plane);
+        at<float>(approach, 0x34) = at<float>(plane, 0x100);
+    }
+    at<float>(approach, 0x30) = kFifteen_00ce5380;
+    if (host.object_vcall_5c(plane, 0x13)) at<float>(approach, 0x30) = kFifteen_00ce5380;
+    if (host.object_vcall_5c(plane, 0x10)) at<float>(approach, 0x30) = kTwentyFive_00ce89cc;
+    at<float>(approach, 0x2C) = at<float>(approach, 0x30) + at<float>(approach, 0x34);
+    return approach;
+}
+
+// ---------------------------------------------------------------------------
+// The strafe approach base.
+
+namespace {
+constexpr std::uint32_t kStrafeApproachVtable_00d20fc8 = 0x00D20FC8u;
+constexpr float kOnePointZeroFive_00ce780c = 1.05f;      // 3F866666
+constexpr float kOnePointOne_00ce6448 = 1.1f;            // 3F8CCCCD
+constexpr double kPointEight_00ce3d40 = 0.800000011920929;   // 3FE99999A0000000
+constexpr double kOnePointFour_00d045f0 = 1.399999976158142;  // 3FF6666660000000
+constexpr float kThirtySixHundred_00cfdeb0 = 3600.0f;    // 45610000
+}  // namespace
+
+// 009CA4A0 (BSP_BotApproachStrafe_Construct): __thiscall(ECX = approach, arg, target),
+// RET 8, EAX = approach. Evidence (disk bytes): 009F9CE0(ECX = approach, arg, tuning
+// +65Ch) (009CA4C0-009CA4D6); vtable 00D20FC8 (009CA4F6). With u = [approach+14h]
+// reloaded before each use: A = 00BD2F10(1, [00CE3860] 0.9, [00CE780C] 1.05) x u+DCh
+// (009CA4DB-009CA50A); B = float(tuning+658h x double [00CE3D40] 0.8) (009CA50E-
+// 009CA51F); FCOMI then JBE keeps A when A <= B or unordered, else B (009CA523-
+// 009CA53F); +34h = that x +24h (009CA548-009CA557); +38h = RNG(1, 0.9, [00CE6448]
+// 1.1) x u+230h x +24h (009CA55A-009CA586); +44h = [00CFDEB0] 3600.0, byte +50h = 0,
+// +3Ch = RNG(1, 0.9, 1.1) x u+D8h x +24h, +54h = 0 (009CA589-009CA5C6); 009FB200(ECX
+// = approach+58h, target) (009CA5CD); +CCh = 1.0, +D0h = -RNG(1, 0, 1) (009CA5D2-
+// 009CA604); +4Ch = 007C2610(ECX = [approach+4]) (009CA60A-009CA612); +54h = target
+// when target is non-null and passes vtable[5Ch](41h), else 0 (009CA615-009CA62C);
+// 009CA3B0(ECX = approach) (009CA62F); when [approach+4] passes vtable[5Ch](10h) or
+// (16h): +34h and +3Ch scaled by double [00D045F0] 1.4 (009CA634-009CA668).
+// UNCERTAINTY: 24-bit precision modelled (each FMUL of a chain rounds to float; at 53
+// bits a chain would round once at the end). The double constants are float-exact, so
+// their products are exact in double and round once. The RNG results are rounded from
+// ST0 by the hook. EH unwinding not modelled.
+// cc9 models this inline (per-name RNG stand-ins, not a named body) in
+// src/game_hosts_units.cpp around 24218 (009CA4DB-009CA668).
+void* bot_approach_strafe_construct_009ca4a0(Cc13Seg67bHost& host, void* approach, void* arg,
+                                             void* target) {
+    const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x65C);
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, arg, speed);
+    void* u = ptr_at(approach, 0x14);
+    at<std::uint32_t>(approach, 0x00) = kStrafeApproachVtable_00d20fc8;
+    const float a =
+        host.random_uniform_00bd2f10(1, kPointNine_00ce3860, kOnePointZeroFive_00ce780c) *
+        at<float>(u, 0xDC);
+    const float b = static_cast<float>(
+        static_cast<double>(at<float>(host.game_tuning_singleton_0042e740(), 0x658)) *
+        kPointEight_00ce3d40);
+    // JBE after FCOMI(A, B): A is kept when A <= B or the compare is unordered.
+    const float m = a > b ? b : a;
+    at<float>(approach, 0x34) = m * at<float>(approach, 0x24);
+    u = ptr_at(approach, 0x14);
+    const float r2 = host.random_uniform_00bd2f10(1, kPointNine_00ce3860, kOnePointOne_00ce6448);
+    at<float>(approach, 0x38) = r2 * at<float>(u, 0x230) * at<float>(approach, 0x24);
+    u = ptr_at(approach, 0x14);
+    const float r3 = host.random_uniform_00bd2f10(1, kPointNine_00ce3860, kOnePointOne_00ce6448);
+    at<float>(approach, 0x44) = kThirtySixHundred_00cfdeb0;
+    at<std::uint8_t>(approach, 0x50) = 0;
+    at<float>(approach, 0x3C) = r3 * at<float>(u, 0xD8) * at<float>(approach, 0x24);
+    at<std::uint32_t>(approach, 0x54) = 0;
+    host.approach_target_ref_construct_009fb200(ptr(approach, 0x58), target);
+    at<float>(approach, 0xCC) = kOne_00d7a24c;
+    at<float>(approach, 0xD0) = -host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    at<float>(approach, 0x4C) =
+        host.unit_min_kind21_component_speed_007c2610(ptr_at(approach, 0x4));
+    const bool keep = target != nullptr && host.object_vcall_5c(target, 0x41);
+    at<std::uintptr_t>(approach, 0x54) = keep ? reinterpret_cast<std::uintptr_t>(target) : 0;
+    host.bot_approach_strafe_seed_glide_009ca3b0(approach);
+    void* owner = ptr_at(approach, 0x4);
+    if (host.object_vcall_5c(owner, 0x10) || host.object_vcall_5c(owner, 0x16)) {
+        at<float>(approach, 0x34) = static_cast<float>(
+            static_cast<double>(at<float>(approach, 0x34)) * kOnePointFour_00d045f0);
+        at<float>(approach, 0x3C) = static_cast<float>(
+            kOnePointFour_00d045f0 * static_cast<double>(at<float>(approach, 0x3C)));
+    }
+    return approach;
+}
+
+// ---------------------------------------------------------------------------
+// The torpedo approach base (reset).
+
+namespace {
+constexpr std::uint32_t kTorpedoApproachVtable_00d212a4 = 0x00D212A4u;
+constexpr double kPointSevenFive_00cec9d8 = 0.75;
+constexpr float kSixtySeven_00d212a0 = 67.0f;           // 42860000
+constexpr float kQuarter_00ce3868 = 0.25f;              // 3E800000
+constexpr float kOnePointTwoFive_00cf29a8 = 1.25f;      // 3FA00000
+constexpr float kOnePointFive_00ce380c = 1.5f;          // 3FC00000
+constexpr float kTen_00ce38b8 = 10.0f;                  // 41200000
+constexpr float kNineNines_00cf87d0 = 999999.0f;        // 497423F0
+constexpr double kOnePointThree_00d21298 = 1.2999999523162842;  // 3FF4CCCCC0000000
+constexpr float kMinusPointOne_00ce3cb4 = -0.1f;        // BDCCCCCD
+}  // namespace
+
+// 009D0380 (BSP_BotApproachTorpedo_Reset): __thiscall(ECX = approach, arg, target),
+// RET 8, EAX = approach. Evidence (disk bytes): 009F9CE0(ECX = approach, arg, tuning
+// +440h) (009D03A1-009D03B7); vtable 00D212A4, +2Ch = 0, +58h = 24h, +5Ch = 0.0
+// (009D03C4-009D03D4); L = float(007BCE20([approach+4]) x double [00CEC9D8] 0.75)
+// (009D03D9-009D03E7); FCOMI then JBE keeps L when L <= desc+18Ch or unordered, else
+// desc+18Ch (desc = [approach+8]) (009D03EB-009D040B); +70h = 00BD2F10(1, 0.9, 1.1) x
+// that (009D0411-009D0449); +74h = [00D212A0] 67.0, +78h = RNG(1, 0, [00CE3868] 0.25)
+// x rec+0h (rec = [approach+14h]) (009D043B-009D0475); +7Ch = rec+4h x +24h, +80h =
+// +24h x rec+8h, +84h = rec+0Ch (009D047D-009D04A0); seed = float(RNG(1, [00CF29A8]
+// 1.25, [00CE380C] 1.5) x desc+268h + +80h), +94h = +9Ch = 0.0, +A0h = [00CE38B8] 10.0,
+// +88h = seed, +A4h = 0FFh, bytes +A8h/+A9h = 0, +AAh = 1, +8Ch = +90h = float(seed x
+// double [00D21298] 1.3), +ACh = +B0h = [00CF87D0] 999999.0 (009D04A6-009D054D);
+// 009FB200(ECX = approach+B4h, target) (009D0555); +128h = 1.0, +12Ch = -RNG(1, 0, 1)
+// (009D055A-009D0590); bytes +130h/+131h = 0, +134h = 3600.0 (009D05AB-009D05C1); with
+// N = +7Ch and F = +80h saved before the draws: +7Ch = N + RNG(1, [00CE3CB4] -0.1, 0.5)
+// x (F - N) (009D0596-009D05ED, FSUBP DE EA = F - N); +80h = F - RNG(1, -0.1, 0.5) x
+// (F - new +7Ch) (009D05F0-009D0625, FSUBRP DE E2 = F - N'); 009D02A0(ECX = approach)
+// (009D062B); 009D0160(ECX = approach) (009D0632); bytes +30h..+54h = 1 (009D063B-
+// 009D065B).
+// The fragment helpers in src/torpedo_approach_update.cpp model these steps at 53-bit
+// precision and take desc+18Ch on an unordered compare; this body follows the image's
+// JBE and models 24-bit precision.
+// UNCERTAINTY: 24-bit precision modelled (at 53 bits the product-plus-sum and the leg
+// expressions would round once at the end). The double constants are float-exact, so
+// their products are exact in double and round once. RNG results rounded from ST0 by
+// the hook. EH unwinding not modelled.
+void* bot_approach_torpedo_construct_009d0380(Cc13Seg67bHost& host, void* approach, void* arg,
+                                              void* target) {
+    const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x440);
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, arg, speed);
+    at<std::uint32_t>(approach, 0x00) = kTorpedoApproachVtable_00d212a4;
+    at<std::uint32_t>(approach, 0x2C) = 0;
+    at<std::uint32_t>(approach, 0x58) = 0x24;
+    at<float>(approach, 0x5C) = kZero_s15;
+    const float limit = static_cast<float>(
+        static_cast<double>(host.unit_min_torpedo_hit_velocity_007bce20(ptr_at(approach, 0x4))) *
+        kPointSevenFive_00cec9d8);
+    const float travel = at<float>(ptr_at(approach, 0x8), 0x18C);
+    // JBE after FCOMI(L, travel): L is kept when L <= travel or the compare is unordered.
+    const float cap = limit > travel ? travel : limit;
+    at<float>(approach, 0x70) =
+        host.random_uniform_00bd2f10(1, kPointNine_00ce3860, kOnePointOne_00ce6448) * cap;
+    void* rec = ptr_at(approach, 0x14);
+    at<float>(approach, 0x74) = kSixtySeven_00d212a0;
+    at<float>(approach, 0x78) =
+        host.random_uniform_00bd2f10(1, 0.0f, kQuarter_00ce3868) * at<float>(rec, 0x0);
+    rec = ptr_at(approach, 0x14);
+    void* desc = ptr_at(approach, 0x8);
+    const float scale = at<float>(approach, 0x24);
+    at<float>(approach, 0x7C) = at<float>(rec, 0x4) * scale;
+    at<float>(approach, 0x80) = scale * at<float>(rec, 0x8);
+    at<float>(approach, 0x84) = at<float>(rec, 0xC);
+    const float seed =
+        host.random_uniform_00bd2f10(1, kOnePointTwoFive_00cf29a8, kOnePointFive_00ce380c) *
+            at<float>(desc, 0x268) +
+        at<float>(approach, 0x80);
+    at<float>(approach, 0x94) = kZero_s15;
+    at<float>(approach, 0x9C) = kZero_s15;
+    at<float>(approach, 0xA0) = kTen_00ce38b8;
+    at<std::uint32_t>(approach, 0xA4) = 0xFF;
+    at<float>(approach, 0x88) = seed;
+    at<std::uint8_t>(approach, 0xA8) = 0;
+    at<std::uint8_t>(approach, 0xA9) = 0;
+    at<std::uint8_t>(approach, 0xAA) = 1;
+    const float engage =
+        static_cast<float>(static_cast<double>(seed) * kOnePointThree_00d21298);
+    at<float>(approach, 0x8C) = engage;
+    at<float>(approach, 0x90) = engage;
+    at<float>(approach, 0xAC) = kNineNines_00cf87d0;
+    at<float>(approach, 0xB0) = kNineNines_00cf87d0;
+    host.approach_target_ref_construct_009fb200(ptr(approach, 0xB4), target);
+    at<float>(approach, 0x128) = kOne_00d7a24c;
+    at<float>(approach, 0x12C) = -host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    const float n = at<float>(approach, 0x7C);
+    at<std::uint8_t>(approach, 0x130) = 0;
+    at<std::uint8_t>(approach, 0x131) = 0;
+    at<float>(approach, 0x134) = kThirtySixHundred_00cfdeb0;
+    const float d1 = host.random_uniform_00bd2f10(1, kMinusPointOne_00ce3cb4, kHalf_00ce3800);
+    const float f = at<float>(approach, 0x80);
+    at<float>(approach, 0x7C) = n + d1 * (f - n);
+    const float f2 = at<float>(approach, 0x80);
+    const float d2 = host.random_uniform_00bd2f10(1, kMinusPointOne_00ce3cb4, kHalf_00ce3800);
+    at<float>(approach, 0x80) = f2 - d2 * (f2 - at<float>(approach, 0x7C));
+    host.approach_torpedo_aim_error_draw_009d02a0(approach);
+    host.approach_torpedo_reset_run_time_009d0160(approach);
+    for (std::size_t off = 0x30; off <= 0x54; ++off) at<std::uint8_t>(approach, off) = 1;
+    return approach;
+}
+
+// ---------------------------------------------------------------------------
+// The dive-bomb approach base.
+
+namespace {
+constexpr std::uint32_t kDiveBombApproachVtable_00d20c48 = 0x00D20C48u;
+constexpr double kPointNineFive_00ceffb0 = 0.949999988079071;  // 3FEE666660000000
+constexpr float kPointEight_00ce74f8 = 0.8f;                   // 3F4CCCCD
+constexpr float kOnePointSix_00d06bb4 = 1.6f;                  // 3FCCCCCD
+constexpr float kOnePointEight_00cf4848 = 1.8f;                // 3FE66666
+constexpr double kHalf_00d7a280 = 0.5;
+constexpr double kTwoHundredFifty_00cf8850 = 250.0;
+}  // namespace
+
+// 009C3EA0 (BSP_DiveBombApproach_Construct): __thiscall(ECX = approach, plane, target),
+// RET 8, EAX = approach. Evidence (disk bytes): 009F9CE0(ECX = approach, plane, tuning
+// +4D8h) (009C3EBF-009C3ED5); vtable 00D20C48, +2Ch = 0 (009C3EE2-009C3EE8);
+// 009FB200(ECX = approach+30h, target) (009C3EEF); with desc = [approach+8] and rec =
+// [approach+14h]: +A4h = float(desc+188h x double [00CEFFB0] 0.95) (009C3EF4-009C3F16);
+// +A8h = 00BD2F10(1, rec+38h, rec+3Ch) (009C3F1C-009C3F2E); +ACh = tuning+4CCh
+// (009C3F34-009C3F3F); +B0h = tuning+4D0h - tuning+4CCh (009C3F45-009C3F68); +B4h =
+// RNG(1, [00CE3D30] 0.6, [00CE74F8] 0.8) x desc+268h (009C3F6E-009C3F97); T = RNG(1,
+// [00D06BB4] 1.6, [00CF4848] 1.8) x desc+268h, +C0h = 0.0, +C4h = 3600.0, +CCh = 0FFh,
+// +B8h = +BCh = T, byte +D0h = 0 (009C3F9D-009C3FF5); +D4h = the larger of float(+A8h
+// + 250.0) and float((+ACh + +A8h) x 0.5), the mean on a tie or an unordered compare
+// (009C3FFB-009C4045, FCOMI then JBE); 00414DB0(plane) when byte plane+C8h is 0
+// (009C404D-009C4058); +D8h/+DCh/+E0h = plane+FCh/+100h/+104h (009C405D-009C407D);
+// 009C3DA0(ECX = approach) (009C4083).
+// src/dive_bomb_task.cpp's dive_bomb_dive_entry_height_009c4045 has the +D4h step at
+// 53-bit precision but is bsp_game-only, so it is not called here.
+// UNCERTAINTY: 24-bit precision modelled. The double constants are float-exact, so their
+// products and the 250.0 sum are exact in double and round once, as at 24 bits. RNG
+// results rounded from ST0 by the hook. The plane is dereferenced without a null test,
+// as in the image. EH unwinding not modelled.
+void* bot_approach_dive_bomb_construct_009c3ea0(Cc13Seg67bHost& host, void* approach,
+                                                void* plane, void* target) {
+    const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x4D8);
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, plane, speed);
+    at<std::uint32_t>(approach, 0x00) = kDiveBombApproachVtable_00d20c48;
+    at<std::uint32_t>(approach, 0x2C) = 0;
+    host.approach_target_ref_construct_009fb200(ptr(approach, 0x30), target);
+    void* desc = ptr_at(approach, 0x8);
+    void* rec = ptr_at(approach, 0x14);
+    at<float>(approach, 0xA4) = static_cast<float>(
+        static_cast<double>(at<float>(desc, 0x188)) * kPointNineFive_00ceffb0);
+    at<float>(approach, 0xA8) =
+        host.random_uniform_00bd2f10(1, at<float>(rec, 0x38), at<float>(rec, 0x3C));
+    at<float>(approach, 0xAC) = at<float>(host.game_tuning_singleton_0042e740(), 0x4CC);
+    void* tuning_a = host.game_tuning_singleton_0042e740();
+    void* tuning_b = host.game_tuning_singleton_0042e740();
+    at<float>(approach, 0xB0) = at<float>(tuning_a, 0x4D0) - at<float>(tuning_b, 0x4CC);
+    desc = ptr_at(approach, 0x8);
+    at<float>(approach, 0xB4) =
+        host.random_uniform_00bd2f10(1, kPointSix_00ce3d30, kPointEight_00ce74f8) *
+        at<float>(desc, 0x268);
+    desc = ptr_at(approach, 0x8);
+    const float t =
+        host.random_uniform_00bd2f10(1, kOnePointSix_00d06bb4, kOnePointEight_00cf4848) *
+        at<float>(desc, 0x268);
+    at<float>(approach, 0xC0) = kZero_s15;
+    at<float>(approach, 0xC4) = kThirtySixHundred_00cfdeb0;
+    at<std::uint32_t>(approach, 0xCC) = 0xFF;
+    at<float>(approach, 0xB8) = t;
+    at<std::uint8_t>(approach, 0xD0) = 0;
+    at<float>(approach, 0xBC) = t;
+    const float a8 = at<float>(approach, 0xA8);
+    const float mean =
+        static_cast<float>(static_cast<double>(at<float>(approach, 0xAC) + a8) * kHalf_00d7a280);
+    const float margin = static_cast<float>(static_cast<double>(a8) + kTwoHundredFifty_00cf8850);
+    // JBE after FCOMI(margin, mean): the mean is kept on a tie or an unordered compare.
+    at<float>(approach, 0xD4) = margin > mean ? margin : mean;
+    if (at<std::uint8_t>(plane, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(plane);
+    at<float>(approach, 0xD8) = at<float>(plane, 0xFC);
+    at<float>(approach, 0xDC) = at<float>(plane, 0x100);
+    at<float>(approach, 0xE0) = at<float>(plane, 0x104);
+    host.approach_dive_bomb_aim_error_draw_009c3da0(approach);
+    return approach;
+}
+
+// ---------------------------------------------------------------------------
+// The level-bomb approach base.
+
+namespace {
+constexpr std::uint32_t kLevelBombApproachVtable_00d200a8 = 0x00D200A8u;
+constexpr float kSixteen_00ce6454 = 16.0f;               // 41800000
+constexpr float kPointSixFive_00d07fc4 = 0.65f;          // 3F266666
+constexpr float kTwelveHundred_00cfd714 = 1200.0f;       // 44960000
+}  // namespace
+
+// 009B44F0 (BSP_BotApproachLevelBomb_ConstructBase): __thiscall(ECX = approach, plane,
+// target), RET 8, EAX = approach. Evidence (disk bytes): 009F9CE0(ECX = approach, plane,
+// tuning+458h) (009B4512-009B4528); vtable 00D200A8, +2Ch = 0 (009B4537-009B453D);
+// 009FB200(ECX = approach+30h, target) (009B4540); +A4h = [00CE6454] 16.0 (009B456A);
+// r = 00BD2F10(1, [00CE69C8] 0.3, [00D07FC4] 0.65) kept as a double (009B4572-
+// 009B4577); +A8h = float(007C1FB0(ECX = plane) x r) (009B457B-009B4591); with desc =
+// [approach+8]: +ACh = desc+188h, +B0h = [00CFD714] 1200.0 (009B4586-009B45A9); T =
+// RNG(1, [00D06BB4] 1.6, [00CF4848] 1.8) x desc+268h, +C0h = 0.0, +C8h = 0FFh, bytes
+// +CCh/+CDh = 0, +B4h = T, byte +CEh = 1, +B8h = +BCh = float(T x double [00D045F0]
+// 1.4) (009B45B1-009B4619); 00414DB0(plane) when byte plane+C8h is 0 (009B461F-
+// 009B4629); +D0h/+D4h/+D8h = plane+FCh/+100h/+104h (009B462E-009B464E); 009B4400(ECX =
+// approach) (009B4654).
+// UNCERTAINTY: 24-bit precision modelled; the products of float-exact operands are exact
+// in double and round once. The RNG and 007C1FB0 results are rounded from ST0 by the
+// hooks. The plane is dereferenced without a null test, as in the image. EH unwinding
+// not modelled.
+// cc9 models this inline (per-name RNG stand-ins, not a named body) in
+// src/game_hosts_units.cpp around 24983 (009B451D-009B4591).
+void* bot_approach_level_bomb_construct_base_009b44f0(Cc13Seg67bHost& host, void* approach,
+                                                      void* plane, void* target) {
+    const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x458);
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, plane, speed);
+    at<std::uint32_t>(approach, 0x00) = kLevelBombApproachVtable_00d200a8;
+    at<std::uint32_t>(approach, 0x2C) = 0;
+    host.approach_target_ref_construct_009fb200(ptr(approach, 0x30), target);
+    at<float>(approach, 0xA4) = kSixteen_00ce6454;
+    const double r =
+        host.random_uniform_00bd2f10(1, kPointThree_00ce69c8, kPointSixFive_00d07fc4);
+    at<float>(approach, 0xA8) = static_cast<float>(
+        static_cast<double>(host.unit_longest_rack_stick_time_007c1fb0(plane)) * r);
+    void* desc = ptr_at(approach, 0x8);
+    at<float>(approach, 0xAC) = at<float>(desc, 0x188);
+    at<float>(approach, 0xB0) = kTwelveHundred_00cfd714;
+    const float t =
+        host.random_uniform_00bd2f10(1, kOnePointSix_00d06bb4, kOnePointEight_00cf4848) *
+        at<float>(desc, 0x268);
+    at<float>(approach, 0xC0) = kZero_s15;
+    at<std::uint32_t>(approach, 0xC8) = 0xFF;
+    at<std::uint8_t>(approach, 0xCC) = 0;
+    at<std::uint8_t>(approach, 0xCD) = 0;
+    at<float>(approach, 0xB4) = t;
+    at<std::uint8_t>(approach, 0xCE) = 1;
+    const float u = static_cast<float>(static_cast<double>(t) * kOnePointFour_00d045f0);
+    at<float>(approach, 0xB8) = u;
+    at<float>(approach, 0xBC) = u;
+    if (at<std::uint8_t>(plane, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(plane);
+    at<float>(approach, 0xD0) = at<float>(plane, 0xFC);
+    at<float>(approach, 0xD4) = at<float>(plane, 0x100);
+    at<float>(approach, 0xD8) = at<float>(plane, 0x104);
+    host.approach_level_bomb_aim_error_draw_009b4400(approach);
+    return approach;
+}
+
+// ---------------------------------------------------------------------------
+// The dogfight approach base.
+
+namespace {
+constexpr std::uint32_t kDogfightApproachVtable_00d1f844 = 0x00D1F844u;
+constexpr std::uint32_t kDogfightEmbeddedA0Vtable_00cf89b4 = 0x00CF89B4u;
+constexpr std::uint32_t kDogfightObserverVtable_00cf6514 = 0x00CF6514u;
+constexpr float kNinetyNine_00d059a0 = 99.0f;  // 42C60000
+}  // namespace
+
+// 009A6C10 (BSP_BotApproachDogfight_Construct): __thiscall(ECX = approach, bot, arg),
+// RET 8, EAX = approach. Evidence (disk bytes): 009F9CE0(ECX = approach, [bot+50h],
+// tuning+650h) (009A6C32-009A6C4B); vtable 00D1F844 (009A6C54); 009FB200(ECX =
+// approach+2Ch, [arg+3D0h]) (009A6C50-009A6C66); +A4h/+A8h/+ACh/+B4h = 0, byte +B0h = 1,
+// +A0h = 00CF89B4 (009A6C71-009A6C90); 007F0F80(ECX = approach+B8h, arg) then [+B8h] =
+// 00CF6514 (009A6CA4-009A6CB1); +D4h = +D8h = [00CE4C04] 9999.0, +DCh = 0.0, +E0h =
+// 1.0, +E4h = -1.0, byte +D0h = 0, +E8h = [00D059A0] 99.0 (009A6CB8-009A6D10);
+// 009FA350(ECX = approach+2Ch) (009A6D18).
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_approach_dogfight_construct_009a6c10(Cc13Seg67bHost& host, void* approach, void* bot,
+                                               void* arg) {
+    const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x650);
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, ptr_at(bot, 0x50), speed);
+    at<std::uint32_t>(approach, 0x00) = kDogfightApproachVtable_00d1f844;
+    host.approach_target_ref_construct_009fb200(ptr(approach, 0x2C), ptr_at(arg, 0x3D0));
+    at<std::uint32_t>(approach, 0xA4) = 0;
+    at<std::uint32_t>(approach, 0xA8) = 0;
+    at<std::uint32_t>(approach, 0xAC) = 0;
+    at<std::uint32_t>(approach, 0xB4) = 0;
+    at<std::uint8_t>(approach, 0xB0) = 1;
+    at<std::uint32_t>(approach, 0xA0) = kDogfightEmbeddedA0Vtable_00cf89b4;
+    host.observer_member_initialize_007f0f80(ptr(approach, 0xB8), arg);
+    at<std::uint32_t>(approach, 0xB8) = kDogfightObserverVtable_00cf6514;
+    at<float>(approach, 0xD4) = kSpeedReference_00ce4c04;
+    at<float>(approach, 0xD8) = kSpeedReference_00ce4c04;
+    at<float>(approach, 0xDC) = kZero_s15;
+    at<float>(approach, 0xE0) = kOne_00d7a24c;
+    at<float>(approach, 0xE4) = kMinusOne_00d7a260_f;
+    at<std::uint8_t>(approach, 0xD0) = 0;
+    at<float>(approach, 0xE8) = kNinetyNine_00d059a0;
+    host.approach_target_ref_reset_aim_offset_009fa350(ptr(approach, 0x2C));
+    return approach;
+}
+
+// ---------------------------------------------------------------------------
+// The drop-kamikaze approach base from a stream.
+
+namespace {
+constexpr std::uint32_t kDropKamikazeApproachVtable_00d1fb00 = 0x00D1FB00u;
+constexpr std::uint32_t kStrTargetLockPlain_00d1fb5c = 0x00D1FB5Cu;   // "targetLock"
+constexpr std::uint32_t kStrStartDist_00d1fb50 = 0x00D1FB50u;         // "startDist"
+constexpr std::uint32_t kStrAttackDist_00d1fb44 = 0x00D1FB44u;        // "attackDist"
+constexpr std::uint32_t kStrTargetDist_00d1fb38 = 0x00D1FB38u;        // "targetDist"
+constexpr std::uint32_t kStrInsideAttackRange_00d1fb24 = 0x00D1FB24u; // "insideAttackRange"
+constexpr std::uint32_t kStrTargetHdg_00d1fb18 = 0x00D1FB18u;         // "targetHdg"
+constexpr std::uint32_t kStrCurrentAvoidFlag_00d1fb04 = 0x00D1FB04u;  // "currentAvoidFlag"
+}  // namespace
+
+// 009ABBE0 (BSP_BotApproachDropKamikaze_ConstructBaseFromBag): __thiscall(ECX = approach,
+// plane, archive), RET 8, EAX = approach. Evidence (disk bytes): 009F9CE0(ECX = approach,
+// plane, tuning+458h) (009ABBFE-009ABC14); vtable 00D1FB00, +2Ch = 0 (009ABC2F-
+// 009ABC35); 00BD4FE0(ECX = archive, the outgoing block, {0,"targetLock"}) (009ABC4C);
+// 009FB3E0(ECX = approach+30h, that block by value) (009ABC54); +A4h = desc+18Ch (desc =
+// [approach+8]), +A8h = [00CFD714] 1200.0 (009ABC59-009ABC73); archive vtable[10h] reads
+// {0,"startDist"} <- {2, &+ACh} (009ABCB5), {0,"attackDist"} <- {2, &+B0h} (009ABCEC),
+// {0,"targetDist"} <- {2, &+B4h} (009ABD23), {0,"insideAttackRange"} <- {3, &+C0h}
+// (009ABD5A), {0,"targetHdg"} <- {2, &+B8h} (009ABD91), {0,"currentAvoidFlag"} <- {1,
+// &+BCh} (009ABDC8).
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_approach_drop_kamikaze_construct_base_from_bag_009abbe0(Cc13Seg67bHost& host,
+                                                                  void* approach, void* plane,
+                                                                  void* archive) {
+    const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x458);
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, plane, speed);
+    at<std::uint32_t>(approach, 0x00) = kDropKamikazeApproachVtable_00d1fb00;
+    at<std::uint32_t>(approach, 0x2C) = 0;
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrTargetLockPlain_00d1fb5c));
+    host.approach_ref_construct_from_stream_009fb3e0(ptr(approach, 0x30), ref);
+    at<float>(approach, 0xA4) = at<float>(ptr_at(approach, 0x8), 0x18C);
+    at<float>(approach, 0xA8) = kTwelveHundred_00cfd714;
+    read_field(host, archive, kStrStartDist_00d1fb50, 2, ptr(approach, 0xAC));
+    read_field(host, archive, kStrAttackDist_00d1fb44, 2, ptr(approach, 0xB0));
+    read_field(host, archive, kStrTargetDist_00d1fb38, 2, ptr(approach, 0xB4));
+    read_field(host, archive, kStrInsideAttackRange_00d1fb24, 3, ptr(approach, 0xC0));
+    read_field(host, archive, kStrTargetHdg_00d1fb18, 2, ptr(approach, 0xB8));
+    read_field(host, archive, kStrCurrentAvoidFlag_00d1fb04, 1, ptr(approach, 0xBC));
+    return approach;
+}
+
+// ---------------------------------------------------------------------------
+// The land approach base.
+
+namespace {
+constexpr std::uint32_t kLandApproachVtable_00d1fdb8 = 0x00D1FDB8u;
+}  // namespace
+
+// 009AFE70 (BSP_BotApproachLand_ConstructLower): __thiscall(ECX = approach, plane, air
+// ops), RET 8, EAX = approach. Evidence (disk bytes): 009F9CE0(ECX = approach, plane,
+// tuning+52Ch) (009AFE74-009AFE8A); vtable 00D1FDB8, +2Ch = air ops, +30h = [air ops
+// +7Ch] (009AFE93-009AFE9F); +34h = 006C0B50(ECX = air ops, [plane+9D4h]) (009AFEA2-
+// 009AFEB6); byte +44h = 0, +4Ch = +48h = 1.0, +50h = 1 (009AFEB9-009AFEC7); +54h =
+// 00BD2F10(1, 0.9, 1.1) x tuning+4E4h (009AFECE-009AFEFB); +58h = RNG(1, 0.9, 1.1) x
+// tuning+4E0h (009AFEFE-009AFF39); +60h = 0.0, +64h = [00CE38B8] 10.0, +5Ch =
+// float(desc+18Ch x double [00CEC9D8] 0.75) (desc = [approach+8]), +A4h = 0.0, +ACh =
+// 0.5 (009AFF2B-009AFF77); +B0h = -RNG(1, 0, 0.5) (009AFF7F-009AFF8B); 00414DB0 on
+// [approach+30h] when its byte +C8h is 0, then +38h/+3Ch/+40h = its +FCh/+100h/+104h
+// (009AFF91-009AFFBC); 00414DB0 on [approach+4] when its byte +C8h is 0, then +3Ch =
+// its +100h (009AFFBF-009AFFDC); 009AFAF0(ECX = approach, 0) (009AFFDF).
+// UNCERTAINTY: 24-bit precision modelled; the 0.75 product is exact in double. RNG
+// results rounded from ST0 by the hook. EH unwinding not modelled (the body has no EH
+// frame).
+void* bot_approach_land_construct_lower_009afe70(Cc13Seg67bHost& host, void* approach,
+                                                 void* plane, void* air_ops) {
+    const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x52C);
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, plane, speed);
+    at<std::uint32_t>(approach, 0x00) = kLandApproachVtable_00d1fdb8;
+    at<std::uintptr_t>(approach, 0x2C) = reinterpret_cast<std::uintptr_t>(air_ops);
+    at<std::uint32_t>(approach, 0x30) = at<std::uint32_t>(air_ops, 0x7C);
+    at<std::uintptr_t>(approach, 0x34) =
+        host.air_ops_queue_incoming_006c0b50(air_ops, ptr_at(plane, 0x9D4));
+    at<std::uint8_t>(approach, 0x44) = 0;
+    at<float>(approach, 0x4C) = kOne_00d7a24c;
+    at<float>(approach, 0x48) = kOne_00d7a24c;
+    at<std::uint32_t>(approach, 0x50) = 1;
+    void* tuning = host.game_tuning_singleton_0042e740();
+    at<float>(approach, 0x54) =
+        host.random_uniform_00bd2f10(1, kPointNine_00ce3860, kOnePointOne_00ce6448) *
+        at<float>(tuning, 0x4E4);
+    tuning = host.game_tuning_singleton_0042e740();
+    at<float>(approach, 0x58) =
+        host.random_uniform_00bd2f10(1, kPointNine_00ce3860, kOnePointOne_00ce6448) *
+        at<float>(tuning, 0x4E0);
+    at<float>(approach, 0x60) = kZero_s15;
+    at<float>(approach, 0x64) = kTen_00ce38b8;
+    at<float>(approach, 0x5C) = static_cast<float>(
+        static_cast<double>(at<float>(ptr_at(approach, 0x8), 0x18C)) * kPointSevenFive_00cec9d8);
+    at<float>(approach, 0xA4) = kZero_s15;
+    at<float>(approach, 0xAC) = kHalf_00ce3800;
+    at<float>(approach, 0xB0) = -host.random_uniform_00bd2f10(1, 0.0f, kHalf_00ce3800);
+    void* landing = ptr_at(approach, 0x30);
+    if (at<std::uint8_t>(landing, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(landing);
+    at<float>(approach, 0x38) = at<float>(landing, 0xFC);
+    at<float>(approach, 0x3C) = at<float>(landing, 0x100);
+    at<float>(approach, 0x40) = at<float>(landing, 0x104);
+    void* owner = ptr_at(approach, 0x4);
+    if (at<std::uint8_t>(owner, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(owner);
+    at<float>(approach, 0x3C) = at<float>(owner, 0x100);
+    host.bot_approach_land_geometry_009afaf0(approach, 0);
+    return approach;
+}
+
+// ---------------------------------------------------------------------------
+// The land approach base from a stream.
+
+namespace {
+constexpr std::uint32_t kStrAirBaseEntity_00d1fe78 = 0x00D1FE78u;        // "airBaseEntity"
+constexpr std::uint32_t kStrUpdateLandQueueTimer_00d1fe60 = 0x00D1FE60u; // "updateLandQueueTimer"
+constexpr std::uint32_t kStrApproachAngle_00d1fe50 = 0x00D1FE50u;        // "approachAngle"
+constexpr std::uint32_t kStrApproachPitch_00d1fe40 = 0x00D1FE40u;        // "approachPitch"
+constexpr std::uint32_t kStrStandbyHeightAdd_00d1fe2c = 0x00D1FE2Cu;     // "standbyheightadd"
+}  // namespace
+
+// 009AFFF0 (BSP_BotApproachLand_ConstructFromStream): __thiscall(ECX = approach, plane,
+// archive), RET 8, EAX = approach. Evidence (disk bytes): 009F9CE0(ECX = approach, plane,
+// tuning+52Ch) (009AFFF6-009B000C); vtable 00D1FDB8, byte +44h = 0, +4Ch = +48h = 1.0,
+// +50h = 1 (009B0011-009B003A); +5Ch = float(desc+18Ch x double [00CEC9D8] 0.75), +64h
+// = [00CE38B8] 10.0, +A4h = 0.0, +ACh = 1.0 (009B003D-009B006A); +B0h = -00BD2F10(1, 0,
+// 1) (009B0068-009B0081); archive vtable[10h]({0,"airBaseEntity"}, {4, &slot}), +30h =
+// slot (009B0084-009B00B3); +2Ch = 006BCD20(ECX = slot, DL = 0) (009B00B1-009B00BB); +34h
+// = 006C0B50(ECX = +2Ch, [plane+9D4h]) (009B00BE-009B00D8); 00BD4FE0(ECX = archive, the
+// outgoing block, {0,"updateLandQueueTimer"}) (009B00F1) and 00410D80(ECX = +ACh, that
+// block) (009B00F8); reads {0,"approachAngle"} <- {2, &+54h} (009B012F),
+// {0,"approachPitch"} <- {2, &+58h} (009B0163), {0,"standbyheightadd"} <- {2, &+60h}
+// (009B0197); 00414DB0 on [approach+30h] when its byte +C8h is 0, then +38h/+3Ch/+40h =
+// its +FCh/+100h/+104h (009B0199-009B01C4); 00414DB0 on [approach+4] when its byte +C8h
+// is 0, then +3Ch = its +100h (009B01C7-009B01E4); 009AFAF0(ECX = approach, 0)
+// (009B01E7).
+// UNCERTAINTY: an unwritten "airBaseEntity" leaves a stack address in the slot in the
+// image; here the slot starts at 0. 006C0B50 runs on +2Ch without a null test, as in the
+// image. RNG result rounded from ST0 by the hook. No EH frame.
+void* bot_approach_land_construct_from_stream_009afff0(Cc13Seg67bHost& host, void* approach,
+                                                       void* plane, void* archive) {
+    const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x52C);
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, plane, speed);
+    at<std::uint32_t>(approach, 0x00) = kLandApproachVtable_00d1fdb8;
+    at<std::uint8_t>(approach, 0x44) = 0;
+    at<float>(approach, 0x4C) = kOne_00d7a24c;
+    at<float>(approach, 0x48) = kOne_00d7a24c;
+    at<std::uint32_t>(approach, 0x50) = 1;
+    at<float>(approach, 0x5C) = static_cast<float>(
+        static_cast<double>(at<float>(ptr_at(approach, 0x8), 0x18C)) * kPointSevenFive_00cec9d8);
+    at<float>(approach, 0x64) = kTen_00ce38b8;
+    at<float>(approach, 0xA4) = kZero_s15;
+    at<float>(approach, 0xAC) = kOne_00d7a24c;
+    at<float>(approach, 0xB0) = -host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    std::uintptr_t slot = 0;
+    host.archive_vcall_10_read(archive, name_record(kStrAirBaseEntity_00d1fe78),
+                               record(4, reinterpret_cast<std::uintptr_t>(&slot)));
+    at<std::uintptr_t>(approach, 0x30) = slot;
+    void* const air_ops = host.air_ops_get_block_006bcd20(reinterpret_cast<void*>(slot), false);
+    at<std::uintptr_t>(approach, 0x2C) = reinterpret_cast<std::uintptr_t>(air_ops);
+    at<std::uintptr_t>(approach, 0x34) =
+        host.air_ops_queue_incoming_006c0b50(air_ops, ptr_at(plane, 0x9D4));
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref,
+                                          name_record(kStrUpdateLandQueueTimer_00d1fe60));
+    host.time_freq_pair_read_00410d80(ptr(approach, 0xAC), ref);
+    read_field(host, archive, kStrApproachAngle_00d1fe50, 2, ptr(approach, 0x54));
+    read_field(host, archive, kStrApproachPitch_00d1fe40, 2, ptr(approach, 0x58));
+    read_field(host, archive, kStrStandbyHeightAdd_00d1fe2c, 2, ptr(approach, 0x60));
+    void* landing = ptr_at(approach, 0x30);
+    if (at<std::uint8_t>(landing, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(landing);
+    at<float>(approach, 0x38) = at<float>(landing, 0xFC);
+    at<float>(approach, 0x3C) = at<float>(landing, 0x100);
+    at<float>(approach, 0x40) = at<float>(landing, 0x104);
+    void* owner = ptr_at(approach, 0x4);
+    if (at<std::uint8_t>(owner, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(owner);
+    at<float>(approach, 0x3C) = at<float>(owner, 0x100);
+    host.bot_approach_land_geometry_009afaf0(approach, 0);
+    return approach;
 }
 
 }  // namespace bsp
