@@ -881,6 +881,22 @@ No new bodies. Three ledger-only rows:
   - LOW: the same helper compares against an exact 0.05 where the image uses 0.05000000074505806.
   - The arms were not re-read instruction by instruction; they rest on the earlier packets' coverage notes and the cc13 plane-bot audits.
 
+### 3.59 Batch 13: the barrelroll and gainaltitude ticks (packet cc13-seg67C)
+
+Two new bodies, both read whole from the disk bytes. Neither is hosted (git grep, bsp lookup) and neither has a twin. The only reference to each is its vtable slot (image scan).
+- **009B9740** `bot_task_barrel_roll_tick_009b9740`, slot +64h of vtable 00D206D0 (00D20734):
+  - Sets the fixed demands and clears avoid bit 2.
+  - The roll command +2A0h is 0.5 plus two clamped bank terms, gated on the climb excess cls+1ECh x 1.5 - u+C64h. Operand order comes from the bytes (009B980F D8 F9, 009B9850 DE E1, 009B993B FCHS).
+  - Retires through 0099B690 on +26Ch bit 0 and on the end condition at +3F8h.
+  - No draw.
+- **009BA2F0** `bot_task_gain_altitude_tick_009ba2f0`, slot +64h of vtable 00D20480 (00D204E4):
+  - With a target, it steers by `_CIatan2` beyond 1000 m.
+  - Without a target, it averages three clamped terms. One of them is a stream-1 draw, U(-0.1, 0.1) at 009BA48C, once per tick.
+  - The pitch command is the speed fraction x pi/4, using the widened [00CEDCD0].
+  - New hooks: `unit_vcall_38_speed` and `plane_class_min_control_speed_007c4810`.
+- Both are modelled at 24-bit precision; 53-bit is recorded as the uncertainty.
+- The batch 11 row nits are folded into 009B0300 and 009B22C0 in place.
+
 ## 4. Ledger-only records (packet cc13-seg67C)
 
 | Address | Host body | Result |
