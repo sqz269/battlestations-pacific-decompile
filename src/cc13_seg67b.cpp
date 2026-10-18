@@ -6607,6 +6607,41 @@ void ship_ai_sub_attack_debug_text_009eaad0(Cc13Seg67bHost& host, void* sm, std:
                                               "%s %d/%d", name, ints, 2);                // 009EABD0
 }
 
+// ---------------------------------------------------------------------------
+// The three former false twins of 3.48 (docs 3.50). Each matched another body's bytes
+// outside the rel32 operands, but its CALL target differs.
+// ---------------------------------------------------------------------------
+
+// 009DFA60 (009DFA60-009DFA82): p = [slot]; p -> 009DA880(ECX = p), 00BF65AC(p) and
+// [slot] = 0. 0046A090 makes the same moves around 00469010. Unreferenced.
+void ship_ai_path_node_delete_009dfa60(Cc13Seg67bHost& host, void* slot) {
+    void* const p = ptr_at(slot, 0x0);
+    if (p == nullptr) return;
+    ship_ai_path_node_destroy_009da880(host, p);                                 // 009DFA6C
+    host.crt_free_00bf65ac(p);                                                   // 009DFA72
+    at<std::uintptr_t>(slot, 0x0) = 0;
+}
+
+// 009DFA90 (009DFA90-009DFAB2): the 009DFA60 shape over 0064A610 (the observed-owner
+// base destroy). Unreferenced.
+void observed_owner_delete_009dfa90(Cc13Seg67bHost& host, void* slot) {
+    void* const p = ptr_at(slot, 0x0);
+    if (p == nullptr) return;
+    host.observed_owner_base_destroy_0064a610(p);                                // 009DFA9C
+    host.crt_free_00bf65ac(p);                                                   // 009DFAA2
+    at<std::uintptr_t>(slot, 0x0) = 0;
+}
+
+// 009E5220 (009E5220-009E5235): +4h = 009DF8F0() (the 0Ch self-linked sentinel; ECX is
+// passed but unread), +8h = 0. EAX = list. 0041E1B0 is the same shape over 0041BF50, which
+// allocates 10h. Unreferenced.
+void* ship_ai_traffic_list_construct_009e5220(Cc13Seg67bHost& host, void* list) {
+    at<std::uintptr_t>(list, 0x4) =
+        reinterpret_cast<std::uintptr_t>(ship_ai_traffic_list_head_node_009df8f0(host));  // 009E5223
+    at<std::uint32_t>(list, 0x8) = 0;
+    return list;
+}
+
 // 009CFA10 (009CFA10-009CFA2E). 0099B6E0 (a RET) first; then, when [[task+3FCh]+BF4h]
 // is set, the tail JMP 006C2400(ECX = it).
 void bot_task_takeoff_debug_draw_009cfa10(Cc13Seg67bHost& host, void* task) {

@@ -1343,5 +1343,11 @@ void ship_ai_set_navigation_goal_with_penalty_brain_009e7fa0(Cc13Seg67bHost& hos
 // 009EAAD0: __thiscall(ECX = sub-attack state machine; int x, int y), RET 8.
 void ship_ai_sub_attack_debug_text_009eaad0(Cc13Seg67bHost& host, void* sm, std::int32_t x,
                                             std::int32_t y);
+// The three former false twins of section 3.48 (docs section 3.50).
+// 009DFA60 / 009DFA90: __fastcall(ECX = owning pointer slot), RET.
+void ship_ai_path_node_delete_009dfa60(Cc13Seg67bHost& host, void* slot);
+void observed_owner_delete_009dfa90(Cc13Seg67bHost& host, void* slot);
+// 009E5220: __fastcall(ECX = list), RET, EAX = list.
+void* ship_ai_traffic_list_construct_009e5220(Cc13Seg67bHost& host, void* list);
 
 }  // namespace bsp
