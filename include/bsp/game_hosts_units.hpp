@@ -618,6 +618,11 @@ public:
     // host keeps one index per slot and applies it to every live member of the
     // slot's plane squadron, 007ECF80's fan-out. Default 1, 0095CCCC.
     void set_skill_level_007b8ae0(std::size_t unit_index, int level);
+    // Packet cc13-fix18b: the single-unit leaf of vtable[128h] on a ship or a plane
+    // (006D1EB0 -> the +38Ch sub-object's vtable[0]): that slot's skill index only,
+    // with no squadron fan-out. The squadron's own slot 128h 007ECF80 is the caller's
+    // loop over its members. False for an index out of range.
+    bool set_unit_skill_index_006d1eb0(std::size_t unit_index, int level);
     int skill_level(std::size_t unit_index) const;
     // 00890A10 SetShipMaxSpeed: 00890B51 FSTP [unit+9C0h]. The slot's
     // motion.max_speed is unit+9C0h (00822C20 seeds it from the class).
@@ -808,6 +813,13 @@ public:
     // plane is its world velocity (unit+AC8h, what vtable[34h] 007BBB70 copies;
     // the free-flight step mirrors plane_world_velocity into it).
     bool unit_linear_velocity(std::size_t index, float out[3]) const;
+    // Packet cc13-fix18: the plane flight controller's world velocity ctl+18h
+    // (unit+AC8h), the host's plane_world_velocity, read only. While the plane is
+    // deck-parented it is relative to the owner (007C7277's 007D9CE0 subtracts
+    // the owner's velocity), which motion.linear_velocity is not; 007D8020 caches
+    // its magnitude at unit+B1Ch (007D807C). Zero for a unit that never flew.
+    // False only for an index out of range.
+    bool unit_plane_world_velocity(std::size_t index, float out[3]) const;
     // Packet cc9_aa_turn_average: the flight controller's BODY angular rate,
     // ctl+48h..+50h = unit+AF8h..+B00h (ctl = unit+AB0h), which 00901C20 reads at
     // 00901CE5..00901CF9 for a plane target. The same three floats the rate law

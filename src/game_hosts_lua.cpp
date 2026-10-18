@@ -513,6 +513,10 @@ int binding_trampoline(lua_State* state) {
         && dispatch_row.address == 0x008ab580u;
     const bool entity_speed_row = kLuaGetEntitySpeedBound
         && dispatch_row.address == 0x008c0820u;
+    // Packet cc13-fix18.
+    const bool clear_forced_recon_row = kLuaClearForcedReconLevelBound
+        && dispatch_row.address == 0x008aab90u;
+    const bool crew_level_row = kLuaSetCrewLevelBound && dispatch_row.address == 0x00894f20u;
     // Packet cc13-fix10.
     const bool proximity_trigger_row
         = kLuaProximityTriggersBound && dispatch_row.address == 0x008c9730u;
@@ -550,6 +554,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_device_reload_enabled.
     const bool device_reload_row = kLuaDeviceReloadEnabledBound
         && dispatch_row.address == 0x008c1350u;
+    // Packet cc13-fix18.
+    const bool reload_time_mul_row = kLuaDeviceReloadTimeMulBound
+        && dispatch_row.address == 0x008c14b0u;
     // Packet cc9_squadron_travel_alt.
     const bool travel_alt_row = kSquadronTravelAltBound
         && dispatch_row.address == 0x0089f550u;
@@ -652,6 +659,7 @@ int binding_trampoline(lua_State* state) {
         || add_listener_row || remove_listener_row || listener_active_row || set_invincible_row
         || set_failure_row || get_failure_row || dead_meat_row
         || unit_selectable_row || entity_speed_row
+        || clear_forced_recon_row || crew_level_row
         || proximity_trigger_row || remove_trigger_row
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || override_hp_row
@@ -659,6 +667,7 @@ int binding_trampoline(lua_State* state) {
         || sub_surface_row
         || force_gunner_row
         || slot_count_row || add_stock_row || shipyard_stock_row || device_reload_row
+        || reload_time_mul_row
         || remove_all_stock_row || start_landing2_row || squadron_plane_row || disband_row
         || land_convoy_row || launch_slot_row
         || unlimited_air_row
@@ -817,6 +826,10 @@ int binding_trampoline(lua_State* state) {
         if (!host->error_replay()) host->run_set_device_reload_enabled_008c1350(state, argc);
         return 0;
     }
+    if (reload_time_mul_row) {
+        if (!host->error_replay()) host->run_set_device_reload_time_mul_008c14b0(state, argc);
+        return 0;
+    }
     if (attack_alt_row) {
         if (!host->error_replay()) host->run_squadron_set_attack_alt_008a22b0(state, argc);
         return 0;
@@ -915,6 +928,14 @@ int binding_trampoline(lua_State* state) {
     }
     if (entity_speed_row && !host->error_replay()) {
         return host->run_get_entity_speed_008c0820(state, argc);
+    }
+    if (clear_forced_recon_row) {
+        if (!host->error_replay()) host->run_clear_forced_recon_level_008aab90(state, argc);
+        return 0;
+    }
+    if (crew_level_row) {
+        if (!host->error_replay()) host->run_set_crew_level_00894f20(state, argc);
+        return 0;
     }
     if (proximity_trigger_row) {
         if (!host->error_replay()) host->run_add_proximity_trigger_008c9730(state, argc);
@@ -7170,6 +7191,15 @@ bool lua_device_reload_enabled_00e17bf2() noexcept {
 }
 
 namespace {
+// 00E08178, 1.0 from the mission load (004DFBEB). One float per process here.
+float g_device_reload_time_mul_00e08178 = 1.0f;
+}  // namespace
+
+float lua_device_reload_time_mul_00e08178() noexcept {
+    return kLuaDeviceReloadTimeMulBound ? g_device_reload_time_mul_00e08178 : 1.0f;
+}
+
+namespace {
 // Packet cc9_add_untouchable_unit: the +1D4h byte per units-host index. The image
 // keeps it on each unit's AI object; nothing clears it except
 // RemoveUntouchableUnit 008AC2B0, which no reference row calls.
@@ -7260,6 +7290,21 @@ int GameMissionLuaHost::run_set_device_reload_enabled_008c1350(lua_State* state,
     log_.notef("  SetDeviceReloadEnabled 008c1350: flag=%d -> 00E17BF2 (packet "
         "cc9_device_reload_enabled)", flag ? 1 : 0);
     log_.implemented("MissionLuaNative::SetDeviceReloadEnabled", "008c1350");
+    return 0;
+}
+
+// Packet cc13-fix18 (docs/CC13_FIX18.md section 5), under kLuaDeviceReloadTimeMulBound.
+// 008C14B0 SetDeviceReloadTimeMul(mul): 008C15AF 00B66270 reads argument 0 as a number,
+// 008C15B4 FSTP float [00E08178] (the double rounded to float); no entity, no class test,
+// no clamp (jm03 passes 0, which stops the countdown), no result. No RNG.
+int GameMissionLuaHost::run_set_device_reload_time_mul_008c14b0(lua_State* state,
+    int argument_count) {
+    ++summary_.reload_time_mul_calls;
+    const double mul = argument_count >= 1 ? ::lua_tonumber(state, 1) : 0.0;
+    g_device_reload_time_mul_00e08178 = static_cast<float>(mul);   // 008C15B4
+    log_.notef("  SetDeviceReloadTimeMul 008c14b0: mul=%g -> 00E08178 (packet cc13-fix18)",
+        static_cast<double>(g_device_reload_time_mul_00e08178));
+    log_.implemented("MissionLuaNative::SetDeviceReloadTimeMul", "008c14b0");
     return 0;
 }
 
@@ -8203,15 +8248,29 @@ int GameMissionLuaHost::run_is_unit_selectable_008ab580(lua_State* state, int ar
 }
 
 namespace {
-// 007B8E60 FLD [unit+0B1Ch]. SUBSTITUTION (labelled), as the units host's own
-// leader_live_speed_007b8e60: +B1Ch is |ctl+18h| cached at 007D807C, here the
-// magnitude of the body linear velocity the free-flight step mirrors
-// plane_world_velocity into, taken when the native runs.
+// 007B8E60 FLD [unit+0B1Ch]. +B1Ch is ctl+6Ch (ctl = unit+AB0h), stored at 007D807C by
+// 007D8020 BSP_PlaneFlightController_UpdateSpeedTerms from the controller's world
+// velocity ctl+18h, the host's plane_world_velocity (packet cc13-fix12c). That differs
+// from motion.linear_velocity while the plane is deck-parented: 007C71E0's 007D9CE0
+// (007C7277) leaves ctl+18h relative to the deck owner. The chain, main thread, 24-bit
+// precision control, so each x87 op rounds to float: 007D8024-007D803B
+// s2 = (y*y + x*x) + z*z, 007D803D FSTP float; 007D8041-007D804F FCOMI against the double
+// 1e-10 at 00CE3820, JBE (s2 <= 1e-10 or unordered) -> 0.0 (007D8064 XORPS); else
+// 007D8051 00BF7030 sqrt, 007D8056 FSTP float. LABELLED: computed when the native runs,
+// where the image reads the value 007D8020 cached at the last 007D9C10 / 007D9C80 call.
 bool plane_cached_speed_007b8e60(const GameUnitsHost& units, std::size_t index, float& out) {
     float v[3] = {0.0f, 0.0f, 0.0f};
-    if (!units.unit_linear_velocity(index, v)) return false;
-    out = static_cast<float>(std::sqrt(static_cast<double>(v[0]) * v[0]
-        + static_cast<double>(v[1]) * v[1] + static_cast<double>(v[2]) * v[2]));
+    if (!units.unit_plane_world_velocity(index, v)) return false;
+    const float xx = static_cast<float>(static_cast<double>(v[0]) * v[0]);   // 007D802F
+    const float yy = static_cast<float>(static_cast<double>(v[1]) * v[1]);   // 007D8033
+    const float xy = static_cast<float>(static_cast<double>(yy) + xx);       // 007D8037
+    const float zz = static_cast<float>(static_cast<double>(v[2]) * v[2]);   // 007D8039
+    const float s2 = static_cast<float>(static_cast<double>(xy) + zz);       // 007D803B/3D
+    if (!(static_cast<double>(s2) > 1e-10)) {                                // 007D804F JBE
+        out = 0.0f;                                                          // 007D8064
+        return true;
+    }
+    out = static_cast<float>(std::sqrt(static_cast<double>(s2)));          // 007D8051/56
     return true;
 }
 }  // namespace
@@ -8271,6 +8330,119 @@ int GameMissionLuaHost::run_get_entity_speed_008c0820(lua_State* state, int argu
     ::lua_pushnumber(state, static_cast<lua_Number>(speed));     // 00B66480
     log_.implemented("MissionLuaNative::GetEntitySpeed", "008c0820");
     return 1;
+}
+
+// Packet cc13-fix18 (docs/CC13_FIX18.md section 2), under kLuaClearForcedReconLevelBound.
+// 008AAB90 ClearForcedReconLevel(entity, party), __cdecl binding, no result (008AAD2D
+// 00B66400). 008AAC90 00888AA0 resolves argument 0 with no null test; 008AACC1 00B66290
+// reads argument 1, the observing party, unchecked (008AACD8 IMUL 34h). 008AACE2 00803B50
+// on the entity's own record, unconditionally; then vtable[5Ch](18h), a squadron: each of
+// the +3CCh members at +3D0h + 4i (a slot past the fifth reads a null base, 008AAD04),
+// 008AAD16; otherwise vtable[5Ch](1Ah), a LandConvoy: each element of the +394h vector
+// (008AAD83-008AADE4, the checked-iterator walk), 008AADD2. Host: the slot itself, then
+// the live members of the squadron registry record whose fused slot it is (as
+// run_set_forced_recon_level_008aa8f0 forces them). LABELLED: an unresolved entity faults
+// in the image and is counted here; a LandConvoy's element vector is not carried (its own
+// slot is cleared, as SetForcedReconLevel forces only that); 00803B50's notify reaches the
+// listeners at the next records rebuild (bsp::clear_forced_recon_level_00803b50). No RNG.
+int GameMissionLuaHost::run_clear_forced_recon_level_008aab90(lua_State* state,
+    int argument_count) {
+    ++summary_.clear_forced_recon_calls;
+    const int party = argument_count >= 2 ? static_cast<int>(::lua_tonumber(state, 2)) : 0;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.clear_forced_recon_unresolved;
+        log_.unimplemented("MissionLuaNative::ClearForcedReconLevel", "008aab90");
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    std::vector<std::size_t> targets{index};                     // 008AACE2
+    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+        if (r.squadron_unit == bsp::kPlaneSquadronNoUnit || r.squadron_unit != index) continue;
+        for (std::size_t member : r.member_units) {              // 008AAD16
+            if (member != bsp::kPlaneSquadronNoUnit) targets.push_back(member);
+        }
+        break;
+    }
+    std::size_t was_forced = 0;
+    for (std::size_t unit : targets) {
+        ++summary_.clear_forced_recon_records;
+        if (bsp::clear_forced_recon_level_00803b50(unit, party)) ++was_forced;
+    }
+    summary_.clear_forced_recon_was_forced += was_forced;
+    const GameUnitRow* row = units->unit_row(index);
+    log_.notef("  ClearForcedReconLevel 008aab90: \"%s\" party=%d records=%zu forced=%zu "
+        "(00803B50, packet cc13-fix18)", row != nullptr ? row->name.c_str() : "?", party,
+        targets.size(), was_forced);
+    log_.implemented("MissionLuaNative::ClearForcedReconLevel", "008aab90");
+    return 0;
+}
+
+namespace {
+// 006E6210 __fastcall(ECX = crew level) -> skill, RET. m = ([00E188A8]+1FE4h != 0):
+// 0 -> m (006E6214-006E6225), 1 -> 2m + 1 (006E623A), 2 -> 2m + 2 (006E6253), else
+// (level == 3) * 4 + 1 (006E6258-006E6265). Single player here, so m = 0. The standalone
+// body is bsp::skill_from_crew_level_006e6210 (src/cc13_seg33a.cpp, bsp_core), which reads
+// the session word through a Seg33aHost this host does not implement.
+int crew_level_skill_006e6210(int level) {
+    const int m = 0;
+    if (level == 0) return m;
+    if (level == 1) return 2 * m + 1;
+    if (level == 2) return 2 * m + 2;
+    return (level == 3 ? 4 : 0) + 1;
+}
+}  // namespace
+
+// Packet cc13-fix18 (docs/CC13_FIX18.md section 6), under kLuaSetCrewLevelBound. 00894F20
+// SetCrewLevel(entity, level), __cdecl binding, no result (00895082 00B66400). 00895022
+// 00888AA0 resolves argument 0; 00895053 00B66290 reads argument 1; 0089506C
+// 006E6210(level); 0089507C entity->vtable[128h](skill), no null test. Slot 128h: ships
+// and planes 006D1EB0 (the +38Ch sub-object's vtable[0]), the squadron 007ECF80 (every
+// member's slot 128h, nothing on the squadron). Host: GameUnitsHost::
+// set_unit_skill_index_006d1eb0 on the unit itself, or on each member of a squadron;
+// not set_skill_level_007b8ae0, whose registry fan-out re-skills a plane's siblings
+// and leaves a squadron's members alone (packet cc13-fix18b). LABELLED: an unresolved entity faults in the image and is
+// counted here; the session word is taken as 0 (single player). No RNG.
+int GameMissionLuaHost::run_set_crew_level_00894f20(lua_State* state, int argument_count) {
+    ++summary_.crew_level_calls;
+    const int level = argument_count >= 2 ? static_cast<int>(::lua_tonumber(state, 2)) : 0;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.crew_level_unresolved;
+        log_.unimplemented("MissionLuaNative::SetCrewLevel", "00894f20");
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    const int skill = crew_level_skill_006e6210(level);             // 0089506C
+    // 0089507C vtable[128h]. The squadron (the registry record whose fused slot this
+    // is, as in run_clear_forced_recon_level_008aab90) takes 007ECF80: i < +3CCh,
+    // [+3D0h+4i]->vtable[128h](skill) (007ECF86-007ECFB9), and stores nothing on the
+    // squadron itself. A ship or a plane, a squadron member included, takes 006D1EB0
+    // on itself only.
+    std::size_t written = 0;
+    const bsp::PlaneSquadronHostRecord* squadron = nullptr;
+    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+        if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == index) {
+            squadron = &r;
+            break;
+        }
+    }
+    if (squadron != nullptr) {
+        for (std::size_t member : squadron->member_units) {         // 007ECFAB
+            if (member == bsp::kPlaneSquadronNoUnit) continue;
+            if (units->set_unit_skill_index_006d1eb0(member, skill)) ++written;
+        }
+    } else if (units->set_unit_skill_index_006d1eb0(index, skill)) {
+        ++written;                                                  // 006D1EB0
+    }
+    const GameUnitRow* row = units->unit_row(index);
+    log_.notef("  SetCrewLevel 00894f20: \"%s\" level=%d skill=%d units=%zu (006E6210, "
+        "vtable[128h], packet cc13-fix18)", row != nullptr ? row->name.c_str() : "?", level,
+        skill, written);
+    log_.implemented("MissionLuaNative::SetCrewLevel", "00894f20");
+    return 0;
 }
 
 // Packet cc13-fix11 (docs/CC13_FIX11.md), under kLuaSetDeadMeatBound. 008AC7B0
@@ -10040,6 +10212,22 @@ void GameMissionLuaHost::report_mission_script_state() {
             summary_.entity_speed_squadron, summary_.entity_speed_ship,
             summary_.entity_speed_plane, summary_.entity_speed_unresolved,
             summary_.entity_speed_unmodelled);
+    }
+    if constexpr (kLuaClearForcedReconLevelBound) {
+        log_.notef("summary mission script clear forced recon calls=%llu records=%llu "
+            "was_forced=%llu unresolved=%llu (008AAB90 -> 00803B50, packet cc13-fix18)",
+            summary_.clear_forced_recon_calls, summary_.clear_forced_recon_records,
+            summary_.clear_forced_recon_was_forced, summary_.clear_forced_recon_unresolved);
+    }
+    if constexpr (kLuaSetCrewLevelBound) {
+        log_.notef("summary mission script crew level calls=%llu unresolved=%llu (00894F20 "
+            "-> 006E6210 -> vtable[128h], packet cc13-fix18)", summary_.crew_level_calls,
+            summary_.crew_level_unresolved);
+    }
+    if constexpr (kLuaDeviceReloadTimeMulBound) {
+        log_.notef("summary mission script reload time mul calls=%llu mul=%g (008C14B0 -> "
+            "00E08178, packet cc13-fix18)", summary_.reload_time_mul_calls,
+            static_cast<double>(lua_device_reload_time_mul_00e08178()));
     }
     log_.notef("summary mission script attack target bound=%d calls=%llu fire_arm=%llu "
         "command_arm=%llu pushed=%llu nil=%llu unresolved=%llu (008A6DE0, packet "

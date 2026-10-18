@@ -246,5 +246,14 @@ void recon_sensor_pass_rebuild_008073c0(ReconSensorPassState& state, float dt,
 void set_forced_recon_level_00805cf0(std::size_t target, int side, int level);
 bool forced_recon_level(int side, std::size_t target, ReconDetectionLevel& out);
 void clear_forced_recon_levels();
+// Packet cc13-fix18 (docs/CC13_FIX18.md), ClearForcedReconLevel 008AAB90. 00803B50
+// __fastcall(ECX = record), RET: old = +10h ? +8h : +4h (00803B52-00803B5E); +10h = 0
+// (00803B66); when +4h differs from old, the record's listener [+2Ch] vt[0](+30h, old,
+// +4h) (00803B6C-00803B7A). Here: the (side, target) entry leaves the forced table,
+// and the next records rebuild clears the persistent record's force byte and queues
+// that (old, +4h) transition ahead of the pass's own (SUBSTITUTION, labelled: the
+// notify is delivered at the next pass, not inside the native). Answers whether the
+// pair was forced. Nothing calls it unless kLuaClearForcedReconLevelBound is true.
+bool clear_forced_recon_level_00803b50(std::size_t target, int side);
 
 } // namespace bsp
