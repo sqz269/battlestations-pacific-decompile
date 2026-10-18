@@ -612,7 +612,7 @@ There are 35 ledger-only rows (section 4 records only the group):
 
 Rows of 7 to 40 instructions with no host mention, depth charge and dogfight first. Before writing, each row had three checks: a rel32-masked byte-twin scan against rows that already have reconstructions, a `git grep` of every address form, and a read of the hosts that model the same task inline.
 
-There are 20 bodies:
+There are 21 bodies:
 - **The nine Describe slots (+18h):** 009A68C0, 009AF670, 009AF890, 009B8F80, 009BDB00, 009C3A60, 009C8BC0, 009CA200 and 009CD250.
   - All share one helper. Each calls 009A1A90 for the base name and 00411430 for the state name, using the task's own registry offset, then 007B7E70 to join them. The temporary string is released inline.
 - **009A79F0, the enter of the dogfight avoid state at vtable 00D1F8F8:**
@@ -620,14 +620,15 @@ There are 20 bodies:
   - It clears +24h, +1Ch and +20h.
   - cc9's `dogfight_avoid_timer_009a7de0` computes the same timer for 009A7DE0 and 009A8020, but that function is bsp_game only. This state is not hosted.
 - **Debug draws:**
-  - 009B35E0, the land task's. Its first stack argument (+440h) moves through FLD/FSTP, so it is a float. The provisional `rgba*` in the 008608B0 ledger row does not fit this caller.
+  - 009B35E0, the land task's. Its first stack argument (+440h) is the float radius of 008608B0; the colour is 008608B0's own static rgba 00F875A8, passed to 00860710 in EDX (the names-ledger row is corrected).
   - 009CFA10, the takeoff task's.
 - **Maneuver slots:** 009B93D0 (conditioned tick), 009B93F0 (tight-turn slot +68h) and 009B9420 (leave-alone cruise profile).
   - 009B93F0 computes PitchSpd x pi + 1. It is modelled at 24-bit precision; at 53-bit the product would be rounded once less.
 - **Saves:** 009B9FD0 (tight turn: pull-up plus "left"), 009BD380 (move on path) and 009C3510 (move to).
 - **Small accessors:** 009CA0C0 (retreat target position) and 009CA480 (the kind-41h cast).
+- **009AAF30, the dogfight cruise profile (slot +54h):** 0099B660, then the altitude block of `bot_task_update_cruise_profile` (src/bot_tasks.cpp:158) with the cruise offset 640h behind the 007B8AD0 gate, then 009AAC70(task+3F8h, 0.0) through a hook and the tail 0099B740. The cc9 dogfight host has not bound it (include/bsp/dogfight_task.hpp:59-60).
 
-There are 34 ledger-only rows (section 4):
+There are 33 ledger-only rows (section 4):
 - **Byte twins:**
   - 009A6BF0 is a twin of 004BEAD0.
   - 009AE0D0, 009B8180 and 009C7FF0 are twins of depth_charge_flush_009a5710.
@@ -645,7 +646,6 @@ There are 34 ledger-only rows (section 4):
   - 009A4900, the drop arm of the done tick, without the 0.3 re-arm.
   - 009B94B0, inlined in the flikflak tick.
   - 009B8450, `bot_task_step_result` with the level-bomb attack states.
-  - 009AAF30, recorded as **partial**. `bot_task_update_cruise_profile` covers the CruisingAlt write, but not the 009AAC70(+3F8h, 0.0) call or the 0099B740 tail.
 
 ## 4. Ledger-only records (packet cc13-seg67C)
 
@@ -654,7 +654,7 @@ There are 34 ledger-only rows (section 4):
 | 0099B790 | `ga_insert_0099b790` | matches; the array order after a multi-merge differs, but the set of pairs is the same |
 | 0099BF30 | `gunfire_repair_0099bf30` | matches; differences only on NaN fallbacks |
 | 0099EC40 | `gunfire_detect_0099ec40` | **mismatch**: the exempt arm's +840h WandererMul store (0099F197) is missing; adoption note sent |
-| 009A7A50 | `df_avoid_common_009a7a50` | **mismatch**: the U(1, 2) redraw at 009A7D72 is a constant 1.5 (the image draws on shared stream 1, so the host also drops one draw from the shared sequence), and approach+100h bit 2 is not modelled; adoption note sent |
+| 009A7A50 | `df_avoid_common_009a7a50` | **mismatch**: the U(1, 2) redraw at 009A7D72 is a keyed stand-in under kDogfightAvoidTimerDrawBound (ON); the shared stream-1 draw itself is still not taken. Approach+100h bit 2 is not modelled; adoption note sent |
 | 009AFAF0 | `land_geometry_009afaf0` | matches; the speed divisor (vtable[38h]) is the host's \|v\| |
 | 009B1420 | `land_begin_steer_009b1420` | first third (009B1420-009B15BC) matches; coverage partial, 009B15C0 onward not re-read |
 | 009C7A80 | `update_dive_bomb_approach` | matches, with the host's labelled substitutions |
@@ -699,12 +699,11 @@ There are 34 ledger-only rows (section 4):
 | 009ACFB0, 009CAD90, 009D0790 | the attack-run enter resets (kamikaze_task_cc13.cpp, strafe_task.hpp, game_hosts_units.cpp) | match |
 | 009DAB10, 009DAE20, 009E6480, 009E8540 | game_hosts_ship_ai.cpp, ship_ai_states.hpp, ship_ai_state_steps.cpp | match |
 | 009A6BF0, 009AE0D0, 009B8180, 009C7FF0, 009B4AF0, 009B4B60, 009B4C10, 009B4C90, 009BD3C0, 009C88E0, 009C32D0, 009CA730 | byte twins (rel32-masked) of 004BEAD0, 009A5710, 007EDD70, 007EDDE0, 006F3410, 00B0A440, 009A2B90, 009A56C0, 007B4890 | twins |
-| 009AF2B0 | `set_state` (src/bot_task_states.cpp:230), next = task+654h inlined | matches |
+| 009AF2B0 | `set_state` (src/bot_task_states.cpp:231) with the constant next = task+654h (kamikaze gotowards); no stack argument (RET) | matches |
 | 009A5DB0, 009A9CC0, 009AE140, 009AF560 | attack_commands.cpp:359 still-valid family; kamikaze_task_cc13.hpp:291 | match |
 | 009AE210, 009A35A0, 009A7F70, 009AB1C0 | `drop_kamikaze_manual_release_009ae210`; depth_charge_task_cc13.cpp:233; `df_avoid_roll_weight_009a7f70`; `df_arm_body_009ab1c0` | match |
-| 009A3160, 009A6B10, 009AB6D0, 009AB7F0, 009B4380 | the initial-state selectors (depth_charge_task_cc13.cpp:380, `dogfight_unengaged_state_009aafa0`, `kamikaze_initial_state_009aeef0`, `drop_kamikaze_initial_state_009adbf0`, plane_level_bomb_task.cpp:121) | match |
-| 009A6B70, 009B4670, 009B4A30, 009B7A50 | dogfight_task.hpp:225; plane_level_bomb_task.hpp:176, .cpp:303 and :388 | match |
+| 009A3160, 009A6B10, 009AB6D0, 009AB7F0, 009B4380 | the initial-state selectors (depth_charge_task_cc13.cpp:380, `dogfight_unengaged_state_009aafa0`, `kamikaze_initial_state_009aeef0` (:405), `drop_kamikaze_initial_state_009adbf0`, plane_level_bomb_task.cpp:121) | match |
+| 009A6B70, 009B4670, 009B4A30, 009B7A50 | dogfight_task.hpp:225; plane_level_bomb_task.hpp:176, .cpp:303 and :390 | match |
 | 009A4900 | the drop arm of `depth_charge_follow_tick_009a4940` (009A4A89-009A4ABA) | matches; 009A4900 has no 0.3 re-arm |
-| 009B94B0 | the flikflak tick, game_hosts_units.cpp:24586 | matches (one stream-1 draw) |
-| 009B8450 | `bot_task_step_result` (src/bot_tasks.cpp:120) | matches |
-| 009AAF30 | `bot_task_update_cruise_profile` (src/bot_tasks.cpp:158), kDogfightCruisingAlt | **partial**: the 009AAC70(task+3F8h, 0.0) call and the 0099B740 tail are not in that model |
+| 009B94B0 | the flikflak tick, game_hosts_units.cpp:24625 | matches (one stream-1 draw) |
+| 009B8450 | `bot_task_step_result` (src/bot_tasks.cpp:121) | matches |
