@@ -78,10 +78,20 @@ could be extended.
    - the other `00926D90` callers.
 
    A target killed only through one of these keeps its trigger.
+   Lua Kill of a unit gunnery already counts dead feeds nothing, which matches the image's Kill:
+   `00926DE1 CMP byte [EDI+5Fh],0` / `00926DED JNE 00926E5A` returns before anything else
+   (cc13-fix19b check). In the image that unit's earlier Kill already notified its observers;
+   here a gunnery-funnel death does not, which is the unfed-caller gap above.
 2. **Squadron targets.** The drain polls each proximity trigger's entity target. When the host
-   registry shows a squadron with at least one member and none alive (gunnery `unit_dead`), the
-   drain queues a notice. This stands for `007F3970`'s Kill of the squadron when its last plane
-   goes. A plane that landed counts as alive here, but in the image it has left `+3D0h`.
+   registry shows a squadron that has held a member and now has none alive, the drain queues a
+   notice. This stands for `007F3970`'s Kill of the squadron when its last plane goes
+   (`007F3A16 CMP [ESI+3CCh],0` / `JNE`, `007F3A2A CALL 00926D90`). A member is alive when its
+   registry entry is not `NoUnit` and gunnery does not count it dead. A plane that dies or lands
+   is removed and Killed: `kSquadronRemovesDeadBound` and the stock return's `007F3970`
+   (`game_hosts_units.cpp`) clear its entry to `NoUnit`, as the image's compaction of `+3D0h`
+   does. Packet cc13-fix19b: "has held a member" is a sticky per-target flag
+   (`squadron_target_resolved_`). Before it, the test needed a non-`NoUnit` member, so a
+   compacted squadron never read as gone and its trigger never retired.
 3. **Timing.** The drain runs after the host's rows, which is the image's row-15 position
    relative to the walks. Kills from the motion step or the walk are drained after that step's
    walk. Kills from the rows are drained before the next walk. The drain runs after row 16
@@ -148,8 +158,9 @@ There is no float arithmetic and no RNG (`00BD2F10` is not reached).
    else is counted `unresolved` and not stored. The image would attach the trigger and then read
    `+3CCh` of a non-squadron. Every use in this installation passes a squadron.
 2. **Members.** `+3D0h`/`+3CCh` are replaced by the registry members that gunnery does not
-   count dead, the same proxy cc9's spent-ordnance latch uses for `007ED790`. A plane back in
-   its hangar counts as a member.
+   count dead, the same proxy cc9's spent-ordnance latch uses for `007ED790`. A plane that lands
+   is removed and Killed (the stock return's `007F3970`, `game_hosts_units.cpp`), so it is no
+   longer a member, as in the image.
 3. **No live member.** The trigger is not tested. This stands for the squadron's `+5Eh`: when
    `007F3970` removes the last plane it Kills the squadron, and that drains at row 15 before the
    next walk. So a destroyed squadron never fires the trigger. In the image it could fire in a
@@ -160,7 +171,14 @@ There is no float arithmetic and no RNG (`00BD2F10` is not reached).
 5. **`+30h` null.** That arm (a silent retire) is not reachable here, because the squadron slot
    keys the list.
 6. **Timing and admission.** As FIX10: the walk runs after the host's motion step,
-   `unit_active()` stands for wave 2's admission, and the callback runs inline.
+   `unit_active()` stands for wave 2's admission, and the callback runs inline. Packet
+   cc13-fix19b: wave 2 admits the squadron entity (`+5Eh` clear, `+BDh` set), and its `+5Eh` is
+   set only by `007F3970`'s Kill when `+3CCh` reaches 0. The list is keyed by the fused wing-0
+   slot, so the walk also admits that slot while `plane_squadron_live_fused_slot` finds the
+   squadron holding a plane. Before this, a dead wing-0 leader stopped the squadron's triggers.
+   A proximity trigger watching such a squadron is posed at its current leader
+   (`flight_leader()`, `+3D0h[0]` after compaction), standing for the squadron's `+FCh`
+   (docs/CONSTRUCT_WORLD.md, "the squadron's position +FCh | the leader's pose").
    `proximity_trigger_callback_missing` now counts both kinds.
 
 ### Missions reached (this installation, the switch ON)

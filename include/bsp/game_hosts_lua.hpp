@@ -2139,6 +2139,9 @@ private:
     void fire_lua_trigger_0074fdd0(std::size_t unit, ProximityTrigger& trigger);
     std::vector<std::size_t> target_gone_pending_;   // the kill list's notices, FIFO
     std::vector<bool> target_gone_notified_;         // +5Eh: pass K ran (00926D90 idempotence)
+    // Packet cc13-fix19b: a squadron target whose registry record has held a member
+    // (+3CCh was non-zero), so a later empty record reads as 007F3970's Kill.
+    std::vector<bool> squadron_target_resolved_;
     // Packet cc13-ver8: the cause this host's Lua Kill (008AC5C0) passed, per unit; the
     // gunnery funnel does not keep it.
     std::map<std::size_t, int> lua_kill_cause_;
