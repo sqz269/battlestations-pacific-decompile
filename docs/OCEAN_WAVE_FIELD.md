@@ -2899,3 +2899,6 @@ The other two unexercised natives still have no reachable caller: SquadronLandAn
 JM03's script (`PRCPIJN/JM03.lua`), not JM08's.
 - ReloadTorpedoes on JM03 for 36000 frames (`local\p18r{off,torp}_jm03`, the 3250f9d2f exports): both fail at
   1176.02 s, no call, identical. Still OFF, unexercised.
+
+**Tool:** `python tools/mission_script_reach.py <Native> [<Native> ...]` lists every menu id whose real script (the
+scene's `StageScript`) calls one of the natives, with call-site counts; with no arguments it prints each id's script.
