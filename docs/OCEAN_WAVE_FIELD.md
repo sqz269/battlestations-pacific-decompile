@@ -3101,3 +3101,6 @@ and the releases do not, because the stage spends +C20h either way.
   D4Y (both), Gekko, Betty (three), Liz, B7A, AD-2 and a few gun rows, none of which flies in USN01 (TBD / SBD).
   So the no-force arm matches and the enabler arm is unexercised: stays OFF until a row with one of those classes
   releases (a late USN row with Avengers or a JM row with Bettys).
+- **ESMP08 (TBF Avengers), 12000 frames:** `local\p19e_off_esmp08.log` against `local\p19e_bay_esmp08.log`. pair_diff
+  1, identical; `bay_door_classes` 0 -> 72 (the enabler arm runs), no bay request in the window on either side.
+  Both arms now matched with identical gameplay: **flipped ON.**

@@ -6800,7 +6800,7 @@ struct GameUnitsHost::Impl {
     // channel C (rate 1.0) before the request, so the bay opens.
     // With it, wing_fold_class_007eabc0 enables channel C from PartAnims.BayDoor
     // as 007EABC0 does (class+5F4h), so only a class without bay doors keeps it shut.
-    static constexpr bool kBayRequestNoForceEnableBound = false;
+    static constexpr bool kBayRequestNoForceEnableBound = true;  // ON 2026-10-18 (OCEAN_WAVE_FIELD 76)
     unsigned long long bay_channel_disabled_requests{0}, bay_door_classes{0};
     // Packet cc9_release_issue_stage_vals, docs/RELEASE_ISSUE_STAGE.md section
     // "Vals": the dive bomber's bomb leaves the same rack through the same stage.
