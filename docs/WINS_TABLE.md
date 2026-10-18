@@ -799,3 +799,43 @@ mechanism is in the cd761bb52 section above).
     at 413.22 s by depth at (1465, -3007) and never hits MiniSub, whose hit listener (luaMiniSubHit) is the scripted
     kill; on 654daf00e the charge hit at 461 s. physics-lane plan: routed to the lead.
   - **PRCP01 20,3**: no end at 30000 frames (physics-lane plan `p9_p01_k`): routed to the lead.
+- **Re-time on fcb6c6fa5** (cc9-lua67, 2026-10-18; main after lua66's SetDeadMeat / PutTo / DepthChargeTask / issue
+  draw flips, physics17's four air switches / GenerateObject / band floor, ships57's SHIP_AI 274-283 and cc13 fix10-21,
+  all OFF switches of fix13-20 still OFF). Export `cc9-lua52\local\l67_rt` (1F0D9DD17135), reference env,
+  `--stop-after-end 40`; logs `cc9-lua52\local\l67r_<row>_rt_<ref|j3>.log` with manifests, summary `local\l67_sum.py`,
+  queue `local\l67_runs.ps1` / `l67_queue.ps1` (at most two runs, 65 s apart). "Was" is the fe9811ba8 re-time above.
+
+  | Row (plan) | frames | reference | 20,3 | was (ref / 20,3) |
+  |---|---|---|---|---|
+  | USN01 `l65_u1_g` | 26000 | completed 405.02 s | completed 415.02 s | 435.02 / 390.03 |
+  | JM08 `l65_j8_p2` | 110000 | **failed 1259.15 s** (HQ) | **failed 1165.06 s** (HQ) | 2688.20 / no end |
+  | LOMP06 `l64_l6_a` | 16000 | **failed 635.12 s** (Narwhal sunk) | completed 346.84 s | 345.84 / 354.84 |
+  | LOMP06 **`l67_l6_b`** (new) | 16000 | completed 269.86 s | completed 269.86 s | - |
+  | USN02 `s36_u2_p7` | 16000 | **failed 195.06 s** | **failed 634.97 s** | 200.06 / 200.06 |
+  | LOMP10 `p3_l10_b` | 36000 | completed 987.43 s | completed 991.43 s | 1073.47 / 1293.69 |
+  | USN12 `g45_u12_e7` | 36000 | completed 1395.24 s | **no end** | 1680.51 / 1670.50 |
+  | BSM01 `p6_b1_a` | 40000 | no end | no end | no end / no end |
+  | PRCP01 `p9_p01_k` | 30000 | completed 921.85 s | completed 854.86 s | 540.39 / no end |
+  | JM06 `p12_j6_c1` | 120000 | **no end** | **no end** | 1967.79 / 2256.08 |
+  | IJN08 `p10_i08_z` | 100000 | **no end** | completed 3076.88 s | 3006.81 / 3026.83 |
+  | IJN18 `s46_i18_a` | 64000 | **failed 2035.86 s** (Game Over) | **failed 789.93 s** | EndMission 2152.97 / 2306.12 |
+  | BSM09 `l65_b9_c` | 36000 | **failed 183.06 s** (Donald) | EndMission 327.04 s, guard | 483.01 / 360.04 |
+  | ESMP08 `p12_e8_rb` | 140000 | completed 1367.41 s | completed 1372.41 s | 3876.81 / 3634.62 |
+  | USN15 `s45_u15_l2` | 90000 | **failed 1257.15 s** (Game Over) | **failed 1297.19 s** | row record: EndMission |
+
+  Every completion and every winning EndMission logged the guard. Notes:
+  - **USN02** (both seeds): the AutoTarget override (SHIP_AI 274, `override 0071e7f0`) puts Houston into `attackmove`
+    after every kill, so `540 moveto Houston EscapePoint` never holds; phase 2 starts at 148 s with Houston 3.5 km out
+    and Exeter is torpedoed (Ushio, 190.31 s) before Houston arrives. Tried (`cc9-lua52\local\l67_u2_<v>.txt`): a, the
+    moveto every 5 s (Houston stays in attackmove); c, g, h, j, k, the player takes Houston's helm at 2000-4000
+    (torpedoed by Nachi 160-232 s); d, from 540 (torpedoed by Minegumo 62 s); i, Houston selected plus moveto: no
+    loss in 800 s but Houston never reaches EscapePoint. Whether a player moveto should pre-empt the override is with
+    the ships lane; no plan yet.
+  - **LOMP06 `lomp06_l67_l6_b`**: the reference seed's Narwhal fires 8 torpedoes at Sado Maru from 455 s and misses,
+    then Kitakami sinks it. b attacks Kinjosan Maru instead of Toba Maru at 3800-5800 and completes at 269.86 s on both
+    seeds (guard); c (Sado Maru there) fails 628.12 s.
+  - **BSM09 reference**: Zuikaku_sqn03 and Shokaku_sqn04 pick Donald (118.00 / 134.60 s, free attack override) and kill
+    it at 181.71 s (primary 3, Game Over). The helm `moveto` does not steer a plane squadron (Donald keeps its scene
+    moveto), and F4F launches at the fighters are refused (deck slots full, or the target hidden, 0043F080). 20,3 wins.
+  - **BSM01**: as on fe9811ba8 (no end); the lead's SetDeadMeat note applies.
+  - **ESMP08** now completes 2500 s earlier on both seeds.
