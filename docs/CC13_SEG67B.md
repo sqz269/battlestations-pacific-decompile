@@ -140,3 +140,17 @@ was made; the image faults on that path, so the host receives a null object.
 The teardown bodies share one sequence interpreter (`teardown`). It keeps each
 image's call order exactly, including the null-adjusted registry cast
 (`ECX = b ? b+off : 0`) in front of 004116D0. EH state bookkeeping is not modelled.
+
+### 3.4 The moveto-style state's archive pair and the task-base predicates
+
+| Address | Function | Notes |
+|---|---|---|
+| 009BEAA0 | `bot_approach_save_altitude_leg_009beaa0` | "target" goes through the writer handle itself; minAlt, diffAlt and refDist go through handle+8h; then 004107B0 |
+| 009C2B80 | `bot_state_construct_base_009c2b80` | the read twin, ending with 00694A60 and 00410630; the unwritten target slot is 0 here (an ESP value in the image) |
+| 0099C210 | `bot_task_pilot_robots_row_0099c210` | the robots-row address |
+| 0099C230 | `bot_task_break_off_allowed_for_unit_0099c230` | 0 when the [00E198C4] holder's unit is the task's unit or squadron |
+| 0099C270 | `bot_task_tick_gate_passes_0099c270` | the side byte at unit+9C2h |
+
+Ledger-only, existing ship-AI host bodies, spot-checked: 009E97B0 (`build_tubes_009e97b0`),
+and 009E9910 / 009E9A50 (`tubes_ready`). Both match, under the host's labelled
+substitutions.

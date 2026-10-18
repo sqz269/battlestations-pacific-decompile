@@ -166,6 +166,13 @@ public:
     virtual void plane_clear_turbo_byte_007b8a90(void* unit) = 0;
     // 0042E740 BSP_GameTuning_GetSingleton: EAX.
     virtual void* game_tuning_singleton_0042e740() = 0;
+    // 004107B0 BSP_ArchiveWriterRef_Destroy: __fastcall(ECX = the 0Ch-byte by-value
+    // writer handle {vtable, int* count, writer*}).
+    virtual void archive_writer_ref_destroy_004107b0(void* handle) = 0;
+    // 00E198C4: a global object pointer (its +8Ch holds {byte +4h, unit +34h}).
+    virtual void* global_object_00e198c4() = 0;
+    // 00F876B8: the WORD index of the local side (unit+9C2h + index*8 is a byte).
+    virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
 
@@ -277,6 +284,20 @@ void* bot_state_follow_construct_009c2980(Cc13Seg67bHost& host, void* state, voi
 void bot_state_follow_exit_009bde40(Cc13Seg67bHost& host, void* state);
 // 009BDE80: __thiscall(ECX = moveto state, a, b, c), RET 0Ch.
 void bot_state_moveto_set_ranges_009bde80(void* state, float a, float b, float c);
+
+// 009BEAA0: __thiscall(ECX = moveto state, writer handle by value [0Ch]), RET 0Ch.
+// `handle` is the callee-owned copy (004107B0 destroys it).
+void bot_approach_save_altitude_leg_009beaa0(Cc13Seg67bHost& host, void* state, void* handle);
+// 009C2B80: __thiscall(ECX = state, approach, reader handle by value [0Ch]), RET 10h,
+// EAX = state: the moveto-style state's stream constructor.
+void* bot_state_construct_base_009c2b80(Cc13Seg67bHost& host, void* state, void* approach,
+                                        void* handle);
+// 0099C210: __fastcall(ECX = task), RET, EAX = the pilot robots row.
+std::uintptr_t bot_task_pilot_robots_row_0099c210(Cc13Seg67bHost& host, void* task);
+// 0099C230: __fastcall(ECX = task), RET, AL.
+bool bot_task_break_off_allowed_for_unit_0099c230(Cc13Seg67bHost& host, void* task);
+// 0099C270: __fastcall(ECX = task), RET, EAX (0/1).
+bool bot_task_tick_gate_passes_0099c270(Cc13Seg67bHost& host, void* task);
 
 // ---- teardown bodies: __thiscall(ECX = object), RET, EH frames not modelled ----
 // Follow-style state destructor bodies, all 006CDD70(s+18h) then 007B45F0(s):

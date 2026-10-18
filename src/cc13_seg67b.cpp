@@ -827,4 +827,104 @@ void ship_ai_observer_member_destruct_c_009db420(Cc13Seg67bHost& host, void* obj
     at<std::uint32_t>(object, 0) = 0x00D056D0u;
 }
 
+// ---------------------------------------------------------------------------
+// The moveto-style state's archive pair and the task-base predicates.
+
+namespace {
+constexpr std::uint32_t kStrTarget = 0x00CFD964u;    // "target"
+constexpr std::uint32_t kStrMinAlt = 0x00D209FCu;    // "minAlt"
+constexpr std::uint32_t kStrDiffAlt = 0x00D209F4u;   // "diffAlt"
+constexpr std::uint32_t kStrRefDist = 0x00D209ECu;   // "refDist"
+constexpr std::uint32_t kStateMember18BaseVtable = 0x00CE3CD4u;
+constexpr std::uint32_t kStateVtable_00d20aec = 0x00D20AECu;
+constexpr std::uint32_t kStateMember18Vtable_00d20ad4 = 0x00D20AD4u;
+}  // namespace
+
+// 009BEAA0 (009BEAA0-009BEB92). EH frame 00CAF6F8. handle->vtable[0Ch]
+// ({0,"target"}, {4, s+2Ch}) on the handle itself (009BEAEF); then, on the
+// handle's writer (handle+8h), vtable[0Ch]({0,"minAlt"}, {2, s+30h}) at
+// 009BEB19, ({0,"diffAlt"}, {2, s+34h}) at 009BEB43, ({0,"refDist"}, {2, s+38h})
+// at 009BEB6D; finally 004107B0(&handle) (009BEB7B). The float payloads are
+// MOVSS bit copies.
+void bot_approach_save_altitude_leg_009beaa0(Cc13Seg67bHost& host, void* state, void* handle) {
+    host.archive_vcall_0c_write(handle, name_record(kStrTarget),
+                                record(4, at<std::uint32_t>(state, 0x2C)));
+    host.archive_vcall_0c_write(ptr_at(handle, 8), name_record(kStrMinAlt),
+                                record(2, at<std::uint32_t>(state, 0x30)));
+    host.archive_vcall_0c_write(ptr_at(handle, 8), name_record(kStrDiffAlt),
+                                record(2, at<std::uint32_t>(state, 0x34)));
+    host.archive_vcall_0c_write(ptr_at(handle, 8), name_record(kStrRefDist),
+                                record(2, at<std::uint32_t>(state, 0x38)));
+    host.archive_writer_ref_destroy_004107b0(handle);
+}
+
+// 009C2B80 (009C2B80-009C2C91). EH frame 00CAF87B. +4h = approach; +0Ch, +10h,
+// +14h, +8h = 0; the +18h member: [+18h] = 00CE3CD4, +1Ch, +20h, +24h = 0, byte
+// +28h = 0; [s] = 00D20AEC; [+18h] = 00D20AD4. handle->vtable[10h]({0,"target"},
+// {4, &t}) (009C2C07); +2Ch = t; on the handle's reader (handle+8h)
+// vtable[10h]({0,"minAlt"}, {2, &s+30h}), ({0,"diffAlt"}, {2, &s+34h}),
+// ({0,"refDist"}, {2, &s+38h}) (009C2C28, 009C2C42, 009C2C5C); when +2Ch is set,
+// 00694A60(ECX = +2Ch, EDX = s+18h) (009C2C67); then 00410630(&handle).
+// UNCERTAINTY: t is the reused argument slot, which the image overwrites with an
+// ESP value (009C2BD3) before the read; an archive that does not write it leaves
+// that stack address in +2Ch. Here t starts at 0.
+void* bot_state_construct_base_009c2b80(Cc13Seg67bHost& host, void* state, void* approach,
+                                        void* handle) {
+    at<std::uintptr_t>(state, 0x04) = reinterpret_cast<std::uintptr_t>(approach);
+    at<std::uint32_t>(state, 0x0C) = 0;
+    at<std::uint32_t>(state, 0x10) = 0;
+    at<std::uint32_t>(state, 0x14) = 0;
+    at<std::uint32_t>(state, 0x08) = 0;
+    at<std::uint32_t>(state, 0x18) = kStateMember18BaseVtable;
+    at<std::uint32_t>(state, 0x1C) = 0;
+    at<std::uint32_t>(state, 0x20) = 0;
+    at<std::uint32_t>(state, 0x24) = 0;
+    at<std::uint8_t>(state, 0x28) = 0;
+    at<std::uint32_t>(state, 0x00) = kStateVtable_00d20aec;
+    at<std::uint32_t>(state, 0x18) = kStateMember18Vtable_00d20ad4;
+    std::uintptr_t t = 0;
+    host.archive_vcall_10_read(handle, name_record(kStrTarget),
+                               record(4, reinterpret_cast<std::uintptr_t>(&t)));
+    at<std::uintptr_t>(state, 0x2C) = t;
+    void* const reader = ptr_at(handle, 8);
+    read_field(host, reader, kStrMinAlt, 2, ptr(state, 0x30));
+    read_field(host, ptr_at(handle, 8), kStrDiffAlt, 2, ptr(state, 0x34));
+    read_field(host, ptr_at(handle, 8), kStrRefDist, 2, ptr(state, 0x38));
+    void* const target = ptr_at(state, 0x2C);
+    if (target != nullptr) host.observer_register_pair_00694a60(target, ptr(state, 0x18));
+    host.native_string_destruct_00410630(handle);
+    return state;
+}
+
+// 0099C210 (0099C210-0099C229). [00F8A30C] + (task+3F4h)+34h * 248h + 0Ch.
+std::uintptr_t bot_task_pilot_robots_row_0099c210(Cc13Seg67bHost& host, void* task) {
+    return static_cast<std::uintptr_t>(at<std::int32_t>(ptr_at(task, kTaskBot), 0x34) * 0x248) +
+           host.robots_table_00f8a30c() + 0x0Cu;
+}
+
+// 0099C230 (0099C230-0099C266). g = [00E198C4]; when g, g+8Ch and the byte
+// (g+8Ch)+4h are all set and ((g+8Ch)+34h) equals task+2F4h (the unit) or
+// task+2FCh (the squadron): 0. Otherwise 1.
+bool bot_task_break_off_allowed_for_unit_0099c230(Cc13Seg67bHost& host, void* task) {
+    void* const g = host.global_object_00e198c4();
+    if (g == nullptr) return true;
+    void* const holder = ptr_at(g, 0x8C);
+    if (holder == nullptr) return true;
+    if (at<std::uint8_t>(holder, 4) == 0) return true;
+    const std::uint32_t unit = at<std::uint32_t>(holder, 0x34);
+    if (unit == at<std::uint32_t>(task, 0x2F4) || unit == at<std::uint32_t>(task, 0x2FC)) {
+        return false;
+    }
+    return true;
+}
+
+// 0099C270 (0099C270-0099C293). task+2F4h (the unit) set and the byte
+// unit+9C2h + [00F876B8]*8 set -> 1, else 0.
+bool bot_task_tick_gate_passes_0099c270(Cc13Seg67bHost& host, void* task) {
+    void* const unit = ptr_at(task, 0x2F4);
+    if (unit == nullptr) return false;
+    const std::size_t side = host.global_side_index_00f876b8();
+    return at<std::uint8_t>(unit, 0x9C2 + side * 8) != 0;
+}
+
 }  // namespace bsp
