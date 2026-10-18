@@ -3657,3 +3657,15 @@ Predictions: unreached on USN04 and USN21 (no moveto tick with C25h set). The re
 - `plane_touchdown_007cc440`'s y > -6.0 test (vt[34h] y, 007CC440): runs before the plane is parented to that owner.
 - The core law's parent term at 007DC0A2-007DC131 reads the PARENT's vt[34h] (the carrier's world velocity), not the plane's.
 No further direction-dependent reader of a parented plane's own vt[34h] was found, so no new switch. The core law's own use of ctl+18h in the body frame while parented is still section 75's whole-frame item.
+
+**90, flips.** kMoveToTickHeadBound and kLevelBombGoAwayOrderBound are ON, on the pairs above (identical, faithful).
+
+## 91. Strafe draw counts (cc9-physics22, 2026-10-18)
+
+- 009CB0F0, the strafe aim enter: +1Dh = +1Ch = 0 (009CB110 / 009CB113), then 009CB116 00BD2F10(ECX = 1, 0.2 [00CE54A0], 0.8 [00CE74F8]) FSTP +18h (009CB11B), RET at 009CB11F. No strafe tick reads +18h. The host took no draw.
+- The strafe goaway's tightturn (009BC030) and flikflak (009BC0A0) pushes each construct a bot task through 0099C6F0. Its seeds draw +308h = -U(0, 1) on stream 1 and +3E8h = U(-1, 0) on stream 0 (section 81). The host's push builds no task, so it took neither draw.
+
+Switch **kStrafeDrawCountBound**, committed OFF. It takes these draws under the keys the host already uses (`<name>#sta18`, `<name>#tb308`, `<name>#tb3e8`) and drops the values; the pushed task's own +308h / +3E8h are not hosted (LABELLED). A summary line "strafe draw-count takes=" prints when nonzero.
+
+Prediction: with BSP_GUNNERY_RNG_STREAMS=1 (the reference env) each purpose has its own keyed stream. The aim draw is in a new key and moves nothing. The push draws advance `#tb308` / `#tb3e8`, so the next task install on that plane takes a later value of its think phase and ga timer, and only strafing planes that tightturn or flikflak can move. USNOS `l65_os_c1` strafes (planes #1.x on TroopTrans); USN04 and USN21 have no strafe task installs.
+- The remaining low item: the land standby 009B0FE0 / final 009B1ED0 +2B4h blend is per-op 24-bit in the image (009B11E9-1205, 009B1FC6-1FDF) and round-once double in the host. The dive goaway 009C4A40 ceiling NaN is not reachable without a NaN altitude. Both are left open.

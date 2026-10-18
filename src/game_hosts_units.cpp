@@ -6733,13 +6733,24 @@ struct GameUnitsHost::Impl {
     // or below double 1e-10 ([00CE3820], 009C249A-009C24A8 FCOMI/JBE), else
     // float(sqrt). True: that store and that distance. False: double d2 with
     // a 1e-6 threshold, and no +26Ch store.
-    static constexpr bool kMoveToTickHeadBound = false;
+    static constexpr bool kMoveToTickHeadBound = true;   // ON: OCEAN_WAVE_FIELD 90 (identical)
     // Packet p22_lb_goaway_order (OCEAN_WAVE_FIELD 90). The level-bomb goaway
     // enter 009B5680 loads approach+24h (009B5724, FSTP to a local at
     // 009B572A), draws at 009B5746, then 009B574B-009B5755 FLD the speed ratio,
     // FMUL the clamped base, FMULP the draw: +18h = draw * (ratio * base).
     // True: that order. False: (draw * base) * ratio.
-    static constexpr bool kLevelBombGoAwayOrderBound = false;
+    static constexpr bool kLevelBombGoAwayOrderBound = true;   // ON: OCEAN_WAVE_FIELD 90 (unreached)
+    // Packet p22_strafe_draws (OCEAN_WAVE_FIELD 91). Two stream draws the host
+    // skipped. (a) The strafe aim enter 009CB0F0 stores +18h = U(0.2, 0.8)
+    // (ECX = 1, [00CE54A0] / [00CE74F8], 009CB116, FSTP 009CB11B); no tick
+    // reads it. (b) Each tightturn (009BC030) or flikflak (009BC0A0) push
+    // constructs a bot task through 0099C6F0, whose seeds draw +308h = -U(0, 1)
+    // and +3E8h = U(-1, 0) (section 81). True: those draws are taken under the
+    // keys the host already uses (`#sta18`, `#tb308`, `#tb3e8`) and their
+    // values are dropped (the pushed task's own +308h / +3E8h are not hosted).
+    // False: no draw.
+    static constexpr bool kStrafeDrawCountBound = false;
+    unsigned long long strafe_draw_count_takes{0};
     unsigned long long moveto_c25_arm_applied{0};
     void moveto_c25_arm(GameUnitSlot& unit) {
         ++moveto_c25_arm_applied;
@@ -24858,6 +24869,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plane_pitch_angle_c64, unit_.plane_climb_angle_1ec);
                         unit_.st_mv_kind = 1;
                         ++unit_.st_mv_tightturns;
+                        st_push_ctor_draws();
+                    }
+                    // 009BC030 / 009BC0A0 build the pushed task through 0099C6F0:
+                    // its +308h and +3E8h seeds (section 81), drawn and dropped.
+                    void st_push_ctor_draws() {
+                        if constexpr (GameUnitsHost::Impl::kStrafeDrawCountBound) {
+                            const std::string& n = unit_.row.name;
+                            (void)owner_.release_altitude_draw_00bd2f10(n + "#tb308", 0.0f, 1.0f);
+                            (void)owner_.release_altitude_draw_00bd2f10(n + "#tb3e8", -1.0f, 0.0f);
+                            ++owner_.strafe_draw_count_takes;
+                        }
                     }
                     // 009CBD0A-009CBD86 (tick) / 009CB9DE-009CBA59 (enter):
                     // dist = U(0.5, 0.7) * approach+34h, the condition 007B5E20
@@ -24871,6 +24893,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.st_mv_timer_3fc = st_draw("ff_timer", 0.0f, 1.0f) + 2.0f;
                         unit_.st_mv_kind = 2;
                         ++unit_.st_mv_flikflaks;
+                        st_push_ctor_draws();
                     }
                     // r = U(0, 1) against the goaway state's +18h (JBE to tightturn
                     // when +18h <= r). The enter adds 009CB9B2-009CB9D8: flikflak
@@ -25051,9 +25074,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 break;
                             case bsp::StrafeState::kAim:
                                 // 009CB0F0: +1Ch = +1Dh = 0; its +18h = U(0.2, 0.8) has
-                                // no reader in the tick and is not drawn here.
+                                // no reader in the tick; kStrafeDrawCountBound takes
+                                // the draw and drops it.
                                 unit_.st_aim_close_1c = false;
                                 unit_.st_aim_off_1d = false;
+                                if constexpr (GameUnitsHost::Impl::kStrafeDrawCountBound) {
+                                    (void)st_draw("a18", 0.2f, 0.8f);   // 009CB116
+                                    ++owner_.strafe_draw_count_takes;
+                                }
                                 ++unit_.st_aim_entries;
                                 break;
                             case bsp::StrafeState::kGoAway:
@@ -41428,6 +41456,10 @@ void GameUnitsHost::report() {
             host.attack_mode_cadence_skips, Impl::kTaskAttackModeCadenceBound ? 1 : 0);
         host.log.notef("summary bot task ctor seeds=%llu bound=%d (0099C6F0 / 009C2980, packet "
             "p20_ctor_seeds)", host.bot_task_ctor_seeds, Impl::kBotTaskCtorSeedsBound ? 1 : 0);
+        if (host.strafe_draw_count_takes > 0) {
+            host.log.notef("summary strafe draw-count takes=%llu (009CB116 / 0099C6F0 pushes, "
+                "packet p22_strafe_draws)", host.strafe_draw_count_takes);
+        }
         host.log.notef("summary land min speed owner terms=%llu bound=%d (009B1362, packet "
             "p20_land_min_speed_owner)", host.land_min_speed_owner_terms,
             Impl::kLandMinSpeedOwnerVelocityBound ? 1 : 0);
