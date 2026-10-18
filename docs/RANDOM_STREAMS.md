@@ -242,6 +242,17 @@ BSP_HudMovieCamera_Destruct, `00798C80` BSP_HudMovieCamera_FirstStepReseed.
 - **Load kind 6's second ammunition** for `00729B90`.
 - **Build the gun node frame**, so the fire window can be bound faithfully and measured as its own
   pair.
+- **Open divergence: the warning variant draw (packet cc15-wB4 step 3a).** The image advances
+  the shared per-thread MT on every warning activation: 00979B50 draws `00BD2FC0` with ECX = 1 at
+  00979D0C/00979D11. It draws only when the message entry has more than one variant; a single
+  variant is taken with no draw. On JM08 (20000 frames) that is 54 draws, one for each of the 54
+  accepted warnings; USN01 (3000 frames) has 15. The host draws from a warning-local
+  `std::mt19937` behind the one call site `warning_pick_variant_draw()` in
+  src/game_hosts_mission_frame.cpp, labelled SUBSTITUTION, and does not touch the gunnery
+  generator. The image-exact shared draw is option (i). It belongs with the stream-1 accessor work
+  and gets its own OFF switch and pair later. With the reference option `BSP_GUNNERY_RNG_STREAMS=1`,
+  the per-(unit, purpose) keying already absorbs the offset, so (i) changes only the default-env
+  sequence.
 - **The census's 84 unresolved ECX sites** (51 register-derived, 24 undecoded, 9 after a call) were not resolved one by
   one. The stream-1 claim for gameplay rests on the 327 literal sites plus the gunnery table
   above.
