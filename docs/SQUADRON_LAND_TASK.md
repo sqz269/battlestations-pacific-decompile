@@ -17787,3 +17787,19 @@ Under `kPutToFormationBound`: PutTo with exactly three arguments (008AA10E) and 
 call `set_heading_008196b0` with float(arg x 00CE3D28 / 00CE3D20) (`put_to_heading_radians`, 24-bit model), and
 PutFormationTo's shape 1..3 on a grouped unit runs `reshape_formation_0070efd0` before the move. OFF keeps the three
 unimplemented records. The pair follows (5id prediction).
+
+
+## 5ig. The three cc13-fix67 constant switches: **ON** (cc9-lua66, 2026-10-17)
+
+`kConstExactImageBitsBound`, `kPilotPitchInputScaleImageBound`, `kGuiCameraTargetZImageBound` (docs/CC13_FIX67.md).
+`tools/const_width_sweep.py --all --exact --assume-on` the three: 9 exact mismatches, exactly the nine cc13 skipped
+(four judged intentional, three unused, kHudRootRowGap / kHudRootCircleYOffset); the sweep with the switches ON in
+source reports the same. Pairs (export of 3f0059c55 with the three flipped, `local\l66_cst_on`, against the
+bb5d16e51 control, reference env):
+
+- USN04 9000 fr: gameplay identical; 36 ship-AI native counts move by a few calls (the ship_ai_approach doubles).
+- BSM01 `bsm01_p6_b1_a` 40000 fr: gameplay moved chaotically (deaths 805 = 805, 627 death rows changed, torpedo
+  releases 42 -> 25, dive 39 -> 48); neither side ends the mission. The changes are ulp-level (and the pitch input
+  scale, which acts on the player's stick only; the player drives HenryPT here), so the spread is trajectory chaos.
+
+Flipped ON: the values are the image's bits. Full build passed.

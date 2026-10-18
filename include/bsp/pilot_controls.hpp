@@ -88,7 +88,7 @@ inline constexpr float kPilotPitchHalfRange = kConstExactImageBitsBound ? 0x1.0c
 // qword scales the stick at 00519697 (FMUL) before the wrapped subtract that makes the error.
 // The float 3F060A92 holds the qword's exact value, and under the main thread's 24-bit
 // precision control the image's FDIV rounds as a float divide does. ON changes the response.
-inline constexpr bool kPilotPitchInputScaleImageBound = false;
+inline constexpr bool kPilotPitchInputScaleImageBound = true;   // ON: cc9-lua66 (SQUADRON_LAND_TASK 5ig)
 inline constexpr float kPilotPitchInputScale = kPilotPitchInputScaleImageBound ? 0x1.0c1524p-1f : 2.0f;    // 00CEC730, a double in the image; image bits 3F060A92 at 00CEC730 m64 3FE0C15240000000
 inline constexpr float kPilotGroundSpeedGate = 1.3888889f;  // 00CF8AAC, 5 km/h in m/s
 inline constexpr float kPilotGroundTimerGate = 5.0f;    // 00CE3850
