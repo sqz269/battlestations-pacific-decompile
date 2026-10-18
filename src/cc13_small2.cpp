@@ -203,8 +203,9 @@ LuaObject* unit_lua_this_table_entry_0077cd80(void* unit, LuaObject* out, Small2
 
 // 0077D270 __thiscall(unit) RET, the unit override of mission-entity slot 7Ch. Clears the
 // game's +193Ch byte, marks the recon slot of each of the three +1F0h rows (34h apart) with a
-// positive count (row+8 selects row+0 or row-4), and for a kind-1 unit (+70h) with a script
-// handle (word +2C8h) sets self.LastBanto = thisTable entry of the +2B0h record under the
+// positive count (row+8 selects row+0 or row-4), and when the kill cause +70h is 1 ("harm";
+// 00926C80 writes 1 at 00926CF0 or copies the parent's cause at 00926CEB; 0077A650 kills
+// with cause 3) and there is a script handle (word +2C8h) sets self.LastBanto = thisTable entry of the +2B0h record under the
 // mission-entity lock (critical section [lock+4], depth +18h). Then 00929B60.
 void unit_instance_on_killed_lua_0077d270(void* unit, Small2Host& host) {
     at<std::uint8_t>(host.global_ptr(kGame), 0x193C) = 0;                      // 0077D295
@@ -355,7 +356,7 @@ bool session_dispatch_entity_kind_message_0077fe80(void* entity, void* msg, bool
         return false;
     }
     switch (at<std::uint8_t>(msg, 0x10)) {                                      // 0077FEAA
-    case 0x53: {                                                                // 0077FFAF
+    case 0x53: {  // MT_GIVEUNIT                                                // 0077FFAF
         const std::uint32_t player = at<std::uint32_t>(msg, 0x20);
         void* const slot = at<void*>(host.global_ptr(kGame),
                                      0x18CC + static_cast<std::size_t>(player) * 4);
@@ -372,21 +373,21 @@ bool session_dispatch_entity_kind_message_0077fe80(void* entity, void* msg, bool
         host.unit_apply_role_owner_slots_0077a5d0(entity);                     // 00780009
         return true;
     }
-    case 0x54:                                                                  // 00780015
-        host.entity_apply_message_payload_0c(entity, add(msg, 0x20), at<std::uint8_t>(msg, 0x28));
+    case 0x54:  // MT_SETGUINAME, the receiving side of 0077D3F0                // 00780015
+        host.entity_set_gui_name_0c(entity, add(msg, 0x20), at<std::uint8_t>(msg, 0x28));
         return true;
-    case 0x76: {                                                                // 0077FEC8
+    case 0x76: {  // MT_FORMATION_JOIN                                          // 0077FEC8
         void* const target = host.entity_handle_resolve_00521e30(at<std::uint16_t>(msg, 0x20));
         if (target != nullptr) host.unit_group_join_or_merge_0077f940(entity, target);
         return true;
     }
-    case 0x77: {                                                                // 0077FEE4
+    case 0x77: {  // MT_FORMATION_LEAVE                                         // 0077FEE4
         const std::uint16_t id = at<std::uint16_t>(msg, 0x20);
         void* const target = id != 0 ? host.entity_handle_resolve_00521e30(id) : nullptr;
         host.unit_group_hand_over_leadership_0077bd70(entity, target);         // 0077FEF7
         return true;
     }
-    case 0x78: {                                                                // 0077FF03
+    case 0x78: {  // MT_FORMATION_SET                                           // 0077FF03
         if (ptr(entity, 0x284) != nullptr) {
             host.unit_group_apply_formation_shape_0070efd0(ptr(entity, 0x284),
                                                            at<std::uint32_t>(msg, 0x20));
@@ -453,9 +454,89 @@ void unit_apply_expiry_message_0077f7b0(void* unit, const void* msg, Small2Host&
     }
 }
 
+// 00780DB0 __thiscall(object, id) RET 4, EAX = object: the MultiScore net entity. Base
+// 0077EED0(id), five vtable words, +C4h = 60h, +54h = 2, +58h = 0, single device role 9
+// (0077F2D0), byte +310h = 0. Then, on a borrowed Lua state owner over
+// [[[game+1A08h]+4]+4], for the globals "MultiScore" and "MultiScore_save" in turn: create the
+// table (00B67580), look it up again by name (00B67800: 00D04080 at 00780EFC, 00D04070 at
+// 00780FF6) and give it eight empty subtables at 0..7 (00B66670). The owner is closed last.
+void* multi_score_construct_00780db0(void* object, std::uint32_t id, Small2Host& host) {
+    host.unit_owner_entity_construct_0077eed0(object, id);                    // 00780DDC
+    at<std::uint32_t>(object, 0x000) = 0x00D040B8;                            // 00780DEE
+    at<std::uint32_t>(object, 0x010) = 0x00D040A0;
+    at<std::uint32_t>(object, 0x024) = 0x00D04098;
+    at<std::uint32_t>(object, 0x170) = 0x00D04094;
+    at<std::uint32_t>(object, 0x1E4) = 0x00D0408C;                            // 00780E0C
+    at<std::uint32_t>(object, 0x0C4) = 0x60;                                  // 00780E16
+    at<std::uint32_t>(object, 0x054) = 2;                                     // 00780E20
+    at<std::uint32_t>(object, 0x058) = 0;                                     // 00780E27
+    host.unit_assign_single_device_role_0077f2d0(object, 9);                  // 00780E2A
+    at<std::uint8_t>(object, 0x310) = 0;                                      // 00780E2F
+    alignas(4) std::uint8_t owner[0x54];
+    void* const game = host.global_ptr(kGame);
+    host.lua_state_owner_construct_borrowed_00b66c00(
+        owner, ptr(ptr(ptr(game, 0x1A08), 4), 4));                            // 00780E4C
+    for (const std::uint32_t name_address : {kMultiScoreName, kMultiScoreSaveName}) {
+        const char* const text = static_cast<const char*>(host.global_address(name_address));
+        NativeString name{0, nullptr};
+        host.native_string_resize_0041dd40(&name, static_cast<std::uint32_t>(std::strlen(text)),
+                                           1);                                // 00780E69 / 00780F63
+        if (name.data != nullptr) std::memcpy(name.data, text, name.length + 1);
+        LuaObject globals{};
+        host.lua_set_new_table_00b67580(host.lua_globals_00b67980(owner, &globals), &name);
+        host.lua_destroy_00b67700(&globals);                                  // 00780EC2 / 00780FBC
+        if (name.data != nullptr) host.native_string_free_storage(&name);
+        LuaObject table{};
+        void* const g = host.lua_globals_00b67980(owner, &globals);           // 00780EF7 / 00780FF1
+        host.lua_get_by_name_00b67800(g, &table, text);                       // 00780F10 / 0078100A
+        host.lua_destroy_00b67700(&globals);                                  // 00780F21 / 0078101B
+        for (std::int32_t i = 0; i < 8; ++i)
+            host.lua_set_new_table_at_index_00b66670(&table, i);              // 00780F35 / 00781027
+        host.lua_destroy_00b67700(&table);                                    // 00780F4E / 00781040
+    }
+    host.lua_state_owner_close_00b669a0(owner);                               // 00781050
+    return object;
+}
+
 // ---------------------------------------------------------------------------
 // Segment 26.
 // ---------------------------------------------------------------------------
+
+// 00641E30 __thiscall(markers, unit) RET 4. Skips a unit whose parent (00923810(1)) is a
+// kind-6 entity with parts byte +14h == 1, and a unit that is not live (+5Ch set, +5Dh / +60h
+// / +5Eh clear). Projects the unit's world position (y forced to 0 for a kind-8 unit under
+// 00852860 while the [game+1ED4h] entity's y is > 0) through 006395E0 into a, b, c, d (a is
+// written into the unit argument's own stack slot), then emits a box marker on the 006407A0(0)
+// sink: 0063C620(&quad, 3, 0, 1, unit->vtable[10h](), 0, NativeString "" by value, 0.0f,
+// {a, b, a, d}, 0), quad = (a, b), (a, d), (c, d), (c, b). 14 stack dwords, RET 38h.
+void hud_markers_add_unit_part_markers_00641e30(void* markers, void* unit, Small2Host& host) {
+    void* const parent = host.entity_ancestor_00923810(unit, 1);              // 00641E55
+    if (parent != nullptr && host.entity_is_kind_5c(parent, kUnitKind06) &&
+        at<std::uint8_t>(host.unit_parts_object_0080e490(parent), 0x14) == 1)
+        return;                                                                // 00641E7A
+    if (unit == nullptr || at<std::uint8_t>(unit, 0x5C) == 0 || at<std::uint8_t>(unit, 0x5D) != 0 ||
+        at<std::uint8_t>(unit, 0x60) != 0 || at<std::uint8_t>(unit, 0x5E) != 0)
+        return;                                                                // 00641E80..00641EAA
+    void* const sink = host.hud_markers_sink_006407a0(markers, 0);            // 00641EB4
+    if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);
+    float point[3] = {at<float>(unit, 0xFC), at<float>(unit, 0x100), at<float>(unit, 0x104)};
+    if (host.entity_is_kind_5c(unit, kUnitKind08) &&
+        host.entity_is_below_altitude_third_00852860(unit)) {                  // 00641EFE / 00641F06
+        const float* const ref = host.entity_world_position_refreshed_00427eb0(
+            ptr(host.global_ptr(kGame), 0x1ED4));                              // 00641F1A
+        if (ref[1] > 0.0f) point[1] = 0.0f;                                    // 00641F27 COMISS / JA
+    }
+    float a = 0.0f, b = 0.0f, c = 0.0f, d = 0.0f;
+    host.hud_markers_project_part_bounds_006395e0(markers, point, unit, &a, &b, &c, &d);  // 00641F6C
+    const float quad[8] = {a, b, a, d, c, d, c, b};                           // 00641F8C..00641FE9
+    const float box[4] = {a, b, a, d};                                         // 00641F96..00641FC5
+    NativeString empty{0, nullptr};
+    host.native_string_assign_cstr_0041e870(
+        &empty, static_cast<const char*>(host.global_address(kEmptyCString)));  // 00641FEF
+    const char* const name = host.entity_name_10(unit);                       // 00642005
+    // The by-value string is owned by 0063C620 from here (EH state -1 at 00642015).
+    host.hud_marker_emit_box_0063c620(sink, quad, 3, 0, 1, name, 0, empty, 0.0f, box, 0);
+}
 
 // 00645BB0 __thiscall(listener, unit, event, candidate) RET 0Ch, slot +0Ch of the HUD-root
 // secondary vtable 00CF5A84 (the listener sits at root+8). Event 1 for the controlled unit:
