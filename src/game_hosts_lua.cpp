@@ -60,6 +60,10 @@
 #include "bsp/vehicle_class.hpp"
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/native_string.hpp"
+#include "bsp/cc13_seg87.hpp"
+#include "bsp/native_lua_class_setters.hpp"
+#include "bsp/native_lua_field_setters.hpp"
+#include "bsp/native_lua_object_boolean.hpp"
 #include "bsp/recon_values.hpp"
 #include "bsp/recon_slot_lists.hpp"  // packet cc9_recon_publication
 #include "bsp/shipyard_production.hpp"  // packet cc9_lua_add_shipyard_stock
@@ -92,6 +96,31 @@ extern "C" {
 
 namespace bsp::game {
 namespace {
+// Packet cc15-lua1: the VehicleClass row mark (0096490C, 00964959) and the lobby
+// settings globals (00B67350, 00B67580) run the native 14h-object field setters
+// over this state instead of stock push/setfield pairs. Each setter pushes the
+// key with lua_pushlstring, then the value, then lua_settable on the object.
+constexpr bool kLuaObjectFieldSettersCc13Bound = false;
+
+// The setters' NativeString key: 0041E870 over the CRT-backed storage, released
+// when the call returns.
+struct ScopedNativeKey {
+    NativeString key;
+    explicit ScopedNativeKey(const char* text) { key.assign_0041e870(crt_string_storage(), text); }
+    ~ScopedNativeKey() { key.release_to(crt_string_storage()); }
+    ScopedNativeKey(const ScopedNativeKey&) = delete;
+    ScopedNativeKey& operator=(const ScopedNativeKey&) = delete;
+};
+
+// An untracked native object over the value at stack index `index` (kind 2).
+NativeLuaObjectStorage stack_object(NativeLuaStateStorage& owner, int index) {
+    NativeLuaObjectStorage object{};
+    object.owner_00 = &owner;
+    object.kind_04 = 2;
+    object.index_08 = index;
+    return object;
+}
+
 // Packet cc9_spawn_new_id_queries: what the two id bindings answered.
 struct SpawnIdQueryCensus {
     unsigned long long requested{0};
@@ -4315,10 +4344,20 @@ void GameMissionLuaHost::mark_vehicle_class_row_00964790(int class_index) {
                 lua_rawgeti(state_, -1, class_index);
             }
             if (lua_istable(state_, -1)) {
-                lua_pushinteger(state_, class_index);   // 0096490C 00B67460
-                lua_setfield(state_, -2, "ID");
-                lua_pushboolean(state_, 1);             // 00964959 00B673A0
-                lua_setfield(state_, -2, "Got");
+                if constexpr (kLuaObjectFieldSettersCc13Bound) {
+                    NativeLuaStateStorage owner;
+                    construct_native_lua_state_00b66bd0(&owner);
+                    owner.state_04 = state_;
+                    NativeLuaObjectStorage row = stack_object(owner, ::lua_gettop(state_));
+                    const ScopedNativeKey id("ID"), got("Got");
+                    native_lua_set_integer_00b67460(row, id.key, class_index);   // 0096490C
+                    native_lua_set_boolean_00b673a0(row, got.key, 1);            // 00964959
+                } else {
+                    lua_pushinteger(state_, class_index);   // 0096490C 00B67460
+                    lua_setfield(state_, -2, "ID");
+                    lua_pushboolean(state_, 1);             // 00964959 00B673A0
+                    lua_setfield(state_, -2, "Got");
+                }
                 ++summary_.class_rows_marked;
             }
         }
@@ -9827,15 +9866,37 @@ public:
 
     void set_global_nil(const char* name) override {
         if (state_ == nullptr) return;
-        lua_pushnil(state_);
-        lua_setfield(state_, LUA_GLOBALSINDEX, name);
+        if constexpr (kLuaObjectFieldSettersCc13Bound) {
+            NativeLuaStateStorage owner;
+            construct_native_lua_state_00b66bd0(&owner);
+            owner.state_04 = state_;
+            NativeLuaObjectStorage globals;
+            native_lua_globals_00b67980(owner, &globals);
+            const ScopedNativeKey key(name);
+            native_lua_set_nil_00b67350(globals, key.key);
+        } else {
+            lua_pushnil(state_);
+            lua_setfield(state_, LUA_GLOBALSINDEX, name);
+        }
         nil_global_ = true;
         log_.implemented("MissionLua::lobby_settings_set_global_nil", "00b67350");
     }
     void set_global_new_table(const char* name) override {
         if (state_ == nullptr) return;
-        lua_createtable(state_, 0, static_cast<int>(bsp::kLobbySettingsFieldCount));
-        lua_setfield(state_, LUA_GLOBALSINDEX, name);
+        if constexpr (kLuaObjectFieldSettersCc13Bound) {
+            // 00B67580 creates the table with (0, 0); the host's presize is not
+            // observable from Lua.
+            NativeLuaStateStorage owner;
+            construct_native_lua_state_00b66bd0(&owner);
+            owner.state_04 = state_;
+            NativeLuaObjectStorage globals;
+            native_lua_globals_00b67980(owner, &globals);
+            const ScopedNativeKey key(name);
+            native_lua_set_new_table_00b67580(globals, key.key);
+        } else {
+            lua_createtable(state_, 0, static_cast<int>(bsp::kLobbySettingsFieldCount));
+            lua_setfield(state_, LUA_GLOBALSINDEX, name);
+        }
         table_created_ = true;
         log_.implemented("MissionLua::lobby_settings_set_global_table", "00b67580");
     }
