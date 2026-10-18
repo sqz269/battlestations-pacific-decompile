@@ -80,3 +80,37 @@ read here either, so it is a named host hook.
 | `008FB750` | BSP_RobotConfig_ConstructBase | ledger-only | src/robot_config.cpp `construct_descriptor`. |
 | `008FC660` `008FC6B0` `008FC9F0` `008FCD40` `008FCF10` `008FD350` `008FD860` | Construct PilotBot, AAFlakBot, TailGunnerBot, AAGunnerBot, ArtillerySubDirectorBot, ArtilleryGunnerBot, DepthChargeBot | ledger-only | src/robot_config.cpp `construct_descriptor` with the same name strings and derived vtables. |
 | `008FC570` `008FC680` `008FC9C0` `008FCD10` `008FCEE0` `008FD320` `008FD5F0` `008FDAC0` | Destruct base and the seven classes | ledger-only | src/robot_config.cpp `delete_robot_descriptor`. |
+
+## Scene property records and the spawn reference frame
+
+A scene property record: +04h type (0 int, 1 float, 2 string, 3 bool byte, 4 enum, 5 reference,
+6 none, 7 vec3, 8 bytes, 9 float array, 0Ah int array, 0Bh vec3 array), +0Ch value, +10h/+14h the
+vec3 tail, +18h/+1Ch the reference object / name, +20h/+24h the array block / byte size, +28h the
+enum declaration. The existing `native_scene_property_*` files own storage; these are the readers.
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `008EF7C0` | BSP_SpawnSpec_SetField0C_Provisional | reconstructed | `scene_property_set_field0c_008ef7c0`: +0Ch = value, returns the record. |
+| `008EF820` | BSP_SceneProperty_ValueEquals | reconstructed | `scene_property_value_equals_008ef820`: per type through table 008EF9FC; floats pass only when ordered-equal (FUCOMIP, JP at 008EF877); references compare objects, else names through `00438E10` (008EF8BE); type 6 is never equal. |
+| `008F0B00` | BSP_SceneEnumTable_FindNameByValue | reconstructed | `scene_enum_table_find_name_008f0b00`: 40h buckets at +8, chains via node+0Ch; a null name gives `00F89450`. |
+| `008F0D80` | BSP_SceneEnumDecl_FindNameByValue | reconstructed | `scene_enum_decl_find_name_008f0d80`: the same walk through `008EEB10` (008F0D8E) / `008EEB60` (008F0DA9) on decl+4. |
+| `008F0DF0` | BSP_SceneProperty_GetStringValue | reconstructed | `scene_property_string_value_008f0df0`: string, enum name through `008F0D80` (008F0E08), else the +1Ch name or "". 31 callers. |
+| `008F0E20` | BSP_SceneProperty_GetValueText | reconstructed | `scene_property_value_text_008f0e20`: display text through `004B7F70` (008F0E7E) into the shared buffer `00F89458`; array counts from `008EF7F0` (008F0EED). |
+| `008F84A0` | BSP_SpawnRefFrame_Assign | reconstructed | `spawn_ref_frame_assign_008f84a0`: entity +14h, `00694A60` (008F84B4), matrix through `004134F0` (008F84C0); the old entity is not unregistered. |
+| `008F84D0` | BSP_SpawnRefFrame_ConstructFromMatrix | reconstructed | `spawn_ref_frame_construct_from_matrix_008f84d0`: zero fields, vtable `00D16AA4`, `004134F0` (008F84F2). |
+| `008F8530` | BSP_SpawnRefFrame_ConstructFromEntity | reconstructed | `spawn_ref_frame_construct_from_entity_008f8530`: entity +14h with `00694A60` (008F8574), identity matrix through `004134F0` (008F85EC). |
+| `008F8610` | BSP_SpawnRefFrame_CopyConstruct | reconstructed | `spawn_ref_frame_copy_construct_008f8610`: `00694A60` (008F8656), `004134F0` (008F8662). |
+| `008F86B0` | BSP_SpawnRefFrame_FreezeToMatrix | reconstructed | `spawn_ref_frame_freeze_to_matrix_008f86b0`: `00414DB0` (008F86C6) when the pose is stale, matrix from entity+CCh, +14h = 0. |
+| `008F8700` | BSP_SpawnRefFrame_OnObservedReleased | reconstructed | `spawn_ref_frame_on_observed_released_008f8700`: `008F86B0` (008F8709) for the frame's own entity. |
+| `008EEA80` | BSP_PropertyHash64Iterator_Next | ledger-only | Byte-identical to `008EEB60`, implemented in src/native_scene_property_hash_iterator.cpp. |
+| `008EF650` | BSP_PropertyHash64Iterator_BeginCopy | ledger-only | Byte-identical to `008EEB10`, same file. |
+
+## Library rows (bound, name only)
+
+Recorded `library_instantiation_out_of_scope`, callees read first (only STL instantiations,
+allocators, the ref-pointer release, operator new, the key transfer `00438FE0` and the element
+copy `00904250`): `008F8F30`, `008F8F90`, `008F8FF0`, `008F9060`, `008F9220`, `008F9260`,
+`008F92B0`, `008F9300`, `008F9360`, `008F93C0`, `008F9420`, `008F9610`, `008F9680`, `008F96D0`,
+`008F9750`, `008F9980`, `008FA2A0`, `008FA740`, `008FAA00`, `008FDF30`, `008FF970`, `009045C0`,
+`0090C170`, and `00904250` (the placement copy of a 64h-byte list element: FLD/FSTP float copies
+of +4h..+1Ch, REP MOVSD of +20h..+5Fh, +60h).

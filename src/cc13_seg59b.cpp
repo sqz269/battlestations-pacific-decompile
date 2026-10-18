@@ -459,4 +459,264 @@ void* entity_as_kind06_or_null_008fe140(Seg59bHost& host, void* entity) {
     return host.entity_is_kind_of_vt5c(entity, 6) ? entity : nullptr;
 }
 
+// ---------------------------------------------------------------------------
+// 008EF7C0 BSP_SpawnSpec_SetField0C_Provisional. __thiscall(ECX = property, value), RET 4;
+// EAX = property. Evidence: 008EF7C0..008EF7C9 MOV [EAX+0Ch],ECX. Callers (cc13_large61) use it
+// on scene property records ("OwnerPlayer", the skill), so +0Ch is the record's value word.
+// ---------------------------------------------------------------------------
+void* scene_property_set_field0c_008ef7c0(void* property, std::uint32_t value) {
+    at<std::uint32_t>(property, 0x0C) = value;
+    return property;
+}
+
+namespace {
+
+// The float compare the image repeats (008EF86B, 008EF927, 008EF93B, 008EF94F): FLD other; FLD
+// this; FUCOMIP; LAHF; TEST AH,44h; JP -> not equal. Only an ordered equal passes (NaN fails).
+bool float_field_equal(void* a, void* b, std::size_t off) {
+    return at<float>(a, off) == at<float>(b, off);
+}
+
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 008EF820 BSP_SceneProperty_ValueEquals. __thiscall(ECX = property, other), RET 4; AL.
+// Evidence: 008EF82A types differ -> false (008EF920); 008EF832 type > 0Bh -> false; table
+// 008EF9FC: 0 int +0Ch (008EF885), 1 float +0Ch (008EF86B), 2 inline strcmp of the +0Ch strings
+// (008EF8DB), 3 byte +0Ch (008EF842), 4 enum: declaration +28h and value +0Ch (008EF854),
+// 5 reference (008EF895): both objects +18h null or both set, then pointer equality when set,
+// else 00438E10(+1Ch, other+1Ch) == 0 (008EF8BE); 6 false (008EF920); 7 vec3 +0Ch/+10h/+14h
+// (008EF927..008EF94F); 8..0Bh arrays: byte size +24h equal, then the inline memcmp of the +20h
+// blocks (008EF95A..008EF9E6).
+// ---------------------------------------------------------------------------
+bool scene_property_value_equals_008ef820(Seg59bHost& host, void* property, void* other) {
+    const std::uint32_t type = at<std::uint32_t>(property, 0x04);
+    if (type != at<std::uint32_t>(other, 0x04) || type > 0x0B) return false;
+    switch (type) {
+    case 0:
+        return at<std::uint32_t>(property, 0x0C) == at<std::uint32_t>(other, 0x0C);
+    case 1:
+        return float_field_equal(property, other, 0x0C);
+    case 2:
+        return std::strcmp(at<const char*>(property, 0x0C), at<const char*>(other, 0x0C)) == 0;
+    case 3:
+        return at<std::uint8_t>(property, 0x0C) == at<std::uint8_t>(other, 0x0C);
+    case 4:
+        return ptr(property, 0x28) == ptr(other, 0x28)
+               && at<std::uint32_t>(property, 0x0C) == at<std::uint32_t>(other, 0x0C);
+    case 5: {
+        void* const mine = ptr(property, 0x18);
+        void* const theirs = ptr(other, 0x18);
+        if ((mine != nullptr) != (theirs != nullptr)) return false;
+        if (mine != nullptr) return mine == theirs;
+        return host.compare_insensitive_00438e10(at<const char*>(property, 0x1C),
+                                                 at<const char*>(other, 0x1C)) == 0;
+    }
+    case 6:
+        return false;
+    case 7:
+        return float_field_equal(property, other, 0x0C) && float_field_equal(property, other, 0x10)
+               && float_field_equal(property, other, 0x14);
+    default: {  // 8..0Bh
+        const std::uint32_t size = at<std::uint32_t>(property, 0x24);
+        if (size != at<std::uint32_t>(other, 0x24)) return false;
+        return std::memcmp(ptr(property, 0x20), ptr(other, 0x20), size) == 0;
+    }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// 008F0B00 BSP_SceneEnumTable_FindNameByValue. __thiscall(ECX = table, value), RET 4.
+// Evidence: 008F0B06/008F0B0A buckets at table+8, 40h of them (008F0B22..008F0B2A); each chain
+// follows node+0Ch (008F0B1B); 008F0B16 [node+8] == value -> 008F0B33 name = [node+4], returned
+// when non-null, else 00F89450 (008F0B3A); no match -> null (008F0B2D).
+// ---------------------------------------------------------------------------
+const char* scene_enum_table_find_name_008f0b00(Seg59bHost& host, void* table, std::uint32_t value) {
+    for (std::uint32_t bucket = 0; bucket < 0x40; ++bucket) {
+        for (void* node = ptr(table, 0x08 + bucket * 4); node != nullptr; node = ptr(node, 0x0C)) {
+            if (at<std::uint32_t>(node, 0x08) == value) {
+                const char* const name = at<const char*>(node, 0x04);
+                return name != nullptr ? name : static_cast<const char*>(host.image_pointer(kEnumNameEmpty));
+            }
+        }
+    }
+    return nullptr;
+}
+
+// ---------------------------------------------------------------------------
+// 008F0D80 BSP_SceneEnumDecl_FindNameByValue. __thiscall(ECX = declaration, value), RET 4.
+// Evidence: 008F0D86/008F0D89 iterator.table = decl+4; 008F0D8E 008EEB10(&iterator); 008F0D93
+// node null -> null (008F0DB6); 008F0D9F [node+8] == value -> 008F0DBF name = [node+4] or
+// 00F89450 when null (008F0DC6); else 008F0DA9 008EEB60(&iterator) and loop while node != 0.
+// ---------------------------------------------------------------------------
+const char* scene_enum_decl_find_name_008f0d80(Seg59bHost& host, void* decl, std::uint32_t value) {
+    Hash64Iterator iterator{add(decl, 0x04), nullptr, 0};
+    host.hash64_iterator_begin_008eeb10(&iterator);
+    while (iterator.node != nullptr) {
+        if (at<std::uint32_t>(iterator.node, 0x08) == value) {
+            const char* const name = at<const char*>(iterator.node, 0x04);
+            return name != nullptr ? name : static_cast<const char*>(host.image_pointer(kEnumNameEmpty));
+        }
+        host.hash64_iterator_next_008eeb60(&iterator);
+    }
+    return nullptr;
+}
+
+// ---------------------------------------------------------------------------
+// 008F0DF0 BSP_SceneProperty_GetStringValue. __fastcall(ECX = property), RET; EAX = text.
+// Evidence: 008F0DF3 type 2 -> +0Ch (008F0DF8); 008F0DFC type 4 -> 008F0D80(+28h, +0Ch)
+// (008F0E08); otherwise +1Ch when non-null (008F0E0E..008F0E1C), else "" 00CE3A0C (008F0E17).
+// ---------------------------------------------------------------------------
+const char* scene_property_string_value_008f0df0(Seg59bHost& host, void* property) {
+    const std::uint32_t type = at<std::uint32_t>(property, 0x04);
+    if (type == 2) return at<const char*>(property, 0x0C);
+    if (type == 4) return scene_enum_decl_find_name_008f0d80(host, ptr(property, 0x28), at<std::uint32_t>(property, 0x0C));
+    const char* const name = at<const char*>(property, 0x1C);
+    return name != nullptr ? name : static_cast<const char*>(host.image_pointer(kEmptyString));
+}
+
+// ---------------------------------------------------------------------------
+// 008F0E20 BSP_SceneProperty_GetValueText. __fastcall(ECX = property), RET; EAX = text.
+// Evidence: type 2 -> +0Ch (008F0E25 -> 008F0F2A); type 4 -> 008F0D80 (008F0E2C -> 008F0F3A);
+// type 5 -> +1Ch when non-null and non-empty, else "(none)" 00D16350 (008F0E3A..008F0E4C);
+// type > 0Bh -> the buffer 00F89458 unwritten (008F0E52 -> 008F0F1F); table 008F0F50: 0 "%i"
+// of +0Ch (008F0E62); 1 "%.2f" of +0Ch as a double (008F0E70); 3 [00E0C980] when byte +0Ch is
+// non-zero else [00E0C97C] (008F0E91); 6 buffer[0] = 0 (008F0ED5); 7 "%.2f, %.2f, %.2f" of
+// +0Ch/+10h/+14h (008F0EA6); 8 "(bin %u bytes)" of +24h (008F0EE2); 9/0Ah/0Bh
+// "(floatarray|intarray|vec3array count=%u)" of 008EF7F0 (008F0EED/008F0EFA/008F0F07). Every
+// format goes through 004B7F70 into 00F89458; the floats are FLD float / FSTP double (exact).
+// ---------------------------------------------------------------------------
+const char* scene_property_value_text_008f0e20(Seg59bHost& host, void* property) {
+    const std::uint32_t type = at<std::uint32_t>(property, 0x04);
+    if (type == 2) return at<const char*>(property, 0x0C);
+    if (type == 4) return scene_enum_decl_find_name_008f0d80(host, ptr(property, 0x28), at<std::uint32_t>(property, 0x0C));
+    if (type == 5) {
+        const char* const name = at<const char*>(property, 0x1C);
+        if (name != nullptr && name[0] != 0) return name;
+        return static_cast<const char*>(host.image_pointer(kNoneText));
+    }
+    char* const buffer = static_cast<char*>(host.image_pointer(kValueTextBuffer));
+    switch (type) {
+    case 0:
+        host.format_string_512_004b7f70_u32(buffer, "%i", at<std::uint32_t>(property, 0x0C));  // 00CE4BF8
+        return buffer;
+    case 1: {
+        const double value = at<float>(property, 0x0C);
+        host.format_string_512_004b7f70_f64(buffer, "%.2f", &value, 1);  // 00D16348
+        return buffer;
+    }
+    case 3: {
+        const std::uint32_t global = at<std::uint8_t>(property, 0x0C) != 0 ? kTrueTextGlobal : kFalseTextGlobal;
+        return static_cast<const char*>(host.image_pointer(host.image_dword(global)));
+    }
+    case 6:
+        buffer[0] = 0;
+        return buffer;
+    case 7: {
+        const double values[3] = {at<float>(property, 0x0C), at<float>(property, 0x10), at<float>(property, 0x14)};
+        host.format_string_512_004b7f70_f64(buffer, "%.2f, %.2f, %.2f", values, 3);  // 00D16334
+        return buffer;
+    }
+    case 8:
+        host.format_string_512_004b7f70_u32(buffer, "(bin %u bytes)", at<std::uint32_t>(property, 0x24));  // 00D16324
+        return buffer;
+    case 9:
+        host.format_string_512_004b7f70_u32(buffer, "(floatarray count=%u)", host.scene_property_array_count_008ef7f0(property));  // 00D1630C
+        return buffer;
+    case 10:
+        host.format_string_512_004b7f70_u32(buffer, "(intarray count=%u)", host.scene_property_array_count_008ef7f0(property));  // 00D162F8
+        return buffer;
+    case 11:
+        host.format_string_512_004b7f70_u32(buffer, "(vec3array count=%u)", host.scene_property_array_count_008ef7f0(property));  // 00D162E0
+        return buffer;
+    default:
+        return buffer;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// The spawn reference frame: +0 vtable 00D16AA4, +4/+8/+0Ch dwords, byte +10h, +14h the observed
+// entity (registered with 00694A60, the frame as the member), +18h a 4x4 float matrix.
+// ---------------------------------------------------------------------------
+
+// 008F84A0 BSP_SpawnRefFrame_Assign. __thiscall(ECX = frame, other), RET 4; EAX = frame.
+// Evidence: 008F84AA +14h = other+14h; non-null -> 008F84B4 00694A60(ECX = entity, EDX = frame);
+// 008F84C0 004134F0(frame+18h, other+18h). The previous entity is not unregistered.
+void* spawn_ref_frame_assign_008f84a0(Seg59bHost& host, void* frame, void* other) {
+    void* const entity = ptr(other, 0x14);
+    at<void*>(frame, 0x14) = entity;
+    if (entity != nullptr) host.observer_register_pair_00694a60(entity, frame);
+    host.matrix_copy_004134f0(add(frame, 0x18), add(other, 0x18));
+    return frame;
+}
+
+// 008F84D0 BSP_SpawnRefFrame_ConstructFromMatrix. __thiscall(ECX = frame, matrix), RET 4.
+// Evidence: 008F84D5..008F84E0 +4/+8/+0Ch = 0, byte +10h = 0, +14h = 0; 008F84EC vtable
+// 00D16AA4; 008F84F2 004134F0(frame+18h, matrix).
+void* spawn_ref_frame_construct_from_matrix_008f84d0(Seg59bHost& host, void* frame, const void* matrix) {
+    at<std::uint32_t>(frame, 0x04) = 0;
+    at<std::uint32_t>(frame, 0x08) = 0;
+    at<std::uint32_t>(frame, 0x0C) = 0;
+    at<std::uint8_t>(frame, 0x10) = 0;
+    at<std::uint32_t>(frame, 0x14) = 0;
+    at<std::uint32_t>(frame, 0x00) = kSpawnRefFrameVtable;
+    host.matrix_copy_004134f0(add(frame, 0x18), matrix);
+    return frame;
+}
+
+// 008F8530 BSP_SpawnRefFrame_ConstructFromEntity. __thiscall(ECX = frame, entity), RET 4.
+// Evidence: zero +4/+8/+0Ch and byte +10h, vtable 00D16AA4, +14h = entity (008F8569); non-null
+// -> 008F8574 00694A60(entity, frame); 008F8579..008F85EC an identity matrix on the stack
+// (1.0f = 00D7A24C at +0, +14h, +28h, +3Ch, the rest 0.0f) copied by 004134F0 into +18h. The SEH
+// frame (state 0) only covers unwinding.
+void* spawn_ref_frame_construct_from_entity_008f8530(Seg59bHost& host, void* frame, void* entity) {
+    at<std::uint32_t>(frame, 0x04) = 0;
+    at<std::uint32_t>(frame, 0x08) = 0;
+    at<std::uint32_t>(frame, 0x0C) = 0;
+    at<std::uint8_t>(frame, 0x10) = 0;
+    at<std::uint32_t>(frame, 0x00) = kSpawnRefFrameVtable;
+    at<void*>(frame, 0x14) = entity;
+    if (entity != nullptr) host.observer_register_pair_00694a60(entity, frame);
+    float identity[16] = {};
+    identity[0] = identity[5] = identity[10] = identity[15] = 1.0f;
+    host.matrix_copy_004134f0(add(frame, 0x18), identity);
+    return frame;
+}
+
+// 008F8610 BSP_SpawnRefFrame_CopyConstruct. __thiscall(ECX = frame, other), RET 4.
+// Evidence: zero +4/+8/+0Ch and byte +10h, vtable 00D16AA4 (008F8641), +14h = other+14h
+// (008F864E); non-null -> 008F8656 00694A60; 008F8662 004134F0(frame+18h, other+18h).
+void* spawn_ref_frame_copy_construct_008f8610(Seg59bHost& host, void* frame, void* other) {
+    at<std::uint32_t>(frame, 0x04) = 0;
+    at<std::uint32_t>(frame, 0x08) = 0;
+    at<std::uint32_t>(frame, 0x0C) = 0;
+    at<std::uint8_t>(frame, 0x10) = 0;
+    at<std::uint32_t>(frame, 0x00) = kSpawnRefFrameVtable;
+    void* const entity = ptr(other, 0x14);
+    at<void*>(frame, 0x14) = entity;
+    if (entity != nullptr) host.observer_register_pair_00694a60(entity, frame);
+    host.matrix_copy_004134f0(add(frame, 0x18), add(other, 0x18));
+    return frame;
+}
+
+// 008F86B0 BSP_SpawnRefFrame_FreezeToMatrix. __fastcall(ECX = frame), RET.
+// Evidence: entity = +14h (008F86B4); non-null: byte [entity+C8h] == 0 -> 008F86C6
+// 00414DB0(entity); 008F86D5 004134F0(frame+18h, entity+CCh); null: 008F86EB 004134F0(frame+18h,
+// frame+18h); both arms 008F86DA/008F86F0 +14h = 0. No unregister here.
+void spawn_ref_frame_freeze_to_matrix_008f86b0(Seg59bHost& host, void* frame) {
+    void* const entity = ptr(frame, 0x14);
+    if (entity != nullptr) {
+        if (at<std::uint8_t>(entity, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(entity);
+        host.matrix_copy_004134f0(add(frame, 0x18), add(entity, 0xCC));
+    } else {
+        host.matrix_copy_004134f0(add(frame, 0x18), add(frame, 0x18));
+    }
+    at<std::uint32_t>(frame, 0x14) = 0;
+}
+
+// 008F8700 BSP_SpawnRefFrame_OnObservedReleased. __thiscall(ECX = frame, entity), RET 4; vtable
+// 00D16AA4 slot +04h. Evidence: 008F8704 entity == +14h -> 008F8709 008F86B0(frame).
+void spawn_ref_frame_on_observed_released_008f8700(Seg59bHost& host, void* frame, void* entity) {
+    if (entity == ptr(frame, 0x14)) spawn_ref_frame_freeze_to_matrix_008f86b0(host, frame);
+}
 }  // namespace bsp::cc13_seg59b

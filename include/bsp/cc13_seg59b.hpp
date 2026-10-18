@@ -89,6 +89,21 @@ inline constexpr const char* kAimPeriodMaxKey = "aimPeriodMax";         // 00D18
 inline constexpr const char* kShootRangeKey = "shootRange";             // 00D18190
 inline constexpr const char* kDistErrorKey = "distError";               // 00D18288
 
+// The 64-bucket property-hash iterator (12 bytes on the stack): table, node, bucket index.
+struct Hash64Iterator {
+    void* table;
+    void* node;
+    std::uint32_t bucket;
+};
+
+inline constexpr std::uint32_t kEmptyString = 0x00CE3A0C;       // ""
+inline constexpr std::uint32_t kEnumNameEmpty = 0x00F89450;     // .bss byte, a "" for a null name
+inline constexpr std::uint32_t kValueTextBuffer = 0x00F89458;   // .bss text buffer of 008F0E20
+inline constexpr std::uint32_t kNoneText = 0x00D16350;          // "(none)"
+inline constexpr std::uint32_t kTrueTextGlobal = 0x00E0C980;    // -> "true" (00CE4378)
+inline constexpr std::uint32_t kFalseTextGlobal = 0x00E0C97C;   // -> "false" (00CE4370)
+inline constexpr std::uint32_t kSpawnRefFrameVtable = 0x00D16AA4;
+
 // ---------------------------------------------------------------------------
 // Engine boundary. Each method stands for one image routine or one virtual slot, named by
 // address; the comment gives the original register ABI.
@@ -128,6 +143,28 @@ struct Seg59bHost {
     // (both empty bodies in this image, TRIV_body_*).
     virtual void tick_node_read_properties_008746f0(void* object, void* archive) = 0;
     virtual void tick_node_write_properties_00874700(void* object, void* archive) = 0;
+
+    // An image address (a string literal, a global buffer) as host memory.
+    virtual void* image_pointer(std::uint32_t address) = 0;
+    // 008EEB10 / 008EEB60, __fastcall(ECX = iterator {table, node, bucket}): the 64-bucket
+    // property-hash iterator's begin / next (next returns node != 0 in EAX).
+    virtual void hash64_iterator_begin_008eeb10(Hash64Iterator* iterator) = 0;
+    virtual std::uint32_t hash64_iterator_next_008eeb60(Hash64Iterator* iterator) = 0;
+    // 008EF7F0, __fastcall(ECX = property): the array property's element count.
+    virtual std::uint32_t scene_property_array_count_008ef7f0(void* property) = 0;
+    // 00438E10, __fastcall(ECX = a, EDX = b): case-insensitive compare, EAX = ordering.
+    virtual std::int32_t compare_insensitive_00438e10(const char* a, const char* b) = 0;
+    // 004B7F70, __cdecl(dst, fmt, ...): _vsprintf_s(dst, 200h, fmt, ...). The two shapes the
+    // callers here use: one dword, or `count` doubles.
+    virtual void format_string_512_004b7f70_u32(void* dst, const char* fmt, std::uint32_t value) = 0;
+    virtual void format_string_512_004b7f70_f64(void* dst, const char* fmt, const double* values,
+                                                 int count) = 0;
+    // 00694A60, __fastcall(ECX = subject, EDX = member): register an observer pair.
+    virtual void observer_register_pair_00694a60(void* subject, void* member) = 0;
+    // 004134F0, __thiscall(ECX = dst, src), RET 4: copy a 4x4 float matrix.
+    virtual void matrix_copy_004134f0(void* dst, const void* src) = 0;
+    // 00414DB0, __thiscall(entity): refresh the cached world pose.
+    virtual void entity_pose_refresh_world_00414db0(void* entity) = 0;
 };
 
 // --- Torpedo bot (vtable 00D182B0) ---------------------------------------------------------
@@ -183,6 +220,32 @@ void robot_config_read_parameters_base_008fb770(void* descriptor, void* level_ta
 // accepts, else null.
 void* entity_as_kind05_or_null_008fe120(Seg59bHost& host, void* entity);
 void* entity_as_kind06_or_null_008fe140(Seg59bHost& host, void* entity);
+
+// --- Scene property records (+04h type, +0Ch value, +10h/+14h vec3 tail, +18h/+1Ch reference
+// object / name, +20h/+24h array data / byte size, +28h enum declaration) -------------------
+// 008EF7C0, __thiscall(ECX = property, value), RET 4; EAX = property: +0Ch = value.
+void* scene_property_set_field0c_008ef7c0(void* property, std::uint32_t value);
+// 008EF820, __thiscall(ECX = property, other), RET 4; AL = the two values are equal.
+bool scene_property_value_equals_008ef820(Seg59bHost& host, void* property, void* other);
+// 008F0B00, __thiscall(ECX = enum table, value), RET 4; EAX = name, the empty name, or null.
+const char* scene_enum_table_find_name_008f0b00(Seg59bHost& host, void* table, std::uint32_t value);
+// 008F0D80, __thiscall(ECX = enum declaration, value), RET 4; the same through the iterator.
+const char* scene_enum_decl_find_name_008f0d80(Seg59bHost& host, void* decl, std::uint32_t value);
+// 008F0DF0, __fastcall(ECX = property): the string value (string, enum name, reference name).
+const char* scene_property_string_value_008f0df0(Seg59bHost& host, void* property);
+// 008F0E20, __fastcall(ECX = property): the value as display text (the shared buffer F89458).
+const char* scene_property_value_text_008f0e20(Seg59bHost& host, void* property);
+
+// --- Spawn reference frame (vtable 00D16AA4: +14h observed entity, +18h 4x4 matrix) ---------
+void* spawn_ref_frame_assign_008f84a0(Seg59bHost& host, void* frame, void* other);           // RET 4
+void* spawn_ref_frame_construct_from_matrix_008f84d0(Seg59bHost& host, void* frame,
+                                                      const void* matrix);                    // RET 4
+void* spawn_ref_frame_construct_from_entity_008f8530(Seg59bHost& host, void* frame,
+                                                      void* entity);                          // RET 4
+void* spawn_ref_frame_copy_construct_008f8610(Seg59bHost& host, void* frame, void* other);   // RET 4
+void spawn_ref_frame_freeze_to_matrix_008f86b0(Seg59bHost& host, void* frame);              // RET
+void spawn_ref_frame_on_observed_released_008f8700(Seg59bHost& host, void* frame,
+                                                   void* entity);                             // RET 4
 
 }  // namespace bsp::cc13_seg59b
 
