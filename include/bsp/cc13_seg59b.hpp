@@ -351,6 +351,20 @@ struct Seg59bHost {
     virtual void* lua_object_to_userdata_00b662d0(void* object) = 0;
     // vt[10h] with ECX = object, no stack argument; EAX = a type-name C string.
     virtual const char* object_type_name_vt10(void* object) = 0;
+    // STL map subscripts, __thiscall(ECX = map, const int* key), RET 4; EAX = the mapped value:
+    // 0062C170 / 00915610 (outer maps), 0062BB60 / 00911890 (inner maps), 00625900 (int),
+    // 0090E740 (float).
+    virtual void* stl_map_subscript_0062c170(void* map, const std::int32_t* key) = 0;
+    virtual void* stl_map_subscript_0062bb60(void* map, const std::int32_t* key) = 0;
+    virtual void* stl_map_subscript_00915610(void* map, const std::int32_t* key) = 0;
+    virtual void* stl_map_subscript_00911890(void* map, const std::int32_t* key) = 0;
+    virtual std::int32_t* stl_map_subscript_00625900(void* map, const std::int32_t* key) = 0;
+    virtual float* stl_map_subscript_0090e740(void* map, const std::int32_t* key) = 0;
+    // 0090BDA0 / 0090BE30 / 0090BEC0, __thiscall(ECX = score record, NativeString by value), RET 8:
+    // the record's condition / victory / third message text; each destroys its argument.
+    virtual void score_record_set_condition_message_0090bda0(void* record, void* text) = 0;
+    virtual void score_record_set_victory_message_0090be30(void* record, void* text) = 0;
+    virtual void score_record_set_message_0090bec0(void* record, void* text) = 0;
     // 00419CC0 BSP_SizedStoragePool_GetSingleton (no args); 00BD1510 ReturnBlock,
     // __thiscall(ECX = pool, data, bytes, flag), RET 0Ch.
     virtual void* sized_pool_singleton_00419cc0() = 0;
@@ -686,6 +700,9 @@ void* lua_table_format_summary_00920f00(Seg59bHost& host, void* out, void* table
 // 00921360, __thiscall(ECX = watch list), RET: formats "name: value" lines for every watched Lua
 // path into a local NativeString that is then released unused.
 void lua_watch_list_format_values_00921360(Seg59bHost& host, void* owner);
+// 0091C650, __thiscall(ECX = message), RET: applies one score-record sync message (24 kinds) to
+// the mission score record of [message+1Ch].
+void score_sync_message_apply_0091c650(Seg59bHost& host, void* message);
 // 008F7CF0, __thiscall(ECX = scope), RET; EAX = scope: 00BD2FE0.
 void* random_threads_scope_construct_008f7cf0(Seg59bHost& host, void* scope);
 // 008F7D20, no arguments: destroy and free the object at [01090AA0], then clear it.

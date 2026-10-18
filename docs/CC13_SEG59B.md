@@ -246,3 +246,9 @@ None of these six is reached: apart from their own recursion and 008F71E0's use 
 | `00920690` | BSP_ScoreMap_SumCampaignBestScores | reconstructed | `score_map_sum_campaign_best_scores_00920690`: *b = the sum, over the current campaign's missions (the USN/IJN prefix of game+2198h, mission list 00E19434 + 10h * USN), of the best of [+27Ch], [+278h] and [+280h] in each `00594A70` record with a non-zero +0Ch. *a stays 0. cc9 hosts the call from `00A43AF0` as `stats_lookup_00920690`, but no body. |
 | `00920F00` | BSP_LuaTable_FormatSummary | reconstructed | `lua_table_format_summary_00920f00`: `{k=v,...}` with nested tables as `{...}`, and `...` once the limit is used up. The by-value table argument is destroyed inside. |
 | `00921360` | BSP_LuaWatchList_FormatValues | reconstructed | `lua_watch_list_format_values_00921360`: a "name: value" line for each watched dotted path (`00B68D70`): invalid, a table summary (`00920F00`, limit 3), a light userdata (`ptr->` handle + vt[10h] name), or `0043C1C0` text. The text is released without being used. Unreferenced. |
+
+## Score sync message
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `0091C650` | BSP_ScoreSyncMessage_Apply | reconstructed | `score_sync_message_apply_0091c650`: one network message (from `00777850` and `0076D220`) updates the mission score record of a slot. It has 24 kinds (jump table 0091CBD8): the header copy, the text-keyed counters (`005070C0`), an award (`0090EDE0`), the nested int-keyed maps (`0062C170`/`0062BB60`/`00625900`, `00915610`/`00911890`/`00625900`, `0090E740`), and the three message setters (`0090BDA0`/`0090BE30`/`0090BEC0`). |

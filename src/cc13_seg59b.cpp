@@ -3265,4 +3265,139 @@ void lua_watch_list_format_values_00921360(Seg59bHost& host, void* owner) {
     }
     release_native_string(host, text);
 }
+
+// ---------------------------------------------------------------------------
+// 0091C650 BSP_ScoreSyncMessage_Apply. __thiscall(ECX = message), RET. Callers 0076D220 and
+// 00777850 (BSP_Session_PumpReceiveQueue).
+// Evidence: record = [game+21A0h] + [message+1Ch] * 284h + 4 (0091C67A..0091C687); switch on
+// [message+18h] through 0091CBD8 (above 17h -> nothing):
+//   0: the header block copy (0091C69E..0091C754): +0/+4/+8 <- +2Ch/+30h/+34h, +250h <- +78h,
+//      +1E4h/+1E8h <- +68h/+6Ch, +17Ch <- +74h, +178h <- +70h, +1C8h..+1E0h <- +38h..+50h, the
+//      floats +14h/+0Ch/+10h <- +28h/+20h/+24h (FLD/FSTP), +184h <- +58h, +180h <- +54h,
+//      +188h <- +5Ch, +18Ch <- +60h, +194h <- +64h.
+//   1: float +14h <- +28h.
+//   2..8, 9, 10, 19: key = 0041E870(message+7Ch); *005070C0(record + 18h/24h/30h/3Ch/48h/54h/
+//      60h, 1ECh, 1F8h, 6Ch, &key) = [message+188h]; 0041DD20(&key).
+//   20: key; 0091C8A8 0090EDE0([game+21A0h], [message+1Ch], &key, [message+188h], 0); 0041DD20.
+//   11 / 13: 0062C170(record+0B4h / +0C0h, &[+17Ch]) -> 0062BB60(&[+180h]) -> 00625900(&[+184h])
+//      = [message+188h]. 12 / 14: 00915610(record+9Ch / +0A8h, &[+180h]) -> 00911890(&[+17Ch])
+//      -> 00625900(&[+184h]) = [message+188h]. 16: 00911890(record+0CCh, &[+17Ch]) ->
+//      00625900(&[+180h]) = [+188h]. 17: 00625900(record+0D8h, &[+180h]) = [+188h].
+//      15: float *0090E740(record+114h, &[+180h]) = [message+18Ch]. 18: +1E0h <- [+50h].
+//   21 / 22 / 23: a by-value NativeString 0041E870(message+7Ch) passed to 0090BDA0 / 0090BE30 /
+//      0090BEC0 (ECX = record), which destroy it.
+// The map keys are copied to locals before the chained subscripts, as in the image.
+// ---------------------------------------------------------------------------
+void score_sync_message_apply_0091c650(Seg59bHost& host, void* message) {
+    void* const scoring = ptr(game_global(host), 0x21A0);
+    void* const record = add(scoring, at<std::int32_t>(message, 0x1C) * 0x284 + 4);
+    const char* const text = static_cast<const char*>(add(message, 0x7C));
+    auto index_text_key = [&](std::uint32_t offset) {
+        alignas(4) std::uint8_t key[8];
+        host.native_string_assign_0041e870(key, text);
+        *host.string_int_map_index_005070c0(add(record, offset), key) = at<std::int32_t>(message, 0x188);
+        host.native_string_destroy_storage_0041dd20(key);
+    };
+    switch (at<std::uint32_t>(message, 0x18)) {
+    case 0:
+        at<std::uint32_t>(record, 0x000) = at<std::uint32_t>(message, 0x2C);
+        at<std::uint32_t>(record, 0x004) = at<std::uint32_t>(message, 0x30);
+        at<std::uint32_t>(record, 0x008) = at<std::uint32_t>(message, 0x34);
+        at<std::uint32_t>(record, 0x250) = at<std::uint32_t>(message, 0x78);
+        at<std::uint32_t>(record, 0x1E4) = at<std::uint32_t>(message, 0x68);
+        at<std::uint32_t>(record, 0x1E8) = at<std::uint32_t>(message, 0x6C);
+        at<std::uint32_t>(record, 0x17C) = at<std::uint32_t>(message, 0x74);
+        at<std::uint32_t>(record, 0x178) = at<std::uint32_t>(message, 0x70);
+        for (std::uint32_t k = 0; k < 7; ++k) at<std::uint32_t>(record, 0x1C8 + k * 4) = at<std::uint32_t>(message, 0x38 + k * 4);
+        at<float>(record, 0x14) = at<float>(message, 0x28);
+        at<float>(record, 0x0C) = at<float>(message, 0x20);
+        at<float>(record, 0x10) = at<float>(message, 0x24);
+        at<std::uint32_t>(record, 0x184) = at<std::uint32_t>(message, 0x58);
+        at<std::uint32_t>(record, 0x180) = at<std::uint32_t>(message, 0x54);
+        at<std::uint32_t>(record, 0x188) = at<std::uint32_t>(message, 0x5C);
+        at<std::uint32_t>(record, 0x18C) = at<std::uint32_t>(message, 0x60);
+        at<std::uint32_t>(record, 0x194) = at<std::uint32_t>(message, 0x64);
+        break;
+    case 1:
+        at<float>(record, 0x14) = at<float>(message, 0x28);
+        break;
+    case 2: index_text_key(0x18); break;
+    case 3: index_text_key(0x24); break;
+    case 4: index_text_key(0x30); break;
+    case 5: index_text_key(0x3C); break;
+    case 6: index_text_key(0x48); break;
+    case 7: index_text_key(0x54); break;
+    case 8: index_text_key(0x60); break;
+    case 9: index_text_key(0x1EC); break;
+    case 10: index_text_key(0x1F8); break;
+    case 19: index_text_key(0x6C); break;
+    case 20: {
+        alignas(4) std::uint8_t key[8];
+        host.native_string_assign_0041e870(key, text);
+        host.scoring_grant_award_0090ede0(ptr(game_global(host), 0x21A0), at<std::int32_t>(message, 0x1C), key,
+                                          at<std::int32_t>(message, 0x188), 0);
+        host.native_string_destroy_storage_0041dd20(key);
+        break;
+    }
+    case 11:
+    case 13: {
+        const std::int32_t first = at<std::int32_t>(message, 0x17C);
+        const std::int32_t second = at<std::int32_t>(message, 0x180);
+        const std::int32_t third = at<std::int32_t>(message, 0x184);
+        void* const outer = add(record, at<std::uint32_t>(message, 0x18) == 11 ? 0xB4 : 0xC0);
+        void* const middle = host.stl_map_subscript_0062c170(outer, &first);
+        void* const inner = host.stl_map_subscript_0062bb60(middle, &second);
+        *host.stl_map_subscript_00625900(inner, &third) = at<std::int32_t>(message, 0x188);
+        break;
+    }
+    case 12:
+    case 14: {
+        const std::int32_t first = at<std::int32_t>(message, 0x17C);
+        const std::int32_t second = at<std::int32_t>(message, 0x180);
+        const std::int32_t third = at<std::int32_t>(message, 0x184);
+        void* const outer = add(record, at<std::uint32_t>(message, 0x18) == 12 ? 0x9C : 0xA8);
+        void* const middle = host.stl_map_subscript_00915610(outer, &second);
+        void* const inner = host.stl_map_subscript_00911890(middle, &first);
+        *host.stl_map_subscript_00625900(inner, &third) = at<std::int32_t>(message, 0x188);
+        break;
+    }
+    case 15: {
+        const std::int32_t key = at<std::int32_t>(message, 0x180);
+        *host.stl_map_subscript_0090e740(add(record, 0x114), &key) = at<float>(message, 0x18C);
+        break;
+    }
+    case 16: {
+        const std::int32_t first = at<std::int32_t>(message, 0x17C);
+        const std::int32_t second = at<std::int32_t>(message, 0x180);
+        void* const inner = host.stl_map_subscript_00911890(add(record, 0xCC), &first);
+        *host.stl_map_subscript_00625900(inner, &second) = at<std::int32_t>(message, 0x188);
+        break;
+    }
+    case 17: {
+        const std::int32_t key = at<std::int32_t>(message, 0x180);
+        *host.stl_map_subscript_00625900(add(record, 0xD8), &key) = at<std::int32_t>(message, 0x188);
+        break;
+    }
+    case 18:
+        at<std::uint32_t>(record, 0x1E0) = at<std::uint32_t>(message, 0x50);
+        break;
+    case 21:
+    case 22:
+    case 23: {
+        alignas(4) std::uint8_t argument[8];
+        host.native_string_assign_0041e870(argument, text);
+        const std::uint32_t kind = at<std::uint32_t>(message, 0x18);
+        if (kind == 21) {
+            host.score_record_set_condition_message_0090bda0(record, argument);
+        } else if (kind == 22) {
+            host.score_record_set_victory_message_0090be30(record, argument);
+        } else {
+            host.score_record_set_message_0090bec0(record, argument);
+        }
+        break;
+    }
+    default:
+        break;
+    }
+}
 }  // namespace bsp::cc13_seg59b
