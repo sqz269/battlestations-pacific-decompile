@@ -3283,3 +3283,15 @@ code paths of the later commits are the 236355ef9 ones). OFF exe `local\p20d_off
   exercised; flipped. FLAG for the stow question: the final descent law takes world pitch while the closure on the
   deck is speed - carrier speed, so a faster air speed steepens the path relative to the deck; check what in
   009B1ED0 / 009B1F2C accounts for the moving deck before blaming this term.
+- **`kGunfireExemptWandererMulBound` ON.** JM02 24000 fr (`p20d_gx_jm02.log` vs `p20d_off_jm02.log`): pair_diff
+  MOVED; the exempt arm runs about 2000 times (exempt 2321 OFF / 1993 ON), and each now writes WandererMul
+  (+840h) = PilotAvoidance.GunfireBomberVsGunfire as the bytes do. Deaths 44 -> 39, shots 64515 -> 58299,
+  units 48 -> 54, PlayerBetty survives (dies OFF); the ON run reaches the scripted "did not find Force Z" fail at
+  740.19 s (OFF: EndMission never true in 24000 fr). Flipped by mechanism (faithful store, exercised). JM02 is not
+  a WINS row.
+- **`kFollowExitClearsBound` ON.** JM02 (`p20d_fx_jm02.log`): gameplay identical, `follow exit 009BDE40 calls=0`;
+  USN01 identical with `exits=0` earlier. Only LB prepare's exit (009B6660 JMP 009BDE40) and the moveto follow are
+  wired, as in vtable 00D20AB8. Flipped, unexercised.
+- **`kStrafeHorizontalFloatOpsBound` (OFF, added).** 009CAD00 rounds dx/dz to float (009CAD30 / 009CAD3E) and stores
+  d2 = (dx dx + 0 0) + dz dz as a float (009CAD58) before the 00CE3820 test and sqrt 00BF7030; the host took dx/dz
+  as doubles. Not paired yet.

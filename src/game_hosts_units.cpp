@@ -6424,13 +6424,17 @@ struct GameUnitsHost::Impl {
     // of 0099EC40 (kinds 10h / 16h, or a flight leader whose squadron +3CCh > 1) writes
     // unit+840h WandererMul = tuning+614h (Pilot/Avoidance/Gunfire/BomberVSGunfire)
     // before returning. True: wanderer.mul takes the value. False: only counted.
-    static constexpr bool kGunfireExemptWandererMulBound = false;
+    static constexpr bool kGunfireExemptWandererMulBound = true;
     // Packet p20_follow_exit (section 80). 009BDE40 BSP_BotStateFollow_Exit (RET): 007B8A90
     // clears the turbo byte unit+9F9h (009BDE49), then [bot+1Ch]+4Ch, the gun hold timer
     // the sight tick sets, = 0.0 (009BDE57). It is the follow state's exit in the kind-7
     // task and the level-bomb prepare's exit (009B84A0). True: both stores. False:
     // recorded only, as before.
-    static constexpr bool kFollowExitClearsBound = false;
+    static constexpr bool kFollowExitClearsBound = true;
+    // Packet p20_strafe_horizontal (section 80). 009CAD27-009CAD58: dx and dz are FSTP'd
+    // to floats (009CAD30, 009CAD3E) and d2 = (dx dx + 0 0) + dz dz is stored as a float
+    // (009CAD58), main-thread 24-bit per op. True: float per op. False: double dx, dz.
+    static constexpr bool kStrafeHorizontalFloatOpsBound = false;
     unsigned long long follow_exits{0};
     void follow_exit_009bde40(GameUnitSlot& unit) {
         ++follow_exits;
@@ -24322,6 +24326,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // 009CAD00 (009CAD00-009CAD8B): the horizontal distance to the
                     // aim point, 0 at or below double [00CE3820].
                     float st_horizontal_009cad00() const {
+                        if constexpr (GameUnitsHost::Impl::kStrafeHorizontalFloatOpsBound) {
+                            const float dx = unit_.st_aim_point[0] - unit_.motion.position[0];
+                            const float dz = unit_.st_aim_point[2] - unit_.motion.position[2];
+                            const float d2 = (dx * dx + 0.0f) + dz * dz;
+                            return static_cast<double>(d2) > 1e-10
+                                ? static_cast<float>(std::sqrt(static_cast<double>(d2))) : 0.0f;
+                        }
                         const double dx = static_cast<double>(unit_.st_aim_point[0]) -
                                           unit_.motion.position[0];
                         const double dz = static_cast<double>(unit_.st_aim_point[2]) -
