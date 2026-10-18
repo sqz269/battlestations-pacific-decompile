@@ -576,6 +576,9 @@ public:
                                                       const char* fmt, const char* name,
                                                       const std::int32_t* ints,
                                                       std::size_t count) = 0;
+    // 00415690 BSP_Math_ClampInPlace: __fastcall(ECX = value, EDX = low; high), RET 4.
+    virtual void math_clamp_in_place_00415690(float* value, const float* low,
+                                              const float* high) = 0;
 };
 
 // ---- the bot-task factory list (00F8A314) ----
@@ -1349,5 +1352,17 @@ void ship_ai_path_node_delete_009dfa60(Cc13Seg67bHost& host, void* slot);
 void observed_owner_delete_009dfa90(Cc13Seg67bHost& host, void* slot);
 // 009E5220: __fastcall(ECX = list), RET, EAX = list.
 void* ship_ai_traffic_list_construct_009e5220(Cc13Seg67bHost& host, void* list);
+
+// ---------------------------------------------------------------------------
+// Medium rows, batch 5 (docs/CC13_SEG67B.md section 3.51)
+// ---------------------------------------------------------------------------
+// 009B8260 / 009C80D0: __fastcall(ECX = task), RET.
+void bot_task_level_bomb_debug_draw_009b8260(Cc13Seg67bHost& host, void* task);
+void bot_task_dive_bomb_debug_draw_009c80d0(Cc13Seg67bHost& host, void* task);
+// 009D6E50: __thiscall(ECX = 65-byte profile; float* angle), RET 4, ST0.
+float byte_profile65_sample_009d6e50(Cc13Seg67bHost& host, const void* profile, float* angle);
+// 009D7780 / 009D7930: __thiscall(ECX = record; const float* point), RET 4, ST0.
+float oriented_rect_distance_to_point_009d7780(const void* rect, const float* point);
+float oriented_rect2_distance_to_point_009d7930(const void* rect, const float* point);
 
 }  // namespace bsp
