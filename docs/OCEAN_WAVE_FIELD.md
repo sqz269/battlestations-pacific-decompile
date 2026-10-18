@@ -3233,3 +3233,8 @@ not explain the image's stows. With the deck term the throttle holds measured = 
 of ParkVelocity - 0.1 x deck speed (about 0.56 m/s at 16.7 m/s), under the clock's 1.0, so the clock drains. Next
 to check: the plane's heading on the deck during the park (z < 0 takes 0.8 with the opposite sign) and the actual
 value of ParkVelocity (Pilot/Landing, tuning +4E8h) the host reads against this installation's Lua.
+ParkVelocity is `KTS(40)` in this installation's `scripts\datatables\planeglobals.lua:632` (about 20.6 m/s; its
+Hungarian comment: the plane rolls to its place at this speed after landing, and if it is too large the plane
+cannot stop on the carrier's lift). physics19's commanded 2.23 m/s is therefore 009B2C1E's +2B4h = interp x speed
+with the heading-error interp near its low end (00D7A2F0 = 0.1): the creeping plane is still turning onto the
+lift line. The heading error at the stop is the next thing to log.
