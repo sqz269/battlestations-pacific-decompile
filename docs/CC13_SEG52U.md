@@ -146,9 +146,12 @@ does not write it.
    - **Host caller.** The host's only mention of it is in `GameUnitsHost::run_squadron_free_attack_009f8470`
      (game_hosts_units.cpp ~16634), labelled "0071F290 arm 5's begin (0084DDA0 -> 0071F600) is
      not run".
-   - **Why it changes nothing there.** That path issues attack-class orders. The two arms of
-     0084DDA0 that do anything fire only for moveto aimed at the squadron itself, and for land or
-     retreat. So skipping it there changes nothing.
+   - **Why it changes nothing there.** The image's 009F8470 issues attack-class orders and one
+     moveto. The moveto is E08F68 at 009F860E, in the stop-head arm 009F85EB..009F8615. Its target
+     is a position descriptor built by 00468560 with kind byte 0. 00521EA0 returns 0 for kind 0
+     (00521EA3), so 0084DDA0's arm for a moveto aimed at the squadron itself cannot fire. Its other
+     arm needs land or retreat, which this path never issues. So skipping it there changes nothing.
+     (Corrected 2026-10-18: the first version said that path issues no moveto.)
    - **Base begin.** The host's director stand-in `begin_command_base` (game_hosts_commands.cpp
      ~2713) records 0071F600 and returns false. It does not dispatch the squadron block's
      override.
