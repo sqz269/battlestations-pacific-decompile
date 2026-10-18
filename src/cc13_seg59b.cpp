@@ -3435,7 +3435,9 @@ StlTreeIterator tree_end(void* map) { return StlTreeIterator{map, ptr(map, 0x04)
 // ---------------------------------------------------------------------------
 // 00915F20 BSP_MissionScoring_RecordHitDamage (provisional). __thiscall(ECX = scoring, target,
 // hit), RET 8. Callers 0077CE60 BSP_Unit_RecordDamageAttribution and 00819A20
-// BSP_UnitInstance_KamikazeDetonate (the direct arm); neither hosts the call.
+// BSP_UnitInstance_KamikazeDetonate (the direct arm). 00819A20's direct arm is recorded, not
+// delivered, by game_hosts_gunnery.cpp:11973 (record "KamikazeDetonate::direct_hit_00915f20";
+// CC13_VERIFY3 D2); cc9's 0077CE60 attribution host (kKillCreditDamageGateBound) does not call it.
 // Evidence (listing 00915F20..00916955, read whole):
 //  [[00E188A8]+1FE4h] == 2, target bytes +5Ch == 0, +5Dh / +60h / +5Eh != 0, or source =
 //  [hit+4] null -> return (00915F59..00915F96). record = source->vt[108h]() (00915FA6).
@@ -3478,9 +3480,9 @@ StlTreeIterator tree_end(void* map) { return StlTreeIterator{map, ptr(map, 0x04)
 //  [00F876A4] - +00h (FSUBR double, FADD), +00h = [00F876A4].
 // Original ABI: the record pointer is reused as the key slot [esp+14h] after 0091673C.
 // A null record with a source that is not kind 6 reads [0+ACh] in the image; no guard is added.
-// x87: the tail sum, the LBU age and the entry +04h/+08h updates are modeled at 24-bit
-// precision (main thread); at 53 bits each could differ in the last place, and +08h's sum is
-// formed in double before the float store. No shared RNG draws.
+// x87: the tail sum, the LBU age and the entry +04h update are modeled at 24-bit precision
+// (main thread); at 53 bits each could differ in the last place. The entry +08h sum is formed in
+// double before the float store. No shared RNG draws.
 // ---------------------------------------------------------------------------
 void scoring_record_hit_damage_00915f20(Seg59bHost& host, void* scoring, void* target, void* hit) {
     void* const game = game_global(host);
@@ -3939,5 +3941,431 @@ void score_record_evaluate_badge_counters_00911e80(Seg59bHost& host, void* recor
         }
         host.tree_iterator_increment(0x004FBD20u, &it);
     }
+}
+
+namespace {
+
+// The inlined std::map<NativeString, int, case-insensitive>::find of 00911E80 / 00912A60:
+// 004BF370 lower bound, then the empty-key tests and __stricmp. Returns the found node, or the
+// tree's head ([tree+4], re-read) on a miss.
+void* awards_map_find_inline(Seg59bHost& host, void* tree, void* name) {
+    void* const lower = host.string_int_map_lower_bound_004bf370(tree, name);
+    if (tree == nullptr) host.checked_iterator_failure_00bf6713();
+    if (lower == ptr(tree, 0x04)) {
+        if (tree == nullptr) host.checked_iterator_failure_00bf6713();  // the result's container test
+        return ptr(tree, 0x04);
+    }
+    std::int32_t order;
+    if (at<std::uint32_t>(name, 0x00) == 0) {
+        order = at<std::uint32_t>(lower, 0x0C) != 0 ? -1 : 0;
+    } else if (at<std::uint32_t>(lower, 0x0C) == 0) {
+        order = 0;
+    } else {
+        order = host.stricmp_00bf7fbf(static_cast<const char*>(ptr(name, 0x04)),
+                                      static_cast<const char*>(ptr(lower, 0x10)));
+    }
+    void* const node = order >= 0 ? lower : ptr(tree, 0x04);
+    if (tree == nullptr) host.checked_iterator_failure_00bf6713();  // the result's container test
+    return node;
+}
+
+void* scoring_global(Seg59bHost& host) { return ptr(game_global(host), 0x21A0); }
+
+// The award record's +44h int vector [index], with the image's emptiness / bound test.
+std::int32_t award_vector_value(Seg59bHost& host, void* award, std::uint32_t index) {
+    const std::uint8_t* const first = static_cast<const std::uint8_t*>(ptr(award, 0x48));
+    if (first == nullptr ||
+        static_cast<std::uint32_t>(static_cast<std::int32_t>(
+            static_cast<const std::uint8_t*>(ptr(award, 0x4C)) - first) >> 2) <= index) {
+        host.checked_iterator_failure_00bf6713();
+    }
+    return static_cast<const std::int32_t*>(ptr(award, 0x48))[index];
+}
+
+// The 4-byte vector's size as the image loads it: (last - first) >> 2, 0 for a null first,
+// then FILD with the 2^32 fix-up (00CE3978) when the dword is negative.
+double float_vector_size(void* vector) {
+    const std::uint8_t* const first = static_cast<const std::uint8_t*>(ptr(vector, 0x04));
+    std::int32_t size = 0;
+    if (first != nullptr) {
+        size = static_cast<std::int32_t>(static_cast<const std::uint8_t*>(ptr(vector, 0x08)) - first) >> 2;
+    }
+    double value = static_cast<double>(size);
+    if (size < 0) value = static_cast<double>(static_cast<float>(value + 4294967296.0));
+    return value;
+}
+
+std::uint32_t float_vector_count(void* vector) {
+    const std::uint8_t* const first = static_cast<const std::uint8_t*>(ptr(vector, 0x04));
+    return static_cast<std::uint32_t>(
+        static_cast<std::int32_t>(static_cast<const std::uint8_t*>(ptr(vector, 0x08)) - first) >> 2);
+}
+
+// The entity registry lookup inlined at 00913297: ids below [00F89A10] index the low table,
+// the rest the high one; 16-byte rows, the entity at +0Ch.
+void* registry_entity_by_id(Seg59bHost& host, std::uint32_t id) {
+    const auto value = static_cast<std::int32_t>(id);
+    const auto split = *static_cast<const std::int32_t*>(host.image_pointer(0x00F89A10u));
+    if (value < split) {
+        const auto base = *static_cast<const std::int32_t*>(host.image_pointer(0x00F89A0Cu));
+        void* const rows = *static_cast<void**>(host.image_pointer(0x00F89A54u));
+        return ptr(rows, static_cast<std::uint32_t>(value - base) * 16u + 0x0Cu);
+    }
+    const auto base = *static_cast<const std::int32_t*>(host.image_pointer(0x00F89A60u));
+    void* const rows = *static_cast<void**>(host.image_pointer(0x00F89AA8u));
+    return ptr(rows, static_cast<std::uint32_t>(value - base) * 16u + 0x0Cu);
+}
+
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 00912A60 BSP_MissionScoreRecord_EvaluateAchievementCounters (provisional, cc9 name).
+// __fastcall(ECX = record = scoring + slot*284h + 4), RET. Callers 00914EF0 and 00920A20.
+// Evidence (listing 00912A60..00913A61, read whole):
+//  0058B520 empties the counter map at record+84h and resets its head (00912A9A..00912ABA).
+//  Thresholds from the award table (0050FC30, +44h vector, each key an inline NativeString of
+//  0041DD40 + 00BF7680 released through 00419CC0 / 00BD1510): RUA_CU [0] (int), RUA_FU [0] - 1
+//  (CVTSI2SS) and RUA_FU [1] (CVTSI2SS, bound test >= 2 at 00912C4C). Two local trees: A (00907D40
+//  head, isnil +21h; u16 id -> vector<float>) and B (005828E0 head, isnil +15h, then emptied by
+//  00582C80; u16 id -> int).
+//  Kill-list walk (record+1BCh, ++ 0057F660), skipping entries with byte +2Bh set; with e = the
+//  2Ch entry at node+10h and slot = [record+250h]:
+//   RUA_CU = threshold + 1 when e+10h == 4, e+20h == slot, e+14h in {0,1,3,4}, byte e+2Ah and
+//   threshold > float e+04h (FCOMIP, JBE also on unordered); RUA_SU += 1 for e+10h 0Dh, e+14h 3,
+//   e+20h == slot; e+10h 0Ah, e+14h in {0Ah,7,8,9}, e+1Ch == e+20h: A[u16 key].push_back(e+00h)
+//   (00910F10, 0045AFD0); e+10h 9 with a non-zero u16 key: B[key] += e+24h (00667EB0); GA_SH = 1
+//   for e+10h/14h/18h = 0Dh/0Dh/0Ah; GA_DB += 1 for e+10h 3, e+14h 0, e+08h > e+0Ch (FCOMIP, JBE),
+//   e+1Ch == e+20h; e+20h == slot: GA_AO = 1 for (e+10h 2 or 6, e+14h in {1,3,0,4}) else (1, {3,0,4})
+//   else (4, {3,0}).
+//  GA_PL: when the slot's awards map ([game+21A0h] + slot*284h + 70h) lacks it (the inlined find),
+//  walk the {u16 id, float time} vector at record+14Ch: a missing or dead registry entity (bytes
+//  +5Ch == 0, +5Dh / +60h / +5Eh != 0) is erased in place and the walk restarts; an alive one
+//  with [00F876A4] - time > 5.0 (00D7A370; FXCH, FCOMIP, JA) -> 0090EDE0(slot, "GA_PL", 1, 0) and
+//  0090CA30 erases the whole vector.
+//  A walk (++ 00907240): a list with size > RUA_FU[0] - 1 is sorted (0090D220, ideal = count);
+//  for i = 0.. while size > i + (RUA_FU[0] - 1): j = chop(i + that) (FISTP under RC = chop);
+//  v[j] - v[i] <= RUA_FU[1] (FCOMIP, JC also on unordered) -> RUA_FU = _ftol2((RUA_FU[0] - 1)
+//  + 1.0 (00D7A210)).
+//  B walk (++ 0057F5F0): value >= RUA_TBU [0] (SETGE) -> RUA_TBU = that [0], read again.
+//  Counter walk (++ 004FBD20): [0] <= count and not yet in record+6Ch -> 0090EDE0([game+21A0h];
+//  slot, key, count, 0) at 009139C4 (the count, not 1). B then A are erased (0058B000 /
+//  0090F3D0) and their heads freed (00BF65AC).
+// Every inline checked-iterator test keeps its 00BF6713 call at its point.
+// x87: i + (RUA_FU[0] - 1), the v[j] - v[i] difference, the GA_PL age and the RUA_FU sum are
+// modeled at 24-bit precision (main thread); 53-bit could differ in the last place. No shared
+// RNG draws.
+// ---------------------------------------------------------------------------
+void score_record_evaluate_achievement_counters_00912a60(Seg59bHost& host, void* record) {
+    void* const counters = add(record, 0x84);
+    host.stl_tree_erase_subtree(0x0058B520u, counters, ptr(ptr(record, 0x88), 0x04));
+    *static_cast<void**>(add(ptr(counters, 0x04), 0x04)) = ptr(counters, 0x04);
+    at<std::uint32_t>(counters, 0x08) = 0;
+    *static_cast<void**>(add(ptr(counters, 0x04), 0x00)) = ptr(counters, 0x04);
+    *static_cast<void**>(add(ptr(counters, 0x04), 0x08)) = ptr(counters, 0x04);
+
+    alignas(4) std::uint8_t key[8];
+    construct_native_string_inline(host, key, 0x00D188ACu, 6);  // RUA_CU
+    const std::int32_t cu_threshold = award_vector_value(host, host.award_table_find_record_0050fc30(award_table(host), key), 0);
+    release_native_string(host, key);
+    construct_native_string_inline(host, key, 0x00D188A4u, 6);  // RUA_FU
+    const float fu_count = static_cast<float>(
+        award_vector_value(host, host.award_table_find_record_0050fc30(award_table(host), key), 0) - 1);
+    release_native_string(host, key);
+    construct_native_string_inline(host, key, 0x00D188A4u, 6);  // RUA_FU
+    const float fu_window = static_cast<float>(
+        award_vector_value(host, host.award_table_find_record_0050fc30(award_table(host), key), 1));
+    release_native_string(host, key);
+
+    // The two local trees {comparator byte, head, size}.
+    alignas(4) std::uint8_t times[12] = {};
+    void* const times_head = host.tree_buy_head_node(0x00907D40u, times);
+    *static_cast<void**>(add(times, 0x04)) = times_head;
+    at<std::uint8_t>(times_head, 0x21) = 1;
+    *static_cast<void**>(add(times_head, 0x04)) = times_head;
+    *static_cast<void**>(add(times_head, 0x00)) = times_head;
+    *static_cast<void**>(add(times_head, 0x08)) = times_head;
+    at<std::uint32_t>(times, 0x08) = 0;
+    alignas(4) std::uint8_t bombs[12] = {};
+    void* const bombs_head = host.tree_buy_head_node(0x005828E0u, bombs);
+    *static_cast<void**>(add(bombs, 0x04)) = bombs_head;
+    at<std::uint8_t>(bombs_head, 0x15) = 1;
+    *static_cast<void**>(add(bombs_head, 0x04)) = bombs_head;
+    *static_cast<void**>(add(bombs_head, 0x00)) = bombs_head;
+    *static_cast<void**>(add(bombs_head, 0x08)) = bombs_head;
+    at<std::uint32_t>(bombs, 0x08) = 0;
+    host.stl_tree_erase_subtree(0x00582C80u, bombs, ptr(ptr(bombs, 0x04), 0x04));
+    *static_cast<void**>(add(ptr(bombs, 0x04), 0x04)) = ptr(bombs, 0x04);
+    at<std::uint32_t>(bombs, 0x08) = 0;
+    *static_cast<void**>(add(ptr(bombs, 0x04), 0x00)) = ptr(bombs, 0x04);
+    *static_cast<void**>(add(ptr(bombs, 0x04), 0x08)) = ptr(bombs, 0x04);
+
+    // 00912D13..0091314B: the kill-list walk.
+    {
+        void* const kills = add(record, 0x1BC);
+        StlTreeIterator it{kills, ptr(ptr(kills, 0x04), 0x00)};
+        for (;;) {
+            void* const head = ptr(record, 0x1C0);
+            check_iterator_owner(host, it, kills);
+            if (it.node == head) break;
+            check_iterator_container(host, it);
+            check_iterator_not_head(host, it);
+            if (at<std::uint8_t>(it.node, 0x3B) == 0) {
+                void* const e = add(it.node, 0x10);
+                const std::uint32_t slot = at<std::uint32_t>(record, 0x250);
+                const std::int32_t kind = at<std::int32_t>(e, 0x10);
+                const std::int32_t sub = at<std::int32_t>(e, 0x14);
+                if (kind == 4 && at<std::uint32_t>(e, 0x20) == slot &&
+                    (sub == 0 || sub == 1 || sub == 3 || sub == 4) && at<std::uint8_t>(e, 0x2A) != 0 &&
+                    static_cast<double>(cu_threshold) > static_cast<double>(at<float>(e, 0x04))) {
+                    alignas(4) std::uint8_t name[8] = {};
+                    host.native_string_assign_0041e870(name, image_text(host, 0x00D188ACu));
+                    *host.string_int_map_index_005070c0(counters, name) = cu_threshold + 1;
+                    release_native_string(host, name);
+                }
+                if (at<std::int32_t>(e, 0x10) == 0x0D && at<std::int32_t>(e, 0x14) == 3 &&
+                    at<std::uint32_t>(e, 0x20) == at<std::uint32_t>(record, 0x250)) {
+                    alignas(4) std::uint8_t name[8] = {};
+                    host.native_string_assign_0041e870(name, image_text(host, 0x00D1889Cu));  // RUA_SU
+                    *host.string_int_map_index_005070c0(counters, name) += 1;
+                    release_native_string(host, name);
+                }
+                if (at<std::int32_t>(e, 0x10) == 0x0A) {
+                    const std::int32_t weapon = at<std::int32_t>(e, 0x14);
+                    if ((weapon == 0x0A || weapon == 7 || weapon == 8 || weapon == 9) &&
+                        at<std::uint32_t>(e, 0x1C) == at<std::uint32_t>(e, 0x20)) {
+                        check_iterator_not_head(host, it);
+                        const std::uint32_t id = at<std::uint16_t>(it.node, 0x0C);
+                        host.float_vector_push_back_0045afd0(host.float_vector_map_index_00910f10(times, &id), e);
+                    }
+                }
+                if (at<std::int32_t>(e, 0x10) == 9) {
+                    check_iterator_not_head(host, it);
+                    const std::uint32_t id = at<std::uint16_t>(it.node, 0x0C);
+                    if (static_cast<std::uint16_t>(id) != 0) {
+                        *host.int_map_index_00667eb0(bombs, &id) += at<std::int32_t>(e, 0x24);
+                    }
+                }
+                if (at<std::int32_t>(e, 0x10) == 0x0D && at<std::int32_t>(e, 0x14) == 0x0D &&
+                    at<std::int32_t>(e, 0x18) == 0x0A) {
+                    alignas(4) std::uint8_t name[8] = {};
+                    host.native_string_assign_0041e870(name, image_text(host, 0x00D18894u));  // GA_SH
+                    *host.string_int_map_index_005070c0(counters, name) = 1;
+                    release_native_string(host, name);
+                }
+                if (at<std::int32_t>(e, 0x10) == 3 && at<std::int32_t>(e, 0x14) == 0 &&
+                    at<float>(e, 0x08) > at<float>(e, 0x0C) &&
+                    at<std::uint32_t>(e, 0x1C) == at<std::uint32_t>(e, 0x20)) {
+                    alignas(4) std::uint8_t name[8] = {};
+                    host.native_string_assign_0041e870(name, image_text(host, 0x00D1888Cu));  // GA_DB
+                    *host.string_int_map_index_005070c0(counters, name) += 1;
+                    release_native_string(host, name);
+                }
+                if (at<std::uint32_t>(record, 0x250) == at<std::uint32_t>(e, 0x20)) {
+                    const std::int32_t source = at<std::int32_t>(e, 0x10);
+                    const std::int32_t target = at<std::int32_t>(e, 0x14);
+                    if ((source == 2 || source == 6) &&
+                        (target == 1 || target == 3 || target == 0 || target == 4)) {
+                        construct_native_string_inline(host, key, 0x00D18884u, 5);  // GA_AO
+                        *host.string_int_map_index_005070c0(counters, key) = 1;
+                        release_native_string(host, key);
+                    } else if (source == 1 && (target == 3 || target == 0 || target == 4)) {
+                        alignas(4) std::uint8_t name[8] = {};
+                        host.native_string_assign_0041e870(name, image_text(host, 0x00D18884u));
+                        *host.string_int_map_index_005070c0(counters, name) = 1;
+                        release_native_string(host, name);
+                    } else if (source == 4 && (target == 3 || target == 0)) {
+                        alignas(4) std::uint8_t name[8] = {};
+                        host.native_string_assign_0041e870(name, image_text(host, 0x00D18884u));
+                        *host.string_int_map_index_005070c0(counters, name) = 1;
+                        release_native_string(host, name);
+                    }
+                }
+            }
+            host.tree_iterator_increment_0057f660(&it);
+        }
+    }
+
+    // 00913150..0091341A: GA_PL over the record+14Ch {u16 id, float time} vector.
+    {
+        construct_native_string_inline(host, key, 0x00D1887Cu, 5);  // GA_PL
+        void* const scoring = ptr(game_global(host), 0x21A0);
+        void* const awards = add(scoring, at<std::uint32_t>(record, 0x250) * 0x284u + 0x70u);
+        void* const awards_head = ptr(awards, 0x04);
+        void* const found = awards_map_find_inline(host, awards, key);
+        const bool missing = found == awards_head;
+        release_native_string(host, key);
+        if (missing) {
+            void* const vector = add(record, 0x14C);
+            std::uint8_t* element = static_cast<std::uint8_t*>(ptr(vector, 0x04));
+            bool from_start = true;  // 00913258 runs on entry and after an erase; ++ rejoins at 00913262
+            for (;;) {
+                if (from_start && element > static_cast<std::uint8_t*>(ptr(vector, 0x08))) {
+                    host.checked_iterator_failure_00bf6713();
+                }
+                from_start = false;
+                std::uint8_t* const last = static_cast<std::uint8_t*>(ptr(vector, 0x08));
+                if (static_cast<std::uint8_t*>(ptr(vector, 0x04)) > last) host.checked_iterator_failure_00bf6713();
+                if (vector == nullptr) host.checked_iterator_failure_00bf6713();  // 0091326F
+                if (element == last) break;
+                if (vector == nullptr) host.checked_iterator_failure_00bf6713();  // 00913284
+                if (element >= static_cast<std::uint8_t*>(ptr(vector, 0x08))) host.checked_iterator_failure_00bf6713();
+                void* const unit = registry_entity_by_id(host, at<std::uint16_t>(element, 0x00));
+                if (unit == nullptr || at<std::uint8_t>(unit, 0x5C) == 0 || at<std::uint8_t>(unit, 0x5D) != 0 ||
+                    at<std::uint8_t>(unit, 0x60) != 0 || at<std::uint8_t>(unit, 0x5E) != 0) {
+                    // 00913328: erase this element in place, then restart from the first.
+                    std::uint8_t* const end = static_cast<std::uint8_t*>(ptr(vector, 0x08));
+                    for (std::uint8_t* from = element + 8; from != end; from += 8) {
+                        at<std::uint32_t>(from - 8, 0x00) = at<std::uint32_t>(from, 0x00);
+                        at<std::uint32_t>(from - 8, 0x04) = at<std::uint32_t>(from, 0x04);
+                    }
+                    *static_cast<std::uint8_t**>(add(vector, 0x08)) -= 8;
+                    std::uint8_t* const first = static_cast<std::uint8_t*>(ptr(vector, 0x04));
+                    if (first == nullptr) break;
+                    if ((static_cast<std::int32_t>(static_cast<std::uint8_t*>(ptr(vector, 0x08)) - first) >> 3) == 0) break;
+                    element = first;
+                    from_start = true;
+                    continue;
+                }
+                const float now = *static_cast<const float*>(host.image_pointer(0x00F876A4u));
+                if (element >= static_cast<std::uint8_t*>(ptr(vector, 0x08))) host.checked_iterator_failure_00bf6713();
+                const float age = now - at<float>(element, 0x04);
+                if (static_cast<double>(age) > 5.0) {
+                    construct_native_string_inline(host, key, 0x00D1887Cu, 5);
+                    host.scoring_grant_award_0090ede0(scoring_global(host), at<std::int32_t>(record, 0x250), key, 1, 0);
+                    release_native_string(host, key);
+                    void* const stop = ptr(vector, 0x08);
+                    if (static_cast<std::uint8_t*>(ptr(vector, 0x04)) > static_cast<std::uint8_t*>(stop)) host.checked_iterator_failure_00bf6713();
+                    void* const start = ptr(vector, 0x04);
+                    if (static_cast<std::uint8_t*>(start) > static_cast<std::uint8_t*>(ptr(vector, 0x08))) host.checked_iterator_failure_00bf6713();
+                    host.vector_erase_range_0090ca30(vector, StlTreeIterator{vector, start}, StlTreeIterator{vector, stop});
+                    break;
+                }
+                if (element >= static_cast<std::uint8_t*>(ptr(vector, 0x08))) host.checked_iterator_failure_00bf6713();
+                element += 8;
+            }
+        }
+    }
+
+    // 0091341F..00913662: RUA_FU over the sorted kill times of each id in A.
+    {
+        StlTreeIterator it{times, ptr(ptr(times, 0x04), 0x00)};
+        for (;;) {
+            void* const head = ptr(times, 0x04);
+            check_iterator_owner(host, it, times);
+            if (it.node == head) break;
+            check_iterator_container(host, it);
+            check_iterator_not_head(host, it);
+            void* const list = add(it.node, 0x10);
+            if (float_vector_size(list) > static_cast<double>(fu_count)) {
+                check_iterator_not_head(host, it);
+                float* const last = static_cast<float*>(ptr(list, 0x08));
+                if (static_cast<float*>(ptr(list, 0x04)) > last) host.checked_iterator_failure_00bf6713();
+                check_iterator_not_head(host, it);
+                float* const first = static_cast<float*>(ptr(list, 0x04));
+                if (first > static_cast<float*>(ptr(list, 0x08))) host.checked_iterator_failure_00bf6713();
+                host.float_sort_0090d220(first, last, static_cast<std::int32_t>(last - first));
+                for (std::int32_t i = 0;; ++i) {
+                    check_iterator_not_head(host, it);
+                    const float reach = static_cast<float>(i) + fu_count;
+                    if (!(float_vector_size(list) > static_cast<double>(reach))) break;
+                    check_iterator_not_head(host, it);
+                    const auto j = static_cast<std::uint32_t>(ftol2_low_00bf7420(reach));
+                    if (ptr(list, 0x04) == nullptr || j >= float_vector_count(list)) host.checked_iterator_failure_00bf6713();
+                    check_iterator_not_head(host, it);
+                    const float* const later = static_cast<const float*>(ptr(list, 0x04)) + j;
+                    if (ptr(list, 0x04) == nullptr || static_cast<std::uint32_t>(i) >= float_vector_count(list)) {
+                        host.checked_iterator_failure_00bf6713();
+                    }
+                    const float spread = *later - static_cast<const float*>(ptr(list, 0x04))[i];
+                    if (fu_window >= spread) {
+                        alignas(4) std::uint8_t name[8];
+                        construct_native_string_inline(host, name, 0x00D188A4u, 6);  // RUA_FU
+                        std::int32_t* const value = host.string_int_map_index_005070c0(add(record, 0x84), name);
+                        *value = ftol2_low_00bf7420(static_cast<float>(static_cast<double>(fu_count) + 1.0));
+                        release_native_string(host, name);
+                    }
+                }
+            }
+            host.tree_iterator_increment(0x00907240u, &it);
+        }
+    }
+
+    // 00913667..0091385F: RUA_TBU from B.
+    {
+        StlTreeIterator it{bombs, ptr(ptr(bombs, 0x04), 0x00)};
+        for (;;) {
+            void* const head = ptr(bombs, 0x04);
+            check_iterator_owner(host, it, bombs);
+            if (it.node == head) break;
+            alignas(4) std::uint8_t name[8];
+            construct_native_string_inline(host, name, 0x00D18874u, 7);  // RUA_TBU
+            check_iterator_container(host, it);
+            check_iterator_not_head(host, it);
+            const std::int32_t threshold =
+                award_vector_value(host, host.award_table_find_record_0050fc30(award_table(host), name), 0);
+            const bool reached = at<std::int32_t>(it.node, 0x10) >= threshold;
+            release_native_string(host, name);
+            if (reached) {
+                alignas(4) std::uint8_t lookup[8];
+                construct_native_string_inline(host, lookup, 0x00D18874u, 7);
+                construct_native_string_inline(host, name, 0x00D18874u, 7);
+                void* const award = host.award_table_find_record_0050fc30(award_table(host), lookup);
+                const std::uint8_t* const first = static_cast<const std::uint8_t*>(ptr(award, 0x48));
+                if (first == nullptr ||
+                    (static_cast<std::int32_t>(static_cast<const std::uint8_t*>(ptr(award, 0x4C)) - first) >> 2) == 0) {
+                    host.checked_iterator_failure_00bf6713();
+                }
+                const std::int32_t* const target = static_cast<const std::int32_t*>(ptr(award, 0x48));
+                std::int32_t* const value = host.string_int_map_index_005070c0(counters, name);
+                *value = *target;
+                release_native_string(host, name);
+                release_native_string(host, lookup);
+            }
+            host.tree_iterator_increment(0x0057F5F0u, &it);
+        }
+    }
+
+    // 00913864..009139DC: grant each counter that reached its threshold, with its count.
+    {
+        StlTreeIterator it{counters, ptr(ptr(record, 0x88), 0x00)};
+        for (;;) {
+            void* const head = ptr(record, 0x88);
+            check_iterator_owner(host, it, counters);
+            if (it.node == head) break;
+            check_iterator_container(host, it);
+            check_iterator_not_head(host, it);
+            void* const name = add(it.node, 0x0C);
+            void* const award = host.award_table_find_record_0050fc30(award_table(host), name);
+            const std::uint8_t* const first = static_cast<const std::uint8_t*>(ptr(award, 0x48));
+            if (first == nullptr ||
+                (static_cast<std::int32_t>(static_cast<const std::uint8_t*>(ptr(award, 0x4C)) - first) >> 2) == 0) {
+                host.checked_iterator_failure_00bf6713();
+            }
+            check_iterator_not_head(host, it);
+            if (!(*static_cast<const std::int32_t*>(ptr(award, 0x48)) > at<std::int32_t>(it.node, 0x14))) {
+                void* const awards = add(record, 0x6C);
+                void* const awards_head = ptr(awards, 0x04);
+                check_iterator_not_head(host, it);
+                void* const found = awards_map_find_inline(host, awards, name);
+                if (found == awards_head) {
+                    check_iterator_not_head(host, it);
+                    check_iterator_not_head(host, it);
+                    host.scoring_grant_award_0090ede0(scoring_global(host), at<std::int32_t>(record, 0x250), name,
+                                                      at<std::int32_t>(it.node, 0x14), 0);
+                }
+            }
+            host.tree_iterator_increment(0x004FBD20u, &it);
+        }
+    }
+
+    // 009139E1..00913A44: the local trees' destructors.
+    void* const b_head = ptr(bombs, 0x04);
+    host.tree_erase_range(0x0058B000u, bombs, StlTreeIterator{bombs, ptr(b_head, 0x00)}, StlTreeIterator{bombs, b_head});
+    host.free_00bf65ac(ptr(bombs, 0x04));
+    void* const a_head = ptr(times, 0x04);
+    at<std::uint32_t>(bombs, 0x04) = 0;
+    at<std::uint32_t>(bombs, 0x08) = 0;
+    host.tree_erase_range(0x0090F3D0u, times, StlTreeIterator{times, ptr(a_head, 0x00)}, StlTreeIterator{times, a_head});
+    host.free_00bf65ac(ptr(times, 0x04));
 }
 }  // namespace bsp::cc13_seg59b

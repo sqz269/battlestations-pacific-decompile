@@ -410,6 +410,27 @@ struct Seg59bHost {
     // The checked iterator ++ instantiation at `callee` (0057F4A0, 0057F920, 0057F580, 0057F5F0,
     // 004FBD20), __thiscall(ECX = it), RET. Bound library code.
     virtual void tree_iterator_increment(std::uint32_t callee, StlTreeIterator* it) = 0;
+
+    // --- 00912A60 achievement counters ----------------------------------------------------------
+    // The _Buynode head instantiation at `callee` (00907D40, 005828E0), __thiscall(ECX = tree),
+    // RET; EAX = the new head node (the caller sets isnil and the links).
+    virtual void* tree_buy_head_node(std::uint32_t callee, void* tree) = 0;
+    // 00910F10 std::map<uint32, vector<float>>::operator[], __thiscall(ECX = map, key*), RET 4;
+    // EAX = &vector (node+10h).
+    virtual void* float_vector_map_index_00910f10(void* map, const std::uint32_t* key) = 0;
+    // 0045AFD0 vector<float>::push_back, __thiscall(ECX = vector, const float*), RET 4.
+    virtual void float_vector_push_back_0045afd0(void* vector, const void* value) = 0;
+    // 00667EB0 std::map<uint32, int>::operator[], __thiscall(ECX = map, key*), RET 4; EAX = &int.
+    virtual std::int32_t* int_map_index_00667eb0(void* map, const std::uint32_t* key) = 0;
+    // 0090D220 std::_Sort<float*>, register ABI (ECX = first, EDX = last, ideal pushed), RET 4.
+    // Bound library code.
+    virtual void float_sort_0090d220(float* first, float* last, std::int32_t ideal) = 0;
+    // 0090CA30 STL_Vector_EraseRange, __thiscall(ECX = vector, result*, first {vector, ptr},
+    // last {vector, ptr}), RET 14h.
+    virtual void vector_erase_range_0090ca30(void* vector, StlTreeIterator first, StlTreeIterator last) = 0;
+    // The tree erase(first, last) instantiation at `callee` (0058B000, 0090F3D0), __thiscall(ECX =
+    // tree, result*, first, last), RET 14h.
+    virtual void tree_erase_range(std::uint32_t callee, void* tree, StlTreeIterator first, StlTreeIterator last) = 0;
     // 00419CC0 BSP_SizedStoragePool_GetSingleton (no args); 00BD1510 ReturnBlock,
     // __thiscall(ECX = pool, data, bytes, flag), RET 0Ch.
     virtual void* sized_pool_singleton_00419cc0() = 0;
@@ -787,6 +808,10 @@ void scoring_record_hit_damage_00915f20(Seg59bHost& host, void* scoring, void* t
 // counter map at record+78h and grants (0090EDE0) each counter that reached its award threshold
 // and is not yet in the awards map at record+6Ch.
 void score_record_evaluate_badge_counters_00911e80(Seg59bHost& host, void* record);
+// 00912A60, __fastcall(ECX = record = scoring + slot*284h + 4), RET: rebuilds the RUA_* / GA_*
+// counter map at record+84h from the kill list, the GA_PL vector and two local trees, and grants
+// (0090EDE0, value = the count) each counter that reached its threshold and is not yet awarded.
+void score_record_evaluate_achievement_counters_00912a60(Seg59bHost& host, void* record);
 
 
 }  // namespace bsp::cc13_seg59b
