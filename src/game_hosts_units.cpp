@@ -6425,6 +6425,20 @@ struct GameUnitsHost::Impl {
     // unit+840h WandererMul = tuning+614h (Pilot/Avoidance/Gunfire/BomberVSGunfire)
     // before returning. True: wanderer.mul takes the value. False: only counted.
     static constexpr bool kGunfireExemptWandererMulBound = false;
+    // Packet p20_follow_exit (section 80). 009BDE40 BSP_BotStateFollow_Exit (RET): 007B8A90
+    // clears the turbo byte unit+9F9h (009BDE49), then [bot+1Ch]+4Ch, the gun hold timer
+    // the sight tick sets, = 0.0 (009BDE57). It is the follow state's exit in the kind-7
+    // task and the level-bomb prepare's exit (009B84A0). True: both stores. False:
+    // recorded only, as before.
+    static constexpr bool kFollowExitClearsBound = false;
+    unsigned long long follow_exits{0};
+    void follow_exit_009bde40(GameUnitSlot& unit) {
+        ++follow_exits;
+        if constexpr (kFollowExitClearsBound) {
+            unit.plane_turbo_9f9 = false;      // 009BDE49 007B8A90
+            unit.df_gun.hold_4c = 0.0f;        // 009BDE57
+        }
+    }
     static constexpr bool kLandingLandedArmBound = true;  // ON: all ten LOMP10 planes land (docs/SQUADRON_LAND_TASK.md 5r)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
@@ -25189,6 +25203,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         using namespace bsp::level_bomb;
                         using LS = bsp::LevelBombState;
                         if (s == unit_.level_bomb_state) return;
+                        // 009B84A0: prepare's exit 009B6660 JMPs to 009BDE40, and the follow
+                        // state (009C2980, vtable 00D20AB8 +8) is 009BDE40 itself.
+                        if (unit_.level_bomb_state == bsp::LevelBombState::kPrepare ||
+                            unit_.level_bomb_state == bsp::LevelBombState::kFollow) {
+                            owner_.follow_exit_009bde40(unit_);
+                        }
                         unit_.level_bomb_state = s;
                         bsp::LevelBombApproach& a = unit_.lb_ap;
                         switch (s) {
@@ -35139,6 +35159,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 pb_.owner_.record("BotStateFollow::enter", 0x009bed80u);
                             }
                             void exit_follow_009bde40() override {
+                                pb_.owner_.follow_exit_009bde40(pb_.unit_);
                                 pb_.owner_.record("BotStateFollow::exit", 0x009bde40u);
                             }
                             void tick_follow_009c1fd0(float step) override {
@@ -40857,6 +40878,8 @@ void GameUnitsHost::report() {
             "bound=%d (009A7D60 / 009AAC63, packets p20_df_avoid_timer / p20_df_early_clear)",
             host.df_avoid_timer_redraws, Impl::kDogfightAvoidTimerDrawBound ? 1 : 0,
             host.df_early_edge_clears, Impl::kDogfightEarlyEdgeClearBound ? 1 : 0);
+        host.log.notef("summary follow exit 009BDE40 calls=%llu bound=%d (packet p20_follow_exit)",
+            host.follow_exits, Impl::kFollowExitClearsBound ? 1 : 0);
         host.log.notef("summary land min speed owner terms=%llu bound=%d (009B1362, packet "
             "p20_land_min_speed_owner)", host.land_min_speed_owner_terms,
             Impl::kLandMinSpeedOwnerVelocityBound ? 1 : 0);
