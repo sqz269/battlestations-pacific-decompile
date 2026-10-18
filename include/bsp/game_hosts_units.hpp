@@ -209,6 +209,22 @@ inline constexpr bool kSquadronReturnToBaseResolveBound = true;  // ON: record o
 inline constexpr bool kUnitYawRateForwardSpeedBound = true;  // ON: mechanism held, reach miss recorded (docs/UNIT_YAW_RATE_FORWARD_SPEED.md)
 inline constexpr bool kSquadronLandTaskBound = true;  // ON: pairs, spread miss recorded (docs/SQUADRON_LAND_TASK.md 5)
 inline constexpr bool kLandConvoyMovementBound = true;  // ON: pairs held (docs/LAND_AND_STRUCTURES.md)
+// Packet cc13-convoy. cc15's land convoy bodies (include/bsp/cc15_land_convoy.hpp,
+// docs/CC15_LAND_CONVOY.md) and cc13's 00742210 / 0074CD10 on the host's convoys.
+// True:
+//  - the roster keeps one member vector (+398h, nulls in place) and the live count
+//    +3BCh per convoy, shared with the motion state's slots, and each member's
+//    +738h back pointer;
+//  - 007420B0 runs at bind (members take the convoy's 00927A80 skill through
+//    vtable +128h, 006D1EB0);
+//  - each 009273A0 flush runs 0074CD10 -> 007422A0 for every member that died
+//    since the last flush, then the convoy's queued 00742180 on the flush after
+//    its 00926D90 (cause 2 at exactly zero live members);
+//  - Lua Kill on a convoy runs 00742210 (members killed and nulled, +738h kept,
+//    the convoy not killed).
+// False: the convoy is a marker with a fixed roster; a member's death touches
+// nothing, and Lua Kill on a convoy kills nobody (no units-host slot).
+inline constexpr bool kLandConvoyBodiesBound = false;
 // Packet cc9_landing_sequencer. The deck's landing queue and sequencer for an
 // AIRFIELD owner: 006C54C0 queues the squadron (006BF060/006C0B50) and reads
 // its record through 006BD080; the queue tick 006CD240 runs 006CC9F0 (insert
@@ -1235,6 +1251,16 @@ public:
     // convoy of that name is bound. Callers: the GameMissionLuaHost rows only.
     bool set_land_convoy_stopped_3a8(const std::string& convoy, bool stopped);
     bool set_land_convoy_speed_368(const std::string& convoy, float speed);
+    // Packet cc13-convoy, under kLandConvoyBodiesBound (no-ops when it is off).
+    // The row-15 flush (009273A0): the convoy kills queued by the previous flush
+    // run 00742180, then each member dead since the last flush runs 0074CD10.
+    void land_convoy_flush_009273a0();
+    // Lua Kill(convoy[, hard]) through 008AC740 -> 00742210 on the convoy named
+    // `convoy`. Appends each member 00742210 handed to 00926D90 to `victims`
+    // (the caller kills them, as for any Lua Kill victim) and nulls its slot.
+    // False when no convoy of that name has a roster.
+    bool land_convoy_kill_member_vector_00742210(const std::string& convoy, bool hard,
+                                                 std::vector<std::size_t>& victims);
     // Instance vtable+5Ch dispatch using the class selected by VehicleClass.Type
     // and the compiled predicates in unit_kind_query.hpp. Missing/unrecognized
     // identity and invalid indices answer false. docs/GAME_UNIT_KIND_BINDING.md.
