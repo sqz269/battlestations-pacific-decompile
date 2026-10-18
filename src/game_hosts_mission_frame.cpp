@@ -176,6 +176,13 @@ constexpr bool kScanProximityBound = true;
 // gameplay identical on both (docs/CONSTRUCT_WORLD.md section 18).
 constexpr bool kScanProximityUnitsEntriesBound = true;
 
+// Packet p20_squadron_helm (docs/OCEAN_WAVE_FIELD.md section 79). True: a helm
+// `moveto` whose unit is a plane squadron member goes through
+// GameScriptOrdersHost::player_plane_moveto (the members' 00E08F68 moveto and
+// the 0099A170 install at delivery). False: the ship path, whose command row a
+// plane's bot never reads, so the squadron keeps its scene moveto (BSM09 Donald).
+constexpr bool kHelmPlaneMovetoBound = false;
+
 // Packet cc9_construct_world_p8 (docs/CONSTRUCT_WORLD.md section 15). True:
 // 00481640's call is the walk 00487270 itself: the std::list whose sentinel is
 // group+10h (group = [TrafficConfig+8h], the 20h object 0049D690 builds), each
@@ -3586,6 +3593,30 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                         "%llu) moveto %s: 00645060 rejects the unit, so it can never be "
                         "[00E188D8], the unit 005F9B20 orders", order.line, due, now,
                         order.unit.c_str());
+                    continue;
+                }
+            }
+            if constexpr (kHelmPlaneMovetoBound) {
+                const int planes = host.script_orders != nullptr
+                    ? host.script_orders->player_plane_moveto(unit_index, x, z) : -1;
+                if (planes >= 0) {
+                    const bool issued = planes > 0;
+                    ++order.applications;
+                    if (issued && order.repeat_seconds > 0.0f) {
+                        const float frame_seconds = host.mission_frame_seconds > 0.0f
+                            ? host.mission_frame_seconds : 0.05f;
+                        long step = static_cast<long>(order.repeat_seconds / frame_seconds + 0.5f);
+                        if (step < 1) step = 1;
+                        order.frame = static_cast<long>(now) + step;
+                        order.applied = false;
+                    }
+                    if (issued) ++host.helm_orders_applied; else ++host.helm_orders_refused;
+                    host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) "
+                        "moveto %s %s(%.1f, %.1f) to %d squadron plane(s) (005F9B20 00E08F68 -> "
+                        "0099A170, packet p20_squadron_helm)", issued ? "applied" : "refused",
+                        order.line, due, now, order.unit.c_str(),
+                        order.point_name.empty() ? "" : (order.point_name + " ").c_str(),
+                        static_cast<double>(x), static_cast<double>(z), planes);
                     continue;
                 }
             }

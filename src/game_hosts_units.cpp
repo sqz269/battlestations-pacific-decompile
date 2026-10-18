@@ -6393,6 +6393,12 @@ struct GameUnitsHost::Impl {
     // through 009B3680. True: the edge enters park. False: it is refused, as before.
     // LABELLED: vt[38h] is read as "airborne", the host's +900h == 7.
     static constexpr bool kLandFinalParkEdgeBound = false;
+    // Packet p20_finder_noise (docs/OCEAN_WAVE_FIELD.md section 78). 007E2184-007E21B3:
+    // for each candidate whose 007DEEC0 score is > 0 and when the noise argument is
+    // > 0 ([00D7A218]), 007E2090 adds BSP_Random_UniformFloatRange(1, 0, noise) (00BD2F10,
+    // ECX = 1). True: a keyed stream-1 draw (unit name + "#fnoise") per such candidate.
+    // False: the constant midpoint noise / 2, as before. RNG-coupled: judge per entity.
+    static constexpr bool kFinderNoiseDrawBound = false;
     static constexpr bool kLandingLandedArmBound = true;  // ON: all ten LOMP10 planes land (docs/SQUADRON_LAND_TASK.md 5r)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
@@ -23590,7 +23596,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             float s = bsp::plane_finder_score_007deec0(
                                 fp, loc, p[1] - unit_.motion.position[1],
                                 static_cast<float>(std::sqrt(hx * hx + hz * hz)));
-                            if (0.0f < s && noise_mid > 0.0f) s += noise_mid;  // U(0, noise)
+                            if (0.0f < s && noise_mid > 0.0f) {
+                                if constexpr (GameUnitsHost::Impl::kFinderNoiseDrawBound) {
+                                    // 007E21AA: U(0, noise), noise = 2 x the midpoint.
+                                    s += owner_.release_altitude_draw_00bd2f10(
+                                        unit_.row.name + "#fnoise", 0.0f, noise_mid * 2.0f);
+                                } else {
+                                    s += noise_mid;  // U(0, noise) at its midpoint
+                                }
+                            }
                             if (best < s) {
                                 best = s;
                                 pick = e;

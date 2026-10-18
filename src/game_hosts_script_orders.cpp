@@ -1896,6 +1896,52 @@ int (*g_class_default_arm_reader)(int vehicle_class) = nullptr;
 // kPlayerLaunchScreenCursorBound retired: the cursor key's state-5 path (0067A565) is not the targeted launch (docs/SHIP_AI_OPEN_ITEMS.md 212).
 }  // namespace
 
+// Packet p20_squadron_helm (docs/OCEAN_WAVE_FIELD.md section 79). The player's
+// moveto 005F9B20 orders [00E188D8] through 0077D600 with 00E08F68, the class
+// kPilotOrderClassMoveTo; on a squadron the command lands on the squadron's
+// director and each member's bot (0099A4C0 on the change, then 0099A170) builds
+// a kind-7 moveto task on a position descriptor. The host's member command rows
+// and the install at delivery are the standing fan-out substitution, as in the
+// air-ops order's moveto above (006CCDA0 kMoveToSelf). LABELLED: no 00645060
+// select or 0064B870 / 00780214 role transfer runs; the harness's order stands
+// for a player who selected the squadron.
+int GameScriptOrdersHost::player_plane_moveto(std::size_t unit_index, float x, float z) {
+    if (unit_index >= units_.count()) return -1;
+    const bsp::PlaneSquadronHostRecord* record =
+        bsp::plane_squadron_registry().find_by_member_unit(unit_index);
+    if (record == nullptr) return -1;
+    float lx = 0.0f, ly = 0.0f, lz = 0.0f;
+    units_.unit_position_00fc(unit_index, lx, ly, lz);
+    bsp::SceneCommandTarget here;
+    here.kind = 0;
+    here.position_valid = 1;
+    here.position[0] = x;
+    here.position[1] = ly;
+    here.position[2] = z;
+    const std::string saved_source = delivery_source_;
+    delivery_source_ = "player:helm moveto 005F9B20";
+    int planes = 0;
+    for (const std::size_t m : record->member_units) {
+        if (m == bsp::kPlaneSquadronNoUnit || m >= units_.count()) continue;
+        if (!units_.unit_alive_and_visible(m)) continue;
+        void* const handle = reinterpret_cast<void*>(static_cast<std::uintptr_t>(m + 1u));
+        entity_issue_command(handle, bsp::kPilotOrderClassMoveTo, here, 1);
+        ++planes;
+        after_order_delivery([this, m, here]() {
+            ScriptOrderAttackCommandHost bot_host(units_, log_, bsp::kPilotOrderClassMoveTo, 0u);
+            const std::uint32_t task = bsp::bot_install_command_task_0099a170(
+                static_cast<std::uint32_t>(m + 1u), bot_host);
+            if (task == 0u) return;
+            units_.store_unit_attack_command_class(m, bsp::kPilotOrderClassMoveTo);
+            units_.store_unit_moveto_range(m, 0.0f);
+            units_.store_unit_moveto_target(m, ~static_cast<std::size_t>(0));
+            units_.store_unit_moveto_point(m, here.position);
+        });
+    }
+    delivery_source_ = saved_source;
+    return planes;
+}
+
 std::size_t harness_target_row(const GameUnitsHost& units, const std::string& name) {
     std::size_t first = units.count();
     for (std::size_t k = 0; k < units.count(); ++k) {
