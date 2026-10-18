@@ -188,7 +188,7 @@ inline constexpr bool kShipAiTrafficBound = true;
 // gunnery host's recon_triple_units(party, 1), as kAutoTargetReconCandidatesBound
 // reads it for 009F5D30. False: every live ship or plane of another side (neutral
 // included) at any recon level above none, in unit order.
-inline constexpr bool kShipAiTrafficReconListBound = false;
+inline constexpr bool kShipAiTrafficReconListBound = true;   // ON: SHIP_AI 281 (mechanism)
 // Packet s57_torpedo_from_sub (SHIP_AI_OPEN_ITEMS 283; CC13_VERIFY2 R1). True: a torpedo
 // launched under the surface (projectile+354h at 006E2E7F, copied to +49Ch at 008578B0)
 // is seen TorpedoObservationSubAddon later (009F0C0E; robots.lua: 4.0 s SPNormal, 0 at

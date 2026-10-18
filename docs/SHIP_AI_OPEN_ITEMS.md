@@ -19007,3 +19007,14 @@ manifests beside each log).** JM08 `jm08_l65_j8_p2`: `joins=12 advanced=0`, pair
 USN04 (no orders): `joins=2 advanced=0`, exit 1, identical. As predicted, every join on these rows happens before
 the ship passes its nearest point, so 007B11F0 keeps the nearest. **Decision: ON** as a faithful binding with the
 mechanism exercised (the projection runs on every build) and no moved row.
+
+### 281 result: ON
+
+**Pairs.** USN12 `g45_u12_e7` 20000 frames (d4171938d, exe `local\s57_tr_on` vs `local\s57_off4`): exit 3, deaths
+39 -> 37, torpedo drops 6 -> 0, walks=705 contacts=4790. IJN08 `p10_i08_z` 20000 frames (06f985f99, which adds
+the switch-off count, exe `local\s57_tr2_on` vs `local\s57_off5`): exit 3, deaths 174 -> 170, 89 changed rows;
+OFF `live_walks=1609 live_contacts=35253` (21.9 per walk), ON `walks=1612 contacts=78214` (48.5 per walk).
+**The count prediction missed and the mechanism holds:** the triple holds every identified enemy entity, land
+units and buildings included (IJN08's island: `Static Oscar 01`, tents), while the switch-off list kept only ship
+and plane bases; the library's own 009E9253 kind-5 test drops the non-ships after the walk either way. What moves
+is the order (class buckets), the 3.0 s snapshot, and the absent blips/neutrals. **Decision: ON** by mechanism.
