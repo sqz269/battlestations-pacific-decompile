@@ -21,6 +21,7 @@
 #include "bsp/game_hosts_ai.hpp"
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/gameplay_seg38_cc13.hpp"
 #include "bsp/gameplay_seg46_cc13.hpp"
 
@@ -114,6 +115,17 @@ constexpr bool kSceneCommandFindCaseInsensitiveBound = true;
 // a landing ship's `land` became an attackmove and never reached the land state.
 // ON by section 85.4: both JM08 land rows became current (slot=1, curr=1).
 constexpr bool kEntityCommandSelfKindBound = true;
+
+// cc15-sm1 (session-message bring-up). True: the MT_GAMEUNIT_SETCMD that 0071ECF0
+// posts is built by 0071C830 over host message memory and the queued copy is
+// the one 0076E520 rebuilds from its bits (0071C930 write, 00768530 / 00764F90,
+// 0071CA30 read), so the delivery sees what the image's drain does: the target
+// position quantised to 24 bits over 22000 (00CF9360), a trailing value below
+// 1.0 (00D7A24C) dropped to 0, no object when the target bit is clear, and the
+// command found again from its ordinal byte by the first-match registry walk
+// 007216D0. False: the typed command, target and flag are delivered as posted.
+// The pair is cc15's; cc9 flips.
+constexpr bool kSetCommandMessageCc13Bound = false;
 
 // [00e188a8]+1fe4h. The single-player value, which is what every other host in
 // this executable already reports for the same field.
@@ -581,6 +593,10 @@ struct GameCommandsHost::Impl {
         std::uint32_t set_command{0};        // MT_GAMEUNIT_SETCMD (0071C830)
         bsp::SceneCommandTarget set_target{};
         std::uint8_t set_flag{0};
+        // kSetCommandMessageCc13Bound: the queued copy 0076E520 rebuilt, held
+        // until its delivery, where the drain frees it.
+        bool set_message_bound{false};
+        bsp::NativeSessionMessage92 set_message{};
         bool player{false};                  // the 5Dh clear (0071C730 / 0071D900)
         bsp::ClearCommandMessage clear{};
         // The receiver side a Lua binding runs once its order is delivered
@@ -598,6 +614,13 @@ struct GameCommandsHost::Impl {
     std::size_t last_post_index{kNoLoopbackRow};
     std::vector<LoopbackMessage>* last_issue_list{nullptr};
     std::size_t last_issue_index{kNoLoopbackRow};
+    // kSetCommandMessageCc13Bound: the image-shaped session context, and what
+    // the round trip changed against the typed post.
+    bsp::HostSessionMessages session_messages;
+    unsigned long long setcmd_round_trips{0};
+    unsigned long long setcmd_command_changed{0};
+    unsigned long long setcmd_target_changed{0};
+    unsigned long long setcmd_object_dropped{0};
     std::vector<LoopbackMessage> loopback;
     std::vector<LoopbackMessage>* loopback_active{nullptr};
     // unit+184h as the last director step of each unit was given it; what the
@@ -1666,7 +1689,9 @@ void DirectorBinding::route_set_command_message(std::uint32_t command,
     // +20h and the command ordinal at +21h, and 0077c2a0 at 0071ed81 routes it
     // with the routing flags 7 through the endpoint at director+34h. The same
     // session boundary as the first hop, so the executable delivers it here.
-    chain_.owner.record("WeaponDirector::build_set_command_message", 0x0071c830u);
+    if constexpr (!kSetCommandMessageCc13Bound || !kSetCommandQueueDelayBound) {
+        chain_.owner.record("WeaponDirector::build_set_command_message", 0x0071c830u);
+    }
     chain_.owner.record("WeaponDirector::route_set_command_message", 0x0077c2a0u);
     chain_.owner.record_slot("Session::dispatch_gameunit_message", "00cfc530+vtable114");
     ++chain_.owner.summary.loopback_setcmd_posts;
@@ -1694,6 +1719,16 @@ void DirectorBinding::route_set_command_message(std::uint32_t command,
     posted.set_command = command;
     posted.set_target = target;
     posted.set_flag = flag;
+    if constexpr (kSetCommandMessageCc13Bound) {
+        // 0071C830 reads the command object's +4h ordinal. A command this host
+        // cannot class has no ordinal here and goes as the null command (0FFh).
+        const bsp::EntityOrderCommandClass* klass = chain_.owner.class_of(command);
+        posted.set_message = chain_.owner.session_messages.queue_set_command_92(
+            (command != 0u && klass != nullptr) ? klass->ordinal : -1, target, flag);
+        posted.set_message_bound = true;
+        ++chain_.owner.setcmd_round_trips;
+        chain_.owner.done("WeaponDirector::build_set_command_message", 0x0071c830u);
+    }
     posted.after_delivery = std::move(chain_.after_delivery);
     chain_.after_delivery = nullptr;
     chain_.finish_pending = false;
@@ -2105,6 +2140,52 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
         break;
     }
     case LoopbackKind::SetCommand: {
+        if (message.set_message_bound) {
+            // kSetCommandMessageCc13Bound: the fields of 0076E520's copy. 007216D0
+            // finds the command again from the +21h ordinal (0FFh finds none),
+            // and the read leaves the object null with the handle in +2h, which
+            // the resolve (00521EA0) turns back into the same entity: this
+            // host's unit, or the posted object for a target that is not one.
+            // With the target bit clear the write sends no handle, so there is
+            // no object.
+            bsp::NativeSessionMessage92 queued = message.set_message;
+            const std::uint8_t ordinal = queued.command_21;
+            const bsp::EntityOrderCommandClass* klass
+                = ordinal == bsp::kCruiseCommandNoOrdinal
+                    ? nullptr : bsp::entity_order_command_class_by_ordinal(ordinal);
+            chain.pending_command = klass != nullptr ? klass->object_address : 0u;
+            chain.pending_target = queued.target_24;
+            chain.pending_target.object = queued.target_24.kind != 0
+                ? const_cast<void*>(unit_object_of(message.target_handle,
+                    message.set_target.object))
+                : nullptr;
+            chain.pending_flag = queued.flags_20;
+            if (chain.pending_command != message.set_command) ++setcmd_command_changed;
+            const bsp::SceneCommandTarget& sent = message.set_target;
+            if (std::memcmp(sent.position, queued.target_24.position, sizeof sent.position) != 0
+                || std::memcmp(&sent.trailing, &queued.target_24.trailing, sizeof sent.trailing) != 0
+                || sent.kind != queued.target_24.kind
+                || sent.position_valid != queued.target_24.position_valid) {
+                if (++setcmd_target_changed <= 12) {
+                    const bsp::SceneCommandTarget& q = queued.target_24;
+                    log.notef("setcmd round trip %s: kind %u->%u valid %u->%u pos (%.6f %.6f %.6f)"
+                        " -> (%.6f %.6f %.6f) trailing %.6f -> %.6f", units[message.unit].name.c_str(),
+                        sent.kind, q.kind, sent.position_valid, q.position_valid,
+                        sent.position[0], sent.position[1], sent.position[2],
+                        q.position[0], q.position[1], q.position[2], sent.trailing, q.trailing);
+                }
+            }
+            if (sent.object != nullptr && chain.pending_target.object == nullptr) {
+                ++setcmd_object_dropped;
+            }
+            DirectorBinding binding(chain);
+            bsp::gameunit_apply_set_command_00721a40(binding, kSessionModeSinglePlayer,
+                chain.pending_flag);
+            done("GameUnitMessage::apply_set_command", 0x00721a40u);
+            // The drain's scalar delete (0071E3B0 -> 0071CB40) after the dispatch.
+            bsp::HostSessionMessages::free_set_command_92(queued);
+            break;
+        }
         chain.pending_command = message.set_command;
         chain.pending_target = message.set_target;
         chain.pending_target.object = const_cast<void*>(
@@ -4217,6 +4298,11 @@ void GameCommandsHost::report() {
         host.summary.loopback_setcmd_posts, host.summary.loopback_clear_posts,
         host.summary.loopback_delivered_in_place, host.summary.loopback_delivered_nested,
         host.summary.loopback_delivered_queued, host.summary.loopback_drains);
+    host.log.notef("summary mission director setcmd message bound=%d round_trips=%llu "
+        "command_changed=%llu target_changed=%llu object_dropped=%llu (cc15-sm1, 0071C830 / "
+        "0071C930 / 00764F90 / 0071CA30)", kSetCommandMessageCc13Bound ? 1 : 0,
+        host.setcmd_round_trips, host.setcmd_command_changed, host.setcmd_target_changed,
+        host.setcmd_object_dropped);
     host.log.notef("summary mission director override bound=%d sends=%llu installs=%llu "
         "arm_ends=%llu clears=%llu (packet s56_autotarget_override, 0071D980 / 0071E7F0 / "
         "00836D67 / 0071E610)", kAutoTargetOverrideBound ? 1 : 0,
