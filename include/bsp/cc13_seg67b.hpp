@@ -218,6 +218,9 @@ public:
     // 009F126B..009F1401, the tail of 009F1160: bind to
     // bsp::ship_ai_brain_produce_tail_009f126b (src/ship_ai_brain_producers.cpp). The goal
     // defaults, the seven stream-1 draws and the critical section at brain+4h.
+    // The (void* brain) signature differs from bsp::ship_ai_brain_produce_tail_009f126b(
+    // ShipAiBrainProducerView, const ShipAiBrainProducerContext&): whoever binds this hook
+    // must build the view over the brain record and supply the context.
     virtual void ship_ai_brain_produce_tail_009f126b(void* brain) = 0;
     // task->vtable[+28h](), RET, AL (a bot task's own predicate slot).
     virtual std::uint8_t task_vcall_28_flag(void* task) = 0;
