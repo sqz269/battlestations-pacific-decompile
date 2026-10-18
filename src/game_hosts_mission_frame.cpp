@@ -77,6 +77,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <map>
+#include <random>
 #include <string>
 #include <vector>
 #include <sstream>
@@ -155,10 +156,15 @@ constexpr bool kWarningManagerTickBound = true;
 // channel record: its gates from the host's own state (recon level and
 // 00803CE0 through the recon sensor pass, read only), 009744C0's id, and
 // 009763E0 into the pending queue, and 00977690's accepted torpedo report
-// builds its 00974150 "torpedo" warning and reports it the same way. The
-// post-accept hooks stay empty (vtable[3]
-// 0097F970, voice_ready 005B71D0, 00974070), so an accepted warning is Queued
-// and never applied. False: no table, no kill block, and every id is unknown.
+// builds its 00974150 "torpedo" warning and reports it the same way. An
+// accepted warning runs its vtable[3] activate (0097F970 kill, 0097F490
+// torpedo, 0097FA90 hit; see warning_activate_cc15): the 00979B50 variant
+// pick, whose one draw is a SUBSTITUTION (warning_pick_variant_draw), the
+// 00803CE0 relation test and the 00976B00 clip. The MessageManager
+// [game+21DCh] is not hosted, so 00705E00 and 0097D650's 0097B5E0 step are
+// counted as not evaluated. voice_ready 005B71D0 and 00974070 stay empty, so
+// an accepted warning is Queued and never applied. False: no table, no kill
+// block, and every id is unknown.
 constexpr bool kWarningMessageBankCc15Bound = false;
 
 // Packet cc9_construct_world part 2 (docs/CONSTRUCT_WORLD.md section 9). True:
@@ -368,6 +374,15 @@ struct GameMissionFrameHost::Impl {
     float kill_plane_throttle_last{0.0f};      // 00F8A0CC
     std::map<std::string, std::array<unsigned long long, 4>> warning_report_outcomes{};
     std::map<std::string, unsigned long long> warning_lua_callbacks{};
+    // Step 3a: the activates' variant use tables (manager +144h/+150h), the
+    // warning-local generator of the SUBSTITUTION draw, and their counts.
+    bsp::cc13_seg49_64_78::WarningVariantTable warning_variants{};
+    std::mt19937 warning_variant_rng{};
+    struct WarningActivateCounts {
+        unsigned long long activations{0}, single_variant{0}, draws{0},
+            sound_keys_untouched{0}, sound_keys_not_evaluated{0}, relation_blocked{0},
+            clips{0}, records_not_evaluated{0};
+    } warning_activate{};
     bool device_edge_injected{false};         // the executable's own injection
     // Packet cc_mission_tick's reconstruction of the four-call opener of every
     // simulated frame, and the dynamics list behind its fourth call.
@@ -598,9 +613,23 @@ int warning_relation_00803ce0(GameMissionFrameHost::Impl& host, int side,
     return other == 2 ? 2 : 1;                             // 00803D18
 }
 
+// Packet cc15-wB4 step 3a: which vtable[3] activate the reported warning runs.
+enum class WarningActivate {
+    plain,    // 0097F490, the type-1 entity warning (torpedo)
+    kill_6c,  // 0097F970, the kill warning: victim +6Ch, relation test
+    hit_80,   // 0097FA90, the hit warning: entity +80h, relation test
+};
+void warning_activate_cc15(GameMissionFrameHost::Impl& host,
+    bsp::cc13_seg49_64_78::WarningObject& warning, WarningActivate kind);
+
 class WarningManagerBinding final : public bsp::WarningManagerHost {
 public:
     explicit WarningManagerBinding(GameMissionFrameHost::Impl& owner) : owner_(owner) {}
+    // 009763E0 calls vtable[3] on the object it just queued; the record is
+    // the queue's projection of `accepted`.
+    WarningManagerBinding(GameMissionFrameHost::Impl& owner,
+        bsp::cc13_seg49_64_78::WarningObject& accepted, WarningActivate kind)
+        : owner_(owner), accepted_(&accepted), kind_(kind) {}
     void pump_input_channel_00982540() override {}
     void scan_proximity_00977990() override {}
     bool input_action_pressed(int) override {
@@ -628,12 +657,23 @@ public:
     }
     void report_error(const char*) override {}
     void destroy_warning(std::size_t, bool) override {}
-    void on_warning_accepted(std::size_t) override {}
+    void on_warning_accepted(std::size_t index) override {
+        if constexpr (kWarningMessageBankCc15Bound) {
+            if (accepted_ == nullptr) return;
+            warning_activate_cc15(owner_, *accepted_, kind_);
+            bsp::WarningRecord& record = owner_.warning.pending[index];
+            record.state = accepted_->state;                    // +0Ch
+            record.applied_at = accepted_->validity_ref_time;   // +10h
+            record.clip_count = accepted_->messages.size();     // +14h
+        }
+    }
     bool voice_ready(std::size_t) override { return false; }
     void apply_warning_00974070(std::size_t) override {}
 
 private:
     GameMissionFrameHost::Impl& owner_;
+    bsp::cc13_seg49_64_78::WarningObject* accepted_{nullptr};
+    WarningActivate kind_{WarningActivate::plain};
 };
 
 // Packet cc15-wB4: what 009744C0 asks of the victim and its killer, answered
@@ -760,7 +800,8 @@ public:
     }
     float entity_distance_0042b2f0(void*, void*) override { return unreached<float>(); }
     void entity_world_position(void*, float[3]) override { unreached<int>(); }
-    std::int32_t local_side_28() override { return unreached<std::int32_t>(); }
+    // 00976B00's [[game+18CCh+4*[game+18ECh]]+28h], the local party.
+    std::int32_t local_side_28() override { return local_player_party(); }
     std::int32_t relation_00803ce0(std::int32_t, void*) override {
         return unreached<std::int32_t>();
     }
@@ -768,8 +809,11 @@ public:
     bool is_kind_of_5c(void*, std::int32_t) override { return unreached<bool>(); }
     void* plane_squadron_9d4(void*) override { return unreached<void*>(); }
     void* local_player_unit_00e188d8() override { return unreached<void*>(); }
+    // 00976B00's 00705E00 reads the MessageManager [game+21DCh], which the
+    // host does not keep: the clip's record is left null and counted.
     const void* resolve_message_00705e00(const std::string&) override {
-        return unreached<const void*>();
+        ++host_.warning_activate.records_not_evaluated;
+        return nullptr;
     }
     void read_message_ref_00706060(bsp::cc13_seg49_64_78::EventArchiveReader&,
         bsp::cc13_seg49_64_78::VoiceClipRef&) override { unreached<int>(); }
@@ -782,6 +826,85 @@ private:
     }
     GameMissionFrameHost::Impl& host_;
 };
+
+// SUBSTITUTION (packet cc15-wB4 step 3a, cc9 option ii). 00979B50 takes its
+// draw at 00979D0C/00979D11 from 00BD2FC0 with ECX = 1, the per-thread
+// generator the image's gunnery also draws from; the host draws from a
+// warning-local std::mt19937 instead, so no gunnery sequence moves. This is
+// the only call site; the image-exact shared draw (option i) is a sub-switch
+// here (docs/RANDOM_STREAMS.md).
+std::uint32_t warning_pick_variant_draw(GameMissionFrameHost::Impl& host) {
+    ++host.warning_activate.draws;
+    return static_cast<std::uint32_t>(host.warning_variant_rng());
+}
+
+class WarningVariantBinding final : public bsp::cc13_seg49_64_78::WarningVariantHost {
+public:
+    explicit WarningVariantBinding(GameMissionFrameHost::Impl& host) : host_(host) {}
+    std::uint32_t random_word_00bd2fc0_stream1() override {
+        return warning_pick_variant_draw(host_);
+    }
+    float clock_00f876a4() override { return host_.world_clock; }
+    void invalid_parameter_00bf6713() override {
+        throw std::logic_error("00979B50 picked no variant (00BF6713)");
+    }
+    void divide_error() override {
+        throw std::logic_error("00979B50 divided by zero ties (00979D1A)");
+    }
+
+private:
+    GameMissionFrameHost::Impl& host_;
+};
+
+// Packet cc15-wB4 step 3a: the vtable[3] activates of the warnings the host
+// reports (src/cc13_seg62_seg65.cpp gives their Raw forms), all
+// __fastcall(ECX = warning), RET. Common head: +0Ch = 1, +10h = [00F876A4].
+// The key +4h is looked up in the manager's +108h map (008EC460; 009763E0
+// has already found it through 0096DBB0) and 00979B50 picks a variant. The
+// kill (+6Ch) and hit (+80h) forms then run 0097D650 on the copy for that
+// entity and add no message when 00803CE0 of the local party and the entity
+// is 2. 0097D650 returns at once on an empty text, a null separator set
+// (manager+11Ch, the entity escape keys) or no separator in the text;
+// otherwise its 0097B5E0 step tests candidate keys against the MessageManager
+// map, which the host does not keep, so the text is left as picked and the
+// call counted as not evaluated. Last, 00976B00 appends the clip.
+void warning_activate_cc15(GameMissionFrameHost::Impl& host,
+    bsp::cc13_seg49_64_78::WarningObject& warning, WarningActivate kind) {
+    auto& counts = host.warning_activate;
+    ++counts.activations;
+    warning.state = 1;
+    warning.validity_ref_time = host.world_clock;
+    const auto entry = host.warning_tables.messages.find(warning.id);
+    if (entry == host.warning_tables.messages.end()) {
+        throw std::logic_error("an accepted warning id is missing from the +108h map");
+    }
+    const std::vector<std::string>& variants = entry->second;
+    if (variants.size() == 1) ++counts.single_variant;
+    WarningVariantBinding variant_host(host);
+    const std::size_t picked = bsp::cc13_seg49_64_78::pick_message_variant_00979b50(
+        host.warning_variants, variants, variant_host);
+    const std::string text = variants[picked];
+    if (kind != WarningActivate::plain) {
+        const std::uintptr_t entity = kind == WarningActivate::kill_6c
+            ? static_cast<std::uintptr_t>(warning.word_6c)
+            : reinterpret_cast<std::uintptr_t>(warning.entity);
+        const std::string& set = host.warning_tables.entity.prefixes;
+        if (text.empty() || set.empty()
+            || std::strcspn(text.c_str(), set.c_str()) == text.size()) {
+            ++counts.sound_keys_untouched;
+        } else {
+            ++counts.sound_keys_not_evaluated;
+        }
+        if (entity != 0 && warning_relation_00803ce0(host, local_player_party(),
+                static_cast<std::size_t>(entity - 1u)) == 2) {
+            ++counts.relation_blocked;
+            return;
+        }
+    }
+    WarningObjectHostBinding warning_host(host);
+    bsp::cc13_seg49_64_78::warning_add_message_00976b00(warning, warning_host, text);
+    ++counts.clips;
+}
 
 // Packet cc15-wB4: one 009763E0 outcome, counted under the warning's id.
 void count_warning_report(GameMissionFrameHost::Impl& host, const std::string& id,
@@ -907,7 +1030,7 @@ void game_warning_kill_block_00981e07(GameMissionFrameHost::Impl& host, std::siz
     record.priority = 0.0f;         // +18h, 0096F220
     record.pending_lifetime = 5.0f; // +1Ch, 0096F230: 00CE3850
     record.applied_lifetime = 15.0f; // +20h, 0096F240: 00CE5380
-    WarningManagerBinding binding(host);
+    WarningManagerBinding binding(host, warning, WarningActivate::kill_6c);
     const bsp::WarningReportResult result =
         bsp::report_warning_009763e0(host.warning, binding, record, host.world_clock);
     ++counts.reports;
@@ -937,7 +1060,7 @@ void game_warning_torpedo_report_0097777b(GameMissionFrameHost::Impl& host, std:
     record.priority = 0.0f;         // +18h, 0096F220
     record.pending_lifetime = 5.0f; // +1Ch, 0096F230: 00CE3850
     record.applied_lifetime = 15.0f; // +20h, 0096F240: 00CE5380
-    WarningManagerBinding binding(host);
+    WarningManagerBinding binding(host, warning, WarningActivate::plain);
     const bsp::WarningReportResult result =
         bsp::report_warning_009763e0(host.warning, binding, record, host.world_clock);
     count_warning_report(host, record.message_id, result);
@@ -2453,7 +2576,7 @@ void game_warning_report_hit_00989604(std::size_t victim, std::size_t shooter,
         record.priority = 0.0f;         // +18h, 0096F220
         record.pending_lifetime = 5.0f; // +1Ch, 0096F230: 00CE3850
         record.applied_lifetime = 15.0f; // +20h, 0096F240: 00CE5380
-        WarningManagerBinding binding(*host);
+        WarningManagerBinding binding(*host, warning, WarningActivate::hit_80);
         const bsp::WarningReportResult result =
             bsp::report_warning_009763e0(host->warning, binding, record, host->world_clock);
         ++counts.reports;
@@ -4505,6 +4628,14 @@ void GameMissionFrameHost::report(long requested_frames) {
             host.log.notef("summary mission warning lua callback %s calls=%llu", name.c_str(),
                 calls);
         }
+        const auto& activate = host.warning_activate;
+        host.log.notef("summary mission warning activate activations=%llu single_variant=%llu "
+            "draws=%llu sound_keys_untouched=%llu sound_keys_not_evaluated=%llu "
+            "relation_blocked=%llu clips=%llu records_not_evaluated=%llu (0097F490, 0097F970, "
+            "0097FA90; draws are the SUBSTITUTION for 00BD2FC0 stream 1 at 00979D0C/00979D11)",
+            activate.activations, activate.single_variant, activate.draws,
+            activate.sound_keys_untouched, activate.sound_keys_not_evaluated,
+            activate.relation_blocked, activate.clips, activate.records_not_evaluated);
     }
     host.log.notef("summary mission fixed steps=%llu at %.3f s each (00875bb0's own clock "
         "at 00f876a4/00f876ac)", host.fixed_steps,
