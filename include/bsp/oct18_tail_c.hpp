@@ -83,3 +83,73 @@ struct FileStoreBindings {
 void cache_file_from_vfs_00be7ab0(void*, void*, const void*, std::uint32_t,
     const FileStoreBindings&);
 } // namespace bsp::oct18_tail_c
+
+namespace bsp::oct18_tail_c {
+void section_loaded_00abe630(void*, RawThis base_00aa7170);
+void widget_describe_alias_00ac6fe0(void*, void*, void (__thiscall* base_00aaaed0)(void*, void*));
+void icon_geometry_alias_00ad2df0(void*, RawThis base_00ab2540);
+void render_release_alias_00b0fc00(void*, RawThis base_00b0f6e0);
+struct SectionBindings {
+    void* (__thiscall* base_construct_00aa9390)(void*, std::uint32_t);
+    const std::uint32_t* scalar_d7a24c;
+    const std::uint32_t* scalar_ce3800;
+    void* (__fastcall* mesh_allocate_00b73b60)(std::uint32_t);
+    void* (__thiscall* mesh_construct_00b73d70)(void*);
+    const float* mesh_scalar_d7a260;
+    void (__thiscall* set_geometry_00b75170)(void*, std::uint32_t, void*, float, float);
+    void (__thiscall* position_00aa7dc0)(void*, const void*);
+    void (__cdecl* release_string_00419cc0_00bd1510)(void*, std::uint32_t, std::uint32_t);
+    RawThis base_destroy_00aa9730;
+};
+void* section_construct_00abf420(void*, const SectionBindings&);
+void section_constructed_00abeda0(void*, const SectionBindings&);
+void section_destroy_00abf4f0(void*, const SectionBindings&);
+// ECX raw BF857A _CIfmod target; EDX three actual double-literal pointers:
+// CE3828, CE3D18, CE3D28. Stack angle; ST0 result; RET4. No CRT substitution.
+float __fastcall normalize_angle_00abe960(void*, const double* const*, float);
+struct FontRegistryBindings {
+    void* (__thiscall* sentinel_00ac3400)(void*);
+    RawThis font_destroy_00ad53a0;
+    void (__cdecl* free_bf65ac)(void*);
+    CheckedIterator checked_iterator_bf6713;
+};
+void* font_registry_construct_00ac3690(void*, const FontRegistryBindings&);
+void font_registry_destroy_00ac36f0(void*, std::uint32_t& image_f8bf44, const FontRegistryBindings&);
+struct SoundCacheBindings {
+    void (__thiscall* reserve_00a84450)(void*, std::int32_t);
+    void* (__thiscall* sentinel_004c3020)(void*);
+    RawThis destroy_record_00a842e0;
+};
+void sound_cache_resize_00a845a0(void*, std::int32_t, const SoundCacheBindings&);
+struct GuiListVisibilityBindings {
+    void (__thiscall* base_visible_00aa8530)(void*, std::uint32_t);
+    void* (__cdecl* manager_004c12b0)();
+    void* (__thiscall* select_widget_00aa0f50)(void*, std::uint32_t);
+};
+void gui_list_visible_00a9cce0(void*, std::uint32_t, const GuiListVisibilityBindings&);
+void* lua_vector4_or_00b67d40(void*, void*, const void*);
+struct QueryGuardScratch { void* owner; std::uint8_t taken; };
+struct QueryBindings {
+    std::uint8_t (__thiscall* enter_00b33ad0)(void*);
+    void (__thiscall* leave_00b33b00)(void*, std::uint8_t);
+    void* (__cdecl* allocate_00bf681b)(std::uint32_t);
+    void* (__thiscall* construct_00b5fe90)(void*);
+    void (__thiscall* reserve_00b22530)(void*, std::int32_t);
+};
+void* renderer_query_create_00b27c20(void*, const volatile std::uint8_t& image_108d6dc,
+    QueryGuardScratch&, const QueryBindings&);
+struct WarningIteratorPair { void* owner; void* node; };
+struct WarningRemoveBindings {
+    void* (__thiscall* channel_00980150)(void*, const void*);
+    WarningIteratorPair* (__thiscall* find_0096d6f0)(void*, WarningIteratorPair*, std::uint32_t);
+    WarningIteratorPair* (__thiscall* erase_009713d0)(void*, WarningIteratorPair*, void*, void*);
+    CheckedIterator checked_iterator_bf6713;
+};
+void warning_remove_listener_00980d30(void*, const void*, std::uint32_t, const WarningRemoveBindings&);
+struct WholeFileBindings {
+    void (__thiscall* string_resize_0041dd40)(void*, std::uint32_t, std::uint32_t);
+    void (__cdecl* release_string_00419cc0_00bd1510)(void*, std::uint32_t, std::uint32_t);
+    void* (__cdecl* allocate_00bf55be)(std::uint32_t);
+};
+void* vfs_load_whole_file_00bdc8b0(void*, const void*, std::uint32_t*, const WholeFileBindings&);
+} // namespace bsp::oct18_tail_c

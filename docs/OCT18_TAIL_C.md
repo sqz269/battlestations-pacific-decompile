@@ -97,3 +97,62 @@ Validation: Win32 Release and both existing CTests passed. Assembly names `in`,
 were corrected and the build rerun successfully. No added tests or host wiring.
 Source normal control flow is complete for these bodies. Native FH3/SEH, fault
 transport, private call-stack identity and gameplay remain unproved.
+
+## Batch 3: lifetime, aliases, Lua and file operations
+
+Sixteen new ordinary bodies use the same TU/header. Direct JMP aliases keep
+their target as an explicit binding and do not claim a second reconstruction
+of the target body. The Section and FontRegistry code preserves native fields,
+vtable words, caller-owned string/pool operations and raw list identity.
+
+| Address | Source body | Original ABI / specific evidence |
+|---|---|---|
+| 00ABE630 | section_loaded | ECX Section; JMP AA7170 |
+| 00AC6FE0 | widget_describe_alias | ECX widget, visitor stack; JMP AAAED0 |
+| 00AD2DF0 | icon_geometry_alias | ECX icon; JMP AB2540 |
+| 00B0FC00 | render_release_alias | ECX resources; JMP B0F6E0; the misleading decompile expands the target, not the five-byte thunk |
+| 00ABF420 | section_construct | ECX fresh storage, EAX same, RET; type11h base call, preserves unwritten 10D..10F and 128h |
+| 00ABEDA0 | section_constructed | ECX Section, RET; optional BCh mesh, same model captured before allocation, no invented null-mesh fallback |
+| 00ABF4F0 | section_destroy | ECX Section, RET; table D5C8E8, texture114, string F0, common AA9730 |
+| 00ABE960 | normalize_angle | angle float stack, ST0 result, RET4; actual BF857A x87 remainder binding and original three double literals |
+| 00AC3690 | font_registry_construct | ECX registry, EAX same, RET; sentinel helper receives registry+4 |
+| 00AC36F0 | font_registry_destroy | ECX registry, RET; disk209B through AC37C0 fills the misleading saved free/no-return gaps |
+| 00A845A0 | sound_cache_resize | ECX three-word array, signed count stack, RET4; complete ordinary growth and reverse destruction |
+| 00A9CCE0 | gui_list_visible | ECX list, DWORD visibility stack, RET4; retain full argument through the linked widget call |
+| 00B67D40 | lua_vector4_or | ECX actual 14h LuaObject, output/fallback stack, EAX output, RET8 |
+| 00B27C20 | renderer_query_create | ECX renderer, EAX query, RET; retain null constructor result, doubling reserve, borrowed append and current-flag guard leave |
+| 00980D30 | warning_remove_listener | ECX manager, channel/id stack, RET8; actual lock depth, map at F8h, checked iterator and deleting slot0 |
+| 00BDC8B0 | vfs_load_whole_file | ECX manager, name/size-output stack, RET8, EAX bytes; single read with actual-read pointer null, low32 size published after stream release |
+
+The angle entry adds mandatory ECX/EDX bindings for the raw x87 CRT callee and
+the actual CE3828/CE3D18/CE3D28 literal pointers. It preserves the original
+FLD/FSTP/FCOMI flow without substituting host `fmod` or reconstructing CRT code.
+The Lua reader uses existing actual-object primitives and linked Lua 5.1.1:
+release index5 before fallback/numeric reads, release each numeric field before
+fetching the next, then publish all four binary32 values. The fallback retains
+the original overlap-sensitive integer load/store sequence. No protected error
+adapter is silently substituted; native nonlocal error differential remains open.
+
+Query creation rereads the actual optional-guard mode at exit. If it changes
+from disabled to enabled during allocation, the original reads an unwritten
+owner/flag slot. `QueryGuardScratch` makes that preimage explicit; it is not
+silently zeroed. The bound leave helper ignores its saved flag argument, as the
+full B33B00 listing shows. Ordinary normal paths are implemented; private FH3
+unwinding, fault transport and original allocation-failure frame cleanup are
+not claimed. The whole-file loader guards only its copied name, matching its
+original state ownership; it adds no stream/buffer cleanup on an escaping read.
+
+`00B51B50` already has a complete address-suffixed ordinary body in
+`src/native_render_batch_lifetime.cpp`. Its complete clamp/grow/copy/free/publish
+implementation was inspected, compiled and registered as a function without
+adding a duplicate. Its canonical allocator interface remains qualified.
+
+`00A9D9D0` is a checked MSVC `std::list` pointer-range assignment specialization:
+self-link sentinel, zero count, free old nodes, insert supplied checked range.
+Its only non-free callee A9D560 is already tagged `stl_instantiation` and contains
+checked iterators, node allocation and STL length checks. There are no GUI field
+operations. It is classified `library_instantiation_out_of_scope`; the existing
+valid-allocation projection is retained.
+
+Validation: Win32 Release build and both existing CTests passed. No tests were
+added and no game was launched. No original ABI replacement or game claim.
