@@ -199,9 +199,18 @@ def first_ledger_records(kind_now, passes):
                 m = LEGACY_KEY.match(line) or ADDR_FIELD.search(line)
                 if m:
                     addr, kind = m.group(1).lower(), kind_now.get(m.group(1).lower())
-            if not addr or addr in funcs or addr in frags:
+            if not addr or addr in funcs:
                 continue
-            (frags if kind == 'fragment' else funcs)[addr] = (ts, harness, passes.add(short, ts, subject, harness))
+            if kind == 'fragment' and addr in frags:
+                continue
+            record = (ts, harness, passes.add(short, ts, subject, harness))
+            if kind == 'fragment':
+                frags[addr] = record
+            else:
+                # A fragment can precede the whole body by months. Count the
+                # function from its own first record, not the earlier fragment.
+                funcs[addr] = record
+                frags.pop(addr, None)
     return funcs, frags
 
 
