@@ -3509,7 +3509,8 @@ constexpr float kTwentyFive_00ce89cc = 25.0f;         // 41C80000
 // UNCERTAINTY: the RNG result leaves in ST0 and is rounded to float by FSTP; the host
 // hook returns a float. EH unwinding not modelled.
 // cc9 models this inline (per-name RNG stand-ins, not a named body) in
-// src/game_hosts_units.cpp around 24246 ("goaway 009CB500").
+// GameUnitsHost::motion_step_00825f20 (src/game_hosts_units.cpp), the strafe install
+// st_install_009cc230, block "goaway 009CB500".
 void* bot_state_strafe_go_away_construct_009cb500(Cc13Seg67bHost& host, void* state,
                                                   void* block) {
     construct_state_base(state, block);
@@ -3557,7 +3558,7 @@ void* bot_state_torpedo_attack_run_construct_009d06d0(Cc13Seg67bHost& host, void
 // The vtable calls at 009CD479 dereference the plane without the null test.
 // UNCERTAINTY: the sum is rounded once at 24-bit precision in the image (modelled).
 // cc9 models this inline in GameUnitsHost::Impl::install_takeoff_task_0099a4a0
-// (src/game_hosts_units.cpp around 15303), not as a named body.
+// (src/game_hosts_units.cpp), not as a named body.
 void* bot_approach_takeoff_construct_009cd420(Cc13Seg67bHost& host, void* approach,
                                               void* plane) {
     host.bot_approach_construct_speed_reference_009f9ce0(approach, plane,
@@ -3606,7 +3607,8 @@ constexpr float kThirtySixHundred_00cfdeb0 = 3600.0f;    // 45610000
 // their products are exact in double and round once. The RNG results are rounded from
 // ST0 by the hook. EH unwinding not modelled.
 // cc9 models this inline (per-name RNG stand-ins, not a named body) in
-// src/game_hosts_units.cpp around 24218 (009CA4DB-009CA668).
+// GameUnitsHost::motion_step_00825f20 (src/game_hosts_units.cpp), the strafe install
+// st_install_009cc230 (009CA4DB-009CA668).
 void* bot_approach_strafe_construct_009ca4a0(Cc13Seg67bHost& host, void* approach, void* arg,
                                              void* target) {
     const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x65C);
@@ -3691,6 +3693,10 @@ constexpr float kMinusPointOne_00ce3cb4 = -0.1f;        // BDCCCCCD
 // expressions would round once at the end). The double constants are float-exact, so
 // their products are exact in double and round once. RNG results rounded from ST0 by
 // the hook. EH unwinding not modelled.
+// cc9 models the draws inline (per-name RNG stand-ins, not a named body) in
+// run_torpedo_task_arm_009d4850 (src/game_hosts_units.cpp), under the switches
+// kTorpedoResetDrawsBound (009D03D9-009D0475, 009D0581-009D0625) and
+// kTorpedoResetEngageDrawsBound (009D04A6-009D053F).
 void* bot_approach_torpedo_construct_009d0380(Cc13Seg67bHost& host, void* approach, void* arg,
                                               void* target) {
     const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x440);
@@ -3787,6 +3793,9 @@ constexpr double kTwoHundredFifty_00cf8850 = 250.0;
 // products and the 250.0 sum are exact in double and round once, as at 24 bits. RNG
 // results rounded from ST0 by the hook. The plane is dereferenced without a null test,
 // as in the image. EH unwinding not modelled.
+// cc9 models the +A8h draw inline (per-name RNG stand-in, not a named body) in
+// run_dive_bomb_task_arm_009c8790 (src/game_hosts_units.cpp), under the switch
+// kReleaseAltitudeDrawBound (packet cc8_dive_race).
 void* bot_approach_dive_bomb_construct_009c3ea0(Cc13Seg67bHost& host, void* approach,
                                                 void* plane, void* target) {
     const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x4D8);
@@ -3859,7 +3868,8 @@ constexpr float kTwelveHundred_00cfd714 = 1200.0f;       // 44960000
 // hooks. The plane is dereferenced without a null test, as in the image. EH unwinding
 // not modelled.
 // cc9 models this inline (per-name RNG stand-ins, not a named body) in
-// src/game_hosts_units.cpp around 24983 (009B451D-009B4591).
+// GameUnitsHost::motion_step_00825f20 (src/game_hosts_units.cpp), the level-bomb
+// install block "009B7990 -> 009B75E0 -> 009B44F0" (009B451D-009B4591).
 void* bot_approach_level_bomb_construct_base_009b44f0(Cc13Seg67bHost& host, void* approach,
                                                       void* plane, void* target) {
     const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x458);
@@ -4007,6 +4017,9 @@ constexpr std::uint32_t kLandApproachVtable_00d1fdb8 = 0x00D1FDB8u;
 // UNCERTAINTY: 24-bit precision modelled; the 0.75 product is exact in double. RNG
 // results rounded from ST0 by the hook. EH unwinding not modelled (the body has no EH
 // frame).
+// cc9 models the draws inline (per-name RNG stand-ins, not a named body) in
+// GameUnitsHost::Impl::install_land_task_0099a3dd (src/game_hosts_units.cpp), block
+// "009B41C0 -> 009B3240 -> 009B2E50 -> 009AFE70".
 void* bot_approach_land_construct_lower_009afe70(Cc13Seg67bHost& host, void* approach,
                                                  void* plane, void* air_ops) {
     const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x52C);
