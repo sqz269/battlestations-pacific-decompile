@@ -3064,3 +3064,268 @@ void cache_file_from_vfs_00be7ab0(void* store, void* vfs, const void* name,
     c_release_ref(stream);
 }
 } // namespace bsp::oct18_tail_c
+
+#include "bsp/native_lua_objects.hpp"
+extern "C" {
+#include <lua.h>
+}
+
+namespace bsp::oct18_tail_c {
+void section_loaded_00abe630(void* self, RawThis base_00aa7170) { base_00aa7170(self); }
+void widget_describe_alias_00ac6fe0(void* self, void* visitor,
+    void (__thiscall* base_00aaaed0)(void*, void*)) { base_00aaaed0(self, visitor); }
+void icon_geometry_alias_00ad2df0(void* self, RawThis base_00ab2540) { base_00ab2540(self); }
+void render_release_alias_00b0fc00(void* self, RawThis base_00b0f6e0) { base_00b0f6e0(self); }
+void* section_construct_00abf420(void* self, const SectionBindings& b) {
+    b.base_construct_00aa9390(self, 0x11);
+    const CWord a = *b.scalar_d7a24c;
+    const CWord d = *b.scalar_ce3800;
+    c_write<CWord>(self, 0, 0x00d5c8e8);
+    c_write<CWord>(self, 0xec, 0);
+    c_write<CWord>(self, 0xf0, 0);
+    c_write<CWord>(self, 0x110, 0);
+    c_write<CWord>(self, 0x114, 0);
+    for (CWord offset = 0xf4; offset <= 0x100; offset += 4) c_write<CWord>(self, offset, 0);
+    c_write<CWord>(self, 0x104, a);
+    c_write<CWord>(self, 0x108, d);
+    c_write<std::uint8_t>(self, 0x10c, 1);
+    c_write<CWord>(self, 0x118, 0);
+    c_write<CWord>(self, 0x11c, 0);
+    c_write<CWord>(self, 0x120, a);
+    c_write<CWord>(self, 0x124, a);
+    return self;
+}
+void section_constructed_00abeda0(void* self, const SectionBindings& b) {
+    if (c_read<std::uint8_t>(self, 0x74) == 0) {
+        void* const model = c_read<void*>(self, 0x4c);
+        void* const allocation = b.mesh_allocate_00b73b60(0xbc);
+        void* const mesh = allocation ? b.mesh_construct_00b73d70(allocation) : nullptr;
+        float scale;
+        c_fld_store(&scale, b.mesh_scalar_d7a260);
+        b.set_geometry_00b75170(model, 0, mesh, scale, scale);
+        // Original dereferences mesh+4 even when allocation returned null.
+        if (InterlockedDecrement(static_cast<volatile LONG*>(c_at(mesh, 4))) == 0)
+            c_virtual<void>(mesh, 0);
+    }
+    const CWord zero[3] = {};
+    b.position_00aa7dc0(self, zero);
+}
+void section_destroy_00abf4f0(void* self, const SectionBindings& b) {
+    c_write<CWord>(self, 0, 0x00d5c8e8);
+    void* const texture = c_read<void*>(self, 0x114);
+    if (texture) {
+        c_release_ref(texture);
+        c_write<CWord>(self, 0x114, 0);
+    }
+    void* const block = c_read<void*>(self, 0xf0);
+    if (block) b.release_string_00419cc0_00bd1510(block, c_read<CWord>(self, 0xec) + 1, 1);
+    b.base_destroy_00aa9730(self);
+}
+__declspec(naked) float __fastcall normalize_angle_00abe960(void*, const double* const*, float) {
+    __asm {
+        push esi
+        push edi
+        mov esi, edx
+        mov edi, ecx
+        fld dword ptr [esp + 0ch]
+        mov eax, dword ptr [esi]
+        fld qword ptr [eax]
+        call edi
+        fstp dword ptr [esp + 0ch]
+        fld dword ptr [esp + 0ch]
+        fstp dword ptr [esp + 0ch]
+        fld dword ptr [esp + 0ch]
+        mov eax, dword ptr [esi + 4]
+        fld qword ptr [eax]
+        fcomip st(0), st(1)
+        jc c_angle_upper
+        mov eax, dword ptr [esi]
+        fadd qword ptr [eax]
+        fstp dword ptr [esp + 0ch]
+        fld dword ptr [esp + 0ch]
+        jmp c_angle_done
+    c_angle_upper:
+        mov eax, dword ptr [esi + 8]
+        fld qword ptr [eax]
+        fxch st(1)
+        fcomi st(0), st(1)
+        fstp st(1)
+        jbe c_angle_done
+        mov eax, dword ptr [esi]
+        fsub qword ptr [eax]
+        fstp dword ptr [esp + 0ch]
+        fld dword ptr [esp + 0ch]
+    c_angle_done:
+        pop edi
+        pop esi
+        ret 4
+    }
+}
+void* font_registry_construct_00ac3690(void* self, const FontRegistryBindings& b) {
+    c_write<CWord>(self, 0, 0x00d5ca84);
+    c_write<void*>(self, 8, b.sentinel_00ac3400(c_at(self, 4)));
+    c_write<CWord>(self, 0xc, 0);
+    return self;
+}
+void font_registry_destroy_00ac36f0(void* self, CWord& image_f8bf44, const FontRegistryBindings& b) {
+    c_write<CWord>(self, 0, 0x00d5ca84);
+    void* node = c_read<void*>(c_read<void*>(self, 8));
+    while (node != c_read<void*>(self, 8)) {
+        if (node == c_read<void*>(self, 8)) b.checked_iterator_bf6713();
+        void* const font = c_read<void*>(node, 8);
+        if (font) { b.font_destroy_00ad53a0(font); b.free_bf65ac(font); }
+        if (node == c_read<void*>(self, 8)) b.checked_iterator_bf6713();
+        node = c_read<void*>(node);
+    }
+    void* head = c_read<void*>(self, 8);
+    node = c_read<void*>(head);
+    c_write<void*>(head, 0, head);
+    head = c_read<void*>(self, 8);
+    c_write<void*>(head, 4, head);
+    c_write<CWord>(self, 0xc, 0);
+    while (node != c_read<void*>(self, 8)) {
+        void* const next = c_read<void*>(node);
+        b.free_bf65ac(node);
+        node = next;
+    }
+    b.free_bf65ac(c_read<void*>(self, 8));
+    c_write<CWord>(self, 8, 0);
+    image_f8bf44 = 0;
+    c_write<CWord>(self, 0, 0x00ce3818);
+}
+void sound_cache_resize_00a845a0(void* array, std::int32_t requested, const SoundCacheBindings& b) {
+    if (requested > c_read<std::int32_t>(array, 8)) b.reserve_00a84450(array, requested);
+    for (std::int32_t i = c_read<std::int32_t>(array, 4); i < requested; ++i) {
+        void* const record = c_at(c_read<void*>(array), static_cast<CWord>(i) * 0x2c);
+        if (record) {
+            c_write<CWord>(record, 0, 0);
+            c_write<CWord>(record, 4, 0);
+            c_write<void*>(record, 0xc, b.sentinel_004c3020(c_at(record, 8)));
+            c_write<CWord>(record, 0x10, 0);
+            for (CWord offset = 0x24; offset >= 0x14; offset -= 4) c_write<CWord>(record, offset, 0);
+        }
+    }
+    while (requested < c_read<std::int32_t>(array, 4)) {
+        const CWord count = c_read<CWord>(array, 4) - 1;
+        c_write<CWord>(array, 4, count);
+        b.destroy_record_00a842e0(c_at(c_read<void*>(array), count * 0x2c));
+    }
+    c_write<std::int32_t>(array, 4, requested);
+}
+void gui_list_visible_00a9cce0(void* self, CWord visible, const GuiListVisibilityBindings& b) {
+    b.base_visible_00aa8530(self, visible);
+    if (c_read<CWord>(self, 0x118) != 0xffffffffU) {
+        void* const manager = b.manager_004c12b0();
+        void* const other = b.select_widget_00aa0f50(manager, c_read<CWord>(self, 0x118));
+        c_virtual<void>(other, 0x34, visible);
+    }
+}
+void* lua_vector4_or_00b67d40(void* reference, void* output, const void* fallback) {
+    auto& table = *static_cast<NativeLuaObjectStorage*>(reference);
+    bool use_fallback = true;
+    NativeLuaObjectStorage fifth;
+    if (native_lua_is_table_00b661b0(table)) {
+        NativeLuaObjectStorage* const field = native_lua_get_by_index_00b67720(table, &fifth, 5);
+        use_fallback = !native_lua_is_nil_00b65fb0(*field);
+        if (fifth.kind_04 != 0)
+            release_native_lua_tracked_object_00b66de0(fifth.owner_00, fifth, fifth.index_08, 1);
+    }
+    if (use_fallback) {
+        c_write<CWord>(output, 0, c_read<CWord>(fallback));
+        c_write<CWord>(output, 4, c_read<CWord>(fallback, 4));
+        const CWord third = c_read<CWord>(fallback, 8);
+        const CWord fourth = c_read<CWord>(fallback, 0xc);
+        c_write<CWord>(output, 8, third);
+        c_write<CWord>(output, 0xc, fourth);
+        return output;
+    }
+    float values[4];
+    NativeLuaObjectStorage field;
+    for (int i = 0; i != 4; ++i) {
+        NativeLuaObjectStorage* const current = native_lua_get_by_index_00b67720(table, &field, i + 1);
+        values[i] = static_cast<float>(lua_tonumber(current->owner_00->state_04, current->index_08));
+        if (field.kind_04 != 0)
+            release_native_lua_tracked_object_00b66de0(field.owner_00, field, field.index_08, 1);
+    }
+    for (CWord i = 0; i != 4; ++i) c_write<CWord>(output, i * 4, c_read<CWord>(values, i * 4));
+    return output;
+}
+void* renderer_query_create_00b27c20(void* renderer, const volatile std::uint8_t& enabled,
+    QueryGuardScratch& scratch, const QueryBindings& b) {
+    if (enabled) { scratch.owner = renderer; scratch.taken = b.enter_00b33ad0(renderer); }
+    void* const storage = b.allocate_00bf681b(0x14);
+    void* const query = storage ? b.construct_00b5fe90(storage) : nullptr;
+    void* const array = c_at(renderer, 0x19a0);
+    if (c_read<CWord>(array, 4) == c_read<CWord>(array, 8)) {
+        std::int32_t capacity = static_cast<std::int32_t>(c_read<CWord>(array, 8) * 2);
+        if (capacity <= 1) capacity = 1;
+        b.reserve_00b22530(array, capacity);
+    }
+    void* const slot = c_at(c_read<void*>(array), c_read<CWord>(array, 4) * 4);
+    if (slot) c_write<void*>(slot, 0, query);
+    c_write<CWord>(array, 4, c_read<CWord>(array, 4) + 1);
+    if (enabled) b.leave_00b33b00(scratch.owner, scratch.taken);
+    return query;
+}
+namespace {
+class CWarningGuard {
+public:
+    explicit CWarningGuard(void* section) : section_(section) {
+        if (section_) {
+            EnterCriticalSection(static_cast<LPCRITICAL_SECTION>(section_));
+            c_write<CWord>(section_, 0x18, c_read<CWord>(section_, 0x18) + 1);
+        }
+    }
+    ~CWarningGuard() {
+        if (section_) {
+            c_write<CWord>(section_, 0x18, c_read<CWord>(section_, 0x18) - 1);
+            LeaveCriticalSection(static_cast<LPCRITICAL_SECTION>(section_));
+        }
+    }
+private:
+    void* section_;
+};
+}
+void warning_remove_listener_00980d30(void* manager, const void* channel, CWord id,
+    const WarningRemoveBindings& b) {
+    CWarningGuard guard(c_read<void*>(manager, 0x24));
+    void* const tree = b.channel_00980150(c_at(manager, 0xf8), channel);
+    WarningIteratorPair iterator;
+    b.find_0096d6f0(tree, &iterator, id);
+    if (!iterator.owner) b.checked_iterator_bf6713();
+    if (iterator.node == c_read<void*>(iterator.owner, 4)) b.checked_iterator_bf6713();
+    void* const subscription = c_read<void*>(iterator.node, 0x14);
+    if (subscription) {
+        c_virtual<void*>(subscription, 0, 1);
+        c_write<CWord>(iterator.node, 0x14, 0);
+    }
+    b.erase_009713d0(tree, &iterator, iterator.owner, iterator.node);
+}
+void* vfs_load_whole_file_00bdc8b0(void* manager, const void* name, CWord* size_output,
+    const WholeFileBindings& b) {
+    NativeString copied{};
+    if (&copied != name) {
+        b.string_resize_0041dd40(&copied, c_read<CWord>(name), 1);
+        if (c_read<CWord>(name) != 0)
+            std::memcpy(c_read<void*>(&copied, 4), c_read<const void*>(name, 4), c_read<CWord>(&copied));
+    }
+    struct NameGuard {
+        NativeString& value;
+        const WholeFileBindings& bindings;
+        ~NameGuard() {
+            void* const data = c_read<void*>(&value, 4);
+            if (data) bindings.release_string_00419cc0_00bd1510(data, c_read<CWord>(&value) + 1, 1);
+        }
+    } cleanup{copied, b};
+    void* const stream = c_virtual<void*>(manager, 4, &copied, CWord{2});
+    CWord high_size = 0;
+    const CWord low_size = c_virtual<CWord>(stream, 0x2c, &high_size);
+    void* const bytes = b.allocate_00bf55be(low_size);
+    c_virtual<CWord>(stream, 0x24, bytes, low_size, static_cast<CWord*>(nullptr));
+    // Native has no stream/buffer unwind owner: only copied name is guarded.
+    if (InterlockedDecrement(static_cast<volatile LONG*>(c_at(stream, 4))) == 0)
+        c_virtual<void>(stream, 0);
+    *size_output = low_size;
+    return bytes;
+}
+} // namespace bsp::oct18_tail_c
