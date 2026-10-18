@@ -382,7 +382,7 @@ inline constexpr bool kGenerateObjectEveryCallBound = true;   // ON: PRCP01 pair
 // own Map bounds (border_bounds_, loaded by set_world_border_zones), so the image's
 // retry / requeue arms are reached. With no bounds loaded nothing is refused.
 // False: no member is ever outside the map.
-inline constexpr bool kSpawnPlacementMapBoundsBound = false;
+inline constexpr bool kSpawnPlacementMapBoundsBound = true;   // ON: JM06 pair (OCEAN_WAVE_FIELD 66)
 
 // docs/CC13_AUDIT_LUA51_FLIPS.md item 1c. 00988510 boxes, and 0097B8C0 matches,
 // the target as hitEntity->vtable[140h]() kept only when it answers IsKindOf(2)
@@ -509,14 +509,14 @@ inline constexpr bool kLuaGetSubmarineOnSurfaceBound = true;  // ON: JM06 24000 
 // userdata (00B662D0) and pushes `Ptr == null` (00B66450). Only the on-killed slot
 // 00928C80 (vtable[80h], from the kill list's drain) nulls `Ptr`. True: the same
 // read on the host's self tables. False: unimplemented, nil.
-inline constexpr bool kLuaTrulyDeadBound = false;
+inline constexpr bool kLuaTrulyDeadBound = true;   // ON: JM06 / USN04 pairs (OCEAN_WAVE_FIELD 66)
 // Packet p16_truly_dead (docs/OCEAN_WAVE_FIELD.md section 65; cc13 verify5 R3). True:
 // where the units host drains a unit off the kill list (the KillDepth drain and the
 // row-15 removal, both recording 00928C80), the Lua half of 00928C80 runs: the self
 // table's `Ptr` becomes lightuserdata(0) (00928D04, 00B67530(self, "Ptr", null)), so
 // TrulyDead answers true from then on. LABELLED: the last-position table
 // (00928D49..00928E7E) is not written. False: `Ptr` is never nulled.
-inline constexpr bool kLuaTrulyDeadOnKilledBound = false;
+inline constexpr bool kLuaTrulyDeadOnKilledBound = true;   // ON: JM06 / USN04 pairs (OCEAN_WAVE_FIELD 66)
 
 // Packet cc9_set_air_base_slot_count (docs/LUA_BINDING_MISSION.md, "SetAirBaseSlotCount,
 // 008963E0"). SetAirBaseSlotCount(entity, n) resizes the air-ops block's 58h slot array
@@ -581,7 +581,7 @@ inline constexpr bool kLuaClosestBorderZoneBound = true;  // ON: pairs (docs/LUA
 // (+4h) of 00489C40's zone record through 00B664B0. Inside the map nothing is
 // pushed. True: run it on the zones set_world_border_zones keeps. False:
 // unimplemented, nil (the inside answer).
-inline constexpr bool kLuaIsInBorderZoneBound = false;
+inline constexpr bool kLuaIsInBorderZoneBound = true;   // ON: JM06 pair, 82 calls (OCEAN_WAVE_FIELD 66)
 
 // Packet cc9_hit_rate_limit (docs/LUA_BINDING_MISSION.md, "The hit-callback rate
 // limit"). 00988510 keys a map at this+168h (009882F0 / 00499030) by (victim,
