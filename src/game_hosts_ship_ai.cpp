@@ -899,7 +899,7 @@ inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 // is placed at the unit's world y (+FCh..+104h), so it moves with the hull. LABELLED
 // SUBSTITUTION: no unit carries a model here, so the band's height stays -10..+50 about
 // the hull origin rather than the model's own extent. False: the fixed world band.
-inline constexpr bool kShipNeighbourDepthBandBound = false;
+inline constexpr bool kShipNeighbourDepthBandBound = true;   // ON: SHIP_AI 282 (faithful direction; identical on USN04 / JM06)
 namespace {
 
 // Diagnostic only: BSP_SHIP_ESCAPE_TRACE=<unit name> logs the escape inputs of

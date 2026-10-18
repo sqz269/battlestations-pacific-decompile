@@ -19018,3 +19018,12 @@ OFF `live_walks=1609 live_contacts=35253` (21.9 per walk), ON `walks=1612 contac
 units and buildings included (IJN08's island: `Static Oscar 01`, tents), while the switch-off list kept only ship
 and plane bases; the library's own 009E9253 kind-5 test drops the non-ships after the walk either way. What moves
 is the order (class buckets), the 3.0 s snapshot, and the absent blips/neutrals. **Decision: ON** by mechanism.
+
+### 282 result: ON
+
+**Pairs (d4171938d, `--flip kShipNeighbourDepthBandBound=true`, exe `local\s57_db_on` vs `local\s57_off4`; 20000 frames;
+manifests beside each log).** USN04 (no orders): exit 1, gameplay identical, 1340120 observed retargets. JM06
+`jm06_p12_j6_c1` (submarines; 183 submerged launches): exit 1, gameplay identical (only the masked sector-scan
+noise counters move). No row here has a hull deeper than the 60 m the substituted band needs to separate.
+**Decision: ON** as a binding in the image's direction (bands follow the hull's world y) with no moved row; the
+band height stays the labelled substitution until a model extent exists.
