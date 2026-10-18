@@ -17803,3 +17803,24 @@ bb5d16e51 control, reference env):
   scale, which acts on the player's stick only; the player drives HenryPT here), so the spread is trajectory chaos.
 
 Flipped ON: the values are the image's bits. Full build passed.
+
+## 5ih. The cc13 switches: SetDeadMeat, hidden membership and recon set branch **ON**; the command-building moveto stays OFF (cc9-lua66, 2026-10-17)
+
+Export of 3f0059c55 with kLuaSetDeadMeatBound, kObjectiveSetHiddenMembershipBound, kReconSurfaceSetBranchBound and
+kSquadronCommandBuildingMoveToBound flipped (`local\l66_c13_on`) against the bb5d16e51 control; reference env.
+
+- **USNOS `l65_os_c1`**: gameplay identical (pair_diff 1). `objective set membership ... hidden_skips=2` in both; the two
+  hidden-objective units never reach a set reader on this plan. SetDeadMeat calls=0.
+- **JM08 `jm08_l64_j8_e`**: gameplay identical; no `command-building moveto` line (no ordnance squadron ends on a
+  CommandBuilding target on this plan); fails at 1337.23 s (HQ destroyed) in both.
+- **BSM01 `bsm01_p6_b1_a`**: moved, all from SetDeadMeat (membership 0 skips, no moveto line). bsm_01:1193 runs
+  ExplodeToParts, BreakShip and `SetDeadMeat(Mission.Phoenix)` when the attack starts. OFF, Phoenix never dies and its AA
+  keeps killing the Japanese planes (OFF death rows credit it with many kills); ON, 008AC7B0's ship arm sinks it
+  (`SetDeadMeat 008ac7b0: ship "Phoenix" pivot_x=-0.2091 sink=destroyed`, dead at 114.05 s). With that AA gone,
+  HenryPT dies at 1512.30 s and luaMissionFailed ends the mission (OFF: no end within 2000 s). Deaths 805 -> 622
+  because the run stops at the failure.
+
+SetDeadMeat matches cc13-fix11 exactly on its live call: **ON**. The hidden membership and the recon set branch are
+identical on all three rows and are the image's membership: **ON**. `kSquadronCommandBuildingMoveToBound` was never
+reached (no row logs the moveto), so it stays **OFF**; its moveto-self interaction is fixed (CC13_FIX1.md). BSM01 needs
+a re-plan with Phoenix sunk.

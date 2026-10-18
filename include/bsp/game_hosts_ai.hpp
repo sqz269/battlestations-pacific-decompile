@@ -185,7 +185,7 @@ inline constexpr bool kObjectiveKindBound = true;  // ON: identity pairs (docs/M
 // re-inserts when a hidden objective's state later changes (008DE6A0's only
 // other caller is the network sync 008DF000). True: units_in_slot answers that
 // tree. False: every unit any objective of the slot lists, the earlier host rule.
-inline constexpr bool kObjectiveSetHiddenMembershipBound = false;
+inline constexpr bool kObjectiveSetHiddenMembershipBound = true;  // ON: SQUADRON_LAND_TASK 5ih
 
 // game+21A4h..+21C0h: the eight per-player-slot objective sets 00A2C450 walks.
 // The world builds them at 004DF917 and only the mission Lua fills them, through

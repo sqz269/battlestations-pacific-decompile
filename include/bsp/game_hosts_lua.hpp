@@ -420,7 +420,7 @@ inline constexpr bool kLuaSetFailureBound = true;  // ON: n1 pairs (GUNNERY 197-
 // +150h > 0, else vtable[70h](1)); anything else gets vtable[70h](1) at 008AC97A.
 // True: run_set_dead_meat_008ac7b0 on the gunnery host's draw and death funnel
 // (the plane arm is counted, not applied). False: the row stays UNIMPLEMENTED.
-inline constexpr bool kLuaSetDeadMeatBound = false;  // OFF: committed for a USN04 pair
+inline constexpr bool kLuaSetDeadMeatBound = true;  // ON: BSM01 pair, SQUADRON_LAND_TASK 5ih
 // Packet cc13-fix12 (docs/CC13_FIX12.md). 008AB580 IsUnitSelectable(entity): 008AB67F
 // 00888AA0, 008AB696 MOV DL,1 / CALL 00645160 (EDX = [[00E188A8]+18ECh], then
 // 00645060(unit, team, 1)), 008AB6A4 PushBoolean; one result. True:
