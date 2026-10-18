@@ -1238,15 +1238,21 @@ public:
     bool set_land_convoy_stopped_3a8(const std::string& convoy, bool stopped);
     bool set_land_convoy_speed_368(const std::string& convoy, float speed);
     // Packet cc13-convoy, under kLandConvoyBodiesBound (no-ops when it is off).
-    // The row-15 flush (009273A0): the convoy kills queued by the previous flush
-    // run 00742180, then each member dead since the last flush runs 0074CD10.
+    // The row-15 flush (009273A0), which loops until its queues are empty: each
+    // pass runs the queued convoys' 00742180, then 0074CD10 for each member dead
+    // since the previous pass, until a pass finds neither.
     void land_convoy_flush_009273a0();
     // Lua Kill(convoy[, hard]) through 008AC740 -> 00742210 on the convoy named
-    // `convoy`. Appends each member 00742210 handed to 00926D90 to `victims`
-    // (the caller kills them, as for any Lua Kill victim) and nulls its slot.
-    // False when no convoy of that name has a roster.
+    // `convoy`. Appends each member 00742210 handed to 00926D90 to `victims`,
+    // with the cause 00742210 computed (the caller kills them, as for any Lua
+    // Kill victim), and nulls its slot. False when no convoy of that name has a
+    // roster.
+    struct LandConvoyVictim {
+        std::size_t unit;
+        int cause;
+    };
     bool land_convoy_kill_member_vector_00742210(const std::string& convoy, bool hard,
-                                                 std::vector<std::size_t>& victims);
+                                                 std::vector<LandConvoyVictim>& victims);
     // Instance vtable+5Ch dispatch using the class selected by VehicleClass.Type
     // and the compiled predicates in unit_kind_query.hpp. Missing/unrecognized
     // identity and invalid indices answer false. docs/GAME_UNIT_KIND_BINDING.md.

@@ -9267,7 +9267,7 @@ int GameMissionLuaHost::run_kill_008ac5c0(lua_State* state, int argument_count) 
     if (units == nullptr || units->gunnery() == nullptr || id <= 0
         || static_cast<std::size_t>(id) > units->count()) {
         if constexpr (bsp::game::kLandConvoyBodiesBound) {
-            // Packet cc13-convoy: 008AC740 IsKindOf 1Ah -> 008AC74E 00742210(hard), then
+            // Packet cc13-convoy: 008AC740 IsKindOf 1Ah -> 008AC74E 00742210(flag), then
             // 008AC753 JMPs past 008AC756's 00926D90. A LandConvoy is a scene marker
             // here (no units-host slot); it is named as run_land_convoy_native names it.
             // SUBSTITUTION (labelled): "a convoy roster of that name exists" stands for
@@ -9281,23 +9281,27 @@ int GameMissionLuaHost::run_kill_008ac5c0(lua_State* state, int argument_count) 
             if (name.empty() && id > 0) {
                 if (const PendingEntity* node = find_pending(id)) name = node->name;
             }
-            std::vector<std::size_t> victims;
+            // 008AC748 CMP ESI,EBP / SETNE: EBP is 0 (008AC5E3 XOR EBP,EBP, not written
+            // again before 008AC796) and the cause is 1 or 2, so the flag is always true
+            // and 00742210 kills every member with cause 2, whatever `hard` was.
+            const bool vector_hard = cause != 0;
+            std::vector<GameUnitsHost::LandConvoyVictim> victims;
             if (units != nullptr && units->gunnery() != nullptr && !name.empty()
-                && units->land_convoy_kill_member_vector_00742210(name, hard, victims)) {
+                && units->land_convoy_kill_member_vector_00742210(name, vector_hard, victims)) {
                 GameGunneryHost& gunnery = *units->gunnery();
-                for (std::size_t unit : victims) {
-                    if (gunnery.unit_dead(unit)) {
+                for (const GameUnitsHost::LandConvoyVictim& victim : victims) {
+                    if (gunnery.unit_dead(victim.unit)) {
                         ++summary_.kill_already_dead;    // 00926D90 returns on +5Fh
                         continue;
                     }
-                    if constexpr (kKillListenerHarmOnlyBound) lua_kill_cause_[unit] = cause;
-                    gunnery.kill_unit_00926d90(unit, cause);
-                    if constexpr (kLuaProximityTriggersBound) target_gone_00925c40(unit);
+                    if constexpr (kKillListenerHarmOnlyBound) lua_kill_cause_[victim.unit] = victim.cause;
+                    gunnery.kill_unit_00926d90(victim.unit, victim.cause);
+                    if constexpr (kLuaProximityTriggersBound) target_gone_00925c40(victim.unit);
                     ++summary_.kill_units;
                 }
-                log_.notef("  Kill 008ac5c0: LandConvoy \"%s\" cause=%d members=%zu through "
-                    "00742210, the convoy not killed (packet cc13-convoy)", name.c_str(), cause,
-                    victims.size());
+                log_.notef("  Kill 008ac5c0: LandConvoy \"%s\" Lua cause=%d, members=%zu through "
+                    "00742210 with cause 2, the convoy not killed (packet cc13-convoy)", name.c_str(),
+                    cause, victims.size());
                 log_.implemented("MissionLuaNative::Kill", "008ac5c0");
                 return 0;
             }

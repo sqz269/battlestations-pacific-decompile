@@ -12,10 +12,12 @@ namespace bsp::game {
 //  - 007420B0 runs at bind (members take the convoy's 00927A80 skill through
 //    vtable +128h, 006D1EB0);
 //  - each 009273A0 flush runs 0074CD10 -> 007422A0 for every member that died
-//    since the last flush, then the convoy's queued 00742180 on the flush after
-//    its 00926D90 (cause 2 at exactly zero live members);
-//  - Lua Kill on a convoy runs 00742210 (members killed and nulled, +738h kept,
-//    the convoy not killed).
+//    since the last flush; 007422A0's 00926D90(convoy, 2) at exactly zero live
+//    members queues the convoy, and its 00742180 runs in the same flush, because
+//    009273A0 loops until both queues are empty (009275BA JMP 009273C0, the head
+//    re-testing 00F899B0 / 00F899BC);
+//  - Lua Kill on a convoy runs 00742210 (members killed with cause 2 and nulled,
+//    +738h kept, the convoy not killed).
 // False: the convoy is a marker with a fixed roster; a member's death touches
 // nothing, and Lua Kill on a convoy kills nobody (no units-host slot).
 inline constexpr bool kLandConvoyBodiesBound = false;

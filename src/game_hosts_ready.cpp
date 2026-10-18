@@ -604,7 +604,9 @@ void GameStepSubsystemsHost::flush_pending_entity_queues_009273a0() {
     bsp::flush_pending_entity_queues_009273a0(binding);
     if constexpr (kLandConvoyBodiesBound) {
         // Packet cc13-convoy: the kill list's +080h calls for the land convoys
-        // (00742180) and their members (0074CD10 -> 007422A0).
+        // (00742180) and their members (0074CD10 -> 007422A0), looped as 009273A0
+        // loops until its queues are empty, so a convoy a member's death empties
+        // is killed within this same flush.
         if (units_ != nullptr) units_->land_convoy_flush_009273a0();
     }
     ++summary_.pending_queue_passes;

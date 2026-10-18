@@ -2734,6 +2734,7 @@ struct LandConvoyLifeState {
     std::vector<std::size_t> slots;  // +394h vector (+398h..+39Ch); npos = a null slot
     std::int32_t live_3bc{0};        // +3BCh
     bool killed_5f{false};           // +5Fh, set by 00926D90 on the convoy
+    bool pending_destroy_60{false};  // +60h; nothing destroys a convoy marker here
     std::int32_t cause_70{0};        // +70h
     bool kill_queued{false};         // on 00F899B4; its +080h (00742180) not yet run
     struct Member {
@@ -13110,15 +13111,26 @@ std::size_t GameUnitsHost::build_land_convoy_roster_00743450(
         // Packet cc13-convoy: the member vector (a null per type below 1, as at
         // 0074379C), the live count (the members made, as above) and each
         // member's +738h, for cc15's 00742180 / 007422A0 and cc13's 00742210.
-        auto life = std::make_unique<LandConvoyLifeState>();
-        life->name = convoy.name;
-        life->slots.assign(convoy.convoy_slots.size(), static_cast<std::size_t>(-1));
-        for (std::size_t i = 0; i < made && i < slots.size(); ++i) {
-            life->slots[static_cast<std::size_t>(slots[i])] = before + i;
-            life->members.push_back({before + i, life.get(), false});
+        // A second roster under a name already held (a roster built twice, or two
+        // convoys sharing a name) is not tracked: every lookup here is by name, as
+        // the motion state's is, and would only ever reach the first.
+        bool duplicate = false;
+        for (const auto& held : host.land_convoy_lives) duplicate = duplicate || held->name == convoy.name;
+        if (duplicate) {
+            host.log.notef("  LandConvoy roster \"%s\": a convoy of that name already has a "
+                "member vector; this roster's %zu members are not tracked (packet cc13-convoy)",
+                convoy.name.c_str(), made);
+        } else {
+            auto life = std::make_unique<LandConvoyLifeState>();
+            life->name = convoy.name;
+            life->slots.assign(convoy.convoy_slots.size(), static_cast<std::size_t>(-1));
+            for (std::size_t i = 0; i < made && i < slots.size(); ++i) {
+                life->slots[static_cast<std::size_t>(slots[i])] = before + i;
+                life->members.push_back({before + i, life.get(), false});
+            }
+            life->live_3bc = static_cast<std::int32_t>(made);
+            host.land_convoy_lives.push_back(std::move(life));
         }
-        life->live_3bc = static_cast<std::int32_t>(made);
-        host.land_convoy_lives.push_back(std::move(life));
     }
     host.log.notef("  LandConvoy roster 00743450: \"%s\" rows=%d columns=%d slots=%zu "
         "members=%zu path=\"%s\" speed=%.2f offset=%.2f (packet cc9_land_convoy_members)",
@@ -13336,15 +13348,24 @@ public:
         gunnery->kill_unit_00926d90(unit, cause);
     }
     // 00926D90 on the convoy: +5Fh, +70h, and the kill list. Its +080h
-    // (00742180) runs on the next flush (land_convoy_flush_009273a0).
+    // (00742180) runs in the same 009273A0 flush, on the loop's next pass
+    // (land_convoy_flush_009273a0).
     void kill_convoy(std::uint8_t* convoy, std::int32_t cause) {
         LandConvoyLifeState& life = convoy_life(convoy);
-        if (life.killed_5f) return;
-        life.killed_5f = true;
-        life.cause_70 = cause == 7 ? 2 : cause;
-        life.kill_queued = true;
+        if (life.killed_5f) return;                                  // 00926DE1
+        const std::int32_t stored = cause == 7 ? 2 : cause;          // 00926DAD..00926DBC
+        life.killed_5f = true;                                       // 00926DF3
+        if (!life.pending_destroy_60) {                              // 00926DEF
+            life.cause_70 = stored;                                  // 00926E02
+            // OMITTED (labelled): 00926E05 vtable+70h(1), the entity's own
+            // notification; not modelled for a convoy marker.
+        }
+        if (cause == 7) life.cause_70 = stored;                      // 00926E07..00926E0C
+        // OMITTED (labelled): 00926E0F..00926E23, 00926D90(cause) on each child of
+        // the +48h / +44h chain; a convoy marker here has no child entities.
+        life.kill_queued = true;                                     // 00F899B4
         host_.log.notef("  LandConvoy \"%s\": 00926D90 cause %d at live count %d, 00742180 "
-            "queued for the next 009273A0 flush (packet cc13-convoy)", life.name.c_str(),
+            "queued for the flush loop's next pass (packet cc13-convoy)", life.name.c_str(),
             static_cast<int>(cause), static_cast<int>(life.live_3bc));
     }
 
@@ -13400,21 +13421,23 @@ public:
 };
 
 // 00742210, from the Lua Kill binding. The members it hands to 00926D90 go
-// back to the caller, which kills them as it kills any Lua Kill victim.
+// back to the caller with the cause the body computed (0074226A..00742271),
+// and the caller kills them as it kills any Lua Kill victim.
 class LandConvoyKillVectorBinding final
     : public LandConvoySlotsAdapter<bsp::cc13_seg41::LandConvoyKillVectorHost> {
 public:
-    LandConvoyKillVectorBinding(GameUnitsHost::Impl& host, std::vector<std::size_t>& victims)
+    LandConvoyKillVectorBinding(GameUnitsHost::Impl& host,
+                                std::vector<GameUnitsHost::LandConvoyVictim>& victims)
         : LandConvoySlotsAdapter(host), victims_(victims) {}
-    void mission_entity_kill_00926d90(std::uint8_t* entity, std::int32_t) override {
-        victims_.push_back(member_unit(entity));
+    void mission_entity_kill_00926d90(std::uint8_t* entity, std::int32_t cause) override {
+        victims_.push_back({member_unit(entity), static_cast<int>(cause)});
     }
     void null_member_slot(std::uint8_t* convoy, std::size_t i) override {
         null_slot(convoy, i);
     }
 
 private:
-    std::vector<std::size_t>& victims_;
+    std::vector<GameUnitsHost::LandConvoyVictim>& victims_;
 };
 
 // 0074CD10 (member +080h). Its only reads are member +738h and the two calls;
@@ -13648,32 +13671,48 @@ bool GameUnitsHost::set_land_convoy_speed_368(const std::string& convoy, float s
 }
 
 // Packet cc13-convoy. 009273A0's kill-list pass calls each killed entity's
-// +080h (0092751F): the convoy's 00742180, a member's 0074CD10. A convoy killed
-// at the previous flush (007422A0's zero-count 00926D90) runs first; then every
-// member the gunnery host counts dead since the last flush, once each (+5Eh).
+// +080h (0092751F): the convoy's 00742180, a member's 0074CD10. The flush loops
+// until both queues are empty (009275BA JMP 009273C0; the head at 009273C2 /
+// 009273CA re-tests 00F899B0 / 00F899BC), so an entity killed by a +080h call
+// is handled in the same flush, one pass later. Each pass here takes the
+// convoys queued and the members newly dead at its start, runs the convoys'
+// 00742180, then the members' 0074CD10, and the loop ends when a pass finds
+// neither. So a member's 007422A0 that empties its convoy has the convoy's
+// 00742180 run on the next pass, and members that 00742180 kills have their
+// 0074CD10 (with +738h already cleared) on the pass after.
 // SUBSTITUTION (labelled): a member's kill is read from the gunnery host's dead
-// flag at the flush, not from the kill list.
+// flag at the flush, not from the kill list; the host's on_killed_run flag
+// stands in for 009274C8's +5Eh test (each entity's +080h runs once).
 void GameUnitsHost::land_convoy_flush_009273a0() {
     if constexpr (kLandConvoyBodiesBound) {
         Impl& host = *impl_;
         GameGunneryHost* gunnery = host.gunnery.get();
         if (gunnery == nullptr) return;
-        for (auto& life : host.land_convoy_lives) {
-            if (!life->kill_queued) continue;
-            life->kill_queued = false;
-            LandConvoyKillBinding kill(host);
-            bsp::cc15_land_convoy::land_convoy_kill_members_00742180(convoy_handle(*life), kill);
-            host.done("LandConvoy::kill_members_00742180", 0x00742180u);
-        }
-        for (auto& life : host.land_convoy_lives) {
-            for (LandConvoyLifeState::Member& m : life->members) {
-                if (m.on_killed_run || m.unit >= host.slots.size() || !gunnery->unit_dead(m.unit)) continue;
-                m.on_killed_run = true;
+        for (;;) {
+            std::vector<LandConvoyLifeState*> convoys;
+            std::vector<LandConvoyLifeState::Member*> members;
+            for (auto& life : host.land_convoy_lives) {
+                if (life->kill_queued) convoys.push_back(life.get());
+                for (LandConvoyLifeState::Member& m : life->members) {
+                    if (m.on_killed_run || m.unit >= host.slots.size() || !gunnery->unit_dead(m.unit)) continue;
+                    members.push_back(&m);
+                }
+            }
+            if (convoys.empty() && members.empty()) break;  // 009273D0 JE 009275BF
+            for (LandConvoyLifeState* life : convoys) {
+                life->kill_queued = false;
+                LandConvoyKillBinding kill(host);
+                bsp::cc15_land_convoy::land_convoy_kill_members_00742180(convoy_handle(*life), kill);
+                host.done("LandConvoy::kill_members_00742180", 0x00742180u);
+            }
+            for (LandConvoyLifeState::Member* m : members) {
+                m->on_killed_run = true;
                 // The member: a shadow whose only word is +738h, all 0074CD10 reads.
                 alignas(4) std::uint8_t shadow[0x73C] = {};
-                std::uint8_t* const convoy = m.convoy_738 != nullptr ? convoy_handle(*m.convoy_738) : nullptr;
+                std::uint8_t* const convoy =
+                    m->convoy_738 != nullptr ? convoy_handle(*m->convoy_738) : nullptr;
                 std::memcpy(shadow + 0x738, &convoy, sizeof(convoy));
-                LandVehicleOnDeathBinding on_death(host, m.unit);
+                LandVehicleOnDeathBinding on_death(host, m->unit);
                 bsp::cc13_seg41::land_vehicle_on_death_0074cd10(shadow, on_death);
             }
         }
@@ -13683,7 +13722,7 @@ void GameUnitsHost::land_convoy_flush_009273a0() {
 // Packet cc13-convoy. 008AC740 (IsKindOf 1Ah) -> 008AC74E 00742210(hard); the
 // JMP at 008AC753 skips 008AC756's 00926D90, so the convoy is not killed.
 bool GameUnitsHost::land_convoy_kill_member_vector_00742210(const std::string& convoy, bool hard,
-                                                            std::vector<std::size_t>& victims) {
+                                                            std::vector<LandConvoyVictim>& victims) {
     if constexpr (!kLandConvoyBodiesBound) {
         static_cast<void>(convoy);
         static_cast<void>(hard);
