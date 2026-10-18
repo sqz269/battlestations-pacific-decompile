@@ -524,7 +524,11 @@ inline constexpr bool kShipAiApproachEnterReseedBound = true;
 // draws in jitter_48, and the two timers take theirs. False: the ring is built
 // lazily with jitter 0, +1500h starts at 0, and only submarines take the +CCh
 // draw (kShipAiSubAttackStatesBound).
-inline constexpr bool kShipAiBrainConstructionDrawsBound = false;
+// ON (2026-10-18, by mechanism): 62 draws per ship (USN01 868 = 14 x 62, USN04
+// 1116 = 18 x 62); USN04 gameplay identical in the reference env; USN01 moved
+// in both envs (deaths 36 -> 37 reference, 32 -> 32 default) and USN04 default
+// moved (55 -> 54), stream-coupled (local\g52_bd_*.log, fba7c0e90).
+inline constexpr bool kShipAiBrainConstructionDrawsBound = true;
 // Packet cc9_sub_target_entry_points, docs/SHIP_AI_OPEN_ITEMS.md section 9. The
 // three stand-ins of the submarine-target sub-states take the entry points now
 // on main. True: the lead pursuit's yaw rate is 0082ECB0 over the unit's class
