@@ -72,7 +72,7 @@ was transcribed from its full export listing.
 |---|---|---|
 | 005CD0F0 BSP_MovCam_SpectateUnit | thiscall(screen, unit), RET 4 | 004CC460([00E198C4], 2Bh, unit); 005CC000(screen); 007A6910([screen+30h], unit) |
 | 005CD9C0 HudMovieScreen_Enter | thiscall(screen), RET | 005CD1A0(screen, [00E188D8]) when byte +20h is 0; 005CC170(screen); game+61Dh = 1; park list, flag 1 |
-| 005CDB00 HudMovieScreen_Exit | ECX unread, RET | 00B0D0B0([00F8D39C], 0.0f); 00A933F0(input, 1Eh, 0); game+61Dh = 0 (the decompile drops this store); 00A933F0(input, 3, 0); park list, flag 0 |
+| 005CDB00 HudMovieScreen_Exit | ECX unread, RET | 00B0D0B0([00F8D39C], 0.0f); 00A933F0(input, 1Eh, 0); game+61Dh = 0; 00A933F0(input, 3, 0); park list, flag 0 |
 | 005CDC50 HudScreen38_ClearCameraMover | ECX unread, RET | 004BC410(game, null); park list, flag 1 |
 | 005CDD70 BSP_HudEngineMovieScreen_Exit | ECX unread, RET | 00B0D0B0(.., 0.0f); a kind-4 cutscene player at game+38h is destroyed (0045D930) and freed (00BF65AC), and the slot cleared; park list, flag 0 |
 | 005CDF30 / 005CDF40 | thiscall(screen, vector), RET 4 | 004D6790(vector, &screen+30h / +18h) |
@@ -103,8 +103,9 @@ Otherwise it does the following, in order:
    string vector at +154h*party + B8h + 64h, with +18h set to (party == 1).
 6. Publishes the block with 0057D060 and releases it with 004D2A80.
 
-00626930 is a second, lobby-side caller of the per-mission statistics reset.
-The known callers are 005C5732 and 0058BF1D. The reset clears, in this order:
+00626930 is the per-mission statistics reset. It has four call sites: 004DFD0A
+(BSP_Game_LoadMissionScene), 0058BF21, 005C5735 and 005DED75, the lobby-side
+call in this body. The reset clears, in this order:
 - the strings 00E19798 (mission name, from record+08h) and 00E197A0
   (debriefing text, from record+38h);
 - 00E196CC, 00E196DC and 00E196EC (vector erase 004954F0);
@@ -127,7 +128,9 @@ strings. A re-time that reads stats after a lobby change would see them empty.
 Other notes:
 - Live in a normal mission? No. It is a multiplayer lobby path. Its caller is the
   lobby screen through the hook in `frontend_menus`.
-- It does not draw from the shared RNG 00BD2F10.
+- It makes no direct draw from the shared RNG 00BD2F10 or 00BD2F40. As for
+  00565D80, a static call-graph walk (8 levels, 228 functions) reaches neither;
+  virtual calls are not followed.
 
 ### RNG note: 00565D80
 
