@@ -366,6 +366,10 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // Packet cc9_lua_camera_state: handled only with kLuaCameraStateBound.
     {"GetCameraState", 0x008bf6a0u},
     {"GetRotation", 0x008a7e60u},
+    // Packet cc13-fix14b: handled only with kLuaGetShipMaxSpeedBound /
+    // kLuaGetDirectionBound.
+    {"GetShipMaxSpeed", 0x00890bb0u},
+    {"GetDirection", 0x008a7cb0u},
 };
 
 // The id the first script entity takes. The created scene instances number from 1
@@ -687,6 +691,8 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     if (std::strcmp(binding->name, "SetCommandBuildingOwnerPlayer") == 0) {
         return kLuaSetCommandBuildingOwnerPlayerBound;
     }
+    if (std::strcmp(binding->name, "GetShipMaxSpeed") == 0) return kLuaGetShipMaxSpeedBound;
+    if (std::strcmp(binding->name, "GetDirection") == 0) return kLuaGetDirectionBound;
     if (std::strcmp(binding->name, "DisplayScores") == 0 ||
         std::strcmp(binding->name, "HideScoreDisplay") == 0) {
         return kLuaDisplayScoresBound;
@@ -4374,6 +4380,62 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             ++command_building_owner_applied_;
         }
         results = 0;
+    } else if (std::strcmp(binding->name, "GetShipMaxSpeed") == 0) {
+        // Packet cc13-fix14b. 00890BB0 (__fastcall, ECX the Lua state, RET): 00890CAF
+        // 00888AA0 on argument 0, no null or class test, 00890CC8 0080FC30 with ECX the
+        // entity (ST0), 00890CD2 FSTP dword, 00890CD5 00B66480 PushFloat; one result.
+        // 0080FC30 is float([unit+9C0h] * scale), the scale 1.0f (00D7A24C) unless the
+        // powerups byte 00E0C978 and [[00F88C30]+B8h] are both set (0080FC31..0080FC4A).
+        // SUBSTITUTIONS (labelled): the scale is the unscaled 1.0f the other hosts
+        // take (the powerup scale 008E6430(4, unit) is not built); unit+9C0h is the
+        // units host's slot value (00822C20's class MaxSpeed, moved by SetShipMaxSpeed
+        // 00890B51). An entity with no units-host slot (a scene marker, or none)
+        // pushes nothing and records UNIMPLEMENTED, where the image reads +9C0h of
+        // whatever object it is handed (and faults on a null one).
+        // handles() already refuses the row while the switch is off.
+        if constexpr (kLuaGetShipMaxSpeedBound) {
+            ++ship_max_speed_calls_;
+            void* entity = entity_from_argument(0);
+            const std::size_t index = index_of(entity);
+            if (entity != nullptr && index < units_.count()) {
+                push_number_float_00b66480(
+                    units_.throttle_ceiling_inputs(index).reference_speed);
+                results = state_ != nullptr ? 1 : 0;
+            } else {
+                ++ship_max_speed_unresolved_;
+                log_.unimplemented("LuaNative::GetShipMaxSpeed(entity without a unit slot)",
+                    "00890bb0");
+                results = 0;
+            }
+        }
+    } else if (std::strcmp(binding->name, "GetDirection") == 0) {
+        // Packet cc13-fix14b. 008A7CB0 (__fastcall, ECX the Lua state, RET): 008A7DAF
+        // 00888AA0 on argument 0, 008A7DCF 00B67930 the new table, 008A7DD4 CMP byte
+        // [ESI+0C8h],0 / JNE past 008A7DE7 00414DB0 (the world refresh), then 008A7DF9
+        // 0088BA30 with EDX = ESI+0CCh+20h, the world matrix's forward row +ECh..+F4h;
+        // one result. No null or class test.
+        // SUBSTITUTIONS (labelled): the row is GameUnitsHost::unit_pose's forward row
+        // for the entity's units-host slot (the host's poses are never stale, so the
+        // refresh is not reached, as for GetPosition). A scene marker (no basis in
+        // this host) or an entity with no slot pushes nothing and records
+        // UNIMPLEMENTED, where the image reads +ECh of whatever object it is handed.
+        if constexpr (kLuaGetDirectionBound) {
+            ++direction_calls_;
+            void* entity = entity_from_argument(0);
+            const std::size_t index = index_of(entity);
+            float right[3], up[3], forward[3], position[3];
+            if (entity != nullptr && index < units_.count() &&
+                units_.unit_pose(index, right, up, forward, position)) {
+                if (entity_pose_stale_008a7c24(entity)) entity_pose_refresh_00414db0(entity);
+                push_vector3_table_0088ba30(forward);
+                results = state_ != nullptr ? 1 : 0;
+            } else {
+                ++direction_unresolved_;
+                log_.unimplemented("LuaNative::GetDirection(entity without a unit slot)",
+                    "008a7cb0");
+                results = 0;
+            }
+        }
     } else if (std::strcmp(binding->name, "CountdownTimeLeft") == 0) {
         // 008B1B40 computes the time left without testing +3Ch.
         ++countdown_time_left_reads_;
@@ -6228,6 +6290,13 @@ void GameScriptOrdersHost::report() {
             command_building_level_calls_, command_building_level_unresolved_,
             kLuaSetCommandBuildingOwnerPlayerBound ? 1 : 0, command_building_owner_calls_,
             command_building_owner_applied_);
+    }
+    if (ship_max_speed_calls_ != 0 || direction_calls_ != 0) {
+        log_.notef("summary mission script ship max speed bound=%d calls=%zu unresolved=%zu "
+            "direction bound=%d calls=%zu unresolved=%zu (00890BB0 / 008A7CB0, packet "
+            "cc13-fix14b)", kLuaGetShipMaxSpeedBound ? 1 : 0, ship_max_speed_calls_,
+            ship_max_speed_unresolved_, kLuaGetDirectionBound ? 1 : 0, direction_calls_,
+            direction_unresolved_);
     }
     if (rows_.empty()) return;
     log_.notef("the mission script's own orders, run through the eight reconstructed "
