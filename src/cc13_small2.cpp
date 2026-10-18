@@ -512,8 +512,9 @@ void* multi_score_construct_00780db0(void* object, std::uint32_t id, Small2Host&
 // group 3; show 0; text_mode 1; text = unit->vtable[10h](); unit null; distance "" by value;
 // scale 0.0f; colour = {a, b, a, d} (the binary copies the projected values into the colour
 // slot); flag 0. 14 stack dwords, RET 38h. Only four corner pairs are written here (frame
-// +18h..+34h); the contract's fifth pair would be this frame's SEH record at +38h, which the
-// show-0 path is assumed not to read (unverified).
+// +18h..+34h); the contract's fifth pair would be this frame's SEH record at +38h, which
+// 0063C620 does not read here: unit null, so the special path is skipped (JZ 0063C815);
+// corners+20h/+24h are read only at 0063C83D/0063C848.
 void hud_markers_add_unit_part_markers_00641e30(void* markers, void* unit, Small2Host& host) {
     void* const parent = host.entity_ancestor_00923810(unit, 1);              // 00641E55
     if (parent != nullptr && host.entity_is_kind_5c(parent, kUnitKind06) &&

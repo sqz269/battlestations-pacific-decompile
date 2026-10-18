@@ -198,7 +198,9 @@ std::uint32_t hud_map_icon_refresh_carried_unit_icons_005aac00(void* icon, void*
 // 0064AE20 __fastcall(ECX = ship screen 45), RET; EH handler 00C7A978. screen+184h is the unit,
 // [unit+538h] its class record. Lua: VehicleClass[class+70h].NoRepairGUI; the damage widget
 // (+40h) is shown unless that is a boolean equal to 1. +44h = clamp((unit+980h + 0.5) / 1.5, 0,
-// 1) (24-bit: the sum and the quotient each round to float; a NaN passes both clamps), the
+// 1) (24-bit: the sum and the quotient each round to float; a NaN passes both clamps; at 53-bit
+// PC the image holds (x + 0.5) / 1.5 in the register until the FSTP float, one rounding that can
+// differ from the modelled pair by one ulp), the
 // three gauges' +18h bytes are cleared, +128h = 0064AAD0(), +12Ch = 0.0f, 0064A9F0(0.0f). Flags:
 // +105h = [class+C8h] > 0 (signed), +107h = 00818300() != 0, +106h = !+105h && 0059CB90(unit,
 // null) == 16h. Widgets +54h, +68h, +6Ch shown when +105h or +106h; +54h's frame is +106h != 0.
@@ -847,7 +849,7 @@ void enter_catalog_arm(std::uint8_t* s, Big1Host& host) {
                 set_device_icon(s, unit, static_cast<std::uint8_t*>(unit), 0x134, host);  // 0067549E..00675433
             }
         } else {
-            host.list_tidy_005a0b80(&units);                                 // 0067556E
+            host.list_tidy_005a0b80(&units);                                 // 0067557A (joins at 0067556E)
             return;
         }
         if (device) {
@@ -939,7 +941,7 @@ void enter_map_arm(std::uint8_t* s, Big1Host& host) {
                 host.list_tidy_005a0b80(&copy2);                             // 00675861
             } else {
                 host.gui_text_set_localised_cstring_00abbe50(ptr(s, 0x170), "globals.unitclass_spawnpoint",
-                                                             1);  // 00675888, 00CF6B24
+                                                             1);  // 0067588E, 00CF6B24
             }
         } else {
             void* const unit = *host.support_unit_iterator_value_00658a60(s + 0x300);  // 00675877
@@ -989,8 +991,11 @@ void hud_support_manager_screen_enter_00674b80(void* screen, Big1Host& host) {
         host.award_tracker_get_singleton_004e1ca0(), &hint);                 // 00674C9B / 00674CA7
     release_str(hint, host);                                                 // 00674CC0..00674CD3
     if (!shown) {
+        // 0041E870 is a constructor (it zeroes the string before assigning), so
+        // the released `hint` is rebuilt from {0, null} here, not reassigned.
         host.native_string_assign_0041e870(&hint, "SM1STUSE");               // 00674CE8
-        host.award_tracker_trigger_hint_00690fd0(host.award_tracker_get_singleton_004e1ca0(), &hint, 0);  // 00674D01
+        host.award_tracker_trigger_hint_00690fd0(
+            host.award_tracker_get_singleton_004e1ca0(), &hint, 0);          // 00674CFA / 00674D01
         release_str(hint, host);                                             // 00674D0A..00674D23
     }
 
@@ -1711,8 +1716,8 @@ void projectile_trace_hit_landing_troops_00428420(void* trace, float unused, Big
                                     if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
                                     if (at<std::uint8_t>(ptr(node, 8), 0x39) == 0) {  // 004287C8
                                         if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
-                                        host.landing_group_apply_damage_00480c20(group,
-                                                                                 at<float>(ptr(node, 8), 0x1C));  // 004287E6
+                                        host.landing_group_apply_damage_00480c20(
+                                            group, at<float>(ptr(node, 8), 0x1C));  // 004287E6
                                     }
                                     return;
                                 }
@@ -1835,8 +1840,11 @@ void landing_troop_update_004a0d20(void* troop, Big1Host& host) {
                     c = ftol2_low_00bf7420(static_cast<float>(
                         int_times_float(at<std::int32_t>(member(i), 0x2C), at<float>(member(i), 0x14)) +
                         static_cast<double>(c)));                             // 004A0E01
-                } else {
-                    counts[i] = 0;                                            // 004A0E15
+                } else if (i < 16) {
+                    // 004A0E15 stores into the 16-slot frame array by member index, so a
+                    // 17th or later member clobbers other frame slots in the image; that
+                    // write is not modelled (it would be out of bounds here).
+                    counts[i] = 0;
                 }
             } else if (at<std::int32_t>(t, 0xD4) == 0) {
                 const std::int32_t k = d8(0x10);                              // EBP
@@ -1961,7 +1969,7 @@ void landing_troop_update_004a0d20(void* troop, Big1Host& host) {
             float end_point[3];                                               // [B+D4h], read from the buffer
             host.scene_path_point_to_world_007af800(path_a, end_point, inline_point_count(path_a) - 1);  // 004A13F0
             std::int32_t best = 0;                                            // EBP, [B+1Ch] = best * 0Ch
-            if (host.path_point_count_00415870(path_b) - 2 > 0) {             // 004A1402
+            if (host.path_point_count_00415870(path_b) - 2 > 0) {             // 004A13FD
                 std::int32_t k = 0;                                           // ESI
                 do {
                     const float dx = points[k][0] - end_point[0];
@@ -2238,7 +2246,8 @@ void landing_troop_update_004a0d20(void* troop, Big1Host& host) {
                 std::uint8_t* const mw = member(i);
                 const float whi = static_cast<float>(at<std::int32_t>(mw, 0x34) + 1);
                 const float wlo = static_cast<float>(at<std::int32_t>(mw, 0x30));
-                row_left = ftol2_low_00bf7420(host.random_uniform_float_00bd2f10(0, wlo, whi));  // 004A2B7B
+                row_left = ftol2_low_00bf7420(
+                    host.random_uniform_float_00bd2f10(0, wlo, whi));  // 004A2B76, ftol 004A2B7B
                 ++row;
                 slot = 0;
             }
@@ -2296,7 +2305,8 @@ void landing_troop_update_004a0d20(void* troop, Big1Host& host) {
                         host.camera_path_derive_knots_007af150(ptr(node, 0x18));  // 004A2F53
                     ++r;
                 }
-                if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();  // 004A2F5D
+                if (node == ptr(list, 4))
+                    host.crt_invalid_parameter_noinfo_00bf6713();  // 004A2F5D CMP, 004A2F62 call
             }
         }
         host.crt_free_00bf6989(starts);                                       // 004A2F73
@@ -2374,6 +2384,7 @@ void hud_map_icon_place_widget_0059d4a0(void* screen, void* icon, Big1Host& host
             break;
         }
         }
+        // bsp_core builds with /fp:strict, which keeps this z + 0.0 (it turns -0 into +0).
         position[2] = static_cast<float>(position[2] + 0.0);                  // 0059D679 [00D7A258]
     }
     if (ptr(ic, 0xEC) == nullptr || (at<std::uint8_t*>(ic, 0xF0) - at<std::uint8_t*>(ic, 0xEC)) >> 2 == 0)

@@ -6386,7 +6386,7 @@ struct GameUnitsHost::Impl {
     // False: the arm is refused and only +21h acts. OFF: paired with park on, its
     // yaw (heading - runway, opposite to park's sense) rests at pi/2 under the
     // host's park <-> abort loop; re-pair with park (docs/SQUADRON_LAND_TASK.md 5v.2).
-    static constexpr bool kLandAbortGroundArmBound = false;
+    static constexpr bool kLandAbortGroundArmBound = true;   // ON: OCEAN_WAVE_FIELD 78 (bytes match; USN01 identical)
     // Packet p20_land_final_park (docs/OCEAN_WAVE_FIELD.md section 78). 009B3DD9-009B3DF7:
     // land/final with mode +448h = 4 calls 009B3370 BSP_BotStateLandFinal_ParkRule (final
     // +20h touched && !(plane+72Ch)->vt[38h]) and on true switches to land/park (+620h)
@@ -6398,7 +6398,51 @@ struct GameUnitsHost::Impl {
     // > 0 ([00D7A218]), 007E2090 adds BSP_Random_UniformFloatRange(1, 0, noise) (00BD2F10,
     // ECX = 1). True: a keyed stream-1 draw (unit name + "#fnoise") per such candidate.
     // False: the constant midpoint noise / 2, as before. RNG-coupled: judge per entity.
-    static constexpr bool kFinderNoiseDrawBound = false;
+    static constexpr bool kFinderNoiseDrawBound = true;   // ON: OCEAN_WAVE_FIELD 78 (BSM09, USN04 identical)
+    // Packet p20_df_avoid_timer (docs/OCEAN_WAVE_FIELD.md section 80). 009A7D52-009A7D77: on
+    // the latched arm of 009A7A50, +18h > 2.0 ([00CE3958], COMISS/JBE) is redrawn as
+    // 00BD2F10(ECX = 1, 1.0, 2.0). True: a keyed stream-1 draw (unit name + "#dfat").
+    // False: the constant midpoint 1.5, as before.
+    static constexpr bool kDogfightAvoidTimerDrawBound = true;   // ON: OCEAN_WAVE_FIELD 80 (bytes; USN04/JM02 identical)
+    // Packet p20_df_early_clear (section 80). 009AAC5D-009AAC63: when 009AAA80's gate
+    // fails (+4D4h <= 0.0 at 009AAA9C, or +4D8h >= 1.0 at 009AAABB, NaN failing both),
+    // 007B9740(ECX = [task+3FCh]) runs before the false return: with unit+C50h set it
+    // tail-jumps to 007E2070, which unregisters the cached target at neighbours+B0h
+    // (6952A0) and zeroes it. True: the host's cache (nb_found_plus_one) is cleared.
+    // False: the gate returns false and keeps the cache, as before. LABELLED: +C50h,
+    // the neighbours block 007E1E20 builds, is taken to exist for every fighter.
+    static constexpr bool kDogfightEarlyEdgeClearBound = true;   // ON: OCEAN_WAVE_FIELD 80 (USN04 pair, 210 clears)
+    unsigned long long df_avoid_timer_redraws{0}, df_early_edge_clears{0};
+    // Packet p20_land_min_speed_owner (section 80). 009B1309-009B137C: with approach+30h
+    // set, 009B1300 adds dot(owner velocity (vt[34h], 009B1362), the plane's unit
+    // velocity (vt[34h] / 0042B2F0, 009B1315-009B1359)) to 007C47F0 before the max with
+    // 007C4810. True: the land target's (land_site_plus_one) linear velocity enters, so a
+    // carrier's speed along the plane's heading raises the minimum. False: 0, as before.
+    static constexpr bool kLandMinSpeedOwnerVelocityBound = true;   // ON: OCEAN_WAVE_FIELD 80 (USN01 pair, 2332 terms)
+    mutable unsigned long long land_min_speed_owner_terms{0};
+    // Packet p20_gunfire_exempt_wanderer (section 80). 0099F197-0099F1A8: the exempt arm
+    // of 0099EC40 (kinds 10h / 16h, or a flight leader whose squadron +3CCh > 1) writes
+    // unit+840h WandererMul = tuning+614h (Pilot/Avoidance/Gunfire/BomberVSGunfire)
+    // before returning. True: wanderer.mul takes the value. False: only counted.
+    static constexpr bool kGunfireExemptWandererMulBound = true;
+    // Packet p20_follow_exit (section 80). 009BDE40 BSP_BotStateFollow_Exit (RET): 007B8A90
+    // clears the turbo byte unit+9F9h (009BDE49), then [bot+1Ch]+4Ch, the gun hold timer
+    // the sight tick sets, = 0.0 (009BDE57). It is the follow state's exit in the kind-7
+    // task and the level-bomb prepare's exit (009B84A0). True: both stores. False:
+    // recorded only, as before.
+    static constexpr bool kFollowExitClearsBound = true;
+    // Packet p20_strafe_horizontal (section 80). 009CAD27-009CAD58: dx and dz are FSTP'd
+    // to floats (009CAD30, 009CAD3E) and d2 = (dx dx + 0 0) + dz dz is stored as a float
+    // (009CAD58), main-thread 24-bit per op. True: float per op. False: double dx, dz.
+    static constexpr bool kStrafeHorizontalFloatOpsBound = false;
+    unsigned long long follow_exits{0};
+    void follow_exit_009bde40(GameUnitSlot& unit) {
+        ++follow_exits;
+        if constexpr (kFollowExitClearsBound) {
+            unit.plane_turbo_9f9 = false;      // 009BDE49 007B8A90
+            unit.df_gun.hold_4c = 0.0f;        // 009BDE57
+        }
+    }
     static constexpr bool kLandingLandedArmBound = true;  // ON: all ten LOMP10 planes land (docs/SQUADRON_LAND_TASK.md 5r)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
@@ -8506,6 +8550,11 @@ struct GameUnitsHost::Impl {
              own_sq->live_count() > 1);
         if (exempt) {
             ++u.ga_exempt_ticks;
+            if constexpr (kGunfireExemptWandererMulBound) {
+                // 0099F197 0042E740, 0099F19C FLD [tuning+614h], 0099F1A8 FSTP [unit+840h].
+                if (lua.plane_globals_loaded())
+                    u.wanderer.mul = lua.plane_globals().pilot_avoidance_gunfire_bomber_vs_gunfire;
+            }
             return;
         }
         // 0099F087 004F2F40: the 2-D threat sum normalised, then x 0.8
@@ -22816,7 +22865,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         unit_.df_dc = 1.0f;
                         unit_.df_e0 = 0.5f;
-                        if (unit_.df_avoid_timer > 2.0f) unit_.df_avoid_timer = 1.5f;  // U(1, 2)
+                        if (unit_.df_avoid_timer > 2.0f) {
+                            ++owner_.df_avoid_timer_redraws;
+                            if constexpr (GameUnitsHost::Impl::kDogfightAvoidTimerDrawBound) {
+                                // 009A7D72: 00BD2F10(ECX = 1, 1.0, 2.0).
+                                unit_.df_avoid_timer = owner_.release_altitude_draw_00bd2f10(
+                                    unit_.row.name + "#dfat", 1.0f, 2.0f);
+                            } else {
+                                unit_.df_avoid_timer = 1.5f;  // U(1, 2) at its midpoint
+                            }
+                        }
                     }
                     static float df_neg_sgn(float v) { return v < 0.0f ? 1.0f : (v > 0.0f ? -1.0f : 0.0f); }
                     // 009A7E80.
@@ -23622,7 +23680,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // StallSpd, 0, 007C47F0 = LevelFlight * StallSpd, 1.6, speed).
                     // Either way 009A7650 retargets and the task goes to aim.
                     bool df_early_edge_009aaa80() {
-                        if (!(unit_.df_dc > 0.0f) || !(unit_.df_e0 < 1.0f)) return false;
+                        if (!(unit_.df_dc > 0.0f) || !(unit_.df_e0 < 1.0f)) {
+                            // 009AAC5D-009AAC63: 007B9740 -> 007E2070 clears the cache.
+                            ++owner_.df_early_edge_clears;
+                            if constexpr (GameUnitsHost::Impl::kDogfightEarlyEdgeClearBound) {
+                                unit_.nb_found_plus_one = 0;
+                            }
+                            return false;
+                        }
                         ++unit_.df_early_asks;
                         const bsp::PlaneSquadronHostRecord* tsq = nullptr;
                         if (unit_.command_target_plus_one != 0) {
@@ -24261,6 +24326,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // 009CAD00 (009CAD00-009CAD8B): the horizontal distance to the
                     // aim point, 0 at or below double [00CE3820].
                     float st_horizontal_009cad00() const {
+                        if constexpr (GameUnitsHost::Impl::kStrafeHorizontalFloatOpsBound) {
+                            const float dx = unit_.st_aim_point[0] - unit_.motion.position[0];
+                            const float dz = unit_.st_aim_point[2] - unit_.motion.position[2];
+                            const float d2 = (dx * dx + 0.0f) + dz * dz;
+                            return static_cast<double>(d2) > 1e-10
+                                ? static_cast<float>(std::sqrt(static_cast<double>(d2))) : 0.0f;
+                        }
                         const double dx = static_cast<double>(unit_.st_aim_point[0]) -
                                           unit_.motion.position[0];
                         const double dz = static_cast<double>(unit_.st_aim_point[2]) -
@@ -25142,6 +25214,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         using namespace bsp::level_bomb;
                         using LS = bsp::LevelBombState;
                         if (s == unit_.level_bomb_state) return;
+                        // 009B84A0: prepare's exit 009B6660 JMPs to 009BDE40, and the follow
+                        // state (009C2980, vtable 00D20AB8 +8) is 009BDE40 itself.
+                        if (unit_.level_bomb_state == bsp::LevelBombState::kPrepare ||
+                            unit_.level_bomb_state == bsp::LevelBombState::kFollow) {
+                            owner_.follow_exit_009bde40(unit_);
+                        }
                         unit_.level_bomb_state = s;
                         bsp::LevelBombApproach& a = unit_.lb_ap;
                         switch (s) {
@@ -33513,7 +33591,27 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     gg.dynamics_spd_multipliers_level_flight),
                                 unit_.plane_stall_spd);
                         }
-                        const float a = static_cast<float>(static_cast<double>(lvl) + 0.0);
+                        float w = 0.0f;
+                        if constexpr (GameUnitsHost::Impl::kLandMinSpeedOwnerVelocityBound) {
+                            const std::size_t site = unit_.land_site_plus_one - 1u;
+                            if (unit_.land_site_plus_one != 0 && site < owner_.slots.size()) {
+                                // 009B1328 0042B2F0: |v|; each component / |v| stored as float.
+                                const float* const v = unit_.plane_world_velocity;
+                                const float len = static_cast<float>(std::sqrt(
+                                    static_cast<double>(v[0]) * v[0] + static_cast<double>(v[1]) * v[1]
+                                    + static_cast<double>(v[2]) * v[2]));
+                                const float nx = v[0] / len, ny = v[1] / len, nz = v[2] / len;
+                                const bsp::OceanVec3& o = owner_.slots[site]->motion.linear_velocity;
+                                // 009B1364-009B137C: (o.y ny + o.x nx) + o.z nz, per-op float.
+                                const float oy = static_cast<float>(o.y), ox = static_cast<float>(o.x),
+                                            oz = static_cast<float>(o.z);
+                                w = oy * ny;
+                                w = w + ox * nx;
+                                w = w + oz * nz;
+                                if (w != 0.0f) ++owner_.land_min_speed_owner_terms;
+                            }
+                        }
+                        const float a = lvl + w;                                // 009B138E
                         return mc > a ? mc : a;
                     }
 
@@ -35072,6 +35170,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 pb_.owner_.record("BotStateFollow::enter", 0x009bed80u);
                             }
                             void exit_follow_009bde40() override {
+                                pb_.owner_.follow_exit_009bde40(pb_.unit_);
                                 pb_.owner_.record("BotStateFollow::exit", 0x009bde40u);
                             }
                             void tick_follow_009c1fd0(float step) override {
@@ -40786,6 +40885,15 @@ void GameUnitsHost::report() {
             "min_mul=%.3f bound=%d (009C207C, packet cc9_follow_trail_arm)", host.trail_arm_calls,
             host.trail_arm_raised, host.trail_arm_enabled, host.trail_arm_disabled,
             static_cast<double>(host.trail_arm_min_mul), Impl::kFollowTrailArmBound ? 1 : 0);
+        host.log.notef("summary dogfight avoid timer redraws=%llu bound=%d | early edge clears=%llu "
+            "bound=%d (009A7D60 / 009AAC63, packets p20_df_avoid_timer / p20_df_early_clear)",
+            host.df_avoid_timer_redraws, Impl::kDogfightAvoidTimerDrawBound ? 1 : 0,
+            host.df_early_edge_clears, Impl::kDogfightEarlyEdgeClearBound ? 1 : 0);
+        host.log.notef("summary follow exit 009BDE40 calls=%llu bound=%d (packet p20_follow_exit)",
+            host.follow_exits, Impl::kFollowExitClearsBound ? 1 : 0);
+        host.log.notef("summary land min speed owner terms=%llu bound=%d (009B1362, packet "
+            "p20_land_min_speed_owner)", host.land_min_speed_owner_terms,
+            Impl::kLandMinSpeedOwnerVelocityBound ? 1 : 0);
         host.log.notef("summary follow release arm pending=%llu applied=%llu bound=%d "
             "(009C1FFD-009C2063, packet p20_follow_release_arm)", host.follow_release_pending_ticks,
             host.follow_release_arm_applied, Impl::kFollowReleaseArmBound ? 1 : 0);

@@ -92,8 +92,6 @@ public:
     virtual void sized_storage_pool_return_block_00bd1510(void* pool, void* block,
                                                           std::uint32_t size,
                                                           std::uint32_t unused) = 0;
-    // 0099A870: __thiscall(ECX = pilot bot, task), RET 4 (the retire).
-    virtual void pilot_bot_retire_task_0099a870(void* bot, void* task) = 0;
     // 0099D0A0 BSP_PilotBot_HeadingDiffCalc: __thiscall(ECX = plan, float), RET 4, ST0.
     virtual float pilot_heading_diff_0099d0a0(void* plan, float value) = 0;
     // 00438AA0 BSP_Math_AddWrappedAngle(float, float), RET 8, ST0.
@@ -197,6 +195,10 @@ public:
     virtual std::uintptr_t air_ops_queue_incoming_006c0b50(void* air_ops, void* arg) = 0;
     // 009AFAF0: __thiscall(ECX = land approach, flag), RET 4: the approach geometry.
     virtual void bot_approach_land_geometry_009afaf0(void* approach, std::uint32_t flag) = 0;
+    // 009AB920 BSP_BotApproachKamikaze_ConstructBase: __thiscall(ECX = kamikaze approach,
+    // [bot+50h], target), RET 8 (draws through 009AB850 and the aim errors).
+    virtual void bot_approach_kamikaze_construct_base_009ab920(void* block, void* arg,
+                                                               void* target) = 0;
     // 009ABAB0: __thiscall(ECX = drop-kamikaze approach, [bot+50h], target), RET 8.
     virtual void bot_approach_drop_kamikaze_construct_base_009abab0(void* block, void* arg,
                                                                     void* target) = 0;
@@ -211,17 +213,11 @@ public:
     virtual void approach_level_bomb_aim_error_draw_009b4400(void* approach) = 0;
     // 007C1FB0: __thiscall(ECX = unit), ST0: the longest rack stick time.
     virtual float unit_longest_rack_stick_time_007c1fb0(void* unit) = 0;
-    // 009A6D40: __thiscall(ECX = dogfight approach, bot, archive), RET 8.
-    virtual void bot_approach_dogfight_construct_from_stream_009a6d40(void* block, void* bot,
-                                                                      void* archive) = 0;
     // 006BCD20: __fastcall(ECX = entity, DL = flag), EAX: the entity's air-ops block
     // (0 for a null entity).
     virtual void* air_ops_get_block_006bcd20(void* entity, bool flag) = 0;
     // 009AF9A0: __thiscall(ECX = land approach), RET: registers the eight land states.
     virtual void land_approach_register_states_009af9a0(void* approach) = 0;
-    // 009B4690: __thiscall(ECX = level-bomb approach, [bot+50h], archive), RET 8.
-    virtual void bot_approach_level_bomb_construct_from_stream_009b4690(void* block, void* arg,
-                                                                        void* archive) = 0;
     // 00410D80 / 00410E00: __thiscall(ECX = time/frequency pair, 0Ch reader or writer
     // block by value): read or write the pair; the callee destroys the block.
     virtual void time_freq_pair_read_00410d80(void* pair, void* ref) = 0;
@@ -233,7 +229,8 @@ public:
                                                       std::uint8_t final_leg) = 0;
     // 00605070: __thiscall(ECX = float*), wraps the angle in place.
     virtual void math_wrap_angle_in_place_00605070(float* angle) = 0;
-    // 00F8A68C: the ship-AI debug static block (colour records and guards, 64h bytes).
+    // 00F8A68C: the ship-AI debug static block (colour records and guards,
+    // 00F8A68C-00F8A703, 78h bytes).
     virtual std::uint8_t* ship_ai_debug_static_block_00f8a68c() = 0;
     // 00411E20: __thiscall(ECX = registry), the state-registry constructor.
     virtual void bot_state_registry_construct_00411e20(void* registry) = 0;
@@ -369,6 +366,40 @@ public:
                                        Cc13Seg67bArchiveValue value) = 0;
     // object->vtable[+0Ch](archive), RET 4: an object's save slot.
     virtual void object_vcall_0c_save(void* object, void* archive) = 0;
+
+    // ---- packet cc13-seg67C ----
+    // object->vtable[+114h](), RET, EAX: a unit's weapon director (no stack arguments).
+    virtual void* object_vcall_114(void* object) = 0;
+    // object->vtable[+28h](), RET, EAX.
+    virtual void* object_vcall_28(void* object) = 0;
+    // 0071BFF0 BSP_WeaponDirector_CommandPathCursor: __thiscall(ECX = director, arg), RET 4.
+    virtual void* weapon_director_command_path_cursor_0071bff0(void* director,
+                                                               std::uint32_t arg) = 0;
+    // 007ACA30 BSP_PathObject_GetEntity: __thiscall(ECX = path object), EAX.
+    virtual void* path_object_get_entity_007aca30(void* path) = 0;
+    // 0085FB30 BSP_DebugDraw_LineRgbaFloatsOneColour: __fastcall(ECX = from, EDX = to,
+    // colour[4] by value), RET 10h.
+    virtual void debug_line_0085fb30(const float* from, const float* to,
+                                     const float* colour) = 0;
+    // 0085F990 BSP_DebugDraw_LineRgbaFloats: __fastcall(ECX = from, EDX = to, colour0[4],
+    // colour1[4] by value), RET 20h.
+    virtual void line_rgba_floats_0085f990(const float* from, const float* to,
+                                           const float* colour0, const float* colour1) = 0;
+    // 00860BB0 BSP_DebugDraw_CircleAroundAxis: __fastcall(ECX = centre, EDX = axis; radius,
+    // rgba*, segments), RET 0Ch.
+    virtual void circle_around_axis_00860bb0(const float* centre, const float* axis,
+                                             float radius, const float* rgba,
+                                             std::uint32_t segments) = 0;
+    // 00860BE0 BSP_DebugDraw_WireSphereMarker: __fastcall(ECX = centre, EDX = rgba; radius,
+    // rgba*, detailed byte), RET 0Ch.
+    virtual void wire_sphere_00860be0(const float* centre, const float* rgba_edx, float radius,
+                                      const float* rgba_stack, std::uint8_t detailed) = 0;
+    // 004166E0 BSP_AvoidZoneDebug_DrawSelectedSegments: __thiscall(ECX = list head, rgba*),
+    // RET 4.
+    virtual void avoid_zone_debug_draw_selected_segments_004166e0(void* list_head,
+                                                                  const float* rgba) = 0;
+    // [00E0E300]: the debug side filter (a dword; negative draws every side).
+    virtual std::int32_t global_debug_side_00e0e300() = 0;
 };
 
 // ---- the bot-task factory list (00F8A314) ----
@@ -837,5 +868,35 @@ void* bot_approach_land_construct_lower_009afe70(Cc13Seg67bHost& host, void* app
 // 009AFFF0: __thiscall(ECX = approach, plane, archive), RET 8, EAX = approach.
 void* bot_approach_land_construct_from_stream_009afff0(Cc13Seg67bHost& host, void* approach,
                                                        void* plane, void* archive);
+// 009A6D40: __thiscall(ECX = approach, bot, archive), RET 8, EAX = approach.
+void* bot_approach_dogfight_construct_from_stream_009a6d40(Cc13Seg67bHost& host, void* approach,
+                                                           void* bot, void* archive);
+// 009B4690: __thiscall(ECX = approach, arg, archive), RET 8, EAX = approach.
+void* bot_approach_level_bomb_construct_from_stream_009b4690(Cc13Seg67bHost& host,
+                                                             void* approach, void* arg,
+                                                             void* archive);
+// 009BD0B0: __fastcall(ECX = approach), RET, EAX = the path's entity or 0.
+void* bot_approach_move_on_path_path_entity_009bd0b0(Cc13Seg67bHost& host, void* approach);
+// 009D7260: __fastcall(ECX = box), RET.
+void ship_ai_debug_draw_box_lines_009d7260(Cc13Seg67bHost& host, void* box);
+// 009D98C0: __fastcall(ECX = node), RET; recursive.
+void ship_ai_debug_draw_path_tree_009d98c0(Cc13Seg67bHost& host, void* node);
+// 009DD9C0: __fastcall(ECX = plan), RET.
+void ship_ai_debug_draw_plan_009dd9c0(Cc13Seg67bHost& host, void* plan);
+// 009DDCC0: __fastcall(ECX = ship AI), RET.
+void ship_ai_debug_draw_009ddcc0(Cc13Seg67bHost& host, void* ai);
+
+// Approach and task saves: __thiscall(ECX = approach or task, archive), RET 4.
+void bot_approach_dogfight_save_009aa410(Cc13Seg67bHost& host, void* a, void* archive);
+void bot_task_dogfight_save_009aa5c0(Cc13Seg67bHost& host, void* task, void* archive);
+void bot_approach_drop_kamikaze_save_009ae2d0(Cc13Seg67bHost& host, void* a, void* archive);
+void bot_task_drop_kamikaze_save_009ae4c0(Cc13Seg67bHost& host, void* task, void* archive);
+void bot_approach_land_save_009b37f0(Cc13Seg67bHost& host, void* a, void* archive);
+void bot_task_land_save_009b3b90(Cc13Seg67bHost& host, void* task, void* archive);
+// 0099A660: __thiscall(ECX = pilot bot, task), RET 4 (thunk 0099A870).
+void pilot_bot_retire_task_0099a660(Cc13Seg67bHost& host, void* bot, void* task);
+// 009AED20: __thiscall(ECX = kamikaze approach, bot, target), RET 8, EAX = approach.
+void* bot_approach_kamikaze_construct_009aed20(Cc13Seg67bHost& host, void* block, void* bot,
+                                               void* target);
 
 }  // namespace bsp

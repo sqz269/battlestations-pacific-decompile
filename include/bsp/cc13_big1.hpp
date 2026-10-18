@@ -256,7 +256,8 @@ public:
     virtual bool award_tracker_has_hint_been_shown_0068e600(void* tracker, const void* name) = 0;
     virtual void award_tracker_trigger_hint_00690fd0(void* tracker, const void* name, std::int32_t forced) = 0;
     // 0041E870 NativeString from a C string: __thiscall(ECX = string; const char*), RET 4; EAX
-    // = string. 0041DD20 its destructor: __thiscall(ECX = string), RET.
+    // = string. 0041DD20 its destructor: __thiscall(ECX = string), RET. A constructor, not an
+    // assign: it zeroes the string first, so 00674B80 legitimately passes one it has released.
     virtual void* native_string_assign_0041e870(void* string, const char* text) = 0;
     virtual void native_string_destroy_0041dd20(void* string) = 0;
     // 004260B0 NativeString from an int: __thiscall(ECX = out; int), RET 4; EAX = out.
