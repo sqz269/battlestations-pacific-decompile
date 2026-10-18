@@ -734,6 +734,30 @@ Each is now a body. An image scan finds no absolute or rel32 reference to any of
 - **009DFA90:** the same shape over 0064A610, the observed-owner base destroy.
 - **009E5220:** +4h = 009DF8F0() (a 0Ch self-linked sentinel), +8h = 0. 0041E1B0 calls 0041BF50, which allocates a 10h node.
 
+### 3.51 Medium leftovers and host comparisons, batch 5 (packet cc13-seg67C)
+
+Same checks as batch 4. The twin scan is the target-equal one. Each host-named row was read against the named host function and the switch above it.
+
+There are 5 bodies:
+- **009B8260 / 009C80D0:** the level-bomb and dive-bomb debug draws. Each draws a red sphere at its task marker (+4C8h / +4D0h) and a white sphere at the approach target; the two share one helper.
+- **009D7780 / 009D7930:** oriented-rectangle distances. Both are unreferenced.
+  - Each projects the delta on two axes, clamps it to the half-extents, rebuilds the closest point, and takes sqrt of its squared distance, with 0 at or under 1e-10.
+  - 009D7930 takes the delta from +44h/+48h but rebuilds the point from +20h/+24h. Byte +68h short-cuts it to the delta's own length.
+  - Every x87 step is modelled as a float operation.
+- **009D6E50:** the 65-byte profile sampler. It is unreferenced.
+  - It clamps the angle, indexes the profile, and walks left and right for the nearest lower byte (or the first higher one).
+  - It writes back pos / 16 - 2, clamped through 00415690, and returns the chosen byte.
+
+There are 20 ledger-only rows (section 4). 18 match their hosts, with these notes:
+- The level-bomb moveto and attackrun enters draw on stream 0. The host takes that draw through its keyed stand-in `lb_draw`.
+- Land/final's +24h copy and the plane+844h clear are the host's own labelled gap. The fly-over enter's plane+844h clear is not modelled either.
+- Retreat's still-valid test does not distinguish the null-squadron answer 2.
+- 009BE2C0 is also a target-equal byte twin of 009A6B70.
+
+The other two are partial and went to the lead as candidate torpedo mismatches:
+- **009D2530**, the done/prepare enter, resets +98h to -1.0 on every entry. The host resets `torpedo_drop_timer` only at install, and done and prepare share that one timer.
+- **009D15D0**, the aim enter, clears the aim-complete byte +2Ch. The host's `torpedo_aim_complete_2c` is only ever set, so it stays true once set.
+
 ## 4. Ledger-only records (packet cc13-seg67C)
 
 | Address | Host body | Result |
@@ -809,3 +833,16 @@ Each is now a body. An image scan finds no absolute or rel32 reference to any of
 | 009C8D20 | `install_retreat_task_009c9d00` (game_hosts_units.cpp ~9485; RetreatState kMoveTo / kFollow) | matches |
 | 009C91A0 | `retreat_refresh_approach` (game_hosts_units.cpp ~9412) over `retreat_refresh_zone_009c8d40` and `retreat_refresh_target_009c8f40` | matches |
 | 009D32A0 | byte twin (decoded rel32 masked) of 006F8290, the torpedo row of `kEntityOrderCommandClasses` (src/entity_orders.cpp ~37) | twin |
+| 009B0980, 009B09A0, 009B13E0 | `land_enter_abort_009b0980` (~33170), `land_exit_abort_009b09a0` (~33187), `land_enter_begin_009b13e0` (~32684), game_hosts_units.cpp | match |
+| 009B1E60 | `land_enter_final_009b1e60` (game_hosts_units.cpp ~32998) | matches apart from the host's labelled gap (+24h, plane+844h) |
+| 009B5C60, 009B6CE0, 009B4BD0 | the kAim / kMoveTo / kAttackRun arms of `lb_enter` (game_hosts_units.cpp ~25378) | match; the stream-0 U(0.4, 0.7) draws go through the keyed `lb_draw` |
+| 009CE270 | the SlowTakeoff -> Takeoff switch (game_hosts_units.cpp ~34291) | matches |
+| 009D24E0 | the torpedo install (game_hosts_units.cpp ~29576) | matches (+98h = -1) |
+| 009C8260, 009D4970, 009B8420 | `member_follows_007bcc20` (game_hosts_units.cpp ~8826) | match |
+| 009BE2C0 | target-equal byte twin of 009A6B70 (src/dogfight_task.cpp); moveto reads +48h..+50h (~35690) | twin |
+| 009BC760, 009CA680 | MoveOnPath `ref_34` (moveonpath_task_cc13.hpp ~58), `st_aim_point` (game_hosts_units.cpp ~603) | match |
+| 009C9E30 | `run_retreat_task_tick_009ca130` (game_hosts_units.cpp ~34893) | matches on the command class; the null-squadron 2 is not distinguished |
+| 009C6270 | the kFlyAbove enter (game_hosts_units.cpp ~27795) | matches; plane+844h not modelled |
+| 009CA820 | `st_gotowards_enter_009ca820` (game_hosts_units.cpp ~24608) | matches with the labelled substitutions |
+| 009D2530 | the done/prepare arm of `set_state` (game_hosts_units.cpp ~21909) | **partial**: no +98h reset on enter; done and prepare share one host timer; sent to the lead |
+| 009D15D0 | the aim enter redraw (game_hosts_units.cpp ~29996) | **partial**: +2Ch is never cleared in the host (sticky `torpedo_aim_complete_2c`); sent to the lead |

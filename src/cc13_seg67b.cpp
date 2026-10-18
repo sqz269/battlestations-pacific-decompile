@@ -6632,6 +6632,182 @@ void observed_owner_delete_009dfa90(Cc13Seg67bHost& host, void* slot) {
     at<std::uintptr_t>(slot, 0x0) = 0;
 }
 
+// ---------------------------------------------------------------------------
+// Medium rows, batch 5 (docs 3.51)
+// ---------------------------------------------------------------------------
+
+namespace {
+
+// 009B8260 / 009C80D0 share this shape: 0099B6E0(task); 00860BE0(ECX = task+marker, EDX
+// = red; 10.0 [00CE38B8], red, 0); then 00860BE0(ECX = (task+3F8h)->vtable[0](&local),
+// EDX = white; 10.0, white, 0). Each colour is a lazily initialised static (its guard
+// test is emitted twice); the values are passed as equal local constants.
+void bomb_task_markers_debug_draw(Cc13Seg67bHost& host, void* task, std::size_t marker) {
+    static constexpr float kRed[4] = {1.0f, 0.0f, 0.0f, 1.0f};
+    static constexpr float kWhite[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+    host.bot_task_debug_draw_base_0099b6e0(task);
+    host.wire_sphere_00860be0(static_cast<const float*>(ptr(task, marker)), kRed, 10.0f, kRed, 0);
+    float point[3] = {};
+    const float* const centre = host.approach_vcall_00_target_point(ptr(task, 0x3F8), point);
+    host.wire_sphere_00860be0(centre, kWhite, 10.0f, kWhite, 0);
+}
+
+// The clamp both rect distances use: -e > v -> -e (FCHS of the float extent); v > e ->
+// e; else v, so an unordered v is kept.
+float clamp_to_extent(float v, float e) {
+    if (-e > v) return -e;
+    if (v > e) return e;
+    return v;
+}
+
+// 009D7780 / 009D7930 after the delta: project (dx, dz) on the two axes, clamp, rebuild
+// the closest point from the centre +20h/+24h, and return its distance to the point (0
+// at or under 1e-10 [00CE3820] squared, unordered included). Every x87 step is modelled
+// as a float operation (24-bit precision control); at 53 bits the products and sums
+// would round once less.
+float rect_distance_from_delta(const void* rc, const float* p, float dx, float dz,
+                               std::size_t axis_a, std::size_t axis_b, std::size_t ext_a,
+                               std::size_t ext_b) {
+    void* const r = const_cast<void*>(rc);
+    const float u = at<float>(r, axis_a + 4) * dz + at<float>(r, axis_a) * dx;
+    const float cu = clamp_to_extent(u, at<float>(r, ext_a));
+    const float v = at<float>(r, axis_b + 4) * dz + at<float>(r, axis_b) * dx;
+    const float cv = clamp_to_extent(v, at<float>(r, ext_b));
+    const float bx = at<float>(r, axis_b) * cv;
+    const float bz = cv * at<float>(r, axis_b + 4);
+    const float ax = at<float>(r, axis_a) * cu;
+    const float az = cu * at<float>(r, axis_a + 4);
+    const float qx = (at<float>(r, 0x20) + ax) + bx;
+    const float qz = (at<float>(r, 0x24) + az) + bz;
+    const float ex = qx - p[0];                                                  // FSUBRP
+    const float ez = qz - p[1];
+    const float d2 = ex * ex + ez * ez;
+    if (!(static_cast<double>(d2) > 1e-10)) return 0.0f;
+    return std::sqrt(d2);                                                        // 00BF7030
+}
+
+}  // namespace
+
+// 009B8260 (009B8260-009B838F), at 00D20214: the marker at task+4C8h.
+void bot_task_level_bomb_debug_draw_009b8260(Cc13Seg67bHost& host, void* task) {
+    bomb_task_markers_debug_draw(host, task, 0x4C8);
+}
+
+// 009C80D0 (009C80D0-009C81FF), at 00D20E1C: the marker at task+4D0h.
+void bot_task_dive_bomb_debug_draw_009c80d0(Cc13Seg67bHost& host, void* task) {
+    bomb_task_markers_debug_draw(host, task, 0x4D0);
+}
+
+// 009D7780 (009D7780-009D7922): dx = p[0] - +20h, dz = p[1] - +24h; axes +28h/+2Ch and
+// +30h/+34h with half-extents +38h and +3Ch. Unreferenced.
+float oriented_rect_distance_to_point_009d7780(const void* rc, const float* point) {
+    void* const rect = const_cast<void*>(rc);
+    const float dx = point[0] - at<float>(rect, 0x20);
+    const float dz = point[1] - at<float>(rect, 0x24);
+    return rect_distance_from_delta(rect, point, dx, dz, 0x28, 0x30, 0x38, 0x3C);
+}
+
+// 009D7930 (009D7930-009D7AE2): dx = p[0] - +44h, dz = p[1] - +48h. Byte +68h set -> the
+// distance of that delta itself (009D7A8D). Otherwise axes +4Ch/+50h and +54h/+58h with
+// half-extents +5Ch and +60h, but the closest point is rebuilt from +20h/+24h, not from
+// +44h/+48h (009D7A4B, 009D7A55). Unreferenced.
+float oriented_rect2_distance_to_point_009d7930(const void* rc, const float* point) {
+    void* const rect = const_cast<void*>(rc);
+    const float dx = point[0] - at<float>(rect, 0x44);
+    const float dz = point[1] - at<float>(rect, 0x48);
+    if (at<std::uint8_t>(rect, 0x68) != 0) {
+        const float d2 = dz * dz + dx * dx;
+        if (!(static_cast<double>(d2) > 1e-10)) return 0.0f;
+        return std::sqrt(d2);
+    }
+    return rect_distance_from_delta(rect, point, dx, dz, 0x4C, 0x54, 0x5C, 0x60);
+}
+
+// 009D6E50 (009D6E50-009D7033). x = *angle clamped to [-2.0 [00CE7D7C], 2.0 [00CE3958]]
+// (COMISS; unordered kept) and stored back. Byte profile+100h set -> 0.0. Otherwise i =
+// _ftol((x + 2.0) * 16.0 + 0.5) clamped to [0, 64]; b0 = profile[i]; 0 -> 0.0.
+// Left walk (i > 0): while the running minimum lmin > 0 and j > 0, c = profile[--j]; c <
+// lmin -> lmin = c, lpos = j; else c > b0 and j > lpeak (0) -> lpeak = j. Right walk (i <
+// 64): while rmin > 0 and j < 64, c = profile[++j]; c < rmin -> rmin = c, rpos = j; else
+// c > b0 and j < rpeak (64) -> rpeak = j. Then: rmin > lmin -> (lpos, lmin); rmin < lmin
+// -> (rpos, rmin); equal and below b0 -> the nearer side, the right on a tie; equal to
+// b0 -> lpeak == 0 && rpeak == 64 ? (i < 64 - i ? 0 : 64) : (lpeak < 64 - rpeak ? lpeak
+// : rpeak). *angle = float(pos * 0.0625 - 2.0), then 00415690(angle, &-2.0, &2.0).
+// Returns float(the chosen byte). Unreferenced.
+// UNCERTAINTY: the index sum is modelled in float (24-bit precision control); _ftol
+// truncates after a double store, which a float value survives exactly.
+float byte_profile65_sample_009d6e50(Cc13Seg67bHost& host, const void* profile, float* angle) {
+    static constexpr float kLow_00ce7d7c = -2.0f;
+    const auto* const bytes = static_cast<const std::uint8_t*>(profile);
+    float x = *angle;
+    if (kLow_00ce7d7c > x) {
+        x = kLow_00ce7d7c;
+    } else if (x > kTwo_00ce3958) {
+        x = kTwo_00ce3958;
+    }
+    *angle = x;                                                                  // 009D6E8A
+    if (bytes[0x100] != 0) return 0.0f;
+    std::int32_t i = static_cast<std::int32_t>((x + 2.0f) * 16.0f + 0.5f);      // 009D6EBB
+    if (i < 0) i = 0;
+    else if (i > 0x40) i = 0x40;
+    const std::uint8_t b0 = bytes[i];
+    if (b0 == 0) return 0.0f;
+    std::uint8_t lmin = b0, rmin = b0;
+    std::int32_t lpos = i, rpos = i, lpeak = 0, rpeak = 0x40;
+    if (i > 0) {
+        std::int32_t j = i;
+        while (lmin != 0) {
+            const std::uint8_t c = bytes[j - 1];
+            --j;
+            if (c < lmin) {
+                lmin = c;
+                lpos = j;
+            } else if (c > b0 && j > lpeak) {
+                lpeak = j;
+            }
+            if (j <= 0) break;
+        }
+    }
+    if (i < 0x40) {
+        std::int32_t j = i;
+        while (rmin != 0) {
+            const std::uint8_t c = bytes[j + 1];
+            ++j;
+            if (c < rmin) {
+                rmin = c;
+                rpos = j;
+            } else if (c > b0 && j < rpeak) {
+                rpeak = j;
+            }
+            if (j >= 0x40) break;
+        }
+    }
+    std::int32_t pos;
+    std::uint8_t result;
+    if (rmin > lmin) {
+        pos = lpos;
+        result = lmin;
+    } else if (rmin < lmin) {
+        pos = rpos;
+        result = rmin;
+    } else if (lmin < b0) {
+        result = lmin;
+        pos = (i - lpos) < (rpos - i) ? lpos : rpos;                             // 009D6FA9
+    } else {
+        result = b0;
+        if (lpeak == 0 && rpeak == 0x40) {
+            pos = i < 0x40 - i ? 0 : 0x40;                                       // 009D6FC6
+        } else {
+            pos = lpeak < 0x40 - rpeak ? lpeak : rpeak;                          // 009D6FDE
+        }
+    }
+    *angle = static_cast<float>(pos) * 0.0625f - 2.0f;                           // 009D7011
+    const float low = kLow_00ce7d7c;
+    const float high = kTwo_00ce3958;
+    host.math_clamp_in_place_00415690(angle, &low, &high);                       // 009D7013
+    return static_cast<float>(result);
+}
+
 // 009E5220 (009E5220-009E5235): +4h = 009DF8F0() (the 0Ch self-linked sentinel; ECX is
 // passed but unread), +8h = 0. EAX = list. 0041E1B0 is the same shape over 0041BF50, which
 // allocates 10h. Unreferenced.
