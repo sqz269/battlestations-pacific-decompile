@@ -158,8 +158,10 @@ blanket free or substitute STL containers are used.
 against disk before the final instruction-probe run.
 `verify_report_calls.py` checks406 direct call sites from the twelve original
 listings against live caller bodies and exact callee addresses: zero failures.
-`./scripts/build.ps1`: strict MSVC Win32 Release, `bsp_game` compilation and both
-registered CTests passed(2/2). `python tools/oct18_tb_contract_probe.py` passes:
+`./scripts/build.ps1`: strict MSVC Win32 Release and `bsp_game` compilation pass.
+The initial two registered CTests pass; after seed verification and merging
+current Main, all three pass(3/3), including `native_math_differential`.
+`python tools/oct18_tb_contract_probe.py` passes:
 360 packet timing comparisons and60 camera comparisons against relocated
 original instruction slices, across PC24/53/64 and all four RC settings;
 unspilled80-versus32 and unordered checks; final-allocation failure checks all38
