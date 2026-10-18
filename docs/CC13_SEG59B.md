@@ -238,3 +238,11 @@ None of these six is reached: apart from their own recursion and 008F71E0's use 
 | `0090EA00` | BSP_MissionScoreRecord_PublishToLua | reconstructed | `score_record_publish_to_lua_0090ea00`: Lua `scoring = nil`, then `scoring = {}` (`00B67350`, `00B67580`), then the record is written into the table by cc9's `00908A30` through a `0090E920` holder (0090EB37). The holder's destructor is inlined. |
 | `009105F0` | BSP_ObjectiveListsMessage_Apply | reconstructed | `objective_lists_message_apply_009105f0`: a network message from `00777850` with eight cases (jump table 009108C8): append a text to one of six string lists, drain six counts of flags and ints into the 00E196FC.. containers, or clear everything / call `00626C50`. The counts in the message are left at -1, as in the image. |
 | `0090CDD0` | BSP_StringIntMap_SumNationMissions | reconstructed | `string_int_map_sum_nation_missions_0090cdd0`: sums the owner+0Ch map over "USN01".."USN14" or "IJN01".."IJN14" (`004BF370` with the `_stricmp` match), and returns 0 when a key is missing. Unreferenced. |
+
+## XLive stats sum and Lua text printers
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `00920690` | BSP_ScoreMap_SumCampaignBestScores | reconstructed | `score_map_sum_campaign_best_scores_00920690`: *b = the sum, over the current campaign's missions (the USN/IJN prefix of game+2198h, mission list 00E19434 + 10h * USN), of the best of [+27Ch], [+278h] and [+280h] in each `00594A70` record with a non-zero +0Ch. *a stays 0. cc9 hosts the call from `00A43AF0` as `stats_lookup_00920690`, but no body. |
+| `00920F00` | BSP_LuaTable_FormatSummary | reconstructed | `lua_table_format_summary_00920f00`: `{k=v,...}` with nested tables as `{...}`, and `...` once the limit is used up. The by-value table argument is destroyed inside. |
+| `00921360` | BSP_LuaWatchList_FormatValues | reconstructed | `lua_watch_list_format_values_00921360`: a "name: value" line for each watched dotted path (`00B68D70`): invalid, a table summary (`00920F00`, limit 3), a light userdata (`ptr->` handle + vt[10h] name), or `0043C1C0` text. The text is released without being used. Unreferenced. |

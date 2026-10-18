@@ -323,6 +323,34 @@ struct Seg59bHost {
     virtual void* string_int_map_lower_bound_004bf370(void* map, void* key) = 0;
     // 00BF7FBF __stricmp, __cdecl(a, b).
     virtual std::int32_t stricmp_00bf7fbf(const char* a, const char* b) = 0;
+    // 00469840 BSP_NativeString_Substring, __thiscall(ECX = source, out, start, count), RET 0Ch.
+    virtual void* native_string_substring_00469840(void* source, void* out, std::uint32_t start, std::uint32_t count) = 0;
+    // 00553C80 BSP_NativeString_HasPrefixAt, __thiscall(ECX = string, prefix, position), RET 8; AL.
+    virtual bool native_string_has_prefix_at_00553c80(void* string, const char* prefix, std::uint32_t position) = 0;
+    // 00594A70 STL_MissionScoreMap_Index, __thiscall(ECX = map, NativeString* key), RET 4; EAX = record.
+    virtual void* mission_score_map_index_00594a70(void* map, void* key) = 0;
+    // LuaObject helpers, __thiscall(ECX = object): 00B65F50 construct; 00B661B0 is-table (AL);
+    // 00B67080 iterate-first(&key, &value), RET 8; 00B67190 iterate-next(&key, &value), RET 8;
+    // 00B66420(&key), RET 4: AL = the iteration is over.
+    virtual void lua_object_construct_00b65f50(void* object) = 0;
+    virtual bool lua_object_is_table_00b661b0(void* object) = 0;
+    virtual void lua_object_iterate_first_00b67080(void* table, void* key, void* value) = 0;
+    virtual void lua_object_iterate_next_00b67190(void* table, void* key, void* value) = 0;
+    virtual bool lua_object_iterate_at_end_00b66420(void* table, void* key) = 0;
+    // 0043C1C0 BSP_LuaValue_FormatSourceText, __fastcall(ECX = out NativeString, EDX = LuaObject);
+    // EAX = out (cc9 lua_text_dump.cpp lua_value_text_0043c1c0 models the text).
+    virtual void* lua_value_format_source_text_0043c1c0(void* out, void* object) = 0;
+    // 00B68D70 BSP_LuaObject_ResolveDotPath, __thiscall(ECX = table, out, NativeString* path,
+    // bool* found), RET 0Ch.
+    virtual void* lua_object_resolve_dot_path_00b68d70(void* table, void* out, void* path, bool* found) = 0;
+    // 00B66FA0 BSP_LuaObject_CopyConstruct, __thiscall(ECX = destination, source), RET 4.
+    virtual void lua_object_copy_construct_00b66fa0(void* destination, void* source) = 0;
+    // 00B66160 BSP_LuaObject_IsLightUserdata (AL) / 00B662D0 BSP_LuaObject_ToUserdata (EAX),
+    // __thiscall(ECX = object).
+    virtual bool lua_object_is_light_userdata_00b66160(void* object) = 0;
+    virtual void* lua_object_to_userdata_00b662d0(void* object) = 0;
+    // vt[10h] with ECX = object, no stack argument; EAX = a type-name C string.
+    virtual const char* object_type_name_vt10(void* object) = 0;
     // 00419CC0 BSP_SizedStoragePool_GetSingleton (no args); 00BD1510 ReturnBlock,
     // __thiscall(ECX = pool, data, bytes, flag), RET 0Ch.
     virtual void* sized_pool_singleton_00419cc0() = 0;
@@ -647,6 +675,17 @@ void objective_lists_message_apply_009105f0(Seg59bHost& host, void* message);
 // 0090CDD0, __thiscall(ECX = owner, nation), RET 4; EAX: the sum of the owner+0Ch map's values for
 // "USN01".."USN14" (nation 1) or "IJN01".."IJN14" (nation 0), 0 when one is missing.
 std::int32_t string_int_map_sum_nation_missions_0090cdd0(Seg59bHost& host, void* owner, std::int32_t nation);
+// 00920690, __thiscall(ECX = score map, key, a*, b*), RET 0Ch; AL: *a = 0, *b = the sum of the best
+// of three scores over the current campaign's missions (game+2198h prefix USN/IJN); AL = 0 when
+// the campaign name has neither prefix.
+bool score_map_sum_campaign_best_scores_00920690(Seg59bHost& host, void* map, std::int32_t key, std::uint32_t* a,
+                                                 std::uint32_t* b);
+// 00920F00, __stdcall(out, LuaObject table by value, limit), RET 1Ch; EAX = out: "{k=v,...}" with
+// nested tables as "{...}" and "..." when the limit ran out.
+void* lua_table_format_summary_00920f00(Seg59bHost& host, void* out, void* table, std::int32_t limit);
+// 00921360, __thiscall(ECX = watch list), RET: formats "name: value" lines for every watched Lua
+// path into a local NativeString that is then released unused.
+void lua_watch_list_format_values_00921360(Seg59bHost& host, void* owner);
 // 008F7CF0, __thiscall(ECX = scope), RET; EAX = scope: 00BD2FE0.
 void* random_threads_scope_construct_008f7cf0(Seg59bHost& host, void* scope);
 // 008F7D20, no arguments: destroy and free the object at [01090AA0], then clear it.

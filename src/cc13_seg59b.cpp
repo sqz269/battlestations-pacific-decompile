@@ -2901,4 +2901,368 @@ std::int32_t string_int_map_sum_nation_missions_0090cdd0(Seg59bHost& host, void*
     release_native_string(host, prefix);
     return sum;
 }
+
+// ---------------------------------------------------------------------------
+// 00920690 BSP_ScoreMap_SumCampaignBestScores. __thiscall(ECX = score map ([game+6B4h]), key,
+// uint* a, uint* b), RET 0Ch; AL. Caller 00A43AF0 (BSP_XLiveSystem_CreateStatsSession; cc9's
+// online_seg71_cc13.cpp hosts the call as stats_lookup_00920690, no body).
+// Evidence: *b = 0, *a = 0 (009206BF / 009206C1); key is never read. name = a copy of the
+// NativeString at game+2198h (0041DD40 + memcpy, 009206E6 / 009206FD); prefix = 00469840(name,
+// &prefix, 0, 3) (00920715). 00553C80(prefix, "IJN" D18780, 0) (00920729), else 00553C80(prefix,
+// "USN" CF1468, 0) (0092073F); neither -> prefix and name released, AL = 0. list = 00E19434 + 10h
+// * (not IJN). For i = 1 while i < count + 1 (count = (last - first) / 4 of list, 0 when first
+// is null; unsigned compare): key text = prefix + ("0" + i via 004263B0, or 004260B0(i) from 10
+// on) joined by 004261A0 (00920879), temporaries released by their flag bits; record =
+// 00594A70(map, &text) (00920914); [record+0Ch] != 0.0 (UCOMISS 00D7A218, LAHF / TEST AH,44h /
+// JNP: skipped only when ordered-equal) and [00594A70(..)+0] != 0 -> *b += max(max([+27Ch],
+// [+278h]), [+280h]) (signed, each field through its own 00594A70 call, 00920932..00920972).
+// The text released. After the loop prefix and name released; AL = 1. *a is left 0.
+// ---------------------------------------------------------------------------
+bool score_map_sum_campaign_best_scores_00920690(Seg59bHost& host, void* map, std::int32_t key, std::uint32_t* a,
+                                                 std::uint32_t* b) {
+    static_cast<void>(key);
+    *b = 0;
+    *a = 0;
+    void* const source = add(game_global(host), 0x2198);
+    alignas(4) std::uint8_t name[8] = {};
+    if (static_cast<void*>(name) != source) {
+        host.native_string_resize_0041dd40(name, at<std::uint32_t>(source, 0x00), 1);
+        if (at<std::uint32_t>(source, 0x00) != 0) {
+            host.memcpy_00bf7680(ptr(name, 0x04), ptr(source, 0x04), at<std::uint32_t>(name, 0x00));
+        }
+    }
+    alignas(4) std::uint8_t prefix[8];
+    host.native_string_substring_00469840(name, prefix, 0, 3);
+    const bool ijn = host.native_string_has_prefix_at_00553c80(prefix, image_text(host, 0x00D18780u), 0);
+    if (!ijn && !host.native_string_has_prefix_at_00553c80(prefix, image_text(host, 0x00CF1468u), 0)) {
+        release_native_string(host, prefix);
+        release_native_string(host, name);
+        return false;
+    }
+    void* const list = host.image_pointer(0x00E19434u + (ijn ? 0u : 0x10u));
+    for (std::uint32_t index = 1;; ++index) {
+        const std::uint32_t count =
+            ptr(list, 0x04) == nullptr
+                ? 0u
+                : static_cast<std::uint32_t>(static_cast<std::int32_t>(static_cast<std::uint8_t*>(ptr(list, 0x08)) -
+                                                                       static_cast<std::uint8_t*>(ptr(list, 0x04))) >> 2);
+        if (index >= count + 1) break;
+        alignas(4) std::uint8_t digit[8] = {};
+        alignas(4) std::uint8_t padded[8];
+        alignas(4) std::uint8_t plain[8];
+        std::uint32_t live = 0;
+        void* suffix = nullptr;
+        if (static_cast<std::int32_t>(index) < 10) {
+            host.native_string_resize_0041dd40(digit, 1, 1);
+            if (ptr(digit, 0x04) != nullptr) {
+                host.memcpy_00bf7680(ptr(digit, 0x04), host.image_pointer(0x00CE43BCu), at<std::uint32_t>(digit, 0x00) + 1u);
+            }
+            live |= 1;
+            suffix = host.native_string_concat_int_004263b0(digit, padded, static_cast<std::int32_t>(index));
+            live |= 2;
+        } else {
+            suffix = host.native_string_from_int_004260b0(plain, static_cast<std::int32_t>(index));
+            live |= 4;
+        }
+        alignas(4) std::uint8_t text[8];
+        host.native_string_concat_004261a0(prefix, text, suffix);
+        if ((live & 4) != 0) release_native_string(host, plain);
+        if ((live & 2) != 0) release_native_string(host, padded);
+        if ((live & 1) != 0) release_native_string(host, digit);
+        const float value = at<float>(host.mission_score_map_index_00594a70(map, text), 0x0C);
+        if (value != 0.0f && at<std::uint32_t>(host.mission_score_map_index_00594a70(map, text), 0x00) != 0) {
+            void* const third = add(host.mission_score_map_index_00594a70(map, text), 0x27C);
+            void* const second_record = host.mission_score_map_index_00594a70(map, text);
+            std::int32_t best = at<std::int32_t>(third, 0x00);
+            const std::int32_t second = at<std::int32_t>(second_record, 0x278);
+            if (second > best) best = second;
+            const std::int32_t first = at<std::int32_t>(host.mission_score_map_index_00594a70(map, text), 0x280);
+            *b += static_cast<std::uint32_t>(best > first ? best : first);
+        }
+        release_native_string(host, text);
+    }
+    release_native_string(host, prefix);
+    release_native_string(host, name);
+    return true;
+}
+
+namespace {
+// out += text, as 00920F00 / 00921360 inline it: size = text.size; non-zero -> old = out.size,
+// 0041DD40(out, old + size, 1), memcpy(out.data + old, text.data, size).
+void append_native_string(Seg59bHost& host, void* out, void* text) {
+    const std::uint32_t size = at<std::uint32_t>(text, 0x00);
+    if (size != 0) {
+        const std::uint32_t old = at<std::uint32_t>(out, 0x00);
+        host.native_string_resize_0041dd40(out, old + size, 1);
+        host.memcpy_00bf7680(static_cast<std::uint8_t*>(ptr(out, 0x04)) + old, ptr(text, 0x04), size);
+    }
+}
+
+// A literal appended through a temporary: {0, 0}, 0041DD40(length, 1), memcpy(size + 1) when
+// the data is non-null, appended, then released.
+void append_literal(Seg59bHost& host, void* out, std::uint32_t address, std::uint32_t length) {
+    alignas(4) std::uint8_t text[8] = {};
+    host.native_string_resize_0041dd40(text, length, 1);
+    if (ptr(text, 0x04) != nullptr) {
+        host.memcpy_00bf7680(ptr(text, 0x04), host.image_pointer(address), at<std::uint32_t>(text, 0x00) + 1u);
+    }
+    append_native_string(host, out, text);
+    release_native_string(host, text);
+}
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 00920F00 BSP_LuaTable_FormatSummary. __stdcall(out NativeString, LuaObject table by value
+// (14h bytes), limit), RET 1Ch; EAX = out. Callers: 00921360 only (itself unreferenced).
+// Evidence: 00920F36 0041E870(out, "{" CE4D38) constructs out; key and value LuaObjects
+// (00B65F50 at 00920F43 / 00920F51); 00920F6C 00B67080(&table, &key, &value); loop while
+// 00B66420(&table, &key) is false (00920F7D / 00921213): limit == 0 -> stop; "=" (CE55BC) built
+// first, then 0043C1C0(&keytext, &key) (00920FDD), joined = 004261A0(keytext, &joined, "=")
+// (00920FF3) appended to out; joined, keytext and "=" released. 00B661B0(&value) (00921098) ->
+// "{...}" (D18BE4) appended; else 0043C1C0(&valuetext, &value) (00921118) appended. "," (CE4BFC)
+// appended. 009211FA 00B67190(&table, &key, &value); limit -= 1. After the loop, limit == 0 ->
+// "..." (CF3F98) appended; "}" (CE4CD4) appended; 00B67700 on value, key and table (the
+// by-value argument is destroyed here).
+// ---------------------------------------------------------------------------
+void* lua_table_format_summary_00920f00(Seg59bHost& host, void* out, void* table, std::int32_t limit) {
+    host.native_string_assign_0041e870(out, image_text(host, 0x00CE4D38u));
+    alignas(4) std::uint8_t key[0x14];
+    alignas(4) std::uint8_t value[0x14];
+    host.lua_object_construct_00b65f50(key);
+    host.lua_object_construct_00b65f50(value);
+    host.lua_object_iterate_first_00b67080(table, key, value);
+    if (!host.lua_object_iterate_at_end_00b66420(table, key)) {
+        do {
+            if (limit == 0) break;
+            alignas(4) std::uint8_t equals[8] = {};
+            host.native_string_resize_0041dd40(equals, 1, 1);
+            if (ptr(equals, 0x04) != nullptr) {
+                host.memcpy_00bf7680(ptr(equals, 0x04), host.image_pointer(0x00CE55BCu), at<std::uint32_t>(equals, 0x00) + 1u);
+            }
+            alignas(4) std::uint8_t key_text[8];
+            void* const formatted = host.lua_value_format_source_text_0043c1c0(key_text, key);
+            alignas(4) std::uint8_t joined[8];
+            void* const line = host.native_string_concat_004261a0(formatted, joined, equals);
+            append_native_string(host, out, line);
+            release_native_string(host, joined);
+            release_native_string(host, key_text);
+            release_native_string(host, equals);
+            if (host.lua_object_is_table_00b661b0(value)) {
+                append_literal(host, out, 0x00D18BE4u, 5);
+            } else {
+                alignas(4) std::uint8_t value_text[8];
+                append_native_string(host, out, host.lua_value_format_source_text_0043c1c0(value_text, value));
+                release_native_string(host, value_text);
+            }
+            append_literal(host, out, 0x00CE4BFCu, 1);
+            host.lua_object_iterate_next_00b67190(table, key, value);
+            limit -= 1;
+        } while (!host.lua_object_iterate_at_end_00b66420(table, key));
+    }
+    if (limit == 0) append_literal(host, out, 0x00CF3F98u, 3);
+    append_literal(host, out, 0x00CE4CD4u, 1);
+    host.lua_object_destruct_00b67700(value);
+    host.lua_object_destruct_00b67700(key);
+    host.lua_object_destruct_00b67700(table);
+    return out;
+}
+
+namespace {
+// "S = result" as 00921360 inlines it after each concatenation chain.
+void store_chain_result(Seg59bHost& host, void* text, void* result) {
+    if (text != result) assign_native_string_inline(host, text, result);
+}
+
+// The watched name: [node+0Ch] (the NativeString at node+8) or "" at 00F899A1.
+const char* watch_name(Seg59bHost& host, void* node) {
+    const char* const name = static_cast<const char*>(ptr(node, 0x0C));
+    return name != nullptr ? name : image_text(host, 0x00F899A1u);
+}
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 00921360 BSP_LuaWatchList_FormatValues. __thiscall(ECX = watch list), RET. No code caller and
+// no absolute-dword reference. The text it builds is released at the end without being used.
+// Evidence: text = "" (0041DD40(0, 1), memcpy CE3A0C). For each node of the list at owner+4
+// (head [owner+8], next = [node]; 00BF6713 checks at 00921411 and at the advance): globals =
+// 00B67980(game+1A0Ch) (009213FD); value = 00B68D70(globals, &value, node+8, &found) (0092142D);
+// globals destroyed (00921441). Then, each chain stored into text when it is not text itself:
+//   not found: ": invalid\n" (D18C18, 0041DD40(10, 1)), name copy (strlen); text + name +
+//     ": invalid\n" (two 004261A0); released: both results, name, then the literal.
+//   00B661B0 table: ")\n" (D18C14, 0041DD40(2, 1)); 00B66FA0 copy of value into the by-value
+//     argument and 0092167D 00920F00(&summary, copy, 3); summary text copied (strlen, "" at
+//     F899A1 when null); ": table (" (D18C08, 0041DD40(9, 1)); name copy; text + name +
+//     ": table (" + summary + ")\n"; released: the four results, name, ": table (", the summary
+//     copy, summary, ")\n".
+//   00B66160 light userdata: p = 00B662D0(&value). p != 0: 0041E870 on ")\n", p->vt[10h]()
+//     (009219D6), " (" (D08B78), ": ptr->" (D18C00), name; text + name + ": ptr->", then
+//     004263B0(.., WORD [p+174h]) (00921A96), + " (" + type name + ")\n"; released in reverse.
+//     p == 0: "\n" (CE4390), ": ptr->x (invalid)" (D18BEC), name; text + name + literal + "\n".
+//   otherwise: "\n", ": " (CF1A80), name, 0043C1C0(&valuetext, &value); text + name + ": " +
+//     valuetext + "\n"; released in reverse.
+// value destroyed (0092216B) per node; text released after the loop.
+// ---------------------------------------------------------------------------
+void lua_watch_list_format_values_00921360(Seg59bHost& host, void* owner) {
+    alignas(4) std::uint8_t text[8] = {};
+    host.native_string_resize_0041dd40(text, 0, 1);
+    if (ptr(text, 0x04) != nullptr) {
+        host.memcpy_00bf7680(ptr(text, 0x04), host.image_pointer(kEmptyString), at<std::uint32_t>(text, 0x00) + 1u);
+    }
+    void* const list = add(owner, 0x04);
+    void* node = ptr(ptr(list, 0x04), 0x00);
+    while (node != ptr(list, 0x04)) {
+        alignas(4) std::uint8_t globals[0x14];
+        host.lua_owner_get_globals_00b67980(add(game_global(host), 0x1A0C), globals);
+        if (node == ptr(list, 0x04)) host.checked_iterator_failure_00bf6713();
+        alignas(4) std::uint8_t value[0x14];
+        bool found = false;
+        host.lua_object_resolve_dot_path_00b68d70(globals, value, add(node, 0x08), &found);
+        host.lua_object_destruct_00b67700(globals);
+        if (!found) {
+            alignas(4) std::uint8_t invalid[8] = {};
+            host.native_string_resize_0041dd40(invalid, 10, 1);
+            if (ptr(invalid, 0x04) != nullptr) {
+                host.memcpy_00bf7680(ptr(invalid, 0x04), host.image_pointer(0x00D18C18u), at<std::uint32_t>(invalid, 0x00) + 1u);
+            }
+            if (node == ptr(list, 0x04)) host.checked_iterator_failure_00bf6713();
+            alignas(4) std::uint8_t name[8];
+            build_native_key(host, name, watch_name(host, node));
+            alignas(4) std::uint8_t first[8];
+            alignas(4) std::uint8_t second[8];
+            void* const step = host.native_string_concat_004261a0(text, first, name);
+            store_chain_result(host, text, host.native_string_concat_004261a0(step, second, invalid));
+            release_native_string(host, second);
+            release_native_string(host, first);
+            release_native_string(host, name);
+            release_native_string(host, invalid);
+        } else if (host.lua_object_is_table_00b661b0(value)) {
+            alignas(4) std::uint8_t close[8] = {};
+            host.native_string_resize_0041dd40(close, 2, 1);
+            if (ptr(close, 0x04) != nullptr) {
+                host.memcpy_00bf7680(ptr(close, 0x04), host.image_pointer(0x00D18C14u), at<std::uint32_t>(close, 0x00) + 1u);
+            }
+            alignas(4) std::uint8_t copy[0x14];
+            host.lua_object_copy_construct_00b66fa0(copy, value);
+            alignas(4) std::uint8_t summary[8];
+            void* const formatted = lua_table_format_summary_00920f00(host, summary, copy, 3);
+            const char* summary_text = static_cast<const char*>(ptr(formatted, 0x04));
+            if (summary_text == nullptr) summary_text = image_text(host, 0x00F899A1u);
+            alignas(4) std::uint8_t summary_copy[8];
+            build_native_key(host, summary_copy, summary_text);
+            alignas(4) std::uint8_t label[8] = {};
+            host.native_string_resize_0041dd40(label, 9, 1);
+            if (ptr(label, 0x04) != nullptr) {
+                host.memcpy_00bf7680(ptr(label, 0x04), host.image_pointer(0x00D18C08u), at<std::uint32_t>(label, 0x00) + 1u);
+            }
+            if (node == ptr(list, 0x04)) host.checked_iterator_failure_00bf6713();
+            alignas(4) std::uint8_t name[8];
+            build_native_key(host, name, watch_name(host, node));
+            alignas(4) std::uint8_t c1[8];
+            alignas(4) std::uint8_t c2[8];
+            alignas(4) std::uint8_t c3[8];
+            alignas(4) std::uint8_t c4[8];
+            void* step = host.native_string_concat_004261a0(text, c1, name);
+            step = host.native_string_concat_004261a0(step, c2, label);
+            step = host.native_string_concat_004261a0(step, c3, summary_copy);
+            store_chain_result(host, text, host.native_string_concat_004261a0(step, c4, close));
+            release_native_string(host, c4);
+            release_native_string(host, c3);
+            release_native_string(host, c2);
+            release_native_string(host, c1);
+            release_native_string(host, name);
+            release_native_string(host, label);
+            release_native_string(host, summary_copy);
+            release_native_string(host, summary);
+            release_native_string(host, close);
+        } else if (host.lua_object_is_light_userdata_00b66160(value)) {
+            void* const pointer = host.lua_object_to_userdata_00b662d0(value);
+            if (pointer != nullptr) {
+                alignas(4) std::uint8_t close[8];
+                host.native_string_assign_0041e870(close, image_text(host, 0x00D18C14u));
+                alignas(4) std::uint8_t type_name[8];
+                host.native_string_assign_0041e870(type_name, host.object_type_name_vt10(pointer));
+                alignas(4) std::uint8_t open[8];
+                host.native_string_assign_0041e870(open, image_text(host, 0x00D08B78u));
+                alignas(4) std::uint8_t label[8];
+                host.native_string_assign_0041e870(label, image_text(host, 0x00D18C00u));
+                if (node == ptr(list, 0x04)) host.checked_iterator_failure_00bf6713();
+                alignas(4) std::uint8_t name[8];
+                host.native_string_assign_0041e870(name, watch_name(host, node));
+                alignas(4) std::uint8_t c1[8];
+                alignas(4) std::uint8_t c2[8];
+                alignas(4) std::uint8_t c3[8];
+                alignas(4) std::uint8_t c4[8];
+                alignas(4) std::uint8_t c5[8];
+                alignas(4) std::uint8_t c6[8];
+                void* step = host.native_string_concat_004261a0(text, c1, name);
+                step = host.native_string_concat_004261a0(step, c2, label);
+                step = host.native_string_concat_int_004263b0(step, c3, at<std::uint16_t>(pointer, 0x174));
+                step = host.native_string_concat_004261a0(step, c4, open);
+                step = host.native_string_concat_004261a0(step, c5, type_name);
+                store_chain_result(host, text, host.native_string_concat_004261a0(step, c6, close));
+                release_native_string(host, c6);
+                release_native_string(host, c5);
+                release_native_string(host, c4);
+                release_native_string(host, c3);
+                release_native_string(host, c2);
+                release_native_string(host, c1);
+                release_native_string(host, name);
+                release_native_string(host, label);
+                release_native_string(host, open);
+                release_native_string(host, type_name);
+                release_native_string(host, close);
+            } else {
+                alignas(4) std::uint8_t newline[8];
+                host.native_string_assign_0041e870(newline, image_text(host, 0x00CE4390u));
+                alignas(4) std::uint8_t label[8];
+                host.native_string_assign_0041e870(label, image_text(host, 0x00D18BECu));
+                if (node == ptr(list, 0x04)) host.checked_iterator_failure_00bf6713();
+                alignas(4) std::uint8_t name[8];
+                host.native_string_assign_0041e870(name, watch_name(host, node));
+                alignas(4) std::uint8_t c1[8];
+                alignas(4) std::uint8_t c2[8];
+                alignas(4) std::uint8_t c3[8];
+                void* step = host.native_string_concat_004261a0(text, c1, name);
+                step = host.native_string_concat_004261a0(step, c2, label);
+                store_chain_result(host, text, host.native_string_concat_004261a0(step, c3, newline));
+                release_native_string(host, c3);
+                release_native_string(host, c2);
+                release_native_string(host, c1);
+                release_native_string(host, name);
+                release_native_string(host, label);
+                release_native_string(host, newline);
+            }
+        } else {
+            alignas(4) std::uint8_t newline[8];
+            host.native_string_assign_0041e870(newline, image_text(host, 0x00CE4390u));
+            alignas(4) std::uint8_t separator[8];
+            host.native_string_assign_0041e870(separator, image_text(host, 0x00CF1A80u));
+            if (node == ptr(list, 0x04)) host.checked_iterator_failure_00bf6713();
+            alignas(4) std::uint8_t name[8];
+            host.native_string_assign_0041e870(name, watch_name(host, node));
+            alignas(4) std::uint8_t value_text[8];
+            void* const formatted = host.lua_value_format_source_text_0043c1c0(value_text, value);
+            alignas(4) std::uint8_t c1[8];
+            alignas(4) std::uint8_t c2[8];
+            alignas(4) std::uint8_t c3[8];
+            alignas(4) std::uint8_t c4[8];
+            void* step = host.native_string_concat_004261a0(text, c1, name);
+            step = host.native_string_concat_004261a0(step, c2, separator);
+            step = host.native_string_concat_004261a0(step, c3, formatted);
+            store_chain_result(host, text, host.native_string_concat_004261a0(step, c4, newline));
+            release_native_string(host, c4);
+            release_native_string(host, c3);
+            release_native_string(host, c2);
+            release_native_string(host, c1);
+            release_native_string(host, value_text);
+            release_native_string(host, name);
+            release_native_string(host, separator);
+            release_native_string(host, newline);
+        }
+        host.lua_object_destruct_00b67700(value);
+        if (node == ptr(list, 0x04)) host.checked_iterator_failure_00bf6713();
+        node = ptr(node, 0x00);
+    }
+    release_native_string(host, text);
+}
 }  // namespace bsp::cc13_seg59b
