@@ -1220,8 +1220,9 @@ bool property_map_unlink_key_008f4030(Seg59bHost& host, void* map, const void* k
 // the first free slot of the ten at 01090AC4 and raises the count at 01090AEC to slot+1 when that
 // is larger; 00BD2ED0 then routes that thread's draws (00BD2F10, 00BD2F40, 00BD2FC0) to the
 // per-slot generator at 01090AF0 + (stream + 2*slot)*9C8h instead of the shared 00E14748. Neither
-// function seeds or draws; 00BD3050 clears the slot. 00BD2FE0 ignores ECX, so the scope argument
-// is unused.
+// function seeds or draws; 00BD3050 clears the slot and, when it was the last one, trims the count
+// (00BD308B..00BD30B4 lower [01090AEC] past trailing empty slots). 00BD2FE0 ignores ECX, so the
+// scope argument is unused.
 // ---------------------------------------------------------------------------
 void* random_threads_scope_construct_008f7cf0(Seg59bHost& host, void* scope) {
     host.random_threads_register_current_00bd2fe0(scope);
@@ -2980,13 +2981,13 @@ bool score_map_sum_campaign_best_scores_00920690(Seg59bHost& host, void* map, st
         if ((live & 1) != 0) release_native_string(host, digit);
         const float value = at<float>(host.mission_score_map_index_00594a70(map, text), 0x0C);
         if (value != 0.0f && at<std::uint32_t>(host.mission_score_map_index_00594a70(map, text), 0x00) != 0) {
-            void* const third = add(host.mission_score_map_index_00594a70(map, text), 0x27C);
-            void* const second_record = host.mission_score_map_index_00594a70(map, text);
-            std::int32_t best = at<std::int32_t>(third, 0x00);
-            const std::int32_t second = at<std::int32_t>(second_record, 0x278);
-            if (second > best) best = second;
-            const std::int32_t first = at<std::int32_t>(host.mission_score_map_index_00594a70(map, text), 0x280);
-            *b += static_cast<std::uint32_t>(best > first ? best : first);
+            void* const score_27c = add(host.mission_score_map_index_00594a70(map, text), 0x27C);
+            void* const record_for_278 = host.mission_score_map_index_00594a70(map, text);
+            std::int32_t best = at<std::int32_t>(score_27c, 0x00);
+            const std::int32_t score_278 = at<std::int32_t>(record_for_278, 0x278);
+            if (score_278 > best) best = score_278;
+            const std::int32_t score_280 = at<std::int32_t>(host.mission_score_map_index_00594a70(map, text), 0x280);
+            *b += static_cast<std::uint32_t>(best > score_280 ? best : score_280);
         }
         release_native_string(host, text);
     }
