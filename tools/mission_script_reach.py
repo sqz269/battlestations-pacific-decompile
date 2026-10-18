@@ -8,7 +8,7 @@ Usage:
   python tools/mission_script_reach.py NativeA NativeB ...   # rows whose script calls any of them
   python tools/mission_script_reach.py                       # every row with its script
 
-Counts are call sites outside `--` comments and `--[[ ]]` blocks, not calls reached at run time;
+Counts are call sites outside `--` comments and `--[[ ]]` / `--[==[ ]==]` blocks, not calls reached at run time;
 check the run's native census before calling a row exercised.
 """
 import json
@@ -57,7 +57,8 @@ def stage_script(root, scene):
 
 def count_calls(path, natives):
     with open(path, encoding='latin-1') as f:
-        text = re.sub(r'--\[\[.*?\]\]', '', f.read(), flags=re.S)
+        # Long comments of any level: --[[ ]], --[==[ ]==].
+        text = re.sub(r'--\[(=*)\[.*?\]\1\]', '', f.read(), flags=re.S)
     code = [ln.split('--', 1)[0] for ln in text.splitlines()]
     return [sum(len(re.findall(r'\b' + re.escape(n) + r'\s*\(', ln)) for ln in code) for n in natives]
 
