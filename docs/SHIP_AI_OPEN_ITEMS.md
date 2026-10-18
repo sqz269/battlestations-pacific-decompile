@@ -18928,6 +18928,8 @@ small moves only where the live sea lifts a hull); a submarine deeper than 60 m 
 surface ships and vice versa. Rows: USN04 / JM08 (submarines present) and any sub-heavy mission; elsewhere
 small or no movement.
 
+### 278 addendum: the follow pair found a stale descriptor
+
 **First pair (b727a20db, ESMP08 `esmp08_p12_e8_rb` 20000 frames, `local\s57_off3_ess.log` / `s57_fj_on_ess.log`):**
 gameplay identical, `requests=30 available=0`, no `ai diag follow` line and no kind test: every request
 carried target 0. Cause: the arm binding's 00521EA0 read `chain_.pending_target`, which is the last SETCMD's
