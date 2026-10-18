@@ -839,3 +839,17 @@ mechanism is in the cd761bb52 section above).
     moveto), and F4F launches at the fighters are refused (deck slots full, or the target hidden, 0043F080). 20,3 wins.
   - **BSM01**: as on fe9811ba8 (no end); the lead's SetDeadMeat note applies.
   - **ESMP08** now completes 2500 s earlier on both seeds.
+- **Re-plans on aa5f342e6** (cc9-lua67, 2026-10-18; the re-time base plus this lane's fix13/14/17/18/20 and skill
+  fan-out flips). Export `cc9-lua52\local\l67_cur` (CF275C1FB94F), logs `local\l67r_<variant>_cur_<env>.log`. The
+  committed alternative plans per lost row, reference seed first:
+  - **JM06: the row is now `config/win_orders/jm06_s45_j6_k.txt`** (cc9-ships45's k): completed 676.96 s (reference),
+    790.93 s (20,3), 733.94 s (20,5), guard on all three. m and n1 also complete (676.96 / 790.93 s); a4 and s do
+    not end; c1 still does not end on this exe. c1's cause: phase 3 (primary 2, `CVHitByPlayer`) starts at 705 s,
+    I-400 #2.1 torpedoes Lexington-class 01 from 463 s and sinks it at 2294 s, and PlayerSub 01 is at (2144, -489)
+    rather than c1's station when the 34001 torpedo lines fire, so no player hit ever lands and the phase never ends.
+  - **USN15**: g46_u15_tl fails 1522.41 s, g50_u15_nn 1727.61 s (Game Over). On l2 Fuso alone sinks California,
+    Pennsylvania, West Virginia and two Fletchers between 1122 and 1252 s (killer_cat 4 at 230-844 m): a gunnery
+    question before any re-plan.
+  - **IJN08 reference**: z does not capture the HQ (primary 4 `AK`: Mission.HQTable[1] Japanese) in 100000 frames;
+    p9_i08_w fails 1124.97 s, s49_i08_i11 1480.32 s, s48_i08_h5 does not end. 20,3 still completes with z.
+  - **USN12 20,3**: e7, g44_u12_d and s38_u12_p2 do not end at 36000 frames (d fails the reference at 869.91 s).
