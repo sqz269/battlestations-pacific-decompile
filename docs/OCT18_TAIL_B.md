@@ -6,13 +6,15 @@ analysis are preserved. No game hosts are wired by this packet.
 
 ## Batch 1: fifteen source-level storage bodies
 
-Source: `src/oct18_tail_b.cpp`; declarations: `include/bsp/oct18_tail_b.hpp`.
+Source: `src/leftovers_cc13.cpp`; declarations: `include/bsp/oct18_tail_b.hpp`.
 Original pointers and offsets are Win32. The source API explicitly supplies the
 game global and required virtual/direct callees through `Host`; it is not an
 ABI-compatible replacement. No dependency returns a fabricated result. Valid
 objects, live list links and canonical non-returning CRT error transport are
 provider preconditions. Compiler EH frames and undefined upper return-register
-bits are not reproduced. Build validation is pending registration.
+bits are not reproduced. MSVC Win32 Release `scripts/build.ps1` passed, including compilation of
+`leftovers_cc13.cpp` into bsp_game. Both registered CTests passed (2/2);
+receipt: ignored `local/tB_build1.log`. No differential/ABI/game test was run.
 
 | Original | Original ABI | Established behavior and evidence |
 |---|---|---|
@@ -39,6 +41,25 @@ suffixes. The source includes neither native callsite adoption nor gameplay proo
 ## Coordination
 
 0093A3F0 is skipped while covered by cc15-rB's 0092E0B0..00951F20 lease.
-The build registry is queued behind cc15-rB/cc15-r48; coordinator notified.
+The new namespace is compiled through the already registered, separately leased
+`src/leftovers_cc13.cpp` translation unit (bsp_game). This avoids the currently
+held source registries; no CMake ownership is bypassed. No game hosts are wired.
 The initial audit is retained in ignored `local/tB_audit.json`. An address mention
 alone is not treated as an existing reconstruction; definitions are checked.
+
+## Library and generated construction classification
+
+These are exclusions, not reconstructed game-function credit. Each has
+`recon_status: library_instantiation_out_of_scope` in the reconstruction ledger;
+reviewed names/comments were applied under the Ghidra write lock and saved.
+
+| Address | Classification evidence |
+|---|---|
+| 0077EDF0 | MSVC unsigned-key map subscript: lower bound, sentinel flag +15h, default-zero mapped byte, insert-hint 0077E950, return node+10h. No game policy. |
+| 00780CC0 | Pair-like aggregate constructor: only two member copies (00884EF0, 00886DA0) and compiler EH rollback. Member names/types remain hypotheses. |
+| 00780D10 | Corresponding synthesized aggregate copy: source and source+10h forwarded to those same two member copies, with EH state only. |
+| 0081E350 | Refptr-vector assignment: self/size/capacity branches, copy/release ranges, allocate or construct suffix, set end; complete live body has no unit policy. |
+
+00924A70 is also a generic `std::list` destructor (detach/rehead, free nodes,
+free head, zero head pointer). Its ledger shards are held by cc15-rB, so only
+this evidence note is written until that ownership clears.
