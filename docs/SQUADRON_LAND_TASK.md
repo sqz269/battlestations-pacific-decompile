@@ -17838,3 +17838,10 @@ Exports of 1dd374f71 (`local\l66_m3_off`, `local\l66_pt_on`), reference env.
   completes (636.57 -> 916.75 s). The four Kate/Val PutTo calls (no heading) are unchanged.
 
 Mechanism as predicted; flipped ON. PutTo with a heading on a ship (jm08:1600, luaJM8USFormation) was not reached.
+
+### 5if.1 Pairs and flip: `kReleaseIssueIntervalDrawBound` **ON** (cc9-lua66, 2026-10-17)
+
+Exports of a86826f07 (`local\l66_m2_off`, `local\l66_id_on`), reference env. USN04 9000 fr: 4 draws, gameplay identical.
+BSM01 `bsm01_p6_b1_a` 40000 fr: 196 draws, gameplay identical. The draw is keyed per unit, so it moves no other
+stream, and on these rows no issue leaves a further request pending (unit+C20h), so the drawn interval is never
+waited out. Mechanism live, nothing moved: flipped ON.
