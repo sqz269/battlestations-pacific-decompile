@@ -3,6 +3,7 @@
 // docs/CC13_SYS_3.md for the evidence, the original ABIs and what is not claimed.
 
 #include "bsp/engine_seg11_35_66_cc13.hpp"
+#include "bsp/oct18_tail_c.hpp"
 
 #include <windows.h>
 #include <intrin.h>
@@ -2738,3 +2739,328 @@ void update_fish_school_00707b00(FishSchoolDescLayout& school, float dt, FishUpd
 }
 
 }  // namespace bsp::engine_seg11_35_66_cc13
+
+// Lane oct18-tC: this already-registered TU is separately leased. Keeping the
+// leaves here avoids changing the concurrently leased CMake source registry.
+// Each naked getter retains the original one-load/LEA + RET sequence, including
+// the unspilled ST0 result of FLD. No fabricated layout or dependency stubs.
+namespace bsp::oct18_tail_c {
+__declspec(naked) const void* __fastcall accepted_invite_info_00a3e460(const void*) {
+    __asm { lea eax, [ecx + 32h] }
+    __asm { ret }
+}
+__declspec(naked) void __fastcall enumerate_input_noop_00a90ed0(void*) {
+    __asm { ret }
+}
+__declspec(naked) std::uint8_t __fastcall gui_layer_visible_00aa38e0(const void*) {
+    __asm { mov al, byte ptr [ecx + 0f5h] }
+    __asm { ret }
+}
+void set_pointer_activation_reader_00aa6be0(std::uint32_t& image_f8bc84,
+                                          std::uint32_t reader) {
+    image_f8bc84 = reader;
+}
+void set_selection_callback_00aab5e0(std::uint32_t& image_f8bcfc,
+                                    std::uint32_t callback) {
+    image_f8bcfc = callback;
+}
+__declspec(naked) std::uint32_t __fastcall terrain_field3c_00ad56d0(const void*) {
+    __asm { mov eax, dword ptr [ecx + 3ch] }
+    __asm { ret }
+}
+__declspec(naked) float __fastcall foliage_scalar0c_00ad5720(const void*) {
+    __asm { fld dword ptr [ecx + 0ch] }
+    __asm { ret }
+}
+__declspec(naked) std::uint32_t __fastcall foliage_bush_texture_00ad57d0(const void*) {
+    __asm { mov eax, dword ptr [ecx + 9ch] }
+    __asm { ret }
+}
+__declspec(naked) std::uint32_t __fastcall foliage_bush_normal_texture_00ad57e0(const void*) {
+    __asm { mov eax, dword ptr [ecx + 0a0h] }
+    __asm { ret }
+}
+__declspec(naked) float __fastcall atmosphere_time_of_day_00bbdd30(const void*) {
+    __asm { fld dword ptr [ecx + 20h] }
+    __asm { ret }
+}
+__declspec(naked) float __fastcall atmosphere_sky_blend_00bbdd40(const void*) {
+    __asm { fld dword ptr [ecx + 28h] }
+    __asm { ret }
+}
+__declspec(naked) const void* __fastcall atmosphere_wind_direction_00bbdd60(const void*) {
+    __asm { lea eax, [ecx + 2ch] }
+    __asm { ret }
+}
+__declspec(naked) float __fastcall atmosphere_wind_speed_00bbdd70(const void*) {
+    __asm { fld dword ptr [ecx + 38h] }
+    __asm { ret }
+}
+__declspec(naked) std::uint32_t __fastcall atmosphere_skybox_00bbddb0(const void*) {
+    __asm { mov eax, dword ptr [ecx + 18h] }
+    __asm { ret }
+}
+} // namespace bsp::oct18_tail_c
+
+// Lane tC batch 2: actual borrowed storage and mandatory dependency contracts.
+namespace bsp::oct18_tail_c {
+namespace {
+using CWord = std::uint32_t;
+template<class T> T c_read(const void* p, std::size_t offset = 0) {
+    T value;
+    std::memcpy(&value, static_cast<const unsigned char*>(p) + offset, sizeof value);
+    return value;
+}
+template<class T> void c_write(void* p, std::size_t offset, T value) {
+    std::memcpy(static_cast<unsigned char*>(p) + offset, &value, sizeof value);
+}
+void* c_at(void* p, CWord offset) {
+    return reinterpret_cast<void*>(reinterpret_cast<CWord>(p) + offset);
+}
+template<class R, class... Args> R c_virtual(void* p, CWord slot, Args... args) {
+    const auto table = c_read<const unsigned char*>(p);
+    const auto target = c_read<R (__thiscall*)(void*, Args...)>(table, slot);
+    return target(p, args...);
+}
+void* c_first_entity(void* group, CheckedIterator checked) {
+    void* const head = c_read<void*>(group, 0x5640);
+    void* const node = c_read<void*>(head);
+    if (node == head) checked();
+    return c_read<void*>(node, 8);
+}
+const float* c_leader_point(void* group, const AiBindings& b) {
+    if (c_read<CWord>(group, 0x5644) == 0) return b.zero_vector_f87574;
+    void* const entity = c_first_entity(group, b.checked_iterator_bf6713);
+    if (c_read<std::uint8_t>(entity, 0xc8) == 0) b.refresh_pose_00414db0(entity);
+    return static_cast<const float*>(c_at(entity, 0xfc));
+}
+void c_fld_store(float* destination, const float* source) {
+    __asm { mov eax, source }
+    __asm { mov edx, destination }
+    __asm { fld dword ptr [eax] }
+    __asm { fstp dword ptr [edx] }
+}
+void c_release_ref(void* owner) {
+    if (owner && InterlockedDecrement(static_cast<volatile LONG*>(c_at(owner, 4))) == 0)
+        c_virtual<void>(owner, 0);
+}
+}
+__declspec(naked) std::uint32_t __fastcall active_user_slot_00a3eac0(const void*) {
+    __asm { mov eax, dword ptr [ecx + 11ch] }
+    __asm { ret }
+}
+__declspec(naked) void __fastcall node_local_position_00b6dab0(void*, void*, const void*) {
+    __asm {
+        mov eax, dword ptr [esp + 4]
+        fld dword ptr [eax]
+        lea edx, [ecx + 0b0h]
+        fstp dword ptr [ecx + 0e0h]
+        mov dword ptr [esp + 4], edx
+        fld dword ptr [eax + 4]
+        fstp dword ptr [ecx + 0e4h]
+        fld dword ptr [eax + 8]
+        mov eax, dword ptr [ecx]
+        mov eax, dword ptr [eax + 38h]
+        fstp dword ptr [ecx + 0e8h]
+        jmp eax
+    }
+}
+bool ai_group_contains_entity_00a2c720(void* group, void* entity, CheckedIterator checked) {
+    void* node = c_read<void*>(c_read<void*>(group, 0x5640));
+    for (;;) {
+        void* const head = c_read<void*>(group, 0x5640);
+        if (c_at(group, 0x563c) == nullptr) checked();
+        if (node == head) return false;
+        if (c_at(group, 0x563c) == nullptr) checked();
+        if (node == c_read<void*>(group, 0x5640)) checked();
+        if (c_read<void*>(node, 8) == entity) return true;
+        if (node == c_read<void*>(group, 0x5640)) checked();
+        node = c_read<void*>(node);
+    }
+}
+void ai_enable_torpedoes_00a11af0(void* command, const AiBindings& b) {
+    void* const group = c_read<void*>(command, 4);
+    void* node = c_read<void*>(c_read<void*>(group, 0x5640));
+    for (;;) {
+        void* const current = c_read<void*>(command, 4);
+        void* const end = c_read<void*>(current, 0x5640);
+        if (!c_at(group, 0x563c) || c_at(group, 0x563c) != c_at(current, 0x563c))
+            b.checked_iterator_bf6713();
+        if (node == end) return;
+        if (!c_at(group, 0x563c)) b.checked_iterator_bf6713();
+        if (node == c_read<void*>(group, 0x5640)) b.checked_iterator_bf6713();
+        void* const entity = c_read<void*>(node, 8);
+        if (c_virtual<std::uint8_t>(entity, 0x5c, 6) != 0)
+            b.torpedo_enable_0071e0d0(c_read<void*>(entity, 0x738), 1);
+        if (node == c_read<void*>(group, 0x5640)) b.checked_iterator_bf6713();
+        node = c_read<void*>(node);
+    }
+}
+void ai_close_attack_tick_00a15490(void* command, const AiBindings& b) {
+    void* const target = c_read<void*>(command, 0x1c);
+    const float* const point = c_leader_point(target, b);
+    float scale;
+    c_fld_store(&scale, b.close_attack_scale_ce380c);
+    b.target_pass_00a13b60(command, scale, point, target, 1);
+    b.landing_00a11b80(command, c_read<void*>(command, 0x1c));
+    ai_enable_torpedoes_00a11af0(command, b);
+}
+void ai_defend_position_tick_00a15500(void* command, const AiBindings& b) {
+    b.followers_00a10dc0(command);
+    b.formation_00a11690(command);
+    const float* const point = c_leader_point(c_read<void*>(command, 4), b);
+    b.target_pass_00a13b60(command, 1.0f, point, nullptr, 0);
+    b.landing_00a11b80(command, nullptr);
+}
+bool ai_merge_strength_00a10d50(void* command, void* other, const AiBindings& b) {
+    void* const own = c_first_entity(c_read<void*>(command, 4), b.checked_iterator_bf6713);
+    void* const candidate = c_first_entity(other, b.checked_iterator_bf6713);
+    const auto weight = b.class_weight_009ffd70;
+    double own_weight;
+    unsigned result;
+    __asm {
+        mov ecx, own
+        call weight
+        fstp qword ptr own_weight
+        mov ecx, candidate
+        call weight
+        fld qword ptr own_weight
+        fxch
+        fcomip st(0), st(1)
+        fstp st(0)
+        setae al
+        movzx eax, al
+        mov result, eax
+    }
+    return result != 0;
+}
+bool ai_merge_distance_00a10c60(void* command, void* other, const AiBindings& b) {
+    const float* const candidate = c_leader_point(other, b);
+    const float* const own = c_leader_point(c_read<void*>(command, 4), b);
+    float delta_x, delta_z;
+    __asm {
+        mov eax, own
+        mov edx, candidate
+        fld dword ptr [eax]
+        fsub dword ptr [edx]
+        fstp dword ptr delta_x
+        fld dword ptr [eax + 8]
+        fsub dword ptr [edx + 8]
+        fstp dword ptr delta_z
+    }
+    const float* const tuning_radius = static_cast<const float*>(c_at(b.active_tuning_00a371a0(), 0x208));
+    float radius, distance2, radius2;
+    unsigned result;
+    __asm {
+        mov eax, tuning_radius
+        fld dword ptr [eax]
+        fstp dword ptr radius
+        fld dword ptr delta_z
+        fld dword ptr delta_x
+        fld dword ptr radius
+        fld st(1)
+        fmulp st(2), st(0)
+        fld st(2)
+        fmulp st(3), st(0)
+        fxch st(1)
+        faddp st(2), st(0)
+        fxch st(1)
+        fstp dword ptr distance2
+        fld dword ptr distance2
+        fld st(1)
+        fmulp st(2), st(0)
+        fxch st(1)
+        fstp dword ptr radius2
+        fld dword ptr radius2
+        fcomip st(0), st(1)
+        fstp st(0)
+        seta al
+        movzx eax, al
+        mov result, eax
+    }
+    return result != 0;
+}
+void ai_build_entity_records_00a07e40(void* group, void* out, CWord record_class, const AiBindings& b) {
+    alignas(4) unsigned char scratch[0x20]; // actual 32-byte caller temporary
+    void* node = c_read<void*>(c_read<void*>(group, 0x5640));
+    while (node != c_read<void*>(group, 0x5640)) {
+        if (node == c_read<void*>(group, 0x5640)) b.checked_iterator_bf6713();
+        void* const record = b.entity_record_00a04560(scratch, c_read<void*>(node, 8), record_class);
+        b.append_record_00a078f0(out, record);
+        if (node == c_read<void*>(group, 0x5640)) b.checked_iterator_bf6713();
+        node = c_read<void*>(node);
+    }
+}
+void sound_dsp_resize_00a7a980(void* array, std::int32_t requested,
+    void (__thiscall* reserve_00a7a8b0)(void*, std::int32_t)) {
+    if (c_read<std::int32_t>(array, 8) < requested) reserve_00a7a8b0(array, requested);
+    for (std::int32_t i = c_read<std::int32_t>(array, 4); i < requested; ++i) {
+        void* const slot = c_at(c_read<void*>(array), static_cast<CWord>(i) * 4);
+        if (slot) c_write<CWord>(slot, 0, 0);
+    }
+    while (requested < c_read<std::int32_t>(array, 4))
+        c_write<CWord>(array, 4, c_read<CWord>(array, 4) - 1);
+    c_write<std::int32_t>(array, 4, requested);
+}
+void gui_line_describe_00ac2090(void* line, void* visitor, const GuiLineBindings& b) {
+    b.describe_base_00aaaed0(line, visitor);
+    auto count = [&]() -> CWord {
+        const CWord difference = c_read<CWord>(line, 0xf4) - c_read<CWord>(line, 0xf0);
+        return static_cast<CWord>(static_cast<std::int32_t>(difference) >> 3);
+    };
+    if (!c_read<void*>(line, 0xf0) || count() == 0) return;
+    c_virtual<void>(visitor, 4, GuiTaggedWord{0, reinterpret_cast<CWord>(b.points_key_cfd91c)});
+    CWord i = 0;
+    while (c_read<void*>(line, 0xf0) && i < count()) {
+        if (!c_read<void*>(line, 0xf0) || count() <= i) b.checked_iterator_bf6713();
+        const CWord point = c_read<CWord>(line, 0xf0) + i * 8;
+        ++i;
+        c_virtual<void>(visitor, 0xc, GuiTaggedWord{1, i}, GuiTaggedWord{6, point});
+    }
+    c_virtual<void>(visitor, 8);
+}
+void gui_line_reset_00ac2950(void* line, const GuiLineBindings& b) {
+    void* const captured_end = c_read<void*>(line, 0xf4);
+    if (c_read<CWord>(line, 0xf0) > reinterpret_cast<CWord>(captured_end)) b.checked_iterator_bf6713();
+    void* const begin = c_read<void*>(line, 0xf0);
+    if (c_read<CWord>(line, 0xf4) < reinterpret_cast<CWord>(begin)) b.checked_iterator_bf6713();
+    if (begin != captured_end)
+        c_write<void*>(line, 0xf4, b.copy_pod8_0043b920(captured_end, c_read<void*>(line, 0xf4), begin));
+    c_write<CWord>(line, 0xfc, 0);
+    b.ensure_capacity_00ac2690(line, 4);
+    void* const geometry = b.geometry_00b74640(c_read<void*>(line, 0x4c), 0);
+    void* const element = b.element_00b732c0(geometry, 0);
+    c_write<CWord>(element, 0x10, 0);
+    c_write<CWord>(element, 0x18, 0);
+}
+void* group_world_sphere_00b8f100(void* group, const GroupSphereBindings& b) {
+    if (c_read<std::uint8_t>(group, 0x175) != 0) {
+        if ((c_read<std::uint8_t>(group, 0x138) & 0x30) == 0) {
+            b.aggregate_world_sphere_00b8ebe0(group);
+            c_write<CWord>(group, 0x138, c_read<CWord>(group, 0x138) | 0x30);
+        }
+        return c_at(group, 0x13c);
+    }
+    if ((c_read<std::uint8_t>(group, 0x138) & 0x30) == 0) {
+        if ((c_read<std::uint8_t>(group, 0x5c) & 2) == 0) b.refresh_world_00b6db70(group);
+        float scratch[4];
+        const auto* source = static_cast<const float*>(b.transform_sphere_007c1180(
+            c_at(group, 8), scratch, c_at(group, 0xf0)));
+        for (CWord i = 0; i != 4; ++i)
+            c_fld_store(static_cast<float*>(c_at(group, 0x13c + i * 4)), source + i);
+        c_write<CWord>(group, 0x138, c_read<CWord>(group, 0x138) | 0x30);
+    }
+    return c_at(group, 0x13c);
+}
+void release_whole_file_00bd91f0(void* buffer, void (__cdecl* free_bf6989)(void*)) {
+    free_bf6989(buffer);
+}
+void cache_file_from_vfs_00be7ab0(void* store, void* vfs, const void* name,
+    CWord flags, const FileStoreBindings& b) {
+    void* const stream = c_virtual<void*>(vfs, 4, name, flags);
+    void* const memory = b.memory_view_00bef750(stream);
+    b.add_file_00be7760(store, name, memory);
+    c_release_ref(memory);
+    c_release_ref(stream);
+}
+} // namespace bsp::oct18_tail_c

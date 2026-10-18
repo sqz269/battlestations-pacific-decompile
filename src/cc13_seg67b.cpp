@@ -1379,6 +1379,187 @@ bool bot_task_maneuver_roll_completed_009b9680(Cc13Seg67bHost&, void* task) {
 }
 
 namespace {
+constexpr double kClimbMargin_00ce3d78 = 1.5;
+constexpr double kSixthPi_00cec730 = 0.5235987901687622;   // pi/6, float-rounded
+constexpr float kRollPi_00d7a264 = 3.1415927410125732f;
+constexpr double kZero_00d7a258 = 0.0;
+constexpr double kBarrelBias_00d7a280 = 0.5;
+constexpr double kGainAltTinySq_00ce3820 = 1e-10;
+constexpr double kGainAltFar_00ce47a0 = 1000.0;
+constexpr double kThirdPi_00d03dd0 = 1.0471975803375244;   // pi/3, float-rounded
+constexpr float kGainAltJitterLo_00ce3cb4 = -0.1f;
+constexpr float kGainAltJitterHi_00d7a2f0 = 0.1f;
+constexpr double kOne_00d7a210 = 1.0;
+constexpr double kGainAltPitch_00cedcd0 = 0.7853981852531433;  // pi/4, float-rounded
+
+// The COMISS/FCOMIP clamp to [-1, 1] these ticks repeat: the low bound first, so a
+// NaN passes through.
+float clamp_unit_pm1(float x) {
+    if (-1.0f > x) return -1.0f;
+    if (x > 1.0f) return 1.0f;
+    return x;
+}
+
+// The same pattern on [0, 1].
+float clamp_unit_01(float x) {
+    if (0.0f > x) return 0.0f;
+    if (x > 1.0f) return 1.0f;
+    return x;
+}
+}  // namespace
+
+// 009B9740 (009B9740-009B99DB), barrelroll. u = task+2F4h, cls = task+2F8h.
+//  - 009B9752-009B9791: +2E4h &= ~4; +27Ch = 1.0, +280h = 1; +2ACh = 0, +2B0h = 1;
+//    +2DCh = 0; +288h = 0, +28Ch = 1; +2D8h = 0.
+//  - 009B97A4-009B97BC: e = cls+1ECh x 1.5 (qword 00CE3D78) - u+C64h, stored float.
+//  - 009B9797-009B97D1: until byte +404h is set it takes 009B9680's answer; while that
+//    is 0 the body skips to the end test.
+//  - 009B97D7-009B97E9: +294h = +408h (the roll speed), +298h = 1, +2D0h = 0.
+//  - 009B97EF-009B98CB: q = bank / (pi/6) (009B980F D8 F9: ST1 / ST0); |q| < 1 ->
+//    c = clamp01(e / cls+278h) x (1 - |q|) (009B9850 DE E1: 1 - |q|) + 0.0 (qword).
+//  - 009B98CF-009B9993: q2 = 00438B10(bank, pi) / (pi/6); |q2| < 1 -> c += clamp01(-e /
+//    cls+278h) x (1 - |q2|) (009B993B FCHS).
+//  - 009B9993-009B99B9: +2A0h = c + 0.5 (qword), +2A4h = 1, +2D4h = 0; byte +26Ch bit 0
+//    -> 0099B690.
+//  - 009B99BE-009B99D0: (+3F8h)->vtable[0]() true -> 0099B690.
+// x87 is modelled at 24-bit precision (each FMUL/FSUB/FDIV rounded to float); 53-bit is
+// the alternative. No draw. Only reference: vtable 00D206D0 slot +64h (00D20734, image
+// scan); no target-equal twin.
+void bot_task_barrel_roll_tick_009b9740(Cc13Seg67bHost& host, void* task, float) {
+    at<std::uint32_t>(task, 0x2E4) &= 0xFFFFFFFBu;
+    at<float>(task, 0x27C) = 1.0f;
+    at<std::uint8_t>(task, 0x280) = 1;
+    at<float>(task, 0x2AC) = 0.0f;
+    at<std::uint8_t>(task, 0x2B0) = 1;
+    at<std::int32_t>(task, 0x2DC) = 0;
+    at<float>(task, 0x288) = 0.0f;
+    at<std::uint8_t>(task, 0x28C) = 1;
+    at<std::int32_t>(task, 0x2D8) = 0;
+    const float climb = static_cast<float>(
+        static_cast<double>(at<float>(ptr_at(task, 0x2F8), 0x1EC)) * kClimbMargin_00ce3d78);
+    const float excess = climb - at<float>(ptr_at(task, 0x2F4), 0xC64);
+
+    bool run = at<std::uint8_t>(task, 0x404) != 0;
+    if (!run) {
+        run = bot_task_maneuver_roll_completed_009b9680(host, task);
+        at<std::uint8_t>(task, 0x404) = run ? 1 : 0;
+    }
+    if (run) {
+        at<std::uint8_t>(task, 0x298) = 1;
+        at<float>(task, 0x294) = at<float>(task, 0x408);
+        at<std::int32_t>(task, 0x2D0) = 0;
+        const float bank = at<float>(ptr_at(task, 0x2F4), 0xC68);
+        float c = 0.0f;
+        const float q = static_cast<float>(static_cast<double>(bank) / kSixthPi_00cec730);
+        const float aq = q > 0.0f ? q : -0.0f - q;
+        if (1.0f > aq) {
+            const float w = 1.0f - aq;
+            const float g = clamp_unit_01(excess / at<float>(ptr_at(task, 0x2F8), 0x278));
+            c = static_cast<float>(static_cast<double>(g * w) + kZero_00d7a258);
+        }
+        const float q2 = static_cast<float>(
+            static_cast<double>(host.math_subtract_wrapped_angle_00438b10(bank, kRollPi_00d7a264)) /
+            kSixthPi_00cec730);
+        const float aq2 = q2 > 0.0f ? q2 : -0.0f - q2;
+        if (1.0f > aq2) {
+            const float w2 = 1.0f - aq2;
+            const float g2 = clamp_unit_01(-excess / at<float>(ptr_at(task, 0x2F8), 0x278));
+            c = g2 * w2 + c;
+        }
+        at<std::uint8_t>(task, 0x2A4) = 1;
+        at<float>(task, 0x2A0) = static_cast<float>(static_cast<double>(c) + kBarrelBias_00d7a280);
+        at<std::int32_t>(task, 0x2D4) = 0;
+        if ((at<std::uint8_t>(task, 0x26C) & 1) != 0) host.bot_task_retire_0099b690(task);
+    }
+    if (host.condition_vcall_00_test(ptr_at(task, 0x3F8))) host.bot_task_retire_0099b690(task);
+}
+
+// 009BA2F0 (009BA2F0-009BA6E3), gainaltitude. u = task+2F4h, cls = task+2F8h, the
+// target t = task+3F8h (may be 0), the altitude margin task+3FCh.
+//  - 009BA300: +2E4h &= ~4.
+//  - With t (009BA31E-009BA41F): d = t - u in x and z; |d| (1e-10 guard); |d| > 1000.0
+//    (qword 00CE47A0, FCOMIP JBE, NaN -> near) -> +2C4h = _CIatan2(dx, dz), +2D0h = 2;
+//    else +2C8h = 0, +2D0h = 1.
+//  - Without t (009BA424-009BA583): the mean of three [-1, 1]-clamped terms,
+//    u+C68h / (pi/3) (qword 00D03DD0), one 00BD2F10 draw (ECX = 1) U(-0.1 [00CE3CB4],
+//    0.1 [00D7A2F0]) at 009BA48C, and u+9ECh; the divisor 0.0 + 1.0 (qword) + 1 + 1 is
+//    tested for zero by FUCOMIP/LAHF/TEST 44h/JNP (unordered divides). +294h = the
+//    mean, +298h = 1, +2D0h = 0.
+//  - 009BA589-009BA654: f = (u->vtable[38h]() - 007C4810(cls)) / (cls+18Ch -
+//    007C4810(cls)) clamped to [0, 1]; +2D4h = 2, +2C0h = f x pi/4 (qword 00CEDCD0);
+//    +27Ch = 1.0, +280h = 1; +2ACh = 0, +2B0h = 1; +2DCh = 0.
+//  - 009BA655-009BA6D7: with t, u+100h > t+100h + task+3FCh (JA) -> 0099B690; without,
+//    u+100h > task+3FCh (JBE skips) -> 0099B690.
+// x87 at 24-bit precision as above (the speed fraction's two qword temporaries hold
+// 24-bit results); 53-bit is the alternative. Only reference: vtable 00D20480 slot +64h
+// (00D204E4, image scan); no target-equal twin.
+void bot_task_gain_altitude_tick_009ba2f0(Cc13Seg67bHost& host, void* task, float) {
+    at<std::uint32_t>(task, 0x2E4) &= 0xFFFFFFFBu;
+    if (ptr_at(task, 0x3F8) != nullptr) {
+        void* const unit = ptr_at(task, 0x2F4);
+        if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);
+        const float px = at<float>(unit, 0xFC);
+        const float pz = at<float>(unit, 0x104);
+        void* const target = ptr_at(task, 0x3F8);
+        if (at<std::uint8_t>(target, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(target);
+        const float dx = at<float>(target, 0xFC) - px;
+        const float dz = at<float>(target, 0x104) - pz;
+        const float s = dz * dz + dx * dx;
+        const float len = static_cast<double>(s) > kGainAltTinySq_00ce3820
+                              ? static_cast<float>(std::sqrt(static_cast<double>(s)))
+                              : 0.0f;
+        if (static_cast<double>(len) > kGainAltFar_00ce47a0) {
+            at<std::int32_t>(task, 0x2D0) = 2;
+            at<float>(task, 0x2C4) = host.crt_atan2_00bf701a(dx, dz);
+        } else {
+            at<float>(task, 0x2C8) = 0.0f;
+            at<std::int32_t>(task, 0x2D0) = 1;
+        }
+    } else {
+        void* const unit = ptr_at(task, 0x2F4);
+        const float r = clamp_unit_pm1(static_cast<float>(
+            static_cast<double>(at<float>(unit, 0xC68)) / kThirdPi_00d03dd0));
+        float sum = r + 0.0f;
+        float count = static_cast<float>(0.0 + kOne_00d7a210);
+        const float j = clamp_unit_pm1(host.random_uniform_00bd2f10(
+            1, kGainAltJitterLo_00ce3cb4, kGainAltJitterHi_00d7a2f0));
+        sum = j + sum;
+        count = count + 1.0f;
+        const float w = clamp_unit_pm1(at<float>(ptr_at(task, 0x2F4), 0x9EC));
+        sum = w + sum;
+        count = 1.0f + count;
+        at<float>(task, 0x294) = (count == 0.0f) ? 0.0f : sum / count;
+        at<std::uint8_t>(task, 0x298) = 1;
+        at<std::int32_t>(task, 0x2D0) = 0;
+    }
+
+    void* const cls = ptr_at(task, 0x2F8);
+    const float speed = host.unit_vcall_38_speed(ptr_at(task, 0x2F4));
+    const float num = speed - host.plane_class_min_control_speed_007c4810(cls);
+    const float den = at<float>(cls, 0x18C) - host.plane_class_min_control_speed_007c4810(cls);
+    const float f = clamp_unit_01(num / den);
+    at<std::int32_t>(task, 0x2D4) = 2;
+    at<float>(task, 0x2C0) = static_cast<float>(static_cast<double>(f) * kGainAltPitch_00cedcd0);
+    at<float>(task, 0x27C) = 1.0f;
+    at<std::uint8_t>(task, 0x280) = 1;
+    at<float>(task, 0x2AC) = 0.0f;
+    at<std::uint8_t>(task, 0x2B0) = 1;
+    at<std::int32_t>(task, 0x2DC) = 0;
+
+    void* const unit = ptr_at(task, 0x2F4);
+    void* const target = ptr_at(task, 0x3F8);
+    if (target != nullptr) {
+        if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);
+        if (at<std::uint8_t>(target, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(target);
+        const float ceiling = at<float>(target, 0x100) + at<float>(task, 0x3FC);
+        if (at<float>(unit, 0x100) > ceiling) host.bot_task_retire_0099b690(task);
+    } else {
+        if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);
+        if (at<float>(unit, 0x100) > at<float>(task, 0x3FC)) host.bot_task_retire_0099b690(task);
+    }
+}
+
+namespace {
 constexpr std::uint32_t kTightTurnTaskVtable = 0x00D205E0u;
 }  // namespace
 

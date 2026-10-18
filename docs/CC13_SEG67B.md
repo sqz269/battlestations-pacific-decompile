@@ -843,6 +843,61 @@ No new bodies. Three ledger-only rows, checked against the bytes:
 - **009B1ED0**, land final, against `run_land_final_tick_009b1ed0` (~33027): matches the labelled host, which skips the done tests because 007B8D70 is stood in as true. No draw.
 - Both land ticks blend the +2B4h speed on x87 (DE EA, DE CA, DE C1). The binary rounds each step at 24-bit PC; the hosts use double with one final rounding, so the result can differ by about 1 ULP (sent as precision-only).
 
+### 3.57 Batch 11: land line and park, level-bomb attackrun and moveto (packet cc13-seg67C)
+
+No new bodies. Four ledger-only rows, each read from the whole listing. None takes a draw.
+- **009B0300**, land line, against `run_land_line_tick_009b0300` (~32432): matches. Checked:
+  - the lead point and bearings;
+  - the k80 threshold curves;
+  - the far/near gain;
+  - the probe deadband (FSUBRP DE E1 at 009B0681);
+  - the altitude band and its clamp order;
+  - the speed blend (DE EA, DE CA).
+- **009B22C0**, land park, against `run_land_park_tick_009b22c0` (~33355): matches, with one NaN arm, sent as URGENT. The JBE at 009B264F counts a NaN speed as slow; the host's `v <= base x 1.5` does not. Checked:
+  - the speed curve, the 0.85 keep and the queue band;
+  - the path test, the three steer arms (00415690, 00415510, 00415550) and the carrier clamps;
+  - the heading-error scale and the yaw deadband. The deadband's NaN arm gives the host's value.
+- **009B4D00**, level-bomb attackrun, and **009B6D20**, level-bomb moveto, against `lb_attackrun_tick_009b4d00` (~25756), `lb_moveto_tick_009b6d20` (~25697) and the plane_level_bomb_task.cpp helpers. They match for finite inputs, including the peer gap loop (FSUB forms D8 E2/E1/E9 from the bytes), the fraction, tolerance and speed curves, and the attackrun command. Sent as URGENT:
+  - both countdowns take the decrement on a NaN dt (FCOMI JB), where the hosts refresh;
+  - moveto's tolerance min keeps b on NaN, where the host keeps +40h;
+  - the binary zeroes own_d at or below 1e-10 squared, which `lb_spacing_pass` does not.
+
+### 3.58 Batch 12: the dive aimglide, aimdive and flyabove ticks (packet cc13-seg67C)
+
+No new bodies. Three ledger-only rows:
+- **009C5180**, aimglide. Read whole against `run_dive_bomb_aimglide_tick_009c5180` (~28827) and its helpers. It matches, given the host's labelled stand-ins:
+  - The release takes one stream-1 draw, U(0.2, 0.5) at 009C579E. The host replaces it at gate 6 with a keyed per-unit stand-in, `release_altitude_draw_00bd2f10(name + "#db_ag1c", 0.2, 0.5)`. That stand-in is not stream 1, so there is no RNG coupling. It is ON under `kAimGlideRearmDrawBound` (~7765).
+  - Uncertainty: the image FSTPs cos(e) x [14h] and L + travel + 5 to float (009C5721, 009C5739) before gates 5 and 6. The host's `lead_travel_margin` (dive_bomb_task.cpp ~417) is double.
+  - approach+CCh = 3 in the yaw arm is not kept.
+  - The heading arm takes its bearing from `db_bearing_c0`.
+- **009C58D0**, aimdive, against `run_dive_bomb_aimdive_tick_009c58d0` (~29350):
+  - Read: the release 009C608C-009C6154 and the steer and roll-band block 009C5B61-009C5DAB.
+  - Checked by constant only: the other 27 memory-operand constants, each decoded at its load width. All agree.
+  - Draws: one stream-1 draw, U(0.5, 1.0) at 009C6114. The host replaces it with a keyed per-unit stand-in, `release_altitude_draw_00bd2f10(name + "#db_ad1c", 0.5, 1.0)`. That stand-in is not stream 1, so there is no RNG coupling. It is ON under `kAimDiveRearmDrawBound` (~7767).
+  - LOW: a NaN +1Ch skips the release in the image but passes the host.
+- **009C62B0**, flyabove, against `run_dive_bomb_flyabove_tick_009c62b0` (~28959):
+  - No direct draw.
+  - All 57 memory-operand constants checked.
+  - One finite-input difference, sent URGENT: 009C6BBE subtracts qword [00CE3D10] = 0.20000000298023224, but `near_field_flyover_slot_009c6b75` subtracts the exact double 0.2.
+  - LOW: the same helper compares against an exact 0.05 where the image uses 0.05000000074505806.
+  - The arms were not re-read instruction by instruction; they rest on the earlier packets' coverage notes and the cc13 plane-bot audits.
+
+### 3.59 Batch 13: the barrelroll and gainaltitude ticks (packet cc13-seg67C)
+
+Two new bodies, both read whole from the disk bytes. Neither is hosted (git grep, bsp lookup) and neither has a twin. The only reference to each is its vtable slot (image scan).
+- **009B9740** `bot_task_barrel_roll_tick_009b9740`, slot +64h of vtable 00D206D0 (00D20734):
+  - Sets the fixed demands and clears avoid bit 2.
+  - The roll command +2A0h is 0.5 plus two clamped bank terms, gated on the climb excess cls+1ECh x 1.5 - u+C64h. Operand order comes from the bytes (009B980F D8 F9, 009B9850 DE E1, 009B993B FCHS).
+  - Retires through 0099B690 on +26Ch bit 0 and on the end condition at +3F8h.
+  - No draw.
+- **009BA2F0** `bot_task_gain_altitude_tick_009ba2f0`, slot +64h of vtable 00D20480 (00D204E4):
+  - With a target, it steers by `_CIatan2` beyond 1000 m.
+  - Without a target, it averages three clamped terms. One of them is a stream-1 draw, U(-0.1, 0.1) at 009BA48C, once per tick.
+  - The pitch command is the speed fraction x pi/4, using the widened [00CEDCD0].
+  - New hooks: `unit_vcall_38_speed` and `plane_class_min_control_speed_007c4810`.
+- Both are modelled at 24-bit precision; 53-bit is recorded as the uncertainty.
+- The batch 11 row nits are folded into 009B0300 and 009B22C0 in place.
+
 ## 4. Ledger-only records (packet cc13-seg67C)
 
 | Address | Host body | Result |
@@ -983,3 +1038,10 @@ No new bodies. Three ledger-only rows, checked against the bytes:
 | 009C4A40 | `run_dive_bomb_goaway_tick_009c4a40` (game_hosts_units.cpp ~28372) | PARTIAL: ceiling NaN arm; draws pinned low (labelled) |
 | 009B0FE0 | `run_land_standby_tick_009b0fe0` (game_hosts_units.cpp ~32229) | matches (24-bit vs double blend note) |
 | 009B1ED0 | `run_land_final_tick_009b1ed0` (game_hosts_units.cpp ~33027) | matches the labelled host |
+| 009B0300 | `run_land_line_tick_009b0300` (game_hosts_units.cpp ~32432) | matches |
+| 009B22C0 | `run_land_park_tick_009b22c0` (game_hosts_units.cpp ~33355) | PARTIAL: slow-test NaN arm |
+| 009B4D00 | `lb_attackrun_tick_009b4d00` (game_hosts_units.cpp ~25756) | PARTIAL: NaN-dt arm, own_d 1e-10 guard |
+| 009B6D20 | `lb_moveto_tick_009b6d20` (game_hosts_units.cpp ~25697) | PARTIAL: NaN-dt arm, tolerance-min NaN arm |
+| 009C5180 | `run_dive_bomb_aimglide_tick_009c5180` (game_hosts_units.cpp ~28827) | matches; the draw is a keyed per-unit stand-in (ON); float lead margin in the image |
+| 009C58D0 | `run_dive_bomb_aimdive_tick_009c58d0` (game_hosts_units.cpp ~29350) | matches (release and constants); keyed stand-in draw (ON); LOW NaN rearm arm |
+| 009C62B0 | `run_dive_bomb_flyabove_tick_009c62b0` (game_hosts_units.cpp ~28959) | PARTIAL: exact 0.2 at 009C6BBE (near_field_probe.cpp) |
