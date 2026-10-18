@@ -1,4 +1,5 @@
 #include "bsp/oct18_rec.hpp"
+#include <cstddef>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error These original x87 sequences require MSVC Win32.
@@ -77,6 +78,86 @@ void* vector_construct_empty_0040ab80(std::uint32_t* header) noexcept {
 void vector_free_0040ab90(void* const* header, Free release) {
     void* const data = *header;
     if (data) release(data);
+}
+} // namespace bsp::oct18_rec
+
+namespace bsp::oct18_rec {
+namespace {
+template<class T> T raw_read(const void* p, std::uint32_t offset) {
+    return *reinterpret_cast<const volatile T*>(
+        static_cast<const std::byte*>(p) + offset);
+}
+template<class T> void raw_write(void* p, std::uint32_t offset, T value) {
+    *reinterpret_cast<volatile T*>(static_cast<std::byte*>(p) + offset) = value;
+}
+void unwind_cleanup(void (*cleanup)(void*), void* p) noexcept {
+    // A destructor throwing while the original CRT unwinds terminates.
+    cleanup(p);
+}
+} // namespace
+
+void set_xbox_mode_008d44c0(void* settings, std::uint8_t enabled,
+    volatile std::uint8_t& mirror, void* volatile& game_publication,
+    RunLuaString run, const char* command_true, const char* command_false) {
+    raw_write(settings, 0xb0, enabled);
+    mirror = enabled;
+    void* const game = game_publication;
+    if (!game || !raw_read<void*>(game, 0x1a08)) return;
+    // The original reloads +1A08h after the null test.
+    void* const owner = raw_read<void*>(game, 0x1a08);
+    void* const machine = raw_read<void*>(owner, 4);
+    if (!machine) return;
+    const bool current = raw_read<std::uint8_t>(settings, 0xb0) != 0;
+    run(machine, current ? command_true : command_false, 0, 0, 2);
+}
+
+bool mission_completed_0090c560(void* table, const void* key,
+    FindMission find, InvalidParameter invalid) {
+    MissionIterator result; // The original find initializes both stack words.
+    find(table, &result, key);
+    void* const owner = result.owner;
+    void* const end = raw_read<void*>(table, 4);
+    if (!owner || owner != table) invalid();
+    void* const node = result.node;
+    if (node == end) return false;
+    if (!owner) invalid();
+    if (node == raw_read<void*>(owner, 4)) invalid();
+    return raw_read<std::int32_t>(node, 0x14) != 0;
+}
+
+char* read_quoted_runs_008efb00(void* tokenizer, const QuotedRunCalls& calls) {
+    alignas(4) std::byte writer[0x20]; // Preserve unspecified stack bytes.
+    raw_write<std::uint32_t>(writer, 8, 0);
+    raw_write<std::uint32_t>(writer, 0xc, 2);
+    raw_write<std::uint8_t>(writer, 0x10, 0x20);
+    raw_write<std::uint8_t>(writer, 4, 0);
+    raw_write<std::uint32_t>(writer, 0, 0x00d162cc);
+    raw_write<std::uint32_t>(writer, 0x18, 0);
+    raw_write<std::uint32_t>(writer, 0x14, 0);
+    raw_write<std::uint32_t>(writer, 0x1c, 0);
+    char* joined;
+    try { // FuncInfo 00DD72B4 state 0 -> unwind funclet 00CA4700.
+        calls.reset_009502e0(writer);
+        calls.peek_008d8a70(tokenizer);
+        while (raw_read<std::uint8_t>(tokenizer, 4) != 0) {
+            const char* token = calls.read_008d9980(tokenizer);
+            const char* decoded = calls.decode_008ee670(token);
+            calls.append_0094ff10(writer, decoded);
+            calls.peek_008d8a70(tokenizer);
+        }
+        joined = calls.join_009500a0(writer);
+    } catch (...) {
+        unwind_cleanup(calls.destroy_reader_008ef030, writer);
+        throw;
+    }
+    raw_write<std::uint32_t>(writer, 0, 0x00d162cc);
+    try { // State 1 -> 00CA4708: base only if normal clear throws.
+        calls.clear_00950320(writer);
+    } catch (...) {
+        unwind_cleanup(calls.destroy_base_0045c4c0, writer);
+        throw;
+    }
+    return joined;
 }
 } // namespace bsp::oct18_rec
 
