@@ -3069,3 +3069,15 @@ body frame, then tail-jumps to 007D8020. The host keeps the relative velocity in
 components from the world pose rows: the same value while the carrier holds its heading, but the image's vector
 turns with the deck and the host's does not. LABELLED difference; it matters only for a parented plane on a
 turning or rolling carrier. Carrying a parent-local velocity would touch every parented reader; not started.
+
+## 76. Section 69's MINOR (a): the bay request no longer force-enables channel C (cc9-physics19, 2026-10-18)
+
+With `kReleaseIssueStageBound` (and its Vals twin) ON, the spawn already keys on unit+C20h: line 3671's raise is
+unconditional, and the rack stage 007CE9FD spends it. So the "spawn hangs off the bay acceptance" half of MINOR (a)
+is only the OFF stand-in. What is left is the force-enable: both `release_ordnance_007bbba0` and
+`release_bomb_007bbba0` turned a disabled channel C on (rate 1.0) before the request, where 007BBBA6-007BBBB0 skips
+the bay writes. **`kBayRequestNoForceEnableBound` (OFF)** keeps the channel as it is;
+`summary bay request disabled channel C=` counts the requests that met a disabled channel. Prediction: when that
+count is 0 the pair is identical; otherwise only the bay animation and whatever reads channel C (its value) move,
+and the releases do not, because the stage spends +C20h either way.
+- MINOR (b) (the attach test has no drop-to-attach gap) is untouched.

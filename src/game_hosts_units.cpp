@@ -3598,8 +3598,11 @@ struct GameUnitsHost::Impl {
         // has no such byte, so it is NOT applied and the refusal count below
         // therefore under-counts what the image would refuse.
         if (!slot.actuator_block_dec.channel_c.enabled) {
-            slot.actuator_block_dec.channel_c.enabled = true;
-            slot.actuator_block_dec.channel_c.rate = 1.0f;
+            ++bay_channel_disabled_requests;
+            if constexpr (!kBayRequestNoForceEnableBound) {
+                slot.actuator_block_dec.channel_c.enabled = true;
+                slot.actuator_block_dec.channel_c.rate = 1.0f;
+            }
         }
         const bool accepted =
             bsp::ordnance_release_request_007bbba0(slot.actuator_block_dec);
@@ -5543,8 +5546,11 @@ struct GameUnitsHost::Impl {
     // it is the prediction to score the round against, not a latched origin.
     void release_bomb_007bbba0(GameUnitSlot& slot, int rounds) {
         if (!slot.actuator_block_dec.channel_c.enabled) {
-            slot.actuator_block_dec.channel_c.enabled = true;
-            slot.actuator_block_dec.channel_c.rate = 1.0f;
+            ++bay_channel_disabled_requests;
+            if constexpr (!kBayRequestNoForceEnableBound) {
+                slot.actuator_block_dec.channel_c.enabled = true;
+                slot.actuator_block_dec.channel_c.rate = 1.0f;
+            }
         }
         // The bay request is raised ONCE per release even when the salvo is two
         // rounds, and that is not a shortcut. 007BBBA0 is a latch: 007BBBB2
@@ -6787,6 +6793,13 @@ struct GameUnitsHost::Impl {
     // Torpedoes only; the dive bomber's bombs keep their spawn at the request.
     // ON since the E2 9000 / USN04 4500 pairs (docs/RELEASE_ISSUE_STAGE.md).
     static constexpr bool kReleaseIssueStageBound = true;
+    // Packet p19_bay_force (docs/OCEAN_WAVE_FIELD.md section 76; section 69's
+    // MINOR a). True: a disabled channel C stays disabled at the request, as
+    // 007BBBA6-007BBBB0 skips the bay writes and still reaches 007BBC00's +C20h
+    // raise; the rack stage spends +C20h either way. False: the host enables
+    // channel C (rate 1.0) before the request, so the bay opens.
+    static constexpr bool kBayRequestNoForceEnableBound = false;
+    unsigned long long bay_channel_disabled_requests{0};
     // Packet cc9_release_issue_stage_vals, docs/RELEASE_ISSUE_STAGE.md section
     // "Vals": the dive bomber's bomb leaves the same rack through the same stage.
     // 007BBBA0 raises unit+C20h once per round (the aimglide's 009C5771-009C5784
@@ -40637,6 +40650,9 @@ void GameUnitsHost::report() {
                 "(007D99C0, 006BCC0A, packets p19_fwd_speed / p19_lead_ops)",
                 host.forward_speed_deck_terms, Impl::kPlaneForwardSpeedDeckTermBound ? 1 : 0,
                 Impl::kCarrierLandingLeadFloatOpsBound ? 1 : 0);
+            host.log.notef("summary bay request disabled channel C=%llu no_force_bound=%d "
+                "(007BBBA6, packet p19_bay_force)", host.bay_channel_disabled_requests,
+                Impl::kBayRequestNoForceEnableBound ? 1 : 0);
             host.log.notef("summary moveto cruise by_ordnance=%llu bound=%d leg separations=%llu "
                 "bound=%d (009C3650, 009BEC85, packet p16_moveto_cruise)",
                 host.moveto_cruise_by_ordnance, Impl::kMoveToCruiseByOrdnanceBound ? 1 : 0,
