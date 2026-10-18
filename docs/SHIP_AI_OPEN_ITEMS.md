@@ -18999,3 +18999,54 @@ OFF `local\s57_off3`, the same OFF code; manifests beside each log).**
 **Decision: both ON.** MinLevel by mechanism; the capture range as a faithful binding with no reach found
 (no installed row on hand MoveTos a ship at a CommandBuilding target within these windows; jm13.lua:1499 and
 jm16.lua:944 do, untested). JM05 moves (to cc9-lua66).
+
+### 279 result: ON
+
+**Pairs (37dfa5d45, `--flip kPathJoinProjectionBound=true`, exe `local\s57_pj_on`; OFF `local\s57_off3`; 20000 frames;
+manifests beside each log).** JM08 `jm08_l65_j8_p2`: `joins=12 advanced=0`, pair_diff exit 1, gameplay identical.
+USN04 (no orders): `joins=2 advanced=0`, exit 1, identical. As predicted, every join on these rows happens before
+the ship passes its nearest point, so 007B11F0 keeps the nearest. **Decision: ON** as a faithful binding with the
+mechanism exercised (the projection runs on every build) and no moved row.
+
+### 281 result: ON
+
+**Pairs.** USN12 `g45_u12_e7` 20000 frames (d4171938d, exe `local\s57_tr_on` vs `local\s57_off4`): exit 3, deaths
+39 -> 37, torpedo drops 6 -> 0, walks=705 contacts=4790. IJN08 `p10_i08_z` 20000 frames (06f985f99, which adds
+the switch-off count, exe `local\s57_tr2_on` vs `local\s57_off5`): exit 3, deaths 174 -> 170, 89 changed rows;
+OFF `live_walks=1609 live_contacts=35253` (21.9 per walk), ON `walks=1612 contacts=78214` (48.5 per walk).
+**The count prediction missed and the mechanism holds:** the triple holds every identified enemy entity, land
+units and buildings included (IJN08's island: `Static Oscar 01`, tents), while the switch-off list kept only ship
+and plane bases; the library's own 009E9253 kind-5 test drops the non-ships after the walk either way. What moves
+is the order (class buckets), the 3.0 s snapshot, and the absent blips/neutrals. **Decision: ON** by mechanism.
+
+### 282 result: ON
+
+**Pairs (d4171938d, `--flip kShipNeighbourDepthBandBound=true`, exe `local\s57_db_on` vs `local\s57_off4`; 20000 frames;
+manifests beside each log).** USN04 (no orders): exit 1, gameplay identical, 1340120 observed retargets. JM06
+`jm06_p12_j6_c1` (submarines; 183 submerged launches): exit 1, gameplay identical (only the masked sector-scan
+noise counters move). No row here has a hull deeper than the 60 m the substituted band needs to separate.
+**Decision: ON** as a binding in the image's direction (bands follow the hull's world y) with no moved row; the
+band height stays the labelled substitution until a model extent exists.
+
+### 283 result: ON
+
+**Pairs (`--flip kTorpedoFromSubmarineBound=true`; 20000 frames; manifests beside each log).** USN04 (d4171938d,
+`local\s57_ts_on` vs `local\s57_off4`, 6 submerged launches): exit 1, identical. JM06 `jm06_p12_j6_c1` (4133f0a15,
+`local\s57_ts2_on` vs `local\s57_off6`, with the admit count of e9c326c73): `submerged_admits` 2972 OFF / 3098 ON,
+so the flag reaches the 009F0AD0 admit thousands of times and ON adds the 4.0 s SPNormal add-on to each; exit 3,
+deaths 13 -> 12, hit records 144 -> 134 (ships react later to the I-400s' torpedoes, the hits move). An earlier
+JM06 pair on d4171938d (`local\s57_ts_on_j6.log`) even completed the mission at 811.93 s, with the exec guard's
+`refused a mission script's process launch: sus_prog.exe`; that base is superseded by the flips since.
+**Decision: ON** by mechanism. JM06 moves (to cc9-lua66).
+
+### 276 result: ON (no reach)
+
+**Pairs (`--flip kAttackPushEndsOverrideBound=true`; manifests beside each log).** 9088c9c7b (exe `local\s57_po_on`):
+USNOS `s55_os_r0` 30000 frames against `local\s57_us_osr.log` and USN13 30000 frames against
+`local\s57_po_off_u13.log`: both exit 1, gameplay identical, `echoes=0`. With the a73a84449 count (exe
+`local\s57_po2_on`): USN13 30000 frames `weapon_pushes=60 with_override=0`; USNOS `s55_os_r0` 80000 frames
+(`local\s57_po2_on_osl.log`, failed "Game Over" at 3071.87 s) `override installs=72 arm_ends=30`,
+`weapon_pushes=412 with_override=0`. In both missions no category 1/2 order is pushed onto a director whose
++188h is set: the overrides sit on AI ships and squadrons that the scripts and planners do not re-order while
+the override lives. **Decision: ON** as a faithful binding with no reach on these rows; the counts stay in the
+summary line, so a row that does reach it shows `with_override > 0`.
