@@ -3227,3 +3227,59 @@ ship (`vt[5Ch](6)`, 0099DA05) and whose ship speed 0092D730 ([ship+1018h]) is NE
 going astern only). It also shows the image keeps the forward deck term in the measured speed on purpose, so the
 answer to the stow question lies elsewhere (the parented ctl+44h, section 75's frame question, or 009B21D0's
 timer), not in 0099D300.
+Eliminated as well: 009B260C-009B2631's clock (+28h runs down while vt[38h] < 1.0 and dz < 10) reads vt[38h] =
+|ctl+18h| (007B8E60), the parent-local relative speed in the image too (section 75), so a world-speed reading does
+not explain the image's stows. With the deck term the throttle holds measured = ParkVelocity, i.e. a relative speed
+of ParkVelocity - 0.1 x deck speed (about 0.56 m/s at 16.7 m/s), under the clock's 1.0, so the clock drains. Next
+to check: the plane's heading on the deck during the park (z < 0 takes 0.8 with the opposite sign) and the actual
+value of ParkVelocity (Pilot/Landing, tuning +4E8h) the host reads against this installation's Lua.
+ParkVelocity is `KTS(40)` in this installation's `scripts\datatables\planeglobals.lua:632` (about 20.6 m/s; its
+Hungarian comment: the plane rolls to its place at this speed after landing, and if it is too large the plane
+cannot stop on the carrier's lift). physics19's commanded 2.23 m/s is therefore 009B2C1E's +2B4h = interp x speed
+with the heading-error interp near its low end (00D7A2F0 = 0.1): the creeping plane is still turning onto the
+lift line. The heading error at the stop is the next thing to log.
+
+## 80. Dogfight avoid timer, early-edge clear, land minimum speed (cc9-physics20, 2026-10-18)
+
+The lead's queue from cc13 seg67 (UNREVIEWED notes, checked here against the bytes).
+
+**009A7A50 avoid timer, `kDogfightAvoidTimerDrawBound` (OFF).** `disasm-raw 009A7D40`: on the latched arm
+(009A7D2E, +24h set), `MOVSS [esi+18h]; COMISS [00CE3958] (2.0); JBE` (009A7D52-009A7D5E), then the pair
+(1.0 FLD1, 2.0) and `CALL 00BD2F10` (009A7D72), `FSTP [esi+18h]`. ECX is 1 (the byte the latch stores from CL at
+009A7D0F). The host wrote the midpoint 1.5. True: a keyed stream-1 draw (`unit name + "#dfat"`, the host's
+00BD2F10 convention). `summary dogfight avoid timer redraws=` counts the arm in both builds.
+
+**009AAA80 early-edge clear, `kDogfightEarlyEdgeClearBound` (OFF).** Both gate failures (009AAA9C `+4D4h > 0`
+JBE, 009AAABB `1.0 > +4D8h` JBE; NaN fails both) go to 009AAC5D: `MOV ECX,[task+3FCh]; CALL 007B9740`, then
+`XOR AL,AL`. 007B9740: `ECX = [ECX+C50h]`, null returns, else tail-JMP 007E2070, which takes `esi = nb+9Ch`,
+and when `[esi+14h]` (nb+B0h, the target cache 007E2090 returns while +84h <= 2.0) is set calls 006952A0 (the
+observer unregister) and zeroes it. The two later false returns (009AAB1F, 009AAC31) go to 009AAC68 and skip the
+clear, as the host's do. True: `nb_found_plus_one = 0` on the gate failure. LABELLED: +C50h is taken to exist.
+
+**009B1300 land minimum speed, `kLandMinSpeedOwnerVelocityBound` (OFF).** `disasm-raw 009B1300`: with
+approach+30h set (009B1309), the plane's vt[34h] velocity is normalised by 0042B2F0's length (each component
+FDIV'd and stored as a float, 009B1331-009B1359), approach+30h's vt[34h] (009B1362) gives w, and
+`(w.y ny + w.x nx) + w.z nz` (009B1364-009B137C) is added to 007C47F0 (009B138E) before the max with 007C4810
+(009B13A9-009B13C0). The host had no such term anywhere (`kCarrierLandingVelocityLeadBound`'s sites are
+009AFC73-009AFD1A, the lead point, not this). True: the land target (`land_site_plus_one`) linear velocity enters.
+An airfield's is zero, so only carrier recoveries move. Prediction (USN01): the final approach's commanded speed
+rises by about the carrier's speed (16-17 m/s) for planes heading with the carrier, touchdowns shift.
+
+**80, results.** Variants built in this tree at 236355ef9 / dea03afaf / 967fa63ea (`local\p20_variant.ps1`: the
+switch flipped, `scripts/build.ps1`, exe copied to `local\p20d_<tag>`, `variant.txt` beside it; the OFF
+code paths of the later commits are the 236355ef9 ones). OFF exe `local\p20d_off`. Manifests beside each log.
+- **`kDogfightAvoidTimerDrawBound` ON.** USN04 12000 fr (`local\p20d_avt_usn04.log` vs `p20d_off_usn04.log`) and
+  JM02 24000 fr (`p20d_avt_jm02.log` vs `p20d_off_jm02.log`): gameplay identical, `redraws=0` on both rows
+  (3 / 5 fighters latch, never with the timer above 2.0; AvoidTime is {2, 3} in planeglobals.lua:418). The bytes'
+  draw on a keyed stream; flipped, unexercised.
+- **`kDogfightEarlyEdgeClearBound` ON.** USN04 (`p20d_ec_usn04.log`): pair_diff 3, `early edge clears=210`. Deaths
+  54 -> 53, 44 death rows moved from 90.80 s (A6M Zero #1.2|.-II), shots 13554 -> 9252, units 120 -> 81 (fewer
+  later spawns in 12000 frames). The fighters re-search instead of re-using a cached target after a failed gate.
+  Mechanism exercised; flipped.
+- **`kLandMinSpeedOwnerVelocityBound` ON.** USN01 p8_u1_i 30000 fr (`p20d_lms_usn01.log` vs `p20d_off_usn01.log`):
+  pair_diff 3, `owner terms=2332`; stows 17 -> 16, deaths 36 / 36 with 17 rows moved. ConTBD1 now flies land/final at
+  spd_cmd 51.3 m/s (the carrier's speed added; OFF about 35) and descends at about 11 m/s at pitch -0.22, and dies
+  at 609.82 s, alt 23, no damage, in land/final, where OFF it stowed (620.67 s). The term is the bytes and is
+  exercised; flipped. FLAG for the stow question: the final descent law takes world pitch while the closure on the
+  deck is speed - carrier speed, so a faster air speed steepens the path relative to the deck; check what in
+  009B1ED0 / 009B1F2C accounts for the moving deck before blaming this term.
