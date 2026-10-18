@@ -676,7 +676,7 @@ int binding_trampoline(lua_State* state) {
         || truly_dead_row
         || attack_alt_row
         || ready_row
-        || simplified_row || catapult_stock_row
+        || simplified_row || catapult_stock_row || num_catapulted_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || spawn_id_requested_row || spawn_id_remove_row
         || in_border_zone_row

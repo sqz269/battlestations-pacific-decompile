@@ -541,6 +541,41 @@ inline constexpr bool kLuaGetShipMaxSpeedBound = false;
 // with no slot pushes nothing and records UNIMPLEMENTED. False: an unimplemented
 // record that pushes nothing (jm01 / jm02 index the result and raise).
 inline constexpr bool kLuaGetDirectionBound = false;
+// Packet cc13-fix16 (docs/CC13_FIX16.md): six bomb-release natives, each its own
+// switch, all committed OFF. False leaves the native an unimplemented record that
+// pushes nothing, as before.
+// True: `PlaneForceRelease(plane)` 0089EBA0: 0089EC9F 00888AA0 on argument 0 (no
+// null or class test); 0089ECB6-0089ECC5 the step record byte
+// [plane + 8*word[00F876B8] + 9C0h] (007CDC70's 007B9140(plane, 0) of the previous
+// step); when set, 0089ECC9 007BBBA0 with ECX the plane. No result. The host takes
+// the byte live (kind 17h, or GameUnitsHost::plane_holds_rack_round_007b9140) and
+// calls GameUnitsHost::request_ordnance_release_007bbba0.
+inline constexpr bool kLuaPlaneForceReleaseBound = false;
+// True: `SquadronForceRelease(squadron)` 0089E850: 0089E950 00888AA0 on argument 0;
+// for each of the +3CCh members at +3D0h (slot > 4 reads null, 0089E977) the same
+// byte test and 007BBBA0 (0089E983-0089E9A0). No result. The host walks the
+// registry record's member_units (GetSquadronPlanes's lookup).
+inline constexpr bool kLuaSquadronForceReleaseBound = false;
+// True: `PilotBomb(unit, target)` 008A4F00: 008A4FFF 00888AA0 on argument 0,
+// 008A5034 0088A810 argument 1 as a command target; 008A504C 007ED880(unit, 0)
+// true gives dropkamikaze 00E08F30, else vtable[5Ch](10h) true gives levelbomb
+// 00E08F28, false divebomb 00E08F20; 008A507F 0077D600(unit, class, &target, 1).
+// No result. The host issues through entity_issue_command and installs the task
+// as PilotSetTarget does (install_pilot_attack_task_after_delivery).
+inline constexpr bool kLuaPilotBombBound = false;
+// True: `PlaneBombFallingTime(plane)` 008A54C0: 008A55C3 00888AA0 on argument 0;
+// 008A55D6 +C8h clear -> 00414DB0; 008A55E6 FLD [plane+100h] (world y), 008A55F2
+// 007BCC80(plane, y); 008A55FC FSTP float, 008A55FF 00B66480 PushFloat. One result.
+inline constexpr bool kLuaPlaneBombFallingTimeBound = false;
+// True: `PlaneReloadBombPlatforms(squadron)` 0089F080: 0089F17F 00888AA0 on
+// argument 0, 0089F198 007ED650 (each +3CCh member at +3D0h through 007C1D80, then
+// byte squadron+3ECh = 1). No result. The host rearms each member through
+// GameUnitsHost::plane_reload_bomb_platforms_007c1d80.
+inline constexpr bool kLuaPlaneReloadBombPlatformsBound = false;
+// True: `GetPlaneIsReloading(entity)` 008BEBE0: 008BECDF 00888AA0 on argument 0;
+// 008BED04 vtable[5Ch](0Fh) true -> 007B92E0 on the entity, else on [entity+3D0h]
+// when non-null; 008BED2A 00B66450 PushBoolean (0 when skipped). One result.
+inline constexpr bool kLuaGetPlaneIsReloadingBound = false;
 // Packet cc9_lua_mission_narrative (docs/MISSION_END.md, "The narrative queue").
 // True: MissionNarrative / MissionNarrativeEnqueue 008B0C10 enqueue (text,
 // callback, arguments) on [game+21E8h] (00734870), MissionNarrativeClear
@@ -942,6 +977,14 @@ private:
     // 008A4C90 PilotSetTarget. Resolves and reports; see the definition for why
     // it does not yet issue.
     int run_pilot_set_target(GameScriptOrderRow& row);
+    // Packet cc13-fix16: the receiver's side of PilotSetTarget, shared with
+    // PilotBomb. `label` names the native in the log lines.
+    void install_pilot_attack_task_after_delivery(std::size_t leader_index,
+        std::string leader_name, std::uint32_t chosen, bsp::SceneCommandTarget target,
+        std::size_t target_index, const char* label, unsigned long long& tasks);
+    // Packet cc13-fix16: the six bomb-release natives (docs/CC13_FIX16.md).
+    int run_bomb_release_native(GameScriptOrderRow& row, const char* name);
+    const bsp::PlaneSquadronHostRecord* squadron_record_for_argument(std::size_t index);
     int run_pilot_move_to_range(GameScriptOrderRow& row);
     // Packet cc9_pilot_move_to: set while PilotMoveTo runs the shared body.
     bool pilot_move_to_plain_{false};
@@ -1267,6 +1310,25 @@ private:
     std::size_t ship_max_speed_unresolved_{0};
     std::size_t direction_calls_{0};
     std::size_t direction_unresolved_{0};
+    // Packet cc13-fix16, per native: calls, requests or rearms made, unresolved.
+    std::size_t plane_force_release_calls_{0};
+    std::size_t plane_force_release_requests_{0};
+    std::size_t plane_force_release_unresolved_{0};
+    std::size_t squadron_force_release_calls_{0};
+    std::size_t squadron_force_release_requests_{0};
+    std::size_t squadron_force_release_unresolved_{0};
+    std::size_t pilot_bomb_calls_{0};
+    std::size_t pilot_bomb_issued_{0};
+    unsigned long long pilot_bomb_tasks_{0};
+    std::size_t pilot_bomb_unresolved_{0};
+    std::size_t bomb_falling_time_calls_{0};
+    std::size_t bomb_falling_time_unresolved_{0};
+    std::size_t reload_bomb_platforms_calls_{0};
+    std::size_t reload_bomb_platforms_racks_{0};
+    std::size_t reload_bomb_platforms_unresolved_{0};
+    std::size_t plane_is_reloading_calls_{0};
+    std::size_t plane_is_reloading_true_{0};
+    std::size_t plane_is_reloading_unresolved_{0};
     // Packet cc9_lua_mission_narrative: [game+21E8h]'s list +8h (00734870's
     // nodes: text +0Ch, callback +14h, arguments +1Ch) and the shown entry
     // +14h..+34h.

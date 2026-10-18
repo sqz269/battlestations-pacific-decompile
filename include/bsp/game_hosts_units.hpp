@@ -551,6 +551,20 @@ public:
     // answers 2Ah, and the flag-1 arm needs [00E17BF2], 0 in single player, so
     // this is squadron_ammo_type's per-plane rack test. False for a non-plane.
     bool plane_holds_rack_round_007b9140(std::size_t unit_index);
+    // Packet cc13-fix16 (docs/CC13_FIX16.md). 007B92E0, GetPlaneIsReloading's
+    // test: some rack's vtable[20Ch] (006E3570, no round left) answers. The
+    // per-rack count is the one plane_holds_rack_round_007b9140 reads. False
+    // for a unit without a slot.
+    bool plane_any_rack_empty_007b92e0(std::size_t unit_index);
+    // Packet cc13-fix16. 007C1D80 on one plane: every rack's 006E3410 rearm
+    // (reload countdown back to ReloadTime, the count back to the seeded
+    // orgAmmo, a refilled torpedo rack's kind-2Bh bit restored). Returns the
+    // racks changed, -1 for a unit without a slot.
+    int plane_reload_bomb_platforms_007c1d80(std::size_t unit_index);
+    // Packet cc13-fix16. 007BBBA0 BSP_Unit_RequestOrdnanceRelease on the unit,
+    // through the same release_ordnance_007bbba0 the bot tasks call (bay
+    // channel C, unit+C20h, the release stage's spawn). False without a slot.
+    bool request_ordnance_release_007bbba0(std::size_t unit_index);
     // Packet cc9_plane_scene_equipment: the slot's bag `Equipment` ([unit+C54h]
     // as 007CDF20 stores it), -1 when the unit's creator carried none.
     int plane_bag_equipment(std::size_t unit_index) const;

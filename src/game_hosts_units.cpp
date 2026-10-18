@@ -4292,6 +4292,95 @@ struct GameUnitsHost::Impl {
         return r.authored_ammo > 0;
     }
 
+    // One rack's answer to vtable[210h](2Ah, flag) as plane_holds_rack_round_007b9140
+    // takes it: the unseeded fallbacks below, then rack_holds_round. Shared by
+    // GetPlaneIsReloading's 007B92E0 (packet cc13-fix16), whose vtable[20Ch]
+    // 006E3570 is the same count read the other way (vtable[21Ch](2Ah) + ammo == 0).
+    bool plane_rack_holds_round(const GameUnitSlot& s, const PlaneOrdnanceRack& r) const {
+        // LABELLED: rack_holds_round's unseeded fallback is the DefaultEquipment
+        // Ammo. A scene squadron with no authored Equipment flies Equipments[1]
+        // (0094BD34), so a rack the default leaves empty (a Zero's, whose class
+        // has DefaultEquipment 0) takes that loadout's Ammo until the release
+        // issue seeds the host's own count.
+        PlaneOrdnanceRack g = r;
+        // With kPlaneSceneEquipmentBound and a carried index, authored_ammo is
+        // already the plane's own loadout and an empty one stays empty.
+        const bool own_index = bsp::kPlaneSceneEquipmentBound && s.bag_equipment >= 0;
+        if (g.authored_ammo < 0 && !own_index) g.authored_ammo = g.generator_ammo;
+        if constexpr (kRackConstructorRoundBound) {
+            // 006E3350 with +C54h <= 0: no loadout Ammo, the constructor's one
+            // round attached. LABELLED: only bag 0; a positive bag whose
+            // loadout has no entry for a rack also keeps the constructor's
+            // round in the image, but the release seed gives that rack none.
+            // The unread 006E33ED `[+C0h]+4 == 3` skip is taken as not met.
+            if (own_index && s.bag_equipment == 0 && g.authored_ammo < 0 && !g.multi)
+                g.authored_ammo = 1;
+        }
+        return rack_holds_round(s, g);
+    }
+
+    // Packet cc13-fix16: 007C1D80 BSP_Plane_ReloadBombPlatforms on one plane. It
+    // walks the device list (+48h, next +44h) and calls vtable[200h] on every
+    // device answering IsKindOf(25h). A single rack's slot is 006E3410
+    // (BSP_MBombPlatform_Rearm): +490h = +48Ch (the reload countdown back to
+    // ReloadTime), then ammo +484h = orgAmmo - 1 when vtable[210h](2Ah, 0) finds
+    // a round attached, else ammo = orgAmmo and the tail-jump vtable[224h]
+    // attaches the next one. In this host's terms (a rack's count includes the
+    // attached round, as rack_device_reload_slice_006e57a4 keeps it) both arms
+    // leave the rack holding orgAmmo rounds.
+    // SUBSTITUTIONS, labelled:
+    //  - orgAmmo is the value the host seeded the rack with (authored ? max(Ammo,
+    //    0) : 1), as the device reload slice and the issue seed take it.
+    //  - a plane whose racks the host has not seeded (rack_ammo < 0) holds every
+    //    authored round already, so only the countdowns are reset.
+    //  - no round entity is created (006E3E70 is not hosted), as in the slice.
+    //  - a multi rack (26h) keeps no per-round state here; rack_holds_round
+    //    answers its authored Ammo, which a reload does not change.
+    //  - the rocket racks' orx_rack_ammo (packet cc13-oprocket1) is not
+    //    restored: its seeded value is not kept apart from the count.
+    //  - a refilled torpedo rack (bullet class 2Bh) puts back the kind-2Bh bit
+    //    the gunnery host clears at a drop (game_hosts_gunnery.cpp, packet
+    //    cc8_torpedo_breakoff), since that bit is this host's stand-in for
+    //    the torpedo rack holding a round; 007B93F0 then answers again, as the
+    //    image's does once 006E3410 has refilled +484h.
+    // Returns the number of single racks whose count changed.
+    int plane_reload_bomb_platforms_007c1d80(GameUnitSlot& s) {
+        done("Plane::reload_bomb_platforms_007c1d80", 0x007c1d80u);
+        const std::size_t n = std::min(s.rack_reload_left_per_rack.size(),
+                                       s.rack_reload_time_per_rack.size());
+        for (std::size_t i = 0; i < n; ++i)
+            s.rack_reload_left_per_rack[i] = s.rack_reload_time_per_rack[i];   // 006E3419
+        if (s.rack_ammo < 0) return 0;
+        const bool authored = kDiveBombCarriedRoundsBound && s.rack_rounds_authored > 0;
+        int changed = 0;
+        bool torpedo_refilled = false;
+        const std::size_t m = std::min(s.rack_ammo_per_rack.size(),
+                                       s.rack_authored_per_rack.size());
+        for (std::size_t i = 0; i < m; ++i) {
+            const int a = s.rack_authored_per_rack[i];
+            const int org = authored ? (a > 0 ? a : 0) : 1;
+            if (org > 0 && i < s.rack_bullet_class_per_rack.size()
+                && s.rack_bullet_class_per_rack[i] == 0x2B) {
+                torpedo_refilled = true;
+            }
+            if (s.rack_ammo_per_rack[i] == org) continue;
+            s.rack_ammo += org - s.rack_ammo_per_rack[i];
+            s.rack_ammo_per_rack[i] = org;                                      // 006E3431 / 006E343B
+            ++changed;
+        }
+        // store_unit_ordnance's rule: an unequipped bag (0) carries no rack kind.
+        const bool unequipped = kRackUnequippedEmptyBound && bsp::kPlaneSceneEquipmentBound
+            && s.bag_equipment == 0;
+        if (torpedo_refilled && !unequipped) {
+            const std::uint64_t torpedo_bit = std::uint64_t(1) << (0x2B - 0x08);
+            if ((s.ordnance_mask & torpedo_bit) == 0) {
+                s.ordnance_mask |= torpedo_bit;
+                ++changed;
+            }
+        }
+        return changed;
+    }
+
     // 007EDAD0 BSP_PlaneSquadron_AmmoType (007EDAD0-007EDB7C, __fastcall(squadron),
     // RET): for each of the +3CCh planes at +3D0h, in turn 007B93F0 (2Bh) -> 2,
     // 007B94F0 (2Ch) -> 3, 007B9400 (33h) -> 4, 007B9500 (31h) -> 5, 007B93E0
@@ -18188,28 +18277,39 @@ bool GameUnitsHost::plane_holds_rack_round_007b9140(std::size_t unit_index) {
     // 007B915B-007B918F: the first part answering stops the walk.
     for (const PlaneOrdnanceRack& r : host.ordnance_racks(s)) {
         if (r.class_id == 0) continue;
-        // LABELLED: rack_holds_round's unseeded fallback is the DefaultEquipment
-        // Ammo. A scene squadron with no authored Equipment flies Equipments[1]
-        // (0094BD34), so a rack the default leaves empty (a Zero's, whose class
-        // has DefaultEquipment 0) takes that loadout's Ammo until the release
-        // issue seeds the host's own count.
-        PlaneOrdnanceRack g = r;
-        // With kPlaneSceneEquipmentBound and a carried index, authored_ammo is
-        // already the plane's own loadout and an empty one stays empty.
-        const bool own_index = bsp::kPlaneSceneEquipmentBound && s.bag_equipment >= 0;
-        if (g.authored_ammo < 0 && !own_index) g.authored_ammo = g.generator_ammo;
-        if constexpr (Impl::kRackConstructorRoundBound) {
-            // 006E3350 with +C54h <= 0: no loadout Ammo, the constructor's one
-            // round attached. LABELLED: only bag 0; a positive bag whose
-            // loadout has no entry for a rack also keeps the constructor's
-            // round in the image, but the release seed gives that rack none.
-            // The unread 006E33ED `[+C0h]+4 == 3` skip is taken as not met.
-            if (own_index && s.bag_equipment == 0 && g.authored_ammo < 0 && !g.multi)
-                g.authored_ammo = 1;
-        }
-        if (host.rack_holds_round(s, g)) return true;
+        if (host.plane_rack_holds_round(s, r)) return true;
     }
     return false;
+}
+
+bool GameUnitsHost::plane_any_rack_empty_007b92e0(std::size_t unit_index) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size() || !host.slots[unit_index]) return false;
+    GameUnitSlot& s = *host.slots[unit_index];
+    // 007B92E0-007B931A: the +994h racks at +974h in order, each asked
+    // vtable[20Ch]; the first true answers. 006E3570 (single rack) is
+    // vtable[21Ch](2Ah) + ammo +484h == 0, the negation of the round test
+    // plane_holds_rack_round_007b9140 makes per rack (same LABELLED counts).
+    // A rack whose projectile class the host could not read (class 0) is
+    // skipped, as plane_holds_rack_round_007b9140 skips it; the image asks it.
+    for (const PlaneOrdnanceRack& r : host.ordnance_racks(s)) {
+        if (r.class_id == 0) continue;
+        if (!host.plane_rack_holds_round(s, r)) return true;
+    }
+    return false;
+}
+
+int GameUnitsHost::plane_reload_bomb_platforms_007c1d80(std::size_t unit_index) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size() || !host.slots[unit_index]) return -1;
+    return host.plane_reload_bomb_platforms_007c1d80(*host.slots[unit_index]);
+}
+
+bool GameUnitsHost::request_ordnance_release_007bbba0(std::size_t unit_index) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size() || !host.slots[unit_index]) return false;
+    host.release_ordnance_007bbba0(*host.slots[unit_index]);
+    return true;
 }
 
 int GameUnitsHost::plane_bag_equipment(std::size_t unit_index) const {
