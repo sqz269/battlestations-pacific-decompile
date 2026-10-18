@@ -5915,6 +5915,21 @@ public:
                 }
             }
         }
+        if constexpr (kLuaArtilleryEnableBound) {
+            // Packet cc13-fix15: 0086258B reads director+220h for every unit
+            // with a bridge (00863A80 builds one for any unit whose
+            // vtable[114h] director exists, a LandFort's included: 00743E90).
+            // A ship already took the whole entry above; any other unit takes
+            // the artillery byte ArtilleryEnable (0071C231) left in its entry.
+            const bool ship_read = kShipDirectorEnablesBound
+                && owner_.units.unit_is_kind_of(unit_, 6);
+            if (!plane && !ship_read) {
+                if (const SceneDirectorEnables* e
+                        = scene_director_enables_find(owner_.unit_state[unit_].row.name)) {
+                    stance.artillery = e->artillery;
+                }
+            }
+        }
         if constexpr (kShipFireStanceBound) {
             // Packet cc9_ship_fire_stance: +3Ch and +3Dh as the last script stance
             // left them (0071BE80 -> 0071DA50 / 0071DAD0 -> 00836210 / 0071D5E0).
