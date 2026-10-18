@@ -261,7 +261,9 @@ public:
     virtual void* factory_vcall_04_load(void* factory, void* bot, void* archive) = 0;
     // entity->vtable[+34h](float* scratch), RET 4, EAX = the velocity vector.
     virtual const float* entity_vcall_34_velocity(void* entity, float* scratch) = 0;
-    // entity->vtable[+38h](), RET, ST0 (the value is discarded by 0099C527).
+    // entity->vtable[+38h](), RET, ST0 (the value is discarded by 0099C527). For a unit
+    // this is 007B8E60 BSP_Unit_GetCachedSpeed (FLD [ECX+B1Ch]), body
+    // native_plane_cached_speed_007b8e60; 009BA2F0 reads it as the speed.
     virtual float entity_vcall_38_float(void* entity) = 0;
     // 009BE3E0 BSP_BotStateFollow_WaitValue: __fastcall(ECX = follow state), ST0.
     virtual float bot_state_follow_wait_value_009be3e0(void* state) = 0;
@@ -607,9 +609,9 @@ public:
     // heading, float pitch), RET 8. Body: bot_set_direction_from_heading_pitch_009fabe0
     // (cc13_seg68.cpp).
     virtual void bot_set_direction_009fabe0(void* direction, float heading, float pitch) = 0;
-    // unit->vtable[38h](): __thiscall(ECX = unit), RET, ST0 = the unit's current speed.
-    virtual float unit_vcall_38_speed(void* unit) = 0;
-    // 007C4810 BSP_PlaneClass_MinControlSpeed: __thiscall(ECX = class), RET, ST0.
+    // 007C4810 BSP_PlaneClass_MinControlSpeed: __thiscall(ECX = class), RET, ST0. The
+    // law is plane_min_control_speed_007c4810 (dive_bomb_aimdive_tail.hpp): tuning+28Ch
+    // x class+184h StallSpd, rounded to float.
     virtual float plane_class_min_control_speed_007c4810(void* plane_class) = 0;
 };
 
