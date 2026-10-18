@@ -183,8 +183,10 @@ Adoption notes:
   cause at 00926CEB). Expiry kills from 0077A650 use cause 3 and skip it. On harm deaths, Lua
   that reads `LastBanto` would see nil in the host.
 - **0077FE80.** cc9 runs the 77h and 76h arms at their call sites, as labelled substitutions,
-  rather than through this switch. The MT_GIVEUNIT 53h arm (claim a player slot, report a new unit, and
-  in server mode broadcast and release from the group) and the MT_SETGUINAME 54h arm (SetGuiName, the receiver of 0077D3F0) are not hosted.
+  rather than through this switch. Two arms are not hosted:
+  - MT_GIVEUNIT 53h: claim a player slot, report a new unit, and in server mode broadcast
+    and release from the group;
+  - MT_SETGUINAME 54h: SetGuiName, the receiver of 0077D3F0.
 - **0077A080.** The new[] arrays are never freed here; the message's destructor owns them.
   The hooks in cc13_sweepB9, menu_screens_2 and options_seg56_cc13 can forward to this body.
 
@@ -193,7 +195,7 @@ Adoption notes:
 | Address | Name | ABI | Notes |
 | --- | --- | --- | --- |
 | 00780DB0 | BSP_MultiScore_Construct | thiscall(object; id) RET 4 | base 0077EED0, five vtables; creates the Lua globals `MultiScore` and `MultiScore_save`, each with subtables 0..7 |
-| 00641E30 | BSP_InGameHudMarkers_AddUnitPartMarkers | thiscall(markers; unit) RET 4 | projects the unit through 006395E0 and emits a four-corner box via 0063C620 (14 stack dwords) |
+| 00641E30 | BSP_InGameHudMarkers_AddUnitPartMarkers | thiscall(markers; unit) RET 4 | projects the unit through 006395E0 and emits a marker via 0063C620 (pkt642 contract: four corners, group 3, show 0, text_mode 1, text = name, unit null, colour = {a, b, a, d}) |
 
 Register and stack notes:
 
@@ -210,7 +212,8 @@ Adoption notes:
   `SceneContents::create_multi_score` as unimplemented.
   - This body is the replacement: the object fields, plus the two Lua tables that
     multiplayer scoring reads.
-  - Whether a single-player scene creates it was not checked here.
+  - A single-player scene never creates it: mission_scene_contents.cpp:128 calls
+    create_multi_score only when !single_player_layout && network_session_active().
   - Its callers are 004D4DF0 (scene contents) and 007813B0 (net table sync create).
 - **00641E30.** Not hosted, so there is no mismatch.
 
