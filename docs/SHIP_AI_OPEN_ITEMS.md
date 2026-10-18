@@ -19302,3 +19302,37 @@ with 90 death rows, 181 unit-table rows and 25295 shots on both sides. The nativ
 The only other moved line is `ship ai free: refills` 2455 -> 2394, the known avoidance-refill noise.
 **Flipped ON** by mechanism. With every site routed, the host's own `< 1.0` projection at 0071E200 is only the OFF
 arm, so no boundary fix is needed.
+
+## 292. Scene `traffic` block 009514B0 bound behind `kSceneTrafficBlockBound` (cc9-ships59, 2026-10-18)
+
+Lead queue item 3, from cc15. `read_traffic_block` (src/scene_traffic_groups.cpp, docs/SCENE_TRAFFIC_BLOCK.md) replaces
+the record stand-in `SceneContents::load_traffic_block` behind `kSceneTrafficBlockBound` (OFF,
+src/game_hosts_scene_contents.cpp).
+
+**Keyword.** The image peeks: 0046EB24 `CALL 008D8A70` (BSP_SceneTokenizer_PeekToken), then 0046EB32 `CALL 00438E10`
+against 00CE5890 "traffic", and 0046EB5B calls 009514B0 with the lexer still on the keyword. 009514B0 expects the
+keyword itself after the 009514B5 clear. scene_file.cpp's loop consumes it with next(), so a new
+`read_traffic_block_after_keyword` runs the clear and then the body from the `{` expect on, mirroring cc15's
+`read_browser_groups_after_keyword`. `read_traffic_block` keeps the keyword form and shares the body.
+
+**Host (`SceneTrafficRecorder`).** It keeps the records and resolves each template name through the loaded library's
+`LandVehicleclasses`, then `SoldierTypes` (0049D25A / 0049D2AC; case-insensitive). The following are counted only
+(LABELLED): the 00964790 class materialisation, the 004B1400 soldier arm, the 00951385 path-entity lookup (answered
+false; only 004A50D0 reads it) and the 004A5620 commit. **No traffic unit is created.** The spawner 004A50D0 is
+cc13's unwired `scene_traffic_runtime_construct_004a50d0` (cc13_left8b_seg8).
+
+**Predictions (written before the pair).** Gameplay-identical (exit 0/1) on USN01. The ON log adds one
+`scene traffic block:` line per authored block. The native table turns `SceneContents::load_traffic_block 009514b0`
+from unimplemented to concrete. OFF steps over the block's tokens one by one, and none of them is a scene-loop
+keyword (`entity`, `traffic`, `groups`, `SceneBrowserGroups`), so the loop ends in the same state either way.
+
+**Pair (JM05 12000, reference env; JM05 loads COTP-IJN/PRCPIJN/ijn_05_invasion_of_port_moresby.scn, 7 items).** USN01's
+block is empty (smoke `local\s59_trsmoke_u1.log`: 0 items, commits=1). OFF `local\s59_troff_j5.log` (tree exe at
+267e48677), ON `local\s59_tron_j5.log` (`local\s59_tr_on`). The ON log reads `scene traffic block: 7 items, 7
+templates (1 vehicle classes, 6 soldier types, 0 unresolved), 7 path lookups, commits=1 ... skipped=0 ok=1`.
+`pair_diff` exit 1: gameplay identical, with 34 death rows, 184 unit rows and 12415 shots on both sides, and the
+mission fails at 321.05 s both ways. Native table: `load_traffic_block` goes from unimplemented to concrete, and
+otherwise only the known sector-scan / clearance noise moves. **Flipped ON** as predicted. What remains is the
+spawner (004A5620 -> 004A50D0, cc13_left8b_seg8), which would put the authored jeeps, trucks and marines on their
+paths. Rows with traffic items: BSM01, BSM02, BSM10, USNRM01, USN07, USN11, USN20, JM01, JM05, JM12, PRCP02,
+PRCP08 (`local\s59_traffic_ids.py`).
