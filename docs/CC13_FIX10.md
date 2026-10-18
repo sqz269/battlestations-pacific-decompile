@@ -66,11 +66,13 @@ same sequence.
 2. **Admission.** `unit_active()` stands for wave 2's `+5Eh`/`+BDh` test.
 3. **Lists.** Only units of this host carry lists. A watched entity that is not a unit is
    counted `unresolved` and its trigger is not stored.
-4. **Target gone.** The `0074FFE0` observer is not kept, so a trigger watching a target unit
-   that is deleted keeps testing that unit's last pose. All of this installation's USN04/JM13
-   calls target NavPoints or buildings.
-5. **Other trigger kinds.** Line-of-sight (`008C9460`) and squad-ordnance (`008C9A10`) triggers
-   stay unbound. `RemoveTrigger` answers false for their names, where the image answers true.
+4. **Target gone.** Superseded by packet cc13-fix19 (`docs/CC13_FIX19.md`): the `0074FFE0`
+   observer is now modelled under this switch, fed from the host's Kill sites and drained at
+   the fan-out's row 15. All of this installation's USN04/JM13 calls target NavPoints or
+   buildings, so it changes nothing there.
+5. **Other trigger kinds.** Squad-ordnance (`008C9A10`) is bound by packet cc13-fix19 under its
+   own switch. Line-of-sight (`008C9460`) stays unbound (no faithful host ray cast), and
+   `RemoveTrigger` answers false for its names, where the image answers true.
 6. **x87 precision.** The host test assumes 24-bit precision control: each product and the sum
    round to float. The thread that runs wave-2 jobs is not established; under 53 bits the sum
    rounds once (`proximity_check_00750000` in `src/gameplay_seg41_cc13.cpp` models that). The
@@ -87,8 +89,13 @@ same sequence.
   `:422`, a building: a scene marker in this host). `:3251` watches the generated
   `Mission.IJNParatrooper` against `Mission.CC`, which is nil: every assignment (`:398`) is
   commented out. `0088A810` then reads `ID` from a nil argument through `00B67910`; whether
-  that raises a Lua error or yields nil (point arm, `00888760` on nil) is not established. The
-  host takes neither arm: it leaves the zero point with position_valid clear.
+  that raises a Lua error or yields nil is not established. If it yields nil, the point arm
+  runs `00888760` on the nil argument. Its key loop finds no `x`/`y`/`z`, so it initialises
+  nothing and copies its own uninitialised locals to the output (`0088884E`..`0088885D`;
+  packet cc13-fix19). The image's target is then uninitialised stack with position_valid 1:
+  an indeterminate point. The
+  host leaves the zero point with position_valid clear. That zero point stands in for an
+  indeterminate value; it is not the image's value.
 - The callbacks take a global name. `00887E50` also splits dotted names into table lookups; the
   listener path this host reuses does not, and no USN04/JM13 call uses a dotted name.
 

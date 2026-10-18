@@ -229,7 +229,7 @@ inline constexpr bool kDirectorOverrideLayerBound =
 // flags 7, the 5Dh clear with +20h = 0 that 00721A40 answers with 0071E610. True: the
 // push reads +188h and the clear goes through the loopback like every 5Dh. False:
 // +188h answers 0 to the push, so an attack order leaves an AutoTarget override on.
-inline constexpr bool kAttackPushEndsOverrideBound = false;
+inline constexpr bool kAttackPushEndsOverrideBound = true;   // ON: SHIP_AI 276 (faithful; no reach on USNOS / USN13)
 // Packet s57_follow_join (docs/CC13_VERIFY6.md R2, SHIP_AI_OPEN_ITEMS 278). The scene
 // command `follow` arm 00816EA6: 00521EA0, then the target's IsKindOf(2) at 00816ECA,
 // then 00816ED5 0077C8D0 (RequestJoinFormation) on this unit with that target. True:
@@ -243,7 +243,7 @@ inline constexpr bool kSceneFollowJoinBound = true;   // ON: SHIP_AI 278 (mechan
 // when the unit lies strictly ahead of the nearest point along that leg (007B1263..
 // 007B1303). True: the moveonpath build (0071F600) uses that answer. False: the
 // nearest point alone, so a ship already past it turns back to it first.
-inline constexpr bool kPathJoinProjectionBound = false;
+inline constexpr bool kPathJoinProjectionBound = true;   // ON: SHIP_AI 279 (faithful; identical on JM08 / USN04)
 
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.

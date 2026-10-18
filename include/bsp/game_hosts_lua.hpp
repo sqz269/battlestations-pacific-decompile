@@ -466,12 +466,37 @@ inline constexpr bool kLuaSetCrewLevelBound = false;  // OFF: committed unpaired
 // that name (0074FBB0, _stricmp) and pushes whether any matched.
 // True: both rows run here, and run_proximity_triggers_008759b0 walks the lists once
 // per fixed step after the motion step (game_hosts_mission_frame.cpp).
+// Packet cc13-fix19 (docs/CC13_FIX19.md) adds the target-gone observer under this
+// switch: 0074FEE0 registers it (00694A60) for every entity target, so the image has
+// it whenever such a trigger exists. The observer's slot +4h (0074FFE0, adjustor
+// table 00D00568) is reached only by the kill list's pass K (009273A0 row 15,
+// 009274DE..00927510 -> 00696330); slot +8h, the destroy-list notice (00925C90), is
+// 0042B120, a bare RET 4. So a target that is Killed (00926D90) retires the trigger
+// silently through vtable[10h] at row 15, after that step's wave-2 walk; a target
+// destroyed by damage does not, until its wreck's KillDepth Kill.
 // SUBSTITUTIONS (labelled at the code): host units only carry lists; unit_active()
-// stands for wave 2's +5Eh/+BDh admission; the target-gone observer (0074FFE0) and
-// 00887E50's queued arm are not modelled; the line-of-sight and squad-ordnance
-// triggers stay unbound, so RemoveTrigger answers false for their names.
+// stands for wave 2's +5Eh/+BDh admission; 00887E50's queued arm is not modelled;
+// the observer is fed from the host's Kill sites only (target_gone_00925c40); the
+// line-of-sight trigger stays unbound, so RemoveTrigger answers false for its names.
 // False: both rows stay UNIMPLEMENTED and push nothing, and nothing is walked.
 inline constexpr bool kLuaProximityTriggersBound = false;  // OFF: committed for a USN04 pair
+// Packet cc13-fix19 (docs/CC13_FIX19.md). 008C9A10
+// AddSquadOrdnanceDroppedTrigger(entity, name?, callback): 00750660 makes a 34h trigger
+// (vtable 00D005C0, +11h = 1, +18h = 2), 00750790 stores the name and callback, and
+// the entity's list (vtable[60h]) takes it through 0074FAB0 -> vtable[4h] 007504C0:
+// 00876020, then +30h = element+28h (the entity). Wave 2 runs 007504F0 each fixed
+// step: +30h null retires it silently; otherwise 007ED790(ECX = +30h, 0) asks every
+// member (+3D0h, count +3CCh) 007B9140(member, 0) (kind 17h answers true; else a rack
+// holding a kind-2Ah round), and when none can drop, 0074FDD0 calls the Lua
+// callback(entity, name or nil) and retires the trigger: one-shot. No float math,
+// no RNG. RemoveTrigger (0074FBB0) retires it by name like any Lua trigger.
+// True: the row runs here, the trigger joins the unit's list that
+// run_proximity_triggers_008759b0 walks, and RemoveTrigger is bound and matches it.
+// SUBSTITUTIONS (labelled at the code): the entity must be a squadron of the
+// host's registry; its live members (registry members the gunnery host does not
+// count dead) stand for +3D0h/+3CCh; a squadron with none is not tested.
+// False: the row stays UNIMPLEMENTED and pushes nothing.
+inline constexpr bool kLuaSquadOrdnanceDroppedTriggerBound = false;  // OFF: new, unpaired
 inline constexpr bool kLuaSetShipSpeedBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_unit_get_attack_target (docs/LUA_BINDING_MISSION.md, "UnitGetAttackTarget,
@@ -1032,6 +1057,12 @@ struct GameMissionLuaSummary {
     unsigned long long proximity_trigger_callback_missing{0};
     unsigned long long remove_trigger_calls{0};
     unsigned long long remove_trigger_matched{0};
+    unsigned long long target_gone_notices{0};             // packet cc13-fix19
+    unsigned long long target_gone_retired{0};
+    unsigned long long ordnance_trigger_adds{0};
+    unsigned long long ordnance_trigger_unresolved{0};
+    unsigned long long ordnance_trigger_checks{0};
+    unsigned long long ordnance_trigger_fires{0};
     unsigned long long listener_kill_dead_first{0};          // packet cc13-ver5
     unsigned long long listener_kill_not_harm{0};            // packet cc13-ver8
     unsigned long long listener_kill_grace{0};               // packet cc13-ver8
@@ -1758,6 +1789,15 @@ public:
     // Wave 2's sub-list walk (00875B90 -> 008759B0) over the proximity triggers;
     // the mission frame calls it once per fixed step, after the motion step.
     void run_proximity_triggers_008759b0(float step);
+    // Packet cc13-fix19, under kLuaSquadOrdnanceDroppedTriggerBound.
+    int run_add_squad_ordnance_dropped_trigger_008c9a10(lua_State* state, int argument_count);
+    // Packet cc13-fix19, under kLuaProximityTriggersBound: a Kill of unit `unit_index`
+    // reached the kill list (00926D90); its pass-K observer notice (00925C40 inlined
+    // at 009274DE) is queued for target_gone_drain_009273a0.
+    void target_gone_00925c40(std::size_t unit_index);
+    // Row 15 (009273A0) of the fixed-step fan-out: each queued unit's notice runs
+    // 0074FFE0 on every trigger whose entity target it is.
+    void target_gone_drain_009273a0();
     // Packet cc9_unit_get_attack_target, under kLuaUnitGetAttackTargetBound.
     int run_unit_get_attack_target_008a6de0(lua_State* state, int argument_count);
     // Packet cc9_squadron_set_speed, under kLuaSquadronSetSpeedBound.
@@ -2067,6 +2107,11 @@ private:
     // Packet cc13-fix10: one 0074FEE0 trigger, the fields 00750000, 0074FDD0 and
     // 0074FBB0 read, under the image offsets.
     struct ProximityTrigger {
+        // Packet cc13-fix19: the record's vtable. 00D00580 = proximity (check
+        // 00750000), 00D005C0 = squad ordnance dropped (check 007504F0); both
+        // share the Lua trigger base fields below (+10h..+28h).
+        enum class Kind : std::uint8_t { Proximity, SquadOrdnanceDropped };
+        Kind kind{Kind::Proximity};
         std::string name_1c;
         bool named_24{false};
         std::string callback_28;
@@ -2081,6 +2126,11 @@ private:
     // Each watched unit's sub-list, in 00876020's order (all priority 2: appended).
     std::map<std::size_t, std::list<ProximityTrigger>> proximity_triggers_;
     void check_proximity_trigger_00750000(std::size_t unit, ProximityTrigger& trigger);
+    // Packet cc13-fix19.
+    void check_squad_ordnance_trigger_007504f0(std::size_t unit, ProximityTrigger& trigger);
+    void fire_lua_trigger_0074fdd0(std::size_t unit, ProximityTrigger& trigger);
+    std::vector<std::size_t> target_gone_pending_;   // the kill list's notices, FIFO
+    std::vector<bool> target_gone_notified_;         // +5Eh: pass K ran (00926D90 idempotence)
     // Packet cc13-ver8: the cause this host's Lua Kill (008AC5C0) passed, per unit; the
     // gunnery funnel does not keep it.
     std::map<std::size_t, int> lua_kill_cause_;
