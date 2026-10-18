@@ -12,7 +12,9 @@ symbols. Nothing here is wired.
 |---|---|---|
 | In the struck range 0081B000-0081EFFF (seg51) | 22 | Not touched |
 | Template bodies | 88 | Tagged `stl_shape`, `reviewed`, evidence `sys6_shape` |
-| Game code | 23 | See below |
+| Game code, reconstructed | 7 | `src/cc13_segmix.cpp`, build-tested (cc13-segmixB) |
+| Game code, cc9-hosted (verify-and-record) | 1 | Recorded with a verdict |
+| Game code, not done yet | 15 | Following commits |
 
 ## Template bodies (cc13-segmixA)
 
@@ -50,10 +52,54 @@ and `cc13_bigB1`. Those hooks are bind-only, which matches the tag.
 
 ## Game code
 
-To be filled by the following commits.
+### Segment 42: the mother ship (cc13-segmixB)
+
+The bodies are in `src/cc13_segmix.cpp` (Cc13SegmixHost). They were
+transcribed from disk bytes and are build-tested and unwired.
+
+| Address | Name | ABI | Body |
+|---|---|---|---|
+| 00759020 | BSP_SessionMessage_MOTHERSHIP_CREATE_Destruct | thiscall(message) | vtables 00D0189C / 00CF8EB8, frees the +148h and +138h vectors, JMP 0080E380 |
+| 007590E0 | BSP_SessionMessage_MOTHERSHIP_CREATE_Write | thiscall(message; writer), RET 4 | 00813B10, then 006D44F0 on +12Ch |
+| 007592A0 | BSP_SessionMessage_MOTHERSHIP_CREATE_Construct | thiscall(message; word, ship), RET 8 | 00813A20(word, ship, 8Bh), the snapshot fields, 006CC800(+12Ch, ship+1188h or 0) |
+| 00759330 | BSP_MotherShip_SendCreateMessage | thiscall(ship; peer), RET 4 | a 154h-byte message on the stack, 00779FC0, then 00759020 |
+| 007593D0 | BSP_MotherShip_InitAll | thiscall(ship) | see below |
+| 00759920 | BSP_SessionMessage_LANDINGSHIP_CREATE_ConstructForRead | fastcall(message) | 0080E2C0, words +12Ch/+12Eh = 0, vtable 00CFF8E8 |
+| 00766EF0 | BSP_SessionMessage_MOTHERSHIP_CREATE_ConstructForRead | fastcall(message) | 0080E2C0, vtable 00D0189C, the snapshot fields |
+
+What 007593D0 does, in order:
+1. It runs the unit init (00822C20).
+2. It finds the "elevator_2" note node (0071AD50) into +1284h and copies the
+   node's local matrix into +1288h (00B6DB60, 004134F0). The node is not
+   null-checked.
+3. It builds the air-ops block at +1188h:
+   - 006C0D20 takes class +814h..+81Ch, +820h and +824h;
+   - 006CADD0 takes [ship+C0h];
+   - block+3Ch is set to the site from 006D0A10 (the trivial 006BA690 is inlined).
+4. For a saved entity ([+C0h]+4h == 3), it reads the saved Lua data:
+   - "_airBase" feeds 006BEF30, the traffic table;
+   - "_motherShip" is entered and left with nothing read.
+5. It ticks the block with dt 0 (006BA670) and sets +11A8h to 1.
+
+cc9 hosts part of this as semantics, without the function itself:
+- the 006CADD0 mode-1 deck build for motherships (`game_hosts_scene_contents.cpp`
+  ~2205);
+- the mother-ship landing-deck holder (`game_hosts_units.cpp` ~2902).
+
+This packet makes no mismatch claim against those.
+
+Verify-and-record:
+
+| Address | Name | Host | Verdict |
+|---|---|---|---|
+| 00758FE0 | BSP_MotherShip_DetachFromWorldLists | `game_hosts_units.cpp` `world_lists_unlink_unit_00928f24` (~3282) | Matches. The image runs 006DFFC0 and then erases the first node whose payload is the ship from the class list [ship+30h]+84h (004837D0). The host erases the first matching node of every world list, which is the same set. |
 
 ## Files
 
 - 88 tag rows in `config/tags/006b0000`, `006c0000`, `00730000`, `00740000`,
   `00750000`, `00760000`, `007b0000`, `00810000`, `00870000` and
   `008e0000.jsonl`.
+- `include/bsp/cc13_segmix.hpp` and `src/cc13_segmix.cpp`, registered in
+  `cmake/startup.cmake` (bsp_core).
+- 8 function records in `config/reconstruction/00750000` and `00760000.jsonl`:
+  7 bodies and 1 verify-and-record.
