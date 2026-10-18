@@ -1929,8 +1929,8 @@ void bot_task_level_bomb_destruct_body_009b8e80(Cc13Seg67bHost& host, void* task
 void* bot_task_level_bomb_construct_from_stream_009b8ee0(Cc13Seg67bHost& host, void* task,
                                                          void* bot, void* archive) {
     bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 4);
-    host.level_bomb_construct_approach_block_from_stream_009b77c0(ptr(task, 0x3F8), bot,
-                                                                  archive);
+    bot_task_level_bomb_construct_approach_block_from_stream_009b77c0(host, ptr(task, 0x3F8),
+                                                                      bot, archive);
     at<std::uint32_t>(task, 0x000) = kLevelBombTaskVtable;
     at<std::uint32_t>(task, 0x3F8) = kLevelBombApproachVtable;
     at<std::uint32_t>(task, 0x4D4) = kLevelBombRegistryVtable;
@@ -1973,8 +1973,8 @@ void bot_task_move_on_path_destroy_009bd9d0(Cc13Seg67bHost& host, void* task) {
 void* bot_task_move_on_path_construct_from_stream_009bda30(Cc13Seg67bHost& host, void* task,
                                                            void* bot, void* archive) {
     bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 6);
-    host.move_on_path_construct_with_states_from_stream_009bcd50(ptr(task, 0x3F8), bot,
-                                                                 archive);
+    bot_task_move_on_path_construct_approach_block_from_stream_009bcd50(host, ptr(task, 0x3F8), bot,
+                                                                        archive);
     at<std::uint32_t>(task, 0x000) = kMoveOnPathTaskVtable;
     at<std::uint32_t>(task, 0x3F8) = kMoveOnPathApproachVtable;
     at<std::uint32_t>(task, 0x438) = kMoveOnPathRegistryVtable;
@@ -2722,6 +2722,115 @@ void bot_approach_move_to_save_009c33d0(Cc13Seg67bHost& host, void* a, void* arc
                                 record(5, reinterpret_cast<std::uintptr_t>(ptr(a, 0x48))));
     host.archive_vcall_0c_write(archive, name_record(kStrTargetEntity_00d04f30),
                                 record(4, at<std::uint32_t>(a, 0x44)));
+}
+
+// ---------------------------------------------------------------------------
+// The move-on-path approach block from a stream.
+
+namespace {
+constexpr std::uint32_t kMoveOnPathBlockVtable_00d208f8 = 0x00D208F8u;
+constexpr std::uint32_t kMoveOnPathRegistryVtable_00d208f4 = 0x00D208F4u;
+constexpr std::uint32_t kMoveOnPathStateVtable_00d208bc = 0x00D208BCu;
+constexpr std::uint32_t kStrPathPath_00d20860 = 0x00D20860u;    // "path (path)"
+constexpr std::uint32_t kStrPathFollow_00d20850 = 0x00D20850u;  // "follow (path)"
+constexpr std::uint32_t kStrPathCircle_00d20840 = 0x00D20840u;  // "circle (path)"
+}  // namespace
+
+// 009BCD50 (009BCD50-009BCE2B). EH frame 00CAF5D7. 009BC7E0(ECX = block,
+// [bot+50h], archive) (009BCD7F); 00411E20(block+40h) (009BCD8F); [block] =
+// 00D208F8, [block+40h] = 00D208F4 (009BCD97, 009BCD9D); the inline state at
+// +54h: +58h = block, +60h/+64h/+68h/+5Ch = 0, [+54h] = 00D208BC (009BCDA3-
+// 009BCDB2); 009C2980(ECX = block+6Ch, block, [00CE3D08] 100.0) (009BCDCD);
+// 009BC960(ECX = block+104h, block) (009BCDDE); 00411E70(block+40h, name, state)
+// for "path (path)" +54h, "follow (path)" +6Ch and "circle (path)" +104h
+// (009BCDF0, 009BCDFD, 009BCE10). RET 8, EAX = block.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_move_on_path_construct_approach_block_from_stream_009bcd50(Cc13Seg67bHost& host,
+                                                                          void* block, void* bot,
+                                                                          void* archive) {
+    bot_approach_move_on_path_construct_from_stream_009bc7e0(host, block, ptr_at(bot, 0x50),
+                                                             archive);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0x40));
+    at<std::uint32_t>(block, 0x00) = kMoveOnPathBlockVtable_00d208f8;
+    at<std::uint32_t>(block, 0x40) = kMoveOnPathRegistryVtable_00d208f4;
+    at<std::uintptr_t>(block, 0x58) = reinterpret_cast<std::uintptr_t>(block);
+    at<std::uint32_t>(block, 0x60) = 0;
+    at<std::uint32_t>(block, 0x64) = 0;
+    at<std::uint32_t>(block, 0x68) = 0;
+    at<std::uint32_t>(block, 0x5C) = 0;
+    at<std::uint32_t>(block, 0x54) = kMoveOnPathStateVtable_00d208bc;
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x6C), block, kHundred_00ce3d08);
+    bot_state_move_on_path_circle_construct_009bc960(host, ptr(block, 0x104), block);
+    host.state_registry_add_00411e70(ptr(block, 0x40), kStrPathPath_00d20860, ptr(block, 0x54));
+    host.state_registry_add_00411e70(ptr(block, 0x40), kStrPathFollow_00d20850, ptr(block, 0x6C));
+    host.state_registry_add_00411e70(ptr(block, 0x40), kStrPathCircle_00d20840, ptr(block, 0x104));
+    return block;
+}
+
+namespace {
+constexpr std::uint32_t kLevelBombBlockVtable_00d20204 = 0x00D20204u;
+constexpr std::uint32_t kLevelBombRegistryVtable_00d20200 = 0x00D20200u;
+constexpr std::uint32_t kLevelBombAimVtable_00d2015c = 0x00D2015Cu;
+constexpr std::uint32_t kLevelBombPrepareVtable_00d201a0 = 0x00D201A0u;
+constexpr std::uint32_t kLevelBombReleaseVtable_00d20140 = 0x00D20140u;
+constexpr std::uint32_t kLevelBombGoAwayVtable_00d2011c = 0x00D2011Cu;
+}  // namespace
+
+// 009B77C0 (009B77C0-009B7967). EH frame 00CAEFC8. 009B4690(ECX = block, [bot+50h],
+// archive) (009B77ED); 00411E20(block+DCh) (009B7800); [block] = 00D20204,
+// [block+DCh] = 00D20200 (009B7817, 009B781D); 00BD4FE0(archive, outgoing block,
+// "_state_moveTo") (009B7834) and 009B7480(ECX = block+F0h, block, that block by
+// value) (009B7840); 009C2980(ECX = block+13Ch, block, 100.0) (009B785B);
+// 009B49B0(ECX = block+1D4h, block) (009B786C). Inline state +1FCh: +200h =
+// block, +208h/+20Ch/+210h/+204h = 0, vtable 00D2015C, bytes +215h/+214h = 0
+// (009B7871-009B789F). 009C2980(ECX = block+218h, block, 100.0) (009B78BD), then
+// [+218h] = 00D201A0, byte +2B8h = 0, +2B0h = [00D7A260] -1.0 (009B78C2-009B78D6).
+// Inline state +2BCh: +2C0h = block, +2C8h/+2CCh/+2D0h/+2C4h = 0, vtable 00D20140
+// (009B78DE-009B78FC). Inline state +2E0h: +2E4h = block, +2ECh/+2F0h/+2F4h/+2E8h
+// = 0, vtable 00D2011C, +2F8h = float(2 x [[+2E4h]+8]+268h) (009B7906-009B793F,
+// FADD ST0, ST0). 009B42D0(block) (009B794C). RET 8, EAX = block.
+// The state names are the 009B42D0 registrations (LevelBomb/aim, /prepare,
+// /release, /goaway). UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_level_bomb_construct_approach_block_from_stream_009b77c0(Cc13Seg67bHost& host,
+                                                                        void* block, void* bot,
+                                                                        void* archive) {
+    host.bot_approach_level_bomb_construct_from_stream_009b4690(block, ptr_at(bot, 0x50), archive);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xDC));
+    at<std::uint32_t>(block, 0x000) = kLevelBombBlockVtable_00d20204;
+    at<std::uint32_t>(block, 0x0DC) = kLevelBombRegistryVtable_00d20200;
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrStateMoveTo));
+    bot_state_level_bomb_run_construct_from_stream_009b7480(host, ptr(block, 0xF0), block, ref);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x13C), block, kHundred_00ce3d08);
+    bot_state_level_bomb_attack_run_construct_009b49b0(host, ptr(block, 0x1D4), block);
+    at<std::uintptr_t>(block, 0x200) = reinterpret_cast<std::uintptr_t>(block);
+    at<std::uint32_t>(block, 0x208) = 0;
+    at<std::uint32_t>(block, 0x20C) = 0;
+    at<std::uint32_t>(block, 0x210) = 0;
+    at<std::uint32_t>(block, 0x204) = 0;
+    at<std::uint32_t>(block, 0x1FC) = kLevelBombAimVtable_00d2015c;
+    at<std::uint8_t>(block, 0x215) = 0;
+    at<std::uint8_t>(block, 0x214) = 0;
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x218), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x218) = kLevelBombPrepareVtable_00d201a0;
+    at<std::uint8_t>(block, 0x2B8) = 0;
+    at<float>(block, 0x2B0) = kMinusOne_00d7a260_f;
+    at<std::uintptr_t>(block, 0x2C0) = reinterpret_cast<std::uintptr_t>(block);
+    at<std::uint32_t>(block, 0x2C8) = 0;
+    at<std::uint32_t>(block, 0x2CC) = 0;
+    at<std::uint32_t>(block, 0x2D0) = 0;
+    at<std::uint32_t>(block, 0x2C4) = 0;
+    at<std::uint32_t>(block, 0x2BC) = kLevelBombReleaseVtable_00d20140;
+    at<std::uintptr_t>(block, 0x2E4) = reinterpret_cast<std::uintptr_t>(block);
+    at<std::uint32_t>(block, 0x2EC) = 0;
+    at<std::uint32_t>(block, 0x2F0) = 0;
+    at<std::uint32_t>(block, 0x2F4) = 0;
+    at<std::uint32_t>(block, 0x2E8) = 0;
+    at<std::uint32_t>(block, 0x2E0) = kLevelBombGoAwayVtable_00d2011c;
+    const float turn = at<float>(ptr_at(ptr_at(block, 0x2E4), 0x08), 0x268);
+    at<float>(block, 0x2F8) = turn + turn;
+    bot_task_level_bomb_register_state_names_009b42d0(host, block);
+    return block;
 }
 
 }  // namespace bsp

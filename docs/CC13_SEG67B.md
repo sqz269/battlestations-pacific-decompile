@@ -309,3 +309,12 @@ Ledger-only (existing implementations, spot-checked against the bytes): 009B4400
 | 009C1DC0 / 009C33D0 | move-to approach construct-from-stream and save | keys altOffset, closingComplete, _updateTrgPosTimer, closingTime, targetpos and targetentity; the stream constructor draws -U(0, 1) into +58h from the shared RNG and reads targetentity into its own argument's stack slot |
 
 009C2EF0 now calls the 009C1DC0 body directly. 009E7F60 is a std::list node allocation (library, bind-only).
+
+### 3.18 Move-on-path and level-bomb approach blocks from a stream
+
+| Address | Function | Notes |
+|---|---|---|
+| 009BCD50 | move-on-path approach block from a stream | registers path, follow and circle (path) at +40h |
+| 009B77C0 | level-bomb approach block from a stream | builds the seven level-bomb states and registers them through 009B42D0; go-away +2F8h is twice the class turn radius |
+
+The move-on-path and level-bomb task stream constructors now call these bodies directly rather than through host hooks.
