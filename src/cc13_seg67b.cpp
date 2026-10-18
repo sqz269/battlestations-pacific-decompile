@@ -3204,8 +3204,8 @@ void drop_kamikaze_block_tail(Cc13Seg67bHost& host, void* block) {
 void* bot_task_drop_kamikaze_construct_approach_block_from_stream_009ad920(Cc13Seg67bHost& host,
                                                                            void* block, void* bot,
                                                                            void* archive) {
-    host.bot_approach_drop_kamikaze_construct_base_from_bag_009abbe0(block, ptr_at(bot, 0x50),
-                                                                     archive);
+    bot_approach_drop_kamikaze_construct_base_from_bag_009abbe0(host, block, ptr_at(bot, 0x50),
+                                                                archive);
     host.bot_state_registry_construct_00411e20(ptr(block, 0xC4));
     at<std::uint32_t>(block, 0x000) = kDropKamikazeBlockVtable_00d1fc60;
     at<std::uint32_t>(block, 0x0C4) = kDropKamikazeRegistryVtable_00d1fc5c;
@@ -3985,6 +3985,52 @@ void* bot_approach_dogfight_construct_009a6c10(Cc13Seg67bHost& host, void* appro
     at<std::uint8_t>(approach, 0xD0) = 0;
     at<float>(approach, 0xE8) = kNinetyNine_00d059a0;
     host.approach_target_ref_reset_aim_offset_009fa350(ptr(approach, 0x2C));
+    return approach;
+}
+
+// ---------------------------------------------------------------------------
+// The drop-kamikaze approach base from a stream.
+
+namespace {
+constexpr std::uint32_t kDropKamikazeApproachVtable_00d1fb00 = 0x00D1FB00u;
+constexpr std::uint32_t kStrTargetLockPlain_00d1fb5c = 0x00D1FB5Cu;   // "targetLock"
+constexpr std::uint32_t kStrStartDist_00d1fb50 = 0x00D1FB50u;         // "startDist"
+constexpr std::uint32_t kStrAttackDist_00d1fb44 = 0x00D1FB44u;        // "attackDist"
+constexpr std::uint32_t kStrTargetDist_00d1fb38 = 0x00D1FB38u;        // "targetDist"
+constexpr std::uint32_t kStrInsideAttackRange_00d1fb24 = 0x00D1FB24u; // "insideAttackRange"
+constexpr std::uint32_t kStrTargetHdg_00d1fb18 = 0x00D1FB18u;         // "targetHdg"
+constexpr std::uint32_t kStrCurrentAvoidFlag_00d1fb04 = 0x00D1FB04u;  // "currentAvoidFlag"
+}  // namespace
+
+// 009ABBE0 (BSP_BotApproachDropKamikaze_ConstructBaseFromBag): __thiscall(ECX = approach,
+// plane, archive), RET 8, EAX = approach. Evidence (disk bytes): 009F9CE0(ECX = approach,
+// plane, tuning+458h) (009ABBFE-009ABC14); vtable 00D1FB00, +2Ch = 0 (009ABC2F-
+// 009ABC35); 00BD4FE0(ECX = archive, the outgoing block, {0,"targetLock"}) (009ABC4C);
+// 009FB3E0(ECX = approach+30h, that block by value) (009ABC54); +A4h = desc+18Ch (desc =
+// [approach+8]), +A8h = [00CFD714] 1200.0 (009ABC59-009ABC73); archive vtable[10h] reads
+// {0,"startDist"} <- {2, &+ACh} (009ABCB5), {0,"attackDist"} <- {2, &+B0h} (009ABCEC),
+// {0,"targetDist"} <- {2, &+B4h} (009ABD23), {0,"insideAttackRange"} <- {3, &+C0h}
+// (009ABD5A), {0,"targetHdg"} <- {2, &+B8h} (009ABD91), {0,"currentAvoidFlag"} <- {1,
+// &+BCh} (009ABDC8).
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_approach_drop_kamikaze_construct_base_from_bag_009abbe0(Cc13Seg67bHost& host,
+                                                                  void* approach, void* plane,
+                                                                  void* archive) {
+    const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x458);
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, plane, speed);
+    at<std::uint32_t>(approach, 0x00) = kDropKamikazeApproachVtable_00d1fb00;
+    at<std::uint32_t>(approach, 0x2C) = 0;
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrTargetLockPlain_00d1fb5c));
+    host.approach_ref_construct_from_stream_009fb3e0(ptr(approach, 0x30), ref);
+    at<float>(approach, 0xA4) = at<float>(ptr_at(approach, 0x8), 0x18C);
+    at<float>(approach, 0xA8) = kTwelveHundred_00cfd714;
+    read_field(host, archive, kStrStartDist_00d1fb50, 2, ptr(approach, 0xAC));
+    read_field(host, archive, kStrAttackDist_00d1fb44, 2, ptr(approach, 0xB0));
+    read_field(host, archive, kStrTargetDist_00d1fb38, 2, ptr(approach, 0xB4));
+    read_field(host, archive, kStrInsideAttackRange_00d1fb24, 3, ptr(approach, 0xC0));
+    read_field(host, archive, kStrTargetHdg_00d1fb18, 2, ptr(approach, 0xB8));
+    read_field(host, archive, kStrCurrentAvoidFlag_00d1fb04, 1, ptr(approach, 0xBC));
     return approach;
 }
 

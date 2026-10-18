@@ -437,3 +437,7 @@ It then copies the plane's position into +D0h..+D8h and calls the aim-error redr
 ### 3.32 Drop-kamikaze approach base (existing implementation)
 
 009ABAB0 stays a host hook. It already has an implementation, drop_kamikaze_approach_seed_009abab0 in src/kamikaze_task_cc13.cpp, recorded by cc13-backfill as an existing implementation with a minor deviation.
+
+### 3.33 Drop-kamikaze approach base from a stream
+
+009ABBE0 is the stream twin of 009ABAB0. It opens the target reference from {0,"targetLock"}, sets +A4h = TravelSpeed and +A8h = 1200.0, then reads six fields: startDist +ACh, attackDist +B0h, targetDist +B4h, insideAttackRange (byte) +C0h, targetHdg +B8h and currentAvoidFlag (dword) +BCh. 009AD920 now calls it directly.
