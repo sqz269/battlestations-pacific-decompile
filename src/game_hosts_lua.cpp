@@ -14,6 +14,7 @@
 #include "bsp/lua_exec_guard.hpp"
 #include "bsp/kamikaze_task_host.hpp"   // packet cc9_lua52_kamikaze_wiring
 #include "bsp/game_hosts_mission_frame.hpp"
+#include "bsp/game_hosts_mission_result.hpp"  // packet cc13-fix20
 
 #include "bsp/air_operations.hpp"
 #include "bsp/mothership_failure.hpp"
@@ -664,7 +665,14 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_lua49_checkpoint.
     const bool checkpoint_row = kMissionCheckpointBound
         && (dispatch_row.address == 0x008acb70u || dispatch_row.address == 0x008aca30u);
-    const bool handled = checkpoint_row || avoidance_setting || objective_row || get_property_row || kill_row
+    // Packet cc13-fix20. Both need the frame host's mission result object.
+    GameMissionResultHost* mission_result = host->mission_result();
+    const bool set_mission_completed_row = kLuaScoringSetMissionCompletedBound
+        && mission_result != nullptr && dispatch_row.address == 0x008b8ad0u;
+    const bool play_bink_movie_row = kLuaPlayBinkMovieBound
+        && mission_result != nullptr && dispatch_row.address == 0x0089a480u;
+    const bool handled = set_mission_completed_row || play_bink_movie_row
+        || checkpoint_row || avoidance_setting || objective_row || get_property_row || kill_row
         || add_listener_row || remove_listener_row || listener_active_row || set_invincible_row
         || set_failure_row || get_failure_row || dead_meat_row
         || unit_selectable_row || entity_speed_row
@@ -932,6 +940,28 @@ int binding_trampoline(lua_State* state) {
     if (ship_speed_row) {
         if (!host->error_replay()) host->run_set_ship_speed_00890d30(state, argc);
         return 0;
+    }
+    if (set_mission_completed_row) {
+        // 008B8AD0: the count 00B663F0, arg 0 through 00B66290 (lua_tonumber
+        // then __ftol, so truncated) and the flag through 00B66250
+        // (lua_toboolean, no type gate). The mode decides which are used.
+        if (!host->error_replay()) {
+            mission_result->lua_scoring_set_mission_completed_008b8ad0(argc,
+                static_cast<int>(::lua_tonumber(state, 1)), lua_toboolean(state, 1) != 0,
+                lua_toboolean(state, 2) != 0);
+        }
+        return 0;  // 00B66400: nothing pushed
+    }
+    if (play_bink_movie_row) {
+        // 0089A480: arg 0 through 00B662B0; arg 2 through 00B66250 only when
+        // the count is above 2 (BL starts at 0, 0089A5A2). Labelled: a non-string
+        // arg 0 is passed as an empty name.
+        if (!host->error_replay()) {
+            const char* name = lua_tostring(state, 1);
+            mission_result->lua_play_bink_movie_0089a480(name != nullptr ? name : "",
+                argc > 2 && lua_toboolean(state, 3) != 0);
+        }
+        return 0;  // 00B66400: nothing pushed
     }
     if (set_failure_row) {
         if (!host->error_replay()) host->run_set_failure_0088eff0(state, argc);

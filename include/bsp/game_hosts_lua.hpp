@@ -801,6 +801,7 @@ class GameHostLog;
 class GameVfsHost;
 class GameScriptOrdersHost;
 class GameUnitsHost;
+class GameMissionResultHost;
 struct SceneSpawnPoolEntry;
 struct GameSceneEntityRecord;
 
@@ -1715,6 +1716,12 @@ public:
     void attach_script_orders(GameScriptOrdersHost* orders) noexcept;
     GameScriptOrdersHost* script_orders() const noexcept;
 
+    // Packet cc13-fix20: the mission result object that the Scoring_SetMissionCompleted
+    // (008B8AD0) and PlayBinkMovie (0089A480) rows reach, when their switches
+    // in game_hosts_mission_result.hpp are on. The frame host owns it.
+    void attach_mission_result(GameMissionResultHost* result) noexcept { mission_result_ = result; }
+    GameMissionResultHost* mission_result() const noexcept { return mission_result_; }
+
     // Packet cc8_ship_drive. 00928F50 BSP_MissionEntity_SetPartyRaceLuaMirror,
     // the other writer of a thisTable slot: `Party` at 00929046 and `Race` at
     // 00928FD9, both through 00B67460. Run once the orders host is attached,
@@ -2053,6 +2060,7 @@ private:
     // Packet cc9_squadron_pass_hooks_calls: the units host, writable, for its
     // two squadron entries (the orders host hands out a const view only).
     GameUnitsHost* units_hooks_{nullptr};
+    GameMissionResultHost* mission_result_{nullptr};  // packet cc13-fix20
     // Packet cc9_lua_listeners: the (channel, id) registry of 00980C10.
     struct ListenerEntry {
         std::string channel;

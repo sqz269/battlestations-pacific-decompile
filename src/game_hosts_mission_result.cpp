@@ -10,18 +10,26 @@
 //
 // Three things here are the executable's own and are marked where they are done:
 //
-// 1. The call itself. No script on this installation calls PlayBinkMovie in a
-//    headless run with no enemy contact, so --mission-complete-frame N stands in
-//    for the script's call, the same substitution --press-start-frame makes for
-//    the title page. Everything after the call is recovered behaviour.
+// 1. The call itself. This installation's scripts\global\commandhelpers.lua
+//    does call PlayBinkMovie(Mission.*Params.Movie, "", true) at a mission end
+//    (luaMissionFailed_FailMovie :9854, luaMissionCompleted_ComplMovie :10111,
+//    luaMissionEnd_Movie :10926), and the BSM missions make one-argument
+//    mid-mission calls; the row is UNIMPLEMENTED in run logs (docs/CC13_VERIFY16.md
+//    R8). The Lua row reaches this path only under kLuaPlayBinkMovieBound
+//    (packet cc13-fix20, OFF). --mission-complete-frame N is the harness's own
+//    injection of the same call, the substitution --press-start-frame makes
+//    for the title page. Everything after the call is recovered behaviour.
 // 2. The movie completion. 004f8a20 needs the GUI movie widget, which is the
 //    front-end owner's, so no clip ever plays and nothing would call the
 //    completion 004f8970 registered. The executable runs 004f89d0 itself, which
 //    is what milestone 2e already does for the mission-detail preview movie.
-// 3. The scoring record is whatever the mission left behind. Nothing here calls
-//    Scoring_SetMissionCompleted 008b8ad0: that is the script's, and this
-//    mission's stage init never reached it, so the record 009205e0 commits is
-//    the zeroed one the load produced.
+// 3. The scoring record is whatever the mission left behind. Scoring_SetMissionCompleted
+//    008b8ad0 is the script's: commandhelpers.lua calls it at every single-player
+//    mission end (luaMissionFailedNew :10372 with false, luaMissionCompletedNew
+//    :10431 with true, and the older helpers at :9967 and :10162). Its row stays
+//    UNIMPLEMENTED unless kLuaScoringSetMissionCompletedBound (packet cc13-fix20,
+//    OFF) is set, so with the switch off the record 009205e0 commits is the
+//    zeroed one the load produced and says "not completed" for every win.
 //
 // See include/bsp/game_hosts_mission_result.hpp for the address list.
 
@@ -230,7 +238,47 @@ void GameMissionResultHost::play_bink_movie_0089a480(const std::string& script_m
     // 0089a480}; it reads the two Lua arguments and tails into 0089a390. The
     // arguments here are the executable's, not a script's.
     record("MissionEndMovie::lua_binding_play_bink_movie", 0x0089a480u);
+    play_named_movie_0089a390(script_movie_name, go_to_debrief);
+}
 
+void GameMissionResultHost::lua_play_bink_movie_0089a480(const std::string& script_movie_name,
+    bool go_to_debrief) {
+    // The script's own call: 0089a480 read arg 0 with 00b662b0 and, when
+    // 00b663f0 > 2, arg 2 with 00b66250 into BL (XOR BL,BL at 0089a5a2 makes
+    // the default false), then MOV DL,BL / CALL 0089a390 at 0089a5e6. The
+    // caller hands both in. The binding pushes nothing and returns 00b66400.
+    done("MissionEndMovie::lua_binding_play_bink_movie", 0x0089a480u);
+    play_named_movie_0089a390(script_movie_name, go_to_debrief);
+}
+
+void GameMissionResultHost::lua_scoring_set_mission_completed_008b8ad0(int argument_count,
+    int argument0_integer, bool argument0_boolean, bool argument1_boolean) {
+    // 008b8bad: the mode is [game+1FE4h] and the default slot [game+18ECh]. The
+    // local slot this process models is game_local_player_slot(). In a mode
+    // other than 0 arg 0 is read with 00b66290 whatever the count, and the
+    // boolean moves to position 1; it is read only when the count exceeds its
+    // position (008b8c0c), so the default byte 1 written before stays otherwise.
+    bsp::ScoringSetMissionCompletedArguments arguments{};
+    arguments.local_player_mode = session_mode_;
+    arguments.local_player_slot = game_local_player_slot();
+    arguments.lua_argument_count = argument_count;
+    if (session_mode_ != 0) arguments.first_integer = argument0_integer;
+    arguments.boolean_argument = session_mode_ != 0 ? argument1_boolean : argument0_boolean;
+    const bsp::ScoringSetMissionCompletedCall call
+        = bsp::resolve_set_mission_completed_008b8ad0(arguments);
+    const int old_flag = scoring_slot(call.slot).mission_completed_00;
+    // 008b8c42, CALL 00906460 with ECX = [game+21A0h]: the flag, the clock on
+    // the edge, then the entity walk (notify_scoring_entities_00927f60, recorded).
+    bsp::run_set_mission_completed_008b8ad0(*this, arguments);
+    done("MissionScoring::set_slot_completed", 0x00906460u);
+    const bsp::MissionScoreRecord& after = scoring_slot(call.slot);
+    log_.notef("Scoring_SetMissionCompleted (008B8AD0): slot=%d completed=%d record+0h %d -> %d "
+        "record+10h=%.3f (00F876A4 on the 0->1 edge only)", call.slot, call.completed ? 1 : 0,
+        old_flag, after.mission_completed_00, static_cast<double>(after.completion_time_10));
+}
+
+void GameMissionResultHost::play_named_movie_0089a390(const std::string& script_movie_name,
+    bool go_to_debrief) {
     // 0089a3c7 and 0089a3fc: a seven-character native string and the concat that
     // prefixes it onto the script's name.
     const std::string name = std::string(kMoviePrefix) + script_movie_name;
