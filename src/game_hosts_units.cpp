@@ -3075,6 +3075,15 @@ struct GameUnitsHost::Impl {
     bool plane_touchdown_007cc440(GameUnitSlot& p);
     std::array<float, 3> landing_t_world_006bca40(const LandingDeck& d) const;
     float landing_run_length_006ba620(const LandingDeck& d) const;
+    // Packet p19_fwd_speed (docs/OCEAN_WAVE_FIELD.md section 74). True:
+    // 007D99C0's deck term joins the host's forward speed ctl+44h for a plane
+    // with a scene parent (unit+3Ch, here deck_parent_plus_one): the parent's
+    // velocity (its vtable[34h]) in the plane's frame (0042D0D0 through the
+    // inverse world +110h), z, times 0.1 (00D7A2F0) when z >= 0.0 (00D7A218) and
+    // 0.8 (00CE74F8) below or unordered (COMISS / JC). False: ctl+44h alone.
+    static constexpr bool kPlaneForwardSpeedDeckTermBound = false;
+    float plane_forward_speed_007d99c0(const GameUnitSlot& p, float ctl_44) const;
+    mutable unsigned long long forward_speed_deck_terms{0};
     float landing_t_distance(const LandingDeck& d, const GameUnitSlot& p) const;
     bool landing_outside_standby_006c46b0(const LandingDeck& d, const GameUnitSlot& p) const;
     bool landing_released_006c45c0(const LandingDeck& d, const GameUnitSlot& p) const;
@@ -15811,6 +15820,24 @@ void GameUnitsHost::Impl::carrier_elevator_platform_tick_006fc480(LandingDeck& d
     if (!moving) e.p4c = 1.0f;                                        // 006FC5EA
 }
 
+// 007D99C0 (007D99C0-007D9A69, __thiscall(ctl), RET, ST0): ctl+44h, plus with
+// a scene parent the parent velocity's z in the plane frame x (0.1 | 0.8).
+// 007D9A4E-007D9A5F: FLD z, FMUL c, FADD ctl+44h, FSTP; per-op float rounding.
+float GameUnitsHost::Impl::plane_forward_speed_007d99c0(const GameUnitSlot& p,
+                                                        float ctl_44) const {
+    if constexpr (!kPlaneForwardSpeedDeckTermBound) return ctl_44;
+    if (p.deck_parent_plus_one == 0 || p.deck_parent_plus_one > slots.size()) return ctl_44;
+    const GameUnitSlot* o = slots[p.deck_parent_plus_one - 1u].get();
+    if (o == nullptr) return ctl_44;
+    const bsp::OceanVec3& pv = o->motion.linear_velocity;
+    const float* const r2 = p.motion.pose_row2;
+    const float z = r2[0] * pv.x + r2[1] * pv.y + r2[2] * pv.z;
+    const float c = z >= 0.0f ? 0.1f : 0.8f;
+    const float t = static_cast<float>(static_cast<double>(z) * static_cast<double>(c));
+    ++forward_speed_deck_terms;
+    return static_cast<float>(static_cast<double>(t) + static_cast<double>(ctl_44));
+}
+
 // 007C71E0 (007C71E0-007C742F), the re-parent arm (007C726C-007C72C5) and the
 // ship arm (007C72D3-007C7417), for a mother-ship holder.
 void GameUnitsHost::Impl::carrier_deck_reparent_007c71e0(GameUnitSlot& p, const LandingDeck& d) {
@@ -19687,7 +19714,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 007D99C0 adds to it is zero off a deck. Under the
                         // identity frame this is the world +Z the previous
                         // revision took, so the acceptance test is unmoved.
-                        state.forward_speed = state.body_velocity[2];
+                        state.forward_speed = owner_.plane_forward_speed_007d99c0(
+                            unit_, state.body_velocity[2]);
                         state.world_altitude = unit_.motion.position[1];
                         state.lost_drag_timer = unit_.plane_lost_drag_timer_c3c;
                         state.pitch = unit_.plane_pitch_angle_c64;
@@ -36408,10 +36436,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.plane_world_velocity[2] * unit_.plane_world_velocity[2]);
                             if constexpr (GameUnitsHost::Impl::kPilotThrottleForwardSpeedBound) {
                                 // 0099D992-0099D99E: 007D99C0(ECX = unit+AB0h).
-                                tin.measured_speed =
+                                tin.measured_speed = owner_.plane_forward_speed_007d99c0(unit_,
                                     unit_.plane_world_velocity[0] * unit_.motion.pose_row2[0] +
                                     unit_.plane_world_velocity[1] * unit_.motion.pose_row2[1] +
-                                    unit_.plane_world_velocity[2] * unit_.motion.pose_row2[2];
+                                    unit_.plane_world_velocity[2] * unit_.motion.pose_row2[2]);
                             }
                             // plan+2B8h. False: 1.0 leaves the error in m/s.
                             tin.speed_scale = 1.0f;
@@ -37551,7 +37579,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const auto interp = bsp::clamped_interpolate_00419010;
                         const float* const fr = unit_.motion.pose_row2;
                         const float* const wv = unit_.plane_world_velocity;
-                        const float fwd = fr[0] * wv[0] + fr[1] * wv[1] + fr[2] * wv[2];   // 007D99C0
+                        const float fwd = owner_.plane_forward_speed_007d99c0(unit_,
+                            fr[0] * wv[0] + fr[1] * wv[1] + fr[2] * wv[2]);              // 007D99C0
                         const float r = static_cast<float>(static_cast<double>(fwd) /
                             static_cast<double>(unit_.plane_stall_spd));                  // 007DC878-007DC886
                         const bool dead = unit_.plane_death_c3a
@@ -40601,6 +40630,10 @@ void GameUnitsHost::report() {
                 "bound=%d (009AFAF0, 009B201B, packet p16_carrier_landing)",
                 host.carrier_landing_leads, Impl::kCarrierLandingVelocityLeadBound ? 1 : 0,
                 host.carrier_touchdown_brakes, Impl::kCarrierTouchdownBrakeBound ? 1 : 0);
+            host.log.notef("summary forward speed deck terms=%llu bound=%d lead_float_ops=%d "
+                "(007D99C0, 006BCC0A, packets p19_fwd_speed / p19_lead_ops)",
+                host.forward_speed_deck_terms, Impl::kPlaneForwardSpeedDeckTermBound ? 1 : 0,
+                Impl::kCarrierLandingLeadFloatOpsBound ? 1 : 0);
             host.log.notef("summary moveto cruise by_ordnance=%llu bound=%d leg separations=%llu "
                 "bound=%d (009C3650, 009BEC85, packet p16_moveto_cruise)",
                 host.moveto_cruise_by_ordnance, Impl::kMoveToCruiseByOrdnanceBound ? 1 : 0,

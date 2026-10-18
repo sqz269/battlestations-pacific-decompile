@@ -2998,3 +2998,27 @@ owner's velocity x t in `land_geometry_009afaf0` under `kCarrierLandingVelocityL
 sum p + T[k]; the host rounds a double v x t + T once. Prediction for a USN01 pair: the same landings in the same
 order; touchdown times and approach traces move by float noise only, and the chaotic flight afterwards may
 move counters. A mechanism check, not a behaviour change.
+
+## 74. 007D99C0's deck term (cc9-physics19, 2026-10-18)
+
+007D99C0 (007D99C0-007D9A69, `__thiscall(ctl)`, RET, result in ST0) returns ctl+44h, plus, when the plane has a
+scene parent (`[ctl+8]+3Ch`), a deck term. The listing, with ESP tracked through the two calls:
+- 007D99DD-007D9A04: with unit+10Ch clear, 00414DB0 refreshes the pose and 00B63D50 builds the inverse world
+  (unit+CCh) into unit+110h; +10Ch = 1.
+- 007D9A09-007D9A1E: the parent's vtable[34h](out = base+10h), RET 4: its velocity. The PUSH 0 and PUSH unit+110h
+  before it are 0042D0D0's arguments (matrix, normalise 0). 007D9A22-007D9A26: 0042D0D0(ECX = base+8h, EDX = the
+  velocity): out[k] = sum_i v[i] x M[4i+k], so out[2] (base+10h) = dot(v_parent, the plane's forward row).
+- 007D9A31-007D9A5F: c = 0.1 (00D7A2F0) when z >= 0.0 (00D7A218), else 0.8 (00CE74F8; COMISS/JC, so unordered
+  takes 0.8); FLD z, FMUL c, FADD ctl+44h, FSTP.
+The host's planes keep deck-relative velocity while parented (007D9CE0's subtraction in
+`carrier_deck_reparent_007c71e0`), as ctl+18h does, so ctl+44h is already the relative forward speed.
+
+**`kPlaneForwardSpeedDeckTermBound` (OFF)**, `plane_forward_speed_007d99c0`, at the three host sites that model a
+007D99C0 call: the free-flight state's forward speed (007DC878; it feeds 007DA710's floor, the water law and the
+pose advance), 0099D99E's measured speed (`kPilotThrottleForwardSpeedBound`) and 007DC878-007DC886's stall ratio.
+LABELLED: the parent's vtable[34h] is its `motion.linear_velocity`, as in 007D9CE0's host. Not wired: the callers
+007C38FC (bow wave), 007C3CC7, 007D9AB4, 007DB75B/007DBD07 (the core law; whether the host's core law reads the
+state speed was not checked), 0099F3EF, 009A176D, 009B0C6D. 007DAABD's floor takes the state speed, so it follows. Prediction: only parented planes move (deck taxi, the take-off
+roll, landed planes); off a deck the helper returns ctl+44h. On a carrier moving forward at v, a plane facing the
+bow reads +0.1v more forward speed, so the stall ratio and the throttle error shift slightly during the roll.
+`summary forward speed deck terms=` counts the parented calls.
