@@ -2936,3 +2936,15 @@ Kill entry) now feeds `GameMissionLuaHost::target_gone_00925c40` for a unit gunn
 (00926DED). It covers the Kill callers fix19 lists as unfed (plane depth kill 007CE3A7, landed remainder 00749B7B,
 SquadronLandAndKill's planes, the other 00926D90 callers). A gunfire death takes destroy (00926C80) and is not fed,
 because the image's destroy notice is the no-op slot `+8h` `0042B120`; its trigger retires when the wreck is Killed.
+
+## 71. Pair results for the SpawnNew raise and the kill-funnel feed (cc9-physics18, 2026-10-18)
+
+Base c925b2319 (prox and SquadOrdnanceDropped ON), PRCP05 (`usn_09_Leyte`), 36000 frames each.
+
+**`kSpawnNewMissingClassRaisesBound` FLIPPED ON.** OFF (`local\p18_d_off`) stops at mission clock 1061.96 s: the
+shipyard SpawnNew (`0094c480`, callback `luaUS09JapPTSpawned`) queued "Gyoraitei PT #1.1" with no class, and the
+units host failed startup at the observer projection (creator 00000000), exit 1. ON (`local\p18_d_spawn`): the same
+call raises once (`spawn missing class raises=1`), `US09Think` fails at script line 1093 with `attempt to index a
+nil value`, and the run continues to 36000 frames with exit 0; the mission does not end (`Mission.EndMission never
+true`) and has no further script failures. The flip is by mechanism (the image's `luaV_gettable` on the nil row);
+PRCP05 still cannot complete on this installation because its PTs never spawn.

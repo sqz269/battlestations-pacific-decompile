@@ -493,7 +493,9 @@ inline constexpr bool kLuaProximityTriggersBound = true;
 // (2026-05-09) has no row 240, which usn_09_Leyte.lua's shipyard PTs ask for.
 // True: a member whose Type has no VehicleClass row raises that error. False: the
 // member is created and the units host aborts the run at its observer projection.
-inline constexpr bool kSpawnNewMissingClassRaisesBound = false;
+// ON (OCEAN_WAVE_FIELD 71): PRCP05 raised once at 1061.96 s (US09Think fails at
+// line 1093) and ran its 36000 frames; OFF stopped there at the observer projection.
+inline constexpr bool kSpawnNewMissingClassRaisesBound = true;
 // Packet cc13-fix19 (docs/CC13_FIX19.md). 008C9A10
 // AddSquadOrdnanceDroppedTrigger(entity, name?, callback): 00750660 makes a 34h trigger
 // (vtable 00D005C0, +11h = 1, +18h = 2), 00750790 stores the name and callback, and
