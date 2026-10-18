@@ -276,6 +276,10 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // Packet cc13-fix17: jm10.lua:1862, jm12.lua:1783 and LOMP 08_lightning_strike
     // .lua:392. Handled only with kLuaSetSubmarineAirSupplyBound.
     {"SetSubmarineAirSupply", 0x00893a60u},
+    // Packet l68_travel_speed: bsm_09_battle_of_the_coral_sea.lua (the
+    // LexKillerGang, KMH(200)), BSM04, BSM10, LOMP03/08/11, ESMP01/02, USN11 and
+    // JM12. Handled only with kLuaSquadronSetTravelSpeedBound.
+    {"SquadronSetTravelSpeed", 0x008a0630u},
     // Packet cc9_ship_set_torpedo_stock: bsm_01_stationed_at_pearl.lua:1790 and
     // the COTP-IJN spawn tables call it. Handled only with
     // kShipSetTorpedoStockBound.
@@ -683,6 +687,9 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     }
     if (std::strcmp(binding->name, "SetSubmarineAirSupply") == 0) {
         return kLuaSetSubmarineAirSupplyBound;
+    }
+    if (std::strcmp(binding->name, "SquadronSetTravelSpeed") == 0) {
+        return kLuaSquadronSetTravelSpeedBound;
     }
     if (std::strcmp(binding->name, "ShipSetTorpedoStock") == 0) return kShipSetTorpedoStockBound;
     if (std::strcmp(binding->name, "ReloadTorpedoes") == 0) return kReloadTorpedoesBound;
@@ -4287,6 +4294,21 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             const bool stored = units_.set_submarine_air_00893a60(row.unit_index, air);
             log_.notef("  SetSubmarineAirSupply: %s air=%.3f stored=%d (00893A60 -> +127Ch)",
                 row.unit.c_str(), static_cast<double>(air), stored ? 1 : 0);
+        }
+    } else if (std::strcmp(binding->name, "SquadronSetTravelSpeed") == 0) {
+        // Packet l68_travel_speed. 008A0630: argument 0 through 00888AA0, argument 1
+        // through 00B66270 rounded to float (008A076C), argument 2 through 00B66250
+        // only when exactly three arguments are passed (008A07BA), else false. No
+        // class or null test before the four stores; a unit with no squadron slot
+        // stores nothing here. No result.
+        const float speed = argument_number(1);
+        const bool force = argument_count_ == 3 && argument_boolean(2);
+        if (subject != nullptr && row.unit_index < units_.count()) {
+            const bool stored =
+                units_.set_squadron_travel_speed_008a0630(row.unit_index, speed, force);
+            log_.notef("  SquadronSetTravelSpeed: %s speed=%.3f force=%d stored=%d "
+                "(008A0630 -> +388h/+38Fh/+3A0h/+3ACh)", row.unit.c_str(),
+                static_cast<double>(speed), force ? 1 : 0, stored ? 1 : 0);
         }
     } else if (std::strcmp(binding->name, "ReloadTorpedoes") == 0) {
         // 008C3CE0: 008C3DE0 00888AA0 resolves argument 0 (a second argument is

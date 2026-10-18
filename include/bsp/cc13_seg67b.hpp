@@ -490,10 +490,31 @@ public:
                                                 const char* right) = 0;
     // 0099B6E0 (TRIV_body_0099b6e0, a lone RET): the base debug-draw slot, __fastcall(ECX = task).
     virtual void bot_task_debug_draw_base_0099b6e0(void* task) = 0;
-    // 008608B0 BSP_DebugDraw_CircleWithHeading: __thiscall(ECX = float* centre; four stack
-    // dwords), RET 10h. See 009B35E0 for what this caller passes.
-    virtual void debug_draw_circle_with_heading_008608b0(const float* centre, float first,
+    // 008608B0 BSP_DebugDraw_CircleWithHeading: __thiscall(ECX = float* centre; float radius,
+    // float x, y, z), RET 10h. It passes the radius to 00860710 with EDX = the static rgba
+    // 00F875A8 (initialised once to 1, 0.5, 0, 1 under guard 00F875B8).
+    virtual void debug_draw_circle_with_heading_008608b0(const float* centre, float radius,
                                                          float x, float y, float z) = 0;
+    // 0099B660 BSP_BotTask_UpdateCruiseProfileBase: __fastcall(ECX = task), RET; empty.
+    virtual void bot_task_update_cruise_profile_base_0099b660(void* task) = 0;
+    // 009AAC70 BSP_BotTaskDogfight_UpdateApproach: __thiscall(ECX = task+3F8h; float dt),
+    // RET 4.
+    virtual void dogfight_update_approach_009aac70(void* approach, float dt) = 0;
+    // 0099B740 BSP_BotTask_AbandonIfStale: __fastcall(ECX = task), RET.
+    virtual void bot_task_abandon_if_stale_0099b740(void* task) = 0;
+    // 00438B10 SubtractWrappedAngle: __stdcall(float a, float b), RET 8, ST0 = wrapped a - b.
+    virtual float wrapped_angle_subtract_00438b10(float a, float b) = 0;
+    // approach->vtable[0](out): __thiscall(ECX = approach; float* out), RET 4, EAX = the
+    // target point (three floats).
+    virtual float* approach_vcall_00_target_point(void* approach, float* out) = 0;
+    // 00860710 BSP_DebugDraw_Circle64: __fastcall(ECX = centre, EDX = rgba; float radius),
+    // RET 4.
+    virtual void debug_circle64_00860710(const float* centre, const float* rgba,
+                                         float radius) = 0;
+    // node->vtable[0](flags): a ship-AI path node's scalar deleting destructor, RET 4.
+    virtual void path_node_vcall_00_scalar_delete(void* node, std::uint32_t flags) = 0;
+    // object->vtable[4](): the add-reference slot a 00D05704 holder calls, RET.
+    virtual void ref_vcall_04_add_ref(void* object) = 0;
     // 006C2400 BSP_AirOpsHolder_DebugDrawRunwayDistances: __fastcall(ECX = holder), RET.
     virtual void air_ops_debug_draw_runway_distances_006c2400(void* holder) = 0;
     // object->vtable[0](), RET, AL: a condition object's test.
@@ -1146,6 +1167,8 @@ void* bot_task_retreat_describe_009ca200(Cc13Seg67bHost& host, void* task, void*
 void* bot_task_strafe_describe_009cd250(Cc13Seg67bHost& host, void* task, void* out);
 // 009A79F0: __fastcall(ECX = dogfight avoid state), RET. One draw on stream 1.
 void bot_state_dogfight_avoid_enter_009a79f0(Cc13Seg67bHost& host, void* state);
+// 009AAF30: __fastcall(ECX = dogfight task), RET (tail JMP 0099B740).
+void bot_task_dogfight_update_cruise_profile_009aaf30(Cc13Seg67bHost& host, void* task);
 // 009B35E0: __fastcall(ECX = land task), RET.
 void bot_task_land_debug_draw_009b35e0(Cc13Seg67bHost& host, void* task);
 // 009B93D0: __thiscall(ECX = task; float dt, unread), RET 4.
@@ -1164,5 +1187,48 @@ void* bot_task_retreat_target_position_009ca0c0(void* task, void* out);
 void* entity_as_kind41_009ca480(Cc13Seg67bHost& host, void* entity);
 // 009CFA10: __fastcall(ECX = takeoff task), RET.
 void bot_task_takeoff_debug_draw_009cfa10(Cc13Seg67bHost& host, void* task);
+
+// ---- medium rows, batch 2 (docs/CC13_SEG67B.md 3.47) ----
+// 009B94E0: __thiscall(ECX = split s task; byte wrap), RET 4.
+void bot_task_split_s_roll_step_009b94e0(Cc13Seg67bHost& host, void* task, std::uint8_t wrap);
+// 009B95D0: __thiscall(ECX = stop task; float dt, unread), RET 4.
+void bot_task_stop_tick_009b95d0(void* task, float dt);
+// 009BAE10 / 009BAE80 / 009BAEF0: __stdcall(bot, archive), RET 8, EAX = task or 0.
+void* bot_task_gain_altitude_factory_create_009bae10(Cc13Seg67bHost& host, void* bot,
+                                                     void* archive);
+void* bot_task_immelmann_factory_create_009bae80(Cc13Seg67bHost& host, void* bot, void* archive);
+void* bot_task_stop_factory_create_009baef0(Cc13Seg67bHost& host, void* bot, void* archive);
+// 009BC6B0: __fastcall(ECX = move-on-path approach), RET.
+void bot_approach_move_on_path_register_state_names_009bc6b0(Cc13Seg67bHost& host,
+                                                             void* approach);
+// 009BC870 / 009BC8A0 / 009C6180: __thiscall(ECX = state; approach), RET 4, EAX = state.
+void* bot_state_move_on_path_base_construct_009bc870(void* state, void* approach);
+void* bot_state_move_on_path_path_construct_009bc8a0(void* state, void* approach);
+void* bot_state_dive_bomb_fly_above_construct_009c6180(void* state, void* approach);
+// 009BC9F0 / 009C2670: __fastcall(ECX = circle state), RET.
+void bot_state_move_on_path_circle_debug_draw_009bc9f0(Cc13Seg67bHost& host, void* state);
+void bot_state_move_to_circle_debug_draw_009c2670(Cc13Seg67bHost& host, void* state);
+// 009BCF70: __fastcall(ECX = move-on-path approach), RET, EAX = cursor or 0.
+void* bot_approach_move_on_path_command_path_cursor_009bcf70(Cc13Seg67bHost& host,
+                                                             void* approach);
+// 009BD1D0: __fastcall(ECX = move-on-path task), RET.
+void bot_task_move_on_path_debug_draw_009bd1d0(Cc13Seg67bHost& host, void* task);
+// 009BDED0: __thiscall(ECX = move-to approach; entity), RET 4.
+void bot_approach_move_to_set_observed_target_009bded0(Cc13Seg67bHost& host, void* approach,
+                                                       void* entity);
+// 009C5870: __fastcall(ECX = aimdive state), RET.
+void bot_state_dive_bomb_aim_dive_enter_009c5870(void* state);
+// 009C6220: __fastcall(ECX = const float* a, EDX = const float* b), RET, ST0.
+float math_clamp_symmetric_009c6220(const float* a, const float* b);
+// 009D58A0: __fastcall(ECX = path node), RET.
+void ship_ai_path_node_destruct_body_009d58a0(Cc13Seg67bHost& host, void* node);
+// 009D59C0: __fastcall(ECX = path node), RET, EAX = &node->x of the run's end node.
+const float* ship_ai_path_node_run_end_point_009d59c0(ShipAiPathNode& node);
+// 009D5CF0: __fastcall(ECX = ship-AI task), RET, AL.
+bool ship_ai_path_has_no_sided_node_009d5cf0(void* task);
+// 009D5D60: __fastcall(ECX = target ref record), RET. One draw on stream 1.
+void target_ref_record_reset_009d5d60(Cc13Seg67bHost& host, void* record);
+// 009D6530: __thiscall(ECX = holder; object), RET 4, EAX = holder.
+void* ref_holder_construct_009d6530(Cc13Seg67bHost& host, void* holder, void* object);
 
 }  // namespace bsp

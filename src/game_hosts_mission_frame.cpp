@@ -1413,7 +1413,8 @@ public:
             owner_.lua.call_entry_point(bsp::kLuaPrecacheUnits, false);
             if constexpr (bsp::game::kVehicleClassPreloadCc15Bound) {
                 // 0045F6C1, the first of the class-table resets.
-                owner_.lua.census_vehicle_class_purge_0095ca70("0045F6C1");
+                owner_.lua.census_vehicle_class_purge_0095ca70("0045F6C1",
+                    bsp::game::kVehicleClassMovieStopPurgeCc15Bound);
             }
             owner_.record("EngineMovieStop::class_table_resets", 0x0045f6dfu);
             owner_.lua.call_entry_point(bsp::kLuaStageInitMulti, false);
@@ -2475,7 +2476,7 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             host.lua.call_entry_point(bsp::kLuaPrecacheUnits, false);
             if constexpr (bsp::game::kVehicleClassPreloadCc15Bound) {
                 // 004E0A9B, the first of the eleven calls after luaPrecacheUnits.
-                host.lua.census_vehicle_class_purge_0095ca70("004E0A9B");
+                host.lua.census_vehicle_class_purge_0095ca70("004E0A9B", true);
             }
             host.lua.call_entry_point(bsp::kLuaStageInitMulti, false);
             ++host.load.concrete;

@@ -322,6 +322,30 @@ void GameMissionResultHost::run_end_scene_004d7970(bool aborted) {
         "broadcast=%d state=0x%02X", aborted ? 1 : 0, first ? 1 : 0,
         decision.commits_record ? 1 : 0, decision.enqueues_teardown ? 1 : 0,
         decision.broadcasts_end_scene ? 1 : 0, control_.state);
+    // Packet cc13-wire3: with the 0091A080 merge bound, one line per commit with
+    // the stored record's +24h/+30h/+3Ch/+48h maps (size/sum), +26Ch/+278h and
+    // +284h. find, not 00594A70, so the dump never inserts a record.
+    if constexpr (bsp::kMissionRecordMergeBound) {
+        const auto it = progress_.mission_scores_00.find(mission_key_);
+        if (decision.commits_record && it != progress_.mission_scores_00.end()) {
+            const bsp::MissionScoreRecord& r = it->second;
+            unsigned sizes[4]{};
+            int sums[4]{};
+            for (std::size_t k = 0; k < 4; ++k) {
+                const auto& map = r.score_maps[k + 1];  // Action, Ship, Plane, Command
+                sizes[k] = static_cast<unsigned>(map.size());
+                for (const auto& entry : map) sums[k] += entry.second;
+            }
+            log_.notef("MissionRecord::commit_009205e0 key=%s count_284=%d completed_00=%d "
+                "map24=%u/%d map30=%u/%d map3c=%u/%d map48=%u/%d best26c=%d,%d,%d "
+                "best278=%d,%d,%d", mission_key_.c_str(), r.count_284,
+                r.mission_completed_00, sizes[0], sums[0], sizes[1], sums[1], sizes[2],
+                sums[2], sizes[3], sums[3], r.completed_by_difficulty_26c[0],
+                r.completed_by_difficulty_26c[1], r.completed_by_difficulty_26c[2],
+                r.scores_by_difficulty_278[0], r.scores_by_difficulty_278[1],
+                r.scores_by_difficulty_278[2]);
+        }
+    }
 }
 
 // --- the drain's request 10h, 004e458a -------------------------------------
