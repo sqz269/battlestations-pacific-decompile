@@ -460,20 +460,20 @@ inline constexpr bool kAiSellSplitClaimBound = false;
 // (Defend 00A28A60, into brain+0Ch) end `MOV byte [receiver+2Ch],1` whenever
 // 00A1C8B0 finds the group not yet in the receiver's list. True:
 // capture_hand_off sets the receiver's replan byte there. False: it does not.
-inline constexpr bool kAiHandOffReplanBound = false;
+inline constexpr bool kAiHandOffReplanBound = true;  // ON, no SP reach: SHIP_AI_OPEN_ITEMS 288
 // R-C. 00A1CDA2 MOV EAX,[EDX+1Ch] / 00A1CDA5 MOV EAX,[EAX+24h] / 00A1CDAB CALL
 // 00A2C450: the candidate is tested against the brain's objective set, and on
 // true 00A1CDB4..00A1CDC1 takes tuning+1CCh (FreeAttack_ObjectiveTargetMul).
 // True: candidate_has_member_in_own_set asks group_has_member_in_world_set
 // with the current party brain's set index. False: the team test, always
 // false for the enemy-team candidates.
-inline constexpr bool kAiTargetObjectiveSetBound = false;
+inline constexpr bool kAiTargetObjectiveSetBound = true;  // ON, no SP reach: SHIP_AI_OPEN_ITEMS 288
 // R-E. 00A2CD42 MOV ECX,1 / CALL 00BD2F40 (cautious move) and 00A2CC51 MOV
 // ECX,1 / CALL 00BD2F40 (order_attack) draw on RandomThreads stream 1. True:
 // both draws come from the host's shared stream-1 generator (the gunnery
 // host's, GameGunneryHost::ship_ai_draw), coupling them to every other
 // stream-1 consumer in call order. False: the AI host's private LCG.
-inline constexpr bool kAiPlannerSharedStreamDrawBound = false;
+inline constexpr bool kAiPlannerSharedStreamDrawBound = true;  // ON, no SP reach: SHIP_AI_OPEN_ITEMS 288
 
 // Packet cc9_order_ring_replace, docs/ORDER_RING_REPLACE.md. True: an AI order
 // that repeats the entity's previous one (same token and target, point within

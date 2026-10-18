@@ -19190,3 +19190,115 @@ countdown starts. Loui1 and Loui2 die at 2767/2771 s with each other as last att
 No further host fault was found on the mission path in this run. What remains is the plan: s56_os_c13 is
 open-loop on absolute frames and does not send a transport to the neutral HQs. Re-planning from section 273's
 next steps (c9/c10 picture) is the next USNOS step.
+## 288. cc13 fix22 planner switches: no reach on any single-player row (cc9-ships58, 2026-10-18)
+
+**Switches** (src/game_hosts_ai.cpp, docs/CC13_FIX22.md): R-A kAiSellSplitClaimBound, R-B kAiHandOffReplanBound,
+R-C kAiTargetObjectiveSetBound, R-E kAiPlannerSharedStreamDrawBound, all in the mode-8 party planners
+(00A182C0 brain -> Defend / Attack / Sell / Capture).
+
+**Reach.** None on a mission-tree launch. Section 150 (kAiCoordinatorLoadGateBound ON since a8404d451): the
+image builds no AI coordinator for a mission-tree launch (004E17FD..004E1838), so no party brain or planner
+ever thinks. Every current log agrees: `coordinator load gate ... created_at_load=0`, `parties calls=0`,
+`capture thinks=0 handoffs=0`, `sell thinks=0`, `defend thinks=0` on JM05 (`local\s58_off4_j5.log`,
+`s58_rb_on_j5.log`, 12000 frames; also ships57's `s57_off3_j5`), USNOS (`s58_st2_os`, 150000 frames) and
+every other row checked. CC13_FIX22's `handoffs=9` (JM05) and `handoffs=21` (USNOS) come from builds before
+the gate. The JM05 R-B pair (8fab34fee, `--flip kAiHandOffReplanBound=true`, exe `local\s58_sa_on`) is exit 1,
+gameplay identical (OFF and ON both fail at 321.05 s, "One of our carriers is destroyed"); USNOS 30000 frames
+(`s58_off4_os` / `s58_rb_on_os`, s56_os_c13 orders) likewise exit 1, `steps_absent=30000`, `handoffs=0`.
+
+**Decision.** R-B, R-C, R-E ON as faithful bindings of cc13's image reads, with no reach in single player.
+They only matter for a skirmish launch, which is not on the host path. R-E's RNG coupling can't move a
+single-player row for the same reason. R-A stays OFF as the lead directed (unjudgeable; no row logs
+`splits > 0`). If the coordinator gate ever changes, pair R-B/R-C on JM05/USNOS and judge R-E on the
+per-entity tables.
+## 289. HANDOFF, cc9-ships58 -> successor (2026-10-18)
+
+**Done this session (all on agent/cc9-ships44, reported to the lead):** 284 submarine air get/set ON (54ed7cccf);
+285 ArtilleryEnable ON (cf30bd420); 286 SetDeviceReloadTimeMul ON, no reach (081a86e79); 287
+kEntityDeadAfterPtrNullBound ON (2c3c0a897 OFF, 12f8cbb1c ON), which unblocked USNOS wave 2; USNOS status
+(a1c10afe0); 288 fix22 R-B/R-C/R-E ON with no single-player reach, R-A OFF (e739cd3f0). USN02 override question:
+the host is faithful (category-3 moveto neither gates nor ends the override; only a role-1 helm take, +184h at
+009F5E06, does). lua67 was told to use `takehelm Houston`. No code change.
+
+**Open queue, in the lead's order:**
+1. cc15's `kDirectorQueueCc13BodiesBound` (OFF on main 7d9a0a305, src/game_hosts_commands.cpp): routes 0071C0C0,
+   0071D780, 0071E200 and both 0071D900 clear messages to src/gameplay_seg38_cc13.cpp. Pair a long mission that
+   issues director commands (0071C0C0 isn't reached on USN01; check reach first), then flip by mechanism. If any
+   host site stays, fix 0071E2B9..0071E2C9's boundary: the image FCOMIPs the sum against 1.0 (JA -> false), so a
+   sum of exactly 1.0 matches; the host's `< 1.0` is wrong, cc13's `<=` is right.
+2. USNOS re-plan on the new tree: wave 2 now spawns (287), phase 2 starts at about 1004 s on s56_os_c13, and all
+   three HQs get neutralized, but no transport is ordered into capture range. Start from section 273's c9/c10
+   picture (`local\s55_osmk.py`, helpers air_mass / escort_sweep / recalls / shifted / turns). Note that wave 2
+   now exists where s56_os_c13 had none, so the wave-2 level bombers (#4.4-#4.6) take TT4/TT2 at 662/744 s.
+3. Side note, not investigated: on s58_st2_os, Loui1 and Loui2 kill each other with direct artillery hits at
+   344-366 m (`death row` killer = the other).
+
+**Working notes.** Mission ids don't load the scripts their names suggest: use `tools/mission_script_reach.py`
+(physics18) or `local\s58_ae_ids.py` (scene basename map) before pairing. The stagger rule applies: at most 2 of
+your runs at once, at least 60 s between launches, no build while a run is starting, and never build in the tree
+while a run uses the tree exe (build in `local\s58_sa_on` through pair_export instead). Launcher:
+`local\s58_rows.ps1` (prefix s58_; copy it to s59_). OFF baselines in local\: s58_off3_os / s58_off4_os
+(USNOS 30000), s58_off4_j5 (JM05 12000), s58_st2_os (USNOS 150000 on 12f8cbb1c).
+## 290. USNOS: Loui1 and Loui2 kill each other. The host is faithful (cc9-ships59, 2026-10-18)
+
+Lead queue item 1, from 289's side note. Log `local\s58_st2_os.log` (USNOS 150000 on 12f8cbb1c, s56_os_c13 orders).
+
+**What the log shows.** Neither ship dies of a direct hit. Both die of damage control: `gunnery: damage control
+death Loui1 t=2767.57 water_total=7983 fire_total=1222`, and Loui2 at 2771.13. The death row names the other
+ship because it owns the last damaging hit, not the flooding.
+- Both ships are in `attackmove` on HQ2, stopped (`navigate_astern`, throttle 0), 344-366 m apart, with no enemy
+  ship within 5.4 km.
+- Loui1's damage starts at 2626.79 with a component failure (Explosion) at full health, in the same step as a
+  round of bullet class 9 that kills HQ2 and also strikes Loui1 (`impact blast bullet=9 on HQ2 ... health=0.0`,
+  then `on Loui1 dist=0.0`). Fires follow at 2634 and 2657, then flooding.
+- Loui2's first damage (1296.99) is an enemy-phase hit; its late hits at 2700-2771 are bullet 23 and 15 rounds
+  from Loui1 (`took` 0-11 per round against armour 130).
+- So the two ships shell HQ2 through each other's hull. The killing guns are cat 3 (Loui2, artillery) and cat 6
+  (Loui1, light artillery flak).
+
+**The image, from four earlier independent reads:**
+- The direct impact excludes only the shooter. `0084BF00` sweeps with `0098B370`, which reaches `0098ADD0` and
+  `0098AC20`; the excluded entity is compared by pointer at `0098AEE4` / `0098ACE3` and is the shooter's
+  collision root (`docs/CC13_JM08_AA_TRUCK_HQ_DAMAGE.md`, `docs/KILL_CREDIT.md`). The one side exemption in
+  `0084BF00` (weapon class 11h against a shooter of the same `+9D4h` parent) needs `[shot+0CCh]` to pass
+  `IsKindOf(0Fh)`; a shell's `[shot+0CCh]` is the projectile (class 29h), so it applies to squadron aircraft
+  guns only.
+- The blast `0084BAD0` gathers every owner in the radius and skips only the burst's source
+  (`docs/RANDOM_STREAMS.md` 5).
+- Credit `0077CE60` is written with no side comparison (same doc).
+- The fire gate. Gun `vtable[1D4h]` (`00730A20 -> 0072F6E0`) answers 1 unless `gun+42Ch` holds a predicate, which
+  `00729560` installs for weapon kinds 1, 5 and 6 only (`docs/GUNNERY_OPEN_ITEMS.md` 164.2). The ArtilleryGunnerBot
+  accept `006DEF30` for kinds 2-4 runs the arc solve and the traverse window and then that slot, so **artillery
+  has no line-of-fire test**. Kind 6 has one, and the host binds it (`kAaLineOfFireBound`, ON). Its answer is cached
+  per (gun, target) for the gun's life (164.1), so a friend that moves into the line after the first query does
+  not hold fire.
+
+**Verdict.** The host matches the image on every step that matters here: no side filter on the impact, the blast
+or the credit, and no artillery line-of-fire gate. The friendly kills are image behaviour. No switch, no code
+change. For the re-plan (item 5): keep the two Louisianas out of each other's line to HQ2. Give them attack
+positions on different bearings, or bring one in only after the other has stopped firing.
+
+## 291. cc15's `kDirectorQueueCc13BodiesBound`: pair and flip (cc9-ships59, 2026-10-18)
+
+Lead queue item 2. The switch (src/game_hosts_commands.cpp) routes four director-queue sites to
+src/gameplay_seg38_cc13.cpp: 0071C0C0 (inside `command_accepted`), 0071D780, 0071E200 and the 0071D900 slot clear.
+
+**Reach.** USN01 never reaches `command_accepted` (00835e90). USN04 does, with no orders: `local\s58_off1_u4.log`
+counts 00835e90 calls=858, 0071d780 calls=1659 and 0071e200 calls=867 in 20000 frames.
+
+**Predictions (written before the pair).** Gameplay-identical (pair_diff exit 0 or 1) on USN04 20000.
+- 0071C0C0: the host's `command != 0 && count < 10` and cc13's first-empty-slot test agree whenever the slots
+  are packed from 0, which is always true here.
+- 0071D780: both weight a slot-0 `moveonpath` by its point count, and slots 1..9 carry no path in either.
+- 0071D900: the same 5Dh record (arm 1, slot).
+- 0071E200: cc13 sums in float and accepts a sum of exactly 1.0 (`<=`, the image's FCOMIP/JA); the host sums in
+  double and uses `< 1.0`. They differ only when two targets are about 1 m apart. A repeat target in this host
+  is either the same point (sum 0) or far away, so I expect no change.
+
+**Pair (USN04 20000, reference env).** OFF `local\s59_dqoff_u4.log` (tree exe at c123ad2dc), ON
+`local\s59_dqon_u4.log` (`local\s59_dq_on`, manifests beside each log). `pair_diff` exit 1: gameplay identical,
+with 90 death rows, 181 unit-table rows and 25295 shots on both sides. The native table adds
+`EntityCommand::has_free_command_slot 0071c0c0 calls=858`, so the cc13 base test runs on every `command_accepted`.
+The only other moved line is `ship ai free: refills` 2455 -> 2394, the known avoidance-refill noise.
+**Flipped ON** by mechanism. With every site routed, the host's own `< 1.0` projection at 0071E200 is only the OFF
+arm, so no boundary fix is needed.

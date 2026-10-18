@@ -18543,8 +18543,8 @@ bsp::CruiseSpeedSetting GameUnitsHost::commanded_speed(std::size_t unit_index) c
 // plane or ship takes 006D1EB0 / 007B8AE0 on itself only. True: the registry
 // record whose fused slot (squadron_unit) is this unit re-skills its members, and
 // any other unit re-skills itself only (as run_set_crew_level_00894f20 does).
-// False: the member-keyed fan-out.
-inline constexpr bool kSkillLevelSquadronFanOutBound = false;
+// False: the member-keyed fan-out. ON (5ij.1): USN04 and BSM09 pairs, both arms live, gameplay identical.
+inline constexpr bool kSkillLevelSquadronFanOutBound = true;
 
 void GameUnitsHost::set_skill_level_007b8ae0(std::size_t unit_index, int level) {
     Impl& host = *impl_;
