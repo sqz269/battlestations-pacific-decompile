@@ -318,3 +318,12 @@ Ledger-only (existing implementations, spot-checked against the bytes): 009B4400
 | 009B77C0 | level-bomb approach block from a stream | builds the seven level-bomb states and registers them through 009B42D0; go-away +2F8h is twice the class turn radius |
 
 The move-on-path and level-bomb task stream constructors now call these bodies directly rather than through host hooks.
+
+### 3.19 Land and depth-charge approach blocks from a stream
+
+| Address | Function | Notes |
+|---|---|---|
+| 009B3040 | land approach block from a stream | six embedded land states, registered by the existing 009AF9A0 body through the host |
+| 009A5000 | depth-charge approach block from a stream | DepthCharge/done (+1E4h) and /prepare (+2ECh) share vtable 00D1F6FC; leave (+38Ch) has +3A4h = 5.0 |
+
+The land and depth-charge task stream constructors now call these bodies directly.

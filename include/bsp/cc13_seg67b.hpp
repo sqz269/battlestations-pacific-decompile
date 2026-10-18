@@ -175,6 +175,11 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
+    // 009AFFF0: __thiscall(ECX = land approach, arg, archive), RET 8.
+    virtual void bot_approach_land_construct_from_stream_009afff0(void* block, void* arg,
+                                                                  void* archive) = 0;
+    // 009AF9A0: __thiscall(ECX = land approach), RET: registers the eight land states.
+    virtual void land_approach_register_states_009af9a0(void* approach) = 0;
     // 009B4690: __thiscall(ECX = level-bomb approach, [bot+50h], archive), RET 8.
     virtual void bot_approach_level_bomb_construct_from_stream_009b4690(void* block, void* arg,
                                                                         void* archive) = 0;
@@ -228,9 +233,6 @@ public:
     virtual void air_ops_retire_landing_squadron_006c8800(void* squadron) = 0;
     // 009B2C80: __fastcall(ECX = task+3F8h), RET: the landing approach destructor.
     virtual void landing_approach_destroy_009b2c80(void* block) = 0;
-    // 009B3040: __thiscall(ECX = task+3F8h, [bot+50h], archive), RET 8.
-    virtual void land_construct_approach_block_from_stream_009b3040(void* block, void* arg,
-                                                                    void* archive) = 0;
     // 009B7990: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
     virtual void* level_bomb_task_construct_009b7990(void* task, void* bot, void* target) = 0;
     // 009BCE50: __thiscall(ECX = task, bot), RET 4, EAX = task.
@@ -260,10 +262,6 @@ public:
                                                            void* archive) = 0;
     virtual void bot_state_registry_read_current_00411170(void* registry, void* machine,
                                                           void* archive) = 0;
-    // 009A5000: __thiscall(ECX = task+3F8h, bot, archive), RET 8.
-    virtual void depth_charge_construct_approach_block_from_stream_009a5000(void* block,
-                                                                            void* bot,
-                                                                            void* archive) = 0;
     // 009A5240: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
     virtual void* depth_charge_task_construct_009a5240(void* task, void* bot, void* target) = 0;
     // 00F8A720: the path-leg manager singleton.
@@ -745,5 +743,13 @@ void* bot_task_move_on_path_construct_approach_block_from_stream_009bcd50(Cc13Se
 void* bot_task_level_bomb_construct_approach_block_from_stream_009b77c0(Cc13Seg67bHost& host,
                                                                         void* block, void* bot,
                                                                         void* archive);
+// 009B3040: __thiscall(ECX = task+3F8h, [bot+50h], archive), RET 8, EAX = block.
+void* bot_task_land_construct_approach_block_from_stream_009b3040(Cc13Seg67bHost& host,
+                                                                  void* block, void* arg,
+                                                                  void* archive);
+// 009A5000: __thiscall(ECX = task+3F8h, bot, archive), RET 8, EAX = block.
+void* bot_task_depth_charge_construct_approach_block_from_stream_009a5000(Cc13Seg67bHost& host,
+                                                                          void* block, void* bot,
+                                                                          void* archive);
 
 }  // namespace bsp

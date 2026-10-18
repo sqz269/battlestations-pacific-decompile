@@ -1693,8 +1693,8 @@ void bot_task_depth_charge_destruct_body_009a67c0(Cc13Seg67bHost& host, void* ta
 void* bot_task_depth_charge_construct_from_stream_009a6820(Cc13Seg67bHost& host, void* task,
                                                            void* bot, void* archive) {
     bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 1);
-    host.depth_charge_construct_approach_block_from_stream_009a5000(ptr(task, 0x3F8), bot,
-                                                                    archive);
+    bot_task_depth_charge_construct_approach_block_from_stream_009a5000(host, ptr(task, 0x3F8),
+                                                                        bot, archive);
     at<std::uint32_t>(task, 0x000) = kDepthChargeTaskVtable;
     at<std::uint32_t>(task, 0x3F8) = kDepthChargeTaskApproachVtable;
     at<std::uint32_t>(task, 0x4F4) = kDepthChargeTaskRegistryVtable;
@@ -1896,8 +1896,8 @@ void bot_task_land_destruct_body_009b3f50(Cc13Seg67bHost& host, void* task) {
 void* bot_task_land_construct_from_stream_009b4120(Cc13Seg67bHost& host, void* task, void* bot,
                                                    void* archive) {
     bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 3);
-    host.land_construct_approach_block_from_stream_009b3040(ptr(task, 0x3F8), ptr_at(bot, 0x50),
-                                                            archive);
+    bot_task_land_construct_approach_block_from_stream_009b3040(host, ptr(task, 0x3F8),
+                                                                ptr_at(bot, 0x50), archive);
     at<std::uint32_t>(task, 0x000) = kLandTaskVtable;
     at<std::uint32_t>(task, 0x3F8) = kLandApproachVtable;
     at<std::uint32_t>(task, 0x4B0) = kLandRegistryVtable;
@@ -2830,6 +2830,125 @@ void* bot_task_level_bomb_construct_approach_block_from_stream_009b77c0(Cc13Seg6
     const float turn = at<float>(ptr_at(ptr_at(block, 0x2E4), 0x08), 0x268);
     at<float>(block, 0x2F8) = turn + turn;
     bot_task_level_bomb_register_state_names_009b42d0(host, block);
+    return block;
+}
+
+// ---------------------------------------------------------------------------
+// The land approach block from a stream.
+
+namespace {
+constexpr std::uint32_t kLandBlockVtable_00d1ff88 = 0x00D1FF88u;
+constexpr std::uint32_t kLandRegistryVtable_00d1ff84 = 0x00D1FF84u;
+
+// An embedded land state as 009B30DD-009B31E7 lays each one out: +4h = owner
+// block, +0Ch/+10h/+14h/+8h = 0, byte +18h = 0, then the vtable.
+void land_inline_state(void* block, std::size_t off, std::uint32_t vtable) {
+    at<std::uintptr_t>(block, off + 0x04) = reinterpret_cast<std::uintptr_t>(block);
+    at<std::uint32_t>(block, off + 0x0C) = 0;
+    at<std::uint32_t>(block, off + 0x10) = 0;
+    at<std::uint32_t>(block, off + 0x14) = 0;
+    at<std::uint32_t>(block, off + 0x08) = 0;
+    at<std::uint8_t>(block, off + 0x18) = 0;
+    at<std::uint32_t>(block, off + 0x00) = vtable;
+}
+}  // namespace
+
+// 009B3040 (009B3040-009B321F). EH frame 00CAEBF6. 009AFFF0(ECX = block, arg,
+// archive) (009B306A; the land task passes [bot+50h] as arg); 00411E20(block+B8h)
+// (009B307D); [block] = 00D1FF88, [block+B8h] = 00D1FF84 (009B3094, 009B309A);
+// 00BD4FE0(archive, outgoing block, "_state_moveTo") (009B30B1) and 009C2B80(ECX =
+// block+CCh, block, that block by value) (009B30BD); 009C2980(ECX = block+108h,
+// block, 100.0) (009B30D8). Six embedded states: +1A0h 00D1FEA4, +1C0h 00D1FEF4,
+// +1E0h 00D1FF14, +200h 00D1FF44, +228h 00D1FF60, +254h 00D1FED4 (009B30DD-
+// 009B31E7); bytes +274h/+275h = 0 (009B31F1, 009B31F7); 009AF9A0(block)
+// (009B3204). RET 8, EAX = block.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_land_construct_approach_block_from_stream_009b3040(Cc13Seg67bHost& host,
+                                                                  void* block, void* arg,
+                                                                  void* archive) {
+    host.bot_approach_land_construct_from_stream_009afff0(block, arg, archive);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xB8));
+    at<std::uint32_t>(block, 0x00) = kLandBlockVtable_00d1ff88;
+    at<std::uint32_t>(block, 0xB8) = kLandRegistryVtable_00d1ff84;
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrStateMoveTo));
+    bot_state_construct_base_009c2b80(host, ptr(block, 0xCC), block, ref);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x108), block, kHundred_00ce3d08);
+    land_inline_state(block, 0x1A0, 0x00D1FEA4u);
+    land_inline_state(block, 0x1C0, 0x00D1FEF4u);
+    land_inline_state(block, 0x1E0, 0x00D1FF14u);
+    land_inline_state(block, 0x200, 0x00D1FF44u);
+    land_inline_state(block, 0x228, 0x00D1FF60u);
+    land_inline_state(block, 0x254, 0x00D1FED4u);
+    at<std::uint8_t>(block, 0x274) = 0;
+    at<std::uint8_t>(block, 0x275) = 0;
+    host.land_approach_register_states_009af9a0(block);
+    return block;
+}
+
+namespace {
+// An embedded state without the byte at +18h: +4h = owner block, +0Ch/+10h/+14h/
+// +8h = 0, then the vtable (the order of 009A50EA-009A5108 and its siblings).
+void plain_inline_state(void* block, std::size_t off, std::uint32_t vtable) {
+    at<std::uintptr_t>(block, off + 0x04) = reinterpret_cast<std::uintptr_t>(block);
+    at<std::uint32_t>(block, off + 0x0C) = 0;
+    at<std::uint32_t>(block, off + 0x10) = 0;
+    at<std::uint32_t>(block, off + 0x14) = 0;
+    at<std::uint32_t>(block, off + 0x08) = 0;
+    at<std::uint32_t>(block, off + 0x00) = vtable;
+}
+
+constexpr std::uint32_t kDepthChargeBlockVtable_00d1f71c = 0x00D1F71Cu;
+constexpr std::uint32_t kDepthChargeRegistryVtable_00d1f718 = 0x00D1F718u;
+constexpr std::uint32_t kDepthChargeDonePrepareVtable_00d1f6fc = 0x00D1F6FCu;
+constexpr float kFive_00ce3850 = 5.0f;  // 40A00000
+}  // namespace
+
+// 009A5000 (009A5000-009A5217). EH frame 00CAE0D4. 009A35D0(ECX = block, [bot+50h],
+// archive) (009A502D); 00411E20(block+FCh) (009A5040); [block] = 00D1F71C,
+// [block+FCh] = 00D1F718 (009A5057, 009A505D); 00BD4FE0(archive, outgoing block,
+// "_state_moveTo") (009A5074) and 009C2B80(ECX = block+110h, block, that block by
+// value) (009A5080); 009C2980(ECX = block+14Ch, block, 100.0) (009A509B);
+// 009C2980(ECX = block+1E4h, ...) (009A50B8), then [+1E4h] = 00D1F6FC, +27Ch =
+// -1.0, +280h = 0 (009A50BD-009A50D3); 009A36A0(ECX = block+284h, block)
+// (009A50E5); embedded +2A8h 00D1F6A0 (009A50EA-009A5108); embedded +2CCh 00D1F6D8
+// with bytes +2E4h/+2E5h = 0 and +2E8h = 0.0 (009A5115-009A5149); 009C2980(ECX =
+// block+2ECh, ...) (009A5169), then [+2ECh] = 00D1F6FC, +384h = -1.0, +388h = 0
+// (009A516E-009A5184); embedded +38Ch 00D1F668 with +3A4h = [00CE3850] 5.0
+// (009A518A-009A51BA); embedded +3A8h 00D1F684 with +3C0h = 0.0 (009A51C2-
+// 009A51ED); 009A3090(block) (009A51FC). RET 8, EAX = block.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_depth_charge_construct_approach_block_from_stream_009a5000(Cc13Seg67bHost& host,
+                                                                          void* block, void* bot,
+                                                                          void* archive) {
+    bot_approach_depth_charge_construct_from_stream_009a35d0(host, block, ptr_at(bot, 0x50),
+                                                             archive);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xFC));
+    at<std::uint32_t>(block, 0x000) = kDepthChargeBlockVtable_00d1f71c;
+    at<std::uint32_t>(block, 0x0FC) = kDepthChargeRegistryVtable_00d1f718;
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrStateMoveTo));
+    bot_state_construct_base_009c2b80(host, ptr(block, 0x110), block, ref);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x14C), block, kHundred_00ce3d08);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x1E4), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x1E4) = kDepthChargeDonePrepareVtable_00d1f6fc;
+    at<float>(block, 0x27C) = kMinusOne_00d7a260_f;
+    at<std::uint32_t>(block, 0x280) = 0;
+    bot_state_depth_charge_attack_run_construct_009a36a0(host, ptr(block, 0x284), block);
+    plain_inline_state(block, 0x2A8, 0x00D1F6A0u);
+    plain_inline_state(block, 0x2CC, 0x00D1F6D8u);
+    at<std::uint8_t>(block, 0x2E4) = 0;
+    at<std::uint8_t>(block, 0x2E5) = 0;
+    at<float>(block, 0x2E8) = kZero_s15;
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x2EC), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x2EC) = kDepthChargeDonePrepareVtable_00d1f6fc;
+    at<float>(block, 0x384) = kMinusOne_00d7a260_f;
+    at<std::uint32_t>(block, 0x388) = 0;
+    plain_inline_state(block, 0x38C, 0x00D1F668u);
+    at<float>(block, 0x3A4) = kFive_00ce3850;
+    plain_inline_state(block, 0x3A8, 0x00D1F684u);
+    at<float>(block, 0x3C0) = kZero_s15;
+    bot_task_depth_charge_register_state_names_009a3090(host, block);
     return block;
 }
 
