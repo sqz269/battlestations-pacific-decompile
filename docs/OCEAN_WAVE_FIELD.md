@@ -3178,3 +3178,22 @@ the point at the leader's height) on every live member and runs 0099A170 at deli
 stores (class, range 0, no target, the point). LABELLED: no 00645060 select and no 0064B870 / 00780214 role
 transfer run; the line stands for a player who selected the squadron. Prediction (BSM09 d1): Donald turns NW
 towards (-2400, 3200) from 0.5 s, so the fighters that picked it at 118 / 134.6 s meet it later or not at all.
+
+**78, results (USN01 `usn01_p8_u1_i.txt`, 30000 frames, reference env, exports of 2f9d20fdb).** OFF
+`local\p20a_off_usn01.log`; manifests beside each log.
+- `kFollowReleaseArmBound` (`local\p20a_rel_usn01.log`): pair_diff 3 (moved). `pending=25 applied=0` OFF,
+  `pending=28 applied=28` ON. Deaths 36 / 36 with 25 rows moved; the first is ScoutDauntless|.-II (159.76 ->
+  164.01 s); stows 19 -> 17: ConTBD2|.-II and ConTBD3|.-II (torpedo wingmen, the torpedo follow seam) are shot down
+  (402.23 s, alt 566, Convoy2) instead of stowing. The mechanism is the bytes' arm and it is exercised: **ON**.
+- `kLandFinalParkEdgeBound` (`local\p20a_fp_usn01.log`): pair_diff 1, gameplay identical, the edge is never
+  reached (no final plane is touched with +900h outside 4, 5 and 7). Stays OFF, unexercised.
+- `kLandAbortGroundArmBound` (`local\p20a_ag_usn01.log`): pair_diff 1, identical; with the deck term OFF no plane
+  enters land/abort on the ground. Paired again with the deck term below.
+
+**79, result: `kHelmPlaneMovetoBound` ON.** BSM09, orders `cc9-lua52\local\l67_b9_d1.txt`, 36000 frames, reference
+env. OFF `local\p20a_off_bsm09d1.log` (export of 2f9d20fdb, which predates the switch and runs the same ship path),
+ON `local\p20b_helm_bsm09d1.log` (export of 57a15d07b with the flip). OFF: Game Over at 183.06 s (Donald killed),
+as the reference. ON: every `moveto Donald` reaches the squadron (`to 1 squadron plane(s)`), Donald is not in the
+death rows, and the mission completes (`luaMissionComplete` 411.97 s, `Scoring_SetMissionCompleted` completed=1;
+EndMission 408.02 s). pair_diff 3: deaths 29 -> 66, units 66 -> 90 (the later waves spawn). The run stops 40
+frames after EndMission, before `luaMissionCompletedNew`, so the exec guard's refusal is not in this log.
