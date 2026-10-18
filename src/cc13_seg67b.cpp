@@ -1534,7 +1534,7 @@ void bot_task_gain_altitude_tick_009ba2f0(Cc13Seg67bHost& host, void* task, floa
     }
 
     void* const cls = ptr_at(task, 0x2F8);
-    const float speed = host.unit_vcall_38_speed(ptr_at(task, 0x2F4));
+    const float speed = host.entity_vcall_38_float(ptr_at(task, 0x2F4));
     const float num = speed - host.plane_class_min_control_speed_007c4810(cls);
     const float den = at<float>(cls, 0x18C) - host.plane_class_min_control_speed_007c4810(cls);
     const float f = clamp_unit_01(num / den);
