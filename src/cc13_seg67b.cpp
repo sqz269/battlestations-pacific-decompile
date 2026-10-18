@@ -3117,7 +3117,7 @@ constexpr StateNamePair kDiveBombStateNamePairs[] = {
 // difference is rounded to float. EH unwinding not modelled.
 void* bot_task_dive_bomb_construct_approach_block_009c73a0(Cc13Seg67bHost& host, void* block,
                                                            void* bot, void* target) {
-    host.bot_approach_dive_bomb_construct_009c3ea0(block, ptr_at(bot, 0x50), target);
+    bot_approach_dive_bomb_construct_009c3ea0(host, block, ptr_at(bot, 0x50), target);
     host.bot_state_registry_construct_00411e20(ptr(block, 0xE4));
     const float third = at<float>(block, 0xB4);
     const float far_ = at<float>(block, 0xA8);
@@ -3654,9 +3654,10 @@ constexpr float kThirtySixHundred_00cfdeb0 = 3600.0f;    // 45610000
 // when target is non-null and passes vtable[5Ch](41h), else 0 (009CA615-009CA62C);
 // 009CA3B0(ECX = approach) (009CA62F); when [approach+4] passes vtable[5Ch](10h) or
 // (16h): +34h and +3Ch scaled by double [00D045F0] 1.4 (009CA634-009CA668).
-// UNCERTAINTY: products are rounded at 24-bit precision in the image; the double-
-// constant products here round to double then to float (53-bit would match this). The
-// RNG results are rounded from ST0 by the hook. EH unwinding not modelled.
+// UNCERTAINTY: 24-bit precision modelled (each FMUL of a chain rounds to float; at 53
+// bits a chain would round once at the end). The double constants are float-exact, so
+// their products are exact in double and round once. The RNG results are rounded from
+// ST0 by the hook. EH unwinding not modelled.
 void* bot_approach_strafe_construct_009ca4a0(Cc13Seg67bHost& host, void* approach, void* arg,
                                              void* target) {
     const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x65C);
@@ -3737,9 +3738,10 @@ constexpr float kMinusPointOne_00ce3cb4 = -0.1f;        // BDCCCCCD
 // The fragment helpers in src/torpedo_approach_update.cpp model these steps at 53-bit
 // precision and take desc+18Ch on an unordered compare; this body follows the image's
 // JBE and models 24-bit precision.
-// UNCERTAINTY: the double-constant products round to double then to float here (at
-// 24 bits the image rounds once). RNG results rounded from ST0 by the hook. EH
-// unwinding not modelled.
+// UNCERTAINTY: 24-bit precision modelled (at 53 bits the product-plus-sum and the leg
+// expressions would round once at the end). The double constants are float-exact, so
+// their products are exact in double and round once. RNG results rounded from ST0 by
+// the hook. EH unwinding not modelled.
 void* bot_approach_torpedo_construct_009d0380(Cc13Seg67bHost& host, void* approach, void* arg,
                                               void* target) {
     const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x440);
@@ -3800,6 +3802,84 @@ void* bot_approach_torpedo_construct_009d0380(Cc13Seg67bHost& host, void* approa
     host.approach_torpedo_aim_error_draw_009d02a0(approach);
     host.approach_torpedo_reset_run_time_009d0160(approach);
     for (std::size_t off = 0x30; off <= 0x54; ++off) at<std::uint8_t>(approach, off) = 1;
+    return approach;
+}
+
+// ---------------------------------------------------------------------------
+// The dive-bomb approach base.
+
+namespace {
+constexpr std::uint32_t kDiveBombApproachVtable_00d20c48 = 0x00D20C48u;
+constexpr double kPointNineFive_00ceffb0 = 0.949999988079071;  // 3FEE666660000000
+constexpr float kPointEight_00ce74f8 = 0.8f;                   // 3F4CCCCD
+constexpr float kOnePointSix_00d06bb4 = 1.6f;                  // 3FCCCCCD
+constexpr float kOnePointEight_00cf4848 = 1.8f;                // 3FE66666
+constexpr double kHalf_00d7a280 = 0.5;
+constexpr double kTwoHundredFifty_00cf8850 = 250.0;
+}  // namespace
+
+// 009C3EA0 (BSP_DiveBombApproach_Construct): __thiscall(ECX = approach, plane, target),
+// RET 8, EAX = approach. Evidence (disk bytes): 009F9CE0(ECX = approach, plane, tuning
+// +4D8h) (009C3EBF-009C3ED5); vtable 00D20C48, +2Ch = 0 (009C3EE2-009C3EE8);
+// 009FB200(ECX = approach+30h, target) (009C3EEF); with desc = [approach+8] and rec =
+// [approach+14h]: +A4h = float(desc+188h x double [00CEFFB0] 0.95) (009C3EF4-009C3F16);
+// +A8h = 00BD2F10(1, rec+38h, rec+3Ch) (009C3F1C-009C3F2E); +ACh = tuning+4CCh
+// (009C3F34-009C3F3F); +B0h = tuning+4D0h - tuning+4CCh (009C3F45-009C3F68); +B4h =
+// RNG(1, [00CE3D30] 0.6, [00CE74F8] 0.8) x desc+268h (009C3F6E-009C3F97); T = RNG(1,
+// [00D06BB4] 1.6, [00CF4848] 1.8) x desc+268h, +C0h = 0.0, +C4h = 3600.0, +CCh = 0FFh,
+// +B8h = +BCh = T, byte +D0h = 0 (009C3F9D-009C3FF5); +D4h = the larger of float(+A8h
+// + 250.0) and float((+ACh + +A8h) x 0.5), the mean on a tie or an unordered compare
+// (009C3FFB-009C4045, FCOMI then JBE); 00414DB0(plane) when byte plane+C8h is 0
+// (009C404D-009C4058); +D8h/+DCh/+E0h = plane+FCh/+100h/+104h (009C405D-009C407D);
+// 009C3DA0(ECX = approach) (009C4083).
+// src/dive_bomb_task.cpp's dive_bomb_dive_entry_height_009c4045 has the +D4h step at
+// 53-bit precision but is bsp_game-only, so it is not called here.
+// UNCERTAINTY: 24-bit precision modelled. The double constants are float-exact, so their
+// products and the 250.0 sum are exact in double and round once, as at 24 bits. RNG
+// results rounded from ST0 by the hook. The plane is dereferenced without a null test,
+// as in the image. EH unwinding not modelled.
+void* bot_approach_dive_bomb_construct_009c3ea0(Cc13Seg67bHost& host, void* approach,
+                                                void* plane, void* target) {
+    const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x4D8);
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, plane, speed);
+    at<std::uint32_t>(approach, 0x00) = kDiveBombApproachVtable_00d20c48;
+    at<std::uint32_t>(approach, 0x2C) = 0;
+    host.approach_target_ref_construct_009fb200(ptr(approach, 0x30), target);
+    void* desc = ptr_at(approach, 0x8);
+    void* rec = ptr_at(approach, 0x14);
+    at<float>(approach, 0xA4) = static_cast<float>(
+        static_cast<double>(at<float>(desc, 0x188)) * kPointNineFive_00ceffb0);
+    at<float>(approach, 0xA8) =
+        host.random_uniform_00bd2f10(1, at<float>(rec, 0x38), at<float>(rec, 0x3C));
+    at<float>(approach, 0xAC) = at<float>(host.game_tuning_singleton_0042e740(), 0x4CC);
+    void* tuning_a = host.game_tuning_singleton_0042e740();
+    void* tuning_b = host.game_tuning_singleton_0042e740();
+    at<float>(approach, 0xB0) = at<float>(tuning_a, 0x4D0) - at<float>(tuning_b, 0x4CC);
+    desc = ptr_at(approach, 0x8);
+    at<float>(approach, 0xB4) =
+        host.random_uniform_00bd2f10(1, kPointSix_00ce3d30, kPointEight_00ce74f8) *
+        at<float>(desc, 0x268);
+    desc = ptr_at(approach, 0x8);
+    const float t =
+        host.random_uniform_00bd2f10(1, kOnePointSix_00d06bb4, kOnePointEight_00cf4848) *
+        at<float>(desc, 0x268);
+    at<float>(approach, 0xC0) = kZero_s15;
+    at<float>(approach, 0xC4) = kThirtySixHundred_00cfdeb0;
+    at<std::uint32_t>(approach, 0xCC) = 0xFF;
+    at<float>(approach, 0xB8) = t;
+    at<std::uint8_t>(approach, 0xD0) = 0;
+    at<float>(approach, 0xBC) = t;
+    const float a8 = at<float>(approach, 0xA8);
+    const float mean =
+        static_cast<float>(static_cast<double>(at<float>(approach, 0xAC) + a8) * kHalf_00d7a280);
+    const float margin = static_cast<float>(static_cast<double>(a8) + kTwoHundredFifty_00cf8850);
+    // JBE after FCOMI(margin, mean): the mean is kept on a tie or an unordered compare.
+    at<float>(approach, 0xD4) = margin > mean ? margin : mean;
+    if (at<std::uint8_t>(plane, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(plane);
+    at<float>(approach, 0xD8) = at<float>(plane, 0xFC);
+    at<float>(approach, 0xDC) = at<float>(plane, 0x100);
+    at<float>(approach, 0xE0) = at<float>(plane, 0x104);
+    host.approach_dive_bomb_aim_error_draw_009c3da0(approach);
     return approach;
 }
 

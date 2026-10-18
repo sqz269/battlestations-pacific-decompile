@@ -410,3 +410,14 @@ It also sets +44h = 3600.0, takes +4Ch from 007C2610, and keeps the target at +5
 - **NaN on the attack-speed cap.** At 009D03FD the JBE keeps 0.75 x 007BCE20 when the compare is unordered. torpedo_reset_attack_speed_009d03d9 takes desc+18Ch in that case.
 
 It draws six times from the RNG 00BD2F10 on stream 1, and 009D02A0 draws again after them.
+
+### 3.29 Dive-bomb approach base
+
+009C3EA0 builds the dive-bomb approach on 009F9CE0 (tuning +4D8h) with vtable 00D20C48. It makes three draws from the RNG 00BD2F10 on stream 1:
+- +A8h from the record's +38h..+3Ch range;
+- +B4h = U(0.6, 0.8) x TurnCircleRadius;
+- +B8h and +BCh share U(1.6, 1.8) x TurnCircleRadius.
+
++D4h is the larger of +A8h + 250.0 and the mean of +A8h and +ACh. The mean is kept on a tie or an unordered compare, as dive_bomb_dive_entry_height_009c4045 also does; that helper is bsp_game-only, so this body has its own copy of the step. The body then copies the plane's position into +D8h..+E0h and calls the aim-error redraw 009C3DA0.
+
+The uncertainty notes for 009CA4A0 and 009D0380 were corrected: float-exact double constants give exact products in double, so those steps round once.

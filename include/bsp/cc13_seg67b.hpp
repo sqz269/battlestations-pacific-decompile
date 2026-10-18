@@ -202,9 +202,9 @@ public:
     // 009ABBE0: __thiscall(ECX = drop-kamikaze approach, [bot+50h], archive), RET 8.
     virtual void bot_approach_drop_kamikaze_construct_base_from_bag_009abbe0(void* block, void* arg,
                                                                              void* archive) = 0;
-    // 009C3EA0: __thiscall(ECX = dive-bomb approach, [bot+50h], target), RET 8.
-    virtual void bot_approach_dive_bomb_construct_009c3ea0(void* block, void* arg,
-                                                           void* target) = 0;
+    // 009C3DA0: __thiscall(ECX = dive-bomb approach): the aim-error redraw (draws from
+    // 00BD2F10).
+    virtual void approach_dive_bomb_aim_error_draw_009c3da0(void* approach) = 0;
     // 009A6C10: __thiscall(ECX = dogfight approach, bot, arg), RET 8.
     virtual void bot_approach_dogfight_construct_009a6c10(void* block, void* bot, void* arg) = 0;
     // 009B44F0: __thiscall(ECX = level-bomb approach, [bot+50h], target), RET 8.
@@ -837,5 +837,8 @@ void* bot_approach_strafe_construct_009ca4a0(Cc13Seg67bHost& host, void* approac
 // 009D0380: __thiscall(ECX = approach, arg, target), RET 8, EAX = approach.
 void* bot_approach_torpedo_construct_009d0380(Cc13Seg67bHost& host, void* approach, void* arg,
                                               void* target);
+// 009C3EA0: __thiscall(ECX = approach, plane, target), RET 8, EAX = approach.
+void* bot_approach_dive_bomb_construct_009c3ea0(Cc13Seg67bHost& host, void* approach,
+                                                void* plane, void* target);
 
 }  // namespace bsp
