@@ -17901,3 +17901,24 @@ SetSkillLevel on a member plane, so nothing moves. Flipped ON.
 
 Flipped as faithful bindings with the bodies re-checked (5ii): no WINS row reaches either native (JM06's only
 ClearForcedReconLevel call is commented out; SetCrewLevel runs only in chg / multi / the commandhelpers cheat paths).
+
+## 5ik. cc13 fix20: `kLuaPlayBinkMovieBound` and `kLuaScoringSetMissionCompletedBound` **ON** (cc9-lua67, 2026-10-18)
+
+Export `local\l67_br_on` (fcb6c6fa5 with both switches, 7D430F3F03E7) against `local\l67_rt`; logs
+`local\l67r_<row>_<rt|br_on>_<env>.log`.
+
+- **BSM09 `bsm09_l65_b9_c` 20,3** (pair_diff 3, deaths identical 49 = 49, every death row and plane mode identical):
+  luaMissionCompletedNew sets `Scoring_SetMissionCompleted` slot 0 `0 -> 1`, +10h = 331.029 s, then
+  `PlayBinkMovie("campaigns/BSM/m0902.bik", "", true)` replaces the result object (+8h = -200.0, debrief 1) and runs
+  EndScene 004D7970 (commit, request 10h); the teardown hands the movie to 004F8A20 and leaves state 0Dh for 11h.
+  The only moved numbers (shots 19622 -> 19418, plane water contacts, Yorktown distance) are the 40 s of post-end
+  play the OFF run keeps and the ON run no longer has. **Completion now comes from the movie path**: the run leaves
+  the mission at 331 s the way `--mission-complete-frame` does; `summary mission end` still reports the script's
+  EndMission at 327.04 s, and the exec guard logged its sus_prog.exe refusal both ways.
+- **USN02 `usn02_s36_u2_p7`** (reference; a loss on this base): pair_diff 1, gameplay identical. The failure path sets
+  the record `0 -> 0` (`Scoring_SetMissionCompleted(false)`); usn_2_java.lua's luaMissionFailedNew passes no movie.
+- **IJN08 `ijn08_p10_i08_z`** (reference; no end on this base in 100000 frames): pair_diff 1, identical, no call.
+- **JM06 `jm06_p12_j6_c1`** (reference; no end): pair_diff 1, identical, no call.
+
+Mechanism as predicted (CC13_FIX20): nothing moves before the end; an end movie with debrief ends the scene. Flipped ON.
+A one-argument mid-mission clip (bsm_01 :2299, bsm_10 :1520, ...) was not exercised by these rows.
