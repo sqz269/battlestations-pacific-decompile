@@ -385,6 +385,25 @@ inline constexpr bool kShipDirectorEnablesBound = true;
 // session. False: the native stays unimplemented and every director keeps 1.
 inline constexpr bool kLuaArtilleryEnableBound = false;
 
+// Packet cc13-fix17 (docs/CC13_FIX17.md). The Lua native ForceFireDepthCharge
+// 0089B9D0: argument 0 through 00888AA0 (no null test), then the unit's child
+// list from +48h (next +44h, read after the call, 0089BB1B). A child that answers
+// vtable[5Ch](24h) (MSTGun and its MDepthChargeLauncher 27h) and whose
+// descriptor [child+3F4h]+80h is 8 ("DEPTHCHARGE") gets vtable[1F0h]() at
+// 0089BB19. For MSTGun that slot is 006FDC50 = vtable[1E8h](1) = 006FDCD0: the
+// fire request 0072D2C0(1), and +4D4h = 0 when +454h is 0. No RNG draw and no
+// result. The request is then the gun's: 006FE0D0's salvo test drops it after
+// the last barrel, and DepthChargeBot 008FC080 only rewrites it on a think with
+// a fire target (it returns at 008FC13C without one).
+// True: each call is queued and, at the next fixed step, raises the trigger of
+// every category-8 gun of the unit; a raised trigger survives the host's
+// no-target drop until its salvo ends or the bot has a target again. LABELLED:
+// category 8 stands in for the class test (every DEPTHCHARGE device in this
+// installation's deviceclasses.lua is a Single_Turning_Gun), the raise lands at
+// the next fixed step rather than in the script phase, and a player-held seat
+// keeps its own trigger. False: the native stays unimplemented.
+inline constexpr bool kLuaForceFireDepthChargeBound = false;
+
 // Packet cc9_torpedo_stock (docs/UNIT_WEAPON_DEVICES.md, "Torpedo stock, bound").
 // True: a ship's torpedo tubes draw on the class's MaxTorpedoStock (class+7A0h).
 // 0081F8B0 at pass C (008201B8) sets the spare unit+104Ch = stock - loaded
@@ -516,6 +535,9 @@ void queue_reload_torpedoes_008c3ce0(std::size_t unit_index);
 // Packet cc9_bsm01_state_natives: an ExplodeToParts call (0088E1B0), applied as
 // 00935C70 over the unit's hull segments at the next fixed step.
 void queue_explode_to_parts_0088e1b0(std::size_t unit_index);
+// Packet cc13-fix17: a ForceFireDepthCharge call (0089B9D0), applied at the next
+// fixed step under kLuaForceFireDepthChargeBound.
+void queue_force_fire_depth_charge_0089b9d0(std::size_t unit_index);
 
 // Session message 79h as 00954A10 builds it in 005484F0 (section 32 of
 // docs/SHIP_SCREEN_UPDATE.md): +1Ch group, +20h..+28h the camera mover's

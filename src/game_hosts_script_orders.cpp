@@ -269,6 +269,12 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // Packet cc13-fix15: usn_09_leyte.lua 9-11 switch the Fortress1-3 artillery
     // off at load. Handled only with kLuaArtilleryEnableBound.
     {"ArtilleryEnable", 0x0089c590u},
+    // Packet cc13-fix17: usn_03_battle_of_santa_cruz.lua:593 (Puffin, every
+    // think). Handled only with kLuaForceFireDepthChargeBound.
+    {"ForceFireDepthCharge", 0x0089b9d0u},
+    // Packet cc13-fix17: jm10.lua:1862, jm12.lua:1783 and LOMP 08_lightning_strike
+    // .lua:392. Handled only with kLuaSetSubmarineAirSupplyBound.
+    {"SetSubmarineAirSupply", 0x00893a60u},
     // Packet cc9_ship_set_torpedo_stock: bsm_01_stationed_at_pearl.lua:1790 and
     // the COTP-IJN spawn tables call it. Handled only with
     // kShipSetTorpedoStockBound.
@@ -653,6 +659,12 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     if (std::strcmp(binding->name, "SetFireTarget") == 0) return kScriptFireTargetBound;
     if (std::strcmp(binding->name, "TorpedoEnable") == 0) return kShipDirectorEnablesBound;
     if (std::strcmp(binding->name, "ArtilleryEnable") == 0) return kLuaArtilleryEnableBound;
+    if (std::strcmp(binding->name, "ForceFireDepthCharge") == 0) {
+        return kLuaForceFireDepthChargeBound;
+    }
+    if (std::strcmp(binding->name, "SetSubmarineAirSupply") == 0) {
+        return kLuaSetSubmarineAirSupplyBound;
+    }
     if (std::strcmp(binding->name, "ShipSetTorpedoStock") == 0) return kShipSetTorpedoStockBound;
     if (std::strcmp(binding->name, "FillPathPoints") == 0) return kFillPathPointsBound;
     if (std::strcmp(binding->name, "Scoring_GetPlayerShotDown") == 0) {
@@ -4111,6 +4123,27 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             queue_ship_set_torpedo_stock_0089eee0(row.unit_index, stock);
             log_.notef("  ShipSetTorpedoStock: %s stock=%d (0089EEE0, queued for 0081F8B0)",
                 row.unit.c_str(), stock);
+        }
+    } else if (std::strcmp(binding->name, "ForceFireDepthCharge") == 0) {
+        // Packet cc13-fix17. 0089B9D0: argument 0 through 00888AA0 and straight
+        // into the child walk (no null test; a null entity faults in the image,
+        // the host drops it). No result. LABELLED: queued for the gunnery host's
+        // next fixed step.
+        if (subject != nullptr && row.unit_index < units_.count()) {
+            queue_force_fire_depth_charge_0089b9d0(row.unit_index);
+            log_.notef("  ForceFireDepthCharge: %s (0089B9D0 -> vtable[1F0h], queued)",
+                row.unit.c_str());
+        }
+    } else if (std::strcmp(binding->name, "SetSubmarineAirSupply") == 0) {
+        // Packet cc13-fix17. 00893A60: argument 0 through 00888AA0, argument 1
+        // through 00B66270 rounded to float (00893B95), stored at unit+127Ch
+        // (00893BA1) with no class, null or range test. No result. LABELLED: a
+        // unit with no seeded submarine air state stores nothing.
+        const float air = argument_number(1);
+        if (subject != nullptr && row.unit_index < units_.count()) {
+            const bool stored = units_.set_submarine_air_00893a60(row.unit_index, air);
+            log_.notef("  SetSubmarineAirSupply: %s air=%.3f stored=%d (00893A60 -> +127Ch)",
+                row.unit.c_str(), static_cast<double>(air), stored ? 1 : 0);
         }
     } else if (std::strcmp(binding->name, "RepairEnable") == 0) {
         bsp::RepairEnableArm arm = bsp::RepairEnableArm::kLocalFieldWrite;

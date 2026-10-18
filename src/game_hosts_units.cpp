@@ -18371,6 +18371,19 @@ bool GameUnitsHost::set_unlimited_air_00893c00(std::size_t unit_index, bool flag
     return true;
 }
 
+// Packet cc13-fix17. 00893A60's store at unit+127Ch: the value as given, no
+// clamp (00855250 clamps it on the next force step). The image writes any
+// entity; a slot that is not a seeded submarine has no air state here.
+bool GameUnitsHost::set_submarine_air_00893a60(std::size_t unit_index, float air) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size()) return false;
+    GameUnitSlot& slot = *host.slots[unit_index];
+    if (!slot.sub_dive_ready) return false;
+    slot.sub_air.air = air;
+    host.done("SubmarineUnit::set_air_supply", 0x00893a60u);
+    return true;
+}
+
 bsp::CruiseSpeedSetting GameUnitsHost::commanded_speed(std::size_t unit_index) const {
     return impl_->commands.commanded_speed(unit_index);
 }
