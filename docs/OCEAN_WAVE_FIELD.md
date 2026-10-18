@@ -3219,3 +3219,11 @@ change is the known ship-avoidance refill noise). USN04, no orders, 12000 fr (`l
 `local\p20a_off_usn04.log`; 26 fighters log early edges 009AAA80): pair_diff 0, identical. The draw is keyed per
 unit, so it couples no other stream; no pick changed on either row. Flipped as the bytes' draw; UNCERTAINTY: no
 counter shows how often the draw ran.
+
+**78, a further 0099D300 read for the deck question.** `disasm-raw 0099D980`: after 0099D99E's 007D99C0 and the
+FDIV by the speed scale (0099D9A3), a plane in +900h 4 or 5 on a holder (+BF8h, +BF4h) whose 006049F0 owner is a
+ship (`vt[5Ch](6)`, 0099DA05) and whose ship speed 0092D730 ([ship+1018h]) is NEGATIVE (FLDZ / FCOMI / JBE at
+0099DA29-0099DA2F) gets `measured -= ship speed` (0099DA31-0099DA48). The host does not model this arm (a carrier
+going astern only). It also shows the image keeps the forward deck term in the measured speed on purpose, so the
+answer to the stow question lies elsewhere (the parented ctl+44h, section 75's frame question, or 009B21D0's
+timer), not in 0099D300.
