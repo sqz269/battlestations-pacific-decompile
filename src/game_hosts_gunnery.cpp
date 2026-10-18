@@ -446,6 +446,22 @@ constexpr bool kSubmarineCategoryGateBound = true;
 //    OFF: as before.
 //    ON since the pairs (GUNNERY_OPEN_ITEMS 226: USN01 21 non-harm causes, identical).
 constexpr bool kKillFunnelCauseBound = true;
+//  * kKillFunnelTargetGoneBound: packet p18_kill_funnel_target_gone (cc9-physics18,
+//    docs/OCEAN_WAVE_FIELD.md 70; docs/CC13_FIX19.md "Feeds"). 00926D90 Kill puts a
+//    live entity (+5Fh clear, 00926DE1/00926DED) on the kill list, and pass K of
+//    009273A0 notifies its observers (00925C40 -> 00696330 -> 0074FFE0, the
+//    proximity trigger's target-gone retire). The host fed that observer only from
+//    Lua Kill, the inline pass-K sites and the squadron poll, so a target Killed
+//    through this entry by any other host site (the plane depth kill 007CE3A7, the
+//    landed-remainder kill 00749B7B, SquadronLandAndKill's planes, ...) kept its
+//    trigger. ON: kill_unit_00926d90 hands a unit gunnery does not yet count dead to
+//    GameMissionLuaHost::target_gone_00925c40, which notices each unit once (the +5Eh
+//    stand-in), so a site that already fed it adds nothing. A gunfire death that takes
+//    destroy (00926C80, impl kill_unit) is NOT fed: the image's Destroy notice is the
+//    no-op slot +8h (0042B120). LABELLED: the host sites that call this entry with
+//    cause 1 are taken to stand for 00926D90 calls, as their comments say.
+//    OFF: as before.
+constexpr bool kKillFunnelTargetGoneBound = false;
 //  * kArtilleryClassSpeedBound: packet g42_ver21_d3 (docs/CC13_VER_21.md D3).
 //    006E98BC rewrites an artillery class (sub-types 4..7) to +50h = sqrt(9.81 *
 //    Range) and +5Ch = V0 / that, and every consumer reads the rewrite: the
@@ -2996,6 +3012,7 @@ struct GameGunneryHost::Impl {
     unsigned long long kill_funnel_non_harm_causes{0};      // kKillFunnelCauseBound
     unsigned long long aa_negative_halvings{0};
     unsigned long long water_depth_kills{0};   // packet cc9_water_surface_law
+    unsigned long long kill_funnel_target_gone_feeds{0};   // packet p18_kill_funnel_target_gone
     unsigned long long airfield_destroy_kills{0};  // packet cc9_airfield_destruction_rule
     // Packet cc9_land_master_damage: per unit, the master +738h (npos for none) and
     // whether it is an airfield (the vtable[1A8h] the host can run).
@@ -15634,6 +15651,13 @@ void GameGunneryHost::kill_unit_00926d90(std::size_t unit_index, int cause) {
         impl_->units.note_kill_cause_00926e02(unit_index, stored);
         if (stored != 1) ++impl_->kill_funnel_non_harm_causes;
     }
+    if constexpr (kKillFunnelTargetGoneBound) {
+        // 00926DED: an entity already dead is not put on the kill list again.
+        if (!impl_->unit_state[unit_index].dead) {
+            ++impl_->kill_funnel_target_gone_feeds;
+            impl_->lua.target_gone_00925c40(unit_index);
+        }
+    }
     ++impl_->water_depth_kills;
     impl_->explicit_kill_cause = bsp::normalized_kill_cause_00926d90(cause);
     impl_->kill_unit(unit_index);
@@ -16606,6 +16630,11 @@ void GameGunneryHost::report() {
             kKillFunnelCauseBound ? 1 : 0);
         host.log.notef("summary mission gunnery water depth kills=%llu (007CE3A7, packet "
             "cc9_water_surface_law)", host.water_depth_kills);
+        if constexpr (kKillFunnelTargetGoneBound) {
+            host.log.notef("summary mission gunnery kill funnel target-gone feeds=%llu (00926D90 "
+                "-> 00925C40, packet p18_kill_funnel_target_gone)",
+                host.kill_funnel_target_gone_feeds);
+        }
         host.log.notef("summary mission gunnery airfield sub-entity asks=%llu listed=%llu "
             "bound=%d (008654AC -> 006D4DD0, packet cc9_airfield_sub_entities)",
             host.airfield_sub_entity_asks, host.airfield_sub_entities_listed,

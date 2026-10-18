@@ -2902,3 +2902,37 @@ JM03's script (`PRCPIJN/JM03.lua`), not JM08's.
 
 **Tool:** `python tools/mission_script_reach.py <Native> [<Native> ...]` lists every menu id whose real script (the
 scene's `StageScript`) calls one of the natives, with call-site counts; with no arguments it prints each id's script.
+
+## 70. Proximity and ordnance triggers ON; the SpawnNew missing-class raise; the kill-funnel feed (cc9-physics18, 2026-10-18)
+
+Exports at e62312da7 (main with cc13 fix19c): `local\p18_c_{off,prox,sod}`; logs `local\p18c<set>_<row>.log`.
+
+**`kLuaProximityTriggersBound` ON** (lead routing, after 69's mechanism). The squadron-target rows:
+- PRCP01 with `prcp01_l55_p01_c` (30000 frames): both complete at 986.78 s, gameplay identical. The one trigger
+  (`"Hornet"`, `FakeDiveBomberReconlistenerID...` -> `luaUS03HornetStrikeIncoming`, 1500 m, target entity 142, a
+  squadron) never fires; its target squadron goes and the trigger is retired (fix19c's poll), 57 notices.
+- JM02 (36000 frames): the trigger (`"Buffalo 06"` -> `ThisLooksBad`, 1500 m) FIRES once; gameplay identical.
+
+**`kLuaSquadOrdnanceDroppedTriggerBound` ON** (by mechanism).
+- USNRM01 (36000 frames): `AddSquadOrdnanceDroppedTrigger(Mission.OklahomaKillers, nil, "luaOklahomaKillersRetreat")`
+  (`usn_1_pearl.lua:1507`) fires once: the squadron's fire stance goes to 2 and it moves off toward `JapRetreat`.
+  MOVED: the mission fails at 784.93 s (OFF 569.98 s), deaths 343 -> 514.
+- BSM04 (fails at 84.05 s on both sides): one add (`"B-17"` -> `luaFortressDroppedBombs`), no fire; identical.
+
+**`kSpawnNewMissingClassRaisesBound` (new, OFF): PRCP05's abort.** The abort's unit is the shipyard PT of
+`usn_09_Leyte.lua` (`SpawnNew` with `["Type"] = 240`, `"Gyoraitei PT"`). This installation's
+`scripts/datatables/autoload/vehicleclasses.lua` (modified 2026-05-09) has no `VehicleClass[240]` (it jumps from
+237 to 241), so the class factory has no row. The image: `00949750` (SpawnNew's body) builds each member through
+`00945C30` -> `00944210` -> `00964790`, which takes `VehicleClass[classIndex]` (`00B67720`, a nil object) and then
+its `Type` through `00B67800` -> `00A67C20` `lua_gettable` -> `luaV_gettable` on nil, which raises `attempt to index
+a nil value`. The error unwinds the native into the script's protected call: the calling function stops and
+nothing is spawned (the members are read inside the native, before `009484xx` creates any). The host instead created
+the member with no class and aborted at the observer projection. The switch raises the same Lua error at the member
+read. Uncertain: the exact message text (no variable name is available to `luaG_typeerror` from a C call), and that
+`00964790` makes no earlier call that would fault first; the listing shows none.
+
+**`kKillFunnelTargetGoneBound` (new, OFF, `game_hosts_gunnery.cpp`).** `kill_unit_00926d90` (the host's 00926D90
+Kill entry) now feeds `GameMissionLuaHost::target_gone_00925c40` for a unit gunnery does not yet count dead
+(00926DED). It covers the Kill callers fix19 lists as unfed (plane depth kill 007CE3A7, landed remainder 00749B7B,
+SquadronLandAndKill's planes, the other 00926D90 callers). A gunfire death takes destroy (00926C80) and is not fed,
+because the image's destroy notice is the no-op slot `+8h` `0042B120`; its trigger retires when the wreck is Killed.
