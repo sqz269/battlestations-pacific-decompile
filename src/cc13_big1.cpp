@@ -606,7 +606,8 @@ void hud_support_manager_rebuild_lists_0066a8a0(void* screen, Big1Host& host) {
                 at<void*>(entry, 0x0) = obj;                                 // 0066AC39
                 if (host.object_vtable18(obj, 0xF))                          // 0066AC3D
                     at<std::uint32_t>(entry, 0x4) =
-                        at<std::uint32_t>(host.scene_property_bag_find_008f2260(bag, "Equipment"), 0xC);  // 0066AC4A (00CF69AC)
+                        // 0066AC4A (00CF69AC)
+                        at<std::uint32_t>(host.scene_property_bag_find_008f2260(bag, "Equipment"), 0xC);
                 else
                     at<std::int32_t>(entry, 0x4) = -1;                       // 0066AC58
                 if (it == ptr(owner, 4)) host.crt_invalid_parameter_noinfo_00bf6713();  // 0066AC69
@@ -647,7 +648,8 @@ void hud_support_manager_rebuild_lists_0066a8a0(void* screen, Big1Host& host) {
     }
 
     const std::uint32_t c_size = at<std::uint32_t>(s, 0x3C0);
-    if (c_size != 0 && at<std::uint32_t>(s, 0x3B4) != 0 && c_size > at<std::uint32_t>(s, 0x3B4)) {  // 0066ADAB..0066ADC5
+    // 0066ADAB..0066ADC5
+    if (c_size != 0 && at<std::uint32_t>(s, 0x3B4) != 0 && c_size > at<std::uint32_t>(s, 0x3B4)) {
         clear_screen_list(s, 0x3C4, host);                                   // 0066ADCF..0066AE01
         for (void* c = at<void*>(ptr(s, 0x3BC), 0); c != ptr(s, 0x3BC);) {  // 0066AE25
             bool found = false;
@@ -680,6 +682,455 @@ void hud_support_manager_rebuild_lists_0066a8a0(void* screen, Big1Host& host) {
     host.entry_list_assign_00668350(s + 0x3EC, list_a, at<void*>(ptr(list_a, 4), 0), list_a, ptr(list_a, 4),
                                     0);                                      // 0066AF44 (tag stale)
     free_list_nodes(t, host);                                                // 0066AF49..0066AF7E
+}
+
+namespace {
+
+// The checked dereference of the iterator {owner, node} at screen+off: 00BF6713 on a null owner
+// or on the end node (the owner's +4h).
+void check_iterator(std::uint8_t* s, std::size_t off, Big1Host& host) {
+    if (ptr(s, off) == nullptr) host.crt_invalid_parameter_noinfo_00bf6713();
+    if (ptr(s, off + 4) == at<void*>(ptr(s, off), 4)) host.crt_invalid_parameter_noinfo_00bf6713();
+}
+
+// A NativeString's block back to the sized pool, when it has data (the inlined destructor).
+void release_str(const NativeStr& str, Big1Host& host) {
+    if (str.data != nullptr)
+        host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), str.data, str.length + 1, 1);
+}
+
+// _ftol2 (00BF7420): ST0 truncated to a 64-bit integer, of which EAX is the low dword. Outside
+// the int64 range (and for a NaN) the store gives 8000000000000000h, whose low dword is 0.
+std::int32_t ftol2_low_00bf7420(double v) {
+    if (!(v >= -9223372036854775808.0 && v < 9223372036854775808.0)) return 0;
+    return static_cast<std::int32_t>(static_cast<std::uint32_t>(
+        static_cast<std::uint64_t>(static_cast<std::int64_t>(v))));
+}
+
+// 00675352..00675408 and 0067548F..0067554B: the device icon of widget +158h. Each read goes
+// through 009552E0(unit; id) and 00443490([[[r+4]+8]+4], DL = 0); the texture is
+// [[[c+74h]+34h]+7Ch] of the first, the UV the four dwords at [[c+74h]+34h]+90h of the second.
+// The id is re-read for each call (from screen+334h, or from unit+134h).
+void set_device_icon(std::uint8_t* s, void* unit, const std::uint8_t* id_base, std::size_t id_off,
+                     Big1Host& host) {
+    auto device = [&]() {
+        void* const r = host.object_class_device_set_009552e0(unit, at<std::uint32_t>(id_base, id_off));
+        return host.device_class_resolve_00443490(at<std::uint32_t>(ptr(ptr(r, 4), 8), 4), 0);
+    };
+    void* const texture = ptr(ptr(ptr(device(), 0x74), 0x34), 0x7C);
+    void* const record = ptr(ptr(device(), 0x74), 0x34);
+    const std::uint32_t uv[4] = {at<std::uint32_t>(record, 0x90), at<std::uint32_t>(record, 0x94),
+                                 at<std::uint32_t>(record, 0x98), at<std::uint32_t>(record, 0x9C)};  // [B+4Ch]
+    host.gui_set_state_texture_uv_00ab2690(ptr(s, 0x158), 3, texture, uv);
+    host.widget_vtable88(ptr(s, 0x158), 0, 0, 1.0f);
+    host.widget_vtable88(ptr(s, 0x158), 3, 0, 1.0f);
+}
+
+// 00674F58..006750B3: the Enter with an available unit at the iterator +300h.
+void enter_unit_arm(std::uint8_t* s, Big1Host& host) {
+    if (at<std::int32_t>(s, 0x1F4) == 1) {                                  // 00674F5E
+        host.support_build_entries_0066a130(s);                              // 00674F65
+        if (at<std::uint32_t>(s, 0x384) == 0 && at<std::uint32_t>(s, 0x2EC) == 0) {
+            at<std::int32_t>(s, 0x5C) = 1;                                   // 00674F80
+            host.widget_vtable34(ptr(s, 0xF0), 1);
+            host.widget_vtable34(ptr(s, 0xF4), 0);
+        } else {
+            at<std::int32_t>(s, 0x5C) = 2;                                   // 00674F9E
+            host.widget_vtable34(ptr(s, 0x12C), 0);
+            host.widget_vtable34(ptr(s, 0x130), 0);
+            host.widget_vtable34(ptr(s, 0x134), 0);
+        }
+    }
+    check_iterator(s, 0x300, host);                                          // 00674FC9
+    host.gui_text_set_localised_cstring_00abbe50(
+        ptr(s, 0x170), host.object_vtable14_name(at<void*>(ptr(s, 0x304), 8)), 1);  // 00674FF7
+    host.support_layout_name_label_0065bbc0(s);                              // 00674FFE
+    check_iterator(s, 0x300, host);                                          // 00675003
+    if (host.unit_has_flag_vtable5c(at<void*>(ptr(s, 0x304), 8), 0x46)) {    // 00675028
+        host.widget_vtable88(ptr(s, 0x1CC), 0, 0, 1.0f);
+        return;
+    }
+    if (host.unit_has_flag_vtable5c(*host.support_unit_iterator_value_00658a60(s + 0x300), 9)) {  // 0067505B
+        host.widget_vtable88(ptr(s, 0x1CC), 1, 0, 1.0f);
+        return;
+    }
+    if (host.unit_has_flag_vtable5c(*host.support_unit_iterator_value_00658a60(s + 0x300), 0x45))  // 0067508F
+        host.widget_vtable88(ptr(s, 0x1CC), 2, 0, 1.0f);
+}
+
+// 006750CF..0067557F: the Enter on the catalog page (+34Ch == 1).
+void enter_catalog_arm(std::uint8_t* s, Big1Host& host) {
+    host.list_clear_004e7a40(s + 0x370);                                     // 006750D5
+    void* const game = host.game_00e188a8();
+    const std::int32_t team =
+        at<std::int32_t>(at<void*>(game, 0x18CC + at<std::int32_t>(game, 0x18EC) * 4), 0x28);  // [B+14h]
+    check_iterator(s, 0x350, host);                                          // 006750FB / 00675111
+    std::uint8_t* const row = static_cast<std::uint8_t*>(ptr(s, 0x354));
+    NativeContainer value_list{};                                           // [B+60h] of {[B+5Ch], list, [B+6Ch]}
+    host.list_copy_005aaaf0(&value_list, row + 0xC);                        // 0067512E
+    NativeContainer units{};                                                // [B+40h]
+    host.list_copy_005aaaf0(&units, &value_list);                           // 0067514E
+    host.list_tidy_005a0b80(&value_list);                                   // 0067515C
+
+    for (void* it = at<void*>(units.head, 0); it != units.head;) {          // 00675167
+        NativeContainer supplies{};                                         // [B+34h]
+        host.support_site_build_supply_class_list_0084d560(ptr(it, 8), &supplies, team, 1);  // 00675184
+        for (void* entry = at<void*>(supplies.head, 0); entry != supplies.head;) {
+            void* const list = s + 0x370;
+            void* const head = ptr(s, 0x374);
+            void* const added = host.support_list_buy_node_00659aa0(
+                list, head, at<void*>(head, 4), static_cast<std::uint8_t*>(entry) + 8);  // 006751AD
+            host.support_list_incsize_00662a70(list, 1);                    // 006751BC
+            at<void*>(head, 4) = added;                                     // 006751C1
+            at<void*>(at<void*>(added, 4), 0) = added;                      // 006751C7
+            if (entry == supplies.head) host.crt_invalid_parameter_noinfo_00bf6713();  // 006751D1
+            entry = at<void*>(entry, 0);
+        }
+        free_list_nodes(supplies, host);                                    // 006751E2..0067521D
+        supplies.head = nullptr;                                            // 00675224
+        if (it == units.head) host.crt_invalid_parameter_noinfo_00bf6713(); // 0067522E
+        it = at<void*>(it, 0);
+    }
+
+    host.support_build_entries_0066a130(s);                                  // 0067523F
+    if (at<std::uint32_t>(s, 0x384) == 0 && at<std::uint32_t>(s, 0x2EC) == 0) {
+        at<std::int32_t>(s, 0x5C) = 1;                                       // 0067525A
+        host.widget_vtable34(ptr(s, 0xF0), 1);
+        host.widget_vtable34(ptr(s, 0xF4), 0);                               // 00675561
+    } else {
+        at<std::int32_t>(s, 0x5C) = 2;                                       // 00675276
+        host.widget_vtable34(ptr(s, 0x12C), 0);
+        host.widget_vtable34(ptr(s, 0x130), 0);
+        host.widget_vtable34(ptr(s, 0x134), 0);
+        bool device = false;
+        if (at<std::uint32_t>(s, 0x384) != 0) {                              // 006752A1
+            if (at<std::uint32_t>(s, 0x58) != 0) {
+                host.support_refresh_selection_0066d020(s);                  // 006752B4
+            } else {
+                void* const head = ptr(s, 0x380);
+                void* const first = at<void*>(head, 0);
+                if (first == head) host.crt_invalid_parameter_noinfo_00bf6713();  // 006752C7
+                at<void*>(s, 0x3A4) = at<void*>(first, 8);                   // 006752CF
+            }
+            if (host.object_vtable18(ptr(s, 0x3A4), 0xF)) {                  // 006752E8
+                device = true;
+                void* const unit = ptr(s, 0x3A4);                            // EDI
+                void* const map = s + 0x50;
+                void* const end = ptr(s, 0x54);                              // [B+38h]
+                void* found[2];                                              // [B+2Ch]
+                void** const r =
+                    static_cast<void**>(host.support_map_find_0065b0f0(map, found, s + 0x3A4));  // 00675307
+                if (r[0] == nullptr || r[0] != map) host.crt_invalid_parameter_noinfo_00bf6713();  // 0067531A
+                if (r[1] != end)
+                    at<std::uint32_t>(s, 0x334) =
+                        *static_cast<std::uint32_t*>(host.support_map_subscript_00667d60(map, s + 0x3A4));  // 0067532F
+                else
+                    at<std::uint32_t>(s, 0x334) = at<std::uint32_t>(unit, 0x134);  // 0067533E
+                if (at<std::uint32_t>(s, 0x334) != 0) {
+                    set_device_icon(s, unit, s, 0x334, host);                // 0067535B..00675433
+                } else {
+                    const bool kind17 = host.object_vtable18(unit, 0x17);    // 00675411
+                    host.widget_vtable88(ptr(s, 0x158), kind17 ? 1 : 0, 0, 1.0f);  // 00675433
+                }
+            }
+        } else if (at<std::uint32_t>(s, 0x2EC) != 0) {                       // 0067544B
+            void* const head = ptr(s, 0x2E8);
+            void* const first = at<void*>(head, 0);
+            if (first == head) host.crt_invalid_parameter_noinfo_00bf6713();  // 00675463
+            at<void*>(s, 0x2A0) = at<void*>(first, 8);                       // 0067546B
+            host.support_select_weapon_value_00669170(s);                    // 00675473
+            if (host.object_vtable18(ptr(s, 0x2A0), 0xF)) {                  // 00675485
+                device = true;
+                void* const unit = ptr(s, 0x2A0);                            // EDI
+                set_device_icon(s, unit, static_cast<std::uint8_t*>(unit), 0x134, host);  // 0067549E..00675433
+            }
+        } else {
+            host.list_tidy_005a0b80(&units);                                 // 0067556E
+            return;
+        }
+        if (device) {
+            host.widget_vtable34(ptr(s, 0xF0), 0);                           // 00675442
+            host.widget_vtable34(ptr(s, 0xF4), 1);
+        } else {
+            host.widget_vtable34(ptr(s, 0xF0), 1);                           // 0067555D
+            host.widget_vtable34(ptr(s, 0xF4), 0);
+        }
+    }
+    host.list_tidy_005a0b80(&units);                                         // 0067557A
+}
+
+// One by-value copy of the selected row's unit list (00658B50 + 4, 005AAAF0) and its first
+// element through 0059FB60; the copy is freed by the caller.
+void* first_row_element(std::uint8_t* s, NativeContainer& copy, Big1Host& host) {
+    void* const value = host.support_map_iterator_value_00658b50(s + 0x350);
+    host.list_copy_005aaaf0(&copy, static_cast<std::uint8_t*>(value) + 4);
+    void* iterator[2] = {&copy, at<void*>(copy.head, 0)};                    // [B+1Ch]
+    return *host.list_iterator_value_0059fb60(iterator);
+}
+
+// 00675584..006758DA: the Enter on a map page (+34Ch >= 2), or the "-" name of an empty one.
+void enter_map_arm(std::uint8_t* s, Big1Host& host) {
+    if (at<std::int32_t>(s, 0x34C) == 0) {                                   // 006750C0
+        host.gui_text_set_localised_cstring_00abbe50(ptr(s, 0x170), "-", 1);     // 006758B7, 00CEED40
+        host.support_layout_name_label_0065bbc0(s);
+        host.widget_vtable88(ptr(s, 0x1CC), 1, 0, 1.0f);                     // 006758DA
+        return;
+    }
+    if (at<std::int32_t>(s, 0x34C) == 1) {
+        enter_catalog_arm(s, host);
+        return;
+    }
+
+    bool has_object = false;                                                // [B+13h]
+    if (at<std::int32_t>(s, 0x34C) != 0) {                                   // 00675586
+        check_iterator(s, 0x350, host);
+        std::uint8_t* const row = static_cast<std::uint8_t*>(ptr(s, 0x354));
+        void* const object = at<void*>(row, 8);                              // [B+5Ch]
+        NativeContainer copy{};
+        host.list_copy_005aaaf0(&copy, row + 0xC);                          // 006755C3
+        has_object = object != nullptr;
+        host.list_tidy_005a0b80(&copy);                                      // 006755F7
+    }
+
+    if (has_object) {
+        check_iterator(s, 0x350, host);                                      // 00675603
+        std::uint8_t* const row = static_cast<std::uint8_t*>(ptr(s, 0x354));
+        void* const object = at<void*>(row, 8);
+        NativeContainer copy{};
+        host.list_copy_005aaaf0(&copy, row + 0xC);                          // 0067563E
+        host.gui_text_set_localised_cstring_00abbe50(ptr(s, 0x170), host.object_vtable14_name(object), 1);  // 00675669
+        host.list_tidy_005a0b80(&copy);                                      // 00675676
+    } else {
+        bool kind9 = false;                                                  // [B+13h]
+        NativeContainer first_copy{};                                        // [B+4Ch], flag 2
+        NativeContainer second_copy{};                                       // [B+40h], flag 4
+        bool have_first = false;
+        bool have_second = false;
+        if (at<std::int32_t>(s, 0x34C) != 0) {                               // 00675680
+            have_first = true;
+            void* const element = first_row_element(s, first_copy, host);    // 00675696..006756C6
+            if (ptr(element, 0x3C) != nullptr) {                             // 006756CD
+                have_second = true;
+                void* const second = first_row_element(s, second_copy, host);  // 006756D4..00675704
+                kind9 = host.unit_has_flag_vtable5c(ptr(second, 0x3C), 9);   // 00675715
+            }
+        }
+        if (have_second) host.list_tidy_005a0b80(&second_copy);              // 00675735
+        if (have_first) host.list_tidy_005a0b80(&first_copy);                // 00675749
+
+        if (kind9) {
+            NativeContainer copy{};                                          // [B+4Ch]
+            void* const element = first_row_element(s, copy, host);          // 0067575B..00675786
+            host.gui_text_set_localised_cstring_00abbe50(
+                ptr(s, 0x170), host.object_vtable14_name(ptr(element, 0x3C)), 1);  // 006757A0
+            host.list_tidy_005a0b80(&copy);                                  // 006757AD
+        } else if (at<std::int32_t>(s, 0x34C) != 0) {                        // 006757B7
+            NativeContainer copy{};
+            void* const element = first_row_element(s, copy, host);          // 006757CB..006757EE
+            const bool has_class = at<std::uint32_t>(element, 0x15C) > 0;    // 00675800 SETA
+            host.list_tidy_005a0b80(&copy);                                  // 00675803
+            if (has_class) {
+                NativeContainer copy2{};
+                void* const element2 = first_row_element(s, copy2, host);    // 0067580E..00675839
+                host.gui_text_set_localised_cstring_00abbe50(
+                    ptr(s, 0x170), host.object_vtable14_name(element2), 1);      // 00675850
+                host.list_tidy_005a0b80(&copy2);                             // 00675861
+            } else {
+                host.gui_text_set_localised_cstring_00abbe50(ptr(s, 0x170), "globals.unitclass_spawnpoint",
+                                                             1);  // 00675888, 00CF6B24
+            }
+        } else {
+            void* const unit = *host.support_unit_iterator_value_00658a60(s + 0x300);  // 00675877
+            host.gui_text_set_localised_cstring_00abbe50(ptr(s, 0x170), host.object_vtable14_name(unit),
+                                                         1);  // 0067588E
+        }
+    }
+    host.support_layout_name_label_0065bbc0(s);                              // 00675895
+    host.widget_vtable88(ptr(s, 0x1CC), 1, 0, 1.0f);                         // 006758DA
+}
+
+} // namespace
+
+// 00674B80 __fastcall(ECX = support manager screen), RET; EBP frame aligned to 8, EH handler
+// 00C7C5CA. The screen's Enter. Resets the panel (counters 00529A30, the powerup prompts, +0Ch =
+// 2.0 in modes 4..7, the slot rebuilds), shows the "SM1STUSE" hint once through the award tracker,
+// observes [00E188D8], resets the widgets and fields, clears list +3B8h inline and, on a map page,
+// takes the selected row's +8h, unit list (00665D20 assign) and +18h. Then one of three arms sets
+// the name text +170h and the icon +1CCh: a unit at +300h (when +1F4h is set and the unit is
+// non-null with +5Dh clear), the catalog page (+34Ch == 1: list +370h rebuilt from every listed
+// unit's 0084D560 supply classes, the device icon +158h), or a map page. The tail refreshes the
+// selection (on the catalog page or +1F4h == 1) or writes the points text +1A8h, then shows
+// +F0h/+F4h, +16Ch, and plays the open sound.
+void hud_support_manager_screen_enter_00674b80(void* screen, Big1Host& host) {
+    std::uint8_t* const s = static_cast<std::uint8_t*>(screen);
+    host.hud_counters_relayout_00529a30(ptr(host.hud_00e198c4(), 0xC8));     // 00674BB5
+    at<std::uint8_t>(s, 0xA) = 0;
+    host.widget_vtable34(ptr(s, 0x178), 0);
+    host.widget_vtable34(ptr(s, 0x1C4), 0);
+    host.widget_vtable34(ptr(s, 0x1C8), 1);
+    at<std::uint32_t>(s, 0x3F8) = 0;                                         // 00674BEC
+    at<std::uint8_t>(s, 0x71) = 0;
+    host.powerup_screen_refresh_prompt_widgets_00612da0(ptr(host.hud_00e198c4(), 0xC0));  // 00674C01
+    const std::int32_t mode = host.game_effective_mode_004bca50(host.game_00e188a8());  // 00674C0C
+    at<float>(s, 0xC) = (mode == 4 || mode == 5 || mode == 6 || mode == 7) ? 2.0f : 0.0f;  // [00CE3958]
+    at<std::uint8_t>(s, 0x30) = host.global_00e188d8() == nullptr ? 1 : 0;   // 00674C3F
+    at<std::uint8_t>(s, 0x2CC) = 1;
+    at<std::uint8_t>(s, 0x2B1) = 1;
+    host.support_layout_widget_1c0_006567d0(s);                              // 00674C53
+    host.support_delete_slot_clones_00652a60(s);                             // 00674C5A
+    host.support_rebind_slots_0065d220(s);                                   // 00674C61
+
+    NativeStr hint{0, nullptr};                                              // [B+1Ch]
+    host.native_string_resize_0041dd40(&hint, 8, 1);                         // 00674C75
+    if (hint.data != nullptr) host.crt_memcpy_00bf7680(hint.data, "SM1STUSE", hint.length + 1);  // 00CF6B8C
+    const bool shown = host.award_tracker_has_hint_been_shown_0068e600(
+        host.award_tracker_get_singleton_004e1ca0(), &hint);                 // 00674C9B / 00674CA7
+    release_str(hint, host);                                                 // 00674CC0..00674CD3
+    if (!shown) {
+        host.native_string_assign_0041e870(&hint, "SM1STUSE");               // 00674CE8
+        host.award_tracker_trigger_hint_00690fd0(host.award_tracker_get_singleton_004e1ca0(), &hint, 0);  // 00674D01
+        release_str(hint, host);                                             // 00674D0A..00674D23
+    }
+
+    void* const target = host.global_00e188d8();                             // 00674D28
+    if (target != nullptr && ptr(s, 0x21C) == nullptr) host.support_set_tracked_unit_target_0065be80(s, target);
+    at<std::uint8_t>(s, 0x1E4) = 1;                                          // 00674D47
+    at<float>(s, 0x1E8) = 0.0f;
+    host.widget_vtable34(ptr(s, 0x78), 1);
+    host.widget_vtable34(ptr(s, 0x16C), 1);
+    host.widget_vtable34(ptr(s, 0x190), 0);
+    host.widget_vtable34(ptr(s, 0x1B0), 1);
+    at<std::int32_t>(s, 0x5C) = 1;                                           // 00674D8A
+    host.support_refresh_sites_0066fb00(s);                                  // 00674D8D
+    at<float>(s, 0x1E0) = 0.35f;                                             // [00CF6560] = 3EB33333h
+    at<std::uint32_t>(s, 0x3A4) = 0;
+    at<std::uint32_t>(s, 0x2A0) = 0;
+    at<std::uint8_t>(s, 0x1DC) = 1;
+    at<std::uint8_t>(s, 0x1DD) = 1;
+    at<std::uint32_t>(s, 0x308) = 0;
+    at<std::uint32_t>(s, 0x30C) = 0;
+    at<std::uint32_t>(s, 0x310) = 0;
+    at<std::uint32_t>(s, 0x314) = 0;
+    at<float>(s, 0x2B8) = 0.0f;
+    at<float>(s, 0x2BC) = 0.0f;
+    at<std::uint8_t>(s, 0x2C0) = 0;
+    at<std::uint8_t>(s, 0x2C1) = 0;
+    at<std::uint32_t>(s, 0x2C4) = 0;                                         // 00674DF5
+
+    // Inlined clear of list +3B8h (00674DFB..00674E33); the head is re-read for each compare.
+    void* node = at<void*>(ptr(s, 0x3BC), 0);
+    at<void*>(ptr(s, 0x3BC), 0) = ptr(s, 0x3BC);
+    at<void*>(ptr(s, 0x3BC), 4) = ptr(s, 0x3BC);
+    at<std::uint32_t>(s, 0x3C0) = 0;
+    while (node != ptr(s, 0x3BC)) {
+        void* const next = at<void*>(node, 0);
+        host.crt_free_00bf65ac(node);                                        // 00674E23
+        node = next;
+    }
+
+    void* const icon = ptr(s, 0x158);                                        // 00674E35
+    at<std::uint32_t>(s, 0x324) = 0;
+    at<std::uint32_t>(s, 0x32C) = 0;
+    at<std::uint32_t>(s, 0x334) = 0;
+    host.widget_vtable88(icon, 0, 0, 1.0f);                                  // 00674E5D
+    at<std::uint8_t>(s, 0x3A8) = 0;
+    at<std::uint8_t>(s, 0x3DC) = 0;
+    if (at<std::int32_t>(s, 0x34C) == 0) host.support_rebuild_00668770(s);   // 00674E77
+    host.support_sync_cursor_iterators_0065a2b0(s);                          // 00674E7E
+    if (at<std::int32_t>(s, 0x34C) != 0) {                                   // 00674E83
+        check_iterator(s, 0x350, host);                                      // 00674E93 / 00674EA9
+        std::uint8_t* const row = static_cast<std::uint8_t*>(ptr(s, 0x354));
+        at<std::uint32_t>(s, 0x358) = at<std::uint32_t>(row, 8);             // 00674EBA
+        std::uint8_t* const units = row + 0xC;
+        if (s + 0x35C != units)                                              // 00674EC9
+            host.support_list_assign_00665d20(s + 0x35C, units, at<void*>(ptr(units, 4), 0), units,
+                                              ptr(units, 4), 0);             // 00674EE3 (tag [B+14h] = 0)
+        at<std::uint32_t>(s, 0x368) = at<std::uint32_t>(row, 0x18);          // 00674EEE
+    }
+
+    bool unit_arm = false;
+    if (at<std::int32_t>(s, 0x1F4) != 0) {                                   // 00674EFA
+        check_iterator(s, 0x300, host);                                      // 00674F10 / 00674F1F
+        if (at<void*>(ptr(s, 0x304), 8) != nullptr) {                        // 00674F27
+            check_iterator(s, 0x300, host);                                  // 00674F34 / 00674F43
+            unit_arm = at<std::uint8_t>(at<void*>(ptr(s, 0x304), 8), 0x5D) == 0;  // 00674F4E
+        }
+    }
+    if (unit_arm)
+        enter_unit_arm(s, host);
+    else
+        enter_map_arm(s, host);
+
+    // 006758DC
+    if (at<std::int32_t>(s, 0x34C) == 1 || at<std::int32_t>(s, 0x1F4) == 1) {
+        host.support_refresh_selection_0066d020(s);                          // 00675BF8
+        void* const selected = ptr(s, 0x2A0);
+        if (selected != nullptr && host.object_vtable18(selected, 0xF)) {    // 00675C12
+            host.widget_vtable34(ptr(s, 0xF0), 0);
+            host.widget_vtable34(ptr(s, 0xF4), 1);
+        } else {
+            host.widget_vtable34(ptr(s, 0xF0), 1);                           // 006759F5
+            host.widget_vtable34(ptr(s, 0xF4), 0);
+        }
+    } else {
+        const std::int32_t mode2 = host.game_effective_mode_004bca50(host.game_00e188a8());  // 006758FC
+        if (mode2 != 8) host.support_rebuild_lists_0066a8a0(s);              // 0067590A
+        host.support_rebuild_00670020(s);                                    // 00675911
+        if (at<std::int32_t>(s, 0x1F4) != 0 && mode2 == 8) {
+            check_iterator(s, 0x300, host);                                  // 0067593B / 0067594A
+            bool air = host.unit_has_flag_vtable5c(at<void*>(ptr(s, 0x304), 8), 9);  // 0067595C
+            if (!air)
+                air = host.unit_has_flag_vtable5c(*host.support_unit_iterator_value_00658a60(s + 0x300),
+                                                  0x45);  // 00675976
+            if (!air) {
+                NativeStr prefix{};                                          // [B+14h]
+                host.native_string_assign_0041e870(&prefix, "ingame.sm_slots|.: ");  // 00675989, 00CF6B10
+                const std::int32_t idle = host.shipyard_count_idle_slots_008434d0(
+                    *host.support_unit_iterator_value_00658a60(s + 0x300));  // 0067599B / 006759A2
+                NativeStr text{};                                            // [B+1Ch]
+                host.native_string_concat_int_004263b0(&prefix, &text, idle);  // 006759AF
+                host.gui_text_set_localised_source_00abaed0(ptr(s, 0x1A8), &text, 1);  // 006759C5
+                host.native_string_destroy_0041dd20(&text);                  // 006759D2
+                host.native_string_destroy_0041dd20(&prefix);                // 006759E3
+            } else {
+                const bool carrier =
+                    host.unit_has_flag_vtable5c(*host.support_unit_iterator_value_00658a60(s + 0x300),
+                                                0x45);  // 00675A65
+                void* const unit = *host.support_unit_iterator_value_00658a60(s + 0x300);  // 00675A6D / 00675A80
+                void* const block = unit != nullptr ? static_cast<std::uint8_t*>(unit) + (carrier ? 0x72C : 0x1188)
+                                                    : nullptr;
+                NativeStr prefix{};                                          // [B+14h]
+                host.native_string_assign_0041e870(&prefix, "ingame.sm_slots|.: ");  // 00675A9E
+                const std::int32_t idle = host.air_ops_count_idle_slots_006bdc30(block);  // 00675AB0
+                NativeStr text{};                                            // [B+1Ch]
+                host.native_string_concat_int_004263b0(&prefix, &text, idle);  // 00675ABD
+                host.gui_text_set_localised_source_00abaed0(ptr(s, 0x1A8), &text, 1);  // 00675AD3
+                release_str(text, host);                                     // 00675AD8..00675AF6
+                release_str(prefix, host);                                   // 00675AFB..00675BEC
+            }
+        } else {
+            void* const game = host.game_00e188a8();
+            const std::int32_t points =
+                // 00675B24 / 00675B29
+                ftol2_low_00bf7420(host.player_support_points_00946f00(at<std::uint32_t>(game, 0x18EC)));
+            NativeStr number{};                                              // [B+34h]
+            host.native_string_from_int_004260b0(&number, points);           // 00675B33
+            NativeStr prefix{};                                              // [B+2Ch]
+            host.native_string_assign_0041e870(&prefix, "ingame.sm_cp|.: "); // 00675B4E, 00CF69CC
+            NativeStr text{};                                                // [B+24h]
+            host.native_string_concat_004261a0(&prefix, &text, &number);     // 00675B64
+            host.gui_text_set_localised_source_00abaed0(ptr(s, 0x1A8), &text, 1);  // 00675B7A
+            release_str(text, host);                                         // 00675B7F..00675B9D
+            release_str(prefix, host);                                       // 00675BA2..00675BC1
+            release_str(number, host);                                       // 00675BC6..00675BEC
+        }
+        host.widget_vtable34(ptr(s, 0xF0), 1);                               // 006759F5
+        host.widget_vtable34(ptr(s, 0xF4), 0);                               // 00675A04
+    }
+    host.widget_vtable34(ptr(s, 0x16C), 1);                                  // 00675A13
+    if (at<std::uint8_t>(ptr(host.hud_00e198c4(), 0x54), 4) != 0) at<std::uint8_t>(s, 0x3DC) = 1;  // 00675A1E
+    host.support_play_open_sound_0065f950(s);                                // 00675A2D
+    host.hud_counters_hide_under_manager_panel_00528f70(ptr(host.hud_00e198c4(), 0xC8));  // 00675A3D
 }
 
 // 005E12A0 __thiscall(ECX = lobby screen), RET; EBP frame aligned to 8, EH handler 00C74D80.

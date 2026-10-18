@@ -217,6 +217,91 @@ public:
     virtual std::int32_t game_effective_mode_004bca50(void* game) = 0;
     // [00F89B3C]: the list object {proxy, head, size} of support records.
     virtual void* global_00f89b3c() = 0;
+
+    // ---- 00674B80 ----
+    // [00E198C4]: the HUD (screen slots +C0h powerup manager, +C8h counters, +54h a page).
+    virtual void* hud_00e198c4() = 0;
+    // [00E188D8]: the tracked-unit target the screen observes.
+    virtual void* global_00e188d8() = 0;
+    // 00529A30 BSP_HudCounters_Relayout / 00528F70 BSP_HudCounters_HideUnderManagerPanel:
+    // __thiscall(ECX = [hud+C8h]), RET.
+    virtual void hud_counters_relayout_00529a30(void* counters) = 0;
+    virtual void hud_counters_hide_under_manager_panel_00528f70(void* counters) = 0;
+    // 00612DA0 BSP_HudPowerupManagerScreen_RefreshPromptWidgets: __fastcall(ECX = [hud+C0h]).
+    virtual void powerup_screen_refresh_prompt_widgets_00612da0(void* screen) = 0;
+    // Support-manager screen routines, each __fastcall(ECX = screen), RET: 006567D0
+    // LayoutWidget1C0, 00652A60, 0065D220, 0066FB00, 00668770, 0065A2B0, 0066A130 (the entry
+    // lists), 0065BBC0 (the name label), 0066D020 (the selection refresh), 00669170, 0066A8A0,
+    // 00670020 and 0065F950 (the open sound).
+    virtual void support_layout_widget_1c0_006567d0(void* screen) = 0;
+    virtual void support_delete_slot_clones_00652a60(void* screen) = 0;
+    virtual void support_rebind_slots_0065d220(void* screen) = 0;
+    virtual void support_refresh_sites_0066fb00(void* screen) = 0;
+    virtual void support_rebuild_00668770(void* screen) = 0;
+    virtual void support_sync_cursor_iterators_0065a2b0(void* screen) = 0;
+    virtual void support_build_entries_0066a130(void* screen) = 0;
+    virtual void support_layout_name_label_0065bbc0(void* screen) = 0;
+    virtual void support_refresh_selection_0066d020(void* screen) = 0;
+    virtual void support_select_weapon_value_00669170(void* screen) = 0;
+    virtual void support_rebuild_lists_0066a8a0(void* screen) = 0;
+    virtual void support_rebuild_00670020(void* screen) = 0;
+    virtual void support_play_open_sound_0065f950(void* screen) = 0;
+    // 0065BE80 BSP_HudSupportManagerScreen_SetTrackedUnitTarget: __thiscall(ECX = screen;
+    // unit), RET 4.
+    virtual void support_set_tracked_unit_target_0065be80(void* screen, void* unit) = 0;
+    // 004E1CA0: the award tracker singleton (EAX). 0068E600: __thiscall(ECX = tracker; const
+    // NativeString*), RET 4; AL = shown. 00690FD0: __thiscall(ECX = tracker; const
+    // NativeString*, forced), RET 8.
+    virtual void* award_tracker_get_singleton_004e1ca0() = 0;
+    virtual bool award_tracker_has_hint_been_shown_0068e600(void* tracker, const void* name) = 0;
+    virtual void award_tracker_trigger_hint_00690fd0(void* tracker, const void* name, std::int32_t forced) = 0;
+    // 0041E870 NativeString from a C string: __thiscall(ECX = string; const char*), RET 4; EAX
+    // = string. 0041DD20 its destructor: __thiscall(ECX = string), RET.
+    virtual void* native_string_assign_0041e870(void* string, const char* text) = 0;
+    virtual void native_string_destroy_0041dd20(void* string) = 0;
+    // 004260B0 NativeString from an int: __thiscall(ECX = out; int), RET 4; EAX = out.
+    virtual void* native_string_from_int_004260b0(void* out, std::int32_t value) = 0;
+    // 004261A0 concat: __thiscall(ECX = left; out, const right*), RET 8; EAX = out.
+    // 004263B0 concat an int: __thiscall(ECX = left; out, int), RET 8; EAX = out.
+    virtual void* native_string_concat_004261a0(const void* left, void* out, const void* right) = 0;
+    virtual void* native_string_concat_int_004263b0(const void* left, void* out, std::int32_t value) = 0;
+    // 00665D20 (list<12-byte>::assign(first, last)): __thiscall(ECX = list; first {owner,
+    // node}, last {owner, node}, a by-value tag dword), RET 14h.
+    virtual void support_list_assign_00665d20(void* list, void* first_owner, void* first_node,
+                                              void* last_owner, void* last_node, std::uint32_t tag) = 0;
+    // 00ABBE50: __thiscall(ECX = text widget; const char*, localise), RET 8.
+    virtual void gui_text_set_localised_cstring_00abbe50(void* text, const char* value, std::int32_t localise) = 0;
+    // 00ABAED0: __thiscall(ECX = text widget; const NativeString*, localise), RET 8.
+    virtual void gui_text_set_localised_source_00abaed0(void* text, const void* source, std::int32_t localise) = 0;
+    // Object vtable +14h: __thiscall(ECX = object), RET; EAX = the class name text.
+    virtual const char* object_vtable14_name(void* object) = 0;
+    // 00658A60: ECX = the checked iterator at screen+300h; EAX = &node->value (the unit slot).
+    // 00658B50: ECX = the checked iterator at screen+350h; EAX = &node->value.
+    // 0059FB60: ECX = a checked list iterator {list, node}; EAX = &node->value.
+    virtual void** support_unit_iterator_value_00658a60(void* iterator) = 0;
+    virtual void* support_map_iterator_value_00658b50(void* iterator) = 0;
+    virtual void** list_iterator_value_0059fb60(void* iterator) = 0;
+    // 004E7A40 STL_List_Clear: __thiscall(ECX = list), RET.
+    virtual void list_clear_004e7a40(void* list) = 0;
+    // 0065B0F0 STL_Tree_Find (keys at +0Ch): __thiscall(ECX = tree; iterator* out, const key*),
+    // RET 8; EAX = out. 00667D60 STL_Map_Subscript: __thiscall(ECX = tree; const key*), RET 4;
+    // EAX = &mapped.
+    virtual void* support_map_find_0065b0f0(void* tree, void* out, const void* key) = 0;
+    virtual void* support_map_subscript_00667d60(void* tree, const void* key) = 0;
+    // 009552E0: __thiscall(ECX = object; dword), RET 4; EAX. 00443490
+    // BSP_DeviceClass_ResolveAndActivate: ECX = id, DL = flag; EAX.
+    virtual void* object_class_device_set_009552e0(void* object, std::uint32_t id) = 0;
+    virtual void* device_class_resolve_00443490(std::uint32_t id, std::uint8_t flag) = 0;
+    // 00AB2690 BSP_GUI_SetStateTextureAndUV: __thiscall(ECX = widget; state, texture, const
+    // float[4]*), RET 0Ch.
+    virtual void gui_set_state_texture_uv_00ab2690(void* widget, std::uint32_t state, void* texture,
+                                                   const void* uv) = 0;
+    // 00946F00: __thiscall(ECX = player), RET; ST0 = the support points.
+    virtual double player_support_points_00946f00(std::uint32_t player) = 0;
+    // 008434D0 (shipyard idle slots): __thiscall(ECX = unit), RET; EAX. 006BDC30 (air-ops
+    // idle slots): __thiscall(ECX = the unit's air-ops block or null), RET; EAX.
+    virtual std::int32_t shipyard_count_idle_slots_008434d0(void* unit) = 0;
+    virtual std::int32_t air_ops_count_idle_slots_006bdc30(void* block) = 0;
 };
 
 // 004C7AA0's 28h-byte result.
@@ -246,6 +331,9 @@ void hud_support_manager_collect_catalog_006697e0(void* screen, Big1Host& host);
 
 // 0066A8A0 __fastcall(ECX = support manager screen), RET.
 void hud_support_manager_rebuild_lists_0066a8a0(void* screen, Big1Host& host);
+
+// 00674B80 __fastcall(ECX = support manager screen), RET: the screen's Enter.
+void hud_support_manager_screen_enter_00674b80(void* screen, Big1Host& host);
 
 // 005E12A0 __thiscall(ECX = lobby screen), RET.
 void multi_game_lobby_load_weather_table_005e12a0(void* screen, Big1Host& host);

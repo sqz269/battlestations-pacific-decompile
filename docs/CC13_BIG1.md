@@ -109,6 +109,53 @@ Notes:
     stale. It is passed as 0.
   - The 14h-byte entry's bytes beyond those written keep whatever the stack held.
 
+## Batch 4
+
+| Address | Name | ABI | Notes |
+| --- | --- | --- | --- |
+| 00674B80 | BSP_HudSupportManagerScreen_Enter | fastcall(screen), EBP frame, EH handler 00C7C5CA | the screen's Enter: panel reset, the SM1STUSE hint, the selected row, one of the unit / catalog / map arms for the name text +170h and the icons +1CCh and +158h, then the points text +1A8h and the open sound |
+
+Notes:
+
+- **00674B80.**
+  - The whole body (1212 listing lines) was read from the listing.
+  - The constants are 2.0f (00CE3958, modes 4..7) and 0.35f (00CF6560). The strings, read
+    from the PE, are "SM1STUSE" (00CF6B8C), "globals.unitclass_spawnpoint" (00CF6B24),
+    "-" (00CEED40), "ingame.sm_slots|.: " (00CF6B10) and "ingame.sm_cp|.: " (00CF69CC).
+  - The hint string is freed to the sized pool after 0068E600. When the hint was not shown,
+    0041E870 rebuilds it in the same stack slot, whose fields still hold the freed block.
+  - The 00665D20 tag dword is [B+14h], which is zeroed at entry, so 0 is passed.
+  - The unit arm runs when +1F4h is set, the +300h unit is non-null and its byte +5Dh is
+    clear. Otherwise the page +34Ch picks the arm: 0 gives the name "-", 1 the catalog
+    arm, and anything else the map arm.
+  - The catalog arm keeps the team in [B+14h]. Unlike 006697E0, it has no team filter: it
+    appends the 0084D560 classes of every unit in the row's list.
+  - The catalog arm's device icon: 009552E0(unit; id) and 00443490([[[r+4]+8]+4], DL = 0).
+    The texture is [[[c+74h]+34h]+7Ch] from the first lookup; the UV is the four dwords at
+    [[c+74h]+34h]+90h from the second. The id is screen+334h (from the map +50h, or
+    unit+134h when the map has no entry) or, on the +2ECh arm, unit+134h.
+  - The map arm's first test copies the row value. Its `m == 0` branch cannot be taken
+    there; it is kept.
+  - _ftol2 (00BF7420) is modelled as truncation to int64, keeping the low dword (0 out of
+    range).
+  - The points-text strings: the not-air arm destroys them through 0041DD20. The other two
+    arms free them inline to the sized pool, newest first.
+
+## Recorded, not reconstructed
+
+- **00673A10 BSP_HudSupportManager_ConfirmOrder (new name).**
+  - The support manager's order action, called from the update 00675C40. It has 1276
+    instructions, and its gameplay arms are in cc9's lane.
+  - cc9 hosts those arms as labelled models:
+    - the shipyard purchase in `GameGunneryHost::shipyard_order` (game_hosts_gunnery.cpp,
+      006743E0..00674624);
+    - the targeted launch in game_hosts_script_orders.cpp (00674765..006748D7).
+  - cc13-big1 checked only the idle-entry search and the start of the A7h loop against the
+    listing.
+  - The HUD side is neither hosted nor reconstructed. It covers the [supportmanager] and
+    spawned messages, and the 00946F00 cost test with the unavailable sound.
+  - Ledger only: status `existing_host_substitution_labelled`, coverage partial.
+
 Adoption notes:
 
 - **004C7AA0.** cc13_large61's hook `game_query_004c7aa0` (0094BFF0) can forward to this
@@ -127,3 +174,6 @@ Adoption notes:
 - **006697E0 and 0066A8A0.** seg27_cc13's `support_collect_catalog_006697e0` and
   ingame_gui's `rebuild_list_c_0066a8a0` hooks can forward to these bodies. cc9 does not
   host either.
+- **00674B80.** It is reached only through vtable 00CF6B44 slot +18h. cc9 does not host it.
+  Several of its callees have bodies elsewhere: 0066A130, 0066D020, 00669170 and 0066FB00 in
+  seg27_cc13. A host can bind the matching hooks to those bodies.
