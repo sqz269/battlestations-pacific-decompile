@@ -62,8 +62,8 @@ inline constexpr float kTorpedoScanSeaFloor_00ce3930 = 20.0f;
 inline constexpr double kPi_00ce3d28 = 3.1415927410125732;
 inline constexpr double kTorpedoSectorsPerHalfTurn_00cee930 = 18.0;
 inline constexpr double kTorpedoSectorsPerHalfTurnNeg_00d21430 = -18.0;
-// 009D4AE7 MOVSS [00CF87D0]: the cached plan position 009D4A70 parks so that
-// the next 009D3420 tick always replans.
+// 009D4BD0-009D4BE6 MOVSS [00CF87D0]: the cached plan position 009D4A70 parks
+// so that its own 009D3420 pass (009D4BFC, dt = 0) replans.
 inline constexpr float kTorpedoPlanPositionReset_00cf87d0 = 999999.0f;
 
 // 009D324F FMUL double [00D05AC8]: the engaged predicate 009D3210 admits a
@@ -84,12 +84,12 @@ inline constexpr double kTorpedoCruiseSpeedFirstSecond_00d7a210 = 1.0;
 inline constexpr float kTorpedoDecelRate_00cf1440 = 80.0f;
 inline constexpr float kTorpedoHalf_00d7a280 = 0.5f;
 
-// 009D4AC4, the attack-distance clamp on the +54h cruise profile.
+// 009D4B63-009D4BA7, the attack-distance clamp on the +54h cruise profile.
 // Pilot/Torpedo/AttackDist, tuning singleton +434h, default 2200 in
 // docs/GAME_TUNING_SINGLETON.md; Pilot/Torpedo/CruisingAlt is +430h = 500.
 inline constexpr float kPilotTorpedoAttackDistDefault = 2200.0f;
 inline constexpr float kPilotTorpedoCruisingAltDefault = 500.0f;
-// 009D4AA9 MOVSS [00CE4C04], written into the pilot control block +39Ch: the
+// 009D4B3E MOVSS [00CE4C04], written into the pilot control block +39Ch: the
 // speed ceiling the approach update clamps approach+80h against.
 inline constexpr float kPilotTorpedoSpeedCeiling_00ce4c04 = 9999.0f;
 
@@ -166,7 +166,7 @@ struct TorpedoApproachState {
     float aspect_scale_84{1.0f};                               // +84h
 
     float scan_radius_seed_88{0.0f};                           // +88h, read only
-    // The engage distance. 009D3420 only reads it; 009D4AC4 (the +54h cruise
+    // The engage distance. 009D3420 only reads it; 009D4B63 (the +54h cruise
     // profile) writes it as max(current, AttackDist * speed_ratio).
     float engage_range_8c{0.0f};                               // +8Ch
 
@@ -375,9 +375,9 @@ float torpedo_reset_far_leg_009d0625(float near_7c, float far_80, float draw) no
 float torpedo_reset_run_time_009d0160(const TorpedoApproachState& s, float fall_time,
                                       float run_speed) noexcept;
 
-// 009D4AC4: the +54h cruise profile's attack-distance clamp, the one producer
+// 009D4B63-009D4BA7: the +54h cruise profile's attack-distance clamp, the one producer
 // of engage_range_8c in the image.
-float torpedo_engage_range_009d4ac4(float current_8c, float attack_dist_tuning,
+float torpedo_engage_range_009d4b63(float current_8c, float attack_dist_tuning,
                                     float speed_ratio_41c) noexcept;
 
 // 009D38A6-009D38D8: the bearing at the centre of sector i, wrapped into
