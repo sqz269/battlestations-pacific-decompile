@@ -12,9 +12,9 @@ symbols. Nothing here is wired.
 |---|---|---|
 | In the struck range 0081B000-0081EFFF (seg51) | 22 | Not touched |
 | Template bodies | 88 | Tagged `stl_shape`, `reviewed`, evidence `sys6_shape` |
-| Game code, reconstructed | 7 | `src/cc13_segmix.cpp`, build-tested (cc13-segmixB) |
-| Game code, cc9-hosted (verify-and-record) | 1 | Recorded with a verdict |
-| Game code, not done yet | 15 | Following commits |
+| Game code, reconstructed | 8 | `src/cc13_segmix.cpp`, build-tested (cc13-segmixB, C) |
+| Game code, cc9-hosted (verify-and-record) | 7 | Recorded with a verdict |
+| Game code, not done yet | 8 | Following commits |
 
 ## Template bodies (cc13-segmixA)
 
@@ -94,6 +94,33 @@ Verify-and-record:
 |---|---|---|---|
 | 00758FE0 | BSP_MotherShip_DetachFromWorldLists | `game_hosts_units.cpp` `world_lists_unlink_unit_00928f24` (~3282) | Matches. The image runs 006DFFC0 and then erases the first node whose payload is the ship from the class list [ship+30h]+84h (004837D0). The host erases the first matching node of every world list, which is the same set. |
 
+### Segment 61: ship systems and failures (cc13-segmixC)
+
+Reconstructed: 0093A2C0 BSP_SessionMessage9B_Construct. It is thiscall(message;
+a, b, byte c), RET 0Ch. It runs 0075B430(9Bh), then sets:
+- the +18h word and the +1Ah and +1Ch bytes to 0;
+- +20h = a, the delivery +4h = 1 and the vtable 00D03400;
+- +24h = b and byte +28h = c.
+
+cc9 counts the send as `Failure::section_state_message_0093a2c0`.
+
+Verify-and-record. Every host file is cc9's and was not edited.
+
+| Address | Name | Host | Verdict |
+|---|---|---|---|
+| 0092E5B0 | BSP_UnitController_ApplyNetworkCorrection | `game_hosts_units.cpp` `controller_0092e5b0` (~10641) | Gate matches. The whole body sits behind byte controller+60h (0092E5B6, JE to the RET 4). cc9 keeps the gate closed; its claim that 0092F2E0 is the only writer was not re-scanned here. The gated x87 correction body is modelled by no one; it is multiplayer only. |
+| 00933BB0 | BSP_ShipSystems_SinkSprayEffect (was FUN_) | `game_hosts_gunnery.cpp` `ship_systems_sink_draws_00933da0_00933bb0` | Matches the labelled substitution. One stream-1 NextU32, and on % 5 == 0 two U1 draws. The effect spawns only when the point's y < 0. The effect itself is recorded. |
+| 00933DA0 | BSP_ShipSystems_SinkGridEffects (was FUN_) | same | Matches. There is an nx x ny grid from class+A4h/A0h * 1.5 / 15 + 1, one NextU32 per cell, and on % 3000 == 0 two U1 draws (ECX = EDX + 1 = 1). |
+| 00935540 | BSP_UnitInstance_SpawnSinkingWreckDebris | `game_hosts_gunnery.cpp` `sinking_wreck_debris_draws_00935540` | Matches. Kinds 0Eh and 8 skip. The length is truncated (CVTTSS2SI) and the count is `_ftol(DebrisNumPerMeter FIMUL length)`. Each piece takes eight unconditional U1 draws. See the note below. |
+| 0093AA00 | BSP_ShipGlobals_FindFailureRowByKind (was FUN_) | `game_hosts_gunnery.cpp` `failure_descriptor_for` (12734) | Matches. The result is the first settings+3E4h row (stride 14h) whose +0h equals the kind, else 0. |
+| 0093BD80 | BSP_LuaBinding_AddEngineJamFailure | `game_hosts_lua.cpp` `run_set_failure_0088eff0` (~8714) | Matches. The duration is argument index 2 (index 0 is the first argument), equal to Lua index 3, when there are at least 3 arguments and it is a number. Otherwise it is 1e10f (501502F9h at 00CE4970). |
+
+Note on 00935540: the host forms the piece count in double, while the image
+rounds the FIMUL product to 24 bits. DebrisNumPerMeter is 0.3, stored as
+0.300000012f, which is above 0.3. The product is therefore never just below an
+integer, and the truncated count is the same for every length. There is no live
+difference, so no adoption note was sent.
+
 ## Files
 
 - 88 tag rows in `config/tags/006b0000`, `006c0000`, `00730000`, `00740000`,
@@ -101,5 +128,8 @@ Verify-and-record:
   `008e0000.jsonl`.
 - `include/bsp/cc13_segmix.hpp` and `src/cc13_segmix.cpp`, registered in
   `cmake/startup.cmake` (bsp_core).
-- 8 function records in `config/reconstruction/00750000` and `00760000.jsonl`:
-  7 bodies and 1 verify-and-record.
+- 15 function records in `config/reconstruction/00750000`, `00760000`, `00920000`
+  and `00930000.jsonl`: 8 bodies and 7 verify-and-record.
+- 4 renames in `config/names/00930000.jsonl` (0093A2C0, 0093AA00, 00933BB0,
+  00933DA0), applied in Ghidra; the old values are in
+  `local/ghidra-annotations-20261018T153423Z.json`.

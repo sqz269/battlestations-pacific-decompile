@@ -67,6 +67,10 @@ public:
     virtual void lua_reader_destroy_00441a20(void* reader) = 0;
     // 006BA670 BSP_AirOpsBlock_ForwardToTraffic08: __thiscall(ECX = block; float dt), RET 4.
     virtual void air_ops_block_tick_006ba670(void* block, float dt) = 0;
+
+    // ---- session messages ----
+    // 0075B430, the session message base constructor: __thiscall(ECX = message; type), RET 4.
+    virtual void session_message_construct_0075b430(void* message, std::uint32_t type) = 0;
 };
 
 // ---- segment 42: the mother ship and its MOTHERSHIP_CREATE message ----
@@ -80,5 +84,9 @@ void cc13_segmix_mothership_send_create_message_00759330(void* ship, std::uint32
 void cc13_segmix_mothership_init_all_007593d0(void* ship, Cc13SegmixHost& host);
 void* cc13_segmix_landingship_create_construct_for_read_00759920(void* message, Cc13SegmixHost& host);
 void* cc13_segmix_mothership_create_construct_for_read_00766ef0(void* message, Cc13SegmixHost& host);
+
+// ---- segment 61: ship systems and failures ----
+void* cc13_segmix_failure_message9b_construct_0093a2c0(void* message, std::uint32_t value_20, std::uint32_t value_24,
+                                                       std::uint8_t flag_28, Cc13SegmixHost& host);
 
 }  // namespace bsp

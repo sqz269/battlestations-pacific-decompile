@@ -175,4 +175,26 @@ void* cc13_segmix_mothership_create_construct_for_read_00766ef0(void* message, C
     return message;
 }
 
+// ---------------------------------------------------------------------------
+// 0093A2C0 BSP_SessionMessage9B_Construct (cc13-segmixC). __thiscall(ECX =
+// message; dword a, dword b, byte c), RET 0Ch; EAX = message. Bytes
+// 0093A2C0..0093A2FE: 0075B430(9Bh); +18h word = 0, +1Ah = +1Ch bytes = 0;
+// +20h = a; +4h = 1 (delivery); vtable 00D03400; +24h = b; byte +28h = c.
+// cc9 counts the send as "Failure::section_state_message_0093a2c0" and
+// unit_message_arms lists 9Bh as a script/AI producer.
+// ---------------------------------------------------------------------------
+void* cc13_segmix_failure_message9b_construct_0093a2c0(void* message, std::uint32_t value_20, std::uint32_t value_24,
+                                                       std::uint8_t flag_28, Cc13SegmixHost& host) {
+    host.session_message_construct_0075b430(message, 0x9B);
+    at<std::uint16_t>(message, 0x18) = 0;
+    at<std::uint8_t>(message, 0x1A) = 0;
+    at<std::uint8_t>(message, 0x1C) = 0;
+    at<std::uint32_t>(message, 0x20) = value_20;
+    at<std::uint32_t>(message, 0x4) = 1;
+    at<std::uint32_t>(message, 0x0) = 0x00D03400u;
+    at<std::uint32_t>(message, 0x24) = value_24;
+    at<std::uint8_t>(message, 0x28) = flag_28;
+    return message;
+}
+
 }  // namespace bsp
