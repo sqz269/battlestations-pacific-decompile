@@ -187,11 +187,11 @@ ScoringBonusRecord scoring_bonus_record_007fc9f0(const ScoringGrantBonusArgument
 // ---------------------------------------------------------------------------
 // The two clears
 // ---------------------------------------------------------------------------
-// 00915760 zeroes every scalar of one 284h record and empties every owned container, slot
-// +08h and +250h included (record+4 at 0091576F, byte record+24Ch at 00915E97; corrected
-// 2026-10-18 from a cc13 review). Scoring_ClearPlayerScore (008BC540) saves those two itself,
-// calls the clear, writes them back and stamps the per-slot flag, so the net result is that
-// they survive.
+// 00915760 zeroes every scalar of one 284h record and empties every owned container
+// (record = mgr+slot*284h+4). Scoring_ClearPlayerScore (008BC540) saves record+08h and dword
+// record+250h (mgr+slot*284h+0Ch/+254h) at 008BC6A3/008BC6A7, calls the clear, restores them at
+// 008BC6C5/008BC6D5 and stamps the per-slot flag, so those two survive. record+4 and byte
+// +24Ch are zeroed and stay zeroed. (Fields corrected 2026-10-18 from cc13 seg59.)
 struct ScoringClearedSlotState {
     int difficulty{0};
     int used_slot{0};
