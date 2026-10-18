@@ -111,13 +111,13 @@ NOISE = [
         "id": "free-bearing-empty",
         "why": "`summary mission ship ai free bearing ... empty=N` is search-cache variance, the avoidance-refills cause (23521 vs 22551 on identical OFF/OFF runs of one binary, cc15-dirq1, 2026-10-18)",
         "kind": "mask",
-        "pattern": re.compile(r"^(\s*summary mission ship ai free bearing .*\bempty=)\d+"),
+        "pattern": re.compile(r"^(\s*(?:summary )?mission ship ai free bearing .*\bempty=)\d+"),
     },
     {
         "id": "free-bearing-refills",
         "why": "`summary mission ship ai free bearing ... refills=N`, the same search-cache variance (152 vs 131 on identical OFF/OFF runs, cc15-dirq1, 2026-10-18)",
         "kind": "mask",
-        "pattern": re.compile(r"^(\s*summary mission ship ai free bearing .*\brefills=)\d+"),
+        "pattern": re.compile(r"^(\s*(?:summary )?mission ship ai free bearing .*\brefills=)\d+"),
     },
     {
         "id": "ring-scan-clear-37c",

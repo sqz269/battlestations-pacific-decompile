@@ -410,3 +410,27 @@ Census with the switch on, later reads of rows that would be nil'd:
 | JM08 | 557 / 76 | 0 | 2149 (133) |
 
 On USN04, 101 is marked by `007B8A80`, and 150 and 162 by `008C92BE`. On JM08, 133 is marked by `008C92BE`. Step 3, the purge itself, still waits for cc9's review of this table.
+### Step 3: the purge at 004E0A9B (cc15-vcp3, same switch)
+
+With `kVehicleClassPreloadCc15Bound` on, the census at 004E0A9B also runs 0095CA70's second loop. Each collected row gets `VehicleClass[%d]=nil` (00D1A964), run as a Lua chunk the way 006B8AD0 runs it.
+
+The movie-stop site 0045F6C1 stays a census until `kVehicleClassMovieStopPurgeCc15Bound` is set. That purge runs mid-mission and can nil rows first read after load, so cc9 wants a census on a mission that takes that path first.
+
+A harness diagnostic, which is not image behaviour, counts script reads of purged keys. It is an `__index` hook on `VehicleClass` that runs only for absent keys and returns nil. The same summary line counts the run's Lua errors. A script error on a row the image also lacks is faithful on this installation, so it is recorded, not guarded.
+
+Open items (cc9):
+- 008E34F0 `PowerupClass` air-support classes. This runs only from 008E6CB0, which the host does not reach, so it is unmarked.
+- Traffic 0049D291 (`TrafficBlockBinding::ensure_vehicle_class` only counts). Load-time on a traffic scene only.
+- The shipyard stock callers (00849A30, 00849F70, 0084ACB0). The host has no marker for them.
+- The ship test in the `Catapult.LaunchedClass` recursion. It is read as the eight ship-sized `Type` branches; the image asks `vtable[18h](6)`.
+Step-3 pairs, same tree, switch on against off. Each pair_diff is exit 1, with gameplay and the unit table identical:
+
+| menu id | site | purged | script_nil_reads | lua_errors | later_host_reads |
+|---|---|---|---|---|---|
+| USN01 | 004E0A9B | 592 | 0 | 0 | 0 |
+| USN04 | 004E0A9B | 599 | 0 | 0 | 0 |
+| JM08 | 004E0A9B | 557 | 0 | 0 | 0 |
+| USN11 | 0045F6C1 | census only: 518 would nil, 115 kept | — | 0 | 0 |
+
+- **USN11 stands in for cc9's prcp_06 / usn_10.** On this installation no menu id runs `prcp_06_2ndbattle.lua` or `usn_10_battle_of_capeengano.lua`. USN11 (`usn_06_guadalcanal_2nd_battle.lua:1330`, `VehicleClass[pEntity.Class.ID]`) is the only reached mission script with that pattern, and no shared helper script has it.
+- **USN11 takes the movie-stop path.** That is the engine-movie entry, skipped on the first in-mission frame. So its census is the first data point for 0045F6C1. A real mid-mission movie stop (BSM09's PlayBink end) is still uncensused.
