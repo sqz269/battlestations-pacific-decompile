@@ -185,9 +185,9 @@ void bot_task_set_owner_25c_0099b650(void* plan, std::uint32_t owner) {
 }
 
 // 0099B690 (0099B690-0099B69C). PUSH ECX supplies 0099A870's argument (it
-// returns with RET 4): 0099A870(ECX = task+3F4h bot, task).
+// returns with RET 4): 0099A870(ECX = task+3F4h bot, task), a JMP to 0099A660.
 void bot_task_retire_0099b690(Cc13Seg67bHost& host, void* task) {
-    host.pilot_bot_retire_task_0099a870(ptr_at(task, kTaskBot), task);
+    pilot_bot_retire_task_0099a660(host, ptr_at(task, kTaskBot), task);
 }
 
 // 009A1A20 (009A1A20-009A1A86). plan+2CCh == 2 -> plan+2C0h. Otherwise
@@ -4558,6 +4558,223 @@ void ship_ai_debug_draw_009ddcc0(Cc13Seg67bHost& host, void* ai) {
         const std::size_t slot = 0x608 + 4 * static_cast<std::size_t>(i);
         ship_ai_debug_draw_box_lines_009d7260(host, ptr_at(ai, slot));
     }
+}
+
+// ---------------------------------------------------------------------------
+// Approach and task saves (cc13-seg67C). Each mirrors the stream constructor's
+// field list: 009A6D40 (dogfight), 009ABBE0 (drop kamikaze) and 009AFFF0 (land).
+// Every field goes through archive slot +0Ch as write(name, value). The approach-level
+// saves at 009AA570, 009AE470 and 009B3B40 (approach save plus "_state_moveTo") have
+// no rel32 or absolute-dword reference in the image and are not reconstructed.
+
+// 009AA410 (009AA410-009AA561). 00BD5010(archive, block, {0,"_targetLock"})
+// (009AA43C), 009FACC0(ECX = a+2Ch, block) (009AA444); {0,"squadName"} = {4, [a+CCh]}
+// (009AA471); {0,"inattackrange"} = {3, byte a+D0h} (009AA4A8); {0,"targetfindangle"} =
+// {2, a+DCh} (009AA4E3); {0,"targetfindweight"} = {2, a+E0h} (009AA51E);
+// {0,"washittimer"} = {2, a+E8h} (009AA559). RET 4.
+void bot_approach_dogfight_save_009aa410(Cc13Seg67bHost& host, void* a, void* archive) {
+    std::uint32_t ref[3] = {};
+    host.archive_writer_ref_open_00bd5010(archive, ref,
+                                          name_record(kStrTargetLockUnderscore_00d1f624));
+    host.approach_ref_save_009facc0(ptr(a, 0x2C), ref);
+    host.archive_vcall_0c_write(archive, name_record(kStrSquadName_00d1f888),
+                                record(4, at<std::uint32_t>(a, 0xCC)));
+    host.archive_vcall_0c_write(archive, name_record(kStrInAttackRange_00d1f878),
+                                record(3, at<std::uint8_t>(a, 0xD0)));
+    host.archive_vcall_0c_write(archive, name_record(kStrTargetFindAngle_00d1f868),
+                                record(2, at<std::uint32_t>(a, 0xDC)));
+    host.archive_vcall_0c_write(archive, name_record(kStrTargetFindWeight_00d1f854),
+                                record(2, at<std::uint32_t>(a, 0xE0)));
+    host.archive_vcall_0c_write(archive, name_record(kStrWasHitTimer_00d1f848),
+                                record(2, at<std::uint32_t>(a, 0xE8)));
+}
+
+// 009AA5C0 (009AA5C0-009AA625). 0099D060(ECX = task, archive) (009AA5CA); 009AA410(ECX =
+// task+3F8h, archive) (009AA5D8); 00BD5010(archive, block, {0,"_state_moveTo"})
+// (009AA5FF), 009BEAA0(ECX = task+3F8h+118h, block) (009AA60A); 00411450(ECX =
+// task+4FCh, task+30Ch, archive) (009AA61D). RET 4.
+void bot_task_dogfight_save_009aa5c0(Cc13Seg67bHost& host, void* task, void* archive) {
+    bot_task_save_base_0099d060(host, task, archive);
+    bot_approach_dogfight_save_009aa410(host, ptr(task, 0x3F8), archive);
+    std::uint32_t ref[3] = {};
+    host.archive_writer_ref_open_00bd5010(archive, ref, name_record(kStrStateMoveTo));
+    bot_approach_save_altitude_leg_009beaa0(host, ptr(task, 0x3F8 + 0x118), ref);
+    host.bot_state_registry_write_current_00411450(ptr(task, 0x4FC), ptr(task, 0x30C), archive);
+}
+
+// 009AE2D0 (009AE2D0-009AE465). 00BD5010(archive, block, {0,"targetLock"}) (009AE2FB),
+// 009FACC0(ECX = a+30h, block) (009AE303); {0,"startDist"} = {2, a+ACh} (009AE341);
+// {0,"attackDist"} = {2, a+B0h} (009AE37C); {0,"targetDist"} = {2, a+B4h} (009AE3B7);
+// {0,"insideAttackRange"} = {3, byte a+C0h} (009AE3EE); {0,"targetHdg"} = {2, a+B8h}
+// (009AE429); {0,"currentAvoidFlag"} = {1, a+BCh} (009AE460). RET 4.
+void bot_approach_drop_kamikaze_save_009ae2d0(Cc13Seg67bHost& host, void* a, void* archive) {
+    std::uint32_t ref[3] = {};
+    host.archive_writer_ref_open_00bd5010(archive, ref, name_record(kStrTargetLockPlain_00d1fb5c));
+    host.approach_ref_save_009facc0(ptr(a, 0x30), ref);
+    host.archive_vcall_0c_write(archive, name_record(kStrStartDist_00d1fb50),
+                                record(2, at<std::uint32_t>(a, 0xAC)));
+    host.archive_vcall_0c_write(archive, name_record(kStrAttackDist_00d1fb44),
+                                record(2, at<std::uint32_t>(a, 0xB0)));
+    host.archive_vcall_0c_write(archive, name_record(kStrTargetDist_00d1fb38),
+                                record(2, at<std::uint32_t>(a, 0xB4)));
+    host.archive_vcall_0c_write(archive, name_record(kStrInsideAttackRange_00d1fb24),
+                                record(3, at<std::uint8_t>(a, 0xC0)));
+    host.archive_vcall_0c_write(archive, name_record(kStrTargetHdg_00d1fb18),
+                                record(2, at<std::uint32_t>(a, 0xB8)));
+    host.archive_vcall_0c_write(archive, name_record(kStrCurrentAvoidFlag_00d1fb04),
+                                record(1, at<std::uint32_t>(a, 0xBC)));
+}
+
+// 009AE4C0 (009AE4C0-009AE525). 0099D060(ECX = task, archive) (009AE4CA); 009AE2D0(ECX =
+// task+3F8h, archive) (009AE4D8); 00BD5010(archive, block, {0,"_state_moveTo"})
+// (009AE4FF), 009BEAA0(ECX = task+3F8h+D8h, block) (009AE50A); 00411450(ECX = task+4BCh,
+// task+30Ch, archive) (009AE51D). RET 4.
+void bot_task_drop_kamikaze_save_009ae4c0(Cc13Seg67bHost& host, void* task, void* archive) {
+    bot_task_save_base_0099d060(host, task, archive);
+    bot_approach_drop_kamikaze_save_009ae2d0(host, ptr(task, 0x3F8), archive);
+    std::uint32_t ref[3] = {};
+    host.archive_writer_ref_open_00bd5010(archive, ref, name_record(kStrStateMoveTo));
+    bot_approach_save_altitude_leg_009beaa0(host, ptr(task, 0x3F8 + 0xD8), ref);
+    host.bot_state_registry_write_current_00411450(ptr(task, 0x4BC), ptr(task, 0x30C), archive);
+}
+
+// 009B37F0 (009B37F0-009B38FF). {0,"airBaseEntity"} = {4, [a+30h]} (009B381E);
+// 00BD5010(archive, block, {0,"updateLandQueueTimer"}) (009B3842), 00410E00(ECX =
+// a+ACh, block) (009B384D); {0,"approachAngle"} = {2, a+54h} (009B3888);
+// {0,"approachPitch"} = {2, a+58h} (009B38C0); {0,"standbyheightadd"} = {2, a+60h}
+// (009B38F8). RET 4.
+void bot_approach_land_save_009b37f0(Cc13Seg67bHost& host, void* a, void* archive) {
+    host.archive_vcall_0c_write(archive, name_record(kStrAirBaseEntity_00d1fe78),
+                                record(4, at<std::uint32_t>(a, 0x30)));
+    std::uint32_t ref[3] = {};
+    host.archive_writer_ref_open_00bd5010(archive, ref,
+                                          name_record(kStrUpdateLandQueueTimer_00d1fe60));
+    host.time_freq_pair_write_00410e00(ptr(a, 0xAC), ref);
+    host.archive_vcall_0c_write(archive, name_record(kStrApproachAngle_00d1fe50),
+                                record(2, at<std::uint32_t>(a, 0x54)));
+    host.archive_vcall_0c_write(archive, name_record(kStrApproachPitch_00d1fe40),
+                                record(2, at<std::uint32_t>(a, 0x58)));
+    host.archive_vcall_0c_write(archive, name_record(kStrStandbyHeightAdd_00d1fe2c),
+                                record(2, at<std::uint32_t>(a, 0x60)));
+}
+
+// 009B3B90 (009B3B90-009B3BF5). 0099D060(ECX = task, archive) (009B3B9A); 009B37F0(ECX =
+// task+3F8h, archive) (009B3BA8); 00BD5010(archive, block, {0,"_state_moveTo"})
+// (009B3BCF), 009BEAA0(ECX = task+3F8h+CCh, block) (009B3BDA); 00411450(ECX = task+4B0h,
+// task+30Ch, archive) (009B3BED). RET 4.
+void bot_task_land_save_009b3b90(Cc13Seg67bHost& host, void* task, void* archive) {
+    bot_task_save_base_0099d060(host, task, archive);
+    bot_approach_land_save_009b37f0(host, ptr(task, 0x3F8), archive);
+    std::uint32_t ref[3] = {};
+    host.archive_writer_ref_open_00bd5010(archive, ref, name_record(kStrStateMoveTo));
+    bot_approach_save_altitude_leg_009beaa0(host, ptr(task, 0x3F8 + 0xCC), ref);
+    host.bot_state_registry_write_current_00411450(ptr(task, 0x4B0), ptr(task, 0x30C), archive);
+}
+
+// 0099A660 (0099A660-0099A71C), reached through the thunk 0099A870. The bot's active
+// task array {data +58h, count +5Ch} and retired array {data +64h, count +68h,
+// capacity +6Ch}. Find the first active slot equal to task (0099A673-0099A680); when
+// the retired array is full, capacity = 2 * capacity + 2 (stored before the
+// allocation), 00BF55BE -> operator new(capacity * 4), the count entries copied, the
+// old buffer through 00BF6989 -> _free when non-null (0099A68A-0099A6D7); append the
+// found slot's value (0099A6DB-0099A6EC); shift the active entries after it down by
+// one and decrement +5Ch (0099A6F0-0099A716). RET 4.
+void pilot_bot_retire_task_0099a660(Cc13Seg67bHost& host, void* bot, void* task) {
+    auto* const active = reinterpret_cast<std::uintptr_t*>(ptr_at(bot, 0x58));
+    const std::uint32_t n = at<std::uint32_t>(bot, 0x5C);
+    const std::uintptr_t key = reinterpret_cast<std::uintptr_t>(task);
+    std::uint32_t i = 0;
+    while (i != n && active[i] != key) ++i;
+    // A task not in the array leaves the image reading the slot past the end and
+    // shifting without bound (the erase loop's end test can never match); the
+    // callers pass a held task, and this body stops there.
+    if (i == n) return;
+    std::uint32_t count = at<std::uint32_t>(bot, 0x68);
+    if (count == at<std::uint32_t>(bot, 0x6C)) {
+        const std::uint32_t capacity = count + count + 2;
+        at<std::uint32_t>(bot, 0x6C) = capacity;
+        auto* const grown = static_cast<std::uintptr_t*>(host.operator_new_00bf681b(capacity * 4));
+        auto* const old = reinterpret_cast<std::uintptr_t*>(ptr_at(bot, 0x64));
+        for (std::uint32_t k = 0; k < count; ++k) {
+            if (grown != nullptr) grown[k] = old[k];
+        }
+        if (old != nullptr) host.crt_free_00bf65ac(old);
+        at<std::uintptr_t>(bot, 0x64) = reinterpret_cast<std::uintptr_t>(grown);
+    }
+    auto* const retired = reinterpret_cast<std::uintptr_t*>(ptr_at(bot, 0x64));
+    if (reinterpret_cast<std::uintptr_t>(retired) + 4u * count != 0) retired[count] = active[i];
+    at<std::uint32_t>(bot, 0x68) = count + 1;
+    for (std::uint32_t k = i; k + 1 < n; ++k) active[k] = active[k + 1];
+    at<std::uint32_t>(bot, 0x5C) = n - 1;
+}
+
+namespace {
+constexpr std::uint32_t kKamikazeApproachVtable_00d1fd34 = 0x00D1FD34u;
+constexpr std::uint32_t kKamikazeRegistryVtable_00d1fd30 = 0x00D1FD30u;
+constexpr std::uint32_t kKamikazeGoTowardsVtable_00d1fb84 = 0x00D1FB84u;
+constexpr std::uint32_t kKamikazeAimVtable_00d1fba0 = 0x00D1FBA0u;
+constexpr std::uint32_t kStrKamikazeGoTowards_00d1fd1c = 0x00D1FD1Cu;  // "Kamikaze/gotowards"
+constexpr std::uint32_t kStrKamikazeAim_00d1fd0c = 0x00D1FD0Cu;        // "Kamikaze/aim"
+constexpr std::uint32_t kStrKamikazeFollow_00d1fcfc = 0x00D1FCFCu;     // "Kamikaze/follow"
+constexpr std::uint32_t kStrKamikazePrepare_00d1fce8 = 0x00D1FCE8u;    // "Kamikaze/prepare"
+constexpr std::uint32_t kStrKamikazeMoveTo_00d1fcd8 = 0x00D1FCD8u;     // "Kamikaze/moveto"
+constexpr float kFollowArg_00ce3d08 = 100.0f;      // [00CE3D08]
+constexpr float kGoTowards18_00cffd60 = 2000.0f;   // [00CFFD60]
+}  // namespace
+
+// 009AED20 (009AED20-009AEEB1). EH frame 00CAE95C. 009AB920(ECX = block, [bot+50h],
+// target) (009AED4F); 00411E20(block+DCh) (009AED62); [block] = 00D1FD34, [block+DCh] =
+// 00D1FD30 (009AEDA6, 009AEDAC); 009C2AC0(ECX = block+F0h, block, target, +4Ch, +4Ch,
+// +48h) (009AEDB3; the three floats go out as [esp] = +4Ch, [esp+4] = +4Ch, [esp+8] =
+// +48h, the second spilled through the target's own argument slot); 009C2980(ECX =
+// block+12Ch, block, 100.0) (009AEDCE) and 009C2980(ECX = block+1C4h, block, 100.0)
+// (009AEDE9); the gotowards state at +25Ch inline: vtable 00D1FB84, +4h = block,
+// +8h..+14h = 0, +18h = 2000.0 [00CFFD60], bytes +1Ch/+1Dh = 0, +20h = 0.0
+// (009AEDEE-009AEE1F); the aim state at +280h inline: vtable 00D1FBA0, +4h = block,
+// +8h..+14h = 0, bytes +18h/+19h = 0 (009AEE24-009AEE42); 00411E70(ECX = block+DCh)
+// registers gotowards (+25Ch), aim (+280h), follow (+12Ch), prepare (+1C4h) and moveto
+// (+F0h) in that order (009AEE52-009AEE98). RET 8, EAX = block.
+// RNG: the draws of 009AB920 and 009C2AC0 are the hooks'; then one shared-stream
+// U(0, 0.6) in each 009C2980, follow (+12Ch) first and prepare (+1C4h) second.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_approach_kamikaze_construct_009aed20(Cc13Seg67bHost& host, void* block, void* bot,
+                                               void* target) {
+    host.bot_approach_kamikaze_construct_base_009ab920(block, ptr_at(bot, 0x50), target);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xDC));
+    const float f48 = at<float>(block, 0x48);
+    const float f4c = at<float>(block, 0x4C);
+    at<std::uint32_t>(block, 0x000) = kKamikazeApproachVtable_00d1fd34;
+    at<std::uint32_t>(block, 0x0DC) = kKamikazeRegistryVtable_00d1fd30;
+    host.bot_state_move_to_construct_009c2ac0(ptr(block, 0xF0), block, target, f4c, f4c, f48);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x12C), block, kFollowArg_00ce3d08);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x1C4), block, kFollowArg_00ce3d08);
+    void* const go = ptr(block, 0x25C);
+    at<std::uintptr_t>(go, 0x04) = reinterpret_cast<std::uintptr_t>(block);
+    at<std::uint32_t>(go, 0x0C) = 0;
+    at<std::uint32_t>(go, 0x10) = 0;
+    at<std::uint32_t>(go, 0x14) = 0;
+    at<float>(go, 0x18) = kGoTowards18_00cffd60;
+    at<std::uint32_t>(go, 0x08) = 0;
+    at<std::uint32_t>(go, 0x00) = kKamikazeGoTowardsVtable_00d1fb84;
+    at<std::uint8_t>(go, 0x1C) = 0;
+    at<std::uint8_t>(go, 0x1D) = 0;
+    at<float>(go, 0x20) = 0.0f;
+    void* const aim = ptr(block, 0x280);
+    at<std::uintptr_t>(aim, 0x04) = reinterpret_cast<std::uintptr_t>(block);
+    at<std::uint32_t>(aim, 0x0C) = 0;
+    at<std::uint32_t>(aim, 0x10) = 0;
+    at<std::uint32_t>(aim, 0x14) = 0;
+    at<std::uint32_t>(aim, 0x08) = 0;
+    at<std::uint32_t>(aim, 0x00) = kKamikazeAimVtable_00d1fba0;
+    at<std::uint8_t>(aim, 0x18) = 0;
+    at<std::uint8_t>(aim, 0x19) = 0;
+    void* const reg = ptr(block, 0xDC);
+    host.state_registry_add_00411e70(reg, kStrKamikazeGoTowards_00d1fd1c, go);
+    host.state_registry_add_00411e70(reg, kStrKamikazeAim_00d1fd0c, aim);
+    host.state_registry_add_00411e70(reg, kStrKamikazeFollow_00d1fcfc, ptr(block, 0x12C));
+    host.state_registry_add_00411e70(reg, kStrKamikazePrepare_00d1fce8, ptr(block, 0x1C4));
+    host.state_registry_add_00411e70(reg, kStrKamikazeMoveTo_00d1fcd8, ptr(block, 0xF0));
+    return block;
 }
 
 }  // namespace bsp

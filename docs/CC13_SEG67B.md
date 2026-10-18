@@ -516,6 +516,16 @@ The function-local static colours (red, green, blue, cyan and yellow) live in th
 
 009D7260 needed every stack slot traced through the four colour blocks. Its corners are (c ± v) ± u, with each product and sum rounded to float.
 
+### 3.40 Saves, the retire list and the kamikaze approach (packet cc13-seg67C)
+
+The approach saves 009AA410 (dogfight), 009AE2D0 (drop kamikaze) and 009B37F0 (land) write the same field lists that the stream constructors 009A6D40, 009ABBE0 and 009AFFF0 read, through archive slot +0Ch. Their task saves 009AA5C0, 009AE4C0 and 009B3B90 run 0099D060, the approach save, the `_state_moveTo` block (009BEAA0) and 00411450.
+
+Each family also has an approach-level twin that writes the approach save plus `_state_moveTo`: 009AA570, 009AE470 and 009B3B40. None of the three has a rel32 or absolute-dword reference in the image, so they are not reconstructed.
+
+0099A660, reached through the JMP thunk 0099A870, moves a task from the bot's active array (+58h/+5Ch) to its retired array (+64h/+68h/+6Ch). When the retired array is full, its capacity grows to 2n + 2. 0099B690 now calls the body directly, and the 0099A870 hook is removed.
+
+009AED20 builds the kamikaze approach: base 009AB920, the moveto, follow and prepare states, and the inline gotowards and aim states, then registers the five names. The kamikaze model in `src/kamikaze_task_cc13.cpp` covers this construction inline with per-name RNG stand-ins, so the whole body is allowed. The two follow constructors (009C2980) each draw U(0, 0.6) from the shared stream: follow at +12Ch first, prepare at +1C4h second. The model does not take these draws.
+
 ## 4. Ledger-only records (packet cc13-seg67C)
 
 | Address | Host body | Result |
@@ -527,3 +537,10 @@ The function-local static colours (red, green, blue, cyan and yellow) live in th
 | 009AFAF0 | `land_geometry_009afaf0` | matches; the speed divisor (vtable[38h]) is the host's \|v\| |
 | 009B1420 | `land_begin_steer_009b1420` | first third (009B1420-009B15BC) matches |
 | 009C7A80 | `update_dive_bomb_approach` | matches, with the host's labelled substitutions |
+| 0099B940 | `ga_band_search_0099b940` | matches; a NaN value takes the first pair in the host, while the image skips every pair |
+| 009A17D0 | `gunfire_avoidance_009a17d0` | matches; the image zeroes all of +26Ch (009A17E9), the host only its modelled bit 4 |
+| 009A85B0 | `df_threat_009a85b0` | matches apart from cc9's labelled gap: the T+9C0h / 007B9140 clause is skipped |
+| 009AAA80 | `df_early_edge_009aaa80` | **gap**: the failed gate's 007B9740 clear (009AAC63) is missing; the finder noise is at its midpoint; adoption note sent |
+| 009998A0 | inline task arm in `game_hosts_units.cpp` | partial: only the vtable[64h] arm is modelled; the 0099C270 fast path, the +308h pacing of 0099B740 and the C24h gate on 009FC7C0 are not |
+| 009A57D0 | `depth_charge_entry_state` | matches |
+| 009B3900 | inline in `run_land_task_tick_009b3eb0` | matches; dt * 60.0 is rounded at 24 bits in the image and at 53 in the host; the NaN dt arms differ |

@@ -92,8 +92,6 @@ public:
     virtual void sized_storage_pool_return_block_00bd1510(void* pool, void* block,
                                                           std::uint32_t size,
                                                           std::uint32_t unused) = 0;
-    // 0099A870: __thiscall(ECX = pilot bot, task), RET 4 (the retire).
-    virtual void pilot_bot_retire_task_0099a870(void* bot, void* task) = 0;
     // 0099D0A0 BSP_PilotBot_HeadingDiffCalc: __thiscall(ECX = plan, float), RET 4, ST0.
     virtual float pilot_heading_diff_0099d0a0(void* plan, float value) = 0;
     // 00438AA0 BSP_Math_AddWrappedAngle(float, float), RET 8, ST0.
@@ -197,6 +195,10 @@ public:
     virtual std::uintptr_t air_ops_queue_incoming_006c0b50(void* air_ops, void* arg) = 0;
     // 009AFAF0: __thiscall(ECX = land approach, flag), RET 4: the approach geometry.
     virtual void bot_approach_land_geometry_009afaf0(void* approach, std::uint32_t flag) = 0;
+    // 009AB920 BSP_BotApproachKamikaze_ConstructBase: __thiscall(ECX = kamikaze approach,
+    // [bot+50h], target), RET 8 (draws through 009AB850 and the aim errors).
+    virtual void bot_approach_kamikaze_construct_base_009ab920(void* block, void* arg,
+                                                               void* target) = 0;
     // 009ABAB0: __thiscall(ECX = drop-kamikaze approach, [bot+50h], target), RET 8.
     virtual void bot_approach_drop_kamikaze_construct_base_009abab0(void* block, void* arg,
                                                                     void* target) = 0;
@@ -883,5 +885,18 @@ void ship_ai_debug_draw_path_tree_009d98c0(Cc13Seg67bHost& host, void* node);
 void ship_ai_debug_draw_plan_009dd9c0(Cc13Seg67bHost& host, void* plan);
 // 009DDCC0: __fastcall(ECX = ship AI), RET.
 void ship_ai_debug_draw_009ddcc0(Cc13Seg67bHost& host, void* ai);
+
+// Approach and task saves: __thiscall(ECX = approach or task, archive), RET 4.
+void bot_approach_dogfight_save_009aa410(Cc13Seg67bHost& host, void* a, void* archive);
+void bot_task_dogfight_save_009aa5c0(Cc13Seg67bHost& host, void* task, void* archive);
+void bot_approach_drop_kamikaze_save_009ae2d0(Cc13Seg67bHost& host, void* a, void* archive);
+void bot_task_drop_kamikaze_save_009ae4c0(Cc13Seg67bHost& host, void* task, void* archive);
+void bot_approach_land_save_009b37f0(Cc13Seg67bHost& host, void* a, void* archive);
+void bot_task_land_save_009b3b90(Cc13Seg67bHost& host, void* task, void* archive);
+// 0099A660: __thiscall(ECX = pilot bot, task), RET 4 (thunk 0099A870).
+void pilot_bot_retire_task_0099a660(Cc13Seg67bHost& host, void* bot, void* task);
+// 009AED20: __thiscall(ECX = kamikaze approach, bot, target), RET 8, EAX = approach.
+void* bot_approach_kamikaze_construct_009aed20(Cc13Seg67bHost& host, void* block, void* bot,
+                                               void* target);
 
 }  // namespace bsp
