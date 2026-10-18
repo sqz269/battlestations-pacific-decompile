@@ -63,3 +63,38 @@ reviewed names/comments were applied under the Ghidra write lock and saved.
 00924A70 is also a generic `std::list` destructor (detach/rehead, free nodes,
 free head, zero head pointer). Its ledger shards are held by cc15-rB, so only
 this evidence note is written until that ownership clears.
+
+## Batch 2: twenty further normal-path bodies
+
+Same source/header/namespace and genuine Win32 storage contract as batch 1.
+MSVC Win32 Release build and both existing CTests passed (2/2); ignored
+receipt `local/tB_build2.log`. Error handlers and library allocation/insertion are required
+providers, not reconstructed vendor bodies. Destructor and constructor EH
+unwind paths are not reproduced; normal-return business/storage coverage is
+distinct from original ABI, allocator identity, exception and gameplay proof.
+
+| Original | Original ABI | Evidence / behavior |
+|---|---|---|
+| 0077C710 | ECX entity, stack message, RET 4 | +5Eh gate, matching holder at list +2A8h, signed message tick vs uint16 previous tick; reject signed difference <=7530h, then store and vslot 18Ch. Listing reviewed. |
+| 0077DA20 | ECX entity, stack record, RET 4 | Erase matching holder from +2A4h through 0077D980; unlink/free matching +29Ch list node, decrement +2A0h after free. |
+| 007844E0 | ECX network, RET | Restore 00D04274; delete peer/message objects; clear lists; unwind tracked lock depths in +44h/+24h/+34h order; free four sentinel heads. Complete normal decompile reviewed. |
+| 00785170 | ECX client, RET | Enter +C0h tracked lock, delete +A0h/+B0h vector pointees, clear both ranges, reload lock on leave. |
+| 007857F0 | ECX network, stack peer, RET 4 | Membership gate; deduplicated removal queue under +24h lock. Allocate, checked-size increment 00773600, link, timer +48h from supplied actual 00CE38C8 bits. The misleading xlen name is not an unconditional no-return. |
+| 00785CC0 | ECX client, RET | Pending hosts drain front-first under +C0h lock; vslot 34h address comparison; replace before deleting old host, or use capacity fast append / bound library growth. Stable native pending cursor and post-callback reloads preserved. |
+| 008363E0 | ECX director, stack endpoint/byte, RET 8, EAX receiver | Base constructor; actual phase-vtable values; reference storage fields; short-circuit class 0Bh/9 tests on current +34h endpoint. Preserve base permissions when either test succeeds. Listing reviewed. |
+| 008360C0 | ECX director, stack visitor, RET 4 | `_gameUnit` scope (0071BDD0 is proven no-op), four enable bools, target ID and primary flag through vslot 0Ch boxed values. |
+| 008362A0 | ECX director, stack visitor, RET 4 | Base property dump then four avoidance/heading bools and two float bit payloads. |
+| 0084D810 | ECX block, stack squadron, RET 4, EAX receiver | Base endpoint +310h; vtables 00D0BD98/00D0BD7C; fighter vslot 18h(13h) queried even at behaviour zero; permission write order; new(40h) and 009F7590 with recovered ECX and two arguments. |
+| 0084EC10 | ECX message, RET | Supplied actual stationary registry globals; unsigned index bound; conditional +1A4h byte, dead vslot 7Ch or live vslot 70h(1). |
+| 008826F0 | ECX landscape, RET | Physics release uses current game+18h world receiver, vector receivers +364h/+374h. Floating-object removal uses ocean+0A8h wave field, not ocean itself. Listing verifies these missing pseudocode receivers. Node and refcount release order retained. |
+| 00864CA0 | ECX AI, stack target/gun, RET 8 | Exact iterator owner check; miss allocates 8Ch, constructs and inserts record; hit reads node+10h into preserved EDI; 00862660 gets that record receiver and gun. Listing fixes the old decompile's missing receiver. |
+| 0081BFE0 | ECX SHIP_CREATE message, RET, EAX instance | Listing recovers uint16 class ID at +1Eh with DL=1, factory vslot 28h(entity ID +1Ch), name +C0h read after creation, resize +154h without terminator, copy stored length. |
+| 0091D620 | ECX receiver, RET, EAX receiver | Listing preserves ESI across required 0091CE90 constructor, then zeroes +284h. The field meaning remains provisional. No claim to close the callee's many container/EH owners. |
+| 007701F0 | ECX session, stack index, RET 4 | Listing: capture record before 00783F20(client,index); forward copy name and six fields; load game global late; clear actual 00F1AF2C DWORD; destroy game+5F0h list; reset game+5FCh and native string +600h. |
+| 007B8A80 | ECX type ID, EAX class | MOV DL,1 / JMP00964790; required provider has existing ECX/DL contract. |
+| 00835610 | ECX director, stack message, target RET 4 | JMP0071C1E0. Existing target declaration in gameplay_seg38_cc13.hpp; no duplicated target body. |
+| 008FE790 | ECX bot, stack target, target RET 4 | JMP006DF170. Existing target source declaration in cc13_seg33a.hpp. |
+| 00852200 | ECX descriptor, no stack args, AL bool | JMP00828F20. Existing contract in ship_ai_throttle_ring.hpp. Its arithmetic remains the required callee's responsibility. |
+
+The last four rows are game delegation bodies. A tail JMP alone does not prove
+library or compiler-generated origin, so these are not exclusion classifications.
