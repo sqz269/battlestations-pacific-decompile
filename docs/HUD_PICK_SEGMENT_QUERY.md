@@ -18,8 +18,13 @@ Ranks 29 and 30 of `docs/UNIMPLEMENTED_RANKING_2.md` (18,160 calls each on E2):
 int kind_filter)`, body 009043A0..009043FA, `RET 14h` at 009043DB. Ghidra has no prototype
 (`FUN_009043a0`); the argument roles below are from the listing.
 - **With `ignore`** (009043A7): 0042E630, the spatial-index singleton, becomes `this`. Then
-  `ignore->vtable[B0h](record, kind_filter)` gives the entity to exclude (009043C5), and 0098ADD0
-  runs as `QuerySegment(from, to, excluded, record, kind_filter)` (009043D4).
+  `ignore->vtable[B0h]()` gives the entity to exclude (009043C5). That vcall takes NO stack
+  arguments: the pushes at 009043BB/009043C2 (kind, record) stay on the stack across it and become
+  0098ADD0's last two arguments, and [esp+18h]/[esp+14h] at 009043C7/009043CB then resolve to `to`
+  and `from`. So 0098ADD0 runs as `QuerySegment(from, to, excluded, record, kind_filter)`
+  (009043D4). Corrected 2026-10-18 from a cc13 review; the earlier text read the two pushes as
+  vt[B0h] arguments. The host passes the unit itself for the exclusion, a labelled substitution
+  (unit vt[B0h] = 006D1DF0 returns [unit+360h]; see query_segment_units_impl).
 - **Without `ignore`**: the stack is rewritten so the exclusion is 0 (009043E8..009043EC), and it
   jumps to 0098ADD0 (009043F6).
 
