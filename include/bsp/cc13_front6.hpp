@@ -75,6 +75,17 @@ struct Front6Host {
     // --- virtual dispatch ----------------------------------------------------
     // [object] vtable +8, __thiscall(ECX = object) -> EAX.
     virtual void* object_vslot_08(void* object) = 0;
+
+    // --- engine arrays {data +0, count +4, capacity +8} ----------------------
+    // 00BF55BE operator new(size), __cdecl.
+    virtual void* operator_new_00bf55be(std::uint32_t size) = 0;
+    // 00BF6989 _free(block), __cdecl.
+    virtual void free_00bf6989(void* block) = 0;
+    // 0086CDB0 BSP_EffectNamedRecord14_CopyConstruct, __thiscall(ECX = slot; source) RET 4.
+    virtual void effect_named_record14_copy_construct_0086cdb0(void* slot, const void* source) = 0;
+    // 00BEE140 BSP_Vector4_ScaleByScalarRef, ECX = out, EDX = const float* scalar,
+    // stack const float* vec4, RET 4 -> EAX = out.
+    virtual float* vector4_scale_00bee140(float* out, const float* scalar, const float* vec) = 0;
 };
 
 // ---------------------------------------------------------------------------
@@ -136,5 +147,24 @@ std::uint32_t find_menu_record_for_entry_kind_005d7070(std::int32_t entry_index,
 // 1.0 times the entity's weight in map 00F8A740 times its weight in the current
 // party's map 00F8A750 + 0Ch * [00E0E344] (each factor only when present).
 float ai_hint_weight_entity_multiplier_00a04240(void* entity, Front6Host& host);
+// 0077A2F0 BSP_Unit_HealthColour, __thiscall(ECX = out float[4]; float health) RET 4
+// -> EAX = out: a two-segment blend of three static RGBA colours (00F8715C,
+// 00F8716C, 00F8717C, initialised once under the guard bits of 00F8718C).
+float* unit_health_colour_0077a2f0(float* out, float health, Front6Host& host);
+
+// ---------------------------------------------------------------------------
+// Engine array templates over {data +0, count +4, capacity +8} (signed counts).
+// ---------------------------------------------------------------------------
+// 0073E9A0 BSP_DecalRecordVector_Reserve, __thiscall(ECX = array; int requested) RET 4:
+// dword elements.
+void dword_array_reserve_0073e9a0(Raw array, std::int32_t requested, Front6Host& host);
+// 0086A350 BSP_NativeQwordVector_Reserve, __thiscall(ECX = array; int requested) RET 4:
+// 8-byte elements copied as two floats through x87 FLD/FSTP.
+void float_pair_array_reserve_0086a350(Raw array, std::int32_t requested, Front6Host& host);
+// 0086CE10 BSP_EffectNamedRecord14Array_Reserve, __thiscall(ECX = array; int requested) RET 4:
+// 14h-byte records with a NativeString at +8.
+void named_record14_array_reserve_0086ce10(Raw array, std::int32_t requested, Front6Host& host);
+// 0086E6F0 BSP_EffectNamedRecord14Array_Resize, __thiscall(ECX = array; int count) RET 4.
+void named_record14_array_resize_0086e6f0(Raw array, std::int32_t count, Front6Host& host);
 
 }  // namespace bsp::cc13_front6

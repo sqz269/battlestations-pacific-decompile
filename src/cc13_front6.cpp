@@ -14,6 +14,12 @@ std::uint32_t addr32(const void* p) noexcept {
 }
 
 // A string key {tag 0, char* payload}; the payload is the image string's address.
+float f32(std::uint32_t bits) noexcept {
+    float f;
+    std::memcpy(&f, &bits, 4);
+    return f;
+}
+
 TaggedValue key(std::uint32_t image_string, Front6Host& host) {
     return TaggedValue{0, addr32(host.global_address(image_string))};
 }
@@ -237,6 +243,183 @@ float ai_hint_weight_entity_multiplier_00a04240(void* entity, Front6Host& host) 
         weight = Raw{node}.at<float>(0x10) * weight;
     }
     return weight;
+}
+
+// ---------------------------------------------------------------------------
+// 0077A2F0 BSP_Unit_HealthColour, __thiscall(ECX = out; float health) RET 4 -> EAX.
+// Function-local statics, each set once under its bit of [00F8718C]:
+//   bit 1: 00F8717C = {0.392157 (00D03DC8), 0.909804 (00D03DC4), 0.145098 (00D03DC0), 1.0}
+//   bit 2: 00F8716C = {0.992157 (00D03DBC), 0.941176 (00D03DB8), 0.125490 (00D03DB4), 1.0}
+//   bit 4: 00F8715C = {0.843137 (00D03DB0), 0.168627 (00D03DAC), 0.168627 (00D03DAC), 1.0}
+// (1.0 = 00D7A24C). health > 0.5f (COMISS 00CE3800; JBE takes the low arm for <=
+// and unordered): t = float((health - 0.5 double 00D7A280) * 2), s = float(1 - t);
+// out = 00BEE140(F8716C, s) + 00BEE140(F8717C, t). Otherwise t = float(health * 2),
+// s = float(1 - t); out = 00BEE140(F8716C, t) + 00BEE140(F8715C, s). The x87
+// chain rounds once per stored value at 24- or 53-bit PC alike (h - 0.5 is exact
+// in double, the doubling is exact), so it is modelled per stored float.
+// ---------------------------------------------------------------------------
+float* unit_health_colour_0077a2f0(float* out, float health, Front6Host& host) {
+    auto& guard = *static_cast<std::uint32_t*>(host.global_address(0x00F8718C));
+    float* const high = static_cast<float*>(host.global_address(0x00F8717C));
+    float* const mid = static_cast<float*>(host.global_address(0x00F8716C));
+    float* const low = static_cast<float*>(host.global_address(0x00F8715C));
+    if ((guard & 1u) == 0) {
+        guard |= 1u;
+        high[0] = f32(0x3EC8C8C9);  // 0.392157
+        high[1] = f32(0x3F68E8E9);  // 0.909804
+        high[2] = f32(0x3E149495);  // 0.145098
+        high[3] = 1.0f;
+    }
+    if ((guard & 2u) == 0) {
+        guard |= 2u;
+        mid[0] = f32(0x3F7DFDFE);  // 0.992157
+        mid[1] = f32(0x3F70F0F1);  // 0.941176
+        mid[2] = f32(0x3E008081);  // 0.125490
+        mid[3] = 1.0f;
+    }
+    if ((guard & 4u) == 0) {
+        guard |= 4u;
+        low[0] = f32(0x3F57D7D8);  // 0.843137
+        low[1] = f32(0x3E2CACAD);  // 0.168627
+        low[2] = f32(0x3E2CACAD);
+        low[3] = 1.0f;
+    }
+    float temp_0c[4];
+    float temp_1c[4];
+    if (health > 0.5f) {
+        const float t = static_cast<float>((static_cast<double>(health) - 0.5) * 2.0);
+        const float s = 1.0f - t;
+        const float* const a = host.vector4_scale_00bee140(temp_0c, &s, mid);      // 0077A400
+        const float* const b = host.vector4_scale_00bee140(temp_1c, &t, high);     // 0077A414
+        for (int k = 0; k < 4; ++k) out[k] = a[k] + b[k];
+    } else {
+        const float t = health + health;
+        const float s = 1.0f - t;
+        const float* const a = host.vector4_scale_00bee140(temp_1c, &s, low);      // 0077A45F
+        const float* const b = host.vector4_scale_00bee140(temp_0c, &t, mid);      // 0077A473
+        for (int k = 0; k < 4; ++k) out[k] = b[k] + a[k];
+    }
+    return out;
+}
+
+// ---------------------------------------------------------------------------
+// Engine array templates over {data +0, count +4, capacity +8}.
+// ---------------------------------------------------------------------------
+namespace {
+
+std::uint8_t* data_of(Raw array) noexcept { return static_cast<std::uint8_t*>(array.ptr(0)); }
+
+// An x87 FLD m32 / FSTP m32 round trip: bit-exact except that a signalling NaN
+// comes back quiet (bit 22 set; the invalid-operation exception is masked).
+void x87_float_copy(void* dst, const void* src) noexcept {
+    std::uint32_t bits;
+    std::memcpy(&bits, src, 4);
+    if ((bits & 0x7F800000u) == 0x7F800000u && (bits & 0x007FFFFFu) != 0) bits |= 0x00400000u;
+    std::memcpy(dst, &bits, 4);
+}
+
+// The record's NativeString {length +8, data +0Ch} released as the inlined
+// ~NativeString does: 00419CC0 then 00BD1510(data, length + 1, 1), data set only.
+void release_record_string(std::uint8_t* record, Front6Host& host) {
+    const Raw r{record};
+    void* const data = r.ptr(0x0C);
+    if (data != nullptr) {
+        void* const pool = host.sized_pool_00419cc0();
+        host.sized_pool_return_00bd1510(pool, data, r.at<std::uint32_t>(0x08) + 1, 1);
+    }
+}
+
+}  // namespace
+
+// 0073E9A0 (bytes identical to 00B22650/00B226B0/00B22710 apart from call
+// displacements): requested < 1 -> 1; capacity >= requested (signed) -> return.
+// fresh = 00BF55BE(requested * 4); dword i is copied while i < count (data and
+// count re-read each pass) into each non-null destination slot; 00BF6989(data)
+// even when data is null; data = fresh, capacity = requested; count unchanged.
+void dword_array_reserve_0073e9a0(Raw array, std::int32_t requested, Front6Host& host) {
+    if (requested < 1) requested = 1;
+    if (array.at<std::int32_t>(8) >= requested) return;
+    auto* const fresh = static_cast<std::uint32_t*>(
+        host.operator_new_00bf55be(static_cast<std::uint32_t>(requested) * 4u));   // 0073E9C0
+    std::uint32_t* dst = fresh;
+    for (std::int32_t i = 0; i < array.at<std::int32_t>(4); ++i, ++dst) {
+        if (dst != nullptr) *dst = reinterpret_cast<const std::uint32_t*>(data_of(array))[i];
+    }
+    host.free_00bf6989(data_of(array));
+    array.ptr(0) = fresh;
+    array.at<std::int32_t>(8) = requested;
+}
+
+// 0086A350: as 0073E9A0 with 8-byte elements (00BF55BE(requested * 8)); each
+// element is copied as FLD/FSTP dword +0 then +4 (signalling NaNs come out quiet).
+void float_pair_array_reserve_0086a350(Raw array, std::int32_t requested, Front6Host& host) {
+    if (requested < 1) requested = 1;
+    if (array.at<std::int32_t>(8) >= requested) return;
+    auto* const fresh = static_cast<std::uint8_t*>(
+        host.operator_new_00bf55be(static_cast<std::uint32_t>(requested) * 8u));   // 0086A370
+    std::uint8_t* dst = fresh;
+    for (std::int32_t i = 0; i < array.at<std::int32_t>(4); ++i, dst += 8) {
+        if (dst != nullptr) {
+            const std::uint8_t* const src = data_of(array) + i * 8;
+            x87_float_copy(dst, src);
+            x87_float_copy(dst + 4, src + 4);
+        }
+    }
+    host.free_00bf6989(data_of(array));                                             // 0086A3A3
+    array.ptr(0) = fresh;
+    array.at<std::int32_t>(8) = requested;
+}
+
+// 0086CE10: requested < 1 -> 1; capacity >= requested (signed) -> return.
+// fresh = 00BF55BE(requested * 14h); each record i < count is copy-constructed
+// by 0086CDB0(ECX = fresh + 14h*i; data + 14h*i) when the slot is non-null; then
+// every old record's string (+8/+0Ch) is released, 00BF6989(data), data = fresh,
+// capacity = requested. The EH frame (00C95847) only covers the copy loop.
+void named_record14_array_reserve_0086ce10(Raw array, std::int32_t requested, Front6Host& host) {
+    if (requested < 1) requested = 1;
+    if (array.at<std::int32_t>(8) >= requested) return;
+    auto* const fresh = static_cast<std::uint8_t*>(
+        host.operator_new_00bf55be(static_cast<std::uint32_t>(requested) * 0x14u));  // 0086CE54
+    for (std::int32_t i = 0; i < array.at<std::int32_t>(4); ++i) {
+        std::uint8_t* const slot = fresh + i * 0x14;
+        if (slot != nullptr) {
+            host.effect_named_record14_copy_construct_0086cdb0(slot, data_of(array) + i * 0x14);  // 0086CE8F
+        }
+    }
+    for (std::int32_t j = 0; j < array.at<std::int32_t>(4); ++j) {
+        release_record_string(data_of(array) + j * 0x14, host);                     // 0086CEC7
+    }
+    host.free_00bf6989(data_of(array));                                             // 0086CEE1
+    array.ptr(0) = fresh;
+    array.at<std::int32_t>(8) = requested;
+}
+
+// 0086E6F0: count > capacity (signed) -> 0086CE10(array; count). Growing, each
+// new record's string {+8, +0Ch} is zeroed when the slot address is non-null
+// (data re-read per record). Shrinking, count field is decremented first and
+// that record's string released, while count < count field. Then count field = count.
+void named_record14_array_resize_0086e6f0(Raw array, std::int32_t count, Front6Host& host) {
+    if (count > array.at<std::int32_t>(8)) {
+        named_record14_array_reserve_0086ce10(array, count, host);                   // 0086E6FF
+    }
+    const std::int32_t old_count = array.at<std::int32_t>(4);
+    if (old_count < count) {
+        std::int32_t offset = old_count * 0x14;
+        std::int32_t left = count - old_count;
+        do {
+            std::uint8_t* const record = data_of(array) + offset;
+            if (record != nullptr) {
+                Raw{record}.at<std::uint32_t>(0x08) = 0;
+                Raw{record}.at<std::uint32_t>(0x0C) = 0;
+            }
+            offset += 0x14;
+        } while (--left != 0);
+    }
+    while (count < array.at<std::int32_t>(4)) {
+        array.at<std::int32_t>(4) -= 1;
+        release_record_string(data_of(array) + array.at<std::int32_t>(4) * 0x14, host);  // 0086E751
+    }
+    array.at<std::int32_t>(4) = count;
 }
 
 }  // namespace bsp::cc13_front6
