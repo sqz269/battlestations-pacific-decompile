@@ -3622,3 +3622,16 @@ Predictions:
 - N = 1 per install; replans +1 per plane (the pass), and the first arm tick no longer replans.
 - The host's re-pick takes its unit draws from a per-shooter seed (`approach_target_ref_unit_draws_substitute`), not from stream 1, so moving it one call earlier moves no draw. The plan is rebuilt from the same positions (the install and the first arm tick run in the same host call). Expected: gameplay identical on USN21 and USN04 (pair_diff 0 or 1). Any movement would come from the +5Ch carry on a retarget re-install.
 - 009D4C10 break-off: a NaN range breaks off in the image (FCOMI/JA) and not in the host's >=. A NaN range needs a NaN position, so it is left as is.
+
+**88, result: kTorpedoCruisePassBound ON.** Exes built at fe6e06f9f (`local\p22b_off`, `local\p22b_on`). USN04 (`local\p22b_{off,on}_u04.log`) and USN21 `s46_u21_f` (`local\p22b_{off,on}_u21f.log`) are both gameplay identical (pair_diff 1): death rows, plane death modes and the unit table are identical. USN21 took 108 install passes (009D3420 and 009FADA0 calls 151237 -> 151345); only the per-tick diagnostic lines moved. As predicted, the pass moves no draw. Flipped ON by mechanism.
+
+## 89. The C25h arm of the moveto ticks (cc9-physics22, 2026-10-18)
+
+Bytes (`disasm-raw`, reviewer-confirmed in the brief):
+- 009C2430, the moveto state tick: after the speed stores (+2B4h, 009C2503 +2B0h = 0, 009C250A +2D8h = 1), 009C2519 `CMP byte [unit+C25h],0` / JE 009C255C. When set: 009C252A cmd+2BCh = 0.0, 009C2532 +2D0h = 2, 009C2543 +2C4h = 0.0, 009C254B +2CCh = 1, RET 4 at 009C2559.
+- 009C26D0, the circle tick: the same test at 009C275A after its speed stores (009C273B-009C274F), then 009C2769 / 009C2771 / 009C2782 / 009C278A the same four stores (+2CCh from ECX = 1, loaded at 009C274A), RET 4 at 009C2794.
+- These are the four stores of the follow release arm 009C200F (section 78) without its speed stores, which the moveto ticks have already made.
+
+The host's two ticks only recorded the arm and returned, so the previous tick's pitch, bank and heading commands stood. Switch **kMoveToC25ArmBound**, committed OFF: when set, it makes the four stores (and drops the heading-written latch, as follow_release_arm_009c200f does). The native table shows `BotStateMoveTo::c25_arm` / `BotStateMoveToCircle::c25_arm` as concrete on ON.
+
+Predictions: unreached on USN04 and USN21 (no moveto tick with C25h set). The reach candidate is USNOS `l65_os_c1` (`Intrepid_sqn22|.-II`, C20h = C25h = 1, section 78). Where it is reached, the plane levels (pitch target 0, mode 2) and holds heading mode 1 while the request is pending. The dive bombers' drop timing moves only if a moveto tick runs with the request pending.

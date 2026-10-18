@@ -6719,7 +6719,23 @@ struct GameUnitsHost::Impl {
     // and tail-JMP 0099B740. True: the host clears +60h, not +5Ch, and runs
     // that dt = 0 pass at install, so the first replan and 009FADA0's dirty
     // re-pick happen there. False: no pass; the first arm tick replans.
-    static constexpr bool kTorpedoCruisePassBound = false;
+    static constexpr bool kTorpedoCruisePassBound = true;   // ON: OCEAN_WAVE_FIELD 88
+    // Packet p22_moveto_c25 (OCEAN_WAVE_FIELD 89). With [unit+C25h] set (a
+    // pending release), the moveto state tick 009C2430 (009C2519-009C2559) and
+    // the circle tick 009C26D0 (009C275A-009C2794) store cmd+2BCh = 0.0,
+    // +2D0h = 2, +2C4h = 0.0 and +2CCh = 1, then RET 4, after the speed
+    // stores. True: the host makes those stores before it returns. False: the
+    // arm only records itself and the previous tick's commands stand.
+    static constexpr bool kMoveToC25ArmBound = false;
+    unsigned long long moveto_c25_arm_applied{0};
+    void moveto_c25_arm(GameUnitSlot& unit) {
+        ++moveto_c25_arm_applied;
+        unit.plan_state.pitch_target_2bc = 0.0f;   // 009C252A / 009C2769
+        unit.plan_state.pitch_mode_2d0 = 2;        // 009C2532 / 009C2771
+        unit.plan_state.bank_target_2c4 = 0.0f;    // 009C2543 / 009C2782
+        unit.plan_heading_mode_2cc = 1;            // 009C254B / 009C278A
+        unit.plan_heading_2c0_written = false;
+    }
     // Packet cc9_l61_torpedo_done_formation (SQUADRON_LAND_TASK 5ho item 2). The
     // done/prepare enter 009D2530 writes squadron+3E4h = 2 (009D254E, after
     // 009BED80's 1) and state+8Ch = 1.0 (009D2565); every wingman's follow
@@ -35876,7 +35892,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         if (unit_.torpedo_release_pending_c25) {
                             // 009C2763-009C2794: +2BCh = 0, +2D0h = 2, +2C4h = 0, +2CCh = 1.
-                            owner_.record("BotStateMoveToCircle::c25_arm", 0x009c2763u);
+                            if constexpr (GameUnitsHost::Impl::kMoveToC25ArmBound) {
+                                owner_.moveto_c25_arm(unit_);
+                                owner_.done("BotStateMoveToCircle::c25_arm", 0x009c2763u);
+                            } else {
+                                owner_.record("BotStateMoveToCircle::c25_arm", 0x009c2763u);
+                            }
                             return;
                         }
                         // 009C27A2: approach vtable[0] = 009BE2C0, +48h..+50h.
@@ -35973,7 +35994,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                           0x009c23b0u);
                         }
                         if (unit_.torpedo_release_pending_c25) {
-                            owner_.record("BotStateMoveTo::c25_arm", 0x009c2519u);
+                            // 009C2522-009C2559: the same four stores, RET 4.
+                            if constexpr (GameUnitsHost::Impl::kMoveToC25ArmBound) {
+                                owner_.moveto_c25_arm(unit_);
+                                owner_.done("BotStateMoveTo::c25_arm", 0x009c2519u);
+                            } else {
+                                owner_.record("BotStateMoveTo::c25_arm", 0x009c2519u);
+                            }
                             return;
                         }
                         // 009C255C-009C256E: 009FB800(pt.y, 1.0).
