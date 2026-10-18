@@ -32,6 +32,7 @@
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/cc13_front6.hpp"
+#include "bsp/cc13_big1_null_host.hpp"
 #include "bsp/hud_root_rows.hpp"
 #include "bsp/local_player_unit_lists.hpp"
 
@@ -42,6 +43,7 @@
 #include "bsp/unit_kind_query.hpp"
 
 #include <cstdio>
+#include <cstring>
 #include <map>
 #include <string>
 #include <vector>
@@ -55,6 +57,22 @@ namespace {
 // picks a hit of kind 6, 0Fh, 45h, 46h, 1Bh or 35h by ray. False: the query
 // reports no hit and the branch is a record.
 constexpr bool kHudPickSegmentQueryBound = true;
+
+// Packet cc13-wire1, granted by cc9 2026-10-18. 0064AE20 (src/cc13_big1.cpp,
+// __fastcall(ECX = screen 45h), RET) is what 0064D590 calls at 0064D5F9 when
+// screen+5 is set, after it stores the unit at +184h. The image: Lua
+// VehicleClass[class+70h].NoRepairGUI hides the damage widget +40h when it is
+// boolean 1; +44h = clamp((unit+980h + 0.5) / 1.5, 0, 1); the three gauges'
+// +18h bytes cleared; +128h = 0064AAD0(), +12Ch = 0, 0064A9F0(0); flags
+// +105h (class+C8h > 0), +107h (00818300 != 0), +106h (!+105h and 0059CB90
+// == 16h), +104h (submarine kind 8 with 00852350 != 0); widget vt34 / vt88
+// on +54h..+74h; then 0064A960. The current host (OFF): the gauges switch
+// records 0064AE20 and the flags keep the enter's clear values. ON runs the
+// body through ShipScreenApplyUnitAdapter below, whose stand-ins are: the Lua
+// lookups (no NoRepairGUI key is read, so +40h shows), class+C8h = 0,
+// 00818300 / 00852350 / 0059CB90 = 0, and the widgets at +40h, +54h, +58h and
+// +68h..+74h, which 0064C0F0's host name map does not bind (no-ops).
+inline constexpr bool kHudShipScreenApplyUnitBound = false;
 
 void format_address(std::uint32_t address, char (&out)[16]) {
     std::snprintf(out, sizeof(out), "%08lx", static_cast<unsigned long>(address));
@@ -117,6 +135,8 @@ struct GameHudHost::Impl {
     bool ship_screen_widgets_bound{false};
     std::map<int, GuiLayoutWidget*> ship_screen_widgets;
     GuiLayoutWidget* ship_screen_widget(bsp::ShipScreenWidget widget);
+    // 0064AE20 through the Big1Host adapter (kHudShipScreenApplyUnitBound).
+    void apply_ship_screen_unit_0064ae20();
     // Packet cc9_screen_50h: screen 50h's fields and its widgets.
     bsp::WarningScreenState warning_screen{};
     bool warning_widgets_bound{false};
@@ -382,7 +402,12 @@ public:
             // recon and torpedo icons. SUBSTITUTION: not bound, so the flags
             // keep the enter's clear values and only the speed gauge runs.
             if (kHudShipScreenGaugesBound) {
-                owner_.record("HudShipScreen::apply_unit_0064ae20", 0x0064ae20u);
+                if constexpr (kHudShipScreenApplyUnitBound) {
+                    // 0064D5F1: only with screen+5 set.
+                    if (owner_.ship_screen.active_05) owner_.apply_ship_screen_unit_0064ae20();
+                } else {
+                    owner_.record("HudShipScreen::apply_unit_0064ae20", 0x0064ae20u);
+                }
             }
         }
     }
@@ -2540,6 +2565,137 @@ void GameHudHost::update_ship_screen_0064dd30(float seconds, bool active) {
     ShipScreenBinding binding(impl);
     bsp::ship_screen_update_0064dd30(impl.ship_screen, binding, seconds);
     impl.done("HudShipScreen::update", 0x0064dd30u);
+}
+
+namespace {
+// The Big1Host adapter for 0064AE20 (kHudShipScreenApplyUnitBound). The body
+// reads and writes the native layout, so the adapter lays out a scratch
+// screen, unit and class record, runs the body over them and copies the
+// written fields back into GameHudHost::Impl::ship_screen. Host state in:
+// unit+980h = the row's throttle, class+70h = the row's type_id, screen+104h
+// = gauge_sub_104 (the body leaves it unwritten off the submarine arm), and
+// vtable[5Ch](8) = unit_is_kind_of. Every other input is a stand-in, labelled
+// at its hook.
+class ShipScreenApplyUnitAdapter final : public bsp::cc13_big1::Big1NullHost {
+public:
+    ShipScreenApplyUnitAdapter(GameHudHost::Impl& owner, bsp::ShipScreenHost& binding)
+        : owner_(owner), binding_(binding) {}
+
+    void run() {
+        const GameUnitRow* row =
+            owner_.units != nullptr ? owner_.units->unit_row(owner_.ship_screen_unit) : nullptr;
+        put<float>(unit_, 0x980, row != nullptr ? row->throttle : 0.0f);
+        // STAND-IN: class+C8h (the SETG at 0064AFA3) is not on the host's class row; 0.
+        put<std::int32_t>(class_, 0x70, row != nullptr ? row->type_id : -1);
+        put<void*>(unit_, 0x538, class_);
+        put<void*>(screen_, 0x184, unit_);
+        for (int offset : {0x40, 0x54, 0x58, 0x68, 0x6C, 0x70, 0x74}) {
+            put<void*>(screen_, offset, widget_tags_ + offset);
+        }
+        for (int i = 0; i < 3; ++i) put<void*>(screen_, 0x78 + 4 * i, gauges_[i]);
+        bsp::ShipScreenState& state = owner_.ship_screen;
+        screen_[0x104] = state.gauge_sub_104 ? 1 : 0;
+
+        bsp::cc13_big1::hud_ship_screen45_apply_unit_0064ae20(screen_, *this);
+
+        state.stick_44 = get<float>(screen_, 0x44);
+        state.dir_target_128 = get<float>(screen_, 0x128);
+        state.dir_rate_12c = get<float>(screen_, 0x12C);
+        state.gauge_sub_104 = screen_[0x104] != 0;
+        state.gauge_recon_105 = screen_[0x105] != 0;
+        state.gauge_class_106 = screen_[0x106] != 0;
+        state.gauge_torpedo_107 = screen_[0x107] != 0;
+        for (int i = 0; i < 3; ++i) state.gauges[i].primed_18 = gauges_[i][0x18] != 0;
+        owner_.done("HudShipScreen::apply_unit_0064ae20", 0x0064ae20u);
+    }
+
+    void unreached(const char* hook, std::uint32_t address) override {
+        static_cast<void>(hook);
+        owner_.record("HudShipScreen::apply_unit_unexpected_hook", address);
+    }
+    // STAND-IN: the game singleton is only the base of 0064AE4D's +1A0Ch owner,
+    // which the stand-in Lua hooks below never read.
+    void* game_00e188a8() override { return game_; }
+    // STAND-IN: the Lua hooks. The host does not read VehicleClass NoRepairGUI,
+    // so the key reads as not a boolean and +40h is shown (0064AEE2 false arm).
+    void* lua_state_owner_get_globals_00b67980(void*, void* out) override { return out; }
+    void* lua_object_get_by_name_00b67800(void*, void* out, const char*) override { return out; }
+    void* lua_object_get_by_index_00b67720(void*, void* out, std::int32_t) override { return out; }
+    void lua_object_construct_00b65f50(void*) override {}
+    void lua_object_assign_00b67690(void*, void*) override {}
+    void lua_object_destruct_00b67700(void*) override {}
+    bool lua_object_is_boolean_00b66000(void*) override {
+        owner_.record("HudShipScreen::apply_unit_no_repair_gui", 0x0064aee2u);
+        return false;
+    }
+    std::uint8_t lua_object_get_boolean_00b66250(void*) override { return 0; }
+    // vtable +34h (show) and +88h (frame) through the ship screen binding. The
+    // host's name map holds none of +40h, +54h, +58h or +68h..+74h, so these
+    // reach no widget (0064C0F0's lookups for them are not modelled).
+    void widget_vtable34(void* widget, std::uint8_t arg) override {
+        binding_.set_visible(widget_at(widget), arg != 0);
+    }
+    void widget_vtable88(void* widget, std::uint32_t frame, std::int32_t arg,
+                         float value) override {
+        binding_.select_state(widget_at(widget), static_cast<int>(frame), arg, value);
+    }
+    float hud_ship_screen45_update_dir_icon_0064aad0(void*) override {
+        return bsp::ship_screen_dir_0064aad0(binding_);
+    }
+    void hud_ship_screen45_update_throttle_indicator_0064a9f0(void*, float value) override {
+        bsp::ship_screen_stick_0064a9f0(binding_, value);
+    }
+    void hud_ship_screen45_update_formation_icon_0064a960(void*) override {
+        bsp::ship_screen_relation_icon_0064a960(owner_.ship_screen, binding_);
+    }
+    bool unit_has_flag_vtable5c(void*, std::int32_t flag) override {
+        return owner_.units != nullptr
+            && owner_.units->unit_is_kind_of(owner_.ship_screen_unit, flag);
+    }
+    // STAND-IN: 00818300 sums +448h over the unit's kind-7 gun children,
+    // 00852350 counts its bomb-platform children and 0059CB90 reads the HUD
+    // icon from the class; the host builds none of them, so each answers 0.
+    std::int32_t unit_torpedo_barrel_count_00818300(void*) override {
+        owner_.record("HudShipScreen::apply_unit_torpedo_barrels", 0x00818300u);
+        return 0;
+    }
+    std::int32_t unit_count_bomb_platform_children_00852350(void*) override {
+        owner_.record("HudShipScreen::apply_unit_bomb_platforms", 0x00852350u);
+        return 0;
+    }
+    std::uint32_t unit_hud_icon_index_0059cb90(void*, void*) override {
+        owner_.record("HudShipScreen::apply_unit_hud_icon", 0x0059cb90u);
+        return 0;
+    }
+
+private:
+    template <typename T> static void put(std::uint8_t* base, int offset, T value) {
+        std::memcpy(base + offset, &value, sizeof(T));
+    }
+    template <typename T> static T get(const std::uint8_t* base, int offset) {
+        T value;
+        std::memcpy(&value, base + offset, sizeof(T));
+        return value;
+    }
+    bsp::ShipScreenWidget widget_at(void* widget) const {
+        return static_cast<bsp::ShipScreenWidget>(static_cast<std::uint8_t*>(widget) - widget_tags_);
+    }
+
+    GameHudHost::Impl& owner_;
+    bsp::ShipScreenHost& binding_;
+    alignas(4) std::uint8_t screen_[0x1B0]{};
+    alignas(4) std::uint8_t unit_[0x988]{};
+    alignas(4) std::uint8_t class_[0xD0]{};
+    alignas(4) std::uint8_t gauges_[3][0x1C]{};
+    std::uint8_t widget_tags_[0x80]{};
+    alignas(4) std::uint8_t game_[0x1A10]{};
+};
+}  // namespace
+
+void GameHudHost::Impl::apply_ship_screen_unit_0064ae20() {
+    ShipScreenBinding binding(*this);
+    ShipScreenApplyUnitAdapter adapter(*this, binding);
+    adapter.run();
 }
 
 GuiLayoutWidget* GameHudHost::Impl::warning_widget(bsp::WarningWidget widget) {
