@@ -12,9 +12,9 @@ symbols. Nothing here is wired.
 |---|---|---|
 | In the struck range 0081B000-0081EFFF (seg51) | 22 | Not touched |
 | Template bodies | 88 | Tagged `stl_shape`, `reviewed`, evidence `sys6_shape` |
-| Game code, reconstructed | 13 | `src/cc13_segmix.cpp`, build-tested (cc13-segmixB to F) |
+| Game code, reconstructed | 14 | `src/cc13_segmix.cpp`, build-tested (cc13-segmixB to G) |
 | Game code, cc9-hosted (verify-and-record) | 7 | Recorded with a verdict |
-| Game code, not done yet | 3 | Following commits |
+| Game code, not done yet | 2 | Following commits |
 
 ## Template bodies (cc13-segmixA)
 
@@ -217,6 +217,38 @@ The two entity slots go through the observer pair calls (006952A0 unregisters,
 When operator new returns null, the image stores the null record and then
 faults on it. The C++ does the same.
 
+### Segment 51: the ship's wreck handler (cc13-segmixG)
+
+**00824B60 BSP_UnitInstance_OnWrecked**, thiscall(unit). This is the ship's
+vtable slot 7Ch, and this is the whole body, from 00824B60 to 008252B0.
+
+cc9 already models parts of it (docs/UNIT_DEATH_MESSAGE_AND_SINK.md):
+- `native_unit_wreck_tail` covers 00824F39..00824FE4;
+- `unit_death_sink` covers the sink block, the anchor ranges and the throttle
+  cut;
+- `game_hosts_ready` logs the handler itself as unimplemented.
+
+Those stay authoritative for the host. This file adds the parts nothing
+reconstructed: the wreck smoke at the head, and the order of the whole handler.
+
+| Step | What it does |
+|---|---|
+| Smoke | L = length × 0.2 and H = height × 0.6. n = trunc(clamp(L / 10, 1, 2)) puffs. Each puff draws z = U(−L, L), appends (0, H, z) to unit+74Ch, creates the class effect [desc+55Ch] on [unit+4A4h] at that point, and appends the reference to unit+758h. |
+| Mode 4 | stops and drops the handles +9ECh, +9F0h and +9F4h |
+| Sink | the leak reset, inertia × 2, dampings 2.5 / 0.5, +828h = +82Ch = 0, and 00818970 |
+| Cause 1 | +BC8h = U(settings+64Ch, +650h). When [desc+6A8h] is set, five anchors at +B68h: z, then x, then y. |
+| Breakup | 004A5AA0, when the class has pieces and [game+21D0h] is set |
+| Tail | the throttle slot = 0, [unit+740h] released and cleared, then 00959450 |
+
+**Correction to UNIT_DEATH_MESSAGE_AND_SINK.md:** n is truncated, not rounded.
+The FISTP at 00824C19 runs under the control word OR 0C00h, which is chop
+mode. A ship gets 2 puffs only from 0.2 × length = 20, not from 15. This has no
+live effect today, because cc9 does not bind the smoke. If it is ever bound,
+each puff makes one draw on the shared 00BD2F10 stream.
+
+The bytes were read for both reversed divisions: DE F1 at 00825131 / 00825179
+and DC F9 at 00825161.
+
 ## Files
 
 - 88 tag rows in `config/tags/006b0000`, `006c0000`, `00730000`, `00740000`,
@@ -224,8 +256,8 @@ faults on it. The C++ does the same.
   `008e0000.jsonl`.
 - `include/bsp/cc13_segmix.hpp` and `src/cc13_segmix.cpp`, registered in
   `cmake/startup.cmake` (bsp_core).
-- 20 function records in `config/reconstruction/00750000`, `00760000`, `007a0000`,
-  `00920000` and `00930000.jsonl`: 13 bodies and 7 verify-and-record.
+- 21 function records in `config/reconstruction/00750000`, `00760000`, `007a0000`, `00820000`,
+  `00920000` and `00930000.jsonl`: 14 bodies and 7 verify-and-record.
 - 7 renames in `config/names/007a0000`, `00920000` and `00930000.jsonl` (007A84D0, 0092F930, 0093B920, 0093A2C0,
   0093AA00, 00933BB0, 00933DA0), applied in Ghidra; the old values are in
   `local/ghidra-annotations-20261018T153423Z.json`, `...T153752Z.json` and `...T154313Z.json`.

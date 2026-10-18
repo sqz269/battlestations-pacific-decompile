@@ -170,6 +170,48 @@ public:
     // __fastcall(ECX = subject, EDX = observer).
     virtual void observer_register_pair_00694a60(void* subject, void* observer) = 0;
     virtual void observer_unregister_pair_006952a0(void* subject, void* observer) = 0;
+
+    // ---- 00824B60 ship wreck handler (cc13-segmixG) ----
+    // 00BF55BE operator new / 00BF6989 _free (the thunk pair the handler calls; cdecl).
+    virtual void* crt_operator_new_00bf55be(std::uint32_t size) = 0;
+    virtual void crt_free_00bf6989(void* block) = 0;
+    // [00CE221C] InterlockedIncrement.
+    virtual std::int32_t interlocked_increment(volatile std::int32_t* value) = 0;
+    // 00BD2F10 BSP_Random_UniformFloatRange: (ECX = stream word, float lo, float hi), RET 8;
+    // ST0, stored as a float by every caller here. The handler passes ECX = 1.
+    virtual float random_uniform_float_range_00bd2f10(std::uint32_t ecx, float lo, float hi) = 0;
+    // 008687C0 BSP_PointEffect_CreateWithParentMatrix: __fastcall(ECX = out slot, EDX = parent;
+    // definition slot by value (retained by the caller, released by the callee), const float
+    // matrix[16], int, int, int), RET 14h; EAX = out.
+    virtual void* point_effect_create_with_parent_matrix_008687c0(void* out, void* parent, void* definition,
+                                                                   const float* matrix, std::int32_t a,
+                                                                   std::int32_t b, std::int32_t c) = 0;
+    // 004D1100 BSP_EffectManager_GetSingleton (cdecl, no arguments).
+    virtual void* effect_manager_singleton_004d1100() = 0;
+    // 008674C0 BSP_LiveEffectManager_StopMatchingEffects: __thiscall(ECX = manager; handle), RET 4.
+    virtual void live_effect_manager_stop_matching_008674c0(void* manager, void* handle) = 0;
+    // 00484620 BSP_EffectReference_AdoptWithoutRetain: __thiscall(ECX = slot; value), RET 4.
+    virtual void effect_reference_adopt_00484620(void* slot, void* value) = 0;
+    // 0074EC50 BSP_LeakManager_ResetForWreck: __thiscall(ECX = unit+10D4h).
+    virtual void leak_manager_reset_for_wreck_0074ec50(void* manager) = 0;
+    // 00C37F10: __thiscall(ECX = dyn body; float out[3]), RET 4; EAX = the inertia.
+    virtual const float* dyn_body_get_inertia_00c37f10(void* body, float* out) = 0;
+    // 00C37E70 Dyn_Body_SetInertia: __thiscall(ECX = body; const float[3]), RET 4.
+    virtual void dyn_body_set_inertia_00c37e70(void* body, const float* inertia) = 0;
+    // 00C37DE0 / 00C37E00 Dyn_Body_SetAngularDamping / SetLinearDamping: __thiscall(ECX =
+    // body; float), RET 4.
+    virtual void dyn_body_set_angular_damping_00c37de0(void* body, float value) = 0;
+    virtual void dyn_body_set_linear_damping_00c37e00(void* body, float value) = 0;
+    // 00818970 BSP_ShipUnit_StopWreckEffects: __fastcall(ECX = unit).
+    virtual void ship_stop_wreck_effects_00818970(void* unit) = 0;
+    // 00424C40 BSP_GameSettings_GetSingleton (cdecl, no arguments).
+    virtual void* game_settings_00424c40() = 0;
+    // 004A5AA0: __thiscall(ECX = [game+21D0h]; unit), RET 4 (the breakup registration).
+    virtual void breakup_register_wreck_004a5aa0(void* manager, void* unit) = 0;
+    // Object vtable slot +10h, no arguments.
+    virtual void vcall_10(void* object) = 0;
+    // 00959450 BSP_Unit_OnDestroyed: __fastcall(ECX = unit).
+    virtual void unit_on_destroyed_00959450(void* unit) = 0;
 };
 
 // ---- segment 42: the mother ship and its MOTHERSHIP_CREATE message ----
@@ -188,6 +230,9 @@ void* cc13_segmix_mothership_create_construct_for_read_00766ef0(void* message, C
 void* cc13_segmix_failure_message9b_construct_0093a2c0(void* message, std::uint32_t value_20, std::uint32_t value_24,
                                                        std::uint8_t flag_28, Cc13SegmixHost& host);
 void cc13_segmix_repair_task_destruct_0093b920(void* task, Cc13SegmixHost& host);
+
+// ---- segment 51 (outside the struck range): the ship's wreck handler ----
+void cc13_segmix_ship_on_wrecked_00824b60(void* unit, Cc13SegmixHost& host);
 void cc13_segmix_unit_controller_update_pose_0092f930(void* controller, float seconds, Cc13SegmixHost& host);
 
 // ---- segment 46: the mission camera ----

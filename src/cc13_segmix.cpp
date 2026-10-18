@@ -700,4 +700,204 @@ void cc13_segmix_movcam_set_path_walk_point_property_007a74f0(void* camera, void
     host.lua_object_destroy_00b67700(table);
 }
 
+// ---------------------------------------------------------------------------
+// 00824B60 BSP_UnitInstance_OnWrecked (cc13-segmixG). __thiscall(ECX = unit), RET.
+// Bytes 00824B60..008252B0. This is the ship override of vtable slot 7Ch, which
+// 00926390 tail-dispatches at 009263AE, and 007497F0 jumps to it. Only parts of
+// it were in the repository: cc9's partial fragments native_unit_wreck_tail
+// (00824F39..00824FE4) and unit_death_sink (the sink block, the scatter and the
+// throttle cut), and game_hosts_ready logs the whole handler as unimplemented.
+// This is the whole body. Write-ups: docs/UNIT_DEATH_MESSAGE_AND_SINK.md and
+// docs/CC13_SEGMIX.md.
+//
+// Its six steps, in image order:
+// 1. Wreck smoke. It runs when [desc+55Ch] and [game+19FCh] are both set:
+//    - L = float(length A0h * 0.2), H = float(height A8h * 0.6) and
+//      n = trunc(clamp(L / 10, 1, 2)).
+//    - For each of the n puffs, it draws z = U(-0.0f - L, L) and appends
+//      (0, H, z) to the float3 vector unit+74Ch.
+//    - It then creates the [desc+55Ch] effect on [unit+4A4h] at the translation
+//      (0, H, z), and appends that reference to the vector unit+758h.
+// 2. In game mode 4 ([[game+38h]+60h]), it stops and drops the effect handles
+//    +9ECh, +9F0h and +9F4h.
+// 3. The sink block: the leak reset, the inertia doubled, the dampings 2.5 / 0.5,
+//    unit+828h = +82Ch = 0, and 00818970.
+// 4. When the destroy cause [unit+70h] is 1, it draws unit+BC8h from the settings
+//    range +64Ch..+650h. When [desc+6A8h] is set, it also fills five float3 slots
+//    at unit+B68h:
+//    - z = U(-A0h/2.5, A0h/2.5) is drawn first;
+//    - then x = U(-A4h/2.5, A4h/2.5);
+//    - then y = U(0, A8h/3).
+// 5. Breakup: when the class has 50h-byte pieces (+6E0h..+6E4h) or 1Ch-byte
+//    pieces (+700h..+704h), and [game+21D0h] is set, it calls 004A5AA0.
+// 6. The throttle cut, 0.0f at the order ring slot [unit+97Ch] (unit+838h +
+//    cursor * 20h). Then it releases [unit+740h] through vtable +10h, clears the
+//    slot, and calls 00959450.
+//
+// Byte checks: DE F1 at 00825131 / 00825179 is FDIVRP ST(1),ST(0), giving
+// -a / 2.5. DC F9 at 00825161 is FDIV ST(1),ST(0), giving b / 2.5. The fistp at
+// 00824C19 runs under RC = chop (OR 0C00h), so n is truncated, not rounded as
+// UNIT_DEATH_MESSAGE_AND_SINK.md wrote. Within the clamp to [1, 2] that gives
+// n = 1 below L = 20 and n = 2 from L = 20, where L is 0.2 times the class
+// length.
+//
+// The 0.2 and 0.6 products are double constants under 24-bit precision. They
+// are modelled as float(double * double), and a double-rounding difference is
+// possible in halfway cases. The divisions are exact as float(double / double).
+// The EH frame 00C9184D is not modelled.
+// ---------------------------------------------------------------------------
+namespace {
+
+// The intrusive reference release the handler inlines: decrement +4h, slot 0 at zero.
+void release_reference(void* object, Cc13SegmixHost& host) {
+    if (object == nullptr) return;
+    if (host.interlocked_decrement(&at<std::int32_t>(object, 0x4)) == 0) host.vcall_00_release(object);
+}
+
+void* retain_reference(void* object, Cc13SegmixHost& host) {
+    if (object != nullptr) host.interlocked_increment(&at<std::int32_t>(object, 0x4));
+    return object;
+}
+
+}  // namespace
+
+void cc13_segmix_ship_on_wrecked_00824b60(void* unit, Cc13SegmixHost& host) {
+    void* const desc = at<void*>(unit, 0x538);
+    void* game = host.game_global_00e188a8();
+    if (at<void*>(desc, 0x55C) != nullptr && at<std::uint32_t>(game, 0x19FC) != 0) {   // 00824B9A, 00824BAD
+        const float length = static_cast<float>(static_cast<double>(at<float>(desc, 0xA0)) * 0.2);
+        const float height = static_cast<float>(static_cast<double>(at<float>(desc, 0xA8)) * 0.6);
+        float scale = static_cast<float>(static_cast<double>(length) / 10.0);
+        if (!(std::isnan(scale) || 1.0f <= scale)) {
+            scale = 1.0f;                                                              // 00824BF1
+        } else if (!std::isnan(scale) && scale > 2.0f) {
+            scale = 2.0f;                                                              // 008252A6
+        }
+        std::uint32_t count = std::isnan(scale) ? 0u : static_cast<std::uint32_t>(scale);   // FISTP, chop
+        const float low = -0.0f - length;                                              // [00D7A208] - L
+        for (; count != 0; --count) {
+            const float z = host.random_uniform_float_range_00bd2f10(1, low, length); // 00824C5C
+            // The float3 vector {+74Ch data, +750h size, +754h capacity}.
+            if (at<std::uint32_t>(unit, 0x750) == at<std::uint32_t>(unit, 0x754)) {
+                const std::uint32_t capacity = at<std::uint32_t>(unit, 0x754) * 2 + 2;
+                at<std::uint32_t>(unit, 0x754) = capacity;
+                auto* const fresh = static_cast<float*>(host.crt_operator_new_00bf55be(capacity * 12));
+                for (std::uint32_t i = 0; i < at<std::uint32_t>(unit, 0x750); ++i) {
+                    if (fresh == nullptr) continue;
+                    const float* const source = at<float*>(unit, 0x74C) + i * 3;
+                    fresh[i * 3 + 0] = source[0];
+                    fresh[i * 3 + 1] = source[1];
+                    fresh[i * 3 + 2] = source[2];
+                }
+                if (at<void*>(unit, 0x74C) != nullptr) host.crt_free_00bf6989(at<void*>(unit, 0x74C));
+                at<float*>(unit, 0x74C) = fresh;
+            }
+            float* const point = at<float*>(unit, 0x74C) + at<std::uint32_t>(unit, 0x750) * 3;
+            if (point != nullptr) {
+                point[0] = 0.0f;
+                point[1] = height;
+                point[2] = z;
+            }
+            at<std::uint32_t>(unit, 0x750) += 1;                                       // 00824D17
+
+            float matrix[16] = {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                                0.0f, 0.0f, 1.0f, 0.0f, 0.0f, height, z, 1.0f};
+            void* const definition = retain_reference(at<void*>(desc, 0x55C), host);   // the by-value slot
+            void* effect = nullptr;                                                    // [esp+20h]
+            void** const created = static_cast<void**>(host.point_effect_create_with_parent_matrix_008687c0(
+                &effect, at<void*>(unit, 0x4A4), definition, matrix, 1, 0, 0));        // 00824DE4
+            // The reference vector {+758h data, +75Ch size, +760h capacity}.
+            if (at<std::uint32_t>(unit, 0x75C) == at<std::uint32_t>(unit, 0x760)) {
+                const std::uint32_t capacity = at<std::uint32_t>(unit, 0x760) * 2 + 2;
+                at<std::uint32_t>(unit, 0x760) = capacity;
+                auto* const fresh = static_cast<void**>(host.crt_operator_new_00bf55be(capacity * 4));
+                for (std::uint32_t i = 0; i < at<std::uint32_t>(unit, 0x75C); ++i) {
+                    void** const old_slot = at<void**>(unit, 0x758) + i;
+                    if (fresh != nullptr) fresh[i] = retain_reference(*old_slot, host);
+                    void* const old = *old_slot;
+                    if (old != nullptr) {
+                        release_reference(old, host);
+                        *old_slot = nullptr;
+                    }
+                }
+                if (at<void*>(unit, 0x758) != nullptr) host.crt_free_00bf6989(at<void*>(unit, 0x758));
+                at<void**>(unit, 0x758) = fresh;
+            }
+            void** const slot = at<void**>(unit, 0x758) + at<std::uint32_t>(unit, 0x75C);
+            if (slot != nullptr) *slot = retain_reference(*created, host);
+            at<std::uint32_t>(unit, 0x75C) += 1;                                       // 00824EFA
+            release_reference(effect, host);
+            effect = nullptr;
+        }
+    }
+
+    game = host.game_global_00e188a8();                                                // 00824F39
+    if (at<void*>(game, 0x38) != nullptr && at<std::int32_t>(at<void*>(game, 0x38), 0x60) == 4) {
+        for (std::size_t offset = 0x9EC; offset <= 0x9F4; offset += 4) {
+            void* const handle = at<void*>(unit, offset);
+            if (handle == nullptr) continue;
+            host.live_effect_manager_stop_matching_008674c0(host.effect_manager_singleton_004d1100(), handle);
+            host.effect_reference_adopt_00484620(static_cast<std::uint8_t*>(unit) + offset, nullptr);
+        }
+    }
+
+    host.leak_manager_reset_for_wreck_0074ec50(static_cast<std::uint8_t*>(unit) + 0x10D4);   // 00824FEB
+    float buffer[3];
+    const float* const inertia =
+        host.dyn_body_get_inertia_00c37f10(at<void*>(at<void*>(unit, 0x1018), 0x2C), buffer);
+    const float doubled[3] = {static_cast<float>(2.0 * inertia[0]), static_cast<float>(2.0 * inertia[1]),
+                              static_cast<float>(2.0 * inertia[2])};
+    host.dyn_body_set_inertia_00c37e70(at<void*>(at<void*>(unit, 0x1018), 0x2C), doubled);
+    host.dyn_body_set_angular_damping_00c37de0(at<void*>(at<void*>(unit, 0x1018), 0x2C), 2.5f);   // [00CF87C8]
+    host.dyn_body_set_linear_damping_00c37e00(at<void*>(at<void*>(unit, 0x1018), 0x2C), 0.5f);    // [00CE3800]
+    at<float>(unit, 0x828) = 0.0f;
+    at<float>(unit, 0x82C) = 0.0f;
+    host.ship_stop_wreck_effects_00818970(unit);                                       // 0082508E
+
+    if (at<std::int32_t>(unit, 0x70) == 1) {                                           // 00825093
+        void* const settings = host.game_settings_00424c40();
+        at<float>(unit, 0xBC8) =
+            host.random_uniform_float_range_00bd2f10(1, at<float>(settings, 0x64C), at<float>(settings, 0x650));
+        if (at<void*>(at<void*>(unit, 0x538), 0x6A8) != nullptr) {
+            for (std::size_t i = 0; i < 5; ++i) {                                     // 008250F0
+                float* const slot = &at<float>(unit, 0xB68 + i * 0xC);
+                slot[0] = 0.0f;
+                slot[1] = 0.0f;
+                slot[2] = 0.0f;
+                const float hull_length = at<float>(at<void*>(unit, 0x538), 0xA0);
+                const float z_high = static_cast<float>(static_cast<double>(hull_length) / 2.5);
+                const float z_low = static_cast<float>(-static_cast<double>(hull_length) / 2.5);
+                slot[2] = slot[2] + host.random_uniform_float_range_00bd2f10(1, z_low, z_high);
+                const float hull_width = at<float>(at<void*>(unit, 0x538), 0xA4);
+                const float x_high = static_cast<float>(static_cast<double>(hull_width) / 2.5);
+                const float x_low = static_cast<float>(-static_cast<double>(hull_width) / 2.5);
+                slot[0] = slot[0] + host.random_uniform_float_range_00bd2f10(1, x_low, x_high);
+                const float height = at<float>(at<void*>(unit, 0x538), 0xA8);
+                const float y_high = static_cast<float>(static_cast<double>(height) / 3.0);
+                slot[1] = slot[1] + host.random_uniform_float_range_00bd2f10(1, 0.0f, y_high);
+            }
+        }
+    }
+
+    void* const ship_class = at<void*>(unit, 0x538);                                   // 008251D3
+    const auto count_of = [&](std::size_t begin, std::size_t end, std::int32_t stride) {
+        const auto first = at<std::int32_t>(ship_class, begin);
+        if (first == 0) return 0;
+        return (at<std::int32_t>(ship_class, end) - first) / stride;
+    };
+    if (count_of(0x6E0, 0x6E4, 0x50) != 0 || count_of(0x700, 0x704, 0x1C) != 0) {
+        void* const manager = at<void*>(host.game_global_00e188a8(), 0x21D0);
+        if (manager != nullptr) host.breakup_register_wreck_004a5aa0(manager, unit);  // 0082523A
+    }
+
+    const std::uint32_t cursor = at<std::uint32_t>(unit, 0x97C);                       // 0082523F
+    at<float>(unit, 0x838 + static_cast<std::size_t>(cursor << 5)) = 0.0f;
+    void* const holder = at<void*>(unit, 0x740);
+    if (holder != nullptr) {
+        host.vcall_10(holder);
+        at<void*>(unit, 0x740) = nullptr;
+    }
+    host.unit_on_destroyed_00959450(unit);                                             // 00825271
+}
+
 }  // namespace bsp
