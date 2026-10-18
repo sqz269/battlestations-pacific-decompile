@@ -3123,3 +3123,58 @@ Landed on agent/cc9-physics1 after 4341b23c2: 888960641 / af8206868 (lead per-op
    faithful body lands, so it is not wired twice.
 Run tools as section 72 lists; `local\p19_rel32.py <hex>` scans the PE for rel32 calls/jumps and absolute dwords to
 an address. Export trees `local\p19_*` are kept (no reparse points; drive J has over 1 TB free).
+
+## 78. The stuck release request; 009C1FD0's release arm; final -> park (cc9-physics20, 2026-10-18)
+
+**The stuck release (USNOS `l65_os_c1`) is faithful.** The divebomb stage line now splits `guard_blocked` by the
+first 007CE9FD guard that holds (`guard_by=` app 007CEA02 / +9E0h 007CEA0F / +C3Ah 007CEA1C / +5Dh 007CEA29 /
++900h 007CEA33-4B) and prints the last blocked +900h. Diagnostic run `local\p20_os_diag.log` (30000 fr, reference
+env, orders `cc9-lua52\local\l65_os_c1.txt`, working-tree build of this section's first commit): the two rows left
+with C20h = 1, C25h = 1 are `Essex_sqn05|.-II` (`guard_by=0/0/97/0/43`, died 425.27 s) and `Intrepid_sqn22|.-II`
+(`0/0/109/0/43`, shot down by Cargo7 at 954.64 s, alt 117 m, right after its first bomb). The 43 are the deck ticks
+(+900h = 2, before launch); everything after is +C3Ah, which the death-message tail 007D1314 raises
+(`kPlaneDeathModesBound`). A dead plane's request is never spent in the image either; no host change.
+
+**009C1FD0's release arm, `kFollowReleaseArmBound` (OFF).** `disasm-raw 009C1FD0`: after 009BFD70 (false ->
+009C234E), `CMP byte [unit+C25h],0` (009C1FFD) / `CMP [unit+C20h],0; JLE` (009C2006) take 009C200F-009C2063:
+cmd+2D0h = 2, +2BCh = 0.0, +2C4h = 0.0, +2CCh = 1, +2B4h = `[[bot+4]+8]+190h` (the class's TravelSpeed x
+NewTravelSpeedMul slot, 007D2406), +2B0h = 0, +2D8h = 1, then `RET 4` before 009BFEE0 / 009BEE30. The host's
+plain follow tick ran the law unconditionally (it gated only the trail arm and sight search) and the moveto follow
+returned without the stores. True: both seams take the arm. LABELLED: bot+8 is read as the plane's own class.
+`summary follow release arm pending= applied=` counts it in both builds.
+Prediction: wingmen holding a queued or pending release (dive / level bombers between the request and the issue)
+fly level at travel speed instead of station-keeping; the number of such ticks is small (a release spends C20h
+within one interval), except for planes whose request is never spent.
+
+**009B3DD9's final -> park edge, `kLandFinalParkEdgeBound` (OFF).** `disasm-raw 009B3DB2`: final (+5F8h) with
+mode +448h = 4 calls 009B3370 `BSP_BotStateLandFinal_ParkRule` (`final+20h != 0 && !(plane+72Ch)->vt[38h]()`) and
+on true switches to +620h land/park through 009B3680 (009B3DE6-009B3DEF). The host refused it while park was ON.
+True: the edge calls `land_enter_park_009b21a0`. LABELLED as before: vt[38h] is the host's +900h == 7. Prediction:
+only a touched-down plane whose +900h is neither 4/5 (the earlier park arm) nor 7 reaches it, so few planes.
+
+**007E2090's candidate noise, `kFinderNoiseDrawBound` (OFF).** `disasm-raw 007E2160`: after 007DEEC0's score
+(007E2175), `score > 0` (007E2184 FCOMI against FLDZ) and `noise > [00D7A218]` (007E218E COMISS) push the pair
+(0.0, noise) and call 00BD2F10 with ECX = 1 (007E21A2-007E21AA), adding the draw to the score (007E21AF). The
+host added the midpoint 0.025 as a constant (the only noisy caller is 009AAA80 with 00CE7638 = 0.05). True: a
+keyed stream-1 draw (`unit name + "#fnoise"`, the host's 00BD2F10 convention) per positive candidate. It couples
+the stream: judge it on per-entity tables, never aggregates.
+
+## 79. The squadron helm moveto (cc9-physics20, 2026-10-18)
+
+BSM09 (`cc9-lua52\local\l67r_b9d1_rt_ref.log`, orders `l67_b9_d1.txt` line 2 `10 moveto Donald -2400 3200
+repeat 30`): every helm moveto on Donald logs `player command issued ... current=0 latched=0` and Donald keeps its
+scene moveto until Shokaku_sqn04 kills it at 181.71 s. The harness sent the moveto down the ship path
+(`issue_player_command`, a command row on the plane's slot), and no plane bot reads that row: the host's plane
+tasks are installed at delivery by the binding that issues the order (the fan-out substitution, as for
+`PilotMoveTo` 008A4150 and the air-ops order 006CCDA0's kMoveToSelf).
+
+In the image the player's moveto 005F9B20 orders [00E188D8] through 0077D600 with 00E08F68, which is
+`kPilotOrderClassMoveTo`; on a squadron the command lands on the squadron's director, and each member's bot sees
+the change (0099A4C0) and 0099A170 builds the kind-7 moveto task on the position descriptor (0099A23A arm).
+
+`kHelmPlaneMovetoBound` (OFF, `game_hosts_mission_frame.cpp`): a helm moveto on a squadron member goes to
+`GameScriptOrdersHost::player_plane_moveto`, which issues 00E08F68 with a position descriptor (kind 0, +1h set,
+the point at the leader's height) on every live member and runs 0099A170 at delivery with the air-ops path's
+stores (class, range 0, no target, the point). LABELLED: no 00645060 select and no 0064B870 / 00780214 role
+transfer run; the line stands for a player who selected the squadron. Prediction (BSM09 d1): Donald turns NW
+towards (-2400, 3200) from 0.5 s, so the fighters that picked it at 118 / 134.6 s meet it later or not at all.

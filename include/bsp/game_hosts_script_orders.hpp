@@ -877,6 +877,10 @@ public:
     // Packet cc9_air_ops_held_slot_orders: the entry above.
     PlayerAirOpsOrderResult player_air_ops_order(const std::string& base, int slot_number,
         int order, const std::string& target);
+    // Packet p20_squadron_helm: the harness's helm `moveto` on a plane of a squadron.
+    // Returns the members the moveto was issued to, or -1 when the unit is no
+    // squadron member (the caller keeps the ship path).
+    int player_plane_moveto(std::size_t unit_index, float x, float z);
     void queue_auto_attack_target_007f15f0(std::uint32_t squadron_entity,
                                            std::uint32_t target_plus_one);    unsigned long long air_ops_slot_ticks() const noexcept { return air_ops_ticks_; }
     unsigned long long air_ops_slot_refills() const noexcept { return air_ops_refills_; }
