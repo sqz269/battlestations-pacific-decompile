@@ -1216,6 +1216,12 @@ bool property_map_unlink_key_008f4030(Seg59bHost& host, void* map, const void* k
 // ---------------------------------------------------------------------------
 // 008F7CF0 BSP_RandomThreadsScope_Construct. __thiscall(ECX = scope), RET; EAX = scope.
 // Evidence: 008F7CF3 00BD2FE0 with ECX = scope unchanged; 008F7CF8 EAX = scope. No code xrefs.
+// 00BD2FE0, under the [01090AC0] critical section (when non-null), stores GetCurrentThreadId in
+// the first free slot of the ten at 01090AC4 and raises the count at 01090AEC to slot+1 when that
+// is larger; 00BD2ED0 then routes that thread's draws (00BD2F10, 00BD2F40, 00BD2FC0) to the
+// per-slot generator at 01090AF0 + (stream + 2*slot)*9C8h instead of the shared 00E14748. Neither
+// function seeds or draws; 00BD3050 clears the slot. 00BD2FE0 ignores ECX, so the scope argument
+// is unused.
 // ---------------------------------------------------------------------------
 void* random_threads_scope_construct_008f7cf0(Seg59bHost& host, void* scope) {
     host.random_threads_register_current_00bd2fe0(scope);
