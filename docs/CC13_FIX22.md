@@ -13,6 +13,27 @@ no game runs and flipped no switches. Status: build-tested only.
 | `kAiTargetObjectiveSetBound` | R-C | Attack think rows (00A1CF90); also Duel/Escort through 00A1CB80 | none |
 | `kAiPlannerSharedStreamDrawBound` | R-E | rows with cautious moves or order_attack cautious rolls | adds shared stream-1 draws |
 
+### Which rows reach these paths
+
+This doc cites no mission script file. Rows are named by the mission ID that runs, not by script file names
+(a menu ID does not load the file it resembles; the scene's StageScript decides).
+- **Every mode-8 row with a party brain builds all four base planners.** 00A15A70 builds Defend, Attack, Sell
+  and Capture outside modes 4..7 (`docs/CC13_PLANNER_VERIFY.md` section 4). The party brain runs on all nine
+  reference rows (`docs/SHIP_AI_OPEN_ITEMS.md` rank 5 and rank 8: E2, USN02, USN04 and the others). So Sell and
+  Capture planners exist on every one of those rows.
+- **Capture hand-offs (R-B) are observed on:**
+  - JM05: `handoffs=9`. Capture hands groups to brain+8h because all three CommandBuildings are Allied
+    (SHIP_AI_OPEN_ITEMS, the Sell/returntobase table).
+  - USNOS: `handoffs=21` with `kCaptureGroupValueBound` ON (SHIP_AI_OPEN_ITEMS, the cgv question).
+
+  Defend hand-offs to brain+0Ch have no published per-row count.
+- **Sell splits (R-A)** need a Sell-owned group that holds air and non-air members. CC13_PLANNER_VERIFY R-A
+  calls JM05 probably inert, because its carrier groups hold no squadrons. No row has a published
+  `sell_splits` count, so R-A's reach is unmapped until a pair runs.
+- **R-C** reaches every Attack think, but changes a score only when an objective set holds a member of an enemy
+  group.
+- **R-E** reaches every row that issues a cautious move or an order_attack past the gates.
+
 ## R-A, `kAiSellSplitClaimBound`: Sell think split claim
 
 Image 00A22800: `00A22841 CALL 00A2E4C0`, `00A22846 TEST EAX,EAX / JZ`, then `00A2284D CALL 00A22750` with
