@@ -33480,12 +33480,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.plane_taxi_queue_910 ? 1 : 0, unit_.land_done_18 ? 1 : 0);
                         }
                         if constexpr (GameUnitsHost::Impl::kParkStowTrace) {
+                            const auto dot3 = [](const float* r, const float* w) {
+                                return r[0] * w[0] + r[1] * w[1] + r[2] * w[2];
+                            };
                             if (carrier && 8.0f > f18 && (unit_.land_park_ticks % 2) == 1) {
                                 const bsp::PilotPlanSlot& th = unit_.plan_slots[bsp::kPilotSlotThrottle];
                                 const bsp::PilotPlanSlot& ab = unit_.plan_slots[bsp::kPilotSlotAirBrake];
                                 owner_.log.notef("  park stow trace %s t=%.2f st=%d f18=%.3f v=%.3f spd=%.3f "
                                     "meas=%.3f scale=%.3f skip=%d thr=(%.4f %.4f %d) ab=(%.4f %.4f %d) "
-                                    "live=%.4f lat=%.4f lab=%.4f brake=%.3f fric=%.4f a7c=%.4f m2d8=%d",
+                                    "live=%.4f lat=%.4f lab=%.4f brake=%.3f fric=%.4f a7c=%.4f m2d8=%d bv=(%.3f %.3f %.3f) pitch=%.4f c8=%.3f",
                                     unit_.row.name.c_str(),
                                     static_cast<double>(owner_.summary.simulated_seconds),
                                     unit_.plane_control_mode_900, static_cast<double>(f18),
@@ -33501,7 +33504,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     static_cast<double>(unit_.ground_last_brake),
                                     static_cast<double>(unit_.ground_last_friction),
                                     static_cast<double>(unit_.plane_body_accel_7c[2]),
-                                    unit_.plane_air_brake_mode_2d8);
+                                    unit_.plane_air_brake_mode_2d8,
+                                    static_cast<double>(dot3(unit_.motion.pose_row0, unit_.plane_world_velocity)),
+                                    static_cast<double>(dot3(unit_.motion.pose_row1, unit_.plane_world_velocity)),
+                                    static_cast<double>(dot3(unit_.motion.pose_row2, unit_.plane_world_velocity)),
+                                    static_cast<double>(unit_.plane_pitch_angle_c64),
+                                    static_cast<double>(unit_.plane_speed_floor_timer_c8));
                             }
                         }
                         owner_.done("BotStateLandPark::tick", 0x009b22c0u);
