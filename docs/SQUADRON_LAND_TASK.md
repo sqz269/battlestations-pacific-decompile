@@ -17768,3 +17768,15 @@ Exports of bb5d16e51 (`local\l66_g_off` control, `local\l66_dc_on` with the swit
 Mechanism as predicted up to the release (choice, arm, state machine, issue stage); the drop itself is shown only on
 the older base, and USN21's empty racks follow the shared 5ey rule. Flipped ON; a JM06 drop at the submarine is still
 to be seen on a current-base run.
+
+## 5if. The release issue interval draw, `kReleaseIssueIntervalDrawBound` (cc9-lua66, 2026-10-17)
+
+docs/CC13_VERIFY1.md A.1: after the 007C0D90 issue (007CEA8D), 007CEA9A-007CEABE draws 00BD2F10(ECX = 1, 0.9f
+00CE3860, 1.1f 00CE6448), multiplies by class+1F4h (BombDelay) and stores unit+C28h. The host always used 0.9. Switch
+`GameUnitsHost::Impl::kReleaseIssueIntervalDrawBound` (committed OFF): after each issue the interval is overwritten
+with a keyed draw (`<unit>#issue`, the host's other stream-1 draws' convention) times BombDelay. Counter
+`summary mission release issue interval draws`.
+
+Prediction: multi-issue sequences (level-bomb sticks, multi-round racks, the torpedo stage) space 0-22% wider on
+average (mean 1.0 instead of 0.9 x BombDelay); every row with a level bomber or a multi-round rack moves slightly
+after its first issue; rows with no issue are identical.
