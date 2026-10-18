@@ -261,7 +261,9 @@ public:
     virtual void* factory_vcall_04_load(void* factory, void* bot, void* archive) = 0;
     // entity->vtable[+34h](float* scratch), RET 4, EAX = the velocity vector.
     virtual const float* entity_vcall_34_velocity(void* entity, float* scratch) = 0;
-    // entity->vtable[+38h](), RET, ST0 (the value is discarded by 0099C527).
+    // entity->vtable[+38h](), RET, ST0 (the value is discarded by 0099C527). For a unit
+    // this is 007B8E60 BSP_Unit_GetCachedSpeed (FLD [ECX+B1Ch]), body
+    // native_plane_cached_speed_007b8e60; 009BA2F0 reads it as the speed.
     virtual float entity_vcall_38_float(void* entity) = 0;
     // 009BE3E0 BSP_BotStateFollow_WaitValue: __fastcall(ECX = follow state), ST0.
     virtual float bot_state_follow_wait_value_009be3e0(void* state) = 0;
@@ -590,6 +592,27 @@ public:
     // 0075B430 BSP_SessionMessage_ConstructBase: __thiscall(ECX = message; type), RET 4.
     virtual void session_message_construct_base_0075b430(void* message,
                                                          std::uint32_t type) = 0;
+    // 00BF701A LIBCRT_atan2 (_CIatan2): ST0 = atan2(ST1, ST0).
+    virtual float crt_atan2_00bf701a(float y, float x) = 0;
+    // 007F0280 BSP_Bot_NearFieldUnitAvoidanceProbe: __thiscall(ECX = control; unit,
+    // const float* extents, float* out_a, float* out_b, const float* weights, byte mode),
+    // RET 18h (docs/BOT_PROBE_007F0280.md section 0.1).
+    virtual void bot_near_field_probe_007f0280(void* control, void* unit, const float* extents,
+                                               float* out_a, float* out_b,
+                                               const float* weights, bool mode) = 0;
+    // 009FB800 BSP_PilotBot_CommandPitchFromAltitude: __thiscall(ECX = state+4h; float
+    // altitude, float reference), RET 8. The law is pitch_command_009fb800 (plane_flight.cpp).
+    virtual void pilot_bot_command_pitch_from_altitude_009fb800(void* approach_ref,
+                                                                float altitude,
+                                                                float reference) = 0;
+    // 009FABE0 BSP_Bot_SetDirectionFromHeadingPitch: __thiscall(ECX = direction; float
+    // heading, float pitch), RET 8. Body: bot_set_direction_from_heading_pitch_009fabe0
+    // (cc13_seg68.cpp).
+    virtual void bot_set_direction_009fabe0(void* direction, float heading, float pitch) = 0;
+    // 007C4810 BSP_PlaneClass_MinControlSpeed: __thiscall(ECX = class), RET, ST0. The
+    // law is plane_min_control_speed_007c4810 (dive_bomb_aimdive_tail.hpp): tuning+28Ch
+    // x class+184h StallSpd, rounded to float.
+    virtual float plane_class_min_control_speed_007c4810(void* plane_class) = 0;
 };
 
 // ---- the bot-task factory list (00F8A314) ----
@@ -761,6 +784,8 @@ void* bot_state_depth_charge_attack_run_construct_009a36a0(Cc13Seg67bHost& host,
                                                            void* approach);
 void* bot_state_dogfight_attack_run_construct_009a70e0(Cc13Seg67bHost& host, void* state,
                                                        void* approach);
+// 009A71E0: __thiscall(ECX = state; float dt), RET 4. The attack run's tick (slot +0Ch).
+void bot_state_dogfight_attack_run_tick_009a71e0(Cc13Seg67bHost& host, void* state, float dt);
 void* bot_state_dogfight_maneuver_construct_009a84e0(Cc13Seg67bHost& host, void* state,
                                                      void* approach);
 void* bot_state_level_bomb_attack_run_construct_009b49b0(Cc13Seg67bHost& host, void* state,
@@ -769,6 +794,11 @@ void* bot_state_move_on_path_circle_construct_009bc960(Cc13Seg67bHost& host, voi
                                                        void* approach);
 // 009B9680: __fastcall(ECX = task), RET, AL.
 bool bot_task_maneuver_roll_completed_009b9680(Cc13Seg67bHost& host, void* task);
+// 009B9740 (barrelroll, vtable 00D206D0 slot +64h) and 009BA2F0 (gainaltitude, vtable
+// 00D20480 slot +64h): __thiscall(ECX = task; float dt), RET 4, dt unread. 009BA2F0
+// takes one stream-1 draw in its no-target arm.
+void bot_task_barrel_roll_tick_009b9740(Cc13Seg67bHost& host, void* task, float dt);
+void bot_task_gain_altitude_tick_009ba2f0(Cc13Seg67bHost& host, void* task, float dt);
 // 009BB380: __fastcall(ECX = unit, EDX = float point[3]; float limit, byte flag), RET 8.
 void pilot_bot_prepend_tight_turn_to_point_009bb380(Cc13Seg67bHost& host, void* unit,
                                                     const float* point, float limit,
@@ -872,7 +902,7 @@ void* bot_task_make_level_bomb_009b9030(Cc13Seg67bHost& host, void* bot, void* t
 void* bot_task_move_on_path_create_009bdbb0(Cc13Seg67bHost& host, void* bot);
 void* bot_task_make_stop_009badb0(Cc13Seg67bHost& host, void* bot);
 // 009BACB0: __fastcall(ECX = bot, EDX = target; float alt), RET 4, EAX. 009BAD30:
-// __fastcall(ECX = bot), RET, EAX. Both unreferenced; each takes one 00BD2F10 draw.
+// __fastcall(ECX = bot), RET, EAX. Both unreferenced; each takes the base's two draws.
 void* bot_task_make_gain_altitude_009bacb0(Cc13Seg67bHost& host, void* bot, void* target,
                                            float alt);
 void* bot_task_make_immelmann_009bad30(Cc13Seg67bHost& host, void* bot);

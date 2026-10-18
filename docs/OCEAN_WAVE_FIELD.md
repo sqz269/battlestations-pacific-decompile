@@ -3504,3 +3504,98 @@ re-takeoffs 0 / 0. The aircraft-arm throttle sets on US planes go 447 -> 448. Fl
 007BBB70's unit+AC8h in 007D9CE0's parent frame, and it is exercised. UNCERTAINTY: the other vt[34h] readers of a
 parented plane (the deck term's own parent read is the carrier's, unaffected) still take world axes. Section 75's
 whole-frame item stays open.
+## 85. Torpedo state-enter stores 009D2530 / 009D15D0 (cc9-physics21, 2026-10-18)
+
+Source: cc13 CC13_SEG67B 3.51. Bytes read on disk (this installation's exe, read only).
+
+- **009D2530**, the done/prepare enter (vtable 00D21320 +4h), stores state+98h = -1.0 at 009D253B (00D7A260) on every entry. Done is task+310h and prepare is task+740h, and each has its own +98h. 009D49A0 arms only prepare's. The host had one `torpedo_drop_timer`, reset only at install. A done tick could therefore count down a timer that prepare armed earlier, and a re-entered prepare kept its old arm.
+- **009D15D0**, the aim enter (vtable 00D212FC +4h), does four things in order: it calls 009D02A0 (the host already redraws there under kAimErrorDrawBound), stores approach+A8h = 1 at 009D15DE, state+24h = 0 at 009D15E7, and state+2Ch = 0 at 009D15EA.
+  - state+24h is the release timer 009FA3A0's +0Ch enable, the host's `torpedo_aim_timer_enabled_0c`.
+  - state+2Ch is the aim-complete byte that 009D236E sets.
+- The aim exit **009D1350** (vtable +8h) stores approach+A8h = 0 at 009D1353.
+- The census of +A8h byte writers in 009D0000-009D6000 found five:
+  - 009D0511, in the constructor;
+  - 009D12F0 and 009D1300, a set and a clear accessor with no rel32 or absolute references;
+  - 009D1353, the aim exit;
+  - 009D15DE, the aim enter.
+- So +A8h is 1 only while the plane is in aim. It gates the replan's over-land writers at 009D3688. The host never stored it, so `over_land_a9` was never written there.
+
+Switches, both OFF in this commit:
+- **kTorpedoStateEnterTimersBound** splits the done timer out (`torpedo_done_timer_98`) and resets the entered state's timer to -1 on each enter.
+- **kTorpedoAimEnterStoresBound** makes the aim enter clear +24h and +2Ch and set +A8h = 1, and makes the aim exit clear +A8h. The latch diagnostics (`torpedo_aim_complete_tick` and the rest) are not cleared; they re-latch on the next completion.
+
+Counters, which run in both builds, print one line per plane: "aim enters=N (2Ch already set=M) done-state drops=D stale-timer drops=S".
+- A stale-timer drop is a release from the done/prepare tick that read a positive timer with no 009D49A0 arm since the last enter.
+
+Predictions:
+- OFF: on reattack rows, M > 0 (a reattack enters aim with +2Ch set, so the 009D31B0 hold fires at once), and S > 0 wherever done follows an armed prepare.
+- ON: S = 0 and no releases in the done state from a timer.
+
+**85, result: both switches ON.** The exes were built at b3c467f82 (`local\p21e_off`, and `local\p21e_on` with both switches flipped). Env: BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1. Manifests sit beside each log.
+
+| row | logs | aim enters | 2Ch already set | stale-timer / done-state drops | pair_diff |
+|---|---|---|---|---|---|
+| USN21 `s46_u21_f`, 80000 fr | `local\p21f_{off,on}_u21f.log` | 73 over 73 planes | 0 | 0 / 0 | 1, gameplay identical (completed 1325.17 s both) |
+| USN04, 40000 fr | `local\p21f_{off,on}_u04.log` | 16 over 16 planes | 0 | 0 / 0 | 1, gameplay identical |
+
+- **Exercised:** the +A8h gate. With ON, the replan's over-land writers run during aim:
+  - 0041BC20 samples rise by 1493 on USN21 and by 414 on USN04;
+  - `BotApproach::target_reachable 007df360` now shows as UNIMPLEMENTED with the same 1493 and 414 calls.
+  - Its host answer leaves `over_land_a9` alone, and no terrain sample exceeded 00CE38B8. That gap is 007DF360 (unit+C50h); it is not modelled, so the decision the image makes there is still missing.
+- **Not exercised:** no plane re-entered aim (one aim enter per plane on both rows), and no row reaches prepare (as SQUADRON_LAND_TASK 5hr found). So the timer split and the +2Ch clear did not change anything here.
+- Both are faithful stores read from the bytes, with gameplay identical on both rows, so both are flipped ON.
+- WINS: nothing moved.
+
+## 86. HANDOFF (cc9-physics21, 2026-10-18)
+
+The lane is PHYSICS / PLANE FLIGHT, worked in tree J:\PROG\battlestations-pacific-decompile-cc9-physics1 on branch agent/cc9-physics1.
+
+Commits this session:
+- 22e58011f (landed): kParkStowTrace, OFF.
+- aa13241d2: the BSP_THROTTLE_TRACE env trace.
+- 4bd013e4a / 5caaef9d8: kAvoidParentLocalVelocityBound, ON (section 84).
+- b3c467f82 / 85951f409: kTorpedoStateEnterTimersBound and kTorpedoAimEnterStoresBound, ON (section 85).
+
+Closed:
+- The stow: the brake law matches the image. The deck term stays OFF and the blocker is the carrier's speed (section 83).
+- ConTBD1's 604.43 s cut: it was the avoidance frame, not 0099DAC8.
+- Item (a), the air-ops site tick: it only steps the lift.
+- Item (b), terminal speed: no cap. It is MaxSpeed x throttle, less one frame of 00937440 drag.
+
+Open, in priority order:
+1. **007DF360 target_reachable is UNIMPLEMENTED** (unit+C50h). It now runs from the torpedo replan during aim. The image may set over_land_a9 there and abort or replan the run. Read 007DF360 and the unit+C50h writer.
+2. **The timer split and the +2Ch clear are unexercised.** Find a row with a torpedo reattack (aim re-entered) or a prepare state, and re-check the counters on the "aim enters=" summary line.
+3. **The host's Enterprise holds heading 0.0000 against a target of -2.5885** with rudder 0.004 (USN01, section 84). This belongs to the ships lane (ships59).
+4. **Section 75's whole-frame item:** the other vt[34h] readers of a parented plane still take world axes.
+5. **kLandFinalParkEdgeBound** stays OFF and unreached. Stream order (item 4) is not cheap.
+
+## 87. 007DF360, the replan's line-of-sight writer of +A9h (cc9-physics22, 2026-10-18)
+
+Bytes read on disk (this installation's exe, read only). 007DF360 sits in cc15-r48's lease (007D1E50-007F8390), so its ledger name goes through the lead.
+
+- **The call site.** 009D36C3-009D36F3: when approach+4 (the unit) is set and [unit+C50h] != 0, 009D36E4 calls approach->vtable[0](&local) for the aim point, then 009D36EE `007DF360(ECX = [unit+C50h], [approach+CCh], point)` and 009D36F3 `MOV [ESI+A9h],AL`. That is an overwrite, not an OR: a 0 clears the terrain arm's 1 from 009D36BC. The host had `a9 = r ? 1 : a9`.
+- **The C50h object.** 007D61C0-007D621F (plane construction): [unit+C50h] = 0, then the 007E1E20 object is built when [game+1FE4h] is 0 or 1 and unit+54h != [[game+5FCh]+908h] (the scene's DummyAIEnabled, 3 when absent). That is the same predicate as kAvoidanceDummyAiGateBound. Its +30h list (IsKindOf 6 or 0Fh within 1080, refreshed every 3 s by 007E11D0) is the host's `nb_near_30`.
+- **007DF360**, `char __thiscall(neighbours, target, const float* point)`, RET 8 (body 007DF360-007DF4E9, exclusive; INT3 follows):
+  - 007DF36A: o = [[ECX+4]+28h]; null returns 0. Its +FCh/+104h are taken as the plane's own x/z (LABELLED; the refresh uses the same owner).
+  - 007DF3A8-007DF3D0: d = (o.x - p.x, 0, o.z - p.z), len = 0042B2F0(d): float((x*x + y*y) + z*z), sqrt when above 1e-10 ([00CE3820]), else 0.
+  - 007DF3E4-007DF4D7, per +30h member n: skip null, skip n == target, skip !n->vtable[5Ch](6). a = n.x - p.x, b = n.z - p.z (float stores); dot = float((a*dx + 0*0) + b*dz); JBE skips dot <= 0 or NaN; t = float(dot / len); q = float((0 + a*a) + b*b); perp = float(q - t*t); return 1 when Length^2 * 0.22 > perp (FCOMIP/JBE; [n+538h]+A0h, double [00D06BA0] = 0x3FCC28F5C0000000).
+  - Return 0 after the walk.
+- **Meaning.** A ship (kind 6), other than the target, lies ahead of the aim point toward the plane and within 0.469 x its Length of that line. The aim tick then floors at 30 m instead of 5 m (009D1613-009D163F), which moves the release threshold (009D1D5A) and the dive command (009D1E8E).
+
+Switch **kTorpedoLineOfSightBound**, committed OFF. The host interface now returns -1 (no C50h: skip), 0 or 1, and the core overwrites on 0/1. OFF returns -1, which keeps the old answer exactly. ON models the walk over `nb_near_30` with float ops (24-bit per op); class+A0h is `motion_class.hull_length`. The per-plane line "los 007DF360 calls= screened= a9 clears= zero-length=" prints on ON.
+
+Predictions:
+- OFF vs ON on USN21 `s46_u21_f` and USN04: calls equal the 1493 / 414 of section 85 if the rows are unchanged. `screened > 0` wherever an escort sits between the torpedo plane and its target (USN04's escorted carriers). Each screened aim floors at 30 m and holds the drop longer, so drop times and torpedo hits move on those planes.
+- a9 clears = 0 (no terrain sample exceeds 10.0 on these rows).
+- zero-length > 0 would mean a screening ship has no Length key, which disables its screen.
+
+**87, result: kTorpedoLineOfSightBound ON.** Exes built at f72a22d73 (`local\p22a_off`, `local\p22a_on` with the switch flipped). Env BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1; manifests beside each log.
+
+| row | logs | 007DF360 calls | screened | pair_diff |
+|---|---|---|---|---|
+| USN04, 40000 fr | `local\p22a_{off,on}_u04.log` | 414 over 16 Kates | 0 | 1, gameplay identical |
+| USN21 `s46_u21_f`, 80000 fr | `local\p22a_{off,on}_u21f.log` | 72 planes | 53 on 10 planes (Lexington_sqn22: 14 of 15) | 3, moved |
+
+- The mechanism is exercised where the US torpedo squadrons attack the escorted IJN groups on USN21: a screened aim floors at 30 m. Three planes show "a9 clears=1", a screen answer replaced by a clear one on a later replan, which the old OR could never undo. Zero-length = 0: every screening ship has a Length.
+- USN21 moved: torpedo drops 12 -> 8, torpedo-task releases 3 -> 1, dive-bomb-task releases 2 -> 10, deaths 299 -> 301, and the mission still completes (1325.17 s -> 1355.20 s). USN04's Kates are never screened.
+- Faithful by the bytes, so it is flipped ON. The drop loss is the image's 30 m floor, not a host defect.

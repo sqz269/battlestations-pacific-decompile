@@ -1611,6 +1611,24 @@ struct GameUnitSlot {
     int torpedo_rounds_pending{0};
     // prepare+98h (task+7D8h), the countdown 009D49A0 raises.
     float torpedo_drop_timer{-1.0f};
+    // done+98h, the done state's own countdown (kTorpedoStateEnterTimersBound).
+    // 009D49A0 writes prepare+98h only, so the image's done timer stays at the
+    // -1.0 its enter 009D2530 stores.
+    float torpedo_done_timer_98{-1.0f};
+    // Packet p21_torp_enter counters. armed: 009D49A0 wrote the timer since the
+    // last done/prepare enter; a release from the done/prepare tick that read
+    // a positive timer without that arm is a stale-timer drop.
+    bool torpedo_timer_armed_since_enter{false};
+    float torpedo_last_drop_timer_read{-1.0f};
+    int torpedo_stale_timer_drops{0};
+    int torpedo_done_state_drops{0};
+    int torpedo_aim_enters{0};
+    int torpedo_aim_enters_complete_stale{0};   // +2Ch already set at an aim enter
+    // Packet p22_los_007df360: 007DF360 calls, screened answers, terrain 1s cleared.
+    int torpedo_los_calls{0};
+    int torpedo_los_screened{0};
+    int torpedo_los_clears{0};
+    int torpedo_los_zero_length{0};   // a screening ship with class+A0h == 0
     // The values 009D3420 produces. docs/TORPEDO_APPROACH_UPDATE.md reads that
     // routine; the reconstruction in torpedo_approach_update.hpp runs here and
     // these mirror its outputs so the arm and the census read one set.
@@ -6665,6 +6683,34 @@ struct GameUnitsHost::Impl {
     // bank_limit_2c8 / pitch_target_2bc / pitch_mode_2d0 / bank_target_2c4 and
     // plan_heading_mode_2cc). False: every write is dropped, as before.
     static constexpr bool kTorpedoCommandWritesBound = true;   // ON: SQUADRON_LAND_TASK 5hr
+    // Packet p21_torp_enter (cc13 CC13_SEG67B 3.51). The done/prepare enter
+    // 009D2530 stores state+98h = -1.0 (009D253B, 00D7A260) on every entry, and
+    // done (task+310h) and prepare (task+740h) each own a +98h; 009D49A0 arms
+    // prepare's only. True: the done tick reads and writes its own timer and
+    // each enter resets the entered state's timer to -1. False: one shared
+    // timer, reset only at install, so done can release on prepare's stale arm.
+    static constexpr bool kTorpedoStateEnterTimersBound = true;   // ON: OCEAN_WAVE_FIELD 85
+    // The aim state's enter 009D15D0 (vtable 00D212FC +4h): approach+A8h = 1
+    // (009D15DE), state+24h = 0 (009D15E7, the release timer 009FA3A0's +0Ch
+    // enable) and state+2Ch = 0 (009D15EA, aim complete). Its exit 009D1350
+    // (+8h) stores approach+A8h = 0 (009D1353). +A8h gates the replan's
+    // over-land writers 009D3688. True: those stores land on
+    // torpedo_aim_timer_enabled_0c, torpedo_aim_complete_2c and
+    // torpedo_approach.scan_enabled_a8. False: +2Ch stays set once set, the
+    // enable carries over and +A8h stays 0.
+    static constexpr bool kTorpedoAimEnterStoresBound = true;   // ON: OCEAN_WAVE_FIELD 85
+    // Packet p22_los_007df360 (OCEAN_WAVE_FIELD 87). The replan's second
+    // over-land writer: when unit+C50h is set (007D61C0-007D621F: built when
+    // [game+1FE4h] is 0 or 1 and unit+54h != the scene's DummyAIEnabled),
+    // 009D36EE 007DF360(ECX = unit+C50h, [approach+CCh], aim point), RET 8,
+    // AL, and 009D36F3 stores AL to +A9h outright. 007DF360 walks the +30h
+    // list and answers 1 for the first IsKindOf(6) member, not the target,
+    // ahead of the aim point toward the plane (dot > 0) whose perpendicular
+    // distance squared is below Length^2 * 0.22 ([class+A0h], double
+    // [00D06BA0]). True: modelled over nb_near_30 with the plane's own pose
+    // (unit+FCh/+104h; [[C50h+4]+28h] is taken to be the plane, labelled).
+    // False: -1, the old "leave +A9h alone" answer.
+    static constexpr bool kTorpedoLineOfSightBound = true;   // ON: OCEAN_WAVE_FIELD 87
     // Packet cc9_l61_torpedo_done_formation (SQUADRON_LAND_TASK 5ho item 2). The
     // done/prepare enter 009D2530 writes squadron+3E4h = 2 (009D254E, after
     // 009BED80's 1) and state+8Ch = 1.0 (009D2565); every wingman's follow
@@ -21415,10 +21461,55 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 return blocked;
                             }
                         }
-                        bool target_reachable_007df360(const float[3]) override {
-                            owner_.log.unimplemented(
-                                "BotApproach::target_reachable", "007df360");
-                            return false;
+                        int target_reachable_007df360(const float point[3]) override {
+                            if constexpr (!GameUnitsHost::Impl::kTorpedoLineOfSightBound) {
+                                (void)point;
+                                owner_.log.unimplemented(
+                                    "BotApproach::target_reachable", "007df360");
+                                return -1;
+                            } else {
+                                // 007D61DD-007D61EC: no C50h object for the
+                                // scene's DummyAI side ([game+1FE4h] taken as
+                                // 0/1, single player, labelled).
+                                if (slot_.row.party == bsp::kSceneDefaultDummyAi) return -1;
+                                ++slot_.torpedo_los_calls;
+                                owner_.done("BotApproach::target_reachable", 0x007df360u);
+                                const GameUnitSlot* const t = target();
+                                // 007DF38B-007DF3D0: d = (own - point) in xz,
+                                // y = 0, and its 0042B2F0 length (0 at or below
+                                // 1e-10, [00CE3820]).
+                                const float dx = slot_.world[12] - point[0];
+                                const float dz = slot_.world[14] - point[2];
+                                const float sq = dx * dx + 0.0f * 0.0f + dz * dz;
+                                const float len = static_cast<double>(sq) > 1.0e-10
+                                    ? static_cast<float>(std::sqrt(static_cast<double>(sq)))
+                                    : 0.0f;
+                                for (const std::size_t idx : slot_.nb_near_30) {
+                                    if (idx >= owner_.slots.size()) continue;
+                                    const GameUnitSlot& o = *owner_.slots[idx];
+                                    if (&o == t || &o == &slot_) continue;          // 007DF3EE
+                                    if (!bsp::unit_is_kind_of(o.class_id, 0x06)) continue;  // 007DF401
+                                    const float a = o.world[12] - point[0];         // 007DF424
+                                    const float b = o.world[14] - point[2];         // 007DF431
+                                    const float dot = (a * dx + 0.0f) + b * dz;     // 007DF453
+                                    if (!(dot > 0.0f)) continue;                    // 007DF461 JBE
+                                    const float tt = dot / len;                     // 007DF463
+                                    const float q = (0.0f + a * a) + b * b;         // 007DF48B
+                                    const float p = q - tt * tt;                    // 007DF49B
+                                    const float r = o.motion_class.hull_length;     // [+538h]+A0h
+                                    if (r == 0.0f) ++slot_.torpedo_los_zero_length;
+                                    const float lim = static_cast<float>(
+                                        static_cast<double>(r * r) * 0.2199999988079071);  // [00D06BA0]
+                                    if (p < lim) {                                  // 007DF4AF FCOMIP/JBE
+                                        ++slot_.torpedo_los_screened;
+                                        return 1;
+                                    }
+                                }
+                                if (slot_.torpedo_approach.over_land_a9 != 0) {
+                                    ++slot_.torpedo_los_clears;
+                                }
+                                return 0;
+                            }
                         }
                         float unit_speed_vtable38() override {
                             // 009D3D01, unit->vtable[38h]. The plane's speed,
@@ -21938,6 +22029,36 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     ++slot_.torpedo_done_enters_2530;
                                 }
                             }
+                            if ((next == bsp::TorpedoState::kDone ||
+                                 next == bsp::TorpedoState::kPrepare) &&
+                                next != slot_.torpedo_state) {
+                                slot_.torpedo_timer_armed_since_enter = false;
+                                if constexpr (GameUnitsHost::Impl::kTorpedoStateEnterTimersBound) {
+                                    // 009D253B: the entered state's +98h = -1.0.
+                                    if (next == bsp::TorpedoState::kPrepare) {
+                                        slot_.torpedo_drop_timer = -1.0f;
+                                    } else {
+                                        slot_.torpedo_done_timer_98 = -1.0f;
+                                    }
+                                }
+                            }
+                            if (next == bsp::TorpedoState::kAim &&
+                                slot_.torpedo_state != bsp::TorpedoState::kAim) {
+                                ++slot_.torpedo_aim_enters;
+                                if (slot_.torpedo_aim_complete_2c) {
+                                    ++slot_.torpedo_aim_enters_complete_stale;
+                                }
+                                if constexpr (GameUnitsHost::Impl::kTorpedoAimEnterStoresBound) {
+                                    slot_.torpedo_approach.scan_enabled_a8 = 1;   // 009D15DE
+                                    slot_.torpedo_aim_timer_enabled_0c = false;   // 009D15E7
+                                    slot_.torpedo_aim_complete_2c = false;        // 009D15EA
+                                }
+                            } else if (next != bsp::TorpedoState::kAim &&
+                                       slot_.torpedo_state == bsp::TorpedoState::kAim) {
+                                if constexpr (GameUnitsHost::Impl::kTorpedoAimEnterStoresBound) {
+                                    slot_.torpedo_approach.scan_enabled_a8 = 0;   // 009D1353
+                                }
+                            }
                             // cc8_torpedo_retire item 5. Latch the run-in
                             // geometry on the FIRST tick of each attackrun, in
                             // the same convention the closest-approach census
@@ -22171,11 +22292,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             record("BotApproach::steer_to_point", "009f9e40");
                         }
                         void clear_approach_1c_field40(void*) override {}
-                        float read_drop_timer(void*) override {
-                            return slot_.torpedo_drop_timer;
+                        // prepare_state is &torpedo_drop_timer under
+                        // kTorpedoStateEnterTimersBound; any other pointer
+                        // is the done state.
+                        float* drop_timer_for(const void* state) {
+                            if constexpr (GameUnitsHost::Impl::kTorpedoStateEnterTimersBound) {
+                                if (state != &slot_.torpedo_drop_timer) {
+                                    return &slot_.torpedo_done_timer_98;
+                                }
+                            }
+                            (void)state;
+                            return &slot_.torpedo_drop_timer;
                         }
-                        void write_drop_timer(void*, float value) override {
-                            slot_.torpedo_drop_timer = value;
+                        float read_drop_timer(void* state) override {
+                            slot_.torpedo_last_drop_timer_read = *drop_timer_for(state);
+                            return slot_.torpedo_last_drop_timer_read;
+                        }
+                        void write_drop_timer(void* state, float value) override {
+                            *drop_timer_for(state) = value;
                         }
                         bool pilot_control_has_target(void*) override {
                             return slot_.command_target_plus_one != 0;
@@ -29599,6 +29733,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     ? bsp::TorpedoState::kMoveTo
                                     : bsp::TorpedoState::kFollow;
                             unit_.torpedo_drop_timer = -1.0f;
+                            unit_.torpedo_done_timer_98 = -1.0f;
                             // 009D4A70, the task's +54h cruise profile, is the
                             // one producer of the engage distance the engaged
                             // predicate 009D3210 compares the range against:
@@ -29931,11 +30066,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         ctx.command_block = &unit_;
                         ctx.pilot_control_block = &unit_;
                         ctx.state = &unit_;
-                        ctx.prepare_state = &unit_;
+                        ctx.prepare_state = GameUnitsHost::Impl::kTorpedoStateEnterTimersBound
+                            ? static_cast<void*>(&unit_.torpedo_drop_timer)
+                            : static_cast<void*>(&unit_);
                         ctx.current = unit_.torpedo_state;
                         const bsp::TorpedoState before_state = ctx.current;
                         const bsp::TorpedoArmTickResult r =
                             bsp::torpedo_task_arm_009d4850(binding, ctx, dt);
+                        if (r.ran_done_tick && r.done_tick.released) {
+                            if (ctx.current == bsp::TorpedoState::kDone) {
+                                ++unit_.torpedo_done_state_drops;
+                            }
+                            if (unit_.torpedo_last_drop_timer_read > 0.0f &&
+                                !unit_.torpedo_timer_armed_since_enter) {
+                                ++unit_.torpedo_stale_timer_drops;
+                            }
+                        }
                         if constexpr (GameUnitsHost::Impl::kTorpedoDoneDisarmedArmBound) {
                             if (r.ran_done_tick && r.done_tick.disarmed) {
                                 // 009D274A EDI = [ctl+3D0h], the squadron's first
@@ -30180,6 +30326,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 bsp::torpedo_arm_drop_009d49a0(arm);
                             if (ar.armed) {
                                 unit_.torpedo_drop_timer = ar.prepare_timer;
+                                unit_.torpedo_timer_armed_since_enter = true;
                             }
                             if (ar.release_007bbba0) {
                                 owner_.release_ordnance_007bbba0(unit_);   // 0099B6CD
@@ -43227,6 +43374,21 @@ void GameUnitsHost::report() {
                         "republish=%d (009BFDA6, packet cc9_l61_torpedo_done_formation)",
                         slot->row.name.c_str(), slot->torpedo_done_enters_2530,
                         slot->torpedo_3e8_republishes);
+                }
+                if (slot->torpedo_aim_enters > 0 || slot->torpedo_stale_timer_drops > 0 ||
+                    slot->torpedo_done_state_drops > 0) {
+                    host.log.notef("  torpedo %-12s aim enters=%d (2Ch already set=%d) "
+                        "done-state drops=%d stale-timer drops=%d (packet p21_torp_enter)",
+                        slot->row.name.c_str(), slot->torpedo_aim_enters,
+                        slot->torpedo_aim_enters_complete_stale,
+                        slot->torpedo_done_state_drops, slot->torpedo_stale_timer_drops);
+                }
+                if (slot->torpedo_los_calls > 0) {
+                    host.log.notef("  torpedo %-12s los 007DF360 calls=%d screened=%d "
+                        "a9 clears=%d zero-length=%d (packet p22_los_007df360)",
+                        slot->row.name.c_str(), slot->torpedo_los_calls,
+                        slot->torpedo_los_screened, slot->torpedo_los_clears,
+                        slot->torpedo_los_zero_length);
                 }
                 if (slot->torpedo_disarmed_ticks > 0) {
                     host.log.notef("  torpedo %-12s disarmed 009D29E0: ticks=%d close=%d "
