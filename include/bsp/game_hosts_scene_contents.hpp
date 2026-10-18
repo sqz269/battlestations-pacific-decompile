@@ -502,6 +502,18 @@ inline constexpr bool kVehicleClassPreloadCc15Bound = false;
 // movie-stop path (cc9).
 inline constexpr bool kVehicleClassMovieStopPurgeCc15Bound = false;
 
+// Packet cc15-wC1 (docs/CC15_SCENE_CONTENTS_WIRING.md). 004D4DF0's step between
+// scene-file passes 2 and 3: 004D4720 (ECX = 010904E4) turns each class index
+// the Registration pass's 0095C640 collected into 00F8A09C into a "Class_"
+// alias through 0095C1C0 and links it into the list at 010904E4+4, then
+// 00BB5AC0 rewrites every list entry through 00BB5670 (".mpak" suffix) and
+// 00BDF4C0 (VFS resolve). Typed restatements over this host's preload census,
+// vehicle-class registry and VFS. The only image readers of the list are those
+// two routines (xrefs 010904E4 / 010904E8), so the list has no consumer here
+// either; 0095C1C0's party-row marks land in VehicleClassRegistry::
+// party_required, which no host path reads. False: both stay records.
+inline constexpr bool kSceneClassPreloadAliasesCc15Bound = false;
+
 // docs/CC13_AUDIT_LUA51_FLIPS.md item 3. Two admits the stop does not remove:
 // a `Hidden` entity goes through 0046C550 with the last argument 1 (0046D60F) and
 // is registered for GenerateObject, never created, so 0046B730 has nothing to

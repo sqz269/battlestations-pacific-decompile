@@ -53,6 +53,16 @@ class GameMissionFrameHost;
 class GameObserverRuntime;
 class GameHudHost;
 
+// Packet cc15-wD1. 0058BFEF: 004D2A80 (ledger BSP_Game_ClearPendingMissionName,
+// a misnomer: __fastcall(ECX = block)) destroys the loading-config temporary at
+// [ESP+10h] that 0058BE75..0058BEDA filled for 0057D060: the text vector at
+// +4h..+Ch (00506C80 from the side block +64h), the NativeString at +10h/+14h
+// (record+08h) and the byte +18h (record+20Ch). True: finish_start is concrete,
+// because the binding hands 0057D060's arguments over by reference and owns no
+// such temporary, so the release has nothing left to free. False: the step
+// stays an unimplemented record.
+inline constexpr bool kMissionStartTemporaryReleaseCc15Bound = false;
+
 // One class token of the selected mission's `.scn`, as the reconstructed
 // reader counted it. `registered` is bsp::scene_entity_class_is_registered.
 struct GameSceneClassCount {
