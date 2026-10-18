@@ -3473,7 +3473,7 @@ void* strafe_construct_approach_block_009cc020(Cc13Seg67bHost& host, void* block
 // at 53 bits it would round to double then to float. EH unwinding not modelled.
 void* torpedo_construct_approach_block_009d2da0(Cc13Seg67bHost& host, void* block, void* bot,
                                                 void* target) {
-    host.bot_approach_torpedo_construct_009d0380(block, ptr_at(bot, 0x50), target);
+    bot_approach_torpedo_construct_009d0380(host, block, ptr_at(bot, 0x50), target);
     host.bot_state_registry_construct_00411e20(ptr(block, 0x138));
     const float elapsed = at<float>(block, 0x134);
     at<std::uint32_t>(block, 0x000) = kTorpedoBlockVtable_00d213b8;
@@ -3696,6 +3696,110 @@ void* bot_approach_strafe_construct_009ca4a0(Cc13Seg67bHost& host, void* approac
         at<float>(approach, 0x3C) = static_cast<float>(
             kOnePointFour_00d045f0 * static_cast<double>(at<float>(approach, 0x3C)));
     }
+    return approach;
+}
+
+// ---------------------------------------------------------------------------
+// The torpedo approach base (reset).
+
+namespace {
+constexpr std::uint32_t kTorpedoApproachVtable_00d212a4 = 0x00D212A4u;
+constexpr double kPointSevenFive_00cec9d8 = 0.75;
+constexpr float kSixtySeven_00d212a0 = 67.0f;           // 42860000
+constexpr float kQuarter_00ce3868 = 0.25f;              // 3E800000
+constexpr float kOnePointTwoFive_00cf29a8 = 1.25f;      // 3FA00000
+constexpr float kOnePointFive_00ce380c = 1.5f;          // 3FC00000
+constexpr float kTen_00ce38b8 = 10.0f;                  // 41200000
+constexpr float kNineNines_00cf87d0 = 999999.0f;        // 497423F0
+constexpr double kOnePointThree_00d21298 = 1.2999999523162842;  // 3FF4CCCCC0000000
+constexpr float kMinusPointOne_00ce3cb4 = -0.1f;        // BDCCCCCD
+}  // namespace
+
+// 009D0380 (BSP_BotApproachTorpedo_Reset): __thiscall(ECX = approach, arg, target),
+// RET 8, EAX = approach. Evidence (disk bytes): 009F9CE0(ECX = approach, arg, tuning
+// +440h) (009D03A1-009D03B7); vtable 00D212A4, +2Ch = 0, +58h = 24h, +5Ch = 0.0
+// (009D03C4-009D03D4); L = float(007BCE20([approach+4]) x double [00CEC9D8] 0.75)
+// (009D03D9-009D03E7); FCOMI then JBE keeps L when L <= desc+18Ch or unordered, else
+// desc+18Ch (desc = [approach+8]) (009D03EB-009D040B); +70h = 00BD2F10(1, 0.9, 1.1) x
+// that (009D0411-009D0449); +74h = [00D212A0] 67.0, +78h = RNG(1, 0, [00CE3868] 0.25)
+// x rec+0h (rec = [approach+14h]) (009D043B-009D0475); +7Ch = rec+4h x +24h, +80h =
+// +24h x rec+8h, +84h = rec+0Ch (009D047D-009D04A0); seed = float(RNG(1, [00CF29A8]
+// 1.25, [00CE380C] 1.5) x desc+268h + +80h), +94h = +9Ch = 0.0, +A0h = [00CE38B8] 10.0,
+// +88h = seed, +A4h = 0FFh, bytes +A8h/+A9h = 0, +AAh = 1, +8Ch = +90h = float(seed x
+// double [00D21298] 1.3), +ACh = +B0h = [00CF87D0] 999999.0 (009D04A6-009D054D);
+// 009FB200(ECX = approach+B4h, target) (009D0555); +128h = 1.0, +12Ch = -RNG(1, 0, 1)
+// (009D055A-009D0590); bytes +130h/+131h = 0, +134h = 3600.0 (009D05AB-009D05C1); with
+// N = +7Ch and F = +80h saved before the draws: +7Ch = N + RNG(1, [00CE3CB4] -0.1, 0.5)
+// x (F - N) (009D0596-009D05ED, FSUBP DE EA = F - N); +80h = F - RNG(1, -0.1, 0.5) x
+// (F - new +7Ch) (009D05F0-009D0625, FSUBRP DE E2 = F - N'); 009D02A0(ECX = approach)
+// (009D062B); 009D0160(ECX = approach) (009D0632); bytes +30h..+54h = 1 (009D063B-
+// 009D065B).
+// The fragment helpers in src/torpedo_approach_update.cpp model these steps at 53-bit
+// precision and take desc+18Ch on an unordered compare; this body follows the image's
+// JBE and models 24-bit precision.
+// UNCERTAINTY: the double-constant products round to double then to float here (at
+// 24 bits the image rounds once). RNG results rounded from ST0 by the hook. EH
+// unwinding not modelled.
+void* bot_approach_torpedo_construct_009d0380(Cc13Seg67bHost& host, void* approach, void* arg,
+                                              void* target) {
+    const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x440);
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, arg, speed);
+    at<std::uint32_t>(approach, 0x00) = kTorpedoApproachVtable_00d212a4;
+    at<std::uint32_t>(approach, 0x2C) = 0;
+    at<std::uint32_t>(approach, 0x58) = 0x24;
+    at<float>(approach, 0x5C) = kZero_s15;
+    const float limit = static_cast<float>(
+        static_cast<double>(host.unit_min_torpedo_hit_velocity_007bce20(ptr_at(approach, 0x4))) *
+        kPointSevenFive_00cec9d8);
+    const float travel = at<float>(ptr_at(approach, 0x8), 0x18C);
+    // JBE after FCOMI(L, travel): L is kept when L <= travel or the compare is unordered.
+    const float cap = limit > travel ? travel : limit;
+    at<float>(approach, 0x70) =
+        host.random_uniform_00bd2f10(1, kPointNine_00ce3860, kOnePointOne_00ce6448) * cap;
+    void* rec = ptr_at(approach, 0x14);
+    at<float>(approach, 0x74) = kSixtySeven_00d212a0;
+    at<float>(approach, 0x78) =
+        host.random_uniform_00bd2f10(1, 0.0f, kQuarter_00ce3868) * at<float>(rec, 0x0);
+    rec = ptr_at(approach, 0x14);
+    void* desc = ptr_at(approach, 0x8);
+    const float scale = at<float>(approach, 0x24);
+    at<float>(approach, 0x7C) = at<float>(rec, 0x4) * scale;
+    at<float>(approach, 0x80) = scale * at<float>(rec, 0x8);
+    at<float>(approach, 0x84) = at<float>(rec, 0xC);
+    const float seed =
+        host.random_uniform_00bd2f10(1, kOnePointTwoFive_00cf29a8, kOnePointFive_00ce380c) *
+            at<float>(desc, 0x268) +
+        at<float>(approach, 0x80);
+    at<float>(approach, 0x94) = kZero_s15;
+    at<float>(approach, 0x9C) = kZero_s15;
+    at<float>(approach, 0xA0) = kTen_00ce38b8;
+    at<std::uint32_t>(approach, 0xA4) = 0xFF;
+    at<float>(approach, 0x88) = seed;
+    at<std::uint8_t>(approach, 0xA8) = 0;
+    at<std::uint8_t>(approach, 0xA9) = 0;
+    at<std::uint8_t>(approach, 0xAA) = 1;
+    const float engage =
+        static_cast<float>(static_cast<double>(seed) * kOnePointThree_00d21298);
+    at<float>(approach, 0x8C) = engage;
+    at<float>(approach, 0x90) = engage;
+    at<float>(approach, 0xAC) = kNineNines_00cf87d0;
+    at<float>(approach, 0xB0) = kNineNines_00cf87d0;
+    host.approach_target_ref_construct_009fb200(ptr(approach, 0xB4), target);
+    at<float>(approach, 0x128) = kOne_00d7a24c;
+    at<float>(approach, 0x12C) = -host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    const float n = at<float>(approach, 0x7C);
+    at<std::uint8_t>(approach, 0x130) = 0;
+    at<std::uint8_t>(approach, 0x131) = 0;
+    at<float>(approach, 0x134) = kThirtySixHundred_00cfdeb0;
+    const float d1 = host.random_uniform_00bd2f10(1, kMinusPointOne_00ce3cb4, kHalf_00ce3800);
+    const float f = at<float>(approach, 0x80);
+    at<float>(approach, 0x7C) = n + d1 * (f - n);
+    const float f2 = at<float>(approach, 0x80);
+    const float d2 = host.random_uniform_00bd2f10(1, kMinusPointOne_00ce3cb4, kHalf_00ce3800);
+    at<float>(approach, 0x80) = f2 - d2 * (f2 - at<float>(approach, 0x7C));
+    host.approach_torpedo_aim_error_draw_009d02a0(approach);
+    host.approach_torpedo_reset_run_time_009d0160(approach);
+    for (std::size_t off = 0x30; off <= 0x54; ++off) at<std::uint8_t>(approach, off) = 1;
     return approach;
 }
 

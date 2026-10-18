@@ -402,3 +402,11 @@ The task constructors 009CC230, 009D3050 and 009CF8E0 now call these bodies dire
 - The glide seed 009CA3B0, called near the end, draws on its own.
 
 It also sets +44h = 3600.0, takes +4Ch from 007C2610, and keeps the target at +54h only when the target passes the 41h kind test. Kinds 10h and 16h scale +34h and +3Ch by 1.4.
+
+### 3.28 Torpedo approach base
+
+009D0380 is the reset the torpedo approach block runs at construction. The whole body now sits in cc13_seg67b.cpp; its steps match the fragment helpers in src/torpedo_approach_update.cpp (packets cc8/cc9) with two differences:
+- **Precision.** The body models 24-bit precision; the helpers model 53-bit.
+- **NaN on the attack-speed cap.** At 009D03FD the JBE keeps 0.75 x 007BCE20 when the compare is unordered. torpedo_reset_attack_speed_009d03d9 takes desc+18Ch in that case.
+
+It draws six times from the RNG 00BD2F10 on stream 1, and 009D02A0 draws again after them.

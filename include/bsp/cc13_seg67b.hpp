@@ -175,14 +175,19 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
+    // 007BCE20: __thiscall(ECX = unit), ST0: the minimum MaxWaterHitVel over the unit's
+    // torpedo devices (FLT_MAX with none).
+    virtual float unit_min_torpedo_hit_velocity_007bce20(void* unit) = 0;
+    // 009D02A0 / 009D0160: __thiscall(ECX = torpedo approach): the aim-error redraw (draws
+    // from 00BD2F10) and the run-time seed.
+    virtual void approach_torpedo_aim_error_draw_009d02a0(void* approach) = 0;
+    virtual void approach_torpedo_reset_run_time_009d0160(void* approach) = 0;
     // 009FB200: __thiscall(ECX = approach target ref, target), RET 4.
     virtual void approach_target_ref_construct_009fb200(void* ref, void* target) = 0;
     // 007C2610: __thiscall(ECX = unit), ST0: the unit's minimum kind-21 component speed.
     virtual float unit_min_kind21_component_speed_007c2610(void* unit) = 0;
     // 009CA3B0: __thiscall(ECX = strafe approach): the glide seed (draws from 00BD2F10).
     virtual void bot_approach_strafe_seed_glide_009ca3b0(void* approach) = 0;
-    // 009D0380: __thiscall(ECX = block, [bot+50h], target): the torpedo approach base.
-    virtual void bot_approach_torpedo_construct_009d0380(void* block, void* arg, void* target) = 0;
     // 009BC780: __thiscall(ECX = move-on-path approach, [bot+50h]), RET 4.
     virtual void bot_approach_move_on_path_construct_009bc780(void* block, void* arg) = 0;
     // 009A3390: __thiscall(ECX = depth-charge approach, [bot+50h], target), RET 8.
@@ -829,5 +834,8 @@ void* bot_approach_takeoff_construct_009cd420(Cc13Seg67bHost& host, void* approa
 // 009CA4A0: __thiscall(ECX = approach, arg, target), RET 8, EAX = approach.
 void* bot_approach_strafe_construct_009ca4a0(Cc13Seg67bHost& host, void* approach, void* arg,
                                              void* target);
+// 009D0380: __thiscall(ECX = approach, arg, target), RET 8, EAX = approach.
+void* bot_approach_torpedo_construct_009d0380(Cc13Seg67bHost& host, void* approach, void* arg,
+                                              void* target);
 
 }  // namespace bsp
