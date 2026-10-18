@@ -236,7 +236,7 @@ inline constexpr bool kAttackPushEndsOverrideBound = false;
 // the kind test answers from the class chain and the request goes to the AI
 // coordinator's 0077C8D0 (00779D50 facts, then the 76h join 0077F940). False: both are
 // records, so an authored `Command = Follow` never joins a formation.
-inline constexpr bool kSceneFollowJoinBound = false;
+inline constexpr bool kSceneFollowJoinBound = true;   // ON: SHIP_AI 278 (mechanism, ESMP08)
 // Packet s57_path_join (docs/CC13_VERIFY7.md R1, SHIP_AI_OPEN_ITEMS 279). 007B1C50 joins
 // a path in start modes 5, 7 and 8 at 007B1D24 through the source's vt+10h, 007B11F0
 // for an authored path: the nearest point, or its neighbour in the travel direction
@@ -352,6 +352,8 @@ struct GameCommandsSummary {
     unsigned long long override_installs{0};  // 0071E7F0 installed director+188h
     unsigned long long override_arm_ends{0};  // 00836DC4, the override arm's 0071D9E0(2)
     unsigned long long override_clears{0};    // 0071E610
+    unsigned long long override_push_tests{0};      // stored category 1/2 pushes (0071E7B4 reads)
+    unsigned long long override_push_tests_set{0};  // ... with director+188h set
     unsigned long long override_push_echoes{0};   // 0071E2E0 from 0071E6C0's tail (s57)
     unsigned long long override_push_clears{0};   // the 5Dh +20h=0 receive it posts
     unsigned long long scene_follow_requests{0};  // 00816ED5 calls (s57_follow_join)

@@ -10961,6 +10961,7 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                                    && !shot.depth_charge_in_water));  // 0084B380: end only
         if (kSubmergedTorpedoLaunchSwimBound && crossed && from[1] <= 0.0f) {
             ++submerged_launch_entries;
+            shot.started_under_water = true;   // +354h -> torpedo+49Ch (s57_torpedo_from_sub)
         }
         if constexpr (kGunneryLiveWaterSurfaceBound) {
             if (!shot.swimming && !shot.depth_charge_in_water) {  // medium 0: 0084C11C picks 0084B380
@@ -17449,6 +17450,7 @@ std::vector<GameGunneryHost::LiveTorpedo> GameGunneryHost::live_torpedoes() cons
         t.swim_seconds = shot.swim_seconds;
         t.swimming = shot.swimming;
         t.water_travel_speed = row->water_travel_speed;
+        t.started_under_water = shot.started_under_water;
         out.push_back(t);
     }
     return out;
