@@ -799,8 +799,19 @@ Three are partial:
   - The C25h arm's four attitude stores are only a record in the host.
 - **009D4A70**, the torpedo cruise profile. Sent to the lead as URGENT. Three problems:
   - The image clears approach+60h, but the host clears +5Ch.
-  - The host does not model the 009D3420(0.0) pass.
+  - The host does not model the 009D3420(0.0) pass. That pass replans: the timer is at or below 0 after the flip, and the plan position was just parked. It takes no 00BD2F10 draw, because 009FADA0's re-pick needs sub+60h > 2.0, which a dt of 0 cannot reach. The host's first real tick replans instead, one tick later.
   - The host's cites for this body do not land on its instructions.
+
+### 3.54 Batch 8: large strafe and takeoff ticks (packet cc13-seg67C)
+
+Same checks as batch 7. Every x87 FSUB/FSUBP operand order here was read from the bytes (DE EA, DE E9, D8 E1).
+
+All 6 rows are ledger-only and match their hosts:
+- 009CB8B0, the strafe goaway enter, and 009CBB30, its tick. The evasive push and its draws match st_evasive_push and the two push helpers. With a NaN dt the tick's +44h countdown decrements where the host refreshes.
+- 009CB1B0, the strafe aim tick. The host recomputes class+26Ch and takes dx and dz in double.
+- 009CA870, the strafe gotowards tick. It is also a target-equal byte twin of 007B4980 `rocket_gotowards_tick_007b4980`.
+- 009CADB0, the strafe attackrun tick. The image always runs the probe. 009FABE0 is not recorded by the host function.
+- 009CDE50, the takeoff prepare step.
 
 ## 4. Ledger-only records (packet cc13-seg67C)
 
@@ -922,7 +933,7 @@ Three are partial:
 | 009CD0D0 | `opportunistic_rocket_clear_target` substitution (game_hosts_units.cpp ~23553) | twin of 009AA9E0 / 007B7BA0 |
 | 009AA9E0 | `opportunistic_rocket_clear_target` substitution (game_hosts_units.cpp ~23553) | matches the labelled substitution |
 | 009D4C10 | the torpedo break-off binding (game_hosts_units.cpp ~21721) | matches; NaN range answers break-off |
-| 009D4A70 | the torpedo install block (game_hosts_units.cpp ~29587) | **partial**: +60h vs +5Ch, 009D3420(0.0) unmodelled, cites off; sent to the lead |
+| 009D4A70 | the torpedo install block (game_hosts_units.cpp ~29587) | **partial**: +60h vs +5Ch, 009D3420(0.0) unmodelled (it replans, no draw), cites off; sent to the lead |
 | 009CD020 | the strafe profile activation (game_hosts_units.cpp ~26330) | the host's stated gap (seed only) |
 | 009C98C0 | the RS::kEnterZone arm (game_hosts_units.cpp ~34960) | matches |
 | 009CB0F0 | `st_enter` kAim (game_hosts_units.cpp ~24866) | matches; one draw skipped (no reader) |
@@ -930,3 +941,9 @@ Three are partial:
 | 009A83B0 | `df_avoid_turn_weight_009a83b0` (game_hosts_units.cpp ~23102) | matches |
 | 009A7E80 | `df_avoid_roll_tick_009a7e80` (game_hosts_units.cpp ~23032) | matches |
 | 009CC400 | `plane_hit_task_notify_00999aa0` (game_hosts_units.cpp ~18926) | matches |
+| 009CB8B0 | `st_goaway_enter_009cb8b0` (game_hosts_units.cpp ~24793) | matches |
+| 009CBB30 | `st_goaway_tick_009cbb30` (game_hosts_units.cpp ~25114) | matches; NaN dt decrements |
+| 009CB1B0 | `st_aim_tick_009cb1b0` (game_hosts_units.cpp ~25054) | matches |
+| 009CA870 | `st_gotowards_tick_009ca870` (game_hosts_units.cpp ~24984) | matches; twin of 007B4980 |
+| 009CADB0 | `st_attackrun_tick_009cadb0` (game_hosts_units.cpp ~25173) | matches |
+| 009CDE50 | `run_takeoff_prepare_step_009cde50` (game_hosts_units.cpp ~34346) | matches |
