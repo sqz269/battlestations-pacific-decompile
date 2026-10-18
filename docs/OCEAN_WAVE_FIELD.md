@@ -2855,7 +2855,7 @@ unexercised.** No reachable row calls them: PRCP07 (36000 frames, phase 4 needs 
 321.05 s), PRCP05 with the proximity switch ON (to the 1062 s abort), and the old rows USN11, JM04, USN09.
 
 **fix16's five + `kLuaPilotBombBound`:** JM05 (36000 frames) and USN12 with `usn12_s38_u12_p2` (34000 frames): gameplay
-identical, none of the six natives called.
+identical, none of the six natives called. **ON, unexercised**, as the lead routed (fix16 rated them safe; cc13 fix21 fixed PilotBomb's squadron class).
 
 **USN12 WINS note:** on fcb6c6fa5 OFF, `usn12_s38_u12_p2` does not complete in 34000 frames (MissionPhase 3,
 Distance 10.12 km); the table's last completion was 1539.83 s. Sent to the WINS keeper.
