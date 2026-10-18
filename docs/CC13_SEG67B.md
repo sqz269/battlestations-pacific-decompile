@@ -373,3 +373,13 @@ Each shares its tail with the stream constructor of the same block; the tails ar
 | 009CF8E0 | takeoff task (kind 0Dh) | +4B8h when the plane's +904h byte is set and +900h is 5; else +448h when the flag byte is set; else +490h when unit+AA0h > 0.0, otherwise +470h |
 
 The takeoff factory 009CFF40 now calls 009CF8E0 directly.
+
+### 3.25 Strafe, torpedo and takeoff approach blocks
+
+| Address | Function | Notes |
+|---|---|---|
+| 009CC020 | strafe approach block | base 009CA4A0; move-to +E8h (near = far = +40h, third = +38h); follow +124h/+1BCh; gotowards +254h (800.0 twice); aim +278h (0.5); goaway 009CB500 at +298h and attackrun 009CAC80 at +2E0h (both draw from the RNG 00BD2F10 in their own bodies); seven names |
+| 009D2DA0 | torpedo approach block | base 009D0380; move-to +14Ch with near = far = +78h + +74h and third = +7Ch when 15.0 <= +134h (or NaN), else +80h; follow +188h; done +220h and prepare +348h (00D21320, -1.0); attackrun 009D06D0 at +2BCh; goaway +2E0h (120.0); aim +318h; seven names |
+| 009CF710 | takeoff approach block | base 009CD420; four embedded states prepare +50h, Takeoff +78h, SlowTakeoff +98h, parking +C0h |
+
+The task constructors 009CC230, 009D3050 and 009CF8E0 now call these bodies directly.

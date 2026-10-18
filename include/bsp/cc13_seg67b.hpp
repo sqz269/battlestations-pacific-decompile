@@ -175,12 +175,17 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
-    // 009CC020 / 009D2DA0: __thiscall(ECX = task+3F8h, bot, target), RET 8: the strafe
-    // and torpedo approach blocks.
-    virtual void strafe_construct_approach_block_009cc020(void* block, void* bot, void* target) = 0;
-    virtual void torpedo_construct_approach_block_009d2da0(void* block, void* bot, void* target) = 0;
-    // 009CF710: __thiscall(ECX = task+3F8h, [owner+50h]), RET 4: the takeoff approach block.
-    virtual void takeoff_construct_approach_block_009cf710(void* block, void* arg) = 0;
+    // 009CA4A0 / 009D0380: __thiscall(ECX = block, [bot+50h], target): the strafe and
+    // torpedo approach bases.
+    virtual void bot_approach_strafe_construct_009ca4a0(void* block, void* arg, void* target) = 0;
+    virtual void bot_approach_torpedo_construct_009d0380(void* block, void* arg, void* target) = 0;
+    // 009CD420: __thiscall(ECX = block, arg), RET 4: the takeoff approach base.
+    virtual void bot_approach_takeoff_construct_009cd420(void* block, void* arg) = 0;
+    // 009CB500 / 009CAC80 / 009D06D0: __thiscall(ECX = state, owner block), RET 4: the
+    // strafe goaway and attackrun states and the torpedo attackrun state.
+    virtual void bot_state_strafe_go_away_construct_009cb500(void* state, void* block) = 0;
+    virtual void bot_state_strafe_attack_run_construct_009cac80(void* state, void* block) = 0;
+    virtual void bot_state_torpedo_attack_run_construct_009d06d0(void* state, void* block) = 0;
     // 009BC780: __thiscall(ECX = move-on-path approach, [bot+50h]), RET 4.
     virtual void bot_approach_move_on_path_construct_009bc780(void* block, void* arg) = 0;
     // 009A3390: __thiscall(ECX = depth-charge approach, [bot+50h], target), RET 8.
@@ -807,5 +812,12 @@ void* bot_task_torpedo_construct_009d3050(Cc13Seg67bHost& host, void* task, void
 // 009CF8E0: __thiscall(ECX = task, owner, flag byte), RET 8, EAX = task.
 void* bot_task_takeoff_construct_009cf8e0(Cc13Seg67bHost& host, void* task, void* owner,
                                           std::uint32_t flag);
+// 009CC020 / 009D2DA0: __thiscall(ECX = block, bot, target), RET 8, EAX = block.
+void* strafe_construct_approach_block_009cc020(Cc13Seg67bHost& host, void* block, void* bot,
+                                               void* target);
+void* torpedo_construct_approach_block_009d2da0(Cc13Seg67bHost& host, void* block, void* bot,
+                                                void* target);
+// 009CF710: __thiscall(ECX = block, arg), RET 4, EAX = block.
+void* takeoff_construct_approach_block_009cf710(Cc13Seg67bHost& host, void* block, void* arg);
 
 }  // namespace bsp

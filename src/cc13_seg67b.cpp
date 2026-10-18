@@ -3320,7 +3320,7 @@ constexpr float kZero_00d7a218 = 0.0f;  // 00000000
 void* bot_task_strafe_construct_009cc230(Cc13Seg67bHost& host, void* task, void* bot,
                                          void* target) {
     bot_task_construct_base_0099c6f0(host, task, bot, 0x0A);
-    host.strafe_construct_approach_block_009cc020(ptr(task, 0x3F8), bot, target);
+    strafe_construct_approach_block_009cc020(host, ptr(task, 0x3F8), bot, target);
     construct_task_tail(host, task, kStrafeTaskVtable_00d210e0, kStrafeApproachVtable_00d210d8,
                         0x4CC, kStrafeRegistryVtable_00d210d4, 0x4E0, 0x51C);
     return task;
@@ -3335,7 +3335,7 @@ void* bot_task_strafe_construct_009cc230(Cc13Seg67bHost& host, void* task, void*
 void* bot_task_torpedo_construct_009d3050(Cc13Seg67bHost& host, void* task, void* bot,
                                           void* target) {
     bot_task_construct_base_0099c6f0(host, task, bot, 0x0E);
-    host.torpedo_construct_approach_block_009d2da0(ptr(task, 0x3F8), bot, target);
+    torpedo_construct_approach_block_009d2da0(host, ptr(task, 0x3F8), bot, target);
     construct_task_tail(host, task, kTorpedoTaskVtable_00d213c8, kTorpedoApproachVtable_00d213c0,
                         0x530, kTorpedoRegistryVtable_00d213bc, 0x544, 0x580);
     return task;
@@ -3353,7 +3353,7 @@ void* bot_task_torpedo_construct_009d3050(Cc13Seg67bHost& host, void* task, void
 void* bot_task_takeoff_construct_009cf8e0(Cc13Seg67bHost& host, void* task, void* owner,
                                           std::uint32_t flag) {
     bot_task_construct_base_0099c6f0(host, task, owner, 0x0D);
-    host.takeoff_construct_approach_block_009cf710(ptr(task, 0x3F8), ptr_at(owner, 0x50));
+    takeoff_construct_approach_block_009cf710(host, ptr(task, 0x3F8), ptr_at(owner, 0x50));
     at<std::uint32_t>(task, 0x000) = kTakeoffTaskVtable_00d21228;
     at<std::uint32_t>(task, 0x3F8) = kTakeoffApproachVtable_00d2121c;
     at<std::uint32_t>(task, 0x434) = kTakeoffRegistryVtable_00d21218;
@@ -3370,6 +3370,173 @@ void* bot_task_takeoff_construct_009cf8e0(Cc13Seg67bHost& host, void* task, void
     host.state_vcall_04_enter(state);
     host.bot_approach_bind_to_task_009f9980(ptr(task, 0x3F8), task);
     return task;
+}
+
+// ---------------------------------------------------------------------------
+// The strafe, torpedo and takeoff approach blocks (the hooks 009CC230, 009D3050 and
+// 009CF8E0 called before batch 26).
+
+namespace {
+constexpr std::uint32_t kStrafeBlockVtable_00d210d0 = 0x00D210D0u;
+constexpr std::uint32_t kStrafeRegistryVtable_00d210cc = 0x00D210CCu;
+
+constexpr StateNamePair kStrafeStateNamePairs[] = {
+    {0x00D210BCu, 0x0E8},  // "moveto (strafe)"    009CC171
+    {0x00D210ACu, 0x124},  // "follow (strafe)"    009CC189
+    {0x00D2109Cu, 0x1BC},  // "strafe/prepare"     009CC19C
+    {0x00D21088u, 0x254},  // "strafe/gotowards"   009CC1A9
+    {0x00D2107Cu, 0x278},  // "strafe/aim"         009CC1B6
+    {0x00D2106Cu, 0x298},  // "strafe/goaway"      009CC1C9
+    {0x00D21058u, 0x2E0},  // "strafe/attackrun"   009CC1DC
+};
+
+constexpr std::uint32_t kTorpedoBlockVtable_00d213b8 = 0x00D213B8u;
+constexpr std::uint32_t kTorpedoRegistryVtable_00d213b4 = 0x00D213B4u;
+constexpr std::uint32_t kTorpedoDonePrepareVtable_00d21320 = 0x00D21320u;
+constexpr double kFifteen_00cf3f20 = 15.0;           // 402E000000000000
+constexpr float kOneHundredTwenty_00d05804 = 120.0f;  // 42F00000
+
+constexpr StateNamePair kTorpedoStateNamePairs[] = {
+    {0x00D213A0u, 0x14C},  // "moveto (torpedo)"   009D2F92
+    {0x00D2138Cu, 0x188},  // "follow (torpedo)"   009D2FAA
+    {0x00D2137Cu, 0x220},  // "torpedo/done"       009D2FBD
+    {0x00D2136Cu, 0x2E0},  // "torpedo/goaway"     009D2FCA
+    {0x00D21360u, 0x318},  // "torpedo/aim"        009D2FD7
+    {0x00D2134Cu, 0x2BC},  // "torpedo/attackrun"  009D2FEA
+    {0x00D2133Cu, 0x348},  // "torpedo/prepare"    009D2FFD
+};
+
+constexpr std::uint32_t kTakeoffBlockVtable_00d21210 = 0x00D21210u;
+constexpr std::uint32_t kTakeoffRegistryVtable_00d2120c = 0x00D2120Cu;
+
+constexpr StateNamePair kTakeoffStateNamePairs[] = {
+    {0x00D211FCu, 0x050},  // "takeoff/prepare"      009CF7E9
+    {0x00D211ECu, 0x078},  // "takeoff/Takeoff"      009CF7FB
+    {0x00D211D8u, 0x098},  // "takeoff/SlowTakeoff"  009CF80E
+    {0x00D211C8u, 0x0C0},  // "takeoff/parking"      009CF81B
+};
+}  // namespace
+
+// 009CC020 (BSP_BotTaskStrafe_ConstructApproachBlock): __thiscall(ECX = block, bot,
+// target), RET 8, EAX = block. Evidence (disk bytes): 009CA4A0(ECX = block,
+// [bot+50h], target) (009CC04F); 00411E20(ECX = block+D4h) (009CC062); vtables
+// 00D210D0 / +D4h 00D210CC (009CC0A6-009CC0AC); 009C2AC0(ECX = block+E8h, block,
+// target, near = +40h, far = +40h, third = +38h) (009CC067-009CC0B3: [esp] and
+// [esp+4] take +40h, [esp+8] takes +38h); 009C2980(block, 100.0) at +124h and +1BCh
+// with no vtable overwrite (009CC0CE, 009CC0E9). Embedded gotowards +254h (00D20FE8):
+// +26Ch = +270h = [00CE3950] 800.0, byte +274h = 0 (009CC0EE-009CC11B). Embedded aim
+// +278h (00D21020): +290h = [00CE3800] 0.5 (009CC11E-009CC143). 009CB500(ECX =
+// block+298h, block) (009CC154) and 009CAC80(ECX = block+2E0h, block) (009CC165);
+// both draw from the RNG 00BD2F10 inside their own bodies. Seven 00411E70
+// registrations into +D4h (009CC171-009CC1E3).
+// UNCERTAINTY: the floats pass through x87 FLD/FSTP; an SNaN would be quieted there
+// and is copied here. EH unwinding not modelled.
+void* strafe_construct_approach_block_009cc020(Cc13Seg67bHost& host, void* block, void* bot,
+                                               void* target) {
+    host.bot_approach_strafe_construct_009ca4a0(block, ptr_at(bot, 0x50), target);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xD4));
+    const float third = at<float>(block, 0x38);
+    const float far_ = at<float>(block, 0x40);
+    at<std::uint32_t>(block, 0x000) = kStrafeBlockVtable_00d210d0;
+    at<std::uint32_t>(block, 0x0D4) = kStrafeRegistryVtable_00d210cc;
+    host.bot_state_move_to_construct_009c2ac0(ptr(block, 0xE8), block, target, far_, far_, third);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x124), block, kHundred_00ce3d08);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x1BC), block, kHundred_00ce3d08);
+    plain_inline_state(block, 0x254, 0x00D20FE8u);
+    at<float>(block, 0x26C) = kEightHundred_00ce3950;
+    at<float>(block, 0x270) = kEightHundred_00ce3950;
+    at<std::uint8_t>(block, 0x274) = 0;
+    plain_inline_state(block, 0x278, 0x00D21020u);
+    at<float>(block, 0x290) = kHalf_00ce3800;
+    host.bot_state_strafe_go_away_construct_009cb500(ptr(block, 0x298), block);
+    host.bot_state_strafe_attack_run_construct_009cac80(ptr(block, 0x2E0), block);
+    register_state_names(host, block, 0xD4, kStrafeStateNamePairs,
+                         sizeof(kStrafeStateNamePairs) / sizeof(kStrafeStateNamePairs[0]));
+    return block;
+}
+
+// 009D2DA0 (BSP_BotTaskTorpedo_ConstructStates): __thiscall(ECX = block, bot, target),
+// RET 8, EAX = block. Evidence (disk bytes): 009D0380(ECX = block, [bot+50h], target)
+// (009D2DCF); 00411E20(ECX = block+138h) (009D2DE2); vtables 00D213B8 / +138h 00D213B4
+// (009D2DFC-009D2E02); FCOMI double [00CF3F20] 15.0 against +134h, JBE (15.0 <= +134h
+// or unordered) picks +7Ch, otherwise +80h (009D2DE7-009D2E14); 009C2AC0(ECX =
+// block+14Ch, block, target, near = far = float(+78h + +74h), third = the pick)
+// (009D2E19-009D2E57); 009C2980(block, 100.0) at +188h (009D2E72) and at +220h, the
+// latter then given vtable 00D21320 and +2B8h = -1.0 (009D2E8F-009D2EA3); 009D06D0(ECX
+// = block+2BCh, block) (009D2EB7). Embedded goaway +2E0h (00D212E0): +308h = 100.0,
+// +314h = +310h = 0.0, +300h = +2FCh = [00D05804] 120.0, +2F8h = 0.0 (009D2EBC-
+// 009D2F04). Embedded aim +318h (00D212FC): +334h = 0.5, +330h = [block+4], +338h =
+// 1.0, bytes +33Ch/+33Dh = 0, +340h = 0.0 (009D2F09-009D2F51). 009C2980(block, 100.0)
+// at +348h, then vtable 00D21320 and +3E0h = -1.0 (009D2F6C-009D2F83). Seven 00411E70
+// registrations into +138h (009D2F92-009D3004).
+// UNCERTAINTY: the sum is rounded once at 24-bit precision in the image (modelled);
+// at 53 bits it would round to double then to float. EH unwinding not modelled.
+void* torpedo_construct_approach_block_009d2da0(Cc13Seg67bHost& host, void* block, void* bot,
+                                                void* target) {
+    host.bot_approach_torpedo_construct_009d0380(block, ptr_at(bot, 0x50), target);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0x138));
+    const float elapsed = at<float>(block, 0x134);
+    at<std::uint32_t>(block, 0x000) = kTorpedoBlockVtable_00d213b8;
+    at<std::uint32_t>(block, 0x138) = kTorpedoRegistryVtable_00d213b4;
+    // JBE after FCOMI(15.0, +134h): taken when 15.0 <= +134h or the compare is unordered.
+    const bool above = kFifteen_00cf3f20 > static_cast<double>(elapsed);
+    const float third = above ? at<float>(block, 0x80) : at<float>(block, 0x7C);
+    const float sum = at<float>(block, 0x78) + at<float>(block, 0x74);
+    host.bot_state_move_to_construct_009c2ac0(ptr(block, 0x14C), block, target, sum, sum, third);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x188), block, kHundred_00ce3d08);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x220), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x220) = kTorpedoDonePrepareVtable_00d21320;
+    at<float>(block, 0x2B8) = kMinusOne_00d7a260_f;
+    host.bot_state_torpedo_attack_run_construct_009d06d0(ptr(block, 0x2BC), block);
+    plain_inline_state(block, 0x2E0, 0x00D212E0u);
+    at<float>(block, 0x308) = kHundred_00ce3d08;
+    at<float>(block, 0x314) = kZero_s15;
+    at<float>(block, 0x310) = kZero_s15;
+    at<float>(block, 0x300) = kOneHundredTwenty_00d05804;
+    at<float>(block, 0x2FC) = kOneHundredTwenty_00d05804;
+    at<float>(block, 0x2F8) = kZero_s15;
+    plain_inline_state(block, 0x318, 0x00D212FCu);
+    at<float>(block, 0x334) = kHalf_00ce3800;
+    at<std::uint32_t>(block, 0x330) = at<std::uint32_t>(block, 0x004);
+    at<float>(block, 0x338) = kOne_00d7a24c;
+    at<std::uint8_t>(block, 0x33C) = 0;
+    at<std::uint8_t>(block, 0x33D) = 0;
+    at<float>(block, 0x340) = kZero_s15;
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x348), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x348) = kTorpedoDonePrepareVtable_00d21320;
+    at<float>(block, 0x3E0) = kMinusOne_00d7a260_f;
+    register_state_names(host, block, 0x138, kTorpedoStateNamePairs,
+                         sizeof(kTorpedoStateNamePairs) / sizeof(kTorpedoStateNamePairs[0]));
+    return block;
+}
+
+// 009CF710 (BSP_TakeoffTask_ConstructStates): __thiscall(ECX = block, arg), RET 4, EAX =
+// block. Evidence (disk bytes): 009CD420(ECX = block, arg) (009CF735); 00411E20(ECX =
+// block+3Ch) (009CF745); vtables 00D21210 / +3Ch 00D2120C (009CF750-009CF756).
+// Embedded prepare +50h (00D2116C): bytes +68h/+69h = 0, +6Ch = +70h = +74h = 0.0
+// (009CF74A-009CF781). Embedded Takeoff +78h (00D211A4) (009CF786-009CF798). Embedded
+// SlowTakeoff +98h (00D21188) (009CF79F-009CF7BD). Embedded parking +C0h (00D21150):
+// byte +D8h = 0 (009CF7C7-009CF7E2). Four 00411E70 registrations into +3Ch
+// (009CF7E9-009CF822).
+// UNCERTAINTY: EH unwinding not modelled.
+void* takeoff_construct_approach_block_009cf710(Cc13Seg67bHost& host, void* block, void* arg) {
+    host.bot_approach_takeoff_construct_009cd420(block, arg);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0x3C));
+    at<std::uint32_t>(block, 0x00) = kTakeoffBlockVtable_00d21210;
+    at<std::uint32_t>(block, 0x3C) = kTakeoffRegistryVtable_00d2120c;
+    plain_inline_state(block, 0x50, 0x00D2116Cu);
+    at<std::uint8_t>(block, 0x68) = 0;
+    at<std::uint8_t>(block, 0x69) = 0;
+    at<float>(block, 0x6C) = kZero_s15;
+    at<float>(block, 0x70) = kZero_s15;
+    at<float>(block, 0x74) = kZero_s15;
+    plain_inline_state(block, 0x78, 0x00D211A4u);
+    plain_inline_state(block, 0x98, 0x00D21188u);
+    plain_inline_state(block, 0xC0, 0x00D21150u);
+    at<std::uint8_t>(block, 0xD8) = 0;
+    register_state_names(host, block, 0x3C, kTakeoffStateNamePairs,
+                         sizeof(kTakeoffStateNamePairs) / sizeof(kTakeoffStateNamePairs[0]));
+    return block;
 }
 
 }  // namespace bsp
