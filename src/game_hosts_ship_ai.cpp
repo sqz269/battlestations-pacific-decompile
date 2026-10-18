@@ -843,12 +843,12 @@ inline constexpr bool kCommandBuildingGarrisonBound = true;
 // Expert` and others on CommandBuildingInferior LandForts), and the kill arm
 // 006F36AE..006F36F0 runs 00926D90(member, 2) through the gunnery host. False: +5Ch
 // is 0 and the kill is recorded.
-inline constexpr bool kGarrisonMinLevelBound = false;
+inline constexpr bool kGarrisonMinLevelBound = true;   // ON: SHIP_AI 280 (JM05 mechanism)
 // Packet s57_moveto_capture_range (SHIP_AI_OPEN_ITEMS 280; CC13_VERIFY2 R5). True: the
 // MoveTo / MoveOnPath arrival tests (009E58CE, 009E5BA6) read a CommandBuilding
 // target's +7A0h capture range. False: 0, so the arrival arms 009E58E6 / 009E5BBC
 // never run for a building target.
-inline constexpr bool kShipMoveToCaptureRangeBound = false;
+inline constexpr bool kShipMoveToCaptureRangeBound = true;   // ON: SHIP_AI 280 (faithful, no reach on the rows)
 // Packet cc9_command_building_garrison_revive (SHIP_AI_OPEN_ITEMS 185): 006F3660's
 // re-create arm (006F3703..006F3844) revives the dead member in place through the
 // gunnery host's revive_unit_garrison_006f3660, then the scene flags, the

@@ -18980,3 +18980,22 @@ summary moving first.
 - IJN08 `p10_i08_z`: exit 3, deaths 173 -> 174, 55 changed rows.
 - JM08 `l65_j8_p2`: exit 3, deaths 120 -> 124 (LandingShip and a squadron plane only ON).
 **Decision: ON** by mechanism. USN12 and USN15 are win rows: re-time / re-plan (moved rows to cc9-lua66).
+
+### 280 result: both ON
+
+**Pairs (a73a84449, `--flip kGarrisonMinLevelBound=true --flip kShipMoveToCaptureRangeBound=true`, exe `local\s57_gm_on`;
+OFF `local\s57_off3`, the same OFF code; manifests beside each log).**
+- USNOS `s55_os_r0` 30000 frames and USN13 30000 frames: no reach. Garrison `records=0` on both (USNOS builds no
+  capture building in this window; USN13's CB2 / CB4 / CBT have InferiorRange 1, `members=0`), and
+  `moveto_range_reads=0`. USN13 pair_diff exit 1, gameplay identical. (The USNOS ON log was first diffed
+  against a pre-merge OFF and is not used.)
+- JM05 (ijn\JM\ijn_05_invasion_of_port_moresby.scn: 4x MinLevel Medium), 6000 frames, no orders: the predicted
+  mechanism. At adoption `MainFortress element, Round, Side 01` / `Side 02` (MainCommandBuilding 01) and
+  `RadarStationFortress 01` / `02` (RadarStation 01) log `MinLevel 1 > level 0: kill 00926D90(2) (done)`,
+  `kills=4`, and they are the 4 only-ON deaths. Without their guns Mogami-class 01, Japan Troop Transport 01,
+  Fubuki-class 01 and Zuikaku survive (the 4 only-OFF deaths), hit records 3787 -> 2245, and the OFF row's
+  failure at 285.05 s (`MissionStatus`, "One of o...") does not happen in the window.
+  `moveto_range_reads=0` here too.
+**Decision: both ON.** MinLevel by mechanism; the capture range as a faithful binding with no reach found
+(no installed row on hand MoveTos a ship at a CommandBuilding target within these windows; jm13.lua:1499 and
+jm16.lua:944 do, untested). JM05 moves (to cc9-lua66).
