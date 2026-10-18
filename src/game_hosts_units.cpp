@@ -6749,7 +6749,23 @@ struct GameUnitsHost::Impl {
     // keys the host already uses (`#sta18`, `#tb308`, `#tb3e8`) and their
     // values are dropped (the pushed task's own +308h / +3E8h are not hosted).
     // False: no draw.
-    static constexpr bool kStrafeDrawCountBound = false;
+    static constexpr bool kStrafeDrawCountBound = true;   // ON: OCEAN_WAVE_FIELD 91 (identical)
+    // Packet p22_land_blend_ops (OCEAN_WAVE_FIELD 92). The land standby 009B0FE0
+    // (009B11E9-009B1205) and final 009B1ED0 (009B1FC6-009B1FDF) blend
+    // +2B4h = a + w * (b - a) on the x87 at the main thread's 24-bit precision:
+    // FSUBP, FMULP by approach+4Ch and FADDP each round to float. True: float per
+    // op. False: (b - a) in float, then a double product and sum rounded once.
+    static constexpr bool kLandBlendFloatOpsBound = false;
+    static float land_blend_2b4(float a, float w, float b) {
+        if constexpr (kLandBlendFloatOpsBound) {
+            const float diff = b - a;      // FSUBP
+            const float prod = w * diff;   // FMULP by +4Ch
+            return a + prod;               // FADDP, FSTP +2B4h
+        } else {
+            return static_cast<float>(static_cast<double>(a) +
+                                      static_cast<double>(w) * (b - a));
+        }
+    }
     unsigned long long strafe_draw_count_takes{0};
     unsigned long long moveto_c25_arm_applied{0};
     void moveto_c25_arm(GameUnitSlot& unit) {
@@ -32537,9 +32553,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009B11C4-009B1205: +2B4h = lvl + a+4Ch x (class+190h - lvl).
                         const float lvl = owner_.bot_desired_speed_007c47f0(unit_);
                         const float c190 = unit_.plane_travel_speed * travel_mul;
-                        unit_.plane_desired_speed_2b4 = static_cast<float>(
-                            static_cast<double>(lvl) +
-                            static_cast<double>(unit_.land_spacing_4c) * (c190 - lvl));
+                        unit_.plane_desired_speed_2b4 = GameUnitsHost::Impl::land_blend_2b4(
+                            lvl, unit_.land_spacing_4c, c190);
                         unit_.plane_trg_speed_corr_off_2b0 = 0;
                         unit_.plane_air_brake_mode_2d8 = 1;
                         ++unit_.plane_speed_commands;
@@ -33343,9 +33358,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 g->pilot_landing_approach_dist);
                             const float sp = bsp::clamped_interpolate_00419010(x0, r, x, mid,
                                 unit_.land_dist_a8);
-                            unit_.plane_desired_speed_2b4 = static_cast<float>(
-                                static_cast<double>(r) + static_cast<double>(unit_.land_spacing_4c) *
-                                (static_cast<double>(sp) - r));
+                            // 009B1FC2-009B1FDF.
+                            if constexpr (GameUnitsHost::Impl::kLandBlendFloatOpsBound) {
+                                unit_.plane_desired_speed_2b4 = GameUnitsHost::Impl::land_blend_2b4(
+                                    r, unit_.land_spacing_4c, sp);
+                            } else {
+                                unit_.plane_desired_speed_2b4 = static_cast<float>(
+                                    static_cast<double>(r) + static_cast<double>(unit_.land_spacing_4c) *
+                                    (static_cast<double>(sp) - r));
+                            }
                             unit_.plane_trg_speed_corr_off_2b0 = 1;
                             unit_.plane_air_brake_mode_2d8 = 1;
                             ++unit_.plane_speed_commands;
