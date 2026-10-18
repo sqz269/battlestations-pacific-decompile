@@ -19325,3 +19325,14 @@ cc13's unwired `scene_traffic_runtime_construct_004a50d0` (cc13_left8b_seg8).
 `scene traffic block:` line per authored block. The native table turns `SceneContents::load_traffic_block 009514b0`
 from unimplemented to concrete. OFF steps over the block's tokens one by one, and none of them is a scene-loop
 keyword (`entity`, `traffic`, `groups`, `SceneBrowserGroups`), so the loop ends in the same state either way.
+
+**Pair (JM05 12000, reference env; JM05 loads COTP-IJN/PRCPIJN/ijn_05_invasion_of_port_moresby.scn, 7 items).** USN01's
+block is empty (smoke `local\s59_trsmoke_u1.log`: 0 items, commits=1). OFF `local\s59_troff_j5.log` (tree exe at
+267e48677), ON `local\s59_tron_j5.log` (`local\s59_tr_on`). The ON log reads `scene traffic block: 7 items, 7
+templates (1 vehicle classes, 6 soldier types, 0 unresolved), 7 path lookups, commits=1 ... skipped=0 ok=1`.
+`pair_diff` exit 1: gameplay identical, with 34 death rows, 184 unit rows and 12415 shots on both sides, and the
+mission fails at 321.05 s both ways. Native table: `load_traffic_block` goes from unimplemented to concrete, and
+otherwise only the known sector-scan / clearance noise moves. **Flipped ON** as predicted. What remains is the
+spawner (004A5620 -> 004A50D0, cc13_left8b_seg8), which would put the authored jeeps, trucks and marines on their
+paths. Rows with traffic items: BSM01, BSM02, BSM10, USNRM01, USN07, USN11, USN20, JM01, JM05, JM12, PRCP02,
+PRCP08 (`local\s59_traffic_ids.py`).

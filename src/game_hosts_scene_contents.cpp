@@ -71,7 +71,8 @@ constexpr bool kSceneBrowserGroupsBound = false;
 // 00951385 and the commit 004A5620 -> 004A50D0 (the ambient traffic spawner)
 // are counted only; no traffic unit is created. False: the record, as before,
 // and the scene loop steps over the block's tokens as unknown keywords.
-constexpr bool kSceneTrafficBlockBound = false;
+// ON by cc9-ships59 (SHIP_AI_OPEN_ITEMS 292): JM05 12000 gameplay-identical.
+constexpr bool kSceneTrafficBlockBound = true;
 
 class SceneBrowserGroupsCounter final : public SceneBrowserGroupsHost {
 public:
