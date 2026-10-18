@@ -559,6 +559,9 @@ struct Seg59bHost {
     // 0076A9F0, __thiscall(ECX = game+1EF0h; message, flag), RET 8: thunk to 00784790 with
     // ECX = [ECX+188h], the session send.
     virtual void session_forward_message_0076a9f0(void* session, void* message, std::int32_t flag) = 0;
+    // 00625F50, __thiscall(ECX = map, const NativeString* key), RET 4: the NativeString-keyed map
+    // subscript (lower_bound 0061E650, insert 00625AB0); 0091A080 adds into [EAX+8].
+    virtual void* string_record_map_index_00625f50(void* map, const void* key) = 0;
 };
 
 // --- Torpedo bot (vtable 00D182B0) ---------------------------------------------------------
@@ -821,6 +824,9 @@ void score_record_evaluate_achievement_counters_00912a60(Seg59bHost& host, void*
 // ([game+1FE4h] == 1, byte [game+218Ch] == 0) sends the record as type-15h messages through
 // 0076A9F0: the kind-0 header, then one message per map entry (kinds 2..13h).
 void score_record_send_sync_0090abb0(Seg59bHost& host, void* record);
+// 0091A080, __thiscall(ECX = destination record, source record), RET 4: merges a mission score
+// record into the progress map's record (counts and maps added, best score per src+8h index).
+void score_record_merge_0091a080(Seg59bHost& host, void* destination, void* source);
 
 
 }  // namespace bsp::cc13_seg59b
