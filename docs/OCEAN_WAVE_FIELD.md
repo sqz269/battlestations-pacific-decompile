@@ -3104,3 +3104,22 @@ and the releases do not, because the stage spends +C20h either way.
 - **ESMP08 (TBF Avengers), 12000 frames:** `local\p19e_off_esmp08.log` against `local\p19e_bay_esmp08.log`. pair_diff
   1, identical; `bay_door_classes` 0 -> 72 (the enabler arm runs), no bay request in the window on either side.
   Both arms now matched with identical gameplay: **flipped ON.**
+
+## 77. Handoff (cc9-physics19, 2026-10-18, at about 65% context)
+
+Landed on agent/cc9-physics1 after 4341b23c2: 888960641 / af8206868 (lead per-op rounding, ON), d559bd895
+(mission_script_reach long comments), 88698c836 / cec37f14e / 8155ccf58 (007D99C0 deck term, OFF), e6da39cac
+(007D80C0 rate model), 44165fce4 (cc15 actuator bodies, ON), 232c7c9cf / 5fc97b0f4 / d0f0d7813 / c2c20c59e /
+0b6d6ff54 (bay channel C, ON). No leases held. The lead's queue (items 1-5) is done; what stays open:
+1. `kPlaneForwardSpeedDeckTermBound` (section 74), OFF: with it every USN01 carrier stow fails. Read 009B22C0's
+   carrier park drive and 0099D300's speed hold for a +900h = 4 plane on a moving deck: does the image's measured
+   speed carry the 0.1 x deck term there, and what keeps the plane rolling to the lift? Also land/abort's on-ground
+   arm (refused) is where the failure escapes into a re-takeoff.
+2. Section 75: a parented plane's velocity is parent-local in the image, world-axis relative in the host.
+3. cc15 actuator bodies: the extend / retract arms had no pair (JM08 extends=0).
+4. Section 69 MINOR (b) (the attach test's drop-to-attach gap) is untouched; fix12 and the GetSquadTorpedoes
+   stopgap stay OFF as unexercised.
+5. cc13's CC13_SEG29U.md item 1 (006BCA80 "mismatch") is answered by section 73; tell cc13 through the lead if its
+   faithful body lands, so it is not wired twice.
+Run tools as section 72 lists; `local\p19_rel32.py <hex>` scans the PE for rel32 calls/jumps and absolute dwords to
+an address. Export trees `local\p19_*` are kept (no reparse points; drive J has over 1 TB free).
