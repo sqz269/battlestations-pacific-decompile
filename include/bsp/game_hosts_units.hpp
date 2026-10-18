@@ -69,6 +69,7 @@ namespace bsp { struct PlaneSquadronHostRecord; }
 #include "bsp/native_scene_lifecycle_notify.hpp"
 #include "bsp/ship_ai_obstacle_tables.hpp"
 #include "bsp/unit_force_channel.hpp"
+#include "bsp/land_convoy_wiring_cc13.hpp"  // packet cc13-convoy
 
 namespace bsp::game {
 
@@ -209,22 +210,7 @@ inline constexpr bool kSquadronReturnToBaseResolveBound = true;  // ON: record o
 inline constexpr bool kUnitYawRateForwardSpeedBound = true;  // ON: mechanism held, reach miss recorded (docs/UNIT_YAW_RATE_FORWARD_SPEED.md)
 inline constexpr bool kSquadronLandTaskBound = true;  // ON: pairs, spread miss recorded (docs/SQUADRON_LAND_TASK.md 5)
 inline constexpr bool kLandConvoyMovementBound = true;  // ON: pairs held (docs/LAND_AND_STRUCTURES.md)
-// Packet cc13-convoy. cc15's land convoy bodies (include/bsp/cc15_land_convoy.hpp,
-// docs/CC15_LAND_CONVOY.md) and cc13's 00742210 / 0074CD10 on the host's convoys.
-// True:
-//  - the roster keeps one member vector (+398h, nulls in place) and the live count
-//    +3BCh per convoy, shared with the motion state's slots, and each member's
-//    +738h back pointer;
-//  - 007420B0 runs at bind (members take the convoy's 00927A80 skill through
-//    vtable +128h, 006D1EB0);
-//  - each 009273A0 flush runs 0074CD10 -> 007422A0 for every member that died
-//    since the last flush, then the convoy's queued 00742180 on the flush after
-//    its 00926D90 (cause 2 at exactly zero live members);
-//  - Lua Kill on a convoy runs 00742210 (members killed and nulled, +738h kept,
-//    the convoy not killed).
-// False: the convoy is a marker with a fixed roster; a member's death touches
-// nothing, and Lua Kill on a convoy kills nobody (no units-host slot).
-inline constexpr bool kLandConvoyBodiesBound = false;
+// Packet cc13-convoy: kLandConvoyBodiesBound, include/bsp/land_convoy_wiring_cc13.hpp.
 // Packet cc9_landing_sequencer. The deck's landing queue and sequencer for an
 // AIRFIELD owner: 006C54C0 queues the squadron (006BF060/006C0B50) and reads
 // its record through 006BD080; the queue tick 006CD240 runs 006CC9F0 (insert
