@@ -131,6 +131,14 @@ inline constexpr bool kScriptedOrderNatives2Bound = true;
 // 0071BF20 (1) in place of 0071BED0's 0. False leaves both unimplemented
 // records, as before, and every hold stays permanent.
 inline constexpr bool kLuaUnitFreeFireBound = false;
+// Packet cc9_l66_putto: PutTo 008AA131-008AA14D and PutFormationTo 008AA3CA turn a
+// Lua degree value into vtable[11Ch]'s radians: FMUL [00CE3D28] (pi as a float,
+// 400921FB60000000), FDIV [00CE3D20] (180.0), FSTP float. LABELLED: modelled with
+// the main thread's 24-bit x87 precision, one rounding after each operation.
+float put_to_heading_radians(double degrees) {
+    const float scaled = static_cast<float>(degrees * 3.1415927410125732);
+    return static_cast<float>(static_cast<double>(scaled) / 180.0);
+}
 // Packet cc9_l57_think_delay (docs/CC13_VER_8.md V3): 00929460 stores delay - step
 // into +1E0h at 009294C7..009294D7 for each walked entity on the timed branch, and
 // only then 009294E5 calls the think; a SetWait (008982C9) inside that think writes
@@ -3964,7 +3972,15 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             }
         }
         if (argument_count_ >= 3) {
-            log_.unimplemented("PutTo::set_heading_vtable_011c", "008196b0");
+            if constexpr (kPutToFormationBound) {
+                // 008AA10E-008AA14D: only with exactly three arguments, heading =
+                // float(arg * 00CE3D28 / 00CE3D20); then vtable[11Ch] (008AA207).
+                if (argument_count_ == 3 && entity != nullptr && index < units_.count()) {
+                    units_.set_heading_008196b0(index, put_to_heading_radians(get_number(2)));
+                }
+            } else {
+                log_.unimplemented("PutTo::set_heading_vtable_011c", "008196b0");
+            }
         }
         log_.notef("  PutTo: %s pos=(%.1f, %.1f, %.1f) placed=%d (008A9F90 -> 008193A0)",
             index < units_.count() ? name_of(entity).c_str() : "?",
@@ -3988,7 +4004,11 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         bool placed = false;
         if (entity != nullptr && index < units_.count()) {
             if (static_cast<unsigned>(shape - 1) < 3u && units_.unit_formation_group_0284(index) >= 0) {
-                log_.unimplemented("PutFormationTo::apply_formation_shape", "0070efd0");
+                if constexpr (kPutToFormationBound) {
+                    units_.reshape_formation_0070efd0(index, shape);   // 008AA4E0
+                } else {
+                    log_.unimplemented("PutFormationTo::apply_formation_shape", "0070efd0");
+                }
             }
             if (have_pos) {
                 placed = units_.place_at_world_position_008193a0(index, pos);
@@ -3999,7 +4019,14 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             }
         }
         if (argument_count_ == 4) {
-            log_.unimplemented("PutFormationTo::set_heading_vtable_011c", "008196b0");
+            if constexpr (kPutToFormationBound) {
+                // 008AA3CA: argument 3 * 00CE3D28 / 00CE3D20, then vtable[11Ch].
+                if (entity != nullptr && index < units_.count()) {
+                    units_.set_heading_008196b0(index, put_to_heading_radians(get_number(3)));
+                }
+            } else {
+                log_.unimplemented("PutFormationTo::set_heading_vtable_011c", "008196b0");
+            }
         }
         log_.notef("  PutFormationTo: %s pos=(%.1f, %.1f, %.1f) shape=%d placed=%d (008AA260, "
             "packet cc13-fix5)", index < units_.count() ? name_of(entity).c_str() : "?",

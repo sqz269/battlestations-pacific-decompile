@@ -17768,3 +17768,59 @@ Exports of bb5d16e51 (`local\l66_g_off` control, `local\l66_dc_on` with the swit
 Mechanism as predicted up to the release (choice, arm, state machine, issue stage); the drop itself is shown only on
 the older base, and USN21's empty racks follow the shared 5ey rule. Flipped ON; a JM06 drop at the submarine is still
 to be seen on a current-base run.
+
+## 5if. The release issue interval draw, `kReleaseIssueIntervalDrawBound` (cc9-lua66, 2026-10-17)
+
+docs/CC13_VERIFY1.md A.1: after the 007C0D90 issue (007CEA8D), 007CEA9A-007CEABE draws 00BD2F10(ECX = 1, 0.9f
+00CE3860, 1.1f 00CE6448), multiplies by class+1F4h (BombDelay) and stores unit+C28h. The host always used 0.9. Switch
+`GameUnitsHost::Impl::kReleaseIssueIntervalDrawBound` (committed OFF): after each issue the interval is overwritten
+with a keyed draw (`<unit>#issue`, the host's other stream-1 draws' convention) times BombDelay. Counter
+`summary mission release issue interval draws`.
+
+Prediction: multi-issue sequences (level-bomb sticks, multi-round racks, the torpedo stage) space 0-22% wider on
+average (mean 1.0 instead of 0.9 x BombDelay); every row with a level bomber or a multi-round rack moves slightly
+after its first issue; rows with no issue are identical.
+
+### 5id.1 The script-orders half (cc9-lua66, 2026-10-17)
+
+Under `kPutToFormationBound`: PutTo with exactly three arguments (008AA10E) and PutFormationTo with four (008AA3CA)
+call `set_heading_008196b0` with float(arg x 00CE3D28 / 00CE3D20) (`put_to_heading_radians`, 24-bit model), and
+PutFormationTo's shape 1..3 on a grouped unit runs `reshape_formation_0070efd0` before the move. OFF keeps the three
+unimplemented records. The pair follows (5id prediction).
+
+
+## 5ig. The three cc13-fix67 constant switches: **ON** (cc9-lua66, 2026-10-17)
+
+`kConstExactImageBitsBound`, `kPilotPitchInputScaleImageBound`, `kGuiCameraTargetZImageBound` (docs/CC13_FIX67.md).
+`tools/const_width_sweep.py --all --exact --assume-on` the three: 9 exact mismatches, exactly the nine cc13 skipped
+(four judged intentional, three unused, kHudRootRowGap / kHudRootCircleYOffset); the sweep with the switches ON in
+source reports the same. Pairs (export of 3f0059c55 with the three flipped, `local\l66_cst_on`, against the
+bb5d16e51 control, reference env):
+
+- USN04 9000 fr: gameplay identical; 36 ship-AI native counts move by a few calls (the ship_ai_approach doubles).
+- BSM01 `bsm01_p6_b1_a` 40000 fr: gameplay moved chaotically (deaths 805 = 805, 627 death rows changed, torpedo
+  releases 42 -> 25, dive 39 -> 48); neither side ends the mission. The changes are ulp-level (and the pitch input
+  scale, which acts on the player's stick only; the player drives HenryPT here), so the spread is trajectory chaos.
+
+Flipped ON: the values are the image's bits. Full build passed.
+
+## 5ih. The cc13 switches: SetDeadMeat, hidden membership and recon set branch **ON**; the command-building moveto stays OFF (cc9-lua66, 2026-10-17)
+
+Export of 3f0059c55 with kLuaSetDeadMeatBound, kObjectiveSetHiddenMembershipBound, kReconSurfaceSetBranchBound and
+kSquadronCommandBuildingMoveToBound flipped (`local\l66_c13_on`) against the bb5d16e51 control; reference env.
+
+- **USNOS `l65_os_c1`**: gameplay identical (pair_diff 1). `objective set membership ... hidden_skips=2` in both; the two
+  hidden-objective units never reach a set reader on this plan. SetDeadMeat calls=0.
+- **JM08 `jm08_l64_j8_e`**: gameplay identical; no `command-building moveto` line (no ordnance squadron ends on a
+  CommandBuilding target on this plan); fails at 1337.23 s (HQ destroyed) in both.
+- **BSM01 `bsm01_p6_b1_a`**: moved, all from SetDeadMeat (membership 0 skips, no moveto line). bsm_01:1193 runs
+  ExplodeToParts, BreakShip and `SetDeadMeat(Mission.Phoenix)` when the attack starts. OFF, Phoenix never dies and its AA
+  keeps killing the Japanese planes (OFF death rows credit it with many kills); ON, 008AC7B0's ship arm sinks it
+  (`SetDeadMeat 008ac7b0: ship "Phoenix" pivot_x=-0.2091 sink=destroyed`, dead at 114.05 s). With that AA gone,
+  HenryPT dies at 1512.30 s and luaMissionFailed ends the mission (OFF: no end within 2000 s). Deaths 805 -> 622
+  because the run stops at the failure.
+
+SetDeadMeat matches cc13-fix11 exactly on its live call: **ON**. The hidden membership and the recon set branch are
+identical on all three rows and are the image's membership: **ON**. `kSquadronCommandBuildingMoveToBound` was never
+reached (no row logs the moveto), so it stays **OFF**; its moveto-self interaction is fixed (CC13_FIX1.md). BSM01 needs
+a re-plan with Phoenix sunk.

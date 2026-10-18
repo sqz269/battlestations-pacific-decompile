@@ -1034,7 +1034,7 @@ constexpr bool kArtilleryAimPointBound = true;
 //    runs out. 006DF6D7..006DF6F5 subtract dt, then refresh only when 0 > timer
 //    (FCOMI / JBE: strict). True: as the image. False: a target change resets the
 //    timer and redraws at once, and the refresh takes timer <= 0.
-constexpr bool kArtilleryAimPointKeepBound = false;
+constexpr bool kArtilleryAimPointKeepBound = true;  // ON: GUNNERY 272.9 (cc9-lua66 pairs)
 //  * kAaGunnerShipHullPointBound: packet cc9_g51_aa_hull_point (GUNNERY 272.8,
 //    cc13-verify3). 00902920's refresh, when row+0Ch AngleDiffErrorRatio > 0
 //    (00902B7A), calls target->vt[100h](out, chance -1.0 00D7A260, weights 1,1,1, box
@@ -1044,7 +1044,7 @@ constexpr bool kArtilleryAimPointKeepBound = false;
 //    the three draws and the drawn hull point. False: no draws, the error from the
 //    host's aim point. LABELLED: a plane target's vt[100h] (0042D810, the origin, no
 //    draw) still measures from the host's Height-raised point.
-constexpr bool kAaGunnerShipHullPointBound = false;
+constexpr bool kAaGunnerShipHullPointBound = true;  // ON: GUNNERY 272.9 (cc9-lua66 pairs)
 //  * kTorpedoFriendlyCrossingBound: packet cc9_torpedo_launch_gate. 008FFF20's
 //    friendly-crossing gate 0090058A..009007F6: a torpedo launch is held when
 //    another own-side ship within 2000 m would be within 0.3 * run + 200 m of
@@ -1132,7 +1132,7 @@ constexpr bool kReconContactAllKindsBound = true;  // ON: AA_LETHALITY_AUDIT 14.
 //    the set holds the entity (008DDFA9: an IsKindOf(5) entity is looked up as
 //    itself). True: `in_set || tail`. False: the tail alone, the earlier host
 //    rule. Packet cc13-fix4, docs/CC13_FIX34.md.
-constexpr bool kReconSurfaceSetBranchBound = false;
+constexpr bool kReconSurfaceSetBranchBound = true;  // ON: SQUADRON_LAND_TASK 5ih (identical pairs)
 //  * kGunneryClassArmsBound: 00862820's arms after the liveness bytes and the
 //    rank (00862843..008628CA). Category 7 needs IsKindOf(6) and not
 //    IsKindOf(0Eh). A kind-8 target then goes through 00852820 (world y +100h
@@ -1515,11 +1515,11 @@ constexpr bool kInferiorFailureArmBound = true;
 //    what moves is the shared stream, advanced once per re-arm. The empty arm
 //    (0072D592, FLT_MAX) draws nothing. True: one Draw::reload per full re-arm. False:
 //    the timer is set with no draw.
-constexpr bool kReloadDrawBound = false;
+constexpr bool kReloadDrawBound = true;  // ON: GUNNERY 272.9 (cc9-lua66 pairs)
 //  * kDrawKeyCollisionFixBound: Draw::sink_effects and Draw::auto_target_phase shared
 //    the key value 30, so under BSP_GUNNERY_RNG_STREAMS=1 a unit's auto-target phase
 //    and its sink spawners read one generator. True: auto_target_phase is 32.
-constexpr bool kDrawKeyCollisionFixBound = false;  // ON: mechanism matches, JM08 now completes (GUNNERY 272.4)
+constexpr bool kDrawKeyCollisionFixBound = true;  // ON: GUNNERY 272.9 (cc9-lua66 pairs)
 // CommandBuildingGlobals.SingleInvincibleTime in this installation's
 // commandbuildingglobals.lua (mtime 2024-07-13): 20, stored at +4Ch by 006F7670 and
 // copied to class+190h by 006F4360 in game mode 0.
