@@ -3,6 +3,7 @@
 // docs/CC13_SYS_3.md for the evidence, the original ABIs and what is not claimed.
 
 #include "bsp/engine_seg11_35_66_cc13.hpp"
+#include "bsp/oct18_tail_c.hpp"
 
 #include <windows.h>
 #include <intrin.h>
@@ -2738,3 +2739,65 @@ void update_fish_school_00707b00(FishSchoolDescLayout& school, float dt, FishUpd
 }
 
 }  // namespace bsp::engine_seg11_35_66_cc13
+
+// Lane oct18-tC: this already-registered TU is separately leased. Keeping the
+// leaves here avoids changing the concurrently leased CMake source registry.
+// Each naked getter retains the original one-load/LEA + RET sequence, including
+// the unspilled ST0 result of FLD. No fabricated layout or dependency stubs.
+namespace bsp::oct18_tail_c {
+__declspec(naked) const void* __fastcall accepted_invite_info_00a3e460(const void*) {
+    __asm { lea eax, [ecx + 32h] }
+    __asm { ret }
+}
+__declspec(naked) void __fastcall enumerate_input_noop_00a90ed0(void*) {
+    __asm { ret }
+}
+__declspec(naked) std::uint8_t __fastcall gui_layer_visible_00aa38e0(const void*) {
+    __asm { mov al, byte ptr [ecx + 0f5h] }
+    __asm { ret }
+}
+void set_pointer_activation_reader_00aa6be0(std::uint32_t& image_f8bc84,
+                                          std::uint32_t reader) {
+    image_f8bc84 = reader;
+}
+void set_selection_callback_00aab5e0(std::uint32_t& image_f8bcfc,
+                                    std::uint32_t callback) {
+    image_f8bcfc = callback;
+}
+__declspec(naked) std::uint32_t __fastcall terrain_field3c_00ad56d0(const void*) {
+    __asm { mov eax, dword ptr [ecx + 3ch] }
+    __asm { ret }
+}
+__declspec(naked) float __fastcall foliage_scalar0c_00ad5720(const void*) {
+    __asm { fld dword ptr [ecx + 0ch] }
+    __asm { ret }
+}
+__declspec(naked) std::uint32_t __fastcall foliage_bush_texture_00ad57d0(const void*) {
+    __asm { mov eax, dword ptr [ecx + 9ch] }
+    __asm { ret }
+}
+__declspec(naked) std::uint32_t __fastcall foliage_bush_normal_texture_00ad57e0(const void*) {
+    __asm { mov eax, dword ptr [ecx + 0a0h] }
+    __asm { ret }
+}
+__declspec(naked) float __fastcall atmosphere_time_of_day_00bbdd30(const void*) {
+    __asm { fld dword ptr [ecx + 20h] }
+    __asm { ret }
+}
+__declspec(naked) float __fastcall atmosphere_sky_blend_00bbdd40(const void*) {
+    __asm { fld dword ptr [ecx + 28h] }
+    __asm { ret }
+}
+__declspec(naked) const void* __fastcall atmosphere_wind_direction_00bbdd60(const void*) {
+    __asm { lea eax, [ecx + 2ch] }
+    __asm { ret }
+}
+__declspec(naked) float __fastcall atmosphere_wind_speed_00bbdd70(const void*) {
+    __asm { fld dword ptr [ecx + 38h] }
+    __asm { ret }
+}
+__declspec(naked) std::uint32_t __fastcall atmosphere_skybox_00bbddb0(const void*) {
+    __asm { mov eax, dword ptr [ecx + 18h] }
+    __asm { ret }
+}
+} // namespace bsp::oct18_tail_c
