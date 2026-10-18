@@ -31,7 +31,7 @@ void run_title_screen_state(GameFrontEndFrameState& state, FrontEndWorld& world,
     if (world.front_end_gui_suspended) {
         // 004e4c38..004e4c52. Both pushes belong to the GUI calls, not to
         // 004c12b0: the same accessor is called with no push at 004e4ca8.
-        host.gui_clear_screens(false);
+        host.gui_set_pointer_visible(false);
         host.gui_set_enabled(false);
         return;
     }

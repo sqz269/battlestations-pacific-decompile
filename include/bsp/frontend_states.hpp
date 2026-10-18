@@ -114,7 +114,9 @@ struct FrontEndFrameHost {
     virtual void update_logo_sequence() = 0; // 00685170, ECX = 00E198A4
     virtual void reinitialize_title_screen() = 0; // 004db220, ECX = game
     virtual void update_title_screen(float raw_delta) = 0; // 0068d850
-    virtual void gui_clear_screens(bool flag) = 0; // 004c12b0 then 00aa0e50
+    // 004c12b0 then 00aa0e50, which tail-calls the manager +50h pointer
+    // widget's visibility virtual +34h (MousePtrFE_Icon at startup).
+    virtual void gui_set_pointer_visible(bool visible) = 0;
     virtual void gui_set_enabled(bool enabled) = 0; // 004c12b0 then 00aa0e00
     virtual void gui_update(float raw_delta, int mode) = 0; // 004c12b0, 00aa4f80
     virtual void game_render() = 0; // 004ca440
