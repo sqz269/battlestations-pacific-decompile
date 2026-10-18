@@ -7474,7 +7474,7 @@ struct GameUnitsHost::Impl {
     // (006BCC1D/006BCC26/006BCC2D), then that float + T[k] to a float (006BCC39..).
     // Exact at the main thread's 24-bit PC; at 53 bits the image can differ by a
     // double rounding of the product. False: one double v x t + T, rounded once.
-    static constexpr bool kCarrierLandingLeadFloatOpsBound = false;
+    static constexpr bool kCarrierLandingLeadFloatOpsBound = true;  // ON 2026-10-18 (OCEAN_WAVE_FIELD 73)
     // Same packet (R3). True: 009B201B-009B2074, the land-final ground half's air
     // brake is 1.0 (00D7A24C) when the land target answers vtable[5Ch](9) (a mother
     // ship), else 0.2 (00CE54A0). False: 0.2 always.

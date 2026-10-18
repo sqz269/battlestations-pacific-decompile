@@ -3022,3 +3022,9 @@ state speed was not checked), 0099F3EF, 009A176D, 009B0C6D. 007DAABD's floor tak
 roll, landed planes); off a deck the helper returns ctl+44h. On a carrier moving forward at v, a plane facing the
 bow reads +0.1v more forward speed, so the stall ratio and the throttle error shift slightly during the roll.
 `summary forward speed deck terms=` counts the parented calls.
+
+**73, result: `kCarrierLandingLeadFloatOpsBound` ON.** USN01 with `usn01_p8_u1_i.txt`, 30000 frames, at 888960641:
+`local\p19a_off_usn01.log` against `local\p19a_ops_usn01.log` (manifests beside them). pair_diff 3 (moved), as
+predicted: the same 19 touchdowns, the first four (417.87, 502.05, 521.45, 541.44 s) identical, the rest drifting
+by 0.15-12 s (KatSBD 706.25 -> 718.10); leads 7287 -> 7571, Enterprise inserts 12 / releases 5 on both; deaths 36
+on both, 15 death times shifted; neither run ends the mission in 30000 frames. Mechanism matches; flipped.
