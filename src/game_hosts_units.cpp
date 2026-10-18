@@ -6726,7 +6726,20 @@ struct GameUnitsHost::Impl {
     // +2D0h = 2, +2C4h = 0.0 and +2CCh = 1, then RET 4, after the speed
     // stores. True: the host makes those stores before it returns. False: the
     // arm only records itself and the previous tick's commands stand.
-    static constexpr bool kMoveToC25ArmBound = false;
+    static constexpr bool kMoveToC25ArmBound = true;   // ON: OCEAN_WAVE_FIELD 89 (faithful, unreached)
+    // Packet p22_moveto_head (OCEAN_WAVE_FIELD 90). The moveto state tick
+    // 009C2430 stores [[state+4]+18h]+26Ch = 1 at 009C2440, first thing, and
+    // takes its distance as float(dx*dx + dz*dz) (FSTP at 009C2496), zero at
+    // or below double 1e-10 ([00CE3820], 009C249A-009C24A8 FCOMI/JBE), else
+    // float(sqrt). True: that store and that distance. False: double d2 with
+    // a 1e-6 threshold, and no +26Ch store.
+    static constexpr bool kMoveToTickHeadBound = false;
+    // Packet p22_lb_goaway_order (OCEAN_WAVE_FIELD 90). The level-bomb goaway
+    // enter 009B5680 loads approach+24h (009B5724, FSTP to a local at
+    // 009B572A), draws at 009B5746, then 009B574B-009B5755 FLD the speed ratio,
+    // FMUL the clamped base, FMULP the draw: +18h = draw * (ratio * base).
+    // True: that order. False: (draw * base) * ratio.
+    static constexpr bool kLevelBombGoAwayOrderBound = false;
     unsigned long long moveto_c25_arm_applied{0};
     void moveto_c25_arm(GameUnitSlot& unit) {
         ++moveto_c25_arm_applied;
@@ -25587,8 +25600,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 const float base = bsp::level_bomb_goaway_standoff_base(
                                     lb_tuning(&bsp::GameTuningBlock::pilot_level_bomb_safe_dist, 1000.0f),
                                     false, 0.0f);
-                                unit_.lb_ga_standoff_18 = lb_draw("ga18", kGoAwayJitterLow, kGoAwayJitterHigh) *
-                                    base * a.speed_ratio_24;
+                                const float ga_draw = lb_draw("ga18", kGoAwayJitterLow, kGoAwayJitterHigh);
+                                if constexpr (GameUnitsHost::Impl::kLevelBombGoAwayOrderBound) {
+                                    // 009B574B-009B5755: draw * (ratio * base).
+                                    const float ratio_base = a.speed_ratio_24 * base;
+                                    unit_.lb_ga_standoff_18 = ga_draw * ratio_base;
+                                } else {
+                                    unit_.lb_ga_standoff_18 = ga_draw * base * a.speed_ratio_24;
+                                }
                                 break;
                             }
                             case LS::kPrepare:   // 009B6600
@@ -28184,6 +28203,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             GameUnitsHost::Impl::kMovetoSpeedBlendBound
                                 ? owner_.moveto_speed_009c1850(unit_, sep)
                                 : owner_.bot_desired_speed_007c47f0(unit_);
+                        unit_.plane_trg_speed_corr_off_2b0 = 0;   // 009C18A0
                         unit_.plane_air_brake_mode_2d8 = 1;
                         ++unit_.plane_speed_commands;
                         owner_.record("BotStateMoveTo::set_desired_speed", 0x009c1850u);
@@ -31395,6 +31415,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             GameUnitsHost::Impl::kMovetoSpeedBlendBound
                                 ? owner_.moveto_speed_009c1850(unit_, distance)
                                 : owner_.bot_desired_speed_007c47f0(unit_);
+                        unit_.plane_trg_speed_corr_off_2b0 = 0;   // 009C18A0
                         unit_.plane_air_brake_mode_2d8 = 1;
                         ++unit_.plane_speed_commands;
                         owner_.record("BotStateMoveTo::set_desired_speed", 0x009c1850u);
@@ -34209,6 +34230,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             GameUnitsHost::Impl::kMovetoSpeedBlendBound
                                 ? owner_.moveto_speed_009c1850(unit_, sep)
                                 : owner_.bot_desired_speed_007c47f0(unit_);
+                        unit_.plane_trg_speed_corr_off_2b0 = 0;   // 009C18A0
                         unit_.plane_air_brake_mode_2d8 = 1;
                         ++unit_.plane_speed_commands;
                         owner_.record("BotStateMoveTo::set_desired_speed", 0x009c1850u);
@@ -35975,9 +35997,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const float* pt = unit_.moveto_point;
                         const float dx = pt[0] - unit_.motion.position[0];
                         const float dz = pt[2] - unit_.motion.position[2];
-                        const double d2 = static_cast<double>(dx) * dx +
-                                          static_cast<double>(dz) * dz;
-                        const float dist = d2 <= 1e-6 ? 0.0f : static_cast<float>(std::sqrt(d2));
+                        float dist = 0.0f;
+                        if constexpr (GameUnitsHost::Impl::kMoveToTickHeadBound) {
+                            unit_.plan_mode_26c = 1;                        // 009C2440
+                            const float d2f = dx * dx + dz * dz;            // 009C2496 FSTP
+                            dist = static_cast<double>(d2f) > 1.0e-10       // 009C24A4 [00CE3820]
+                                ? static_cast<float>(std::sqrt(static_cast<double>(d2f)))
+                                : 0.0f;
+                        } else {
+                            const double d2 = static_cast<double>(dx) * dx +
+                                              static_cast<double>(dz) * dz;
+                            dist = d2 <= 1e-6 ? 0.0f : static_cast<float>(std::sqrt(d2));
+                        }
                         // 009C24D5-009C24EB: 009BECD0(009C23B0(), 007C47F0(), dist).
                         // 009C23B0 is [approach+0Ch]+3A0h unless the target is
                         // within TurnCircleRadius + 50 and faster than 007C47F0;
