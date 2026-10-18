@@ -36962,6 +36962,40 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.diag_thr_skip = tin.dead_band_skips ? 1 : 0;
                             const bsp::PilotBotThrottleResult tr =
                                 bsp::pilot_plan_throttle_0099d300(tin);
+                            {
+                                // DIAGNOSTIC, env-gated (BSP_THROTTLE_TRACE=<unit name>, exact):
+                                // 0099D300's inputs and outputs per think (p21_thrcut). Prints
+                                // nothing when unset.
+                                static const std::string thr_trace = [] {
+                                    char* e = nullptr;
+                                    std::size_t n = 0;
+                                    std::string s;
+                                    if (_dupenv_s(&e, &n, "BSP_THROTTLE_TRACE") == 0 && e != nullptr) s = e;
+                                    std::free(e);
+                                    return s;
+                                }();
+                                if (!thr_trace.empty() && unit_.row.name == thr_trace) {
+                                    const float* const lp = unit_.plane_velocity_lp_30;
+                                    owner_.log.notef("  thr0099d300 %s t=%.2f st=%d m2d8=%d want=%.3f meas=%.3f "
+                                        "scale=%.4f corr=%.4f pend=%.4f skip=%d slot=(%.4f %.4f %d) "
+                                        "out=(%.4f %d) ab=(%.4f %d) clr=%d lp=%.3f lpv=%d",
+                                        unit_.row.name.c_str(),
+                                        static_cast<double>(owner_.summary.simulated_seconds),
+                                        tin.flight_state, tin.air_brake_mode,
+                                        static_cast<double>(tin.desired_speed),
+                                        static_cast<double>(tin.measured_speed),
+                                        static_cast<double>(tin.speed_scale),
+                                        static_cast<double>(tin.error_correction),
+                                        static_cast<double>(tin.pending), tin.dead_band_skips ? 1 : 0,
+                                        static_cast<double>(tin.slot_current),
+                                        static_cast<double>(tin.slot_desired), tin.slot_active ? 1 : 0,
+                                        static_cast<double>(tr.throttle_desired), tr.wrote_throttle ? 1 : 0,
+                                        static_cast<double>(tr.air_brake_desired), tr.wrote_air_brake ? 1 : 0,
+                                        tr.clears_air_brake_mode ? 1 : 0,
+                                        static_cast<double>(std::sqrt(lp[0] * lp[0] + lp[1] * lp[1] + lp[2] * lp[2])),
+                                        unit_.plane_velocity_lp_valid ? 1 : 0);
+                                }
+                            }
                             if constexpr (GameUnitsHost::Impl::kThrottleSlotTrace) {
                                 // Packet cc9_throttle_slot: one line per think for
                                 // the Yorktown flight while its dogfight task runs.
