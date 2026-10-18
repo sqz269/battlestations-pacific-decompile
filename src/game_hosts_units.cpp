@@ -6434,7 +6434,7 @@ struct GameUnitsHost::Impl {
     // Packet p20_strafe_horizontal (section 80). 009CAD27-009CAD58: dx and dz are FSTP'd
     // to floats (009CAD30, 009CAD3E) and d2 = (dx dx + 0 0) + dz dz is stored as a float
     // (009CAD58), main-thread 24-bit per op. True: float per op. False: double dx, dz.
-    static constexpr bool kStrafeHorizontalFloatOpsBound = false;
+    static constexpr bool kStrafeHorizontalFloatOpsBound = true;
     unsigned long long follow_exits{0};
     void follow_exit_009bde40(GameUnitSlot& unit) {
         ++follow_exits;
@@ -24332,14 +24332,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             const float d2 = (dx * dx + 0.0f) + dz * dz;
                             return static_cast<double>(d2) > 1e-10
                                 ? static_cast<float>(std::sqrt(static_cast<double>(d2))) : 0.0f;
+                        } else {
+                            const double dx = static_cast<double>(unit_.st_aim_point[0]) -
+                                              unit_.motion.position[0];
+                            const double dz = static_cast<double>(unit_.st_aim_point[2]) -
+                                              unit_.motion.position[2];
+                            const float d2 = static_cast<float>(dx * dx + dz * dz);
+                            return static_cast<double>(d2) > 1e-10
+                                ? static_cast<float>(std::sqrt(static_cast<double>(d2))) : 0.0f;
                         }
-                        const double dx = static_cast<double>(unit_.st_aim_point[0]) -
-                                          unit_.motion.position[0];
-                        const double dz = static_cast<double>(unit_.st_aim_point[2]) -
-                                          unit_.motion.position[2];
-                        const float d2 = static_cast<float>(dx * dx + dz * dz);
-                        return static_cast<double>(d2) > 1e-10
-                            ? static_cast<float>(std::sqrt(static_cast<double>(d2))) : 0.0f;
                     }
                     // 009CA3B0 (009CA3B0-009CA46D), the glide seed, on the approach.
                     void st_glide_seed_009ca3b0() {
