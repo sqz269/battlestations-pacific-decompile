@@ -2755,3 +2755,50 @@ launches sit in a later init) make no ShipUseCatapult call; JM03 identical. JM06
 **Open.** 64's touched byte (009B1EF2, land final never sets `+20h`, so the touchdown brake is unreached); the
 three unexercised Lua natives; `kFollowSightSearchBound` and `kKamikazeBoostTurboBound` (need a firing follow leader
 and a released Ohka); ReloadTorpedoes and the catapult need rows that reach their scripts.
+
+## 68. Handoff (cc9-physics17, 2026-10-17, paused by the user at about 50% context)
+
+**Commits on agent/cc9-physics1** (each passed the full `scripts/build.ps1` with tests): 49575c7db (R7's turbo arm),
+057145750 + 3250f9d2f (ReloadTorpedoes: gunnery side and script-orders binding, OFF; GenerateObjectEveryCall ON),
+e3da85f78 (four air switches ON, section 66), 334be0e5f (TrulyDead x2, SpawnPlacementMapBounds, IsInBorderZone ON),
+c246320d6 (catapult adapter, OFF), 16404484a (band floor and fighter gunfire scale ON, section 67). No run is in flight.
+
+**Queue remaining, in order** (lead routing, 2026-10-17):
+1. **cc13 fix12** (main 2f2cdac74, `game_hosts_lua.hpp`): `kLuaIsUnitSelectableBound` (008AB580) and
+   `kLuaGetEntitySpeedBound` (008C0820). Flip them TOGETHER: IsUnitSelectable alone makes usn_11's `and` chain hit
+   `nil < 30`. Merge origin/main first, because fix18 (ecc9982d9) moved the plane arm onto `plane_world_velocity`.
+   Pair USN11 (PRCP11 if cheap). Reached by usn_11/prcp_11 CheckMontR*, commandhelpers :14963 (PT boats), jm12 :702 and
+   jm05 :1236. **Caveat (cc13, unreviewed):** usn_11 :1296/:1533 and prcp_11 :1302/:1539 raise on
+   `pairs(GetSquadTorpedoes(sq,true))`, because 008BEF80 returns nil. The rest of that function never runs
+   (SetDeviceReloadEnabled, SquadronSetTravelAlt, PilotMoveTo/SetShipSpeed, SetRoleAvailable, SetForcedReconLevel, the
+   Phase4Movie delay). Judge fix12 by mechanism, not by mission outcome. cc13 MINOR: the image's +B1Ch is
+   |plane_world_velocity|, and it differs from the host while a plane is deck-parented.
+2. **cc13 fix10** (main 8cf922c82): `kLuaProximityTriggersBound` (AddProximityTrigger 008C9730, RemoveTrigger 008C5FD0,
+   the per-step walk 008759B0/00750000). Pair ONLY USN04 and JM13. Prediction for USN04 ON: the convoy passes the split
+   navpoint, North03 sets CarrierEvacEnable, Kill runs at North04, the West04 PTs head for the border, and the two
+   natives leave the UNIMPLEMENTED census. Do not judge it on usn_03, prcp_06, jm02 or usn_09: the target-destroyed
+   observer 0074FFE0 is not modelled, so record any move there as provisional.
+3. **cc13 fix14 with the catapult adapter.** `kLuaGetNumCatapultedBound` (00892AA0) answers 0 until
+   `kShipCatapultLaunchBound` fills slots. c246320d6 already routes GetNumCatapulted through the adapter's record when
+   the adapter switch is ON. Pair and flip them together. Live callers: jm03 :1614 (luaJM3SendPlanes, random >= 80, the
+   image stops at 4), jm04 :1011/:1047, jm14 :670, LOMP01 :703. None was reached on JM02, JM03, JM06 or USN16 (67).
+4. **cc13 fix16** (main dd4cc6fb6, `game_hosts_script_orders.hpp`). Pair USN12 and JM05 (JM13 if cheap), then flip the
+   five as one batch: `kLuaPlaneForceReleaseBound`, `kLuaSquadronForceReleaseBound`, `kLuaPlaneBombFallingTimeBound`,
+   `kLuaPlaneReloadBombPlatformsBound` and `kLuaGetPlaneIsReloadingBound`. Send USN12 WINS moves to lua66. Do NOT flip
+   `kLuaPilotBombBound`: it asks the wing-0 plane where the image asks the squadron (008A505C); cc13 fix21 fixes it.
+   **Release MINORs in our code**, to fix behind a switch if cheap: (a) `release_ordnance_007bbba0` (units.cpp ~3593)
+   turns channel C on when it is disabled, where the image skips the raise at +60h == 0 and only does C20h += 1
+   (007BBBB0); (b) the attach test has no drop-to-attach gap (006E3FE0 tests an attached round only). Also correct
+   docs/ATTACK_COMMANDS.md :89-91 and :307: the squadron 007EFB00 never answers IsKindOf(10h).
+5. Unexercised and OFF (67): UntouchableClear, SquadronSetReleaseAlt, SquadronLandAndKill, FollowSightSearch,
+   KamikazeBoostTurbo (with R7's turbo arm), ReloadTorpedoes, ShipCatapultLaunch. Each needs a row that reaches it.
+
+**Open item, TouchdownBrake (64, 66).** 009B1EF2-009B1F10 sets the land-final touched byte +20h when
+`(plane+72Ch)->vtable[38h]()` is false. The host stands in `plane_control_mode_900 != 7` for that call. The state rule
+009B3D0B moves a plane whose +900h is 4 or 5 to land/park first (`land_enter_park_009b21a0`), so land final's on-ground
+half, which holds the brake, never runs (`touched=0` on all 13 USN01 landings). Next step: identify the plane's
++72Ch sub-object and its vtable[38h]. If it answers false before +900h leaves 7 (on wheel contact, for example), the
+host must take that signal in place of the mode test.
+
+**Tools in `local\`:** `p12_launch.ps1` (one detached run with the reference env), `p11_wait.ps1`, `p17_exports*.ps1`
+(pair_export batches), and the `p17_*` export trees and logs that sections 66-67 cite.
