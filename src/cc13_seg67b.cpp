@@ -3,6 +3,7 @@
 // Hypothesis names, build-tested only, nothing wired.
 
 #include "bsp/cc13_seg67b.hpp"
+#include "bsp/ship_ai_path_follower.hpp"
 
 #include <cmath>
 #include <cstring>
@@ -2327,6 +2328,110 @@ void* bot_task_dive_bomb_construct_009c7710(Cc13Seg67bHost& host, void* task, vo
     construct_task_tail(host, task, kDiveBombTaskVtable, kDiveBombApproachVtable, 0x4DC,
                         kDiveBombRegistryVtable, 0x4F0, 0x52C);
     return task;
+}
+
+// ---------------------------------------------------------------------------
+// Land minimum speed and park-edge rule, the takeoff factory, and the ship-AI
+// plan's signed-node walks.
+
+namespace {
+constexpr float kZero_s15 = 0.0f;
+}  // namespace
+
+// 009B1300 (009B1300-009B13D9). acc = 0.0 (009B130D). When the approach's
+// target +30h is set: v = [approach+4]->vtable[34h](&v) (009B1322), len =
+// 0042B2F0(&v) (009B1328), v /= len component by component, each rounded to
+// float (009B1343 FDIVP ST(2), 009B134F FDIV ST(1), 009B1355 FDIVR m32); w =
+// [approach+30h]->vtable[34h](&w) (009B1362, EAX = the vector); acc = (w.y v.y
+// + w.x v.x) + w.z v.z (009B1364-009B137C). s1 = 007C47F0(ECX = [[approach+4]
+// +538h]) + acc (009B1389-009B139B); s2 = 007C4810(same) (009B139F). 009B13B0
+// FCOMIP s2 against s1, JBE (s2 <= s1, or NaN) -> s1, else s2.
+// UNCERTAINTY: the image rounds each x87 step at 24 bits (main thread); float
+// arithmetic here matches that except for the extended exponent range.
+float bot_approach_land_min_speed_009b1300(Cc13Seg67bHost& host, void* approach) {
+    float acc = kZero_s15;
+    if (ptr_at(approach, 0x30) != nullptr) {
+        float v[3];
+        host.object_vcall_34_get_vector(ptr_at(approach, 0x04), v);
+        const float len = host.vector3_length_0042b2f0(v);
+        v[0] = v[0] / len;
+        v[1] = v[1] / len;
+        v[2] = v[2] / len;
+        float w_buf[3];
+        const float* const w = host.object_vcall_34_get_vector(ptr_at(approach, 0x30), w_buf);
+        acc = (w[1] * v[1] + w[0] * v[0]) + w[2] * v[2];
+    }
+    const float s1 = host.plane_class_level_flight_speed_007c47f0(
+                         ptr_at(ptr_at(approach, 0x04), 0x538)) + acc;
+    const float s2 = host.plane_class_min_control_speed_007c4810(
+        ptr_at(ptr_at(approach, 0x04), 0x538));
+    return (s2 > s1) ? s2 : s1;
+}
+
+// 009B3770 (009B3770-009B37EF). s = [task+310h]. From +4C4h or +500h (009B377F,
+// 009B3789): nothing. From +5B8h or +598h (009B3793, 009B379D): when byte s+18h
+// is set (009B37B7), n = 009AFA50(task) (009B37C0) and an inline set_state:
+// when n != [task+310h], old->vtable[8]() when old is set (009B37DA), +310h = n
+// (009B37DC), n->vtable[4]() by tail JMP (009B37EB). Any other state: when
+// byte s+18h is set (009B37A1), 009B3680(task, task+64Ch) (009B37B0).
+void bot_task_land_state_rule_park_edge_009b3770(Cc13Seg67bHost& host, void* task) {
+    void* const s = ptr_at(task, 0x310);
+    if (s == ptr(task, 0x4C4) || s == ptr(task, 0x500)) return;
+    if (s == ptr(task, 0x5B8) || s == ptr(task, 0x598)) {
+        if (at<std::uint8_t>(s, 0x18) == 0) return;
+        void* const next = bot_task_land_pick_cruise_state_009afa50(host, task);
+        void* const old = ptr_at(task, 0x310);
+        if (next == old) return;
+        if (old != nullptr) host.object_vcall_08_noargs(old);
+        at<std::uintptr_t>(task, 0x310) = reinterpret_cast<std::uintptr_t>(next);
+        host.state_vcall_04_enter(next);
+        return;
+    }
+    if (at<std::uint8_t>(s, 0x18) == 0) return;
+    host.bot_task_land_switch_state_009b3680(task, ptr(task, 0x64C));
+}
+
+// 009CFF40 (009CFF40-009CFFA6). EH frame 00CB01BB. t = operator new(4D4h)
+// (009CFF61); null -> 0 (009CFF93); else 009CF8E0(ECX = t, owner, flag)
+// (009CFF7D), whose EAX is returned.
+void* pilot_bot_create_takeoff_task_009cff40(Cc13Seg67bHost& host, void* owner,
+                                             std::uint32_t flag) {
+    void* const t = host.operator_new_00bf681b(0x4D4);
+    if (t == nullptr) return nullptr;
+    return host.takeoff_task_construct_009cf8e0(t, owner, flag);
+}
+
+namespace {
+// The shared walk of 009D5AE0 and 009D5B90: from plan+20h, a leaf (both links
+// null) ends it with 0; a node whose signed byte +14h passes `hit` ends it with
+// 1; an undecided node gets the 009D5930 direction rule, stored into +4h; then
+// the walk follows +24h on +1, +20h on -1, else ends with 0.
+template <typename Hit>
+bool ship_ai_path_walk_for_signed_node(ShipAiPathPlanBlock& plan, Hit hit) {
+    ShipAiPathNode* n = plan.head;
+    while (n != nullptr) {
+        if (n->link_minus == nullptr && n->link_plus == nullptr) return false;
+        if (hit(static_cast<std::int8_t>(n->field_14))) return true;
+        ship_ai_path_node_decide_direction_009d5930(*n);
+        n = ship_ai_path_node_next_009d9ee6(*n);
+    }
+    return false;
+}
+}  // namespace
+
+// 009D5AE0 (009D5AE0-009D5B87). The walk above with `hit` = signed byte +14h > 0
+// (009D5B00 CMP / JG). The direction rule is inline at 009D5B06-009D5B56.
+// UNCERTAINTY: 009D5B4F JC takes the +1 arm when the costs are unordered (NaN);
+// the shared rule ship_ai_path_node_direction_009d9e6c returns -1 there.
+bool ship_ai_path_any_positive_side_ahead_009d5ae0(ShipAiPathPlanBlock& plan) {
+    return ship_ai_path_walk_for_signed_node(plan, [](std::int8_t b) { return b > 0; });
+}
+
+// 009D5B90 (009D5B90-009D5C37). The same walk with `hit` = signed byte +14h < 0
+// (009D5BB0 CMP / JL). Inline rule 009D5BB6-009D5C06.
+// UNCERTAINTY: as 009D5AE0, the JC at 009D5BFF takes +1 on NaN costs.
+bool ship_ai_path_any_negative_side_ahead_009d5b90(ShipAiPathPlanBlock& plan) {
+    return ship_ai_path_walk_for_signed_node(plan, [](std::int8_t b) { return b < 0; });
 }
 
 }  // namespace bsp

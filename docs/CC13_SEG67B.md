@@ -271,3 +271,14 @@ Ledger-only: 009C9F70 is a byte-identical copy of `set_state`.
 | Address | Function | Notes |
 |---|---|---|
 | 009B7990 / 009C7710 | level-bomb (kind 4) and dive-bomb (kind 8) task constructors | the base, the approach block at +3F8h, three vtables, then a flight leader starts in +4E8h / +4F0h and a member in +534h / +52Ch |
+
+### 3.14 Land minimum speed and park edge, the takeoff factory, and the ship-AI signed-node walks
+
+| Address | Function | Notes |
+|---|---|---|
+| 009B1300 | land approach minimum speed | max(007C4810, 007C47F0 + the target's velocity along the plane's unit direction); the cc9 host drops the projection because its airfield target is static |
+| 009B3770 | land state rule, the park edge | from +5B8h / +598h a set done byte re-picks the cruise state (009AFA50, an inline set_state); any other state but +4C4h / +500h goes to +64Ch |
+| 009CFF40 | takeoff task factory | 4D4h-byte task, 009CF8E0 |
+| 009D5AE0 / 009D5B90 | plan walks for a node with a positive / negative side byte | reuse the 009D5930 direction rule; on NaN costs the image takes +1 and the shared rule takes -1 |
+
+Ledger-only (existing implementations, spot-checked against the bytes): 009B4400, 009C3DA0 and 009D02A0 (aim-error redraws); 009C23B0 (move-to target speed); 009CB650 and 009CB780 (strafe go-away re-plans); 009A86F0 (dogfight maneuver expiry); 009A9970 (avoid pick); 009B21D0 (park done test); 009B3C00 (land/begin final rule). The NaN-only differences in 009CB780 and 009B21D0 are recorded in their ledger rows.

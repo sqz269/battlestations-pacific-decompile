@@ -175,6 +175,17 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
+    // vtable[34h](out) on a unit or entity: fills a 3-float vector, EAX = it.
+    virtual float* object_vcall_34_get_vector(void* object, float* out) = 0;
+    // 0042B2F0: __thiscall(ECX = vector), ST0 = its length.
+    virtual float vector3_length_0042b2f0(const float* v) = 0;
+    // 007C47F0 / 007C4810: __thiscall(ECX = plane class descriptor), ST0.
+    virtual float plane_class_level_flight_speed_007c47f0(void* descriptor) = 0;
+    virtual float plane_class_min_control_speed_007c4810(void* descriptor) = 0;
+    // 009B3680: __thiscall(ECX = land task, state), RET 4 (set_state copy).
+    virtual void bot_task_land_switch_state_009b3680(void* task, void* state) = 0;
+    // 009CF8E0: __thiscall(ECX = task, owner, flag byte), RET 8, EAX = task.
+    virtual void* takeoff_task_construct_009cf8e0(void* task, void* owner, std::uint32_t flag) = 0;
     // 009B75E0 / 009C73A0: __thiscall(ECX = task+3F8h, bot, target), RET 8.
     virtual void level_bomb_approach_construct_009b75e0(void* block, void* bot, void* target) = 0;
     virtual void dive_bomb_approach_construct_009c73a0(void* block, void* bot, void* target) = 0;
@@ -666,5 +677,17 @@ void* bot_task_level_bomb_construct_009b7990(Cc13Seg67bHost& host, void* task, v
                                              void* target);
 void* bot_task_dive_bomb_construct_009c7710(Cc13Seg67bHost& host, void* task, void* bot,
                                             void* target);
+struct ShipAiPathPlanBlock;
+
+// 009B1300: __thiscall(ECX = approach), RET, ST0.
+float bot_approach_land_min_speed_009b1300(Cc13Seg67bHost& host, void* approach);
+// 009B3770: __thiscall(ECX = task), RET.
+void bot_task_land_state_rule_park_edge_009b3770(Cc13Seg67bHost& host, void* task);
+// 009CFF40: __fastcall(ECX = owner, EDX = flag), RET, EAX = task or 0.
+void* pilot_bot_create_takeoff_task_009cff40(Cc13Seg67bHost& host, void* owner,
+                                             std::uint32_t flag);
+// 009D5AE0 / 009D5B90: __thiscall(ECX = plan block), RET, AL.
+bool ship_ai_path_any_positive_side_ahead_009d5ae0(ShipAiPathPlanBlock& plan);
+bool ship_ai_path_any_negative_side_ahead_009d5b90(ShipAiPathPlanBlock& plan);
 
 }  // namespace bsp
