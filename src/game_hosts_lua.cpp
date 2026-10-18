@@ -2868,6 +2868,7 @@ void GameMissionLuaHost::note_error(const std::string& message) {
     // Harness diagnostic, not image behaviour: the summary keeps only the first
     // error, so a later error raised inside a listener or delayed callback was
     // silent. Log each one, capped so a per-frame failure cannot flood the log.
+    if (!message.empty()) ++lua_errors_total_;   // cc15-vcp3 summary
     static int logged = 0;
     if (!message.empty() && logged < 50) {
         ++logged;
@@ -4410,7 +4411,23 @@ void GameMissionLuaHost::mark_vehicle_class_row_00964790(int class_index, const 
     }
 }
 
-void GameMissionLuaHost::census_vehicle_class_purge_0095ca70(const char* site) {
+int GameMissionLuaHost::vehicle_class_nil_index_hook(lua_State* state) {
+    // cc15-vcp3, harness diagnostic, not image behaviour: __index on
+    // VehicleClass runs only for an absent key, and it returns nothing, which
+    // is the nil a plain table gives. Only purged keys are counted.
+    auto* host = static_cast<GameMissionLuaHost*>(lua_touserdata(state, lua_upvalueindex(1)));
+    if (host != nullptr && lua_type(state, 2) == LUA_TNUMBER) {
+        const auto row = host->vehicle_class_script_nil_rows_.find(
+            static_cast<int>(lua_tointeger(state, 2)));
+        if (row != host->vehicle_class_script_nil_rows_.end()) {
+            ++row->second;
+            ++host->vehicle_class_script_nil_reads_;
+        }
+    }
+    return 0;
+}
+
+void GameMissionLuaHost::census_vehicle_class_purge_0095ca70(const char* site, bool purge) {
     // 0095CA70 walks VehicleClass with 00B67080 / 00B67190 and collects every
     // key whose value's Got (00CE452C) fails 00B66000, then runs
     // "VehicleClass[%d]=nil" (00D1A964) for each. This census only counts.
@@ -4452,8 +4469,39 @@ void GameMissionLuaHost::census_vehicle_class_purge_0095ca70(const char* site) {
     ::lua_settop(state_, base);
     ++vehicle_class_censuses_;
     vehicle_class_rows_would_nil_ = would_nil;
-    log_.notef("vehicle class purge census at %s (0095CA70, log only): rows=%zu would_nil=%zu "
-        "kept=%zu:%s", site, rows, would_nil, rows - would_nil, kept.c_str());
+    log_.notef("vehicle class purge census at %s (0095CA70, %s): rows=%zu would_nil=%zu "
+        "kept=%zu:%s", site, purge ? "PURGED" : "log only", rows, would_nil,
+        rows - would_nil, kept.c_str());
+    if (!purge) return;
+    // cc15-vcp3: 0095CA70's second loop. Each index is formatted with
+    // "VehicleClass[%d]=nil" (00D1A964) into a 2Ah-byte buffer and run by the
+    // Lua machine (006B8AD0(buffer, 0, 0, 2)): a chunk, not a raw store.
+    for (const auto& [index, reads] : vehicle_class_would_nil_) {
+        static_cast<void>(reads);
+        char chunk[0x2a];
+        std::snprintf(chunk, sizeof chunk, "VehicleClass[%d]=nil", index);
+        if (::luaL_loadbuffer(state_, chunk, std::strlen(chunk), chunk) != 0
+            || ::lua_pcall(state_, 0, 0, 0) != 0) {
+            ++vehicle_class_purge_failures_;
+            ::lua_settop(state_, base);
+            continue;
+        }
+        ++vehicle_class_purged_;
+        vehicle_class_script_nil_rows_.emplace(index, 0);
+    }
+    // The harness hook that counts later script reads of the purged keys.
+    // A table that already has a metatable is left alone.
+    lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+    if (lua_istable(state_, -1) && !lua_getmetatable(state_, -1)) {
+        lua_createtable(state_, 0, 1);
+        lua_pushlightuserdata(state_, this);
+        lua_pushcclosure(state_, &GameMissionLuaHost::vehicle_class_nil_index_hook, 1);
+        lua_setfield(state_, -2, "__index");
+        lua_setmetatable(state_, -2);
+    }
+    ::lua_settop(state_, base);
+    log_.notef("vehicle class purge at %s: purged=%zu failures=%zu (VehicleClass[%%d]=nil, "
+        "00D1A964 through 006B8AD0)", site, vehicle_class_purged_, vehicle_class_purge_failures_);
 }
 
 void GameMissionLuaHost::note_vehicle_class_read(int index) {
@@ -10806,6 +10854,16 @@ void GameMissionLuaHost::report_mission_script_state() {
             "censuses=%zu rows_would_nil=%zu later_host_reads=%zu per_class:%s",
             vehicle_class_censuses_, vehicle_class_rows_would_nil_,
             vehicle_class_later_reads_, read_rows.c_str());
+        std::string script_rows;
+        for (const auto& [index, reads] : vehicle_class_script_nil_rows_) {
+            if (reads != 0 && script_rows.size() < 900) {
+                script_rows += " " + std::to_string(index) + "x" + std::to_string(reads);
+            }
+        }
+        log_.notef("summary vehicle class purge (cc15-vcp3): purged=%zu failures=%zu "
+            "script_nil_reads=%zu lua_errors=%zu per_class:%s", vehicle_class_purged_,
+            vehicle_class_purge_failures_, vehicle_class_script_nil_reads_, lua_errors_total_,
+            script_rows.c_str());
     }
     log_.notef("summary mission script listeners bound=%d adds=%llu removes=%llu queries=%llu "
         "registered=%zu kill_deaths=%llu kill_fires=%llu attacker_filtered=%llu (008C6760 / "

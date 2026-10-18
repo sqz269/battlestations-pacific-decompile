@@ -488,8 +488,19 @@ inline constexpr bool kEngineMovieStopRosterBound = true;
 // With the switch on, USN01, USN04 and JM08 read no would-nil row after
 // 004E0A9B. docs/VEHICLE_CLASS_DESCRIPTORS.md has the census.
 //
+// Step 3 (cc15-vcp3): at 004E0A9B, 0095CA70's purge itself runs. Each
+// collected row gets "VehicleClass[%d]=nil" (00D1A964), run as a Lua chunk the
+// way 006B8AD0 runs it. The site 0045F6C1 stays a census until
+// kVehicleClassMovieStopPurgeCc15Bound.
+//
 // False: 0046BF20 and 0046BF70 stay records, as before.
 inline constexpr bool kVehicleClassPreloadCc15Bound = false;
+
+// cc15-vcp3: with kVehicleClassPreloadCc15Bound, also purge at the movie stop
+// 0045F6C1. That runs mid-mission and can nil rows that were first read after
+// load, so it stays off until a census exists for a mission that takes the
+// movie-stop path (cc9).
+inline constexpr bool kVehicleClassMovieStopPurgeCc15Bound = false;
 
 // docs/CC13_AUDIT_LUA51_FLIPS.md item 3. Two admits the stop does not remove:
 // a `Hidden` entity goes through 0046C550 with the last argument 1 (0046D60F) and

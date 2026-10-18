@@ -4024,6 +4024,9 @@ void* registry_entity_by_id(Seg59bHost& host, std::uint32_t id) {
 // ---------------------------------------------------------------------------
 // 00912A60 BSP_MissionScoreRecord_EvaluateAchievementCounters (provisional, cc9 name).
 // __fastcall(ECX = record = scoring + slot*284h + 4), RET. Callers 00914EF0 and 00920A20.
+// The cc9 host records the call only (game_hosts_mission_frame.cpp ~762, bot_think_pass_b_00912a60,
+// "BotScheduler::think_b"); the second caller 00920A20 is cc9's debrief_bringup_00920a20 host, which
+// does not call it; vocabulary in bot_scheduler_output.hpp:85-105.
 // Evidence (listing 00912A60..00913A61, read whole):
 //  0058B520 empties the counter map at record+84h and resets its head (00912A9A..00912ABA).
 //  Thresholds from the award table (0050FC30, +44h vector, each key an inline NativeString of
@@ -4457,7 +4460,8 @@ void send_int_tree3(Seg59bHost& host, void* message, void* tree, std::uint32_t k
 // multiplayer_session_cc13.cpp:879 hosts that loop through scoring_send_row_0090abb0 (no body).
 // The sending half of 0091C650: one stack message (0075B430 type 15h, vtable 00D035B8,
 // +4 = 1) is refilled and sent through 0076A9F0(game+1EF0h; message, 0) once per item; it is
-// never destroyed.
+// never destroyed. The EH state is set to 0 at 0090AD21 (before the first send) and stays 0 at
+// the exit, so only an exception unwind (handler 00CA550B) destroys the message.
 // Evidence (listing 0090ABB0..0090BD92, read whole):
 //  [game+1FE4h] != 1 or byte [game+218Ch] != 0 -> return. Kind 0: message+1Ch slot ([+250h]),
 //  +20h..+28h floats [+0Ch]/[+10h]/[+14h], +2Ch..+34h [+0]/[+4]/[+8], +38h..+50h [+1C8h..+1E0h],
@@ -4593,5 +4597,213 @@ void score_record_send_sync_0090abb0(Seg59bHost& host, void* record) {
             host.tree_iterator_increment(0x0057F4A0u, &it);
         }
     }
+}
+
+namespace {
+
+// 0091A080's one-level walk: owner, end, container, not-head; the subscript; not-head; the add.
+template <typename Body>
+void merge_walk_one_level(Seg59bHost& host, void* tree, std::uint32_t increment, Body body) {
+    StlTreeIterator it{tree, ptr(ptr(tree, 0x04), 0x00)};
+    for (;;) {
+        void* const head = ptr(tree, 0x04);
+        check_iterator_owner(host, it, tree);
+        if (it.node == head) break;
+        check_iterator_container(host, it);
+        check_iterator_not_head(host, it);
+        body(it);
+        host.tree_iterator_increment(increment, &it);
+    }
+}
+
+// A string-keyed int map: destination[key] (005070C0) += node+14h; ++ 004FBD20.
+void merge_string_int_map(Seg59bHost& host, void* destination_map, void* source_map) {
+    merge_walk_one_level(host, source_map, 0x004FBD20u, [&](const StlTreeIterator& it) {
+        std::int32_t* const slot = host.string_int_map_index_005070c0(destination_map, add(it.node, 0x0C));
+        check_iterator_not_head(host, it);
+        *slot += at<std::int32_t>(it.node, 0x14);
+    });
+}
+
+// A three-level int tree: outer[key] -> middle[key] -> 00625900 leaf[key] += leaf value. `int_chain`
+// picks 0062C170 / 0062BB60 (true) or 00915610 / 00911890 (false); leaf ++ 0057F4A0.
+void merge_int_tree3(Seg59bHost& host, void* destination_map, void* tree, bool int_chain,
+                     std::uint32_t middle_increment, std::uint32_t outer_increment) {
+    StlTreeIterator outer{tree, ptr(ptr(tree, 0x04), 0x00)};
+    for (;;) {
+        void* const head = ptr(tree, 0x04);
+        check_iterator_owner(host, outer, tree);
+        if (outer.node == head) break;
+        check_iterator_container(host, outer);
+        check_iterator_not_head(host, outer);
+        StlTreeIterator middle{add(outer.node, 0x10), ptr(ptr(outer.node, 0x14), 0x00)};
+        for (;;) {
+            check_iterator_not_head(host, outer);
+            void* const middle_head = ptr(outer.node, 0x14);
+            check_iterator_owner(host, middle, add(outer.node, 0x10));
+            if (middle.node == middle_head) break;
+            check_iterator_container(host, middle);
+            check_iterator_not_head(host, middle);
+            StlTreeIterator leaf{add(middle.node, 0x10), ptr(ptr(middle.node, 0x14), 0x00)};
+            for (;;) {
+                check_iterator_not_head(host, middle);
+                void* const leaf_head = ptr(middle.node, 0x14);
+                check_iterator_owner(host, leaf, add(middle.node, 0x10));
+                if (leaf.node == leaf_head) break;
+                check_iterator_container(host, leaf);
+                check_iterator_not_head(host, leaf);
+                check_iterator_not_head(host, middle);
+                check_iterator_not_head(host, outer);
+                const auto* const outer_key = static_cast<const std::int32_t*>(add(outer.node, 0x0C));
+                const auto* const middle_key = static_cast<const std::int32_t*>(add(middle.node, 0x0C));
+                const auto* const leaf_key = static_cast<const std::int32_t*>(add(leaf.node, 0x0C));
+                void* const level2 = int_chain ? host.stl_map_subscript_0062c170(destination_map, outer_key)
+                                               : host.stl_map_subscript_00915610(destination_map, outer_key);
+                void* const level3 = int_chain ? host.stl_map_subscript_0062bb60(level2, middle_key)
+                                               : host.stl_map_subscript_00911890(level2, middle_key);
+                std::int32_t* const slot = host.stl_map_subscript_00625900(level3, leaf_key);
+                check_iterator_not_head(host, leaf);
+                *slot += at<std::int32_t>(leaf.node, 0x10);
+                host.tree_iterator_increment(0x0057F4A0u, &leaf);
+            }
+            host.tree_iterator_increment(middle_increment, &middle);
+        }
+        host.tree_iterator_increment(outer_increment, &outer);
+    }
+}
+
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 0091A080 BSP_MissionScoreRecord_MergeInto (provisional). __thiscall(ECX = destination record,
+// [ESP+4] = source record), RET 4; no SEH frame. Caller 009205E0 (BSP_MissionProgress_
+// CommitMissionRecord) merges the mission's score record into the progress map's record.
+// cc9's commit_mission_record_009205e0 (mission_result.cpp, ~188) models this call as
+// `stored = record` with the play count kept; the image accumulates instead (see below).
+// Evidence (listing 0091A080..0091B2B1, read whole):
+//  i = src[+8]: when dst[+26Ch + 4i] < src[+0] and dst[+278h + 4i] < src[+1E0h] (signed, JGE
+//  skips), dst[+278h + 4i] = src[+1E0h] and dst[+26Ch + 4i] = src[+0]. When src[+0] != 0:
+//  dst[+4] = max(dst[+4], src[+4]) (JL), dst[+194h] |= src[+194h], dst[+18Ch] += src[+18Ch].
+//  dst[+0] += src[+0]; dst[+8] = src[+8]; floats +0Ch, +10h = src + dst (FLD src, FADD dst).
+//  String-keyed int maps (005070C0, ++ 004FBD20), source -> destination: +18h -> +18h,
+//  +24h -> +24h, +3Ch -> +24h, +30h -> +24h, +48h -> +24h, +54h -> +54h, +60h -> +60h (the
+//  ECX at 0091A257, 0091A2D7 and 0091A357 is dst+24h for the +3Ch, +30h and +48h sources).
+//  Three-level trees: +B4h and +C0h (0062C170 / 0062BB60 / 00625900; ++ 0057F920 / 0057F3C0),
+//  +9Ch and +A8h (00915610 / 00911890 / 00625900; ++ 0057F430 / 0057F350). +114h int -> float
+//  (0090E740, src + dst; ++ 0057F510). +D8h int map (00625900; ++ 0057F4A0). +CCh two levels
+//  (00911890 / 00625900; ++ 0057F4A0 / 0057F430). Float +14h = src + dst. Ints +1C8h..+1E8h
+//  added. String maps +1ECh, +1F8h. 00625F50 maps +204h, +210h, +21Ch, +228h, +234h, +240h:
+//  [result+8] += node+1Ch (++ 0057F010). Ints +178h, +17Ch, +180h, +188h, +184h added, RET 4.
+// Every inlined 00BF6713 iterator test keeps its point (4 per one-level node, 9 per two-level
+// leaf, 14 per three-level leaf path). No shared RNG draws.
+// Uncertainty: the four float adds are modelled at 24-bit precision; 53-bit precision rounds
+// the same float+float sum once on the FSTP except in extreme exponent gaps. Whether the
+// dst+24h target for three source maps is a source-level slip is not established; the image
+// does it.
+// ---------------------------------------------------------------------------
+void score_record_merge_0091a080(Seg59bHost& host, void* destination, void* source) {
+    {
+        const std::int32_t i = at<std::int32_t>(source, 0x08);
+        if (at<std::int32_t>(destination, 0x26C + i * 4) < at<std::int32_t>(source, 0x000) &&
+            at<std::int32_t>(destination, 0x278 + i * 4) < at<std::int32_t>(source, 0x1E0)) {
+            at<std::int32_t>(destination, 0x278 + i * 4) = at<std::int32_t>(source, 0x1E0);
+            at<std::int32_t>(destination, 0x26C + at<std::int32_t>(source, 0x08) * 4) =
+                at<std::int32_t>(source, 0x000);
+        }
+    }
+    if (at<std::int32_t>(source, 0x000) != 0) {
+        const std::int32_t best = at<std::int32_t>(destination, 0x004) < at<std::int32_t>(source, 0x004)
+                                      ? at<std::int32_t>(source, 0x004)
+                                      : at<std::int32_t>(destination, 0x004);
+        at<std::int32_t>(destination, 0x004) = best;
+        at<std::uint32_t>(destination, 0x194) |= at<std::uint32_t>(source, 0x194);
+        at<std::int32_t>(destination, 0x18C) += at<std::int32_t>(source, 0x18C);
+    }
+    at<std::int32_t>(destination, 0x000) += at<std::int32_t>(source, 0x000);
+    at<std::int32_t>(destination, 0x008) = at<std::int32_t>(source, 0x008);
+    at<float>(destination, 0x0C) = at<float>(source, 0x0C) + at<float>(destination, 0x0C);
+    at<float>(destination, 0x10) = at<float>(source, 0x10) + at<float>(destination, 0x10);
+
+    merge_string_int_map(host, add(destination, 0x18), add(source, 0x18));
+    merge_string_int_map(host, add(destination, 0x24), add(source, 0x24));
+    merge_string_int_map(host, add(destination, 0x24), add(source, 0x3C));
+    merge_string_int_map(host, add(destination, 0x24), add(source, 0x30));
+    merge_string_int_map(host, add(destination, 0x24), add(source, 0x48));
+    merge_string_int_map(host, add(destination, 0x54), add(source, 0x54));
+    merge_string_int_map(host, add(destination, 0x60), add(source, 0x60));
+
+    merge_int_tree3(host, add(destination, 0xB4), add(source, 0xB4), true, 0x0057F920u, 0x0057F3C0u);
+    merge_int_tree3(host, add(destination, 0xC0), add(source, 0xC0), true, 0x0057F920u, 0x0057F3C0u);
+    merge_int_tree3(host, add(destination, 0x9C), add(source, 0x9C), false, 0x0057F430u, 0x0057F350u);
+    merge_int_tree3(host, add(destination, 0xA8), add(source, 0xA8), false, 0x0057F430u, 0x0057F350u);
+
+    // 0091AAFD..0091AB90: +114h int -> float, 0090E740.
+    merge_walk_one_level(host, add(source, 0x114), 0x0057F510u, [&](const StlTreeIterator& it) {
+        float* const slot = host.stl_map_subscript_0090e740(
+            add(destination, 0x114), static_cast<const std::int32_t*>(add(it.node, 0x0C)));
+        check_iterator_not_head(host, it);
+        *slot = at<float>(it.node, 0x10) + *slot;
+    });
+    // 0091AB92..0091AC10: +D8h int -> int, 00625900.
+    merge_walk_one_level(host, add(source, 0xD8), 0x0057F4A0u, [&](const StlTreeIterator& it) {
+        std::int32_t* const slot = host.stl_map_subscript_00625900(
+            add(destination, 0xD8), static_cast<const std::int32_t*>(add(it.node, 0x0C)));
+        check_iterator_not_head(host, it);
+        *slot += at<std::int32_t>(it.node, 0x10);
+    });
+
+    // 0091AC12..0091AD2B: +CCh, two levels (00911890 / 00625900).
+    {
+        void* const tree = add(source, 0xCC);
+        StlTreeIterator outer{tree, ptr(ptr(tree, 0x04), 0x00)};
+        for (;;) {
+            void* const head = ptr(tree, 0x04);
+            check_iterator_owner(host, outer, tree);
+            if (outer.node == head) break;
+            check_iterator_container(host, outer);
+            check_iterator_not_head(host, outer);
+            StlTreeIterator leaf{add(outer.node, 0x10), ptr(ptr(outer.node, 0x14), 0x00)};
+            for (;;) {
+                check_iterator_not_head(host, outer);
+                void* const leaf_head = ptr(outer.node, 0x14);
+                check_iterator_owner(host, leaf, add(outer.node, 0x10));
+                if (leaf.node == leaf_head) break;
+                check_iterator_container(host, leaf);
+                check_iterator_not_head(host, leaf);
+                check_iterator_not_head(host, outer);
+                void* const level2 = host.stl_map_subscript_00911890(
+                    add(destination, 0xCC), static_cast<const std::int32_t*>(add(outer.node, 0x0C)));
+                std::int32_t* const slot =
+                    host.stl_map_subscript_00625900(level2, static_cast<const std::int32_t*>(add(leaf.node, 0x0C)));
+                check_iterator_not_head(host, leaf);
+                *slot += at<std::int32_t>(leaf.node, 0x10);
+                host.tree_iterator_increment(0x0057F4A0u, &leaf);
+            }
+            host.tree_iterator_increment(0x0057F430u, &outer);
+        }
+    }
+
+    at<float>(destination, 0x14) = at<float>(source, 0x14) + at<float>(destination, 0x14);
+    for (std::uint32_t offset = 0x1C8; offset <= 0x1E8; offset += 4) {
+        at<std::int32_t>(destination, offset) += at<std::int32_t>(source, offset);
+    }
+
+    merge_string_int_map(host, add(destination, 0x1EC), add(source, 0x1EC));
+    merge_string_int_map(host, add(destination, 0x1F8), add(source, 0x1F8));
+
+    // 0091AEDF..0091B268: six NativeString-keyed maps, 00625F50; [result+8] += node+1Ch.
+    for (std::uint32_t offset = 0x204; offset <= 0x240; offset += 0x0C) {
+        merge_walk_one_level(host, add(source, offset), 0x0057F010u, [&](const StlTreeIterator& it) {
+            void* const entry = host.string_record_map_index_00625f50(add(destination, offset), add(it.node, 0x0C));
+            check_iterator_not_head(host, it);
+            at<std::int32_t>(entry, 0x08) += at<std::int32_t>(it.node, 0x1C);
+        });
+    }
+
+    at<std::int32_t>(destination, 0x178) += at<std::int32_t>(source, 0x178);
+    at<std::int32_t>(destination, 0x17C) += at<std::int32_t>(source, 0x17C);
+    at<std::int32_t>(destination, 0x180) += at<std::int32_t>(source, 0x180);
+    at<std::int32_t>(destination, 0x188) += at<std::int32_t>(source, 0x188);
+    at<std::int32_t>(destination, 0x184) += at<std::int32_t>(source, 0x184);
 }
 }  // namespace bsp::cc13_seg59b
