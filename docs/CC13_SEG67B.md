@@ -79,3 +79,47 @@ not a host defect.
 | 009B09C0 | BSP_BotStateLandAbort_Tick | `run_land_abort_tick_009b09c0` | on-ground arm matches |
 | 009B3CF0 | BSP_BotTaskLand_StateRule | `land_state_rule_009b3cf0` | matches except final->park |
 | 009B3370 | BSP_BotStateLandFinal_ParkRule | inline predicate | matches |
+
+## 3. Reconstructed bodies (`src/cc13_seg67b.cpp`)
+
+These are new C++ interfaces over raw native records. Every native call goes through
+`Cc13Seg67bHost` at the image's point, with the image's arguments. Nothing is wired
+in. Status: build-tested only. Per-function evidence and uncertainty are in the
+code comments and the ledger records.
+
+### 3.1 The bot-task base and the factory list
+
+| Address | Function | Notes |
+|---|---|---|
+| 0099EBB0 | `bot_task_factory_register_0099ebb0` | pushes the factory onto 00F8A314 |
+| 0099EBE0 | `bot_task_factory_unregister_0099ebe0` | unlinks it, then returns the name block through 00419CC0 / 00BD1510 |
+| 0099B630 | `pilot_command_pitch_target_or_live_0099b630` | plan+2BCh when +2D0h is set, else unit+C64h |
+| 0099B650 | `bot_task_set_owner_25c_0099b650` | +25Ch store |
+| 0099B690 | `bot_task_retire_0099b690` | 0099A870(bot, task) |
+| 009A1A20 | `bot_task_commanded_heading_009a1a20` | 00438AA0(heading, 0099D0A0 or 0) |
+| 0099C6F0 | `bot_task_construct_base_0099c6f0` | two draws: stream 1 U(0,1), stream 0 U(-1,0) |
+| 0099C8B0 | `bot_task_construct_base_from_stream_0099c8b0` | the same, plus a read of "avoidFlags" |
+| 0099D060 | `bot_task_save_base_0099d060` | writes "avoidFlags" |
+
+### 3.2 Bot conditions (00996120-009972ED)
+
+| Address | Function |
+|---|---|
+| 00996120 | `bot_condition_timed_destruct_00996120` |
+| 00996270 | `bot_condition_turn_to_test_00996270` |
+| 00996460 | `bot_condition_timed_save_00996460` |
+| 009965D0 | `bot_target_condition_save_target_ref_009965d0` |
+| 00996670, 00996770 | `bot_target_condition_destruct_00996670` / `_00996770` |
+| 00996720 | `bot_condition_turn_to_construct_00996720` |
+| 009968D0 | `bot_condition_create_from_archive_009968d0` |
+| 00996BB0 | `bot_condition_load_from_reader_00996bb0` |
+| 00996C00 | `bot_condition_timed_load_00996c00` |
+| 00996CA0 | `bot_target_condition_save_00996ca0` |
+| 00996D00, 00996D70, 00996E10, 00996EB0 | the turnAway, turnToHdg, turnTo and farAway saves |
+| 00996F50 | `bot_target_condition_load_target_00996f50` |
+| 00996FB0, 00997090, 00997110, 009971B0, 00997250 | the target, turnAway, turnToHdg, turnTo and farAway loads |
+
+Two loads are seeded from the stack: the read slots in 00996C00 and 00996F50 are
+the entry `PUSH ECX` slots. Before the archive writes them they hold the pointer
+bits, and the code keeps that. 009968D0 calls `o->vtable[8]` even when no object
+was made; the image faults on that path, so the host receives a null object.
