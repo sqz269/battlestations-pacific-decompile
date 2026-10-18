@@ -862,6 +862,25 @@ No new bodies. Four ledger-only rows, each read from the whole listing. None tak
   - moveto's tolerance min keeps b on NaN, where the host keeps +40h;
   - the binary zeroes own_d at or below 1e-10 squared, which `lb_spacing_pass` does not.
 
+### 3.58 Batch 12: the dive aimglide, aimdive and flyabove ticks (packet cc13-seg67C)
+
+No new bodies. Three ledger-only rows:
+- **009C5180**, aimglide. Read whole against `run_dive_bomb_aimglide_tick_009c5180` (~28827) and its helpers. It matches, given the host's labelled stand-ins:
+  - The release takes one stream-1 draw, U(0.2, 0.5) at 009C579E; the host pins it at 0.2.
+  - approach+CCh = 3 in the yaw arm is not kept.
+  - The heading arm takes its bearing from `db_bearing_c0`.
+- **009C58D0**, aimdive, against `run_dive_bomb_aimdive_tick_009c58d0` (~29350):
+  - Read: the release 009C608C-009C6154 and the steer and roll-band block 009C5B61-009C5DAB.
+  - Checked by constant only: the other 27 memory-operand constants, each decoded at its load width. All agree.
+  - Draws: one stream-1 draw, U(0.5, 1.0) at 009C6114, pinned low with a label.
+  - LOW: a NaN +1Ch skips the release in the image but passes the host.
+- **009C62B0**, flyabove, against `run_dive_bomb_flyabove_tick_009c62b0` (~28959):
+  - No direct draw.
+  - All 57 memory-operand constants checked.
+  - One finite-input difference, sent URGENT: 009C6BBE subtracts qword [00CE3D10] = 0.20000000298023224, but `near_field_flyover_slot_009c6b75` subtracts the exact double 0.2.
+  - LOW: the same helper compares against an exact 0.05 where the image uses 0.05000000074505806.
+  - The arms were not re-read instruction by instruction; they rest on the earlier packets' coverage notes and the cc13 plane-bot audits.
+
 ## 4. Ledger-only records (packet cc13-seg67C)
 
 | Address | Host body | Result |
@@ -1006,3 +1025,6 @@ No new bodies. Four ledger-only rows, each read from the whole listing. None tak
 | 009B22C0 | `run_land_park_tick_009b22c0` (game_hosts_units.cpp ~33355) | PARTIAL: slow-test NaN arm |
 | 009B4D00 | `lb_attackrun_tick_009b4d00` (game_hosts_units.cpp ~25756) | PARTIAL: NaN-dt arm, own_d 1e-10 guard |
 | 009B6D20 | `lb_moveto_tick_009b6d20` (game_hosts_units.cpp ~25697) | PARTIAL: NaN-dt arm, tolerance-min NaN arm |
+| 009C5180 | `run_dive_bomb_aimglide_tick_009c5180` (game_hosts_units.cpp ~28827) | matches the labelled stand-ins (draw pinned low) |
+| 009C58D0 | `run_dive_bomb_aimdive_tick_009c58d0` (game_hosts_units.cpp ~29350) | matches (release and constants); LOW NaN rearm arm |
+| 009C62B0 | `run_dive_bomb_flyabove_tick_009c62b0` (game_hosts_units.cpp ~28959) | PARTIAL: exact 0.2 at 009C6BBE (near_field_probe.cpp) |
