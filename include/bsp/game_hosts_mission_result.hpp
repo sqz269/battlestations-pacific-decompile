@@ -45,8 +45,14 @@ class GameHostLog;
 // commit 009205E0 copies into progress_. Divergence, labelled: 00906460's walk
 // of [[game+19CCh]+28h] calling 00927F60 per entity with +180h < 8 (stamp the
 // clock at entity+1D0h, give five flight members the same value, and pass the
-// elapsed time clock - old +1D0h to 0090ED40, a per-slot statistic) is one
-// recorded step; the host has no entity list or per-slot statistics.
+// elapsed time clock - old +1D0h to 0090ED40, which adds it into slot
+// entity+1ACh's saved unit_usage map, record+114h keyed by entity+170h's
+// vtable[0]() (0090ED74 LEA ECX,[slot*284h + scoring + 118h], the records
+// starting at scoring+4h; 0090E740 subscript, float add); 0091A080 merges that
+// map into the progress record (0091AB5E ADD ECX,114h; 0090E740; float add),
+// which the archive writes as section
+// "unit_usage") is one recorded step; the host has no entity list and does not
+// write the unit_usage map.
 // The binding returns 0 results (00B66400). No 00BD2F10 draw.
 inline constexpr bool kLuaScoringSetMissionCompletedBound = false;
 
