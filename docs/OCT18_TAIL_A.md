@@ -154,29 +154,6 @@ Four rows already have full function records/source and are left unchanged:
 004837D0 (native unit-list erase), 004845A0 (native list payload remove), 004B7EC0
 (raw list-header initialization), and 006AA460 (raw input-settings destruction).
 
-## Prior deferred rows (follow-up below)
-
-The table records the original triage. Ten rows are now reconstructed below;
-004D56E0, 004DE610, 004E27E0 and 00648C20 remain in progress.
-
-| Address | Remaining work / evidence boundary |
-|---|---|
-| 00428800 | Full blast-site traversal, pose-cache refresh and x87 radius checks; existing blast host reaches it through a service. |
-| 00436C50 | Complete recursive Lua cross-state copy, x87 numeric coercion and cleanup; current profile implementation is a host projection. |
-| 0049C000 | Full randomized point-announcement construction, vector/x87 normalization and unwind; existing source covers only XYZ fragment. |
-| 004A5620 | Full runtime publication over checked record vector/map, constructor failure cleanup and returning-validation captures need completing; constructor004A50D0 source exists. This is game code, despite older STL-probable notes. |
-| 004D56E0 | Dropped-player score ordering, redistribution and message publication need a complete body/ABI audit. |
-| 004DD5B0 | Full initialization/Lua/file-block lifetime and branch contracts; existing input-init fragment is retained. |
-| 004DE610 | Whole world construction and parent/subsystem contracts; current fog/header fragments do not cover the large parent. |
-| 004E27E0 | Complete option parser and all side effects; large body with45 direct callees. |
-| 004E4000 | Full shell-transition order and startup/UI effects; existing executable-effect fragment is retained. |
-| 005C7B80 | Whole mission-record string/container/reference-count assignment; existing picture-owner projection is partial. |
-| 00648C20 | Existing hud_root_update_rows is explicitly bounded, including non-x87-exact width rules; full457-line parent remains open. |
-| 006D0D40 | JMP00958A30 verified, but existing target source explicitly omits the subobject branch. A forwarding wrapper would inherit an incomplete target. |
-| 006E35A0 | JMP0072E6D0 verified; target is currently labelled host_reference_unverified, not an accepted complete standalone body. |
-| 00768530 | Whole roughly190-case message factory. Many dependencies already have fragment records; factory/read-dispatch/unwind contract still needs its own complete reconstruction. |
-
-
 ## Follow-up batch 1: ten deferred bodies
 
 All ten caller bodies were swept through the complete saved listing, with disk
@@ -216,6 +193,44 @@ ABI, private-stack, nonlocal Lua error, full fault/concurrency or gameplay proof
 The locked annotator preserves prior naming comments, records old values and
 saves; refreshed exports for the factory expose the current ownership limitation.
 
+## Follow-up batch 2: the four large parents
+
+All four complete pseudocode bodies and listings were swept. The call report
+`reports/oct18_tail_a_deferred.json` records original disk-body hashes, indirect
+call sites, and all499 direct sites. `verify_report_calls.py` checked all499 against
+the original live Ghidra program with zero failures. This verifies call evidence,
+not execution equivalence. Every required primitive binding must implement the
+actual original target and effects; none has a default implementation.
+
+| Address | Caller behavior and contract |
+|---|---|
+| 004D56E0 | Complete player-drop redistribution: sampled current mission count, untouched eight-slot stack preimage, eligible unit filtering, descending stable score insertion, all-eight-slot team selection, virtual idle fallback, type53h message construction/routing and weight subtraction, final party-slot assignment and list disposal. Raw temporary message bytes are explicit. D8EFB4 states0/1 unwind list004C8070 and message004B5CE0. No player-count clamp or synthesized empty slots. |
+| 004E27E0 | Complete raw token walk, checked iterator effects, case-sensitive match sequence, replace/difficulty, inert option groups, SubScene/quote handling, absolute scene-path trimming, profile read/state requests/scene publication and all modes/duel flags. Uses actual native SBO/string bodies with required remaining CRT/STL/game calls. Temp prefix lifetimes extend across the OR chain. Native star-token back edge does not advance and can loop indefinitely. Empty-name cleanup is normal-only as in the original parent. |
+| 00648C20 | Full selected/controlled/override unit choice, counted weapon-label lifetimes, ticker/localization/cached label, role-command frame mapping, name ellipsis, ownership/payload icons and health gauges. Directly composes the four audited float getter leaves at939F70/80/C0/B0. Raw health and modifier bindings feed an x87 kernel with the native operand order and spills, including the mid-calculation UCOMISS flags and arithmetic before the zero-count branch. Existing bounded HUD projection is unchanged. |
+| 004DE610 | Full world/scene/camera/viewport construction and publication, display/foliage, optional point effects and retained ownership, default/configured lighting/caustics/shores, render resources/shadows, atmosphere/cloud/sky configuration, fog, ocean/weather and all mission subsystem creation/reset/settings/input calls. All45 D8FD28 unwind states reviewed. State0 cleanup is0042B100; camera state4 isB71350; other allocation states use BF65AC. Color values are captured before getter callbacks; effect arguments transfer retained ownership. |
+
+World uses one required register/stack primitive dispatch interface for its83
+native callees. It performs the parent control flow, object stores, interlocked
+reference operations, string lifetimes and x87 kernels itself. Borrowed image
+lookups must return actual cells/data without side effects; raw output-reference
+callees must initialize their specified output. `00B107F0` remains a required whole
+target, and the existing partial source is not selected. FOV index0..2 is the
+ordinary settings domain; no bounds clamp is added. Existing renderer, scene,
+front-end and HUD hosts were not switched. Other target-body projections retain
+their qualifications and receive no new completion credit.
+
+`scripts/build.ps1` passed MSVC Win32 Release and both CTests after all14 bodies,
+including the HUD flag-order correction (`local/tA_deferred_all14_build.log`).
+This is source/build and static call-site proof. No native differential, original
+register ABI/FH3/SEH/private-frame/full-fault/concurrency or live game proof.
+
+Follow-up disposition: all14 requested caller rows reconstructed, none skipped.
+Across the original82-row lane:61 new caller bodies,2 prior bodies reindexed,
+5 prior library/compiler classifications,4 already complete rows unchanged and
+10 rows originally left to cc15. The00759120 metadata delay is closed; its host
+replacement is still cc9's decision. The factory body-ownership repair remains
+blocked by the shared server script gate; receive wiring remains absent.
+
 ## Complete lane disposition (82 rows)
 
 | Address | Disposition |
@@ -244,10 +259,10 @@ saves; refreshed exports for the factory expose the current ownership limitation
 | 004B7EC0 | already complete; unchanged |
 | 004C8AA0 | new source body |
 | 004C9C90 | new source body |
-| 004D56E0 | open; see above |
+| 004D56E0 | follow-up source body with required callee contracts |
 | 004DD5B0 | follow-up source body with required callee contracts |
-| 004DE610 | open; see above |
-| 004E27E0 | open; see above |
+| 004DE610 | follow-up source body with required callee contracts |
+| 004E27E0 | follow-up source body with required callee contracts |
 | 004E4000 | follow-up source body with required callee contracts |
 | 004F1870 | new source body |
 | 004F1890 | new source body |
@@ -260,7 +275,7 @@ saves; refreshed exports for the factory expose the current ownership limitation
 | 00642B80 | new source body |
 | 00644230 | new source body |
 | 00646C50 | new source body |
-| 00648C20 | open; see above |
+| 00648C20 | follow-up source body with required callee contracts |
 | 006965A0 | existing ordinary body reindexed |
 | 006AA460 | already complete; unchanged |
 | 006AB6B0 | existing ordinary body reindexed |

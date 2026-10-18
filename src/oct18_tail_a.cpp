@@ -1,5 +1,6 @@
 #include "bsp/oct18_tail_a.hpp"
 #include <cstring>
+#include <initializer_list>
 #include "bsp/native_string.hpp"
 #include "bsp/entity_mission_seg60_argon.hpp"
 #include "bsp/native_scene_dword_erase_range.hpp"
@@ -1255,5 +1256,948 @@ void enter_frontend_shell_004e4000(void* self,const void* config_preimage,
     write<std::uint8_t>(self,0x216d,0);
 }
 
-} // namespace bsp::oct18_tail_a
+namespace {
+bool drop_not_sentinel_a(float value,float sentinel) {
+    unsigned char result;
+    __asm {
+        movss xmm0,value
+        ucomiss xmm0,sentinel
+        lahf
+        test ah,44h
+        setp result
+    }
+    return result!=0;
+}
+double drop_promote_a(float value) {
+    double result;
+    __asm {
+        fld value
+        fstp result
+    }
+    return result;
+}
+float drop_subtract_a(float weight,const void* source) {
+    float result;
+    __asm {
+        mov eax,source
+        fld weight
+        fsub dword ptr [eax]
+        fstp result
+    }
+    return result;
+}
+struct DropListCleanupA {
+    PlayerDropServices& services;void* list;bool armed=true;
+    ~DropListCleanupA() noexcept {if(armed) services.list_unwind_004c8070(list);}
+};
+struct DropMessageCleanupA {
+    PlayerDropServices& services;void* message;bool armed=true;
+    ~DropMessageCleanupA() noexcept {if(armed) services.message_unwind_004b5ce0(message);}
+};
+}
+// ECX game, RET. Eight-player valid-storage domain; no count clamp. The original
+// samples fewer than eight slots when mission count is smaller, then examines all
+// eight; untouched stack bytes are supplied rather than invented as zero.
+void reassign_units_on_drop_004d56e0(void* self,const PlayerDropStackPreimage& preimage,
+    PlayerDropState& globals,PlayerDropServices& s) {
+    void* game=globals.game_00e188a8;
+    if(!read<void*>(game,0x19cc)) return;
+    s.diagnostic_start_004254b0();
+    std::uint8_t active[8];float weights[8];
+    std::memcpy(active,preimage.active,sizeof active);
+    std::memcpy(weights,preimage.weights,sizeof weights);
+    auto player_active=[](const void* player) {
+        return read<std::uint8_t>(player,8) &&
+            (!read<std::uint8_t>(player,9) || read<std::uint8_t>(player,10));
+    };
+    for(std::int32_t i=0;i<read<std::int32_t>(read<void*>(game,0x5fc),0x988);++i) {
+        active[i]=player_active(read<void*>(self,0x18cc+Word(i)*4))?1:0;
+        float value=0;
+        if(active[i]) {value=s.player_weight_00946f00(Word(i));game=globals.game_00e188a8;}
+        std::memcpy(weights+i,&value,4);
+    }
+    Word list[3];list[0]=preimage.list_allocator_word;
+    write<void*>(list,4,s.list_head_004c1630(list));list[2]=0;
+    DropListCleanupA cleanup{s,list};
+    auto checked=[&](void* node) {if(node==read<void*>(list,4)) s.invalid_00bf6713();};
+    for(void* node=read<void*>(globals.unit_head_00f87198,0);
+        node!=globals.unit_head_00f87198;) {
+        void* unit=read<void*>(node,8);
+        bool eligible=read<std::uint8_t>(unit,0x5c) && !read<std::uint8_t>(unit,0x5d) &&
+            !read<std::uint8_t>(unit,0x60) && !read<std::uint8_t>(unit,0x5e);
+        if(eligible) {
+            const Word owner=read<Word>(unit,0x188);
+            eligible=owner<8 && !player_active(read<void*>(self,0x18cc+owner*4));
+        }
+        float score=0; // Unobserved until eligibility loads the native score.
+        if(eligible) {
+            std::memcpy(&score,add(unit,0x304),4);
+            eligible=drop_not_sentinel_a(score,globals.unassigned_00d7a218);
+        }
+        if(eligible) {
+            void* stop=read<void*>(list,4);
+            void* position=stop;
+            if(list[2]) {
+                position=read<void*>(stop,0);
+                while(position!=stop) {
+                    checked(position);
+                    float existing=read<float>(read<void*>(position,8),0x304);
+                    if(blast_less_a(existing,score)) break;
+                    checked(position);position=read<void*>(position,0);
+                }
+            }
+            // BuyNode, count growth and publication remain three separate effects.
+            void* publication=add(position,4);
+            void* new_node=s.list_node_004c2220(list,position,read<void*>(position,4),&unit);
+            s.grow_004cee30(list,1);
+            write<void*>(publication,0,new_node);
+            write<void*>(read<void*>(new_node,4),0,new_node);
+            if(position!=stop) {void* inserted=read<void*>(position,4);checked(inserted);}
+        }
+        if(node==globals.unit_head_00f87198) s.invalid_00bf6713();
+        node=read<void*>(node,0);
+    }
+    void* stop=read<void*>(list,4);
+    for(void* node=read<void*>(stop,0);node!=stop;) {
+        checked(node);void* named=read<void*>(node,8);
+        checked(node);float value;copy_native_float32_a(&value,add(read<void*>(node,8),0x304));
+        const double promoted=drop_promote_a(value);
+        const Word name=s.unit_name_slot10(named);
+        s.diagnostic_value_004254b0(name,promoted);
+        checked(node);const Word party=read<Word>(read<void*>(node,8),0x54);
+        std::int32_t selected=-1;float best=globals.minimum_00d7a244;
+        for(Word i=0;i!=8;++i) {
+            if(active[i] && read<Word>(read<void*>(self,0x18cc+i*4),0x28)==party) {
+                float candidate;copy_native_float32_a(&candidate,weights+i);
+                if(blast_less_a(best,candidate)) {selected=std::int32_t(i);best=candidate;}
+            }
+        }
+        if(selected==-1) {
+            checked(node);s.unit_slot148(read<void*>(node,8),0x1ff,8);
+        } else {
+            checked(node);void* named_again=read<void*>(node,8);
+            checked(node);const Word old_owner=read<Word>(read<void*>(node,8),0x188);
+            const Word current_name=s.unit_name_slot10(named_again);
+            s.diagnostic_move_004254b0(current_name,party,old_owner,Word(selected));
+            alignas(4) unsigned char message[36];std::memcpy(message,preimage.message,36);
+            s.message_base_0075b430(message,0x53);
+            write<std::uint16_t>(message,0x18,0);write<std::uint8_t>(message,0x1a,0);
+            write<Word>(message,4,1);write<std::uint8_t>(message,0x1c,0);
+            write<Word>(message,0,0xce74b4);write<Word>(message,0x20,Word(selected));
+            DropMessageCleanupA guard{s,message};
+            checked(node);s.unit_message_0077c2a0(read<void*>(node,8),message,0,0);
+            guard.armed=false; // Inlined empty normal destructor; unwind-only call.
+            checked(node);weights[selected]=drop_subtract_a(weights[selected],add(read<void*>(node,8),0x304));
+        }
+        checked(node);node=read<void*>(node,0);
+    }
+    s.assign_slots_004c3840(self,1);
+    void* head=read<void*>(list,4);void* node=read<void*>(head,0);
+    write<void*>(head,0,head);write<void*>(read<void*>(list,4),4,read<void*>(list,4));list[2]=0;
+    while(node!=read<void*>(list,4)) {
+        void* next=read<void*>(node,0);s.free_00bf65ac(node);node=next;
+    }
+    s.free_00bf65ac(read<void*>(list,4));cleanup.armed=false;
+}
 
+namespace {
+struct CliSboA {
+    NativeLegacySboStringStorage value;
+    bool armed=true;
+    explicit CliSboA(const NativeLegacySboStringStorage& preimage):value(preimage) { empty(); }
+    CliSboA(const NativeLegacySboStringStorage& preimage,const char* text):value(preimage) {
+        empty();native_legacy_sbo_string_assign_counted_00408720(value,text,Word(std::strlen(text)));
+    }
+    CliSboA(const NativeLegacySboStringStorage& preimage,const NativeLegacySboStringStorage& source,
+            Word offset=0,Word count=~Word(0)):value(preimage) {
+        empty();native_legacy_sbo_string_assign_substring_00408120(value,source,offset,count);
+    }
+    void empty() noexcept {value.capacity_18=15;value.length_14=0;value.buffer_04.inline_bytes[0]=0;}
+    void close() noexcept {armed=false;native_legacy_sbo_string_destroy_004072d0(value);}
+    ~CliSboA() noexcept {if(armed) native_legacy_sbo_string_destroy_004072d0(value);}
+};
+struct CliVectorCleanupA {
+    CommandLineServices& s;void* vector;bool armed=true;
+    ~CliVectorCleanupA() noexcept {if(armed) s.vector_unwind_004d6800(vector);}
+};
+}
+// ECX incoming game, RET. Full control flow; original CRT/STL/game callees
+// remain mandatory contracts. Reuses actual native SBO and pooled-string bodies.
+void apply_command_line_004e27e0(void* self,const CommandLineStackPreimage& preimage,
+    CommandLineState& globals,NativeStringRawPoolContext& strings,CommandLineServices& s) {
+    CliSboA subscene(preimage.strings[0]);
+    Word tokens[4];std::memcpy(tokens,preimage.token_vector,sizeof tokens);
+    {
+        const char* text=read<const char*>(self,0x7168);
+        CliSboA command(preimage.strings[1],text?text:globals.empty_00e18b1c);
+        s.split_0094ec70(tokens,command.value," ");
+    }
+    CliVectorCleanupA token_guard{s,tokens};
+    void* begin=read<void*>(tokens,4);
+    if(bits(read<void*>(tokens,8))<bits(begin)) s.invalid_00bf6713();
+    DialogIterator iterator{tokens,begin};Word scratch=preimage.scratch;
+    for(;;) {
+        void* current=iterator.node;void* owner=iterator.owner;
+        void* end=read<void*>(tokens,8);
+        if(bits(end)<read<Word>(tokens,4)) s.invalid_00bf6713();
+        if(!owner || owner!=tokens) s.invalid_00bf6713();
+        if(current==end) break;
+        if(!owner) s.invalid_00bf6713();
+        if(bits(current)>=read<Word>(owner,8)) s.invalid_00bf6713();
+        CliSboA token(preimage.strings[2],*static_cast<NativeLegacySboStringStorage*>(current));
+        if(token.value.data()[0]=='*') {token.close();continue;} // Native back edge does not advance.
+        auto match=[&](const char* text){return s.matches_004c2df0(token.value,text);};
+        auto compare=[&](const char* text,Word count) {
+            return s.compare_004beb60(token.value,0,token.value.length_14,text,count)==0;
+        };
+        auto assign=[&](const NativeLegacySboStringStorage& value) {
+            native_legacy_sbo_string_assign_substring_00408120(token.value,value,0,~Word(0));
+        };
+        auto substring_match=[&](Word count,const char* text) {
+            CliSboA temporary(preimage.strings[3],token.value,0,count);
+            const bool result=s.matches_004c2df0(temporary.value,text);temporary.close();return result;
+        };
+        const Word length=token.value.length_14;
+        const Word compare_count=length<5?length:5;
+        const bool nolog=s.compare_bytes_004b3fc0(token.value.data(),"nolog",compare_count)==0 && length==5;
+        if(nolog) {
+            // This option is intentionally inert here, as in the native caller.
+        } else if(compare("replace",7)) {
+            if(bits(current)>=read<Word>(owner,8)) s.invalid_00bf6713();
+            current=add(current,0x1c);
+            if(bits(current)>=read<Word>(owner,8)) s.invalid_00bf6713();
+            native_legacy_sbo_string_assign_substring_00408120(token.value,
+                *static_cast<NativeLegacySboStringStorage*>(current),0,~Word(0));
+            const auto left=s.atol_00bf8417(token.value.data());
+            owner=iterator.owner;
+            if(bits(current)>=read<Word>(owner,8)) s.invalid_00bf6713();
+            current=add(current,0x1c);iterator.node=current;
+            if(bits(current)>=read<Word>(owner,8)) s.invalid_00bf6713();
+            native_legacy_sbo_string_assign_substring_00408120(token.value,
+                *static_cast<NativeLegacySboStringStorage*>(current),0,~Word(0));
+            const auto right=s.atol_00bf8417(token.value.data());
+            void* registry=s.class_registry_00437f50();
+            write<Word>(registry,0x10+Word(left)*4,Word(right));
+            write<Word>(registry,0x2010+Word(right)*4,Word(left));
+        } else {
+            bool difficulty;
+            {
+                CliSboA prefix(preimage.strings[4],token.value,0,5);
+                difficulty=s.compare_004beb60(prefix.value,0,prefix.value.length_14,"diff:",5)==0;
+            }
+            if(difficulty) {
+                Word name[2];construct_native_string_header_0041e870(name,strings,token.value.data()+5);
+                HeaderCleanup guard{name,strings};
+                void* profile=add(globals.game_00e188a8,0x650);
+                const Word index=s.difficulty_007f7bf0(name);write<Word>(profile,0x5c,index);
+                guard.armed=false;destroy_native_string_header_0041dd20(name,strings);
+            } else {
+                bool ignored=compare("cachedload",10) || match("filelog") || match("1frame") ||
+                    match("server") || match("smallserver") || match("smallclient") ||
+                    match("faststart") || match("fastlobby");
+                // These five prefixes live together until the entire OR expression ends.
+                NativeLegacySboStringStorage prefixes[5];bool live[5]={};
+                struct PrefixCleanup {
+                    NativeLegacySboStringStorage* values;bool* live;
+                    ~PrefixCleanup() noexcept {for(int i=4;i>=0;--i) if(live[i])
+                        native_legacy_sbo_string_destroy_004072d0(values[i]);}
+                } prefix_guard{prefixes,live};
+                auto prefix=[&](Word slot,Word count,const char* text) {
+                    prefixes[slot]=preimage.strings[3+slot%5];
+                    prefixes[slot].capacity_18=15;prefixes[slot].length_14=0;
+                    prefixes[slot].buffer_04.inline_bytes[0]=0;
+                    native_legacy_sbo_string_assign_substring_00408120(prefixes[slot],token.value,0,count);
+                    live[slot]=true;return s.matches_004c2df0(prefixes[slot],text);
+                };
+                if(!ignored) ignored=prefix(0,3,"ip:") || prefix(1,10,"localport:") ||
+                    prefix(2,12,"connectport:") || prefix(3,6,"debug:") || match("nozip") ||
+                    match("freecam") || match("fixfps") || prefix(4,8,"content:") ||
+                    match("nomemlimit") || match("memlimit");
+                for(int i=4;i>=0;--i) if(live[i]) {
+                    live[i]=false;native_legacy_sbo_string_destroy_004072d0(prefixes[i]);
+                }
+                if(!ignored) {
+                    if(match("auto")) s.iterator_add_004bcec0(iterator,2);
+                    else if(match("frames")) {
+                        s.push_command_004d6f30(self,token.value);
+                        DialogIterator old,end_iterator;
+                        s.postincrement_004bce80(iterator,old,0);
+                        auto* stop=s.end_004c44d0(tokens,end_iterator);
+                        if(s.iterator_not_equal_004bcf00(iterator,*stop)) {
+                            auto* next=s.iterator_get_004bcdf0(iterator);
+                            CliSboA copy(preimage.strings[3],*next);
+                            s.push_command_004d6f30(self,copy.value);copy.close();
+                        }
+                    } else if(match("term") || match("pause") || match("quit") || match("freecamera")) {
+                        s.push_command_004d6f30(self,token.value);
+                    } else if(substring_match(9,"SubScene:")) {
+                        CliSboA value(preimage.strings[3],token.value,9);
+                        native_legacy_sbo_string_assign_substring_00408120(subscene.value,value.value,0,~Word(0));
+                        value.close();s.command_text_004c8950(globals.game_00e188a8,subscene.value.data());
+                    } else {
+                        if(*s.character_004bcb10(token.value,0)=='"') {
+                            CliSboA value(preimage.strings[3],token.value,1);assign(value.value);value.close();
+                        }
+                        if(*s.character_004bcb10(token.value,token.value.length_14-1)=='"') {
+                            CliSboA value(preimage.strings[3],token.value,0,token.value.length_14-1);
+                            assign(value.value);value.close();
+                        }
+                        bool scene=false;
+                        if(token.value.length_14>4) {
+                            CliSboA suffix(preimage.strings[3],token.value,token.value.length_14-4);
+                            scene=s.matches_004c2df0(suffix.value,".scn");suffix.close();
+                        }
+                        if(scene) {
+                            Word lower[2];construct_native_string_header_0041e870(lower,strings,token.value.data());
+                            HeaderCleanup lower_guard{lower,strings};s.lowercase_004bcc00(lower);
+                            const char* lowered=read<const char*>(lower,4);
+                            const char* position=lowered?s.strstr_00bf9440(lowered,"scenes"):nullptr;
+                            if(!position || Word(bits(position)-bits(lowered))==~Word(0)) {
+                                CliSboA root(preimage.strings[4],"universe/scenes/");
+                                CliSboA joined(preimage.strings[3]);
+                                // Actual operator+ is a hidden-result cdecl call, not token splitting.
+                                auto* result=s.concatenate_004d0860(joined.value,root.value,token.value);
+                                assign(*result);joined.close();root.close();
+                            }
+                            CliSboA path(preimage.strings[5],token.value);
+                            char directory[260];std::memcpy(directory,preimage.directory,sizeof directory);
+                            if(s.current_directory(255,directory)) {
+                                Word n=Word(std::strlen(directory)),i=0;
+                                bool equal=true;
+                                for(;i<n;++i) {
+                                    char* character=s.character_004bcb10(path.value,i);
+                                    scratch=Word(s.tolower_00bf9611(std::int32_t(static_cast<signed char>(directory[i]))));
+                                    if(scratch!=Word(s.tolower_00bf9611(std::int32_t(static_cast<signed char>(*character)))))
+                                        {equal=false;break;}
+                                }
+                                if(equal) {
+                                    if(*s.character_004bcb10(path.value,n)=='\\' ||
+                                       *s.character_004bcb10(path.value,n)=='/') ++n;
+                                    CliSboA relative(preimage.strings[3],path.value,n);
+                                    native_legacy_sbo_string_assign_substring_00408120(path.value,relative.value,0,~Word(0));
+                                    relative.close();
+                                }
+                            }
+                            Word label[2];construct_native_string_header_0041e870(label,strings,"command_line_mission");
+                            HeaderCleanup label_guard{label,strings};s.console_label_004c89a0(globals.game_00e188a8,label);
+                            label_guard.armed=false;destroy_native_string_header_0041dd20(label,strings);
+                            s.pending_scene_004e2770(globals.game_00e188a8,path.value.data(),subscene.value.data());
+                            s.command_text_004c8950(globals.game_00e188a8,subscene.value.data());
+                            if(read<std::uint8_t>(globals.storage_0109cecc,0x21)) {
+                                Word newest[2];s.newest_slot_004c5e00(globals.storage_0109cecc,newest);
+                                HeaderCleanup newest_guard{newest,strings};Word empty[2];
+                                void* empty_name=s.empty_save_00436710(empty);
+                                // The parent has no EH state for the empty temporary.
+                                const bool different=s.string_not_equal_00449af0(newest,empty_name);
+                                destroy_native_string_header_0041dd20(empty,strings);
+                                if(different) s.request_read_007ff100(add(globals.game_00e188a8,0x650),newest,0xbd53c0);
+                                newest_guard.armed=false;destroy_native_string_header_0041dd20(newest,strings);
+                            }
+                            if(read<Word>(self,0x5f0)) {scratch=14;s.enqueue_004d3ed0(add(self,0x5d8),&scratch);}
+                            scratch=10;s.enqueue_004d3ed0(add(self,0x5d8),&scratch);
+                            s.build_record_004e1d70(self,path.value.data(),0,~Word(0),subscene.value.data());
+                            s.select_record_004c6890(self,0);
+                            s.command_text_004c8950(globals.game_00e188a8,subscene.value.data());
+                            s.reset_participants_004bb160(self);
+                            path.close();lower_guard.armed=false;destroy_native_string_header_0041dd20(lower,strings);
+                        } else if(match("singlethread")) globals.singlethread_00e0b6ce=0;
+                        else if(match("flaktest")) globals.flaktest_00e19b4d=1;
+                        else if(match("novehiclelog")) globals.vehiclelog_00e0cfc0=0;
+                        else if(match("siege")) s.game_mode_004bc890(self,6,1);
+                        else if(match("duel")) s.game_mode_004bc890(self,4,1);
+                        else {
+                            const char* duels[]={"DD_duel","CL_duel","CA_duel","BB_duel","PT_duel","Sub_duel","fighter_duel"};
+                            bool handled=false;
+                            for(Word i=0;i!=7;++i) if(match(duels[i])) {
+                                s.game_mode_004bc890(self,4,1);s.duel_005d4a00(i);write<Word>(self,0x2030,i);
+                                handled=true;break;
+                            }
+                            if(!handled) {
+                                const char* modes[]={"competitive","escort","ic1","ic2","ic3","ic4"};
+                                const Word values[]={7,5,0,1,2,3};
+                                for(Word i=0;i!=6;++i) if(match(modes[i])) {
+                                    s.game_mode_004bc890(self,values[i],1);handled=true;break;
+                                }
+                            }
+                            if(!handled) {
+                                if(match("nohints")) globals.hints_00f8898c=0;
+                                else {
+                                    const char* inert[]={"skipLogos","noskipLogos","skipTitle","skipBriefings","lockitMark","lockitRaw","hiresmode","reloadresources","genshaders","devshaders","devrr","noperforce"};
+                                    for(const char* flag:inert) if(match(flag)) break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if(!iterator.owner) s.invalid_00bf6713();
+        if(bits(iterator.node)>=read<Word>(iterator.owner,8)) s.invalid_00bf6713();
+        iterator.node=add(iterator.node,0x1c);token.close();
+    }
+    if(read<Word>(self,0x7164)) {
+        destroy_native_string_header_0041dd20(add(self,0x7164),strings);
+        write<Word>(self,0x7168,0);write<Word>(self,0x7164,0);
+    }
+    if(void* data=read<void*>(self,0x7168)) std::memmove(data,globals.clear_bytes_00ce3a0c,read<Word>(self,0x7164));
+    if(void* first=read<void*>(tokens,4)) {
+        s.range_destroy_004ce520(first,read<void*>(tokens,8),tokens,scratch);
+        s.free_00bf65ac(read<void*>(tokens,4));
+    }
+    write<Word>(tokens,4,0);write<Word>(tokens,8,0);write<Word>(tokens,12,0);
+    token_guard.armed=false;subscene.close();
+}
+
+namespace {
+float hud_health_a(void* unit,void (__cdecl* target)()) {
+    float result;
+    __asm {
+        mov ecx,unit
+        call target
+        fstp result
+    }
+    return result;
+}
+float hud_factor_a(void* manager,void* unit,float multiplier,void (__cdecl* target)()) {
+    float result;
+    __asm {
+        push unit
+        push 3
+        mov ecx,manager
+        call target
+        fmul multiplier
+        fstp result
+    }
+    return result;
+}
+float hud_width_a(void* unit,void (__cdecl* health)(),float count_a,float count_b,
+                  float coefficient_a,float coefficient_b,float denominator_a,
+                  float denominator_b,float maximum,bool& count_a_nonzero) {
+    float result;unsigned char nonzero;
+    __asm {
+        mov ecx,unit
+        call health
+        fld coefficient_b
+        movss xmm1,count_a
+        fmul count_b
+        xorps xmm0,xmm0
+        ucomiss xmm1,xmm0
+        lahf
+        test ah,44h
+        fdiv denominator_b
+        fld coefficient_a
+        fmul count_a
+        fdiv denominator_a
+        faddp st(1),st(0)
+        fdiv maximum
+        fsubp st(1),st(0)
+        fstp result
+        setp nonzero
+    }
+    count_a_nonzero=nonzero!=0;
+    return result;
+}
+bool hud_not_equal_a(float left,float right) {
+    unsigned char result;
+    __asm {
+        fld right
+        fld left
+        fucomip st(0),st(1)
+        fstp st(0)
+        lahf
+        test ah,44h
+        setp result
+    }
+    return result!=0;
+}
+}
+// ECX HUD root, RET. Whole parent, including original x87 health-width path.
+void update_hud_rows_00648c20(void* self,HudRowsContext& context) {
+    auto& s=context.services;auto& g=context.state;auto& strings=context.strings;
+    s.rebuild_00648290(self);
+    void* unit=g.controlled_00e188d8;
+    if(!unit) unit=s.selected_00644a60(self);
+    void* screen=read<void*>(g.screens_00e198c4,0x74);
+    if(read<std::uint8_t>(screen,5)) {
+        void* object=read<void*>(screen,0x20);
+        if(object && read<void*>(object,0x9d4)) unit=read<void*>(object,0x9d4);
+    }
+    if(unit) {
+        if(s.class_slot5c(unit,0x18) && !read<void*>(unit,0x3d0)) return;
+        if(!read<std::uint8_t>(read<void*>(g.screens_00e198c4,0x54),5)) {
+            Word label[2];construct_native_string_header_0041e870(label,strings,"ingame.selector_noweapon");
+            HeaderCleanup label_guard{label,strings};bool ordnance_mode=false;
+            auto counted_label=[&](void* counted_unit,Word target,const char* suffix) {
+                Word ending[2];construct_native_string_header_0041e870(ending,strings,suffix);
+                HeaderCleanup ending_guard{ending,strings};
+                Word dot[2];construct_native_string_header_0041e870(dot,strings,".");
+                HeaderCleanup dot_guard{dot,strings};
+                const Word count=s.count(counted_unit,target);
+                Word number[2];void* number_result=s.concat_int_004263b0(dot,number,count);
+                HeaderCleanup number_guard{number,strings};
+                Word joined[2];void* result=s.concat_004261a0(number_result,joined,ending);
+                HeaderCleanup joined_guard{joined,strings};copy_header(label,result,strings);
+                joined_guard.armed=false;destroy_native_string_header_0041dd20(joined,strings);
+                number_guard.armed=false;destroy_native_string_header_0041dd20(number,strings);
+                dot_guard.armed=false;destroy_native_string_header_0041dd20(dot,strings);
+                ending_guard.armed=false;destroy_native_string_header_0041dd20(ending,strings);
+            };
+            if(s.class_slot5c(unit,0x18) || s.class_slot5c(unit,0xf)) {
+                void* payload=s.class_slot5c(unit,0x18)?read<void*>(unit,0x3d0):unit;
+                if(payload) {
+                    void* weapon_screen=read<void*>(g.screens_00e198c4,0x6c);
+                    ordnance_mode=read<std::uint8_t>(weapon_screen,5) && read<std::uint8_t>(weapon_screen,0xbd);
+                    bool labelled=false;
+                    if(ordnance_mode) {
+                        const Word tests[]={0x7b9320,0x7b93f0,0x7b94f0,0x7b9400};
+                        const char* suffixes[]={"x |ingame.selector_bomb","x |ingame.selector_torpedo",
+                            "x |ingame.selector_depthcharge","x |ingame.selector_rocket"};
+                        for(Word i=0;i!=4;++i) if(s.ordnance(payload,tests[i],0)) {
+                            counted_label(payload,i==3?0x7c1de0:0x7c1db0,suffixes[i]);labelled=true;break;
+                        }
+                    }
+                    if(!labelled) s.assign_text_0041e350(label,
+                        read<std::uint8_t>(payload,0xc24)?"ingame.selector_machinegun":".");
+                }
+            } else {
+                void* selector=read<void*>(g.screens_00e198c4,0x50);
+                if(read<std::uint8_t>(selector,5)) switch(read<Word>(selector,0x44)) {
+                case 0:s.assign_text_0041e350(label,"ingame.selector_noweapon");break;
+                case 1:s.assign_text_0041e350(label,"ingame.selector_aagun");break;
+                case 2:s.assign_text_0041e350(label,"ingame.selector_aaflak");break;
+                case 3:s.assign_text_0041e350(label,"ingame.selector_atrillery");break;
+                case 4:
+                    if(s.class_slot5c(unit,6)) counted_label(unit,0x815850,"x |ingame.selector_torpedo");
+                    else {
+                        Word temporary[2];construct_native_string_header_0041e870(temporary,strings,"ingame.selector_torpedo");
+                        HeaderCleanup guard{temporary,strings};copy_header(label,temporary,strings);
+                        guard.armed=false;destroy_native_string_header_0041dd20(temporary,strings);
+                    }
+                    break;
+                case 5:s.assign_text_0041e350(label,"ingame.selector_depthcharge");break;
+                }
+            }
+            if(unit!=read<void*>(self,0x6c) || s.not_equal_00449af0(add(self,0x70),label)) {
+                if(!s.class_slot5c(unit,0x45) && !s.class_slot5c(unit,0x46)) {
+                    s.widget_slot4c(read<void*>(self,0x3c),1.0f);
+                    if(!ordnance_mode) {
+                        void* timed=s.timed_00aa8b00(read<void*>(self,0x3c),0);
+                        s.ticker_00ac2f20(timed,0.0f,1.0f);write<float>(timed,4,g.one_00d7a24c);
+                    }
+                } else {
+                    s.delete_timed_00aa8b80(read<void*>(self,0x3c),0);
+                    s.widget_slot4c(read<void*>(self,0x3c),0.0f);
+                }
+            }
+            s.localized_00abaed0(read<void*>(self,0x3c),label,1);
+            copy_header(add(self,0x70),label,strings);
+            label_guard.armed=false;destroy_native_string_header_0041dd20(label,strings);
+        }
+    }
+    write<void*>(self,0x6c,unit);Word icon=3;
+    if(unit) {
+        bool local=false;
+        if(s.class_slot5c(unit,0x18)) local=s.local_role_00927f30(read<void*>(unit,0x3d0),1);
+        else if(s.class_slot5c(unit,0xf)) local=s.local_role_00927f30(unit,1);
+        Word frame=0;
+        if(local) frame=2;
+        else if(void* director=s.director_slot114(unit)) {
+            if(const void* command=s.command_0071be40(director)) {
+                // Order follows native comparisons, including E08F30 after E08F50.
+                const Word order[]={0,1,2,3,5,6,7,8,4,9,10,11,12,13,14,15,16,17};
+                const Word values[]={3,3,3,3,3,3,3,3,3,3,1,1,2,3,1,0,0,4};
+                for(Word i=0;i!=18;++i) if(command==g.commands[order[i]]) {frame=values[i];break;}
+            }
+        }
+        s.widget_slot88(read<void*>(self,0x84),frame,0,1.0f);
+        const char* name=s.unit_name_slot14(unit);
+        Word text[2];construct_native_string_header_0041e870(text,strings,name);
+        HeaderCleanup text_guard{text,strings};float ellipsis;
+        copy_native_float32_a(&ellipsis,&g.ellipsis_00d7a260);
+        s.ellipsized_00abb000(read<void*>(self,0x34),text,ellipsis,1);
+        text_guard.armed=false;destroy_native_string_header_0041dd20(text,strings);
+        if(g.controlled_00e188d8) {
+            if(!read<Word>(g.controlled_00e188d8,0x54)) {
+                s.widget_slot34(read<void*>(self,0x64),0);s.widget_slot34(read<void*>(self,0x68),1);
+            } else {
+                s.widget_slot34(read<void*>(self,0x68),0);s.widget_slot34(read<void*>(self,0x64),1);
+            }
+        }
+        if(s.class_slot5c(unit,0x1c)) icon=0;
+        else {
+            void* payload=s.class_slot5c(unit,0x18)?read<void*>(unit,0x3d0):unit;
+            const Word payload_id=read<Word>(payload,0x538);
+            icon=s.icon_00653200(read<void*>(g.screens_00e198c4,0xbc),payload_id);
+        }
+        void* payload=s.class_slot5c(unit,0x18)?read<void*>(unit,0x3d0):unit;
+        if(payload) {
+            auto pair=[&](Word widget,float value) {
+                float values[2];std::memcpy(values,&value,4);std::memcpy(values+1,&g.one_00d7a24c,4);
+                s.widget_slot48(read<void*>(self,widget),values);
+            };
+            if(s.class_slot5c(payload,0x45)) pair(0x7c,s.airfield_health_006d2560(payload));
+            else if(s.class_slot5c(payload,5)) {
+                s.widget_slot34(read<void*>(self,0x7c),1);
+                pair(0x7c,hud_health_a(payload,context.health_00923be0));
+                if(!s.class_slot5c(payload,6)) {
+                    pair(0x80,hud_health_a(payload,context.health_00923be0));pair(0x7c,0.0f);
+                } else {
+                    // Four native leaf getters are FLD [ECX+38/34/30/2C], RET.
+                    float count_a,count_b,coefficient_a,coefficient_b;
+                    copy_native_float32_a(&count_a,add(unit,0xa58));
+                    copy_native_float32_a(&count_b,add(unit,0xa54));
+                    copy_native_float32_a(&coefficient_a,add(unit,0xa50));
+                    copy_native_float32_a(&coefficient_b,add(unit,0xa4c));
+                    float scale_b=g.one_00d7a24c,scale_a=g.one_00d7a24c;
+                    const Word type=read<Word>(unit,0xa44);
+                    if(type==4) scale_b=read<float>(s.settings_00424c40(),0x3c8);
+                    else if(type==3) scale_a=read<float>(s.settings_00424c40(),0x3cc);
+                    const float denominator_b=hud_factor_a(g.modifiers_00f88c30,unit,scale_b,context.modifier_00470440);
+                    const float denominator_a=hud_factor_a(g.modifiers_00f88c30,unit,scale_a,context.modifier_00470440);
+                    float maximum;copy_native_float32_a(&maximum,add(unit,0x36c));
+                    // Calculation happens even when both counts are zero, including
+                    // the original FP divide/exception behavior before the branch.
+                    bool first_nonzero;
+                    const float width=hud_width_a(payload,context.health_00923be0,count_a,count_b,
+                        coefficient_a,coefficient_b,denominator_a,denominator_b,maximum,first_nonzero);
+                    if(!first_nonzero && !drop_not_sentinel_a(count_b,0.0f))
+                        pair(0x80,hud_health_a(payload,context.health_00923be0));
+                    else {
+                        if(hud_not_equal_a(read<float>(self,0x88),width)) pair(0x80,width);
+                        write<float>(self,0x88,width);
+                    }
+                }
+            }
+        }
+    }
+    s.widget_slot88(read<void*>(self,0x50),icon,0,1.0f);
+    if(read<std::uint8_t>(read<void*>(g.screens_00e198c4,0x54),4)) {
+        s.delete_timed_00aa8b80(read<void*>(self,0x3c),0);
+        s.widget_slot4c(read<void*>(self,0x3c),0.0f);
+    }
+}
+
+namespace {
+struct WorldCallerA {
+    WorldConstructServices& services;
+    Word call(Word target,Word ecx=0,Word edx=0,std::initializer_list<Word> arguments={}) {
+        return services.invoke(target,ecx,edx,arguments.begin(),Word(arguments.size()));
+    }
+    Word virtual_call(void* object,Word slot,std::initializer_list<Word> arguments={}) {
+        const Word target=read<Word>(read<void*>(object,0),slot);
+        return call(target,bits(object),0,arguments);
+    }
+    void release(void* object,bool nullable=false) {
+        if(nullable && !object) return;
+        if(_InterlockedDecrement(reinterpret_cast<volatile long*>(add(object,4)))==0)
+            virtual_call(object,0);
+    }
+    Word float_argument(const void* address) {
+        float value;copy_native_float32_a(&value,address);Word result;std::memcpy(&result,&value,4);return result;
+    }
+    Word float_image(Word address) {return float_argument(services.image(address));}
+    Word image_word(Word address) {return read<Word>(services.image(address),0);}
+};
+struct WorldAllocationCleanupA {
+    WorldCallerA& caller;Word allocation,target;bool stacked;bool armed=true;
+    ~WorldAllocationCleanupA() noexcept {
+        if(armed) {
+            if(stacked) caller.call(target,0,0,{allocation});
+            else caller.call(target,allocation);
+        }
+    }
+};
+struct WorldReferenceCleanupA {
+    WorldCallerA& caller;Word* reference;Word target;bool armed=true;
+    ~WorldReferenceCleanupA() noexcept {if(armed) caller.call(target,bits(reference));}
+};
+void world_scaled_position_a(float* output,const float* direction,const double* scale) {
+    __asm {
+        mov eax,direction
+        mov edx,scale
+        mov ecx,output
+        fld dword ptr [eax]
+        fld qword ptr [edx]
+        fmul st(1),st(0) // DC C9 at004DEA51: multiply destination ST1.
+        fxch st(1)
+        fstp dword ptr [ecx]
+        fld dword ptr [eax+4]
+        fmul st(0),st(1)
+        fstp dword ptr [ecx+4]
+        fmul dword ptr [eax+8]
+        fstp dword ptr [ecx+8]
+    }
+}
+Word world_zero_divide_a(const double* divisor) {
+    float result;Word value;
+    __asm {
+        mov eax,divisor
+        fldz
+        fdiv qword ptr [eax]
+        fstp result
+    }
+    std::memcpy(&value,&result,4);return value;
+}
+}
+// ECX game, RET. Entire raw parent; providers must bind complete original callees
+// (including B107F0), never the existing partial host projections. FOV-index
+// setting domain0..2; source cleanup does not claim native private-frame/SEH ABI.
+void construct_world_004de610(void* self,NativeStringRawPoolContext& strings,WorldConstructServices& s) {
+    WorldCallerA c{s};
+    auto field=[&](Word offset){return read<Word>(self,offset);};
+    auto object=[&](Word offset){return read<void*>(self,offset);};
+    auto record=[&](){return read<void*>(self,0x5fc);};
+    auto global=[&](Word address){return s.word(address);};
+    auto image_word=[&](Word address){return c.image_word(address);};
+    auto invoke=[&](Word target,Word receiver,std::initializer_list<Word> args={}) {
+        return c.call(target,receiver,0,args);
+    };
+    auto publish=[&](Word offset,Word value){write<Word>(self,offset,value);};
+    auto ordinary=[&](Word bytes,Word target,std::initializer_list<Word> args={}) {
+        const Word allocation=c.call(0xbf681b,0,0,{bytes});
+        WorldAllocationCleanupA guard{c,allocation,0xbf65ac,true};
+        Word result=0;if(allocation) result=c.call(target,allocation,0,args);
+        guard.armed=false;return result;
+    };
+    auto parameter_pair=[&](const char* key_text,const char* value_text) {
+        Word value[2];construct_native_string_header_0041e870(value,strings,value_text);
+        HeaderCleanup value_guard{value,strings};
+        Word key[2];construct_native_string_header_0041e870(key,strings,key_text);
+        HeaderCleanup key_guard{key,strings};
+        invoke(0xb1b830,global(0xf8d434),{bits(key),bits(value)});
+        key_guard.armed=false;destroy_native_string_header_0041dd20(key,strings);
+        value_guard.armed=false;destroy_native_string_header_0041dd20(value,strings);
+    };
+    auto shores=[&]() {
+        parameter_pair("ShoreWaveTextureSource0","ShoreWaves0");
+        parameter_pair("ShoreWaveTextureSource1","ShoreWaves1");
+        parameter_pair("ShoreWaveTextureSource2","ShoreWaves2");
+    };
+    if(read<std::uint8_t>(self,0x719d)) write<Word>(pointer(global(0xf8d394)),0x18,0x20000000);
+    {
+        const Word allocation=c.call(0xbf55be,0,0,{0x4bc});
+        // Native zeroing precedes the parent's state0; null still reaches memset.
+        c.call(0xbf79f0,0,0,{allocation,0,0x4bc});
+        WorldAllocationCleanupA guard{c,allocation,0x42b100,false};
+        const Word world=allocation?invoke(0x4cb030,allocation):0;
+        guard.armed=false;publish(0x19cc,world);invoke(0x9037f0,world,{1,1});
+    }
+    {
+        const Word allocation=c.call(0xbf681b,0,0,{0x24});
+        WorldAllocationCleanupA guard{c,allocation,0xbf65ac,true};Word scene=0;
+        if(allocation) {
+            Word name[2];construct_native_string_header_0041e870(name,strings,"World");
+            HeaderCleanup name_guard{name,strings};scene=invoke(0xb724e0,allocation,{bits(name)});
+            guard.armed=false;publish(0x19ec,scene);
+            name_guard.armed=false;destroy_native_string_header_0041dd20(name,strings);
+        } else {guard.armed=false;publish(0x19ec,0);}
+    }
+    c.virtual_call(pointer(global(0xf8bbf0)),4,{s.byte(0xf88a04)});
+    {
+        const Word allocation=invoke(0xb71930,0x458);
+        WorldAllocationCleanupA guard{c,allocation,0xb71350,false};Word camera=0;
+        if(allocation) {
+            Word name[2];construct_native_string_header_0041e870(name,strings,"Operator");
+            HeaderCleanup name_guard{name,strings};camera=invoke(0xb71a80,allocation,{bits(name)});
+            guard.armed=false;publish(0x19fc,camera);
+            name_guard.armed=false;destroy_native_string_header_0041dd20(name,strings);
+        } else {guard.armed=false;publish(0x19fc,0);}
+    }
+    s.word(0xe188b0)=field(0x19fc);
+    invoke(0xb6fbf0,field(0x19fc),{c.float_image(0xce380c)});
+    {
+        const Word viewport=ordinary(0x34,0xb1f850);publish(0x1a00,viewport);
+        invoke(0xb71990,field(0x19fc),{viewport});c.release(object(0x1a00));
+    }
+    Word position[]={0,image_word(0xce3d08),0};
+    c.virtual_call(object(0x19fc),0x30,{bits(position)});
+    invoke(0xb6fe50,field(0x19fc),{0x506e});
+    invoke(0xb1ffb0,global(0xf8d394),{2-global(0xf889e8)});
+    {const Word quality=c.float_image(0xf889e4);c.virtual_call(pointer(global(0xf8d394)),0xf0,{quality});}
+    Word fovs[]={image_word(0xce3800),image_word(0xce3e18),image_word(0xd7a24c)};
+    write<Word>(object(0x19fc),0x4c,read<Word>(fovs,global(0xf889d4)*4));
+    if(s.byte(0xf8899c)) write<Word>(object(0x19fc),0x4c,image_word(0xce3804));
+    invoke(0xad71c0,global(0xf8c210),{s.byte(0xf88a06)});
+    invoke(0x4dcdf0,bits(self));invoke(0x4c9ec0,bits(self));
+    void* sampler;
+    if(record()) {
+        write<Word>(object(0x19fc),0x178,read<Word>(record(),0xa78));
+        invoke(0xad56f0,global(0xf8c210),{c.float_argument(add(record(),0xa88))});
+        invoke(0xad5710,global(0xf8c210),{c.float_argument(add(record(),0xa8c))});
+        invoke(0xad5750,global(0xf8c210),{read<std::uint8_t>(record(),0xa90)});
+        if(read<Word>(record(),0x1044)) {
+            Word reference;const Word returned=c.call(0x871ba0,bits(&reference),bits(add(record(),0x1044)),{1});
+            WorldReferenceCleanupA guard{c,&reference,0x41de40};
+            invoke(0x440580,bits(add(self,0x19d4)),{returned});
+            guard.armed=false;c.release(pointer(reference),true);
+            float direction[3];
+            const Word angle_a=c.float_argument(add(record(),0x100c));
+            const Word angle_b=c.float_argument(add(record(),0x1010));
+            const Word result=invoke(0x4b4d80,bits(direction),{angle_b,angle_a});
+            const Word scene=field(0x19ec);float scaled[3],point[3];
+            world_scaled_position_a(scaled,static_cast<const float*>(pointer(result)),
+                static_cast<const double*>(s.image(0xce4c08)));
+            for(Word i=0;i!=3;++i) copy_native_float32_a(point+i,scaled+i);
+            void* retained=object(0x19d4);
+            if(retained) _InterlockedIncrement(reinterpret_cast<volatile long*>(add(retained,4)));
+            Word effect;const Word effect_result=c.call(0x8685e0,bits(&effect),scene,{bits(retained),bits(point),0,0});
+            WorldReferenceCleanupA effect_guard{c,&effect,0x440a30};
+            invoke(0x4845d0,bits(add(self,0x19d8)),{effect_result});
+            effect_guard.armed=false;c.release(pointer(effect),true);
+        }
+        if(read<Word>(record(),0x104c)) {
+            Word reference;const Word returned=c.call(0x871ba0,bits(&reference),bits(add(record(),0x104c)),{1});
+            WorldReferenceCleanupA guard{c,&reference,0x41de40};
+            invoke(0x440580,bits(add(self,0x19dc)),{returned});
+            guard.armed=false;c.release(pointer(reference),true);
+            const Word scene=field(0x19ec),one=image_word(0xd7a24c);
+            Word matrix[16]={one,0,0,0,0,one,0,0,0,0,one,0,0,0,0,one};
+            void* retained=object(0x19dc);
+            if(retained) _InterlockedIncrement(reinterpret_cast<volatile long*>(add(retained,4)));
+            Word effect;const Word effect_result=c.call(0x868420,bits(&effect),scene,{bits(retained),bits(matrix),0,0});
+            WorldReferenceCleanupA effect_guard{c,&effect,0x440a30};
+            invoke(0x4845d0,bits(add(self,0x19e4)),{effect_result});
+            effect_guard.armed=false;c.release(pointer(effect),true);
+            Word extra;const Word extra_result=c.call(0x870cd0,bits(&extra),0x192,{1});
+            WorldReferenceCleanupA extra_guard{c,&extra,0x41de40};
+            invoke(0x440580,bits(add(self,0x19e0)),{extra_result});
+            extra_guard.armed=false;c.release(pointer(extra),true);
+        }
+        {
+            Word key[2];construct_native_string_header_0041e870(key,strings,"CausticsTextureSource");
+            HeaderCleanup guard{key,strings};
+            invoke(0xb1b830,global(0xf8d434),{bits(key),bits(add(record(),0xacc))});
+            guard.armed=false;destroy_native_string_header_0041dd20(key,strings);
+        }
+        shores();
+        {
+            Word key[2];construct_native_string_header_0041e870(key,strings,"CausticsTextureSource");
+            HeaderCleanup guard{key,strings};const Word clock=invoke(0x4de4b0,0);
+            sampler=pointer(invoke(0xb1b400,clock,{bits(key),bits(add(record(),0xacc))}));
+            guard.armed=false;destroy_native_string_header_0041dd20(key,strings);
+        }
+        c.virtual_call(sampler,0x20,{c.float_argument(add(record(),0xab8))});
+        c.virtual_call(sampler,0x24,{bits(add(record(),0xabc))});
+    } else {
+        Word vector[]={image_word(0xd7a260),image_word(0xd7a24c),image_word(0xce7d7c)};
+        float normalized[3];const Word result=c.call(0x419510,bits(normalized),bits(vector));
+        void* light=object(0x19f8);
+        for(Word i=0;i!=3;++i) copy_native_float32_a(add(light,0x1e0+4*i),add(pointer(result),4*i));
+        const Word diffuse=image_word(0xce3800);
+        Word color[]={diffuse,diffuse,diffuse,image_word(0xd7a24c)};
+        invoke(0x4b62e0,field(0x19f8),{bits(color)});
+        light=object(0x19f8);const Word red=image_word(0xce7804),one=image_word(0xd7a24c);
+        write<Word>(light,0x1c4,red);write<Word>(light,0x1c8,red);
+        write<Word>(light,0x1cc,image_word(0xd7a2f0));write<Word>(light,0x1d0,one);
+        write<Word>(object(0x19f8),0x1d4,image_word(0xce7d78));
+        parameter_pair("CausticsTextureSource","CausticsDayLight");shores();
+        {
+            Word value[2];construct_native_string_header_0041e870(value,strings,"CausticsDayLight");
+            HeaderCleanup value_guard{value,strings};
+            Word key[2];construct_native_string_header_0041e870(key,strings,"CausticsTextureSource");
+            HeaderCleanup key_guard{key,strings};const Word clock=invoke(0x4de4b0,0);
+            sampler=pointer(invoke(0xb1b400,clock,{bits(key),bits(value)}));
+            key_guard.armed=false;destroy_native_string_header_0041dd20(key,strings);
+            value_guard.armed=false;destroy_native_string_header_0041dd20(value,strings);
+        }
+        c.virtual_call(sampler,0x20,{c.float_image(0xce69c8)});
+        Word sampler_color[]={image_word(0xce7804),image_word(0xce7804),image_word(0xd7a2f0),image_word(0xd7a24c)};
+        c.virtual_call(sampler,0x24,{bits(sampler_color)});
+    }
+    c.release(sampler);
+    invoke(0xb6d890,field(0x19f8),{field(0x19ec)});
+    invoke(0xb107f0,global(0xf8d39c),{s.byte(0xf88a0c),s.byte(0xf88a0d),global(0xf889d8)});
+    void* shadow=pointer(c.call(0xa8fd30,field(0x19f8),0));
+    invoke(0xb7bdf0,field(0x19f8),{bits(shadow)});c.release(shadow);
+    if(record()) {
+        const Word size=read<Word>(record(),0xa84);
+        void* owner=pointer(invoke(0xb7aab0,field(0x19f8)));write<Word>(owner,8,size);
+    }
+    if(record()) {
+        const Word allocation=c.call(0xbf681b,0,0,{0x40});
+        WorldAllocationCleanupA guard{c,allocation,0xbf65ac,true};Word atmosphere=0;
+        if(allocation) atmosphere=invoke(0xbbdff0,allocation,{field(0x19ec),bits(add(record(),0xc54))});
+        guard.armed=false;publish(0x19e8,atmosphere);
+        const Word light=field(0x19f8);
+        invoke(0xbbce30,invoke(0xbbddf0,atmosphere),{light});
+        const Word colors[]={0x1014,0x1024,0x1034};const Word setters[]={0xbbcd90,0xbbcde0,0xbbcd50};
+        for(Word i=0;i!=3;++i) {
+            Word values[4];std::memcpy(values,add(record(),colors[i]),16);
+            const Word cloud=invoke(0xbbddf0,field(0x19e8));
+            invoke(setters[i],cloud,{values[0],values[1],values[2],values[3]});
+        }
+        const Word rotation=c.float_argument(add(record(),0xc5c));
+        invoke(0xbbf1a0,invoke(0xbbddb0,field(0x19e8)),{rotation});
+        const Word luminance=c.float_argument(add(record(),0xc60));
+        invoke(0xbbf200,invoke(0xbbddb0,field(0x19e8)),{luminance});
+        Word key[2];construct_native_string_header_0041e870(key,strings,"WaterTracerColor");
+        HeaderCleanup key_guard{key,strings};
+        invoke(0xb1b890,global(0xf8d434),{bits(key),bits(add(record(),0xc44))});
+        key_guard.armed=false;destroy_native_string_header_0041dd20(key,strings);
+    } else {
+        const Word allocation=c.call(0xbf681b,0,0,{0x40});
+        WorldAllocationCleanupA guard{c,allocation,0xbf65ac,true};Word atmosphere=0;
+        if(allocation) {
+            Word name[2];construct_native_string_header_0041e870(name,strings,"sky_001");
+            HeaderCleanup name_guard{name,strings};atmosphere=invoke(0xbbdff0,allocation,{field(0x19ec),bits(name)});
+            guard.armed=false;publish(0x19e8,atmosphere);
+            name_guard.armed=false;destroy_native_string_header_0041dd20(name,strings);
+        } else {guard.armed=false;publish(0x19e8,0);}
+        const Word light=field(0x19f8);
+        invoke(0xbbce30,invoke(0xbbddf0,field(0x19e8)),{light});
+    }
+    const Word clouds=s.byte(0xf889f4);
+    invoke(0xbbcfe0,invoke(0xbbddf0,field(0x19e8)),{clouds});
+    void* fog=pointer(ordinary(0x94,0xb84e50));
+    if(field(0x19e8)) invoke(0xbbdf20,field(0x19e8),{bits(fog)});
+    invoke(0xb71940,field(0x19fc),{bits(fog)});c.release(fog);
+    invoke(0xb84d00,bits(fog),{0});invoke(0xb84d40,bits(fog),{0});
+    Word fog_color[4];fog_color[3]=world_zero_divide_a(static_cast<const double*>(s.image(0xce4b48)));
+    fog_color[0]=image_word(0xce7d60);fog_color[1]=image_word(0xce7d5c);fog_color[2]=image_word(0xce7d58);
+    invoke(0xb84c40,bits(fog),{bits(fog_color)});
+    if(record()) for(Word i=0;i!=4;++i) invoke(0xb84fa0,bits(fog),{bits(add(record(),0xa20+i*16)),i});
+    invoke(0xb6fe50,field(0x19fc),{0xa5a3ab});
+    {
+        const Word allocation=c.call(0xbf681b,0,0,{0xb8});
+        WorldAllocationCleanupA guard{c,allocation,0xbf65ac,true};Word ocean=0;
+        if(allocation) {
+            void* current=record();const Word flags=current ?
+                ((bits(current)&0xffffff00u)|read<std::uint8_t>(current,0xc20)):0;
+            ocean=invoke(0x78daa0,allocation,{field(0x19ec),flags});
+        }
+        guard.armed=false;publish(0x19f0,ocean);
+    }
+    if(record()) {
+        Word diagnostic[2]={0,0};resize_native_string_header_0041dd40(diagnostic,strings,0x1b,true);
+        if(void* data=read<void*>(diagnostic,4)) {
+            std::memmove(data,s.image(0xce7d3c),read<Word>(diagnostic,0)+1);
+            destroy_native_string_header_0041dd20(diagnostic,strings);
+        }
+        invoke(0x78c9b0,field(0x19f0),{bits(add(record(),0x990))});
+        const Word preset=bits(add(record(),0x990));
+        invoke(0x865900,invoke(0x865cf0,0),{preset});
+        const Word particles=read<Word>(record(),0xc18);
+        invoke(0x78dba0,field(0x19f0),{field(0x19ec),particles});
+        const Word beams=read<Word>(record(),0xc1c);
+        invoke(0x78dcf0,field(0x19f0),{field(0x19ec),beams});
+    }
+    write<std::uint8_t>(read<void*>(object(0x19f0),0xa8),0xf8,s.byte(0xf889ec));
+    invoke(0xb6d890,field(0x19fc),{field(0x19ec)});s.word(0xf89a04)=0;
+    for(Word i=0;i!=8;++i) {
+        const Word objective=ordinary(0x30,0x8df900,{i});publish(0x21a4+i*4,objective);
+        invoke(0x8da160,objective);
+    }
+    invoke(0x91c560,field(0x21a0));
+    const Word offsets[]={0x21c8,0x21cc,0x21d4,0x21dc,0x21e8};
+    const Word sizes[]={0x10,0x10,0x50,0x70,0x58};
+    const Word constructors[]={0x8e2b90,0x9221e0,0x6deca0,0x707480,0x735030};
+    const Word resets[]={0x8e25f0,0x920ec0,0x6d6200,0x7018c0,0x733030};
+    for(Word i=0;i!=5;++i) {
+        const Word manager=ordinary(sizes[i],constructors[i]);publish(offsets[i],manager);invoke(resets[i],manager);
+    }
+    const Word queue=ordinary(0x10,0x945820);s.word(0xf89b3c)=queue;invoke(0x941310,queue);
+    invoke(0x8d5b50,bits(s.image(0xf88980)));
+    invoke(0xa933f0,invoke(0x4bec00,0),{0x1d,1});
+}
+
+} // namespace bsp::oct18_tail_a

@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_legacy_sbo_string.hpp"
 #include <cstdint>
 #include "bsp/classes_seg7_cc13.hpp"
 #include "bsp/cc13_seg48U.hpp"
@@ -354,5 +355,150 @@ struct FrontendShellServices {
 };
 void enter_frontend_shell_004e4000(void* self,const void* config_stack_preimage_28_bytes,
     FrontendShellState&,NativeStringRawPoolContext&,FrontendShellServices&);
+
+struct PlayerDropStackPreimage {
+    std::uint8_t active[8]; float weights[8]; std::uint32_t list_allocator_word;
+    std::uint8_t message[36];
+};
+struct PlayerDropState {
+    void* const& game_00e188a8; void* const& unit_head_00f87198;
+    const float &unassigned_00d7a218, &minimum_00d7a244;
+};
+struct PlayerDropServices {
+    virtual ~PlayerDropServices() = default;
+    virtual void diagnostic_start_004254b0() = 0;
+    virtual float player_weight_00946f00(std::uint32_t player_in_ecx) = 0;
+    virtual void* list_head_004c1630(void* list) = 0;
+    virtual void* list_node_004c2220(void* list,void* next,void* previous,const void* payload) = 0;
+    virtual void grow_004cee30(void* list,std::uint32_t count) = 0;
+    virtual void invalid_00bf6713() = 0;
+    virtual std::uint32_t unit_name_slot10(void*) = 0;
+    virtual void diagnostic_value_004254b0(std::uint32_t name,double value) = 0;
+    virtual void diagnostic_move_004254b0(std::uint32_t name,std::uint32_t party,
+        std::uint32_t old_player,std::uint32_t new_player) = 0;
+    virtual void unit_slot148(void*,std::uint32_t value,std::uint32_t reason) = 0;
+    virtual void message_base_0075b430(void*,std::uint32_t type) = 0;
+    virtual void message_unwind_004b5ce0(void*) noexcept = 0;
+    virtual void unit_message_0077c2a0(void* unit,const void* message,std::uint32_t,std::uint32_t) = 0;
+    virtual void assign_slots_004c3840(void* game,std::uint32_t notify) = 0;
+    virtual void list_unwind_004c8070(void*) noexcept = 0;
+    virtual void free_00bf65ac(void*) noexcept = 0;
+};
+void reassign_units_on_drop_004d56e0(void* self,const PlayerDropStackPreimage&,
+    PlayerDropState&,PlayerDropServices&);
+
+struct CommandLineStackPreimage {
+    NativeLegacySboStringStorage strings[8];
+    std::uint32_t token_vector[4], scratch;
+    char directory[260];
+};
+struct CommandLineState {
+    void* const& game_00e188a8; void* const& storage_0109cecc;
+    const char* empty_00e18b1c; const void* clear_bytes_00ce3a0c;
+    std::uint8_t &singlethread_00e0b6ce,&flaktest_00e19b4d,&vehiclelog_00e0cfc0;
+    std::uint32_t& hints_00f8898c;
+};
+struct CommandLineServices {
+    virtual ~CommandLineServices() = default;
+    virtual void split_0094ec70(void* output,const NativeLegacySboStringStorage&,const char*) = 0;
+    virtual void vector_unwind_004d6800(void*) noexcept = 0;
+    virtual void range_destroy_004ce520(void* first,void* end,void* owner,std::uint32_t scratch) = 0;
+    virtual void free_00bf65ac(void*) noexcept = 0;
+    virtual void invalid_00bf6713() = 0;
+    virtual std::int32_t compare_bytes_004b3fc0(const char*,const char*,std::uint32_t) = 0;
+    virtual std::int32_t compare_004beb60(const NativeLegacySboStringStorage&,std::uint32_t,
+        std::uint32_t,const char*,std::uint32_t) = 0;
+    virtual bool matches_004c2df0(const NativeLegacySboStringStorage&,const char*) = 0;
+    virtual char* character_004bcb10(NativeLegacySboStringStorage&,std::uint32_t) = 0;
+    virtual std::int32_t atol_00bf8417(const char*) = 0;
+    virtual void* class_registry_00437f50() = 0;
+    virtual std::uint32_t difficulty_007f7bf0(const void* native_string) = 0;
+    virtual void iterator_add_004bcec0(DialogIterator&,std::uint32_t) = 0;
+    virtual DialogIterator* postincrement_004bce80(DialogIterator&,DialogIterator&,std::uint32_t) = 0;
+    virtual DialogIterator* end_004c44d0(void* vector,DialogIterator&) = 0;
+    virtual bool iterator_not_equal_004bcf00(DialogIterator&,const DialogIterator&) = 0;
+    virtual NativeLegacySboStringStorage* iterator_get_004bcdf0(DialogIterator&) = 0;
+    virtual void push_command_004d6f30(void* game,const NativeLegacySboStringStorage&) = 0;
+    virtual void lowercase_004bcc00(void* native_string) = 0;
+    virtual const char* strstr_00bf9440(const char*,const char*) = 0;
+    virtual NativeLegacySboStringStorage* concatenate_004d0860(NativeLegacySboStringStorage&,
+        const NativeLegacySboStringStorage&,const NativeLegacySboStringStorage&) = 0;
+    virtual std::uint32_t current_directory(std::uint32_t,char*) = 0; // IAT00CE2264
+    virtual std::int32_t tolower_00bf9611(std::int32_t) = 0;
+    virtual void console_label_004c89a0(void* game,const void* native_string) = 0;
+    virtual void pending_scene_004e2770(void* game,const char*,const char*) = 0;
+    virtual void command_text_004c8950(void* game,const char*) = 0;
+    virtual void newest_slot_004c5e00(void* storage,void* output_native_string) = 0;
+    virtual void* empty_save_00436710(void* output_native_string) = 0;
+    virtual bool string_not_equal_00449af0(const void*,const void*) = 0;
+    virtual void request_read_007ff100(void* profile,const void* name,std::uint32_t callback) = 0;
+    virtual void enqueue_004d3ed0(void* queue,const std::uint32_t*) = 0;
+    virtual void build_record_004e1d70(void* game,const char*,std::uint32_t,std::uint32_t,const char*) = 0;
+    virtual void select_record_004c6890(void* game,std::uint32_t) = 0;
+    virtual void reset_participants_004bb160(void* game) = 0;
+    virtual void game_mode_004bc890(void* game,std::uint32_t,std::uint32_t) = 0;
+    virtual void duel_005d4a00(std::uint32_t ecx) = 0;
+};
+void apply_command_line_004e27e0(void* self,const CommandLineStackPreimage&,
+    CommandLineState&,NativeStringRawPoolContext&,CommandLineServices&);
+
+struct HudRowsState {
+    void* const& controlled_00e188d8;void* const& screens_00e198c4;
+    void* const& modifiers_00f88c30;
+    const float &one_00d7a24c,&ellipsis_00d7a260;
+    // Actual descriptor identities corresponding to E08F10,18,...,90,A0.
+    const void* commands[18];
+};
+struct HudRowsServices {
+    virtual ~HudRowsServices() = default;
+    virtual void rebuild_00648290(void* root) = 0;
+    virtual void* selected_00644a60(void* root) = 0;
+    virtual bool class_slot5c(void* unit,std::uint32_t) = 0;
+    virtual void assign_text_0041e350(void* header,const char*) = 0;
+    virtual bool ordnance(void* unit,std::uint32_t target,std::uint32_t argument) = 0;
+    virtual std::uint32_t count(void* unit,std::uint32_t target) = 0;
+    virtual void* concat_int_004263b0(const void* left,void* output,std::uint32_t value) = 0;
+    virtual void* concat_004261a0(const void* left,void* output,const void* right) = 0;
+    virtual bool not_equal_00449af0(const void* left,const void* right) = 0;
+    virtual void widget_slot4c(void* widget,float) = 0;
+    virtual void* timed_00aa8b00(void* widget,std::uint32_t key) = 0;
+    virtual void ticker_00ac2f20(void*,float,float) = 0;
+    virtual void delete_timed_00aa8b80(void*,std::uint32_t key) = 0;
+    virtual void localized_00abaed0(void*,const void* text,std::uint32_t) = 0;
+    virtual bool local_role_00927f30(void*,std::uint32_t) = 0;
+    virtual void* director_slot114(void* unit) = 0;
+    virtual const void* command_0071be40(void* director) = 0;
+    virtual void widget_slot88(void*,std::uint32_t frame,std::uint32_t,float) = 0;
+    virtual const char* unit_name_slot14(void*) = 0;
+    virtual void ellipsized_00abb000(void*,const void* text,float,std::uint32_t) = 0;
+    virtual void widget_slot34(void*,std::uint32_t) = 0;
+    virtual std::uint32_t icon_00653200(void* selector,std::uint32_t payload) = 0;
+    virtual void widget_slot48(void*,const float* pair) = 0;
+    virtual float airfield_health_006d2560(void*) = 0;
+    virtual void* settings_00424c40() = 0;
+};
+struct HudRowsContext {
+    // Required raw bindings: health ECX unit, RET/ST0; modifier ECX manager,
+    // stack(kind,unit), RET8/ST0. Kernels consume ST0 before any source spill.
+    void (__cdecl* health_00923be0)();
+    void (__cdecl* modifier_00470440)();
+    HudRowsState& state;NativeStringRawPoolContext& strings;HudRowsServices& services;
+};
+void update_hud_rows_00648c20(void* self,HudRowsContext&);
+
+struct WorldConstructServices {
+    virtual ~WorldConstructServices() = default;
+    // Bind actual original primitive targets. Stack words are in native entry
+    // order (ESP+4 first), float words keep their bits, EAX is returned. Restore
+    // the target's original ECX/EDX/stack convention in the provider; this new
+    // interface is not a binary-ABI adapter and has no fallback implementation.
+    virtual std::uint32_t invoke(std::uint32_t target,std::uint32_t ecx,std::uint32_t edx,
+                                const std::uint32_t* stack,std::uint32_t words) = 0;
+    // Actual borrowed image cells/data, not a synthesized global map or heap.
+    virtual std::uint32_t& word(std::uint32_t address) = 0;
+    virtual std::uint8_t& byte(std::uint32_t address) = 0;
+    virtual const void* image(std::uint32_t address) = 0;
+};
+void construct_world_004de610(void* self,NativeStringRawPoolContext&,WorldConstructServices&);
 
 } // namespace bsp::oct18_tail_a
