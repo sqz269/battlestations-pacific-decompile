@@ -2781,7 +2781,7 @@ void level_bomb_block_tail(Cc13Seg67bHost& host, void* block) {
 void* bot_task_level_bomb_construct_approach_block_from_stream_009b77c0(Cc13Seg67bHost& host,
                                                                         void* block, void* bot,
                                                                         void* archive) {
-    host.bot_approach_level_bomb_construct_from_stream_009b4690(block, ptr_at(bot, 0x50), archive);
+    bot_approach_level_bomb_construct_from_stream_009b4690(host, block, ptr_at(bot, 0x50), archive);
     host.bot_state_registry_construct_00411e20(ptr(block, 0xDC));
     at<std::uint32_t>(block, 0x000) = kLevelBombBlockVtable_00d20204;
     at<std::uint32_t>(block, 0x0DC) = kLevelBombRegistryVtable_00d20200;
@@ -2960,7 +2960,7 @@ void dogfight_block_tail(Cc13Seg67bHost& host, void* block) {
 void* bot_task_dogfight_construct_approach_block_from_stream_009a9670(Cc13Seg67bHost& host,
                                                                       void* block, void* bot,
                                                                       void* archive) {
-    host.bot_approach_dogfight_construct_from_stream_009a6d40(block, bot, archive);
+    bot_approach_dogfight_construct_from_stream_009a6d40(host, block, bot, archive);
     host.bot_state_registry_construct_00411e20(ptr(block, 0x104));
     at<std::uint32_t>(block, 0x000) = kDogfightBlockVtable_00d1f9a4;
     at<std::uint32_t>(block, 0x104) = kDogfightRegistryVtable_00d1f9a0;
@@ -4129,6 +4129,435 @@ void* bot_approach_land_construct_from_stream_009afff0(Cc13Seg67bHost& host, voi
     at<float>(approach, 0x3C) = at<float>(owner, 0x100);
     host.bot_approach_land_geometry_009afaf0(approach, 0);
     return approach;
+}
+
+
+// ---------------------------------------------------------------------------
+// The dogfight approach base from a stream (packet cc13-seg67C).
+
+namespace {
+constexpr std::uint32_t kStrTargetLockUnderscore_00d1f624 = 0x00D1F624u;  // "_targetLock"
+constexpr std::uint32_t kStrSquadName_00d1f888 = 0x00D1F888u;             // "squadName"
+constexpr std::uint32_t kStrInAttackRange_00d1f878 = 0x00D1F878u;         // "inattackrange"
+constexpr std::uint32_t kStrTargetFindAngle_00d1f868 = 0x00D1F868u;       // "targetfindangle"
+constexpr std::uint32_t kStrTargetFindWeight_00d1f854 = 0x00D1F854u;      // "targetfindweight"
+constexpr std::uint32_t kStrWasHitTimer_00d1f848 = 0x00D1F848u;           // "washittimer"
+}  // namespace
+
+// 009A6D40 (BSP_BotApproachDogfight_ConstructFromStream): __thiscall(ECX = approach, bot,
+// archive), RET 8, EAX = approach. EH frame 00CAE237. Evidence (disk bytes):
+// 009F9CE0(ECX = approach, [bot+50h], tuning+650h) (009A6D62-009A6D7B); vtable 00D1F844
+// (009A6D92); 00BD4FE0(ECX = archive, the outgoing block, {0,"_targetLock"}) (009A6DAA)
+// and 009FB3E0(ECX = approach+2Ch, that block by value) (009A6DB2). The observer member
+// at +A0h is built inline: +A4h/+A8h/+ACh/+B4h = 0, byte +B0h = 1, [+A0h] = 00CF89B4
+// (009A6DB7-009A6DD2); so is the one at +B8h: +BCh/+C0h/+C4h/+CCh = 0, byte +C8h = 1,
+// [+B8h] = 00CF6514 (009A6DD8-009A6DEF). (The direct twin 009A6C10 calls 007F0F80 for
+// +B8h instead.) archive->vtable[10h]({0,"squadName"}, {4, &slot}) (009A6E1F), where the
+// slot is the image's `bot` argument slot [ESP+38h]; then the +B8h observer is swapped
+// to that entity: unchanged -> skip; old != 0 -> 006952A0(old, +B8h); +CCh = e; e != 0
+// -> 00694A60(e, +B8h) (009A6E21-009A6E46). The +A0h observer: +B4h != 0 ->
+// 006952A0(+B4h, +A0h), +B4h = 0 (009A6E4B-009A6E59); t = [+44h] (the target ref's
+// entity); t != 0 -> k = t->vtable[5Ch](0Fh) ? t : 0 (NEG AL / SBB / AND), and the
+// same swap of +B4h to k (009A6E60-009A6E95). The target position +48h..+50h is copied
+// BEFORE the plane refresh (009A6E9A-009A6EBF); plane = [+4h], 00414DB0(plane) unless
+// byte plane+C8h (009A6EC9); dx/dy/dz = float(plane+FCh/+100h/+104h - copy)
+// (009A6ECE-009A6EF4). s = float((dy*dy + dx*dx) + dz*dz) (009A6EF8-009A6F1A: FMUL
+// ST0,ST0; FLD ST1; FMULP ST2; FXCH; FADD ST2; FADD ST1); +D4h = s > double [00CE3820]
+// 1e-10 ? float(_CIsqrt(s)) : 0.0 (FCOMI then JBE: NaN -> 0) (009A6F1E-009A6F5C).
+// Then FLDZ squared is added: h = float(dz*dz + (dx*dx + 0.0)) (009A6F5A-009A6F6A), and
+// +D8h = h > 1e-10 ? float(_CIsqrt(h)) : 0.0 (JBE) (009A6F6E-009A6F9F). Reads
+// {0,"inattackrange"} <- {3, &+D0h} (009A6FDA), {0,"targetfindangle"} <- {2, &+DCh}
+// (009A7012), {0,"targetfindweight"} <- {2, &+E0h} (009A704A), {0,"washittimer"} <- {2,
+// &+E8h} (009A7082); +E4h = [00D7A260] -1.0 (009A7084-009A7091).
+// Stack seed, labelled: 009A6D87, 009A6D98 and 009A6DFA (`MOV [ESP+..],ESP`) overwrite
+// the `bot` slot before the squadName read. The nearest write, 009A6DFA, leaves the
+// address of the outgoing field record {4, &slot}, so a missing squadName key registers
+// the +B8h observer on that stack address. Here the slot is seeded the same way, with
+// the address of this body's field record.
+// UNCERTAINTY: 24-bit precision modelled: the squares and sums round to float at each
+// step, as float arithmetic does here (the image keeps dx*dx and dz*dz on the x87 stack
+// and spills them as doubles, which are float-exact). The x87 stack's wider exponent
+// range is not modelled (it matters only for squares beyond FLT_MAX). The square root is
+// std::sqrt in double rounded to float, which is the correctly rounded float root the
+// 24-bit FSQRT gives. EH unwinding not modelled.
+void* bot_approach_dogfight_construct_from_stream_009a6d40(Cc13Seg67bHost& host, void* approach,
+                                                           void* bot, void* archive) {
+    const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x650);
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, ptr_at(bot, 0x50), speed);
+    at<std::uint32_t>(approach, 0x00) = kDogfightApproachVtable_00d1f844;
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref,
+                                          name_record(kStrTargetLockUnderscore_00d1f624));
+    host.approach_ref_construct_from_stream_009fb3e0(ptr(approach, 0x2C), ref);
+    void* const a0 = ptr(approach, 0xA0);
+    at<std::uint32_t>(a0, 0x04) = 0;
+    at<std::uint32_t>(a0, 0x08) = 0;
+    at<std::uint32_t>(a0, 0x0C) = 0;
+    at<std::uint32_t>(a0, 0x14) = 0;
+    at<std::uint8_t>(a0, 0x10) = 1;
+    at<std::uint32_t>(a0, 0x00) = kDogfightEmbeddedA0Vtable_00cf89b4;
+    void* const b8 = ptr(approach, 0xB8);
+    at<std::uint32_t>(b8, 0x04) = 0;
+    at<std::uint32_t>(b8, 0x08) = 0;
+    at<std::uint32_t>(b8, 0x0C) = 0;
+    at<std::uint32_t>(b8, 0x14) = 0;
+    at<std::uint8_t>(b8, 0x10) = 1;
+    at<std::uint32_t>(b8, 0x00) = kDogfightObserverVtable_00cf6514;
+    // The image's slot holds the address of the outgoing field record (009A6DFA).
+    std::uint32_t field_record[2] = {4u, 0u};
+    std::uintptr_t slot = reinterpret_cast<std::uintptr_t>(field_record);
+    host.archive_vcall_10_read(archive, name_record(kStrSquadName_00d1f888),
+                               record(4, reinterpret_cast<std::uintptr_t>(&slot)));
+    {
+        const std::uintptr_t old = at<std::uintptr_t>(b8, 0x14);
+        if (old != slot) {
+            if (old != 0) host.observer_unregister_pair_006952a0(reinterpret_cast<void*>(old), b8);
+            at<std::uintptr_t>(b8, 0x14) = slot;
+            if (slot != 0) host.observer_register_pair_00694a60(reinterpret_cast<void*>(slot), b8);
+        }
+    }
+    if (ptr_at(a0, 0x14) != nullptr) {
+        host.observer_unregister_pair_006952a0(ptr_at(a0, 0x14), a0);
+        at<std::uint32_t>(a0, 0x14) = 0;
+    }
+    void* const t = ptr_at(approach, 0x44);
+    if (t != nullptr) {
+        void* const k = host.object_vcall_5c(t, 0x0F) ? t : nullptr;
+        void* const old = ptr_at(a0, 0x14);
+        if (old != k) {
+            if (old != nullptr) host.observer_unregister_pair_006952a0(old, a0);
+            at<std::uintptr_t>(a0, 0x14) = reinterpret_cast<std::uintptr_t>(k);
+            if (k != nullptr) host.observer_register_pair_00694a60(k, a0);
+        }
+    }
+    const float tx = at<float>(approach, 0x48);
+    const float ty = at<float>(approach, 0x4C);
+    const float tz = at<float>(approach, 0x50);
+    void* const plane = ptr_at(approach, 0x04);
+    if (at<std::uint8_t>(plane, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(plane);
+    const float dx = at<float>(plane, 0xFC) - tx;
+    const float dy = at<float>(plane, 0x100) - ty;
+    const float dz = at<float>(plane, 0x104) - tz;
+    const float dx2 = dx * dx;
+    const float dz2 = dz * dz;
+    const float dy2 = dy * dy;
+    const float s = (dy2 + dx2) + dz2;
+    at<float>(approach, 0xD4) =
+        static_cast<double>(s) > kTiny_00ce3820
+            ? static_cast<float>(std::sqrt(static_cast<double>(s)))
+            : 0.0f;
+    const float h = dz2 + (dx2 + 0.0f);
+    at<float>(approach, 0xD8) =
+        static_cast<double>(h) > kTiny_00ce3820
+            ? static_cast<float>(std::sqrt(static_cast<double>(h)))
+            : 0.0f;
+    read_field(host, archive, kStrInAttackRange_00d1f878, 3, ptr(approach, 0xD0));
+    read_field(host, archive, kStrTargetFindAngle_00d1f868, 2, ptr(approach, 0xDC));
+    read_field(host, archive, kStrTargetFindWeight_00d1f854, 2, ptr(approach, 0xE0));
+    read_field(host, archive, kStrWasHitTimer_00d1f848, 2, ptr(approach, 0xE8));
+    at<float>(approach, 0xE4) = kMinusOne_00d7a260_f;
+    return approach;
+}
+
+
+// ---------------------------------------------------------------------------
+// The level-bomb approach base from a stream (packet cc13-seg67C).
+
+namespace {
+constexpr std::uint32_t kStrReleaseTime_00d200d8 = 0x00D200D8u;   // "releaseTime"
+constexpr std::uint32_t kStrReleaseError_00d200c8 = 0x00D200C8u;  // "releaseError"
+constexpr std::uint32_t kStrBayDoorState_00d200b8 = 0x00D200B8u;  // "bayDoorState"
+constexpr std::uint32_t kStrCalcHitPos_00d200ac = 0x00D200ACu;    // "calcHitPos"
+}  // namespace
+
+// 009B4690 (BSP_BotApproachLevelBomb_ConstructFromStream): __thiscall(ECX = approach,
+// arg, archive), RET 8, EAX = approach; the caller 009B77C0 passes [bot+50h] as arg.
+// EH frame 00CAED2B. The stream twin of 009B44F0. Evidence (disk bytes):
+// 009F9CE0(ECX = approach, arg, tuning+458h) (009B46AE-009B46C4); vtable 00D200A8, +2Ch
+// = 0 (009B46DF-009B46E5); 00BD4FE0(ECX = archive, the outgoing block, {0,"targetLock"})
+// (009B46FC) and 009FB3E0(ECX = approach+30h, that block by value) (009B4704); +A4h =
+// [00CE6454] 16.0, +ACh = desc+188h (desc = [approach+8], FLD/FSTP of a float, exact),
+// +B0h = [00CFD714] 1200.0 (009B4709-009B4733). Then archive->vtable[10h] reads, in
+// order: {0,"releaseTime"} <- {2, &+A8h} (009B4775), {0,"startDist"} <- {2, &+B4h}
+// (009B47AC), {0,"releaseError"} <- {2, &+C4h} (009B47E3), {0,"attackDist"} <- {2,
+// &+B8h} (009B481A), {0,"targetDist"} <- {2, &+BCh} (009B4851), {0,"bayDoorState"} <- {3,
+// &+CCh} (009B4888), {0,"insideAttackRange"} <- {3, &+CDh} (009B48BF), {0,"targetHdg"}
+// <- {2, &+C0h} (009B48F6), {0,"currentAvoidFlag"} <- {1, &+C8h} (009B492D),
+// {0,"calcHitPos"} <- {5, &+D0h} (009B4964). Unlike 009B44F0 it makes no RNG draws and
+// does not call the aim-error redraw 009B4400; the stream supplies those fields.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_approach_level_bomb_construct_from_stream_009b4690(Cc13Seg67bHost& host,
+                                                             void* approach, void* arg,
+                                                             void* archive) {
+    const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x458);
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, arg, speed);
+    at<std::uint32_t>(approach, 0x00) = kLevelBombApproachVtable_00d200a8;
+    at<std::uint32_t>(approach, 0x2C) = 0;
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrTargetLockPlain_00d1fb5c));
+    host.approach_ref_construct_from_stream_009fb3e0(ptr(approach, 0x30), ref);
+    at<float>(approach, 0xA4) = kSixteen_00ce6454;
+    at<float>(approach, 0xAC) = at<float>(ptr_at(approach, 0x8), 0x188);
+    at<float>(approach, 0xB0) = kTwelveHundred_00cfd714;
+    read_field(host, archive, kStrReleaseTime_00d200d8, 2, ptr(approach, 0xA8));
+    read_field(host, archive, kStrStartDist_00d1fb50, 2, ptr(approach, 0xB4));
+    read_field(host, archive, kStrReleaseError_00d200c8, 2, ptr(approach, 0xC4));
+    read_field(host, archive, kStrAttackDist_00d1fb44, 2, ptr(approach, 0xB8));
+    read_field(host, archive, kStrTargetDist_00d1fb38, 2, ptr(approach, 0xBC));
+    read_field(host, archive, kStrBayDoorState_00d200b8, 3, ptr(approach, 0xCC));
+    read_field(host, archive, kStrInsideAttackRange_00d1fb24, 3, ptr(approach, 0xCD));
+    read_field(host, archive, kStrTargetHdg_00d1fb18, 2, ptr(approach, 0xC0));
+    read_field(host, archive, kStrCurrentAvoidFlag_00d1fb04, 1, ptr(approach, 0xC8));
+    read_field(host, archive, kStrCalcHitPos_00d200ac, 5, ptr(approach, 0xD0));
+    return approach;
+}
+
+
+// ---------------------------------------------------------------------------
+// The move-on-path approach's path entity (packet cc13-seg67C).
+
+namespace {
+constexpr std::uint32_t kMoveOnPathCommandClass_00e08f80 = 0x00E08F80u;  // `moveonpath`
+}  // namespace
+
+// 009BD0B0 (BSP_BotApproachMoveOnPath_PathEntity, 009BD0B0-009BD119): __fastcall(ECX =
+// approach), RET, EAX. Evidence (disk bytes): ctl = [approach+0Ch]; ctl == 0 -> 0
+// (009BD0B3-009BD0B8). director = ctl->vtable[114h]() (009BD0C2, no stack arguments);
+// [director+54h] != 00E08F80 -> 0 (009BD0C4-009BD0CB). ctl->vtable[114h]() again
+// (009BD0DA); the `PUSH 0` at 009BD0D8 is the stack argument of the following
+// 0071BFF0(ECX = that director, 0) (009BD0DE, RET 4), not of vtable[114h]. cursor == 0
+// -> 0 (009BD0E5). path = [cursor+4]; the NEG/SBB/TEST 00E19B95 at 009BD0EE-009BD0F2 is
+// a base-cast null test, so path == 0 -> 0. path->vtable[28h]() == 0 -> 0 (009BD0FE-
+// 009BD102); else path->vtable[28h]() is called a second time (009BD10C) and its result
+// goes to 007ACA30 by a tail JMP (009BD111), whose EAX is returned.
+// UNCERTAINTY: none beyond the host hooks; the director, cursor and path are
+// dereferenced exactly where the image does.
+void* bot_approach_move_on_path_path_entity_009bd0b0(Cc13Seg67bHost& host, void* approach) {
+    void* const ctl = ptr_at(approach, 0x0C);
+    if (ctl == nullptr) return nullptr;
+    void* const director = host.object_vcall_114(ctl);
+    if (at<std::uint32_t>(director, 0x54) != kMoveOnPathCommandClass_00e08f80) return nullptr;
+    void* const director2 = host.object_vcall_114(ptr_at(approach, 0x0C));
+    void* const cursor = host.weapon_director_command_path_cursor_0071bff0(director2, 0);
+    if (cursor == nullptr) return nullptr;
+    void* const path = ptr_at(cursor, 0x04);
+    if (path == nullptr) return nullptr;
+    if (host.object_vcall_28(path) == nullptr) return nullptr;
+    return host.path_object_get_entity_007aca30(host.object_vcall_28(ptr_at(cursor, 0x04)));
+}
+
+
+// ---------------------------------------------------------------------------
+// The ship-AI debug box (packet cc13-seg67C).
+
+namespace {
+constexpr double kTwenty_00ce3d88 = 20.0;  // bytes 00 00 00 00 00 00 34 40
+void debug_line_xz(Cc13Seg67bHost& host, float x0, float z0, float x1, float z1) {
+    const float from[3] = {x0, 0.0f, z0};
+    const float to[3] = {x1, 0.0f, z1};
+    const float colour[4] = {kOne_00d7a24c, kOne_00d7a24c, kOne_00d7a24c, kOne_00d7a24c};
+    host.debug_line_0085fb30(from, to, colour);
+}
+}  // namespace
+
+// 009D7260 (BSP_ShipAiDebug_DrawBoxLines, 009D7260-009D7770): __fastcall(ECX = box), RET.
+// Evidence (disk bytes): byte box+68h set -> return (009D7266-009D726A). With c =
+// (+44h, +48h), a = (+4Ch, +50h), b = (+54h, +58h), h1 = +5Ch and h2 = +60h, the image
+// forms u = h2 x b and v = h1 x a (each product spilled to a float) and the corners
+// p1 = (c + v) + u (009D72C2-009D72EC), p2 = (c + v) - u (009D7330-009D735A), p3 =
+// (c - v) - u (009D73C5-009D73EF) and p4 = (c - v) + u (009D7429-009D7480), every sum
+// spilled to a float. Four lines through 0085FB30(ECX = from, EDX = to, colour by value
+// [00D7A24C] 1.0 x 4), RET 10h, with y = 0.0 at both ends: p1 -> p2 (009D74B3), p2 -> p3
+// (009D753F), p3 -> p4 (009D75CB), p4 -> p1 (009D7657). Then with m = +88h != 0: e =
+// float(h2 + double [00CE3D88] 20.0) (009D766D-009D7676); m == 1 -> end = c - e x b
+// (009D767C-009D76A6), else end = e x b + c (009D76A8-009D76CA); a fifth line c -> end
+// (009D7767).
+// UNCERTAINTY: 24-bit precision modelled (each product and sum rounds to float, as in
+// the image's spills); e is rounded once from the double sum, which equals the 24-bit
+// FADD except in double-rounding ties.
+void ship_ai_debug_draw_box_lines_009d7260(Cc13Seg67bHost& host, void* box) {
+    if (at<std::uint8_t>(box, 0x68) != 0) return;
+    const float c0 = at<float>(box, 0x44), c1 = at<float>(box, 0x48);
+    const float a0 = at<float>(box, 0x4C), a1 = at<float>(box, 0x50);
+    const float b0 = at<float>(box, 0x54), b1 = at<float>(box, 0x58);
+    const float h1 = at<float>(box, 0x5C), h2 = at<float>(box, 0x60);
+    const float u0 = b0 * h2, u1 = h2 * b1;
+    const float v0 = a0 * h1, v1 = h1 * a1;
+    const float p1x = (c0 + v0) + u0, p1z = u1 + (c1 + v1);
+    const float p2x = (v0 + c0) - u0, p2z = (c1 + v1) - u1;
+    const float p3x = (c0 - v0) - u0, p3z = (c1 - v1) - u1;
+    const float p4x = (c0 - v0) + u0, p4z = (c1 - v1) + u1;
+    debug_line_xz(host, p1x, p1z, p2x, p2z);
+    debug_line_xz(host, p2x, p2z, p3x, p3z);
+    debug_line_xz(host, p3x, p3z, p4x, p4z);
+    debug_line_xz(host, p4x, p4z, p1x, p1z);
+    const std::int32_t mode = at<std::int32_t>(box, 0x88);
+    if (mode == 0) return;
+    const float e = static_cast<float>(static_cast<double>(h2) + kTwenty_00ce3d88);
+    float ex, ez;
+    if (mode == 1) {
+        ex = c0 - b0 * e;
+        ez = c1 - e * b1;
+    } else {
+        ex = e * b0 + c0;
+        ez = c1 + e * b1;
+    }
+    debug_line_xz(host, c0, c1, ex, ez);
+}
+
+
+// ---------------------------------------------------------------------------
+// The ship-AI debug draws (packet cc13-seg67C).
+
+namespace {
+constexpr float kTwenty_00ce3930 = 20.0f;  // 41A00000
+constexpr std::uint32_t kDebugCircleSegments = 0x40u;
+// A function-local static colour in the block at 00F8A68C: when bit 0 of the guard
+// dword is clear it is set (OR) and the record filled. Returns the record.
+float* debug_static_colour(Cc13Seg67bHost& host, std::size_t record, std::size_t guard,
+                           float r, float g, float b, float a) {
+    std::uint8_t* const block = host.ship_ai_debug_static_block_00f8a68c();
+    if ((at<std::uint8_t>(block, guard) & 1u) == 0) {
+        at<std::uint32_t>(block, guard) |= 1u;
+        at<float>(block, record + 0x0) = r;
+        at<float>(block, record + 0x4) = g;
+        at<float>(block, record + 0x8) = b;
+        at<float>(block, record + 0xC) = a;
+    }
+    return &at<float>(block, record);
+}
+// Red 00F8A6A0 (guard 00F8A6B0), green 00F8A6B4 (00F8A6C4), blue 00F8A6C8 (00F8A6D8),
+// yellow 00F8A6F0 (00F8A700). Cyan 00F8A6DC (00F8A6EC) is 009D5FD0's record.
+float* debug_red(Cc13Seg67bHost& h) { return debug_static_colour(h, 0x14, 0x24, 1, 0, 0, 1); }
+float* debug_green(Cc13Seg67bHost& h) { return debug_static_colour(h, 0x28, 0x38, 0, 1, 0, 1); }
+float* debug_blue(Cc13Seg67bHost& h) { return debug_static_colour(h, 0x3C, 0x4C, 0, 0, 1, 1); }
+float* debug_cyan(Cc13Seg67bHost& h) { return debug_static_colour(h, 0x50, 0x60, 0, 1, 1, 1); }
+float* debug_yellow(Cc13Seg67bHost& h) { return debug_static_colour(h, 0x64, 0x74, 1, 1, 0, 1); }
+
+// One child link of 009D98C0: the block at 009D98E5-009D9AB2 (child +20h, flag +31h)
+// and its copy at 009D9AD4-009D9CAB (child +24h, flag +32h).
+void draw_path_tree_link(Cc13Seg67bHost& host, void* node, std::size_t child_offset,
+                         std::size_t flag_offset) {
+    void* const child = ptr_at(node, child_offset);
+    const float p[3] = {at<float>(node, 0x18), kTen_00ce38b8, at<float>(node, 0x1C)};
+    const float q[3] = {at<float>(child, 0x18), kTen_00ce38b8, at<float>(child, 0x1C)};
+    const float white[4] = {kOne_00d7a24c, kOne_00d7a24c, kOne_00d7a24c, kOne_00d7a24c};
+    float* const green = debug_green(host);
+    host.wire_sphere_00860be0(q, green, kTwenty_00ce3930, white, 1);
+    if (at<std::uint8_t>(node, flag_offset) != 0) {
+        host.debug_line_0085fb30(p, q, debug_green(host));
+    } else {
+        float* const red = debug_red(host);
+        host.line_rgba_floats_0085f990(p, q, red, red);
+    }
+    ship_ai_debug_draw_path_tree_009d98c0(host, child);
+}
+}  // namespace
+
+// 009D98C0 (BSP_ShipAiDebug_DrawPathTree, 009D98C0-009D9CB6): __fastcall(ECX = node), RET.
+// Evidence (disk bytes): for each child in turn, [node+20h] (009D98DA) then [node+24h]
+// (009D9ACA), when non-zero: P = (node+18h, [00CE38B8] 10.0, node+1Ch) and Q = (child+18h,
+// 10.0, child+1Ch); the static green record 00F8A6B4 = {0, 1, 0, 1} (guard 00F8A6C4);
+// 00860BE0(ECX = Q, EDX = green, [00CE3930] 20.0, a stack white {1, 1, 1, 1}, 1)
+// (009D9982 / 009D9B71). Byte node+31h (+32h for the second child) set -> 0085FB30(ECX
+// = P, EDX = Q, green by value) (009D99F8 / 009D9BE7); else the static red 00F8A6A0 =
+// {1, 0, 0, 1} (guard 00F8A6B0) and 0085F990(ECX = P, EDX = Q, red, red by value)
+// (009D9AAA / 009D9CA3). Then the recursion on the child (009D9AB2 / 009D9BEF).
+// The static colours are the image's function-local statics, written through the
+// 00F8A68C block hook at the image's guard tests.
+// UNCERTAINTY: none beyond the host hooks.
+void ship_ai_debug_draw_path_tree_009d98c0(Cc13Seg67bHost& host, void* node) {
+    if (ptr_at(node, 0x20) != nullptr) draw_path_tree_link(host, node, 0x20, 0x31);
+    if (ptr_at(node, 0x24) != nullptr) draw_path_tree_link(host, node, 0x24, 0x32);
+}
+
+// 009DD9C0 (BSP_ShipAiDebug_DrawPlan, 009DD9C0-009DDB9E): __fastcall(ECX = plan), RET.
+// Evidence (disk bytes): [plan+20h] != 0 -> 009D98C0 on it (009DD9CD). Byte
+// [plan+3Ch]+174h compared as a dword with [00E0E300]; unequal -> return (009DD9D2-
+// 009DD9E2). 00860BB0(ECX = (plan+60h, 0, plan+64h), EDX = (0, 1, 0), plan+4Ch, a stack
+// white {1, 1, 1, 1}, 40h) (009DDA4F). The static yellow 00F8A6F0 = {1, 1, 0, 1}
+// (guard 00F8A700) and 00860BE0(ECX = (plan+50h, 0, plan+54h), EDX = yellow,
+// [00CE38B8] 10.0, yellow, 1) (009DDAF2); the static blue 00F8A6C8 = {0, 0, 1, 1}
+// (guard 00F8A6D8) and 00860BE0(ECX = (plan+58h, 0, plan+5Ch), EDX = blue, 10.0, blue,
+// 1) (009DDB95).
+// UNCERTAINTY: none beyond the host hooks. The image tests the guard bit twice after
+// setting it (009DDA6B, 009DDB0E); the second test always passes, so it is not repeated.
+void ship_ai_debug_draw_plan_009dd9c0(Cc13Seg67bHost& host, void* plan) {
+    void* const tree = ptr_at(plan, 0x20);
+    if (tree != nullptr) ship_ai_debug_draw_path_tree_009d98c0(host, tree);
+    const std::uint32_t side = at<std::uint8_t>(ptr_at(plan, 0x3C), 0x174);
+    if (side != static_cast<std::uint32_t>(host.global_debug_side_00e0e300())) return;
+    const float white[4] = {kOne_00d7a24c, kOne_00d7a24c, kOne_00d7a24c, kOne_00d7a24c};
+    const float axis[3] = {0.0f, kOne_00d7a24c, 0.0f};
+    const float centre[3] = {at<float>(plan, 0x60), 0.0f, at<float>(plan, 0x64)};
+    host.circle_around_axis_00860bb0(centre, axis, at<float>(plan, 0x4C), white,
+                                     kDebugCircleSegments);
+    float* const yellow = debug_yellow(host);
+    const float a[3] = {at<float>(plan, 0x50), 0.0f, at<float>(plan, 0x54)};
+    host.wire_sphere_00860be0(a, yellow, kTen_00ce38b8, yellow, 1);
+    float* const blue = debug_blue(host);
+    const float b[3] = {at<float>(plan, 0x58), 0.0f, at<float>(plan, 0x5C)};
+    host.wire_sphere_00860be0(b, blue, kTen_00ce38b8, blue, 1);
+}
+
+// 009DDCC0 (BSP_ShipAiDebug_Draw, 009DDCC0-009DE04B): __fastcall(ECX = ship AI), RET.
+// Evidence (disk bytes): with a stack white {1, 1, 1, 1} and the static yellow
+// 00F8A6F0 (guard 00F8A700): 00860BE0(ECX = (ai+18Ch, 0, ai+190h), EDX = yellow,
+// [00CE3850] 5.0, white, 1) (009DDD59) and the same for (ai+194h, 0, ai+198h)
+// (009DDDEE), the white refilled and the guard re-tested between them. u = [ai+3FCh];
+// when u != 0 and ([00E0E300] < 0 or byte u+174h == [00E0E300]) (009DDDF3-009DDE14):
+// 009DD9C0 on byte ai+2FCh ? [ai+2F8h] : [ai+2F4h] (009DDE1A-009DDE31); the static
+// cyan 00F8A6DC (guard 00F8A6EC); 00860BB0(ECX = (ai+18Ch, 5.0, ai+190h), EDX = (0, 1,
+// 0), ai+3C8h, cyan, 40h) (009DDEC5) and the same around (ai+194h, 5.0, ai+198h)
+// (009DDF59); the static red 00F8A6A0, 004166E0(ECX = ai+A3Ch, red) (009DDFA3); the
+// static yellow, 004166E0(ECX = ai+A5Ch, yellow) (009DDFED); byte ai+A90h set ->
+// 00860BE0(ECX = ai+A94h, EDX = 009D5FD0(), 5.0, 009D5E10(), 1), with 009D5E10 called
+// first (009DDFFC-009DE019); then 009D7260 on each of the [ai+604h] boxes at ai+608h,
+// the count re-read each step (009DE01F-009DE042).
+// UNCERTAINTY: none beyond the host hooks.
+void ship_ai_debug_draw_009ddcc0(Cc13Seg67bHost& host, void* ai) {
+    {
+        const float white[4] = {kOne_00d7a24c, kOne_00d7a24c, kOne_00d7a24c, kOne_00d7a24c};
+        float* const yellow = debug_yellow(host);
+        const float c[3] = {at<float>(ai, 0x18C), 0.0f, at<float>(ai, 0x190)};
+        host.wire_sphere_00860be0(c, yellow, kFive_00ce3850, white, 1);
+    }
+    {
+        const float white[4] = {kOne_00d7a24c, kOne_00d7a24c, kOne_00d7a24c, kOne_00d7a24c};
+        float* const yellow = debug_yellow(host);
+        const float c[3] = {at<float>(ai, 0x194), 0.0f, at<float>(ai, 0x198)};
+        host.wire_sphere_00860be0(c, yellow, kFive_00ce3850, white, 1);
+    }
+    void* const u = ptr_at(ai, 0x3FC);
+    if (u == nullptr) return;
+    const std::int32_t side = host.global_debug_side_00e0e300();
+    if (side >= 0 && static_cast<std::int32_t>(at<std::uint8_t>(u, 0x174)) != side) return;
+    ship_ai_debug_draw_plan_009dd9c0(
+        host, at<std::uint8_t>(ai, 0x2FC) != 0 ? ptr_at(ai, 0x2F8) : ptr_at(ai, 0x2F4));
+    const float axis[3] = {0.0f, kOne_00d7a24c, 0.0f};
+    {
+        float* const cyan = debug_cyan(host);
+        const float c[3] = {at<float>(ai, 0x18C), kFive_00ce3850, at<float>(ai, 0x190)};
+        host.circle_around_axis_00860bb0(c, axis, at<float>(ai, 0x3C8), cyan,
+                                         kDebugCircleSegments);
+    }
+    {
+        float* const cyan = debug_cyan(host);
+        const float c[3] = {at<float>(ai, 0x194), kFive_00ce3850, at<float>(ai, 0x198)};
+        host.circle_around_axis_00860bb0(c, axis, at<float>(ai, 0x3C8), cyan,
+                                         kDebugCircleSegments);
+    }
+    host.avoid_zone_debug_draw_selected_segments_004166e0(ptr(ai, 0xA3C), debug_red(host));
+    host.avoid_zone_debug_draw_selected_segments_004166e0(ptr(ai, 0xA5C), debug_yellow(host));
+    if (at<std::uint8_t>(ai, 0xA90) != 0) {
+        float* const a = ship_ai_debug_colour_record_a_009d5e10(host);
+        float* const b = ship_ai_debug_colour_record_b_009d5fd0(host);
+        host.wire_sphere_00860be0(&at<float>(ai, 0xA94), b, kFive_00ce3850, a, 1);
+    }
+    for (std::int32_t i = 0; i < at<std::int32_t>(ai, 0x604); ++i) {
+        const std::size_t slot = 0x608 + 4 * static_cast<std::size_t>(i);
+        ship_ai_debug_draw_box_lines_009d7260(host, ptr_at(ai, slot));
+    }
 }
 
 }  // namespace bsp

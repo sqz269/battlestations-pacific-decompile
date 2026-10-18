@@ -493,3 +493,37 @@ Other corrections:
 - Host cites by line number in this file and in `src/cc13_seg67b.cpp` were replaced by host function, block or switch names.
 - **009C1DC0:** the ledger uncertainty now says that a missing targetentity key leaves a stack address in the image, not arg.
 - **00999AE0:** the ledger evidence now says that the cursor is taken once and the end is re-read after each entry.
+
+### 3.38 Stream constructors and the move-on-path path entity (packet cc13-seg67C)
+
+009A6D40 builds the dogfight approach from a stream. It follows 009A6C10 but builds both observer members inline, and it reads the target lock from {0,"_targetLock"}. Further details:
+- The +B8h observer is swapped to the entity read from "squadName".
+- The +A0h observer is cleared, then swapped to the target ref's entity [+44h] when that entity's vtable[5Ch](0Fh) holds.
+- +D4h is the 3-D distance from the target to the plane, (dy² + dx²) + dz². +D8h is the horizontal distance, dz² + (dx² + 0), where the zero is the FLDZ the image squares. Each takes the 1e-10 cutoff with the JBE NaN arm.
+- The image overwrites the `bot` argument slot with stack addresses before the squadName read. A missing key would therefore register the observer on a stack address. The body seeds the slot with its own field record's address, and this is labelled.
+
+009A9670 now calls it directly.
+
+009B4690 is the stream twin of 009B44F0. It makes no RNG draws and does not call 009B4400. It reads ten fields, from releaseTime to calcHitPos. 009B77C0 now calls it directly.
+
+009BD0B0 answers the path's entity for the move-on-path still-valid test 009BD280. The pseudocode shows a "varargs" vtable[114h], but that comes from the hoisted `PUSH 0`, which is 0071BFF0's own stack argument. vtable[114h] takes no arguments.
+
+### 3.39 Ship-AI debug draws (packet cc13-seg67C)
+
+009D7260, 009D98C0, 009DD9C0 and 009DDCC0 draw through 0085FB30, 0085F990, 00860BB0, 00860BE0 and 004166E0 (all host hooks).
+
+The function-local static colours (red, green, blue, cyan and yellow) live in the image's block at 00F8A68C, which the hook now covers up to 00F8A703. They are written at the image's guard tests. The cyan record is 009D5FD0's.
+
+009D7260 needed every stack slot traced through the four colour blocks. Its corners are (c ± v) ± u, with each product and sum rounded to float.
+
+## 4. Ledger-only records (packet cc13-seg67C)
+
+| Address | Host body | Result |
+|---|---|---|
+| 0099B790 | `ga_insert_0099b790` | matches; the array order after a multi-merge differs, but the set of pairs is the same |
+| 0099BF30 | `gunfire_repair_0099bf30` | matches; differences only on NaN fallbacks |
+| 0099EC40 | `gunfire_detect_0099ec40` | **mismatch**: the exempt arm's +840h WandererMul store (0099F197) is missing; adoption note sent |
+| 009A7A50 | `df_avoid_common_009a7a50` | **mismatch**: the U(1, 2) redraw at 009A7D72 is a constant 1.5, and approach+100h bit 2 is not modelled; adoption note sent |
+| 009AFAF0 | `land_geometry_009afaf0` | matches; the speed divisor (vtable[38h]) is the host's \|v\| |
+| 009B1420 | `land_begin_steer_009b1420` | first third (009B1420-009B15BC) matches |
+| 009C7A80 | `update_dive_bomb_approach` | matches, with the host's labelled substitutions |
