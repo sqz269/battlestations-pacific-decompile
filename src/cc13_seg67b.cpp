@@ -5985,6 +5985,284 @@ void* entity_as_kind41_009ca480(Cc13Seg67bHost& host, void* entity) {
     return host.object_vcall_5c(entity, 0x41) ? entity : nullptr;
 }
 
+// ============================================================================
+// Medium rows, batch 2 (docs/CC13_SEG67B.md 3.47)
+// ============================================================================
+
+namespace {
+
+// The shared shape of the three plain state constructors 009BC870, 009BC8A0 and
+// 009C6180: +4h = approach; +0Ch, +10h, +14h, +8h = 0 (in that order); vptr.
+void* construct_plain_state(void* state, void* approach, std::uint32_t vtable) {
+    at<std::uintptr_t>(state, 0x4) = reinterpret_cast<std::uintptr_t>(approach);
+    at<std::uint32_t>(state, 0xC) = 0;
+    at<std::uint32_t>(state, 0x10) = 0;
+    at<std::uint32_t>(state, 0x14) = 0;
+    at<std::uint32_t>(state, 0x8) = 0;
+    at<std::uint32_t>(state, 0x0) = vtable;
+    return state;
+}
+
+// 009BC9F0 / 009C2670 (the same 23 instructions at two addresses): a
+// local white rgba (1, 1, 1, 1) from [00D7A24C]; unit = [approach+8h] (read before
+// the call); approach->vtable[0](&local) (EAX unused); 00860710(ECX = &local, EDX =
+// &white; radius = unit+268h).
+void circle_state_debug_draw(Cc13Seg67bHost& host, void* state) {
+    const float white[4] = {kOne_00d7a24c, kOne_00d7a24c, kOne_00d7a24c, kOne_00d7a24c};
+    void* const approach = ptr_at(state, 0x4);
+    void* const unit = ptr_at(approach, 0x8);
+    float point[3] = {};
+    host.approach_vcall_00_target_point(approach, point);
+    host.debug_circle64_00860710(point, white, at<float>(unit, 0x268));
+}
+
+}  // namespace
+
+// 009B94E0 (009B94E0-009B9581), split-S roll step. d = [task+2F8h], u = [task+2F4h]:
+// twice = d+1A8h / d+1BCh doubled (FADD ST0,ST0); off = -pi/2 (qword 00CF48A0, FSUBR)
+// - u+C64h, rounded to a float; sq = off * off; v = wrap ? 00438B10(pi [00D7A264],
+// u+C68h) : u+C68h; byte +298h = 1; +294h = (-v / twice) * sq; +2D0h = 0.
+// 24-bit precision is modelled as float operations; UNCERTAINTY: at 53 bits the
+// quotient and the products round once less. Caller: the split s tick 009B9CA0 (no
+// Ghidra function; vtable 00D207C0 +64h) at 009B9D05, with wrap = ([task+3F8h] == 1);
+// cc9 does not model the split s task.
+void bot_task_split_s_roll_step_009b94e0(Cc13Seg67bHost& host, void* task, std::uint8_t wrap) {
+    void* const desc = ptr_at(task, 0x2F8);
+    void* const unit = ptr_at(task, 0x2F4);
+    const float rate = at<float>(desc, 0x1A8) / at<float>(desc, 0x1BC);         // 009B94F7
+    const float twice = rate + rate;                                            // 009B950B
+    const float bank = at<float>(unit, 0xC68);
+    const float off = static_cast<float>(-1.5707963705062866 -
+                                         static_cast<double>(at<float>(unit, 0xC64)));  // 009B9517
+    const float sq = off * off;                                                 // 009B952B
+    const float v = wrap != 0 ? host.wrapped_angle_subtract_00438b10(3.14159274101257324f, bank)
+                              : bank;                                           // 009B9547
+    at<std::uint8_t>(task, 0x298) = 1;                                          // 009B955C
+    const float q = -v / twice;                                                 // 009B9563
+    at<float>(task, 0x294) = q * sq;                                            // 009B9569
+    at<std::uint32_t>(task, 0x2D0) = 0;                                         // 009B9573
+}
+
+// 009B95D0 (009B95D0-009B963D), the stop task's tick: the plan slots in image order.
+void bot_task_stop_tick_009b95d0(void* task, float dt) {
+    (void)dt;
+    at<float>(task, 0x27C) = 0.0f;
+    at<std::uint8_t>(task, 0x280) = 1;
+    at<float>(task, 0x2AC) = kOne_00d7a24c;
+    at<std::uint8_t>(task, 0x2B0) = 1;
+    at<std::uint32_t>(task, 0x2DC) = 0;
+    at<float>(task, 0x288) = 0.0f;
+    at<std::uint8_t>(task, 0x28C) = 1;
+    at<std::uint32_t>(task, 0x2D8) = 0;
+    at<float>(task, 0x2A0) = 0.0f;
+    at<std::uint8_t>(task, 0x2A4) = 1;
+    at<std::uint32_t>(task, 0x2D4) = 0;
+    at<float>(task, 0x294) = 0.0f;
+    at<std::uint8_t>(task, 0x298) = 1;
+    at<std::uint32_t>(task, 0x2D0) = 0;
+}
+
+// 009BAE10 (009BAE10-009BAE74): operator new(400h); null -> 0; else 009BAAB0(t, bot, archive).
+void* bot_task_gain_altitude_factory_create_009bae10(Cc13Seg67bHost& host, void* bot,
+                                                     void* archive) {
+    void* const t = host.operator_new_00bf681b(0x400);
+    if (t == nullptr) return nullptr;
+    return bot_task_gain_altitude_construct_from_stream_009baab0(host, t, bot, archive);
+}
+
+// 009BAE80 (009BAE80-009BAEE4): operator new(3FCh); null -> 0; else 009BA960(t, bot, archive).
+void* bot_task_immelmann_factory_create_009bae80(Cc13Seg67bHost& host, void* bot, void* archive) {
+    void* const t = host.operator_new_00bf681b(0x3FC);
+    if (t == nullptr) return nullptr;
+    return bot_task_immelmann_construct_from_stream_009ba960(host, t, bot, archive);
+}
+
+// 009BAEF0 (009BAEF0-009BAF4E): operator new(3F8h); null -> 0; else 0099C8B0(t, bot,
+// archive, kind 0Fh) and vptr = 00D20500 (009BAF37).
+void* bot_task_stop_factory_create_009baef0(Cc13Seg67bHost& host, void* bot, void* archive) {
+    void* const t = host.operator_new_00bf681b(0x3F8);
+    if (t == nullptr) return nullptr;
+    bot_task_construct_base_from_stream_0099c8b0(host, t, bot, archive, 0x0F);
+    at<std::uint32_t>(t, 0x0) = 0x00D20500u;
+    return t;
+}
+
+// 009BC6B0 (009BC6B0-009BC6EC): registry approach+40h; "path (path)" 00D20860 ->
+// +54h, "follow (path)" 00D20850 -> +6Ch, "circle (path)" 00D20840 -> +104h.
+void bot_approach_move_on_path_register_state_names_009bc6b0(Cc13Seg67bHost& host,
+                                                             void* approach) {
+    static constexpr StateNamePair kPairs[] = {
+        {0x00D20860u, 0x54}, {0x00D20850u, 0x6C}, {0x00D20840u, 0x104}};
+    register_state_names(host, approach, 0x40, kPairs, 3);
+}
+
+// 009BC870 / 009BC8A0 (11 and 12 instructions): vtables 00D208A0 and 00D208BC.
+void* bot_state_move_on_path_base_construct_009bc870(void* state, void* approach) {
+    return construct_plain_state(state, approach, 0x00D208A0u);
+}
+void* bot_state_move_on_path_path_construct_009bc8a0(void* state, void* approach) {
+    return construct_plain_state(state, approach, 0x00D208BCu);
+}
+
+// 009C6180 (009C6180-009C61AC): the plain header with vtable 00D20D04, then bytes
+// +18h..+1Bh = 0 and +20h = 0 (+1Ch is not written).
+void* bot_state_dive_bomb_fly_above_construct_009c6180(void* state, void* approach) {
+    construct_plain_state(state, approach, 0x00D20D04u);
+    at<std::uint8_t>(state, 0x18) = 0;
+    at<std::uint8_t>(state, 0x19) = 0;
+    at<std::uint8_t>(state, 0x1A) = 0;
+    at<std::uint8_t>(state, 0x1B) = 0;
+    at<std::uint32_t>(state, 0x20) = 0;
+    return state;
+}
+
+// 009BC9F0 (009BC9F0-009BCA40) and 009C2670 (009C2670-009C26C0).
+void bot_state_move_on_path_circle_debug_draw_009bc9f0(Cc13Seg67bHost& host, void* state) {
+    circle_state_debug_draw(host, state);
+}
+void bot_state_move_to_circle_debug_draw_009c2670(Cc13Seg67bHost& host, void* state) {
+    circle_state_debug_draw(host, state);
+}
+
+// 009BCF70 (009BCF70-009BCFAC): the first half of 009BD0B0. c = [approach+0Ch]; null
+// -> 0; c->vtable[114h]()+54h != 00E08F80 (moveonpath) -> 0; else
+// 0071BFF0(ECX = c->vtable[114h](), 0) (the PUSH 0 at 009BCF9B is 0071BFF0's argument).
+void* bot_approach_move_on_path_command_path_cursor_009bcf70(Cc13Seg67bHost& host,
+                                                             void* approach) {
+    void* const ctl = ptr_at(approach, 0x0C);
+    if (ctl == nullptr) return nullptr;
+    void* const director = host.object_vcall_114(ctl);
+    if (at<std::uint32_t>(director, 0x54) != kMoveOnPathCommandClass_00e08f80) return nullptr;
+    return host.weapon_director_command_path_cursor_0071bff0(
+        host.object_vcall_114(ptr_at(approach, 0x0C)), 0);
+}
+
+// 009BD1D0 (009BD1D0-009BD27C). 0099B6E0 (a RET) first. Two image statics are set once
+// under guards: 00F8A508 = (0, 0, 1, 1) (guard 00F8A518) and 00F8A51C = (1, 1, 0, 1)
+// (guard 00F8A52C); this body passes equal local constants. Then
+// 00860BE0(ECX = (task+3F8h)->vtable[0](&local), EDX = 00F8A51C; radius 30.0
+// [00CE38C8], 00F8A508, detailed 1).
+void bot_task_move_on_path_debug_draw_009bd1d0(Cc13Seg67bHost& host, void* task) {
+    static constexpr float kBlue_00f8a508[4] = {0.0f, 0.0f, 1.0f, 1.0f};
+    static constexpr float kYellow_00f8a51c[4] = {1.0f, 1.0f, 0.0f, 1.0f};
+    host.bot_task_debug_draw_base_0099b6e0(task);                                // 009BD1D6
+    float point[3] = {};
+    const float* const centre = host.approach_vcall_00_target_point(ptr(task, 0x3F8), point);
+    host.wire_sphere_00860be0(centre, kYellow_00f8a51c, 30.0f, kBlue_00f8a508, 1);  // 009BD273
+}
+
+// 009BDED0 (009BDED0-009BDEFE): the observed entity at approach+2Ch, the observer node at
+// approach+18h. Same entity -> nothing; old -> 006952A0(old, node); store; new ->
+// 00694A60(new, node).
+void bot_approach_move_to_set_observed_target_009bded0(Cc13Seg67bHost& host, void* approach,
+                                                       void* entity) {
+    void* const old = ptr_at(approach, 0x2C);
+    if (entity == old) return;
+    if (old != nullptr) host.observer_unregister_pair_006952a0(old, ptr(approach, 0x18));
+    at<std::uintptr_t>(approach, 0x2C) = reinterpret_cast<std::uintptr_t>(entity);
+    if (entity != nullptr) host.observer_register_pair_00694a60(entity, ptr(approach, 0x18));
+}
+
+// 009C5870 (009C5870-009C5892), the aimdive enter: +1Ch = 0; byte +18h = (approach+D1h
+// == 0); byte [[approach+4h]+844h] = 0. The cc9 dive-bomb host clears its shared
+// db_aim_rearm_1c / db_aim_pull_out_18 only on the aimglide enter (it cites this
+// enter's 009C5876 store) and keeps no aimdive enter of its own.
+void bot_state_dive_bomb_aim_dive_enter_009c5870(void* state) {
+    void* const approach = ptr_at(state, 0x4);
+    at<float>(state, 0x1C) = 0.0f;
+    at<std::uint8_t>(state, 0x18) = at<std::uint8_t>(approach, 0xD1) == 0 ? 1 : 0;
+    at<std::uint8_t>(ptr_at(approach, 0x4), 0x844) = 0;
+}
+
+// 009C6220 (009C6220-009C6266): a = *ECX (through FSTP/FLD float), b = *EDX, c = -0.0
+// [00D7A208] - b (SUBSS). c > a (FCOMI, JA; unordered falls through) -> c; else a <= b
+// or unordered (JBE) -> a; else b. A clamp of a to [-b, b] that keeps a on NaN.
+float math_clamp_symmetric_009c6220(const float* a, const float* b) {
+    const float av = *a;
+    const float bv = *b;
+    const float c = -0.0f - bv;
+    if (c > av) return c;
+    if (!(av > bv)) return av;
+    return bv;
+}
+
+// 009D58A0 (009D58A0-009D58EA), the path node's destructor body: vptr = 00D214F4;
+// for link_minus (+20h): when its +2Ch is 0, vtable[0](1), else its +28h = 0; +20h = 0.
+// For link_plus (+24h): when its +28h is 0, vtable[0](1), else its +2Ch = 0; +24h = 0.
+void ship_ai_path_node_destruct_body_009d58a0(Cc13Seg67bHost& host, void* node) {
+    at<std::uint32_t>(node, 0x0) = kShipAiPathNodeVtable;
+    if (void* const minus = ptr_at(node, 0x20)) {
+        if (at<std::uint32_t>(minus, 0x2C) == 0) {
+            host.path_node_vcall_00_scalar_delete(minus, 1);                    // 009D58BE
+        } else {
+            at<std::uint32_t>(minus, 0x28) = 0;                                 // 009D58C2
+        }
+        at<std::uint32_t>(node, 0x20) = 0;
+    }
+    if (void* const plus = ptr_at(node, 0x24)) {
+        if (at<std::uint32_t>(plus, 0x28) == 0) {
+            host.path_node_vcall_00_scalar_delete(plus, 1);                     // 009D58DA
+        } else {
+            at<std::uint32_t>(plus, 0x2C) = 0;                                  // 009D58E2
+        }
+        at<std::uint32_t>(node, 0x24) = 0;
+    }
+}
+
+// 009D59C0 (009D59C0-009D5A17): 009D5930 on the node; direction +1: link_plus_length
+// (+38h) > 1.0 (COMISS, JBE: NaN recurses) -> &link_plus->x, else the tail JMP repeats
+// on link_plus; direction -1: the same with +34h and link_minus; otherwise &node->x.
+// The tail recursion is a loop here.
+const float* ship_ai_path_node_run_end_point_009d59c0(ShipAiPathNode& node) {
+    ShipAiPathNode* n = &node;
+    for (;;) {
+        ship_ai_path_node_decide_direction_009d5930(*n);                       // 009D59C3
+        if (n->direction == 1) {
+            if (n->link_plus_length > kOne_00d7a24c) return &n->link_plus->x;  // 009D59D5
+            n = n->link_plus;
+        } else if (n->direction == -1) {
+            if (n->link_minus_length > kOne_00d7a24c) return &n->link_minus->x;
+            n = n->link_minus;
+        } else {
+            return &n->x;                                                      // 009D5A13
+        }
+    }
+}
+
+// 009D5CF0 (009D5CF0-009D5D20): plan = [task+2F4h]; plan+1Ch (search_state) == 0 -> 1;
+// 009D5AE0(plan) or 009D5B90(plan, re-read) -> 0; else 1.
+bool ship_ai_path_has_no_sided_node_009d5cf0(void* task) {
+    auto& plan = *static_cast<ShipAiPathPlanBlock*>(ptr_at(task, 0x2F4));
+    if (plan.search_state == 0) return true;
+    if (ship_ai_path_any_positive_side_ahead_009d5ae0(plan)) return false;
+    auto& again = *static_cast<ShipAiPathPlanBlock*>(ptr_at(task, 0x2F4));
+    return !ship_ai_path_any_negative_side_ahead_009d5b90(again);
+}
+
+// 009D5D60 (009D5D60-009D5DC9): +2Ch, +28h, +24h, +20h, +1Ch, +18h, +3Ch, +30h, +34h,
+// +38h = 0 (image order); byte +40h = 0; +48h = 00BD2F10(ECX = 1; 0.0, 2.0 [00CE3958]),
+// one draw on stream 1; +44h = 1000.0 [00CE3804]. Unreferenced (no xrefs, no absolute
+// or rel32 references in the image). The same record reset is inlined 60 times in
+// 009E5530's first pass, the sixty draws of section 3.42.
+void target_ref_record_reset_009d5d60(Cc13Seg67bHost& host, void* record) {
+    static constexpr std::size_t kZeroed[] = {0x2C, 0x28, 0x24, 0x20, 0x1C, 0x18, 0x3C, 0x30, 0x34, 0x38};
+    for (const std::size_t off : kZeroed) {
+        at<float>(record, off) = 0.0f;
+    }
+    at<std::uint8_t>(record, 0x40) = 0;
+    at<float>(record, 0x48) = host.random_uniform_00bd2f10(1, 0.0f, kTwo_00ce3958);  // 009D5DB3
+    at<float>(record, 0x44) = 1000.0f;                                             // 009D5DC3
+}
+
+// 009D6530 (009D6530-009D654A): vptr = 00D05704; +4h = object; object->vtable[4]()
+// (no null test). EAX = holder.
+void* ref_holder_construct_009d6530(Cc13Seg67bHost& host, void* holder, void* object) {
+    at<std::uint32_t>(holder, 0x0) = 0x00D05704u;
+    at<std::uintptr_t>(holder, 0x4) = reinterpret_cast<std::uintptr_t>(object);
+    host.ref_vcall_04_add_ref(object);
+    return holder;
+}
+
 // 009CFA10 (009CFA10-009CFA2E). 0099B6E0 (a RET) first; then, when [[task+3FCh]+BF4h]
 // is set, the tail JMP 006C2400(ECX = it).
 void bot_task_takeoff_debug_draw_009cfa10(Cc13Seg67bHost& host, void* task) {
