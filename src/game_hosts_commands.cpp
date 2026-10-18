@@ -124,7 +124,12 @@ constexpr bool kEntityCommandSelfKindBound = true;
 // 1.0 (00D7A24C) dropped to 0, no object when the target bit is clear, and the
 // command found again from its ordinal byte by the first-match registry walk
 // 007216D0. False: the typed command, target and flag are delivered as posted.
-// The pair is cc15's; cc9 flips.
+// The pair is cc15's; cc9 flips. USN01 3200-frame pair (f0d2c7b7b): exit 3,
+// accepted as the image. Of 103 round trips the command and object never
+// changed; 10 moveto targets were quantised on this loopback path by the
+// 24-bit / 22000 codec (00429790, original compared), e.g. Enterprise
+// (6000, 0, 8000) -> (6000, 0, 8000.000977), and that sub-millimetre shift
+// moved the deterministic mission (shots 2032 -> 1938).
 constexpr bool kSetCommandMessageCc13Bound = false;
 
 // [00e188a8]+1fe4h. The single-player value, which is what every other host in
