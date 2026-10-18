@@ -250,6 +250,14 @@ inline constexpr bool kHudMinimapDirectionWedgeBound = true;
 // counterpart (004C0890) sets. ON by its USN04 pair.
 inline constexpr bool kHudInterfaceControlledUnitBound = true;
 
+// Packet cc13-fix24 (docs/CC13_FIX24.md). ON answers the marker host's
+// unit_health_colour_0077a2f0 hook with the reconstructed 0077A2F0 body
+// (src/cc13_front6.cpp) over host-owned copies of its function-local statics
+// 00F8715C/00F8716C/00F8717C and guard 00F8718C, scaling through 00BEE140.
+// OFF records the hook as unimplemented and zero-fills the RGBA. No runtime
+// caller reaches the hook yet, so the switch has no observable effect today.
+inline constexpr bool kHudUnitHealthColourBound = false;
+
 class GameHostLog;
 class GameFrontendHost;
 class GameMenuHost;

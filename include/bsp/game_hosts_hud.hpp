@@ -339,6 +339,14 @@ inline constexpr bool kMovieParentKilledByteBound = true;
 // parses the key and answers the ground from world_ground_height_00903860;
 // OFF counts the key as unsupported.
 inline constexpr bool kMovieTerrainAvoidBound = true;
+// Packet cc13-fix24 (docs/CC13_FIX24.md). The in-mission interface update's
+// 0068C52C call 0054D3C0 (ECX = HUD manager +A8h, the hints screen) returns
+// CVTTSS2SI of the screen's +54h seconds-left float, and 0068C531 tests EAX for
+// non-zero. ON answers screen_34_query with that truncated int != 0 from the
+// host's copy of the screen's +54h (zero: Register 0054D900 stores 0.0f and the
+// host runs none of ShowHint 0054E020, Update 0054E6B0 or Dismiss 0054E610).
+// OFF records the call and answers false.
+inline constexpr bool kHudHintsSecondsLeftBound = false;
 // Returns the keyframes added, or -1 when no HUD is attached.
 int hud_movie_add_position_007a44d0(const bsp::MovieKeyframeInput& in);
 
