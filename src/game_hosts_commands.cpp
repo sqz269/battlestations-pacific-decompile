@@ -124,13 +124,24 @@ constexpr bool kEntityCommandSelfKindBound = true;
 // 1.0 (00D7A24C) dropped to 0, no object when the target bit is clear, and the
 // command found again from its ordinal byte by the first-match registry walk
 // 007216D0. False: the typed command, target and flag are delivered as posted.
-// The pair is cc15's; cc9 flips. USN01 3200-frame pair (f0d2c7b7b): exit 3,
-// accepted as the image. Of 103 round trips the command and object never
-// changed; 10 moveto targets were quantised on this loopback path by the
-// 24-bit / 22000 codec (00429790, original compared), e.g. Enterprise
-// (6000, 0, 8000) -> (6000, 0, 8000.000977), and that sub-millimetre shift
-// moved the deterministic mission (shots 2032 -> 1938).
+// The pair is cc15's; cc9 flips. USN01 3200-frame pair (cc15-sm2 tree): exit 1,
+// gameplay identical. Of 103 round trips the command and object never change;
+// 10 moveto targets are quantised on this loopback path by the 24-bit / 22000
+// codec (00429790, original compared), e.g. Enterprise (6000, 0, 8000) ->
+// (6000, 0, 8000.000977), which moves nothing on USN01; 3 object ids above
+// 13 bits (this host's synthesised 50000+ ids) are kept as posted. CORRECTION:
+// the exit 3 first reported for f0d2c7b7b (shots 2032 -> 1938) was those 3
+// cut ids, a host artefact, not the quantisation.
 constexpr bool kSetCommandMessageCc13Bound = false;
+
+// cc15-sm2. True: the MT_COMMAND (58h) that 0077D600 posts is delivered as the
+// copy 0076E520 rebuilds from its bits (00764D40 write, 00768530 case 88 at
+// 00769CB0 -> 00764C80, 00764E60 read). Positions travel unscaled (scale
+// FLT_MAX, 00D7A248, the codec's raw sentinel), so what the copy can change is
+// the flags byte (one bit), a trailing value below 1.0 (dropped to 0) and the
+// object (13-bit handle, none when the target bit is clear). False: the posted
+// record is delivered. The pair is cc15's; cc9 flips.
+constexpr bool kCommandMessageCc13Bound = false;
 
 // [00e188a8]+1fe4h. The single-player value, which is what every other host in
 // this executable already reports for the same field.
@@ -626,6 +637,10 @@ struct GameCommandsHost::Impl {
     unsigned long long setcmd_command_changed{0};
     unsigned long long setcmd_target_changed{0};
     unsigned long long setcmd_object_dropped{0};
+    unsigned long long setcmd_id_cut{0};
+    unsigned long long command_round_trips{0};
+    unsigned long long command_flags_changed{0};
+    unsigned long long command_target_changed{0};
     std::vector<LoopbackMessage> loopback;
     std::vector<LoopbackMessage>* loopback_active{nullptr};
     // unit+184h as the last director step of each unit was given it; what the
@@ -1674,6 +1689,34 @@ void EntityIssueBinding::route_message(void* entity, const bsp::EntityOrderMessa
     posted.script_issue = chain_.script_issue;
     posted.target_handle = chain_.owner.unit_handle_of(message.target_object);
     posted.command = message;
+    if constexpr (kCommandMessageCc13Bound) {
+        // 0076E520's copy of the MT_COMMAND. Its read leaves the object null
+        // with the handle in +2h; the delivery resolves it back to the same
+        // entity, so the posted object stands for that resolve while the
+        // target bit is set, and there is none when it is clear. The same for
+        // the id: the image's entity ids fit the 13-bit handle, this host's
+        // synthesised ones (50000 and up) do not, and cutting them would be a
+        // host artefact, so the posted id is kept with the object.
+        bsp::EntityOrderMessage queued = chain_.owner.session_messages.queue_command_88(message);
+        const bool target_bit = (queued.target_kind & 0xffu) != 0;
+        queued.target_object = target_bit ? message.target_object : nullptr;
+        if (target_bit) queued.target_id = message.target_id;
+        ++chain_.owner.command_round_trips;
+        if (queued.flags != message.flags) ++chain_.owner.command_flags_changed;
+        if (std::memcmp(queued.position, message.position, sizeof queued.position) != 0
+            || std::memcmp(&queued.trailing, &message.trailing, sizeof queued.trailing) != 0
+            || queued.target_kind != message.target_kind || queued.target_id != message.target_id
+            || queued.target_object != message.target_object) {
+            if (++chain_.owner.command_target_changed <= 12) {
+                chain_.owner.log.notef("command round trip %s: kind %04x->%04x id %u->%u"
+                    " object %d->%d trailing %.6f -> %.6f", chain_.unit.name.c_str(),
+                    message.target_kind, queued.target_kind, message.target_id, queued.target_id,
+                    message.target_object != nullptr ? 1 : 0, queued.target_object != nullptr ? 1 : 0,
+                    message.trailing, queued.trailing);
+            }
+        }
+        posted.command = queued;
+    }
     posted.after_delivery = std::move(chain_.after_delivery);
     chain_.after_delivery = nullptr;
     chain_.finish_pending = false;
@@ -2164,6 +2207,12 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
                 ? const_cast<void*>(unit_object_of(message.target_handle,
                     message.set_target.object))
                 : nullptr;
+            // The image's ids fit the 13-bit handle; this host's synthesised
+            // ones do not, so the resolved entity keeps its posted id.
+            if (queued.target_24.kind != 0) {
+                if (queued.target_24.object_id != message.set_target.object_id) ++setcmd_id_cut;
+                chain.pending_target.object_id = message.set_target.object_id;
+            }
             chain.pending_flag = queued.flags_20;
             if (chain.pending_command != message.set_command) ++setcmd_command_changed;
             const bsp::SceneCommandTarget& sent = message.set_target;
@@ -4304,10 +4353,14 @@ void GameCommandsHost::report() {
         host.summary.loopback_delivered_in_place, host.summary.loopback_delivered_nested,
         host.summary.loopback_delivered_queued, host.summary.loopback_drains);
     host.log.notef("summary mission director setcmd message bound=%d round_trips=%llu "
-        "command_changed=%llu target_changed=%llu object_dropped=%llu (cc15-sm1, 0071C830 / "
-        "0071C930 / 00764F90 / 0071CA30)", kSetCommandMessageCc13Bound ? 1 : 0,
+        "command_changed=%llu target_changed=%llu object_dropped=%llu id_cut_restored=%llu "
+        "(cc15-sm1, 0071C830 / 0071C930 / 00764F90 / 0071CA30)", kSetCommandMessageCc13Bound ? 1 : 0,
         host.setcmd_round_trips, host.setcmd_command_changed, host.setcmd_target_changed,
-        host.setcmd_object_dropped);
+        host.setcmd_object_dropped, host.setcmd_id_cut);
+    host.log.notef("summary mission director command message bound=%d round_trips=%llu "
+        "flags_changed=%llu target_changed=%llu (cc15-sm2, 00764D40 / 00764C80 / 00764E60)",
+        kCommandMessageCc13Bound ? 1 : 0, host.command_round_trips, host.command_flags_changed,
+        host.command_target_changed);
     host.log.notef("summary mission director override bound=%d sends=%llu installs=%llu "
         "arm_ends=%llu clears=%llu (packet s56_autotarget_override, 0071D980 / 0071E7F0 / "
         "00836D67 / 0071E610)", kAutoTargetOverrideBound ? 1 : 0,

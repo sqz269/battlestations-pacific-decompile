@@ -16,6 +16,7 @@
 // call, as the image's stack message does; the queued one is returned to the
 // caller, who keeps it until its delivery and then calls the destructor, which
 // is where the image's drain frees it.
+#include "bsp/entity_orders.hpp"
 #include "bsp/native_session_message_tags_90_to93.hpp"
 #include <memory>
 
@@ -39,6 +40,14 @@ public:
     // 0071CB40, the destructor the drain's scalar delete 0071E3B0 runs. The
     // memory is the caller's, so only the destructor runs.
     static void free_set_command_92(NativeSessionMessage92& message) noexcept;
+
+    // MT_COMMAND (58h): the message 007798D0 built, as the typed record that
+    // mirrors its 3Ch layout, through 0076E520's local copy (00764D40 write,
+    // 00768530 case 88 at 00769CB0: 00764C80, then 00764E60 read). Returns the
+    // posted record with the fields the copy carries replaced by the copy's:
+    // the command ordinal, the flags bit, the target. The copy is destroyed
+    // (00764CF0) here because the record is all the delivery reads.
+    EntityOrderMessage queue_command_88(const EntityOrderMessage& posted) const;
 
 private:
     struct Image;
