@@ -1193,7 +1193,10 @@ constexpr bool kGunBotRetargetReleaseBound = true;
 //    retarget, or the think's own dead-target drop 008FFA75) clears, and a
 //    targetless think leaves +58h/+59h/+5Ch and the trigger untouched. False:
 //    the debounce runs without a target.
-constexpr bool kTailGunnerClearReleaseBound = false;
+//    ON (2026-10-18, by mechanism): USN01 reference pair deaths identical, hit
+//    records 4988 -> 4991 (sends 8798, drops 11); USN04 gameplay identical
+//    (sends 1435, drops 3). local\g52_tg_*.log, d3bc814e1.
+constexpr bool kTailGunnerClearReleaseBound = true;
 //  * kSeatArtilleryLeadBound: cc9-ships54, SHIP_AI_OPEN_ITEMS 271. 00957740's
 //    hit lead (009578C3..00957A50) on the player-seat artillery aim: a ship hit
 //    (IsKindOf 6) leads through 00902290 and the hit offset turns with it; any
