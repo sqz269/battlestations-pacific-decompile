@@ -34,6 +34,8 @@ binary on every row checked.
 
 ## Gun-bot class machinery
 
+cc9 already covers this machinery. docs/GUN_BOT_TICKS.md (:83, :124-140, and the coverage table near :476) reads 008FBC80, 008FBDC0, 008FBEC0 and 008FEAC0 in full. include/bsp/gun_bot_ticks.hpp carries kGunBotAttachAddress, kAAGunnerBotOffGun (5Ch), kTailGunnerBotOffGun (68h), kEntityKindUnit (5) and the 008FEAC0 property layout (~:100). The bodies here reuse those constants.
+
 The class names in the image's ledger ("lead", "turret", "ballistic") map to robot classes by the
 descriptor global each constructor passes to `0072BBD0`: lead = AAGunnerBot `[00E19998]`, turret =
 TailGunnerBot `[00E199A0]`, ballistic = AAFlakBot `[00E1999C]`. Vtable slots: +04h attach, +30h
@@ -68,9 +70,7 @@ clear fire target, +38h set fire target, +48h / +4Ch save/load reader / writer.
 | `008FEA40` | BSP_GunBot_SetFireTargetTurretClass | ledger-only | Hosted at the cc9 gunnery caller (game_hosts_gunnery.cpp, kTailGunnerAimErrorBound): `006DF170`, then +6Ch = -1.0f. |
 | `008FF040` | BSP_GunBot_AttachBallisticClass | ledger-only | Hosted with cc9's labelled substitution (kFlakErrorRerollBound): the `008FDBE0` roll (shared RNG `00BD2F10`) happens at the first flak tick instead of at attach (008FF055). |
 
-The three ClearFireTarget overrides send the gun's vt[1E8h](0); the cc9 host's clear does not (an
-open item already listed in docs/SHIP_AI_OPEN_ITEMS.md for the torpedo twin). Its meaning was not
-read here either, so it is a named host hook.
+The three ClearFireTarget overrides send the gun's vt[1E8h](0). That slot is the gun's trigger, and (0) releases it (docs/GUNNERY_OPEN_ITEMS.md ~10906 and ~14140). The cc9 host's clear does not send it; docs/SHIP_AI_OPEN_ITEMS.md lists that only for TorpedoBot and DepthChargeBot. The release is a named host hook here.
 
 ## Robot descriptors
 
@@ -123,7 +123,7 @@ of +4h..+1Ch, REP MOVSD of +20h..+5Fh, +60h).
 | `00903D80` | BSP_MatrixInterpolator_WriteArchive | reconstructed | `matrix_interpolator_write_archive_00903d80`: the writer twin. Save/load. |
 | `00904F70` | BSP_World_ReadArchive | reconstructed | `world_read_archive_00904f70`: one list node per existing section {1, i} (archive slot +14h): `009045C0` (00904FDD), `00904E50` (00904FE7), `00903C60` (00905026); then "stationaries" through `0084F080` (00905066). Save/load. |
 | `009042B0` | BSP_World_WriteArchive | reconstructed | `world_write_archive_009042b0`: `00903D80` per node (00904324), then `0084F1A0` (00904369). Save/load. |
-| `009043A0` | BSP_SpatialIndex_QuerySegmentExcluding | reconstructed | `spatial_query_segment_excluding_009043a0`: `0042E630` (009043AA), entity vt[B0h]() as the exclusion, `0098ADD0` (009043D4); a null entity tail-jumps with exclusion 0. Live in HUD picking. |
+| `009043A0` | BSP_SpatialIndex_QuerySegmentExcluding | ledger-only | Hosted by cc9 as `ray_pick_009043a0` (src/game_hosts_hud.cpp:3244, a labelled substitution under kHudPickSegmentQueryBound; the exclusion-by-unit runs through query_segment_units_impl). docs/HUD_PICK_SEGMENT_QUERY.md section 1 reads the whole body. vt[B0h] takes no stack arguments, and the call is `0098ADD0`(from, to, excl, record, kind) (009043D4). The cc13 body was dropped. |
 | `009052E0` | BSP_ScoreRecord_AddField18 | reconstructed | `score_record_add_field18_009052e0`: record `slot*284h`, float +18h += delta, returns its address. |
 | `00900C60` .. `00900D40` (eight) | BSP_RobotConfig_ResolveAlias* | ledger-only | src/robot_config.cpp assigns each alias with `find_robot_config_00900af0` in the loader. |
 | `009009A0` | STL_Tree_Construct_009009a0 | library | std::_Tree constructor, bound. |

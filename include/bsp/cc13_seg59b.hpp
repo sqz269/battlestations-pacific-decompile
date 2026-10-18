@@ -6,6 +6,11 @@
 // recorded ledger-only because a cc9 gameplay host (or an earlier cc13 file) already implements
 // them.
 //
+// cc9 coverage of the gun-bot machinery: docs/GUN_BOT_TICKS.md (:83, :124-140 and the coverage
+// table, where 008FBC80, 008FBDC0, 008FBEC0 and 008FEAC0 are read in full) and the constants in
+// include/bsp/gun_bot_ticks.hpp (kGunBotAttachAddress, kAAGunnerBotOffGun 5Ch, kTailGunnerBotOffGun
+// 68h, kEntityKindUnit 5, the 008FEAC0 property layout), which the bodies here reuse.
+//
 // Model: every routine works on the original object as raw bytes (Win32 layout, offsets as in the
 // image) and reaches the engine through Seg59bHost, whose methods name the image routine or the
 // virtual slot they stand for. New C++ interfaces, not drop-in binary replacements; nothing here is
@@ -146,7 +151,8 @@ struct Seg59bHost {
     virtual void gun_bot_clear_fire_target_0072bd50(void* bot) = 0;
     // 00927F10, __stdcall(slot), RET 4: the party slot is AI-held.
     virtual bool party_slot_is_ai_held_00927f10(std::int32_t slot) = 0;
-    // gun->vtable[1E8h](arg), __thiscall, RET 4 (the gun's own release; meaning not read).
+    // gun->vtable[1E8h](arg), __thiscall, RET 4: the gun's trigger; (0) releases it
+    // (docs/GUNNERY_OPEN_ITEMS.md ~10906 and ~14140).
     virtual void gun_vt1e8(void* gun, std::int32_t arg) = 0;
     // 008746F0 / 00874700, __thiscall(object, archive), RET 4: the tick-node property visitors
     // (both empty bodies in this image, TRIV_body_*).
@@ -188,15 +194,6 @@ struct Seg59bHost {
     virtual void stationaries_read_archive_0084f080(void* archive) = 0;
     virtual void stationaries_write_archive_0084f1a0(void* archive) = 0;
 
-    // 0042E630, __cdecl(): the spatial index singleton.
-    virtual void* spatial_index_singleton_0042e630() = 0;
-    // entity->vtable[B0h](), __thiscall, RET: the object a segment query excludes for it.
-    virtual void* entity_query_exclude_vtb0(void* entity) = 0;
-    // 0098ADD0 BSP_SpatialIndex_QuerySegment, __thiscall(index; from, to, exclude, record,
-    // kind_filter), RET 14h; EAX = result.
-    virtual std::uint32_t spatial_index_query_segment_0098add0(void* index, void* from, void* to,
-                                                               void* exclude, void* record,
-                                                               std::uint32_t kind_filter) = 0;
 
     // 00BF681B, __cdecl(size): operator new; EAX = block or null.
     virtual void* operator_new_00bf681b(std::uint32_t size) = 0;
@@ -498,11 +495,6 @@ void world_write_archive_009042b0(Seg59bHost& host, void* world, void* archive);
 // +18h += delta; EAX = its address.
 float* score_record_add_field18_009052e0(void* scoring, std::int32_t slot, float delta);
 
-// 009043A0, __stdcall(from, to, record, entity, kind_filter), RET 14h; EAX = the query result.
-// A segment query on the spatial index that excludes entity->vt[B0h]() (or nothing).
-std::uint32_t spatial_query_segment_excluding_009043a0(Seg59bHost& host, void* from, void* to,
-                                                       void* record, void* entity,
-                                                       std::uint32_t kind_filter);
 
 }  // namespace bsp::cc13_seg59b
 

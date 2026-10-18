@@ -3,6 +3,7 @@
 // transcribed from its full export listing.
 
 #include "bsp/cc13_seg59b.hpp"
+#include "bsp/gun_bot_ticks.hpp"
 
 #include <cstring>
 
@@ -93,7 +94,7 @@ void gun_bot_attach_008fbc80(Seg59bHost& host, void* bot, void* parent) {
     host.tick_subnode_reparent_00876020(parent, bot);
     void* const unit = ptr(parent, 0x28);
     at<void*>(bot, 0x50) = unit;
-    if (unit != nullptr && host.entity_is_kind_of_vt5c(unit, 5)) {
+    if (unit != nullptr && host.entity_is_kind_of_vt5c(unit, bsp::kEntityKindUnit)) {
         host.bot_set_skill_vt18(bot, host.unit_skill_level_vt12c(ptr(bot, 0x50)));
         return;
     }
@@ -205,7 +206,7 @@ void* aa_gunner_bot_construct_008fe740(Seg59bHost& host, void* bot) {
 // ---------------------------------------------------------------------------
 void aa_gunner_bot_attach_008fbdc0(Seg59bHost& host, void* bot, void* parent) {
     gun_bot_attach_008fbc80(host, bot, parent);
-    at<void*>(bot, 0x5C) = ptr(bot, 0x50);
+    at<void*>(bot, bsp::kAAGunnerBotOffGun) = ptr(bot, 0x50);
     for (std::size_t off = 0x60; off <= 0x70; off += 4) at<std::uint32_t>(bot, off) = 0;
 }
 
@@ -215,7 +216,7 @@ void aa_gunner_bot_attach_008fbdc0(Seg59bHost& host, void* bot, void* parent) {
 // 008FE7C0..008FE7CD [bot+5Ch]->vt[1E8h](0).
 // ---------------------------------------------------------------------------
 void aa_gunner_bot_clear_fire_target_008fe7a0(Seg59bHost& host, void* bot) {
-    clear_fire_target_then_release(host, bot, 0x5C);
+    clear_fire_target_then_release(host, bot, bsp::kAAGunnerBotOffGun);
 }
 
 // ---------------------------------------------------------------------------
@@ -233,7 +234,7 @@ void aa_gunner_bot_read_properties_008fe800(Seg59bHost& host, void* bot, void* a
     read_float(host, archive, kAngleErrTickKey, bot, 0x60);
     host.archive_read_field_vt10(archive, key(kActAngleErrKey), value_arg(6, add(bot, 0x64)));
     host.archive_read_field_vt10(archive, key(kDAngleErrKey), value_arg(6, add(bot, 0x6C)));
-    at<void*>(bot, 0x5C) = ptr(bot, 0x50);
+    at<void*>(bot, bsp::kAAGunnerBotOffGun) = ptr(bot, 0x50);
 }
 
 // ---------------------------------------------------------------------------
@@ -273,7 +274,7 @@ void* tail_gunner_bot_construct_008fe9f0(Seg59bHost& host, void* bot) {
 // ---------------------------------------------------------------------------
 void tail_gunner_bot_attach_008fbec0(Seg59bHost& host, void* bot, void* parent) {
     gun_bot_attach_008fbc80(host, bot, parent);
-    at<void*>(bot, 0x68) = ptr(bot, 0x50);
+    at<void*>(bot, bsp::kTailGunnerBotOffGun) = ptr(bot, 0x50);
     at<std::uint8_t>(bot, 0x58) = 0;
     at<std::uint32_t>(bot, 0x70) = 0;
     at<std::uint32_t>(bot, 0x74) = 0;
@@ -285,7 +286,7 @@ void tail_gunner_bot_attach_008fbec0(Seg59bHost& host, void* bot, void* parent) 
 // [bot+68h]->vt[1E8h](0).
 // ---------------------------------------------------------------------------
 void tail_gunner_bot_clear_fire_target_008fea60(Seg59bHost& host, void* bot) {
-    clear_fire_target_then_release(host, bot, 0x68);
+    clear_fire_target_then_release(host, bot, bsp::kTailGunnerBotOffGun);
 }
 
 // ---------------------------------------------------------------------------
@@ -816,33 +817,12 @@ void world_write_archive_009042b0(Seg59bHost& host, void* world, void* archive) 
 }
 
 // ---------------------------------------------------------------------------
-// 009043A0 BSP_SpatialIndex_QuerySegmentExcluding (hypothesis). __stdcall(from, to, record,
-// entity, kind_filter), RET 14h; EAX = 0098ADD0's result. Evidence: entity = arg 4 (009043A1);
-// non-null: 009043AA 0042E630; kind_filter and record are pushed first (009043BB/009043C2) and
-// stay on the stack as 0098ADD0's arguments 5 and 4 across 009043C5 entity->vt[B0h]() (no stack
-// arguments); 009043D4 0098ADD0(ECX = index; from, to, exclude = that result, record,
-// kind_filter). Null: 009043DE 0042E630, the frame is rewritten in place (009043E8/009043EC) and
-// 009043F6 tail-jumps 0098ADD0(from, to, 0, record, kind_filter). Callers: HUD unit pick
-// 00526A40, free-camera effects 0053F2D0, 005220C0.
-// ---------------------------------------------------------------------------
-std::uint32_t spatial_query_segment_excluding_009043a0(Seg59bHost& host, void* from, void* to,
-                                                       void* record, void* entity,
-                                                       std::uint32_t kind_filter) {
-    if (entity != nullptr) {
-        void* const index = host.spatial_index_singleton_0042e630();
-        void* const exclude = host.entity_query_exclude_vtb0(entity);
-        return host.spatial_index_query_segment_0098add0(index, from, to, exclude, record, kind_filter);
-    }
-    void* const index = host.spatial_index_singleton_0042e630();
-    return host.spatial_index_query_segment_0098add0(index, from, to, nullptr, record, kind_filter);
-}
-
-// ---------------------------------------------------------------------------
 // 009052E0 BSP_ScoreRecord_AddField18 (hypothesis). __thiscall(ECX = scoring, slot, delta),
 // RET 8; EAX = &record+18h. Evidence: 009052E4 IMUL slot,284h; 009052EA FLD [rec+18h];
 // 009052EE FADD float [ESP+8]; 009052F2 FSTP back; 009052F6 LEA EAX. Caller 005B45C0
 // (HUD map update). x87: one add of two floats rounded to float; the same at 24- and 53-bit
-// precision control (a float sum fits double exactly before the final rounding).
+// precision control: double rounding through binary64 is innocuous for a binary32 addition
+// (53 >= 2*24 + 2), so the 53-bit result rounds to the same float.
 // ---------------------------------------------------------------------------
 float* score_record_add_field18_009052e0(void* scoring, std::int32_t slot, float delta) {
     float* const field = &at<float>(scoring, static_cast<std::size_t>(slot * 0x284) + 0x18);
