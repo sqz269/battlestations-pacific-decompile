@@ -184,7 +184,46 @@ Notes:
     - The listing computes 1 - v as v * -1 + 1, and u as u * 1 + 0 (or 0 + u * 1), which
       turns a -0 into +0. That is kept.
 
+## Batch 5
+
+| Address | Name | ABI | Notes |
+| --- | --- | --- | --- |
+| 00428420 | BSP_ProjectileTrace_HitLandingTroops (new name) | thiscall(trace; float) RET 4 | tests a projectile trace's segments against the landing-troop members (2.0 spheres); the first hit is killed, gets a random death animation, and forwards its Damage to the group |
+
+Notes:
+
+- **00428420.**
+  - The stack float is never read. The only caller, 0084BF00 (projectile_impact.cpp), passes
+    a stream-1 draw (00BD2F10(ECX = 1) at 0084C19F) as that argument. The draw is the
+    caller's.
+  - The landing groups are the list [[00E188A8]+21D0h]+28h. Each group's box is
+    +9Ch..+A8h. Its three member lists start at +B4h, 0Ch apart. A list node holds
+    {+8h type, +0Ch member, +34h state, +38h timer}.
+  - The segments are boxed from FLT_MAX / -FLT_MAX (00D7A248 / 00D7A244).
+  - A member is tested only when vtable[5Ch](3Ah) passes and its state is not 3.
+  - The pose refresh copies +74h, or +74h times the parent's +CCh, into +CCh..+108h,
+    through float FLD/FSTP copies.
+  - The death animation is 00BD2FC0(0) modulo the size of the type's 8-byte vector
+    (+60h..+64h). This is a stream-0 draw. A zero size faults (DIV) in the image; the C++
+    division keeps that.
+  - Only a type with +39h clear (not Defence, per CC13_SOLDIER_TRAFFIC.md) forwards its +1Ch
+    (Damage) through 00480C20.
+
 ## Recorded, not reconstructed
+
+- **004A9BD0 BSP_PlanePartClasses_LoadGlobals.**
+  - The planepartclasses.lua globals loader (1118 instructions), called from
+    BSP_Game_OnInit 004E3AA0.
+  - cc9 hosts the one value it consumes. game_hosts_units.cpp, under
+    `GameUnitsHost::Impl::kPlaneDeathModesBound`, reads ExplosionExplosionDelay through
+    `read_global_number_pair`, once per process, with defaults {0.6, 1.8}.
+  - What the listing confirms:
+    - [1] goes to [00E18710] and [2] to [00E1870C] (004AABEC..004AACCD), with no presence
+      test or default.
+    - 007BBFA0 draws 00BD2F10(ECX = 0, [00E18710], [00E1870C]), so cc9's
+      (first, second) = (min, max) matches.
+  - The other globals, stored at [00E186F4] through [00E18798], are neither hosted nor reconstructed.
+  - Ledger only: `existing_host_substitution_labelled`, coverage partial.
 
 - **00673A10 BSP_HudSupportManager_ConfirmOrder (new name).**
   - The support manager's order action, called from the update 00675C40. It has 1276
@@ -220,6 +259,9 @@ Adoption notes:
 - **00674B80.** It is reached only through vtable 00CF6B44 slot +18h. cc9 does not host it.
   Several of its callees have bodies elsewhere: 0066A130, 0066D020, 00669170 and 0066FB00 in
   seg27_cc13. A host can bind the matching hooks to those bodies.
+- **00428420.** Not hosted. GUNNERY_OPEN_ITEMS.md and SHIP_AI_OPEN_ITEMS.md list it as
+  blocked on hosted landing-troop groups. A gunnery or ships host with troop groups can call
+  this body at 0084C1AA.
 - **0066EA60.** Reached through vtable 00CF6B44 slot +10h. cc9 does not host it.
   src/hud_screens.cpp lists only its page and widget catalogue. CC13_FE_10.md's "left to
   cc9" listing named it.

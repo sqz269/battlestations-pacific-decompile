@@ -356,6 +356,34 @@ public:
     // 0066DF30 (seg27_cc13 support_sites_build_with_icons_0066df30): __fastcall(ECX = list,
     // EDX = float* depth).
     virtual void support_sites_build_with_icons_0066df30(void* list, float* depth) = 0;
+
+    // ---- 00428420 ----
+    // 00427D10 BSP_Aabb3_IncludePoint: __thiscall(ECX = box {min[3], max[3]}; const float*), RET 4.
+    virtual void aabb_include_point_00427d10(float* box, const float* point) = 0;
+    // 0085BF20 BSP_Aabb_Overlaps: __fastcall(ECX = a min, EDX = a max; b min, b max), RET 8; AL.
+    virtual bool aabb_overlaps_0085bf20(const float* a_min, const float* a_max, const float* b_min,
+                                        const float* b_max) = 0;
+    // 00427FE0: the landing-group list iterator increment, __thiscall(ECX = iterator {owner,
+    // node}), RET.
+    virtual void group_iterator_increment_00427fe0(void* iterator) = 0;
+    // 00414DB0 BSP_EntityPose_RefreshWorld: __thiscall(ECX = entity), RET.
+    virtual void entity_pose_refresh_world_00414db0(void* entity) = 0;
+    // 00413920 BSP_Matrix_Multiply4x4: __thiscall(ECX = left; out, right), RET 8; EAX = out.
+    virtual const float* matrix_multiply_00413920(const void* left, float* out, const void* right) = 0;
+    // 00428090 BSP_Geometry_SegmentIntersectsSphere: __fastcall(ECX = centre, EDX = start;
+    // float radius, const float* end), RET 8; AL.
+    virtual bool segment_intersects_sphere_00428090(const float* centre, const float* start, float radius,
+                                                    const float* end) = 0;
+    // 00480BF0: __thiscall(ECX = troop member entity), RET (the member's kill).
+    // 00480C20: __thiscall(ECX = landing group; float damage), RET 4.
+    virtual void troop_member_kill_00480bf0(void* member) = 0;
+    virtual void landing_group_apply_damage_00480c20(void* group, float damage) = 0;
+    // 00BD2FC0 BSP_RandomThreads_NextU32: ECX = stream; EAX.
+    virtual std::uint32_t random_threads_next_u32_00bd2fc0(std::uint32_t stream) = 0;
+    // 004B0F80 (soldier animation start): __thiscall(ECX = soldier; anim, random_start, dword),
+    // RET 0Ch.
+    virtual void soldier_start_animation_004b0f80(void* soldier, const void* anim, std::int32_t random_start,
+                                                  std::int32_t arg) = 0;
 };
 
 // 004C7AA0's 28h-byte result.
@@ -385,6 +413,10 @@ void hud_support_manager_collect_catalog_006697e0(void* screen, Big1Host& host);
 
 // 0066A8A0 __fastcall(ECX = support manager screen), RET.
 void hud_support_manager_rebuild_lists_0066a8a0(void* screen, Big1Host& host);
+
+// 00428420 __thiscall(ECX = the projectile trace {segments[] of 18h bytes, count +C0h}; float),
+// RET 4. The stack float (the caller's stream-1 draw at 0084C19F) is never read.
+void projectile_trace_hit_landing_troops_00428420(void* trace, float unused, Big1Host& host);
 
 // 0066EA60 __fastcall(ECX = support manager screen), RET: the screen's register (vtable +10h).
 void hud_support_manager_screen_register_0066ea60(void* screen, Big1Host& host);

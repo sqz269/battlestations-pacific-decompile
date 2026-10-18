@@ -1611,4 +1611,119 @@ void hud_markers_add_kind1c_marker_00641910(void* markers, void* unit, std::uint
     release_native_string(distance, host);                                     // 00641C36 / 00641DE1
 }
 
+// 00428420 __thiscall(ECX = projectile trace; float), RET 4; no frame pointer, 7Ch bytes of
+// locals. The landing groups are the list [[00E188A8]+21D0h]+28h ({proxy, head, size}); each
+// node's value +10h is a group whose box is +9Ch..+A8h and whose three member lists start at
+// +B4h (0Ch apart). A list node holds {+8h type, +0Ch member, +34h state, +38h timer}. The
+// trace's segments (18h bytes: start, end; count +C0h) are boxed (00427D10 from FLT_MAX /
+// -FLT_MAX). For each group whose box overlaps (0085BF20), each member passing vtable[5Ch](3Ah)
+// whose state is not 3 is tested against every segment: its world pose is refreshed when +C8h is
+// clear (00414DB0 on the parent +3Ch, then +74h times the parent's +CCh, or +74h itself, copied
+// to +CCh..+108h; +C8h = 1, +10Ch = 0), and 00428090(+FCh, start; 2.0, end) decides the hit.
+// The first hit ends the search: state = 3, timer = 20.0, 00480BF0(member), a stream-0 draw
+// (00BD2FC0(0) modulo the size of the type's 8-byte vector +60h..+64h) picks the death
+// animation for 004B0F80(member; &anim, 0, 0), and a type with +39h clear forwards its +1Ch
+// (Damage) to the group through 00480C20. No stack argument is read.
+void projectile_trace_hit_landing_troops_00428420(void* trace, float unused, Big1Host& host) {
+    static_cast<void>(unused);
+    std::uint8_t* const t = static_cast<std::uint8_t*>(trace);              // [B+14h]
+    std::uint8_t* const groups = static_cast<std::uint8_t*>(ptr(host.game_00e188a8(), 0x21D0)) + 0x28;  // EBX, [B+1Ch]
+    if (at<std::uint32_t>(groups, 8) == 0) return;                            // 00428432
+    if (at<std::uint32_t>(t, 0xC0) == 0) return;                              // 0042844A
+
+    float box[6] = {3.4028235e38f, 3.4028235e38f, 3.4028235e38f,              // [00D7A248], [B+34h]
+                    -3.4028235e38f, -3.4028235e38f, -3.4028235e38f};          // [00D7A244], [B+40h]
+    std::uint8_t* const segments_end = t + at<std::uint32_t>(t, 0xC0) * 0x18;
+    for (std::uint8_t* seg = t; seg != segments_end; seg += 0x18) {
+        host.aabb_include_point_00427d10(box, reinterpret_cast<const float*>(seg));          // 00428499
+        host.aabb_include_point_00427d10(box, reinterpret_cast<const float*>(seg + 0xC));    // 004284A6
+    }
+
+    void* it[2] = {groups, at<void*>(ptr(groups, 4), 0)};                     // [B+24h] owner, [B+28h] node
+    for (;;) {
+        void* const head = ptr(groups, 4);                                    // EDI, 004284C4
+        if (it[0] == nullptr || it[0] != groups) host.crt_invalid_parameter_noinfo_00bf6713();  // 004284CD
+        if (it[1] == head) return;                                            // 004284D4
+        if (it[0] == nullptr) host.crt_invalid_parameter_noinfo_00bf6713();   // 004284DE
+        if (it[1] == at<void*>(it[0], 4)) host.crt_invalid_parameter_noinfo_00bf6713();  // 004284E8
+        std::uint8_t* const group = static_cast<std::uint8_t*>(ptr(it[1], 0x10));  // [B+20h]
+        if (host.aabb_overlaps_0085bf20(box, box + 3, reinterpret_cast<const float*>(group + 0x9C),
+                                        reinterpret_cast<const float*>(group + 0xA8))) {  // 0042850A
+            for (std::int32_t k = 0; k < 3; ++k) {                            // [B+18h]
+                std::uint8_t* const list = group + 0xB4 + k * 0xC;            // EBP, [B+10h]; EDI, [B+2Ch]
+                std::uint8_t* node = static_cast<std::uint8_t*>(at<void*>(ptr(list, 4), 0));  // EBX
+                for (;;) {
+                    if (list == nullptr) host.crt_invalid_parameter_noinfo_00bf6713();  // 0042854B (owner == list)
+                    if (node == ptr(list, 4)) break;                          // 00428552
+                    if (list == nullptr) host.crt_invalid_parameter_noinfo_00bf6713();  // 0042855C
+                    if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();  // 00428566
+                    std::uint8_t* const member = static_cast<std::uint8_t*>(ptr(node, 0xC));  // ESI
+                    if (host.unit_has_flag_vtable5c(member, 0x3A)) {          // 00428577
+                        if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();  // 00428586
+                        if (at<std::int32_t>(node, 0x34) != 3) {              // 0042858B
+                            for (std::uint32_t j = 0; j < at<std::uint32_t>(t, 0xC0); ++j) {  // EBP, JC
+                                std::uint8_t* const seg = t + j * 0x18;       // EDI
+                                if (at<std::uint8_t>(member, 0xC8) == 0) {    // 004285B0
+                                    if (ptr(member, 0x3C) != nullptr)
+                                        host.entity_pose_refresh_world_00414db0(ptr(member, 0x3C));  // 004285C4
+                                    const float* src = reinterpret_cast<const float*>(member + 0x74);
+                                    float product[16];                         // [B+4Ch]
+                                    if (ptr(member, 0x3C) != nullptr)
+                                        src = host.matrix_multiply_00413920(
+                                            member + 0x74, product,
+                                            static_cast<std::uint8_t*>(ptr(member, 0x3C)) + 0xCC);  // 004285DE
+                                    for (std::size_t e = 0; e < 16; ++e)
+                                        at<float>(member, 0xCC + 4 * e) = src[e];  // FLD/FSTP float copies
+                                    at<std::uint8_t>(member, 0xC8) = 1;       // 00428677
+                                    at<std::uint8_t>(member, 0x10C) = 0;
+                                }
+                                if (host.segment_intersects_sphere_00428090(
+                                        reinterpret_cast<const float*>(member + 0xFC),
+                                        reinterpret_cast<const float*>(seg), 2.0f,  // [00CE3958]
+                                        reinterpret_cast<const float*>(seg + 0xC))) {  // 0042869B
+                                    // 00428708: the hit.
+                                    if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
+                                    at<std::int32_t>(node, 0x34) = 3;         // 00428716
+                                    if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
+                                    at<float>(node, 0x38) = 20.0f;            // [00CE3930]
+                                    if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
+                                    host.troop_member_kill_00480bf0(ptr(node, 0xC));  // 00428741
+                                    if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
+                                    std::uint8_t* type = static_cast<std::uint8_t*>(ptr(node, 8));
+                                    const std::uint32_t count =
+                                        ptr(type, 0x60) == nullptr
+                                            ? 0
+                                            : static_cast<std::uint32_t>(at<std::uint8_t*>(type, 0x64) -
+                                                                         at<std::uint8_t*>(type, 0x60)) >> 3;
+                                    if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
+                                    // 0042877C DIV: a zero count faults (#DE) in the image.
+                                    const std::uint32_t pick = host.random_threads_next_u32_00bd2fc0(0) % count;
+                                    type = static_cast<std::uint8_t*>(ptr(node, 8));
+                                    if (ptr(type, 0x60) == nullptr ||
+                                        pick >= (static_cast<std::uint32_t>(at<std::uint8_t*>(type, 0x64) -
+                                                                            at<std::uint8_t*>(type, 0x60)) >> 3))
+                                        host.crt_invalid_parameter_noinfo_00bf6713();  // 00428799
+                                    std::uint8_t* const anim = at<std::uint8_t*>(type, 0x60) + pick * 8;
+                                    if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
+                                    host.soldier_start_animation_004b0f80(ptr(node, 0xC), anim, 0, 0);  // 004287B6
+                                    if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
+                                    if (at<std::uint8_t>(ptr(node, 8), 0x39) == 0) {  // 004287C8
+                                        if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
+                                        host.landing_group_apply_damage_00480c20(group,
+                                                                                 at<float>(ptr(node, 8), 0x1C));  // 004287E6
+                                    }
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();  // 004286C7
+                    node = static_cast<std::uint8_t*>(at<void*>(node, 0));
+                }
+            }
+        }
+        host.group_iterator_increment_00427fe0(it);                          // 004286F6
+    }
+}
+
 } // namespace bsp::cc13_big1
