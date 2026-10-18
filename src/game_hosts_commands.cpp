@@ -1181,6 +1181,9 @@ public:
         chain_.owner.done("WeaponDirector::set_command_mode", 0x0071e795u);
     }
     std::uint32_t override_command() override {   // director+188h
+        // Reached only for a stored category 1/2 push (0071E7A8 is tested first).
+        ++chain_.owner.summary.override_push_tests;
+        if (chain_.director.override_command != 0u) ++chain_.owner.summary.override_push_tests_set;
         return kAttackPushEndsOverrideBound ? chain_.director.override_command : 0u;
     }
     bool session_field_f4h_is_0_or_1() override {
@@ -1336,7 +1339,8 @@ void SceneResolveBinding::issue_command(void* owner, void* command,
 
 class EntityCommandArmsBinding final : public bsp::EntityCommandArmsHost {
 public:
-    explicit EntityCommandArmsBinding(ChainState& chain) : chain_(chain) {}
+    EntityCommandArmsBinding(ChainState& chain, const bsp::SceneCommandTarget& message_target)
+        : chain_(chain), message_target_(message_target) {}
 
     std::uint32_t resolve_target_00521ea0() override {
         // 00521EA0 returns 0 for a descriptor whose kind is 0 and otherwise
@@ -1345,6 +1349,13 @@ public:
         // substitution this header already declares for entity+174h, so the
         // resolve is that numbering rather than the native tables.
         chain_.owner.done("EntityCommandArm::resolve_target", 0x00521ea0u);
+        if (kSceneFollowJoinBound) {
+            // 00816EB6 / 00816FA0 / 00816FF1 resolve the MT_COMMAND message's own
+            // descriptor (packet s57_follow_join). chain_.pending_target is the last
+            // SETCMD's, written only later at 0071ED81's delivery, so it was stale here.
+            if (message_target_.kind == 0) return 0u;
+            return message_target_.object_id;
+        }
         if (chain_.pending_target.kind == 0) return 0u;
         return chain_.pending_target.object_id;
     }
@@ -1466,6 +1477,7 @@ public:
 
 private:
     ChainState& chain_;
+    const bsp::SceneCommandTarget& message_target_;   // the MT_COMMAND descriptor
 };
 
 // MT_COMMAND's delivery: 00780120's 58h arm to the ship's vtable[160h], 00816e30.
@@ -1490,7 +1502,7 @@ void deliver_entity_command(ChainState& chain_, const bsp::EntityOrderMessage& m
     // hands the survivors to the same tail, so the seven commands this
     // mission's script issues now reach 0071ecf0.
     if (klass != nullptr) {
-        EntityCommandArmsBinding arms(chain_);
+        EntityCommandArmsBinding arms(chain_, view.target);
         const bsp::EntityCommandArmDecision decision
             = bsp::entity_command_arm_cascade_00816ea6(
                 static_cast<bsp::EntityCommandArmId>(klass->object_address), view.target,
@@ -4131,10 +4143,11 @@ void GameCommandsHost::report() {
         "00836D67 / 0071E610)", kAutoTargetOverrideBound ? 1 : 0,
         host.summary.override_sends, host.summary.override_installs,
         host.summary.override_arm_ends, host.summary.override_clears);
-    host.log.notef("summary mission director override push-end bound=%d echoes=%llu "
-        "clears=%llu (packet s57_override_push, 0071E6C0 tail -> 0071E2E0 -> 0071E610)",
-        kAttackPushEndsOverrideBound ? 1 : 0, host.summary.override_push_echoes,
-        host.summary.override_push_clears);
+    host.log.notef("summary mission director override push-end bound=%d weapon_pushes=%llu "
+        "with_override=%llu echoes=%llu clears=%llu (packet s57_override_push, 0071E6C0 tail -> "
+        "0071E2E0 -> 0071E610)", kAttackPushEndsOverrideBound ? 1 : 0,
+        host.summary.override_push_tests, host.summary.override_push_tests_set,
+        host.summary.override_push_echoes, host.summary.override_push_clears);
     host.log.notef("summary mission scene follow join bound=%d requests=%llu available=%llu "
         "(packet s57_follow_join, 00816ED5 -> 0077C8D0)", kSceneFollowJoinBound ? 1 : 0,
         host.summary.scene_follow_requests, host.summary.scene_follow_available);

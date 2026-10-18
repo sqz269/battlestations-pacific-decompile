@@ -1956,6 +1956,12 @@ struct GameGunneryHost::Impl {
     std::map<std::size_t, bsp::DepthChargeBotState> depth_charge_bot_by_gun;
     std::map<std::size_t, bool> depth_charge_trigger_by_gun;
     unsigned long long depth_charge_ticks{0}, depth_charge_holds{0};
+    // Packet cc13-fix17 (kLuaForceFireDepthChargeBound). A trigger raised by
+    // ForceFireDepthCharge 0089B9D0: `raised` once the request has been sent.
+    struct ForcedDepthCharge { bool active{false}; bool raised{false}; };
+    std::map<std::size_t, ForcedDepthCharge> depth_charge_forced_by_gun;
+    unsigned long long force_dc_calls{0}, force_dc_guns{0}, force_dc_salvo_ends{0},
+        force_dc_bot_takeovers{0};
     // kGunBotRetargetReleaseBound: vtable[1E8h](0) sends from 008FF2B0 / 008FF500,
     // and those that dropped a trigger that was held.
     unsigned long long bot_release_sends{0}, bot_release_drops{0};
@@ -8950,7 +8956,29 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             // target drops vtable[1E8h] (LABELLED: that clear is not read here).
             // The target is the bot's (bot_has_target): the host's arc solve above
             // clears have_target, and 008FC080 solves no arc.
-            if (!bot_has_target) depth_charge_trigger_by_gun[g] = false;
+            bool forced_keep = false;
+            if constexpr (kLuaForceFireDepthChargeBound) {
+                // Packet cc13-fix17. Without a fire target 008FC080 returns at
+                // 008FC13C and never touches the request ForceFireDepthCharge
+                // raised; it ends when 006FE0D0's salvo test drops it after the
+                // last barrel (or 0072D2C0 refused it), or when the bot has a
+                // target and its think owns the byte again.
+                auto forced = depth_charge_forced_by_gun.find(g);
+                if (forced != depth_charge_forced_by_gun.end() && forced->second.active) {
+                    if (bot_has_target) {
+                        forced->second = Impl::ForcedDepthCharge{};
+                        ++force_dc_bot_takeovers;
+                    } else if (forced->second.raised && !gun.fire.fire_requested) {
+                        forced->second = Impl::ForcedDepthCharge{};
+                        depth_charge_trigger_by_gun[g] = false;
+                        ++force_dc_salvo_ends;
+                    } else {
+                        forced->second.raised = true;
+                        forced_keep = true;
+                    }
+                }
+            }
+            if (!bot_has_target && !forced_keep) depth_charge_trigger_by_gun[g] = false;
             struct DcHost final : bsp::DepthChargeBotHost {
                 Impl& h; std::size_t g, owner, target; bool have, inhibit; bool& trigger;
                 DcHost(Impl& h_, std::size_t g_, std::size_t o, std::size_t t, bool hv,
@@ -10961,6 +10989,7 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                                    && !shot.depth_charge_in_water));  // 0084B380: end only
         if (kSubmergedTorpedoLaunchSwimBound && crossed && from[1] <= 0.0f) {
             ++submerged_launch_entries;
+            shot.started_under_water = true;   // +354h -> torpedo+49Ch (s57_torpedo_from_sub)
         }
         if constexpr (kGunneryLiveWaterSurfaceBound) {
             if (!shot.swimming && !shot.depth_charge_in_water) {  // medium 0: 0084C11C picks 0084B380
@@ -14156,6 +14185,17 @@ void queue_explode_to_parts_0088e1b0(std::size_t unit_index) {
     explode_to_parts_queue().push_back(unit_index);
 }
 
+namespace {
+std::vector<std::size_t>& force_fire_depth_charge_queue() {
+    static std::vector<std::size_t> queue;
+    return queue;
+}
+}  // namespace
+
+void queue_force_fire_depth_charge_0089b9d0(std::size_t unit_index) {
+    force_fire_depth_charge_queue().push_back(unit_index);
+}
+
 // ---------------------------------------------------------------------------
 // Packet cc9_shipyard_production (bsp::kShipyardProductionBound). The shipyard's
 // production queue: 00849F70's slot pass, the tick 00846320, the build 00844FC0
@@ -14850,6 +14890,24 @@ void GameGunneryHost::fixed_step(float step_seconds) {
         std::vector<std::size_t> pending;
         pending.swap(explode_to_parts_queue());
         for (const std::size_t unit : pending) host.explode_to_parts_00935c70(unit);
+    }
+    if constexpr (kLuaForceFireDepthChargeBound) {
+        // Packet cc13-fix17: 0089BAF2..0089BB19, vtable[1F0h] -> vtable[1E8h](1)
+        // on every DEPTHCHARGE gun of the unit. LABELLED: the trigger the gun
+        // pass sends through vtable[1E8h] is raised here, at the next fixed step.
+        std::vector<std::size_t> pending;
+        pending.swap(force_fire_depth_charge_queue());
+        for (const std::size_t unit : pending) {
+            for (std::size_t g = 0; g < host.guns.size(); ++g) {
+                if (host.guns[g].unit_index != unit || host.guns[g].category != 8) continue;
+                host.depth_charge_trigger_by_gun[g] = true;
+                host.depth_charge_forced_by_gun[g] = Impl::ForcedDepthCharge{true, false};
+                ++host.force_dc_guns;
+            }
+            ++host.force_dc_calls;
+        }
+    } else {
+        force_fire_depth_charge_queue().clear();
     }
     if (host.guns.empty()) return;
     if constexpr (kLandMasterDamageBound) host.build_land_masters_00744a20();
@@ -16110,6 +16168,12 @@ void GameGunneryHost::report() {
             "player_group_fires=%llu group5_triggers=%llu (008FC080 / 0095A441, packets "
             "cc9_depth_charge_bot, cc9_player_weapon_group_fire)", host.depth_charge_ticks,
             host.depth_charge_holds, host.player_group_fires, host.player_group5_triggers);
+    }
+    if constexpr (kLuaForceFireDepthChargeBound) {
+        host.log.notef("summary mission gunnery force fire depth charge calls=%llu guns=%llu "
+            "salvo_ends=%llu bot_takeovers=%llu (0089B9D0 -> vtable[1F0h] 006FDC50, packet "
+            "cc13-fix17)", host.force_dc_calls, host.force_dc_guns, host.force_dc_salvo_ends,
+            host.force_dc_bot_takeovers);
     }
     if constexpr (kGunBotRetargetReleaseBound) {
         host.log.notef("summary mission gunnery bot clear release sends=%llu drops=%llu "
@@ -17449,6 +17513,7 @@ std::vector<GameGunneryHost::LiveTorpedo> GameGunneryHost::live_torpedoes() cons
         t.swim_seconds = shot.swim_seconds;
         t.swimming = shot.swimming;
         t.water_travel_speed = row->water_travel_speed;
+        t.started_under_water = shot.started_under_water;
         out.push_back(t);
     }
     return out;

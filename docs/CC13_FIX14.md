@@ -42,9 +42,11 @@ control does not matter here.
 
 Labelled divergences:
 - The powerup scale (008E6430) is not built; the host takes the unscaled 1.0f, the
-  same substitution the ship-AI host makes for every 0080FC30 call. Whether a
-  campaign run has both 00E0C978 and `[[00F88C30]+B8h]` set (the scaled arm) is not
-  established here; include/bsp/mission_lobby_settings.hpp defaults the byte true.
+  same substitution the ship-AI host makes for every 0080FC30 call. The byte
+  00E0C978 is SET to 1 in single player (005E2F99-005E2FAB: `[[00E188A8]+1FE4h]`
+  zero and `[+61Ch]` zero store 1 to 00E0C978), so in a campaign run the scaled arm
+  depends only on an active category-4 modifier, `[[00F88C30]+B8h]`; when one is
+  active the host's unscaled value is wrong (correction 2026-10-17, packet fix16).
 - An entity with no units-host slot (a scene marker, an unresolved table, nil)
   pushes nothing and records `LuaNative::GetShipMaxSpeed(entity without a unit
   slot)` UNIMPLEMENTED; the image reads +9C0h of whatever object 00888AA0 returned
@@ -106,18 +108,28 @@ Paths are under `scripts/` of the game root in config/target.json.
   prcpjm12 (COTP-IJN/PRCPIJN); chg_1, chg_5, chg_9; multiplayer competitive04/05/07/
   08/11/13, escort10-13, siege01. While OFF each arithmetic use of the nil result
   raises.
-- GetNumCatapulted: missions/ijn/JM/jm02, jm03, jm04, jm14 (and the COTP-IJN and
-  PRCPIJN copies); missions/usn/LOMP/01_saving_force_z.lua:703 `num > 0`. jm02's
-  luaJM2CheckReconplanes (:2443) tests `not inAir and num < 4`: while OFF the nil
-  compare raises; ON, a ship's 0 passes that test, so the script takes its
-  launch arm, which then depends on the catapult natives this host does not build.
+- GetNumCatapulted: live callers are jm03 :1614 (luaJM3SendPlanes), jm04 :1011 /
+  :1047, jm14 :670 (and the COTP-IJN and PRCPIJN copies), and
+  missions/usn/LOMP/01_saving_force_z.lua:703 `num > 0`. jm02's
+  luaJM2CheckReconplanes (:2441, the call at :2443) is dead code: its only callers,
+  :1273 and :1289, sit inside the `--[[ ]]` block at :1267-1297. jm03's
+  luaJM3SendPlanes draws `random(1,100)` per live allied recon cruiser, then calls
+  ShipUseCatapult when `rnd >= 80 and num < 4 and not inAir`: while OFF the nil
+  `num < 4` raises after the draw; ON, the host's count stuck at 0 calls
+  ShipUseCatapult on every roll >= 80, where the image's count climbs to 4 and stops
+  it. The switch should therefore stay OFF until cc9's catapult adapter builds the
+  launch slots.
 - GetDirection: missions/ijn/JM/jm01 (:2320, :2335, :2350, :2584) and jm02 (:2736),
   and their COTP-IJN / PRCPIJN copies; commandhelpers' luaGetDirectionVector is a
-  different (script) function. jm01 hands the table to luaJM1GetFlakPos.
+  different (script) function. jm01 hands the table to luaJM1GetFlakPos. jm01
+  :2316-2320 draws `random(10,100)` for each flak before GetPosition/GetDirection;
+  while OFF the nil direction raises inside luaJM1GetFlakPos and ends the loop
+  after the first draw, so ON changes the number of `random()` draws. That moves
+  every later draw from the same stream; it is image-faithful, not a defect.
 
 ## Flip guidance
 
 Each switch is independent. Judge any flip from paired runs of the missions above;
-GetNumCatapulted ON moves jm02's recon-plane branch (expect launch attempts that the
-host then refuses), and GetShipMaxSpeed ON changes usn_02's ship speeds (1.5x of the
+GetNumCatapulted should stay OFF until the catapult adapter exists (ON, jm03 would
+call ShipUseCatapult on every roll >= 80 with no cap of 4), and GetShipMaxSpeed ON changes usn_02's ship speeds (1.5x of the
 class value instead of a raised error).
