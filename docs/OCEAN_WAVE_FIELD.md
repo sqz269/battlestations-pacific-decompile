@@ -3295,3 +3295,22 @@ code paths of the later commits are the 236355ef9 ones). OFF exe `local\p20d_off
 - **`kStrafeHorizontalFloatOpsBound` (OFF, added).** 009CAD00 rounds dx/dz to float (009CAD30 / 009CAD3E) and stores
   d2 = (dx dx + 0 0) + dz dz as a float (009CAD58) before the 00CE3820 test and sqrt 00BF7030; the host took dx/dz
   as doubles. Not paired yet.
+
+**80, item 7: the deck-term stow question, narrowed (read-only).** 007D99C0 re-read: the parent's vt[34h](out)
+(RET 4; the PUSH 0 / PUSH plane+110h it leaves are 0042D0D0's stack arguments), then 0042D0D0 (ECX = local, EDX =
+the velocity, matrix +110h, flag 0) is v times the matrix's column; the COMISS / FLD read the output's z
+([ESP+18h] with ESI/EDI pushed = [ESP+10h] after the pops). +110h is 00B63D50's inverse of +CCh, and 00414DB0 builds
++CCh = local +74h times the parent's +CCh, the WORLD matrix. So the term is the parent's world velocity along the
+plane's world forward, times 0.1, as the host has it; the frame is not the answer. Section 79's heading-interp
+guess is wrong too: `p20c_dtagfp_usn01.log`'s park traces for ScoutDauntless show err 0.013 at the stop. What
+stops it is 009B2923-009B298D's cap c = max(0.5, dz x 0.5) on the commanded speed: the hold drives measured =
+relative + 0.1 x 16.7 = relative + 1.67 to c, so the relative speed reaches zero at dz = 2 x 1.67 = 3.3 m
+(trace: dz 3.9, v 0.45, spd 1.94 at 435.92 s), while 006CFF70's intake wants the nose within 3.0 - v of the lift
+(about 2.5 m). With an exact hold the bytes stow only for a deck slower than about 12.5 m/s (2.5 / 2 / 0.1). So
+the open question is the deck speed during recovery (the host's carrier runs 16.7 m/s on USN01, a ships-lane
+input) or a ground speed hold that does not settle exactly (idle thrust / wheel brake under +2B0h = 1,
++2D8h = 1). The switch stays OFF.
+- **`kStrafeHorizontalFloatOpsBound` ON.** JM08 `jm08_s45_j8_m10.txt` 24000 fr (`local\p20e_sh_jm08.log` vs
+  `local\p20e_off_jm08.log`, exes built at de14db729): gameplay identical, all tables identical; the strafe task is
+  exercised (42 planes, aim 1840 ticks, 47 aims, 729 gun-point fires), so no decision crossed a float/double
+  rounding edge. Flipped as the bytes.

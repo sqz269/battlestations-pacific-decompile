@@ -6434,7 +6434,7 @@ struct GameUnitsHost::Impl {
     // Packet p20_strafe_horizontal (section 80). 009CAD27-009CAD58: dx and dz are FSTP'd
     // to floats (009CAD30, 009CAD3E) and d2 = (dx dx + 0 0) + dz dz is stored as a float
     // (009CAD58), main-thread 24-bit per op. True: float per op. False: double dx, dz.
-    static constexpr bool kStrafeHorizontalFloatOpsBound = false;
+    static constexpr bool kStrafeHorizontalFloatOpsBound = true;
     unsigned long long follow_exits{0};
     void follow_exit_009bde40(GameUnitSlot& unit) {
         ++follow_exits;
