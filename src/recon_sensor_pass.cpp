@@ -197,8 +197,22 @@ void recon_sensor_pass_rebuild_008073c0(ReconSensorPassState& state, float dt,
                                         ReconSensorPassHost& host) {
     const std::size_t count = host.unit_count();
     if (state.record_unit_count_ != count) {
+        const std::size_t old_count = state.record_unit_count_;
+        if (kReconRecordsSurviveSpawnBound && old_count != 0 && count > old_count) {
+            // A spawn: the existing units keep their records (packet cc9_s59_recon_growth).
+            std::vector<ReconDetectionRecord> grown(3 * count, ReconDetectionRecord{});
+            for (std::size_t party = 0; party < 3; ++party) {
+                for (std::size_t unit = 0; unit < old_count; ++unit) {
+                    grown[party * count + unit] = state.records_[party * old_count + unit];
+                }
+            }
+            state.records_.swap(grown);
+            ++state.record_growths;
+        } else {
+            state.records_.assign(3 * count, ReconDetectionRecord{});
+            if (old_count != 0) ++state.record_resets;
+        }
         state.record_unit_count_ = count;
-        state.records_.assign(3 * count, ReconDetectionRecord{});
     }
     state.reset(count);
     state.suppressed_by_network_role = false;

@@ -242,3 +242,33 @@ applying entry's range for about two seconds is identified, and stays identified
 prediction (a); (b) shows on USN04's side 1; (c) shows on LOMP06 (`IsListenerActive` 53400 -> 3 follows the earlier
 failure). `stale_gain_reads` is 0 in all four runs. **Flipped ON** by mechanism. LOMP06's keeper win is already lost
 on the OFF tree (reported to the lead).
+
+## Records survive a spawn (packet cc9_s59_recon_growth, cc9-ships59, 2026-10-18)
+
+**Fault.** `recon_sensor_pass_rebuild_008073c0` re-laid the records as `[party * count + unit]` and **zeroed all of
+them whenever the host's unit count changed**. Every squadron launch, `GenerateObject` or wave spawn therefore wiped
+what each side knew. The next pass then re-identified the known units from zero (value, hysteresis and level) and
+notified `0 -> level` for each. In the image a record belongs to its unit for the unit's life (item 1 above: unit
+records are never zeroed), so a spawn adds records and touches no other.
+
+**Seen on USNOS (`local\s58_st2_os.log`, `local\s59_a_c14.log`, `local\s59_aj_c14.log`).** Every `recon` listener
+us_osumi.lua registers in phase 2 fires on its first pass after registration, for an entity that had been known for
+minutes. ConvoySighted fires at 1016.88 s. ShimotSighted and BlockSighted, both registered by `luaDelay(.., 6)`, fire
+together at 1025.88 s, blockade first. The Shimotsuke movie then overwrites `Mission.MovieCallbackParameters`, so
+`luaBlockadeMovieEnd` never runs and the Countdown to `luaReinTime` is never armed. The reinforcements never spawn, and
+the mission cannot end.
+
+**Bind (OFF).** `kReconRecordsSurviveSpawnBound` (include/bsp/recon_sensor_pass.hpp). When the count grows (unit indices
+are append-only), the existing records move into the larger layout and only the new units start at zero. A shrink or
+the first layout still assigns fresh records. Census: `layout_growths` / `layout_resets` on the
+`summary mission recon records` line.
+
+**Predictions (ON vs OFF, same tree).** Not gameplay-identical on any row that spawns units after the first pass,
+which is any row with a squadron launch.
+- (a) `layout_resets` goes to 0 and `layout_growths` takes its count.
+- (b) `notifications` falls.
+- (c) Units stay identified across launches, so fire-target picks and AutoTarget can move.
+- (d) On USNOS, the phase-2 recon listeners fire only on a real first identification (0/1 -> 2). The 1025.88 s
+  double fire goes away. BlockSighted fires when a blockade ship is first identified, which could be earlier or
+  later than 1025 s, or never if it was identified before registration and stays identified.
+Pairs: USNOS 30000 (`s59_os_c14`), USN04 20000, JM05 12000.
