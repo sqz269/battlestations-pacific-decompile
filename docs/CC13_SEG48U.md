@@ -22,9 +22,9 @@ Nothing is wired.
 |---|---|---|
 | In the struck ranges 007DF000-007DFFFF and 007EE000-007F2FFF | 55 | Not touched |
 | Template bodies: list, tree and vector instantiations, `std::copy` into a back inserter (00732560), `std::operator+(const char*, const std::string&)` (007F3D40) | 27 | Tagged `stl_shape`, `reviewed`, evidence `sys6_shape` |
-| No cc9 host, reconstructed | 24 | `src/cc13_seg48U.cpp`, build-tested (0072C170 and 007E29A0 by cc13-seg48V) |
+| No cc9 host, reconstructed | 25 | `src/cc13_seg48U.cpp`, build-tested (0072C170, 007E29A0 and 007EC5A0 by cc13-seg48V) |
 | Already implemented: 00730BD0 as table data (`src/unit_kind_query.cpp`), 0072AB10 (`src/unit_parts.cpp`) | 2 | Record only |
-| No cc9 host, not done in this packet: 007F3E50, 007EC5A0 | 2 | Left for a follow-up |
+| No cc9 host, not done in this packet: 007F3E50 | 1 | Left for a follow-up |
 | Referenced by cc9 `game_hosts_*` files (verify-and-record) | 31 | Recorded with a verdict by cc13-seg48V (see "Verify-and-record") |
 
 The template tags use the existing evidence id `sys6_shape`, because
@@ -66,6 +66,7 @@ these, and adds one named hook for every other native call:
 | 007D5AC0 BSP_Plane_CopyClassRecordLists | thiscall(plane) | the plane's effect records rebuilt from the class record list (00868420, identity matrix) |
 | 007F35C0 BSP_PlaneSquadron_GetDisplayName | thiscall(squadron), EAX | a stored name, or the function-static "." + id + "x\|" + name |
 | 007E29A0 BSP_ObserverSet_Remove | thiscall(set, entity), RET 4 | the entity's slot +4h, 006952A0 (EDX = set), then std::remove (007E1D30) over {+14h, +18h count}; game code, the stl_shape tag was a mistake |
+| 007EC5A0 BSP_PlaneFxComponent_LoadFromClass | thiscall(component; plane, byte active), RET 8 | Dying/Falling effect slots, 007EB160 or 007EB0E0, the stream-1 speed spread, and one engine per class+140h through slot 0; see "007EC5A0" below |
 | 00735030 BSP_MissionNarrative_Construct | thiscall(narrative), EAX | the 58h object at game+21E8h |
 | 00733030 BSP_MissionNarrative_Reset | thiscall(narrative) | bytes +3Ch and +14h cleared |
 | 00733C80 BSP_NarrativeEntry_CopyConstruct | thiscall(entry, source), RET 4 | vtable 00CFE960, two native strings, +14h |
@@ -283,16 +284,35 @@ takes the flag as a `bool`, which drops the stale upper bytes that the image
 passes into the spawn's fifth argument. Whether the spawn reads more than the
 low byte was not checked.
 
+## 007EC5A0: the plane effects load (cc13-seg48V)
+
+`cc13_seg48U_plane_fx_component_load_from_class_007ec5a0` is transcribed from the
+disk-byte disassembly 007EC5A0..007ECCBF (RET 8). It is unwired.
+
+- The plane's slot +5Ch(10h) or +5Ch(16h) picks the "Big" names and +1Ch = 0.5f.
+  Otherwise the "Small" names are used and +1Ch = 1.0f.
+- The two lazy effect slots, class+F0h (Dying) and class+F8h (Falling), are filled
+  by name through 00871BA0 and 00440580. Then 007E2300 binds component+74h and +CCh
+  with tuning +6BCh and +6B8h.
+- The speed spread repeats `rotor_speed_spread_007eca0e` (src/gameplay_seg48_cc13.cpp)
+  inline, because that file is bsp_game and this one is bsp_core. It draws two
+  U1 values and then c NextU32 values from stream 1.
+- The engines go into component+8h. Each engine's slot 0 takes four arguments:
+  00476B90 takes none, so the three values pushed before it belong to the slot. The
+  call reads data[i], which is not the engine just pushed when the array was not
+  empty on entry.
+- Uncertainty: the vector's first dword (the checked-iterator proxy) is never
+  written by the image. The model zeroes it.
+
 ## Left open
 - **007F3E50 BSP_PlaneSquadron_BuildDebugText.**
-- **007EC5A0 BSP_PlaneFxComponent_LoadFromClass.**
 
 ## Files
 
 - `include/bsp/cc13_seg48U.hpp` and `src/cc13_seg48U.cpp`, registered in
   `cmake/startup.cmake` (bsp_core).
-- 26 function records in `config/reconstruction/00720000`, `00730000`,
-  `007d0000`, `007e0000` and `007f0000.jsonl`: the 24 bodies plus 00730BD0 and 0072AB10.
+- 27 function records in `config/reconstruction/00720000`, `00730000`,
+  `007d0000`, `007e0000` and `007f0000.jsonl`: the 25 bodies plus 00730BD0 and 0072AB10.
 - 31 verify-and-record records (cc13-seg48V) in `config/reconstruction/00720000`,
   `00730000`, `007d0000`, `007e0000` and `007f0000.jsonl`, and 10 renames in
   `config/names/006f0000`, `00720000` and `00730000.jsonl`.

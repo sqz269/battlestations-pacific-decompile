@@ -137,6 +137,25 @@ public:
     // 007E1D30 STL_inst_007e1d30, std::remove over a pointer array: __fastcall(ECX =
     // first, EDX = last; const value*), RET 4; EAX = the new end. Template body, bind-only.
     virtual void** std_remove_pointer_007e1d30(void** first, void** last, void* const* value) = 0;
+
+    // ---- 007EC5A0 (cc13-seg48V) ----
+    // 0042E740 BSP_GameTuning_GetSingleton: no input; EAX = the 6D0h tuning object.
+    virtual void* game_tuning_get_singleton_0042e740() = 0;
+    // 00871BA0 BSP_EffectHandle_AcquireByName: __fastcall(ECX = out handle, EDX = native
+    // string; flag), RET 4; EAX = out. The handle is refcounted (+4h count).
+    virtual void** effect_handle_acquire_by_name_00871ba0(void** out, const void* name, std::int32_t flag) = 0;
+    // 00440580 STL_inst_00440580, the refcounted handle assign: __thiscall(ECX = slot;
+    // const handle*), RET 4. Template body, bind-only.
+    virtual void ref_handle_assign_00440580(void* slot, void* const* source) = 0;
+    // 004A8F10 STL_CheckedFloatVector_Resize_004a8f10: __thiscall(ECX = vector; count,
+    // float fill), RET 8. Template body, bind-only.
+    virtual void float_vector_resize_004a8f10(void* vector, std::uint32_t count, float fill) = 0;
+    // 00BD2FC0 BSP_RandomThreads_NextU32: ECX = stream; EAX.
+    virtual std::uint32_t random_threads_next_u32_00bd2fc0(std::uint32_t stream) = 0;
+    // Plane engine vtable slot 0 (00D08640 -> 007E1BA0, 00D0865C -> 007EBF10 rotor):
+    // __thiscall(ECX = engine; visual, node, index, float spread), RET 10h.
+    virtual void plane_engine_vcall_00_init(void* engine, void* visual, std::uint32_t node, std::int32_t index,
+                                            float spread) = 0;
 };
 
 // ---- gun and gun bot ----
@@ -162,6 +181,8 @@ void cc13_seg48U_gun_compute_aim_for_target_0072c170(void* shooter, std::int32_t
 void cc13_seg48U_plane_copy_class_record_lists_007d5ac0(void* plane, Cc13Seg48UHost& host);
 const char* cc13_seg48U_plane_squadron_display_name_007f35c0(void* squadron, Cc13Seg48UHost& host);
 void cc13_seg48U_observer_set_remove_007e29a0(void* set, void* entity, Cc13Seg48UHost& host);
+void cc13_seg48U_plane_fx_component_load_from_class_007ec5a0(void* component, void* plane, std::uint8_t active,
+                                                             Cc13Seg48UHost& host);
 
 // ---- mission narrative (game+21E8h) ----
 void* cc13_seg48U_mission_narrative_construct_00735030(void* narrative, Cc13Seg48UHost& host);

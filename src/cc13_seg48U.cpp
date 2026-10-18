@@ -702,6 +702,181 @@ void cc13_seg48U_observer_set_remove_007e29a0(void* set, void* entity, Cc13Seg48
 }
 
 // ---------------------------------------------------------------------------
+// 007EC5A0 BSP_PlaneFxComponent_LoadFromClass (cc13-seg48V). __thiscall(ECX =
+// component; plane, byte active), RET 8. Evidence: the disk-byte disassembly
+// 007EC5A0..007ECCBF. The class is plane+538h. "Big" means plane slot +5Ch(10h) or
+// +5Ch(16h) (two calls, short-circuit), and +1Ch is 0.5f (00CE3800) for big, else
+// 1.0f (00D7A24C). The two lazy effect slots, class+F0h ("DyingSmallPlane" 00D086DC
+// / "DyingBigPlane" 00D086CC) and class+F8h ("FallingSmallPlane" 00D086B8 /
+// "FallingBigPlane" 00D086A8), are filled through 00871BA0 + 00440580 when null.
+// If a slot is then non-null, 007E2300 binds component+74h / +CCh to it with
+// (plane+4A4h, tuning+6BCh, tuning+6B8h). The speed spread is
+// rotor_speed_spread_007eca0e's (bsp_game), modelled here because bsp_core cannot
+// call it: lo = U1(0, 0.2f), hi = U1(8.0f, 1.0f), spread[i] = i/c * (hi - lo) + lo
+// for i <= c, then a Fisher-Yates pass from k = 1 with NextU32(1) % (k + 1). The
+// x87 terms are float-exact under the main thread's 24-bit precision; the double
+// (hi - lo) temporary holds a 24-bit value. Then one engine per class+140h, 0Ch bytes
+// (vtable 00D08640) when class byte +144h is set, else 40h (vtable 00D0865C, the
+// rotor), is pushed into component+8h {data, count, cap}. data[i] (not the pushed
+// one when the array was not empty) is initialised through its slot 0 with
+// (00476B90(plane), [[plane+6F4h]+160h] or 0, c > 1 ? i : -1, spread[i]).
+// 00476B90 takes no stack arguments, so its three pushes are slot 0's arguments.
+// ---------------------------------------------------------------------------
+void cc13_seg48U_plane_fx_component_load_from_class_007ec5a0(void* component, void* plane, std::uint8_t active,
+                                                             Cc13Seg48UHost& host) {
+    at<void*>(component, 0x4) = plane;
+    void* const plane_class = at<void*>(plane, 0x538);
+    at<float>(component, 0x44) = 0.0f;
+    const auto is_big = [&] {
+        return host.vcall_5c_has_ordnance_kind(plane, 0x10) || host.vcall_5c_has_ordnance_kind(plane, 0x16);
+    };
+    at<float>(component, 0x1C) = is_big() ? 0.5f : 1.0f;                                // 007EC5D9..007EC609
+    void* const tuning = host.game_tuning_get_singleton_0042e740();                     // 007EC60E
+    const float tuning_6b8 = at<float>(tuning, 0x6B8);
+    const float tuning_6bc = at<float>(tuning, 0x6BC);
+    at<std::uint32_t>(component, 0x4C) = at<std::uint32_t>(plane, 0x4A4);
+
+    void* const definition = at<void*>(plane_class, 0xE8);                              // 007EC636..007EC672
+    void* const previous = at<void*>(component, 0x50);
+    if (previous != definition) {
+        at<void*>(component, 0x50) = definition;
+        if (definition != nullptr) host.interlocked_increment(&at<std::int32_t>(definition, 4));
+        if (previous != nullptr && host.interlocked_decrement(&at<std::int32_t>(previous, 4)) == 0) {
+            host.vcall_00_release(previous);
+        }
+    }
+    at<float>(component, 0x6C) = tuning_6bc;
+    at<float>(component, 0x60) = tuning_6b8;
+
+    const auto bind_slot = [&](std::size_t slot_offset, const char* small_name, const char* big_name,
+                               std::size_t engine_offset) {
+        void** const slot = &at<void*>(plane_class, slot_offset);
+        if (*slot == nullptr) {
+            struct {
+                std::uint32_t size;
+                void* data;
+            } name{0, nullptr};
+            host.native_string_assign_0041e870(&name, is_big() ? big_name : small_name);
+            void* handle = nullptr;
+            host.ref_handle_assign_00440580(slot, host.effect_handle_acquire_by_name_00871ba0(&handle, &name, 1));
+            if (handle != nullptr && host.interlocked_decrement(&at<std::int32_t>(handle, 4)) == 0) {
+                host.vcall_00_release(handle);
+            }
+            if (name.data != nullptr) {
+                host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), name.data, name.size + 1, 1);
+            }
+        }
+        if (*slot != nullptr) {
+            const float value_6bc = x87_float_round_trip(tuning_6bc);
+            const float value_6b8 = x87_float_round_trip(tuning_6b8);
+            std::uint32_t bits_6bc = 0;
+            std::uint32_t bits_6b8 = 0;
+            std::memcpy(&bits_6bc, &value_6bc, sizeof(bits_6bc));
+            std::memcpy(&bits_6b8, &value_6b8, sizeof(bits_6b8));
+            cc13_seg48_plane_engine_base_bind_007e2300(static_cast<std::uint8_t*>(component) + engine_offset,
+                                                       at<std::uint32_t>(plane, 0x4A4), slot, bits_6bc, bits_6b8,
+                                                       host);
+        }
+    };
+    bind_slot(0xF0, "DyingSmallPlane", "DyingBigPlane", 0x74);                          // 007EC685..007EC7C6
+    at<float>(component, 0x94) = 0.0f;
+    at<float>(component, 0x9C) = 0.0f;
+    at<float>(component, 0xC0) = 0.0f;
+    at<float>(component, 0xC8) = 0.0f;
+    bind_slot(0xF8, "FallingSmallPlane", "FallingBigPlane", 0xCC);                      // 007EC7E2..007EC926
+
+    at<float>(component, 0xEC) = 0.0f;
+    at<float>(component, 0xF4) = 0.0f;
+    at<std::uint32_t>(component, 0x24) = at<std::uint32_t>(tuning, 0x6C0);
+    at<std::uint8_t>(component, 0x28) = active;
+    at<float>(component, 0x2C) = 0.0f;
+    bool on = false;                                                                    // 007EC961..007EC996
+    if (active != 0) {
+        void* const owner = at<void*>(component, 0x4);
+        on = at<std::uint8_t>(owner, 0xBC8) != 0 || !host.vcall_5c_has_ordnance_kind(owner, 0x17) ||
+             at<std::uint8_t>(owner, 0xC24) != 0;
+    }
+    at<std::uint8_t>(component, 0x14) = on ? 1 : 0;
+    const float level = on ? 1.0f : 0.0f;
+    at<float>(component, 0x68) = level;
+    at<float>(component, 0x70) = level;
+    at<float>(component, 0x30) = level;
+    if (on) {
+        host.plane_fx_component_start_class_loops_007eb160(component);                  // 007EC9B6
+    } else {
+        cc13_seg48_plane_fx_component_stop_all_effects_007eb0e0(component, host);         // 007EC9CC
+    }
+
+    // The checked std::vector<float> at [esp+2Ch]: {proxy, first, last, end}.
+    struct {
+        std::uint32_t proxy;
+        float* first;
+        float* last;
+        float* end;
+    } spread{0, nullptr, nullptr, nullptr};
+    const auto spread_size = [&]() -> std::uint32_t {
+        return static_cast<std::uint32_t>(spread.last - spread.first);
+    };
+    const std::int32_t count = at<std::int32_t>(plane_class, 0x140);                     // 007EC9D5
+    const std::int32_t points = count + 1;
+    host.float_vector_resize_004a8f10(&spread, static_cast<std::uint32_t>(points), 0.0f);  // 007ECA09
+    const float lo = host.random_uniform_float_range_00bd2f10(1, 0.0f, 0.2f);           // 007ECA23
+    const float hi = host.random_uniform_float_range_00bd2f10(1, 8.0f, 1.0f);           // 007ECA41
+    if (points > 0) {
+        const float range = hi - lo;                                                     // 007ECA5B, 24-bit
+        const float divisor = static_cast<float>(points - 1);                           // 007ECA5F CVTSI2SS
+        for (std::int32_t i = 0; i < points; ++i) {
+            const float fraction = static_cast<float>(i) / divisor;                     // 007ECA7A
+            if (spread.first == nullptr || static_cast<std::uint32_t>(i) >= spread_size()) {
+                host.crt_invalid_parameter_noinfo_00bf6713();
+            }
+            spread.first[i] = fraction * range + lo;                                    // 007ECAA3..007ECAAF
+        }
+    }
+    for (std::uint32_t k = 1; spread.first != nullptr && k < spread_size(); ++k) {     // 007ECAC0
+        const std::uint32_t j = host.random_threads_next_u32_00bd2fc0(1) % (k + 1);       // 007ECADD
+        if (spread.first == nullptr || j >= spread_size()) host.crt_invalid_parameter_noinfo_00bf6713();
+        if (spread.first == nullptr || k >= spread_size()) host.crt_invalid_parameter_noinfo_00bf6713();
+        const float held = spread.first[k];                                              // MOVSS
+        spread.first[k] = x87_float_round_trip(spread.first[j]);                         // FLD / FSTP
+        spread.first[j] = held;
+    }
+
+    at<float>(component, 0x40) = 0.0f;                                                  // 007ECB41
+    void* const engines = static_cast<std::uint8_t*>(component) + 0x8;
+    for (std::int32_t i = 0; i < count; ++i) {
+        const bool base_engine = at<std::uint8_t>(plane_class, 0x144) != 0;
+        void* const engine = host.operator_new_00bf681b(base_engine ? 0xC : 0x40);
+        if (engine != nullptr) {
+            at<std::uint32_t>(engine, 0x4) = 0;
+            at<std::uint8_t>(engine, 0x9) = 0;
+            at<std::uint8_t>(engine, 0x8) = 0;
+            at<std::uint32_t>(engine, 0x0) = base_engine ? 0x00D08640u : 0x00D0865Cu;
+        }
+        if (at<std::int32_t>(engines, 0x4) == at<std::int32_t>(engines, 0x8)) {          // 007ECB96 / 007ECBE6
+            std::int32_t capacity = at<std::int32_t>(engines, 0x8) * 2;
+            if (capacity <= 1) capacity = 1;
+            host.pod_array4_reserve_007bd940(engines, capacity);
+        }
+        void** const tail = at<void**>(engines, 0x0) + at<std::int32_t>(engines, 0x4);
+        if (tail != nullptr) *tail = engine;
+        at<std::int32_t>(engines, 0x4) += 1;
+        const std::int32_t index = count > 1 ? i : -1;
+        void* const pod = at<void*>(plane, 0x6F4);
+        const std::uint32_t node = pod != nullptr ? at<std::uint32_t>(pod, 0x160) : 0u;
+        void* const target = at<void**>(engines, 0x0)[i];                                // 007ECC4B
+        if (spread.first == nullptr || static_cast<std::uint32_t>(i) >= spread_size()) {
+            host.crt_invalid_parameter_noinfo_00bf6713();
+        }
+        const float value = x87_float_round_trip(spread.first[i]);
+        void* const holder = at<void*>(plane, 0x360);                                    // 00476B90, inline
+        void* const visual = holder != nullptr ? at<void*>(holder, 0x160) : nullptr;
+        host.plane_engine_vcall_00_init(target, visual, node, index, value);              // 007ECC85
+    }
+    if (spread.first != nullptr) host.crt_free_00bf65ac(spread.first);                  // 007ECCA9
+}
+
+// ---------------------------------------------------------------------------
 // 007337A0 BSP_MissionNarrative_Write. __thiscall(ECX = narrative, writer), RET 4.
 // No SEH. Evidence: export listing 007337A0..00733ADF. Archive slots: +4h begin,
 // +0Ch put({0, key}, {type, value}), +8h end; type 1 = int, 2 = float (bits),
