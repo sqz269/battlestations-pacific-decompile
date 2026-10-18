@@ -681,6 +681,27 @@ const char* cc13_seg48U_plane_squadron_display_name_007f35c0(void* squadron, Cc1
 }
 
 // ---------------------------------------------------------------------------
+// 007E29A0 BSP_ObserverSet_Remove (cc13-seg48V). __thiscall(ECX = set, entity),
+// RET 4. Evidence: the disk-byte disassembly 007E29A0..007E2A12. Its only caller is
+// the jump thunk 007EB0D0. This is game code, not a template body (the first
+// seg48U commit's stl_shape tag was removed). The set's pointer array is
+// {+14h first, +18h count}. The entity's slot +4h names the observed object.
+// 006952A0 drops the observer pair (ECX = observed, EDX = set). Then std::remove
+// (007E1D30) compacts the array, and the count shrinks by (end - new end) / 4.
+// 007E29D2..007E2A06 is the erase's tail move. It runs from the end to the end,
+// which is the same address, so it copies nothing.
+// ---------------------------------------------------------------------------
+void cc13_seg48U_observer_set_remove_007e29a0(void* set, void* entity, Cc13Seg48UHost& host) {
+    void* const observed = host.entity_vcall_4_observed(entity);                   // 007E29AE
+    host.observer_unregister_pair_006952a0(observed, set);                          // 007E29B6
+    void** const first = at<void**>(set, 0x14);
+    void** const last = first + at<std::int32_t>(set, 0x18);                        // 007E29C1
+    void* const value = observed;                                                   // 007E29C9, the argument slot
+    void** const new_end = host.std_remove_pointer_007e1d30(first, last, &value);   // 007E29CD
+    at<std::int32_t>(set, 0x18) -= static_cast<std::int32_t>(last - new_end);       // 007E2A07..007E2A0C, SAR 2
+}
+
+// ---------------------------------------------------------------------------
 // 007337A0 BSP_MissionNarrative_Write. __thiscall(ECX = narrative, writer), RET 4.
 // No SEH. Evidence: export listing 007337A0..00733ADF. Archive slots: +4h begin,
 // +0Ch put({0, key}, {type, value}), +8h end; type 1 = int, 2 = float (bits),

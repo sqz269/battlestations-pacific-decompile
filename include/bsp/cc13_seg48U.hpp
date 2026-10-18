@@ -130,6 +130,13 @@ public:
     // The projectile's vtable slot +34h: __thiscall(ECX = projectile; const float a[3],
     // const float b[3]), RET 8.
     virtual void projectile_vcall_34(void* projectile, const float* a, const float* b) = 0;
+
+    // ---- 007E29A0 (cc13-seg48V) ----
+    // The entity's vtable slot +4h: __thiscall(ECX = entity); EAX = the observed object.
+    virtual void* entity_vcall_4_observed(void* entity) = 0;
+    // 007E1D30 STL_inst_007e1d30, std::remove over a pointer array: __fastcall(ECX =
+    // first, EDX = last; const value*), RET 4; EAX = the new end. Template body, bind-only.
+    virtual void** std_remove_pointer_007e1d30(void** first, void** last, void* const* value) = 0;
 };
 
 // ---- gun and gun bot ----
@@ -154,6 +161,7 @@ void cc13_seg48U_gun_compute_aim_for_target_0072c170(void* shooter, std::int32_t
 // ---- planes and squadrons ----
 void cc13_seg48U_plane_copy_class_record_lists_007d5ac0(void* plane, Cc13Seg48UHost& host);
 const char* cc13_seg48U_plane_squadron_display_name_007f35c0(void* squadron, Cc13Seg48UHost& host);
+void cc13_seg48U_observer_set_remove_007e29a0(void* set, void* entity, Cc13Seg48UHost& host);
 
 // ---- mission narrative (game+21E8h) ----
 void* cc13_seg48U_mission_narrative_construct_00735030(void* narrative, Cc13Seg48UHost& host);
