@@ -607,6 +607,10 @@ public:
     // heading, float pitch), RET 8. Body: bot_set_direction_from_heading_pitch_009fabe0
     // (cc13_seg68.cpp).
     virtual void bot_set_direction_009fabe0(void* direction, float heading, float pitch) = 0;
+    // unit->vtable[38h](): __thiscall(ECX = unit), RET, ST0 = the unit's current speed.
+    virtual float unit_vcall_38_speed(void* unit) = 0;
+    // 007C4810 BSP_PlaneClass_MinControlSpeed: __thiscall(ECX = class), RET, ST0.
+    virtual float plane_class_min_control_speed_007c4810(void* plane_class) = 0;
 };
 
 // ---- the bot-task factory list (00F8A314) ----
@@ -788,6 +792,11 @@ void* bot_state_move_on_path_circle_construct_009bc960(Cc13Seg67bHost& host, voi
                                                        void* approach);
 // 009B9680: __fastcall(ECX = task), RET, AL.
 bool bot_task_maneuver_roll_completed_009b9680(Cc13Seg67bHost& host, void* task);
+// 009B9740 (barrelroll, vtable 00D206D0 slot +64h) and 009BA2F0 (gainaltitude, vtable
+// 00D20480 slot +64h): __thiscall(ECX = task; float dt), RET 4, dt unread. 009BA2F0
+// takes one stream-1 draw in its no-target arm.
+void bot_task_barrel_roll_tick_009b9740(Cc13Seg67bHost& host, void* task, float dt);
+void bot_task_gain_altitude_tick_009ba2f0(Cc13Seg67bHost& host, void* task, float dt);
 // 009BB380: __fastcall(ECX = unit, EDX = float point[3]; float limit, byte flag), RET 8.
 void pilot_bot_prepend_tight_turn_to_point_009bb380(Cc13Seg67bHost& host, void* unit,
                                                     const float* point, float limit,
