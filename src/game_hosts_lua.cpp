@@ -3663,6 +3663,17 @@ int GameMissionLuaHost::run_spawn_new_00949750(lua_State* state, int argument_co
             const int member = ::lua_gettop(state);
             bsp::SpawnNewGroupMember row;
             row.type_class_id = read_member_int(state, member, "Type");
+            if constexpr (kSpawnNewMissingClassRaisesBound) {
+                // Packet p18_spawn_missing_class: 00944210 -> 00964790 indexes the nil
+                // VehicleClass row (00B67800 -> 00A67C20 lua_gettable) and Lua raises.
+                if (!read_vehicle_class_row(row.type_class_id).found) {
+                    ++summary_.spawn_missing_class_raises;
+                    log_.notef("  SpawnNew 00949750: member %d Type %d has no VehicleClass row; "
+                        "00964790's lua_gettable on the nil row raises (packet "
+                        "p18_spawn_missing_class)", i, row.type_class_id);
+                    return luaL_error(state, "attempt to index a nil value");
+                }
+            }
             row.name = read_member_string(state, member, "Name");
             row.crew = read_member_int(state, member, "Crew");
             row.race = read_member_int(state, member, "Race");
@@ -10770,6 +10781,11 @@ void GameMissionLuaHost::report_mission_script_state() {
             "vtable[70h], packet cc13-fix11)", summary_.dead_meat_calls, summary_.dead_meat_sunk,
             summary_.dead_meat_sink_refused, summary_.dead_meat_destroyed,
             summary_.dead_meat_plane_unapplied, summary_.dead_meat_unresolved);
+    }
+    if constexpr (kSpawnNewMissingClassRaisesBound) {
+        log_.notef("summary mission script spawn missing class raises=%llu (00949750 -> "
+            "00944210 -> 00964790, packet p18_spawn_missing_class)",
+            summary_.spawn_missing_class_raises);
     }
     if constexpr (kLuaIsUnitSelectableBound) {
         log_.notef("summary mission script unit selectable calls=%llu true=%llu "

@@ -144,8 +144,12 @@ struct PlaneSquadronHostRecord {
     // clear_007ed3c0` is reconstructed and nothing in this host calls it,
     // because its caller is unlocated, so the flag stays set here. Labelled.
     bool force_flag_378{true};
-    // The squadron entity itself. This process fuses no unit into it: the
-    // squadron is its own slot, and every member below is a separate one.
+    // The squadron entity's slot. This process has no separate squadron unit:
+    // the slot is FUSED with wing 0, the first unit the plan creates
+    // (game_hosts_script_orders.cpp `squadron_unit = before` / `= index`), so
+    // it is also member_units[0]. A query that means the squadron (IsKindOf,
+    // GetEntitySpeed's 007ED470, PilotBomb's 008A505C) has to treat this slot
+    // as the squadron and not as its wing-0 plane (cc13 fix21).
     std::size_t squadron_unit{kPlaneSquadronNoUnit};
     // +3D0h in array order. `member_names` is filled by the plan and
     // `member_units` by the units host once create_units has run.

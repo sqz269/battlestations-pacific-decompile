@@ -479,7 +479,21 @@ inline constexpr bool kLuaSetCrewLevelBound = false;  // OFF: committed unpaired
 // the observer is fed from the host's Kill sites only (target_gone_00925c40); the
 // line-of-sight trigger stays unbound, so RemoveTrigger answers false for its names.
 // False: both rows stay UNIMPLEMENTED and push nothing, and nothing is walked.
-inline constexpr bool kLuaProximityTriggersBound = false;  // OFF: committed for a USN04 pair
+// ON (cc9-physics18, OCEAN_WAVE_FIELD 69-70): PRCP05's airfield trigger fires and
+// completes primary 1; USN11 / USN10 identical.
+inline constexpr bool kLuaProximityTriggersBound = true;
+// Packet p18_spawn_missing_class (cc9-physics18, docs/OCEAN_WAVE_FIELD.md 70).
+// SpawnNew 00949750 builds each groupMembers entry through 00945C30 -> 00944210, whose
+// 00964790 reads the member's class: VehicleClass[classIndex] (00B67720, a nil object
+// when the row is absent), then its `Type` through 00B67800 -> lua_gettable 00A67C20
+// -> luaV_gettable, which raises "attempt to index a nil value" on the nil row. That
+// error unwinds the SpawnNew native into the script call's protected call, so the
+// script function aborts and nothing is spawned (the members are read inside the
+// native, before 009484xx creates any). This installation's vehicleclasses.lua
+// (2026-05-09) has no row 240, which usn_09_Leyte.lua's shipyard PTs ask for.
+// True: a member whose Type has no VehicleClass row raises that error. False: the
+// member is created and the units host aborts the run at its observer projection.
+inline constexpr bool kSpawnNewMissingClassRaisesBound = false;
 // Packet cc13-fix19 (docs/CC13_FIX19.md). 008C9A10
 // AddSquadOrdnanceDroppedTrigger(entity, name?, callback): 00750660 makes a 34h trigger
 // (vtable 00D005C0, +11h = 1, +18h = 2), 00750790 stores the name and callback, and
@@ -496,7 +510,9 @@ inline constexpr bool kLuaProximityTriggersBound = false;  // OFF: committed for
 // host's registry; its live members (registry members the gunnery host does not
 // count dead) stand for +3D0h/+3CCh; a squadron with none is not tested.
 // False: the row stays UNIMPLEMENTED and pushes nothing.
-inline constexpr bool kLuaSquadOrdnanceDroppedTriggerBound = false;  // OFF: new, unpaired
+// ON (cc9-physics18, OCEAN_WAVE_FIELD 70): USNRM01's Oklahoma_Killers trigger fires and
+// luaOklahomaKillersRetreat runs (the mission ends 784.93 s, was 569.98 s); BSM04 identical.
+inline constexpr bool kLuaSquadOrdnanceDroppedTriggerBound = true;
 inline constexpr bool kLuaSetShipSpeedBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_unit_get_attack_target (docs/LUA_BINDING_MISSION.md, "UnitGetAttackTarget,
@@ -1123,6 +1139,7 @@ struct GameMissionLuaSummary {
     unsigned long long dead_meat_destroyed{0};      // else arm, vtable[70h](1)
     unsigned long long dead_meat_plane_unapplied{0};  // plane arm, not hosted
     unsigned long long dead_meat_unresolved{0};
+    unsigned long long spawn_missing_class_raises{0};   // packet p18_spawn_missing_class
     unsigned long long unit_selectable_calls{0};    // packet cc13-fix12, 008AB580
     unsigned long long unit_selectable_true{0};
     unsigned long long unit_selectable_unresolved{0};  // no entity: pushed false
