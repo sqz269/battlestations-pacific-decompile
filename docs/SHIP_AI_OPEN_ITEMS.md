@@ -19302,3 +19302,64 @@ with 90 death rows, 181 unit-table rows and 25295 shots on both sides. The nativ
 The only other moved line is `ship ai free: refills` 2455 -> 2394, the known avoidance-refill noise.
 **Flipped ON** by mechanism. With every site routed, the host's own `< 1.0` projection at 0071E200 is only the OFF
 arm, so no boundary fix is needed.
+
+## 292. Scene `traffic` block 009514B0 bound behind `kSceneTrafficBlockBound` (cc9-ships59, 2026-10-18)
+
+Lead queue item 3, from cc15. `read_traffic_block` (src/scene_traffic_groups.cpp, docs/SCENE_TRAFFIC_BLOCK.md) replaces
+the record stand-in `SceneContents::load_traffic_block` behind `kSceneTrafficBlockBound` (OFF,
+src/game_hosts_scene_contents.cpp).
+
+**Keyword.** The image peeks: 0046EB24 `CALL 008D8A70` (BSP_SceneTokenizer_PeekToken), then 0046EB32 `CALL 00438E10`
+against 00CE5890 "traffic", and 0046EB5B calls 009514B0 with the lexer still on the keyword. 009514B0 expects the
+keyword itself after the 009514B5 clear. scene_file.cpp's loop consumes it with next(), so a new
+`read_traffic_block_after_keyword` runs the clear and then the body from the `{` expect on, mirroring cc15's
+`read_browser_groups_after_keyword`. `read_traffic_block` keeps the keyword form and shares the body.
+
+**Host (`SceneTrafficRecorder`).** It keeps the records and resolves each template name through the loaded library's
+`LandVehicleclasses`, then `SoldierTypes` (0049D25A / 0049D2AC; case-insensitive). The following are counted only
+(LABELLED): the 00964790 class materialisation, the 004B1400 soldier arm, the 00951385 path-entity lookup (answered
+false; only 004A50D0 reads it) and the 004A5620 commit. **No traffic unit is created.** The spawner 004A50D0 is
+cc13's unwired `scene_traffic_runtime_construct_004a50d0` (cc13_left8b_seg8).
+
+**Predictions (written before the pair).** Gameplay-identical (exit 0/1) on USN01. The ON log adds one
+`scene traffic block:` line per authored block. The native table turns `SceneContents::load_traffic_block 009514b0`
+from unimplemented to concrete. OFF steps over the block's tokens one by one, and none of them is a scene-loop
+keyword (`entity`, `traffic`, `groups`, `SceneBrowserGroups`), so the loop ends in the same state either way.
+
+**Pair (JM05 12000, reference env; JM05 loads COTP-IJN/PRCPIJN/ijn_05_invasion_of_port_moresby.scn, 7 items).** USN01's
+block is empty (smoke `local\s59_trsmoke_u1.log`: 0 items, commits=1). OFF `local\s59_troff_j5.log` (tree exe at
+267e48677), ON `local\s59_tron_j5.log` (`local\s59_tr_on`). The ON log reads `scene traffic block: 7 items, 7
+templates (1 vehicle classes, 6 soldier types, 0 unresolved), 7 path lookups, commits=1 ... skipped=0 ok=1`.
+`pair_diff` exit 1: gameplay identical, with 34 death rows, 184 unit rows and 12415 shots on both sides, and the
+mission fails at 321.05 s both ways. Native table: `load_traffic_block` goes from unimplemented to concrete, and
+otherwise only the known sector-scan / clearance noise moves. **Flipped ON** as predicted. What remains is the
+spawner (004A5620 -> 004A50D0, cc13_left8b_seg8), which would put the authored jeeps, trucks and marines on their
+paths. Rows with traffic items: BSM01, BSM02, BSM10, USNRM01, USN07, USN11, USN20, JM01, JM05, JM12, PRCP02,
+PRCP08 (`local\s59_traffic_ids.py`).
+
+## 293. Item 4: cc15's four low-priority rows (cc9-ships59, 2026-10-18)
+
+- **0070D140 `formation_speed_ceiling`.** The host inlines the minimum in 009F4DA0's member loop
+  (src/game_hosts_ship_ai.cpp, `formation_throttle_ceiling_009f4da0`). It is now behind
+  `kShipFormationSpeedCeilingRowBound` (OFF), which runs `ship_ai_formation_speed_ceiling` over a member-record projection:
+  entity = the member is live, +30h = its published speed. LABELLED: the image writes 999.0f back into a null-entity
+  record (0070D18D). That write lands in the projection and is discarded, because the host keeps +30h per unit and a
+  dead member has already left the group (`formation leave`, 0077D1A0). **Prediction:** gameplay-identical. Both skip
+  the same members and take the same float minimum from the same 9999999 seed.
+- **009DACD0 `formation_speed_ratio`.** There is nothing to wire. The host's follow producer already runs
+  src/ship_ai_formation.cpp's 009DF2D0 projection, which calls `ship_ai_formation_speed_ratio` at both of its sites
+  (009DF400 and 009DF612; ship_ai_formation.cpp:415 and :482).
+- **006E1510 `bomb_air_velocity`.** No switch. The host splits the step: gravity is in `projectile_flight_step`, and
+  the record+348h drift is added afterwards under the same NoGravity test (game_hosts_gunnery.cpp, the
+  `kBombDropDriftBound` branch). The y term is zero by construction (006E1F00 stores block+38h with y zeroed). The
+  arithmetic is the function's, and its ordering against the position step is already a labelled substitution there.
+  Routing it through `bomb_air_velocity` would need the flight step split first, which changes nothing.
+- **006FDF20 `entity_is_kind_of` (MSTGun 24h).** No switch. The host keeps no class id per gun; its turning class
+  comes from the device Type (GUNNERY 63 / `kGunImmediateFireSlotBound`, the G4 note in GUNNERY_OPEN_ITEMS). The test's
+  only consumer modelled here, ForceFireDepthCharge 0089B9D0 (cc13-fix17), already asks the same question over the
+  Type. An IsKindOf row needs per-gun class ids first.
+
+**Pair (0070D140, USN04 20000, reference env).** OFF `local\s59_ceoff_u4.log` (tree exe at d41d8186c), ON
+`local\s59_ceon_u4.log` (`local\s59_ce_on`). 009F4DA0 is reached 413285 times over groups that lose members
+(Zuiho/Takao/Mogami `formation leave` at 918-943 s). `pair_diff` exit 1: gameplay identical, with 90 death rows,
+181 unit rows and 25295 shots; only the avoidance refill counter moves. **Flipped ON.**

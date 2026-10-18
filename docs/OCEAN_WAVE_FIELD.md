@@ -2981,3 +2981,91 @@ Run tools: `local\p12_launch.ps1 -Exe <exe> -Name <n> -Mission <id> -Frames <f> 
 `local\p18_wait.ps1 -Names a,b -Max 580`; export builds `local\p18_exports*.ps1`. Stagger launches by 60 s, run at
 most two, and run one build at a time. `python tools/mission_script_reach.py <Native>` maps menu ids to scripts.
 PRCP05 does not complete on this installation: VehicleClass has no row 240, so its PTs never spawn.
+
+## 73. 006BCA80's owner-velocity lead is already bound; per-op rounding (cc9-physics19, 2026-10-18)
+
+cc13's CC13_SEG29U.md item 1 reports 006BCA80 as a live mismatch ("velocity = 0, +8Ch ignored"). It read
+`land_path_point_006bca80`'s comment, which described only the t = 0 point. The t != 0 call (009AFD52) adds the
+owner's velocity x t in `land_geometry_009afaf0` under `kCarrierLandingVelocityLeadBound`, ON since section 66;
+`local\p17xair_usn01w.log` has `summary carrier landing leads=4761 bound=1`. The comment now says so.
+- Callers (rel32 + absolute scan of the PE, `local\p19_rel32.py`): 007C7329 (t 0, only `.w`), 009AFB46 (t 0),
+  009AFD52. The one absolute hit, 004AAEFC, is inside `CALL 00B67980` at 004AAEFB.
+- holder+8Ch: 006BEE40 (the carrier refresh) writes +88h only. With +8Ch = 0, a = 0 x t = 0, UCOMISS sets ZF and
+  `TEST AH,44h` leaves PF clear, so the JNP at 006BCAD9 skips the rotation. Dead arm, not modelled.
+- TouchdownBrake is not affected: 009B1EF2's touched byte keys on +900h == 7 (section 70), not on the path point.
+
+**`kCarrierLandingLeadFloatOpsBound` (OFF).** 006BCC0A-006BCC51 stores each v[k] x t as a float, then the float
+sum p + T[k]; the host rounds a double v x t + T once. Prediction for a USN01 pair: the same landings in the same
+order; touchdown times and approach traces move by float noise only, and the chaotic flight afterwards may
+move counters. A mechanism check, not a behaviour change.
+
+## 74. 007D99C0's deck term (cc9-physics19, 2026-10-18)
+
+007D99C0 (007D99C0-007D9A69, `__thiscall(ctl)`, RET, result in ST0) returns ctl+44h, plus, when the plane has a
+scene parent (`[ctl+8]+3Ch`), a deck term. The listing, with ESP tracked through the two calls:
+- 007D99DD-007D9A04: with unit+10Ch clear, 00414DB0 refreshes the pose and 00B63D50 builds the inverse world
+  (unit+CCh) into unit+110h; +10Ch = 1.
+- 007D9A09-007D9A1E: the parent's vtable[34h](out = base+10h), RET 4: its velocity. The PUSH 0 and PUSH unit+110h
+  before it are 0042D0D0's arguments (matrix, normalise 0). 007D9A22-007D9A26: 0042D0D0(ECX = base+8h, EDX = the
+  velocity): out[k] = sum_i v[i] x M[4i+k], so out[2] (base+10h) = dot(v_parent, the plane's forward row).
+- 007D9A31-007D9A5F: c = 0.1 (00D7A2F0) when z >= 0.0 (00D7A218), else 0.8 (00CE74F8; COMISS/JC, so unordered
+  takes 0.8); FLD z, FMUL c, FADD ctl+44h, FSTP.
+The host's planes keep deck-relative velocity while parented (007D9CE0's subtraction in
+`carrier_deck_reparent_007c71e0`), as ctl+18h does, so ctl+44h is already the relative forward speed.
+
+**`kPlaneForwardSpeedDeckTermBound` (OFF)**, `plane_forward_speed_007d99c0`, at the three host sites that model a
+007D99C0 call: the free-flight state's forward speed (007DC878; it feeds 007DA710's floor, the water law and the
+pose advance), 0099D99E's measured speed (`kPilotThrottleForwardSpeedBound`) and 007DC878-007DC886's stall ratio.
+LABELLED: the parent's vtable[34h] is its `motion.linear_velocity`, as in 007D9CE0's host. Not wired: the callers
+007C38FC (bow wave), 007C3CC7, 007D9AB4, 007DB75B/007DBD07 (the core law; whether the host's core law reads the
+state speed was not checked), 0099F3EF, 009A176D, 009B0C6D. 007DAABD's floor takes the state speed, so it follows. Prediction: only parented planes move (deck taxi, the take-off
+roll, landed planes); off a deck the helper returns ctl+44h. On a carrier moving forward at v, a plane facing the
+bow reads +0.1v more forward speed, so the stall ratio and the throttle error shift slightly during the roll.
+`summary forward speed deck terms=` counts the parented calls.
+
+**73, result: `kCarrierLandingLeadFloatOpsBound` ON.** USN01 with `usn01_p8_u1_i.txt`, 30000 frames, at 888960641:
+`local\p19a_off_usn01.log` against `local\p19a_ops_usn01.log` (manifests beside them). pair_diff 3 (moved), as
+predicted: the same 19 touchdowns, the first four (417.87, 502.05, 521.45, 541.44 s) identical, the rest drifting
+by 0.15-12 s (KatSBD 706.25 -> 718.10); leads 7287 -> 7571, Enterprise inserts 12 / releases 5 on both; deaths 36
+on both, 15 death times shifted; neither run ends the mission in 30000 frames. Mechanism matches; flipped.
+
+**74, result: `kPlaneForwardSpeedDeckTermBound` stays OFF.** USN01 `usn01_p8_u1_i.txt`, 30000 frames:
+`local\p19a_off_usn01.log` (888960641) against `local\p19b_fwd_usn01.log` (88698c836 + the flip; both have the lead
+rounding OFF). pair_diff 3: `deck terms=16206`; carrier stows 19 -> 0, ground retakeoffs 0 -> 37, refused land/abort
+on-ground entries 0 -> 13, plane water contacts 8 -> 16, deaths 36 -> 30. The chain, ConTBD1: touchdown 553.29 s,
+land/park taxis toward z 82.6 but with the deck term the throttle's measured speed (0099D99E) reads about 1.7 m/s
+high (Enterprise at about 16.7 m/s, x 0.1), the plane creeps to a stop at z 78.2 (v 0.79, commanded 2.23) short of
+the lift, the park timer (+28h) runs out, 009B21D0 sets done, 009B37A7 enters land/abort, whose on-ground arm is
+unbound (refused), so 0099B107 pushes a re-takeoff and the plane lifts off and ditches (|v| 152.76). OFF, the same
+plane reaches z 80.6 and the lift takes it (574.18 s).
+- The mechanism itself is confirmed: 00923810(1) is `[unit+3Ch]` (the scene parent; 007C7253-007C7266 compares it
+  with the carrier's `[[holder+4]+7Ch]` before re-parenting through vtable[ACh]), so the term does apply on deck.
+- Why it stays OFF: the failure passes through an unbound arm (land/abort on the ground), and the image's carriers
+  stow their planes. Open before a flip: whether 009B22C0's park drive reaches the throttle through 0099D99E for a
+  parented plane in the image (or brakes/drives the wheels directly), and the abort on-ground arm.
+
+**74, rewired (cc9-physics19).** The first wiring fed the deck term into the whole free-flight state speed, so
+ctl+7Ch (007D80C0 latches ctl+44h, no term), the pose advance (reads ctl+7Ch) and the water law (ctl+44h) took it
+too. Now the state speed is ctl+44h again and the term reaches only 007D9AB4 (the authority, `control_authority`)
+and 007DAABD (the floor) inside `control_step_007da710`, plus 0099D99E and 007DC878 as before. The USN01 result
+above was measured with the first wiring; the stow failure ran through 0099D99E's throttle, which the rewire keeps.
+
+## 75. cc15's actuator bodies ON; 007D9CE0 / 007D9C10 frames (cc9-physics19, 2026-10-18)
+
+**`kActuatorFlagCc13BodiesBound` ON.** JM08 `jm08_s45_j8_m10.txt`, 72000 frames, at af8206868:
+`local\p19c_off_jm08.log` against `local\p19c_act_jm08.log` (manifests beside them). pair_diff 1, gameplay identical:
+126 deaths, 70763 shots, the same end (failed at 1107.00 s, "The HQ has been destroyed!", as on main since the
+wing-fold flip, WINS notes); only the known ship-AI noise counters and one ship-ai summary line move. Exercised:
+`wing fold ... prep_holds=360` on both sides (009CDEED's 007B8D10 read through the cc13 bodies); not exercised:
+extends / retracts / elevator waits are 0 on both, so the extend and retract arms have no pair yet.
+
+**007D9CE0 / 007D9C10 (cc15 held item c), read, no switch.** 007D9CE0 (re-parent): with an old parent
+(`[unit+3Ch]`), ctl+18h (velocity) and ctl+24h (angular) go through the old parent's world matrix (+CCh, 0042D0D0)
+and the old parent's velocity (vtable[34h]) is added, each component FADD/FSTP; with a new parent its velocity is
+subtracted and both vectors go through the new parent's inverse world (+110h, built by 00B63D50 when +10Ch is
+clear). So a parented plane's ctl+18h/+24h are in the PARENT'S LOCAL frame. 007D9C10 then builds ctl+B0h as the
+inverse (0085DEA0) of unit+74h, the plane's local matrix, and ctl+3Ch..44h / +48h..50h are those vectors in the
+body frame, then tail-jumps to 007D8020. The host keeps the relative velocity in world axes and forms body
+components from the world pose rows: the same value while the carrier holds its heading, but the image's vector
+turns with the deck and the host's does not. LABELLED difference; it matters only for a parented plane on a
+turning or rolling carrier. Carrying a parent-local velocity would touch every parented reader; not started.

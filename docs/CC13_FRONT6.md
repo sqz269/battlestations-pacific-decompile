@@ -49,7 +49,7 @@ is ECX and the body ends in a plain RET.
 | 0078E470 | `camera_view_unit_0078e470` | `__fastcall(ECX = view)` -> [ECX+38Ch] | 004BFED0 |
 | 005662F0 | `mode_selector_set_005662f0` | `__fastcall(ECX = mode)`: [00E086C0] = ECX | 005EC990 |
 | 008DA180 | `objective_manager_008da180` | `__fastcall(ECX = owner)` -> ECX + 24h (LEA, an address) | 00603120 |
-| 007F7D90 | `session_message_root_store_vtable_007f7d90` | `__fastcall(ECX)`: [ECX] = 00CE4974 (the BSP_SessionMessageRoot vtable). Probably an inlined base-destructor vtable store; provisional | 007752D0 (w) |
+| 007F7D90 | `session_message_root_store_vtable_007f7d90` | `__fastcall(ECX)`: [ECX] = 00CE4974 (the BSP_SessionMessageRoot vtable). The out-of-line base destructor body (callers 0075C6E3, the scalar-deleting destructor, and the EH funclets 00C89AA5/00C8F773), not an inlined store | 007752D0 (w) |
 | 007B9000 | `run_surface_mark_released_007b9000` | `__fastcall(ECX)`: byte [ECX+0C01h] = 2 | 009CD540 |
 | 005CE750 | `option_panel_set_flag_8d_005ce750` | `__fastcall(ECX = panel)`: byte [ECX+8Dh] = 1 | 005E51D0 still blocked on 005DF510 |
 | 00472520 | `field_28_get_00472520` | `__fastcall(ECX)` -> [ECX+28h] | none (006E4640 has no identifier) |

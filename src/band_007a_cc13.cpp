@@ -132,8 +132,10 @@ void flight_controller_update_rate_007d80c0(FlightControllerRateFields& fields, 
         // FLD previous; FSTP float; FLD f44 (via a float slot); FSUB float; FDIV float dt; FSTP float.
         const float previous = fields.previous_7c;
         fields.previous_7c = fields.f44;
-        fields.rate_78 = static_cast<float>((static_cast<double>(fields.f44) - static_cast<double>(previous)) /
-                                            static_cast<double>(dt));
+        // Modelled at the main thread's 24-bit PC (each x87 op rounds to a float);
+        // at 53 bits the image can differ by a double rounding of the quotient.
+        const float diff = static_cast<float>(static_cast<double>(fields.f44) - static_cast<double>(previous));
+        fields.rate_78 = static_cast<float>(static_cast<double>(diff) / static_cast<double>(dt));
         return;
     }
     fields.rate_78 = 0.0F;

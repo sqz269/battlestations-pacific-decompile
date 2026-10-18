@@ -60,6 +60,20 @@ namespace {
 // stand-in left the loop to step over the block's tokens as unknown keywords.
 constexpr bool kSceneBrowserGroupsBound = false;
 
+// Packet cc9_s59_traffic (docs/SHIP_AI_OPEN_ITEMS.md 292): the `traffic` block
+// (009514B0, called at 0046EB5B) is read by scene_traffic_groups.cpp's body over
+// SceneTrafficRecorder instead of being only recorded. The image peeks the
+// keyword (008D8A70 + 00438E10 at 0046EB24..0046EB39) and 009514B0 expects it;
+// scene_file.cpp has already consumed it, so the after-keyword entry is used.
+// The records are counted and their template names resolved through the
+// library's LandVehicleclasses / SoldierTypes tables. LABELLED: the class
+// materialisation 00964790, the soldier arm 004B1400, the path-entity lookup
+// 00951385 and the commit 004A5620 -> 004A50D0 (the ambient traffic spawner)
+// are counted only; no traffic unit is created. False: the record, as before,
+// and the scene loop steps over the block's tokens as unknown keywords.
+// ON by cc9-ships59 (SHIP_AI_OPEN_ITEMS 292): JM05 12000 gameplay-identical.
+constexpr bool kSceneTrafficBlockBound = true;
+
 class SceneBrowserGroupsCounter final : public SceneBrowserGroupsHost {
 public:
     void observe_browser_group(const SceneBrowserGroupEntry& entry) override {
@@ -67,6 +81,69 @@ public:
         ++count;
     }
     std::size_t count{0};
+};
+
+class SceneTrafficRecorder final : public SceneTrafficHost {
+public:
+    using SymbolLookup = bool (*)(const void* library, const std::string& table,
+        const std::string& symbol, int& value);
+    SceneTrafficRecorder(const void* library, SymbolLookup lookup)
+        : library_(library), lookup_(lookup) {}
+
+    void clear_traffic_records() override {
+        records.clear();
+        ++clears;
+    }
+    bool resolve_path_entity(const std::string& name) override {
+        // 00951385 searches the live entity registry; only 004A50D0 reads the
+        // answer. Counted, answered false.
+        static_cast<void>(name);
+        ++path_lookups;
+        return false;
+    }
+    void add_traffic_record(const std::string& item_name,
+        const TrafficRecord& record) override {
+        static_cast<void>(item_name);
+        records.push_back(record);
+    }
+    bool resolve_template_class(const std::string& name,
+        bool& land_vehicle_class, std::int32_t& class_id) override {
+        int value = 0;
+        // 0049D25A: "LandVehicleclasses" (00CE6710), then 0049D2AC: "SoldierTypes".
+        if (lookup_(library_, kLandVehicleClassesTable, name, value)) {
+            land_vehicle_class = true;
+            class_id = value;
+            return true;
+        }
+        if (lookup_(library_, kSoldierTypesTable, name, value)) {
+            land_vehicle_class = false;
+            class_id = value;
+            return true;
+        }
+        ++unresolved_templates;
+        return false;
+    }
+    void ensure_vehicle_class(std::int32_t class_id) override {
+        static_cast<void>(class_id);
+        ++vehicle_class_requests;   // 00964790, counted
+    }
+    void ensure_soldier_type(std::int32_t soldier_type_id) override {
+        static_cast<void>(soldier_type_id);
+        ++soldier_type_requests;    // 004B1400, counted
+    }
+    void commit_traffic_records() override { ++commits; }   // 004A5620, counted
+
+    std::vector<TrafficRecord> records;
+    std::size_t clears{0};
+    std::size_t path_lookups{0};
+    std::size_t unresolved_templates{0};
+    std::size_t vehicle_class_requests{0};
+    std::size_t soldier_type_requests{0};
+    std::size_t commits{0};
+
+private:
+    const void* library_;
+    SymbolLookup lookup_;
 };
 
 bool equal_insensitive(const std::string& a, const std::string& b) noexcept {
@@ -1170,8 +1247,31 @@ public:
         SceneFilePass pass) override;
 
     void load_traffic_block(SceneLexer& lexer) override {
-        static_cast<void>(lexer);
-        owner_.log.unimplemented("SceneContents::load_traffic_block", "009514b0");
+        if constexpr (kSceneTrafficBlockBound) {
+            SceneTrafficRecorder recorder(&owner_.library,
+                [](const void* library, const std::string& table,
+                    const std::string& symbol, int& value) {
+                    return static_cast<const PropertyLibrary*>(library)
+                        ->resolve_symbol(table, symbol, value);
+                });
+            const SceneTrafficReadResult read =
+                read_traffic_block_after_keyword(lexer, recorder);
+            owner_.log.implemented("SceneContents::load_traffic_block", "009514b0");
+            std::size_t templates = 0;
+            for (const TrafficRecord& record : recorder.records) {
+                templates += record.templates.size();
+            }
+            owner_.log.notef("scene traffic block: %zu items, %zu templates (%zu vehicle "
+                "classes, %zu soldier types, %zu unresolved), %zu path lookups, commits=%zu "
+                "(004A5620 not modelled: no traffic unit created), skipped=%zu ok=%d%s%s",
+                recorder.records.size(), templates, recorder.vehicle_class_requests,
+                recorder.soldier_type_requests, recorder.unresolved_templates,
+                recorder.path_lookups, recorder.commits, read.skipped_tokens,
+                read.ok ? 1 : 0, read.error.empty() ? "" : " error=", read.error.c_str());
+        } else {
+            static_cast<void>(lexer);
+            owner_.log.unimplemented("SceneContents::load_traffic_block", "009514b0");
+        }
     }
     void skip_traffic_block(SceneLexer& lexer) override {
         static_cast<void>(lexer);
