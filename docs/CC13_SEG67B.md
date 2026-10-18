@@ -652,10 +652,10 @@ There are 33 ledger-only rows (section 4):
 Each row had the same three checks as batch 1, run before writing. The twin scan now decodes instructions with capstone and masks only the rel32 of CALL, JMP and Jcc.
 
 There are 21 bodies:
-- **Flikflak roll step (009B94E0):** +294h = (-v / 2r) x (-pi/2 - pitch)^2.
+- **Split-S roll step (009B94E0):** +294h = (-v / 2r) x (-pi/2 - pitch)^2.
   - v is the bank, or 00438B10(pi, bank) when the argument byte is set.
   - The ratio r = d+1A8h / d+1BCh is taken from the task descriptor at +2F8h.
-  - It is modelled at 24-bit precision. The cc9 flikflak arm of `st_manoeuvre_tick` steers by a bank target and does not call this step.
+  - It is modelled at 24-bit precision. Caller: the split s tick 009B9CA0 (no Ghidra function; vtable 00D207C0 +64h) at 009B9D05, with wrap = ([task+3F8h] == 1); cc9 does not model the split s task.
 - **Stop tick (009B95D0)** writes the plan slots.
 - **Factories:** 009BAE10 (gain altitude), 009BAE80 (immelmann) and 009BAEF0 (stop). Stop uses 0099C8B0 with kind 0Fh and vtable 00D20500.
 - **009BC6B0** registers "path", "follow" and "circle (path)".
@@ -670,7 +670,7 @@ There are 21 bodies:
   - 009D58A0, the destructor body.
   - 009D59C0, the run end point. Its tail recursion is written as a loop.
   - 009D5CF0, over the existing 009D5AE0 and 009D5B90 bodies.
-- **009D5D60:** the target-ref reset, with one stream-1 U(0, 2) draw.
+- **009D5D60:** the target-ref reset, with one stream-1 U(0, 2) draw. It is unreferenced; the same reset is inlined 60 times in 009E5530's first pass (the sixty draws of §3.42).
 - **009D6530:** the ref holder.
 
 There are 6 ledger-only rows (section 4):

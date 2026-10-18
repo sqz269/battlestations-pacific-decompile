@@ -1189,8 +1189,8 @@ void* entity_as_kind41_009ca480(Cc13Seg67bHost& host, void* entity);
 void bot_task_takeoff_debug_draw_009cfa10(Cc13Seg67bHost& host, void* task);
 
 // ---- medium rows, batch 2 (docs/CC13_SEG67B.md 3.47) ----
-// 009B94E0: __thiscall(ECX = flikflak task; byte wrap), RET 4.
-void bot_task_flik_flak_roll_step_009b94e0(Cc13Seg67bHost& host, void* task, std::uint8_t wrap);
+// 009B94E0: __thiscall(ECX = split s task; byte wrap), RET 4.
+void bot_task_split_s_roll_step_009b94e0(Cc13Seg67bHost& host, void* task, std::uint8_t wrap);
 // 009B95D0: __thiscall(ECX = stop task; float dt, unread), RET 4.
 void bot_task_stop_tick_009b95d0(void* task, float dt);
 // 009BAE10 / 009BAE80 / 009BAEF0: __stdcall(bot, archive), RET 8, EAX = task or 0.

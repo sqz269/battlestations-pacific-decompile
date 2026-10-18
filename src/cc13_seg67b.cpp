@@ -6018,15 +6018,15 @@ void circle_state_debug_draw(Cc13Seg67bHost& host, void* state) {
 
 }  // namespace
 
-// 009B94E0 (009B94E0-009B9581), flikflak roll step. d = [task+2F8h], u = [task+2F4h]:
+// 009B94E0 (009B94E0-009B9581), split-S roll step. d = [task+2F8h], u = [task+2F4h]:
 // twice = d+1A8h / d+1BCh doubled (FADD ST0,ST0); off = -pi/2 (qword 00CF48A0, FSUBR)
 // - u+C64h, rounded to a float; sq = off * off; v = wrap ? 00438B10(pi [00D7A264],
 // u+C68h) : u+C68h; byte +298h = 1; +294h = (-v / twice) * sq; +2D0h = 0.
 // 24-bit precision is modelled as float operations; UNCERTAINTY: at 53 bits the
-// quotient and the products round once less. The cc9 flikflak tick
-// (st_manoeuvre_tick, src/game_hosts_units.cpp ~24728) steers by a bank target and
-// does not call this step.
-void bot_task_flik_flak_roll_step_009b94e0(Cc13Seg67bHost& host, void* task, std::uint8_t wrap) {
+// quotient and the products round once less. Caller: the split s tick 009B9CA0 (no
+// Ghidra function; vtable 00D207C0 +64h) at 009B9D05, with wrap = ([task+3F8h] == 1);
+// cc9 does not model the split s task.
+void bot_task_split_s_roll_step_009b94e0(Cc13Seg67bHost& host, void* task, std::uint8_t wrap) {
     void* const desc = ptr_at(task, 0x2F8);
     void* const unit = ptr_at(task, 0x2F4);
     const float rate = at<float>(desc, 0x1A8) / at<float>(desc, 0x1BC);         // 009B94F7
@@ -6241,7 +6241,9 @@ bool ship_ai_path_has_no_sided_node_009d5cf0(void* task) {
 
 // 009D5D60 (009D5D60-009D5DC9): +2Ch, +28h, +24h, +20h, +1Ch, +18h, +3Ch, +30h, +34h,
 // +38h = 0 (image order); byte +40h = 0; +48h = 00BD2F10(ECX = 1; 0.0, 2.0 [00CE3958]),
-// one draw on stream 1; +44h = 1000.0 [00CE3804].
+// one draw on stream 1; +44h = 1000.0 [00CE3804]. Unreferenced (no xrefs, no absolute
+// or rel32 references in the image). The same record reset is inlined 60 times in
+// 009E5530's first pass, the sixty draws of section 3.42.
 void target_ref_record_reset_009d5d60(Cc13Seg67bHost& host, void* record) {
     static constexpr std::size_t kZeroed[] = {0x2C, 0x28, 0x24, 0x20, 0x1C, 0x18, 0x3C, 0x30, 0x34, 0x38};
     for (const std::size_t off : kZeroed) {
