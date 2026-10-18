@@ -156,3 +156,69 @@ valid-allocation projection is retained.
 
 Validation: Win32 Release build and both existing CTests passed. No tests were
 added and no game was launched. No original ABI replacement or game claim.
+
+## Batch 4: ordinary archive, voice, GUI and platform dispatch
+
+Ten more bodies use actual storage and the same TU/header. They retain mandatory
+original-callee bindings; stock CRT, Lua and XLive bodies are not reconstructed.
+
+| Address | Source body | Original ABI / specific evidence |
+|---|---|---|
+| 00BD8CD0 | archive_write_field | ECX writer, key/value tagged pairs by value, RET10h; indent receives depth, key/terminator receive current root flag |
+| 00BB8A90 | mpkg_entry_offset | ECX archive, entry stack, EAX offset, RET4; actual0Ch reader/34h header; cache before current-base free |
+| 00BB8BE0 | mpkg_open_entry | ECX archive, entry/unused flags stack, RET8, EAX stream; compressed, memory-copy and reopened adopted branches |
+| 00BB8D60 | mpkg_open_named | ECX archive, name/flags stack, RET8, EAX stream; bit0 rejection, ordered24h entries, length-equal case-insensitive first match |
+| 00A44000 | voice_packet | ECX owner, packet stack, RET4; accept/state gates, signed distance/10 count, current packet range reloads and self+1C24 voice owner |
+| 00A44150 | voice_refresh_flags | ECX owner, mode stack, RET4; two independently captured list owners, mute/reapply, virtualF0 capture before FSTP |
+| 00AB7A40 | text_register_clip | ECX Text, RET; main/shadow geometry calls, actual material pointer and child virtual70 walk |
+| 00AC4C50 | layer_read_properties | ECX layer, visitor stack, RET4; three tagged pairs/property, explicit unwritten priority preimage, root binding and base read |
+| 00AA6340 | gui_manager_destroy | ECX manager, RET; page virtual20/04 calls, current bounds reloads, reference/string/array/tree retirement and singleton clear |
+| 00BED3B0 | platform_handle_message | five explicit active/HWND/message/WPARAM/LPARAM stack DWORDs, RET14h, EAX result; incoming ECX is not the receiver |
+
+The MPKG branch order and ownership behavior are retained, including nonzero
+compression method dispatch, small stored-entry copy, and large stored-entry
+reopen followed by an adopting substream. No invented source release is added
+if the final allocation returns null. Existing actual BB8850 header parsing is
+reused; zlib stays behind the established raw-inflate constructor binding.
+
+The platform handler keeps the explicit active owner separate from window-extra
+storage and preserves message-specific return values and synchronous import
+ordering. It reloads HWND after focus/foreground calls, uses full DWORD key
+whitelists, and queues the original two-byte character/category payload while
+retaining the active argument's high16 preimage. Sound, GUI, media, renderer and
+text-queue calls are explicit mandatory bindings. This adds no application
+registration or window creation; the new handler has not been executed.
+
+Validation: Win32 Release build and both existing CTests passed. The 37 original
+function records in the initial packet all name sources registered in the
+current generated MSBuild projects. One of them was only the partial supported
+Group-sphere projection; batch2 adds the complete ordinary branch structure.
+No whole-body differential, live window/network test, native ABI/FH3/SEH,
+allocation-failure transport or gameplay claim is made.
+
+## Packet disposition and open contracts
+
+The 106-row packet now has 55 new ordinary bodies, one existing complete body
+newly registered, four library/compiler classifications, 36 other pre-existing
+function rows left intact, and ten explicitly unresolved rows. No row was
+skipped because of an address lease; the CMake file lease was respected by
+using the separately leased existing engine TU. The same owner holds all 106
+address leases during this packet.
+
+| Unresolved address | Why it remains open |
+|---|---|
+| 00985F30 | Chat dispatch needs the raw warning subscription/event-box/Lua argument ownership and cancellation/reentrant iteration contract; existing mission-event code supplies semantic dispatch only. |
+| 00986B00 | HP dispatch needs the complete raw threshold/reason-box/Lua callback ownership path; the damage/repair crossing predicate alone does not close the body. |
+| 0098E910 | Existing semantic options builder is not the raw hardware owner/buffer routine; native field/vector access, mode fallback, LCID output and C3Ch buffer effects still need full source recovery. |
+| 00A3C5E0 | Existing R173-R175 fragments are worker dependencies, not the 1286-byte send loop; x87 clock/deadline schedule, socket/logging/queue and worker lifetime remain unbound. |
+| 00A3CAF0 | Existing receive helpers do not close the 868-byte socket receive loop, packet/pool/logging/clock and worker-owner composition. No fake receive loop added. |
+| 00AB6120 | Existing synchronous visibility adapter rejects the delayed-texture path; canonical delayed queue, placeholder ownership and per-state iteration/lifetime remain open. |
+| 00AB98F0 | Existing prefix/native fixtures cover glyph data and parts of the child continuation; the 1747-byte body still needs conditional UV blanking and the full child UI/borrowed-frame continuation. |
+| 00AD4C30 | Existing installed-font and native publication fragments do not supply the complete native glyph/resource owner, texture/material lifetime and failure paths. |
+| 00AEEAF0 | The semantic seven-item atlas parser does not recover the original manager/register inputs, native string/pool/renderer publication or partial EOF/failure effects. Pseudocode still has unaffiliated EBP/ESI. |
+| 00BE9630 | Only the defined 240-byte decoder prefix is implemented; original final512-byte copy includes272 bytes of uninitialized private stack. Choosing deterministic tail bytes would invent behavior. |
+
+The coordinator should keep these ten rows open and split them by their actual
+contracts. The fingerprint row needs an explicit decision on defined-prefix
+coverage versus a private-frame/ABI reproduction requirement. Game-host wiring
+and live validation remain separate work for the owning coordinator.

@@ -154,7 +154,9 @@ constexpr bool kWarningManagerTickBound = true;
 // default kill warning, 00981E07..00982096, after the loss entry's `kill`
 // channel record: its gates from the host's own state (recon level and
 // 00803CE0 through the recon sensor pass, read only), 009744C0's id, and
-// 009763E0 into the pending queue. The post-accept hooks stay empty (vtable[3]
+// 009763E0 into the pending queue, and 00977690's accepted torpedo report
+// builds its 00974150 "torpedo" warning and reports it the same way. The
+// post-accept hooks stay empty (vtable[3]
 // 0097F970, voice_ready 005B71D0, 00974070), so an accepted warning is Queued
 // and never applied. False: no table, no kill block, and every id is unknown.
 constexpr bool kWarningMessageBankCc15Bound = false;
@@ -689,12 +691,13 @@ private:
     GameMissionFrameHost::Impl& host_;
 };
 
-// The WarningHost calls 00973A90 and 009744C0 make: the clock and the observer
-// handles of the +3Ch/+54h slots. The host keeps no observer lists, so a link
-// is the slot's pointer in the object. Nothing else is reached from 009744C0.
-class KillWarningHostBinding final : public bsp::cc13_seg49_64_78::WarningHost {
+// The WarningHost calls 00973A90, 009744C0 and 00974150 make: the clock and the
+// observer handles of the +3Ch/+54h/+6Ch slots. The host keeps no observer
+// lists, so a link is the slot's pointer in the object. Nothing else is reached
+// from those constructors.
+class WarningObjectHostBinding final : public bsp::cc13_seg49_64_78::WarningHost {
 public:
-    explicit KillWarningHostBinding(GameMissionFrameHost::Impl& host) : host_(host) {}
+    explicit WarningObjectHostBinding(GameMissionFrameHost::Impl& host) : host_(host) {}
     float clock_00f876a4() override { return host_.world_clock; }
     void observer_link_00694a60(void*, bsp::cc13_seg49_64_78::WarningSlot) override {}
     void observer_unlink_006952a0(void*, bsp::cc13_seg49_64_78::WarningSlot) override {}
@@ -722,10 +725,23 @@ public:
 
 private:
     template <typename T> static T unreached() {
-        throw std::logic_error("009744C0 does not reach this WarningHost call");
+        throw std::logic_error("the warning constructors used here do not reach this WarningHost call");
     }
     GameMissionFrameHost::Impl& host_;
 };
+
+// Packet cc15-wB4: one 009763E0 outcome, counted under the warning's id.
+void count_warning_report(GameMissionFrameHost::Impl& host, const std::string& id,
+    const bsp::WarningReportResult& result) {
+    auto& outcome = host.warning_report_outcomes[id];
+    switch (result.outcome) {
+    case bsp::WarningReportOutcome::Queued:
+    case bsp::WarningReportOutcome::QueuedAndApplied: ++outcome[0]; break;
+    case bsp::WarningReportOutcome::SuppressedDuplicate: ++outcome[1]; break;
+    case bsp::WarningReportOutcome::RejectedUnknownId: ++outcome[2]; break;
+    default: ++outcome[3]; break;
+    }
+}
 
 // Packet cc15-wB4: 009813A0's default kill warning, 00981E07..009820AC, after
 // the two `kill` channel passes (docs/CC13_EVENT_CHANNELS.md section 3). The
@@ -822,7 +838,7 @@ void game_warning_kill_block_00981e07(GameMissionFrameHost::Impl& host, std::siz
     }
     // 0098204D..00982096: operator_new(70h), 009744C0(victim), 009763E0.
     bsp::cc13_seg49_64_78::WarningObject warning;
-    KillWarningHostBinding warning_host(host);
+    WarningObjectHostBinding warning_host(host);
     bsp::construct_kill_warning_009744c0(warning, warning_host, query, victim);
     bsp::WarningRecord record;
     record.message_id = warning.id;
@@ -842,15 +858,37 @@ void game_warning_kill_block_00981e07(GameMissionFrameHost::Impl& host, std::siz
     const bsp::WarningReportResult result =
         bsp::report_warning_009763e0(host.warning, binding, record, host.world_clock);
     ++counts.reports;
-    auto& outcome = host.warning_report_outcomes[record.message_id];
-    switch (result.outcome) {
-    case bsp::WarningReportOutcome::Queued:
-    case bsp::WarningReportOutcome::QueuedAndApplied: ++outcome[0]; break;
-    case bsp::WarningReportOutcome::SuppressedDuplicate: ++outcome[1]; break;
-    case bsp::WarningReportOutcome::RejectedUnknownId: ++outcome[2]; break;
-    default: ++outcome[3]; break;
-    }
+    count_warning_report(host, record.message_id, result);
     host.done("WarningManager::report_kill_warning", 0x00982096u);
+}
+
+// Packet cc15-wB4: 00977690's report, 0097777B..009777CE, past the guards the
+// entry already runs: operator_new(84h), 00974150(entity, "torpedo" 00CFB414),
+// 009763E0.
+void game_warning_torpedo_report_0097777b(GameMissionFrameHost::Impl& host, std::size_t unit) {
+    bsp::cc13_seg49_64_78::WarningObject warning;
+    WarningObjectHostBinding warning_host(host);
+    bsp::cc13_seg49_64_78::construct_entity_warning_with_id_00974150(warning, warning_host,
+        const_cast<void*>(warning_entity_of_unit(unit)), "torpedo");
+    bsp::WarningRecord record;
+    record.message_id = warning.id;
+    record.applied_at = warning.validity_ref_time;  // +10h
+    record.clip_count = warning.messages.size();    // filled by vtable[3], 0097F490
+    // +50h and +68h: an entity warning leaves the +3Ch and +54h handles empty.
+    record.positional_speaker = static_cast<std::uint32_t>(
+        reinterpret_cast<std::uintptr_t>(warning.ambient));
+    record.flat_speaker = static_cast<std::uint32_t>(
+        reinterpret_cast<std::uintptr_t>(warning.reporter));
+    record.target_id = static_cast<std::uint32_t>(unit);  // +80h, the host's unit as 00976F10 compares it
+    record.kind = 1;                // vtable 00D1B26C +10h, 00973C50
+    record.priority = 0.0f;         // +18h, 0096F220
+    record.pending_lifetime = 5.0f; // +1Ch, 0096F230: 00CE3850
+    record.applied_lifetime = 15.0f; // +20h, 0096F240: 00CE5380
+    WarningManagerBinding binding(host);
+    const bsp::WarningReportResult result =
+        bsp::report_warning_009763e0(host.warning, binding, record, host.world_clock);
+    count_warning_report(host, record.message_id, result);
+    host.done("WarningManager::report_torpedo_warning", 0x009763e0u);
 }
 
 // Packet cc15-wB4: the table-loading fragment of 009870A0 (see
@@ -2138,8 +2176,12 @@ void game_warning_report_torpedo_00977690(std::size_t unit) {
     if (units.unit_is_kind_of(unit, 8)) return;
     ++host->warning_torpedo_accepted;
     // 00974150 builds the "torpedo" warning and 009763E0 queues it for the
-    // voice manager; neither is built here.
-    host->record("WarningManager::report_torpedo_queue", 0x009763e0u);
+    // voice manager; with kWarningMessageBankCc15Bound both run, else neither.
+    if constexpr (kWarningMessageBankCc15Bound) {
+        game_warning_torpedo_report_0097777b(*host, unit);
+    } else {
+        host->record("WarningManager::report_torpedo_queue", 0x009763e0u);
+    }
 }
 
 void game_warning_report_loss_009813a0(std::size_t unit) {
@@ -4236,7 +4278,7 @@ void GameMissionFrameHost::report(long requested_frames) {
             kill.recon_not_evaluated, kill.recon_below, kill.plane_throttled, kill.filtered,
             kill.reports);
         for (const auto& [id, outcome] : host.warning_report_outcomes) {
-            host.log.notef("summary mission kill warning id %s queued=%llu duplicate=%llu "
+            host.log.notef("summary mission warning report id %s queued=%llu duplicate=%llu "
                 "unknown=%llu other=%llu", id.c_str(), outcome[0], outcome[1], outcome[2],
                 outcome[3]);
         }
