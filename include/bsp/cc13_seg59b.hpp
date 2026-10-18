@@ -109,6 +109,12 @@ struct Hash64Iterator {
     std::uint32_t bucket;
 };
 
+// The checked std::map / std::set iterator (8 bytes): owning container, node.
+struct StlTreeIterator {
+    void* container;
+    void* node;
+};
+
 inline constexpr std::uint32_t kEmptyString = 0x00CE3A0C;       // ""
 inline constexpr std::uint32_t kEnumNameEmpty = 0x00F89450;     // .bss byte, a "" for a null name
 inline constexpr std::uint32_t kValueTextBuffer = 0x00F89458;   // .bss text buffer of 008F0E20
@@ -365,6 +371,38 @@ struct Seg59bHost {
     virtual void score_record_set_condition_message_0090bda0(void* record, void* text) = 0;
     virtual void score_record_set_victory_message_0090be30(void* record, void* text) = 0;
     virtual void score_record_set_message_0090bec0(void* record, void* text) = 0;
+
+    // --- 00915F20 hit recorder ----------------------------------------------------------------
+    // 00779AA0 BSP_Unit_ClassHasAttackSlot, __thiscall(ECX = unit), RET; AL.
+    virtual bool unit_class_has_attack_slot_00779aa0(void* unit) = 0;
+    // 00803510 BSP_Party_RelativeTo, __fastcall(ECX = subject party, EDX = reference party); EAX
+    // 0 same, 1 enemy, 2 neutral.
+    virtual std::int32_t party_relative_to_00803510(std::uint32_t subject, std::uint32_t reference) = 0;
+    // (unit+170h)->vtable[0](), __thiscall(ECX = unit+170h), RET; EAX: the unit class.
+    virtual std::uint32_t unit_class_id_vt00(void* class_component) = 0;
+    // entity->vtable[140h](), __thiscall, RET; EAX: the root entity.
+    virtual void* entity_root_vt140(void* entity) = 0;
+    // entity->vtable[204h](), __thiscall, RET; ST0 (stored as a double at 0091615B).
+    virtual double entity_value_vt204(void* entity) = 0;
+    // 004C8B80 std::map<NativeString, int>::find, __thiscall(ECX = map, result*, key*), RET 8.
+    virtual StlTreeIterator string_int_map_find_004c8b80(void* map, const void* key) = 0;
+    // 004B93C0 / 0057E8A0 iterator ==, 0057E8D0 iterator !=, __thiscall(ECX = it, other*), RET 4;
+    // AL. Each calls 00BF6713 when the first container is null or the containers differ.
+    virtual bool tree_iterator_equal_004b93c0(const StlTreeIterator* it, const StlTreeIterator* other) = 0;
+    virtual bool tree_iterator_equal_0057e8a0(const StlTreeIterator* it, const StlTreeIterator* other) = 0;
+    virtual bool tree_iterator_not_equal_0057e8d0(const StlTreeIterator* it, const StlTreeIterator* other) = 0;
+    // 0090C740, __thiscall(ECX = scoring, slot, key*), RET 8; AL = the award map at scoring +
+    // slot*284h + 70h holds key (004C8B80 find != end).
+    virtual bool scoring_has_award_0090c740(void* scoring, std::int32_t slot, const void* key) = 0;
+    // 0090C090 kill-list find, __thiscall(ECX = map, result*, const uint32* key), RET 8.
+    virtual StlTreeIterator kill_list_find_0090c090(void* map, const std::uint32_t* key) = 0;
+    // 00907950 checked dereference, __thiscall(ECX = it), RET; EAX = &pair {uint32 key, 2Ch entry}.
+    virtual void* kill_list_iterator_deref_00907950(StlTreeIterator* it) = 0;
+    // 0057F660 checked ++, __thiscall(ECX = it), RET.
+    virtual void tree_iterator_increment_0057f660(StlTreeIterator* it) = 0;
+    // 0090E850 kill-list operator[], __thiscall(ECX = map, const uint32* key), RET 4; EAX = &entry
+    // (2Ch bytes, default-inserted on a miss).
+    virtual void* kill_list_index_0090e850(void* map, const std::uint32_t* key) = 0;
     // 00419CC0 BSP_SizedStoragePool_GetSingleton (no args); 00BD1510 ReturnBlock,
     // __thiscall(ECX = pool, data, bytes, flag), RET 0Ch.
     virtual void* sized_pool_singleton_00419cc0() = 0;
@@ -734,6 +772,10 @@ void world_write_archive_009042b0(Seg59bHost& host, void* world, void* archive);
 // 009052E0, __thiscall(ECX = scoring, slot, delta), RET 8: the 284h-byte player record's float
 // +18h += delta; EAX = its address.
 float* score_record_add_field18_009052e0(void* scoring, std::int32_t slot, float delta);
+// 00915F20, __thiscall(ECX = scoring, target, hit), RET 8: one damaging hit into the attacking
+// slot's score record (damage-by-class trees, BW_* weapon counters, RUA_KU / RUA_LBU awards and
+// the +1C0h kill-list entry).
+void scoring_record_hit_damage_00915f20(Seg59bHost& host, void* scoring, void* target, void* hit);
 
 
 }  // namespace bsp::cc13_seg59b

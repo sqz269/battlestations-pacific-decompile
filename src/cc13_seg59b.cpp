@@ -3409,4 +3409,287 @@ void score_sync_message_apply_0091c650(Seg59bHost& host, void* message) {
         break;
     }
 }
+
+namespace {
+
+// _ftol2 (00BF7420): ST0 truncated to a 64-bit integer, of which EAX is the low dword. Outside
+// the int64 range (and for a NaN) the store gives 8000000000000000h, whose low dword is 0.
+std::int32_t ftol2_low_00bf7420(double v) {
+    if (!(v >= -9223372036854775808.0 && v < 9223372036854775808.0)) return 0;
+    return static_cast<std::int32_t>(static_cast<std::uint32_t>(
+        static_cast<std::uint64_t>(static_cast<std::int64_t>(v))));
+}
+
+// CVTTSS2SI: truncation, 80000000h for a NaN or a value outside the int32 range.
+std::int32_t cvttss2si(float v) {
+    if (!(v > -2147483904.0f && v < 2147483648.0f)) return static_cast<std::int32_t>(0x80000000u);
+    return static_cast<std::int32_t>(v);
+}
+
+// The end iterator the image builds on the stack before a find: {map, [map+4] head}.
+StlTreeIterator tree_end(void* map) { return StlTreeIterator{map, ptr(map, 0x04)}; }
+
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 00915F20 BSP_MissionScoring_RecordHitDamage (provisional). __thiscall(ECX = scoring, target,
+// hit), RET 8. Callers 0077CE60 BSP_Unit_RecordDamageAttribution and 00819A20
+// BSP_UnitInstance_KamikazeDetonate (the direct arm); neither hosts the call.
+// Evidence (listing 00915F20..00916955, read whole):
+//  [[00E188A8]+1FE4h] == 2, target bytes +5Ch == 0, +5Dh / +60h / +5Eh != 0, or source =
+//  [hit+4] null -> return (00915F59..00915F96). record = source->vt[108h]() (00915FA6).
+//  Record null and source->vt[5Ch](6): 00779AA0(source) false or slot = [source+180h] > 7 ->
+//  return; map[A0h of the slot's 284h block][source class][00803510([source+54h],
+//  [target+54h])][target class] (00915610 / 00911890 / 00625900, keys pushed in that order at
+//  00916024..00916036; classes are (unit+170h)->vt[0]) = CVTTSS2SI(CVTSI2SS(old) + [hit+48h]).
+//  Otherwise target->vt[5Ch](1Bh) -> target = target->vt[140h]() (00916090). owner =
+//  [record+ACh]; slot = [owner+180h] when owner is non-null and that is <= 7, else [record+1Ch]
+//  (00916094..009160C8). Byte [record+20h] set -> skip to the tail. slot <= 7 only:
+//   RUA_KU (D18918): target kind 6, source kind 17h, 00803510([source+54h], [target+54h]) != 0,
+//   [source+1B0h] == slot, and source->vt[204h]() >= int [0] of the award record's +44h vector
+//   (FCOMIP, JC also on unordered, 00916173); the key temporary is destroyed only when it was
+//   built (flag bit 0 at [esp+24h]). Then a find of "RUA_KU" in scoring + slot*284h + 70h equal
+//   to its end (004B93C0 is ==, SETZ at 004B93E0) -> 0090EDE0(slot, "RUA_KU", 1, 0).
+//   Byte [[[00E198C4]+B8h]+14h] = 0 (00916242). 00803510([[game + slot*4 + 18CCh]+28h],
+//   [target+54h]) == 1 and [target+2DCh] == slot: [[record+4]+8] through the byte table
+//   00916970 / jump table 00916958: 3 BW_AAM, 5..7 BW_AM, 0Ah BW_TM, 0Bh BW_DCM, 12h BW_RM ->
+//   ++ the 005070C0 counter in scoring + slot*284h + 124h. Kind 9 with target kind 6 or 1Bh
+//   and [target+2C4h] non-null of kind 10h, and 0090C740(slot, "RUA_LBU") false: threshold =
+//   int [1] of the RUA_LBU award vector; for every kill-list entry of scoring + slot*284h +
+//   1C0h (begin = [[map+4]], 0057E8D0 is !=, 00907950 deref, 0057F660 ++) whose key low word is
+//   word [target+2E0h] and high word is not word [target+174h], threshold > [00F876A4] -
+//   entry time (FSUBR then FCOMIP, JBE also on unordered, 009164DE) -> 0090EDE0(slot,
+//   "RUA_LBU", 1, 0); the loop never stops early.
+//   key = word [target+174h] << 16; low = word [[record+ACh]+174h] when non-null, else word
+//   [target+2E0h]; low != 0 and target kind 6: key |= low, and kind 0Ah with the key found in the
+//   kill list (0090C090, 0057E8D0) -> ++ entry+24h (0090E850). Byte [record+20h] = 1.
+//  Tail (009165E1): points = _ftol2((([hit+4Ch] + [hit+48h]) + [hit+50h]) + byte [hit+2Ch]);
+//  points <= 0 or slot > 7 -> return. The map at the slot block's +A0h (owner non-null, [owner+
+//  1ACh] == slot and [target+2DCh] == slot) or +ACh (otherwise) gets [record+14h-key][00803510(
+//  [record+18h], [target+54h])][target class] += points. Target and source kind 6 -> ++ the slot
+//  block's +174h (record+170h). key = word [target+174h] << 16 | (owner ? word [owner+174h] :
+//  word [target+2E0h]). [target+2C4h] null -> return. Key not in the kill list (0057E8A0 is ==):
+//  a new entry, written through a fresh 0090E850 call per field: +0Ch = target kind 5 ?
+//  [[target+538h]+48h] : 100000.0f (00CE4BC8), +14h target class, +10h attacker ([target+2C4h])
+//  class, +08h CVTSI2SS(points), +1Ch slot, +04h 0.0f, +00h [00F876A4], +24h = [target+2D4h] ==
+//  0Ah; then unless [target+188h] != slot, [target+180h] != slot and 00803510([target+2D0h],
+//  [target+54h]) == 1: byte +2Bh = 1. Key present: +08h += points (FILD, FADD, FSTP), +04h +=
+//  [00F876A4] - +00h (FSUBR double, FADD), +00h = [00F876A4].
+// Original ABI: the record pointer is reused as the key slot [esp+14h] after 0091673C.
+// A null record with a source that is not kind 6 reads [0+ACh] in the image; no guard is added.
+// x87: the tail sum, the LBU age and the entry +04h/+08h updates are modeled at 24-bit
+// precision (main thread); at 53 bits each could differ in the last place, and +08h's sum is
+// formed in double before the float store. No shared RNG draws.
+// ---------------------------------------------------------------------------
+void scoring_record_hit_damage_00915f20(Seg59bHost& host, void* scoring, void* target, void* hit) {
+    void* const game = game_global(host);
+    if (at<std::uint32_t>(game, 0x1FE4) == 2) return;
+    if (at<std::uint8_t>(target, 0x5C) == 0) return;
+    if (at<std::uint8_t>(target, 0x5D) != 0) return;
+    if (at<std::uint8_t>(target, 0x60) != 0) return;
+    if (at<std::uint8_t>(target, 0x5E) != 0) return;
+    void* const source = ptr(hit, 0x04);
+    if (source == nullptr) return;
+    void* const record = host.entity_player_record_vt108(source);
+
+    if (record == nullptr && host.entity_is_kind_of_vt5c(source, 6)) {
+        if (!host.unit_class_has_attack_slot_00779aa0(source)) return;
+        const std::uint32_t slot = at<std::uint32_t>(source, 0x180);
+        if (slot > 7) return;
+        const std::int32_t target_class = static_cast<std::int32_t>(host.unit_class_id_vt00(add(target, 0x170)));
+        const std::int32_t relation =
+            host.party_relative_to_00803510(at<std::uint32_t>(source, 0x54), at<std::uint32_t>(target, 0x54));
+        const std::int32_t source_class = static_cast<std::int32_t>(host.unit_class_id_vt00(add(source, 0x170)));
+        void* const by_source = host.stl_map_subscript_00915610(add(scoring, slot * 0x284u + 0xA0u), &source_class);
+        void* const by_relation = host.stl_map_subscript_00911890(by_source, &relation);
+        std::int32_t* const damage = host.stl_map_subscript_00625900(by_relation, &target_class);
+        *damage = cvttss2si(static_cast<float>(*damage) + at<float>(hit, 0x48));
+        return;
+    }
+
+    if (host.entity_is_kind_of_vt5c(target, 0x1B)) target = host.entity_root_vt140(target);
+    void* owner = ptr(record, 0xAC);
+    std::uint32_t slot;
+    if (owner == nullptr) {
+        slot = at<std::uint32_t>(record, 0x1C);
+    } else if (at<std::uint32_t>(owner, 0x180) <= 7) {
+        slot = at<std::uint32_t>(owner, 0x180);
+    } else {
+        slot = at<std::uint32_t>(record, 0x1C);
+    }
+
+    if (at<std::uint8_t>(record, 0x20) == 0) {
+        if (slot <= 7) {
+            // 009160E1..00916197: the RUA_KU gate; its key temporary exists only once the first
+            // four tests pass.
+            bool kamikaze_hit = false;
+            if (host.entity_is_kind_of_vt5c(target, 6) && host.entity_is_kind_of_vt5c(source, 0x17) &&
+                host.party_relative_to_00803510(at<std::uint32_t>(source, 0x54), at<std::uint32_t>(target, 0x54)) != 0 &&
+                at<std::uint32_t>(source, 0x1B0) == slot) {
+                alignas(4) std::uint8_t key[8] = {};
+                host.native_string_assign_0041e870(key, image_text(host, 0x00D18918u));
+                void* const award = host.award_table_find_record_0050fc30(award_table(host), key);
+                const double value = host.entity_value_vt204(source);
+                const std::int32_t threshold = *host.int_vector_at_00481750(add(award, 0x44), 0);
+                kamikaze_hit = value >= static_cast<double>(threshold);
+                host.native_string_destroy_storage_0041dd20(key);
+            }
+            if (kamikaze_hit) {
+                alignas(4) std::uint8_t key[8] = {};
+                host.native_string_assign_0041e870(key, image_text(host, 0x00D18918u));
+                void* const awards = add(scoring, slot * 0x284u + 0x70u);
+                const StlTreeIterator end = tree_end(awards);
+                const StlTreeIterator found = host.string_int_map_find_004c8b80(awards, key);
+                const bool absent = host.tree_iterator_equal_004b93c0(&found, &end);
+                host.native_string_destroy_storage_0041dd20(key);
+                if (absent) {
+                    alignas(4) std::uint8_t grant[8] = {};
+                    host.native_string_assign_0041e870(grant, image_text(host, 0x00D18918u));
+                    host.scoring_grant_award_0090ede0(scoring, static_cast<std::int32_t>(slot), grant, 1, 0);
+                    host.native_string_destroy_storage_0041dd20(grant);
+                }
+            }
+
+            void* const global_e198c4 = *static_cast<void**>(host.image_pointer(0x00E198C4u));
+            at<std::uint8_t>(ptr(global_e198c4, 0xB8), 0x14) = 0;
+
+            const std::uint32_t side = at<std::uint32_t>(ptr(game, 0x18CC + slot * 4u), 0x28);
+            if (host.party_relative_to_00803510(side, at<std::uint32_t>(target, 0x54)) == 1 &&
+                at<std::uint32_t>(target, 0x2DC) == slot) {
+                std::uint32_t weapon_key = 0;
+                switch (at<std::int32_t>(ptr(record, 0x04), 0x08)) {
+                case 3: weapon_key = 0x00D18910u; break;                     // BW_AAM
+                case 5: case 6: case 7: weapon_key = 0x00D18908u; break;     // BW_AM
+                case 0x0A: weapon_key = 0x00D18900u; break;                  // BW_TM
+                case 0x0B: weapon_key = 0x00D188F0u; break;                  // BW_DCM
+                case 0x12: weapon_key = 0x00D188F8u; break;                  // BW_RM
+                default: break;
+                }
+                if (weapon_key != 0) {
+                    alignas(4) std::uint8_t key[8] = {};
+                    host.native_string_assign_0041e870(key, image_text(host, weapon_key));
+                    *host.string_int_map_index_005070c0(add(scoring, slot * 0x284u + 0x124u), key) += 1;
+                    host.native_string_destroy_storage_0041dd20(key);
+                }
+
+                void* const attacker = ptr(target, 0x2C4);
+                if (at<std::int32_t>(ptr(record, 0x04), 0x08) == 9 &&
+                    (host.entity_is_kind_of_vt5c(target, 6) || host.entity_is_kind_of_vt5c(target, 0x1B)) &&
+                    attacker != nullptr && host.entity_is_kind_of_vt5c(attacker, 0x10)) {
+                    alignas(4) std::uint8_t key[8] = {};
+                    host.native_string_assign_0041e870(key, image_text(host, 0x00D188E8u));
+                    const bool granted = host.scoring_has_award_0090c740(scoring, static_cast<std::int32_t>(slot), key);
+                    host.native_string_destroy_storage_0041dd20(key);
+                    if (!granted) {
+                        host.native_string_assign_0041e870(key, image_text(host, 0x00D188E8u));
+                        void* const award = host.award_table_find_record_0050fc30(award_table(host), key);
+                        const std::int32_t threshold = *host.int_vector_at_00481750(add(award, 0x44), 1);
+                        host.native_string_destroy_storage_0041dd20(key);
+                        const float now = *static_cast<const float*>(host.image_pointer(0x00F876A4u));
+                        void* const kills = add(scoring, slot * 0x284u + 0x1C0u);
+                        StlTreeIterator it{kills, ptr(ptr(kills, 0x04), 0x00)};
+                        for (;;) {
+                            const StlTreeIterator end = tree_end(kills);
+                            if (!host.tree_iterator_not_equal_0057e8d0(&it, &end)) break;
+                            const std::uint32_t entry_key = at<std::uint32_t>(host.kill_list_iterator_deref_00907950(&it), 0);
+                            if (static_cast<std::uint16_t>(entry_key) == at<std::uint16_t>(target, 0x2E0)) {
+                                const std::uint32_t again = at<std::uint32_t>(host.kill_list_iterator_deref_00907950(&it), 0);
+                                if (static_cast<std::uint16_t>(again >> 16) != at<std::uint16_t>(target, 0x174)) {
+                                    const float age = now - at<float>(host.kill_list_iterator_deref_00907950(&it), 0x04);
+                                    if (static_cast<double>(threshold) > static_cast<double>(age)) {
+                                        alignas(4) std::uint8_t grant[8] = {};
+                                        host.native_string_assign_0041e870(grant, image_text(host, 0x00D188E8u));
+                                        host.scoring_grant_award_0090ede0(scoring, static_cast<std::int32_t>(slot), grant, 1, 0);
+                                        host.native_string_destroy_storage_0041dd20(grant);
+                                    }
+                                }
+                            }
+                            host.tree_iterator_increment_0057f660(&it);
+                        }
+                    }
+                }
+            }
+
+            // 0091652A..009165D6: the torpedo hit count of the existing kill-list entry.
+            std::uint32_t key = static_cast<std::uint32_t>(at<std::uint16_t>(target, 0x174)) << 16;
+            std::uint32_t low = at<std::uint16_t>(target, 0x2E0);
+            if (ptr(record, 0xAC) != nullptr) low = at<std::uint16_t>(ptr(record, 0xAC), 0x174);
+            if (low != 0 && host.entity_is_kind_of_vt5c(target, 6)) {
+                key |= low;
+                if (at<std::int32_t>(ptr(record, 0x04), 0x08) == 0x0A) {
+                    void* const kills = add(scoring, slot * 0x284u + 0x1C0u);
+                    const StlTreeIterator end = tree_end(kills);
+                    const StlTreeIterator found = host.kill_list_find_0090c090(kills, &key);
+                    if (host.tree_iterator_not_equal_0057e8d0(&found, &end)) {
+                        at<std::int32_t>(host.kill_list_index_0090e850(kills, &key), 0x24) += 1;
+                    }
+                }
+            }
+        }
+        at<std::uint8_t>(record, 0x20) = 1;
+    }
+
+    // 009165E1: the tail runs whether or not the record was already marked.
+    float sum = at<float>(hit, 0x4C) + at<float>(hit, 0x48);
+    sum = sum + at<float>(hit, 0x50);
+    sum = sum + static_cast<float>(at<std::uint8_t>(hit, 0x2C));
+    const std::int32_t points = ftol2_low_00bf7420(sum);
+    if (points <= 0) return;
+    if (slot > 7) return;
+
+    const bool owner_matches = owner != nullptr && at<std::uint32_t>(owner, 0x1AC) == slot &&
+                               at<std::uint32_t>(target, 0x2DC) == slot;
+    const std::int32_t target_class = static_cast<std::int32_t>(host.unit_class_id_vt00(add(target, 0x170)));
+    const std::int32_t relation =
+        host.party_relative_to_00803510(at<std::uint32_t>(record, 0x18), at<std::uint32_t>(target, 0x54));
+    void* const block = add(scoring, slot * 0x284u);
+    void* const by_class = host.stl_map_subscript_00915610(add(block, owner_matches ? 0xA0u : 0xACu),
+                                                           static_cast<const std::int32_t*>(add(record, 0x14)));
+    void* const by_relation = host.stl_map_subscript_00911890(by_class, &relation);
+    *host.stl_map_subscript_00625900(by_relation, &target_class) += points;
+    if (host.entity_is_kind_of_vt5c(target, 6) && host.entity_is_kind_of_vt5c(source, 6)) {
+        at<std::int32_t>(block, 0x174) += 1;
+    }
+
+    std::uint32_t key = static_cast<std::uint32_t>(at<std::uint16_t>(target, 0x174)) << 16;
+    void* const record_owner = ptr(record, 0xAC);
+    key |= record_owner != nullptr ? at<std::uint16_t>(record_owner, 0x174) : at<std::uint16_t>(target, 0x2E0);
+    void* const attacker = ptr(target, 0x2C4);
+    if (attacker == nullptr) return;
+    void* const kills = add(block, 0x1C0);
+    const StlTreeIterator end = tree_end(kills);
+    const StlTreeIterator found = host.kill_list_find_0090c090(kills, &key);
+    const float* const clock = static_cast<const float*>(host.image_pointer(0x00F876A4u));
+    if (host.tree_iterator_equal_0057e8a0(&found, &end)) {
+        const float health = host.entity_is_kind_of_vt5c(target, 5)
+                                 ? at<float>(ptr(target, 0x538), 0x48)
+                                 : *static_cast<const float*>(host.image_pointer(0x00CE4BC8u));
+        at<float>(host.kill_list_index_0090e850(kills, &key), 0x0C) = health;
+        const std::uint32_t victim_class = host.unit_class_id_vt00(add(target, 0x170));
+        at<std::uint32_t>(host.kill_list_index_0090e850(kills, &key), 0x14) = victim_class;
+        const std::uint32_t attacker_class = host.unit_class_id_vt00(add(attacker, 0x170));
+        at<std::uint32_t>(host.kill_list_index_0090e850(kills, &key), 0x10) = attacker_class;
+        at<float>(host.kill_list_index_0090e850(kills, &key), 0x08) = static_cast<float>(points);
+        at<std::uint32_t>(host.kill_list_index_0090e850(kills, &key), 0x1C) = slot;
+        at<float>(host.kill_list_index_0090e850(kills, &key), 0x04) = 0.0f;
+        const float now = *clock;
+        at<float>(host.kill_list_index_0090e850(kills, &key), 0x00) = now;
+        const std::uint32_t is_kind_10 = at<std::uint32_t>(target, 0x2D4) == 0x0A ? 1u : 0u;
+        at<std::uint32_t>(host.kill_list_index_0090e850(kills, &key), 0x24) = is_kind_10;
+        if (at<std::uint32_t>(target, 0x188) != slot && at<std::uint32_t>(target, 0x180) != slot &&
+            host.party_relative_to_00803510(at<std::uint32_t>(target, 0x2D0), at<std::uint32_t>(target, 0x54)) == 1) {
+            return;
+        }
+        at<std::uint8_t>(host.kill_list_index_0090e850(kills, &key), 0x2B) = 1;
+        return;
+    }
+    float* const damage = &at<float>(host.kill_list_index_0090e850(kills, &key), 0x08);
+    *damage = static_cast<float>(static_cast<double>(points) + static_cast<double>(*damage));
+    void* const entry = host.kill_list_index_0090e850(kills, &key);
+    const float now = *clock;
+    const float since = now - at<float>(host.kill_list_index_0090e850(kills, &key), 0x00);
+    at<float>(entry, 0x04) = since + at<float>(entry, 0x04);
+    const float stamp = *clock;
+    at<float>(host.kill_list_index_0090e850(kills, &key), 0x00) = stamp;
+}
 }  // namespace bsp::cc13_seg59b
