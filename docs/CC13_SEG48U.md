@@ -6,19 +6,25 @@ functions with no reconstruction record and no tag. They lie in segment 48
 cc9 gameplay terms (`local/cc13_gameplay_terms.txt`).
 
 Each row was checked against rule 1 with:
-- `git grep` over src/include;
+- `git grep` over src/include for the address;
 - `bsp.py lookup` and `docs-for`;
 - the export listing.
+
+The address grep was not enough. It missed `unit_last_damage_state_index`
+(`include/bsp/unit_parts.hpp:119-122`, `src/unit_parts.cpp:65`), which implements
+0072AB10 and cites the address only in upper case. The first commit reconstructed
+0072AB10 a second time, and cc13-seg48V removed that duplicate. Later rows are
+grepped in every case form and under likely names.
 
 Nothing is wired.
 
 | Group | Rows | Outcome |
 |---|---|---|
 | In the struck ranges 007DF000-007DFFFF and 007EE000-007F2FFF | 55 | Not touched |
-| Template bodies: list, tree and vector instantiations, `std::copy` into a back inserter (00732560), `std::operator+(const char*, const std::string&)` (007F3D40) | 28 | Tagged `stl_shape`, `reviewed`, evidence `sys6_shape` |
-| No cc9 host, reconstructed | 23 | `src/cc13_seg48U.cpp`, build-tested |
-| No cc9 host, already implemented as table data: 00730BD0 | 1 | Record only (`src/unit_kind_query.cpp`) |
-| No cc9 host, not done in this packet: 0072C170, 007F3E50, 007EC5A0 | 3 | Left for a follow-up |
+| Template bodies: list, tree and vector instantiations, `std::copy` into a back inserter (00732560), `std::operator+(const char*, const std::string&)` (007F3D40) | 27 | Tagged `stl_shape`, `reviewed`, evidence `sys6_shape` |
+| No cc9 host, reconstructed | 22 | `src/cc13_seg48U.cpp`, build-tested |
+| Already implemented: 00730BD0 as table data (`src/unit_kind_query.cpp`), 0072AB10 (`src/unit_parts.cpp`) | 2 | Record only |
+| No cc9 host, not done in this packet: 0072C170, 007F3E50, 007EC5A0, 007E29A0 | 4 | Left for a follow-up |
 | Referenced by cc9 `game_hosts_*` files (verify-and-record) | 31 | Not done in this packet (see "Left open") |
 
 The template tags use the existing evidence id `sys6_shape`, because
@@ -47,7 +53,6 @@ these, and adds one named hook for every other native call:
 | 0072BC80 BSP_GunBot_SetSkillIndex | thiscall(bot, index), RET 4 | +34h = index |
 | 0072BD10 BSP_GunBot_HasFireTarget | thiscall(bot), AL | byte +39h or +38h |
 | 00731050 / 00731040 | thiscall(gun), EAX | +78h == 0 gives null; else +74h, or [[+74h]+34h] |
-| 0072AB10 BSP_UnitInstance_LastDamageStateIndex | thiscall(unit), EAX | count of 10h records at [unit+360h]+16Ch, minus 1; 0 when empty |
 | 00729FA0 BSP_Gun_OnActivated | thiscall(gun) | 00440F50, then 00956C20(unit) or 00956BA0(unit, gun) by unit bytes +5Dh/+60h |
 | 0072D7E0 BSP_GunBase_InitDevice | thiscall(gun) | 004426C0; when modes > 0: 0072B6D0(+3A8h, modes) and 0072D5B0(gun, 0, 1); +3F0h = +3Ch |
 | 0072BE40 BSP_GunBot_ConstructMuzzleClass | thiscall(bot), EAX | 0072BBD0(bot, [00E19990]), vtables, the 00F87574 vector twice, +B4h = -1.0f |
@@ -76,9 +81,12 @@ these, and adds one named hook for every other native call:
 - **0072D950 reference release.** The image releases the vector element's
   reference (+0Ch) without a null test, and so does the model.
 - **00734460 "state" field.** "state" is read into the reader argument's own
-  stack slot ([ESP+3Ch]). When the archive has no "state", that slot still holds
-  the reader pointer, and the image stores it to +18h. The model starts the local
-  from the reader pointer for the same reason.
+  stack slot ([ESP+3Ch] at 007344E7, which is ESP0+4h). That slot no longer holds
+  the reader pointer: 007344B9 `MOV [ESP+44h],ESP` overwrote it with ESP0-40h,
+  the address of the {0, "title"} begin-key record. When the archive has no
+  "state", the image stores that stale stack address to +18h. The value cannot
+  be reproduced exactly. The model starts the local from its own address, which
+  is likewise a non-zero stack address.
 - **x87 float copies.** In 0072BE40 and 00729670, the FLD/FSTP float copies
   quiet a signalling NaN (`x87_float_round_trip`). These two functions do no
   other floating-point arithmetic.
@@ -115,9 +123,14 @@ RNG: there is no direct draw.
 - **00735030 and the cc9 countdown model.** `game_hosts_script_orders.hpp`
   (packet cc9_lua_countdown) models the countdown object at [game+21E8h]. It
   states that 00735030 writes +4Ch..+54h and leaves +3Ch..+48h unwritten. The
-  listing agrees: it writes +0h, +4h..+0Ch, +10h, +2Ch..+38h and +4Ch..+54h,
-  and nothing in +14h..+28h or +3Ch..+48h. cc9 assumes those unwritten fields
-  start at zero; that is its own assumption and is not checked here.
+  listing agrees: it writes +0h (vtable 00CFE9C0), +8h (the list head node that
+  00733430 returns, with ECX = +4h), +0Ch, +10h, +2Ch..+38h and +4Ch..+54h. It
+  writes nothing in +14h..+28h or +3Ch..+48h.
+  The constructor does not run alone, though. At 004DFA8D the world construction
+  calls 00733030 (Reset) straight after the construct at 004DFA75
+  (`include/bsp/world_construct.hpp:205`). Reset clears bytes +3Ch and +14h, so
+  those two are zeroed by the image. Only +40h..+48h rely on cc9's assumption
+  that they start at zero, and that assumption is not checked here.
 - **The countdown in saves.** The "status" section of 007337A0/00734460 saves
   and restores the countdown: +3Ch active, +40h "level", +44h "time", +48h
   "init", +4Ch "callback". The "title" section does the same for +14h..+2Ch.
@@ -125,7 +138,7 @@ RNG: there is no direct draw.
 - **00731040.** `game_hosts_lua.hpp` cites 00731040 as the class's first
   bullet. It is used in a comment only, with no call.
 
-No cc9 `game_hosts_*` file calls any of the 23 bodies.
+No cc9 `game_hosts_*` file calls any of the 22 bodies.
 
 ## Left open
 
@@ -133,6 +146,10 @@ No cc9 `game_hosts_*` file calls any of the 23 bodies.
   sqrt; its only caller is 00892F70, the Lua HitTarget binding.
 - **007F3E50 BSP_PlaneSquadron_BuildDebugText.**
 - **007EC5A0 BSP_PlaneFxComponent_LoadFromClass.**
+- **007E29A0 BSP_ObserverSet_Remove.** Game code, not a template body: it calls
+  [arg]->vtable+4h, then 006952A0 BSP_Observer_UnregisterPair (EDX = this), then
+  erases through 007E1D30. The first commit tagged it `stl_shape` by mistake;
+  cc13-seg48V removed that tag row.
 - **The 31 cc9-hosted rows** (verify against the binary, record only):
   - segment 48: 007D3E60, 007DEDB0, 007E2090, 007EB380, 007F3820, 007F4BA0;
   - segment 40: 00729560, 00729600, 0072AC20, 0072B4C0, 0072BBD0, 0072BD30,
@@ -148,6 +165,6 @@ They should be checked first.
 - `include/bsp/cc13_seg48U.hpp` and `src/cc13_seg48U.cpp`, registered in
   `cmake/startup.cmake` (bsp_core).
 - 24 function records in `config/reconstruction/00720000`, `00730000`,
-  `007d0000` and `007f0000.jsonl`: the 23 bodies plus 00730BD0.
-- 28 tag rows in `config/tags/00720000`, `00730000`, `007e0000` and
+  `007d0000` and `007f0000.jsonl`: the 22 bodies plus 00730BD0 and 0072AB10.
+- 27 tag rows in `config/tags/00720000`, `00730000`, `007e0000` and
   `007f0000.jsonl`.

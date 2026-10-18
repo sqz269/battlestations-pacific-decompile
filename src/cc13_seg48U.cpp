@@ -87,23 +87,6 @@ void* cc13_seg48U_gun_current_bullet_00731040(const void* gun) {
 }
 
 // ---------------------------------------------------------------------------
-// 0072AB10 BSP_UnitInstance_LastDamageStateIndex. __thiscall(ECX = unit), RET; EAX.
-// Evidence: export listing 0072AB10..0072AB52. p = [unit+360h]; the vector of
-// 10h-byte records at p+16Ch/+170h. Count = (last - first) SAR 4 (signed).
-// ---------------------------------------------------------------------------
-std::int32_t cc13_seg48U_unit_last_damage_state_index_0072ab10(const void* unit) {
-    const void* const p = at<void*>(unit, 0x360);
-    if (p == nullptr) return 0;
-    const std::uint32_t first = at<std::uint32_t>(p, 0x16C);
-    if (first == 0) return 0;
-    const std::int32_t count = static_cast<std::int32_t>(at<std::uint32_t>(p, 0x170) - first) >> 4;
-    if (count == 0) return 0;
-    // 0072AB32..0072AB3D re-test first and return -1 when it is null; first is
-    // non-null here, so that arm is unreachable.
-    return count - 1;  // 0072AB3F..0072AB4A
-}
-
-// ---------------------------------------------------------------------------
 // 00729FA0 BSP_Gun_OnActivated. __thiscall(ECX = gun), RET. Evidence: export
 // listing 00729FA0..00729FCB.
 // ---------------------------------------------------------------------------
@@ -637,9 +620,14 @@ void cc13_seg48U_mission_narrative_read_00734460(void* narrative, void* reader, 
     if (host.archive_vcall_14_has(reader, 0, "title")) {
         host.archive_vcall_04(reader, 0, "title");
         at<std::uint8_t>(narrative, 0x14) = 1;
-        // [ESP+3Ch] is the reader argument's own stack slot, so it starts as the reader
-        // pointer and keeps that value if the reader does not write "state".
-        std::int32_t state = static_cast<std::int32_t>(reinterpret_cast<std::uintptr_t>(reader));
+        // "state" is read into [ESP+3Ch] (007344E7), the reader argument's own stack
+        // slot (ESP0+4h). 007344B9 MOV [ESP+44h],ESP already overwrote that slot with
+        // ESP0-40h, the address of the {0, "title"} begin-key record. So when the
+        // archive has no "state", +18h receives that stale stack address, not the
+        // reader pointer. The value cannot be reproduced exactly; the model starts
+        // from the address of its own local, which is likewise a stack address.
+        std::int32_t state = 0;
+        state = static_cast<std::int32_t>(reinterpret_cast<std::uintptr_t>(&state));
         host.archive_vcall_10_get(reader, 0, "state", 1, &state);
         at<std::int32_t>(narrative, 0x18) = state;
         host.archive_vcall_10_get(reader, 0, "fadeIn", 2, base + 0x1C);

@@ -81,7 +81,7 @@ public:
     // 007342B0 BSP_NarrativeList_BuyNode, __thiscall(ECX = list; next, prev, const entry*),
     // RET 0Ch; EAX = node (entry copied into node+8h).
     virtual void* narrative_list_buy_node_007342b0(void* list, void* next, void* prev, const void* entry) = 0;
-    // 007341B0 (ledger STL_xlen_throw_007341b0): __thiscall(ECX = list, count), RET 4, the
+    // 007341B0 STL_NarrativeList_Incsize_007341b0 (MSVC _Incsize): __thiscall(ECX = list, count), RET 4, the
     // list's size increment with its length check.
     virtual void narrative_list_incsize_007341b0(void* list, std::uint32_t count) = 0;
     // 00733DC0 BSP_NarrativeEntry_Destruct (cc13_seg40), __thiscall(ECX = entry), RET.
@@ -113,7 +113,6 @@ void cc13_seg48U_gun_bot_set_skill_index_0072bc80(void* bot, std::int32_t index)
 bool cc13_seg48U_gun_bot_has_fire_target_0072bd10(const void* bot);
 void* cc13_seg48U_gun_current_mode_record_00731050(const void* gun);
 void* cc13_seg48U_gun_current_bullet_00731040(const void* gun);
-std::int32_t cc13_seg48U_unit_last_damage_state_index_0072ab10(const void* unit);
 void cc13_seg48U_gun_on_activated_00729fa0(void* gun, Cc13Seg48UHost& host);
 void cc13_seg48U_gun_base_init_device_0072d7e0(void* gun, Cc13Seg48UHost& host);
 void* cc13_seg48U_gun_bot_construct_muzzle_class_0072be40(void* bot, Cc13Seg48UHost& host);
