@@ -1044,9 +1044,10 @@ bool mothership_handle_message_00758eb0(std::uint8_t* ship, const std::uint8_t* 
 // 009273A0's loop reaches it on the kill list) still calls 007422A0, which no
 // longer finds the slot:
 // no decrement, and the convoy dies only if +3BCh was already zero.
-// src/unit_damage.cpp group_kill_members_vector_00742210 is the same walk
-// behind the 72-hook UnitDamageHost, which no game host implements; this one
-// shares cc15's member-slot seam (include/bsp/cc15_land_convoy.hpp).
+// This is the one 00742210 body; it uses cc15's member-slot seam
+// (include/bsp/cc15_land_convoy.hpp). src/unit_damage.cpp
+// group_kill_members_vector_00742210 forwards to it through an adapter over
+// UnitDamageHost's vector hooks; no game host implements UnitDamageHost.
 struct LandConvoyKillVectorHost : cc15_land_convoy::LandConvoyMemberSlots {
     // 00926D90 BSP_MissionEntity_Kill, __thiscall(ECX = entity, cause) RET 4.
     virtual void mission_entity_kill_00926d90(std::uint8_t* entity, std::int32_t cause) = 0;
