@@ -16,14 +16,14 @@ part bodies were already done by cc13 and cc9. Each row was checked against `src
 address and by behaviour before a body was written (cc9's rule 1).
 
 x87: the main thread runs at 24-bit precision control, so every x87 FADD/FSUB/FMUL/FDIV rounds to a
-float; the bodies use float arithmetic. Only 007DF360 has a non-trivial x87 expression (see below).
+float; the bodies use float arithmetic.
 
 ## Counts
 
 | Class | Rows |
 |---|---|
-| Built (`src/cc15_seg48.cpp`) | 37 |
-| Ledger-only (modelled elsewhere; host or existing body cited) | 15 |
+| Built (`src/cc15_seg48.cpp`) | 36 |
+| Ledger-only (modelled elsewhere; host or existing body cited) | 16 |
 | Deferred-partial (cc9's 007D8000-007E3000 band) | 0 |
 | Library / dead | 0 (excluded by the board rule before selection) |
 
@@ -31,7 +31,6 @@ float; the bodies use float arithmetic. Only 007DF360 has a non-trivial x87 expr
 
 | Address | Body | ABI | Notes |
 |---|---|---|---|
-| 007DF360 | plane_neighbours_line_of_sight_clear | thiscall(neighbours=unit+C50h; target, point) RET 8, AL | In cc9's band, but the host only stubs it (`game_hosts_units.cpp:21418` logs unimplemented, returns false), so nothing is modelled and it is built. AL = 1 means a neighbour blocks the line (renamed BSP_PlaneNeighbours_AnyBlocksLine). x87: dot, projection, squared distance and difference are float spills; the r*r * 0.22 (double 00D06BA0) product is double-rounded in C++, which differs from the x87's single 24-bit rounding only on exact halfway cases. |
 | 007EE150 | plane_squadron_max_member_908 | fastcall(squadron), ST0 | A maximum from 0.0, not a minimum (renamed BSP_PlaneSquadron_MaxMember908). |
 | 007EE2E0 | is_leaving_on_purpose | thiscall(squadron; byte) RET 4 | Whole body; cc9 reads only its retreat arm. |
 | 007EE4E0 | detach_pilot | thiscall(squadron) | UNITEXITED (007EDF50 inlined) per member, channel 2 in mode 2 else 7. |
@@ -69,6 +68,7 @@ type-3 values carry stale upper bytes in the image and zero here.
 
 | Address | Cite | What models it |
 |---|---|---|
+| 007DF360 | src/game_hosts_units.cpp:21464 | cc9 `target_reachable_007df360` under kTorpedoLineOfSightBound (ON, main c5be2a47a), docs/OCEAN_WAVE_FIELD.md section 87. Body 007DF360-007DF4E9 (exclusive; RET 8 at 007DF4E6), thiscall(ECX = unit+C50h neighbours; target, const float* point), AL. AL = 1 means screened: an IsKindOf(6) member other than the target lies ahead of the point toward the plane with perp^2 < ([n+538h]+A0h)^2 * 0.22 (00D06BA0); the caller 009D36F3 overwrites [+A9h] with it. The host name "target_reachable" is a misnomer for that answer. Name BSP_PlaneNeighbours_LineOfSightClear kept at cc9's request (cc15-r48b; a cc15-r48a body and rename were withdrawn). |
 | 007EB0D0 | src/cc13_seg48U.cpp:694 | JMP thunk to 007E29A0, whose body is reconstructed. |
 | 007EE080 | src/band_007a_cc13.cpp:10 | Type predicate as a TypeIdRule row {BBh, 47h, 46h}. |
 | 007EE410 | src/game_hosts_units.cpp:9509 | cc9 retreat_leave_map_007ee410 (gate and message effects). |
@@ -87,6 +87,5 @@ type-3 values carry stale upper bytes in the image and zero here.
 
 ## Deferred-partial (for cc9)
 
-None. The only row in 007D8000-007E3000 was 007DF360, which cc9's host does not model at all (an
-unimplemented stub), so it was built rather than deferred; cc9 may want to bind
-`target_reachable_007df360` to it.
+None. The only row in 007D8000-007E3000 is 007DF360, which cc9's host models whole (on main since
+c5be2a47a), so it is ledger-only.

@@ -27,8 +27,6 @@ namespace bsp {
 class Cc15Seg48Host : public Cc13Seg48UHost {
 public:
     // ---- geometry and world ----
-    // 0042B2F0 BSP_Vector3_LengthFloatThreshold: __thiscall(ECX = const float[3]), ST0 (a float).
-    virtual float vector3_length_float_threshold_0042b2f0(const float* v) = 0;
     // 0071C4F0 BSP_Game_PointOutsideMapBounds: __thiscall(ECX = [00E188A8] game, const float[3]),
     // RET 4, AL.
     virtual bool game_point_outside_map_bounds_0071c4f0(void* game, const float* point) = 0;
@@ -178,10 +176,6 @@ public:
     // 00B67700 BSP_LuaObject_Destruct: __thiscall(ECX = object).
     virtual void lua_object_destruct_00b67700(void* object) = 0;
 };
-
-// ---- plane neighbours (the one row in cc9's 007D8000-007E3000 band; the host stubs it) ----
-bool cc15_seg48_plane_neighbours_line_of_sight_clear_007df360(void* neighbours, const void* target,
-                                                              const float* point, Cc15Seg48Host& host);
 
 // ---- squadron predicates and counters ----
 float cc15_seg48_plane_squadron_max_member_908_007ee150(const void* squadron);

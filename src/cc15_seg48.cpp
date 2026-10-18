@@ -119,63 +119,11 @@ void* head_task(const void* member_unit) {
 }  // namespace
 
 // ---------------------------------------------------------------------------
-// 007DF360 BSP_PlaneNeighbours_LineOfSightClear, __thiscall(ECX = neighbours (unit+C50h);
-// target entity, const float[3] point), RET 8, AL. Evidence: listing 007DF360-007DF4E6.
-// The owner is [[neighbours+4]+28h]; none gives 0. The direction is (owner - point) in x/z
-// with y = 0 (007DF3A8-007DF3C4), its length from 0042B2F0. Every neighbour in the pointer
-// array {+30h first, +34h count} that is non-null, not the target and answers slot +5Ch(6)
-// is tested: with d = (neighbour - point) in x/z, dot = (dx*vx + 0) + dz*vz (the y term is
-// FLDZ FMUL ST0 = 0), skipped unless dot > 0 (FCOMI, JBE); proj = dot / length; with r =
-// [[neighbour+538h]+A0h], the neighbour blocks (AL = 1) when r*r * 0.22000000476837158
-// (double 00D06BA0) > (0 + dx*dx + dz*dz) - proj*proj (FCOMIP, JBE). dot, proj, the
-// squared distance and the difference are FSTP float spills; at the main thread's 24-bit
-// precision control every product and sum also rounds to float. Uncertainty: the double
-// constant product is modelled as float(double(r*r) * k), a double rounding where the x87
-// rounds once to 24 bits; the two differ only on exact float halfway cases. The pointer
-// array's end is re-read each iteration, as the listing does. Name is a hypothesis: the AL
-// = 1 answer means "a neighbour is in the way", the inverse of the name.
-// ---------------------------------------------------------------------------
-bool cc15_seg48_plane_neighbours_line_of_sight_clear_007df360(void* neighbours, const void* target,
-                                                              const float* point, Cc15Seg48Host& host) {
-    void* const owner = ptr(ptr(neighbours, 4), 0x28);
-    if (owner == nullptr) return false;
-    if (rd<std::uint8_t>(owner, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(owner);
-    const float own_x = x87_float_round_trip(rd<float>(owner, 0xFC));
-    const float own_z = x87_float_round_trip(rd<float>(owner, 0x104));
-    float direction[3] = {own_x - point[0], 0.0f, own_z - point[2]};
-    const float length = host.vector3_length_float_threshold_0042b2f0(direction);
-    constexpr double kRadiusScale = 0.22000000476837158;  // 00D06BA0
-    const auto array_end = [&] {
-        return static_cast<std::uint8_t*>(ptr(neighbours, 0x30)) +
-               static_cast<std::size_t>(rd<std::int32_t>(neighbours, 0x34)) * 4;
-    };
-    for (std::uint8_t* cursor = static_cast<std::uint8_t*>(ptr(neighbours, 0x30)); cursor != array_end();
-         cursor += 4) {
-        void* const other = ptr(cursor, 0);
-        if (other == nullptr || other == target) continue;
-        if (!host.vcall_5c_has_ordnance_kind(other, 6)) continue;
-        if (rd<std::uint8_t>(other, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(other);
-        const float dx = rd<float>(other, 0xFC) - point[0];
-        const float dz = rd<float>(other, 0x104) - point[2];
-        const float zero_square = 0.0f * 0.0f;
-        const float dot = (dx * direction[0] + zero_square) + dz * direction[2];
-        if (!(dot > 0.0f)) continue;
-        const float projection = dot / length;
-        const float radius = rd<float>(ptr(other, 0x538), 0xA0);
-        const float distance_square = (zero_square + dx * dx) + dz * dz;
-        const float perpendicular_square = distance_square - projection * projection;
-        const float reach = static_cast<float>(static_cast<double>(radius * radius) * kRadiusScale);
-        if (reach > perpendicular_square) return true;
-    }
-    return false;
-}
-
-// ---------------------------------------------------------------------------
-// 007EE150 BSP_PlaneSquadron_MinMember908, __fastcall(ECX = squadron), ST0. Evidence:
+// 007EE150 BSP_PlaneSquadron_MaxMember908, __fastcall(ECX = squadron), ST0. Evidence:
 // listing 007EE150-007EE2D7 (the loop unrolled by four, then the remainder). It is a
 // MAXIMUM from 0.0, not a minimum: each member's +908h goes through a float slot (FLD/FSTP,
 // quieting a signalling NaN) and replaces the running value unless running > value (FCOMIP,
-// JA), so a NaN member value is taken. The old name is kept until the Ghidra rename.
+// JA), so a NaN member value is taken.
 // ---------------------------------------------------------------------------
 float cc15_seg48_plane_squadron_max_member_908_007ee150(const void* squadron) {
     float best = 0.0f;
