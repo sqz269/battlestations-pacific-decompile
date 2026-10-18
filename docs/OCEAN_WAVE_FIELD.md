@@ -3504,3 +3504,29 @@ re-takeoffs 0 / 0. The aircraft-arm throttle sets on US planes go 447 -> 448. Fl
 007BBB70's unit+AC8h in 007D9CE0's parent frame, and it is exercised. UNCERTAINTY: the other vt[34h] readers of a
 parented plane (the deck term's own parent read is the carrier's, unaffected) still take world axes. Section 75's
 whole-frame item stays open.
+## 85. Torpedo state-enter stores 009D2530 / 009D15D0 (cc9-physics21, 2026-10-18)
+
+Source: cc13 CC13_SEG67B 3.51. Bytes read on disk (this installation's exe, read only).
+
+- **009D2530**, the done/prepare enter (vtable 00D21320 +4h), stores state+98h = -1.0 at 009D253B (00D7A260) on every entry. Done is task+310h and prepare is task+740h, and each has its own +98h. 009D49A0 arms only prepare's. The host had one `torpedo_drop_timer`, reset only at install. A done tick could therefore count down a timer that prepare armed earlier, and a re-entered prepare kept its old arm.
+- **009D15D0**, the aim enter (vtable 00D212FC +4h), does four things in order: it calls 009D02A0 (the host already redraws there under kAimErrorDrawBound), stores approach+A8h = 1 at 009D15DE, state+24h = 0 at 009D15E7, and state+2Ch = 0 at 009D15EA.
+  - state+24h is the release timer 009FA3A0's +0Ch enable, the host's `torpedo_aim_timer_enabled_0c`.
+  - state+2Ch is the aim-complete byte that 009D236E sets.
+- The aim exit **009D1350** (vtable +8h) stores approach+A8h = 0 at 009D1353.
+- The census of +A8h byte writers in 009D0000-009D6000 found five:
+  - 009D0511, in the constructor;
+  - 009D12F0 and 009D1300, a set and a clear accessor with no rel32 or absolute references;
+  - 009D1353, the aim exit;
+  - 009D15DE, the aim enter.
+- So +A8h is 1 only while the plane is in aim. It gates the replan's over-land writers at 009D3688. The host never stored it, so `over_land_a9` was never written there.
+
+Switches, both OFF in this commit:
+- **kTorpedoStateEnterTimersBound** splits the done timer out (`torpedo_done_timer_98`) and resets the entered state's timer to -1 on each enter.
+- **kTorpedoAimEnterStoresBound** makes the aim enter clear +24h and +2Ch and set +A8h = 1, and makes the aim exit clear +A8h. The latch diagnostics (`torpedo_aim_complete_tick` and the rest) are not cleared; they re-latch on the next completion.
+
+Counters, which run in both builds, print one line per plane: "aim enters=N (2Ch already set=M) done-state drops=D stale-timer drops=S".
+- A stale-timer drop is a release from the done/prepare tick that read a positive timer with no 009D49A0 arm since the last enter.
+
+Predictions:
+- OFF: on reattack rows, M > 0 (a reattack enters aim with +2Ch set, so the 009D31B0 hold fires at once), and S > 0 wherever done follows an armed prepare.
+- ON: S = 0 and no releases in the done state from a timer.
