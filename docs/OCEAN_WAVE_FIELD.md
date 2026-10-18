@@ -2936,3 +2936,48 @@ Kill entry) now feeds `GameMissionLuaHost::target_gone_00925c40` for a unit gunn
 (00926DED). It covers the Kill callers fix19 lists as unfed (plane depth kill 007CE3A7, landed remainder 00749B7B,
 SquadronLandAndKill's planes, the other 00926D90 callers). A gunfire death takes destroy (00926C80) and is not fed,
 because the image's destroy notice is the no-op slot `+8h` `0042B120`; its trigger retires when the wreck is Killed.
+
+## 71. Pair results for the SpawnNew raise and the kill-funnel feed (cc9-physics18, 2026-10-18)
+
+Base c925b2319 (prox and SquadOrdnanceDropped ON), PRCP05 (`usn_09_Leyte`), 36000 frames each.
+
+**`kSpawnNewMissingClassRaisesBound` FLIPPED ON.** OFF (`local\p18_d_off`) stops at mission clock 1061.96 s: the
+shipyard SpawnNew (`0094c480`, callback `luaUS09JapPTSpawned`) queued "Gyoraitei PT #1.1" with no class, and the
+units host failed startup at the observer projection (creator 00000000), exit 1. ON (`local\p18_d_spawn`): the same
+call raises once (`spawn missing class raises=1`), `US09Think` fails at script line 1093 with `attempt to index a
+nil value`, and the run continues to 36000 frames with exit 0; the mission does not end (`Mission.EndMission never
+true`) and has no further script failures. The flip is by mechanism (the image's `luaV_gettable` on the nil row);
+PRCP05 still cannot complete on this installation because its PTs never spawn.
+
+**`kKillFunnelTargetGoneBound` FLIPPED ON.** Pairs at c925b2319 (`local\p18_d_off` vs `local\p18_d_feed`), 24000
+frames, no helm orders. PRCP01 (`usn_03`): 8 feeds, both fail at 465.71 s (`usn03.obj_p2_fail`), pair_diff exit 1
+(gameplay identical). JM02: 0 feeds, no mission end on either, exit 1. The fed units had no live proximity trigger
+on these rows, so nothing moved; `target_gone_00925c40` notices each unit once, so a later Lua Kill or pass-K notice
+for the same unit adds nothing. Flipped by mechanism (00926D90's kill list notifies 0074FFE0 at pass K).
+
+## 72. Handoff (cc9-physics18, 2026-10-18, at about 70% context)
+
+Landed on agent/cc9-physics1 after c925b2319: 8bdea81c1 (SpawnNew missing-class raise ON), e687bff42 (kill-funnel
+target-gone feed ON). All of the lead's six-item packet is done: prox ON, PT spawn gap ON, PRCP01/JM02 prox pairs,
+SquadOrdnanceDropped ON, squadron_unit comment, gunnery-funnel feed ON. The PRCP01 prox result went to cc9-lua67
+(identical, completes 986.78 s with prcp01_l55_p01_c). Leases: only p18_catapult_flip (OCEAN_WAVE_FIELD.md,
+ship_catapult_host.hpp) is still held; release it when you take over.
+
+Open, in the lead's order (all low priority):
+1. Pair cc15's `kActuatorFlagCc13BodiesBound` (OFF on main 106f741a0, `game_hosts_units.cpp`) on
+   jm08_s45_j8_m10 for 72000 frames before the flip. cc15's manifests are in
+   `J:\PROG\battlestations-pacific-decompile-cc15-wire1\local\cc15_act1_*.manifest.json`. A 72000-frame run outlasts
+   the 600 s foreground cap: launch, then fill the wait with read-only work.
+2. cc15 held item (a), 007D99C0 forward speed. The host inlines dot(v_world, fwd) at units.cpp ~11834/11915. The image
+   returns ctl+44h + parent_local_z * (0.1 if z >= 0 else 0.8) when the plane is parented (007D9A31..007D9A5F). Put
+   it behind an OFF switch if the listing confirms it, and pair it on a carrier row. Lease units.cpp after cc15
+   releases it.
+3. Item (b): model 007D80C0's rate at 24-bit precision per op. Item (c): 007D9CE0/007D9C10 are not examined.
+4. The release MINORs from section 69. 007BBBA0 (the spawn should key on the +C20h raise for all 11 callers) is not
+   cheap.
+5. fix12 and the GetSquadTorpedoes stopgap stay OFF as unexercised (section 69).
+
+Run tools: `local\p12_launch.ps1 -Exe <exe> -Name <n> -Mission <id> -Frames <f> [-Orders <abs path>]`;
+`local\p18_wait.ps1 -Names a,b -Max 580`; export builds `local\p18_exports*.ps1`. Stagger launches by 60 s, run at
+most two, and run one build at a time. `python tools/mission_script_reach.py <Native>` maps menu ids to scripts.
+PRCP05 does not complete on this installation: VehicleClass has no row 240, so its PTs never spawn.
