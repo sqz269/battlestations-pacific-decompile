@@ -2,7 +2,11 @@
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/native_bit_cursor_numeric.hpp"
 #include "bsp/native_bit_cursor_read.hpp"
+#include "bsp/camera_position_modes.hpp"
+#include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/session_message_cc13_seg42.hpp"
 #include <cfloat>
+#include <cmath>
 #include <cstring>
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
@@ -53,6 +57,23 @@ struct HostSessionMessages::Image {
     NativeSessionMessage90To93Context context{&session, target, &position_scale_00cf9360};
     NativeSessionMessage92Profile profile92{context};
     NativeSessionMessage88Profile profile88{target};
+
+    // The 79h class's vtable 00D032D0, its four slots read from the PE:
+    // 007605F0 scalar delete, 0075FFF0 write, 007600D0 read, 0075FFD0 IsType.
+    // The only table these bodies store here.
+    struct Seg42Vtables final : seg42::VtableBinding {
+        std::uint32_t slots_00d032d0[4]{0x007605f0u, 0x0075fff0u, 0x007600d0u, 0x0075ffd0u};
+        const std::uint32_t* vtable(std::uint32_t image_address) const override {
+            return image_address == 0x00d032d0u ? slots_00d032d0 : nullptr;
+        }
+    } seg42_vtables;
+    seg42::Context seg42{current_game, seg42_vtables};
+    // 00954A10's pitch clamp: 00D1A640 / 00D1A638 the doubles of -1.57f and
+    // 1.57f compared, 00CF0AAC / 00CF0B40 the floats stored.
+    volatile double pitch_low_00d1a640{static_cast<double>(-1.57f)};
+    volatile double pitch_high_00d1a638{static_cast<double>(1.57f)};
+    volatile float pitch_low_00cf0aac{-1.57f};
+    volatile float pitch_high_00cf0b40{1.57f};
 };
 
 namespace {
@@ -153,6 +174,58 @@ EntityOrderMessage HostSessionMessages::queue_command_88(const EntityOrderMessag
     // The drain's delete (00764D20 -> 00764CF0) only restamps +0h, which the
     // record does not carry, so ending the copy here is not observable.
     destroy_native_session_message88_00764cf0(&queued);
+    return result;
+}
+
+game::GunAimMessage79 HostSessionMessages::queue_gun_aim_79(
+    const game::GunAimMessage79& posted) const {
+    Image& image = *image_;
+    // 0054884D: 00521370(ECX = the mover's forward row, EDX = &pitch, &yaw),
+    // as cc13_sweepA reconstructs it: y clamped to [-1, 1] in double, then
+    // 0042CF10 on the float; yaw = atan2(x, z) rounded to float.
+    const double y = posted.forward[1];
+    const double clamped = -1.0 > y ? -1.0 : (y > 1.0 ? 1.0 : y);
+    float pitch = camera_asin_clamped_0042cf10(static_cast<float>(clamped));
+    const float yaw = static_cast<float>(
+        std::atan2(static_cast<double>(posted.forward[0]), static_cast<double>(posted.forward[2])));
+
+    // 00954A10: 0075B430(79h), +18h/+1Ah/+4h zero, vtable 00D032D0, which are
+    // 0075FF60's stores; then the arguments.
+    seg42::VehicleGunControlMessage sent{};
+    seg42::construct_vehicle_gun_control_0075ff60(&sent, image.seg42);
+    sent.mode_1c = static_cast<std::uint32_t>(posted.group);
+    for (int i = 0; i < 3; ++i) sent.vector_20[i] = posted.camera[i];
+    sent.angle_2c = yaw;
+    sent.flag_34 = posted.held_34 ? 1u : 0u;
+    sent.flag_35 = posted.pressed_35 ? 1u : 0u;
+    sent.has_target_36 = posted.has_target_36 ? 1u : 0u;
+    sent.target_id_38 = posted.target_38;
+    // 00954A88..00954AD9: FCOMIP against the doubles, NaN stored unchanged.
+    if (image.pitch_low_00d1a640 > static_cast<double>(pitch)) {
+        pitch = image.pitch_low_00cf0aac;
+    } else if (static_cast<double>(pitch) > image.pitch_high_00d1a638) {
+        pitch = image.pitch_high_00cf0b40;
+    }
+    sent.angle_30 = pitch;
+
+    LocalStream stream;
+    seg42::write_vehicle_gun_control_0075fff0(&sent, &stream.out, image.numeric);
+    stream.begin_read();
+    // 00769132: operator new(3Ch), 0075FF60; 0076A27B: vtable+8, 007600D0.
+    seg42::VehicleGunControlMessage queued{};
+    seg42::construct_vehicle_gun_control_0075ff60(&queued, image.seg42);
+    seg42::read_vehicle_gun_control_007600d0(&queued, &stream.in, image.numeric);
+
+    game::GunAimMessage79 result = posted;
+    result.group = static_cast<int>(queued.mode_1c);
+    for (int i = 0; i < 3; ++i) result.camera[i] = queued.vector_20[i];
+    result.yaw_2c = queued.angle_2c;
+    result.pitch_30 = queued.angle_30;
+    result.held_34 = queued.flag_34 != 0;
+    result.pressed_35 = queued.flag_35 != 0;
+    result.has_target_36 = queued.has_target_36 != 0;
+    result.target_38 = result.has_target_36 ? posted.target_38 : queued.target_id_38;
+    result.angles_carried = true;
     return result;
 }
 

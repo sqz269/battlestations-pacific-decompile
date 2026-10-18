@@ -30,6 +30,7 @@
 #include "bsp/game_hosts_world.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/cc13_front6.hpp"
 #include "bsp/cc13_big1_null_host.hpp"
@@ -42,6 +43,8 @@
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/unit_kind_query.hpp"
 
+#include <algorithm>
+#include <cmath>
 #include <cstdio>
 #include <cstring>
 #include <map>
@@ -166,6 +169,13 @@ struct GameHudHost::Impl {
     // Packet cc9_player_gun_seat: the message 00954A10 last built.
     GunAimMessage79 pending_gun_message{};
     bool pending_gun_message_valid{false};
+    // cc15-smA (kGunAimMessageCc15Bound): the 79h session copy, and what the
+    // copy changed against the angles the OFF delivery derives from forward.
+    bsp::HostSessionMessages session_messages;
+    unsigned long long gun_aim_round_trips{0};
+    unsigned long long gun_aim_changed[6]{};  // yaw, pitch, camera, bools, group, target
+    double gun_aim_max_yaw_delta{0.0};
+    double gun_aim_max_pitch_delta{0.0};
     bool lock_radius_read{false};
     std::vector<float> lock_radius;
     const std::vector<float>& lock_radius_multipliers();
@@ -1277,11 +1287,41 @@ public:
         static_cast<void>(target_id);
         owner_.record("HudWeaponGroupScreen::fire_message", 0x00954a10u);
     }
+    // cc15-smA: count what the 79h copy changed, field by field, against the
+    // posted value and the angles the OFF delivery derives from `forward`.
+    void note_gun_aim_round_trip(const GunAimMessage79& m, const GunAimMessage79& q) {
+        ++owner_.gun_aim_round_trips;
+        const float fy = std::max(-1.0f, std::min(1.0f, m.forward[1]));
+        const float pitch = std::max(-1.57f, std::min(1.57f, std::asin(fy)));
+        const float yaw = std::atan2(m.forward[0], m.forward[2]);
+        const double dy = std::fabs(static_cast<double>(q.yaw_2c) - yaw);
+        const double dp = std::fabs(static_cast<double>(q.pitch_30) - pitch);
+        if (q.yaw_2c != yaw) ++owner_.gun_aim_changed[0];
+        if (q.pitch_30 != pitch) ++owner_.gun_aim_changed[1];
+        if (std::memcmp(q.camera, m.camera, sizeof q.camera) != 0) ++owner_.gun_aim_changed[2];
+        if (q.held_34 != m.held_34 || q.pressed_35 != m.pressed_35
+            || q.has_target_36 != m.has_target_36) {
+            ++owner_.gun_aim_changed[3];
+        }
+        if (q.group != m.group) ++owner_.gun_aim_changed[4];
+        if (q.target_38 != m.target_38) ++owner_.gun_aim_changed[5];
+        if (dy > owner_.gun_aim_max_yaw_delta) owner_.gun_aim_max_yaw_delta = dy;
+        if (dp > owner_.gun_aim_max_pitch_delta) owner_.gun_aim_max_pitch_delta = dp;
+    }
     void route_fire_message_0077c2a0(std::size_t unit) override {
         if constexpr (kPlayerGunSeatBound) {
             GameGunneryHost* gunnery = owner_.units != nullptr ? owner_.units->gunnery() : nullptr;
             if (unit != 0 && gunnery != nullptr && owner_.pending_gun_message_valid) {
-                gunnery->apply_gun_aim_message_00959c20(unit - 1, owner_.pending_gun_message);
+                if constexpr (bsp::kGunAimMessageCc15Bound) {
+                    // 00548A1F: 0077C2A0(flags 3) takes the local bit, and
+                    // 0076E520's copy is what 00959C20 reads.
+                    const GunAimMessage79& m = owner_.pending_gun_message;
+                    const GunAimMessage79 queued = owner_.session_messages.queue_gun_aim_79(m);
+                    note_gun_aim_round_trip(m, queued);
+                    gunnery->apply_gun_aim_message_00959c20(unit - 1, queued);
+                } else {
+                    gunnery->apply_gun_aim_message_00959c20(unit - 1, owner_.pending_gun_message);
+                }
                 owner_.done("HudWeaponGroupScreen::route_fire_message", 0x0077c2a0u);
                 return;
             }
@@ -3878,6 +3918,13 @@ void GameHudHost::report() {
         impl.summary.pump_frames, impl.summary.update_frames,
         impl.summary.audio_environment.empty() ? "(none)"
                                                : impl.summary.audio_environment.c_str());
+    impl.log.notef("summary mission hud gun aim message 79h (cc15-smA, 00954A10 / 0075FFF0 / "
+        "0075FF60 / 007600D0): bound=%d round_trips=%llu changed yaw=%llu pitch=%llu camera=%llu "
+        "bools=%llu group=%llu target=%llu max_delta yaw=%.9g pitch=%.9g",
+        bsp::kGunAimMessageCc15Bound ? 1 : 0, impl.gun_aim_round_trips, impl.gun_aim_changed[0],
+        impl.gun_aim_changed[1], impl.gun_aim_changed[2], impl.gun_aim_changed[3],
+        impl.gun_aim_changed[4], impl.gun_aim_changed[5], impl.gun_aim_max_yaw_delta,
+        impl.gun_aim_max_pitch_delta);
     impl.log.notef("summary mission hud set selected unit (packet cc9_set_selected_unit, "
         "008AB260 / 00647300): bound=%d calls=%llu accepted=%llu pushes_20h=%llu",
         kSetSelectedUnitBound ? 1 : 0, impl.select_calls, impl.select_accepted,
