@@ -3225,7 +3225,8 @@ void* bot_task_drop_kamikaze_construct_approach_block_from_stream_009ad920(Cc13S
 // difference is rounded to float. EH unwinding not modelled.
 void* bot_approach_drop_kamikaze_construct_009ad720(Cc13Seg67bHost& host, void* block, void* bot,
                                                     void* target) {
-    host.bot_approach_drop_kamikaze_construct_base_009abab0(block, ptr_at(bot, 0x50), target);
+    bot_approach_drop_kamikaze_construct_base_009abab0(host, block, ptr_at(bot, 0x50),
+                                                        target);
     host.bot_state_registry_construct_00411e20(ptr(block, 0xC4));
     const float third = at<float>(block, 0xAC);
     const float far_ = at<float>(block, 0xA8);
@@ -3985,6 +3986,54 @@ void* bot_approach_dogfight_construct_009a6c10(Cc13Seg67bHost& host, void* appro
     at<std::uint8_t>(approach, 0xD0) = 0;
     at<float>(approach, 0xE8) = kNinetyNine_00d059a0;
     host.approach_target_ref_reset_aim_offset_009fa350(ptr(approach, 0x2C));
+    return approach;
+}
+
+// ---------------------------------------------------------------------------
+// The drop-kamikaze approach base.
+
+namespace {
+constexpr std::uint32_t kDropKamikazeApproachVtable_00d1fb00 = 0x00D1FB00u;
+constexpr double kTwoThousand_00cf0dd8 = 2000.0;
+constexpr float kNinetyNineThousand_00d119ac = 99999.0f;  // 47C34F80
+}  // namespace
+
+// 009ABAB0 (BSP_BotApproachDropKamikaze_ConstructBase): __thiscall(ECX = approach, plane,
+// target), RET 8, EAX = approach. Evidence (disk bytes): 009F9CE0(ECX = approach, plane,
+// tuning+458h) (009ABACF-009ABAE5); vtable 00D1FB00, +2Ch = 0 (009ABAF6-009ABAFC);
+// 009FB200(ECX = approach+30h, target) (009ABAFF); +A4h = desc+18Ch (desc =
+// [approach+8]), +A8h = [00CFD714] 1200.0 (009ABB04-009ABB1B); T = float(+24h x double
+// [00CF0DD8] 2000.0), byte +C0h = 0, +B4h = [00D119AC] 99999.0, +ACh = T, +B0h =
+// float(T x double [00D045F0] 1.4), +B8h = 0.0, +BCh = 0FFh, byte +C1h = 1 (009ABB23-
+// 009ABB7E); 009FA380(ECX = approach+30h, &00F87574) (009ABB59-009ABB84); byte +71h =
+// 1, +80h = +7Ch = +78h = [00CE3800] 0.5 (009ABB89-009ABBA2).
+// UNCERTAINTY: the products of float-exact operands are exact in double and round once.
+// EH unwinding not modelled.
+void* bot_approach_drop_kamikaze_construct_base_009abab0(Cc13Seg67bHost& host, void* approach,
+                                                         void* plane, void* target) {
+    const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x458);
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, plane, speed);
+    at<std::uint32_t>(approach, 0x00) = kDropKamikazeApproachVtable_00d1fb00;
+    at<std::uint32_t>(approach, 0x2C) = 0;
+    host.approach_target_ref_construct_009fb200(ptr(approach, 0x30), target);
+    at<float>(approach, 0xA4) = at<float>(ptr_at(approach, 0x8), 0x18C);
+    at<float>(approach, 0xA8) = kTwelveHundred_00cfd714;
+    const float t = static_cast<float>(static_cast<double>(at<float>(approach, 0x24)) *
+                                       kTwoThousand_00cf0dd8);
+    at<std::uint8_t>(approach, 0xC0) = 0;
+    at<float>(approach, 0xB4) = kNinetyNineThousand_00d119ac;
+    at<float>(approach, 0xAC) = t;
+    at<float>(approach, 0xB8) = kZero_s15;
+    at<std::uint32_t>(approach, 0xBC) = 0xFF;
+    at<float>(approach, 0xB0) =
+        static_cast<float>(static_cast<double>(t) * kOnePointFour_00d045f0);
+    at<std::uint8_t>(approach, 0xC1) = 1;
+    host.approach_target_ref_set_aim_error_009fa380(ptr(approach, 0x30),
+                                                    host.global_vector_00f87574());
+    at<std::uint8_t>(approach, 0x71) = 1;
+    at<float>(approach, 0x80) = kHalf_00ce3800;
+    at<float>(approach, 0x7C) = kHalf_00ce3800;
+    at<float>(approach, 0x78) = kHalf_00ce3800;
     return approach;
 }
 
