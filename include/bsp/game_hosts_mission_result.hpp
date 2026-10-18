@@ -55,7 +55,8 @@ class GameHostLog;
 // "unit_usage") is one recorded step; the host has no entity list and does not
 // write the unit_usage map.
 // The binding returns 0 results (00B66400). No 00BD2F10 draw.
-inline constexpr bool kLuaScoringSetMissionCompletedBound = false;
+// ON (cc9-lua67, SQUADRON_LAND_TASK 5ik).
+inline constexpr bool kLuaScoringSetMissionCompletedBound = true;
 
 // Packet cc13-fix20. PlayBinkMovie, the Lua row 0089A480 (registered at
 // 00E0BA60). OFF keeps the row UNIMPLEMENTED. ON runs what 0089A480 does after
@@ -66,7 +67,8 @@ inline constexpr bool kLuaScoringSetMissionCompletedBound = false;
 // wait: the call is synchronous and returns 0 results. No clip is played here,
 // as before: the poll 004D7EA0 and the request-10h arm record 004F8A20 and the
 // executable runs the completion 004F89D0 itself (milestone 2g). No 00BD2F10 draw.
-inline constexpr bool kLuaPlayBinkMovieBound = false;
+// ON (cc9-lua67, SQUADRON_LAND_TASK 5ik).
+inline constexpr bool kLuaPlayBinkMovieBound = true;
 
 // What the exit path did, for the report.
 struct GameMissionExitSummary {
