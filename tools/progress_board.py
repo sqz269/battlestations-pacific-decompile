@@ -21,6 +21,7 @@ import datetime as dt
 import json
 import re
 import sqlite3
+import struct
 import subprocess
 import sys
 import time
@@ -43,12 +44,54 @@ NON_GAME_RANGES = [
 NON_GAME_TAGS = {'lua511', 'zlib121', 'crt_unmatched', 'static_init', 'block_telemetry', 'block_telemetry_tmpl',
                  'block_pipe_ipc', 'block_metrics_wrapper'}
 NON_GAME_TAG_PREFIXES = ('stl_', 'cg_', 'tmpl_')
+# Ghidra names that mark library or compiler-generated bodies whatever their tag (cc15's live survey,
+# 2026-10-18). Its broader '_', 'lua', 'Lua_' and 'LIB' prefixes are left out: they also match game names.
+LIBRARY_NAME_PREFIXES = ('STL_', 'CRT_', 'LIBCRT', 'CG_', 'TMPL_', 'TRIV_', 'std', '`', 'zlib', 'xlive')
 
 
 def is_game(addr, tag):
     if any(lo <= addr < hi for lo, hi in NON_GAME_RANGES):
         return False
     return not (tag and (tag in NON_GAME_TAGS or tag.startswith(NON_GAME_TAG_PREFIXES)))
+
+
+def referenced_functions(db, starts):
+    """Function starts that something in the image references: a caller in the index's call table other
+    than an EH funclet, or an absolute dword anywhere in the PE (vtables, function-pointer tables, data).
+    Unreferenced game bodies (the Dyn/Mit header instantiations that fill seg 0, cc15 survey 2026-10-18)
+    can never run, so they stay out of the target unless someone reconstructed them anyway."""
+    names = dict(db.execute('select address, name from functions'))
+    live = {e for c, e in db.execute('select caller, callee from calls')
+            if e in starts and not (names.get(c) or '').startswith(FUNCLET)}
+    cfg = json.loads((ROOT / 'config/target.json').read_text())
+    img = Path(cfg['binary']).read_bytes()
+    base = int(cfg['image_base'], 16)
+    pe =struct.unpack_from('<I', img, 0x3c)[0]
+    nsec = struct.unpack_from('<H', img, pe + 6)[0]
+    so = pe + 24 + struct.unpack_from('<H', img, pe + 20)[0]
+    for i in range(nsec):
+        vsize, va, rsize, raw = struct.unpack_from('<4I', img, so + 40 * i + 8)
+        chars = struct.unpack_from('<I', img, so + 40 * i + 36)[0]
+        data = img[raw: raw + min(rsize, vsize or rsize)]
+        if not chars & 0x20000000:  # data: vtables and pointer tables are dword-aligned
+            for (v,) in struct.iter_unpack('<I', data[: len(data) // 4 * 4]):
+                if v in starts:
+                    live.add(v)
+            continue
+        # code: only an imm32 operand that takes an address counts; a bare byte window over-counts
+        # thousands of rows. push imm32 (68), mov r32,imm32 (B8-BF), mov [r],imm32 (C7 0x),
+        # mov [r+d8],imm32 (C7 4x d8), mov [d32],imm32 (C7 05 d32).
+        for j in range(1, len(data) - 3):
+            v = struct.unpack_from('<I', data, j)[0]
+            if v not in starts:
+                continue
+            p = data[j - 1]
+            if (p == 0x68 or 0xB8 <= p <= 0xBF
+                    or (j >= 2 and data[j - 2] == 0xC7 and p < 0x08 and p != 0x05 and p != 0x04)
+                    or (j >= 3 and data[j - 3] == 0xC7 and 0x40 <= data[j - 2] <= 0x47 and data[j - 2] != 0x44)
+                    or (j >= 6 and data[j - 6] == 0xC7 and data[j - 5] == 0x05)):
+                live.add(v)
+    return live
 
 # Category per partition segment, keyed by the segment's start address so a re-partition cannot
 # silently relabel a band. Segments whose start is not listed fall back to keyword matching.
@@ -248,7 +291,10 @@ def build(now=None):
         if a not in union or v[0] < union[a][0]:
             union[a] = v
     names_first = first_names(passes)
-    game = {a: is_game(a, v[1]) for a, v in funcs.items()}
+    live = referenced_functions(db, set(funcs))
+    game_any = {a: is_game(a, v[1]) and not v[4].startswith(LIBRARY_NAME_PREFIXES) for a, v in funcs.items()}
+    # the target counts game code that can run, plus any unreferenced game body already reconstructed
+    game = {a: g and (a in live or a in union) for a, g in game_any.items()}
     game_union = {a: v for a, v in union.items() if game.get(a)}
 
     seg_rows = db.execute('select id, start, end, keywords from segments order by id').fetchall()
@@ -337,7 +383,8 @@ def build(now=None):
         commits=sorted(hourly.items()), milestones=milestones, tags=dict(tags.most_common()),
         passes=passes.rows, tag_names=tag_names, fn=fn,
         kpi=dict(functions=len(union), ledger_functions=len(ledger_first), fragments=len(frag_first), names=len(names_first),
-                 tags=sum(tags.values()), excluded=sum(1 for g in game.values() if not g),
+                 tags=sum(tags.values()), excluded=sum(1 for g in game_any.values() if not g),
+                 unreferenced=sum(1 for a, g in game_any.items() if g and not game[a]),
                  target=sum(game.values()), game_done=len(game_union),
                  game_rate24=sum(1 for v in game_union.values() if v[0] >= now - 86400),
                  game_outside=sum(1 for a, g in game.items() if g and funcs[a][0] is None),
