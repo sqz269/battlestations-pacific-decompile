@@ -42,6 +42,9 @@ inline constexpr std::uint32_t kEmptyText = 0x00F87158;       // "" used for a n
 inline constexpr std::uint32_t kDefaultCommandPosition = 0x00F87574;  // three floats (.bss)
 inline constexpr std::uint32_t kRotatingSlot = 0x00E188C4;    // int32 slot index, 004C3C2E
 inline constexpr std::int32_t kGameModeSlotScan = 0x0D;       // game+5D4h, 004C3A86
+inline constexpr std::uint32_t kMsgFormationSet = 0x78;        // 0075B430 type, 0077A09B
+inline constexpr std::uint32_t kMsgFormationSetVtable = 0x00CED548;  // 0077A0BD
+inline constexpr std::uint32_t kLastBantoName = 0x00D03E2C;     // "LastBanto", 0077D32B
 inline constexpr std::uint32_t kWarningManager = 0x00F8A0C4;  // pointer read by 0064A270
 
 // 0077C540: 64 buckets x 768 queued rows; counts at 00F1B050, bytes at 00F1B150 (300h a
@@ -167,6 +170,34 @@ struct Small2Host {
     virtual void* hud_get_controlled_unit_00644230(void* hud_root) = 0;
     // widget->vtable[34h](byte), 004C3BE9.
     virtual void widget_set_flag_34(void* widget, bool flag) = 0;
+    virtual void session_message_construct_base_0075b430(void* msg, std::uint32_t type) = 0;
+    virtual void* operator_new_array_00bf55be(std::uint32_t bytes) = 0;
+    virtual void* group_member_record_at_0070d070(void* group, std::uint32_t index) = 0;
+    // 00803BA0 __fastcall(ECX = index).
+    virtual void recon_mark_slot_dirty_00803ba0(std::int32_t index) = 0;
+    virtual void* mission_entity_lock_get_004c1570() = 0;
+    // Imports through [00CE2218] / [00CE2210] (EnterCriticalSection / LeaveCriticalSection).
+    virtual void enter_critical_section_iat_00ce2218(void* section) = 0;
+    virtual void leave_critical_section_iat_00ce2210(void* section) = 0;
+    virtual void native_string_resize_0041dd40(NativeString* s, std::uint32_t length,
+                                               std::int32_t keep) = 0;
+    virtual void* mission_entity_lua_self_object_00927b40(void* entity, LuaObject* out) = 0;
+    virtual void lua_set_object_00b675d0(void* table, const NativeString* name, void* value) = 0;
+    virtual void mission_entity_on_killed_lua_00929b60(void* entity) = 0;
+    // 0077FE80's arms.
+    virtual bool message_is_ready_10(void* msg) = 0;                        // msg->vtable[10h]
+    virtual void entity_claim_player_144(void* entity, std::uint32_t player) = 0;
+    virtual void warning_manager_report_new_unit_00977cd0(void* manager, std::uint32_t player) = 0;
+    virtual void unit_group_release_member_0077c980(void* unit, void* other) = 0;
+    virtual void unit_apply_role_owner_slots_0077a5d0(void* unit) = 0;
+    virtual void entity_apply_message_payload_0c(void* entity, void* payload,
+                                                 std::uint8_t flag) = 0;  // vtable[0Ch]
+    // 00521E30 __fastcall(CX = id).
+    virtual void* entity_handle_resolve_00521e30(std::uint16_t id) = 0;
+    virtual void unit_group_join_or_merge_0077f940(void* unit, void* target) = 0;
+    virtual void unit_group_hand_over_leadership_0077bd70(void* unit, void* successor) = 0;
+    virtual void unit_group_apply_formation_shape_0070efd0(void* group, std::uint32_t shape) = 0;
+    virtual bool entity_generic_message_164(void* entity, void* msg) = 0;   // vtable[164h]
     virtual bool unit_is_selectable_00645060(void* unit, std::int32_t team,
                                              bool allow_spectate) = 0;
     virtual void hud_root_set_controlled_unit_00645600(void* hud_root, void* unit) = 0;
@@ -179,6 +210,9 @@ struct Small2Host {
 void* entity_weapon_director_ref_construct_00778820(void* holder, void* entity,
                                                    Small2Host& host);
 void* unit_director_path_object0_00778860(void* unit, Small2Host& host);
+void* session_message_formation_set_construct_0077a080(void* msg, void* group,
+                                                       Small2Host& host);
+void unit_instance_on_killed_lua_0077d270(void* unit, Small2Host& host);
 float unit_distance_to_record_00779eb0(void* entity, void* const* record, Small2Host& host);
 void unit_expire_at_scheduled_time_0077a650(void* unit, Small2Host& host);
 void entity_update_command_target_position_0077b050(void* entity, TargetPoint* out,
@@ -190,6 +224,8 @@ void entity_set_gui_name_0077d3f0(void* entity, const NativeString* name, std::u
                                   Small2Host& host);
 void replication_step_local_player_record_0077d7f0(Small2Host& host);
 void replication_drain_child_queues_0077f5e0(Small2Host& host);
+bool session_dispatch_entity_kind_message_0077fe80(void* entity, void* msg, bool* out,
+                                                   Small2Host& host);
 void unit_apply_expiry_message_0077f7b0(void* unit, const void* msg, Small2Host& host);
 
 // Segment 26.
