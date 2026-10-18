@@ -71,7 +71,7 @@ enum class ShipAiApproachMode : int {
 // mode 0 goes to the general arm; the host's mode-0 frame span writes +1204h as
 // 009F275B..009F2789 do; and unit+490h answers the artillery maximum range 00956C20 stores
 // (00956E35..00956E43), not 0. False: the inverted test, no mode-0 frame write, +490h = 0.
-inline constexpr bool kAttackMoveApproachImageBound = false;
+inline constexpr bool kAttackMoveApproachImageBound = true;   // ON: SHIP_AI 277 (mechanism)
 
 // ---------------------------------------------------------------------------
 // The nested object's tail state, as the seven callees read and write it

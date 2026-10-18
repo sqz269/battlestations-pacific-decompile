@@ -18890,3 +18890,112 @@ levels up to them; USN13: up to 15 Expert members die at adoption unless their b
 Expert. moveto_range_reads > 0 on missions that MoveTo a ship at a CommandBuilding (USN13 / USNOS
 landing ships), and those ships now finish the move at the capture ring (stop, `finished` report)
 instead of driving on to the building's centre.
+
+## 281. Approach traffic from the recon enemy triple, kShipAiTrafficReconListBound (cc9-ships57, 2026-10-17; lead item 7b)
+
+**Image (CC13_VERIFY2 R2).** 009E9217..009E9225 walk `[008053C0(party)]+0DE8h`, the enemy triple 008073C0 publishes:
+identified (level 2) enemies only, in class-bucket order, rebuilt every 3.0 s. The host's AvoidBinding built its
+own list: every live ship or plane of another side (neutral included) at any recon level above none (blips
+included), live every call, in unit order. A blip or neutral ship within its weapon range + 200 was inserted
+(009E92D5), rated (0095EB40) and steered away from; the image never sees it.
+
+**Bind (OFF).** `kShipAiTrafficReconListBound` (src/game_hosts_ship_ai.cpp): the walk takes the gunnery host's
+`recon_triple_units(party, 1)`, the same list kAutoTargetReconCandidatesBound gives 009F5D30 (empty before the
+first rebuild, as 009F5D54's JE). The library's own kind-5 / range filters are unchanged. Counter: `summary
+mission ship ai traffic recon list bound= walks= contacts=`.
+
+**Predictions, written before any run.** OFF identical (walks=0). ON: contacts per walk fall (no blips, no
+neutrals, nothing before the first 3.0 s rebuild); ships near unidentified or neutral ships stop steering
+around them, so approach tracks move on every surface battle (USN12, USN15, IJN08, JM08); the RNG is not
+touched by the walk itself, but moved tracks move the fire timings downstream.
+
+## 282. Neighbour bands follow depth, kShipNeighbourDepthBandBound (cc9-ships57, 2026-10-17; lead item 7c)
+
+**Image (CC13_VERIFY2 R3).** 009DE2F0 (own hull) and 009EAFC0 (observed hull) both copy the model's world bounds
+through 0098A8E0 into max/min Y; 009EB03C / 009EB053 bail when the bands do not overlap. With models the bands
+follow depth, so a deep submarine and a surface ship ignore each other. The host gives every hull the constant
+world band -10..+50 (009DE2F0's null-model arm for the own hull, `kShipNeighbourNullModelBandSubstituted`
+for the observed one), so they always overlap.
+
+**Bind (OFF).** `kShipNeighbourDepthBandBound` (src/game_hosts_ship_ai.cpp): both bands are placed at the unit's
+world y (position +FCh..+104h): own hull through `unit_model_vtable20` (a band object instead of null), the
+observed hull when 009EAFC0's binding is retargeted. LABELLED SUBSTITUTION: still no model, so the height
+stays -10..+50 about the hull origin. Counter: `summary mission ship ai neighbour depth band bound=
+observed_retargets=`.
+
+**Predictions, written before any run.** OFF identical. ON: surface-vs-surface pairs stay overlapping (y ~ 0,
+small moves only where the live sea lifts a hull); a submarine deeper than 60 m (y < -60) stops avoiding
+surface ships and vice versa. Rows: USN04 / JM08 (submarines present) and any sub-heavy mission; elsewhere
+small or no movement.
+
+### 278 addendum: the follow pair found a stale descriptor
+
+**First pair (b727a20db, ESMP08 `esmp08_p12_e8_rb` 20000 frames, `local\s57_off3_ess.log` / `s57_fj_on_ess.log`):**
+gameplay identical, `requests=30 available=0`, no `ai diag follow` line and no kind test: every request
+carried target 0. Cause: the arm binding's 00521EA0 read `chain_.pending_target`, which is the last SETCMD's
+descriptor (written at 0071ED81's delivery, after the cascade), not the MT_COMMAND message's. Under the switch
+the binding now resolves the message descriptor (`view.target`) for every arm that calls 00521EA0 (Follow,
+Leave at 00816F01, MoveTo's path test 00816FA0, SetTarget 00816FF1); OFF keeps the stale read. Re-paired below.
+
+### 278 result: ON
+
+**Pair (e4f545f01, `--flip kSceneFollowJoinBound=true`, exe `local\s57_fj2_on`; ESMP08 `esmp08_p12_e8_rb` 20000 frames,
+`local\s57_off3_ess.log` / `local\s57_fj2_on_ess.log`, manifests beside them).** pair_diff exit 3. The mechanism is
+the predicted one: `requests=30 available=30`, `formation join follow calls=30 pushed=30` (0077FA8D -> 00720CD0),
+`ai diag follow Chiyoda -> Zuikaku available=1`, likewise Zuiho, Chitose, Hyuga, Ise, Tama, Oyodo, Isuzu, Sugi
+and Kuwa; the only arm-level native change is the new 00816ECA kind test (30 calls). The escorts now keep station
+on their leaders and the battle moves: deaths 188 -> 217, first hit 370.88 -> 319.85 s, torpedo-task releases
+14/101 -> 41/96, Zuikaku's track 10206 -> 8654 m. ESMP08 is not a win row (WINS_TABLE). **Decision: ON** by
+mechanism. Moved rows to cc9-lua66.
+
+## 283. Submarine torpedoes are seen later, kTorpedoFromSubmarineBound (cc9-ships57, 2026-10-17; lead item 7a)
+
+**Image (CC13_VERIFY2 R1).** 006E2E10 (BSP_BombProjectile_Activate) stores `+354h = (y <= water height 0078CF20)`
+at 006E2E7F (NaN sets it too); 00857780 (BSP_TorpedoProjectile_Activate) copies it to `+49Ch = 1` at 008578B0;
+009F0AD0 tests +49Ch at 009F0C0E and adds the robots row's `TorpedoObservationSubAddon` (+24h; 4.0 s SPNormal,
+3.0 MPNormal, 1.5 MPVeteran, 1.0 Stun, 0 SPVeteran / Elite) to the observation draw. The host's candidate had
+`from_submarine = false` with the label "no host submarine launches underwater", false since
+kSubmergedTorpedoLaunchSwimBound (ON).
+
+**Bind (OFF).** The gunnery host marks a shot `started_under_water` at the swim entry of a launch that was already
+under the surface (the `submerged_launch_entries` branch, from y <= 0) and publishes it in `LiveTorpedo`; the ship
+AI candidate takes it under `kTorpedoFromSubmarineBound`. LABELLED: the sample is the swim entry's flat-water
+test rather than 006E2E10's live water height at activation. The observation draw is taken either way, so the
+RNG stream is unchanged.
+
+**Predictions, written before any run.** OFF identical. ON: only where an AI submarine fires submerged at a ship
+with torpedo response on (USN04 / JM08 submarines, IJN rows with US subs): those ships react up to 4 s later;
+elsewhere identical.
+
+### 277 result: ON
+
+**Pairs (a356392e8, `--flip kAttackMoveApproachImageBound=true`, exe `local\s57_ap_on`; OFF `local\s57_off2` (USN12,
+USN15) and `local\s57_off3` (IJN08, JM08, the same OFF code); 20000 frames; newest config/win_orders files;
+manifests beside each log).** Every ON row shows the predicted mechanism: `range_0490_reads=0` and every mode-0
+frame write in the 0 column (USN12 8201/0/0, USN15 32948/0/0, IJN08 16645/0/0, JM08 25684/0/0), with no other
+summary moving first.
+- USN12 `g45_u12_e7`: exit 3, deaths 40 -> 39, shots 2988 -> 3844; Denver closes from 780 to 565 m and fires 961
+  shots instead of 121 (no throttle cap at the standoff ring, as predicted); Dyson survives.
+- USN15 `g50_u15_nn`: exit 3, deaths 33 -> 25 (11 only OFF: Columbia, Louisville, four Fletchers ...; 3 only ON).
+- IJN08 `p10_i08_z`: exit 3, deaths 173 -> 174, 55 changed rows.
+- JM08 `l65_j8_p2`: exit 3, deaths 120 -> 124 (LandingShip and a squadron plane only ON).
+**Decision: ON** by mechanism. USN12 and USN15 are win rows: re-time / re-plan (moved rows to cc9-lua66).
+
+### 280 result: both ON
+
+**Pairs (a73a84449, `--flip kGarrisonMinLevelBound=true --flip kShipMoveToCaptureRangeBound=true`, exe `local\s57_gm_on`;
+OFF `local\s57_off3`, the same OFF code; manifests beside each log).**
+- USNOS `s55_os_r0` 30000 frames and USN13 30000 frames: no reach. Garrison `records=0` on both (USNOS builds no
+  capture building in this window; USN13's CB2 / CB4 / CBT have InferiorRange 1, `members=0`), and
+  `moveto_range_reads=0`. USN13 pair_diff exit 1, gameplay identical. (The USNOS ON log was first diffed
+  against a pre-merge OFF and is not used.)
+- JM05 (ijn\JM\ijn_05_invasion_of_port_moresby.scn: 4x MinLevel Medium), 6000 frames, no orders: the predicted
+  mechanism. At adoption `MainFortress element, Round, Side 01` / `Side 02` (MainCommandBuilding 01) and
+  `RadarStationFortress 01` / `02` (RadarStation 01) log `MinLevel 1 > level 0: kill 00926D90(2) (done)`,
+  `kills=4`, and they are the 4 only-ON deaths. Without their guns Mogami-class 01, Japan Troop Transport 01,
+  Fubuki-class 01 and Zuikaku survive (the 4 only-OFF deaths), hit records 3787 -> 2245, and the OFF row's
+  failure at 285.05 s (`MissionStatus`, "One of o...") does not happen in the window.
+  `moveto_range_reads=0` here too.
+**Decision: both ON.** MinLevel by mechanism; the capture range as a faithful binding with no reach found
+(no installed row on hand MoveTos a ship at a CommandBuilding target within these windows; jm13.lua:1499 and
+jm16.lua:944 do, untested). JM05 moves (to cc9-lua66).

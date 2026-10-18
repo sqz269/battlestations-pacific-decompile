@@ -182,6 +182,18 @@ inline constexpr bool kUnitRadiusBound = true;
 // (009E6170), rates its weapons against this ship through 0095EB40 (009E6240)
 // and steers away by the weighted sum. False: no candidates, as before.
 inline constexpr bool kShipAiTrafficBound = true;
+// Packet s57_traffic_recon (SHIP_AI_OPEN_ITEMS 281; CC13_VERIFY2 R2). True: 009E9217..
+// 009E9225 walk [008053C0(party)]+0DE8h, the enemy triple 008073C0 publishes
+// (identified, level 2, enemies only, class-bucket order, rebuilt every 3.0 s): the
+// gunnery host's recon_triple_units(party, 1), as kAutoTargetReconCandidatesBound
+// reads it for 009F5D30. False: every live ship or plane of another side (neutral
+// included) at any recon level above none, in unit order.
+inline constexpr bool kShipAiTrafficReconListBound = false;
+// Packet s57_torpedo_from_sub (SHIP_AI_OPEN_ITEMS 283; CC13_VERIFY2 R1). True: a torpedo
+// launched under the surface (projectile+354h at 006E2E7F, copied to +49Ch at 008578B0)
+// is seen TorpedoObservationSubAddon later (009F0C0E; robots.lua: 4.0 s SPNormal, 0 at
+// SPVeteran / Elite). False: every torpedo counts as surface-launched.
+inline constexpr bool kTorpedoFromSubmarineBound = false;
 // Packet cc9_autotarget_recon_candidates, docs/AUTOTARGET_RECON_CANDIDATES.md.
 // True: the automatic target scan 009F5D30 walks the owner party's recon enemy
 // triple ([008053C0(party)]+0DE8h: identified contacts only, in bucket order).
@@ -831,12 +843,12 @@ inline constexpr bool kCommandBuildingGarrisonBound = true;
 // Expert` and others on CommandBuildingInferior LandForts), and the kill arm
 // 006F36AE..006F36F0 runs 00926D90(member, 2) through the gunnery host. False: +5Ch
 // is 0 and the kill is recorded.
-inline constexpr bool kGarrisonMinLevelBound = false;
+inline constexpr bool kGarrisonMinLevelBound = true;   // ON: SHIP_AI 280 (JM05 mechanism)
 // Packet s57_moveto_capture_range (SHIP_AI_OPEN_ITEMS 280; CC13_VERIFY2 R5). True: the
 // MoveTo / MoveOnPath arrival tests (009E58CE, 009E5BA6) read a CommandBuilding
 // target's +7A0h capture range. False: 0, so the arrival arms 009E58E6 / 009E5BBC
 // never run for a building target.
-inline constexpr bool kShipMoveToCaptureRangeBound = false;
+inline constexpr bool kShipMoveToCaptureRangeBound = true;   // ON: SHIP_AI 280 (faithful, no reach on the rows)
 // Packet cc9_command_building_garrison_revive (SHIP_AI_OPEN_ITEMS 185): 006F3660's
 // re-create arm (006F3703..006F3844) revives the dead member in place through the
 // gunnery host's revive_unit_garrison_006f3660, then the scene flags, the
@@ -880,6 +892,14 @@ inline constexpr float kCommandBuildingRepairLevel[4] = {1.00f, 1.10f, 1.20f, 1.
 inline constexpr bool kCommandBuildingStepRepairBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
+// Packet s57_depth_band (SHIP_AI_OPEN_ITEMS 282; CC13_VERIFY2 R3). In the image both
+// neighbour bands are the model's WORLD Y bounds (009DE2F0 for the own hull, 009EAFC0
+// for the observed one, both through 0098A8E0), so they follow depth and a deep
+// submarine fails 009EB03C / 009EB053 against a surface ship. True: the null-model band
+// is placed at the unit's world y (+FCh..+104h), so it moves with the hull. LABELLED
+// SUBSTITUTION: no unit carries a model here, so the band's height stays -10..+50 about
+// the hull origin rather than the model's own extent. False: the fixed world band.
+inline constexpr bool kShipNeighbourDepthBandBound = false;
 namespace {
 
 // Diagnostic only: BSP_SHIP_ESCAPE_TRACE=<unit name> logs the escape inputs of
@@ -973,6 +993,13 @@ public:
         // The represented unit/class owner creates no model box or parts.
         // Native0087BE02..0087BF5B maps absent descriptor+50h to unit+360h=0;
         // the verified virtual20 target006D1E30 returns that field.
+        if (kShipNeighbourDepthBandBound) {
+            float x = 0.0f, y = 0.0f, z = 0.0f;
+            units_.unit_position_00fc(index_, x, y, z);
+            depth_band_.min = {x, static_cast<float>(static_cast<double>(y) + kShipNeighbourNullModelMinY), z};
+            depth_band_.max = {x, static_cast<float>(static_cast<double>(y) + kShipNeighbourNullModelMaxY), z};
+            return &depth_band_;
+        }
         return nullptr;
     }
 
@@ -981,6 +1008,7 @@ private:
     std::size_t index_;
     const std::uint32_t& class_reference_;
     bsp::CameraMatrix world_{};
+    bsp::HitQueryBounds depth_band_{};   // packet s57_depth_band
 };
 
 // The two re-plan interval getters, read from the image for this packet.
@@ -1196,6 +1224,9 @@ struct GameShipAiHost::Impl {
     unsigned long long garrison_passes{0};
     unsigned long long garrison_kills{0};
     unsigned long long moveto_capture_range_reads{0};   // s57_moveto_capture_range
+    unsigned long long traffic_recon_walks{0};      // s57_traffic_recon, 009E9220 walks
+    unsigned long long depth_band_targets{0};       // s57_depth_band, 009EAFC0 retargets
+    unsigned long long traffic_recon_contacts{0};   // ... contacts summed
     unsigned long long garrison_recreates{0};
     unsigned long long garrison_recreates_recorded{0};
     unsigned long long garrison_skill_pushes{0};
@@ -2102,7 +2133,10 @@ struct GameShipAiHost::Impl {
         c.run_seconds = t.swim_seconds;
         c.water_travel_speed = t.water_travel_speed;
         c.side = t.owner_side;
-        c.from_submarine = false;   // record+49Ch: no host submarine launches underwater
+        // record+49Ch, torpedo+49Ch: 00857780 sets it at 008578B0 from +354h, the
+        // started-under-water sample (packet s57_torpedo_from_sub). 009F0C0E adds
+        // TorpedoObservationSubAddon (+24h) to the observation draw when it is set.
+        c.from_submarine = kTorpedoFromSubmarineBound && t.started_under_water;
         c.shooter = t.owner_unit;
         return c;
     }
@@ -5402,6 +5436,16 @@ public:
         if (!kShipAiTrafficBound || owner_.gunnery == nullptr) {
             owner_.record("ShipAiApproach::candidate_count_008053c0", 0x008053c0u);
             return 0;
+        }
+        if (kShipAiTrafficReconListBound) {
+            const GameUnitRow* self = owner_.units.unit_row(index_);
+            if (self == nullptr || !owner_.gunnery->recon_triple_units(self->party, 1, contacts_)) {
+                contacts_.clear();   // before the slot's first rebuild the chain is empty
+            }
+            ++owner_.traffic_recon_walks;
+            owner_.traffic_recon_contacts += contacts_.size();
+            owner_.done("ShipAiApproach::candidate_count_008053c0", 0x008053c0u);
+            return static_cast<int>(contacts_.size());
         }
         const std::vector<GameGunneryUnitRow>& rows = owner_.gunnery->unit_rows();
         const bsp::ReconSensorPassState& recon = owner_.gunnery->recon_sensor_pass_state();
@@ -9501,7 +9545,16 @@ private:
 class NeighbourAvoidBoxBinding final : public bsp::ShipAiNeighbourAvoidBoxHost {
 public:
     explicit NeighbourAvoidBoxBinding(GameShipAiHost::Impl& owner) : owner_(owner) {}
-    void target(std::size_t unit) { unit_ = unit; }
+    void target(std::size_t unit) {
+        unit_ = unit;
+        if (kShipNeighbourDepthBandBound) {
+            float x = 0.0f, y = 0.0f, z = 0.0f;
+            owner_.units.unit_position_00fc(unit_, x, y, z);
+            band_.min.y = static_cast<float>(static_cast<double>(y) + kShipNeighbourNullModelMinY);
+            band_.max.y = static_cast<float>(static_cast<double>(y) + kShipNeighbourNullModelMaxY);
+            ++owner_.depth_band_targets;
+        }
+    }
 
     const void* observed_model_vtable20() override {
         // 006D1E30, unit+360h: no unit of this process carries a model, the same
@@ -14581,6 +14634,12 @@ void GameShipAiHost::report() {
             "moveto_range_reads=%llu (packets s57_garrison_min_level / s57_moveto_capture_range, "
             "006F5E4D / 006F36CD / 009E58CE / 009E5BA6)", kGarrisonMinLevelBound ? 1 : 0,
             kShipMoveToCaptureRangeBound ? 1 : 0, host.moveto_capture_range_reads);
+        host.log.notef("summary mission ship ai traffic recon list bound=%d walks=%llu contacts=%llu "
+            "(packet s57_traffic_recon, 009E9220 [008053C0(party)]+0DE8h)",
+            kShipAiTrafficReconListBound ? 1 : 0, host.traffic_recon_walks, host.traffic_recon_contacts);
+        host.log.notef("summary mission ship ai neighbour depth band bound=%d observed_retargets=%llu "
+            "(packet s57_depth_band, 009DE2F0 / 009EAFC0 world Y bounds)",
+            kShipNeighbourDepthBandBound ? 1 : 0, host.depth_band_targets);
         for (const Impl::CaptureBuilding& b : host.capture_buildings) {
             const GameUnitRow* row = host.units.unit_row(b.unit);
             host.log.notef("summary mission command building level unit=%s level=%d "
