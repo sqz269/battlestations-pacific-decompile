@@ -127,6 +127,49 @@ public:
                                                          std::int32_t index, std::uint8_t* flag) = 0;
     // 00797070 BSP_MovCam_SetLookTarget: __thiscall(ECX = camera; a, b), RET 8.
     virtual void movcam_set_look_target_00797070(void* camera, std::uint32_t a, std::uint32_t b) = 0;
+
+    // ---- 007A74F0 path-walk point properties (cc13-segmixF) ----
+    // 00BF681B operator new (cdecl, size).
+    virtual void* crt_operator_new_00bf681b(std::uint32_t size) = 0;
+    // 0079C830 BSP_MovCam_ClearPathRecords: __thiscall(ECX = camera).
+    virtual void movcam_clear_path_records_0079c830(void* camera) = 0;
+    // 0079EB10, the pointer vector resize: __thiscall(ECX = vector; count, value), RET 8.
+    virtual void pointer_vector_resize_0079eb10(void* vector, std::uint32_t count, void* value) = 0;
+    // 007A5A00 BSP_MovCam_BeginPathWalk: __thiscall(ECX = camera; float, byte, float,
+    // name, variants), RET 14h.
+    virtual void movcam_begin_path_walk_007a5a00(void* camera, float a, std::uint8_t b, float c, void* name,
+                                                 std::uint32_t variants) = 0;
+    // LuaObject blocks are 14h bytes, handled only through these.
+    // 00B65F50 BSP_LuaObject_Construct and 00B67700, the destructor: __thiscall(ECX = object).
+    virtual void lua_object_construct_00b65f50(void* object) = 0;
+    virtual void lua_object_destroy_00b67700(void* object) = 0;
+    // 00B67080 BSP_LuaObject_IterateFirst / 00B67190 BSP_LuaObject_IterateNext:
+    // __thiscall(ECX = table; key, value), RET 8.
+    virtual void lua_object_iterate_first_00b67080(void* table, void* key, void* value) = 0;
+    virtual void lua_object_iterate_next_00b67190(void* table, void* key, void* value) = 0;
+    // 00B66420 BSP_LuaObject_IsUnbound: __thiscall(ECX ignored; object), RET 4; AL. The end
+    // of an iteration (the image passes the table in ECX).
+    virtual bool lua_object_is_unbound_00b66420(void* ignored, void* object) = 0;
+    // 00B65FB0 BSP_LuaObject_IsNil: __thiscall(ECX = object); AL.
+    virtual bool lua_object_is_nil_00b65fb0(void* object) = 0;
+    // 00B66290 BSP_LuaObject_GetInteger: __thiscall(ECX = object); EAX.
+    virtual std::int32_t lua_object_get_integer_00b66290(void* object) = 0;
+    // 00B66270 BSP_LuaObject_GetNumber: __thiscall(ECX = object); ST0, which every caller here
+    // stores as a float.
+    virtual double lua_object_get_number_00b66270(void* object) = 0;
+    // 00B67800 BSP_LuaObject_GetByName: __thiscall(ECX = table; out object, const char* key),
+    // RET 8; EAX = out.
+    virtual void* lua_object_get_by_name_00b67800(void* table, void* out, const char* key) = 0;
+    // 00B67690, the LuaObject assignment: __thiscall(ECX = object; source), RET 4.
+    virtual void lua_object_assign_00b67690(void* object, void* source) = 0;
+    // 00888AA0 BSP_ObjectHandle_FromLuaTable: __thiscall(ECX = object); EAX = the entity.
+    virtual void* object_handle_from_lua_table_00888aa0(void* object) = 0;
+    // 00888760 BSP_LuaObject_ReadVector3: __fastcall(ECX = out float[3], EDX = object); EAX = out.
+    virtual float* lua_object_read_vector3_00888760(float* out, void* object) = 0;
+    // 00694A60 BSP_Observer_RegisterPair / 006952A0 BSP_Observer_UnregisterPair:
+    // __fastcall(ECX = subject, EDX = observer).
+    virtual void observer_register_pair_00694a60(void* subject, void* observer) = 0;
+    virtual void observer_unregister_pair_006952a0(void* subject, void* observer) = 0;
 };
 
 // ---- segment 42: the mother ship and its MOTHERSHIP_CREATE message ----
@@ -150,5 +193,10 @@ void cc13_segmix_unit_controller_update_pose_0092f930(void* controller, float se
 // ---- segment 46: the mission camera ----
 void cc13_segmix_movcam_cycle_target_007a84d0(void* camera, std::uint8_t backward, Cc13SegmixHost& host);
 void cc13_segmix_movcam_update_hand_mode_007a87b0(void* camera, Cc13SegmixHost& host);
+// `table` is the 14h-byte LuaObject passed by value; this function destroys it, as the
+// image does.
+void cc13_segmix_movcam_set_path_walk_point_property_007a74f0(void* camera, void* table, float a,
+                                                              std::uint8_t reverse, float c, void* name,
+                                                              std::uint32_t variants, Cc13SegmixHost& host);
 
 }  // namespace bsp

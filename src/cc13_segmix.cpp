@@ -523,4 +523,181 @@ void cc13_segmix_movcam_update_hand_mode_007a87b0(void* camera, Cc13SegmixHost& 
     if (failed == 0) host.movcam_set_look_target_00797070(camera, 0, 0);
 }
 
+// ---------------------------------------------------------------------------
+// 007A74F0 BSP_MovCam_SetPathWalkPointProperty (cc13-segmixF). This is
+// __thiscall(ECX = camera; LuaObject table by value (14h), float a, byte reverse,
+// float c, name, variants), RET 28h. Bytes 007A74F0..007A7C50. The sole caller is
+// the Lua native 008B4DA0. cc13_left55_seg56b reaches it through the hook
+// movcam_set_path_walk_point_property_007a74f0.
+//
+// It clears the path records (0079C830), then walks the table (00B67080 /
+// 00B67190, ended by 00B66420). For each key k, the slot is k - 1 when reverse is
+// set and k + 1 otherwise. The camera+478h pointer vector grows to the slot + 1
+// (unsigned compare), and a new 4Ch path record goes into the slot through the
+// checked index.
+//
+// The record starts with vtable 00D043D8, zeroes, and +3Ch = +40h = 1/3f
+// ([00D04678]). It is then filled from the value's fields. Each field is read into
+// one LuaObject, T, that lives across the whole iteration:
+//
+// | Field | Effect on the record |
+// |---|---|
+// | parent | entity +14h, through the observer swap below |
+// | pos | +18h/+1Ch/+20h = x, y, z (read in the order z, y, x; numbers taken x, y, z) |
+// | rotRefEntity | entity +24h through the swap; mode +48h = 1 (+48h is 0 first) |
+// | rotRefPosW | +28h..+30h via 00888760; mode 2 |
+// | rotRefPosL | the same; mode 3 |
+// | rotRefRotW | +34h = x, +38h = y; mode 4 |
+// | rotRefRotL | the same; mode 5 |
+// | sustainBefore, sustainAfter, speed | +3Ch, +40h, +44h |
+//
+// The observer swap for slot S (+14h or +24h, with the other slot O) is:
+// 1. When the old [S] is set, differs from the new entity, and differs from [O],
+//    unregister (rec) from the old (006952A0).
+// 2. Store the new entity in S.
+// 3. When the new entity is set and differs from [O], register (rec) with it
+//    (00694A60).
+//
+// The tail calls 007A5A00(camera; a, reverse, c, name, variants) and destroys the
+// value, the key and the by-value table.
+//
+// Notes:
+// - A null record from operator new is stored as is, and the field stores fault
+//   through it as in the image (not guarded).
+// - The EH frame 00C8BBF4 is not modelled.
+// ---------------------------------------------------------------------------
+void cc13_segmix_movcam_set_path_walk_point_property_007a74f0(void* camera, void* table, float a,
+                                                              std::uint8_t reverse, float c, void* name,
+                                                              std::uint32_t variants, Cc13SegmixHost& host) {
+    host.movcam_clear_path_records_0079c830(camera);                                  // 007A751C
+    alignas(4) std::uint8_t key[0x14];                                                 // [esp+54h]
+    alignas(4) std::uint8_t value[0x14];                                               // [esp+3Ch]
+    host.lua_object_construct_00b65f50(key);
+    host.lua_object_construct_00b65f50(value);
+    host.lua_object_iterate_first_00b67080(table, key, value);
+    const auto number = [&](void* object) {
+        return static_cast<float>(host.lua_object_get_number_00b66270(object));
+    };
+    while (!host.lua_object_is_unbound_00b66420(table, key)) {
+        const std::int32_t index = host.lua_object_get_integer_00b66290(key);
+        const std::uint32_t slot = static_cast<std::uint32_t>(reverse != 0 ? index - 1 : index + 1);
+        void* const vector = static_cast<std::uint8_t*>(camera) + 0x478;
+        const auto size = [&]() -> std::uint32_t {
+            void** const begin = at<void**>(vector, 0x4);
+            return begin == nullptr ? 0u : static_cast<std::uint32_t>(at<void**>(vector, 0x8) - begin);
+        };
+        if (size() < slot + 1) host.pointer_vector_resize_0079eb10(vector, slot + 1, nullptr);
+        auto* rec = static_cast<std::uint8_t*>(host.crt_operator_new_00bf681b(0x4C));
+        if (rec != nullptr) {
+            at<std::uint32_t>(rec, 0x4) = 0;
+            at<std::uint32_t>(rec, 0x8) = 0;
+            at<std::uint32_t>(rec, 0xC) = 0;
+            at<std::uint32_t>(rec, 0x14) = 0;
+            at<std::uint8_t>(rec, 0x10) = 0;
+            at<std::uint32_t>(rec, 0x0) = 0x00D043D8;
+            at<float>(rec, 0x18) = 0.0f;
+            at<float>(rec, 0x1C) = 0.0f;
+            at<float>(rec, 0x20) = 0.0f;
+            at<std::uint32_t>(rec, 0x24) = 0;
+            for (std::size_t off = 0x28; off <= 0x38; off += 4) at<float>(rec, off) = 0.0f;
+            at<std::uint32_t>(rec, 0x48) = 0;
+            float third;
+            const std::uint32_t third_bits = 0x3EAAAAABu;                             // [00D04678]
+            std::memcpy(&third, &third_bits, sizeof third);
+            at<float>(rec, 0x40) = third;
+            at<float>(rec, 0x3C) = third;
+            at<float>(rec, 0x44) = 0.0f;
+        }
+        if (at<void**>(vector, 0x4) == nullptr || slot >= size()) host.crt_invalid_parameter_noinfo_00bf6713();
+        at<void**>(vector, 0x4)[slot] = rec;                                           // 007A7660
+
+        const auto swap_entity = [&](std::size_t slot_offset, std::size_t other_offset, void* entity) {
+            void* const old = at<void*>(rec, slot_offset);
+            if (old != nullptr && old != entity && old != at<void*>(rec, other_offset)) {
+                host.observer_unregister_pair_006952a0(old, rec);
+            }
+            at<void*>(rec, slot_offset) = entity;
+            if (entity != nullptr && entity != at<void*>(rec, other_offset)) {
+                host.observer_register_pair_00694a60(entity, rec);
+            }
+        };
+        alignas(4) std::uint8_t field[0x14];                                           // T, [esp+10h]
+        alignas(4) std::uint8_t temp[0x14];
+        const auto read_field = [&](const char* name_key) {                           // T = value[key]
+            host.lua_object_assign_00b67690(field, host.lua_object_get_by_name_00b67800(value, temp, name_key));
+            host.lua_object_destroy_00b67700(temp);
+        };
+        host.lua_object_get_by_name_00b67800(value, field, "parent");                 // T built in place
+        if (!host.lua_object_is_nil_00b65fb0(field)) {
+            swap_entity(0x14, 0x24, host.object_handle_from_lua_table_00888aa0(field));
+        }
+        read_field("pos");
+        {
+            alignas(4) std::uint8_t z_object[0x14];
+            alignas(4) std::uint8_t y_object[0x14];
+            alignas(4) std::uint8_t x_object[0x14];
+            void* const z_field = host.lua_object_get_by_name_00b67800(field, z_object, "z");
+            void* const y_field = host.lua_object_get_by_name_00b67800(field, y_object, "y");
+            void* const x_field = host.lua_object_get_by_name_00b67800(field, x_object, "x");
+            const float x = number(x_field);
+            const float y = number(y_field);
+            const float z = number(z_field);
+            at<float>(rec, 0x18) = x;
+            at<float>(rec, 0x1C) = y;
+            at<float>(rec, 0x20) = z;
+            host.lua_object_destroy_00b67700(x_object);
+            host.lua_object_destroy_00b67700(y_object);
+            host.lua_object_destroy_00b67700(z_object);
+        }
+        at<std::uint32_t>(rec, 0x48) = 0;                                              // 007A77BF
+        read_field("rotRefEntity");
+        if (!host.lua_object_is_nil_00b65fb0(field)) {
+            swap_entity(0x24, 0x14, host.object_handle_from_lua_table_00888aa0(field));
+            at<std::uint32_t>(rec, 0x48) = 1;
+        }
+        const auto read_position = [&](const char* name_key, std::uint32_t mode) {
+            read_field(name_key);
+            if (host.lua_object_is_nil_00b65fb0(field)) return;
+            float out[3];
+            const float* const p = host.lua_object_read_vector3_00888760(out, field);
+            at<float>(rec, 0x28) = p[0];
+            at<float>(rec, 0x2C) = p[1];
+            at<float>(rec, 0x30) = p[2];
+            at<std::uint32_t>(rec, 0x48) = mode;
+        };
+        read_position("rotRefPosW", 2);
+        read_position("rotRefPosL", 3);
+        const auto read_rotation = [&](const char* name_key, std::uint32_t mode) {
+            read_field(name_key);
+            if (host.lua_object_is_nil_00b65fb0(field)) return;
+            alignas(4) std::uint8_t y_object[0x14];
+            alignas(4) std::uint8_t x_object[0x14];
+            void* const y_field = host.lua_object_get_by_name_00b67800(field, y_object, "y");
+            void* const x_field = host.lua_object_get_by_name_00b67800(field, x_object, "x");
+            const float x = number(x_field);
+            const float y = number(y_field);
+            at<float>(rec, 0x34) = x;
+            at<float>(rec, 0x38) = y;
+            host.lua_object_destroy_00b67700(x_object);
+            host.lua_object_destroy_00b67700(y_object);
+            at<std::uint32_t>(rec, 0x48) = mode;
+        };
+        read_rotation("rotRefRotW", 4);
+        read_rotation("rotRefRotL", 5);
+        const auto read_number = [&](const char* name_key, std::size_t offset) {
+            read_field(name_key);
+            if (!host.lua_object_is_nil_00b65fb0(field)) at<float>(rec, offset) = number(field);
+        };
+        read_number("sustainBefore", 0x3C);
+        read_number("sustainAfter", 0x40);
+        read_number("speed", 0x44);
+        host.lua_object_destroy_00b67700(field);                                       // 007A7B92
+        host.lua_object_iterate_next_00b67190(table, key, value);
+    }
+    host.movcam_begin_path_walk_007a5a00(camera, a, reverse, c, name, variants);      // 007A7BFC
+    host.lua_object_destroy_00b67700(value);
+    host.lua_object_destroy_00b67700(key);
+    host.lua_object_destroy_00b67700(table);
+}
+
 }  // namespace bsp

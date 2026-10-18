@@ -12,9 +12,9 @@ symbols. Nothing here is wired.
 |---|---|---|
 | In the struck range 0081B000-0081EFFF (seg51) | 22 | Not touched |
 | Template bodies | 88 | Tagged `stl_shape`, `reviewed`, evidence `sys6_shape` |
-| Game code, reconstructed | 12 | `src/cc13_segmix.cpp`, build-tested (cc13-segmixB, C, D, E) |
+| Game code, reconstructed | 13 | `src/cc13_segmix.cpp`, build-tested (cc13-segmixB to F) |
 | Game code, cc9-hosted (verify-and-record) | 7 | Recorded with a verdict |
-| Game code, not done yet | 4 | Following commits |
+| Game code, not done yet | 3 | Following commits |
 
 ## Template bodies (cc13-segmixA)
 
@@ -191,6 +191,32 @@ target's vehicle cameras with the stick.
 The two reversed subtractions were read from the bytes: D8 E9 at 007A8A22 and
 DE E2 at 007A8B7D. Both compute z0 - z, and only the magnitude is used.
 
+**007A74F0 BSP_MovCam_SetPathWalkPointProperty** (cc13-segmixF). The signature
+is thiscall(camera; LuaObject table by value, float a, byte reverse, float c,
+name, variants), RET 28h. The Lua native 008B4DA0 is its only caller, and
+`cc13_left55_seg56b` declares the hook. CC13_SYS_5B noted that its stack slots
+were never traced; they are traced here from the frame offsets.
+
+It clears the path records, then walks the table. Each key k fills camera+478h
+slot k - 1 (when reverse is set) or k + 1 with a new 4Ch record. The fields come
+from the value's keys; the strings were read from the PE:
+
+| Key | Record field |
+|---|---|
+| `parent` | +14h |
+| `pos` (`x`, `y`, `z`) | +18h..+20h |
+| `rotRefEntity` | +24h, mode +48h = 1 |
+| `rotRefPosW`, `rotRefPosL` | +28h..+30h, mode 2 / 3 |
+| `rotRefRotW`, `rotRefRotL` (`x`, `y`) | +34h / +38h, mode 4 / 5 |
+| `sustainBefore`, `sustainAfter`, `speed` | +3Ch, +40h, +44h |
+
+The two entity slots go through the observer pair calls (006952A0 unregisters,
+00694A60 registers), and each is checked against the other slot. It ends with
+007A5A00 and destroys the by-value table.
+
+When operator new returns null, the image stores the null record and then
+faults on it. The C++ does the same.
+
 ## Files
 
 - 88 tag rows in `config/tags/006b0000`, `006c0000`, `00730000`, `00740000`,
@@ -198,8 +224,8 @@ DE E2 at 007A8B7D. Both compute z0 - z, and only the magnitude is used.
   `008e0000.jsonl`.
 - `include/bsp/cc13_segmix.hpp` and `src/cc13_segmix.cpp`, registered in
   `cmake/startup.cmake` (bsp_core).
-- 19 function records in `config/reconstruction/00750000`, `00760000`, `007a0000`,
-  `00920000` and `00930000.jsonl`: 12 bodies and 7 verify-and-record.
+- 20 function records in `config/reconstruction/00750000`, `00760000`, `007a0000`,
+  `00920000` and `00930000.jsonl`: 13 bodies and 7 verify-and-record.
 - 7 renames in `config/names/007a0000`, `00920000` and `00930000.jsonl` (007A84D0, 0092F930, 0093B920, 0093A2C0,
   0093AA00, 00933BB0, 00933DA0), applied in Ghidra; the old values are in
   `local/ghidra-annotations-20261018T153423Z.json`, `...T153752Z.json` and `...T154313Z.json`.
