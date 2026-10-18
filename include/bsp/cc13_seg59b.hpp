@@ -326,6 +326,30 @@ struct Seg59bHost {
     virtual void repair_event_vector_push_back_0090e7c0(void* vector, const void* value) = 0;
     // 00923BE0 BSP_UnitInstance_GetHealth, __thiscall(ECX = unit); ST0.
     virtual float unit_get_health_00923be0(void* unit) = 0;
+    // 00914390 BSP_MissionScoreRecord_RecomputeCategoryTotals, __thiscall(ECX = record);
+    // 0090EA00 (the record's Lua publish, open row), __thiscall(ECX = record).
+    virtual void score_record_recompute_category_totals_00914390(void* record) = 0;
+    virtual void score_record_publish_0090ea00(void* record) = 0;
+    // 00B67980 BSP_LuaStateOwner_GetGlobals, __thiscall(ECX = owner, LuaObject* out), RET 4;
+    // 00B67800 BSP_LuaObject_GetByName, __thiscall(ECX = table, LuaObject* out, name), RET 8;
+    // 00B67460 BSP_LuaObject_SetNativeStringInteger, __thiscall(ECX = table, key*, value), RET 8.
+    // Each returns its out object (EAX).
+    virtual void* lua_owner_get_globals_00b67980(void* owner, void* out) = 0;
+    virtual void* lua_object_get_by_name_00b67800(void* table, void* out, const char* name) = 0;
+    virtual void lua_object_set_native_string_integer_00b67460(void* table, const void* key,
+                                                              std::int32_t value) = 0;
+    // 0094F3E0 BSP_StringKeyList_ClearOwnedHeaders, __thiscall(ECX = list); 0094F1B0 (qsort of
+    // the list with comparator 0094F130 / 0094F180 by the flag), __thiscall(ECX = list, flag),
+    // RET 4.
+    virtual void string_key_list_clear_owned_headers_0094f3e0(void* list) = 0;
+    virtual void string_key_list_sort_0094f1b0(void* list, std::uint32_t flag) = 0;
+    // 008F5900 (std::vector<void*>::insert), __thiscall(ECX = vector, ret*, container, where,
+    // const value*), RET 10h; 008F3C90 (std::sort), __fastcall(ECX = first, EDX = last, count,
+    // predicate), RET 8.
+    virtual void pointer_vector_insert_008f5900(void* vector, void* ret, void* container, void* where,
+                                                const void* value) = 0;
+    virtual void sort_by_predicate_008f3c90(void* first, void* last, std::int32_t count,
+                                            std::uint32_t predicate) = 0;
     // 00BF79F0 _memset, __cdecl(dst, value, count).
     virtual void memset_00bf79f0(void* dst, std::int32_t value, std::uint32_t count) = 0;
     // 00950320 BSP_SceneTextChunkList_Clear, __thiscall(ECX = list).
@@ -494,6 +518,15 @@ void scoring_record_component_failure_00913d80(Seg59bHost& host, void* scoring, 
                                                 std::int32_t owner_kind);
 // 00914100, __thiscall(ECX = scoring, unit), RET 4: the GA_PL repair event (JMP from 0093CAF1).
 void scoring_record_repair_completed_00914100(Seg59bHost& host, void* scoring, void* unit);
+// 009150A0, __thiscall(ECX = scoring, slot), RET 4: recompute and publish one record, then
+// scoring.playerIndex = slot in Lua when game+1FE4h != 0.
+void scoring_force_refresh_009150a0(Seg59bHost& host, void* scoring, std::int32_t slot);
+// 008F3270, __thiscall(ECX = bag, list, sort), RET 8: copy every key name of the bag into the
+// string list, then sort it when the flag byte is set.
+void scene_property_bag_collect_key_names_008f3270(Seg59bHost& host, void* bag, void* list, bool sort);
+// 008F6E20, __thiscall(ECX = bag, out array), RET 4; EAX = count: the bag's records sorted by
+// their ordinal (+34h) into the 008F0010 pointer array.
+std::int32_t scene_property_bag_collect_records_sorted_008f6e20(Seg59bHost& host, void* bag, void* out);
 // 008F7CF0, __thiscall(ECX = scope), RET; EAX = scope: 00BD2FE0.
 void* random_threads_scope_construct_008f7cf0(Seg59bHost& host, void* scope);
 // 008F7D20, no arguments: destroy and free the object at [01090AA0], then clear it.

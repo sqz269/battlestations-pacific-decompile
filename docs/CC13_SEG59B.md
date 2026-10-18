@@ -202,3 +202,11 @@ STL code, allocators, `_free`, `_memmove_s` and xlen throws: `009063C0`, `009076
 | --- | --- | --- | --- |
 | `00913D80` | BSP_MissionScoring_RecordComponentFailure | reconstructed | `scoring_record_component_failure_00913d80`: the Counter_RUA_DBU counter (`005070C0`), the RUA_DBU award (`0050FC30`, `0090EDE0` at 00913F9E), the trace through `004254B0`, and the unit id push (`007265E0`, 009140DB) when the block's c*a + d*b exceeds [unit+370h]. Reached from the component-failure roll at 0093C0DC in normal missions. cc9's host only records the call. It touches only scoring state and the record's +21h flag, and draws no shared RNG. |
 | `00914100` | BSP_MissionScoring_RecordRepairCompleted | reconstructed | `scoring_record_repair_completed_00914100`: GA_PL threshold against `00923BE0` health * 100 (0091418D), then {id, clock [00F876A4]} pushed through `0090E7C0` (00914250). cc9's host marks the 0093CAF1 jump unreached. |
+
+## Scoring refresh and scene bag collectors
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `009150A0` | BSP_MissionScoring_ForceRefresh | reconstructed | `scoring_force_refresh_009150a0`: `00914390` (009150CC) and `0090EA00` (009150D3) on the record, then Lua `scoring.playerIndex = slot` (`00B67460`, 0091513A) when game+1FE4h != 0. |
+| `008F3270` | BSP_ScenePropertyBag_CollectKeyNames | reconstructed | `scene_property_bag_collect_key_names_008f3270`: every key copied into a `0094F270` list (008F3324), sorted by `0094F1B0` (008F3348) when asked. The old name "WriteAll" was wrong. |
+| `008F6E20` | BSP_ScenePropertyBag_CollectRecordsSorted | reconstructed | `scene_property_bag_collect_records_sorted_008f6e20`: the records gathered in a local vector, `008F3C90` sort by ordinal (008F6F08), copied out with `008F0010` (008F6F44). |

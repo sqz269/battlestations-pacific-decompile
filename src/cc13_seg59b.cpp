@@ -1939,4 +1939,115 @@ void scoring_record_repair_completed_00914100(Seg59bHost& host, void* scoring, v
         host.repair_event_vector_push_back_0090e7c0(add(record, 0x150), local);
     }
 }
+
+// ---------------------------------------------------------------------------
+// 009150A0 BSP_MissionScoring_ForceRefresh. __thiscall(ECX = scoring, slot), RET 4. Caller
+// 008B8E60 (Lua Scoring.ForceRefreshScoringTable; src/cc13_left55_seg56b.cpp calls it as
+// scoring_force_refresh_009150a0 through its host).
+// Evidence: record = scoring + slot*284h + 4 (009150C2); 009150CC 00914390(record); 009150D3
+// 0090EA00(record); [[00E188A8]+1FE4h] == 0 -> return (009150E5). Else key "playerIndex"
+// CF9D28 (0041E870, 009150F4); 00915112 00B67980(game+1A0Ch, &globals); 00915128
+// 00B67800(globals, &table, "scoring" CF8268); 0091513A 00B67460(table, &key, slot); 00B67700
+// on the table (00915148), then on the globals (00915156); the key released (0091517D).
+// ---------------------------------------------------------------------------
+void scoring_force_refresh_009150a0(Seg59bHost& host, void* scoring, std::int32_t slot) {
+    void* const record = add(scoring, static_cast<std::uint32_t>(slot) * 0x284u + 4u);
+    host.score_record_recompute_category_totals_00914390(record);
+    host.score_record_publish_0090ea00(record);
+    void* const game = game_global(host);
+    if (at<std::uint32_t>(game, 0x1FE4) == 0) return;
+    alignas(4) std::uint8_t key[8] = {};
+    host.native_string_assign_0041e870(key, static_cast<const char*>(host.image_pointer(0x00CF9D28u)));
+    alignas(4) std::uint8_t globals[0x14] = {};
+    alignas(4) std::uint8_t table[0x14] = {};
+    void* const globals_object = host.lua_owner_get_globals_00b67980(add(game, 0x1A0C), globals);
+    void* const table_object = host.lua_object_get_by_name_00b67800(
+        globals_object, table, static_cast<const char*>(host.image_pointer(0x00CF8268u)));
+    host.lua_object_set_native_string_integer_00b67460(table_object, key, slot);
+    host.lua_object_destruct_00b67700(table);
+    host.lua_object_destruct_00b67700(globals);
+    release_native_string(host, key);
+}
+
+// ---------------------------------------------------------------------------
+// 008F3270 BSP_ScenePropertyBag_CollectKeyNames. __thiscall(ECX = bag, list, sort), RET 8. No
+// code xrefs (vtable or dead).
+// Evidence: 008F3293 0094F3E0(list); iterator {bag+4} with 008EEB10 begin (008F32A3); per node:
+// name = [node+4] or F89450 (008F32C0); 008F32C7 00BF681B(8); non-null -> header {0, 0},
+// 008F32F7 0041DD40(header, strlen(name), 1), data non-null -> 008F330B memcpy(data, name,
+// size + 1); 008F3324 0094F270(list, header or 0, 1); 008F332D 008EEB60 next while node != 0.
+// After: byte sort != 0 -> 008F3348 0094F1B0(list, 0).
+// ---------------------------------------------------------------------------
+void scene_property_bag_collect_key_names_008f3270(Seg59bHost& host, void* bag, void* list, bool sort) {
+    host.string_key_list_clear_owned_headers_0094f3e0(list);
+    Hash64Iterator iterator{add(bag, 0x04), nullptr, 0};
+    host.hash64_iterator_begin_008eeb10(&iterator);
+    while (iterator.node != nullptr) {
+        const char* name = static_cast<const char*>(ptr(iterator.node, 0x04));
+        if (name == nullptr) name = static_cast<const char*>(host.image_pointer(kEnumNameEmpty));
+        void* header = host.operator_new_00bf681b(8);
+        if (header != nullptr) {
+            at<std::uint32_t>(header, 0x00) = 0;
+            at<std::uint32_t>(header, 0x04) = 0;
+            host.native_string_resize_0041dd40(header, static_cast<std::uint32_t>(std::strlen(name)), 1);
+            if (ptr(header, 0x04) != nullptr) {
+                host.memcpy_00bf7680(ptr(header, 0x04), name, at<std::uint32_t>(header, 0x00) + 1u);
+            }
+        }
+        host.string_key_list_append_owned_header_0094f270(list, header, 1);
+        host.hash64_iterator_next_008eeb60(&iterator);
+    }
+    if (sort) host.string_key_list_sort_0094f1b0(list, 0);
+}
+
+// ---------------------------------------------------------------------------
+// 008F6E20 BSP_ScenePropertyBag_CollectRecordsSorted. __thiscall(ECX = bag, out), RET 4; EAX =
+// count. Caller 008F7550.
+// Evidence: a local std::vector<record*> {alloc, first, last, end} zeroed (008F6E3E..008F6E4C);
+// iterator {bag+4} 00480690 begin (008F6E63). Per node: value = [node+8]; first non-null and
+// size < capacity -> stored at last, last += 4 (008F6E8D); else first > last -> 00BF6713, then
+// 008F6EB4 008F5900(vector, &ret, {vector, last}, &[node+8]); count += 1; 0047E480 next
+// (008F6EC1). Then the two first <= last checks (00BF6713 at 008F6EE1 / 008F6EF2) and 008F6F08
+// 008F3C90(first, last, size, 008EFBC0). out+4 = 0 (008F6F15); for i < count: checked index
+// (00BF6713 at 008F6F35), 008F6F44 008F0010(out, &v[i]); _free(first) when non-null (008F6F59).
+// ---------------------------------------------------------------------------
+std::int32_t scene_property_bag_collect_records_sorted_008f6e20(Seg59bHost& host, void* bag, void* out) {
+    alignas(4) std::uint8_t vector[0x10] = {};
+    auto first = [&]() { return static_cast<std::uint8_t*>(ptr(vector, 0x04)); };
+    auto last = [&]() { return static_cast<std::uint8_t*>(ptr(vector, 0x08)); };
+    auto end = [&]() { return static_cast<std::uint8_t*>(ptr(vector, 0x0C)); };
+    Hash64Iterator iterator{add(bag, 0x04), nullptr, 0};
+    host.scene_property_bag_iterator_begin_00480690(&iterator);
+    std::int32_t count = 0;
+    while (iterator.node != nullptr) {
+        void* const value = add(iterator.node, 0x08);
+        if (first() != nullptr && ((last() - first()) >> 2) < ((end() - first()) >> 2)) {
+            std::memcpy(last(), value, 4);
+            at<std::uint8_t*>(vector, 0x08) = last() + 4;
+        } else {
+            if (first() > last()) host.checked_iterator_failure_00bf6713();
+            alignas(4) std::uint8_t ret[8] = {};
+            host.pointer_vector_insert_008f5900(vector, ret, vector, last(), value);
+        }
+        host.scene_property_bag_iterator_next_0047e480(&iterator);
+        ++count;
+    }
+    std::uint8_t* const sort_last = last();
+    if (first() > sort_last) {
+        host.checked_iterator_failure_00bf6713();
+        if (first() > last()) host.checked_iterator_failure_00bf6713();
+    }
+    host.sort_by_predicate_008f3c90(first(), sort_last, static_cast<std::int32_t>((sort_last - first()) >> 2),
+                                    0x008EFBC0u);
+    at<std::uint32_t>(out, 0x04) = 0;
+    for (std::int32_t index = 0; index < count; ++index) {
+        if (first() == nullptr || static_cast<std::uint32_t>(index) >= static_cast<std::uint32_t>((last() - first()) >> 2)) {
+            host.checked_iterator_failure_00bf6713();
+        }
+        pointer_array_push_back_grow_008f0010(host, out,
+                                              reinterpret_cast<const std::uint32_t*>(first() + index * 4));
+    }
+    if (first() != nullptr) host.free_00bf65ac(first());
+    return count;
+}
 }  // namespace bsp::cc13_seg59b
