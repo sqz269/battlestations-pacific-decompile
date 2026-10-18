@@ -207,9 +207,10 @@ public:
     virtual void approach_dive_bomb_aim_error_draw_009c3da0(void* approach) = 0;
     // 009A6C10: __thiscall(ECX = dogfight approach, bot, arg), RET 8.
     virtual void bot_approach_dogfight_construct_009a6c10(void* block, void* bot, void* arg) = 0;
-    // 009B44F0: __thiscall(ECX = level-bomb approach, [bot+50h], target), RET 8.
-    virtual void bot_approach_level_bomb_construct_base_009b44f0(void* block, void* arg,
-                                                                 void* target) = 0;
+    // 009B4400: __thiscall(ECX = level-bomb approach): the aim-error redraw.
+    virtual void approach_level_bomb_aim_error_draw_009b4400(void* approach) = 0;
+    // 007C1FB0: __thiscall(ECX = unit), ST0: the longest rack stick time.
+    virtual float unit_longest_rack_stick_time_007c1fb0(void* unit) = 0;
     // 009A6D40: __thiscall(ECX = dogfight approach, bot, archive), RET 8.
     virtual void bot_approach_dogfight_construct_from_stream_009a6d40(void* block, void* bot,
                                                                       void* archive) = 0;
@@ -840,5 +841,8 @@ void* bot_approach_torpedo_construct_009d0380(Cc13Seg67bHost& host, void* approa
 // 009C3EA0: __thiscall(ECX = approach, plane, target), RET 8, EAX = approach.
 void* bot_approach_dive_bomb_construct_009c3ea0(Cc13Seg67bHost& host, void* approach,
                                                 void* plane, void* target);
+// 009B44F0: __thiscall(ECX = approach, plane, target), RET 8, EAX = approach.
+void* bot_approach_level_bomb_construct_base_009b44f0(Cc13Seg67bHost& host, void* approach,
+                                                      void* plane, void* target);
 
 }  // namespace bsp

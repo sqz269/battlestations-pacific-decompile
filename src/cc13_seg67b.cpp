@@ -3042,7 +3042,7 @@ constexpr double kHundred_00d7a220 = 100.0;  // 4059000000000000
 // difference is rounded to float. EH unwinding not modelled.
 void* bot_approach_level_bomb_construct_009b75e0(Cc13Seg67bHost& host, void* block, void* bot,
                                                  void* target) {
-    host.bot_approach_level_bomb_construct_base_009b44f0(block, ptr_at(bot, 0x50), target);
+    bot_approach_level_bomb_construct_base_009b44f0(host, block, ptr_at(bot, 0x50), target);
     host.bot_state_registry_construct_00411e20(ptr(block, 0xDC));
     const float third = at<float>(block, 0xB4);
     const float far_ = at<float>(block, 0xB0);
@@ -3880,6 +3880,67 @@ void* bot_approach_dive_bomb_construct_009c3ea0(Cc13Seg67bHost& host, void* appr
     at<float>(approach, 0xDC) = at<float>(plane, 0x100);
     at<float>(approach, 0xE0) = at<float>(plane, 0x104);
     host.approach_dive_bomb_aim_error_draw_009c3da0(approach);
+    return approach;
+}
+
+// ---------------------------------------------------------------------------
+// The level-bomb approach base.
+
+namespace {
+constexpr std::uint32_t kLevelBombApproachVtable_00d200a8 = 0x00D200A8u;
+constexpr float kSixteen_00ce6454 = 16.0f;               // 41800000
+constexpr float kPointSixFive_00d07fc4 = 0.65f;          // 3F266666
+constexpr float kTwelveHundred_00cfd714 = 1200.0f;       // 44960000
+}  // namespace
+
+// 009B44F0 (BSP_BotApproachLevelBomb_ConstructBase): __thiscall(ECX = approach, plane,
+// target), RET 8, EAX = approach. Evidence (disk bytes): 009F9CE0(ECX = approach, plane,
+// tuning+458h) (009B4512-009B4528); vtable 00D200A8, +2Ch = 0 (009B4537-009B453D);
+// 009FB200(ECX = approach+30h, target) (009B4540); +A4h = [00CE6454] 16.0 (009B456A);
+// r = 00BD2F10(1, [00CE69C8] 0.3, [00D07FC4] 0.65) kept as a double (009B4572-
+// 009B4577); +A8h = float(007C1FB0(ECX = plane) x r) (009B457B-009B4591); with desc =
+// [approach+8]: +ACh = desc+188h, +B0h = [00CFD714] 1200.0 (009B4586-009B45A9); T =
+// RNG(1, [00D06BB4] 1.6, [00CF4848] 1.8) x desc+268h, +C0h = 0.0, +C8h = 0FFh, bytes
+// +CCh/+CDh = 0, +B4h = T, byte +CEh = 1, +B8h = +BCh = float(T x double [00D045F0]
+// 1.4) (009B45B1-009B4619); 00414DB0(plane) when byte plane+C8h is 0 (009B461F-
+// 009B4629); +D0h/+D4h/+D8h = plane+FCh/+100h/+104h (009B462E-009B464E); 009B4400(ECX =
+// approach) (009B4654).
+// UNCERTAINTY: 24-bit precision modelled; the products of float-exact operands are exact
+// in double and round once. The RNG and 007C1FB0 results are rounded from ST0 by the
+// hooks. The plane is dereferenced without a null test, as in the image. EH unwinding
+// not modelled.
+void* bot_approach_level_bomb_construct_base_009b44f0(Cc13Seg67bHost& host, void* approach,
+                                                      void* plane, void* target) {
+    const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x458);
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, plane, speed);
+    at<std::uint32_t>(approach, 0x00) = kLevelBombApproachVtable_00d200a8;
+    at<std::uint32_t>(approach, 0x2C) = 0;
+    host.approach_target_ref_construct_009fb200(ptr(approach, 0x30), target);
+    at<float>(approach, 0xA4) = kSixteen_00ce6454;
+    const double r =
+        host.random_uniform_00bd2f10(1, kPointThree_00ce69c8, kPointSixFive_00d07fc4);
+    at<float>(approach, 0xA8) = static_cast<float>(
+        static_cast<double>(host.unit_longest_rack_stick_time_007c1fb0(plane)) * r);
+    void* desc = ptr_at(approach, 0x8);
+    at<float>(approach, 0xAC) = at<float>(desc, 0x188);
+    at<float>(approach, 0xB0) = kTwelveHundred_00cfd714;
+    const float t =
+        host.random_uniform_00bd2f10(1, kOnePointSix_00d06bb4, kOnePointEight_00cf4848) *
+        at<float>(desc, 0x268);
+    at<float>(approach, 0xC0) = kZero_s15;
+    at<std::uint32_t>(approach, 0xC8) = 0xFF;
+    at<std::uint8_t>(approach, 0xCC) = 0;
+    at<std::uint8_t>(approach, 0xCD) = 0;
+    at<float>(approach, 0xB4) = t;
+    at<std::uint8_t>(approach, 0xCE) = 1;
+    const float u = static_cast<float>(static_cast<double>(t) * kOnePointFour_00d045f0);
+    at<float>(approach, 0xB8) = u;
+    at<float>(approach, 0xBC) = u;
+    if (at<std::uint8_t>(plane, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(plane);
+    at<float>(approach, 0xD0) = at<float>(plane, 0xFC);
+    at<float>(approach, 0xD4) = at<float>(plane, 0x100);
+    at<float>(approach, 0xD8) = at<float>(plane, 0x104);
+    host.approach_level_bomb_aim_error_draw_009b4400(approach);
     return approach;
 }
 

@@ -421,3 +421,11 @@ It draws six times from the RNG 00BD2F10 on stream 1, and 009D02A0 draws again a
 +D4h is the larger of +A8h + 250.0 and the mean of +A8h and +ACh. The mean is kept on a tie or an unordered compare, as dive_bomb_dive_entry_height_009c4045 also does; that helper is bsp_game-only, so this body has its own copy of the step. The body then copies the plane's position into +D8h..+E0h and calls the aim-error redraw 009C3DA0.
 
 The uncertainty notes for 009CA4A0 and 009D0380 were corrected: float-exact double constants give exact products in double, so those steps round once.
+
+### 3.30 Level-bomb approach base
+
+009B44F0 builds the level-bomb approach on 009F9CE0 (tuning +458h) with vtable 00D200A8. It makes two draws from the RNG 00BD2F10 on stream 1:
+- +A8h = U(0.3, 0.65) x 007C1FB0 (the longest rack stick time);
+- +B4h = U(1.6, 1.8) x TurnCircleRadius, with +B8h = +BCh = 1.4 times that.
+
+It then copies the plane's position into +D0h..+D8h and calls the aim-error redraw 009B4400.
