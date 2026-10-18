@@ -853,7 +853,9 @@ struct GameUnitSlot {
     // plane+840h WandererMul and plane+844h WandererEnabled (the Lua names at
     // 00D1047C / 00D10460, SquadronSetWandererMul / SquadronSetWandererEnabled).
     // Written by the follow trail arm 009C207C (kFollowTrailArmBound); read by
-    // 007BE060 BSP_PlaneWanderer_FixedStep, which this host does not run.
+    // 007BE060 BSP_PlaneWanderer_FixedStep, hosted as wanderer_fixed_step_007be060
+    // under kPlaneWandererBound (ON). Also written by the gunfire exempt arm 0099F197
+    // (kGunfireExemptWandererMulBound).
     // plane+810h, the wanderer (packet cc9_plane_wanderer): +30h is plane+840h
     // WandererMul, +34h plane+844h WandererEnabled.
     bsp::PlaneWandererState wanderer;
@@ -2097,6 +2099,9 @@ struct GameUnitSlot {
     // the only one bound and inserts once per think (0099B790 on an empty set).
     float ga_timer_3e8{0.0f};
     float ga_rest_3ec{0.0f};
+    // Packet p20_ctor_seeds: task+308h, the 0099B740 phase 0099C76C seeds with
+    // -U(0, 1). Seeded only; 009998A0's +304h/+308h accumulator is not hosted.
+    float task_phase_308{0.0f};
     bool ga_flag_26c_4{false};
     // Packet cc9_pilot_vehicle_terrain_avoidance: each set as 0099B790 keeps
     // it, up to 24 merged [lo, hi] pairs from set+4h with the count at set+C4h
@@ -6435,6 +6440,33 @@ struct GameUnitsHost::Impl {
     // to floats (009CAD30, 009CAD3E) and d2 = (dx dx + 0 0) + dz dz is stored as a float
     // (009CAD58), main-thread 24-bit per op. True: float per op. False: double dx, dz.
     static constexpr bool kStrafeHorizontalFloatOpsBound = true;
+    // Packet p20_ctor_seeds (section 81). The bot-task base constructors 0099C6F0 /
+    // 0099C8B0 seed task+308h = -U(0, 1) (ECX = 1, 0099C765 FCHS FSTP 0099C76C),
+    // +3E8h = U(-1, 0) (ECX = 0, 0099C7BA FSTP 0099C7BF) and +3ECh = -1.0 (0099C7D3), on
+    // every task construction; the follow state 009C2980 seeds +74h = -U(0, 0.6)
+    // (009C2A0A), the dogfight maneuver 009A84E0 +2Ch = -U(0, 1) (009A853A), the torpedo
+    // attackrun 009D06D0 +1Ch = -U(0, 1). True: those values from keyed per-(unit,
+    // purpose) streams at each host task install (one host stream without
+    // BSP_GUNNERY_RNG_STREAMS, not the image's stream 0/1 order). False: the per-unit
+    // values persist across tasks (ga 0 / 0, +74h 0, maneuver and torpedo -0.5).
+    // Not hosted, recorded: the depth-charge attackrun 009A36A0 +1Ch and the dogfight
+    // attackrun 009A70E0 +1Ch (no host countdown field; the latter is unreachable).
+    static constexpr bool kBotTaskCtorSeedsBound = true;
+    unsigned long long bot_task_ctor_seeds{0};
+    void bot_task_ctor_seeds_0099c6f0(GameUnitSlot& unit, bool follow_state) {
+        if constexpr (kBotTaskCtorSeedsBound) {
+            ++bot_task_ctor_seeds;
+            const std::string& n = unit.row.name;
+            unit.task_phase_308 = -release_altitude_draw_00bd2f10(n + "#tb308", 0.0f, 1.0f);
+            unit.ga_timer_3e8 = release_altitude_draw_00bd2f10(n + "#tb3e8", -1.0f, 0.0f);
+            unit.ga_rest_3ec = -1.0f;
+            if (follow_state)
+                unit.fs_countdown_74 = -release_altitude_draw_00bd2f10(n + "#tb74", 0.0f, 0.6f);
+        } else {
+            (void)unit;
+            (void)follow_state;
+        }
+    }
     unsigned long long follow_exits{0};
     void follow_exit_009bde40(GameUnitSlot& unit) {
         ++follow_exits;
@@ -9345,13 +9377,16 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         a.countdown_38 = -release_altitude_draw_00bd2f10(n + "#r38", 0.0f, 1.0f);
         retreat_refresh_approach(unit);                       // 009C9282, 009C9289
         // 009C9C5D 009C2980, the follow state's construction draw.
-        (void)release_altitude_draw_00bd2f10(n + "#rf", 0.0f, 0.6f);
+        const float retreat_follow_74 = -release_altitude_draw_00bd2f10(n + "#rf", 0.0f, 0.6f);
+        (void)retreat_follow_74;
         unit.retreat_arm_560 = -release_altitude_draw_00bd2f10(n + "#r560", 0.0f, 1.0f);
         unit.retreat_squadron_ordered = squadron_ordered;
         unit.retreat_exit_6f0 = 0.0f;
         unit.retreat_exit_state_6ec = 0;
         unit.retreat_installed_at = summary.simulated_seconds;
         unit.retreat_task_installed = true;
+        bot_task_ctor_seeds_0099c6f0(unit, false);
+        if constexpr (kBotTaskCtorSeedsBound) unit.fs_countdown_74 = retreat_follow_74;
         unit.retreat_state = bsp::RetreatState::kNone;
         // 009C9DA0-009C9DC6: leader -> moveto, member -> follow, then its enter.
         retreat_enter_state(unit, unit_is_flight_leader_007b8ad0(m)
@@ -13558,6 +13593,8 @@ bool GameUnitsHost::Impl::install_land_task_core_009b41c0(std::size_t unit_index
     unit.land_deck_plus_one = deck + 1u;
     unit.land_explicit_site = explicit_site;
     unit.land_task_installed = true;
+    bot_task_ctor_seeds_0099c6f0(unit, false);
+    if constexpr (kBotTaskCtorSeedsBound) unit.fs_countdown_74 = unit.land_follow_stagger_74;
     unit.land_profile_activation_pending = true;    // 0099AEB3
     unit.land_installed_at = summary.simulated_seconds;
     // 009B32C2-009B32DD: a flight leader (007B8AD0) starts in moveto (land),
@@ -15443,6 +15480,7 @@ void GameUnitsHost::Impl::install_takeoff_task_0099a4a0(GameUnitSlot& p) {
     p.takeoff_margin_30 = bsp::unit_is_kind_of(p.class_id, 0x10) ? 25.0f : 15.0f;
     p.takeoff_floor_2c = p.takeoff_margin_30 + p.takeoff_base_34;
     p.takeoff_task_installed = true;
+            bot_task_ctor_seeds_0099c6f0(p, false);
     ++p.takeoff_installs;
     ++takeoff_installs;
     p.takeoff_installed_at = summary.simulated_seconds;
@@ -15483,6 +15521,7 @@ void GameUnitsHost::Impl::push_ground_retakeoff_0099b107(GameUnitSlot& p, const 
     p.takeoff_margin_30 = bsp::unit_is_kind_of(p.class_id, 0x10) ? 25.0f : 15.0f;
     p.takeoff_floor_2c = p.takeoff_margin_30 + p.takeoff_base_34;
     p.takeoff_task_installed = true;
+            bot_task_ctor_seeds_0099c6f0(p, false);
     ++p.takeoff_installs;
     ++takeoff_installs;
     p.takeoff_installed_at = summary.simulated_seconds;
@@ -23886,7 +23925,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
                         const bsp::DogfightState was = unit_.dogfight_state;
                         if (!unit_.dogfight_task_installed) {
-                            unit_.dogfight_task_installed = true;
+                            unit_.dogfight_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true); if constexpr (GameUnitsHost::Impl::kBotTaskCtorSeedsBound) unit_.mv_count_2c = -owner_.release_altitude_draw_00bd2f10(unit_.row.name + "#tbmv2c", 0.0f, 1.0f);
                         }
                         float attack_dist = 2000.0f;
                         float ceiling = 3000.0f;
@@ -24375,7 +24414,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void st_install_009cc230() {
                         const GameUnitsHost::Impl::PilotStrafeRow& row =
                             GameUnitsHost::Impl::strafe_row(unit_);
-                        unit_.strafe_task_installed = true;
+                        unit_.strafe_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true);
                         unit_.st_profile_activation_pending = true;   // 0099AEB3, after the install
                         unit_.st_target_plus_one = unit_.command_target_plus_one;
                         // 009F9CE0: approach+24h = max(1.0, MaxSpd / Pilot/Strafe/ReferenceSpeed).
@@ -25144,7 +25183,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // 009B9030 -> 009B7990: the task, its approach and its states.
                     void lb_install_009b7990() {
                         using namespace bsp::level_bomb;
-                        unit_.level_bomb_task_installed = true;
+                        unit_.level_bomb_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true);
                         unit_.lb_profile_activation_pending = true;   // 0099AEB3
                         unit_.lb_target_plus_one = unit_.command_target_plus_one;
                         bsp::LevelBombApproach& a = unit_.lb_ap;
@@ -26531,7 +26570,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void kz_install_009af720(KzHost& h) {
                         unit_.kz = bsp::KamikazeTask{};
                         unit_.kz.ap.ref = bsp::approach_target_ref_construct_009fb200(0.0f);
-                        unit_.kamikaze_task_installed = true;
+                        unit_.kamikaze_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true);
                         unit_.kz_target_plus_one = unit_.command_target_plus_one;
                         unit_.kz_attack_mode_370 = bsp::PilotAttackMode::kForced;
                         ++unit_.kz_installs;
@@ -26860,7 +26899,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void dkz_install_009aebe0(DkzHost& h) {
                         unit_.dkz = bsp::DropKamikazeTask{};
                         unit_.dkz.ap.ref = bsp::approach_target_ref_construct_009fb200(0.0f);
-                        unit_.drop_kamikaze_task_installed = true;
+                        unit_.drop_kamikaze_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true);
                         unit_.dkz_target_plus_one = unit_.command_target_plus_one;
                         unit_.dkz_attack_mode_370 = bsp::PilotAttackMode::kForced;
                         unit_.dkz_rack = dkz_find_rack();
@@ -27241,7 +27280,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             pin.ctl_380 = -1.0f;
                             pin.ctl_37c = -1.0f;
                             bsp::depth_charge_cruise_profile_009a6500(unit_.dc, host, pin);
-                            unit_.depth_charge_task_installed = true;
+                            unit_.depth_charge_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true);
                             unit_.dc_target_plus_one = unit_.command_target_plus_one;
                         }
                         const bsp::DepthChargeArmResult r =
@@ -27288,7 +27327,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (unit_.command_target_plus_one == 0) return;
                         }
                         if (!unit_.dive_bomb_task_installed) {
-                            unit_.dive_bomb_task_installed = true;
+                            unit_.dive_bomb_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true);
                             unit_.db_task_target_plus_one = unit_.command_target_plus_one;
                             unit_.db_profile_activation_pending = true;   // 0099AEB3
                             // 009C7710 leaves +310h on the moveto/follow pair
@@ -29418,7 +29457,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 }
                                 return;
                             }
-                            unit_.torpedo_task_installed = true;
+                            unit_.torpedo_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true); if constexpr (GameUnitsHost::Impl::kBotTaskCtorSeedsBound) unit_.torpedo_ar_countdown_1c = -owner_.release_altitude_draw_00bd2f10(unit_.row.name + "#tbt1c", 0.0f, 1.0f);
                             unit_.torpedo_task_target_plus_one = unit_.command_target_plus_one;
                             // 009D3050 leaves +310h on the moveto/follow pair
                             // 009D2DA0 registered; 009D24E0 leaves +98h at -1.
@@ -31681,7 +31720,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void run_moveto_task_install_009c3000() {
                         if (unit_.attack_command_class != bsp::kPilotOrderClassMoveTo) return;
                         if (unit_.moveto_task_installed) return;
-                        unit_.moveto_task_installed = true;
+                        unit_.moveto_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, false);
                         unit_.moveto_profile_activation_pending = true;   // 0099AEB3
                         unit_.moveto_arrived_454 = false;       // 009C1D0A
                         unit_.moveto_timer_548 = 1.0f;          // 009C307C
@@ -35239,7 +35278,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (!unit_.moveonpath_task_installed) {
                             bsp::moveonpath_task_construct_009bce50(unit_.moveonpath_task, h, h,
                                                                     max_alt_offset);
-                            unit_.moveonpath_task_installed = true;
+                            unit_.moveonpath_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true);
                             activated = true;
                         }
                         ++unit_.moveonpath_ticks;
@@ -40896,6 +40935,8 @@ void GameUnitsHost::report() {
             host.df_early_edge_clears, Impl::kDogfightEarlyEdgeClearBound ? 1 : 0);
         host.log.notef("summary follow exit 009BDE40 calls=%llu bound=%d (packet p20_follow_exit)",
             host.follow_exits, Impl::kFollowExitClearsBound ? 1 : 0);
+        host.log.notef("summary bot task ctor seeds=%llu bound=%d (0099C6F0 / 009C2980, packet "
+            "p20_ctor_seeds)", host.bot_task_ctor_seeds, Impl::kBotTaskCtorSeedsBound ? 1 : 0);
         host.log.notef("summary land min speed owner terms=%llu bound=%d (009B1362, packet "
             "p20_land_min_speed_owner)", host.land_min_speed_owner_terms,
             Impl::kLandMinSpeedOwnerVelocityBound ? 1 : 0);
