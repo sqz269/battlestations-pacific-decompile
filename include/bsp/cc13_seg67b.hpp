@@ -590,6 +590,22 @@ public:
     // 0075B430 BSP_SessionMessage_ConstructBase: __thiscall(ECX = message; type), RET 4.
     virtual void session_message_construct_base_0075b430(void* message,
                                                          std::uint32_t type) = 0;
+    // 00BF701A LIBCRT_atan2 (_CIatan2): ST0 = atan2(ST1, ST0).
+    virtual float crt_atan2_00bf701a(float y, float x) = 0;
+    // 007F0280 BSP_Bot_NearFieldUnitAvoidanceProbe: __thiscall(ECX = control; unit,
+    // const float* extents, float* out_a, float* out_b, const float* weights, byte mode),
+    // RET 18h (docs/BOT_PROBE_007F0280.md section 0.1).
+    virtual void bot_near_field_probe_007f0280(void* control, void* unit, const float* extents,
+                                               float* out_a, float* out_b,
+                                               const float* weights, bool mode) = 0;
+    // 009FB800 BSP_PilotBot_CommandPitchFromAltitude: __thiscall(ECX = state+4h; float
+    // altitude, float reference), RET 8.
+    virtual void pilot_bot_command_pitch_from_altitude_009fb800(void* approach_ref,
+                                                                float altitude,
+                                                                float reference) = 0;
+    // 009FABE0 BSP_Bot_SetDirectionFromHeadingPitch: __thiscall(ECX = direction; float
+    // heading, float pitch), RET 8.
+    virtual void bot_set_direction_009fabe0(void* direction, float heading, float pitch) = 0;
 };
 
 // ---- the bot-task factory list (00F8A314) ----
@@ -761,6 +777,8 @@ void* bot_state_depth_charge_attack_run_construct_009a36a0(Cc13Seg67bHost& host,
                                                            void* approach);
 void* bot_state_dogfight_attack_run_construct_009a70e0(Cc13Seg67bHost& host, void* state,
                                                        void* approach);
+// 009A71E0: __thiscall(ECX = state; float dt), RET 4. The attack run's tick (slot +0Ch).
+void bot_state_dogfight_attack_run_tick_009a71e0(Cc13Seg67bHost& host, void* state, float dt);
 void* bot_state_dogfight_maneuver_construct_009a84e0(Cc13Seg67bHost& host, void* state,
                                                      void* approach);
 void* bot_state_level_bomb_attack_run_construct_009b49b0(Cc13Seg67bHost& host, void* state,

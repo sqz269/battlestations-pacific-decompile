@@ -813,6 +813,22 @@ All 6 rows are ledger-only and match their hosts:
 - 009CADB0, the strafe attackrun tick. The image always runs the probe. 009FABE0 is not recorded by the host function.
 - 009CDE50, the takeoff prepare step.
 
+### 3.55 Batch 9: the dogfight large ticks (packet cc13-seg67C)
+
+**009A71E0** is a new body: the dogfight attack run's tick, slot +0Ch of 00D1F8B0.
+- No host function models it. The units host runs a labelled stand-in for attackrun and prepare (game_hosts_units.cpp ~24322).
+- Its only reference is the vtable slot (image scan), and it has no target-equal twin.
+- It has the strafe attackrun's shape: the +1Ch countdown re-samples the 007F0280 probe offset, and the heading goes through 00438AA0. Its own parts:
+  - an altitude command, 009FB800(ctl+394h, factor), with the factor from 1400 - y over min(a+D8h, 2000);
+  - a+DCh = 1.0 and a+E0h = 0.1.
+- It takes no draw.
+- New host hooks: `crt_atan2_00bf701a`, `bot_near_field_probe_007f0280`, `pilot_bot_command_pitch_from_altitude_009fb800` and `bot_set_direction_009fabe0`.
+
+Three ledger-only rows match the host:
+- 009A80E0, the avoid-turn tick. Its two FSUB forms were read from the bytes (DE E9, DE E1).
+- 009A87F0, the maneuver enter. Its stream-1 draws (3, or 4 in the threat arm) are the host's labelled midpoint stand-ins.
+- 009A8B20, the maneuver tick. The listing was followed through 009A8D9A; the mode machine below that was checked by its constants, curves and calls. The 0071C4F0 "out" arm and the U(lo, hi) draw are the host's labels.
+
 ## 4. Ledger-only records (packet cc13-seg67C)
 
 | Address | Host body | Result |
@@ -947,3 +963,6 @@ All 6 rows are ledger-only and match their hosts:
 | 009CA870 | `st_gotowards_tick_009ca870` (game_hosts_units.cpp ~24984) | matches; twin of 007B4980 |
 | 009CADB0 | `st_attackrun_tick_009cadb0` (game_hosts_units.cpp ~25173) | matches |
 | 009CDE50 | `run_takeoff_prepare_step_009cde50` (game_hosts_units.cpp ~34346) | matches |
+| 009A80E0 | `df_avoid_turn_tick_009a80e0` (game_hosts_units.cpp ~23066) | matches |
+| 009A87F0 | `df_maneuver_enter_009a87f0` (game_hosts_units.cpp ~22809) | matches the labelled midpoint stand-ins (no draws) |
+| 009A8B20 | `df_maneuver_tick_009a8b20` (game_hosts_units.cpp ~22838) | matches the labelled host |
