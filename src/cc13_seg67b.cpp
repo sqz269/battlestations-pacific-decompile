@@ -4,6 +4,7 @@
 
 #include "bsp/cc13_seg67b.hpp"
 #include "bsp/ship_ai_path_follower.hpp"
+#include "bsp/geometry_helpers.hpp"
 
 #include <cmath>
 #include <cstring>
@@ -2515,6 +2516,107 @@ void* bot_task_move_to_construct_approach_block_from_stream_009c2ef0(Cc13Seg67bH
     host.state_registry_add_00411e70(ptr(block, 0x70), kStrMoveToCircle_00d20978,
                                      ptr(block, 0x134));
     return block;
+}
+
+// ---------------------------------------------------------------------------
+// Ship-AI path node walks, the navigation goal with a penalty, and two debug
+// colour records.
+
+// 009D5A80 (009D5A80-009D5ADB). Recursive. With both +28h and +2Ch null: true
+// (009D5A8A-009D5A8F). Else for c = +28h (009D5A83): when c is set and byte
+// c+31h is set (009D5A97), true when float c+34h > [00D7A24C] 1.0 (009D5AA2
+// COMISS JA; NaN falls through) or when 009D5A80(c) is true (009D5AAB). Then
+// the same for c = +2Ch with byte c+32h and float c+38h (009D5AB4-009D5AD6).
+// Else false (009D5AD8).
+bool ship_ai_path_node_subtree_complete_009d5a80(void* node) {
+    void* const a = ptr_at(node, 0x28);
+    if (a == nullptr && ptr_at(node, 0x2C) == nullptr) return true;
+    if (a != nullptr && at<std::uint8_t>(a, 0x31) != 0) {
+        if (at<float>(a, 0x34) > kOne_00d7a24c) return true;
+        if (ship_ai_path_node_subtree_complete_009d5a80(a)) return true;
+    }
+    void* const b = ptr_at(node, 0x2C);
+    if (b != nullptr && at<std::uint8_t>(b, 0x32) != 0) {
+        if (at<float>(b, 0x38) > kOne_00d7a24c) return true;
+        if (ship_ai_path_node_subtree_complete_009d5a80(b)) return true;
+    }
+    return false;
+}
+
+// 009D9440 (009D9440-009D954B). Recursive. 009D5930(node) (009D9446), then on
+// +4h: +1 (009D944E): when +38h > 1.0 (009D945C COMISS JBE; NaN recurses), the
+// heading of (plus - node) in XZ, inlined as 00414EB0's formula (009D9465-
+// 009D94C1); else 009D9440(plus) (009D94DC). -1 (009D94EE): when +34h > 1.0
+// (009D94F8), 00414EB0 on (minus - node) (009D951F); else 009D9440(minus)
+// (009D9533). Any other direction: 0.0 (009D9545 FLDZ).
+float ship_ai_path_node_run_heading_009d9440(ShipAiPathNode& node) {
+    ship_ai_path_node_decide_direction_009d5930(node);
+    if (node.direction == 1) {
+        if (node.link_plus_length > kOne_00d7a24c) {
+            const std::array<float, 2> d{{node.link_plus->x - node.x,
+                                          node.link_plus->z - node.z}};
+            return heading_angle_00414eb0(d);
+        }
+        return ship_ai_path_node_run_heading_009d9440(*node.link_plus);
+    }
+    if (node.direction == -1) {
+        if (node.link_minus_length > kOne_00d7a24c) {
+            const std::array<float, 2> d{{node.link_minus->x - node.x,
+                                          node.link_minus->z - node.z}};
+            return heading_angle_00414eb0(d);
+        }
+        return ship_ai_path_node_run_heading_009d9440(*node.link_minus);
+    }
+    return kZero_s15;
+}
+
+// 009DE280 (009DE280-009DE2EF). 009DE050(ECX = nav, goal, 1, 0) (009DE28C); when
+// +1C4h != 3 (009DE291): +368h = +360h = 0.0 (009DE29D, 009DE2A5); +1D8h =
+// heading (009DE2B9) and 00605070(&+1D8h) wraps it (009DE2BD); +1CCh = 0
+// (009DE2C8), +1C4h = 3 (009DE2D2), +250h = +2B8h = penalty (009DE2DC, 009DE2E4).
+void ship_ai_set_navigation_goal_with_penalty_009de280(Cc13Seg67bHost& host, void* nav,
+                                                       float heading, const float* goal,
+                                                       float penalty) {
+    host.ship_ai_set_navigation_goal_009de050(nav, goal, 1, 0);
+    if (at<std::int32_t>(nav, 0x1C4) != 3) {
+        at<float>(nav, 0x368) = kZero_s15;
+        at<float>(nav, 0x360) = kZero_s15;
+    }
+    at<float>(nav, 0x1D8) = heading;
+    host.math_wrap_angle_in_place_00605070(&at<float>(nav, 0x1D8));
+    at<std::uint32_t>(nav, 0x1CC) = 0;
+    at<std::int32_t>(nav, 0x1C4) = 3;
+    at<float>(nav, 0x250) = penalty;
+    at<float>(nav, 0x2B8) = penalty;
+}
+
+// 009D5E10 (009D5E10-009D5E58) and 009D5FD0 (009D5FD0-009D6013): function-local
+// static colours. When bit 0 of the guard dword is clear (009D5E15 / 009D5FD5),
+// it is set (OR) and the record filled: A at 00F8A68C = {0.5, 0.5, 0.5, 1.0}
+// (00CE3800, 00D7A24C), guard 00F8A69C; B at 00F8A6DC = {0.0, 1.0, 1.0, 1.0},
+// guard 00F8A6EC. Returns the record's address.
+float* ship_ai_debug_colour_record_a_009d5e10(Cc13Seg67bHost& host) {
+    std::uint8_t* const block = host.ship_ai_debug_static_block_00f8a68c();
+    if ((at<std::uint8_t>(block, 0x10) & 1u) == 0) {
+        at<std::uint32_t>(block, 0x10) |= 1u;
+        at<float>(block, 0x00) = kHalf_00ce3800;
+        at<float>(block, 0x04) = kHalf_00ce3800;
+        at<float>(block, 0x08) = kHalf_00ce3800;
+        at<float>(block, 0x0C) = kOne_00d7a24c;
+    }
+    return &at<float>(block, 0x00);
+}
+
+float* ship_ai_debug_colour_record_b_009d5fd0(Cc13Seg67bHost& host) {
+    std::uint8_t* const block = host.ship_ai_debug_static_block_00f8a68c();
+    if ((at<std::uint8_t>(block, 0x60) & 1u) == 0) {
+        at<std::uint32_t>(block, 0x60) |= 1u;
+        at<float>(block, 0x50) = kZero_s15;
+        at<float>(block, 0x54) = kOne_00d7a24c;
+        at<float>(block, 0x58) = kOne_00d7a24c;
+        at<float>(block, 0x5C) = kOne_00d7a24c;
+    }
+    return &at<float>(block, 0x50);
 }
 
 }  // namespace bsp

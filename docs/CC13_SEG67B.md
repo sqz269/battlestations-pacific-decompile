@@ -290,3 +290,12 @@ Ledger-only (existing implementations, spot-checked against the bytes): 009B4400
 | 009CA1A0 / 009CD1F0 / 009CFEE0 / 009D4DB0 | retreat, strafe, takeoff and torpedo task destructor bodies | the approach block's destructor on task+3F8h, then 007B4030 |
 | 009F3E80 | ship-AI gun-bot destructor body | +2260h sub-vtable 00D05704, the owned object at +2264h, 009E8C10 on +58h, then 007293D0 |
 | 009C2EF0 | move-to approach block from a stream | registers the moveto, follow and circle states in the registry at +70h |
+
+### 3.16 Ship-AI path node walks, the navigation goal with a penalty and two debug colours
+
+| Address | Function | Notes |
+|---|---|---|
+| 009D5A80 | path node subtree test | recursive; true for a node with no children, or when any child flagged at +31h / +32h has a leg longer than 1.0 or is itself complete |
+| 009D9440 | run heading | follows the decided direction past legs of 1.0 or less and returns the heading of the first longer leg (00414EB0); 0.0 with no direction |
+| 009DE280 | navigation goal with a penalty | 009DE050(goal, 1, 0), then mode +1C4h = 3, the wrapped heading at +1D8h and the penalty at +250h and +2B8h |
+| 009D5E10 / 009D5FD0 | debug colour records | function-local statics {0.5, 0.5, 0.5, 1.0} and {0.0, 1.0, 1.0, 1.0} |

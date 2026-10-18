@@ -175,6 +175,15 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
+    // 009DE050: __thiscall(ECX = nav block, const float* goal2d, char keep_mode,
+    // unsigned char final_leg), RET 0Ch.
+    virtual void ship_ai_set_navigation_goal_009de050(void* nav, const float* goal,
+                                                      std::uint8_t keep_mode,
+                                                      std::uint8_t final_leg) = 0;
+    // 00605070: __thiscall(ECX = float*), wraps the angle in place.
+    virtual void math_wrap_angle_in_place_00605070(float* angle) = 0;
+    // 00F8A68C: the ship-AI debug static block (colour records and guards, 64h bytes).
+    virtual std::uint8_t* ship_ai_debug_static_block_00f8a68c() = 0;
     // 009C1DC0: __thiscall(ECX = move-to approach block, [bot+50h], archive), RET 8.
     virtual void bot_approach_move_to_construct_from_stream_009c1dc0(void* block, void* bot_owner,
                                                                      void* archive) = 0;
@@ -707,5 +716,18 @@ void ship_ai_gun_bot_destruct_body_009f3e80(Cc13Seg67bHost& host, void* bot);
 void* bot_task_move_to_construct_approach_block_from_stream_009c2ef0(Cc13Seg67bHost& host,
                                                                      void* block, void* bot,
                                                                      void* archive);
+struct ShipAiPathNode;
+
+// 009D5A80: __thiscall(ECX = node), RET, AL.
+bool ship_ai_path_node_subtree_complete_009d5a80(void* node);
+// 009D9440: __thiscall(ECX = node), RET, ST0.
+float ship_ai_path_node_run_heading_009d9440(ShipAiPathNode& node);
+// 009DE280: __thiscall(ECX = nav block, float heading, const float* goal, float penalty), RET 0Ch.
+void ship_ai_set_navigation_goal_with_penalty_009de280(Cc13Seg67bHost& host, void* nav,
+                                                       float heading, const float* goal,
+                                                       float penalty);
+// 009D5E10 / 009D5FD0: __cdecl(), RET, EAX = the static colour record.
+float* ship_ai_debug_colour_record_a_009d5e10(Cc13Seg67bHost& host);
+float* ship_ai_debug_colour_record_b_009d5fd0(Cc13Seg67bHost& host);
 
 }  // namespace bsp
