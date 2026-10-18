@@ -6046,7 +6046,13 @@ void GameMissionLuaHost::check_squad_ordnance_trigger_007504f0(std::size_t unit,
 // squadron itself, so the squadron's notice comes from this poll alone: a notice for
 // the fused wing-0 slot from a plane-level Kill site is not the squadron's and is
 // dropped here (cc13-fix19c; before, a kamikaze wing-0 plane retired triggers aimed
-// at a squadron whose other planes lived).
+// at a squadron whose other planes lived). RESIDUAL (labelled, cc13-fix19d): the
+// wing-0 PLANE shares the fused slot's id with its squadron. So a trigger aimed at
+// that plane, which used to retire on the plane's Lua Kill, kamikaze or KillDepth,
+// now retires only when the whole squadron goes. No reachable script in this
+// installation aims at a single plane this way. The squadron targets are PRCP01's
+// usn_03:961 Mission.HornetKillers[1] and JM02's prcpjm02.lua:1123
+// luaPickRnd(Mission.Bombers) (docs/CC13_FIX19.md, item 5).
 // Once per unit, standing for the +5Eh test (009274C8).
 void GameMissionLuaHost::target_gone_00925c40(std::size_t unit_index) {
     if constexpr (!kLuaProximityTriggersBound) {
@@ -6088,9 +6094,12 @@ void GameMissionLuaHost::target_gone_drain_009273a0() {
                 // "had a member" is kept sticky; without it an emptied record never read
                 // as gone.
                 // TIMING SUBSTITUTION (labelled, cc13-fix19c): a member the gunnery host
-                // counts dead but has not yet compacted is not live either. The image
-                // drops +3CCh only at the plane's destroy flush (007BCAA0 -> 007F3970),
-                // so this can notice the squadron's Kill up to one units step early.
+                // counts dead but has not yet compacted is not live either. For a plane
+                // that dies, the image drops +3CCh at its destroy flush (007BCAA0 ->
+                // 007F3970), so this can notice the squadron's Kill up to one units step
+                // early. The other 007F3970 callers Kill and remove at once, so they
+                // leave no window: the landed plane (007F3CD9 00926D90 cause 5, then
+                // 007F3CE7) and Lua SquadronLandAndKill (008A223F, then 008A2249).
                 bool live = false;
                 for (const std::size_t m : r.member_units) {
                     if (m == bsp::kPlaneSquadronNoUnit || m >= units_hooks_->count()) continue;
