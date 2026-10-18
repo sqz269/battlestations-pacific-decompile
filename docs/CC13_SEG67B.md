@@ -27,10 +27,12 @@ Read from disk bytes:
   while a release request is queued, the plane holds level flight at TravelSpeed
   instead of keeping station.
 
-The host's `run_follow_tick_009c1fd0` (game_hosts_units.cpp:9330) runs the law
-unconditionally and writes none of the seven stores. None of its callers gates on
-C20h/C25h. The moveto-follow arm at :35102 returns at the right point but drops the
-stores. Adoption note sent to cc9.
+The host's `run_follow_tick_009c1fd0` (game_hosts_units.cpp) ran the law
+unconditionally and wrote none of the seven stores. None of its callers gates on
+C20h/C25h. The moveto-follow arm (`run_moveto_follow_tick_009c1fd0`) returns at the
+right point but drops the stores. Adoption note sent to cc9. cc9 has since added the
+arm behind `kFollowReleaseArmBound` (packet p20_follow_release_arm, OFF as of
+2026-10-18); with the switch OFF the host behaves as described above.
 
 The issue stage 007CE9FD lies outside this segment. Its five guards (bytes
 007CEA02-007CEA4B) are:
@@ -46,17 +48,19 @@ blocked ticks on USNOS have not been attributed to a guard.
 
 ### 1.2 Land / park / land-abort (priority 2)
 
-- **009B09C0, the land/abort on-ground arm 009B0E74-009B0F93.** The host's arm (:33246,
-  behind `kLandAbortGroundArmBound`, OFF) matches the bytes, including float(pi/2)
+- **009B09C0, the land/abort on-ground arm 009B0E74-009B0F93.** The host's arm (in
+  `run_land_abort_tick_009b09c0`, behind `kLandAbortGroundArmBound`, OFF) matches the bytes, including float(pi/2)
   00CE3830, the COMISS/JA sign test, and the 00419010 yaw with ±1.1. The only
   host-only behaviour is the null-holder refusal.
 - **0099B0BE-0099B113, the re-takeoff.** Its condition is:
   !(plane+72Ch)->vt[38h], task->vt[38h], (0042A7E0 IsOnGround || +900h == 6), and
   task->vt[30h]. When all hold, the tick pushes 009CFF40(DL=0) through 00999F50. The
-  host's gate (:35681) agrees, taking task vt[38h] as "a head task exists".
+  host's gate (in `pilot_think_and_commit`, before `push_ground_retakeoff_0099b107`) agrees, taking task vt[38h] as "a head task exists".
 - **009B3CF0, the land state rule.** 009B3D0B parks a plane whose +900h is 4/5 unless
   it is in park or abort, and the host agrees. One gap: the final->park edge
-  (009B3DD9, 009B3370) is refused at :33497 even with `kLandParkStateBound` ON.
+  (009B3DD9, 009B3370) is refused in `land_state_rule_009b3cf0` even with
+  `kLandParkStateBound` ON. cc9 has since added the edge behind
+  `kLandFinalParkEdgeBound` (packet p20_land_final_park, OFF as of 2026-10-18).
 - **009B3370.** The host's predicate (`land_touched_20 && +900h != 7`) matches.
 
 ### 1.3 The torpedo goaway's done condition (priority 3)
@@ -199,7 +203,7 @@ Ledger-only: 009C82D0 and 009D3E40 are byte-identical copies of 009A56C0 (`set_s
 | 009BEBA0 | `bot_approach_refresh_target_009beba0` | the whole body |
 | 009BD400 | `bot_path_leg_manager_get_body_009bd400` | a lazy singleton taken under the lifetime manager's critical section |
 
-009BEBA0 and the cc9 host's `moveto_refresh_009beba0` (game_hosts_units.cpp:31618):
+009BEBA0 and the cc9 host's `moveto_refresh_009beba0` (game_hosts_units.cpp):
 - The host is a partial model that carries its own labelled substitutions.
 - The +2Ch zeroing has the same polarity in both: `sq_lua_alt_3ad` is true exactly when byte +3ADh is 0.
 - The host does not apply the +28h leg-altitude override (009FC260). It keeps that as a record, as its comment states.
@@ -472,8 +476,8 @@ These rows from earlier sections are now recorded ledger-only, because cc9 alrea
 |---|---|---|
 | 009B1300 | land_min_speed_009b1300 (game_hosts_units.cpp) | **Mismatch.** The host drops the w·v carrier term (009B1309-009B1362) and adds 0. On a carrier landing, approach+30h is the mother ship, so that term is the carrier's velocity along the plane direction. |
 | 009B3770 | inline in land_state_rule_009b3cf0 (game_hosts_units.cpp) | Arms match. |
-| 009E5E00 | engagement_target_009e5e00 (game_hosts_ship_ai.cpp:5756) | The host skips the kind-1Ch test. This is benign: the only caller sits under standoff mode 4, which is latched only for kind-1Ch targets. |
-| 009E6120 | probe_point_009e6120 (game_hosts_ship_ai.cpp:5172) | Matches. |
+| 009E5E00 | engagement_target_009e5e00 (game_hosts_ship_ai.cpp) | The host skips the kind-1Ch test. This is benign: the only caller sits under standoff mode 4, which is latched only for kind-1Ch targets. |
+| 009E6120 | probe_point_009e6120 (game_hosts_ship_ai.cpp) | Matches. |
 
 Other corrections:
 - **00999AE0:** the walk is now the image's stale cursor. The cursor is taken once from +58h and compared by != against an end that is re-read after each entry (00999B07-00999B15).
@@ -482,3 +486,44 @@ Other corrections:
 - **009CAD00:** marked as a last-bit mismatch. The image rounds dx and dz to float (009CAD30, 009CAD3E); the host keeps them in double.
 - **009B9030 and 009C8C70:** these now call the local constructors 009B7990 and 009C7710 directly.
 - **009CA4A0, 009CB500, 009CD420 and 009B44F0:** these stay as new reconstructions. Each body now cites the inline cc9 host site that models it with per-name RNG stand-ins.
+
+### 3.37 Review minors (packet cc13-seg67C)
+
+- **009D0380, 009C3EA0 and 009AFE70** stay as new reconstructions and now cite cc9's inline models by host function and switch: `run_torpedo_task_arm_009d4850` under `kTorpedoResetDrawsBound` and `kTorpedoResetEngageDrawsBound`; `run_dive_bomb_task_arm_009c8790` under `kReleaseAltitudeDrawBound` (the +A8h draw); `GameUnitsHost::Impl::install_land_task_0099a3dd` (the land approach draws).
+- Host cites by line number in this file and in `src/cc13_seg67b.cpp` were replaced by host function, block or switch names.
+- **009C1DC0:** the ledger uncertainty now says that a missing targetentity key leaves a stack address in the image, not arg.
+- **00999AE0:** the ledger evidence now says that the cursor is taken once and the end is re-read after each entry.
+
+### 3.38 Stream constructors and the move-on-path path entity (packet cc13-seg67C)
+
+009A6D40 builds the dogfight approach from a stream. It follows 009A6C10 but builds both observer members inline, and it reads the target lock from {0,"_targetLock"}. Further details:
+- The +B8h observer is swapped to the entity read from "squadName".
+- The +A0h observer is cleared, then swapped to the target ref's entity [+44h] when that entity's vtable[5Ch](0Fh) holds.
+- +D4h is the 3-D distance from the target to the plane, (dy² + dx²) + dz². +D8h is the horizontal distance, dz² + (dx² + 0), where the zero is the FLDZ the image squares. Each takes the 1e-10 cutoff with the JBE NaN arm.
+- The image overwrites the `bot` argument slot with stack addresses before the squadName read. A missing key would therefore register the observer on a stack address. The body seeds the slot with its own field record's address, and this is labelled.
+
+009A9670 now calls it directly.
+
+009B4690 is the stream twin of 009B44F0. It makes no RNG draws and does not call 009B4400. It reads ten fields, from releaseTime to calcHitPos. 009B77C0 now calls it directly.
+
+009BD0B0 answers the path's entity for the move-on-path still-valid test 009BD280. The pseudocode shows a "varargs" vtable[114h], but that comes from the hoisted `PUSH 0`, which is 0071BFF0's own stack argument. vtable[114h] takes no arguments.
+
+### 3.39 Ship-AI debug draws (packet cc13-seg67C)
+
+009D7260, 009D98C0, 009DD9C0 and 009DDCC0 draw through 0085FB30, 0085F990, 00860BB0, 00860BE0 and 004166E0 (all host hooks).
+
+The function-local static colours (red, green, blue, cyan and yellow) live in the image's block at 00F8A68C, which the hook now covers up to 00F8A703. They are written at the image's guard tests. The cyan record is 009D5FD0's.
+
+009D7260 needed every stack slot traced through the four colour blocks. Its corners are (c ± v) ± u, with each product and sum rounded to float.
+
+## 4. Ledger-only records (packet cc13-seg67C)
+
+| Address | Host body | Result |
+|---|---|---|
+| 0099B790 | `ga_insert_0099b790` | matches; the array order after a multi-merge differs, but the set of pairs is the same |
+| 0099BF30 | `gunfire_repair_0099bf30` | matches; differences only on NaN fallbacks |
+| 0099EC40 | `gunfire_detect_0099ec40` | **mismatch**: the exempt arm's +840h WandererMul store (0099F197) is missing; adoption note sent |
+| 009A7A50 | `df_avoid_common_009a7a50` | **mismatch**: the U(1, 2) redraw at 009A7D72 is a constant 1.5, and approach+100h bit 2 is not modelled; adoption note sent |
+| 009AFAF0 | `land_geometry_009afaf0` | matches; the speed divisor (vtable[38h]) is the host's \|v\| |
+| 009B1420 | `land_begin_steer_009b1420` | first third (009B1420-009B15BC) matches |
+| 009C7A80 | `update_dive_bomb_approach` | matches, with the host's labelled substitutions |
