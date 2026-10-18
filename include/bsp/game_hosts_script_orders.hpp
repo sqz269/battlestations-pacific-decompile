@@ -138,6 +138,15 @@ void set_game_effective_difficulty_6ac(std::int32_t value) noexcept;
 // flush does in the image (009273A0 -> vtable[74h] 00926390 -> vtable[7Ch] ->
 // 00929B60 -> 00929800). False: the old behaviour, `Dead` stays false.
 inline constexpr bool kEntityDeadBound = true;
+// Packet cc9-ships58 (docs/SHIP_AI_OPEN_ITEMS.md section 287). 00929800 finds the
+// self table through the entity's cached key (+178h, 0092981F) and never reads
+// `Ptr`; 00928C80 (kLuaTrulyDeadOnKilledBound) nulls `Ptr` (00928D04) and leaves
+// +178h alone, so a unit already unlinked through the kill list still gets
+// `Dead`. True: the publisher also takes a slot whose `Ptr` is null as the
+// unit's own. False: only `Ptr == id` counts, and a unit whose `Ptr` the
+// TrulyDead hook nulled first (a kamikaze boat's 00814595 removal) never reads
+// `Dead` (USNOS: the Shinyos hold PhOneAttackers open, wave 2 never spawns).
+inline constexpr bool kEntityDeadAfterPtrNullBound = true;  // ON: USNOS pair, section 287
 // Packet cc9_squadron_dead, docs/ENTITY_DEAD_FLAG.md section 8. True: a squadron
 // fused with its wing-0 plane publishes `Dead` only once no other member still
 // flies, as 007F3970 kills the squadron entity only when +3CCh reaches 0. False:
