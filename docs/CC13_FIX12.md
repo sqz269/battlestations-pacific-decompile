@@ -66,15 +66,26 @@ natives do, and takes the index as `ID - 1`. It then picks the first matching ca
 1. **Squadron.** A plane-squadron registry record whose `squadron_unit` is the index: take that
    record's `flight_leader()` (+3D0h slot 0, "whatever the count", as 007EDA91 reads it), then the
    plane value below for that leader. usn_11's `Monteray` is this case: it is a squadron
-   (`SquadronSetTravelAlt(Mission.Monteray, ...)`, usn_11 `:1531`).
+   (`SquadronSetTravelAlt(Mission.Monteray, ...)`, usn_11 `:1531`). usn_11's `Hammerhead`
+   (`GenerateObject(luaFindHidden("Hammerhead 3").Name)`, `:1294`, later handed to
+   `PlaneReloadBombPlatforms`) is a squadron too and takes this case. (Corrected by packet
+   cc13-fix18; an earlier revision called it a submarine.)
 2. **Ship family** (`unit_is_kind_of(index, kUnitKindQueryShip)`):
    `GameUnitsHost::unit_forward_speed_0092d730(index)`, the host's existing 0092D730 over the slot's
-   linear velocity and pose row 2. Hammerhead (a submarine) and the PT boat in commandhelpers take
-   this case.
-3. **Plane family** (`kUnitKindQueryPlane`): `float(sqrt(vx^2 + vy^2 + vz^2))` over
-   `GameUnitsHost::unit_linear_velocity(index)`. The free-flight step and the spawn seed mirror
-   `plane_world_velocity` into that field (`game_hosts_units.cpp` 007F2B3C and the integration step).
-   This is the same value as the units host's own `leader_live_speed_007b8e60`.
+   linear velocity and pose row 2. No shipped call site is known to pass a ship.
+3. **Plane family** (`kUnitKindQueryPlane`): +B1Ch is ctl+6Ch (ctl = unit+AB0h), which
+   007D8020 BSP_PlaneFlightController_UpdateSpeedTerms stores at 007D807C from the controller's
+   world velocity ctl+18h. The host reads that velocity through
+   `GameUnitsHost::unit_plane_world_velocity(index)` (the slot's `plane_world_velocity`, packet
+   cc13-fix12c in cc13-fix18). It is not `unit_linear_velocity`: while a plane is deck-parented,
+   007C71E0's 007D9CE0 (007C7277) leaves ctl+18h relative to the deck owner (the host's
+   `carrier_deck_reparent_007c71e0` subtracts the owner's velocity from `plane_world_velocity`
+   and not from `motion.linear_velocity`), so a plane at rest on a moving carrier reads its
+   deck-relative speed here, as the image does.
+   The magnitude follows 007D8024-007D8064 as x87 at 24-bit precision (main thread), each op
+   rounded to float: `s2 = float(float(float(y*y) + float(x*x)) + float(z*z))`, stored as a
+   float at 007D803D; `s2 <= 1e-10` (the double at 00CE3820, FCOMI then JBE, so a NaN also takes
+   it) gives 0.0 (007D8064); otherwise `float(sqrt(s2))` (00BF7030, 007D8056).
 
 The pushed value is the float widened to a Lua number, as 00B66480 receives it.
 
@@ -87,11 +98,12 @@ The pushed value is the float widened to a Lua number, as 00B66480 receives it.
 - **Any other class** (land vehicles, structures, ordnance and so on): those vtables' slot 38h
   bodies were not read. The host pushes **nothing** and counts `unmodelled`. No shipped call site
   reaches this case; the subjects are planes, squadrons, submarines and ships.
-- **LABELLED, plane value:** the image caches +B1Ch in the core step at 007D807C, whereas the host
-  computes the magnitude when the native is called. The host's velocity field holds the value of the
-  last step, so the two agree unless a script reads the speed between a velocity write and the next
-  step.
-- **Precision:** the result is a single float load or a float magnitude; no x87 chain is involved.
+- **LABELLED, plane value:** +B1Ch is written at 007D807C, inside 007D8020, which runs as the tail
+  of 007D9C10 and 007D9C80 (its only two callers); the host computes the magnitude when the native
+  is called. The two agree unless ctl+18h moved since the last of those calls.
+- **Precision:** the plane arm is an x87 chain (three products, two sums, a compare and a sqrt) on
+  the main thread at 24-bit precision; the host rounds each step to float in the image's order
+  (above). The ship arm is the existing 0092D730 model; the squadron arm is the leader's plane arm.
 
 GetShipSpeed 00890EF0 makes the same vtable[38h] call (`00891006..0089100D`, `FSTP float`). It is
 not answered here because no packet asked for it.
@@ -101,8 +113,11 @@ not answered here because no packet asked for it.
 - usn_11 and prcp_11 `CheckMontR1..R10` (`:2295-2415` / `:2304-2421`): the primary-4 rescue points
   clear when the Monteray squadron is within 100 of a point, selectable, below y 10 and slower than
   30. The squadron is selectable through the fused-slot liveness (`kFusedSquadronSlotSelectableBound`).
-- usn_11 and prcp_11 Hammerhead (`:1363` / `:1369`).
-- jm05 (`COTP-IJN :1236`, `PRCPIJN :1341`): the captured-PT switch.
+- usn_11 and prcp_11 Hammerhead (`:1363` / `:1369`), a squadron: the squadron arm.
+- jm05 (`COTP-IJN :1236`, `PRCPIJN :1341`, `luaJM5CheckCapPt`): the subjects are the enemy planes
+  `luaGetPlanesAround(Mission.CapPt, 300, "enemy")` returns around the PT boat `CapPt`, not the PT
+  boat itself; a plane that is selectable, below y 50 and slower than 10 switches `CapPt` to the
+  Japanese party. Those take the plane arm (or the squadron arm for a squadron entity).
 - jm12 (`COTP-IJN :702`, `PRCPIJN jm12 / prcpjm12 :721`): stays false through IsUnitSelectable
   on a plane-family unit (see above). If `luaGetType` also answers "plane" for a squadron entity
   (not checked here), that case reaches GetEntitySpeed through the squadron arm.

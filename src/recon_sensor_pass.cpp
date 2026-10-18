@@ -49,11 +49,18 @@ float ReconSensorPassState::value(int side, std::size_t target) const noexcept {
     return values_[row * unit_count_ + target];
 }
 
+namespace {
+// Packet cc13-fix18: the (side, target) pairs 00803B50 cleared since the last rebuild.
+std::vector<std::pair<int, std::size_t>>& forced_recon_clears();
+} // namespace
+
 void recon_sensor_pass_step_008073c0(ReconSensorPassState& state, float dt,
                                      ReconSensorPassHost& host) {
     const std::size_t count = host.unit_count();
     state.reset(count);
     state.suppressed_by_network_role = false;
+    // This pass keeps no persistent records; it reads the forced table each time.
+    forced_recon_clears().clear();
 
     // 00806871 / 0080686A: on a non-originating machine the whole sensor test
     // is skipped and every detection record keeps what it held.
@@ -198,8 +205,28 @@ void recon_sensor_pass_rebuild_008073c0(ReconSensorPassState& state, float dt,
     state.transitions_.clear();
     ++state.record_rebuilds;
 
+    // Packet cc13-fix18: 00803B50 from ClearForcedReconLevel (008AAB90), the only
+    // writer that clears +10h. old = the effective level, +10h = 0, then the
+    // listener with (old, +4h) when they differ, ahead of this pass's own calls.
+    // Empty unless kLuaClearForcedReconLevelBound routes the native.
+    for (const std::pair<int, std::size_t>& c : forced_recon_clears()) {
+        ReconDetectionRecord* r = state.record(c.first, c.second);
+        if (r == nullptr || !r->forced) continue;
+        const ReconDetectionLevel old = recon_record_effective_level(*r);   // 00803B52
+        r->forced = false;                                                   // 00803B66
+        if (r->level != old) {                                               // 00803B64
+            ReconLevelTransition t;
+            t.unit = c.second;
+            t.party = c.first;
+            t.old_level = old;
+            t.new_level = r->level;
+            state.transitions_.push_back(t);
+        }
+    }
+    forced_recon_clears().clear();
+
     // 00805CF0's writes, kept in the forced table by SetForcedReconLevel: +10h = 1
-    // and +8h = level. Nothing in the image clears +10h again.
+    // and +8h = level. 00803B50 (above) is the one writer that clears +10h.
     for (int party = 0; party < 3; ++party) {
         for (std::size_t u = 0; u < count; ++u) {
             ReconDetectionLevel level = ReconDetectionLevel::none;
@@ -312,6 +339,10 @@ std::map<std::pair<int, std::size_t>, ReconDetectionLevel>& forced_recon_table()
     static std::map<std::pair<int, std::size_t>, ReconDetectionLevel> table;
     return table;
 }
+std::vector<std::pair<int, std::size_t>>& forced_recon_clears() {
+    static std::vector<std::pair<int, std::size_t>> clears;
+    return clears;
+}
 } // namespace
 
 void set_forced_recon_level_00805cf0(std::size_t target, int side, int level) {
@@ -330,5 +361,11 @@ bool forced_recon_level(int side, std::size_t target, ReconDetectionLevel& out) 
 }
 
 void clear_forced_recon_levels() { forced_recon_table().clear(); }
+
+bool clear_forced_recon_level_00803b50(std::size_t target, int side) {
+    if (forced_recon_table().erase(std::make_pair(side, target)) == 0) return false;
+    forced_recon_clears().emplace_back(side, target);
+    return true;
+}
 
 } // namespace bsp
