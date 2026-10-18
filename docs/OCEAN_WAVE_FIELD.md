@@ -2802,3 +2802,60 @@ host must take that signal in place of the mode test.
 
 **Tools in `local\`:** `p12_launch.ps1` (one detached run with the reference env), `p11_wait.ps1`, `p17_exports*.ps1`
 (pair_export batches), and the `p17_*` export trees and logs that sections 66-67 cite.
+
+## 69. Menu rows and their scripts; pairs for fix10, fix12, fix14, fix16 (cc9-physics18, 2026-10-18)
+
+**The menu ids do not run the files the fix docs cite.** A row's script is the scene's `StageScript`
+(`missiontree.lua` sceneFile -> the `.scn` header -> `scripts/missions/<StageScript>.lua`; the run log's
+`mission script name:` line shows the same). `local\p18_reach.py <natives...>` maps every id this way and counts
+live (uncommented) call sites. In this installation USN04 runs `usn/usn_19_coralus.lua`, USN11 runs
+`COTP-USN/PRCPUS/usn_06_guadalcanal_2nd_battle.lua`, USN12 runs `usn_12_augusta`, JM13 runs `COTP-IJN/jm16.lua`
+and JM16 runs `PRCPIJN/JM14.lua`. `usn_04_defend_guadalcanal.lua`, `usn_11_protecting_iowa.lua` and `jm13.lua` are
+never loaded, so USN04 and JM13 have no `AddProximityTrigger` call (no `008c9730` row in either OFF census) and USN12
+has none of fix16's natives. Live callers by row:
+
+| native | rows (call sites) |
+| --- | --- |
+| AddProximityTrigger | USN11 (8), PRCP05 (3), PRCP08 (3), USN10 (2), PRCP01 (1), JM02 (1), PRCP07 (1) |
+| IsUnitSelectable / GetEntitySpeed | PRCP07 (11 / 11), JM05 (4 / 1), PRCP05 (3 / 0), JM01, CHG05 (the harness does not load JM01 or CHG05) |
+| GetSquadTorpedoes | PRCP07 (2, `prcp_11_patrol.lua` :1302 / :1539) |
+| GetNumCatapulted / ShipUseCatapult | LOMP01 (1 / 0), JM16 (1 / 0), JM03 (1 / 1), USN20 (0 / 9), JM02, JM06 (0 / 1) |
+| fix16's five | JM05 (PlaneForceRelease, PlaneReloadBombPlatforms), PRCP08 (SquadronForceRelease), JM01 / JM16 (GetPlaneIsReloading), PRCP07 (PlaneReloadBombPlatforms) |
+
+Pairs are same-commit exports: `local\p18_a_{off,f12,f12t,prox,cat,rel}` at fcb6c6fa5, `local\p18_b_{prox,proxf12}` at
+b62233d78 (fix19b inside the proximity switch). Logs are `local\p18<set>_<row>.log` with their `.manifest.json`.
+
+**fix14 + the catapult adapter: ON** (`kShipCatapultLaunchBound`; `kLuaGetNumCatapultedBound` is already implied
+by it at `game_hosts_lua.cpp:610/879` and only adds the summary line, so it flips when `game_hosts_lua.hpp` is free).
+- LOMP01, 24000 frames: OFF, every `GetNumCatapulted(Mission.Repulse)` returns nothing and `luaCheckReconplanes`
+  raises `attempt to compare number with nil` (`01_saving_force_z.lua:704`) inside `luaTimetable`
+  (`timetable.lua:32`), 362 times. ON it answers 0 (356 calls), the timetable entry runs on, and gameplay MOVES:
+  deaths 47 -> 53, hit records 1546 -> 1715, units 126 -> 132, three more movie camera builds, a `Countdown`, formation
+  joins 5 -> 7. That is the script running as written.
+- JM16, 24000 frames: OFF 18 calls (each raising), ON 2088; gameplay identical.
+- USN20, 24000 frames: the nine `ShipUseCatapult` carriers are refused (stock 0, no catapult class), as the image's
+  `008141E0` (`+638h > 0`) refuses them; gameplay identical.
+- LABELLED as in the header: the answer is 0 because no ship AI or script launches a catapult plane before the call.
+
+**fix10, `kLuaProximityTriggersBound`: mechanism matches; still OFF** (`game_hosts_lua.hpp` is leased by cc13-fix19c).
+- USN11 (36000 frames, fails at 285.60 s on both sides): 3 adds (`ConvoyReachedPathPoint1` on three transports),
+  14048 checks, 0 fires, `unresolved=0`; gameplay identical.
+- USN10 (fails at 1000.23 s on both sides): 1 add (`ProxiamityFlagshipEscape`, 4000 m), 12000 checks, 0 fires;
+  identical.
+- PRCP05: the trigger FIRES. `"AirField 01" "ProximityAirfield" -> luaUS09AirfieldDetected()` near mission frame
+  4241 completes primary 1 and sets `MissionPhase = 3`; OFF never leaves phase 1 and fails at 1397.74 s. ON then
+  reaches `luaUS09EM_Airfield_1` (`usn_09_Leyte.lua:1985`), whose `GenerateObject(Mission.PTTemplate.Name, "Gyoraitei
+  PT")` aborts the run near 1062 s: `unit observer creator projection is unavailable: unit=Gyoraitei PT #1.1
+  creator=00000000 (no vehicle-class descriptor; a StationaryClass row carries no Type)`. That is a spawn-host gap the
+  flip exposes, not a trigger fault. Same on the b62233d78 pair.
+- PRCP08 (fails at 378.08 s): no `AddProximityTrigger` call.
+
+**fix12 (`kLuaIsUnitSelectableBound` + `kLuaGetEntitySpeedBound`) and the GetSquadTorpedoes stopgap: OFF,
+unexercised.** No reachable row calls them: PRCP07 (36000 frames, phase 4 needs the player), JM05 (fails at
+321.05 s), PRCP05 with the proximity switch ON (to the 1062 s abort), and the old rows USN11, JM04, USN09.
+
+**fix16's five + `kLuaPilotBombBound`:** JM05 (36000 frames) and USN12 with `usn12_s38_u12_p2` (34000 frames): gameplay
+identical, none of the six natives called.
+
+**USN12 WINS note:** on fcb6c6fa5 OFF, `usn12_s38_u12_p2` does not complete in 34000 frames (MissionPhase 3,
+Distance 10.12 km); the table's last completion was 1539.83 s. Sent to the WINS keeper.
