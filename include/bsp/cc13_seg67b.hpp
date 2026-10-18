@@ -199,6 +199,84 @@ public:
     // [bot+50h], target), RET 8 (draws through 009AB850 and the aim errors).
     virtual void bot_approach_kamikaze_construct_base_009ab920(void* block, void* arg,
                                                                void* target) = 0;
+    // 009C9D00: __thiscall(ECX = task, bot), RET 4, EAX = task: the retreat task
+    // constructor (size 564h).
+    virtual void* bot_task_retreat_construct_009c9d00(void* task, void* bot) = 0;
+    // 009FA260 BSP_BotApproachTargetRef_PickBodyFrameAimOffset: __thiscall(ECX = target
+    // reference), RET.
+    virtual void approach_ref_pick_aim_offset_009fa260(void* ref) = 0;
+    // 009E5530 BSP_ShipAi_AttackMoveRingConstruct: __thiscall(ECX = nested, owner), RET 4.
+    virtual void ship_ai_attackmove_ring_construct_009e5530(void* nested, void* owner) = 0;
+    // 009DBDB0 BSP_ShipAiPathPlan_DestructBody: __thiscall(ECX = path plan), RET.
+    virtual void ship_ai_path_plan_destruct_009dbdb0(void* plan) = 0;
+    // 0072BBD0 BSP_GunBot_ConstructBase: __thiscall(ECX = bot, class descriptor), RET 4.
+    virtual void gun_bot_construct_base_0072bbd0(void* bot, std::uint32_t descriptor) = 0;
+    // 008FBC80 BSP_GunBot_Attach: __thiscall(ECX = bot, tick node), RET 4.
+    virtual void gun_bot_attach_008fbc80(void* bot, void* node) = 0;
+    // 009E4330 BSP_ShipAi_NavigationBlockConstruct: __thiscall(ECX = block, ship), RET 4.
+    virtual void ship_ai_nav_block_construct_009e4330(void* block, void* ship) = 0;
+    // 009F126B..009F1401, the tail of 009F1160: bind to
+    // bsp::ship_ai_brain_produce_tail_009f126b (src/ship_ai_brain_producers.cpp). The goal
+    // defaults, the seven stream-1 draws and the critical section at brain+4h.
+    // The (void* brain) signature differs from bsp::ship_ai_brain_produce_tail_009f126b(
+    // ShipAiBrainProducerView, const ShipAiBrainProducerContext&): whoever binds this hook
+    // must build the view over the brain record and supply the context.
+    virtual void ship_ai_brain_produce_tail_009f126b(void* brain) = 0;
+    // task->vtable[+28h](), RET, AL (a bot task's own predicate slot).
+    virtual std::uint8_t task_vcall_28_flag(void* task) = 0;
+    // task->vtable[+3Ch](), RET, EAX.
+    virtual std::uint32_t task_vcall_3c(void* task) = 0;
+    // task->vtable[+40h](), RET, EAX.
+    virtual std::uint32_t task_vcall_40(void* task) = 0;
+    // 00BF55BE operator new[](size), cdecl, EAX.
+    virtual void* operator_new_array_00bf55be(std::uint32_t size) = 0;
+    // 00BF6989 operator delete[](p), cdecl.
+    virtual void operator_delete_array_00bf6989(void* p) = 0;
+    // 009FC7C0 BSP_BotTaskGun_Tick: __thiscall(ECX = gun (task+314h), float dt), RET 4.
+    virtual void bot_task_gun_tick_009fc7c0(void* gun, float dt) = 0;
+    // 009FD0E0 opportunistic rocket tick: __thiscall(ECX = task+38Ch, float dt), RET 4.
+    virtual void opportunistic_rocket_tick_009fd0e0(void* rocket, float dt) = 0;
+    // 007D7A40 BSP_PilotPlan_ResetCommandTimer: __fastcall(ECX = plane+AB0h), RET.
+    virtual void pilot_plan_reset_command_timer_007d7a40(void* controller) = 0;
+    // 0071BE40 BSP_WeaponDirector_CurrentCommand: __fastcall(ECX = director), EAX.
+    virtual std::uint32_t weapon_director_current_command_0071be40(void* director) = 0;
+    // 0071EB60 BSP_EntityCommand_ActiveTargetDescriptor: __fastcall(ECX = director), EAX.
+    virtual void* entity_command_active_target_descriptor_0071eb60(void* director) = 0;
+    // 006F7DD0 BSP_TargetDescriptor_ResolvePosition: __thiscall(ECX = descriptor,
+    // float* scratch), RET 4, EAX = the position (the scratch, a stored point or 00F87574).
+    virtual const float* target_descriptor_resolve_position_006f7dd0(void* descriptor,
+                                                                    float* scratch) = 0;
+    // 0042B2F0 BSP_Vector3_LengthFloatThreshold: __fastcall(ECX = vector), RET, ST0.
+    virtual float vector_length_0042b2f0(const float* v) = 0;
+    // task->vtable[+0Ch](out), RET 4: the task's aim record {x, y, z, byte valid}.
+    virtual void task_vcall_0c_aim(void* task, void* out16) = 0;
+    // command->vtable[+0Ch](), RET, EAX.
+    virtual std::uint32_t command_vcall_0c(void* command) = 0;
+    // 008FE660 BSP_GunBot_ReadBaseProperties: __thiscall(ECX = bot, archive), RET 4.
+    virtual void gun_bot_read_base_properties_008fe660(void* bot, void* archive) = 0;
+    // 0099C690 BSP_BotTaskFactory_FindByName: __fastcall(ECX = counted string {length,
+    // buffer}), EAX = factory (body: band0099::bot_task_factory_find_0099c690).
+    virtual void* bot_task_factory_find_0099c690(void* name) = 0;
+    // factory->vtable[+4h](bot, archive), RET 8, EAX = the loaded task.
+    virtual void* factory_vcall_04_load(void* factory, void* bot, void* archive) = 0;
+    // entity->vtable[+34h](float* scratch), RET 4, EAX = the velocity vector.
+    virtual const float* entity_vcall_34_velocity(void* entity, float* scratch) = 0;
+    // entity->vtable[+38h](), RET, ST0 (the value is discarded by 0099C527).
+    virtual float entity_vcall_38_float(void* entity) = 0;
+    // 009BE3E0 BSP_BotStateFollow_WaitValue: __fastcall(ECX = follow state), ST0.
+    virtual float bot_state_follow_wait_value_009be3e0(void* state) = 0;
+    // 0099B720: the task base wait value (FLD [00D7A260] = -1.0; RET), ST0.
+    virtual float bot_task_base_wait_value_0099b720(void* task) = 0;
+    // 007EFB30 BSP_PilotControl_RaiseForceReleaseFlag: __fastcall(ECX = unit), RET.
+    virtual void pilot_control_raise_force_release_flag_007efb30(void* unit) = 0;
+    // 009BCE30 / 009BDB90: scalar deleting destructors, __thiscall(ECX, flags), RET 4, EAX.
+    virtual void* scalar_deleting_dtor_009bce30(void* object, std::uint32_t flags) = 0;
+    virtual void* scalar_deleting_dtor_009bdb90(void* object, std::uint32_t flags) = 0;
+    // object->vtable[0](), no stack arguments, EAX.
+    virtual void* object_vcall_00(void* object) = 0;
+    // 004BEF00: __thiscall(ECX = observer, subject), RET 4: zeroes the observer and
+    // registers the pair (BSP_Observer_RegisterPair).
+    virtual void observer_construct_004bef00(void* observer, void* subject) = 0;
     // 009ABAB0: __thiscall(ECX = drop-kamikaze approach, [bot+50h], target), RET 8.
     virtual void bot_approach_drop_kamikaze_construct_base_009abab0(void* block, void* arg,
                                                                     void* target) = 0;
@@ -400,6 +478,32 @@ public:
                                                                   const float* rgba) = 0;
     // [00E0E300]: the debug side filter (a dword; negative draws every side).
     virtual std::int32_t global_debug_side_00e0e300() = 0;
+    // 009A1A90 BSP_BotTask_DescribeAvoidFlags (the base slot +18h debug name):
+    // __thiscall(ECX = task; string* result), RET 4, EAX = the 1Ch-byte string.
+    virtual void* bot_task_debug_name_009a1a90(void* task, void* result) = 0;
+    // 00411430 BSP_BotStateRegistry_NameOrUndefined: __thiscall(ECX = registry; state),
+    // RET 4, EAX.
+    virtual const char* state_registry_name_or_undefined_00411430(void* registry,
+                                                                  void* state) = 0;
+    // 007B7E70 operator+(const string&, const char*): __cdecl(out, left, right), EAX = out.
+    virtual void* std_string_plus_cstr_007b7e70(void* out, const void* left,
+                                                const char* right) = 0;
+    // 0099B6E0 (TRIV_body_0099b6e0, a lone RET): the base debug-draw slot, __fastcall(ECX = task).
+    virtual void bot_task_debug_draw_base_0099b6e0(void* task) = 0;
+    // 008608B0 BSP_DebugDraw_CircleWithHeading: __thiscall(ECX = float* centre; four stack
+    // dwords), RET 10h. See 009B35E0 for what this caller passes.
+    virtual void debug_draw_circle_with_heading_008608b0(const float* centre, float first,
+                                                         float x, float y, float z) = 0;
+    // 006C2400 BSP_AirOpsHolder_DebugDrawRunwayDistances: __fastcall(ECX = holder), RET.
+    virtual void air_ops_debug_draw_runway_distances_006c2400(void* holder) = 0;
+    // object->vtable[0](), RET, AL: a condition object's test.
+    virtual bool condition_vcall_00_test(void* condition) = 0;
+    // 0099B690 BSP_BotTask_Retire: __fastcall(ECX = task), RET.
+    virtual void bot_task_retire_0099b690(void* task) = 0;
+    // 007ED3C0 BSP_PilotControl_ClearReleaseOrders: __fastcall(ECX = control), RET.
+    virtual void pilot_control_clear_release_orders_007ed3c0(void* control) = 0;
+    // 007BCBE0 BSP_Unit_SetQueuedReleaseOrders: __thiscall(ECX = unit; count), RET 4.
+    virtual void unit_set_queued_release_orders_007bcbe0(void* unit, std::int32_t count) = 0;
 };
 
 // ---- the bot-task factory list (00F8A314) ----
@@ -893,10 +997,172 @@ void bot_approach_drop_kamikaze_save_009ae2d0(Cc13Seg67bHost& host, void* a, voi
 void bot_task_drop_kamikaze_save_009ae4c0(Cc13Seg67bHost& host, void* task, void* archive);
 void bot_approach_land_save_009b37f0(Cc13Seg67bHost& host, void* a, void* archive);
 void bot_task_land_save_009b3b90(Cc13Seg67bHost& host, void* task, void* archive);
+void bot_approach_level_bomb_save_009b84e0(Cc13Seg67bHost& host, void* a, void* archive);
+void bot_task_level_bomb_save_009b87b0(Cc13Seg67bHost& host, void* task, void* archive);
 // 0099A660: __thiscall(ECX = pilot bot, task), RET 4 (thunk 0099A870).
 void pilot_bot_retire_task_0099a660(Cc13Seg67bHost& host, void* bot, void* task);
 // 009AED20: __thiscall(ECX = kamikaze approach, bot, target), RET 8, EAX = approach.
 void* bot_approach_kamikaze_construct_009aed20(Cc13Seg67bHost& host, void* block, void* bot,
                                                void* target);
+// 009C1C30: __thiscall(ECX = approach, unit, target descriptor), RET 8, EAX = approach.
+void* bot_approach_moveto_construct_009c1c30(Cc13Seg67bHost& host, void* a, void* unit,
+                                             void* target);
+// 009CA2B0: __fastcall(ECX = bot), RET, EAX = the new retreat task or 0.
+void* bot_task_make_retreat_009ca2b0(Cc13Seg67bHost& host, void* bot);
+// 009CA780: __fastcall(ECX = strafe approach), RET.
+void bot_approach_strafe_rearm_target_point_009ca780(Cc13Seg67bHost& host, void* a);
+// 009CD300: __fastcall(ECX = bot, EDX = target), RET, EAX = the new strafe task or 0.
+void* bot_task_make_strafe_009cd300(Cc13Seg67bHost& host, void* bot, void* target);
+// 009D4E30: __fastcall(ECX = bot, EDX = target), RET, EAX = the new torpedo task or 0.
+void* bot_task_make_torpedo_009d4e30(Cc13Seg67bHost& host, void* bot, void* target);
+// 009DDBA0: __thiscall(ECX = ship AI), RET: the EH cleanup of the two path plans at +60h.
+void ship_ai_destruct_path_plans_009ddba0(Cc13Seg67bHost& host, void* ai);
+// 009E4F90: __thiscall(ECX = sub_attack parent, brain), RET 4, EAX = parent.
+void* ship_ai_sub_attack_construct_009e4f90(Cc13Seg67bHost& host, void* p, void* brain);
+// 009E5CA0: __thiscall(ECX = approach sub-state, owner), RET 4, EAX = sub.
+void* ship_ai_attackmove_approach_construct_009e5ca0(Cc13Seg67bHost& host, void* sub,
+                                                     void* owner);
+// 009E8450: __thiscall(ECX = attackmove state, owner), RET 4, EAX = state.
+void* ship_ai_attackmove_construct_009e8450(Cc13Seg67bHost& host, void* s, void* owner);
+// 00997340: __thiscall(ECX = bot task, float dt), RET 4.
+void bot_task_tick_gun_and_rocket_00997340(Cc13Seg67bHost& host, void* task, float dt);
+// 009995A0: __thiscall(ECX = pilot bot, tick node), RET 4.
+void pilot_bot_attach_009995a0(Cc13Seg67bHost& host, void* bot, void* node);
+// The {data, count, capacity} pointer arrays: 00999700 insert at (RET 8, EAX = the slot),
+// 00999810 grow (RET), 00999CC0 push back (RET 4), 00999D40 insert at the front (RET 4).
+std::uint32_t* ptr_array_insert_at_00999700(Cc13Seg67bHost& host, void* array,
+                                            std::uint32_t* where, const std::uint32_t* value);
+void ptr_array_grow_00999810(Cc13Seg67bHost& host, void* array);
+void ptr_array_push_back_00999cc0(Cc13Seg67bHost& host, void* array,
+                                  const std::uint32_t* value);
+void ptr_array_push_front_00999d40(Cc13Seg67bHost& host, void* array,
+                                   const std::uint32_t* value);
+// ---- one-line table slots (packet cc13-seg67C, section 3.45) ----
+// Constant returns, __thiscall(ECX = task, unused), RET, EAX (009B9140: ST0).
+std::uint32_t bot_task_depth_charge_factory_record_009a54e0() noexcept;
+std::uint32_t bot_task_dogfight_factory_record_009a9950() noexcept;
+std::uint32_t bot_task_depth_charge_name_009a5500() noexcept;
+std::uint32_t bot_task_drop_kamikaze_name_009adde0() noexcept;
+std::uint32_t bot_task_kamikaze_name_009af080() noexcept;
+std::uint32_t bot_task_land_factory_record_009b33a0() noexcept;
+std::uint32_t bot_task_level_bomb_name_009b7bd0() noexcept;
+float bot_task_pull_up_slot68_009b9140() noexcept;
+std::uint32_t bot_task_immelmann_name_009ba920() noexcept;
+std::uint32_t bot_task_moveonpath_factory_record_009bcfb0() noexcept;
+std::uint32_t bot_task_dive_bomb_name_009c79c0() noexcept;
+std::uint32_t bot_task_retreat_kind_009c9e60() noexcept;
+// Bare RET slots: takeoff's exit 009CE290 and the torpedo go-away enter 009D0C00.
+void bot_state_takeoff_exit_009ce290(void* state) noexcept;
+void bot_state_torpedo_go_away_enter_009d0c00(void* state) noexcept;
+// Field slots, __thiscall(ECX = task or state).
+std::uint32_t bot_task_dogfight_slot48_value_009a9c80(const void* task);
+bool bot_task_dogfight_in_go_away_009a9d30(const void* task);
+void bot_task_leave_alone_flush_009b9480(Cc13Seg67bHost& host, void* task);
+// Adjustor thunks to the scalar deleting destructors, (ECX, flags), RET 4, EAX.
+void* bot_approach_moveonpath_registry_dtor_thunk_009bcd40(Cc13Seg67bHost& host, void* self,
+                                                           std::uint32_t flags);
+void* bot_task_moveonpath_approach_view_dtor_thunk_009bd090(Cc13Seg67bHost& host, void* self,
+                                                            std::uint32_t flags);
+void* bot_task_moveonpath_registry_view_dtor_thunk_009bd0a0(Cc13Seg67bHost& host, void* self,
+                                                            std::uint32_t flags);
+// Wait values (slot +4Ch), ST0: the follow state's when current, else 0099B720.
+float bot_task_depth_charge_wait_value_009a5d50(Cc13Seg67bHost& host, void* task);
+float bot_task_moveonpath_follow_wait_value_009bd2e0(Cc13Seg67bHost& host, void* task);
+float bot_task_retreat_wait_value_009ca0a0(Cc13Seg67bHost& host, void* task);
+// 009C44C0: byte plane+844h = 0, byte state+1Ch = 0.
+void bot_state_dive_bomb_turn_down_enter_009c44c0(void* state);
+// 009B1E90: byte plane+844h = 1 (plane = [[state+4h]+4h]); twins 009C44E0/009C58A0/009C6210 ledger-only.
+void bot_state_land_final_exit_009b1e90(void* state);
+// 009D1350: byte [[state+4h]+A8h] = 0.
+void bot_state_torpedo_aim_exit_009d1350(void* state);
+// Command record accessors.
+void command_record_set_float40_009d4ea0(void* record, float value);
+void command_record_set_float48_009d4ec0(void* record, float value);
+float command_record_get_float48_009d4f00(const void* record);
+// 009D4F70: EAX = ai + A98h + [ai+B40h] * 54h.
+void* ship_ai_current_order_slot_009d4f70(void* ai);
+// The unreferenced navigation-block setters.
+void ship_ai_set_torpedo_avoidance_request_009dabb0(void* block, std::uint8_t value);
+void ship_ai_set_ship_avoidance_party_filter_009dabc0(void* block, std::uint32_t value);
+void ship_ai_set_land_avoidance_request_009dabd0(void* block, std::uint8_t value);
+void ship_ai_set_drive_bypass_009dabe0(void* block, std::uint8_t value);
+void ship_ai_set_speed_commanded_flag_009dabf0(void* block);
+// 009F5260: [o] = 00D21B40, [o+4h] = arg; EAX = o.
+void* auto_target_base_construct_009f5260(void* object, std::uint32_t arg);
+// 0099AA20: __thiscall(ECX = pilot bot, archive), RET 4.
+void pilot_bot_load_tasks_0099aa20(Cc13Seg67bHost& host, void* bot, void* archive);
+// 0099C3C0: __thiscall(ECX = lead record {owner, float speed, byte, out time +0Ch, out
+// point +10h}, target entity), RET 4.
+void bot_lead_point_on_target_0099c3c0(Cc13Seg67bHost& host, void* lead, void* target);
+// 0099BDB0: __fastcall(ECX = table element), RET, EAX = element.
+void* pilot_plan_table_construct_0099bdb0(void* table);
+// 0099B1B0: __fastcall(ECX = plane), RET.
+void plane_command_band_repair_if_controlled_0099b1b0(Cc13Seg67bHost& host, void* plane);
+// 0099B2A0: __thiscall(ECX = five 0Ch-byte plan slots, unit), RET 4.
+void pilot_bot_seed_slot_array_0099b2a0(void* slots, const void* unit);
+// 0099C2C0: __fastcall(ECX = bot task), RET, EAX = 0, 1 or 2.
+std::uint32_t bot_task_is_command_still_valid_base_0099c2c0(Cc13Seg67bHost& host, void* task);
+// 00999A10: __fastcall(ECX = pilot bot), RET, AL.
+bool pilot_bot_head_task_blocks_switch_00999a10(Cc13Seg67bHost& host, void* bot);
+// 00999A60: __fastcall(ECX = park predicate), RET, AL.
+bool pilot_park_predicate_plane_byte184_zero_00999a60(const void* predicate);
+// 00999A80: __thiscall(ECX = park predicate, flags), RET 4, EAX = predicate.
+void* pilot_park_predicate_scalar_delete_00999a80(Cc13Seg67bHost& host, void* predicate,
+                                                  std::uint32_t flags);
+// 00999B30: __fastcall(ECX = pilot bot), RET, AL (see the body for the no-match value).
+std::uint8_t pilot_bot_any_task_slot28_00999b30(Cc13Seg67bHost& host, void* bot);
+// 00999C70: __fastcall(ECX = pilot bot), RET, EAX = task or 0.
+void* pilot_bot_find_task_by_slot3c_00999c70(Cc13Seg67bHost& host, void* bot);
+// 0099A630: __fastcall(ECX = node), RET, EAX = node.
+void* pilot_bot_init_observer_node_0099a630(void* node);
+// 0099A940 / 0099A980: __thiscall(ECX = park predicate, archive), RET 4.
+void pilot_park_predicate_read_plane_id_0099a940(Cc13Seg67bHost& host, void* predicate,
+                                                 void* archive);
+void pilot_park_predicate_write_plane_id_0099a980(Cc13Seg67bHost& host, void* predicate,
+                                                  void* archive);
+// 0099B3D0 / 0099B3E0: __thiscall(ECX = plan, byte), RET 4.
+void pilot_plan_set_byte_2dc_0099b3d0(void* plan, std::uint8_t value);
+void pilot_plan_set_turbo_request_0099b3e0(void* plan, std::uint8_t value);
+// 009F1160: __thiscall(ECX = brain, ship), RET 4, EAX = brain: the brain record.
+void* ship_ai_brain_record_construct_009f1160(Cc13Seg67bHost& host, void* brain, void* ship);
+// 009F39C0: __thiscall(ECX = brain (ai+58h), owner ship), RET 4, EAX = brain.
+void* ship_ai_brain_construct_009f39c0(Cc13Seg67bHost& host, void* brain, void* ship);
+// 009F3BA0: __thiscall(ECX = ship AI, ship), RET 4, EAX = ai.
+void* ship_ai_gun_bot_construct_009f3ba0(Cc13Seg67bHost& host, void* ai, void* ship);
+// 009F3F20: __fastcall(ECX = ship), RET, EAX = the new 2268h-byte ship AI or null.
+void* ship_ai_allocate_brain_009f3f20(Cc13Seg67bHost& host, void* ship);
+
+// ---- medium rows, batch 1 (docs/CC13_SEG67B.md 3.46) ----
+// The nine bot-task Describe slots (+18h overrides): __thiscall(ECX = task;
+// string* out), RET 4, EAX = out, SEH frame. Each differs only in its state registry.
+void* bot_task_depth_charge_describe_009a68c0(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_kamikaze_describe_009af670(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_drop_kamikaze_describe_009af890(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_level_bomb_describe_009b8f80(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_move_on_path_describe_009bdb00(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_move_to_describe_009c3a60(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_dive_bomb_describe_009c8bc0(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_retreat_describe_009ca200(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_strafe_describe_009cd250(Cc13Seg67bHost& host, void* task, void* out);
+// 009A79F0: __fastcall(ECX = dogfight avoid state), RET. One draw on stream 1.
+void bot_state_dogfight_avoid_enter_009a79f0(Cc13Seg67bHost& host, void* state);
+// 009B35E0: __fastcall(ECX = land task), RET.
+void bot_task_land_debug_draw_009b35e0(Cc13Seg67bHost& host, void* task);
+// 009B93D0: __thiscall(ECX = task; float dt, unread), RET 4.
+void bot_task_conditioned_tick_009b93d0(Cc13Seg67bHost& host, void* task, float dt);
+// 009B93F0: __fastcall(ECX = task), RET, ST0.
+float bot_task_tight_turn_slot68_009b93f0(void* task);
+// 009B9420: __fastcall(ECX = task), RET.
+void bot_task_leave_alone_update_cruise_profile_009b9420(Cc13Seg67bHost& host, void* task);
+// 009B9FD0 / 009BD380 / 009C3510: __thiscall(ECX = task, archive), RET 4.
+void bot_task_tight_turn_save_009b9fd0(Cc13Seg67bHost& host, void* task, void* archive);
+void bot_task_move_on_path_save_009bd380(Cc13Seg67bHost& host, void* task, void* archive);
+void bot_task_move_to_save_009c3510(Cc13Seg67bHost& host, void* task, void* archive);
+// 009CA0C0: __thiscall(ECX = retreat task; out), RET 4, EAX = out (3 floats + a byte).
+void* bot_task_retreat_target_position_009ca0c0(void* task, void* out);
+// 009CA480: __fastcall(ECX = entity or null), RET, EAX = entity or 0.
+void* entity_as_kind41_009ca480(Cc13Seg67bHost& host, void* entity);
+// 009CFA10: __fastcall(ECX = takeoff task), RET.
+void bot_task_takeoff_debug_draw_009cfa10(Cc13Seg67bHost& host, void* task);
 
 }  // namespace bsp

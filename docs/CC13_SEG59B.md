@@ -164,7 +164,7 @@ preloading with string temporaries and an SEH frame) and `008FF640`
 | `008F4030` | BSP_PropertyMap_UnlinkKey | reconstructed | `0043B8B0`, bucket unlink, `0043D2D0`, count -1. |
 | `008F2540` | BSP_ScenePropertyBag_WriteText | reconstructed | `scene_property_bag_write_text_008f2540`: the "PropTree {" debug dump; every line goes to `004254B0`, a trivial body in this build. |
 | `008F1CA0` | BSP_SceneProperty_WriteText | reconstructed | `scene_property_write_text_008f1ca0`: one "name = letter value ;" line; arrays wrap 16 / 4 / 4 / 2 per line through `00439AC0`. |
-| `008F7CF0`, `008F7D80` | BSP_RandomThreadsScope_Construct / Release | reconstructed | `00BD2FE0` / `00BD3050` thread registration only; neither draws the shared RNG. |
+| `008F7CF0`, `008F7D80` | BSP_RandomThreadsScope_Construct / Release | reconstructed | `00BD2FE0` / `00BD3050` thread registration only; neither draws the shared RNG. 00BD2FE0, under the [01090AC0] critical section (when non-null), stores GetCurrentThreadId in the first free slot of the ten at 01090AC4 and raises the count at 01090AEC to slot+1 when that is larger; 00BD2ED0 then routes that thread's draws (00BD2F10, 00BD2F40, 00BD2FC0) to the per-slot generator at 01090AF0 + (stream + 2*slot)*9C8h instead of the shared 00E14748. Neither function seeds or draws; 00BD3050 clears the slot and, when it was the last one, trims the count (00BD308B..00BD30B4 lower [01090AEC] past trailing empty slots). 00BD2FE0 ignores ECX, so the scope argument is unused. |
 | `008F7D20` | BSP_SingletonLifetime_DestroyGlobal01090AA0 | reconstructed | `00BD0400`, `_free`, clear [01090AA0]. |
 | `008F67B0`, `008F6FC0`, `008F7100` | CPropTreeLibrary_Load and its folder / extension walkers | ledger-only | src/scene_traffic_groups.cpp:494 and :592. |
 | `008F7DB0` | BSP_Startup_ResolveLanguage | ledger-only | src/winmain_startup.cpp (:93, :108) behind StartupHost::resolve_language. |
@@ -194,7 +194,7 @@ STL code, allocators, `_free`, `_memmove_s` and xlen throws: `009063C0`, `009076
 
 | Address | Name (hypothesis) | Status | Notes |
 | --- | --- | --- | --- |
-| `00915760` | BSP_MissionScoreRecord_Clear | reconstructed | `mission_score_record_clear_00915760`: 25 scalar zeroes, 36 inline tree clears, two 16-bit vector erases (`00BF67A7`) and three string resets (`0041DD40`, 00915E9D). include/bsp/scoring_bodies.hpp:190 says the clear leaves slot+08h and slot+250h alone. In the binary it zeroes both (record+4 at 0091576F, byte record+24Ch at 00915E97); 008BC540 restores them afterwards. |
+| `00915760` | BSP_MissionScoreRecord_Clear | reconstructed | `mission_score_record_clear_00915760`: 25 scalar zeroes, 36 inline tree clears, two 16-bit vector erases (`00BF67A7`) and three string resets (`0041DD40`, 00915E9D). (An earlier include/bsp/scoring_bodies.hpp note said the clear leaves slot+08h and slot+250h alone; cc9 has since corrected it.) The binary zeroes both (record+08h at 0091576C, dword record+250h at 009157C5; saved at 008BC6A3/008BC6A7 and restored at 008BC6C5/008BC6D5, record = mgr+slot*284h+4). |
 
 ## Scoring events: component failure and repair
 
@@ -210,3 +210,58 @@ STL code, allocators, `_free`, `_memmove_s` and xlen throws: `009063C0`, `009076
 | `009150A0` | BSP_MissionScoring_ForceRefresh | reconstructed | `scoring_force_refresh_009150a0`: `00914390` (009150CC) and `0090EA00` (009150D3) on the record, then Lua `scoring.playerIndex = slot` (`00B67460`, 0091513A) when game+1FE4h != 0. |
 | `008F3270` | BSP_ScenePropertyBag_CollectKeyNames | reconstructed | `scene_property_bag_collect_key_names_008f3270`: every key copied into a `0094F270` list (008F3324), sorted by `0094F1B0` (008F3348) when asked. The old name "WriteAll" was wrong. |
 | `008F6E20` | BSP_ScenePropertyBag_CollectRecordsSorted | reconstructed | `scene_property_bag_collect_records_sorted_008f6e20`: the records gathered in a local vector, `008F3C90` sort by ordinal (008F6F08), copied out with `008F0010` (008F6F44). |
+
+## Scene bag subtract, dotted path and text writers
+
+None of these six is reached: apart from their own recursion and 008F71E0's use by 008F7550, the band scan found no direct call and no absolute-dword reference (`docs/CC13_BAND_0080_008F.md`, Unreferenced).
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `008F4290` | BSP_ScenePropertyBag_SubtractEqual | reconstructed | `scene_property_bag_subtract_equal_008f4290`: a heap iterator over other, a key lookup in bag (`0043B8B0`), and removal (`004F01F0`, 008F43D9) when the values are equal (`008EF820`) or a shared sub-bag ends up empty after the recursion. The old name was "CloneIterator". |
+| `008F4420` | BSP_ScenePropertyBag_SubtractSameType | reconstructed | `scene_property_bag_subtract_same_type_008f4420`: the same walk keyed on type alone. The image never calls `0047E480` in the loop (008F454E..008F4556), so a non-empty other spins on its first key. That is reproduced, not fixed. |
+| `008F1A20` | BSP_SceneObject_BuildDottedPath | reconstructed | `scene_object_build_dotted_path_008f1a20`: out = the names along the [+30h]/[+110h] owner chain, joined with "." (CE3A70) by two `004261A0` concatenations per step, outermost name first. The result is "" when the object has no owner. The old name was "FormatValue". |
+| `008F71E0` | BSP_ScenePropertyBag_WriteTextBlock | reconstructed | `scene_property_bag_write_text_block_008f71e0`: `" {"`, then the entries sorted through an inline `map<std::string, record*>` (`008F6BA0`), `"}"`. Sub-bags are written as `"key"` plus a nested block; other entries go through `008F1CA0`. |
+| `008F7550` | BSP_ScenePropertyBag_WriteTextDiff | reconstructed | `scene_property_bag_write_text_diff_008f7550`: the 008F71E0 block with every entry equal to base's (`008F2260` + `008EF820`) left out. Shared sub-bags recurse, and a null base writes the full block. The old name was "WriteTextEntry". |
+| `008F79A0` | BSP_ScenePropertyBag_RemoveMissing | reconstructed | `scene_property_bag_remove_missing_008f79a0`: collects the names that base lacks into a `vector<std::string>` (`00849170`), then erases them from other (`0043D870`) or from bag (`008F4030`). The heap iterator built for other is leaked, as in the image. The old name was "WriteFiltered". |
+
+## Common resource precache and hull distance
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `008FAFC0` | BSP_CommonResourceCache_Preload | reconstructed | `common_resource_cache_preload_008fafc0`: runs once, under an "IngamePrecache" file block (`00BE0A30`/`00BDCB30`). It fills 54h textures (`[00F8D394]`->vt[64h]), 9 sounds (`00A83FD0`) and 3Ch models (`007188A0`) from the tables at 00E0C988 / 00E0CAD8 / 00E0CB00, and reports `0057C1A0` progress at step / 153.0 after each item. It is live at title start: cc9's `game_entry.hpp` names the call at 004E5758 as `notify_title_ready`, but no body is hosted. |
+| `008FF640` | BSP_Entity_HullDistanceToPoint_Provisional | reconstructed | `entity_hull_distance_to_point_008ff640`: for a null or non-ship entity, the XZ distance (zero below 1e-10). For a ship, q is moved into hull space (`00B63D50` inverse built lazily, `004142E0`) and tested against an outline from hull+0A0h / +0A4h before `00419AB0`. The operand order comes from the DC/DE bytes. The model uses 24-bit precision; see the uncertainty in the source. Unreferenced. |
+
+## Scoring publish, objective-list message and nation sum
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `0090EA00` | BSP_MissionScoreRecord_PublishToLua | reconstructed | `score_record_publish_to_lua_0090ea00`: Lua `scoring = nil`, then `scoring = {}` (`00B67350`, `00B67580`), then the record is written into the table by cc9's `00908A30` through a `0090E920` holder (0090EB37). The holder's destructor is inlined. |
+| `009105F0` | BSP_ObjectiveListsMessage_Apply | reconstructed | `objective_lists_message_apply_009105f0`: a network message from `00777850` with eight cases (jump table 009108C8): append a text to one of six string lists, drain six counts of flags and ints into the 00E196FC.. containers, or clear everything / call `00626C50`. The counts in the message are left at -1, as in the image. |
+| `0090CDD0` | BSP_StringIntMap_SumNationMissions | reconstructed | `string_int_map_sum_nation_missions_0090cdd0`: sums the owner+0Ch map over "USN01".."USN14" or "IJN01".."IJN14" (`004BF370` with the `_stricmp` match), and returns 0 when a key is missing. Unreferenced. |
+
+## XLive stats sum and Lua text printers
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `00920690` | BSP_ScoreMap_SumCampaignBestScores | reconstructed | `score_map_sum_campaign_best_scores_00920690`: *b = the sum, over the current campaign's missions (the USN/IJN prefix of game+2198h, mission list 00E19434 + 10h * USN), of the best of [+27Ch], [+278h] and [+280h] in each `00594A70` record with a non-zero +0Ch. *a stays 0. cc9 hosts the call from `00A43AF0` as `stats_lookup_00920690`, but no body. |
+| `00920F00` | BSP_LuaTable_FormatSummary | reconstructed | `lua_table_format_summary_00920f00`: `{k=v,...}` with nested tables as `{...}`, and `...` once the limit is used up. The by-value table argument is destroyed inside. |
+| `00921360` | BSP_LuaWatchList_FormatValues | reconstructed | `lua_watch_list_format_values_00921360`: a "name: value" line for each watched dotted path (`00B68D70`): invalid, a table summary (`00920F00`, limit 3), a light userdata (`ptr->` handle + vt[10h] name), or `0043C1C0` text. The text is released without being used. Unreferenced. |
+
+## Score sync message
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `0091C650` | BSP_ScoreSyncMessage_Apply | reconstructed | `score_sync_message_apply_0091c650`: one network message (from `00777850` and `0076D220`) updates the mission score record of a slot. It has 24 kinds (jump table 0091CBD8): the header copy, the text-keyed counters (`005070C0`), an award (`0090EDE0`), the nested int-keyed maps (`0062C170`/`0062BB60`/`00625900`, `00915610`/`00911890`/`00625900`, `0090E740`), and the three message setters (`0090BDA0`/`0090BE30`/`0090BEC0`). |
+
+## Hit damage recorder
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `00915F20` | BSP_MissionScoring_RecordHitDamage | reconstructed | `scoring_record_hit_damage_00915f20`: `__thiscall(ECX = scoring, target, hit)`, RET 8, called from `0077CE60` (unit damage attribution) and `00819A20` (kamikaze direct arm). 00819A20's direct arm is recorded, not delivered, by game_hosts_gunnery.cpp:11973 (record "KamikazeDetonate::direct_hit_00915f20"; CC13_VERIFY3 D2); cc9's 0077CE60 attribution host (kKillCreditDamageGateBound) does not call it. Returns early on game+1FE4h == 2, on the target's flag bytes +5Ch/+5Dh/+60h/+5Eh, or on a null source `[hit+4]`. A source with no `vt[108h]` record that is kind 6 adds `[hit+48h]` to the slot block's `+A0h` damage tree (`00915610`/`00911890`/`00625900`, keyed by source class, `00803510` relation, target class). Otherwise, once per record (byte +20h), with slot <= 7: the RUA_KU award (`vt[204h]` against the award's +44h vector [0], then the `+70h` award map lookup with `004B93C0` ==), a byte clear at `[[[00E198C4]+B8h]+14h]`, and for enemy targets the BW_AAM/BW_AM/BW_TM/BW_DCM/BW_RM counters (switch tables 00916970/00916958) in `+124h`, the RUA_LBU award over the `+1C0h` kill list (age below the vector [1] threshold), and the torpedo-hit count `entry+24h`. Every call then adds the `_ftol2` sum of `[hit+4Ch]`, `[hit+48h]`, `[hit+50h]` and byte `[hit+2Ch]` to the `+A0h` or `+ACh` tree keyed by `[record+14h]`, bumps `+174h` for ship-on-ship hits, and creates or updates the `+1C0h` kill-list entry (`0090C090` find, `0057E8A0` ==, one `0090E850` call per field). 24-bit x87 modelled; 53-bit noted. |
+
+## Badge and achievement counters
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `00911E80` | BSP_MissionScoreRecord_EvaluateBadgeCounters (cc9 name, kept) | reconstructed | `score_record_evaluate_badge_counters_00911e80`: `__fastcall(ECX = record)`, RET, called from `00914EF0`. It empties the counter map at record+78h (`0058B520`, then resets the head), then rebuilds it. Under key 1 of record+B4h (`00908190`), the leaves of each inner node add their ints to the BU_* token picked by the inner key (jump table 00912A20: 1 BU_DM, 2 BU_PTM, 3 BU_BM, 4 BU_CM, 7 BU_VLB, 8 BU_VDB, 9 BU_VTB, 0Ah BU_FA, 0Bh BU_VR, 0Dh BU_SM). It copies record+120h by key, counts the record+15Ch floats above `[[game+21A0h]+1470h]` as BO_CV, and sets BO_DCM += [+168h], BO_KSS / BO_KSP = the largest value of +1A4h / +198h (from 0), BO_SC = [+174h], BO_EE = [+190h]. Each counter whose award vector [0] (`0050FC30`, +44h) is at most its count and which an inlined find (`004BF370`, `00BF7FBF`) misses in the awards map record+6Ch is granted through `0090EDE0([record+250h], key, 1, 0)` at 009129EE. Every inline checked-iterator test keeps its `00BF6713` call. |
+| `00912A60` | BSP_MissionScoreRecord_EvaluateAchievementCounters (cc9 name, kept) | reconstructed | `score_record_evaluate_achievement_counters_00912a60`: `__fastcall(ECX = record)`, RET, called from `00914EF0` and `00920A20`. It empties the counter map at record+84h. It reads the thresholds RUA_CU [0], RUA_FU [0] - 1 and RUA_FU [1] from the award table, and builds two local trees: A (`00907D40` head; id -> kill times) and B (`005828E0` head; id -> int). One walk of the record+1BCh kill list, skipping entries with byte +2Bh set, sets RUA_CU, RUA_SU, GA_SH, GA_DB and GA_AO and fills A (`00910F10`/`0045AFD0`) and B (`00667EB0`). GA_PL is granted when an alive registry entity of the record+14Ch {id, time} vector is older than 5.0 (00D7A370) and the award is missing from the slot's awards map; dead entries are erased in place and the walk restarts, and a grant erases the whole vector (`0090CA30`). Each A list longer than RUA_FU [0] - 1 is sorted (`0090D220`), and any window of RUA_FU [0] kills within RUA_FU [1] sets RUA_FU. B values at or above RUA_TBU [0] set RUA_TBU. The last walk grants counters at threshold that are not yet in record+6Ch through `0090EDE0(slot, key, count, 0)` at 009139C4; the value is the count, not 1. The local trees are then erased (`0058B000`/`0090F3D0`) and their heads freed. 24-bit x87 modelled; 53-bit noted. |

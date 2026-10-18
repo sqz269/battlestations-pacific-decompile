@@ -109,6 +109,12 @@ struct Hash64Iterator {
     std::uint32_t bucket;
 };
 
+// The checked std::map / std::set iterator (8 bytes): owning container, node.
+struct StlTreeIterator {
+    void* container;
+    void* node;
+};
+
 inline constexpr std::uint32_t kEmptyString = 0x00CE3A0C;       // ""
 inline constexpr std::uint32_t kEnumNameEmpty = 0x00F89450;     // .bss byte, a "" for a null name
 inline constexpr std::uint32_t kValueTextBuffer = 0x00F89458;   // .bss text buffer of 008F0E20
@@ -224,6 +230,11 @@ struct Seg59bHost {
     // 00480690 / 0047E480 BSP_ScenePropertyBag_IteratorBegin / Next, __thiscall(ECX = iterator).
     virtual void scene_property_bag_iterator_begin_00480690(Hash64Iterator* iterator) = 0;
     virtual void scene_property_bag_iterator_next_0047e480(Hash64Iterator* iterator) = 0;
+    // 00484D20, __fastcall(ECX = iterator): the current node's key text ([node+4]) or "" (00E186ED).
+    virtual const char* property_bag_iterator_key_00484d20(Hash64Iterator* iterator) = 0;
+    // 004F01F0, __thiscall(ECX = bag map {+4 count, +8 64 buckets}, record), RET 4: unlinks the
+    // node holding record, destroys record (vt[0](1)) and the key, returns the node; AL = found.
+    virtual bool scene_property_bag_remove_record_004f01f0(void* map, void* record) = 0;
     // The 008F08E0 resolver callback, __fastcall(ECX = reference name, EDX = context); EAX.
     virtual void* call_reference_resolver(std::uintptr_t callback, void* name, void* context) = 0;
     // 00435C40 BSP_NativeString_EqualsInsensitive, __thiscall(ECX = string, other), RET 4; AL.
@@ -236,6 +247,190 @@ struct Seg59bHost {
     virtual void native_string_assign_header_00425f40(void* string, const void* other) = 0;
     // 0041E870 BSP_NativeString_Assign, __thiscall(ECX = string, text), RET 4; EAX = string.
     virtual void* native_string_assign_0041e870(void* string, const char* text) = 0;
+    // 004261A0 BSP_NativeString_Concat, __thiscall(ECX = lhs, dst, rhs), RET 8; EAX = dst = lhs + rhs.
+    virtual void* native_string_concat_004261a0(void* lhs, void* dst, void* rhs) = 0;
+    // 008F0AB0 STL_Tree_BuyHeadNode, __thiscall(ECX = tree); EAX = a new head node.
+    virtual void* stl_tree_buy_head_node_008f0ab0(void* tree) = 0;
+    // 008F6BA0, __thiscall(ECX = map<std::string, record*>, result, value), RET 8; EAX = result.
+    virtual void* property_tree_insert_unique_008f6ba0(void* tree, void* result, void* value) = 0;
+    // 008EFF30, __thiscall(ECX = tree iterator {container, node}): ++iterator.
+    virtual void stl_tree_iterator_increment_008eff30(void* iterator) = 0;
+    // 008F6D50, __thiscall(ECX = tree, result, first {tree, node}, last {tree, node}), RET 14h.
+    virtual void* stl_tree_erase_range_008f6d50(void* tree, void* result, void* first_tree, void* first_node,
+                                                void* last_tree, void* last_node) = 0;
+    // 00408720, __thiscall(ECX = std::string, text, count), RET 8; EAX = string.
+    virtual void* std_string_assign_counted_00408720(void* string, const char* text, std::uint32_t count) = 0;
+    // 00408120, __thiscall(ECX = std::string, source, offset, count), RET 0Ch; EAX = string.
+    virtual void* std_string_assign_substring_00408120(void* string, const void* source, std::uint32_t offset,
+                                                       std::uint32_t count) = 0;
+    // 008F2260 BSP_ScenePropertyBag_Find, __thiscall(ECX = bag, dotted key), RET 4; EAX = record.
+    virtual void* scene_property_bag_find_008f2260(void* bag, const char* key) = 0;
+    // 00849170, __thiscall(ECX = vector<std::string>, &value), RET 4: push_back.
+    virtual void string_vector_push_back_00849170(void* vector, const void* value) = 0;
+    // 004CE520, __fastcall(ECX = first, EDX = last, allocator, unused), RET 8: destroys the
+    // 1Ch std::string range.
+    virtual void string_range_destroy_004ce520(void* first, void* last, void* allocator, std::uint32_t unused) = 0;
+    // 0043D870 BSP_PropertyMap_EraseByName, __thiscall(ECX = map, name), RET 4.
+    virtual void property_map_erase_by_name_0043d870(void* map, const char* name) = 0;
+    // InterlockedDecrement / InterlockedIncrement imports ([00CE2220] / [00CE221C]); EAX = new value.
+    virtual std::int32_t interlocked_decrement_00ce2220(std::int32_t* value) = 0;
+    virtual std::int32_t interlocked_increment_00ce221c(std::int32_t* value) = 0;
+    // vt[0] with ECX = object and no stack argument: the counted object's release on zero.
+    virtual void object_release_vt00(void* object) = 0;
+    // 0057C1A0 BSP_LoadingProgress_ReportPhase, __fastcall(ECX = phase, float fraction), RET 4.
+    virtual void loading_progress_report_phase_0057c1a0(std::int32_t phase, float fraction) = 0;
+    // 00BE0A30 BSP_FileBlock_Construct, __thiscall(ECX = 1Ch block, name*, mode), RET 8; 00BDCB30
+    // BSP_FileBlock_Destroy, __thiscall(ECX = block).
+    virtual void file_block_construct_00be0a30(void* block, void* name, std::int32_t mode) = 0;
+    virtual void file_block_destroy_00bdcb30(void* block) = 0;
+    // 008FA640 / 008FAD80 / 008FAE80, __thiscall(ECX = vector, count, holder by value), RET 8:
+    // resize with a counted-reference holder value.
+    virtual void vector_resize_008fa640(void* vector, std::uint32_t count, void* holder) = 0;
+    virtual void vector_resize_008fad80(void* vector, std::uint32_t count, void* holder) = 0;
+    virtual void vector_resize_008fae80(void* vector, std::uint32_t count, void* holder) = 0;
+    // [00F8D394]->vt[64h](name*, flag), RET 8; EAX = a referenced texture.
+    virtual void* render_device_vt64_00f8d394(void* device, void* name, std::int32_t flag) = 0;
+    // 00A83FD0 BSP_SoundSampleCache_AcquireByName, __thiscall(ECX = [00F8BBE8], out holder*, name*),
+    // RET 8; EAX = out.
+    virtual void** sound_sample_cache_acquire_00a83fd0(void* cache, void** out, void* name) = 0;
+    // 007188A0 BSP_Resource_LoadWithGameFactory, ECX = name*; EAX = a referenced resource.
+    virtual void* resource_load_with_game_factory_007188a0(void* name) = 0;
+    // 00B63D50 BSP_Matrix_BuildOrthogonalScaledAffineInverse, __fastcall(ECX = out, EDX = source).
+    virtual void matrix_build_orthogonal_scaled_affine_inverse_00b63d50(void* out, const void* source) = 0;
+    // 004142E0 BSP_Vector3f_TransformAffinePoint, __thiscall(ECX = source, out, matrix), RET 8.
+    virtual void vector3f_transform_affine_point_004142e0(const float* source, float* out, const void* matrix) = 0;
+    // 00419AB0 BSP_Segment2f_PointDistance, __fastcall(ECX = start, EDX = end, point), RET 4; ST0.
+    virtual float segment2f_point_distance_00419ab0(const float* start, const float* end, const float* point) = 0;
+    // 00B67350 BSP_LuaObject_SetNil / 00B67580 BSP_LuaObject_SetNewTable, __thiscall(ECX = table,
+    // NativeString* name), RET 4.
+    virtual void lua_object_set_nil_00b67350(void* table, void* name) = 0;
+    virtual void lua_object_set_new_table_00b67580(void* table, void* name) = 0;
+    // 00908A30 BSP_MissionScoreRecord_WriteArchive, __thiscall(ECX = record, archive), RET 4
+    // (cc9 mission_progress.cpp write_mission_score_record_00908a30).
+    virtual void mission_score_record_write_archive_00908a30(void* record, void* archive) = 0;
+    // 0041E350 BSP_NativeString_AssignCString, __thiscall(ECX = string, text), RET 4.
+    virtual void* native_string_assign_cstring_0041e350(void* string, const char* text) = 0;
+    // Objective-list containers, all __thiscall(ECX = container): 00450540 append(NativeString*),
+    // 0049F2D0 vector<bool> push_back(bool), 006257D0 int push_back(const int*), and the clears
+    // 00498FF0 / 005F6190 / 00622F50 (each RET 4 when it takes an argument).
+    virtual void native_string_vector_append_00450540(void* vector, void* string) = 0;
+    virtual void bool_vector_push_back_0049f2d0(void* vector, bool value) = 0;
+    virtual void int_vector_push_back_006257d0(void* vector, const std::int32_t* value) = 0;
+    virtual void native_string_vector_clear_00498ff0(void* vector) = 0;
+    virtual void bool_vector_clear_005f6190(void* vector) = 0;
+    virtual void int_vector_clear_00622f50(void* vector) = 0;
+    // 00626C50, no register or stack input: rebuilds the objective lists from the game state.
+    virtual void objective_lists_reset_00626c50() = 0;
+    // 004263B0 BSP_NativeString_ConcatInt, __thiscall(ECX = source, out, value), RET 8; EAX = out.
+    virtual void* native_string_concat_int_004263b0(void* source, void* out, std::int32_t value) = 0;
+    // 004260B0 BSP_NativeString_FromInt, __thiscall(ECX = out, value), RET 4; EAX = out.
+    virtual void* native_string_from_int_004260b0(void* out, std::int32_t value) = 0;
+    // 004BF370 STL_CaseInsensitiveStringIntMap_LowerBound, __thiscall(ECX = map, key*), RET 4; EAX = node.
+    virtual void* string_int_map_lower_bound_004bf370(void* map, void* key) = 0;
+    // 00BF7FBF __stricmp, __cdecl(a, b).
+    virtual std::int32_t stricmp_00bf7fbf(const char* a, const char* b) = 0;
+    // 00469840 BSP_NativeString_Substring, __thiscall(ECX = source, out, start, count), RET 0Ch.
+    virtual void* native_string_substring_00469840(void* source, void* out, std::uint32_t start, std::uint32_t count) = 0;
+    // 00553C80 BSP_NativeString_HasPrefixAt, __thiscall(ECX = string, prefix, position), RET 8; AL.
+    virtual bool native_string_has_prefix_at_00553c80(void* string, const char* prefix, std::uint32_t position) = 0;
+    // 00594A70 STL_MissionScoreMap_Index, __thiscall(ECX = map, NativeString* key), RET 4; EAX = record.
+    virtual void* mission_score_map_index_00594a70(void* map, void* key) = 0;
+    // LuaObject helpers, __thiscall(ECX = object): 00B65F50 construct; 00B661B0 is-table (AL);
+    // 00B67080 iterate-first(&key, &value), RET 8; 00B67190 iterate-next(&key, &value), RET 8;
+    // 00B66420(&key), RET 4: AL = the iteration is over.
+    virtual void lua_object_construct_00b65f50(void* object) = 0;
+    virtual bool lua_object_is_table_00b661b0(void* object) = 0;
+    virtual void lua_object_iterate_first_00b67080(void* table, void* key, void* value) = 0;
+    virtual void lua_object_iterate_next_00b67190(void* table, void* key, void* value) = 0;
+    virtual bool lua_object_iterate_at_end_00b66420(void* table, void* key) = 0;
+    // 0043C1C0 BSP_LuaValue_FormatSourceText, __fastcall(ECX = out NativeString, EDX = LuaObject);
+    // EAX = out (cc9 lua_text_dump.cpp lua_value_text_0043c1c0 models the text).
+    virtual void* lua_value_format_source_text_0043c1c0(void* out, void* object) = 0;
+    // 00B68D70 BSP_LuaObject_ResolveDotPath, __thiscall(ECX = table, out, NativeString* path,
+    // bool* found), RET 0Ch.
+    virtual void* lua_object_resolve_dot_path_00b68d70(void* table, void* out, void* path, bool* found) = 0;
+    // 00B66FA0 BSP_LuaObject_CopyConstruct, __thiscall(ECX = destination, source), RET 4.
+    virtual void lua_object_copy_construct_00b66fa0(void* destination, void* source) = 0;
+    // 00B66160 BSP_LuaObject_IsLightUserdata (AL) / 00B662D0 BSP_LuaObject_ToUserdata (EAX),
+    // __thiscall(ECX = object).
+    virtual bool lua_object_is_light_userdata_00b66160(void* object) = 0;
+    virtual void* lua_object_to_userdata_00b662d0(void* object) = 0;
+    // vt[10h] with ECX = object, no stack argument; EAX = a type-name C string.
+    virtual const char* object_type_name_vt10(void* object) = 0;
+    // STL map subscripts, __thiscall(ECX = map, const int* key), RET 4; EAX = the mapped value:
+    // 0062C170 / 00915610 (outer maps), 0062BB60 / 00911890 (inner maps), 00625900 (int),
+    // 0090E740 (float).
+    virtual void* stl_map_subscript_0062c170(void* map, const std::int32_t* key) = 0;
+    virtual void* stl_map_subscript_0062bb60(void* map, const std::int32_t* key) = 0;
+    virtual void* stl_map_subscript_00915610(void* map, const std::int32_t* key) = 0;
+    virtual void* stl_map_subscript_00911890(void* map, const std::int32_t* key) = 0;
+    virtual std::int32_t* stl_map_subscript_00625900(void* map, const std::int32_t* key) = 0;
+    virtual float* stl_map_subscript_0090e740(void* map, const std::int32_t* key) = 0;
+    // 0090BDA0 / 0090BE30 / 0090BEC0, __thiscall(ECX = score record, NativeString by value), RET 8:
+    // the record's condition / victory / third message text; each destroys its argument.
+    virtual void score_record_set_condition_message_0090bda0(void* record, void* text) = 0;
+    virtual void score_record_set_victory_message_0090be30(void* record, void* text) = 0;
+    virtual void score_record_set_message_0090bec0(void* record, void* text) = 0;
+
+    // --- 00915F20 hit recorder ----------------------------------------------------------------
+    // 00779AA0 BSP_Unit_ClassHasAttackSlot, __thiscall(ECX = unit), RET; AL.
+    virtual bool unit_class_has_attack_slot_00779aa0(void* unit) = 0;
+    // 00803510 BSP_Party_RelativeTo, __fastcall(ECX = subject party, EDX = reference party); EAX
+    // 0 same, 1 enemy, 2 neutral.
+    virtual std::int32_t party_relative_to_00803510(std::uint32_t subject, std::uint32_t reference) = 0;
+    // (unit+170h)->vtable[0](), __thiscall(ECX = unit+170h), RET; EAX: the unit class.
+    virtual std::uint32_t unit_class_id_vt00(void* class_component) = 0;
+    // entity->vtable[140h](), __thiscall, RET; EAX: the root entity.
+    virtual void* entity_root_vt140(void* entity) = 0;
+    // entity->vtable[204h](), __thiscall, RET; ST0 (stored as a double at 0091615B).
+    virtual double entity_value_vt204(void* entity) = 0;
+    // 004C8B80 std::map<NativeString, int>::find, __thiscall(ECX = map, result*, key*), RET 8.
+    virtual StlTreeIterator string_int_map_find_004c8b80(void* map, const void* key) = 0;
+    // 004B93C0 / 0057E8A0 iterator ==, 0057E8D0 iterator !=, __thiscall(ECX = it, other*), RET 4;
+    // AL. Each calls 00BF6713 when the first container is null or the containers differ.
+    virtual bool tree_iterator_equal_004b93c0(const StlTreeIterator* it, const StlTreeIterator* other) = 0;
+    virtual bool tree_iterator_equal_0057e8a0(const StlTreeIterator* it, const StlTreeIterator* other) = 0;
+    virtual bool tree_iterator_not_equal_0057e8d0(const StlTreeIterator* it, const StlTreeIterator* other) = 0;
+    // 0090C740, __thiscall(ECX = scoring, slot, key*), RET 8; AL = the award map at scoring +
+    // slot*284h + 70h holds key (004C8B80 find != end).
+    virtual bool scoring_has_award_0090c740(void* scoring, std::int32_t slot, const void* key) = 0;
+    // 0090C090 kill-list find, __thiscall(ECX = map, result*, const uint32* key), RET 8.
+    virtual StlTreeIterator kill_list_find_0090c090(void* map, const std::uint32_t* key) = 0;
+    // 00907950 checked dereference, __thiscall(ECX = it), RET; EAX = &pair {uint32 key, 2Ch entry}.
+    virtual void* kill_list_iterator_deref_00907950(StlTreeIterator* it) = 0;
+    // 0057F660 checked ++, __thiscall(ECX = it), RET.
+    virtual void tree_iterator_increment_0057f660(StlTreeIterator* it) = 0;
+    // 0090E850 kill-list operator[], __thiscall(ECX = map, const uint32* key), RET 4; EAX = &entry
+    // (2Ch bytes, default-inserted on a miss).
+    virtual void* kill_list_index_0090e850(void* map, const std::uint32_t* key) = 0;
+
+    // --- 00911E80 badge counters ----------------------------------------------------------------
+    // 00908190 std::map<int, ...>::find, __thiscall(ECX = map, result*, const int* key), RET 8.
+    virtual StlTreeIterator int_map_find_00908190(void* map, const std::int32_t* key) = 0;
+    // The checked iterator ++ instantiation at `callee` (0057F4A0, 0057F920, 0057F580, 0057F5F0,
+    // 004FBD20), __thiscall(ECX = it), RET. Bound library code.
+    virtual void tree_iterator_increment(std::uint32_t callee, StlTreeIterator* it) = 0;
+
+    // --- 00912A60 achievement counters ----------------------------------------------------------
+    // The _Buynode head instantiation at `callee` (00907D40, 005828E0), __thiscall(ECX = tree),
+    // RET; EAX = the new head node (the caller sets isnil and the links).
+    virtual void* tree_buy_head_node(std::uint32_t callee, void* tree) = 0;
+    // 00910F10 std::map<uint32, vector<float>>::operator[], __thiscall(ECX = map, key*), RET 4;
+    // EAX = &vector (node+10h).
+    virtual void* float_vector_map_index_00910f10(void* map, const std::uint32_t* key) = 0;
+    // 0045AFD0 vector<float>::push_back, __thiscall(ECX = vector, const float*), RET 4.
+    virtual void float_vector_push_back_0045afd0(void* vector, const void* value) = 0;
+    // 00667EB0 std::map<uint32, int>::operator[], __thiscall(ECX = map, key*), RET 4; EAX = &int.
+    virtual std::int32_t* int_map_index_00667eb0(void* map, const std::uint32_t* key) = 0;
+    // 0090D220 std::_Sort<float*>, register ABI (ECX = first, EDX = last, ideal pushed), RET 4.
+    // Bound library code.
+    virtual void float_sort_0090d220(float* first, float* last, std::int32_t ideal) = 0;
+    // 0090CA30 STL_Vector_EraseRange, __thiscall(ECX = vector, result*, first {vector, ptr},
+    // last {vector, ptr}), RET 14h.
+    virtual void vector_erase_range_0090ca30(void* vector, StlTreeIterator first, StlTreeIterator last) = 0;
+    // The tree erase(first, last) instantiation at `callee` (0058B000, 0090F3D0), __thiscall(ECX =
+    // tree, result*, first, last), RET 14h.
+    virtual void tree_erase_range(std::uint32_t callee, void* tree, StlTreeIterator first, StlTreeIterator last) = 0;
     // 00419CC0 BSP_SizedStoragePool_GetSingleton (no args); 00BD1510 ReturnBlock,
     // __thiscall(ECX = pool, data, bytes, flag), RET 0Ch.
     virtual void* sized_pool_singleton_00419cc0() = 0;
@@ -527,6 +722,53 @@ void scene_property_bag_collect_key_names_008f3270(Seg59bHost& host, void* bag, 
 // 008F6E20, __thiscall(ECX = bag, out array), RET 4; EAX = count: the bag's records sorted by
 // their ordinal (+34h) into the 008F0010 pointer array.
 std::int32_t scene_property_bag_collect_records_sorted_008f6e20(Seg59bHost& host, void* bag, void* out);
+// 008F4290, __thiscall(ECX = bag, other), RET 4: removes from bag every record whose key is in
+// other with an equal value (008EF820); type-6 sub-bags recurse and go when left empty.
+void scene_property_bag_subtract_equal_008f4290(Seg59bHost& host, void* bag, void* other);
+// 008F4420, __thiscall(ECX = bag, other), RET 4: the same walk keyed by type only; the image never
+// advances its iterator (see the body).
+void scene_property_bag_subtract_same_type_008f4420(Seg59bHost& host, void* bag, void* other);
+// 008F1A20, __thiscall(ECX = object, out), RET 4: out = the owner chain's names joined with ".",
+// outermost first ([+30h] owner, [owner+110h] parent); "" when the object has no owner.
+void scene_object_build_dotted_path_008f1a20(Seg59bHost& host, void* object, void* out);
+// 008F71E0, __thiscall(ECX = bag, writer), RET 4: " {", the bag's entries sorted by name (sub-bags
+// as '"name"' + a nested block, others through 008F1CA0), "}".
+void scene_property_bag_write_text_block_008f71e0(Seg59bHost& host, void* bag, void* writer);
+// 008F7550, __thiscall(ECX = bag, writer, base), RET 8: the 008F71E0 block with entries equal
+// to base's (008EF820) left out; null base writes the whole block.
+void scene_property_bag_write_text_diff_008f7550(Seg59bHost& host, void* bag, void* writer, void* base);
+// 008F79A0, __thiscall(ECX = bag, base, other), RET 8: erases the names (of other, or of bag
+// when other is null) that base does not have, recursing through shared sub-bags.
+void scene_property_bag_remove_missing_008f79a0(Seg59bHost& host, void* bag, void* base, void* other);
+// 008FAFC0, __fastcall(ECX = cache): fills the 54h texture, 9 sound and 3Ch model references
+// from the 00E0C988 / 00E0CAD8 / 00E0CB00 name tables once, reporting 0057C1A0 progress.
+void common_resource_cache_preload_008fafc0(Seg59bHost& host, void* cache);
+// 008FF640, __fastcall(ECX = entity, EDX = p, q), RET 4; ST0: q's distance from the ship hull
+// outline placed at p (XZ distance for a null or non-ship entity).
+float entity_hull_distance_to_point_008ff640(Seg59bHost& host, void* entity, const float* p, const float* q);
+// 0090EA00, __thiscall(ECX = record), RET: Lua scoring = nil, scoring = {}, then 00908A30 writes
+// the record into it through a 0090E920 holder.
+void score_record_publish_to_lua_0090ea00(Seg59bHost& host, void* record);
+// 009105F0, __thiscall(ECX = message), RET: applies an objective-list network message (append,
+// bulk flags/ints, or reset) to the 00E196CC.. containers.
+void objective_lists_message_apply_009105f0(Seg59bHost& host, void* message);
+// 0090CDD0, __thiscall(ECX = owner, nation), RET 4; EAX: the sum of the owner+0Ch map's values for
+// "USN01".."USN14" (nation 1) or "IJN01".."IJN14" (nation 0), 0 when one is missing.
+std::int32_t string_int_map_sum_nation_missions_0090cdd0(Seg59bHost& host, void* owner, std::int32_t nation);
+// 00920690, __thiscall(ECX = score map, key, a*, b*), RET 0Ch; AL: *a = 0, *b = the sum of the best
+// of three scores over the current campaign's missions (game+2198h prefix USN/IJN); AL = 0 when
+// the campaign name has neither prefix.
+bool score_map_sum_campaign_best_scores_00920690(Seg59bHost& host, void* map, std::int32_t key, std::uint32_t* a,
+                                                 std::uint32_t* b);
+// 00920F00, __stdcall(out, LuaObject table by value, limit), RET 1Ch; EAX = out: "{k=v,...}" with
+// nested tables as "{...}" and "..." when the limit ran out.
+void* lua_table_format_summary_00920f00(Seg59bHost& host, void* out, void* table, std::int32_t limit);
+// 00921360, __thiscall(ECX = watch list), RET: formats "name: value" lines for every watched Lua
+// path into a local NativeString that is then released unused.
+void lua_watch_list_format_values_00921360(Seg59bHost& host, void* owner);
+// 0091C650, __thiscall(ECX = message), RET: applies one score-record sync message (24 kinds) to
+// the mission score record of [message+1Ch].
+void score_sync_message_apply_0091c650(Seg59bHost& host, void* message);
 // 008F7CF0, __thiscall(ECX = scope), RET; EAX = scope: 00BD2FE0.
 void* random_threads_scope_construct_008f7cf0(Seg59bHost& host, void* scope);
 // 008F7D20, no arguments: destroy and free the object at [01090AA0], then clear it.
@@ -558,6 +800,18 @@ void world_write_archive_009042b0(Seg59bHost& host, void* world, void* archive);
 // 009052E0, __thiscall(ECX = scoring, slot, delta), RET 8: the 284h-byte player record's float
 // +18h += delta; EAX = its address.
 float* score_record_add_field18_009052e0(void* scoring, std::int32_t slot, float delta);
+// 00915F20, __thiscall(ECX = scoring, target, hit), RET 8: one damaging hit into the attacking
+// slot's score record (damage-by-class trees, BW_* weapon counters, RUA_KU / RUA_LBU awards and
+// the +1C0h kill-list entry).
+void scoring_record_hit_damage_00915f20(Seg59bHost& host, void* scoring, void* target, void* hit);
+// 00911E80, __fastcall(ECX = record = scoring + slot*284h + 4), RET: rebuilds the BU_* / BO_*
+// counter map at record+78h and grants (0090EDE0) each counter that reached its award threshold
+// and is not yet in the awards map at record+6Ch.
+void score_record_evaluate_badge_counters_00911e80(Seg59bHost& host, void* record);
+// 00912A60, __fastcall(ECX = record = scoring + slot*284h + 4), RET: rebuilds the RUA_* / GA_*
+// counter map at record+84h from the kill list, the GA_PL vector and two local trees, and grants
+// (0090EDE0, value = the count) each counter that reached its threshold and is not yet awarded.
+void score_record_evaluate_achievement_counters_00912a60(Seg59bHost& host, void* record);
 
 
 }  // namespace bsp::cc13_seg59b
