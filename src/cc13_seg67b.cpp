@@ -5616,22 +5616,24 @@ std::uint32_t bot_task_is_command_still_valid_base_0099c2c0(Cc13Seg67bHost& host
 }
 
 // ---- section 3.45: one-line table slots (disk bytes; each body is its whole listing) ----
-// 009A54E0: MOV EAX,00F8A370 (the depth-charge robots row pointer); 009A5500: "DepthCharge"
+// 009A54E0: MOV EAX,00F8A370 (the static depth-charge bot-task factory record);
+// 009A9950: MOV EAX,00F8A3E8 (the static "Dogfight" factory record); 009A5500: "DepthCharge"
 // 00CFA700; 009ADDE0: "DropKamikaze" 00D1FADC; 009AF080: "Kamikaze"
-// 00CFA714; 009B33A0: 00F8A438; 009B7BD0: "LevelBomb" 00D06EB0; 009B9140: FLD [00CE38B8]
-// 10.0; 009BA920: "immelmann" 00D20468; 009BCFB0: 00F8A534; 009C79C0:
+// 00CFA714; 009B33A0: 00F8A438 (land factory record); 009B7BD0: "LevelBomb" 00D06EB0; 009B9140: FLD [00CE38B8]
+// 10.0; 009BA920: "immelmann" 00D20468; 009BCFB0: 00F8A534 (move-on-path factory record); 009C79C0:
 // "DiveBomb" 00D06E1C; 009C9E60: 3. Byte twins of existing bodies are ledger-only:
-// 009A9950 (0098D3D0), 009BAC60 / 009C3170 / 009C9E70 (entity_orders.cpp 006F8C00 /
+// 009BAC60 / 009C3170 / 009C9E70 (entity_orders.cpp 006F8C00 /
 // 006F8920 / 006F8C90) and 009C3150 (kMoveToCommandClass, 009DAE20).
-std::uint32_t bot_task_depth_charge_robots_row_009a54e0() noexcept { return 0x00F8A370u; }
+std::uint32_t bot_task_depth_charge_factory_record_009a54e0() noexcept { return 0x00F8A370u; }
+std::uint32_t bot_task_dogfight_factory_record_009a9950() noexcept { return 0x00F8A3E8u; }
 std::uint32_t bot_task_depth_charge_name_009a5500() noexcept { return 0x00CFA700u; }
 std::uint32_t bot_task_drop_kamikaze_name_009adde0() noexcept { return 0x00D1FADCu; }
 std::uint32_t bot_task_kamikaze_name_009af080() noexcept { return 0x00CFA714u; }
-std::uint32_t bot_task_land_robots_row_009b33a0() noexcept { return 0x00F8A438u; }
+std::uint32_t bot_task_land_factory_record_009b33a0() noexcept { return 0x00F8A438u; }
 std::uint32_t bot_task_level_bomb_name_009b7bd0() noexcept { return 0x00D06EB0u; }
 float bot_task_pull_up_slot68_009b9140() noexcept { return kTen_00ce38b8; }
 std::uint32_t bot_task_immelmann_name_009ba920() noexcept { return 0x00D20468u; }
-std::uint32_t bot_task_moveonpath_robots_row_009bcfb0() noexcept { return 0x00F8A534u; }
+std::uint32_t bot_task_moveonpath_factory_record_009bcfb0() noexcept { return 0x00F8A534u; }
 std::uint32_t bot_task_dive_bomb_name_009c79c0() noexcept { return 0x00D06E1Cu; }
 std::uint32_t bot_task_retreat_kind_009c9e60() noexcept { return 3u; }
 

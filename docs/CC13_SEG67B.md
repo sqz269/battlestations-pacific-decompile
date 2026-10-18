@@ -583,8 +583,8 @@ Ledger-only: 00999610 and 0099B710 (see the table).
 
 These are the open zero-caller rows of six instructions or fewer. Each listing was read whole, and a host that already models a row takes precedence over a new body.
 
-There are 35 bodies:
-- **Constant returns:** robots-row pointers, task names, retreat's kind 3, and pull-up's 10.0.
+There are 36 bodies:
+- **Constant returns:** static bot-task factory records (00F8A370, 00F8A3E8, 00F8A438, 00F8A534), task names, retreat's kind 3, and pull-up's 10.0.
 - **Bare RETs:** 009CE290 and 009D0C00.
 - **Field slots:** 009A9C80 and 009A9D30.
 - **Leave-alone flush:** 009B9480.
@@ -596,7 +596,7 @@ There are 35 bodies:
 - **Navigation setters:** five unreferenced ones, 009DABB0-009DABF0.
 - **Auto-target base constructor:** 009F5260.
 
-There are 36 ledger-only rows (section 4 records only the group):
+There are 35 ledger-only rows (section 4 records only the group):
 - Command-class and name constants that a host header already carries.
 - Wait values that the dogfight, land and strafe hosts model.
 - The land standby, line and park enter and exit slots.
@@ -607,7 +607,6 @@ There are 36 ledger-only rows (section 4 records only the group):
   - 009C44E0, 009C58A0 and 009C6210 are twins of 009B1E90.
   - 009BAC60, 009C3170 and 009C9E70 are twins of the entity_orders.cpp rows 006F8C00, 006F8920 and 006F8C90.
   - 009C3150 is a twin of 009DAE20 (kMoveToCommandClass).
-  - 009A9950 is a twin of 0098D3D0.
 
 ### 3.46 Medium rows, batch 1 (packet cc13-seg67C)
 

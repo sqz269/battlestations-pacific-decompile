@@ -1039,15 +1039,16 @@ void ptr_array_push_front_00999d40(Cc13Seg67bHost& host, void* array,
                                    const std::uint32_t* value);
 // ---- one-line table slots (packet cc13-seg67C, section 3.45) ----
 // Constant returns, __thiscall(ECX = task, unused), RET, EAX (009B9140: ST0).
-std::uint32_t bot_task_depth_charge_robots_row_009a54e0() noexcept;
+std::uint32_t bot_task_depth_charge_factory_record_009a54e0() noexcept;
+std::uint32_t bot_task_dogfight_factory_record_009a9950() noexcept;
 std::uint32_t bot_task_depth_charge_name_009a5500() noexcept;
 std::uint32_t bot_task_drop_kamikaze_name_009adde0() noexcept;
 std::uint32_t bot_task_kamikaze_name_009af080() noexcept;
-std::uint32_t bot_task_land_robots_row_009b33a0() noexcept;
+std::uint32_t bot_task_land_factory_record_009b33a0() noexcept;
 std::uint32_t bot_task_level_bomb_name_009b7bd0() noexcept;
 float bot_task_pull_up_slot68_009b9140() noexcept;
 std::uint32_t bot_task_immelmann_name_009ba920() noexcept;
-std::uint32_t bot_task_moveonpath_robots_row_009bcfb0() noexcept;
+std::uint32_t bot_task_moveonpath_factory_record_009bcfb0() noexcept;
 std::uint32_t bot_task_dive_bomb_name_009c79c0() noexcept;
 std::uint32_t bot_task_retreat_kind_009c9e60() noexcept;
 // Bare RET slots: takeoff's exit 009CE290 and the torpedo go-away enter 009D0C00.
