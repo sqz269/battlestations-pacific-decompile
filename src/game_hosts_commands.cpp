@@ -21,6 +21,7 @@
 #include "bsp/game_hosts_ai.hpp"
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/gameplay_seg38_cc13.hpp"
 #include "bsp/gameplay_seg46_cc13.hpp"
 
 #include "bsp/command_completion.hpp"
@@ -58,6 +59,21 @@ constexpr bool kAiRetaskBound = true;
 // by packet cc8_ship_moveonpath, and the override arm 00836D67 cannot fire here
 // because nothing writes director+188h. False: the record, as before.
 constexpr bool kDirectorCommandArmsBound = true;
+// Packet cc15-dirq1 (integration lane). True: four director-queue sites call the
+// cc13 bodies in src/gameplay_seg38_cc13.cpp over a DirectorQueue projected from
+// GameDirector, in place of this host's own projections: 0071C0C0 (the base
+// test inside command_accepted), 0071D780 (the weighted queue-full count),
+// 0071E200 (slot_target_matches) and 0071D900 (the 5Dh slot clear at both of
+// its sites). Projection: slot i's class is slot_command[i]; only slot 0 carries
+// a path object here (path_built / path_points), so slots 1..9 have none, the
+// same named hole the host's own count has. A target's has_entity is kind == 1,
+// has_point is position_valid. False: the host's own projections, as before.
+// The pair is a differential test of the two models; cc9 pairs and flips.
+// Not wired, recorded: 0071DC80 needs the resolved entity's +170h kind, which
+// no host target carries; 0071E2E0 and 0071DF70 need director+50h / +40h state
+// the echo site and this host do not model; 0071FB90's path objects are
+// kPathObjectDefaultPairBound's.
+constexpr bool kDirectorQueueCc13BodiesBound = false;
 // Packet cc9_unresolved_fire_target (docs/GUNNERY_OPEN_ITEMS.md section 33).
 // True: 008358D0's forced fire target (00835930 -> 00835860) resolves a
 // descriptor whose object is a producer's handle, not one of this host's unit
@@ -211,6 +227,50 @@ struct GameDirector {
     unsigned long long user_points_dropped{0};
     unsigned long long user_points_outside_map{0};
 };
+
+// Packet cc15-dirq1: the 18h-byte target and the queue as the cc13 bodies take
+// them. The object pointer is the cached entity +4h (32-bit build).
+bsp::gameplay_seg38_cc13::CommandTarget cc13_command_target(
+    const bsp::SceneCommandTarget& target) noexcept {
+    bsp::gameplay_seg38_cc13::CommandTarget out;
+    out.has_entity_00 = target.kind == 1;
+    out.has_point_01 = target.position_valid != 0;
+    out.entity_index_02 = target.object_id;
+    out.entity_04 = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(target.object));
+    out.point_08 = {target.position[0], target.position[1], target.position[2]};
+    std::memcpy(&out.param_14, &target.trailing, sizeof(out.param_14));
+    return out;
+}
+
+bsp::gameplay_seg38_cc13::DirectorQueue cc13_director_queue(const GameDirector& director) {
+    bsp::gameplay_seg38_cc13::DirectorQueue q;
+    for (int i = 0; i < bsp::kDirectorCommandSlotCount; ++i) {
+        q.slots[i].command_class = director.slot_command[i];
+        q.slots[i].target = cc13_command_target(director.slot_target[i]);
+    }
+    // director+1A4h: the slot-0 path object alone (see GameDirector::path_cursor).
+    if (director.slot_command[0] == bsp::gameplay_seg38_cc13::kCmdMoveOnPath
+        && director.path_built) {
+        q.paths[0].present = true;
+        q.paths[0].vt4_valid = true;
+        q.paths[0].has_point_list = true;
+        q.paths[0].point_count = static_cast<int>(director.path_points.size());
+    }
+    return q;
+}
+
+// 0071D900's 5Dh record (+20h arm, +24h slot) as this host routes it.
+bsp::ClearCommandMessage clear_command_slot_message(int slot_index) noexcept {
+    if (!kDirectorQueueCc13BodiesBound) return bsp::clear_command_message_for_slot(slot_index);
+    const bsp::gameplay_seg38_cc13::RoutedDirectorMessage m =
+        bsp::gameplay_seg38_cc13::clear_command_slot_message_0071d900(
+            static_cast<std::uint32_t>(slot_index));
+    bsp::ClearCommandMessage out;
+    out.kind = m.type;
+    out.arm = static_cast<std::uint8_t>(m.field_20);
+    out.index = static_cast<std::int32_t>(m.field_24);
+    return out;
+}
 
 struct GameCommandsHost::Impl {
     explicit Impl(GameHostLog& log_in) : log(log_in) {}
@@ -859,7 +919,13 @@ public:
         const bsp::EntityOrderCommandClass* klass = chain_.owner.class_of(command);
         // 0071c0c0: false for a null command, otherwise the first empty slot
         // index is below 10.
-        const bool base_allows = command != 0 && count < bsp::kDirectorCommandSlotCount;
+        bool base_allows = command != 0 && count < bsp::kDirectorCommandSlotCount;
+        if (kDirectorQueueCc13BodiesBound) {
+            // Packet cc15-dirq1: the want argument is the command pointer.
+            base_allows = bsp::gameplay_seg38_cc13::has_free_command_slot_0071c0c0(
+                cc13_director_queue(chain_.director), static_cast<int>(command));
+            chain_.owner.done("EntityCommand::has_free_command_slot", 0x0071c0c0u);
+        }
         chain_.owner.done("EntityCommand::command_accepted", 0x00835e90u);
         return bsp::cruise_command_accepted_00835e90(base_allows, count, top,
             (top_class != nullptr) ? top_class->category : -1,
@@ -924,7 +990,7 @@ public:
             chain_.owner.done("EntityCommand::drop_top_slot", 0x0071d900u);
             chain_.owner.route_clear_command(chain_.unit.index,
                 chain_.owner.player_of(chain_.unit.index),
-                bsp::clear_command_message_for_slot(count - 1));
+                clear_command_slot_message(count - 1));
         } else if (dropped && count > 0) {
             // 0071d900 at 0071e5aa removes the top slot.
             chain_.owner.record("EntityCommand::drop_top_slot", 0x0071d900u);
@@ -1063,7 +1129,10 @@ public:
         for (int i = 0; i < bsp::kDirectorCommandSlotCount; ++i) {
             state.slots[i].command = chain_.director.slot_command[i];
         }
-        const int weighted = bsp::command_queue_count(state, path_point_counts);
+        const int weighted = kDirectorQueueCc13BodiesBound
+            ? bsp::gameplay_seg38_cc13::command_count_0071d780(
+                  cc13_director_queue(chain_.director))   // packet cc15-dirq1
+            : bsp::command_queue_count(state, path_point_counts);
         // Packet cc9_director_slot_housekeeping, diagnostic: a queued `moveonpath`
         // in slots 1..9 is where 0071FB90's path objects (0 here) would weigh.
         ++chain_.owner.queue_full_tests;
@@ -1097,6 +1166,14 @@ public:
         if (slot_index < 0 || slot_index >= bsp::kDirectorCommandSlotCount) return false;
         const bsp::SceneCommandTarget& slot = chain_.director.slot_target[slot_index];
         chain_.owner.done("WeaponDirector::slot_target_matches", 0x0071e200u);
+        if (kDirectorQueueCc13BodiesBound) {
+            // Packet cc15-dirq1. 0071E2B9..0071E2C9 store the sum as a float and
+            // FCOMIP it against FLD1 with JA to the false arm: a sum of exactly
+            // 1.0 matches, which the projection below (< 1.0 over doubles) misses.
+            return bsp::gameplay_seg38_cc13::slot_target_matches_0071e200(
+                cc13_command_target(slot), cc13_command_target(target),
+                slot.object == target.object);
+        }
         if (slot.object != target.object) return false;
         double squared = 0.0;
         for (int lane = 0; lane < 3; ++lane) {
@@ -3751,7 +3828,7 @@ std::size_t GameCommandsHost::release_observed_target_0071ddb0(
             } else if (category == 1 || category == 2) {
                 // 0071DE7B..0071DE91: 0071DEB0(command, i) true, 0071D900(i).
                 host.done("WeaponDirector::send_clear_command_slot", 0x0071d900u);
-                host.route_clear_command(d, player, bsp::clear_command_message_for_slot(i));
+                host.route_clear_command(d, player, clear_command_slot_message(i));
             }
             host.done("WeaponDirector::release_observed_target", 0x0071ddb0u);
         }

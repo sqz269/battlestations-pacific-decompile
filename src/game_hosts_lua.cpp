@@ -60,6 +60,10 @@
 #include "bsp/vehicle_class.hpp"
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/native_string.hpp"
+#include "bsp/cc13_seg87.hpp"
+#include "bsp/native_lua_class_setters.hpp"
+#include "bsp/native_lua_field_setters.hpp"
+#include "bsp/native_lua_object_boolean.hpp"
 #include "bsp/recon_values.hpp"
 #include "bsp/recon_slot_lists.hpp"  // packet cc9_recon_publication
 #include "bsp/shipyard_production.hpp"  // packet cc9_lua_add_shipyard_stock
@@ -92,6 +96,31 @@ extern "C" {
 
 namespace bsp::game {
 namespace {
+// Packet cc15-lua1: the VehicleClass row mark (0096490C, 00964959) and the lobby
+// settings globals (00B67350, 00B67580) run the native 14h-object field setters
+// over this state instead of stock push/setfield pairs. Each setter pushes the
+// key with lua_pushlstring, then the value, then lua_settable on the object.
+constexpr bool kLuaObjectFieldSettersCc13Bound = false;
+
+// The setters' NativeString key: 0041E870 over the CRT-backed storage, released
+// when the call returns.
+struct ScopedNativeKey {
+    NativeString key;
+    explicit ScopedNativeKey(const char* text) { key.assign_0041e870(crt_string_storage(), text); }
+    ~ScopedNativeKey() { key.release_to(crt_string_storage()); }
+    ScopedNativeKey(const ScopedNativeKey&) = delete;
+    ScopedNativeKey& operator=(const ScopedNativeKey&) = delete;
+};
+
+// An untracked native object over the value at stack index `index` (kind 2).
+NativeLuaObjectStorage stack_object(NativeLuaStateStorage& owner, int index) {
+    NativeLuaObjectStorage object{};
+    object.owner_00 = &owner;
+    object.kind_04 = 2;
+    object.index_08 = index;
+    return object;
+}
+
 // Packet cc9_spawn_new_id_queries: what the two id bindings answered.
 struct SpawnIdQueryCensus {
     unsigned long long requested{0};
@@ -4315,10 +4344,20 @@ void GameMissionLuaHost::mark_vehicle_class_row_00964790(int class_index) {
                 lua_rawgeti(state_, -1, class_index);
             }
             if (lua_istable(state_, -1)) {
-                lua_pushinteger(state_, class_index);   // 0096490C 00B67460
-                lua_setfield(state_, -2, "ID");
-                lua_pushboolean(state_, 1);             // 00964959 00B673A0
-                lua_setfield(state_, -2, "Got");
+                if constexpr (kLuaObjectFieldSettersCc13Bound) {
+                    NativeLuaStateStorage owner;
+                    construct_native_lua_state_00b66bd0(&owner);
+                    owner.state_04 = state_;
+                    NativeLuaObjectStorage row = stack_object(owner, ::lua_gettop(state_));
+                    const ScopedNativeKey id("ID"), got("Got");
+                    native_lua_set_integer_00b67460(row, id.key, class_index);   // 0096490C
+                    native_lua_set_boolean_00b673a0(row, got.key, 1);            // 00964959
+                } else {
+                    lua_pushinteger(state_, class_index);   // 0096490C 00B67460
+                    lua_setfield(state_, -2, "ID");
+                    lua_pushboolean(state_, 1);             // 00964959 00B673A0
+                    lua_setfield(state_, -2, "Got");
+                }
                 ++summary_.class_rows_marked;
             }
         }
@@ -5834,9 +5873,15 @@ int GameMissionLuaHost::run_remove_trigger_008c5fd0(lua_State* state, int argume
 // the fan-out); the units are walked in index order (the image walks the job groups'
 // element order); wave 2's admission (+5Eh clear, +BDh set) is unit_active(). Packet
 // cc13-fix19b: a squadron's list is keyed by its fused wing-0 slot, but the image
-// tests the squadron entity, whose +5Eh is set only by 007F3970's Kill when +3CCh
-// reaches 0 (007F3A16..007F3A2A); so a fused slot whose squadron still holds a plane
-// (plane_squadron_live_fused_slot) is admitted after the wing-0 plane dies.
+// tests the squadron entity. Its +5Eh is set by pass K (009274D2 MOV byte [ESI+5Eh],1)
+// once the squadron has been Killed, and the squadron is Killed by 007F3970 when
+// +3CCh reaches 0 (007F3A16..007F3A2A); Lua Kill of a squadron Kills only its members
+// (008AC732 007ED380, then 008AC737 JMP past 00926D90). Other direct Kills of a
+// squadron object are not enumerated. So a fused slot whose squadron still holds a
+// plane (plane_squadron_live_fused_slot) is admitted after the wing-0 plane dies, and
+// (cc13-fix19c) a fused slot is refused once the drain has noticed the squadron's
+// Kill (target_gone_notified_, the +5Eh stand-in), which also covers the up-to-one-
+// step window where gunnery counts every member dead before compaction.
 void GameMissionLuaHost::run_proximity_triggers_008759b0(float step) {
     static_cast<void>(step);   // 00750000 is RET 4 and never reads it
     if (units_hooks_ == nullptr || state_ == nullptr) return;
@@ -5844,6 +5889,16 @@ void GameMissionLuaHost::run_proximity_triggers_008759b0(float step) {
         const std::size_t unit = entry.first;
         if (!units_hooks_->unit_active(unit)
             && bsp::plane_squadron_live_fused_slot(unit) == nullptr) continue;
+        if (unit < target_gone_notified_.size() && target_gone_notified_[unit]) {
+            bool squadron_slot = false;
+            for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+                if (r.squadron_unit == unit) {
+                    squadron_slot = true;
+                    break;
+                }
+            }
+            if (squadron_slot) continue;
+        }
         std::list<ProximityTrigger>& list = entry.second;
         for (auto it = list.begin(); it != list.end();) {
             const auto next = std::next(it);
@@ -5979,12 +6034,32 @@ void GameMissionLuaHost::check_squad_ordnance_trigger_007504f0(std::size_t unit,
 // this hook: the host's inline pass-K sites (through on_entity_killed_00928c80: the
 // ship KillDepth and kamikaze removals) and Lua Kill's victims (008AC5C0 -> 00926D90).
 // Other Kill callers are not fed (the host's gunnery funnel does not tell a Kill from
-// a Destroy). A squadron target is noticed at the drain when the host's registry
-// shows no live member (none left after compaction, or all dead in gunnery) after it
-// has held one (cc13-fix19b: sticky, because compaction empties the record), standing
-// for 007F3970's Kill of the squadron when its last plane goes (007F3A16..007F3A2A).
+// a Destroy). A squadron is noticed at the drain when the host's registry shows no
+// live member after it has held one (cc13-fix19b: sticky, because compaction empties
+// the record), standing for 007F3970's Kill of the squadron when its last plane goes
+// (007F3A16 CMP [ESI+3CCh],0 / JNE, 007F3A2A 00926D90). Packet cc13-fix19c: every
+// registry squadron is polled at every drain, watched or not, as the image's Kill
+// does not depend on an observer; the notice then sets the squadron's +5Eh stand-in
+// (target_gone_notified_), so a trigger made later is never retired by it, as in the
+// image (pass K handles an entity once). Lua Kill of a squadron (008AC72F JE /
+// 008AC732 007ED380 / 008AC737 JMP 008AC75B) Kills only the members, never the
+// squadron itself, so the squadron's notice comes from this poll alone: a notice for
+// the fused wing-0 slot from a plane-level Kill site is not the squadron's and is
+// dropped here (cc13-fix19c; before, a kamikaze wing-0 plane retired triggers aimed
+// at a squadron whose other planes lived).
 // Once per unit, standing for the +5Eh test (009274C8).
 void GameMissionLuaHost::target_gone_00925c40(std::size_t unit_index) {
+    if constexpr (!kLuaProximityTriggersBound) {
+        static_cast<void>(unit_index);
+    } else {
+        for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+            if (r.squadron_unit == unit_index) return;
+        }
+        target_gone_mark_(unit_index);
+    }
+}
+
+void GameMissionLuaHost::target_gone_mark_(std::size_t unit_index) {
     if constexpr (!kLuaProximityTriggersBound) {
         static_cast<void>(unit_index);
     } else {
@@ -5999,38 +6074,36 @@ void GameMissionLuaHost::target_gone_00925c40(std::size_t unit_index) {
 
 void GameMissionLuaHost::target_gone_drain_009273a0() {
     if constexpr (kLuaProximityTriggersBound) {
-        // The squadron targets first: the registry's view of 007F3970's Kill. A
-        // record that never had a member is not taken as gone.
-        for (const auto& entry : proximity_triggers_) {
-            for (const ProximityTrigger& trigger : entry.second) {
-                if (trigger.kind != ProximityTrigger::Kind::Proximity
-                    || trigger.target_kind_44 == 0 || trigger.target_id <= 0) continue;
-                const std::size_t target = static_cast<std::size_t>(trigger.target_id - 1);
+        // The squadrons first: the registry's view of 007F3970's Kill, for every
+        // registry squadron (cc13-fix19c), watched or not. A record that never had a
+        // member is not taken as gone.
+        GameGunneryHost* gunnery = units_hooks_ != nullptr ? units_hooks_->gunnery() : nullptr;
+        if (gunnery != nullptr) {
+            for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+                const std::size_t target = r.squadron_unit;
+                if (target == bsp::kPlaneSquadronNoUnit) continue;
                 if (target < target_gone_notified_.size() && target_gone_notified_[target]) continue;
-                GameGunneryHost* gunnery = units_hooks_ != nullptr ? units_hooks_->gunnery() : nullptr;
-                if (gunnery == nullptr) continue;
-                for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
-                    if (r.squadron_unit != target) continue;
-                    // Packet cc13-fix19b: the compaction (kSquadronRemovesDeadBound, and
-                    // the stock return's 007F3970) clears a dead or landed member to
-                    // NoUnit, so "had a member" is kept sticky; without it an emptied
-                    // record never read as gone. A member the gunnery host counts dead
-                    // but not yet compacted is not live either.
-                    bool live = false;
-                    for (const std::size_t m : r.member_units) {
-                        if (m == bsp::kPlaneSquadronNoUnit || m >= units_hooks_->count()) continue;
-                        if (squadron_target_resolved_.size() <= target) {
-                            squadron_target_resolved_.resize(target + 1, false);
-                        }
-                        squadron_target_resolved_[target] = true;
-                        if (!gunnery->unit_dead(m)) live = true;
+                // Packet cc13-fix19b: the compaction (kSquadronRemovesDeadBound, and the
+                // stock return's 007F3970) clears a dead or landed member to NoUnit, so
+                // "had a member" is kept sticky; without it an emptied record never read
+                // as gone.
+                // TIMING SUBSTITUTION (labelled, cc13-fix19c): a member the gunnery host
+                // counts dead but has not yet compacted is not live either. The image
+                // drops +3CCh only at the plane's destroy flush (007BCAA0 -> 007F3970),
+                // so this can notice the squadron's Kill up to one units step early.
+                bool live = false;
+                for (const std::size_t m : r.member_units) {
+                    if (m == bsp::kPlaneSquadronNoUnit || m >= units_hooks_->count()) continue;
+                    if (squadron_target_resolved_.size() <= target) {
+                        squadron_target_resolved_.resize(target + 1, false);
                     }
-                    // 007F3A16 CMP [ESI+3CCh],0 / JNE; 007F3A2A 00926D90 (the squadron).
-                    if (!live && target < squadron_target_resolved_.size()
-                        && squadron_target_resolved_[target]) {
-                        target_gone_00925c40(target);
-                    }
-                    break;
+                    squadron_target_resolved_[target] = true;
+                    if (!gunnery->unit_dead(m)) live = true;
+                }
+                // 007F3A16 CMP [ESI+3CCh],0 / JNE; 007F3A2A 00926D90 (the squadron).
+                if (!live && target < squadron_target_resolved_.size()
+                    && squadron_target_resolved_[target]) {
+                    target_gone_mark_(target);
                 }
             }
         }
@@ -9827,15 +9900,37 @@ public:
 
     void set_global_nil(const char* name) override {
         if (state_ == nullptr) return;
-        lua_pushnil(state_);
-        lua_setfield(state_, LUA_GLOBALSINDEX, name);
+        if constexpr (kLuaObjectFieldSettersCc13Bound) {
+            NativeLuaStateStorage owner;
+            construct_native_lua_state_00b66bd0(&owner);
+            owner.state_04 = state_;
+            NativeLuaObjectStorage globals;
+            native_lua_globals_00b67980(owner, &globals);
+            const ScopedNativeKey key(name);
+            native_lua_set_nil_00b67350(globals, key.key);
+        } else {
+            lua_pushnil(state_);
+            lua_setfield(state_, LUA_GLOBALSINDEX, name);
+        }
         nil_global_ = true;
         log_.implemented("MissionLua::lobby_settings_set_global_nil", "00b67350");
     }
     void set_global_new_table(const char* name) override {
         if (state_ == nullptr) return;
-        lua_createtable(state_, 0, static_cast<int>(bsp::kLobbySettingsFieldCount));
-        lua_setfield(state_, LUA_GLOBALSINDEX, name);
+        if constexpr (kLuaObjectFieldSettersCc13Bound) {
+            // 00B67580 creates the table with (0, 0); the host's presize is not
+            // observable from Lua.
+            NativeLuaStateStorage owner;
+            construct_native_lua_state_00b66bd0(&owner);
+            owner.state_04 = state_;
+            NativeLuaObjectStorage globals;
+            native_lua_globals_00b67980(owner, &globals);
+            const ScopedNativeKey key(name);
+            native_lua_set_new_table_00b67580(globals, key.key);
+        } else {
+            lua_createtable(state_, 0, static_cast<int>(bsp::kLobbySettingsFieldCount));
+            lua_setfield(state_, LUA_GLOBALSINDEX, name);
+        }
         table_created_ = true;
         log_.implemented("MissionLua::lobby_settings_set_global_table", "00b67580");
     }

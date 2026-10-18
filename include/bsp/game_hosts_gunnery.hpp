@@ -383,7 +383,8 @@ inline constexpr bool kShipDirectorEnablesBound = true;
 // whole table under kShipDirectorEnablesBound, and the ship AI's +12B9h reads
 // the same table). SUBSTITUTION: stored at the call, not delivered through the
 // session. False: the native stays unimplemented and every director keeps 1.
-inline constexpr bool kLuaArtilleryEnableBound = false;
+// ON since cc9-ships58 (docs/SHIP_AI_OPEN_ITEMS.md section 285).
+inline constexpr bool kLuaArtilleryEnableBound = true;
 
 // Packet cc13-fix17 (docs/CC13_FIX17.md). The Lua native ForceFireDepthCharge
 // 0089B9D0: argument 0 through 00888AA0 (no null test), then the unit's child
@@ -402,7 +403,8 @@ inline constexpr bool kLuaArtilleryEnableBound = false;
 // installation's deviceclasses.lua is a Single_Turning_Gun), the raise lands at
 // the next fixed step rather than in the script phase, and a player-held seat
 // keeps its own trigger. False: the native stays unimplemented.
-inline constexpr bool kLuaForceFireDepthChargeBound = false;
+// ON (cc9-lua67, SQUADRON_LAND_TASK 5ii): PRCP01 pair, Puffin fires 124 charges.
+inline constexpr bool kLuaForceFireDepthChargeBound = true;
 
 // Packet cc9_torpedo_stock (docs/UNIT_WEAPON_DEVICES.md, "Torpedo stock, bound").
 // True: a ship's torpedo tubes draw on the class's MaxTorpedoStock (class+7A0h).

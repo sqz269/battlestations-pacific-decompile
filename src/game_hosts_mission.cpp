@@ -10,6 +10,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/game_hosts_vfs.hpp"
+#include "bsp/engine_seg1_cc13.hpp"
 #include "bsp/game_observer_runtime.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/gui_lua_runtime.hpp"
@@ -56,6 +57,10 @@
 
 namespace bsp::game {
 namespace {
+
+// Packet cc15-fe2: the mission-detail page's 00414130 call (0059A36F..0059A39C)
+// runs engine_seg1_cc13.cpp's lerp instead of returning the offset unchanged.
+constexpr bool kMissionDetailOffsetLerpBound = false;
 
 // Packet cc9_frame_delta_jitter. A process-private splitmix64 stream, so the
 // shared generator 00BD2F10 (gunnery, planner) never sees a draw from it.
@@ -1003,7 +1008,17 @@ public:
         static_cast<void>(scene_id);
         owner_.log.unimplemented("MainMenuUpdate::update_scene", "004c1e90");
     }
+    // 00414130 is ECX = a, EDX = b, [ESP+4] = t, returning (b - a) * t + a. The
+    // caller passes ECX = this+1A8h, EDX -> 00CEFF04 and t -> 00D7A2F0, so the
+    // offset moves a tenth of the way to -0.21 per frame: the header's `low`
+    // is the target and `high` the rate. Uncertainty: the body evaluates in
+    // double; this runs on the main thread, whose x87 precision is 24-bit, so
+    // the image rounds after each of the three operations (at most 1 ulp apart).
     float blend_map_offset(float current, float low, float high) override {
+        if (kMissionDetailOffsetLerpBound) {
+            owner_.log.implemented("MainMenuUpdate::blend_map_offset", "00414130");
+            return engine_seg1_cc13::math_lerp_00414130(&current, &low, &high);
+        }
         static_cast<void>(low);
         static_cast<void>(high);
         owner_.log.unimplemented("MainMenuUpdate::blend_map_offset", "00414130");

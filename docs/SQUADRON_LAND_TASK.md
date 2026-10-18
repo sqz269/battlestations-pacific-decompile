@@ -17845,3 +17845,30 @@ Exports of a86826f07 (`local\l66_m2_off`, `local\l66_id_on`), reference env. USN
 BSM01 `bsm01_p6_b1_a` 40000 fr: 196 draws, gameplay identical. The draw is keyed per unit, so it moves no other
 stream, and on these rows no issue leaves a further request pending (unit+C20h), so the drawn interval is never
 waited out. Mechanism live, nothing moved: flipped ON.
+## 5ii. cc13 fix17/fix18 natives: pairs on fcb6c6fa5 (cc9-lua67, 2026-10-18)
+
+Exports of fcb6c6fa5: control `local\l67_rt` (1F0D9DD17135, also the WINS re-time exe) and `local\l67_nat_on`
+(E98287E2DB67) with kLuaGetCommandBuildingLevelBound, kLuaSetCommandBuildingOwnerPlayerBound, kLuaGetShipMaxSpeedBound,
+kLuaGetDirectionBound, kLuaClearForcedReconLevelBound, kLuaSetCrewLevelBound and kLuaForceFireDepthChargeBound all
+true. Reference env; logs `local\l67r_<row>_<rt|nat_on>_ref.log` with manifests. Each pair's log shows which native ran.
+
+- **ForceFireDepthCharge (fix17), PRCP01 `prcp01_p9_p01_k`** (the PRCP01 menu runs PRCPUS usn_03_battle_of_santa_cruz.lua;
+  the USN03 menu does not reach :593): pair_diff 3. The native is called 307 times both ways (concrete ON); Puffin
+  fires 124 depth charges (DepthCharge activate / water entry / advance 124 each), 300 more 00BD2F10 fire-stagger
+  draws on the gunnery stream. Death rows, plane modes and every other unit row are identical; completion 921.85 s
+  both ways, guard logged. As predicted (CC13_FIX17: one salvo per think at the reload rate). **Flipped ON.**
+- **ClearForcedReconLevel (fix18), JM06 `jm06_p12_j6_c1`** 120000 frames: `clear forced recon calls=0`, gameplay identical.
+  The only JM06 call (PRCPIJN jm06.lua:1429, luaJM6ClearCatalinaReconCheat) is dead: its sole caller is the commented
+  `--luaDelay(luaJM6ClearCatalinaReconCheat, 30)` at :1425. Body re-checked against 00803B50 (old = +10h ? +8h : +4h;
+  +10h = 0; listener when +4h != old). ON-unexercised; to flip with SetCrewLevel when the lua header lease frees.
+- **SetCrewLevel (fix18)**: no WINS row calls it (chg / multi / cheat paths only). Body re-checked: 006E6210 maps
+  0 -> m, 1 -> 2m+1, 2 -> 2m+2, 3 -> 5, else 1 (006E6210-006E6265) and the host's `crew_level_skill_006e6210` matches
+  with m = 0. ON-unexercised, flipped with ClearForcedReconLevel.
+- **GetCommandBuildingLevel (fix13), JM05 no orders** 30000 frames: gameplay identical; the mission fails at 321.05 s
+  (a carrier lost) before RadarStation 01 is Japanese, so luaJM5CheckObjectives never reaches the compare. No reach.
+- **GetDirection (fix14)**: JM01 is commented out of this installation's missiontree.lua (CC13_JM01_MENU_SELECT.md; the
+  proposed `--mission-tree-append` harness option is not on main, so `--menu-select JM01` exits 2), and the JM02 menu
+  runs prcpjm02.lua, which does not call it. No reachable row: stays OFF.
+- **GetShipMaxSpeed (fix14)**: USN02 runs usn_2_java.lua, which does not call it (the 1.5x lines are in COTP-USN
+  usn_02_battle_of_cape_esperance.lua, a scene no menu id loads); USN02 pair_diff 1. JM14 (prcpjm12.lua:1138,
+  PreparePhase4) is queued.

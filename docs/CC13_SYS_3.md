@@ -99,7 +99,10 @@ parameter defaults (`init_fish_school_params_00708b00`) were read from the image
 
 ## Segment 66
 
-- Registry: 0098D470 / 0098D4E0 and the four wrappers call the registry directly. 0098D5C0 stores the
+- Registry: 0098D470 / 0098D4E0 and the four wrappers call the registry directly. All four wrappers
+  return the inner call's AL (cc13-fix23 corrected 0098D5C0 / 0098D5F0, previously void; 0073C3B0
+  sums the four read answers). 0098D570 types its four bytes REG_QWORD (0098D57C MOV EDX,0Bh), not
+  REG_DWORD (corrected by cc13-fix23). 0098D5C0 stores the
   low dword of its eight-byte buffer even when the read failed; the host
   `GameHardwareProbe::read_stored_qword` (src/game_hosts_init_tail.cpp) does not. Recorded, not
   changed.

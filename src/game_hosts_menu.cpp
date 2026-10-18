@@ -34,6 +34,11 @@ namespace {
 // runs only from the mission frame's own 004c40f0 passes (GameMenuHost::frame).
 constexpr bool kMenuPumpYieldsToMissionFrameBound = true;  // ON: 17 rows identical (GUNNERY_OPEN_ITEMS 76.4)
 
+// Packet cc15-fe1: the front-end frame's two GUI-manager calls, 00aa0e50 at
+// 004e4c38..004e4c52 and 00aa0e00 after it, run blocking_screen.cpp's bodies on
+// the host manager's +50h pointer slot instead of only being recorded.
+constexpr bool kFrontEndPointerCc13Bound = false;
+
 // 004f8710 publishes screen ids; the level-4 set the main-menu manager raises
 // has exactly one element (docs/MAIN_MENU_PATH.md).
 constexpr int kNoScreenSlot = -1;
@@ -948,12 +953,22 @@ public:
         update_title_screen_0068d850(owner_.handover, handover_, raw_delta);
         owner_.log.implemented("FrontEndFrame::update_title_screen", "0068d850");
     }
-    void gui_clear_screens(bool flag) override {
-        static_cast<void>(flag);
-        owner_.log.unimplemented("FrontEndFrame::gui_clear_screens", "00aa0e50");
+    // 00aa0e50 is MOV ECX,[ECX+50h]; JMP [vtable+34h]: the pointer widget's
+    // visibility setter, not a screen clear (this row was gui_clear_screens).
+    void gui_set_pointer_visible(bool visible) override {
+        if (kFrontEndPointerCc13Bound) {
+            owner_.frontend.gui_manager_set_pointer_visible_00aa0e50(visible);
+            owner_.log.implemented("FrontEndFrame::gui_set_pointer_visible", "00aa0e50");
+            return;
+        }
+        owner_.log.unimplemented("FrontEndFrame::gui_set_pointer_visible", "00aa0e50");
     }
     void gui_set_enabled(bool enabled) override {
-        static_cast<void>(enabled);
+        if (kFrontEndPointerCc13Bound) {
+            owner_.frontend.gui_manager_set_enabled_00aa0e00(enabled);
+            owner_.log.implemented("FrontEndFrame::gui_set_enabled", "00aa0e00");
+            return;
+        }
         owner_.log.unimplemented("FrontEndFrame::gui_set_enabled", "00aa0e00");
     }
     void gui_update(float raw_delta, int mode) override {
@@ -1172,6 +1187,12 @@ public:
     void refresh_multiplayer_state() override {
         owner_.log.unimplemented("FrontEndManager::refresh_multiplayer_state", "00576b10");
     }
+    // Label check (cc15-fe1): 006895CE tests the byte 00F88950 and 006895D7
+    // calls 00687C00, which under the singleton-lifetime lock unregisters and
+    // deletes the object in 00F8894C (BSP_Singleton_Destroy_00f8894c,
+    // frontend_seg16_24_28_cc13.cpp). Nothing in it refreshes content; the
+    // downloadable-content names are unsupported. The process never builds
+    // that singleton, so the byte stays false here.
     bool downloadable_content_present() override { return false; }
     void refresh_downloadable_content() override {
         owner_.log.unimplemented("FrontEndManager::refresh_downloadable_content", "00687c00");
@@ -1190,6 +1211,11 @@ public:
     void reset_interface_stack() override {
         owner_.log.unimplemented("FrontEndManager::reset_interface_stack", "004d95f0");
     }
+    // Label check (cc15-fe1): 004DB1A6..004DB1AF is 004D7970(0) then 004DA780
+    // with ECX = the game, and 004DA780 is the whole session teardown
+    // (BSP_Game_TeardownSessionState, 55 callees). clear_all_screen_set_levels_004da780
+    // in main_menu_path.cpp covers only its 004DA99D..004DA9CF slice, so it is
+    // not wired here as the whole call.
     void lower_in_mission_interface() override {
         owner_.log.unimplemented("FrontEndManager::lower_in_mission_interface", "004da780");
     }

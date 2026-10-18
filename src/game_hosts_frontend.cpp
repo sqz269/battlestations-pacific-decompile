@@ -2,6 +2,7 @@
 // See include/bsp/game_hosts_frontend.hpp for the address list and the evidence.
 #include "bsp/game_hosts_frontend.hpp"
 
+#include "bsp/blocking_screen.hpp"
 #include "bsp/d3d9_texture.hpp"
 #include "bsp/fingerprint_payload.hpp"
 #include "bsp/font_registry_startup.hpp"
@@ -181,6 +182,7 @@ struct GameFrontendHost::Impl {
     // The 0x88-byte GUI manager of 00aa5d70, kept as the dword slots 00aa5e20 writes.
     struct ManagerState {
         void* fields[0x88 / 4]{};
+        GuiManagerPointerState pointer{};  // the byte at +48h 00aa0e00 stores
         bool constructed{false};
         bool ready_flag{true};
     } manager;
@@ -481,6 +483,35 @@ void* gui_manager_get_or_create_004c12b0(GameFrontendHost::Impl& owner) {
     return &owner.manager;
 }
 
+// A manager resource's virtual +34h. For a page that is the screen's own
+// visibility byte; for a child it is the widget's. Both reach the projected
+// `visible` field here; the scene-node half of the native setter does not exist.
+void apply_gui_resource_visibility(GameFrontendHost::Impl& owner, void* resource,
+    bool visible) {
+    if (resource == nullptr) return;
+    if (owner.page_handles.count(resource) != 0) {
+        auto* page = static_cast<GuiLayoutPage*>(resource);
+        if (page->root) {
+            page->root->visible = visible;
+            owner.visibility_applied.insert(page->root.get());
+        }
+    } else {
+        auto* widget = static_cast<GuiLayoutWidget*>(resource);
+        widget->visible = visible;
+        owner.visibility_applied.insert(widget);
+    }
+}
+
+// The manager's +50h pointer slot, which both 00aa0e00 and 00aa0e50 reach.
+struct GuiManagerPointerSlot final : GuiPointerHost {
+    GameFrontendHost::Impl& owner;
+    explicit GuiManagerPointerSlot(GameFrontendHost::Impl& o) : owner(o) {}
+    void set_front_end_pointer_visible(bool visible) override {
+        apply_gui_resource_visibility(owner, owner.manager.fields[0x50 / 4], visible);
+        owner.quads_built = false;
+    }
+};
+
 // GuiStartupHost for 0073bae0.
 class GameGuiStartupHost final : public GuiStartupHost {
 public:
@@ -575,21 +606,8 @@ public:
     }
 
     void set_gui_resource_visibility(void* resource, bool visible) override {
-        // The native call is the object's virtual +34h. For a page that is the screen's
-        // own visibility byte; for a child it is the widget's. Both reach the projected
-        // `visible` field here; the scene-node half of the native setter does not exist.
         if (resource == nullptr) return;
-        if (owner_.page_handles.count(resource) != 0) {
-            auto* page = static_cast<GuiLayoutPage*>(resource);
-            if (page->root) {
-                page->root->visible = visible;
-                owner_.visibility_applied.insert(page->root.get());
-            }
-        } else {
-            auto* widget = static_cast<GuiLayoutWidget*>(resource);
-            widget->visible = visible;
-            owner_.visibility_applied.insert(widget);
-        }
+        apply_gui_resource_visibility(owner_, resource, visible);
         owner_.log.implemented("GuiManagerResources::set_visibility", "00aa5faf");
     }
 
@@ -1094,6 +1112,19 @@ void GameFrontendHost::invalidate_bridge() { impl_->quads_built = false; }
 
 void* GameFrontendHost::gui_manager_004c12b0() {
     return gui_manager_get_or_create_004c12b0(*impl_);
+}
+
+// Callers reach both through 004c12b0, so the manager is constructed first.
+void GameFrontendHost::gui_manager_set_enabled_00aa0e00(bool enabled) {
+    gui_manager_get_or_create_004c12b0(*impl_);
+    GuiManagerPointerSlot slot(*impl_);
+    bsp::gui_manager_set_enabled_00aa0e00(impl_->manager.pointer, slot, enabled);
+}
+
+void GameFrontendHost::gui_manager_set_pointer_visible_00aa0e50(bool visible) {
+    gui_manager_get_or_create_004c12b0(*impl_);
+    GuiManagerPointerSlot slot(*impl_);
+    bsp::gui_manager_set_pointer_visible_00aa0e50(slot, visible);
 }
 
 // ---------------------------------------------------------------------------

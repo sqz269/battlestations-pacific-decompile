@@ -247,8 +247,9 @@ inline constexpr std::uint32_t kTopLevelSelectionGlobal = 0x00E194C4;
 // ---------------------------------------------------------------------------
 
 // 00414130 blends the +1A8h map offset on the mission-detail page from the two
-// floats at 00CEFF04 and 00D7A2F0. Its body was not read, so the operation is
-// unidentified; the two operands are recorded and the call is a host method.
+// floats at 00CEFF04 and 00D7A2F0: it is the lerp (b - a) * t + a with a = the
+// offset, b = 00CEFF04 (so `Low` is the target) and t = 00D7A2F0 (`High` is
+// the rate), per 0059A36F..0059A39C (cc15-fe2). The call stays a host method.
 inline constexpr float kMissionDetailOffsetLow = -0.21f;  // 00CEFF04
 inline constexpr float kMissionDetailOffsetHigh = 0.1f;   // 00D7A2F0
 // The constant zoom delta the mission-detail page hands to 00588C70 (00CE54A0).
