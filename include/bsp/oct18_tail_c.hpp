@@ -153,3 +153,76 @@ struct WholeFileBindings {
 };
 void* vfs_load_whole_file_00bdc8b0(void*, const void*, std::uint32_t*, const WholeFileBindings&);
 } // namespace bsp::oct18_tail_c
+
+namespace bsp::oct18_tail_c {
+struct ArchiveFieldBindings {
+    void (__cdecl* indent_00bd6990)(std::uint32_t);
+    void (__cdecl* key_00bd7b30)(std::uint8_t, GuiTaggedWord);
+    void (__cdecl* value_00bd7f50)(GuiTaggedWord);
+    void (__cdecl* terminator_00bd6ac0)(std::uint8_t);
+};
+void archive_write_field_00bd8cd0(void*, GuiTaggedWord, GuiTaggedWord, const ArchiveFieldBindings&);
+struct MpkgBindings {
+    void* (__cdecl* allocate_header_00bf55be)(std::uint32_t);
+    void (__cdecl* free_header_00bf65ac)(void*);
+    void* (__cdecl* allocate_owner_00bf681b)(std::uint32_t);
+    void* (__thiscall* inflate_00bbc1d0)(void*, void*, const std::uint32_t*, std::uint32_t, std::uint32_t);
+    void* (__thiscall* memory_00bef750)(void*);
+    void* (__thiscall* copy_range_00bef840)(void*, std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t);
+    void* (__thiscall* adopted_00bf1130)(void*, void*, std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t);
+    int (__cdecl* stricmp_00bf7fbf)(const char*, const char*);
+};
+std::uint32_t mpkg_entry_offset_00bb8a90(void*, void*, const MpkgBindings&);
+void* mpkg_open_entry_00bb8be0(void*, void*, std::uint32_t, void* volatile& image_109ceec, const MpkgBindings&);
+void* mpkg_open_named_00bb8d60(void*, const void*, std::uint32_t, void* volatile& image_109ceec, const MpkgBindings&);
+struct VoiceBindings {
+    std::uint8_t (__thiscall* accept_00a43f40)(void*, std::uint32_t, std::uint32_t);
+    std::uint8_t (__thiscall* state_00687860)(void*, std::uint32_t, std::uint32_t);
+    void (__thiscall* incoming_00a49040)(void*, const void*, std::uint32_t, const void*);
+    void (__thiscall* mute_00a49180)(void*, std::uint32_t, std::uint32_t);
+    CheckedIterator checked_iterator_bf6713;
+};
+void voice_packet_00a44000(void*, const void*, void* volatile& image_e198b4, const VoiceBindings&);
+void voice_refresh_flags_00a44150(void*, std::uint8_t, const VoiceBindings&);
+struct TextClipBindings {
+    int (__thiscall* has_geometry_00b74650)(void*);
+    void* (__thiscall* geometry_00b74640)(void*, std::uint32_t);
+    std::uint32_t (__thiscall* count_00b72b40)(void*);
+    void* (__thiscall* element_00b732c0)(void*, std::uint32_t);
+    void (__thiscall* clip_00aa9f10)(void*, void*);
+    CheckedIterator checked_iterator_bf6713;
+};
+void text_register_clip_00ab7a40(void*, const TextClipBindings&);
+struct LayerReadBindings {
+    const char* priority_d5cb00;
+    const char* render_order_d5caf4;
+    void (__thiscall* register_root_00b6d890)(void*, void*);
+    void (__thiscall* position_00aa7dc0)(void*, const void*);
+    void (__thiscall* read_base_00aaa710)(void*, void*);
+};
+void layer_read_properties_00ac4c50(void*, void*, std::uint32_t& priority_preimage, const LayerReadBindings&);
+struct GuiDestroyBindings {
+    CheckedIterator checked_iterator_bf6713;
+    RawThis clear_strings_00aa51d0;
+    void (__cdecl* free_00bf65ac)(void*);
+    void* (__thiscall* erase_tree_00aa49e0)(void*, void*, void*, void*, void*, void*);
+};
+void gui_manager_destroy_00aa6340(void*, std::uint32_t& image_f8bc5c, const GuiDestroyBindings&);
+struct PlatformBindings {
+    void* volatile& sound_f8bbd8;
+    void* volatile& renderer_f8d394;
+    void* volatile& render_service_f8d39c;
+    void (__stdcall* xinput_enable_00c2f172)(int);
+    RawThis sound_pause_00a7a480;
+    RawThis sound_resume_00a7a4a0;
+    void* (__cdecl* media_get_004c1710)();
+    void (__thiscall* media_pause_00a4c2d0)(void*, std::uint32_t);
+    void* (__cdecl* gui_get_004c12b0)();
+    void (__thiscall* gui_pause_00aa33a0)(void*, std::uint32_t);
+    RawThis reload_renderer_00b24fb0;
+    RawThis refresh_render_service_00b0d1e0;
+    void (__thiscall* append_text_00bed370)(void*, const void*);
+};
+std::intptr_t platform_handle_message_00bed3b0(void*, std::uintptr_t, std::uint32_t,
+    std::uint32_t, std::intptr_t, const PlatformBindings&);
+} // namespace bsp::oct18_tail_c
