@@ -511,6 +511,20 @@ inline constexpr bool kShipAiSubTargetSubStatesBound = true;  // ON: pairs held,
 // the state switch. False: the three are records. Counted on both sides.
 // ON (2026-09-28): USN02 and JM06 moved, LOMP06/USN01/USN04 gameplay-identical; re-seeds = approach enters, 60 draws each (section 8)
 inline constexpr bool kShipAiApproachEnterReseedBound = true;
+// Packet g52_brain_draws (cc9-gunnery52). The brain construction 00810DD0 ->
+// 009F3F20 -> 009F3BA0 -> 009F39C0 makes 69 stream-1 draws for every ship, with
+// no kind gate: 009F1160's seven (009F39E5), then 009E8450 (009F3AB2) ->
+// 009E5CA0 -> 009E5530, whose first loop (counter 3Bh, SUB 1 / JNS 009E5550:
+// 60 passes, slot stride 4Ch from brain+..+4h) draws 00BD2F10(ECX = 1, 0.0,
+// 2.0 [00CE3958]) at 009E55A1 and stores it UNNEGATED to slot+48h (009E55A6);
+// then 009E84F8, -U(0, 1) to state+1500h (FCHS 009E84FD, FSTP 009E8509); then
+// 009E4F90 (009F3AC3, unconditional), -U(0, 1) at 009E5061 to parent+CCh
+// (009E5066/009E5072). True: the 62 draws after the seven are made at
+// construction in that order for every ship, the ring is built eagerly with the
+// draws in jitter_48, and the two timers take theirs. False: the ring is built
+// lazily with jitter 0, +1500h starts at 0, and only submarines take the +CCh
+// draw (kShipAiSubAttackStatesBound).
+inline constexpr bool kShipAiBrainConstructionDrawsBound = false;
 // Packet cc9_sub_target_entry_points, docs/SHIP_AI_OPEN_ITEMS.md section 9. The
 // three stand-ins of the submarine-target sub-states take the entry points now
 // on main. True: the lead pursuit's yaw rate is 0082ECB0 over the unit's class
@@ -2188,12 +2202,27 @@ struct GameShipAiHost::Impl {
             ctl.neighbour_period_b4c = draw.uniform_00bd2f10(1.0f, 2.0f);     // 009F13F0, B4C
             ctl.neighbour_timer_seeded = true;
             ctl.torpedo_timer.seeded = true;
-            if (kShipAiSubAttackStatesBound && units.unit_is_kind_of(index, 8)) {
+            if (kShipAiBrainConstructionDrawsBound) {
+                // 009E5550..009E55C1: the ring slots in ascending address order,
+                // each +48h = U(0, 2), unnegated. The lazy build is done first so
+                // it does not later zero the jitters.
+                ensure_approach_ring(ctl, index);
+                for (int i = 0; i < bsp::kAttackMoveRingSlotCount; ++i) {
+                    ctl.approach_ring[i].jitter_48 = draw.uniform_00bd2f10(0.0f, 2.0f);
+                }
+                // 009E84F8: state+1500h = -U(0, 1). 009E86C0 zeroes it on enter.
+                ctl.selector.countdown_1500 = -draw.uniform_00bd2f10(0.0f, 1.0f);
+                // 009E5061: parent+CCh = -U(0, 1), for every brain.
+                ctl.sub_attack.countdown_cc = -draw.uniform_00bd2f10(0.0f, 1.0f);
+                ctl.sub_attack.seeded = true;
+                brain_construction_draws += bsp::kAttackMoveRingSlotCount + 2;
+            } else if (kShipAiSubAttackStatesBound && units.unit_is_kind_of(index, 8)) {
                 // Packet cc9_submarine_ai_states: 009E4F90's parent+CCh =
                 // -U(0, 1) at 009E5061, called from 009F39C0 after 009F1160.
-                // LABELLED: drawn for submarines only (no other brain reaches
-                // sub_attack), and any stream-1 draw of the state constructors
-                // between the two is not reproduced.
+                // LABELLED: drawn for submarines only, though 009F39C0 builds
+                // sub_attack for every brain, and the 61 draws of 009E8450
+                // between the two are skipped (kShipAiBrainConstructionDrawsBound
+                // takes them all).
                 ctl.sub_attack.countdown_cc = -draw.uniform_00bd2f10(0.0f, 1.0f);
                 ctl.sub_attack.seeded = true;
             }
@@ -2201,6 +2230,7 @@ struct GameShipAiHost::Impl {
         }
     }
     unsigned long long brain_seed_draws{0};
+    unsigned long long brain_construction_draws{0};  // g52_brain_draws, the 62 per ship
     // Packet cc9_generated_ship_ai_registration: units the units host created
     // after register_units (GenerateObject, SpawnNew, air-ops launches).
     void register_generated_units();
@@ -13555,6 +13585,9 @@ void GameShipAiHost::bind_gunnery(GameGunneryHost* gunnery) noexcept {
         impl_->seed_brain_draws_009f1160();
         impl_->log.notef("ship ai brain constructor draws: %llu controllers seeded (009F1160's "
             "seven stream-1 draws, made when the draw source binds)", impl_->brain_seed_draws);
+        impl_->log.notef("ship ai brain construction draws: %llu (009E55A1 x60, 009E84F8, "
+            "009E5061; kShipAiBrainConstructionDrawsBound=%d)", impl_->brain_construction_draws,
+            kShipAiBrainConstructionDrawsBound ? 1 : 0);
     }
     // Packet cc9_target_release: the dead-target facts need the gunnery rows.
     if (kShipAiTargetReleaseBound) {
