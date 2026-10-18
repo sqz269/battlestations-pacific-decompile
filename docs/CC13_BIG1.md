@@ -296,6 +296,38 @@ Notes:
   - The 007B28C0 constructor runs in EH state 0; if it throws, the image frees the
     2Ch-byte block. That unwind is not modelled.
 
+## Batch 7
+
+| Address | Name | ABI | Notes |
+| --- | --- | --- | --- |
+| 0059D4A0 | BSP_HudMapIcon_PlaceWidget (cc13-ng2 name kept) | thiscall(screen; icon) RET 4 | places the icon's first widget on the HUD map by its anchor mode and corner; the body behind cc13_big5ad's `hud_map_icon_place_widget_0059d4a0` hook (the call sites 005B040C and 005B0420 lie inside 005ADDA0) |
+
+Notes:
+
+- **0059D4A0.**
+  - The depth is -2.0 when icon+28h is set, else -12.0 ([00CE7D7C] / [00CE781C]). It is kept
+    in the argument slot [B+40h].
+  - The widget is the checked front() of the vector +ECh/+F0h. 00BF6713 is called when it
+    is null or empty, before 00AA6740 and again before 00AA8240.
+  - Anchor mode +11Ch:
+    - 0: x = (+554h - +54Ch) / +30h + [00E08890], y = (+550h - +558h) / +34h + [00E08894].
+    - 1: the unit (+4h) position through vtable +C4h, read twice. y uses the first call's
+      z, x the second call's x.
+    - Any other value leaves the position [B+18h..B+20h] unset. The image applies the corner
+      offsets to stale stack (what earlier calls at the same depth in 005ADDA0 left there)
+      and passes it to 00AA8240. The C++ starts from zero.
+  - Corner +120h, by the jump table at 0059D6BC (unsigned; above 3 skips the offsets and the
+    depth step):
+    - 0: x + 0.02, y + 0.03.
+    - 1: x - (w + 0.02), y + 0.03.
+    - 2: x + 0.02, y - (h + 0.03).
+    - 3: x - (w + 0.02), y - (h + 0.03).
+    - Then z + 0.0 (the double [00D7A258], which turns -0.0 into +0.0).
+  - The pads are the doubles [00D7A2F8] and [00CEB690], which are 0.02f and 0.03f widened.
+    w and h are 00AA6740's size.
+  - x87: memory operands only, with no register DE/DC forms. Each sum is rounded at its
+    FSTP. Modelled at 24 bits; the caller is a UI path.
+
 ## Recorded, not reconstructed
 
 - **004A9BD0 BSP_PlanePartClasses_LoadGlobals.**

@@ -2304,4 +2304,81 @@ void landing_troop_update_004a0d20(void* troop, Big1Host& host) {
     }
 }
 
+// 0059D4A0 __thiscall(ECX = HUD map screen; icon), RET 4. Frame SUB ESP 34h; B below is ESP after
+// PUSH EDI. Precision: modelled at 24 bits (each x87 op rounded to float; the double constants
+// 0.02f / 0.03f / 0.0 applied in double and rounded at the store). The caller 005ADDA0 is the HUD
+// map icon update (a UI path); 53-bit would only change the unstored sums before their FSTPs.
+void hud_map_icon_place_widget_0059d4a0(void* screen, void* icon, Big1Host& host) {
+    std::uint8_t* const s = static_cast<std::uint8_t*>(screen);               // EDI
+    std::uint8_t* const ic = static_cast<std::uint8_t*>(icon);                // ESI
+    const float depth = at<std::uint8_t>(ic, 0x28) != 0 ? -2.0f : -12.0f;     // [00CE7D7C] / [00CE781C], into [B+40h]
+    if (ptr(ic, 0xEC) == nullptr || (at<std::uint8_t*>(ic, 0xF0) - at<std::uint8_t*>(ic, 0xEC)) >> 2 == 0)
+        host.crt_invalid_parameter_noinfo_00bf6713();                         // 0059D4E0: front() of the widgets
+    const float* const size = host.gui_widget_get_size_00aa6740(at<void*>(ptr(ic, 0xEC), 0));  // 0059D4ED
+    const float w = size[0];                                                  // [B+10h]
+    const float h = size[1];                                                  // [B+14h]
+
+    // [B+18h] the position handed to 00AA8240. Anchor modes other than 0 and 1 leave all three
+    // floats unset: the image adds the offsets below to stale stack (what 005ADDA0's earlier calls
+    // at the same depth left there) and passes it on; they are zero here.
+    float position[3] = {0.0f, 0.0f, 0.0f};
+    const std::int32_t anchor = at<std::int32_t>(ic, 0x11C);
+    if (anchor == 0) {
+        // 0059D511: the fixed map point +554h / +558h against the origin +54Ch / +550h.
+        const float* const offset = host.map_offset_00e08890();
+        const float x = (at<float>(s, 0x554) - at<float>(s, 0x54C)) / at<float>(s, 0x30) + offset[0];  // [B+24h]
+        const float y = (at<float>(s, 0x550) - at<float>(s, 0x558)) / at<float>(s, 0x34) + offset[1];  // [B+28h]
+        position[0] = x;
+        position[1] = y;
+        position[2] = depth;                                                  // 0059D5C3
+    } else if (anchor == 1) {
+        // 0059D556: the unit's position, read twice through vtable +C4h.
+        float first[3];                                                       // [B+24h]
+        const float z = host.unit_vtablec4_position(ptr(ic, 4), first)[2];    // [B+8h]
+        const float y = (at<float>(s, 0x550) - z) / at<float>(s, 0x34) + host.map_offset_00e08890()[1];  // [B+Ch]
+        float second[3];                                                      // [B+30h]
+        const float x0 = host.unit_vtablec4_position(ptr(ic, 4), second)[0];  // 0059D596
+        position[0] = (x0 - at<float>(s, 0x54C)) / at<float>(s, 0x30) + host.map_offset_00e08890()[0];
+        position[1] = y;
+        position[2] = depth;
+    }
+
+    // 0059D5C9: the corner, by the jump table at 0059D6BC over +120h (above 3: no offset, no depth
+    // step). The 0.02 / 0.03 pads are the doubles [00D7A2F8] / [00CEB690] (0.02f, 0.03f widened).
+    const double pad_x = static_cast<double>(0.02f);
+    const double pad_y = static_cast<double>(0.03f);
+    const std::uint32_t corner = at<std::uint32_t>(ic, 0x120);
+    if (corner <= 3) {
+        switch (corner) {
+        case 0:                                                               // 0059D5DF
+            position[0] = static_cast<float>(position[0] + pad_x);
+            position[1] = static_cast<float>(position[1] + pad_y);
+            break;
+        case 1: {                                                             // 0059D5F9
+            const float left = -static_cast<float>(w + pad_x);                // [B+24h], FCHS
+            position[0] = left + position[0];
+            position[1] = static_cast<float>(position[1] + pad_y);
+            break;
+        }
+        case 2: {                                                             // 0059D621
+            const float down = -static_cast<float>(h + pad_y);                // [B+28h]
+            position[0] = static_cast<float>(position[0] + pad_x);
+            position[1] = down + position[1];
+            break;
+        }
+        default: {                                                            // 3, 0059D63D
+            const float left = -static_cast<float>(w + pad_x);
+            const float down = -static_cast<float>(h + pad_y);
+            position[0] = left + position[0];
+            position[1] = down + position[1];
+            break;
+        }
+        }
+        position[2] = static_cast<float>(position[2] + 0.0);                  // 0059D679 [00D7A258]
+    }
+    if (ptr(ic, 0xEC) == nullptr || (at<std::uint8_t*>(ic, 0xF0) - at<std::uint8_t*>(ic, 0xEC)) >> 2 == 0)
+        host.crt_invalid_parameter_noinfo_00bf6713();                         // 0059D69A
+    host.gui_widget_set_resolved_position_00aa8240(at<void*>(ptr(ic, 0xEC), 0), position);  // 0059D6AC
+}
+
 } // namespace bsp::cc13_big1

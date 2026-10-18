@@ -439,6 +439,15 @@ public:
     virtual const float* unit_vtable24c_point(void* unit, float* out, std::int32_t which) = 0;
     // The three floats at 00F8758C..00F87594 (a global direction copied into the matrix row 1).
     virtual const float* global_vector_00f8758c() = 0;
+
+    // ---- 0059D4A0 (also 00AA6740 above) ----
+    // 00AA8240 BSP_GuiWidget_SetResolvedPosition: __thiscall(ECX = widget; const float[3]), RET 4.
+    virtual void gui_widget_set_resolved_position_00aa8240(void* widget, const float* position) = 0;
+    // The icon's unit (+4h), vtable +C4h: __thiscall(ECX = unit; float out[3]), RET 4; EAX = the
+    // position.
+    virtual const float* unit_vtablec4_position(void* unit, float* out) = 0;
+    // The two floats at 00E08890 / 00E08894 (the map screen offset added after the scale).
+    virtual const float* map_offset_00e08890() = 0;
 };
 
 // 004C7AA0's 28h-byte result.
@@ -478,6 +487,10 @@ void hud_support_manager_screen_register_0066ea60(void* screen, Big1Host& host);
 
 // 00674B80 __fastcall(ECX = support manager screen), RET: the screen's Enter.
 void hud_support_manager_screen_enter_00674b80(void* screen, Big1Host& host);
+
+// 0059D4A0 __thiscall(ECX = HUD map screen; icon), RET 4. cc13_big5ad's
+// hud_map_icon_place_widget_0059d4a0 hook (callers 005B040C / 005B0420 in 005ADDA0).
+void hud_map_icon_place_widget_0059d4a0(void* screen, void* icon, Big1Host& host);
 
 // 004A0D20 __thiscall(ECX = landing troop), RET. Called only from 004A2FC0.
 void landing_troop_update_004a0d20(void* troop, Big1Host& host);
