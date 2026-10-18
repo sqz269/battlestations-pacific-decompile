@@ -52,6 +52,8 @@ checked and are FAITHFUL. The PLACEHOLDER grade is for the host, which never cal
 
 ## 2. REAL findings
 
+Fixes for R-A, R-B, R-C and R-E are in place behind OFF switches; see `docs/CC13_FIX22.md`. R-D is not addressed.
+
 ### R-A (item 15, new). The Sell think's split claim does not set the replan byte
 
 Image 00A22800: for each owned group it calls 00A2E4C0 (`00A22841`). A non-null split-off group is then

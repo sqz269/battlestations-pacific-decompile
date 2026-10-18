@@ -127,3 +127,4 @@ row, so a same-binary pair cannot exercise `kAiFormationShapeBound`. On campaign
 byte-identical whether ON or OFF. Leave it OFF, or flip it ON "by mechanism" with the other five.
 Either way it cannot move a reference row. The same holds for `kAiRegroupingMoveTickBound`,
 `kAiDuelEscortThinkBound` and the cautious-wedge census.
+Note (cc13-fix22): the host's `game_mode()` returns only 8, so modes 4..7 are unreachable, and the identical `kAiDuelEscortThinkBound` pair (USN15/USN12/LOMP10/IJN18) proves nothing about those models (see `docs/CC13_PLANNER_VERIFY.md` section 0).
