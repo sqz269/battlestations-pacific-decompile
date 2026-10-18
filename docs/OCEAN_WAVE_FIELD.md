@@ -3197,3 +3197,17 @@ as the reference. ON: every `moveto Donald` reaches the squadron (`to 1 squadron
 death rows, and the mission completes (`luaMissionComplete` 411.97 s, `Scoring_SetMissionCompleted` completed=1;
 EndMission 408.02 s). pair_diff 3: deaths 29 -> 66, units 66 -> 90 (the later waves spawn). The run stops 40
 frames after EndMission, before `luaMissionCompletedNew`, so the exec guard's refusal is not in this log.
+
+**78, the deck term on top (item 3).** Export of 2f9d20fdb with `kPlaneForwardSpeedDeckTermBound`,
+`kLandAbortGroundArmBound` and `kLandFinalParkEdgeBound` all true (`local\p20c_dtagfp_usn01.log`, USN01 as above)
+against `local\p20a_off_usn01.log`: pair_diff 3; stows 19 -> 1, ground re-takeoffs 0 -> 26 (physics19's deck term
+alone: 24), land/park entries 12, deaths 36 -> 27. The abort on-ground arm now runs (`on_ground_arm` 009B0E74
+calls=26), but each run is the abort entry tick itself: ScoutDauntless parks at 417.92 s, its park timer expires
+short of the lift, 009B21D0 sets done, 009B37A7 enters land/abort at 436.02 s, and 0099B0BE pushes the re-takeoff on
+that same tick (`head=land state=4 landed=1`); the plane is airborne (height 21.6) when the arm's +21h sends it back
+to park 9.7 s later. The stows do not hold, so **`kPlaneForwardSpeedDeckTermBound` stays OFF**. The open question
+is still physics19's: what keeps the image's plane rolling to the lift with the 0.1 x deck term in 0099D99E's
+measured speed (009B22C0's tail writes +2B4h, +2B0h = 1, +2D8h = 1, so the park drive does go through the speed
+hold). **`kLandAbortGroundArmBound` ON**: it is the bytes (009B0E74-009B0F93, as the switch comment lists), the
+USN01 pair with the deck term OFF is identical, and the arm is reached only on a failed park.
+`kLandFinalParkEdgeBound` stays OFF, unexercised.
