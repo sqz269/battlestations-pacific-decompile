@@ -7325,8 +7325,8 @@ void ship_ai_debug_draw_command_path_009db060(Cc13Seg67bHost& host, void* self) 
     }
 }
 
-// 009E53B0 (009E53B0-009E5455). Unreferenced (image scan). The 009E52E0 obstacle-node
-// constructor without the observer registration: +4h..+0Ch = 0, +14h = 0, +10h = 1,
+// 009E53B0 (009E53B0-009E5455). Unreferenced (image scan). 009E52E0's layout with arg1
+// at +18h instead of +14h, and no 00694A60 registration: +4h..+0Ch = 0, +14h = 0, +10h = 1,
 // vtable 00CF5C94, +1Ch = b, +18h = a; +78h = a != 0 ? the third argument's bits : -1.0
 // [00D7A260] (MOVSS, a bit copy); +69h, +74h, +75h = 0; +88h, +8Ch = 0; +68h = 1; +70h,
 // +7Ch = 0.0; +80h, +84h = -1000.0 [00D7A240]. The SEH frame covers no call.
