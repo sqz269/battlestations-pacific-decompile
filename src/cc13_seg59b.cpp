@@ -4876,10 +4876,11 @@ void campaign_grant_one(Seg59bHost& host, std::uint8_t* frame, std::uint32_t tex
 
 // ---------------------------------------------------------------------------
 // 0091D780 BSP_MissionScoreRecord_EvaluateCampaignAwards (provisional), PARTIAL: this function
-// covers 0091D780..0091E15E only, the frame set-up and the campaign-finish awards. The rest of
-// the body (0091E15F..0091FFFF: CA_IC, CA_VR, the CA_US / CA_JP / CA_HOS / CA_WOG / CA_AA /
-// CA_FA counters, the RANK pass and the frame teardown) is not reconstructed yet, so nothing
-// here is a callable replacement for 0091D780.
+// covers 0091D780..0091E15E only, the frame set-up and the campaign-finish awards; sub-range 2
+// (campaign_awards_mode_part_0091e15f) covers 0091E15F..0091E697. The rest of the body
+// (0091E698..0091FFFF: the CA_US / CA_JP / CA_HOS / CA_WOG / CA_AA / CA_FA counters, the RANK
+// pass and the frame teardown) is not reconstructed yet, so nothing here is a callable
+// replacement for 0091D780. No cc9 host models these awards (see sub-range 2).
 // Original ABI: __fastcall(ECX = record = scoring + slot*284h + 4), RET; SEH frame, handler
 // 00CA65F0. Caller 00920A20 (cc9's debrief_bringup_00920a20 host records the debrief bring-up
 // and does not call it).
@@ -5019,5 +5020,101 @@ void campaign_awards_finish_part_0091d780(Seg59bHost& host, void* record, Campai
     if (at<std::uint8_t>(frame, kCampaignBoolCum) != 0) campaign_grant_one(host, frame, 0x00D18BA4u, 6);
     if (at<std::uint8_t>(frame, kCampaignBoolOf) != 0) campaign_grant_one(host, frame, 0x00D18BBCu, 5);
     if (at<std::uint8_t>(frame, kCampaignBoolCjm) != 0) campaign_grant_one(host, frame, 0x00D18BB4u, 6);
+}
+
+namespace {
+
+constexpr std::uint32_t kCampaignMode = 0x38, kCampaignModeCount = 0x28;
+
+// One CA_IC / CA_VR pass (0091E16A..0091E405 and 0091E406..0091E697): S+28h = 0; mask = the
+// award's [+48h][1]; every progress record whose +1A8h bits cover the mask adds the mask to S+28h,
+// and the current mission (its key a prefix match of the node key, inline walk) counts with bit
+// [S+38h] added; then [+48h][0] == S+28h grants the award with value S+28h.
+void campaign_mode_award(Seg59bHost& host, std::uint8_t* frame, std::uint32_t text) {
+    at<std::int32_t>(frame, kCampaignModeCount) = 0;
+    void* const key = add(frame, kCampaignScratch);
+    construct_native_string_inline(host, key, text, 5);
+    const std::uint32_t mask = static_cast<std::uint32_t>(
+        award_vector_value(host, host.award_table_find_record_0050fc30(award_table(host), key), 1));
+    release_native_string(host, key);
+
+    void* const map = ptr(frame, kCampaignProgress);
+    StlTreeIterator it{map, ptr(ptr(map, 0x04), 0x00)};
+    for (;;) {
+        void* const head = ptr(map, 0x04);
+        check_iterator_owner(host, it, map);
+        if (it.node == head) break;
+        check_iterator_container(host, it);
+        check_iterator_not_head(host, it);
+        bool counts = (at<std::uint32_t>(it.node, 0x1A8) & mask) == mask;
+        if (!counts) {
+            check_iterator_not_head(host, it);
+            const char* mission = static_cast<const char*>(ptr(ptr(frame, kCampaignMissionKey), 0x04));
+            if (mission == nullptr) mission = static_cast<const char*>(host.image_pointer(0x00F899A0u));
+            const char* node_text = static_cast<const char*>(ptr(it.node, 0x10));
+            if (node_text != nullptr && mission != nullptr) {
+                char c = *node_text;
+                while (c != 0 && *mission != 0 && c == *mission) {
+                    c = *++node_text;
+                    ++mission;
+                }
+                if (*mission == 0) {
+                    check_iterator_not_head(host, it);
+                    const std::uint32_t bits =
+                        (1u << (at<std::uint32_t>(frame, kCampaignMode) & 31u)) | at<std::uint32_t>(it.node, 0x1A8);
+                    counts = (bits & mask) == mask;
+                }
+            }
+        }
+        if (counts) at<std::int32_t>(frame, kCampaignModeCount) += static_cast<std::int32_t>(mask);
+        host.tree_iterator_increment(0x00581290u, &it);
+    }
+    // The image leaves the iterator in S+48h/S+4Ch; the next statement rebuilds S+48h as {0, 0}.
+    at<void*>(frame, kCampaignScratch) = it.container;
+    at<void*>(frame, kCampaignScratch + 4) = it.node;
+
+    construct_native_string_inline(host, key, text, 5);
+    const bool reached =
+        at<std::int32_t>(frame, kCampaignModeCount) ==
+        award_vector_value(host, host.award_table_find_record_0050fc30(award_table(host), key), 0);
+    release_native_string(host, key);
+    if (!reached) return;
+    construct_native_string_inline(host, key, text, 5);
+    const std::int32_t count = at<std::int32_t>(frame, kCampaignModeCount);
+    void* const record = ptr(frame, kCampaignRecord);
+    host.scoring_grant_award_0090ede0(scoring_global(host), at<std::int32_t>(record, 0x250), key, count, 0);
+    release_native_string(host, key);
+}
+
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 0091D780 PARTIAL, sub-range 2: 0091E15F..0091E697, the CA_IC and CA_VR mode awards.
+// Runs on the frame campaign_awards_finish_part_0091d780 left; both the campaign and the
+// non-campaign paths of sub-range 1 arrive at 0091E15F. Not a whole-body replacement:
+// 0091E698..0091FFFF (the 00F8A2FC gate, the Counter_CA_* passes, RANK, teardown) is not
+// reconstructed yet.
+// Duplicate check: no cc9 host evaluates these awards; award_grant.cpp's kAwardNameIds only maps
+// CA_IC (65) / CA_VR (66) and the other CA_* names to achievement ids, and mission_result.cpp /
+// game_hosts_mission_result.cpp do not mention them.
+// Evidence (listing 0091E15F..0091E697, read whole; EH states 12h..17h):
+//  S+38h = 004BCA50(ECX = [00E188A8]) (the effective game mode). CA_IC (00D18B80): S+28h = 0;
+//  inline NativeString in S+48h (state 12h); mask EBP = FindRecord [+48h][1] (00BF6713 when the
+//  vector holds fewer than two, JA); release. Walk [S+24h] (the progress map) with ++ 00581290,
+//  iterator in S+48h/S+4Ch: owner / end / container / not-head tests; [node+1A8h] & mask == mask
+//  adds the mask; otherwise a not-head test, the node key data [node+10h] against the mission key
+//  data ([S+30h]+4, 00F899A0 when null), a prefix walk that matches when the mission key ends,
+//  then a not-head test and ((1 << S+38h) | [node+1A8h]) & mask == mask adds the mask. Then the
+//  key again (state 13h), S+28h == [+48h][0] (SETZ), release; a hit grants 0090EDE0([game+21A0h];
+//  [record+250h], &key, S+28h, 0) (state 14h). CA_VR (00D18B78) repeats it (states 15h..17h).
+// No x87, no shared RNG draws. SHL by CL keeps the low five bits of S+38h.
+// Uncertainty: the +1A8h node field read as a per-mode completion mask and the summed mask as the
+// count are names-only inferences; the image adds the mask itself, not 1.
+// ---------------------------------------------------------------------------
+void campaign_awards_mode_part_0091e15f(Seg59bHost& host, CampaignAwardsFrame0091d780& state) {
+    std::uint8_t* const frame = state.bytes;
+    at<std::uint32_t>(frame, kCampaignMode) = host.game_effective_mode_004bca50(game_global(host));
+    campaign_mode_award(host, frame, 0x00D18B80u);
+    campaign_mode_award(host, frame, 0x00D18B78u);
 }
 }  // namespace bsp::cc13_seg59b

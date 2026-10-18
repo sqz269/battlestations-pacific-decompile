@@ -564,6 +564,8 @@ struct Seg59bHost {
     virtual void* string_record_map_index_00625f50(void* map, const void* key) = 0;
     // 0043E9A0 BSP_NativeString_MatchesAtOffset, __thiscall(ECX = string, other, offset), RET 8; AL.
     virtual bool native_string_matches_at_0043e9a0(const void* string, const void* other, std::uint32_t offset) = 0;
+    // 004BCA50 BSP_Game_GetEffectiveGameMode, __thiscall(ECX = [00E188A8]), RET; EAX.
+    virtual std::uint32_t game_effective_mode_004bca50(void* game) = 0;
 };
 
 // --- Torpedo bot (vtable 00D182B0) ---------------------------------------------------------
@@ -836,8 +838,10 @@ struct CampaignAwardsFrame0091d780 {
 };
 // 0091D780 PARTIAL, 0091D780..0091E15E: the frame set-up and the campaign-finish awards
 // (CA_SA / CA_CUM for USN01..USN14, CA_OF / CA_CJM for IJN01..IJN14). Not a whole-body
-// replacement; 0091E15F..0091FFFF is not reconstructed yet.
+// replacement; 0091E698..0091FFFF is not reconstructed yet.
 void campaign_awards_finish_part_0091d780(Seg59bHost& host, void* record, CampaignAwardsFrame0091d780& state);
+// 0091D780 PARTIAL, 0091E15F..0091E697: the CA_IC and CA_VR mode awards on the same frame.
+void campaign_awards_mode_part_0091e15f(Seg59bHost& host, CampaignAwardsFrame0091d780& state);
 
 
 }  // namespace bsp::cc13_seg59b
