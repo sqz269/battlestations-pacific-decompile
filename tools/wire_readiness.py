@@ -22,6 +22,7 @@ Approximations (say so when quoting numbers):
     raw_host_shaped  takes a Raw / void* / byte pointer, and config/wire_host_shaped.json records that the
                      host already keeps that object image-shaped, so Raw over the host's storage works
     raw_view         takes a Raw / void* / byte pointer and needs a typed view overload (Raw kept as a wrapper)
+    raw_callback     raw_view that also takes a *Host& interface, which has to be implemented as well
     nodef            no definition matched; check by hand
 - "stand_in_hosts" lists the host files whose text mentions the address: usually a record/unimplemented row
   the body would replace, sometimes only a comment.
@@ -163,7 +164,8 @@ def host_own(a):
 
 
 # ---- ABI class of a ready row, from its definition's parameter list
-RAW_PARAM = re.compile(r'\bRaw\b|std::uintptr_t|\bvoid\s*\*|std::uint8_t\s*\*|\bchar\s*\*')
+# char* is a C string or a text buffer, not image memory, so it does not make a row raw.
+RAW_PARAM = re.compile(r'\bRaw\b|std::uintptr_t|\bvoid\s*\*|std::uint8_t\s*\*')
 HOST_PARAM = re.compile(r'\w*Host\s*&')
 shaped_path = ROOT / 'config/wire_host_shaped.json'
 host_shaped = {k.lower(): v for k, v in json.load(open(shaped_path)).items()} if shaped_path.exists() else {}
@@ -179,7 +181,11 @@ def abi_class(a, ident, source):
         return 'nodef', None
     params = m.group(1)
     if RAW_PARAM.search(params):
-        return ('raw_host_shaped' if f'{a:08x}' in host_shaped else 'raw_view'), params
+        if f'{a:08x}' in host_shaped:
+            return 'raw_host_shaped', params
+        # A raw body that also takes a cc13 *Host& needs that interface implemented first; the
+        # view overload alone does not make it callable.
+        return ('raw_callback' if HOST_PARAM.search(params) else 'raw_view'), params
     if HOST_PARAM.search(params):
         return 'callback', params
     return 'typed', params
