@@ -18999,3 +18999,11 @@ OFF `local\s57_off3`, the same OFF code; manifests beside each log).**
 **Decision: both ON.** MinLevel by mechanism; the capture range as a faithful binding with no reach found
 (no installed row on hand MoveTos a ship at a CommandBuilding target within these windows; jm13.lua:1499 and
 jm16.lua:944 do, untested). JM05 moves (to cc9-lua66).
+
+### 279 result: ON
+
+**Pairs (37dfa5d45, `--flip kPathJoinProjectionBound=true`, exe `local\s57_pj_on`; OFF `local\s57_off3`; 20000 frames;
+manifests beside each log).** JM08 `jm08_l65_j8_p2`: `joins=12 advanced=0`, pair_diff exit 1, gameplay identical.
+USN04 (no orders): `joins=2 advanced=0`, exit 1, identical. As predicted, every join on these rows happens before
+the ship passes its nearest point, so 007B11F0 keeps the nearest. **Decision: ON** as a faithful binding with the
+mechanism exercised (the projection runs on every build) and no moved row.

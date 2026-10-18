@@ -243,7 +243,7 @@ inline constexpr bool kSceneFollowJoinBound = true;   // ON: SHIP_AI 278 (mechan
 // when the unit lies strictly ahead of the nearest point along that leg (007B1263..
 // 007B1303). True: the moveonpath build (0071F600) uses that answer. False: the
 // nearest point alone, so a ship already past it turns back to it first.
-inline constexpr bool kPathJoinProjectionBound = false;
+inline constexpr bool kPathJoinProjectionBound = true;   // ON: SHIP_AI 279 (faithful; identical on JM08 / USN04)
 
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.
