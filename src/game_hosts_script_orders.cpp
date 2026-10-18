@@ -309,6 +309,8 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // the PT boats and rescue craft onto their path points. Handled only with
     // kPutToBound.
     {"PutTo", 0x008a9f90u},
+    // Packet l68_putrelto: handled only with kPutRelToBound.
+    {"PutRelTo", 0x008aa560u},
     // Packet cc9_get_squadron_planes: bsm_04_vengance_at_luzon.lua:1717 and
     // 1720 (luaIntroMovieA). Handled only with kGetSquadronPlanesBound.
     {"GetSquadronPlanes", 0x0089cc50u},
@@ -698,6 +700,7 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
         return kScoringPlayerShotDownBound;
     }
     if (std::strcmp(binding->name, "PutTo") == 0) return kPutToBound;
+    if (std::strcmp(binding->name, "PutRelTo") == 0) return kPutRelToBound;
     if (std::strcmp(binding->name, "GetSquadronPlanes") == 0) return kGetSquadronPlanesBound;
     if (std::strcmp(binding->name, "GetSubmarineDepthLevel") == 0) {
         return kSubmarineDepthLevelBound;
@@ -4109,6 +4112,44 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             index < units_.count() ? name_of(entity).c_str() : "?",
             static_cast<double>(pos[0]), static_cast<double>(pos[1]),
             static_cast<double>(pos[2]), placed ? 1 : 0);
+        results = 0;
+    } else if (std::strcmp(binding->name, "PutRelTo") == 0) {
+        // 008AA560, packet l68_putrelto: arguments 0 and 1 through 00888AA0,
+        // argument 2 through 00888760 as a Vector3. vtable[114h] (0080E150, the
+        // weapon director) and 007788B0 (when IsKindOf(2)) run with their results
+        // unused; vtable[120h] (00819840) takes argument 1's rotation and the
+        // transformed point (put_rel_to_00819840). With exactly four arguments
+        // (008AA7CF) argument 3 * 00CE3D28 / 00CE3D20 goes to vtable[11Ch]. Then
+        // vtable[0D8h] (no host counterpart) and, for an occupant owner (00778890,
+        // the group's leader), every other member through vtable[118h](&00F87574).
+        // No result.
+        void* entity = entity_from_argument(0);
+        void* ref = entity_from_argument(1);
+        float rel[3] = {0.0f, 0.0f, 0.0f};
+        const bool have_rel = argument_vector3(2, rel);
+        const std::size_t index = index_of(entity);
+        const std::size_t ref_index = index_of(ref);
+        bool placed = false;
+        if (entity != nullptr && ref != nullptr && have_rel && index < units_.count() &&
+            ref_index < units_.count()) {
+            placed = units_.put_rel_to_00819840(index, ref_index, rel);
+            if (argument_count_ == 4) {
+                units_.set_heading_008196b0(index, put_to_heading_radians(get_number(3)));
+            }
+            const std::int32_t group = units_.unit_formation_group_0284(index);
+            if (group >= 0 && units_.formation_leader_0014(group) == index) {
+                units_.relocate_formation_members_00819672(index);   // 008AA851
+            }
+        }
+        float pos[3] = {0.0f, 0.0f, 0.0f};
+        if (index < units_.count()) units_.unit_position_00fc(index, pos[0], pos[1], pos[2]);
+        log_.notef("  PutRelTo: %s rel to %s (%.1f, %.1f, %.1f) placed=%d at (%.1f, %.1f, %.1f) "
+            "(008AA560 -> 00819840, packet l68_putrelto)",
+            index < units_.count() ? name_of(entity).c_str() : "?",
+            ref_index < units_.count() ? name_of(ref).c_str() : "?",
+            static_cast<double>(rel[0]), static_cast<double>(rel[1]), static_cast<double>(rel[2]),
+            placed ? 1 : 0, static_cast<double>(pos[0]), static_cast<double>(pos[1]),
+            static_cast<double>(pos[2]));
         results = 0;
     } else if (std::strcmp(binding->name, "PutFormationTo") == 0) {
         // 008AA260, packet cc13-fix5 (docs/CC13_FIX_5.md section 9): argument 0

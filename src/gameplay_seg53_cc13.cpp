@@ -1705,10 +1705,12 @@ void water_tracer_read_lua_0086d180(WaterTracerComponent& c, const WaterTracerLu
     if (c.divisions_34 < 2u) {  // 0086DCF6 JAE (unsigned)
         c.divisions_34 = 2u;
     }
-    if (static_cast<double>(c.lifetime_2c) < 0.1) {          // 00D7A3A0
+    // 0086DD09 FLD qword [00D7A3A0] = 0.1f widened (0.10000000149011612);
+    // 0086DD0F and 0086DD1F compare both fields against that one ST value.
+    if (static_cast<double>(c.lifetime_2c) < 0.10000000149011612) {  // 00D7A3A0
         c.lifetime_2c = 0.1f;                                 // 00D7A2F0
     }
-    if (static_cast<double>(c.line_distance_38) < 0.1) {
+    if (static_cast<double>(c.line_distance_38) < 0.10000000149011612) {  // 00D7A3A0
         c.line_distance_38 = 0.1f;
     }
 

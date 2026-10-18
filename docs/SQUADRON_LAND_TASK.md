@@ -18041,3 +18041,52 @@ rewrites it. No shipped mission passes `force`.
 - BSM09: the LexKillerGang squadrons fly their approach to Lexington at 55.6 m/s instead of TravelSpeed x 1.6
   until the second task change of a member. Their attacks on Lexington come later, so Lexington's sinking moves.
 - Rows with no caller are identical: USN01, USN02, LOMP06, LOMP10, USN12, PRCP01, IJN08 and JM08 do not call it.
+  Correction: USN01's script does call it (usn_01 1225 and 1412, the bomber and fighter refresh), but the WIN plan
+  never reaches either line. Across the 03d3df7f8 re-time logs the only WINS row that counts a call is BSM09 (5).
+
+## 5in. SquadronSetTravelSpeed pairs and flip (cc9-lua68, 2026-10-18)
+
+Exports `cc9-lua52\local\l68_ts_off` and `l68_ts_on` (both ac6536f82, the second with the switch true), reference
+env; logs `cc9-lua52\local\l68r_<b9s|w_b9|b4|l3>_ts_<off|on>_ref.log`.
+
+| Mission | OFF | ON | what moved |
+|---|---|---|---|
+| BSM09 (`l65_b9_c`) | failed 222.06 s | failed 222.06 s | 5 LexKillerGang D3A sets at 55.6 m/s; reverts 22.40-27.30 s; D3A deaths up to 3 s apart, shots 11724 -> 11624. Lexington still sinks at 154.80 s, Yorktown at 218.86 s |
+| BSM04 (no plan) | failed 84.05 s | failed 90.05 s | Wildcat and B-17 at 41.7 m/s, Donald at 50 m/s; Wildcat reverts 38.80 s, Donald 60.70 s, B-17 keeps it; first hit 74.85 -> 82.00 s, Donald killed 84.00 -> 89.80 s |
+| LOMP03 (no plan) | no end | no end | eight Kate / Val / Zero squadrons at 65.3 m/s; first hit 160.76 -> 165.01 s; 61 deaths both, all retimed |
+
+- Every moved number traces to the stored speeds: each ON log has one `SquadronSetTravelSpeed:` line per script call
+  and a `back to the class value` line per revert, and the moved deaths are of the slowed squadrons or of the units
+  they engage.
+- The BSM09 prediction was wrong in one part: the reverts come about 20 s after the call, long before the attacks,
+  so Lexington's sinking does not move.
+- **Flipped**: `kLuaSquadronSetTravelSpeedBound = true` by mechanism. No winning WINS row reaches the native, and the
+  switch changes nothing until a script stores a speed.
+
+## 5io. PutRelTo 008AA560 (cc9-lua68, 2026-10-18, packet l68_putrelto)
+
+`kPutRelToBound` (include/bsp/game_hosts_script_orders.hpp) is committed OFF with this section.
+
+**The native** 008AA560 `PutRelTo(unit, ref, rel[, heading])`, from the listing:
+- arguments 0 and 1 go through 00888AA0, argument 2 through 00888760 as a Vector3;
+- ref's world matrix (+0CCh, 16 dwords) is copied after 00414DB0 refreshes it, and 004142E0 transforms rel as a
+  row-vector affine point (x*row0 + y*row1 + z*row2 + translation) into the copy's translation;
+- 008AA764-008AA787: when the unit answers IsKindOf(6) and not IsKindOf(8), the point's y is 0;
+- vtable[114h] (0080E150, the weapon director getter) and, for IsKindOf(2), 007788B0 run with results unused;
+- vtable[120h] (00819840: 009585B0 SetWorldMatrix, 0092D620, 00818EA0) takes the copied matrix, so the unit gets
+  ref's rotation and the new point. Unlike vtable[118h] (008193A0) it neither refuses a formation follower nor
+  snaps a leader's group;
+- with exactly four arguments (008AA7CF) argument 3 * 00CE3D28 / 00CE3D20 goes to vtable[11Ch] (008196B0);
+- vtable[0D8h], then for an occupant owner (00778890, the group's leader) every other member through
+  vtable[118h](&00F87574) and vtable[0D8h] (008AA851-008AA897). No result.
+
+**Host (switch ON):** `GameUnitsHost::put_rel_to_00819840` computes the point in 004142E0's add order in float
+arithmetic, copies ref's rotation rows and the point into the unit's motion state, publishes the pose and refills the
+wake ring; the script orders host then applies the heading and the leader's `relocate_formation_members_00819672`.
+LABELLED: only a ship (IsKindOf 6) is posed, as for 008196B0; the controller sync is the motion state itself; float
+arithmetic stands in for the main thread's 24-bit x87 precision.
+
+**Callers that a WIN row reaches:** PRCP01 (PRCPUS usn_03_battle_of_santa_cruz.lua 1268, 2 calls in the 03d3df7f8
+re-time): each live Junyo-group ship goes to (250 idx, 0, 250 idx) in Chikuma's frame, then joins Chikuma's
+formation. Prediction: the Junyo group starts phase 2 beside Chikuma instead of where it was, so PRCP01's later
+deaths move.

@@ -617,7 +617,13 @@ public:
     // index's point to out (009DB060 then zeroes out[1]).
     virtual void path_vcall_08_point(void* path, float* out, std::int32_t index) = 0;
     // path->vtable[0Ch](): __thiscall(ECX = command path), RET, EAX = the point count.
+    // The same slot as Cc13SweepB4Host::path_vcall_0c_count (cc13_sweepB4.hpp).
     virtual std::int32_t path_vcall_0c_count(void* path) = 0;
+    // 0085FFF0 BSP_DebugDraw_ArrowRgbaFloatsOneColour: __fastcall(ECX = from, EDX = to;
+    // rgba[4] by value), RET 10h. Body: debug_draw_arrow_rgba_floats_one_colour_0085fff0
+    // (cc13_big53.hpp).
+    virtual void debug_arrow_0085fff0(const float* from, const float* to,
+                                      const float* rgba) = 0;
 };
 
 // ---- the bot-task factory list (00F8A314) ----
@@ -1297,6 +1303,13 @@ void bot_task_depth_charge_debug_draw_009a5af0(Cc13Seg67bHost& host, void* task)
 void bot_task_torpedo_debug_draw_009d4230(Cc13Seg67bHost& host, void* task);
 // 009DB060: __thiscall(ECX = this; two stack arguments, unread), RET 8.
 void ship_ai_debug_draw_command_path_009db060(Cc13Seg67bHost& host, void* self);
+// 009E53B0: __thiscall(ECX = node storage; a, b, std::uint32_t lifetime bits), RET 0Ch,
+// EAX = node.
+void* ship_ai_obstacle_node_construct_unregistered_009e53b0(void* node, void* a, void* b,
+                                                            std::uint32_t lifetime_bits);
+// 009E8900: __thiscall(ECX = ship-AI debug object; int x, int y), RET 8.
+void ship_ai_debug_draw_state_label_009e8900(Cc13Seg67bHost& host, void* self,
+                                             std::int32_t x, std::int32_t y);
 
 // ---- medium rows, batch 2 (docs/CC13_SEG67B.md 3.47) ----
 // 009B94E0: __thiscall(ECX = split s task; byte wrap), RET 4.

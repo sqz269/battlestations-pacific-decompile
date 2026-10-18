@@ -145,25 +145,19 @@ Batch 3 validation: MSVC Win32 `scripts/build.ps1` and both existing CTests pass
 saved the program and refreshed the affected exports
 (`local/tail_a_batch3_annotations.log`). No native differential or game run was made.
 
-00759120's source is built, but its two ledger files in band00750000 are held by
-cc15-rB2. Their local edits were restored to HEAD before committing. The queue is
-`oct18-tA-ledger75`; the exact proposed function record and appended naming evidence
-are in `docs/OCT18_TAIL_A_PENDING.json`. The coordinator can apply these using the
-ledger CLI after that file lease clears. The address-owned Ghidra comment was
-already saved/refreshed; its existing function name is unchanged. Thus47 new source
-bodies are delivered,46 new source-function ledger records are published here,
-and one source-function record is pending. Two existing bodies are separately
-reindexed; the five library/compiler records carry no game-body credit.
+The queued band75 lease became active during the follow-up. The exact record and
+appended naming evidence in `OCT18_TAIL_A_PENDING.json` have now been applied,
+Ghidra saved and the export refreshed. This closes the prior one-record delay.
+00759120 host replacement belongs to cc9; this lane leaves the host unchanged.
 
 Four rows already have full function records/source and are left unchanged:
 004837D0 (native unit-list erase), 004845A0 (native list payload remove), 004B7EC0
 (raw list-header initialization), and 006AA460 (raw input-settings destruction).
 
-## Open rows (14; no completion credit)
+## Prior deferred rows (follow-up below)
 
-These were triaged against existing source and current function boundaries. Large
-parents were not fully audited/reconstructed in this lane; no projection is promoted
-to a complete body. The saved native bodies remain available for follow-up work.
+The table records the original triage. Ten rows are now reconstructed below;
+004D56E0, 004DE610, 004E27E0 and 00648C20 remain in progress.
 
 | Address | Remaining work / evidence boundary |
 |---|---|
@@ -183,18 +177,57 @@ to a complete body. The saved native bodies remain available for follow-up work.
 | 00768530 | Whole roughly190-case message factory. Many dependencies already have fragment records; factory/read-dispatch/unwind contract still needs its own complete reconstruction. |
 
 
+## Follow-up batch 1: ten deferred bodies
+
+All ten caller bodies were swept through the complete saved listing, with disk
+bytes resolving jump-table, EH and x87 ambiguities. Required original callees
+are explicit abstract contracts; they have no defaults or stand-in bodies.
+This is caller-body reconstruction, not implementation credit for those callees.
+Raw Win32 storage, current singleton references and returning invalid-parameter
+handlers remain exposed. No host wiring, game run or original binary/FH3/SEH ABI
+compatibility is claimed. Ordinary C++ cleanup models the observed ownership.
+
+| Address | Recovered behavior and material contract |
+|---|---|
+| 00428800 | ECX center, radius and ignored second word, RET8. Checked tree and three lists; pose-cache refresh and 16 ordered FLD/FSTP copies; strict ordered radius checks consume AABB ST0 before spilling. Random modulo retains empty-vector division failure. |
+| 00436C50 | ECX manager and three Lua references, RET0Ch. Full recursive bool/number/string/table copy, repeated key reads and temporary lifetime order. Uses actual native Lua/string helpers plus required missing setters and CRT floor. Ordered x87 number-minus-floor test preserves infinity/NaN behavior; no cycle/depth guard added. |
+| 0049C000 | ECX self, four stack words, RET10h, EAX self. Full randomized 76-byte record population. Resize's original 76-byte uninitialized stack fill is an explicit preimage input. Raw random ST0 is consumed directly by CRT conversion or FIMUL; original SSE integer conversion, x87 sine/cosine and float spills retained. D8B418 unwind states destroy vector0048E160 then base00489DD0. |
+| 004A5620 | Complete checked global record walk/map publication; composes existing constructor004A50D0. Captured ends survive returning validation; constructor-only failure frees170h allocation. D8BE9C unwind verified. |
+| 004DD5B0 | Both initialization branches; file-block/string lifetimes, Lua init/script, three input backend configurations, callbacks, sound queue, safe zone and menu registration. Raw singleton references and required primitives replace no host. |
+| 004E4000 | Full shell transition: statistics/title disposal, conditional loading block/config, callback-controlled state3 gate, three menu lifetimes, Lua GC/music/invite, checked achievement lookup/live grant and session flag clearing. Original unknown config word/padding supplied as28-byte stack preimage. D9061C ten EH states swept. |
+| 005C7B80 | Complete mission-record assignment: native strings/vectors, interlocked picture owner and virtual deletion, both headers, ordered float copies and tree replacement. EAX self, RET4. |
+| 006D0D40 | Literal JMP00958A30; mandatory whole-target service forwards self. The existing partial target implementation is deliberately not bound. No new target-body credit. |
+| 006E35A0 | Literal JMP0072E6D0; mandatory whole-target service forwards self. Unverified host projection is not bound. No new target-body credit. |
+| 00768530 | ECX stream, RET, EAX message. All233 table entries:214 allocated tags,9 direct-getter tags,10 defaults,215 physical entries,22 allocation cleanup states. Constructors/getters and current read-slot8 are required bindings. Unknown tags use native entryESP-10h preimage; null allocation still dispatches. Multiplayer receive factory is reconstructed but unwired. |
+
+Factory evidence is `reports/oct18_tail_a_factory.json` and the generated route
+include. SHA256 and full disk span are recorded. Current Ghidra ownership is only
+113 bytes in two ranges;214 raw case call sites have no containing function.
+`verify_report_calls.py` therefore reports214 ownership failures, not a pass.
+The exact-preimage body-only repair script is prepared in
+`tools/ghidra_scripts/RepairOct18FactoryBody.java`, but the server refused the
+locked RPC because `GHIDRA_MCP_ALLOW_SCRIPTS` is disabled. The script is unexecuted
+and unvalidated. Shared server settings and instruction flow were left alone.
+This metadata blocker does not hide the independently audited source body.
+
+Validation: MSVC Win32 Release and both existing CTests pass through
+`scripts/build.ps1` (`local/tA_deferred_first10_build.log`). No native differential,
+ABI, private-stack, nonlocal Lua error, full fault/concurrency or gameplay proof.
+The locked annotator preserves prior naming comments, records old values and
+saves; refreshed exports for the factory expose the current ownership limitation.
+
 ## Complete lane disposition (82 rows)
 
 | Address | Disposition |
 |---|---|
 | 00423960 | new source body |
 | 00423AF0 | new source body |
-| 00428800 | open; see above |
+| 00428800 | follow-up source body with required callee contracts |
 | 0042ABD0 | new source body |
 | 00435390 | new source body |
 | 00435640 | library/compiler |
 | 00436690 | new source body |
-| 00436C50 | open; see above |
+| 00436C50 | follow-up source body with required callee contracts |
 | 00437490 | new source body |
 | 00438F80 | new source body |
 | 0044E4F0 | library/compiler |
@@ -204,25 +237,25 @@ to a complete body. The saved native bodies remain available for follow-up work.
 | 004845A0 | already complete; unchanged |
 | 0048E1F0 | new source body |
 | 0048E500 | new source body |
-| 0049C000 | open; see above |
-| 004A5620 | open; see above |
+| 0049C000 | follow-up source body with required callee contracts |
+| 004A5620 | follow-up source body with required callee contracts |
 | 004A6B90 | new source body |
 | 004AB030 | new source body |
 | 004B7EC0 | already complete; unchanged |
 | 004C8AA0 | new source body |
 | 004C9C90 | new source body |
 | 004D56E0 | open; see above |
-| 004DD5B0 | open; see above |
+| 004DD5B0 | follow-up source body with required callee contracts |
 | 004DE610 | open; see above |
 | 004E27E0 | open; see above |
-| 004E4000 | open; see above |
+| 004E4000 | follow-up source body with required callee contracts |
 | 004F1870 | new source body |
 | 004F1890 | new source body |
 | 004FF580 | new source body |
 | 00519340 | new source body |
 | 0054ED00 | new source body |
 | 00550F70 | library/compiler |
-| 005C7B80 | open; see above |
+| 005C7B80 | follow-up source body with required callee contracts |
 | 0060C610 | new source body |
 | 00642B80 | new source body |
 | 00644230 | new source body |
@@ -239,7 +272,7 @@ to a complete body. The saved native bodies remain available for follow-up work.
 | 006CFE30 | new source body |
 | 006D0D20 | new source body |
 | 006D0D30 | new source body |
-| 006D0D40 | open; see above |
+| 006D0D40 | follow-up source body with required callee contracts |
 | 006D1640 | new source body |
 | 006D1D20 | new source body |
 | 006D1D40 | new source body |
@@ -252,7 +285,7 @@ to a complete body. The saved native bodies remain available for follow-up work.
 | 006DA6B0 | library/compiler |
 | 006DFE40 | new source body |
 | 006E2850 | new source body |
-| 006E35A0 | open; see above |
+| 006E35A0 | follow-up source body with required callee contracts |
 | 006EB600 | new source body |
 | 006EB7C0 | new source body |
 | 006F7F30 | new source body |
@@ -268,4 +301,4 @@ to a complete body. The saved native bodies remain available for follow-up work.
 | 00758390 | held by cc15-rB |
 | 00759120 | new source body |
 | 00767D70 | new source body |
-| 00768530 | open; see above |
+| 00768530 | follow-up source body with required callee contracts |
