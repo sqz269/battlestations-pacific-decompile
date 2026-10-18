@@ -12,9 +12,9 @@ symbols. Nothing here is wired.
 |---|---|---|
 | In the struck range 0081B000-0081EFFF (seg51) | 22 | Not touched |
 | Template bodies | 88 | Tagged `stl_shape`, `reviewed`, evidence `sys6_shape` |
-| Game code, reconstructed | 14 | `src/cc13_segmix.cpp`, build-tested (cc13-segmixB to G) |
+| Game code, reconstructed | 15 | `src/cc13_segmix.cpp`, build-tested (cc13-segmixB to G, I) |
 | Game code, cc9-hosted (verify-and-record) | 8 | Recorded with a verdict |
-| Game code, not done yet | 1 | 00935D30 |
+| Game code, not done yet | 0 | |
 
 ## Template bodies (cc13-segmixA)
 
@@ -249,6 +249,29 @@ each puff makes one draw on the shared 00BD2F10 stream.
 The bytes were read for both reversed divisions: DE F1 at 00825131 / 00825179
 and DC F9 at 00825161.
 
+### Segment 61: the ship breaking in two (cc13-segmixI)
+
+**00935D30 BSP_UnitController_BreakInTwo**, thiscall(controller). It was FUN_
+and is now renamed in the ledger and in Ghidra; the old value is in
+`local/ghidra-annotations-20261018T160110Z.json`. 00814520 jumps to it for
+message 98h, with ECX = unit+1018h. The ship splits into a front half and a back
+half, each on a new 398h tickable piece:
+
+| Step | What it does |
+|---|---|
+| Interior | The `hajobelso*` children are moved by -100000 on each axis. |
+| Halves | [ctrl+370h] is renamed ELELLYE and [ctrl+374h] HATULLYA, and both world matrices are kept. The guns get 007297B0. |
+| Pieces | Each piece is constructed, posed at its half's world matrix, and installed through 0092AAE0 with source {unit, half, p, side}. |
+| Offsets | front p = t + d·row2 + b·row0 + a·row1; back p = t − d·row2 + b·row0 + a·row1. d = U(10, 20), and a and b are U(0, 1.5) times a random sign. |
+| Nodes | The pieces take the root's ELELLYE / HATULLYA nodes (0092A240) and link to each other at +33Ch. Each gun node is re-parented to ELELLYE when its z in the inverse instance frame is above [class+580h], else to HATULLYA. |
+| End | +370h/+374h are cleared, 00926D90(unit, 1) kills the unit, and every body shape gets mask 0 and group 0. The [settings+3A8h] effect is spawned at the unit's position. |
+
+The front piece makes 6 draws on the shared stream (ECX = 1): the signs sx, sy
+and sz, then a, b and d. The back makes 5, with no sx. The source block's +14h
+"side" is float(sx). The back piece reuses the same block without rewriting
++14h, so both installs see the front's side. The bytes were read for the
+interior subtractions: DC E9, D8 E1 and D8 /5.
+
 ### Segment 41: the land fort's static body (cc13-segmixH, verify-and-record)
 
 **007482B0 BSP_LandFort_InitSceneAndCreateStaticBody** is cc9's. Its contract is
@@ -274,8 +297,8 @@ Two of the contract's citations are off; the behaviour they describe is right:
   `008e0000.jsonl`.
 - `include/bsp/cc13_segmix.hpp` and `src/cc13_segmix.cpp`, registered in
   `cmake/startup.cmake` (bsp_core).
-- 22 function records in `config/reconstruction/00740000`, `00750000`, `00760000`, `007a0000`, `00820000`,
-  `00920000` and `00930000.jsonl`: 14 bodies and 8 verify-and-record.
-- 7 renames in `config/names/007a0000`, `00920000` and `00930000.jsonl` (007A84D0, 0092F930, 0093B920, 0093A2C0,
+- 23 function records in `config/reconstruction/00740000`, `00750000`, `00760000`, `007a0000`, `00820000`,
+  `00920000` and `00930000.jsonl`: 15 bodies and 8 verify-and-record.
+- 8 renames in `config/names/007a0000`, `00920000` and `00930000.jsonl` (007A84D0, 00935D30, 0092F930, 0093B920, 0093A2C0,
   0093AA00, 00933BB0, 00933DA0), applied in Ghidra; the old values are in
-  `local/ghidra-annotations-20261018T153423Z.json`, `...T153752Z.json` and `...T154313Z.json`.
+  `local/ghidra-annotations-20261018T153423Z.json`, `...T153752Z.json`, `...T154313Z.json` and `...T160110Z.json`.

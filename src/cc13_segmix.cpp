@@ -900,4 +900,269 @@ void cc13_segmix_ship_on_wrecked_00824b60(void* unit, Cc13SegmixHost& host) {
     host.unit_on_destroyed_00959450(unit);                                             // 00825271
 }
 
+// ---------------------------------------------------------------------------
+// 00935D30, the ship breakup (cc13-segmixI). __thiscall(ECX = controller, the
+// unit+1018h controller), RET. Bytes 00935D30..00936DBE, with an aligned frame and
+// EH frame 00CA771E (not modelled). 00814520 BSP_UnitInstance_OnBreakupMessage
+// tail-jumps here after its 004A5AA0 registration. The unit is [controller+1Ch].
+// The two hull halves are the nodes [controller+370h] (front, named ELELLYE) and
+// [controller+374h] (back, named HATULLYA). Steps, in image order:
+//
+// 1. Hide the interior. Each child of the model instance named "hajobelso*"
+//    (0071BA20) gets 00B6DA70(1.0f, 0), then moves to its local position minus
+//    100000 on every axis (slot +2Ch). The bytes are DC E9 (FSUB ST(1),ST(0)),
+//    D8 E1 and D8 /5, all p - 1e5.
+// 2. It copies both halves' world matrices (refreshed through 00B6DB70 when
+//    +5Ch bit 2 is clear) and renames +374h HATULLYA and +370h ELELLYE.
+// 3. Every gun child (kind 20h) with [gun+3C0h] gets 007297B0
+//    BSP_Gun_ApplyWreckVisibility.
+// 4. The root node R = model+10h(unit+190h(0)) gets 00B6DA70(1.0f, 0) and the
+//    automatic world sphere when it is the current group type.
+// 5. Two 398h TickableGameEntity pieces. Each is zeroed, constructed (00929E50),
+//    given slot +98h(0, [game+19CCh], identity), posed at its half's world
+//    matrix M, and installed (0092AAE0) with a source {unit, half node, p, side}.
+//    The offset comes from the shared stream (ECX = 1):
+//    - Front: sx, sy, sz = sign(U(-1, 1)) in that order. a = U(0, 1.5) * sy,
+//      b = U(0, 1.5) * sz and d = U(10, 20). p = ((M.t + d * row2) + b * row0) +
+//      a * row1, and side = float(sx).
+//    - Back: sy, sz, a, b and d drawn the same way (5 draws, no sx).
+//      p = ((M.t - d * row2) + b * row0) + a * row1. side is left at the front's
+//      value, because the image never rewrites source+14h.
+//    Each sign is -1 when 0 > r, 1 when r > 0, else 0, with an unordered r
+//    giving 0.
+// 6. The pieces take the R children ELELLYE / HATULLYA (00B6E750, recursive)
+//    through 0092A240, and point at each other at +33Ch.
+// 7. Each gun with a model instance re-parents its named node (found under R)
+//    to ELELLYE when the node's position in the inverse instance frame has
+//    z > [class+580h], else to HATULLYA. The automatic world sphere follows.
+// 8. Clears +370h/+374h and kills the unit (00926D90(1)). Every shape of the
+//    body [controller+2Ch] gets collide mask 0 and group 0.
+// 9. Creates [settings+3A8h] at the unit's world position on [game+19ECh]
+//    (008685E0), sets effect byte +9h, and frees the name vector.
+//
+// Every float op is float-exact under 24-bit precision: products and sums of
+// floats, rounded at each FSTP, as written here.
+// ---------------------------------------------------------------------------
+namespace {
+
+struct SegmixNativeString {
+    std::uint32_t length;
+    char* data;
+};
+
+// The inlined temporary: resize, copy the text with its NUL, use, return to the sized pool.
+template <typename Use>
+void with_native_string(const char* text, std::uint32_t length, Cc13SegmixHost& host, Use use) {
+    SegmixNativeString string = {0, nullptr};
+    host.native_string_resize_0041dd40(&string, length, 1);
+    if (string.data != nullptr) host.crt_memcpy_00bf7680(string.data, text, string.length + 1);
+    use(&string);
+    if (string.data != nullptr) {
+        host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), string.data, string.length + 1, 1);
+    }
+}
+
+std::int32_t stream_sign(float r) {
+    if (0.0f > r) return -1;
+    if (r > 0.0f) return 1;
+    return 0;
+}
+
+void refresh_and_copy_world(void* node, float* out, Cc13SegmixHost& host) {
+    if ((at<std::uint8_t>(node, 0x5C) & 2) == 0) host.transform_refresh_world_matrix_00b6db70(node);
+    std::memcpy(out, &at<float>(node, 0xF0), 16 * sizeof(float));
+}
+
+}  // namespace
+
+void cc13_segmix_ship_break_in_two_00935d30(void* controller, Cc13SegmixHost& host) {
+    const auto instance_of = [&](void* entity) -> void* {
+        void* const visual = at<void*>(entity, 0x360);
+        return visual != nullptr ? at<void*>(visual, 0x160) : nullptr;
+    };
+    alignas(4) std::uint8_t interior[0x10] = {};                                     // [F+68h]
+    host.node_collect_children_by_name_prefix_0071ba20(instance_of(at<void*>(controller, 0x1C)), interior,
+                                                       "hajobelso");
+    float scratch[3];                                                                  // [F+13Ch]
+    for (std::uint32_t i = 0;; ++i) {
+        void** const first = at<void**>(interior, 0x4);
+        if (first == nullptr || i >= static_cast<std::uint32_t>(at<void**>(interior, 0x8) - first)) break;
+        host.scene_node_set_visibility_factor_00b6da70(first[i], 1.0f, 0);           // 00935DB7
+        const auto checked = [&]() {
+            void** const begin = at<void**>(interior, 0x4);
+            if (begin == nullptr || i >= static_cast<std::uint32_t>(at<void**>(interior, 0x8) - begin)) {
+                host.crt_invalid_parameter_noinfo_00bf6713();
+            }
+            return at<void**>(interior, 0x4)[i];
+        };
+        void* const node = checked();
+        const float* const p = host.node_copy_local_position_00b6e0a0(checked(), scratch);
+        const float moved[3] = {static_cast<float>(static_cast<double>(p[0]) - 100000.0),   // [00CF81F0]
+                                static_cast<float>(static_cast<double>(p[1]) - 100000.0),
+                                static_cast<float>(static_cast<double>(p[2]) - 100000.0)};
+        host.node_vcall_2c_set_position(node, moved);                                  // 00935E45
+    }
+
+    float front_world[16];                                                             // [F+F8h]
+    float back_world[16];                                                              // [F+B8h]
+    refresh_and_copy_world(at<void*>(controller, 0x370), front_world, host);
+    refresh_and_copy_world(at<void*>(controller, 0x374), back_world, host);
+    with_native_string("HATULLYA", 8, host, [&](const void* name) {
+        host.node_assign_name_00b6f960(at<void*>(controller, 0x374), name);           // 009360DB
+    });
+    with_native_string("ELELLYE", 7, host, [&](const void* name) {
+        host.node_assign_name_00b6f960(at<void*>(controller, 0x370), name);           // 0093614D
+    });
+    for (void* child = at<void*>(at<void*>(controller, 0x1C), 0x48); child != nullptr; child = at<void*>(child, 0x44)) {
+        if (host.unit_vcall_5c_is_kind(child, 0x20) && at<void*>(child, 0x3C0) != nullptr) {
+            host.gun_apply_wreck_visibility_007297b0(child);                           // 0093619F
+        }
+    }
+    void* const unit = at<void*>(controller, 0x1C);
+    void* const key = host.unit_vcall_190(unit, 0);
+    void* const root = host.model_vcall_10_root_node(at<void*>(unit, 0x4A4), key);    // [F+64h]
+    host.scene_node_set_visibility_factor_00b6da70(root, 1.0f, 0);
+    if (host.node_vcall_0c_is_type(root, host.group_current_type_00b8e600())) {
+        host.group_enable_automatic_world_sphere_00b8f0f0(root);
+    }
+
+    const float identity[16] = {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                                0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    const auto make_piece = [&](const float* world) -> void* {
+        void* const block = host.crt_operator_new_00bf55be(0x398);
+        host.crt_memset_00bf79f0(block, 0, 0x398);
+        void* const piece = block != nullptr ? host.tickable_game_entity_construct_00929e50(block) : nullptr;
+        host.entity_vcall_98(piece, 0, at<std::uint32_t>(host.game_global_00e188a8(), 0x19CC), identity);
+        host.entity_set_world_pose_matrix_00741e90(piece, world);
+        return piece;
+    };
+    const auto draw = [&](float lo, float hi) { return host.random_uniform_float_range_00bd2f10(1, lo, hi); };
+    const auto scaled = [](float value, std::int32_t sign) {
+        return static_cast<float>(value * static_cast<float>(sign));                  // FIMUL, exact
+    };
+    // The 0092AAE0 source block [F+4Ch]: unit, node, x, y, z, side (float).
+    alignas(4) std::uint8_t source[0x18] = {};
+
+    void* const front = make_piece(front_world);                                       // 00936235
+    const std::int32_t sx = stream_sign(draw(-1.0f, 1.0f));                           // 00936328
+    at<void*>(source, 0x0) = unit;
+    at<void*>(source, 0x4) = at<void*>(controller, 0x370);
+    const float side = static_cast<float>(sx);                                         // CVTSI2SS
+    const float ry = draw(-1.0f, 1.0f);
+    const float rz = draw(-1.0f, 1.0f);
+    {
+        const float a = scaled(draw(0.0f, 1.5f), stream_sign(ry));                   // [00CE380C]
+        const float u[3] = {front_world[4] * a, front_world[5] * a, front_world[6] * a};
+        const float b = scaled(draw(0.0f, 1.5f), stream_sign(rz));
+        const float v[3] = {b * front_world[0], b * front_world[1], b * front_world[2]};
+        const float d = draw(10.0f, 20.0f);                                            // [00CE38B8], [00CE3930]
+        const float w[3] = {front_world[8] * d, front_world[9] * d, front_world[10] * d};
+        float p[3];
+        for (int k = 0; k < 3; ++k) {
+            p[k] = front_world[12 + k] + w[k];
+            p[k] = p[k] + v[k];
+            p[k] = p[k] + u[k];
+        }
+        at<float>(source, 0x8) = p[0];
+        at<float>(source, 0xC) = p[1];
+        at<float>(source, 0x10) = p[2];
+        at<float>(source, 0x14) = side;
+        host.tickable_install_collision_0092aae0(front, source);                      // 00936584
+    }
+
+    void* const back = make_piece(back_world);                                         // 009365B7
+    at<void*>(source, 0x4) = at<void*>(controller, 0x374);
+    {
+        const float ry2 = draw(-1.0f, 1.0f);
+        const float rz2 = draw(-1.0f, 1.0f);
+        const float a = scaled(draw(0.0f, 1.5f), stream_sign(ry2));
+        const float u[3] = {back_world[4] * a, back_world[5] * a, back_world[6] * a};
+        const float b = scaled(draw(0.0f, 1.5f), stream_sign(rz2));
+        const float v[3] = {b * back_world[0], b * back_world[1], b * back_world[2]};
+        const float d = draw(10.0f, 20.0f);
+        const float w[3] = {back_world[8] * d, back_world[9] * d, back_world[10] * d};
+        float p[3];
+        for (int k = 0; k < 3; ++k) {
+            p[k] = back_world[12 + k] - w[k];
+            p[k] = p[k] + v[k];
+            p[k] = p[k] + u[k];
+        }
+        at<float>(source, 0x8) = p[0];
+        at<float>(source, 0xC) = p[1];
+        at<float>(source, 0x10) = p[2];
+        host.tickable_install_collision_0092aae0(back, source);                       // 009368B2
+    }
+
+    with_native_string("ELELLYE", 7, host, [&](const void* name) {
+        host.tickable_entity_attach_node_0092a240(front, host.node_find_child_by_name_00b6e750(root, name, 1));
+    });
+    with_native_string("HATULLYA", 8, host, [&](const void* name) {
+        host.tickable_entity_attach_node_0092a240(back, host.node_find_child_by_name_00b6e750(root, name, 1));
+    });
+    at<void*>(front, 0x33C) = back;                                                    // 009369AF
+    at<void*>(back, 0x33C) = front;
+
+    for (void* gun = at<void*>(at<void*>(controller, 0x1C), 0x48); gun != nullptr; gun = at<void*>(gun, 0x44)) {
+        if (!host.unit_vcall_5c_is_kind(gun, 0x20)) continue;
+        float inverse[16];                                                             // [F+78h], REP MOVSD
+        std::memcpy(inverse,
+                    host.node_get_inverse_world_matrix_00b6e0d0(
+                        at<void*>(instance_of(at<void*>(controller, 0x1C)), 0xC)),
+                    sizeof inverse);
+        void* const gun_instance = instance_of(gun);
+        if (gun_instance == nullptr || at<void*>(gun_instance, 0xC) == nullptr) continue;
+        const char* const gun_name = host.object_vcall_10_name(gun);
+        void* node = nullptr;
+        with_native_string(gun_name, static_cast<std::uint32_t>(std::strlen(gun_name)), host,
+                           [&](const void* name) { node = host.node_find_child_by_name_00b6e750(root, name, 1); });
+        float node_world[16];
+        refresh_and_copy_world(node, node_world, host);
+        float local[3];
+        host.vector3_transform_affine_point_004142e0(&node_world[12], local, inverse);   // 00936AF8
+        const float split = at<float>(at<void*>(at<void*>(controller, 0x1C), 0x538), 0x580);
+        const bool to_front = local[2] > split;                                        // FCOMIP, JBE
+        with_native_string(to_front ? "ELELLYE" : "HATULLYA", to_front ? 7u : 8u, host, [&](const void* name) {
+            host.node_set_parent_00b6e680(node, host.node_find_child_by_name_00b6e750(root, name, 1));
+        });
+        if (host.node_vcall_0c_is_type(node, host.group_current_type_00b8e600())) {
+            host.group_enable_automatic_world_sphere_00b8f0f0(node);
+        }
+    }
+
+    at<void*>(controller, 0x374) = nullptr;                                            // 00936C39
+    at<void*>(controller, 0x370) = nullptr;
+    host.mission_entity_kill_00926d90(at<void*>(controller, 0x1C), 1);
+    void* const body = at<void*>(controller, 0x2C);
+    if (body != nullptr) {
+        for (void* shape = host.body_first_shape_00c31dc0(body); shape != nullptr; shape = at<void*>(shape, 0x208)) {
+            host.shape_collide_mask_assign_00c48020(shape, 0);
+            host.shape_group_assign_00c48050(shape, 0);
+        }
+    }
+
+    void* const owner = at<void*>(controller, 0x1C);                                   // 00936C7A
+    float* const world = &at<float>(owner, 0xCC);
+    if (at<std::uint8_t>(owner, 0xC8) == 0) {
+        if (at<void*>(owner, 0x3C) != nullptr) host.entity_pose_refresh_world_00414db0(at<void*>(owner, 0x3C));
+        const float* source_matrix = &at<float>(owner, 0x74);
+        float product[16];                                                             // [F+78h]
+        if (at<void*>(owner, 0x3C) != nullptr) {
+            source_matrix = host.matrix_multiply_4x4_00413920(&at<float>(owner, 0x74), product,
+                                                              &at<float>(at<void*>(owner, 0x3C), 0xCC));
+        }
+        for (int k = 0; k < 16; ++k) world[k] = source_matrix[k];
+        at<std::uint8_t>(owner, 0xC8) = 1;
+        at<std::uint8_t>(owner, 0x10C) = 0;
+    }
+    void* const manager = at<void*>(host.game_global_00e188a8(), 0x19EC);
+    void* const definition = retain_reference(at<void*>(host.game_settings_00424c40(), 0x3A8), host);
+    void* effect = nullptr;                                                            // [F+14h]
+    void** const created = static_cast<void**>(
+        host.point_effect_create_from_position_008685e0(&effect, manager, definition, &world[12], 0, 0));
+    auto* const spawned = static_cast<std::uint8_t*>(*created);                        // read before the release
+    release_reference(effect, host);
+    at<std::uint8_t>(spawned, 0x9) = 1;                                                // 00936D94
+    if (at<void*>(interior, 0x4) != nullptr) host.crt_free_00bf65ac(at<void*>(interior, 0x4));
+}
+
 }  // namespace bsp

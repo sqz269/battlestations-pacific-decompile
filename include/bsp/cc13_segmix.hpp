@@ -212,6 +212,84 @@ public:
     virtual void vcall_10(void* object) = 0;
     // 00959450 BSP_Unit_OnDestroyed: __fastcall(ECX = unit).
     virtual void unit_on_destroyed_00959450(void* unit) = 0;
+
+    // ---- 00935D30 ship breakup (cc13-segmixI) ----
+    // 0071BA20 BSP_Node_CollectChildrenByNamePrefix: __thiscall(ECX = node; out vector (10h:
+    // +4h first, +8h last, +0Ch end), const char* prefix), RET 8.
+    virtual void node_collect_children_by_name_prefix_0071ba20(void* node, void* out_vector,
+                                                               const char* prefix) = 0;
+    // 00B6DA70 BSP_SceneNode_SetVisibilityFactor: __thiscall(ECX = node; float, byte recurse), RET 8.
+    virtual void scene_node_set_visibility_factor_00b6da70(void* node, float value, std::uint8_t recurse) = 0;
+    // 00B6E0A0 BSP_Node_CopyLocalPosition: __thiscall(ECX = node; float out[3]), RET 4; EAX = out.
+    virtual const float* node_copy_local_position_00b6e0a0(void* node, float* out) = 0;
+    // Node vtable slot +2Ch(const float position[3]), RET 4.
+    virtual void node_vcall_2c_set_position(void* node, const float* position) = 0;
+    // 00B6DB70 BSP_Transform_RefreshWorldMatrix: __thiscall(ECX = node).
+    virtual void transform_refresh_world_matrix_00b6db70(void* node) = 0;
+    // 0041DD40 BSP_NativeString_Resize: __thiscall(ECX = string {+0h length, +4h data}; length,
+    // flag), RET 8.
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint32_t flag) = 0;
+    // 00BF7680 memcpy (cdecl).
+    virtual void crt_memcpy_00bf7680(void* destination, const void* source, std::uint32_t size) = 0;
+    // 00BF79F0 memset (cdecl).
+    virtual void crt_memset_00bf79f0(void* destination, std::int32_t value, std::uint32_t size) = 0;
+    // 00419CC0 BSP_SizedStoragePool_GetSingleton (cdecl); 00BD1510, the sized pool return:
+    // __thiscall(ECX = pool; data, size, flag), RET 0Ch.
+    virtual void* sized_pool_get_00419cc0() = 0;
+    virtual void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t size,
+                                                  std::uint32_t flag) = 0;
+    // 00B6F960 BSP_Node_AssignName: __thiscall(ECX = node; const string*), RET 4.
+    virtual void node_assign_name_00b6f960(void* node, const void* string) = 0;
+    // 007297B0 BSP_Gun_ApplyWreckVisibility: __fastcall(ECX = gun).
+    virtual void gun_apply_wreck_visibility_007297b0(void* gun) = 0;
+    // The unit's vtable slot +190h(0), RET 4; EAX = the model key. The model's vtable slot
+    // +10h(key), RET 4; EAX = the root node.
+    virtual void* unit_vcall_190(void* unit, std::uint32_t value) = 0;
+    virtual void* model_vcall_10_root_node(void* model, void* key) = 0;
+    // 00B8E600 BSP_Group_GetCurrentType (no arguments; EAX = [0109032C]).
+    virtual void* group_current_type_00b8e600() = 0;
+    // The node's vtable slot +0Ch(type), RET 4; AL (an is-type test).
+    virtual bool node_vcall_0c_is_type(void* node, void* type) = 0;
+    // 00B8F0F0 BSP_Group_EnableAutomaticWorldSphere: __thiscall(ECX = group).
+    virtual void group_enable_automatic_world_sphere_00b8f0f0(void* group) = 0;
+    // 00929E50 BSP_TickableGameEntity_Construct: __thiscall(ECX = block); EAX = this.
+    virtual void* tickable_game_entity_construct_00929e50(void* block) = 0;
+    // The entity's vtable slot +98h(a, b, const float matrix[16]), RET 0Ch.
+    virtual void entity_vcall_98(void* entity, std::uint32_t a, std::uint32_t b, const float* matrix) = 0;
+    // 00741E90 BSP_Entity_SetWorldPoseMatrix: __thiscall(ECX = entity; const float[16]), RET 4.
+    virtual void entity_set_world_pose_matrix_00741e90(void* entity, const float* matrix) = 0;
+    // 0092AAE0 BSP_TickableGameEntity_InstallCollision: __thiscall(ECX = entity; source), RET 4.
+    // The source is 18h bytes: unit, node, float x, y, z, float side.
+    virtual void tickable_install_collision_0092aae0(void* entity, void* source) = 0;
+    // 00B6E750 BSP_Node_FindChildByName: __thiscall(ECX = node; const string*, byte recursive),
+    // RET 8; EAX = the node.
+    virtual void* node_find_child_by_name_00b6e750(void* node, const void* string, std::uint8_t recursive) = 0;
+    // 0092A240: __thiscall(ECX = entity; node), RET 4 (ledger BSP_TickableEntityAttachFires).
+    virtual void tickable_entity_attach_node_0092a240(void* entity, void* node) = 0;
+    // 00B6E0D0 BSP_Node_GetInverseWorldMatrix: __thiscall(ECX = node); EAX = float[16].
+    virtual const float* node_get_inverse_world_matrix_00b6e0d0(void* node) = 0;
+    // The gun's vtable slot +10h(); EAX = its name (C string).
+    virtual const char* object_vcall_10_name(void* object) = 0;
+    // 004142E0 BSP_Vector3f_TransformAffinePoint: __thiscall(ECX = point; float out[3],
+    // const float matrix[16]), RET 8.
+    virtual void vector3_transform_affine_point_004142e0(const float* point, float* out, const float* matrix) = 0;
+    // 00B6E680 BSP_Node_SetParent: __thiscall(ECX = node; parent), RET 4.
+    virtual void node_set_parent_00b6e680(void* node, void* parent) = 0;
+    // 00926D90 BSP_MissionEntity_Kill: __thiscall(ECX = entity; cause), RET 4.
+    virtual void mission_entity_kill_00926d90(void* entity, std::int32_t cause) = 0;
+    // 00C31DC0: __thiscall(ECX = body); EAX = [body+70h], the first shape (next at +208h).
+    virtual void* body_first_shape_00c31dc0(void* body) = 0;
+    // 00C48020 / 00C48050: __thiscall(ECX = shape; value), RET 4 (the collide mask / group).
+    virtual void shape_collide_mask_assign_00c48020(void* shape, std::uint32_t value) = 0;
+    virtual void shape_group_assign_00c48050(void* shape, std::uint32_t value) = 0;
+    // 00413920 BSP_Matrix_Multiply4x4: __thiscall(ECX = left; out, right), RET 8; EAX = out.
+    virtual float* matrix_multiply_4x4_00413920(const float* left, float* out, const float* right) = 0;
+    // 008685E0 BSP_PointEffect_CreateFromPosition: __fastcall(ECX = out slot, EDX = manager;
+    // definition slot by value (retained by the caller, released by the callee), const float
+    // position[3], int, int), RET 10h; EAX = out.
+    virtual void* point_effect_create_from_position_008685e0(void* out, void* manager, void* definition,
+                                                             const float* position, std::int32_t a,
+                                                             std::int32_t b) = 0;
 };
 
 // ---- segment 42: the mother ship and its MOTHERSHIP_CREATE message ----
@@ -234,6 +312,8 @@ void cc13_segmix_repair_task_destruct_0093b920(void* task, Cc13SegmixHost& host)
 // ---- segment 51 (outside the struck range): the ship's wreck handler ----
 void cc13_segmix_ship_on_wrecked_00824b60(void* unit, Cc13SegmixHost& host);
 void cc13_segmix_unit_controller_update_pose_0092f930(void* controller, float seconds, Cc13SegmixHost& host);
+// 00935D30, the ship breakup on the unit controller (unit+1018h).
+void cc13_segmix_ship_break_in_two_00935d30(void* controller, Cc13SegmixHost& host);
 
 // ---- segment 46: the mission camera ----
 void cc13_segmix_movcam_cycle_target_007a84d0(void* camera, std::uint8_t backward, Cc13SegmixHost& host);
