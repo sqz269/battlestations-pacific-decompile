@@ -409,8 +409,9 @@ inline constexpr bool kSubmarineAirBound = true;  // ON: pairs held (docs/SUBMAR
 // the host's slot sub_air.air), the HUD screens 0064DD30 / 00650450 / 00683020,
 // 00852D30, and GetSubmarineAirSupply 008938E0. True: the script orders host
 // routes the row to GameUnitsHost::set_submarine_air_00893a60. False: the row
-// stays unimplemented and stores nothing.
-inline constexpr bool kLuaSetSubmarineAirSupplyBound = false;
+// stays unimplemented and stores nothing. ON since cc9-ships58 (docs/SHIP_AI_OPEN_ITEMS.md
+// section 284), flipped together with kLuaGetSubmarineAirSupplyBound.
+inline constexpr bool kLuaSetSubmarineAirSupplyBound = true;
 
 // Packet cc9_periscope_out (docs/GUNNERY_OPEN_ITEMS.md section 38). True: each seeded
 // submarine with a periscope node runs 00854650's mast arm once per force step.
