@@ -6420,6 +6420,11 @@ struct GameUnitsHost::Impl {
     // carrier's speed along the plane's heading raises the minimum. False: 0, as before.
     static constexpr bool kLandMinSpeedOwnerVelocityBound = false;
     mutable unsigned long long land_min_speed_owner_terms{0};
+    // Packet p20_gunfire_exempt_wanderer (section 80). 0099F197-0099F1A8: the exempt arm
+    // of 0099EC40 (kinds 10h / 16h, or a flight leader whose squadron +3CCh > 1) writes
+    // unit+840h WandererMul = tuning+614h (Pilot/Avoidance/Gunfire/BomberVSGunfire)
+    // before returning. True: wanderer.mul takes the value. False: only counted.
+    static constexpr bool kGunfireExemptWandererMulBound = false;
     static constexpr bool kLandingLandedArmBound = true;  // ON: all ten LOMP10 planes land (docs/SQUADRON_LAND_TASK.md 5r)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
@@ -8527,6 +8532,11 @@ struct GameUnitsHost::Impl {
              own_sq->live_count() > 1);
         if (exempt) {
             ++u.ga_exempt_ticks;
+            if constexpr (kGunfireExemptWandererMulBound) {
+                // 0099F197 0042E740, 0099F19C FLD [tuning+614h], 0099F1A8 FSTP [unit+840h].
+                if (lua.plane_globals_loaded())
+                    u.wanderer.mul = lua.plane_globals().pilot_avoidance_gunfire_bomber_vs_gunfire;
+            }
             return;
         }
         // 0099F087 004F2F40: the 2-D threat sum normalised, then x 0.8
