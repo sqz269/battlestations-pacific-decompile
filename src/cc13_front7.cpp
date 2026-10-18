@@ -282,4 +282,324 @@ void powerup_screen_rebuild_lists_0061b0f0(Raw screen, PowerupListsHost& host) {
     if (a.first != nullptr) host.operator_delete_00bf65ac(a.first);                 // 0061B81C
 }
 
+// ---------------------------------------------------------------------------
+// 0087CA80, __thiscall(ECX = descriptor; LuaObject* row) RET 4; ESP frame 0F4h
+// locals, EH handler 00C96A7D. Assembly 0087CA80-0087D723 (858 instructions),
+// cross-checked with docs/NATIVE_DAMAGEABLE_CLASS_LUA_ORCH4.md. In order:
+//  - "Name": [desc+54h] = 00438E40(00B662B0(obj)).
+//  - "Unique" (kept alive to the end): byte [desc+34h] = 00B66000 && 00B66250.
+//  - "Mesh" / "Comment": 00B685C0(obj; &tmp, "") and, when the result is not the
+//    destination (desc+38h / desc+58h), 0041DD40(dest; src.len, 1) then
+//    memcpy(dest.data, src.data, dest.len) if src.len != 0; tmp released.
+//  - "HP": float default 100.0 (00CE3D08) -> [desc+48h]; "Armour": default 0 -> +4Ch.
+//  - "ExplosionType": 00B66A60 probe on one object, then a fresh object's
+//    00B66290 -> [desc+40h] when the probe held.
+//  - "Damage" table -> "Sections" table: for each (key, value) of Sections a 30h
+//    record (memset 0, floats +28h/+2Ch = 10.0 from 00CE38B8) is appended by
+//    0087C870 to desc+18h, the temporary's destructor is inlined (vtable 00D0DF04,
+//    handle +24h released); row = last - 30h after the three checked tests;
+//    "MshCategory" copied to a local string; "Index": 00BF7420(00B66270) -> row+8;
+//    007149D0(string data or 00F878E0) -> row+4; "FireEfx": 00870CD0(&h,
+//    00B66380(obj; 0), 1) assigned to row+24h; when row+24h is still null,
+//    00871BA0(&h, "BigFire", 1) is; "FailureChance": default -100.0 (00CE65D8)
+//    divided by the double 100.0 (00D7A220) -> row+28h; "FailureDamageThreshold":
+//    default -1.0 (00D7A260) -> row+2Ch.
+//  - "FakeExplosionEffects" table: entries "0", "1", ... (sprintf "%d") while each
+//    is a table: 0087C920(desc+8; n+1, {-1.0, -1, ?, 0}) then elements 1..4 of the
+//    entry -> float +0 (00B66270), +8, +4 (00B66290) and the 00870CD0 handle at
+//    +0Ch, each behind the checked index n < size.
+//  - "Emberkek" table: for each (key, value): 0087B750(desc+60h; &int key)[+40h]
+//    = 004B1400(&string value).
+// x87: the FailureChance FDIV runs at the main thread's 24-bit precision control
+// on a float32 reload, so the correctly rounded float quotient v / 100.0f is the
+// stored value; GetNumber's double is rounded once by FSTP m32.
+// ---------------------------------------------------------------------------
+namespace {
+
+using EffectHandle = void*;
+
+// A float from its image bit pattern (keeps the constants exact).
+float f32(std::uint32_t bits) noexcept {
+    float value;
+    std::memcpy(&value, &bits, sizeof value);
+    return value;
+}
+
+void release_native_string(NativeStringImage& s, DamageableClassReadHost& host) {
+    if (s.data != nullptr) {
+        void* const pool = host.sized_pool_00419cc0();
+        host.sized_pool_return_00bd1510(pool, s.data, s.length + 1, 1);
+    }
+}
+
+// The inlined intrusive-handle release: InterlockedDecrement([h+4]), vtable[0] at zero.
+void release_handle(EffectHandle h, DamageableClassReadHost& host) {
+    const Raw raw{static_cast<std::uint8_t*>(h)};
+    if (host.interlocked_decrement_ce2220(&raw.at<volatile std::int32_t>(4)) == 0) {
+        host.effect_handle_vtable0(h);
+    }
+}
+
+// The inlined intrusive assignment *slot = value (increment new, release old).
+void assign_handle(EffectHandle* slot, EffectHandle value, DamageableClassReadHost& host) {
+    const EffectHandle old = *slot;
+    if (old == value) return;
+    *slot = value;
+    if (value != nullptr) {
+        host.interlocked_increment_ce221c(&Raw{static_cast<std::uint8_t*>(value)}.at<volatile std::int32_t>(4));
+    }
+    if (old != nullptr) release_handle(old, host);
+}
+
+// A temporary handle's destructor followed by the image's explicit zeroing.
+void drop_temp_handle(EffectHandle& h, DamageableClassReadHost& host) {
+    if (h != nullptr) {
+        release_handle(h, host);
+        h = nullptr;
+    }
+}
+
+// Mesh / Comment: string-or-default copied into an existing descriptor string.
+void read_string_field(LuaObjectStorage* row, const char* key, NativeStringImage* dest,
+                       DamageableClassReadHost& host) {
+    LuaObjectStorage obj;
+    NativeStringImage tmp;
+    LuaObjectStorage* const got = host.lua_object_get_by_name_00b67800(row, &obj, key);
+    const NativeStringImage* const src =
+        host.lua_object_string_or_default_00b685c0(got, &tmp, static_cast<const char*>(""));
+    if (dest != src) {
+        host.native_string_resize_0041dd40(dest, src->length, 1);
+        if (src->length != 0) host.memcpy_00bf7680(dest->data, src->data, dest->length);
+    }
+    release_native_string(tmp, host);
+    host.lua_object_destruct_00b67700(&obj);
+}
+
+// strlen + 0041DD40 + memcpy(len + 1) into a fresh {0, 0} string (inlined twice).
+void copy_c_string(NativeStringImage& s, const char* text, DamageableClassReadHost& host) {
+    s.length = 0;
+    s.data = nullptr;
+    host.native_string_resize_0041dd40(&s, static_cast<std::uint32_t>(std::strlen(text)), 1);
+    if (s.data != nullptr) host.memcpy_00bf7680(s.data, text, s.length + 1);
+}
+
+std::int32_t fake_effect_count(const Raw vector) {
+    const auto* const first = static_cast<std::uint8_t*>(vector.ptr(4));
+    if (first == nullptr) return 0;
+    return static_cast<std::int32_t>(static_cast<std::uint8_t*>(vector.ptr(8)) - first) >> 4;
+}
+
+// The inlined checked index n < size on the 16-byte vector.
+void check_fake_effect_index(const Raw vector, std::int32_t n, DamageableClassReadHost& host) {
+    const auto* const first = static_cast<std::uint8_t*>(vector.ptr(4));
+    if (first == nullptr ||
+        static_cast<std::uint32_t>(n) >=
+            static_cast<std::uint32_t>((static_cast<std::uint8_t*>(vector.ptr(8)) - first) >> 4)) {
+        host.invalid_parameter_00bf6713();
+    }
+}
+
+}  // namespace
+
+void damageable_class_read_lua_fields_0087ca80(Raw desc, LuaObjectStorage* row,
+                                               DamageableClassReadHost& host) {
+    LuaObjectStorage s44, s94;
+    {   // "Name"
+        LuaObjectStorage* const got = host.lua_object_get_by_name_00b67800(row, &s44, "Name");
+        desc.at<char*>(0x54) =
+            host.native_string_duplicate_00438e40(host.lua_object_get_string_00b662b0(got));  // 0087CADA
+        host.lua_object_destruct_00b67700(&s44);
+    }
+    host.lua_object_get_by_name_00b67800(row, &s94, "Unique");                            // 0087CAFC
+    desc.at<std::uint8_t>(0x34) =
+        (host.lua_object_is_boolean_00b66000(&s94) && host.lua_object_get_boolean_00b66250(&s94)) ? 1 : 0;
+    read_string_field(row, "Mesh", reinterpret_cast<NativeStringImage*>(desc.field(0x38)), host);     // 0087CB44
+    read_string_field(row, "Comment", reinterpret_cast<NativeStringImage*>(desc.field(0x58)), host);  // 0087CBDB
+    {
+        LuaObjectStorage* got = host.lua_object_get_by_name_00b67800(row, &s44, "HP");
+        desc.at<float>(0x48) = host.lua_object_get_float_or_default_00b66330(got, f32(0x42C80000u));  // 0087CC98
+        host.lua_object_destruct_00b67700(&s44);
+        got = host.lua_object_get_by_name_00b67800(row, &s44, "Armour");
+        desc.at<float>(0x4C) = host.lua_object_get_float_or_default_00b66330(got, 0.0f);    // 0087CCCE
+        host.lua_object_destruct_00b67700(&s44);
+        got = host.lua_object_get_by_name_00b67800(row, &s44, "ExplosionType");
+        const bool is_integer = host.lua_object_is_integer_00b66a60(got);                  // 0087CCFD
+        host.lua_object_destruct_00b67700(&s44);
+        if (is_integer) {
+            got = host.lua_object_get_by_name_00b67800(row, &s44, "ExplosionType");
+            desc.at<std::int32_t>(0x40) = host.lua_object_get_integer_00b66290(got);        // 0087CD3D
+            host.lua_object_destruct_00b67700(&s44);
+        }
+    }
+
+    host.lua_object_get_by_name_00b67800(row, &s44, "Damage");                            // 0087CD59
+    if (host.lua_object_is_table_00b661b0(&s44)) {
+        LuaObjectStorage sections;                                                         // ESP+80h
+        host.lua_object_get_by_name_00b67800(&s44, &sections, "Sections");
+        if (host.lua_object_is_table_00b661b0(&sections)) {
+            LuaObjectStorage key, value;                                                   // ESP+58h, ESP+2Ch
+            host.lua_object_construct_00b65f50(&key);
+            host.lua_object_construct_00b65f50(&value);
+            host.lua_object_iterate_first_00b67080(&sections, &key, &value);
+            while (!host.lua_object_iteration_ended_00b66420(&sections, &key)) {
+                alignas(4) std::uint8_t temp_bytes[0x30];                                  // ESP+A8h
+                const Raw temp{temp_bytes};
+                host.memset_00bf79f0(temp_bytes, 0, 0x30);                                 // 0087CE0D
+                temp.at<float>(0x28) = f32(0x41200000u);                                   // 00CE38B8 10.0
+                temp.at<float>(0x2C) = f32(0x41200000u);
+                void* const vector = desc.field(0x18);
+                host.damageable_section_vector_append_0087c870(vector, temp_bytes);        // 0087CE48
+                temp.at<std::uint32_t>(0) = 0x00D0DF04u;                                   // inlined destructor
+                drop_temp_handle(temp.at<EffectHandle>(0x24), host);                       // 0087CE6F
+
+                const Raw vec{static_cast<std::uint8_t*>(vector)};
+                const auto first = reinterpret_cast<std::uintptr_t>(vec.ptr(4));
+                const auto last = reinterpret_cast<std::uintptr_t>(vec.ptr(8));
+                if (first > last) host.invalid_parameter_00bf6713();                       // 0087CE90
+                const std::uintptr_t back = last - 0x30;
+                if (back > reinterpret_cast<std::uintptr_t>(vec.ptr(8)) ||
+                    back < reinterpret_cast<std::uintptr_t>(vec.ptr(4))) {
+                    host.invalid_parameter_00bf6713();                                     // 0087CEA9
+                }
+                if (back >= reinterpret_cast<std::uintptr_t>(vec.ptr(8))) host.invalid_parameter_00bf6713();  // 0087CEB6
+                const Raw record{reinterpret_cast<std::uint8_t*>(back)};
+
+                NativeStringImage category;                                                // ESP+18h
+                LuaObjectStorage field;                                                    // ESP+E0h / ESP+6Ch
+                LuaObjectStorage* got = host.lua_object_get_by_name_00b67800(&value, &field, "MshCategory");
+                copy_c_string(category, host.lua_object_get_string_00b662b0(got), host);   // 0087CF02
+                host.lua_object_destruct_00b67700(&field);
+
+                got = host.lua_object_get_by_name_00b67800(&value, &field, "Index");
+                record.at<std::int32_t>(8) = host.ftol_00bf7420(host.lua_object_get_number_00b66270(got));  // 0087CF60
+                host.lua_object_destruct_00b67700(&field);
+
+                const char* const category_text =
+                    category.data != nullptr ? category.data
+                                             : static_cast<const char*>(host.global_address(0x00F878E0));
+                record.at<std::int32_t>(4) = host.mesh_category_from_name_007149d0(category_text);  // 0087CF8E
+
+                got = host.lua_object_get_by_name_00b67800(&value, &field, "FireEfx");
+                {
+                    EffectHandle handle = nullptr;                                         // ESP+28h
+                    const std::int32_t id = host.lua_object_get_integer_or_default_00b66380(got, 0);
+                    EffectHandle* const out = host.effect_handle_acquire_00870cd0(&handle, id, 1);  // 0087CFAF
+                    assign_handle(&record.at<EffectHandle>(0x24), *out, host);
+                    drop_temp_handle(handle, host);                                        // 0087CFF0
+                }
+                host.lua_object_destruct_00b67700(&field);
+
+                if (record.at<EffectHandle>(0x24) == nullptr) {                            // 0087D031
+                    NativeStringImage big_fire;                                            // ESP+10h
+                    host.native_string_assign_0041e870(&big_fire, "BigFire");
+                    EffectHandle handle = nullptr;                                         // ESP+20h
+                    EffectHandle* const out =
+                        host.effect_handle_acquire_by_name_00871ba0(&handle, &big_fire, 1);  // 0087D063
+                    assign_handle(&record.at<EffectHandle>(0x24), *out, host);
+                    drop_temp_handle(handle, host);
+                    release_native_string(big_fire, host);                                 // 0087D0D4
+                }
+
+                got = host.lua_object_get_by_name_00b67800(&value, &field, "FailureChance");
+                record.at<float>(0x28) =
+                    host.lua_object_get_float_or_default_00b66330(got, f32(0xC2C80000u)) / f32(0x42C80000u);  // 0087D127
+                host.lua_object_destruct_00b67700(&field);
+                got = host.lua_object_get_by_name_00b67800(&value, &field, "FailureDamageThreshold");
+                record.at<float>(0x2C) = host.lua_object_get_float_or_default_00b66330(got, f32(0xBF800000u));  // 0087D16D
+                host.lua_object_destruct_00b67700(&field);
+
+                release_native_string(category, host);                                     // 0087D181
+                host.lua_object_iterate_next_00b67190(&sections, &key, &value);
+            }
+            host.lua_object_destruct_00b67700(&value);
+            host.lua_object_destruct_00b67700(&key);
+        }
+        host.lua_object_destruct_00b67700(&sections);                                     // 0087D1F8
+    }
+    host.lua_object_destruct_00b67700(&s44);                                              // 0087D20C
+
+    LuaObjectStorage fake;                                                                 // ESP+58h
+    host.lua_object_get_by_name_00b67800(row, &fake, "FakeExplosionEffects");
+    if (host.lua_object_is_table_00b661b0(&fake)) {
+        LuaObjectStorage entry;                                                            // ESP+2Ch
+        host.lua_object_construct_00b65f50(&entry);
+        char name[16];                                                                     // ESP+10h
+        std::int32_t i = 0;                                                                // ESP+28h
+        auto load_entry = [&]() {
+            host.sprintf_int_00bf7a6a(name, "%d", i);
+            LuaObjectStorage* const got = host.lua_object_get_by_name_00b67800(&fake, &s44, name);
+            host.lua_object_assign_00b67690(&entry, got);
+            host.lua_object_destruct_00b67700(&s44);
+        };
+        load_entry();                                                                      // 0087D26C
+        const Raw vector{desc.field(0x08)};
+        while (host.lua_object_is_table_00b661b0(&entry)) {
+            const std::int32_t n = fake_effect_count(vector);
+            host.damageable_fake_effect_vector_resize_0087c920(vector.p, static_cast<std::uint32_t>(n + 1),
+                                                                f32(0xBF800000u), -1, 0);  // 0087D2FE
+            auto element = [&]() { return Raw{static_cast<std::uint8_t*>(vector.ptr(4)) + 16 * n}; };
+            LuaObjectStorage field;                                                        // ESP+6Ch
+            LuaObjectStorage* got = host.lua_object_get_by_index_00b67720(&entry, &field, 1);
+            check_fake_effect_index(vector, n, host);
+            {
+                const Raw e = element();
+                e.at<float>(0) = static_cast<float>(host.lua_object_get_number_00b66270(got));  // 0087D34A
+            }
+            host.lua_object_destruct_00b67700(&field);
+            got = host.lua_object_get_by_index_00b67720(&entry, &field, 2);
+            check_fake_effect_index(vector, n, host);
+            {
+                const Raw e = element();
+                e.at<std::int32_t>(8) = host.lua_object_get_integer_00b66290(got);         // 0087D3A4
+            }
+            host.lua_object_destruct_00b67700(&field);
+            got = host.lua_object_get_by_index_00b67720(&entry, &field, 3);
+            check_fake_effect_index(vector, n, host);
+            {
+                const Raw e = element();
+                e.at<std::int32_t>(4) = host.lua_object_get_integer_00b66290(got);         // 0087D3FA
+            }
+            host.lua_object_destruct_00b67700(&field);
+            got = host.lua_object_get_by_index_00b67720(&entry, &field, 4);
+            {
+                EffectHandle handle = nullptr;                                             // ESP+20h
+                const std::int32_t id = host.lua_object_get_integer_00b66290(got);
+                EffectHandle* const out = host.effect_handle_acquire_00870cd0(&handle, id, 1);  // 0087D431
+                check_fake_effect_index(vector, n, host);
+                assign_handle(&element().at<EffectHandle>(0x0C), *out, host);             // 0087D45B
+                drop_temp_handle(handle, host);
+            }
+            host.lua_object_destruct_00b67700(&field);                                     // 0087D4CE
+            i = i + 1;
+            load_entry();                                                                  // 0087D4E9
+        }
+        host.lua_object_destruct_00b67700(&entry);                                        // 0087D544
+    }
+    host.lua_object_destruct_00b67700(&fake);                                             // 0087D55C
+
+    LuaObjectStorage ember;                                                                // ESP+2Ch
+    host.lua_object_get_by_name_00b67800(row, &ember, "Emberkek");
+    if (host.lua_object_is_table_00b661b0(&ember)) {
+        LuaObjectStorage key, value;                                                       // ESP+80h, ESP+58h
+        host.lua_object_construct_00b65f50(&key);
+        host.lua_object_construct_00b65f50(&value);
+        host.lua_object_iterate_first_00b67080(&ember, &key, &value);
+        void* const tree = desc.field(0x60);
+        while (!host.lua_object_iteration_ended_00b66420(&ember, &key)) {
+            NativeStringImage class_name;                                                  // ESP+20h
+            copy_c_string(class_name, host.lua_object_get_string_00b662b0(&value), host);  // 0087D618
+            const std::int32_t crew_key = host.lua_object_get_integer_00b66290(&key);      // 0087D645, ESP+18h
+            void* const soldier_class = host.soldier_class_get_or_load_004b1400(&class_name);  // 0087D652
+            std::uint8_t* const mapped = host.damageable_crew_tree_subscript_0087b750(tree, &crew_key);
+            Raw{mapped}.at<void*>(0x40) = soldier_class;                                   // 0087D665
+            release_native_string(class_name, host);
+            host.lua_object_iterate_next_00b67190(&ember, &key, &value);
+        }
+        host.lua_object_destruct_00b67700(&value);
+        host.lua_object_destruct_00b67700(&key);
+    }
+    host.lua_object_destruct_00b67700(&ember);                                            // 0087D6EF
+    host.lua_object_destruct_00b67700(&s94);                                              // 0087D706
+}
+
 }  // namespace bsp::cc13_front7

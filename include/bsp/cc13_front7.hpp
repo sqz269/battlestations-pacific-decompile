@@ -122,4 +122,119 @@ struct PowerupListsHost {
 // 0061B0F0, __fastcall(ECX = screen) RET.
 void powerup_screen_rebuild_lists_0061b0f0(Raw screen, PowerupListsHost& host);
 
+// ---------------------------------------------------------------------------
+// 0087CA80: the damageable-class descriptor's Lua field reader.
+// ---------------------------------------------------------------------------
+using cc13_sweepA::LuaObjectStorage;
+
+// The image's {length, data} string (00419CC0/00BD1510 release it to the pool).
+struct NativeStringImage {
+    std::uint32_t length;
+    char* data;
+};
+static_assert(sizeof(NativeStringImage) == 8);
+
+struct DamageableClassReadHost {
+    virtual ~DamageableClassReadHost() = default;
+    // The address of the image global at `address` (00F878E0, the empty C string).
+    virtual void* global_address(std::uint32_t address) = 0;
+
+    // --- CRT (bound) ---
+    // 00BF6713, the checked-iterator failure (_invalid_parameter_noinfo); returns here.
+    virtual void invalid_parameter_00bf6713() = 0;
+    // 00BF7680 memcpy, 00BF79F0 memset, 00BF7A6A sprintf, __cdecl.
+    virtual void memcpy_00bf7680(void* dest, const void* source, std::uint32_t bytes) = 0;
+    virtual void memset_00bf79f0(void* dest, std::int32_t value, std::uint32_t bytes) = 0;
+    virtual void sprintf_int_00bf7a6a(char* buffer, const char* format, std::int32_t value) = 0;
+    // 00BF7420, the CRT ST0 -> EAX truncation (_ftol2 family); ST0 passed as a double.
+    virtual std::int32_t ftol_00bf7420(double value) = 0;
+    // [00CE221C] InterlockedIncrement / [00CE2220] InterlockedDecrement imports.
+    virtual std::int32_t interlocked_increment_ce221c(volatile std::int32_t* count) = 0;
+    virtual std::int32_t interlocked_decrement_ce2220(volatile std::int32_t* count) = 0;
+    // The refcounted effect handle's vtable slot 0, __thiscall(ECX = handle), called
+    // when InterlockedDecrement([handle+4]) reaches zero.
+    virtual void effect_handle_vtable0(void* handle) = 0;
+
+    // --- strings ---
+    // 00438E40 BSP_NativeString_Duplicate, __fastcall(ECX = C string) -> EAX.
+    virtual char* native_string_duplicate_00438e40(const char* text) = 0;
+    // 0041DD40, __thiscall(ECX = string; length, char preserve) RET 8.
+    virtual void native_string_resize_0041dd40(NativeStringImage* string, std::uint32_t length,
+                                               char preserve) = 0;
+    // 0041E870 BSP_NativeString_Assign, __thiscall(ECX = string; const char*) RET 4 (constructs).
+    virtual void native_string_assign_0041e870(NativeStringImage* string, const char* text) = 0;
+    // 00419CC0, the sized-storage pool singleton (EAX); the call site pushes
+    // (block, length + 1, 1) before it and leaves them for 00BD1510.
+    virtual void* sized_pool_00419cc0() = 0;
+    // 00BD1510, __thiscall(ECX = pool; block, bytes, count) RET 0Ch.
+    virtual void sized_pool_return_00bd1510(void* pool, void* block, std::uint32_t bytes,
+                                            std::uint32_t count) = 0;
+
+    // --- Lua objects ---
+    // 00B67800, __thiscall(ECX = table; LuaObject* out, const char* name) RET 8 -> EAX = out.
+    virtual LuaObjectStorage* lua_object_get_by_name_00b67800(LuaObjectStorage* table,
+                                                              LuaObjectStorage* out,
+                                                              const char* name) = 0;
+    // 00B67720, __thiscall(ECX = table; LuaObject* out, int index) RET 8 -> EAX = out.
+    virtual LuaObjectStorage* lua_object_get_by_index_00b67720(LuaObjectStorage* table,
+                                                               LuaObjectStorage* out,
+                                                               std::int32_t index) = 0;
+    // 00B67700 destructor, 00B65F50 nil constructor, __thiscall(ECX = object).
+    virtual void lua_object_destruct_00b67700(LuaObjectStorage* object) = 0;
+    virtual void lua_object_construct_00b65f50(LuaObjectStorage* object) = 0;
+    // 00B67690, __thiscall(ECX = destination; const LuaObject* source) RET 4.
+    virtual void lua_object_assign_00b67690(LuaObjectStorage* destination,
+                                            const LuaObjectStorage* source) = 0;
+    // 00B66420, __thiscall(ECX = table; LuaObject* key) RET 4, AL = iteration ended.
+    virtual bool lua_object_iteration_ended_00b66420(LuaObjectStorage* table, LuaObjectStorage* key) = 0;
+    // 00B67080 / 00B67190, __thiscall(ECX = table; key*, value*) RET 8.
+    virtual void lua_object_iterate_first_00b67080(LuaObjectStorage* table, LuaObjectStorage* key,
+                                                   LuaObjectStorage* value) = 0;
+    virtual void lua_object_iterate_next_00b67190(LuaObjectStorage* table, LuaObjectStorage* key,
+                                                  LuaObjectStorage* value) = 0;
+    // Predicates and getters, __thiscall(ECX = object) RET: 00B661B0 IsTable,
+    // 00B66000 IsBoolean, 00B66250 GetBoolean, 00B66A60 IsInteger (AL);
+    // 00B662B0 GetString (EAX); 00B66290 GetInteger (EAX); 00B66270 GetNumber (ST0).
+    virtual bool lua_object_is_table_00b661b0(LuaObjectStorage* object) = 0;
+    virtual bool lua_object_is_boolean_00b66000(LuaObjectStorage* object) = 0;
+    virtual bool lua_object_get_boolean_00b66250(LuaObjectStorage* object) = 0;
+    virtual bool lua_object_is_integer_00b66a60(LuaObjectStorage* object) = 0;
+    virtual const char* lua_object_get_string_00b662b0(LuaObjectStorage* object) = 0;
+    virtual std::int32_t lua_object_get_integer_00b66290(LuaObjectStorage* object) = 0;
+    virtual double lua_object_get_number_00b66270(LuaObjectStorage* object) = 0;
+    // 00B66330, __thiscall(ECX = object; float default) RET 4 -> ST0 (a float32 spill/reload).
+    virtual float lua_object_get_float_or_default_00b66330(LuaObjectStorage* object, float fallback) = 0;
+    // 00B66380, __thiscall(ECX = object; int default) RET 4 -> EAX.
+    virtual std::int32_t lua_object_get_integer_or_default_00b66380(LuaObjectStorage* object,
+                                                                    std::int32_t fallback) = 0;
+    // 00B685C0, __thiscall(ECX = object; NativeString* out, const char* fallback) RET 8 -> EAX = out.
+    virtual NativeStringImage* lua_object_string_or_default_00b685c0(LuaObjectStorage* object,
+                                                                     NativeStringImage* out,
+                                                                     const char* fallback) = 0;
+
+    // --- game ---
+    // 007149D0 BSP_MeshCategory_FromName, __fastcall(ECX = C string) -> EAX.
+    virtual std::int32_t mesh_category_from_name_007149d0(const char* name) = 0;
+    // 00870CD0 BSP_EffectHandle_Acquire, __fastcall(ECX = out handle, EDX = id; dword) RET 4 -> EAX = out.
+    virtual void** effect_handle_acquire_00870cd0(void** out, std::int32_t id, std::uint32_t arg) = 0;
+    // 00871BA0 BSP_EffectHandle_AcquireByName, __fastcall(ECX = out, EDX = NativeString*; dword) RET 4 -> EAX = out.
+    virtual void** effect_handle_acquire_by_name_00871ba0(void** out, const NativeStringImage* name,
+                                                          std::uint32_t arg) = 0;
+    // 0087C870 BSP_DamageableSectionVector_Append, __thiscall(ECX = vector; const 30h record*) RET 4.
+    virtual void damageable_section_vector_append_0087c870(void* vector, const void* record) = 0;
+    // 0087C920, __thiscall(ECX = vector; count, 16-byte value by value) RET 14h. The image
+    // writes the value's dwords +0, +4 and +0Ch only; +8 is whatever the stack slot held.
+    virtual void damageable_fake_effect_vector_resize_0087c920(void* vector, std::uint32_t count,
+                                                                float value_0, std::int32_t value_4,
+                                                                std::int32_t value_c) = 0;
+    // 004B1400 SoldierClass_GetOrLoad, __thiscall(ECX = NativeString* name) -> EAX.
+    virtual void* soldier_class_get_or_load_004b1400(NativeStringImage* name) = 0;
+    // 0087B750 STL_DamageableCrewTree_Subscript, __thiscall(ECX = tree; const int* key) RET 4 -> EAX.
+    virtual std::uint8_t* damageable_crew_tree_subscript_0087b750(void* tree, const std::int32_t* key) = 0;
+};
+
+// 0087CA80, __thiscall(ECX = damageable-class descriptor; LuaObject* row) RET 4.
+void damageable_class_read_lua_fields_0087ca80(Raw descriptor, LuaObjectStorage* row,
+                                               DamageableClassReadHost& host);
+
 }  // namespace bsp::cc13_front7
