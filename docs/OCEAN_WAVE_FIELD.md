@@ -3319,3 +3319,51 @@ input) or a ground speed hold that does not settle exactly (idle thrust / wheel 
   `!(v > lo) || !(hi > v)` without a switch: identical for every ordered value; no run was checked for a NaN band (unpaired). 009A17D0
   zeroes the whole +26Ch dword (009A17E9); the host carries only bit 4 (`ga_flag_26c_4`), and no other bit is
   modelled or read, so nothing to bind.
+
+**80, the early-edge USN04 move per entity (for lua68's re-time).** `units` in pair_diff is `summary mission
+world units=`, the units-host slot count at the end, so it counts every unit ever spawned. ON (`p20d_ec_usn04.log`)
+lacks 39 rows, all of phase 2: Zuiho-class01 (Shoho), Takao-class01, Mogami-class01, moviefisher, and their and
+the US strike squadrons (Zuiho_sqn05/08/10/12/14, Yorktown_sqn06/07/09/11/13). Deaths are the same set except
+Yorktown-class01_sqn04|.-II, which dies at 194.61 s OFF and survives ON. Mechanism, in usn_19_coralus.lua:569-586:
+when the IJN bomber list is empty, the per-tick check calls `luaObj_Completed("primary",1)` and
+`Blackout(true, "luaMoveToPh2", 3)` on every pass while the condition holds. ON, the faster fighters clear the
+bombers by 195.01 s, so the check re-arms Blackout every 2.5 s: 135 arms, 141 Blackout calls against 35 OFF. Each
+arm resets remaining to 3.0 (005B9BA0, `src/mission_blackout.cpp`), so luaMoveToPh2 never runs. OFF clears them at
+344.99 s; the next 80 s bomber wave refills the list, the re-arms stop, and GenerateObject("Zuiho-class01") runs at
+about 425 s. Planes that stopped firing are the phase-2 squadrons that never spawned (shots 13554 -> 9252). In
+phase 1 the US CAP fires less and the ships fire more: Lexington_sqn01|.-II 1153 -> 250, Yorktown_sqn04|.-II
+828 -> 0 (it never engages), Yorktown_sqn04|.-III 1045 -> 220, the A6M escorts about 30-40 % fewer; Northampton-class03
+310 -> 804, Lexington 693 -> 865. The stall is a script knife edge on the faithful Blackout re-arm.
+
+## 81. Bot-task constructor seeds; carrier speed in recovery (cc9-physics20, 2026-10-18)
+
+**`kBotTaskCtorSeedsBound` ON.** The task base constructors 0099C6F0 / 0099C8B0 (every bot-task constructor
+calls one) seed task+308h = -U(0, 1) on stream 1 (0099C765, FCHS, FSTP 0099C76C), +3E8h = U(-1, 0) on stream 0
+(0099C7BA, FSTP 0099C7BF), and +3ECh = -1.0 (0099C7D3). The follow state 009C2980 seeds +74h = -U(0, 0.6), the
+dogfight maneuver 009A84E0 seeds +2Ch = -U(0, 1) (009A853A), and the torpedo attackrun 009D06D0 seeds
++1Ch = -U(0, 1). Before this switch the host kept per-unit values across tasks: the gunfire timers 0 / 0, the
+follow +74h 0, and the maneuver and torpedo countdowns at the midpoint -0.5. True: each host task install draws
+them from keyed streams (`#tb308`, `#tb3e8`, `#tb74`, `#tbmv2c`, `#tbt1c`). Land and retreat reuse their existing
+`#l74` / `#rf` follow draws. Without BSP_GUNNERY_RNG_STREAMS the draws share the host's one stream. That is not the
+image's stream 0 / 1 order, which would need the image's global draw sequence. Not hosted, recorded:
+- task+308h is seeded but not read. 009998A0's accumulator (00999912-009999BB) runs 0099B740 only when
+  dt >= +308h, then adds +304h - dt. The host runs 0099B740 on every think.
+- The depth-charge attackrun 009A36A0 +1Ch has no host countdown field.
+- The dogfight attackrun 009A70E0 +1Ch is not reached, because the mode stays 1.
+
+Pairs, exes built at c137d931e (`local\p20f_off`, `local\p20f_seed`):
+- JM02, 24000 fr (`p20f_seed_jm02.log` vs `p20f_off_jm02.log`): pair_diff MOVED with 48 seeds. Deaths 39 / 39,
+  with 3 rows swapped. Hits 2842 -> 3251, shots 56796 -> 60458. The scripted Force Z fail moves 741.19 -> 829.17 s.
+- USN01 `usn01_p8_u1_i.txt`, 30000 fr (`p20f_seed_usn01.log` vs `p20f_off_usn01.log`): MOVED with 77 seeds. Deaths
+  36 / 36 with 22 rows shifted by about 0.1 s. The hangar / stow log lines go from 18 to 21.
+
+Flipped by mechanism: these are the bytes' values, and they are exercised on both rows.
+
+**Carrier speed during recovery (read-only).** USN01's Enterprise runs at the scene's reference speed: the ship
+pre-step input logs `reference_speed=16.7194405` (log line 1935). The ship AI is in `movetopos / navigate` at
+throttle 1.0 through the park (ship ai step 8610-8630; d32c falls 8.31 m per 0.5 s). usn_1_marshall.lua sets no
+speed for the CV group (lines 304-320). In the image, the bounded search found nothing that ties air ops to a ship's
+speed: no tuning string (the "wind" / "Recover" / "Landing" strings are landing-craft and weather keys), and the
+callers of 006CE610 / 006C0840 / 006C0750 are all plane or air-ops code. So no image cap under 12.5 m/s was found,
+and the deck term stays OFF. Still open: whether the image's ground speed hold under +2B0h = 1 / +2D8h = 1 settles
+exactly (the throttle and wheel-brake law of a parented plane), and the ConTBD1 final at 51 m/s.
