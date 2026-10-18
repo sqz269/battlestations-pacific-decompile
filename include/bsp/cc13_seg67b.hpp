@@ -83,6 +83,8 @@ public:
     virtual std::uintptr_t robots_table_00f8a30c() = 0;
     // 00F876A4: the float clock the timed condition subtracts.
     virtual float global_clock_00f876a4() = 0;
+// 00F87574: the static zero vector (three floats; set by the static initialisers).
+virtual const float* zero_vector_00f87574() = 0;
 
     // ---- other packets' functions ----
     // 00419CC0 BSP_SizedStoragePool_GetSingleton: no arguments, EAX.
@@ -209,6 +211,16 @@ public:
     virtual void ship_ai_attackmove_ring_construct_009e5530(void* nested, void* owner) = 0;
     // 009DBDB0 BSP_ShipAiPathPlan_DestructBody: __thiscall(ECX = path plan), RET.
     virtual void ship_ai_path_plan_destruct_009dbdb0(void* plan) = 0;
+    // 0072BBD0 BSP_GunBot_ConstructBase: __thiscall(ECX = bot, class descriptor), RET 4.
+    virtual void gun_bot_construct_base_0072bbd0(void* bot, std::uint32_t descriptor) = 0;
+    // 008FBC80 BSP_GunBot_Attach: __thiscall(ECX = bot, tick node), RET 4.
+    virtual void gun_bot_attach_008fbc80(void* bot, void* node) = 0;
+    // 009E4330 BSP_ShipAi_NavigationBlockConstruct: __thiscall(ECX = block, ship), RET 4.
+    virtual void ship_ai_nav_block_construct_009e4330(void* block, void* ship) = 0;
+    // 00424C40 BSP_GameSettings_GetSingleton: cdecl, EAX = the settings record.
+    virtual void* game_settings_singleton_00424c40() = 0;
+    // 00BD1860 BSP_CriticalSection_Create: cdecl, EAX = the new lock handle.
+    virtual std::uint32_t critical_section_create_00bd1860() = 0;
     // object->vtable[0](), no stack arguments, EAX.
     virtual void* object_vcall_00(void* object) = 0;
     // 004BEF00: __thiscall(ECX = observer, subject), RET 4: zeroes the observer and
@@ -937,5 +949,13 @@ void* ship_ai_attackmove_approach_construct_009e5ca0(Cc13Seg67bHost& host, void*
                                                      void* owner);
 // 009E8450: __thiscall(ECX = attackmove state, owner), RET 4, EAX = state.
 void* ship_ai_attackmove_construct_009e8450(Cc13Seg67bHost& host, void* s, void* owner);
+// 009F1160: __thiscall(ECX = brain, ship), RET 4, EAX = brain: the brain record.
+void* ship_ai_brain_record_construct_009f1160(Cc13Seg67bHost& host, void* brain, void* ship);
+// 009F39C0: __thiscall(ECX = brain (ai+58h), owner ship), RET 4, EAX = brain.
+void* ship_ai_brain_construct_009f39c0(Cc13Seg67bHost& host, void* brain, void* ship);
+// 009F3BA0: __thiscall(ECX = ship AI, ship), RET 4, EAX = ai.
+void* ship_ai_gun_bot_construct_009f3ba0(Cc13Seg67bHost& host, void* ai, void* ship);
+// 009F3F20: __fastcall(ECX = ship), RET, EAX = the new 2268h-byte ship AI or null.
+void* ship_ai_allocate_brain_009f3f20(Cc13Seg67bHost& host, void* ship);
 
 }  // namespace bsp

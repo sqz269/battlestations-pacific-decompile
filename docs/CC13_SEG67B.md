@@ -551,6 +551,16 @@ Three STL instantiations are tagged library-only after their callees were read:
 - 009E7F60, the list's _Buynode;
 - 009E8EF0, the vector's _Insert_n.
 
+### 3.43 The ship-AI allocation chain (packet cc13-seg67C)
+
+The chain 009F3F20 -> 009F3BA0 -> 009F39C0 -> 009F1160 is now four bodies:
+- 009F3F20 allocates 2268h bytes (009F3F3E) and runs 009F3BA0 on them (009F3F59); a failed allocation returns 0.
+- 009F3BA0 runs the gun-bot base 0072BBD0, builds the brain at ai+58h through 009F39C0 (009F3BE5), installs the ship-AI vtables, makes the brain's `cruise` state current (ai+2264h = ai+0BC8h, its vtable+4h at 009F3C27), and attaches through 008FBC80 to ship+310h (009F3C43).
+- 009F39C0 runs 009F1160, builds the state registry at brain+0B5Ch, the seven inline state objects, attackmove (009E8450) and sub_attack (009E4F90), then registers nine names in this order: "cruise", "stop", "follow", "land", "movetopos", "moveonpath", "attackmove", "sub_attack", "kamikaze_attack".
+- 009F1160 builds the navigation block (009E4330, hooked), the unit references, the submarine slot +0AB4h (`ship->vtable[+5Ch](8) ? ship : 0`) and its 4-byte holder at +0AC4h, the defaults, then seven stream-1 draws (009F12CD, 009F12F1, 009F1321, 009F1351, 009F1385, 009F13B9, 009F13EB) and the critical section at +4h.
+
+Whole bodies are allowed because cc9 models these constructors only inline (`seed_brain_draws_009f1160` with keyed stand-ins, the follow and land defaults, the initial cruise state). Its seven draws match the image's order and ranges; the two missing state-constructor draws are the finding of 3.42.
+
 ## 4. Ledger-only records (packet cc13-seg67C)
 
 | Address | Host body | Result |
@@ -589,3 +599,9 @@ Three STL instantiations are tagged library-only after their callees were read:
 | 009E6240 | `advance_traffic_record_009e6240` | matches; the U(2, 3) draw is the host's labelled keyed stand-in |
 | 009E8360 | `TrafficRecord{}` in `insert_traffic_record` | matches the read fields (timer -1.0, weight 1.0) |
 | 009E99A0 / 009E9AE0 | `tubes_min_reload` | matches; the host's operational test is the same constant for every tube |
+| 009E9BC0 | `torpedo_bot_range_00901ba0`'s list pick | matches |
+| 009EAA10 | `ship_ai_sub_attack_tick_009eaa90` (src/ship_ai_sub_attack.cpp) | matches; NaN arm differs (FCOMI JB takes cd - dt), unreachable with finite timers |
+| 009F30F0 | `ship_ai_approach_enter_009f3220` | matches; sixty keyed draws stand in for the stream-1 U(0, 2) at 009F314E |
+| 009F3D00 | `select_state_for_command_009f3d00` | matches |
+| 009F59F0 | `auto_target_owner_can_engage_009f59f0` (src/bot_fire_target.cpp) | matches |
+| 009F5D30 | `auto_target_scan_009f5d30` (src/bot_fire_target.cpp) | matches; the +1D4h skip is carried by the gunnery host's candidate build |

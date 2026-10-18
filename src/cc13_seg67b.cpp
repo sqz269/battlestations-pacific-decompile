@@ -5059,4 +5059,225 @@ void* ship_ai_attackmove_construct_009e8450(Cc13Seg67bHost& host, void* s, void*
     return s;
 }
 
+namespace {
+constexpr std::uint32_t kBrainVtable_00d21a40 = 0x00D21A40u;
+constexpr std::uint32_t kBrainRegistryVtable_00d21a3c = 0x00D21A3Cu;
+constexpr std::uint32_t kBrainCruiseVtable_00d21598 = 0x00D21598u;
+constexpr std::uint32_t kBrainStopVtable_00d215c8 = 0x00D215C8u;
+constexpr std::uint32_t kBrainFollowVtable_00d215f8 = 0x00D215F8u;
+constexpr std::uint32_t kBrainLandVtable_00d21658 = 0x00D21658u;
+constexpr std::uint32_t kBrainMoveToPosVtable_00d21628 = 0x00D21628u;
+constexpr std::uint32_t kBrainMoveOnPathVtable_00d21688 = 0x00D21688u;
+constexpr std::uint32_t kBrainKamikazeVtable_00d216b8 = 0x00D216B8u;
+constexpr float kMinus99_00cf5bfc = -99.0f;
+constexpr std::uint32_t kStrCruise_00cfb568 = 0x00CFB568u;
+constexpr std::uint32_t kStrStop_00cfb5b8 = 0x00CFB5B8u;
+constexpr std::uint32_t kStrFollow_00cfb52c = 0x00CFB52Cu;
+constexpr std::uint32_t kStrLand_00cfb614 = 0x00CFB614u;
+constexpr std::uint32_t kStrMoveToPos_00d21ab8 = 0x00D21AB8u;
+constexpr std::uint32_t kStrMoveOnPath_00cfb654 = 0x00CFB654u;
+constexpr std::uint32_t kStrAttackMove_00cecca8 = 0x00CECCA8u;
+constexpr std::uint32_t kStrSubAttack_00d21aac = 0x00D21AACu;
+constexpr std::uint32_t kStrKamikazeAttack_00d21a9c = 0x00D21A9Cu;
+constexpr std::uint32_t kGunBotAiVtable_00d21808 = 0x00D21808u;
+constexpr std::uint32_t kGunBotAiObserverVtable_00d217f0 = 0x00D217F0u;
+constexpr std::uint32_t kShipAiVtable_00d21ae8 = 0x00D21AE8u;
+constexpr std::uint32_t kShipAiObserverVtable_00d21acc = 0x00D21ACCu;
+constexpr std::uint32_t kShipAiBrainVtable_00d21ac8 = 0x00D21AC8u;
+constexpr std::uint32_t kShipAiBrainRegistryVtable_00d21ac4 = 0x00D21AC4u;
+constexpr std::uint32_t kShipAiSize_2268 = 0x2268u;
+constexpr std::uint32_t kBrainRecordVtable_00d21990 = 0x00D21990u;
+constexpr std::uint32_t kBrainRecordAf8Vtable_00d21898 = 0x00D21898u;
+}  // namespace
+
+// 009F1160 (009F1160-009F1413). EH frame 00CB0B65. The brain record r:
+// [r] = 00D21990; 009E4330(r+8h, ship) (009F118D); r+AA8h = ship, r+AACh = [ship+538h],
+// r+AB0h = [ship+73Ch]; r+AB4h = ship->vtable[+5Ch](8) ? ship : 0 (009F11BF-009F11C9);
+// r+AB8h = [ship+738h]; r+AC4h = r+AB4h ? new(4) holding r+AB4h (null if the
+// allocation fails) : 0 (009F11DB-009F11F7). Defaults (009F11FD-009F12C7): byte +AC8h
+// = 0; +AD0h..+AD8h, +AE0h..+AE8h = 0; +AF0h = 1.0; +AF4h = 3; +AFCh..+B04h, +B0Ch = 0;
+// byte +B08h = 1; +AF8h = 00D21898; +B20h, +B24h = 0; byte +B28h = 1; +B2Ch..+B34h =
+// the zero vector 00F87574; byte +B38h = 0.
+// RNG, stream 1, seven draws in this order: B3C = U(1, 2.0 [00CE3958]) (009F12CD,
+// spilled to a float and reloaded); B40 = -U(0, B3C) (009F12F1); B48 = -U(0, 1)
+// (009F1321); B50 = -U(0, 1) (009F1351); B58 = -U(0, 2) (009F1385); B44 = U(s+1ECh,
+// s+1F0h) (009F13B9); B4C = U(s+190h, s+194h) (009F13EB), s = 00424C40 (each range
+// reads the singleton twice; hi first). B44 = 1.0, B4C = 1.0 and B54 = 2.0 are stored
+// between the draws (B44 and B4C then overwritten). r+4h = 00BD1860() (009F13FF).
+// RET 4, EAX = r.
+// Whole body allowed: cc9 models only the seven draws, inline, with keyed per-name
+// stand-ins (game_hosts_ship_ai.cpp, seed_brain_draws_009f1160).
+// UNCERTAINTY: EH unwinding not modelled. The x87 draws pass through float stores; the
+// 24-bit model is exact here (53-bit would differ only inside 00BD2F10).
+void* ship_ai_brain_record_construct_009f1160(Cc13Seg67bHost& host, void* r, void* ship) {
+    at<std::uint32_t>(r, 0x000) = kBrainRecordVtable_00d21990;
+    host.ship_ai_nav_block_construct_009e4330(ptr(r, 0x008), ship);
+    at<std::uintptr_t>(r, 0xAA8) = reinterpret_cast<std::uintptr_t>(ship);
+    at<std::uint32_t>(r, 0xAAC) = at<std::uint32_t>(ship, 0x538);
+    at<std::uint32_t>(r, 0xAB0) = at<std::uint32_t>(ship, 0x73C);
+    const bool submarine = host.object_vcall_5c(ship, 8);
+    const std::uintptr_t sub = submarine ? reinterpret_cast<std::uintptr_t>(ship) : 0u;
+    at<std::uintptr_t>(r, 0xAB4) = sub;
+    at<std::uint32_t>(r, 0xAB8) = at<std::uint32_t>(ship, 0x738);
+    std::uintptr_t holder = 0;
+    if (sub != 0) {
+        void* const cell = host.operator_new_00bf681b(4);
+        if (cell != nullptr) {
+            at<std::uintptr_t>(cell, 0) = sub;
+            holder = reinterpret_cast<std::uintptr_t>(cell);
+        }
+    }
+    at<std::uintptr_t>(r, 0xAC4) = holder;
+    at<std::uint8_t>(r, 0xAC8) = 0;
+    at<std::uint32_t>(r, 0xAD0) = 0;
+    at<std::uint32_t>(r, 0xAD4) = 0;
+    at<std::uint32_t>(r, 0xAD8) = 0;
+    at<std::uint32_t>(r, 0xAE0) = 0;
+    at<std::uint32_t>(r, 0xAE4) = 0;
+    at<std::uint32_t>(r, 0xAE8) = 0;
+    at<float>(r, 0xAF0) = kOne_00d7a24c;
+    at<std::uint32_t>(r, 0xAF4) = 3;
+    at<std::uint32_t>(r, 0xAFC) = 0;
+    at<std::uint32_t>(r, 0xB00) = 0;
+    at<std::uint32_t>(r, 0xB04) = 0;
+    at<std::uint32_t>(r, 0xB0C) = 0;
+    at<std::uint8_t>(r, 0xB08) = 1;
+    at<std::uint32_t>(r, 0xAF8) = kBrainRecordAf8Vtable_00d21898;
+    at<std::uint32_t>(r, 0xB20) = 0;
+    at<std::uint32_t>(r, 0xB24) = 0;
+    at<std::uint8_t>(r, 0xB28) = 1;
+    const float* const zero = host.zero_vector_00f87574();
+    at<float>(r, 0xB2C) = zero[0];
+    at<float>(r, 0xB30) = zero[1];
+    at<float>(r, 0xB34) = zero[2];
+    at<std::uint8_t>(r, 0xB38) = 0;
+    const float b3c = host.random_uniform_00bd2f10(1, 1.0f, kTwo_00ce3958);
+    at<float>(r, 0xB3C) = b3c;
+    at<float>(r, 0xB40) = -host.random_uniform_00bd2f10(1, 0.0f, b3c);
+    at<float>(r, 0xB44) = kOne_00d7a24c;
+    at<float>(r, 0xB48) = -host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    at<float>(r, 0xB4C) = kOne_00d7a24c;
+    at<float>(r, 0xB50) = -host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    at<float>(r, 0xB54) = kTwo_00ce3958;
+    at<float>(r, 0xB58) = -host.random_uniform_00bd2f10(1, 0.0f, kTwo_00ce3958);
+    {
+        void* const hi_settings = host.game_settings_singleton_00424c40();
+        void* const lo_settings = host.game_settings_singleton_00424c40();
+        at<float>(r, 0xB44) = host.random_uniform_00bd2f10(
+            1, at<float>(lo_settings, 0x1EC), at<float>(hi_settings, 0x1F0));
+    }
+    {
+        void* const hi_settings = host.game_settings_singleton_00424c40();
+        void* const lo_settings = host.game_settings_singleton_00424c40();
+        at<float>(r, 0xB4C) = host.random_uniform_00bd2f10(
+            1, at<float>(lo_settings, 0x190), at<float>(hi_settings, 0x194));
+    }
+    at<std::uint32_t>(r, 0x004) = host.critical_section_create_00bd1860();
+    return r;
+}
+
+// 009F39C0 (009F39C0-009F3B97). EH frame 00CB0C64. The brain b (ai+58h):
+// 009F1160(b, ship) (009F39E5); 00411E20(b+B5Ch) (009F39FA); [b] = 00D21A40,
+// [b+B5Ch] = 00D21A3C. The state objects, each with owner b at +4h: cruise +B70h
+// (00D21598, +B78h = +B7Ch = -99.0 [00CF5BFC]), stop +B80h (00D215C8), follow +B8Ch
+// (00D215F8; byte +BB8h = 1, byte +B94h = 0), land +BE0h (00D21658; +BECh = 1.0
+// [00D7A24C], bytes +BF0h, +BF1h = 0), movetopos +C04h (00D21628), moveonpath +C0Ch
+// (00D21688; byte +C14h = 0) (009F3A07-009F3A9F); 009E8450(b+C18h, b) (009F3AB2);
+// 009E4F90(b+2124h, b) (009F3AC3); kamikaze_attack +21FCh (00D216B8; byte +2204h = 0).
+// 00411E70(b+B5Ch) registers, in order: "cruise", "stop", "follow", "land", "movetopos",
+// "moveonpath", "attackmove", "sub_attack", "kamikaze_attack" (009F3AEC-009F3B7E).
+// RET 4, EAX = b.
+// RNG, stream 1, in order: 009F1160's seven, 009E8450's one (after 009E5530's), then
+// 009E4F90's one, for every ship (no kind gate).
+// Whole body allowed: cc9 models the construction inline (game_hosts_ship_ai.cpp,
+// seed_brain_draws_009f1160 with keyed per-name stand-ins, and the follow and land
+// state defaults); it cites this constructor's stores.
+// UNCERTAINTY: EH unwinding not modelled. The state objects' unwritten fields (cruise
+// +B74h, land +BE8h, follow +B98h..+BB7h) are left as the allocation held them.
+void* ship_ai_brain_construct_009f39c0(Cc13Seg67bHost& host, void* b, void* ship) {
+    const std::uintptr_t self = reinterpret_cast<std::uintptr_t>(b);
+    ship_ai_brain_record_construct_009f1160(host, b, ship);
+    void* const registry = ptr(b, 0xB5C);
+    host.bot_state_registry_construct_00411e20(registry);
+    at<std::uint32_t>(b, 0x000) = kBrainVtable_00d21a40;
+    at<std::uint32_t>(b, 0xB5C) = kBrainRegistryVtable_00d21a3c;
+    void* const cruise = ptr(b, 0xB70);
+    at<std::uintptr_t>(cruise, 0x04) = self;
+    at<std::uint32_t>(cruise, 0x00) = kBrainCruiseVtable_00d21598;
+    at<float>(cruise, 0x08) = kMinus99_00cf5bfc;
+    at<float>(cruise, 0x0C) = kMinus99_00cf5bfc;
+    at<std::uintptr_t>(b, 0xB84) = self;
+    at<std::uint32_t>(b, 0xB80) = kBrainStopVtable_00d215c8;
+    at<std::uintptr_t>(b, 0xB90) = self;
+    at<std::uint32_t>(b, 0xB8C) = kBrainFollowVtable_00d215f8;
+    at<std::uint8_t>(b, 0xBB8) = 1;
+    at<std::uint8_t>(b, 0xB94) = 0;
+    void* const land = ptr(b, 0xBE0);
+    at<std::uintptr_t>(land, 0x04) = self;
+    at<std::uint32_t>(land, 0x00) = kBrainLandVtable_00d21658;
+    at<float>(land, 0x0C) = kOne_00d7a24c;
+    at<std::uint8_t>(land, 0x10) = 0;
+    at<std::uint8_t>(land, 0x11) = 0;
+    at<std::uintptr_t>(b, 0xC08) = self;
+    at<std::uint32_t>(b, 0xC04) = kBrainMoveToPosVtable_00d21628;
+    at<std::uintptr_t>(b, 0xC10) = self;
+    at<std::uint32_t>(b, 0xC0C) = kBrainMoveOnPathVtable_00d21688;
+    at<std::uint8_t>(b, 0xC14) = 0;
+    ship_ai_attackmove_construct_009e8450(host, ptr(b, 0xC18), b);
+    ship_ai_sub_attack_construct_009e4f90(host, ptr(b, 0x2124), b);
+    at<std::uintptr_t>(b, 0x2200) = self;
+    at<std::uint32_t>(b, 0x21FC) = kBrainKamikazeVtable_00d216b8;
+    at<std::uint8_t>(b, 0x2204) = 0;
+    host.state_registry_add_00411e70(registry, kStrCruise_00cfb568, cruise);
+    host.state_registry_add_00411e70(registry, kStrStop_00cfb5b8, ptr(b, 0xB80));
+    host.state_registry_add_00411e70(registry, kStrFollow_00cfb52c, ptr(b, 0xB8C));
+    host.state_registry_add_00411e70(registry, kStrLand_00cfb614, land);
+    host.state_registry_add_00411e70(registry, kStrMoveToPos_00d21ab8, ptr(b, 0xC04));
+    host.state_registry_add_00411e70(registry, kStrMoveOnPath_00cfb654, ptr(b, 0xC0C));
+    host.state_registry_add_00411e70(registry, kStrAttackMove_00cecca8, ptr(b, 0xC18));
+    host.state_registry_add_00411e70(registry, kStrSubAttack_00d21aac, ptr(b, 0x2124));
+    host.state_registry_add_00411e70(registry, kStrKamikazeAttack_00d21a9c, ptr(b, 0x21FC));
+    return b;
+}
+
+// 009F3BA0 (009F3BA0-009F3C6E). EH frame 00CB0C91. 0072BBD0(ai, 0) (009F3BC1);
+// [ai] = 00D21808, [ai+1Ch] = 00D217F0; 009F39C0(ai+58h, ship) (009F3BE5); [ai] =
+// 00D21AE8, [ai+1Ch] = 00D21ACC, [ai+58h] = 00D21AC8, [ai+BB4h] = 00D21AC4; ai+2260h =
+// 00D05704, ai+2264h = &ai+BC8h (the brain's cruise state), then its vtable[4]
+// (009F3C0D-009F3C27); byte ai+11h = 1; 008FBC80(ai, ship ? ship+310h : 0)
+// (009F3C43); ai+B18h = ai+B14h = 0.0 (009F3C50, 009F3C58). RET 4, EAX = ai.
+// Whole body allowed: cc9 models the initial cruise state inline
+// (game_hosts_ship_ai.cpp, active_state_ai_offset under kShipAiInitialCruiseStateBound).
+// UNCERTAINTY: EH unwinding not modelled.
+void* ship_ai_gun_bot_construct_009f3ba0(Cc13Seg67bHost& host, void* ai, void* ship) {
+    host.gun_bot_construct_base_0072bbd0(ai, 0);
+    at<std::uint32_t>(ai, 0x00) = kGunBotAiVtable_00d21808;
+    at<std::uint32_t>(ai, 0x1C) = kGunBotAiObserverVtable_00d217f0;
+    ship_ai_brain_construct_009f39c0(host, ptr(ai, 0x58), ship);
+    at<std::uint32_t>(ai, 0x00) = kShipAiVtable_00d21ae8;
+    at<std::uint32_t>(ai, 0x1C) = kShipAiObserverVtable_00d21acc;
+    at<std::uint32_t>(ai, 0x58) = kShipAiBrainVtable_00d21ac8;
+    at<std::uint32_t>(ai, 0xBB4) = kShipAiBrainRegistryVtable_00d21ac4;
+    void* const cruise = ptr(ai, 0xBC8);
+    at<std::uint32_t>(ai, 0x2260) = kBotTaskSubVtable30C;
+    at<std::uintptr_t>(ai, 0x2264) = reinterpret_cast<std::uintptr_t>(cruise);
+    host.state_vcall_04_enter(cruise);
+    at<std::uint8_t>(ai, 0x11) = 1;
+    host.gun_bot_attach_008fbc80(ai, ship != nullptr ? ptr(ship, 0x310) : nullptr);
+    at<float>(ai, 0xB18) = 0.0f;
+    at<float>(ai, 0xB14) = 0.0f;
+    return ai;
+}
+
+// 009F3F20 (009F3F20-009F3F7F). EH frame 00CB0CEB. operator new(2268h) (009F3F3E);
+// null -> EAX = 0; else 009F3BA0(t, ship) (009F3F59) and EAX = t.
+// UNCERTAINTY: EH unwinding (the delete on a throwing constructor) not modelled.
+void* ship_ai_allocate_brain_009f3f20(Cc13Seg67bHost& host, void* ship) {
+    void* const t = host.operator_new_00bf681b(kShipAiSize_2268);
+    if (t == nullptr) {
+        return nullptr;
+    }
+    return ship_ai_gun_bot_construct_009f3ba0(host, t, ship);
+}
+
 }  // namespace bsp
