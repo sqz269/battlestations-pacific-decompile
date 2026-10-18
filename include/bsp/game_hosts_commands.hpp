@@ -352,6 +352,8 @@ struct GameCommandsSummary {
     unsigned long long override_installs{0};  // 0071E7F0 installed director+188h
     unsigned long long override_arm_ends{0};  // 00836DC4, the override arm's 0071D9E0(2)
     unsigned long long override_clears{0};    // 0071E610
+    unsigned long long override_push_tests{0};      // stored category 1/2 pushes (0071E7B4 reads)
+    unsigned long long override_push_tests_set{0};  // ... with director+188h set
     unsigned long long override_push_echoes{0};   // 0071E2E0 from 0071E6C0's tail (s57)
     unsigned long long override_push_clears{0};   // the 5Dh +20h=0 receive it posts
     unsigned long long scene_follow_requests{0};  // 00816ED5 calls (s57_follow_join)

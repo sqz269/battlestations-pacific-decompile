@@ -1181,6 +1181,9 @@ public:
         chain_.owner.done("WeaponDirector::set_command_mode", 0x0071e795u);
     }
     std::uint32_t override_command() override {   // director+188h
+        // Reached only for a stored category 1/2 push (0071E7A8 is tested first).
+        ++chain_.owner.summary.override_push_tests;
+        if (chain_.director.override_command != 0u) ++chain_.owner.summary.override_push_tests_set;
         return kAttackPushEndsOverrideBound ? chain_.director.override_command : 0u;
     }
     bool session_field_f4h_is_0_or_1() override {
@@ -4131,10 +4134,11 @@ void GameCommandsHost::report() {
         "00836D67 / 0071E610)", kAutoTargetOverrideBound ? 1 : 0,
         host.summary.override_sends, host.summary.override_installs,
         host.summary.override_arm_ends, host.summary.override_clears);
-    host.log.notef("summary mission director override push-end bound=%d echoes=%llu "
-        "clears=%llu (packet s57_override_push, 0071E6C0 tail -> 0071E2E0 -> 0071E610)",
-        kAttackPushEndsOverrideBound ? 1 : 0, host.summary.override_push_echoes,
-        host.summary.override_push_clears);
+    host.log.notef("summary mission director override push-end bound=%d weapon_pushes=%llu "
+        "with_override=%llu echoes=%llu clears=%llu (packet s57_override_push, 0071E6C0 tail -> "
+        "0071E2E0 -> 0071E610)", kAttackPushEndsOverrideBound ? 1 : 0,
+        host.summary.override_push_tests, host.summary.override_push_tests_set,
+        host.summary.override_push_echoes, host.summary.override_push_clears);
     host.log.notef("summary mission scene follow join bound=%d requests=%llu available=%llu "
         "(packet s57_follow_join, 00816ED5 -> 0077C8D0)", kSceneFollowJoinBound ? 1 : 0,
         host.summary.scene_follow_requests, host.summary.scene_follow_available);
