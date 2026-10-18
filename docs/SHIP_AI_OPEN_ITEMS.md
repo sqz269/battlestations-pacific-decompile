@@ -19138,3 +19138,32 @@ construction).
 **Decision: ON** as a faithful binding with no reach found: the store is exercised on every caller above and
 the slice reads it exactly where the image does. A row with player-ordered bomb runs on PRCP05 / JM02 would
 show `reloads` timed at ReloadTime / mul.
+## 287. USNOS status on 72f90a16d, and `Dead` after TrulyDead's Ptr null, kEntityDeadAfterPtrNullBound (cc9-ships58, 2026-10-18; lead item 4)
+
+**Status run.** Tree at 72f90a16d (origin/main + 284/285), `s56_os_c13.txt`, 150000 frames, reference env
+(`local\s58_st_os.log`, manifest beside it): **no mission end in 7500 s**, MissionPhase stays 1, no phase-2
+countdown, `SpawnNew calls=3` (wave 1 only). Transports lost: TT6/TT4/TT2 to HQ2 at 2696-2769 s, TT5/TT3 to
+Ada2 at 4296/4632 s. ships57's `s57_cur_osc13` (61f4f9c9f, same orders) spawned wave 2 (serial 4) at about
+438 s, right after its last wave-1 death (437.17 s).
+
+**First failure on the mission path.** us_osumi.lua (mtime 2024-10-29) spawns wave 2 from luaCheckObjectives
+when `luaRemoveDeadsFromTable(Mission.PhOneAttackers)` is empty (`:999`), and that reads each unit's
+`value.Dead`. All 39 wave-1 units have death rows by 438 s, but the nine Shinyos #2.1-#2.9 never get
+`entity dead: ... Dead=true` (s57's run published all 39). Each Shinyo death runs the kamikaze removal
+00814595 (`ship death message: ... kamikaze Kill(1) and removal`), which since p17's 334be0e5f
+(kLuaTrulyDeadOnKilledBound ON) calls the 00928C80 hook and nulls the self table's `Ptr`; the host's
+00929800 publisher then takes the slot as not the unit's own (`Ptr == id` test) and skips it. So
+PhOneAttackers is never empty and phase 1 never ends.
+
+**Image.** 00929800 gates on the entity's cached key [this+178h] (0092981F/00929830), gets the table through
+00927B40 and sets `Dead` (00929896); it reads no `Ptr`. 00928C80 reads +178h (00928C9B) and sets
+`Ptr = 0` (00928D04) but writes no +178h. So `Dead` is published after the null in the image.
+
+**Bind (OFF).** `kEntityDeadAfterPtrNullBound` (include/bsp/game_hosts_script_orders.hpp): the publisher also
+takes a slot whose `Ptr` is null. LABELLED: a table with no `Ptr` field at all would pass too (none is
+known; the host seeds `Ptr` on every unit table).
+
+**Predictions, written before the runs.** OFF identical. ON on USNOS: nine more `entity dead` lines (the
+Shinyos, at their death times), wave 2 spawns at about 440 s, and the run follows ships55's phase-1 / phase-2
+picture from there. Any row with kamikaze boats or other units removed through 00814595 before the flush
+moves the same way (their `Dead` turns true); rows with none are identical.
