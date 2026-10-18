@@ -35,6 +35,32 @@ namespace bsp::game {
 
 class GameHostLog;
 
+// Packet cc13-fix20. Scoring_SetMissionCompleted, the Lua row 008B8AD0
+// (registered at 00E0C380). OFF keeps the row UNIMPLEMENTED. ON runs the
+// reconstruction run_set_mission_completed_008b8ad0: the slot is game+18ECh in
+// mode 0 (game+1FE4h) and the first argument otherwise, the flag is the
+// argument at that position as lua_toboolean (00B66250) and defaults to true,
+// and 00906460 stores it at record+0h with the clock 00F876A4 at record+10h on
+// the 0 -> 1 edge only. The record is scoring_.slots[slot], the one 004D7970's
+// commit 009205E0 copies into progress_. Divergence, labelled: 00906460's walk
+// of [[game+19CCh]+28h] calling 00927F60 per entity with +180h < 8 (stamp the
+// clock at entity+1D0h, give five flight members the same value, and pass the
+// elapsed time clock - old +1D0h to 0090ED40, a per-slot statistic) is one
+// recorded step; the host has no entity list or per-slot statistics.
+// The binding returns 0 results (00B66400). No 00BD2F10 draw.
+inline constexpr bool kLuaScoringSetMissionCompletedBound = false;
+
+// Packet cc13-fix20. PlayBinkMovie, the Lua row 0089A480 (registered at
+// 00E0BA60). OFF keeps the row UNIMPLEMENTED. ON runs what 0089A480 does after
+// reading arg 0 as the name (00B662B0) and, only when there are more than two
+// arguments, arg 2 as the debrief byte (default false): 0089A390 prefixes
+// "movies/", 004CD390 replaces the result object at game+7188h, and with the
+// byte set 004D7970(0) runs before the binding returns. The script does not
+// wait: the call is synchronous and returns 0 results. No clip is played here,
+// as before: the poll 004D7EA0 and the request-10h arm record 004F8A20 and the
+// executable runs the completion 004F89D0 itself (milestone 2g). No 00BD2F10 draw.
+inline constexpr bool kLuaPlayBinkMovieBound = false;
+
 // What the exit path did, for the report.
 struct GameMissionExitSummary {
     bool movie_requested{false};      // 0089a480 -> 004cd390 ran
@@ -78,7 +104,21 @@ public:
     // calls PlayBinkMovie(name, goToDebrief). When `go_to_debrief` is set,
     // 0089a390 also calls 004d7970(0) before it returns, which is why the poll
     // 004d7ea0 never sees an empty request queue on that frame.
+    // This entry is the --mission-complete-frame injection: the binding itself is
+    // recorded, because no script made the call.
     void play_bink_movie_0089a480(const std::string& script_movie_name, bool go_to_debrief);
+
+    // Packet cc13-fix20, behind kLuaPlayBinkMovieBound: the same path entered
+    // from a script's PlayBinkMovie row, with the arguments 0089a480 read.
+    void lua_play_bink_movie_0089a480(const std::string& script_movie_name, bool go_to_debrief);
+
+    // Packet cc13-fix20, behind kLuaScoringSetMissionCompletedBound: a script's
+    // Scoring_SetMissionCompleted row. The caller passes the argument count
+    // (00b663f0), arg 0 as an integer (00b66290) and args 0 and 1 as
+    // lua_toboolean (00b66250); which of them 008b8ad0 uses depends on the mode
+    // game+1FE4h, which is this object's, as is the local slot game+18ECh.
+    void lua_scoring_set_mission_completed_008b8ad0(int argument_count, int argument0_integer,
+        bool argument0_boolean, bool argument1_boolean);
 
     // 004d7970 on its own, for the drain's request 0Fh.
     void run_end_scene_004d7970(bool aborted);
@@ -141,6 +181,9 @@ private:
     void replicate_objective_state(int slot, const bsp::MissionObjectiveEntry& entry,
         bsp::MissionObjectiveStatus status) override;
     void clear_hud_objective_dirty_byte() override;
+
+    // 0089a390: the prefix, 004cd390 and, with the byte set, 004d7970(0).
+    void play_named_movie_0089a390(const std::string& script_movie_name, bool go_to_debrief);
 
     void record(const char* method, std::uint32_t address);
     void done(const char* method, std::uint32_t address);
