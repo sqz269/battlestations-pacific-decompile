@@ -18427,6 +18427,18 @@ bool GameUnitsHost::submarine_band_y(std::size_t unit_index, int band, float& y)
     return true;
 }
 
+// Packet cc13-fix21. 008938E0's read of unit+127Ch (008939F6 FLD float): the
+// value as 00855250 and 00893A60 last left it. The image reads any entity; a
+// slot that is not a seeded submarine has no air state here.
+bool GameUnitsHost::submarine_air_008938e0(std::size_t unit_index, float& air) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.slots.size()) return false;
+    const GameUnitSlot& slot = *host.slots[unit_index];
+    if (!slot.sub_dive_ready) return false;
+    air = slot.sub_air.air;
+    return true;
+}
+
 // Packet cc9_submarine_air. 00893C00's store at unit+1280h.
 // Packet cc9_squadron_attack_alt. 008A22B0: argument 0 through 00888AA0 (no null
 // test in the image; a unit with no squadron is refused here), 008A2456..008A2489.

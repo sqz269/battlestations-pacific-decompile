@@ -141,6 +141,13 @@ Host:
   ordnance OR its live squadron members'.
 - vtable[5Ch](10h) is `unit_is_kind_of(unit, 0x10)` on the ordered unit, as for
   `self_is_level_bomber`.
+- **Corrected by cc13-fix21 (docs/CC13_FIX21.md section 3).** 008A505C-008A5065 are
+  `mov eax,[esi]; push 10h; mov ecx,esi; call [eax+5Ch]`, so IsKindOf(10h) is asked of
+  the ARGUMENT itself. For a squadron that is 007EFB00 (vtable 00D087C0+5Ch), which
+  answers only 18h, 2, 1, 0 and [this+C4h] (written only by 007F2DEC, = 18h), so never
+  10h. The host used to ask the fused wing-0 plane's class, which gave Betty and Kate
+  squadrons levelbomb 00E08F28. A fused squadron slot now answers false (dropkamikaze
+  or divebomb per 007ED880); any other slot keeps the plane arm.
 
 Labelled divergences:
 
@@ -230,8 +237,15 @@ Labelled divergences:
   authored Ammo either way.
 - The rocket racks' `orx_rack_ammo` is not restored: the host does not keep its
   seeded value apart from the count.
+- The orgAmmo == 0 edge (cc13-fix21): 006E3410 sets ammo = orgAmmo = 0 and tail-jumps
+  to vtable[224h] = 006E3E70, which builds and attaches a round with no ammo test and
+  then decrements +484h, leaving ammo -1 with a round on the rack (the "2Ah loaded"
+  arm gives orgAmmo - 1 = -1 as well). The host sets the rack back to 0 and has no
+  round, so `rack_holds_round` answers false where the image's plane holds one.
 - squadron+3ECh is not kept. A disp32 census of +3ECh finds byte writers at 007ED0D7,
-  007ED23E, 007ED67C, 007ED6C9, 007F1D5D, 007F3A1D and 007F4B6E, and no byte reader in
+  007ED23E, 007ED67C, 007ED6C9, 007F1D5D, 007F3A1D and 007F4B6E, plus two more found by
+  cc13-fix21: 007EE65D (= 1, in 007EE620) and 007EE802 (= 0, in 007EE7F0
+  RefreshArmedFraction), and no byte reader in
   the squadron code; the only byte read, 009DA21D, is in the ship AI. The reader may
   use a different base, so this is "no reader found", not "no reader".
 - A plane argument resolves to its squadron.
@@ -282,11 +296,14 @@ carry copies of the ijn/JM missions.
   01")) and COTP-USN/usn_12_indochina.lua:1559 (PRCPUS :1819). The two calls in
   global/commandhelpers.lua (:15471, :15529) are in luaPlayerAirbaseManager, whose only
   caller (chg_6_forcez.lua:165) is commented out.
-- **PilotBomb:** COTP-USN/usn_10_battle_of_capeengano.lua:1148 / :1150 (PRCPUS :1196 /
-  :1198), JAP_StartingPlane01/02 onto USN_Iowa[1].
-  - ON: a levelbomb, divebomb or dropkamikaze task where today the row is refused.
-  - commandhelpers :5579 is in luaAirstrikeManager_think; no mission calls
-    luaAirstrikeManager.
+- **PilotBomb: no live caller (corrected by cc13-fix21).** The calls at
+  COTP-USN/usn_10_battle_of_capeengano.lua:1148 / :1150 (PRCPUS :1196 / :1198) are in
+  luaUSN10_InitAttack, whose only call is commented out (usn_10 :961, PRCPUS :997), and
+  JAP_StartingPlane01/02 are never assigned (the only assignment, usn_10 :344 / PRCPUS
+  :372, is commented out too). commandhelpers :5579 is in luaAirstrikeManager_think,
+  inside the `--[[` block 5531-5613, and no mission calls luaAirstrikeManager.
+  competitive09.lua:1551 and usn_04_defend_guadalcanal.lua:735 are `--` comments. ON
+  therefore changes no mission in this installation.
 - **PlaneBombFallingTime:** ijn/JM/jm02.lua:2430 (the selected player Betty's delay
   before luaJM2CheckFailDlgs).
   - OFF: the nil result makes luaDelay's delay nil.

@@ -400,6 +400,12 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     {"PlaneBombFallingTime", 0x008a54c0u},
     {"PlaneReloadBombPlatforms", 0x0089f080u},
     {"GetPlaneIsReloading", 0x008bebe0u},
+    // Packet cc13-fix21: usn_11_protecting_iowa.lua 1296/1533 (and its PRCPUS copy),
+    // prcp_11_patrol.lua 1302/1539. Handled only with kLuaGetSquadTorpedoesBound.
+    {"GetSquadTorpedoes", 0x008bef80u},
+    // Packet cc13-fix21: jm10.lua:1764 (luaJM10SaveMissionData, both copies).
+    // Handled only with kLuaGetSubmarineAirSupplyBound.
+    {"GetSubmarineAirSupply", 0x008938e0u},
 };
 
 // The id the first script entity takes. The created scene instances number from 1
@@ -756,6 +762,10 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     }
     if (std::strcmp(binding->name, "GetPlaneIsReloading") == 0) {
         return kLuaGetPlaneIsReloadingBound;
+    }
+    if (std::strcmp(binding->name, "GetSquadTorpedoes") == 0) return kLuaGetSquadTorpedoesBound;
+    if (std::strcmp(binding->name, "GetSubmarineAirSupply") == 0) {
+        return kLuaGetSubmarineAirSupplyBound;
     }
     if (std::strcmp(binding->name, "DisplayScores") == 0 ||
         std::strcmp(binding->name, "HideScoreDisplay") == 0) {
@@ -4130,6 +4140,45 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         } else {
             results = 0;
         }
+    } else if (std::strcmp(binding->name, "GetSquadTorpedoes") == 0) {
+        // Packet cc13-fix21, PARTIAL. 008BEF80: 008BF0E9 00B67930 NewTable is
+        // unconditional (every path, nil or non-squadron argument included, answers
+        // a table; a null squadron faults only once a list element qualifies), and
+        // the walk of [game+19CCh] fills it with the 00927B40 self objects of the
+        // live torpedoes whose +3BCh is one of the squadron's planes. LABELLED: the
+        // host's payload is an ordnance set with no Lua objects, so the table is
+        // always empty and the squadron stays armed where the image's callers Kill
+        // those torpedoes. The flag (argument 1, read only when there are two
+        // arguments, 008BF0A7) does not matter to an empty answer.
+        if constexpr (kLuaGetSquadTorpedoesBound) {
+            if (state_ != nullptr) {
+                lua_newtable(state_);
+                results = 1;
+            }
+            log_.notef("  GetSquadTorpedoes: %s -> {} (008BEF80, PARTIAL: payload "
+                "torpedoes have no Lua objects, packet cc13-fix21)", row.unit.c_str());
+        }
+    } else if (std::strcmp(binding->name, "GetSubmarineAirSupply") == 0) {
+        // Packet cc13-fix21. 008938E0: 008939DF 00888AA0 on argument 0 (no null and
+        // no class test), 008939F6 FLD float [unit+127Ch], 00B66480 PushFloat; one
+        // result. unit+127Ch is the field 00893A60 stores (00893BA1) and the air
+        // model 00855250 steps, the host's sub_air.air. LABELLED: an entity with no
+        // seeded submarine air state pushes nothing (the image reads +127Ch of any
+        // entity and faults on null).
+        if constexpr (kLuaGetSubmarineAirSupplyBound) {
+            float air = 0.0f;
+            if (subject != nullptr && row.unit_index < units_.count()
+                && units_.submarine_air_008938e0(row.unit_index, air)) {
+                push_number_float_00b66480(air);
+                results = state_ != nullptr ? 1 : 0;
+                log_.notef("  GetSubmarineAirSupply: %s air=%.6f (008938E0 <- +127Ch)",
+                    row.unit.c_str(), static_cast<double>(air));
+            } else {
+                log_.unimplemented(
+                    "LuaNative::GetSubmarineAirSupply(entity without submarine air state)",
+                    "008938e0");
+            }
+        }
     } else if (std::strcmp(binding->name, "FillPathPoints") == 0) {
         // 0089A190: argument 0 through 00888AA0 and 007AC9D0 (the path
         // interface), 00B67930's new table, then for i < 00415870's count
@@ -6341,8 +6390,27 @@ int GameScriptOrdersHost::run_bomb_release_native(GameScriptOrderRow& row, const
             // 008A5053-008A5070: dropkamikaze 00E08F30, else vtable[5Ch](10h) gives
             // levelbomb 00E08F28 and its refusal divebomb 00E08F20 (the ordered
             // unit's class answers, as for 007EEC50's self_is_level_bomber).
+            // Packet cc13-fix21: 008A505C-008A5065 `mov eax,[esi]; push 10h; mov
+            // ecx,esi; call [eax+5Ch]` ask the ARGUMENT. A squadron's slot is
+            // 007EFB00 (vtable 00D087C0+5Ch), which answers only 18h, 2, 1, 0 and
+            // [this+C4h] (= 18h, 007F2DEC), so never 10h: a squadron argument gets
+            // divebomb. SUBSTITUTION, labelled: a fused squadron slot (a registry
+            // record's squadron_unit) is taken as the squadron, so its wing-0
+            // plane named on its own cannot be told apart from it here; any other
+            // slot answers with its own class (the plane arm).
+            bool argument_is_squadron = false;
+            for (const bsp::PlaneSquadronHostRecord& r :
+                 bsp::plane_squadron_registry().records()) {
+                if (r.squadron_unit != bsp::kPlaneSquadronNoUnit
+                    && r.squadron_unit == unit_index) {
+                    argument_is_squadron = true;
+                    break;
+                }
+            }
+            const bool level_bomber = !argument_is_squadron
+                && units_.unit_is_kind_of(unit_index, 0x10);
             const std::uint32_t chosen = drop_kamikaze ? 0x00E08F30u
-                : (units_.unit_is_kind_of(unit_index, 0x10) ? 0x00E08F28u : 0x00E08F20u);
+                : (level_bomber ? 0x00E08F28u : 0x00E08F20u);
             // 008A507F 0077D600(unit, class, &target, 1), with no test of the class
             // or the target: the order is issued whatever 007EEC50 would choose.
             entity_issue_command(unit, chosen, target, 1);

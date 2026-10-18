@@ -562,6 +562,11 @@ inline constexpr bool kLuaSquadronForceReleaseBound = false;
 // 00E08F28, false divebomb 00E08F20; 008A507F 0077D600(unit, class, &target, 1).
 // No result. The host issues through entity_issue_command and installs the task
 // as PilotSetTarget does (install_pilot_attack_task_after_delivery).
+// Packet cc13-fix21: 008A505C-008A5065 ask vtable[5Ch](10h) of the ARGUMENT, so a
+// squadron argument reaches 007EFB00 (vtable 00D087C0+5Ch), which answers only 18h,
+// 2, 1, 0 and [this+C4h] (18h, 007F2DEC): never 10h, so a squadron gets divebomb
+// unless 007ED880 answers. The host treats a fused squadron slot (a registry
+// record's squadron_unit) as the squadron, not as its wing-0 plane.
 inline constexpr bool kLuaPilotBombBound = false;
 // True: `PlaneBombFallingTime(plane)` 008A54C0: 008A55C3 00888AA0 on argument 0;
 // 008A55D6 +C8h clear -> 00414DB0; 008A55E6 FLD [plane+100h] (world y), 008A55F2
@@ -576,6 +581,26 @@ inline constexpr bool kLuaPlaneReloadBombPlatformsBound = false;
 // 008BED04 vtable[5Ch](0Fh) true -> 007B92E0 on the entity, else on [entity+3D0h]
 // when non-null; 008BED2A 00B66450 PushBoolean (0 when skipped). One result.
 inline constexpr bool kLuaGetPlaneIsReloadingBound = false;
+// Packet cc13-fix21 (docs/CC13_FIX21.md). PARTIAL stopgap for `GetSquadTorpedoes(
+// squadron [, all])` 008BEF80: 008BF0E9 00B67930 NewTable is unconditional, then
+// the list [game+19CCh] (count +21Ch, node +224h, element [node+8]) adds each
+// element with byte +5Eh == 0 and ((e+310h)->vtable[38h]() or the flag) whose
+// +3BCh is one of the squadron's +3D0h planes (slot > 4 reads 0); one result,
+// always a table. True: the host answers an EMPTY table. LABELLED: the host keeps
+// a plane's payload as an ordnance set with no Lua objects, so the torpedoes the
+// image lists (and its callers Kill, disarming the squadron) stay on the racks.
+// False: an unimplemented record that pushes nothing (usn_11 / prcp_11 then raise
+// in pairs(nil) and abort the rest of PrepareS1Phase4 / PrepareS2Phase4).
+inline constexpr bool kLuaGetSquadTorpedoesBound = false;
+// Packet cc13-fix21. `GetSubmarineAirSupply(unit)` 008938E0: 008939DF 00888AA0 on
+// argument 0 (no null and no class test), 008939F6 FLD float [unit+127Ch],
+// 008939FC FSTP float, 00B66480 PushFloat (lua_pushnumber of the float widened to
+// double). One result. True: the host pushes the slot's sub_air.air
+// (GameUnitsHost::submarine_air_008938e0), the field SetSubmarineAirSupply
+// 00893A60 writes. LABELLED: a unit with no seeded submarine air state pushes
+// nothing (the image reads +127Ch of any entity and faults on null). False: an
+// unimplemented record that pushes nothing.
+inline constexpr bool kLuaGetSubmarineAirSupplyBound = false;
 // Packet cc9_lua_mission_narrative (docs/MISSION_END.md, "The narrative queue").
 // True: MissionNarrative / MissionNarrativeEnqueue 008B0C10 enqueue (text,
 // callback, arguments) on [game+21E8h] (00734870), MissionNarrativeClear
