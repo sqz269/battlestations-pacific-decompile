@@ -838,6 +838,15 @@ public:
         // tail hook's own gate is tested once per step alongside them, because
         // 00875fd1 is the last thing the driver does with the same clock.
         owner_.fixed_step->run_subsystems_00875e0c(step, world_active);
+        if constexpr (kLuaProximityTriggersBound) {
+            // Packet cc13-fix19: row 15's pass K (009273A0) notifies the observers of
+            // each entity Killed since the last drain (00696330 -> 0074FFE0). The rows
+            // just ran, and this host's motion step and trigger walk (waves 1 and 2)
+            // come next, so the notice lands after the previous step's walk and before
+            // this one's, where the image puts it. SUBSTITUTION (labelled): drained
+            // after row 16 instead of between rows 14 and 16.
+            owner_.lua.target_gone_drain_009273a0();
+        }
         // Milestone 2i: the ship motion virtual 00825f20. Its own caller is not
         // established - docs/SHIP_MOTION.md names three call sites (0085542f,
         // 00749b2c, 00644a38) and reads none - so the position in the frame is
@@ -860,11 +869,12 @@ public:
                 }
             }
             owner_.units->motion_step_00825f20(step);
-            if constexpr (kLuaProximityTriggersBound) {
+            if constexpr (kLuaProximityTriggersBound || kLuaSquadOrdnanceDroppedTriggerBound) {
                 // Packet cc13-fix10: wave 2's sub-list walk (00875B90 -> 008759B0)
                 // tests the Lua proximity triggers (00750000) after wave 1's element
                 // steps, and a hit's callback runs before the next step. SUBSTITUTION
-                // (labelled): once per step after this host's motion step.
+                // (labelled): once per step after this host's motion step. Packet
+                // cc13-fix19: the same walk runs the squad-ordnance triggers (007504F0).
                 owner_.lua.run_proximity_triggers_008759b0(step);
             }
             if (hull_attitude_trace_interval() != 0u

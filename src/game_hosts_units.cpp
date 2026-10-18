@@ -6732,7 +6732,7 @@ struct GameUnitsHost::Impl {
     // Packet cc9_l66_issue_draw (docs/CC13_VERIFY1.md A.1). True: after each
     // 007C0D90 issue the next-issue interval is U(0.9, 1.1) x BombDelay (007CEAB3,
     // one keyed stream-1 draw per issue). False: always 0.9 x BombDelay, no draw.
-    static constexpr bool kReleaseIssueIntervalDrawBound = false;
+    static constexpr bool kReleaseIssueIntervalDrawBound = true;  // ON: SQUADRON_LAND_TASK 5if.1
     unsigned long long release_issue_interval_draws = 0;
     // Packet cc9_plane_device_walk, docs/PLANE_DEVICE_WALK.md: 007CEB00-007CEB1D,
     // the cleanup arm's walk over the rack list asking vtable[1FCh], and the
