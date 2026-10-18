@@ -719,4 +719,134 @@ void spawn_ref_frame_freeze_to_matrix_008f86b0(Seg59bHost& host, void* frame) {
 void spawn_ref_frame_on_observed_released_008f8700(Seg59bHost& host, void* frame, void* entity) {
     if (entity == ptr(frame, 0x14)) spawn_ref_frame_freeze_to_matrix_008f86b0(host, frame);
 }
+
+// ---------------------------------------------------------------------------
+// 00903C60 BSP_MatrixInterpolator_ReadArchive (hypothesis). __thiscall(ECX = element, archive),
+// RET 4. Evidence: vt[10h] in order "entity" 00CE5818 {4, element} (00903C8F), "translation"
+// 00D184A4 {5, +4} (00903CBB), "rotation" 00D18498 {5, +10h} (00903CE7), "time" 00CE37A8 {2, +1Ch}
+// (00903D13), "initialMatrix" 00D18488 {7, +20h} (00903D3F), "initialTime" 00D1847C {2, +60h}
+// (00903D6B).
+// ---------------------------------------------------------------------------
+void matrix_interpolator_read_archive_00903c60(Seg59bHost& host, void* element, void* archive) {
+    host.archive_read_field_vt10(archive, key(kEntityFieldKey), value_arg(4, element));
+    host.archive_read_field_vt10(archive, key(kTranslationKey), value_arg(5, add(element, 0x04)));
+    host.archive_read_field_vt10(archive, key(kRotationKey), value_arg(5, add(element, 0x10)));
+    read_float(host, archive, kTimeKey, element, 0x1C);
+    host.archive_read_field_vt10(archive, key(kInitialMatrixKey), value_arg(7, add(element, 0x20)));
+    read_float(host, archive, kInitialTimeKey, element, 0x60);
+}
+
+// ---------------------------------------------------------------------------
+// 00903D80 BSP_MatrixInterpolator_WriteArchive (hypothesis). __thiscall(ECX = element, archive),
+// RET 4. Evidence: vt[0Ch] "entity" {4, [element]} (00903D8A/00903DB6), "translation" {5, +4},
+// "rotation" {5, +10h}, "time" {2, MOVSS bits +1Ch} (00903E0B), "initialMatrix" {7, +20h},
+// "initialTime" {2, bits +60h} (00903E67..00903E95).
+// ---------------------------------------------------------------------------
+void matrix_interpolator_write_archive_00903d80(Seg59bHost& host, void* element, void* archive) {
+    host.archive_write_field_vt0c(archive, key(kEntityFieldKey), ArchiveArg{4u, at<std::uint32_t>(element, 0x00)});
+    host.archive_write_field_vt0c(archive, key(kTranslationKey), value_arg(5, add(element, 0x04)));
+    host.archive_write_field_vt0c(archive, key(kRotationKey), value_arg(5, add(element, 0x10)));
+    write_float(host, archive, kTimeKey, element, 0x1C);
+    host.archive_write_field_vt0c(archive, key(kInitialMatrixKey), value_arg(7, add(element, 0x20)));
+    write_float(host, archive, kInitialTimeKey, element, 0x60);
+}
+
+// ---------------------------------------------------------------------------
+// 00904F70 BSP_World_ReadArchive (hypothesis). __thiscall(ECX = world, archive), RET 4.
+// Evidence: 00904F98 vt[04h]("matrixInterpolators" 00D184C0); index = 0 in the archive
+// argument's slot (00904F9A); loop: 00904FB9 vt[14h]({1, index}) false -> done; 00904FDD
+// 009045C0(ECX = list world+4B0h, head, head->prev, &stack element); 00904FE7 00904E50(list, 1);
+// 00904FED..00904FF5 head->prev = node, node->prev->next = node; 00904FFF/00905009 00BF6713
+// when the last node is the head (the checked --end()); 0090501E vt[04h]({1, index}); 00905026
+// 00903C60(node+8, archive); 00905032 vt[08h]; index + 1. Then 0090504C vt[08h], 00905062
+// vt[04h]("stationaries" 00D184B0), 00905066 0084F080(archive), 00905072 vt[08h].
+// ---------------------------------------------------------------------------
+void world_read_archive_00904f70(Seg59bHost& host, void* world, void* archive) {
+    host.archive_open_section_vt04(archive, key(kMatrixInterpolatorsKey));
+    for (std::uint32_t index = 0;; ++index) {
+        if (!host.archive_has_section_vt14(archive, ArchiveArg{1u, index})) break;
+        void* const list = add(world, 0x4B0);
+        void* const head = ptr(world, 0x4B4);
+        // The image copies a 64h-byte stack element it never initialized; every byte of it is
+        // then read back below, so the zeroed stand-in leaves no trace once the reads succeed.
+        std::uint8_t element[0x64] = {};
+        void* const node = host.list_buy_node_009045c0(list, head, ptr(head, 0x04), element);
+        host.list_inc_size_00904e50(list, 1);
+        at<void*>(head, 0x04) = node;
+        at<void*>(ptr(node, 0x04), 0x00) = node;
+        void* const head_now = ptr(list, 0x04);
+        void* const last = ptr(head_now, 0x04);
+        if (last == head_now) host.checked_iterator_failure_00bf6713();
+        if (last == ptr(list, 0x04)) host.checked_iterator_failure_00bf6713();
+        host.archive_open_section_vt04(archive, ArchiveArg{1u, index});
+        matrix_interpolator_read_archive_00903c60(host, add(last, 0x08), archive);
+        host.archive_close_section_vt08(archive);
+    }
+    host.archive_close_section_vt08(archive);
+    host.archive_open_section_vt04(archive, key(kStationariesKey));
+    host.stationaries_read_archive_0084f080(archive);
+    host.archive_close_section_vt08(archive);
+}
+
+// ---------------------------------------------------------------------------
+// 009042B0 BSP_World_WriteArchive (hypothesis). __thiscall(ECX = world, archive), RET 4.
+// Evidence: 009042D6 vt[04h]("matrixInterpolators"); node = head->next (009042D8..009042DE);
+// loop while node != head (re-read each pass, 00904300): 0090430B 00BF6713 when node is the head
+// (unreachable after that test, kept), 0090431E vt[04h]({1, index}), 00904324 00903D80(node+8,
+// archive), 00904330 vt[08h], 00904337 00BF6713 again for the checked ++, node = node->next,
+// index + 1. The 009042F0 CMP EBX,EBX container check always passes. Then 0090434B vt[08h],
+// 00904365 vt[04h]("stationaries"), 00904369 0084F1A0(archive), 00904375 vt[08h].
+// ---------------------------------------------------------------------------
+void world_write_archive_009042b0(Seg59bHost& host, void* world, void* archive) {
+    host.archive_open_section_vt04(archive, key(kMatrixInterpolatorsKey));
+    void* const list = add(world, 0x4B0);
+    void* node = ptr(ptr(list, 0x04), 0x00);
+    for (std::uint32_t index = 0; node != ptr(list, 0x04); ++index) {
+        if (node == ptr(list, 0x04)) host.checked_iterator_failure_00bf6713();
+        host.archive_open_section_vt04(archive, ArchiveArg{1u, index});
+        matrix_interpolator_write_archive_00903d80(host, add(node, 0x08), archive);
+        host.archive_close_section_vt08(archive);
+        if (node == ptr(list, 0x04)) host.checked_iterator_failure_00bf6713();
+        node = ptr(node, 0x00);
+    }
+    host.archive_close_section_vt08(archive);
+    host.archive_open_section_vt04(archive, key(kStationariesKey));
+    host.stationaries_write_archive_0084f1a0(archive);
+    host.archive_close_section_vt08(archive);
+}
+
+// ---------------------------------------------------------------------------
+// 009043A0 BSP_SpatialIndex_QuerySegmentExcluding (hypothesis). __stdcall(from, to, record,
+// entity, kind_filter), RET 14h; EAX = 0098ADD0's result. Evidence: entity = arg 4 (009043A1);
+// non-null: 009043AA 0042E630; kind_filter and record are pushed first (009043BB/009043C2) and
+// stay on the stack as 0098ADD0's arguments 5 and 4 across 009043C5 entity->vt[B0h]() (no stack
+// arguments); 009043D4 0098ADD0(ECX = index; from, to, exclude = that result, record,
+// kind_filter). Null: 009043DE 0042E630, the frame is rewritten in place (009043E8/009043EC) and
+// 009043F6 tail-jumps 0098ADD0(from, to, 0, record, kind_filter). Callers: HUD unit pick
+// 00526A40, free-camera effects 0053F2D0, 005220C0.
+// ---------------------------------------------------------------------------
+std::uint32_t spatial_query_segment_excluding_009043a0(Seg59bHost& host, void* from, void* to,
+                                                       void* record, void* entity,
+                                                       std::uint32_t kind_filter) {
+    if (entity != nullptr) {
+        void* const index = host.spatial_index_singleton_0042e630();
+        void* const exclude = host.entity_query_exclude_vtb0(entity);
+        return host.spatial_index_query_segment_0098add0(index, from, to, exclude, record, kind_filter);
+    }
+    void* const index = host.spatial_index_singleton_0042e630();
+    return host.spatial_index_query_segment_0098add0(index, from, to, nullptr, record, kind_filter);
+}
+
+// ---------------------------------------------------------------------------
+// 009052E0 BSP_ScoreRecord_AddField18 (hypothesis). __thiscall(ECX = scoring, slot, delta),
+// RET 8; EAX = &record+18h. Evidence: 009052E4 IMUL slot,284h; 009052EA FLD [rec+18h];
+// 009052EE FADD float [ESP+8]; 009052F2 FSTP back; 009052F6 LEA EAX. Caller 005B45C0
+// (HUD map update). x87: one add of two floats rounded to float; the same at 24- and 53-bit
+// precision control (a float sum fits double exactly before the final rounding).
+// ---------------------------------------------------------------------------
+float* score_record_add_field18_009052e0(void* scoring, std::int32_t slot, float delta) {
+    float* const field = &at<float>(scoring, static_cast<std::size_t>(slot * 0x284) + 0x18);
+    *field = *field + delta;
+    return field;
+}
 }  // namespace bsp::cc13_seg59b

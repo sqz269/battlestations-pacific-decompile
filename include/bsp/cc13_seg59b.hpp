@@ -31,7 +31,7 @@ inline void* add(void* base, std::size_t off) noexcept {
 // The property archive's tagged by-value argument (8 bytes on the stack): kind 0 = C string key,
 // 1 = int (an index key, or the value / int* of an int field), 2 = float (value bits when written,
 // float* when read), 3 = byte (low byte when written), 4 = object reference, 5 / 6 = by-address
-// aggregates (5 is the vec3 "pos"; 6 is a record whose size this file does not establish).
+// aggregates (5 is the vec3 "pos"; 6 is a record whose size this file does not establish); 7 = a 4x4 matrix by address.
 struct ArchiveArg {
     std::uint32_t kind;
     std::uintptr_t value;
@@ -88,6 +88,14 @@ inline constexpr const char* kAimPeriodMinKey = "aimPeriodMin";         // 00D18
 inline constexpr const char* kAimPeriodMaxKey = "aimPeriodMax";         // 00D1819C
 inline constexpr const char* kShootRangeKey = "shootRange";             // 00D18190
 inline constexpr const char* kDistErrorKey = "distError";               // 00D18288
+inline constexpr const char* kMatrixInterpolatorsKey = "matrixInterpolators";  // 00D184C0
+inline constexpr const char* kStationariesKey = "stationaries";         // 00D184B0
+inline constexpr const char* kEntityFieldKey = "entity";                // 00CE5818
+inline constexpr const char* kTranslationKey = "translation";           // 00D184A4
+inline constexpr const char* kRotationKey = "rotation";                 // 00D18498
+inline constexpr const char* kTimeKey = "time";                         // 00CE37A8
+inline constexpr const char* kInitialMatrixKey = "initialMatrix";       // 00D18488
+inline constexpr const char* kInitialTimeKey = "initialTime";           // 00D1847C
 
 // The 64-bucket property-hash iterator (12 bytes on the stack): table, node, bucket index.
 struct Hash64Iterator {
@@ -165,6 +173,29 @@ struct Seg59bHost {
     virtual void matrix_copy_004134f0(void* dst, const void* src) = 0;
     // 00414DB0, __thiscall(entity): refresh the cached world pose.
     virtual void entity_pose_refresh_world_00414db0(void* entity) = 0;
+
+    // archive->vtable[14h](key), __thiscall, RET 8: AL = the keyed section exists.
+    virtual bool archive_has_section_vt14(void* archive, ArchiveArg key) = 0;
+    // 00BF6713, __cdecl(): the checked-iterator failure report.
+    virtual void checked_iterator_failure_00bf6713() = 0;
+    // 009045C0, __thiscall(ECX = list, next, prev, const value*), RET 0Ch: allocate a list node
+    // (operator new + the 64h-byte element copy 00904250); EAX = node.
+    virtual void* list_buy_node_009045c0(void* list, void* next, void* prev, const void* value) = 0;
+    // 00904E50, __thiscall(ECX = list, count), RET 4: grow the size, throwing on overflow.
+    virtual void list_inc_size_00904e50(void* list, std::uint32_t count) = 0;
+    // 0084F080 / 0084F1A0, __fastcall(ECX = archive): the stationaries reader / writer.
+    virtual void stationaries_read_archive_0084f080(void* archive) = 0;
+    virtual void stationaries_write_archive_0084f1a0(void* archive) = 0;
+
+    // 0042E630, __cdecl(): the spatial index singleton.
+    virtual void* spatial_index_singleton_0042e630() = 0;
+    // entity->vtable[B0h](), __thiscall, RET: the object a segment query excludes for it.
+    virtual void* entity_query_exclude_vtb0(void* entity) = 0;
+    // 0098ADD0 BSP_SpatialIndex_QuerySegment, __thiscall(index; from, to, exclude, record,
+    // kind_filter), RET 14h; EAX = result.
+    virtual std::uint32_t spatial_index_query_segment_0098add0(void* index, void* from, void* to,
+                                                               void* exclude, void* record,
+                                                               std::uint32_t kind_filter) = 0;
 };
 
 // --- Torpedo bot (vtable 00D182B0) ---------------------------------------------------------
@@ -246,6 +277,26 @@ void* spawn_ref_frame_copy_construct_008f8610(Seg59bHost& host, void* frame, voi
 void spawn_ref_frame_freeze_to_matrix_008f86b0(Seg59bHost& host, void* frame);              // RET
 void spawn_ref_frame_on_observed_released_008f8700(Seg59bHost& host, void* frame,
                                                    void* entity);                             // RET 4
+
+// --- World matrix interpolators (std::list at world+4B0h; 64h-byte elements: +0 entity,
+// +4 translation, +10h rotation, +1Ch time, +20h initial matrix, +60h initial time) ----------
+// 00903C60 / 00903D80, __thiscall(ECX = element, archive), RET 4.
+void matrix_interpolator_read_archive_00903c60(Seg59bHost& host, void* element, void* archive);
+void matrix_interpolator_write_archive_00903d80(Seg59bHost& host, void* element, void* archive);
+// 00904F70 / 009042B0, __thiscall(ECX = world, archive), RET 4: "matrixInterpolators", then
+// "stationaries".
+void world_read_archive_00904f70(Seg59bHost& host, void* world, void* archive);
+void world_write_archive_009042b0(Seg59bHost& host, void* world, void* archive);
+
+// 009052E0, __thiscall(ECX = scoring, slot, delta), RET 8: the 284h-byte player record's float
+// +18h += delta; EAX = its address.
+float* score_record_add_field18_009052e0(void* scoring, std::int32_t slot, float delta);
+
+// 009043A0, __stdcall(from, to, record, entity, kind_filter), RET 14h; EAX = the query result.
+// A segment query on the spatial index that excludes entity->vt[B0h]() (or nothing).
+std::uint32_t spatial_query_segment_excluding_009043a0(Seg59bHost& host, void* from, void* to,
+                                                       void* record, void* entity,
+                                                       std::uint32_t kind_filter);
 
 }  // namespace bsp::cc13_seg59b
 

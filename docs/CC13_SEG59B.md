@@ -114,3 +114,20 @@ copy `00904250`): `008F8F30`, `008F8F90`, `008F8FF0`, `008F9060`, `008F9220`, `0
 `008F9750`, `008F9980`, `008FA2A0`, `008FA740`, `008FAA00`, `008FDF30`, `008FF970`, `009045C0`,
 `0090C170`, and `00904250` (the placement copy of a 64h-byte list element: FLD/FSTP float copies
 of +4h..+1Ch, REP MOVSD of +20h..+5Fh, +60h).
+
+## World save/load, the segment query, and the alias resolvers
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `00903C60` | BSP_MatrixInterpolator_ReadArchive | reconstructed | `matrix_interpolator_read_archive_00903c60`: entity, translation, rotation, time, initialMatrix (kind 7), initialTime. Save/load. |
+| `00903D80` | BSP_MatrixInterpolator_WriteArchive | reconstructed | `matrix_interpolator_write_archive_00903d80`: the writer twin. Save/load. |
+| `00904F70` | BSP_World_ReadArchive | reconstructed | `world_read_archive_00904f70`: one list node per existing section {1, i} (archive slot +14h): `009045C0` (00904FDD), `00904E50` (00904FE7), `00903C60` (00905026); then "stationaries" through `0084F080` (00905066). Save/load. |
+| `009042B0` | BSP_World_WriteArchive | reconstructed | `world_write_archive_009042b0`: `00903D80` per node (00904324), then `0084F1A0` (00904369). Save/load. |
+| `009043A0` | BSP_SpatialIndex_QuerySegmentExcluding | reconstructed | `spatial_query_segment_excluding_009043a0`: `0042E630` (009043AA), entity vt[B0h]() as the exclusion, `0098ADD0` (009043D4); a null entity tail-jumps with exclusion 0. Live in HUD picking. |
+| `009052E0` | BSP_ScoreRecord_AddField18 | reconstructed | `score_record_add_field18_009052e0`: record `slot*284h`, float +18h += delta, returns its address. |
+| `00900C60` .. `00900D40` (eight) | BSP_RobotConfig_ResolveAlias* | ledger-only | src/robot_config.cpp assigns each alias with `find_robot_config_00900af0` in the loader. |
+| `009009A0` | STL_Tree_Construct_009009a0 | library | std::_Tree constructor, bound. |
+
+Not done in this pass: `008FAFC0` (BSP_CommonResourceCache_Preload, 1.1 KB of title-time resource
+preloading with string temporaries and an SEH frame) and `008FF640`
+(BSP_Entity_HullDistanceToPoint_Provisional, no callers).
