@@ -935,3 +935,79 @@ bool ship_derive_turn_fields_thunk_00852200(void* descriptor, Host& host) {
     return host.derive_ship_turn_fields_00828f20(descriptor);
 }
 } // namespace bsp::oct18_tail_b
+
+#include "bsp/entity_mission_seg60_argon.hpp"
+namespace bsp::oct18_tail_b {
+// 0093A3F0, ECX=task, RET, ST0 float. Last matching record wins; compare
+// through the canonical CRT binding. Listing is MOVSS/FLD, with no x87 math.
+float engine_jam_seconds_0093a3f0(const void* task, Host& host) {
+    float seconds = 0.0f;
+    for (std::uint32_t index = 0;; ++index) {
+        void* begin = get<void*>(task, 0x18);
+        if (begin == nullptr || index >=
+            (get<std::uintptr_t>(task, 0x1c) - reinterpret_cast<std::uintptr_t>(begin)) / 16) break;
+        void* record = at(begin, index * 16);
+        const char* name = get<const char*>(record, 8);
+        if (name != nullptr && host.compare_case_insensitive_00bf7fbf(name, "EngineJam") == 0)
+            seconds = get<float>(record, 0xc);
+    }
+    return seconds;
+}
+// 0095C550, ECX=class id, RET. Supplied actual vector is 00F8A09C, not
+// an independent census. Keep the duplicate scan and capacity fast append.
+void append_vehicle_census_0095c550(void* vector, std::int32_t class_id, Host& host) {
+    auto cursor = get<std::uintptr_t>(vector, 4);
+    const auto end = get<std::uintptr_t>(vector, 8);
+    if (end < cursor) invalid(host);
+    while (cursor != end) {
+        if (get<std::int32_t>(reinterpret_cast<void*>(cursor), 0) == class_id) return;
+        cursor += 4;
+    }
+    const auto begin = get<std::uintptr_t>(vector, 4);
+    if (begin != 0 && (end - begin) / 4 < (get<std::uintptr_t>(vector, 0xc) - begin) / 4) {
+        put<std::int32_t>(reinterpret_cast<void*>(end), 0, class_id);
+        put<std::uintptr_t>(vector, 8, end + 4);
+    } else host.insert_census_00441f30(vector, reinterpret_cast<void*>(end), &class_id);
+}
+// 009277E0: five-byte JMP00923840, unchanged ECX. Bind the existing
+// complete raw-storage implementation rather than copy its flag writes.
+void inherit_race_activate_thunk_009277e0(void* entity) {
+    entity_mission_seg60_argon::entity_inherit_race_and_activate_00923840(entity);
+}
+// 00922DC0: MOV DL,1 / JMP00922C80, AL result. The existing source's
+// actual allow_far argument is forced to one, exactly as the native thunk.
+std::uint8_t surface_target_thunk_00922dc0(void* entity,
+                                          entity_mission_seg60_argon::Seg60Host& host) {
+    return entity_mission_seg60_argon::entity_is_surface_target_00922c80(host, entity, 1);
+}
+// 008429C0: JMP00960230, unchanged ECX descriptor / stack LuaObject row.
+// The target's original contract is __thiscall(descriptor,row), RET 4.
+void read_vehicle_fields_thunk_008429c0(void* descriptor, void* lua_row, Host& host) {
+    host.read_vehicle_fields_00960230(descriptor, lua_row);
+}
+// 00968AF0 and 00968470 have identical raw filter/parameter layouts and
+// ordered short-circuit checks. Reuse the complete checked storage body.
+bool event_subscription_matches_00968af0(const void* subscription, const void* parameters, Host& host) {
+    return recon_subscription_matches_00968470(subscription, parameters, host);
+}
+// 008EE670: ECX=nullable text, RET, EAX=00F88C50 scratch. The source API
+// supplies that actual scratch explicitly; forward aliasing/read/write order
+// is retained. Preconditions: terminated input, no lone trailing backslash,
+// and sufficient scratch storage, matching the native valid domain.
+char* decode_scene_fragment_008ee670(const char* input, char* scratch) {
+    char* output = scratch;
+    if (input != nullptr) {
+        while (*input != '\0') {
+            if (*input == '\\') {
+                const char escaped = input[1];
+                input += 2;
+                if (escaped == '\\') *output++ = '\\';
+                else if (escaped == 'n') *output++ = '\n';
+                else if (escaped == 'q') *output++ = '"';
+            } else *output++ = *input++;
+        }
+    }
+    *output = '\0';
+    return scratch;
+}
+} // namespace bsp::oct18_tail_b
