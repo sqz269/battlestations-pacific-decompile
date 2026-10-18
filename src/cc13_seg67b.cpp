@@ -1466,4 +1466,161 @@ void ship_ai_brain_destruct_members_009db470(Cc13Seg67bHost& host, void* brain) 
     ship_ai_observer_member_destruct_a_009db380(host, brain);
 }
 
+// ---------------------------------------------------------------------------
+// Ship-AI destructor bodies (009E5110-009E8CC1). EH state bookkeeping is not
+// modelled. 009E48A0 is the std::list destructor instantiation (library, bound
+// through the host).
+
+namespace {
+constexpr std::uint32_t kObserverPairVtable_00d056d0 = 0x00D056D0u;
+constexpr std::uint32_t kShipAiBaseVtable_00d21990 = 0x00D21990u;
+constexpr std::uint32_t kShipAiBrainVtable_00d21a40 = 0x00D21A40u;
+constexpr std::uint32_t kShipAiBrainB5CVtable_00d21a3c = 0x00D21A3Cu;
+
+void free_and_null(Cc13Seg67bHost& host, void* o, std::size_t off) {
+    void* const p = ptr_at(o, off);
+    if (p != nullptr) host.crt_free_00bf65ac(p);
+    at<std::uint32_t>(o, off) = 0;
+}
+}  // namespace
+
+// 009E5110 (009E5110-009E5122). 009E48A0(o+8h) (009E5116); [o] = 00D056D0.
+void ship_ai_list_owner_destruct_009e5110(Cc13Seg67bHost& host, void* o) {
+    host.std_list_destroy_009e48a0(ptr(o, 0x08));
+    at<std::uint32_t>(o, 0) = kObserverPairVtable_00d056d0;
+}
+
+// 009E5130 (009E5130-009E51AB). EH frame 00CB080B. [o+1504h] = 00D05704
+// (009E515E); [o+1508h]->vtable[8]() when set (009E516F); +14F4h, +14E0h, +14CCh,
+// +14C0h = 00D056D0 (009E5176-009E518B); 009E48A0(o+10h) (009E5191); [o+8h] and
+// [o] = 00D056D0 (009E519A, 009E519D).
+void ship_ai_planner_destruct_009e5130(Cc13Seg67bHost& host, void* o) {
+    at<std::uint32_t>(o, 0x1504) = kBotTaskSubVtable30C;
+    void* const owned = ptr_at(o, 0x1508);
+    if (owned != nullptr) host.object_vcall_08_noargs(owned);
+    at<std::uint32_t>(o, 0x14F4) = kObserverPairVtable_00d056d0;
+    at<std::uint32_t>(o, 0x14E0) = kObserverPairVtable_00d056d0;
+    at<std::uint32_t>(o, 0x14CC) = kObserverPairVtable_00d056d0;
+    at<std::uint32_t>(o, 0x14C0) = kObserverPairVtable_00d056d0;
+    host.std_list_destroy_009e48a0(ptr(o, 0x10));
+    at<std::uint32_t>(o, 0x08) = kObserverPairVtable_00d056d0;
+    at<std::uint32_t>(o, 0x00) = kObserverPairVtable_00d056d0;
+}
+
+// 009E5460 (009E5460-009E5524). EH frame 00CB0887. [o] = 00D21990 (009E547E);
+// free(+AC4h) and +AC4h = 0 when set (009E5499, 009E54A1); 0041CC80(o+4h)
+// (009E54AA); 006E0860(o+AF8h) (009E54B5); free(+AE0h) when set, then +AE0h,
+// +AE4h, +AE8h = 0 (009E54C5-009E54D9); free(+AD0h) when set, then +AD0h, +AD4h,
+// +AD8h = 0 (009E54EA-009E5501); 009E0130(o+8h) (009E550F).
+void ship_ai_base_destruct_009e5460(Cc13Seg67bHost& host, void* o) {
+    at<std::uint32_t>(o, 0) = kShipAiBaseVtable_00d21990;
+    void* const p = ptr_at(o, 0xAC4);
+    if (p != nullptr) {
+        host.crt_free_00bf65ac(p);
+        at<std::uint32_t>(o, 0xAC4) = 0;
+    }
+    host.critical_section_destroy_owned_0041cc80(ptr(o, 0x04));
+    host.observer_member_9348_destruct_006e0860(ptr(o, 0xAF8));
+    free_and_null(host, o, 0xAE0);
+    at<std::uint32_t>(o, 0xAE4) = 0;
+    at<std::uint32_t>(o, 0xAE8) = 0;
+    free_and_null(host, o, 0xAD0);
+    at<std::uint32_t>(o, 0xAD4) = 0;
+    at<std::uint32_t>(o, 0xAD8) = 0;
+    host.member_array_destruct_009e0130(ptr(o, 0x08));
+}
+
+// 009E8C10 (009E8C10-009E8CC1). EH frame 00CB0A53. [b] = 00D21A40, [b+B5Ch] =
+// 00D21A3C, [b+21FCh] = 00D056D0 (009E8C37-009E8C56); 009DB470(b+2124h)
+// (009E8C5C); 009E5130(b+C18h) (009E8C6C); +C0Ch, +C04h, +BE0h, +B8Ch, +B80h,
+// +B70h = 00D056D0 (009E8C71-009E8C91); 004116D0(b+B5Ch) (009E8C9C, no null
+// adjustment); 009E5460(b) (009E8CAB).
+void ship_ai_brain_destruct_009e8c10(Cc13Seg67bHost& host, void* brain) {
+    at<std::uint32_t>(brain, 0x000) = kShipAiBrainVtable_00d21a40;
+    at<std::uint32_t>(brain, 0xB5C) = kShipAiBrainB5CVtable_00d21a3c;
+    at<std::uint32_t>(brain, 0x21FC) = kObserverPairVtable_00d056d0;
+    ship_ai_brain_destruct_members_009db470(host, ptr(brain, 0x2124));
+    ship_ai_planner_destruct_009e5130(host, ptr(brain, 0xC18));
+    at<std::uint32_t>(brain, 0xC0C) = kObserverPairVtable_00d056d0;
+    at<std::uint32_t>(brain, 0xC04) = kObserverPairVtable_00d056d0;
+    at<std::uint32_t>(brain, 0xBE0) = kObserverPairVtable_00d056d0;
+    at<std::uint32_t>(brain, 0xB8C) = kObserverPairVtable_00d056d0;
+    at<std::uint32_t>(brain, 0xB80) = kObserverPairVtable_00d056d0;
+    at<std::uint32_t>(brain, 0xB70) = kObserverPairVtable_00d056d0;
+    host.state_registry_destruct_004116d0(ptr(brain, 0xB5C));
+    ship_ai_base_destruct_009e5460(host, brain);
+}
+
+namespace {
+constexpr double kTiny_00ce3820 = 1e-10;   // bytes BB BD D7 D9 DF 7C DB 3D
+}  // namespace
+
+// 009BEBA0 (009BEBA0-009BECC8). ctl = [a+0Ch]; byte ctl+3ADh == 0 -> a+2Ch = 0
+// (009BEBAA-009BEBB7). t = [a+44h]: when set, 00414DB0(t) unless byte t+C8h
+// (009BEBCE), then a+48h..+50h = t+FCh..+104h (009BEBD3-009BEBEB). a+4Ch =
+// float(ctl+394h - a+2Ch) (009BEBF1-009BEBFD). u = [a+4h]: 00414DB0(u) unless byte
+// u+C8h (009BEC0B); dx = float(a+48h - u+FCh), dz = float(a+50h - u+104h); d2 =
+// float(dz*dz + dx*dx) (009BEC2D-009BEC3D); d = d2 > double [00CE3820] ?
+// float(sqrt(d2)) (00BF7030) : 0 (JBE, so NaN -> 0); a+64h = d (009BEC80);
+// 009FD050(ECX = a, d, a+48h) (009BEC85). When a+28h > [00D7A218] (0.0; COMISS,
+// JBE -> skip): a+4Ch = 009FC260(ECX = 009BD400(), [a+4h], a+48h, a+28h)
+// (009BECA9-009BECBF).
+void bot_approach_refresh_target_009beba0(Cc13Seg67bHost& host, void* a) {
+    void* const ctl = ptr_at(a, 0x0C);
+    if (at<std::uint8_t>(ctl, 0x3AD) == 0) at<float>(a, 0x2C) = 0.0f;
+    void* const t = ptr_at(a, 0x44);
+    if (t != nullptr) {
+        if (at<std::uint8_t>(t, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(t);
+        at<float>(a, 0x48) = at<float>(t, 0xFC);
+        at<float>(a, 0x4C) = at<float>(t, 0x100);
+        at<float>(a, 0x50) = at<float>(t, 0x104);
+    }
+    at<float>(a, 0x4C) = at<float>(ctl, 0x394) - at<float>(a, 0x2C);
+    void* const u = ptr_at(a, 0x04);
+    if (at<std::uint8_t>(u, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(u);
+    const float dx = at<float>(a, 0x48) - at<float>(u, 0xFC);
+    const float dz = at<float>(a, 0x50) - at<float>(u, 0x104);
+    const float d2 = dz * dz + dx * dx;
+    const float d = static_cast<double>(d2) > kTiny_00ce3820
+                        ? static_cast<float>(std::sqrt(static_cast<double>(d2)))
+                        : 0.0f;
+    at<float>(a, 0x64) = d;
+    host.bot_approach_refresh_path_leg_009fd050(a, d, ptr(a, 0x48));
+    const float w = at<float>(a, 0x28);
+    if (w > 0.0f) {
+        void* const unit = ptr_at(a, 0x04);
+        void* const manager = host.bot_path_leg_manager_get_009bd400();
+        at<float>(a, 0x4C) =
+            host.bot_path_leg_manager_altitude_009fc260(manager, unit, ptr(a, 0x48), w);
+    }
+}
+
+// 009BD400 (009BD400-009BD4BC). EH frame 00CAF623. [00F8A720] set -> return it.
+// Else cs = [00415350()+10h]; when cs: EnterCriticalSection(cs) (import 00CE2218,
+// 009BD43F) and cs+18h += 1. When [00F8A720] is still 0 (009BD451): m = operator
+// new(10h) (009BD45C), m = m ? 009FAA40(ECX = m) : 0 (009BD473), [00F8A720] = m
+// (009BD481), 00BD0C30(ECX = 00415350(), m) (009BD494). When cs: cs+18h -= 1 and
+// LeaveCriticalSection(cs) (import 00CE2210, 009BD4A2). Returns [00F8A720].
+// The guard local's vtable 00CE37FC (009BD430) has no other effect.
+void* bot_path_leg_manager_get_body_009bd400(Cc13Seg67bHost& host) {
+    if (host.path_leg_manager_00f8a720() != nullptr) return host.path_leg_manager_00f8a720();
+    void* const cs = ptr_at(host.singleton_manager_00415350(), 0x10);
+    if (cs != nullptr) {
+        host.enter_critical_section_ce2218(cs);
+        at<std::int32_t>(cs, 0x18) += 1;
+    }
+    if (host.path_leg_manager_00f8a720() == nullptr) {
+        void* m = host.operator_new_00bf681b(0x10);
+        m = m != nullptr ? host.bot_path_leg_manager_construct_009faa40(m) : nullptr;
+        host.set_path_leg_manager_00f8a720(m);
+        host.singleton_register_00bd0c30(host.singleton_manager_00415350(),
+                                         host.path_leg_manager_00f8a720());
+    }
+    if (cs != nullptr) {
+        at<std::int32_t>(cs, 0x18) -= 1;
+        host.leave_critical_section_ce2210(cs);
+    }
+    return host.path_leg_manager_00f8a720();
+}
+
 }  // namespace bsp

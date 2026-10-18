@@ -190,3 +190,16 @@ Ledger-only spot checks:
 | 009DA880 / 009DB470 / 009DF8F0 | ship-AI node destroy, brain members, list head | the list head writes address 4 on a null allocation, as in the image |
 
 Ledger-only: 009C82D0 and 009D3E40 are byte-identical copies of 009A56C0 (`set_state`).
+
+### 3.7 Ship-AI destructors, the move-to refresh and the path-leg manager singleton
+
+| Address | Function | Notes |
+|---|---|---|
+| 009E5110 / 009E5130 / 009E5460 / 009E8C10 | ship-AI destructor bodies | 009E48A0 is the std::list destructor (library), bound through the host |
+| 009BEBA0 | `bot_approach_refresh_target_009beba0` | the whole body |
+| 009BD400 | `bot_path_leg_manager_get_body_009bd400` | a lazy singleton taken under the lifetime manager's critical section |
+
+009BEBA0 and the cc9 host's `moveto_refresh_009beba0` (game_hosts_units.cpp:31618):
+- The host is a partial model that carries its own labelled substitutions.
+- The +2Ch zeroing has the same polarity in both: `sq_lua_alt_3ad` is true exactly when byte +3ADh is 0.
+- The host does not apply the +28h leg-altitude override (009FC260). It keeps that as a record, as its comment states.

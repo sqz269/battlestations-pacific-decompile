@@ -175,6 +175,36 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
+    // 00F8A720: the path-leg manager singleton.
+    virtual void* path_leg_manager_00f8a720() = 0;
+    virtual void set_path_leg_manager_00f8a720(void* manager) = 0;
+    // 00415350: the singleton lifetime manager (critical section pointer at +10h).
+    virtual void* singleton_manager_00415350() = 0;
+    // EnterCriticalSection / LeaveCriticalSection through the imports 00CE2218 / 00CE2210.
+    virtual void enter_critical_section_ce2218(void* section) = 0;
+    virtual void leave_critical_section_ce2210(void* section) = 0;
+    // 009FAA40: __fastcall(ECX = memory), RET, EAX = the manager.
+    virtual void* bot_path_leg_manager_construct_009faa40(void* memory) = 0;
+    // 00BD0C30: __thiscall(ECX = lifetime manager; instance), RET 4.
+    virtual void singleton_register_00bd0c30(void* manager, void* instance) = 0;
+    // 009FD050: __thiscall(ECX = approach, float d, const float* point), RET 8.
+    virtual void bot_approach_refresh_path_leg_009fd050(void* approach, float d,
+                                                        void* point) = 0;
+    // 009BD400: __cdecl(), RET, EAX: the lazily built path-leg manager.
+    virtual void* bot_path_leg_manager_get_009bd400() = 0;
+    // 009FC260: __thiscall(ECX = manager, unit, const float* point, float w), RET 0Ch, ST0.
+    virtual float bot_path_leg_manager_altitude_009fc260(void* manager, void* unit, void* point,
+                                                         float w) = 0;
+    // 00BF65AC: _free (operator delete), __cdecl(p).
+    virtual void crt_free_00bf65ac(void* p) = 0;
+    // 009E48A0: the std::list destructor instantiation, __fastcall(ECX = owner+offset).
+    virtual void std_list_destroy_009e48a0(void* object) = 0;
+    // 0041CC80: __fastcall(ECX = owned critical section holder), RET.
+    virtual void critical_section_destroy_owned_0041cc80(void* object) = 0;
+    // 006E0860: __fastcall(ECX = observer member), RET.
+    virtual void observer_member_9348_destruct_006e0860(void* object) = 0;
+    // 009E0130: __fastcall(ECX = member array), RET (no flags pushed at 009E550F).
+    virtual void member_array_destruct_009e0130(void* object) = 0;
     // object->vtable[38h](), RET, AL.
     virtual bool object_vcall_38(void* object) = 0;
     // object->vtable[34h](), RET, AL.
@@ -443,5 +473,14 @@ float pilot_bot_first_task_wait_value_00999ae0(Cc13Seg67bHost& host, void* bot);
 void plane_latch_yaw_rate_multiplier_0099bb00(void* unit, float v);
 // 009DB470: __fastcall(ECX = brain), RET.
 void ship_ai_brain_destruct_members_009db470(Cc13Seg67bHost& host, void* brain);
+// 009E5110 / 009E5130 / 009E5460 / 009E8C10: __fastcall(ECX = object), RET.
+void ship_ai_list_owner_destruct_009e5110(Cc13Seg67bHost& host, void* o);
+void ship_ai_planner_destruct_009e5130(Cc13Seg67bHost& host, void* o);
+void ship_ai_base_destruct_009e5460(Cc13Seg67bHost& host, void* o);
+void ship_ai_brain_destruct_009e8c10(Cc13Seg67bHost& host, void* brain);
+// 009BEBA0: __fastcall(ECX = approach), RET.
+void bot_approach_refresh_target_009beba0(Cc13Seg67bHost& host, void* a);
+// 009BD400: __cdecl(), RET, EAX. (009BEBA0 reaches it through the host hook.)
+void* bot_path_leg_manager_get_body_009bd400(Cc13Seg67bHost& host);
 
 }  // namespace bsp
