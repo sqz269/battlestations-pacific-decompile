@@ -19382,3 +19382,30 @@ The image keeps a unit's record for its life. Bound OFF as `kReconRecordsSurvive
 **c14 (`local\s59_osmk.py`; `s59_a_c14` reference, `s59_aj_c14` 20,3).** It is c13 with Shimotsuke out of every strike
 until frame 30000, and the Loui HQ2 sweeps ended at 2500 s. Same result: the double fire at 1025.88 / 1070.92, blockade
 first, and no reinforcements. Keeping Shimotsuke unstruck cannot help while the records reset.
+
+**The new tree (310ac5a0b, records survive a spawn).** BlockSighted now fires on its own first identification, so the
+Countdown is armed and `luaReinTime` runs. The blocker moves on to the transports and the last FinalTrgs member.
+
+| run | BlockSighted | luaReinTime | transports lost | end |
+|---|---|---|---|---|
+| `s59_b_c14` (ref) | 1833 s | none | TT4 662, TT2 744 (wave-2 planes); TT6/TT3/TT1/TT5 2370-2474 (blockade) | failed 2476 s, "Game Over" HQ1 |
+| `s59_bj_c14` (20,3) | 1602 s | none | all six 2292-2506 (blockade Shima) | failed 2506 s |
+| `s59_bj_c15` (20,3) | 1497 s | 2403 s | TT6/TT2/TT3 2224-2316, TT1 2677 (DM1 friendly), TT4 2678 (TT1 blast), TT5 2800 | failed 2802 s |
+| `s59_b_c15` (ref, 150000 frames) | 1774 s | 2679 s | TT4 662, TT2 744, TT3 1390, TT6 2367, TT1 2886; TT5 lives | none at 7487 s |
+
+`luaBlockadeMovieEnd` sends every blockade ship with x >= -6500 at a random live TilmanGrp member (NH, Portland1/2, the
+six transports, Gear13/14), so the transports are the blockade's targets wherever they stand. In `s59_b_c15`, 13 of 14
+blockade ships died at 1890-3264 s, Yamato at 6314 s, Musashi at 6579 s, Haku1/3/4 at 3396-3520 s, and TT5 allied CB2
+at 4400 s. Two things were missing at the end. HQ1 and HQ2 were neutral but never allied: `luaCaptureBases` allies a
+neutral base when the nearest live `Mission.Troops` member is within 1500 m 3D, and TT5 was never sent there. HQ2's
+engine capture reached 4620 of 10000 at 2725 s and then decayed. And Haku2 was never hit: IJN12 lists it after both
+battleships, and the four decks' launches at it from 3500 s were refused with "no such slot".
+
+**c16 (`s59_b_c16`, 170000 frames, reference only).** Its orders are identical to c15 before frame 89000, so it
+replays `s59_b_c15` to 4450 s. After that, TT5 moves to (-2100, 3300), 1384 m from HQ1, at frame 89000, then to
+(2000, 4200), 1250 m from HQ2, at frame 122000. The decks strike Haku2 first, then Haku1/3/4, the battleships and the
+rest, at 331 every 6000 frames with recalls. Predictions: HQ1 allied at about 5600-5800 s, HQ2 at about 6300-6500 s
+(TT5 at its 12.86 m/s reference speed), Haku2 dead before 6500 s. The win needs both battleships and Haku2 dead, and
+TT5 alive (Primary 1). There is no jitter row: `s59_bj_c15` lost every transport before frame 89000, so a c16 jitter
+run would repeat it. A jitter-robust plan needs the transports kept away from the blockade until it is dead (see the
+handoff).
