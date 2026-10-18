@@ -887,6 +887,14 @@ inline constexpr float kCommandBuildingRepairLevel[4] = {1.00f, 1.10f, 1.20f, 1.
 inline constexpr bool kCommandBuildingStepRepairBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
+// Packet s57_depth_band (SHIP_AI_OPEN_ITEMS 282; CC13_VERIFY2 R3). In the image both
+// neighbour bands are the model's WORLD Y bounds (009DE2F0 for the own hull, 009EAFC0
+// for the observed one, both through 0098A8E0), so they follow depth and a deep
+// submarine fails 009EB03C / 009EB053 against a surface ship. True: the null-model band
+// is placed at the unit's world y (+FCh..+104h), so it moves with the hull. LABELLED
+// SUBSTITUTION: no unit carries a model here, so the band's height stays -10..+50 about
+// the hull origin rather than the model's own extent. False: the fixed world band.
+inline constexpr bool kShipNeighbourDepthBandBound = false;
 namespace {
 
 // Diagnostic only: BSP_SHIP_ESCAPE_TRACE=<unit name> logs the escape inputs of
@@ -980,6 +988,13 @@ public:
         // The represented unit/class owner creates no model box or parts.
         // Native0087BE02..0087BF5B maps absent descriptor+50h to unit+360h=0;
         // the verified virtual20 target006D1E30 returns that field.
+        if (kShipNeighbourDepthBandBound) {
+            float x = 0.0f, y = 0.0f, z = 0.0f;
+            units_.unit_position_00fc(index_, x, y, z);
+            depth_band_.min = {x, static_cast<float>(static_cast<double>(y) + kShipNeighbourNullModelMinY), z};
+            depth_band_.max = {x, static_cast<float>(static_cast<double>(y) + kShipNeighbourNullModelMaxY), z};
+            return &depth_band_;
+        }
         return nullptr;
     }
 
@@ -988,6 +1003,7 @@ private:
     std::size_t index_;
     const std::uint32_t& class_reference_;
     bsp::CameraMatrix world_{};
+    bsp::HitQueryBounds depth_band_{};   // packet s57_depth_band
 };
 
 // The two re-plan interval getters, read from the image for this packet.
@@ -1204,6 +1220,7 @@ struct GameShipAiHost::Impl {
     unsigned long long garrison_kills{0};
     unsigned long long moveto_capture_range_reads{0};   // s57_moveto_capture_range
     unsigned long long traffic_recon_walks{0};      // s57_traffic_recon, 009E9220 walks
+    unsigned long long depth_band_targets{0};       // s57_depth_band, 009EAFC0 retargets
     unsigned long long traffic_recon_contacts{0};   // ... contacts summed
     unsigned long long garrison_recreates{0};
     unsigned long long garrison_recreates_recorded{0};
@@ -9520,7 +9537,16 @@ private:
 class NeighbourAvoidBoxBinding final : public bsp::ShipAiNeighbourAvoidBoxHost {
 public:
     explicit NeighbourAvoidBoxBinding(GameShipAiHost::Impl& owner) : owner_(owner) {}
-    void target(std::size_t unit) { unit_ = unit; }
+    void target(std::size_t unit) {
+        unit_ = unit;
+        if (kShipNeighbourDepthBandBound) {
+            float x = 0.0f, y = 0.0f, z = 0.0f;
+            owner_.units.unit_position_00fc(unit_, x, y, z);
+            band_.min.y = static_cast<float>(static_cast<double>(y) + kShipNeighbourNullModelMinY);
+            band_.max.y = static_cast<float>(static_cast<double>(y) + kShipNeighbourNullModelMaxY);
+            ++owner_.depth_band_targets;
+        }
+    }
 
     const void* observed_model_vtable20() override {
         // 006D1E30, unit+360h: no unit of this process carries a model, the same
@@ -14603,6 +14629,9 @@ void GameShipAiHost::report() {
         host.log.notef("summary mission ship ai traffic recon list bound=%d walks=%llu contacts=%llu "
             "(packet s57_traffic_recon, 009E9220 [008053C0(party)]+0DE8h)",
             kShipAiTrafficReconListBound ? 1 : 0, host.traffic_recon_walks, host.traffic_recon_contacts);
+        host.log.notef("summary mission ship ai neighbour depth band bound=%d observed_retargets=%llu "
+            "(packet s57_depth_band, 009DE2F0 / 009EAFC0 world Y bounds)",
+            kShipNeighbourDepthBandBound ? 1 : 0, host.depth_band_targets);
         for (const Impl::CaptureBuilding& b : host.capture_buildings) {
             const GameUnitRow* row = host.units.unit_row(b.unit);
             host.log.notef("summary mission command building level unit=%s level=%d "

@@ -18908,3 +18908,22 @@ mission ship ai traffic recon list bound= walks= contacts=`.
 neutrals, nothing before the first 3.0 s rebuild); ships near unidentified or neutral ships stop steering
 around them, so approach tracks move on every surface battle (USN12, USN15, IJN08, JM08); the RNG is not
 touched by the walk itself, but moved tracks move the fire timings downstream.
+
+## 282. Neighbour bands follow depth, kShipNeighbourDepthBandBound (cc9-ships57, 2026-10-17; lead item 7c)
+
+**Image (CC13_VERIFY2 R3).** 009DE2F0 (own hull) and 009EAFC0 (observed hull) both copy the model's world bounds
+through 0098A8E0 into max/min Y; 009EB03C / 009EB053 bail when the bands do not overlap. With models the bands
+follow depth, so a deep submarine and a surface ship ignore each other. The host gives every hull the constant
+world band -10..+50 (009DE2F0's null-model arm for the own hull, `kShipNeighbourNullModelBandSubstituted`
+for the observed one), so they always overlap.
+
+**Bind (OFF).** `kShipNeighbourDepthBandBound` (src/game_hosts_ship_ai.cpp): both bands are placed at the unit's
+world y (position +FCh..+104h): own hull through `unit_model_vtable20` (a band object instead of null), the
+observed hull when 009EAFC0's binding is retargeted. LABELLED SUBSTITUTION: still no model, so the height
+stays -10..+50 about the hull origin. Counter: `summary mission ship ai neighbour depth band bound=
+observed_retargets=`.
+
+**Predictions, written before any run.** OFF identical. ON: surface-vs-surface pairs stay overlapping (y ~ 0,
+small moves only where the live sea lifts a hull); a submarine deeper than 60 m (y < -60) stops avoiding
+surface ships and vice versa. Rows: USN04 / JM08 (submarines present) and any sub-heavy mission; elsewhere
+small or no movement.
