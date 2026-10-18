@@ -69,6 +69,7 @@ namespace bsp { struct PlaneSquadronHostRecord; }
 #include "bsp/native_scene_lifecycle_notify.hpp"
 #include "bsp/ship_ai_obstacle_tables.hpp"
 #include "bsp/unit_force_channel.hpp"
+#include "bsp/land_convoy_wiring_cc13.hpp"  // packet cc13-convoy
 
 namespace bsp::game {
 
@@ -209,6 +210,7 @@ inline constexpr bool kSquadronReturnToBaseResolveBound = true;  // ON: record o
 inline constexpr bool kUnitYawRateForwardSpeedBound = true;  // ON: mechanism held, reach miss recorded (docs/UNIT_YAW_RATE_FORWARD_SPEED.md)
 inline constexpr bool kSquadronLandTaskBound = true;  // ON: pairs, spread miss recorded (docs/SQUADRON_LAND_TASK.md 5)
 inline constexpr bool kLandConvoyMovementBound = true;  // ON: pairs held (docs/LAND_AND_STRUCTURES.md)
+// Packet cc13-convoy: kLandConvoyBodiesBound, include/bsp/land_convoy_wiring_cc13.hpp.
 // Packet cc9_landing_sequencer. The deck's landing queue and sequencer for an
 // AIRFIELD owner: 006C54C0 queues the squadron (006BF060/006C0B50) and reads
 // its record through 006BD080; the queue tick 006CD240 runs 006CC9F0 (insert
@@ -1235,6 +1237,22 @@ public:
     // convoy of that name is bound. Callers: the GameMissionLuaHost rows only.
     bool set_land_convoy_stopped_3a8(const std::string& convoy, bool stopped);
     bool set_land_convoy_speed_368(const std::string& convoy, float speed);
+    // Packet cc13-convoy, under kLandConvoyBodiesBound (no-ops when it is off).
+    // The row-15 flush (009273A0), which loops until its queues are empty: each
+    // pass runs the queued convoys' 00742180, then 0074CD10 for each member dead
+    // since the previous pass, until a pass finds neither.
+    void land_convoy_flush_009273a0();
+    // Lua Kill(convoy[, hard]) through 008AC740 -> 00742210 on the convoy named
+    // `convoy`. Appends each member 00742210 handed to 00926D90 to `victims`,
+    // with the cause 00742210 computed (the caller kills them, as for any Lua
+    // Kill victim), and nulls its slot. False when no convoy of that name has a
+    // roster.
+    struct LandConvoyVictim {
+        std::size_t unit;
+        int cause;
+    };
+    bool land_convoy_kill_member_vector_00742210(const std::string& convoy, bool hard,
+                                                 std::vector<LandConvoyVictim>& victims);
     // Instance vtable+5Ch dispatch using the class selected by VehicleClass.Type
     // and the compiled predicates in unit_kind_query.hpp. Missing/unrecognized
     // identity and invalid indices answer false. docs/GAME_UNIT_KIND_BINDING.md.

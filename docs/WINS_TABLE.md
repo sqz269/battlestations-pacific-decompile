@@ -865,3 +865,51 @@ mechanism is in the cd761bb52 section above).
   - **JM08** still fails on HQ capture with every committed plan on this exe: e 1202.10 s, w1 1312.20 s,
     r12 1130.03 s (plus p2 1259.15 s on fcb6c6fa5, before this lane's flips). LandingShip units reach
     `Headquarter 01` from 984 s. Not re-planned here; it needs the landing force sunk before 980 s.
+- **Re-time on 03d3df7f8** (cc9-lua68, 2026-10-18; main after the lua67 re-plans, ships57's SHIP_AI flips and cc13
+  seg67A). Export `cc9-lua52\local\l68_m1` (9F2B57BCAA24), reference env, `--stop-after-end 40`; logs
+  `cc9-lua52\local\l68r_<row>_m1_<ref|j3>.log`, summary `local\l68_sum.py`, queue `local\l68_queue.ps1` /
+  `l68_runs.ps1` (at most two runs, 65 s apart). "Was" is the fcb6c6fa5 / aa5f342e6 rows above.
+
+  | Row (plan) | frames | reference | 20,3 | was (ref / 20,3) |
+  |---|---|---|---|---|
+  | USN01 `l65_u1_g` | 26000 | completed 405.02 s | completed 415.02 s | 405.02 / 415.02 |
+  | LOMP06 `l67_l6_b` | 16000 | completed 269.86 s | completed 269.86 s | 269.86 / 269.86 |
+  | PRCP01 `p9_p01_k` | 30000 | completed 647.37 s | completed 920.45 s | 921.85 / 854.86 |
+  | LOMP10 `p3_l10_b` | 36000 | completed 987.43 s | completed 991.43 s | 987.43 / 991.43 |
+  | JM06 `s45_j6_k` | 120000 | completed 676.96 s | completed 790.93 s | 676.96 / 790.93 |
+  | ESMP08 `p12_e8_rb` | 140000 | completed 1367.41 s | completed 1372.41 s | 1367.41 / 1372.41 |
+  | IJN18 `l67_i18_d` | 64000 | EndMission 1676.51 s (Crush) | EndMission 1841.67 s (Crush) | 1911.74 / 2011.84 |
+  | USN12 `g45_u12_e7` | 36000 | completed 1395.24 s | **no end** | 1395.24 / no end |
+  | USN12 **`l68_u12_e8`** (new) | 36000 | completed 1395.24 s | completed 1500.34 s | - |
+  | USN02 `s36_u2_p7` | 16000 | **failed 195.06 s** | - | 195.06 / 634.97 |
+  | USN02 **`l68_u2_a`** (new) | 16000 | completed 475.01 s | completed 460.01 s | - |
+  | IJN08 `p10_i08_z` | 100000 | **no end** | completed 3076.88 s | no end / 3076.88 |
+  | JM08 `l65_j8_p2` | 110000 | **failed 1259.15 s** (HQ) | - | 1259.15 / 1165.06 |
+  | BSM09 `l65_b9_c` | 36000 | **failed 183.06 s** (Donald) | - | 183.06 / EndMission 327.04 |
+  | USN15 `s45_u15_l2` | 90000 | **failed 1257.15 s** | - | 1257.15 / 1297.19 |
+  | BSM01 `p6_b1_a` | 40000 | no end | - | no end / no end |
+
+  Every completion logged the guard ("refused a mission script's process launch"); the IJN18 EndMission wins log it
+  too on this exe. Notes:
+  - **USN02: the row is now `config/win_orders/usn02_l68_u2_a.txt`.** The player stays on Houston and re-issues
+    `moveto Houston EscapePoint` every 200 frames from 540 to 5140, sends Exeter to (1000, -5450) at 4400, and at 5300 takes Houston's helm (`takehelm Houston
+    1.0 EscapePoint stop 200`, a role-1 take that exempts Houston from SHIP_AI 274). b and c (the take at 6000 /
+    7000) complete at 495.00 / 505.00 s (reference); the orders are in `cc9-lua52\local\l68_u2_<v>.txt`.
+  - **USN12: the row is now `config/win_orders/usn12_l68_u12_e8.txt`**: e7 with every MontGrp moveto to (4500, 2500)
+    sent to (7600, 7000) instead. e7 has no end under 20,3; e8 completes on both seeds, and its reference time is
+    e7's.
+  - **IJN08 reference**: on z, Maru1 dies at 1384 s to US_Airfield_03's squadrons, Maru2's landing craft launch
+    only at 3715 s, and `Shipyard Entity CB3` never dies, so the HQ is not taken in 100000 frames. Two re-plans
+    (`cc9-lua52\local\l68_i08_gen.py`, through physics9's planner): a sends Aoba, Kinugasa and Furutaka onto CB3 /
+    US_Shipyard_03 from 36500, b also releases the Marus at 46000. Neither ends: Kinugasa (830 s) and Furutaka
+    (1355 s) are dead before 36500, Aoba alone takes US_Shipyard_03 at 2390 s instead of 2900 s and CB3 survives;
+    on b all 14 LandingShip units die together at 3343.64 s. IJN08's reference stays open.
+  - **JM08**: USTroopTransport 01 (unit 353) launches 8 landing craft at about 790 s near (600, -700); they land at
+    1037-1075 s and take the HQ (Party 2, the failure). CheckInvasion starts the invasion at once. Five re-plans fail
+    at 1222-1285 s: q1 / q2 / q3 put AP01 first in the launch order from 12000 / 8000 / 10000, r1 / r2 send torpedoes
+    at AP01 (`cc9-lua52\local\l68_j8_<v>.txt`). AP01 dies too late or not at all; the craft have to die before they
+    land. JM08 stays open.
+  - **BSM09** on be691fb5b's base (SquadronSetTravelSpeed ON, SQUADRON_LAND_TASK 5in) fails at 222.06 s instead
+    of 183.06 s with the same plan: main moved it, not the travel speed (the OFF side of that pair fails at 222.06 s
+    too).
+  - USN15, BSM09's reference, BSM01 and USNOS wait on the ships and physics lanes as the lead's queue says.

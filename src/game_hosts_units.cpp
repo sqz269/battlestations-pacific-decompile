@@ -32,6 +32,8 @@
 #include "bsp/camera_path_sampler.hpp"      // packet cc9_land_convoy_movement
 #include "bsp/return_to_base.hpp"           // packet cc9_squadron_land_task
 #include "bsp/land_and_structures.hpp"      // packet cc9_land_convoy_movement
+#include "bsp/cc15_land_convoy.hpp"         // packet cc13-convoy
+#include "bsp/cc13_seg41_land_null_host.hpp"  // packet cc13-convoy (0074CD10, 00742210)
 #include "bsp/mission_camera.hpp"           // kWorldUp00f8758c
 #include "bsp/native_camera_plane_transform.hpp"
 #include "bsp/plane_advance_pose.hpp"
@@ -2723,6 +2725,26 @@ struct LandConvoyMotionState {
     std::size_t range_errors{0};
 };
 
+// Packet cc13-convoy, under kLandConvoyBodiesBound: what cc15's bodies read and
+// write on one convoy (include/bsp/cc15_land_convoy.hpp). The bodies take this
+// object's address as the convoy pointer and unit index + 1 as a member pointer;
+// neither is dereferenced by them.
+struct LandConvoyLifeState {
+    std::string name;
+    std::vector<std::size_t> slots;  // +394h vector (+398h..+39Ch); npos = a null slot
+    std::int32_t live_3bc{0};        // +3BCh
+    bool killed_5f{false};           // +5Fh, set by 00926D90 on the convoy
+    bool pending_destroy_60{false};  // +60h; nothing destroys a convoy marker here
+    std::int32_t cause_70{0};        // +70h
+    bool kill_queued{false};         // on 00F899B4; its +080h (00742180) not yet run
+    struct Member {
+        std::size_t unit{0};
+        LandConvoyLifeState* convoy_738{nullptr};  // member +738h; 00742180 clears it
+        bool on_killed_run{false};                 // its +080h (0074CD10) has run
+    };
+    std::vector<Member> members;
+};
+
 struct GameUnitsHost::Impl {
     Impl(GameHostLog& log_in, GameMissionLuaHost& lua_in)
         : log(log_in), lua(lua_in), commands(log_in) {}
@@ -2735,6 +2757,8 @@ struct GameUnitsHost::Impl {
     GameCommandsHost commands;
     // Packet cc9_land_convoy_movement, under kLandConvoyMovementBound.
     std::vector<LandConvoyMotionState> land_convoys;
+    // Packet cc13-convoy, under kLandConvoyBodiesBound: one per roster built.
+    std::vector<std::unique_ptr<LandConvoyLifeState>> land_convoy_lives;
     // Packet cc9_air_ops_squadron_registry.
     unsigned long long departed_block_reads{0};
     // Packet cc9_squadron_land_task, under kSquadronReturnToBaseResolveBound.
@@ -13107,6 +13131,31 @@ std::size_t GameUnitsHost::build_land_convoy_roster_00743450(
         row.land_convoy_738 = convoy.name;                        // 00743A34
         row.land_convoy_slot_73c = slots[i];                      // +73Ch
     }
+    if constexpr (kLandConvoyBodiesBound) {
+        // Packet cc13-convoy: the member vector (a null per type below 1, as at
+        // 0074379C), the live count (the members made, as above) and each
+        // member's +738h, for cc15's 00742180 / 007422A0 and cc13's 00742210.
+        // A second roster under a name already held (a roster built twice, or two
+        // convoys sharing a name) is not tracked: every lookup here is by name, as
+        // the motion state's is, and would only ever reach the first.
+        bool duplicate = false;
+        for (const auto& held : host.land_convoy_lives) duplicate = duplicate || held->name == convoy.name;
+        if (duplicate) {
+            host.log.notef("  LandConvoy roster \"%s\": a convoy of that name already has a "
+                "member vector; this roster's %zu members are not tracked (packet cc13-convoy)",
+                convoy.name.c_str(), made);
+        } else {
+            auto life = std::make_unique<LandConvoyLifeState>();
+            life->name = convoy.name;
+            life->slots.assign(convoy.convoy_slots.size(), static_cast<std::size_t>(-1));
+            for (std::size_t i = 0; i < made && i < slots.size(); ++i) {
+                life->slots[static_cast<std::size_t>(slots[i])] = before + i;
+                life->members.push_back({before + i, life.get(), false});
+            }
+            life->live_3bc = static_cast<std::int32_t>(made);
+            host.land_convoy_lives.push_back(std::move(life));
+        }
+    }
     host.log.notef("  LandConvoy roster 00743450: \"%s\" rows=%d columns=%d slots=%zu "
         "members=%zu path=\"%s\" speed=%.2f offset=%.2f (packet cc9_land_convoy_members)",
         convoy.name.c_str(), convoy.convoy_rows, convoy.convoy_columns,
@@ -13269,6 +13318,241 @@ private:
     LandConvoyMotionState& c_;
 };
 
+// Packet cc13-convoy, under kLandConvoyBodiesBound: the host side of cc15's
+// three land convoy bodies and cc13's 00742210 / 0074CD10. A convoy pointer is
+// its LandConvoyLifeState, a member pointer is unit index + 1.
+namespace {
+LandConvoyLifeState& convoy_life(std::uint8_t* convoy) {
+    return *reinterpret_cast<LandConvoyLifeState*>(convoy);
+}
+std::uint8_t* convoy_handle(LandConvoyLifeState& life) {
+    return reinterpret_cast<std::uint8_t*>(&life);
+}
+std::uint8_t* member_handle(std::size_t unit) {
+    return reinterpret_cast<std::uint8_t*>(static_cast<std::uintptr_t>(unit) + 1u);
+}
+std::size_t member_unit(std::uint8_t* member) {
+    return static_cast<std::size_t>(reinterpret_cast<std::uintptr_t>(member) - 1u);
+}
+
+// The member walk every body shares (LandConvoyMemberSlots).
+template <class Seam>
+class LandConvoySlotsAdapter : public Seam {
+public:
+    explicit LandConvoySlotsAdapter(GameUnitsHost::Impl& host) : host_(host) {}
+    std::size_t member_slot_count(std::uint8_t* convoy) override {
+        return convoy_life(convoy).slots.size();
+    }
+    std::uint8_t* member_slot(std::uint8_t* convoy, std::size_t i) override {
+        const std::size_t unit = convoy_life(convoy).slots[i];
+        return unit == static_cast<std::size_t>(-1) ? nullptr : member_handle(unit);
+    }
+    // The image reports and carries on; the index model never reaches it.
+    void invalid_parameter_noinfo_00bf6713() override {
+        host_.log.notef("  LandConvoy: checked-iterator report 00BF6713 (packet cc13-convoy)");
+    }
+    // MOV dword [slot], 0: the one vector +398h, which the motion state's
+    // placement walk (00742400, land_and_structures.cpp) reads too.
+    void null_slot(std::uint8_t* convoy, std::size_t i) {
+        LandConvoyLifeState& life = convoy_life(convoy);
+        life.slots[i] = static_cast<std::size_t>(-1);
+        for (LandConvoyMotionState& c : host_.land_convoys) {
+            if (c.name != life.name) continue;
+            if (i < c.member_units.size()) c.member_units[i] = static_cast<std::size_t>(-1);
+            break;
+        }
+    }
+    // 00926D90 on a member: returns at once when +5Fh is set, else the kill. The
+    // host's one death route is the gunnery funnel, as for the Lua Kill victims.
+    // SUBSTITUTION (labelled): it kills now; the image queues on 00F899B4.
+    void kill_member(std::uint8_t* member, std::int32_t cause) {
+        const std::size_t unit = member_unit(member);
+        GameGunneryHost* gunnery = host_.gunnery.get();
+        if (gunnery == nullptr || unit >= host_.slots.size() || gunnery->unit_dead(unit)) return;
+        gunnery->kill_unit_00926d90(unit, cause);
+    }
+    // 00926D90 on the convoy: +5Fh, +70h, and the kill list. Its +080h
+    // (00742180) runs in the same 009273A0 flush, on the loop's next pass
+    // (land_convoy_flush_009273a0).
+    void kill_convoy(std::uint8_t* convoy, std::int32_t cause) {
+        LandConvoyLifeState& life = convoy_life(convoy);
+        if (life.killed_5f) return;                                  // 00926DE1
+        const std::int32_t stored = cause == 7 ? 2 : cause;          // 00926DAD..00926DBC
+        life.killed_5f = true;                                       // 00926DF3
+        if (!life.pending_destroy_60) {                              // 00926DEF
+            life.cause_70 = stored;                                  // 00926E02
+            // OMITTED (labelled): 00926E05 vtable+70h(1), the entity's own
+            // notification; not modelled for a convoy marker.
+        }
+        if (cause == 7) life.cause_70 = stored;                      // 00926E07..00926E0C
+        // OMITTED (labelled): 00926E0F..00926E23, 00926D90(cause) on each child of
+        // the +48h / +44h chain; a convoy marker here has no child entities.
+        life.kill_queued = true;                                     // 00F899B4
+        host_.log.notef("  LandConvoy \"%s\": 00926D90 cause %d at live count %d, 00742180 "
+            "queued for the flush loop's next pass (packet cc13-convoy)", life.name.c_str(),
+            static_cast<int>(cause), static_cast<int>(life.live_3bc));
+    }
+
+protected:
+    GameUnitsHost::Impl& host_;
+};
+
+// 00742180 (convoy +080h).
+class LandConvoyKillBinding final
+    : public LandConvoySlotsAdapter<bsp::cc15_land_convoy::LandConvoyKillHost> {
+public:
+    using LandConvoySlotsAdapter::LandConvoySlotsAdapter;
+    void clear_member_convoy_738(std::uint8_t* member) override {
+        const std::size_t unit = member_unit(member);
+        for (auto& life : host_.land_convoy_lives) {
+            for (LandConvoyLifeState::Member& m : life->members) {
+                if (m.unit == unit) m.convoy_738 = nullptr;
+            }
+        }
+    }
+    std::int32_t convoy_kill_cause_70(std::uint8_t* convoy) override {
+        return convoy_life(convoy).cause_70;
+    }
+    void mission_entity_kill_00926d90(std::uint8_t* entity, std::int32_t cause) override {
+        kill_member(entity, cause);
+    }
+    // 00779AF0 -> 00928C80: the Lua on-killed release. RESIDUAL (labelled): the
+    // convoy is a scene marker here; nothing releases its Lua table, and nothing
+    // sets its `Dead` field (docs/MISSION_ENTITY_LUA_ATTACH.md, open).
+    void mission_entity_on_killed_00779af0(std::uint8_t* convoy) override {
+        host_.log.notef("  LandConvoy \"%s\": 00742180 ran, tail 00779AF0 not modelled for "
+            "a marker (packet cc13-convoy)", convoy_life(convoy).name.c_str());
+    }
+};
+
+// 007422A0, reached from 0074CD10.
+class LandConvoyRemoveBinding final
+    : public LandConvoySlotsAdapter<bsp::cc15_land_convoy::LandConvoyRemoveHost> {
+public:
+    using LandConvoySlotsAdapter::LandConvoySlotsAdapter;
+    void null_member_slot(std::uint8_t* convoy, std::size_t i) override {
+        null_slot(convoy, i);
+    }
+    std::int32_t live_count_3bc(std::uint8_t* convoy) override {
+        return convoy_life(convoy).live_3bc;
+    }
+    void set_live_count_3bc(std::uint8_t* convoy, std::int32_t count) override {
+        convoy_life(convoy).live_3bc = count;
+    }
+    void mission_entity_kill_00926d90(std::uint8_t* entity, std::int32_t cause) override {
+        kill_convoy(entity, cause);
+    }
+};
+
+// 00742210, from the Lua Kill binding. The members it hands to 00926D90 go
+// back to the caller with the cause the body computed (0074226A..00742271),
+// and the caller kills them as it kills any Lua Kill victim.
+class LandConvoyKillVectorBinding final
+    : public LandConvoySlotsAdapter<bsp::cc13_seg41::LandConvoyKillVectorHost> {
+public:
+    LandConvoyKillVectorBinding(GameUnitsHost::Impl& host,
+                                std::vector<GameUnitsHost::LandConvoyVictim>& victims)
+        : LandConvoySlotsAdapter(host), victims_(victims) {}
+    void mission_entity_kill_00926d90(std::uint8_t* entity, std::int32_t cause) override {
+        victims_.push_back({member_unit(entity), static_cast<int>(cause)});
+    }
+    void null_member_slot(std::uint8_t* convoy, std::size_t i) override {
+        null_slot(convoy, i);
+    }
+
+private:
+    std::vector<GameUnitsHost::LandConvoyVictim>& victims_;
+};
+
+// 0074CD10 (member +080h). Its only reads are member +738h and the two calls;
+// the member is a 73Ch-byte shadow carrying +738h, every other hook is unreached.
+class LandVehicleOnDeathBinding final : public bsp::cc13_seg41::LandVehicleNullHost {
+public:
+    LandVehicleOnDeathBinding(GameUnitsHost::Impl& host, std::size_t unit)
+        : host_(host), unit_(unit) {}
+    void unreached(const char* hook, std::uint32_t) override {
+        host_.log.notef("  LandVehicle 0074CD10: unexpected hook %s (packet cc13-convoy)", hook);
+    }
+    void convoy_member_died_007422a0(std::uint8_t* convoy, std::uint8_t*) override {
+        LandConvoyRemoveBinding remove(host_);
+        LandConvoyLifeState& life = convoy_life(convoy);
+        const std::int32_t before = life.live_3bc;
+        const std::size_t slot = bsp::cc15_land_convoy::land_convoy_remove_member_007422a0(
+            convoy, member_handle(unit_), remove);
+        host_.log.notef("  LandConvoy \"%s\": member unit %zu died, 007422A0 %s, live %d -> %d "
+            "(packet cc13-convoy)", life.name.c_str(), unit_,
+            slot == bsp::cc15_land_convoy::kMemberNotFound ? "found no slot" : "nulled its slot",
+            static_cast<int>(before), static_cast<int>(life.live_3bc));
+        host_.done("LandConvoy::remove_member", 0x007422a0u);
+    }
+    // JMP 00951FB0: the unit's own death route, which the gunnery funnel ran.
+    void unit_on_death_00951fb0(std::uint8_t*) override {}
+
+private:
+    GameUnitsHost::Impl& host_;
+    std::size_t unit_;
+};
+
+// 007420B0 (convoy +0A0h), at the host's bind. The property bag, its "Path"
+// property and the registry lookup are answered from the record the host
+// already resolved; the skill broadcast goes to the members' 006D1EB0.
+class LandConvoyBindBinding final
+    : public LandConvoySlotsAdapter<bsp::cc15_land_convoy::LandConvoyBindHost> {
+public:
+    LandConvoyBindBinding(GameUnitsHost::Impl& host, GameUnitsHost& units,
+                          const GameSceneEntityRecord& convoy, const GameSceneEntityRecord* path)
+        : LandConvoySlotsAdapter(host), units_(units), convoy_(convoy), path_(path) {}
+    // 0077F0E0: the host registered the convoy's marker at its creation.
+    void unit_owner_activate_and_register_0077f0e0(std::uint8_t*) override {}
+    // SUBSTITUTION (labelled): the record that carries the roster keys stands for
+    // the bag at +C0h, taken as state 1 (bind_land_convoy_motion returns before
+    // this for a record without them).
+    void* property_bag_c0(std::uint8_t*) override {
+        return const_cast<GameSceneEntityRecord*>(&convoy_);
+    }
+    std::int32_t property_bag_state(void*) override { return 1; }
+    void* property_bag_records(void* bag) override { return bag; }
+    void* scene_property_bag_find_008f2260(void*, const char*) override {
+        return const_cast<std::string*>(&convoy_.convoy_path);
+    }
+    const char* scene_property_string_008f0df0(void* property) override {
+        return static_cast<const std::string*>(property)->c_str();
+    }
+    void* entity_registry_30(std::uint8_t*) override { return nullptr; }
+    // SUBSTITUTION (labelled): bind_land_convoy_motion's qualified match stands
+    // for 00925A90.
+    void* entity_registry_find_by_name_00925a90(void*, const char*) override {
+        return const_cast<GameSceneEntityRecord*>(path_);
+    }
+    void* entity_path_interface_for_kind_007ac9d0(void* entity) override { return entity; }
+    void set_path_interface_344(std::uint8_t*, void* path_interface) override {
+        path_interface_ = path_interface;
+    }
+    std::int32_t property_bag_get_skill_00927a80(std::uint8_t*) override {
+        return convoy_.bag_skill;
+    }
+    void member_set_skill_vt128(std::uint8_t* member, std::int32_t skill) override {
+        if (units_.set_unit_skill_index_006d1eb0(member_unit(member), skill)) ++skilled_;
+    }
+    void* path_interface() const { return path_interface_; }
+    std::size_t skilled() const { return skilled_; }
+
+private:
+    GameUnitsHost& units_;
+    const GameSceneEntityRecord& convoy_;
+    const GameSceneEntityRecord* path_;
+    void* path_interface_{nullptr};
+    std::size_t skilled_{0};
+};
+
+LandConvoyLifeState* find_convoy_life(GameUnitsHost::Impl& host, const std::string& name) {
+    for (auto& life : host.land_convoy_lives) {
+        if (life->name == name) return life.get();
+    }
+    return nullptr;
+}
+}  // namespace
+
 // Packet cc9_land_convoy_movement. 007420B0 resolves "Path" through 00925A90
 // (qualified, __strnicmp: "Landscape 01\<path>") and 007AC9D0; 007B34F0 then
 // 007AF150 built the knots from the authored Point%002i Pos triples at the
@@ -13312,6 +13596,18 @@ bool GameUnitsHost::bind_land_convoy_motion(const GameSceneEntityRecord& convoy,
         if (!qualifier.empty() && !land_name_equal(record.parent_name, qualifier)) continue;
         path = &record;
         break;
+    }
+    if constexpr (kLandConvoyBodiesBound) {
+        // Packet cc13-convoy: 007420B0 itself, over the roster's member vector.
+        if (LandConvoyLifeState* life = find_convoy_life(host, convoy.name)) {
+            LandConvoyBindBinding bind(host, *this, convoy, path);
+            bsp::cc15_land_convoy::land_convoy_bind_motion_007420b0(convoy_handle(*life), bind);
+            host.log.notef("  LandConvoy \"%s\": 007420B0 path=%s skill=%d members re-skilled=%zu "
+                "(006D1EB0, packet cc13-convoy)", convoy.name.c_str(),
+                bind.path_interface() != nullptr ? "resolved" : "null", convoy.bag_skill,
+                bind.skilled());
+            host.done("LandConvoy::bind_motion_007420b0", 0x007420b0u);
+        }
     }
     const char* refused = nullptr;
     if (members == 0) refused = "no members";
@@ -13396,6 +13692,78 @@ bool GameUnitsHost::set_land_convoy_speed_368(const std::string& convoy, float s
         return true;
     }
     return false;
+}
+
+// Packet cc13-convoy. 009273A0's kill-list pass calls each killed entity's
+// +080h (0092751F): the convoy's 00742180, a member's 0074CD10. The flush loops
+// until both queues are empty (009275BA JMP 009273C0; the head at 009273C2 /
+// 009273CA re-tests 00F899B0 / 00F899BC), so an entity killed by a +080h call
+// is handled in the same flush, one pass later. Each pass here takes the
+// convoys queued and the members newly dead at its start, runs the convoys'
+// 00742180, then the members' 0074CD10, and the loop ends when a pass finds
+// neither. So a member's 007422A0 that empties its convoy has the convoy's
+// 00742180 run on the next pass, and members that 00742180 kills have their
+// 0074CD10 (with +738h already cleared) on the pass after.
+// SUBSTITUTION (labelled): a member's kill is read from the gunnery host's dead
+// flag at the flush, not from the kill list; the host's on_killed_run flag
+// stands in for 009274C8's +5Eh test (each entity's +080h runs once).
+void GameUnitsHost::land_convoy_flush_009273a0() {
+    if constexpr (kLandConvoyBodiesBound) {
+        Impl& host = *impl_;
+        GameGunneryHost* gunnery = host.gunnery.get();
+        if (gunnery == nullptr) return;
+        for (;;) {
+            std::vector<LandConvoyLifeState*> convoys;
+            std::vector<LandConvoyLifeState::Member*> members;
+            for (auto& life : host.land_convoy_lives) {
+                if (life->kill_queued) convoys.push_back(life.get());
+                for (LandConvoyLifeState::Member& m : life->members) {
+                    if (m.on_killed_run || m.unit >= host.slots.size() || !gunnery->unit_dead(m.unit)) continue;
+                    members.push_back(&m);
+                }
+            }
+            if (convoys.empty() && members.empty()) break;  // 009273D0 JE 009275BF
+            for (LandConvoyLifeState* life : convoys) {
+                life->kill_queued = false;
+                LandConvoyKillBinding kill(host);
+                bsp::cc15_land_convoy::land_convoy_kill_members_00742180(convoy_handle(*life), kill);
+                host.done("LandConvoy::kill_members_00742180", 0x00742180u);
+            }
+            for (LandConvoyLifeState::Member* m : members) {
+                m->on_killed_run = true;
+                // The member: a shadow whose only word is +738h, all 0074CD10 reads.
+                alignas(4) std::uint8_t shadow[0x73C] = {};
+                std::uint8_t* const convoy =
+                    m->convoy_738 != nullptr ? convoy_handle(*m->convoy_738) : nullptr;
+                std::memcpy(shadow + 0x738, &convoy, sizeof(convoy));
+                LandVehicleOnDeathBinding on_death(host, m->unit);
+                bsp::cc13_seg41::land_vehicle_on_death_0074cd10(shadow, on_death);
+            }
+        }
+    }
+}
+
+// Packet cc13-convoy. 008AC740 (IsKindOf 1Ah) -> 008AC74E 00742210(hard); the
+// JMP at 008AC753 skips 008AC756's 00926D90, so the convoy is not killed.
+bool GameUnitsHost::land_convoy_kill_member_vector_00742210(const std::string& convoy, bool hard,
+                                                            std::vector<LandConvoyVictim>& victims) {
+    if constexpr (!kLandConvoyBodiesBound) {
+        static_cast<void>(convoy);
+        static_cast<void>(hard);
+        static_cast<void>(victims);
+        return false;
+    } else {
+        Impl& host = *impl_;
+        LandConvoyLifeState* life = find_convoy_life(host, convoy);
+        if (life == nullptr) return false;
+        LandConvoyKillVectorBinding binding(host, victims);
+        bsp::cc13_seg41::land_convoy_kill_member_vector_00742210(convoy_handle(*life), hard, binding);
+        host.log.notef("  LandConvoy \"%s\": 00742210 hard=%d killed and nulled %zu members, "
+            "+738h kept, live count %d, convoy not killed (packet cc13-convoy)",
+            convoy.c_str(), hard ? 1 : 0, victims.size(), static_cast<int>(life->live_3bc));
+        host.done("LandConvoy::kill_member_vector_00742210", 0x00742210u);
+        return true;
+    }
 }
 
 void GameUnitsHost::land_convoy_step_waves(float step) {
