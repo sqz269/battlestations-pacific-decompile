@@ -353,3 +353,13 @@ The dogfight and dive-bomb task constructors now call these bodies directly.
 | 009AD720 / 009AD920 | drop-kamikaze approach block, direct and from a stream | seven states registered through 009AB740; the two follow-built states take vtable 00D1FC08 |
 
 The drop-kamikaze task stream constructor now calls 009AD920 directly.
+
+### 3.23 Direct move-on-path, depth-charge and land approach blocks
+
+| Address | Function | Notes |
+|---|---|---|
+| 009BCC60 | move-on-path approach block | 009BC780, then the tail it shares with 009BCD50 |
+| 009A4DC0 | depth-charge approach block | the move-to state takes d = +3Ch + +34h as both distances and +40h as the third float |
+| 009B2E50 | land approach block | the move-to state targets [block+30h] with 100.0, 100.0 and 800.0 |
+
+Each shares its tail with the stream constructor of the same block; the tails are now helpers (`move_on_path_block_tail`, `depth_charge_block_tail`, `land_block_tail`, and likewise `level_bomb_block_tail`, `dogfight_block_tail`, `drop_kamikaze_block_tail`).

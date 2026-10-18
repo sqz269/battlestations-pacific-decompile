@@ -175,6 +175,14 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
+    // 009BC780: __thiscall(ECX = move-on-path approach, [bot+50h]), RET 4.
+    virtual void bot_approach_move_on_path_construct_009bc780(void* block, void* arg) = 0;
+    // 009A3390: __thiscall(ECX = depth-charge approach, [bot+50h], target), RET 8.
+    virtual void bot_approach_depth_charge_construct_009a3390(void* block, void* arg,
+                                                              void* target) = 0;
+    // 009AFE70: __thiscall(ECX = land approach, arg1, arg2), RET 8.
+    virtual void bot_approach_land_construct_lower_009afe70(void* block, void* arg1,
+                                                            void* arg2) = 0;
     // 009ABAB0: __thiscall(ECX = drop-kamikaze approach, [bot+50h], target), RET 8.
     virtual void bot_approach_drop_kamikaze_construct_base_009abab0(void* block, void* arg,
                                                                     void* target) = 0;
@@ -777,5 +785,15 @@ void* bot_task_drop_kamikaze_construct_approach_block_from_stream_009ad920(Cc13S
 // 009AD720: __thiscall(ECX = task+3F8h, bot, target), RET 8, EAX = block.
 void* bot_approach_drop_kamikaze_construct_009ad720(Cc13Seg67bHost& host, void* block, void* bot,
                                                     void* target);
+// 009BCC60: __thiscall(ECX = task+3F8h, bot), RET 4, EAX = block.
+void* bot_approach_move_on_path_construct_with_states_009bcc60(Cc13Seg67bHost& host, void* block,
+                                                               void* bot);
+// 009A4DC0: __thiscall(ECX = task+3F8h, bot, target), RET 8, EAX = block.
+void* bot_approach_depth_charge_construct_with_states_009a4dc0(Cc13Seg67bHost& host,
+                                                               void* block, void* bot,
+                                                               void* target);
+// 009B2E50: __thiscall(ECX = task+3F8h, arg1, arg2), RET 8, EAX = block.
+void* bot_approach_land_construct_composite_009b2e50(Cc13Seg67bHost& host, void* block,
+                                                     void* arg1, void* arg2);
 
 }  // namespace bsp

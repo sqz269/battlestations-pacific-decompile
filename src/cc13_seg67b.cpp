@@ -2736,6 +2736,26 @@ constexpr std::uint32_t kMoveOnPathStateVtable_00d208bc = 0x00D208BCu;
 constexpr std::uint32_t kStrPathPath_00d20860 = 0x00D20860u;    // "path (path)"
 constexpr std::uint32_t kStrPathFollow_00d20850 = 0x00D20850u;  // "follow (path)"
 constexpr std::uint32_t kStrPathCircle_00d20840 = 0x00D20840u;  // "circle (path)"
+
+// The tail 009BCC60 and 009BCD50 share (009BCC8D-009BCD1E and 009BCD84-009BCE10):
+// the registry at +40h, the vtables, the path state +54h, follow +6Ch, circle
+// +104h and the three registrations.
+void move_on_path_block_tail(Cc13Seg67bHost& host, void* block) {
+    host.bot_state_registry_construct_00411e20(ptr(block, 0x40));
+    at<std::uint32_t>(block, 0x00) = kMoveOnPathBlockVtable_00d208f8;
+    at<std::uint32_t>(block, 0x40) = kMoveOnPathRegistryVtable_00d208f4;
+    at<std::uintptr_t>(block, 0x58) = reinterpret_cast<std::uintptr_t>(block);
+    at<std::uint32_t>(block, 0x60) = 0;
+    at<std::uint32_t>(block, 0x64) = 0;
+    at<std::uint32_t>(block, 0x68) = 0;
+    at<std::uint32_t>(block, 0x5C) = 0;
+    at<std::uint32_t>(block, 0x54) = kMoveOnPathStateVtable_00d208bc;
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x6C), block, kHundred_00ce3d08);
+    bot_state_move_on_path_circle_construct_009bc960(host, ptr(block, 0x104), block);
+    host.state_registry_add_00411e70(ptr(block, 0x40), kStrPathPath_00d20860, ptr(block, 0x54));
+    host.state_registry_add_00411e70(ptr(block, 0x40), kStrPathFollow_00d20850, ptr(block, 0x6C));
+    host.state_registry_add_00411e70(ptr(block, 0x40), kStrPathCircle_00d20840, ptr(block, 0x104));
+}
 }  // namespace
 
 // 009BCD50 (009BCD50-009BCE2B). EH frame 00CAF5D7. 009BC7E0(ECX = block,
@@ -2752,20 +2772,7 @@ void* bot_task_move_on_path_construct_approach_block_from_stream_009bcd50(Cc13Se
                                                                           void* archive) {
     bot_approach_move_on_path_construct_from_stream_009bc7e0(host, block, ptr_at(bot, 0x50),
                                                              archive);
-    host.bot_state_registry_construct_00411e20(ptr(block, 0x40));
-    at<std::uint32_t>(block, 0x00) = kMoveOnPathBlockVtable_00d208f8;
-    at<std::uint32_t>(block, 0x40) = kMoveOnPathRegistryVtable_00d208f4;
-    at<std::uintptr_t>(block, 0x58) = reinterpret_cast<std::uintptr_t>(block);
-    at<std::uint32_t>(block, 0x60) = 0;
-    at<std::uint32_t>(block, 0x64) = 0;
-    at<std::uint32_t>(block, 0x68) = 0;
-    at<std::uint32_t>(block, 0x5C) = 0;
-    at<std::uint32_t>(block, 0x54) = kMoveOnPathStateVtable_00d208bc;
-    bot_state_follow_construct_009c2980(host, ptr(block, 0x6C), block, kHundred_00ce3d08);
-    bot_state_move_on_path_circle_construct_009bc960(host, ptr(block, 0x104), block);
-    host.state_registry_add_00411e70(ptr(block, 0x40), kStrPathPath_00d20860, ptr(block, 0x54));
-    host.state_registry_add_00411e70(ptr(block, 0x40), kStrPathFollow_00d20850, ptr(block, 0x6C));
-    host.state_registry_add_00411e70(ptr(block, 0x40), kStrPathCircle_00d20840, ptr(block, 0x104));
+    move_on_path_block_tail(host, block);
     return block;
 }
 
@@ -2860,6 +2867,21 @@ void land_inline_state(void* block, std::size_t off, std::uint32_t vtable) {
     at<std::uint8_t>(block, off + 0x18) = 0;
     at<std::uint32_t>(block, off + 0x00) = vtable;
 }
+
+// The tail 009B2E50 and 009B3040 share (009B2ECE-009B3010 and 009B30C2-009B3204):
+// follow +108h, six embedded states, bytes +274h/+275h, then 009AF9A0.
+void land_block_tail(Cc13Seg67bHost& host, void* block) {
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x108), block, kHundred_00ce3d08);
+    land_inline_state(block, 0x1A0, 0x00D1FEA4u);
+    land_inline_state(block, 0x1C0, 0x00D1FEF4u);
+    land_inline_state(block, 0x1E0, 0x00D1FF14u);
+    land_inline_state(block, 0x200, 0x00D1FF44u);
+    land_inline_state(block, 0x228, 0x00D1FF60u);
+    land_inline_state(block, 0x254, 0x00D1FED4u);
+    at<std::uint8_t>(block, 0x274) = 0;
+    at<std::uint8_t>(block, 0x275) = 0;
+    host.land_approach_register_states_009af9a0(block);
+}
 }  // namespace
 
 // 009B3040 (009B3040-009B321F). EH frame 00CAEBF6. 009AFFF0(ECX = block, arg,
@@ -2882,16 +2904,7 @@ void* bot_task_land_construct_approach_block_from_stream_009b3040(Cc13Seg67bHost
     std::uint32_t ref[3] = {};
     host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrStateMoveTo));
     bot_state_construct_base_009c2b80(host, ptr(block, 0xCC), block, ref);
-    bot_state_follow_construct_009c2980(host, ptr(block, 0x108), block, kHundred_00ce3d08);
-    land_inline_state(block, 0x1A0, 0x00D1FEA4u);
-    land_inline_state(block, 0x1C0, 0x00D1FEF4u);
-    land_inline_state(block, 0x1E0, 0x00D1FF14u);
-    land_inline_state(block, 0x200, 0x00D1FF44u);
-    land_inline_state(block, 0x228, 0x00D1FF60u);
-    land_inline_state(block, 0x254, 0x00D1FED4u);
-    at<std::uint8_t>(block, 0x274) = 0;
-    at<std::uint8_t>(block, 0x275) = 0;
-    host.land_approach_register_states_009af9a0(block);
+    land_block_tail(host, block);
     return block;
 }
 
@@ -2911,6 +2924,32 @@ constexpr std::uint32_t kDepthChargeBlockVtable_00d1f71c = 0x00D1F71Cu;
 constexpr std::uint32_t kDepthChargeRegistryVtable_00d1f718 = 0x00D1F718u;
 constexpr std::uint32_t kDepthChargeDonePrepareVtable_00d1f6fc = 0x00D1F6FCu;
 constexpr float kFive_00ce3850 = 5.0f;  // 40A00000
+
+// The tail 009A4DC0 and 009A5000 share (009A4E5C-009A4FD3 and 009A5085-009A51FC):
+// follow +14Ch, done +1E4h, attackrun +284h, goaway +2A8h, aim +2CCh, prepare
+// +2ECh, leave +38Ch, turnto +3A8h, then 009A3090.
+void depth_charge_block_tail(Cc13Seg67bHost& host, void* block) {
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x14C), block, kHundred_00ce3d08);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x1E4), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x1E4) = kDepthChargeDonePrepareVtable_00d1f6fc;
+    at<float>(block, 0x27C) = kMinusOne_00d7a260_f;
+    at<std::uint32_t>(block, 0x280) = 0;
+    bot_state_depth_charge_attack_run_construct_009a36a0(host, ptr(block, 0x284), block);
+    plain_inline_state(block, 0x2A8, 0x00D1F6A0u);
+    plain_inline_state(block, 0x2CC, 0x00D1F6D8u);
+    at<std::uint8_t>(block, 0x2E4) = 0;
+    at<std::uint8_t>(block, 0x2E5) = 0;
+    at<float>(block, 0x2E8) = kZero_s15;
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x2EC), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x2EC) = kDepthChargeDonePrepareVtable_00d1f6fc;
+    at<float>(block, 0x384) = kMinusOne_00d7a260_f;
+    at<std::uint32_t>(block, 0x388) = 0;
+    plain_inline_state(block, 0x38C, 0x00D1F668u);
+    at<float>(block, 0x3A4) = kFive_00ce3850;
+    plain_inline_state(block, 0x3A8, 0x00D1F684u);
+    at<float>(block, 0x3C0) = kZero_s15;
+    bot_task_depth_charge_register_state_names_009a3090(host, block);
+}
 }  // namespace
 
 // 009A5000 (009A5000-009A5217). EH frame 00CAE0D4. 009A35D0(ECX = block, [bot+50h],
@@ -2938,26 +2977,7 @@ void* bot_task_depth_charge_construct_approach_block_from_stream_009a5000(Cc13Se
     std::uint32_t ref[3] = {};
     host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrStateMoveTo));
     bot_state_construct_base_009c2b80(host, ptr(block, 0x110), block, ref);
-    bot_state_follow_construct_009c2980(host, ptr(block, 0x14C), block, kHundred_00ce3d08);
-    bot_state_follow_construct_009c2980(host, ptr(block, 0x1E4), block, kHundred_00ce3d08);
-    at<std::uint32_t>(block, 0x1E4) = kDepthChargeDonePrepareVtable_00d1f6fc;
-    at<float>(block, 0x27C) = kMinusOne_00d7a260_f;
-    at<std::uint32_t>(block, 0x280) = 0;
-    bot_state_depth_charge_attack_run_construct_009a36a0(host, ptr(block, 0x284), block);
-    plain_inline_state(block, 0x2A8, 0x00D1F6A0u);
-    plain_inline_state(block, 0x2CC, 0x00D1F6D8u);
-    at<std::uint8_t>(block, 0x2E4) = 0;
-    at<std::uint8_t>(block, 0x2E5) = 0;
-    at<float>(block, 0x2E8) = kZero_s15;
-    bot_state_follow_construct_009c2980(host, ptr(block, 0x2EC), block, kHundred_00ce3d08);
-    at<std::uint32_t>(block, 0x2EC) = kDepthChargeDonePrepareVtable_00d1f6fc;
-    at<float>(block, 0x384) = kMinusOne_00d7a260_f;
-    at<std::uint32_t>(block, 0x388) = 0;
-    plain_inline_state(block, 0x38C, 0x00D1F668u);
-    at<float>(block, 0x3A4) = kFive_00ce3850;
-    plain_inline_state(block, 0x3A8, 0x00D1F684u);
-    at<float>(block, 0x3C0) = kZero_s15;
-    bot_task_depth_charge_register_state_names_009a3090(host, block);
+    depth_charge_block_tail(host, block);
     return block;
 }
 
@@ -3214,6 +3234,64 @@ void* bot_approach_drop_kamikaze_construct_009ad720(Cc13Seg67bHost& host, void* 
     at<std::uint32_t>(block, 0x0C4) = kDropKamikazeRegistryVtable_00d1fc5c;
     host.bot_state_move_to_construct_009c2ac0(ptr(block, 0xD8), block, target, near_, far_, third);
     drop_kamikaze_block_tail(host, block);
+    return block;
+}
+
+// ---------------------------------------------------------------------------
+// The direct move-on-path, depth-charge and land approach blocks.
+
+// 009BCC60 (009BCC60-009BCD34). EH frame 00CAF587. 009BC780(ECX = block, [bot+50h])
+// (009BCC88); then the tail shared with 009BCD50 (009BCC8D-009BCD1E). RET 4, EAX =
+// block.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_approach_move_on_path_construct_with_states_009bcc60(Cc13Seg67bHost& host, void* block,
+                                                               void* bot) {
+    host.bot_approach_move_on_path_construct_009bc780(block, ptr_at(bot, 0x50));
+    move_on_path_block_tail(host, block);
+    return block;
+}
+
+// 009A4DC0 (009A4DC0-009A4FEE). EH frame 00CAE034. 009A3390(ECX = block, [bot+50h],
+// target) (009A4DEF); 00411E20(block+FCh) (009A4E02); [block] = 00D1F71C,
+// [block+FCh] = 00D1F718 (009A4E22, 009A4E28); d = float(+3Ch + +34h) (009A4E11-
+// 009A4E2E); 009C2AC0(ECX = block+110h, block, target, d, d, +40h) (009A4E57); then
+// the tail shared with 009A5000 (009A4E5C-009A4FD3). RET 8, EAX = block.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_approach_depth_charge_construct_with_states_009a4dc0(Cc13Seg67bHost& host,
+                                                               void* block, void* bot,
+                                                               void* target) {
+    host.bot_approach_depth_charge_construct_009a3390(block, ptr_at(bot, 0x50), target);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xFC));
+    const float third = at<float>(block, 0x40);
+    const float d = at<float>(block, 0x3C) + at<float>(block, 0x34);
+    at<std::uint32_t>(block, 0x000) = kDepthChargeBlockVtable_00d1f71c;
+    at<std::uint32_t>(block, 0x0FC) = kDepthChargeRegistryVtable_00d1f718;
+    host.bot_state_move_to_construct_009c2ac0(ptr(block, 0x110), block, target, d, d, third);
+    depth_charge_block_tail(host, block);
+    return block;
+}
+
+namespace {
+constexpr float kEightHundred_00ce3950 = 800.0f;  // 44480000
+}  // namespace
+
+// 009B2E50 (009B2E50-009B302A). EH frame 00CAEB66. 009AFE70(ECX = block, arg1,
+// arg2) (009B2E7B); 00411E20(block+B8h) (009B2E8E); [block] = 00D1FF88,
+// [block+B8h] = 00D1FF84 (009B2EB8, 009B2EC3); 009C2AC0(ECX = block+CCh, block,
+// [block+30h], 100.0, 100.0, [00CE3950] 800.0) (009B2E93-009B2EC9); then the tail
+// shared with 009B3040 (009B2ECE-009B3010). RET 8, EAX = block.
+// UNCERTAINTY: EH unwinding not modelled. The roles of arg1 and arg2 are those
+// 009AFE70 gives them.
+void* bot_approach_land_construct_composite_009b2e50(Cc13Seg67bHost& host, void* block,
+                                                     void* arg1, void* arg2) {
+    host.bot_approach_land_construct_lower_009afe70(block, arg1, arg2);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xB8));
+    at<std::uint32_t>(block, 0x00) = kLandBlockVtable_00d1ff88;
+    at<std::uint32_t>(block, 0xB8) = kLandRegistryVtable_00d1ff84;
+    host.bot_state_move_to_construct_009c2ac0(ptr(block, 0xCC), block, ptr_at(block, 0x30),
+                                              kHundred_00ce3d08, kHundred_00ce3d08,
+                                              kEightHundred_00ce3950);
+    land_block_tail(host, block);
     return block;
 }
 
