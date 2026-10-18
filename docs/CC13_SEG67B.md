@@ -941,6 +941,18 @@ The byte twin scan masks absolute addresses only, so it misses bodies whose sole
   - Every point is flattened to y = 0.
   - New hooks: `path_vcall_08_point` and `path_vcall_0c_count`.
 
+### 3.63 Batch 17: the last three rows (packet cc13-seg67C)
+
+- **009D4FE0**, ledger-only. It is 009D4FB0 with +1034h in place of +102Ch, so the law is `raise_unit_load_latch_009d4fb0` (unit_orders.cpp): store only when request > field, and a NaN request keeps the field. It is unreferenced out of line; the hosts carry the inlined copies.
+- **009E53B0** `ship_ai_obstacle_node_construct_unregistered_009e53b0`, unreferenced. It is the 009E52E0 obstacle-node constructor without the observer registration. Its first argument goes to +18h rather than +14h, which stays 0. Every other store is the same.
+- **009E8900** `ship_ai_debug_draw_state_label_009e8900`, the ship-AI debug slot:
+  - A screen label naming the state (" move", " kamikaze", " submerged", " wandering"), plus " (target lost)".
+  - An orange arrow from the ship to the point at owner+B2Ch.
+  - Then the state's own vtable[18h] text.
+  - No direct draw and none reachable through its direct callees. It is not part of the brain construction, so the 69-draw note is untouched.
+  - New hook: `debug_arrow_0085fff0`.
+  - The native string calls are modelled by std::string.
+
 ## 4. Ledger-only records (packet cc13-seg67C)
 
 | Address | Host body | Result |
@@ -1092,3 +1104,4 @@ The byte twin scan masks absolute addresses only, so it misses bodies whose sole
 | 009B99E0 | kind-2 arm of `st_manoeuvre_tick` (game_hosts_units.cpp ~24853) | matches (keyed stand-in draw, ON) |
 | 009A9E10 | twin of `bot_task_rocket_debug_draw_007b7290` (cc13_seg53U.cpp) | instruction-equal; only the colour statics differ |
 | 009CC8F0 | twin of `bot_task_rocket_debug_draw_007b7290` (cc13_seg53U.cpp) | instruction-equal; only the colour statics differ |
+| 009D4FE0 | `raise_unit_load_latch_009d4fb0` (unit_orders.cpp) and the inlined copies (game_hosts_units.cpp ~2341) | matches (same law, +1034h) |
