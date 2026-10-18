@@ -449,8 +449,9 @@ inline constexpr bool kLuaClearForcedReconLevelBound = false;  // OFF: committed
 // no result: 00895022 00888AA0 argument 0, 00895053 00B66290 argument 1, 0089506C
 // 006E6210(ECX = level), 0089507C entity->vtable[128h](skill) with no null test. 006E6210
 // with the session word [00E188A8]+1FE4h zero (single player) maps 0 -> 0, 1 -> 1,
-// 2 -> 2, 3 -> 5 and anything else -> 1. True: run_set_crew_level_00894f20 on
-// GameUnitsHost::set_skill_level_007b8ae0, SetSkillLevel's leaf. False: UNIMPLEMENTED.
+// 2 -> 2, 3 -> 5 and anything else -> 1. True: run_set_crew_level_00894f20 writes the
+// skill index of the unit (006D1EB0) or of each member of a squadron (007ECF80) through
+// GameUnitsHost::set_unit_skill_index_006d1eb0. False: UNIMPLEMENTED.
 inline constexpr bool kLuaSetCrewLevelBound = false;  // OFF: committed unpaired
 // Packet cc13-fix10 (docs/CC13_FIX10.md; cc9 grant 2026-10-17). 008C9730
 // AddProximityTrigger(entity, name, callback, target, range) makes a 60h trigger

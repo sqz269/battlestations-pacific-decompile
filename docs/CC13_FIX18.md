@@ -35,8 +35,10 @@ plane arm and the squadron arm, which reads through the leader.
 
 - **Source.** 007B8E60 is `FLD [unit+0B1Ch]`, and +B1Ch is ctl+6Ch, where ctl = unit+AB0h.
   007D8020 BSP_PlaneFlightController_UpdateSpeedTerms writes it at 007D807C, computing it from the
-  controller's world velocity ctl+18h. 007D8020 runs as the tail of 007D9C10 and 007D9C80, which
-  are its only callers. The host's copy of ctl+18h is the slot's `plane_world_velocity`. The new
+  controller's world velocity ctl+18h. 007D8020 runs as the tail of 007D9C10 and 007D9C80, its
+  only two direct callers. Those two are reached from many places, among them 007DB680
+  BSP_PlaneFlight_CoreLaw in the fixed step, as well as the velocity setters and the deck
+  attach/detach paths. The host's copy of ctl+18h is the slot's `plane_world_velocity`. The new
   read-only accessor `GameUnitsHost::unit_plane_world_velocity` returns it. It is the only change
   to `game_hosts_units.*` for this item.
 - **Why not the linear velocity.** While a plane is deck-parented, 007C71E0's 007D9CE0
@@ -44,8 +46,8 @@ plane arm and the squadron arm, which reads through the leader.
   `carrier_deck_reparent_007c71e0` does the same to `plane_world_velocity` and leaves
   `motion.linear_velocity` alone. That leaves `unit_linear_velocity`, which the old code read,
   as the wrong field while the plane is parented.
-- **Chain.** This runs on the main thread at 24-bit precision control, so each x87 operation
-  rounds to float:
+- **Chain.** The host models it as main-thread code at 24-bit precision control, where each x87
+  operation rounds to float:
   1. 007D8024-007D803B compute `s2 = (y*y + x*x) + z*z`. Each product and each sum is rounded to
      float, in that order.
   2. 007D803D stores `s2` as a float.
@@ -55,6 +57,11 @@ plane arm and the squadron arm, which reads through the leader.
   5. Otherwise the result is `float(sqrt(s2))`, from 00BF7030 and stored at 007D8056.
 - **LABELLED.** The image reads the value cached at the last 007D9C10 or 007D9C80 call. The host
   computes it when the native runs.
+- **Uncertainty, precision.** Most writes of +B1Ch come through 007DB680 in the fixed step, and a
+  fixed-step job runs at 24 or 53 bits depending on which thread claims it
+  (docs/CC13_FPU_PRECISION.md). The host takes 24 bits. At 53 bits the sums and the sqrt would
+  round once each to float on the store instead of at every step, a difference of at most about
+  one ulp.
 
 `docs/CC13_FIX12.md` is corrected:
 - Hammerhead (usn_11 `:1294`, `:1363`) is a squadron and takes the squadron arm.
@@ -253,6 +260,9 @@ plane to Shoho) and jm08 `:1785` (a squadron to the airfield).
 - `run_set_device_reload_time_mul_008c14b0` stores `float(lua_tonumber(1))` in the process-wide
   float behind `lua_device_reload_time_mul_00e08178()`. It starts at 1.0, which matches the
   mission load.
+- **LABELLED.** The resets of 00E08178 at 004DFBEB (mission load) and 0076FE73 (session mode)
+  are not modelled. The host has one multiplier per process, which starts at 1.0 and is never
+  reset, so it relies on one mission per process.
 - The units host's rack reload slice (`rack_device_reload_slice_006e57a4`, 006E57A4 -> 006E41C0)
   now subtracts `step = float(mul * dt)` instead of `dt`. This change is guarded by the same
   switch, and it is the one reader edit in `game_hosts_units.cpp`.
@@ -295,14 +305,22 @@ player, the mapping is as follows (006E6210-006E6265):
 | 3 | 5 | 5 |
 | anything else | 1 | 1 |
 
-Slot 128h is 006D1EB0 on ships and planes (the +38Ch sub-object's vtable[0]) and 007ECF80 on the
-squadron (it fans out to every member).
+Slot 128h is 006D1EB0 on ships and planes (the +38Ch sub-object's vtable[0]). On the squadron
+it is 007ECF80, which loops i < +3CCh over [+3D0h+4i]->vtable[128h](skill) (007ECF86-007ECFB9)
+and writes nothing on the squadron itself. A plane that is a squadron member takes 006D1EB0 and
+re-skills itself only.
 
-**Host.** The host function `run_set_crew_level_00894f20` hands the skill to the units host's
-`set_skill_level_007b8ae0` (index, skill). That is the leaf SetSkillLevel 00895250 already reaches through the same slot
-(`GameScriptOrdersHost::entity_set_skill_level`).
+**Host.** The host function `run_set_crew_level_00894f20` looks for the squadron registry record
+whose fused slot (`squadron_unit`) is the entity, the same way the ClearForcedReconLevel arm
+does. If it finds one, it writes each live member through the units host's single-slot setter
+`set_unit_skill_index_006d1eb0` (new in packet cc13-fix18b). If not, it writes the entity's own
+slot through the same setter. It does not use `set_skill_level_007b8ae0`, SetSkillLevel's leaf.
+That function's registry fan-out (`find_by_member_unit`) re-skills a member plane's siblings and
+leaves a squadron's members alone, which is the reverse of the image. That was the defect in
+2faff7c42, and it has been reported to cc9 rather than changed here.
 
-**Field written.** `GameUnitSlot::pilot_skill_index`, on the slot and on its squadron's members.
+**Field written.** `GameUnitSlot::pilot_skill_index`: on the unit's own slot for a ship or a
+plane, and on each member's slot (not the squadron's own) for a squadron.
 Its readers are the existing `skill_level()` consumers:
 - the gun bots (`units.skill_level()`, read live);
 - the dive-bomb approach capture (009F9D22).
@@ -311,8 +329,13 @@ Its readers are the existing `skill_level()` consumers:
 taken as 0.
 
 **Missions reached.** 92 calls in 12 files:
-- commandhelpers.lua `:3930`-`:3979`, eight sites: the Alt+F7 cheat key (`:3926`) and the
-  `Mission.AlliedCrewLevelCheat` loops (`:3950`-`:3979`).
+- commandhelpers.lua, eight sites from `:3930` to `:12480`:
+  - the Alt+F7 cheat key (`:3926`, `:3930`/`:3932`);
+  - the `Mission.AlliedCrewLevelCheat` and `Mission.JapCrewLevelCheat` loops (`:3973`-`:4015`);
+  - `luaSetDifficulty` (`:12478`/`:12480`). Its only shipped call, LOMP 07_Komandorski `:373`,
+    passes no argument. That mission also defines its own `luaSetDifficulty()` at `:386`, which
+    replaces the global one, so the commandhelpers arms are never reached there. Even the global
+    version would match neither arm with `dif` nil.
 - chg_1, chg_3, chg_5, chg_7, chg_8, chg_9 and PC_cargo.
 - multi/competitive01 and siege02.
 
@@ -350,5 +373,6 @@ prcp_13 `:1304` and usn_11 `:2490` (a building, 1).
 - `include/bsp/recon_sensor_pass.hpp`, `src/recon_sensor_pass.cpp`:
   `clear_forced_recon_level_00803b50` and the rebuild's clear step.
 - `include/bsp/game_hosts_units.hpp`, `src/game_hosts_units.cpp`: the const accessor
-  `unit_plane_world_velocity` and the switch-guarded reload-step scale.
+  `unit_plane_world_velocity`, the switch-guarded reload-step scale, and (cc13-fix18b) the
+  single-slot setter `set_unit_skill_index_006d1eb0`.
 - `docs/CC13_FIX12.md`: the corrections listed in section 0.

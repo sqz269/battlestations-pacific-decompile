@@ -604,6 +604,11 @@ public:
     // host keeps one index per slot and applies it to every live member of the
     // slot's plane squadron, 007ECF80's fan-out. Default 1, 0095CCCC.
     void set_skill_level_007b8ae0(std::size_t unit_index, int level);
+    // Packet cc13-fix18b: the single-unit leaf of vtable[128h] on a ship or a plane
+    // (006D1EB0 -> the +38Ch sub-object's vtable[0]): that slot's skill index only,
+    // with no squadron fan-out. The squadron's own slot 128h 007ECF80 is the caller's
+    // loop over its members. False for an index out of range.
+    bool set_unit_skill_index_006d1eb0(std::size_t unit_index, int level);
     int skill_level(std::size_t unit_index) const;
     // 00890A10 SetShipMaxSpeed: 00890B51 FSTP [unit+9C0h]. The slot's
     // motion.max_speed is unit+9C0h (00822C20 seeds it from the class).

@@ -8399,9 +8399,10 @@ int crew_level_skill_006e6210(int level) {
 // 00888AA0 resolves argument 0; 00895053 00B66290 reads argument 1; 0089506C
 // 006E6210(level); 0089507C entity->vtable[128h](skill), no null test. Slot 128h: ships
 // and planes 006D1EB0 (the +38Ch sub-object's vtable[0]), the squadron 007ECF80 (every
-// member's slot 128h). Host: GameUnitsHost::set_skill_level_007b8ae0, the leaf
-// SetSkillLevel 00895250 reaches through the same slot (game_hosts_script_orders.cpp,
-// entity_set_skill_level). LABELLED: an unresolved entity faults in the image and is
+// member's slot 128h, nothing on the squadron). Host: GameUnitsHost::
+// set_unit_skill_index_006d1eb0 on the unit itself, or on each member of a squadron;
+// not set_skill_level_007b8ae0, whose registry fan-out re-skills a plane's siblings
+// and leaves a squadron's members alone (packet cc13-fix18b). LABELLED: an unresolved entity faults in the image and is
 // counted here; the session word is taken as 0 (single player). No RNG.
 int GameMissionLuaHost::run_set_crew_level_00894f20(lua_State* state, int argument_count) {
     ++summary_.crew_level_calls;
@@ -8415,10 +8416,31 @@ int GameMissionLuaHost::run_set_crew_level_00894f20(lua_State* state, int argume
     }
     const std::size_t index = static_cast<std::size_t>(id - 1);
     const int skill = crew_level_skill_006e6210(level);             // 0089506C
-    units->set_skill_level_007b8ae0(index, skill);                  // 0089507C vtable[128h]
+    // 0089507C vtable[128h]. The squadron (the registry record whose fused slot this
+    // is, as in run_clear_forced_recon_level_008aab90) takes 007ECF80: i < +3CCh,
+    // [+3D0h+4i]->vtable[128h](skill) (007ECF86-007ECFB9), and stores nothing on the
+    // squadron itself. A ship or a plane, a squadron member included, takes 006D1EB0
+    // on itself only.
+    std::size_t written = 0;
+    const bsp::PlaneSquadronHostRecord* squadron = nullptr;
+    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+        if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == index) {
+            squadron = &r;
+            break;
+        }
+    }
+    if (squadron != nullptr) {
+        for (std::size_t member : squadron->member_units) {         // 007ECFAB
+            if (member == bsp::kPlaneSquadronNoUnit) continue;
+            if (units->set_unit_skill_index_006d1eb0(member, skill)) ++written;
+        }
+    } else if (units->set_unit_skill_index_006d1eb0(index, skill)) {
+        ++written;                                                  // 006D1EB0
+    }
     const GameUnitRow* row = units->unit_row(index);
-    log_.notef("  SetCrewLevel 00894f20: \"%s\" level=%d skill=%d (006E6210, vtable[128h], "
-        "packet cc13-fix18)", row != nullptr ? row->name.c_str() : "?", level, skill);
+    log_.notef("  SetCrewLevel 00894f20: \"%s\" level=%d skill=%d units=%zu (006E6210, "
+        "vtable[128h], packet cc13-fix18)", row != nullptr ? row->name.c_str() : "?", level,
+        skill, written);
     log_.implemented("MissionLuaNative::SetCrewLevel", "00894f20");
     return 0;
 }
