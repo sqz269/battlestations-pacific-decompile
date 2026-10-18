@@ -22,9 +22,9 @@ Nothing is wired.
 |---|---|---|
 | In the struck ranges 007DF000-007DFFFF and 007EE000-007F2FFF | 55 | Not touched |
 | Template bodies: list, tree and vector instantiations, `std::copy` into a back inserter (00732560), `std::operator+(const char*, const std::string&)` (007F3D40) | 27 | Tagged `stl_shape`, `reviewed`, evidence `sys6_shape` |
-| No cc9 host, reconstructed | 22 | `src/cc13_seg48U.cpp`, build-tested |
+| No cc9 host, reconstructed | 23 | `src/cc13_seg48U.cpp`, build-tested (0072C170 by cc13-seg48V) |
 | Already implemented: 00730BD0 as table data (`src/unit_kind_query.cpp`), 0072AB10 (`src/unit_parts.cpp`) | 2 | Record only |
-| No cc9 host, not done in this packet: 0072C170, 007F3E50, 007EC5A0, 007E29A0 | 4 | Left for a follow-up |
+| No cc9 host, not done in this packet: 007F3E50, 007EC5A0, 007E29A0 | 3 | Left for a follow-up |
 | Referenced by cc9 `game_hosts_*` files (verify-and-record) | 31 | Recorded with a verdict by cc13-seg48V (see "Verify-and-record") |
 
 The template tags use the existing evidence id `sys6_shape`, because
@@ -62,6 +62,7 @@ these, and adds one named hook for every other native call:
 | 007323E0 BSP_GunClassEffectRecord_Destruct | thiscall(record) | effect stop, container erase, six reference releases |
 | 00729D30 BSP_Gun_RebuildBarrelBuffers | thiscall(gun) | per-record barrel grid build (integer only) |
 | 0072D950 BSP_Gun_Destruct | thiscall(gun) | full member teardown, then 0087A410 |
+| 0072C170 BSP_Gun_ComputeAimForTarget | ECX shooter, EDX device id; stack (target, a*, b*, speed, flag dword), RET 14h | Lua HitTarget's aim: a stepped ballistic flight, the miss and the target's motion folded in, then the spawn (see the x87 note) |
 | 007D5AC0 BSP_Plane_CopyClassRecordLists | thiscall(plane) | the plane's effect records rebuilt from the class record list (00868420, identity matrix) |
 | 007F35C0 BSP_PlaneSquadron_GetDisplayName | thiscall(squadron), EAX | a stored name, or the function-static "." + id + "x\|" + name |
 | 00735030 BSP_MissionNarrative_Construct | thiscall(narrative), EAX | the 58h object at game+21E8h |
@@ -138,7 +139,7 @@ RNG: there is no direct draw.
 - **00731040.** `game_hosts_lua.hpp` cites 00731040 as the class's first
   bullet. It is used in a comment only, with no call.
 
-No cc9 `game_hosts_*` file calls any of the 22 bodies.
+No cc9 `game_hosts_*` file calls any of the 23 bodies.
 
 ## Verify-and-record (cc13-seg48V)
 
@@ -248,10 +249,40 @@ renamed here.
   a kind-44h parent, the frame is re-expressed through 00413920, 0087FA50 and
   00414E10. No cc9 switch text mentions this arm, and its reach is unverified.
 
-## Left open
+## 0072C170: the x87 aim for Lua HitTarget (cc13-seg48V)
 
-- **0072C170 BSP_Gun_ComputeAimForTarget.** 384 instructions of x87 with a
-  sqrt; its only caller is 00892F70, the Lua HitTarget binding.
+The source is the disk-byte disassembly 0072C170..0072C692 (`bsp.py disasm-raw`).
+Every x87 operand form and direction was read from the bytes, not from the
+Ghidra listing.
+- **Entry.** HitTarget (00892F70) loads ECX = Lua arg 0 (the shooter) and EDX =
+  arg 1 (__ftol, the device id). It pushes the target, the two vector pointers,
+  the speed (stored as a float at 008931CC) and a flag dword. Only AL of that
+  dword was stored (008931B2); the upper bytes are stale and are passed through.
+- **Constants.** All six doubles are float-exact: [00CE7630] 30.0,
+  [00D7A358] 0.01f, [00CF9058] 9.81f, [00D7A280] 0.5, [00D7A210] 1.0 and
+  [00CFE058] 0.033333335f. On the main thread (24-bit precision control),
+  float arithmetic therefore reproduces each rounding, the extended exponent
+  range aside. The one sqrt is `_CIsqrt` on a float sum, and std::sqrt on a
+  float is correctly rounded either way.
+- **Order kept.** The loop updates x, then y (first + vy*dt, then - drop), then
+  z, vy and t. The exit test is FCOMI/JA, so a NaN leaves the loop. When
+  a.y <= b.y, or the compare is unordered, the loop is skipped. The fraction is
+  then (a.y - b.y) / (a.y - (a.y + 0.01)).
+- **The height term of the miss** is `b.y - b.y` (0072C43D FSUBR ST0,ST0). It
+  is 0, or NaN for a non-finite b.y; the model keeps the subtraction.
+- **Two calls.** The target's vtable +34h is called twice (0072C3DB and
+  0072C44F), and each answer is scaled by the flight time. The model calls the
+  hook twice.
+- **Owner and source.** A shooter that is not IsKindOf(0Fh) binds a null owner
+  (0072C693). For a plane with +914h > 0, the +170h/+54h/+180h fields come from
+  the squadron's first plane, [[shooter+9D4h]+3D0h].
+
+Adoption note: `cc13_left55_seg56a`'s hook `gun_compute_aim_for_target_0072c170`
+takes the flag as a `bool`, which drops the stale upper bytes that the image
+passes into the spawn's fifth argument. Whether the spawn reads more than the
+low byte was not checked.
+
+## Left open
 - **007F3E50 BSP_PlaneSquadron_BuildDebugText.**
 - **007EC5A0 BSP_PlaneFxComponent_LoadFromClass.**
 - **007E29A0 BSP_ObserverSet_Remove.** Game code, not a template body: it calls
@@ -262,8 +293,8 @@ renamed here.
 
 - `include/bsp/cc13_seg48U.hpp` and `src/cc13_seg48U.cpp`, registered in
   `cmake/startup.cmake` (bsp_core).
-- 24 function records in `config/reconstruction/00720000`, `00730000`,
-  `007d0000` and `007f0000.jsonl`: the 22 bodies plus 00730BD0 and 0072AB10.
+- 25 function records in `config/reconstruction/00720000`, `00730000`,
+  `007d0000` and `007f0000.jsonl`: the 23 bodies plus 00730BD0 and 0072AB10.
 - 31 verify-and-record records (cc13-seg48V) in `config/reconstruction/00720000`,
   `00730000`, `007d0000`, `007e0000` and `007f0000.jsonl`, and 10 renames in
   `config/names/006f0000`, `00720000` and `00730000.jsonl`.

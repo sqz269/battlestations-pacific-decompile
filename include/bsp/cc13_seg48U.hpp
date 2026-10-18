@@ -107,6 +107,29 @@ public:
     // first {container, node}, last {container, node}), RET 14h.
     virtual void tree_erase_range_00441e50(void* container, void* out_iterator, void* first_container,
                                            void* first_node, void* last_container, void* last_node) = 0;
+
+    // ---- 0072C170 (cc13-seg48V) ----
+    // 004142E0 BSP_Vector3f_TransformAffinePoint, ECX = point; (float out[3], const float
+    // matrix[16]), RET 8.
+    virtual void vector3f_transform_affine_point_004142e0(const float* point, float* out,
+                                                          const float* matrix) = 0;
+    // 00419510 BSP_Vector3f_Normalize, __fastcall(ECX = out, EDX = v), RET; EAX = out.
+    virtual const float* vector3f_normalize_00419510(float* out, const float* v) = 0;
+    // The target entity's vtable slot +34h: __thiscall(ECX = entity, float out[3]), RET 4;
+    // EAX = the vector it answers (read as the target's velocity, per metre per second).
+    virtual const float* entity_vcall_34_vector(void* entity, float* out) = 0;
+    // The bullet class's vtable slot +20h (the spawn): __thiscall(ECX = bullet class; 0,
+    // side, const float from[3], float dir[3], flag dword, 0, 0); EAX = projectile or null.
+    virtual void* bullet_class_vcall_20_spawn(void* bullet_class, std::uint32_t zero_a, std::uint32_t side,
+                                              const float* from, float* direction, std::uint32_t flag,
+                                              std::uint32_t zero_b, std::uint32_t zero_c) = 0;
+    // 006E6BB0 BSP_Projectile_BindOwner, __thiscall(ECX = projectile, owner), RET 4.
+    virtual void projectile_bind_owner_006e6bb0(void* projectile, void* owner) = 0;
+    // Slot 0 of the sub-object at unit+170h: __thiscall(ECX = unit+170h); EAX.
+    virtual std::uint32_t unit_sub170_vcall_0(void* sub_object) = 0;
+    // The projectile's vtable slot +34h: __thiscall(ECX = projectile; const float a[3],
+    // const float b[3]), RET 8.
+    virtual void projectile_vcall_34(void* projectile, const float* a, const float* b) = 0;
 };
 
 // ---- gun and gun bot ----
@@ -123,6 +146,10 @@ void* cc13_seg48U_gun_shot_command_read_and_create_00731ae0(void* reader, Cc13Se
 void cc13_seg48U_gun_class_effect_record_destruct_007323e0(void* record, Cc13Seg48UHost& host);
 void cc13_seg48U_gun_rebuild_barrel_buffers_00729d30(void* gun, Cc13Seg48UHost& host);
 void cc13_seg48U_gun_destruct_0072d950(void* gun, Cc13Seg48UHost& host);
+// 0072C170, reached only from the Lua native HitTarget (00892F70 at 008931DE).
+void cc13_seg48U_gun_compute_aim_for_target_0072c170(void* shooter, std::int32_t device_id, void* target,
+                                                     const float* point_a, const float* point_b, float speed,
+                                                     std::uint32_t flag_dword, Cc13Seg48UHost& host);
 
 // ---- planes and squadrons ----
 void cc13_seg48U_plane_copy_class_record_lists_007d5ac0(void* plane, Cc13Seg48UHost& host);

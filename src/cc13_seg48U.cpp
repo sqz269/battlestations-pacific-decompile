@@ -4,6 +4,7 @@
 
 #include "bsp/cc13_seg48U.hpp"
 
+#include <cmath>
 #include <cstring>
 #include <initializer_list>
 
@@ -422,6 +423,134 @@ void cc13_seg48U_gun_destruct_0072d950(void* gun, Cc13Seg48UHost& host) {
     host.native_vector14_resize_0072b6d0(static_cast<std::uint8_t*>(gun) + 0x3A8, 0);  // 0072DBBE
     host.crt_free_00bf6989(at<void*>(gun, 0x3A8));                                      // 0072DBC6, no null test
     host.unit_tickable_entity_destruct_0087a410(gun);                                    // 0072DBD8
+}
+
+// ---------------------------------------------------------------------------
+// 0072C170 BSP_Gun_ComputeAimForTarget (cc13-seg48V). ECX = shooter (Lua arg 0),
+// EDX = device id (Lua arg 1, __ftol); stack (target, point_a*, point_b*, float speed,
+// flag dword); RET 14h. Its only caller is the Lua native HitTarget 00892F70, at
+// 008931DE. Evidence: the disk-byte disassembly 0072C170..0072C692 (bsp.py disasm-raw),
+// with every x87 operand and direction read from the bytes.
+// The device class's bullet ([class+74h]+34h) is fired from point_a toward point_b.
+// Both points are local to the target and taken through its world matrix (+CCh).
+// The flight is stepped at 1/(speed[bullet+5Ch] * 30) s under 9.81 gravity until it
+// falls below point_b's height. The landing miss and the target's motion over the
+// flight time are folded into the aim. The round is spawned through the bullet
+// class's slot +20h and given speed * the aim direction.
+// Precision: the main thread runs the x87 at 24-bit precision control. Every double
+// constant here is float-exact (30.0, 0.01f, 9.81f, 0.5, 1.0, 1/30 as 0.033333335f),
+// so float arithmetic rounds each operation as the image does, the exponent range
+// aside. The flag dword's low byte is HitTarget's boolean; its upper three bytes are
+// whatever the caller's stack slot held (008931B2 stores only AL), and they are
+// passed through.
+// ---------------------------------------------------------------------------
+void cc13_seg48U_gun_compute_aim_for_target_0072c170(void* shooter, std::int32_t device_id, void* target,
+                                                     const float* point_a, const float* point_b, float speed,
+                                                     std::uint32_t flag_dword, Cc13Seg48UHost& host) {
+    void* const device_class =
+        host.device_class_resolve_and_activate_00443490(static_cast<std::uint32_t>(device_id), 0);  // 0072C17D, DL = 0
+    void* const bullet = at<void*>(at<void*>(device_class, 0x74), 0x34);
+    if (bullet == nullptr) return;                                                                   // 0072C18A
+    const float* const target_world = reinterpret_cast<const float*>(static_cast<std::uint8_t*>(target) + 0xCC);
+    if (at<std::uint8_t>(target, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(target);       // 0072C1A1
+    float a[3];
+    host.vector3f_transform_affine_point_004142e0(point_a, a, target_world);                         // 0072C1B6
+    if (at<std::uint8_t>(target, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(target);       // 0072C1EA
+    float b[3];
+    host.vector3f_transform_affine_point_004142e0(point_b, b, target_world);                         // 0072C1F9
+
+    const float dt = 1.0f / (at<float>(bullet, 0x5C) * 30.0f);    // 0072C1FE..0072C213, [00CE7630] = 30.0
+    const float d[3] = {b[0] - a[0], b[1] - a[1], b[2] - a[2]};   // 0072C217..0072C237
+    float normal_out[3];
+    const float* const n = host.vector3f_normalize_00419510(normal_out, d);  // 0072C23B
+    const float vx = speed * n[0];                                          // 0072C281
+    float vy = speed * n[1];                                                // 0072C25B
+    const float vz = n[2] * speed;                                          // 0072C27B
+    float px = a[0];
+    float py = a[1];
+    float pz = a[2];
+    float t = 0.0f;                                // 0072C28B
+    float prev_y = a[1] + 0.01f;                   // 0072C2A1..0072C2A9, [00D7A358] = 0.01f
+    if (a[1] > b[1]) {                             // 0072C2B3 FCOMIP, JBE skips (unordered too)
+        const float step_x = vx * dt;              // 0072C2C3
+        const float step_z = vz * dt;              // 0072C2CB, FMULP
+        const float gdt = dt * 9.81f;              // 0072C2D5, [00CF9058] = 9.81f, kept in ST
+        const float drop = dt * gdt * 0.5f;        // 0072C2DD..0072C2DF, [00D7A280], kept in ST
+        do {
+            prev_y = py;                           // 0072C2F5
+            const float step_y = vy * dt;          // 0072C2FB
+            px = step_x + px;                      // 0072C301..0072C309
+            py = py + step_y;                      // 0072C311..0072C315
+            pz = step_z + pz;                      // 0072C319..0072C321
+            py = py - drop;                        // 0072C325..0072C32B
+            vy = vy - gdt;                         // 0072C32F..0072C331
+            t = t + 1.0f;                          // 0072C335..0072C33F, [00D7A210]
+        } while (py > b[1]);                       // 0072C347 FCOMI, JA (unordered leaves)
+    }
+    // FDIVRP at 0072C379: (py - b.y) / (py - prev_y), the fraction of the last step
+    // that fell below b.y.
+    const float frac = (py - b[1]) / (py - prev_y);
+    const float ex = vx * dt;                      // 0072C385
+    const float ez = vz * dt;                      // 0072C38B
+    px = px - ex * frac;                           // 0072C39B, 0072C3AD..0072C3B5
+    pz = pz - ez * frac;                           // 0072C3A7, 0072C3B9..0072C3C1
+    t = t - frac;                                  // 0072C3C5 FSUBR
+    const float time = t * (1.0f / 30.0f);         // 0072C3D1, [00CFE058] = 0.033333335f
+    float velocity_out[3];
+    const float* v = host.entity_vcall_34_vector(target, velocity_out);  // 0072C3DB
+    {
+        const float mx = time * v[0];              // 0072C3EC
+        const float my = v[1] * time;              // 0072C3F7
+        const float mz = time * v[2];              // 0072C3FD
+        a[0] = mx + a[0];                          // 0072C409..0072C411
+        a[1] = my + a[1];                          // 0072C415..0072C41D
+        a[2] = mz + a[2];                          // 0072C421..0072C429
+    }
+    // The miss on the ground plane. The image computes the height term as b.y - b.y
+    // (0072C439..0072C43D FSUBR ST0,ST0): 0, or NaN for a non-finite b.y.
+    const float e[3] = {b[0] - px, b[1] - b[1], b[2] - pz};   // 0072C42D..0072C44B
+    float velocity_out2[3];
+    v = host.entity_vcall_34_vector(target, velocity_out2);   // 0072C44F, the same slot again
+    float h[3];
+    {
+        const float mx = time * v[0];              // 0072C457
+        const float my = v[1] * time;              // 0072C460
+        const float mz = time * v[2];              // 0072C466
+        const float f[3] = {mx + e[0], my + e[1], mz + e[2]};        // 0072C46D..0072C48D
+        const float g[3] = {f[0] + b[0], f[1] + b[1], f[2] + b[2]};  // 0072C491..0072C4B1
+        h[0] = g[0] - a[0];                        // 0072C4B5..0072C4BD
+        h[1] = g[1] - a[1];                        // 0072C4C1..0072C4C9
+        h[2] = g[2] - a[2];                        // 0072C4CD..0072C4D5
+    }
+    // 0072C4D9..0072C50F: (h.y^2 + h.x^2) + h.z^2, each square stored as a float.
+    const float hy2 = h[1] * h[1];
+    const float hx2 = h[0] * h[0];
+    const float hz2 = h[2] * h[2];
+    const float length = std::sqrt(hy2 + hx2 + hz2);      // 0072C517 _CIsqrt, FSTP float
+    const float inverse = length > 0.0f ? 1.0f / length : 0.0f;  // 0072C52E FCOMI, JBE: 0 for <= 0 or NaN
+    float u[3] = {h[0] * inverse, h[1] * inverse, h[2] * inverse};  // 0072C55D, 0072C576, 0072C584
+    void* const projectile = host.bullet_class_vcall_20_spawn(bullet, 0, at<std::uint32_t>(shooter, 0x54), a, u,
+                                                              flag_dword, 0, 0);  // 0072C5A6
+    if (projectile == nullptr) return;                                           // 0072C5AC
+    // u is re-read from the buffer the spawn received (0072C5B2, 0072C5C8, 0072C5D2).
+    at<float>(projectile, 0x08) = u[0] * speed;   // 0072C5C0, 0072C5DA..0072C5DE
+    at<float>(projectile, 0x0C) = u[1] * speed;   // 0072C5CC, 0072C5E1..0072C5E5
+    at<float>(projectile, 0x10) = speed * u[2];   // 0072C5D2, 0072C5E8..0072C5EC
+    void* owner = nullptr;                         // 0072C693, a shooter that is not kind 0Fh
+    void* source = shooter;
+    if (host.vcall_5c_has_ordnance_kind(shooter, 0x0F)) {   // 0072C5F4, vtable +5Ch (IsKindOf)
+        owner = shooter;                                     // 0072C60D
+        // 0072C606 COMISS with [00D7A218] = 0.0f; JBE skips (unordered too).
+        if (at<float>(shooter, 0x914) > 0.0f) source = at<void*>(at<void*>(shooter, 0x9D4), 0x3D0);
+    }
+    host.projectile_bind_owner_006e6bb0(projectile, owner);                                    // 0072C620
+    at<std::uint32_t>(projectile, 0x14) =
+        host.unit_sub170_vcall_0(static_cast<std::uint8_t*>(source) + 0x170);                  // 0072C633..0072C638
+    at<std::uint32_t>(projectile, 0x18) = at<std::uint32_t>(source, 0x54);                     // 0072C643
+    at<std::uint32_t>(projectile, 0x1C) = at<std::uint32_t>(source, 0x180);                    // 0072C650
+    const float ones[3] = {1.0f, 1.0f, 1.0f};      // [00D7A24C]
+    const float zeros[3] = {0.0f, 0.0f, 0.0f};
+    host.projectile_vcall_34(projectile, ones, zeros);                                         // 0072C687
 }
 
 // ---------------------------------------------------------------------------
