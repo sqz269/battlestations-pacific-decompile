@@ -538,6 +538,19 @@ The byte fields in these saves (inattackrange, insideAttackRange and bayDoorStat
 - **009D4E30**: the torpedo factory. It calls operator new (7DCh bytes) and then the local 009D3050.
 - **009DDBA0**: Ghidra matched this to the library's `~SubAllocator`, but it is game code. It runs `eh vector destructor iterator` over the ship AI's two path plans at +60h (68h bytes each, destructor 009DBDB0), and only the unwind funclets 00CB0630 and 00CB06C0 reach it.
 
+### 3.42 Ship-brain state constructors and their draws (packet cc13-seg67C)
+
+009E4F90 builds the sub_attack parent and its "approach" and "fire" children. 009E8450 builds the attackmove state, its approach sub-state 009E5CA0, and four further sub-states. Each constructor makes one stream-1 draw: 009E4F90 sets +CCh = -U(0, 1) at 009E5061, and 009E8450 sets +1500h = -U(0, 1) at 009E84F8.
+
+Both are reached for every ship: 00810DD0 -> 009F3F20 -> 009F3BA0 -> 009F39C0, which calls 009E8450 at 009F3AB2 and 009E4F90 at 009F3AC3 with no kind gate. In the image, every brain therefore draws 9 times: 009F1160's seven, then 009E8450's, then 009E4F90's.
+
+cc9's `seed_brain_draws_009f1160` takes the seven draws. It takes the 009E4F90 draw for submarines only, with the comment "no other brain reaches sub_attack", and it never takes the 009E8450 draw. That leaves the shared stream two draws short for each surface ship and one short for each submarine at spawn. An URGENT-class adoption note was sent (submarine, shared RNG).
+
+Three STL instantiations are tagged library-only after their callees were read:
+- 009E48A0, the std::list destructor;
+- 009E7F60, the list's _Buynode;
+- 009E8EF0, the vector's _Insert_n.
+
 ## 4. Ledger-only records (packet cc13-seg67C)
 
 | Address | Host body | Result |
@@ -572,3 +585,7 @@ The byte fields in these saves (inattackrange, insideAttackRange and bayDoorStat
 | 009DA690 | the find lambda in `deliver_pass_side_messages` | matches |
 | 009DA8D0 | `tail_009da8d0` | matches; the NaN dt arms differ |
 | 009DBBC0 | `list_element_009dbbc0` | matches |
+| 009E6170 | `traffic_record_active_009e6170` | matches; the image rounds d2 to a float, the host compares in double |
+| 009E6240 | `advance_traffic_record_009e6240` | matches; the U(2, 3) draw is the host's labelled keyed stand-in |
+| 009E8360 | `TrafficRecord{}` in `insert_traffic_record` | matches the read fields (timer -1.0, weight 1.0) |
+| 009E99A0 / 009E9AE0 | `tubes_min_reload` | matches; the host's operational test is the same constant for every tube |

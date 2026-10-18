@@ -4951,4 +4951,112 @@ void ship_ai_destruct_path_plans_009ddba0(Cc13Seg67bHost& host, void* ai) {
     }
 }
 
+namespace {
+constexpr std::uint32_t kShipAiStateBaseVtable_00d218c0 = 0x00D218C0u;
+constexpr std::uint32_t kShipAiStateSubVtable_00d21880 = 0x00D21880u;
+constexpr std::uint32_t kSubAttackRegistryVtable_00d2198c = 0x00D2198Cu;
+constexpr std::uint32_t kSubAttackVtable_00d2195c = 0x00D2195Cu;
+constexpr std::uint32_t kSubAttackApproachVtable_00d218f0 = 0x00D218F0u;
+constexpr std::uint32_t kSubAttackFireVtable_00d21920 = 0x00D21920u;
+constexpr std::uint32_t kStrApproach_00d21950 = 0x00D21950u;  // "approach"
+constexpr std::uint32_t kStrFire_00ce6798 = 0x00CE6798u;      // "fire"
+constexpr std::uint32_t kAttackMoveVtable_00d219d0 = 0x00D219D0u;
+constexpr std::uint32_t kAttackMoveApproachVtable_00d21994 = 0x00D21994u;
+constexpr std::uint32_t kAttackMove14c0Vtable_00d2174c = 0x00D2174Cu;
+constexpr std::uint32_t kAttackMove14ccVtable_00d2177c = 0x00D2177Cu;
+constexpr std::uint32_t kAttackMove14e0Vtable_00d217ac = 0x00D217ACu;
+constexpr std::uint32_t kAttackMove14f4Vtable_00d2171c = 0x00D2171Cu;
+
+// The 1Ch-byte state base the two sub_attack children and the parent share:
+// +4h = owner, +0Ch..+14h = 0, +1Ch = 0, byte +18h = 1, +8h = 00D21880.
+void ship_ai_state_base_init(void* s, void* owner) {
+    at<std::uintptr_t>(s, 0x04) = reinterpret_cast<std::uintptr_t>(owner);
+    at<std::uint32_t>(s, 0x0C) = 0;
+    at<std::uint32_t>(s, 0x10) = 0;
+    at<std::uint32_t>(s, 0x14) = 0;
+    at<std::uint32_t>(s, 0x1C) = 0;
+    at<std::uint8_t>(s, 0x18) = 1;
+    at<std::uint32_t>(s, 0x08) = kShipAiStateSubVtable_00d21880;
+}
+}  // namespace
+
+// 009E4F90 (009E4F90-009E50BD). EH frame 00CB07A7. Parent p: [p] = 00D218C0 and the
+// state base on (p, brain) (009E4FAF-009E4FCF); 00411E20(p+20h) (009E4FDF), [p+20h] =
+// 00D2198C; [p] = 00D2195C (009E4FED). Child +34h: the state base on (brain), [+34h] =
+// 00D218F0 (009E4FF3-009E500D). Child +58h: the same, [+58h] = 00D21920 (009E5017-
+// 009E5034). p+C8h = 1.0 (009E5059); p+CCh = -U(0, 1) on stream 1 (00BD2F10 at
+// 009E5061); p+D0h = 00D05704, p+D4h = &p+34h, then (p+34h)->vtable[4]() (009E5068-
+// 009E5085); 00411E70(p+20h) registers "approach" (+34h) and "fire" (+58h) (009E5097,
+// 009E50A4). RET 4, EAX = p.
+// Every ship's brain reaches it: 00810DD0 -> 009F3F20 -> 009F3BA0 -> 009F39C0
+// (009F3AC3), with no kind gate.
+// UNCERTAINTY: EH unwinding not modelled.
+void* ship_ai_sub_attack_construct_009e4f90(Cc13Seg67bHost& host, void* p, void* brain) {
+    at<std::uintptr_t>(p, 0x04) = reinterpret_cast<std::uintptr_t>(brain);
+    at<std::uint32_t>(p, 0x00) = kShipAiStateBaseVtable_00d218c0;
+    ship_ai_state_base_init(p, brain);
+    host.bot_state_registry_construct_00411e20(ptr(p, 0x20));
+    at<std::uint32_t>(p, 0x20) = kSubAttackRegistryVtable_00d2198c;
+    at<std::uint32_t>(p, 0x00) = kSubAttackVtable_00d2195c;
+    void* const approach = ptr(p, 0x34);
+    ship_ai_state_base_init(approach, brain);
+    at<std::uint32_t>(approach, 0x00) = kSubAttackApproachVtable_00d218f0;
+    void* const fire = ptr(p, 0x58);
+    ship_ai_state_base_init(fire, brain);
+    at<std::uint32_t>(fire, 0x00) = kSubAttackFireVtable_00d21920;
+    at<float>(p, 0xC8) = kOne_00d7a24c;
+    const float r = host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    at<std::uint32_t>(p, 0xD0) = kBotTaskSubVtable30C;
+    at<float>(p, 0xCC) = -r;
+    at<std::uintptr_t>(p, 0xD4) = reinterpret_cast<std::uintptr_t>(approach);
+    host.state_vcall_04_enter(approach);
+    host.state_registry_add_00411e70(ptr(p, 0x20), kStrApproach_00d21950, approach);
+    host.state_registry_add_00411e70(ptr(p, 0x20), kStrFire_00ce6798, fire);
+    return p;
+}
+
+// 009E5CA0 (009E5CA0-009E5CEC). EH frame 00CB08E8. [sub+4h] = owner, [sub] = 00D21994,
+// 009E5530(ECX = sub+8h, owner) (009E5CD6). RET 4, EAX = sub.
+// UNCERTAINTY: EH unwinding not modelled.
+void* ship_ai_attackmove_approach_construct_009e5ca0(Cc13Seg67bHost& host, void* sub,
+                                                     void* owner) {
+    at<std::uintptr_t>(sub, 0x04) = reinterpret_cast<std::uintptr_t>(owner);
+    at<std::uint32_t>(sub, 0x00) = kAttackMoveApproachVtable_00d21994;
+    host.ship_ai_attackmove_ring_construct_009e5530(ptr(sub, 0x08), owner);
+    return sub;
+}
+
+// 009E8450 (009E8450-009E8531). EH frame 00CB096B. [s+4h] = owner, [s] = 00D219D0;
+// 009E5CA0(ECX = s+8h, owner) (009E8486); the sub-states +14C0h (00D2174C, byte +14C8h
+// = 0), +14CCh (00D2177C), +14E0h (00D217AC) and +14F4h (00D2171C), each with owner at
+// +4h (009E848B-009E84CA); s+14FCh = 1.0; s+1500h = -U(0, 1) on stream 1 (00BD2F10 at
+// 009E84F8); s+1504h = 00D05704, s+1508h = &s+14F4h, then (s+14F4h)->vtable[4]()
+// (009E84FF-009E851C). RET 4, EAX = s.
+// RNG: 009E5530's draws (the hook's), then this body's one. Every ship's brain reaches
+// it through 009F39C0 (009F3AB2).
+// UNCERTAINTY: EH unwinding not modelled.
+void* ship_ai_attackmove_construct_009e8450(Cc13Seg67bHost& host, void* s, void* owner) {
+    const std::uintptr_t o = reinterpret_cast<std::uintptr_t>(owner);
+    at<std::uintptr_t>(s, 0x04) = o;
+    at<std::uint32_t>(s, 0x00) = kAttackMoveVtable_00d219d0;
+    ship_ai_attackmove_approach_construct_009e5ca0(host, ptr(s, 0x08), owner);
+    at<std::uintptr_t>(s, 0x14C4) = o;
+    at<std::uint32_t>(s, 0x14C0) = kAttackMove14c0Vtable_00d2174c;
+    at<std::uint8_t>(s, 0x14C8) = 0;
+    at<std::uintptr_t>(s, 0x14D0) = o;
+    at<std::uint32_t>(s, 0x14CC) = kAttackMove14ccVtable_00d2177c;
+    at<std::uintptr_t>(s, 0x14E4) = o;
+    at<std::uint32_t>(s, 0x14E0) = kAttackMove14e0Vtable_00d217ac;
+    void* const last = ptr(s, 0x14F4);
+    at<std::uintptr_t>(last, 0x04) = o;
+    at<std::uint32_t>(last, 0x00) = kAttackMove14f4Vtable_00d2171c;
+    at<float>(s, 0x14FC) = kOne_00d7a24c;
+    const float r = host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    at<std::uint32_t>(s, 0x1504) = kBotTaskSubVtable30C;
+    at<float>(s, 0x1500) = -r;
+    at<std::uintptr_t>(s, 0x1508) = reinterpret_cast<std::uintptr_t>(last);
+    host.state_vcall_04_enter(last);
+    return s;
+}
+
 }  // namespace bsp
