@@ -554,6 +554,11 @@ struct Seg59bHost {
     // 008EF650 / 008EEA80, __fastcall(ECX = iterator): the hash iterator's begin / next copies.
     virtual void hash64_iterator_begin_008ef650(Hash64Iterator* iterator) = 0;
     virtual std::uint32_t hash64_iterator_next_008eea80(Hash64Iterator* iterator) = 0;
+    // 0075B430, __thiscall(ECX = message, type), RET 4: the session message base constructor.
+    virtual void session_message_construct_base_0075b430(void* message, std::int32_t type) = 0;
+    // 0076A9F0, __thiscall(ECX = game+1EF0h; message, flag), RET 8: thunk to 00784790 with
+    // ECX = [ECX+188h], the session send.
+    virtual void session_forward_message_0076a9f0(void* session, void* message, std::int32_t flag) = 0;
 };
 
 // --- Torpedo bot (vtable 00D182B0) ---------------------------------------------------------
@@ -812,6 +817,10 @@ void score_record_evaluate_badge_counters_00911e80(Seg59bHost& host, void* recor
 // counter map at record+84h from the kill list, the GA_PL vector and two local trees, and grants
 // (0090EDE0, value = the count) each counter that reached its threshold and is not yet awarded.
 void score_record_evaluate_achievement_counters_00912a60(Seg59bHost& host, void* record);
+// 0090ABB0, __thiscall(ECX = record = scoring + slot*284h + 4), RET: on a multiplayer server
+// ([game+1FE4h] == 1, byte [game+218Ch] == 0) sends the record as type-15h messages through
+// 0076A9F0: the kind-0 header, then one message per map entry (kinds 2..13h).
+void score_record_send_sync_0090abb0(Seg59bHost& host, void* record);
 
 
 }  // namespace bsp::cc13_seg59b

@@ -413,6 +413,21 @@ inline constexpr bool kSubmarineAirBound = true;  // ON: pairs held (docs/SUBMAR
 // section 284), flipped together with kLuaGetSubmarineAirSupplyBound.
 inline constexpr bool kLuaSetSubmarineAirSupplyBound = true;
 
+// Packet l68_travel_speed (docs/SQUADRON_LAND_TASK.md section 5im). 008A0630
+// SquadronSetTravelSpeed(squadron, speed[, force]): argument 1 through 00B66270
+// (FSTP float 008A076C), argument 2 through 00B66250 only when 00B663F0 counts
+// exactly 3, then 008A07E2 +388h = [00CE3800] 0.5 (countdown 3), 008A07F0 +38Fh =
+// force (its freeze byte), 008A07FA +3A0h = speed, 008A0802 +3ACh = 1. The only
+// image writers of +3A0h besides it are 007ED590, 007F1FE0 and 007ED5D0, all the
+// class's [squadron+35Ch]+190h; 007ED5D0 runs from BSP_PilotBot_Tick 0099AEA3
+// only when a member's head task changed (0099AE92), and replaces +3A0h only
+// when +38Fh is clear, the countdown is below zero and +3ACh is clear, then
+// clears +3ACh. Readers: 009C185C (moveto speed), 009C23BE (moveto target
+// speed), 009BC909 (move-on-path), 009C97E4 (retreat moveto). True: the script
+// orders host stores the quadruple and those readers take it. False: the row
+// stays unimplemented and every reader keeps the class value.
+inline constexpr bool kLuaSquadronSetTravelSpeedBound = false;
+
 // Packet cc9_periscope_out (docs/GUNNERY_OPEN_ITEMS.md section 38). True: each seeded
 // submarine with a periscope node runs 00854650's mast arm once per force step.
 // periscopeOut (+1234h) is cleared (00854B00), the mast's local Y steps toward
@@ -630,6 +645,9 @@ public:
     // (+384h, +38Eh, +39Ch, +3ABh, +3ADh); 009C8920 / 009C7A80 read +39Ch.
     bool set_squadron_release_alt_008a24e0(std::size_t unit_index, float altitude, bool force);
     bool set_squadron_travel_alt_0089f550(std::size_t unit_index, float altitude, bool force);
+    // Packet l68_travel_speed: 008A0630's four stores on the squadron's slot
+    // (+388h countdown, +38Fh freeze, +3A0h speed, +3ACh lock).
+    bool set_squadron_travel_speed_008a0630(std::size_t unit_index, float speed, bool force);
 
     // Packet cc9_difficulty. SetSkillLevel's leaf, unit->vtable[128h]: 009565A0
     // stores unit+390h and 007B8AE0 sets the pilot bot's index (bot+34h). The

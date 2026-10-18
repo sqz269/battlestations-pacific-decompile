@@ -3748,6 +3748,9 @@ std::int32_t tree_max_value(Seg59bHost& host, void* tree) {
 // ---------------------------------------------------------------------------
 // 00911E80 BSP_MissionScoreRecord_EvaluateBadgeCounters (provisional, cc9 name). __fastcall(ECX =
 // record = scoring + slot*284h + 4), RET. Caller 00914EF0 (BSP_BotScheduler_Update).
+// The cc9 host records the call only (game_hosts_mission_frame.cpp:759, "BotScheduler::think_a");
+// the token vocabulary, the +1470h threshold and the `threshold <= count` predicate
+// bot_demand_reaches_threshold are in bot_scheduler_output.hpp:85-114 / .cpp:42.
 // Evidence (listing 00911E80..00912A1E, read whole):
 //  0058B520(record+78h, [[record+7Ch]+4]) then the head's parent, left and right = head and
 //  [record+80h] = 0 (00911EB4..00911ED2). 00908190 finds key 1 in the int map at record+B4h; for
@@ -4021,6 +4024,9 @@ void* registry_entity_by_id(Seg59bHost& host, std::uint32_t id) {
 // ---------------------------------------------------------------------------
 // 00912A60 BSP_MissionScoreRecord_EvaluateAchievementCounters (provisional, cc9 name).
 // __fastcall(ECX = record = scoring + slot*284h + 4), RET. Callers 00914EF0 and 00920A20.
+// The cc9 host records the call only (game_hosts_mission_frame.cpp:762, "BotScheduler::think_b");
+// the second caller 00920A20 is cc9's debrief_bringup_00920a20 host, which does not call it;
+// vocabulary in bot_scheduler_output.hpp:85-105.
 // Evidence (listing 00912A60..00913A61, read whole):
 //  0058B520 empties the counter map at record+84h and resets its head (00912A9A..00912ABA).
 //  Thresholds from the award table (0050FC30, +44h vector, each key an inline NativeString of
@@ -4367,5 +4373,228 @@ void score_record_evaluate_achievement_counters_00912a60(Seg59bHost& host, void*
     at<std::uint32_t>(bombs, 0x08) = 0;
     host.tree_erase_range(0x0090F3D0u, times, StlTreeIterator{times, ptr(a_head, 0x00)}, StlTreeIterator{times, a_head});
     host.free_00bf65ac(ptr(times, 0x04));
+}
+
+namespace {
+
+// 0090ABB0's send: 0076A9F0(ECX = [00E188A8]+1EF0h; message, 0), the game pointer re-read each time.
+void send_score_sync(Seg59bHost& host, void* message) {
+    host.session_forward_message_0076a9f0(add(game_global(host), 0x1EF0), message, 0);
+}
+
+// One string-keyed int map as kind `kind` messages: message+7Ch = the key text (strcpy inline,
+// "" from 00F899A0 for a null data pointer), message+188h = the value; ++ 004FBD20.
+void send_string_int_map(Seg59bHost& host, void* message, void* tree, std::uint32_t kind) {
+    StlTreeIterator it{tree, ptr(ptr(tree, 0x04), 0x00)};
+    for (;;) {
+        void* const head = ptr(tree, 0x04);
+        check_iterator_owner(host, it, tree);
+        if (it.node == head) break;
+        at<std::uint32_t>(message, 0x18) = kind;
+        check_iterator_container(host, it);
+        check_iterator_not_head(host, it);
+        const char* text = static_cast<const char*>(ptr(it.node, 0x10));
+        if (text == nullptr) text = static_cast<const char*>(host.image_pointer(0x00F899A0u));
+        char* out = static_cast<char*>(add(message, 0x7C));
+        char c;
+        do {
+            c = *text++;
+            *out++ = c;
+        } while (c != 0);
+        check_iterator_not_head(host, it);
+        at<std::uint32_t>(message, 0x188) = at<std::uint32_t>(it.node, 0x14);
+        send_score_sync(host, message);
+        host.tree_iterator_increment(0x004FBD20u, &it);
+    }
+}
+
+// A three-level int tree as kind `kind` messages: the outer key goes to `outer_field`, the
+// middle key to `middle_field`, the leaf key to +184h and its value to +188h.
+void send_int_tree3(Seg59bHost& host, void* message, void* tree, std::uint32_t kind, std::uint32_t outer_field,
+                    std::uint32_t middle_field, std::uint32_t outer_increment, std::uint32_t middle_increment) {
+    StlTreeIterator outer{tree, ptr(ptr(tree, 0x04), 0x00)};
+    for (;;) {
+        void* const head = ptr(tree, 0x04);
+        check_iterator_owner(host, outer, tree);
+        if (outer.node == head) break;
+        check_iterator_container(host, outer);
+        check_iterator_not_head(host, outer);
+        StlTreeIterator middle{add(outer.node, 0x10), ptr(ptr(outer.node, 0x14), 0x00)};
+        for (;;) {
+            check_iterator_not_head(host, outer);
+            void* const middle_head = ptr(outer.node, 0x14);
+            check_iterator_owner(host, middle, add(outer.node, 0x10));
+            if (middle.node == middle_head) break;
+            check_iterator_container(host, middle);
+            check_iterator_not_head(host, middle);
+            StlTreeIterator leaf{add(middle.node, 0x10), ptr(ptr(middle.node, 0x14), 0x00)};
+            for (;;) {
+                check_iterator_not_head(host, middle);
+                void* const leaf_head = ptr(middle.node, 0x14);
+                check_iterator_owner(host, leaf, add(middle.node, 0x10));
+                if (leaf.node == leaf_head) break;
+                at<std::uint32_t>(message, 0x18) = kind;
+                check_iterator_not_head(host, outer);
+                at<std::uint32_t>(message, outer_field) = at<std::uint32_t>(outer.node, 0x0C);
+                check_iterator_not_head(host, middle);
+                at<std::uint32_t>(message, middle_field) = at<std::uint32_t>(middle.node, 0x0C);
+                check_iterator_container(host, leaf);
+                check_iterator_not_head(host, leaf);
+                at<std::uint32_t>(message, 0x184) = at<std::uint32_t>(leaf.node, 0x0C);
+                check_iterator_not_head(host, leaf);
+                at<std::uint32_t>(message, 0x188) = at<std::uint32_t>(leaf.node, 0x10);
+                send_score_sync(host, message);
+                host.tree_iterator_increment(0x0057F4A0u, &leaf);
+            }
+            host.tree_iterator_increment(middle_increment, &middle);
+        }
+        host.tree_iterator_increment(outer_increment, &outer);
+    }
+}
+
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 0090ABB0 BSP_MissionScoreRecord_SendSync (provisional). __thiscall(ECX = record = scoring +
+// slot*284h + 4), RET. Caller 0076D1B0 BSP_MMultiPlayer_ServerSendSceneScoring for rows 0..7;
+// multiplayer_session_cc13.cpp:879 hosts that loop through scoring_send_row_0090abb0 (no body).
+// The sending half of 0091C650: one stack message (0075B430 type 15h, vtable 00D035B8,
+// +4 = 1) is refilled and sent through 0076A9F0(game+1EF0h; message, 0) once per item; it is
+// never destroyed.
+// Evidence (listing 0090ABB0..0090BD92, read whole):
+//  [game+1FE4h] != 1 or byte [game+218Ch] != 0 -> return. Kind 0: message+1Ch slot ([+250h]),
+//  +20h..+28h floats [+0Ch]/[+10h]/[+14h], +2Ch..+34h [+0]/[+4]/[+8], +38h..+50h [+1C8h..+1E0h],
+//  +54h..+64h [+180h..+18Ch]/[+194h], +68h/+6Ch [+1E4h]/[+1E8h], +70h/+74h [+178h]/[+17Ch], +78h
+//  slot. String-keyed int maps (key text to +7Ch, value to +188h, ++ 004FBD20): kind 2..8 at
+//  +18h, +24h, +30h, +3Ch, +48h, +54h, +60h; 13h at +6Ch; 9 at +1ECh; 0Ah at +1F8h. Kind 0Fh:
+//  +114h int -> float (+180h, float bits to +18Ch; ++ 0057F510). Three-level int trees (leaf
+//  ++ 0057F4A0, leaf key +184h, value +188h): 0Bh at +B4h and 0Dh at +C0h (outer key +17Ch,
+//  middle +180h; ++ 0057F920 / 0057F3C0); 0Eh at +A8h and 0Ch at +9Ch (outer key +180h, middle
+//  +17Ch; ++ 0057F430 / 0057F350). Kind 10h: +CCh two levels (leaf key +180h, outer key +17Ch,
+//  value +188h; ++ 0057F4A0 / 0057F430). Kind 11h: +D8h (key +180h, value +188h; ++ 0057F4A0).
+// Every inline checked-iterator test keeps its 00BF6713 call at its point. No x87 arithmetic;
+// floats are copied as bits (MOVSS). No shared RNG draws.
+// Uncertainty: message bytes the image never writes keep whatever the stack held; the C++
+// zero-fills its message buffer.
+// ---------------------------------------------------------------------------
+void score_record_send_sync_0090abb0(Seg59bHost& host, void* record) {
+    void* const game = game_global(host);
+    if (at<std::uint32_t>(game, 0x1FE4) != 1) return;
+    if (at<std::uint8_t>(game, 0x218C) != 0) return;
+    alignas(4) std::uint8_t message[0x190] = {};
+    host.session_message_construct_base_0075b430(message, 0x15);
+    at<std::uint32_t>(message, 0x04) = 1;
+    at<std::uint32_t>(message, 0x00) = 0x00D035B8u;
+    at<std::uint32_t>(message, 0x2C) = at<std::uint32_t>(record, 0x000);
+    at<std::uint32_t>(message, 0x34) = at<std::uint32_t>(record, 0x008);
+    at<std::uint32_t>(message, 0x1C) = at<std::uint32_t>(record, 0x250);
+    at<std::uint32_t>(message, 0x78) = at<std::uint32_t>(record, 0x250);
+    at<std::uint32_t>(message, 0x6C) = at<std::uint32_t>(record, 0x1E8);
+    at<std::uint32_t>(message, 0x30) = at<std::uint32_t>(record, 0x004);
+    at<std::uint32_t>(message, 0x74) = at<std::uint32_t>(record, 0x17C);
+    at<std::uint32_t>(message, 0x68) = at<std::uint32_t>(record, 0x1E4);
+    at<std::uint32_t>(message, 0x3C) = at<std::uint32_t>(record, 0x1CC);
+    at<std::uint32_t>(message, 0x38) = at<std::uint32_t>(record, 0x1C8);
+    at<std::uint32_t>(message, 0x70) = at<std::uint32_t>(record, 0x178);
+    at<std::uint32_t>(message, 0x48) = at<std::uint32_t>(record, 0x1D8);
+    at<std::uint32_t>(message, 0x44) = at<std::uint32_t>(record, 0x1D4);
+    at<std::uint32_t>(message, 0x40) = at<std::uint32_t>(record, 0x1D0);
+    at<std::uint32_t>(message, 0x58) = at<std::uint32_t>(record, 0x184);
+    at<std::uint32_t>(message, 0x50) = at<std::uint32_t>(record, 0x1E0);
+    at<std::uint32_t>(message, 0x4C) = at<std::uint32_t>(record, 0x1DC);
+    at<std::uint32_t>(message, 0x60) = at<std::uint32_t>(record, 0x18C);
+    at<std::uint32_t>(message, 0x5C) = at<std::uint32_t>(record, 0x188);
+    at<std::uint32_t>(message, 0x54) = at<std::uint32_t>(record, 0x180);
+    at<std::uint32_t>(message, 0x28) = at<std::uint32_t>(record, 0x014);  // MOVSS
+    at<std::uint32_t>(message, 0x20) = at<std::uint32_t>(record, 0x00C);  // MOVSS
+    at<std::uint32_t>(message, 0x18) = 0;
+    at<std::uint32_t>(message, 0x24) = at<std::uint32_t>(record, 0x010);  // MOVSS
+    at<std::uint32_t>(message, 0x64) = at<std::uint32_t>(record, 0x194);
+    send_score_sync(host, message);
+
+    send_string_int_map(host, message, add(record, 0x18), 2);
+    send_string_int_map(host, message, add(record, 0x24), 3);
+    send_string_int_map(host, message, add(record, 0x30), 4);
+    send_string_int_map(host, message, add(record, 0x3C), 5);
+    send_string_int_map(host, message, add(record, 0x48), 6);
+    send_string_int_map(host, message, add(record, 0x54), 7);
+    send_string_int_map(host, message, add(record, 0x60), 8);
+    send_string_int_map(host, message, add(record, 0x6C), 0x13);
+    send_string_int_map(host, message, add(record, 0x1EC), 9);
+    send_string_int_map(host, message, add(record, 0x1F8), 0x0A);
+
+    // 0090B426..0090B4C0: kind 0Fh, the int -> float map at +114h.
+    {
+        void* const tree = add(record, 0x114);
+        StlTreeIterator it{tree, ptr(ptr(tree, 0x04), 0x00)};
+        for (;;) {
+            void* const head = ptr(tree, 0x04);
+            check_iterator_owner(host, it, tree);
+            if (it.node == head) break;
+            at<std::uint32_t>(message, 0x18) = 0x0F;
+            check_iterator_container(host, it);
+            check_iterator_not_head(host, it);
+            at<std::uint32_t>(message, 0x180) = at<std::uint32_t>(it.node, 0x0C);
+            check_iterator_not_head(host, it);
+            at<std::uint32_t>(message, 0x18C) = at<std::uint32_t>(it.node, 0x10);  // MOVSS
+            send_score_sync(host, message);
+            host.tree_iterator_increment(0x0057F510u, &it);
+        }
+    }
+
+    send_int_tree3(host, message, add(record, 0xB4), 0x0B, 0x17C, 0x180, 0x0057F3C0u, 0x0057F920u);
+    send_int_tree3(host, message, add(record, 0xC0), 0x0D, 0x17C, 0x180, 0x0057F3C0u, 0x0057F920u);
+    send_int_tree3(host, message, add(record, 0xA8), 0x0E, 0x180, 0x17C, 0x0057F350u, 0x0057F430u);
+    send_int_tree3(host, message, add(record, 0x9C), 0x0C, 0x180, 0x17C, 0x0057F350u, 0x0057F430u);
+
+    // 0090BBBA..0090BCE0: kind 10h, the two-level tree at +CCh.
+    {
+        void* const tree = add(record, 0xCC);
+        StlTreeIterator outer{tree, ptr(ptr(tree, 0x04), 0x00)};
+        for (;;) {
+            void* const head = ptr(tree, 0x04);
+            check_iterator_owner(host, outer, tree);
+            if (outer.node == head) break;
+            check_iterator_container(host, outer);
+            check_iterator_not_head(host, outer);
+            StlTreeIterator leaf{add(outer.node, 0x10), ptr(ptr(outer.node, 0x14), 0x00)};
+            for (;;) {
+                check_iterator_not_head(host, outer);
+                void* const leaf_head = ptr(outer.node, 0x14);
+                check_iterator_owner(host, leaf, add(outer.node, 0x10));
+                if (leaf.node == leaf_head) break;
+                at<std::uint32_t>(message, 0x18) = 0x10;
+                check_iterator_container(host, leaf);
+                check_iterator_not_head(host, leaf);
+                at<std::uint32_t>(message, 0x180) = at<std::uint32_t>(leaf.node, 0x0C);
+                check_iterator_not_head(host, outer);
+                at<std::uint32_t>(message, 0x17C) = at<std::uint32_t>(outer.node, 0x0C);
+                check_iterator_not_head(host, leaf);
+                at<std::uint32_t>(message, 0x188) = at<std::uint32_t>(leaf.node, 0x10);
+                send_score_sync(host, message);
+                host.tree_iterator_increment(0x0057F4A0u, &leaf);
+            }
+            host.tree_iterator_increment(0x0057F430u, &outer);
+        }
+    }
+
+    // 0090BCE5..0090BD7B: kind 11h, the int map at +D8h.
+    {
+        void* const tree = add(record, 0xD8);
+        StlTreeIterator it{tree, ptr(ptr(tree, 0x04), 0x00)};
+        for (;;) {
+            void* const head = ptr(tree, 0x04);
+            check_iterator_owner(host, it, tree);
+            if (it.node == head) break;
+            at<std::uint32_t>(message, 0x18) = 0x11;
+            check_iterator_container(host, it);
+            check_iterator_not_head(host, it);
+            at<std::uint32_t>(message, 0x180) = at<std::uint32_t>(it.node, 0x0C);
+            check_iterator_not_head(host, it);
+            at<std::uint32_t>(message, 0x188) = at<std::uint32_t>(it.node, 0x10);
+            send_score_sync(host, message);
+            host.tree_iterator_increment(0x0057F4A0u, &it);
+        }
+    }
 }
 }  // namespace bsp::cc13_seg59b
