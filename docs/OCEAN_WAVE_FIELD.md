@@ -2859,3 +2859,30 @@ identical, none of the six natives called. **ON, unexercised**, as the lead rout
 
 **USN12 WINS note:** on fcb6c6fa5 OFF, `usn12_s38_u12_p2` does not complete in 34000 frames (MissionPhase 3,
 Distance 10.12 km); the table's last completion was 1539.83 s. Sent to the WINS keeper.
+
+**fix16's release MINORs: recorded, not fixed (not cheap).**
+- (a) `007BBBA0` (disasm-raw): `007BBBA6 CMP byte [EDX+60h],0` / `007BBBB0 JE 007BBC00`, so a disabled channel C
+  skips the bay writes and still reaches `007BBC00 ADD [ECX+C20h],EBX` (EBX = 1). The host's two callers
+  (`release_ordnance_007bbba0` and `release_bomb_007bbba0`, `game_hosts_units.cpp`) instead turn channel C on first.
+  The host also gates the torpedo spawn on the bay's acceptance, where the image's spawn hangs off `+C20h` on
+  every path (bay already open included). Removing the force-enable alone would stop releases on any plane whose
+  channel C is disabled, so the faithful fix is to key the spawn on the `+C20h` raise for all callers
+  (`release_ordnance_007bbba0` has eleven call sites in the shared units file). Left for the plane lane.
+- (b) The attach test has no drop-to-attach gap: `006E3FE0` tests an attached round only. Not touched.
+- `docs/ATTACK_COMMANDS.md` corrected: `PilotBomb` asks `vtable[5Ch](10h)` of its argument (`008A505C`), not of
+  the `+3D0h` object, so a squadron argument never gets `levelbomb`.
+
+**TouchdownBrake (68's open item): the stand-in is the image's call.** `009B1EF2`-`009B1F07`: ECX = the plane
+(`[[task+4]+4]`), `ADD ECX,72Ch`, `CALL [[ECX]+38h]`. The plane class stores vtable `00D06130` at `+72Ch`
+(`007D03FD MOV [EDI+72Ch],00D06130` in its destructor; the unit base stores `00CFC384` at `006FE4A9`). Slot `38h`
+(`00D06168`) is `0074E210` `BSP_PlaneControlMode_IsFreeFlight`: `CMP [ECX+1D4h],7 / SETE AL`, and `+72Ch + 1D4h` is
+the plane's `+900h`. So the call answers `+900h == 7`, which is exactly the host's `plane_control_mode_900 != 7`
+test for setting the touched byte. The brake stays unreached for the reason 68 gives (`009B3D0B` moves a plane
+whose `+900h` is 4 or 5 to land/park first); whether the image ever has `+900h` at another value (6, say; `0074E230`
+groups 7, 6, 4 and 5) during land final is the remaining question, and it is a `+900h` writer census, not this call.
+  Immediate `+900h` writers (scan-bytes `C7 86/81 00 09 00 00`): 7 at `007C6481` / `007C7183` / `007D6600` (spawn,
+  begin flying, property bag), 6 at `007C63F4` (spawn) and `007CB9E0` (session-remote only), 4 at `007C1697`
+  (FiveToFour; callers `009B22C0` approach-base, `009CD540` taxi, `009CE2C0` takeoff) and `007C7488` (remote), 5 at
+  `007C171E`, 2 at `007CC7E2` and 1 at `007CC857` (both from `007CCFA0` BSP_Plane_HandleMessage). So in single
+  player only a message arm (1 or 2) could clear the free-flight test during land final; which message, if any,
+  the landing sends is the next step.
