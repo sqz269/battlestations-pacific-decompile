@@ -1235,6 +1235,89 @@ void* bot_state_dogfight_attack_run_construct_009a70e0(Cc13Seg67bHost& host, voi
                                  0x20);
 }
 
+// 009A71E0 (009A71E0-009A74AE). The dogfight attack run's tick, slot +0Ch of 00D1F8B0.
+// a = [state+4h] (the approach), unit = a+4h, plan = a+18h, direction = a+1Ch.
+//  - 009A71EF-009A7260: h0 = pi/2 [00CE3830] - atan2(dz, dx) to the approach's target
+//    point (vtable[0]), + 2pi [00CE3828] when negative; dx, dz are stored as floats.
+//  - 009A7260-009A7301: dt < +1Ch (FCOMI, JB; a NaN dt takes it too) -> +1Ch = +1Ch - dt
+//    (009A735A DE E9); else +1Ch = +1Ch + (+18h - dt) and +20h = (-A.x x B.y x B.z) x
+//    pi/6 [00CEC730] from 007F0280(ECX = a+0Ch; unit, (100, 60, 120), &A, &B, (0, 0, 0),
+//    0) (00CE3D08, 00CEB4B0, 00D05804).
+//  - 009A7301-009A732A: plan+2C0h = 00438AA0(h0, +20h), plan+2CCh = 2.
+//  - 009A7334-009A7411: r = min(a+D8h, 2000) ([00CF0DD8] compare, [00CFFD60] store);
+//    hgt = 1400 [00D1F8D0] - unit+100h, raised to 50 ([00CE3938], [00CEB4D4]);
+//    009FB800(ECX = state+4h; ctl+394h, 00419010(0.1, 0.35, 0.4, 1, hgt / r)) with
+//    [00D7A2F0], [00CF6560], [00CE7804].
+//  - 009A7411-009A743F: throttle 0.98 [00CE6650], air brake 0, both active, +2D8h = 0.
+//  - 009A7449-009A747C: direction+40h = tuning+670h; 009FABE0(direction; 009A1A20(plan),
+//    0099B630(plan)) - the 0099B630 result is pushed first and stays as the pitch.
+//  - 009A7481-009A74A0: a+DCh = 1.0 [00D7A24C], a+E0h = 0.1 [00D7A2F0].
+// x87 is modelled in float (24-bit); the double constants are rounded where the image
+// stores. The three pi qwords are widened floats, used at their image values. No direct
+// 00BD2F10 draws; 007F0280 and 009A1A20 each have one indirect call that was not chased.
+// Unreferenced by address except through its vtable slot.
+void bot_state_dogfight_attack_run_tick_009a71e0(Cc13Seg67bHost& host, void* state, float dt) {
+    void* const a = at<void*>(state, 4);
+    void* const unit = at<void*>(a, 4);
+    if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);
+    float pt[3];
+    const float* const p = host.approach_vcall_00_target_point(a, pt);
+    const float dz = p[2] - at<float>(unit, 0x104);
+    const float dx = p[0] - at<float>(unit, 0xFC);
+    // 009A723E FSUBR qword [00CE3830], 009A7252 FADD qword [00CE3828]: widened floats.
+    float h0 = static_cast<float>(1.5707963705062866 - host.crt_atan2_00bf701a(dz, dx));
+    if (0.0f > h0) h0 = static_cast<float>(h0 + 6.2831854820251465);
+
+    const float c = at<float>(state, 0x1C);
+    if (dt < c || std::isnan(dt) || std::isnan(c)) {
+        at<float>(state, 0x1C) = c - dt;
+    } else {
+        at<float>(state, 0x1C) = c + (at<float>(state, 0x18) - dt);
+        const float extents[3] = {100.0f, 60.0f, 120.0f};
+        const float weights[3] = {0.0f, 0.0f, 0.0f};
+        float out_a[3] = {0.0f, 0.0f, 0.0f};
+        float out_b[3] = {0.0f, 0.0f, 0.0f};
+        host.bot_near_field_probe_007f0280(at<void*>(a, 0x0C), unit, extents, out_a, out_b,
+                                           weights, false);
+        // With a null unit the image multiplies uninitialised stack (007F0280 skips the
+        // zeroing at 007F02A7, JE 007F0B08); this pre-zeroes and gets 0. The unit is the
+        // bot's own entity, so that never happens in practice.
+        const float o = -out_a[0] * out_b[1] * out_b[2];
+        // 009A72F8 FMUL qword [00CEC730], pi/6 as a widened float.
+        at<float>(state, 0x20) = static_cast<float>(o * 0.5235987901687622);
+    }
+    void* const plan = at<void*>(a, 0x18);
+    at<float>(plan, 0x2C0) = host.math_add_wrapped_angle_00438aa0(h0, at<float>(state, 0x20));
+    at<std::uint32_t>(plan, 0x2CC) = 2;
+
+    float r = at<float>(a, 0xD8);
+    if (r > 2000.0f) r = 2000.0f;
+    void* const u2 = at<void*>(a, 4);
+    if (at<std::uint8_t>(u2, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(u2);
+    float hgt = 1400.0f - at<float>(u2, 0x100);
+    if (50.0f > hgt) hgt = 50.0f;
+    const float factor = host.interpolate_clamped_00419010(0.1f, 0.35f, 0.4f, 1.0f, hgt / r);
+    host.pilot_bot_command_pitch_from_altitude_009fb800(
+        ptr(state, 4), at<float>(at<void*>(a, 0x0C), 0x394), factor);
+
+    void* const plan2 = at<void*>(at<void*>(state, 4), 0x18);
+    at<float>(plan2, 0x278) = 0.98f;
+    at<std::uint8_t>(plan2, 0x27C) = 1;
+    at<float>(plan2, 0x2A8) = 0.0f;
+    at<std::uint8_t>(plan2, 0x2AC) = 1;
+    at<std::uint32_t>(plan2, 0x2D8) = 0;
+
+    void* const a2 = at<void*>(state, 4);
+    at<float>(at<void*>(a2, 0x1C), 0x40) =
+        at<float>(host.game_tuning_singleton_0042e740(), 0x670);
+    void* const plan3 = at<void*>(a2, 0x18);
+    const float pitch = pilot_command_pitch_target_or_live_0099b630(plan3);
+    const float heading = bot_task_commanded_heading_009a1a20(host, plan3);
+    host.bot_set_direction_009fabe0(at<void*>(a2, 0x1C), heading, pitch);
+    at<float>(at<void*>(state, 4), 0xDC) = 1.0f;
+    at<float>(at<void*>(state, 4), 0xE0) = 0.1f;
+}
+
 // 009A84E0 (009A84E0-009A855F). Vtable 00D1F960 (009A8523); +28h = 1.0 (009A8535);
 // 009A853A RNG; +2Ch = -r (009A8544); +34h = 0 (009A854B). +18h..+24h and +30h
 // are not written.
@@ -2027,7 +2110,8 @@ void* bot_task_make_stop_009badb0(Cc13Seg67bHost& host, void* bot) {
 // 009BACB0 (009BACB0-009BAD23). EH frame. __fastcall(ECX = bot, EDX = target; float
 // alt), RET 4: t = new(400h) (009BACD2); null -> 0; else 0099C6F0(ECX = t, bot, 0Fh)
 // (009BACEF), [t] = 00D20480 (009BACFA), +3F8h = target (009BAD00), +3FCh = alt
-// (009BAD06). The base constructor takes one 00BD2F10 draw.
+// (009BAD06). The base constructor takes two 00BD2F10 draws: stream 1 at 0099C765
+// (U(0, 1), negated, into +308h) and stream 0 at 0099C7BA (U(-1, 0) into +3E8h).
 void* bot_task_make_gain_altitude_009bacb0(Cc13Seg67bHost& host, void* bot, void* target,
                                            float alt) {
     void* const t = host.operator_new_00bf681b(0x400);
@@ -2041,7 +2125,7 @@ void* bot_task_make_gain_altitude_009bacb0(Cc13Seg67bHost& host, void* bot, void
 
 // 009BAD30 (009BAD30-009BADA8). EH frame. __fastcall(ECX = bot), RET: t = new(3FCh)
 // (009BAD4F); null -> 0; else 0099C6F0(ECX = t, bot, 0Fh) (009BAD6E), [t] = 00D20400
-// (009BAD74), +3F8h = 0 (009BAD7A). The base constructor takes one 00BD2F10 draw.
+// (009BAD74), +3F8h = 0 (009BAD7A). The base constructor takes the same two draws.
 void* bot_task_make_immelmann_009bad30(Cc13Seg67bHost& host, void* bot) {
     void* const t = host.operator_new_00bf681b(0x3FC);
     if (t == nullptr) return nullptr;
