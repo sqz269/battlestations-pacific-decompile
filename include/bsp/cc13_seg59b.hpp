@@ -562,6 +562,8 @@ struct Seg59bHost {
     // 00625F50, __thiscall(ECX = map, const NativeString* key), RET 4: the NativeString-keyed map
     // subscript (lower_bound 0061E650, insert 00625AB0); 0091A080 adds into [EAX+8].
     virtual void* string_record_map_index_00625f50(void* map, const void* key) = 0;
+    // 0043E9A0 BSP_NativeString_MatchesAtOffset, __thiscall(ECX = string, other, offset), RET 8; AL.
+    virtual bool native_string_matches_at_0043e9a0(const void* string, const void* other, std::uint32_t offset) = 0;
 };
 
 // --- Torpedo bot (vtable 00D182B0) ---------------------------------------------------------
@@ -827,6 +829,15 @@ void score_record_send_sync_0090abb0(Seg59bHost& host, void* record);
 // 0091A080, __thiscall(ECX = destination record, source record), RET 4: merges a mission score
 // record into the progress map's record (counts and maps added, best score per src+8h index).
 void score_record_merge_0091a080(Seg59bHost& host, void* destination, void* source);
+// 0091D780's stack frame at ESP after its four register pushes (S+0..S+8Bh; the EH state slot
+// S+8Ch is not modelled). The sub-range functions below share it at the image's offsets.
+struct CampaignAwardsFrame0091d780 {
+    alignas(8) std::uint8_t bytes[0x8C];
+};
+// 0091D780 PARTIAL, 0091D780..0091E15E: the frame set-up and the campaign-finish awards
+// (CA_SA / CA_CUM for USN01..USN14, CA_OF / CA_CJM for IJN01..IJN14). Not a whole-body
+// replacement; 0091E15F..0091FFFF is not reconstructed yet.
+void campaign_awards_finish_part_0091d780(Seg59bHost& host, void* record, CampaignAwardsFrame0091d780& state);
 
 
 }  // namespace bsp::cc13_seg59b

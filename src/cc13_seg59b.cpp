@@ -4806,4 +4806,218 @@ void score_record_merge_0091a080(Seg59bHost& host, void* destination, void* sour
     at<std::int32_t>(destination, 0x188) += at<std::int32_t>(source, 0x188);
     at<std::int32_t>(destination, 0x184) += at<std::int32_t>(source, 0x184);
 }
+
+namespace {
+
+// 0091D780's frame offsets (ESP after the four register pushes, "S"); see CampaignAwardsFrame0091d780.
+constexpr std::uint32_t kCampaignBoolSa = 0x14, kCampaignBoolCum = 0x15, kCampaignBoolOf = 0x16,
+                        kCampaignBoolCjm = 0x17, kCampaignLiveFlags = 0x18, kCampaignRecord = 0x1C,
+                        kCampaignProfile = 0x20, kCampaignProgress = 0x24, kCampaignCjm = 0x28,
+                        kCampaignMissionKey = 0x30, kCampaignSa = 0x38, kCampaignOf = 0x40,
+                        kCampaignScratch = 0x48, kCampaignMissionId = 0x50, kCampaignIjn = 0x58,
+                        kCampaignUsn = 0x60, kCampaignIjn0 = 0x68, kCampaignUsn0 = 0x70,
+                        kCampaignScratch2 = 0x78;
+
+// The flag-guarded release of 0091D921 / 0091DBD8 and later: test the bit, clear it, then free
+// the string's data when it has any.
+void campaign_release_if(Seg59bHost& host, std::uint8_t* frame, std::uint32_t bit, std::uint32_t string) {
+    if ((at<std::uint32_t>(frame, kCampaignLiveFlags) & bit) == 0) return;
+    at<std::uint32_t>(frame, kCampaignLiveFlags) &= ~bit;
+    release_native_string(host, add(frame, string));
+}
+
+// FindRecord(text) [+44h vector][0], the key held in `string` and released after the read.
+std::int32_t campaign_award_first_value(Seg59bHost& host, std::uint8_t* frame, std::uint32_t string,
+                                        std::uint32_t text) {
+    host.native_string_assign_0041e870(add(frame, string), static_cast<const char*>(host.image_pointer(text)));
+    void* const award = host.award_table_find_record_0050fc30(award_table(host), add(frame, string));
+    const std::int32_t value = award_vector_value(host, award, 0);
+    release_native_string(host, add(frame, string));
+    return value;
+}
+
+// One campaign mission id into S+50h: (i < 10 ? prefix0 + i : prefix + i) through 004263B0 into
+// S+48h (live bit `low_bit`) or S+78h (`high_bit`), the inline copy, then both releases.
+void campaign_mission_id(Seg59bHost& host, std::uint8_t* frame, std::int32_t i, std::uint32_t prefix0,
+                         std::uint32_t prefix, std::uint32_t low_bit, std::uint32_t high_bit) {
+    void* source;
+    if (i < 10) {
+        source = host.native_string_concat_int_004263b0(add(frame, prefix0), add(frame, kCampaignScratch), i);
+        at<std::uint32_t>(frame, kCampaignLiveFlags) |= low_bit;
+    } else {
+        source = host.native_string_concat_int_004263b0(add(frame, prefix), add(frame, kCampaignScratch2), i);
+        at<std::uint32_t>(frame, kCampaignLiveFlags) |= high_bit;
+    }
+    if (source != add(frame, kCampaignMissionId)) assign_native_string_inline(host, add(frame, kCampaignMissionId), source);
+}
+
+// The "Campaign Finish %s %d%d%d" trace (00D18B88) of one mission record.
+void campaign_trace(Seg59bHost& host, const char* name, void* mission) {
+    std::uint32_t args[4];
+    std::uint32_t count = 0;
+    push_pointer(args, count, name != nullptr ? name : host.image_pointer(0x00F899A0u));
+    push_dword(args, count, at<std::uint32_t>(mission, 0x274));
+    push_dword(args, count, at<std::uint32_t>(mission, 0x270));
+    push_dword(args, count, at<std::uint32_t>(mission, 0x26C));
+    host.trace_printf_004254b0(static_cast<const char*>(host.image_pointer(0x00D18B88u)), args, count);
+}
+
+// The finish-award grant of 0091DF26 and its three copies: inline NativeString(text), then
+// 0090EDE0([game+21A0h]; [record+250h], &key, 1, 0), then the release.
+void campaign_grant_one(Seg59bHost& host, std::uint8_t* frame, std::uint32_t text, std::uint32_t length) {
+    void* const key = add(frame, kCampaignScratch);
+    construct_native_string_inline(host, key, text, length);
+    void* const record = ptr(frame, kCampaignRecord);
+    host.scoring_grant_award_0090ede0(scoring_global(host), at<std::int32_t>(record, 0x250), key, 1, 0);
+    release_native_string(host, key);
+}
+
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 0091D780 BSP_MissionScoreRecord_EvaluateCampaignAwards (provisional), PARTIAL: this function
+// covers 0091D780..0091E15E only, the frame set-up and the campaign-finish awards. The rest of
+// the body (0091E15F..0091FFFF: CA_IC, CA_VR, the CA_US / CA_JP / CA_HOS / CA_WOG / CA_AA /
+// CA_FA counters, the RANK pass and the frame teardown) is not reconstructed yet, so nothing
+// here is a callable replacement for 0091D780.
+// Original ABI: __fastcall(ECX = record = scoring + slot*284h + 4), RET; SEH frame, handler
+// 00CA65F0. Caller 00920A20 (cc9's debrief_bringup_00920a20 host records the debrief bring-up
+// and does not call it).
+// `frame` stands for the image's stack frame at ESP after the four register pushes (S); the
+// offsets are the image's, so the later sub-ranges continue on the same bytes.
+// Evidence (listing 0091D780..0091E15E, read whole; EH state slot S+8Ch):
+//  S+18h live-string bits = 0; S+1Ch = record; S+30h = game+2198h (mission key). Inline
+//  NativeStrings: S+60h "USN" (00CF1468, 3; state 0), S+70h "USN0" (00D18BCC, 4; 1), S+58h "IJN"
+//  (00D18780, 3; 2), S+68h "IJN0" (00D18BC4, 4). S+50h = {0, 0}; S+20h = game+650h, S+24h =
+//  [game+6B4h] (the game pointer re-read at 0091D8A7). 00469840(key; S+48h, 0, size of "USN"),
+//  bit 1, 00435C40 against "USN"; on a miss 00469840(key; S+78h, 0, size of "IJN"), bits 3,
+//  00435C40 against "IJN". Bit 2 then bit 1 releases. No match -> 0091E15F.
+//  Bytes S+16h/S+17h/S+14h/S+15h = 1; thresholds [FindRecord(x)+48h][0] (00BF6713 on an empty
+//  vector): CA_OF (00D18BBC) -> S+40h, CA_CJM (00D18BB4) -> S+28h, CA_SA (00D18BAC) -> S+38h,
+//  CA_CUM (00D18BA4, in S+78h) -> EBP; each key released after its read.
+//  i = 1..14: "USN0"+i (i < 10, 004263B0 into S+48h, bit 4, state 0Ah) or "USN"+i (S+78h, bit 8,
+//  state 0Bh); S+50h = that string (0041DD40 + memcpy of the new size when the source size is not
+//  0, skipped when the source is S+50h); bit 8 then bit 4 releases; m = 00594A70([S+24h]; S+50h);
+//  trace "Campaign Finish %s %d%d%d" (00D18B88; data or 00F899A0, m+274h, m+270h, m+26Ch);
+//  0043E9A0(key; S+50h, 0): a match ANDs S+14h with !(SA > record+8 && record+8 != 0) &&
+//  record+0 > 0 and S+15h with CUM == record+8 && record+0 > 0; a miss ANDs S+14h with
+//  (m+274h > 0 || m+270h > 0 || m+26Ch > 0) and S+15h with m+26Ch[CUM] > 0 (SETG).
+//  i = 1..14 again with "IJN0"/"IJN" (bits 10h/20h, states 0Ch/0Dh), the data pointer of S+50h
+//  taken after the copy, and the prefix test inlined (key data and text non-null, byte walk,
+//  match when the text ends): S+16h with OF, S+17h with CJM, the same shapes.
+//  Grants in order S+14h CA_SA (5), S+15h CA_CUM (6), S+16h CA_OF (5), S+17h CA_CJM (6):
+//  inline NativeString in S+48h, 0090EDE0([game+21A0h]; [record+250h], &key, 1, 0), release.
+// No x87 and no shared RNG draws. Signed compares throughout (JLE/JG/SETG).
+// Uncertainty: 0041E870 is used here on S+48h after an earlier release left its header stale,
+// exactly as the image does; whether 0041E870 resets the header first is the hook's business.
+// The meaning of record+8 (the difficulty index used by 0091A080's +26Ch/+278h arrays) and of
+// the four awards is inferred from the names only.
+// ---------------------------------------------------------------------------
+void campaign_awards_finish_part_0091d780(Seg59bHost& host, void* record, CampaignAwardsFrame0091d780& state) {
+    std::uint8_t* const frame = state.bytes;
+    void* const game = game_global(host);
+    at<std::uint32_t>(frame, kCampaignLiveFlags) = 0;
+    at<void*>(frame, kCampaignRecord) = record;
+    void* const key = add(game, 0x2198);
+    at<void*>(frame, kCampaignMissionKey) = key;
+    construct_native_string_inline(host, add(frame, kCampaignUsn), 0x00CF1468u, 3);
+    const std::uint32_t usn_size = at<std::uint32_t>(frame, kCampaignUsn);
+    construct_native_string_inline(host, add(frame, kCampaignUsn0), 0x00D18BCCu, 4);
+    construct_native_string_inline(host, add(frame, kCampaignIjn), 0x00D18780u, 3);
+    const std::uint32_t ijn_size = at<std::uint32_t>(frame, kCampaignIjn);
+    construct_native_string_inline(host, add(frame, kCampaignIjn0), 0x00D18BC4u, 4);
+    at<std::uint32_t>(frame, kCampaignMissionId) = 0;
+    at<std::uint32_t>(frame, kCampaignMissionId + 4) = 0;
+    void* const game_again = game_global(host);
+    at<void*>(frame, kCampaignProfile) = add(game_again, 0x650);
+    at<std::uint32_t>(frame, kCampaignProgress) = at<std::uint32_t>(game_again, 0x6B4);
+
+    void* const usn_part = host.native_string_substring_00469840(key, add(frame, kCampaignScratch), 0, usn_size);
+    at<std::uint32_t>(frame, kCampaignLiveFlags) = 1;
+    bool campaign = host.native_string_equals_insensitive_00435c40(usn_part, add(frame, kCampaignUsn));
+    if (!campaign) {
+        void* const ijn_part =
+            host.native_string_substring_00469840(key, add(frame, kCampaignScratch2), 0, ijn_size);
+        at<std::uint32_t>(frame, kCampaignLiveFlags) = 3;
+        campaign = host.native_string_equals_insensitive_00435c40(ijn_part, add(frame, kCampaignIjn));
+    }
+    campaign_release_if(host, frame, 2, kCampaignScratch2);
+    campaign_release_if(host, frame, 1, kCampaignScratch);
+    if (!campaign) return;
+
+    at<std::uint8_t>(frame, kCampaignBoolOf) = 1;
+    at<std::uint8_t>(frame, kCampaignBoolCjm) = 1;
+    at<std::uint8_t>(frame, kCampaignBoolSa) = 1;
+    at<std::uint8_t>(frame, kCampaignBoolCum) = 1;
+    at<std::int32_t>(frame, kCampaignOf) = campaign_award_first_value(host, frame, kCampaignScratch, 0x00D18BBCu);
+    at<std::int32_t>(frame, kCampaignCjm) = campaign_award_first_value(host, frame, kCampaignScratch, 0x00D18BB4u);
+    at<std::int32_t>(frame, kCampaignSa) = campaign_award_first_value(host, frame, kCampaignScratch, 0x00D18BACu);
+    const std::int32_t cum = campaign_award_first_value(host, frame, kCampaignScratch2, 0x00D18BA4u);
+
+    // 0091DB5E..0091DD1B: the US campaign, USN01..USN14.
+    for (std::int32_t i = 1; i <= 14; ++i) {
+        campaign_mission_id(host, frame, i, kCampaignUsn0, kCampaignUsn, 4, 8);
+        campaign_release_if(host, frame, 8, kCampaignScratch2);
+        campaign_release_if(host, frame, 4, kCampaignScratch);
+        void* const mission = host.mission_score_map_index_00594a70(ptr(frame, kCampaignProgress),
+                                                                   add(frame, kCampaignMissionId));
+        campaign_trace(host, static_cast<const char*>(ptr(frame, kCampaignMissionId + 4)), mission);
+        const bool current = host.native_string_matches_at_0043e9a0(ptr(frame, kCampaignMissionKey),
+                                                                    add(frame, kCampaignMissionId), 0);
+        if (current) {
+            const std::int32_t difficulty = at<std::int32_t>(record, 0x08);
+            const bool sa = !(at<std::int32_t>(frame, kCampaignSa) > difficulty && difficulty != 0) &&
+                            at<std::int32_t>(record, 0x00) > 0;
+            at<std::uint8_t>(frame, kCampaignBoolSa) &= sa ? 1 : 0;
+            const bool cum_ok = cum == difficulty && at<std::int32_t>(record, 0x00) > 0;
+            at<std::uint8_t>(frame, kCampaignBoolCum) &= cum_ok ? 1 : 0;
+        } else {
+            const bool any = at<std::int32_t>(mission, 0x274) > 0 || at<std::int32_t>(mission, 0x270) > 0 ||
+                             at<std::int32_t>(mission, 0x26C) > 0;
+            at<std::uint8_t>(frame, kCampaignBoolSa) &= any ? 1 : 0;
+            at<std::uint8_t>(frame, kCampaignBoolCum) &= at<std::int32_t>(mission, 0x26C + cum * 4) > 0 ? 1 : 0;
+        }
+    }
+
+    // 0091DD21..0091DF13: the Japanese campaign, IJN01..IJN14.
+    for (std::int32_t i = 1; i <= 14; ++i) {
+        campaign_mission_id(host, frame, i, kCampaignIjn0, kCampaignIjn, 0x10, 0x20);
+        const char* text = static_cast<const char*>(ptr(frame, kCampaignMissionId + 4));
+        campaign_release_if(host, frame, 0x20, kCampaignScratch2);
+        campaign_release_if(host, frame, 0x10, kCampaignScratch);
+        void* const mission = host.mission_score_map_index_00594a70(ptr(frame, kCampaignProgress),
+                                                                   add(frame, kCampaignMissionId));
+        campaign_trace(host, text, mission);
+        if (text == nullptr) text = static_cast<const char*>(host.image_pointer(0x00F899A0u));
+        const char* key_text = static_cast<const char*>(ptr(ptr(frame, kCampaignMissionKey), 0x04));
+        bool current = false;
+        if (key_text != nullptr && text != nullptr) {
+            char c = *key_text;
+            while (c != 0 && *text != 0 && c == *text) {
+                c = *++key_text;
+                ++text;
+            }
+            current = *text == 0;
+        }
+        if (current) {
+            const std::int32_t difficulty = at<std::int32_t>(record, 0x08);
+            const bool of = !(at<std::int32_t>(frame, kCampaignOf) > difficulty && difficulty != 0) &&
+                            at<std::int32_t>(record, 0x00) > 0;
+            at<std::uint8_t>(frame, kCampaignBoolOf) &= of ? 1 : 0;
+            const bool cjm = at<std::int32_t>(frame, kCampaignCjm) == difficulty && at<std::int32_t>(record, 0x00) > 0;
+            at<std::uint8_t>(frame, kCampaignBoolCjm) &= cjm ? 1 : 0;
+        } else {
+            const bool any = at<std::int32_t>(mission, 0x274) > 0 || at<std::int32_t>(mission, 0x270) > 0 ||
+                             at<std::int32_t>(mission, 0x26C) > 0;
+            at<std::uint8_t>(frame, kCampaignBoolOf) &= any ? 1 : 0;
+            at<std::uint8_t>(frame, kCampaignBoolCjm) &=
+                at<std::int32_t>(mission, 0x26C + at<std::int32_t>(frame, kCampaignCjm) * 4) > 0 ? 1 : 0;
+        }
+    }
+
+    if (at<std::uint8_t>(frame, kCampaignBoolSa) != 0) campaign_grant_one(host, frame, 0x00D18BACu, 5);
+    if (at<std::uint8_t>(frame, kCampaignBoolCum) != 0) campaign_grant_one(host, frame, 0x00D18BA4u, 6);
+    if (at<std::uint8_t>(frame, kCampaignBoolOf) != 0) campaign_grant_one(host, frame, 0x00D18BBCu, 5);
+    if (at<std::uint8_t>(frame, kCampaignBoolCjm) != 0) campaign_grant_one(host, frame, 0x00D18BB4u, 6);
+}
 }  // namespace bsp::cc13_seg59b
