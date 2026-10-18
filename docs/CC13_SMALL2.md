@@ -11,10 +11,10 @@ for the ledger name. Names below are hypotheses, not recovered symbols.
 | --- | ---: | --- |
 | Library container code, bind-only | 82 | tags (`stl_shape` 74, `tmpl_shape` 7, `cg_array_ctor_helper` 1) |
 | Game code hosted by cc9, verified | 7 | `existing_host_verified_ledger_only` |
-| Game code reconstructed here | 20 | `reconstructed_build_tested` |
+| Game code reconstructed here | 22 | `reconstructed_build_tested` |
 | cc9 keep, not touched | 1 | none (00428800) |
 | Reconstructed concurrently by cc13-front8 | 1 | none here (0053D230, `src/cc13_front8.cpp`) |
-| Game code deferred | 18 | none |
+| Game code deferred | 16 | none |
 
 ### Library rows (82)
 
@@ -72,7 +72,8 @@ date-disabled flag, so the name `EnabledContinuation` stands.
 ## Reconstructed (17)
 
 The code is in `src/cc13_small2.cpp` and `include/bsp/cc13_small2.hpp`. It is built into
-`bsp_core` and nothing calls it. Each body was read from the listing. The x87 operand order was taken from the stack sequence in the listing (FLD, FMULP, FADDP).
+`bsp_core` and nothing calls it. Each body was read from the listing. The x87 operand order was
+taken from the stack sequence in the listing (FLD, FMULP, FADDP).
 These routines contain no non-commutative DC-form operation (FSUBR or FDIVR). The one DC-form
 instruction, 00779F35 `DC C8` FMUL ST0,ST0, is symmetric. The products and sums are modelled
 as float operations at the main thread's 24-bit precision.
@@ -120,7 +121,9 @@ Register details found while reading:
   (00D0DE84), then FSTP to a float. The FILD is exact. The C++ rounds the int to float first,
   which only matters when |age| >= 2^24.
 
-0053D230 was also read here, but cc13-front8 landed its reconstruction first (5b97f92bb), so this packet does not keep a second copy. Both readings agree: y is zeroed when vtable[5Ch](6) accepts the unit, then vtable[118h](&x).
+0053D230 was also read here, but cc13-front8 landed its reconstruction first (5b97f92bb), so
+this packet does not keep a second copy. Both readings agree: y is zeroed when vtable[5Ch](6)
+accepts the unit, then vtable[118h](&x).
 
 Uncertainty: the virtual slots (114h, 148h, 178h, 17Ch, 180h, 184h, 188h) are named
 from their call sites only. Mode 1 is read as "server" and mode 2 as "client" because the
@@ -169,21 +172,49 @@ cc13 multiplayer docs read them that way.
 | Address | Name | ABI | Notes |
 | --- | --- | --- | --- |
 | 0077A080 | BSP_SessionMessage_FORMATION_SET_Construct | thiscall(msg; group) RET 4 | 78h message; two new[] arrays of n 16-byte member rows, with the image's MUL/SETO overflow guard |
-| 0077D270 | BSP_UnitInstance_OnKilledLua | thiscall(unit) | recon slot marks; `self.LastBanto` under the mission-entity lock; then 00929B60 |
-| 0077FE80 | BSP_Session_DispatchEntityKindMessage | thiscall(entity; msg, bool* out) RET 8, AL | byte table 0078005C and targets 00780044: arms 53h, 54h, 76h, 77h, 78h; everything else goes to vtable[164h] |
+| 0077D270 | BSP_UnitInstance_OnKilledLua | thiscall(unit) | recon slot marks; on kill cause 1 ("harm", +70h) `self.LastBanto` under the mission-entity lock; then 00929B60 |
+| 0077FE80 | BSP_Session_DispatchEntityKindMessage | thiscall(entity; msg, bool* out) RET 8, AL | byte table 0078005C, targets 00780044: MT_GIVEUNIT 53h, MT_SETGUINAME 54h (SetGuiName vtable[0Ch]), MT_FORMATION_JOIN/LEAVE/SET 76h-78h; others vtable[164h] |
 
 Adoption notes:
 - **0077D270.** cc9's entity-dead host (`game_hosts_script_orders.cpp` near 5661) models only
   the 00929B60 tail and labels `LastBanto` as not modelled. This is not a mismatch. The
-  routine writes the dead unit's `self.LastBanto` from its +2B0h thisTable entry, so Lua that
-  reads `LastBanto` would see nil in the host.
+  routine writes the dead unit's `self.LastBanto` from its +2B0h thisTable entry, but only
+  when the kill cause +70h is 1 ("harm": 00926C80 writes 1 at 00926CF0 or copies the parent's
+  cause at 00926CEB). Expiry kills from 0077A650 use cause 3 and skip it. On harm deaths, Lua
+  that reads `LastBanto` would see nil in the host.
 - **0077FE80.** cc9 runs the 77h and 76h arms at their call sites, as labelled substitutions,
-  rather than through this switch. The 53h arm (claim a player slot, report a new unit, and
-  in server mode broadcast and release from the group) and the 54h arm are not hosted.
+  rather than through this switch. The MT_GIVEUNIT 53h arm (claim a player slot, report a new unit, and
+  in server mode broadcast and release from the group) and the MT_SETGUINAME 54h arm (SetGuiName, the receiver of 0077D3F0) are not hosted.
 - **0077A080.** The new[] arrays are never freed here; the message's destructor owns them.
   The hooks in cc13_sweepB9, menu_screens_2 and options_seg56_cc13 can forward to this body.
 
-## Deferred (18, no record)
+## Batch 3 (2 more reconstructed)
+
+| Address | Name | ABI | Notes |
+| --- | --- | --- | --- |
+| 00780DB0 | BSP_MultiScore_Construct | thiscall(object; id) RET 4 | base 0077EED0, five vtables; creates the Lua globals `MultiScore` and `MultiScore_save`, each with subtables 0..7 |
+| 00641E30 | BSP_InGameHudMarkers_AddUnitPartMarkers | thiscall(markers; unit) RET 4 | projects the unit through 006395E0 and emits a four-corner box via 0063C620 (14 stack dwords) |
+
+Register and stack notes:
+
+- **00641E30.**
+  - The arguments of 0063C620 were recovered from the EH-state stores at 00641FFD
+    (`[ESP+64h]`) and 00642015 (`[ESP+78h]`).
+  - Both stores land on the same slot only if vtable[10h] takes no argument. The PUSH 0 at
+    00641FF9 therefore belongs to 0063C620.
+  - The projection's first output, a, is written into the unit argument's own stack slot.
+
+Adoption notes:
+
+- **00780DB0.** cc9's `game_hosts_scene_contents.cpp:2591` logs
+  `SceneContents::create_multi_score` as unimplemented.
+  - This body is the replacement: the object fields, plus the two Lua tables that
+    multiplayer scoring reads.
+  - Whether a single-player scene creates it was not checked here.
+  - Its callers are 004D4DF0 (scene contents) and 007813B0 (net table sync create).
+- **00641E30.** Not hosted, so there is no mismatch.
+
+## Deferred (16, no record)
 
 Each of these exceeds what a bounded small-row packet can verify instruction by instruction:
 
@@ -202,11 +233,8 @@ Each of these exceeds what a bounded small-row packet can verify instruction by 
   - 0064AE20 (244);
   - 005AAC00 (239);
   - 004C7AA0 (231).
-- **Mid-size, next in line:**
-  - 00780DB0 (176, the MultiScore constructor);
-  - 00641E30 (142);
-  - 005B8810 (140; docs/CC13_FRONTEND_MENUS.md places it in cc9's front-end range).
-- **Owned by front8:** 0077B280. cc13-front8 reconstructed it, and its ABI text was fixed
-  in batch 2.
-- **Hard x87:** 0059D4A0. It has a jump table over four placement modes, and its mode
-  outside 0 and 1 leaves the position locals unset. Raise it at max effort.
+- **Left for cc9:** 005B8810 (140). docs/CC13_FRONTEND_MENUS.md places it in cc9's
+  front-end range.
+- **Owned by front8:** 0077B280. cc13-front8 reconstructed it.
+- **Hard x87:** 0059D4A0. It has a jump table over four placement modes, and its modes
+  outside 0 and 1 leave the position locals unset. Raise it at max effort.

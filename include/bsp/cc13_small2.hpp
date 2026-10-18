@@ -45,6 +45,9 @@ inline constexpr std::int32_t kGameModeSlotScan = 0x0D;       // game+5D4h, 004C
 inline constexpr std::uint32_t kMsgFormationSet = 0x78;        // 0075B430 type, 0077A09B
 inline constexpr std::uint32_t kMsgFormationSetVtable = 0x00CED548;  // 0077A0BD
 inline constexpr std::uint32_t kLastBantoName = 0x00D03E2C;     // "LastBanto", 0077D32B
+inline constexpr std::uint32_t kMultiScoreName = 0x00D04080;     // "MultiScore"
+inline constexpr std::uint32_t kMultiScoreSaveName = 0x00D04070; // "MultiScore_save"
+inline constexpr std::uint32_t kEmptyCString = 0x00CE3A0C;      // "", 00641FD2
 inline constexpr std::uint32_t kWarningManager = 0x00F8A0C4;  // pointer read by 0064A270
 
 // 0077C540: 64 buckets x 768 queued rows; counts at 00F1B050, bytes at 00F1B150 (300h a
@@ -70,6 +73,7 @@ inline constexpr std::int32_t kLimboStateExpired = 3;           // 00565FB0 arg,
 inline constexpr std::int32_t kKillReasonExpired = 3;           // 00926D90 arg, 0077A67F
 inline constexpr std::int32_t kUnitKind05 = 5;                   // vtable[5Ch] arg, 004C3B2C
 inline constexpr std::int32_t kUnitKind06 = 6;                  // vtable[5Ch] arg, 005F98FB
+inline constexpr std::int32_t kUnitKind08 = 8;                   // vtable[5Ch] arg, 00641EF4
 inline constexpr std::int32_t kUnitKind09 = 9;                   // vtable[5Ch] arg, 005F990C
 inline constexpr std::int32_t kUnitKind0F = 0x0F;               // vtable[5Ch] arg, 0077D884
 inline constexpr std::int32_t kUnitKind18 = 0x18;               // vtable[5Ch] arg, 0077D89F
@@ -190,14 +194,41 @@ struct Small2Host {
     virtual void warning_manager_report_new_unit_00977cd0(void* manager, std::uint32_t player) = 0;
     virtual void unit_group_release_member_0077c980(void* unit, void* other) = 0;
     virtual void unit_apply_role_owner_slots_0077a5d0(void* unit) = 0;
-    virtual void entity_apply_message_payload_0c(void* entity, void* payload,
-                                                 std::uint8_t flag) = 0;  // vtable[0Ch]
+    // entity->vtable[0Ch](name, flag): SetGuiName, MT_SETGUINAME's receiver.
+    virtual void entity_set_gui_name_0c(void* entity, void* name, std::uint8_t flag) = 0;
     // 00521E30 __fastcall(CX = id).
     virtual void* entity_handle_resolve_00521e30(std::uint16_t id) = 0;
     virtual void unit_group_join_or_merge_0077f940(void* unit, void* target) = 0;
     virtual void unit_group_hand_over_leadership_0077bd70(void* unit, void* successor) = 0;
     virtual void unit_group_apply_formation_shape_0070efd0(void* group, std::uint32_t shape) = 0;
     virtual bool entity_generic_message_164(void* entity, void* msg) = 0;   // vtable[164h]
+    // 00780DB0.
+    virtual void unit_owner_entity_construct_0077eed0(void* object, std::uint32_t id) = 0;
+    virtual void unit_assign_single_device_role_0077f2d0(void* unit, std::int32_t slot) = 0;
+    virtual void lua_state_owner_construct_borrowed_00b66c00(void* owner, void* state) = 0;
+    virtual void lua_set_new_table_00b67580(void* table, const NativeString* name) = 0;
+    virtual void lua_set_new_table_at_index_00b66670(LuaObject* table, std::int32_t index) = 0;
+    virtual void lua_state_owner_close_00b669a0(void* owner) = 0;
+    // 00641E30.
+    virtual void* entity_ancestor_00923810(void* entity, std::int32_t levels) = 0;
+    virtual void* unit_parts_object_0080e490(void* unit) = 0;
+    virtual void* hud_markers_sink_006407a0(void* markers, std::int32_t arg) = 0;
+    virtual bool entity_is_below_altitude_third_00852860(void* entity) = 0;
+    // 00427EB0 __fastcall(ECX = entity) -> const float[3].
+    virtual const float* entity_world_position_refreshed_00427eb0(void* entity) = 0;
+    // 006395E0 __thiscall(markers; float[3] by value, unit, float* a, float* b, float* c,
+    // float* d), seven stack dwords.
+    virtual void hud_markers_project_part_bounds_006395e0(void* markers, const float* point3,
+                                                         void* unit, float* a, float* b,
+                                                         float* c, float* d) = 0;
+    virtual void native_string_assign_cstr_0041e870(NativeString* s, const char* text) = 0;
+    // 0063C620 __thiscall(sink; const float quad[8]*, 3, 0, 1, name, 0, NativeString by
+    // value, float, float[4] by value, 0), 14 stack dwords.
+    virtual void hud_marker_emit_box_0063c620(void* sink, const float* quad, std::int32_t a1,
+                                              std::int32_t a2, std::int32_t a3,
+                                              const char* name, std::int32_t a5,
+                                              NativeString text, float value,
+                                              const float* box4, std::int32_t a10) = 0;
     virtual bool unit_is_selectable_00645060(void* unit, std::int32_t team,
                                              bool allow_spectate) = 0;
     virtual void hud_root_set_controlled_unit_00645600(void* hud_root, void* unit) = 0;
@@ -226,9 +257,11 @@ void replication_step_local_player_record_0077d7f0(Small2Host& host);
 void replication_drain_child_queues_0077f5e0(Small2Host& host);
 bool session_dispatch_entity_kind_message_0077fe80(void* entity, void* msg, bool* out,
                                                    Small2Host& host);
+void* multi_score_construct_00780db0(void* object, std::uint32_t id, Small2Host& host);
 void unit_apply_expiry_message_0077f7b0(void* unit, const void* msg, Small2Host& host);
 
 // Segment 26.
+void hud_markers_add_unit_part_markers_00641e30(void* markers, void* unit, Small2Host& host);
 void hud_root_listener_current_0c_00645bb0(void* listener, void* unit, std::int32_t event,
                                            void* candidate, Small2Host& host);
 void hud_root_ensure_selectable_controlled_unit_00648930(void* hud_root, Small2Host& host);
