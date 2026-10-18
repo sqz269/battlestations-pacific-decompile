@@ -3545,3 +3545,26 @@ Predictions:
 - **Not exercised:** no plane re-entered aim (one aim enter per plane on both rows), and no row reaches prepare (as SQUADRON_LAND_TASK 5hr found). So the timer split and the +2Ch clear did not change anything here.
 - Both are faithful stores read from the bytes, with gameplay identical on both rows, so both are flipped ON.
 - WINS: nothing moved.
+
+## 86. HANDOFF (cc9-physics21, 2026-10-18)
+
+The lane is PHYSICS / PLANE FLIGHT, worked in tree J:\PROG\battlestations-pacific-decompile-cc9-physics1 on branch agent/cc9-physics1.
+
+Commits this session:
+- 22e58011f (landed): kParkStowTrace, OFF.
+- aa13241d2: the BSP_THROTTLE_TRACE env trace.
+- 4bd013e4a / 5caaef9d8: kAvoidParentLocalVelocityBound, ON (section 84).
+- b3c467f82 / 85951f409: kTorpedoStateEnterTimersBound and kTorpedoAimEnterStoresBound, ON (section 85).
+
+Closed:
+- The stow: the brake law matches the image. The deck term stays OFF and the blocker is the carrier's speed (section 83).
+- ConTBD1's 604.43 s cut: it was the avoidance frame, not 0099DAC8.
+- Item (a), the air-ops site tick: it only steps the lift.
+- Item (b), terminal speed: no cap. It is MaxSpeed x throttle, less one frame of 00937440 drag.
+
+Open, in priority order:
+1. **007DF360 target_reachable is UNIMPLEMENTED** (unit+C50h). It now runs from the torpedo replan during aim. The image may set over_land_a9 there and abort or replan the run. Read 007DF360 and the unit+C50h writer.
+2. **The timer split and the +2Ch clear are unexercised.** Find a row with a torpedo reattack (aim re-entered) or a prepare state, and re-check the counters on the "aim enters=" summary line.
+3. **The host's Enterprise holds heading 0.0000 against a target of -2.5885** with rudder 0.004 (USN01, section 84). This belongs to the ships lane (ships59).
+4. **Section 75's whole-frame item:** the other vt[34h] readers of a parented plane still take world axes.
+5. **kLandFinalParkEdgeBound** stays OFF and unreached. Stream order (item 4) is not cheap.
