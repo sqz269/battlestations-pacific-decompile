@@ -1226,6 +1226,7 @@ struct GameShipAiHost::Impl {
     unsigned long long moveto_capture_range_reads{0};   // s57_moveto_capture_range
     unsigned long long traffic_recon_walks{0};      // s57_traffic_recon, 009E9220 walks
     unsigned long long depth_band_targets{0};       // s57_depth_band, 009EAFC0 retargets
+    unsigned long long torpedo_admits_submerged{0}; // s57_torpedo_from_sub, +49Ch admits
     unsigned long long traffic_recon_contacts{0};   // ... contacts summed
     unsigned long long traffic_live_walks{0};       // the switch-off list, same walk
     unsigned long long traffic_live_contacts{0};
@@ -2246,6 +2247,7 @@ struct GameShipAiHost::Impl {
             const bsp::ShipAiTorpedoCandidate candidate = torpedo_candidate(t);
             if (!bsp::ship_ai_torpedo_admits(x, z, vx, vz, length, horizon, candidate)) continue;
             ++row.torpedo_admits;
+            if (t.started_under_water) ++torpedo_admits_submerged;   // s57_torpedo_from_sub
             if (bsp::ship_ai_admit_torpedo_track_009f0ad0(ctl.torpedo_tracks, candidate, tuning,
                     length, side, kTorpedoCollectTimer2, draw)) {
                 ++row.torpedo_tracks_built;
@@ -14646,6 +14648,9 @@ void GameShipAiHost::report() {
         host.log.notef("summary mission ship ai neighbour depth band bound=%d observed_retargets=%llu "
             "(packet s57_depth_band, 009DE2F0 / 009EAFC0 world Y bounds)",
             kShipNeighbourDepthBandBound ? 1 : 0, host.depth_band_targets);
+        host.log.notef("summary mission ship ai torpedo from submarine bound=%d submerged_admits=%llu "
+            "(packet s57_torpedo_from_sub, 008578B0 +49Ch -> 009F0C0E)",
+            kTorpedoFromSubmarineBound ? 1 : 0, host.torpedo_admits_submerged);
         for (const Impl::CaptureBuilding& b : host.capture_buildings) {
             const GameUnitRow* row = host.units.unit_row(b.unit);
             host.log.notef("summary mission command building level unit=%s level=%d "
