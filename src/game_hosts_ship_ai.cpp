@@ -1227,6 +1227,8 @@ struct GameShipAiHost::Impl {
     unsigned long long traffic_recon_walks{0};      // s57_traffic_recon, 009E9220 walks
     unsigned long long depth_band_targets{0};       // s57_depth_band, 009EAFC0 retargets
     unsigned long long traffic_recon_contacts{0};   // ... contacts summed
+    unsigned long long traffic_live_walks{0};       // the switch-off list, same walk
+    unsigned long long traffic_live_contacts{0};
     unsigned long long garrison_recreates{0};
     unsigned long long garrison_recreates_recorded{0};
     unsigned long long garrison_skill_pushes{0};
@@ -5462,6 +5464,8 @@ public:
             if (recon.level(own_side, i) == bsp::ReconDetectionLevel::none) continue;
             contacts_.push_back(i);
         }
+        ++owner_.traffic_live_walks;
+        owner_.traffic_live_contacts += contacts_.size();
         owner_.done("ShipAiApproach::candidate_count_008053c0", 0x008053c0u);
         return static_cast<int>(contacts_.size());
     }
@@ -14635,8 +14639,10 @@ void GameShipAiHost::report() {
             "006F5E4D / 006F36CD / 009E58CE / 009E5BA6)", kGarrisonMinLevelBound ? 1 : 0,
             kShipMoveToCaptureRangeBound ? 1 : 0, host.moveto_capture_range_reads);
         host.log.notef("summary mission ship ai traffic recon list bound=%d walks=%llu contacts=%llu "
-            "(packet s57_traffic_recon, 009E9220 [008053C0(party)]+0DE8h)",
-            kShipAiTrafficReconListBound ? 1 : 0, host.traffic_recon_walks, host.traffic_recon_contacts);
+            "live_walks=%llu live_contacts=%llu (packet s57_traffic_recon, 009E9220 "
+            "[008053C0(party)]+0DE8h)", kShipAiTrafficReconListBound ? 1 : 0,
+            host.traffic_recon_walks, host.traffic_recon_contacts, host.traffic_live_walks,
+            host.traffic_live_contacts);
         host.log.notef("summary mission ship ai neighbour depth band bound=%d observed_retargets=%llu "
             "(packet s57_depth_band, 009DE2F0 / 009EAFC0 world Y bounds)",
             kShipNeighbourDepthBandBound ? 1 : 0, host.depth_band_targets);
