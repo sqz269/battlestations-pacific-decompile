@@ -1432,17 +1432,27 @@ namespace {
 constexpr float kMinusOne_00d7a260_f = -1.0f;
 }  // namespace
 
-// 00999AE0 (00999AE0-00999B2B). Walks the bot's task vector (begin +58h, count
-// +5Ch, both reloaded per step, 00999B07-00999B15); null entries are skipped. The
-// first task whose vtable[34h]() is false (00999B01) answers by a tail JMP to its
-// vtable[4Ch]() (00999B2B). With none: [00D7A260] (-1.0) (00999B17).
+// 00999AE0 (00999AE0-00999B2B). Walks the bot's task vector with a cursor taken
+// once from begin +58h (00999AE7); after each entry the end = [+58h] + 4 x [+5Ch]
+// is re-read and the loop continues while cursor != end (JNZ, 00999B07-00999B15).
+// Null entries are skipped. The first task whose vtable[34h]() is false (00999B01)
+// answers by a tail JMP to its vtable[4Ch]() (00999B2B). With none: [00D7A260]
+// (-1.0) (00999B17).
+// UNCERTAINTY: if a vtable[34h] call moved or shrank the vector, the stale cursor
+// is followed exactly as the image does (it may step past the end).
 float pilot_bot_first_task_wait_value_00999ae0(Cc13Seg67bHost& host, void* bot) {
-    for (std::uint32_t i = 0; i < at<std::uint32_t>(bot, 0x5C); ++i) {
-        void* const task = reinterpret_cast<void*>(
-            at<std::uintptr_t>(ptr_at(bot, 0x58), i * 4u));
-        if (task == nullptr) continue;
-        if (!host.object_vcall_34(task)) return host.object_vcall_4c_float(task);
-    }
+    auto end_of = [bot] {
+        return at<std::uintptr_t>(bot, 0x58) + 4u * at<std::uint32_t>(bot, 0x5C);
+    };
+    std::uintptr_t cursor = at<std::uintptr_t>(bot, 0x58);
+    if (cursor == end_of()) return kMinusOne_00d7a260_f;
+    do {
+        void* const task = *reinterpret_cast<void**>(cursor);
+        if (task != nullptr && !host.object_vcall_34(task)) {
+            return host.object_vcall_4c_float(task);
+        }
+        cursor += 4u;
+    } while (cursor != end_of());
     return kMinusOne_00d7a260_f;
 }
 
@@ -1955,7 +1965,7 @@ void* bot_task_level_bomb_factory_create_009b90a0(Cc13Seg67bHost& host, void* bo
 void* bot_task_make_level_bomb_009b9030(Cc13Seg67bHost& host, void* bot, void* target) {
     void* const t = host.operator_new_00bf681b(0x6F8);
     if (t == nullptr) return nullptr;
-    return host.level_bomb_task_construct_009b7990(t, bot, target);
+    return bot_task_level_bomb_construct_009b7990(host, t, bot, target);
 }
 
 // 009BD9D0 (009BD9D0-009BDA20). 009BCB70(task ? task+3F8h : 0) (009BD9FD);
@@ -2177,7 +2187,7 @@ void bot_task_dive_bomb_destruct_body_009c8b60(Cc13Seg67bHost& host, void* task)
 void* bot_task_make_dive_bomb_009c8c70(Cc13Seg67bHost& host, void* bot, void* target) {
     void* const t = host.operator_new_00bf681b(0x7E0);
     if (t == nullptr) return nullptr;
-    return host.dive_bomb_task_construct_009c7710(t, bot, target);
+    return bot_task_dive_bomb_construct_009c7710(host, t, bot, target);
 }
 
 // 009C2CA0 (009C2CA0-009C2CE0). 009C2AC0(ECX = s, approach, target, near, far,
@@ -2341,59 +2351,6 @@ namespace {
 constexpr float kZero_s15 = 0.0f;
 }  // namespace
 
-// 009B1300 (009B1300-009B13D9). acc = 0.0 (009B130D). When the approach's
-// target +30h is set: v = [approach+4]->vtable[34h](&v) (009B1322), len =
-// 0042B2F0(&v) (009B1328), v /= len component by component, each rounded to
-// float (009B1343 FDIVP ST(2), 009B134F FDIV ST(1), 009B1355 FDIVR m32); w =
-// [approach+30h]->vtable[34h](&w) (009B1362, EAX = the vector); acc = (w.y v.y
-// + w.x v.x) + w.z v.z (009B1364-009B137C). s1 = 007C47F0(ECX = [[approach+4]
-// +538h]) + acc (009B1389-009B139B); s2 = 007C4810(same) (009B139F). 009B13B0
-// FCOMIP s2 against s1, JBE (s2 <= s1, or NaN) -> s1, else s2.
-// UNCERTAINTY: the image rounds each x87 step at 24 bits (main thread); float
-// arithmetic here matches that except for the extended exponent range.
-float bot_approach_land_min_speed_009b1300(Cc13Seg67bHost& host, void* approach) {
-    float acc = kZero_s15;
-    if (ptr_at(approach, 0x30) != nullptr) {
-        float v[3];
-        host.object_vcall_34_get_vector(ptr_at(approach, 0x04), v);
-        const float len = host.vector3_length_0042b2f0(v);
-        v[0] = v[0] / len;
-        v[1] = v[1] / len;
-        v[2] = v[2] / len;
-        float w_buf[3];
-        const float* const w = host.object_vcall_34_get_vector(ptr_at(approach, 0x30), w_buf);
-        acc = (w[1] * v[1] + w[0] * v[0]) + w[2] * v[2];
-    }
-    const float s1 = host.plane_class_level_flight_speed_007c47f0(
-                         ptr_at(ptr_at(approach, 0x04), 0x538)) + acc;
-    const float s2 = host.plane_class_min_control_speed_007c4810(
-        ptr_at(ptr_at(approach, 0x04), 0x538));
-    return (s2 > s1) ? s2 : s1;
-}
-
-// 009B3770 (009B3770-009B37EF). s = [task+310h]. From +4C4h or +500h (009B377F,
-// 009B3789): nothing. From +5B8h or +598h (009B3793, 009B379D): when byte s+18h
-// is set (009B37B7), n = 009AFA50(task) (009B37C0) and an inline set_state:
-// when n != [task+310h], old->vtable[8]() when old is set (009B37DA), +310h = n
-// (009B37DC), n->vtable[4]() by tail JMP (009B37EB). Any other state: when
-// byte s+18h is set (009B37A1), 009B3680(task, task+64Ch) (009B37B0).
-void bot_task_land_state_rule_park_edge_009b3770(Cc13Seg67bHost& host, void* task) {
-    void* const s = ptr_at(task, 0x310);
-    if (s == ptr(task, 0x4C4) || s == ptr(task, 0x500)) return;
-    if (s == ptr(task, 0x5B8) || s == ptr(task, 0x598)) {
-        if (at<std::uint8_t>(s, 0x18) == 0) return;
-        void* const next = bot_task_land_pick_cruise_state_009afa50(host, task);
-        void* const old = ptr_at(task, 0x310);
-        if (next == old) return;
-        if (old != nullptr) host.object_vcall_08_noargs(old);
-        at<std::uintptr_t>(task, 0x310) = reinterpret_cast<std::uintptr_t>(next);
-        host.state_vcall_04_enter(next);
-        return;
-    }
-    if (at<std::uint8_t>(s, 0x18) == 0) return;
-    host.bot_task_land_switch_state_009b3680(task, ptr(task, 0x64C));
-}
-
 // 009CFF40 (009CFF40-009CFFA6). EH frame 00CB01BB. t = operator new(4D4h)
 // (009CFF61); null -> 0 (009CFF93); else 009CF8E0(ECX = t, owner, flag)
 // (009CFF7D), whose EAX is returned.
@@ -2551,6 +2508,9 @@ bool ship_ai_path_node_subtree_complete_009d5a80(void* node) {
 // 009D94C1); else 009D9440(plus) (009D94DC). -1 (009D94EE): when +34h > 1.0
 // (009D94F8), 00414EB0 on (minus - node) (009D951F); else 009D9440(minus)
 // (009D9533). Any other direction: 0.0 (009D9545 FLDZ).
+// UNCERTAINTY: inherited from 009D5930 through ship_ai_path_node_direction_009d9e6c:
+// the image's JC takes the +1 arm on unordered (NaN) costs (009D5974, 009D5B4F,
+// 009D5BFF); the shared rule returns -1 there.
 float ship_ai_path_node_run_heading_009d9440(ShipAiPathNode& node) {
     ship_ai_path_node_decide_direction_009d5930(node);
     if (node.direction == 1) {
@@ -2624,30 +2584,11 @@ float* ship_ai_debug_colour_record_b_009d5fd0(Cc13Seg67bHost& host) {
 // ---------------------------------------------------------------------------
 // Ship-AI approach accessors on [nested] = brain.
 
-// 009E5E00 (009E5E00-009E5E29). t = [[nested]+B20h] (009E5E05); when t is set and
-// t->vtable[5Ch](1Ch) is true (009E5E16), returns [[nested]+B20h] re-read
-// (009E5E1E); else 0 (009E5E26).
-void* ship_ai_approach_engagement_target_009e5e00(Cc13Seg67bHost& host, void* nested) {
-    void* const t = ptr_at(ptr_at(nested, 0), 0xB20);
-    if (t == nullptr || !host.object_vcall_5c(t, 0x1C)) return nullptr;
-    return ptr_at(ptr_at(nested, 0), 0xB20);
-}
-
 // 009E5E30 (009E5E30-009E5E4E). t = [[nested]+B20h] (009E5E32); true when t is
 // set and t->vtable[5Ch](6) is true (009E5E43); else false.
 bool ship_ai_approach_target_is_kind_6_009e5e30(Cc13Seg67bHost& host, void* nested) {
     void* const t = ptr_at(ptr_at(nested, 0), 0xB20);
     return t != nullptr && host.object_vcall_5c(t, 6);
-}
-
-// 009E6120 (009E6120-009E6140). out[0..2] = [nested]+B2Ch..+B34h, each through an
-// FLD/FSTP pair (009E6126-009E613D). RET 4.
-// UNCERTAINTY: the x87 copy quiets a signalling NaN; the C++ copy keeps its bits.
-void ship_ai_approach_goal_point_009e6120(void* nested, float* out) {
-    void* const brain = ptr_at(nested, 0);
-    out[0] = at<float>(brain, 0xB2C);
-    out[1] = at<float>(brain, 0xB30);
-    out[2] = at<float>(brain, 0xB34);
 }
 
 namespace {
@@ -2671,10 +2612,12 @@ constexpr std::uint32_t kStrTargetEntity_00d04f30 = 0x00D04F30u;  // "targetenti
 // "_updateTrgPosTimer") (009C1EE3) and 00410D80(ECX = +54h, block by value)
 // (009C1EEA); "closingTime" {2, &+60h} (009C1F21), "targetpos" {5, &+48h}
 // (009C1F55), "targetentity" {4, &e} (009C1F7D) where e is the stack slot of
-// `arg` itself, so a missing key leaves e = arg. Then the 0099A9B0 swap of +44h to
-// e with +30h as the observer (009C1F7F-009C1FA0) and 009BEBA0(a) (009C1FA7).
-// Returns a.
-// UNCERTAINTY: shared RNG stream 1. EH unwinding not modelled.
+// `arg`. Then the 0099A9B0 swap of +44h to e with +30h as the observer
+// (009C1F7F-009C1FA0) and 009BEBA0(a) (009C1FA7). Returns a.
+// UNCERTAINTY: 009C1E64 and 009C1F5C (`MOV [ESP+2Ch],ESP`) overwrite the arg slot
+// with a stack address before the targetentity read, so in the image a missing key
+// leaves e = that stack address; here e starts as arg (as 009C2B80's slot). Shared
+// RNG stream 1. EH unwinding not modelled.
 void* bot_approach_move_to_construct_from_stream_009c1dc0(Cc13Seg67bHost& host, void* a,
                                                           void* arg, void* archive) {
     const float f = at<float>(host.game_tuning_singleton_0042e740(), 0x37C);
@@ -3565,6 +3508,8 @@ constexpr float kTwentyFive_00ce89cc = 25.0f;         // 41C80000
 // +18h = 00BD2F10(1, [00CE69C8] 0.3, [00CE3860] 0.9) (009CB5D9-009CB5F9).
 // UNCERTAINTY: the RNG result leaves in ST0 and is rounded to float by FSTP; the host
 // hook returns a float. EH unwinding not modelled.
+// cc9 models this inline (per-name RNG stand-ins, not a named body) in
+// src/game_hosts_units.cpp around 24246 ("goaway 009CB500").
 void* bot_state_strafe_go_away_construct_009cb500(Cc13Seg67bHost& host, void* state,
                                                   void* block) {
     construct_state_base(state, block);
@@ -3611,6 +3556,8 @@ void* bot_state_torpedo_attack_run_construct_009d06d0(Cc13Seg67bHost& host, void
 // [00CE89CC] 25.0 (009CD495-009CD4AC); +2Ch = float(+30h + +34h) (009CD4B1-009CD4BA).
 // The vtable calls at 009CD479 dereference the plane without the null test.
 // UNCERTAINTY: the sum is rounded once at 24-bit precision in the image (modelled).
+// cc9 models this inline in GameUnitsHost::Impl::install_takeoff_task_0099a4a0
+// (src/game_hosts_units.cpp around 15303), not as a named body.
 void* bot_approach_takeoff_construct_009cd420(Cc13Seg67bHost& host, void* approach,
                                               void* plane) {
     host.bot_approach_construct_speed_reference_009f9ce0(approach, plane,
@@ -3658,6 +3605,8 @@ constexpr float kThirtySixHundred_00cfdeb0 = 3600.0f;    // 45610000
 // bits a chain would round once at the end). The double constants are float-exact, so
 // their products are exact in double and round once. The RNG results are rounded from
 // ST0 by the hook. EH unwinding not modelled.
+// cc9 models this inline (per-name RNG stand-ins, not a named body) in
+// src/game_hosts_units.cpp around 24218 (009CA4DB-009CA668).
 void* bot_approach_strafe_construct_009ca4a0(Cc13Seg67bHost& host, void* approach, void* arg,
                                              void* target) {
     const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x65C);
@@ -3909,6 +3858,8 @@ constexpr float kTwelveHundred_00cfd714 = 1200.0f;       // 44960000
 // in double and round once. The RNG and 007C1FB0 results are rounded from ST0 by the
 // hooks. The plane is dereferenced without a null test, as in the image. EH unwinding
 // not modelled.
+// cc9 models this inline (per-name RNG stand-ins, not a named body) in
+// src/game_hosts_units.cpp around 24983 (009B451D-009B4591).
 void* bot_approach_level_bomb_construct_base_009b44f0(Cc13Seg67bHost& host, void* approach,
                                                       void* plane, void* target) {
     const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x458);

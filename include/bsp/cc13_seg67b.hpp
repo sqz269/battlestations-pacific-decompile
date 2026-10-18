@@ -239,17 +239,6 @@ public:
     virtual void bot_state_registry_construct_00411e20(void* registry) = 0;
     // 007293D0: __thiscall(ECX = object), the tick-subnode owner base destructor.
     virtual void tick_subnode_owner_destruct_base_007293d0(void* object) = 0;
-    // vtable[34h](out) on a unit or entity: fills a 3-float vector, EAX = it.
-    virtual float* object_vcall_34_get_vector(void* object, float* out) = 0;
-    // 0042B2F0: __thiscall(ECX = vector), ST0 = its length.
-    virtual float vector3_length_0042b2f0(const float* v) = 0;
-    // 007C47F0 / 007C4810: __thiscall(ECX = plane class descriptor), ST0.
-    virtual float plane_class_level_flight_speed_007c47f0(void* descriptor) = 0;
-    virtual float plane_class_min_control_speed_007c4810(void* descriptor) = 0;
-    // 009B3680: __thiscall(ECX = land task, state), RET 4 (set_state copy).
-    virtual void bot_task_land_switch_state_009b3680(void* task, void* state) = 0;
-    // 009C7710: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
-    virtual void* dive_bomb_task_construct_009c7710(void* task, void* bot, void* target) = 0;
     // 009C2EF0: __thiscall(ECX = task+3F8h, bot, archive), RET 8.
     virtual void move_to_construct_approach_block_from_stream_009c2ef0(void* block, void* bot,
                                                                        void* archive) = 0;
@@ -267,8 +256,6 @@ public:
     virtual void air_ops_retire_landing_squadron_006c8800(void* squadron) = 0;
     // 009B2C80: __fastcall(ECX = task+3F8h), RET: the landing approach destructor.
     virtual void landing_approach_destroy_009b2c80(void* block) = 0;
-    // 009B7990: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
-    virtual void* level_bomb_task_construct_009b7990(void* task, void* bot, void* target) = 0;
     // 009BCE50: __thiscall(ECX = task, bot), RET 4, EAX = task.
     virtual void* move_on_path_task_construct_009bce50(void* task, void* bot) = 0;
     // 009ADBF0 / 009AEEF0: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
@@ -717,10 +704,6 @@ void* bot_task_dive_bomb_construct_009c7710(Cc13Seg67bHost& host, void* task, vo
                                             void* target);
 struct ShipAiPathPlanBlock;
 
-// 009B1300: __thiscall(ECX = approach), RET, ST0.
-float bot_approach_land_min_speed_009b1300(Cc13Seg67bHost& host, void* approach);
-// 009B3770: __thiscall(ECX = task), RET.
-void bot_task_land_state_rule_park_edge_009b3770(Cc13Seg67bHost& host, void* task);
 // 009CFF40: __fastcall(ECX = owner, EDX = flag), RET, EAX = task or 0.
 void* pilot_bot_create_takeoff_task_009cff40(Cc13Seg67bHost& host, void* owner,
                                              std::uint32_t flag);
@@ -751,11 +734,8 @@ void ship_ai_set_navigation_goal_with_penalty_009de280(Cc13Seg67bHost& host, voi
 // 009D5E10 / 009D5FD0: __cdecl(), RET, EAX = the static colour record.
 float* ship_ai_debug_colour_record_a_009d5e10(Cc13Seg67bHost& host);
 float* ship_ai_debug_colour_record_b_009d5fd0(Cc13Seg67bHost& host);
-// 009E5E00: __thiscall(ECX = nested), RET, EAX. 009E5E30: same, AL.
-void* ship_ai_approach_engagement_target_009e5e00(Cc13Seg67bHost& host, void* nested);
+// 009E5E30: __thiscall(ECX = nested), RET, AL.
 bool ship_ai_approach_target_is_kind_6_009e5e30(Cc13Seg67bHost& host, void* nested);
-// 009E6120: __thiscall(ECX = nested, float* out), RET 4.
-void ship_ai_approach_goal_point_009e6120(void* nested, float* out);
 // 009C1DC0: __thiscall(ECX = approach, arg, archive), RET 8, EAX = approach.
 void* bot_approach_move_to_construct_from_stream_009c1dc0(Cc13Seg67bHost& host, void* a,
                                                           void* arg, void* archive);

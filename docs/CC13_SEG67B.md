@@ -463,3 +463,22 @@ It then copies the plane's position into +D0h..+D8h and calls the aim-error redr
 009AFFF0 is the stream twin of 009AFE70. Its +ACh seed is 1.0, where the direct path seeds 0.5. It draws only +B0h = -U(0, 1) from the RNG.
 
 The landing unit comes from the archive (airBaseEntity), and the air-ops block comes from 006BCD20 on that unit. The timer pair at +ACh is read from updateLandQueueTimer, then approachAngle, approachPitch and standbyheightadd are read into +54h, +58h and +60h. The tail matches 009AFE70: the two position refreshes, then 009AFAF0. 009B3040 now calls it directly.
+
+### 3.36 Part-3 review fixes
+
+These rows from earlier sections are now recorded ledger-only, because cc9 already hosts them. Their cc13_seg67b bodies and the hooks only they used were removed. Each is now an existing implementation, spot-checked.
+
+| Address | Host | Note |
+|---|---|---|
+| 009B1300 | land_min_speed_009b1300 (game_hosts_units.cpp) | **Mismatch.** The host drops the w·v carrier term (009B1309-009B1362) and adds 0. On a carrier landing, approach+30h is the mother ship, so that term is the carrier's velocity along the plane direction. |
+| 009B3770 | inline in land_state_rule_009b3cf0 (game_hosts_units.cpp) | Arms match. |
+| 009E5E00 | engagement_target_009e5e00 (game_hosts_ship_ai.cpp:5756) | The host skips the kind-1Ch test. This is benign: the only caller sits under standoff mode 4, which is latched only for kind-1Ch targets. |
+| 009E6120 | probe_point_009e6120 (game_hosts_ship_ai.cpp:5172) | Matches. |
+
+Other corrections:
+- **00999AE0:** the walk is now the image's stale cursor. The cursor is taken once from +58h and compared by != against an end that is re-read after each entry (00999B07-00999B15).
+- **009C1DC0:** at 009C1E64 and 009C1F5C, `MOV [ESP+2Ch],ESP` overwrites the arg slot before the targetentity read. In the image, a missing key therefore leaves a stack address. The body starts e as arg, and this is now labelled as an uncertainty.
+- **009D9440:** labelled as inheriting 009D5930's NaN arm. The image's JC takes +1 on unordered costs.
+- **009CAD00:** marked as a last-bit mismatch. The image rounds dx and dz to float (009CAD30, 009CAD3E); the host keeps them in double.
+- **009B9030 and 009C8C70:** these now call the local constructors 009B7990 and 009C7710 directly.
+- **009CA4A0, 009CB500, 009CD420 and 009B44F0:** these stay as new reconstructions. Each body now cites the inline cc9 host site that models it with per-name RNG stand-ins.
