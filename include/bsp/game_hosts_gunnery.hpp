@@ -402,7 +402,8 @@ inline constexpr bool kLuaArtilleryEnableBound = false;
 // installation's deviceclasses.lua is a Single_Turning_Gun), the raise lands at
 // the next fixed step rather than in the script phase, and a player-held seat
 // keeps its own trigger. False: the native stays unimplemented.
-inline constexpr bool kLuaForceFireDepthChargeBound = false;
+// ON (cc9-lua67, SQUADRON_LAND_TASK 5ii): PRCP01 pair, Puffin fires 124 charges.
+inline constexpr bool kLuaForceFireDepthChargeBound = true;
 
 // Packet cc9_torpedo_stock (docs/UNIT_WEAPON_DEVICES.md, "Torpedo stock, bound").
 // True: a ship's torpedo tubes draw on the class's MaxTorpedoStock (class+7A0h).
