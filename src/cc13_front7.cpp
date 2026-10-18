@@ -227,7 +227,10 @@ void powerup_screen_rebuild_lists_0061b0f0(Raw screen, PowerupListsHost& host) {
         const Raw ui{static_cast<std::uint8_t*>(host.global_pointer(0x00E198C4))};
         const std::uint8_t* const v2 = static_cast<std::uint8_t*>(ui.ptr(0xC0)) + 0x144;
         check_index(v2, i, host);
-        std::uint8_t* const x = rd_ptr(rd_ptr(element_record(v2, i), 4) + party_slot() * 0x38, 0x2C);
+        // X lives at [V2[i]+4]+38h*slot+2Ch (EBX+20h); the image re-reads it after 00614060
+        // (0061B35D) and after 00AB64C0 (0061B3A8).
+        std::uint8_t* const x_slot = rd_ptr(element_record(v2, i), 4) + party_slot() * 0x38 + 0x2C;
+        std::uint8_t* const x = rd_ptr(x_slot, 0);
         if (x != nullptr) {
             std::uint8_t* const owner = static_cast<std::uint8_t*>(
                 Raw{static_cast<std::uint8_t*>(host.global_pointer(0x00E198C4))}.ptr(0xBC));
@@ -241,10 +244,10 @@ void powerup_screen_rebuild_lists_0061b0f0(Raw screen, PowerupListsHost& host) {
                 const Raw owner2{static_cast<std::uint8_t*>(
                     Raw{static_cast<std::uint8_t*>(host.global_pointer(0x00E198C4))}.ptr(0xBC))};
                 const std::uint32_t icon = host.gui_icon_add_state_00ab64c0(
-                    owner2.ptr(0x1CC), Raw{x}.at<std::uint32_t>(0xD4), state);         // 0061B3A3
+                    owner2.ptr(0x1CC), Raw{rd_ptr(x_slot, 0)}.at<std::uint32_t>(0xD4), state);  // 0061B35D / 0061B3A3
                 const Raw owner3{static_cast<std::uint8_t*>(
                     Raw{static_cast<std::uint8_t*>(host.global_pointer(0x00E198C4))}.ptr(0xBC))};
-                *host.int_map_subscript_006171b0(owner3.field(0x42C), x + 0x70) = icon;  // 0061B3C2
+                *host.int_map_subscript_006171b0(owner3.field(0x42C), rd_ptr(x_slot, 0) + 0x70) = icon;  // 0061B3A8 / 0061B3C2
             }
         }
 
@@ -875,7 +878,7 @@ void text_set_glyph_reference_00531130(Raw text, const WideStringImage* source, 
 // floats +114h = 1.0 (00D7A24C), +118h = 0, +11Ch = 0, +120h = 1.0, +124h = 1.0;
 // word +12Ch = 0; byte +134h = 0; floats +128h = 0, +130h = 0. +F0h is not written.
 // ---------------------------------------------------------------------------
-void* gui_stateful_image_construct_00ab5c60(Raw w, SmallBlockersHost& host) {
+void* gui_icon_construct_00ab5c60(Raw w, SmallBlockersHost& host) {
     host.ui_context_construct_00aa9390(w.p, 6);                                            // 00AB5C7B
     const float one = f32(0x3F800000u);
     w.at<std::uint32_t>(0) = 0x00D5C4C0u;

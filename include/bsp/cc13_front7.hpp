@@ -377,7 +377,7 @@ void* profile_manager_construct_00435cc0(Raw manager, LuaObjectConstructHost& ho
 void text_set_glyph_reference_00531130(Raw text, const WideStringImage* source, std::uint32_t listener,
                                        std::uint32_t reference, SmallBlockersHost& host);
 // 00AB5C60, __thiscall(ECX = widget) RET -> EAX = widget (the Icon widget constructor).
-void* gui_stateful_image_construct_00ab5c60(Raw widget, SmallBlockersHost& host);
+void* gui_icon_construct_00ab5c60(Raw widget, SmallBlockersHost& host);
 // 00798080, __thiscall(ECX = track; keyframe) RET 4.
 void movie_camera_track_pair_keyframe_00798080(Raw track, void* keyframe, SmallBlockersHost& host);
 
