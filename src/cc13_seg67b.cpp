@@ -5146,7 +5146,7 @@ void* ship_ai_brain_record_construct_009f1160(Cc13Seg67bHost& host, void* r, voi
     at<std::uint32_t>(r, 0xB20) = 0;
     at<std::uint32_t>(r, 0xB24) = 0;
     at<std::uint8_t>(r, 0xB28) = 1;
-    const float* const zero = host.zero_vector_00f87574();
+    const float* const zero = host.global_vector_00f87574();
     at<float>(r, 0xB2C) = zero[0];
     at<float>(r, 0xB30) = zero[1];
     at<float>(r, 0xB34) = zero[2];
@@ -5278,6 +5278,408 @@ void* ship_ai_allocate_brain_009f3f20(Cc13Seg67bHost& host, void* ship) {
         return nullptr;
     }
     return ship_ai_gun_bot_construct_009f3ba0(host, t, ship);
+}
+
+namespace {
+constexpr std::uint32_t kStrPlaneId_00cf8770 = 0x00CF8770u;  // "planeID"
+constexpr std::uint32_t kObserverNodeVtable_00ce75cc = 0x00CE75CCu;
+constexpr float kObserverNodeDefault_00cf8b3c = 256.0f;
+void* pilot_task_at(void* bot, std::uint32_t i) {
+    return reinterpret_cast<void*>(
+        at<std::uintptr_t>(reinterpret_cast<void*>(at<std::uintptr_t>(bot, 0x58)), i * 4u));
+}
+}  // namespace
+
+// 00999A10 (00999A10-00999A5A). The pilot bot's task array is [+58h] with the count
+// at +5Ch. False with no task or a null head; false unless head->vtable[+38h]();
+// false when head->vtable[+34h](); true with more than one task; else true unless
+// head->vtable[+40h]() == 1 (00999A3D-00999A4F). No RNG.
+bool pilot_bot_head_task_blocks_switch_00999a10(Cc13Seg67bHost& host, void* bot) {
+    if (at<std::uint32_t>(bot, 0x5C) == 0) return false;
+    void* const head = pilot_task_at(bot, 0);
+    if (head == nullptr) return false;
+    if (!host.object_vcall_38(head)) return false;
+    if (host.object_vcall_34(head)) return false;
+    if (at<std::uint32_t>(bot, 0x5C) > 1) return true;
+    return host.task_vcall_40(head) != 1;
+}
+
+// 00999A60 (00999A60-00999A70). AL = byte [[p+4h]+184h] == 0.
+bool pilot_park_predicate_plane_byte184_zero_00999a60(const void* p) {
+    const void* const plane = reinterpret_cast<const void*>(
+        *reinterpret_cast<const std::uintptr_t*>(static_cast<const char*>(p) + 4));
+    return *(static_cast<const std::uint8_t*>(plane) + 0x184) == 0;
+}
+
+// 00999A80 (00999A80-00999A9C). [p] = 00D05840 (the pure-call base); flags bit 0 ->
+// _free(p) (00999A91). RET 4, EAX = p.
+void* pilot_park_predicate_scalar_delete_00999a80(Cc13Seg67bHost& host, void* p,
+                                                  std::uint32_t flags) {
+    at<std::uint32_t>(p, 0) = kPureCallVtable;
+    if ((flags & 1u) != 0) host.crt_free_00bf65ac(p);
+    return p;
+}
+
+// 00999B30 (00999B30-00999B66). Walks the task array; a non-null task whose
+// vtable[+28h]() returns AL != 0 ends the walk with that AL. With no match EAX holds
+// the count [bot+5Ch] (reloaded at 00999B54, or loaded at 00999B37 when the array is
+// empty), so AL = the count's low byte: the image has no explicit false.
+// UNCERTAINTY: the no-match value is the register left over, modelled as such.
+std::uint8_t pilot_bot_any_task_slot28_00999b30(Cc13Seg67bHost& host, void* bot) {
+    for (std::uint32_t i = 0; i < at<std::uint32_t>(bot, 0x5C); ++i) {
+        void* const task = pilot_task_at(bot, i);
+        if (task == nullptr) continue;
+        const std::uint8_t al = host.task_vcall_28_flag(task);
+        if (al != 0) return al;
+    }
+    return static_cast<std::uint8_t>(at<std::uint32_t>(bot, 0x5C) & 0xFFu);
+}
+
+// 00999C70 (00999C70-00999CB2). The first non-null task whose vtable[+3Ch]() is
+// non-zero, else 0.
+void* pilot_bot_find_task_by_slot3c_00999c70(Cc13Seg67bHost& host, void* bot) {
+    for (std::uint32_t i = 0; i < at<std::uint32_t>(bot, 0x5C); ++i) {
+        void* const task = pilot_task_at(bot, i);
+        if (task != nullptr && host.task_vcall_3c(task) != 0) return task;
+    }
+    return nullptr;
+}
+
+// 0099A630 (0099A630-0099A657). +4h, +8h, +0Ch, +14h = 0; byte +10h = 1; [n] = 00CE75CC;
+// +18h = 256.0 [00CF8B3C]. EAX = n.
+void* pilot_bot_init_observer_node_0099a630(void* n) {
+    at<std::uint32_t>(n, 0x04) = 0;
+    at<std::uint32_t>(n, 0x08) = 0;
+    at<std::uint32_t>(n, 0x0C) = 0;
+    at<std::uint32_t>(n, 0x14) = 0;
+    at<std::uint8_t>(n, 0x10) = 1;
+    at<std::uint32_t>(n, 0x00) = kObserverNodeVtable_00ce75cc;
+    at<float>(n, 0x18) = kObserverNodeDefault_00cf8b3c;
+    return n;
+}
+
+// 0099A940 (0099A940-0099A979). archive->vtable[+10h]("planeID", {4, &slot}), then
+// p+4h = slot. The slot is the stack word the record points at (the PUSH ECX at
+// 0099A940); before the read 0099A94A stores the record's own stack address into it.
+// UNCERTAINTY: an archive that does not write the slot leaves p+4h = that stack
+// address in the image; seeded to 0 here (labelled).
+void pilot_park_predicate_read_plane_id_0099a940(Cc13Seg67bHost& host, void* p,
+                                                 void* archive) {
+    std::uint32_t slot = 0;
+    host.archive_vcall_10_read(archive, name_record(kStrPlaneId_00cf8770),
+                               record(4, reinterpret_cast<std::uintptr_t>(&slot)));
+    at<std::uint32_t>(p, 0x04) = slot;
+}
+
+// 0099A980 (0099A980-0099A9AD). archive->vtable[+0Ch]("planeID", {4, [p+4h]}).
+void pilot_park_predicate_write_plane_id_0099a980(Cc13Seg67bHost& host, void* p,
+                                                  void* archive) {
+    host.archive_vcall_0c_write(archive, name_record(kStrPlaneId_00cf8770),
+                                record(4, at<std::uint32_t>(p, 0x04)));
+}
+
+// 0099B3D0 (0099B3D0-0099B3DA): byte plan+2DCh = value.
+void pilot_plan_set_byte_2dc_0099b3d0(void* plan, std::uint8_t value) {
+    at<std::uint8_t>(plan, 0x2DC) = value;
+}
+
+// 0099B3E0 (0099B3E0-0099B3EA): byte plan+2E5h = value (the turbo request).
+void pilot_plan_set_turbo_request_0099b3e0(void* plan, std::uint8_t value) {
+    at<std::uint8_t>(plan, 0x2E5) = value;
+}
+
+// 00997340 (00997340-00997379). With byte [[task+2F4h]+C24h] set, 009FC7C0(task+314h,
+// dt) (00997360); then 009FD0E0(task+38Ch, dt) (00997373). Unreferenced (no caller or
+// table entry found); BSP_PilotBot_Update 00999979/0099998C makes the same two calls.
+void bot_task_tick_gun_and_rocket_00997340(Cc13Seg67bHost& host, void* task, float dt) {
+    void* const unit = reinterpret_cast<void*>(at<std::uintptr_t>(task, 0x2F4));
+    if (at<std::uint8_t>(unit, 0xC24) != 0) {
+        host.bot_task_gun_tick_009fc7c0(ptr(task, 0x314), dt);
+    }
+    host.opportunistic_rocket_tick_009fd0e0(ptr(task, 0x38C), dt);
+}
+
+// 009995A0 (009995A0-009995C6), PilotBot vtable 00D1F348 slot +4h. 008FBC80(bot, node)
+// (009995A8); bot+9Ch = bot+B8h = 256.0 [00CF8B3C].
+void pilot_bot_attach_009995a0(Cc13Seg67bHost& host, void* bot, void* node) {
+    host.gun_bot_attach_008fbc80(bot, node);
+    at<float>(bot, 0x9C) = kObserverNodeDefault_00cf8b3c;
+    at<float>(bot, 0xB8) = kObserverNodeDefault_00cf8b3c;
+}
+
+namespace {
+std::uint32_t* array_data(void* a) {
+    return reinterpret_cast<std::uint32_t*>(at<std::uintptr_t>(a, 0x0));
+}
+// The reallocation shared by the four bodies: capacity = 2 * capacity + extra, then
+// operator new[](capacity * 4).
+std::uint32_t* array_reserve(Cc13Seg67bHost& host, void* a, std::uint32_t extra) {
+    const std::uint32_t cap = at<std::uint32_t>(a, 0x8) * 2u + extra;
+    at<std::uint32_t>(a, 0x8) = cap;
+    return static_cast<std::uint32_t*>(host.operator_new_array_00bf55be(cap * 4u));
+}
+void array_release(Cc13Seg67bHost& host, void* a, std::uint32_t* fresh) {
+    if (array_data(a) != nullptr) host.operator_delete_array_00bf6989(array_data(a));
+    at<std::uintptr_t>(a, 0x0) = reinterpret_cast<std::uintptr_t>(fresh);
+}
+}  // namespace
+
+// 00999700 (00999700-00999801). idx = (where - data) / 4. Full (count == capacity):
+// capacity = 2 * capacity + 1, new[] (0099972B), copy [0, idx), the value at idx, then
+// [idx, count) one up, delete[] the old data (009997A4), count += 1. Otherwise
+// data[count] = data[count - 1], shift (idx, count) up one, data[idx] = value, count
+// += 1. Each store into new storage is behind the placement-new null test. RET 8, EAX =
+// data + idx.
+// UNCERTAINTY: with count == 0 and spare capacity the image reads data[-1] and its
+// shift counter wraps (unbounded loop); unreachable for these arrays, and the body
+// stops after the one store (labelled).
+std::uint32_t* ptr_array_insert_at_00999700(Cc13Seg67bHost& host, void* a,
+                                            std::uint32_t* where, const std::uint32_t* value) {
+    const std::uint32_t idx = static_cast<std::uint32_t>(where - array_data(a));
+    const std::uint32_t count = at<std::uint32_t>(a, 0x4);
+    if (count == at<std::uint32_t>(a, 0x8)) {
+        std::uint32_t* const fresh = array_reserve(host, a, 1);
+        std::uint32_t* const old = array_data(a);
+        if (fresh != nullptr) {
+            for (std::uint32_t i = 0; i < idx; ++i) fresh[i] = old[i];
+            fresh[idx] = *value;
+            for (std::uint32_t i = idx; i < count; ++i) fresh[i + 1] = old[i];
+        }
+        array_release(host, a, fresh);
+        at<std::uint32_t>(a, 0x4) = count + 1;
+        return array_data(a) + idx;
+    }
+    std::uint32_t* const data = array_data(a);
+    if (count != 0) {
+        data[count] = data[count - 1];
+        for (std::uint32_t i = count - 1; i > idx; --i) data[i] = data[i - 1];
+    }
+    data[idx] = *value;
+    at<std::uint32_t>(a, 0x4) = count + 1;
+    return data + idx;
+}
+
+// 00999810 (00999810-0099985F). capacity = 2 * capacity + 2, new[] (00999823), copy
+// [0, count), delete[] the old data (00999853), data = new. RET.
+void ptr_array_grow_00999810(Cc13Seg67bHost& host, void* a) {
+    std::uint32_t* const fresh = array_reserve(host, a, 2);
+    const std::uint32_t count = at<std::uint32_t>(a, 0x4);
+    if (fresh != nullptr) {
+        for (std::uint32_t i = 0; i < count; ++i) fresh[i] = array_data(a)[i];
+    }
+    array_release(host, a, fresh);
+}
+
+// 00999CC0 (00999CC0-00999D31). Full: the 00999810 growth inline (2 * capacity + 2,
+// 00999CD8, 00999D0D); then data[count] = value (placement null test), count += 1.
+void ptr_array_push_back_00999cc0(Cc13Seg67bHost& host, void* a, const std::uint32_t* value) {
+    if (at<std::uint32_t>(a, 0x4) == at<std::uint32_t>(a, 0x8)) {
+        ptr_array_grow_00999810(host, a);
+    }
+    std::uint32_t* const data = array_data(a);
+    if (data != nullptr || at<std::uint32_t>(a, 0x4) != 0) {
+        data[at<std::uint32_t>(a, 0x4)] = *value;
+    }
+    at<std::uint32_t>(a, 0x4) += 1;
+}
+
+namespace {
+constexpr std::uint32_t kStrBot_00cf904c = 0x00CF904Cu;            // "_bot"
+constexpr std::uint32_t kStrCommandName_00d1f390 = 0x00D1F390u;    // "commandName"
+constexpr std::uint32_t kPilotPlanTableVtable_00d056e8 = 0x00D056E8u;
+}  // namespace
+
+// 0099AA20 (0099AA20-0099ABC3). EH frame 00CADB68. archive->vtable[+4h]("_bot");
+// 008FE660(bot, archive) (0099AA62); archive->vtable[+8h](). Then for i = 1, 2, ...
+// while archive->vtable[+14h]({1, i}) (0099AA8C): begin {1, i}; a counted string s =
+// {0, 0} read under "commandName" ({0, &s}, 0099AAE8); factory = 0099C690(&s)
+// (0099AAEE); task = factory->vtable[+4h](bot, archive) (0099AAFC); push the task onto
+// the bot's task array {+58h, +5Ch, +60h} (growth 2 * capacity + 2 inline, the
+// 00999CC0 pattern, 0099AB0A-0099AB71); end; when s's buffer is set, 00BD1510(00419CC0(),
+// buffer, length + 1, 1) (0099ABA0-0099ABA7). RET 4.
+// UNCERTAINTY: EH unwinding not modelled; a factory miss (0099C690 = 0) dereferences
+// null in the image as here.
+void pilot_bot_load_tasks_0099aa20(Cc13Seg67bHost& host, void* bot, void* archive) {
+    host.archive_vcall_04_begin(archive, name_record(kStrBot_00cf904c));
+    host.gun_bot_read_base_properties_008fe660(bot, archive);
+    host.archive_vcall_08_end(archive);
+    for (std::uint32_t i = 1;; ++i) {
+        if (!host.archive_vcall_14_has(archive, record(1, i))) return;
+        host.archive_vcall_04_begin(archive, record(1, i));
+        struct CountedString {
+            std::uint32_t length;
+            std::uintptr_t buffer;
+        } s{0, 0};
+        host.archive_vcall_10_read(archive, name_record(kStrCommandName_00d1f390),
+                                   record(0, reinterpret_cast<std::uintptr_t>(&s)));
+        void* const factory = host.bot_task_factory_find_0099c690(&s);
+        void* const task = host.factory_vcall_04_load(factory, bot, archive);
+        const std::uint32_t value =
+            static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(task));
+        ptr_array_push_back_00999cc0(host, ptr(bot, 0x58), &value);
+        host.archive_vcall_08_end(archive);
+        if (s.buffer != 0) {
+            host.sized_storage_pool_return_block_00bd1510(host.sized_storage_pool_00419cc0(),
+                                                          reinterpret_cast<void*>(s.buffer),
+                                                          s.length + 1, 1);
+        }
+    }
+}
+
+namespace {
+// 0099C459-0099C49F and 0099C5B3-0099C5FB: s = (dx*dx + dy*dy) + dz*dz spilled to a
+// float; float(sqrt(s)) (00BF7030) when s > 1e-10 [00CE3820, double], else 0 (FCOMI
+// JBE, so NaN -> 0).
+float lead_distance(const float* a, const float* b) {
+    const float dx = a[0] - b[0];
+    const float dy = a[1] - b[1];
+    const float dz = a[2] - b[2];
+    const float s = (dx * dx + dy * dy) + dz * dz;
+    return static_cast<double>(s) > kTiny_00ce3820
+               ? static_cast<float>(std::sqrt(static_cast<double>(s)))
+               : 0.0f;
+}
+}  // namespace
+
+// 0099C3C0 (0099C3C0-0099C683). l = {+0h owner entity, +4h float speed, byte +8h, +0Ch,
+// +10h..+18h}. Owner and target each refreshed through 00414DB0 when byte +C8h is clear;
+// P = owner+FCh..+104h, T = target+FCh..+104h. Pass 1: t = |T - P| / speed
+// (0099C4AF). With byte l+8h set, v = target->vtable[+34h](&scratch) (0099C4C4);
+// otherwise target->vtable[+38h]() first, its ST0 dropped (0099C525/0099C527), then the
+// same +34h call; Q = v * t + T. Pass 2: s = |Q - P| (0099C5CF); l+0Ch = s, the
+// distance before the division (XMM0 loaded at 0099C605, stored at 0099C60E); t =
+// s / speed; v = target->vtable[+34h](&scratch) again (0099C623); l+10h..+18h = v * t +
+// T. RET 4.
+// UNCERTAINTY: 24-bit x87 modelled (every intermediate is a float spill); the two
+// branches differ only by the discarded +38h call.
+void bot_lead_point_on_target_0099c3c0(Cc13Seg67bHost& host, void* l, void* target) {
+    void* const owner = reinterpret_cast<void*>(at<std::uintptr_t>(l, 0x0));
+    if (at<std::uint8_t>(owner, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(owner);
+    const float p[3] = {at<float>(owner, 0xFC), at<float>(owner, 0x100),
+                        at<float>(owner, 0x104)};
+    if (at<std::uint8_t>(target, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(target);
+    const float t_pos[3] = {at<float>(target, 0xFC), at<float>(target, 0x100),
+                            at<float>(target, 0x104)};
+    const float speed = at<float>(l, 0x4);
+    const float t1 = lead_distance(t_pos, p) / speed;
+    if (at<std::uint8_t>(l, 0x8) == 0) {
+        static_cast<void>(host.entity_vcall_38_float(target));
+    }
+    float scratch[3] = {};
+    const float* v = host.entity_vcall_34_velocity(target, scratch);
+    const float q[3] = {v[0] * t1 + t_pos[0], v[1] * t1 + t_pos[1], v[2] * t1 + t_pos[2]};
+    const float s2 = lead_distance(q, p);
+    at<float>(l, 0x0C) = s2;
+    const float t2 = s2 / speed;
+    float scratch2[3] = {};
+    v = host.entity_vcall_34_velocity(target, scratch2);
+    at<float>(l, 0x10) = v[0] * t2 + t_pos[0];
+    at<float>(l, 0x14) = v[1] * t2 + t_pos[1];
+    at<float>(l, 0x18) = v[2] * t2 + t_pos[2];
+}
+
+// 0099BDB0 (0099BDB0-0099BDE0), the element constructor 0099BE30 passes to the array
+// constructor 00BF7CD1 (three 0C8h elements). [t] = 00D056E8; 24 float pairs at +4h..+C3h
+// zeroed (ESI = 17h down to 0, JNS); the count +C4h = 0. EAX = t.
+void* pilot_plan_table_construct_0099bdb0(void* t) {
+    at<std::uint32_t>(t, 0x00) = kPilotPlanTableVtable_00d056e8;
+    for (std::uint32_t i = 0; i < 24; ++i) {
+        at<float>(t, 0x08 + i * 8) = 0.0f;
+        at<float>(t, 0x04 + i * 8) = 0.0f;
+    }
+    at<std::uint32_t>(t, 0xC4) = 0;
+    return t;
+}
+
+// 0099B1B0 (0099B1B0-0099B1D5). (plane+72Ch)->vtable[+38h]() true -> tail JMP 007D7A40
+// (ECX = plane+AB0h) (0099B1CF). No caller or table entry found (game_hosts_units.cpp
+// notes the same).
+void plane_command_band_repair_if_controlled_0099b1b0(Cc13Seg67bHost& host, void* plane) {
+    if (host.object_vcall_38(ptr(plane, 0x72C))) {
+        host.pilot_plan_reset_command_timer_007d7a40(ptr(plane, 0xAB0));
+    }
+}
+
+// 0099B2A0 (0099B2A0-0099B30E), the bare-array twin of 0099B450 (docs/PILOT_CONTROLS.md).
+// Five slots {value +0h, desired +4h, byte +8h}: both floats from unit+9F0h, +9E4h,
+// +9ECh, +9E8h, +9F4h in that slot order, the byte cleared. RET 4.
+void pilot_bot_seed_slot_array_0099b2a0(void* slots, const void* unit) {
+    static constexpr std::uint32_t kSource[5] = {0x9F0, 0x9E4, 0x9EC, 0x9E8, 0x9F4};
+    const char* const u = static_cast<const char*>(unit);
+    for (std::uint32_t i = 0; i < 5; ++i) {
+        float v;
+        std::memcpy(&v, u + kSource[i], sizeof v);
+        void* const slot = ptr(slots, i * 0x0C);
+        at<float>(slot, 0x4) = v;
+        at<float>(slot, 0x0) = v;
+        at<std::uint8_t>(slot, 0x8) = 0;
+    }
+}
+
+// 0099C2C0 (0099C2C0-0099C3B3), the bot-task base of the command-still-valid slot.
+// 2 when task+2FCh (the unit) is null or task->vtable[+3Ch]() (the task's command) is
+// null. director = unit->vtable[+114h](); match = 0071BE40(director) == command
+// (0099C2FD). When 0071BE40(director) (called again, 0099C30A) is 00E08F78 and
+// command->vtable[+0Ch]() is 1 or 2, or else when match holds, the aim test runs;
+// otherwise 0. The aim test: task->vtable[+0Ch](&aim) (0099C339); aim byte +0Ch clear ->
+// 1; else p = 006F7DD0(0071EB60(director), &scratch) (0099C351, 0099C358), d = p - aim
+// spilled to floats, 1 when 100.0 [00D7A220, double] > 0042B2F0(&d) (FCOMPI, JBE), else
+// 0 (an unordered length gives 0).
+// The scratch push at 0099C34E precedes the 0071EB60 call but is 006F7DD0's argument
+// (0071EB60 is a plain RET).
+// UNCERTAINTY: x87 at 24-bit; the double constant makes the compare exact either way.
+std::uint32_t bot_task_is_command_still_valid_base_0099c2c0(Cc13Seg67bHost& host, void* task) {
+    void* const unit = reinterpret_cast<void*>(at<std::uintptr_t>(task, 0x2FC));
+    if (unit == nullptr) return 2;
+    const std::uint32_t command = host.task_vcall_3c(task);
+    if (command == 0) return 2;
+    void* const director = host.object_vcall_114(unit);
+    const bool match = host.weapon_director_current_command_0071be40(director) == command;
+    bool check = false;
+    if (host.weapon_director_current_command_0071be40(director) == 0x00E08F78u) {
+        const std::uint32_t kind =
+            host.command_vcall_0c(reinterpret_cast<void*>(static_cast<std::uintptr_t>(command)));
+        check = kind == 1 || kind == 2;
+    }
+    if (!check && !match) return 0;
+    alignas(4) std::uint8_t aim[0x10] = {};
+    host.task_vcall_0c_aim(task, aim);
+    if (aim[0x0C] == 0) return 1;
+    float aim_xyz[3];
+    std::memcpy(aim_xyz, aim, sizeof aim_xyz);
+    float scratch[3] = {};
+    const float* const p = host.target_descriptor_resolve_position_006f7dd0(
+        host.entity_command_active_target_descriptor_0071eb60(director), scratch);
+    const float d[3] = {p[0] - aim_xyz[0], p[1] - aim_xyz[1], p[2] - aim_xyz[2]};
+    const float len = host.vector_length_0042b2f0(d);
+    return kHundred_00d7a220 > static_cast<double>(len) ? 1u : 0u;
+}
+
+// 00999D40 (00999D40-00999DEE), ledger name BSP_PtrArray_PushBackOdd: an insert at the
+// front. Full: capacity = 2 * capacity + 1, new[] (00999D5A), new[0] = value, [0, count)
+// one up, delete[] (00999DA5), count += 1. Otherwise data[count] = data[count - 1],
+// shift [1, count) up, data[0] = value, count += 1. RET 4.
+// UNCERTAINTY: as 00999700 for count == 0 with spare capacity (the image's counter
+// wraps at 00999DC9); the body only stores data[0] (labelled).
+void ptr_array_push_front_00999d40(Cc13Seg67bHost& host, void* a, const std::uint32_t* value) {
+    const std::uint32_t count = at<std::uint32_t>(a, 0x4);
+    if (count == at<std::uint32_t>(a, 0x8)) {
+        std::uint32_t* const fresh = array_reserve(host, a, 1);
+        if (fresh != nullptr) {
+            fresh[0] = *value;
+            for (std::uint32_t i = 0; i < count; ++i) fresh[i + 1] = array_data(a)[i];
+        }
+        array_release(host, a, fresh);
+        at<std::uint32_t>(a, 0x4) = count + 1;
+        return;
+    }
+    std::uint32_t* const data = array_data(a);
+    if (count != 0) {
+        data[count] = data[count - 1];
+        for (std::uint32_t i = count - 1; i != 0; --i) data[i] = data[i - 1];
+    }
+    data[0] = *value;
+    at<std::uint32_t>(a, 0x4) = count + 1;
 }
 
 }  // namespace bsp

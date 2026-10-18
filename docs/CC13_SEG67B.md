@@ -561,6 +561,20 @@ The chain 009F3F20 -> 009F3BA0 -> 009F39C0 -> 009F1160 is now four bodies:
 
 Whole bodies are allowed because cc9 models these constructors only inline (`seed_brain_draws_009f1160` with keyed stand-ins, the follow and land defaults, the initial cruise state). Its seven draws match the image's order and ranges; the two missing state-constructor draws are the finding of 3.42.
 
+### 3.44 Pilot-bot table slots and helpers, 00997340-0099C683 (packet cc13-seg67C)
+
+These rows have no direct caller; most are vtable slots. Each is a body in src/cc13_seg67b.cpp:
+- **Task-list queries:** 00999A10 (does the head task block a switch), 00999B30 (any task's +28h slot) and 00999C70 (find a task by its +3Ch slot). 00999B30 has no explicit false: with no match it returns the count's low byte, which the body reproduces.
+- **Park predicate:** 00999A60, 00999A80 (scalar delete), 0099A940 and 0099A980 (the "planeID" read and write).
+- **Pointer arrays {data, count, capacity}:** 00999700 (insert at), 00999810 (grow, 2c+2), 00999CC0 (push back) and 00999D40. The ledger calls 00999D40 PushBackOdd, but it inserts at index 0. Both inserts loop without bound when count is 0 with spare capacity; the bodies store once and label it.
+- **Loading:** 0099AA20 loads the "_bot" base, then the numbered tasks, each by its "commandName" through the factory list (0099C690). Each task is pushed onto bot+58h.
+- **Seeds and constructors:** 0099A630 (observer node), 0099B2A0 (the bare five-slot seed, twin of 0099B450), 0099BDB0 (the 0C8h plan table element), 009995A0 (attach) and 0099B3D0 / 0099B3E0 (byte setters).
+- **0099C2C0** is the base command-still-valid slot. It returns 2 with no unit or command, and 1 when the director still runs the command (or runs 00E08F78 with a kind 1/2 command) and the aim point is invalid or within 100.0 of the active target; otherwise 0. The push at 0099C34E is 006F7DD0's scratch argument; 0071EB60 is a plain RET.
+- **0099C3C0** is the two-pass lead point. Pass 1 predicts with t = |T - P| / speed; pass 2 recomputes t from the predicted point and writes it at +10h. +0Ch receives the pass-2 *distance*, not the time (XMM0 is loaded before the FDIV). The byte +8h only decides whether the target's vtable[+38h] is called (and dropped) first.
+- **00997340** and **0099B1B0** are unreferenced.
+
+Ledger-only: 00999610 and 0099B710 (see the table).
+
 ## 4. Ledger-only records (packet cc13-seg67C)
 
 | Address | Host body | Result |
@@ -605,3 +619,5 @@ Whole bodies are allowed because cc9 models these constructors only inline (`see
 | 009F3D00 | `select_state_for_command_009f3d00` | matches |
 | 009F59F0 | `auto_target_owner_can_engage_009f59f0` (src/bot_fire_target.cpp) | matches |
 | 009F5D30 | `auto_target_scan_009f5d30` (src/bot_fire_target.cpp) | matches; the +1D4h skip is carried by the gunnery host's candidate build |
+| 00999610 | `kBulletThrowMul` PilotBot row (src/game_hosts_gunnery.cpp) | matches the robots row +250h; the host reads the authored values |
+| 0099B710 | inline constant true (src/game_hosts_units.cpp) | matches (`MOV AL,1 / RET`) |
