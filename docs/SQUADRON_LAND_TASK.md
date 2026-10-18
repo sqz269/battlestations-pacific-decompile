@@ -18062,3 +18062,31 @@ env; logs `cc9-lua52\local\l68r_<b9s|w_b9|b4|l3>_ts_<off|on>_ref.log`.
   so Lexington's sinking does not move.
 - **Flipped**: `kLuaSquadronSetTravelSpeedBound = true` by mechanism. No winning WINS row reaches the native, and the
   switch changes nothing until a script stores a speed.
+
+## 5io. PutRelTo 008AA560 (cc9-lua68, 2026-10-18, packet l68_putrelto)
+
+`kPutRelToBound` (include/bsp/game_hosts_script_orders.hpp) is committed OFF with this section.
+
+**The native** 008AA560 `PutRelTo(unit, ref, rel[, heading])`, from the listing:
+- arguments 0 and 1 go through 00888AA0, argument 2 through 00888760 as a Vector3;
+- ref's world matrix (+0CCh, 16 dwords) is copied after 00414DB0 refreshes it, and 004142E0 transforms rel as a
+  row-vector affine point (x*row0 + y*row1 + z*row2 + translation) into the copy's translation;
+- 008AA764-008AA787: when the unit answers IsKindOf(6) and not IsKindOf(8), the point's y is 0;
+- vtable[114h] (0080E150, the weapon director getter) and, for IsKindOf(2), 007788B0 run with results unused;
+- vtable[120h] (00819840: 009585B0 SetWorldMatrix, 0092D620, 00818EA0) takes the copied matrix, so the unit gets
+  ref's rotation and the new point. Unlike vtable[118h] (008193A0) it neither refuses a formation follower nor
+  snaps a leader's group;
+- with exactly four arguments (008AA7CF) argument 3 * 00CE3D28 / 00CE3D20 goes to vtable[11Ch] (008196B0);
+- vtable[0D8h], then for an occupant owner (00778890, the group's leader) every other member through
+  vtable[118h](&00F87574) and vtable[0D8h] (008AA851-008AA897). No result.
+
+**Host (switch ON):** `GameUnitsHost::put_rel_to_00819840` computes the point in 004142E0's add order in float
+arithmetic, copies ref's rotation rows and the point into the unit's motion state, publishes the pose and refills the
+wake ring; the script orders host then applies the heading and the leader's `relocate_formation_members_00819672`.
+LABELLED: only a ship (IsKindOf 6) is posed, as for 008196B0; the controller sync is the motion state itself; float
+arithmetic stands in for the main thread's 24-bit x87 precision.
+
+**Callers that a WIN row reaches:** PRCP01 (PRCPUS usn_03_battle_of_santa_cruz.lua 1268, 2 calls in the 03d3df7f8
+re-time): each live Junyo-group ship goes to (250 idx, 0, 250 idx) in Chikuma's frame, then joins Chikuma's
+formation. Prediction: the Junyo group starts phase 2 beside Chikuma instead of where it was, so PRCP01's later
+deaths move.

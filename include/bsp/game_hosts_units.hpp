@@ -1315,6 +1315,17 @@ public:
     // LABELLED: the 1.25 at +BCCh and vtable[0D8h] have no host counterpart, and
     // the rotation drops any pitch or roll as 0047F200 does.
     bool set_heading_008196b0(std::size_t index, float heading);
+    // Packet l68_putrelto. PutRelTo 008AA560's pose: the world point 004142E0(rel,
+    // ref's world matrix +0CCh) as a row-vector affine transform (x*row0 + y*row1 +
+    // z*row2 + translation), with y = 0 for an IsKindOf(6) unit that is not
+    // IsKindOf(8) (008AA784); then vtable[120h] 00819840: 009585B0 sets ref's
+    // rotation rows and that point, 0092D620 syncs the controller and 00818EA0
+    // refills the wake ring. Unlike vtable[118h] it neither refuses a formation
+    // follower nor re-places a leader's group. LABELLED: only a ship (IsKindOf 6) is
+    // posed, as for 008196B0; the transform is float arithmetic in 004142E0's order
+    // (the main thread's 24-bit x87 precision); the controller sync is the motion
+    // state itself. Answers false and changes nothing for any other unit.
+    bool put_rel_to_00819840(std::size_t index, std::size_t ref, const float rel[3]);
     // 00819672-00819694 / 0081968F: the leader's loop, vtable[118h](&00F87574) on
     // every other member of its group (0070D060 over group+4F8h).
     void relocate_formation_members_00819672(std::size_t leader);
