@@ -342,6 +342,37 @@ struct SmallBlockersHost {
     virtual void ui_context_construct_00aa9390(void* widget, std::uint32_t type) = 0;
 };
 
+struct VoiceCleanupHost {
+    virtual ~VoiceCleanupHost() = default;
+    virtual void invalid_parameter_00bf6713() = 0;
+    // 00BF65AC operator delete, __cdecl.
+    virtual void operator_delete_00bf65ac(void* block) = 0;
+    // 007027B0 BSP_VoiceSlot_PollState, __fastcall(ECX = slot) -> EAX.
+    virtual std::int32_t voice_slot_poll_state_007027b0(void* slot) = 0;
+    // 007026F0 BSP_VoiceSlot_Stop, __fastcall(ECX = slot).
+    virtual void voice_slot_stop_007026f0(void* slot) = 0;
+    // 005B7840 BSP_OwnedObjectList_Clear, __fastcall(ECX = list).
+    virtual void owned_object_list_clear_005b7840(void* list) = 0;
+    // 006952A0 BSP_Observer_UnregisterPair, ECX = first endpoint, EDX = callback owner.
+    virtual void observer_unregister_pair_006952a0(void* endpoint, void* callback_owner) = 0;
+    // 00695870 BSP_CallbackOwner_Destroy, __fastcall(ECX = callback owner).
+    virtual void callback_owner_destroy_00695870(void* callback_owner) = 0;
+    // 005B7FC0 BSP_VoiceSlot_Destroy, __fastcall(ECX = slot).
+    virtual void voice_slot_destroy_005b7fc0(void* slot) = 0;
+};
+
+// 005B83E0, __fastcall(ECX = owner) RET; EH frame 00C72110.
+void voice_owner_stop_and_clear_005b83e0(Raw owner, VoiceCleanupHost& host);
+
+struct LuaObjectConstructHost {
+    virtual ~LuaObjectConstructHost() = default;
+    // 00B65F50, __thiscall(ECX = object): nil constructor.
+    virtual void lua_object_construct_00b65f50(LuaObjectStorage* object) = 0;
+};
+
+// 00435CC0, __thiscall(ECX = profile manager) RET -> EAX = it.
+void* profile_manager_construct_00435cc0(Raw manager, LuaObjectConstructHost& host);
+
 // 00531130, __thiscall(ECX = text; const WideString* source, listener, reference) RET 0Ch.
 void text_set_glyph_reference_00531130(Raw text, const WideStringImage* source, std::uint32_t listener,
                                        std::uint32_t reference, SmallBlockersHost& host);

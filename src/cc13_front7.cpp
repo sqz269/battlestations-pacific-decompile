@@ -937,4 +937,66 @@ void movie_camera_track_pair_keyframe_00798080(Raw track, void* keyframe, SmallB
     }
 }
 
+// ---------------------------------------------------------------------------
+// 005B83E0, __fastcall(ECX = owner) RET; EH frame 00C72110. Assembly 005B83E0-005B8506:
+//  1. For each node of the singly linked chain [owner+58h] (next at +4): index =
+//     [[node+8]+18h]; unless -1, slot = owner+8+18h*index and 007026F0(slot) when
+//     007027B0(slot) is non-zero.
+//  2. 005B7840(owner+54h).
+//  3. The list at owner+64h (head [+68h]), checked iterator: per node, obj = [node+8];
+//     007026F0(obj) (before the null test); when obj is set, its sub-object obj+18h
+//     gets vtable 00CE74FC, 006952A0(ECX = [sub+14h], EDX = sub) when [sub+14h] is
+//     set, 00695870(sub); then 005B7FC0(obj) and operator delete(obj).
+//  4. Inlined clear: head linked to itself, size 0, every old node deleted.
+// ---------------------------------------------------------------------------
+void voice_owner_stop_and_clear_005b83e0(Raw owner, VoiceCleanupHost& host) {
+    for (auto* node = static_cast<std::uint8_t*>(owner.ptr(0x58)); node != nullptr;
+         node = static_cast<std::uint8_t*>(Raw{node}.ptr(4))) {
+        const std::int32_t index = Raw{static_cast<std::uint8_t*>(Raw{node}.ptr(8))}.at<std::int32_t>(0x18);
+        if (index == -1) continue;
+        void* const slot = owner.field(8 + 0x18 * static_cast<std::size_t>(index));        // 005B8412
+        if (host.voice_slot_poll_state_007027b0(slot) != 0) host.voice_slot_stop_007026f0(slot);
+    }
+    host.owned_object_list_clear_005b7840(owner.field(0x54));                              // 005B8433
+
+    const Raw list{owner.field(0x64)};
+    auto* node = static_cast<std::uint8_t*>(Raw{static_cast<std::uint8_t*>(list.ptr(4))}.ptr(0));
+    for (;;) {
+        if (node == static_cast<std::uint8_t*>(list.ptr(4))) break;                        // 005B844C
+        if (node == static_cast<std::uint8_t*>(list.ptr(4))) host.invalid_parameter_00bf6713();
+        auto* const obj = static_cast<std::uint8_t*>(Raw{node}.ptr(8));
+        host.voice_slot_stop_007026f0(obj);                                                // 005B845F
+        if (obj != nullptr) {
+            const Raw sub{obj + 0x18};
+            sub.at<std::uint32_t>(0) = 0x00CE74FCu;
+            if (sub.ptr(0x14) != nullptr) host.observer_unregister_pair_006952a0(sub.ptr(0x14), sub.p);
+            host.callback_owner_destroy_00695870(sub.p);                                   // 005B849B
+            host.voice_slot_destroy_005b7fc0(obj);
+            host.operator_delete_00bf65ac(obj);                                            // 005B84B0
+        }
+        if (node == static_cast<std::uint8_t*>(list.ptr(4))) host.invalid_parameter_00bf6713();  // 005B84BD
+        node = static_cast<std::uint8_t*>(Raw{node}.ptr(0));
+    }
+    auto* const head = static_cast<std::uint8_t*>(list.ptr(4));
+    auto* first = static_cast<std::uint8_t*>(Raw{head}.ptr(0));
+    Raw{head}.ptr(0) = head;
+    Raw{static_cast<std::uint8_t*>(list.ptr(4))}.ptr(4) = list.ptr(4);
+    list.at<std::uint32_t>(8) = 0;
+    while (first != static_cast<std::uint8_t*>(list.ptr(4))) {
+        auto* const next = static_cast<std::uint8_t*>(Raw{first}.ptr(0));
+        host.operator_delete_00bf65ac(first);                                              // 005B84E6
+        first = next;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// 00435CC0, __thiscall(ECX = profile manager) RET -> EAX; EH frame 00C5EE28.
+// Assembly 00435CC0-00435D04: [this] = vtable 00CE411C, then 00B65F50(this+4).
+// ---------------------------------------------------------------------------
+void* profile_manager_construct_00435cc0(Raw manager, LuaObjectConstructHost& host) {
+    manager.at<std::uint32_t>(0) = 0x00CE411Cu;
+    host.lua_object_construct_00b65f50(reinterpret_cast<LuaObjectStorage*>(manager.field(4)));
+    return manager.p;
+}
+
 }  // namespace bsp::cc13_front7
