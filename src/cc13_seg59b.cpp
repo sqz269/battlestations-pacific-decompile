@@ -4875,13 +4875,11 @@ void campaign_grant_one(Seg59bHost& host, std::uint8_t* frame, std::uint32_t tex
 }  // namespace
 
 // ---------------------------------------------------------------------------
-// 0091D780 BSP_MissionScoreRecord_EvaluateCampaignAwards (provisional), PARTIAL: this function
-// covers 0091D780..0091E15E only, the frame set-up and the campaign-finish awards; sub-range 2
-// (campaign_awards_mode_part_0091e15f) covers 0091E15F..0091E697 and sub-range 3
-// (campaign_awards_counter_part_0091e698) 0091E698..0091F2E2. The rest of the body
-// (0091F2E3..0091FFFF: the CA_HOS / CA_WOG / CA_AA / CA_FA counters, the RANK pass and the
-// frame teardown) is not reconstructed yet, so nothing here is a callable replacement for
-// 0091D780. No cc9 host models these awards (see sub-range 2).
+// 0091D780 BSP_MissionScoreRecord_EvaluateCampaignAwards (provisional), sub-range 1: this
+// function covers 0091D780..0091E15E, the frame set-up and the campaign-finish awards. Sub-ranges
+// 2..5 follow (0091E15F, 0091E698, 0091F2E3, 0091FF24) and score_record_evaluate_campaign_
+// awards_0091d780 chains them into the whole body. No cc9 host models these awards (see
+// sub-range 2).
 // Original ABI: __fastcall(ECX = record = scoring + slot*284h + 4), RET; SEH frame, handler
 // 00CA65F0. Caller 00920A20 (cc9's debrief_bringup_00920a20 host records the debrief bring-up
 // and does not call it).
@@ -5090,10 +5088,9 @@ void campaign_mode_award(Seg59bHost& host, std::uint8_t* frame, std::uint32_t te
 }  // namespace
 
 // ---------------------------------------------------------------------------
-// 0091D780 PARTIAL, sub-range 2: 0091E15F..0091E697, the CA_IC and CA_VR mode awards.
+// 0091D780 sub-range 2: 0091E15F..0091E697, the CA_IC and CA_VR mode awards.
 // Runs on the frame campaign_awards_finish_part_0091d780 left; both the campaign and the
-// non-campaign paths of sub-range 1 arrive at 0091E15F. Not a whole-body replacement; sub-range
-// 3 continues at 0091E698.
+// non-campaign paths of sub-range 1 arrive at 0091E15F; sub-range 3 continues at 0091E698.
 // Duplicate check: no cc9 host evaluates these awards; award_grant.cpp's kAwardNameIds only maps
 // CA_IC (65) / CA_VR (66) and the other CA_* names to achievement ids, and mission_result.cpp /
 // game_hosts_mission_result.cpp do not mention them.
@@ -5186,9 +5183,9 @@ void campaign_counter_write_back(Seg59bHost& host, std::uint8_t* frame, void* ma
 }  // namespace
 
 // ---------------------------------------------------------------------------
-// 0091D780 PARTIAL, sub-range 3: 0091E698..0091F2E2, the online gate and the Counter_CA_US /
-// Counter_CA_JP passes. Returns false when the gate sends the image to 0091FF24 (not
-// reconstructed yet), true when it falls through to 0091F2E3 (not reconstructed yet).
+// 0091D780 sub-range 3: 0091E698..0091F2E2, the online gate and the Counter_CA_US /
+// Counter_CA_JP passes. Returns false when the gate sends the image to 0091FF24 (the teardown,
+// sub-range 5), true when it falls through to 0091F2E3 (sub-range 4).
 // Same frame as sub-ranges 1 and 2. The scratch slots S+28h..S+4Ch and S+78h..S+7Fh carry the
 // image's stores for the heads, the search results and the misses; the strings this sub-range
 // builds are released before it ends.
@@ -5275,5 +5272,203 @@ bool campaign_awards_counter_part_0091e698(Seg59bHost& host, CampaignAwardsFrame
         campaign_counter_write_back(host, frame, add(ptr(frame, kCampaignProfile), 0xA0), 0x00D18B48u, 0x17C);
     }
     return true;
+}
+
+namespace {
+
+constexpr std::uint32_t kCampaignAwardKey = 0x78;
+
+void campaign_assign(Seg59bHost& host, std::uint8_t* frame, std::uint32_t slot, std::uint32_t text) {
+    host.native_string_assign_0041e870(add(frame, slot), static_cast<const char*>(host.image_pointer(text)));
+}
+
+// The 0041E870-keyed grant of 0091F499 and its copies: S+78h = text, 0090EDE0(slot, &S+78h,
+// value, 0), release S+78h.
+void campaign_grant_assigned(Seg59bHost& host, std::uint8_t* frame, std::uint32_t text, std::int32_t value) {
+    campaign_assign(host, frame, kCampaignAwardKey, text);
+    void* const record = ptr(frame, kCampaignRecord);
+    host.scoring_grant_award_0090ede0(scoring_global(host), at<std::int32_t>(record, 0x250),
+                                      add(frame, kCampaignAwardKey), value, 0);
+    release_native_string(host, add(frame, kCampaignAwardKey));
+}
+
+// The named-counter write-back of 0091F500 / 0091F6F7 / 0091F8FA / 0091FAF3: S+48h and S+78h
+// both = the counter name, 0090EDE0(slot, &S+78h, 005097D0(profile; &S+48h) + record field, 0),
+// then the S+78h and S+48h releases.
+void campaign_named_counter_write_back(Seg59bHost& host, std::uint8_t* frame, std::uint32_t counter_text,
+                                       std::uint32_t record_field) {
+    campaign_assign(host, frame, kCampaignScratch, counter_text);
+    campaign_assign(host, frame, kCampaignAwardKey, counter_text);
+    void* const record = ptr(frame, kCampaignRecord);
+    const std::int32_t value =
+        host.profile_get_named_counter_005097d0(ptr(frame, kCampaignProfile), add(frame, kCampaignScratch)) +
+        at<std::int32_t>(record, record_field);
+    host.scoring_grant_award_0090ede0(scoring_global(host), at<std::int32_t>(record, 0x250),
+                                      add(frame, kCampaignAwardKey), value, 0);
+    release_native_string(host, add(frame, kCampaignAwardKey));
+    release_native_string(host, add(frame, kCampaignScratch));
+}
+
+// The WOG / AA / FA test: S+40h = counter name, S+78h = award name, the award's [+48h] checked
+// (00BF6713 when empty), byte S+17h = 005097D0(profile; &S+40h) + record field == [+48h][0];
+// S+78h then S+40h released; a set byte grants the award with value 1; then the write-back.
+void campaign_named_counter_award(Seg59bHost& host, std::uint8_t* frame, std::uint32_t counter_text,
+                                  std::uint32_t award_text, std::uint32_t record_field) {
+    campaign_assign(host, frame, kCampaignOf, counter_text);
+    campaign_assign(host, frame, kCampaignAwardKey, award_text);
+    void* const award = host.award_table_find_record_0050fc30(award_table(host), add(frame, kCampaignAwardKey));
+    const std::uint8_t* const first = static_cast<const std::uint8_t*>(ptr(award, 0x48));
+    if (first == nullptr ||
+        (static_cast<std::int32_t>(static_cast<const std::uint8_t*>(ptr(award, 0x4C)) - first) >> 2) == 0) {
+        host.checked_iterator_failure_00bf6713();
+    }
+    const std::int32_t* const values = static_cast<const std::int32_t*>(ptr(award, 0x48));
+    void* const record = ptr(frame, kCampaignRecord);
+    const std::int32_t counter =
+        host.profile_get_named_counter_005097d0(ptr(frame, kCampaignProfile), add(frame, kCampaignOf)) +
+        at<std::int32_t>(record, record_field);
+    at<std::uint8_t>(frame, kCampaignBoolCjm) = counter == values[0] ? 1 : 0;
+    release_native_string(host, add(frame, kCampaignAwardKey));
+    release_native_string(host, add(frame, kCampaignOf));
+    if (at<std::uint8_t>(frame, kCampaignBoolCjm) != 0) campaign_grant_assigned(host, frame, award_text, 1);
+    campaign_named_counter_write_back(host, frame, counter_text, record_field);
+}
+
+// FindRecord(text in S+78h) [+48h][0] == value, the key released after the read.
+bool campaign_rank_award_hit(Seg59bHost& host, std::uint8_t* frame, std::uint32_t text, std::int32_t value) {
+    campaign_assign(host, frame, kCampaignAwardKey, text);
+    void* const award = host.award_table_find_record_0050fc30(award_table(host), add(frame, kCampaignAwardKey));
+    const bool hit = value == award_vector_value(host, award, 0);
+    release_native_string(host, add(frame, kCampaignAwardKey));
+    return hit;
+}
+
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 0091D780 sub-range 4: 0091F2E3..0091FF23, Counter_CA_HOS / WOG / AA / FA and the RANK pass.
+// Every early exit here is the image's jump to 0091FF24 (campaign_awards_teardown_0091ff24).
+// Evidence (listing 0091F2E3..0091FF23, read whole; EH states 28h..42h):
+//  HOS, when record+180h != 0: S+40h "Counter_CA_HOS" (00D18B28, 14), S+38h "CA_HOS" (00D18B20, 6),
+//  map [S+20h]+A0h with S+34h = head, the inlined find (miss -> S+48h), BL = record+180h +
+//  counter == [+48h][0], S+38h then S+40h released; BL: S+78h = 0041E870("CA_HOS"), 0090EDE0(slot,
+//  &S+78h, 1, 0), release. Then S+48h / S+78h = "Counter_CA_HOS", 0090EDE0(slot, &S+78h,
+//  005097D0(profile; &S+48h) + record+180h, 0), S+78h / S+48h released.
+//  WOG (record+184h; 00D18B10 / 00D18B08), AA (record+188h and 004BCA50() <= 3 unsigned; 00D18AF8
+//  / 00D18AF0) and FA (record+18Ch and the same mode test; 00D18AE0 / 00D18AD8): S+40h = counter,
+//  S+78h = award (0041E870), FindRecord, the vector test, SETZ byte S+17h on 005097D0(profile;
+//  &S+40h) + field == [+48h][0] (the vector read after the call), releases, a set byte grants with
+//  value 1, then the write-back as for HOS.
+//  RANK at 0091FBA1: [game+1FE4h] == 0, byte [game+218Ch] != 0 or byte [[00F8A2FC]+4Dh] == 0 ->
+//  0091FF24. S+40h = 0090BF50([S+24h]) + record+1E0h; S+38h = (u8) 00574050(profile). i = 0..:
+//  S+48h = "RANK" (00CEF15C), bit 100h; FindRecord; a null [+48h] or i >= size (JNC) stops; else
+//  S+78h = "RANK", bit 200h, FindRecord, 00BF6713 unless i < size (JC), stop when [+48h][i] >
+//  S+40h (JG); bit 200h then 100h releases; ++i while not stopped. S+38h >= i (JGE) -> 0091FF24.
+//  Else 0090EDE0(slot, "RANK" in S+78h, i, 0); then RANK_FR (00D18AD0) [+48h][0] == i grants
+//  RANK_FR with 1 and ends, else RANK_SR (00CF5678) [+48h][0] == i grants RANK_SR with 1.
+// No x87, no shared RNG draws.
+// ---------------------------------------------------------------------------
+void campaign_awards_rank_part_0091f2e3(Seg59bHost& host, CampaignAwardsFrame0091d780& state) {
+    std::uint8_t* const frame = state.bytes;
+    if (at<std::int32_t>(ptr(frame, kCampaignRecord), 0x180) != 0) {
+        construct_native_string_inline(host, add(frame, kCampaignOf), 0x00D18B28u, 0x0E);
+        construct_native_string_inline(host, add(frame, kCampaignSa), 0x00D18B20u, 6);
+        void* const map = add(ptr(frame, kCampaignProfile), 0xA0);
+        const std::int32_t counter = campaign_profile_counter(host, frame, map, kCampaignOf, 0x34, 0x48);
+        const bool hos = campaign_counter_reached(host, frame, counter, kCampaignSa, 0x180);
+        release_native_string(host, add(frame, kCampaignSa));
+        release_native_string(host, add(frame, kCampaignOf));
+        if (hos) campaign_grant_assigned(host, frame, 0x00D18B20u, 1);
+        campaign_named_counter_write_back(host, frame, 0x00D18B28u, 0x180);
+    }
+    if (at<std::int32_t>(ptr(frame, kCampaignRecord), 0x184) != 0) {
+        campaign_named_counter_award(host, frame, 0x00D18B10u, 0x00D18B08u, 0x184);
+    }
+    if (at<std::int32_t>(ptr(frame, kCampaignRecord), 0x188) != 0 &&
+        host.game_effective_mode_004bca50(game_global(host)) <= 3) {
+        campaign_named_counter_award(host, frame, 0x00D18AF8u, 0x00D18AF0u, 0x188);
+    }
+    if (at<std::int32_t>(ptr(frame, kCampaignRecord), 0x18C) != 0 &&
+        host.game_effective_mode_004bca50(game_global(host)) <= 3) {
+        campaign_named_counter_award(host, frame, 0x00D18AE0u, 0x00D18AD8u, 0x18C);
+    }
+
+    // 0091FBA1: the RANK pass.
+    void* const game = game_global(host);
+    if (at<std::int32_t>(game, 0x1FE4) == 0) return;
+    if (at<std::uint8_t>(game, 0x218C) != 0) return;
+    void* const session = *static_cast<void**>(host.image_pointer(0x00F8A2FCu));
+    if (at<std::uint8_t>(session, 0x4D) == 0) return;
+    void* const record = ptr(frame, kCampaignRecord);
+    const std::int32_t score =
+        host.mission_progress_sum_multi_scores_0090bf50(ptr(frame, kCampaignProgress)) + at<std::int32_t>(record, 0x1E0);
+    at<std::int32_t>(frame, kCampaignOf) = score;
+    at<std::int32_t>(frame, kCampaignSa) = host.profile_rank_00574050(ptr(frame, kCampaignProfile));
+    std::int32_t rank = 0;
+    for (;;) {
+        campaign_assign(host, frame, kCampaignScratch, 0x00CEF15Cu);
+        at<std::uint32_t>(frame, kCampaignLiveFlags) |= 0x100;
+        void* const table_row = host.award_table_find_record_0050fc30(award_table(host), add(frame, kCampaignScratch));
+        bool below = false;
+        const std::uint8_t* const first = static_cast<const std::uint8_t*>(ptr(table_row, 0x48));
+        if (first != nullptr &&
+            static_cast<std::uint32_t>(rank) <
+                static_cast<std::uint32_t>(
+                    static_cast<std::int32_t>(static_cast<const std::uint8_t*>(ptr(table_row, 0x4C)) - first) >> 2)) {
+            campaign_assign(host, frame, kCampaignAwardKey, 0x00CEF15Cu);
+            at<std::uint32_t>(frame, kCampaignLiveFlags) |= 0x200;
+            void* const row = host.award_table_find_record_0050fc30(award_table(host), add(frame, kCampaignAwardKey));
+            const std::uint8_t* const values = static_cast<const std::uint8_t*>(ptr(row, 0x48));
+            if (values == nullptr ||
+                static_cast<std::uint32_t>(rank) >=
+                    static_cast<std::uint32_t>(
+                        static_cast<std::int32_t>(static_cast<const std::uint8_t*>(ptr(row, 0x4C)) - values) >> 2)) {
+                host.checked_iterator_failure_00bf6713();
+            }
+            below = !(static_cast<const std::int32_t*>(ptr(row, 0x48))[rank] > score);
+        }
+        campaign_release_if(host, frame, 0x200, kCampaignAwardKey);
+        campaign_release_if(host, frame, 0x100, kCampaignScratch);
+        if (!below) break;
+        ++rank;
+    }
+    if (at<std::int32_t>(frame, kCampaignSa) >= rank) return;
+    campaign_grant_assigned(host, frame, 0x00CEF15Cu, rank);
+    if (campaign_rank_award_hit(host, frame, 0x00D18AD0u, rank)) {
+        campaign_grant_assigned(host, frame, 0x00D18AD0u, 1);
+        return;
+    }
+    if (campaign_rank_award_hit(host, frame, 0x00CF5678u, rank)) campaign_grant_assigned(host, frame, 0x00CF5678u, 1);
+}
+
+// ---------------------------------------------------------------------------
+// 0091D780 sub-range 5: 0091FF24..0091FFFF, the teardown: S+50h (state 3), "IJN0" S+68h (2),
+// "IJN" S+58h (1), "USN0" S+70h (0) and "USN" S+60h (-1) released when their data is non-null;
+// then the SEH frame is unlinked and RET.
+// ---------------------------------------------------------------------------
+void campaign_awards_teardown_0091ff24(Seg59bHost& host, CampaignAwardsFrame0091d780& state) {
+    std::uint8_t* const frame = state.bytes;
+    release_native_string(host, add(frame, kCampaignMissionId));
+    release_native_string(host, add(frame, kCampaignIjn0));
+    release_native_string(host, add(frame, kCampaignIjn));
+    release_native_string(host, add(frame, kCampaignUsn0));
+    release_native_string(host, add(frame, kCampaignUsn));
+}
+
+// ---------------------------------------------------------------------------
+// 0091D780 BSP_MissionScoreRecord_EvaluateCampaignAwards (provisional), the whole body.
+// __fastcall(ECX = record = scoring + slot*284h + 4), RET; SEH handler 00CA65F0. Caller 00920A20.
+// Sub-range 1 falls through to 0091E15F on both of its paths; sub-range 3's gate miss and every
+// early exit of sub-range 4 are the image's jumps to 0091FF24, the teardown.
+// Uncertainty: the image's frame is uninitialised stack; the C++ frame is zero-filled. Nothing
+// reads a frame byte before the image writes it (sub-range 1 writes every slot later sub-ranges
+// read before they read it).
+// ---------------------------------------------------------------------------
+void score_record_evaluate_campaign_awards_0091d780(Seg59bHost& host, void* record) {
+    CampaignAwardsFrame0091d780 state{};
+    campaign_awards_finish_part_0091d780(host, record, state);
+    campaign_awards_mode_part_0091e15f(host, state);
+    if (campaign_awards_counter_part_0091e698(host, state)) campaign_awards_rank_part_0091f2e3(host, state);
+    campaign_awards_teardown_0091ff24(host, state);
 }
 }  // namespace bsp::cc13_seg59b
