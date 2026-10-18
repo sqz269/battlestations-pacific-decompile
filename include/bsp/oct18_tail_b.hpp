@@ -20,6 +20,48 @@ public:
     virtual void visit_reference_vslot_10(void* visitor, const char* name,
                                          int type, void* value) = 0;
     virtual bool filter_vslot_00(void* filter, std::uint32_t value) = 0;
+    virtual void deliver_entity_vslot_18c(void*, void*) = 0;
+    virtual void erase_peer_holder_0077d980(void* list, void* node) = 0;
+    virtual void free_00bf65ac(void*) = 0;
+    virtual void scalar_delete_vslot_00(void*, unsigned flags) = 0;
+    virtual void enter_critical_section(void*) = 0;
+    virtual void leave_critical_section(void*) = 0;
+    virtual void delete_critical_section(void*) = 0;
+    virtual void* buy_peer_node_0076ea10(void* list, void* next, void* previous, void* peer) = 0;
+    virtual void grow_list_00773600(void* list, unsigned amount) = 0;
+    virtual bool host_address_equal_vslot_34(void* client, void*, void*) = 0;
+    virtual void insert_host_vector_00785700(void* vector, void* end, void* const* value) = 0;
+    virtual void construct_controller_00720180(void*, void* endpoint) = 0;
+    virtual void visitor_open_vslot_04(void*, const char* name) = 0;
+    virtual void visitor_close_vslot_08(void*) = 0;
+    virtual void visitor_value_vslot_0c(void*, const char*, int type, std::uint32_t bits) = 0;
+    virtual bool class_is_kind_vslot_18(void*, int) = 0;
+    virtual void* allocate_00bf681b(unsigned bytes) = 0;
+    virtual void* construct_auto_target_009f7590(void* memory, void* block, void* squadron) = 0;
+    virtual void stationary_dead_vslot_7c(void*) = 0;
+    virtual void stationary_live_vslot_70(void*, unsigned) = 0;
+    virtual void release_body_00c34f70(void* world, void* body) = 0;
+    virtual void resize_body_vector_00882620(void* vector, unsigned, unsigned) = 0;
+    virtual void remove_floating_object_00b9fe00(void* wave_field, void*) = 0;
+    virtual void unlink_release_node_00b6dfa0(void*) = 0;
+    virtual void remove_wave_object_vslot_1c(void* wave_field, void*) = 0;
+    virtual void terrain_delete_vslot_04(void*, unsigned) = 0;
+    virtual void release_reference(void*) = 0; // InterlockedDecrement(+4h); slot 0() iff zero
+    struct Iterator { void* owner; void* node; };
+    virtual Iterator find_target_00863b10(void* tree, void* target) = 0;
+    virtual void* construct_target_00864880(void* memory, void* unit, void* target) = 0;
+    virtual void insert_target_00864160(void* tree, void* target, void* record) = 0;
+    virtual void register_gun_00862660(void* record, void* gun) = 0;
+    virtual void* vehicle_class_00964790(std::uint32_t class_id, bool read_race) = 0;
+    virtual void* instantiate_class_vslot_28(void* descriptor, std::uint16_t entity_id) = 0;
+    virtual void native_string_resize_0041dd40(void* header, std::uint32_t length, bool terminate) = 0;
+    virtual void construct_score_record_0091ce90(void* receiver) = 0;
+    virtual void select_host_00783f20(void* client, std::uint32_t index) = 0;
+    virtual void* game_global_00e188a8() = 0;
+    virtual void scene_records_destroy_all_004bf930(void* list) = 0;
+    virtual void apply_director_command_0071c1e0(void* director, void* message) = 0;
+    virtual void set_gunbot_target_006df170(void* bot, void* target) = 0;
+    virtual bool derive_ship_turn_fields_00828f20(void* descriptor) = 0;
     // The original uses the canonical CRT invalid-iterator/range handler.
     // Providers must not return from this call.
     virtual void invalid_iterator_00bf6713() = 0;
@@ -41,4 +83,27 @@ void* stationary_part_scene_0084efe0(const void* stationary);
 bool consume_single_peer_flag_00784cd0(void* transport, Host&);
 bool recon_subscription_matches_00968470(const void* subscription,
                                          const void* parameters, Host&);
+
+void deliver_entity_sync_0077c710(void* entity, void* message, Host& host);
+void remove_peer_holder_0077da20(void* entity, void* record, Host& host);
+void network_destruct_007844e0(void* network, Host& host);
+void clear_host_lists_00785170(void* client, Host& host);
+void queue_peer_removal_007857f0(void* network, void* peer, std::uint32_t timer_bits, Host& host);
+void merge_pending_hosts_00785cc0(void* client, Host& host);
+void* construct_director_base_008363e0(void* director, void* endpoint, std::uint8_t flag, Host& host);
+void director_visit_properties_008360c0(void* director, void* visitor, Host& host);
+void director_dump_properties_008362a0(void* director, void* visitor, Host& host);
+void* construct_squadron_block_0084d810(void* block, void* squadron, Host& host);
+void stationary_apply_state_0084ec10(void* message, void* const* first_global,
+                                    void* const* end_global, Host& host);
+void landscape_release_terrain_008826f0(void* landscape, const void* game, Host& host);
+void add_gun_to_target_00864ca0(void* ai, void* target, void* gun, Host& host);
+void* instantiate_ship_message_0081bfe0(void* message, Host& host);
+void* construct_score_record_tail_0091d620(void* receiver, Host& host);
+void select_listed_server_007701f0(void* session, std::uint32_t index,
+                                  std::uint32_t& scene_flag, const void* empty_bytes, Host& host);
+void* vehicle_class_get_or_create_007b8a80(std::uint32_t type_id, Host& host);
+void director_apply_command_thunk_00835610(void* director, void* message, Host& host);
+void gunbot_set_target_thunk_008fe790(void* bot, void* target, Host& host);
+bool ship_derive_turn_fields_thunk_00852200(void* descriptor, Host& host);
 } // namespace bsp::oct18_tail_b
