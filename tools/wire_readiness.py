@@ -178,6 +178,29 @@ for p, t in srcs.items():
             h = ADDR_HEAD.search(ln_)
             if h:
                 addr_defs[int(h.group(1) or h.group(2), 16)].add((p, simple))
+# The same heading rule over header prototypes: many bodies carry their address only at the declaration.
+PROTO_RE = re.compile(r'^[ \t]*(?:[\w:<>,\*&~ \t]+?[ \t\*&])((?:\w+::)*(\w+))[ \t]*\([^;{}]*\)[ \t]*'
+                      r'(?:const[ \t]*)?(?:noexcept[ \t]*)?;', re.M)
+addr_decls = collections.defaultdict(set)  # address -> {(header, simple)}
+for p, t in srcs.items():
+    if p.suffix != '.hpp':
+        continue
+    lines = t.split('\n'); line_at = [0]
+    for ln_ in lines:
+        line_at.append(line_at[-1] + len(ln_) + 1)
+    for m in PROTO_RE.finditer(t):
+        simple = m.group(2)
+        if simple in KEYWORDS:
+            continue
+        i = bisect.bisect_right(line_at, m.start(1)) - 1
+        j = i - 1
+        block = [lines[i]]
+        while j >= 0 and i - j <= 40 and COMMENT_LINE.match(lines[j]):
+            block.append(lines[j]); j -= 1
+        for ln_ in block:
+            h = ADDR_HEAD.search(ln_)
+            if h:
+                addr_decls[int(h.group(1) or h.group(2), 16)].add((p, simple))
 map_names = set(re.findall(r'\?{1,2}([A-Za-z_]\w*)@', mp))
 SUFFIX = re.compile(r'_([0-9a-f]{8})$')
 suffixed_defs = collections.defaultdict(set)
@@ -197,8 +220,11 @@ for a, (nm, src) in recon.items():
     via = 'name'
     if not hit:
         cands = {(f, s) for f, s in addr_defs.get(a, ()) if ok(s)}
-        local = [s for f, s in cands if f == sp]
-        hit = local or ([s for f, s in cands] if len(cands) == 1 else [])
+        # Two bodies in one file headed by the same address are slices of it (0057cb60's mode arms), not it.
+        local = sorted({s for f, s in cands if f == sp})
+        decl = sorted({s for f, s in addr_decls.get(a, ()) if ok(s) and s in def_files})
+        names = sorted({s for f, s in cands} | set(decl))
+        hit = local if len(local) == 1 else decl if len(decl) == 1 else (names if not local and len(names) == 1 else [])
         via = 'address_comment'
     if not hit:
         hit = [s for s in parts if s in map_names and len(def_files.get(s, ())) == 1]
@@ -285,7 +311,8 @@ def host_own(a):
 
 # ---- ABI class of a ready row, from its definition's parameter list
 # char* is a C string or a text buffer, not image memory, so it does not make a row raw.
-RAW_PARAM = re.compile(r'\bRaw\b|std::uintptr_t|\bvoid\s*\*|std::uint8_t\s*\*')
+# Object (std::uint8_t*, ten cc13 files) and Pointer (void*) are the image-pointer aliases bodies take.
+RAW_PARAM = re.compile(r'\bRaw\b|\bObject\b|\bPointer\b|std::uintptr_t|\bvoid\s*\*|std::uint8_t\s*\*')
 HOST_PARAM = re.compile(r'\w*Host\s*&')
 shaped_path = ROOT / 'config/wire_host_shaped.json'
 host_shaped = {k.lower(): v for k, v in json.load(open(shaped_path)).items()} if shaped_path.exists() else {}

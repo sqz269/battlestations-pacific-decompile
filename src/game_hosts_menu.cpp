@@ -45,6 +45,13 @@ constexpr bool kFrontEndPointerCc13Bound = false;
 // recorded. The host state they reach is the frame-layout selector 00518250
 // (mode 0 selects set 2 with commit 1) and the GUI enable 00aa0e00 (under
 // kFrontEndPointerCc13Bound); every other call is a record row.
+// ON moves the front end, and the image does the same: mode 0 at 0057cd14 pushes
+// EBX (1 since 0057cc22, callee-saved through the calls between) and 2, then
+// 004c1ac0 (no arguments) and 00518250(set 2, commit 1) at 0057cd1e. Committing
+// set 2 loads that set's own layout rows from 00E08500 / 00E08604 / 00E0862C,
+// among them its FE_frame / FE_frame_title. So pages 63 -> 67, widgets 776 -> 792 and the
+// two page scripts' Lua getters (128 -> 130) on USN01 (cc15-ls1 pair) are
+// the image's behaviour, not a host artefact.
 constexpr bool kLoadingScreenCc13Bound = false;
 
 // 004f8710 publishes screen ids; the level-4 set the main-menu manager raises
