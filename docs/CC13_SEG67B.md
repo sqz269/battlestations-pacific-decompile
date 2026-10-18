@@ -176,3 +176,17 @@ Ledger-only spot checks:
 - 009A56C0 (`set_state`) matches, and covers its byte-identical copies 009AE290, 009B84A0 and 009B3680. 009A9D50 is the same body with a redundant leading test.
 - The cc9 host's 009CA3B0 (glide seed) matches, with its labelled ctl+398h substitution.
 - The cc9 host's 009CAD00 (horizontal distance) matches, with one exception: the host keeps dx/dz in double, while the image rounds each to float before squaring, so the result can differ in the last bit.
+
+### 3.6 Plan endpoints, the land cruise pick, angle normalisation and ship-AI teardown
+
+| Address | Function | Notes |
+|---|---|---|
+| 009C25D0 | move-to circle state | the 009BC960 body with vtable 00D20A9C, using the shared RNG |
+| 009AFA50 | `bot_task_land_pick_cruise_state_009afa50` | +620h when (unit+72Ch)->vtable[38h] is false; otherwise +4C4h for a leader and +500h for the rest |
+| 0099B260 / 0099A9B0 / 0099A9E0 | plan slot, endpoint observer and copy | the plan registers itself as the observer |
+| 0099BA10 | `math_normalize_angle_to_pi_by_ref_0099ba10` | fmod by 2pi, then one fold; NaN passes through |
+| 0099BB00 | yaw-rate multiplier latch | max with the NaN arm taking the argument |
+| 00999AE0 | first-task wait value | -1.0 when every task passes vtable[34h] |
+| 009DA880 / 009DB470 / 009DF8F0 | ship-AI node destroy, brain members, list head | the list head writes address 4 on a null allocation, as in the image |
+
+Ledger-only: 009C82D0 and 009D3E40 are byte-identical copies of 009A56C0 (`set_state`).

@@ -1329,4 +1329,141 @@ void pilot_bot_prepend_tight_turn_to_point_009bb380(Cc13Seg67bHost& host, void* 
     host.pilot_bot_prepend_active_task_00999f50(bot, t);
 }
 
+// ---------------------------------------------------------------------------
+// Small plan, land-task and ship-AI bodies.
+
+namespace {
+constexpr std::uint32_t kMoveToCircleVtable = 0x00D20A9Cu;
+constexpr double kTwoPi_00ce3828 = 6.2831854820251465;
+constexpr double kMinusPi_00ce3d18 = -3.1415927410125732;
+constexpr double kPi_00ce3d28 = 3.1415927410125732;
+}  // namespace
+
+// 009C25D0 (009C25D0-009C264F). The 009BC960 body with vtable 00D20A9C
+// (009C2618): base, r = 00BD2F10(1, 0, 1) (009C261E), 009C262B FCOMIP r against
+// [00CE3800] (0.5), JB -> 0 else 1, into byte +18h (009C263C).
+void* bot_state_move_to_circle_construct_009c25d0(Cc13Seg67bHost& host, void* state,
+                                                  void* approach) {
+    construct_state_base(state, approach);
+    at<std::uint32_t>(state, 0) = kMoveToCircleVtable;
+    const float r = host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    at<std::uint8_t>(state, 0x18) = (r >= kHalf_00ce3800) ? 1 : 0;
+    return state;
+}
+
+// 009AFA50 (009AFA50-009AFA8E). u = [task+3FCh]; when (u+72Ch)->vtable[38h]() is
+// false (009AFA64): task+620h. Else 007B8AD0(u) (009AFA78) ? task+4C4h : task+500h.
+void* bot_task_land_pick_cruise_state_009afa50(Cc13Seg67bHost& host, void* task) {
+    void* const unit = ptr_at(task, 0x3FC);
+    if (!host.object_vcall_38(ptr(unit, 0x72C))) return ptr(task, 0x620);
+    return host.unit_is_squadron_flight_leader_007b8ad0(unit) ? ptr(task, 0x4C4)
+                                                              : ptr(task, 0x500);
+}
+
+// 0099B260 (0099B260-0099B283). byte s+8h ? s+4h : s+0h, returned through a
+// MOVSS/FLD stack copy.
+float pilot_bot_override_or_value_0099b260(void* slot) {
+    return at<std::uint8_t>(slot, 8) != 0 ? at<float>(slot, 4) : at<float>(slot, 0);
+}
+
+// 0099A9B0 (0099A9B0-0099A9DE). The plan observes entity +14h with itself as the
+// observer: when it changes, 006952A0(ECX = old, EDX = plan) when old is set
+// (0099A9C5), +14h = entity (0099A9CC), 00694A60(ECX = entity, EDX = plan) when
+// set (0099A9D5).
+void pilot_plan_set_observed_endpoint_0099a9b0(Cc13Seg67bHost& host, void* plan, void* entity) {
+    void* const old = ptr_at(plan, 0x14);
+    if (entity == old) return;
+    if (old != nullptr) host.observer_unregister_pair_006952a0(old, plan);
+    at<std::uintptr_t>(plan, 0x14) = reinterpret_cast<std::uintptr_t>(entity);
+    if (entity != nullptr) host.observer_register_pair_00694a60(entity, plan);
+}
+
+// 0099A9E0 (0099A9E0-0099AA17). +18h = src+18h (FLD/FSTP, 0099A9E4/0099A9ED), then
+// the 0099A9B0 swap to src+14h (0099A9F4-0099AA0E).
+// UNCERTAINTY: the x87 copy quiets a signalling NaN; the C++ copy keeps its bits.
+void pilot_plan_copy_endpoint_0099a9e0(Cc13Seg67bHost& host, void* plan, void* src) {
+    at<float>(plan, 0x18) = at<float>(src, 0x18);
+    pilot_plan_set_observed_endpoint_0099a9b0(host, plan, ptr_at(src, 0x14));
+}
+
+// 0099BA10 (0099BA10-0099BA8B). r = float(fmod(*in, double [00CE3828])) via
+// 00BF857A (_CIfmod, ST1 mod ST0) (0099BA1C). 0099BA37 FCOMIP of double [00CE3D18]
+// (-pi) against r, JB (-pi < r, or NaN) -> the second test; else *out =
+// float(r + 2pi) (0099BA3B). Second: 0099BA5C FCOMI r against double [00CE3D28]
+// (pi), JBE (r <= pi, or NaN) -> *out = r; else *out = float(r - 2pi) (0099BA62).
+// Returns out.
+// UNCERTAINTY: the sums are rounded once to 24 bits in the image (main thread);
+// here a double sum is rounded to float, which can differ by double rounding.
+float* math_normalize_angle_to_pi_by_ref_0099ba10(float* out, const float* in) {
+    const float r = static_cast<float>(std::fmod(static_cast<double>(*in), kTwoPi_00ce3828));
+    if (kMinusPi_00ce3d18 >= static_cast<double>(r)) {
+        *out = static_cast<float>(static_cast<double>(r) + kTwoPi_00ce3828);
+    } else if (static_cast<double>(r) > kPi_00ce3d28) {
+        *out = static_cast<float>(static_cast<double>(r) - kTwoPi_00ce3828);
+    } else {
+        *out = r;
+    }
+    return out;
+}
+
+// 009DA880 (009DA880-009DA8CC). EH frame 00CB052B. 0064A610(ECX = node+4Ch)
+// (009DA8A8); 009D5EB0(ECX = node+34h) (009DA8B8).
+void ship_ai_path_node_destroy_009da880(Cc13Seg67bHost& host, void* node) {
+    host.observed_owner_base_destroy_0064a610(ptr(node, 0x4C));
+    ship_ai_path_node_observer_destruct_body_009d5eb0(host, ptr(node, 0x34));
+}
+
+// 009DF8F0 (009DF8F0-009DF909). n = operator new(0Ch) (009DF8F2); when n: [n] = n
+// (009DF8FE); then, when n+4h is non-zero, [n+4h] = n (009DF907). The second test
+// is on the address, so a null n writes 0 to address 4, as in the image.
+void* ship_ai_traffic_list_head_node_009df8f0(Cc13Seg67bHost& host) {
+    void* const n = host.operator_new_00bf681b(0x0C);
+    if (n != nullptr) at<std::uintptr_t>(n, 0) = reinterpret_cast<std::uintptr_t>(n);
+    const std::uintptr_t next = reinterpret_cast<std::uintptr_t>(n) + 4u;
+    if (next != 0) {
+        *reinterpret_cast<std::uintptr_t*>(next) = reinterpret_cast<std::uintptr_t>(n);
+    }
+    return n;
+}
+
+namespace {
+constexpr float kMinusOne_00d7a260_f = -1.0f;
+}  // namespace
+
+// 00999AE0 (00999AE0-00999B2B). Walks the bot's task vector (begin +58h, count
+// +5Ch, both reloaded per step, 00999B07-00999B15); null entries are skipped. The
+// first task whose vtable[34h]() is false (00999B01) answers by a tail JMP to its
+// vtable[4Ch]() (00999B2B). With none: [00D7A260] (-1.0) (00999B17).
+float pilot_bot_first_task_wait_value_00999ae0(Cc13Seg67bHost& host, void* bot) {
+    for (std::uint32_t i = 0; i < at<std::uint32_t>(bot, 0x5C); ++i) {
+        void* const task = reinterpret_cast<void*>(
+            at<std::uintptr_t>(ptr_at(bot, 0x58), i * 4u));
+        if (task == nullptr) continue;
+        if (!host.object_vcall_34(task)) return host.object_vcall_4c_float(task);
+    }
+    return kMinusOne_00d7a260_f;
+}
+
+// 0099BB00 (0099BB00-0099BB37). cur = unit+BC4h; 0099BB11 FCOMIP cur against v,
+// JBE (cur <= v, or NaN) -> unit+BC4h = v; else unit+BC4h = cur (re-stored).
+void plane_latch_yaw_rate_multiplier_0099bb00(void* unit, float v) {
+    const float cur = at<float>(unit, 0xBC4);
+    at<float>(unit, 0xBC4) = (cur > v) ? cur : v;
+}
+
+// 009DB470 (009DB470-009DB522). EH frame 00CB05FD. [b+D0h] = 00D05704 (009DB49F);
+// [b+D4h]->vtable[8]() when set (009DB4B0); 009D60F0(b+60h), [b+58h] = 00D056D0
+// (009DB4C2, 009DB4C7); 009D60F0(b+3Ch), [b+34h] = 00D056D0 (009DB4DC, 009DB4E3);
+// 004116D0(b ? b+20h : 0) (009DB4F8); 009D60F0(b+8h), [b] = 00D056D0 (009DB508,
+// 009DB511).
+void ship_ai_brain_destruct_members_009db470(Cc13Seg67bHost& host, void* brain) {
+    at<std::uint32_t>(brain, 0xD0) = kBotTaskSubVtable30C;
+    void* const owned = ptr_at(brain, 0xD4);
+    if (owned != nullptr) host.object_vcall_08_noargs(owned);
+    ship_ai_observer_member_destruct_a_009db380(host, ptr(brain, 0x58));
+    ship_ai_observer_member_destruct_a_009db380(host, ptr(brain, 0x34));
+    host.state_registry_destruct_004116d0(brain != nullptr ? ptr(brain, 0x20) : nullptr);
+    ship_ai_observer_member_destruct_a_009db380(host, brain);
+}
+
 }  // namespace bsp

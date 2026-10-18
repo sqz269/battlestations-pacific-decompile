@@ -175,6 +175,16 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
+    // object->vtable[38h](), RET, AL.
+    virtual bool object_vcall_38(void* object) = 0;
+    // object->vtable[34h](), RET, AL.
+    virtual bool object_vcall_34(void* object) = 0;
+    // object->vtable[4Ch](), RET, ST0.
+    virtual float object_vcall_4c_float(void* object) = 0;
+    // object->vtable[8](), no stack arguments.
+    virtual void object_vcall_08_noargs(void* object) = 0;
+    // 0064A610: __fastcall(ECX = observed-owner base), RET.
+    virtual void observed_owner_base_destroy_0064a610(void* object) = 0;
     // 00411E70: __thiscall(ECX = state registry; name string, state), RET 8.
     virtual void state_registry_add_00411e70(void* registry, std::uint32_t name_string,
                                              void* state) = 0;
@@ -410,5 +420,28 @@ bool bot_task_maneuver_roll_completed_009b9680(Cc13Seg67bHost& host, void* task)
 void pilot_bot_prepend_tight_turn_to_point_009bb380(Cc13Seg67bHost& host, void* unit,
                                                     const float* point, float limit,
                                                     std::uint8_t flag);
+// 009C25D0: __thiscall(ECX = state, approach), RET 4, EAX = state.
+void* bot_state_move_to_circle_construct_009c25d0(Cc13Seg67bHost& host, void* state,
+                                                  void* approach);
+// 009AFA50: __fastcall(ECX = task), RET, EAX = state.
+void* bot_task_land_pick_cruise_state_009afa50(Cc13Seg67bHost& host, void* task);
+// 0099B260: __fastcall(ECX = slot), RET, ST0.
+float pilot_bot_override_or_value_0099b260(void* slot);
+// 0099A9B0: __thiscall(ECX = plan, entity), RET 4.
+void pilot_plan_set_observed_endpoint_0099a9b0(Cc13Seg67bHost& host, void* plan, void* entity);
+// 0099A9E0: __thiscall(ECX = plan, const plan* src), RET 4.
+void pilot_plan_copy_endpoint_0099a9e0(Cc13Seg67bHost& host, void* plan, void* src);
+// 0099BA10: __fastcall(ECX = out, EDX = in), RET, EAX = out.
+float* math_normalize_angle_to_pi_by_ref_0099ba10(float* out, const float* in);
+// 009DA880: __fastcall(ECX = node), RET.
+void ship_ai_path_node_destroy_009da880(Cc13Seg67bHost& host, void* node);
+// 009DF8F0: __cdecl(), RET, EAX = node.
+void* ship_ai_traffic_list_head_node_009df8f0(Cc13Seg67bHost& host);
+// 00999AE0: __fastcall(ECX = bot), RET, ST0.
+float pilot_bot_first_task_wait_value_00999ae0(Cc13Seg67bHost& host, void* bot);
+// 0099BB00: __thiscall(ECX = unit, float v), RET 4.
+void plane_latch_yaw_rate_multiplier_0099bb00(void* unit, float v);
+// 009DB470: __fastcall(ECX = brain), RET.
+void ship_ai_brain_destruct_members_009db470(Cc13Seg67bHost& host, void* brain);
 
 }  // namespace bsp
