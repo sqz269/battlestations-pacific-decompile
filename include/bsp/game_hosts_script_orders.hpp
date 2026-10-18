@@ -225,7 +225,7 @@ inline constexpr bool kPutToBound = true;
 // leader re-places its members (008AA851..008AA897). False: the native stays an
 // unimplemented record. Callers on the WIN rows: PRCP01 (PRCPUS
 // usn_03_battle_of_santa_cruz.lua 1268, the Junyo group beside Chikuma).
-inline constexpr bool kPutRelToBound = false;
+inline constexpr bool kPutRelToBound = true;  // ON: PRCP01 pair, SQUADRON_LAND_TASK 5ip
 // Packet cc9_squadron_member_placement (docs/SQUADRON_MEMBER_PLACEMENT.md). On a
 // PlaneSquadron, PutTo's vtable[118h] is 007F2E20: the base position set 00489760,
 // then 007F2920 (007F2E8F), which puts every member but the leader on its 007F23A0
