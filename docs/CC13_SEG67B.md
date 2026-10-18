@@ -434,11 +434,6 @@ It then copies the plane's position into +D0h..+D8h and calls the aim-error redr
 
 009A6C10 builds the dogfight approach on 009F9CE0 (tuning +650h, with the plane at [bot+50h]) with vtable 00D1F844. The target reference at +2Ch takes [arg+3D0h]. The observer member at +B8h is initialized on arg (007F0F80) and then given vtable 00CF6514. The body seeds +D4h/+D8h = 9999.0 and +E8h = 99.0, and resets the aim offset with 009FA350. It makes no draws from the RNG.
 
-### 3.32 Drop-kamikaze approach base
+### 3.32 Drop-kamikaze approach base (existing implementation)
 
-009ABAB0 builds the drop-kamikaze approach on 009F9CE0 (tuning +458h) with vtable 00D1FB00. It sets:
-- +A4h = TravelSpeed (desc+18Ch) and +A8h = 1200.0;
-- +ACh = 2000 x +24h and +B0h = 1.4 times that;
-- +B4h = 99999.0.
-
-It sets the target reference's aim error from the global vector 00F87574 (009FA380), then writes byte +71h = 1 and 0.5 into +78h..+80h. It makes no draws from the RNG.
+009ABAB0 stays a host hook. It already has an implementation, drop_kamikaze_approach_seed_009abab0 in src/kamikaze_task_cc13.cpp, recorded by cc13-backfill as an existing implementation with a minor deviation.

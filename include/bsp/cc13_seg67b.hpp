@@ -196,8 +196,9 @@ public:
     // 009AFE70: __thiscall(ECX = land approach, arg1, arg2), RET 8.
     virtual void bot_approach_land_construct_lower_009afe70(void* block, void* arg1,
                                                             void* arg2) = 0;
-    // 009FA380: __thiscall(ECX = approach target ref, vector), RET 4: set the aim error.
-    virtual void approach_target_ref_set_aim_error_009fa380(void* ref, float* vector) = 0;
+    // 009ABAB0: __thiscall(ECX = drop-kamikaze approach, [bot+50h], target), RET 8.
+    virtual void bot_approach_drop_kamikaze_construct_base_009abab0(void* block, void* arg,
+                                                                    void* target) = 0;
     // 009ABBE0: __thiscall(ECX = drop-kamikaze approach, [bot+50h], archive), RET 8.
     virtual void bot_approach_drop_kamikaze_construct_base_from_bag_009abbe0(void* block, void* arg,
                                                                              void* archive) = 0;
@@ -848,8 +849,5 @@ void* bot_approach_level_bomb_construct_base_009b44f0(Cc13Seg67bHost& host, void
 // 009A6C10: __thiscall(ECX = approach, bot, arg), RET 8, EAX = approach.
 void* bot_approach_dogfight_construct_009a6c10(Cc13Seg67bHost& host, void* approach, void* bot,
                                                void* arg);
-// 009ABAB0: __thiscall(ECX = approach, plane, target), RET 8, EAX = approach.
-void* bot_approach_drop_kamikaze_construct_base_009abab0(Cc13Seg67bHost& host, void* approach,
-                                                         void* plane, void* target);
 
 }  // namespace bsp
