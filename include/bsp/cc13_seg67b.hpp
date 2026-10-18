@@ -175,6 +175,11 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
+    // 009C2AC0: __thiscall(ECX = state, approach, target, float near, float far, mode),
+    // RET 14h: the move-to state constructor.
+    virtual void bot_state_move_to_construct_009c2ac0(void* state, void* approach, void* target,
+                                                      float near_, float far_,
+                                                      std::uint32_t mode) = 0;
     // 006C8800: __fastcall(ECX = squadron), RET: retires the landing squadron's blocks.
     virtual void air_ops_retire_landing_squadron_006c8800(void* squadron) = 0;
     // 009B2C80: __fastcall(ECX = task+3F8h), RET: the landing approach destructor.
@@ -602,5 +607,18 @@ void bot_approach_move_on_path_save_offsets_009bd300(Cc13Seg67bHost& host, void*
 // 009BC7E0: __thiscall(ECX = approach, arg, archive), RET 8, EAX = approach.
 void* bot_approach_move_on_path_construct_from_stream_009bc7e0(Cc13Seg67bHost& host, void* a,
                                                                void* arg, void* archive);
+// 009B7A80 / 009B7B10 / 009B7B40: __fastcall(ECX = state), RET, EAX.
+bool bot_state_level_bomb_prepare_is_waiting_009b7a80(void* state);
+bool bot_state_level_bomb_aim_should_release_009b7b10(void* state);
+bool bot_state_level_bomb_aim_should_abort_009b7b40(void* state);
+// 009B6C10: __thiscall(ECX = state, approach, target, float near, float far, mode),
+// RET 14h, EAX = state.
+void* bot_state_level_bomb_move_to_construct_009b6c10(Cc13Seg67bHost& host, void* s,
+                                                      void* approach, void* target, float near_,
+                                                      float far_, std::uint32_t mode);
+// 009B7480: __thiscall(ECX = state, approach, reader handle by value [0Ch]), RET 10h,
+// EAX = state.
+void* bot_state_level_bomb_run_construct_from_stream_009b7480(Cc13Seg67bHost& host, void* s,
+                                                              void* approach, void* handle);
 
 }  // namespace bsp

@@ -242,3 +242,12 @@ Ledger-only: 009AF230 is a byte-identical copy of 009A56C0 (`set_state`).
 | 009BADB0 | stop-task factory | a bare 3F8h-byte task of kind 0Fh |
 | 009BA960 / 009BAAB0 | immelmann and gain-altitude stream constructors | both read into the archive argument's own stack slot |
 | 009BD300 / 009BC7E0 | move-on-path approach save and stream constructor | keys "altOffset" and "travelAltOffset" |
+
+### 3.11 Level-bomb predicates and move-to state constructors
+
+| Address | Function | Notes |
+|---|---|---|
+| 009B7A80 / 009B7B10 / 009B7B40 | prepare-waiting, aim-release and aim-abort predicates | the release and abort tests read the squadron byte ctl+3AEh |
+| 009B6C10 / 009B7480 | level-bomb move-to state constructors (direct and from stream) | each makes one draw from the shared RNG; the stream form copies the reader handle and increments its count |
+
+Ledger-only: 009BC780 is spot-checked against the move-on-path model, which inlines it.

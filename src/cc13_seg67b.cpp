@@ -2070,4 +2070,80 @@ void* bot_approach_move_on_path_construct_from_stream_009bc7e0(Cc13Seg67bHost& h
     return a;
 }
 
+// ---------------------------------------------------------------------------
+// Level-bomb state predicates.
+
+namespace {
+constexpr float kMinusHalf_00ce69d0 = -0.5f;
+}  // namespace
+
+// 009B7A80 (009B7A80-009B7AA2). byte +A0h set -> 0; else +98h > [00CE69D0] (-0.5)
+// (COMISS, JBE -> 0, so NaN -> 0) -> 1.
+bool bot_state_level_bomb_prepare_is_waiting_009b7a80(void* state) {
+    if (at<std::uint8_t>(state, 0xA0) != 0) return false;
+    return at<float>(state, 0x98) > kMinusHalf_00ce69d0;
+}
+
+// 009B7B10 (009B7B10-009B7B33). byte +18h set -> 1; byte +19h clear -> 0; else
+// byte ([+4h]+0Ch)+3AEh set -> 1, clear -> 0.
+bool bot_state_level_bomb_aim_should_release_009b7b10(void* state) {
+    if (at<std::uint8_t>(state, 0x18) != 0) return true;
+    if (at<std::uint8_t>(state, 0x19) == 0) return false;
+    return at<std::uint8_t>(ptr_at(ptr_at(state, 0x04), 0x0C), 0x3AE) != 0;
+}
+
+// 009B7B40 (009B7B40-009B7B5D). byte +19h set and byte ([+4h]+0Ch)+3AEh clear -> 1;
+// else 0.
+bool bot_state_level_bomb_aim_should_abort_009b7b40(void* state) {
+    if (at<std::uint8_t>(state, 0x19) == 0) return false;
+    return at<std::uint8_t>(ptr_at(ptr_at(state, 0x04), 0x0C), 0x3AE) == 0;
+}
+
+namespace {
+constexpr std::uint32_t kLevelBombMoveToVtable = 0x00D201E0u;
+constexpr std::uint32_t kLevelBombMoveTo18Vtable = 0x00D201C8u;
+constexpr std::uint32_t kArchiveReaderRefVtable_00ce3768 = 0x00CE3768u;
+
+// The timer tail both level-bomb move-to constructors share (009B6C58-009B6CAB,
+// 009B74DB-009B752B).
+void level_bomb_move_to_tail(Cc13Seg67bHost& host, void* s) {
+    at<std::uint32_t>(s, 0x00) = kLevelBombMoveToVtable;
+    at<std::uint32_t>(s, 0x18) = kLevelBombMoveTo18Vtable;
+    at<float>(s, 0x44) = kOne_00d7a24c;
+    at<float>(s, 0x48) = -host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    at<float>(s, 0x3C) = 0.0f;
+    at<float>(s, 0x40) = kOne_00d7a24c;
+}
+}  // namespace
+
+// 009B6C10 (009B6C10-009B6CBF). EH frame. 009C2AC0(ECX = s, approach, target,
+// near, far, mode) (009B6C53; the three trailing arguments are re-pushed through
+// FLD/FSTP); [s] = 00D201E0, [s+18h] = 00D201C8, +44h = 1.0, 009B6C8D 00BD2F10(1, 0,
+// 1), +48h = -r, +3Ch = 0, +40h = 1.0. Returns s.
+// UNCERTAINTY: the FLD/FSTP re-push quiets a signalling-NaN bit pattern; the
+// C++ passes the bits unchanged.
+void* bot_state_level_bomb_move_to_construct_009b6c10(Cc13Seg67bHost& host, void* s,
+                                                      void* approach, void* target, float near_,
+                                                      float far_, std::uint32_t mode) {
+    host.bot_state_move_to_construct_009c2ac0(s, approach, target, near_, far_, mode);
+    level_bomb_move_to_tail(host, s);
+    return s;
+}
+
+// 009B7480 (009B7480-009B7550). EH frame. Copies the reader handle into the
+// outgoing block ({00CE3768, count*, reader*}, the base vtable 00CE374C being
+// overwritten at 009B74AA) and increments [count*] (009B74C0); 009C2B80(ECX = s,
+// approach, the copy by value) (009B74D6), which destroys the copy; the 009B6C10
+// tail (009B74EC-009B752B); 00410630(&handle) (009B7538). Returns s.
+void* bot_state_level_bomb_run_construct_from_stream_009b7480(Cc13Seg67bHost& host, void* s,
+                                                              void* approach, void* handle) {
+    std::uint32_t copy[3] = {kArchiveReaderRefVtable_00ce3768, at<std::uint32_t>(handle, 4),
+                             at<std::uint32_t>(handle, 8)};
+    *reinterpret_cast<std::int32_t*>(static_cast<std::uintptr_t>(copy[1])) += 1;
+    bot_state_construct_base_009c2b80(host, s, approach, copy);
+    level_bomb_move_to_tail(host, s);
+    host.native_string_destruct_00410630(handle);
+    return s;
+}
+
 }  // namespace bsp
