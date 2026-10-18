@@ -17,7 +17,10 @@ namespace {
 constexpr float kFltMax = std::numeric_limits<float>::max();  // float 00CFDBF8
 constexpr double kHundred = 100.0;        // double 00D7A220
 constexpr double kOneAndHalf = 1.5;       // double 00CE3D78
-constexpr double kPi = 3.14159265358979323846;  // double 00CE3D28
+// double 00CE3D28 = 00 00 00 60 FB 21 09 40: float pi widened to double, not
+// exact pi. Loaded as an m64 by FMUL double ptr [00CE3D28] at 008FDC73, 008FDCCB,
+// 008FDD6A and 008FDDCD.
+constexpr double kPi = 3.1415927410125732;
 constexpr double kHalfTurnDegrees = 180.0;       // double 00CE3D20
 constexpr int kStream = 1;                // ECX = 1 at every call site below
 
