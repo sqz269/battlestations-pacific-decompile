@@ -8591,6 +8591,10 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
             }
             ::lua_settop(state_, top);
         }
+        // Packet cc15-wB4: 009895D8..00989992, the default hit warning, inside the
+        // arm past the +168h rate limit (00988969 JBE 009889AF) and after both
+        // listener passes (00988F5D, 0098952A). Behind kWarningMessageBankCc15Bound.
+        game_warning_report_hit_00989604(hit.victim, hit.shooter, hit.attacker_player_index);
     }
 }
 
