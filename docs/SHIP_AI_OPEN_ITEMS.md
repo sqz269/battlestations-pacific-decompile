@@ -18966,3 +18966,17 @@ RNG stream is unchanged.
 **Predictions, written before any run.** OFF identical. ON: only where an AI submarine fires submerged at a ship
 with torpedo response on (USN04 / JM08 submarines, IJN rows with US subs): those ships react up to 4 s later;
 elsewhere identical.
+
+### 277 result: ON
+
+**Pairs (a356392e8, `--flip kAttackMoveApproachImageBound=true`, exe `local\s57_ap_on`; OFF `local\s57_off2` (USN12,
+USN15) and `local\s57_off3` (IJN08, JM08, the same OFF code); 20000 frames; newest config/win_orders files;
+manifests beside each log).** Every ON row shows the predicted mechanism: `range_0490_reads=0` and every mode-0
+frame write in the 0 column (USN12 8201/0/0, USN15 32948/0/0, IJN08 16645/0/0, JM08 25684/0/0), with no other
+summary moving first.
+- USN12 `g45_u12_e7`: exit 3, deaths 40 -> 39, shots 2988 -> 3844; Denver closes from 780 to 565 m and fires 961
+  shots instead of 121 (no throttle cap at the standoff ring, as predicted); Dyson survives.
+- USN15 `g50_u15_nn`: exit 3, deaths 33 -> 25 (11 only OFF: Columbia, Louisville, four Fletchers ...; 3 only ON).
+- IJN08 `p10_i08_z`: exit 3, deaths 173 -> 174, 55 changed rows.
+- JM08 `l65_j8_p2`: exit 3, deaths 120 -> 124 (LandingShip and a squadron plane only ON).
+**Decision: ON** by mechanism. USN12 and USN15 are win rows: re-time / re-plan (moved rows to cc9-lua66).
