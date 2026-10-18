@@ -226,6 +226,15 @@ inline constexpr bool kShipAiOrderTailBound = true;
 // class speeds and turn radii. False: blk+344h is the arm tail's value (or 1.0)
 // and blk+348h 1.0, as before.
 inline constexpr bool kShipFormationSpeedBound = true;
+// Packet cc9_s59_ceiling (docs/SHIP_AI_OPEN_ITEMS.md 293). True: 009F4DA0's
+// 0070D140 minimum runs ship_ai_formation_speed_ceiling over a member-record
+// projection (entity = the member is live, +30h = its published speed) instead
+// of the inline minimum. LABELLED: the 999.0f the image writes back into a
+// null-entity record (0070D18D) lands in the projection and is discarded; the
+// host keeps +30h per unit, and a dead member has already left the group.
+// False: the inline minimum, as before.
+// ON: SHIP_AI_OPEN_ITEMS 293, USN04 20000 gameplay-identical.
+inline constexpr bool kShipFormationSpeedCeilingRowBound = true;
 // 0082E850's multiplier, [00424C40+438h] Navigator.TurnMultipliers.
 // TurnMultiplierMaxSpeed[2]: the gameplay settings object is not loaded here, so
 // its documented value stands in (docs/GAMEPLAY_SETTINGS.md). LABELLED.
@@ -2633,14 +2642,29 @@ struct GameShipAiHost::Impl {
         for (std::int32_t i = 0; i < count; ++i) {
             const std::size_t member = units.formation_member_unit(group, i);
             if (member == static_cast<std::size_t>(-1) || member >= controllers.size()) continue;
-            const float slot = controllers[member].member_speed_30;
-            if (slot_min > slot) slot_min = slot;
+            if (!kShipFormationSpeedCeilingRowBound) {
+                const float slot = controllers[member].member_speed_30;
+                if (slot_min > slot) slot_min = slot;
+            }
             const float max_speed = units.unit_class_max_speed_0500(member);
             if (ceiling > max_speed) ceiling = max_speed;
             if (member != leader && units.unit_is_kind_of(member, 6)) {
                 const float r = class_turn_radius_0082e850(member);
                 if (!(group_turn > r)) group_turn = r;
             }
+        }
+        if (kShipFormationSpeedCeilingRowBound) {
+            // 0070D140 at 009F4E1F over group+18h, count group+4F8h.
+            std::vector<bsp::ShipAiUnitGroupMember> records(
+                static_cast<std::size_t>(count > 0 ? count : 0));
+            for (std::int32_t i = 0; i < count; ++i) {
+                const std::size_t member = units.formation_member_unit(group, i);
+                if (member == static_cast<std::size_t>(-1) || member >= controllers.size()) continue;
+                bsp::ShipAiUnitGroupMember& r = records[static_cast<std::size_t>(i)];
+                r.entity = static_cast<std::uint32_t>(member) + 1u;
+                bsp::ship_ai_formation_set_member_speed(r, controllers[member].member_speed_30);
+            }
+            slot_min = bsp::ship_ai_formation_speed_ceiling(records.data(), count);
         }
         const float reference = units.throttle_ceiling_inputs(index).reference_speed; // 0080FC30
         const float own_turn = class_turn_radius_0082e850(index);

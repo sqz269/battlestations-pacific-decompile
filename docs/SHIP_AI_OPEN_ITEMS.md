@@ -19336,3 +19336,30 @@ otherwise only the known sector-scan / clearance noise moves. **Flipped ON** as 
 spawner (004A5620 -> 004A50D0, cc13_left8b_seg8), which would put the authored jeeps, trucks and marines on their
 paths. Rows with traffic items: BSM01, BSM02, BSM10, USNRM01, USN07, USN11, USN20, JM01, JM05, JM12, PRCP02,
 PRCP08 (`local\s59_traffic_ids.py`).
+
+## 293. Item 4: cc15's four low-priority rows (cc9-ships59, 2026-10-18)
+
+- **0070D140 `formation_speed_ceiling`.** The host inlines the minimum in 009F4DA0's member loop
+  (src/game_hosts_ship_ai.cpp, `formation_throttle_ceiling_009f4da0`). It is now behind
+  `kShipFormationSpeedCeilingRowBound` (OFF), which runs `ship_ai_formation_speed_ceiling` over a member-record projection:
+  entity = the member is live, +30h = its published speed. LABELLED: the image writes 999.0f back into a null-entity
+  record (0070D18D). That write lands in the projection and is discarded, because the host keeps +30h per unit and a
+  dead member has already left the group (`formation leave`, 0077D1A0). **Prediction:** gameplay-identical. Both skip
+  the same members and take the same float minimum from the same 9999999 seed.
+- **009DACD0 `formation_speed_ratio`.** There is nothing to wire. The host's follow producer already runs
+  src/ship_ai_formation.cpp's 009DF2D0 projection, which calls `ship_ai_formation_speed_ratio` at both of its sites
+  (009DF400 and 009DF612; ship_ai_formation.cpp:415 and :482).
+- **006E1510 `bomb_air_velocity`.** No switch. The host splits the step: gravity is in `projectile_flight_step`, and
+  the record+348h drift is added afterwards under the same NoGravity test (game_hosts_gunnery.cpp, the
+  `kBombDropDriftBound` branch). The y term is zero by construction (006E1F00 stores block+38h with y zeroed). The
+  arithmetic is the function's, and its ordering against the position step is already a labelled substitution there.
+  Routing it through `bomb_air_velocity` would need the flight step split first, which changes nothing.
+- **006FDF20 `entity_is_kind_of` (MSTGun 24h).** No switch. The host keeps no class id per gun; its turning class
+  comes from the device Type (GUNNERY 63 / `kGunImmediateFireSlotBound`, the G4 note in GUNNERY_OPEN_ITEMS). The test's
+  only consumer modelled here, ForceFireDepthCharge 0089B9D0 (cc13-fix17), already asks the same question over the
+  Type. An IsKindOf row needs per-gun class ids first.
+
+**Pair (0070D140, USN04 20000, reference env).** OFF `local\s59_ceoff_u4.log` (tree exe at d41d8186c), ON
+`local\s59_ceon_u4.log` (`local\s59_ce_on`). 009F4DA0 is reached 413285 times over groups that lose members
+(Zuiho/Takao/Mogami `formation leave` at 918-943 s). `pair_diff` exit 1: gameplay identical, with 90 death rows,
+181 unit rows and 25295 shots; only the avoidance refill counter moves. **Flipped ON.**
