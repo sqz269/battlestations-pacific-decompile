@@ -434,9 +434,11 @@ struct TorpedoApproachHost {
     // test the scan uses inside 450 units. contract: unread.
     virtual bool segment_blocked_00903bc0(const float from[3], const float to[3]) = 0;
 
-    // 009D36EE: 007DF360(ECX = unit+C50h, target, target_point). contract:
-    // unread. Overwrites over_land_a9 whenever unit+C50h is set.
-    virtual bool target_reachable_007df360(const float point[3]) = 0;
+    // 009D36EE: 007DF360(ECX = unit+C50h, target, target_point), then 009D36F3
+    // MOV [+A9h],AL. -1 when unit+C50h is null (009D36CA JE skips the call and
+    // the store); otherwise 1 when a kind-6 neighbour screens the point, else 0,
+    // which overwrites over_land_a9 outright.
+    virtual int target_reachable_007df360(const float point[3]) = 0;
 
     // 009D3D01: unit->vtable[38h](), the aircraft's speed.
     virtual float unit_speed_vtable38() = 0;
