@@ -11,6 +11,8 @@ namespace bsp {
 // 00be9630: two stack pointers, RET8, ECX ignored. XOR 16-bit source/key words
 // 16..255, compact their odd bits into 240 output bytes. Native copies another
 // 272 uninitialized stack bytes; this new C++ interface exposes only defined data.
+// Original 0053C740 -> 00ABBE50 C-string consumption can reach that tail when the
+// prefix has no NUL; 0073BAE0 discards the pointer. No deterministic tail is claimed.
 using FingerprintEncodedBytes = std::array<std::uint8_t, 512>;
 using FingerprintDecodedPrefix = std::array<std::uint8_t, 240>;
 FingerprintDecodedPrefix decode_fingerprint_payload_00be9630(
