@@ -11579,9 +11579,24 @@ float avoid_radius_500(const GameUnitSlot& s) {
     return r;
 }
 
-// vtable[34h], the world velocity.
+// Packet p21_thrcut (docs/OCEAN_WAVE_FIELD.md section 84). A plane's vtable[34h] is
+// 007BBB70, a copy of unit+AC8h (ctl+18h). While the plane is parented, 007D9CE0 keeps
+// that vector in the PARENT'S LOCAL frame (section 75). True: a parented plane answers
+// deck_local_vel, the carrier-frame vector, as the bytes do. False: it answers the
+// host's world-axes rotation of the same relative velocity (plane_world_velocity).
+inline constexpr bool kAvoidParentLocalVelocityBound = false;
+
+// vtable[34h], the world velocity (for a parented plane, see above).
 void avoid_velocity(const GameUnitSlot& s, float out[3]) {
     if (bsp::unit_is_kind_of(s.class_id, 0x0F)) {
+        if constexpr (kAvoidParentLocalVelocityBound) {
+            if (s.deck_parent_plus_one != 0) {
+                out[0] = s.deck_local_vel[0];
+                out[1] = s.deck_local_vel[1];
+                out[2] = s.deck_local_vel[2];
+                return;
+            }
+        }
         out[0] = s.plane_world_velocity[0];
         out[1] = s.plane_world_velocity[1];
         out[2] = s.plane_world_velocity[2];
