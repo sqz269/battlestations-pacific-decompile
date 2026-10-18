@@ -9,6 +9,8 @@
 // reads or writes, and every call the image makes goes through a named host
 // method at the same point with the same arguments.
 
+#include "bsp/cc13_pkt642.hpp"
+
 #include <cstddef>
 #include <cstdint>
 
@@ -121,6 +123,41 @@ public:
     virtual std::int32_t unit_torpedo_barrel_count_00818300(void* unit) = 0;
     // 00852350 BSP_Unit_CountBombPlatformChildren: __thiscall(ECX = unit), RET; EAX.
     virtual std::int32_t unit_count_bomb_platform_children_00852350(void* unit) = 0;
+
+    // ---- 005E12A0 ----
+    // 00B66BD0 BSP_LuaStateOwner_Construct: __thiscall(ECX = owner), RET.
+    virtual void lua_state_owner_construct_00b66bd0(void* owner) = 0;
+    // 00B6A020 BSP_LuaStateOwner_Open: __thiscall(ECX = owner; dword), RET 4.
+    virtual void lua_state_owner_open_00b6a020(void* owner, std::int32_t flags) = 0;
+    // 00B69D40 BSP_LuaStateOwner_RunScriptWithOverrides: __thiscall(ECX = owner; const
+    // NativeString* path, dword), RET 8.
+    virtual void lua_state_owner_run_script_00b69d40(void* owner, const void* path, std::int32_t arg) = 0;
+    // 00B669A0 BSP_LuaStateOwner_Close: __thiscall(ECX = owner), RET.
+    virtual void lua_state_owner_close_00b669a0(void* owner) = 0;
+    // 00B65FB0 BSP_LuaObject_IsNil: __thiscall(ECX = object), RET; AL.
+    virtual bool lua_object_is_nil_00b65fb0(void* object) = 0;
+    // 00B66290 BSP_LuaObject_GetInteger: __thiscall(ECX = object), RET; EAX.
+    virtual std::int32_t lua_object_get_integer_00b66290(void* object) = 0;
+    // 00B662B0 BSP_LuaObject_GetString: __thiscall(ECX = object), RET; EAX.
+    virtual const char* lua_object_get_string_00b662b0(void* object) = 0;
+    // 0041DD40 BSP_NativeString_Resize: __thiscall(ECX = string {length, data}; length, dword),
+    // RET 8.
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::int32_t arg) = 0;
+    // 00BF7680 CRT memcpy, cdecl(destination, source, count).
+    virtual void crt_memcpy_00bf7680(void* destination, const void* source, std::uint32_t count) = 0;
+    // 00419CC0 BSP_SizedStoragePool_GetSingleton: no arguments; EAX.
+    virtual void* sized_pool_get_00419cc0() = 0;
+    // 00BD1510 BSP_SizedStoragePool_ReturnBlock: __thiscall(ECX = pool; data, bytes, dword), RET 0Ch.
+    virtual void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes,
+                                                  std::int32_t arg) = 0;
+    // 005E11F0 (STL vector push_back, 24h-byte weather entries): __thiscall(ECX = vector; const
+    // entry*), RET 4.
+    virtual void weather_entry_vector_push_back_005e11f0(void* vector, const void* entry) = 0;
+    // 005DACA0 BSP_LobbyMapEntry_Destruct: __thiscall(ECX = entry), RET.
+    virtual void lobby_map_entry_destruct_005daca0(void* entry) = 0;
+    // 00450540 STL_CheckedNativeStringVector_Append: __thiscall(ECX = vector; const
+    // NativeString*), RET 4.
+    virtual void native_string_vector_append_00450540(void* vector, const void* string) = 0;
 };
 
 // 004C7AA0's 28h-byte result.
@@ -144,5 +181,15 @@ std::uint32_t hud_map_icon_refresh_carried_unit_icons_005aac00(void* icon, void*
 
 // 0064AE20 __fastcall(ECX = ship screen), RET.
 void hud_ship_screen45_apply_unit_0064ae20(void* screen, Big1Host& host);
+
+// 005E12A0 __thiscall(ECX = lobby screen), RET.
+void multi_game_lobby_load_weather_table_005e12a0(void* screen, Big1Host& host);
+
+// 00641910 __thiscall(ECX = markers; unit, is_self, is_friendly, is_target), RET 10h. The
+// sibling of 00642040 (cc13_pkt642) for the IsKindOf(1Ch) arm; every callee already has a
+// Cc13Pkt642Host hook, and 0063C620 / 0063D1E0 are the pkt642 bodies.
+void hud_markers_add_kind1c_marker_00641910(void* markers, void* unit, std::uint32_t is_self,
+                                            std::uint32_t is_friendly, std::uint32_t is_target,
+                                            Cc13Pkt642Host& host);
 
 } // namespace bsp::cc13_big1

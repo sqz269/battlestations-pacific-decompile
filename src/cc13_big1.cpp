@@ -280,4 +280,252 @@ void hud_ship_screen45_apply_unit_0064ae20(void* screen, Big1Host& host) {
     host.lua_object_destruct_00b67700(vehicle_classes);                        // 0064B150
 }
 
+namespace {
+
+struct NativeStr {
+    std::uint32_t length;
+    char* data;
+};
+
+// The inlined NativeString-from-C-string, append and release sequence of 005E159A..005E1611
+// (and 005E164A..005E16C1): {0, 0}, strlen, 0041DD40(length, 1), memcpy(length + 1) when the
+// resize produced data, 00450540, then the temporary's block back to the sized pool.
+void append_lua_string(void* vector, const char* text, Big1Host& host) {
+    NativeStr tmp{0, nullptr};
+    std::uint32_t n = 0;
+    while (text[n] != '\0') ++n;
+    host.native_string_resize_0041dd40(&tmp, n, 1);
+    char* const data = tmp.data;
+    const std::uint32_t length = tmp.length;
+    if (data != nullptr) host.crt_memcpy_00bf7680(data, text, length + 1);
+    host.native_string_vector_append_00450540(vector, &tmp);
+    if (data != nullptr)
+        host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), data, length + 1, 1);
+}
+
+} // namespace
+
+// 005E12A0 __thiscall(ECX = lobby screen), RET; EBP frame aligned to 8, EH handler 00C74D80.
+// A private LuaStateOwner ([B+E8h], at most 4CCh bytes before the EH record) is opened with 4 and
+// runs "SCRIPTS\datatables\Weather.lua" (00CE59DC, a 1Eh-byte NativeString released after the
+// run). For i = 1.. while Weathers[i] is not nil (00CE59D0): when entry.UniqueID (00CF240C) is
+// not nil, a 24h-byte entry with its two vectors' first/last/end zeroed (+8..+10h, +18h..+20h;
+// +0, +4 and +14h are not written) is pushed onto screen+2E0h (005E11F0) and destroyed
+// (005DACA0); the last element (checked subscript size-1, 00BF6713 on a null first or an out
+// of range index; the store follows the check) gets +0 = the id. Then for j = 1.. while
+// SubScenes[j] is not nil: SubScenes[j].ID appended to element+4 and .Text to element+14h. Each
+// probe of t[i] is a temporary that is destroyed before the loop test. The owner is closed
+// with 00B669A0.
+void multi_game_lobby_load_weather_table_005e12a0(void* screen, Big1Host& host) {
+    alignas(8) std::uint8_t owner[0x4CC];          // [B+E8h]
+    alignas(4) std::uint8_t globals[0x14];         // [B+C0h]
+    alignas(4) std::uint8_t weathers[0x14];        // [B+98h]
+    alignas(4) std::uint8_t probe[0x14];           // [B+38h]
+    alignas(4) std::uint8_t entry[0x14];           // [B+84h]
+    alignas(4) std::uint8_t unique_id[0x14];       // [B+70h]
+    alignas(4) std::uint8_t sub_scenes[0x14];      // [B+5Ch]
+    alignas(4) std::uint8_t sub_scene[0x14];       // [B+ACh]
+    alignas(4) std::uint8_t id[0x14];              // [B+38h] (reuses the probe slot)
+    alignas(4) std::uint8_t text[0x14];            // [B+D4h]
+    alignas(4) std::uint8_t weather[0x24];         // [B+38h] (the pushed entry)
+
+    host.lua_state_owner_construct_00b66bd0(owner);                            // 005E12D0
+    host.lua_state_owner_open_00b6a020(owner, 4);                              // 005E12E7
+    NativeStr path{0, nullptr};                                                // [B+14h]
+    host.native_string_resize_0041dd40(&path, 0x1E, 1);                        // 005E12FC
+    if (path.data != nullptr)
+        host.crt_memcpy_00bf7680(path.data, "SCRIPTS\\datatables\\Weather.lua", path.length + 1);  // 005E1317
+    host.lua_state_owner_run_script_00b69d40(owner, &path, 0);                 // 005E1334
+    if (path.data != nullptr)
+        host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), path.data, path.length + 1,
+                                              1);                              // 005E135B
+    void* const g = host.lua_state_owner_get_globals_00b67980(owner, globals);  // 005E136F
+    host.lua_object_get_by_name_00b67800(g, weathers, "Weathers");             // 005E138B
+    host.lua_object_destruct_00b67700(globals);                                // 005E139F
+
+    std::int32_t i = 1;                                                        // [B+24h]
+    bool more = !host.lua_object_is_nil_00b65fb0(
+        host.lua_object_get_by_index_00b67720(weathers, probe, i));            // 005E13BA / 005E13C9
+    host.lua_object_destruct_00b67700(probe);                                  // 005E13DF
+    while (more) {
+        host.lua_object_get_by_index_00b67720(weathers, entry, i);             // 005E13FC
+        host.lua_object_get_by_name_00b67800(entry, unique_id, "UniqueID");    // 005E141A
+        if (!host.lua_object_is_nil_00b65fb0(unique_id)) {                     // 005E142B
+            const std::int32_t value = host.lua_object_get_integer_00b66290(unique_id);  // 005E143C
+            at<std::uint32_t>(weather, 0x08) = 0;                              // 005E1443..005E1457
+            at<std::uint32_t>(weather, 0x0C) = 0;
+            at<std::uint32_t>(weather, 0x10) = 0;
+            at<std::uint32_t>(weather, 0x18) = 0;
+            at<std::uint32_t>(weather, 0x1C) = 0;
+            at<std::uint32_t>(weather, 0x20) = 0;
+            std::uint8_t* const vector = static_cast<std::uint8_t*>(screen) + 0x2E0;
+            host.weather_entry_vector_push_back_005e11f0(vector, weather);     // 005E1474
+            host.lobby_map_entry_destruct_005daca0(weather);                   // 005E1485
+            std::uint8_t* const first = at<std::uint8_t*>(vector, 0x4);
+            const std::int32_t size =
+                first == nullptr ? 0 : static_cast<std::int32_t>(at<std::uint8_t*>(vector, 0x8) - first) / 0x24;
+            const std::uint32_t last = static_cast<std::uint32_t>(size - 1);  // 005E14AB
+            if (at<std::uint8_t*>(vector, 0x4) == nullptr ||
+                last >= static_cast<std::uint32_t>(
+                            (at<std::uint8_t*>(vector, 0x8) - at<std::uint8_t*>(vector, 0x4)) / 0x24))
+                host.crt_invalid_parameter_noinfo_00bf6713();                  // 005E14CF
+            std::uint8_t* const element = at<std::uint8_t*>(vector, 0x4) + last * 0x24;  // 005E14DA
+            at<std::int32_t>(element, 0) = value;                              // 005E14EE
+            host.lua_object_get_by_name_00b67800(entry, sub_scenes, "SubScenes");  // 005E14F0 (00CE59B8)
+            if (!host.lua_object_is_nil_00b65fb0(sub_scenes)) {                // 005E1501
+                std::int32_t j = 1;                                            // EBP
+                bool sub_more = !host.lua_object_is_nil_00b65fb0(
+                    host.lua_object_get_by_index_00b67720(sub_scenes, probe, j));  // 005E151D / 005E152C
+                host.lua_object_destruct_00b67700(probe);                      // 005E1542
+                while (sub_more) {
+                    host.lua_object_get_by_index_00b67720(sub_scenes, sub_scene, j);  // 005E156D
+                    append_lua_string(element + 0x04,
+                                      host.lua_object_get_string_00b662b0(
+                                          host.lua_object_get_by_name_00b67800(sub_scene, id, "ID")),
+                                      host);                                   // 005E158B..005E1611 (00CE59B4)
+                    host.lua_object_destruct_00b67700(id);                     // 005E1622
+                    append_lua_string(element + 0x14,
+                                      host.lua_object_get_string_00b662b0(
+                                          host.lua_object_get_by_name_00b67800(sub_scene, text, "Text")),
+                                      host);                                   // 005E163B..005E16C1 (00CEC778)
+                    host.lua_object_destruct_00b67700(text);                   // 005E16D5
+                    host.lua_object_destruct_00b67700(sub_scene);              // 005E16E9
+                    ++j;
+                    sub_more = !host.lua_object_is_nil_00b65fb0(
+                        host.lua_object_get_by_index_00b67720(sub_scenes, probe, j));  // 005E16FB / 005E170A
+                    host.lua_object_destruct_00b67700(probe);                  // 005E1720
+                }
+            }
+            host.lua_object_destruct_00b67700(sub_scenes);                     // 005E173B
+        }
+        host.lua_object_destruct_00b67700(unique_id);                          // 005E174C / 005E1773
+        host.lua_object_destruct_00b67700(entry);                              // 005E1760 / 005E1787
+        ++i;                                                                   // 005E178C
+        more = !host.lua_object_is_nil_00b65fb0(
+            host.lua_object_get_by_index_00b67720(weathers, probe, i));        // 005E17A0 / 005E17AF
+        host.lua_object_destruct_00b67700(probe);                              // 005E17C5
+    }
+    host.lua_object_destruct_00b67700(weathers);                               // 005E17E1
+    host.lua_state_owner_close_00b669a0(owner);                                // 005E17F8
+}
+
+namespace {
+
+// 00641DF8..00641E06: a native string with data is returned to the sized pool (length + 1, 1).
+void release_native_string(const Cc13SweepBNativeString& s, Cc13Pkt642Host& host) {
+    if (s.data != nullptr)
+        host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), s.data, s.length + 1, 1);
+}
+
+// [[game + 18CCh + [game+18ECh]*4] + 28h], the party table 00803DC0 takes in ECX.
+void* current_party_table(Cc13Pkt642Host& host) {
+    void* const game = host.global_00e188a8();
+    return at<void*>(at<void*>(game, 0x18CC + at<std::int32_t>(game, 0x18EC) * 4), 0x28);
+}
+
+constexpr std::uint32_t kEmptyCString = 0x00CE3A0C;
+
+} // namespace
+
+// 00641910 __thiscall(ECX = markers; unit, is_self, is_friendly, is_target) RET 10h; EH handler
+// 00C7A3AB (state 0 / 1 own the distance string, 2 the colour temporary). Frame base B = entry
+// ESP - B0h; arguments at B+B4h..B+C0h. Only the low bytes of the three flags are tested, except
+// that 0063D1E0 receives is_self whole as its flag.
+//   Live check as in 00642040; record = 006407A0(markers, 0) ([B+30h]). The clip point is the
+// unit position with y = float([class+A8h] + y) (class = unit+538h); for an IsKindOf(8) unit
+// under 00852860 it is 0 when the [game+1ED4h] entity's refreshed +100h is > 0 (COMISS/JBE: NaN
+// keeps it).
+//   On screen (00638E50 true): 0063A6C0 bounds from the raw unit position; record+5 = collapsed;
+// corners (min,min) (min,max) (max,max) (max,min) then the clip result; colour index 00639990;
+// record+4 = !is_self unless is_target, and it is left unwritten when is_friendly and is_target
+// are both set; distance 0063E5C0; colour 0077A2F0(1.0f); text "" (00CE3A0C) unless is_self or
+// is_target, then 00803DC0; show = markers+1Ch set and unit vtable[140h]() equal to its
+// vtable[140h](); 0063C620(record; corners, index, show, 0, text, unit, distance copy,
+// float(00923BE0(unit)), colour, 0).
+//   Off screen: the raw position (y = 0 under the same test, this time through 00427EB0 of the
+// [game+1ED4h] entity), 00638E50 (result unused), 00638C60 for x, y and angle, index 00639990,
+// distance, text by is_self alone, then 0063D1E0(record; unit, x, y, angle, index, colour, text,
+// distance copy, float(00923BE0(unit)), is_self). The colour 0077A2F0 call comes after the
+// distance copy and 00923BE0 on this arm.
+void hud_markers_add_kind1c_marker_00641910(void* markers, void* unit, std::uint32_t is_self,
+                                            std::uint32_t is_friendly, std::uint32_t is_target,
+                                            Cc13Pkt642Host& host) {
+    const auto low = [](std::uint32_t v) { return (v & 0xFFu) != 0; };
+    if (unit == nullptr || at<std::uint8_t>(unit, 0x5C) == 0 || at<std::uint8_t>(unit, 0x5D) != 0 ||
+        at<std::uint8_t>(unit, 0x60) != 0 || at<std::uint8_t>(unit, 0x5E) != 0)
+        return;                                                                // 0064193A..00641962
+    void* const record = host.hud_markers_acquire_record_006407a0(markers, 0);  // 0064196A
+    if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);  // 00641980
+    float clip_point[3] = {at<float>(unit, 0xFC), 0.0f, at<float>(unit, 0x104)};  // [B+24h]
+    clip_point[1] = at<float>(ptr(unit, 0x538), 0xA8) + at<float>(unit, 0x100);  // 006419B7
+    if (host.entity_vcall_5c_is_kind(unit, 8) &&
+        host.entity_is_below_altitude_third_00852860(unit)) {                  // 006419C8 / 006419D0
+        void* const player = ptr(host.global_00e188a8(), 0x1ED4);
+        if (at<std::uint8_t>(player, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(player);
+        if (at<float>(player, 0x100) > 0.0f) clip_point[1] = 0.0f;             // 006419FF COMISS / JBE
+    }
+    float screen[3];                                                           // [B+7Ch]
+    Cc13SweepBNativeString distance{0, nullptr};
+    if (host.hud_marker_project_and_clip_00638e50(clip_point, screen)) {       // 00641A12
+        if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);  // 00641A45
+        std::uint8_t collapsed;                                                // [B+13h]
+        float min_x, min_y, max_x, max_y;                                      // [B+34h] [B+18h] [B+14h] [B+20h]
+        host.hud_marker_project_unit_bounds_0063a6c0(markers, at<float>(unit, 0xFC), at<float>(unit, 0x100),
+                                                     at<float>(unit, 0x104), unit, &collapsed, &min_x,
+                                                     &min_y, &max_x, &max_y);  // 00641AB3
+        float corners[10] = {min_x, min_y, min_x, max_y, max_x, max_y, max_x, min_y,
+                             screen[0], screen[1]};                            // [B+54h]..[B+78h]
+        at<std::uint8_t>(record, 5) = collapsed;                               // 00641B07
+        const std::int32_t index = host.hud_markers_colour_index_00639990(unit);  // 00641B0A
+        if (!(low(is_friendly) && low(is_target)))                             // 00641B1B..00641B31
+            at<std::uint8_t>(record, 4) = (!low(is_target) && !low(is_self)) ? 1 : 0;  // 00641B43
+        host.hud_marker_format_distance_0063e5c0(&distance, unit);             // 00641B5F
+        float colour_out[4];                                                   // [B+38h]
+        host.unit_health_colour_0077a2f0(colour_out, 1.0f);                    // 00641B6E (EAX unused)
+        const char* text = static_cast<const char*>(host.image_global(kEmptyCString));
+        if (low(is_self) || low(is_target))
+            text = host.recon_display_name_for_party_00803dc0(current_party_table(host), unit);  // 00641BA7
+        std::uint32_t show = 0;
+        if (ptr(markers, 0x1C) != nullptr) {                                   // 00641BAE
+            void* const mine = host.unit_vcall_140(unit);                      // 00641BC1
+            void* const theirs = host.unit_vcall_140(ptr(markers, 0x1C));      // 00641BCF
+            show = mine == theirs ? 1 : 0;
+        }
+        Cc13Pkt642Colour colour;
+        for (int i = 0; i < 4; ++i) colour.rgba[i] = colour_out[i];            // 00641BDB..00641BFC
+        const float scale = static_cast<float>(host.unit_health_00923be0(unit));  // 00641BFF
+        Cc13SweepBNativeString copy;
+        host.native_string_copy_construct_00426060(&copy, &distance);          // 00641C16
+        cc13_pkt642_hud_marker_emit_box_marker_0063c620(record, corners, index, show, 0, text, unit, copy,
+                                                        scale, colour, 0, host);  // 00641C31
+    } else {
+        if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);  // 00641C61
+        float world[3] = {at<float>(unit, 0xFC), at<float>(unit, 0x100), at<float>(unit, 0x104)};  // [B+48h]
+        if (host.entity_vcall_5c_is_kind(unit, 8) &&
+            host.entity_is_below_altitude_third_00852860(unit)) {              // 00641C99 / 00641CA1
+            const float* const p = host.entity_world_position_00427eb0(ptr(host.global_00e188a8(), 0x1ED4));
+            if (p[1] > 0.0f) world[1] = 0.0f;                                  // 00641CC3 COMISS / JBE
+        }
+        float unused[3];                                                       // [B+88h]
+        host.hud_marker_project_and_clip_00638e50(world, unused);              // 00641CD9
+        float x, y, angle;                                                     // [B+20h] [B+18h] [B+14h]
+        host.hud_marker_project_offscreen_arrow_00638c60(world, &x, &y, &angle);  // 00641CF0
+        const std::int32_t index = host.hud_markers_colour_index_00639990(unit);  // 00641CF8
+        host.hud_marker_format_distance_0063e5c0(&distance, unit);             // 00641D1C
+        const char* text = static_cast<const char*>(host.image_global(kEmptyCString));
+        if (low(is_self))
+            text = host.recon_display_name_for_party_00803dc0(current_party_table(host), unit);  // 00641D45
+        const float scale = static_cast<float>(host.unit_health_00923be0(unit));  // 00641D56
+        Cc13SweepBNativeString copy;
+        host.native_string_copy_construct_00426060(&copy, &distance);          // 00641D6D
+        float colour_out[4];                                                   // [B+94h]
+        const float* const colour_ptr = host.unit_health_colour_0077a2f0(colour_out, 1.0f);  // 00641D88
+        Cc13Pkt642Colour colour;
+        for (int i = 0; i < 4; ++i) colour.rgba[i] = colour_ptr[i];            // 00641D9E..00641DB3
+        cc13_pkt642_hud_marker_write_unit_marker_widgets_0063d1e0(record, unit, x, y, angle, index, colour,
+                                                                  text, copy, scale, is_self, host);  // 00641DDC
+    }
+    release_native_string(distance, host);                                     // 00641C36 / 00641DE1
+}
+
 } // namespace bsp::cc13_big1

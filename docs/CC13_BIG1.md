@@ -48,6 +48,35 @@ Precision and register notes:
     modelled.
   - +104h is written only on the vtable[5Ch](8) arm.
 
+## Batch 2
+
+| Address | Name | ABI | Notes |
+| --- | --- | --- | --- |
+| 00641910 | BSP_InGameHudMarkers_AddKind1CMarker | thiscall(markers; unit, is_self, is_friendly, is_target) RET 10h | the IsKindOf(1Ch) sibling of 00642040; on screen a 0063C620 box marker, off screen a 0063D1E0 arrow marker |
+| 005E12A0 | BSP_MultiGameLobby_LoadWeatherTable | thiscall(lobby screen) | a private Lua state runs Weather.lua; each Weathers entry with a UniqueID is pushed onto screen+2E0h with its SubScenes ID and Text strings |
+
+Notes:
+
+- **00641910.**
+  - It takes `Cc13Pkt642Host` (include/bsp/cc13_pkt642.hpp): every callee already has a
+    hook there. 0063C620 and 0063D1E0 are called as the pkt642 bodies, as 00642040 does.
+  - The clip point's y is [class+A8h] + y. The bounds (0063A6C0) and the off-screen
+    arrow use the raw unit position.
+  - record+4 is left unwritten when is_friendly and is_target are both set. Otherwise
+    it is set when neither is_target nor is_self is set.
+  - On screen, the colour is read from 0077A2F0's out buffer. Off screen, it is read
+    through the returned pointer, after 00923BE0 and the copy of the distance string.
+  - The marker's show flag is set when markers+1Ch is set and the unit's vtable[140h]
+    value equals that object's.
+  - 0063D1E0 receives is_self as a whole dword.
+- **005E12A0.**
+  - The LuaStateOwner is a 4CCh-byte stack buffer, the room between [B+E8h] and the EH
+    record.
+  - The pushed 24h-byte entry has only its two vectors' first/last/end dwords zeroed;
+    +0, +4 and +14h are not written.
+  - The id is stored after the checked subscript of the last element, even when that
+    check calls 00BF6713.
+
 Adoption notes:
 
 - **004C7AA0.** cc13_large61's hook `game_query_004c7aa0` (0094BFF0) can forward to this
@@ -59,3 +88,7 @@ Adoption notes:
   `HudShipScreen::apply_unit_0064ae20` under `kHudShipScreenGaugesBound`, as a labelled
   substitution: the flags keep the enter's clear values. This body is the replacement.
   The hooks in cc13_sweepB2 and ingame_gui_cc13 can forward to it.
+- **00641910.** Not hosted. hud_markers_runtime.cpp (near line 268) lists it as follow-up
+  work.
+- **005E12A0.** frontend_screens_cc13's `load_weather_table_005e12a0` hook can forward to
+  this body. scene_contents_hosts reads the same table for a different routine.
