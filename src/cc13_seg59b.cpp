@@ -2050,4 +2050,457 @@ std::int32_t scene_property_bag_collect_records_sorted_008f6e20(Seg59bHost& host
     if (first() != nullptr) host.free_00bf65ac(first());
     return count;
 }
+
+namespace {
+// The key lookup shared by 008F4290 and 008F4420: a local NativeString {0, 0} sized by 0041DD40
+// to strlen(name) and filled by memcpy(size + 1) when its data is non-null, 0043B8B0 on the
+// destination map, then the key released (00419CC0 / 00BD1510). EAX = the found node's record.
+void* find_record_by_iterator_key(Seg59bHost& host, Hash64Iterator* iterator, void* map, bool& found) {
+    const char* const name = host.property_bag_iterator_key_00484d20(iterator);
+    alignas(4) std::uint8_t key[8] = {};
+    host.native_string_resize_0041dd40(key, static_cast<std::uint32_t>(std::strlen(name)), 1);
+    if (ptr(key, 0x04) != nullptr) host.memcpy_00bf7680(ptr(key, 0x04), name, at<std::uint32_t>(key, 0x00) + 1u);
+    std::uint32_t bucket = 0;
+    void* const node = host.property_map_find_node_0043b8b0(map, key, &bucket);
+    found = node != nullptr;
+    void* const record = found ? ptr(node, 0x08) : nullptr;
+    release_native_string(host, key);
+    return record;
+}
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 008F4290 BSP_ScenePropertyBag_SubtractEqual. __thiscall(ECX = bag, other), RET 4. Only caller
+// is its own recursion (008F43AC); no absolute-dword reference (CC13_BAND_0080_008F.md).
+// Evidence: 008F42AF 00BF681B(0Ch) iterator, non-null -> [it] = other+4, 008F42CA 00480690 begin;
+// a null allocation leaves 0 and the image reads [0+4]. While [it+4] != 0: 008F42FA 00484D20 key,
+// key NativeString (0041DD40 at 008F4322, memcpy at 008F4339), 008F4353 0043B8B0(bag+4); found ->
+// record = [node+8]; key released (008F437C/008F4383). Found: record type 6 -> the other record
+// ([[it+4]+8]) must be type 6 too (008F43A3), recurse 008F43AC(record+0C, other+0C), remove when
+// [[record+0C]+8] (count) == 0; other types -> 008F43CB 008EF820(record, other record) and remove
+// on AL. Remove = 008F43D9 004F01F0(bag+4, record). 008F43E4 0047E480 next. Then 008F43F9 _free.
+// ---------------------------------------------------------------------------
+void scene_property_bag_subtract_equal_008f4290(Seg59bHost& host, void* bag, void* other) {
+    auto* const iterator = static_cast<Hash64Iterator*>(host.operator_new_00bf681b(0x0C));
+    if (iterator != nullptr) {
+        iterator->table = add(other, 0x04);
+        host.scene_property_bag_iterator_begin_00480690(iterator);
+    }
+    if (iterator->node != nullptr) {
+        void* const map = add(bag, 0x04);
+        do {
+            bool found = false;
+            void* const record = find_record_by_iterator_key(host, iterator, map, found);
+            if (found) {
+                void* const other_record = ptr(iterator->node, 0x08);
+                bool remove = false;
+                if (at<std::uint32_t>(record, 0x04) == 6) {
+                    if (at<std::uint32_t>(other_record, 0x04) == 6) {
+                        scene_property_bag_subtract_equal_008f4290(host, ptr(record, 0x0C), ptr(other_record, 0x0C));
+                        remove = at<std::uint32_t>(ptr(record, 0x0C), 0x08) == 0;
+                    }
+                } else {
+                    remove = scene_property_value_equals_008ef820(host, record, other_record);
+                }
+                if (remove) host.scene_property_bag_remove_record_004f01f0(map, record);
+            }
+            host.scene_property_bag_iterator_next_0047e480(iterator);
+        } while (iterator->node != nullptr);
+    }
+    host.free_00bf65ac(iterator);
+}
+
+// ---------------------------------------------------------------------------
+// 008F4420 BSP_ScenePropertyBag_SubtractSameType. __thiscall(ECX = bag, other), RET 4. Only
+// caller is its own recursion (008F4536); no absolute-dword reference.
+// Evidence: the 008F4290 shape without the value test: found and record type ([EDI+4]) equal to
+// the other record's type (008F4525) -> type 6 recurses 008F4536(record+0C, other+0C) and removes
+// when the sub-bag count is 0 (008F453E), other types remove directly; 008F4549 004F01F0(bag+4,
+// record). The loop (008F454E..008F4556) re-tests [it+4] with no 0047E480 call: the iterator
+// never advances, so a non-empty other spins on its first key. Reproduced as in the image.
+// ---------------------------------------------------------------------------
+void scene_property_bag_subtract_same_type_008f4420(Seg59bHost& host, void* bag, void* other) {
+    auto* const iterator = static_cast<Hash64Iterator*>(host.operator_new_00bf681b(0x0C));
+    if (iterator != nullptr) {
+        iterator->table = add(other, 0x04);
+        host.scene_property_bag_iterator_begin_00480690(iterator);
+    }
+    if (iterator->node != nullptr) {
+        void* const map = add(bag, 0x04);
+        do {
+            bool found = false;
+            void* const record = find_record_by_iterator_key(host, iterator, map, found);
+            if (found) {
+                void* const other_record = ptr(iterator->node, 0x08);
+                const std::uint32_t type = at<std::uint32_t>(record, 0x04);
+                if (type == at<std::uint32_t>(other_record, 0x04)) {
+                    bool remove = true;
+                    if (type == 6) {
+                        scene_property_bag_subtract_same_type_008f4420(host, ptr(record, 0x0C),
+                                                                       ptr(other_record, 0x0C));
+                        remove = at<std::uint32_t>(ptr(record, 0x0C), 0x08) == 0;
+                    }
+                    if (remove) host.scene_property_bag_remove_record_004f01f0(map, record);
+                }
+            }
+        } while (iterator->node != nullptr);
+    }
+    host.free_00bf65ac(iterator);
+}
+
+// ---------------------------------------------------------------------------
+// 008F1A20 BSP_SceneObject_BuildDottedPath. __thiscall(ECX = object, out NativeString), RET 4.
+// No code caller and no absolute-dword reference (CC13_BAND_0080_008F.md "Unreferenced").
+// Evidence: owner = [object+30h]; 0 -> 008F1C69 0041DD40(out, 0, 0) and memcpy(data, "" CE3A0C,
+// size) (008F1C7E). Else name = 008F0B00(owner+4, object) (008F1A52), out = 0041DD40(out,
+// strlen or 0, 0) + memcpy(data, name, size) (008F1A77/008F1A88). cursor = owner+110h; while
+// [cursor] != 0: "." (CE3A70) NativeString (0041DD40(1, 1), memcpy size+1 at 008F1AE3); parent =
+// [cursor]; name = parent and [parent+30h] ? 008F0B00([parent+30h]+4, parent) : 0 (008F1B00), its
+// NativeString (008F1B2A, memcpy 008F1B41); 008F1B5C 004261A0(name, &joined, &dot); 008F1B6E
+// 004261A0(joined, &result, out); result != out -> 0041DD40(out, result.size, 1) and, size != 0,
+// memcpy(out.data, result.data, out.size) (008F1B9A); result, joined, name and dot released in
+// that order; cursor = [[cursor]+30h]+110h (008F1C3A).
+// The ledger's FormatValue name is replaced: the routine joins owner names with ".", outermost
+// first. A null name in the loop is passed to strlen, as in the image.
+// ---------------------------------------------------------------------------
+void scene_object_build_dotted_path_008f1a20(Seg59bHost& host, void* object, void* out) {
+    void* const owner = ptr(object, 0x30);
+    if (owner == nullptr) {
+        host.native_string_resize_0041dd40(out, 0, 0);
+        if (ptr(out, 0x04) != nullptr) {
+            host.memcpy_00bf7680(ptr(out, 0x04), host.image_pointer(kEmptyString), at<std::uint32_t>(out, 0x00));
+        }
+        return;
+    }
+    const char* const name = scene_enum_table_find_name_008f0b00(
+        host, add(owner, 0x04), static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(object)));
+    host.native_string_resize_0041dd40(out, name != nullptr ? static_cast<std::uint32_t>(std::strlen(name)) : 0u, 0);
+    if (ptr(out, 0x04) != nullptr) host.memcpy_00bf7680(ptr(out, 0x04), name, at<std::uint32_t>(out, 0x00));
+    void* cursor = add(owner, 0x110);
+    while (ptr(cursor, 0x00) != nullptr) {
+        alignas(4) std::uint8_t dot[8] = {};
+        host.native_string_resize_0041dd40(dot, 1, 1);
+        if (ptr(dot, 0x04) != nullptr) {
+            host.memcpy_00bf7680(ptr(dot, 0x04), host.image_pointer(0x00CE3A70), at<std::uint32_t>(dot, 0x00) + 1u);
+        }
+        void* const parent = ptr(cursor, 0x00);
+        const char* parent_name = nullptr;
+        if (parent != nullptr && ptr(parent, 0x30) != nullptr) {
+            parent_name = scene_enum_table_find_name_008f0b00(
+                host, add(ptr(parent, 0x30), 0x04), static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(parent)));
+        }
+        alignas(4) std::uint8_t name_string[8] = {};
+        host.native_string_resize_0041dd40(name_string, static_cast<std::uint32_t>(std::strlen(parent_name)), 1);
+        if (ptr(name_string, 0x04) != nullptr) {
+            host.memcpy_00bf7680(ptr(name_string, 0x04), parent_name, at<std::uint32_t>(name_string, 0x00) + 1u);
+        }
+        alignas(4) std::uint8_t joined[8] = {};
+        alignas(4) std::uint8_t result_storage[8] = {};
+        host.native_string_concat_004261a0(name_string, joined, dot);
+        void* const result = host.native_string_concat_004261a0(joined, result_storage, out);
+        if (out != result) {
+            host.native_string_resize_0041dd40(out, at<std::uint32_t>(result, 0x00), 1);
+            if (at<std::uint32_t>(result, 0x00) != 0) {
+                host.memcpy_00bf7680(ptr(out, 0x04), ptr(result, 0x04), at<std::uint32_t>(out, 0x00));
+            }
+        }
+        release_native_string(host, result_storage);
+        release_native_string(host, joined);
+        release_native_string(host, name_string);
+        release_native_string(host, dot);
+        cursor = add(ptr(ptr(cursor, 0x00), 0x30), 0x110);
+    }
+}
+
+namespace {
+const char* image_text(Seg59bHost& host, std::uint32_t address) {
+    return static_cast<const char*>(host.image_pointer(address));
+}
+
+// The MSVC std::string the 008F71E0 / 008F7550 / 008F79A0 frames build inline (1Ch bytes):
+// {+0 allocator, +4 16-byte buffer or pointer, +14h size, +18h capacity}; capacity 0Fh is the
+// inline buffer. Construction and the post-destroy tidy both store capacity 0Fh, size 0 and a
+// zero first byte; destruction frees the pointer (00BF65AC) when capacity >= 10h.
+void std_string_tidy(void* string) {
+    at<std::uint32_t>(string, 0x18) = 0x0F;
+    at<std::uint32_t>(string, 0x14) = 0;
+    at<std::uint8_t>(string, 0x04) = 0;
+}
+
+void std_string_release(Seg59bHost& host, void* string) {
+    if (at<std::uint32_t>(string, 0x18) >= 0x10) host.free_00bf65ac(ptr(string, 0x04));
+}
+
+const char* std_string_c_str(void* string) {
+    return static_cast<const char*>(at<std::uint32_t>(string, 0x18) >= 0x10 ? ptr(string, 0x04) : add(string, 0x04));
+}
+
+// One map<std::string, record*> insertion as both writers inline it: name -> std::string T
+// (00408720), pair P1 = {T copy (00408120(P1, T, 0, -1)), record}, P2 = {P1 copy, record},
+// 008F6BA0(map, &result, &P2); then P2 and P1 destroyed with their tidy, T destroyed.
+void insert_named_record(Seg59bHost& host, void* map, void* result, const char* name, void* record) {
+    alignas(4) std::uint8_t named[0x1C] = {};
+    alignas(4) std::uint8_t first[0x20] = {};
+    alignas(4) std::uint8_t second[0x20] = {};
+    std_string_tidy(named);
+    host.std_string_assign_counted_00408720(named, name, static_cast<std::uint32_t>(std::strlen(name)));
+    std_string_tidy(first);
+    host.std_string_assign_substring_00408120(first, named, 0, 0xFFFFFFFFu);
+    at<void*>(first, 0x1C) = record;
+    std_string_tidy(second);
+    host.std_string_assign_substring_00408120(second, first, 0, 0xFFFFFFFFu);
+    at<void*>(second, 0x1C) = at<void*>(first, 0x1C);
+    host.property_tree_insert_unique_008f6ba0(map, result, second);
+    std_string_release(host, second);
+    std_string_tidy(second);
+    std_string_release(host, first);
+    std_string_tidy(first);
+    std_string_release(host, named);
+}
+
+// The map {+0 comparator, +4 head, +8 size} set up inline: 008F0AB0 head, head isnil (+2Dh) = 1,
+// head left/parent/right = head, size 0.
+void init_named_record_map(Seg59bHost& host, void* map) {
+    at<void*>(map, 0x04) = host.stl_tree_buy_head_node_008f0ab0(map);
+    void* const head = ptr(map, 0x04);
+    at<std::uint8_t>(head, 0x2D) = 1;
+    at<void*>(ptr(map, 0x04), 0x04) = ptr(map, 0x04);
+    at<void*>(ptr(map, 0x04), 0x00) = ptr(map, 0x04);
+    at<void*>(ptr(map, 0x04), 0x08) = ptr(map, 0x04);
+    at<std::uint32_t>(map, 0x08) = 0;
+}
+
+// The checked in-order walk prologue per step: iterator {container, node}. Returns false at end.
+bool named_record_iterator_step(Seg59bHost& host, void* map, void* iterator, void*& node) {
+    void* const end = ptr(map, 0x04);
+    void* const container = ptr(iterator, 0x00);
+    if (container == nullptr || container != map) host.checked_iterator_failure_00bf6713();
+    node = ptr(iterator, 0x04);
+    if (node == end) return false;
+    if (container == nullptr) host.checked_iterator_failure_00bf6713();
+    if (node == ptr(container, 0x04)) host.checked_iterator_failure_00bf6713();
+    return true;
+}
+
+// The map teardown: 008F6D50(map, &result, {map, head->left}, {map, head}), _free(head), then
+// head and size zeroed.
+void destroy_named_record_map(Seg59bHost& host, void* map, void* result) {
+    void* const head = ptr(map, 0x04);
+    host.stl_tree_erase_range_008f6d50(map, result, map, ptr(head, 0x00), map, head);
+    host.free_00bf65ac(ptr(map, 0x04));
+    at<void*>(map, 0x04) = nullptr;
+    at<std::uint32_t>(map, 0x08) = 0;
+}
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 008F71E0 BSP_ScenePropertyBag_WriteTextBlock. __thiscall(ECX = bag, writer), RET 4. Callers:
+// itself (008F746C) and 008F7550 (008F7586, 008F78C5); no absolute-dword reference.
+// Evidence: 008F7216 0094FF10(writer, " {" D16564), 008F721D 0094FFA0(.., 0). An unused pair
+// {std::string, 0} constructed at frame+94h (008F7237..008F724C) and destroyed at the end. map at
+// frame+10h set up through 008F0AB0 (008F725E). Walk of bag+4 (00480690 at 008F722D, 0047E480 at
+// 008F73BC): name = [node+4] or F89450, record = [node+8], inserted as above (00408720 at
+// 008F72D7, 00408120 at 008F72FF / 008F732C, 008F6BA0 at 008F7352). writer+8 += 1 (008F73D8).
+// In order from head->left with the 00BF6713 checks (008F7400..008F7428): key = the node's
+// c_str (+10h, or the pointer when [+24h] >= 10h); record = [node+28h]; type 6 -> 0094FF10 '"'
+// (CE436C), key, '"', then 008F746C 008F71E0(record+0Ch, writer); else 008F7495 008F1CA0(bag,
+// key, record, writer); 008EFF30 next. Then writer+8 -= 1 when non-zero (008F74B7), 0094FF10
+// "}" (CE4CD4) + 0094FFA0(0), 008F74F2 008F6D50 erase, 008F74FC _free(head), the pair's string
+// freed when its capacity >= 10h (never: it is not written).
+// ---------------------------------------------------------------------------
+void scene_property_bag_write_text_block_008f71e0(Seg59bHost& host, void* bag, void* writer) {
+    host.scene_text_writer_manipulator_0094ffa0(host.scene_text_write_0094ff10(writer, image_text(host, 0x00D16564u)), 0);
+    Hash64Iterator iterator{add(bag, 0x04), nullptr, 0};
+    host.scene_property_bag_iterator_begin_00480690(&iterator);
+    alignas(4) std::uint8_t unused_pair[0x20] = {};
+    std_string_tidy(unused_pair);
+    at<std::uint32_t>(unused_pair, 0x1C) = 0;
+    alignas(4) std::uint8_t map[0x0C] = {};
+    init_named_record_map(host, map);
+    alignas(4) std::uint8_t result[0x0C] = {};
+    alignas(4) std::uint8_t erased[0x08] = {};
+    while (iterator.node != nullptr) {
+        void* const record = ptr(iterator.node, 0x08);
+        const char* name = static_cast<const char*>(ptr(iterator.node, 0x04));
+        if (name == nullptr) name = image_text(host, kEnumNameEmpty);
+        insert_named_record(host, map, result, name, record);
+        host.scene_property_bag_iterator_next_0047e480(&iterator);
+    }
+    at<std::uint32_t>(writer, 0x08) += 1;
+    alignas(4) std::uint8_t walk[0x08] = {};
+    at<void*>(walk, 0x00) = map;
+    at<void*>(walk, 0x04) = ptr(ptr(map, 0x04), 0x00);
+    void* node = nullptr;
+    while (named_record_iterator_step(host, map, walk, node)) {
+        void* const record = ptr(node, 0x28);
+        if (node == ptr(ptr(walk, 0x00), 0x04)) host.checked_iterator_failure_00bf6713();
+        const char* const key = std_string_c_str(add(node, 0x0C));
+        if (at<std::uint32_t>(record, 0x04) == 6) {
+            void* const quote_writer = host.scene_text_write_0094ff10(writer, image_text(host, 0x00CE436Cu));
+            host.scene_text_write_0094ff10(host.scene_text_write_0094ff10(quote_writer, key), image_text(host, 0x00CE436Cu));
+            scene_property_bag_write_text_block_008f71e0(host, ptr(record, 0x0C), writer);
+        } else {
+            scene_property_write_text_008f1ca0(host, key, record, writer);
+        }
+        host.stl_tree_iterator_increment_008eff30(walk);
+    }
+    if (at<std::uint32_t>(writer, 0x08) != 0) at<std::uint32_t>(writer, 0x08) -= 1;
+    host.scene_text_writer_manipulator_0094ffa0(host.scene_text_write_0094ff10(writer, image_text(host, 0x00CE4CD4u)), 0);
+    destroy_named_record_map(host, map, erased);
+    std_string_release(host, unused_pair);
+}
+
+// ---------------------------------------------------------------------------
+// 008F7550 BSP_ScenePropertyBag_WriteTextDiff. __thiscall(ECX = bag, writer, base), RET 8.
+// Caller: itself (008F78A2); no absolute-dword reference.
+// Evidence: base == 0 -> 008F7586 008F71E0(bag, writer) and return. Else 0094FF10 " {" +
+// 0094FFA0(0) (008F75A1/008F75A8); pointer array {00BF55BE(40h*4) (overflow-checked size,
+// 008F75BB..008F75CD), 0, 40h, 40h}; 008F75EB 008F6E20(bag, &array); unused pair and map as in
+// 008F71E0 (008F75F0..008F763D). For i < count (signed): record = data[i]; name = [record+30h] ?
+// 008F0B00([record+30h]+4, record) : 0 (strlen of 0 faults, as in the image); inserted (00408720
+// at 008F76A4, 00408120 at 008F76D1 / 008F7704, 008F6BA0 at 008F772A). writer+8 += 1. In order:
+// other = 008F7823 008F2260(base, key); record type != 6 -> other non-null and 008F7839
+// 008EF820(record, other) true -> skip; otherwise 008F7851 008F1CA0(bag, key, record, writer).
+// Type 6 -> '"', key, '"'; other non-null with type 6 -> 008F78A2 008F7550(record+0Ch, writer,
+// other+0Ch); else 008F78C5 008F71E0(record+0Ch, writer). Then "}" + 0094FFA0(0), 008F7923
+// 008F6D50 erase, _free(head), the pair's string, array data non-null -> 008F797B 00BF6989.
+// The ledger name WriteTextEntry is replaced: the routine writes only what differs from base.
+// ---------------------------------------------------------------------------
+void scene_property_bag_write_text_diff_008f7550(Seg59bHost& host, void* bag, void* writer, void* base) {
+    if (base == nullptr) {
+        scene_property_bag_write_text_block_008f71e0(host, bag, writer);
+        return;
+    }
+    host.scene_text_writer_manipulator_0094ffa0(host.scene_text_write_0094ff10(writer, image_text(host, 0x00D16564u)), 0);
+    alignas(4) std::uint8_t array[0x10] = {};
+    at<std::uint32_t>(array, 0x0C) = 0x40;
+    at<std::uint32_t>(array, 0x08) = 0x40;
+    at<void*>(array, 0x00) = host.operator_new_00bf55be(0x40u * 4u);
+    at<std::int32_t>(array, 0x04) = 0;
+    scene_property_bag_collect_records_sorted_008f6e20(host, bag, array);
+    alignas(4) std::uint8_t unused_pair[0x20] = {};
+    std_string_tidy(unused_pair);
+    at<std::uint32_t>(unused_pair, 0x1C) = 0;
+    alignas(4) std::uint8_t map[0x0C] = {};
+    init_named_record_map(host, map);
+    alignas(4) std::uint8_t result[0x0C] = {};
+    alignas(4) std::uint8_t erased[0x08] = {};
+    for (std::int32_t index = 0; index < at<std::int32_t>(array, 0x04); ++index) {
+        void* const record = static_cast<void**>(ptr(array, 0x00))[index];
+        const char* name = nullptr;
+        if (ptr(record, 0x30) != nullptr) {
+            name = scene_enum_table_find_name_008f0b00(
+                host, add(ptr(record, 0x30), 0x04), static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(record)));
+        }
+        insert_named_record(host, map, result, name, static_cast<void**>(ptr(array, 0x00))[index]);
+    }
+    at<std::uint32_t>(writer, 0x08) += 1;
+    alignas(4) std::uint8_t walk[0x08] = {};
+    at<void*>(walk, 0x00) = map;
+    at<void*>(walk, 0x04) = ptr(ptr(map, 0x04), 0x00);
+    void* node = nullptr;
+    while (named_record_iterator_step(host, map, walk, node)) {
+        void* const record = ptr(node, 0x28);
+        if (node == ptr(ptr(walk, 0x00), 0x04)) host.checked_iterator_failure_00bf6713();
+        const char* const key = std_string_c_str(add(node, 0x0C));
+        void* const other = host.scene_property_bag_find_008f2260(base, key);
+        if (at<std::uint32_t>(record, 0x04) == 6) {
+            void* const quote_writer = host.scene_text_write_0094ff10(writer, image_text(host, 0x00CE436Cu));
+            host.scene_text_write_0094ff10(host.scene_text_write_0094ff10(quote_writer, key), image_text(host, 0x00CE436Cu));
+            if (other != nullptr && at<std::uint32_t>(other, 0x04) == 6) {
+                scene_property_bag_write_text_diff_008f7550(host, ptr(record, 0x0C), writer, ptr(other, 0x0C));
+            } else {
+                scene_property_bag_write_text_block_008f71e0(host, ptr(record, 0x0C), writer);
+            }
+        } else if (other == nullptr || !scene_property_value_equals_008ef820(host, record, other)) {
+            scene_property_write_text_008f1ca0(host, key, record, writer);
+        }
+        host.stl_tree_iterator_increment_008eff30(walk);
+    }
+    if (at<std::uint32_t>(writer, 0x08) != 0) at<std::uint32_t>(writer, 0x08) -= 1;
+    host.scene_text_writer_manipulator_0094ffa0(host.scene_text_write_0094ff10(writer, image_text(host, 0x00CE4CD4u)), 0);
+    destroy_named_record_map(host, map, erased);
+    std_string_release(host, unused_pair);
+    std_string_tidy(unused_pair);
+    if (ptr(array, 0x00) != nullptr) host.free_00bf6989(ptr(array, 0x00));
+}
+
+// ---------------------------------------------------------------------------
+// 008F79A0 BSP_ScenePropertyBag_RemoveMissing. __thiscall(ECX = bag, base, other), RET 8.
+// Caller: itself (008F7A6B); no absolute-dword reference.
+// Evidence: iterator {bag+4} begun (008F79CD); other != 0 -> a heap iterator 00BF681B(0Ch)
+// {other+4} begun (008F79F3) and copied over the local one (never freed; a null allocation is
+// read through, as in the image). vector<std::string> {+0, first, last, end} zeroed. Per node:
+// name = [node+4] or F89450; found = 008F7A4F 008F2260(base, name); found and type 6 ->
+// 008F7A6B 008F79A0(bag, found+0Ch, [[node+8]+0Ch]); found other type -> nothing; not found ->
+// std::string (00408720 at 008F7AA5) pushed by 008F7AB8 00849170(vector, &string), then freed.
+// 0047E480 next (008F7ADA). Then other != 0: for i < size (1Ch stride, signed /1Ch) while first
+// != 0: 008F7B3D 0043D870(other, c_str); other == 0: a NativeString of the c_str (0041DD40 at
+// 008F7BB2, memcpy at 008F7BC9), 008F7BDF 008F4030(bag+4, &key), released. A null first skips
+// the teardown; otherwise 008F7C25 004CE520(ECX = first, EDX = last, &vector, junk) and
+// 008F7C2F _free(first). The junk dword is arg 2's slot ([ESP+60h]): other, or the byte offset
+// the other == 0 loop kept there.
+// The ledger name WriteFiltered is replaced: the routine erases the names base does not have.
+// ---------------------------------------------------------------------------
+void scene_property_bag_remove_missing_008f79a0(Seg59bHost& host, void* bag, void* base, void* other) {
+    Hash64Iterator iterator{add(bag, 0x04), nullptr, 0};
+    host.scene_property_bag_iterator_begin_00480690(&iterator);
+    if (other != nullptr) {
+        auto* const heap_iterator = static_cast<Hash64Iterator*>(host.operator_new_00bf681b(0x0C));
+        if (heap_iterator != nullptr) {
+            heap_iterator->table = add(other, 0x04);
+            host.scene_property_bag_iterator_begin_00480690(heap_iterator);
+        }
+        iterator = *heap_iterator;
+    }
+    alignas(4) std::uint8_t vector[0x10] = {};
+    while (iterator.node != nullptr) {
+        const char* name = static_cast<const char*>(ptr(iterator.node, 0x04));
+        if (name == nullptr) name = image_text(host, kEnumNameEmpty);
+        void* const found = host.scene_property_bag_find_008f2260(base, name);
+        if (found != nullptr) {
+            if (at<std::uint32_t>(found, 0x04) == 6) {
+                scene_property_bag_remove_missing_008f79a0(host, bag, ptr(found, 0x0C),
+                                                           ptr(ptr(iterator.node, 0x08), 0x0C));
+            }
+        } else {
+            const char* missing = static_cast<const char*>(ptr(iterator.node, 0x04));
+            if (missing == nullptr) missing = image_text(host, kEnumNameEmpty);
+            alignas(4) std::uint8_t string[0x1C] = {};
+            std_string_tidy(string);
+            host.std_string_assign_counted_00408720(string, missing, static_cast<std::uint32_t>(std::strlen(missing)));
+            host.string_vector_push_back_00849170(vector, string);
+            std_string_release(host, string);
+        }
+        host.scene_property_bag_iterator_next_0047e480(&iterator);
+    }
+    auto size = [&]() {
+        return static_cast<std::int32_t>(static_cast<std::uint8_t*>(ptr(vector, 0x08)) -
+                                         static_cast<std::uint8_t*>(ptr(vector, 0x04))) / 0x1C;
+    };
+    std::uint32_t junk = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(other));
+    if (other != nullptr) {
+        for (std::uint32_t index = 0;; ++index) {
+            if (ptr(vector, 0x04) == nullptr) return;
+            if (index >= static_cast<std::uint32_t>(size())) break;
+            host.property_map_erase_by_name_0043d870(
+                other, std_string_c_str(add(ptr(vector, 0x04), index * 0x1C)));
+        }
+    } else {
+        junk = 0;
+        for (std::uint32_t index = 0;; ++index) {
+            if (ptr(vector, 0x04) == nullptr) return;
+            if (index >= static_cast<std::uint32_t>(size())) break;
+            const char* const text = std_string_c_str(add(ptr(vector, 0x04), junk));
+            alignas(4) std::uint8_t key[8] = {};
+            host.native_string_resize_0041dd40(key, static_cast<std::uint32_t>(std::strlen(text)), 1);
+            if (ptr(key, 0x04) != nullptr) host.memcpy_00bf7680(ptr(key, 0x04), text, at<std::uint32_t>(key, 0x00) + 1u);
+            property_map_unlink_key_008f4030(host, add(bag, 0x04), key);
+            release_native_string(host, key);
+            junk += 0x1C;
+        }
+    }
+    host.string_range_destroy_004ce520(ptr(vector, 0x04), ptr(vector, 0x08), vector, junk);
+    host.free_00bf65ac(ptr(vector, 0x04));
+}
 }  // namespace bsp::cc13_seg59b

@@ -224,6 +224,11 @@ struct Seg59bHost {
     // 00480690 / 0047E480 BSP_ScenePropertyBag_IteratorBegin / Next, __thiscall(ECX = iterator).
     virtual void scene_property_bag_iterator_begin_00480690(Hash64Iterator* iterator) = 0;
     virtual void scene_property_bag_iterator_next_0047e480(Hash64Iterator* iterator) = 0;
+    // 00484D20, __fastcall(ECX = iterator): the current node's key text ([node+4]) or "" (00E186ED).
+    virtual const char* property_bag_iterator_key_00484d20(Hash64Iterator* iterator) = 0;
+    // 004F01F0, __thiscall(ECX = bag map {+4 count, +8 64 buckets}, record), RET 4: unlinks the
+    // node holding record, destroys record (vt[0](1)) and the key, returns the node; AL = found.
+    virtual bool scene_property_bag_remove_record_004f01f0(void* map, void* record) = 0;
     // The 008F08E0 resolver callback, __fastcall(ECX = reference name, EDX = context); EAX.
     virtual void* call_reference_resolver(std::uintptr_t callback, void* name, void* context) = 0;
     // 00435C40 BSP_NativeString_EqualsInsensitive, __thiscall(ECX = string, other), RET 4; AL.
@@ -236,6 +241,31 @@ struct Seg59bHost {
     virtual void native_string_assign_header_00425f40(void* string, const void* other) = 0;
     // 0041E870 BSP_NativeString_Assign, __thiscall(ECX = string, text), RET 4; EAX = string.
     virtual void* native_string_assign_0041e870(void* string, const char* text) = 0;
+    // 004261A0 BSP_NativeString_Concat, __thiscall(ECX = lhs, dst, rhs), RET 8; EAX = dst = lhs + rhs.
+    virtual void* native_string_concat_004261a0(void* lhs, void* dst, void* rhs) = 0;
+    // 008F0AB0 STL_Tree_BuyHeadNode, __thiscall(ECX = tree); EAX = a new head node.
+    virtual void* stl_tree_buy_head_node_008f0ab0(void* tree) = 0;
+    // 008F6BA0, __thiscall(ECX = map<std::string, record*>, result, value), RET 8; EAX = result.
+    virtual void* property_tree_insert_unique_008f6ba0(void* tree, void* result, void* value) = 0;
+    // 008EFF30, __thiscall(ECX = tree iterator {container, node}): ++iterator.
+    virtual void stl_tree_iterator_increment_008eff30(void* iterator) = 0;
+    // 008F6D50, __thiscall(ECX = tree, result, first {tree, node}, last {tree, node}), RET 14h.
+    virtual void* stl_tree_erase_range_008f6d50(void* tree, void* result, void* first_tree, void* first_node,
+                                                void* last_tree, void* last_node) = 0;
+    // 00408720, __thiscall(ECX = std::string, text, count), RET 8; EAX = string.
+    virtual void* std_string_assign_counted_00408720(void* string, const char* text, std::uint32_t count) = 0;
+    // 00408120, __thiscall(ECX = std::string, source, offset, count), RET 0Ch; EAX = string.
+    virtual void* std_string_assign_substring_00408120(void* string, const void* source, std::uint32_t offset,
+                                                       std::uint32_t count) = 0;
+    // 008F2260 BSP_ScenePropertyBag_Find, __thiscall(ECX = bag, dotted key), RET 4; EAX = record.
+    virtual void* scene_property_bag_find_008f2260(void* bag, const char* key) = 0;
+    // 00849170, __thiscall(ECX = vector<std::string>, &value), RET 4: push_back.
+    virtual void string_vector_push_back_00849170(void* vector, const void* value) = 0;
+    // 004CE520, __fastcall(ECX = first, EDX = last, allocator, unused), RET 8: destroys the
+    // 1Ch std::string range.
+    virtual void string_range_destroy_004ce520(void* first, void* last, void* allocator, std::uint32_t unused) = 0;
+    // 0043D870 BSP_PropertyMap_EraseByName, __thiscall(ECX = map, name), RET 4.
+    virtual void property_map_erase_by_name_0043d870(void* map, const char* name) = 0;
     // 00419CC0 BSP_SizedStoragePool_GetSingleton (no args); 00BD1510 ReturnBlock,
     // __thiscall(ECX = pool, data, bytes, flag), RET 0Ch.
     virtual void* sized_pool_singleton_00419cc0() = 0;
@@ -527,6 +557,24 @@ void scene_property_bag_collect_key_names_008f3270(Seg59bHost& host, void* bag, 
 // 008F6E20, __thiscall(ECX = bag, out array), RET 4; EAX = count: the bag's records sorted by
 // their ordinal (+34h) into the 008F0010 pointer array.
 std::int32_t scene_property_bag_collect_records_sorted_008f6e20(Seg59bHost& host, void* bag, void* out);
+// 008F4290, __thiscall(ECX = bag, other), RET 4: removes from bag every record whose key is in
+// other with an equal value (008EF820); type-6 sub-bags recurse and go when left empty.
+void scene_property_bag_subtract_equal_008f4290(Seg59bHost& host, void* bag, void* other);
+// 008F4420, __thiscall(ECX = bag, other), RET 4: the same walk keyed by type only; the image never
+// advances its iterator (see the body).
+void scene_property_bag_subtract_same_type_008f4420(Seg59bHost& host, void* bag, void* other);
+// 008F1A20, __thiscall(ECX = object, out), RET 4: out = the owner chain's names joined with ".",
+// outermost first ([+30h] owner, [owner+110h] parent); "" when the object has no owner.
+void scene_object_build_dotted_path_008f1a20(Seg59bHost& host, void* object, void* out);
+// 008F71E0, __thiscall(ECX = bag, writer), RET 4: " {", the bag's entries sorted by name (sub-bags
+// as '"name"' + a nested block, others through 008F1CA0), "}".
+void scene_property_bag_write_text_block_008f71e0(Seg59bHost& host, void* bag, void* writer);
+// 008F7550, __thiscall(ECX = bag, writer, base), RET 8: the 008F71E0 block with entries equal
+// to base's (008EF820) left out; null base writes the whole block.
+void scene_property_bag_write_text_diff_008f7550(Seg59bHost& host, void* bag, void* writer, void* base);
+// 008F79A0, __thiscall(ECX = bag, base, other), RET 8: erases the names (of other, or of bag
+// when other is null) that base does not have, recursing through shared sub-bags.
+void scene_property_bag_remove_missing_008f79a0(Seg59bHost& host, void* bag, void* base, void* other);
 // 008F7CF0, __thiscall(ECX = scope), RET; EAX = scope: 00BD2FE0.
 void* random_threads_scope_construct_008f7cf0(Seg59bHost& host, void* scope);
 // 008F7D20, no arguments: destroy and free the object at [01090AA0], then clear it.

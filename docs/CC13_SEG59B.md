@@ -210,3 +210,16 @@ STL code, allocators, `_free`, `_memmove_s` and xlen throws: `009063C0`, `009076
 | `009150A0` | BSP_MissionScoring_ForceRefresh | reconstructed | `scoring_force_refresh_009150a0`: `00914390` (009150CC) and `0090EA00` (009150D3) on the record, then Lua `scoring.playerIndex = slot` (`00B67460`, 0091513A) when game+1FE4h != 0. |
 | `008F3270` | BSP_ScenePropertyBag_CollectKeyNames | reconstructed | `scene_property_bag_collect_key_names_008f3270`: every key copied into a `0094F270` list (008F3324), sorted by `0094F1B0` (008F3348) when asked. The old name "WriteAll" was wrong. |
 | `008F6E20` | BSP_ScenePropertyBag_CollectRecordsSorted | reconstructed | `scene_property_bag_collect_records_sorted_008f6e20`: the records gathered in a local vector, `008F3C90` sort by ordinal (008F6F08), copied out with `008F0010` (008F6F44). |
+
+## Scene bag subtract, dotted path and text writers
+
+None of these six is reached: apart from their own recursion and 008F71E0's use by 008F7550, the band scan found no direct call and no absolute-dword reference (`docs/CC13_BAND_0080_008F.md`, Unreferenced).
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `008F4290` | BSP_ScenePropertyBag_SubtractEqual | reconstructed | `scene_property_bag_subtract_equal_008f4290`: a heap iterator over other, a key lookup in bag (`0043B8B0`), and removal (`004F01F0`, 008F43D9) when the values are equal (`008EF820`) or a shared sub-bag ends up empty after the recursion. The old name was "CloneIterator". |
+| `008F4420` | BSP_ScenePropertyBag_SubtractSameType | reconstructed | `scene_property_bag_subtract_same_type_008f4420`: the same walk keyed on type alone. The image never calls `0047E480` in the loop (008F454E..008F4556), so a non-empty other spins on its first key. That is reproduced, not fixed. |
+| `008F1A20` | BSP_SceneObject_BuildDottedPath | reconstructed | `scene_object_build_dotted_path_008f1a20`: out = the names along the [+30h]/[+110h] owner chain, joined with "." (CE3A70) by two `004261A0` concatenations per step, outermost name first. The result is "" when the object has no owner. The old name was "FormatValue". |
+| `008F71E0` | BSP_ScenePropertyBag_WriteTextBlock | reconstructed | `scene_property_bag_write_text_block_008f71e0`: `" {"`, then the entries sorted through an inline `map<std::string, record*>` (`008F6BA0`), `"}"`. Sub-bags are written as `"key"` plus a nested block; other entries go through `008F1CA0`. |
+| `008F7550` | BSP_ScenePropertyBag_WriteTextDiff | reconstructed | `scene_property_bag_write_text_diff_008f7550`: the 008F71E0 block with every entry equal to base's (`008F2260` + `008EF820`) left out. Shared sub-bags recurse, and a null base writes the full block. The old name was "WriteTextEntry". |
+| `008F79A0` | BSP_ScenePropertyBag_RemoveMissing | reconstructed | `scene_property_bag_remove_missing_008f79a0`: collects the names that base lacks into a `vector<std::string>` (`00849170`), then erases them from other (`0043D870`) or from bag (`008F4030`). The heap iterator built for other is leaked, as in the image. The old name was "WriteFiltered". |
