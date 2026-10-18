@@ -579,6 +579,17 @@ public:
     // 00415690 BSP_Math_ClampInPlace: __fastcall(ECX = value, EDX = low; high), RET 4.
     virtual void math_clamp_in_place_00415690(float* value, const float* low,
                                               const float* high) = 0;
+    // 00408720 BSP_CharacterString_AssignCounted: __thiscall(ECX = string; text, count),
+    // RET 8, EAX = string.
+    virtual void* string_assign_counted_00408720(void* str, const char* text,
+                                                 std::size_t count) = 0;
+    // 004D0860 std::operator+(const string&, const string&): __cdecl(out, left, right),
+    // EAX = out.
+    virtual void* string_plus_string_004d0860(void* out, const void* left,
+                                              const void* right) = 0;
+    // 0075B430 BSP_SessionMessage_ConstructBase: __thiscall(ECX = message; type), RET 4.
+    virtual void session_message_construct_base_0075b430(void* message,
+                                                         std::uint32_t type) = 0;
 };
 
 // ---- the bot-task factory list (00F8A314) ----
@@ -1323,9 +1334,8 @@ void* bot_task_dogfight_describe_009ab220(Cc13Seg67bHost& host, void* task, void
 void* bot_task_land_describe_009b3ff0(Cc13Seg67bHost& host, void* task, void* out);
 void* bot_task_takeoff_describe_009cfdd0(Cc13Seg67bHost& host, void* task, void* out);
 void* bot_task_torpedo_describe_009d4c90(Cc13Seg67bHost& host, void* task, void* out);
-// 009AC7C0 / 009ACD90: __fastcall(ECX = kamikaze state), RET.
+// 009AC7C0: __fastcall(ECX = kamikaze state), RET (009ACD90 is its exact twin).
 void bot_state_kamikaze_go_towards_debug_draw_009ac7c0(Cc13Seg67bHost& host, void* state);
-void bot_state_kamikaze_aim_debug_draw_009acd90(Cc13Seg67bHost& host, void* state);
 // 009BB4A0: __fastcall(ECX = unit, EDX = float point[3]; float limit), RET 4.
 void pilot_bot_tight_turn_toward_point_009bb4a0(Cc13Seg67bHost& host, void* unit,
                                                 const float* point, float limit);
@@ -1364,5 +1374,19 @@ float byte_profile65_sample_009d6e50(Cc13Seg67bHost& host, const void* profile, 
 // 009D7780 / 009D7930: __thiscall(ECX = record; const float* point), RET 4, ST0.
 float oriented_rect_distance_to_point_009d7780(const void* rect, const float* point);
 float oriented_rect2_distance_to_point_009d7930(const void* rect, const float* point);
+
+// ---------------------------------------------------------------------------
+// Batch 6 (docs/CC13_SEG67B.md section 3.52)
+// ---------------------------------------------------------------------------
+// 009BC5C0: __thiscall(ECX = task; string* out), RET 4, EAX = out.
+void* bot_task_leave_alone_describe_009bc5c0(Cc13Seg67bHost& host, void* task, void* out);
+// 009BDD70: __fastcall(ECX = moveto approach), RET.
+void bot_approach_move_to_register_state_names_009bdd70(Cc13Seg67bHost& host, void* approach);
+// 009D6650: __thiscall(ECX = message; float a, float b, float c, float d, int e), RET 14h,
+// EAX = message.
+void* session_message_9d_construct_009d6650(Cc13Seg67bHost& host, void* message, float a,
+                                            float b, float c, float d, std::int32_t e);
+// 009DBDB0: __fastcall(ECX = path plan), RET.
+void ship_ai_path_plan_destruct_body_009dbdb0(Cc13Seg67bHost& host, void* plan);
 
 }  // namespace bsp
