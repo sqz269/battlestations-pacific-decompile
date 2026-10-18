@@ -2954,3 +2954,30 @@ frames, no helm orders. PRCP01 (`usn_03`): 8 feeds, both fail at 465.71 s (`usn0
 (gameplay identical). JM02: 0 feeds, no mission end on either, exit 1. The fed units had no live proximity trigger
 on these rows, so nothing moved; `target_gone_00925c40` notices each unit once, so a later Lua Kill or pass-K notice
 for the same unit adds nothing. Flipped by mechanism (00926D90's kill list notifies 0074FFE0 at pass K).
+
+## 72. Handoff (cc9-physics18, 2026-10-18, at about 70% context)
+
+Landed on agent/cc9-physics1 after c925b2319: 8bdea81c1 (SpawnNew missing-class raise ON), e687bff42 (kill-funnel
+target-gone feed ON). All of the lead's six-item packet is done: prox ON, PT spawn gap ON, PRCP01/JM02 prox pairs,
+SquadOrdnanceDropped ON, squadron_unit comment, gunnery-funnel feed ON. The PRCP01 prox result went to cc9-lua67
+(identical, completes 986.78 s with prcp01_l55_p01_c). Leases: only p18_catapult_flip (OCEAN_WAVE_FIELD.md,
+ship_catapult_host.hpp) is still held; release it when you take over.
+
+Open, in the lead's order (all low priority):
+1. Pair cc15's `kActuatorFlagCc13BodiesBound` (OFF on main 106f741a0, `game_hosts_units.cpp`) on
+   jm08_s45_j8_m10 for 72000 frames before the flip. cc15's manifests are in
+   `J:\PROG\battlestations-pacific-decompile-cc15-wire1\local\cc15_act1_*.manifest.json`. A 72000-frame run outlasts
+   the 600 s foreground cap: launch, then fill the wait with read-only work.
+2. cc15 held item (a), 007D99C0 forward speed. The host inlines dot(v_world, fwd) at units.cpp ~11834/11915. The image
+   returns ctl+44h + parent_local_z * (0.1 if z >= 0 else 0.8) when the plane is parented (007D9A31..007D9A5F). Put
+   it behind an OFF switch if the listing confirms it, and pair it on a carrier row. Lease units.cpp after cc15
+   releases it.
+3. Item (b): model 007D80C0's rate at 24-bit precision per op. Item (c): 007D9CE0/007D9C10 are not examined.
+4. The release MINORs from section 69. 007BBBA0 (the spawn should key on the +C20h raise for all 11 callers) is not
+   cheap.
+5. fix12 and the GetSquadTorpedoes stopgap stay OFF as unexercised (section 69).
+
+Run tools: `local\p12_launch.ps1 -Exe <exe> -Name <n> -Mission <id> -Frames <f> [-Orders <abs path>]`;
+`local\p18_wait.ps1 -Names a,b -Max 580`; export builds `local\p18_exports*.ps1`. Stagger launches by 60 s, run at
+most two, and run one build at a time. `python tools/mission_script_reach.py <Native>` maps menu ids to scripts.
+PRCP05 does not complete on this installation: VehicleClass has no row 240, so its PTs never spawn.
