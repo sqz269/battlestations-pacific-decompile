@@ -53,6 +53,22 @@ extern "C" {
 namespace bsp::game {
 namespace {
 
+// Packet cc15-bg1: the SceneBrowserGroups block (00469E40, called at 0046EBD3)
+// is parsed by scene_traffic_groups.cpp's body instead of being only recorded.
+// The native stores nothing (004694F0 discards each entry); the entries are
+// counted and the lexer leaves the block at its closing brace, where the
+// stand-in left the loop to step over the block's tokens as unknown keywords.
+constexpr bool kSceneBrowserGroupsBound = false;
+
+class SceneBrowserGroupsCounter final : public SceneBrowserGroupsHost {
+public:
+    void observe_browser_group(const SceneBrowserGroupEntry& entry) override {
+        static_cast<void>(entry);
+        ++count;
+    }
+    std::size_t count{0};
+};
+
 bool equal_insensitive(const std::string& a, const std::string& b) noexcept {
     if (a.size() != b.size()) return false;
     for (std::size_t i = 0; i < a.size(); ++i) {
@@ -1172,8 +1188,16 @@ public:
         owner_.log.implemented("SceneContents::load_groups", "00467e10");
     }
     void load_browser_groups(SceneLexer& lexer) override {
-        static_cast<void>(lexer);
-        owner_.log.unimplemented("SceneContents::load_browser_groups", "00469e40");
+        if constexpr (kSceneBrowserGroupsBound) {
+            SceneBrowserGroupsCounter counter;
+            const SceneBrowserGroupsReadResult read = read_browser_groups_after_keyword(lexer, counter);
+            owner_.log.implemented("SceneContents::load_browser_groups", "00469e40");
+            owner_.log.notef("scene browser groups: %zu entries, ok=%d%s%s", counter.count,
+                read.ok ? 1 : 0, read.error.empty() ? "" : " error=", read.error.c_str());
+        } else {
+            static_cast<void>(lexer);
+            owner_.log.unimplemented("SceneContents::load_browser_groups", "00469e40");
+        }
     }
     void resolve_deferred_references() override;
 

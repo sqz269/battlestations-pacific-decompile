@@ -405,13 +405,21 @@ int drain_stock_class_queue(VehicleClassPreloadHost& host)
 SceneBrowserGroupsReadResult read_browser_groups_block(SceneLexer& lexer,
     SceneBrowserGroupsHost& host)
 {
-    SceneBrowserGroupsReadResult result;
     std::string error;
-
     if (!expect_token(lexer, kBrowserGroupsBlockKeyword, error)) {
+        SceneBrowserGroupsReadResult result;
         result.error = error;
         return result;
     }
+    return read_browser_groups_after_keyword(lexer, host);
+}
+
+SceneBrowserGroupsReadResult read_browser_groups_after_keyword(SceneLexer& lexer,
+    SceneBrowserGroupsHost& host)
+{
+    SceneBrowserGroupsReadResult result;
+    std::string error;
+
     if (!expect_token(lexer, "{", error)) {
         result.error = error;
         return result;
