@@ -706,12 +706,12 @@ There are 16 ledger-only rows (section 4):
 
 Same checks as batch 3. A scan for absolute dwords and rel32 targets backs each "unreferenced" note and each vtable slot below.
 
-There are 11 bodies:
+There are 10 bodies (11 when first committed; 009ACD90 became ledger-only):
 - **Describes with a tail:** each appends 004B8490 text through 007B7CC0 after the base describe.
   - 009AB220, dogfight: "_follow" or "_goaway" in the go-away state (task+6A4h), then "_autoaim".
   - 009B3FF0 (land) and 009CFDD0 (takeoff): " spd:%f" with the unit's vtable[38h] speed.
   - 009D4C90, torpedo: " dr:%f  dir:%d lr:%d-%d" with 009D1500 and three task dwords.
-- **009AC7C0 / 009ACD90:** the kamikaze go-towards and aim debug draws, 41 identical instructions sharing one helper.
+- **009AC7C0:** the kamikaze go-towards debug draw. Its helper is kept; 009ACD90, the aim draw, is its exact twin (same targets) and is now ledger-only.
 - **009BB4A0 / 009BB530:** the two unreferenced tight-turn wrappers over the existing 009BB380 body.
   - 009BB4A0 takes atan2(dx, dz) and reads the heading first.
   - 009BB530 takes atan2(dz, dx), maps it to pi/2 - a in [0, 2pi), and fires only above the threshold.
@@ -757,6 +757,22 @@ There are 20 ledger-only rows (section 4). 18 match their hosts, with these note
 The other two are partial and went to the lead as candidate torpedo mismatches:
 - **009D2530**, the done/prepare enter, resets +98h to -1.0 on every entry. The host resets `torpedo_drop_timer` only at install, and done and prepare share that one timer.
 - **009D15D0**, the aim enter, clears the aim-complete byte +2Ch. The host's `torpedo_aim_complete_2c` is only ever set, so it stays true once set.
+
+### 3.52 Batch 6 (packet cc13-seg67C)
+
+Same checks as batch 5. 009ACD90 is now a ledger-only twin of 009AC7C0 (section 3.49).
+
+There are 4 bodies:
+- **009BC5C0:** the leave-alone task's describe, at 00D20670. It builds "leavealone" in a local string, takes the base describe from 009A1A90, and joins the two through 004D0860.
+- **009BDD70:** the moveto approach's state-name registrar (moveto +84h, follow +9Ch, circle +134h, registry +70h). It is unreferenced (image scan).
+- **009D6650:** the session message 9Dh constructor (three floats at +24h..+2Ch, a float at +20h, an int at +1Ch). It is unreferenced (image scan); unit_message_arms.cpp lists 9Dh as unresolved.
+- **009DBDB0:** the ship-AI path plan's destruct body. It deletes the owned node at +20h, clears the fields and sets +30h to 1.0e7. Four sites push it as an element destructor.
+
+There are 15 ledger-only rows (section 4), all compared against the named host function and its switch. All match, with these notes:
+- 009DB320 and 009DB5E0 are the same bytes. Both store 1225.0 at blk+234h and blk+29Ch, which the host labels as a gap.
+- The still-valid tests (009B81F0, 009C8060, 009D3EF0) return 2 for a null squadron and 0 for a null command. The host's `attack_task_still_valid` does not tell the two apart.
+- The two moveto speed rows match the speed law. Their +2B4h/+2B0h/+2D8h stores were not re-read at the host's call sites.
+- 009CA130, the retreat tick, takes the decrement arm when dt is NaN (FCOMI then JB). The host refreshes instead. Only a NaN dt reaches the difference.
 
 ## 4. Ledger-only records (packet cc13-seg67C)
 
@@ -846,3 +862,19 @@ The other two are partial and went to the lead as candidate torpedo mismatches:
 | 009CA820 | `st_gotowards_enter_009ca820` (game_hosts_units.cpp ~24608) | matches with the labelled substitutions |
 | 009D2530 | the done/prepare arm of `set_state` (game_hosts_units.cpp ~21909) | **partial**: no +98h reset on enter; done and prepare share one host timer; sent to the lead |
 | 009D15D0 | the aim enter redraw (game_hosts_units.cpp ~29996) | **partial**: +2Ch is never cleared in the host (sticky `torpedo_aim_complete_2c`); sent to the lead |
+| 009ACD90 | target-equal byte twin of 009AC7C0 `bot_state_kamikaze_go_towards_debug_draw_009ac7c0` | twin |
+| 009C40A0 | target-equal byte twin of 009B4670 `BSP_BotApproachLevelBomb_GetTargetPoint` (plane_level_bomb_task.cpp) | twin |
+| 009DB320 | the kamikaze arm of `select_state_for_command_009f3d00` (game_hosts_ship_ai.cpp ~2943) | matches; the blk floats are the host's labelled gap |
+| 009DB5E0 | `AttackMoveSelectorBinding::member_enter` (game_hosts_ship_ai.cpp ~4413) | matches; same bytes as 009DB320 |
+| 009D0670 | the torpedo goaway aim point (game_hosts_units.cpp ~2452) | matches |
+| 009F3E30 | `deliver_pass_side_messages` (game_hosts_ship_ai.cpp ~12314) | matches |
+| 009C3950 | `run_moveto_task_tick_009c3950` (game_hosts_units.cpp ~35170) | matches |
+| 009CFD70 | `run_takeoff_task_tick_009cfd70` (game_hosts_units.cpp ~34186) | matches |
+| 009B81F0 | `attack_task_still_valid` levelbomb row (attack_commands.cpp ~354) | matches; null squadron 2 vs null command 0 not distinguished |
+| 009C8060 | `attack_task_still_valid` divebomb row (attack_commands.cpp ~354) | as 009B81F0 |
+| 009D3EF0 | `attack_task_still_valid` torpedo row (attack_commands.cpp ~354) | as 009B81F0 |
+| 009C1850 | `moveto_speed_009c1850` (game_hosts_units.cpp ~8768) | matches; stores not re-read at host call sites |
+| 009C1BC0 | `df_moveto_speed_009c1bc0` (game_hosts_units.cpp ~23962) | matches; stores not re-read at host call sites |
+| 009CE160 | `run_takeoff_slow_step_009ce160` (game_hosts_units.cpp ~34872) | matches |
+| 009E18D0 | the land arm of `select_state_for_command_009f3d00` (game_hosts_ship_ai.cpp ~2949) | matches |
+| 009CA130 | `run_retreat_task_tick_009ca130` (game_hosts_units.cpp ~34890) | matches except a NaN dt: the image decrements, the host refreshes |

@@ -6481,13 +6481,9 @@ void* bot_task_torpedo_describe_009d4c90(Cc13Seg67bHost& host, void* task, void*
 
 // 009AC7C0 (009AC7C0-009AC86F), vtable 00D1FB98 slot: when byte
 // [0051F460()]+2Ch is set, 00860BE0(ECX = [state+4h]->vtable[0](&local), EDX = yellow
-// 00F8A40C; 5.0 [00CE3850], white 00F8A3F8, 1).
+// 00F8A40C; 5.0 [00CE3850], white 00F8A3F8, 1). 009ACD90 (at 00D1FBB4) is its exact
+// twin, ledger-only.
 void bot_state_kamikaze_go_towards_debug_draw_009ac7c0(Cc13Seg67bHost& host, void* state) {
-    kamikaze_target_sphere_draw(host, state);
-}
-
-// 009ACD90 (009ACD90-009ACE3F), at 00D1FBB4: the same 41 instructions as 009AC7C0.
-void bot_state_kamikaze_aim_debug_draw_009acd90(Cc13Seg67bHost& host, void* state) {
     kamikaze_target_sphere_draw(host, state);
 }
 
@@ -6806,6 +6802,69 @@ float byte_profile65_sample_009d6e50(Cc13Seg67bHost& host, const void* profile, 
     const float high = kTwo_00ce3958;
     host.math_clamp_in_place_00415690(angle, &low, &high);                       // 009D7013
     return static_cast<float>(result);
+}
+
+// ---------------------------------------------------------------------------
+// Batch 6 (docs 3.52)
+// ---------------------------------------------------------------------------
+
+// 009BC5C0 (009BC5C0-009BC674), at 00D20670. A local string is set up inline (capacity
+// 0Fh, size 0, empty buffer) and 00408720 assigns "leavealone" 00D206C0 (10 chars) to
+// it; base = 009A1A90(task, &temp); out = 004D0860(out, base, &name), base on the left;
+// then temp, then name are released inline (capacity +18h >= 10h frees +4h through
+// 00BF65AC; the ten-character name never allocates).
+void* bot_task_leave_alone_describe_009bc5c0(Cc13Seg67bHost& host, void* task, void* out) {
+    alignas(4) std::uint8_t name[0x1C] = {};
+    at<std::uint32_t>(name, 0x18) = 0xF;
+    host.string_assign_counted_00408720(name, "leavealone", 10);                 // 009BC5FD
+    alignas(4) std::uint8_t temp[0x1C] = {};
+    const void* const base = host.bot_task_debug_name_009a1a90(task, temp);       // 009BC60D
+    host.string_plus_string_004d0860(out, base, name);                           // 009BC622
+    if (at<std::uint32_t>(temp, 0x18) >= 0x10) host.crt_free_00bf65ac(ptr_at(temp, 0x4));
+    if (at<std::uint32_t>(name, 0x18) >= 0x10) host.crt_free_00bf65ac(ptr_at(name, 0x4));
+    return out;
+}
+
+// 009BDD70 (009BDD70-009BDDB2): 00411E70 on registry approach+70h with "moveto (moveto)"
+// 00D20998 -> +84h, "follow (moveto)" 00D20988 -> +9Ch, "circle (moveto)" 00D20978 ->
+// +134h. Unreferenced. The 009BC6B0 shape.
+void bot_approach_move_to_register_state_names_009bdd70(Cc13Seg67bHost& host, void* approach) {
+    static constexpr StateNamePair kPairs[] = {
+        {0x00D20998u, 0x84}, {0x00D20988u, 0x9C}, {0x00D20978u, 0x134}};
+    register_state_names(host, approach, 0x70, kPairs, 3);
+}
+
+// 009D6650 (009D6650-009D66A9): 0075B430(ECX = message; 9Dh); word +18h = 0, byte +1Ah =
+// 0; +4h = 1; vptr 00D0339C; +24h = a, +28h = b, +2Ch = c, +1Ch = e, +20h = d (MOVSS bit
+// copies). Unreferenced (unit_message_arms.cpp lists 9Dh as unresolved).
+void* session_message_9d_construct_009d6650(Cc13Seg67bHost& host, void* message, float a,
+                                            float b, float c, float d, std::int32_t e) {
+    host.session_message_construct_base_0075b430(message, 0x9D);                 // 009D6658
+    at<std::uint16_t>(message, 0x18) = 0;
+    at<std::uint8_t>(message, 0x1A) = 0;
+    at<std::uint32_t>(message, 0x4) = 1;
+    at<std::uint32_t>(message, 0x0) = 0x00D0339Cu;
+    at<float>(message, 0x24) = a;
+    at<float>(message, 0x28) = b;
+    at<float>(message, 0x2C) = c;
+    at<std::int32_t>(message, 0x1C) = e;
+    at<float>(message, 0x20) = d;
+    return message;
+}
+
+// 009DBDB0 (009DBDB0-009DBDE9): vptr = 00D2152C; [+20h] -> its vtable[0](1); then +24h,
+// +20h, +34h, +38h, +1Ch = 0 and +30h = 1.0e7 [00CF58EC]. Pushed by address as the
+// element destructor of the `eh vector destructor iterator` calls at 009DBDF2,
+// 009DBF41, 009DDBA1 and 009E023E.
+void ship_ai_path_plan_destruct_body_009dbdb0(Cc13Seg67bHost& host, void* plan) {
+    at<std::uint32_t>(plan, 0x0) = 0x00D2152Cu;
+    if (void* const owned = ptr_at(plan, 0x20)) host.path_node_vcall_00_scalar_delete(owned, 1);
+    at<std::uint32_t>(plan, 0x24) = 0;
+    at<std::uint32_t>(plan, 0x20) = 0;
+    at<std::uint32_t>(plan, 0x34) = 0;
+    at<std::uint32_t>(plan, 0x38) = 0;
+    at<std::uint32_t>(plan, 0x1C) = 0;
+    at<float>(plan, 0x30) = 1.0e7f;                                              // 009DBDE3
 }
 
 // 009E5220 (009E5220-009E5235): +4h = 009DF8F0() (the 0Ch self-linked sentinel; ECX is
