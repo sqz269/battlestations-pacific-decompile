@@ -17896,3 +17896,8 @@ difference is kLuaForceFireDepthChargeBound, which neither row calls). USN04 no 
 fan-outs (007ECF80) and 21 single-unit sets (006D1EB0), pair_diff 1, gameplay identical. BSM09 `bsm09_l65_b9_c` 20,3:
 20 / 10, pair_diff 1, identical, EndMission 327.04 s with the guard both ways. Both arms live and no row has a script
 SetSkillLevel on a member plane, so nothing moves. Flipped ON.
+
+### 5ii.1 `kLuaClearForcedReconLevelBound` and `kLuaSetCrewLevelBound` **ON** (unexercised, cc9-lua67, 2026-10-18)
+
+Flipped as faithful bindings with the bodies re-checked (5ii): no WINS row reaches either native (JM06's only
+ClearForcedReconLevel call is commented out; SetCrewLevel runs only in chg / multi / the commandhelpers cheat paths).
