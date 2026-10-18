@@ -71,17 +71,17 @@ type-3 values carry stale upper bytes in the image and zero here.
 | 007DF360 | src/game_hosts_units.cpp:21464 | cc9 `target_reachable_007df360` under kTorpedoLineOfSightBound (ON, main c5be2a47a), docs/OCEAN_WAVE_FIELD.md section 87. Body 007DF360-007DF4E9 (exclusive; RET 8 at 007DF4E6), thiscall(ECX = unit+C50h neighbours; target, const float* point), AL. AL = 1 means screened: an IsKindOf(6) member other than the target lies ahead of the point toward the plane with perp^2 < ([n+538h]+A0h)^2 * 0.22 (00D06BA0); the caller 009D36F3 overwrites [+A9h] with it. The host name "target_reachable" is a misnomer for that answer. Name BSP_PlaneNeighbours_LineOfSightClear kept at cc9's request (cc15-r48b; a cc15-r48a body and rename were withdrawn). |
 | 007EB0D0 | src/cc13_seg48U.cpp:694 | JMP thunk to 007E29A0, whose body is reconstructed. |
 | 007EE080 | src/band_007a_cc13.cpp:10 | Type predicate as a TypeIdRule row {BBh, 47h, 46h}. |
-| 007EE410 | src/game_hosts_units.cpp:9509 | cc9 retreat_leave_map_007ee410 (gate and message effects). |
+| 007EE410 | src/game_hosts_units.cpp:9555 | cc9 retreat_leave_map_007ee410 (gate and message effects). |
 | 007EE5C0 | src/game_hosts_script_orders.cpp:2120 | cc9 inline unstowed-member count. |
 | 007EE670 | src/game_hosts_hud.cpp:1680 | cc9 leader-active test (+361h read clear, labelled). |
-| 007EE6B0 | src/game_hosts_units.cpp:16841 | cc9 per-member break-off answers. |
-| 007EE8B0 | src/game_hosts_units.cpp:16920 | cc9 override squadron_outside_map_detached_007ee8b0. |
-| 007EF010 | src/game_hosts_units.cpp:15275 | cc9 launch-task tick sends the next member inline. |
+| 007EE6B0 | src/game_hosts_units.cpp:16887 | cc9 per-member break-off answers. |
+| 007EE8B0 | src/game_hosts_units.cpp:16966 | cc9 override squadron_outside_map_detached_007ee8b0. |
+| 007EF010 | src/game_hosts_units.cpp:15279 | cc9 launch-task tick sends the next member inline. |
 | 007EF1C0 | src/game_hosts_lua.cpp:5334 | cc9 GetProperty "state" / "ammoType" (5334, 5368). |
 | 007EFA70 | src/entity_mission_seg60_argon.cpp:1086 | JMP thunk to 00928860, whose body is reconstructed. |
-| 007F10B0 | src/game_hosts_units.cpp:4025 | cc9 list-24 push (lists 1/2 fused, labelled). |
+| 007F10B0 | src/game_hosts_units.cpp:4043 | cc9 list-24 push (lists 1/2 fused, labelled). |
 | 007F1B70 | src/air_operations.cpp:231 | release_squadron_slot per air-ops block (also game_hosts_lua.cpp:7909). |
-| 007F1DE0 | src/game_hosts_units.cpp:39980 | cc9 launch-task record construction. |
+| 007F1DE0 | src/game_hosts_units.cpp:40112 | cc9 launch-task record construction. |
 | 007F23A0 | src/plane_formation.cpp:97 | plane_formation_station_007f23a0; host game_hosts_units.cpp:8020. |
 | 007F44E0 | src/ship_sub_entity_list.cpp:48 | SubEntityProvider::SquadronPlanes append. |
 
