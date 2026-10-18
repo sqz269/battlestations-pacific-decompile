@@ -22,9 +22,8 @@ Nothing is wired.
 |---|---|---|
 | In the struck ranges 007DF000-007DFFFF and 007EE000-007F2FFF | 55 | Not touched |
 | Template bodies: list, tree and vector instantiations, `std::copy` into a back inserter (00732560), `std::operator+(const char*, const std::string&)` (007F3D40) | 27 | Tagged `stl_shape`, `reviewed`, evidence `sys6_shape` |
-| No cc9 host, reconstructed | 25 | `src/cc13_seg48U.cpp`, build-tested (0072C170, 007E29A0 and 007EC5A0 by cc13-seg48V) |
+| No cc9 host, reconstructed | 26 | `src/cc13_seg48U.cpp`, build-tested (0072C170, 007E29A0, 007EC5A0 and 007F3E50 by cc13-seg48V) |
 | Already implemented: 00730BD0 as table data (`src/unit_kind_query.cpp`), 0072AB10 (`src/unit_parts.cpp`) | 2 | Record only |
-| No cc9 host, not done in this packet: 007F3E50 | 1 | Left for a follow-up |
 | Referenced by cc9 `game_hosts_*` files (verify-and-record) | 31 | Recorded with a verdict by cc13-seg48V (see "Verify-and-record") |
 
 The template tags use the existing evidence id `sys6_shape`, because
@@ -67,6 +66,7 @@ these, and adds one named hook for every other native call:
 | 007F35C0 BSP_PlaneSquadron_GetDisplayName | thiscall(squadron), EAX | a stored name, or the function-static "." + id + "x\|" + name |
 | 007E29A0 BSP_ObserverSet_Remove | thiscall(set, entity), RET 4 | the entity's slot +4h, 006952A0 (EDX = set), then std::remove (007E1D30) over {+14h, +18h count}; game code, the stl_shape tag was a mistake |
 | 007EC5A0 BSP_PlaneFxComponent_LoadFromClass | thiscall(component; plane, byte active), RET 8 | Dying/Falling effect slots, 007EB160 or 007EB0E0, the stream-1 speed spread, and one engine per class+140h through slot 0; see "007EC5A0" below |
+| 007F3E50 BSP_PlaneSquadron_BuildDebugText | thiscall(squadron; dword unused, target*), RET 8 | builds two std::strings and two format buffers, then drops them; see "007F3E50" below |
 | 00735030 BSP_MissionNarrative_Construct | thiscall(narrative), EAX | the 58h object at game+21E8h |
 | 00733030 BSP_MissionNarrative_Reset | thiscall(narrative) | bytes +3Ch and +14h cleared |
 | 00733C80 BSP_NarrativeEntry_CopyConstruct | thiscall(entry, source), RET 4 | vtable 00CFE960, two native strings, +14h |
@@ -304,15 +304,31 @@ disk-byte disassembly 007EC5A0..007ECCBF (RET 8). It is unwired.
 - Uncertainty: the vector's first dword (the checked-iterator proxy) is never
   written by the image. The model zeroes it.
 
+## 007F3E50: the squadron debug text (cc13-seg48V)
+
+`cc13_seg48U_plane_squadron_build_debug_text_007f3e50` is transcribed from the
+disk-byte disassembly 007F3E50..007F44D6. It is unwired.
+
+- Nothing references the body. Ghidra has no xrefs, and `scan-bytes '50 3e 7f 00'`
+  finds no dword. The same scan finds 007EBF10 in its vtable, so the scan works.
+- It builds two strings, the squadron line and the target line, plus the
+  "pos" and "dist %.2f" buffers. Then it destroys them without passing them on, so
+  the output sink was probably compiled out. The first stack argument is never read.
+- The effects that remain come from the callees: the name slots, 00521EA0, 00414DB0
+  (when byte +C8h is 0), 006F7DD0, and the heap traffic of the string temporaries.
+  The model keeps their order.
+- The template string bodies (004C90D0, 004D0860, 007F3D40, 007B7E70, 007B7CC0) are
+  bind-only hooks. 007F3DF0 calls the existing cc13_seg48 reconstruction.
+
 ## Left open
-- **007F3E50 BSP_PlaneSquadron_BuildDebugText.**
+- No body from the row list is left. Open notes are in the sections above.
 
 ## Files
 
 - `include/bsp/cc13_seg48U.hpp` and `src/cc13_seg48U.cpp`, registered in
   `cmake/startup.cmake` (bsp_core).
-- 27 function records in `config/reconstruction/00720000`, `00730000`,
-  `007d0000`, `007e0000` and `007f0000.jsonl`: the 25 bodies plus 00730BD0 and 0072AB10.
+- 28 function records in `config/reconstruction/00720000`, `00730000`,
+  `007d0000`, `007e0000` and `007f0000.jsonl`: the 26 bodies plus 00730BD0 and 0072AB10.
 - 31 verify-and-record records (cc13-seg48V) in `config/reconstruction/00720000`,
   `00730000`, `007d0000`, `007e0000` and `007f0000.jsonl`, and 10 renames in
   `config/names/006f0000`, `00720000` and `00730000.jsonl`.

@@ -156,6 +156,32 @@ public:
     // __thiscall(ECX = engine; visual, node, index, float spread), RET 10h.
     virtual void plane_engine_vcall_00_init(void* engine, void* visual, std::uint32_t node, std::int32_t index,
                                             float spread) = 0;
+
+    // ---- 007F3E50 (cc13-seg48V) ----
+    // The object's vtable slot +10h: __thiscall(ECX = object); EAX = its name (C string).
+    virtual const char* object_vcall_10_name(void* object) = 0;
+    // The string bodies below are MSVC std::string template code (1Ch objects:
+    // +4h buffer or pointer, +14h size, +18h capacity), bind-only.
+    // 004C90D0 append(const string&, pos, count): __thiscall(ECX = string; source, pos, count), RET 0Ch.
+    virtual void std_string_append_substr_004c90d0(void* string, const void* source, std::uint32_t pos,
+                                                   std::uint32_t count) = 0;
+    // 004D0860 operator+(const string&, const string&): __cdecl(out, left, right), EAX = out.
+    virtual void* std_string_concat_004d0860(void* out, const void* left, const void* right) = 0;
+    // 007F3D40 operator+(const char*, const string&): __cdecl(out, left, right), EAX = out.
+    virtual void* std_string_cstr_plus_007f3d40(void* out, const char* left, const void* right) = 0;
+    // 007B7E70 operator+(const string&, const char*): __cdecl(out, left, right), EAX = out.
+    virtual void* std_string_plus_cstr_007b7e70(void* out, const void* left, const char* right) = 0;
+    // 007B7CC0 append(const char*, count): __thiscall(ECX = string; text, count), RET 8.
+    virtual void std_string_append_ptr_count_007b7cc0(void* string, const char* text, std::uint32_t count) = 0;
+    // 004E60E0 BSP_FormatString64, _vsprintf_s(dst, 40h, format, ...): __cdecl. The two
+    // argument shapes 007F3E50 uses: three doubles and one double.
+    virtual void format_string64_3d_004e60e0(char* out, const char* format, double a, double b, double c) = 0;
+    virtual void format_string64_1d_004e60e0(char* out, const char* format, double a) = 0;
+    // 00521EA0 BSP_CommandTarget_ResolveObject: __fastcall(ECX = target); EAX = object or null.
+    virtual void* command_target_resolve_object_00521ea0(const void* target) = 0;
+    // 006F7DD0 BSP_TargetDescriptor_ResolvePosition: __thiscall(ECX = target; float* out),
+    // RET 4; EAX = the position (out, or a stored vector).
+    virtual const float* target_descriptor_resolve_position_006f7dd0(const void* target, float* out) = 0;
 };
 
 // ---- gun and gun bot ----
@@ -183,6 +209,8 @@ const char* cc13_seg48U_plane_squadron_display_name_007f35c0(void* squadron, Cc1
 void cc13_seg48U_observer_set_remove_007e29a0(void* set, void* entity, Cc13Seg48UHost& host);
 void cc13_seg48U_plane_fx_component_load_from_class_007ec5a0(void* component, void* plane, std::uint8_t active,
                                                              Cc13Seg48UHost& host);
+void cc13_seg48U_plane_squadron_build_debug_text_007f3e50(void* squadron, std::uint32_t unused, const void* target,
+                                                          Cc13Seg48UHost& host);
 
 // ---- mission narrative (game+21E8h) ----
 void* cc13_seg48U_mission_narrative_construct_00735030(void* narrative, Cc13Seg48UHost& host);

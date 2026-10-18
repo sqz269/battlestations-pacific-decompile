@@ -876,6 +876,144 @@ void cc13_seg48U_plane_fx_component_load_from_class_007ec5a0(void* component, vo
     if (spread.first != nullptr) host.crt_free_00bf65ac(spread.first);                  // 007ECCA9
 }
 
+namespace {
+
+// An MSVC std::string on the stack: +4h buffer or pointer, +14h size, +18h capacity.
+struct NativeStdString {
+    alignas(4) std::uint8_t bytes[0x1C];
+};
+
+// The inlined empty construction: capacity 0Fh, size 0, buffer[0] = 0.
+void std_string_init_empty(NativeStdString& string) {
+    at<std::uint32_t>(string.bytes, 0x18) = 0xF;
+    at<std::uint32_t>(string.bytes, 0x14) = 0;
+    at<std::uint8_t>(string.bytes, 0x4) = 0;
+}
+
+// The inlined destructor: _free (00BF65AC) of the heap block when capacity >= 10h,
+// then the empty state.
+void std_string_destroy(NativeStdString& string, Cc13Seg48UHost& host) {
+    if (at<std::uint32_t>(string.bytes, 0x18) >= 0x10) host.crt_free_00bf65ac(at<void*>(string.bytes, 0x4));
+    std_string_init_empty(string);
+}
+
+std::uint32_t c_string_length(const char* text) {
+    std::uint32_t length = 0;
+    while (text[length] != '\0') ++length;
+    return length;
+}
+
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 007F3E50 BSP_PlaneSquadron_BuildDebugText (cc13-seg48V). __thiscall(ECX =
+// squadron; dword unused, const target descriptor*), RET 8. Evidence: the disk-byte
+// disassembly 007F3E50..007F44D6. There are no references: Ghidra has no xrefs,
+// and scan-bytes finds no absolute dword (a control scan for 007EBF10 finds its
+// vtable slot). The first stack argument is never read.
+// It builds two strings and two 64-byte format buffers, then destroys them all
+// without passing them anywhere. The output sink was presumably compiled out. The
+// only effects outside the frame are the callees' own: name slots, 00521EA0,
+// 00414DB0 (when byte +C8h is 0), 006F7DD0, and the heap traffic.
+//   text   = name + " #" + id(+174h) + " (" + [+3D0h count +3CCh] + " x "
+//            + [[+3D0h]+538h]+54h + ")" [+ " from " + name of +404h]
+//   target = "" [+ " unit " + name + " #" + id] [+ " pos x%.0f y%.0f z%.0f"]
+//   "dist %.2f" of |position - (+FCh, +100h, +104h)|, 0 when the square <= 1e-10
+// Strings: " #" 00D08B7C, " (" 00D08B78, " x " 00CF3A84, ")" 00CE584C, " from "
+// 00D08B70, " unit " 00D08B68, the pos format 00D08B50, "dist %.2f" 00D08B44, ""
+// 00CE3A0C; 1e-10 is the double at 00CE3820. The x87 terms are float-exact under
+// 24-bit precision; _CIsqrt (00BF7030) of a float rounds like a float sqrt.
+// ---------------------------------------------------------------------------
+void cc13_seg48U_plane_squadron_build_debug_text_007f3e50(void* squadron, std::uint32_t unused, const void* target,
+                                                          Cc13Seg48UHost& host) {
+    static_cast<void>(unused);
+    constexpr std::uint32_t npos = 0xFFFFFFFFu;
+    NativeStdString text;     // [esp+ACh]
+    NativeStdString target_text;  // [esp+90h]
+    NativeStdString s14;      // [esp+14h]
+    NativeStdString s3c;      // [esp+3Ch]
+    NativeStdString s58;      // [esp+58h]
+    NativeStdString s74;      // [esp+74h]
+    NativeStdString sc8;      // [esp+C8h]
+
+    const char* name = host.object_vcall_10_name(squadron);                             // 007F3E76
+    std_string_init_empty(text);
+    host.character_string_assign_counted_00408720(text.bytes, name, c_string_length(name));
+    cc13_seg48_debug_string_from_int_007f3df0(s3c.bytes, at<std::uint16_t>(squadron, 0x174), host);
+    std_string_init_empty(s14);
+    host.character_string_assign_counted_00408720(s14.bytes, " #", 2);
+    host.std_string_concat_004d0860(s58.bytes, s14.bytes, s3c.bytes);                   // 007F3F10
+    host.std_string_append_substr_004c90d0(text.bytes, s58.bytes, 0, npos);
+    std_string_destroy(s58, host);
+    std_string_destroy(s14, host);
+    std_string_destroy(s3c, host);
+
+    cc13_seg48_debug_string_from_int_007f3df0(sc8.bytes, at<std::int32_t>(squadron, 0x3CC), host);  // 007F3F9F
+    host.std_string_cstr_plus_007f3d40(s3c.bytes, " (", sc8.bytes);
+    host.std_string_plus_cstr_007b7e70(s74.bytes, s3c.bytes, " x ");
+    const char* const class_name = at<const char*>(at<void*>(at<void*>(squadron, 0x3D0), 0x538), 0x54);
+    host.std_string_plus_cstr_007b7e70(s14.bytes, s74.bytes, class_name);               // 007F3FF5
+    host.std_string_plus_cstr_007b7e70(s58.bytes, s14.bytes, ")");
+    host.std_string_append_substr_004c90d0(text.bytes, s58.bytes, 0, npos);             // 007F402B
+    std_string_destroy(s58, host);
+    std_string_destroy(s14, host);
+    std_string_destroy(s74, host);
+    std_string_destroy(s3c, host);
+    std_string_destroy(sc8, host);
+
+    void* const other = at<void*>(squadron, 0x404);                                      // 007F40D5
+    if (other != nullptr) {
+        const char* const other_name = host.object_vcall_10_name(other);
+        std_string_init_empty(s14);
+        host.character_string_assign_counted_00408720(s14.bytes, other_name, c_string_length(other_name));
+        host.std_string_cstr_plus_007f3d40(s3c.bytes, " from ", s14.bytes);
+        host.std_string_append_substr_004c90d0(text.bytes, s3c.bytes, 0, npos);         // 007F4149
+        std_string_destroy(s3c, host);
+        std_string_destroy(s14, host);
+    }
+
+    std_string_init_empty(target_text);
+    host.character_string_assign_counted_00408720(target_text.bytes, "", 0);            // 007F41B2
+    if (at<std::uint8_t>(target, 0x0) != 0) {
+        void* const object = host.command_target_resolve_object_00521ea0(target);       // 007F41D0
+        cc13_seg48_debug_string_from_int_007f3df0(sc8.bytes, at<std::uint16_t>(object, 0x174), host);
+        const char* const object_name = host.object_vcall_10_name(object);
+        std_string_init_empty(s14);
+        host.character_string_assign_counted_00408720(s14.bytes, object_name, c_string_length(object_name));
+        host.std_string_cstr_plus_007f3d40(s58.bytes, " unit ", s14.bytes);
+        host.std_string_plus_cstr_007b7e70(s74.bytes, s58.bytes, " #");
+        host.std_string_concat_004d0860(s3c.bytes, s74.bytes, sc8.bytes);
+        host.std_string_append_substr_004c90d0(target_text.bytes, s3c.bytes, 0, npos);  // 007F428E
+        std_string_destroy(s3c, host);
+        std_string_destroy(s74, host);
+        std_string_destroy(s58, host);
+        std_string_destroy(s14, host);
+        std_string_destroy(sc8, host);
+    }
+    if (at<std::uint8_t>(target, 0x1) != 0) {
+        char position_text[0x40];                                                         // [esp+F0h]
+        host.format_string64_3d_004e60e0(position_text, " pos x%.0f y%.0f z%.0f",
+                                         static_cast<double>(x87_float_round_trip(at<float>(target, 0x8))),
+                                         static_cast<double>(x87_float_round_trip(at<float>(target, 0xC))),
+                                         static_cast<double>(x87_float_round_trip(at<float>(target, 0x10))));
+        host.std_string_append_ptr_count_007b7cc0(target_text.bytes, position_text, c_string_length(position_text));
+    }
+
+    if (at<std::uint8_t>(squadron, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(squadron);  // 007F43CC
+    float scratch[3] = {};
+    const float* const position = host.target_descriptor_resolve_position_006f7dd0(target, scratch);
+    const float dx = position[0] - at<float>(squadron, 0xFC);
+    const float dy = position[1] - at<float>(squadron, 0x100);
+    const float dz = position[2] - at<float>(squadron, 0x104);
+    const float square = (dy * dy + dx * dx) + dz * dz;                                  // 007F4406..007F4422
+    const float distance = static_cast<double>(square) > 1e-10 ? std::sqrt(square) : 0.0f;  // 007F4430 FCOMI, JBE
+    char distance_text[0x40];                                                             // [esp+130h]
+    host.format_string64_1d_004e60e0(distance_text, "dist %.2f", static_cast<double>(distance));
+
+    std_string_destroy(target_text, host);                                               // 007F4473
+    std_string_destroy(text, host);
+}
+
 // ---------------------------------------------------------------------------
 // 007337A0 BSP_MissionNarrative_Write. __thiscall(ECX = narrative, writer), RET 4.
 // No SEH. Evidence: export listing 007337A0..00733ADF. Archive slots: +4h begin,
