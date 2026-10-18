@@ -434,3 +434,12 @@ Step-3 pairs, same tree, switch on against off. Each pair_diff is exit 1, with g
 
 - **USN11 stands in for cc9's prcp_06 / usn_10.** On this installation no menu id runs `prcp_06_2ndbattle.lua` or `usn_10_battle_of_capeengano.lua`. USN11 (`usn_06_guadalcanal_2nd_battle.lua:1330`, `VehicleClass[pEntity.Class.ID]`) is the only reached mission script with that pattern, and no shared helper script has it.
 - **USN11 takes the movie-stop path.** That is the engine-movie entry, skipped on the first in-mission frame. So its census is the first data point for 0045F6C1. A real mid-mission movie stop (BSM09's PlayBink end) is still uncensused.
+Probes after step 3 (cc15-vcp4). Both switches were flipped locally for these runs and reverted afterwards; main is unchanged.
+- **USN11, both purges on, against off (3000 frames):** exit 1, gameplay and unit table identical. 0045F6C1 purged 518 rows; script_nil_reads, lua_errors and later_host_reads are all 0. CAVEAT: it is unproven whether `usn_06_guadalcanal_2nd_battle.lua:1330` (`VehicleClass[pEntity.Class.ID]` on a GenerateObject result) is reached within 3000 frames. lua68 is to check whether a full-length USN11 run ever logs a nil read.
+- **BSM09, both purges on (census only):** run with the `l67_b9_d1` helm orders, 36200 frames.
+  - 004E0A9B purged 617 rows and kept 16.
+  - EndMission came at 411.02 s, then PlayBinkMovie `m0902.bik`.
+  - Over the whole mission, script_nil_reads, lua_errors and later_host_reads are all 0.
+  - The end movie plays through the mission-end movie player, not BSP_EngineMovie_Stop 0045F600, so it never reaches 0045F6C1.
+
+Open item for `kVehicleClassMovieStopPurgeCc15Bound` (stays OFF): a 0045F600 stop later than the first in-mission frame. No known row reaches one. In this host the only 0045F600 path is the engine-movie skip (004C6B20), on the first frame, which USN11 covers.
