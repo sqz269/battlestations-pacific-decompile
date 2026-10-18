@@ -2333,6 +2333,9 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         };
         depth_value("Dive", stored.dive_present, stored.dive_level);
         depth_value("TargetDive", stored.target_dive_present, stored.target_dive_level);
+        // Packet s57_garrison_min_level: 006F5E3F..006F5E5D, `MinLevel` from the
+        // cloned bag, its value at prop+0Ch (`E CommandBuildingLevels : Expert`).
+        depth_value("MinLevel", stored.min_level_present, stored.min_level);
     } else {
         stored.skipped_because = "the creator returned no instance";
     }

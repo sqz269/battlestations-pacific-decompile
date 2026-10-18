@@ -798,7 +798,11 @@ void ship_ai_approach_choose_standoff_009e6e80(ShipAiApproachState& state,
         sign_masked(offset)); // 009E73C0
 
     float side_weight = 0.0f;
-    if (!state.flag_1208 && state.mode_1234 == ShipAiApproachMode::free_0) {
+    // 009E73C9 TEST BL,BL / 009E73CE JE 009E7400: +1208h CLEAR takes the general
+    // arm; the side arm needs +1208h set and mode 0 (009E73D0).
+    const bool side_arm_flag = kAttackMoveApproachImageBound ? state.flag_1208
+                                                             : !state.flag_1208;
+    if (side_arm_flag && state.mode_1234 == ShipAiApproachMode::free_0) {
         if (0.0f > offset) { // 009E73D9
             side_weight = kApproachHalfTurn;
             state.speed_gate_1204 = 0; // 009E73E8

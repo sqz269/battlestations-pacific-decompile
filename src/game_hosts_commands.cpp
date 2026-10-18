@@ -18,8 +18,10 @@
 
 #include "bsp/game_hosts_commands.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
+#include "bsp/game_hosts_ai.hpp"
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/gameplay_seg46_cc13.hpp"
 
 #include "bsp/command_completion.hpp"
 #include "bsp/command_execution.hpp"
@@ -35,6 +37,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <deque>
 #include <functional>
 #include <string>
 #include <vector>
@@ -213,9 +216,12 @@ struct GameCommandsHost::Impl {
     explicit Impl(GameHostLog& log_in) : log(log_in) {}
 
     GameHostLog& log;
-    std::vector<GameCommandUnit> units;
+    // Deques, packet s57_unit_storage: descriptors and chains keep &units[i] and
+    // &directors[i] across ticks, and a spawn batch appends without moving them.
+    std::deque<GameCommandUnit> units;
     std::vector<GameFireTargetRequest> fire_target_requests;   // cc9_weapon_director_fire_target
-    std::vector<GameDirector> directors;
+    std::deque<GameDirector> directors;
+    unsigned long long unit_pointers_kept{0};   // packet s57_unit_storage census
     // Packet s53_path_multileg: 007ADD70 calls, the hits its 0.5 lookahead
     // turned away, advances taken by force alone, and steps of two or more legs.
     unsigned long long path_follow_calls{0};
@@ -1174,13 +1180,43 @@ public:
         chain_.director.mode = mode;
         chain_.owner.done("WeaponDirector::set_command_mode", 0x0071e795u);
     }
-    std::uint32_t override_command() override { return 0; }   // director+188h
+    std::uint32_t override_command() override {   // director+188h
+        return kAttackPushEndsOverrideBound ? chain_.director.override_command : 0u;
+    }
     bool session_field_f4h_is_0_or_1() override {
-        chain_.owner.record("WeaponDirector::session_echo_gate", 0x006e38e0u);
-        return false;
+        if (!kAttackPushEndsOverrideBound) {
+            chain_.owner.record("WeaponDirector::session_echo_gate", 0x006e38e0u);
+            return false;
+        }
+        // [[00E188A8]+1EF0h]+F4h is game+1FE4h, the session mode.
+        chain_.owner.done("WeaponDirector::session_echo_gate", 0x006e38e0u);
+        return kSessionModeSinglePlayer == 0 || kSessionModeSinglePlayer == 1;
     }
     void echo_command() override {
-        chain_.owner.record("WeaponDirector::echo_command", 0x0071e2e0u);
+        if (!kAttackPushEndsOverrideBound) {
+            chain_.owner.record("WeaponDirector::echo_command", 0x0071e2e0u);
+            return;
+        }
+        // 0071E2E0, body 0071E2E0-0071E361: only while +50h < 2, which it raises to 2;
+        // then, outside session mode 2, 0071C730(0, 0) routed with flags 7.
+        chain_.owner.done("WeaponDirector::echo_command", 0x0071e2e0u);
+        if (chain_.director.override_stage >= 2) return;
+        chain_.director.override_stage = 2;
+        if (kSessionModeSinglePlayer == 2) return;
+        ++chain_.owner.summary.override_push_echoes;
+        if (chain_.owner.summary.override_push_echoes <= 12) {
+            chain_.owner.log.notef("  override ended by a pushed attack order: %s, head `%s`, "
+                "override `%s` (0071E6C0 -> 0071E2E0, packet s57_override_push)",
+                chain_.unit.name.c_str(),
+                chain_.owner.life_command_name(chain_.director.slot_command[0]),
+                chain_.owner.life_command_name(chain_.director.override_command));
+        }
+        bsp::ClearCommandMessage message{};
+        message.arm = 0;
+        message.index = 0;
+        chain_.owner.done("WeaponDirector::build_clear_command", 0x0071c730u);
+        chain_.owner.route_clear_command(chain_.unit.index,
+            chain_.owner.player_of(chain_.unit.index), message);
     }
 
     // -- 00835c70's `cruise` arm -------------------------------------------
@@ -1312,9 +1348,15 @@ public:
         if (chain_.pending_target.kind == 0) return 0u;
         return chain_.pending_target.object_id;
     }
-    bool target_is_kind_of_vtable5c(std::uint32_t, int) override {
-        chain_.owner.record_slot("EntityCommandArm::target_is_kind_of", "00cfc3d0+vtable5c");
-        return false;
+    bool target_is_kind_of_vtable5c(std::uint32_t target, int kind) override {
+        if (!kSceneFollowJoinBound) {
+            chain_.owner.record_slot("EntityCommandArm::target_is_kind_of", "00cfc3d0+vtable5c");
+            return false;
+        }
+        // 00816ECA, the resolved target's IsKindOf; `target` is its id, index + 1.
+        chain_.owner.done("EntityCommandArm::target_is_kind_of", 0x00816ecau);
+        if (target == 0u || target - 1u >= chain_.owner.units.size()) return false;
+        return bsp::unit_is_kind_of(chain_.owner.units[target - 1u].class_id, kind);
     }
     bool self_is_kind_of_vtable5c(int kind) override {
         if constexpr (kEntityCommandSelfKindBound) {
@@ -1327,8 +1369,19 @@ public:
             return false;
         }
     }
-    void request_join_formation_0077c8d0(std::uint32_t) override {
-        chain_.owner.record("EntityCommandArm::request_join_formation", 0x0077c8d0u);
+    void request_join_formation_0077c8d0(std::uint32_t target) override {
+        if (!kSceneFollowJoinBound) {
+            chain_.owner.record("EntityCommandArm::request_join_formation", 0x0077c8d0u);
+            return;
+        }
+        // 00816ED5 CALL 0077C8D0, ECX = this unit, the argument the kind-2 target
+        // (null when it failed 00816ECA). The coordinator owns the 00779D50 facts and
+        // the 76h join, so the request goes to it.
+        ++chain_.owner.summary.scene_follow_requests;
+        const bool joined = target != 0u
+            && ai_request_join_formation_0077c8d0(chain_.unit.index, target - 1u);
+        if (joined) ++chain_.owner.summary.scene_follow_available;
+        chain_.owner.done("EntityCommandArm::request_join_formation", 0x0077c8d0u);
     }
     void call_0064a8e0() override {
         chain_.owner.record("EntityCommandArm::follow_tail", 0x0064a8e0u);
@@ -1604,7 +1657,27 @@ void GameCommandsHost::register_units(std::vector<GameCommandUnit> units) {
             units[i].formation_leader = host.units[i].formation_leader;
         }
     }
-    host.units = std::move(units);
+    // Packet s57_unit_storage. Director slot descriptors (+54h + i*1Ch), the
+    // override descriptor (+18Ch), the observer pairs and every ChainState hold
+    // &units[i]; 0071E200 at 0071E70C compares those pointers. Moving a new
+    // vector in on every spawn batch left them all naming freed storage, so the
+    // table is a deque updated in place: the existing rows keep their address
+    // and only the appended rows are new. The census below counts the live
+    // descriptors that the old move-assign invalidated.
+    if (!host.units.empty()) {
+        for (const GameDirector& d : host.directors) {
+            for (const bsp::SceneCommandTarget& t : d.slot_target) {
+                if (t.object != nullptr) ++host.unit_pointers_kept;
+            }
+            if (d.override_target.object != nullptr) ++host.unit_pointers_kept;
+        }
+    }
+    const std::size_t in_place = std::min(host.units.size(), units.size());
+    for (std::size_t i = 0; i < in_place; ++i) host.units[i] = std::move(units[i]);
+    if (units.size() < host.units.size()) host.units.resize(units.size());
+    for (std::size_t i = in_place; i < units.size(); ++i) {
+        host.units.push_back(std::move(units[i]));
+    }
     // Packet cc8_ship_drive. This is called again for every batch of units the
     // mission creates - GameScriptOrdersHost calls create_units at its two
     // spawn producers and create_units ends here - and it used to `assign`,
@@ -1625,6 +1698,12 @@ void GameCommandsHost::register_units(std::vector<GameCommandUnit> units) {
                 "packet cc8_ship_drive every one of the %zu was destroyed and rebuilt here, "
                 "which emptied the command queue of every unit already in the mission each "
                 "time one was created", kept, host.units.size() - kept, kept);
+        }
+        if (host.summary.director_reregistrations <= 16) {
+            host.log.notef("unit table kept in place: re-registration %zu, %llu live descriptor "
+                "pointer(s) so far that a moved vector would have left dangling (packet "
+                "s57_unit_storage)", host.summary.director_reregistrations,
+                host.unit_pointers_kept);
         }
     }
     // 0081f273 / 0081f278 leave the pair at -1.0f, which is what
@@ -2776,6 +2855,13 @@ bool GameCommandsHost::Impl::apply_clear_command(std::size_t unit_index,
         done("GameUnitMessage::clear_every_slot", 0x00720ca0u);
         return true;
     }
+    if (kAttackPushEndsOverrideBound
+        && bsp::clear_command_action(message) == bsp::ClearCommandAction::kClearOverride) {
+        // 00721B9F JZ 00721BC5 -> 0071E610, packet s57_override_push.
+        ++summary.override_push_clears;
+        clear_override_in_place(*this, unit_index);
+        return true;
+    }
     if (bsp::clear_command_action(message) != bsp::ClearCommandAction::kClearSlot) {
         return false;
     }
@@ -3240,8 +3326,9 @@ bool GameCommandsHost::build_path_object_0071f600(std::size_t unit_index,
         return false;
     }
     // 007B11F0's head: the nearest point, then its neighbour in the travel
-    // direction as a second candidate. The projection test that chooses between
-    // them (007B1263 onwards) was not read, so this takes the nearest alone.
+    // direction as a second candidate. With kPathJoinProjectionBound off the
+    // projection test that chooses between them (007B1263 onwards) is skipped and
+    // the nearest is taken alone.
     std::vector<float> flat;
     flat.reserve(points.size() * 3);
     for (const std::array<float, 3>& point : points) {
@@ -3249,8 +3336,44 @@ bool GameCommandsHost::build_path_object_0071f600(std::size_t unit_index,
         flat.push_back(point[1]);
         flat.push_back(point[2]);
     }
-    const int joined = bsp::ship_ai_path_nearest_index_007b1100(flat.data(),
+    int joined = bsp::ship_ai_path_nearest_index_007b1100(flat.data(),
         static_cast<int>(points.size()), unit_x, unit_z);
+    if (kPathJoinProjectionBound && director.path_start_mode >= 5
+        && director.path_start_mode <= 8 && director.path_start_mode != 6) {
+        // Packet s57_path_join (CC13_VERIFY7 R1): 007B1D24's vt+10h is 007B11F0 for an
+        // authored path; its projection test (007B1263..007B1303) picks the
+        // neighbour in the travel direction when the unit is already past the
+        // nearest point toward it. The travel direction is 007B1C50's: backward for
+        // mode 8, forward for 5 and (this host's choice of the draw) 7.
+        struct JoinSource final : bsp::gameplay_seg46_cc13::PathJoinSource {
+            const std::vector<std::array<float, 3>>& pts;
+            int nearest;
+            JoinSource(const std::vector<std::array<float, 3>>& p, int n) : pts(p), nearest(n) {}
+            int point_count() override { return static_cast<int>(pts.size()); }
+            int nearest_index(const bsp::gameplay_seg46_cc13::Vec3&) override { return nearest; }
+            bsp::gameplay_seg46_cc13::Vec3 point(int i) override {
+                const std::array<float, 3>& p = pts[static_cast<std::size_t>(i)];
+                return {p[0], p[1], p[2]};
+            }
+            // 00419260 BSP_Vector2f_ReciprocalLength: x*x and z*z each stored as
+            // float, their float sum, CRT sqrt (00BF7030) stored as float, then
+            // 1 / r stored as float, or 0 for a zero length (004192B3 FUCOMIP).
+            float reciprocal_length_00419260(float x, float z) override {
+                const float xx = static_cast<float>(static_cast<double>(x) * x);
+                const float zz = static_cast<float>(static_cast<double>(z) * z);
+                const float sum = static_cast<float>(static_cast<double>(xx) + zz);
+                const float r = static_cast<float>(std::sqrt(static_cast<double>(sum)));
+                if (r == 0.0f) return 0.0f;
+                return static_cast<float>(1.0 / static_cast<double>(r));
+            }
+        } source(points, joined);
+        const int projected = bsp::gameplay_seg46_cc13::start_index_for_position_007b11f0(
+            source, {unit_x, 0.0f, unit_z}, director.path_start_mode != 8);
+        ++host.summary.path_join_projections;
+        if (projected != joined) ++host.summary.path_join_advanced;
+        joined = projected;
+        host.done("PathSource::start_index_for_position_007b11f0", 0x007b11f0u);
+    }
     // 007B1C50. `random_forward` is only consulted for PATH_SM_JOIN_RANDOM_DIR,
     // and the draw 00BD2F10 makes is not reproduced: this host keeps forward,
     // which is what start modes 5 and 6 give anyway and what every USN04 call
@@ -4008,6 +4131,16 @@ void GameCommandsHost::report() {
         "00836D67 / 0071E610)", kAutoTargetOverrideBound ? 1 : 0,
         host.summary.override_sends, host.summary.override_installs,
         host.summary.override_arm_ends, host.summary.override_clears);
+    host.log.notef("summary mission director override push-end bound=%d echoes=%llu "
+        "clears=%llu (packet s57_override_push, 0071E6C0 tail -> 0071E2E0 -> 0071E610)",
+        kAttackPushEndsOverrideBound ? 1 : 0, host.summary.override_push_echoes,
+        host.summary.override_push_clears);
+    host.log.notef("summary mission scene follow join bound=%d requests=%llu available=%llu "
+        "(packet s57_follow_join, 00816ED5 -> 0077C8D0)", kSceneFollowJoinBound ? 1 : 0,
+        host.summary.scene_follow_requests, host.summary.scene_follow_available);
+    host.log.notef("summary mission path join projection bound=%d joins=%llu advanced=%llu "
+        "(packet s57_path_join, 007B1C50 -> 007B11F0)", kPathJoinProjectionBound ? 1 : 0,
+        host.summary.path_join_projections, host.summary.path_join_advanced);
     host.log.notef("summary mission director clear-all bound=%d clear_all=%llu drops=%llu "
         "slot_clears_00720ca0=%llu (packet cc9_set_command_clear_all, 0071D880 / 0071D900)",
         kSetCommandClearAllMessageBound ? 1 : 0, host.summary.clear_all_calls,

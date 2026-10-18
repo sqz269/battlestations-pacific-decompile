@@ -635,6 +635,16 @@ inline constexpr bool kLuaLastCatapultedBound = true;  // ON by its pairs (LUA_B
 // constructor value stands). False: the unimplemented row pushes nothing, which breaks
 // commandhelpers' luaCheckpoint (`GetCatapultStock(unit) > 0`) for every ship.
 inline constexpr bool kLuaGetCatapultStockBound = true;   // ON: SQUADRON_LAND_TASK 5gm
+// Packet cc13-fix14b (docs/CC13_FIX14.md). 00892AA0 GetNumCatapulted(ship): argument
+// 0 through 00888AA0; a null entity, or one that does not answer vtable[5Ch](6) (the
+// ship family), pushes integer 0 (00892BD3 PUSH EBP); a ship pushes 00953920's count
+// of its ten launch slots +550h..+628h (stride 18h) whose first dword is non-zero
+// (00892BCB, 00892BD8 00B664B0 PushInteger). One result either way. True: the row
+// answers from this host; no path here fills a launch slot (the catapult launch
+// 006EC8E0 -> 00957450 is not built), so a ship's count is 0, LABELLED. False: an
+// unimplemented record that pushes nothing (jm02's luaJM2CheckReconplanes compares
+// the nil `num`).
+inline constexpr bool kLuaGetNumCatapultedBound = false;
 inline constexpr bool kLuaFormationQueryBound = true;  // ON: mechanism matched, spread miss recorded (docs/LUA_BINDING_MISSION.md)
 
 // The process-wide 00E17BF2. It is reset from the lobby flags when a mission's settings
@@ -1103,6 +1113,8 @@ struct GameMissionLuaSummary {
     unsigned long long catapult_stock_calls{0};     // packet cc9_lua55_catapult_stock
     unsigned long long last_catapulted_nil{0};
     unsigned long long last_catapulted_not_ship{0};
+    unsigned long long num_catapulted_calls{0};     // packet cc13-fix14b
+    unsigned long long num_catapulted_not_ship{0};
     unsigned long long untouchable_calls{0};        // packet cc9_add_untouchable_unit
     unsigned long long untouchable_marked{0};
     unsigned long long untouchable_remove_calls{0};   // packet p16_lua_natives
@@ -1731,6 +1743,7 @@ public:
     int run_is_in_formation_008996a0(lua_State* state, int argument_count);
     int run_get_formation_leader_00899af0(lua_State* state, int argument_count);
     int run_get_last_catapulted_00892860(lua_State* state, int argument_count);
+    int run_get_num_catapulted_00892aa0(lua_State* state, int argument_count);
     int run_get_catapult_stock_00892de0(lua_State* state, int argument_count);
     int run_add_untouchable_unit_008ac140(lua_State* state, int argument_count);
     int run_remove_untouchable_unit_008ac2b0(lua_State* state, int argument_count);

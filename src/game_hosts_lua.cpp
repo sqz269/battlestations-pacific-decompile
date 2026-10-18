@@ -594,6 +594,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_get_last_catapulted.
     const bool last_catapulted_row = kLuaLastCatapultedBound
         && dispatch_row.address == 0x00892860u;
+    // Packet cc13-fix14b.
+    const bool num_catapulted_row = kLuaGetNumCatapultedBound
+        && dispatch_row.address == 0x00892aa0u;
     // Packet cc9_lua55_catapult_stock.
     const bool catapult_stock_row = kLuaGetCatapultStockBound
         && dispatch_row.address == 0x00892de0u;
@@ -838,6 +841,11 @@ int binding_trampoline(lua_State* state) {
     }
     if (last_catapulted_row && !host->error_replay()) {
         return host->run_get_last_catapulted_00892860(state, argc);
+    }
+    if constexpr (kLuaGetNumCatapultedBound) {
+        if (num_catapulted_row && !host->error_replay()) {
+            return host->run_get_num_catapulted_00892aa0(state, argc);
+        }
     }
     if (catapult_stock_row && !host->error_replay()) {
         return host->run_get_catapult_stock_00892de0(state, argc);
@@ -7470,6 +7478,39 @@ int GameMissionLuaHost::run_get_last_catapulted_00892860(lua_State* state,
     return 1;
 }
 
+// Packet cc13-fix14b. 00892AA0 GetNumCatapulted(ship) (__fastcall, ECX the Lua
+// state, RET): 00892B9F 00888AA0 on argument 0; 00892BB6 CMP ESI,EBP (EBP zeroed at 00892AC3) /
+// JE to 00892BD3 PUSH EBP; 00892BC3 vtable[5Ch](6), JE on false to the same zero;
+// otherwise 00892BCB 00953920 (ECX the ship), which counts the ten launch slots
+// +550h, +568h .. +628h whose first dword is non-zero; 00892BD8 00B664B0
+// PushInteger. One integer result on every path. LABELLED: no path in this host
+// fills a launch slot (the catapult launch 006EC8E0 and 00957450's slot write are
+// not built), so a ship counts 0 until the catapult adapter lands; the count is
+// bsp::ShipCatapultOffsets' slots, empty from the constructor.
+int GameMissionLuaHost::run_get_num_catapulted_00892aa0(lua_State* state,
+    int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.num_catapulted_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const bool valid = units != nullptr && id > 0
+        && static_cast<std::size_t>(id) <= units->count();
+    const bool ship = valid
+        && units->unit_is_kind_of(static_cast<std::size_t>(id - 1), bsp::kUnitKindQueryShip);
+    // 00953920 over the slots this host keeps: none is ever occupied.
+    const lua_Integer count = 0;
+    if (!ship) ++summary_.num_catapulted_not_ship;
+    if (summary_.num_catapulted_calls <= 8) {
+        const GameUnitRow* row = valid ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+        log_.notef("  GetNumCatapulted 00892aa0: \"%s\" ship=%d -> %d (%s, packet cc13-fix14b)",
+            row != nullptr ? row->name.c_str() : "?", ship ? 1 : 0, static_cast<int>(count),
+            ship ? "no launch slot is filled in this host" : "not a ship: 0");
+    }
+    log_.implemented("MissionLuaNative::GetNumCatapulted", "00892aa0");
+    ::lua_pushinteger(state, count);
+    return 1;
+}
+
 // Packet cc9_lua55_catapult_stock. 00892DE0 GetCatapultStock(entity): 00888AA0 on
 // argument 0, vtable[5Ch](5), then (x < 0) - 1 & x on unit+638h, i.e. max(x, 0);
 // any other entity, or none, pushes 0 (00892F1F). One integer result.
@@ -10076,6 +10117,11 @@ void GameMissionLuaHost::report_mission_script_state() {
         "not_ship=%llu (00892860 -> 00953A60, packet cc9_get_last_catapulted)",
         kLuaLastCatapultedBound ? 1 : 0, summary_.last_catapulted_calls,
         summary_.last_catapulted_nil, summary_.last_catapulted_not_ship);
+    if constexpr (kLuaGetNumCatapultedBound) {
+        log_.notef("summary mission script num catapulted bound=1 calls=%llu not_ship=%llu "
+            "(00892AA0 -> 00953920, packet cc13-fix14b; ships count 0, no launch slot "
+            "is filled)", summary_.num_catapulted_calls, summary_.num_catapulted_not_ship);
+    }
     log_.notef("summary mission script unlimited air bound=%d calls=%llu stored=%llu "
         "(00893C00 -> unit+1280h, packet cc9_submarine_air)", kSubmarineAirBound ? 1 : 0,
         summary_.unlimited_air_calls, summary_.unlimited_air_stored);
