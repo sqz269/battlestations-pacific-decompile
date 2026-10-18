@@ -19178,3 +19178,15 @@ reaches phase 2 (`Blackout(true, "luaMoveToPh2")`); 274 death rows, one unpublis
 held by kSquadronDeadOnLastMemberBound). TrulyDead `ptr_nulled` 32 -> 60. No mission end in the 1500 s window.
 **Decision: ON** by mechanism. Every row with a unit removed through 00814595 before the publish (kamikaze
 boats) can move; USNOS's plan goes back to ships55's phase-2 picture (section 273).
+### 287 follow-up: USNOS status on 12f8cbb1c (lead item 4)
+
+`local\s58_st2_os.log` (12f8cbb1c tree build, `s56_os_c13.txt`, 150000 frames, reference env): **no mission end in
+7500 s**, now in phase 2 (luaMoveToPh2 at 1003.88 s; wave 2 spawned at 438 s). Transports lost: TT4 at 662 s and
+TT2 at 744 s to wave-2 level bombers (#4.4|.-II, #4.6|.-III; ships55's known problem), TT1 at 2225 s to
+Airfield2_sqn61. TT3/TT5/TT6 live to the end. HQ1 (1634 s), CB2 (2222 s) and HQ2 (2446 s, then 2 -> 0 six more
+times) are neutralized, but no transport comes within the capture range, so nothing turns allied and no phase-2
+countdown starts. Loui1 and Loui2 die at 2767/2771 s with each other as last attacker (direct hits at
+344-366 m, nearest enemy 5.4-5.8 km: shells hitting a friend in the line of fire; not investigated).
+No further host fault was found on the mission path in this run. What remains is the plan: s56_os_c13 is
+open-loop on absolute frames and does not send a transport to the neutral HQs. Re-planning from section 273's
+next steps (c9/c10 picture) is the next USNOS step.
