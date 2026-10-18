@@ -1073,6 +1073,9 @@ struct GameUnitSlot {
     unsigned long long land_park_retarget{0};
     double land_park_hangar_at{-1.0};
     float land_park_last[4]{0.0f, 0.0f, 0.0f, 0.0f};   // x, z, speed request, yaw request
+    // DIAGNOSTIC (p21_stow): the last 0099D300 demand inputs.
+    float diag_thr_meas{0.0f}, diag_thr_scale{1.0f};
+    int diag_thr_skip{-1};
     unsigned long long land_found_assignments{0};
     double land_installed_at{-1.0};
     unsigned long long land_ticks{0};
@@ -7599,6 +7602,8 @@ struct GameUnitsHost::Impl {
     // Packet cc9_throttle_slot: a per-think trace of the throttle slot for the
     // Yorktown flight (dogfight) and D3A Val #1.1 (dive-bomb). Diagnostic, off.
     static constexpr bool kThrottleSlotTrace = false;
+    // DIAGNOSTIC (p21_stow): 009B22C0's carrier park inputs within 8 m of the target.
+    static constexpr bool kParkStowTrace = false;
     // Packet cc9_throttle_slot: 0099D300's speed-hold multiplier is dt in speed
     // mode (not the slot's pending distance). docs/PILOT_THROTTLE_SLOT.md.
     // OFF, measured: USN04 bomb drops 29 -> 0 (local/S0_9000.log vs
@@ -33551,6 +33556,39 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 static_cast<double>(yaw), static_cast<double>(err), slow ? 1 : 0,
                                 unit_.plane_taxi_queue_910 ? 1 : 0, unit_.land_done_18 ? 1 : 0);
                         }
+                        if constexpr (GameUnitsHost::Impl::kParkStowTrace) {
+                            const auto dot3 = [](const float* r, const float* w) {
+                                return r[0] * w[0] + r[1] * w[1] + r[2] * w[2];
+                            };
+                            if (carrier && 8.0f > f18 && (unit_.land_park_ticks % 2) == 1) {
+                                const bsp::PilotPlanSlot& th = unit_.plan_slots[bsp::kPilotSlotThrottle];
+                                const bsp::PilotPlanSlot& ab = unit_.plan_slots[bsp::kPilotSlotAirBrake];
+                                owner_.log.notef("  park stow trace %s t=%.2f st=%d f18=%.3f v=%.3f spd=%.3f "
+                                    "meas=%.3f scale=%.3f skip=%d thr=(%.4f %.4f %d) ab=(%.4f %.4f %d) "
+                                    "live=%.4f lat=%.4f lab=%.4f brake=%.3f fric=%.4f a7c=%.4f m2d8=%d bv=(%.3f %.3f %.3f) pitch=%.4f c8=%.3f",
+                                    unit_.row.name.c_str(),
+                                    static_cast<double>(owner_.summary.simulated_seconds),
+                                    unit_.plane_control_mode_900, static_cast<double>(f18),
+                                    static_cast<double>(v), static_cast<double>(spd),
+                                    static_cast<double>(unit_.diag_thr_meas),
+                                    static_cast<double>(unit_.diag_thr_scale), unit_.diag_thr_skip,
+                                    static_cast<double>(th.current), static_cast<double>(th.desired),
+                                    static_cast<int>(th.active), static_cast<double>(ab.current),
+                                    static_cast<double>(ab.desired), static_cast<int>(ab.active),
+                                    static_cast<double>(unit_.plane_live_throttle),
+                                    static_cast<double>(unit_.plane_latched_throttle),
+                                    static_cast<double>(unit_.plane_latched_air_brake),
+                                    static_cast<double>(unit_.ground_last_brake),
+                                    static_cast<double>(unit_.ground_last_friction),
+                                    static_cast<double>(unit_.plane_body_accel_7c[2]),
+                                    unit_.plane_air_brake_mode_2d8,
+                                    static_cast<double>(dot3(unit_.motion.pose_row0, unit_.plane_world_velocity)),
+                                    static_cast<double>(dot3(unit_.motion.pose_row1, unit_.plane_world_velocity)),
+                                    static_cast<double>(dot3(unit_.motion.pose_row2, unit_.plane_world_velocity)),
+                                    static_cast<double>(unit_.plane_pitch_angle_c64),
+                                    static_cast<double>(unit_.plane_speed_floor_timer_c8));
+                            }
+                        }
                         owner_.done("BotStateLandPark::tick", 0x009b22c0u);
                     }
 
@@ -36919,6 +36957,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     else ++owner_.throttle_band_skipped;
                                 }
                             }
+                            unit_.diag_thr_meas = tin.measured_speed;
+                            unit_.diag_thr_scale = tin.speed_scale;
+                            unit_.diag_thr_skip = tin.dead_band_skips ? 1 : 0;
                             const bsp::PilotBotThrottleResult tr =
                                 bsp::pilot_plan_throttle_0099d300(tin);
                             if constexpr (GameUnitsHost::Impl::kThrottleSlotTrace) {
