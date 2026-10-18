@@ -332,6 +332,12 @@ struct PropLibraryLoadResult {
 // 009514B0. `lexer` must be positioned on the `traffic` keyword. Clears the
 // record vector through the host, reads the block, then commits.
 SceneTrafficReadResult read_traffic_block(SceneLexer& lexer, SceneTrafficHost& host);
+// 009514B0 for a caller whose loop has already consumed the `traffic` keyword
+// (scene_file.cpp takes it with next(), where 0046EB24..0046EB39 only peek it
+// through 008D8A70 and 00438E10 before the call at 0046EB5B). The clear at
+// 009514B5 still runs first; only the keyword expect is skipped.
+SceneTrafficReadResult read_traffic_block_after_keyword(SceneLexer& lexer,
+    SceneTrafficHost& host);
 
 // 009512F0, exposed on its own because 009514B0 is a dispatcher around it.
 bool read_traffic_item(SceneLexer& lexer, SceneTrafficHost& host,

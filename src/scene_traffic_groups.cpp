@@ -283,17 +283,15 @@ bool read_traffic_item(SceneLexer& lexer, SceneTrafficHost& host, TrafficRecord&
 // ---------------------------------------------------------------------------
 // 009514B0 BSP_SceneFile_ReadTrafficBlock
 // ---------------------------------------------------------------------------
-SceneTrafficReadResult read_traffic_block(SceneLexer& lexer, SceneTrafficHost& host)
+namespace {
+
+// 009514B0 from its `{` expect on. The clear and the keyword expect are the
+// callers' (read_traffic_block and read_traffic_block_after_keyword).
+SceneTrafficReadResult read_traffic_block_body(SceneLexer& lexer, SceneTrafficHost& host)
 {
     SceneTrafficReadResult result;
 
-    host.clear_traffic_records();   // 009514B5
-
     std::string error;
-    if (!expect_token(lexer, kTrafficBlockKeyword, error)) {
-        result.error = error;
-        return result;
-    }
     if (!expect_token(lexer, "{", error)) {
         result.error = error;
         return result;
@@ -334,6 +332,28 @@ SceneTrafficReadResult read_traffic_block(SceneLexer& lexer, SceneTrafficHost& h
     result.ok = error.empty();
     result.error = error;
     return result;
+}
+
+} // namespace
+
+SceneTrafficReadResult read_traffic_block(SceneLexer& lexer, SceneTrafficHost& host)
+{
+    host.clear_traffic_records();   // 009514B5
+
+    std::string error;
+    if (!expect_token(lexer, kTrafficBlockKeyword, error)) {
+        SceneTrafficReadResult result;
+        result.error = error;
+        return result;
+    }
+    return read_traffic_block_body(lexer, host);
+}
+
+SceneTrafficReadResult read_traffic_block_after_keyword(SceneLexer& lexer,
+    SceneTrafficHost& host)
+{
+    host.clear_traffic_records();   // 009514B5, before the keyword expect
+    return read_traffic_block_body(lexer, host);
 }
 
 // ---------------------------------------------------------------------------
