@@ -175,9 +175,13 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
-    // 009CA4A0 / 009D0380: __thiscall(ECX = block, [bot+50h], target): the strafe and
-    // torpedo approach bases.
-    virtual void bot_approach_strafe_construct_009ca4a0(void* block, void* arg, void* target) = 0;
+    // 009FB200: __thiscall(ECX = approach target ref, target), RET 4.
+    virtual void approach_target_ref_construct_009fb200(void* ref, void* target) = 0;
+    // 007C2610: __thiscall(ECX = unit), ST0: the unit's minimum kind-21 component speed.
+    virtual float unit_min_kind21_component_speed_007c2610(void* unit) = 0;
+    // 009CA3B0: __thiscall(ECX = strafe approach): the glide seed (draws from 00BD2F10).
+    virtual void bot_approach_strafe_seed_glide_009ca3b0(void* approach) = 0;
+    // 009D0380: __thiscall(ECX = block, [bot+50h], target): the torpedo approach base.
     virtual void bot_approach_torpedo_construct_009d0380(void* block, void* arg, void* target) = 0;
     // 009BC780: __thiscall(ECX = move-on-path approach, [bot+50h]), RET 4.
     virtual void bot_approach_move_on_path_construct_009bc780(void* block, void* arg) = 0;
@@ -822,5 +826,8 @@ void* bot_state_torpedo_attack_run_construct_009d06d0(Cc13Seg67bHost& host, void
 // 009CD420: __thiscall(ECX = approach, plane), RET 4, EAX = approach.
 void* bot_approach_takeoff_construct_009cd420(Cc13Seg67bHost& host, void* approach,
                                               void* plane);
+// 009CA4A0: __thiscall(ECX = approach, arg, target), RET 8, EAX = approach.
+void* bot_approach_strafe_construct_009ca4a0(Cc13Seg67bHost& host, void* approach, void* arg,
+                                             void* target);
 
 }  // namespace bsp

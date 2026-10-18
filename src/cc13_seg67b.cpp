@@ -3433,7 +3433,7 @@ constexpr StateNamePair kTakeoffStateNamePairs[] = {
 // and is copied here. EH unwinding not modelled.
 void* strafe_construct_approach_block_009cc020(Cc13Seg67bHost& host, void* block, void* bot,
                                                void* target) {
-    host.bot_approach_strafe_construct_009ca4a0(block, ptr_at(bot, 0x50), target);
+    bot_approach_strafe_construct_009ca4a0(host, block, ptr_at(bot, 0x50), target);
     host.bot_state_registry_construct_00411e20(ptr(block, 0xD4));
     const float third = at<float>(block, 0x38);
     const float far_ = at<float>(block, 0x40);
@@ -3625,6 +3625,77 @@ void* bot_approach_takeoff_construct_009cd420(Cc13Seg67bHost& host, void* approa
     if (host.object_vcall_5c(plane, 0x13)) at<float>(approach, 0x30) = kFifteen_00ce5380;
     if (host.object_vcall_5c(plane, 0x10)) at<float>(approach, 0x30) = kTwentyFive_00ce89cc;
     at<float>(approach, 0x2C) = at<float>(approach, 0x30) + at<float>(approach, 0x34);
+    return approach;
+}
+
+// ---------------------------------------------------------------------------
+// The strafe approach base.
+
+namespace {
+constexpr std::uint32_t kStrafeApproachVtable_00d20fc8 = 0x00D20FC8u;
+constexpr float kOnePointZeroFive_00ce780c = 1.05f;      // 3F866666
+constexpr float kOnePointOne_00ce6448 = 1.1f;            // 3F8CCCCD
+constexpr double kPointEight_00ce3d40 = 0.800000011920929;   // 3FE99999A0000000
+constexpr double kOnePointFour_00d045f0 = 1.399999976158142;  // 3FF6666660000000
+constexpr float kThirtySixHundred_00cfdeb0 = 3600.0f;    // 45610000
+}  // namespace
+
+// 009CA4A0 (BSP_BotApproachStrafe_Construct): __thiscall(ECX = approach, arg, target),
+// RET 8, EAX = approach. Evidence (disk bytes): 009F9CE0(ECX = approach, arg, tuning
+// +65Ch) (009CA4C0-009CA4D6); vtable 00D20FC8 (009CA4F6). With u = [approach+14h]
+// reloaded before each use: A = 00BD2F10(1, [00CE3860] 0.9, [00CE780C] 1.05) x u+DCh
+// (009CA4DB-009CA50A); B = float(tuning+658h x double [00CE3D40] 0.8) (009CA50E-
+// 009CA51F); FCOMI then JBE keeps A when A <= B or unordered, else B (009CA523-
+// 009CA53F); +34h = that x +24h (009CA548-009CA557); +38h = RNG(1, 0.9, [00CE6448]
+// 1.1) x u+230h x +24h (009CA55A-009CA586); +44h = [00CFDEB0] 3600.0, byte +50h = 0,
+// +3Ch = RNG(1, 0.9, 1.1) x u+D8h x +24h, +54h = 0 (009CA589-009CA5C6); 009FB200(ECX
+// = approach+58h, target) (009CA5CD); +CCh = 1.0, +D0h = -RNG(1, 0, 1) (009CA5D2-
+// 009CA604); +4Ch = 007C2610(ECX = [approach+4]) (009CA60A-009CA612); +54h = target
+// when target is non-null and passes vtable[5Ch](41h), else 0 (009CA615-009CA62C);
+// 009CA3B0(ECX = approach) (009CA62F); when [approach+4] passes vtable[5Ch](10h) or
+// (16h): +34h and +3Ch scaled by double [00D045F0] 1.4 (009CA634-009CA668).
+// UNCERTAINTY: products are rounded at 24-bit precision in the image; the double-
+// constant products here round to double then to float (53-bit would match this). The
+// RNG results are rounded from ST0 by the hook. EH unwinding not modelled.
+void* bot_approach_strafe_construct_009ca4a0(Cc13Seg67bHost& host, void* approach, void* arg,
+                                             void* target) {
+    const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x65C);
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, arg, speed);
+    void* u = ptr_at(approach, 0x14);
+    at<std::uint32_t>(approach, 0x00) = kStrafeApproachVtable_00d20fc8;
+    const float a =
+        host.random_uniform_00bd2f10(1, kPointNine_00ce3860, kOnePointZeroFive_00ce780c) *
+        at<float>(u, 0xDC);
+    const float b = static_cast<float>(
+        static_cast<double>(at<float>(host.game_tuning_singleton_0042e740(), 0x658)) *
+        kPointEight_00ce3d40);
+    // JBE after FCOMI(A, B): A is kept when A <= B or the compare is unordered.
+    const float m = a > b ? b : a;
+    at<float>(approach, 0x34) = m * at<float>(approach, 0x24);
+    u = ptr_at(approach, 0x14);
+    const float r2 = host.random_uniform_00bd2f10(1, kPointNine_00ce3860, kOnePointOne_00ce6448);
+    at<float>(approach, 0x38) = r2 * at<float>(u, 0x230) * at<float>(approach, 0x24);
+    u = ptr_at(approach, 0x14);
+    const float r3 = host.random_uniform_00bd2f10(1, kPointNine_00ce3860, kOnePointOne_00ce6448);
+    at<float>(approach, 0x44) = kThirtySixHundred_00cfdeb0;
+    at<std::uint8_t>(approach, 0x50) = 0;
+    at<float>(approach, 0x3C) = r3 * at<float>(u, 0xD8) * at<float>(approach, 0x24);
+    at<std::uint32_t>(approach, 0x54) = 0;
+    host.approach_target_ref_construct_009fb200(ptr(approach, 0x58), target);
+    at<float>(approach, 0xCC) = kOne_00d7a24c;
+    at<float>(approach, 0xD0) = -host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    at<float>(approach, 0x4C) =
+        host.unit_min_kind21_component_speed_007c2610(ptr_at(approach, 0x4));
+    const bool keep = target != nullptr && host.object_vcall_5c(target, 0x41);
+    at<std::uintptr_t>(approach, 0x54) = keep ? reinterpret_cast<std::uintptr_t>(target) : 0;
+    host.bot_approach_strafe_seed_glide_009ca3b0(approach);
+    void* owner = ptr_at(approach, 0x4);
+    if (host.object_vcall_5c(owner, 0x10) || host.object_vcall_5c(owner, 0x16)) {
+        at<float>(approach, 0x34) = static_cast<float>(
+            static_cast<double>(at<float>(approach, 0x34)) * kOnePointFour_00d045f0);
+        at<float>(approach, 0x3C) = static_cast<float>(
+            kOnePointFour_00d045f0 * static_cast<double>(at<float>(approach, 0x3C)));
+    }
     return approach;
 }
 

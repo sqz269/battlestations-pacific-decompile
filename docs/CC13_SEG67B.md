@@ -391,3 +391,14 @@ The task constructors 009CC230, 009D3050 and 009CF8E0 now call these bodies dire
 | 009CB500 | strafe goaway state | vtable 00D2103C; four draws from the RNG 00BD2F10 on stream 1: +30h and +3Ch from U(0, 5.0), +44h = -U(0, 1), +18h from U(0.3, 0.9) |
 | 009CAC80 / 009D06D0 | strafe and torpedo attackrun states | the 009A36A0 shape (+18h = 1.0, +1Ch = -U(0, 1), +20h = 0.0) with vtables 00D21004 / 00D212C4 |
 | 009CD420 | takeoff approach base | 009F9CE0 with 9999.0; +34h = the plane's +100h when the plane has a holder (+BF4h); +30h = 15.0, or 25.0 when the plane passes the 10h kind test; +2Ch = +30h + +34h |
+
+### 3.27 Strafe approach base
+
+009CA4A0 builds the strafe approach on 009F9CE0 (tuning +65Ch) with vtable 00D20FC8. It makes four draws from the RNG 00BD2F10 on stream 1:
+- +34h = min(U(0.9, 1.05) x u+DCh, tuning+658h x 0.8) x +24h; the first value is kept when the compare is unordered.
+- +38h = U(0.9, 1.1) x u+230h x +24h.
+- +3Ch = U(0.9, 1.1) x u+D8h x +24h.
+- +D0h = -U(0, 1).
+- The glide seed 009CA3B0, called near the end, draws on its own.
+
+It also sets +44h = 3600.0, takes +4Ch from 007C2610, and keeps the target at +54h only when the target passes the 41h kind test. Kinds 10h and 16h scale +34h and +3Ch by 1.4.
