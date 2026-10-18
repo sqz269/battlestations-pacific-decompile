@@ -20,7 +20,29 @@
 #include "bsp/native_session_message_tags_90_to93.hpp"
 #include <memory>
 
+namespace bsp::game {
+struct GunAimMessage79;
+}
+
 namespace bsp {
+
+// cc15-smA. True: the MT_VEHICLE_GUN_CONTROL (79h) that 005484F0 builds with
+// 00954A10 (005489DA) and routes per group entry with 0077C2A0(flags 3) at
+// 00548A1F reaches 00959C20 as the copy 0076E520 rebuilds from its bits
+// (0075FFF0 write; 00768530 case 79h, jump table 0076A298+78h*4 = 00769132:
+// operator new(3Ch), 0075FF60; 0076A27B vtable+8 = 007600D0 read; vtable
+// 00D032D0 read from the PE). The angles are 005484F0's (00521370 on the
+// mover's forward row, 0054884D) with 00954A10's +30h clamp to +/-1.57f;
+// on the copy +2Ch/+30h are 18-bit over 6.3 (00D032E4), the camera raw
+// (FLT_MAX, 00D7A248), the group 3 bits, the bools 1 bit, the target id 12
+// bits (kept as posted while has-target is set: this host's ids exceed 12
+// bits). ABI: 00954A10 __thiscall RET 28h (group, x, y, z, yaw, pitch, held,
+// pressed, has_target, id); 0075FFF0 / 007600D0 __thiscall RET 4.
+// UNCERTAIN: delivery stays in place at the route (the image delivers at the
+// drain); 00521370's atan2 is the double one (x87 may differ in the last
+// bit). False: the posted value, angles recomputed from `forward` at
+// delivery. The pair is cc15's; cc9 flips.
+inline constexpr bool kGunAimMessageCc15Bound = false;
 
 class HostSessionMessages {
 public:
@@ -48,6 +70,20 @@ public:
     // the command ordinal, the flags bit, the target. The copy is destroyed
     // (00764CF0) here because the record is all the delivery reads.
     EntityOrderMessage queue_command_88(const EntityOrderMessage& posted) const;
+
+    // MT_VEHICLE_GUN_CONTROL (79h, cc15-smA): 00954A10 at 005489DA over the
+    // HUD's posted fields, routed by 0077C2A0 at 00548A1F (flags 3, local
+    // bit), through 0076E520's local copy (0075FFF0 write, 00768530 case 79h
+    // at 00769132: 0075FF60, then 007600D0 read). 00954A10 takes the two
+    // angles 005484F0 made with 00521370 from the mover's forward row
+    // (0054884D), so they are made here from `posted.forward`. Returns the
+    // posted value with the copy's fields: group (3 bits), camera (raw),
+    // +2Ch yaw and +30h pitch (18 bits over 6.3, 00D032E4), the three bools,
+    // and `angles_carried` set. The target id is the posted one while the
+    // has-target bit is set: the copy carries 12 bits and this host's ids do
+    // not fit. The drain's delete (007605F0) only restamps +0h, so the copy
+    // ends here.
+    game::GunAimMessage79 queue_gun_aim_79(const game::GunAimMessage79& posted) const;
 
 private:
     struct Image;

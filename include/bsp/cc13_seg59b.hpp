@@ -410,6 +410,27 @@ struct Seg59bHost {
     // The checked iterator ++ instantiation at `callee` (0057F4A0, 0057F920, 0057F580, 0057F5F0,
     // 004FBD20), __thiscall(ECX = it), RET. Bound library code.
     virtual void tree_iterator_increment(std::uint32_t callee, StlTreeIterator* it) = 0;
+
+    // --- 00912A60 achievement counters ----------------------------------------------------------
+    // The _Buynode head instantiation at `callee` (00907D40, 005828E0), __thiscall(ECX = tree),
+    // RET; EAX = the new head node (the caller sets isnil and the links).
+    virtual void* tree_buy_head_node(std::uint32_t callee, void* tree) = 0;
+    // 00910F10 std::map<uint32, vector<float>>::operator[], __thiscall(ECX = map, key*), RET 4;
+    // EAX = &vector (node+10h).
+    virtual void* float_vector_map_index_00910f10(void* map, const std::uint32_t* key) = 0;
+    // 0045AFD0 vector<float>::push_back, __thiscall(ECX = vector, const float*), RET 4.
+    virtual void float_vector_push_back_0045afd0(void* vector, const void* value) = 0;
+    // 00667EB0 std::map<uint32, int>::operator[], __thiscall(ECX = map, key*), RET 4; EAX = &int.
+    virtual std::int32_t* int_map_index_00667eb0(void* map, const std::uint32_t* key) = 0;
+    // 0090D220 std::_Sort<float*>, register ABI (ECX = first, EDX = last, ideal pushed), RET 4.
+    // Bound library code.
+    virtual void float_sort_0090d220(float* first, float* last, std::int32_t ideal) = 0;
+    // 0090CA30 STL_Vector_EraseRange, __thiscall(ECX = vector, result*, first {vector, ptr},
+    // last {vector, ptr}), RET 14h.
+    virtual void vector_erase_range_0090ca30(void* vector, StlTreeIterator first, StlTreeIterator last) = 0;
+    // The tree erase(first, last) instantiation at `callee` (0058B000, 0090F3D0), __thiscall(ECX =
+    // tree, result*, first, last), RET 14h.
+    virtual void tree_erase_range(std::uint32_t callee, void* tree, StlTreeIterator first, StlTreeIterator last) = 0;
     // 00419CC0 BSP_SizedStoragePool_GetSingleton (no args); 00BD1510 ReturnBlock,
     // __thiscall(ECX = pool, data, bytes, flag), RET 0Ch.
     virtual void* sized_pool_singleton_00419cc0() = 0;
@@ -533,6 +554,26 @@ struct Seg59bHost {
     // 008EF650 / 008EEA80, __fastcall(ECX = iterator): the hash iterator's begin / next copies.
     virtual void hash64_iterator_begin_008ef650(Hash64Iterator* iterator) = 0;
     virtual std::uint32_t hash64_iterator_next_008eea80(Hash64Iterator* iterator) = 0;
+    // 0075B430, __thiscall(ECX = message, type), RET 4: the session message base constructor.
+    virtual void session_message_construct_base_0075b430(void* message, std::int32_t type) = 0;
+    // 0076A9F0, __thiscall(ECX = game+1EF0h; message, flag), RET 8: thunk to 00784790 with
+    // ECX = [ECX+188h], the session send.
+    virtual void session_forward_message_0076a9f0(void* session, void* message, std::int32_t flag) = 0;
+    // 00625F50, __thiscall(ECX = map, const NativeString* key), RET 4: the NativeString-keyed map
+    // subscript (lower_bound 0061E650, insert 00625AB0); 0091A080 adds into [EAX+8].
+    virtual void* string_record_map_index_00625f50(void* map, const void* key) = 0;
+    // 0043E9A0 BSP_NativeString_MatchesAtOffset, __thiscall(ECX = string, other, offset), RET 8; AL.
+    virtual bool native_string_matches_at_0043e9a0(const void* string, const void* other, std::uint32_t offset) = 0;
+    // 004BCA50 BSP_Game_GetEffectiveGameMode, __thiscall(ECX = [00E188A8]), RET; EAX.
+    virtual std::uint32_t game_effective_mode_004bca50(void* game) = 0;
+    // [00F8A2FC]->vtable[198h](), __thiscall(ECX = object), RET; AL (0091E6AE).
+    virtual bool session_object_query_vt198(void* object) = 0;
+    // 005097D0 BSP_Profile_GetNamedCounter, __thiscall(ECX = game+650h, const NativeString*), RET 4; EAX.
+    virtual std::int32_t profile_get_named_counter_005097d0(void* profile, const void* name) = 0;
+    // 00574050 BSP_SessionFilter_ReadRankSetting, __thiscall(ECX = game+650h), RET; AL.
+    virtual std::uint8_t profile_rank_00574050(void* profile) = 0;
+    // 0090BF50 BSP_MissionProgress_SumMultiScores, __thiscall(ECX = [game+6B4h]), RET; EAX.
+    virtual std::int32_t mission_progress_sum_multi_scores_0090bf50(void* progress) = 0;
 };
 
 // --- Torpedo bot (vtable 00D182B0) ---------------------------------------------------------
@@ -787,6 +828,37 @@ void scoring_record_hit_damage_00915f20(Seg59bHost& host, void* scoring, void* t
 // counter map at record+78h and grants (0090EDE0) each counter that reached its award threshold
 // and is not yet in the awards map at record+6Ch.
 void score_record_evaluate_badge_counters_00911e80(Seg59bHost& host, void* record);
+// 00912A60, __fastcall(ECX = record = scoring + slot*284h + 4), RET: rebuilds the RUA_* / GA_*
+// counter map at record+84h from the kill list, the GA_PL vector and two local trees, and grants
+// (0090EDE0, value = the count) each counter that reached its threshold and is not yet awarded.
+void score_record_evaluate_achievement_counters_00912a60(Seg59bHost& host, void* record);
+// 0090ABB0, __thiscall(ECX = record = scoring + slot*284h + 4), RET: on a multiplayer server
+// ([game+1FE4h] == 1, byte [game+218Ch] == 0) sends the record as type-15h messages through
+// 0076A9F0: the kind-0 header, then one message per map entry (kinds 2..13h).
+void score_record_send_sync_0090abb0(Seg59bHost& host, void* record);
+// 0091A080, __thiscall(ECX = destination record, source record), RET 4: merges a mission score
+// record into the progress map's record (counts and maps added, best score per src+8h index).
+void score_record_merge_0091a080(Seg59bHost& host, void* destination, void* source);
+// 0091D780's stack frame at ESP after its four register pushes (S+0..S+8Bh; the EH state slot
+// S+8Ch is not modelled). The sub-range functions below share it at the image's offsets.
+struct CampaignAwardsFrame0091d780 {
+    alignas(8) std::uint8_t bytes[0x8C];
+};
+// 0091D780 sub-range 1, 0091D780..0091E15E: the frame set-up and the campaign-finish awards
+// (CA_SA / CA_CUM for USN01..USN14, CA_OF / CA_CJM for IJN01..IJN14).
+void campaign_awards_finish_part_0091d780(Seg59bHost& host, void* record, CampaignAwardsFrame0091d780& state);
+// 0091D780 sub-range 2, 0091E15F..0091E697: the CA_IC and CA_VR mode awards on the same frame.
+void campaign_awards_mode_part_0091e15f(Seg59bHost& host, CampaignAwardsFrame0091d780& state);
+// 0091D780 sub-range 3, 0091E698..0091F2E2: the [00F8A2FC] gate and the Counter_CA_US / Counter_CA_JP
+// passes. false = the gate's jump to 0091FF24; true = fall through to 0091F2E3.
+bool campaign_awards_counter_part_0091e698(Seg59bHost& host, CampaignAwardsFrame0091d780& state);
+// 0091D780 sub-range 4, 0091F2E3..0091FF23: Counter_CA_HOS / WOG / AA / FA and the RANK pass.
+void campaign_awards_rank_part_0091f2e3(Seg59bHost& host, CampaignAwardsFrame0091d780& state);
+// 0091D780 sub-range 5, 0091FF24..0091FFFF: the five frame strings released.
+void campaign_awards_teardown_0091ff24(Seg59bHost& host, CampaignAwardsFrame0091d780& state);
+// 0091D780, __fastcall(ECX = record = scoring + slot*284h + 4), RET: the whole body, sub-ranges
+// 1..5 in the image's order with the 0091FF24 jumps.
+void score_record_evaluate_campaign_awards_0091d780(Seg59bHost& host, void* record);
 
 
 }  // namespace bsp::cc13_seg59b

@@ -108,6 +108,18 @@ NOISE = [
         "pattern": re.compile(r"^(\s*ship avoidance search:.*\brefills=)\d+"),
     },
     {
+        "id": "free-bearing-empty",
+        "why": "`summary mission ship ai free bearing ... empty=N` is search-cache variance, the avoidance-refills cause (23521 vs 22551 on identical OFF/OFF runs of one binary, cc15-dirq1, 2026-10-18)",
+        "kind": "mask",
+        "pattern": re.compile(r"^(\s*(?:summary )?mission ship ai free bearing .*\bempty=)\d+"),
+    },
+    {
+        "id": "free-bearing-refills",
+        "why": "`summary mission ship ai free bearing ... refills=N`, the same search-cache variance (152 vs 131 on identical OFF/OFF runs, cc15-dirq1, 2026-10-18)",
+        "kind": "mask",
+        "pattern": re.compile(r"^(\s*(?:summary )?mission ship ai free bearing .*\brefills=)\d+"),
+    },
+    {
         "id": "ring-scan-clear-37c",
         "why": "the ring-scan table's clear_37c column reads the 9999.0 sentinel or FLT_MAX by heap state (the uninitialised searcher bounds; docs/SHIP_AI_OPEN_ITEMS.md section 140); only those two values are masked",
         "kind": "mask",

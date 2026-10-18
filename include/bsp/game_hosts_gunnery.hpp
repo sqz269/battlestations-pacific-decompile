@@ -557,6 +557,12 @@ struct GunAimMessage79 {
     // msg+2Ch, the group 4 arm's world yaw (0095A210), in this host's world
     // heading convention (atan2(x, z)).
     float yaw_2c{0.0f};
+    // cc15-smA: msg+30h, the pitch 00954A10 clamped. Set, with yaw_2c, when
+    // the value is the copy 0076E520 rebuilt (HostSessionMessages::
+    // queue_gun_aim_79); 00959C20's arms then take +2Ch/+30h as the image
+    // does instead of recomputing them from `forward`.
+    float pitch_30{0.0f};
+    bool angles_carried{false};
 };
 
 // One projectile in flight, as 006E8430 created it.

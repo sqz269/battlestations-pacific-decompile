@@ -3,6 +3,7 @@
 // docs/CC13_SYS_3.md for the evidence, the original ABIs and what is not claimed.
 
 #include "bsp/engine_seg11_35_66_cc13.hpp"
+#include "bsp/oct18_tail_c.hpp"
 
 #include <windows.h>
 #include <intrin.h>
@@ -2738,3 +2739,884 @@ void update_fish_school_00707b00(FishSchoolDescLayout& school, float dt, FishUpd
 }
 
 }  // namespace bsp::engine_seg11_35_66_cc13
+
+// Lane oct18-tC: this already-registered TU is separately leased. Keeping the
+// leaves here avoids changing the concurrently leased CMake source registry.
+// Each naked getter retains the original one-load/LEA + RET sequence, including
+// the unspilled ST0 result of FLD. No fabricated layout or dependency stubs.
+namespace bsp::oct18_tail_c {
+__declspec(naked) const void* __fastcall accepted_invite_info_00a3e460(const void*) {
+    __asm { lea eax, [ecx + 32h] }
+    __asm { ret }
+}
+__declspec(naked) void __fastcall enumerate_input_noop_00a90ed0(void*) {
+    __asm { ret }
+}
+__declspec(naked) std::uint8_t __fastcall gui_layer_visible_00aa38e0(const void*) {
+    __asm { mov al, byte ptr [ecx + 0f5h] }
+    __asm { ret }
+}
+void set_pointer_activation_reader_00aa6be0(std::uint32_t& image_f8bc84,
+                                          std::uint32_t reader) {
+    image_f8bc84 = reader;
+}
+void set_selection_callback_00aab5e0(std::uint32_t& image_f8bcfc,
+                                    std::uint32_t callback) {
+    image_f8bcfc = callback;
+}
+__declspec(naked) std::uint32_t __fastcall terrain_field3c_00ad56d0(const void*) {
+    __asm { mov eax, dword ptr [ecx + 3ch] }
+    __asm { ret }
+}
+__declspec(naked) float __fastcall foliage_scalar0c_00ad5720(const void*) {
+    __asm { fld dword ptr [ecx + 0ch] }
+    __asm { ret }
+}
+__declspec(naked) std::uint32_t __fastcall foliage_bush_texture_00ad57d0(const void*) {
+    __asm { mov eax, dword ptr [ecx + 9ch] }
+    __asm { ret }
+}
+__declspec(naked) std::uint32_t __fastcall foliage_bush_normal_texture_00ad57e0(const void*) {
+    __asm { mov eax, dword ptr [ecx + 0a0h] }
+    __asm { ret }
+}
+__declspec(naked) float __fastcall atmosphere_time_of_day_00bbdd30(const void*) {
+    __asm { fld dword ptr [ecx + 20h] }
+    __asm { ret }
+}
+__declspec(naked) float __fastcall atmosphere_sky_blend_00bbdd40(const void*) {
+    __asm { fld dword ptr [ecx + 28h] }
+    __asm { ret }
+}
+__declspec(naked) const void* __fastcall atmosphere_wind_direction_00bbdd60(const void*) {
+    __asm { lea eax, [ecx + 2ch] }
+    __asm { ret }
+}
+__declspec(naked) float __fastcall atmosphere_wind_speed_00bbdd70(const void*) {
+    __asm { fld dword ptr [ecx + 38h] }
+    __asm { ret }
+}
+__declspec(naked) std::uint32_t __fastcall atmosphere_skybox_00bbddb0(const void*) {
+    __asm { mov eax, dword ptr [ecx + 18h] }
+    __asm { ret }
+}
+} // namespace bsp::oct18_tail_c
+
+// Lane tC batch 2: actual borrowed storage and mandatory dependency contracts.
+namespace bsp::oct18_tail_c {
+namespace {
+using CWord = std::uint32_t;
+template<class T> T c_read(const void* p, std::size_t offset = 0) {
+    T value;
+    std::memcpy(&value, static_cast<const unsigned char*>(p) + offset, sizeof value);
+    return value;
+}
+template<class T> void c_write(void* p, std::size_t offset, T value) {
+    std::memcpy(static_cast<unsigned char*>(p) + offset, &value, sizeof value);
+}
+void* c_at(void* p, CWord offset) {
+    return reinterpret_cast<void*>(reinterpret_cast<CWord>(p) + offset);
+}
+template<class R, class... Args> R c_virtual(void* p, CWord slot, Args... args) {
+    const auto table = c_read<const unsigned char*>(p);
+    const auto target = c_read<R (__thiscall*)(void*, Args...)>(table, slot);
+    return target(p, args...);
+}
+void* c_first_entity(void* group, CheckedIterator checked) {
+    void* const head = c_read<void*>(group, 0x5640);
+    void* const node = c_read<void*>(head);
+    if (node == head) checked();
+    return c_read<void*>(node, 8);
+}
+const float* c_leader_point(void* group, const AiBindings& b) {
+    if (c_read<CWord>(group, 0x5644) == 0) return b.zero_vector_f87574;
+    void* const entity = c_first_entity(group, b.checked_iterator_bf6713);
+    if (c_read<std::uint8_t>(entity, 0xc8) == 0) b.refresh_pose_00414db0(entity);
+    return static_cast<const float*>(c_at(entity, 0xfc));
+}
+void c_fld_store(float* destination, const float* source) {
+    __asm { mov eax, source }
+    __asm { mov edx, destination }
+    __asm { fld dword ptr [eax] }
+    __asm { fstp dword ptr [edx] }
+}
+void c_release_ref(void* owner) {
+    if (owner && InterlockedDecrement(static_cast<volatile LONG*>(c_at(owner, 4))) == 0)
+        c_virtual<void>(owner, 0);
+}
+}
+__declspec(naked) std::uint32_t __fastcall active_user_slot_00a3eac0(const void*) {
+    __asm { mov eax, dword ptr [ecx + 11ch] }
+    __asm { ret }
+}
+__declspec(naked) void __fastcall node_local_position_00b6dab0(void*, void*, const void*) {
+    __asm {
+        mov eax, dword ptr [esp + 4]
+        fld dword ptr [eax]
+        lea edx, [ecx + 0b0h]
+        fstp dword ptr [ecx + 0e0h]
+        mov dword ptr [esp + 4], edx
+        fld dword ptr [eax + 4]
+        fstp dword ptr [ecx + 0e4h]
+        fld dword ptr [eax + 8]
+        mov eax, dword ptr [ecx]
+        mov eax, dword ptr [eax + 38h]
+        fstp dword ptr [ecx + 0e8h]
+        jmp eax
+    }
+}
+bool ai_group_contains_entity_00a2c720(void* group, void* entity, CheckedIterator checked) {
+    void* node = c_read<void*>(c_read<void*>(group, 0x5640));
+    for (;;) {
+        void* const head = c_read<void*>(group, 0x5640);
+        if (c_at(group, 0x563c) == nullptr) checked();
+        if (node == head) return false;
+        if (c_at(group, 0x563c) == nullptr) checked();
+        if (node == c_read<void*>(group, 0x5640)) checked();
+        if (c_read<void*>(node, 8) == entity) return true;
+        if (node == c_read<void*>(group, 0x5640)) checked();
+        node = c_read<void*>(node);
+    }
+}
+void ai_enable_torpedoes_00a11af0(void* command, const AiBindings& b) {
+    void* const group = c_read<void*>(command, 4);
+    void* node = c_read<void*>(c_read<void*>(group, 0x5640));
+    for (;;) {
+        void* const current = c_read<void*>(command, 4);
+        void* const end = c_read<void*>(current, 0x5640);
+        if (!c_at(group, 0x563c) || c_at(group, 0x563c) != c_at(current, 0x563c))
+            b.checked_iterator_bf6713();
+        if (node == end) return;
+        if (!c_at(group, 0x563c)) b.checked_iterator_bf6713();
+        if (node == c_read<void*>(group, 0x5640)) b.checked_iterator_bf6713();
+        void* const entity = c_read<void*>(node, 8);
+        if (c_virtual<std::uint8_t>(entity, 0x5c, 6) != 0)
+            b.torpedo_enable_0071e0d0(c_read<void*>(entity, 0x738), 1);
+        if (node == c_read<void*>(group, 0x5640)) b.checked_iterator_bf6713();
+        node = c_read<void*>(node);
+    }
+}
+void ai_close_attack_tick_00a15490(void* command, const AiBindings& b) {
+    void* const target = c_read<void*>(command, 0x1c);
+    const float* const point = c_leader_point(target, b);
+    float scale;
+    c_fld_store(&scale, b.close_attack_scale_ce380c);
+    b.target_pass_00a13b60(command, scale, point, target, 1);
+    b.landing_00a11b80(command, c_read<void*>(command, 0x1c));
+    ai_enable_torpedoes_00a11af0(command, b);
+}
+void ai_defend_position_tick_00a15500(void* command, const AiBindings& b) {
+    b.followers_00a10dc0(command);
+    b.formation_00a11690(command);
+    const float* const point = c_leader_point(c_read<void*>(command, 4), b);
+    b.target_pass_00a13b60(command, 1.0f, point, nullptr, 0);
+    b.landing_00a11b80(command, nullptr);
+}
+bool ai_merge_strength_00a10d50(void* command, void* other, const AiBindings& b) {
+    void* const own = c_first_entity(c_read<void*>(command, 4), b.checked_iterator_bf6713);
+    void* const candidate = c_first_entity(other, b.checked_iterator_bf6713);
+    const auto weight = b.class_weight_009ffd70;
+    double own_weight;
+    unsigned result;
+    __asm {
+        mov ecx, own
+        call weight
+        fstp qword ptr own_weight
+        mov ecx, candidate
+        call weight
+        fld qword ptr own_weight
+        fxch
+        fcomip st(0), st(1)
+        fstp st(0)
+        setae al
+        movzx eax, al
+        mov result, eax
+    }
+    return result != 0;
+}
+bool ai_merge_distance_00a10c60(void* command, void* other, const AiBindings& b) {
+    const float* const candidate = c_leader_point(other, b);
+    const float* const own = c_leader_point(c_read<void*>(command, 4), b);
+    float delta_x, delta_z;
+    __asm {
+        mov eax, own
+        mov edx, candidate
+        fld dword ptr [eax]
+        fsub dword ptr [edx]
+        fstp dword ptr delta_x
+        fld dword ptr [eax + 8]
+        fsub dword ptr [edx + 8]
+        fstp dword ptr delta_z
+    }
+    const float* const tuning_radius = static_cast<const float*>(c_at(b.active_tuning_00a371a0(), 0x208));
+    float radius, distance2, radius2;
+    unsigned result;
+    __asm {
+        mov eax, tuning_radius
+        fld dword ptr [eax]
+        fstp dword ptr radius
+        fld dword ptr delta_z
+        fld dword ptr delta_x
+        fld dword ptr radius
+        fld st(1)
+        fmulp st(2), st(0)
+        fld st(2)
+        fmulp st(3), st(0)
+        fxch st(1)
+        faddp st(2), st(0)
+        fxch st(1)
+        fstp dword ptr distance2
+        fld dword ptr distance2
+        fld st(1)
+        fmulp st(2), st(0)
+        fxch st(1)
+        fstp dword ptr radius2
+        fld dword ptr radius2
+        fcomip st(0), st(1)
+        fstp st(0)
+        seta al
+        movzx eax, al
+        mov result, eax
+    }
+    return result != 0;
+}
+void ai_build_entity_records_00a07e40(void* group, void* out, CWord record_class, const AiBindings& b) {
+    alignas(4) unsigned char scratch[0x20]; // actual 32-byte caller temporary
+    void* node = c_read<void*>(c_read<void*>(group, 0x5640));
+    while (node != c_read<void*>(group, 0x5640)) {
+        if (node == c_read<void*>(group, 0x5640)) b.checked_iterator_bf6713();
+        void* const record = b.entity_record_00a04560(scratch, c_read<void*>(node, 8), record_class);
+        b.append_record_00a078f0(out, record);
+        if (node == c_read<void*>(group, 0x5640)) b.checked_iterator_bf6713();
+        node = c_read<void*>(node);
+    }
+}
+void sound_dsp_resize_00a7a980(void* array, std::int32_t requested,
+    void (__thiscall* reserve_00a7a8b0)(void*, std::int32_t)) {
+    if (c_read<std::int32_t>(array, 8) < requested) reserve_00a7a8b0(array, requested);
+    for (std::int32_t i = c_read<std::int32_t>(array, 4); i < requested; ++i) {
+        void* const slot = c_at(c_read<void*>(array), static_cast<CWord>(i) * 4);
+        if (slot) c_write<CWord>(slot, 0, 0);
+    }
+    while (requested < c_read<std::int32_t>(array, 4))
+        c_write<CWord>(array, 4, c_read<CWord>(array, 4) - 1);
+    c_write<std::int32_t>(array, 4, requested);
+}
+void gui_line_describe_00ac2090(void* line, void* visitor, const GuiLineBindings& b) {
+    b.describe_base_00aaaed0(line, visitor);
+    auto count = [&]() -> CWord {
+        const CWord difference = c_read<CWord>(line, 0xf4) - c_read<CWord>(line, 0xf0);
+        return static_cast<CWord>(static_cast<std::int32_t>(difference) >> 3);
+    };
+    if (!c_read<void*>(line, 0xf0) || count() == 0) return;
+    c_virtual<void>(visitor, 4, GuiTaggedWord{0, reinterpret_cast<CWord>(b.points_key_cfd91c)});
+    CWord i = 0;
+    while (c_read<void*>(line, 0xf0) && i < count()) {
+        if (!c_read<void*>(line, 0xf0) || count() <= i) b.checked_iterator_bf6713();
+        const CWord point = c_read<CWord>(line, 0xf0) + i * 8;
+        ++i;
+        c_virtual<void>(visitor, 0xc, GuiTaggedWord{1, i}, GuiTaggedWord{6, point});
+    }
+    c_virtual<void>(visitor, 8);
+}
+void gui_line_reset_00ac2950(void* line, const GuiLineBindings& b) {
+    void* const captured_end = c_read<void*>(line, 0xf4);
+    if (c_read<CWord>(line, 0xf0) > reinterpret_cast<CWord>(captured_end)) b.checked_iterator_bf6713();
+    void* const begin = c_read<void*>(line, 0xf0);
+    if (c_read<CWord>(line, 0xf4) < reinterpret_cast<CWord>(begin)) b.checked_iterator_bf6713();
+    if (begin != captured_end)
+        c_write<void*>(line, 0xf4, b.copy_pod8_0043b920(captured_end, c_read<void*>(line, 0xf4), begin));
+    c_write<CWord>(line, 0xfc, 0);
+    b.ensure_capacity_00ac2690(line, 4);
+    void* const geometry = b.geometry_00b74640(c_read<void*>(line, 0x4c), 0);
+    void* const element = b.element_00b732c0(geometry, 0);
+    c_write<CWord>(element, 0x10, 0);
+    c_write<CWord>(element, 0x18, 0);
+}
+void* group_world_sphere_00b8f100(void* group, const GroupSphereBindings& b) {
+    if (c_read<std::uint8_t>(group, 0x175) != 0) {
+        if ((c_read<std::uint8_t>(group, 0x138) & 0x30) == 0) {
+            b.aggregate_world_sphere_00b8ebe0(group);
+            c_write<CWord>(group, 0x138, c_read<CWord>(group, 0x138) | 0x30);
+        }
+        return c_at(group, 0x13c);
+    }
+    if ((c_read<std::uint8_t>(group, 0x138) & 0x30) == 0) {
+        if ((c_read<std::uint8_t>(group, 0x5c) & 2) == 0) b.refresh_world_00b6db70(group);
+        float scratch[4];
+        const auto* source = static_cast<const float*>(b.transform_sphere_007c1180(
+            c_at(group, 8), scratch, c_at(group, 0xf0)));
+        for (CWord i = 0; i != 4; ++i)
+            c_fld_store(static_cast<float*>(c_at(group, 0x13c + i * 4)), source + i);
+        c_write<CWord>(group, 0x138, c_read<CWord>(group, 0x138) | 0x30);
+    }
+    return c_at(group, 0x13c);
+}
+void release_whole_file_00bd91f0(void* buffer, void (__cdecl* free_bf6989)(void*)) {
+    free_bf6989(buffer);
+}
+void cache_file_from_vfs_00be7ab0(void* store, void* vfs, const void* name,
+    CWord flags, const FileStoreBindings& b) {
+    void* const stream = c_virtual<void*>(vfs, 4, name, flags);
+    void* const memory = b.memory_view_00bef750(stream);
+    b.add_file_00be7760(store, name, memory);
+    c_release_ref(memory);
+    c_release_ref(stream);
+}
+} // namespace bsp::oct18_tail_c
+
+#include "bsp/native_lua_objects.hpp"
+extern "C" {
+#include <lua.h>
+}
+
+namespace bsp::oct18_tail_c {
+void section_loaded_00abe630(void* self, RawThis base_00aa7170) { base_00aa7170(self); }
+void widget_describe_alias_00ac6fe0(void* self, void* visitor,
+    void (__thiscall* base_00aaaed0)(void*, void*)) { base_00aaaed0(self, visitor); }
+void icon_geometry_alias_00ad2df0(void* self, RawThis base_00ab2540) { base_00ab2540(self); }
+void render_release_alias_00b0fc00(void* self, RawThis base_00b0f6e0) { base_00b0f6e0(self); }
+void* section_construct_00abf420(void* self, const SectionBindings& b) {
+    b.base_construct_00aa9390(self, 0x11);
+    const CWord a = *b.scalar_d7a24c;
+    const CWord d = *b.scalar_ce3800;
+    c_write<CWord>(self, 0, 0x00d5c8e8);
+    c_write<CWord>(self, 0xec, 0);
+    c_write<CWord>(self, 0xf0, 0);
+    c_write<CWord>(self, 0x110, 0);
+    c_write<CWord>(self, 0x114, 0);
+    for (CWord offset = 0xf4; offset <= 0x100; offset += 4) c_write<CWord>(self, offset, 0);
+    c_write<CWord>(self, 0x104, a);
+    c_write<CWord>(self, 0x108, d);
+    c_write<std::uint8_t>(self, 0x10c, 1);
+    c_write<CWord>(self, 0x118, 0);
+    c_write<CWord>(self, 0x11c, 0);
+    c_write<CWord>(self, 0x120, a);
+    c_write<CWord>(self, 0x124, a);
+    return self;
+}
+void section_constructed_00abeda0(void* self, const SectionBindings& b) {
+    if (c_read<std::uint8_t>(self, 0x74) == 0) {
+        void* const model = c_read<void*>(self, 0x4c);
+        void* const allocation = b.mesh_allocate_00b73b60(0xbc);
+        void* const mesh = allocation ? b.mesh_construct_00b73d70(allocation) : nullptr;
+        float scale;
+        c_fld_store(&scale, b.mesh_scalar_d7a260);
+        b.set_geometry_00b75170(model, 0, mesh, scale, scale);
+        // Original dereferences mesh+4 even when allocation returned null.
+        if (InterlockedDecrement(static_cast<volatile LONG*>(c_at(mesh, 4))) == 0)
+            c_virtual<void>(mesh, 0);
+    }
+    const CWord zero[3] = {};
+    b.position_00aa7dc0(self, zero);
+}
+void section_destroy_00abf4f0(void* self, const SectionBindings& b) {
+    c_write<CWord>(self, 0, 0x00d5c8e8);
+    void* const texture = c_read<void*>(self, 0x114);
+    if (texture) {
+        c_release_ref(texture);
+        c_write<CWord>(self, 0x114, 0);
+    }
+    void* const block = c_read<void*>(self, 0xf0);
+    if (block) b.release_string_00419cc0_00bd1510(block, c_read<CWord>(self, 0xec) + 1, 1);
+    b.base_destroy_00aa9730(self);
+}
+__declspec(naked) float __fastcall normalize_angle_00abe960(void*, const double* const*, float) {
+    __asm {
+        push esi
+        push edi
+        mov esi, edx
+        mov edi, ecx
+        fld dword ptr [esp + 0ch]
+        mov eax, dword ptr [esi]
+        fld qword ptr [eax]
+        call edi
+        fstp dword ptr [esp + 0ch]
+        fld dword ptr [esp + 0ch]
+        fstp dword ptr [esp + 0ch]
+        fld dword ptr [esp + 0ch]
+        mov eax, dword ptr [esi + 4]
+        fld qword ptr [eax]
+        fcomip st(0), st(1)
+        jc c_angle_upper
+        mov eax, dword ptr [esi]
+        fadd qword ptr [eax]
+        fstp dword ptr [esp + 0ch]
+        fld dword ptr [esp + 0ch]
+        jmp c_angle_done
+    c_angle_upper:
+        mov eax, dword ptr [esi + 8]
+        fld qword ptr [eax]
+        fxch st(1)
+        fcomi st(0), st(1)
+        fstp st(1)
+        jbe c_angle_done
+        mov eax, dword ptr [esi]
+        fsub qword ptr [eax]
+        fstp dword ptr [esp + 0ch]
+        fld dword ptr [esp + 0ch]
+    c_angle_done:
+        pop edi
+        pop esi
+        ret 4
+    }
+}
+void* font_registry_construct_00ac3690(void* self, const FontRegistryBindings& b) {
+    c_write<CWord>(self, 0, 0x00d5ca84);
+    c_write<void*>(self, 8, b.sentinel_00ac3400(c_at(self, 4)));
+    c_write<CWord>(self, 0xc, 0);
+    return self;
+}
+void font_registry_destroy_00ac36f0(void* self, CWord& image_f8bf44, const FontRegistryBindings& b) {
+    c_write<CWord>(self, 0, 0x00d5ca84);
+    void* node = c_read<void*>(c_read<void*>(self, 8));
+    while (node != c_read<void*>(self, 8)) {
+        if (node == c_read<void*>(self, 8)) b.checked_iterator_bf6713();
+        void* const font = c_read<void*>(node, 8);
+        if (font) { b.font_destroy_00ad53a0(font); b.free_bf65ac(font); }
+        if (node == c_read<void*>(self, 8)) b.checked_iterator_bf6713();
+        node = c_read<void*>(node);
+    }
+    void* head = c_read<void*>(self, 8);
+    node = c_read<void*>(head);
+    c_write<void*>(head, 0, head);
+    head = c_read<void*>(self, 8);
+    c_write<void*>(head, 4, head);
+    c_write<CWord>(self, 0xc, 0);
+    while (node != c_read<void*>(self, 8)) {
+        void* const next = c_read<void*>(node);
+        b.free_bf65ac(node);
+        node = next;
+    }
+    b.free_bf65ac(c_read<void*>(self, 8));
+    c_write<CWord>(self, 8, 0);
+    image_f8bf44 = 0;
+    c_write<CWord>(self, 0, 0x00ce3818);
+}
+void sound_cache_resize_00a845a0(void* array, std::int32_t requested, const SoundCacheBindings& b) {
+    if (requested > c_read<std::int32_t>(array, 8)) b.reserve_00a84450(array, requested);
+    for (std::int32_t i = c_read<std::int32_t>(array, 4); i < requested; ++i) {
+        void* const record = c_at(c_read<void*>(array), static_cast<CWord>(i) * 0x2c);
+        if (record) {
+            c_write<CWord>(record, 0, 0);
+            c_write<CWord>(record, 4, 0);
+            c_write<void*>(record, 0xc, b.sentinel_004c3020(c_at(record, 8)));
+            c_write<CWord>(record, 0x10, 0);
+            for (CWord offset = 0x24; offset >= 0x14; offset -= 4) c_write<CWord>(record, offset, 0);
+        }
+    }
+    while (requested < c_read<std::int32_t>(array, 4)) {
+        const CWord count = c_read<CWord>(array, 4) - 1;
+        c_write<CWord>(array, 4, count);
+        b.destroy_record_00a842e0(c_at(c_read<void*>(array), count * 0x2c));
+    }
+    c_write<std::int32_t>(array, 4, requested);
+}
+void gui_list_visible_00a9cce0(void* self, CWord visible, const GuiListVisibilityBindings& b) {
+    b.base_visible_00aa8530(self, visible);
+    if (c_read<CWord>(self, 0x118) != 0xffffffffU) {
+        void* const manager = b.manager_004c12b0();
+        void* const other = b.select_widget_00aa0f50(manager, c_read<CWord>(self, 0x118));
+        c_virtual<void>(other, 0x34, visible);
+    }
+}
+void* lua_vector4_or_00b67d40(void* reference, void* output, const void* fallback) {
+    auto& table = *static_cast<NativeLuaObjectStorage*>(reference);
+    bool use_fallback = true;
+    NativeLuaObjectStorage fifth;
+    if (native_lua_is_table_00b661b0(table)) {
+        NativeLuaObjectStorage* const field = native_lua_get_by_index_00b67720(table, &fifth, 5);
+        use_fallback = !native_lua_is_nil_00b65fb0(*field);
+        if (fifth.kind_04 != 0)
+            release_native_lua_tracked_object_00b66de0(fifth.owner_00, fifth, fifth.index_08, 1);
+    }
+    if (use_fallback) {
+        c_write<CWord>(output, 0, c_read<CWord>(fallback));
+        c_write<CWord>(output, 4, c_read<CWord>(fallback, 4));
+        const CWord third = c_read<CWord>(fallback, 8);
+        const CWord fourth = c_read<CWord>(fallback, 0xc);
+        c_write<CWord>(output, 8, third);
+        c_write<CWord>(output, 0xc, fourth);
+        return output;
+    }
+    float values[4];
+    NativeLuaObjectStorage field;
+    for (int i = 0; i != 4; ++i) {
+        NativeLuaObjectStorage* const current = native_lua_get_by_index_00b67720(table, &field, i + 1);
+        values[i] = static_cast<float>(lua_tonumber(current->owner_00->state_04, current->index_08));
+        if (field.kind_04 != 0)
+            release_native_lua_tracked_object_00b66de0(field.owner_00, field, field.index_08, 1);
+    }
+    for (CWord i = 0; i != 4; ++i) c_write<CWord>(output, i * 4, c_read<CWord>(values, i * 4));
+    return output;
+}
+void* renderer_query_create_00b27c20(void* renderer, const volatile std::uint8_t& enabled,
+    QueryGuardScratch& scratch, const QueryBindings& b) {
+    if (enabled) { scratch.owner = renderer; scratch.taken = b.enter_00b33ad0(renderer); }
+    void* const storage = b.allocate_00bf681b(0x14);
+    void* const query = storage ? b.construct_00b5fe90(storage) : nullptr;
+    void* const array = c_at(renderer, 0x19a0);
+    if (c_read<CWord>(array, 4) == c_read<CWord>(array, 8)) {
+        std::int32_t capacity = static_cast<std::int32_t>(c_read<CWord>(array, 8) * 2);
+        if (capacity <= 1) capacity = 1;
+        b.reserve_00b22530(array, capacity);
+    }
+    void* const slot = c_at(c_read<void*>(array), c_read<CWord>(array, 4) * 4);
+    if (slot) c_write<void*>(slot, 0, query);
+    c_write<CWord>(array, 4, c_read<CWord>(array, 4) + 1);
+    if (enabled) b.leave_00b33b00(scratch.owner, scratch.taken);
+    return query;
+}
+namespace {
+class CWarningGuard {
+public:
+    explicit CWarningGuard(void* section) : section_(section) {
+        if (section_) {
+            EnterCriticalSection(static_cast<LPCRITICAL_SECTION>(section_));
+            c_write<CWord>(section_, 0x18, c_read<CWord>(section_, 0x18) + 1);
+        }
+    }
+    ~CWarningGuard() {
+        if (section_) {
+            c_write<CWord>(section_, 0x18, c_read<CWord>(section_, 0x18) - 1);
+            LeaveCriticalSection(static_cast<LPCRITICAL_SECTION>(section_));
+        }
+    }
+private:
+    void* section_;
+};
+}
+void warning_remove_listener_00980d30(void* manager, const void* channel, CWord id,
+    const WarningRemoveBindings& b) {
+    CWarningGuard guard(c_read<void*>(manager, 0x24));
+    void* const tree = b.channel_00980150(c_at(manager, 0xf8), channel);
+    WarningIteratorPair iterator;
+    b.find_0096d6f0(tree, &iterator, id);
+    if (!iterator.owner) b.checked_iterator_bf6713();
+    if (iterator.node == c_read<void*>(iterator.owner, 4)) b.checked_iterator_bf6713();
+    void* const subscription = c_read<void*>(iterator.node, 0x14);
+    if (subscription) {
+        c_virtual<void*>(subscription, 0, 1);
+        c_write<CWord>(iterator.node, 0x14, 0);
+    }
+    b.erase_009713d0(tree, &iterator, iterator.owner, iterator.node);
+}
+void* vfs_load_whole_file_00bdc8b0(void* manager, const void* name, CWord* size_output,
+    const WholeFileBindings& b) {
+    NativeString copied{};
+    if (&copied != name) {
+        b.string_resize_0041dd40(&copied, c_read<CWord>(name), 1);
+        if (c_read<CWord>(name) != 0)
+            std::memcpy(c_read<void*>(&copied, 4), c_read<const void*>(name, 4), c_read<CWord>(&copied));
+    }
+    struct NameGuard {
+        NativeString& value;
+        const WholeFileBindings& bindings;
+        ~NameGuard() {
+            void* const data = c_read<void*>(&value, 4);
+            if (data) bindings.release_string_00419cc0_00bd1510(data, c_read<CWord>(&value) + 1, 1);
+        }
+    } cleanup{copied, b};
+    void* const stream = c_virtual<void*>(manager, 4, &copied, CWord{2});
+    CWord high_size = 0;
+    const CWord low_size = c_virtual<CWord>(stream, 0x2c, &high_size);
+    void* const bytes = b.allocate_00bf55be(low_size);
+    c_virtual<CWord>(stream, 0x24, bytes, low_size, static_cast<CWord*>(nullptr));
+    // Native has no stream/buffer unwind owner: only copied name is guarded.
+    if (InterlockedDecrement(static_cast<volatile LONG*>(c_at(stream, 4))) == 0)
+        c_virtual<void>(stream, 0);
+    *size_output = low_size;
+    return bytes;
+}
+} // namespace bsp::oct18_tail_c
+
+#include "bsp/native_mpkg_directory.hpp"
+namespace bsp::oct18_tail_c {
+void archive_write_field_00bd8cd0(void* writer, GuiTaggedWord key, GuiTaggedWord value,
+    const ArchiveFieldBindings& b) {
+    b.indent_00bd6990(c_read<CWord>(writer, 4));
+    b.key_00bd7b30(c_read<CWord>(writer, 4) == 0, key);
+    b.value_00bd7f50(value);
+    b.terminator_00bd6ac0(c_read<CWord>(writer, 4) == 0);
+}
+std::uint32_t mpkg_entry_offset_00bb8a90(void* state, void* entry, const MpkgBindings& b) {
+    if (c_read<std::uint8_t>(entry, 0xc)) return c_read<CWord>(entry, 0x10);
+    c_virtual<void>(c_read<void*>(state, 0xc), 0x1c, c_read<CWord>(entry, 8), CWord{0}, CWord{0});
+    void* const source = c_read<void*>(state, 0xc); // captured before allocation
+    struct Reader { void* base; CWord reported; void* cursor; } reader;
+    static_assert(sizeof(Reader) == 0xc);
+    reader.base = b.allocate_header_00bf55be(0x1e);
+    c_virtual<void>(source, 0x24, reader.base, CWord{0x1e}, &reader.reported);
+    reader.cursor = reader.base;
+    alignas(4) unsigned char header[0x34]; // actual header; local-only fields stay unwritten
+    read_native_mpkg_header_00bb8850(&reader, header, 1);
+    const CWord offset = c_read<std::uint16_t>(header, 0x20)
+        + c_read<std::uint16_t>(header, 0x22) + CWord{0x1e} + c_read<CWord>(entry, 8);
+    c_write<CWord>(entry, 0x10, offset);
+    c_write<std::uint8_t>(entry, 0xc, 1);
+    b.free_header_00bf65ac(reader.base);
+    return offset;
+}
+void* mpkg_open_entry_00bb8be0(void* state, void* entry, CWord flags,
+    void* volatile& vfs, const MpkgBindings& b) {
+    (void)flags; // original stacked flags are unused
+    const CWord offset = mpkg_entry_offset_00bb8a90(state, entry, b);
+    if (c_read<std::uint16_t>(entry, 0x14) != 0) {
+        c_virtual<void>(c_read<void*>(state, 0xc), 0x1c, offset, CWord{0}, CWord{0});
+        void* const allocation = b.allocate_owner_00bf681b(0x34);
+        void* inflate = nullptr;
+        if (allocation) {
+            const CWord parameters[3] = {c_read<CWord>(entry, 0x10),
+                c_read<CWord>(entry, 0x18), c_read<CWord>(entry, 0x1c)};
+            inflate = b.inflate_00bbc1d0(allocation, c_read<void*>(state, 0xc), parameters, 0x4000, 0x10000);
+        }
+        void* const memory = b.memory_00bef750(inflate);
+        if (InterlockedDecrement(static_cast<volatile LONG*>(c_at(inflate, 4))) == 0)
+            c_virtual<void>(inflate, 0);
+        return memory;
+    }
+    if (c_read<CWord>(entry, 0x1c) <= 0x40000) {
+        c_virtual<void>(c_read<void*>(state, 0xc), 0x1c, offset, CWord{0}, CWord{0});
+        return b.copy_range_00bef840(c_read<void*>(state, 0xc), offset, 0, c_read<CWord>(entry, 0x1c), 0);
+    }
+    void* const reopened = c_virtual<void*>(vfs, 4, c_at(state, 4), CWord{2});
+    void* const allocation = b.allocate_owner_00bf681b(0x28);
+    if (!allocation) return nullptr; // original does not retire reopened source here
+    return b.adopted_00bf1130(allocation, reopened, offset, 0, c_read<CWord>(entry, 0x1c), 0);
+}
+void* mpkg_open_named_00bb8d60(void* state, const void* name, CWord flags,
+    void* volatile& vfs, const MpkgBindings& b) {
+    if (flags & 1) return nullptr;
+    CWord byte_offset = 0;
+    for (std::int32_t i = 0; i < c_read<std::int32_t>(state, 0x2c); ++i, byte_offset += 0x24) {
+        void* const entry = c_at(c_read<void*>(state, 0x28), byte_offset);
+        const CWord stored_length = c_read<CWord>(entry);
+        if (c_read<CWord>(name) != stored_length) continue;
+        bool match = c_read<CWord>(name) == 0;
+        if (!match) match = b.stricmp_00bf7fbf(c_read<const char*>(name, 4), c_read<const char*>(entry, 4)) == 0;
+        if (match) return mpkg_open_entry_00bb8be0(state, entry, flags, vfs, b);
+    }
+    return nullptr;
+}
+void voice_packet_00a44000(void* self, const void* packet, void* volatile& game, const VoiceBindings& b) {
+    const CWord low = c_read<CWord>(packet), high = c_read<CWord>(packet, 4);
+    if (c_read<std::uint8_t>(self, 0x84) && !b.accept_00a43f40(self, low, high)) return;
+    bool allowed = false;
+    void* const current_game = game;
+    if (current_game) {
+        if (c_read<CWord>(c_read<void*>(self, 0x2210), 0x5d4) == 0xd) allowed = true;
+        else allowed = b.state_00687860(current_game, 0x14, 0) != 0;
+    }
+    if (!c_read<CWord>(self, 0x1d28) || !allowed) return;
+    c_write<CWord>(self, 0x1f34, 0);
+    const CWord user[2] = {c_read<CWord>(packet), c_read<CWord>(packet, 4)};
+    auto count = [&]() -> CWord {
+        return static_cast<CWord>(static_cast<std::int32_t>(c_read<CWord>(packet, 0x10)
+            - c_read<CWord>(packet, 0xc)) / 10);
+    };
+    CWord offset = 0;
+    for (CWord i = 0; c_read<void*>(packet, 0xc) && i < count(); ++i, offset += 10) {
+        if (!c_read<void*>(packet, 0xc) || count() <= i) b.checked_iterator_bf6713();
+        b.incoming_00a49040(c_at(self, 0x1c24), c_at(c_read<void*>(packet, 0xc), offset), 10, user);
+    }
+}
+void voice_refresh_flags_00a44150(void* self, std::uint8_t mode, const VoiceBindings& b) {
+    bool has_remote = false;
+    void* const first_owner = c_virtual<void*>(self, 0x80);
+    void* node = c_read<void*>(c_read<void*>(first_owner, 4));
+    void* const last_owner = c_virtual<void*>(self, 0x80);
+    void* const end = c_read<void*>(last_owner, 4);
+    for (;;) {
+        if (first_owner != last_owner) b.checked_iterator_bf6713();
+        if (node == end) break;
+        if (node == c_read<void*>(first_owner, 4)) b.checked_iterator_bf6713();
+        if (c_read<std::uint8_t>(node, 0x42) == 0) {
+            if (node == c_read<void*>(first_owner, 4)) b.checked_iterator_bf6713();
+            if (c_read<CWord>(node, 0x34) == 0) has_remote = true;
+        }
+        if (node == c_read<void*>(first_owner, 4)) b.checked_iterator_bf6713();
+        node = c_read<void*>(node);
+    }
+    if (mode == 0 || (mode == 1 && !has_remote)) {
+        void* const owner = c_virtual<void*>(self, 0x80);
+        void* const head = c_read<void*>(owner, 4);
+        node = c_read<void*>(head);
+        if (node == head) b.checked_iterator_bf6713();
+        b.mute_00a49180(c_at(self, 0x1c24), c_read<std::uint8_t>(node, 0x38), mode);
+        if (mode == 1) {
+            __asm {
+                mov ecx, self
+                mov edx, dword ptr [ecx]
+                fld dword ptr [ecx + 1d40h]
+                mov eax, dword ptr [edx + 0f0h]
+                push ecx
+                fstp dword ptr [esp]
+                call eax
+            }
+        }
+    }
+}
+void text_register_clip_00ab7a40(void* self, const TextClipBindings& b) {
+    for (CWord owner_offset : {CWord{0x4c}, CWord{0x188}}) {
+        void* const model = c_read<void*>(self, owner_offset);
+        if (model && b.has_geometry_00b74650(model)) {
+            void* const geometry = b.geometry_00b74640(model, 0);
+            if (b.count_00b72b40(geometry)) {
+                void* const reloaded = b.geometry_00b74640(model, 0);
+                void* const element = b.element_00b732c0(reloaded, 0);
+                b.clip_00aa9f10(self, c_read<void*>(element, 0x20));
+            }
+        }
+    }
+    void* node = c_read<void*>(c_read<void*>(self, 0x68));
+    while (node != c_read<void*>(self, 0x68)) {
+        if (node == c_read<void*>(self, 0x68)) b.checked_iterator_bf6713();
+        c_virtual<void>(c_read<void*>(node, 8), 0x70);
+        if (node == c_read<void*>(self, 0x68)) b.checked_iterator_bf6713();
+        node = c_read<void*>(node);
+    }
+}
+void layer_read_properties_00ac4c50(void* self, void* visitor, CWord& priority,
+    const LayerReadBindings& b) {
+    c_virtual<void>(visitor, 0xc, GuiTaggedWord{0, reinterpret_cast<CWord>(b.priority_d5cb00)},
+        GuiTaggedWord{1, reinterpret_cast<CWord>(&priority)}, GuiTaggedWord{1, 0});
+    const CWord value = priority;
+    c_write<CWord>(self, 0xfc, value);
+    c_write<CWord>(self, 0x118, value);
+    c_virtual<void>(visitor, 0xc, GuiTaggedWord{0, reinterpret_cast<CWord>(b.render_order_d5caf4)},
+        GuiTaggedWord{2, reinterpret_cast<CWord>(c_at(self, 0x11c))}, GuiTaggedWord{2, 0});
+    c_virtual<void>(self, 0x78);
+    void* const root = c_read<void*>(self, 0xec);
+    b.register_root_00b6d890(c_read<void*>(self, 0x4c), root);
+    const CWord zero[3] = {};
+    b.position_00aa7dc0(self, zero);
+    b.read_base_00aaa710(self, visitor);
+}
+void gui_manager_destroy_00aa6340(void* self, CWord& singleton, const GuiDestroyBindings& b) {
+    c_write<CWord>(self, 0, 0x00d5bfcc);
+    CWord cursor = c_read<CWord>(self, 0x18);
+    if (cursor > c_read<CWord>(self, 0x1c)) b.checked_iterator_bf6713();
+    for (;;) {
+        const CWord end = c_read<CWord>(self, 0x1c);
+        if (c_read<CWord>(self, 0x18) > end) b.checked_iterator_bf6713();
+        if (cursor == end) break;
+        if (cursor >= c_read<CWord>(self, 0x1c)) b.checked_iterator_bf6713();
+        void* const slot = reinterpret_cast<void*>(cursor);
+        c_virtual<void>(c_read<void*>(slot), 0x20);
+        if (cursor >= c_read<CWord>(self, 0x1c)) b.checked_iterator_bf6713();
+        void* const page = c_read<void*>(slot);
+        if (page) c_virtual<void*>(page, 4, 1);
+        if (cursor >= c_read<CWord>(self, 0x1c)) b.checked_iterator_bf6713();
+        cursor += 4;
+    }
+    for (CWord offset : {CWord{0x28}, CWord{0x2c}}) {
+        if (offset == 0x2c) {
+            b.clear_strings_00aa51d0(c_at(self, 0x34));
+            b.free_00bf65ac(c_read<void*>(self, 0x38));
+            c_write<CWord>(self, 0x38, 0);
+        }
+        void* const owner = c_read<void*>(self, offset);
+        if (owner) { c_release_ref(owner); c_write<CWord>(self, offset, 0); }
+    }
+    void* const pages = c_read<void*>(self, 0x18);
+    if (pages) b.free_00bf65ac(pages);
+    c_write<CWord>(self, 0x18, 0);
+    c_write<CWord>(self, 0x1c, 0);
+    c_write<CWord>(self, 0x20, 0);
+    void* const tree = c_at(self, 8);
+    void* const head = c_read<void*>(self, 0xc);
+    WarningIteratorPair result;
+    b.erase_tree_00aa49e0(tree, &result, tree, c_read<void*>(head), tree, head);
+    b.free_00bf65ac(c_read<void*>(self, 0xc));
+    c_write<CWord>(self, 0xc, 0);
+    c_write<CWord>(self, 0x10, 0);
+    singleton = 0;
+    c_write<CWord>(self, 0, 0x00ce3818);
+}
+std::intptr_t platform_handle_message_00bed3b0(void* active, std::uintptr_t handle,
+    CWord message, CWord wp, std::intptr_t lp, const PlatformBindings& b) {
+    HWND const window = reinterpret_cast<HWND>(handle);
+    void* const extra = message == WM_CREATE ? nullptr : reinterpret_cast<void*>(GetWindowLongA(window, 0));
+    auto standard = [&]() -> std::intptr_t { return DefWindowProcA(window, message, wp, lp); };
+    auto z_order = [&](void* owner, HWND after) {
+        SetWindowPos(c_read<HWND>(owner, 0x30), after, 0, 0,
+            c_read<int>(owner, 0x24), c_read<int>(owner, 0x28), 0x20);
+    };
+    if (message == WM_CREATE) {
+        void* const owner = c_read<void*>(reinterpret_cast<const void*>(lp));
+        SetWindowLongA(window, 0, reinterpret_cast<LONG>(owner));
+        c_write<std::uint8_t>(owner, 0x40, 1);
+        return 0;
+    }
+    if (message == WM_SIZE) {
+        if (wp != 4 && wp != 1) {
+            if (c_read<std::uint8_t>(extra, 0xc)) z_order(extra, HWND_TOPMOST);
+            c_write<std::uint8_t>(extra, 0x40, 1);
+            c_write<std::uint8_t>(extra, 0x41, 1);
+            SetFocus(c_read<HWND>(active, 0x30));
+            SetForegroundWindow(c_read<HWND>(active, 0x30));
+        } else {
+            if (c_read<std::uint8_t>(extra, 0xc)) z_order(extra, HWND_NOTOPMOST);
+            c_write<std::uint8_t>(extra, 0x40, 0);
+            c_write<std::uint8_t>(extra, 0x41, 0);
+        }
+        return standard();
+    }
+    if (message == WM_ACTIVATE) {
+        if (static_cast<std::uint16_t>(wp) == 0) {
+            b.xinput_enable_00c2f172(0);
+            const bool reorder = c_read<std::uint8_t>(extra, 0xc) != static_cast<std::uint8_t>(wp);
+            c_write<std::uint8_t>(extra, 0x41, static_cast<std::uint8_t>(wp));
+            if (reorder) z_order(extra, HWND_NOTOPMOST);
+            b.sound_pause_00a7a480(b.sound_f8bbd8);
+            b.media_pause_00a4c2d0(b.media_get_004c1710(), 1);
+            b.gui_pause_00aa33a0(b.gui_get_004c12b0(), 1);
+        } else {
+            b.xinput_enable_00c2f172(1);
+            if (c_read<std::uint8_t>(extra, 0xc)) z_order(extra, HWND_TOPMOST);
+            c_write<std::uint8_t>(extra, 0x40, 1);
+            c_write<std::uint8_t>(extra, 0x41, 1);
+            b.gui_pause_00aa33a0(b.gui_get_004c12b0(), 0);
+            b.sound_resume_00a7a4a0(b.sound_f8bbd8);
+            b.media_pause_00a4c2d0(b.media_get_004c1710(), 0);
+            b.reload_renderer_00b24fb0(b.renderer_f8d394);
+            SetForegroundWindow(c_read<HWND>(active, 0x30));
+            SetFocus(c_read<HWND>(active, 0x30));
+            if (c_read<std::uint8_t>(active, 0xc)) {
+                void* const service = b.render_service_f8d39c;
+                if (service) b.refresh_render_service_00b0d1e0(service);
+            }
+        }
+        return standard();
+    }
+    if (message == WM_PAINT) { standard(); return 0; }
+    if (message == WM_CLOSE) { c_write<std::uint8_t>(active, 0x180, 1); return 0; }
+    if (message == WM_SETTINGCHANGE && (wp == 0x20 || wp == 0x21))
+        c_write<std::uint8_t>(active, 0x2c, 1);
+    if (message == WM_GETMINMAXINFO) {
+        c_write<CWord>(reinterpret_cast<void*>(lp), 0x18, 100);
+        c_write<CWord>(reinterpret_cast<void*>(lp), 0x1c, 100);
+    }
+    if (message == WM_SYSCOMMAND && wp == 0xf140) return 1;
+    if (message == WM_ENTERSIZEMOVE) c_write<std::uint8_t>(extra, 0x42, 0);
+    if (message == WM_EXITSIZEMOVE) c_write<std::uint8_t>(extra, 0x42, 1);
+    if ((message == WM_CHAR || message == WM_KEYDOWN) && c_read<std::uint8_t>(active, 0x170)) {
+        bool queue = message == WM_CHAR;
+        if (message == WM_CHAR && wp == 0x16) c_write<std::uint8_t>(active, 0x44, 1);
+        if (message == WM_KEYDOWN) {
+            switch (wp) {
+            case 0x26: case 0x28: case 0x25: case 0x27: case 0x24: case 9:
+            case 0x23: case 0x2e: case 0x2d: case 0x14: case 0x21: case 0x22:
+                queue = true; break;
+            default: break;
+            }
+        }
+        if (queue) {
+            const CWord payload = (reinterpret_cast<CWord>(active) & 0xffff0000U)
+                | (message == WM_KEYDOWN ? 0x100U : 0) | (wp & 0xff);
+            b.append_text_00bed370(c_at(active, 0x174), &payload);
+        }
+    }
+    return standard();
+}
+} // namespace bsp::oct18_tail_c

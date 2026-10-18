@@ -1175,7 +1175,14 @@ public:
         owner_.log.unimplemented("MissionStart::report_metrics", "00753810");
     }
     void finish_start() override {
-        owner_.log.unimplemented("MissionStart::finish_start", "004d2a80");
+        if constexpr (kMissionStartTemporaryReleaseCc15Bound) {
+            // 0058BFEF 004D2A80 on the [ESP+10h] loading-config block: the
+            // binding built no copy of it (publish_loading_config took the
+            // record's vector and name by reference), so nothing is freed.
+            owner_.log.implemented("MissionStart::finish_start", "004d2a80");
+        } else {
+            owner_.log.unimplemented("MissionStart::finish_start", "004d2a80");
+        }
     }
 
 private:

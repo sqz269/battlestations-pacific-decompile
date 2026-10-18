@@ -479,8 +479,40 @@ inline constexpr bool kEngineMovieStopRosterBound = true;
 // UNCERTAIN: the 0046BE50 / 0046EBE6 counters (game+1910h..192Ch) have no
 // host state and are taken as zero.
 //
+// Step 2 (cc15-vcp2): the same miss-path mark is also made at the other
+// load-time callers of 00964790 whose host equivalents are reached:
+// - the air-ops deck resolver 007B8A80, on the created path;
+// - PrepareClass 008C92BE, per argument;
+// - the scene-unit creator seam, 004F0520..004F10B0 and 004F0AD0;
+// - 00964790's own ship Catapult.LaunchedClass recursion, 00965182.
+// With the switch on, USN01, USN04 and JM08 read no would-nil row after
+// 004E0A9B. docs/VEHICLE_CLASS_DESCRIPTORS.md has the census.
+//
+// Step 3 (cc15-vcp3): at 004E0A9B, 0095CA70's purge itself runs. Each
+// collected row gets "VehicleClass[%d]=nil" (00D1A964), run as a Lua chunk the
+// way 006B8AD0 runs it. The site 0045F6C1 stays a census until
+// kVehicleClassMovieStopPurgeCc15Bound.
+//
 // False: 0046BF20 and 0046BF70 stay records, as before.
 inline constexpr bool kVehicleClassPreloadCc15Bound = false;
+
+// cc15-vcp3: with kVehicleClassPreloadCc15Bound, also purge at the movie stop
+// 0045F6C1. That runs mid-mission and can nil rows that were first read after
+// load, so it stays off until a census exists for a mission that takes the
+// movie-stop path (cc9).
+inline constexpr bool kVehicleClassMovieStopPurgeCc15Bound = false;
+
+// Packet cc15-wC1 (docs/CC15_SCENE_CONTENTS_WIRING.md). 004D4DF0's step between
+// scene-file passes 2 and 3: 004D4720 (ECX = 010904E4) turns each class index
+// the Registration pass's 0095C640 collected into 00F8A09C into a "Class_"
+// alias through 0095C1C0 and links it into the list at 010904E4+4, then
+// 00BB5AC0 rewrites every list entry through 00BB5670 (".mpak" suffix) and
+// 00BDF4C0 (VFS resolve). Typed restatements over this host's preload census,
+// vehicle-class registry and VFS. The only image readers of the list are those
+// two routines (xrefs 010904E4 / 010904E8), so the list has no consumer here
+// either; 0095C1C0's party-row marks land in VehicleClassRegistry::
+// party_required, which no host path reads. False: both stay records.
+inline constexpr bool kSceneClassPreloadAliasesCc15Bound = false;
 
 // docs/CC13_AUDIT_LUA51_FLIPS.md item 3. Two admits the stop does not remove:
 // a `Hidden` entity goes through 0046C550 with the last argument 1 (0046D60F) and

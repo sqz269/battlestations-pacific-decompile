@@ -1073,6 +1073,9 @@ struct GameUnitSlot {
     unsigned long long land_park_retarget{0};
     double land_park_hangar_at{-1.0};
     float land_park_last[4]{0.0f, 0.0f, 0.0f, 0.0f};   // x, z, speed request, yaw request
+    // DIAGNOSTIC (p21_stow): the last 0099D300 demand inputs.
+    float diag_thr_meas{0.0f}, diag_thr_scale{1.0f};
+    int diag_thr_skip{-1};
     unsigned long long land_found_assignments{0};
     double land_installed_at{-1.0};
     unsigned long long land_ticks{0};
@@ -1608,6 +1611,24 @@ struct GameUnitSlot {
     int torpedo_rounds_pending{0};
     // prepare+98h (task+7D8h), the countdown 009D49A0 raises.
     float torpedo_drop_timer{-1.0f};
+    // done+98h, the done state's own countdown (kTorpedoStateEnterTimersBound).
+    // 009D49A0 writes prepare+98h only, so the image's done timer stays at the
+    // -1.0 its enter 009D2530 stores.
+    float torpedo_done_timer_98{-1.0f};
+    // Packet p21_torp_enter counters. armed: 009D49A0 wrote the timer since the
+    // last done/prepare enter; a release from the done/prepare tick that read
+    // a positive timer without that arm is a stale-timer drop.
+    bool torpedo_timer_armed_since_enter{false};
+    float torpedo_last_drop_timer_read{-1.0f};
+    int torpedo_stale_timer_drops{0};
+    int torpedo_done_state_drops{0};
+    int torpedo_aim_enters{0};
+    int torpedo_aim_enters_complete_stale{0};   // +2Ch already set at an aim enter
+    // Packet p22_los_007df360: 007DF360 calls, screened answers, terrain 1s cleared.
+    int torpedo_los_calls{0};
+    int torpedo_los_screened{0};
+    int torpedo_los_clears{0};
+    int torpedo_los_zero_length{0};   // a screening ship with class+A0h == 0
     // The values 009D3420 produces. docs/TORPEDO_APPROACH_UPDATE.md reads that
     // routine; the reconstruction in torpedo_approach_update.hpp runs here and
     // these mirror its outputs so the arm and the census read one set.
@@ -6480,6 +6501,32 @@ struct GameUnitsHost::Impl {
             (void)follow_state;
         }
     }
+    // Packet p20_cadence (section 82). 009998A0's slow path runs 0099B740 only when
+    // dt >= task+308h (00999912-00999926 FCOMI / JC): then +308h = (+304h - dt) + +308h
+    // (0099992C FSUBR, 00999934 FADDP, +304h = 1.0 from 0099C75D) and 0099993C CALL
+    // 0099B740; otherwise +308h -= dt (009999B5-009999BB) and 0099B740 is skipped. The
+    // task arm runs either way. True: the host's 0099B740 sites take that gate on
+    // task_phase_308. False: 0099B740 on every think, as before.
+    static constexpr bool kTaskAttackModeCadenceBound = true;
+    unsigned long long attack_mode_cadence_fires{0};
+    unsigned long long attack_mode_cadence_skips{0};
+    bool attack_mode_cadence_009998a0(GameUnitSlot& unit, float dt) {
+        if constexpr (kTaskAttackModeCadenceBound) {
+            const float t = unit.task_phase_308;
+            if (dt < t) {
+                unit.task_phase_308 = t - dt;
+                ++attack_mode_cadence_skips;
+                return false;
+            }
+            unit.task_phase_308 = (1.0f - dt) + t;
+            ++attack_mode_cadence_fires;
+            return true;
+        } else {
+            (void)unit;
+            (void)dt;
+            return true;
+        }
+    }
     unsigned long long follow_exits{0};
     void follow_exit_009bde40(GameUnitSlot& unit) {
         ++follow_exits;
@@ -6636,6 +6683,34 @@ struct GameUnitsHost::Impl {
     // bank_limit_2c8 / pitch_target_2bc / pitch_mode_2d0 / bank_target_2c4 and
     // plan_heading_mode_2cc). False: every write is dropped, as before.
     static constexpr bool kTorpedoCommandWritesBound = true;   // ON: SQUADRON_LAND_TASK 5hr
+    // Packet p21_torp_enter (cc13 CC13_SEG67B 3.51). The done/prepare enter
+    // 009D2530 stores state+98h = -1.0 (009D253B, 00D7A260) on every entry, and
+    // done (task+310h) and prepare (task+740h) each own a +98h; 009D49A0 arms
+    // prepare's only. True: the done tick reads and writes its own timer and
+    // each enter resets the entered state's timer to -1. False: one shared
+    // timer, reset only at install, so done can release on prepare's stale arm.
+    static constexpr bool kTorpedoStateEnterTimersBound = true;   // ON: OCEAN_WAVE_FIELD 85
+    // The aim state's enter 009D15D0 (vtable 00D212FC +4h): approach+A8h = 1
+    // (009D15DE), state+24h = 0 (009D15E7, the release timer 009FA3A0's +0Ch
+    // enable) and state+2Ch = 0 (009D15EA, aim complete). Its exit 009D1350
+    // (+8h) stores approach+A8h = 0 (009D1353). +A8h gates the replan's
+    // over-land writers 009D3688. True: those stores land on
+    // torpedo_aim_timer_enabled_0c, torpedo_aim_complete_2c and
+    // torpedo_approach.scan_enabled_a8. False: +2Ch stays set once set, the
+    // enable carries over and +A8h stays 0.
+    static constexpr bool kTorpedoAimEnterStoresBound = true;   // ON: OCEAN_WAVE_FIELD 85
+    // Packet p22_los_007df360 (OCEAN_WAVE_FIELD 87). The replan's second
+    // over-land writer: when unit+C50h is set (007D61C0-007D621F: built when
+    // [game+1FE4h] is 0 or 1 and unit+54h != the scene's DummyAIEnabled),
+    // 009D36EE 007DF360(ECX = unit+C50h, [approach+CCh], aim point), RET 8,
+    // AL, and 009D36F3 stores AL to +A9h outright. 007DF360 walks the +30h
+    // list and answers 1 for the first IsKindOf(6) member, not the target,
+    // ahead of the aim point toward the plane (dot > 0) whose perpendicular
+    // distance squared is below Length^2 * 0.22 ([class+A0h], double
+    // [00D06BA0]). True: modelled over nb_near_30 with the plane's own pose
+    // (unit+FCh/+104h; [[C50h+4]+28h] is taken to be the plane, labelled).
+    // False: -1, the old "leave +A9h alone" answer.
+    static constexpr bool kTorpedoLineOfSightBound = true;   // ON: OCEAN_WAVE_FIELD 87
     // Packet cc9_l61_torpedo_done_formation (SQUADRON_LAND_TASK 5ho item 2). The
     // done/prepare enter 009D2530 writes squadron+3E4h = 2 (009D254E, after
     // 009BED80's 1) and state+8Ch = 1.0 (009D2565); every wingman's follow
@@ -7573,6 +7648,8 @@ struct GameUnitsHost::Impl {
     // Packet cc9_throttle_slot: a per-think trace of the throttle slot for the
     // Yorktown flight (dogfight) and D3A Val #1.1 (dive-bomb). Diagnostic, off.
     static constexpr bool kThrottleSlotTrace = false;
+    // DIAGNOSTIC (p21_stow): 009B22C0's carrier park inputs within 8 m of the target.
+    static constexpr bool kParkStowTrace = false;
     // Packet cc9_throttle_slot: 0099D300's speed-hold multiplier is dt in speed
     // mode (not the slot's pending distance). docs/PILOT_THROTTLE_SLOT.md.
     // OFF, measured: USN04 bomb drops 29 -> 0 (local/S0_9000.log vs
@@ -11548,9 +11625,24 @@ float avoid_radius_500(const GameUnitSlot& s) {
     return r;
 }
 
-// vtable[34h], the world velocity.
+// Packet p21_thrcut (docs/OCEAN_WAVE_FIELD.md section 84). A plane's vtable[34h] is
+// 007BBB70, a copy of unit+AC8h (ctl+18h). While the plane is parented, 007D9CE0 keeps
+// that vector in the PARENT'S LOCAL frame (section 75). True: a parented plane answers
+// deck_local_vel, the carrier-frame vector, as the bytes do. False: it answers the
+// host's world-axes rotation of the same relative velocity (plane_world_velocity).
+inline constexpr bool kAvoidParentLocalVelocityBound = true;   // ON: OCEAN_WAVE_FIELD 84 (USN01 pair)
+
+// vtable[34h], the world velocity (for a parented plane, see above).
 void avoid_velocity(const GameUnitSlot& s, float out[3]) {
     if (bsp::unit_is_kind_of(s.class_id, 0x0F)) {
+        if constexpr (kAvoidParentLocalVelocityBound) {
+            if (s.deck_parent_plus_one != 0) {
+                out[0] = s.deck_local_vel[0];
+                out[1] = s.deck_local_vel[1];
+                out[2] = s.deck_local_vel[2];
+                return;
+            }
+        }
         out[0] = s.plane_world_velocity[0];
         out[1] = s.plane_world_velocity[1];
         out[2] = s.plane_world_velocity[2];
@@ -21369,10 +21461,55 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 return blocked;
                             }
                         }
-                        bool target_reachable_007df360(const float[3]) override {
-                            owner_.log.unimplemented(
-                                "BotApproach::target_reachable", "007df360");
-                            return false;
+                        int target_reachable_007df360(const float point[3]) override {
+                            if constexpr (!GameUnitsHost::Impl::kTorpedoLineOfSightBound) {
+                                (void)point;
+                                owner_.log.unimplemented(
+                                    "BotApproach::target_reachable", "007df360");
+                                return -1;
+                            } else {
+                                // 007D61DD-007D61EC: no C50h object for the
+                                // scene's DummyAI side ([game+1FE4h] taken as
+                                // 0/1, single player, labelled).
+                                if (slot_.row.party == bsp::kSceneDefaultDummyAi) return -1;
+                                ++slot_.torpedo_los_calls;
+                                owner_.done("BotApproach::target_reachable", 0x007df360u);
+                                const GameUnitSlot* const t = target();
+                                // 007DF38B-007DF3D0: d = (own - point) in xz,
+                                // y = 0, and its 0042B2F0 length (0 at or below
+                                // 1e-10, [00CE3820]).
+                                const float dx = slot_.world[12] - point[0];
+                                const float dz = slot_.world[14] - point[2];
+                                const float sq = dx * dx + 0.0f * 0.0f + dz * dz;
+                                const float len = static_cast<double>(sq) > 1.0e-10
+                                    ? static_cast<float>(std::sqrt(static_cast<double>(sq)))
+                                    : 0.0f;
+                                for (const std::size_t idx : slot_.nb_near_30) {
+                                    if (idx >= owner_.slots.size()) continue;
+                                    const GameUnitSlot& o = *owner_.slots[idx];
+                                    if (&o == t || &o == &slot_) continue;          // 007DF3EE
+                                    if (!bsp::unit_is_kind_of(o.class_id, 0x06)) continue;  // 007DF401
+                                    const float a = o.world[12] - point[0];         // 007DF424
+                                    const float b = o.world[14] - point[2];         // 007DF431
+                                    const float dot = (a * dx + 0.0f) + b * dz;     // 007DF453
+                                    if (!(dot > 0.0f)) continue;                    // 007DF461 JBE
+                                    const float tt = dot / len;                     // 007DF463
+                                    const float q = (0.0f + a * a) + b * b;         // 007DF48B
+                                    const float p = q - tt * tt;                    // 007DF49B
+                                    const float r = o.motion_class.hull_length;     // [+538h]+A0h
+                                    if (r == 0.0f) ++slot_.torpedo_los_zero_length;
+                                    const float lim = static_cast<float>(
+                                        static_cast<double>(r * r) * 0.2199999988079071);  // [00D06BA0]
+                                    if (p < lim) {                                  // 007DF4AF FCOMIP/JBE
+                                        ++slot_.torpedo_los_screened;
+                                        return 1;
+                                    }
+                                }
+                                if (slot_.torpedo_approach.over_land_a9 != 0) {
+                                    ++slot_.torpedo_los_clears;
+                                }
+                                return 0;
+                            }
                         }
                         float unit_speed_vtable38() override {
                             // 009D3D01, unit->vtable[38h]. The plane's speed,
@@ -21892,6 +22029,36 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     ++slot_.torpedo_done_enters_2530;
                                 }
                             }
+                            if ((next == bsp::TorpedoState::kDone ||
+                                 next == bsp::TorpedoState::kPrepare) &&
+                                next != slot_.torpedo_state) {
+                                slot_.torpedo_timer_armed_since_enter = false;
+                                if constexpr (GameUnitsHost::Impl::kTorpedoStateEnterTimersBound) {
+                                    // 009D253B: the entered state's +98h = -1.0.
+                                    if (next == bsp::TorpedoState::kPrepare) {
+                                        slot_.torpedo_drop_timer = -1.0f;
+                                    } else {
+                                        slot_.torpedo_done_timer_98 = -1.0f;
+                                    }
+                                }
+                            }
+                            if (next == bsp::TorpedoState::kAim &&
+                                slot_.torpedo_state != bsp::TorpedoState::kAim) {
+                                ++slot_.torpedo_aim_enters;
+                                if (slot_.torpedo_aim_complete_2c) {
+                                    ++slot_.torpedo_aim_enters_complete_stale;
+                                }
+                                if constexpr (GameUnitsHost::Impl::kTorpedoAimEnterStoresBound) {
+                                    slot_.torpedo_approach.scan_enabled_a8 = 1;   // 009D15DE
+                                    slot_.torpedo_aim_timer_enabled_0c = false;   // 009D15E7
+                                    slot_.torpedo_aim_complete_2c = false;        // 009D15EA
+                                }
+                            } else if (next != bsp::TorpedoState::kAim &&
+                                       slot_.torpedo_state == bsp::TorpedoState::kAim) {
+                                if constexpr (GameUnitsHost::Impl::kTorpedoAimEnterStoresBound) {
+                                    slot_.torpedo_approach.scan_enabled_a8 = 0;   // 009D1353
+                                }
+                            }
                             // cc8_torpedo_retire item 5. Latch the run-in
                             // geometry on the FIRST tick of each attackrun, in
                             // the same convention the closest-approach census
@@ -22125,11 +22292,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             record("BotApproach::steer_to_point", "009f9e40");
                         }
                         void clear_approach_1c_field40(void*) override {}
-                        float read_drop_timer(void*) override {
-                            return slot_.torpedo_drop_timer;
+                        // prepare_state is &torpedo_drop_timer under
+                        // kTorpedoStateEnterTimersBound; any other pointer
+                        // is the done state.
+                        float* drop_timer_for(const void* state) {
+                            if constexpr (GameUnitsHost::Impl::kTorpedoStateEnterTimersBound) {
+                                if (state != &slot_.torpedo_drop_timer) {
+                                    return &slot_.torpedo_done_timer_98;
+                                }
+                            }
+                            (void)state;
+                            return &slot_.torpedo_drop_timer;
                         }
-                        void write_drop_timer(void*, float value) override {
-                            slot_.torpedo_drop_timer = value;
+                        float read_drop_timer(void* state) override {
+                            slot_.torpedo_last_drop_timer_read = *drop_timer_for(state);
+                            return slot_.torpedo_last_drop_timer_read;
+                        }
+                        void write_drop_timer(void* state, float value) override {
+                            *drop_timer_for(state) = value;
                         }
                         bool pilot_control_has_target(void*) override {
                             return slot_.command_target_plus_one != 0;
@@ -25416,7 +25596,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // cadence (0099AE28, unread), the block is the squadron's slot,
                     // the dirty byte +3ADh is not modelled, and the 009B7C90(0) the
                     // profile re-runs is the arm's own update a moment later.
-                    void lb_cruise_profile_009b8c90(bool leader) {
+                    void lb_cruise_profile_009b8c90(bool leader, float dt) {
                         bsp::LevelBombApproach& a = unit_.lb_ap;
                         bool profile_runs = true;
                         if constexpr (kTaskProfileActivationOnlyBound) {
@@ -25457,8 +25637,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         in.has_unit_2f4 = true;
                         in.unit_is_flight_lead = leader;
                         in.task_authorises_38h = true;
-                        unit_.lb_attack_mode_370 =
-                            bsp::pilot_attack_mode_0099b740(unit_.lb_attack_mode_370, in);
+                        if (owner_.attack_mode_cadence_009998a0(unit_, dt))
+                            unit_.lb_attack_mode_370 =
+                                bsp::pilot_attack_mode_0099b740(unit_.lb_attack_mode_370, in);
                         if (leader) {
                             const auto* sqn = bsp::plane_squadron_registry().find_by_member_unit(
                                 unit_.process_index);
@@ -26003,7 +26184,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                         }
                         const bool leader = owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
-                        lb_cruise_profile_009b8c90(leader);
+                        lb_cruise_profile_009b8c90(leader, dt);
                         ++unit_.lb_arm_ticks;
                         bsp::LevelBombApproach& a = unit_.lb_ap;
                         a.step_c8 = 0xFF;                                      // 009B8B62
@@ -26273,8 +26454,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             in.has_unit_2f4 = true;
                             in.unit_is_flight_lead = leader;
                             in.task_authorises_38h = true;
-                            unit_.st_attack_mode_370 =
-                                bsp::pilot_attack_mode_0099b740(unit_.st_attack_mode_370, in);
+                            if (owner_.attack_mode_cadence_009998a0(unit_, dt))
+                                unit_.st_attack_mode_370 =
+                                    bsp::pilot_attack_mode_0099b740(unit_.st_attack_mode_370, in);
                             // squadron+370h: the leader's value, copied to its members
                             // (the same labelled ownership hole as db_attack_mode_370).
                             if (leader) {
@@ -26546,13 +26728,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // leader's value goes to its members (the strafe arm's labelled
                     // ownership of squadron+370h).
                     bsp::PilotAttackMode kz_attack_mode_0099b740(bsp::PilotAttackMode cur,
-                                                                bool leader, bool drop) {
+                                                                bool leader, bool drop, float dt) {
                         bsp::PilotAttackModeInputs in;
                         in.has_control_block_2fc = true;
                         in.has_unit_2f4 = true;
                         in.unit_is_flight_lead = leader;
                         in.task_authorises_38h = true;
-                        const bsp::PilotAttackMode m = bsp::pilot_attack_mode_0099b740(cur, in);
+                        const bsp::PilotAttackMode m = owner_.attack_mode_cadence_009998a0(unit_, dt)
+                            ? bsp::pilot_attack_mode_0099b740(cur, in) : cur;
                         if (leader) {
                             const auto* sqn = bsp::plane_squadron_registry().find_by_member_unit(
                                 unit_.process_index);
@@ -26728,7 +26911,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const bool leader =
                             owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
                         unit_.kz_attack_mode_370 =
-                            kz_attack_mode_0099b740(unit_.kz_attack_mode_370, leader, false);
+                            kz_attack_mode_0099b740(unit_.kz_attack_mode_370, leader, false, dt);
                         unit_.plan_boost_2e4 = false;                      // 0099B56C
                         const bool was_locked = unit_.kz.aim.locked_18;
                         const bsp::KamikazeArmResult r =
@@ -27050,7 +27233,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const bool leader =
                             owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
                         unit_.dkz_attack_mode_370 =
-                            kz_attack_mode_0099b740(unit_.dkz_attack_mode_370, leader, true);
+                            kz_attack_mode_0099b740(unit_.dkz_attack_mode_370, leader, true, dt);
                         unit_.plan_boost_2e4 = false;                      // 0099B56C
                         const bsp::DropKamikazeArmResult r =
                             bsp::drop_kamikaze_task_arm_009ae8a0(unit_.dkz, h, dt);
@@ -27344,8 +27527,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             in.unit_is_flight_lead =
                                 owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
                             in.task_authorises_38h = true;
-                            unit_.st_attack_mode_370 =
-                                bsp::pilot_attack_mode_0099b740(unit_.st_attack_mode_370, in);
+                            if (owner_.attack_mode_cadence_009998a0(unit_, dt))
+                                unit_.st_attack_mode_370 =
+                                    bsp::pilot_attack_mode_0099b740(unit_.st_attack_mode_370, in);
                         }
                         Adapter host{*this};
                         if (!unit_.depth_charge_task_installed ||
@@ -27598,7 +27782,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                         }
                         // 0099993C: before the task arm, once per think.
-                        run_dive_bomb_attack_mode_tick_0099b740();
+                        if (owner_.attack_mode_cadence_009998a0(unit_, dt))
+                            run_dive_bomb_attack_mode_tick_0099b740();
                         DiveBombArmBinding binding(owner_, unit_);
                         bsp::DiveBombTaskContext ctx;
                         ctx.task = &unit_;
@@ -29548,6 +29733,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     ? bsp::TorpedoState::kMoveTo
                                     : bsp::TorpedoState::kFollow;
                             unit_.torpedo_drop_timer = -1.0f;
+                            unit_.torpedo_done_timer_98 = -1.0f;
                             // 009D4A70, the task's +54h cruise profile, is the
                             // one producer of the engage distance the engaged
                             // predicate 009D3210 compares the range against:
@@ -29857,7 +30043,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         // 009D4A70's tail 0099B740, the cruise profile that
                         // also sets the engage distance.
-                        run_attack_mode_tick_0099b740();
+                        run_attack_mode_tick_0099b740(dt);
                         {
                             const int m = static_cast<int>(
                                 unit_.torpedo_attack_mode_370);
@@ -29880,11 +30066,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         ctx.command_block = &unit_;
                         ctx.pilot_control_block = &unit_;
                         ctx.state = &unit_;
-                        ctx.prepare_state = &unit_;
+                        ctx.prepare_state = GameUnitsHost::Impl::kTorpedoStateEnterTimersBound
+                            ? static_cast<void*>(&unit_.torpedo_drop_timer)
+                            : static_cast<void*>(&unit_);
                         ctx.current = unit_.torpedo_state;
                         const bsp::TorpedoState before_state = ctx.current;
                         const bsp::TorpedoArmTickResult r =
                             bsp::torpedo_task_arm_009d4850(binding, ctx, dt);
+                        if (r.ran_done_tick && r.done_tick.released) {
+                            if (ctx.current == bsp::TorpedoState::kDone) {
+                                ++unit_.torpedo_done_state_drops;
+                            }
+                            if (unit_.torpedo_last_drop_timer_read > 0.0f &&
+                                !unit_.torpedo_timer_armed_since_enter) {
+                                ++unit_.torpedo_stale_timer_drops;
+                            }
+                        }
                         if constexpr (GameUnitsHost::Impl::kTorpedoDoneDisarmedArmBound) {
                             if (r.ran_done_tick && r.done_tick.disarmed) {
                                 // 009D274A EDI = [ctl+3D0h], the squadron's first
@@ -30129,6 +30326,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 bsp::torpedo_arm_drop_009d49a0(arm);
                             if (ar.armed) {
                                 unit_.torpedo_drop_timer = ar.prepare_timer;
+                                unit_.torpedo_timer_armed_since_enter = true;
                             }
                             if (ar.release_007bbba0) {
                                 owner_.release_ordnance_007bbba0(unit_);   // 0099B6CD
@@ -30825,7 +31023,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                     }
 
-                    void run_attack_mode_tick_0099b740() {
+                    void run_attack_mode_tick_0099b740(float dt) {
                         const bsp::PlaneSquadronHostRecord* own_sqn = nullptr;
                         if constexpr (GameUnitsHost::Impl::kTorpedoFlightLeadPerSquadronBound) {
                             // 0099B757: this unit against ctl+3D0h[0], the
@@ -30850,8 +31048,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 0099B710, which is MOV AL,1 / RET.
                         in.task_authorises_38h = true;
                         const bsp::PilotAttackMode next =
-                            bsp::pilot_attack_mode_0099b740(
-                                unit_.torpedo_attack_mode_370, in);
+                            owner_.attack_mode_cadence_009998a0(unit_, dt)
+                            ? bsp::pilot_attack_mode_0099b740(unit_.torpedo_attack_mode_370, in)
+                            : unit_.torpedo_attack_mode_370;
                         if (next != unit_.torpedo_attack_mode_370) {
                             unit_.torpedo_attack_mode_370 = next;
                             if (unit_.torpedo_attack_mode_raised_tick < 0) {
@@ -33518,6 +33717,39 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 static_cast<double>(v), static_cast<double>(spd),
                                 static_cast<double>(yaw), static_cast<double>(err), slow ? 1 : 0,
                                 unit_.plane_taxi_queue_910 ? 1 : 0, unit_.land_done_18 ? 1 : 0);
+                        }
+                        if constexpr (GameUnitsHost::Impl::kParkStowTrace) {
+                            const auto dot3 = [](const float* r, const float* w) {
+                                return r[0] * w[0] + r[1] * w[1] + r[2] * w[2];
+                            };
+                            if (carrier && 8.0f > f18 && (unit_.land_park_ticks % 2) == 1) {
+                                const bsp::PilotPlanSlot& th = unit_.plan_slots[bsp::kPilotSlotThrottle];
+                                const bsp::PilotPlanSlot& ab = unit_.plan_slots[bsp::kPilotSlotAirBrake];
+                                owner_.log.notef("  park stow trace %s t=%.2f st=%d f18=%.3f v=%.3f spd=%.3f "
+                                    "meas=%.3f scale=%.3f skip=%d thr=(%.4f %.4f %d) ab=(%.4f %.4f %d) "
+                                    "live=%.4f lat=%.4f lab=%.4f brake=%.3f fric=%.4f a7c=%.4f m2d8=%d bv=(%.3f %.3f %.3f) pitch=%.4f c8=%.3f",
+                                    unit_.row.name.c_str(),
+                                    static_cast<double>(owner_.summary.simulated_seconds),
+                                    unit_.plane_control_mode_900, static_cast<double>(f18),
+                                    static_cast<double>(v), static_cast<double>(spd),
+                                    static_cast<double>(unit_.diag_thr_meas),
+                                    static_cast<double>(unit_.diag_thr_scale), unit_.diag_thr_skip,
+                                    static_cast<double>(th.current), static_cast<double>(th.desired),
+                                    static_cast<int>(th.active), static_cast<double>(ab.current),
+                                    static_cast<double>(ab.desired), static_cast<int>(ab.active),
+                                    static_cast<double>(unit_.plane_live_throttle),
+                                    static_cast<double>(unit_.plane_latched_throttle),
+                                    static_cast<double>(unit_.plane_latched_air_brake),
+                                    static_cast<double>(unit_.ground_last_brake),
+                                    static_cast<double>(unit_.ground_last_friction),
+                                    static_cast<double>(unit_.plane_body_accel_7c[2]),
+                                    unit_.plane_air_brake_mode_2d8,
+                                    static_cast<double>(dot3(unit_.motion.pose_row0, unit_.plane_world_velocity)),
+                                    static_cast<double>(dot3(unit_.motion.pose_row1, unit_.plane_world_velocity)),
+                                    static_cast<double>(dot3(unit_.motion.pose_row2, unit_.plane_world_velocity)),
+                                    static_cast<double>(unit_.plane_pitch_angle_c64),
+                                    static_cast<double>(unit_.plane_speed_floor_timer_c8));
+                            }
                         }
                         owner_.done("BotStateLandPark::tick", 0x009b22c0u);
                     }
@@ -36887,8 +37119,45 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     else ++owner_.throttle_band_skipped;
                                 }
                             }
+                            unit_.diag_thr_meas = tin.measured_speed;
+                            unit_.diag_thr_scale = tin.speed_scale;
+                            unit_.diag_thr_skip = tin.dead_band_skips ? 1 : 0;
                             const bsp::PilotBotThrottleResult tr =
                                 bsp::pilot_plan_throttle_0099d300(tin);
+                            {
+                                // DIAGNOSTIC, env-gated (BSP_THROTTLE_TRACE=<unit name>, exact):
+                                // 0099D300's inputs and outputs per think (p21_thrcut). Prints
+                                // nothing when unset.
+                                static const std::string thr_trace = [] {
+                                    char* e = nullptr;
+                                    std::size_t n = 0;
+                                    std::string s;
+                                    if (_dupenv_s(&e, &n, "BSP_THROTTLE_TRACE") == 0 && e != nullptr) s = e;
+                                    std::free(e);
+                                    return s;
+                                }();
+                                if (!thr_trace.empty() && unit_.row.name == thr_trace) {
+                                    const float* const lp = unit_.plane_velocity_lp_30;
+                                    owner_.log.notef("  thr0099d300 %s t=%.2f st=%d m2d8=%d want=%.3f meas=%.3f "
+                                        "scale=%.4f corr=%.4f pend=%.4f skip=%d slot=(%.4f %.4f %d) "
+                                        "out=(%.4f %d) ab=(%.4f %d) clr=%d lp=%.3f lpv=%d",
+                                        unit_.row.name.c_str(),
+                                        static_cast<double>(owner_.summary.simulated_seconds),
+                                        tin.flight_state, tin.air_brake_mode,
+                                        static_cast<double>(tin.desired_speed),
+                                        static_cast<double>(tin.measured_speed),
+                                        static_cast<double>(tin.speed_scale),
+                                        static_cast<double>(tin.error_correction),
+                                        static_cast<double>(tin.pending), tin.dead_band_skips ? 1 : 0,
+                                        static_cast<double>(tin.slot_current),
+                                        static_cast<double>(tin.slot_desired), tin.slot_active ? 1 : 0,
+                                        static_cast<double>(tr.throttle_desired), tr.wrote_throttle ? 1 : 0,
+                                        static_cast<double>(tr.air_brake_desired), tr.wrote_air_brake ? 1 : 0,
+                                        tr.clears_air_brake_mode ? 1 : 0,
+                                        static_cast<double>(std::sqrt(lp[0] * lp[0] + lp[1] * lp[1] + lp[2] * lp[2])),
+                                        unit_.plane_velocity_lp_valid ? 1 : 0);
+                                }
+                            }
                             if constexpr (GameUnitsHost::Impl::kThrottleSlotTrace) {
                                 // Packet cc9_throttle_slot: one line per think for
                                 // the Yorktown flight while its dogfight task runs.
@@ -41022,6 +41291,9 @@ void GameUnitsHost::report() {
             host.df_early_edge_clears, Impl::kDogfightEarlyEdgeClearBound ? 1 : 0);
         host.log.notef("summary follow exit 009BDE40 calls=%llu bound=%d (packet p20_follow_exit)",
             host.follow_exits, Impl::kFollowExitClearsBound ? 1 : 0);
+        host.log.notef("summary attack mode cadence fires=%llu skips=%llu bound=%d (009998A0 "
+            "+308h gate on 0099B740, packet p20_cadence)", host.attack_mode_cadence_fires,
+            host.attack_mode_cadence_skips, Impl::kTaskAttackModeCadenceBound ? 1 : 0);
         host.log.notef("summary bot task ctor seeds=%llu bound=%d (0099C6F0 / 009C2980, packet "
             "p20_ctor_seeds)", host.bot_task_ctor_seeds, Impl::kBotTaskCtorSeedsBound ? 1 : 0);
         host.log.notef("summary land min speed owner terms=%llu bound=%d (009B1362, packet "
@@ -43102,6 +43374,21 @@ void GameUnitsHost::report() {
                         "republish=%d (009BFDA6, packet cc9_l61_torpedo_done_formation)",
                         slot->row.name.c_str(), slot->torpedo_done_enters_2530,
                         slot->torpedo_3e8_republishes);
+                }
+                if (slot->torpedo_aim_enters > 0 || slot->torpedo_stale_timer_drops > 0 ||
+                    slot->torpedo_done_state_drops > 0) {
+                    host.log.notef("  torpedo %-12s aim enters=%d (2Ch already set=%d) "
+                        "done-state drops=%d stale-timer drops=%d (packet p21_torp_enter)",
+                        slot->row.name.c_str(), slot->torpedo_aim_enters,
+                        slot->torpedo_aim_enters_complete_stale,
+                        slot->torpedo_done_state_drops, slot->torpedo_stale_timer_drops);
+                }
+                if (slot->torpedo_los_calls > 0) {
+                    host.log.notef("  torpedo %-12s los 007DF360 calls=%d screened=%d "
+                        "a9 clears=%d zero-length=%d (packet p22_los_007df360)",
+                        slot->row.name.c_str(), slot->torpedo_los_calls,
+                        slot->torpedo_los_screened, slot->torpedo_los_clears,
+                        slot->torpedo_los_zero_length);
                 }
                 if (slot->torpedo_disarmed_ticks > 0) {
                     host.log.notef("  torpedo %-12s disarmed 009D29E0: ticks=%d close=%d "

@@ -62,7 +62,15 @@
 #include "bsp/recon_sensor_pass.hpp"
 #include "bsp/world_ocean.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
+#include "bsp/gui_lua_runtime.hpp"
+#include "bsp/warning_messages.hpp"
+#include "bsp/warning_reports_cc13.hpp"
+#include "bsp/game_hosts_ai.hpp"
+#include "bsp/memory_stream.hpp"
+#include "bsp/resource_lookup.hpp"
+#include "bsp/vfs_mounts.hpp"
 
+#include <array>
 #include <cmath>
 #include <cstdint>
 #include <cstdio>
@@ -132,6 +140,24 @@ void format_address(std::uint32_t value, char (&out)[16]) {
 // False: the three calls are records under the old MissionEvents names and the
 // accumulator reads the world state's never-written delta.
 constexpr bool kWarningManagerTickBound = true;
+
+// Packet cc15-wB4. True: the global_subsystems step loads the manager+108h
+// message table as 009870A0 BSP_WarningManager_Init does (its only caller is
+// 004DC6A0): Scripts/datatables/Warnings.lua through 00bdf4c0/00bdf310, run in
+// a Lua state of its own (009870A0 opens one with 00B6A020 mask 1; the
+// repository's Lua 5.1.1 stands in, as for decals.lua), then
+// Warnings.escapecharacters.{entity,playerunit_section} and Warnings.messages
+// through load_warning_tables_009870a0. message_id_known answers 0096DBB0 over
+// that table. The rest of Init (roster 00973F20, the two environment effects,
+// the hooks) is not run. Messages.lua (007065E0, load_warning_bank) is the
+// MessageManager's voice bank, not this table. The same switch runs 009813A0's
+// default kill warning, 00981E07..00982096, after the loss entry's `kill`
+// channel record: its gates from the host's own state (recon level and
+// 00803CE0 through the recon sensor pass, read only), 009744C0's id, and
+// 009763E0 into the pending queue. The post-accept hooks stay empty (vtable[3]
+// 0097F970, voice_ready 005B71D0, 00974070), so an accepted warning is Queued
+// and never applied. False: no table, no kill block, and every id is unknown.
+constexpr bool kWarningMessageBankCc15Bound = false;
 
 // Packet cc9_construct_world part 2 (docs/CONSTRUCT_WORLD.md section 9). True:
 // the load step construct_world 004DE610 sets the world-active byte
@@ -317,6 +343,21 @@ struct GameMissionFrameHost::Impl {
     unsigned long long warning_loss_cancelled{0};
     unsigned long long warning_loss_proximity_erased{0};
     std::map<std::size_t, float> warning_loss_stamp_15c{};
+    // Packet cc15-wB4: manager+108h..+144h and the 0096DBB0 answers per id.
+    bsp::WarningMessageTables warning_tables{};
+    bool warning_tables_loaded{false};
+    std::string warning_tables_error{};
+    std::map<std::string, std::pair<unsigned long long, unsigned long long>> warning_id_queries{};
+    // The kill block of 009813A0 (00981E07..009820AC) under the same switch.
+    struct KillWarningCounts {
+        unsigned long long entries{0}, override_104{0}, suppressed_d0{0}, slot{0}, clock{0},
+            suppress_77edf0{0}, recon_not_evaluated{0}, recon_below{0}, plane_throttled{0},
+            filtered{0}, reports{0};
+    } kill_warning{};
+    bool kill_plane_throttle_init{false};      // 00F8A0D0 bit 0
+    float kill_plane_throttle_last{0.0f};      // 00F8A0CC
+    std::map<std::string, std::array<unsigned long long, 4>> warning_report_outcomes{};
+    std::map<std::string, unsigned long long> warning_lua_callbacks{};
     bool device_edge_injected{false};         // the executable's own injection
     // Packet cc_mission_tick's reconstruction of the four-call opener of every
     // simulated frame, and the dynamics list behind its fourth call.
@@ -529,6 +570,24 @@ private:
 // per-entity methods below are unreachable in this process and never record.
 // ---------------------------------------------------------------------------
 
+// 00803CE0(ECX = side, EDX = unit): 3 when the side's detection level of
+// the unit is below 2 (00803CFE); else 0 own, 2 neutral, 1 enemy. The level
+// is the host's recon sensor pass (ReconSensorPassState::level).
+int warning_relation_00803ce0(GameMissionFrameHost::Impl& host, int side,
+    std::size_t unit) {
+    const GameGunneryHost* gunnery =
+        host.units != nullptr ? host.units->gunnery() : nullptr;
+    if (gunnery == nullptr) return 3;
+    if (gunnery->recon_sensor_pass_state().level(side, unit)
+            != bsp::ReconDetectionLevel::identified) {
+        return 3;
+    }
+    const int other = host.units->unit_side_0054(unit);
+    if (side == 2) return other == 2 ? 0 : 2;              // 00803D26
+    if (side == other) return 0;                           // 00803D15
+    return other == 2 ? 2 : 1;                             // 00803D18
+}
+
 class WarningManagerBinding final : public bsp::WarningManagerHost {
 public:
     explicit WarningManagerBinding(GameMissionFrameHost::Impl& owner) : owner_(owner) {}
@@ -541,11 +600,22 @@ public:
     void raise_prompt_hud(int) override {
         owner_.record("WarningManager::raise_prompt_hud", 0x0096d540u);
     }
-    void call_mission_lua(const std::string&) override {
+    void call_mission_lua(const std::string& callback) override {
+        if constexpr (kWarningMessageBankCc15Bound) ++owner_.warning_lua_callbacks[callback];
         owner_.record("WarningManager::call_mission_lua", 0x00887e50u);
     }
     void stop_collision_sound() override {}
-    bool message_id_known(const std::string&) override { return false; }
+    bool message_id_known(const std::string& id) override {
+        if constexpr (kWarningMessageBankCc15Bound) {
+            const bool known = bsp::warning_message_id_known_0096dbb0(owner_.warning_tables, id);
+            auto& counts = owner_.warning_id_queries[id];
+            ++(known ? counts.first : counts.second);
+            owner_.done("WarningManager::message_id_known", 0x0096dbb0u);
+            return known;
+        } else {
+            return false;
+        }
+    }
     void report_error(const char*) override {}
     void destroy_warning(std::size_t, bool) override {}
     void on_warning_accepted(std::size_t) override {}
@@ -555,6 +625,287 @@ public:
 private:
     GameMissionFrameHost::Impl& owner_;
 };
+
+// Packet cc15-wB4: what 009744C0 asks of the victim and its killer, answered
+// from the host's unit, gunnery (kill attribution, read only) and recon state.
+// Host entities travel in the opaque WarningEntity as one-based unit indices.
+bsp::WarningEntity warning_entity_of_unit(std::size_t unit) {
+    return reinterpret_cast<bsp::WarningEntity>(static_cast<std::uintptr_t>(unit) + 1u);
+}
+
+class KillWarningQueryBinding final : public bsp::KillWarningQuery {
+public:
+    explicit KillWarningQueryBinding(GameMissionFrameHost::Impl& host) : host_(host) {}
+    bool is_kind_5c(bsp::WarningEntity entity, std::int32_t kind) override {
+        std::size_t unit = 0;
+        return unit_of(entity, unit) && host_.units->unit_is_kind_of(unit, kind);
+    }
+    // 00965810's other arm reads +9D4h of a kind-0Fh plane; the host fuses a
+    // squadron with its members, so no plane entity carries one (as at 00977690).
+    bsp::WarningEntity plane_owner_9d4(bsp::WarningEntity) override { return nullptr; }
+    bsp::WarningEntity controlled_unit_e188d8() override {
+        return host_.units->controlled_bound()
+            ? warning_entity_of_unit(host_.units->controlled_index()) : nullptr;
+    }
+    std::int32_t local_slot_18ec() override { return 0; }  // single player
+    std::int32_t local_side_id() override { return local_player_party(); }
+    std::int32_t side_54(bsp::WarningEntity entity) override {
+        return host_.units->unit_side_0054(required_unit(entity));
+    }
+    bsp::WarningRelation relation_00803ce0(bsp::WarningEntity entity) override {
+        return static_cast<bsp::WarningRelation>(
+            warning_relation_00803ce0(host_, local_side_id(), required_unit(entity)));
+    }
+    bool is_player_controlled_00965810(bsp::WarningEntity entity) override {
+        std::size_t unit = 0;
+        if (!unit_of(entity, unit)) return false;  // 00965810 tests ECX for null
+        return host_.units->controlled_bound() && host_.units->controlled_index() == unit;
+    }
+    // victim+2C4h/+2D8h as 0077CE60 left them (GameGunneryHost's kill attribution).
+    bsp::WarningEntity killer_2c4(bsp::WarningEntity victim) override {
+        const GameGunneryHost* gunnery = host_.units->gunnery();
+        if (gunnery == nullptr) return nullptr;
+        const std::size_t last = gunnery->kill_last_attacker(required_unit(victim));
+        return last == 0 ? nullptr : warning_entity_of_unit(last - 1);
+    }
+    std::int32_t slot_2d8(bsp::WarningEntity victim) override {
+        const GameGunneryHost* gunnery = host_.units->gunnery();
+        return gunnery == nullptr ? 0 : gunnery->kill_credited_slot(required_unit(victim));
+    }
+
+private:
+    bool unit_of(bsp::WarningEntity entity, std::size_t& unit) const {
+        const auto raw = reinterpret_cast<std::uintptr_t>(entity);
+        if (raw == 0 || raw > host_.units->count()) return false;
+        unit = static_cast<std::size_t>(raw - 1u);
+        return true;
+    }
+    std::size_t required_unit(bsp::WarningEntity entity) const {
+        std::size_t unit = 0;
+        // The native dereferences the pointer without a check.
+        if (!unit_of(entity, unit)) throw std::logic_error("kill warning query on a null entity");
+        return unit;
+    }
+    GameMissionFrameHost::Impl& host_;
+};
+
+// The WarningHost calls 00973A90 and 009744C0 make: the clock and the observer
+// handles of the +3Ch/+54h slots. The host keeps no observer lists, so a link
+// is the slot's pointer in the object. Nothing else is reached from 009744C0.
+class KillWarningHostBinding final : public bsp::cc13_seg49_64_78::WarningHost {
+public:
+    explicit KillWarningHostBinding(GameMissionFrameHost::Impl& host) : host_(host) {}
+    float clock_00f876a4() override { return host_.world_clock; }
+    void observer_link_00694a60(void*, bsp::cc13_seg49_64_78::WarningSlot) override {}
+    void observer_unlink_006952a0(void*, bsp::cc13_seg49_64_78::WarningSlot) override {}
+    void observer_destroy(bsp::cc13_seg49_64_78::WarningSlot) override {}
+    bool equals_insensitive_00435c40(const std::string&, const std::string&) override {
+        return unreached<bool>();
+    }
+    float entity_distance_0042b2f0(void*, void*) override { return unreached<float>(); }
+    void entity_world_position(void*, float[3]) override { unreached<int>(); }
+    std::int32_t local_side_28() override { return unreached<std::int32_t>(); }
+    std::int32_t relation_00803ce0(std::int32_t, void*) override {
+        return unreached<std::int32_t>();
+    }
+    void* detector_for_side_210(void*, std::int32_t) override { return unreached<void*>(); }
+    bool is_kind_of_5c(void*, std::int32_t) override { return unreached<bool>(); }
+    void* plane_squadron_9d4(void*) override { return unreached<void*>(); }
+    void* local_player_unit_00e188d8() override { return unreached<void*>(); }
+    const void* resolve_message_00705e00(const std::string&) override {
+        return unreached<const void*>();
+    }
+    void read_message_ref_00706060(bsp::cc13_seg49_64_78::EventArchiveReader&,
+        bsp::cc13_seg49_64_78::VoiceClipRef&) override { unreached<int>(); }
+    void write_message_ref_00703380(const bsp::cc13_seg49_64_78::VoiceClipRef&,
+        bsp::cc13_seg49_64_78::EventArchiveWriter&) override { unreached<int>(); }
+
+private:
+    template <typename T> static T unreached() {
+        throw std::logic_error("009744C0 does not reach this WarningHost call");
+    }
+    GameMissionFrameHost::Impl& host_;
+};
+
+// Packet cc15-wB4: 009813A0's default kill warning, 00981E07..009820AC, after
+// the two `kill` channel passes (docs/CC13_EVENT_CHANNELS.md section 3). The
+// report goes through 009763E0 into the manager's pending queue, which only
+// 009763E0's own walks and 00976F10 read in this process.
+void game_warning_kill_block_00981e07(GameMissionFrameHost::Impl& host, std::size_t unit) {
+    auto& counts = host.kill_warning;
+    ++counts.entries;
+    // 00981E07..00981E0E: +104h is set only by 00979670 (Lua OverrideMessage)
+    // from a listener the dispatcher ran inline; the dispatcher cleared it on
+    // entry and the host runs no `kill` listener, so it is clear here.
+    // 00981E3E..00981E45: +D0h.
+    if (host.warning.suppressed) {
+        ++counts.suppressed_d0;
+        return;
+    }
+    // 00981E4B..00981E62: [game+18ECh] in [0, 7]; the single-player slot is 0.
+    // 00981E68..00981E77: 00F876A4 above 4.0 (00CE3D34).
+    if (!bsp::warning_report_clock_allows(host.world_clock)) {
+        ++counts.clock;
+        return;
+    }
+    // 00981E7D..00981E94: 0077EDF0 on manager+D4h for the victim; that map has
+    // no entries in this process (as at 00977690).
+    // 00981E9A..00981ECE: the victim's recon record for the local party,
+    // unit+1E8h+party*34h (+8h when +10h is set, else +4h); below 2 ends the
+    // block. ReconSensorPassState::level publishes the forced level the same way.
+    const GameGunneryHost* gunnery = host.units->gunnery();
+    if (gunnery == nullptr) {
+        ++counts.recon_not_evaluated;
+        return;
+    }
+    const int party = local_player_party();
+    if (gunnery->recon_sensor_pass_state().level(party, unit)
+            != bsp::ReconDetectionLevel::identified) {
+        ++counts.recon_below;
+        return;
+    }
+    KillWarningQueryBinding query(host);
+    const bsp::WarningEntity victim = warning_entity_of_unit(unit);
+    if (query.is_kind_5c(victim, bsp::kWarningKindPlane)) {
+        // 00981EFC..00981F6E, x87: a function-local static (init bit 00F8A0D0,
+        // last time 00F8A0CC, first -1e10 from 00CE4ADC) against game+64Ch, the
+        // accumulator 004C6E30 writes (world.game.elapsed here). A last time
+        // ahead of now resets; one within 8.0 (double 00CE3DB0) ends the block.
+        if (!host.kill_plane_throttle_init) {
+            host.kill_plane_throttle_init = true;
+            host.kill_plane_throttle_last = -1.0e10f;
+        }
+        const float now = host.world.game.elapsed;  // 00981F22 FSTP to a float slot
+        if (host.kill_plane_throttle_last > now) host.kill_plane_throttle_last = -1.0e10f;
+        if (static_cast<double>(host.kill_plane_throttle_last)
+                > static_cast<double>(now) - 8.0) {
+            ++counts.plane_throttled;
+            return;
+        }
+        host.kill_plane_throttle_last = now;
+    }
+    // 00981F76..00981F8A: 00803CE0(ECX = party, EDX = victim).
+    const int relation = warning_relation_00803ce0(host, party, unit);
+    // 00981F8F..00981FB0: +2C4h when it is a kind-2 object.
+    bsp::WarningEntity killer = query.killer_2c4(victim);
+    if (killer != nullptr && !query.is_kind_5c(killer, bsp::kWarningKindUnit)) killer = nullptr;
+    // 00922A90: class id +C4h in {19h, 1Ah, 1Bh, 36h, 45h, 46h, 1Ch}.
+    const auto land_family = [&]() {
+        const int id = host.units->unit_class_id(unit);
+        return id == 0x19 || id == 0x1a || id == 0x1b || id == 0x36 || id == 0x45
+            || id == 0x46 || id == 0x1c;
+    };
+    bool report = false;
+    if (relation == 0) {
+        // 00981FB6..00981FF8: own ships, planes, squadrons and airfields.
+        report = query.is_kind_5c(victim, bsp::kWarningKindShip)
+            || query.is_kind_5c(victim, bsp::kWarningKindPlane)
+            || query.is_kind_5c(victim, bsp::kWarningKindSquadron)
+            || query.is_kind_5c(victim, bsp::kWarningKindAirfield);
+    } else if (relation == 1) {
+        // 0098201E..0098204B: an enemy plane needs a killer; an airfield
+        // reports; any other land-family class does not.
+        if (killer == nullptr && query.is_kind_5c(victim, bsp::kWarningKindPlane)) {
+            report = false;
+        } else if (query.is_kind_5c(victim, bsp::kWarningKindAirfield)) {
+            report = true;
+        } else {
+            report = !land_family();
+        }
+    } else {
+        // 00982071..00982074: neutral ends the block; any other code reports.
+        report = relation != 2;
+    }
+    if (!report) {
+        ++counts.filtered;
+        return;
+    }
+    // 0098204D..00982096: operator_new(70h), 009744C0(victim), 009763E0.
+    bsp::cc13_seg49_64_78::WarningObject warning;
+    KillWarningHostBinding warning_host(host);
+    bsp::construct_kill_warning_009744c0(warning, warning_host, query, victim);
+    bsp::WarningRecord record;
+    record.message_id = warning.id;
+    record.applied_at = warning.validity_ref_time;  // +10h
+    record.clip_count = warning.messages.size();    // filled by vtable[3], 0097F970
+    // +50h and +68h, the entities of the +3Ch and +54h handles.
+    record.positional_speaker = static_cast<std::uint32_t>(
+        reinterpret_cast<std::uintptr_t>(warning.ambient));
+    record.flat_speaker = static_cast<std::uint32_t>(
+        reinterpret_cast<std::uintptr_t>(warning.reporter));
+    record.target_id = 0;           // a 70h kill warning has no +80h; 00976F10 tests kind 4 first
+    record.kind = 3;                // vtable 00D1B2CC +10h, 00973D50
+    record.priority = 0.0f;         // +18h, 0096F220
+    record.pending_lifetime = 5.0f; // +1Ch, 0096F230: 00CE3850
+    record.applied_lifetime = 15.0f; // +20h, 0096F240: 00CE5380
+    WarningManagerBinding binding(host);
+    const bsp::WarningReportResult result =
+        bsp::report_warning_009763e0(host.warning, binding, record, host.world_clock);
+    ++counts.reports;
+    auto& outcome = host.warning_report_outcomes[record.message_id];
+    switch (result.outcome) {
+    case bsp::WarningReportOutcome::Queued:
+    case bsp::WarningReportOutcome::QueuedAndApplied: ++outcome[0]; break;
+    case bsp::WarningReportOutcome::SuppressedDuplicate: ++outcome[1]; break;
+    case bsp::WarningReportOutcome::RejectedUnknownId: ++outcome[2]; break;
+    default: ++outcome[3]; break;
+    }
+    host.done("WarningManager::report_kill_warning", 0x00982096u);
+}
+
+// Packet cc15-wB4: the table-loading fragment of 009870A0 (see
+// kWarningMessageBankCc15Bound). 009870EB runs the 31-byte path through the
+// script runner, which reads it out of the VFS like decals.lua.
+void load_warning_message_bank_009870a0(GameMissionFrameHost::Impl& host) {
+    if (host.warning_tables_loaded) return;  // 004DC6A0 runs once per process
+    std::string text;
+    {
+        std::string resolved = bsp::kWarningDataScript;
+        if (!host.vfs.ready() || !bsp::resolve_existing_resource_00bdf4c0_fragment(
+                host.vfs.context(), host.vfs.search_registrations(), resolved)) {
+            host.warning_tables_error = "cannot resolve the warning table";
+        } else {
+            bsp::VfsMemoryOpen opened = bsp::open_resource_memory_00bdf310_fragment(
+                host.vfs.context(), resolved, 2);
+            if (!opened.provider_opened || !opened.stream || !opened.stream->fully_initialized()) {
+                host.warning_tables_error = opened.error.empty()
+                    ? "cannot open the warning table" : opened.error;
+            } else {
+                text.assign(reinterpret_cast<const char*>(opened.stream->data_00bef610()),
+                    static_cast<std::size_t>(opened.stream->size_00bef600()));
+            }
+        }
+    }
+    if (host.warning_tables_error.empty()) {
+        bsp::GuiLua51Host lua;
+        std::string error;
+        if (!lua.execute_archive(text, error)) {
+            host.warning_tables_error = error;
+        } else {
+            const bsp::GuiLuaRef globals = lua.globals();
+            const bsp::GuiLuaRef warnings = lua.get_by_name(globals, "Warnings");
+            lua.release(globals);  // 009871AF
+            try {
+                bsp::load_warning_tables_009870a0(host.warning_tables, lua, warnings);
+                host.warning_tables_loaded = true;
+            } catch (const std::exception& failure) {
+                host.warning_tables_error = failure.what();
+            }
+            lua.release(warnings);
+        }
+    }
+    if (host.warning_tables_loaded) {
+        host.done("WarningManager::load_message_tables", 0x009870a0u);
+        host.log.notef("warning table %s: messages=%zu entity=%zu playerunit_section=%zu",
+            bsp::kWarningDataScript, host.warning_tables.messages.size(),
+            host.warning_tables.entity.replacements.size(),
+            host.warning_tables.playerunit_section.replacements.size());
+    } else {
+        host.record("WarningManager::load_message_tables", 0x009870a0u);
+        host.log.notef("warning table %s not loaded: %s", bsp::kWarningDataScript,
+            host.warning_tables_error.c_str());
+    }
+}
 
 
 class WorldTickBinding final : public bsp::WorldTickHost {
@@ -700,17 +1051,7 @@ public:
     // the unit is below 2 (00803CFE); else 0 own, 2 neutral, 1 enemy. The level
     // is the host's recon sensor pass (ReconSensorPassState::level).
     int relation_00803ce0(int side, std::size_t unit) const {
-        const GameGunneryHost* gunnery =
-            owner_.units != nullptr ? owner_.units->gunnery() : nullptr;
-        if (gunnery == nullptr) return 3;
-        if (gunnery->recon_sensor_pass_state().level(side, unit)
-                != bsp::ReconDetectionLevel::identified) {
-            return 3;
-        }
-        const int other = owner_.units->unit_side_0054(unit);
-        if (side == 2) return other == 2 ? 0 : 2;              // 00803D26
-        if (side == other) return 0;                           // 00803D15
-        return other == 2 ? 2 : 1;                             // 00803D18
+        return warning_relation_00803ce0(owner_, side, unit);
     }
 
     void mission_events_poll_0096d540() override {
@@ -1413,7 +1754,8 @@ public:
             owner_.lua.call_entry_point(bsp::kLuaPrecacheUnits, false);
             if constexpr (bsp::game::kVehicleClassPreloadCc15Bound) {
                 // 0045F6C1, the first of the class-table resets.
-                owner_.lua.census_vehicle_class_purge_0095ca70("0045F6C1");
+                owner_.lua.census_vehicle_class_purge_0095ca70("0045F6C1",
+                    bsp::game::kVehicleClassMovieStopPurgeCc15Bound);
             }
             owner_.record("EngineMovieStop::class_table_resets", 0x0045f6dfu);
             owner_.lua.call_entry_point(bsp::kLuaStageInitMulti, false);
@@ -1870,6 +2212,7 @@ void game_warning_report_loss_009813a0(std::size_t unit) {
     // listener through 00887E50. Kept a record: the host fails a mission through
     // its own script-order path, which must not run twice.
     host->record("WarningManager::kill_channel_0097b8c0", 0x0097b8c0u);
+    if constexpr (kWarningMessageBankCc15Bound) game_warning_kill_block_00981e07(*host, unit);
     // Teardown 0077EDF0, 006952A0, 00695870, 006E0860.
     host->record("WarningManager::loss_teardown", 0x0077edf0u);
 }
@@ -2447,6 +2790,7 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // leave behind (docs/MISSION_LUA_MACHINE.md, gap 1).
             host.record(label, step.address);
             ++host.load.records;
+            if constexpr (kWarningMessageBankCc15Bound) load_warning_message_bank_009870a0(host);
             if (!host.lua.started()) host.lua.start_machine_00884be0();
             host.lua.run_global_script_folders_00886900();
             continue;
@@ -2475,7 +2819,7 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             host.lua.call_entry_point(bsp::kLuaPrecacheUnits, false);
             if constexpr (bsp::game::kVehicleClassPreloadCc15Bound) {
                 // 004E0A9B, the first of the eleven calls after luaPrecacheUnits.
-                host.lua.census_vehicle_class_purge_0095ca70("004E0A9B");
+                host.lua.census_vehicle_class_purge_0095ca70("004E0A9B", true);
             }
             host.lua.call_entry_point(bsp::kLuaStageInitMulti, false);
             ++host.load.concrete;
@@ -3869,6 +4213,40 @@ void GameMissionFrameHost::report(long requested_frames) {
         host.warning_loss_other, kLossWarningBound ? 1 : 0, host.warning_loss_text_uslost,
         host.warning_loss_text_japanlost, host.warning_loss_cancelled,
         host.warning_loss_proximity_erased);
+    if constexpr (kWarningMessageBankCc15Bound) {
+        unsigned long long known = 0, unknown = 0;
+        for (const auto& [id, counts] : host.warning_id_queries) {
+            known += counts.first;
+            unknown += counts.second;
+        }
+        host.log.notef("summary mission warning table bound=1 loaded=%d messages=%zu ids=%zu "
+            "known=%llu unknown=%llu (packet cc15-wB4; 009870a0, 0096dbb0)",
+            host.warning_tables_loaded ? 1 : 0, host.warning_tables.messages.size(),
+            host.warning_id_queries.size(), known, unknown);
+        for (const auto& [id, counts] : host.warning_id_queries) {
+            host.log.notef("summary mission warning id %s known=%llu unknown=%llu",
+                id.c_str(), counts.first, counts.second);
+        }
+        const auto& kill = host.kill_warning;
+        host.log.notef("summary mission kill warning entries=%llu override_104=%llu "
+            "suppressed_d0=%llu slot=%llu clock=%llu suppress_77edf0=%llu "
+            "recon_not_evaluated=%llu recon_below=%llu plane_throttled=%llu filtered=%llu "
+            "reports=%llu (00981e07..00982096)", kill.entries, kill.override_104,
+            kill.suppressed_d0, kill.slot, kill.clock, kill.suppress_77edf0,
+            kill.recon_not_evaluated, kill.recon_below, kill.plane_throttled, kill.filtered,
+            kill.reports);
+        for (const auto& [id, outcome] : host.warning_report_outcomes) {
+            host.log.notef("summary mission kill warning id %s queued=%llu duplicate=%llu "
+                "unknown=%llu other=%llu", id.c_str(), outcome[0], outcome[1], outcome[2],
+                outcome[3]);
+        }
+        host.log.notef("summary mission warning lua callbacks=%zu (00887e50)",
+            host.warning_lua_callbacks.size());
+        for (const auto& [name, calls] : host.warning_lua_callbacks) {
+            host.log.notef("summary mission warning lua callback %s calls=%llu", name.c_str(),
+                calls);
+        }
+    }
     host.log.notef("summary mission fixed steps=%llu at %.3f s each (00875bb0's own clock "
         "at 00f876a4/00f876ac)", host.fixed_steps,
         static_cast<double>(bsp::kFixedSimulationStepFloat));

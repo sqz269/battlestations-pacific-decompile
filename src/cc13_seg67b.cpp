@@ -1235,6 +1235,89 @@ void* bot_state_dogfight_attack_run_construct_009a70e0(Cc13Seg67bHost& host, voi
                                  0x20);
 }
 
+// 009A71E0 (009A71E0-009A74AE). The dogfight attack run's tick, slot +0Ch of 00D1F8B0.
+// a = [state+4h] (the approach), unit = a+4h, plan = a+18h, direction = a+1Ch.
+//  - 009A71EF-009A7260: h0 = pi/2 [00CE3830] - atan2(dz, dx) to the approach's target
+//    point (vtable[0]), + 2pi [00CE3828] when negative; dx, dz are stored as floats.
+//  - 009A7260-009A7301: dt < +1Ch (FCOMI, JB; a NaN dt takes it too) -> +1Ch = +1Ch - dt
+//    (009A735A DE E9); else +1Ch = +1Ch + (+18h - dt) and +20h = (-A.x x B.y x B.z) x
+//    pi/6 [00CEC730] from 007F0280(ECX = a+0Ch; unit, (100, 60, 120), &A, &B, (0, 0, 0),
+//    0) (00CE3D08, 00CEB4B0, 00D05804).
+//  - 009A7301-009A732A: plan+2C0h = 00438AA0(h0, +20h), plan+2CCh = 2.
+//  - 009A7334-009A7411: r = min(a+D8h, 2000) ([00CF0DD8] compare, [00CFFD60] store);
+//    hgt = 1400 [00D1F8D0] - unit+100h, raised to 50 ([00CE3938], [00CEB4D4]);
+//    009FB800(ECX = state+4h; ctl+394h, 00419010(0.1, 0.35, 0.4, 1, hgt / r)) with
+//    [00D7A2F0], [00CF6560], [00CE7804].
+//  - 009A7411-009A743F: throttle 0.98 [00CE6650], air brake 0, both active, +2D8h = 0.
+//  - 009A7449-009A747C: direction+40h = tuning+670h; 009FABE0(direction; 009A1A20(plan),
+//    0099B630(plan)) - the 0099B630 result is pushed first and stays as the pitch.
+//  - 009A7481-009A74A0: a+DCh = 1.0 [00D7A24C], a+E0h = 0.1 [00D7A2F0].
+// x87 is modelled in float (24-bit); the double constants are rounded where the image
+// stores. The three pi qwords are widened floats, used at their image values. No direct
+// 00BD2F10 draws; 007F0280 and 009A1A20 each have one indirect call that was not chased.
+// Unreferenced by address except through its vtable slot.
+void bot_state_dogfight_attack_run_tick_009a71e0(Cc13Seg67bHost& host, void* state, float dt) {
+    void* const a = at<void*>(state, 4);
+    void* const unit = at<void*>(a, 4);
+    if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);
+    float pt[3];
+    const float* const p = host.approach_vcall_00_target_point(a, pt);
+    const float dz = p[2] - at<float>(unit, 0x104);
+    const float dx = p[0] - at<float>(unit, 0xFC);
+    // 009A723E FSUBR qword [00CE3830], 009A7252 FADD qword [00CE3828]: widened floats.
+    float h0 = static_cast<float>(1.5707963705062866 - host.crt_atan2_00bf701a(dz, dx));
+    if (0.0f > h0) h0 = static_cast<float>(h0 + 6.2831854820251465);
+
+    const float c = at<float>(state, 0x1C);
+    if (dt < c || std::isnan(dt) || std::isnan(c)) {
+        at<float>(state, 0x1C) = c - dt;
+    } else {
+        at<float>(state, 0x1C) = c + (at<float>(state, 0x18) - dt);
+        const float extents[3] = {100.0f, 60.0f, 120.0f};
+        const float weights[3] = {0.0f, 0.0f, 0.0f};
+        float out_a[3] = {0.0f, 0.0f, 0.0f};
+        float out_b[3] = {0.0f, 0.0f, 0.0f};
+        host.bot_near_field_probe_007f0280(at<void*>(a, 0x0C), unit, extents, out_a, out_b,
+                                           weights, false);
+        // With a null unit the image multiplies uninitialised stack (007F0280 skips the
+        // zeroing at 007F02A7, JE 007F0B08); this pre-zeroes and gets 0. The unit is the
+        // bot's own entity, so that never happens in practice.
+        const float o = -out_a[0] * out_b[1] * out_b[2];
+        // 009A72F8 FMUL qword [00CEC730], pi/6 as a widened float.
+        at<float>(state, 0x20) = static_cast<float>(o * 0.5235987901687622);
+    }
+    void* const plan = at<void*>(a, 0x18);
+    at<float>(plan, 0x2C0) = host.math_add_wrapped_angle_00438aa0(h0, at<float>(state, 0x20));
+    at<std::uint32_t>(plan, 0x2CC) = 2;
+
+    float r = at<float>(a, 0xD8);
+    if (r > 2000.0f) r = 2000.0f;
+    void* const u2 = at<void*>(a, 4);
+    if (at<std::uint8_t>(u2, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(u2);
+    float hgt = 1400.0f - at<float>(u2, 0x100);
+    if (50.0f > hgt) hgt = 50.0f;
+    const float factor = host.interpolate_clamped_00419010(0.1f, 0.35f, 0.4f, 1.0f, hgt / r);
+    host.pilot_bot_command_pitch_from_altitude_009fb800(
+        ptr(state, 4), at<float>(at<void*>(a, 0x0C), 0x394), factor);
+
+    void* const plan2 = at<void*>(at<void*>(state, 4), 0x18);
+    at<float>(plan2, 0x278) = 0.98f;
+    at<std::uint8_t>(plan2, 0x27C) = 1;
+    at<float>(plan2, 0x2A8) = 0.0f;
+    at<std::uint8_t>(plan2, 0x2AC) = 1;
+    at<std::uint32_t>(plan2, 0x2D8) = 0;
+
+    void* const a2 = at<void*>(state, 4);
+    at<float>(at<void*>(a2, 0x1C), 0x40) =
+        at<float>(host.game_tuning_singleton_0042e740(), 0x670);
+    void* const plan3 = at<void*>(a2, 0x18);
+    const float pitch = pilot_command_pitch_target_or_live_0099b630(plan3);
+    const float heading = bot_task_commanded_heading_009a1a20(host, plan3);
+    host.bot_set_direction_009fabe0(at<void*>(a2, 0x1C), heading, pitch);
+    at<float>(at<void*>(state, 4), 0xDC) = 1.0f;
+    at<float>(at<void*>(state, 4), 0xE0) = 0.1f;
+}
+
 // 009A84E0 (009A84E0-009A855F). Vtable 00D1F960 (009A8523); +28h = 1.0 (009A8535);
 // 009A853A RNG; +2Ch = -r (009A8544); +34h = 0 (009A854B). +18h..+24h and +30h
 // are not written.
@@ -1293,6 +1376,187 @@ bool bot_task_maneuver_roll_completed_009b9680(Cc13Seg67bHost&, void* task) {
     at<float>(task, 0x2A0) = 0.0f - q;
     at<std::int32_t>(task, 0x2D4) = 0;
     return false;
+}
+
+namespace {
+constexpr double kClimbMargin_00ce3d78 = 1.5;
+constexpr double kSixthPi_00cec730 = 0.5235987901687622;   // pi/6, float-rounded
+constexpr float kRollPi_00d7a264 = 3.1415927410125732f;
+constexpr double kZero_00d7a258 = 0.0;
+constexpr double kBarrelBias_00d7a280 = 0.5;
+constexpr double kGainAltTinySq_00ce3820 = 1e-10;
+constexpr double kGainAltFar_00ce47a0 = 1000.0;
+constexpr double kThirdPi_00d03dd0 = 1.0471975803375244;   // pi/3, float-rounded
+constexpr float kGainAltJitterLo_00ce3cb4 = -0.1f;
+constexpr float kGainAltJitterHi_00d7a2f0 = 0.1f;
+constexpr double kOne_00d7a210 = 1.0;
+constexpr double kGainAltPitch_00cedcd0 = 0.7853981852531433;  // pi/4, float-rounded
+
+// The COMISS/FCOMIP clamp to [-1, 1] these ticks repeat: the low bound first, so a
+// NaN passes through.
+float clamp_unit_pm1(float x) {
+    if (-1.0f > x) return -1.0f;
+    if (x > 1.0f) return 1.0f;
+    return x;
+}
+
+// The same pattern on [0, 1].
+float clamp_unit_01(float x) {
+    if (0.0f > x) return 0.0f;
+    if (x > 1.0f) return 1.0f;
+    return x;
+}
+}  // namespace
+
+// 009B9740 (009B9740-009B99DB), barrelroll. u = task+2F4h, cls = task+2F8h.
+//  - 009B9752-009B9791: +2E4h &= ~4; +27Ch = 1.0, +280h = 1; +2ACh = 0, +2B0h = 1;
+//    +2DCh = 0; +288h = 0, +28Ch = 1; +2D8h = 0.
+//  - 009B97A4-009B97BC: e = cls+1ECh x 1.5 (qword 00CE3D78) - u+C64h, stored float.
+//  - 009B9797-009B97D1: until byte +404h is set it takes 009B9680's answer; while that
+//    is 0 the body skips to the end test.
+//  - 009B97D7-009B97E9: +294h = +408h (the roll speed), +298h = 1, +2D0h = 0.
+//  - 009B97EF-009B98CB: q = bank / (pi/6) (009B980F D8 F9: ST1 / ST0); |q| < 1 ->
+//    c = clamp01(e / cls+278h) x (1 - |q|) (009B9850 DE E1: 1 - |q|) + 0.0 (qword).
+//  - 009B98CF-009B9993: q2 = 00438B10(bank, pi) / (pi/6); |q2| < 1 -> c += clamp01(-e /
+//    cls+278h) x (1 - |q2|) (009B993B FCHS).
+//  - 009B9993-009B99B9: +2A0h = c + 0.5 (qword), +2A4h = 1, +2D4h = 0; byte +26Ch bit 0
+//    -> 0099B690.
+//  - 009B99BE-009B99D0: (+3F8h)->vtable[0]() true -> 0099B690.
+// x87 is modelled at 24-bit precision (each FMUL/FSUB/FDIV rounded to float); 53-bit is
+// the alternative. No draw. Only reference: vtable 00D206D0 slot +64h (00D20734, image
+// scan); no target-equal twin.
+void bot_task_barrel_roll_tick_009b9740(Cc13Seg67bHost& host, void* task, float) {
+    at<std::uint32_t>(task, 0x2E4) &= 0xFFFFFFFBu;
+    at<float>(task, 0x27C) = 1.0f;
+    at<std::uint8_t>(task, 0x280) = 1;
+    at<float>(task, 0x2AC) = 0.0f;
+    at<std::uint8_t>(task, 0x2B0) = 1;
+    at<std::int32_t>(task, 0x2DC) = 0;
+    at<float>(task, 0x288) = 0.0f;
+    at<std::uint8_t>(task, 0x28C) = 1;
+    at<std::int32_t>(task, 0x2D8) = 0;
+    const float climb = static_cast<float>(
+        static_cast<double>(at<float>(ptr_at(task, 0x2F8), 0x1EC)) * kClimbMargin_00ce3d78);
+    const float excess = climb - at<float>(ptr_at(task, 0x2F4), 0xC64);
+
+    bool run = at<std::uint8_t>(task, 0x404) != 0;
+    if (!run) {
+        run = bot_task_maneuver_roll_completed_009b9680(host, task);
+        at<std::uint8_t>(task, 0x404) = run ? 1 : 0;
+    }
+    if (run) {
+        at<std::uint8_t>(task, 0x298) = 1;
+        at<float>(task, 0x294) = at<float>(task, 0x408);
+        at<std::int32_t>(task, 0x2D0) = 0;
+        const float bank = at<float>(ptr_at(task, 0x2F4), 0xC68);
+        float c = 0.0f;
+        const float q = static_cast<float>(static_cast<double>(bank) / kSixthPi_00cec730);
+        const float aq = q > 0.0f ? q : -0.0f - q;
+        if (1.0f > aq) {
+            const float w = 1.0f - aq;
+            const float g = clamp_unit_01(excess / at<float>(ptr_at(task, 0x2F8), 0x278));
+            c = static_cast<float>(static_cast<double>(g * w) + kZero_00d7a258);
+        }
+        const float q2 = static_cast<float>(
+            static_cast<double>(host.math_subtract_wrapped_angle_00438b10(bank, kRollPi_00d7a264)) /
+            kSixthPi_00cec730);
+        const float aq2 = q2 > 0.0f ? q2 : -0.0f - q2;
+        if (1.0f > aq2) {
+            const float w2 = 1.0f - aq2;
+            const float g2 = clamp_unit_01(-excess / at<float>(ptr_at(task, 0x2F8), 0x278));
+            c = g2 * w2 + c;
+        }
+        at<std::uint8_t>(task, 0x2A4) = 1;
+        at<float>(task, 0x2A0) = static_cast<float>(static_cast<double>(c) + kBarrelBias_00d7a280);
+        at<std::int32_t>(task, 0x2D4) = 0;
+        if ((at<std::uint8_t>(task, 0x26C) & 1) != 0) host.bot_task_retire_0099b690(task);
+    }
+    if (host.condition_vcall_00_test(ptr_at(task, 0x3F8))) host.bot_task_retire_0099b690(task);
+}
+
+// 009BA2F0 (009BA2F0-009BA6E3), gainaltitude. u = task+2F4h, cls = task+2F8h, the
+// target t = task+3F8h (may be 0), the altitude margin task+3FCh.
+//  - 009BA300: +2E4h &= ~4.
+//  - With t (009BA31E-009BA41F): d = t - u in x and z; |d| (1e-10 guard); |d| > 1000.0
+//    (qword 00CE47A0, FCOMIP JBE, NaN -> near) -> +2C4h = _CIatan2(dx, dz), +2D0h = 2;
+//    else +2C8h = 0, +2D0h = 1.
+//  - Without t (009BA424-009BA583): the mean of three [-1, 1]-clamped terms,
+//    u+C68h / (pi/3) (qword 00D03DD0), one 00BD2F10 draw (ECX = 1) U(-0.1 [00CE3CB4],
+//    0.1 [00D7A2F0]) at 009BA48C, and u+9ECh; the divisor 0.0 + 1.0 (qword) + 1 + 1 is
+//    tested for zero by FUCOMIP/LAHF/TEST 44h/JNP (unordered divides). +294h = the
+//    mean, +298h = 1, +2D0h = 0.
+//  - 009BA589-009BA654: f = (u->vtable[38h]() - 007C4810(cls)) / (cls+18Ch -
+//    007C4810(cls)) clamped to [0, 1]; +2D4h = 2, +2C0h = f x pi/4 (qword 00CEDCD0);
+//    +27Ch = 1.0, +280h = 1; +2ACh = 0, +2B0h = 1; +2DCh = 0.
+//  - 009BA655-009BA6D7: with t, u+100h > t+100h + task+3FCh (JA) -> 0099B690; without,
+//    u+100h > task+3FCh (JBE skips) -> 0099B690.
+// x87 at 24-bit precision as above (the speed fraction's two qword temporaries hold
+// 24-bit results); 53-bit is the alternative. Only reference: vtable 00D20480 slot +64h
+// (00D204E4, image scan); no target-equal twin.
+void bot_task_gain_altitude_tick_009ba2f0(Cc13Seg67bHost& host, void* task, float) {
+    at<std::uint32_t>(task, 0x2E4) &= 0xFFFFFFFBu;
+    if (ptr_at(task, 0x3F8) != nullptr) {
+        void* const unit = ptr_at(task, 0x2F4);
+        if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);
+        const float px = at<float>(unit, 0xFC);
+        const float pz = at<float>(unit, 0x104);
+        void* const target = ptr_at(task, 0x3F8);
+        if (at<std::uint8_t>(target, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(target);
+        const float dx = at<float>(target, 0xFC) - px;
+        const float dz = at<float>(target, 0x104) - pz;
+        const float s = dz * dz + dx * dx;
+        const float len = static_cast<double>(s) > kGainAltTinySq_00ce3820
+                              ? static_cast<float>(std::sqrt(static_cast<double>(s)))
+                              : 0.0f;
+        if (static_cast<double>(len) > kGainAltFar_00ce47a0) {
+            at<std::int32_t>(task, 0x2D0) = 2;
+            at<float>(task, 0x2C4) = host.crt_atan2_00bf701a(dx, dz);
+        } else {
+            at<float>(task, 0x2C8) = 0.0f;
+            at<std::int32_t>(task, 0x2D0) = 1;
+        }
+    } else {
+        void* const unit = ptr_at(task, 0x2F4);
+        const float r = clamp_unit_pm1(static_cast<float>(
+            static_cast<double>(at<float>(unit, 0xC68)) / kThirdPi_00d03dd0));
+        float sum = r + 0.0f;
+        float count = static_cast<float>(0.0 + kOne_00d7a210);
+        const float j = clamp_unit_pm1(host.random_uniform_00bd2f10(
+            1, kGainAltJitterLo_00ce3cb4, kGainAltJitterHi_00d7a2f0));
+        sum = j + sum;
+        count = count + 1.0f;
+        const float w = clamp_unit_pm1(at<float>(ptr_at(task, 0x2F4), 0x9EC));
+        sum = w + sum;
+        count = 1.0f + count;
+        at<float>(task, 0x294) = (count == 0.0f) ? 0.0f : sum / count;
+        at<std::uint8_t>(task, 0x298) = 1;
+        at<std::int32_t>(task, 0x2D0) = 0;
+    }
+
+    void* const cls = ptr_at(task, 0x2F8);
+    const float speed = host.entity_vcall_38_float(ptr_at(task, 0x2F4));
+    const float num = speed - host.plane_class_min_control_speed_007c4810(cls);
+    const float den = at<float>(cls, 0x18C) - host.plane_class_min_control_speed_007c4810(cls);
+    const float f = clamp_unit_01(num / den);
+    at<std::int32_t>(task, 0x2D4) = 2;
+    at<float>(task, 0x2C0) = static_cast<float>(static_cast<double>(f) * kGainAltPitch_00cedcd0);
+    at<float>(task, 0x27C) = 1.0f;
+    at<std::uint8_t>(task, 0x280) = 1;
+    at<float>(task, 0x2AC) = 0.0f;
+    at<std::uint8_t>(task, 0x2B0) = 1;
+    at<std::int32_t>(task, 0x2DC) = 0;
+
+    void* const unit = ptr_at(task, 0x2F4);
+    void* const target = ptr_at(task, 0x3F8);
+    if (target != nullptr) {
+        if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);
+        if (at<std::uint8_t>(target, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(target);
+        const float ceiling = at<float>(target, 0x100) + at<float>(task, 0x3FC);
+        if (at<float>(unit, 0x100) > ceiling) host.bot_task_retire_0099b690(task);
+    } else {
+        if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);
+        if (at<float>(unit, 0x100) > at<float>(task, 0x3FC)) host.bot_task_retire_0099b690(task);
+    }
 }
 
 namespace {
@@ -2021,6 +2285,34 @@ void* bot_task_make_stop_009badb0(Cc13Seg67bHost& host, void* bot) {
     if (t == nullptr) return nullptr;
     bot_task_construct_base_0099c6f0(host, t, bot, 0x0F);
     at<std::uint32_t>(t, 0) = kStopTaskVtable;
+    return t;
+}
+
+// 009BACB0 (009BACB0-009BAD23). EH frame. __fastcall(ECX = bot, EDX = target; float
+// alt), RET 4: t = new(400h) (009BACD2); null -> 0; else 0099C6F0(ECX = t, bot, 0Fh)
+// (009BACEF), [t] = 00D20480 (009BACFA), +3F8h = target (009BAD00), +3FCh = alt
+// (009BAD06). The base constructor takes two 00BD2F10 draws: stream 1 at 0099C765
+// (U(0, 1), negated, into +308h) and stream 0 at 0099C7BA (U(-1, 0) into +3E8h).
+void* bot_task_make_gain_altitude_009bacb0(Cc13Seg67bHost& host, void* bot, void* target,
+                                           float alt) {
+    void* const t = host.operator_new_00bf681b(0x400);
+    if (t == nullptr) return nullptr;
+    bot_task_construct_base_0099c6f0(host, t, bot, 0x0F);
+    at<std::uint32_t>(t, 0) = kGainAltitudeTaskVtable;
+    at<void*>(t, 0x3F8) = target;
+    at<float>(t, 0x3FC) = alt;
+    return t;
+}
+
+// 009BAD30 (009BAD30-009BADA8). EH frame. __fastcall(ECX = bot), RET: t = new(3FCh)
+// (009BAD4F); null -> 0; else 0099C6F0(ECX = t, bot, 0Fh) (009BAD6E), [t] = 00D20400
+// (009BAD74), +3F8h = 0 (009BAD7A). The base constructor takes the same two draws.
+void* bot_task_make_immelmann_009bad30(Cc13Seg67bHost& host, void* bot) {
+    void* const t = host.operator_new_00bf681b(0x3FC);
+    if (t == nullptr) return nullptr;
+    bot_task_construct_base_0099c6f0(host, t, bot, 0x0F);
+    at<std::uint32_t>(t, 0) = kImmelmannTaskVtable;
+    at<std::uint32_t>(t, 0x3F8) = 0;
     return t;
 }
 
@@ -4572,6 +4864,8 @@ void ship_ai_debug_draw_009ddcc0(Cc13Seg67bHost& host, void* ai) {
 // (009AA471); {0,"inattackrange"} = {3, byte a+D0h} (009AA4A8); {0,"targetfindangle"} =
 // {2, a+DCh} (009AA4E3); {0,"targetfindweight"} = {2, a+E0h} (009AA51E);
 // {0,"washittimer"} = {2, a+E8h} (009AA559). RET 4.
+// UNCERTAINTY: each byte record stores only the low byte (MOV byte [EAX+4]); the payload's
+// upper three bytes are stack garbage in the image and zero here.
 void bot_approach_dogfight_save_009aa410(Cc13Seg67bHost& host, void* a, void* archive) {
     std::uint32_t ref[3] = {};
     host.archive_writer_ref_open_00bd5010(archive, ref,
@@ -4607,6 +4901,8 @@ void bot_task_dogfight_save_009aa5c0(Cc13Seg67bHost& host, void* task, void* arc
 // {0,"attackDist"} = {2, a+B0h} (009AE37C); {0,"targetDist"} = {2, a+B4h} (009AE3B7);
 // {0,"insideAttackRange"} = {3, byte a+C0h} (009AE3EE); {0,"targetHdg"} = {2, a+B8h}
 // (009AE429); {0,"currentAvoidFlag"} = {1, a+BCh} (009AE460). RET 4.
+// UNCERTAINTY: each byte record stores only the low byte (MOV byte [EAX+4]); the payload's
+// upper three bytes are stack garbage in the image and zero here.
 void bot_approach_drop_kamikaze_save_009ae2d0(Cc13Seg67bHost& host, void* a, void* archive) {
     std::uint32_t ref[3] = {};
     host.archive_writer_ref_open_00bd5010(archive, ref, name_record(kStrTargetLockPlain_00d1fb5c));
@@ -4708,6 +5004,54 @@ void pilot_bot_retire_task_0099a660(Cc13Seg67bHost& host, void* bot, void* task)
     at<std::uint32_t>(bot, 0x5C) = n - 1;
 }
 
+// 009B84E0 (009B84E0-009B8759). The field list of 009B4690: 00BD5010 {0,"targetLock"}
+// (009B850B) + 009FACC0(ECX = a+30h, block) (009B8513); releaseTime {2,+A8h} (009B8551),
+// startDist {2,+B4h} (009B858C), releaseError {2,+C4h} (009B85C7), attackDist {2,+B8h}
+// (009B8602), targetDist {2,+BCh} (009B863D), bayDoorState {3,+CCh} (009B8674),
+// insideAttackRange {3,+CDh} (009B86AB), targetHdg {2,+C0h} (009B86E6),
+// currentAvoidFlag {1,+C8h} (009B871D), calcHitPos {5, &a+D0h} (009B8754). RET 4.
+// UNCERTAINTY: each byte record stores only the low byte (MOV byte [EAX+4]); the payload's
+// upper three bytes are stack garbage in the image and zero here.
+void bot_approach_level_bomb_save_009b84e0(Cc13Seg67bHost& host, void* a, void* archive) {
+    std::uint32_t ref[3] = {};
+    host.archive_writer_ref_open_00bd5010(archive, ref, name_record(kStrTargetLockPlain_00d1fb5c));
+    host.approach_ref_save_009facc0(ptr(a, 0x30), ref);
+    host.archive_vcall_0c_write(archive, name_record(kStrReleaseTime_00d200d8),
+                                record(2, at<std::uint32_t>(a, 0xA8)));
+    host.archive_vcall_0c_write(archive, name_record(kStrStartDist_00d1fb50),
+                                record(2, at<std::uint32_t>(a, 0xB4)));
+    host.archive_vcall_0c_write(archive, name_record(kStrReleaseError_00d200c8),
+                                record(2, at<std::uint32_t>(a, 0xC4)));
+    host.archive_vcall_0c_write(archive, name_record(kStrAttackDist_00d1fb44),
+                                record(2, at<std::uint32_t>(a, 0xB8)));
+    host.archive_vcall_0c_write(archive, name_record(kStrTargetDist_00d1fb38),
+                                record(2, at<std::uint32_t>(a, 0xBC)));
+    host.archive_vcall_0c_write(archive, name_record(kStrBayDoorState_00d200b8),
+                                record(3, at<std::uint8_t>(a, 0xCC)));
+    host.archive_vcall_0c_write(archive, name_record(kStrInsideAttackRange_00d1fb24),
+                                record(3, at<std::uint8_t>(a, 0xCD)));
+    host.archive_vcall_0c_write(archive, name_record(kStrTargetHdg_00d1fb18),
+                                record(2, at<std::uint32_t>(a, 0xC0)));
+    host.archive_vcall_0c_write(archive, name_record(kStrCurrentAvoidFlag_00d1fb04),
+                                record(1, at<std::uint32_t>(a, 0xC8)));
+    host.archive_vcall_0c_write(archive, name_record(kStrCalcHitPos_00d200ac),
+                                record(5, reinterpret_cast<std::uintptr_t>(ptr(a, 0xD0))));
+}
+
+// 009B87B0 (009B87B0-009B8815). 0099D060(ECX = task, archive) (009B87BA); 009B84E0(ECX =
+// task+3F8h, archive) (009B87C8); 00BD5010(archive, block, {0,"_state_moveTo"})
+// (009B87EF), 009BEAA0(ECX = task+3F8h+F0h, block) (009B87FA); 00411450(ECX = task+4D4h,
+// task+30Ch, archive) (009B880D). RET 4. The approach-level twin 009B8760 has no
+// reference in the image.
+void bot_task_level_bomb_save_009b87b0(Cc13Seg67bHost& host, void* task, void* archive) {
+    bot_task_save_base_0099d060(host, task, archive);
+    bot_approach_level_bomb_save_009b84e0(host, ptr(task, 0x3F8), archive);
+    std::uint32_t ref[3] = {};
+    host.archive_writer_ref_open_00bd5010(archive, ref, name_record(kStrStateMoveTo));
+    bot_approach_save_altitude_leg_009beaa0(host, ptr(task, 0x3F8 + 0xF0), ref);
+    host.bot_state_registry_write_current_00411450(ptr(task, 0x4D4), ptr(task, 0x30C), archive);
+}
+
 namespace {
 constexpr std::uint32_t kKamikazeApproachVtable_00d1fd34 = 0x00D1FD34u;
 constexpr std::uint32_t kKamikazeRegistryVtable_00d1fd30 = 0x00D1FD30u;
@@ -4736,6 +5080,9 @@ constexpr float kGoTowards18_00cffd60 = 2000.0f;   // [00CFFD60]
 // (+F0h) in that order (009AEE52-009AEE98). RET 8, EAX = block.
 // RNG: the draws of 009AB920 and 009C2AC0 are the hooks'; then one shared-stream
 // U(0, 0.6) in each 009C2980, follow (+12Ch) first and prepare (+1C4h) second.
+// Whole body: cc9 models this construction inline in kz_install_009af720
+// (game_hosts_units.cpp ~26514, the 009AED20 note at ~26556, kz_moveto_near /
+// kz_moveto_speed_range).
 // UNCERTAINTY: EH unwinding not modelled.
 void* bot_approach_kamikaze_construct_009aed20(Cc13Seg67bHost& host, void* block, void* bot,
                                                void* target) {
@@ -4775,6 +5122,2206 @@ void* bot_approach_kamikaze_construct_009aed20(Cc13Seg67bHost& host, void* block
     host.state_registry_add_00411e70(reg, kStrKamikazePrepare_00d1fce8, ptr(block, 0x1C4));
     host.state_registry_add_00411e70(reg, kStrKamikazeMoveTo_00d1fcd8, ptr(block, 0xF0));
     return block;
+}
+
+// 009C1C30 (009C1C30-009C1DBB). EH frame 00CAF71B. 009F9CE0(ECX = a, unit,
+// tuning+37Ch) (009C1C68); [a] = 00D209CC; a+2Ch = U(0, tuning+540h) on stream 1
+// (009C1C8F); 004BEF00(ECX = a+30h, target->vtable[0]()) (009C1CA9), [a+30h] =
+// 00CE3CF0; a+48h..+50h = target+4h..+0Ch; a+54h = 0.5 [00CE3800]; a+58h = -U(0, 0.5)
+// on stream 1 (009C1CEE); a+60h = 0, byte a+5Ch = 0, a+68h = 50.0 [00CEB4D4]
+// (009C1CFA-009C1D0D). unit set and 007B8AD0(unit) (the flight leader): 00414DB0(unit)
+// unless byte unit+C8h; d = 00414C60(unit+FCh - a+48h, unit+104h - a+50h) (each
+// difference spilled to a float; x*x + y*y rounded to float, > double 1e-10 ? sqrt :
+// 0, JBE); t = [[a+8h]+268h]; t > d (FCOMI, JA) keeps d, else d = t (so NaN -> t);
+// a+60h = d / [[a+8h]+18Ch] (009C1D18-009C1D9A). 009BEBA0(a) (009C1D9F). RET 8, EAX = a.
+// RNG: two stream-1 draws, +2Ch then +58h, after 009F9CE0's (the hook's).
+// Whole body: cc9 models this construction inline in
+// GameUnitsHost::Impl::run_moveto_task_install_009c3000 with per-name stand-ins
+// ("#mt2c", "#mt58").
+// UNCERTAINTY: 24-bit precision modelled; EH unwinding not modelled.
+void* bot_approach_moveto_construct_009c1c30(Cc13Seg67bHost& host, void* a, void* unit,
+                                             void* target) {
+    void* tuning = host.game_tuning_singleton_0042e740();
+    host.bot_approach_construct_speed_reference_009f9ce0(a, unit, at<float>(tuning, 0x37C));
+    at<std::uint32_t>(a, 0x00) = kMoveToApproachVtable_00d209cc;
+    tuning = host.game_tuning_singleton_0042e740();
+    at<float>(a, 0x2C) = host.random_uniform_00bd2f10(1, 0.0f, at<float>(tuning, 0x540));
+    host.observer_construct_004bef00(ptr(a, 0x30), host.object_vcall_00(target));
+    at<std::uint32_t>(a, 0x30) = kObservedEndpointVtable_00ce3cf0;
+    at<float>(a, 0x48) = at<float>(target, 0x04);
+    at<float>(a, 0x4C) = at<float>(target, 0x08);
+    at<float>(a, 0x50) = at<float>(target, 0x0C);
+    at<float>(a, 0x54) = kHalf_00ce3800;
+    at<float>(a, 0x58) = -host.random_uniform_00bd2f10(1, 0.0f, kHalf_00ce3800);
+    at<float>(a, 0x60) = 0.0f;
+    at<std::uint8_t>(a, 0x5C) = 0;
+    at<float>(a, 0x68) = kFifty_00ceb4d4;
+    if (unit != nullptr && host.unit_is_squadron_flight_leader_007b8ad0(unit)) {
+        if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);
+        const float dx = at<float>(unit, 0xFC) - at<float>(a, 0x48);
+        const float dz = at<float>(unit, 0x104) - at<float>(a, 0x50);
+        const float xx = dx * dx;
+        const float zz = dz * dz;
+        const float s = xx + zz;
+        float d = static_cast<double>(s) > kTiny_00ce3820
+                      ? static_cast<float>(std::sqrt(static_cast<double>(s)))
+                      : 0.0f;
+        void* const row = ptr_at(a, 0x08);
+        const float t = at<float>(row, 0x268);
+        if (!(t > d)) d = t;
+        at<float>(a, 0x60) = d / at<float>(row, 0x18C);
+    }
+    bot_approach_refresh_target_009beba0(host, a);
+    return a;
+}
+
+// 009CA2B0 (009CA2B0-009CA30F). EH frame 00CAFDFB. t = operator new(564h) (009CA2CE);
+// null -> 0; else 009C9D00(ECX = t, bot) (009CA2E9), EAX = its result.
+// UNCERTAINTY: EH unwinding (the delete on a throwing constructor) not modelled.
+void* bot_task_make_retreat_009ca2b0(Cc13Seg67bHost& host, void* bot) {
+    void* const t = host.operator_new_00bf681b(0x564);
+    if (t == nullptr) return nullptr;
+    return host.bot_task_retreat_construct_009c9d00(t, bot);
+}
+
+// 009CA780 (009CA780-009CA814). row = [a+14h], ref = a+58h: ref+50h, +4Ch, +48h =
+// row+E4h (StrafeTargetPointSelectPrec, in that store order), byte ref+41h = 1
+// (009CA786-009CA7A0); ref+64h..+70h = row+E8h..+F4h (009CA7A7-009CA7D2); 009FA260(ECX
+// = ref) (009CA7D7); 007B7870(ECX = [a+20h], [a+70h], (a+80h, a+84h, a+88h) by value)
+// (009CA80E). Whole body: cc9 models it inline in the strafe go-towards enter (the
+// "009CA866 -> 009CA780" site, game_hosts_units.cpp ~24450) with the pick on a stand-in seed and without the
+// 007B7870 tail.
+void bot_approach_strafe_rearm_target_point_009ca780(Cc13Seg67bHost& host, void* a) {
+    void* const row = ptr_at(a, 0x14);
+    void* const ref = ptr(a, 0x58);
+    const float spread = at<float>(row, 0xE4);
+    at<float>(ref, 0x50) = spread;
+    at<float>(ref, 0x4C) = spread;
+    at<float>(ref, 0x48) = spread;
+    at<std::uint8_t>(ref, 0x41) = 1;
+    at<float>(ref, 0x64) = at<float>(row, 0xE8);
+    at<float>(ref, 0x68) = at<float>(row, 0xEC);
+    at<float>(ref, 0x6C) = at<float>(row, 0xF0);
+    at<float>(ref, 0x70) = at<float>(row, 0xF4);
+    host.approach_ref_pick_aim_offset_009fa260(ref);
+    const float point[3] = {at<float>(a, 0x80), at<float>(a, 0x84), at<float>(a, 0x88)};
+    host.opportunistic_rocket_set_target_007b7870(ptr_at(a, 0x20), ptr_at(a, 0x70), point);
+}
+
+// 009CD300 (009CD300-009CD365). EH frame 00CB004B. t = operator new(6FCh) (009CD321);
+// null -> 0; else 009CC230(ECX = t, bot, target) (009CD33D).
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_make_strafe_009cd300(Cc13Seg67bHost& host, void* bot, void* target) {
+    void* const t = host.operator_new_00bf681b(0x6FC);
+    if (t == nullptr) return nullptr;
+    return bot_task_strafe_construct_009cc230(host, t, bot, target);
+}
+
+// 009D4E30 (009D4E30-009D4E95). EH frame 00CB041B. t = operator new(7DCh) (009D4E51);
+// null -> 0; else 009D3050(ECX = t, bot, target) (009D4E6D).
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_make_torpedo_009d4e30(Cc13Seg67bHost& host, void* bot, void* target) {
+    void* const t = host.operator_new_00bf681b(0x7DC);
+    if (t == nullptr) return nullptr;
+    return bot_task_torpedo_construct_009d3050(host, t, bot, target);
+}
+
+// 009DDBA0 (009DDBA0-009DDBB2), labelled `~SubAllocator` by Ghidra's library match but
+// game code: `eh vector destructor iterator`(ai+60h, 68h, 2, 009DBDB0) (00BF7C6E at
+// 009DDBAD), which destroys the two path plans last to first. Reached only from the
+// unwind funclets 00CB0630 and 00CB06C0.
+void ship_ai_destruct_path_plans_009ddba0(Cc13Seg67bHost& host, void* ai) {
+    for (std::size_t i = 2; i-- > 0;) {
+        host.ship_ai_path_plan_destruct_009dbdb0(ptr(ai, 0x60 + 0x68 * i));
+    }
+}
+
+namespace {
+constexpr std::uint32_t kShipAiStateBaseVtable_00d218c0 = 0x00D218C0u;
+constexpr std::uint32_t kShipAiStateSubVtable_00d21880 = 0x00D21880u;
+constexpr std::uint32_t kSubAttackRegistryVtable_00d2198c = 0x00D2198Cu;
+constexpr std::uint32_t kSubAttackVtable_00d2195c = 0x00D2195Cu;
+constexpr std::uint32_t kSubAttackApproachVtable_00d218f0 = 0x00D218F0u;
+constexpr std::uint32_t kSubAttackFireVtable_00d21920 = 0x00D21920u;
+constexpr std::uint32_t kStrApproach_00d21950 = 0x00D21950u;  // "approach"
+constexpr std::uint32_t kStrFire_00ce6798 = 0x00CE6798u;      // "fire"
+constexpr std::uint32_t kAttackMoveVtable_00d219d0 = 0x00D219D0u;
+constexpr std::uint32_t kAttackMoveApproachVtable_00d21994 = 0x00D21994u;
+constexpr std::uint32_t kAttackMove14c0Vtable_00d2174c = 0x00D2174Cu;
+constexpr std::uint32_t kAttackMove14ccVtable_00d2177c = 0x00D2177Cu;
+constexpr std::uint32_t kAttackMove14e0Vtable_00d217ac = 0x00D217ACu;
+constexpr std::uint32_t kAttackMove14f4Vtable_00d2171c = 0x00D2171Cu;
+
+// The 1Ch-byte state base the two sub_attack children and the parent share:
+// +4h = owner, +0Ch..+14h = 0, +1Ch = 0, byte +18h = 1, +8h = 00D21880.
+void ship_ai_state_base_init(void* s, void* owner) {
+    at<std::uintptr_t>(s, 0x04) = reinterpret_cast<std::uintptr_t>(owner);
+    at<std::uint32_t>(s, 0x0C) = 0;
+    at<std::uint32_t>(s, 0x10) = 0;
+    at<std::uint32_t>(s, 0x14) = 0;
+    at<std::uint32_t>(s, 0x1C) = 0;
+    at<std::uint8_t>(s, 0x18) = 1;
+    at<std::uint32_t>(s, 0x08) = kShipAiStateSubVtable_00d21880;
+}
+}  // namespace
+
+// 009E4F90 (009E4F90-009E50BD). EH frame 00CB07A7. Parent p: [p] = 00D218C0 and the
+// state base on (p, brain) (009E4FAF-009E4FCF); 00411E20(p+20h) (009E4FDF), [p+20h] =
+// 00D2198C; [p] = 00D2195C (009E4FED). Child +34h: the state base on (brain), [+34h] =
+// 00D218F0 (009E4FF3-009E500D). Child +58h: the same, [+58h] = 00D21920 (009E5017-
+// 009E5034). p+C8h = 1.0 (009E5059); p+CCh = -U(0, 1) on stream 1 (00BD2F10 at
+// 009E5061); p+D0h = 00D05704, p+D4h = &p+34h, then (p+34h)->vtable[4]() (009E5068-
+// 009E5085); 00411E70(p+20h) registers "approach" (+34h) and "fire" (+58h) (009E5097,
+// 009E50A4). RET 4, EAX = p.
+// Every ship's brain reaches it: 00810DD0 -> 009F3F20 -> 009F3BA0 -> 009F39C0
+// (009F3AC3), with no kind gate.
+// UNCERTAINTY: EH unwinding not modelled.
+void* ship_ai_sub_attack_construct_009e4f90(Cc13Seg67bHost& host, void* p, void* brain) {
+    at<std::uintptr_t>(p, 0x04) = reinterpret_cast<std::uintptr_t>(brain);
+    at<std::uint32_t>(p, 0x00) = kShipAiStateBaseVtable_00d218c0;
+    ship_ai_state_base_init(p, brain);
+    host.bot_state_registry_construct_00411e20(ptr(p, 0x20));
+    at<std::uint32_t>(p, 0x20) = kSubAttackRegistryVtable_00d2198c;
+    at<std::uint32_t>(p, 0x00) = kSubAttackVtable_00d2195c;
+    void* const approach = ptr(p, 0x34);
+    ship_ai_state_base_init(approach, brain);
+    at<std::uint32_t>(approach, 0x00) = kSubAttackApproachVtable_00d218f0;
+    void* const fire = ptr(p, 0x58);
+    ship_ai_state_base_init(fire, brain);
+    at<std::uint32_t>(fire, 0x00) = kSubAttackFireVtable_00d21920;
+    at<float>(p, 0xC8) = kOne_00d7a24c;
+    const float r = host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    at<std::uint32_t>(p, 0xD0) = kBotTaskSubVtable30C;
+    at<float>(p, 0xCC) = -r;
+    at<std::uintptr_t>(p, 0xD4) = reinterpret_cast<std::uintptr_t>(approach);
+    host.state_vcall_04_enter(approach);
+    host.state_registry_add_00411e70(ptr(p, 0x20), kStrApproach_00d21950, approach);
+    host.state_registry_add_00411e70(ptr(p, 0x20), kStrFire_00ce6798, fire);
+    return p;
+}
+
+// 009E5CA0 (009E5CA0-009E5CEC). EH frame 00CB08E8. [sub+4h] = owner, [sub] = 00D21994,
+// 009E5530(ECX = sub+8h, owner) (009E5CD6). RET 4, EAX = sub.
+// RNG: 009E5530 is a hook; its binding must take the sixty stream-1 U(0, 2.0
+// [00CE3958]) draws (009E55A1, one per ring slot +48h).
+// UNCERTAINTY: EH unwinding not modelled.
+void* ship_ai_attackmove_approach_construct_009e5ca0(Cc13Seg67bHost& host, void* sub,
+                                                     void* owner) {
+    at<std::uintptr_t>(sub, 0x04) = reinterpret_cast<std::uintptr_t>(owner);
+    at<std::uint32_t>(sub, 0x00) = kAttackMoveApproachVtable_00d21994;
+    host.ship_ai_attackmove_ring_construct_009e5530(ptr(sub, 0x08), owner);
+    return sub;
+}
+
+// 009E8450 (009E8450-009E8531). EH frame 00CB096B. [s+4h] = owner, [s] = 00D219D0;
+// 009E5CA0(ECX = s+8h, owner) (009E8486); the sub-states +14C0h (00D2174C, byte +14C8h
+// = 0), +14CCh (00D2177C), +14E0h (00D217AC) and +14F4h (00D2171C), each with owner at
+// +4h (009E848B-009E84CA); s+14FCh = 1.0; s+1500h = -U(0, 1) on stream 1 (00BD2F10 at
+// 009E84F8); s+1504h = 00D05704, s+1508h = &s+14F4h, then (s+14F4h)->vtable[4]()
+// (009E84FF-009E851C). RET 4, EAX = s.
+// RNG: 009E5530's sixty U(0, 2.0) (009E55A1), then 009E8450's one. Every ship's brain reaches
+// it through 009F39C0 (009F3AB2).
+// UNCERTAINTY: EH unwinding not modelled.
+void* ship_ai_attackmove_construct_009e8450(Cc13Seg67bHost& host, void* s, void* owner) {
+    const std::uintptr_t o = reinterpret_cast<std::uintptr_t>(owner);
+    at<std::uintptr_t>(s, 0x04) = o;
+    at<std::uint32_t>(s, 0x00) = kAttackMoveVtable_00d219d0;
+    ship_ai_attackmove_approach_construct_009e5ca0(host, ptr(s, 0x08), owner);
+    at<std::uintptr_t>(s, 0x14C4) = o;
+    at<std::uint32_t>(s, 0x14C0) = kAttackMove14c0Vtable_00d2174c;
+    at<std::uint8_t>(s, 0x14C8) = 0;
+    at<std::uintptr_t>(s, 0x14D0) = o;
+    at<std::uint32_t>(s, 0x14CC) = kAttackMove14ccVtable_00d2177c;
+    at<std::uintptr_t>(s, 0x14E4) = o;
+    at<std::uint32_t>(s, 0x14E0) = kAttackMove14e0Vtable_00d217ac;
+    void* const last = ptr(s, 0x14F4);
+    at<std::uintptr_t>(last, 0x04) = o;
+    at<std::uint32_t>(last, 0x00) = kAttackMove14f4Vtable_00d2171c;
+    at<float>(s, 0x14FC) = kOne_00d7a24c;
+    const float r = host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    at<std::uint32_t>(s, 0x1504) = kBotTaskSubVtable30C;
+    at<float>(s, 0x1500) = -r;
+    at<std::uintptr_t>(s, 0x1508) = reinterpret_cast<std::uintptr_t>(last);
+    host.state_vcall_04_enter(last);
+    return s;
+}
+
+namespace {
+constexpr std::uint32_t kBrainVtable_00d21a40 = 0x00D21A40u;
+constexpr std::uint32_t kBrainRegistryVtable_00d21a3c = 0x00D21A3Cu;
+constexpr std::uint32_t kBrainCruiseVtable_00d21598 = 0x00D21598u;
+constexpr std::uint32_t kBrainStopVtable_00d215c8 = 0x00D215C8u;
+constexpr std::uint32_t kBrainFollowVtable_00d215f8 = 0x00D215F8u;
+constexpr std::uint32_t kBrainLandVtable_00d21658 = 0x00D21658u;
+constexpr std::uint32_t kBrainMoveToPosVtable_00d21628 = 0x00D21628u;
+constexpr std::uint32_t kBrainMoveOnPathVtable_00d21688 = 0x00D21688u;
+constexpr std::uint32_t kBrainKamikazeVtable_00d216b8 = 0x00D216B8u;
+constexpr float kMinus99_00cf5bfc = -99.0f;
+constexpr std::uint32_t kStrCruise_00cfb568 = 0x00CFB568u;
+constexpr std::uint32_t kStrStop_00cfb5b8 = 0x00CFB5B8u;
+constexpr std::uint32_t kStrFollow_00cfb52c = 0x00CFB52Cu;
+constexpr std::uint32_t kStrLand_00cfb614 = 0x00CFB614u;
+constexpr std::uint32_t kStrMoveToPos_00d21ab8 = 0x00D21AB8u;
+constexpr std::uint32_t kStrMoveOnPath_00cfb654 = 0x00CFB654u;
+constexpr std::uint32_t kStrAttackMove_00cecca8 = 0x00CECCA8u;
+constexpr std::uint32_t kStrSubAttack_00d21aac = 0x00D21AACu;
+constexpr std::uint32_t kStrKamikazeAttack_00d21a9c = 0x00D21A9Cu;
+constexpr std::uint32_t kGunBotAiVtable_00d21808 = 0x00D21808u;
+constexpr std::uint32_t kGunBotAiObserverVtable_00d217f0 = 0x00D217F0u;
+constexpr std::uint32_t kShipAiVtable_00d21ae8 = 0x00D21AE8u;
+constexpr std::uint32_t kShipAiObserverVtable_00d21acc = 0x00D21ACCu;
+constexpr std::uint32_t kShipAiBrainVtable_00d21ac8 = 0x00D21AC8u;
+constexpr std::uint32_t kShipAiBrainRegistryVtable_00d21ac4 = 0x00D21AC4u;
+constexpr std::uint32_t kShipAiSize_2268 = 0x2268u;
+constexpr std::uint32_t kBrainRecordVtable_00d21990 = 0x00D21990u;
+constexpr std::uint32_t kBrainRecordAf8Vtable_00d21898 = 0x00D21898u;
+}  // namespace
+
+// 009F1160 (009F1160-009F1413). EH frame 00CB0B65. The brain record r:
+// [r] = 00D21990; 009E4330(r+8h, ship) (009F118D); r+AA8h = ship, r+AACh = [ship+538h],
+// r+AB0h = [ship+73Ch]; r+AB4h = ship->vtable[+5Ch](8) ? ship : 0 (009F11BF-009F11C9);
+// r+AB8h = [ship+738h]; r+AC4h = r+AB4h ? new(4) holding r+AB4h (null if the
+// allocation fails) : 0 (009F11DB-009F11F7). Defaults (009F11FD-009F1261): byte +AC8h
+// = 0; +AD0h..+AD8h, +AE0h..+AE8h = 0; +AF0h = 1.0; +AF4h = 3; +AFCh..+B04h, +B0Ch = 0;
+// byte +B08h = 1; +AF8h = 00D21898.
+// 009F126B..009F1401 (the goal defaults, the seven stream-1 draws, the critical
+// section) is the existing ship_ai_brain_produce_tail_009f126b
+// (src/ship_ai_brain_producers.cpp), reached through the hook. RET 4, EAX = r.
+// UNCERTAINTY: EH unwinding not modelled.
+void* ship_ai_brain_record_construct_009f1160(Cc13Seg67bHost& host, void* r, void* ship) {
+    at<std::uint32_t>(r, 0x000) = kBrainRecordVtable_00d21990;
+    host.ship_ai_nav_block_construct_009e4330(ptr(r, 0x008), ship);
+    at<std::uintptr_t>(r, 0xAA8) = reinterpret_cast<std::uintptr_t>(ship);
+    at<std::uint32_t>(r, 0xAAC) = at<std::uint32_t>(ship, 0x538);
+    at<std::uint32_t>(r, 0xAB0) = at<std::uint32_t>(ship, 0x73C);
+    const bool submarine = host.object_vcall_5c(ship, 8);
+    const std::uintptr_t sub = submarine ? reinterpret_cast<std::uintptr_t>(ship) : 0u;
+    at<std::uintptr_t>(r, 0xAB4) = sub;
+    at<std::uint32_t>(r, 0xAB8) = at<std::uint32_t>(ship, 0x738);
+    std::uintptr_t holder = 0;
+    if (sub != 0) {
+        void* const cell = host.operator_new_00bf681b(4);
+        if (cell != nullptr) {
+            at<std::uintptr_t>(cell, 0) = sub;
+            holder = reinterpret_cast<std::uintptr_t>(cell);
+        }
+    }
+    at<std::uintptr_t>(r, 0xAC4) = holder;
+    at<std::uint8_t>(r, 0xAC8) = 0;
+    at<std::uint32_t>(r, 0xAD0) = 0;
+    at<std::uint32_t>(r, 0xAD4) = 0;
+    at<std::uint32_t>(r, 0xAD8) = 0;
+    at<std::uint32_t>(r, 0xAE0) = 0;
+    at<std::uint32_t>(r, 0xAE4) = 0;
+    at<std::uint32_t>(r, 0xAE8) = 0;
+    at<float>(r, 0xAF0) = kOne_00d7a24c;
+    at<std::uint32_t>(r, 0xAF4) = 3;
+    at<std::uint32_t>(r, 0xAFC) = 0;
+    at<std::uint32_t>(r, 0xB00) = 0;
+    at<std::uint32_t>(r, 0xB04) = 0;
+    at<std::uint32_t>(r, 0xB0C) = 0;
+    at<std::uint8_t>(r, 0xB08) = 1;
+    at<std::uint32_t>(r, 0xAF8) = kBrainRecordAf8Vtable_00d21898;
+    host.ship_ai_brain_produce_tail_009f126b(r);
+    return r;
+}
+
+// 009F39C0 (009F39C0-009F3B97). EH frame 00CB0C64. The brain b (ai+58h):
+// 009F1160(b, ship) (009F39E5); 00411E20(b+B5Ch) (009F39FA); [b] = 00D21A40,
+// [b+B5Ch] = 00D21A3C. The state objects, each with owner b at +4h: cruise +B70h
+// (00D21598, +B78h = +B7Ch = -99.0 [00CF5BFC]), stop +B80h (00D215C8), follow +B8Ch
+// (00D215F8; byte +BB8h = 1, byte +B94h = 0), land +BE0h (00D21658; +BECh = 1.0
+// [00D7A24C], bytes +BF0h, +BF1h = 0), movetopos +C04h (00D21628), moveonpath +C0Ch
+// (00D21688; byte +C14h = 0) (009F3A07-009F3A9F); 009E8450(b+C18h, b) (009F3AB2);
+// 009E4F90(b+2124h, b) (009F3AC3); kamikaze_attack +21FCh (00D216B8; byte +2204h = 0).
+// 00411E70(b+B5Ch) registers, in order: "cruise", "stop", "follow", "land", "movetopos",
+// "moveonpath", "attackmove", "sub_attack", "kamikaze_attack" (009F3AEC-009F3B7E).
+// RET 4, EAX = b.
+// RNG, stream 1, in order: 009F1160's seven, 009E5530's sixty U(0, 2.0) (009E55A1),
+// then 009E8450's one, then 009E4F90's one: 69 for every ship (no kind gate).
+// Whole body allowed: cc9 models the construction inline (game_hosts_ship_ai.cpp,
+// seed_brain_draws_009f1160 with keyed per-name stand-ins, and the follow and land
+// state defaults); it cites this constructor's stores.
+// UNCERTAINTY: EH unwinding not modelled. The state objects' unwritten fields (cruise
+// +B74h, land +BE8h, follow +B98h..+BB7h) are left as the allocation held them.
+void* ship_ai_brain_construct_009f39c0(Cc13Seg67bHost& host, void* b, void* ship) {
+    const std::uintptr_t self = reinterpret_cast<std::uintptr_t>(b);
+    ship_ai_brain_record_construct_009f1160(host, b, ship);
+    void* const registry = ptr(b, 0xB5C);
+    host.bot_state_registry_construct_00411e20(registry);
+    at<std::uint32_t>(b, 0x000) = kBrainVtable_00d21a40;
+    at<std::uint32_t>(b, 0xB5C) = kBrainRegistryVtable_00d21a3c;
+    void* const cruise = ptr(b, 0xB70);
+    at<std::uintptr_t>(cruise, 0x04) = self;
+    at<std::uint32_t>(cruise, 0x00) = kBrainCruiseVtable_00d21598;
+    at<float>(cruise, 0x08) = kMinus99_00cf5bfc;
+    at<float>(cruise, 0x0C) = kMinus99_00cf5bfc;
+    at<std::uintptr_t>(b, 0xB84) = self;
+    at<std::uint32_t>(b, 0xB80) = kBrainStopVtable_00d215c8;
+    at<std::uintptr_t>(b, 0xB90) = self;
+    at<std::uint32_t>(b, 0xB8C) = kBrainFollowVtable_00d215f8;
+    at<std::uint8_t>(b, 0xBB8) = 1;
+    at<std::uint8_t>(b, 0xB94) = 0;
+    void* const land = ptr(b, 0xBE0);
+    at<std::uintptr_t>(land, 0x04) = self;
+    at<std::uint32_t>(land, 0x00) = kBrainLandVtable_00d21658;
+    at<float>(land, 0x0C) = kOne_00d7a24c;
+    at<std::uint8_t>(land, 0x10) = 0;
+    at<std::uint8_t>(land, 0x11) = 0;
+    at<std::uintptr_t>(b, 0xC08) = self;
+    at<std::uint32_t>(b, 0xC04) = kBrainMoveToPosVtable_00d21628;
+    at<std::uintptr_t>(b, 0xC10) = self;
+    at<std::uint32_t>(b, 0xC0C) = kBrainMoveOnPathVtable_00d21688;
+    at<std::uint8_t>(b, 0xC14) = 0;
+    ship_ai_attackmove_construct_009e8450(host, ptr(b, 0xC18), b);
+    ship_ai_sub_attack_construct_009e4f90(host, ptr(b, 0x2124), b);
+    at<std::uintptr_t>(b, 0x2200) = self;
+    at<std::uint32_t>(b, 0x21FC) = kBrainKamikazeVtable_00d216b8;
+    at<std::uint8_t>(b, 0x2204) = 0;
+    host.state_registry_add_00411e70(registry, kStrCruise_00cfb568, cruise);
+    host.state_registry_add_00411e70(registry, kStrStop_00cfb5b8, ptr(b, 0xB80));
+    host.state_registry_add_00411e70(registry, kStrFollow_00cfb52c, ptr(b, 0xB8C));
+    host.state_registry_add_00411e70(registry, kStrLand_00cfb614, land);
+    host.state_registry_add_00411e70(registry, kStrMoveToPos_00d21ab8, ptr(b, 0xC04));
+    host.state_registry_add_00411e70(registry, kStrMoveOnPath_00cfb654, ptr(b, 0xC0C));
+    host.state_registry_add_00411e70(registry, kStrAttackMove_00cecca8, ptr(b, 0xC18));
+    host.state_registry_add_00411e70(registry, kStrSubAttack_00d21aac, ptr(b, 0x2124));
+    host.state_registry_add_00411e70(registry, kStrKamikazeAttack_00d21a9c, ptr(b, 0x21FC));
+    return b;
+}
+
+// 009F3BA0 (009F3BA0-009F3C6E). EH frame 00CB0C91. 0072BBD0(ai, 0) (009F3BC1);
+// [ai] = 00D21808, [ai+1Ch] = 00D217F0; 009F39C0(ai+58h, ship) (009F3BE5); [ai] =
+// 00D21AE8, [ai+1Ch] = 00D21ACC, [ai+58h] = 00D21AC8, [ai+BB4h] = 00D21AC4; ai+2260h =
+// 00D05704, ai+2264h = &ai+BC8h (the brain's cruise state), then its vtable[4]
+// (009F3C0D-009F3C27); byte ai+11h = 1; 008FBC80(ai, ship ? ship+310h : 0)
+// (009F3C43); ai+B18h = ai+B14h = 0.0 (009F3C50, 009F3C58). RET 4, EAX = ai.
+// Whole body allowed: cc9 models the initial cruise state inline
+// (game_hosts_ship_ai.cpp, active_state_ai_offset under kShipAiInitialCruiseStateBound).
+// UNCERTAINTY: EH unwinding not modelled.
+void* ship_ai_gun_bot_construct_009f3ba0(Cc13Seg67bHost& host, void* ai, void* ship) {
+    host.gun_bot_construct_base_0072bbd0(ai, 0);
+    at<std::uint32_t>(ai, 0x00) = kGunBotAiVtable_00d21808;
+    at<std::uint32_t>(ai, 0x1C) = kGunBotAiObserverVtable_00d217f0;
+    ship_ai_brain_construct_009f39c0(host, ptr(ai, 0x58), ship);
+    at<std::uint32_t>(ai, 0x00) = kShipAiVtable_00d21ae8;
+    at<std::uint32_t>(ai, 0x1C) = kShipAiObserverVtable_00d21acc;
+    at<std::uint32_t>(ai, 0x58) = kShipAiBrainVtable_00d21ac8;
+    at<std::uint32_t>(ai, 0xBB4) = kShipAiBrainRegistryVtable_00d21ac4;
+    void* const cruise = ptr(ai, 0xBC8);
+    at<std::uint32_t>(ai, 0x2260) = kBotTaskSubVtable30C;
+    at<std::uintptr_t>(ai, 0x2264) = reinterpret_cast<std::uintptr_t>(cruise);
+    host.state_vcall_04_enter(cruise);
+    at<std::uint8_t>(ai, 0x11) = 1;
+    host.gun_bot_attach_008fbc80(ai, ship != nullptr ? ptr(ship, 0x310) : nullptr);
+    at<float>(ai, 0xB18) = 0.0f;
+    at<float>(ai, 0xB14) = 0.0f;
+    return ai;
+}
+
+// 009F3F20 (009F3F20-009F3F7F). EH frame 00CB0CEB. operator new(2268h) (009F3F3E);
+// null -> EAX = 0; else 009F3BA0(t, ship) (009F3F59) and EAX = t.
+// cc9 reaches it only inline: register_generated_units (game_hosts_ship_ai.cpp ~12258,
+// the 00810DD0 -> 009F3F20 chain) and the unit+740h note at ~365.
+// UNCERTAINTY: EH unwinding (the delete on a throwing constructor) not modelled.
+void* ship_ai_allocate_brain_009f3f20(Cc13Seg67bHost& host, void* ship) {
+    void* const t = host.operator_new_00bf681b(kShipAiSize_2268);
+    if (t == nullptr) {
+        return nullptr;
+    }
+    return ship_ai_gun_bot_construct_009f3ba0(host, t, ship);
+}
+
+namespace {
+constexpr std::uint32_t kStrPlaneId_00cf8770 = 0x00CF8770u;  // "planeID"
+constexpr std::uint32_t kObserverNodeVtable_00ce75cc = 0x00CE75CCu;
+constexpr float kObserverNodeDefault_00cf8b3c = 256.0f;
+void* pilot_task_at(void* bot, std::uint32_t i) {
+    return reinterpret_cast<void*>(
+        at<std::uintptr_t>(reinterpret_cast<void*>(at<std::uintptr_t>(bot, 0x58)), i * 4u));
+}
+}  // namespace
+
+// 00999A10 (00999A10-00999A5A). The pilot bot's task array is [+58h] with the count
+// at +5Ch. False with no task or a null head; false unless head->vtable[+38h]();
+// false when head->vtable[+34h](); true with more than one task; else true unless
+// head->vtable[+40h]() == 1 (00999A3D-00999A4F). No RNG.
+bool pilot_bot_head_task_blocks_switch_00999a10(Cc13Seg67bHost& host, void* bot) {
+    if (at<std::uint32_t>(bot, 0x5C) == 0) return false;
+    void* const head = pilot_task_at(bot, 0);
+    if (head == nullptr) return false;
+    if (!host.object_vcall_38(head)) return false;
+    if (host.object_vcall_34(head)) return false;
+    if (at<std::uint32_t>(bot, 0x5C) > 1) return true;
+    return host.task_vcall_40(head) != 1;
+}
+
+// 00999A60 (00999A60-00999A70). AL = byte [[p+4h]+184h] == 0.
+bool pilot_park_predicate_plane_byte184_zero_00999a60(const void* p) {
+    const void* const plane = reinterpret_cast<const void*>(
+        *reinterpret_cast<const std::uintptr_t*>(static_cast<const char*>(p) + 4));
+    return *(static_cast<const std::uint8_t*>(plane) + 0x184) == 0;
+}
+
+// 00999A80 (00999A80-00999A9C). [p] = 00D05840 (the pure-call base); flags bit 0 ->
+// _free(p) (00999A91). RET 4, EAX = p.
+void* pilot_park_predicate_scalar_delete_00999a80(Cc13Seg67bHost& host, void* p,
+                                                  std::uint32_t flags) {
+    at<std::uint32_t>(p, 0) = kPureCallVtable;
+    if ((flags & 1u) != 0) host.crt_free_00bf65ac(p);
+    return p;
+}
+
+// 00999B30 (00999B30-00999B66). Walks the task array; a non-null task whose
+// vtable[+28h]() returns AL != 0 ends the walk with that AL. With no match EAX holds
+// the count [bot+5Ch] (reloaded at 00999B54, or loaded at 00999B37 when the array is
+// empty), so AL = the count's low byte: the image has no explicit false.
+// UNCERTAINTY: the no-match value is the register left over, modelled as such.
+std::uint8_t pilot_bot_any_task_slot28_00999b30(Cc13Seg67bHost& host, void* bot) {
+    for (std::uint32_t i = 0; i < at<std::uint32_t>(bot, 0x5C); ++i) {
+        void* const task = pilot_task_at(bot, i);
+        if (task == nullptr) continue;
+        const std::uint8_t al = host.task_vcall_28_flag(task);
+        if (al != 0) return al;
+    }
+    return static_cast<std::uint8_t>(at<std::uint32_t>(bot, 0x5C) & 0xFFu);
+}
+
+// 00999C70 (00999C70-00999CB2). The first non-null task whose vtable[+3Ch]() is
+// non-zero, else 0.
+void* pilot_bot_find_task_by_slot3c_00999c70(Cc13Seg67bHost& host, void* bot) {
+    for (std::uint32_t i = 0; i < at<std::uint32_t>(bot, 0x5C); ++i) {
+        void* const task = pilot_task_at(bot, i);
+        if (task != nullptr && host.task_vcall_3c(task) != 0) return task;
+    }
+    return nullptr;
+}
+
+// 0099A630 (0099A630-0099A657). +4h, +8h, +0Ch, +14h = 0; byte +10h = 1; [n] = 00CE75CC;
+// +18h = 256.0 [00CF8B3C]. EAX = n.
+void* pilot_bot_init_observer_node_0099a630(void* n) {
+    at<std::uint32_t>(n, 0x04) = 0;
+    at<std::uint32_t>(n, 0x08) = 0;
+    at<std::uint32_t>(n, 0x0C) = 0;
+    at<std::uint32_t>(n, 0x14) = 0;
+    at<std::uint8_t>(n, 0x10) = 1;
+    at<std::uint32_t>(n, 0x00) = kObserverNodeVtable_00ce75cc;
+    at<float>(n, 0x18) = kObserverNodeDefault_00cf8b3c;
+    return n;
+}
+
+// 0099A940 (0099A940-0099A979). archive->vtable[+10h]("planeID", {4, &slot}), then
+// p+4h = slot. The slot is the stack word the record points at (the PUSH ECX at
+// 0099A940); before the read 0099A94A stores the record's own stack address into it.
+// UNCERTAINTY: an archive that does not write the slot leaves p+4h = that stack
+// address in the image; seeded to 0 here (labelled).
+void pilot_park_predicate_read_plane_id_0099a940(Cc13Seg67bHost& host, void* p,
+                                                 void* archive) {
+    std::uint32_t slot = 0;
+    host.archive_vcall_10_read(archive, name_record(kStrPlaneId_00cf8770),
+                               record(4, reinterpret_cast<std::uintptr_t>(&slot)));
+    at<std::uint32_t>(p, 0x04) = slot;
+}
+
+// 0099A980 (0099A980-0099A9AD). archive->vtable[+0Ch]("planeID", {4, [p+4h]}).
+void pilot_park_predicate_write_plane_id_0099a980(Cc13Seg67bHost& host, void* p,
+                                                  void* archive) {
+    host.archive_vcall_0c_write(archive, name_record(kStrPlaneId_00cf8770),
+                                record(4, at<std::uint32_t>(p, 0x04)));
+}
+
+// 0099B3D0 (0099B3D0-0099B3DA): byte plan+2DCh = value.
+void pilot_plan_set_byte_2dc_0099b3d0(void* plan, std::uint8_t value) {
+    at<std::uint8_t>(plan, 0x2DC) = value;
+}
+
+// 0099B3E0 (0099B3E0-0099B3EA): byte plan+2E5h = value (the turbo request).
+void pilot_plan_set_turbo_request_0099b3e0(void* plan, std::uint8_t value) {
+    at<std::uint8_t>(plan, 0x2E5) = value;
+}
+
+// 00997340 (00997340-00997379). With byte [[task+2F4h]+C24h] set, 009FC7C0(task+314h,
+// dt) (00997360); then 009FD0E0(task+38Ch, dt) (00997373). Unreferenced (no caller or
+// table entry found); BSP_PilotBot_Update 00999979/0099998C makes the same two calls.
+void bot_task_tick_gun_and_rocket_00997340(Cc13Seg67bHost& host, void* task, float dt) {
+    void* const unit = reinterpret_cast<void*>(at<std::uintptr_t>(task, 0x2F4));
+    if (at<std::uint8_t>(unit, 0xC24) != 0) {
+        host.bot_task_gun_tick_009fc7c0(ptr(task, 0x314), dt);
+    }
+    host.opportunistic_rocket_tick_009fd0e0(ptr(task, 0x38C), dt);
+}
+
+// 009995A0 (009995A0-009995C6), PilotBot vtable 00D1F348 slot +4h. 008FBC80(bot, node)
+// (009995A8); bot+9Ch = bot+B8h = 256.0 [00CF8B3C].
+void pilot_bot_attach_009995a0(Cc13Seg67bHost& host, void* bot, void* node) {
+    host.gun_bot_attach_008fbc80(bot, node);
+    at<float>(bot, 0x9C) = kObserverNodeDefault_00cf8b3c;
+    at<float>(bot, 0xB8) = kObserverNodeDefault_00cf8b3c;
+}
+
+namespace {
+std::uint32_t* array_data(void* a) {
+    return reinterpret_cast<std::uint32_t*>(at<std::uintptr_t>(a, 0x0));
+}
+// The reallocation shared by the four bodies: capacity = 2 * capacity + extra, then
+// operator new[](capacity * 4).
+std::uint32_t* array_reserve(Cc13Seg67bHost& host, void* a, std::uint32_t extra) {
+    const std::uint32_t cap = at<std::uint32_t>(a, 0x8) * 2u + extra;
+    at<std::uint32_t>(a, 0x8) = cap;
+    return static_cast<std::uint32_t*>(host.operator_new_array_00bf55be(cap * 4u));
+}
+void array_release(Cc13Seg67bHost& host, void* a, std::uint32_t* fresh) {
+    if (array_data(a) != nullptr) host.operator_delete_array_00bf6989(array_data(a));
+    at<std::uintptr_t>(a, 0x0) = reinterpret_cast<std::uintptr_t>(fresh);
+}
+}  // namespace
+
+// 00999700 (00999700-00999801). idx = (where - data) / 4. Full (count == capacity):
+// capacity = 2 * capacity + 1, new[] (0099972B), copy [0, idx), the value at idx, then
+// [idx, count) one up, delete[] the old data (009997A4), count += 1. Otherwise
+// data[count] = data[count - 1], shift (idx, count) up one, data[idx] = value, count
+// += 1. Each store into new storage is behind the placement-new null test. RET 8, EAX =
+// data + idx.
+// UNCERTAINTY: with count == 0 and spare capacity the image reads data[-1] and its
+// shift counter wraps (unbounded loop); unreachable for these arrays, and the body
+// stops after the one store (labelled).
+std::uint32_t* ptr_array_insert_at_00999700(Cc13Seg67bHost& host, void* a,
+                                            std::uint32_t* where, const std::uint32_t* value) {
+    const std::uint32_t idx = static_cast<std::uint32_t>(where - array_data(a));
+    const std::uint32_t count = at<std::uint32_t>(a, 0x4);
+    if (count == at<std::uint32_t>(a, 0x8)) {
+        std::uint32_t* const fresh = array_reserve(host, a, 1);
+        std::uint32_t* const old = array_data(a);
+        if (fresh != nullptr) {
+            for (std::uint32_t i = 0; i < idx; ++i) fresh[i] = old[i];
+            fresh[idx] = *value;
+            for (std::uint32_t i = idx; i < count; ++i) fresh[i + 1] = old[i];
+        }
+        array_release(host, a, fresh);
+        at<std::uint32_t>(a, 0x4) = count + 1;
+        return array_data(a) + idx;
+    }
+    std::uint32_t* const data = array_data(a);
+    if (count != 0) {
+        data[count] = data[count - 1];
+        for (std::uint32_t i = count - 1; i > idx; --i) data[i] = data[i - 1];
+    }
+    data[idx] = *value;
+    at<std::uint32_t>(a, 0x4) = count + 1;
+    return data + idx;
+}
+
+// 00999810 (00999810-0099985F). capacity = 2 * capacity + 2, new[] (00999823), copy
+// [0, count), delete[] the old data (00999853), data = new. RET.
+void ptr_array_grow_00999810(Cc13Seg67bHost& host, void* a) {
+    std::uint32_t* const fresh = array_reserve(host, a, 2);
+    const std::uint32_t count = at<std::uint32_t>(a, 0x4);
+    if (fresh != nullptr) {
+        for (std::uint32_t i = 0; i < count; ++i) fresh[i] = array_data(a)[i];
+    }
+    array_release(host, a, fresh);
+}
+
+// 00999CC0 (00999CC0-00999D31). Full: the 00999810 growth inline (2 * capacity + 2,
+// 00999CD8, 00999D0D); then data[count] = value (placement null test), count += 1.
+void ptr_array_push_back_00999cc0(Cc13Seg67bHost& host, void* a, const std::uint32_t* value) {
+    if (at<std::uint32_t>(a, 0x4) == at<std::uint32_t>(a, 0x8)) {
+        ptr_array_grow_00999810(host, a);
+    }
+    std::uint32_t* const data = array_data(a);
+    if (data != nullptr || at<std::uint32_t>(a, 0x4) != 0) {
+        data[at<std::uint32_t>(a, 0x4)] = *value;
+    }
+    at<std::uint32_t>(a, 0x4) += 1;
+}
+
+namespace {
+constexpr std::uint32_t kStrBot_00cf904c = 0x00CF904Cu;            // "_bot"
+constexpr std::uint32_t kStrCommandName_00d1f390 = 0x00D1F390u;    // "commandName"
+constexpr std::uint32_t kPilotPlanTableVtable_00d056e8 = 0x00D056E8u;
+}  // namespace
+
+// 0099AA20 (0099AA20-0099ABC3). EH frame 00CADB68. archive->vtable[+4h]("_bot");
+// 008FE660(bot, archive) (0099AA62); archive->vtable[+8h](). Then for i = 1, 2, ...
+// while archive->vtable[+14h]({1, i}) (0099AA8C): begin {1, i}; a counted string s =
+// {0, 0} read under "commandName" ({0, &s}, 0099AAE8); factory = 0099C690(&s)
+// (0099AAEE); task = factory->vtable[+4h](bot, archive) (0099AAFC); push the task onto
+// the bot's task array {+58h, +5Ch, +60h} (growth 2 * capacity + 2 inline, the
+// 00999CC0 pattern, 0099AB0A-0099AB71); end; when s's buffer is set, 00BD1510(00419CC0(),
+// buffer, length + 1, 1) (0099ABA0-0099ABA7). RET 4.
+// UNCERTAINTY: EH unwinding not modelled; a factory miss (0099C690 = 0) dereferences
+// null in the image as here.
+void pilot_bot_load_tasks_0099aa20(Cc13Seg67bHost& host, void* bot, void* archive) {
+    host.archive_vcall_04_begin(archive, name_record(kStrBot_00cf904c));
+    host.gun_bot_read_base_properties_008fe660(bot, archive);
+    host.archive_vcall_08_end(archive);
+    for (std::uint32_t i = 1;; ++i) {
+        if (!host.archive_vcall_14_has(archive, record(1, i))) return;
+        host.archive_vcall_04_begin(archive, record(1, i));
+        struct CountedString {
+            std::uint32_t length;
+            std::uintptr_t buffer;
+        } s{0, 0};
+        host.archive_vcall_10_read(archive, name_record(kStrCommandName_00d1f390),
+                                   record(0, reinterpret_cast<std::uintptr_t>(&s)));
+        void* const factory = host.bot_task_factory_find_0099c690(&s);
+        void* const task = host.factory_vcall_04_load(factory, bot, archive);
+        const std::uint32_t value =
+            static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(task));
+        ptr_array_push_back_00999cc0(host, ptr(bot, 0x58), &value);
+        host.archive_vcall_08_end(archive);
+        if (s.buffer != 0) {
+            host.sized_storage_pool_return_block_00bd1510(host.sized_storage_pool_00419cc0(),
+                                                          reinterpret_cast<void*>(s.buffer),
+                                                          s.length + 1, 1);
+        }
+    }
+}
+
+namespace {
+// 0099C459-0099C49F and 0099C5B3-0099C5FB: s = (dx*dx + dy*dy) + dz*dz spilled to a
+// float; float(sqrt(s)) (00BF7030) when s > 1e-10 [00CE3820, double], else 0 (FCOMI
+// JBE, so NaN -> 0).
+float lead_distance(const float* a, const float* b) {
+    const float dx = a[0] - b[0];
+    const float dy = a[1] - b[1];
+    const float dz = a[2] - b[2];
+    const float s = (dx * dx + dy * dy) + dz * dz;
+    return static_cast<double>(s) > kTiny_00ce3820
+               ? static_cast<float>(std::sqrt(static_cast<double>(s)))
+               : 0.0f;
+}
+}  // namespace
+
+// 0099C3C0 (0099C3C0-0099C683). l = {+0h owner entity, +4h float speed, byte +8h, +0Ch,
+// +10h..+18h}. Owner and target each refreshed through 00414DB0 when byte +C8h is clear;
+// P = owner+FCh..+104h, T = target+FCh..+104h. Pass 1: t = |T - P| / speed
+// (0099C4AF). With byte l+8h set, v = target->vtable[+34h](&scratch) (0099C4C4);
+// otherwise target->vtable[+38h]() first, its ST0 dropped (0099C525/0099C527), then the
+// same +34h call; Q = v * t + T. Pass 2: s = |Q - P| (0099C5CF); l+0Ch = s, the
+// distance before the division (XMM0 loaded at 0099C605, stored at 0099C60E); t =
+// s / speed; v = target->vtable[+34h](&scratch) again (0099C623); l+10h..+18h = v * t +
+// T. RET 4.
+// UNCERTAINTY: 24-bit x87 modelled (every intermediate is a float spill); the two
+// branches differ only by the discarded +38h call.
+void bot_lead_point_on_target_0099c3c0(Cc13Seg67bHost& host, void* l, void* target) {
+    void* const owner = reinterpret_cast<void*>(at<std::uintptr_t>(l, 0x0));
+    if (at<std::uint8_t>(owner, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(owner);
+    const float p[3] = {at<float>(owner, 0xFC), at<float>(owner, 0x100),
+                        at<float>(owner, 0x104)};
+    if (at<std::uint8_t>(target, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(target);
+    const float t_pos[3] = {at<float>(target, 0xFC), at<float>(target, 0x100),
+                            at<float>(target, 0x104)};
+    const float speed = at<float>(l, 0x4);
+    const float t1 = lead_distance(t_pos, p) / speed;
+    if (at<std::uint8_t>(l, 0x8) == 0) {
+        static_cast<void>(host.entity_vcall_38_float(target));
+    }
+    float scratch[3] = {};
+    const float* v = host.entity_vcall_34_velocity(target, scratch);
+    const float q[3] = {v[0] * t1 + t_pos[0], v[1] * t1 + t_pos[1], v[2] * t1 + t_pos[2]};
+    const float s2 = lead_distance(q, p);
+    at<float>(l, 0x0C) = s2;
+    const float t2 = s2 / speed;
+    float scratch2[3] = {};
+    v = host.entity_vcall_34_velocity(target, scratch2);
+    at<float>(l, 0x10) = v[0] * t2 + t_pos[0];
+    at<float>(l, 0x14) = v[1] * t2 + t_pos[1];
+    at<float>(l, 0x18) = v[2] * t2 + t_pos[2];
+}
+
+// 0099BDB0 (0099BDB0-0099BDE0), the element constructor 0099BE30 passes to the array
+// constructor 00BF7CD1 (three 0C8h elements). [t] = 00D056E8; 24 float pairs at +4h..+C3h
+// zeroed (ESI = 17h down to 0, JNS); the count +C4h = 0. EAX = t.
+void* pilot_plan_table_construct_0099bdb0(void* t) {
+    at<std::uint32_t>(t, 0x00) = kPilotPlanTableVtable_00d056e8;
+    for (std::uint32_t i = 0; i < 24; ++i) {
+        at<float>(t, 0x08 + i * 8) = 0.0f;
+        at<float>(t, 0x04 + i * 8) = 0.0f;
+    }
+    at<std::uint32_t>(t, 0xC4) = 0;
+    return t;
+}
+
+// 0099B1B0 (0099B1B0-0099B1D5). (plane+72Ch)->vtable[+38h]() true -> tail JMP 007D7A40
+// (ECX = plane+AB0h) (0099B1CF). No caller or table entry found (game_hosts_units.cpp
+// notes the same).
+void plane_command_band_repair_if_controlled_0099b1b0(Cc13Seg67bHost& host, void* plane) {
+    if (host.object_vcall_38(ptr(plane, 0x72C))) {
+        host.pilot_plan_reset_command_timer_007d7a40(ptr(plane, 0xAB0));
+    }
+}
+
+// 0099B2A0 (0099B2A0-0099B30E), the bare-array twin of 0099B450 (docs/PILOT_CONTROLS.md).
+// Five slots {value +0h, desired +4h, byte +8h}: both floats from unit+9F0h, +9E4h,
+// +9ECh, +9E8h, +9F4h in that slot order, the byte cleared. RET 4.
+void pilot_bot_seed_slot_array_0099b2a0(void* slots, const void* unit) {
+    static constexpr std::uint32_t kSource[5] = {0x9F0, 0x9E4, 0x9EC, 0x9E8, 0x9F4};
+    const char* const u = static_cast<const char*>(unit);
+    for (std::uint32_t i = 0; i < 5; ++i) {
+        float v;
+        std::memcpy(&v, u + kSource[i], sizeof v);
+        void* const slot = ptr(slots, i * 0x0C);
+        at<float>(slot, 0x4) = v;
+        at<float>(slot, 0x0) = v;
+        at<std::uint8_t>(slot, 0x8) = 0;
+    }
+}
+
+// 0099C2C0 (0099C2C0-0099C3B3), the bot-task base of the command-still-valid slot.
+// 2 when task+2FCh (the unit) is null or task->vtable[+3Ch]() (the task's command) is
+// null. director = unit->vtable[+114h](); match = 0071BE40(director) == command
+// (0099C2FD). When 0071BE40(director) (called again, 0099C30A) is 00E08F78 and
+// command->vtable[+0Ch]() is 1 or 2, or else when match holds, the aim test runs;
+// otherwise 0. The aim test: task->vtable[+0Ch](&aim) (0099C339); aim byte +0Ch clear ->
+// 1; else p = 006F7DD0(0071EB60(director), &scratch) (0099C351, 0099C358), d = p - aim
+// spilled to floats, 1 when 100.0 [00D7A220, double] > 0042B2F0(&d) (FCOMPI, JBE), else
+// 0 (an unordered length gives 0).
+// The scratch push at 0099C34E precedes the 0071EB60 call but is 006F7DD0's argument
+// (0071EB60 is a plain RET).
+// UNCERTAINTY: x87 at 24-bit; the double constant makes the compare exact either way.
+std::uint32_t bot_task_is_command_still_valid_base_0099c2c0(Cc13Seg67bHost& host, void* task) {
+    void* const unit = reinterpret_cast<void*>(at<std::uintptr_t>(task, 0x2FC));
+    if (unit == nullptr) return 2;
+    const std::uint32_t command = host.task_vcall_3c(task);
+    if (command == 0) return 2;
+    void* const director = host.object_vcall_114(unit);
+    const bool match = host.weapon_director_current_command_0071be40(director) == command;
+    bool check = false;
+    if (host.weapon_director_current_command_0071be40(director) == 0x00E08F78u) {
+        const std::uint32_t kind =
+            host.command_vcall_0c(reinterpret_cast<void*>(static_cast<std::uintptr_t>(command)));
+        check = kind == 1 || kind == 2;
+    }
+    if (!check && !match) return 0;
+    alignas(4) std::uint8_t aim[0x10] = {};
+    host.task_vcall_0c_aim(task, aim);
+    if (aim[0x0C] == 0) return 1;
+    float aim_xyz[3];
+    std::memcpy(aim_xyz, aim, sizeof aim_xyz);
+    float scratch[3] = {};
+    const float* const p = host.target_descriptor_resolve_position_006f7dd0(
+        host.entity_command_active_target_descriptor_0071eb60(director), scratch);
+    const float d[3] = {p[0] - aim_xyz[0], p[1] - aim_xyz[1], p[2] - aim_xyz[2]};
+    const float len = host.vector_length_0042b2f0(d);
+    return kHundred_00d7a220 > static_cast<double>(len) ? 1u : 0u;
+}
+
+// ---- section 3.45: one-line table slots (disk bytes; each body is its whole listing) ----
+// 009A54E0: MOV EAX,00F8A370 (the static depth-charge bot-task factory record);
+// 009A9950: MOV EAX,00F8A3E8 (the static "Dogfight" factory record); 009A5500: "DepthCharge"
+// 00CFA700; 009ADDE0: "DropKamikaze" 00D1FADC; 009AF080: "Kamikaze"
+// 00CFA714; 009B33A0: 00F8A438 (land factory record); 009B7BD0: "LevelBomb" 00D06EB0; 009B9140: FLD [00CE38B8]
+// 10.0; 009BA920: "immelmann" 00D20468; 009BCFB0: 00F8A534 (move-on-path factory record); 009C79C0:
+// "DiveBomb" 00D06E1C; 009C9E60: 3. Byte twins of existing bodies are ledger-only:
+// 009BAC60 / 009C3170 / 009C9E70 (entity_orders.cpp 006F8C00 /
+// 006F8920 / 006F8C90) and 009C3150 (kMoveToCommandClass, 009DAE20).
+std::uint32_t bot_task_depth_charge_factory_record_009a54e0() noexcept { return 0x00F8A370u; }
+std::uint32_t bot_task_dogfight_factory_record_009a9950() noexcept { return 0x00F8A3E8u; }
+std::uint32_t bot_task_depth_charge_name_009a5500() noexcept { return 0x00CFA700u; }
+std::uint32_t bot_task_drop_kamikaze_name_009adde0() noexcept { return 0x00D1FADCu; }
+std::uint32_t bot_task_kamikaze_name_009af080() noexcept { return 0x00CFA714u; }
+std::uint32_t bot_task_land_factory_record_009b33a0() noexcept { return 0x00F8A438u; }
+std::uint32_t bot_task_level_bomb_name_009b7bd0() noexcept { return 0x00D06EB0u; }
+float bot_task_pull_up_slot68_009b9140() noexcept { return kTen_00ce38b8; }
+std::uint32_t bot_task_immelmann_name_009ba920() noexcept { return 0x00D20468u; }
+std::uint32_t bot_task_moveonpath_factory_record_009bcfb0() noexcept { return 0x00F8A534u; }
+std::uint32_t bot_task_dive_bomb_name_009c79c0() noexcept { return 0x00D06E1Cu; }
+std::uint32_t bot_task_retreat_kind_009c9e60() noexcept { return 3u; }
+
+// 009CE290 and 009D0C00: a bare RET.
+void bot_state_takeoff_exit_009ce290(void*) noexcept {}
+void bot_state_torpedo_go_away_enter_009d0c00(void*) noexcept {}
+
+// 009A9C80: EAX = [task+4ACh].
+std::uint32_t bot_task_dogfight_slot48_value_009a9c80(const void* task) {
+    return *reinterpret_cast<const std::uint32_t*>(static_cast<const char*>(task) + 0x4AC);
+}
+
+// 009A9D30 (009A9D30-009A9D43): AL = [task+310h] == task+6A4h (the go-away state current).
+bool bot_task_dogfight_in_go_away_009a9d30(const void* task) {
+    const char* const t = static_cast<const char*>(task);
+    return *reinterpret_cast<const std::uintptr_t*>(t + 0x310) ==
+           reinterpret_cast<std::uintptr_t>(t + 0x6A4);
+}
+
+// 009B9480 (009B9480-009B9498): word task+414h = 0; unit = [task+2FCh]; non-null -> tail
+// JMP 007EFB30(unit).
+void bot_task_leave_alone_flush_009b9480(Cc13Seg67bHost& host, void* task) {
+    at<std::uint16_t>(task, 0x414) = 0;
+    void* const unit = reinterpret_cast<void*>(at<std::uintptr_t>(task, 0x2FC));
+    if (unit != nullptr) host.pilot_control_raise_force_release_flag_007efb30(unit);
+}
+
+// 009BCD40: ECX -= 40h, JMP 009BCE30. 009BD090: ECX -= 3F8h, JMP 009BDB90. 009BD0A0:
+// ECX -= 438h, JMP 009BDB90. The flags argument passes through.
+void* bot_approach_moveonpath_registry_dtor_thunk_009bcd40(Cc13Seg67bHost& host, void* self,
+                                                           std::uint32_t flags) {
+    return host.scalar_deleting_dtor_009bce30(static_cast<char*>(self) - 0x40, flags);
+}
+void* bot_task_moveonpath_approach_view_dtor_thunk_009bd090(Cc13Seg67bHost& host, void* self,
+                                                            std::uint32_t flags) {
+    return host.scalar_deleting_dtor_009bdb90(static_cast<char*>(self) - 0x3F8, flags);
+}
+void* bot_task_moveonpath_registry_view_dtor_thunk_009bd0a0(Cc13Seg67bHost& host, void* self,
+                                                            std::uint32_t flags) {
+    return host.scalar_deleting_dtor_009bdb90(static_cast<char*>(self) - 0x438, flags);
+}
+
+namespace {
+float follow_wait_value_or_base(Cc13Seg67bHost& host, void* task, std::uint32_t follow) {
+    if (at<std::uintptr_t>(task, 0x310) == reinterpret_cast<std::uintptr_t>(ptr(task, follow))) {
+        return host.bot_state_follow_wait_value_009be3e0(ptr(task, follow));
+    }
+    return host.bot_task_base_wait_value_0099b720(task);
+}
+}  // namespace
+
+// 009A5D50 (009A5D50-009A5D78): the current state [task+310h] is task+544h -> JMP
+// 009BE3E0(task+544h); task+6E4h -> 009BE3E0(task+6E4h); else JMP 0099B720(task).
+float bot_task_depth_charge_wait_value_009a5d50(Cc13Seg67bHost& host, void* task) {
+    if (at<std::uintptr_t>(task, 0x310) == reinterpret_cast<std::uintptr_t>(ptr(task, 0x544))) {
+        return host.bot_state_follow_wait_value_009be3e0(ptr(task, 0x544));
+    }
+    return follow_wait_value_or_base(host, task, 0x6E4);
+}
+// 009BD2E0: the same test on task+464h; 009CA0A0: on task+4C4h.
+float bot_task_moveonpath_follow_wait_value_009bd2e0(Cc13Seg67bHost& host, void* task) {
+    return follow_wait_value_or_base(host, task, 0x464);
+}
+float bot_task_retreat_wait_value_009ca0a0(Cc13Seg67bHost& host, void* task) {
+    return follow_wait_value_or_base(host, task, 0x4C4);
+}
+
+namespace {
+void* state_plane(void* s) {
+    void* const task = reinterpret_cast<void*>(at<std::uintptr_t>(s, 0x4));
+    return reinterpret_cast<void*>(at<std::uintptr_t>(task, 0x4));
+}
+}  // namespace
+
+// 009C44C0 (009C44C0-009C44D1): byte plane+844h = 0, byte state+1Ch = 0.
+void bot_state_dive_bomb_turn_down_enter_009c44c0(void* s) {
+    at<std::uint8_t>(state_plane(s), 0x844) = 0;
+    at<std::uint8_t>(s, 0x1C) = 0;
+}
+// 009B1E90: byte plane+844h = 1. Its byte-identical twins 009C44E0, 009C58A0 and 009C6210
+// (the dive-bomb exits) are ledger-only rows citing this body.
+void bot_state_land_final_exit_009b1e90(void* s) { at<std::uint8_t>(state_plane(s), 0x844) = 1; }
+// 009D1350: byte [[state+4h]+A8h] = 0.
+void bot_state_torpedo_aim_exit_009d1350(void* s) {
+    at<std::uint8_t>(reinterpret_cast<void*>(at<std::uintptr_t>(s, 0x4)), 0xA8) = 0;
+}
+
+// 009D4EA0 / 009D4EC0: +40h / +48h = value, byte +4Ch = 1, RET 4. 009D4F00: FLD +48h.
+void command_record_set_float40_009d4ea0(void* r, float value) {
+    at<float>(r, 0x40) = value;
+    at<std::uint8_t>(r, 0x4C) = 1;
+}
+void command_record_set_float48_009d4ec0(void* r, float value) {
+    at<float>(r, 0x48) = value;
+    at<std::uint8_t>(r, 0x4C) = 1;
+}
+float command_record_get_float48_009d4f00(const void* r) {
+    return *reinterpret_cast<const float*>(static_cast<const char*>(r) + 0x48);
+}
+
+// 009D4F70: EAX = ai + A98h + [ai+B40h] * 54h (IMUL, so the index is signed).
+void* ship_ai_current_order_slot_009d4f70(void* ai) {
+    const std::int32_t index = at<std::int32_t>(ai, 0xB40);
+    return static_cast<char*>(ai) + 0xA98 + index * 0x54;
+}
+
+// 009DABB0..009DABF0, unreferenced: byte +3F4h, dword +3F8h, byte +3FCh, byte +3FDh
+// from the argument (RET 4); byte +B38h = 1 (RET).
+void ship_ai_set_torpedo_avoidance_request_009dabb0(void* b, std::uint8_t v) {
+    at<std::uint8_t>(b, 0x3F4) = v;
+}
+void ship_ai_set_ship_avoidance_party_filter_009dabc0(void* b, std::uint32_t v) {
+    at<std::uint32_t>(b, 0x3F8) = v;
+}
+void ship_ai_set_land_avoidance_request_009dabd0(void* b, std::uint8_t v) {
+    at<std::uint8_t>(b, 0x3FC) = v;
+}
+void ship_ai_set_drive_bypass_009dabe0(void* b, std::uint8_t v) { at<std::uint8_t>(b, 0x3FD) = v; }
+void ship_ai_set_speed_commanded_flag_009dabf0(void* b) { at<std::uint8_t>(b, 0xB38) = 1; }
+
+// 009F5260: [o] = 00D21B40, [o+4h] = arg, RET 4, EAX = o.
+void* auto_target_base_construct_009f5260(void* o, std::uint32_t arg) {
+    at<std::uint32_t>(o, 0x0) = 0x00D21B40u;
+    at<std::uint32_t>(o, 0x4) = arg;
+    return o;
+}
+
+// 00999D40 (00999D40-00999DEE), ledger name BSP_PtrArray_PushBackOdd: an insert at the
+// front. Full: capacity = 2 * capacity + 1, new[] (00999D5A), new[0] = value, [0, count)
+// one up, delete[] (00999DA5), count += 1. Otherwise data[count] = data[count - 1],
+// shift [1, count) up, data[0] = value, count += 1. RET 4.
+// UNCERTAINTY: as 00999700 for count == 0 with spare capacity (the image's counter
+// wraps at 00999DC9); the body only stores data[0] (labelled).
+void ptr_array_push_front_00999d40(Cc13Seg67bHost& host, void* a, const std::uint32_t* value) {
+    const std::uint32_t count = at<std::uint32_t>(a, 0x4);
+    if (count == at<std::uint32_t>(a, 0x8)) {
+        std::uint32_t* const fresh = array_reserve(host, a, 1);
+        if (fresh != nullptr) {
+            fresh[0] = *value;
+            for (std::uint32_t i = 0; i < count; ++i) fresh[i + 1] = array_data(a)[i];
+        }
+        array_release(host, a, fresh);
+        at<std::uint32_t>(a, 0x4) = count + 1;
+        return;
+    }
+    std::uint32_t* const data = array_data(a);
+    if (count != 0) {
+        data[count] = data[count - 1];
+        for (std::uint32_t i = count - 1; i != 0; --i) data[i] = data[i - 1];
+    }
+    data[0] = *value;
+    at<std::uint32_t>(a, 0x4) = count + 1;
+}
+
+// ============================================================================
+// Medium rows, batch 1 (docs/CC13_SEG67B.md 3.46)
+// ============================================================================
+
+namespace {
+
+// The shared shape of the nine Describe slots (each 38 instructions, the same bytes
+// apart from the SEH handler and the registry LEA): 009A1A90(task, &temp) for the base
+// name, 00411430(task + registry, [task+310h]) for the state name, then
+// 007B7E70(out, base, name). The temporary is released inline: capacity (temp+18h)
+// >= 10h frees the heap buffer at temp+4h through 00BF65AC.
+void* describe_with_registry(Cc13Seg67bHost& host, void* task, void* out,
+                             std::size_t registry) {
+    alignas(4) std::uint8_t temp[0x1C] = {};
+    const void* const base = host.bot_task_debug_name_009a1a90(task, temp);
+    const char* const name =
+        host.state_registry_name_or_undefined_00411430(ptr(task, registry), ptr_at(task, 0x310));
+    host.std_string_plus_cstr_007b7e70(out, base, name);
+    if (at<std::uint32_t>(temp, 0x18) >= 0x10) host.crt_free_00bf65ac(ptr_at(temp, 0x4));
+    return out;
+}
+
+}  // namespace
+
+// 009A68C0 (009A68C0-009A693F): registry task+4F4h (009A68F7).
+void* bot_task_depth_charge_describe_009a68c0(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_registry(host, task, out, 0x4F4);
+}
+
+// 009AF670 (009AF670-009AF6EF): registry task+4D4h (009AF6A7).
+void* bot_task_kamikaze_describe_009af670(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_registry(host, task, out, 0x4D4);
+}
+
+// 009AF890 (009AF890-009AF912): registry task+4BCh (009AF8C7).
+void* bot_task_drop_kamikaze_describe_009af890(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_registry(host, task, out, 0x4BC);
+}
+
+// 009B8F80 (009B8F80-009B8FFF): registry task+4D4h (009B8FB7).
+void* bot_task_level_bomb_describe_009b8f80(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_registry(host, task, out, 0x4D4);
+}
+
+// 009BDB00 (009BDB00-009BDB7F): registry task+438h (009BDB37).
+void* bot_task_move_on_path_describe_009bdb00(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_registry(host, task, out, 0x438);
+}
+
+// 009C3A60 (009C3A60-009C3ADF): registry task+468h (009C3A97).
+void* bot_task_move_to_describe_009c3a60(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_registry(host, task, out, 0x468);
+}
+
+// 009C8BC0 (009C8BC0-009C8C3F): registry task+4DCh (009C8BF7).
+void* bot_task_dive_bomb_describe_009c8bc0(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_registry(host, task, out, 0x4DC);
+}
+
+// 009CA200 (009CA200-009CA27F): registry task+464h (009CA237).
+void* bot_task_retreat_describe_009ca200(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_registry(host, task, out, 0x464);
+}
+
+// 009CD250 (009CD250-009CD2CF): registry task+4CCh (009CD287).
+void* bot_task_strafe_describe_009cd250(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_registry(host, task, out, 0x4CC);
+}
+
+// 009A79F0 (009A79F0-009A7A36), the enter of the dogfight avoid state at vtable
+// 00D1F8F8: +24h byte = 0; +18h = U(0.75, 1.5) (00CEE07C lo at [ESP], 00CE380C hi at
+// [ESP+4]; one draw, stream 1) x AvoidTime (row+214h, row = [[state+4]+14h]); +20h and
+// +1Ch = 0. The same timer arithmetic as the avoid enters 009A7DE0 / 009A8020, which
+// cc9 models as dogfight_avoid_timer_009a7de0 (src/dogfight_task.cpp, bsp_game only).
+// The FMUL is a 24 x 24-bit product, exact in both precisions.
+void bot_state_dogfight_avoid_enter_009a79f0(Cc13Seg67bHost& host, void* state) {
+    void* const row = ptr_at(ptr_at(state, 0x4), 0x14);
+    at<std::uint8_t>(state, 0x24) = 0;                                          // 009A7A04
+    const float draw = host.random_uniform_00bd2f10(1, 0.75f, 1.5f);            // 009A7A19
+    at<float>(state, 0x18) = draw * at<float>(row, 0x214);                       // 009A7A1E
+    at<float>(state, 0x20) = 0.0f;                                               // 009A7A2B
+    at<float>(state, 0x1C) = 0.0f;                                               // 009A7A30
+}
+
+// 009AAF30 (009AAF30-009AAF96), dogfight task slot +54h. 0099B660 (empty) first.
+// Then the altitude block of bot_task_update_cruise_profile (src/bot_tasks.cpp ~158)
+// with the cruise offset 640h (kDogfightCruisingAlt) behind the 007B8AD0 gate, read
+// here from the listing: c = [task+404h]+37Ch; unless c+11h, when 0 > c+4h (COMISS,
+// JBE: NaN skips) and c+2Dh is clear, c+18h = tuning+640h (Pilot/Dogfight/CruisingAlt)
+// and c+31h = 1; c+2Dh = 0 either way. 0042E740 is called before the c+11h test. Then
+// 009AAC70(ECX = task+3F8h, 0.0) and the tail JMP 0099B740(task). The cc9 dogfight host
+// has not bound this slot (include/bsp/dogfight_task.hpp ~59).
+void bot_task_dogfight_update_cruise_profile_009aaf30(Cc13Seg67bHost& host, void* task) {
+    host.bot_task_update_cruise_profile_base_0099b660(task);                     // 009AAF33
+    if (host.unit_is_squadron_flight_leader_007b8ad0(ptr_at(task, 0x3FC))) {     // 009AAF3E
+        void* const tuning = host.game_tuning_singleton_0042e740();             // 009AAF47
+        void* const c = ptr(ptr_at(task, 0x404), 0x37C);
+        if (at<std::uint8_t>(c, 0x11) == 0) {                                   // 009AAF58
+            if (0.0f > at<float>(c, 0x4) && at<std::uint8_t>(c, 0x2D) == 0) {     // 009AAF61
+                at<std::uint8_t>(c, 0x31) = 1;                                  // 009AAF73
+                at<float>(c, 0x18) = at<float>(tuning, 0x640);                  // 009AAF77
+            }
+            at<std::uint8_t>(c, 0x2D) = 0;                                      // 009AAF7A
+        }
+    }
+    host.dogfight_update_approach_009aac70(ptr(task, 0x3F8), 0.0f);              // 009AAF8A
+    host.bot_task_abandon_if_stale_0099b740(task);                               // 009AAF92 JMP
+}
+
+// 009B35E0 (009B35E0-009B3660). 0099B6E0 (a RET) first; then 008608B0 with ECX =
+// the local (+430h, +434h + +458h, +438h) and the stack floats radius = +440h and
+// (+460h, +464h, +468h), each moved by FLD/FSTP; RET 10h. Then
+// 006C2400(ECX = [task+42Ch]).
+void bot_task_land_debug_draw_009b35e0(Cc13Seg67bHost& host, void* task) {
+    host.bot_task_debug_draw_base_0099b6e0(task);                                // 009B35E6
+    const float centre[3] = {at<float>(task, 0x430),
+                             at<float>(task, 0x434) + at<float>(task, 0x458),    // 009B3609
+                             at<float>(task, 0x438)};
+    host.debug_draw_circle_with_heading_008608b0(centre, at<float>(task, 0x440),
+                                                 at<float>(task, 0x460), at<float>(task, 0x464),
+                                                 at<float>(task, 0x468));        // 009B364C
+    host.air_ops_debug_draw_runway_distances_006c2400(ptr_at(task, 0x42C));      // 009B3657
+}
+
+// 009B93D0 (009B93D0-009B93EB): when [task+3F8h]->vtable[0]() returns AL != 0,
+// 0099B690(task). The RET 4 argument is not read.
+void bot_task_conditioned_tick_009b93d0(Cc13Seg67bHost& host, void* task, float dt) {
+    (void)dt;
+    if (host.condition_vcall_00_test(ptr_at(task, 0x3F8))) host.bot_task_retire_0099b690(task);
+}
+
+// 009B93F0 (009B93F0-009B9410): [task+2F8h]+1ACh x pi (double 00CE3D28, the float
+// pi widened) + 1.0 (double 00D7A210), rounded to a float through [ESP]. Modelled at
+// 24-bit precision as two float operations; UNCERTAINTY: a 53-bit control word
+// would round the product once less.
+float bot_task_tight_turn_slot68_009b93f0(void* task) {
+    const float v = at<float>(ptr_at(task, 0x2F8), 0x1AC);
+    const float product = v * 3.14159274101257324f;
+    return product + 1.0f;
+}
+
+// 009B9420 (009B9420-009B947B): word +414h = 0; [[task+2F4h]+DF4h]+80h = 0.0 (the
+// unit is not null-tested for this first store); 007ED3C0([task+2FCh]) when set;
+// with a unit, 007BCBE0(unit, 0) and the +80h store again (the pointers re-read).
+void bot_task_leave_alone_update_cruise_profile_009b9420(Cc13Seg67bHost& host, void* task) {
+    at<std::uint16_t>(task, 0x414) = 0;                                          // 009B942C
+    at<float>(ptr_at(ptr_at(task, 0x2F4), 0xDF4), 0x80) = 0.0f;                  // 009B943B
+    if (void* const control = ptr_at(task, 0x2FC)) {
+        host.pilot_control_clear_release_orders_007ed3c0(control);              // 009B944D
+    }
+    if (void* const unit = ptr_at(task, 0x2F4)) {
+        host.unit_set_queued_release_orders_007bcbe0(unit, 0);                  // 009B945E
+        at<float>(ptr_at(ptr_at(task, 0x2F4), 0xDF4), 0x80) = 0.0f;              // 009B9472
+    }
+}
+
+// 009B9FD0 (009B9FD0-009BA00F). 009B9F20(task, archive) (009B9FD9); archive->vtable[0Ch]
+// ({0,"left"} 00D20368, {3, byte +408h}) (009BA00B).
+// UNCERTAINTY: as 009B9F20 for the type-3 payload's upper bytes (only CL is stored).
+void bot_task_tight_turn_save_009b9fd0(Cc13Seg67bHost& host, void* task, void* archive) {
+    bot_task_pull_up_save_009b9f20(host, task, archive);
+    host.archive_vcall_0c_write(archive, name_record(kStrLeft),
+                                record(3, at<std::uint8_t>(task, 0x408)));
+}
+
+// 009BD380 (009BD380-009BD3AF). 0099D060(task, archive) (009BD389); 009BD300(ECX =
+// task+3F8h, archive) (009BD395); 00411450(ECX = task+438h, task+30Ch, archive) (009BD3A8).
+void bot_task_move_on_path_save_009bd380(Cc13Seg67bHost& host, void* task, void* archive) {
+    bot_task_save_base_0099d060(host, task, archive);
+    bot_approach_move_on_path_save_offsets_009bd300(host, ptr(task, 0x3F8), archive);
+    host.bot_state_registry_write_current_00411450(ptr(task, 0x438), ptr(task, 0x30C), archive);
+}
+
+// 009C3510 (009C3510-009C353F). As 009BD380 with 009C33D0 and the registry task+468h.
+void bot_task_move_to_save_009c3510(Cc13Seg67bHost& host, void* task, void* archive) {
+    bot_task_save_base_0099d060(host, task, archive);
+    bot_approach_move_to_save_009c33d0(host, ptr(task, 0x3F8), archive);
+    host.bot_state_registry_write_current_00411450(ptr(task, 0x468), ptr(task, 0x30C), archive);
+}
+
+// 009CA0C0 (009CA0C0-009CA0E9): out = (+45Ch, 0.0, +460h) through MOVSS, byte out+0Ch = 1,
+// EAX = out.
+void* bot_task_retreat_target_position_009ca0c0(void* task, void* out) {
+    at<float>(out, 0x0) = at<float>(task, 0x45C);
+    at<float>(out, 0x4) = 0.0f;
+    at<float>(out, 0x8) = at<float>(task, 0x460);
+    at<std::uint8_t>(out, 0xC) = 1;
+    return out;
+}
+
+// 009CA480 (009CA480-009CA49B): null -> 0; entity->vtable[5Ch](41h) AL != 0 ->
+// entity, else 0. The kind-0Fh casts (004BEAD0 and twins) are the same shape with 0Fh.
+void* entity_as_kind41_009ca480(Cc13Seg67bHost& host, void* entity) {
+    if (entity == nullptr) return nullptr;
+    return host.object_vcall_5c(entity, 0x41) ? entity : nullptr;
+}
+
+// ============================================================================
+// Medium rows, batch 2 (docs/CC13_SEG67B.md 3.47)
+// ============================================================================
+
+namespace {
+
+// The shared shape of the three plain state constructors 009BC870, 009BC8A0 and
+// 009C6180: +4h = approach; +0Ch, +10h, +14h, +8h = 0 (in that order); vptr.
+void* construct_plain_state(void* state, void* approach, std::uint32_t vtable) {
+    at<std::uintptr_t>(state, 0x4) = reinterpret_cast<std::uintptr_t>(approach);
+    at<std::uint32_t>(state, 0xC) = 0;
+    at<std::uint32_t>(state, 0x10) = 0;
+    at<std::uint32_t>(state, 0x14) = 0;
+    at<std::uint32_t>(state, 0x8) = 0;
+    at<std::uint32_t>(state, 0x0) = vtable;
+    return state;
+}
+
+// 009BC9F0 / 009C2670 (the same 23 instructions at two addresses): a
+// local white rgba (1, 1, 1, 1) from [00D7A24C]; unit = [approach+8h] (read before
+// the call); approach->vtable[0](&local) (EAX unused); 00860710(ECX = &local, EDX =
+// &white; radius = unit+268h).
+void circle_state_debug_draw(Cc13Seg67bHost& host, void* state) {
+    const float white[4] = {kOne_00d7a24c, kOne_00d7a24c, kOne_00d7a24c, kOne_00d7a24c};
+    void* const approach = ptr_at(state, 0x4);
+    void* const unit = ptr_at(approach, 0x8);
+    float point[3] = {};
+    host.approach_vcall_00_target_point(approach, point);
+    host.debug_circle64_00860710(point, white, at<float>(unit, 0x268));
+}
+
+}  // namespace
+
+// 009B94E0 (009B94E0-009B9581), split-S roll step. d = [task+2F8h], u = [task+2F4h]:
+// twice = d+1A8h / d+1BCh doubled (FADD ST0,ST0); off = -pi/2 (qword 00CF48A0, FSUBR)
+// - u+C64h, rounded to a float; sq = off * off; v = wrap ? 00438B10(pi [00D7A264],
+// u+C68h) : u+C68h; byte +298h = 1; +294h = (-v / twice) * sq; +2D0h = 0.
+// 24-bit precision is modelled as float operations; UNCERTAINTY: at 53 bits the
+// quotient and the products round once less. Caller: the split s tick 009B9CA0 (no
+// Ghidra function; vtable 00D207C0 +64h) at 009B9D05, with wrap = ([task+3F8h] == 1);
+// cc9 does not model the split s task.
+void bot_task_split_s_roll_step_009b94e0(Cc13Seg67bHost& host, void* task, std::uint8_t wrap) {
+    void* const desc = ptr_at(task, 0x2F8);
+    void* const unit = ptr_at(task, 0x2F4);
+    const float rate = at<float>(desc, 0x1A8) / at<float>(desc, 0x1BC);         // 009B94F7
+    const float twice = rate + rate;                                            // 009B950B
+    const float bank = at<float>(unit, 0xC68);
+    const float off = static_cast<float>(-1.5707963705062866 -
+                                         static_cast<double>(at<float>(unit, 0xC64)));  // 009B9517
+    const float sq = off * off;                                                 // 009B952B
+    const float v = wrap != 0 ? host.wrapped_angle_subtract_00438b10(3.14159274101257324f, bank)
+                              : bank;                                           // 009B9547
+    at<std::uint8_t>(task, 0x298) = 1;                                          // 009B955C
+    const float q = -v / twice;                                                 // 009B9563
+    at<float>(task, 0x294) = q * sq;                                            // 009B9569
+    at<std::uint32_t>(task, 0x2D0) = 0;                                         // 009B9573
+}
+
+// 009B95D0 (009B95D0-009B963D), the stop task's tick: the plan slots in image order.
+void bot_task_stop_tick_009b95d0(void* task, float dt) {
+    (void)dt;
+    at<float>(task, 0x27C) = 0.0f;
+    at<std::uint8_t>(task, 0x280) = 1;
+    at<float>(task, 0x2AC) = kOne_00d7a24c;
+    at<std::uint8_t>(task, 0x2B0) = 1;
+    at<std::uint32_t>(task, 0x2DC) = 0;
+    at<float>(task, 0x288) = 0.0f;
+    at<std::uint8_t>(task, 0x28C) = 1;
+    at<std::uint32_t>(task, 0x2D8) = 0;
+    at<float>(task, 0x2A0) = 0.0f;
+    at<std::uint8_t>(task, 0x2A4) = 1;
+    at<std::uint32_t>(task, 0x2D4) = 0;
+    at<float>(task, 0x294) = 0.0f;
+    at<std::uint8_t>(task, 0x298) = 1;
+    at<std::uint32_t>(task, 0x2D0) = 0;
+}
+
+// 009BAE10 (009BAE10-009BAE74): operator new(400h); null -> 0; else 009BAAB0(t, bot, archive).
+void* bot_task_gain_altitude_factory_create_009bae10(Cc13Seg67bHost& host, void* bot,
+                                                     void* archive) {
+    void* const t = host.operator_new_00bf681b(0x400);
+    if (t == nullptr) return nullptr;
+    return bot_task_gain_altitude_construct_from_stream_009baab0(host, t, bot, archive);
+}
+
+// 009BAE80 (009BAE80-009BAEE4): operator new(3FCh); null -> 0; else 009BA960(t, bot, archive).
+void* bot_task_immelmann_factory_create_009bae80(Cc13Seg67bHost& host, void* bot, void* archive) {
+    void* const t = host.operator_new_00bf681b(0x3FC);
+    if (t == nullptr) return nullptr;
+    return bot_task_immelmann_construct_from_stream_009ba960(host, t, bot, archive);
+}
+
+// 009BAEF0 (009BAEF0-009BAF4E): operator new(3F8h); null -> 0; else 0099C8B0(t, bot,
+// archive, kind 0Fh) and vptr = 00D20500 (009BAF37).
+void* bot_task_stop_factory_create_009baef0(Cc13Seg67bHost& host, void* bot, void* archive) {
+    void* const t = host.operator_new_00bf681b(0x3F8);
+    if (t == nullptr) return nullptr;
+    bot_task_construct_base_from_stream_0099c8b0(host, t, bot, archive, 0x0F);
+    at<std::uint32_t>(t, 0x0) = 0x00D20500u;
+    return t;
+}
+
+// 009BC6B0 (009BC6B0-009BC6EC): registry approach+40h; "path (path)" 00D20860 ->
+// +54h, "follow (path)" 00D20850 -> +6Ch, "circle (path)" 00D20840 -> +104h.
+void bot_approach_move_on_path_register_state_names_009bc6b0(Cc13Seg67bHost& host,
+                                                             void* approach) {
+    static constexpr StateNamePair kPairs[] = {
+        {0x00D20860u, 0x54}, {0x00D20850u, 0x6C}, {0x00D20840u, 0x104}};
+    register_state_names(host, approach, 0x40, kPairs, 3);
+}
+
+// 009BC870 / 009BC8A0 (11 and 12 instructions): vtables 00D208A0 and 00D208BC.
+void* bot_state_move_on_path_base_construct_009bc870(void* state, void* approach) {
+    return construct_plain_state(state, approach, 0x00D208A0u);
+}
+void* bot_state_move_on_path_path_construct_009bc8a0(void* state, void* approach) {
+    return construct_plain_state(state, approach, 0x00D208BCu);
+}
+
+// 009C6180 (009C6180-009C61AC): the plain header with vtable 00D20D04, then bytes
+// +18h..+1Bh = 0 and +20h = 0 (+1Ch is not written).
+void* bot_state_dive_bomb_fly_above_construct_009c6180(void* state, void* approach) {
+    construct_plain_state(state, approach, 0x00D20D04u);
+    at<std::uint8_t>(state, 0x18) = 0;
+    at<std::uint8_t>(state, 0x19) = 0;
+    at<std::uint8_t>(state, 0x1A) = 0;
+    at<std::uint8_t>(state, 0x1B) = 0;
+    at<std::uint32_t>(state, 0x20) = 0;
+    return state;
+}
+
+// 009BC9F0 (009BC9F0-009BCA40) and 009C2670 (009C2670-009C26C0).
+void bot_state_move_on_path_circle_debug_draw_009bc9f0(Cc13Seg67bHost& host, void* state) {
+    circle_state_debug_draw(host, state);
+}
+void bot_state_move_to_circle_debug_draw_009c2670(Cc13Seg67bHost& host, void* state) {
+    circle_state_debug_draw(host, state);
+}
+
+// 009BCF70 (009BCF70-009BCFAC): the first half of 009BD0B0. c = [approach+0Ch]; null
+// -> 0; c->vtable[114h]()+54h != 00E08F80 (moveonpath) -> 0; else
+// 0071BFF0(ECX = c->vtable[114h](), 0) (the PUSH 0 at 009BCF9B is 0071BFF0's argument).
+void* bot_approach_move_on_path_command_path_cursor_009bcf70(Cc13Seg67bHost& host,
+                                                             void* approach) {
+    void* const ctl = ptr_at(approach, 0x0C);
+    if (ctl == nullptr) return nullptr;
+    void* const director = host.object_vcall_114(ctl);
+    if (at<std::uint32_t>(director, 0x54) != kMoveOnPathCommandClass_00e08f80) return nullptr;
+    return host.weapon_director_command_path_cursor_0071bff0(
+        host.object_vcall_114(ptr_at(approach, 0x0C)), 0);
+}
+
+// 009BD1D0 (009BD1D0-009BD27C). 0099B6E0 (a RET) first. Two image statics are set once
+// under guards: 00F8A508 = (0, 0, 1, 1) (guard 00F8A518) and 00F8A51C = (1, 1, 0, 1)
+// (guard 00F8A52C); this body passes equal local constants. Then
+// 00860BE0(ECX = (task+3F8h)->vtable[0](&local), EDX = 00F8A51C; radius 30.0
+// [00CE38C8], 00F8A508, detailed 1).
+void bot_task_move_on_path_debug_draw_009bd1d0(Cc13Seg67bHost& host, void* task) {
+    static constexpr float kBlue_00f8a508[4] = {0.0f, 0.0f, 1.0f, 1.0f};
+    static constexpr float kYellow_00f8a51c[4] = {1.0f, 1.0f, 0.0f, 1.0f};
+    host.bot_task_debug_draw_base_0099b6e0(task);                                // 009BD1D6
+    float point[3] = {};
+    const float* const centre = host.approach_vcall_00_target_point(ptr(task, 0x3F8), point);
+    host.wire_sphere_00860be0(centre, kYellow_00f8a51c, 30.0f, kBlue_00f8a508, 1);  // 009BD273
+}
+
+// 009BDED0 (009BDED0-009BDEFE): the observed entity at approach+2Ch, the observer node at
+// approach+18h. Same entity -> nothing; old -> 006952A0(old, node); store; new ->
+// 00694A60(new, node).
+void bot_approach_move_to_set_observed_target_009bded0(Cc13Seg67bHost& host, void* approach,
+                                                       void* entity) {
+    void* const old = ptr_at(approach, 0x2C);
+    if (entity == old) return;
+    if (old != nullptr) host.observer_unregister_pair_006952a0(old, ptr(approach, 0x18));
+    at<std::uintptr_t>(approach, 0x2C) = reinterpret_cast<std::uintptr_t>(entity);
+    if (entity != nullptr) host.observer_register_pair_00694a60(entity, ptr(approach, 0x18));
+}
+
+// 009C5870 (009C5870-009C5892), the aimdive enter: +1Ch = 0; byte +18h = (approach+D1h
+// == 0); byte [[approach+4h]+844h] = 0. The cc9 dive-bomb host clears its shared
+// db_aim_rearm_1c / db_aim_pull_out_18 only on the aimglide enter (it cites this
+// enter's 009C5876 store) and keeps no aimdive enter of its own.
+void bot_state_dive_bomb_aim_dive_enter_009c5870(void* state) {
+    void* const approach = ptr_at(state, 0x4);
+    at<float>(state, 0x1C) = 0.0f;
+    at<std::uint8_t>(state, 0x18) = at<std::uint8_t>(approach, 0xD1) == 0 ? 1 : 0;
+    at<std::uint8_t>(ptr_at(approach, 0x4), 0x844) = 0;
+}
+
+// 009C6220 (009C6220-009C6266): a = *ECX (through FSTP/FLD float), b = *EDX, c = -0.0
+// [00D7A208] - b (SUBSS). c > a (FCOMI, JA; unordered falls through) -> c; else a <= b
+// or unordered (JBE) -> a; else b. A clamp of a to [-b, b] that keeps a on NaN.
+float math_clamp_symmetric_009c6220(const float* a, const float* b) {
+    const float av = *a;
+    const float bv = *b;
+    const float c = -0.0f - bv;
+    if (c > av) return c;
+    if (!(av > bv)) return av;
+    return bv;
+}
+
+// 009D58A0 (009D58A0-009D58EA), the path node's destructor body: vptr = 00D214F4;
+// for link_minus (+20h): when its +2Ch is 0, vtable[0](1), else its +28h = 0; +20h = 0.
+// For link_plus (+24h): when its +28h is 0, vtable[0](1), else its +2Ch = 0; +24h = 0.
+void ship_ai_path_node_destruct_body_009d58a0(Cc13Seg67bHost& host, void* node) {
+    at<std::uint32_t>(node, 0x0) = kShipAiPathNodeVtable;
+    if (void* const minus = ptr_at(node, 0x20)) {
+        if (at<std::uint32_t>(minus, 0x2C) == 0) {
+            host.path_node_vcall_00_scalar_delete(minus, 1);                    // 009D58BE
+        } else {
+            at<std::uint32_t>(minus, 0x28) = 0;                                 // 009D58C2
+        }
+        at<std::uint32_t>(node, 0x20) = 0;
+    }
+    if (void* const plus = ptr_at(node, 0x24)) {
+        if (at<std::uint32_t>(plus, 0x28) == 0) {
+            host.path_node_vcall_00_scalar_delete(plus, 1);                     // 009D58DA
+        } else {
+            at<std::uint32_t>(plus, 0x2C) = 0;                                  // 009D58E2
+        }
+        at<std::uint32_t>(node, 0x24) = 0;
+    }
+}
+
+// 009D59C0 (009D59C0-009D5A17): 009D5930 on the node; direction +1: link_plus_length
+// (+38h) > 1.0 (COMISS, JBE: NaN recurses) -> &link_plus->x, else the tail JMP repeats
+// on link_plus; direction -1: the same with +34h and link_minus; otherwise &node->x.
+// The tail recursion is a loop here.
+const float* ship_ai_path_node_run_end_point_009d59c0(ShipAiPathNode& node) {
+    ShipAiPathNode* n = &node;
+    for (;;) {
+        ship_ai_path_node_decide_direction_009d5930(*n);                       // 009D59C3
+        if (n->direction == 1) {
+            if (n->link_plus_length > kOne_00d7a24c) return &n->link_plus->x;  // 009D59D5
+            n = n->link_plus;
+        } else if (n->direction == -1) {
+            if (n->link_minus_length > kOne_00d7a24c) return &n->link_minus->x;
+            n = n->link_minus;
+        } else {
+            return &n->x;                                                      // 009D5A13
+        }
+    }
+}
+
+// 009D5CF0 (009D5CF0-009D5D20): plan = [task+2F4h]; plan+1Ch (search_state) == 0 -> 1;
+// 009D5AE0(plan) or 009D5B90(plan, re-read) -> 0; else 1.
+bool ship_ai_path_has_no_sided_node_009d5cf0(void* task) {
+    auto& plan = *static_cast<ShipAiPathPlanBlock*>(ptr_at(task, 0x2F4));
+    if (plan.search_state == 0) return true;
+    if (ship_ai_path_any_positive_side_ahead_009d5ae0(plan)) return false;
+    auto& again = *static_cast<ShipAiPathPlanBlock*>(ptr_at(task, 0x2F4));
+    return !ship_ai_path_any_negative_side_ahead_009d5b90(again);
+}
+
+// 009D5D60 (009D5D60-009D5DC9): +2Ch, +28h, +24h, +20h, +1Ch, +18h, +3Ch, +30h, +34h,
+// +38h = 0 (image order); byte +40h = 0; +48h = 00BD2F10(ECX = 1; 0.0, 2.0 [00CE3958]),
+// one draw on stream 1; +44h = 1000.0 [00CE3804]. Unreferenced (no xrefs, no absolute
+// or rel32 references in the image). The same record reset is inlined 60 times in
+// 009E5530's first pass, the sixty draws of section 3.42.
+void target_ref_record_reset_009d5d60(Cc13Seg67bHost& host, void* record) {
+    static constexpr std::size_t kZeroed[] = {0x2C, 0x28, 0x24, 0x20, 0x1C, 0x18, 0x3C, 0x30, 0x34, 0x38};
+    for (const std::size_t off : kZeroed) {
+        at<float>(record, off) = 0.0f;
+    }
+    at<std::uint8_t>(record, 0x40) = 0;
+    at<float>(record, 0x48) = host.random_uniform_00bd2f10(1, 0.0f, kTwo_00ce3958);  // 009D5DB3
+    at<float>(record, 0x44) = 1000.0f;                                             // 009D5DC3
+}
+
+// 009D6530 (009D6530-009D654A): vptr = 00D05704; +4h = object; object->vtable[4]()
+// (no null test). EAX = holder.
+void* ref_holder_construct_009d6530(Cc13Seg67bHost& host, void* holder, void* object) {
+    at<std::uint32_t>(holder, 0x0) = 0x00D05704u;
+    at<std::uintptr_t>(holder, 0x4) = reinterpret_cast<std::uintptr_t>(object);
+    host.ref_vcall_04_add_ref(object);
+    return holder;
+}
+
+// ---------------------------------------------------------------------------
+// Medium rows, batch 3 (docs 3.48)
+// ---------------------------------------------------------------------------
+
+// 009DA950 (009DA950-009DA9C1): +0h = 0, then the 009D5D60 record reset with the same
+// store order and the same single stream-1 U(0, 2.0 [00CE3958]) draw (009DA9A9) into
+// +48h; +44h = 1000.0 [00CE3804]. EAX = record. Unreferenced (no xrefs, no absolute or
+// rel32 references in the image).
+void* ship_ai_path_node_init_fields_009da950(Cc13Seg67bHost& host, void* record) {
+    at<std::uint32_t>(record, 0x0) = 0;                                          // 009DA95C
+    target_ref_record_reset_009d5d60(host, record);
+    return record;
+}
+
+// 009DBD60 (009DBD60-009DBD7F): vptr = 00D17DC0; +8h = 00438E40(ECX = "NavigatorBot"
+// 00D2145C); vptr = 00D217DC. EAX = object. Unreferenced. Its destructor body 009DBD80 is
+// the 008FC570 byte twin (ledger-only).
+void* navigator_bot_named_object_construct_009dbd60(Cc13Seg67bHost& host, void* object) {
+    static constexpr char kNavigatorBot_00d2145c[] = "NavigatorBot";
+    at<std::uint32_t>(object, 0x0) = 0x00D17DC0u;                                // 009DBD68
+    at<std::uintptr_t>(object, 0x8) =
+        reinterpret_cast<std::uintptr_t>(host.string_duplicate_00438e40(kNavigatorBot_00d2145c));
+    at<std::uint32_t>(object, 0x0) = 0x00D217DCu;                                // 009DBD76
+    return object;
+}
+
+// 009DE1B0 (009DE1B0-009DE20A): when +1C4h != 0, +368h = +360h = 0.0 and +1C4h = 0;
+// then 009DA4E0(blk); +1D4h = throttle clamped to [-1, 1] by COMISS: -1.0 [00D7A260] >
+// t -> -1 (JA 009DE1EF), else t > 1.0 [00D7A24C] -> 1 (JBE 009DE1FC); an unordered t
+// falls through both tests and is stored unchanged. Unreferenced.
+void ship_ai_reset_path_and_set_throttle_009de1b0(Cc13Seg67bHost& host, void* blk,
+                                                  float throttle) {
+    if (at<std::uint32_t>(blk, 0x1C4) != 0) {
+        at<float>(blk, 0x368) = 0.0f;
+        at<float>(blk, 0x360) = 0.0f;
+        at<std::uint32_t>(blk, 0x1C4) = 0;
+    }
+    host.ship_ai_clear_path_plan_009da4e0(blk);                                 // 009DE1D9
+    float t = throttle;
+    if (kMinusOne_00d7a260 > t) {
+        t = kMinusOne_00d7a260;
+    } else if (t > kOne_00d7a24c) {
+        t = kOne_00d7a24c;
+    }
+    at<float>(blk, 0x1D4) = t;                                                   // 009DE201
+}
+
+// 009DFB90 (009DFB90-009DFBD1): the observer member's observed entity is +14h, the member
+// itself is the observer (EDX = member). Same entity -> no re-registration; otherwise
+// 006952A0(old, member) when old is set, store, 00694A60(new, member) when new is set.
+// Then +18h..+20h = point[0..2] (FLD/FSTP, bit copies). Unreferenced.
+void ship_ai_observer_member_set_observed_with_point_009dfb90(Cc13Seg67bHost& host,
+                                                              void* member, void* entity,
+                                                              const float* point) {
+    void* const old = ptr_at(member, 0x14);
+    if (old != entity) {
+        if (old != nullptr) host.observer_unregister_pair_006952a0(old, member);  // 009DFBA5
+        at<std::uintptr_t>(member, 0x14) = reinterpret_cast<std::uintptr_t>(entity);
+        if (entity != nullptr) host.observer_register_pair_00694a60(entity, member);  // 009DFBB5
+    }
+    at<float>(member, 0x18) = point[0];
+    at<float>(member, 0x1C) = point[1];
+    at<float>(member, 0x20) = point[2];
+}
+
+// 009E2C40 (009E2C40-009E2CA1): 009DDCC0(ECX = bot+60h, the ship AI); name =
+// 00411430(ECX = bot+BB4h; [bot+2264h]); 004C7070([00E188A8], float(x), float(y), name)
+// (cdecl, CVTSI2SS; the global is read after the name call); then
+// [bot+2264h]->vtable[18h](x, y + 15), the state re-read. Sole caller: the unreferenced
+// adapter at 009E2CB0 (no Ghidra function; ECX = bot, EDX = x, stack y, RET 4).
+void ship_ai_bot_debug_draw_with_state_name_009e2c40(Cc13Seg67bHost& host, void* bot,
+                                                     std::int32_t x, std::int32_t y) {
+    ship_ai_debug_draw_009ddcc0(host, static_cast<std::uint8_t*>(bot) + 0x60);  // 009E2C48
+    const char* const name = host.state_registry_name_or_undefined_00411430(
+        static_cast<std::uint8_t*>(bot) + 0xBB4, ptr_at(bot, 0x2264));           // 009E2C5A
+    host.diagnostic_printf_004c7070(host.global_dword_00e188a8(), static_cast<float>(x),
+                                    static_cast<float>(y), name);                // 009E2C84
+    host.state_vcall_18_debug_text(ptr_at(bot, 0x2264), x, y + 15);            // 009E2C9C
+}
+
+// 009E2F10 (009E2F10-009E2F89), slot 1 of the brain record member vtable 00D21898
+// (brain+AF8h, ship_ai_brain_record_construct_009f1160). obs = [member+14h]; when byte
+// obs+C8h == 0, 00414DB0(obs) first; 004142E0(ECX = member+18h; &tmp, obs+CCh) and
+// tmp copied back into +18h..+20h (MOVSS); byte +24h = 1. Then, when
+// released->vtable[4]() == [member+14h] (re-read): +14h = 0 and 006952A0(ECX = that
+// entity, EDX = member). obs is dereferenced without a null test.
+void ship_ai_goal_member_on_observed_released_009e2f10(Cc13Seg67bHost& host, void* member,
+                                                       void* released) {
+    void* const obs = ptr_at(member, 0x14);
+    if (at<std::uint8_t>(obs, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(obs);  // 009E2F25
+    float tmp[3];
+    host.vector_transform_affine_point_004142e0(&at<float>(member, 0x18), tmp,
+                                                static_cast<std::uint8_t*>(obs) + 0xCC);  // 009E2F3B
+    at<float>(member, 0x18) = tmp[0];
+    at<float>(member, 0x1C) = tmp[1];
+    at<float>(member, 0x20) = tmp[2];
+    at<std::uint8_t>(member, 0x24) = 1;                                          // 009E2F64
+    void* const entity = host.object_vcall_04_get(released);                     // 009E2F6D
+    if (entity == ptr_at(member, 0x14)) {
+        at<std::uintptr_t>(member, 0x14) = 0;
+        host.observer_unregister_pair_006952a0(entity, member);                 // 009E2F7F
+    }
+}
+
+// 009E69D0 (009E69D0-009E6A29): d = 00438B10(angle, +8h); +34h = 00419010(0, peak,
+// pi [00D7A264], 0, |d|), |d| by clearing the sign bit (AND 7FFFFFFFh). A ramp from peak
+// at zero error to 0 at pi. Unreferenced.
+void heading_error_ramp_set_34_009e69d0(Cc13Seg67bHost& host, void* object, float angle,
+                                        float peak) {
+    static constexpr float kPi_00d7a264 = 3.14159274f;
+    const float d = host.wrapped_angle_subtract_00438b10(angle, at<float>(object, 0x8));  // 009E69E4
+    at<float>(object, 0x34) =
+        host.interpolate_clamped_00419010(0.0f, peak, kPi_00d7a264, 0.0f, std::fabs(d));  // 009E6A20
+}
+
+// 009E6A30 (009E6A30-009E6A87): as 009E69D0 with the span from the stack:
+// +38h = 00419010(0, peak, span, 0, |00438B10(angle, +8h)|). Unreferenced.
+void heading_error_ramp_set_38_009e6a30(Cc13Seg67bHost& host, void* object, float angle,
+                                        float span, float peak) {
+    const float d = host.wrapped_angle_subtract_00438b10(angle, at<float>(object, 0x8));  // 009E6A44
+    at<float>(object, 0x38) =
+        host.interpolate_clamped_00419010(0.0f, peak, span, 0.0f, std::fabs(d));  // 009E6A7E
+}
+
+// 009F3CC0 (009F3CC0-009F3CDC), vtable 00D21AE8 slot 5: s = [bot+2264h]; s ?
+// 00411430(ECX = bot+BB4h; s) : the empty string 00CE3A0C. The C++ empty string is a
+// stand-in for that image address.
+const char* ship_ai_gun_bot_sub_state_name_009f3cc0(Cc13Seg67bHost& host, void* bot) {
+    void* const s = ptr_at(bot, 0x2264);
+    if (s == nullptr) return "";                                                 // 009F3CD7
+    return host.state_registry_name_or_undefined_00411430(
+        static_cast<std::uint8_t*>(bot) + 0xBB4, s);                             // 009F3CD1
+}
+
+// ---------------------------------------------------------------------------
+// Medium rows, batch 4 (docs 3.49)
+// ---------------------------------------------------------------------------
+
+namespace {
+
+// The describe tail shared by 009AB220, 009B3FF0, 009CFDD0 and 009D4C90: the text
+// 004B8490 wrote into a 100h-byte stack buffer is measured inline (the byte loop) and
+// appended through 007B7CC0(ECX = out; buffer, length).
+void describe_append(Cc13Seg67bHost& host, void* out, const char* buffer) {
+    host.string_append_ptr_count_007b7cc0(out, buffer, std::strlen(buffer));
+}
+
+void* describe_with_speed(Cc13Seg67bHost& host, void* task, void* out, std::size_t registry) {
+    describe_with_registry(host, task, out, registry);
+    // [task+3FCh]->vtable[38h](), FSTP to a float, then widened to the double vararg.
+    const float speed = host.entity_vcall_38_float(ptr_at(task, 0x3FC));
+    char buffer[0x100];
+    host.format_string256_f64_ints_004b8490(buffer, " spd:%f", static_cast<double>(speed),
+                                            nullptr, 0);
+    describe_append(host, out, buffer);
+    return out;
+}
+
+// The statics 00F8A3F8 (white, guard bit 1 of 00F8A408) and 00F8A40C (yellow, guard bit 1
+// of 00F8A41C), lazily set to these values by both kamikaze draws.
+void kamikaze_target_sphere_draw(Cc13Seg67bHost& host, void* state) {
+    static constexpr float kWhite_00f8a3f8[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+    static constexpr float kYellow_00f8a40c[4] = {1.0f, 1.0f, 0.0f, 1.0f};
+    if (at<std::uint8_t>(host.debug_feature_owner_0051f460(), 0x2C) == 0) return;
+    float point[3] = {};
+    const float* const centre = host.approach_vcall_00_target_point(ptr_at(state, 0x4), point);
+    host.wire_sphere_00860be0(centre, kYellow_00f8a40c, 5.0f, kWhite_00f8a3f8, 1);
+}
+
+}  // namespace
+
+// 009AB220 (009AB220-009AB362): registry task+4FCh (009AB260). Then, when [task+310h] ==
+// task+6A4h, "_follow" 00D1FA2C (byte +6E0h set) or "_goaway" 00D1FA24 is formatted and
+// appended (009AB2B7-009AB30B); then "_autoaim" 00D1FA18 when byte +35Dh is set
+// (009AB310-009AB344).
+void* bot_task_dogfight_describe_009ab220(Cc13Seg67bHost& host, void* task, void* out) {
+    describe_with_registry(host, task, out, 0x4FC);
+    char buffer[0x100];
+    if (ptr_at(task, 0x310) == ptr(task, 0x6A4)) {
+        host.format_string256_004b8490(buffer,
+                                       at<std::uint8_t>(task, 0x6E0) != 0 ? "_follow" : "_goaway");
+        describe_append(host, out, buffer);
+    }
+    if (at<std::uint8_t>(task, 0x35D) != 0) {
+        host.format_string256_004b8490(buffer, "_autoaim");
+        describe_append(host, out, buffer);
+    }
+    return out;
+}
+
+// 009B3FF0 (009B3FF0-009B40F1): registry task+4B0h (009B4030), then " spd:%f" 00D20010
+// with float([task+3FCh]->vtable[38h]()) (009B4096-009B40D3).
+void* bot_task_land_describe_009b3ff0(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_speed(host, task, out, 0x4B0);
+}
+
+// 009CFDD0 (009CFDD0-009CFED1): the 009B3FF0 shape with registry task+434h (009CFE10).
+void* bot_task_takeoff_describe_009cfdd0(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_speed(host, task, out, 0x434);
+}
+
+// 009D4C90 (009D4C90-009D4DA3): registry task+530h (009D4CD0), then " dr:%f  dir:%d
+// lr:%d-%d" 00D21440 with float(009D1500(ECX = task+3F8h)), [task+45Ch], [task+460h],
+// [task+464h] (the three dwords read after the call, 009D4D3A-009D4D4A).
+void* bot_task_torpedo_describe_009d4c90(Cc13Seg67bHost& host, void* task, void* out) {
+    describe_with_registry(host, task, out, 0x530);
+    const float dr = host.torpedo_approach_time_to_target_009d1500(ptr(task, 0x3F8));  // 009D4D31
+    const std::int32_t ints[3] = {at<std::int32_t>(task, 0x45C), at<std::int32_t>(task, 0x460),
+                                  at<std::int32_t>(task, 0x464)};
+    char buffer[0x100];
+    host.format_string256_f64_ints_004b8490(buffer, " dr:%f  dir:%d lr:%d-%d",
+                                            static_cast<double>(dr), ints, 3);
+    describe_append(host, out, buffer);
+    return out;
+}
+
+// 009AC7C0 (009AC7C0-009AC86F), vtable 00D1FB98 slot: when byte
+// [0051F460()]+2Ch is set, 00860BE0(ECX = [state+4h]->vtable[0](&local), EDX = yellow
+// 00F8A40C; 5.0 [00CE3850], white 00F8A3F8, 1). 009ACD90 (at 00D1FBB4) is its exact
+// twin, ledger-only.
+void bot_state_kamikaze_go_towards_debug_draw_009ac7c0(Cc13Seg67bHost& host, void* state) {
+    kamikaze_target_sphere_draw(host, state);
+}
+
+// 009BB4A0 (009BB4A0-009BB528). 00414DB0(unit) when byte unit+C8h is 0; dx = float(p[0] -
+// unit+FCh), dz = float(p[2] - unit+104h); h = unit->vtable[50h]() (before the atan2);
+// a = float(_CIatan2(dx, dz)) (ST1 = dx, ST0 = dz at 009BB4E5); d = 00438B10(a, h);
+// 009BB380(unit, p; limit, byte (0 > d)) (FCOMI + JA: unordered -> 0). Unreferenced.
+// UNCERTAINTY: std::atan2 in double stands for _CIatan2, as in 00996270.
+void pilot_bot_tight_turn_toward_point_009bb4a0(Cc13Seg67bHost& host, void* unit,
+                                                const float* point, float limit) {
+    if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);
+    const float dx = static_cast<float>(static_cast<double>(point[0]) -
+                                        static_cast<double>(at<float>(unit, 0xFC)));
+    const float dz = static_cast<float>(static_cast<double>(point[2]) -
+                                        static_cast<double>(at<float>(unit, 0x104)));
+    const float h = host.entity_vcall_50_heading(unit);                          // 009BB4D7
+    const float a = static_cast<float>(std::atan2(static_cast<double>(dx), static_cast<double>(dz)));
+    const float d = host.math_subtract_wrapped_angle_00438b10(a, h);             // 009BB4F6
+    pilot_bot_prepend_tight_turn_to_point_009bb380(host, unit, point, limit,
+                                                   0.0f > d ? 1 : 0);            // 009BB51E
+}
+
+// 009BB530 (009BB530-009BB63A). Returns at once when pi/4 [00CEDCD0] > [[unit+538h]+25Ch]
+// (unordered continues). Then the 009BB4A0 deltas, but a = float(_CIatan2(dz, dx)) (ST1 =
+// dz, ST0 = dx at 009BB584); a = float(pi/2 [00CE3830] - a); 0 > a -> a = float(a + 2pi
+// [00CE3828]); h = unit->vtable[50h]() (after the atan2); d = 00438B10(a, h); m = d > 0 ?
+// d : -0.0 - d (SUBSS); m > threshold (else return; unordered returns) ->
+// 009BB380(unit, p; limit, byte (0 > d)) (COMISS). Unreferenced.
+// UNCERTAINTY: as 009BB4A0; the double constants are applied in extended precision and
+// rounded once on the float stores.
+void pilot_bot_tight_turn_if_off_heading_009bb530(Cc13Seg67bHost& host, void* unit,
+                                                  const float* point, float threshold,
+                                                  float limit) {
+    static constexpr double kQuarterPi_00cedcd0 = 0.7853981852531433;
+    static constexpr double kHalfPi_00ce3830 = 1.5707963705062866;
+    if (kQuarterPi_00cedcd0 > static_cast<double>(at<float>(ptr_at(unit, 0x538), 0x25C))) return;
+    if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);
+    const float dx = static_cast<float>(static_cast<double>(point[0]) -
+                                        static_cast<double>(at<float>(unit, 0xFC)));
+    const float dz = static_cast<float>(static_cast<double>(point[2]) -
+                                        static_cast<double>(at<float>(unit, 0x104)));
+    float a = static_cast<float>(std::atan2(static_cast<double>(dz), static_cast<double>(dx)));
+    a = static_cast<float>(kHalfPi_00ce3830 - static_cast<double>(a));
+    if (0.0f > a) a = static_cast<float>(static_cast<double>(a) + kTwoPi_00ce3828);
+    const float h = host.entity_vcall_50_heading(unit);                          // 009BB5BA
+    const float d = host.math_subtract_wrapped_angle_00438b10(a, h);             // 009BB5CA
+    const float m = d > 0.0f ? d : -0.0f - d;
+    if (!(m > threshold)) return;                                                // 009BB60B
+    pilot_bot_prepend_tight_turn_to_point_009bb380(host, unit, point, limit,
+                                                   0.0f > d ? 1 : 0);            // 009BB630
+}
+
+// 009D9390 (009D9390-009D9430). Byte +44h set -> 0. Otherwise +44h = 1; zone = [+8h]
+// null -> 0; s = (signed char) +14h, 0 -> 0; exactly one of +28h / +2Ch and exactly one
+// of +20h / +24h must be non-zero, else 0. Then 00423520(ECX = zone; &out,
+// (s < 0) + (short) +0Ch, s > 0 ? plus_distance : minus_distance) and +18h, +1Ch =
+// out[0], out[1]; returns 1. Sole caller: 009DA008, inside the unreferenced code at
+// 009D9F90 (no Ghidra function).
+bool ship_ai_path_node_resolve_turn_point_009d9390(Cc13Seg67bHost& host, void* node,
+                                                   float plus_distance, float minus_distance) {
+    if (at<std::uint8_t>(node, 0x44) != 0) return false;
+    void* const zone = ptr_at(node, 0x8);
+    at<std::uint8_t>(node, 0x44) = 1;                                            // 009D93A5
+    if (zone == nullptr) return false;
+    const std::int8_t s = at<std::int8_t>(node, 0x14);
+    if (s == 0) return false;
+    if ((at<std::uint32_t>(node, 0x28) != 0) == (at<std::uint32_t>(node, 0x2C) != 0)) return false;
+    if ((at<std::uint32_t>(node, 0x20) != 0) == (at<std::uint32_t>(node, 0x24) != 0)) return false;
+    const float distance = s > 0 ? plus_distance : minus_distance;
+    const std::int32_t index = (s < 0 ? 1 : 0) + at<std::int16_t>(node, 0xC);
+    float out[2] = {};
+    const float* const p =
+        host.avoid_zone_corner_offset_point_00423520(zone, out, index, distance);  // 009D9411
+    at<float>(node, 0x18) = p[0];
+    at<float>(node, 0x1C) = p[1];
+    return true;
+}
+
+// 009E7FA0 (009E7FA0-009E7FBD): 009DE280(ECX = brain+8h; heading, goal, penalty), the
+// arguments re-pushed in order. Unreferenced (docs/SHIP_AI_OPEN_ITEMS.md).
+void ship_ai_set_navigation_goal_with_penalty_brain_009e7fa0(Cc13Seg67bHost& host, void* brain,
+                                                             float heading, const float* goal,
+                                                             float penalty) {
+    ship_ai_set_navigation_goal_with_penalty_009de280(host, ptr(brain, 0x8), heading, goal,
+                                                      penalty);                 // 009E7FB8
+}
+
+// 009EAAD0 (009EAAD0-009EABDA), vtable slot at 00D21974. brain = [sm+4h] (re-read per
+// call). When [sm+D4h] == sm+58h: yturn = (+BCh > 0.0) (COMISS, unordered -> 0) first;
+// aft = 009E9A50(brain, 0.0); fore = 009E9910(brain, 0.0); close = byte +90h != 0; fwdt
+// = byte +88h != 0; name = 00411430(ECX = sm+20h; [sm+D4h]); 004C7070([00E188A8],
+// float(x), float(y), "%s %d/%d, fwdt:%d, close:%d, Yturn:%d" 00D21A50, name, fore, aft,
+// fwdt, close, yturn). Otherwise the same with "%s %d/%d" 00D21A44 and name, fore, aft.
+void ship_ai_sub_attack_debug_text_009eaad0(Cc13Seg67bHost& host, void* sm, std::int32_t x,
+                                            std::int32_t y) {
+    if (ptr_at(sm, 0xD4) == ptr(sm, 0x58)) {
+        const std::int32_t yturn = at<float>(sm, 0xBC) > 0.0f ? 1 : 0;           // 009EAAEB
+        const std::int32_t aft = host.sub_tubes_ready_aft_009e9a50(ptr_at(sm, 0x4), 0.0f);
+        const std::int32_t fore = host.sub_tubes_ready_fore_009e9910(ptr_at(sm, 0x4), 0.0f);
+        const std::int32_t close = at<std::uint8_t>(sm, 0x90) != 0 ? 1 : 0;
+        const std::int32_t fwdt = at<std::uint8_t>(sm, 0x88) != 0 ? 1 : 0;
+        const char* const name =
+            host.state_registry_name_or_undefined_00411430(ptr(sm, 0x20), ptr_at(sm, 0xD4));
+        const std::int32_t ints[5] = {fore, aft, fwdt, close, yturn};
+        host.diagnostic_printf_name_ints_004c7070(
+            host.global_dword_00e188a8(), static_cast<float>(x), static_cast<float>(y),
+            "%s %d/%d, fwdt:%d, close:%d, Yturn:%d", name, ints, 5);             // 009EAB6C
+        return;
+    }
+    const std::int32_t aft = host.sub_tubes_ready_aft_009e9a50(ptr_at(sm, 0x4), 0.0f);
+    const std::int32_t fore = host.sub_tubes_ready_fore_009e9910(ptr_at(sm, 0x4), 0.0f);
+    const char* const name =
+        host.state_registry_name_or_undefined_00411430(ptr(sm, 0x20), ptr_at(sm, 0xD4));
+    const std::int32_t ints[2] = {fore, aft};
+    host.diagnostic_printf_name_ints_004c7070(host.global_dword_00e188a8(),
+                                              static_cast<float>(x), static_cast<float>(y),
+                                              "%s %d/%d", name, ints, 2);                // 009EABD0
+}
+
+// ---------------------------------------------------------------------------
+// The three former false twins of 3.48 (docs 3.50). Each matched another body's bytes
+// outside the rel32 operands, but its CALL target differs.
+// ---------------------------------------------------------------------------
+
+// 009DFA60 (009DFA60-009DFA82): p = [slot]; p -> 009DA880(ECX = p), 00BF65AC(p) and
+// [slot] = 0. 0046A090 makes the same moves around 00469010. Unreferenced.
+void ship_ai_path_node_delete_009dfa60(Cc13Seg67bHost& host, void* slot) {
+    void* const p = ptr_at(slot, 0x0);
+    if (p == nullptr) return;
+    ship_ai_path_node_destroy_009da880(host, p);                                 // 009DFA6C
+    host.crt_free_00bf65ac(p);                                                   // 009DFA72
+    at<std::uintptr_t>(slot, 0x0) = 0;
+}
+
+// 009DFA90 (009DFA90-009DFAB2): the 009DFA60 shape over 0064A610 (the observed-owner
+// base destroy). Unreferenced.
+void observed_owner_delete_009dfa90(Cc13Seg67bHost& host, void* slot) {
+    void* const p = ptr_at(slot, 0x0);
+    if (p == nullptr) return;
+    host.observed_owner_base_destroy_0064a610(p);                                // 009DFA9C
+    host.crt_free_00bf65ac(p);                                                   // 009DFAA2
+    at<std::uintptr_t>(slot, 0x0) = 0;
+}
+
+// ---------------------------------------------------------------------------
+// Medium rows, batch 5 (docs 3.51)
+// ---------------------------------------------------------------------------
+
+namespace {
+
+// 009B8260 / 009C80D0 share this shape: 0099B6E0(task); 00860BE0(ECX = task+marker, EDX
+// = red; 10.0 [00CE38B8], red, 0); then 00860BE0(ECX = (task+3F8h)->vtable[0](&local),
+// EDX = white; 10.0, white, 0). Each colour is a lazily initialised static (its guard
+// test is emitted twice); the values are passed as equal local constants.
+void bomb_task_markers_debug_draw(Cc13Seg67bHost& host, void* task, std::size_t marker) {
+    static constexpr float kRed[4] = {1.0f, 0.0f, 0.0f, 1.0f};
+    static constexpr float kWhite[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+    host.bot_task_debug_draw_base_0099b6e0(task);
+    host.wire_sphere_00860be0(static_cast<const float*>(ptr(task, marker)), kRed, 10.0f, kRed, 0);
+    float point[3] = {};
+    const float* const centre = host.approach_vcall_00_target_point(ptr(task, 0x3F8), point);
+    host.wire_sphere_00860be0(centre, kWhite, 10.0f, kWhite, 0);
+}
+
+// The clamp both rect distances use: -e > v -> -e (FCHS of the float extent); v > e ->
+// e; else v, so an unordered v is kept.
+float clamp_to_extent(float v, float e) {
+    if (-e > v) return -e;
+    if (v > e) return e;
+    return v;
+}
+
+// 009D7780 / 009D7930 after the delta: project (dx, dz) on the two axes, clamp, rebuild
+// the closest point from the centre +20h/+24h, and return its distance to the point (0
+// at or under 1e-10 [00CE3820] squared, unordered included). Every x87 step is modelled
+// as a float operation (24-bit precision control); at 53 bits the products and sums
+// would round once less.
+float rect_distance_from_delta(const void* rc, const float* p, float dx, float dz,
+                               std::size_t axis_a, std::size_t axis_b, std::size_t ext_a,
+                               std::size_t ext_b) {
+    void* const r = const_cast<void*>(rc);
+    const float u = at<float>(r, axis_a + 4) * dz + at<float>(r, axis_a) * dx;
+    const float cu = clamp_to_extent(u, at<float>(r, ext_a));
+    const float v = at<float>(r, axis_b + 4) * dz + at<float>(r, axis_b) * dx;
+    const float cv = clamp_to_extent(v, at<float>(r, ext_b));
+    const float bx = at<float>(r, axis_b) * cv;
+    const float bz = cv * at<float>(r, axis_b + 4);
+    const float ax = at<float>(r, axis_a) * cu;
+    const float az = cu * at<float>(r, axis_a + 4);
+    const float qx = (at<float>(r, 0x20) + ax) + bx;
+    const float qz = (at<float>(r, 0x24) + az) + bz;
+    const float ex = qx - p[0];                                                  // FSUBRP
+    const float ez = qz - p[1];
+    const float d2 = ex * ex + ez * ez;
+    if (!(static_cast<double>(d2) > 1e-10)) return 0.0f;
+    return std::sqrt(d2);                                                        // 00BF7030
+}
+
+}  // namespace
+
+// 009B8260 (009B8260-009B838F), at 00D20214: the marker at task+4C8h.
+void bot_task_level_bomb_debug_draw_009b8260(Cc13Seg67bHost& host, void* task) {
+    bomb_task_markers_debug_draw(host, task, 0x4C8);
+}
+
+// 009C80D0 (009C80D0-009C81FF), at 00D20E1C: the marker at task+4D0h.
+void bot_task_dive_bomb_debug_draw_009c80d0(Cc13Seg67bHost& host, void* task) {
+    bomb_task_markers_debug_draw(host, task, 0x4D0);
+}
+
+// 009D7780 (009D7780-009D7922): dx = p[0] - +20h, dz = p[1] - +24h; axes +28h/+2Ch and
+// +30h/+34h with half-extents +38h and +3Ch. Unreferenced.
+float oriented_rect_distance_to_point_009d7780(const void* rc, const float* point) {
+    void* const rect = const_cast<void*>(rc);
+    const float dx = point[0] - at<float>(rect, 0x20);
+    const float dz = point[1] - at<float>(rect, 0x24);
+    return rect_distance_from_delta(rect, point, dx, dz, 0x28, 0x30, 0x38, 0x3C);
+}
+
+// 009D7930 (009D7930-009D7AE2): dx = p[0] - +44h, dz = p[1] - +48h. Byte +68h set -> the
+// distance of that delta itself (009D7A8D). Otherwise axes +4Ch/+50h and +54h/+58h with
+// half-extents +5Ch and +60h, but the closest point is rebuilt from +20h/+24h, not from
+// +44h/+48h (009D7A4B, 009D7A55). Unreferenced.
+float oriented_rect2_distance_to_point_009d7930(const void* rc, const float* point) {
+    void* const rect = const_cast<void*>(rc);
+    const float dx = point[0] - at<float>(rect, 0x44);
+    const float dz = point[1] - at<float>(rect, 0x48);
+    if (at<std::uint8_t>(rect, 0x68) != 0) {
+        const float d2 = dz * dz + dx * dx;
+        if (!(static_cast<double>(d2) > 1e-10)) return 0.0f;
+        return std::sqrt(d2);
+    }
+    return rect_distance_from_delta(rect, point, dx, dz, 0x4C, 0x54, 0x5C, 0x60);
+}
+
+// 009D6E50 (009D6E50-009D7033). x = *angle clamped to [-2.0 [00CE7D7C], 2.0 [00CE3958]]
+// (COMISS; unordered kept) and stored back. Byte profile+100h set -> 0.0. Otherwise i =
+// _ftol((x + 2.0) * 16.0 + 0.5) clamped to [0, 64]; b0 = profile[i]; 0 -> 0.0.
+// Left walk (i > 0): while the running minimum lmin > 0 and j > 0, c = profile[--j]; c <
+// lmin -> lmin = c, lpos = j; else c > b0 and j > lpeak (0) -> lpeak = j. Right walk (i <
+// 64): while rmin > 0 and j < 64, c = profile[++j]; c < rmin -> rmin = c, rpos = j; else
+// c > b0 and j < rpeak (64) -> rpeak = j. Then: rmin > lmin -> (lpos, lmin); rmin < lmin
+// -> (rpos, rmin); equal and below b0 -> the nearer side, the right on a tie; equal to
+// b0 -> lpeak == 0 && rpeak == 64 ? (i < 64 - i ? 0 : 64) : (lpeak < 64 - rpeak ? lpeak
+// : rpeak). *angle = float(pos * 0.0625 - 2.0), then 00415690(angle, &-2.0, &2.0).
+// Returns float(the chosen byte). Unreferenced.
+// UNCERTAINTY: the index sum is modelled in float (24-bit precision control); _ftol
+// truncates after a double store, which a float value survives exactly.
+float byte_profile65_sample_009d6e50(Cc13Seg67bHost& host, const void* profile, float* angle) {
+    static constexpr float kLow_00ce7d7c = -2.0f;
+    const auto* const bytes = static_cast<const std::uint8_t*>(profile);
+    float x = *angle;
+    if (kLow_00ce7d7c > x) {
+        x = kLow_00ce7d7c;
+    } else if (x > kTwo_00ce3958) {
+        x = kTwo_00ce3958;
+    }
+    *angle = x;                                                                  // 009D6E8A
+    if (bytes[0x100] != 0) return 0.0f;
+    std::int32_t i = static_cast<std::int32_t>((x + 2.0f) * 16.0f + 0.5f);      // 009D6EBB
+    if (i < 0) i = 0;
+    else if (i > 0x40) i = 0x40;
+    const std::uint8_t b0 = bytes[i];
+    if (b0 == 0) return 0.0f;
+    std::uint8_t lmin = b0, rmin = b0;
+    std::int32_t lpos = i, rpos = i, lpeak = 0, rpeak = 0x40;
+    if (i > 0) {
+        std::int32_t j = i;
+        while (lmin != 0) {
+            const std::uint8_t c = bytes[j - 1];
+            --j;
+            if (c < lmin) {
+                lmin = c;
+                lpos = j;
+            } else if (c > b0 && j > lpeak) {
+                lpeak = j;
+            }
+            if (j <= 0) break;
+        }
+    }
+    if (i < 0x40) {
+        std::int32_t j = i;
+        while (rmin != 0) {
+            const std::uint8_t c = bytes[j + 1];
+            ++j;
+            if (c < rmin) {
+                rmin = c;
+                rpos = j;
+            } else if (c > b0 && j < rpeak) {
+                rpeak = j;
+            }
+            if (j >= 0x40) break;
+        }
+    }
+    std::int32_t pos;
+    std::uint8_t result;
+    if (rmin > lmin) {
+        pos = lpos;
+        result = lmin;
+    } else if (rmin < lmin) {
+        pos = rpos;
+        result = rmin;
+    } else if (lmin < b0) {
+        result = lmin;
+        pos = (i - lpos) < (rpos - i) ? lpos : rpos;                             // 009D6FA9
+    } else {
+        result = b0;
+        if (lpeak == 0 && rpeak == 0x40) {
+            pos = i < 0x40 - i ? 0 : 0x40;                                       // 009D6FC6
+        } else {
+            pos = lpeak < 0x40 - rpeak ? lpeak : rpeak;                          // 009D6FDE
+        }
+    }
+    *angle = static_cast<float>(pos) * 0.0625f - 2.0f;                           // 009D7011
+    const float low = kLow_00ce7d7c;
+    const float high = kTwo_00ce3958;
+    host.math_clamp_in_place_00415690(angle, &low, &high);                       // 009D7013
+    return static_cast<float>(result);
+}
+
+// ---------------------------------------------------------------------------
+// Batch 6 (docs 3.52)
+// ---------------------------------------------------------------------------
+
+// 009BC5C0 (009BC5C0-009BC674), at 00D20670. A local string is set up inline (capacity
+// 0Fh, size 0, empty buffer) and 00408720 assigns "leavealone" 00D206C0 (10 chars) to
+// it; base = 009A1A90(task, &temp); out = 004D0860(out, base, &name), base on the left;
+// then temp, then name are released inline (capacity +18h >= 10h frees +4h through
+// 00BF65AC; the ten-character name never allocates).
+void* bot_task_leave_alone_describe_009bc5c0(Cc13Seg67bHost& host, void* task, void* out) {
+    alignas(4) std::uint8_t name[0x1C] = {};
+    at<std::uint32_t>(name, 0x18) = 0xF;
+    host.string_assign_counted_00408720(name, "leavealone", 10);                 // 009BC5FD
+    alignas(4) std::uint8_t temp[0x1C] = {};
+    const void* const base = host.bot_task_debug_name_009a1a90(task, temp);       // 009BC60D
+    host.string_plus_string_004d0860(out, base, name);                           // 009BC622
+    if (at<std::uint32_t>(temp, 0x18) >= 0x10) host.crt_free_00bf65ac(ptr_at(temp, 0x4));
+    if (at<std::uint32_t>(name, 0x18) >= 0x10) host.crt_free_00bf65ac(ptr_at(name, 0x4));
+    return out;
+}
+
+// 009BDD70 (009BDD70-009BDDB2): 00411E70 on registry approach+70h with "moveto (moveto)"
+// 00D20998 -> +84h, "follow (moveto)" 00D20988 -> +9Ch, "circle (moveto)" 00D20978 ->
+// +134h. Unreferenced. The 009BC6B0 shape.
+void bot_approach_move_to_register_state_names_009bdd70(Cc13Seg67bHost& host, void* approach) {
+    static constexpr StateNamePair kPairs[] = {
+        {0x00D20998u, 0x84}, {0x00D20988u, 0x9C}, {0x00D20978u, 0x134}};
+    register_state_names(host, approach, 0x70, kPairs, 3);
+}
+
+// 009D6650 (009D6650-009D66A9): 0075B430(ECX = message; 9Dh); word +18h = 0, byte +1Ah =
+// 0; +4h = 1; vptr 00D0339C; +24h = a, +28h = b, +2Ch = c, +1Ch = e, +20h = d (MOVSS bit
+// copies). Unreferenced (unit_message_arms.cpp lists 9Dh as unresolved).
+void* session_message_9d_construct_009d6650(Cc13Seg67bHost& host, void* message, float a,
+                                            float b, float c, float d, std::int32_t e) {
+    host.session_message_construct_base_0075b430(message, 0x9D);                 // 009D6658
+    at<std::uint16_t>(message, 0x18) = 0;
+    at<std::uint8_t>(message, 0x1A) = 0;
+    at<std::uint32_t>(message, 0x4) = 1;
+    at<std::uint32_t>(message, 0x0) = 0x00D0339Cu;
+    at<float>(message, 0x24) = a;
+    at<float>(message, 0x28) = b;
+    at<float>(message, 0x2C) = c;
+    at<std::int32_t>(message, 0x1C) = e;
+    at<float>(message, 0x20) = d;
+    return message;
+}
+
+// 009DBDB0 (009DBDB0-009DBDE9): vptr = 00D2152C; [+20h] -> its vtable[0](1); then +24h,
+// +20h, +34h, +38h, +1Ch = 0 and +30h = 1.0e7 [00CF58EC]. Pushed by address as the
+// element destructor of the `eh vector destructor iterator` calls at 009DBDF2,
+// 009DBF41, 009DDBA1 and 009E023E.
+void ship_ai_path_plan_destruct_body_009dbdb0(Cc13Seg67bHost& host, void* plan) {
+    at<std::uint32_t>(plan, 0x0) = 0x00D2152Cu;
+    if (void* const owned = ptr_at(plan, 0x20)) host.path_node_vcall_00_scalar_delete(owned, 1);
+    at<std::uint32_t>(plan, 0x24) = 0;
+    at<std::uint32_t>(plan, 0x20) = 0;
+    at<std::uint32_t>(plan, 0x34) = 0;
+    at<std::uint32_t>(plan, 0x38) = 0;
+    at<std::uint32_t>(plan, 0x1C) = 0;
+    at<float>(plan, 0x30) = 1.0e7f;                                              // 009DBDE3
+}
+
+// 009E5220 (009E5220-009E5235): +4h = 009DF8F0() (the 0Ch self-linked sentinel; ECX is
+// passed but unread), +8h = 0. EAX = list. 0041E1B0 is the same shape over 0041BF50, which
+// allocates 10h. Unreferenced.
+void* ship_ai_traffic_list_construct_009e5220(Cc13Seg67bHost& host, void* list) {
+    at<std::uintptr_t>(list, 0x4) =
+        reinterpret_cast<std::uintptr_t>(ship_ai_traffic_list_head_node_009df8f0(host));  // 009E5223
+    at<std::uint32_t>(list, 0x8) = 0;
+    return list;
+}
+
+// 009CFA10 (009CFA10-009CFA2E). 0099B6E0 (a RET) first; then, when [[task+3FCh]+BF4h]
+// is set, the tail JMP 006C2400(ECX = it).
+void bot_task_takeoff_debug_draw_009cfa10(Cc13Seg67bHost& host, void* task) {
+    host.bot_task_debug_draw_base_0099b6e0(task);                                // 009CFA13
+    if (void* const holder = ptr_at(ptr_at(task, 0x3FC), 0xBF4)) {
+        host.air_ops_debug_draw_runway_distances_006c2400(holder);              // 009CFA29 JMP
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Debug draws, batch 16 (docs 3.62). The colour records are lazily initialised statics
+// (guard test emitted twice); their values are passed here as equal local constants.
+// 009A9E10 and 009CC8F0 are not bodies here: both equal 007B7290
+// (bot_task_rocket_debug_draw_007b7290, cc13_seg53U.cpp) with only the 00F8xxxx
+// statics moved.
+// ---------------------------------------------------------------------------
+
+namespace {
+
+constexpr float kDebugRed[4] = {1.0f, 0.0f, 0.0f, 1.0f};
+constexpr float kDebugGreen[4] = {0.0f, 1.0f, 0.0f, 1.0f};
+constexpr float kDebugWhite[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+constexpr float kDebugBlue[4] = {0.0f, 0.0f, 1.0f, 1.0f};
+constexpr float kDebugYellow[4] = {1.0f, 1.0f, 0.0f, 1.0f};
+constexpr float kDebugMarkerRadius_00ce38b8 = 10.0f;
+constexpr float kTorpedoFanY_00ce3930 = 20.0f;
+constexpr float kTorpedoFanRadiusLong_00ce3804 = 1000.0f;
+constexpr float kTorpedoFanRadius_00d1f980 = 700.0f;
+constexpr double kTorpedoFanPi_00ce3d28 = 3.1415927410125732;      // widened float pi
+constexpr double kTorpedoFanSectors_00cee930 = 18.0;
+constexpr double kTorpedoFanHalfPi_00ce3830 = 1.5707963705062866;  // widened float pi/2
+constexpr double kTorpedoFanTwoPi_00ce3828 = 6.2831854820251465;   // widened float 2pi
+constexpr float kTorpedoHeadingLength_00ce3938 = 50.0f;
+
+// The bearing-to-angle step both 009D4230 loops use: a = float(pi/2 - a); 0 > a (FLDZ,
+// FCOMPI, JBE: unordered keeps a) -> a = float(a + 2pi).
+float debug_bearing_angle(float a) {
+    a = static_cast<float>(kTorpedoFanHalfPi_00ce3830 - static_cast<double>(a));  // DC 2D FSUBR
+    if (0.0f > a) a = static_cast<float>(static_cast<double>(a) + kTorpedoFanTwoPi_00ce3828);
+    return a;
+}
+
+void* refreshed_entity(Cc13Seg67bHost& host, void* e) {
+    if (at<std::uint8_t>(e, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(e);
+    return e;
+}
+
+}  // namespace
+
+// 009A5AF0 (009A5AF0-009A5CF4), depth-charge task slot +4h (00D1F73C): 0099B6E0; a red
+// marker at task+4E8h; a white marker at (task+3F8h)->vtable[0](&local); a green marker
+// at the target's (task+3FCh, pose refreshed at 009A5C2F) x and z with y = task+434h +
+// task+42Ch (009A5C3C FLD [EDI+3Ch], FADD [EDI+34h], EDI = task+3F8h). The target's
+// +100h is stored and then overwritten (dead). Every sphere: radius 10.0 [00CE38B8],
+// the same colour in EDX and on the stack, detailed byte 0.
+void bot_task_depth_charge_debug_draw_009a5af0(Cc13Seg67bHost& host, void* task) {
+    host.bot_task_debug_draw_base_0099b6e0(task);                                 // 009A5AF7
+    host.wire_sphere_00860be0(static_cast<const float*>(ptr(task, 0x4E8)), kDebugRed,
+                              kDebugMarkerRadius_00ce38b8, kDebugRed, 0);         // 009A5B80
+    float point[3] = {};
+    const float* const aim = host.approach_vcall_00_target_point(ptr(task, 0x3F8), point);
+    host.wire_sphere_00860be0(aim, kDebugWhite, kDebugMarkerRadius_00ce38b8, kDebugWhite,
+                              0);                                                 // 009A5C19
+    void* const t = refreshed_entity(host, ptr_at(task, 0x3FC));
+    const float marker[3] = {at<float>(t, 0xFC), at<float>(task, 0x434) + at<float>(task, 0x42C),
+                             at<float>(t, 0x104)};
+    host.wire_sphere_00860be0(marker, kDebugGreen, kDebugMarkerRadius_00ce38b8, kDebugGreen,
+                              0);                                                 // 009A5CEC
+}
+
+// 009D4230 (009D4230-009D4843), torpedo task slot +4h (00D213CC). 0099B6E0; a sphere at
+// (task+3F8h)->vtable[0](&local), EDX green, stack white, radius 10.0, detailed 0. With
+// task+4C4h null it returns there (009D42E6). Otherwise a fan of 36 spokes from C =
+// (u.x, 20.0 [00CE3930], u.z), u = task+4C4h with its pose refreshed:
+//   a_i = float(float(i x pi) / 18.0) (FILD, FMUL qword [00CE3D28], FDIV qword [00CEE930]),
+//   then the bearing step; r = task+45Ch == i ? 1000.0 [00CE3804] : 700.0 [00D1F980];
+//   P_i = (C.x + cos(a_i) r, 20.0, C.z + r sin(a_i)); line C -> P_i (0085F990, ECX = C,
+//   EDX = P_i). Spoke 0: colour0 white, colour1 = byte task+428h ? green : red. Spokes
+//   1..35: both colours = byte task+428h+i ? green : red.
+// Then a heading line from the unit at task+3FCh (pose refreshed): h = the bearing step of
+// task+458h; E = (p.x + cos(h) x 50.0, p.y + 0.0 x 50.0, p.z + 50.0 x sin(h)) ([00CE3938],
+// 009D4744 DC C9); line p -> E, red and red.
+// UNCERTAINTY: FCOS/FSIN run at extended precision (precision control does not apply);
+// std::cos/std::sin in double then the float store can differ by an ulp in rare cases.
+// The FMUL/FDIV of a_i are modelled at 24 bits; 53-bit is the alternative.
+void bot_task_torpedo_debug_draw_009d4230(Cc13Seg67bHost& host, void* task) {
+    host.bot_task_debug_draw_base_0099b6e0(task);                                 // 009D4239
+    float point[3] = {};
+    const float* const aim = host.approach_vcall_00_target_point(ptr(task, 0x3F8), point);
+    host.wire_sphere_00860be0(aim, kDebugGreen, kDebugMarkerRadius_00ce38b8, kDebugWhite,
+                              0);                                                 // 009D42D9
+    void* const u = ptr_at(task, 0x4C4);
+    if (u == nullptr) return;                                                     // 009D42E6
+    refreshed_entity(host, u);
+    const float c[3] = {at<float>(u, 0xFC), kTorpedoFanY_00ce3930, at<float>(u, 0x104)};
+    for (std::int32_t i = 0; i < 36; ++i) {
+        const float step = static_cast<float>(static_cast<float>(i) * kTorpedoFanPi_00ce3d28);
+        const float a = debug_bearing_angle(
+            static_cast<float>(static_cast<double>(step) / kTorpedoFanSectors_00cee930));
+        const float ca = static_cast<float>(std::cos(static_cast<double>(a)));    // 009D437E
+        const float sa = static_cast<float>(std::sin(static_cast<double>(a)));    // 009D4394
+        // 009D439A CMP [EBP+45Ch], EBX: EBX is i, so the spoke whose index equals
+        // task+45Ch is the long one.
+        const float r = at<std::int32_t>(task, 0x45C) == i ? kTorpedoFanRadiusLong_00ce3804
+                                                           : kTorpedoFanRadius_00d1f980;
+        const float tip[3] = {ca * r + c[0], kTorpedoFanY_00ce3930, r * sa + c[2]};
+        const bool set = at<std::uint8_t>(task, 0x428 + static_cast<std::size_t>(i)) != 0;
+        const float* const sector = set ? kDebugGreen : kDebugRed;
+        host.line_rgba_floats_0085f990(c, tip, i == 0 ? kDebugWhite : sector, sector);
+    }
+    void* const unit = refreshed_entity(host, ptr_at(task, 0x3FC));
+    const float p[3] = {at<float>(unit, 0xFC), at<float>(unit, 0x100), at<float>(unit, 0x104)};
+    const float h = debug_bearing_angle(at<float>(task, 0x458));
+    const float ch = static_cast<float>(std::cos(static_cast<double>(h)));        // 009D471B
+    const float sh = static_cast<float>(std::sin(static_cast<double>(h)));        // 009D472D
+    const float end[3] = {ch * kTorpedoHeadingLength_00ce3938 + p[0],
+                          0.0f * kTorpedoHeadingLength_00ce3938 + p[1],
+                          kTorpedoHeadingLength_00ce3938 * sh + p[2]};
+    host.line_rgba_floats_0085f990(p, end, kDebugRed, kDebugRed);                 // 009D4837
+}
+
+// 009DB060 (009DB060-009DB2A8), the ship-AI slot at 00D216A0; __thiscall(ECX = this; two
+// stack arguments, unread), RET 8. owner = this+4h; cursor = 0071BFF0(owner+AB8h, 0);
+// path = cursor+4h; null -> return (NEG/SBB/TEST 00E19B95). A second 0071BFF0 call gives
+// the index k = cursor+8h. q = path->vtable[8](&q, k) with q.y = 0; a line from the unit
+// at owner+AA8h (pose refreshed, its +FCh position) to q, colour0 blue, colour1 yellow.
+// Then while k < path->vtable[0Ch]() - 1 (signed, re-read each pass): a = point k, b =
+// point k + 1, each with y = 0; line a -> b, yellow and yellow.
+void ship_ai_debug_draw_command_path_009db060(Cc13Seg67bHost& host, void* self) {
+    void* const owner = ptr_at(self, 0x4);
+    void* const cursor = host.weapon_director_command_path_cursor_0071bff0(
+        ptr_at(owner, 0xAB8), 0);                                                 // 009DB074
+    // EDI = cursor+4h; the path pointer is re-read from it before every virtual call.
+    if (ptr_at(cursor, 0x4) == nullptr) return;                                   // 009DB08A
+    void* const cursor2 = host.weapon_director_command_path_cursor_0071bff0(
+        ptr_at(owner, 0xAB8), 0);                                                 // 009DB09B
+    std::int32_t k = at<std::int32_t>(cursor2, 0x8);
+    float q[3] = {};
+    host.path_vcall_08_point(ptr_at(cursor, 0x4), q, k);                          // 009DB0B0
+    q[1] = 0.0f;
+    void* const unit = refreshed_entity(host, ptr_at(owner, 0xAA8));
+    host.line_rgba_floats_0085f990(static_cast<const float*>(ptr(unit, 0xFC)), q, kDebugBlue,
+                                   kDebugYellow);                                 // 009DB196
+    while (k < host.path_vcall_0c_count(ptr_at(cursor, 0x4)) - 1) {
+        float a[3] = {};
+        host.path_vcall_08_point(ptr_at(cursor, 0x4), a, k);                      // 009DB1BD
+        a[1] = 0.0f;
+        ++k;
+        float b[3] = {};
+        host.path_vcall_08_point(ptr_at(cursor, 0x4), b, k);                      // 009DB1D8
+        b[1] = 0.0f;
+        host.line_rgba_floats_0085f990(a, b, kDebugYellow, kDebugYellow);         // 009DB288
+    }
 }
 
 }  // namespace bsp

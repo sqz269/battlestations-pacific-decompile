@@ -481,9 +481,10 @@ TorpedoApproachUpdateResult torpedo_approach_update_009d3420(
                     kTorpedoOverLandHeight_00ce38b8) {
                 state.over_land_a9 = 1;  // 009D36BC
             }
-            // 009D36CA: with unit+C50h set, 007DF360 decides it outright.
-            state.over_land_a9 =
-                host.target_reachable_007df360(target_point) ? 1 : state.over_land_a9;
+            // 009D36CA-009D36F3: with unit+C50h set, 007DF360's AL overwrites
+            // it outright (a 0 clears a terrain 1).
+            const int screened = host.target_reachable_007df360(target_point);
+            if (screened >= 0) state.over_land_a9 = screened != 0 ? 1 : 0;
         }
     }
     out.replanned = replan;
