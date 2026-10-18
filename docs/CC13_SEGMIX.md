@@ -172,7 +172,10 @@ The `cc13_bigB1` hook declares the argument as an int, but the image tests only
 its low byte.
 
 Deviation: when the list walk runs past the end, the image reads [0+4], which
-faults. The C++ returns a null unit instead.
+faults. The C++ returns without retargeting instead (it does not call 007A6910).
+
+Earlier evidence for this address, under the old name BSP_Recon_PublishedListCursor,
+is cc7's in `docs/RECON_SLOT_OBJECT.md`.
 
 **007A87B0 BSP_MovCam_UpdateHandMode**, thiscall(camera). It moves between the
 target's vehicle cameras with the stick.
@@ -271,6 +274,10 @@ and sz, then a, b and d. The back makes 5, with no sx. The source block's +14h
 "side" is float(sx). The back piece reuses the same block without rewriting
 +14h, so both installs see the front's side. The bytes were read for the
 interior subtractions: DC E9, D8 E1 and D8 /5.
+
+Liveness and RNG: each breakup makes 11 stream-1 draws. cc9's
+`unit_death_sink.cpp` calls `host.breakup_parts`, which no host implements, so a
+host breakup skips those draws and the shared stream stays 11 behind the image.
 
 ### Segment 41: the land fort's static body (cc13-segmixH, verify-and-record)
 
