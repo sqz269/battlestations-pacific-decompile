@@ -18947,3 +18947,22 @@ and Kuwa; the only arm-level native change is the new 00816ECA kind test (30 cal
 on their leaders and the battle moves: deaths 188 -> 217, first hit 370.88 -> 319.85 s, torpedo-task releases
 14/101 -> 41/96, Zuikaku's track 10206 -> 8654 m. ESMP08 is not a win row (WINS_TABLE). **Decision: ON** by
 mechanism. Moved rows to cc9-lua66.
+
+## 283. Submarine torpedoes are seen later, kTorpedoFromSubmarineBound (cc9-ships57, 2026-10-17; lead item 7a)
+
+**Image (CC13_VERIFY2 R1).** 006E2E10 (BSP_BombProjectile_Activate) stores `+354h = (y <= water height 0078CF20)`
+at 006E2E7F (NaN sets it too); 00857780 (BSP_TorpedoProjectile_Activate) copies it to `+49Ch = 1` at 008578B0;
+009F0AD0 tests +49Ch at 009F0C0E and adds the robots row's `TorpedoObservationSubAddon` (+24h; 4.0 s SPNormal,
+3.0 MPNormal, 1.5 MPVeteran, 1.0 Stun, 0 SPVeteran / Elite) to the observation draw. The host's candidate had
+`from_submarine = false` with the label "no host submarine launches underwater", false since
+kSubmergedTorpedoLaunchSwimBound (ON).
+
+**Bind (OFF).** The gunnery host marks a shot `started_under_water` at the swim entry of a launch that was already
+under the surface (the `submerged_launch_entries` branch, from y <= 0) and publishes it in `LiveTorpedo`; the ship
+AI candidate takes it under `kTorpedoFromSubmarineBound`. LABELLED: the sample is the swim entry's flat-water
+test rather than 006E2E10's live water height at activation. The observation draw is taken either way, so the
+RNG stream is unchanged.
+
+**Predictions, written before any run.** OFF identical. ON: only where an AI submarine fires submerged at a ship
+with torpedo response on (USN04 / JM08 submarines, IJN rows with US subs): those ships react up to 4 s later;
+elsewhere identical.

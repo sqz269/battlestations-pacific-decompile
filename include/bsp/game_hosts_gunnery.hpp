@@ -557,6 +557,11 @@ struct GameProjectileRow {
     // 3 flak burst, 4 water, 5 expired.
     int fate{0};
     bool swimming{false};             // past the water crossing, on the swim
+    // Packet s57_torpedo_from_sub: projectile+354h as 006E2E10 samples it at the
+    // activation (y at or below the water, 006E2E7F), which 00857780 copies to the
+    // torpedo's +49Ch at 008578B0. Set at the swim entry from a launch that was
+    // already under the surface (kSubmergedTorpedoLaunchSwimBound's entry).
+    bool started_under_water{false};
     // Packet cc9_depth_charge_in_water (kDepthChargeInWaterBound): a round of a
     // "Depthcharge" class, its water byte (006E6450 at the entry 006FD660), and
     // the activate 006FD9B0's record+468h dragvert and +470h divedepth.
@@ -1339,6 +1344,7 @@ public:
         float swim_seconds{0.0f};
         bool swimming{false};
         float water_travel_speed{0.0f};
+        bool started_under_water{false};   // torpedo+49Ch (s57_torpedo_from_sub)
     };
     std::vector<LiveTorpedo> live_torpedoes() const;
     // Packet cc9_navigator_force_torpedo. 008A7200's device walk: every gun of

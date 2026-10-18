@@ -189,6 +189,11 @@ inline constexpr bool kShipAiTrafficBound = true;
 // reads it for 009F5D30. False: every live ship or plane of another side (neutral
 // included) at any recon level above none, in unit order.
 inline constexpr bool kShipAiTrafficReconListBound = false;
+// Packet s57_torpedo_from_sub (SHIP_AI_OPEN_ITEMS 283; CC13_VERIFY2 R1). True: a torpedo
+// launched under the surface (projectile+354h at 006E2E7F, copied to +49Ch at 008578B0)
+// is seen TorpedoObservationSubAddon later (009F0C0E; robots.lua: 4.0 s SPNormal, 0 at
+// SPVeteran / Elite). False: every torpedo counts as surface-launched.
+inline constexpr bool kTorpedoFromSubmarineBound = false;
 // Packet cc9_autotarget_recon_candidates, docs/AUTOTARGET_RECON_CANDIDATES.md.
 // True: the automatic target scan 009F5D30 walks the owner party's recon enemy
 // triple ([008053C0(party)]+0DE8h: identified contacts only, in bucket order).
@@ -2128,7 +2133,10 @@ struct GameShipAiHost::Impl {
         c.run_seconds = t.swim_seconds;
         c.water_travel_speed = t.water_travel_speed;
         c.side = t.owner_side;
-        c.from_submarine = false;   // record+49Ch: no host submarine launches underwater
+        // record+49Ch, torpedo+49Ch: 00857780 sets it at 008578B0 from +354h, the
+        // started-under-water sample (packet s57_torpedo_from_sub). 009F0C0E adds
+        // TorpedoObservationSubAddon (+24h) to the observation draw when it is set.
+        c.from_submarine = kTorpedoFromSubmarineBound && t.started_under_water;
         c.shooter = t.owner_unit;
         return c;
     }
