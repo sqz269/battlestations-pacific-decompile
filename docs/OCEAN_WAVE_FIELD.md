@@ -2871,3 +2871,12 @@ Distance 10.12 km); the table's last completion was 1539.83 s. Sent to the WINS 
 - (b) The attach test has no drop-to-attach gap: `006E3FE0` tests an attached round only. Not touched.
 - `docs/ATTACK_COMMANDS.md` corrected: `PilotBomb` asks `vtable[5Ch](10h)` of its argument (`008A505C`), not of
   the `+3D0h` object, so a squadron argument never gets `levelbomb`.
+
+**TouchdownBrake (68's open item): the stand-in is the image's call.** `009B1EF2`-`009B1F07`: ECX = the plane
+(`[[task+4]+4]`), `ADD ECX,72Ch`, `CALL [[ECX]+38h]`. The plane class stores vtable `00D06130` at `+72Ch`
+(`007D03FD MOV [EDI+72Ch],00D06130` in its destructor; the unit base stores `00CFC384` at `006FE4A9`). Slot `38h`
+(`00D06168`) is `0074E210` `BSP_PlaneControlMode_IsFreeFlight`: `CMP [ECX+1D4h],7 / SETE AL`, and `+72Ch + 1D4h` is
+the plane's `+900h`. So the call answers `+900h == 7`, which is exactly the host's `plane_control_mode_900 != 7`
+test for setting the touched byte. The brake stays unreached for the reason 68 gives (`009B3D0B` moves a plane
+whose `+900h` is 4 or 5 to land/park first); whether the image ever has `+900h` at another value (6, say; `0074E230`
+groups 7, 6, 4 and 5) during land final is the remaining question, and it is a `+900h` writer census, not this call.
