@@ -72,10 +72,22 @@ date-disabled flag, so the name `EnabledContinuation` stands.
 ## Reconstructed (17)
 
 The code is in `src/cc13_small2.cpp` and `include/bsp/cc13_small2.hpp`. It is built into
-`bsp_core` and nothing calls it. Each body was read from the listing. The x87 operand order
-was taken from the stack sequence in the listing (FLD/FMULP/FADDP, with no reversed DC-form
-operations), and the products and sums are modelled as float operations because the main
-thread runs at 24-bit precision.
+`bsp_core` and nothing calls it. Each body was read from the listing. The x87 operand order was taken from the stack sequence in the listing (FLD, FMULP, FADDP).
+These routines contain no non-commutative DC-form operation (FSUBR or FDIVR). The one DC-form
+instruction, 00779F35 `DC C8` FMUL ST0,ST0, is symmetric. The products and sums are modelled
+as float operations at the main thread's 24-bit precision.
+
+**Precision uncertainty.** 00779EB0, 0077F7B0 and 005F98F0 can also run on fixed-step job
+threads at 53 bits. In that case the intermediate products and sums would round only at the
+FSTP, not at every step. The records say so.
+
+Hook names: `mp_seg43_cc13`'s hooks are renamed to match the new reading:
+- `replication_flush_queued_rows_0077c540` (was `replication_reset_frame_counters_0077c540`);
+- `replication_drain_child_queues_0077f5e0` (was `replication_rebuild_entity_index_0077f5e0`).
+
+Neither body reads the ECX that the call site passes. `mission_scene_load.hpp:269`
+`commit_scene_ready` (0077F5E0) belongs to the mission-load host, which is not a cc13 file,
+so it is noted here and left unchanged.
 
 | Address | Name | ABI | Notes |
 | --- | --- | --- | --- |

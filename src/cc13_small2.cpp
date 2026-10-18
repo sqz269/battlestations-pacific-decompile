@@ -47,8 +47,9 @@ void* unit_director_path_object0_00778860(void* unit, Small2Host& host) {
 
 // 00779EB0 __thiscall(entity, Record** record) RET 4, float in ST0. The record's point
 // (+ACh) is copied before the pose refresh; the entity's world position is +FCh..+104h.
-// Every x87 step is a float store or a 24-bit-precision product, so float arithmetic
-// reproduces it. Sum order from the listing: (dx*dx + dy*dy) + dz*dz.
+// At the main thread's 24-bit precision every x87 step is a float store or a float-rounded
+// product, so float arithmetic reproduces it; a fixed-step job at 53 bits would round the
+// products and the sum once, at the FSTP (00779F39), instead (uncertain which applies). Sum order from the listing: (dx*dx + dy*dy) + dz*dz.
 float unit_distance_to_record_00779eb0(void* entity, void* const* record, Small2Host& host) {
     const float px = at<float>(*record, 0xAC);                         // 00779EB9
     const float py = at<float>(*record, 0xB0);                         // 00779ECB
@@ -168,6 +169,10 @@ LuaObject* unit_lua_this_table_entry_0077cd80(void* unit, LuaObject* out, Small2
 // 0077D3F0 __thiscall(entity, const NativeString* name, arg) RET 8. Copies the name into
 // entity+15Ch, makes the (compiled-out) log call, and in server mode broadcasts a SETGUINAME
 // message built from a by-value copy of the name (the constructor owns that copy).
+// native_string_assign_0041dd40 folds two image calls: 0041DD40(dst; src.length, 1), then
+// the 00BF7680 memcpy(dst.data, src.data, dst.length) when src.length is non-zero. The
+// SETGUINAME constructor hook can forward to mp_seg43_cc13's
+// message_setguiname_construct_0077ccc0 (the length/chars split of the by-value string).
 void entity_set_gui_name_0077d3f0(void* entity, const NativeString* name, std::uint32_t arg,
                                   Small2Host& host) {
     auto* const own = static_cast<NativeString*>(add(entity, 0x15C));
@@ -227,6 +232,9 @@ void replication_step_local_player_record_0077d7f0(Small2Host& host) {
 // its child queue (container +298h, head +29Ch, size +2A0h), trace each child through
 // vtable[17Ch] when 00E0AF20 is set, then empty the queue and free its nodes. The child
 // keys (child+50h) go into a local std::set that nothing reads before it is destroyed.
+// The checked-iterator reports (0077F678 / 0077F689 / 0077F693 / 0077F6BB / 0077F6C8 /
+// 0077F6D2 / 0077F70F / 0077F750) sit behind container self-compares or a node already known
+// not to be the end, so they cannot fire and are omitted.
 void replication_drain_child_queues_0077f5e0(Small2Host& host) {
     if (session_mode(host) != kSessionModeServer) return;                    // 0077F603
     if (at<std::uint8_t>(host.global_address(kNetChildQueuePending), 0) == 0) return;
@@ -265,7 +273,8 @@ void unit_apply_expiry_message_0077f7b0(void* unit, const void* msg, Small2Host&
     const std::int32_t age = at<std::int32_t>(const_cast<void*>(msg), 0xC) -
                              global_int(host, kTick);                        // 0077F7BB / 0077F7BE
     // 0077F7C8 FILD, 0077F7D2 FMUL float 0.05, 0077F7D8 FSTP float. FILD is exact; the
-    // product rounds to float (24-bit precision) like the C++ below for |age| < 2^24.
+    // product rounds to float (24-bit precision) like the C++ below for |age| < 2^24. On a
+    // 53-bit fixed-step thread the sums below would round only at the FSTP (uncertain).
     const float age_seconds = static_cast<float>(age) * kTickSeconds;
     const std::int32_t mode = host.game_effective_mode_004bca50(host.global_ptr(kGame));
     const float clock = global_float(host, kClock);                          // 0077F7E4
@@ -420,6 +429,7 @@ void game_update_player_slot_unit_flags_004c3a80(void* game, Small2Host& host) {
 // [[game+19CCh]+16Ch] (singly linked: +4 next, +8 entity). Horizontal distance only.
 // x87 from the listing: s = dx*dx + dz*dz stored to float, r = (float)int, r*r stored to
 // float, then FCOMIP ST0(s), ST1(r*r) / JBE: s <= r*r, or unordered, is inside.
+// Modelled at 24-bit precision; at 53 bits the two squares would be added before rounding.
 bool unit_within_friendly_capture_radius_005f98f0(void* unit, Small2Host& host) {
     if (!host.entity_is_kind_5c(unit, kUnitKind06)) return false;            // 005F98FD
     if (host.entity_is_kind_5c(unit, kUnitKind09)) return false;             // 005F9910

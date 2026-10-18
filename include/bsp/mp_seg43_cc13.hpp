@@ -83,9 +83,11 @@ struct MpSeg43Hooks {
     virtual void session_request_player_ready_00771dd0(Raw session, std::uint32_t player,
                                                        std::uint32_t a, std::uint32_t b) = 0;
     virtual void session_set_mode_0076fad0(Raw session, std::uint32_t mode) = 0;
-    virtual void replication_rebuild_entity_index_0077f5e0(Raw session) = 0;
+    // 0077F5E0 / 0077C540 are __cdecl and do not read the ECX value passed here (the call
+    // site's leftover register); bodies in src/cc13_small2.cpp (docs/CC13_SMALL2.md).
+    virtual void replication_drain_child_queues_0077f5e0(Raw session) = 0;
     virtual void game_tuning_get_singleton_0042e740() = 0;
-    virtual void replication_reset_frame_counters_0077c540(Raw transport) = 0;
+    virtual void replication_flush_queued_rows_0077c540(Raw transport) = 0;
     virtual void replication_step_local_player_record_0077d7f0() = 0;
     virtual void plane_send_sync_ack_batch_007cca50() = 0;
     // Message bodies built elsewhere (ECX = the stack message).
