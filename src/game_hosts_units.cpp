@@ -6451,7 +6451,7 @@ struct GameUnitsHost::Impl {
     // values persist across tasks (ga 0 / 0, +74h 0, maneuver and torpedo -0.5).
     // Not hosted, recorded: the depth-charge attackrun 009A36A0 +1Ch and the dogfight
     // attackrun 009A70E0 +1Ch (no host countdown field; the latter is unreachable).
-    static constexpr bool kBotTaskCtorSeedsBound = false;
+    static constexpr bool kBotTaskCtorSeedsBound = true;
     unsigned long long bot_task_ctor_seeds{0};
     void bot_task_ctor_seeds_0099c6f0(GameUnitSlot& unit, bool follow_state) {
         if constexpr (kBotTaskCtorSeedsBound) {
