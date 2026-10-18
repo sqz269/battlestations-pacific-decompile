@@ -1846,4 +1846,228 @@ bool land_target_is_kind9_009b1e30(Cc13Seg67bHost& host, void* o) {
     return host.object_vcall_5c(t, 9);
 }
 
+// ---------------------------------------------------------------------------
+// Land, level-bomb, move-on-path and conditioned-task destructor bodies, stream
+// constructors and factories.
+
+namespace {
+constexpr std::uint32_t kLandTaskVtable = 0x00D1FFA0u;
+constexpr std::uint32_t kLandApproachVtable = 0x00D1FF94u;
+constexpr std::uint32_t kLandRegistryVtable = 0x00D1FF90u;
+constexpr std::uint32_t kLevelBombTaskVtable = 0x00D20210u;
+constexpr std::uint32_t kLevelBombApproachVtable = 0x00D2020Cu;
+constexpr std::uint32_t kLevelBombRegistryVtable = 0x00D20208u;
+constexpr std::uint32_t kMoveOnPathTaskVtable = 0x00D20910u;
+constexpr std::uint32_t kMoveOnPathApproachVtable = 0x00D20904u;
+constexpr std::uint32_t kMoveOnPathRegistryVtable = 0x00D20900u;
+constexpr std::uint32_t kMoveOnPathApproachBaseVtable = 0x00D20838u;
+constexpr std::uint32_t kStopTaskVtable = 0x00D20500u;
+constexpr std::uint32_t kImmelmannTaskVtable = 0x00D20400u;
+constexpr std::uint32_t kGainAltitudeTaskVtable = 0x00D20480u;
+constexpr std::uint32_t kStrStage = 0x00D20474u;            // "stage"
+constexpr std::uint32_t kStrAlt = 0x00D204F8u;              // "alt"
+constexpr std::uint32_t kStrAltOffset = 0x00D20894u;        // "altOffset"
+constexpr std::uint32_t kStrTravelAltOffset = 0x00D20884u;  // "travelAltOffset"
+}  // namespace
+
+// 009B3F50 (009B3F50-009B3FE3). EH frame. [t] = 00D1FFA0, [t+3F8h] = 00D1FF94,
+// [t+4B0h] = 00D1FF90 (009B3F76-009B3F82); u = [t+3FCh]: when u and 007B8AD0(u)
+// (009B3F9E), 006C8800(ECX = [u+9D4h]) (009B3FB3); 009B2C80(ECX = t+3F8h)
+// (009B3FBF); 007B4030(ECX = t) (009B3FCE).
+void bot_task_land_destruct_body_009b3f50(Cc13Seg67bHost& host, void* task) {
+    at<std::uint32_t>(task, 0x000) = kLandTaskVtable;
+    at<std::uint32_t>(task, 0x3F8) = kLandApproachVtable;
+    at<std::uint32_t>(task, 0x4B0) = kLandRegistryVtable;
+    void* const unit = ptr_at(task, 0x3FC);
+    if (unit != nullptr && host.unit_is_squadron_flight_leader_007b8ad0(unit)) {
+        host.air_ops_retire_landing_squadron_006c8800(ptr_at(unit, 0x9D4));
+    }
+    host.landing_approach_destroy_009b2c80(ptr(task, 0x3F8));
+    host.bot_task_destruct_base_007b4030(task);
+}
+
+// 009B4120 (009B4120-009B41B1). EH frame. 0099C8B0(ECX = task, bot, archive, 3)
+// (009B414B); 009B3040(ECX = task+3F8h, [bot+50h], archive) (009B4165); [task] =
+// 00D1FFA0, [task+3F8h] = 00D1FF94, [task+4B0h] = 00D1FF90 (009B417D-009B4189);
+// 00411170(ECX = task+4B0h, task+30Ch, archive) (009B418F); 009F9980(ECX =
+// task+3F8h, task) (009B4197). Returns task.
+void* bot_task_land_construct_from_stream_009b4120(Cc13Seg67bHost& host, void* task, void* bot,
+                                                   void* archive) {
+    bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 3);
+    host.land_construct_approach_block_from_stream_009b3040(ptr(task, 0x3F8), ptr_at(bot, 0x50),
+                                                            archive);
+    at<std::uint32_t>(task, 0x000) = kLandTaskVtable;
+    at<std::uint32_t>(task, 0x3F8) = kLandApproachVtable;
+    at<std::uint32_t>(task, 0x4B0) = kLandRegistryVtable;
+    host.bot_state_registry_read_current_00411170(ptr(task, 0x4B0), ptr(task, 0x30C), archive);
+    host.bot_approach_bind_to_task_009f9980(ptr(task, 0x3F8), task);
+    return task;
+}
+
+// 009B4230 (009B4230-009B4296). __stdcall(bot, archive): t = operator new(670h)
+// (009B4246); null -> 0; else 009B4120(t, bot, archive) (009B426E).
+void* bot_task_land_factory_create_009b4230(Cc13Seg67bHost& host, void* bot, void* archive) {
+    void* const t = host.operator_new_00bf681b(0x670);
+    if (t == nullptr) return nullptr;
+    return bot_task_land_construct_from_stream_009b4120(host, t, bot, archive);
+}
+
+// 009B8E80 (009B8E80-009B8ED0). 009B6480(task ? task+3F8h : 0) (009B8EAD);
+// 007B4030(task) (009B8EBC).
+void bot_task_level_bomb_destruct_body_009b8e80(Cc13Seg67bHost& host, void* task) {
+    bot_task_level_bomb_destruct_approach_block_009b6480(
+        host, task != nullptr ? ptr(task, 0x3F8) : nullptr);
+    host.bot_task_destruct_base_007b4030(task);
+}
+
+// 009B8EE0 (009B8EE0-009B8F73). EH frame. 0099C8B0(task, bot, archive, 4)
+// (009B8F0C); 009B77C0(ECX = task+3F8h, bot, archive) (009B8F23); vtables
+// 00D20210 / +3F8h 00D2020C / +4D4h 00D20208 (009B8F36-009B8F42); 009F9980
+// (009B8F49); 00411170(task+4D4h, task+30Ch, archive) (009B8F58).
+void* bot_task_level_bomb_construct_from_stream_009b8ee0(Cc13Seg67bHost& host, void* task,
+                                                         void* bot, void* archive) {
+    bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 4);
+    host.level_bomb_construct_approach_block_from_stream_009b77c0(ptr(task, 0x3F8), bot,
+                                                                  archive);
+    at<std::uint32_t>(task, 0x000) = kLevelBombTaskVtable;
+    at<std::uint32_t>(task, 0x3F8) = kLevelBombApproachVtable;
+    at<std::uint32_t>(task, 0x4D4) = kLevelBombRegistryVtable;
+    host.bot_approach_bind_to_task_009f9980(ptr(task, 0x3F8), task);
+    host.bot_state_registry_read_current_00411170(ptr(task, 0x4D4), ptr(task, 0x30C), archive);
+    return task;
+}
+
+// 009B90A0 (009B90A0-009B9106). __stdcall(bot, archive): new(6F8h) (009B90B6);
+// null -> 0; else 009B8EE0(t, bot, archive) (009B90DE).
+void* bot_task_level_bomb_factory_create_009b90a0(Cc13Seg67bHost& host, void* bot,
+                                                  void* archive) {
+    void* const t = host.operator_new_00bf681b(0x6F8);
+    if (t == nullptr) return nullptr;
+    return bot_task_level_bomb_construct_from_stream_009b8ee0(host, t, bot, archive);
+}
+
+// 009B9030 (009B9030-009B9095). __fastcall(ECX = bot, EDX = target): new(6F8h)
+// (009B9048); null -> 0; else 009B7990(ECX = t, bot, target) (009B906D).
+void* bot_task_make_level_bomb_009b9030(Cc13Seg67bHost& host, void* bot, void* target) {
+    void* const t = host.operator_new_00bf681b(0x6F8);
+    if (t == nullptr) return nullptr;
+    return host.level_bomb_task_construct_009b7990(t, bot, target);
+}
+
+// 009BD9D0 (009BD9D0-009BDA20). 009BCB70(task ? task+3F8h : 0) (009BD9FD);
+// 007B4030(task) (009BDA0C).
+void bot_task_move_on_path_destroy_009bd9d0(Cc13Seg67bHost& host, void* task) {
+    bot_approach_move_on_path_destroy_009bcb70(host, task != nullptr ? ptr(task, 0x3F8)
+                                                                     : nullptr);
+    host.bot_task_destruct_base_007b4030(task);
+}
+
+// 009BDA30 (009BDA30-009BDAF2). EH frame. 0099C8B0(task, bot, archive, 6)
+// (009BDA5C); 009BCD50(ECX = task+3F8h, bot, archive) (009BDA73); [task] =
+// 00D20910, [task+3F8h] = 00D20904, [task+438h] = 00D20900, +518h = [00D7A24C] 1.0
+// (009BDA96-009BDAB0); 009BDAB8 00BD2F10(1, 0, 1), +51Ch = -r (009BDAC0);
+// 009F9980(ECX = task+3F8h, task) (009BDAC8); 00411170(task+438h, task+30Ch,
+// archive) (009BDAD7).
+void* bot_task_move_on_path_construct_from_stream_009bda30(Cc13Seg67bHost& host, void* task,
+                                                           void* bot, void* archive) {
+    bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 6);
+    host.move_on_path_construct_with_states_from_stream_009bcd50(ptr(task, 0x3F8), bot,
+                                                                 archive);
+    at<std::uint32_t>(task, 0x000) = kMoveOnPathTaskVtable;
+    at<std::uint32_t>(task, 0x3F8) = kMoveOnPathApproachVtable;
+    at<std::uint32_t>(task, 0x438) = kMoveOnPathRegistryVtable;
+    at<float>(task, 0x518) = kOne_00d7a24c;
+    at<float>(task, 0x51C) = -host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    host.bot_approach_bind_to_task_009f9980(ptr(task, 0x3F8), task);
+    host.bot_state_registry_read_current_00411170(ptr(task, 0x438), ptr(task, 0x30C), archive);
+    return task;
+}
+
+// 009BDBB0 (009BDBB0-009BDC0F). __fastcall(ECX = bot): new(520h) (009BDBC7); null
+// -> 0; else 009BCE50(ECX = t, bot) (009BDBE9).
+void* bot_task_move_on_path_create_009bdbb0(Cc13Seg67bHost& host, void* bot) {
+    void* const t = host.operator_new_00bf681b(0x520);
+    if (t == nullptr) return nullptr;
+    return host.move_on_path_task_construct_009bce50(t, bot);
+}
+
+// 009BDC10 (009BDC10-009BDC76). __stdcall(bot, archive): new(520h) (009BDC2B);
+// null -> 0; else 009BDA30(t, bot, archive) (009BDC4E).
+void* bot_task_move_on_path_create_from_stream_009bdc10(Cc13Seg67bHost& host, void* bot,
+                                                        void* archive) {
+    void* const t = host.operator_new_00bf681b(0x520);
+    if (t == nullptr) return nullptr;
+    return bot_task_move_on_path_construct_from_stream_009bda30(host, t, bot, archive);
+}
+
+// 009BADB0 (009BADB0-009BAE09). __fastcall(ECX = bot): t = new(3F8h) (009BADCF);
+// null -> 0; else 0099C6F0(ECX = t, bot, 0Fh) (009BADEC), [t] = 00D20500 (009BADF1).
+void* bot_task_make_stop_009badb0(Cc13Seg67bHost& host, void* bot) {
+    void* const t = host.operator_new_00bf681b(0x3F8);
+    if (t == nullptr) return nullptr;
+    bot_task_construct_base_0099c6f0(host, t, bot, 0x0F);
+    at<std::uint32_t>(t, 0) = kStopTaskVtable;
+    return t;
+}
+
+// 009BA960 (009BA960-009BA9DD). EH frame. 0099C8B0(task, bot, archive, 0Fh)
+// (009BA98B); [task] = 00D20400 (009BA995); archive->vtable[10h]({0,"stage"}, {1,
+// &slot}) (009BA9BC), where slot is the `archive` argument's own stack slot; +3F8h
+// = slot (009BA9C6). An archive that leaves the dword unwritten stores the archive
+// pointer itself, as in the image.
+void* bot_task_immelmann_construct_from_stream_009ba960(Cc13Seg67bHost& host, void* task,
+                                                        void* bot, void* archive) {
+    bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 0x0F);
+    at<std::uint32_t>(task, 0) = kImmelmannTaskVtable;
+    std::uint32_t slot = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(archive));
+    host.archive_vcall_10_read(archive, name_record(kStrStage),
+                               record(1, reinterpret_cast<std::uintptr_t>(&slot)));
+    at<std::uint32_t>(task, 0x3F8) = slot;
+    return task;
+}
+
+// 009BAAB0 (009BAAB0-009BAB6C). EH frame. 0099C8B0(task, bot, archive, 0Fh)
+// (009BAADB); [task] = 00D20480 (009BAAE9); archive->vtable[10h]({0,"target"}, {4,
+// &slot}) (009BAB14), slot being the `archive` argument's stack slot, which
+// 009BAAE5 first overwrites with an ESP value; +3F8h = slot (009BAB1A);
+// archive->vtable[10h]({0,"alt"}, {2, task+3FCh}) (009BAB55).
+// UNCERTAINTY: an unwritten "target" leaves a stack address in +3F8h in the image;
+// here the slot starts at 0.
+void* bot_task_gain_altitude_construct_from_stream_009baab0(Cc13Seg67bHost& host, void* task,
+                                                            void* bot, void* archive) {
+    bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 0x0F);
+    at<std::uint32_t>(task, 0) = kGainAltitudeTaskVtable;
+    std::uintptr_t slot = 0;
+    host.archive_vcall_10_read(archive, name_record(kStrTarget),
+                               record(4, reinterpret_cast<std::uintptr_t>(&slot)));
+    at<std::uintptr_t>(task, 0x3F8) = slot;
+    host.archive_vcall_10_read(archive, name_record(kStrAlt),
+                               record(2, reinterpret_cast<std::uintptr_t>(ptr(task, 0x3FC))));
+    return task;
+}
+
+// 009BD300 (009BD300-009BD36C). archive->vtable[0Ch]({0,"altOffset"}, {2, a+2Ch})
+// (009BD336); ({0,"travelAltOffset"}, {2, a+30h}) (009BD366).
+void bot_approach_move_on_path_save_offsets_009bd300(Cc13Seg67bHost& host, void* a,
+                                                     void* archive) {
+    host.archive_vcall_0c_write(archive, name_record(kStrAltOffset),
+                                record(2, at<std::uint32_t>(a, 0x2C)));
+    host.archive_vcall_0c_write(archive, name_record(kStrTravelAltOffset),
+                                record(2, at<std::uint32_t>(a, 0x30)));
+}
+
+// 009BC7E0 (009BC7E0-009BC867). f = (0042E740())+37Ch (009BC7E9); 009F9CE0(ECX =
+// a, arg, f) (009BC7FA); [a] = 00D20838 (009BC803); archive->vtable[10h]
+// ({0,"altOffset"}, {2, a+2Ch}) (009BC833) and ({0,"travelAltOffset"}, {2, a+30h})
+// (009BC85F). Returns a.
+void* bot_approach_move_on_path_construct_from_stream_009bc7e0(Cc13Seg67bHost& host, void* a,
+                                                               void* arg, void* archive) {
+    const float f = at<float>(host.game_tuning_singleton_0042e740(), 0x37C);
+    host.bot_approach_construct_speed_reference_009f9ce0(a, arg, f);
+    at<std::uint32_t>(a, 0) = kMoveOnPathApproachBaseVtable;
+    read_field(host, archive, kStrAltOffset, 2, ptr(a, 0x2C));
+    read_field(host, archive, kStrTravelAltOffset, 2, ptr(a, 0x30));
+    return a;
+}
+
 }  // namespace bsp

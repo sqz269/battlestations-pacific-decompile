@@ -230,3 +230,15 @@ Ledger-only: 009A3FA0 (`depth_charge_in_release_window`) matches, including its 
 | 009B1E30 | land target kind-9 test | |
 
 Ledger-only: 009AF230 is a byte-identical copy of 009A56C0 (`set_state`).
+
+### 3.10 Land, level-bomb, move-on-path, stop, immelmann and gain-altitude: teardown, stream and factories
+
+| Address | Function | Notes |
+|---|---|---|
+| 009B3F50 | land task destructor body | for a flight leader, retires the landing squadron (006C8800) before 009B2C80 |
+| 009B4120 / 009B4230 | land stream constructor and load factory | 009B3040 receives [bot+50h] rather than the bot |
+| 009B8E80 / 009B8EE0 / 009B90A0 / 009B9030 | level-bomb destructor body, stream constructor, load and make factories | |
+| 009BD9D0 / 009BDA30 / 009BDBB0 / 009BDC10 | move-on-path destroy, stream constructor and factories | the stream constructor draws -U(0, 1) into +51Ch from the shared RNG |
+| 009BADB0 | stop-task factory | a bare 3F8h-byte task of kind 0Fh |
+| 009BA960 / 009BAAB0 | immelmann and gain-altitude stream constructors | both read into the archive argument's own stack slot |
+| 009BD300 / 009BC7E0 | move-on-path approach save and stream constructor | keys "altOffset" and "travelAltOffset" |
