@@ -134,9 +134,10 @@ MSVC Win32 Release and both existing CTests passed (2/2); ignored receipt
 
 ## Complete worklist disposition
 
-All 77 input rows were reviewed. New source bodies: 45 (15 + 20 + 7 + 3).
+All 77 input rows were reviewed. New source bodies: 57 (15 + 20 + 7 + 3 + 12).
 Five library/generated exclusions; 15 retained existing implementations/models
-with their original qualifications; twelve explicit contract gaps remain.
+with their original qualifications. The twelve former contract gaps are closed
+by the follow-up in [OCT18_TB_CONTRACTS.md](OCT18_TB_CONTRACTS.md).
 Both former metadata holds cleared during this turn and their ready rows were
 closed. Existing bounded models are not promoted to native whole-body credit
 by this audit. No game-host switches, original ABI or gameplay claim.
@@ -151,13 +152,13 @@ by this audit. No game-host switches, original ABI or gameplay claim.
 | 00780D10 | library/generated exclusion | Recorded out-of-scope in ledger; evidence in classification table |
 | 007810F0 | new batch 1 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 | 007844E0 | new batch 2 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
-| 00784C40 | uncertain/contract gap | Timeout policy read; unspilled ST0 return/threshold comparisons require an explicitly qualified x87 provider contract |
+| 00784C40 | new contract follow-up | Explicit80-bit elapsed provider and ordered x87 comparison; OCT18_TB_CONTRACTS.md |
 | 00784CD0 | new batch 1 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
-| 007850E0 | uncertain/contract gap | Silence policy read; x87 and warning/disconnect callback/global reload contract require qualification |
+| 007850E0 | new contract follow-up | Binary32 spill, warning and late-global disconnect contract; OCT18_TB_CONTRACTS.md |
 | 00785170 | new batch 2 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 | 007857F0 | new batch 2 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 | 00785CC0 | new batch 2 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
-| 00787850 | uncertain/contract gap | Only borrowed cursor fragment already reconstructed; full ring timing, unsigned x87 conversion and message-factory composition remain unbound |
+| 00787850 | new contract follow-up | Four-argument ring timing, original x87 truncation, message accounting and stream ownership; OCT18_TB_CONTRACTS.md |
 | 00797DA0 | new batch 1 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 | 0079A380 | new batch 1 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 | 0079D840 | new batch 1 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
@@ -167,8 +168,8 @@ by this audit. No game-host switches, original ABI or gameplay claim.
 | 007F8890 | new batch 4 | Metadata ownership cleared during this turn; explicit raw profile/list/set/counter policy with canonical library providers, see batch 4 |
 | 007FB990 | new batch 4 | Metadata ownership cleared during this turn; explicit raw profile/list/set/counter policy with canonical library providers, see batch 4 |
 | 007FBE20 | new batch 4 | Metadata ownership cleared during this turn; explicit raw profile/list/set/counter policy with canonical library providers, see batch 4 |
-| 0081B630 | uncertain/contract gap | World transform/effect/event path read; effect ref ownership and warning argument transport not closed |
-| 0081B7C0 | uncertain/contract gap | Camo path read; resource-manager ref ownership, register arguments and diffuse-color tail not closed |
+| 0081B630 | new contract follow-up | Consumed definition, temporary effect release and recovered warning/virtual arguments; OCT18_TB_CONTRACTS.md |
+| 0081B7C0 | new contract follow-up | Resource references, register arguments, color allocation and live RGBA tail; OCT18_TB_CONTRACTS.md |
 | 0081BFE0 | new batch 2 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 | 0081E350 | library/generated exclusion | Recorded out-of-scope in ledger; evidence in classification table |
 | 00835610 | new batch 2 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
@@ -176,7 +177,7 @@ by this audit. No game-host switches, original ABI or gameplay claim.
 | 008362A0 | new batch 2 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 | 008363E0 | new batch 2 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 | 008364B0 | new batch 1 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
-| 00836510 | uncertain/contract gap | Reference visitor tail uses mutable stack aliases for fireTargetID/primary before StoreFireTarget; preserve qualification instead of inventing temporary defaults |
+| 00836510 | new contract follow-up | Preserve self-alias and saved-pointer force preimage; missing type4 field leaves target untouched; OCT18_TB_CONTRACTS.md |
 | 00836680 | new batch 1 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 | 00836790 | new batch 1 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 | 008367F0 | new batch 1 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
@@ -191,12 +192,12 @@ by this audit. No game-host switches, original ABI or gameplay claim.
 | 00864880 | existing bounded source | src/ship_gunnery_ver_cc13.cpp; artillery-ranging model, not complete raw constructor |
 | 00864CA0 | new batch 2 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 | 008826F0 | new batch 2 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
-| 00892660 | uncertain/contract gap | Existing mission Lua host covers name; original debug-format/angle result and call-frame transport remain unqualified |
-| 008CBCB0 | uncertain/contract gap | Existing mission Lua host covers name; original object-handle/tree error transport and Lua frame lifetime remain unqualified |
-| 008D08B0 | uncertain/contract gap | Existing mission Lua host covers name; original optional integer/string/table and voiceover ownership branches remain unqualified |
-| 008D2F50 | uncertain/contract gap | Large Lua loader only partly reconstructed by existing fragments; all table mappings, native Lua owners and latency producer need a separate packet |
+| 00892660 | new contract follow-up | Actual borrowed Lua owner/frame, raw DC-form angle math, discarded formatting; OCT18_TB_CONTRACTS.md |
+| 008CBCB0 | new contract follow-up | Actual Lua argument lifetimes and required checked set insert/find/erase; OCT18_TB_CONTRACTS.md |
+| 008D08B0 | new contract follow-up | Optional player, strings/table, handles, local/nonlocal message and cleanup; OCT18_TB_CONTRACTS.md |
+| 008D2F50 | new contract follow-up | Full table/override/default loader over actual Lua owners and native map bindings; OCT18_TB_CONTRACTS.md |
 | 008D44C0 | existing source | src/game_settings.cpp: set_xbox_compatibility_008d44c0 and src/lua_runtime_globals.cpp publication; no duplicate |
-| 008E2EE0 | uncertain/contract gap | Ping source policy read; rate-limit x87 timing, native message/chat ownership and integer formatting remain open |
+| 008E2EE0 | new contract follow-up | Mode ECX, x87 cooldown, native message36 and exact pooled chat temporary schedule; OCT18_TB_CONTRACTS.md |
 | 008EE670 | new batch 3 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 | 008EF170 | existing native source | Address-suffixed definition already in src\native_scene_property_clone.cpp, src\native_scene_property_record_type1_float_storage.cpp; retain existing admission qualifications |
 | 008EF1B0 | existing native source | Address-suffixed definition already in src\native_scene_property_clone.cpp, src\native_scene_property_record_type2_string_storage.cpp; retain existing admission qualifications |
@@ -211,7 +212,7 @@ by this audit. No game-host switches, original ABI or gameplay claim.
 | 008F81F0 | existing bounded source | src/winmain_startup.cpp and process bindings in src/game_hosts.cpp; original raw SEH/lifetime remains qualified |
 | 008FE790 | new batch 2 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 | 0090C560 | existing source | src/profile_unlock.cpp plus include/bsp/profile_unlock.hpp: present/nonzero completion predicate; typed model only |
-| 0091CE90 | uncertain/contract gap | Existing persisted defaults only; dozens of heterogeneous STL-head owners and EH rollback require a complete lifetime/provider schema |
+| 0091CE90 | new contract follow-up |36 tree heads, three vector headers, original defaults and38-action reverse rollback; OCT18_TB_CONTRACTS.md |
 | 0091D620 | new batch 2 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 | 00922DC0 | new batch 3 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 | 00924A70 | library/generated exclusion | POD list destructor; rehead, free nodes and sentinel, zero head; ledger exclusion recorded after cc15 ownership cleared |
@@ -222,7 +223,7 @@ by this audit. No game-host switches, original ABI or gameplay claim.
 | 00968AF0 | new batch 3 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 
 Coordinator action: retain the five exclusions and existing native-property
-admission limits, and size separate packets for the twelve explicit ABI, x87,
-Lua/message, visitor or container-lifetime gaps. No row remains skipped solely
-because of another lane ownership hold. The worktree is retained for cleanup
+admission limits. The follow-up closes all twelve source contract gaps; no row
+remains skipped for another lane's ownership. Original ABI, application binding
+and gameplay admission remain separate. The worktree is retained for cleanup
 by the coordinator.

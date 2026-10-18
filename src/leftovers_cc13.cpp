@@ -564,6 +564,704 @@ bool recon_subscription_matches_00968470(const void* subscription,
 }
 } // namespace bsp::oct18_tail_b
 
+#include "bsp/oct18_tail_b_contracts.hpp"
+#include "bsp/native_bit_cursor_read.hpp"
+#include "bsp/native_checked_string_storage.hpp"
+#include "bsp/singleton_lifetime.hpp"
+#include <cstdio>
+
+namespace bsp::oct18_tail_b_contracts {
+namespace {
+void* offset(void* p,std::uint32_t n) {return static_cast<unsigned char*>(p)+n;}
+const void* offset(const void* p,std::uint32_t n) {return static_cast<const unsigned char*>(p)+n;}
+template<class T> T read(const void* p,std::uint32_t n) {T v;std::memcpy(&v,offset(p,n),sizeof v);return v;}
+template<class T> void write(void* p,std::uint32_t n,T v) {std::memcpy(offset(p,n),&v,sizeof v);}
+std::uint32_t bits(const void* p) {return static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(p));}
+std::uint32_t difference(const void* a,const void* b) {return bits(a)-bits(b);}
+struct StringLocal {
+    NativeString value;
+    NativeStringStorage& storage;
+    bool live=true;
+    explicit StringLocal(NativeStringStorage& s):storage(s) {}
+    StringLocal(NativeStringStorage& s,bool published):storage(s),live(published) {}
+    StringLocal(NativeStringStorage& s,const char* text):storage(s) {value.assign_0041e870(s,text);}
+    ~StringLocal() {if(live)destroy_native_string_header_0041dd20(&value,storage);}
+    StringLocal(const StringLocal&)=delete;
+};
+// Native owner destructors leave the local header unchanged. Keep that behavior
+// rather than making release_to's extra zero stores part of these contracts.
+template<class Binding> struct RefLocal {
+    Binding& binding;void* value;
+    RefLocal(Binding& b,void* v):binding(b),value(v) {}
+    void release() noexcept {void* v=value;value=nullptr;if(v)binding.release(v);}
+    ~RefLocal() {release();}
+};
+}
+
+void capture_elapsed_00a3bf50(void* entry,void* console,void* channel_ipv4,X87Value& out) {
+    unsigned char* destination=out.bytes;
+    __asm {
+        push channel_ipv4
+        mov ecx,console
+        call entry
+        mov eax,destination
+        fstp tbyte ptr [eax]
+    }
+}
+bool ordered_x87_greater(const X87Value& value,float threshold) {
+    const unsigned char* source=value.bytes;unsigned char above;
+    __asm {
+        fld threshold
+        mov eax,source
+        fld tbyte ptr [eax]
+        fcomip st(0),st(1)
+        fstp st(0)
+        seta above
+    }
+    return above!=0;
+}
+float spill_x87_binary32(const X87Value& value) {
+    const unsigned char* source=value.bytes;float result;
+    __asm {
+        mov eax,source
+        fld tbyte ptr [eax]
+        fstp result
+    }
+    return result;
+}
+
+// Disk bytes 787880..7878E3: FILD64/FDIVP/FSTP32; unsigned-origin
+// correction; FSUBP/FDIV32; saved CW|0C00h/FISTP64; low DWORD unsigned DIV.
+PacketTick packet_statistics_tick(const ClockPair& pair,void* actual) {
+    const ClockPair* clock=&pair;
+    const float unsigned_correction=4294967296.0f;
+    float seconds;unsigned short saved,truncation;std::int64_t converted;
+    std::uint32_t tick,index;
+    __asm {
+        mov eax,clock
+        fild qword ptr [eax]
+        fild qword ptr [eax+8]
+        fdivp st(1),st(0)
+        fstp seconds
+        fld seconds
+        mov esi,actual
+        fild dword ptr [esi+0762968h]
+        cmp dword ptr [esi+0762968h],0
+        jge origin_ready
+        fadd unsigned_correction
+origin_ready:
+        fsubp st(1),st(0)
+        mov edi,dword ptr [esi+076295Ch]
+        sub edi,dword ptr [esi+0762958h]
+        fnstcw saved
+        fdiv dword ptr [esi+0762964h]
+        movzx eax,saved
+        or eax,0C00h
+        mov truncation,ax
+        fldcw truncation
+        fistp converted
+        mov ecx,dword ptr converted
+        mov eax,ecx
+        xor edx,edx
+        div edi
+        fldcw saved
+        mov tick,ecx
+        mov index,edx
+    }
+    return {tick,index};
+}
+void kick_timed_out_peers_00784c40(void* network,float threshold,
+    NetworkGlobals& globals,NetworkBindings& binding) {
+    if(read<std::uint32_t>(network,0x10)<=1)return;
+    void* node=read<void*>(read<void*>(network,0xc),0);
+    if(node==read<void*>(network,0xc))binding.invalid_iterator_00bf6713();
+    node=read<void*>(node,0); // skip the first peer, before testing the loop end
+    while(node!=read<void*>(network,0xc)) {
+        void* peer=offset(node,8);X87Value elapsed;
+        binding.elapsed_00a3bf50(globals.console_00f8abdc,offset(peer,0xd74),elapsed);
+        if(ordered_x87_greater(elapsed,threshold))binding.kick_00784b10(network,peer,0);
+        if(node==read<void*>(network,0xc))binding.invalid_iterator_00bf6713();
+        node=read<void*>(node,0);
+    }
+}
+void check_server_silence_007850e0(void* client,float threshold,
+    NetworkGlobals& globals,NetworkBindings& binding) {
+    if(read<std::int32_t>(client,0x9c)<7)return;
+    float elapsed=globals.maximum_00cf4888;
+    if(read<std::uint32_t>(client,0x10)>0) {
+        void* node=read<void*>(read<void*>(client,0xc),0);
+        if(node==read<void*>(client,0xc))binding.invalid_iterator_00bf6713();
+        void* peer=offset(node,8);
+        if(peer) {X87Value result;binding.elapsed_00a3bf50(globals.console_00f8abdc,
+            offset(peer,0xd74),result);elapsed=spill_x87_binary32(result);}
+    }
+    void* game=globals.game_00e188a8;
+    if(!game)return;
+    // COMISS/JBE: unordered also returns. Threshold path is x87 FCOMIP/JBE.
+    const float warning=globals.warning_00ce3814;unsigned char above;
+    __asm {
+        movss xmm0,elapsed
+        comiss xmm0,warning
+        seta above
+    }
+    if(!above)return;
+    binding.warn_004ca120(game);
+    __asm {
+        fld threshold
+        fld elapsed
+        fcomip st(0),st(1)
+        fstp st(0)
+        seta above
+    }
+    if(above)binding.disconnect_slot3c(read<void*>(globals.game_00e188a8,0x207c));
+}
+void record_packet_statistics_00787850(void* statistics,const std::uint8_t* data,
+    std::uint32_t length,std::uint32_t unused,std::uint8_t direction,
+    NetworkGlobals& globals,NetworkBindings& binding) {
+    (void)unused;ClockPair temporary;
+    const ClockPair* pair=binding.clock_slot20(globals.clock_01090ab0,temporary);
+    const auto result=packet_statistics_tick(*pair,statistics);
+    write(statistics,0x762960,result.index);
+    if(result.tick>=read<std::uint32_t>(statistics,0x764998))write<std::uint8_t>(statistics,0x7649a8,1);
+    const auto upper=read<std::uint32_t>(statistics,0x76295c);
+    if(result.tick>=upper) {
+        write(statistics,0x762958,read<std::uint32_t>(statistics,0x762958)+1000u);
+        write(statistics,0x76295c,upper+1000u);
+    } else if(result.tick<read<std::uint32_t>(statistics,0x762958))return;
+    NativeSessionReadStream stream;
+    stream.profile_00=globals.stream_profile_00d0385c;
+    stream.cursor_04={data,length,data,0};stream.owns_14=0;
+    struct Cleanup {
+        NativeSessionReadStream& stream;NetworkGlobals& globals;NetworkBindings& binding;
+        ~Cleanup(){stream.profile_00=globals.stream_profile_00d0385c;
+            if(stream.owns_14)binding.free_00bf65ac(const_cast<std::uint8_t*>(stream.cursor_04.base_00));}
+    } cleanup{stream,globals,binding};
+    std::uint16_t sequence,flags;
+    read_native_u16_bits_00428cb0(&stream.cursor_04,&sequence,16);
+    read_native_u16_bits_00428cb0(&stream.cursor_04,&flags,3);
+    auto used=[&](){return difference(stream.cursor_04.current_08,stream.cursor_04.base_00)*8u+
+        static_cast<std::uint32_t>(stream.cursor_04.bit_0c)+7u;};
+    const std::uint32_t total=length*8u;
+    std::uint32_t previous=used();
+    while(static_cast<std::int32_t>(previous)<static_cast<std::int32_t>(total)) {
+        void* message=binding.create_message_00768530(stream);
+        const std::uint32_t delta=used()-previous;
+        const std::uint32_t lane=direction==0?1u:0u;
+        void* row=offset(statistics,4+(2*read<std::uint32_t>(statistics,0x762960)+lane)*0xef4u);
+        if(sequence<read<std::uint16_t>(row,0xef0))write(row,0xef0,sequence);
+        if(sequence>read<std::uint16_t>(row,0xef2))write(row,0xef2,sequence);
+        if(message) {
+            void* cell=offset(row,read<std::uint8_t>(message,0x10)*16u);
+            write(cell,0,read<std::uint32_t>(cell,0)+1u);
+            write(cell,4,read<std::uint32_t>(cell,4)+delta);
+            // Native MOVSX followed by unsigned CMP; do not normalize to uint16.
+            if(static_cast<std::uint32_t>(static_cast<std::int32_t>(read<std::int16_t>(cell,0xc)))>delta)
+                write<std::uint16_t>(cell,0xc,static_cast<std::uint16_t>(delta));
+            if(static_cast<std::uint32_t>(static_cast<std::int32_t>(read<std::int16_t>(cell,0xe)))<delta)
+                write<std::uint16_t>(cell,0xe,static_cast<std::uint16_t>(delta));
+        }
+        previous=used();
+    }
+    const std::uint32_t lane=direction==0?1u:0u;
+    const auto tail=(2*read<std::uint32_t>(statistics,0x762960)+lane)*0xef4u+0xeacu;
+    write(statistics,tail,read<std::uint32_t>(statistics,tail)+8u);
+}
+
+void fail_ship_section_0081b630(void* record,void* volatile& current_game,
+    void* volatile& warnings,NativeStringStorage& strings,EffectBindings& binding) {
+    void* endpoint=read<void*>(record,4);
+    void* owner=endpoint?reinterpret_cast<void*>(bits(endpoint)-0x310u):nullptr;
+    if(!read<std::uint8_t>(owner,0xc8))binding.refresh_owner_00414db0(owner);
+    float transformed[3];binding.transform_point_004142e0(offset(record,0x1c),transformed,offset(owner,0xcc));
+    float position[3];std::memcpy(position,transformed,sizeof position);
+    if(read<void*>(record,0x34)) {
+        void* manager=read<void*>(current_game,0x19ec);
+        void* definition=read<void*>(record,0x34);
+        binding.retain(definition);
+        void* out;
+        void** returned=binding.create_effect_008685e0(&out,manager,definition,position,0,0);
+        void* effect=*returned;
+        {RefLocal<EffectBindings> release(binding,out);} // release BEFORE byte+9
+        if(effect)write<std::uint8_t>(effect,9,1);
+    }
+    binding.owner_slot1ac(owner,read<float>(record,0x2c));
+    binding.record_slot10(record);
+    StringLocal event(strings,"Explosion");
+    binding.report_00982c50(warnings,owner,event.value,0.0f);
+}
+void apply_camo_0081b7c0(void* unit,std::uint32_t index,void* volatile& resource_manager,
+    NativeStringStorage& strings,CamoBindings& binding) {
+    void* definition=read<void*>(unit,0x538);
+    void* begin=read<void*>(definition,0x710);
+    if(!begin || begin==read<void*>(definition,0x714))return;
+    const auto count=static_cast<std::uint32_t>(static_cast<std::int32_t>(difference(read<void*>(definition,0x714),begin))>>2);
+    if(count<=index)return;
+    if(!read<void*>(definition,0x710) || index>=static_cast<std::uint32_t>(
+        static_cast<std::int32_t>(difference(read<void*>(definition,0x714),read<void*>(definition,0x710)))>>2))
+        binding.invalid_iterator_00bf6713();
+    void* camo=read<void*>(read<void*>(definition,0x710),index*4);
+    if(!camo)return;
+    void* entries=offset(camo,8);void* entry=read<void*>(entries,4);
+    if(bits(entry)>bits(read<void*>(entries,8)))binding.invalid_iterator_00bf6713();
+    for(;;) {
+        if(bits(read<void*>(entries,4))>bits(read<void*>(entries,8)))binding.invalid_iterator_00bf6713();
+        if(entry==read<void*>(entries,8))break;
+        if(read<void*>(entries,4) && (static_cast<std::int32_t>(difference(
+            read<void*>(entries,8),read<void*>(entries,4)))>>4)!=0) {
+            if(bits(entry)>=bits(read<void*>(entries,8)))binding.invalid_iterator_00bf6713();
+            RefLocal<CamoBindings> first(binding,binding.load_slot64(resource_manager,entry,0));
+            if(bits(entry)>=bits(read<void*>(entries,8)))binding.invalid_iterator_00bf6713();
+            RefLocal<CamoBindings> second(binding,binding.load_slot64(resource_manager,offset(entry,8),0));
+            binding.textures_00b850f0(read<void*>(binding.visual_00476b90(unit),0xc),first.value,second.value);
+        }
+        if(bits(entry)>=bits(read<void*>(entries,8)))binding.invalid_iterator_00bf6713();
+        entry=offset(entry,0x10);
+    }
+    if(!read<std::uint8_t>(camo,0x18))return;
+    void* color=binding.allocate_00bf681b(0x18);
+    if(color) {
+        write<std::uint32_t>(color,0,0x00ceb130);write<std::uint32_t>(color,4,1);
+        write<std::uint32_t>(color,0,0x00d09430);
+        for(std::uint32_t i=0;i!=16;i+=4)write(color,8+i,read<std::uint32_t>(camo,0x1c+i));
+    }
+    RefLocal<CamoBindings> release_color(binding,color);
+    for(void* child=read<void*>(unit,0x48);child;child=read<void*>(child,0x44)) {
+        if(!binding.child_kind_slot5c(child,4))continue;
+        void* klass=read<void*>(child,0x360);if(!klass)continue;
+        void* visual=read<void*>(klass,0x160);if(!visual)continue;
+        StringLocal key(strings,"gun");
+        binding.color_00b85200(read<void*>(visual,0xc),key.value,offset(camo,0x1c));
+    }
+}
+void visit_director_enables_00836510(void* director,DirectorVisitor& visitor) {
+    auto name=[](const char* p){return VisitPair{0,const_cast<char*>(p)};};
+    visitor.begin_slot04(name("_gameUnit"));
+    // 0071BDC0 is a proven bare RET base visitor.
+    visitor.end_slot08();
+    const char* names[]={"artilleryEnabled","aaEnabled","torpedoEnabled","depthChargeEnabled"};
+    for(std::uint32_t i=0;i!=4;++i)visitor.field_slot10(name(names[i]),{3,offset(director,0x220+i)});
+    std::uint32_t force=bits(director); // original PUSH ECX local, not zero
+    VisitPair reused;
+    void* target=&reused; // original stack slot initially points at value pair
+    reused={4,&target};visitor.field_slot10(name("fireTargetID"),reused);
+    reused={3,&force};visitor.field_slot10(name("fireTargetIsPrimary"),reused);
+    if(target)visitor.target_00836240(director,target,force);
+}
+
+namespace {
+struct LuaOwnerLocal {
+    NativeLuaStateStorage value;
+    LuaOwnerLocal() {construct_native_lua_state_00b66bd0(&value);}
+    LuaOwnerLocal(lua_State& state,int (*do_file)(lua_State*)) {
+        construct_native_lua_borrowed_state_00b66c00(&value,state,do_file);
+    }
+    ~LuaOwnerLocal() {close_native_lua_state_00b669a0(value);}
+    LuaOwnerLocal(const LuaOwnerLocal&)=delete;
+};
+struct LuaLocal {
+    NativeLuaObjectStorage value;
+    LuaLocal() {construct_native_lua_object_00b65f50(&value);}
+    LuaLocal(NativeLuaStateStorage& state,bool frame) {
+        if(frame)native_lua_call_frame_00b679b0(state,&value);
+        else native_lua_globals_00b67980(state,&value);
+    }
+    LuaLocal(NativeLuaObjectStorage& parent,const char* name) {
+        native_lua_get_by_name_00b67800(parent,&value,name);
+    }
+    LuaLocal(NativeLuaObjectStorage& frame,std::int32_t index) {
+        native_lua_argument_at_00b677e0(frame,&value,index);
+    }
+    ~LuaLocal() {destroy_native_lua_object_00b67700(value);}
+    LuaLocal(const LuaLocal&)=delete; // tracked objects MUST NOT move
+};
+void binding_preamble(BindingOnce once,NativeStringStorage& strings,const char* text) {
+    {StringLocal diagnostic(strings,text);}
+    if((once.flags&1u)==0) {
+        once.flags|=1u;
+        StringLocal category(strings,"luakod");
+        once.log=0;
+    }
+}
+struct AngleIntegers {std::int32_t first,second;};
+AngleIntegers camera_angle_integers(float first,float second,void* entry) {
+    const double pi=3.1415927410125732421875; // exact bytes00CE3D28
+    const double degrees=180.0;std::int32_t a,b;
+    __asm {
+        mov esi,entry
+        fld first
+        fld pi
+        fdiv st(1),st(0)
+        fld degrees
+        // DC CA is FMUL ST(2),ST(0), not FMUL ST(0),ST(2).
+        fmul st(2),st(0)
+        fxch st(2)
+        call esi
+        mov a,eax
+        fdivr second
+        fmulp st(1),st(0)
+        call esi
+        mov b,eax
+    }
+    return {a,b};
+}
+std::int32_t trunc_ss(float value) {
+    std::int32_t result;
+    __asm {cvttss2si eax,value
+        mov result,eax}
+    return result;
+}
+struct CheckedStringLocal {
+    struct Header {std::uint32_t opaque;void* begin;void* end;void* capacity;} value;
+    NativeStringStorage& strings;
+    explicit CheckedStringLocal(NativeStringStorage& s):strings(s) {
+        value.begin=nullptr;value.end=nullptr;value.capacity=nullptr;
+    }
+    ~CheckedStringLocal() {
+        if(value.begin) {
+            for(void* p=value.begin;p!=value.end;p=offset(p,8))destroy_native_string_header_0041dd20(p,strings);
+            singleton_lifetime_free(value.begin);
+        }
+        value.begin=value.end=value.capacity=nullptr;
+    }
+    void append(const NativeString& text) {append_checked_native_string_storage(&value,&text,strings);}
+};
+}
+
+// 892660: ECX lua_State*, EAX result count, RET. Formats diagnostics in a
+// discarded256-byte buffer; it does not push a position table or any Lua value.
+int free_camera_get_pos_00892660(lua_State& state,BindingOnce once,LuaContext& context,LuaBindings& binding) {
+    binding_preamble(once,context.strings,"luaMW_FreeCameraGetPos failed:");
+    LuaOwnerLocal owner(state,context.do_file_00b69e00);LuaLocal frame(owner.value,true);
+    void* camera=read<void*>(read<void*>(context.gui_00e198c4,0x90),0x24);
+    float position[3]={0,0,0},first=0,second=0,third;
+    if(camera) {
+        position[0]=read<float>(camera,0xa4);position[1]=read<float>(camera,0xa8);position[2]=read<float>(camera,0xac);
+        binding.camera_angles_0042d2e0(offset(camera,0x74),&first,&second,&third);
+    }
+    const auto angles=camera_angle_integers(first,second,binding.ftol2_entry_00bf7420());
+    const auto y=trunc_ss(position[1]),x=trunc_ss(position[0]),z=trunc_ss(position[2]);
+    char buffer[256];
+    std::sprintf(buffer,"pos:(%d %d %d), horiz_angle:%d, vert_angle:%d",
+        x,y,z,angles.second,angles.first);
+    return binding.result_count_00b66400(frame.value);
+}
+// 8CBCB0: ECX lua_State*, EAX result count, RET. Required STL bindings own
+// their ordinary iterator result temporaries; no replacement set is created.
+int force_arrows_008cbcb0(lua_State& state,BindingOnce once,LuaContext& context,LuaBindings& binding) {
+    binding_preamble(once,context.strings,"luaMW_ForceArrows failed:");
+    LuaOwnerLocal owner(state,context.do_file_00b69e00);LuaLocal frame(owner.value,true);
+    std::uint32_t handle;
+    {LuaLocal argument(frame.value,0);handle=binding.object_handle_00888aa0(argument.value);}
+    bool enabled;
+    {LuaLocal argument(frame.value,1);enabled=native_lua_boolean_00b66250(argument.value);}
+    void* set=offset(read<void*>(context.gui_00e198c4,0x54),0x78);
+    if(enabled)binding.insert_arrows_008caee0(set,handle);
+    else {
+        auto found=binding.find_arrows_005a16f0(set,handle);
+        if(!found.owner || found.owner!=set)binding.invalid_iterator_00bf6713();
+        if(found.node!=read<void*>(set,4))binding.erase_arrows_005a5070(set,found);
+    }
+    return binding.result_count_00b66400(frame.value);
+}
+int display_message_008d08b0(lua_State& state,BindingOnce once,LuaContext& context,LuaBindings& binding) {
+    binding_preamble(once,context.strings,"luaMW_DisplayMessage failed:");
+    LuaOwnerLocal owner(state,context.do_file_00b69e00);LuaLocal frame(owner.value,true);
+    {LuaLocal probe(frame.value,0);(void)native_lua_is_integer_number_00b66a60(probe.value);}
+    CheckedStringLocal strings(context.strings);
+    const std::int32_t local_player=read<std::int32_t>(context.game_00e188a8,0x18ec);
+    std::int32_t player=local_player,index=0;std::uint32_t first=0,second=0;
+    bool has_player;
+    {LuaLocal probe(frame.value,0);has_player=native_lua_is_integer_number_00b66a60(probe.value);}
+    if(has_player) {
+        LuaLocal argument(frame.value,0);
+        player=native_lua_integer_00b66290(argument.value,context.crt_sse2_conversion);index=1;
+    }
+    bool is_string;
+    {LuaLocal probe(frame.value,index);is_string=native_lua_is_string_00b660a0(probe.value);}
+    if(is_string) {
+        LuaLocal argument(frame.value,index);
+        StringLocal text(context.strings,native_lua_string_00b662b0(argument.value));strings.append(text.value);
+    } else {
+        LuaLocal key,value;
+        {LuaLocal table(frame.value,index);native_lua_iterate_first_00b67080(table.value,key.value,value.value);}
+        bool end;
+        {LuaLocal ignored(frame.value,index);end=native_lua_is_unbound_00b66420(key.value);}
+        while(!end) {
+            {StringLocal text(context.strings,native_lua_string_00b662b0(value.value));strings.append(text.value);}
+            {LuaLocal table(frame.value,index);native_lua_iterate_next_00b67190(table.value,key.value,value.value);}
+            {LuaLocal ignored(frame.value,index);end=native_lua_is_unbound_00b66420(key.value);}
+        }
+    }
+    ++index;
+    if(binding.argument_count_00b663f0(frame.value)>=3) {
+        LuaLocal argument(frame.value,index);first=binding.object_handle_00888aa0(argument.value);
+    }
+    ++index;
+    if(binding.argument_count_00b663f0(frame.value)>=4) {
+        LuaLocal argument(frame.value,index);second=binding.object_handle_00888aa0(argument.value);
+    }
+    if(player==local_player)binding.report_strings_00976cb0(context.warnings_00f8a0c4,&strings.value,first,second);
+    else {
+        void* peer=read<void*>(context.game_00e188a8,0x18cc+4u*static_cast<std::uint32_t>(player));
+        if(read<std::uint8_t>(peer,8) && (!read<std::uint8_t>(peer,9)||read<std::uint8_t>(peer,10)) && read<std::uint32_t>(peer,0x50)) {
+            if(!strings.value.begin || difference(strings.value.end,strings.value.begin)/8u==0)
+                binding.invalid_iterator_00bf6713();
+            alignas(4) unsigned char message[0x20];
+            void* built=binding.named_message_0088b7b0(message,strings.value.begin);
+            struct Cleanup {void* object;LuaBindings& binding;~Cleanup(){binding.destroy_named_message_007656e0(object);}} cleanup{message,binding};
+            const auto peer_id=read<std::uint32_t>(peer,0x50);
+            binding.send_nonlocal_00770b50(offset(context.game_00e188a8,0x1ef0),peer_id,built);
+        }
+    }
+    return binding.result_count_00b66400(frame.value);
+}
+
+void load_lobby_tables_008d2f50(void* settings,NativeStringStorage& strings,LobbyGlobals& globals,LobbyBindings& binding) {
+    LuaOwnerLocal owner;
+    binding.open_00b6a020(owner.value,1);
+    {StringLocal path(strings,"Scripts\\datatables\\MultiGlobals.lua");binding.run_00b69d40(owner.value,path.value,0);}
+    LuaLocal root(owner.value,false),latency(root.value,"LatencyLevel"),latency_key,latency_value;
+    auto integer=[&](NativeLuaObjectStorage& value){return native_lua_integer_00b66290(value,globals.crt_sse2_conversion);};
+    native_lua_iterate_first_00b67080(latency.value,latency_key.value,latency_value.value);
+    while(!native_lua_is_unbound_00b66420(latency_key.value)) {
+        const std::int32_t index=integer(latency_key.value);float minimum,maximum,drop,weight;
+        {LuaLocal field(latency_value.value,"Latency_Min");minimum=native_lua_number_or_00b66330(field.value,0);}
+        {LuaLocal field(latency_value.value,"Latency_Max");maximum=native_lua_number_or_00b66330(field.value,globals.maximum_00cf4888);}
+        {LuaLocal field(latency_value.value,"Packet_Drop");drop=native_lua_number_or_00b66330(field.value,0);}
+        {LuaLocal field(latency_value.value,"Sync_Send_Weight");weight=native_lua_number_or_00b66330(field.value,1.0f);}
+        binding.latency_00a3a890(globals.console_00f8abdc,static_cast<std::int32_t>(static_cast<std::uint32_t>(index)-1),maximum,minimum,drop,weight);
+        native_lua_iterate_next_00b67190(latency.value,latency_key.value,latency_value.value);
+    }
+    LuaLocal levels(root.value,"BandwithLevels"),level_key,level_value;
+    native_lua_iterate_first_00b67080(levels.value,level_key.value,level_value.value);
+    while(!native_lua_is_unbound_00b66420(level_key.value)) {
+        const auto value=integer(level_value.value);const auto key=integer(level_key.value);
+        write(settings,0x8c+4u*static_cast<std::uint32_t>(key),value);
+        native_lua_iterate_next_00b67190(levels.value,level_key.value,level_value.value);
+    }
+    {LuaLocal ping(root.value,"PingLevelsForLobby");assign_native_lua_object_00b67690(levels.value,ping.value);}
+    native_lua_iterate_first_00b67080(levels.value,level_key.value,level_value.value);
+    while(!native_lua_is_unbound_00b66420(level_key.value)) {
+        const float value=native_lua_number_00b66270(level_value.value);const auto key=integer(level_key.value);
+        write(settings,0xa0+4u*static_cast<std::uint32_t>(key),value);
+        native_lua_iterate_next_00b67190(levels.value,level_key.value,level_value.value);
+    }
+    for(std::uint32_t n=0x40;n<=0x8c;n+=4)write<std::uint32_t>(settings,n,0);
+    LuaLocal lobby(root.value,"MultiLobbySettings"),slot,options,option,choices,key,value;
+    auto enabled=[&](){const auto inner=integer(option.value),outer=integer(slot.value);
+        return binding.enabled_005c6850_005c49c0(offset(settings,0x28),outer,inner);};
+    auto text_cell=[&](std::uint32_t base){const auto inner=integer(option.value),outer=integer(slot.value);
+        return binding.text_00575e80_005732c0(offset(settings,base),outer,inner);};
+    auto number_cell=[&](){const auto inner=integer(option.value),outer=integer(slot.value);
+        return binding.number_00575fd0_00573410(offset(settings,0x1c),outer,inner);};
+    auto duplicate=[&](NativeLuaObjectStorage& object) {
+        const char* first=native_lua_string_00b662b0(object);std::uint32_t length=0;
+        while(first[length])++length;
+        char* copy=binding.allocate_00bf55be(length+1);
+        const char* current=native_lua_string_00b662b0(object);char* out=copy;
+        do {*out=*current;++out;}while(*current++);
+        return copy;
+    };
+    native_lua_iterate_first_00b67080(lobby.value,slot.value,options.value);
+    while(!native_lua_is_unbound_00b66420(slot.value)) {
+        if(native_lua_is_table_00b661b0(options.value)) {
+            native_lua_iterate_first_00b67080(options.value,option.value,choices.value);
+            while(!native_lua_is_unbound_00b66420(option.value)) {
+                if(native_lua_is_table_00b661b0(choices.value)) {
+                    native_lua_iterate_first_00b67080(choices.value,key.value,value.value);
+                    while(!native_lua_is_unbound_00b66420(key.value)) {
+                        bool has_disable;
+                        {LuaLocal marker(choices.value,"MenuDIS");has_disable=!native_lua_is_nil_00b65fb0(marker.value);}
+                        *enabled()=has_disable?0:1;
+                        bool has_default;
+                        {LuaLocal marker(choices.value,"Default");has_default=!native_lua_is_nil_00b65fb0(marker.value);}
+                        if(has_default) {const auto selected=integer(option.value),which=integer(slot.value);
+                            write(settings,0x40+4u*static_cast<std::uint32_t>(which),selected);}
+                        if(native_lua_is_string_00b660a0(key.value) && !native_lua_is_boolean_00b66000(value.value)) {
+                            char* label=duplicate(key.value);*text_cell(0x10)=label;
+                            char* selection=duplicate(value.value);*text_cell(0x34)=selection;
+                            *number_cell()=0;
+                        }
+                        if(native_lua_is_integer_number_00b66a60(key.value)) {
+                            char* selection=duplicate(value.value);
+                            *text_cell(0x10)=nullptr;*text_cell(0x34)=selection;
+                            std::int32_t* cell=number_cell();*cell=integer(key.value);
+                        }
+                        native_lua_iterate_next_00b67190(choices.value,key.value,value.value);
+                    }
+                }
+                native_lua_iterate_next_00b67190(options.value,option.value,choices.value);
+            }
+        }
+        native_lua_iterate_next_00b67190(lobby.value,slot.value,options.value);
+    }
+    void* vector=offset(read<void*>(globals.application_00e198ac,0x5c),0x24);
+    void* cursor=read<void*>(vector,4);std::uint32_t ordinal=0;
+    if(bits(cursor)>bits(read<void*>(vector,8)))binding.invalid_iterator_00bf6713();
+    auto checked=[&](){if(!vector || bits(cursor)>=bits(read<void*>(vector,8)))binding.invalid_iterator_00bf6713();};
+    auto string_at=[&](std::uint32_t n){checked();const char* p=read<const char*>(cursor,n);return p?p:"";};
+    for(;;) {
+        void* current=offset(read<void*>(globals.application_00e198ac,0x5c),0x24);
+        if(bits(read<void*>(current,4))>bits(read<void*>(current,8)) || vector!=current)
+            binding.invalid_iterator_00bf6713();
+        if(cursor==read<void*>(current,8))break;
+        const auto numeric=binding.atol_00bf8417(string_at(4));
+        if(numeric!=0) {
+            checked();char* selection=binding.allocate_00bf55be(read<std::uint32_t>(cursor,8)+1u);
+            const char* in=string_at(0xc);char* out=selection;do{*out=*in;++out;}while(*in++);
+            *binding.enabled_005c6850_005c49c0(offset(settings,0x28),1,binding.atol_00bf8417(string_at(4)))=1;
+            *binding.text_00575e80_005732c0(offset(settings,0x10),1,binding.atol_00bf8417(string_at(4)))=nullptr;
+            *binding.text_00575e80_005732c0(offset(settings,0x34),1,binding.atol_00bf8417(string_at(4)))=selection;
+            const auto which=binding.atol_00bf8417(string_at(4));++ordinal;
+            *binding.number_00575fd0_00573410(offset(settings,0x1c),1,which)=static_cast<std::int32_t>(ordinal);
+        }
+        checked();cursor=offset(cursor,0x434);
+    }
+    LuaLocal drop(root.value,"DropRateSettings");
+    if(native_lua_is_table_00b661b0(drop.value)) {
+        {LuaLocal field(drop.value,"DropRatePlayedMinimum");write(settings,0xb8,native_lua_integer_or_00b66380(field.value,0,globals.crt_sse2_conversion));}
+        {LuaLocal field(drop.value,"HighDropRatePercent");write(settings,0xbc,native_lua_number_or_00b66330(field.value,globals.drop_00d7a2f0));}
+    } else {const float fallback=globals.drop_00d7a2f0;write<std::uint32_t>(settings,0xb8,0);write(settings,0xbc,fallback);}
+    LuaLocal capture(root.value,"CaptureSettings");
+    if(native_lua_is_table_00b661b0(capture.value)) {
+        LuaLocal field(capture.value,"FallbackCapturePower");write(settings,0xc0,native_lua_number_or_00b66330(field.value,globals.capture_00ce3930));
+    } else write(settings,0xc0,static_cast<float>(globals.capture_00ce3930));
+    globals.loaded_00f88950=1;
+}
+
+namespace {
+void append_string(NativeString& destination,const NativeString& source,NativeStringStorage& strings) {
+    const auto size=source.length();
+    if(size) {const auto old=destination.length();destination.resize_0041dd40(strings,old+size,true);
+        std::memcpy(destination.data()+old,source.data(),size);}
+}
+std::int32_t ping_coordinate(float value,void* entry) {
+    const double divisor=100.0;std::int32_t result;
+    __asm {
+        fld value
+        fdiv divisor
+        call entry
+        mov result,eax
+    }
+    return result;
+}
+}
+void send_map_ping_008e2ee0(std::uint32_t mode,float x,float y,
+    volatile float& clock,volatile float& cooldown,void* volatile& current_game,
+    NativeStringStorage& strings,PingBindings& binding) {
+    const float now=clock,previous=cooldown;const double interval=8.0;
+    float next;unsigned char accepted;
+    __asm {
+        fld now
+        fld previous
+        fcomip st(0),st(1)
+        jbe accept_ping
+        fstp st(0)
+        mov accepted,0
+        jmp ping_time_done
+accept_ping:
+        fadd interval
+        fstp next
+        mov accepted,1
+ping_time_done:
+    }
+    if(!accepted) {write<std::uint8_t>(binding.sound_queue_004c1b90(),0x1c,1);return;}
+    cooldown=next;
+    void* game=current_game;
+    void* player=read<void*>(game,0x18cc+read<std::uint32_t>(game,0x18ec)*4u);
+    const auto player_id=read<std::uint32_t>(player,0x20);
+    alignas(4) unsigned char message[0x28];
+    binding.construct_base_0075b430(message,0x24);
+    write<const void*>(message,0,binding.message36_profile_00d03608());
+    write<std::uint32_t>(message,4,1);write(message,0x18,player_id);write(message,0x1c,mode);
+    write(message,0x20,x);write(message,0x24,y);
+    game=current_game;
+    if(read<std::uint32_t>(game,0x1fe4)==2)binding.send_server_00770af0(offset(game,0x1ef0),message);
+    else binding.receive_008e2da0(message);
+    StringLocal chat(strings,false);
+    {
+        StringLocal suffix(strings," has pinged on "),name(strings,static_cast<const char*>(offset(player,0x58)));
+        binding.concat_004261a0(name.value,chat.value,suffix.value);chat.live=true;
+    }
+    {
+        StringLocal close(strings,">"),comma(strings,","),open(strings,"<");
+        StringLocal first(strings,false);
+        binding.concat_integer_004263b0(open.value,first.value,ping_coordinate(x,binding.ftol2_entry_00bf7420()));first.live=true;
+        StringLocal separator(strings,false);
+        binding.concat_004261a0(first.value,separator.value,comma.value);separator.live=true;
+        StringLocal second(strings,false);
+        binding.concat_integer_004263b0(separator.value,second.value,ping_coordinate(y,binding.ftol2_entry_00bf7420()));second.live=true;
+        StringLocal completed(strings,false);
+        NativeString* result=binding.concat_004261a0(second.value,completed.value,close.value);completed.live=true;
+        append_string(chat.value,*result,strings);
+    }
+    if(mode==1) {StringLocal attack(strings," (attack)");append_string(chat.value,attack.value,strings);}
+    else if(mode==2) {StringLocal defend(strings," (defend)");append_string(chat.value,defend.value,strings);}
+    const std::uint8_t channel=read<std::uint32_t>(player,0x28)!=0?10:9;
+    StringLocal suffix(strings,""),prefix(strings,"");
+    binding.send_chat_00772170(offset(current_game,0x1ef0),prefix.value,channel,4,chat.value,suffix.value,-1,-1);
+}
+
+// 91CE90: ECX fresh284h record, EAX same, RET. Do not bulk-zero the owner:
+// proxy words, payload bytes and byte24D..24F are untouched by the native ctor.
+void* construct_score_record_0091ce90(void* record,ScoreLifetimeBindings& binding) {
+    struct Member {std::uint32_t owner,allocator,nil,destructor;};
+    static constexpr Member members[]={
+        {0x018,0x5826b0,0x19,0x590b40},{0x024,0x5826b0,0x19,0x590b40},
+        {0x030,0x5826b0,0x19,0x590b40},{0x03c,0x5826b0,0x19,0x590b40},
+        {0x048,0x5826b0,0x19,0x590b40},{0x054,0x5826b0,0x19,0x590b40},
+        {0x060,0x5826b0,0x19,0x590b40},{0x06c,0x5826b0,0x19,0x590b40},
+        {0x078,0x5826b0,0x19,0x590b40},{0x084,0x5826b0,0x19,0x590b40},
+        {0x090,0x5826b0,0x19,0x590b40},{0x09c,0x582700,0x1d,0x5933e0},
+        {0x0a8,0x582700,0x1d,0x5933e0},{0x0b4,0x582750,0x1d,0x593510},
+        {0x0c0,0x582750,0x1d,0x593510},{0x0cc,0x5827a0,0x1d,0x591ef0},
+        {0x0d8,0x5827f0,0x15,0x58ef80},{0x0e4,0x5827f0,0x15,0x58ef80},
+        {0x0f0,0x5827f0,0x15,0x58ef80},{0x0fc,0x5827f0,0x15,0x58ef80},
+        {0x108,0x5827f0,0x15,0x58ef80},{0x114,0x582840,0x15,0x58efc0},
+        {0x120,0x5826b0,0x19,0x590b40},
+        {0x12c,0,0,0x583d80},{0x13c,0,0,0x583d80},{0x14c,0,0,0x589450},
+        {0x15c,0x582890,0x15,0x58f000},{0x198,0x5828e0,0x15,0x58f040},
+        {0x1a4,0x5828e0,0x15,0x58f040},{0x1b0,0x5828e0,0x15,0x58f040},
+        {0x1bc,0x582930,0x3d,0x58f080},{0x1ec,0x5826b0,0x19,0x590b40},
+        {0x1f8,0x5826b0,0x19,0x590b40},{0x204,0x582630,0x21,0x590a90},
+        {0x210,0x582630,0x21,0x590a90},{0x21c,0x582630,0x21,0x590a90},
+        {0x228,0x582630,0x21,0x590a90},{0x234,0x582630,0x21,0x590a90},
+        {0x240,0x582630,0x21,0x590a90}
+    };
+    std::uint32_t complete=0;
+    try {
+        for(const auto& member:members) {
+            void* owner=offset(record,member.owner);
+            if(member.allocator) {
+                void* head=binding.allocate_head(member.allocator,owner);
+                write(owner,4,head);write<std::uint8_t>(head,member.nil,1);
+                head=read<void*>(owner,4);write(head,4,head);
+                head=read<void*>(owner,4);write(head,0,head);
+                head=read<void*>(owner,4);write(head,8,head);
+                write<std::uint32_t>(owner,8,0);
+            } else {
+                write<std::uint32_t>(owner,4,0);write<std::uint32_t>(owner,8,0);write<std::uint32_t>(owner,12,0);
+            }
+            ++complete;
+        }
+    } catch(...) {
+        // DD9414 FunctionInfo -> DD9438,38 predecessor-linked FH3 actions.
+        // The last head has no later throwing instruction, so is not in that map.
+        while(complete) {const auto& member=members[--complete];binding.destroy_member(member.destructor,offset(record,member.owner));}
+        throw;
+    }
+    static constexpr std::uint32_t zero_words[]={
+        0x95,0x96,0x97,0x98,0x99,0x9a,2,1,0,
+        0x78,0x77,0x76,0x75,0x74,0x73,0x72,0x5f,0x5e,0x7a,0x79,0x94,
+        0x63,0x62,0x61,0x60,0x5b,0x5a,0x5d,0x5c,0x64,0x65,5,4,3,
+        0x9b,0x9e,0x9c,0x9f,0x9d,0xa0
+    };
+    for(auto word:zero_words)write<std::uint32_t>(record,word*4,0);
+    write<std::uint8_t>(record,0x24c,0);
+    return record;
+}
+} // namespace bsp::oct18_tail_b_contracts
+
 #include <initializer_list>
 namespace bsp::oct18_tail_b {
 namespace {

@@ -43342,6 +43342,48 @@
       "new_entry_executed": false,
       "game_validated": false,
       "closure": "User requested current work drained and paused; no follow-on packets started"
+    },
+    {
+      "id": "cc15_host_voice_manager",
+      "done": false,
+      "state": "proposed_deferred_subsystem",
+      "worker": "unassigned",
+      "function_addresses": [
+        "005bc640",
+        "00702cc0",
+        "005b7790",
+        "005b71d0",
+        "00974070",
+        "005bbc10",
+        "005a2650"
+      ],
+      "output_files": [],
+      "depends_on": [],
+      "source_ready": false,
+      "contract": "Host a voice playback manager with FMOD voice slots so queued warnings can apply: 005BC640 VoiceManager_Update (queue consumer), 00702CC0 VoiceSlot_ConstructAndStart, 005B7790 VoiceLineQueue_Append, 005B71D0 voice_ready, 00974070 apply -> 005BBC10 PlayLine -> 005A2650 HudMapScreen_SetSpeakingUnit (HUD; cc9 OK'd behind kWarningMessageBankCc15Bound if it writes only speaking-unit state). Until then warnings activate but never apply. No mission-Lua reach (00887E50 only via 005BC920 HudNarrativeScreen). See docs/CC15_WARNING_APPLY_GAP.md.",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
+    },
+    {
+      "id": "cc15_host_message_manager",
+      "done": false,
+      "state": "proposed_deferred_subsystem",
+      "worker": "unassigned",
+      "function_addresses": [
+        "007065e0",
+        "00705e00",
+        "0097b5e0",
+        "00706760",
+        "00a83fd0"
+      ],
+      "output_files": [],
+      "depends_on": [],
+      "source_ready": false,
+      "contract": "Host the MessageManager at game+21DCh (the 30-seam MessageManagerCalls) so warning clips resolve: 007065E0 LoadMessages over Scripts/datatables/Messages.lua (reconstructed, load_messages_007065e0), 00705E00 record lookup, 0097B5E0 message-map stop test, 00706760 per-mission name#side maps, 00A83FD0 sound banks. Until then 3a counts those as not evaluated and clip.record stays null. See docs/CC15_WARNING_APPLY_GAP.md.",
+      "Original_ABI_compatible": false,
+      "new_entry_executed": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {

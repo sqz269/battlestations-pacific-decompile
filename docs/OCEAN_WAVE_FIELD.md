@@ -3599,3 +3599,73 @@ Predictions:
 - The mechanism is exercised where the US torpedo squadrons attack the escorted IJN groups on USN21: a screened aim floors at 30 m. Three planes show "a9 clears=1", a screen answer replaced by a clear one on a later replan, which the old OR could never undo. Zero-length = 0: every screening ship has a Length.
 - USN21 moved: torpedo drops 12 -> 8, torpedo-task releases 3 -> 1, dive-bomb-task releases 2 -> 10, deaths 299 -> 301, and the mission still completes (1325.17 s -> 1355.20 s). USN04's Kates are never screened.
 - Faithful by the bytes, so it is flipped ON. The drop loss is the image's 30 m floor, not a host defect.
+
+## 88. The 009D4A70 cruise pass (cc9-physics22, 2026-10-18)
+
+Bytes read on disk (009D4A70-009D4C0D, `disasm-raw`). The body in order:
+- 009D4A77 0099B660, then 009D4A82 007B8AD0 (flight leader). Only the leader runs 009D4A91-009D4B5D: the cruise altitude [+40Ch] (replaced by [00CE3850] when below double [00D7A370]) into the squadron control block +37Ch's three slots, with 009D4B3E MOVSS [00CE4C04] = 9999.0 into ctl+39Ch (+37Ch+20h) when its byte +12h is clear, 0 > [+8] and byte +2Fh is clear; then 009D4B57 task+46Ch = ctl+398h.
+- 009D4B63-009D4BA7, the clamp: task+484h = max(task+484h, float([tuning+434h] * task+41Ch)) (FCOMI/JBE; a NaN takes the product).
+- 009D4BAF-009D4BC8, the flip: approach = task+3F8h; when approach+12Ch > 0 it becomes [00D7A208] (-0.0) minus itself.
+- 009D4BD0-009D4BE6, the park: approach+B0h and +ACh = [00CF87D0] (999999.0).
+- 009D4BEE-009D4BF9: approach+60h = 0.0 (MOVSS from a zeroed XMM1), +6Ch, +68h, +64h = 0.
+- 009D4BD8/009D4BDB/009D4BFC: FLDZ, FSTP to the pushed slot, CALL 009D3420 with ECX = approach. Then 009D4C08 tail-JMP 0099B740.
+
+The old cites 009D4AC4, 009D4AE7, 009D4AF5 and 009D4AA9 are not instruction starts in this body; they are fixed with no switch, and `torpedo_engage_range_009d4ac4` is renamed `torpedo_engage_range_009d4b63`.
+
+**The dt = 0 pass.** 009D3420 tests dt < +12Ch (009D3640-009D3682). The reset leaves +12Ch = -U(0, 1) and the flip keeps it at or below 0, so the pass replans: +12Ch += +128h (1.0) - 0. The plan position is parked, so the plan is rebuilt there and then. 009D34BB calls 009FADA0, whose 009FAEB0 tests sub+41h and runs the re-pick 009FA260 when it is set (the constructor 009FB200, ResetAimOffset 009FA350, SetAimError 009FA380 through 009D02A0, and OnTargetDestroyed 009FAF90 set it). The timed re-pick 009FAE26-009FAE44 needs sub+60h + dt > 2.0 and cannot fire at dt = 0. In the host the first arm tick does all of this one tick later. After that tick the replan timer agrees in both (1 - U - dt).
+
+The host also cleared approach+5Ch (the scan's turn offset) where the image clears +60h. +5Ch is read by the aim heading (bearing + offset) and is only rewritten by a scan, so on a re-install without a scan the image keeps the old offset.
+
+Switch **kTorpedoCruisePassBound**, committed OFF: the +60h clear in place of +5Ch, the flip, and the pass at the end of the install (after the reset's draws, as in the image), through the same TorpedoArmBinding the arm tick uses. The per-plane line "cruise pass 009D4BFC=N replans=M" prints on ON.
+
+Predictions:
+- N = 1 per install; replans +1 per plane (the pass), and the first arm tick no longer replans.
+- The host's re-pick takes its unit draws from a per-shooter seed (`approach_target_ref_unit_draws_substitute`), not from stream 1, so moving it one call earlier moves no draw. The plan is rebuilt from the same positions (the install and the first arm tick run in the same host call). Expected: gameplay identical on USN21 and USN04 (pair_diff 0 or 1). Any movement would come from the +5Ch carry on a retarget re-install.
+- 009D4C10 break-off: a NaN range breaks off in the image (FCOMI/JA) and not in the host's >=. A NaN range needs a NaN position, so it is left as is.
+
+**88, result: kTorpedoCruisePassBound ON.** Exes built at fe6e06f9f (`local\p22b_off`, `local\p22b_on`). USN04 (`local\p22b_{off,on}_u04.log`) and USN21 `s46_u21_f` (`local\p22b_{off,on}_u21f.log`) are both gameplay identical (pair_diff 1): death rows, plane death modes and the unit table are identical. USN21 took 108 install passes (009D3420 and 009FADA0 calls 151237 -> 151345); only the per-tick diagnostic lines moved. As predicted, the pass moves no draw. Flipped ON by mechanism.
+
+## 89. The C25h arm of the moveto ticks (cc9-physics22, 2026-10-18)
+
+Bytes (`disasm-raw`, reviewer-confirmed in the brief):
+- 009C2430, the moveto state tick: after the speed stores (+2B4h, 009C2503 +2B0h = 0, 009C250A +2D8h = 1), 009C2519 `CMP byte [unit+C25h],0` / JE 009C255C. When set: 009C252A cmd+2BCh = 0.0, 009C2532 +2D0h = 2, 009C2543 +2C4h = 0.0, 009C254B +2CCh = 1, RET 4 at 009C2559.
+- 009C26D0, the circle tick: the same test at 009C275A after its speed stores (009C273B-009C274F), then 009C2769 / 009C2771 / 009C2782 / 009C278A the same four stores (+2CCh from ECX = 1, loaded at 009C274A), RET 4 at 009C2794.
+- These are the four stores of the follow release arm 009C200F (section 78) without its speed stores, which the moveto ticks have already made.
+
+The host's two ticks only recorded the arm and returned, so the previous tick's pitch, bank and heading commands stood. Switch **kMoveToC25ArmBound**, committed OFF: when set, it makes the four stores (and drops the heading-written latch, as follow_release_arm_009c200f does). The native table shows `BotStateMoveTo::c25_arm` / `BotStateMoveToCircle::c25_arm` as concrete on ON.
+
+Predictions: unreached on USN04 and USN21 (no moveto tick with C25h set). The reach candidate is USNOS `l65_os_c1` (`Intrepid_sqn22|.-II`, C20h = C25h = 1, section 78). Where it is reached, the plane levels (pitch target 0, mode 2) and holds heading mode 1 while the request is pending. The dive bombers' drop timing moves only if a moveto tick runs with the request pending.
+
+**89, result: kMoveToC25ArmBound ON (faithful, unreached).** Exes built at 2cacdab2f (`local\p22c_off`, `local\p22c_on`). USNOS `l65_os_c1` 30000 fr (`local\p22c_{off,on}_os.log`) is identical apart from noise (pair_diff 0). It runs 2890 moveto state ticks, but no moveto or circle tick runs with C25h set; the c25_arm record never appears. USN21 `s46_u21_f` (`local\p22c_{off,on}_u21f.log`) is gameplay identical and has no moveto tick at all. The four stores are read from the bytes, so the switch is flipped ON, unreached. A reach needs a moveto-command task on a plane with a pending release.
+
+## 90. The moveto tick head, the level-bomb goaway order, the +2B0h clears (cc9-physics22, 2026-10-18)
+
+- **kMoveToTickHeadBound** (OFF). 009C2440 `MOV byte [[state+4]+18h]+26Ch, 1` comes first in the moveto state tick. The host only ever stored 2 (009C1FE2's follow-tick stamp). `plan_mode_26c` has no host reader (its image reader is 0099D300's gate A, section 6c of BOMBER_AFTER_TASK). The distance: 009C246A-009C2496 compute dx, dz and d2 = dx*dx + dz*dz, each stored or rounded to float, then 009C249A-009C24A8 compare d2 against double 1e-10 ([00CE3820]) with FCOMI/JBE, taking 0 at or below it and float(sqrt) above it. The host used a double d2 and 1e-6. Prediction: gameplay identical, since the distance feeds 009C1850's speed blend only through `dist`, and the two differ only in the last float bit or below 1e-3 m.
+- **kLevelBombGoAwayOrderBound** (OFF). 009B5680: 009B5724 FLD approach+24h / 009B572A FSTP to a local, 009B5746 the draw, then 009B574B FLD the ratio, FMUL the clamped base (FMUL [ESP+4]), FMULP the draw: +18h = draw * (ratio * base), per op at 24 bits. The host computed (draw * base) * ratio. Prediction: identical wherever the ratio is 1.0 (the floor). The level bombers here have MaxSpd below the reference speed, so they sit on the floor.
+- **The +2B0h clears, no switch.** 009C1850 stores +2B0h = 0 at 009C18A0 after its +2B4h store. Three host moveto sites called its speed but kept +2B0h: the dive moveto, the torpedo moveto and the land moveto. Each now stores 0 there, as st_speed already did for the others. Behaviour identical expected: +2B0h = 1 comes only from the land standby and final states, and those leave through states that clear it.
+- **attack_commands.cpp kRows.** The strafe test 009CC850 compares +44Ch, falling back to +468h when +44Ch is 0 (009CC898-009CC8AA). Both 0 answers valid. The row's single offset field is documentation only (no reader); a comment now says so.
+
+**90, result.** Exes built at c87cfe51e (`local\p22d_off`, and `local\p22d_on` with both kMoveToTickHeadBound and kLevelBombGoAwayOrderBound flipped). USN04, USN21 `s46_u21_f`, USNOS `l65_os_c1` and USN01 `usn01_p8_u1_i` (`local\p22d_{off,on}_{u04,u21f,os,u1i}.log`) all came out gameplay identical, with pair_diff 0 or 1. USNOS installs 24 level-bomb tasks, every one with +24h = 1.000 (the ratio floor), and none reaches goaway, so the order switch is unreached and could not move anything on these rows. Both are faithful to the bytes. **Flip pending:** src/game_hosts_units.cpp is leased to cc13-convoy until 04:59Z, and p22_flip2_units is queued behind it.
+- The unswitched +2B0h clears: c87cfe51e's OFF build against 2cacdab2f's (`local\p22c_on_{u21f,os}.log` vs `local\p22d_off_{u21f,os}.log`, and `local\p22b_on_u04.log` vs `local\p22d_off_u04.log`) is gameplay identical on all three rows, as predicted.
+
+**Item: a torpedo plane that re-enters aim (reach for kTorpedoStateEnterTimersBound / kTorpedoAimEnterStoresBound).** USN01 with gunnery52's `config\win_orders\usn01_p8_u1_i.txt` (30000 fr): `ConTBD3|.-III aim enters=3 (2Ch already set=0)`, on both builds. The aim enter and exit therefore run three times, and the +A8h set and clear and the LOS writer run in each window. The +2Ch clear is still a no-op there: the plane never completed aim (+2Ch was never set) before it re-entered. The done enter 009D2530 is reached on USN21 (`Enterprise_sqn23|.-II`, `Cabot_sqn56|.-III`, one each) with stale-timer drops 0, so the timer split runs but never decides a release. No row seen reaches prepare. gunnery52's experimental `g52_bd_on` build shows `ConTBD1|.-II aim enters=291 (2Ch already set=288)` on USN01; that is a flicker in that build, not on main.
+
+**Item: the census of host readers of a parented plane's velocity.** `local\p22_census.py` and `local\p22_census2.py` list every `plane_world_velocity` reader in game_hosts_units.cpp (about 70 sites) and flag those within reach of a `deck_parent_plus_one` test. The host's `plane_world_velocity` for a parented plane is the world-axes rotation of the same relative vector (section 84), so a reader that takes only its length (vt[38h], 007B8E60 / ctl+6Ch, 007D8020) gets the same value either way. The deck-reached readers:
+- `avoid_velocity` (vt[34h], 007DF4F0 and the terrain arms 0099F1C0 / 009A1420): already parent-local under kAvoidParentLocalVelocityBound.
+- `carrier_deck_capture` / `carrier_deck_carry_in` / `carrier_deck_reparent_007c71e0` (007D9CE0, 007C7277): these convert between frames explicitly.
+- `carrier_deck_carry_in`'s (3.0 - vt[38h]) test at 15075, `wanderer_fixed_step_007be060`, Lua's `plane_cached_speed_007b8e60` and the takeoff / land speeds: lengths only, so the frame does not matter.
+- `plane_touchdown_007cc440`'s y > -6.0 test (vt[34h] y, 007CC440): runs before the plane is parented to that owner.
+- The core law's parent term at 007DC0A2-007DC131 reads the PARENT's vt[34h] (the carrier's world velocity), not the plane's.
+No further direction-dependent reader of a parented plane's own vt[34h] was found, so no new switch. The core law's own use of ctl+18h in the body frame while parented is still section 75's whole-frame item.
+
+**90, flips.** kMoveToTickHeadBound and kLevelBombGoAwayOrderBound are ON, on the pairs above (identical, faithful).
+
+## 91. Strafe draw counts (cc9-physics22, 2026-10-18)
+
+- 009CB0F0, the strafe aim enter: +1Dh = +1Ch = 0 (009CB110 / 009CB113), then 009CB116 00BD2F10(ECX = 1, 0.2 [00CE54A0], 0.8 [00CE74F8]) FSTP +18h (009CB11B), RET at 009CB11F. No strafe tick reads +18h. The host took no draw.
+- The strafe goaway's tightturn (009BC030) and flikflak (009BC0A0) pushes each construct a bot task through 0099C6F0. Its seeds draw +308h = -U(0, 1) on stream 1 and +3E8h = U(-1, 0) on stream 0 (section 81). The host's push builds no task, so it took neither draw.
+
+Switch **kStrafeDrawCountBound**, committed OFF. It takes these draws under the keys the host already uses (`<name>#sta18`, `<name>#tb308`, `<name>#tb3e8`) and drops the values; the pushed task's own +308h / +3E8h are not hosted (LABELLED). A summary line "strafe draw-count takes=" prints when nonzero.
+
+Prediction: with BSP_GUNNERY_RNG_STREAMS=1 (the reference env) each purpose has its own keyed stream. The aim draw is in a new key and moves nothing. The push draws advance `#tb308` / `#tb3e8`, so the next task install on that plane takes a later value of its think phase and ga timer, and only strafing planes that tightturn or flikflak can move. USNOS `l65_os_c1` strafes (planes #1.x on TroopTrans); USN04 and USN21 have no strafe task installs.
+- The remaining low item: the land standby 009B0FE0 / final 009B1ED0 +2B4h blend is per-op 24-bit in the image (009B11E9-1205, 009B1FC6-1FDF) and round-once double in the host. The dive goaway 009C4A40 ceiling NaN is not reachable without a NaN altitude. Both are left open.

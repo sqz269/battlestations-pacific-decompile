@@ -196,29 +196,79 @@ Group-sphere projection; batch2 adds the complete ordinary branch structure.
 No whole-body differential, live window/network test, native ABI/FH3/SEH,
 allocation-failure transport or gameplay claim is made.
 
-## Packet disposition and open contracts
+## Follow-up: ten contracts, 2026-10-18
 
-The 106-row packet now has 55 new ordinary bodies, one existing complete body
-newly registered, four library/compiler classifications, 36 other pre-existing
-function rows left intact, and ten explicitly unresolved rows. No row was
-skipped because of an address lease; the CMake file lease was respected by
-using the separately leased existing engine TU. The same owner holds all 106
-address leases during this packet.
+Coordinator session -62 requested these ten rows in the same tree, at max
+reasoning effort. Exact addresses and the existing TU/header/document were
+claimed as `oct18-tC-contracts`; none overlaps cc13's 00996120-009F6060 lease.
+Nine new complete ordinary bodies are appended to the registered engine TU.
+The fingerprint decoder keeps its already implemented defined-prefix interface
+by the coordinator's explicit decision. No unresolved call is given a no-op
+default, substitute singleton, synthetic clock or synthetic resource owner.
+Required binding records name the original callees and borrow actual storage.
 
-| Unresolved address | Why it remains open |
+| Address / source name | Original ABI and recovered contract |
 |---|---|
-| 00985F30 | Chat dispatch needs the raw warning subscription/event-box/Lua argument ownership and cancellation/reentrant iteration contract; existing mission-event code supplies semantic dispatch only. |
-| 00986B00 | HP dispatch needs the complete raw threshold/reason-box/Lua callback ownership path; the damage/repair crossing predicate alone does not close the body. |
-| 0098E910 | Existing semantic options builder is not the raw hardware owner/buffer routine; native field/vector access, mode fallback, LCID output and C3Ch buffer effects still need full source recovery. |
-| 00A3C5E0 | Existing R173-R175 fragments are worker dependencies, not the 1286-byte send loop; x87 clock/deadline schedule, socket/logging/queue and worker lifetime remain unbound. |
-| 00A3CAF0 | Existing receive helpers do not close the 868-byte socket receive loop, packet/pool/logging/clock and worker-owner composition. No fake receive loop added. |
-| 00AB6120 | Existing synchronous visibility adapter rejects the delayed-texture path; canonical delayed queue, placeholder ownership and per-state iteration/lifetime remain open. |
-| 00AB98F0 | Existing prefix/native fixtures cover glyph data and parts of the child continuation; the 1747-byte body still needs conditional UV blanking and the full child UI/borrowed-frame continuation. |
-| 00AD4C30 | Existing installed-font and native publication fragments do not supply the complete native glyph/resource owner, texture/material lifetime and failure paths. |
-| 00AEEAF0 | The semantic seven-item atlas parser does not recover the original manager/register inputs, native string/pool/renderer publication or partial EOF/failure effects. Pseudocode still has unaffiliated EBP/ESI. |
-| 00BE9630 | Only the defined 240-byte decoder prefix is implemented; original final512-byte copy includes272 bytes of uninitialized private stack. Choosing deterministic tail bytes would invent behavior. |
+| 00985F30 / `warning_dispatch_chat` | ECX manager, player-name/type/message stack, RET0C. Captured tracked lock+24, eight active/non-observer players at current game+18CC, case-insensitive match or -1. Clear +104/+105, channel lookup at manager+F8. Own integer/string/integer boxes, evaluate into a separate copied-name vector, scalar-delete boxes with flags1, then build 14h-byte Lua variants and a0Ch argument owner for `(playerIndex,message,type)`. Reload current game+1A08 for each Lua call; free arguments, names through their sized pool, and vector blocks. Set +105 only after a nonempty callback run. |
+| 00986B00 / `warning_dispatch_hp` | ECX manager, entity/reason/oldHP/newHP stack, RET10. Same lock; two ancestor00923810 calls and ancestor virtual5C gate. Entity-ID/string boxes; checked iterator owner/node pair, current sentinel reload and subscription virtual0C(params). Strict ordered damage `old > threshold > new` / repair `old < threshold < new`; copy matched callback names before destroying boxes and calling Lua `(entity,reason)`. No +104/+105 stores. |
+| 0098E910 / `hardware_default_options` | ECX hardware owner, EAX owner+C3C, RET. Actual antialias begin/end at +14/+18, shader+24, LCID+C38, resolution fallbacks through 0098DF90/0098E0E0. Exact append order including EAX0, SoundSW0, Log0, CheatsOnAtStartup0, UseFpsLimit0, FPSLimit30, HiResCapture2 and Firewall1. Sound publication F8A0E0 is a **DWORD**, not a byte. Existing semantic builder omits these fixed lines. |
+| 00A3C5E0 / `network_send_worker` | ECX actual4003F0h owner, EAX0/RET on quit. Full1286B ordinary loop: tracked +14C quit/activity protocol, current clock+20 sample, Sleep25, two separately captured +148 locks, sixteen channel deadline/backlog checks, direct queue send/return, profile latency/round schedule, selector/ACK/socket/statistics/error/keepalive paths, progress-triggered rescans and pool return. FCOMIP/JC sends unordered deadlines down the not-due path. Socket results are integer -1 checks, despite float pseudocode. Capture statistics publication before channel lookup as listed. |
+| 00A3CAF0 / `network_receive_worker` | ECX owner, EAX0/RET on quit. Full868B loop: activity protocol, discarded current clock sample, Sleep25, captured +148 lock and socket-drain rescans. Special03/00 packets enter indexed820h receive pool; ordinary packets find/activate/classify channels, splice released82Ch send lists, append accepted820h records and count types5/6. Preserve native socket/address/sequence stores, wrapping index arithmetic and unchanged short-packet bytes; no clamp, allocation, timeout or rollback added. |
+| 00AB6120 / `icon_visibility_changed` | ECX icon, visible stack, RET4. Full640B traversal with live F4/F8 bounds reloads and checked-iterator hook allowed to return. Show/+3C uses captured renderer virtual68(name,0), either consumed NativeString apply00AB3840 plus terminal texture release, or delayed singleton00AB5700/request00AB5F00(name,icon). Hide/+3D uses placeholder00AB3B30, then virtual80(index) only for the current signed-short state+EC. No delayed branch rejection. |
+| 00AB98F0 / `glyph_quad` | ECX Text, ten DWORD stack slots, RET28. Full1747B ordinary flow. Exact x87 prefix and native raw mapped fields; TL/TR/BR/BL/UV/color stores and low16 indices. Conditional code-unit scan and UV blanking, pool construction, checked child-vector append, reference-node creation, scene/draw/visibility/listener/font/shadow/shader/content setup, UTF16 lifetime, attachment, pivot and all three final-position branches. Slots5/6 unused; slot10 supplies the code unit. Re-read current borrowed reference after callbacks; original arg2.x is read again only for the long-reference position branch. |
+| 00AD4C30 / `font_load` | ECX font; stack root, DAT, GFX, alpha, language; RET14. Full1361B normal path. `(root+language)+GFX`, root+alpha or white.tga, then `(root+language)+DAT`; preserve five native owner-string assignments and capture renderer/VFS before concatenation calls. Read scalar count, signed height, four floats and three words per24-byte input record into a32-byte glyph. Exact CVTSI2SS/MULSS/CVTTSS2SI, unsigned metric scaling, unchanged bearing/padding, cache-owned texture pointers. Lookup/insertion remain STL bindings; first duplicate freed. Release stream, initialize space, require/copy0091 fallback, initialize LF and release retained GFX-name temporary. |
+| 00AEEAF0 / `atlas_parse` | ECX manager; one TextBuffer pointer stack; RET4/AL. Full1429B ordinary flow. EBP/ESI pseudocode anomalies are frame-tracking artifacts, not extra inputs. Validate TextureAtlas token; copy descriptor path from buffer+C. Native computes and immediately discards a canonicalized temporary, then uses the original copied spelling for directory/slash/name. Capture renderer before concat; publish texture before body. Grow actual manager+10 texture and +4 item arrays, allocate/construct/parse items, ignore item-parser status, keep partial effects and return success at EOF. Exact string/token cleanup uses length+1 or strlen+1 as appropriate. |
+| 00BE9630 / `decode_fingerprint_payload` | Two stack pointers, ECX unused, RET8. Existing196B decoder's defined source/key words16..255 produce240 bytes. The original final512-byte stack copy also publishes272 uninitialized stale-stack bytes. These are expressly excluded from coverage by the coordinator; no deterministic zero, copied-input or fabricated tail is added. |
 
-The coordinator should keep these ten rows open and split them by their actual
-contracts. The fingerprint row needs an explicit decision on defined-prefix
-coverage versus a private-frame/ABI reproduction requirement. Game-host wiring
-and live validation remain separate work for the owning coordinator.
+The warning Lua temporary is exactly **20 decimal bytes (14h)**;
+the checked vectors are10h headers with begin/end/capacity at+4/+8/+C.
+0097B8C0's listing consumes three stack pointers with RET0C; incoming ECX is
+unused, so its binding uses that transport instead of trusting the old
+zero-argument prototype. Integer/entity event boxes retain unwritten padding.
+
+`NetworkWorkerScratch` supplies explicit initial timestamp, sockaddr and packet
+preimages. Sampling may leave QPC destinations unchanged, and a short receive
+does not initialize unread header bytes; neither condition licenses zeroing
+the original frame. `FontLoadScratch` likewise preserves unused key/pair
+padding. All raw owners, arrays, lists, virtual tables and bound services must
+remain live; sizes, native success-path resources and finite valid lists are
+the original preconditions. Native FH3/SEH, unmasked FP exceptions/fault
+ordering, allocator/new-handler failure transport and concurrent interleavings
+are not established by these new C++ interfaces.
+
+### Fingerprint uncertainty and consumers
+
+The body comment and name/function ledger evidence state that the original's512-byte
+result depends on stale stack outside its deterministic240-byte prefix.
+0053C740 obtains singleton+4 through00BE9620 and passes it to00ABBE50 for
+`Fingerprint_Text`. That routine treats the pointer as a C string, so it can
+read the stale tail **if no NUL occurs in the defined prefix**; no bound at512
+is imposed by that consumer. 0073BAE0 also calls00BE9620 during font startup
+but discards the result and reads neither prefix nor tail. The current C++
+interface returns only the defined prefix and does not claim the original
+unbounded C-string result or private-frame ABI.
+
+### Validation and packet disposition
+
+All nine bodies compile under MSVC Win32 Release in the existing registered
+TU; both existing CTests pass. One focused, local original/source glyph probe
+checks the full1747-byte body after verifying every byte against live Ghidra
+and the installed executable. It relocates data operands and routes the17
+identified direct callees plus virtual methods to recording fixture services.
+Twenty-four cases compare12576 vertex/index output bytes and complete child
+callback traces: both color layouts, signed/large metrics, index wrap, absent,
+nonmatching and null/default code-unit lists, UV blanking, reference replacement
+between callbacks, offset mode and short/long reference positioning. All pass.
+Probe sources/seeds/logs are retained under this worktree's ignored
+`local/tail_c_glyph_*` files; this does not execute real child resources or the
+game. The other eight new bodies have listing/build evidence, not native
+whole-body differential or live SDK/concurrency proof. No new permanent test
+suite, host wiring or original-installation write was added.
+
+The106-row packet now has64 new ordinary bodies, two existing bodies newly
+registered (one is the expressly qualified fingerprint prefix), four earlier
+library/compiler classifications, and36 other pre-existing function rows left
+intact. No follow-up row is skipped or lease-blocked. CRT/STL/Lua/XLive
+dependencies stay bound; there are no new library/compiler classifications in
+this follow-up. Game activation, native ABI/private EH and live validation
+remain separate from the completed source contracts.

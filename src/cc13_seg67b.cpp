@@ -8,6 +8,7 @@
 
 #include <cmath>
 #include <cstring>
+#include <string>
 
 namespace bsp {
 namespace {
@@ -7322,6 +7323,74 @@ void ship_ai_debug_draw_command_path_009db060(Cc13Seg67bHost& host, void* self) 
         b[1] = 0.0f;
         host.line_rgba_floats_0085f990(a, b, kDebugYellow, kDebugYellow);         // 009DB288
     }
+}
+
+// 009E53B0 (009E53B0-009E5455). Unreferenced (image scan). 009E52E0's layout with arg1
+// at +18h instead of +14h, and no 00694A60 registration: +4h..+0Ch = 0, +14h = 0, +10h = 1,
+// vtable 00CF5C94, +1Ch = b, +18h = a; +78h = a != 0 ? the third argument's bits : -1.0
+// [00D7A260] (MOVSS, a bit copy); +69h, +74h, +75h = 0; +88h, +8Ch = 0; +68h = 1; +70h,
+// +7Ch = 0.0; +80h, +84h = -1000.0 [00D7A240]. The SEH frame covers no call.
+void* ship_ai_obstacle_node_construct_unregistered_009e53b0(void* node, void* a, void* b,
+                                                            std::uint32_t lifetime_bits) {
+    at<std::uint32_t>(node, 0x4) = 0;
+    at<std::uint32_t>(node, 0x8) = 0;
+    at<std::uint32_t>(node, 0xC) = 0;
+    at<std::uint32_t>(node, 0x14) = 0;
+    at<std::uint8_t>(node, 0x10) = 1;
+    at<std::uint32_t>(node, 0x0) = 0x00CF5C94u;                                   // 009E53DB
+    at<std::uintptr_t>(node, 0x1C) = reinterpret_cast<std::uintptr_t>(b);
+    at<std::uintptr_t>(node, 0x18) = reinterpret_cast<std::uintptr_t>(a);
+    at<std::uint32_t>(node, 0x78) = a != nullptr ? lifetime_bits : 0xBF800000u;   // -1.0f
+    at<std::uint8_t>(node, 0x69) = 0;
+    at<std::uint32_t>(node, 0x88) = 0;
+    at<std::uint8_t>(node, 0x75) = 0;
+    at<std::uint32_t>(node, 0x8C) = 0;
+    at<std::uint8_t>(node, 0x74) = 0;
+    at<std::uint8_t>(node, 0x68) = 1;
+    at<float>(node, 0x7C) = 0.0f;
+    at<std::uint32_t>(node, 0x84) = 0xC47A0000u;                                  // -1000.0f
+    at<std::uint32_t>(node, 0x80) = 0xC47A0000u;
+    at<float>(node, 0x70) = 0.0f;
+    return node;
+}
+
+// 009E8900 (009E8900-009E8BE1), the ship-AI debug slot at 00D219E8. label = " move"
+// (00D21A34) when the state +1508h is this+8h, " kamikaze" (00D21A28) for this+14C0h,
+// " submerged" (00D21A1C) for this+14CCh, " wandering" (00D21A10) for this+14E0h, else
+// empty; then " (target lost)" (00D21A00) appended while byte [this+4h]+B28h is clear.
+// 004C7070([00E188A8], float(x), float(y), "%s" (00CEB484), label or "" (00F8A718));
+// orange (1.0, 0.5, 0.0, 1.0) arrow 0085FFF0 from the unit ([this+4h]+AA8h, pose
+// refreshed, its +FCh) to the point [this+4h]+B2Ch; then state->vtable[18h](x, y), the
+// state re-read. No direct or reachable 00BD2F10 draw; the state's slot is not chased.
+// UNCERTAINTY: the native string calls (0041E870 assign, 0041DD40 resize, _memcpy,
+// 00425E10 append, the 00419CC0/00BD1510 pool returns) are modelled by std::string; the
+// pool traffic is not replayed through the host.
+void ship_ai_debug_draw_state_label_009e8900(Cc13Seg67bHost& host, void* self,
+                                             std::int32_t x, std::int32_t y) {
+    static constexpr float kOrange[4] = {1.0f, 0.5f, 0.0f, 1.0f};
+    std::string label;
+    void* const state = ptr_at(self, 0x1508);
+    auto* const base = static_cast<std::uint8_t*>(self);
+    if (state == base + 0x8) {
+        label = " move";
+    } else if (state == base + 0x14C0) {
+        label = " kamikaze";
+    } else if (state == base + 0x14CC) {
+        label = " submerged";
+    } else if (state == base + 0x14E0) {
+        label = " wandering";
+    }
+    void* const owner = ptr_at(self, 0x4);
+    if (at<std::uint8_t>(owner, 0xB28) == 0) label += " (target lost)";          // 009E8A30
+    const char* const text = label.empty() ? "" : label.c_str();                 // 009E8A9F
+    host.diagnostic_printf_name_ints_004c7070(host.global_dword_00e188a8(),
+                                              static_cast<float>(x), static_cast<float>(y),
+                                              "%s", text, nullptr, 0);           // 009E8AD0
+    const float to[3] = {at<float>(owner, 0xB2C), at<float>(owner, 0xB30),
+                         at<float>(owner, 0xB34)};
+    void* const unit = refreshed_entity(host, ptr_at(owner, 0xAA8));
+    host.debug_arrow_0085fff0(static_cast<const float*>(ptr(unit, 0xFC)), to, kOrange);  // 009E8B94
+    host.state_vcall_18_debug_text(ptr_at(self, 0x1508), x, y);                  // 009E8BAA
 }
 
 }  // namespace bsp

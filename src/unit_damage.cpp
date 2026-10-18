@@ -6,6 +6,7 @@
 // session, effect and message calls are contracts on UnitDamageHost.
 #include "bsp/unit_damage.hpp"
 #include "bsp/native_render_batch_keys.hpp"
+#include "bsp/cc13_seg41_land.hpp"  // 00742210, packet cc13-convoy
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Unit health marker requires MSVC Win32 x87 assembly.
@@ -593,18 +594,39 @@ void group_kill_members_array_007ed380(UnitDamageHost& host, std::uint32_t group
 }
 
 // 00742210. __thiscall(group, char flag), RET 4.
+// The body is cc13_seg41::land_convoy_kill_member_vector_00742210 (the end
+// re-read at 00742231 each pass, the checked-iterator places); this forwards to
+// it over the three vector hooks and dispatch_kill. UnitDamageHost has no
+// 00BF6713 hook: the image's report falls through, and so does this.
 void group_kill_members_vector_00742210(UnitDamageHost& host, std::uint32_t group, bool hard) {
-    const int cause = hard ? static_cast<int>(UnitKillCause::hard)
-                           : static_cast<int>(UnitKillCause::normal);
-    const std::size_t count = host.group_vector_size(group);
-    for (std::size_t i = 0; i < count; ++i) {
-        const std::uint32_t member = host.group_vector_member(group, i);
-        if (member == 0) {
-            continue;
+    class Adapter final : public cc13_seg41::LandConvoyKillVectorHost {
+    public:
+        explicit Adapter(UnitDamageHost& host) : host_(host) {}
+        std::size_t member_slot_count(std::uint8_t* convoy) override {
+            return host_.group_vector_size(id(convoy));
         }
-        host.dispatch_kill(member, cause);          // 00742275
-        host.clear_group_vector_member(group, i);   // 0074227A
-    }
+        std::uint8_t* member_slot(std::uint8_t* convoy, std::size_t i) override {
+            return handle(host_.group_vector_member(id(convoy), i));
+        }
+        void invalid_parameter_noinfo_00bf6713() override {}
+        void mission_entity_kill_00926d90(std::uint8_t* entity, std::int32_t cause) override {
+            host_.dispatch_kill(id(entity), cause);           // 00742275
+        }
+        void null_member_slot(std::uint8_t* convoy, std::size_t i) override {
+            host_.clear_group_vector_member(id(convoy), i);  // 0074227A
+        }
+        static std::uint8_t* handle(std::uint32_t value) {
+            return reinterpret_cast<std::uint8_t*>(static_cast<std::uintptr_t>(value));
+        }
+        static std::uint32_t id(std::uint8_t* value) {
+            return static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(value));
+        }
+
+    private:
+        UnitDamageHost& host_;
+    };
+    Adapter adapter(host);
+    cc13_seg41::land_convoy_kill_member_vector_00742210(Adapter::handle(group), hard, adapter);
 }
 
 // 00935C70. __fastcall(parts), RET 0.
@@ -648,8 +670,10 @@ int lua_kill_008ac5c0(UnitDamageHost& host) {
     if (host.class_id_test(entity, kKillGroupArrayClassId)) {         // 008AC729
         group_kill_members_array_007ed380(host, entity, cause);       // 008AC732
     } else if (host.class_id_test(entity, kKillGroupVectorClassId)) { // 008AC740
-        // 008AC74E pushes the boolean form, not the 1/2 cause.
-        group_kill_members_vector_00742210(host, entity, cause == static_cast<int>(UnitKillCause::hard));
+        // 008AC748 CMP ESI,EBP / SETNE / 008AC74E PUSH: EBP is 0 (008AC5E3 XOR EBP,EBP,
+        // not written again before 008AC796), and the cause is 1 (008AC689) or 1 + bool
+        // (008AC719), so the flag is always true and 00742210 kills with cause 2.
+        group_kill_members_vector_00742210(host, entity, cause != 0);
     } else {
         entity_kill_00926d90(host, entity, cause);  // 008AC756
     }

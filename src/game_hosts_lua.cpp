@@ -8591,6 +8591,10 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
             }
             ::lua_settop(state_, top);
         }
+        // Packet cc15-wB4: 009895D8..00989992, the default hit warning, inside the
+        // arm past the +168h rate limit (00988969 JBE 009889AF) and after both
+        // listener passes (00988F5D, 0098952A). Behind kWarningMessageBankCc15Bound.
+        game_warning_report_hit_00989604(hit.victim, hit.shooter, hit.attacker_player_index);
     }
 }
 
@@ -9266,6 +9270,46 @@ int GameMissionLuaHost::run_kill_008ac5c0(lua_State* state, int argument_count) 
     const int id = air_ops_entity_id(state);
     if (units == nullptr || units->gunnery() == nullptr || id <= 0
         || static_cast<std::size_t>(id) > units->count()) {
+        if constexpr (bsp::game::kLandConvoyBodiesBound) {
+            // Packet cc13-convoy: 008AC740 IsKindOf 1Ah -> 008AC74E 00742210(flag), then
+            // 008AC753 JMPs past 008AC756's 00926D90. A LandConvoy is a scene marker
+            // here (no units-host slot); it is named as run_land_convoy_native names it.
+            // SUBSTITUTION (labelled): "a convoy roster of that name exists" stands for
+            // the IsKindOf 1Ah test.
+            std::string name;
+            if (::lua_type(state, 1) == LUA_TTABLE) {
+                lua_getfield(state, 1, "Name");
+                if (const char* text = ::lua_tostring(state, -1)) name = text;
+                ::lua_settop(state, ::lua_gettop(state) - 1);
+            }
+            if (name.empty() && id > 0) {
+                if (const PendingEntity* node = find_pending(id)) name = node->name;
+            }
+            // 008AC748 CMP ESI,EBP / SETNE: EBP is 0 (008AC5E3 XOR EBP,EBP, not written
+            // again before 008AC796) and the cause is 1 or 2, so the flag is always true
+            // and 00742210 kills every member with cause 2, whatever `hard` was.
+            const bool vector_hard = cause != 0;
+            std::vector<GameUnitsHost::LandConvoyVictim> victims;
+            if (units != nullptr && units->gunnery() != nullptr && !name.empty()
+                && units->land_convoy_kill_member_vector_00742210(name, vector_hard, victims)) {
+                GameGunneryHost& gunnery = *units->gunnery();
+                for (const GameUnitsHost::LandConvoyVictim& victim : victims) {
+                    if (gunnery.unit_dead(victim.unit)) {
+                        ++summary_.kill_already_dead;    // 00926D90 returns on +5Fh
+                        continue;
+                    }
+                    if constexpr (kKillListenerHarmOnlyBound) lua_kill_cause_[victim.unit] = victim.cause;
+                    gunnery.kill_unit_00926d90(victim.unit, victim.cause);
+                    if constexpr (kLuaProximityTriggersBound) target_gone_00925c40(victim.unit);
+                    ++summary_.kill_units;
+                }
+                log_.notef("  Kill 008ac5c0: LandConvoy \"%s\" Lua cause=%d, members=%zu through "
+                    "00742210 with cause 2, the convoy not killed (packet cc13-convoy)", name.c_str(),
+                    cause, victims.size());
+                log_.implemented("MissionLuaNative::Kill", "008ac5c0");
+                return 0;
+            }
+        }
         // Packet cc9_lua_kill_script_entity: a script entity's `Ptr` is its
         // GameScriptEntity; 008AC756's 00926D90 runs on it through the script
         // orders host (Dead set, think lists dropped, self table rebuilt).
@@ -9303,7 +9347,9 @@ int GameMissionLuaHost::run_kill_008ac5c0(lua_State* state, int argument_count) 
     }
     // 008AC740: a LandConvoy (1Ah) kills its vector through 00742210.
     // SUBSTITUTION (labelled): the host keeps no convoy member vector, so the
-    // convoy's own slot stands for it.
+    // convoy's own slot stands for it. A LandConvoy has no units-host slot (it is
+    // a scene marker), so it never reaches here; under kLandConvoyBodiesBound the
+    // no-slot arm above runs 00742210 on its roster (packet cc13-convoy).
     if (victims.empty()) victims.push_back(index);   // 008AC756, 00926D90
     const GameUnitRow* row = units->unit_row(index);
     for (std::size_t unit : victims) {
