@@ -3069,3 +3069,57 @@ body frame, then tail-jumps to 007D8020. The host keeps the relative velocity in
 components from the world pose rows: the same value while the carrier holds its heading, but the image's vector
 turns with the deck and the host's does not. LABELLED difference; it matters only for a parented plane on a
 turning or rolling carrier. Carrying a parent-local velocity would touch every parented reader; not started.
+
+## 76. Section 69's MINOR (a): the bay request no longer force-enables channel C (cc9-physics19, 2026-10-18)
+
+With `kReleaseIssueStageBound` (and its Vals twin) ON, the spawn already keys on unit+C20h: line 3671's raise is
+unconditional, and the rack stage 007CE9FD spends it. So the "spawn hangs off the bay acceptance" half of MINOR (a)
+is only the OFF stand-in. What is left is the force-enable: both `release_ordnance_007bbba0` and
+`release_bomb_007bbba0` turned a disabled channel C on (rate 1.0) before the request, where 007BBBA6-007BBBB0 skips
+the bay writes. **`kBayRequestNoForceEnableBound` (OFF)** keeps the channel as it is;
+`summary bay request disabled channel C=` counts the requests that met a disabled channel. Prediction: when that
+count is 0 the pair is identical; otherwise only the bay animation and whatever reads channel C (its value) move,
+and the releases do not, because the stage spends +C20h either way.
+- MINOR (b) (the attach test has no drop-to-attach gap) is untouched.
+- **Not paired, stays OFF.** The host has no writer that enables channel C: the force-enable in these two
+  functions is the only `channel_c.enabled = true` in `src/`, and nothing in `game_hosts_units.cpp` reads channel C.
+  In the image the class's init enables it for a plane with a bay-door part (as 007EABC0 enables channel A from
+  PartAnims.Wings). So ON, every bay would stay shut, and a pair would be identical because nothing reads the
+  channel. Next step before a flip: find channel C's enabling writer in the class setup (the bay-door part's
+  PartAnims entry next to 007EABC0) and bind it; then this switch removes only the force for classes without one.
+- **Enabler bound under the same switch.** 007EABC0's arm after the wings one (decompile, `0x5f4`): with
+  class+5F4h set it writes +60h = 1 (enabled), +61h = 0 (target), +64h = 0 (value), +6Ch = 1/class+5F0h (rate),
+  +70h/+74h = class+5ECh/+5E8h. `wing_fold_class_007eabc0` now does that from `PartAnims.BayDoor` (007D3B06 reads it
+  into class+5E8h) when the switch is ON, with the wings arm's substitution (the live VehicleClass table at the
+  first block step; every plane taken as animated). So ON: a bay-door class opens its bay at the request and a class
+  without one keeps channel C shut while +C20h still rises. `bay_door_classes=` in the summary counts the enables.
+- **Pair, USN01 `usn01_p8_u1_i.txt`, 14000 frames, at d0f0d7813:** `local\p19e_off_usn01.log` against
+  `local\p19e_bay_usn01.log`. pair_diff 1, gameplay identical. Disabled-channel requests 27 -> 106 and
+  `Plane::release_spawn_deferred_to_rack` 70 -> 57 (the bay no longer accepts, so the accepted-request record is
+  rarer), while the releases themselves do not move (the stage spends +C20h). `bay_door_classes=0`: this
+  installation's VehicleClass has `PartAnims.BayDoor` on Avenger (both), Helldiver, Judy, B-17, B-25, B-29 (both),
+  D4Y (both), Gekko, Betty (three), Liz, B7A, AD-2 and a few gun rows, none of which flies in USN01 (TBD / SBD).
+  So the no-force arm matches and the enabler arm is unexercised: stays OFF until a row with one of those classes
+  releases (a late USN row with Avengers or a JM row with Bettys).
+- **ESMP08 (TBF Avengers), 12000 frames:** `local\p19e_off_esmp08.log` against `local\p19e_bay_esmp08.log`. pair_diff
+  1, identical; `bay_door_classes` 0 -> 72 (the enabler arm runs), no bay request in the window on either side.
+  Both arms now matched with identical gameplay: **flipped ON.**
+
+## 77. Handoff (cc9-physics19, 2026-10-18, at about 65% context)
+
+Landed on agent/cc9-physics1 after 4341b23c2: 888960641 / af8206868 (lead per-op rounding, ON), d559bd895
+(mission_script_reach long comments), 88698c836 / cec37f14e / 8155ccf58 (007D99C0 deck term, OFF), e6da39cac
+(007D80C0 rate model), 44165fce4 (cc15 actuator bodies, ON), 232c7c9cf / 5fc97b0f4 / d0f0d7813 / c2c20c59e /
+0b6d6ff54 (bay channel C, ON). No leases held. The lead's queue (items 1-5) is done; what stays open:
+1. `kPlaneForwardSpeedDeckTermBound` (section 74), OFF: with it every USN01 carrier stow fails. Read 009B22C0's
+   carrier park drive and 0099D300's speed hold for a +900h = 4 plane on a moving deck: does the image's measured
+   speed carry the 0.1 x deck term there, and what keeps the plane rolling to the lift? Also land/abort's on-ground
+   arm (refused) is where the failure escapes into a re-takeoff.
+2. Section 75: a parented plane's velocity is parent-local in the image, world-axis relative in the host.
+3. cc15 actuator bodies: the extend / retract arms had no pair (JM08 extends=0).
+4. Section 69 MINOR (b) (the attach test's drop-to-attach gap) is untouched; fix12 and the GetSquadTorpedoes
+   stopgap stay OFF as unexercised.
+5. cc13's CC13_SEG29U.md item 1 (006BCA80 "mismatch") is answered by section 73; tell cc13 through the lead if its
+   faithful body lands, so it is not wired twice.
+Run tools as section 72 lists; `local\p19_rel32.py <hex>` scans the PE for rel32 calls/jumps and absolute dwords to
+an address. Export trees `local\p19_*` are kept (no reparse points; drive J has over 1 TB free).
