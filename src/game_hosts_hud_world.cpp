@@ -20,10 +20,13 @@
 #include "bsp/mission_camera.hpp"
 #include "bsp/native_camera_plane_transform.hpp"
 #include "bsp/pose_refresh.hpp"
+#include "bsp/cc13_front6.hpp"
+#include "bsp/engine_services_cc13.hpp"
 
 #include <cmath>
 #include <cstdio>
 #include <map>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -701,6 +704,13 @@ struct GameHudMarkersHost::Impl {
     bsp::PoseRefreshView* fallback_parent{nullptr};
     bsp::PoseRefreshView fallback_pose;
 
+    // Packet cc13-fix24: host copies of 0077A2F0's function-local statics,
+    // zero like the image's .bss until the guard bits fill them.
+    std::uint32_t health_colour_guard_f8718c{0};
+    float health_colour_low_f8715c[4]{};
+    float health_colour_mid_f8716c[4]{};
+    float health_colour_high_f8717c[4]{};
+
     void record(const char* method, std::uint32_t address) {
         char text[16];
         format_address(address, text);
@@ -725,6 +735,70 @@ struct GameHudMarkersHost::Impl {
 namespace {
 
 // bsp::HudMarkersRuntimeHost, the boundary of src/hud_markers_runtime.cpp.
+// Packet cc13-fix24: the Front6Host the 0077A2F0 body needs. It reaches only
+// global_address (00F8715C..00F8718C, mapped to the marker host's copies) and
+// 00BEE140; every other callback belongs to another front6 body.
+class HealthColourFront6Binding final : public bsp::cc13_front6::Front6Host {
+public:
+    explicit HealthColourFront6Binding(GameHudMarkersHost::Impl& owner) : owner_(owner) {}
+
+    void* global_address(std::uint32_t address) override {
+        switch (address) {
+        case 0x00F8715Cu: return owner_.health_colour_low_f8715c;
+        case 0x00F8716Cu: return owner_.health_colour_mid_f8716c;
+        case 0x00F8717Cu: return owner_.health_colour_high_f8717c;
+        case 0x00F8718Cu: return &owner_.health_colour_guard_f8718c;
+        default: unreached("global_address");
+        }
+    }
+    float* vector4_scale_00bee140(float* out, const float* scalar, const float* vec) override {
+        bsp::engine_services_cc13::scale_vector4_00bee140(out, scalar, vec);
+        return out;
+    }
+
+    void* global_pointer(std::uint32_t) override { unreached("global_pointer"); }
+    void invalid_parameter_00bf6713() override { unreached("00BF6713"); }
+    std::int32_t stricmp_00bf7fbf(const char*, const char*) override { unreached("00BF7FBF"); }
+    void* sized_pool_00419cc0() override { unreached("00419CC0"); }
+    void sized_pool_return_00bd1510(void*, void*, std::uint32_t, std::uint32_t) override {
+        unreached("00BD1510");
+    }
+    bsp::cc13_front6::NativeStr* native_string_from_int_004260b0(
+        bsp::cc13_front6::NativeStr*, std::int32_t) override {
+        unreached("004260B0");
+    }
+    std::uint8_t* linked_list_nth_node_004be940(void*, std::int32_t) override {
+        unreached("004BE940");
+    }
+    bsp::cc13_front6::MapIterator* map_find_00a03b20(void*, bsp::cc13_front6::MapIterator*,
+                                                     const std::uint32_t*) override {
+        unreached("00A03B20");
+    }
+    void archive_enter_04(void*, bsp::cc13_front6::TaggedValue) override { unreached("archive+04h"); }
+    void archive_leave_08(void*) override { unreached("archive+08h"); }
+    void archive_write_0c(void*, bsp::cc13_front6::TaggedValue,
+                          bsp::cc13_front6::TaggedValue) override {
+        unreached("archive+0Ch");
+    }
+    void game_entity_write_archive_00928450(void*, void*) override { unreached("00928450"); }
+    void recon_detection_set_write_archive_00805020(void*, void*) override { unreached("00805020"); }
+    void observer_member_write_ref_0070e890(void*, void*) override { unreached("0070E890"); }
+    void* object_vslot_08(void*) override { unreached("vtable+08h"); }
+    void* operator_new_00bf55be(std::uint32_t) override { unreached("00BF55BE"); }
+    void free_00bf6989(void*) override { unreached("00BF6989"); }
+    void effect_named_record14_copy_construct_0086cdb0(void*, const void*) override {
+        unreached("0086CDB0");
+    }
+
+private:
+    [[noreturn]] static void unreached(const char* site) {
+        throw std::logic_error(std::string("HealthColourFront6Binding: ") + site
+            + " is not reached by 0077A2F0");
+    }
+
+    GameHudMarkersHost::Impl& owner_;
+};
+
 class MarkerRuntimeBinding final : public bsp::HudMarkersRuntimeHost {
 public:
     explicit MarkerRuntimeBinding(GameHudMarkersHost::Impl& owner) : owner_(owner) {}
@@ -886,6 +960,18 @@ public:
         static_cast<void>(unit);
         owner_.record("HudMarkers::unit_health", 0x0077a2f0u);
         return 0.0f;
+    }
+    const float* unit_health_colour_0077a2f0(float* out, float health) override {
+        if constexpr (kHudUnitHealthColourBound) {
+            owner_.done("HudMarkers::unit_health_colour", 0x0077a2f0u);
+            HealthColourFront6Binding statics(owner_);
+            return bsp::cc13_front6::unit_health_colour_0077a2f0(out, health, statics);
+        } else {
+            static_cast<void>(health);
+            owner_.record("HudMarkers::unit_health_colour", 0x0077a2f0u);
+            for (int k = 0; k < 4; ++k) out[k] = 0.0f;
+            return out;
+        }
     }
     void* find_child(void* widget, const char* name) override {
         owner_.done("HudMarkers::find_child", 0x00aa7e00u);

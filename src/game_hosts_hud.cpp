@@ -31,6 +31,7 @@
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
+#include "bsp/cc13_front6.hpp"
 #include "bsp/hud_root_rows.hpp"
 #include "bsp/local_player_unit_lists.hpp"
 
@@ -123,6 +124,11 @@ struct GameHudHost::Impl {
     GuiLayoutWidget* warning_widget(bsp::WarningWidget widget);
     // Packet cc9_screen_49h.
     bsp::FollowScreen49State follow_screen{};
+    // Packet cc13-fix24: the hints screen at HUD manager +A8h (vtable 00CEE290,
+    // 7Ch bytes), read only by 0054D3C0 at +54h (seconds left). Register
+    // 0054D900 stores +54h = 0.0f; ShowHint, Update and Dismiss have no host
+    // path, so the host's copy keeps that value. No other field is modelled.
+    alignas(4) std::uint8_t hints_screen[0x7C]{};
     // Packet cc9_screen_46h: screen 46h's +1Ch, stored by 0064DA40.
     bool ship_view_has_unit{false};
     bsp::IntegratedControlsState ship_view_controls{};
@@ -568,7 +574,18 @@ public:
     void screen_2b_set_mode(bool) override {
         owner_.record("InGameInterfaceUpdate::screen_2b_set_mode", 0x0053d290u);
     }
-    bool screen_34_query() override { return record_false("0054d3c0", 0x0054d3c0u); }
+    bool screen_34_query() override {
+        if constexpr (kHudHintsSecondsLeftBound) {
+            // 0068C526..0068C533: ECX = [this+A8h]; CALL 0054D3C0; TEST EAX,EAX;
+            // JNE. Non-zero for |+54h| >= 1.0 and for NaN or |+54h| >= 2^31
+            // (80000000h), zero for +54h in (-1, 1).
+            owner_.done("InGameInterfaceUpdate::screen_34_query", 0x0054d3c0u);
+            const bsp::cc13_sweepA::Raw screen{owner_.hints_screen};
+            return bsp::cc13_front6::hints_screen_seconds_left_0054d3c0(screen) != 0;
+        } else {
+            return record_false("0054d3c0", 0x0054d3c0u);
+        }
+    }
     bool screen_2a_wanted() override { return false; }
     void screen_2a_clear_wanted() override {}
     bool screen_3b_block_a() override { return false; }
