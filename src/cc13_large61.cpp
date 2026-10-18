@@ -298,9 +298,12 @@ void build_name_argument(std::uint32_t (&string)[2], const char* text, Large61Ho
     }
 }
 
-// (float)entity+33Ch over (double)114.6f and -114.6f (00D199E0, 00D199D8), each through an
-// x87 divide stored to float (0094B8BE..0094B942, 0094BF1F..0094BF41).
-constexpr double kArcDivisor = static_cast<double>(114.6f);
+// (float)entity+33Ch over the doubles 114.6 and -114.6 (00D199E0, 00D199D8; both exactly
+// 114.6f), each through an x87 divide stored to float (0094B8BE..0094B942,
+// 0094BF1F..0094BF41). Main-thread x87 runs at 24-bit precision, so each quotient is
+// one single-precision rounding: modelled as a float divide (seg62L audit; 53-bit
+// precision would differ only by a double rounding).
+constexpr float kArcDivisor = 114.6f;
 
 }  // namespace
 
@@ -350,8 +353,8 @@ void spawn_manager_handle_message_0094b600(Raw manager, Raw message, std::uint32
         void* frame_handle = host.spawn_ref_frame_construct_from_entity_008f8530(ref_frame, entity);  // 0094B85B, +84h
         const float arc = static_cast<float>(Raw{static_cast<std::uint8_t*>(entity)}.at<std::int32_t>(0x33c));
         const float limits[7] = {100.0f, 2000.0f, 100.0f, 500.0f, 0.0f, 10000.0f, 4000000.0f};  // +68h, as in 0094BFF0
-        const float half_arc_hi = static_cast<float>(static_cast<double>(arc) / kArcDivisor);
-        const float half_arc_lo = static_cast<float>(static_cast<double>(arc) / -kArcDivisor);
+        const float half_arc_hi = arc / kArcDivisor;
+        const float half_arc_lo = arc / -kArcDivisor;
         host.spawn_manager_enqueue_00949530(manager, members, message.at<std::uint32_t>(0x58), frame_handle,
                                             half_arc_lo, half_arc_hi, 200.0f /* 00D19908 */, 2500.0f /* 00D1990C */,
                                             party, static_cast<std::int32_t>(slot), a1, limits, empty, 0, 0);  // 0094B94C
@@ -469,8 +472,8 @@ void spawn_manager_handle_message_0094b600(Raw manager, Raw message, std::uint32
     if (empty_data != nullptr) host.memcpy_00bf7680(empty_data, "", empty_size + 1);  // 0094BEA1
     void* frame_handle = host.spawn_ref_frame_construct_from_entity_008f8530(ref_frame, entity);  // 0094BEBD, +84h
     const float arc = static_cast<float>(Raw{static_cast<std::uint8_t*>(entity)}.at<std::int32_t>(0x33c));
-    const float half_arc_hi = static_cast<float>(static_cast<double>(arc) / kArcDivisor);
-    const float half_arc_lo = static_cast<float>(static_cast<double>(arc) / -kArcDivisor);
+    const float half_arc_hi = arc / kArcDivisor;
+    const float half_arc_lo = arc / -kArcDivisor;
     host.spawn_manager_enqueue_00949530(manager, members, message.at<std::uint32_t>(0x58), frame_handle,
                                         half_arc_lo, half_arc_hi, 200.0f, 2500.0f, party,
                                         static_cast<std::int32_t>(slot), a1, limits, empty, 0, 0);  // 0094BF47
@@ -782,17 +785,20 @@ void sound_overlay_draw_0093ff10(Raw overlay, std::uint32_t flag, const SoundOve
         const float dy = listener[1] - position[1];
         const float dz = listener[2] - position[2];
         // 00940495..009404D9: dy*dy and dx*dx each stored to float, summed on the x87 stack with
-        // dz*dz stored to float, the total stored to float, then sqrt.
-        const float dy2 = static_cast<float>(static_cast<double>(dy) * dy);
-        const float dx2 = static_cast<float>(static_cast<double>(dx) * dx);
-        const float dz2 = static_cast<float>(static_cast<double>(dz) * dz);
-        const float total = static_cast<float>((static_cast<double>(dy2) + dx2) + dz2);
+        // dz*dz stored to float, the total stored to float, then sqrt. The stack sum is
+        // rounded to single at the main thread's 24-bit precision (seg62L audit).
+        const float dy2 = dy * dy;
+        const float dx2 = dx * dx;
+        const float dz2 = dz * dz;
+        const float total = (dy2 + dx2) + dz2;
         const float distance = static_cast<float>(host.sqrt_00bf7030(total));
         const char* text = name.s[1] != 0 ? static_cast<const char*>(name.data()) : globals.empty_string_00f89b30;
         // 009404F5..00940540: DC C9 FMUL ST1,ST0 (bytes), so _ftol takes level * 100 first and
-        // 100 * volume second; min and max are CVTTSS2SI.
-        const auto level_percent = static_cast<std::int32_t>(static_cast<double>(level) * 100.0);  // 00D7A220
-        const auto volume_percent = static_cast<std::int32_t>(100.0 * static_cast<double>(options.at<float>(0x04)));
+        // 100 * volume second; min and max are CVTTSS2SI. Each product is rounded to single
+        // (24-bit precision) before _ftol truncates it: level 0.29f prints 29, not 28 (seg62L
+        // audit).
+        const auto level_percent = static_cast<std::int32_t>(level * 100.0f);  // 00D7A220 (double 100)
+        const auto volume_percent = static_cast<std::int32_t>(100.0f * options.at<float>(0x04));
         char label[0x200];  // L190
         host.sprintf_sound_label_00bf7a6a(label, "%s(%d%%%%) %s:%d/%d/%dm:%d", text, volume_percent, scale,
                                           static_cast<std::int32_t>(options.at<float>(0x0c)),
@@ -889,8 +895,9 @@ void sound_overlay_draw_0093ff10(Raw overlay, std::uint32_t flag, const SoundOve
         }
         // 00940991..00940A54: volume quantised to 0.05f steps (DC F9 FDIV ST1,ST0 and D8 C9 FMUL,
         // read from the bytes); below one step it becomes 0.05f (00CE7638), above 1 it is 1.
-        const auto steps = static_cast<std::int32_t>(volume / kVolumeStep + 0.5);  // 00D7A280, _ftol
-        const float quantised = static_cast<float>(steps * kVolumeStep);
+        // Quotient and sum are each rounded to single at 24-bit precision (seg62L audit).
+        const auto steps = static_cast<std::int32_t>(volume / 0.05f + 0.5f);  // 00D7A280, _ftol
+        const float quantised = static_cast<float>(steps) * 0.05f;
         if (kVolumeStep > quantised) volume = 0.05f;
         else volume = quantised > 1.0f ? 1.0f : quantised;
 
