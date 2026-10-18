@@ -401,6 +401,17 @@ inline constexpr bool kSubmarineDiveBound = true;  // ON: pairs held (docs/SUBMA
 // SetUnlimitedAirSupply (00893C00) is routed. False: needAir reads false, no crush.
 inline constexpr bool kSubmarineAirBound = true;  // ON: pairs held (docs/SUBMARINE_MODEL.md section 13)
 
+// Packet cc13-fix17 (docs/CC13_FIX17.md). 00893A60 SetSubmarineAirSupply(entity,
+// air): argument 0 through 00888AA0 (no null and no class test), argument 1
+// through 00B66270 (lua_tonumber, nil reads 0), FSTP dword at 00893B95 and again
+// at 00893BA1 into unit+127Ch "air". No clamp at the call; 00855250 clamps the
+// next force step to 1.0 (0085537A). Readers of +127Ch: 00855250 (the air model,
+// the host's slot sub_air.air), the HUD screens 0064DD30 / 00650450 / 00683020,
+// 00852D30, and GetSubmarineAirSupply 008938E0. True: the script orders host
+// routes the row to GameUnitsHost::set_submarine_air_00893a60. False: the row
+// stays unimplemented and stores nothing.
+inline constexpr bool kLuaSetSubmarineAirSupplyBound = false;
+
 // Packet cc9_periscope_out (docs/GUNNERY_OPEN_ITEMS.md section 38). True: each seeded
 // submarine with a periscope node runs 00854650's mast arm once per force step.
 // periscopeOut (+1234h) is cleared (00854B00), the mast's local Y steps toward
@@ -603,6 +614,9 @@ public:
     // Packet cc9_submarine_air. unit+1280h, 00893C00's store. False when the slot
     // is not a seeded submarine.
     bool set_unlimited_air_00893c00(std::size_t unit_index, bool flag);
+    // Packet cc13-fix17. unit+127Ch "air", 00893A60's store (00893BA1). False
+    // when the slot is not a seeded submarine.
+    bool set_submarine_air_00893a60(std::size_t unit_index, float air);
     // Packet cc9_squadron_travel_alt: 0089F550's five stores on the squadron of
     // unit_index (its registry squadron unit when it is a member). False when the
     // unit has no slot.

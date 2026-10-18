@@ -207,8 +207,14 @@ have to be answered together.
 
 **Image.** 0089C590 reads the entity and the flag, gates on the weapon director, and calls 0071DFD0(flag).
 0071DFD0 builds session message 5Ah with sub-kind 3 and routes it with `BSP_Session_RouteMessage(msg, 7, 0)`.
-It is the twin of AAEnable's 0071E050 (sub-kind 2, director+221h; `game_hosts_lua.cpp:7322-7328`). The
+It is the twin of AAEnable's 0071E050 (sub-kind 4, director+221h; `game_hosts_lua.cpp:7322-7328`). The
 artillery handler's director field is unread (docs/UNIT_WEAPON_DEVICES.md).
+
+> **Erratum (2026-10-17, cc13-fix17).** This section first said AAEnable's 0071E050 sends sub-kind 2. It
+> sends sub-kind 4: `0071E09A MOV dword ptr [ESP+24h],4` (ArtilleryEnable's 0071DFD0 stores 3 at
+> 0071E01A). The message 5Ah sub-kind map in 0071C1E0 is: 0 -> vtable[64h], 1 -> vtable[68h],
+> 2 -> +1CCh, 3 -> +220h, 4 -> +221h, 5 -> +222h, 6 -> +223h. The director+221h field above was
+> already right; only the sub-kind number was wrong.
 
 **Host.** Nothing happens, so guns the script switched off keep firing.
 
