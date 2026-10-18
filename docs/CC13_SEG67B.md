@@ -894,9 +894,33 @@ Two new bodies, both read whole from the disk bytes. Neither is hosted (git grep
   - With a target, it steers by `_CIatan2` beyond 1000 m.
   - Without a target, it averages three clamped terms. One of them is a stream-1 draw, U(-0.1, 0.1) at 009BA48C, once per tick.
   - The pitch command is the speed fraction x pi/4, using the widened [00CEDCD0].
-  - New hooks: `unit_vcall_38_speed` and `plane_class_min_control_speed_007c4810`.
+  - The speed comes from the existing hook `entity_vcall_38_float` (slot +38h, 007B8E60 `BSP_Unit_GetCachedSpeed`).
+  - New hook: `plane_class_min_control_speed_007c4810`. Its law is `plane_min_control_speed_007c4810` in dive_bomb_aimdive_tail.hpp.
 - Both are modelled at 24-bit precision; 53-bit is recorded as the uncertainty.
 - The batch 11 row nits are folded into 009B0300 and 009B22C0 in place.
+
+### 3.60 Batch 14: the moveto cruise profile 009C3650 (packet cc13-seg67C)
+
+No new body. One ledger-only row:
+- **009C3650**, the kind-7 moveto task's vt+54h activation. Read whole (009C3650-009C394A) against three parts of `game_hosts_units.cpp`:
+  - the activation block (~32000);
+  - `moveto_refresh_009beba0` (~32053);
+  - that refresh's ordnance arm through `moveonpath_cruise_profile_009bd6e0`.
+- Draws: two stream-1 draws, in order. +460h = U(tuning+368h, +36Ch) at 009C367C, then +424h = U(0, tuning+364h) at 009C36A3. The host replaces both with keyed per-unit stand-ins (`#mt68`, `#mt424`), ON under `kMoveToActivationDrawsBound`.
+- Arms: the arms and their predicates equal 009BD6E0's. The ordnance arms add 0.6 x TravelAltRandom (qword [00CEFF98]). The fighter fallback (009C38FD, 009C3936) does not add it. 0047B850 and 0047B880 were read and match `park_bomber_class_0047b850` and its negation.
+- Squadron write: the image skips the squadron cruise-altitude block (ctl = (task+404h)+37Ch) when ctl+38Dh is set. Otherwise it writes ctl+394h and ctl+3ADh only when 0 > ctl+380h and ctl+3A9h is clear, and it clears ctl+3A9h. The host matches this under `kSquadronTravelAltBound` and `kTaskProfileActivationOnlyBound`.
+- LOW, comment only: the `moveto_refresh_009beba0` header (~32048) says the fighter arm adds 0.6 x TravelAltRandom at 009C38FD; it does not. The host's default cruise keeps that term only while the plane globals are unloaded. With them loaded, the ON ordnance arm replaces it.
+
+### 3.61 Batch 15: the flikflak tick 009B99E0 and two hook fixes (packet cc13-seg67C)
+
+- **009B99E0**, ledger-only. Read whole (009B99E0-009B9AE5) against the kind-2 arm of `st_manoeuvre_tick` (~24791). That arm runs under `kStrafeBreakoffBound`, which is ON. The host matches field for field:
+  - The timer runs down. The image redraws when the timer is ordered and not above zero, and a NaN timer is kept, as in the host.
+  - Each redraw is one stream-1 U(0, 1) at 009B9A14, then (U + 2.0) + t, and the side byte is toggled. The host takes a keyed stand-in (`#stff_timer`) instead.
+  - The bank target is TurnRoll x ±1.0. The pitch target is cls+1ECh. The demands are fixed.
+  - It retires when the +3F8h end condition holds.
+- Hooks for 009BA2F0 (batch 13):
+  - The speed now goes through the existing `entity_vcall_38_float` (slot +38h, 007B8E60). The duplicate `unit_vcall_38_speed` hook is dropped.
+  - `plane_class_min_control_speed_007c4810` now cites its law, `plane_min_control_speed_007c4810`.
 
 ## 4. Ledger-only records (packet cc13-seg67C)
 
@@ -1045,3 +1069,5 @@ Two new bodies, both read whole from the disk bytes. Neither is hosted (git grep
 | 009C5180 | `run_dive_bomb_aimglide_tick_009c5180` (game_hosts_units.cpp ~28827) | matches; the draw is a keyed per-unit stand-in (ON); float lead margin in the image |
 | 009C58D0 | `run_dive_bomb_aimdive_tick_009c58d0` (game_hosts_units.cpp ~29350) | matches (release and constants); keyed stand-in draw (ON); LOW NaN rearm arm |
 | 009C62B0 | `run_dive_bomb_flyabove_tick_009c62b0` (game_hosts_units.cpp ~28959) | PARTIAL: exact 0.2 at 009C6BBE (near_field_probe.cpp) |
+| 009C3650 | activation block and `moveto_refresh_009beba0` (game_hosts_units.cpp ~32000, ~32053) | matches (keyed stand-in draws, ON); LOW stale fighter-arm comment |
+| 009B99E0 | kind-2 arm of `st_manoeuvre_tick` (game_hosts_units.cpp ~24791) | matches (keyed stand-in draw, ON) |

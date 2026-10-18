@@ -16,7 +16,7 @@ Their original ABI is MSVC x86 compiler EH: the dispatcher receives exception
 runtime context with EAX selecting FuncInfo; cleanup funclets inherit the
 parent's EBP frame. Neither is an ordinary callable C++ interface. This report
 does not claim native unwind execution, ABI replacement or game validation.
-No Ghidra names/comments were changed for these already-named support rows.
+No Ghidra names/comments were changed for the FH3/unwind support rows. The deleting-destructor classification was appended to its existing evidence comment.
 
 Original PE SHA-256: `b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6`.
 
@@ -244,3 +244,66 @@ Original PE SHA-256: `b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b
 | `00CC2F38` | `BSP_MeshResource_Support_00cc2f38` | MSVC unwind action: bytes 8b450450e86b36f3ff59c3; mov eax, dword ptr [ebp + 4]; push eax; call 0xbf65ac; pop ecx; ret . FuncInfo 00dfc77c, selector 00cc2f43, unwind entry 00dfc774 state 1->0 references this exact entry. Compiler cleanup funclet using parent EBP, not an ordinary game entry point. |
 | `00CC2F43` | `BSP_MeshResource_Support_00cc2f43` | 10-byte MSVC FH3 dispatcher: bytes b87cc7df00e9f63bf3ff; MOV EAX,00dfc77c; JMP 00bf6b43; FuncInfo magic 19930522. Compiler exception dispatch, no independent game logic. |
 | `00CC3D3E` | `BSP_NativeTracerPool_Construct_ExceptionHandler` | 10-byte MSVC FH3 dispatcher: bytes b830d5df00e9fb2df3ff; MOV EAX,00dfd530; JMP 00bf6b43; FuncInfo magic 19930522. Compiler exception dispatch, no independent game logic. |
+| `00CC3E94` | `BSP_NativeTracer_Construct_FH3Dispatcher` | 10-byte MSVC FH3 dispatcher: bytes b894d6df00e9a52cf3ff; MOV EAX,00dfd694; JMP 00bf6b43; FuncInfo magic 19930522. Compiler exception dispatch, no independent game logic. |
+| `00CC4B3E` | `FUN_00cc4b3e` | 10-byte MSVC FH3 dispatcher: bytes b86ce9df00e9fb1ff3ff; MOV EAX,00dfe96c; JMP 00bf6b43; FuncInfo magic 19930522. Compiler exception dispatch, no independent game logic. |
+| `00CC4B58` | `FUN_00cc4b58` | 10-byte MSVC FH3 dispatcher: bytes b898e9df00e9e11ff3ff; MOV EAX,00dfe998; JMP 00bf6b43; FuncInfo magic 19930522. Compiler exception dispatch, no independent game logic. |
+| `00CC4B98` | `FUN_00cc4b98` | 10-byte MSVC FH3 dispatcher: bytes b8f0e9df00e9a11ff3ff; MOV EAX,00dfe9f0; JMP 00bf6b43; FuncInfo magic 19930522. Compiler exception dispatch, no independent game logic. |
+| `00CC4C89` | `FUN_00cc4c89` | 10-byte MSVC FH3 dispatcher: bytes b840eadf00e9b01ef3ff; MOV EAX,00dfea40; JMP 00bf6b43; FuncInfo magic 19930522. Compiler exception dispatch, no independent game logic. |
+| `00CC4CAB` | `FUN_00cc4cab` | 10-byte MSVC FH3 dispatcher: bytes b8eceadf00e98e1ef3ff; MOV EAX,00dfeaec; JMP 00bf6b43; FuncInfo magic 19930522. Compiler exception dispatch, no independent game logic. |
+| `00CC6C40` | `BSP_FileStorePayload_UnwindString` | MSVC unwind action: bytes 8b4df0e9d87075ff; mov ecx, dword ptr [ebp - 0x10]; jmp 0x41dd20. FuncInfo 00e0146c, selector 00cc6c48, unwind entry 00e01464 state 0->-1 references this exact entry. Compiler cleanup funclet using parent EBP, not an ordinary game entry point. |
+| `009960E0` | `BSP_BotConditionSimpleTimed_ScalarDelete` | MSVC x86 scalar deleting-destructor compiler wrapper, complete 31-byte body 009960E0..009960FE. Vtable 00D1E9F0 slot 1; ECX=this, dword stack flags tested at bit0, RET4, EAX=original this. Only restores base vtable 00D05840 and conditionally calls CRT free 00BF65AC; no separate authored game operation. The earlier candidate C++ wrapper was removed after final scope review; compiler-generated entry is excluded under the packet rule. |
+
+The additional compiler exclusion is the scalar deleting-destructor wrapper at
+`009960E0`. The packet excludes compiler-generated entries even when a wrapper
+contains a game-class vtable token. Its initially added source body was withdrawn.
+
+## Ordinary game entries
+
+All twelve bodies are in `src/oct18_tail_d.cpp`, declared in
+`include/bsp/oct18_tail_d.hpp`. The address suffixes identify their source
+entries. These are new C++ interfaces on original Win32 object layouts, not
+drop-in ABI replacements. Virtual/library calls use explicit required bindings;
+the terrain constructor directly reuses the existing `00C58690` reconstruction.
+The `0042A910` alias delegates to the existing `00923840` contract and adds no
+duplicate target body. No game-host stand-in or switch is replaced.
+
+Font and terrain are complete normal-path reconstructions; original compiler
+exception transport and native exceptional cleanup remain unproved. Terrain's
+x87 reciprocal is computed in double and rounded at the original float store;
+signaling-NaN payloads, nondefault control words and native FPU exceptions are
+not validated. Native object construction and lifetime preconditions apply.
+
+The font body preserves tree nodes until after image and pooled-string release;
+its existing typed host projection had already retired nodes with payloads.
+This source does not change that host projection. Library bodies remain bindings.
+One local Win32 source fixture compiled with `/O2 /W4 /WX /fp:strict` and
+`/link /MANIFEST:EMBED` checks payload/image/string/tree/sentinel retirement,
+the alpha-owner reload after a GFX callback, and exact integer comparison above
+2^24 plus the zero wildcard. It passed; this is source-fixture proof, not native
+differential execution. No new test framework or registered tests were added.
+
+| Address | C++ body | Original ABI | Evidence |
+| --- | --- | --- | --- |
+| `0042A8A0` | `camera_mover_tick_element_0042a8a0` | ECX=mover; EAX=subobject or zero; RET | TEST ECX/JZ; LEA EAX,[ECX+170h]; null path XOR EAX,EAX. Mover vtable slot 60h. |
+| `0042A8B0` | `camera_mover_focus_entity_0042a8b0` | ECX=mover, five stack dwords; RET 14h | Single RET 14h at the default mover virtual slot 11Ch. No body-side reads or writes; argument semantic types remain unknown. |
+| `0042A8C0` | `camera_mover_focus_point_0042a8c0` | ECX=mover, seven stack dwords; RET 1Ch | Single RET 1Ch at the default mover virtual slot 118h. No body-side reads or writes; argument semantic types remain unknown. |
+| `0042A8D0` | `camera_mover_adopt_from_0042a8d0` | ECX=mover, one stack dword; RET 4 | Single RET 4 at the default mover virtual slot 124h. Argument semantic type remains unknown. |
+| `0042A900` | `camera_mover_target_0042a900` | ECX=mover unused; EAX=0; RET | XOR EAX,EAX/RET, default mover vtable slot 130h. |
+| `0042A910` | `entity_inherit_race_and_activate_0042a910` | ECX=entity; JMP 00923840, original caller cleanup/return | Five-byte tail alias JMP 00923840. New interface forwards to a required 00923840 binding; the existing body in entity_mission_seg60_argon is not duplicated. |
+| `00465570` | `movie_force_aa_flak_00465570` | ECX=action, stack movie; RET 4 | Complete 159-byte body 00465570..0046560E. Iterates movie+48h / part+44h; short-circuited virtual +5Ch kind 1Eh then 20h; definition=[part+3F4h], type+80h in {5,1}; FILD signed part+38Ch compared exactly to action+20h, or zero wildcard 00D7A218 (verified bytes 00000000); virtual +1D8h(0,0.0f,0.0f). Next link reloads after callback. |
+| `0051E780` | `binoculars_observer_released_0051e780` | ECX=observer, stack released pointer; RET 4 | Five-instruction exported body: clear observer+38h exactly when the released pointer equals the current binding. |
+| `00680DA0` | `unit_library_collect_children_00680da0` | ECX=screen, stack collection; RET 4 | ADD ECX,6Ch/PUSH ECX/MOV ECX,[ESP+8]/CALL 004D6790/RET 4. Forwards the exact screen+6Ch address to the required existing STL collection binding, without rebuilding the library. |
+| `00AD53A0` | `font_destroy_00ad53a0` | ECX=font; RET at 00AD5586; compiler EH handler 00CB945A | Complete 487-byte normal path. Native checked iterator over font+4 head / node+10h payload; free payload and clear it before increment 00AD40D0. Release exactly GFX+64h then reload alpha+68h, InterlockedDecrement(ref+4)/slot0 only at zero. Six pooled strings in reverse pointer-offset order 44h,3Ch,34h,2Ch,24h,10h; capture block,length+1,1 before argument-free 00419CC0, then 00BD1510. Erase range 00AD4B60, reload/free sentinel, clear font+4/+8. Library/CRT/tree/pool calls are required bindings. Existing partial host projections remain unchanged. |
+| `00B8A270` | `resource_interface_type_descriptor_00b8a270` | No object access; EAX=&00E13084; RET | MOV EAX,00E13084/RET. Return the fixed original-image address token; preserve descriptor identity rather than create a second descriptor. Initializer 00CE0EE0 and vtable 00D63208 remain external evidence. |
+| `00C58840` | `terrain_shape_construct_00c58840` | ECX=body, stack(shape,descriptor); RET 8; EAX=shape | Complete 218-byte normal constructor 00C58840..00C58919. Stamp base D7A04C then terrain D7A194; owner+4, kind+8, material+24h..30h, zero+204h/208h/20Ch; forward 12-word descriptor+14h to shape+34h; descriptor+5Ch/+60h to +210h/+22Ch; dimensions +214h/+218h, spacing+21Ch/+220h, x87 1/descriptor+58h stored at+224h, offset+228h; direct existing 00C58690 bounds call. This in-house Dyn code is explicitly in scope. |
+
+## Validation and remaining integration
+
+Each landing batch runs `./scripts/build.ps1` after merging `origin/main`, and
+repeats fetch/merge/build for rejected pushes. The script builds MSVC Win32 and
+runs the existing `reconstructed_math` and `tool_tests` CTests. No game was run.
+Original-image byte/table evidence classifies 228 compiler rows (195 FH3
+dispatchers, 32 unwind actions and one scalar deleting-destructor wrapper);
+the remaining 12 rows are source bodies.
+No rows were skipped for leases, and none need a scope decision. Host owners
+must choose any later adoption of these new interfaces under their own leases.
