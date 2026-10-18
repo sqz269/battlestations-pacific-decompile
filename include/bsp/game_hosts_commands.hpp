@@ -229,7 +229,7 @@ inline constexpr bool kDirectorOverrideLayerBound =
 // flags 7, the 5Dh clear with +20h = 0 that 00721A40 answers with 0071E610. True: the
 // push reads +188h and the clear goes through the loopback like every 5Dh. False:
 // +188h answers 0 to the push, so an attack order leaves an AutoTarget override on.
-inline constexpr bool kAttackPushEndsOverrideBound = false;
+inline constexpr bool kAttackPushEndsOverrideBound = true;   // ON: SHIP_AI 276 (faithful; no reach on USNOS / USN13)
 // Packet s57_follow_join (docs/CC13_VERIFY6.md R2, SHIP_AI_OPEN_ITEMS 278). The scene
 // command `follow` arm 00816EA6: 00521EA0, then the target's IsKindOf(2) at 00816ECA,
 // then 00816ED5 0077C8D0 (RequestJoinFormation) on this unit with that target. True:

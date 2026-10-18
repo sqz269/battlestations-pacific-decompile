@@ -19038,3 +19038,15 @@ deaths 13 -> 12, hit records 144 -> 134 (ships react later to the I-400s' torped
 JM06 pair on d4171938d (`local\s57_ts_on_j6.log`) even completed the mission at 811.93 s, with the exec guard's
 `refused a mission script's process launch: sus_prog.exe`; that base is superseded by the flips since.
 **Decision: ON** by mechanism. JM06 moves (to cc9-lua66).
+
+### 276 result: ON (no reach)
+
+**Pairs (`--flip kAttackPushEndsOverrideBound=true`; manifests beside each log).** 9088c9c7b (exe `local\s57_po_on`):
+USNOS `s55_os_r0` 30000 frames against `local\s57_us_osr.log` and USN13 30000 frames against
+`local\s57_po_off_u13.log`: both exit 1, gameplay identical, `echoes=0`. With the a73a84449 count (exe
+`local\s57_po2_on`): USN13 30000 frames `weapon_pushes=60 with_override=0`; USNOS `s55_os_r0` 80000 frames
+(`local\s57_po2_on_osl.log`, failed "Game Over" at 3071.87 s) `override installs=72 arm_ends=30`,
+`weapon_pushes=412 with_override=0`. In both missions no category 1/2 order is pushed onto a director whose
++188h is set: the overrides sit on AI ships and squadrons that the scripts and planners do not re-order while
+the override lives. **Decision: ON** as a faithful binding with no reach on these rows; the counts stay in the
+summary line, so a row that does reach it shows `with_override > 0`.
