@@ -3314,3 +3314,8 @@ input) or a ground speed hold that does not settle exactly (idle thrust / wheel 
   `local\p20e_off_jm08.log`, exes built at de14db729): gameplay identical, all tables identical; the strafe task is
   exercised (42 planes, aim 1840 ticks, 47 aims, 729 gun-point fires), so no decision crossed a float/double
   rounding edge. Flipped as the bytes.
+- **Item 8 remainder.** 0099B940: the image skips a pair on an unordered compare (FCOMI / JBE at 0099B977,
+  FCOMIP / JA at 0099B97F); the host's `v <= lo || hi <= v` took a NaN pair as a hit. Rewritten as
+  `!(v > lo) || !(hi > v)` without a switch: identical for every ordered value; no run was checked for a NaN band (unpaired). 009A17D0
+  zeroes the whole +26Ch dword (009A17E9); the host carries only bit 4 (`ga_flag_26c_4`), and no other bit is
+  modelled or read, so nothing to bind.

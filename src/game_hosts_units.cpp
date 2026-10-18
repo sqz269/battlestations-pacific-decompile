@@ -8360,7 +8360,9 @@ struct GameUnitsHost::Impl {
         const auto& b = u.ga_band[set];
         for (int i = 0; i < u.ga_band_n[set]; ++i) {
             const float lo = b[i][0], hi = b[i][1];
-            if (v <= lo || hi <= v) continue;
+            // 0099B977 FCOMI / JBE and 0099B97F FCOMIP / JA: an unordered pair
+            // is skipped, as v <= lo || hi <= v would not (NaN only).
+            if (!(v > lo) || !(hi > v)) continue;
             if (lo < -1.0f && 1.0f < hi) return false;
             v = (hi - v < v - lo) ? hi : lo;
             return true;
@@ -8376,7 +8378,9 @@ struct GameUnitsHost::Impl {
 
     // 009A17D0's gunfire arm and 0099EC40, for one plane, per think.
     void gunfire_avoidance_009a17d0(GameUnitSlot& u, float dt) {
-        u.ga_flag_26c_4 = false;                                   // 009A17E7
+        // 009A17E9 zeroes the whole +26Ch dword; bit 4 is the only bit the
+        // host carries (no other +26Ch bit is modelled or read).
+        u.ga_flag_26c_4 = false;                                   // 009A17E9
         u.av_throttle_25c = 1.0f;                                  // 009A17EF [00D7A24C]
         for (int& n : u.ga_band_n) n = 0;                          // +C8h/+190h/+258h
         // 009A17F8: an AI plane (+520h clear), live (+5Dh clear), in free
