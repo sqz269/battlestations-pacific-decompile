@@ -565,6 +565,251 @@ void metrics_mission_start_00753810(std::uint8_t* metrics, std::int32_t event, s
     release(player, host);
 }
 
+namespace {
+
+// How a row's pair temporary is destroyed: through 00750910 (category 0 and
+// the common rows of category 1) or inline as ~value (+0Ch), ~key (+0) with
+// 00A53210 (every later row).
+enum class PairDtor { call_00750910, inline_00a53210 };
+
+// One "rows.push_back(pair(ZString(key), ZString(value)))": the value is built
+// first (it is the higher argument block), 00751310 consumes both.
+void push_pair(ZPairVectorSlot& rows, ZStringPairArgs& args, PairDtor dtor, Cc15MetricsHost& host) {
+    ZPairSlot pair;
+    void* p = host.zpair_construct_00751310(&pair, &args);
+    host.zpairs_push_back_00754ad0(&rows, p);
+    if (dtor == PairDtor::call_00750910) {
+        host.zpair_destroy_00750910(&pair);
+    } else {
+        host.zstring_destroy_00a53210(pair.bytes + 0xC);
+        host.zstring_destroy_00a53210(pair.bytes);
+    }
+}
+
+void push_text_row(ZPairVectorSlot& rows, const char* key, const char* value, PairDtor dtor, Cc15MetricsHost& host) {
+    ZStringPairArgs args;
+    host.zstring_from_cstr_00a52560(&args.value, value);
+    host.zstring_from_cstr_00a52560(&args.key, key);
+    push_pair(rows, args, dtor, host);
+}
+
+void push_int_row(ZPairVectorSlot& rows, const char* key, std::int32_t value, PairDtor dtor, Cc15MetricsHost& host) {
+    ZStringPairArgs args;
+    host.zstring_from_int_00a52820(&args.value, value);
+    host.zstring_from_cstr_00a52560(&args.key, key);
+    push_pair(rows, args, dtor, host);
+}
+
+// The SiD / Mod / Version rows every category 1-8 starts with. Mod is the
+// first session-id character, sign-extended (MOVSX).
+void push_common_rows(ZPairVectorSlot& rows, const std::uint8_t* metrics, PairDtor dtor, Cc15MetricsHost& host) {
+    const char* sid = reinterpret_cast<const char*>(metrics + 0x1CE);
+    push_text_row(rows, "SiD", sid, dtor, host);
+    push_int_row(rows, "Mod", static_cast<signed char>(sid[0]), dtor, host);
+    push_text_row(rows, "Version", host.version_string_00e0a540(), dtor, host);
+}
+
+// "map[key] = rows" through 00755520 and 007547F0, then the has-data flag.
+void store_category(std::uint8_t* metrics, std::int32_t key, const ZPairVectorSlot& rows, Cc15MetricsHost& host) {
+    std::int32_t k = key;
+    host.zpairs_assign_007547f0(host.category_rows_00755520(metrics + 4, &k), &rows);
+    metrics[0x1C4 + key] = 1;
+}
+
+// ~vector: when first is set, 00752900(first, last) and free(first).
+void destroy_rows(ZPairVectorSlot& rows, Cc15MetricsHost& host) {
+    if (rows.first == 0) return;
+    host.zpair_destroy_range_00752900(rows.first, rows.last, &rows);
+    host.free_00bf65ac(reinterpret_cast<void*>(static_cast<std::uintptr_t>(rows.first)));
+}
+
+// The image's checked-iterator loop over a native std::map object: begin is
+// head->left, the head is re-read for every end test, ++ is the bound
+// instantiation. Its _invalid_parameter_noinfo (00BF6713) checks test that the
+// iterator belongs to this map and is not end, which these walks cannot break,
+// and are omitted.
+template <class F>
+void walk_map(const std::uint8_t* map, void (Cc15MetricsHost::*inc)(NativeTreeIter*), Cc15MetricsHost& host, F visit) {
+    NativeTreeIter it{addr(map), at<std::uint32_t>(ptr_at(map, 4), 0)};
+    while (it.node != at<std::uint32_t>(map, 4)) {
+        visit(static_cast<const std::uint8_t*>(reinterpret_cast<void*>(static_cast<std::uintptr_t>(it.node))));
+        (host.*inc)(&it);
+    }
+}
+
+// map<int unit_type, int value> rows: one int row per unit type whose
+// +20h+type flag is set, tagged from 00E0A570.
+void push_unit_rows(ZPairVectorSlot& rows, const std::uint8_t* metrics, const std::uint8_t* map,
+                    void (Cc15MetricsHost::*inc)(NativeTreeIter*), Cc15MetricsHost& host) {
+    walk_map(map, inc, host, [&](const std::uint8_t* node) {
+        const std::int32_t type = at<std::int32_t>(node, 0xC);
+        if (metrics[0x20 + type] == 0) return;
+        push_int_row(rows, kUnitTypeTags_00e0a570[type], at<std::int32_t>(node, 0x10), PairDtor::inline_00a53210, host);
+    });
+}
+
+// map<int target, int value> rows for one attacker: the +34h pair flag
+// [attacker*14h + target], tagged from 00E0A5C0[attacker*19 + target].
+void push_pair_rows(ZPairVectorSlot& rows, const std::uint8_t* metrics, std::int32_t attacker, const std::uint8_t* map,
+                    Cc15MetricsHost& host) {
+    walk_map(map, &Cc15MetricsHost::tree_iter_inc_0057f4a0, host, [&](const std::uint8_t* node) {
+        const std::int32_t target = at<std::int32_t>(node, 0xC);
+        if (metrics[0x34 + attacker * 0x14 + target] == 0) return;
+        push_int_row(rows, kUnitPairTags_00e0a5c0[attacker * 19 + target], at<std::int32_t>(node, 0x10),
+                     PairDtor::inline_00a53210, host);
+    });
+}
+
+}  // namespace
+
+// The float fields convert with CVTTSS2SI (truncation; SSE, no x87 in this
+// body), which is what static_cast<int32_t> compiles to.
+void metrics_report_mission_end_007556a0(std::uint8_t* metrics, Cc15MetricsHost& host) {
+    // 004254B0("Metrics_System MissionEnd Called"): trivial logger, omitted.
+    if (metrics[0x238] == 0) return;
+    if (!live_user_ready(host)) return;
+    if (metrics[0x23A] == 0) metrics_generate_session_id_00751bd0(metrics, host);
+    // vector::clear on each category: erase(begin, end) inlined as
+    // 007521C0(last, last, first) then 00752900(new last, old last).
+    for (std::int32_t category = 0; category < 10; ++category) {
+        metrics[0x1C4 + category] = 0;
+        std::int32_t key = category;
+        std::uint8_t* v = static_cast<std::uint8_t*>(host.category_rows_00755520(metrics + 4, &key));
+        const std::uint32_t last = at<std::uint32_t>(v, 8);
+        if (at<std::uint32_t>(v, 4) != last) {
+            const std::uint32_t new_last = host.zpair_copy_007521c0(last, last, at<std::uint32_t>(v, 4));
+            host.zpair_destroy_range_00752900(new_last, at<std::uint32_t>(v, 8), v);
+            at<std::uint32_t>(v, 8) = new_last;
+        }
+    }
+    at<std::uint32_t>(metrics, 0x22C) = 0;
+    // The local player's 284h-byte score record: game +21A0h -> base,
+    // base + [base+1424h] * 284h + 4.
+    const std::uint8_t* players = static_cast<const std::uint8_t*>(ptr_at(host.game_00e188a8(), 0x21A0));
+    const std::uint8_t* rec = players + at<std::int32_t>(players, 0x1424) * 0x284 + 4;
+    const PairDtor call = PairDtor::call_00750910;
+    const PairDtor inl = PairDtor::inline_00a53210;
+
+    // Category 0: the mission summary.
+    {
+        ZPairVectorSlot rows{0, 0, 0, 0};  // the image zeroes +4..+0Ch only
+        push_common_rows(rows, metrics, call, host);
+        push_text_row(rows, "MapName", "OMMBIE", call, host);  // 00D01544, a literal
+        NativeStringSlot player;
+        host.native_string_construct_cstr_0041e870(&player, "none");
+        if (host.xenon_has_selected_user_00a3e510(host.xenon_00f8abe8())) {
+            char buffer[0x6C];  // [ESP+78h], to the end of the locals
+            buffer[0] = 0;
+            host.sprintf_llx_00bf7a6a(buffer, host.xenon_selected_xuid_00a3eb00(host.xenon_00f8abe8()));
+            NativeStringSlot hex;
+            host.native_string_construct_cstr_0041e870(&hex, buffer);
+            assign(player, hex, host);
+            release(hex, host);
+        }
+        push_text_row(rows, "PlayerName", text_or_empty(player.data, host), call, host);
+        push_text_row(rows, "Mode",
+                      host.game_mode_name_004b4b40(host.game_effective_mode_004bca50(host.game_00e188a8())), call, host);
+        push_text_row(rows, "Unit", "ladik", call, host);
+        push_int_row(rows, "Bandwidth_up", 0, call, host);
+        push_int_row(rows, "Bandwidth_down", 0, call, host);
+        push_text_row(rows, "End_State", "Normal", call, host);
+        push_int_row(rows, "play_time", static_cast<std::int32_t>(at<float>(rec, 0xC)), call, host);
+        push_int_row(rows, "mission_completed", at<std::int32_t>(rec, 0), call, host);
+        push_int_row(rows, "ranking", at<std::int32_t>(rec, 4), call, host);
+        push_int_row(rows, "completion_time", static_cast<std::int32_t>(at<float>(rec, 0x10)), call, host);
+        push_int_row(rows, "slot", at<std::int32_t>(rec, 0x250), call, host);
+        push_int_row(rows, "map_usage", static_cast<std::int32_t>(at<float>(rec, 0x14)), call, host);
+        push_int_row(rows, "total_action_score", at<std::int32_t>(rec, 0x1CC), call, host);
+        push_int_row(rows, "total_ship_score", at<std::int32_t>(rec, 0x1D0), call, host);
+        push_int_row(rows, "total_plane_score", at<std::int32_t>(rec, 0x1D4), call, host);
+        push_int_row(rows, "total_command_score", at<std::int32_t>(rec, 0x1D8), call, host);
+        push_int_row(rows, "total_badge_score", at<std::int32_t>(rec, 0x1DC), call, host);
+        push_int_row(rows, "total_score", at<std::int32_t>(rec, 0x1E0), call, host);
+        push_int_row(rows, "CheckPoint", metrics[0x239], call, host);
+        push_int_row(rows, "Location", at<std::int32_t>(metrics, 0x14), call, host);
+        metrics_build_timestamp_00752e00(metrics, host);
+        push_text_row(rows, "TimeStamp", text_or_empty(at<std::uint32_t>(metrics, 0x1C), host), call, host);
+        store_category(metrics, 0, rows, host);
+        release(player, host);
+        destroy_rows(rows, host);
+    }
+    // Categories 1, 2, 3 and 6: map<int, int> at +F0h, +108h, +E4h, +D8h.
+    struct UnitCategory {
+        std::int32_t key;
+        std::size_t map;
+        PairDtor common;
+    };
+    const auto unit_category = [&](const UnitCategory& c) {
+        if (at<std::uint32_t>(rec, c.map + 8) == 0) return;
+        ZPairVectorSlot rows{0, 0, 0, 0};
+        push_common_rows(rows, metrics, c.common, host);
+        push_unit_rows(rows, metrics, rec + c.map, &Cc15MetricsHost::tree_iter_inc_0057f4a0, host);
+        store_category(metrics, c.key, rows, host);
+        destroy_rows(rows, host);
+    };
+    unit_category({1, 0xF0, call});
+    unit_category({2, 0x108, inl});
+    unit_category({3, 0xE4, inl});
+    // Category 4: map<int, map<int, int>> at +CCh, only the inner map under key 0.
+    if (at<std::uint32_t>(rec, 0xD4) != 0) {
+        ZPairVectorSlot rows{0, 0, 0, 0};
+        push_common_rows(rows, metrics, inl, host);
+        walk_map(rec + 0xCC, &Cc15MetricsHost::tree_iter_inc_0057f430, host, [&](const std::uint8_t* node) {
+            if (at<std::int32_t>(node, 0xC) != 0) return;
+            push_unit_rows(rows, metrics, node + 0x10, &Cc15MetricsHost::tree_iter_inc_0057f4a0, host);
+        });
+        store_category(metrics, 4, rows, host);
+        destroy_rows(rows, host);
+    }
+    // Category 5: map<int, float> at +114h; rows only above 1.0f (00D7A24C;
+    // COMISS/JBE, so NaN is skipped), truncated to int.
+    if (at<std::uint32_t>(rec, 0x11C) != 0) {
+        ZPairVectorSlot rows{0, 0, 0, 0};
+        push_common_rows(rows, metrics, inl, host);
+        walk_map(rec + 0x114, &Cc15MetricsHost::tree_iter_inc_0057f510, host, [&](const std::uint8_t* node) {
+            if (!(at<float>(node, 0x10) > 1.0f)) return;
+            const std::int32_t type = at<std::int32_t>(node, 0xC);
+            if (metrics[0x20 + type] == 0) return;
+            push_int_row(rows, kUnitTypeTags_00e0a570[type], static_cast<std::int32_t>(at<float>(node, 0x10)), inl,
+                         host);
+        });
+        store_category(metrics, 5, rows, host);
+        destroy_rows(rows, host);
+    }
+    unit_category({6, 0xD8, inl});
+    // Category 7: map<int, map<int attacker, map<int target, int>>> at +B4h,
+    // only the middle map under key 1.
+    if (at<std::uint32_t>(rec, 0xBC) != 0) {
+        ZPairVectorSlot rows{0, 0, 0, 0};  // [ESP+60h] in the image
+        push_common_rows(rows, metrics, inl, host);
+        walk_map(rec + 0xB4, &Cc15MetricsHost::tree_iter_inc_0057f3c0, host, [&](const std::uint8_t* outer) {
+            if (at<std::int32_t>(outer, 0xC) != 1) return;
+            walk_map(outer + 0x10, &Cc15MetricsHost::tree_iter_inc_0057f920, host, [&](const std::uint8_t* middle) {
+                push_pair_rows(rows, metrics, at<std::int32_t>(middle, 0xC), middle + 0x10, host);
+            });
+        });
+        store_category(metrics, 7, rows, host);
+        destroy_rows(rows, host);
+    }
+    // Category 8: map<int attacker, map<int, map<int target, int>>> at +9Ch,
+    // only the middle map entries under key 1.
+    if (at<std::uint32_t>(rec, 0xA4) != 0) {
+        ZPairVectorSlot rows{0, 0, 0, 0};  // [ESP+30h] in the image
+        push_common_rows(rows, metrics, inl, host);
+        walk_map(rec + 0x9C, &Cc15MetricsHost::tree_iter_inc_0057f350, host, [&](const std::uint8_t* outer) {
+            const std::int32_t attacker = at<std::int32_t>(outer, 0xC);
+            walk_map(outer + 0x10, &Cc15MetricsHost::tree_iter_inc_0057f430, host, [&](const std::uint8_t* middle) {
+                if (at<std::int32_t>(middle, 0xC) != 1) return;
+                push_pair_rows(rows, metrics, attacker, middle + 0x10, host);
+            });
+        });
+        store_category(metrics, 8, rows, host);
+        destroy_rows(rows, host);
+    }
+    // 004254B0("Metrics_System MissionEnd Call End"): trivial logger, omitted.
+    at<std::uint32_t>(metrics, 0x22C) = 0;
+}
+
 void metrics_upload_tick_00757ce0(std::uint8_t* metrics, Cc15MetricsHost& host) {
     if (metrics[0x238] == 0) return;
     std::int32_t& index = at<std::int32_t>(metrics, 0x22C);

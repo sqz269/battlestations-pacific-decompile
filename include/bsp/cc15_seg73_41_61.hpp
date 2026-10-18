@@ -22,8 +22,8 @@
 // Nothing here is wired into the game. Build-tested only. Win32 only: native
 // pointer slots are 32-bit.
 //
-// Not reconstructed here: 007556A0 (9.7 KB mission-end score report, the
-// filler of the per-category row map); see the doc.
+// 007556A0 (the 9.7 KB mission-end score report that fills the per-category
+// row map) was added by packet cc15-rB2.
 
 #include <cstddef>
 #include <cstdint>
@@ -48,6 +48,37 @@ struct NativeStringSlot {
     std::uint32_t data;  // char*
 };
 static_assert(sizeof(NativeStringSlot) == 8, "native string is two dwords");
+
+// The by-value argument block of 00751310 pair<ZString,ZString>(key, value):
+// key at the lower address, value at +0Ch (the value is constructed first).
+struct ZStringPairArgs {
+    ZStringSlot key;
+    ZStringSlot value;
+};
+static_assert(sizeof(ZStringPairArgs) == 0x18, "two ZStrings");
+
+// pair<ZString,ZString>, 18h bytes: key at +0, value at +0Ch.
+struct ZPairSlot {
+    alignas(4) std::uint8_t bytes[0x18];
+};
+
+// A local vector<pair<ZString,ZString>> as 007556A0 keeps it: 10h bytes,
+// +4 first, +8 last, +0Ch end. The image never writes +0.
+struct ZPairVectorSlot {
+    std::uint32_t proxy;
+    std::uint32_t first;
+    std::uint32_t last;
+    std::uint32_t end;
+};
+static_assert(sizeof(ZPairVectorSlot) == 0x10, "vector is four dwords");
+
+// A checked std::_Tree iterator as the image keeps it on the stack:
+// {container (the map object), node}. Map objects are {+0 ?, +4 head, +8 size};
+// nodes are {+0 left, +4 parent, +8 right, +0Ch key, +10h value}.
+struct NativeTreeIter {
+    std::uint32_t container;
+    std::uint32_t node;
+};
 
 // Native constants.
 inline constexpr std::uint32_t kMetricsSystemVtable_00d015c0 = 0x00D015C0u;
@@ -174,6 +205,28 @@ struct Cc15MetricsHost {
     // RET 14h) erases a node range.
     virtual void* map_buy_head_node_00751fb0(void* map_04) = 0;
     virtual void map_erase_range_00755250(void* map_04, std::uint32_t first, std::uint32_t last) = 0;
+    // The bound pair<ZString,ZString> / vector<pair> pieces 007556A0 calls.
+    // 00751310 thiscall(ECX out, ZString key, ZString value) RET 18h -> out; the
+    // callee destroys both by-value arguments.
+    virtual void* zpair_construct_00751310(void* out, ZStringPairArgs* args) = 0;
+    virtual void zpairs_push_back_00754ad0(void* vector, const void* pair) = 0;  // thiscall RET 4
+    virtual void zpair_destroy_00750910(void* pair) = 0;                         // thiscall
+    // 007521C0 cdecl(first, last, dest) -> dest + (last - first): element copy.
+    virtual std::uint32_t zpair_copy_007521c0(std::uint32_t first, std::uint32_t last, std::uint32_t dest) = 0;
+    // 00752900(ECX first, EDX last, vector*, allocator copy) RET 8: destroy a range.
+    // The allocator argument is an uninitialised stack dword in every caller here.
+    virtual void zpair_destroy_range_00752900(std::uint32_t first, std::uint32_t last, void* vector) = 0;
+    virtual void* zpairs_assign_007547f0(void* dst, const void* src) = 0;  // vector::operator=, thiscall RET 4
+    // The bound _Tree const_iterator ++ instantiations (thiscall(ECX iterator), RET),
+    // one per map type the player record holds.
+    virtual void tree_iter_inc_0057f350(NativeTreeIter* it) = 0;
+    virtual void tree_iter_inc_0057f3c0(NativeTreeIter* it) = 0;
+    virtual void tree_iter_inc_0057f430(NativeTreeIter* it) = 0;
+    virtual void tree_iter_inc_0057f4a0(NativeTreeIter* it) = 0;
+    virtual void tree_iter_inc_0057f510(NativeTreeIter* it) = 0;
+    virtual void tree_iter_inc_0057f920(NativeTreeIter* it) = 0;
+    // 004B4B40 __fastcall(ECX mode) -> [mode*4 + 00E08214]: the game-mode name.
+    virtual const char* game_mode_name_004b4b40(std::int32_t mode) = 0;
 };
 
 // 00750880, __fastcall(ECX v) -> AL: one 6-bit value as a session-id character.
@@ -283,6 +336,12 @@ void metrics_mission_start_00753810(std::uint8_t* metrics, std::int32_t event, s
 
 // 00757CE0, __thiscall(ECX metrics, float raw_delta unused) RET 4: per-frame
 // upload of one category (+22Ch) when the collector is ready.
+// 007556A0, __fastcall(ECX metrics), RET: when enabled and the Live gate
+// passes, clear the ten category row vectors of the map at +4, then rebuild
+// categories 0-8 from the local player's score record (game +21A0h) and arm
+// the upload (+22Ch = 0); 00757CE0 sends them later. See the .cpp.
+void metrics_report_mission_end_007556a0(std::uint8_t* metrics, Cc15MetricsHost& host);
+
 void metrics_upload_tick_00757ce0(std::uint8_t* metrics, Cc15MetricsHost& host);
 
 // 00757EA0, __fastcall(ECX metrics), RET: the destructor body (00758070 is
