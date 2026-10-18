@@ -2499,7 +2499,7 @@ constexpr std::uint32_t kStrMoveToCircle_00d20978 = 0x00D20978u;  // "circle (mo
 void* bot_task_move_to_construct_approach_block_from_stream_009c2ef0(Cc13Seg67bHost& host,
                                                                      void* block, void* bot,
                                                                      void* archive) {
-    host.bot_approach_move_to_construct_from_stream_009c1dc0(block, ptr_at(bot, 0x50), archive);
+    bot_approach_move_to_construct_from_stream_009c1dc0(host, block, ptr_at(bot, 0x50), archive);
     host.bot_state_registry_construct_00411e20(ptr(block, 0x70));
     at<std::uint32_t>(block, 0x00) = kMoveToBlockVtable_00d20b48;
     at<std::uint32_t>(block, 0x70) = kMoveToRegistryVtable_00d20b44;
@@ -2617,6 +2617,111 @@ float* ship_ai_debug_colour_record_b_009d5fd0(Cc13Seg67bHost& host) {
         at<float>(block, 0x5C) = kOne_00d7a24c;
     }
     return &at<float>(block, 0x50);
+}
+
+// ---------------------------------------------------------------------------
+// Ship-AI approach accessors on [nested] = brain.
+
+// 009E5E00 (009E5E00-009E5E29). t = [[nested]+B20h] (009E5E05); when t is set and
+// t->vtable[5Ch](1Ch) is true (009E5E16), returns [[nested]+B20h] re-read
+// (009E5E1E); else 0 (009E5E26).
+void* ship_ai_approach_engagement_target_009e5e00(Cc13Seg67bHost& host, void* nested) {
+    void* const t = ptr_at(ptr_at(nested, 0), 0xB20);
+    if (t == nullptr || !host.object_vcall_5c(t, 0x1C)) return nullptr;
+    return ptr_at(ptr_at(nested, 0), 0xB20);
+}
+
+// 009E5E30 (009E5E30-009E5E4E). t = [[nested]+B20h] (009E5E32); true when t is
+// set and t->vtable[5Ch](6) is true (009E5E43); else false.
+bool ship_ai_approach_target_is_kind_6_009e5e30(Cc13Seg67bHost& host, void* nested) {
+    void* const t = ptr_at(ptr_at(nested, 0), 0xB20);
+    return t != nullptr && host.object_vcall_5c(t, 6);
+}
+
+// 009E6120 (009E6120-009E6140). out[0..2] = [nested]+B2Ch..+B34h, each through an
+// FLD/FSTP pair (009E6126-009E613D). RET 4.
+// UNCERTAINTY: the x87 copy quiets a signalling NaN; the C++ copy keeps its bits.
+void ship_ai_approach_goal_point_009e6120(void* nested, float* out) {
+    void* const brain = ptr_at(nested, 0);
+    out[0] = at<float>(brain, 0xB2C);
+    out[1] = at<float>(brain, 0xB30);
+    out[2] = at<float>(brain, 0xB34);
+}
+
+namespace {
+constexpr std::uint32_t kMoveToApproachVtable_00d209cc = 0x00D209CCu;
+constexpr std::uint32_t kObservedEndpointVtable_00ce3cf0 = 0x00CE3CF0u;
+constexpr float kFifty_00ceb4d4 = 50.0f;                      // 42480000
+constexpr std::uint32_t kStrClosingComplete_00d20a54 = 0x00D20A54u;  // "closingComplete"
+constexpr std::uint32_t kStrUpdateTrgPosTimer_00d20a40 = 0x00D20A40u;  // "_updateTrgPosTimer"
+constexpr std::uint32_t kStrClosingTime_00d20a34 = 0x00D20A34u;  // "closingTime"
+constexpr std::uint32_t kStrTargetPos_00d20a28 = 0x00D20A28u;    // "targetpos"
+constexpr std::uint32_t kStrTargetEntity_00d04f30 = 0x00D04F30u;  // "targetentity"
+}  // namespace
+
+// 009C1DC0 (009C1DC0-009C1FC2). EH frame 00CAF73B. 009F9CE0(ECX = a, arg,
+// tuning+37Ch) (009C1DF6, tuning = 0042E740()); [a] = 00D209CC (009C1DFE). The
+// observed endpoint at +30h: +34h/+38h/+3Ch/+44h = 0, byte +40h = 1, [+30h] =
+// 00CE3CF0 (009C1E06-009C1E1A). The timer pair: +54h = 1.0 (009C1E3D), +58h =
+// -00BD2F10(1, 0, 1) (009C1E42-009C1E51); +68h = [00CEB4D4] 50.0 (009C1E57).
+// Reads (archive->vtable[10h]): "altOffset" {2, &+2Ch} (009C1E8B),
+// "closingComplete" {3, &+5Ch} (009C1EBF); 00BD4FE0(archive, block,
+// "_updateTrgPosTimer") (009C1EE3) and 00410D80(ECX = +54h, block by value)
+// (009C1EEA); "closingTime" {2, &+60h} (009C1F21), "targetpos" {5, &+48h}
+// (009C1F55), "targetentity" {4, &e} (009C1F7D) where e is the stack slot of
+// `arg` itself, so a missing key leaves e = arg. Then the 0099A9B0 swap of +44h to
+// e with +30h as the observer (009C1F7F-009C1FA0) and 009BEBA0(a) (009C1FA7).
+// Returns a.
+// UNCERTAINTY: shared RNG stream 1. EH unwinding not modelled.
+void* bot_approach_move_to_construct_from_stream_009c1dc0(Cc13Seg67bHost& host, void* a,
+                                                          void* arg, void* archive) {
+    const float f = at<float>(host.game_tuning_singleton_0042e740(), 0x37C);
+    host.bot_approach_construct_speed_reference_009f9ce0(a, arg, f);
+    at<std::uint32_t>(a, 0x00) = kMoveToApproachVtable_00d209cc;
+    at<std::uint32_t>(a, 0x34) = 0;
+    at<std::uint32_t>(a, 0x38) = 0;
+    at<std::uint32_t>(a, 0x3C) = 0;
+    at<std::uint32_t>(a, 0x44) = 0;
+    at<std::uint8_t>(a, 0x40) = 1;
+    at<std::uint32_t>(a, 0x30) = kObservedEndpointVtable_00ce3cf0;
+    at<float>(a, 0x54) = kOne_00d7a24c;
+    at<float>(a, 0x58) = -host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    at<float>(a, 0x68) = kFifty_00ceb4d4;
+    read_field(host, archive, kStrAltOffset, 2, ptr(a, 0x2C));
+    read_field(host, archive, kStrClosingComplete_00d20a54, 3, ptr(a, 0x5C));
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrUpdateTrgPosTimer_00d20a40));
+    host.time_freq_pair_read_00410d80(ptr(a, 0x54), ref);
+    read_field(host, archive, kStrClosingTime_00d20a34, 2, ptr(a, 0x60));
+    read_field(host, archive, kStrTargetPos_00d20a28, 5, ptr(a, 0x48));
+    void* e = arg;
+    read_field(host, archive, kStrTargetEntity_00d04f30, 4, &e);
+    pilot_plan_set_observed_endpoint_0099a9b0(host, ptr(a, 0x30), e);
+    bot_approach_refresh_target_009beba0(host, a);
+    return a;
+}
+
+// 009C33D0 (009C33D0-009C350C). Writes (archive->vtable[0Ch]): "altOffset" {2,
+// +2Ch} (009C340F), "closingComplete" {3, byte +5Ch} (009C3443); 00BD5010(archive,
+// block, "_updateTrgPosTimer") (009C3467) and 00410E00(ECX = +54h, block by value)
+// (009C346F); "closingTime" {2, +60h} (009C34AA), "targetpos" {5, &+48h}
+// (009C34DE), "targetentity" {4, [+44h]} (009C3505). RET 4.
+// UNCERTAINTY: the byte record leaves the payload's upper three bytes as stack
+// garbage (009C3419 MOV byte); here they are zero.
+void bot_approach_move_to_save_009c33d0(Cc13Seg67bHost& host, void* a, void* archive) {
+    host.archive_vcall_0c_write(archive, name_record(kStrAltOffset),
+                                record(2, float_bits(at<float>(a, 0x2C))));
+    host.archive_vcall_0c_write(archive, name_record(kStrClosingComplete_00d20a54),
+                                record(3, at<std::uint8_t>(a, 0x5C)));
+    std::uint32_t ref[3] = {};
+    host.archive_writer_ref_open_00bd5010(archive, ref, name_record(kStrUpdateTrgPosTimer_00d20a40));
+    host.time_freq_pair_write_00410e00(ptr(a, 0x54), ref);
+    host.archive_vcall_0c_write(archive, name_record(kStrClosingTime_00d20a34),
+                                record(2, float_bits(at<float>(a, 0x60))));
+    host.archive_vcall_0c_write(archive, name_record(kStrTargetPos_00d20a28),
+                                record(5, reinterpret_cast<std::uintptr_t>(ptr(a, 0x48))));
+    host.archive_vcall_0c_write(archive, name_record(kStrTargetEntity_00d04f30),
+                                record(4, at<std::uint32_t>(a, 0x44)));
 }
 
 }  // namespace bsp

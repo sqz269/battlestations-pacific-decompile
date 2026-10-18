@@ -299,3 +299,13 @@ Ledger-only (existing implementations, spot-checked against the bytes): 009B4400
 | 009D9440 | run heading | follows the decided direction past legs of 1.0 or less and returns the heading of the first longer leg (00414EB0); 0.0 with no direction |
 | 009DE280 | navigation goal with a penalty | 009DE050(goal, 1, 0), then mode +1C4h = 3, the wrapped heading at +1D8h and the penalty at +250h and +2B8h |
 | 009D5E10 / 009D5FD0 | debug colour records | function-local statics {0.5, 0.5, 0.5, 1.0} and {0.0, 1.0, 1.0, 1.0} |
+
+### 3.17 Ship-AI approach accessors and the move-to approach stream pair
+
+| Address | Function | Notes |
+|---|---|---|
+| 009E5E00 / 009E5E30 | the approach's engagement target (kind 1Ch) and its kind-6 test | both read [brain+B20h] and ask vtable[5Ch] |
+| 009E6120 | the approach goal point | brain+B2Ch..+B34h |
+| 009C1DC0 / 009C33D0 | move-to approach construct-from-stream and save | keys altOffset, closingComplete, _updateTrgPosTimer, closingTime, targetpos and targetentity; the stream constructor draws -U(0, 1) into +58h from the shared RNG and reads targetentity into its own argument's stack slot |
+
+009C2EF0 now calls the 009C1DC0 body directly. 009E7F60 is a std::list node allocation (library, bind-only).

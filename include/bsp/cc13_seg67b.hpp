@@ -175,6 +175,10 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
+    // 00410D80 / 00410E00: __thiscall(ECX = time/frequency pair, 0Ch reader or writer
+    // block by value): read or write the pair; the callee destroys the block.
+    virtual void time_freq_pair_read_00410d80(void* pair, void* ref) = 0;
+    virtual void time_freq_pair_write_00410e00(void* pair, void* ref) = 0;
     // 009DE050: __thiscall(ECX = nav block, const float* goal2d, char keep_mode,
     // unsigned char final_leg), RET 0Ch.
     virtual void ship_ai_set_navigation_goal_009de050(void* nav, const float* goal,
@@ -184,9 +188,6 @@ public:
     virtual void math_wrap_angle_in_place_00605070(float* angle) = 0;
     // 00F8A68C: the ship-AI debug static block (colour records and guards, 64h bytes).
     virtual std::uint8_t* ship_ai_debug_static_block_00f8a68c() = 0;
-    // 009C1DC0: __thiscall(ECX = move-to approach block, [bot+50h], archive), RET 8.
-    virtual void bot_approach_move_to_construct_from_stream_009c1dc0(void* block, void* bot_owner,
-                                                                     void* archive) = 0;
     // 00411E20: __thiscall(ECX = registry), the state-registry constructor.
     virtual void bot_state_registry_construct_00411e20(void* registry) = 0;
     // 007293D0: __thiscall(ECX = object), the tick-subnode owner base destructor.
@@ -729,5 +730,15 @@ void ship_ai_set_navigation_goal_with_penalty_009de280(Cc13Seg67bHost& host, voi
 // 009D5E10 / 009D5FD0: __cdecl(), RET, EAX = the static colour record.
 float* ship_ai_debug_colour_record_a_009d5e10(Cc13Seg67bHost& host);
 float* ship_ai_debug_colour_record_b_009d5fd0(Cc13Seg67bHost& host);
+// 009E5E00: __thiscall(ECX = nested), RET, EAX. 009E5E30: same, AL.
+void* ship_ai_approach_engagement_target_009e5e00(Cc13Seg67bHost& host, void* nested);
+bool ship_ai_approach_target_is_kind_6_009e5e30(Cc13Seg67bHost& host, void* nested);
+// 009E6120: __thiscall(ECX = nested, float* out), RET 4.
+void ship_ai_approach_goal_point_009e6120(void* nested, float* out);
+// 009C1DC0: __thiscall(ECX = approach, arg, archive), RET 8, EAX = approach.
+void* bot_approach_move_to_construct_from_stream_009c1dc0(Cc13Seg67bHost& host, void* a,
+                                                          void* arg, void* archive);
+// 009C33D0: __thiscall(ECX = approach, archive), RET 4.
+void bot_approach_move_to_save_009c33d0(Cc13Seg67bHost& host, void* a, void* archive);
 
 }  // namespace bsp
