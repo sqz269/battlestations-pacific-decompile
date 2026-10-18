@@ -704,7 +704,7 @@ bool lua_device_reload_enabled_00e17bf2() noexcept;
 // route the row to run_set_device_reload_time_mul_008c14b0, and the units host's rack
 // reload slice (006E57A4) scales its step by lua_device_reload_time_mul_00e08178(). False:
 // UNIMPLEMENTED, and the accessor answers 1.0.
-inline constexpr bool kLuaDeviceReloadTimeMulBound = false;  // OFF: committed unpaired
+inline constexpr bool kLuaDeviceReloadTimeMulBound = true;  // ON: cc9-ships58, SHIP_AI_OPEN_ITEMS 286
 // The process-wide float 00E08178; 1.0 while kLuaDeviceReloadTimeMulBound is false.
 float lua_device_reload_time_mul_00e08178() noexcept;
 
