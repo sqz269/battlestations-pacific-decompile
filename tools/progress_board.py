@@ -38,8 +38,10 @@ STEP = 2 * 3600
 # for stock or compiler-generated code. In-house Mit/Dyn physics, trivial game bodies and RTTI slots stay in.
 NON_GAME_RANGES = [
     (0x00bf55be, 0x00c2ddd0), (0x00c2ddd0, 0x00c2f3e0), (0x00cc893b, 0x00ce2000),  # CRT/STL, import thunks, initializers
-    (0x00a60870, 0x00a7772f), (0x00c2f3e0, 0x00c3018f), (0x00bc94d0, 0x00bcf910),  # Lua main block, loadlib.c, zlib
-    (0x00a4d610, 0x00a5de34), (0x0094cab0, 0x0094ec00), (0x00a5de34, 0x00a607e8), (0x00750820, 0x00758000),  # telemetry, IPC, metrics
+    # Lua ends at 00A776A3 (luaK_patchlist RET 4 at 00A776A0, INT3 to 00A776B0); game accessors follow (cc15-rB, 2026-10-18)
+    (0x00a60870, 0x00a776b0), (0x00c2f3e0, 0x00c3018f), (0x00bc94d0, 0x00bcf910),  # Lua main block, loadlib.c, zlib
+    # The metrics TU (00750880-00758090) is no longer a range: its rows carry precise tags, and 25 of them are game code
+    (0x00a4d610, 0x00a5de34), (0x0094cab0, 0x0094ec00), (0x00a5de34, 0x00a607e8),  # telemetry, IPC
 ]
 NON_GAME_TAGS = {'lua511', 'zlib121', 'crt_unmatched', 'static_init', 'block_telemetry', 'block_telemetry_tmpl',
                  'block_pipe_ipc', 'block_metrics_wrapper'}
