@@ -6403,7 +6403,7 @@ struct GameUnitsHost::Impl {
     // the latched arm of 009A7A50, +18h > 2.0 ([00CE3958], COMISS/JBE) is redrawn as
     // 00BD2F10(ECX = 1, 1.0, 2.0). True: a keyed stream-1 draw (unit name + "#dfat").
     // False: the constant midpoint 1.5, as before.
-    static constexpr bool kDogfightAvoidTimerDrawBound = false;
+    static constexpr bool kDogfightAvoidTimerDrawBound = true;   // ON: OCEAN_WAVE_FIELD 80 (bytes; USN04/JM02 identical)
     // Packet p20_df_early_clear (section 80). 009AAC5D-009AAC63: when 009AAA80's gate
     // fails (+4D4h <= 0.0 at 009AAA9C, or +4D8h >= 1.0 at 009AAABB, NaN failing both),
     // 007B9740(ECX = [task+3FCh]) runs before the false return: with unit+C50h set it
@@ -6411,14 +6411,14 @@ struct GameUnitsHost::Impl {
     // (6952A0) and zeroes it. True: the host's cache (nb_found_plus_one) is cleared.
     // False: the gate returns false and keeps the cache, as before. LABELLED: +C50h,
     // the neighbours block 007E1E20 builds, is taken to exist for every fighter.
-    static constexpr bool kDogfightEarlyEdgeClearBound = false;
+    static constexpr bool kDogfightEarlyEdgeClearBound = true;   // ON: OCEAN_WAVE_FIELD 80 (USN04 pair, 210 clears)
     unsigned long long df_avoid_timer_redraws{0}, df_early_edge_clears{0};
     // Packet p20_land_min_speed_owner (section 80). 009B1309-009B137C: with approach+30h
     // set, 009B1300 adds dot(owner velocity (vt[34h], 009B1362), the plane's unit
     // velocity (vt[34h] / 0042B2F0, 009B1315-009B1359)) to 007C47F0 before the max with
     // 007C4810. True: the land target's (land_site_plus_one) linear velocity enters, so a
     // carrier's speed along the plane's heading raises the minimum. False: 0, as before.
-    static constexpr bool kLandMinSpeedOwnerVelocityBound = false;
+    static constexpr bool kLandMinSpeedOwnerVelocityBound = true;   // ON: OCEAN_WAVE_FIELD 80 (USN01 pair, 2332 terms)
     mutable unsigned long long land_min_speed_owner_terms{0};
     // Packet p20_gunfire_exempt_wanderer (section 80). 0099F197-0099F1A8: the exempt arm
     // of 0099EC40 (kinds 10h / 16h, or a flight leader whose squadron +3CCh > 1) writes

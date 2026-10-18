@@ -3264,3 +3264,22 @@ FDIV'd and stored as a float, 009B1331-009B1359), approach+30h's vt[34h] (009B13
 009AFC73-009AFD1A, the lead point, not this). True: the land target (`land_site_plus_one`) linear velocity enters.
 An airfield's is zero, so only carrier recoveries move. Prediction (USN01): the final approach's commanded speed
 rises by about the carrier's speed (16-17 m/s) for planes heading with the carrier, touchdowns shift.
+
+**80, results.** Variants built in this tree at 236355ef9 / dea03afaf / 967fa63ea (`local\p20_variant.ps1`: the
+switch flipped, `scripts/build.ps1`, exe copied to `local\p20d_<tag>`, `variant.txt` beside it; the OFF
+code paths of the later commits are the 236355ef9 ones). OFF exe `local\p20d_off`. Manifests beside each log.
+- **`kDogfightAvoidTimerDrawBound` ON.** USN04 12000 fr (`local\p20d_avt_usn04.log` vs `p20d_off_usn04.log`) and
+  JM02 24000 fr (`p20d_avt_jm02.log` vs `p20d_off_jm02.log`): gameplay identical, `redraws=0` on both rows
+  (3 / 5 fighters latch, never with the timer above 2.0; AvoidTime is {2, 3} in planeglobals.lua:418). The bytes'
+  draw on a keyed stream; flipped, unexercised.
+- **`kDogfightEarlyEdgeClearBound` ON.** USN04 (`p20d_ec_usn04.log`): pair_diff 3, `early edge clears=210`. Deaths
+  54 -> 53, 44 death rows moved from 90.80 s (A6M Zero #1.2|.-II), shots 13554 -> 9252, units 120 -> 81 (fewer
+  later spawns in 12000 frames). The fighters re-search instead of re-using a cached target after a failed gate.
+  Mechanism exercised; flipped.
+- **`kLandMinSpeedOwnerVelocityBound` ON.** USN01 p8_u1_i 30000 fr (`p20d_lms_usn01.log` vs `p20d_off_usn01.log`):
+  pair_diff 3, `owner terms=2332`; stows 17 -> 16, deaths 36 / 36 with 17 rows moved. ConTBD1 now flies land/final at
+  spd_cmd 51.3 m/s (the carrier's speed added; OFF about 35) and descends at about 11 m/s at pitch -0.22, and dies
+  at 609.82 s, alt 23, no damage, in land/final, where OFF it stowed (620.67 s). The term is the bytes and is
+  exercised; flipped. FLAG for the stow question: the final descent law takes world pitch while the closure on the
+  deck is speed - carrier speed, so a faster air speed steepens the path relative to the deck; check what in
+  009B1ED0 / 009B1F2C accounts for the moving deck before blaming this term.
