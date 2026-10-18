@@ -842,4 +842,99 @@ std::uint64_t lobby_dlc_unlock_mask_005df510(std::int32_t mode, LobbyUnlockMaskH
     return mask;
 }
 
+// ---------------------------------------------------------------------------
+// 00531130, __thiscall(ECX = text; const WideString* source, listener, reference)
+// RET 0Ch. Assembly 00531130-005311BC: when source is not text+1A4h, 004C53E0(text+1A4h;
+// source.len, 1) and, if source.len != 0, a word copy from source.data to the
+// destination data through the terminator; then [+1ACh] = listener, [+1B0h] = reference.
+// ---------------------------------------------------------------------------
+void text_set_glyph_reference_00531130(Raw text, const WideStringImage* source, std::uint32_t listener,
+                                       std::uint32_t reference, SmallBlockersHost& host) {
+    auto* const dest = reinterpret_cast<WideStringImage*>(text.field(0x1A4));
+    if (dest != source) {
+        host.wide_string_resize_004c53e0(dest, source->length, 1);                         // 0053114A
+        if (source->length != 0) {
+            const std::uint16_t* from = source->data;
+            std::uint16_t* to = dest->data;
+            std::uint16_t ch;
+            do {
+                ch = *from++;
+                *to++ = ch;
+            } while (ch != 0);
+        }
+    }
+    text.at<std::uint32_t>(0x1AC) = listener;
+    text.at<std::uint32_t>(0x1B0) = reference;
+}
+
+// ---------------------------------------------------------------------------
+// 00AB5C60, __thiscall(ECX = widget) RET -> EAX = widget; EH frame 00CB7D28.
+// Assembly 00AB5C60-00AB5D29: 00AA9390(widget; 6), then the derived stores in the
+// image's order: vtable 00D5C4C0; word +ECh = FFFFh; +F4h/+F8h/+FCh = 0; byte
+// +101h = 0; byte +100h = 1; +104h/+108h = 0; byte +10Ch = 0; +110h = 0;
+// floats +114h = 1.0 (00D7A24C), +118h = 0, +11Ch = 0, +120h = 1.0, +124h = 1.0;
+// word +12Ch = 0; byte +134h = 0; floats +128h = 0, +130h = 0. +F0h is not written.
+// ---------------------------------------------------------------------------
+void* gui_stateful_image_construct_00ab5c60(Raw w, SmallBlockersHost& host) {
+    host.ui_context_construct_00aa9390(w.p, 6);                                            // 00AB5C7B
+    const float one = f32(0x3F800000u);
+    w.at<std::uint32_t>(0) = 0x00D5C4C0u;
+    w.at<std::uint16_t>(0xEC) = 0xFFFFu;
+    w.at<std::uint32_t>(0xF4) = 0;
+    w.at<std::uint32_t>(0xF8) = 0;
+    w.at<std::uint32_t>(0xFC) = 0;
+    w.at<std::uint8_t>(0x101) = 0;
+    w.at<std::uint8_t>(0x100) = 1;
+    w.at<std::uint32_t>(0x104) = 0;
+    w.at<std::uint32_t>(0x108) = 0;
+    w.at<std::uint8_t>(0x10C) = 0;
+    w.at<std::uint32_t>(0x110) = 0;
+    w.at<float>(0x114) = one;
+    w.at<float>(0x118) = 0.0f;
+    w.at<float>(0x11C) = 0.0f;
+    w.at<float>(0x120) = one;
+    w.at<float>(0x124) = one;
+    w.at<std::uint16_t>(0x12C) = 0;
+    w.at<std::uint8_t>(0x134) = 0;
+    w.at<float>(0x128) = 0.0f;
+    w.at<float>(0x130) = 0.0f;
+    return w.p;
+}
+
+// ---------------------------------------------------------------------------
+// 00798080, __thiscall(ECX = track; keyframe) RET 4. Assembly 00798080-0079812C.
+// Nothing when keyframe is null or its pair id (short +DAh) is already >= 0.
+// Otherwise walks the track's list (container track+68h, head [+6Ch]; checked
+// iterator: container null/identity test each pass, end-dereference test) for the
+// first other keyframe ([node+8]) whose pair id is negative and whose float +F0h
+// equals keyframe+F0h (FUCOMIP, unordered is not equal); both take the id
+// movzx word [[track+74h]+3C0h] and the dword there is incremented.
+// ---------------------------------------------------------------------------
+void movie_camera_track_pair_keyframe_00798080(Raw track, void* keyframe, SmallBlockersHost& host) {
+    if (keyframe == nullptr) return;
+    const Raw key{static_cast<std::uint8_t*>(keyframe)};
+    if (key.at<std::int16_t>(0xDA) >= 0) return;
+    std::uint8_t* const container = track.field(0x68);
+    auto* node = Raw{static_cast<std::uint8_t*>(track.ptr(0x6C))}.at<std::uint8_t*>(0);   // 007980A5
+    for (;;) {
+        const Raw list{container};
+        std::uint8_t* const head = static_cast<std::uint8_t*>(list.ptr(4));
+        if (container == nullptr) host.invalid_parameter_00bf6713();                       // 007980B3
+        if (node == head) return;                                                          // 007980BA
+        if (container == nullptr) host.invalid_parameter_00bf6713();
+        if (node == static_cast<std::uint8_t*>(list.ptr(4))) host.invalid_parameter_00bf6713();  // 007980CA
+        const Raw other{static_cast<std::uint8_t*>(Raw{node}.ptr(8))};
+        if (other.at<std::int16_t>(0xDA) < 0 && other.at<float>(0xF0) == key.at<float>(0xF0)) {  // 007980EE
+            const Raw owner{static_cast<std::uint8_t*>(track.ptr(0x74))};
+            const std::uint16_t id = owner.at<std::uint16_t>(0x3C0);
+            key.at<std::uint16_t>(0xDA) = id;
+            other.at<std::uint16_t>(0xDA) = id;
+            Raw{static_cast<std::uint8_t*>(track.ptr(0x74))}.at<std::uint32_t>(0x3C0) += 1;   // 00798121
+            return;
+        }
+        if (node == static_cast<std::uint8_t*>(list.ptr(4))) host.invalid_parameter_00bf6713();  // 007980FD
+        node = Raw{node}.at<std::uint8_t*>(0);
+    }
+}
+
 }  // namespace bsp::cc13_front7

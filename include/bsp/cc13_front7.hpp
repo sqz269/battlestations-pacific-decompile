@@ -322,4 +322,32 @@ struct LobbyUnlockMaskHost {
 // 005DF510, __stdcall(int mode) RET 4 -> EDX:EAX mask; EBP frame aligned to 8, EH 00C74C1D.
 std::uint64_t lobby_dlc_unlock_mask_005df510(std::int32_t mode, LobbyUnlockMaskHost& host);
 
+// ---------------------------------------------------------------------------
+// Smaller ranked blockers.
+// ---------------------------------------------------------------------------
+// The image's {length, data} wide string.
+struct WideStringImage {
+    std::uint32_t length;
+    std::uint16_t* data;
+};
+static_assert(sizeof(WideStringImage) == 8);
+
+struct SmallBlockersHost {
+    virtual ~SmallBlockersHost() = default;
+    // 00BF6713, the checked-iterator failure; returns here.
+    virtual void invalid_parameter_00bf6713() = 0;
+    // 004C53E0 BSP_WideString_Resize, __thiscall(ECX = string; length, char preserve) RET 8.
+    virtual void wide_string_resize_004c53e0(WideStringImage* string, std::uint32_t length, char preserve) = 0;
+    // 00AA9390 BSP_UIContext_Construct, __thiscall(ECX = widget; dword type) RET 4 -> EAX.
+    virtual void ui_context_construct_00aa9390(void* widget, std::uint32_t type) = 0;
+};
+
+// 00531130, __thiscall(ECX = text; const WideString* source, listener, reference) RET 0Ch.
+void text_set_glyph_reference_00531130(Raw text, const WideStringImage* source, std::uint32_t listener,
+                                       std::uint32_t reference, SmallBlockersHost& host);
+// 00AB5C60, __thiscall(ECX = widget) RET -> EAX = widget (the Icon widget constructor).
+void* gui_stateful_image_construct_00ab5c60(Raw widget, SmallBlockersHost& host);
+// 00798080, __thiscall(ECX = track; keyframe) RET 4.
+void movie_camera_track_pair_keyframe_00798080(Raw track, void* keyframe, SmallBlockersHost& host);
+
 }  // namespace bsp::cc13_front7
