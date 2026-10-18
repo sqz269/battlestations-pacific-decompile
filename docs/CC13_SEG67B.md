@@ -429,3 +429,7 @@ The uncertainty notes for 009CA4A0 and 009D0380 were corrected: float-exact doub
 - +B4h = U(1.6, 1.8) x TurnCircleRadius, with +B8h = +BCh = 1.4 times that.
 
 It then copies the plane's position into +D0h..+D8h and calls the aim-error redraw 009B4400.
+
+### 3.31 Dogfight approach base
+
+009A6C10 builds the dogfight approach on 009F9CE0 (tuning +650h, with the plane at [bot+50h]) with vtable 00D1F844. The target reference at +2Ch takes [arg+3D0h]. The observer member at +B8h is initialized on arg (007F0F80) and then given vtable 00CF6514. The body seeds +D4h/+D8h = 9999.0 and +E8h = 99.0, and resets the aim offset with 009FA350. It makes no draws from the RNG.

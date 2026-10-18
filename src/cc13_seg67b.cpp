@@ -3068,7 +3068,7 @@ constexpr float kThousand_00ce3804 = 1000.0f;    // 447A0000
 // UNCERTAINTY: EH unwinding not modelled.
 void* bot_task_dogfight_construct_approach_block_009a94e0(Cc13Seg67bHost& host, void* block,
                                                           void* bot, void* arg) {
-    host.bot_approach_dogfight_construct_009a6c10(block, bot, arg);
+    bot_approach_dogfight_construct_009a6c10(host, block, bot, arg);
     host.bot_state_registry_construct_00411e20(ptr(block, 0x104));
     at<std::uint32_t>(block, 0x000) = kDogfightBlockVtable_00d1f9a4;
     at<std::uint32_t>(block, 0x104) = kDogfightRegistryVtable_00d1f9a0;
@@ -3941,6 +3941,50 @@ void* bot_approach_level_bomb_construct_base_009b44f0(Cc13Seg67bHost& host, void
     at<float>(approach, 0xD4) = at<float>(plane, 0x100);
     at<float>(approach, 0xD8) = at<float>(plane, 0x104);
     host.approach_level_bomb_aim_error_draw_009b4400(approach);
+    return approach;
+}
+
+// ---------------------------------------------------------------------------
+// The dogfight approach base.
+
+namespace {
+constexpr std::uint32_t kDogfightApproachVtable_00d1f844 = 0x00D1F844u;
+constexpr std::uint32_t kDogfightEmbeddedA0Vtable_00cf89b4 = 0x00CF89B4u;
+constexpr std::uint32_t kDogfightObserverVtable_00cf6514 = 0x00CF6514u;
+constexpr float kNinetyNine_00d059a0 = 99.0f;  // 42C60000
+}  // namespace
+
+// 009A6C10 (BSP_BotApproachDogfight_Construct): __thiscall(ECX = approach, bot, arg),
+// RET 8, EAX = approach. Evidence (disk bytes): 009F9CE0(ECX = approach, [bot+50h],
+// tuning+650h) (009A6C32-009A6C4B); vtable 00D1F844 (009A6C54); 009FB200(ECX =
+// approach+2Ch, [arg+3D0h]) (009A6C50-009A6C66); +A4h/+A8h/+ACh/+B4h = 0, byte +B0h = 1,
+// +A0h = 00CF89B4 (009A6C71-009A6C90); 007F0F80(ECX = approach+B8h, arg) then [+B8h] =
+// 00CF6514 (009A6CA4-009A6CB1); +D4h = +D8h = [00CE4C04] 9999.0, +DCh = 0.0, +E0h =
+// 1.0, +E4h = -1.0, byte +D0h = 0, +E8h = [00D059A0] 99.0 (009A6CB8-009A6D10);
+// 009FA350(ECX = approach+2Ch) (009A6D18).
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_approach_dogfight_construct_009a6c10(Cc13Seg67bHost& host, void* approach, void* bot,
+                                               void* arg) {
+    const float speed = at<float>(host.game_tuning_singleton_0042e740(), 0x650);
+    host.bot_approach_construct_speed_reference_009f9ce0(approach, ptr_at(bot, 0x50), speed);
+    at<std::uint32_t>(approach, 0x00) = kDogfightApproachVtable_00d1f844;
+    host.approach_target_ref_construct_009fb200(ptr(approach, 0x2C), ptr_at(arg, 0x3D0));
+    at<std::uint32_t>(approach, 0xA4) = 0;
+    at<std::uint32_t>(approach, 0xA8) = 0;
+    at<std::uint32_t>(approach, 0xAC) = 0;
+    at<std::uint32_t>(approach, 0xB4) = 0;
+    at<std::uint8_t>(approach, 0xB0) = 1;
+    at<std::uint32_t>(approach, 0xA0) = kDogfightEmbeddedA0Vtable_00cf89b4;
+    host.observer_member_initialize_007f0f80(ptr(approach, 0xB8), arg);
+    at<std::uint32_t>(approach, 0xB8) = kDogfightObserverVtable_00cf6514;
+    at<float>(approach, 0xD4) = kSpeedReference_00ce4c04;
+    at<float>(approach, 0xD8) = kSpeedReference_00ce4c04;
+    at<float>(approach, 0xDC) = kZero_s15;
+    at<float>(approach, 0xE0) = kOne_00d7a24c;
+    at<float>(approach, 0xE4) = kMinusOne_00d7a260_f;
+    at<std::uint8_t>(approach, 0xD0) = 0;
+    at<float>(approach, 0xE8) = kNinetyNine_00d059a0;
+    host.approach_target_ref_reset_aim_offset_009fa350(ptr(approach, 0x2C));
     return approach;
 }
 

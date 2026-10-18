@@ -205,8 +205,10 @@ public:
     // 009C3DA0: __thiscall(ECX = dive-bomb approach): the aim-error redraw (draws from
     // 00BD2F10).
     virtual void approach_dive_bomb_aim_error_draw_009c3da0(void* approach) = 0;
-    // 009A6C10: __thiscall(ECX = dogfight approach, bot, arg), RET 8.
-    virtual void bot_approach_dogfight_construct_009a6c10(void* block, void* bot, void* arg) = 0;
+    // 007F0F80: __thiscall(ECX = observer member, subject), RET 4.
+    virtual void observer_member_initialize_007f0f80(void* member, void* subject) = 0;
+    // 009FA350: __thiscall(ECX = approach target ref): reset the aim offset.
+    virtual void approach_target_ref_reset_aim_offset_009fa350(void* ref) = 0;
     // 009B4400: __thiscall(ECX = level-bomb approach): the aim-error redraw.
     virtual void approach_level_bomb_aim_error_draw_009b4400(void* approach) = 0;
     // 007C1FB0: __thiscall(ECX = unit), ST0: the longest rack stick time.
@@ -844,5 +846,8 @@ void* bot_approach_dive_bomb_construct_009c3ea0(Cc13Seg67bHost& host, void* appr
 // 009B44F0: __thiscall(ECX = approach, plane, target), RET 8, EAX = approach.
 void* bot_approach_level_bomb_construct_base_009b44f0(Cc13Seg67bHost& host, void* approach,
                                                       void* plane, void* target);
+// 009A6C10: __thiscall(ECX = approach, bot, arg), RET 8, EAX = approach.
+void* bot_approach_dogfight_construct_009a6c10(Cc13Seg67bHost& host, void* approach, void* bot,
+                                               void* arg);
 
 }  // namespace bsp
