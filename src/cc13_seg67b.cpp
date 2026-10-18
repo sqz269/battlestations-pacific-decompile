@@ -5617,27 +5617,23 @@ std::uint32_t bot_task_is_command_still_valid_base_0099c2c0(Cc13Seg67bHost& host
 
 // ---- section 3.45: one-line table slots (disk bytes; each body is its whole listing) ----
 // 009A54E0: MOV EAX,00F8A370 (the depth-charge robots row pointer); 009A5500: "DepthCharge"
-// 00CFA700; 009A9950: 00F8A3E8; 009ADDE0: "DropKamikaze" 00D1FADC; 009AF080: "Kamikaze"
+// 00CFA700; 009ADDE0: "DropKamikaze" 00D1FADC; 009AF080: "Kamikaze"
 // 00CFA714; 009B33A0: 00F8A438; 009B7BD0: "LevelBomb" 00D06EB0; 009B9140: FLD [00CE38B8]
-// 10.0; 009BA920: "immelmann" 00D20468; 009BAC60: "stop" 00CFB5B8; 009BCFB0: 00F8A534;
-// 009C3150: 00E08F68 (the moveto command class); 009C3170: "moveto" 00CFB54C; 009C79C0:
-// "DiveBomb" 00D06E1C; 009C9E60: 3; 009C9E70: "retreat" 00CFB5D4.
+// 10.0; 009BA920: "immelmann" 00D20468; 009BCFB0: 00F8A534; 009C79C0:
+// "DiveBomb" 00D06E1C; 009C9E60: 3. Byte twins of existing bodies are ledger-only:
+// 009A9950 (0098D3D0), 009BAC60 / 009C3170 / 009C9E70 (entity_orders.cpp 006F8C00 /
+// 006F8920 / 006F8C90) and 009C3150 (kMoveToCommandClass, 009DAE20).
 std::uint32_t bot_task_depth_charge_robots_row_009a54e0() noexcept { return 0x00F8A370u; }
 std::uint32_t bot_task_depth_charge_name_009a5500() noexcept { return 0x00CFA700u; }
-std::uint32_t bot_task_dogfight_robots_row_009a9950() noexcept { return 0x00F8A3E8u; }
 std::uint32_t bot_task_drop_kamikaze_name_009adde0() noexcept { return 0x00D1FADCu; }
 std::uint32_t bot_task_kamikaze_name_009af080() noexcept { return 0x00CFA714u; }
 std::uint32_t bot_task_land_robots_row_009b33a0() noexcept { return 0x00F8A438u; }
 std::uint32_t bot_task_level_bomb_name_009b7bd0() noexcept { return 0x00D06EB0u; }
 float bot_task_pull_up_slot68_009b9140() noexcept { return kTen_00ce38b8; }
 std::uint32_t bot_task_immelmann_name_009ba920() noexcept { return 0x00D20468u; }
-std::uint32_t bot_task_stop_name_009bac60() noexcept { return kStrStop_00cfb5b8; }
 std::uint32_t bot_task_moveonpath_robots_row_009bcfb0() noexcept { return 0x00F8A534u; }
-std::uint32_t bot_task_moveto_command_class_009c3150() noexcept { return 0x00E08F68u; }
-std::uint32_t bot_task_moveto_name_009c3170() noexcept { return 0x00CFB54Cu; }
 std::uint32_t bot_task_dive_bomb_name_009c79c0() noexcept { return 0x00D06E1Cu; }
 std::uint32_t bot_task_retreat_kind_009c9e60() noexcept { return 3u; }
-std::uint32_t bot_task_retreat_name_009c9e70() noexcept { return 0x00CFB5D4u; }
 
 // 009CE290 and 009D0C00: a bare RET.
 void bot_state_takeoff_exit_009ce290(void*) noexcept {}
@@ -5703,16 +5699,6 @@ float bot_task_retreat_wait_value_009ca0a0(Cc13Seg67bHost& host, void* task) {
     return follow_wait_value_or_base(host, task, 0x4C4);
 }
 
-// 009A71C0 and 009C4200 (byte-identical): state+20h = 0.0, state+18h = 0.4 [00CE7804].
-void bot_state_dogfight_attack_run_enter_009a71c0(void* s) {
-    at<float>(s, 0x20) = 0.0f;
-    at<float>(s, 0x18) = kPointFour_00ce7804;
-}
-void bot_state_dive_bomb_attack_run_enter_009c4200(void* s) {
-    at<float>(s, 0x20) = 0.0f;
-    at<float>(s, 0x18) = kPointFour_00ce7804;
-}
-
 namespace {
 void* state_plane(void* s) {
     void* const task = reinterpret_cast<void*>(at<std::uintptr_t>(s, 0x4));
@@ -5725,17 +5711,9 @@ void bot_state_dive_bomb_turn_down_enter_009c44c0(void* s) {
     at<std::uint8_t>(state_plane(s), 0x844) = 0;
     at<std::uint8_t>(s, 0x1C) = 0;
 }
-// 009B1E90, 009C44E0, 009C58A0, 009C6210 (byte-identical): byte plane+844h = 1.
+// 009B1E90: byte plane+844h = 1. Its byte-identical twins 009C44E0, 009C58A0 and 009C6210
+// (the dive-bomb exits) are ledger-only rows citing this body.
 void bot_state_land_final_exit_009b1e90(void* s) { at<std::uint8_t>(state_plane(s), 0x844) = 1; }
-void bot_state_dive_bomb_turn_down_exit_009c44e0(void* s) {
-    at<std::uint8_t>(state_plane(s), 0x844) = 1;
-}
-void bot_state_dive_bomb_aim_dive_exit_009c58a0(void* s) {
-    at<std::uint8_t>(state_plane(s), 0x844) = 1;
-}
-void bot_state_dive_bomb_fly_above_exit_009c6210(void* s) {
-    at<std::uint8_t>(state_plane(s), 0x844) = 1;
-}
 // 009D1350: byte [[state+4h]+A8h] = 0.
 void bot_state_torpedo_aim_exit_009d1350(void* s) {
     at<std::uint8_t>(reinterpret_cast<void*>(at<std::uintptr_t>(s, 0x4)), 0xA8) = 0;

@@ -583,26 +583,31 @@ Ledger-only: 00999610 and 0099B710 (see the table).
 
 These are the open zero-caller rows of six instructions or fewer. Each listing was read whole, and a host that already models a row takes precedence over a new body.
 
-There are 45 bodies:
-- **Constant returns:** robots-row pointers, task names, the moveto command class 00E08F68, retreat's kind 3, and pull-up's 10.0.
+There are 35 bodies:
+- **Constant returns:** robots-row pointers, task names, retreat's kind 3, and pull-up's 10.0.
 - **Bare RETs:** 009CE290 and 009D0C00.
 - **Field slots:** 009A9C80 and 009A9D30.
 - **Leave-alone flush:** 009B9480.
 - **Adjustor thunks:** three that reach the scalar deleting destructors.
 - **Follow-or-base wait values:** 009A5D50 tests two follow states (+544h and +6E4h); 009BD2E0 and 009CA0A0 test one each.
-- **Attack-run enters:** 009A71C0 and 009C4200 (+20h = 0, +18h = 0.4).
-- **The plane+844h byte:** cleared on dive-bomb turn-down enter, set by four exits. Land/final's exit 009B1E90 is one of them; the cc9 land host notes that +844h is not modelled.
+- **The plane+844h byte:** cleared on dive-bomb turn-down enter, set by land/final's exit 009B1E90. The cc9 land host notes that +844h is not modelled.
 - **Command-record accessors.**
 - **The order-slot address:** 009D4F70.
 - **Navigation setters:** five unreferenced ones, 009DABB0-009DABF0.
 - **Auto-target base constructor:** 009F5260.
 
-There are 26 ledger-only rows (section 4 records only the group):
+There are 36 ledger-only rows (section 4 records only the group):
 - Command-class and name constants that a host header already carries.
 - Wait values that the dogfight, land and strafe hosts model.
 - The land standby, line and park enter and exit slots.
 - The torpedo, strafe and drop-kamikaze attack-run enters.
 - The ship-AI rows 009DAB10, 009DAE20, 009E8540 and 009E6480.
+- Byte twins of existing bodies, found by a masked byte scan of every small body:
+  - 009A71C0 and 009C4200 are twins of 007B4F40 (rocket_attackrun_enter_007b4f40) and 009A3750.
+  - 009C44E0, 009C58A0 and 009C6210 are twins of 009B1E90.
+  - 009BAC60, 009C3170 and 009C9E70 are twins of the entity_orders.cpp rows 006F8C00, 006F8920 and 006F8C90.
+  - 009C3150 is a twin of 009DAE20 (kMoveToCommandClass).
+  - 009A9950 is a twin of 0098D3D0.
 
 ## 4. Ledger-only records (packet cc13-seg67C)
 

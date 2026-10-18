@@ -1012,20 +1012,15 @@ void ptr_array_push_front_00999d40(Cc13Seg67bHost& host, void* array,
 // Constant returns, __thiscall(ECX = task, unused), RET, EAX (009B9140: ST0).
 std::uint32_t bot_task_depth_charge_robots_row_009a54e0() noexcept;
 std::uint32_t bot_task_depth_charge_name_009a5500() noexcept;
-std::uint32_t bot_task_dogfight_robots_row_009a9950() noexcept;
 std::uint32_t bot_task_drop_kamikaze_name_009adde0() noexcept;
 std::uint32_t bot_task_kamikaze_name_009af080() noexcept;
 std::uint32_t bot_task_land_robots_row_009b33a0() noexcept;
 std::uint32_t bot_task_level_bomb_name_009b7bd0() noexcept;
 float bot_task_pull_up_slot68_009b9140() noexcept;
 std::uint32_t bot_task_immelmann_name_009ba920() noexcept;
-std::uint32_t bot_task_stop_name_009bac60() noexcept;
 std::uint32_t bot_task_moveonpath_robots_row_009bcfb0() noexcept;
-std::uint32_t bot_task_moveto_command_class_009c3150() noexcept;
-std::uint32_t bot_task_moveto_name_009c3170() noexcept;
 std::uint32_t bot_task_dive_bomb_name_009c79c0() noexcept;
 std::uint32_t bot_task_retreat_kind_009c9e60() noexcept;
-std::uint32_t bot_task_retreat_name_009c9e70() noexcept;
 // Bare RET slots: takeoff's exit 009CE290 and the torpedo go-away enter 009D0C00.
 void bot_state_takeoff_exit_009ce290(void* state) noexcept;
 void bot_state_torpedo_go_away_enter_009d0c00(void* state) noexcept;
@@ -1044,16 +1039,10 @@ void* bot_task_moveonpath_registry_view_dtor_thunk_009bd0a0(Cc13Seg67bHost& host
 float bot_task_depth_charge_wait_value_009a5d50(Cc13Seg67bHost& host, void* task);
 float bot_task_moveonpath_follow_wait_value_009bd2e0(Cc13Seg67bHost& host, void* task);
 float bot_task_retreat_wait_value_009ca0a0(Cc13Seg67bHost& host, void* task);
-// Attack-run enters: +20h = 0, +18h = 0.4 (dogfight 009A71C0, dive bomb 009C4200).
-void bot_state_dogfight_attack_run_enter_009a71c0(void* state);
-void bot_state_dive_bomb_attack_run_enter_009c4200(void* state);
 // 009C44C0: byte plane+844h = 0, byte state+1Ch = 0.
 void bot_state_dive_bomb_turn_down_enter_009c44c0(void* state);
-// Exits that set byte plane+844h = 1 (plane = [[state+4h]+4h]).
+// 009B1E90: byte plane+844h = 1 (plane = [[state+4h]+4h]); twins 009C44E0/009C58A0/009C6210 ledger-only.
 void bot_state_land_final_exit_009b1e90(void* state);
-void bot_state_dive_bomb_turn_down_exit_009c44e0(void* state);
-void bot_state_dive_bomb_aim_dive_exit_009c58a0(void* state);
-void bot_state_dive_bomb_fly_above_exit_009c6210(void* state);
 // 009D1350: byte [[state+4h]+A8h] = 0.
 void bot_state_torpedo_aim_exit_009d1350(void* state);
 // Command record accessors.
