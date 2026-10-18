@@ -2981,3 +2981,50 @@ Run tools: `local\p12_launch.ps1 -Exe <exe> -Name <n> -Mission <id> -Frames <f> 
 `local\p18_wait.ps1 -Names a,b -Max 580`; export builds `local\p18_exports*.ps1`. Stagger launches by 60 s, run at
 most two, and run one build at a time. `python tools/mission_script_reach.py <Native>` maps menu ids to scripts.
 PRCP05 does not complete on this installation: VehicleClass has no row 240, so its PTs never spawn.
+
+## 73. 006BCA80's owner-velocity lead is already bound; per-op rounding (cc9-physics19, 2026-10-18)
+
+cc13's CC13_SEG29U.md item 1 reports 006BCA80 as a live mismatch ("velocity = 0, +8Ch ignored"). It read
+`land_path_point_006bca80`'s comment, which described only the t = 0 point. The t != 0 call (009AFD52) adds the
+owner's velocity x t in `land_geometry_009afaf0` under `kCarrierLandingVelocityLeadBound`, ON since section 66;
+`local\p17xair_usn01w.log` has `summary carrier landing leads=4761 bound=1`. The comment now says so.
+- Callers (rel32 + absolute scan of the PE, `local\p19_rel32.py`): 007C7329 (t 0, only `.w`), 009AFB46 (t 0),
+  009AFD52. The one absolute hit, 004AAEFC, is inside `CALL 00B67980` at 004AAEFB.
+- holder+8Ch: 006BEE40 (the carrier refresh) writes +88h only. With +8Ch = 0, a = 0 x t = 0, UCOMISS sets ZF and
+  `TEST AH,44h` leaves PF clear, so the JNP at 006BCAD9 skips the rotation. Dead arm, not modelled.
+- TouchdownBrake is not affected: 009B1EF2's touched byte keys on +900h == 7 (section 70), not on the path point.
+
+**`kCarrierLandingLeadFloatOpsBound` (OFF).** 006BCC0A-006BCC51 stores each v[k] x t as a float, then the float
+sum p + T[k]; the host rounds a double v x t + T once. Prediction for a USN01 pair: the same landings in the same
+order; touchdown times and approach traces move by float noise only, and the chaotic flight afterwards may
+move counters. A mechanism check, not a behaviour change.
+
+## 74. 007D99C0's deck term (cc9-physics19, 2026-10-18)
+
+007D99C0 (007D99C0-007D9A69, `__thiscall(ctl)`, RET, result in ST0) returns ctl+44h, plus, when the plane has a
+scene parent (`[ctl+8]+3Ch`), a deck term. The listing, with ESP tracked through the two calls:
+- 007D99DD-007D9A04: with unit+10Ch clear, 00414DB0 refreshes the pose and 00B63D50 builds the inverse world
+  (unit+CCh) into unit+110h; +10Ch = 1.
+- 007D9A09-007D9A1E: the parent's vtable[34h](out = base+10h), RET 4: its velocity. The PUSH 0 and PUSH unit+110h
+  before it are 0042D0D0's arguments (matrix, normalise 0). 007D9A22-007D9A26: 0042D0D0(ECX = base+8h, EDX = the
+  velocity): out[k] = sum_i v[i] x M[4i+k], so out[2] (base+10h) = dot(v_parent, the plane's forward row).
+- 007D9A31-007D9A5F: c = 0.1 (00D7A2F0) when z >= 0.0 (00D7A218), else 0.8 (00CE74F8; COMISS/JC, so unordered
+  takes 0.8); FLD z, FMUL c, FADD ctl+44h, FSTP.
+The host's planes keep deck-relative velocity while parented (007D9CE0's subtraction in
+`carrier_deck_reparent_007c71e0`), as ctl+18h does, so ctl+44h is already the relative forward speed.
+
+**`kPlaneForwardSpeedDeckTermBound` (OFF)**, `plane_forward_speed_007d99c0`, at the three host sites that model a
+007D99C0 call: the free-flight state's forward speed (007DC878; it feeds 007DA710's floor, the water law and the
+pose advance), 0099D99E's measured speed (`kPilotThrottleForwardSpeedBound`) and 007DC878-007DC886's stall ratio.
+LABELLED: the parent's vtable[34h] is its `motion.linear_velocity`, as in 007D9CE0's host. Not wired: the callers
+007C38FC (bow wave), 007C3CC7, 007D9AB4, 007DB75B/007DBD07 (the core law; whether the host's core law reads the
+state speed was not checked), 0099F3EF, 009A176D, 009B0C6D. 007DAABD's floor takes the state speed, so it follows. Prediction: only parented planes move (deck taxi, the take-off
+roll, landed planes); off a deck the helper returns ctl+44h. On a carrier moving forward at v, a plane facing the
+bow reads +0.1v more forward speed, so the stall ratio and the throttle error shift slightly during the roll.
+`summary forward speed deck terms=` counts the parented calls.
+
+**73, result: `kCarrierLandingLeadFloatOpsBound` ON.** USN01 with `usn01_p8_u1_i.txt`, 30000 frames, at 888960641:
+`local\p19a_off_usn01.log` against `local\p19a_ops_usn01.log` (manifests beside them). pair_diff 3 (moved), as
+predicted: the same 19 touchdowns, the first four (417.87, 502.05, 521.45, 541.44 s) identical, the rest drifting
+by 0.15-12 s (KatSBD 706.25 -> 718.10); leads 7287 -> 7571, Enterprise inserts 12 / releases 5 on both; deaths 36
+on both, 15 death times shifted; neither run ends the mission in 30000 frames. Mechanism matches; flipped.
