@@ -212,9 +212,16 @@ struct GameMissionFrameHost::Impl {
         fixed_step->attach_entity_init(&lua);
         // Packet cc9_run_extra_fixed_step: GenerateObject's 00874D00.
         lua.attach_extra_fixed_step(fixed_step.get());
+        // Packet cc13-fix20: the Scoring_SetMissionCompleted and PlayBinkMovie rows.
+        lua.attach_mission_result(result.get());
     }
 
-    ~Impl() { release_units(); }
+    ~Impl() {
+        release_units();
+        // Not in release_units: the scene load calls that before the scripts run,
+        // and the result object lives for the whole mission.
+        lua.attach_mission_result(nullptr);
+    }
 
     void release_units() noexcept {
         // HUD persists across frames; Lua persists until after this frame dies.
@@ -3672,8 +3679,9 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
     }
 
     // --mission-complete-frame N: the script's own PlayBinkMovie(name, true),
-    // injected on the frame the switch names because no script on this
-    // installation reaches it in a headless run.
+    // injected on the frame the switch names. commandhelpers.lua's end helpers
+    // do make that call (docs/CC13_VERIFY16.md R8), but the Lua row reaches the
+    // same path only under kLuaPlayBinkMovieBound (packet cc13-fix20, OFF).
     if (host.complete_frame > 0 && !host.complete_injected
         && host.frames.frames + 1 >= static_cast<unsigned long long>(host.complete_frame)) {
         host.complete_injected = true;
