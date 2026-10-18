@@ -18936,3 +18936,14 @@ carried target 0. Cause: the arm binding's 00521EA0 read `chain_.pending_target`
 descriptor (written at 0071ED81's delivery, after the cascade), not the MT_COMMAND message's. Under the switch
 the binding now resolves the message descriptor (`view.target`) for every arm that calls 00521EA0 (Follow,
 Leave at 00816F01, MoveTo's path test 00816FA0, SetTarget 00816FF1); OFF keeps the stale read. Re-paired below.
+
+### 278 result: ON
+
+**Pair (e4f545f01, `--flip kSceneFollowJoinBound=true`, exe `local\s57_fj2_on`; ESMP08 `esmp08_p12_e8_rb` 20000 frames,
+`local\s57_off3_ess.log` / `local\s57_fj2_on_ess.log`, manifests beside them).** pair_diff exit 3. The mechanism is
+the predicted one: `requests=30 available=30`, `formation join follow calls=30 pushed=30` (0077FA8D -> 00720CD0),
+`ai diag follow Chiyoda -> Zuikaku available=1`, likewise Zuiho, Chitose, Hyuga, Ise, Tama, Oyodo, Isuzu, Sugi
+and Kuwa; the only arm-level native change is the new 00816ECA kind test (30 calls). The escorts now keep station
+on their leaders and the battle moves: deaths 188 -> 217, first hit 370.88 -> 319.85 s, torpedo-task releases
+14/101 -> 41/96, Zuikaku's track 10206 -> 8654 m. ESMP08 is not a win row (WINS_TABLE). **Decision: ON** by
+mechanism. Moved rows to cc9-lua66.

@@ -236,7 +236,7 @@ inline constexpr bool kAttackPushEndsOverrideBound = false;
 // the kind test answers from the class chain and the request goes to the AI
 // coordinator's 0077C8D0 (00779D50 facts, then the 76h join 0077F940). False: both are
 // records, so an authored `Command = Follow` never joins a formation.
-inline constexpr bool kSceneFollowJoinBound = false;
+inline constexpr bool kSceneFollowJoinBound = true;   // ON: SHIP_AI 278 (mechanism, ESMP08)
 // Packet s57_path_join (docs/CC13_VERIFY7.md R1, SHIP_AI_OPEN_ITEMS 279). 007B1C50 joins
 // a path in start modes 5, 7 and 8 at 007B1D24 through the source's vt+10h, 007B11F0
 // for an authored path: the nearest point, or its neighbour in the travel direction
