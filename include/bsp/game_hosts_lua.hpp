@@ -435,6 +435,23 @@ inline constexpr bool kLuaIsUnitSelectableBound = false;  // OFF: committed unpa
 // leader +3D0h's slot 38h). True: run_get_entity_speed_008c0820. False: UNIMPLEMENTED,
 // nothing pushed.
 inline constexpr bool kLuaGetEntitySpeedBound = false;  // OFF: committed unpaired
+// Packet cc13-fix18 (docs/CC13_FIX18.md section 2). 008AAB90 ClearForcedReconLevel(entity,
+// party), no result: 008AAC90 00888AA0 resolves argument 0 (no null test), 008AACC1
+// 00B66290 reads argument 1 as the party; 008AACE2 00803B50 on the record
+// entity+1E8h+party*34h, then a squadron (vtable[5Ch](18h)) clears each +3D0h member's
+// record (count +3CCh, 008AACF6-008AAD27)
+// and a LandConvoy (1Ah) each element of the +394h vector (008AAD83-008AADE4). True:
+// run_clear_forced_recon_level_008aab90 through bsp::clear_forced_recon_level_00803b50
+// for the slot and its squadron members. False: the row stays UNIMPLEMENTED and the
+// forced table keeps the pair.
+inline constexpr bool kLuaClearForcedReconLevelBound = false;  // OFF: committed unpaired
+// Packet cc13-fix18 (docs/CC13_FIX18.md section 6). 00894F20 SetCrewLevel(entity, level),
+// no result: 00895022 00888AA0 argument 0, 00895053 00B66290 argument 1, 0089506C
+// 006E6210(ECX = level), 0089507C entity->vtable[128h](skill) with no null test. 006E6210
+// with the session word [00E188A8]+1FE4h zero (single player) maps 0 -> 0, 1 -> 1,
+// 2 -> 2, 3 -> 5 and anything else -> 1. True: run_set_crew_level_00894f20 on
+// GameUnitsHost::set_skill_level_007b8ae0, SetSkillLevel's leaf. False: UNIMPLEMENTED.
+inline constexpr bool kLuaSetCrewLevelBound = false;  // OFF: committed unpaired
 // Packet cc13-fix10 (docs/CC13_FIX10.md; cc9 grant 2026-10-17). 008C9730
 // AddProximityTrigger(entity, name, callback, target, range) makes a 60h trigger
 // (007505C0 / 0074FEE0: target descriptor +44h from 0088A810, +5Ch = range * range)
@@ -651,6 +668,18 @@ inline constexpr bool kLuaFormationQueryBound = true;  // ON: mechanism matched,
 // are published and written by SetDeviceReloadEnabled. It answers false while
 // kLuaDeviceReloadEnabledBound is false.
 bool lua_device_reload_enabled_00e17bf2() noexcept;
+
+// Packet cc13-fix18 (docs/CC13_FIX18.md section 5). 008C14B0 SetDeviceReloadTimeMul(mul),
+// no entity, no result: 008C15AF 00B66270 (lua_tonumber) on argument 0, 008C15B4 FSTP
+// float [00E08178]. The mission load sets the float to 1.0 (004DFBDD-004DFBEB, [00D7A24C])
+// and so does the session-mode setter (0076FE73). Its two readers are the rack reload
+// countdowns 006E41C0 (006E41D5) and 006E44C0 (006E44D5): +490h -= float(mul * dt). True:
+// route the row to run_set_device_reload_time_mul_008c14b0, and the units host's rack
+// reload slice (006E57A4) scales its step by lua_device_reload_time_mul_00e08178(). False:
+// UNIMPLEMENTED, and the accessor answers 1.0.
+inline constexpr bool kLuaDeviceReloadTimeMulBound = false;  // OFF: committed unpaired
+// The process-wide float 00E08178; 1.0 while kLuaDeviceReloadTimeMulBound is false.
+float lua_device_reload_time_mul_00e08178() noexcept;
 
 // Packet cc9_add_untouchable_unit (docs/LUA_BINDING_MISSION.md). 008AC140
 // AddUntouchableUnit(unit): argument 0 through 00888AA0 (008AC23B), then
@@ -1070,6 +1099,13 @@ struct GameMissionLuaSummary {
     unsigned long long entity_speed_plane{0};       // 007B8E60
     unsigned long long entity_speed_unresolved{0};  // nothing pushed
     unsigned long long entity_speed_unmodelled{0};  // other class: nothing pushed
+    unsigned long long clear_forced_recon_calls{0};       // packet cc13-fix18, 008AAB90
+    unsigned long long clear_forced_recon_records{0};     // 00803B50 calls made
+    unsigned long long clear_forced_recon_was_forced{0};  // ... on a forced pair
+    unsigned long long clear_forced_recon_unresolved{0};
+    unsigned long long crew_level_calls{0};               // packet cc13-fix18, 00894F20
+    unsigned long long crew_level_unresolved{0};
+    unsigned long long reload_time_mul_calls{0};          // packet cc13-fix18, 008C14B0
     unsigned long long attack_target_calls{0};
     unsigned long long attack_target_fire_arm{0};
     unsigned long long attack_target_command_arm{0};
@@ -1701,6 +1737,10 @@ public:
     // Packet cc13-fix12, under kLuaIsUnitSelectableBound / kLuaGetEntitySpeedBound.
     int run_is_unit_selectable_008ab580(lua_State* state, int argument_count);
     int run_get_entity_speed_008c0820(lua_State* state, int argument_count);
+    // Packet cc13-fix18, under kLuaClearForcedReconLevelBound / kLuaSetCrewLevelBound.
+    int run_clear_forced_recon_level_008aab90(lua_State* state, int argument_count);
+    int run_set_crew_level_00894f20(lua_State* state, int argument_count);
+    int run_set_device_reload_time_mul_008c14b0(lua_State* state, int argument_count);
     // Packet cc13-fix10, under kLuaProximityTriggersBound.
     int run_add_proximity_trigger_008c9730(lua_State* state, int argument_count);
     int run_remove_trigger_008c5fd0(lua_State* state, int argument_count);

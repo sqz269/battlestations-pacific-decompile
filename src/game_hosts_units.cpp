@@ -29874,8 +29874,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // resets +490h to +48Ch, and B2h's 006E3410 sets ammo = orgAmmo
                     // and attaches the next round (006E3E70). SUBSTITUTIONS, labelled:
                     // every single rack is stepped in one call (the image ticks each
-                    // rack); the multiplier [00E08178] is 1.0 (SetDeviceReloadTimeMul
-                    // 008C14B0 is not hosted); the rearm restores the host's per-rack
+                    // rack); the multiplier [00E08178] is 1.0 unless
+                    // kLuaDeviceReloadTimeMulBound routes SetDeviceReloadTimeMul
+                    // 008C14B0 (packet cc13-fix18); the rearm restores the host's per-rack
                     // count to the value it was seeded with (orgAmmo) and creates no
                     // round entity; a rack seeded with 0 rounds is left empty.
                     void rack_device_reload_slice_006e57a4(float dt) {
@@ -29895,7 +29896,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             for (std::size_t i = 0; i < n; ++i) {
                                 if (unit_.rack_ammo_per_rack[i] > 0) continue;   // 006E41F5
                                 float& left = unit_.rack_reload_left_per_rack[i];
-                                left = static_cast<float>(static_cast<double>(left) - dt);  // 006E4209
+                                // Packet cc13-fix18: 006E41D5 FLD [00E08178] / FMUL dt /
+                                // 006E41E7 FSTP float, the step SetDeviceReloadTimeMul
+                                // scales (1.0 until a script sets it, so dt exactly).
+                                float step = dt;
+                                if constexpr (kLuaDeviceReloadTimeMulBound) {
+                                    step = static_cast<float>(static_cast<double>(
+                                        lua_device_reload_time_mul_00e08178()) * dt);
+                                }
+                                left = static_cast<float>(static_cast<double>(left) - step);  // 006E4209
                                 if (!(left < 0.0f)) continue;
                                 left = unit_.rack_reload_time_per_rack[i];          // 006E424A
                                 const int a = unit_.rack_authored_per_rack[i];
@@ -38764,6 +38773,16 @@ bool GameUnitsHost::unit_linear_velocity(std::size_t index, float out[3]) const 
     out[0] = slot.motion.linear_velocity.x;
     out[1] = slot.motion.linear_velocity.y;
     out[2] = slot.motion.linear_velocity.z;
+    return true;
+}
+
+bool GameUnitsHost::unit_plane_world_velocity(std::size_t index, float out[3]) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size()) return false;
+    const GameUnitSlot& slot = *host.slots[index];
+    out[0] = slot.plane_world_velocity[0];
+    out[1] = slot.plane_world_velocity[1];
+    out[2] = slot.plane_world_velocity[2];
     return true;
 }
 
