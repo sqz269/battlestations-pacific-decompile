@@ -13,8 +13,8 @@ symbols. Nothing here is wired.
 | In the struck range 0081B000-0081EFFF (seg51) | 22 | Not touched |
 | Template bodies | 88 | Tagged `stl_shape`, `reviewed`, evidence `sys6_shape` |
 | Game code, reconstructed | 14 | `src/cc13_segmix.cpp`, build-tested (cc13-segmixB to G) |
-| Game code, cc9-hosted (verify-and-record) | 7 | Recorded with a verdict |
-| Game code, not done yet | 2 | Following commits |
+| Game code, cc9-hosted (verify-and-record) | 8 | Recorded with a verdict |
+| Game code, not done yet | 1 | 00935D30 |
 
 ## Template bodies (cc13-segmixA)
 
@@ -249,6 +249,24 @@ each puff makes one draw on the shared 00BD2F10 stream.
 The bytes were read for both reversed divisions: DE F1 at 00825131 / 00825179
 and DC F9 at 00825161.
 
+### Segment 41: the land fort's static body (cc13-segmixH, verify-and-record)
+
+**007482B0 BSP_LandFort_InitSceneAndCreateStaticBody** is cc9's. Its contract is
+`kHullFortContactBound` in `hull_terrain_contact.hpp`, and the shape source is
+`class_fort_box` in `game_hosts_units.cpp`. The bytes 007482B0..00748987 were
+read against that contract, and it matches:
+- Every {ConvexObject, node} entry of [[fort+360h]+160h]+4Ch becomes one shape.
+  There is no node filter.
+- Each 48h descriptor has restitution 0, friction 1.0, group 1, mask 0Dh, kind
+  4, the hull ConvexObject+0Ch, and an identity frame with zero translation.
+- The body frame is fort+CCh with flags |= 1. The body is created by 00C5D580 on
+  [game+18h], and its handle goes to fort+754h. A fort with no shapes gets
+  +754h = 0.
+
+Two of the contract's citations are off; the behaviour they describe is right:
+- the 1Eh reserve is at 00748444/00748455, not 00748447;
+- the body call is at 00748932, not 0074889B.
+
 ## Files
 
 - 88 tag rows in `config/tags/006b0000`, `006c0000`, `00730000`, `00740000`,
@@ -256,8 +274,8 @@ and DC F9 at 00825161.
   `008e0000.jsonl`.
 - `include/bsp/cc13_segmix.hpp` and `src/cc13_segmix.cpp`, registered in
   `cmake/startup.cmake` (bsp_core).
-- 21 function records in `config/reconstruction/00750000`, `00760000`, `007a0000`, `00820000`,
-  `00920000` and `00930000.jsonl`: 14 bodies and 7 verify-and-record.
+- 22 function records in `config/reconstruction/00740000`, `00750000`, `00760000`, `007a0000`, `00820000`,
+  `00920000` and `00930000.jsonl`: 14 bodies and 8 verify-and-record.
 - 7 renames in `config/names/007a0000`, `00920000` and `00930000.jsonl` (007A84D0, 0092F930, 0093B920, 0093A2C0,
   0093AA00, 00933BB0, 00933DA0), applied in Ghidra; the old values are in
   `local/ghidra-annotations-20261018T153423Z.json`, `...T153752Z.json` and `...T154313Z.json`.
