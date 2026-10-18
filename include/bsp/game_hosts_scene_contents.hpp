@@ -459,6 +459,29 @@ inline constexpr bool kEngineMovieEntryBound = true;
 // three TypeB_Jake subs no script names; USNOS identical.
 inline constexpr bool kEngineMovieStopRosterBound = true;
 
+// Packet cc15-vcp1, step 1 of cc9's vehicle-class purge plan. True: the scene
+// database's +08h vector (0046BE90's push_back) is built during the scene
+// passes. Its writers are the gate's 0046BF20 (a `Type` value whose entity class
+// is not 47h) and 0046BF70's stock lists, where a counted sub-bag goes to the
+// vector when the bag's `Hidden` is set and to the 0095C4D0 stock queue
+// otherwise. At the end of the instantiate read (0046EC77..0046ECA7, skipped
+// when the call's last argument is 1, which is the registration call at
+// 004D54DE), every id is resolved with 00964790(id, 1), which marks the
+// row's ID and Got. The host marks those rows with
+// GameMissionLuaHost::mark_vehicle_class_row_00964790.
+//
+// LOG ONLY: at 004E0A9B and at 0045F6C1 (both call 0095CA70) the host counts
+// the VehicleClass rows whose Got is not true, which are the rows 0095CA70
+// would nil. Nothing is purged. The DeviceClass (004423A0) and Bullets
+// (006E9C50) purges are skipped, because the host keeps no Got marks for
+// those tables.
+//
+// UNCERTAIN: the 0046BE50 / 0046EBE6 counters (game+1910h..192Ch) have no
+// host state and are taken as zero.
+//
+// False: 0046BF20 and 0046BF70 stay records, as before.
+inline constexpr bool kVehicleClassPreloadCc15Bound = false;
+
 // docs/CC13_AUDIT_LUA51_FLIPS.md item 3. Two admits the stop does not remove:
 // a `Hidden` entity goes through 0046C550 with the last argument 1 (0046D60F) and
 // is registered for GenerateObject, never created, so 0046B730 has nothing to

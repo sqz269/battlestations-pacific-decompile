@@ -4,6 +4,8 @@
 #include "bsp/cc13_big1.hpp"
 
 #include <cmath>
+#include <cstdint>
+#include <cstring>
 
 namespace bsp::cc13_big1 {
 
@@ -196,7 +198,9 @@ std::uint32_t hud_map_icon_refresh_carried_unit_icons_005aac00(void* icon, void*
 // 0064AE20 __fastcall(ECX = ship screen 45), RET; EH handler 00C7A978. screen+184h is the unit,
 // [unit+538h] its class record. Lua: VehicleClass[class+70h].NoRepairGUI; the damage widget
 // (+40h) is shown unless that is a boolean equal to 1. +44h = clamp((unit+980h + 0.5) / 1.5, 0,
-// 1) (24-bit: the sum and the quotient each round to float; a NaN passes both clamps), the
+// 1) (24-bit: the sum and the quotient each round to float; a NaN passes both clamps; at 53-bit
+// PC the image holds (x + 0.5) / 1.5 in the register until the FSTP float, one rounding that can
+// differ from the modelled pair by one ulp), the
 // three gauges' +18h bytes are cleared, +128h = 0064AAD0(), +12Ch = 0.0f, 0064A9F0(0.0f). Flags:
 // +105h = [class+C8h] > 0 (signed), +107h = 00818300() != 0, +106h = !+105h && 0059CB90(unit,
 // null) == 16h. Widgets +54h, +68h, +6Ch shown when +105h or +106h; +54h's frame is +106h != 0.
@@ -845,7 +849,7 @@ void enter_catalog_arm(std::uint8_t* s, Big1Host& host) {
                 set_device_icon(s, unit, static_cast<std::uint8_t*>(unit), 0x134, host);  // 0067549E..00675433
             }
         } else {
-            host.list_tidy_005a0b80(&units);                                 // 0067556E
+            host.list_tidy_005a0b80(&units);                                 // 0067557A (joins at 0067556E)
             return;
         }
         if (device) {
@@ -937,7 +941,7 @@ void enter_map_arm(std::uint8_t* s, Big1Host& host) {
                 host.list_tidy_005a0b80(&copy2);                             // 00675861
             } else {
                 host.gui_text_set_localised_cstring_00abbe50(ptr(s, 0x170), "globals.unitclass_spawnpoint",
-                                                             1);  // 00675888, 00CF6B24
+                                                             1);  // 0067588E, 00CF6B24
             }
         } else {
             void* const unit = *host.support_unit_iterator_value_00658a60(s + 0x300);  // 00675877
@@ -987,8 +991,11 @@ void hud_support_manager_screen_enter_00674b80(void* screen, Big1Host& host) {
         host.award_tracker_get_singleton_004e1ca0(), &hint);                 // 00674C9B / 00674CA7
     release_str(hint, host);                                                 // 00674CC0..00674CD3
     if (!shown) {
+        // 0041E870 is a constructor (it zeroes the string before assigning), so
+        // the released `hint` is rebuilt from {0, null} here, not reassigned.
         host.native_string_assign_0041e870(&hint, "SM1STUSE");               // 00674CE8
-        host.award_tracker_trigger_hint_00690fd0(host.award_tracker_get_singleton_004e1ca0(), &hint, 0);  // 00674D01
+        host.award_tracker_trigger_hint_00690fd0(
+            host.award_tracker_get_singleton_004e1ca0(), &hint, 0);          // 00674CFA / 00674D01
         release_str(hint, host);                                             // 00674D0A..00674D23
     }
 
@@ -1709,8 +1716,8 @@ void projectile_trace_hit_landing_troops_00428420(void* trace, float unused, Big
                                     if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
                                     if (at<std::uint8_t>(ptr(node, 8), 0x39) == 0) {  // 004287C8
                                         if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
-                                        host.landing_group_apply_damage_00480c20(group,
-                                                                                 at<float>(ptr(node, 8), 0x1C));  // 004287E6
+                                        host.landing_group_apply_damage_00480c20(
+                                            group, at<float>(ptr(node, 8), 0x1C));  // 004287E6
                                     }
                                     return;
                                 }
@@ -1724,6 +1731,665 @@ void projectile_trace_hit_landing_troops_00428420(void* trace, float unused, Big
         }
         host.group_iterator_increment_00427fe0(it);                          // 004286F6
     }
+}
+
+namespace {
+
+// 004A0D20's member group: byte +38h clear gives 2, else (byte +39h != 0).
+std::int32_t troop_member_group(const void* member) {
+    if (at<std::uint8_t>(member, 0x38) == 0) return 2;
+    return at<std::uint8_t>(member, 0x39) != 0 ? 1 : 0;
+}
+
+// FILD int; FMUL float: one 24-bit rounding of the product.
+float int_times_float(std::int32_t n, float f) { return static_cast<float>(static_cast<double>(n) * f); }
+
+// CVTTSS2SI: truncation; NaN and out-of-range values give 80000000h.
+std::int32_t cvttss2si(float v) {
+    const double d = v;
+    if (!(d > -2147483649.0 && d < 2147483648.0)) return INT32_MIN;
+    return static_cast<std::int32_t>(v);
+}
+
+// The new[] size: MUL; SETO; NEG; OR gives FFFFFFFFh when count * size overflows.
+std::uint32_t array_new_size(std::uint32_t count, std::uint32_t size) {
+    const std::uint64_t bytes = static_cast<std::uint64_t>(count) * size;
+    return (bytes >> 32) != 0 ? 0xFFFFFFFFu : static_cast<std::uint32_t>(bytes);
+}
+
+// The vector's (end - begin) >> 2 as the image inlines it (0 for a null begin).
+std::int32_t inline_point_count(const void* path) {
+    if (at<const void*>(path, 8) == nullptr) return 0;
+    return static_cast<std::int32_t>(at<const std::uint8_t*>(path, 0xC) - at<const std::uint8_t*>(path, 8)) >> 2;
+}
+
+// 004A1D7F..004A1E61 and 004A1F61..004A2030: the entity's cached world matrix +CCh, rebuilt while
+// byte +C8h is clear (00414DB0 on the parent +3Ch, then local +74h times the parent's +CCh, or the
+// local matrix alone, copied as 16 floats; +C8h = 1, +10Ch = 0).
+const float* cached_world_matrix(std::uint8_t* e, Big1Host& host) {
+    if (at<std::uint8_t>(e, 0xC8) == 0) {
+        if (ptr(e, 0x3C) != nullptr) host.entity_pose_refresh_world_00414db0(ptr(e, 0x3C));
+        const float* src = reinterpret_cast<const float*>(e + 0x74);
+        float product[16];                                                    // [B+458h] / [B+494h]
+        if (ptr(e, 0x3C) != nullptr)
+            src = host.matrix_multiply_00413920(e + 0x74, product, static_cast<std::uint8_t*>(ptr(e, 0x3C)) + 0xCC);
+        for (std::size_t k = 0; k < 16; ++k) at<float>(e, 0xCC + 4 * k) = src[k];
+        at<std::uint8_t>(e, 0xC8) = 1;
+        at<std::uint8_t>(e, 0x10C) = 0;
+    }
+    return reinterpret_cast<const float*>(e + 0xCC);
+}
+
+// 00B62D10 then the divide by w: inv = 1 / w (FLD1; FDIVRP), {x * inv, y * inv, inv * z}.
+void project_point(const float* vector, const void* matrix, float* out, Big1Host& host) {
+    float result[4];
+    const float* const r = host.vector4f_transform_00b62d10(vector, result, matrix);
+    const float x = r[0], y = r[1], z = r[2], w = r[3];
+    const float inv = 1.0f / w;
+    out[0] = x * inv;
+    out[1] = y * inv;
+    out[2] = inv * z;
+}
+
+// The checked `--end()` dereference: the list's last node (head->prev); 00BF6713 when that is the
+// head, tested twice against the re-read head.
+std::uint8_t* last_node(std::uint8_t* list, Big1Host& host) {
+    void* const head = ptr(list, 4);
+    std::uint8_t* const node = static_cast<std::uint8_t*>(at<void*>(head, 4));
+    if (node == head) host.crt_invalid_parameter_noinfo_00bf6713();
+    if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
+    return node;
+}
+
+void put_float(std::uint32_t* block, std::size_t index, float v) { std::memcpy(block + index, &v, 4); }
+
+} // namespace
+
+// 004A0D20 __thiscall(ECX = landing troop), RET. EBP frame aligned to 8, SUB ESP 4CCh, EH handler
+// 00C639AE (state 0 only around 007B28C0, whose block the unwind frees; not modelled). B below is ESP
+// after PUSH EDI. Precision: modelled at 24 bits (each x87 op rounded to float in the listing's order;
+// double constants applied in double and rounded once). The caller 004A2FC0 is the landing-troop tick
+// (vtable 00CE66E0 slot 1); which thread runs it is not established, so 53-bit is an uncertainty.
+// Frame slots that persist across the member loop in the image (the rotated path points [B+358h],
+// the long/short vectors [B+54h]/[B+6Ch] and the 40h-byte block [B+1B4h]) are function-scope here,
+// zero before their first write where the image reads uninitialised stack.
+void landing_troop_update_004a0d20(void* troop, Big1Host& host) {
+    std::uint8_t* const t = static_cast<std::uint8_t*>(troop);              // EBX
+    auto member = [&](std::int32_t i) { return at<std::uint8_t*>(ptr(t, 0x48), 4 * static_cast<std::size_t>(i)); };
+    auto d8 = [&](std::size_t off) -> std::int32_t& { return at<std::int32_t>(ptr(t, 0xD8), off); };
+
+    if (ptr(t, 0xDC) == nullptr) return;                                      // 004A0D4F
+    if (at<std::uint8_t>(t, 0x20) != 0) return;                               // 004A0D59
+
+    // [B+88h]: the three group counts. 004A0E15 indexes the store by the member index, so members
+    // 3.. write the frame dwords after it ([B+94h] base x, [B+98h], [B+9Ch] base z, ...); each of
+    // those is rewritten before it is read. The spill dwords stand for them (more than 16 members
+    // would clobber further frame slots in the image; not modelled).
+    std::int32_t counts[16] = {};
+    std::int32_t total = 0;                                                   // [B+2Ch]
+    bool distribute = false;
+    if (at<std::int32_t>(t, 0x4C) > 0) {
+        for (std::int32_t i = 0; i < at<std::int32_t>(t, 0x4C); ++i) {        // ESI
+            if (at<std::uint8_t>(member(i), 0x38) != 0) {
+                if ((at<std::int32_t>(t, 0xBC) == 0 && d8(0x10) > 0) ||
+                    (at<std::int32_t>(t, 0xC8) == 0 && d8(0x14) > 0)) {       // 004A0D98..004A0DC0
+                    total = ftol2_low_00bf7420(static_cast<float>(
+                        int_times_float(at<std::int32_t>(member(i), 0x2C), at<float>(member(i), 0x14)) +
+                        static_cast<double>(total)));                         // 004A0DC8 FILD/FMUL/FIADD
+                    std::int32_t& c = counts[troop_member_group(member(i))];
+                    c = ftol2_low_00bf7420(static_cast<float>(
+                        int_times_float(at<std::int32_t>(member(i), 0x2C), at<float>(member(i), 0x14)) +
+                        static_cast<double>(c)));                             // 004A0E01
+                } else if (i < 16) {
+                    // 004A0E15 stores into the 16-slot frame array by member index, so a
+                    // 17th or later member clobbers other frame slots in the image; that
+                    // write is not modelled (it would be out of bounds here).
+                    counts[i] = 0;
+                }
+            } else if (at<std::int32_t>(t, 0xD4) == 0) {
+                const std::int32_t k = d8(0x10);                              // EBP
+                if (k > 0) {
+                    total = ftol2_low_00bf7420(static_cast<float>(
+                        int_times_float(at<std::int32_t>(member(i), 0x2C), at<float>(member(i), 0x14)) +
+                        static_cast<double>(total)));                         // 004A0E3E
+                    std::int32_t& c = counts[troop_member_group(member(i))];
+                    c = ftol2_low_00bf7420(static_cast<float>(
+                        int_times_float(at<std::int32_t>(member(i), 0x2C), at<float>(member(i), 0x14)) +
+                        static_cast<double>(c)));                             // 004A0E77
+                    if (at<std::int32_t>(t, 0xBC) == 0 && k == 1) d8(0x10) += k;  // 004A0E9A
+                }
+            }
+        }
+        distribute = total > 0;                                               // 004A0EAF
+    }
+    if (!distribute) {
+        if (d8(0x10) <= 0) return;                                            // 004A0EBE
+        // 004A0EC4: every node of the list +B4h gets +38h = 10.0 ([00CE38B8]) and +34h = 6. The
+        // iterator owner is the list itself (CMP EDI,EDI), so only the end tests can fail.
+        std::uint8_t* const list0 = t + 0xB4;
+        for (std::uint8_t* node = static_cast<std::uint8_t*>(at<void*>(ptr(list0, 4), 0));;
+             node = static_cast<std::uint8_t*>(at<void*>(node, 0))) {
+            if (node == ptr(list0, 4)) break;                                 // 004A0EDE
+            if (node == ptr(list0, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
+            at<float>(node, 0x38) = 10.0f;
+            if (node == ptr(list0, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
+            at<std::int32_t>(node, 0x34) = 6;
+            if (node == ptr(list0, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
+        }
+        if (ptr(t, 0xDC) != nullptr) {                                        // 004A0F18
+            for (std::int32_t i = 0; i < at<std::int32_t>(t, 0x4C); ++i) {
+                std::uint8_t* const m = member(i);
+                if (at<std::uint8_t>(m, 0x38) != 0 && at<std::uint8_t>(m, 0x39) == 0)
+                    counts[troop_member_group(m)] = ftol2_low_00bf7420(
+                        int_times_float(at<std::int32_t>(member(i), 0x2C), at<float>(member(i), 0x14)));  // 004A0F61
+            }
+        }
+    }
+
+    // 004A0F7B: [B+7Ch] the per-group weight sums, each replaced by a stream-0 draw in [0, sum].
+    float sums[3] = {0.0f, 0.0f, 0.0f};
+    {
+        const std::int32_t n = at<std::int32_t>(t, 0x4C);                     // EBP, read once
+        std::uint8_t* const* const members = static_cast<std::uint8_t* const*>(ptr(t, 0x48));
+        for (std::int32_t i = 0; i < n; ++i) {
+            const std::int32_t g = troop_member_group(members[i]);
+            sums[g] = at<float>(members[i], 0x14) + sums[g];                  // 004A0FC0
+        }
+    }
+    sums[0] = host.random_uniform_float_00bd2f10(0, 0.0f, sums[0]);           // 004A0FE0
+    sums[1] = host.random_uniform_float_00bd2f10(0, 0.0f, sums[1]);           // 004A0FFE
+    sums[2] = host.random_uniform_float_00bd2f10(0, 0.0f, sums[2]);           // 004A101F
+
+    float points[5][3] = {};  // [B+358h]: 5 entries reach [B+394h]; the image's array is bounded by
+                              // the 007AF800 buffer at [B+3A0h] (a 5-point path needs 4)
+    float u[3] = {};          // [B+54h]: the longer of the two first spans, or the end direction
+    float v[3] = {};          // [B+6Ch]: the shorter span (written on the straight path only)
+    std::uint32_t block[16] = {};  // [B+1B4h]: the list value, later the identity matrix
+
+    for (std::int32_t i = 0; i < at<std::int32_t>(t, 0x4C); ++i) {            // [B+30h]
+        std::uint8_t* const m0 = member(i);                                   // ESI
+        const std::int32_t g_list = troop_member_group(m0);                   // [B+78h]
+        if (counts[troop_member_group(m0)] <= 0) continue;                    // 004A108C
+        if (at<std::uint8_t>(m0, 0x39) != 0 && d8(0x14) < 1) continue;        // 004A10A3
+        if (at<std::uint8_t>(m0, 0x39) == 0 && d8(0x10) < 1) continue;        // 004A10BA
+        float& sum = sums[troop_member_group(m0)];
+        sum = sum - at<float>(m0, 0x14);                                      // 004A10E3
+        if (!(0.0f > sums[troop_member_group(m0)])) continue;                 // 004A10FC COMISS/JBE (NaN skips)
+        if (at<std::uint8_t>(m0, 0x39) == 0 && d8(0x10) > 0) d8(0x10) -= 1;   // 004A111D
+        if (at<std::uint8_t>(member(i), 0x39) != 0 && d8(0x14) > 0) d8(0x14) -= 1;  // 004A113B
+
+        std::uint8_t* const data = static_cast<std::uint8_t*>(ptr(t, 0xD8));  // EAX
+        std::uint8_t* const a_owner =
+            static_cast<std::uint8_t*>(at<std::uint8_t>(member(i), 0x39) == 0 ? ptr(data, 0) : ptr(data, 8));
+        std::uint8_t* const path_a = a_owner != nullptr ? a_owner + 0x1E4 : nullptr;  // [B+3Ch]
+        std::uint8_t* b_owner = static_cast<std::uint8_t*>(ptr(data, 4));
+        if (at<std::uint8_t>(member(i), 0x39) != 0 && ptr(data, 0xC) != nullptr)
+            b_owner = static_cast<std::uint8_t*>(ptr(data, 0xC));
+        std::uint8_t* const path_b = b_owner != nullptr ? b_owner + 0x1E4 : nullptr;  // [B+48h]
+        if (path_a == nullptr || path_b == nullptr) continue;                 // 004A1196 / 004A119E
+
+        // [B+1Bh]: set unless path b has exactly four points whose ends are under 10.0 apart.
+        bool loose = true;
+        if (ptr(path_b, 8) != nullptr && inline_point_count(path_b) == 4) {   // 004A11A9 / 004A11BA
+            const std::int32_t n = inline_point_count(path_b);                // EBP
+            float first[3], last[3];                                          // [B+3B8h], [B+3E8h]
+            const float* const a = host.scene_path_point_to_world_007af800(path_b, first, 0);  // 004A11DE
+            const float* const b = host.scene_path_point_to_world_007af800(path_b, last, n - 1);  // 004A11F3
+            const float dx = b[0] - a[0], dy = b[1] - a[1], dz = b[2] - a[2];
+            const float d2 = (dx * dx + dy * dy) + dz * dz;                   // 004A1214..004A1230
+            if (static_cast<double>(d2) > 1e-10) {                            // [00CE3820], JBE: NaN clears
+                const float len = sqrt_00bf7030(d2);                          // 004A1244
+                loose = !(10.0f > len);                                       // [00CE38B8], COMISS/JA
+            } else {
+                loose = false;                                                // 004A1281
+            }
+        }
+        const std::uint8_t m39 = at<std::uint8_t>(member(i), 0x39);           // [B+37h]
+
+        // 004A1292: one 40h-byte matrix per point of path a, row 3 / row 2 sampled at its knots.
+        float* const matrices = static_cast<float*>(host.crt_operator_new_00bf55be(
+            array_new_size(static_cast<std::uint32_t>(inline_point_count(path_a) + 1), 0x40)));  // [B+40h]
+        for (std::int32_t k = 0; k < host.path_point_count_00415870(path_a); ++k) {  // EBP
+            float* const mtx = matrices + 16 * k;
+            static constexpr float kIdentity[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+            for (std::size_t e = 0; e < 16; ++e) mtx[e] = kIdentity[e];
+            float knot = host.path_knot_time_007b05e0(path_a, static_cast<std::uint32_t>(k));  // [B+38h]
+            const float end = at<float>(path_a, 0x1C);                        // [B+200h], [B+18Ch]
+            if (knot >= end) knot = static_cast<float>(end - 0.01);           // FCOMIP/JC; [00CE6638]
+            host.camera_path_sample_world_007b03c0(path_a, knot, mtx + 12, mtx + 8, 1);  // 004A138B
+        }
+
+        if (!loose) {
+            // 004A13B0: append path b's first point as point 4, then rotate its points so the one
+            // farthest from path a's end comes first. The search reads [B+358h] before this member
+            // writes it (the previous member's rotation, or uninitialised stack: zero here).
+            float first[3];                                                   // [B+3D0h]
+            host.path_points_set_point_local_007ad180(
+                path_b, 4, host.scene_path_point_to_world_007af800(path_b, first, 0));  // 004A13C0 / 004A13CA
+            float end_point[3];                                               // [B+D4h], read from the buffer
+            host.scene_path_point_to_world_007af800(path_a, end_point, inline_point_count(path_a) - 1);  // 004A13F0
+            std::int32_t best = 0;                                            // EBP, [B+1Ch] = best * 0Ch
+            if (host.path_point_count_00415870(path_b) - 2 > 0) {             // 004A13FD
+                std::int32_t k = 0;                                           // ESI
+                do {
+                    const float dx = points[k][0] - end_point[0];
+                    const float dy = points[k][1] - end_point[1];
+                    const float dz = points[k][2] - end_point[2];
+                    const float dk = (dx * dx + dy * dy) + dz * dz;           // [B+44h]
+                    const float bx = points[best][0] - end_point[0];
+                    const float by = points[best][1] - end_point[1];
+                    const float bz = points[best][2] - end_point[2];
+                    const float db = (bx * bx + by * by) + bz * bz;
+                    if (dk > db) best = k;                                    // FCOMIP/JBE: NaN keeps
+                    ++k;
+                } while (k < host.path_point_count_00415870(path_b) - 2);
+            }
+            const std::int32_t offset = best - 1;                             // [B+1Ch]
+            std::int32_t j = 0;                                               // EDI = &points[j]
+            for (std::int32_t k = best; k < host.path_point_count_00415870(path_b) + offset; ++k, ++j) {
+                const std::int32_t index = k % (host.path_point_count_00415870(path_b) - 1);  // IDIV (#DE on 0)
+                float point[3];                                               // [B+3A0h]
+                const float* const q = host.scene_path_point_to_world_007af800(path_b, point, index);
+                points[j][0] = q[0];
+                points[j][1] = q[1];
+                points[j][2] = q[2];
+            }
+            for (std::int32_t k = 0; k < host.path_point_count_00415870(path_b) - 1; ++k)
+                host.path_points_set_point_local_007ad180(path_b, k, points[k]);  // 004A1584
+
+            const float a[3] = {points[1][0] - points[0][0], points[1][1] - points[0][1],
+                                points[1][2] - points[0][2]};                 // [B+54h] (+ [B+204h]...)
+            const float b[3] = {points[2][0] - points[1][0], points[2][1] - points[1][1],
+                                points[2][2] - points[1][2]};                 // [B+6Ch]
+            const float la = (a[1] * a[1] + a[0] * a[0]) + a[2] * a[2];
+            const float lb = (b[1] * b[1] + b[0] * b[0]) + b[2] * b[2];
+            for (std::size_t e = 0; e < 3; ++e) {
+                u[e] = lb > la ? b[e] : a[e];                                 // FCOMIP/JBE: NaN keeps a
+                v[e] = lb > la ? a[e] : b[e];
+            }
+        }
+
+        // 004A16D6: both lengths, computed on every path (the ratio is used on the straight one).
+        const float lu2 = (u[1] * u[1] + u[0] * u[0]) + u[2] * u[2];          // [B+1Ch]
+        const float len_u = static_cast<double>(lu2) > 1e-10 ? sqrt_00bf7030(lu2) : 0.0f;  // [B+A0h]
+        const float lv2 = (v[1] * v[1] + v[0] * v[0]) + v[2] * v[2];          // [B+68h]
+        const float len_v = static_cast<double>(lv2) > 1e-10 ? sqrt_00bf7030(lv2) : 0.0f;  // [B+C0h]
+        const float ratio = len_u / len_v;                                    // [B+14h]
+
+        float spacing;                                                        // [B+60h]
+        if (loose) {
+            // 004A17AB: u = the normalised last span of path b; spacing = the knot time of its
+            // second-last point over (member +2Ch + 1).
+            const std::int32_t n = inline_point_count(path_b);
+            float q0b[3], q1b[3];                                             // [B+400h], [B+3DCh]
+            const float* const q0 = host.scene_path_point_to_world_007af800(path_b, q0b, n - 2);
+            const float* const q1 = host.scene_path_point_to_world_007af800(path_b, q1b, n - 1);
+            const float dx = q1[0] - q0[0], dy = q1[1] - q0[1], dz = q1[2] - q0[2];
+            const float len = sqrt_00bf7030((dx * dx + dy * dy) + dz * dz);   // 004A1846
+            const float inv = reciprocal_or_zero(len);                        // [B+A8h]
+            u[0] = inv * dx;
+            u[1] = inv * dy;
+            u[2] = inv * dz;
+            if (at<std::uint8_t>(path_b, 0x18) == 0) host.camera_path_derive_knots_007af150(path_b);  // 004A18C1
+            std::uint8_t* const* const slot = &at<std::uint8_t*>(ptr(t, 0x48), 4 * static_cast<std::size_t>(i));  // EDI
+            const float knot = host.path_knot_time_007b05e0(path_b, static_cast<std::uint32_t>(n - 2));  // 004A18DA
+            spacing = static_cast<float>(knot / static_cast<double>(at<std::int32_t>(*slot, 0x2C) + 1));  // FIDIV
+        } else {
+            const float lu = static_cast<double>(lu2) > 1e-10 ? sqrt_00bf7030(lu2) : 0.0f;  // [B+ACh]
+            spacing = lu / ratio;                                             // 004A1934
+        }
+
+        std::int32_t segments = 0;                                            // [B+44h]
+        std::int32_t steps = 0;                                               // [B+64h]
+        std::int32_t row = 0;                                                 // [B+38h]
+        std::int32_t slot = 0;                                                // [B+2Ch]
+        std::int32_t row_left = at<std::int32_t>(member(i), 0x34);            // [B+28h]
+        std::int32_t* const starts = static_cast<std::int32_t*>(host.crt_operator_new_00bf55be(
+            array_new_size(static_cast<std::uint32_t>(at<std::int32_t>(member(i), 0x34) + 1), 4)));  // [B+1Ch]
+        float base_x = -0.5f;                                                 // [B+94h]  [00CE69D0]
+        float base_z = -0.2f;                                                 // [B+9Ch]  [00CE69CC]
+        float step_x = 0.5f;                                                  // [B+164h] [00CE3800]
+        float step_z = 0.3f;                                                  // [B+16Ch] [00CE69C8]
+        if (ptr(t, 0xDC) != nullptr) {                                        // 004A19B0
+            float p1b[3], p0b[3];                                             // [B+3F4h], [B+408h]
+            const float* const p1 = host.unit_vtable24c_point(ptr(t, 0xDC), p1b, 1);  // 004A19F3
+            base_x = p1[0];
+            base_z = p1[2];
+            const float* const p0 = host.unit_vtable24c_point(ptr(t, 0xDC), p0b, 0);  // 004A1A28
+            const float p0x = p0[0];                                          // [B+300h]
+            const float p0z = p0[2];                                          // [B+308h]
+            std::uint8_t* const m = member(i);
+            const std::int32_t g = troop_member_group(m);
+            const float dxp = p0x - base_x;
+            const float sx = static_cast<float>(dxp / static_cast<double>(at<std::int32_t>(m, 0x34)));  // 004A1A84
+            const float dzp = p0z - base_z;
+            const float q1 = static_cast<float>(counts[g] / static_cast<double>(at<float>(m, 0x14)));  // 004A1AAA
+            const std::int32_t mean = (at<std::int32_t>(m, 0x30) + at<std::int32_t>(m, 0x34)) / 2;
+            const float q2 = static_cast<float>(q1 / static_cast<double>(mean));  // 004A1AB6 FIDIV
+            const float sz = dzp / q2;                                        // 004A1ABA
+            step_x = sx;
+            step_z = sz;
+            base_z = static_cast<float>(sz * 0.5) + base_z;                   // [00D7A280] (DC C9)
+            base_x = static_cast<float>(sx * 0.5) + base_x;
+        }
+
+        // 004A1AF8: one list node per soldier of the member.
+        for (std::int32_t r = 0;; ++r) {                                      // [B+14h]
+            if (!(r < at<std::int32_t>(member(i), 0x2C))) break;               // 004A1B17
+            if (counts[troop_member_group(member(i))] <= 0) break;            // 004A1B3C
+            float lo, hi;
+            if (slot < at<std::int32_t>(member(i), 0x34) / 2) {
+                lo = -0.0f - at<float>(t, 0x28);                              // [00D7A208] SUBSS
+                hi = 0.0f;
+            } else {
+                lo = 0.0f;
+                hi = at<float>(t, 0x28);
+            }
+            const float lateral = host.random_uniform_float_00bd2f10(0, lo, hi);  // [B+50h]
+            std::uint8_t* const mr = member(i);                               // ESI
+            const float speed = host.random_uniform_float_00bd2f10(0, at<float>(t, 0x30), at<float>(t, 0x34));  // [B+1E4h]
+            const std::uintptr_t mr_bits = reinterpret_cast<std::uintptr_t>(mr);
+            block[0] = static_cast<std::uint32_t>(mr_bits);
+            block[1] = 0;
+            put_float(block, 2, lateral);
+            block[3] = 0;                                                     // [4] (+10h) left as is
+            block[5] = 0;
+            block[6] = 0;
+            block[7] = 0;
+            put_float(block, 8, 1.0f);                                        // [00D7A24C]
+            block[9] = 0;
+            block[10] = 0;
+            block[11] = 0;
+            put_float(block, 12, speed);                                      // [13] (+34h) left as is
+            block[14] = 0;
+            put_float(block, 15, 1.1f);                                       // [00CE6448]
+            std::uint8_t* const list = t + 0xB4 + 0xC * static_cast<std::size_t>(g_list);  // ESI
+            void* const head = ptr(list, 4);                                  // EDI
+            void* const node = host.list_buy_node48_00488e30(list, head, at<void*>(head, 4), block);  // 004A1C64
+            host.list_incsize_00490130(list, 1);                              // 004A1C6F
+            at<void*>(head, 4) = node;
+            at<void*>(ptr(node, 4), 0) = node;
+            const float slot_f = static_cast<float>(slot);                    // [B+224h], [B+2E8h]
+            const float row_f = static_cast<float>(row);                      // [B+154h], [B+2F0h]
+            std::uint8_t* n = last_node(list, host);
+            at<float>(n, 0x1C) = slot_f;
+            at<float>(n, 0x20) = 0.0f;
+            at<float>(n, 0x24) = row_f;
+            void* const raw = host.crt_operator_new_00bf681b(0x2C);           // 004A1CEB
+            void* component = nullptr;                                        // EBP
+            if (raw != nullptr) component = host.path_component_construct_007b28c0(raw, ptr(path_a, 0x14));
+            n = last_node(list, host);
+            at<void*>(n, 0x18) = component;                                   // 004A1D3D
+
+            for (std::int32_t j = 0; j < host.path_point_count_00415870(path_a); ++j) {  // [B+4Ch]
+                const float* const mtx = matrices + 16 * j;                   // EBP - 8
+                if (j < 1 && m39 == 0) {
+                    // 004A1D72: two grid points in the +DCh unit's frame, the second 3.0 + |z offset|
+                    // further along z.
+                    std::uint8_t* dc = static_cast<std::uint8_t*>(ptr(t, 0xDC));  // EDI
+                    const float x = slot_f * step_x + base_x;                 // [B+C8h]
+                    const float zrel = row_f * step_z;                        // [B+20h] (FST double)
+                    float z = zrel + base_z;                                  // [B+D0h]
+                    const float* world = cached_world_matrix(dc, host);
+                    const float v1[4] = {x, 0.0f, z, 1.0f};                   // [B+318h]
+                    float p1[3];                                              // [B+2D0h]
+                    project_point(v1, world, p1, host);                       // 004A1EB9
+                    host.path_points_add_point_local_007ad330(ptr(last_node(list, host), 0x18), p1);  // 004A1F4E
+                    dc = static_cast<std::uint8_t*>(ptr(t, 0xDC));
+                    z = static_cast<float>(std::fabs(zrel) + 3.0) + z;        // [00D7A2B0]
+                    world = cached_world_matrix(dc, host);
+                    const float v2[4] = {x, 0.0f, z, 1.0f};                   // [B+338h]
+                    float p2[3];                                              // [B+2DCh]
+                    project_point(v2, world, p2, host);                       // 004A2088
+                    host.path_points_add_point_local_007ad330(ptr(last_node(list, host), 0x18), p2);  // 004A263E
+                } else {
+                    // 004A211F: the point's matrix with row 1 replaced by the global vector.
+                    float frame[16];                                          // [B+E0h]
+                    for (std::size_t e = 0; e < 16; ++e) frame[e] = mtx[e];
+                    const float* const up = host.global_vector_00f8758c();
+                    frame[4] = up[0];
+                    frame[5] = up[1];
+                    frame[6] = up[2];
+                    host.matrix_orthonormalize_0085dad0(frame);               // 004A2239
+                    if (j <= 0 && m39 != 0) {
+                        // 004A2254: first a point 2.0 back along path a's first span.
+                        float a0b[3], a1b[3];                                 // [B+3ACh], [B+3C4h]
+                        const float* const a0 = host.scene_path_point_to_world_007af800(path_a, a0b, 0);
+                        const float* const a1 = host.scene_path_point_to_world_007af800(path_a, a1b, 1);
+                        const float d[3] = {a1[0] - a0[0], a1[1] - a0[1], a1[2] - a0[2]};  // [B+B4h]
+                        const float len = sqrt_00bf7030((d[1] * d[1] + d[0] * d[0]) + d[2] * d[2]);  // 004A22E8
+                        const float inv = reciprocal_or_zero(len);            // [B+B0h]
+                        const float nx = inv * d[0], ny = inv * d[1], nz = inv * d[2];  // [B+170h]
+                        const float back[3] = {static_cast<float>(nx * 2.0), static_cast<float>(ny * 2.0),
+                                               static_cast<float>(2.0 * nz)};  // [00D7A308]
+                        const float q[4] = {frame[12] - back[0], frame[13] - back[1], frame[14] - back[2],
+                                            1.0f};                            // [B+348h]
+                        float p[3];                                           // [B+2BCh]
+                        project_point(q, t + 0x58, p, host);                  // 004A2418
+                        host.path_points_add_point_local_007ad330(ptr(last_node(list, host), 0x18), p);  // 004A24AD
+                    } else {
+                        // 004A24B7: jitter along row 0 by (draw(0, 0.2) + 0.9) * lateral.
+                        const float jitter = host.random_uniform_float_00bd2f10(0, 0.0f, 0.2f);  // [00CE54A0]
+                        const float s = static_cast<float>(jitter + 0.9) * lateral;  // [00CE69C0]
+                        const float o[3] = {s * frame[0], s * frame[1], s * frame[2]};  // [B+208h]
+                        frame[12] = o[0] + frame[12];
+                        frame[13] = o[1] + frame[13];
+                        frame[14] = o[2] + frame[14];
+                    }
+                    const float q[4] = {frame[12], frame[13], frame[14], 1.0f};  // [B+328h]
+                    float p[3];                                               // [B+2F4h]
+                    project_point(q, t + 0x58, p, host);                      // 004A25A9
+                    host.path_points_add_point_local_007ad330(ptr(last_node(list, host), 0x18), p);  // 004A263E
+                }
+            }
+
+            // 004A2662: steps along u at the spacing; past |u| a new segment starts.
+            ++steps;
+            const float wx = u[0] / spacing;                                  // [B+19Ch]
+            const float wy = u[1] / spacing;                                  // [B+1A0h]
+            const float wz = u[2] / spacing;                                  // [B+1A4h]
+            const float kf = static_cast<float>(steps);                       // [B+20h]
+            const float kw[3] = {wx * kf, kf * wy, kf * wz};                  // [B+238h]
+            const float lu2b = (u[1] * u[1] + u[0] * u[0]) + u[2] * u[2];
+            const float lk2 = (kw[0] * kw[0] + kw[1] * kw[1]) + kw[2] * kw[2];
+            if (lk2 > lu2b) {                                                 // FCOMIP/JBE: NaN keeps
+                ++segments;
+                steps = 0;
+            }
+            if (!loose) {
+                // 004A2766: a third point off the rotated first point, across along v and along u.
+                const float lv_a = static_cast<double>(lv2) > 1e-10 ? sqrt_00bf7030(lv2) : 0.0f;  // [B+A4h]
+                std::uint8_t* const* const mslot = &at<std::uint8_t*>(ptr(t, 0x48), 4 * static_cast<std::size_t>(i));  // EDI
+                const float lv_b = static_cast<double>(lv2) > 1e-10 ? sqrt_00bf7030(lv2) : 0.0f;  // [B+C4h]
+                std::uint8_t* const m = *mslot;
+                const float a = static_cast<float>((lv_b / at<float>(m, 0x20)) * 0.5);  // [B+20h] (DC C9)
+                const float dir[3] = {v[0] / a, v[1] / a, v[2] / a};          // [B+12Ch]
+                const float hi1 = static_cast<float>((lv_a / at<float>(m, 0x24)) * 0.5);
+                const float r1 = static_cast<float>(host.random_uniform_float_00bd2f10(0, 0.0f, hi1) +
+                                                    static_cast<double>(segments));  // 004A2853, FIADD
+                std::uint8_t* const m2 = member(i);
+                const float o1[3] = {dir[0] * r1, r1 * dir[1], r1 * dir[2]};   // [B+158h]
+                const float r2 = static_cast<float>(
+                    host.random_uniform_float_00bd2f10(0, 0.0f, at<float>(m2, 0x24) - at<float>(m2, 0x20)) +
+                    steps * 0.5);                                             // 004A28E6, [00D7A280]
+                const float o2[3] = {wx * r2, r2 * wy, r2 * wz};              // [B+148h]
+                const float s[3] = {o2[0] + o1[0], o2[1] + o1[1], o2[2] + o1[2]};  // [B+180h]
+                const float p[3] = {s[0] + points[0][0], s[1] + points[0][1], s[2] + points[0][2]};  // [B+30Ch]
+                host.path_points_add_point_local_007ad330(ptr(last_node(list, host), 0x18), p);  // 004A29D3
+                void* const path = ptr(last_node(list, host), 0x18);
+                if (at<std::uint8_t>(path, 0x18) == 0) host.camera_path_derive_knots_007af150(path);  // 004A29FA
+            }
+
+            if (at<std::uint32_t>(member(i), 0xC) != 0) {                     // 004A2A0B
+                const std::uint32_t count = at<std::uint32_t>(member(i), 0xC);
+                const std::uint32_t pick = host.random_threads_next_u32_00bd2fc0(0) % count;  // DIV
+                std::uint8_t* const mm = member(i);
+                std::uint8_t* const entry_lo = at<std::uint8_t**>(mm, 8)[pick];  // EBP
+                std::uint8_t* const entry_hi = at<std::uint8_t**>(mm, 8)[pick];  // EDI
+                std::uint8_t* const nd = last_node(list, host);               // [B+2B4h]
+                at<float>(nd, 0x3C) =
+                    host.random_uniform_float_00bd2f10(0, at<float>(entry_lo, 8), at<float>(entry_hi, 4));  // 004A2A89
+            }
+            std::uint8_t* const ms = member(i);
+            float start;                                                      // [B+20h] (FSTP double)
+            if (row == 0) {
+                start = host.random_uniform_float_00bd2f10(0, 0.0f, at<float>(ms, 0x28));  // 004A2AC1
+            } else {
+                start = static_cast<float>(host.random_uniform_float_00bd2f10(0, 0.25f, at<float>(ms, 0x28)) +
+                                           static_cast<double>(starts[slot]));  // [00CE3868], FIADD
+            }
+            at<float>(last_node(list, host), 0x40) = start;                   // 004A2B0B
+            starts[slot] = cvttss2si(at<float>(last_node(list, host), 0x40));  // 004A2B2B
+            --row_left;
+            ++slot;
+            if (row_left <= 0) {                                              // 004A2B4B
+                std::uint8_t* const mw = member(i);
+                const float whi = static_cast<float>(at<std::int32_t>(mw, 0x34) + 1);
+                const float wlo = static_cast<float>(at<std::int32_t>(mw, 0x30));
+                row_left = ftol2_low_00bf7420(
+                    host.random_uniform_float_00bd2f10(0, wlo, whi));  // 004A2B76, ftol 004A2B7B
+                ++row;
+                slot = 0;
+            }
+            std::uint8_t* const mc = member(i);
+            std::int32_t& c = counts[troop_member_group(mc)];
+            c = cvttss2si(static_cast<float>(c) - at<float>(mc, 0x14));       // 004A2BB5..004A2BCC
+        }
+
+        if (loose) {
+            // 004A2BE2: sort the list by the float at value +8 (0047B9F0), then give each node with
+            // state +34h == 0 a front point and a position sampled along path b.
+            std::uint8_t* const list = t + 0xB4 + 0xC * static_cast<std::size_t>(g_list);  // EDI
+            host.list_sort_0049f6a0(list, 0x0047B9F0);                        // 004A2BFC
+            std::int32_t r = 0;                                               // [B+14h]
+            for (std::uint8_t* node = static_cast<std::uint8_t*>(at<void*>(ptr(list, 4), 0));;
+                 node = static_cast<std::uint8_t*>(at<void*>(node, 0))) {
+                if (node == ptr(list, 4)) break;                              // 004A2C14
+                if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
+                if (at<std::int32_t>(node, 0x34) == 0) {
+                    static constexpr float kIdentity[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+                    std::memcpy(block, kIdentity, sizeof block);              // [B+1B4h]
+                    float frame[16];                                          // [B+270h]
+                    host.matrix_copy_004134f0(frame, reinterpret_cast<const float*>(block));  // 004A2CD8
+                    const float r1 = host.random_uniform_float_00bd2f10(0, 0.0f, spacing);  // [B+20h]
+                    const float end_b = at<float>(path_b, 0x1C);              // [B+10h]
+                    const float t0 = int_times_float(r, spacing) + r1;
+                    const float time = end_b > t0 ? t0 : end_b - r1;          // FCOMI/JBE: NaN subtracts
+                    host.camera_path_sample_world_linear_007afd60(path_b, time, frame + 12, frame + 8);  // 004A2D49
+                    host.matrix_orthonormalize_0085dad0(frame);               // 004A2D55
+                    const float r2 = host.random_uniform_float_00bd2f10(0, 0.0f, spacing);  // 004A2D6C
+                    const float o[3] = {r2 * frame[0], r2 * frame[1], r2 * frame[2]};  // [B+190h]
+                    frame[12] = o[0] + frame[12];
+                    frame[13] = frame[13] + o[1];
+                    frame[14] = frame[14] + o[2];
+                    if (at<std::uint8_t>(member(i), 0x38) == 0) {             // 004A2DF4
+                        const float h[3] = {static_cast<float>(u[0] * 2.0), static_cast<float>(u[1] * 2.0),
+                                            static_cast<float>(u[2] * 2.0)};  // [B+1A8h], [00D7A308]
+                        frame[12] = h[0] + frame[12];
+                        frame[13] = frame[13] + h[1];
+                        frame[14] = frame[14] + h[2];
+                    }
+                    const float f[3] = {static_cast<float>(u[0] * 2.0), static_cast<float>(u[1] * 2.0),
+                                        static_cast<float>(2.0 * u[2])};      // [B+1F4h]
+                    const float front[3] = {f[0] + frame[12], frame[13] + f[1], frame[14] + f[2]};  // [B+2B8h]
+                    if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
+                    host.path_points_add_point_local_007ad330(ptr(node, 0x18), front);  // 004A2EED
+                    if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
+                    host.path_points_add_point_local_007ad330(ptr(node, 0x18), frame + 12);  // 004A2F07
+                    if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
+                    at<float>(node, 0x28) = frame[8];
+                    at<float>(node, 0x2C) = frame[9];
+                    at<float>(node, 0x30) = frame[10];
+                    if (node == ptr(list, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
+                    if (at<std::uint8_t>(ptr(node, 0x18), 0x18) == 0)
+                        host.camera_path_derive_knots_007af150(ptr(node, 0x18));  // 004A2F53
+                    ++r;
+                }
+                if (node == ptr(list, 4))
+                    host.crt_invalid_parameter_noinfo_00bf6713();  // 004A2F5D CMP, 004A2F62 call
+            }
+        }
+        host.crt_free_00bf6989(starts);                                       // 004A2F73
+        host.crt_free_00bf6989(matrices);                                     // 004A2F7D
+    }
+}
+
+// 0059D4A0 __thiscall(ECX = HUD map screen; icon), RET 4. Frame SUB ESP 34h; B below is ESP after
+// PUSH EDI. Precision: modelled at 24 bits (each x87 op rounded to float; the double constants
+// 0.02f / 0.03f / 0.0 applied in double and rounded at the store). The caller 005ADDA0 is the HUD
+// map icon update (a UI path); 53-bit would only change the unstored sums before their FSTPs.
+void hud_map_icon_place_widget_0059d4a0(void* screen, void* icon, Big1Host& host) {
+    std::uint8_t* const s = static_cast<std::uint8_t*>(screen);               // EDI
+    std::uint8_t* const ic = static_cast<std::uint8_t*>(icon);                // ESI
+    const float depth = at<std::uint8_t>(ic, 0x28) != 0 ? -2.0f : -12.0f;     // [00CE7D7C] / [00CE781C], into [B+40h]
+    if (ptr(ic, 0xEC) == nullptr || (at<std::uint8_t*>(ic, 0xF0) - at<std::uint8_t*>(ic, 0xEC)) >> 2 == 0)
+        host.crt_invalid_parameter_noinfo_00bf6713();                         // 0059D4E0: front() of the widgets
+    const float* const size = host.gui_widget_get_size_00aa6740(at<void*>(ptr(ic, 0xEC), 0));  // 0059D4ED
+    const float w = size[0];                                                  // [B+10h]
+    const float h = size[1];                                                  // [B+14h]
+
+    // [B+18h] the position handed to 00AA8240. Anchor modes other than 0 and 1 leave all three
+    // floats unset: the image adds the offsets below to stale stack (what 005ADDA0's earlier calls
+    // at the same depth left there) and passes it on; they are zero here.
+    float position[3] = {0.0f, 0.0f, 0.0f};
+    const std::int32_t anchor = at<std::int32_t>(ic, 0x11C);
+    if (anchor == 0) {
+        // 0059D511: the fixed map point +554h / +558h against the origin +54Ch / +550h.
+        const float* const offset = host.map_offset_00e08890();
+        const float x = (at<float>(s, 0x554) - at<float>(s, 0x54C)) / at<float>(s, 0x30) + offset[0];  // [B+24h]
+        const float y = (at<float>(s, 0x550) - at<float>(s, 0x558)) / at<float>(s, 0x34) + offset[1];  // [B+28h]
+        position[0] = x;
+        position[1] = y;
+        position[2] = depth;                                                  // 0059D5C3
+    } else if (anchor == 1) {
+        // 0059D556: the unit's position, read twice through vtable +C4h.
+        float first[3];                                                       // [B+24h]
+        const float z = host.unit_vtablec4_position(ptr(ic, 4), first)[2];    // [B+8h]
+        const float y = (at<float>(s, 0x550) - z) / at<float>(s, 0x34) + host.map_offset_00e08890()[1];  // [B+Ch]
+        float second[3];                                                      // [B+30h]
+        const float x0 = host.unit_vtablec4_position(ptr(ic, 4), second)[0];  // 0059D596
+        position[0] = (x0 - at<float>(s, 0x54C)) / at<float>(s, 0x30) + host.map_offset_00e08890()[0];
+        position[1] = y;
+        position[2] = depth;
+    }
+
+    // 0059D5C9: the corner, by the jump table at 0059D6BC over +120h (above 3: no offset, no depth
+    // step). The 0.02 / 0.03 pads are the doubles [00D7A2F8] / [00CEB690] (0.02f, 0.03f widened).
+    const double pad_x = static_cast<double>(0.02f);
+    const double pad_y = static_cast<double>(0.03f);
+    const std::uint32_t corner = at<std::uint32_t>(ic, 0x120);
+    if (corner <= 3) {
+        switch (corner) {
+        case 0:                                                               // 0059D5DF
+            position[0] = static_cast<float>(position[0] + pad_x);
+            position[1] = static_cast<float>(position[1] + pad_y);
+            break;
+        case 1: {                                                             // 0059D5F9
+            const float left = -static_cast<float>(w + pad_x);                // [B+24h], FCHS
+            position[0] = left + position[0];
+            position[1] = static_cast<float>(position[1] + pad_y);
+            break;
+        }
+        case 2: {                                                             // 0059D621
+            const float down = -static_cast<float>(h + pad_y);                // [B+28h]
+            position[0] = static_cast<float>(position[0] + pad_x);
+            position[1] = down + position[1];
+            break;
+        }
+        default: {                                                            // 3, 0059D63D
+            const float left = -static_cast<float>(w + pad_x);
+            const float down = -static_cast<float>(h + pad_y);
+            position[0] = left + position[0];
+            position[1] = down + position[1];
+            break;
+        }
+        }
+        // bsp_core builds with /fp:strict, which keeps this z + 0.0 (it turns -0 into +0).
+        position[2] = static_cast<float>(position[2] + 0.0);                  // 0059D679 [00D7A258]
+    }
+    if (ptr(ic, 0xEC) == nullptr || (at<std::uint8_t*>(ic, 0xF0) - at<std::uint8_t*>(ic, 0xEC)) >> 2 == 0)
+        host.crt_invalid_parameter_noinfo_00bf6713();                         // 0059D69A
+    host.gui_widget_set_resolved_position_00aa8240(at<void*>(ptr(ic, 0xEC), 0), position);  // 0059D6AC
 }
 
 } // namespace bsp::cc13_big1

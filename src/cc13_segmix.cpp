@@ -328,7 +328,8 @@ void cc13_segmix_unit_controller_update_pose_0092f930(void* controller, float se
 //   or with null.
 //
 // Deviation: when p falls outside a list's walk, the image reads [0+4] and
-// faults. The model stops there (an assertion-level return).
+// faults. The model stops there and returns without retargeting (no 007A6910).
+// cc7's earlier evidence, under the old name: docs/RECON_SLOT_OBJECT.md.
 // ---------------------------------------------------------------------------
 void cc13_segmix_movcam_cycle_target_007a84d0(void* camera, std::uint8_t backward, Cc13SegmixHost& host) {
     const auto lists = [&]() -> void* {
@@ -905,6 +906,9 @@ void cc13_segmix_ship_on_wrecked_00824b60(void* unit, Cc13SegmixHost& host) {
 // unit+1018h controller), RET. Bytes 00935D30..00936DBE, with an aligned frame and
 // EH frame 00CA771E (not modelled). 00814520 BSP_UnitInstance_OnBreakupMessage
 // tail-jumps here after its 004A5AA0 registration. The unit is [controller+1Ch].
+// Liveness/RNG: each breakup makes 11 stream-1 draws (6 front, 5 back). cc9's
+// unit_death_sink.cpp calls host.breakup_parts, which nothing implements, so host
+// breakups skip them.
 // The two hull halves are the nodes [controller+370h] (front, named ELELLYE) and
 // [controller+374h] (back, named HATULLYA). Steps, in image order:
 //
