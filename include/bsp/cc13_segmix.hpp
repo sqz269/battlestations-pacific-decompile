@@ -71,6 +71,37 @@ public:
     // ---- session messages ----
     // 0075B430, the session message base constructor: __thiscall(ECX = message; type), RET 4.
     virtual void session_message_construct_0075b430(void* message, std::uint32_t type) = 0;
+
+    // ---- 0093B920 repair-task destructor (cc13-segmixD) ----
+    // 00BF6713 _invalid_parameter_noinfo (the checked-iterator failure).
+    virtual void crt_invalid_parameter_noinfo_00bf6713() = 0;
+    // [00CE2220] InterlockedDecrement; EAX = the new count.
+    virtual std::int32_t interlocked_decrement(volatile std::int32_t* value) = 0;
+    // Reference-counted object slot 0, no arguments (the release at a zero count).
+    virtual void vcall_00_release(void* object) = 0;
+    // 00867B10 BSP_PointEffect_StopChildren: __thiscall(ECX = effect).
+    virtual void point_effect_stop_children_00867b10(void* effect) = 0;
+    // 0093B300 STL_DestroyRange_0093b300 and 0081C940 STL_DestroyRangeRefPtrPair-shaped
+    // range destroys: __fastcall(ECX = first, EDX = last; vector, owner). Template
+    // bodies, bind-only.
+    virtual void stl_destroy_range_0093b300(void* first, void* last, void* vector, void* owner) = 0;
+    virtual void stl_destroy_range_0081c940(void* first, void* last, void* vector, void* owner) = 0;
+
+    // ---- 0092F930 ship controller pose (cc13-segmixD) ----
+    // 00414DB0 BSP_EntityPose_RefreshWorld: __thiscall(ECX = entity).
+    virtual void entity_pose_refresh_world_00414db0(void* entity) = 0;
+    // 00C43EA0: __thiscall(ECX = dyn body; out 3x4 transform, float t), RET 8; EAX = out.
+    virtual void* dyn_body_transform_at_00c43ea0(void* body, void* out, float t) = 0;
+    // 00C33650 Dyn_Transform_Expand3x4To4x4: __thiscall(ECX = transform; float out[16]), RET 4.
+    virtual void dyn_transform_expand_00c33650(void* transform, float* out_matrix) = 0;
+    // 0042D2E0 BSP_Matrix_ExtractNormalizedBasisAngles: __fastcall(ECX = matrix, EDX =
+    // float* c; float* b, float* a), RET 8.
+    virtual void matrix_extract_basis_angles_0042d2e0(const float* matrix, float* c, float* b, float* a) = 0;
+    // 00467050 BSP_Matrix_SetRotationFromEuler: __thiscall(ECX = matrix; float c, float b,
+    // float a), RET 0Ch.
+    virtual void matrix_set_rotation_from_euler_00467050(float* matrix, float c, float b, float a) = 0;
+    // 0042ED50 BSP_SceneNode_InvalidateSubtreePose: __thiscall(ECX = node).
+    virtual void scene_node_invalidate_subtree_pose_0042ed50(void* node) = 0;
 };
 
 // ---- segment 42: the mother ship and its MOTHERSHIP_CREATE message ----
@@ -88,5 +119,7 @@ void* cc13_segmix_mothership_create_construct_for_read_00766ef0(void* message, C
 // ---- segment 61: ship systems and failures ----
 void* cc13_segmix_failure_message9b_construct_0093a2c0(void* message, std::uint32_t value_20, std::uint32_t value_24,
                                                        std::uint8_t flag_28, Cc13SegmixHost& host);
+void cc13_segmix_repair_task_destruct_0093b920(void* task, Cc13SegmixHost& host);
+void cc13_segmix_unit_controller_update_pose_0092f930(void* controller, float seconds, Cc13SegmixHost& host);
 
 }  // namespace bsp

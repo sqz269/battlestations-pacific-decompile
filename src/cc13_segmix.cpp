@@ -197,4 +197,112 @@ void* cc13_segmix_failure_message9b_construct_0093a2c0(void* message, std::uint3
     return message;
 }
 
+// ---------------------------------------------------------------------------
+// 0093B920 BSP_RepairTask_Destruct (cc13-segmixD). __thiscall(ECX = task), RET.
+// Bytes 0093B920..0093BA77. The unit's +A20h task, which 0081F72F destroys
+// (unit_destructor_levels.hpp `l5_destroy_repair_task_a20`).
+// - For i in 0..13h it reads slot i of the effect vector {+8h first, +0Ch last}.
+//   Every read is checked (00BF6713 when the vector is null or i >= size).
+//   When the slot is set, it runs 00867B10(effect), sets byte effect+9h = 1,
+//   releases the reference (+4h count, slot 0 at zero) and zeroes the slot.
+//   The image zeroes the slot twice.
+// - The +14h vector {+18h, +1Ch, +20h}, when its first is set: 0093B300(first,
+//   last; +14h, task), free, then zeroed.
+// - The +4h vector {+8h, +0Ch, +10h} the same way through 0081C940.
+// ---------------------------------------------------------------------------
+void cc13_segmix_repair_task_destruct_0093b920(void* task, Cc13SegmixHost& host) {
+    auto* const base = static_cast<std::uint8_t*>(task);
+    const auto check = [&](std::int32_t i) {
+        void** const first = at<void**>(task, 0x8);
+        if (first == nullptr ||
+            static_cast<std::uint32_t>(i) >= static_cast<std::uint32_t>(at<void**>(task, 0xC) - first)) {
+            host.crt_invalid_parameter_noinfo_00bf6713();
+        }
+    };
+    for (std::int32_t i = 0; i < 0x14; ++i) {
+        check(i);                                                                       // 0093B950
+        if (at<void**>(task, 0x8)[i] == nullptr) continue;
+        check(i);
+        void* const effect = at<void**>(task, 0x8)[i];
+        host.point_effect_stop_children_00867b10(effect);                              // 0093B9A0
+        at<std::uint8_t>(effect, 0x9) = 1;
+        check(i);
+        void** const slot = at<void**>(task, 0x8) + i;
+        void* const reference = *slot;
+        if (reference != nullptr) {
+            if (host.interlocked_decrement(&at<std::int32_t>(reference, 4)) == 0) host.vcall_00_release(reference);
+            *slot = nullptr;
+        }
+        *slot = nullptr;
+    }
+    if (at<void*>(task, 0x18) != nullptr) {
+        host.stl_destroy_range_0093b300(at<void*>(task, 0x18), at<void*>(task, 0x1C), base + 0x14, task);
+        host.crt_free_00bf65ac(at<void*>(task, 0x18));
+    }
+    at<std::uint32_t>(task, 0x18) = 0;
+    at<std::uint32_t>(task, 0x1C) = 0;
+    at<std::uint32_t>(task, 0x20) = 0;
+    if (at<void*>(task, 0x8) != nullptr) {
+        host.stl_destroy_range_0081c940(at<void*>(task, 0x8), at<void*>(task, 0xC), base + 0x4, task);
+        host.crt_free_00bf65ac(at<void*>(task, 0x8));
+    }
+    at<std::uint32_t>(task, 0x8) = 0;
+    at<std::uint32_t>(task, 0xC) = 0;
+    at<std::uint32_t>(task, 0x10) = 0;
+}
+
+// ---------------------------------------------------------------------------
+// 0092F930 BSP_UnitController_UpdatePoseFromBody (cc13-segmixD).
+// __thiscall(ECX = controller (unit+1018h); float seconds), RET 4. Bytes
+// 0092F930..0092FAE6. unit = [controller+1Ch], body = [controller+2Ch].
+// - Byte controller+14h set: M = the unit's world matrix +CCh (00414DB0 first
+//   when byte unit+C8h is 0).
+// - Otherwise: M = 00C33650(00C43EA0(body; temp, seconds / 0.05f)), where 0.05f
+//   is [00D0DE84] and the quotient is rounded to float.
+// - Byte unit+61h set: M's angles (0042D2E0) are kept, except the middle one,
+//   which becomes unit+FACh. M is rebuilt from identity through 00467050 with
+//   x = unit+FB0h, z = unit+FB8h and the old y.
+// - Finally +74h = M (004134F0), bytes unit+C8h and +10Ch = 0, and every child
+//   from [unit+48h] along +44h is invalidated (0042ED50).
+// unit_rudder.cpp reaches it through the unbound hook `controller_update_0092f930`.
+// ---------------------------------------------------------------------------
+void cc13_segmix_unit_controller_update_pose_0092f930(void* controller, float seconds, Cc13SegmixHost& host) {
+    float matrix[16];                                                                  // [esp+54h]
+    if (at<std::uint8_t>(controller, 0x14) != 0) {
+        void* const unit = at<void*>(controller, 0x1C);
+        if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);
+        host.matrix_copy_4x4_004134f0(matrix, static_cast<std::uint8_t*>(unit) + 0xCC);
+    } else {
+        const float t = x87_float_round_trip(seconds / 0.05f);                        // 0092F971 FDIV, FSTP
+        alignas(4) std::uint8_t transform[0x40];                                       // [esp+14h]
+        void* const out = host.dyn_body_transform_at_00c43ea0(at<void*>(controller, 0x2C), transform, t);
+        host.dyn_transform_expand_00c33650(out, matrix);                               // 0092F993
+    }
+    void* unit = at<void*>(controller, 0x1C);
+    if (at<std::uint8_t>(unit, 0x61) != 0) {
+        float c = 0.0f;
+        float b = 0.0f;
+        float a = 0.0f;
+        host.matrix_extract_basis_angles_0042d2e0(matrix, &c, &b, &a);                // 0092F9B7
+        b = at<float>(unit, 0xFAC);
+        const float y = matrix[13];
+        static const float identity[16] = {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                                           0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+        host.matrix_copy_4x4_004134f0(matrix, identity);                               // 0092FA50
+        host.matrix_set_rotation_from_euler_00467050(matrix, x87_float_round_trip(c), x87_float_round_trip(b),
+                                                     x87_float_round_trip(a));          // 0092FA73
+        unit = at<void*>(controller, 0x1C);
+        matrix[12] = at<float>(unit, 0xFB0);
+        matrix[13] = y;
+        matrix[14] = at<float>(unit, 0xFB8);
+    }
+    host.matrix_copy_4x4_004134f0(static_cast<std::uint8_t*>(unit) + 0x74, matrix);   // 0092FAB4
+    unit = at<void*>(controller, 0x1C);
+    at<std::uint8_t>(unit, 0xC8) = 0;
+    at<std::uint8_t>(unit, 0x10C) = 0;
+    for (void* child = at<void*>(unit, 0x48); child != nullptr; child = at<void*>(child, 0x44)) {
+        host.scene_node_invalidate_subtree_pose_0042ed50(child);                       // 0092FAD3
+    }
+}
+
 }  // namespace bsp

@@ -12,9 +12,9 @@ symbols. Nothing here is wired.
 |---|---|---|
 | In the struck range 0081B000-0081EFFF (seg51) | 22 | Not touched |
 | Template bodies | 88 | Tagged `stl_shape`, `reviewed`, evidence `sys6_shape` |
-| Game code, reconstructed | 8 | `src/cc13_segmix.cpp`, build-tested (cc13-segmixB, C) |
+| Game code, reconstructed | 10 | `src/cc13_segmix.cpp`, build-tested (cc13-segmixB, C, D) |
 | Game code, cc9-hosted (verify-and-record) | 7 | Recorded with a verdict |
-| Game code, not done yet | 8 | Following commits |
+| Game code, not done yet | 6 | Following commits |
 
 ## Template bodies (cc13-segmixA)
 
@@ -121,6 +121,33 @@ rounds the FIMUL product to 24 bits. DebrisNumPerMeter is 0.3, stored as
 integer, and the truncated count is the same for every length. There is no live
 difference, so no adoption note was sent.
 
+Two more segment-61 bodies were reconstructed by cc13-segmixD. Both were FUN_ and
+are renamed in the ledger and in Ghidra; the old values are in
+`local/ghidra-annotations-20261018T153752Z.json`.
+
+**0093B920 BSP_RepairTask_Destruct**, thiscall(task). This is the unit+A20h
+task that 0081F72F destroys; cc9's `unit_destructor_levels.hpp` lists it as
+not modelled. In order:
+1. For each of its 20 effect slots in the +4h vector, it stops the children
+   (00867B10), sets byte +9h to 1, releases the reference and zeroes the slot.
+   Every slot read is checked, and the slot is zeroed twice.
+2. It destroys the +14h vector through 0093B300, then frees it.
+3. It destroys the +4h vector through 0081C940, then frees it.
+
+0081C940 lies in the struck range, but it is only called here as a hook.
+
+**0092F930 BSP_UnitController_UpdatePoseFromBody**, thiscall(controller;
+seconds), RET 4. It rebuilds unit+74h:
+1. The source matrix is one of two:
+   - the unit's world matrix +CCh, when byte controller+14h is set;
+   - otherwise, the dyn body's transform at seconds / 0.05f (00C43EA0, 00C33650).
+2. When byte unit+61h is set, it keeps the matrix's angles except the middle one,
+   which becomes unit+FACh. It keeps y and sets x and z from unit+FB0h and +FB8h.
+3. It clears bytes unit+C8h and +10Ch and invalidates the child nodes.
+
+`unit_rudder.cpp` declares a hook for it, `controller_update_0092f930`, that
+nothing binds.
+
 ## Files
 
 - 88 tag rows in `config/tags/006b0000`, `006c0000`, `00730000`, `00740000`,
@@ -128,8 +155,8 @@ difference, so no adoption note was sent.
   `008e0000.jsonl`.
 - `include/bsp/cc13_segmix.hpp` and `src/cc13_segmix.cpp`, registered in
   `cmake/startup.cmake` (bsp_core).
-- 15 function records in `config/reconstruction/00750000`, `00760000`, `00920000`
-  and `00930000.jsonl`: 8 bodies and 7 verify-and-record.
-- 4 renames in `config/names/00930000.jsonl` (0093A2C0, 0093AA00, 00933BB0,
+- 17 function records in `config/reconstruction/00750000`, `00760000`, `00920000`
+  and `00930000.jsonl`: 10 bodies and 7 verify-and-record.
+- 6 renames in `config/names/00920000` and `00930000.jsonl` (0092F930, 0093B920, 0093A2C0, 0093AA00, 00933BB0,
   00933DA0), applied in Ghidra; the old values are in
-  `local/ghidra-annotations-20261018T153423Z.json`.
+  `local/ghidra-annotations-20261018T153423Z.json` and `...T153752Z.json`.
