@@ -5872,10 +5872,34 @@ void bot_state_dogfight_avoid_enter_009a79f0(Cc13Seg67bHost& host, void* state) 
     at<float>(state, 0x1C) = 0.0f;                                               // 009A7A30
 }
 
+// 009AAF30 (009AAF30-009AAF96), dogfight task slot +54h. 0099B660 (empty) first.
+// Then the altitude block of bot_task_update_cruise_profile (src/bot_tasks.cpp ~158)
+// with the cruise offset 640h (kDogfightCruisingAlt) behind the 007B8AD0 gate, read
+// here from the listing: c = [task+404h]+37Ch; unless c+11h, when 0 > c+4h (COMISS,
+// JBE: NaN skips) and c+2Dh is clear, c+18h = tuning+640h (Pilot/Dogfight/CruisingAlt)
+// and c+31h = 1; c+2Dh = 0 either way. 0042E740 is called before the c+11h test. Then
+// 009AAC70(ECX = task+3F8h, 0.0) and the tail JMP 0099B740(task). The cc9 dogfight host
+// has not bound this slot (include/bsp/dogfight_task.hpp ~59).
+void bot_task_dogfight_update_cruise_profile_009aaf30(Cc13Seg67bHost& host, void* task) {
+    host.bot_task_update_cruise_profile_base_0099b660(task);                     // 009AAF33
+    if (host.unit_is_squadron_flight_leader_007b8ad0(ptr_at(task, 0x3FC))) {     // 009AAF3E
+        void* const tuning = host.game_tuning_singleton_0042e740();             // 009AAF47
+        void* const c = ptr(ptr_at(task, 0x404), 0x37C);
+        if (at<std::uint8_t>(c, 0x11) == 0) {                                   // 009AAF58
+            if (0.0f > at<float>(c, 0x4) && at<std::uint8_t>(c, 0x2D) == 0) {     // 009AAF61
+                at<std::uint8_t>(c, 0x31) = 1;                                  // 009AAF73
+                at<float>(c, 0x18) = at<float>(tuning, 0x640);                  // 009AAF77
+            }
+            at<std::uint8_t>(c, 0x2D) = 0;                                      // 009AAF7A
+        }
+    }
+    host.dogfight_update_approach_009aac70(ptr(task, 0x3F8), 0.0f);              // 009AAF8A
+    host.bot_task_abandon_if_stale_0099b740(task);                               // 009AAF92 JMP
+}
+
 // 009B35E0 (009B35E0-009B3660). 0099B6E0 (a RET) first; then 008608B0 with ECX =
-// the local (+430h, +434h + +458h, +438h) and the stack dwords (+440h, +460h, +464h,
-// +468h), each moved by FLD/FSTP so they are floats (the 008608B0 ledger row's
-// provisional "rgba*" for the first one does not fit this caller); RET 10h. Then
+// the local (+430h, +434h + +458h, +438h) and the stack floats radius = +440h and
+// (+460h, +464h, +468h), each moved by FLD/FSTP; RET 10h. Then
 // 006C2400(ECX = [task+42Ch]).
 void bot_task_land_debug_draw_009b35e0(Cc13Seg67bHost& host, void* task) {
     host.bot_task_debug_draw_base_0099b6e0(task);                                // 009B35E6
