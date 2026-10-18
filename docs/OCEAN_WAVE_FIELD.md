@@ -3211,3 +3211,19 @@ measured speed (009B22C0's tail writes +2B4h, +2B0h = 1, +2D8h = 1, so the park 
 hold). **`kLandAbortGroundArmBound` ON**: it is the bytes (009B0E74-009B0F93, as the switch comment lists), the
 USN01 pair with the deck term OFF is identical, and the arm is reached only on a failed park.
 `kLandFinalParkEdgeBound` stays OFF, unexercised.
+
+**78, result: `kFinderNoiseDrawBound` ON.** Export of 57a15d07b with the flip against the 2f9d20fdb OFF export (the
+same code path with the switch OFF). BSM09 `l67_b9_d1.txt` 36000 fr (`local\p20b_fnoise_bsm09d1.log` vs
+`local\p20a_off_bsm09d1.log`): pair_diff 1, gameplay identical, per-entity tables identical (the only summary
+change is the known ship-avoidance refill noise). USN04, no orders, 12000 fr (`local\p20b_fnoise_usn04.log` vs
+`local\p20a_off_usn04.log`; 26 fighters log early edges 009AAA80): pair_diff 0, identical. The draw is keyed per
+unit, so it couples no other stream; no pick changed on either row. Flipped as the bytes' draw; UNCERTAINTY: no
+counter shows how often the draw ran.
+
+**78, a further 0099D300 read for the deck question.** `disasm-raw 0099D980`: after 0099D99E's 007D99C0 and the
+FDIV by the speed scale (0099D9A3), a plane in +900h 4 or 5 on a holder (+BF8h, +BF4h) whose 006049F0 owner is a
+ship (`vt[5Ch](6)`, 0099DA05) and whose ship speed 0092D730 ([ship+1018h]) is NEGATIVE (FLDZ / FCOMI / JBE at
+0099DA29-0099DA2F) gets `measured -= ship speed` (0099DA31-0099DA48). The host does not model this arm (a carrier
+going astern only). It also shows the image keeps the forward deck term in the measured speed on purpose, so the
+answer to the stow question lies elsewhere (the parented ctl+44h, section 75's frame question, or 009B21D0's
+timer), not in 0099D300.

@@ -6398,7 +6398,7 @@ struct GameUnitsHost::Impl {
     // > 0 ([00D7A218]), 007E2090 adds BSP_Random_UniformFloatRange(1, 0, noise) (00BD2F10,
     // ECX = 1). True: a keyed stream-1 draw (unit name + "#fnoise") per such candidate.
     // False: the constant midpoint noise / 2, as before. RNG-coupled: judge per entity.
-    static constexpr bool kFinderNoiseDrawBound = false;
+    static constexpr bool kFinderNoiseDrawBound = true;   // ON: OCEAN_WAVE_FIELD 78 (BSM09, USN04 identical)
     static constexpr bool kLandingLandedArmBound = true;  // ON: all ten LOMP10 planes land (docs/SQUADRON_LAND_TASK.md 5r)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
