@@ -62,6 +62,11 @@
 #include "bsp/recon_sensor_pass.hpp"
 #include "bsp/world_ocean.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
+#include "bsp/gui_lua_runtime.hpp"
+#include "bsp/warning_messages.hpp"
+#include "bsp/memory_stream.hpp"
+#include "bsp/resource_lookup.hpp"
+#include "bsp/vfs_mounts.hpp"
 
 #include <cmath>
 #include <cstdint>
@@ -132,6 +137,20 @@ void format_address(std::uint32_t value, char (&out)[16]) {
 // False: the three calls are records under the old MissionEvents names and the
 // accumulator reads the world state's never-written delta.
 constexpr bool kWarningManagerTickBound = true;
+
+// Packet cc15-wB4. True: the global_subsystems step loads the manager+108h
+// message table as 009870A0 BSP_WarningManager_Init does (its only caller is
+// 004DC6A0): Scripts/datatables/Warnings.lua through 00bdf4c0/00bdf310, run in
+// a Lua state of its own (009870A0 opens one with 00B6A020 mask 1; the
+// repository's Lua 5.1.1 stands in, as for decals.lua), then
+// Warnings.escapecharacters.{entity,playerunit_section} and Warnings.messages
+// through load_warning_tables_009870a0. message_id_known answers 0096DBB0 over
+// that table. The rest of Init (roster 00973F20, the two environment effects,
+// the hooks) is not run. False: no table, and every id is unknown. Messages.lua
+// (007065E0, load_warning_bank) is the MessageManager's voice bank, not this
+// table. No host path calls 009763E0 yet, so ON is expected to change only the
+// summary line.
+constexpr bool kWarningMessageBankCc15Bound = false;
 
 // Packet cc9_construct_world part 2 (docs/CONSTRUCT_WORLD.md section 9). True:
 // the load step construct_world 004DE610 sets the world-active byte
@@ -317,6 +336,11 @@ struct GameMissionFrameHost::Impl {
     unsigned long long warning_loss_cancelled{0};
     unsigned long long warning_loss_proximity_erased{0};
     std::map<std::size_t, float> warning_loss_stamp_15c{};
+    // Packet cc15-wB4: manager+108h..+144h and the 0096DBB0 answers per id.
+    bsp::WarningMessageTables warning_tables{};
+    bool warning_tables_loaded{false};
+    std::string warning_tables_error{};
+    std::map<std::string, std::pair<unsigned long long, unsigned long long>> warning_id_queries{};
     bool device_edge_injected{false};         // the executable's own injection
     // Packet cc_mission_tick's reconstruction of the four-call opener of every
     // simulated frame, and the dynamics list behind its fourth call.
@@ -545,7 +569,17 @@ public:
         owner_.record("WarningManager::call_mission_lua", 0x00887e50u);
     }
     void stop_collision_sound() override {}
-    bool message_id_known(const std::string&) override { return false; }
+    bool message_id_known(const std::string& id) override {
+        if constexpr (kWarningMessageBankCc15Bound) {
+            const bool known = bsp::warning_message_id_known_0096dbb0(owner_.warning_tables, id);
+            auto& counts = owner_.warning_id_queries[id];
+            ++(known ? counts.first : counts.second);
+            owner_.done("WarningManager::message_id_known", 0x0096dbb0u);
+            return known;
+        } else {
+            return false;
+        }
+    }
     void report_error(const char*) override {}
     void destroy_warning(std::size_t, bool) override {}
     void on_warning_accepted(std::size_t) override {}
@@ -555,6 +589,60 @@ public:
 private:
     GameMissionFrameHost::Impl& owner_;
 };
+
+// Packet cc15-wB4: the table-loading fragment of 009870A0 (see
+// kWarningMessageBankCc15Bound). 009870EB runs the 31-byte path through the
+// script runner, which reads it out of the VFS like decals.lua.
+void load_warning_message_bank_009870a0(GameMissionFrameHost::Impl& host) {
+    if (host.warning_tables_loaded) return;  // 004DC6A0 runs once per process
+    std::string text;
+    {
+        std::string resolved = bsp::kWarningDataScript;
+        if (!host.vfs.ready() || !bsp::resolve_existing_resource_00bdf4c0_fragment(
+                host.vfs.context(), host.vfs.search_registrations(), resolved)) {
+            host.warning_tables_error = "cannot resolve the warning table";
+        } else {
+            bsp::VfsMemoryOpen opened = bsp::open_resource_memory_00bdf310_fragment(
+                host.vfs.context(), resolved, 2);
+            if (!opened.provider_opened || !opened.stream || !opened.stream->fully_initialized()) {
+                host.warning_tables_error = opened.error.empty()
+                    ? "cannot open the warning table" : opened.error;
+            } else {
+                text.assign(reinterpret_cast<const char*>(opened.stream->data_00bef610()),
+                    static_cast<std::size_t>(opened.stream->size_00bef600()));
+            }
+        }
+    }
+    if (host.warning_tables_error.empty()) {
+        bsp::GuiLua51Host lua;
+        std::string error;
+        if (!lua.execute_archive(text, error)) {
+            host.warning_tables_error = error;
+        } else {
+            const bsp::GuiLuaRef globals = lua.globals();
+            const bsp::GuiLuaRef warnings = lua.get_by_name(globals, "Warnings");
+            lua.release(globals);  // 009871AF
+            try {
+                bsp::load_warning_tables_009870a0(host.warning_tables, lua, warnings);
+                host.warning_tables_loaded = true;
+            } catch (const std::exception& failure) {
+                host.warning_tables_error = failure.what();
+            }
+            lua.release(warnings);
+        }
+    }
+    if (host.warning_tables_loaded) {
+        host.done("WarningManager::load_message_tables", 0x009870a0u);
+        host.log.notef("warning table %s: messages=%zu entity=%zu playerunit_section=%zu",
+            bsp::kWarningDataScript, host.warning_tables.messages.size(),
+            host.warning_tables.entity.replacements.size(),
+            host.warning_tables.playerunit_section.replacements.size());
+    } else {
+        host.record("WarningManager::load_message_tables", 0x009870a0u);
+        host.log.notef("warning table %s not loaded: %s", bsp::kWarningDataScript,
+            host.warning_tables_error.c_str());
+    }
+}
 
 
 class WorldTickBinding final : public bsp::WorldTickHost {
@@ -2448,6 +2536,7 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // leave behind (docs/MISSION_LUA_MACHINE.md, gap 1).
             host.record(label, step.address);
             ++host.load.records;
+            if constexpr (kWarningMessageBankCc15Bound) load_warning_message_bank_009870a0(host);
             if (!host.lua.started()) host.lua.start_machine_00884be0();
             host.lua.run_global_script_folders_00886900();
             continue;
@@ -3870,6 +3959,21 @@ void GameMissionFrameHost::report(long requested_frames) {
         host.warning_loss_other, kLossWarningBound ? 1 : 0, host.warning_loss_text_uslost,
         host.warning_loss_text_japanlost, host.warning_loss_cancelled,
         host.warning_loss_proximity_erased);
+    if constexpr (kWarningMessageBankCc15Bound) {
+        unsigned long long known = 0, unknown = 0;
+        for (const auto& [id, counts] : host.warning_id_queries) {
+            known += counts.first;
+            unknown += counts.second;
+        }
+        host.log.notef("summary mission warning table bound=1 loaded=%d messages=%zu ids=%zu "
+            "known=%llu unknown=%llu (packet cc15-wB4; 009870a0, 0096dbb0)",
+            host.warning_tables_loaded ? 1 : 0, host.warning_tables.messages.size(),
+            host.warning_id_queries.size(), known, unknown);
+        for (const auto& [id, counts] : host.warning_id_queries) {
+            host.log.notef("summary mission warning id %s known=%llu unknown=%llu",
+                id.c_str(), counts.first, counts.second);
+        }
+    }
     host.log.notef("summary mission fixed steps=%llu at %.3f s each (00875bb0's own clock "
         "at 00f876a4/00f876ac)", host.fixed_steps,
         static_cast<double>(bsp::kFixedSimulationStepFloat));
