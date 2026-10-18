@@ -33,6 +33,7 @@
 #include "bsp/return_to_base.hpp"           // packet cc9_squadron_land_task
 #include "bsp/land_and_structures.hpp"      // packet cc9_land_convoy_movement
 #include "bsp/cc15_land_convoy.hpp"         // packet cc13-convoy
+#include "bsp/land_convoy_dead_cc13.hpp"    // packet cc13-dead
 #include "bsp/cc13_seg41_land_null_host.hpp"  // packet cc13-convoy (0074CD10, 00742210)
 #include "bsp/mission_camera.hpp"           // kWorldUp00f8758c
 #include "bsp/native_camera_plane_transform.hpp"
@@ -13725,6 +13726,13 @@ void GameUnitsHost::land_convoy_flush_009273a0() {
             if (convoys.empty() && members.empty()) break;  // 009273D0 JE 009275BF
             for (LandConvoyLifeState* life : convoys) {
                 life->kill_queued = false;
+                if constexpr (kLandConvoyDeadWired) {
+                    // Packet cc13-dead: in the same 009273A0 pass, the destroy list
+                    // (0092747F) runs before the kill list's +080h (0092751F); the
+                    // convoy's 00926D90 queued its destroy at 00926E05 (0077D1A0 ->
+                    // 00926C80), whose +7Ch chain ends in 00929800.
+                    host.lua.publish_land_convoy_dead_00929800(life->name, life->cause_70);
+                }
                 LandConvoyKillBinding kill(host);
                 bsp::cc15_land_convoy::land_convoy_kill_members_00742180(convoy_handle(*life), kill);
                 host.done("LandConvoy::kill_members_00742180", 0x00742180u);
