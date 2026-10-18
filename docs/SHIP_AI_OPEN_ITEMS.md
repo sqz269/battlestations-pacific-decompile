@@ -19190,3 +19190,52 @@ countdown starts. Loui1 and Loui2 die at 2767/2771 s with each other as last att
 No further host fault was found on the mission path in this run. What remains is the plan: s56_os_c13 is
 open-loop on absolute frames and does not send a transport to the neutral HQs. Re-planning from section 273's
 next steps (c9/c10 picture) is the next USNOS step.
+## 288. cc13 fix22 planner switches: no reach on any single-player row (cc9-ships58, 2026-10-18)
+
+**Switches** (src/game_hosts_ai.cpp, docs/CC13_FIX22.md): R-A kAiSellSplitClaimBound, R-B kAiHandOffReplanBound,
+R-C kAiTargetObjectiveSetBound, R-E kAiPlannerSharedStreamDrawBound, all in the mode-8 party planners
+(00A182C0 brain -> Defend / Attack / Sell / Capture).
+
+**Reach.** None on a mission-tree launch. Section 150 (kAiCoordinatorLoadGateBound ON since a8404d451): the
+image builds no AI coordinator for a mission-tree launch (004E17FD..004E1838), so no party brain or planner
+ever thinks. Every current log agrees: `coordinator load gate ... created_at_load=0`, `parties calls=0`,
+`capture thinks=0 handoffs=0`, `sell thinks=0`, `defend thinks=0` on JM05 (`local\s58_off4_j5.log`,
+`s58_rb_on_j5.log`, 12000 frames; also ships57's `s57_off3_j5`), USNOS (`s58_st2_os`, 150000 frames) and
+every other row checked. CC13_FIX22's `handoffs=9` (JM05) and `handoffs=21` (USNOS) come from builds before
+the gate. The JM05 R-B pair (8fab34fee, `--flip kAiHandOffReplanBound=true`, exe `local\s58_sa_on`) is exit 1,
+gameplay identical (OFF and ON both fail at 321.05 s, "One of our carriers is destroyed"); USNOS 30000 frames
+(`s58_off4_os` / `s58_rb_on_os`, s56_os_c13 orders) likewise exit 1, `steps_absent=30000`, `handoffs=0`.
+
+**Decision.** R-B, R-C, R-E ON as faithful bindings of cc13's image reads, with no reach in single player.
+They only matter for a skirmish launch, which is not on the host path. R-E's RNG coupling can't move a
+single-player row for the same reason. R-A stays OFF as the lead directed (unjudgeable; no row logs
+`splits > 0`). If the coordinator gate ever changes, pair R-B/R-C on JM05/USNOS and judge R-E on the
+per-entity tables.
+## 289. HANDOFF, cc9-ships58 -> successor (2026-10-18)
+
+**Done this session (all on agent/cc9-ships44, reported to the lead):** 284 submarine air get/set ON (54ed7cccf);
+285 ArtilleryEnable ON (cf30bd420); 286 SetDeviceReloadTimeMul ON, no reach (081a86e79); 287
+kEntityDeadAfterPtrNullBound ON (2c3c0a897 OFF, 12f8cbb1c ON), which unblocked USNOS wave 2; USNOS status
+(a1c10afe0); 288 fix22 R-B/R-C/R-E ON with no single-player reach, R-A OFF (e739cd3f0). USN02 override question:
+the host is faithful (category-3 moveto neither gates nor ends the override; only a role-1 helm take, +184h at
+009F5E06, does). lua67 was told to use `takehelm Houston`. No code change.
+
+**Open queue, in the lead's order:**
+1. cc15's `kDirectorQueueCc13BodiesBound` (OFF on main 7d9a0a305, src/game_hosts_commands.cpp): routes 0071C0C0,
+   0071D780, 0071E200 and both 0071D900 clear messages to src/gameplay_seg38_cc13.cpp. Pair a long mission that
+   issues director commands (0071C0C0 isn't reached on USN01; check reach first), then flip by mechanism. If any
+   host site stays, fix 0071E2B9..0071E2C9's boundary: the image FCOMIPs the sum against 1.0 (JA -> false), so a
+   sum of exactly 1.0 matches; the host's `< 1.0` is wrong, cc13's `<=` is right.
+2. USNOS re-plan on the new tree: wave 2 now spawns (287), phase 2 starts at about 1004 s on s56_os_c13, and all
+   three HQs get neutralized, but no transport is ordered into capture range. Start from section 273's c9/c10
+   picture (`local\s55_osmk.py`, helpers air_mass / escort_sweep / recalls / shifted / turns). Note that wave 2
+   now exists where s56_os_c13 had none, so the wave-2 level bombers (#4.4-#4.6) take TT4/TT2 at 662/744 s.
+3. Side note, not investigated: on s58_st2_os, Loui1 and Loui2 kill each other with direct artillery hits at
+   344-366 m (`death row` killer = the other).
+
+**Working notes.** Mission ids don't load the scripts their names suggest: use `tools/mission_script_reach.py`
+(physics18) or `local\s58_ae_ids.py` (scene basename map) before pairing. The stagger rule applies: at most 2 of
+your runs at once, at least 60 s between launches, no build while a run is starting, and never build in the tree
+while a run uses the tree exe (build in `local\s58_sa_on` through pair_export instead). Launcher:
+`local\s58_rows.ps1` (prefix s58_; copy it to s59_). OFF baselines in local\: s58_off3_os / s58_off4_os
+(USNOS 30000), s58_off4_j5 (JM05 12000), s58_st2_os (USNOS 150000 on 12f8cbb1c).
