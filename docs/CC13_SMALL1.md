@@ -81,8 +81,8 @@ was transcribed from its full export listing.
 | 00565D80 BSP_HudLimboScreen_PollRespawnInput | ECX unread, RET | Unless game+5D4h == 0Ch, the first pressed action of E1h, 8Dh, 8Ch, 8Eh, 8Fh tail-jumps to 006485A0([[00E198C4]+40h]) |
 
 The "park list" step builds a local `std::vector<int>`, pushes 36h, 37h, 38h,
-53h, 33h, 55h, 47h and 5Ah through 00442190, calls 004D6480(&list, flag), and
-releases the storage. The SEH unwind states (00C73738, 00C73758, 00C73778,
+53h, 33h, 55h, 47h and 5Ah (one push_back each). Then the handler itself passes
+the list and the flag to the widget park routine, and releases the storage. The SEH unwind states (00C73738, 00C73758, 00C73778,
 00C73798, 00C74988), which release the locals on a throw, are not modelled.
 
 ### Adoption note: 005DECA0 and the mission statistics
