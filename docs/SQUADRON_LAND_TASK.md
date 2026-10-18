@@ -17872,3 +17872,19 @@ true. Reference env; logs `local\l67r_<row>_<rt|nat_on>_ref.log` with manifests.
 - **GetShipMaxSpeed (fix14)**: USN02 runs usn_2_java.lua, which does not call it (the 1.5x lines are in COTP-USN
   usn_02_battle_of_cape_esperance.lua, a scene no menu id loads); USN02 pair_diff 1. JM14 (prcpjm12.lua:1138,
   PreparePhase4) is queued.
+
+## 5ij. SetSkillLevel fan-out keyed on the squadron, `kSkillLevelSquadronFanOutBound` (cc9-lua67, 2026-10-18)
+
+`GameUnitsHost::set_skill_level_007b8ae0` writes the slot and then re-skills every member of the registry record that
+CONTAINS the unit (`find_by_member_unit`), so a call on a member plane re-skills its siblings. The image dispatches
+vtable[128h] on the entity: the squadron's 007ECF80 (007ECF86-007ECFB9: i < +3CCh, [+3D0h+4i]->vtable[128h](skill),
+nothing stored on the squadron) and a plane's own setter (007B8AE0: +A68h sub-object vtable[18h], then 009565A0;
+ships and planes 006D1EB0) on itself only. Switch (committed OFF, src/game_hosts_units.cpp): the record whose fused
+slot (`squadron_unit`) is the unit re-skills its members through `set_unit_skill_index_006d1eb0`; any other unit
+re-skills itself only, as `run_set_crew_level_00894f20` does. Native-table rows `PlaneSquadron::set_skill_all_members_
+007ecf80` / `Unit::set_skill_index_006d1eb0` count the two arms.
+
+Callers: the carrier launch skill (game_hosts_lua.cpp, passes the squadron node's slot), Lua SetSkillLevel
+(game_hosts_script_orders.cpp) and the capture-garrison skill (game_hosts_ship_ai.cpp, ships). Prediction: ON identical
+wherever every call names a squadron's fused slot or a ship; a script SetSkillLevel on a member plane now leaves its
+siblings alone (their skill index, read by the gun bots and the dive approach, stays at its own value).

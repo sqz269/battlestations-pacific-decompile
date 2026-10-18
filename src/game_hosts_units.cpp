@@ -18536,9 +18536,39 @@ bsp::CruiseSpeedSetting GameUnitsHost::commanded_speed(std::size_t unit_index) c
     return impl_->commands.commanded_speed(unit_index);
 }
 
+// cc9-lua67 (SQUADRON_LAND_TASK 5ij). The fan-out below keys on find_by_member_unit,
+// so a call on a member PLANE re-skills its siblings too. The image dispatches
+// vtable[128h] on the entity: the squadron's 007ECF80 (007ECF86-007ECFB9) loops
+// i < +3CCh over [+3D0h+4i]->vtable[128h](skill) and stores nothing on itself; a
+// plane or ship takes 006D1EB0 / 007B8AE0 on itself only. True: the registry
+// record whose fused slot (squadron_unit) is this unit re-skills its members, and
+// any other unit re-skills itself only (as run_set_crew_level_00894f20 does).
+// False: the member-keyed fan-out.
+inline constexpr bool kSkillLevelSquadronFanOutBound = false;
+
 void GameUnitsHost::set_skill_level_007b8ae0(std::size_t unit_index, int level) {
     Impl& host = *impl_;
     if (unit_index >= host.slots.size()) return;
+    if constexpr (kSkillLevelSquadronFanOutBound) {
+        const bsp::PlaneSquadronHostRecord* squadron = nullptr;
+        for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+            if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == unit_index) {
+                squadron = &r;
+                break;
+            }
+        }
+        if (squadron == nullptr) {
+            set_unit_skill_index_006d1eb0(unit_index, level);     // 006D1EB0
+            host.done("Unit::set_skill_index_006d1eb0", 0x006d1eb0u);
+            return;
+        }
+        for (const std::size_t member : squadron->member_units) {  // 007ECFAB
+            if (member == bsp::kPlaneSquadronNoUnit) continue;
+            set_unit_skill_index_006d1eb0(member, level);
+        }
+        host.done("PlaneSquadron::set_skill_all_members_007ecf80", 0x007ecf80u);
+        return;
+    }
     host.slots[unit_index]->pilot_skill_index = level;
     // 007ECF80: a squadron forwards the call to every member's vtable[128h].
     // process_index is the slot index (see where slots are appended).
