@@ -2981,3 +2981,20 @@ Run tools: `local\p12_launch.ps1 -Exe <exe> -Name <n> -Mission <id> -Frames <f> 
 `local\p18_wait.ps1 -Names a,b -Max 580`; export builds `local\p18_exports*.ps1`. Stagger launches by 60 s, run at
 most two, and run one build at a time. `python tools/mission_script_reach.py <Native>` maps menu ids to scripts.
 PRCP05 does not complete on this installation: VehicleClass has no row 240, so its PTs never spawn.
+
+## 73. 006BCA80's owner-velocity lead is already bound; per-op rounding (cc9-physics19, 2026-10-18)
+
+cc13's CC13_SEG29U.md item 1 reports 006BCA80 as a live mismatch ("velocity = 0, +8Ch ignored"). It read
+`land_path_point_006bca80`'s comment, which described only the t = 0 point. The t != 0 call (009AFD52) adds the
+owner's velocity x t in `land_geometry_009afaf0` under `kCarrierLandingVelocityLeadBound`, ON since section 66;
+`local\p17xair_usn01w.log` has `summary carrier landing leads=4761 bound=1`. The comment now says so.
+- Callers (rel32 + absolute scan of the PE, `local\p19_rel32.py`): 007C7329 (t 0, only `.w`), 009AFB46 (t 0),
+  009AFD52. The one absolute hit, 004AAEFC, is inside `CALL 00B67980` at 004AAEFB.
+- holder+8Ch: 006BEE40 (the carrier refresh) writes +88h only. With +8Ch = 0, a = 0 x t = 0, UCOMISS sets ZF and
+  `TEST AH,44h` leaves PF clear, so the JNP at 006BCAD9 skips the rotation. Dead arm, not modelled.
+- TouchdownBrake is not affected: 009B1EF2's touched byte keys on +900h == 7 (section 70), not on the path point.
+
+**`kCarrierLandingLeadFloatOpsBound` (OFF).** 006BCC0A-006BCC51 stores each v[k] x t as a float, then the float
+sum p + T[k]; the host rounds a double v x t + T once. Prediction for a USN01 pair: the same landings in the same
+order; touchdown times and approach traces move by float noise only, and the chaotic flight afterwards may
+move counters. A mechanism check, not a behaviour change.

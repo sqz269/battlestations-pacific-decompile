@@ -7460,6 +7460,12 @@ struct GameUnitsHost::Impl {
     // (written only at construction), so the turn by +8Ch x t is the identity.
     // False: the point is T and only 009AFDA4's floor of 1.0 is kept.
     static constexpr bool kCarrierLandingVelocityLeadBound = true;  // ON 2026-10-17 (OCEAN_WAVE_FIELD 66)
+    // Packet p19_lead_ops (docs/OCEAN_WAVE_FIELD.md section 73). True: the lead's
+    // arithmetic rounds per op as 006BCC0A-006BCC51 stores it: v[k] x t to a float
+    // (006BCC1D/006BCC26/006BCC2D), then that float + T[k] to a float (006BCC39..).
+    // Exact at the main thread's 24-bit PC; at 53 bits the image can differ by a
+    // double rounding of the product. False: one double v x t + T, rounded once.
+    static constexpr bool kCarrierLandingLeadFloatOpsBound = false;
     // Same packet (R3). True: 009B201B-009B2074, the land-final ground half's air
     // brake is 1.0 (00D7A24C) when the land target answers vtable[5Ch](9) (a mother
     // ship), else 0.2 (00CE54A0). False: 0.2 always.
@@ -32150,8 +32156,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // holder+8Ch x t). holder+8Ch is written only at construction, 0.0
                     // (006C07F5, 006CACAF); the moving-owner refresh is refused with the
                     // mother-ship holder. So for this host's airfield holder the point is T
-                    // in world at every t and the heading is wrap(+88h). SUBSTITUTION,
-                    // labelled: the owner velocity (owner vtable[34h]) is 0, a static airfield.
+                    // in world at every t and the heading is wrap(+88h). This helper is the
+                    // t = 0 point (009AFB46, 007C7329); the t != 0 call at 009AFD52 adds the
+                    // owner's velocity (owner vtable[34h], here motion.linear_velocity) x t
+                    // in its caller under kCarrierLandingVelocityLeadBound (ON).
                     bool land_path_point_006bca80(GameUnitsHost::Impl::LandingDeck& d) {
                         const std::array<float, 3> tw = owner_.landing_t_world_006bca40(d);
                         // 006BCAB3-006BCAC1: holder+ACh = min(+ACh, -20.0) (00CF180C), after
@@ -32245,9 +32253,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     const auto& lv = owner_.slots[d->owner]->motion.linear_velocity;
                                     const double ov[3] = {lv.x, lv.y, lv.z};
                                     for (int k = 0; k < 3; ++k) {
-                                        unit_.land_path_98[k] = static_cast<float>(
-                                            static_cast<double>(unit_.land_path_98[k])
-                                            + ov[k] * static_cast<double>(lead));
+                                        if constexpr (GameUnitsHost::Impl::kCarrierLandingLeadFloatOpsBound) {
+                                            const float p = static_cast<float>(
+                                                static_cast<double>(static_cast<float>(ov[k]))
+                                                * static_cast<double>(lead));
+                                            unit_.land_path_98[k] = static_cast<float>(
+                                                static_cast<double>(p)
+                                                + static_cast<double>(unit_.land_path_98[k]));
+                                        } else {
+                                            unit_.land_path_98[k] = static_cast<float>(
+                                                static_cast<double>(unit_.land_path_98[k])
+                                                + ov[k] * static_cast<double>(lead));
+                                        }
                                     }
                                     if (ov[0] != 0.0 || ov[1] != 0.0 || ov[2] != 0.0) {
                                         ++owner_.carrier_landing_leads;
