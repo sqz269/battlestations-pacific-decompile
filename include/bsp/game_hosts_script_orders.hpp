@@ -146,7 +146,7 @@ inline constexpr bool kEntityDeadBound = true;
 // unit's own. False: only `Ptr == id` counts, and a unit whose `Ptr` the
 // TrulyDead hook nulled first (a kamikaze boat's 00814595 removal) never reads
 // `Dead` (USNOS: the Shinyos hold PhOneAttackers open, wave 2 never spawns).
-inline constexpr bool kEntityDeadAfterPtrNullBound = false;
+inline constexpr bool kEntityDeadAfterPtrNullBound = true;  // ON: USNOS pair, section 287
 // Packet cc9_squadron_dead, docs/ENTITY_DEAD_FLAG.md section 8. True: a squadron
 // fused with its wing-0 plane publishes `Dead` only once no other member still
 // flies, as 007F3970 kills the squadron entity only when +3CCh reaches 0. False:

@@ -19167,3 +19167,14 @@ known; the host seeds `Ptr` on every unit table).
 Shinyos, at their death times), wave 2 spawns at about 440 s, and the run follows ships55's phase-1 / phase-2
 picture from there. Any row with kamikaze boats or other units removed through 00814595 before the flush
 moves the same way (their `Dead` turns true); rows with none are identical.
+### 287 result: ON
+
+**Pair (2c3c0a897, `--flip kEntityDeadAfterPtrNullBound=true`, exe `local\s58_sa_on`; OFF = the tree build of
+2c3c0a897; USNOS `s56_os_c13.txt` 30000 frames, `local\s58_off3_os.log` / `local\s58_dn_on_os.log`, manifests
+beside them).** pair_diff exit 3, the predicted mechanism. OFF: 212 death rows, 11 never published (the nine
+Shinyos and Midway_sqn16 / sqn34), `SpawnNew calls=3`, MissionPhase 1 at the end. ON: all nine Shinyos publish
+`Dead=true` at their deaths, wave 2 spawns (serials 4-6) at 438.07 s as in s57's 61f4f9c9f run, and the run
+reaches phase 2 (`Blackout(true, "luaMoveToPh2")`); 274 death rows, one unpublished (Midway_sqn16, a squadron
+held by kSquadronDeadOnLastMemberBound). TrulyDead `ptr_nulled` 32 -> 60. No mission end in the 1500 s window.
+**Decision: ON** by mechanism. Every row with a unit removed through 00814595 before the publish (kamikaze
+boats) can move; USNOS's plan goes back to ships55's phase-2 picture (section 273).
