@@ -50,7 +50,7 @@ inline constexpr bool kReconDetectionRecordsBound = true;  // ON: mechanism matc
 // record is zeroed on any count change, so the next pass re-notifies 0 -> level for
 // every unit a side knows (each `recon` listener then fires on its first pass after
 // any spawn), as before.
-inline constexpr bool kReconRecordsSurviveSpawnBound = false;
+inline constexpr bool kReconRecordsSurviveSpawnBound = true;   // ON: RECON_SENSOR_PASS.md, pairs of 2026-10-18
 
 // One delegate call, [+2Ch]->vtable[0](+30h, old, new), in pass order.
 struct ReconLevelTransition {
