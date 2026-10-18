@@ -799,7 +799,7 @@ Three are partial:
   - The C25h arm's four attitude stores are only a record in the host.
 - **009D4A70**, the torpedo cruise profile. Sent to the lead as URGENT. Three problems:
   - The image clears approach+60h, but the host clears +5Ch.
-  - The host does not model the 009D3420(0.0) pass. That pass replans: the timer is at or below 0 after the flip, and the plan position was just parked. It takes no 00BD2F10 draw, because 009FADA0's re-pick needs sub+60h > 2.0, which a dt of 0 cannot reach. The host's first real tick replans instead, one tick later.
+  - The host does not model the 009D3420(0.0) pass. That pass replans: the timer is at or below 0 after the flip, and the plan position was just parked. It takes no 009FAE61 draw, because 009FADA0's re-pick needs sub+60h > 2.0, which a dt of 0 cannot reach. It does take 009FA260's target->vtable[100h] (00816650) stream-1 draws when sub+41h is dirty: 009D3420 calls 009FADA0 at 009D34BB, and 009FAEB0 tests sub+41h on its own and calls 009FA260. The four indirect calls do not draw (009D0670 copies; 007B8E60 is an FLD). The host's first real tick replans instead, one tick later.
   - The host's cites for this body do not land on its instructions.
 
 ### 3.54 Batch 8: large strafe and takeoff ticks (packet cc13-seg67C)
@@ -807,7 +807,7 @@ Three are partial:
 Same checks as batch 7. Every x87 FSUB/FSUBP operand order here was read from the bytes (DE EA, DE E9, D8 E1).
 
 All 6 rows are ledger-only and match their hosts:
-- 009CB8B0, the strafe goaway enter, and 009CBB30, its tick. The evasive push and its draws match st_evasive_push and the two push helpers. With a NaN dt the tick's +44h countdown decrements where the host refreshes.
+- 009CB8B0, the strafe goaway enter, and 009CBB30, its tick. The evasive push and its draws match st_evasive_push and the two push helpers. With a NaN dt the tick's +44h countdown decrements where the host refreshes. The pushed task's 0099C6F0 base draws (stream 1 into +308h, stream 0 into +3E8h) are not modelled.
 - 009CB1B0, the strafe aim tick. The host recomputes class+26Ch and takes dx and dz in double.
 - 009CA870, the strafe gotowards tick. It is also a target-equal byte twin of 007B4980 `rocket_gotowards_tick_007b4980`.
 - 009CADB0, the strafe attackrun tick. The image always runs the probe. 009FABE0 is not recorded by the host function.
@@ -821,13 +821,14 @@ All 6 rows are ledger-only and match their hosts:
 - It has the strafe attackrun's shape: the +1Ch countdown re-samples the 007F0280 probe offset, and the heading goes through 00438AA0. Its own parts:
   - an altitude command, 009FB800(ctl+394h, factor), with the factor from 1400 - y over min(a+D8h, 2000);
   - a+DCh = 1.0 and a+E0h = 0.1.
-- It takes no draw.
+- It takes no direct draws; 007F0280 and 009A1A20 each have one indirect call that was not chased.
+- The pi/2, 2pi and pi/6 qwords (00CE3830, 00CE3828, 00CEC730) are widened floats and are used at their image values (review fix).
 - New host hooks: `crt_atan2_00bf701a`, `bot_near_field_probe_007f0280`, `pilot_bot_command_pitch_from_altitude_009fb800` and `bot_set_direction_009fabe0`.
 
 Three ledger-only rows match the host:
 - 009A80E0, the avoid-turn tick. Its two FSUB forms were read from the bytes (DE E9, DE E1).
 - 009A87F0, the maneuver enter. Its stream-1 draws (3, or 4 in the threat arm) are the host's labelled midpoint stand-ins.
-- 009A8B20, the maneuver tick. The listing was followed through 009A8D9A; the mode machine below that was checked by its constants, curves and calls. The 0071C4F0 "out" arm and the U(lo, hi) draw are the host's labels.
+- 009A8B20, the maneuver tick. Matches above 009A8D9A; below, constants and calls only. The 0071C4F0 "out" arm and the U(lo, hi) draw are the host's labels.
 
 ### 3.56 Batch 10: dive goaway and the land ticks (packet cc13-seg67C)
 
@@ -962,7 +963,7 @@ No new bodies. Three ledger-only rows, checked against the bytes:
 | 009CD0D0 | `opportunistic_rocket_clear_target` substitution (game_hosts_units.cpp ~23553) | twin of 009AA9E0 / 007B7BA0 |
 | 009AA9E0 | `opportunistic_rocket_clear_target` substitution (game_hosts_units.cpp ~23553) | matches the labelled substitution |
 | 009D4C10 | the torpedo break-off binding (game_hosts_units.cpp ~21721) | matches; NaN range answers break-off |
-| 009D4A70 | the torpedo install block (game_hosts_units.cpp ~29587) | **partial**: +60h vs +5Ch, 009D3420(0.0) unmodelled (it replans, no draw), cites off; sent to the lead |
+| 009D4A70 | the torpedo install block (game_hosts_units.cpp ~29587) | **partial**: +60h vs +5Ch, 009D3420(0.0) unmodelled (it replans; no 009FAE61 draw, but 009FA260's 00816650 stream-1 draws when sub+41h is dirty), cites off; sent to the lead |
 | 009CD020 | the strafe profile activation (game_hosts_units.cpp ~26330) | the host's stated gap (seed only) |
 | 009C98C0 | the RS::kEnterZone arm (game_hosts_units.cpp ~34960) | matches |
 | 009CB0F0 | `st_enter` kAim (game_hosts_units.cpp ~24866) | matches; one draw skipped (no reader) |

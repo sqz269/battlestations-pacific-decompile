@@ -1253,7 +1253,9 @@ void* bot_state_dogfight_attack_run_construct_009a70e0(Cc13Seg67bHost& host, voi
 //    0099B630(plan)) - the 0099B630 result is pushed first and stays as the pitch.
 //  - 009A7481-009A74A0: a+DCh = 1.0 [00D7A24C], a+E0h = 0.1 [00D7A2F0].
 // x87 is modelled in float (24-bit); the double constants are rounded where the image
-// stores. No 00BD2F10 draw. Unreferenced by address except through its vtable slot.
+// stores. The three pi qwords are widened floats, used at their image values. No direct
+// 00BD2F10 draws; 007F0280 and 009A1A20 each have one indirect call that was not chased.
+// Unreferenced by address except through its vtable slot.
 void bot_state_dogfight_attack_run_tick_009a71e0(Cc13Seg67bHost& host, void* state, float dt) {
     void* const a = at<void*>(state, 4);
     void* const unit = at<void*>(a, 4);
@@ -1262,8 +1264,9 @@ void bot_state_dogfight_attack_run_tick_009a71e0(Cc13Seg67bHost& host, void* sta
     const float* const p = host.approach_vcall_00_target_point(a, pt);
     const float dz = p[2] - at<float>(unit, 0x104);
     const float dx = p[0] - at<float>(unit, 0xFC);
-    float h0 = static_cast<float>(1.5707963267948966 - host.crt_atan2_00bf701a(dz, dx));
-    if (0.0f > h0) h0 = static_cast<float>(h0 + 6.2831853071795862);
+    // 009A723E FSUBR qword [00CE3830], 009A7252 FADD qword [00CE3828]: widened floats.
+    float h0 = static_cast<float>(1.5707963705062866 - host.crt_atan2_00bf701a(dz, dx));
+    if (0.0f > h0) h0 = static_cast<float>(h0 + 6.2831854820251465);
 
     const float c = at<float>(state, 0x1C);
     if (dt < c || std::isnan(dt) || std::isnan(c)) {
@@ -1276,8 +1279,12 @@ void bot_state_dogfight_attack_run_tick_009a71e0(Cc13Seg67bHost& host, void* sta
         float out_b[3] = {0.0f, 0.0f, 0.0f};
         host.bot_near_field_probe_007f0280(at<void*>(a, 0x0C), unit, extents, out_a, out_b,
                                            weights, false);
+        // With a null unit the image multiplies uninitialised stack (007F0280 skips the
+        // zeroing at 007F02A7, JE 007F0B08); this pre-zeroes and gets 0. The unit is the
+        // bot's own entity, so that never happens in practice.
         const float o = -out_a[0] * out_b[1] * out_b[2];
-        at<float>(state, 0x20) = static_cast<float>(o * 0.52359877559829882);
+        // 009A72F8 FMUL qword [00CEC730], pi/6 as a widened float.
+        at<float>(state, 0x20) = static_cast<float>(o * 0.5235987901687622);
     }
     void* const plan = at<void*>(a, 0x18);
     at<float>(plan, 0x2C0) = host.math_add_wrapped_angle_00438aa0(h0, at<float>(state, 0x20));

@@ -599,12 +599,13 @@ public:
                                                float* out_a, float* out_b,
                                                const float* weights, bool mode) = 0;
     // 009FB800 BSP_PilotBot_CommandPitchFromAltitude: __thiscall(ECX = state+4h; float
-    // altitude, float reference), RET 8.
+    // altitude, float reference), RET 8. The law is pitch_command_009fb800 (plane_flight.cpp).
     virtual void pilot_bot_command_pitch_from_altitude_009fb800(void* approach_ref,
                                                                 float altitude,
                                                                 float reference) = 0;
     // 009FABE0 BSP_Bot_SetDirectionFromHeadingPitch: __thiscall(ECX = direction; float
-    // heading, float pitch), RET 8.
+    // heading, float pitch), RET 8. Body: bot_set_direction_from_heading_pitch_009fabe0
+    // (cc13_seg68.cpp).
     virtual void bot_set_direction_009fabe0(void* direction, float heading, float pitch) = 0;
 };
 
