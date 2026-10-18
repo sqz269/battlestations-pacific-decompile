@@ -5977,7 +5977,7 @@ struct GameUnitsHost::Impl {
     // on every path into the tail. True: state+88h = SafeAlt and the -120 bound
     // at the fly-to, hold and catch-up sites. False: state+88h = 1e30 (floor
     // leaderY + LeaderFollowAlt), -120 only with Phase A at the fly-to.
-    static constexpr bool kFollowBandSafeAltFloorBound = false;
+    static constexpr bool kFollowBandSafeAltFloorBound = true;  // ON 2026-10-17 (OCEAN_WAVE_FIELD 67)
     // Packet cc9_plane_follow_law_drift (docs/PLANE_FOLLOW_LAW.md section 17).
     // True: 009BFEE0's leader turn rate is 007D7DA0 (read whole) at the fly-to
     // and the hold steer point, instead of 0.0. False: 0.0.
@@ -6386,7 +6386,7 @@ struct GameUnitsHost::Impl {
     // gunfire timers by f = float(1 - [[unit+DF4h]+34h] x double 0.3f), floored
     // at 0.4f (double [00CE65D0] compare, JBE keeps f and NaN; float [00CE7804]):
     // +3E8h *= f, +3ECh /= f. SPNormal: evade 0.7x, rest 1.43x. Before: unscaled.
-    static constexpr bool kPilotFighterGunfireScaleBound = false;
+    static constexpr bool kPilotFighterGunfireScaleBound = true;  // ON 2026-10-17 (OCEAN_WAVE_FIELD 67)
     // Packet cc9_pilot_vehicle_terrain_avoidance (docs/ATTACKER_EVASION.md
     // section 6): 009A17D0's vehicle arm 0099B670 -> 007DF4F0 over the
     // unit+C50h object's +30h list, and its terrain arm 0099F1C0 with

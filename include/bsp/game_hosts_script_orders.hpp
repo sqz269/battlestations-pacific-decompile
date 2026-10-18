@@ -795,8 +795,11 @@ public:
     // released Ohka/Funryu. The bag goes to the same 004F0AD0 creator as above,
     // with WingCount 1 and State 7 at the round's matrix; the caller queues the
     // bag's AutoAttackTarget. Returns the entity id, or 0 when nothing was made.
+    // `suffix_format` names the unit after the carrier (one %u, the dummy id); the
+    // catapult launch (packet p17_catapult_adapter) passes "_cat%02u".
     std::uint32_t create_dummy_kamikaze_squadron_006fec00(
-        const bsp::DummyKamikazeSpawn& spawn, std::string& created_name);
+        const bsp::DummyKamikazeSpawn& spawn, std::string& created_name,
+        const char* suffix_format = "_kz%02u");
 
     // Packet cc8_lua_generate_object. 0046DB4B runs the descriptor's own
     // instantiate-pass creator on an authored record; this host owns the units

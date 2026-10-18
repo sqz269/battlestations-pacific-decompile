@@ -602,8 +602,13 @@ int binding_trampoline(lua_State* state) {
     const bool last_catapulted_row = kLuaLastCatapultedBound
         && dispatch_row.address == 0x00892860u;
     // Packet cc13-fix14b.
-    const bool num_catapulted_row = kLuaGetNumCatapultedBound
+    const bool num_catapulted_row = (kLuaGetNumCatapultedBound || bsp::kShipCatapultLaunchBound)
         && dispatch_row.address == 0x00892aa0u;
+    // Packet p17_catapult_adapter.
+    const bool use_catapult_row = bsp::kShipCatapultLaunchBound
+        && dispatch_row.address == 0x00891d50u;
+    const bool set_catapult_stock_row = bsp::kShipCatapultLaunchBound
+        && dispatch_row.address == 0x00892c30u;
     // Packet cc9_lua55_catapult_stock.
     const bool catapult_stock_row = kLuaGetCatapultStockBound
         && dispatch_row.address == 0x00892de0u;
@@ -855,10 +860,18 @@ int binding_trampoline(lua_State* state) {
     if (last_catapulted_row && !host->error_replay()) {
         return host->run_get_last_catapulted_00892860(state, argc);
     }
-    if constexpr (kLuaGetNumCatapultedBound) {
+    if constexpr (kLuaGetNumCatapultedBound || bsp::kShipCatapultLaunchBound) {
         if (num_catapulted_row && !host->error_replay()) {
             return host->run_get_num_catapulted_00892aa0(state, argc);
         }
+    }
+    if (use_catapult_row) {
+        if (!host->error_replay()) host->run_ship_use_catapult_00891d50(state, argc);
+        return 0;
+    }
+    if (set_catapult_stock_row) {
+        if (!host->error_replay()) host->run_set_catapult_stock_00892c30(state, argc);
+        return 0;
     }
     if (catapult_stock_row && !host->error_replay()) {
         return host->run_get_catapult_stock_00892de0(state, argc);
@@ -2792,6 +2805,8 @@ void GameMissionLuaHost::attach_script_orders(GameScriptOrdersHost* orders) noex
     bsp::set_spawn_queue_drain(orders == nullptr ? nullptr : this);
     // Packet cc9_lua52_kamikaze_wiring: the released rounds live with the world.
     bsp::dummy_kamikaze_rounds().clear();
+    // Packet p17_catapult_adapter: the ships' launch records live with the world.
+    bsp::ship_catapult_registry().clear();
     if (orders == nullptr) {
         bsp::spawn_request_queue().clear();
         bsp::set_air_ops_squadron_factory(nullptr);
@@ -7518,6 +7533,18 @@ int GameMissionLuaHost::run_get_last_catapulted_00892860(lua_State* state,
         ++summary_.last_catapulted_not_ship;
         return 0;
     }
+    if constexpr (bsp::kShipCatapultLaunchBound) {
+        // Packet p17_catapult_adapter: 00953A60 on the host's record; a dead
+        // child's slot reads 0 (the observer handle), which pushes nil.
+        bsp::ShipCatapultClass cls;
+        if (bsp::ShipCatapultRecord* r = catapult_record(static_cast<std::size_t>(id - 1), cls)) {
+            const std::uint32_t child = bsp::ShipCatapultRegistry::last_00953a60(*r);
+            if (child != 0u && push_resolved_entity_by_id(state, static_cast<int>(child))) {
+                ++summary_.last_catapulted_live;
+                return 1;
+            }
+        }
+    }
     ++summary_.last_catapulted_nil;
     ::lua_pushnil(state);
     return 1;
@@ -7542,8 +7569,17 @@ int GameMissionLuaHost::run_get_num_catapulted_00892aa0(lua_State* state,
         && static_cast<std::size_t>(id) <= units->count();
     const bool ship = valid
         && units->unit_is_kind_of(static_cast<std::size_t>(id - 1), bsp::kUnitKindQueryShip);
-    // 00953920 over the slots this host keeps: none is ever occupied.
-    const lua_Integer count = 0;
+    // 00953920 over the slots this host keeps: none is occupied without the
+    // catapult adapter (packet p17_catapult_adapter).
+    lua_Integer count = 0;
+    if constexpr (bsp::kShipCatapultLaunchBound) {
+        bsp::ShipCatapultClass cls;
+        if (ship) {
+            if (bsp::ShipCatapultRecord* r = catapult_record(static_cast<std::size_t>(id - 1), cls)) {
+                count = bsp::ShipCatapultRegistry::count_00953920(*r);
+            }
+        }
+    }
     if (!ship) ++summary_.num_catapulted_not_ship;
     if (summary_.num_catapulted_calls <= 8) {
         const GameUnitRow* row = valid ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
@@ -7584,6 +7620,16 @@ int GameMissionLuaHost::run_get_catapult_stock_00892de0(lua_State* state,
         }
         ::lua_settop(state, base - 1);
     }
+    if constexpr (bsp::kShipCatapultLaunchBound) {
+        // Packet p17_catapult_adapter: unit+638h is the host's record, which the
+        // launch (00957450) and SetCatapultStock (009539A0) write.
+        bsp::ShipCatapultClass cls;
+        if (kind5) {
+            if (bsp::ShipCatapultRecord* r = catapult_record(static_cast<std::size_t>(id - 1), cls)) {
+                stock = r->slots.pending_638;
+            }
+        }
+    }
     if (stock < 0) stock = 0;
     if (summary_.catapult_stock_calls <= 8) {
         const GameUnitRow* row = valid ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
@@ -7594,6 +7640,136 @@ int GameMissionLuaHost::run_get_catapult_stock_00892de0(lua_State* state,
     log_.implemented("MissionLuaNative::GetCatapultStock", "00892de0");
     ::lua_pushinteger(state, stock);
     return 1;
+}
+
+// Packet p17_catapult_adapter (include/bsp/ship_catapult_host.hpp). The class
+// Catapult block as 00960230 reads it into class +C0h..+CCh, and the ship's record
+// with dead children dropped from their slots.
+bsp::ShipCatapultRecord* GameMissionLuaHost::catapult_record(std::size_t unit,
+                                                             bsp::ShipCatapultClass& cls) {
+    GameUnitsHost* units = units_hooks_;
+    if (units == nullptr || unit >= units->count()) return nullptr;
+    const GameUnitRow* row = units->unit_row(unit);
+    if (row == nullptr) return nullptr;
+    cls.launched_class = static_cast<std::int32_t>(
+        read_vehicle_class_nested_number(row->type_id, "Catapult", "LaunchedClass", -1.0f));
+    cls.equipment = static_cast<std::int32_t>(
+        read_vehicle_class_nested_number(row->type_id, "Catapult", "Equipment", 0.0f));
+    cls.launch_stock = static_cast<std::int32_t>(
+        read_vehicle_class_nested_number(row->type_id, "Catapult", "LaunchStock", 0.0f));
+    cls.max_launched = static_cast<std::int32_t>(
+        read_vehicle_class_nested_number(row->type_id, "Catapult", "MaxLaunchedPlanes", 0.0f));
+    bsp::ShipCatapultRecord& r = bsp::ship_catapult_registry().record(unit, cls);
+    const std::vector<std::pair<std::size_t, float>> destroyed = units->destroyed_units();
+    bsp::ShipCatapultRegistry::prune(r, [&](std::uint32_t entity) {
+        if (entity == 0u || entity > units->count()) return false;
+        for (const auto& d : destroyed) {
+            if (d.first + 1u == entity) return false;
+        }
+        return true;
+    });
+    return &r;
+}
+
+// Packet p17_catapult_adapter. 00891D50 ShipUseCatapult(ship [, heading]): 00888D20
+// on argument 0, the heading 0.0 or argument 1, message 7Bh; the ship's 7Bh arm
+// (00821F12) runs 008141E0, whose gate is bsp::ShipCatapultRegistry::gate_008141e0.
+// A launch creates the LaunchedClass squadron (WingCount 1, State 7) above the ship
+// along its heading and registers it as 00957450 does. LABELLED: see
+// include/bsp/ship_catapult_host.hpp (no catapult device, no held State 3, no
+// takeoff timeline; the plane appears 30 m above the ship's origin).
+int GameMissionLuaHost::run_ship_use_catapult_00891d50(lua_State* state, int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.use_catapult_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || script_orders_ == nullptr || id <= 0
+        || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.use_catapult_no_catapult;
+        return 0;
+    }
+    const std::size_t ship = static_cast<std::size_t>(id - 1);
+    bsp::ShipCatapultClass cls;
+    bsp::ShipCatapultRecord* r = catapult_record(ship, cls);
+    const GameUnitRow* row = units->unit_row(ship);
+    if (r == nullptr || row == nullptr) {
+        ++summary_.use_catapult_no_catapult;
+        return 0;
+    }
+    const bsp::ShipCatapultVerdict verdict = bsp::ShipCatapultRegistry::gate_008141e0(*r, cls);
+    if (verdict != bsp::ShipCatapultVerdict::kLaunch) {
+        if (verdict == bsp::ShipCatapultVerdict::kNoCatapult) ++summary_.use_catapult_no_catapult;
+        if (verdict == bsp::ShipCatapultVerdict::kNoStock) ++summary_.use_catapult_no_stock;
+        if (verdict == bsp::ShipCatapultVerdict::kTooManyInAir) ++summary_.use_catapult_in_air;
+        ++r->refusals;
+        if (r->refusals <= 4) {
+            log_.notef("  ShipUseCatapult 00891d50: \"%s\" refused (%s; stock=%d live=%d max=%d "
+                "class=%d, packet p17_catapult_adapter)", row->name.c_str(),
+                verdict == bsp::ShipCatapultVerdict::kNoCatapult ? "no catapult"
+                    : verdict == bsp::ShipCatapultVerdict::kNoStock ? "no stock" : "too many in air",
+                static_cast<int>(r->slots.pending_638),
+                static_cast<int>(bsp::ShipCatapultRegistry::count_00953920(*r)),
+                static_cast<int>(cls.max_launched), static_cast<int>(cls.launched_class));
+        }
+        return 0;
+    }
+    // 006EC8E0's bag: Type = LaunchedClass (the instance override +530h is -1 here),
+    // WingCount 1, Party, State (7 here, LABELLED), Equipment.
+    bsp::DummyKamikazeSpawn spawn;
+    spawn.carrier = ship;
+    spawn.plane_class = cls.launched_class;
+    spawn.party = row->party;
+    spawn.dummy_id = r->launches + 1u;
+    const float yaw = static_cast<float>(static_cast<double>(row->heading_degrees) * 3.14159265358979 / 180.0);
+    apply_scene_yaw_00467050(spawn.world.data(), yaw);
+    spawn.world[3] = 0.0f; spawn.world[7] = 0.0f; spawn.world[11] = 0.0f; spawn.world[15] = 1.0f;
+    spawn.world[12] = row->position[0];
+    spawn.world[13] = row->position[1] + 30.0f;
+    spawn.world[14] = row->position[2];
+    const std::size_t units_before = units->count();
+    std::string name;
+    const std::uint32_t entity =
+        script_orders_->create_dummy_kamikaze_squadron_006fec00(spawn, name, "_cat%02u");
+    if (entity == 0u) {
+        ++summary_.use_catapult_spawn_failed;
+        return 0;
+    }
+    if constexpr (kSEntityInitAllBound) {
+        route_push_squadron(static_cast<int>(entity), name, cls.launched_class, units_before);
+    } else if (attach_created_entity_00928a00(static_cast<int>(entity), name, cls.launched_class)) {
+        attach_wing_member_tables(units_before, entity, cls.launched_class);
+    }
+    const int slot = bsp::ShipCatapultRegistry::add_child_00957450(*r, entity);
+    ++r->launches;
+    ++summary_.use_catapult_launches;
+    log_.notef("  ShipUseCatapult 00891d50: \"%s\" launched %s (class %d) slot %d, stock now %d "
+        "(008141E0 -> 006EC8E0 -> 00957450, packet p17_catapult_adapter)", row->name.c_str(),
+        name.c_str(), static_cast<int>(cls.launched_class), slot,
+        static_cast<int>(r->slots.pending_638));
+    log_.implemented("MissionLuaNative::ShipUseCatapult", "00891d50");
+    return 0;
+}
+
+// Packet p17_catapult_adapter. 00892C30 SetCatapultStock(ship, n): 00888AA0 on
+// argument 0; a non-null entity passing vtable[5Ch](5) gets 009539A0(integer
+// argument 1): nothing when the class LaunchStock is 0, else +638h = clamp(n, 0,
+// LaunchStock). No result.
+int GameMissionLuaHost::run_set_catapult_stock_00892c30(lua_State* state, int argument_count) {
+    ++summary_.set_catapult_stock_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) return 0;
+    const std::size_t unit = static_cast<std::size_t>(id - 1);
+    if (!units->unit_is_kind_of(unit, 5)) return 0;
+    const std::int32_t requested = argument_count >= 2
+        ? static_cast<std::int32_t>(::lua_tointeger(state, 2)) : 0;
+    bsp::ShipCatapultClass cls;
+    if (bsp::ShipCatapultRecord* r = catapult_record(unit, cls)) {
+        r->slots.pending_638 = bsp::ship_catapult_stock_clamp_009539a0(
+            r->slots.pending_638, requested, cls.launch_stock);
+    }
+    log_.implemented("MissionLuaNative::SetCatapultStock", "00892c30");
+    return 0;
 }
 
 // Packet cc9_get_formation_leader. 00899AF0 GetFormationLeader(unit): 00888AA0 on
@@ -10305,6 +10481,14 @@ void GameMissionLuaHost::report_mission_script_state() {
         "not_ship=%llu (00892860 -> 00953A60, packet cc9_get_last_catapulted)",
         kLuaLastCatapultedBound ? 1 : 0, summary_.last_catapulted_calls,
         summary_.last_catapulted_nil, summary_.last_catapulted_not_ship);
+    log_.notef("summary mission script ship catapult bound=%d use_calls=%llu launches=%llu "
+        "no_catapult=%llu no_stock=%llu in_air=%llu spawn_failed=%llu set_stock_calls=%llu "
+        "last_live=%llu (00891D50 -> 008141E0 -> 00957450, packet p17_catapult_adapter)",
+        bsp::kShipCatapultLaunchBound ? 1 : 0, summary_.use_catapult_calls,
+        summary_.use_catapult_launches, summary_.use_catapult_no_catapult,
+        summary_.use_catapult_no_stock, summary_.use_catapult_in_air,
+        summary_.use_catapult_spawn_failed, summary_.set_catapult_stock_calls,
+        summary_.last_catapulted_live);
     if constexpr (kLuaGetNumCatapultedBound) {
         log_.notef("summary mission script num catapulted bound=1 calls=%llu not_ship=%llu "
             "(00892AA0 -> 00953920, packet cc13-fix14b; ships count 0, no launch slot "

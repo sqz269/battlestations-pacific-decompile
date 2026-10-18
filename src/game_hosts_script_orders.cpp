@@ -280,6 +280,9 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // the COTP-IJN spawn tables call it. Handled only with
     // kShipSetTorpedoStockBound.
     {"ShipSetTorpedoStock", 0x0089eee0u},
+    // Packet p17_reload_torpedoes: commandhelpers.lua 3531/3595/14801, jm03:1486,
+    // jm07, jm08, jm11. Handled only with kReloadTorpedoesBound.
+    {"ReloadTorpedoes", 0x008c3ce0u},
     {"SetRoleAvailable", 0x008ab850u},
     // Packet cc_lua_binding_audit: the delayed-call scheduler and the four state
     // queries usn_2_java's objective checker reads. src/lua_binding_mission.cpp
@@ -676,6 +679,7 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
         return kLuaSetSubmarineAirSupplyBound;
     }
     if (std::strcmp(binding->name, "ShipSetTorpedoStock") == 0) return kShipSetTorpedoStockBound;
+    if (std::strcmp(binding->name, "ReloadTorpedoes") == 0) return kReloadTorpedoesBound;
     if (std::strcmp(binding->name, "FillPathPoints") == 0) return kFillPathPointsBound;
     if (std::strcmp(binding->name, "Scoring_GetPlayerShotDown") == 0) {
         return kScoringPlayerShotDownBound;
@@ -1073,13 +1077,13 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
 // the name is the carrier's plus a counter, where 004F0AD0 takes
 // [desc+DCh]+13Ch. The AutoAttackTarget is the caller's.
 std::uint32_t GameScriptOrdersHost::create_dummy_kamikaze_squadron_006fec00(
-    const bsp::DummyKamikazeSpawn& spawn, std::string& created_name) {
+    const bsp::DummyKamikazeSpawn& spawn, std::string& created_name, const char* suffix_format) {
     created_name.clear();
     if (spawn.plane_class <= 0) return 0u;
     const GameUnitRow* carrier = units_.unit_row(spawn.carrier);
     GameSceneEntityRecord record;
     char suffix[32];
-    std::snprintf(suffix, sizeof(suffix), "_kz%02u", spawn.dummy_id);
+    std::snprintf(suffix, sizeof(suffix), suffix_format, spawn.dummy_id);
     record.name = (carrier != nullptr ? carrier->name : std::string("DummyKamikaze")) + suffix;
     record.class_name = "PlaneSquadronGen";
     record.class_id = 0x18;
@@ -4188,6 +4192,16 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             const bool stored = units_.set_submarine_air_00893a60(row.unit_index, air);
             log_.notef("  SetSubmarineAirSupply: %s air=%.3f stored=%d (00893A60 -> +127Ch)",
                 row.unit.c_str(), static_cast<double>(air), stored ? 1 : 0);
+        }
+    } else if (std::strcmp(binding->name, "ReloadTorpedoes") == 0) {
+        // 008C3CE0: 008C3DE0 00888AA0 resolves argument 0 (a second argument is
+        // never read); the device loop 008C3E00-008C3E47 runs in the gunnery host.
+        // LABELLED: queued for its next fixed step. A null entity would fault at
+        // 008C3DF7 in the image; the host drops it.
+        if (subject != nullptr && row.unit_index < units_.count()) {
+            queue_reload_torpedoes_008c3ce0(row.unit_index);
+            log_.notef("  ReloadTorpedoes: %s (008C3CE0, queued for 0072CF00 on every tube)",
+                row.unit.c_str());
         }
     } else if (std::strcmp(binding->name, "RepairEnable") == 0) {
         bsp::RepairEnableArm arm = bsp::RepairEnableArm::kLocalFieldWrite;
