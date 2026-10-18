@@ -18927,3 +18927,10 @@ observed_retargets=`.
 small moves only where the live sea lifts a hull); a submarine deeper than 60 m (y < -60) stops avoiding
 surface ships and vice versa. Rows: USN04 / JM08 (submarines present) and any sub-heavy mission; elsewhere
 small or no movement.
+
+**First pair (b727a20db, ESMP08 `esmp08_p12_e8_rb` 20000 frames, `local\s57_off3_ess.log` / `s57_fj_on_ess.log`):**
+gameplay identical, `requests=30 available=0`, no `ai diag follow` line and no kind test: every request
+carried target 0. Cause: the arm binding's 00521EA0 read `chain_.pending_target`, which is the last SETCMD's
+descriptor (written at 0071ED81's delivery, after the cascade), not the MT_COMMAND message's. Under the switch
+the binding now resolves the message descriptor (`view.target`) for every arm that calls 00521EA0 (Follow,
+Leave at 00816F01, MoveTo's path test 00816FA0, SetTarget 00816FF1); OFF keeps the stale read. Re-paired below.

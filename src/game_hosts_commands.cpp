@@ -1339,7 +1339,8 @@ void SceneResolveBinding::issue_command(void* owner, void* command,
 
 class EntityCommandArmsBinding final : public bsp::EntityCommandArmsHost {
 public:
-    explicit EntityCommandArmsBinding(ChainState& chain) : chain_(chain) {}
+    EntityCommandArmsBinding(ChainState& chain, const bsp::SceneCommandTarget& message_target)
+        : chain_(chain), message_target_(message_target) {}
 
     std::uint32_t resolve_target_00521ea0() override {
         // 00521EA0 returns 0 for a descriptor whose kind is 0 and otherwise
@@ -1348,6 +1349,13 @@ public:
         // substitution this header already declares for entity+174h, so the
         // resolve is that numbering rather than the native tables.
         chain_.owner.done("EntityCommandArm::resolve_target", 0x00521ea0u);
+        if (kSceneFollowJoinBound) {
+            // 00816EB6 / 00816FA0 / 00816FF1 resolve the MT_COMMAND message's own
+            // descriptor (packet s57_follow_join). chain_.pending_target is the last
+            // SETCMD's, written only later at 0071ED81's delivery, so it was stale here.
+            if (message_target_.kind == 0) return 0u;
+            return message_target_.object_id;
+        }
         if (chain_.pending_target.kind == 0) return 0u;
         return chain_.pending_target.object_id;
     }
@@ -1469,6 +1477,7 @@ public:
 
 private:
     ChainState& chain_;
+    const bsp::SceneCommandTarget& message_target_;   // the MT_COMMAND descriptor
 };
 
 // MT_COMMAND's delivery: 00780120's 58h arm to the ship's vtable[160h], 00816e30.
@@ -1493,7 +1502,7 @@ void deliver_entity_command(ChainState& chain_, const bsp::EntityOrderMessage& m
     // hands the survivors to the same tail, so the seven commands this
     // mission's script issues now reach 0071ecf0.
     if (klass != nullptr) {
-        EntityCommandArmsBinding arms(chain_);
+        EntityCommandArmsBinding arms(chain_, view.target);
         const bsp::EntityCommandArmDecision decision
             = bsp::entity_command_arm_cascade_00816ea6(
                 static_cast<bsp::EntityCommandArmId>(klass->object_address), view.target,
