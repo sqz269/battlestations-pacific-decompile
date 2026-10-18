@@ -94,8 +94,11 @@ could be extended.
    (`squadron_target_resolved_`). Before it, the test needed a non-`NoUnit` member, so a
    compacted squadron never read as gone and its trigger never retired.
    **Timing substitution (cc13-fix19c).** Counting a gunnery-dead member as gone looks ahead of
-   the compaction. The image lowers `+3CCh` only at the plane's destroy flush
+   the compaction. For a plane that dies, the image lowers `+3CCh` at the plane's destroy flush
    (`007BCAA0 -> 007F3970`), so the host can notice the squadron's Kill up to one units step early.
+   The other callers of `007F3970` Kill and remove in one go, so they leave no such window. They
+   are a landed plane (`007F3CD9` calls `00926D90` with cause 5, then `007F3CE7` calls `007F3970`)
+   and Lua `SquadronLandAndKill` (`008A223F` calls `00926D90`, then `008A2249` calls `007F3970`).
    **Every squadron, watched or not (cc13-fix19c).** The image Kills the squadron whether or not a
    trigger observes it, and pass K handles an entity once (`009274C8` tests `+5Eh`). So the notice
    is taken at the death and sets `target_gone_notified_` (the `+5Eh` stand-in). A trigger made
@@ -116,8 +119,35 @@ could be extended.
    (`00903610`), not before it; that row deletes and does not Kill.
 4. **Once per unit.** The `+5Eh` gate is a per-unit flag in the Lua host. The image
    re-enables a unit's kill-list pass after `00925A00`'s cancel path; the host does not.
-5. **Individual planes as targets.** Not fed, beyond Lua `Kill`. No call in the four missions
-   below targets a single plane.
+5. **Individual planes as targets.** Not fed, beyond Lua `Kill`. Since cc13-fix19c, the wing-0
+   plane of a squadron is not fed even by Lua `Kill`, kamikaze or KillDepth. It shares the fused
+   slot's id with its squadron, so `target_gone_00925c40` drops its notice. A trigger aimed at
+   that plane retires only when the whole squadron goes (labelled RESIDUAL in the code).
+   Re-checked in cc13-fix19d/fix19e against every mission that
+   `tools/mission_script_reach.py AddProximityTrigger` lists (origin/main 739a075a6; it agrees
+   with the manual mapping):
+   - USN11 `COTP-USN/PRCPUS/usn_06_guadalcanal_2nd_battle.lua`
+   - USN10 `COTP-USN/PRCPUS/usn_05_guadalcanal_1st_battle.lua`
+   - PRCP05 `COTP-USN/PRCPUS/usn_09_Leyte.lua`
+   - PRCP08 `COTP-USN/usn_12_Indochina.lua`
+   - PRCP01 `COTP-USN/PRCPUS/usn_03_battle_of_santa_cruz.lua`
+   - JM02 `COTP-IJN/PRCPIJN/prcpjm02.lua`
+   - JM14 `COTP-IJN/PRCPIJN/PRCPJM12.lua`
+   - ESMP06 `IJN/ESMP/06_sibuyan_dash.lua`
+   - PRCP07 `COTP-USN/PRCPUS/prcp_11_patrol.lua`
+   - LOMP07 `USN/LOMP/07_Komandorski.lua`
+
+   No live `AddProximityTrigger` in these files targets a single plane. The entity targets are:
+   - ships: usn_06:2546 Enterprise, usn_09_Leyte:807 Atlanta, prcp_11_patrol:921 `Mission.AP[1]`
+     (AK05), PRCPJM12:1190 `Convoy12` (`GenerateObject` of the convoy ship "USS Adair")
+   - script markers: usn_12:1550 a B-17 release point; 06_sibuyan_dash:922 `Mission.Halfway`
+     and 07_Komandorski:469-471 `Mission.Navpoint` (both nav markers)
+   - squadrons: usn_03:961 `Mission.HornetKillers[1]`, prcpjm02:1123
+     `luaPickRnd(Mission.Bombers)`
+
+   usn_03:1863 (`FindEntity("NavEnterpriseStart")`) sits inside a `--[[` block comment that opens
+   at line 1862. It is dead, and the tool's count of 1 for PRCP01 agrees.
+   usn_06:1964 watches a recon plane, but its target is a point.
 6. **Kind.** Only proximity triggers registered the observer, so only they are retired.
    Squad-ordnance triggers have no target.
 
@@ -131,7 +161,7 @@ that scene. A script that no missiontree scene names is marked **unreached**.
 | script | line | watched -> target | effect of the observer |
 | --- | --- | --- | --- |
 | `COTP-USN/PRCPUS/usn_03_battle_of_santa_cruz.lua`: **PRCP01** (missiontree `COTP-USN/PRCPUS/usn_03_Battle_of_Santa_Cruz.scn`, StageScript `COTP-USN\\PRCPUS\\usn_03_battle_of_santa_cruz`). `COTP-USN/usn_03_battle_of_santa_cruz.lua`, the same line: **unreached** (no scene's StageScript names it) | 961 | Hornet -> `Mission.HornetKillers[1]` (a spawned squadron), 1500 m | If that squadron is wiped out before it comes within 1500 m, the trigger retires and `luaUS03HornetStrikeIncoming` never runs from it. Before this packet the host kept testing the dead squadron's slot pose. |
-| `COTP-USN/PRCPUS/prcp_06_2ndbattle.lua`: **unreached** (no scene's StageScript names it) | 2546 | Hiei -> Enterprise (`GenerateObject`), 3900 m | Retired only when Enterprise is Lua-Killed or its wreck reaches KillDepth. While it sinks, the trigger still tests the wreck, as in the image. |
+| `PRCPUS/usn_06_guadalcanal_2nd_battle.lua` :2546, mission **USN11** (missiontree line 3861 names `COTP-USN/PRCPUS/usn_06_guadalcanal_2nd_battle.scn`, whose StageScript names this file). Unreached twin: `COTP-USN/PRCPUS/prcp_06_2ndbattle.lua`, the same call on the same line; no scene's StageScript names it | 2546 | Hiei -> Enterprise (`GenerateObject`), 3900 m | Retired only when Enterprise is Lua-Killed or its wreck reaches KillDepth. While it sinks, the trigger still tests the wreck, as in the image. |
 | `COTP-IJN/PRCPIJN/prcpjm02.lua`: **JM02** (missiontree `COTP-IJN/PRCPIJN/prcpijn_02_force_z.scn`, StageScript `COTP-IJN\\PRCPIJN\\prcpjm02`). `COTP-IJN/PRCPIJN/jm02.lua`, the same line: **unreached** (the `ijn_02_force_z` scenes name `challenge\\jm02`, `Ijn\\JM02` and `Ijn\\JM\\JM02`, and none of those scenes is in missiontree) | 1123 | F2A06 -> `luaPickRnd(Mission.Bombers)` (a G3M squadron), 1500 m | As usn_03. `luaPickRnd` is script-side `math.random`, not image RNG. |
 | `COTP-USN/PRCPUS/usn_09_leyte.lua` (line 807): **PRCP05** (StageScript `COTP-USN\\PRCPUS\\usn_09_Leyte`). `COTP-USN/usn_09_leyte.lua` (line 738): **unreached** (its scene `COTP-USN/usn_09_leyte.scn` names `USN\\usn_09_Leyte` and is not in missiontree) | 738 / 807 | Airfield -> Atlanta (`FindEntity`), 2100 m | As prcp_06. |
 
