@@ -58,7 +58,8 @@ public:
     // The save reader's field read is the chain's archive_vcall_10_get (cc13_seg48).
     // 00BF6713 _invalid_parameter_noinfo (the checked-iterator failure), no arguments.
     virtual void crt_invalid_parameter_noinfo_00bf6713() = 0;
-    // 00729600 BSP_GunEffectSet_Destruct (cc9 hosts it), __thiscall(ECX = gun+424h), RET.
+    // 00729600 BSP_GunShotDecision_Destruct (the shot-decision object at gun+424h; cc9
+    // has no lifetime model for it), __thiscall(ECX = gun+424h), RET.
     virtual void gun_effect_set_destruct_00729600(void* set) = 0;
     // vtable slot 1 (+4h) with (1): the scalar deleting destructor of the gun's
     // +3E0h vector elements, __thiscall(ECX = element, flags), RET 4.
@@ -106,6 +107,81 @@ public:
     // first {container, node}, last {container, node}), RET 14h.
     virtual void tree_erase_range_00441e50(void* container, void* out_iterator, void* first_container,
                                            void* first_node, void* last_container, void* last_node) = 0;
+
+    // ---- 0072C170 (cc13-seg48V) ----
+    // 004142E0 BSP_Vector3f_TransformAffinePoint, ECX = point; (float out[3], const float
+    // matrix[16]), RET 8.
+    virtual void vector3f_transform_affine_point_004142e0(const float* point, float* out,
+                                                          const float* matrix) = 0;
+    // 00419510 BSP_Vector3f_Normalize, __fastcall(ECX = out, EDX = v), RET; EAX = out.
+    virtual const float* vector3f_normalize_00419510(float* out, const float* v) = 0;
+    // The target entity's vtable slot +34h: __thiscall(ECX = entity, float out[3]), RET 4;
+    // EAX = the vector it answers (read as the target's velocity, per metre per second).
+    virtual const float* entity_vcall_34_vector(void* entity, float* out) = 0;
+    // The bullet class's vtable slot +20h (the spawn): __thiscall(ECX = bullet class; 0,
+    // side, const float from[3], float dir[3], flag dword, 0, 0); EAX = projectile or null.
+    virtual void* bullet_class_vcall_20_spawn(void* bullet_class, std::uint32_t zero_a, std::uint32_t side,
+                                              const float* from, float* direction, std::uint32_t flag,
+                                              std::uint32_t zero_b, std::uint32_t zero_c) = 0;
+    // 006E6BB0 BSP_Projectile_BindOwner, __thiscall(ECX = projectile, owner), RET 4.
+    virtual void projectile_bind_owner_006e6bb0(void* projectile, void* owner) = 0;
+    // Slot 0 of the sub-object at unit+170h: __thiscall(ECX = unit+170h); EAX.
+    virtual std::uint32_t unit_sub170_vcall_0(void* sub_object) = 0;
+    // The projectile's vtable slot +34h: __thiscall(ECX = projectile; const float a[3],
+    // const float b[3]), RET 8.
+    virtual void projectile_vcall_34(void* projectile, const float* a, const float* b) = 0;
+
+    // ---- 007E29A0 (cc13-seg48V) ----
+    // The entity's vtable slot +4h: __thiscall(ECX = entity); EAX = the observed object.
+    virtual void* entity_vcall_4_observed(void* entity) = 0;
+    // 007E1D30 STL_inst_007e1d30, std::remove over a pointer array: __fastcall(ECX =
+    // first, EDX = last; const value*), RET 4; EAX = the new end. Template body, bind-only.
+    virtual void** std_remove_pointer_007e1d30(void** first, void** last, void* const* value) = 0;
+
+    // ---- 007EC5A0 (cc13-seg48V) ----
+    // 0042E740 BSP_GameTuning_GetSingleton: no input; EAX = the 6D0h tuning object.
+    virtual void* game_tuning_get_singleton_0042e740() = 0;
+    // 00871BA0 BSP_EffectHandle_AcquireByName: __fastcall(ECX = out handle, EDX = native
+    // string; flag), RET 4; EAX = out. The handle is refcounted (+4h count).
+    virtual void** effect_handle_acquire_by_name_00871ba0(void** out, const void* name, std::int32_t flag) = 0;
+    // 00440580 STL_inst_00440580, the refcounted handle assign: __thiscall(ECX = slot;
+    // const handle*), RET 4. Template body, bind-only.
+    virtual void ref_handle_assign_00440580(void* slot, void* const* source) = 0;
+    // 004A8F10 STL_CheckedFloatVector_Resize_004a8f10: __thiscall(ECX = vector; count,
+    // float fill), RET 8. Template body, bind-only.
+    virtual void float_vector_resize_004a8f10(void* vector, std::uint32_t count, float fill) = 0;
+    // 00BD2FC0 BSP_RandomThreads_NextU32: ECX = stream; EAX.
+    virtual std::uint32_t random_threads_next_u32_00bd2fc0(std::uint32_t stream) = 0;
+    // Plane engine vtable slot 0 (00D08640 -> 007E1BA0, 00D0865C -> 007EBF10 rotor):
+    // __thiscall(ECX = engine; visual, node, index, float spread), RET 10h.
+    virtual void plane_engine_vcall_00_init(void* engine, void* visual, std::uint32_t node, std::int32_t index,
+                                            float spread) = 0;
+
+    // ---- 007F3E50 (cc13-seg48V) ----
+    // The object's vtable slot +10h: __thiscall(ECX = object); EAX = its name (C string).
+    virtual const char* object_vcall_10_name(void* object) = 0;
+    // The string bodies below are MSVC std::string template code (1Ch objects:
+    // +4h buffer or pointer, +14h size, +18h capacity), bind-only.
+    // 004C90D0 append(const string&, pos, count): __thiscall(ECX = string; source, pos, count), RET 0Ch.
+    virtual void std_string_append_substr_004c90d0(void* string, const void* source, std::uint32_t pos,
+                                                   std::uint32_t count) = 0;
+    // 004D0860 operator+(const string&, const string&): __cdecl(out, left, right), EAX = out.
+    virtual void* std_string_concat_004d0860(void* out, const void* left, const void* right) = 0;
+    // 007F3D40 operator+(const char*, const string&): __cdecl(out, left, right), EAX = out.
+    virtual void* std_string_cstr_plus_007f3d40(void* out, const char* left, const void* right) = 0;
+    // 007B7E70 operator+(const string&, const char*): __cdecl(out, left, right), EAX = out.
+    virtual void* std_string_plus_cstr_007b7e70(void* out, const void* left, const char* right) = 0;
+    // 007B7CC0 append(const char*, count): __thiscall(ECX = string; text, count), RET 8.
+    virtual void std_string_append_ptr_count_007b7cc0(void* string, const char* text, std::uint32_t count) = 0;
+    // 004E60E0 BSP_FormatString64, _vsprintf_s(dst, 40h, format, ...): __cdecl. The two
+    // argument shapes 007F3E50 uses: three doubles and one double.
+    virtual void format_string64_3d_004e60e0(char* out, const char* format, double a, double b, double c) = 0;
+    virtual void format_string64_1d_004e60e0(char* out, const char* format, double a) = 0;
+    // 00521EA0 BSP_CommandTarget_ResolveObject: __fastcall(ECX = target); EAX = object or null.
+    virtual void* command_target_resolve_object_00521ea0(const void* target) = 0;
+    // 006F7DD0 BSP_TargetDescriptor_ResolvePosition: __thiscall(ECX = target; float* out),
+    // RET 4; EAX = the position (out, or a stored vector).
+    virtual const float* target_descriptor_resolve_position_006f7dd0(const void* target, float* out) = 0;
 };
 
 // ---- gun and gun bot ----
@@ -122,10 +198,19 @@ void* cc13_seg48U_gun_shot_command_read_and_create_00731ae0(void* reader, Cc13Se
 void cc13_seg48U_gun_class_effect_record_destruct_007323e0(void* record, Cc13Seg48UHost& host);
 void cc13_seg48U_gun_rebuild_barrel_buffers_00729d30(void* gun, Cc13Seg48UHost& host);
 void cc13_seg48U_gun_destruct_0072d950(void* gun, Cc13Seg48UHost& host);
+// 0072C170, reached only from the Lua native HitTarget (00892F70 at 008931DE).
+void cc13_seg48U_gun_compute_aim_for_target_0072c170(void* shooter, std::int32_t device_id, void* target,
+                                                     const float* point_a, const float* point_b, float speed,
+                                                     std::uint32_t flag_dword, Cc13Seg48UHost& host);
 
 // ---- planes and squadrons ----
 void cc13_seg48U_plane_copy_class_record_lists_007d5ac0(void* plane, Cc13Seg48UHost& host);
 const char* cc13_seg48U_plane_squadron_display_name_007f35c0(void* squadron, Cc13Seg48UHost& host);
+void cc13_seg48U_observer_set_remove_007e29a0(void* set, void* entity, Cc13Seg48UHost& host);
+void cc13_seg48U_plane_fx_component_load_from_class_007ec5a0(void* component, void* plane, std::uint8_t active,
+                                                             Cc13Seg48UHost& host);
+void cc13_seg48U_plane_squadron_build_debug_text_007f3e50(void* squadron, std::uint32_t unused, const void* target,
+                                                          Cc13Seg48UHost& host);
 
 // ---- mission narrative (game+21E8h) ----
 void* cc13_seg48U_mission_narrative_construct_00735030(void* narrative, Cc13Seg48UHost& host);
