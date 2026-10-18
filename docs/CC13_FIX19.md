@@ -82,7 +82,8 @@ could be extended.
    `00926DE1 CMP byte [EDI+5Fh],0` / `00926DED JNE 00926E5A` returns before anything else
    (cc13-fix19b check). In the image that unit's earlier Kill already notified its observers;
    here a gunnery-funnel death does not, which is the unfed-caller gap above.
-2. **Squadron targets.** The drain polls each proximity trigger's entity target. When the host
+2. **Squadron targets.** The drain polls every registry squadron (packet cc13-fix19c; before, only
+   the squadrons a proximity trigger targeted). When the host
    registry shows a squadron that has held a member and now has none alive, the drain queues a
    notice. This stands for `007F3970`'s Kill of the squadron when its last plane goes
    (`007F3A16 CMP [ESI+3CCh],0` / `JNE`, `007F3A2A CALL 00926D90`). A member is alive when its
@@ -92,6 +93,23 @@ could be extended.
    does. Packet cc13-fix19b: "has held a member" is a sticky per-target flag
    (`squadron_target_resolved_`). Before it, the test needed a non-`NoUnit` member, so a
    compacted squadron never read as gone and its trigger never retired.
+   **Timing substitution (cc13-fix19c).** Counting a gunnery-dead member as gone looks ahead of
+   the compaction. The image lowers `+3CCh` only at the plane's destroy flush
+   (`007BCAA0 -> 007F3970`), so the host can notice the squadron's Kill up to one units step early.
+   **Every squadron, watched or not (cc13-fix19c).** The image Kills the squadron whether or not a
+   trigger observes it, and pass K handles an entity once (`009274C8` tests `+5Eh`). So the notice
+   is taken at the death and sets `target_gone_notified_` (the `+5Eh` stand-in). A trigger made
+   afterwards, aimed at the dead squadron, is never retired, as in the image. Two edges this closes:
+   (a) a trigger is removed, the squadron empties while nothing watches it, and a new trigger
+   follows; the host used to retire the new one. (b) The squadron empties in the step its trigger
+   is created; the host used to keep the trigger forever. In (b) the trigger now retires at the next
+   drain when it was created before that drain. In the image it would retire only when it was
+   registered before pass K ran on the squadron.
+   **Fused slot (cc13-fix19c).** Lua Kill of a squadron Kills only its members (`008AC72F JE`,
+   `008AC732 CALL 007ED380`, then the jump at `008AC737` that skips the `00926D90` at `008AC756`). So the
+   squadron's notice comes only from this poll. `target_gone_00925c40` now drops a plane-level
+   notice for the fused wing-0 slot. Before, a kamikaze or KillDepth removal of wing 0 (through
+   `on_entity_killed_00928c80`) retired triggers aimed at a squadron whose other planes still flew.
 3. **Timing.** The drain runs after the host's rows, which is the image's row-15 position
    relative to the walks. Kills from the motion step or the walk are drained after that step's
    walk. Kills from the rows are drained before the next walk. The drain runs after row 16
@@ -172,10 +190,18 @@ There is no float arithmetic and no RNG (`00BD2F10` is not reached).
    keys the list.
 6. **Timing and admission.** As FIX10: the walk runs after the host's motion step,
    `unit_active()` stands for wave 2's admission, and the callback runs inline. Packet
-   cc13-fix19b: wave 2 admits the squadron entity (`+5Eh` clear, `+BDh` set), and its `+5Eh` is
-   set only by `007F3970`'s Kill when `+3CCh` reaches 0. The list is keyed by the fused wing-0
-   slot, so the walk also admits that slot while `plane_squadron_live_fused_slot` finds the
+   cc13-fix19b: wave 2 admits the squadron entity (`+5Eh` clear, `+BDh` set). Pass K sets `+5Eh`
+   for any Killed entity (`009274D2 MOV byte [ESI+5Eh],1`). The squadron is Killed by `007F3970`
+   when `+3CCh` reaches 0. Lua Kill of a squadron Kills only its members (item 2 above). Other
+   direct Kills of a squadron object were not enumerated. The `+5Eh` store at `005FBC1B` is in
+   `005FB080`, on an object whose class is not established. The list is keyed by the fused
+   wing-0 slot, so the walk also admits that slot while `plane_squadron_live_fused_slot` finds the
    squadron holding a plane. Before this, a dead wing-0 leader stopped the squadron's triggers.
+   Packet cc13-fix19c: a fused slot is refused once the drain has noticed the squadron's Kill
+   (`target_gone_notified_`). That also covers the window of up to one step in which gunnery
+   counts every member dead before compaction. The test needs `kLuaProximityTriggersBound`, which
+   fills that vector. With only the ordnance switch on, `007504F0`'s own no-live-member return
+   covers the case.
    A proximity trigger watching such a squadron is posed at its current leader
    (`flight_leader()`, `+3D0h[0]` after compaction), standing for the squadron's `+FCh`
    (docs/CONSTRUCT_WORLD.md, "the squadron's position +FCh | the leader's pose").

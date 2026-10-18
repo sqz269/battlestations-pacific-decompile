@@ -5834,9 +5834,15 @@ int GameMissionLuaHost::run_remove_trigger_008c5fd0(lua_State* state, int argume
 // the fan-out); the units are walked in index order (the image walks the job groups'
 // element order); wave 2's admission (+5Eh clear, +BDh set) is unit_active(). Packet
 // cc13-fix19b: a squadron's list is keyed by its fused wing-0 slot, but the image
-// tests the squadron entity, whose +5Eh is set only by 007F3970's Kill when +3CCh
-// reaches 0 (007F3A16..007F3A2A); so a fused slot whose squadron still holds a plane
-// (plane_squadron_live_fused_slot) is admitted after the wing-0 plane dies.
+// tests the squadron entity. Its +5Eh is set by pass K (009274D2 MOV byte [ESI+5Eh],1)
+// once the squadron has been Killed, and the squadron is Killed by 007F3970 when
+// +3CCh reaches 0 (007F3A16..007F3A2A); Lua Kill of a squadron Kills only its members
+// (008AC732 007ED380, then 008AC737 JMP past 00926D90). Other direct Kills of a
+// squadron object are not enumerated. So a fused slot whose squadron still holds a
+// plane (plane_squadron_live_fused_slot) is admitted after the wing-0 plane dies, and
+// (cc13-fix19c) a fused slot is refused once the drain has noticed the squadron's
+// Kill (target_gone_notified_, the +5Eh stand-in), which also covers the up-to-one-
+// step window where gunnery counts every member dead before compaction.
 void GameMissionLuaHost::run_proximity_triggers_008759b0(float step) {
     static_cast<void>(step);   // 00750000 is RET 4 and never reads it
     if (units_hooks_ == nullptr || state_ == nullptr) return;
@@ -5844,6 +5850,16 @@ void GameMissionLuaHost::run_proximity_triggers_008759b0(float step) {
         const std::size_t unit = entry.first;
         if (!units_hooks_->unit_active(unit)
             && bsp::plane_squadron_live_fused_slot(unit) == nullptr) continue;
+        if (unit < target_gone_notified_.size() && target_gone_notified_[unit]) {
+            bool squadron_slot = false;
+            for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+                if (r.squadron_unit == unit) {
+                    squadron_slot = true;
+                    break;
+                }
+            }
+            if (squadron_slot) continue;
+        }
         std::list<ProximityTrigger>& list = entry.second;
         for (auto it = list.begin(); it != list.end();) {
             const auto next = std::next(it);
@@ -5979,12 +5995,32 @@ void GameMissionLuaHost::check_squad_ordnance_trigger_007504f0(std::size_t unit,
 // this hook: the host's inline pass-K sites (through on_entity_killed_00928c80: the
 // ship KillDepth and kamikaze removals) and Lua Kill's victims (008AC5C0 -> 00926D90).
 // Other Kill callers are not fed (the host's gunnery funnel does not tell a Kill from
-// a Destroy). A squadron target is noticed at the drain when the host's registry
-// shows no live member (none left after compaction, or all dead in gunnery) after it
-// has held one (cc13-fix19b: sticky, because compaction empties the record), standing
-// for 007F3970's Kill of the squadron when its last plane goes (007F3A16..007F3A2A).
+// a Destroy). A squadron is noticed at the drain when the host's registry shows no
+// live member after it has held one (cc13-fix19b: sticky, because compaction empties
+// the record), standing for 007F3970's Kill of the squadron when its last plane goes
+// (007F3A16 CMP [ESI+3CCh],0 / JNE, 007F3A2A 00926D90). Packet cc13-fix19c: every
+// registry squadron is polled at every drain, watched or not, as the image's Kill
+// does not depend on an observer; the notice then sets the squadron's +5Eh stand-in
+// (target_gone_notified_), so a trigger made later is never retired by it, as in the
+// image (pass K handles an entity once). Lua Kill of a squadron (008AC72F JE /
+// 008AC732 007ED380 / 008AC737 JMP 008AC75B) Kills only the members, never the
+// squadron itself, so the squadron's notice comes from this poll alone: a notice for
+// the fused wing-0 slot from a plane-level Kill site is not the squadron's and is
+// dropped here (cc13-fix19c; before, a kamikaze wing-0 plane retired triggers aimed
+// at a squadron whose other planes lived).
 // Once per unit, standing for the +5Eh test (009274C8).
 void GameMissionLuaHost::target_gone_00925c40(std::size_t unit_index) {
+    if constexpr (!kLuaProximityTriggersBound) {
+        static_cast<void>(unit_index);
+    } else {
+        for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+            if (r.squadron_unit == unit_index) return;
+        }
+        target_gone_mark_(unit_index);
+    }
+}
+
+void GameMissionLuaHost::target_gone_mark_(std::size_t unit_index) {
     if constexpr (!kLuaProximityTriggersBound) {
         static_cast<void>(unit_index);
     } else {
@@ -5999,38 +6035,36 @@ void GameMissionLuaHost::target_gone_00925c40(std::size_t unit_index) {
 
 void GameMissionLuaHost::target_gone_drain_009273a0() {
     if constexpr (kLuaProximityTriggersBound) {
-        // The squadron targets first: the registry's view of 007F3970's Kill. A
-        // record that never had a member is not taken as gone.
-        for (const auto& entry : proximity_triggers_) {
-            for (const ProximityTrigger& trigger : entry.second) {
-                if (trigger.kind != ProximityTrigger::Kind::Proximity
-                    || trigger.target_kind_44 == 0 || trigger.target_id <= 0) continue;
-                const std::size_t target = static_cast<std::size_t>(trigger.target_id - 1);
+        // The squadrons first: the registry's view of 007F3970's Kill, for every
+        // registry squadron (cc13-fix19c), watched or not. A record that never had a
+        // member is not taken as gone.
+        GameGunneryHost* gunnery = units_hooks_ != nullptr ? units_hooks_->gunnery() : nullptr;
+        if (gunnery != nullptr) {
+            for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+                const std::size_t target = r.squadron_unit;
+                if (target == bsp::kPlaneSquadronNoUnit) continue;
                 if (target < target_gone_notified_.size() && target_gone_notified_[target]) continue;
-                GameGunneryHost* gunnery = units_hooks_ != nullptr ? units_hooks_->gunnery() : nullptr;
-                if (gunnery == nullptr) continue;
-                for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
-                    if (r.squadron_unit != target) continue;
-                    // Packet cc13-fix19b: the compaction (kSquadronRemovesDeadBound, and
-                    // the stock return's 007F3970) clears a dead or landed member to
-                    // NoUnit, so "had a member" is kept sticky; without it an emptied
-                    // record never read as gone. A member the gunnery host counts dead
-                    // but not yet compacted is not live either.
-                    bool live = false;
-                    for (const std::size_t m : r.member_units) {
-                        if (m == bsp::kPlaneSquadronNoUnit || m >= units_hooks_->count()) continue;
-                        if (squadron_target_resolved_.size() <= target) {
-                            squadron_target_resolved_.resize(target + 1, false);
-                        }
-                        squadron_target_resolved_[target] = true;
-                        if (!gunnery->unit_dead(m)) live = true;
+                // Packet cc13-fix19b: the compaction (kSquadronRemovesDeadBound, and the
+                // stock return's 007F3970) clears a dead or landed member to NoUnit, so
+                // "had a member" is kept sticky; without it an emptied record never read
+                // as gone.
+                // TIMING SUBSTITUTION (labelled, cc13-fix19c): a member the gunnery host
+                // counts dead but has not yet compacted is not live either. The image
+                // drops +3CCh only at the plane's destroy flush (007BCAA0 -> 007F3970),
+                // so this can notice the squadron's Kill up to one units step early.
+                bool live = false;
+                for (const std::size_t m : r.member_units) {
+                    if (m == bsp::kPlaneSquadronNoUnit || m >= units_hooks_->count()) continue;
+                    if (squadron_target_resolved_.size() <= target) {
+                        squadron_target_resolved_.resize(target + 1, false);
                     }
-                    // 007F3A16 CMP [ESI+3CCh],0 / JNE; 007F3A2A 00926D90 (the squadron).
-                    if (!live && target < squadron_target_resolved_.size()
-                        && squadron_target_resolved_[target]) {
-                        target_gone_00925c40(target);
-                    }
-                    break;
+                    squadron_target_resolved_[target] = true;
+                    if (!gunnery->unit_dead(m)) live = true;
+                }
+                // 007F3A16 CMP [ESI+3CCh],0 / JNE; 007F3A2A 00926D90 (the squadron).
+                if (!live && target < squadron_target_resolved_.size()
+                    && squadron_target_resolved_[target]) {
+                    target_gone_mark_(target);
                 }
             }
         }

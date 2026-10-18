@@ -36,7 +36,8 @@ Status: reconstructed and build-tested. Not game-validated: no ON pair was run.
   past the fifth read as 0.
 - When entity+1ACh is below 8, virtual +5Ch(5) holds and the leader flag (BL) is clear, it passes the
   elapsed time to 0090ED40 with ECX = `[game+21A0h]` and the slot entity+1ACh. 0090ED40
-  (`scoring_add_unit_float_0090ed40`, include/bsp/cc13_seg59a.hpp) adds it into that slot's saved
+  (`scoring_add_unit_float_0090ed40`, include/bsp/cc13_seg59a.hpp) does nothing when
+  `[game]+1FE4h == 2` (0090ED45 `CMP [EAX+1FE4h],2`, 0090ED4F `JE 0090ED8C`). Otherwise it adds it into that slot's saved
   `unit_usage` map: record+114h (0090ED74 `LEA ECX,[slot*284h + scoring + 118h]`, the records start
   at scoring+4h), keyed by entity+170h's vtable[0]() (the 0090E740 subscript, then a float add). 0091A080
   merges that map into the progress record (0091AB5E `ADD ECX,114h`, 0090E740, a float add), and the
