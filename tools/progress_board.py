@@ -138,6 +138,11 @@ SEP = '@@COMMIT@@'
 FMT = SEP + '%H%x1f%ct%x1f%h%x1f%s%x1f%(trailers)%x1e'
 
 
+# History is read from origin/main: lanes land with `git push origin HEAD:main`, which never moves the
+# shared checkout's local main ref (it was 702 commits behind on 2026-10-18 and froze the board's done count).
+MAIN = 'origin/main'
+
+
 def git(*args):
     return subprocess.run(['git', *args], cwd=ROOT, capture_output=True).stdout.decode('utf-8', 'replace')
 
@@ -161,7 +166,7 @@ class Passes:
 
 def commits_with_patches(*paths):
     """Yield (ts, harness, short, subject, patch_lines) for every non-merge commit on main touching paths, oldest first."""
-    raw = git('log', 'main', '--reverse', '--no-merges', '-p', '--no-color', '--format=' + FMT, '--', *paths)
+    raw = git('log', MAIN, '--reverse', '--no-merges', '-p', '--no-color', '--format=' + FMT, '--', *paths)
     for chunk in raw.split(SEP)[1:]:
         head, _, body = chunk.partition('\x1e')
         parts = head.split('\x1f')
@@ -274,7 +279,10 @@ def build(now=None):
     now = now or int(time.time())
     db = sqlite3.connect(f'file:{INDEX.as_posix()}?mode=ro', uri=True)
     funcs = {}
-    for a, name, seg, tag, rk, rn, ln in db.execute('select address, name, segment, tag_category, recon_kind, recon_name, ledger_name from functions'):
+    out_of_scope = set()
+    for a, name, seg, tag, rk, rn, ln, rs in db.execute('select address, name, segment, tag_category, recon_kind, recon_name, ledger_name, recon_status from functions'):
+        if rs == 'library_instantiation_out_of_scope':
+            out_of_scope.add(a)
         if not name.startswith(FUNCLET):
             funcs[a] = (seg, tag, rk, ln, name, rn)
     kind_now = {}
@@ -292,7 +300,8 @@ def build(now=None):
             union[a] = v
     names_first = first_names(passes)
     live = referenced_functions(db, set(funcs))
-    game_any = {a: is_game(a, v[1]) and not v[4].startswith(LIBRARY_NAME_PREFIXES) for a, v in funcs.items()}
+    game_any = {a: is_game(a, v[1]) and not v[4].startswith(LIBRARY_NAME_PREFIXES) and a not in out_of_scope
+                for a, v in funcs.items()}
     # the target counts game code that can run, plus any unreferenced game body already reconstructed
     game = {a: g and (a in live or a in union) for a, g in game_any.items()}
     game_union = {a: v for a, v in union.items() if game.get(a)}
@@ -363,9 +372,9 @@ def build(now=None):
             out.append([a, nm, nt, npass, rt, rpass, tag_idx.get(tag, -1), rn, 1 if (prior and not ln) else 0])
         fn[sid] = out
 
-    hourly = collections.Counter(int(l) // 3600 * 3600 for l in git('log', 'main', '--format=%ct').split())
+    hourly = collections.Counter(int(l) // 3600 * 3600 for l in git('log', MAIN, '--format=%ct').split())
     milestones, seen = [], set()
-    for line in git('log', 'main', '--reverse', '--format=%ct %s').splitlines():
+    for line in git('log', MAIN, '--reverse', '--format=%ct %s').splitlines():
         m = re.match(r'(\d+) Merge agent/cc-exe-(2[a-z]\d?)$', line)
         mid = m.group(2) if m else ('1' if line.endswith(' Merge agent/cc-game-exe') else ('2a' if line.endswith(' Merge agent/cc-game-vfs') else None))
         if mid and mid not in seen:
@@ -376,7 +385,7 @@ def build(now=None):
     snapshot = (db.execute("select value from meta where key='built_utc'").fetchone() or ['?'])[0][:16].replace('T', ' ') + ' UTC'
     return dict(
         generated=dt.datetime.fromtimestamp(now, dt.timezone.utc).strftime('%Y-%m-%d %H:%M UTC'), snapshot=snapshot,
-        head=git('rev-parse', '--short', 'main').strip(), t0=t0, now=now,
+        head=git('rev-parse', '--short', MAIN).strip(), t0=t0, now=now,
         categories=[dict(key=k, label=l, segments=[s['id'] for s in segments if s['cat'] == k]) for k, l in CATEGORIES],
         segments=segments, grid=grid, funcs=funcs_series, names=names_series, ledger_total=ledger_total, frag_total=frag_total,
         game_total=game_total,
@@ -401,6 +410,9 @@ def main():
     ap.add_argument('--json', help='also write the data as JSON')
     ap.add_argument('--no-index', action='store_true', help='do not run bsp.py index --if-stale first')
     args = ap.parse_args()
+    git('fetch', '-q', 'origin', 'main')
+    if subprocess.run(['git', 'merge-base', '--is-ancestor', MAIN, 'HEAD'], cwd=ROOT).returncode:
+        print(f'note: this tree does not contain {MAIN}; the index (and recon states) lag the history', file=sys.stderr)
     if not args.no_index:
         subprocess.run([sys.executable, str(ROOT / 'tools/bsp.py'), 'index', '--if-stale'], cwd=ROOT, check=False)
     if not INDEX.exists():
