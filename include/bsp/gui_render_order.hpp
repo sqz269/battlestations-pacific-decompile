@@ -184,7 +184,7 @@ struct GuiCameraPlacement {
 };
 // cc13-fix67 (fix6b), OFF: 00AA3E7F MOVSS xmm0,[00D19620] loads C61C4000 = -10000.0 and
 // 00AA3E87 stores it as the target z; -9992 is not the image's value. Presentation only.
-inline constexpr bool kGuiCameraTargetZImageBound = false;
+inline constexpr bool kGuiCameraTargetZImageBound = true;   // ON: cc9-lua66 (SQUADRON_LAND_TASK 5ig)
 inline constexpr float kGuiCameraTargetZ = kGuiCameraTargetZImageBound ? -10000.0F : -9992.0F; // 00D19620; image bits C61C4000 at 00D19620
 
 // 00AA3E30..00AA3E93: eye = (0.5 + 0.5/width, 0.375 + 0.5/height, 0),

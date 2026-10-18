@@ -9,6 +9,6 @@ namespace bsp {
 // `kConstExactImageBitsBound ? <image bits> : <old value>` at its declaration and names the
 // image bits and address in its comment; docs/CC13_FIX67.md lists them. With the switch OFF
 // the compiled behaviour is exactly the old one.
-inline constexpr bool kConstExactImageBitsBound = false;
+inline constexpr bool kConstExactImageBitsBound = true;   // ON: cc9-lua66 (SQUADRON_LAND_TASK 5ig)
 
 }  // namespace bsp

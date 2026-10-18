@@ -16028,3 +16028,22 @@ host made no box draws and measured from its own aim point. Plane targets (`0042
 LABELLED. Live when a category-1 AA gun on a ship engages a ship (PT boats, landing craft). **Prediction:** AA swing
 errors against small craft move; pairs on BSM01 `bsm01_p6_b1_a` and JM08 `jm08_l64_j8_e`. The tail gunner
 (`008FFBC6..008FFC03`, A6) is not touched.
+
+
+### 272.9 Pairs and flips of 272.6-272.8 (cc9-lua66, 2026-10-17): all four **ON**
+
+Exports of bb5d16e51: `local\l66_g_off` (control), `local\l66_g_rd` (kReloadDrawBound), `local\l66_g_on` (all four).
+Logs `local\l66r_<row>_<variant>_<env>.log` in the cc9-lua52 tree.
+
+- **Reference env, kReloadDrawBound alone, USN04 9000 fr:** gameplay identical (pair_diff 1). The only ON-only line is
+  `reload draws=9782`, equal to the shot count; the ship-AI free-refill counter moved (known noise).
+- **Default shared stream, all four, JM08 `jm08_l64_j8_e` 110000 fr:** moved broadly (deaths 132 -> 138, dive releases
+  17 -> 26, torpedo drops 7 -> 8); neither side ends. Mechanism counters ON: reload draws 79635 (shots 79642),
+  `aa gunner hull_points=930`, `artillery aim kept_retargets=629`.
+- **Shared, BSM01 `bsm01_p6_b1_a` 40000 fr:** moved (deaths 809 -> 817, torpedo drops 27 -> 34); reload draws 180884;
+  no AA-on-ship or retarget arm reached (0 / 0). Neither side ends.
+- **Shared, JM06 `jm06_p12_j6_c1`:** completes in both (1817.65 -> 1211.06 s); kept_retargets 43; deaths 25 -> 23.
+
+Every mechanism fires where predicted and the reference-env identity of the reload draw holds; the spread is the
+shared stream moving, as predicted. All four flipped ON, with `kReconSurfaceSetBranchBound` (cc13-fix4, identical on
+USNOS / JM08 / BSM01, SQUADRON_LAND_TASK 5ih). WINS re-time follows.

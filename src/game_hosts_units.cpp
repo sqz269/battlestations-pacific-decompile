@@ -6640,6 +6640,11 @@ struct GameUnitsHost::Impl {
     static constexpr bool kDogfightHeadOnVelocityBound = true;
     // 007CE9FD's release-issue predicates: session mode, +C3Ah, +5Dh, BombDelay.
     static constexpr bool kPlaneFixedStepPredicatesBound = true;
+    // Packet cc9_l66_issue_draw (docs/CC13_VERIFY1.md A.1). True: after each
+    // 007C0D90 issue the next-issue interval is U(0.9, 1.1) x BombDelay (007CEAB3,
+    // one keyed stream-1 draw per issue). False: always 0.9 x BombDelay, no draw.
+    static constexpr bool kReleaseIssueIntervalDrawBound = false;
+    unsigned long long release_issue_interval_draws = 0;
     // Packet cc9_plane_device_walk, docs/PLANE_DEVICE_WALK.md: 007CEB00-007CEB1D,
     // the cleanup arm's walk over the rack list asking vtable[1FCh], and the
     // busy byte the fire slot vtable[1F0h] (006E3550) raises at 007C0E17.
@@ -29747,6 +29752,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         if (!r.call_issue_007c0d90) return;
                         run_release_order_issue_007c0d90();
+                        if constexpr (GameUnitsHost::Impl::kReleaseIssueIntervalDrawBound) {
+                            // 007CEA9A-007CEABE, after the 007C0D90 issue: 00BD2F10(ECX = 1,
+                            // 0.9f 00CE3860, 1.1f 00CE6448), FMUL [class+1F4h], FSTP
+                            // unit+C28h. Keyed per unit like the host's other stream-1
+                            // draws (cc13-verify1 A.1).
+                            const float draw = owner_.release_altitude_draw_00bd2f10(
+                                unit_.row.name + "#issue", bsp::kIssueIntervalLow_00ce3860, 1.1f);
+                            unit_.torpedo_issue_interval_c28 = draw * in.class_interval_scale_1f4;
+                            ++owner_.release_issue_interval_draws;
+                        }
                     }
 
                     // Packet cc9_plane_device_walk: the rack census, once per unit.
@@ -40804,6 +40819,10 @@ void GameUnitsHost::report() {
         static_cast<unsigned long long>(host.formation_groups.size()),
         host.formation_joins, host.formation_creates, host.formation_rejoins,
         host.formation_clamped, host.formation_columns_unmeasurable);
+    if constexpr (Impl::kReleaseIssueIntervalDrawBound) {
+        host.log.notef("summary mission release issue interval draws=%llu (007CEAB3, packet "
+            "cc9_l66_issue_draw)", host.release_issue_interval_draws);
+    }
     if constexpr (kPutToFormationBound) {
         host.log.notef("summary mission putto formation: station_places=%llu headings=%llu "
             "reshapes=%llu (008193A0 / 008196B0 / 0070EFD0, packet cc9_l66_putto)",
