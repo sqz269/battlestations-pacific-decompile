@@ -222,13 +222,15 @@ struct Small2Host {
                                                          void* unit, float* a, float* b,
                                                          float* c, float* d) = 0;
     virtual void native_string_assign_cstr_0041e870(NativeString* s, const char* text) = 0;
-    // 0063C620 __thiscall(sink; const float quad[8]*, 3, 0, 1, name, 0, NativeString by
-    // value, float, float[4] by value, 0), 14 stack dwords.
-    virtual void hud_marker_emit_box_0063c620(void* sink, const float* quad, std::int32_t a1,
-                                              std::int32_t a2, std::int32_t a3,
-                                              const char* name, std::int32_t a5,
-                                              NativeString text, float value,
-                                              const float* box4, std::int32_t a10) = 0;
+    // 0063C620 BSP_HudMarker_EmitBoxMarker, the contract of
+    // cc13_pkt642_hud_marker_emit_box_marker_0063c620 (include/bsp/cc13_pkt642.hpp):
+    // __thiscall(record; corners*, group, show, text_mode, text, unit, distance NativeString by
+    // value (released by the callee), scale, colour (4 floats by value), flag), RET 38h.
+    virtual void hud_marker_emit_box_0063c620(void* record, const float* corners,
+                                              std::int32_t group, std::uint32_t show,
+                                              std::uint32_t text_mode, const char* text,
+                                              void* unit, NativeString distance, float scale,
+                                              const float* colour, std::uint32_t flag) = 0;
     virtual bool unit_is_selectable_00645060(void* unit, std::int32_t team,
                                              bool allow_spectate) = 0;
     virtual void hud_root_set_controlled_unit_00645600(void* hud_root, void* unit) = 0;

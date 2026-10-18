@@ -3178,3 +3178,144 @@ the point at the leader's height) on every live member and runs 0099A170 at deli
 stores (class, range 0, no target, the point). LABELLED: no 00645060 select and no 0064B870 / 00780214 role
 transfer run; the line stands for a player who selected the squadron. Prediction (BSM09 d1): Donald turns NW
 towards (-2400, 3200) from 0.5 s, so the fighters that picked it at 118 / 134.6 s meet it later or not at all.
+
+**78, results (USN01 `usn01_p8_u1_i.txt`, 30000 frames, reference env, exports of 2f9d20fdb).** OFF
+`local\p20a_off_usn01.log`; manifests beside each log.
+- `kFollowReleaseArmBound` (`local\p20a_rel_usn01.log`): pair_diff 3 (moved). `pending=25 applied=0` OFF,
+  `pending=28 applied=28` ON. Deaths 36 / 36 with 25 rows moved; the first is ScoutDauntless|.-II (159.76 ->
+  164.01 s); stows 19 -> 17: ConTBD2|.-II and ConTBD3|.-II (torpedo wingmen, the torpedo follow seam) are shot down
+  (402.23 s, alt 566, Convoy2) instead of stowing. The mechanism is the bytes' arm and it is exercised: **ON**.
+- `kLandFinalParkEdgeBound` (`local\p20a_fp_usn01.log`): pair_diff 1, gameplay identical, the edge is never
+  reached (no final plane is touched with +900h outside 4, 5 and 7). Stays OFF, unexercised.
+- `kLandAbortGroundArmBound` (`local\p20a_ag_usn01.log`): pair_diff 1, identical; with the deck term OFF no plane
+  enters land/abort on the ground. Paired again with the deck term below.
+
+**79, result: `kHelmPlaneMovetoBound` ON.** BSM09, orders `cc9-lua52\local\l67_b9_d1.txt`, 36000 frames, reference
+env. OFF `local\p20a_off_bsm09d1.log` (export of 2f9d20fdb, which predates the switch and runs the same ship path),
+ON `local\p20b_helm_bsm09d1.log` (export of 57a15d07b with the flip). OFF: Game Over at 183.06 s (Donald killed),
+as the reference. ON: every `moveto Donald` reaches the squadron (`to 1 squadron plane(s)`), Donald is not in the
+death rows, and the mission completes (`luaMissionComplete` 411.97 s, `Scoring_SetMissionCompleted` completed=1;
+EndMission 408.02 s). pair_diff 3: deaths 29 -> 66, units 66 -> 90 (the later waves spawn). The run stops 40
+frames after EndMission, before `luaMissionCompletedNew`, so the exec guard's refusal is not in this log.
+
+**78, the deck term on top (item 3).** Export of 2f9d20fdb with `kPlaneForwardSpeedDeckTermBound`,
+`kLandAbortGroundArmBound` and `kLandFinalParkEdgeBound` all true (`local\p20c_dtagfp_usn01.log`, USN01 as above)
+against `local\p20a_off_usn01.log`: pair_diff 3; stows 19 -> 1, ground re-takeoffs 0 -> 26 (physics19's deck term
+alone: 24), land/park entries 12, deaths 36 -> 27. The abort on-ground arm now runs (`on_ground_arm` 009B0E74
+calls=26), but each run is the abort entry tick itself: ScoutDauntless parks at 417.92 s, its park timer expires
+short of the lift, 009B21D0 sets done, 009B37A7 enters land/abort at 436.02 s, and 0099B0BE pushes the re-takeoff on
+that same tick (`head=land state=4 landed=1`); the plane is airborne (height 21.6) when the arm's +21h sends it back
+to park 9.7 s later. The stows do not hold, so **`kPlaneForwardSpeedDeckTermBound` stays OFF**. The open question
+is still physics19's: what keeps the image's plane rolling to the lift with the 0.1 x deck term in 0099D99E's
+measured speed (009B22C0's tail writes +2B4h, +2B0h = 1, +2D8h = 1, so the park drive does go through the speed
+hold). **`kLandAbortGroundArmBound` ON**: it is the bytes (009B0E74-009B0F93, as the switch comment lists), the
+USN01 pair with the deck term OFF is identical, and the arm is reached only on a failed park.
+`kLandFinalParkEdgeBound` stays OFF, unexercised.
+
+**78, result: `kFinderNoiseDrawBound` ON.** Export of 57a15d07b with the flip against the 2f9d20fdb OFF export (the
+same code path with the switch OFF). BSM09 `l67_b9_d1.txt` 36000 fr (`local\p20b_fnoise_bsm09d1.log` vs
+`local\p20a_off_bsm09d1.log`): pair_diff 1, gameplay identical, per-entity tables identical (the only summary
+change is the known ship-avoidance refill noise). USN04, no orders, 12000 fr (`local\p20b_fnoise_usn04.log` vs
+`local\p20a_off_usn04.log`; 26 fighters log early edges 009AAA80): pair_diff 0, identical. The draw is keyed per
+unit, so it couples no other stream; no pick changed on either row. Flipped as the bytes' draw; UNCERTAINTY: no
+counter shows how often the draw ran.
+
+**78, a further 0099D300 read for the deck question.** `disasm-raw 0099D980`: after 0099D99E's 007D99C0 and the
+FDIV by the speed scale (0099D9A3), a plane in +900h 4 or 5 on a holder (+BF8h, +BF4h) whose 006049F0 owner is a
+ship (`vt[5Ch](6)`, 0099DA05) and whose ship speed 0092D730 ([ship+1018h]) is NEGATIVE (FLDZ / FCOMI / JBE at
+0099DA29-0099DA2F) gets `measured -= ship speed` (0099DA31-0099DA48). The host does not model this arm (a carrier
+going astern only). It also shows the image keeps the forward deck term in the measured speed on purpose, so the
+answer to the stow question lies elsewhere (the parented ctl+44h, section 75's frame question, or 009B21D0's
+timer), not in 0099D300.
+Eliminated as well: 009B260C-009B2631's clock (+28h runs down while vt[38h] < 1.0 and dz < 10) reads vt[38h] =
+|ctl+18h| (007B8E60), the parent-local relative speed in the image too (section 75), so a world-speed reading does
+not explain the image's stows. With the deck term the throttle holds measured = ParkVelocity, i.e. a relative speed
+of ParkVelocity - 0.1 x deck speed (about 0.56 m/s at 16.7 m/s), under the clock's 1.0, so the clock drains. Next
+to check: the plane's heading on the deck during the park (z < 0 takes 0.8 with the opposite sign) and the actual
+value of ParkVelocity (Pilot/Landing, tuning +4E8h) the host reads against this installation's Lua.
+ParkVelocity is `KTS(40)` in this installation's `scripts\datatables\planeglobals.lua:632` (about 20.6 m/s; its
+Hungarian comment: the plane rolls to its place at this speed after landing, and if it is too large the plane
+cannot stop on the carrier's lift). physics19's commanded 2.23 m/s is therefore 009B2C1E's +2B4h = interp x speed
+with the heading-error interp near its low end (00D7A2F0 = 0.1): the creeping plane is still turning onto the
+lift line. The heading error at the stop is the next thing to log.
+
+## 80. Dogfight avoid timer, early-edge clear, land minimum speed (cc9-physics20, 2026-10-18)
+
+The lead's queue from cc13 seg67 (UNREVIEWED notes, checked here against the bytes).
+
+**009A7A50 avoid timer, `kDogfightAvoidTimerDrawBound` (OFF).** `disasm-raw 009A7D40`: on the latched arm
+(009A7D2E, +24h set), `MOVSS [esi+18h]; COMISS [00CE3958] (2.0); JBE` (009A7D52-009A7D5E), then the pair
+(1.0 FLD1, 2.0) and `CALL 00BD2F10` (009A7D72), `FSTP [esi+18h]`. ECX is 1 (the byte the latch stores from CL at
+009A7D0F). The host wrote the midpoint 1.5. True: a keyed stream-1 draw (`unit name + "#dfat"`, the host's
+00BD2F10 convention). `summary dogfight avoid timer redraws=` counts the arm in both builds.
+
+**009AAA80 early-edge clear, `kDogfightEarlyEdgeClearBound` (OFF).** Both gate failures (009AAA9C `+4D4h > 0`
+JBE, 009AAABB `1.0 > +4D8h` JBE; NaN fails both) go to 009AAC5D: `MOV ECX,[task+3FCh]; CALL 007B9740`, then
+`XOR AL,AL`. 007B9740: `ECX = [ECX+C50h]`, null returns, else tail-JMP 007E2070, which takes `esi = nb+9Ch`,
+and when `[esi+14h]` (nb+B0h, the target cache 007E2090 returns while +84h <= 2.0) is set calls 006952A0 (the
+observer unregister) and zeroes it. The two later false returns (009AAB1F, 009AAC31) go to 009AAC68 and skip the
+clear, as the host's do. True: `nb_found_plus_one = 0` on the gate failure. LABELLED: +C50h is taken to exist.
+
+**009B1300 land minimum speed, `kLandMinSpeedOwnerVelocityBound` (OFF).** `disasm-raw 009B1300`: with
+approach+30h set (009B1309), the plane's vt[34h] velocity is normalised by 0042B2F0's length (each component
+FDIV'd and stored as a float, 009B1331-009B1359), approach+30h's vt[34h] (009B1362) gives w, and
+`(w.y ny + w.x nx) + w.z nz` (009B1364-009B137C) is added to 007C47F0 (009B138E) before the max with 007C4810
+(009B13A9-009B13C0). The host had no such term anywhere (`kCarrierLandingVelocityLeadBound`'s sites are
+009AFC73-009AFD1A, the lead point, not this). True: the land target (`land_site_plus_one`) linear velocity enters.
+An airfield's is zero, so only carrier recoveries move. Prediction (USN01): the final approach's commanded speed
+rises by about the carrier's speed (16-17 m/s) for planes heading with the carrier, touchdowns shift.
+
+**80, results.** Variants built in this tree at 236355ef9 / dea03afaf / 967fa63ea (`local\p20_variant.ps1`: the
+switch flipped, `scripts/build.ps1`, exe copied to `local\p20d_<tag>`, `variant.txt` beside it; the OFF
+code paths of the later commits are the 236355ef9 ones). OFF exe `local\p20d_off`. Manifests beside each log.
+- **`kDogfightAvoidTimerDrawBound` ON.** USN04 12000 fr (`local\p20d_avt_usn04.log` vs `p20d_off_usn04.log`) and
+  JM02 24000 fr (`p20d_avt_jm02.log` vs `p20d_off_jm02.log`): gameplay identical, `redraws=0` on both rows
+  (3 / 5 fighters latch, never with the timer above 2.0; AvoidTime is {2, 3} in planeglobals.lua:418). The bytes'
+  draw on a keyed stream; flipped, unexercised.
+- **`kDogfightEarlyEdgeClearBound` ON.** USN04 (`p20d_ec_usn04.log`): pair_diff 3, `early edge clears=210`. Deaths
+  54 -> 53, 44 death rows moved from 90.80 s (A6M Zero #1.2|.-II), shots 13554 -> 9252, units 120 -> 81 (fewer
+  later spawns in 12000 frames). The fighters re-search instead of re-using a cached target after a failed gate.
+  Mechanism exercised; flipped.
+- **`kLandMinSpeedOwnerVelocityBound` ON.** USN01 p8_u1_i 30000 fr (`p20d_lms_usn01.log` vs `p20d_off_usn01.log`):
+  pair_diff 3, `owner terms=2332`; stows 17 -> 16, deaths 36 / 36 with 17 rows moved. ConTBD1 now flies land/final at
+  spd_cmd 51.3 m/s (the carrier's speed added; OFF about 35) and descends at about 11 m/s at pitch -0.22, and dies
+  at 609.82 s, alt 23, no damage, in land/final, where OFF it stowed (620.67 s). The term is the bytes and is
+  exercised; flipped. FLAG for the stow question: the final descent law takes world pitch while the closure on the
+  deck is speed - carrier speed, so a faster air speed steepens the path relative to the deck; check what in
+  009B1ED0 / 009B1F2C accounts for the moving deck before blaming this term.
+- **`kGunfireExemptWandererMulBound` ON.** JM02 24000 fr (`p20d_gx_jm02.log` vs `p20d_off_jm02.log`): pair_diff
+  MOVED; the exempt arm runs about 2000 times (exempt 2321 OFF / 1993 ON), and each now writes WandererMul
+  (+840h) = PilotAvoidance.GunfireBomberVsGunfire as the bytes do. Deaths 44 -> 39, shots 64515 -> 58299,
+  units 48 -> 54, PlayerBetty survives (dies OFF); the ON run reaches the scripted "did not find Force Z" fail at
+  740.19 s (OFF: EndMission never true in 24000 fr). Flipped by mechanism (faithful store, exercised). JM02 is not
+  a WINS row.
+- **`kFollowExitClearsBound` ON.** JM02 (`p20d_fx_jm02.log`): gameplay identical, `follow exit 009BDE40 calls=0`;
+  USN01 identical with `exits=0` earlier. Only LB prepare's exit (009B6660 JMP 009BDE40) and the moveto follow are
+  wired, as in vtable 00D20AB8. Flipped, unexercised.
+- **`kStrafeHorizontalFloatOpsBound` (OFF, added).** 009CAD00 rounds dx/dz to float (009CAD30 / 009CAD3E) and stores
+  d2 = (dx dx + 0 0) + dz dz as a float (009CAD58) before the 00CE3820 test and sqrt 00BF7030; the host took dx/dz
+  as doubles. Not paired yet.
+
+**80, item 7: the deck-term stow question, narrowed (read-only).** 007D99C0 re-read: the parent's vt[34h](out)
+(RET 4; the PUSH 0 / PUSH plane+110h it leaves are 0042D0D0's stack arguments), then 0042D0D0 (ECX = local, EDX =
+the velocity, matrix +110h, flag 0) is v times the matrix's column; the COMISS / FLD read the output's z
+([ESP+18h] with ESI/EDI pushed = [ESP+10h] after the pops). +110h is 00B63D50's inverse of +CCh, and 00414DB0 builds
++CCh = local +74h times the parent's +CCh, the WORLD matrix. So the term is the parent's world velocity along the
+plane's world forward, times 0.1, as the host has it; the frame is not the answer. Section 79's heading-interp
+guess is wrong too: `p20c_dtagfp_usn01.log`'s park traces for ScoutDauntless show err 0.013 at the stop. What
+stops it is 009B2923-009B298D's cap c = max(0.5, dz x 0.5) on the commanded speed: the hold drives measured =
+relative + 0.1 x 16.7 = relative + 1.67 to c, so the relative speed reaches zero at dz = 2 x 1.67 = 3.3 m
+(trace: dz 3.9, v 0.45, spd 1.94 at 435.92 s), while 006CFF70's intake wants the nose within 3.0 - v of the lift
+(about 2.5 m). With an exact hold the bytes stow only for a deck slower than about 12.5 m/s (2.5 / 2 / 0.1). So
+the open question is the deck speed during recovery (the host's carrier runs 16.7 m/s on USN01, a ships-lane
+input) or a ground speed hold that does not settle exactly (idle thrust / wheel brake under +2B0h = 1,
++2D8h = 1). The switch stays OFF.
+- **`kStrafeHorizontalFloatOpsBound` ON.** JM08 `jm08_s45_j8_m10.txt` 24000 fr (`local\p20e_sh_jm08.log` vs
+  `local\p20e_off_jm08.log`, exes built at de14db729): gameplay identical, all tables identical; the strafe task is
+  exercised (42 planes, aim 1840 ticks, 47 aims, 729 gun-point fires), so no decision crossed a float/double
+  rounding edge. Flipped as the bytes.
+- **Item 8 remainder.** 0099B940: the image skips a pair on an unordered compare (FCOMI / JBE at 0099B977,
+  FCOMIP / JA at 0099B97F); the host's `v <= lo || hi <= v` took a NaN pair as a hit. Rewritten as
+  `!(v > lo) || !(hi > v)` without a switch: identical for every ordered value; no run was checked for a NaN band (unpaired). 009A17D0
+  zeroes the whole +26Ch dword (009A17E9); the host carries only bit 4 (`ga_flag_26c_4`), and no other bit is
+  modelled or read, so nothing to bind.

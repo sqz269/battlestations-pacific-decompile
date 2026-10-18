@@ -181,7 +181,7 @@ constexpr bool kScanProximityUnitsEntriesBound = true;
 // GameScriptOrdersHost::player_plane_moveto (the members' 00E08F68 moveto and
 // the 0099A170 install at delivery). False: the ship path, whose command row a
 // plane's bot never reads, so the squadron keeps its scene moveto (BSM09 Donald).
-constexpr bool kHelmPlaneMovetoBound = false;
+constexpr bool kHelmPlaneMovetoBound = true;   // ON: OCEAN_WAVE_FIELD 79 (BSM09 pair)
 
 // Packet cc9_construct_world_p8 (docs/CONSTRUCT_WORLD.md section 15). True:
 // 00481640's call is the walk 00487270 itself: the std::list whose sentinel is
@@ -1411,6 +1411,10 @@ public:
                 killed == 1 ? "y" : "ies");
             owner_.record("EngineMovieStop::scene_database_reset_0046b730", 0x0046b730u);
             owner_.lua.call_entry_point(bsp::kLuaPrecacheUnits, false);
+            if constexpr (bsp::game::kVehicleClassPreloadCc15Bound) {
+                // 0045F6C1, the first of the class-table resets.
+                owner_.lua.census_vehicle_class_purge_0095ca70("0045F6C1");
+            }
             owner_.record("EngineMovieStop::class_table_resets", 0x0045f6dfu);
             owner_.lua.call_entry_point(bsp::kLuaStageInitMulti, false);
             owner_.lua.call_entry_point(bsp::kLuaStageInit, true);
@@ -2469,6 +2473,10 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                 continue;
             }
             host.lua.call_entry_point(bsp::kLuaPrecacheUnits, false);
+            if constexpr (bsp::game::kVehicleClassPreloadCc15Bound) {
+                // 004E0A9B, the first of the eleven calls after luaPrecacheUnits.
+                host.lua.census_vehicle_class_purge_0095ca70("004E0A9B");
+            }
             host.lua.call_entry_point(bsp::kLuaStageInitMulti, false);
             ++host.load.concrete;
             continue;

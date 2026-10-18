@@ -1287,6 +1287,7 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
     GameVehicleClassRow row;
     row.index = index;
     if (state_ == nullptr || index < 0) return row;
+    note_vehicle_class_read(index);   // cc15-vcp1 census
     const int top = ::lua_gettop(state_);
     ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
     if (::lua_type(state_, -1) == LUA_TTABLE) {
@@ -4374,6 +4375,54 @@ void GameMissionLuaHost::mark_vehicle_class_row_00964790(int class_index) {
         }
     }
     ::lua_settop(state_, base);
+}
+
+void GameMissionLuaHost::census_vehicle_class_purge_0095ca70(const char* site) {
+    // 0095CA70 walks VehicleClass with 00B67080 / 00B67190 and collects every
+    // key whose value's Got (00CE452C) fails 00B66000, then runs
+    // "VehicleClass[%d]=nil" (00D1A964) for each. This census only counts.
+    // UNCERTAIN: 00B66000 is read here as "is the boolean true".
+    if (state_ == nullptr) return;
+    const int base = ::lua_gettop(state_);
+    std::size_t rows = 0;
+    std::size_t would_nil = 0;
+    std::string kept;
+    vehicle_class_would_nil_.clear();
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_pushnil(state_);
+        while (::lua_next(state_, -2) != 0) {
+            ++rows;
+            bool got = false;
+            if (::lua_type(state_, -1) == LUA_TTABLE) {
+                ::lua_getfield(state_, -1, "Got");
+                got = ::lua_type(state_, -1) == LUA_TBOOLEAN && ::lua_toboolean(state_, -1) != 0;
+                ::lua_settop(state_, ::lua_gettop(state_) - 1);
+            }
+            const int index = ::lua_type(state_, -2) == LUA_TNUMBER
+                ? static_cast<int>(::lua_tointeger(state_, -2)) : -1;
+            if (got) {
+                if (kept.size() < 600) kept += " " + std::to_string(index);
+            } else {
+                ++would_nil;
+                vehicle_class_would_nil_.emplace(index, 0);
+            }
+            ::lua_settop(state_, ::lua_gettop(state_) - 1);
+        }
+    }
+    ::lua_settop(state_, base);
+    ++vehicle_class_censuses_;
+    vehicle_class_rows_would_nil_ = would_nil;
+    log_.notef("vehicle class purge census at %s (0095CA70, log only): rows=%zu would_nil=%zu "
+        "kept=%zu:%s", site, rows, would_nil, rows - would_nil, kept.c_str());
+}
+
+void GameMissionLuaHost::note_vehicle_class_read(int index) {
+    if (vehicle_class_censuses_ == 0) return;
+    const auto row = vehicle_class_would_nil_.find(index);
+    if (row == vehicle_class_would_nil_.end()) return;
+    ++row->second;
+    ++vehicle_class_later_reads_;
 }
 
 bool GameMissionLuaHost::attach_created_entity_00928a00(int entity_id,    const std::string& name, int class_index, bool seed_class, bool findable) {
@@ -9303,6 +9352,7 @@ int GameMissionLuaHost::run_get_property_0088bf80(lua_State* state, int argument
 int GameMissionLuaHost::read_vehicle_class_integer(int index, const char* key,
     const char* nested_key, int fallback) {
     if (state_ == nullptr || index < 0 || key == nullptr) return fallback;
+    note_vehicle_class_read(index);   // cc15-vcp1 census
     const int top = ::lua_gettop(state_);
     int value = fallback;
     ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
@@ -9395,6 +9445,7 @@ float GameMissionLuaHost::read_vehicle_class_number(int index, const char* key,
     // the result; this reader does not, because the Lua field is the modifier
     // and class+B8h is its square.
     if (state_ == nullptr || index < 0 || key == nullptr) return fallback;
+    note_vehicle_class_read(index);   // cc15-vcp1 census
     const int top = ::lua_gettop(state_);
     float value = fallback;
     ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
@@ -9722,6 +9773,7 @@ std::string GameMissionLuaHost::read_vehicle_class_string(int index, const char*
     // The VehicleClass companion of read_device_class_string.
     std::string value;
     if (state_ == nullptr || index < 0 || key == nullptr) return value;
+    note_vehicle_class_read(index);   // cc15-vcp1 census
     const int top = ::lua_gettop(state_);
     ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
     if (::lua_type(state_, -1) == LUA_TTABLE) {
@@ -10703,6 +10755,18 @@ void GameMissionLuaHost::report_mission_script_state() {
     if constexpr (kVehicleClassRowIdBound) {
         log_.notef("summary mission vehicle class rows marked=%zu (00964790 ID/Got, "
             "009648EC..00964959, packet s54_class_id)", summary_.class_rows_marked);
+    }
+    if (vehicle_class_censuses_ != 0) {
+        std::string read_rows;
+        for (const auto& [index, reads] : vehicle_class_would_nil_) {
+            if (reads != 0 && read_rows.size() < 900) {
+                read_rows += " " + std::to_string(index) + "x" + std::to_string(reads);
+            }
+        }
+        log_.notef("summary vehicle class purge census (0095CA70, log only, cc15-vcp1): "
+            "censuses=%zu rows_would_nil=%zu later_host_reads=%zu per_class:%s",
+            vehicle_class_censuses_, vehicle_class_rows_would_nil_,
+            vehicle_class_later_reads_, read_rows.c_str());
     }
     log_.notef("summary mission script listeners bound=%d adds=%llu removes=%llu queries=%llu "
         "registered=%zu kill_deaths=%llu kill_fires=%llu attacker_filtered=%llu (008C6760 / "
