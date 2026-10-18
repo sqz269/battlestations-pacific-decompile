@@ -843,6 +843,25 @@ No new bodies. Three ledger-only rows, checked against the bytes:
 - **009B1ED0**, land final, against `run_land_final_tick_009b1ed0` (~33027): matches the labelled host, which skips the done tests because 007B8D70 is stood in as true. No draw.
 - Both land ticks blend the +2B4h speed on x87 (DE EA, DE CA, DE C1). The binary rounds each step at 24-bit PC; the hosts use double with one final rounding, so the result can differ by about 1 ULP (sent as precision-only).
 
+### 3.57 Batch 11: land line and park, level-bomb attackrun and moveto (packet cc13-seg67C)
+
+No new bodies. Four ledger-only rows, each read from the whole listing. None takes a draw.
+- **009B0300**, land line, against `run_land_line_tick_009b0300` (~32432): matches. Checked:
+  - the lead point and bearings;
+  - the k80 threshold curves;
+  - the far/near gain;
+  - the probe deadband (FSUBRP DE E1 at 009B0681);
+  - the altitude band and its clamp order;
+  - the speed blend (DE EA, DE CA).
+- **009B22C0**, land park, against `run_land_park_tick_009b22c0` (~33355): matches, with one NaN arm, sent as URGENT. The JBE at 009B264F counts a NaN speed as slow; the host's `v <= base x 1.5` does not. Checked:
+  - the speed curve, the 0.85 keep and the queue band;
+  - the path test, the three steer arms (00415690, 00415510, 00415550) and the carrier clamps;
+  - the heading-error scale and the yaw deadband. The deadband's NaN arm gives the host's value.
+- **009B4D00**, level-bomb attackrun, and **009B6D20**, level-bomb moveto, against `lb_attackrun_tick_009b4d00` (~25756), `lb_moveto_tick_009b6d20` (~25697) and the plane_level_bomb_task.cpp helpers. They match for finite inputs, including the peer gap loop (FSUB forms D8 E2/E1/E9 from the bytes), the fraction, tolerance and speed curves, and the attackrun command. Sent as URGENT:
+  - both countdowns take the decrement on a NaN dt (FCOMI JB), where the hosts refresh;
+  - moveto's tolerance min keeps b on NaN, where the host keeps +40h;
+  - the binary zeroes own_d at or below 1e-10 squared, which `lb_spacing_pass` does not.
+
 ## 4. Ledger-only records (packet cc13-seg67C)
 
 | Address | Host body | Result |
@@ -983,3 +1002,7 @@ No new bodies. Three ledger-only rows, checked against the bytes:
 | 009C4A40 | `run_dive_bomb_goaway_tick_009c4a40` (game_hosts_units.cpp ~28372) | PARTIAL: ceiling NaN arm; draws pinned low (labelled) |
 | 009B0FE0 | `run_land_standby_tick_009b0fe0` (game_hosts_units.cpp ~32229) | matches (24-bit vs double blend note) |
 | 009B1ED0 | `run_land_final_tick_009b1ed0` (game_hosts_units.cpp ~33027) | matches the labelled host |
+| 009B0300 | `run_land_line_tick_009b0300` (game_hosts_units.cpp ~32432) | matches |
+| 009B22C0 | `run_land_park_tick_009b22c0` (game_hosts_units.cpp ~33355) | PARTIAL: slow-test NaN arm |
+| 009B4D00 | `lb_attackrun_tick_009b4d00` (game_hosts_units.cpp ~25756) | PARTIAL: NaN-dt arm, own_d 1e-10 guard |
+| 009B6D20 | `lb_moveto_tick_009b6d20` (game_hosts_units.cpp ~25697) | PARTIAL: NaN-dt arm, tolerance-min NaN arm |
