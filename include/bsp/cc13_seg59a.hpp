@@ -3,8 +3,10 @@
 // The mission scoring object *(game+21A0h) keeps one 284h-byte record per player slot (eight
 // slots) plus a block of point-formula tunables at +1424h..+14B0h. This file reconstructs the
 // band's award grant (0090EDE0) and its badge filter (0090C000), the award triggers that feed
-// it (GA_AE, GA_DN, GA_AI, SA_IM, SA_OC, RUA_MU, GA_SL), the per-slot statistic counters the
-// kill, damage, bomb-drop and party-loss events write, the commit-record message setters, the
+// it (GA_AE, GA_DN, GA_AI, SA_IM, SA_OC, RUA_MU, GA_SL), the scoring maps the kill, damage,
+// bomb-drop and party-loss events write (among them the slot record's saved unit_usage map at
+// record+114h that 0090ED40 adds into, merged by 0091A080 and archived as section
+// "unit_usage"), the commit-record message setters, the
 // rewards point formulas, and the new-mission reset.
 //
 // Model as in cc13_seg33a: every routine works on the original objects as raw bytes (Win32
@@ -126,7 +128,7 @@ void scoring_capture_awards_0090f860(Seg59aHost& host, void* scoring, std::uint3
                                      std::int32_t building_type);
 void scoring_spawn_awards_00913ab0(Seg59aHost& host, void* scoring, std::int32_t slot, std::int32_t kind);
 
-// --- per-slot statistic counters ---
+// --- scoring map writers (e.g. the saved unit_usage map, slot record+114h) ---
 CheckedIter* find_ushort_00908500(CheckedIter* out, const std::int32_t* value, CheckedIter first, CheckedIter last);
 void scoring_record_unique_kill_0090ec40(Seg59aHost& host, void* scoring, void* unit, std::int32_t unused);
 void scoring_add_unit_float_0090ed40(Seg59aHost& host, void* scoring, std::uint32_t slot, void* unit, float amount);

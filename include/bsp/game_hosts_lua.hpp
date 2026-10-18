@@ -2142,6 +2142,8 @@ private:
     // Packet cc13-fix19b: a squadron target whose registry record has held a member
     // (+3CCh was non-zero), so a later empty record reads as 007F3970's Kill.
     std::vector<bool> squadron_target_resolved_;
+    // Packet cc13-fix19c: target_gone_00925c40 without its fused-squadron-slot filter.
+    void target_gone_mark_(std::size_t unit_index);
     // Packet cc13-ver8: the cause this host's Lua Kill (008AC5C0) passed, per unit; the
     // gunnery funnel does not keep it.
     std::map<std::size_t, int> lua_kill_cause_;

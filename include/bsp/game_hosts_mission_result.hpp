@@ -45,7 +45,8 @@ class GameHostLog;
 // commit 009205E0 copies into progress_. Divergence, labelled: 00906460's walk
 // of [[game+19CCh]+28h] calling 00927F60 per entity with +180h < 8 (stamp the
 // clock at entity+1D0h, give five flight members the same value, and pass the
-// elapsed time clock - old +1D0h to 0090ED40, which adds it into slot
+// elapsed time clock - old +1D0h to 0090ED40, which does nothing when
+// [game]+1FE4h == 2 (0090ED45 CMP / 0090ED4F JE 0090ED8C) and otherwise adds it into slot
 // entity+1ACh's saved unit_usage map, record+114h keyed by entity+170h's
 // vtable[0]() (0090ED74 LEA ECX,[slot*284h + scoring + 118h], the records
 // starting at scoring+4h; 0090E740 subscript, float add); 0091A080 merges that
