@@ -6263,6 +6263,140 @@ void* ref_holder_construct_009d6530(Cc13Seg67bHost& host, void* holder, void* ob
     return holder;
 }
 
+// ---------------------------------------------------------------------------
+// Medium rows, batch 3 (docs 3.48)
+// ---------------------------------------------------------------------------
+
+// 009DA950 (009DA950-009DA9C1): +0h = 0, then the 009D5D60 record reset with the same
+// store order and the same single stream-1 U(0, 2.0 [00CE3958]) draw (009DA9A9) into
+// +48h; +44h = 1000.0 [00CE3804]. EAX = record. Unreferenced (no xrefs, no absolute or
+// rel32 references in the image).
+void* ship_ai_path_node_init_fields_009da950(Cc13Seg67bHost& host, void* record) {
+    at<std::uint32_t>(record, 0x0) = 0;                                          // 009DA95C
+    target_ref_record_reset_009d5d60(host, record);
+    return record;
+}
+
+// 009DBD60 (009DBD60-009DBD7F): vptr = 00D17DC0; +8h = 00438E40(ECX = "NavigatorBot"
+// 00D2145C); vptr = 00D217DC. EAX = object. Unreferenced. Its destructor body 009DBD80 is
+// the 008FC570 byte twin (ledger-only).
+void* navigator_bot_named_object_construct_009dbd60(Cc13Seg67bHost& host, void* object) {
+    static constexpr char kNavigatorBot_00d2145c[] = "NavigatorBot";
+    at<std::uint32_t>(object, 0x0) = 0x00D17DC0u;                                // 009DBD68
+    at<std::uintptr_t>(object, 0x8) =
+        reinterpret_cast<std::uintptr_t>(host.string_duplicate_00438e40(kNavigatorBot_00d2145c));
+    at<std::uint32_t>(object, 0x0) = 0x00D217DCu;                                // 009DBD76
+    return object;
+}
+
+// 009DE1B0 (009DE1B0-009DE20A): when +1C4h != 0, +368h = +360h = 0.0 and +1C4h = 0;
+// then 009DA4E0(blk); +1D4h = throttle clamped to [-1, 1] by COMISS: -1.0 [00D7A260] >
+// t -> -1 (JA 009DE1EF), else t > 1.0 [00D7A24C] -> 1 (JBE 009DE1FC); an unordered t
+// falls through both tests and is stored unchanged. Unreferenced.
+void ship_ai_reset_path_and_set_throttle_009de1b0(Cc13Seg67bHost& host, void* blk,
+                                                  float throttle) {
+    if (at<std::uint32_t>(blk, 0x1C4) != 0) {
+        at<float>(blk, 0x368) = 0.0f;
+        at<float>(blk, 0x360) = 0.0f;
+        at<std::uint32_t>(blk, 0x1C4) = 0;
+    }
+    host.ship_ai_clear_path_plan_009da4e0(blk);                                 // 009DE1D9
+    float t = throttle;
+    if (kMinusOne_00d7a260 > t) {
+        t = kMinusOne_00d7a260;
+    } else if (t > kOne_00d7a24c) {
+        t = kOne_00d7a24c;
+    }
+    at<float>(blk, 0x1D4) = t;                                                   // 009DE201
+}
+
+// 009DFB90 (009DFB90-009DFBD1): the observer member's observed entity is +14h, the member
+// itself is the observer (EDX = member). Same entity -> no re-registration; otherwise
+// 006952A0(old, member) when old is set, store, 00694A60(new, member) when new is set.
+// Then +18h..+20h = point[0..2] (FLD/FSTP, bit copies). Unreferenced.
+void ship_ai_observer_member_set_observed_with_point_009dfb90(Cc13Seg67bHost& host,
+                                                              void* member, void* entity,
+                                                              const float* point) {
+    void* const old = ptr_at(member, 0x14);
+    if (old != entity) {
+        if (old != nullptr) host.observer_unregister_pair_006952a0(old, member);  // 009DFBA5
+        at<std::uintptr_t>(member, 0x14) = reinterpret_cast<std::uintptr_t>(entity);
+        if (entity != nullptr) host.observer_register_pair_00694a60(entity, member);  // 009DFBB5
+    }
+    at<float>(member, 0x18) = point[0];
+    at<float>(member, 0x1C) = point[1];
+    at<float>(member, 0x20) = point[2];
+}
+
+// 009E2C40 (009E2C40-009E2CA1): 009DDCC0(ECX = bot+60h, the ship AI); name =
+// 00411430(ECX = bot+BB4h; [bot+2264h]); 004C7070([00E188A8], float(x), float(y), name)
+// (cdecl, CVTSI2SS; the global is read after the name call); then
+// [bot+2264h]->vtable[18h](x, y + 15), the state re-read. Sole caller: the unreferenced
+// adapter at 009E2CB0 (no Ghidra function; ECX = bot, EDX = x, stack y, RET 4).
+void ship_ai_bot_debug_draw_with_state_name_009e2c40(Cc13Seg67bHost& host, void* bot,
+                                                     std::int32_t x, std::int32_t y) {
+    ship_ai_debug_draw_009ddcc0(host, static_cast<std::uint8_t*>(bot) + 0x60);  // 009E2C48
+    const char* const name = host.state_registry_name_or_undefined_00411430(
+        static_cast<std::uint8_t*>(bot) + 0xBB4, ptr_at(bot, 0x2264));           // 009E2C5A
+    host.diagnostic_printf_004c7070(host.global_dword_00e188a8(), static_cast<float>(x),
+                                    static_cast<float>(y), name);                // 009E2C84
+    host.state_vcall_18_debug_text(ptr_at(bot, 0x2264), x, y + 15);            // 009E2C9C
+}
+
+// 009E2F10 (009E2F10-009E2F89), slot 1 of the brain record member vtable 00D21898
+// (brain+AF8h, ship_ai_brain_record_construct_009f1160). obs = [member+14h]; when byte
+// obs+C8h == 0, 00414DB0(obs) first; 004142E0(ECX = member+18h; &tmp, obs+CCh) and
+// tmp copied back into +18h..+20h (MOVSS); byte +24h = 1. Then, when
+// released->vtable[4]() == [member+14h] (re-read): +14h = 0 and 006952A0(ECX = that
+// entity, EDX = member). obs is dereferenced without a null test.
+void ship_ai_goal_member_on_observed_released_009e2f10(Cc13Seg67bHost& host, void* member,
+                                                       void* released) {
+    void* const obs = ptr_at(member, 0x14);
+    if (at<std::uint8_t>(obs, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(obs);  // 009E2F25
+    float tmp[3];
+    host.vector_transform_affine_point_004142e0(&at<float>(member, 0x18), tmp,
+                                                static_cast<std::uint8_t*>(obs) + 0xCC);  // 009E2F3B
+    at<float>(member, 0x18) = tmp[0];
+    at<float>(member, 0x1C) = tmp[1];
+    at<float>(member, 0x20) = tmp[2];
+    at<std::uint8_t>(member, 0x24) = 1;                                          // 009E2F64
+    void* const entity = host.object_vcall_04_get(released);                     // 009E2F6D
+    if (entity == ptr_at(member, 0x14)) {
+        at<std::uintptr_t>(member, 0x14) = 0;
+        host.observer_unregister_pair_006952a0(entity, member);                 // 009E2F7F
+    }
+}
+
+// 009E69D0 (009E69D0-009E6A29): d = 00438B10(angle, +8h); +34h = 00419010(0, peak,
+// pi [00D7A264], 0, |d|), |d| by clearing the sign bit (AND 7FFFFFFFh). A ramp from peak
+// at zero error to 0 at pi. Unreferenced.
+void heading_error_ramp_set_34_009e69d0(Cc13Seg67bHost& host, void* object, float angle,
+                                        float peak) {
+    static constexpr float kPi_00d7a264 = 3.14159274f;
+    const float d = host.wrapped_angle_subtract_00438b10(angle, at<float>(object, 0x8));  // 009E69E4
+    at<float>(object, 0x34) =
+        host.interpolate_clamped_00419010(0.0f, peak, kPi_00d7a264, 0.0f, std::fabs(d));  // 009E6A20
+}
+
+// 009E6A30 (009E6A30-009E6A87): as 009E69D0 with the span from the stack:
+// +38h = 00419010(0, peak, span, 0, |00438B10(angle, +8h)|). Unreferenced.
+void heading_error_ramp_set_38_009e6a30(Cc13Seg67bHost& host, void* object, float angle,
+                                        float span, float peak) {
+    const float d = host.wrapped_angle_subtract_00438b10(angle, at<float>(object, 0x8));  // 009E6A44
+    at<float>(object, 0x38) =
+        host.interpolate_clamped_00419010(0.0f, peak, span, 0.0f, std::fabs(d));  // 009E6A7E
+}
+
+// 009F3CC0 (009F3CC0-009F3CDC), vtable 00D21AE8 slot 5: s = [bot+2264h]; s ?
+// 00411430(ECX = bot+BB4h; s) : the empty string 00CE3A0C. The C++ empty string is a
+// stand-in for that image address.
+const char* ship_ai_gun_bot_sub_state_name_009f3cc0(Cc13Seg67bHost& host, void* bot) {
+    void* const s = ptr_at(bot, 0x2264);
+    if (s == nullptr) return "";                                                 // 009F3CD7
+    return host.state_registry_name_or_undefined_00411430(
+        static_cast<std::uint8_t*>(bot) + 0xBB4, s);                             // 009F3CD1
+}
+
 // 009CFA10 (009CFA10-009CFA2E). 0099B6E0 (a RET) first; then, when [[task+3FCh]+BF4h]
 // is set, the tail JMP 006C2400(ECX = it).
 void bot_task_takeoff_debug_draw_009cfa10(Cc13Seg67bHost& host, void* task) {

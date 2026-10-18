@@ -525,6 +525,28 @@ public:
     virtual void pilot_control_clear_release_orders_007ed3c0(void* control) = 0;
     // 007BCBE0 BSP_Unit_SetQueuedReleaseOrders: __thiscall(ECX = unit; count), RET 4.
     virtual void unit_set_queued_release_orders_007bcbe0(void* unit, std::int32_t count) = 0;
+    // 00438E40 BSP_NativeString_Duplicate: __fastcall(ECX = text), RET, EAX = the heap
+    // copy (0 for a null text).
+    virtual void* string_duplicate_00438e40(const char* text) = 0;
+    // 009DA4E0 BSP_ShipAi_ClearPathPlan: __fastcall(ECX = navigator block), RET. Body:
+    // ship_ai_clear_path_plan_009da4e0 (ship_ai_state_steps.hpp).
+    virtual void ship_ai_clear_path_plan_009da4e0(void* blk) = 0;
+    // 004C7070 BSP_DiagnosticPrintf: cdecl(a, float b, float c, fmt, ...).
+    virtual void diagnostic_printf_004c7070(std::uint32_t a, float b, float c,
+                                            const char* fmt) = 0;
+    // The dword at 00E188A8, read just before the 004C7070 call.
+    virtual std::uint32_t global_dword_00e188a8() = 0;
+    // state->vtable[18h](x, y): __thiscall(ECX = state; int x, int y), RET 8.
+    virtual void state_vcall_18_debug_text(void* state, std::int32_t x, std::int32_t y) = 0;
+    // 004142E0 BSP_Vector3f_TransformAffinePoint: __thiscall(ECX = point; float* out,
+    // const matrix*), RET 8.
+    virtual void vector_transform_affine_point_004142e0(const float* point, float* out,
+                                                        const void* matrix) = 0;
+    // object->vtable[4](), RET, EAX: the released object's observed-entity getter.
+    virtual void* object_vcall_04_get(void* object) = 0;
+    // 00419010 BSP_Math_InterpolateClamped: __stdcall(x0, y0, x1, y1, x), RET 14h, ST0.
+    virtual float interpolate_clamped_00419010(float x0, float y0, float x1, float y1,
+                                               float x) = 0;
 };
 
 // ---- the bot-task factory list (00F8A314) ----
@@ -1230,5 +1252,34 @@ bool ship_ai_path_has_no_sided_node_009d5cf0(void* task);
 void target_ref_record_reset_009d5d60(Cc13Seg67bHost& host, void* record);
 // 009D6530: __thiscall(ECX = holder; object), RET 4, EAX = holder.
 void* ref_holder_construct_009d6530(Cc13Seg67bHost& host, void* holder, void* object);
+
+// ---------------------------------------------------------------------------
+// Medium rows, batch 3 (docs/CC13_SEG67B.md section 3.48)
+// ---------------------------------------------------------------------------
+// 009DA950: __fastcall(ECX = path node record), RET, EAX = record. One draw on stream 1.
+void* ship_ai_path_node_init_fields_009da950(Cc13Seg67bHost& host, void* record);
+// 009DBD60: __fastcall(ECX = object), RET, EAX = object.
+void* navigator_bot_named_object_construct_009dbd60(Cc13Seg67bHost& host, void* object);
+// 009DE1B0: __thiscall(ECX = navigator block; float throttle), RET 4.
+void ship_ai_reset_path_and_set_throttle_009de1b0(Cc13Seg67bHost& host, void* blk,
+                                                  float throttle);
+// 009DFB90: __thiscall(ECX = observer member; entity, const float* point), RET 8.
+void ship_ai_observer_member_set_observed_with_point_009dfb90(Cc13Seg67bHost& host,
+                                                              void* member, void* entity,
+                                                              const float* point);
+// 009E2C40: __thiscall(ECX = ship-AI bot; int x, int y), RET 8.
+void ship_ai_bot_debug_draw_with_state_name_009e2c40(Cc13Seg67bHost& host, void* bot,
+                                                     std::int32_t x, std::int32_t y);
+// 009E2F10: __thiscall(ECX = goal record member; released), RET 4.
+void ship_ai_goal_member_on_observed_released_009e2f10(Cc13Seg67bHost& host, void* member,
+                                                       void* released);
+// 009E69D0: __thiscall(ECX = object; float angle, float peak), RET 8.
+void heading_error_ramp_set_34_009e69d0(Cc13Seg67bHost& host, void* object, float angle,
+                                        float peak);
+// 009E6A30: __thiscall(ECX = object; float angle, float span, float peak), RET 0Ch.
+void heading_error_ramp_set_38_009e6a30(Cc13Seg67bHost& host, void* object, float angle,
+                                        float span, float peak);
+// 009F3CC0: __fastcall(ECX = ship-AI gun bot), RET, EAX = name.
+const char* ship_ai_gun_bot_sub_state_name_009f3cc0(Cc13Seg67bHost& host, void* bot);
 
 }  // namespace bsp
