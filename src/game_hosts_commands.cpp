@@ -73,7 +73,9 @@ constexpr bool kDirectorCommandArmsBound = true;
 // no host target carries; 0071E2E0 and 0071DF70 need director+50h / +40h state
 // the echo site and this host do not model; 0071FB90's path objects are
 // kPathObjectDefaultPairBound's.
-constexpr bool kDirectorQueueCc13BodiesBound = false;
+// ON by cc9-ships59 (docs/SHIP_AI_OPEN_ITEMS.md 291): USN04 20000 gameplay-identical,
+// 0071C0C0 reached 858 times.
+constexpr bool kDirectorQueueCc13BodiesBound = true;
 // Packet cc9_unresolved_fire_target (docs/GUNNERY_OPEN_ITEMS.md section 33).
 // True: 008358D0's forced fire target (00835930 -> 00835860) resolves a
 // descriptor whose object is a producer's handle, not one of this host's unit

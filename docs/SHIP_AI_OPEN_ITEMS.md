@@ -19277,3 +19277,28 @@ ship because it owns the last damaging hit, not the flooding.
 or the credit, and no artillery line-of-fire gate. The friendly kills are image behaviour. No switch, no code
 change. For the re-plan (item 5): keep the two Louisianas out of each other's line to HQ2. Give them attack
 positions on different bearings, or bring one in only after the other has stopped firing.
+
+## 291. cc15's `kDirectorQueueCc13BodiesBound`: pair and flip (cc9-ships59, 2026-10-18)
+
+Lead queue item 2. The switch (src/game_hosts_commands.cpp) routes four director-queue sites to
+src/gameplay_seg38_cc13.cpp: 0071C0C0 (inside `command_accepted`), 0071D780, 0071E200 and the 0071D900 slot clear.
+
+**Reach.** USN01 never reaches `command_accepted` (00835e90). USN04 does, with no orders: `local\s58_off1_u4.log`
+counts 00835e90 calls=858, 0071d780 calls=1659 and 0071e200 calls=867 in 20000 frames.
+
+**Predictions (written before the pair).** Gameplay-identical (pair_diff exit 0 or 1) on USN04 20000.
+- 0071C0C0: the host's `command != 0 && count < 10` and cc13's first-empty-slot test agree whenever the slots
+  are packed from 0, which is always true here.
+- 0071D780: both weight a slot-0 `moveonpath` by its point count, and slots 1..9 carry no path in either.
+- 0071D900: the same 5Dh record (arm 1, slot).
+- 0071E200: cc13 sums in float and accepts a sum of exactly 1.0 (`<=`, the image's FCOMIP/JA); the host sums in
+  double and uses `< 1.0`. They differ only when two targets are about 1 m apart. A repeat target in this host
+  is either the same point (sum 0) or far away, so I expect no change.
+
+**Pair (USN04 20000, reference env).** OFF `local\s59_dqoff_u4.log` (tree exe at c123ad2dc), ON
+`local\s59_dqon_u4.log` (`local\s59_dq_on`, manifests beside each log). `pair_diff` exit 1: gameplay identical,
+with 90 death rows, 181 unit-table rows and 25295 shots on both sides. The native table adds
+`EntityCommand::has_free_command_slot 0071c0c0 calls=858`, so the cc13 base test runs on every `command_accepted`.
+The only other moved line is `ship ai free: refills` 2455 -> 2394, the known avoidance-refill noise.
+**Flipped ON** by mechanism. With every site routed, the host's own `< 1.0` projection at 0071E200 is only the OFF
+arm, so no boundary fix is needed.
