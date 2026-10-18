@@ -39,6 +39,14 @@ constexpr bool kMenuPumpYieldsToMissionFrameBound = true;  // ON: 17 rows identi
 // the host manager's +50h pointer slot instead of only being recorded.
 constexpr bool kFrontEndPointerCc13Bound = false;
 
+// Packet cc15-ls1: the front-end shell's begin_loading (0057cb60) and end_loading
+// (0057c250) run frontend_entry.cpp's begin_loading_screen / end_loading_screen
+// over MenuLoadingScreenHost and the Impl's LoadingScreen, instead of being only
+// recorded. The host state they reach is the frame-layout selector 00518250
+// (mode 0 selects set 2 with commit 1) and the GUI enable 00aa0e00 (under
+// kFrontEndPointerCc13Bound); every other call is a record row.
+constexpr bool kLoadingScreenCc13Bound = false;
+
 // 004f8710 publishes screen ids; the level-4 set the main-menu manager raises
 // has exactly one element (docs/MAIN_MENU_PATH.md).
 constexpr int kNoScreenSlot = -1;
@@ -166,6 +174,7 @@ struct GameMenuHost::Impl {
     MainMenuMusicState title_music{};
     FrontEndShellState shell_state{};
     LoadingScreenConfig loading_globals{};
+    LoadingScreen loading_screen{};  // the 00E194B4 singleton's recovered fields
     GameSingletonHost& singletons;
 
     // --- the main-menu path -------------------------------------------------
@@ -1228,6 +1237,101 @@ private:
 };
 
 // ---------------------------------------------------------------------------
+// 0057cb60 / 0057c250, the loading screen (packet cc15-ls1)
+// ---------------------------------------------------------------------------
+
+// The loading screen's native calls. The renderer, the screen object, its four
+// GUI elements and the render worker do not exist in this process, so those
+// calls are record rows; game_object_present is true because the host's game
+// state stands for 00E188A8 throughout the shell.
+class MenuLoadingScreenHost final : public LoadingScreenHost {
+public:
+    explicit MenuLoadingScreenHost(GameMenuHost::Impl& owner) : owner_(owner) {}
+
+    void renderer_begin_frame() override { rec("LoadingScreen::renderer_begin_frame", "00f8d394+0Ch"); }
+    void renderer_end_frame() override { rec("LoadingScreen::renderer_end_frame", "00f8d394+14h"); }
+    void renderer_begin_worker_mode() override { rec("LoadingScreen::renderer_begin_worker_mode", "00f8d394+1Ch"); }
+    bool game_object_present() override { return true; }
+    void session_suspend() override { rec("LoadingScreen::session_suspend", "0076c190"); }
+    void session_resume() override { rec("LoadingScreen::session_resume", "0076c230"); }
+    void gui_set_enabled(bool enabled) override {
+        if constexpr (kFrontEndPointerCc13Bound) {
+            owner_.frontend.gui_manager_set_enabled_00aa0e00(enabled);
+            owner_.log.implemented("LoadingScreen::gui_set_enabled", "00aa0e00");
+        } else {
+            static_cast<void>(enabled);
+            rec("LoadingScreen::gui_set_enabled", "00aa0e00");
+        }
+    }
+    void gui_update(float seconds, int mode) override {
+        static_cast<void>(seconds);
+        static_cast<void>(mode);
+        rec("LoadingScreen::gui_update", "00aa4f80");
+    }
+    void gui_refresh() override { rec("LoadingScreen::gui_refresh", "00aa2b80"); }
+    // The loading screen is not one of the registry screens the host commits.
+    void screen_registry_commit() override { rec("LoadingScreen::screen_registry_commit", "004f83b0"); }
+    void screen_pump_reset() override { rec("LoadingScreen::screen_pump_reset", "004f8ac0"); }
+    void close_previous_screen() override { rec("LoadingScreen::close_previous_screen", "00e19698"); }
+    void load_texture_atlas(const char* path) override {
+        owner_.log.notef("loading screen atlas %s", path);
+        rec("LoadingScreen::load_texture_atlas", "00af0060");
+    }
+    void create_screen() override { rec("LoadingScreen::create_screen", "0057c1c0"); }
+    void screen_init() override { rec("LoadingScreen::screen_init", "00cef264+10h"); }
+    void screen_show() override { rec("LoadingScreen::screen_show", "00cef264+18h"); }
+    void screen_stop_worker() override { rec("LoadingScreen::screen_stop_worker", "00cef264+1Ch"); }
+    void screen_destroy() override { rec("LoadingScreen::screen_destroy", "00cef264+0Ch"); }
+    void lifetime_unregister() override { rec("LoadingScreen::lifetime_unregister", "00415350"); }
+    void select_menu_layout(int layout, int flag) override {
+        // 004c1ac0 returns the frame singleton the host's frame_layouts stand
+        // for; 00518250 is the same selector the title bring-up runs.
+        const bool commit = flag != 0;
+        owner_.acquire_hidden = !commit;
+        MenuFrameLayoutHost layouts(owner_);
+        bsp::select_front_end_frame_set(owner_.frame_layouts, layouts, layout, commit);
+        owner_.acquire_hidden = false;
+        owner_.frontend.invalidate_bridge();
+        owner_.log.implemented("LoadingScreen::select_menu_layout", "00518250");
+    }
+    void element_set_image(int element, int index, float alpha) override {
+        static_cast<void>(element);
+        static_cast<void>(index);
+        static_cast<void>(alpha);
+        rec("LoadingScreen::element_set_image", "element+88h");
+    }
+    void element_set_visible(int element, bool visible) override {
+        static_cast<void>(element);
+        static_cast<void>(visible);
+        rec("LoadingScreen::element_set_visible", "element+34h");
+    }
+    void element_set_rect(int element) override {
+        static_cast<void>(element);
+        rec("LoadingScreen::element_set_rect", "element+58h");
+    }
+    void bind_loading_image(const std::string& name) override {
+        static_cast<void>(name);
+        rec("LoadingScreen::bind_loading_image", "00abaed0");
+    }
+    float element_aspect_source() override {
+        rec("LoadingScreen::element_aspect_source", "element+114h");
+        return 0.0f;
+    }
+    void prepare_extra_elements() override { rec("LoadingScreen::prepare_extra_elements", "0057c990"); }
+    void start_render_worker(int rate) override {
+        static_cast<void>(rate);
+        rec("LoadingScreen::start_render_worker", "00aa4040");
+    }
+
+private:
+    void rec(const char* method, const char* address) {
+        owner_.log.unimplemented(method, address);  // literals: the log indexes by pointer
+    }
+
+    GameMenuHost::Impl& owner_;
+};
+
+// ---------------------------------------------------------------------------
 // 004e4000, BSP_Game_EnterFrontEndShell
 // ---------------------------------------------------------------------------
 
@@ -1274,17 +1378,30 @@ public:
     }
     LoadingScreenConfig& loading_globals() override { return owner_.loading_globals; }
     void begin_loading(LoadingScreenMode mode) override {
-        static_cast<void>(mode);
-        // 0057cb60 builds the 58h loading screen and starts its render worker.
-        // That screen is another packet; the shell loads synchronously here.
-        owner_.log.unimplemented("FrontEndShell::begin_loading", "0057cb60");
+        if constexpr (kLoadingScreenCc13Bound) {
+            MenuLoadingScreenHost host(owner_);
+            begin_loading_screen(owner_.loading_screen, mode, owner_.loading_globals, host);
+            owner_.log.implemented("FrontEndShell::begin_loading", "0057cb60");
+        } else {
+            static_cast<void>(mode);
+            // 0057cb60 builds the 58h loading screen and starts its render worker.
+            // That screen is another packet; the shell loads synchronously here.
+            owner_.log.unimplemented("FrontEndShell::begin_loading", "0057cb60");
+        }
     }
     void report_progress(float progress) override {
         static_cast<void>(progress);
         owner_.log.unimplemented("FrontEndShell::report_progress", "0057bec0");
     }
     void end_loading() override {
-        owner_.log.unimplemented("FrontEndShell::end_loading", "0057c250");
+        if constexpr (kLoadingScreenCc13Bound) {
+            // 00E194B4 is null unless 0057cb60 built the screen.
+            MenuLoadingScreenHost host(owner_);
+            end_loading_screen(owner_.loading_screen.created ? &owner_.loading_screen : nullptr, host);
+            owner_.log.implemented("FrontEndShell::end_loading", "0057c250");
+        } else {
+            owner_.log.unimplemented("FrontEndShell::end_loading", "0057c250");
+        }
     }
     void game_on_init() override {
         // 004e3aa0's first store is game+5D4h = 3.
