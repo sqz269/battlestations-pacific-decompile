@@ -5,6 +5,7 @@
 #include "bsp/cc13_small2.hpp"
 
 #include <cmath>
+#include <cstring>
 #include <initializer_list>
 #include <set>
 
@@ -47,8 +48,9 @@ void* unit_director_path_object0_00778860(void* unit, Small2Host& host) {
 
 // 00779EB0 __thiscall(entity, Record** record) RET 4, float in ST0. The record's point
 // (+ACh) is copied before the pose refresh; the entity's world position is +FCh..+104h.
-// Every x87 step is a float store or a 24-bit-precision product, so float arithmetic
-// reproduces it. Sum order from the listing: (dx*dx + dy*dy) + dz*dz.
+// At the main thread's 24-bit precision every x87 step is a float store or a float-rounded
+// product, so float arithmetic reproduces it; a fixed-step job at 53 bits would round the
+// products and the sum once, at the FSTP (00779F39), instead (uncertain which applies). Sum order from the listing: (dx*dx + dy*dy) + dz*dz.
 float unit_distance_to_record_00779eb0(void* entity, void* const* record, Small2Host& host) {
     const float px = at<float>(*record, 0xAC);                         // 00779EB9
     const float py = at<float>(*record, 0xB0);                         // 00779ECB
@@ -61,6 +63,40 @@ float unit_distance_to_record_00779eb0(void* entity, void* const* record, Small2
     // 00779F47 FCOMI / JBE: at or below 1e-10, or unordered, gives 0.
     if (!(static_cast<double>(sq) > kMinDistanceSquared)) return 0.0f;
     return static_cast<float>(std::sqrt(static_cast<double>(sq)));    // 00779F4D 00BF7030
+}
+
+// 0077A080 __thiscall(msg, group) RET 4, EAX = msg: MT_FORMATION_SET (78h). Header via
+// 0075B430(78h), then vtable 00CED548, +20h = group+500h, +24h = n = group+4F8h, and two
+// new[] arrays of n 16-byte rows (+28h from member record +10h..+1Ch, +2Ch from +20h..+2Ch).
+// The new[] size is n*16 with the image's overflow guard (MUL / SETO / NEG / OR -> FFFFFFFFh).
+void* session_message_formation_set_construct_0077a080(void* msg, void* group,
+                                                       Small2Host& host) {
+    host.session_message_construct_base_0075b430(msg, kMsgFormationSet);       // 0077A0A1
+    at<std::uint16_t>(msg, 0x18) = 0;                                          // 0077A0A8
+    at<std::uint8_t>(msg, 0x1A) = 0;                                           // 0077A0AC
+    at<std::uint32_t>(msg, 0x4) = 1;                                           // 0077A0AF
+    at<std::uint8_t>(msg, 0x1C) = 0;                                           // 0077A0B6
+    at<std::uint32_t>(msg, 0x0) = kMsgFormationSetVtable;                      // 0077A0BD
+    at<std::uint32_t>(msg, 0x20) = at<std::uint32_t>(group, 0x500);            // 0077A0C3
+    at<std::uint32_t>(msg, 0x24) = at<std::uint32_t>(group, 0x4F8);            // 0077A0CC
+    const auto array_bytes = [](std::uint32_t n) -> std::uint32_t {
+        const std::uint64_t bytes = static_cast<std::uint64_t>(n * 4u) * 4u;  // ADD, ADD, MUL 4
+        return (bytes >> 32) != 0 ? 0xFFFFFFFFu : static_cast<std::uint32_t>(bytes);
+    };
+    at<void*>(msg, 0x28) = host.operator_new_array_00bf55be(
+        array_bytes(at<std::uint32_t>(msg, 0x24)));                            // 0077A0EE
+    at<void*>(msg, 0x2C) = host.operator_new_array_00bf55be(
+        array_bytes(at<std::uint32_t>(msg, 0x24)));                            // 0077A10E
+    for (std::uint32_t i = 0; i < at<std::uint32_t>(msg, 0x24); ++i) {        // 0077A116 / 0077A17D JC
+        void* const record = host.group_member_record_at_0070d070(group, i);  // 0077A124
+        float* const a = static_cast<float*>(ptr(msg, 0x28)) + i * 4;
+        float* const b = static_cast<float*>(ptr(msg, 0x2C)) + i * 4;
+        for (int k = 0; k < 4; ++k) {                                          // 0077A129..0077A179
+            a[k] = at<float>(record, 0x10 + 4 * k);
+            b[k] = at<float>(record, 0x20 + 4 * k);
+        }
+    }
+    return msg;
 }
 
 // 0077A650 __thiscall(unit) RET. Callers (00826D5A, 007F3D1C) run it only when unit+308h
@@ -165,9 +201,54 @@ LuaObject* unit_lua_this_table_entry_0077cd80(void* unit, LuaObject* out, Small2
     return out;
 }
 
+// 0077D270 __thiscall(unit) RET, the unit override of mission-entity slot 7Ch. Clears the
+// game's +193Ch byte, marks the recon slot of each of the three +1F0h rows (34h apart) with a
+// positive count (row+8 selects row+0 or row-4), and for a kind-1 unit (+70h) with a script
+// handle (word +2C8h) sets self.LastBanto = thisTable entry of the +2B0h record under the
+// mission-entity lock (critical section [lock+4], depth +18h). Then 00929B60.
+void unit_instance_on_killed_lua_0077d270(void* unit, Small2Host& host) {
+    at<std::uint8_t>(host.global_ptr(kGame), 0x193C) = 0;                      // 0077D295
+    for (std::int32_t i = 0; i < 3; ++i) {                                     // 0077D29C..0077D2C4
+        const std::size_t row = 0x1F0 + 0x34 * static_cast<std::size_t>(i);
+        const std::int32_t count = at<std::uint8_t>(unit, row + 8) != 0
+                                       ? at<std::int32_t>(unit, row)
+                                       : at<std::int32_t>(unit, row - 4);
+        if (count > 0) host.recon_mark_slot_dirty_00803ba0(i);                 // 0077D2B6
+    }
+    if (at<std::int32_t>(unit, 0x70) == 1 && at<std::uint16_t>(unit, 0x2C8) != 0) {  // 0077D2CB / 0077D2D4
+        void* const section = ptr(host.mission_entity_lock_get_004c1570(), 4);  // 0077D2E1
+        if (section != nullptr) {                                              // guard, vtable 00CE37FC
+            host.enter_critical_section_iat_00ce2218(section);                // 0077D2FA
+            at<std::int32_t>(section, 0x18) += 1;                              // 0077D300
+        }
+        NativeString name{0, nullptr};
+        host.native_string_resize_0041dd40(&name, 9, 1);                       // 0077D316
+        if (name.data != nullptr)
+            std::memcpy(name.data, host.global_address(kLastBantoName), name.length + 1);  // 0077D331
+        LuaObject entry{};
+        LuaObject self{};
+        LuaObject* const value =
+            unit_lua_this_table_entry_0077cd80(add(unit, 0x2B0), &entry, host);   // 0077D349
+        void* const self_obj = host.mission_entity_lua_self_object_00927b40(unit, &self);
+        host.lua_set_object_00b675d0(self_obj, &name, value);                  // 0077D36F
+        host.lua_destroy_00b67700(&self);                                      // 0077D37C
+        host.lua_destroy_00b67700(&entry);                                     // 0077D38A
+        if (name.data != nullptr) host.native_string_free_storage(&name);      // 0077D38F..0077D3AE
+        if (section != nullptr) {
+            at<std::int32_t>(section, 0x18) -= 1;                              // 0077D3BE
+            host.leave_critical_section_iat_00ce2210(section);                // 0077D3C2
+        }
+    }
+    host.mission_entity_on_killed_lua_00929b60(unit);                          // 0077D3CA
+}
+
 // 0077D3F0 __thiscall(entity, const NativeString* name, arg) RET 8. Copies the name into
 // entity+15Ch, makes the (compiled-out) log call, and in server mode broadcasts a SETGUINAME
 // message built from a by-value copy of the name (the constructor owns that copy).
+// native_string_assign_0041dd40 folds two image calls: 0041DD40(dst; src.length, 1), then
+// the 00BF7680 memcpy(dst.data, src.data, dst.length) when src.length is non-zero. The
+// SETGUINAME constructor hook can forward to mp_seg43_cc13's
+// message_setguiname_construct_0077ccc0 (the length/chars split of the by-value string).
 void entity_set_gui_name_0077d3f0(void* entity, const NativeString* name, std::uint32_t arg,
                                   Small2Host& host) {
     auto* const own = static_cast<NativeString*>(add(entity, 0x15C));
@@ -227,6 +308,9 @@ void replication_step_local_player_record_0077d7f0(Small2Host& host) {
 // its child queue (container +298h, head +29Ch, size +2A0h), trace each child through
 // vtable[17Ch] when 00E0AF20 is set, then empty the queue and free its nodes. The child
 // keys (child+50h) go into a local std::set that nothing reads before it is destroyed.
+// The checked-iterator reports (0077F678 / 0077F689 / 0077F693 / 0077F6BB / 0077F6C8 /
+// 0077F6D2 / 0077F70F / 0077F750) sit behind container self-compares or a node already known
+// not to be the end, so they cannot fire and are omitted.
 void replication_drain_child_queues_0077f5e0(Small2Host& host) {
     if (session_mode(host) != kSessionModeServer) return;                    // 0077F603
     if (at<std::uint8_t>(host.global_address(kNetChildQueuePending), 0) == 0) return;
@@ -258,6 +342,75 @@ void replication_drain_child_queues_0077f5e0(Small2Host& host) {
     at<std::uint8_t>(host.global_address(kNetChildQueuePending), 0) = 0;     // 0077F770
 }   // 0077F78A 0077E740 / 0077F794 _free: the set goes away here.
 
+// 0077FE80 __thiscall(entity, msg, bool* out) RET 8, AL. The fall-through of 00780120:
+// msg->vtable[10h]() false -> *out = 0 (when out) and 0; else the type byte msg+10h,
+// 53h..78h, picks an arm through the byte table 0078005C and the targets at 00780044, and
+// anything else (or a table entry of 5) returns entity->vtable[164h](msg). `out` is
+// written only on the not-ready path. 00521E30 resolves the 16-bit handle in CX; at
+// 0077FEC8 ECX's high half still holds the message pointer's (the routine reads CX only).
+bool session_dispatch_entity_kind_message_0077fe80(void* entity, void* msg, bool* out,
+                                                   Small2Host& host) {
+    if (!host.message_is_ready_10(msg)) {                                       // 0077FE8F
+        if (out != nullptr) *out = false;                                       // 0077FE9D
+        return false;
+    }
+    switch (at<std::uint8_t>(msg, 0x10)) {                                      // 0077FEAA
+    case 0x53: {                                                                // 0077FFAF
+        const std::uint32_t player = at<std::uint32_t>(msg, 0x20);
+        void* const slot = at<void*>(host.global_ptr(kGame),
+                                     0x18CC + static_cast<std::size_t>(player) * 4);
+        if (at<std::uint8_t>(slot, 9) == 0) {                                   // 0077FFBF
+            host.entity_claim_player_144(entity, player);                       // 0077FFD1
+            host.warning_manager_report_new_unit_00977cd0(
+                host.global_ptr(kWarningManager), at<std::uint32_t>(msg, 0x20));  // 0077FFDD
+            void* const game = host.global_ptr(kGame);
+            if (game != nullptr && at<std::int32_t>(game, 0x1FE4) == kSessionModeServer) {
+                host.session_owner_broadcast_0077c7b0(entity, msg, 0);          // 0077FFF9
+                host.unit_group_release_member_0077c980(entity, nullptr);      // 00780002
+            }
+        }
+        host.unit_apply_role_owner_slots_0077a5d0(entity);                     // 00780009
+        return true;
+    }
+    case 0x54:                                                                  // 00780015
+        host.entity_apply_message_payload_0c(entity, add(msg, 0x20), at<std::uint8_t>(msg, 0x28));
+        return true;
+    case 0x76: {                                                                // 0077FEC8
+        void* const target = host.entity_handle_resolve_00521e30(at<std::uint16_t>(msg, 0x20));
+        if (target != nullptr) host.unit_group_join_or_merge_0077f940(entity, target);
+        return true;
+    }
+    case 0x77: {                                                                // 0077FEE4
+        const std::uint16_t id = at<std::uint16_t>(msg, 0x20);
+        void* const target = id != 0 ? host.entity_handle_resolve_00521e30(id) : nullptr;
+        host.unit_group_hand_over_leadership_0077bd70(entity, target);         // 0077FEF7
+        return true;
+    }
+    case 0x78: {                                                                // 0077FF03
+        if (ptr(entity, 0x284) != nullptr) {
+            host.unit_group_apply_formation_shape_0070efd0(ptr(entity, 0x284),
+                                                           at<std::uint32_t>(msg, 0x20));
+            const std::int32_t n = at<std::int32_t>(ptr(entity, 0x284), 0x4F8);   // 0077FF21
+            for (std::int32_t i = 0; i < n; ++i) {                              // 0077FF2F / 0077FF98 JL
+                void* const record = host.group_member_record_at_0070d070(
+                    ptr(entity, 0x284), static_cast<std::uint32_t>(i));         // 0077FF3B
+                const float* const a = static_cast<const float*>(ptr(msg, 0x28)) + i * 4;
+                const float* const b = static_cast<const float*>(ptr(msg, 0x2C)) + i * 4;
+                for (int k = 0; k < 4; ++k) {                                   // 0077FF43..0077FF95
+                    at<float>(record, 0x10 + 4 * k) = a[k];
+                    at<float>(record, 0x20 + 4 * k) = b[k];
+                }
+            }
+        }
+        host.session_owner_broadcast_0077c7b0(entity, msg,
+                                              at<std::int32_t>(msg, 0x14));     // 0077FFA3
+        return true;
+    }
+    default:                                                                    // 0078002F
+        return host.entity_generic_message_164(entity, msg);
+    }
+}
+
 // 0077F7B0 __thiscall(unit, msg) RET 4, entity message 51h (00780522). Schedules the
 // unit's expiry at clock + mode delay + message age, transfers every role, retires the
 // controlled unit's HUD, and outside client mode clears and stops its orders.
@@ -265,7 +418,8 @@ void unit_apply_expiry_message_0077f7b0(void* unit, const void* msg, Small2Host&
     const std::int32_t age = at<std::int32_t>(const_cast<void*>(msg), 0xC) -
                              global_int(host, kTick);                        // 0077F7BB / 0077F7BE
     // 0077F7C8 FILD, 0077F7D2 FMUL float 0.05, 0077F7D8 FSTP float. FILD is exact; the
-    // product rounds to float (24-bit precision) like the C++ below for |age| < 2^24.
+    // product rounds to float (24-bit precision) like the C++ below for |age| < 2^24. On a
+    // 53-bit fixed-step thread the sums below would round only at the FSTP (uncertain).
     const float age_seconds = static_cast<float>(age) * kTickSeconds;
     const std::int32_t mode = host.game_effective_mode_004bca50(host.global_ptr(kGame));
     const float clock = global_float(host, kClock);                          // 0077F7E4
@@ -420,6 +574,7 @@ void game_update_player_slot_unit_flags_004c3a80(void* game, Small2Host& host) {
 // [[game+19CCh]+16Ch] (singly linked: +4 next, +8 entity). Horizontal distance only.
 // x87 from the listing: s = dx*dx + dz*dz stored to float, r = (float)int, r*r stored to
 // float, then FCOMIP ST0(s), ST1(r*r) / JBE: s <= r*r, or unordered, is inside.
+// Modelled at 24-bit precision; at 53 bits the two squares would be added before rounding.
 bool unit_within_friendly_capture_radius_005f98f0(void* unit, Small2Host& host) {
     if (!host.entity_is_kind_5c(unit, kUnitKind06)) return false;            // 005F98FD
     if (host.entity_is_kind_5c(unit, kUnitKind09)) return false;             // 005F9910

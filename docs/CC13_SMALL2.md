@@ -11,10 +11,10 @@ for the ledger name. Names below are hypotheses, not recovered symbols.
 | --- | ---: | --- |
 | Library container code, bind-only | 82 | tags (`stl_shape` 74, `tmpl_shape` 7, `cg_array_ctor_helper` 1) |
 | Game code hosted by cc9, verified | 7 | `existing_host_verified_ledger_only` |
-| Game code reconstructed here | 17 | `reconstructed_build_tested` |
+| Game code reconstructed here | 20 | `reconstructed_build_tested` |
 | cc9 keep, not touched | 1 | none (00428800) |
 | Reconstructed concurrently by cc13-front8 | 1 | none here (0053D230, `src/cc13_front8.cpp`) |
-| Game code deferred | 21 | none |
+| Game code deferred | 18 | none |
 
 ### Library rows (82)
 
@@ -72,10 +72,22 @@ date-disabled flag, so the name `EnabledContinuation` stands.
 ## Reconstructed (17)
 
 The code is in `src/cc13_small2.cpp` and `include/bsp/cc13_small2.hpp`. It is built into
-`bsp_core` and nothing calls it. Each body was read from the listing. The x87 operand order
-was taken from the stack sequence in the listing (FLD/FMULP/FADDP, with no reversed DC-form
-operations), and the products and sums are modelled as float operations because the main
-thread runs at 24-bit precision.
+`bsp_core` and nothing calls it. Each body was read from the listing. The x87 operand order was taken from the stack sequence in the listing (FLD, FMULP, FADDP).
+These routines contain no non-commutative DC-form operation (FSUBR or FDIVR). The one DC-form
+instruction, 00779F35 `DC C8` FMUL ST0,ST0, is symmetric. The products and sums are modelled
+as float operations at the main thread's 24-bit precision.
+
+**Precision uncertainty.** 00779EB0, 0077F7B0 and 005F98F0 can also run on fixed-step job
+threads at 53 bits. In that case the intermediate products and sums would round only at the
+FSTP, not at every step. The records say so.
+
+Hook names: `mp_seg43_cc13`'s hooks are renamed to match the new reading:
+- `replication_flush_queued_rows_0077c540` (was `replication_reset_frame_counters_0077c540`);
+- `replication_drain_child_queues_0077f5e0` (was `replication_rebuild_entity_index_0077f5e0`).
+
+Neither body reads the ECX that the call site passes. `mission_scene_load.hpp:269`
+`commit_scene_ready` (0077F5E0) belongs to the mission-load host, which is not a cc13 file,
+so it is noted here and left unchanged.
 
 | Address | Name | ABI | Notes |
 | --- | --- | --- | --- |
@@ -152,11 +164,49 @@ cc13 multiplayer docs read them that way.
   as cc9 lane. This packet assigned them. The rows recorded here are standalone and
   unwired, and no cc9 file was edited.
 
-## Deferred (21, no record)
+## Batch 2 (3 more reconstructed)
 
-- **Too large for this packet:** 0077B280 (sync delta, 294 instructions of x87),
-  00673A10 (63 callees), 00674B80 (53 callees), 004A9BD0 (planepartclasses loader; a class
-  loader, and cc9 reads its globals), 00428420 (over 250 lines).
-- **Still to do:** 004A0D20, 0066EA60, 005E12A0, 00641910, 00641E30, 0064AE20, 005AAC00,
-  006697E0, 0066A8A0, 0077FE80, 00780DB0, 0077D270, 0077A080,
-  005B8810, 004C7AA0 and 0059D4A0 (x87 with a jump table and a path that leaves locals unset). These are for a later batch.
+| Address | Name | ABI | Notes |
+| --- | --- | --- | --- |
+| 0077A080 | BSP_SessionMessage_FORMATION_SET_Construct | thiscall(msg; group) RET 4 | 78h message; two new[] arrays of n 16-byte member rows, with the image's MUL/SETO overflow guard |
+| 0077D270 | BSP_UnitInstance_OnKilledLua | thiscall(unit) | recon slot marks; `self.LastBanto` under the mission-entity lock; then 00929B60 |
+| 0077FE80 | BSP_Session_DispatchEntityKindMessage | thiscall(entity; msg, bool* out) RET 8, AL | byte table 0078005C and targets 00780044: arms 53h, 54h, 76h, 77h, 78h; everything else goes to vtable[164h] |
+
+Adoption notes:
+- **0077D270.** cc9's entity-dead host (`game_hosts_script_orders.cpp` near 5661) models only
+  the 00929B60 tail and labels `LastBanto` as not modelled. This is not a mismatch. The
+  routine writes the dead unit's `self.LastBanto` from its +2B0h thisTable entry, so Lua that
+  reads `LastBanto` would see nil in the host.
+- **0077FE80.** cc9 runs the 77h and 76h arms at their call sites, as labelled substitutions,
+  rather than through this switch. The 53h arm (claim a player slot, report a new unit, and
+  in server mode broadcast and release from the group) and the 54h arm are not hosted.
+- **0077A080.** The new[] arrays are never freed here; the message's destructor owns them.
+  The hooks in cc13_sweepB9, menu_screens_2 and options_seg56_cc13 can forward to this body.
+
+## Deferred (18, no record)
+
+Each of these exceeds what a bounded small-row packet can verify instruction by instruction:
+
+- **Loaders and very large bodies:**
+  - 004A0D20 (2199 instructions);
+  - 0066EA60 (1280);
+  - 00673A10 (63 callees);
+  - 00674B80 (53 callees);
+  - 004A9BD0 (the planepartclasses class loader; cc9 reads its globals);
+  - 00428420 (over 250 instructions, a cc9-adjacent projectile helper).
+- **Large HUD and lobby bodies:**
+  - 0066A8A0 (523);
+  - 006697E0 (372);
+  - 005E12A0 (359);
+  - 00641910 (340);
+  - 0064AE20 (244);
+  - 005AAC00 (239);
+  - 004C7AA0 (231).
+- **Mid-size, next in line:**
+  - 00780DB0 (176, the MultiScore constructor);
+  - 00641E30 (142);
+  - 005B8810 (140; docs/CC13_FRONTEND_MENUS.md places it in cc9's front-end range).
+- **Owned by front8:** 0077B280. cc13-front8 reconstructed it, and its ABI text was fixed
+  in batch 2.
+- **Hard x87:** 0059D4A0. It has a jump table over four placement modes, and its mode
+  outside 0 and 1 leaves the position locals unset. Raise it at max effort.

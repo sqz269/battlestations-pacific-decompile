@@ -218,12 +218,12 @@ bool lan_host_key_less_0076eaa0(const void* left, const void* right, MpSeg43Hook
 void session_step_entity_replication_0076f210(Raw session, std::uint32_t, bool flag,
                                               const MpGlobals& globals, MpSeg43Hooks& hooks) {
     if (globals.game_00e188a8 == nullptr) return;
-    if (get<void*>(session, kServer) != nullptr) hooks.replication_rebuild_entity_index_0077f5e0(session);
+    if (get<void*>(session, kServer) != nullptr) hooks.replication_drain_child_queues_0077f5e0(session);
     if (!flag) return;
     if (void* const server = get<void*>(session, kServer)) {
         put<std::uint32_t>(server, 0x98, 0);
         hooks.game_tuning_get_singleton_0042e740(); // result unused
-        hooks.replication_reset_frame_counters_0077c540(get<void*>(session, kServer));
+        hooks.replication_flush_queued_rows_0077c540(get<void*>(session, kServer));
     }
     void* const client = get<void*>(session, kClient);
     if (client == nullptr || get<std::int32_t>(client, 0x9c) < 8) return;
