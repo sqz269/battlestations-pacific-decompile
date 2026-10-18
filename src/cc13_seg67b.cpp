@@ -2024,6 +2024,33 @@ void* bot_task_make_stop_009badb0(Cc13Seg67bHost& host, void* bot) {
     return t;
 }
 
+// 009BACB0 (009BACB0-009BAD23). EH frame. __fastcall(ECX = bot, EDX = target; float
+// alt), RET 4: t = new(400h) (009BACD2); null -> 0; else 0099C6F0(ECX = t, bot, 0Fh)
+// (009BACEF), [t] = 00D20480 (009BACFA), +3F8h = target (009BAD00), +3FCh = alt
+// (009BAD06). The base constructor takes one 00BD2F10 draw.
+void* bot_task_make_gain_altitude_009bacb0(Cc13Seg67bHost& host, void* bot, void* target,
+                                           float alt) {
+    void* const t = host.operator_new_00bf681b(0x400);
+    if (t == nullptr) return nullptr;
+    bot_task_construct_base_0099c6f0(host, t, bot, 0x0F);
+    at<std::uint32_t>(t, 0) = kGainAltitudeTaskVtable;
+    at<void*>(t, 0x3F8) = target;
+    at<float>(t, 0x3FC) = alt;
+    return t;
+}
+
+// 009BAD30 (009BAD30-009BADA8). EH frame. __fastcall(ECX = bot), RET: t = new(3FCh)
+// (009BAD4F); null -> 0; else 0099C6F0(ECX = t, bot, 0Fh) (009BAD6E), [t] = 00D20400
+// (009BAD74), +3F8h = 0 (009BAD7A). The base constructor takes one 00BD2F10 draw.
+void* bot_task_make_immelmann_009bad30(Cc13Seg67bHost& host, void* bot) {
+    void* const t = host.operator_new_00bf681b(0x3FC);
+    if (t == nullptr) return nullptr;
+    bot_task_construct_base_0099c6f0(host, t, bot, 0x0F);
+    at<std::uint32_t>(t, 0) = kImmelmannTaskVtable;
+    at<std::uint32_t>(t, 0x3F8) = 0;
+    return t;
+}
+
 // 009BA960 (009BA960-009BA9DD). EH frame. 0099C8B0(task, bot, archive, 0Fh)
 // (009BA98B); [task] = 00D20400 (009BA995); archive->vtable[10h]({0,"stage"}, {1,
 // &slot}) (009BA9BC), where slot is the `archive` argument's own stack slot; +3F8h

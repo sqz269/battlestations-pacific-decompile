@@ -774,6 +774,34 @@ There are 15 ledger-only rows (section 4), all compared against the named host f
 - The two moveto speed rows match the speed law. Their +2B4h/+2B0h/+2D8h stores were not re-read at the host's call sites.
 - 009CA130, the retreat tick, takes the decrement arm when dt is NaN (FCOMI then JB). The host refreshes instead. Only a NaN dt reaches the difference.
 
+### 3.53 Batch 7: host-named ticks (packet cc13-seg67C)
+
+Same checks as batch 6. The lead's three batch-5 row notes (009CE270, 009D24E0, 009C6270) are folded into those rows.
+
+There are 2 bodies, the gain-altitude and Immelmann task factories:
+- **009BACB0** builds a 400h-byte task with target and altitude.
+- **009BAD30** builds a 3FCh-byte task.
+
+Both run the base constructor 0099C6F0 with kind 0Fh, which takes one 00BD2F10 draw. Both are unreferenced (image scan) and have no target-equal twin.
+
+There are 24 ledger-only rows (section 4). 20 match their hosts, with these notes:
+- 009AA9E0, 009CD0D0 and 007B7BA0 (dogfight, strafe and rocket Stop) are target-equal byte twins.
+- 009CB0F0 takes one stream-1 draw for +18h. The host skips it because nothing reads +18h.
+- 009CD020 is the host's stated gap. Only the leader's 009CA3B0 seed is bound.
+- The strafe still-valid test (009CC850) falls back to +468h when +44Ch is 0. The kRows table names only +44Ch, and `attack_task_still_valid` has no callers.
+- With a NaN range, 009D4C10 answers break-off.
+
+Three are partial:
+- **009B5680**, the level-bomb goaway enter, multiplies draw x (+24h x base). The host forms (draw x base) x ratio, so the last bit can differ. Sent to the lead as URGENT (low).
+- **009C2430**, the moveto state tick. Sent to the lead as an adoption note. Three differences:
+  - The distance floor is 1e-10 in the image, against 1e-6 in the host.
+  - The host never stores +26Ch = 1.
+  - The C25h arm's four attitude stores are only a record in the host.
+- **009D4A70**, the torpedo cruise profile. Sent to the lead as URGENT. Three problems:
+  - The image clears approach+60h, but the host clears +5Ch.
+  - The host does not model the 009D3420(0.0) pass.
+  - The host's cites for this body do not land on its instructions.
+
 ## 4. Ledger-only records (packet cc13-seg67C)
 
 | Address | Host body | Result |
@@ -852,13 +880,13 @@ There are 15 ledger-only rows (section 4), all compared against the named host f
 | 009B0980, 009B09A0, 009B13E0 | `land_enter_abort_009b0980` (~33170), `land_exit_abort_009b09a0` (~33187), `land_enter_begin_009b13e0` (~32684), game_hosts_units.cpp | match |
 | 009B1E60 | `land_enter_final_009b1e60` (game_hosts_units.cpp ~32998) | matches apart from the host's labelled gap (+24h, plane+844h) |
 | 009B5C60, 009B6CE0, 009B4BD0 | the kAim / kMoveTo / kAttackRun arms of `lb_enter` (game_hosts_units.cpp ~25378) | match; the stream-0 U(0.4, 0.7) draws go through the keyed `lb_draw` |
-| 009CE270 | the SlowTakeoff -> Takeoff switch (game_hosts_units.cpp ~34291) | matches |
-| 009D24E0 | the torpedo install (game_hosts_units.cpp ~29576) | matches (+98h = -1) |
+| 009CE270 | the SlowTakeoff -> Takeoff switch (game_hosts_units.cpp ~34291) | matches; the host records 007C17D0 (BSP_Plane_NotifyTakeoffStart) but does not run it |
+| 009D24E0 | the torpedo install (game_hosts_units.cpp ~29576) | matches (+98h = -1); unreferenced in the image (0 refs) |
 | 009C8260, 009D4970, 009B8420 | `member_follows_007bcc20` (game_hosts_units.cpp ~8826) | match |
 | 009BE2C0 | target-equal byte twin of 009A6B70 (src/dogfight_task.cpp); moveto reads +48h..+50h (~35690) | twin |
 | 009BC760, 009CA680 | MoveOnPath `ref_34` (moveonpath_task_cc13.hpp ~58), `st_aim_point` (game_hosts_units.cpp ~603) | match |
 | 009C9E30 | `run_retreat_task_tick_009ca130` (game_hosts_units.cpp ~34893) | matches on the command class; the null-squadron 2 is not distinguished |
-| 009C6270 | the kFlyAbove enter (game_hosts_units.cpp ~27795) | matches; plane+844h not modelled |
+| 009C6270 | the kFlyAbove enter (game_hosts_units.cpp ~27795) | matches; plane+844h not modelled; the +1Bh clear is not modelled (the host holds +1B at 0 under kOldStyleBombing1b) |
 | 009CA820 | `st_gotowards_enter_009ca820` (game_hosts_units.cpp ~24608) | matches with the labelled substitutions |
 | 009D2530 | the done/prepare arm of `set_state` (game_hosts_units.cpp ~21909) | **partial**: no +98h reset on enter; done and prepare share one host timer; sent to the lead |
 | 009D15D0 | the aim enter redraw (game_hosts_units.cpp ~29996) | **partial**: +2Ch is never cleared in the host (sticky `torpedo_aim_complete_2c`); sent to the lead |
@@ -878,3 +906,27 @@ There are 15 ledger-only rows (section 4), all compared against the named host f
 | 009CE160 | `run_takeoff_slow_step_009ce160` (game_hosts_units.cpp ~34872) | matches |
 | 009E18D0 | the land arm of `select_state_for_command_009f3d00` (game_hosts_ship_ai.cpp ~2949) | matches |
 | 009CA130 | `run_retreat_task_tick_009ca130` (game_hosts_units.cpp ~34890) | matches except a NaN dt: the image decrements, the host refreshes |
+| 009B1D70 | `run_land_begin_tick_009b1d70` (game_hosts_units.cpp ~32957) | matches |
+| 009B3EB0 | `run_land_task_tick_009b3eb0` (game_hosts_units.cpp ~35021) | matches |
+| 009B5680 | `case LS::kGoAway` (game_hosts_units.cpp ~25406) | **partial**: product order draw x (+24h x base); sent to the lead |
+| 009B59F0 | `lb_release_tick_009b59f0` (game_hosts_units.cpp ~25866) | matches |
+| 009B5760 | `lb_goaway_tick_009b5760` (game_hosts_units.cpp ~25917) | matches |
+| 009B8B50 | `run_level_bomb_task_arm_009b8b50` (game_hosts_units.cpp ~25989) | matches |
+| 009B8C90 | `lb_cruise_profile_009b8c90` (game_hosts_units.cpp ~25450) | matches the labelled host |
+| 009BCA50 | `moveonpath_circle_tick_009bca50` (moveonpath_task_cc13.cpp ~141) | matches |
+| 009C2430 | `run_moveto_state_tick_009c2430` (game_hosts_units.cpp ~35760) | **partial**: 1e-10 vs 1e-6 floor, +26Ch = 1 unstored, C25h arm a record; adoption note |
+| 009C26D0 | `run_moveto_circle_tick_009c26d0` (game_hosts_units.cpp ~35666) | matches the labelled host |
+| 009C4F00 | the aimglide enter seed (game_hosts_units.cpp ~27888) | matches |
+| 009CD170 | the strafe arm (game_hosts_units.cpp ~26340) | matches |
+| 009CC850 | `attack_task_still_valid` strafe row (attack_commands.cpp ~354) | matches; the +468h fallback is not in kRows (no callers) |
+| 009CD0D0 | `opportunistic_rocket_clear_target` substitution (game_hosts_units.cpp ~23553) | twin of 009AA9E0 / 007B7BA0 |
+| 009AA9E0 | `opportunistic_rocket_clear_target` substitution (game_hosts_units.cpp ~23553) | matches the labelled substitution |
+| 009D4C10 | the torpedo break-off binding (game_hosts_units.cpp ~21721) | matches; NaN range answers break-off |
+| 009D4A70 | the torpedo install block (game_hosts_units.cpp ~29587) | **partial**: +60h vs +5Ch, 009D3420(0.0) unmodelled, cites off; sent to the lead |
+| 009CD020 | the strafe profile activation (game_hosts_units.cpp ~26330) | the host's stated gap (seed only) |
+| 009C98C0 | the RS::kEnterZone arm (game_hosts_units.cpp ~34960) | matches |
+| 009CB0F0 | `st_enter` kAim (game_hosts_units.cpp ~24866) | matches; one draw skipped (no reader) |
+| 009A8020 | `df_avoid_enter(true)` (game_hosts_units.cpp ~22948) | matches |
+| 009A83B0 | `df_avoid_turn_weight_009a83b0` (game_hosts_units.cpp ~23102) | matches |
+| 009A7E80 | `df_avoid_roll_tick_009a7e80` (game_hosts_units.cpp ~23032) | matches |
+| 009CC400 | `plane_hit_task_notify_00999aa0` (game_hosts_units.cpp ~18926) | matches |
