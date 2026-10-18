@@ -611,9 +611,9 @@ There are 26 ledger-only rows (section 4 records only the group):
 | 0099B790 | `ga_insert_0099b790` | matches; the array order after a multi-merge differs, but the set of pairs is the same |
 | 0099BF30 | `gunfire_repair_0099bf30` | matches; differences only on NaN fallbacks |
 | 0099EC40 | `gunfire_detect_0099ec40` | **mismatch**: the exempt arm's +840h WandererMul store (0099F197) is missing; adoption note sent |
-| 009A7A50 | `df_avoid_common_009a7a50` | **mismatch**: the U(1, 2) redraw at 009A7D72 is a constant 1.5, and approach+100h bit 2 is not modelled; adoption note sent |
+| 009A7A50 | `df_avoid_common_009a7a50` | **mismatch**: the U(1, 2) redraw at 009A7D72 is a constant 1.5 (the image draws on shared stream 1, so the host also drops one draw from the shared sequence), and approach+100h bit 2 is not modelled; adoption note sent |
 | 009AFAF0 | `land_geometry_009afaf0` | matches; the speed divisor (vtable[38h]) is the host's \|v\| |
-| 009B1420 | `land_begin_steer_009b1420` | first third (009B1420-009B15BC) matches |
+| 009B1420 | `land_begin_steer_009b1420` | first third (009B1420-009B15BC) matches; coverage partial, 009B15C0 onward not re-read |
 | 009C7A80 | `update_dive_bomb_approach` | matches, with the host's labelled substitutions |
 | 0099B940 | `ga_band_search_0099b940` | matches; a NaN value takes the first pair in the host, while the image skips every pair |
 | 009A17D0 | `gunfire_avoidance_009a17d0` | matches; the image zeroes all of +26Ch (009A17E9), the host only its modelled bit 4 |

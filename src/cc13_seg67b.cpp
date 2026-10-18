@@ -5010,6 +5010,8 @@ void* ship_ai_sub_attack_construct_009e4f90(Cc13Seg67bHost& host, void* p, void*
 
 // 009E5CA0 (009E5CA0-009E5CEC). EH frame 00CB08E8. [sub+4h] = owner, [sub] = 00D21994,
 // 009E5530(ECX = sub+8h, owner) (009E5CD6). RET 4, EAX = sub.
+// RNG: 009E5530 is a hook; its binding must take the sixty stream-1 U(0, 2.0
+// [00CE3958]) draws (009E55A1, one per ring slot +48h).
 // UNCERTAINTY: EH unwinding not modelled.
 void* ship_ai_attackmove_approach_construct_009e5ca0(Cc13Seg67bHost& host, void* sub,
                                                      void* owner) {
