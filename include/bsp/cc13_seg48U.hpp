@@ -58,7 +58,8 @@ public:
     // The save reader's field read is the chain's archive_vcall_10_get (cc13_seg48).
     // 00BF6713 _invalid_parameter_noinfo (the checked-iterator failure), no arguments.
     virtual void crt_invalid_parameter_noinfo_00bf6713() = 0;
-    // 00729600 BSP_GunEffectSet_Destruct (cc9 hosts it), __thiscall(ECX = gun+424h), RET.
+    // 00729600 BSP_GunShotDecision_Destruct (the shot-decision object at gun+424h; cc9
+    // has no lifetime model for it), __thiscall(ECX = gun+424h), RET.
     virtual void gun_effect_set_destruct_00729600(void* set) = 0;
     // vtable slot 1 (+4h) with (1): the scalar deleting destructor of the gun's
     // +3E0h vector elements, __thiscall(ECX = element, flags), RET 4.
