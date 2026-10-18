@@ -19190,3 +19190,24 @@ countdown starts. Loui1 and Loui2 die at 2767/2771 s with each other as last att
 No further host fault was found on the mission path in this run. What remains is the plan: s56_os_c13 is
 open-loop on absolute frames and does not send a transport to the neutral HQs. Re-planning from section 273's
 next steps (c9/c10 picture) is the next USNOS step.
+## 288. cc13 fix22 planner switches: no reach on any single-player row (cc9-ships58, 2026-10-18)
+
+**Switches** (src/game_hosts_ai.cpp, docs/CC13_FIX22.md): R-A kAiSellSplitClaimBound, R-B kAiHandOffReplanBound,
+R-C kAiTargetObjectiveSetBound, R-E kAiPlannerSharedStreamDrawBound, all in the mode-8 party planners
+(00A182C0 brain -> Defend / Attack / Sell / Capture).
+
+**Reach.** None on a mission-tree launch. Section 150 (kAiCoordinatorLoadGateBound ON since a8404d451): the
+image builds no AI coordinator for a mission-tree launch (004E17FD..004E1838), so no party brain or planner
+ever thinks. Every current log agrees: `coordinator load gate ... created_at_load=0`, `parties calls=0`,
+`capture thinks=0 handoffs=0`, `sell thinks=0`, `defend thinks=0` on JM05 (`local\s58_off4_j5.log`,
+`s58_rb_on_j5.log`, 12000 frames; also ships57's `s57_off3_j5`), USNOS (`s58_st2_os`, 150000 frames) and
+every other row checked. CC13_FIX22's `handoffs=9` (JM05) and `handoffs=21` (USNOS) come from builds before
+the gate. The JM05 R-B pair (8fab34fee, `--flip kAiHandOffReplanBound=true`, exe `local\s58_sa_on`) is exit 1,
+gameplay identical (OFF and ON both fail at 321.05 s, "One of our carriers is destroyed"); USNOS 30000 frames
+(`s58_off4_os` / `s58_rb_on_os`, s56_os_c13 orders) likewise exit 1, `steps_absent=30000`, `handoffs=0`.
+
+**Decision.** R-B, R-C, R-E ON as faithful bindings of cc13's image reads, with no reach in single player.
+They only matter for a skirmish launch, which is not on the host path. R-E's RNG coupling can't move a
+single-player row for the same reason. R-A stays OFF as the lead directed (unjudgeable; no row logs
+`splits > 0`). If the coordinator gate ever changes, pair R-B/R-C on JM05/USNOS and judge R-E on the
+per-entity tables.
