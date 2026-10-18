@@ -33,7 +33,10 @@ namespace bsp {
 
 // False: ShipUseCatapult stays a record, GetNumCatapulted / SetCatapultStock stay
 // unbound, GetLastCatapulted answers nil and GetCatapultStock reads the class value.
-inline constexpr bool kShipCatapultLaunchBound = false;
+// ON (cc9-physics18, OCEAN_WAVE_FIELD 69): LOMP01's luaCheckReconplanes gets 0 where
+// OFF raised `number with nil` in luaTimetable; USN20's nine carriers are refused
+// (stock 0), as 008141E0's +638h > 0 gate refuses them.
+inline constexpr bool kShipCatapultLaunchBound = true;
 
 // The ship class's Catapult block (00960230 reads it into class +C0h..+CCh).
 struct ShipCatapultClass {
