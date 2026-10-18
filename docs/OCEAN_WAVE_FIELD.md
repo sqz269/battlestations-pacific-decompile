@@ -3367,3 +3367,44 @@ speed: no tuning string (the "wind" / "Recover" / "Landing" strings are landing-
 callers of 006CE610 / 006C0840 / 006C0750 are all plane or air-ops code. So no image cap under 12.5 m/s was found,
 and the deck term stays OFF. Still open: whether the image's ground speed hold under +2B0h = 1 / +2D8h = 1 settles
 exactly (the throttle and wheel-brake law of a parented plane), and the ConTBD1 final at 51 m/s.
+
+## 82. 0099B740 cadence; HANDOFF (cc9-physics20, 2026-10-18)
+
+**`kTaskAttackModeCadenceBound`** (c38b38b13 added it OFF; the flip commit follows this section). 009998A0's
+slow path runs 0099B740 only when dt >= task+308h (00999912-00999926 FCOMI / JC). On that pass
++308h = (+304h - dt) + +308h, using 0099992C FSUBR and 00999934 FADDP (+304h = 1.0, from 0099C75D). On every other
+pass +308h -= dt (009999B5-009999BB). The task arm 00999950-0099995A runs either way. True: all seven host
+0099B740 sites take the gate: dive `run_dive_bomb_attack_mode_tick_0099b740`, level bomb `lb_cruise_profile_009b8c90`,
+strafe, depth charge, kamikaze / drop kamikaze `kz_attack_mode_0099b740`, and torpedo `run_attack_mode_tick_0099b740`.
+On a skipped pass the squadron +370h keeps its value. The gate reads the `task_phase_308` that
+`kBotTaskCtorSeedsBound` seeds (section 81). Pairs, exes built at c38b38b13 (`local\p20g_off`, `local\p20g_cad`):
+- JM02, 24000 fr: identical, fires 0 / skips 0. JM02's tasks are all dogfights, and no dogfight arm calls 0099B740.
+- USN01 `usn01_p8_u1_i.txt`, 30000 fr (`p20g_cad_usn01.log` vs `p20g_off_usn01.log`): gameplay identical, with
+  fires 2028 and skips 17647. 0099B740 is an assignment of 1 for a flight leader, so a slower cadence only changes
+  how long a Lua-raised mode 2 survives, and no USN01 order raises it.
+Flipped by mechanism: exercised, and it is the bytes.
+
+**The parked-plane speed hold (the stow question, unfinished).** The host's park speed law is in
+`run_land_park_tick_009b22c0`, with traces `land park trace`. The throttle law (game_hosts_units.cpp ~36740)
+integrates the demand from desired - measured, using 007D99C0's measured speed. With the deck term,
+measured = relative + 1.67, so the integrator drives the throttle to zero once 009B2923's cap
+c = max(0.5, dz / 2) falls below 1.67 (dz < 3.3 m). The plane then coasts on ground friction. In
+`p20c_dtagfp_usn01.log`, ScoutDauntless decelerates at about 0.13 m/s^2 from dz 5.5 m / 0.98 m/s, covers 1.6 m in 4 s,
+and stops at dz 3.9 m. 006CFF70 wants the nose within 3.0 - v of the lift (about 2.5 m). Coasting the rest would need
+only about 0.88 m/s at dz 5.5, so the answer turns on the ground deceleration: wheel brake (classDesc+1E0h WheelBrake,
+read at 007D22A6, `cc9_plane_ground_roll`) and rolling friction, under +2D8h = 1. Next steps:
+- Read 007D22A6's brake condition. Does it brake when measured > desired with +2D8h = 1, or only on +2D8h = 0 / an
+  explicit brake?
+- Compare it with the host's `last_brake` / `last_friction` in the ground summary line (~41262).
+- If the image does not brake there, a host brake under +2D8h = 1 is the stow blocker. Put that fix behind an OFF
+  switch and pair it with `kPlaneForwardSpeedDeckTermBound` on USN01.
+- The ConTBD1 crash short of the deck at 51 m/s (section 80, `kLandMinSpeedOwnerVelocityBound`) is still unread.
+  Check 009B1ED0 / 009B1F2C's descent law against the moving deck.
+
+**Open items for the successor.**
+1. The stow question above.
+2. ConTBD1's final at 51 m/s.
+3. The USN04 Blackout knife edge is with lua68 (does the Lua native refuse a re-arm while active?).
+4. 0099C8B0's ConstructFromStream callers are not hosted (save / stream path).
+
+Leases: `p20_doc2` (this doc) is released with this handoff. The flip commit takes units.cpp for one commit.
