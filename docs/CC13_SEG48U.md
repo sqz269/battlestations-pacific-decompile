@@ -218,9 +218,10 @@ renamed here.
   created by 006E08F0 and 006E0970. `src/entity_class_ids.cpp` gives 25h the
   parent 20h, the gun family, so the conclusion may still hold. The citation is
   wrong, though, and 006E08F0/006E0970's constructors were not read here.
-- **0072C970's kind-6 arm.** The image also predicts the depth when the target
-  is kind 6 whose +738h object casts to a submarine (0072B9B0, slot +2Ch,
-  00465060). The host's `torpedo_sub_vs_sub_launches` counter tests target
+- **0072C970's kind-6 arm.** The image also predicts the depth when the kind-8
+  cast (0072B990) of [gun+39Ch] slot +44h is null. Then it casts the gun's OWNER [gun+3F0h], not the target,
+  to kind 6 (0072B9B0 at 0072C9DC). It takes that owner's [+738h] object, calls
+  its slot +2Ch, and casts the result to a submarine (00465060 at 0072C9F8). The host's `torpedo_sub_vs_sub_launches` counter tests target
   kind 8 only. This is a counter only: the depth stays -2.5 under the labelled
   substitution.
 - **0072AC20, a player order that never clears.** The image keeps one command
@@ -245,8 +246,9 @@ renamed here.
     `[ESI+4]` = narrative+8 (the head node 00733430 returns, which 00735030
     stores at +8h).
 
-  Its comment calls the pseudocode's `param_1[2]` wrong, but the pseudocode
-  was right. The file is not leased here and is reported to the lead.
+  The old comment called the pseudocode's `param_1[2]` wrong, but the pseudocode
+  was right. cc13-seg40F fixed the code: the call now passes narrative+4, and the
+  free and zero use +8h. The wrong comment is gone.
 - **0072DD20's kind 46h-in-44h arm.** When the gun's parent is kind 46h inside
   a kind-44h parent, the frame is re-expressed through 00413920, 0087FA50 and
   00414E10. No cc9 switch text mentions this arm, and its reach is unverified.
@@ -311,6 +313,10 @@ disk-byte disassembly 007F3E50..007F44D6. It is unwired.
 
 - Nothing references the body. Ghidra has no xrefs, and `scan-bytes '50 3e 7f 00'`
   finds no dword. The same scan finds 007EBF10 in its vtable, so the scan works.
+  `tools/image_ref_scan.py 007f3e50` finds no E8/E9 rel32 reference. The control
+  `007e29a0` finds the jump 007EB0D0. A Jcc rel32 (0F 80..8F) and rel8 scan of
+  .text also finds nothing for 007F3E50. Its control 0072CA6B finds four Jcc sites
+  in 0072C970. (cc13-seg40F)
 - It builds two strings, the squadron line and the target line, plus the
   "pos" and "dist %.2f" buffers. Then it destroys them without passing them on, so
   the output sink was probably compiled out. The first stack argument is never read.

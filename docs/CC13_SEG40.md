@@ -54,7 +54,7 @@ destructor are archive and teardown code.
 | 0072CC60 | BSP_NativeParticlePopulationLock_Destruct | `0041CC80(+4h)`, clears the singleton [0108FF50] |
 | 00733E70 / 00733F00 | BSP_Countdown/NarrativeCallbackHolder_Destruct | the Lua argument vector (`006B88E0`, two frees), then the name string back to the pool |
 | 00733DC0 | BSP_NarrativeEntry_Destruct | the holder body (vtable 00CFE960, vector +14h, string +0Ch), then the string at +4h |
-| 00735080 | BSP_MissionNarrative_Destruct | vtable 00CFE9C0; 00733F00(+38h); 00733E70(+10h); `00734CE0`; free [+4h]. The pseudocode shows +8h, but the bytes read +4h |
+| 00735080 | BSP_MissionNarrative_Destruct | vtable 00CFE9C0; 00733F00(+38h); 00733E70(+10h); `00734CE0`(ECX = +4h, after ADD ESI,4 at 007350C0); free [+8h] and zero +8h (007350D2..007350E2, `[ESI+4]`) |
 
 ## Simplifications
 
