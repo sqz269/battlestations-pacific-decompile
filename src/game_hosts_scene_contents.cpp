@@ -662,6 +662,12 @@ struct GameSceneContentsHost::Impl {
     // 00f8a09c, the deduplicated preload census, and 00f8a0b0, the stock queue.
     std::vector<std::int32_t> preload_census;
     std::vector<std::int32_t> stock_queue;
+    // cc15-vcp1 (kVehicleClassPreloadCc15Bound): the scene database's +08h
+    // vector, destroyed by 00468C90 at 004D54A4 before the passes.
+    std::vector<std::int32_t> scene_class_vector;
+    std::size_t scene_vector_gate_pushes{0};
+    std::size_t scene_vector_stock_pushes{0};
+    std::size_t scene_stock_queue_appends{0};
     GameSceneContentsSummary summary;
     std::vector<GameSceneEntityRecord> entities;
     // 007F4580's per-wing loop makes its planes while the squadron is being
@@ -904,6 +910,121 @@ private:
 };
 
 // ---------------------------------------------------------------------------
+// cc15-vcp1 (kVehicleClassPreloadCc15Bound): the scene database's +08h vector
+// ---------------------------------------------------------------------------
+//
+// A typed restatement of seg6_cc13.cpp's 0046BE90 / 0046BF20 / 0046BF70 over
+// this host's property bags. The cc13 bodies take the image's 008F2260 bag
+// records, which this process does not build. The property's +0Ch word is the
+// value this host resolves: an enum symbol through the library, or an integer.
+
+int scene_stock_int(GameSceneContentsHost::Impl& owner, const ScenePropertyBlock& bag,
+    const char* key) {
+    const SceneEnumProperty e = scene_enum_property(bag, key);
+    if (e.present) {
+        int value = 0;
+        return owner.library.resolve_symbol(e.table, e.symbol, value) ? value : 0;
+    }
+    const SceneProperty* property = bag.find(key);
+    if (property == nullptr || property->values.empty()) return 0;
+    std::int32_t value = 0;
+    if (scene_scan_int(property->values.back(), value)) return value;
+    // `Hidden` is a byte the loader stores as 1 for an authored true.
+    return equal_insensitive(property->values.back(), "true") ? 1 : 0;
+}
+
+const ScenePropertyBlock* scene_stock_sub_bag(const ScenePropertyBlock& bag,
+    const std::string& key) {
+    for (const auto& block : bag.blocks) {
+        if (equal_insensitive(block.first, key)) return &block.second;
+    }
+    return nullptr;
+}
+
+// 0046BE90: 2ACh is ignored, and so is a value whose scene class name
+// (00468660) is "SpawnPoint" (00CE56B8, 00425850). Anything else is appended.
+bool scene_stock_register_0046be90(GameSceneContentsHost::Impl& owner, int value) {
+    if (value == 0x2ac) return false;
+    const SceneEntityClassRow* klass = find_scene_entity_class_by_id(value);
+    if (klass != nullptr && klass->name != nullptr
+        && std::strcmp(klass->name, "SpawnPoint") == 0) return false;
+    owner.scene_class_vector.push_back(value);
+    return true;
+}
+
+// 0095C4D0: the stock-queue append. Its de-duplication is
+// VehicleClassPreloadBinding::push_stock_queue's.
+void scene_stock_queue_0095c4d0(GameSceneContentsHost::Impl& owner, int value) {
+    VehicleClassPreloadBinding(owner).push_stock_queue(value);
+    ++owner.scene_stock_queue_appends;
+}
+
+// route_counted_stock (0046C07A..0046C0D8, 0046C11F..0046C180).
+void scene_stock_route_counted(GameSceneContentsHost::Impl& owner,
+    const ScenePropertyBlock& bag, const std::string& key) {
+    const ScenePropertyBlock* sub = scene_stock_sub_bag(bag, key);
+    if (sub == nullptr) return;
+    const int type = scene_stock_int(owner, *sub, "Type");
+    if (scene_stock_int(owner, *sub, "Count") == 0) return;
+    if (scene_stock_int(owner, bag, "Hidden") == 0) {
+        scene_stock_queue_0095c4d0(owner, type);
+    } else if (scene_stock_register_0046be90(owner, type)) {
+        ++owner.scene_vector_stock_pushes;
+    }
+}
+
+// queue_list_stock (0046C329..0046C3A4, 0046C3C3..0046C439). The host's mode
+// is never 4 (single player).
+int scene_stock_queue_list(GameSceneContentsHost::Impl& owner,
+    const ScenePropertyBlock* list, int index) {
+    if (list == nullptr) return index;
+    for (;; ++index) {
+        char key[32];
+        std::snprintf(key, sizeof key, "Stock %d", index);
+        const ScenePropertyBlock* sub = scene_stock_sub_bag(*list, key);
+        if (sub == nullptr) return index;
+        if (scene_stock_int(owner, *sub, "Count") == 0) continue;
+        scene_stock_queue_0095c4d0(owner, scene_stock_int(owner, *sub, "Type"));
+    }
+}
+
+// 0046BF70.
+void scene_stock_lists_0046bf70(GameSceneContentsHost::Impl& owner,
+    const ScenePropertyBlock& bag, const std::string& class_name) {
+    if (equal_insensitive(class_name, "AirField") || class_name == "MotherShipGen") {
+        for (int i = 1; i <= 12; ++i) {
+            char key[32];
+            std::snprintf(key, sizeof key, "PlaneStock %d", i);
+            scene_stock_route_counted(owner, bag, key);
+        }
+        const int slots = scene_stock_int(owner, bag, "NumSlots");
+        for (int i = 0; i < slots; ++i) {
+            char key[32];
+            std::snprintf(key, sizeof key, "Slot %d", i + 1);
+            scene_stock_route_counted(owner, bag, key);
+        }
+    }
+    if (equal_insensitive(class_name, "Shipyard")) {
+        for (int i = 1; i <= 20; ++i) {
+            char key[32];
+            std::snprintf(key, sizeof key, "Stock %d", i);
+            const ScenePropertyBlock* sub = scene_stock_sub_bag(bag, key);
+            if (sub == nullptr) continue;
+            const int type = scene_stock_int(owner, *sub, "Type");
+            if (type <= 0) continue;
+            if (scene_stock_int(owner, bag, "Hidden") == 0) {
+                scene_stock_queue_0095c4d0(owner, type);
+            } else if (scene_stock_register_0046be90(owner, type)) {
+                ++owner.scene_vector_stock_pushes;
+            }
+        }
+    }
+    if (!equal_insensitive(class_name, "SpawnPoint")) return;
+    const int next = scene_stock_queue_list(owner, scene_stock_sub_bag(bag, "JapanList"), 1);
+    scene_stock_queue_list(owner, scene_stock_sub_bag(bag, "AlliedList"), next);
+}
+
+// ---------------------------------------------------------------------------
 // 0046c550's remaining services
 // ---------------------------------------------------------------------------
 
@@ -935,10 +1056,23 @@ public:
     }
     void register_multiplayer_stock(const ScenePropertyBlock& properties,
         const std::string& class_name) override {
-        static_cast<void>(properties);
-        static_cast<void>(class_name);
         ++stock_walks_;
-        owner_.log.unimplemented("SceneGate::register_multiplayer_stock", "0046bf20");
+        if constexpr (kVehicleClassPreloadCc15Bound) {
+            // 0046BF20: a `Type` property, and the class name's id
+            // (00469690) is not 47h (Path).
+            const SceneEntityClassRow* klass = find_scene_entity_class_by_name(class_name);
+            if (properties.find(kSceneUnitTypeKey) != nullptr
+                && (klass == nullptr || klass->class_id != 0x47)
+                && scene_stock_register_0046be90(owner_,
+                       scene_stock_int(owner_, properties, kSceneUnitTypeKey))) {
+                ++owner_.scene_vector_gate_pushes;
+            }
+            owner_.log.implemented("SceneGate::register_multiplayer_stock", "0046bf20");
+        } else {
+            static_cast<void>(properties);
+            static_cast<void>(class_name);
+            owner_.log.unimplemented("SceneGate::register_multiplayer_stock", "0046bf20");
+        }
     }
 
     std::size_t deferred_records() const noexcept { return deferred_records_; }
@@ -1833,7 +1967,12 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
                     "0095c640");
             }
         }
-        owner.log.unimplemented("SceneContents::register_multiplayer_stock", "0046bf70");
+        if constexpr (kVehicleClassPreloadCc15Bound) {
+            scene_stock_lists_0046bf70(owner, bag, entity.class_name);
+            owner.log.implemented("SceneContents::register_multiplayer_stock", "0046bf70");
+        } else {
+            owner.log.unimplemented("SceneContents::register_multiplayer_stock", "0046bf70");
+        }
 
         ++tally.registration_bodies;
         ++owner.summary.registration_bodies;
@@ -2616,9 +2755,41 @@ void SceneContentsBinding::read_scene_file(const std::string& path,
     const std::string& override_name, SceneContentsPass pass) {
     const SceneFilePass file_pass = pass == SceneContentsPass::Registration
         ? SceneFilePass::Registration : SceneFilePass::Instantiate;
+    if constexpr (kVehicleClassPreloadCc15Bound) {
+        // 00468C90 at 004D54A4 destroys the +08h vector before the passes.
+        if (pass == SceneContentsPass::Registration) {
+            owner_.scene_class_vector.clear();
+            owner_.scene_vector_gate_pushes = 0;
+            owner_.scene_vector_stock_pushes = 0;
+            owner_.scene_stock_queue_appends = 0;
+        }
+    }
     SceneReaderBinding reader(owner_, file_pass, mode_);
     const SceneFileReadResult result = run_scene_file_reader_0046df00(reader, path,
         override_name, file_pass);
+    if constexpr (kVehicleClassPreloadCc15Bound) {
+        // 0046EBE6's counters (game+1910h..192Ch) run after both reads; this
+        // host has none of them. 0046EC6B skips the reader when the last
+        // argument is 1 (the registration call), so only the instantiate read
+        // resolves the vector: 0046EC77..0046ECA7 call 00964790(id, 1) per id,
+        // and on a miss that writes the row's ID and Got (0096490C, 00964959).
+        if (pass == SceneContentsPass::Instantiate) {
+            std::size_t marked = 0;
+            if (owner_.lua != nullptr) {
+                VehicleClassPreloadBinding map(owner_);
+                for (const std::int32_t id : owner_.scene_class_vector) {
+                    owner_.lua->mark_scene_vehicle_class_row_00964790(
+                        static_cast<int>(map.map_class_index(id)));
+                    ++marked;
+                }
+            }
+            owner_.log.notef("scene database +08h vector: %zu ids (gate 0046BF20 %zu, "
+                "stock lists 0046BF70 %zu), stock queue appends %zu, resolved at 0046EC77 %zu "
+                "(kVehicleClassPreloadCc15Bound)", owner_.scene_class_vector.size(),
+                owner_.scene_vector_gate_pushes, owner_.scene_vector_stock_pushes,
+                owner_.scene_stock_queue_appends, marked);
+        }
+    }
     if (pass == SceneContentsPass::Registration) {
         owner_.summary.registration_entities = result.entities_visited;
         owner_.log.implemented("SceneContents::read_scene_file_registration", "0046df00");
