@@ -223,3 +223,10 @@ None of these six is reached: apart from their own recursion and 008F71E0's use 
 | `008F71E0` | BSP_ScenePropertyBag_WriteTextBlock | reconstructed | `scene_property_bag_write_text_block_008f71e0`: `" {"`, then the entries sorted through an inline `map<std::string, record*>` (`008F6BA0`), `"}"`. Sub-bags are written as `"key"` plus a nested block; other entries go through `008F1CA0`. |
 | `008F7550` | BSP_ScenePropertyBag_WriteTextDiff | reconstructed | `scene_property_bag_write_text_diff_008f7550`: the 008F71E0 block with every entry equal to base's (`008F2260` + `008EF820`) left out. Shared sub-bags recurse, and a null base writes the full block. The old name was "WriteTextEntry". |
 | `008F79A0` | BSP_ScenePropertyBag_RemoveMissing | reconstructed | `scene_property_bag_remove_missing_008f79a0`: collects the names that base lacks into a `vector<std::string>` (`00849170`), then erases them from other (`0043D870`) or from bag (`008F4030`). The heap iterator built for other is leaked, as in the image. The old name was "WriteFiltered". |
+
+## Common resource precache and hull distance
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `008FAFC0` | BSP_CommonResourceCache_Preload | reconstructed | `common_resource_cache_preload_008fafc0`: runs once, under an "IngamePrecache" file block (`00BE0A30`/`00BDCB30`). It fills 54h textures (`[00F8D394]`->vt[64h]), 9 sounds (`00A83FD0`) and 3Ch models (`007188A0`) from the tables at 00E0C988 / 00E0CAD8 / 00E0CB00, and reports `0057C1A0` progress at step / 153.0 after each item. It is live at title start: cc9's `game_entry.hpp` names the call at 004E5758 as `notify_title_ready`, but no body is hosted. |
+| `008FF640` | BSP_Entity_HullDistanceToPoint_Provisional | reconstructed | `entity_hull_distance_to_point_008ff640`: for a null or non-ship entity, the XZ distance (zero below 1e-10). For a ship, q is moved into hull space (`00B63D50` inverse built lazily, `004142E0`) and tested against an outline from hull+0A0h / +0A4h before `00419AB0`. The operand order comes from the DC/DE bytes. The model uses 24-bit precision; see the uncertainty in the source. Unreferenced. |

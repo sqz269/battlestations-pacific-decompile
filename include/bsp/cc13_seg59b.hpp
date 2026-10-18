@@ -266,6 +266,35 @@ struct Seg59bHost {
     virtual void string_range_destroy_004ce520(void* first, void* last, void* allocator, std::uint32_t unused) = 0;
     // 0043D870 BSP_PropertyMap_EraseByName, __thiscall(ECX = map, name), RET 4.
     virtual void property_map_erase_by_name_0043d870(void* map, const char* name) = 0;
+    // InterlockedDecrement / InterlockedIncrement imports ([00CE2220] / [00CE221C]); EAX = new value.
+    virtual std::int32_t interlocked_decrement_00ce2220(std::int32_t* value) = 0;
+    virtual std::int32_t interlocked_increment_00ce221c(std::int32_t* value) = 0;
+    // vt[0] with ECX = object and no stack argument: the counted object's release on zero.
+    virtual void object_release_vt00(void* object) = 0;
+    // 0057C1A0 BSP_LoadingProgress_ReportPhase, __fastcall(ECX = phase, float fraction), RET 4.
+    virtual void loading_progress_report_phase_0057c1a0(std::int32_t phase, float fraction) = 0;
+    // 00BE0A30 BSP_FileBlock_Construct, __thiscall(ECX = 1Ch block, name*, mode), RET 8; 00BDCB30
+    // BSP_FileBlock_Destroy, __thiscall(ECX = block).
+    virtual void file_block_construct_00be0a30(void* block, void* name, std::int32_t mode) = 0;
+    virtual void file_block_destroy_00bdcb30(void* block) = 0;
+    // 008FA640 / 008FAD80 / 008FAE80, __thiscall(ECX = vector, count, holder by value), RET 8:
+    // resize with a counted-reference holder value.
+    virtual void vector_resize_008fa640(void* vector, std::uint32_t count, void* holder) = 0;
+    virtual void vector_resize_008fad80(void* vector, std::uint32_t count, void* holder) = 0;
+    virtual void vector_resize_008fae80(void* vector, std::uint32_t count, void* holder) = 0;
+    // [00F8D394]->vt[64h](name*, flag), RET 8; EAX = a referenced texture.
+    virtual void* render_device_vt64_00f8d394(void* device, void* name, std::int32_t flag) = 0;
+    // 00A83FD0 BSP_SoundSampleCache_AcquireByName, __thiscall(ECX = [00F8BBE8], out holder*, name*),
+    // RET 8; EAX = out.
+    virtual void** sound_sample_cache_acquire_00a83fd0(void* cache, void** out, void* name) = 0;
+    // 007188A0 BSP_Resource_LoadWithGameFactory, ECX = name*; EAX = a referenced resource.
+    virtual void* resource_load_with_game_factory_007188a0(void* name) = 0;
+    // 00B63D50 BSP_Matrix_BuildOrthogonalScaledAffineInverse, __fastcall(ECX = out, EDX = source).
+    virtual void matrix_build_orthogonal_scaled_affine_inverse_00b63d50(void* out, const void* source) = 0;
+    // 004142E0 BSP_Vector3f_TransformAffinePoint, __thiscall(ECX = source, out, matrix), RET 8.
+    virtual void vector3f_transform_affine_point_004142e0(const float* source, float* out, const void* matrix) = 0;
+    // 00419AB0 BSP_Segment2f_PointDistance, __fastcall(ECX = start, EDX = end, point), RET 4; ST0.
+    virtual float segment2f_point_distance_00419ab0(const float* start, const float* end, const float* point) = 0;
     // 00419CC0 BSP_SizedStoragePool_GetSingleton (no args); 00BD1510 ReturnBlock,
     // __thiscall(ECX = pool, data, bytes, flag), RET 0Ch.
     virtual void* sized_pool_singleton_00419cc0() = 0;
@@ -575,6 +604,12 @@ void scene_property_bag_write_text_diff_008f7550(Seg59bHost& host, void* bag, vo
 // 008F79A0, __thiscall(ECX = bag, base, other), RET 8: erases the names (of other, or of bag
 // when other is null) that base does not have, recursing through shared sub-bags.
 void scene_property_bag_remove_missing_008f79a0(Seg59bHost& host, void* bag, void* base, void* other);
+// 008FAFC0, __fastcall(ECX = cache): fills the 54h texture, 9 sound and 3Ch model references
+// from the 00E0C988 / 00E0CAD8 / 00E0CB00 name tables once, reporting 0057C1A0 progress.
+void common_resource_cache_preload_008fafc0(Seg59bHost& host, void* cache);
+// 008FF640, __fastcall(ECX = entity, EDX = p, q), RET 4; ST0: q's distance from the ship hull
+// outline placed at p (XZ distance for a null or non-ship entity).
+float entity_hull_distance_to_point_008ff640(Seg59bHost& host, void* entity, const float* p, const float* q);
 // 008F7CF0, __thiscall(ECX = scope), RET; EAX = scope: 00BD2FE0.
 void* random_threads_scope_construct_008f7cf0(Seg59bHost& host, void* scope);
 // 008F7D20, no arguments: destroy and free the object at [01090AA0], then clear it.

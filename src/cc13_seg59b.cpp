@@ -2503,4 +2503,209 @@ void scene_property_bag_remove_missing_008f79a0(Seg59bHost& host, void* bag, voi
     host.string_range_destroy_004ce520(ptr(vector, 0x04), ptr(vector, 0x08), vector, junk);
     host.free_00bf65ac(ptr(vector, 0x04));
 }
+
+namespace {
+// The intrusive reference release inlined three times in 008FAFC0: InterlockedDecrement
+// ([00CE2220]) on object+4, and vt[0] (no stack argument) when it reaches zero.
+void release_counted_reference(Seg59bHost& host, void* object) {
+    if (host.interlocked_decrement_00ce2220(static_cast<std::int32_t*>(add(object, 0x04))) == 0) {
+        host.object_release_vt00(object);
+    }
+}
+
+// The NativeString key the three 008FAFC0 loops build: {0, 0}, 0041DD40(strlen, 1), and the
+// memcpy(size + 1) when the data is non-null.
+void build_native_key(Seg59bHost& host, void* key, const char* text) {
+    at<std::uint32_t>(key, 0x00) = 0;
+    at<std::uint32_t>(key, 0x04) = 0;
+    host.native_string_resize_0041dd40(key, static_cast<std::uint32_t>(std::strlen(text)), 1);
+    if (ptr(key, 0x04) != nullptr) host.memcpy_00bf7680(ptr(key, 0x04), text, at<std::uint32_t>(key, 0x00) + 1u);
+}
+
+// 008FAFC0's checked vector index: first null or index >= (last - first) / 4 -> 00BF6713.
+void check_reference_index(Seg59bHost& host, void* vector, std::uint32_t index) {
+    void* const first = ptr(vector, 0x04);
+    if (first == nullptr ||
+        index >= static_cast<std::uint32_t>((static_cast<std::uint8_t*>(ptr(vector, 0x08)) -
+                                             static_cast<std::uint8_t*>(first)) >> 2)) {
+        host.checked_iterator_failure_00bf6713();
+    }
+}
+
+// 0057C1A0(ECX = 1, step / 153.0): FILD step, FDIV double [00D17D10] = 153.0, FSTP float.
+void report_precache_progress(Seg59bHost& host, std::int32_t step) {
+    host.loading_progress_report_phase_0057c1a0(1, static_cast<float>(step) / 153.0f);
+}
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 008FAFC0 BSP_CommonResourceCache_Preload. __fastcall(ECX = cache), RET. Callers 004DD5B0
+// (BSP_Game_OnInitOnce) and 004E5540 at 004E5758 (cc9's game_entry.hpp notify_title_ready hook
+// names the call; no body is hosted).
+// Evidence: the first vector {+4 alloc, +8 first, +0Ch last} non-empty -> return (008FAFFA).
+// Otherwise a NativeString "IngamePrecache" (D17D18) built by 0041E870 (008FB009, which zeroes it
+// first), 008FB01D 00BE0A30(block at frame+2Ch, &name, 1), the name released. 008FB053
+// 008FA640(cache+4, 54h, null holder). For i < 54h: key = [00E0C988 + 4i]; checked index
+// (008FB0D1); ref = [00F8D394]->vt[64h](&key, 0) (008FB0E9); the old slot reference released
+// (InterlockedDecrement [00CE2220], vt[0] at 008FB107) and the slot zeroed, then slot = ref;
+// key released; 0057C1A0(1, i / 153.0) (008FB150). 008FB181 008FAD80(cache+14h, 9, null). For
+// j < 9: key = [00E0CAD8 + 4j]; 008FB1F6 00A83FD0([00F8BBE8], &holder, &key); checked index
+// (008FB215); slot != *result -> slot = *result, InterlockedIncrement ([00CE221C], 008FB232)
+// on the new one, the old one released; the holder released (008FB265) and zeroed; key released;
+// 0057C1A0(1, (54h + j) / 153.0) (008FB2C5). 008FB2F2 008FAE80(cache+24h, 3Ch, null). For
+// k < 3Ch: key = [00E0CB00 + 4k]; checked index (008FB369); ref = 008FB377 007188A0(&key); old
+// released and zeroed, slot = ref; key released; 0057C1A0(1, (5Dh + k) / 153.0) (008FB3E8).
+// Last, 008FB405 00BDCB30(block).
+// Uncertainty: the progress quotient is modeled at 24-bit precision (FDIV, then FSTP float); at
+// 53-bit it is rounded twice and could differ in the last float place.
+// ---------------------------------------------------------------------------
+void common_resource_cache_preload_008fafc0(Seg59bHost& host, void* cache) {
+    void* const textures = add(cache, 0x04);
+    if (ptr(cache, 0x08) != nullptr &&
+        ((static_cast<std::uint8_t*>(ptr(textures, 0x08)) - static_cast<std::uint8_t*>(ptr(cache, 0x08))) >> 2) != 0) {
+        return;
+    }
+    alignas(4) std::uint8_t name[8];  // constructed by 0041E870
+    host.native_string_assign_0041e870(name, image_text(host, 0x00D17D18u));
+    alignas(4) std::uint8_t block[0x20];  // constructed by 00BE0A30
+    host.file_block_construct_00be0a30(block, name, 1);
+    release_native_string(host, name);
+    host.vector_resize_008fa640(textures, 0x54, nullptr);
+    for (std::int32_t index = 0; index < 0x54; ++index) {
+        const char* const text = *static_cast<const char* const*>(host.image_pointer(0x00E0C988u + index * 4u));
+        alignas(4) std::uint8_t key[8];
+        build_native_key(host, key, text);
+        void* const device = *static_cast<void**>(host.image_pointer(0x00F8D394u));
+        check_reference_index(host, textures, static_cast<std::uint32_t>(index));
+        void** const slot = static_cast<void**>(ptr(textures, 0x04)) + index;
+        void* const loaded = host.render_device_vt64_00f8d394(device, key, 0);
+        void* const old = *slot;
+        if (old != nullptr) {
+            release_counted_reference(host, old);
+            *slot = nullptr;
+        }
+        *slot = loaded;
+        release_native_string(host, key);
+        report_precache_progress(host, index);
+    }
+    void* const sounds = add(cache, 0x14);
+    host.vector_resize_008fad80(sounds, 9, nullptr);
+    for (std::int32_t index = 0; index < 9; ++index) {
+        const char* const text = *static_cast<const char* const*>(host.image_pointer(0x00E0CAD8u + index * 4u));
+        alignas(4) std::uint8_t key[8];
+        build_native_key(host, key, text);
+        void* holder = nullptr;
+        void* const sound_cache = *static_cast<void**>(host.image_pointer(0x00F8BBE8u));
+        void** const result = host.sound_sample_cache_acquire_00a83fd0(sound_cache, &holder, key);
+        check_reference_index(host, sounds, static_cast<std::uint32_t>(index));
+        void** const slot = static_cast<void**>(ptr(sounds, 0x04)) + index;
+        void* const old = *slot;
+        void* const acquired = *result;
+        if (old != acquired) {
+            *slot = acquired;
+            if (acquired != nullptr) host.interlocked_increment_00ce221c(static_cast<std::int32_t*>(add(acquired, 0x04)));
+            if (old != nullptr) release_counted_reference(host, old);
+        }
+        if (holder != nullptr) {
+            release_counted_reference(host, holder);
+            holder = nullptr;
+        }
+        release_native_string(host, key);
+        report_precache_progress(host, 0x54 + index);
+    }
+    void* const models = add(cache, 0x24);
+    host.vector_resize_008fae80(models, 0x3C, nullptr);
+    for (std::int32_t index = 0; index < 0x3C; ++index) {
+        const char* const text = *static_cast<const char* const*>(host.image_pointer(0x00E0CB00u + index * 4u));
+        alignas(4) std::uint8_t key[8];
+        build_native_key(host, key, text);
+        check_reference_index(host, models, static_cast<std::uint32_t>(index));
+        void** const slot = static_cast<void**>(ptr(models, 0x04)) + index;
+        void* const loaded = host.resource_load_with_game_factory_007188a0(key);
+        void* const old = *slot;
+        if (old != nullptr) {
+            release_counted_reference(host, old);
+            *slot = nullptr;
+        }
+        *slot = loaded;
+        release_native_string(host, key);
+        report_precache_progress(host, 0x5D + index);
+    }
+    host.file_block_destroy_00bdcb30(block);
+}
+
+namespace {
+// The SSE "absolute value" 008FF640 uses: COMISS x > 0 keeps x, else -0.0 (00D7A208) - x, so
+// +0 becomes -0 and a NaN passes through the subtraction.
+float positive_or_negated(float value) {
+    return value > 0.0f ? value : -0.0f - value;
+}
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 008FF640 BSP_Entity_HullDistanceToPoint_Provisional. __fastcall(ECX = entity, EDX = point p,
+// stack point q), RET 4; ST0 = float. No code caller and no absolute-dword reference.
+// Evidence:
+//   entity null or vt[5Ch](6) false (008FF656) -> 008FF8B4: dx = p.x - q.x, dz = p.z - q.z
+//   (floats), d2 = float(dx*dx + dz*dz) (DC C8 / DE CA / DE C1 at 008FF8F2..008FF8F8); d2 >
+//   1e-10 (00CE3820, FCOMI then JBE) -> float(sqrt(d2)) (00BF7030), else +0.
+//   Otherwise hull = [entity+538h]; [entity+0C8h] == 0 -> 00414DB0 (008FF674); d = p - [entity+
+//   0FCh..104h] (floats); [entity+10Ch] == 0 -> 00414DB0, byte = 1, 00B63D50(ECX = entity+110h,
+//   EDX = entity+0CCh) (008FF6C2); v = q - d; local = 004142E0(v, &local, entity+110h)
+//   (008FF6FB). a0 = [hull+0A0h], a4 = [hull+0A4h]; Q = float(a0 / 6.0) (D8 F9 FDIVR at
+//   008FF758, 00CE6628), t = |local.z|.
+//   Q > t: r = float(|local.x| - a4 * 0.5) (00D7A280, DE E9 FSUBP at 008FF79B); 0 > r -> +0,
+//   else r (a NaN r is returned).
+//   Else: half = a4 * 0.5 (DC C9 at 008FF812); u = float(|local.x| / half) (D8 F2); 1 > u ->
+//   w = float((|local.z| - Q) / (a0 / 3.0)) (DE E4 FSUBRP, 00D7A2B0, DE FC FDIVP), and
+//   u + w <= 1 (DE C3, FCOMIP + JC at 008FF84A) returns +0. Then 008FF8A7 00419AB0(ECX = {half,
+//   Q}, EDX = {0, float(a0 * 0.5)}, point {|local.x|, |local.z|}).
+// Uncertainty: modeled at 24-bit precision. At 53-bit, a0 / 6.0 stays a double in the
+// |local.z| - Q subtraction while the comparison uses its float store, and the quotients and
+// sums would be rounded twice. Purpose (distance from q to a hull outline whose length is a4 and
+// width a0, the bow and stern tapering over a0 / 6) is inferred from the shape.
+// ---------------------------------------------------------------------------
+float entity_hull_distance_to_point_008ff640(Seg59bHost& host, void* entity, const float* p, const float* q) {
+    if (entity == nullptr || !host.entity_is_kind_of_vt5c(entity, 6)) {
+        const float dx = p[0] - q[0];
+        const float dz = p[2] - q[2];
+        const float d2 = dx * dx + dz * dz;
+        if (static_cast<double>(d2) > 1e-10) return std::sqrt(d2);
+        return 0.0f;
+    }
+    void* const hull = ptr(entity, 0x538);
+    if (at<std::uint8_t>(entity, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(entity);
+    const std::uint8_t inverse_ready = at<std::uint8_t>(entity, 0x10C);
+    const float d[3] = {p[0] - at<float>(entity, 0xFC), p[1] - at<float>(entity, 0x100), p[2] - at<float>(entity, 0x104)};
+    if (inverse_ready == 0) {
+        host.entity_pose_refresh_world_00414db0(entity);
+        at<std::uint8_t>(entity, 0x10C) = 1;
+        host.matrix_build_orthogonal_scaled_affine_inverse_00b63d50(add(entity, 0x110), add(entity, 0xCC));
+    }
+    const float v[3] = {q[0] - d[0], q[1] - d[1], q[2] - d[2]};
+    float local[3] = {};
+    host.vector3f_transform_affine_point_004142e0(v, local, add(entity, 0x110));
+    const float a0 = at<float>(hull, 0xA0);
+    const float a4 = at<float>(hull, 0xA4);
+    const float t = positive_or_negated(local[2]);
+    const float taper = a0 / 6.0f;
+    if (taper > t) {
+        const float r = positive_or_negated(local[0]) - a4 * 0.5f;
+        if (0.0f > r) return 0.0f;
+        return r;
+    }
+    const float ax = positive_or_negated(local[0]);
+    const float az = positive_or_negated(local[2]);
+    const float half = a4 * 0.5f;
+    const float u = ax / half;
+    if (1.0f > u) {
+        const float w = (az - taper) / (a0 / 3.0f);
+        const float sum = u + w;
+        if (sum <= 1.0f) return 0.0f;
+    }
+    const float start[2] = {half, taper};
+    const float end[2] = {0.0f, a0 * 0.5f};
+    const float point[2] = {ax, az};
+    return host.segment2f_point_distance_00419ab0(start, end, point);
+}
 }  // namespace bsp::cc13_seg59b
