@@ -1732,4 +1732,118 @@ void pilot_bot_avoid_vehicles_0099b670(Cc13Seg67bHost& host, void* p) {
     if (n != nullptr) host.vehicle_avoidance_007df4f0(n, p);
 }
 
+// ---------------------------------------------------------------------------
+// Dogfight, drop-kamikaze and kamikaze task destructor bodies, stream
+// constructors and factories.
+
+namespace {
+constexpr std::uint32_t kDropKamikazeTaskVtable = 0x00D1FC70u;
+constexpr std::uint32_t kDropKamikazeApproachVtable = 0x00D1FC68u;
+constexpr std::uint32_t kDropKamikazeRegistryVtable = 0x00D1FC64u;
+}  // namespace
+
+// 009AB370 (009AB370-009AB3C0). 009A93E0(task ? task+3F8h : 0) (009AB39D);
+// 007B4030(ECX = task) (009AB3AC).
+void bot_task_dogfight_destruct_body_009ab370(Cc13Seg67bHost& host, void* task) {
+    bot_task_dogfight_destruct_approach_block_009a93e0(
+        host, task != nullptr ? ptr(task, 0x3F8) : nullptr);
+    host.bot_task_destruct_base_007b4030(task);
+}
+
+// 009AEB80 (009AEB80-009AEBD0). 009ADAE0(task ? task+3F8h : 0) (009AEBAD);
+// 007B4030(task) (009AEBBC).
+void bot_task_drop_kamikaze_destruct_body_009aeb80(Cc13Seg67bHost& host, void* task) {
+    bot_task_drop_kamikaze_destruct_approach_block_009adae0(
+        host, task != nullptr ? ptr(task, 0x3F8) : nullptr);
+    host.bot_task_destruct_base_007b4030(task);
+}
+
+// 009AF610 (009AF610-009AF660). 009ACE50(task ? task+3F8h : 0) (009AF63D);
+// 007B4030(task) (009AF64C).
+void bot_task_kamikaze_destruct_body_009af610(Cc13Seg67bHost& host, void* task) {
+    bot_task_kamikaze_destruct_approach_block_009ace50(
+        host, task != nullptr ? ptr(task, 0x3F8) : nullptr);
+    host.bot_task_destruct_base_007b4030(task);
+}
+
+// 009AB3D0 (009AB3D0-009AB463). EH frame. 0099C8B0(ECX = task, bot, archive, 2)
+// (009AB3FC); 009A9670(ECX = task+3F8h, bot, archive) (009AB413); [task] =
+// 00D1F9B0, [task+3F8h] = 00D1F9AC, [task+4FCh] = 00D1F9A8 (009AB426-009AB432);
+// 009F9980(ECX = task+3F8h, task) (009AB439); 00411170(ECX = task+4FCh, task+30Ch,
+// archive) (009AB448). Returns task.
+void* bot_task_dogfight_construct_from_stream_009ab3d0(Cc13Seg67bHost& host, void* task,
+                                                       void* bot, void* archive) {
+    bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 2);
+    host.dogfight_construct_approach_block_from_stream_009a9670(ptr(task, 0x3F8), bot, archive);
+    at<std::uint32_t>(task, 0x000) = kDogfightTaskVtable;
+    at<std::uint32_t>(task, 0x3F8) = kDogfightApproachVtable;
+    at<std::uint32_t>(task, 0x4FC) = kDogfightTask4FCVtable;
+    host.bot_approach_bind_to_task_009f9980(ptr(task, 0x3F8), task);
+    host.bot_state_registry_read_current_00411170(ptr(task, 0x4FC), ptr(task, 0x30C), archive);
+    return task;
+}
+
+// 009AEAE0 (009AEAE0-009AEB73). EH frame. The 009AB3D0 shape with kind 5, 009AD920
+// (009AEB23), vtables 00D1FC70 / +3F8h 00D1FC68 / +4BCh 00D1FC64
+// (009AEB36-009AEB42), 009F9980 (009AEB49) and 00411170(task+4BCh, task+30Ch,
+// archive) (009AEB58).
+void* bot_task_drop_kamikaze_construct_from_bag_009aeae0(Cc13Seg67bHost& host, void* task,
+                                                         void* bot, void* archive) {
+    bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 5);
+    host.drop_kamikaze_approach_construct_from_bag_009ad920(ptr(task, 0x3F8), bot, archive);
+    at<std::uint32_t>(task, 0x000) = kDropKamikazeTaskVtable;
+    at<std::uint32_t>(task, 0x3F8) = kDropKamikazeApproachVtable;
+    at<std::uint32_t>(task, 0x4BC) = kDropKamikazeRegistryVtable;
+    host.bot_approach_bind_to_task_009f9980(ptr(task, 0x3F8), task);
+    host.bot_state_registry_read_current_00411170(ptr(task, 0x4BC), ptr(task, 0x30C), archive);
+    return task;
+}
+
+// 009AB630 (009AB630-009AB696). __stdcall(bot, archive): t = operator new(758h) (009AB64B); null -> 0;
+// else 009AB3D0(t, bot, archive) (009AB66E).
+void* bot_task_dogfight_factory_create_009ab630(Cc13Seg67bHost& host, void* bot, void* archive) {
+    void* const t = host.operator_new_00bf681b(0x758);
+    if (t == nullptr) return nullptr;
+    return bot_task_dogfight_construct_from_stream_009ab3d0(host, t, bot, archive);
+}
+
+// 009AEC50 (009AEC50-009AECB6). __stdcall(bot, archive): t = operator new(74Ch) (009AEC6B); null -> 0;
+// else 009AEAE0(t, bot, archive) (009AEC8E).
+void* bot_task_make_drop_kamikaze_from_bag_009aec50(Cc13Seg67bHost& host, void* bot,
+                                                    void* archive) {
+    void* const t = host.operator_new_00bf681b(0x74C);
+    if (t == nullptr) return nullptr;
+    return bot_task_drop_kamikaze_construct_from_bag_009aeae0(host, t, bot, archive);
+}
+
+// 009AEBE0 (009AEBE0-009AEC45). __fastcall(ECX = bot, EDX = target): t = operator
+// new(74Ch) (009AEC01); null -> 0; else 009ADBF0(ECX = t, bot, target) (009AEC1D).
+void* bot_task_make_drop_kamikaze_009aebe0(Cc13Seg67bHost& host, void* bot, void* target) {
+    void* const t = host.operator_new_00bf681b(0x74C);
+    if (t == nullptr) return nullptr;
+    return host.drop_kamikaze_task_construct_009adbf0(t, bot, target);
+}
+
+// 009AF720 (009AF720-009AF785). __fastcall(ECX = bot, EDX = target): t = operator
+// new(6A0h) (009AF741); null -> 0; else 009AEEF0(ECX = t, bot, target) (009AF75D).
+void* bot_task_make_kamikaze_009af720(Cc13Seg67bHost& host, void* bot, void* target) {
+    void* const t = host.operator_new_00bf681b(0x6A0);
+    if (t == nullptr) return nullptr;
+    return host.kamikaze_task_construct_009aeef0(t, bot, target);
+}
+
+// 009A98F0 (009A98F0-009A9904). 009A98F6 FCOMIP of +18h against +1Ch: JBE
+// (+18h <= +1Ch, or NaN) -> 0, else 1.
+bool bot_state_dogfight_aim_is_bored_009a98f0(void* state) {
+    return at<float>(state, 0x18) > at<float>(state, 0x1C);
+}
+
+// 009B1E30 (009B1E30-009B1E4E). +30h null -> 0; else ([+30h])->vtable[5Ch](9) ? 1 : 0
+// (009B1E40).
+bool land_target_is_kind9_009b1e30(Cc13Seg67bHost& host, void* o) {
+    void* const t = ptr_at(o, 0x30);
+    if (t == nullptr) return false;
+    return host.object_vcall_5c(t, 9);
+}
+
 }  // namespace bsp

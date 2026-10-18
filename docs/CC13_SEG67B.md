@@ -217,3 +217,16 @@ Ledger-only: 009C82D0 and 009D3E40 are byte-identical copies of 009A56C0 (`set_s
 | 0099B670 | vehicle avoidance dispatch | calls 007DF4F0 when unit+C50h is set |
 
 Ledger-only: 009A3FA0 (`depth_charge_in_release_window`) matches, including its NaN arm.
+
+### 3.9 Dogfight, drop-kamikaze and kamikaze destructor bodies, stream constructors and factories
+
+| Address | Function | Notes |
+|---|---|---|
+| 009AB370 / 009AEB80 / 009AF610 | task destructor bodies | each runs the approach block's destructor at +3F8h, then 007B4030 |
+| 009AB3D0 / 009AEAE0 | stream constructors (kinds 2 and 5) | 009F9980 runs before 00411170 here; in 009A6820 the order is reversed |
+| 009AB630 / 009AEC50 | load factories | 758h- and 74Ch-byte tasks |
+| 009AEBE0 / 009AF720 | make factories | the constructors are 009ADBF0 and 009AEEF0, called through the host |
+| 009A98F0 | dogfight aim "bored" test | +18h > +1Ch |
+| 009B1E30 | land target kind-9 test | |
+
+Ledger-only: 009AF230 is a byte-identical copy of 009A56C0 (`set_state`).

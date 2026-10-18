@@ -175,6 +175,15 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
+    // 009A9670: __thiscall(ECX = task+3F8h, bot, archive), RET 8.
+    virtual void dogfight_construct_approach_block_from_stream_009a9670(void* block, void* bot,
+                                                                        void* archive) = 0;
+    // 009AD920: __thiscall(ECX = task+3F8h, bot, archive), RET 8.
+    virtual void drop_kamikaze_approach_construct_from_bag_009ad920(void* block, void* bot,
+                                                                    void* archive) = 0;
+    // 009ADBF0 / 009AEEF0: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
+    virtual void* drop_kamikaze_task_construct_009adbf0(void* task, void* bot, void* target) = 0;
+    virtual void* kamikaze_task_construct_009aeef0(void* task, void* bot, void* target) = 0;
     // 007DF4F0: __thiscall(ECX = neighbour list at unit+C50h, pilot), RET 4.
     virtual void vehicle_avoidance_007df4f0(void* neighbours, void* pilot) = 0;
     // 009F9CE0: __thiscall(ECX = approach, arg, float reference speed), RET 8.
@@ -523,5 +532,25 @@ void* bot_task_load_depth_charge_009a69e0(Cc13Seg67bHost& host, void* bot, void*
 float pilot_command_heading_diff_from_live_plane_009a19b0(Cc13Seg67bHost& host, void* plan);
 // 0099B670: __fastcall(ECX = pilot task), RET.
 void pilot_bot_avoid_vehicles_0099b670(Cc13Seg67bHost& host, void* p);
+// 009AB370 / 009AEB80 / 009AF610: __fastcall(ECX = task), RET.
+void bot_task_dogfight_destruct_body_009ab370(Cc13Seg67bHost& host, void* task);
+void bot_task_drop_kamikaze_destruct_body_009aeb80(Cc13Seg67bHost& host, void* task);
+void bot_task_kamikaze_destruct_body_009af610(Cc13Seg67bHost& host, void* task);
+// 009AB3D0 / 009AEAE0: __thiscall(ECX = task, bot, archive), RET 8, EAX = task.
+void* bot_task_dogfight_construct_from_stream_009ab3d0(Cc13Seg67bHost& host, void* task,
+                                                       void* bot, void* archive);
+void* bot_task_drop_kamikaze_construct_from_bag_009aeae0(Cc13Seg67bHost& host, void* task,
+                                                         void* bot, void* archive);
+// 009AB630 / 009AEC50: __stdcall(bot, archive), RET 8, EAX.
+void* bot_task_dogfight_factory_create_009ab630(Cc13Seg67bHost& host, void* bot, void* archive);
+void* bot_task_make_drop_kamikaze_from_bag_009aec50(Cc13Seg67bHost& host, void* bot,
+                                                    void* archive);
+// 009AEBE0 / 009AF720: __fastcall(ECX = bot, EDX = target), RET, EAX.
+void* bot_task_make_drop_kamikaze_009aebe0(Cc13Seg67bHost& host, void* bot, void* target);
+void* bot_task_make_kamikaze_009af720(Cc13Seg67bHost& host, void* bot, void* target);
+// 009A98F0: __fastcall(ECX = aim state), RET, EAX.
+bool bot_state_dogfight_aim_is_bored_009a98f0(void* state);
+// 009B1E30: __fastcall(ECX = land approach), RET, EAX.
+bool land_target_is_kind9_009b1e30(Cc13Seg67bHost& host, void* o);
 
 }  // namespace bsp
