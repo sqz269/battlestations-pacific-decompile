@@ -12,9 +12,9 @@ symbols. Nothing here is wired.
 |---|---|---|
 | In the struck range 0081B000-0081EFFF (seg51) | 22 | Not touched |
 | Template bodies | 88 | Tagged `stl_shape`, `reviewed`, evidence `sys6_shape` |
-| Game code, reconstructed | 10 | `src/cc13_segmix.cpp`, build-tested (cc13-segmixB, C, D) |
+| Game code, reconstructed | 12 | `src/cc13_segmix.cpp`, build-tested (cc13-segmixB, C, D, E) |
 | Game code, cc9-hosted (verify-and-record) | 7 | Recorded with a verdict |
-| Game code, not done yet | 6 | Following commits |
+| Game code, not done yet | 4 | Following commits |
 
 ## Template bodies (cc13-segmixA)
 
@@ -148,6 +148,49 @@ seconds), RET 4. It rebuilds unit+74h:
 `unit_rudder.cpp` declares a hook for it, `controller_update_0092f930`, that
 nothing binds.
 
+### Segment 46: the mission camera (cc13-segmixE)
+
+These are two camera bodies that 007A91A0 BSP_MovCam_Step calls. `cc13_bigB1`
+reaches both through hooks: `movcam_007a84d0` and
+`movcam_update_hand_mode_007a87b0`. No body existed for either.
+
+**007A84D0 BSP_MovCam_CycleTarget**, thiscall(camera; byte backward), RET 4. The
+ledger name BSP_Recon_PublishedListCursor was replaced, and the Ghidra old value
+is in `local/ghidra-annotations-20261018T154313Z.json`. The units come from the
+active player's three lists: [[game+18ECh*4+18CCh]+30h] at +DD8h, +DE4h and +DF0h
+(each a count, then a head).
+- With no target [camera+38Ch], it takes the first unit of the first list that is
+  not empty. That unit becomes the target if it answers kind 5. Otherwise the
+  search steps on from it as in the next case.
+- Otherwise it finds the target's index over the joined lists (00793610,
+  00793670, 007936D0). It then steps, by -1 when the byte and camera+518h are
+  both set and by +1 otherwise, wrapping, until a unit answers kind 5 (vtable
+  +5Ch). The total count bounds the number of steps.
+- The result goes to 007A6910. That is the unit, or null when nothing answers.
+
+The `cc13_bigB1` hook declares the argument as an int, but the image tests only
+its low byte.
+
+Deviation: when the list walk runs past the end, the image reads [0+4], which
+faults. The C++ returns a null unit instead.
+
+**007A87B0 BSP_MovCam_UpdateHandMode**, thiscall(camera). It moves between the
+target's vehicle cameras with the stick.
+- The cameras are [[[camera+38Ch]+538h]+BCh]: 5Ch-byte entries with x at +38h, z
+  at +40h and a disabled byte at +58h.
+- The stick is camera+504h (dx) and +508h (dy, inverted), each with a dead zone
+  of 0.25.
+- The columns split at plus or minus class+A4h / 64. The new column is the
+  current one plus dx.
+- Pass 1 takes the enabled entry in the new column with the nearest z on the dy
+  side. If it finds nothing, pass 2 does the same over the middle column, but
+  only for a pure vertical push from a side column.
+- It then calls 007A6710. When [camera+390h] is set, it calls 0079F710, and then
+  00797070(0, 0) if 0079F710 did not fail.
+
+The two reversed subtractions were read from the bytes: D8 E9 at 007A8A22 and
+DE E2 at 007A8B7D. Both compute z0 - z, and only the magnitude is used.
+
 ## Files
 
 - 88 tag rows in `config/tags/006b0000`, `006c0000`, `00730000`, `00740000`,
@@ -155,8 +198,8 @@ nothing binds.
   `008e0000.jsonl`.
 - `include/bsp/cc13_segmix.hpp` and `src/cc13_segmix.cpp`, registered in
   `cmake/startup.cmake` (bsp_core).
-- 17 function records in `config/reconstruction/00750000`, `00760000`, `00920000`
-  and `00930000.jsonl`: 10 bodies and 7 verify-and-record.
-- 6 renames in `config/names/00920000` and `00930000.jsonl` (0092F930, 0093B920, 0093A2C0, 0093AA00, 00933BB0,
-  00933DA0), applied in Ghidra; the old values are in
-  `local/ghidra-annotations-20261018T153423Z.json` and `...T153752Z.json`.
+- 19 function records in `config/reconstruction/00750000`, `00760000`, `007a0000`,
+  `00920000` and `00930000.jsonl`: 12 bodies and 7 verify-and-record.
+- 7 renames in `config/names/007a0000`, `00920000` and `00930000.jsonl` (007A84D0, 0092F930, 0093B920, 0093A2C0,
+  0093AA00, 00933BB0, 00933DA0), applied in Ghidra; the old values are in
+  `local/ghidra-annotations-20261018T153423Z.json`, `...T153752Z.json` and `...T154313Z.json`.

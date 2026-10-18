@@ -102,6 +102,31 @@ public:
     virtual void matrix_set_rotation_from_euler_00467050(float* matrix, float c, float b, float a) = 0;
     // 0042ED50 BSP_SceneNode_InvalidateSubtreePose: __thiscall(ECX = node).
     virtual void scene_node_invalidate_subtree_pose_0042ed50(void* node) = 0;
+
+    // ---- segment 46 camera (cc13-segmixE) ----
+    // [00E188A8], the game object.
+    virtual void* game_global_00e188a8() = 0;
+    // The unit's vtable slot +5Ch(kind): __thiscall(ECX = unit; kind), RET 4; AL.
+    virtual bool unit_vcall_5c_is_kind(void* unit, std::int32_t kind) = 0;
+    // 00793610 / 00793670 / 007936D0: __thiscall(ECX = player lists; unit), RET 4;
+    // EAX = the unit's index in the first / second / third list, or -1.
+    virtual std::int32_t player_lists_index_a_00793610(void* lists, void* unit) = 0;
+    virtual std::int32_t player_lists_index_b_00793670(void* lists, void* unit) = 0;
+    virtual std::int32_t player_lists_index_c_007936d0(void* lists, void* unit) = 0;
+    // 007A6910: __thiscall(ECX = camera; unit or null), RET 4 (the camera's target set).
+    virtual void movcam_set_target_007a6910(void* camera, void* unit) = 0;
+    // 005CD640 BSP_VehicleCameraArray_Resize: __thiscall(ECX = array; count), RET 4.
+    virtual void vehicle_camera_array_resize_005cd640(void* array, std::int32_t count) = 0;
+    // 005CD820 BSP_VehicleCameraArray_At: __thiscall(ECX = array; index), RET 4; EAX = entry (5Ch).
+    virtual void* vehicle_camera_array_at_005cd820(void* array, std::int32_t index) = 0;
+    // 007A6710 BSP_MovCam_EnterVehicleCamera: __thiscall(ECX = camera; index), RET 4.
+    virtual void movcam_enter_vehicle_camera_007a6710(void* camera, std::int32_t index) = 0;
+    // 0079F710 BSP_MovCam_GetVehicleCameraPose: __thiscall(ECX = camera; out pose,
+    // object, index, bool* failed), RET 10h.
+    virtual void movcam_get_vehicle_camera_pose_0079f710(void* camera, void* out_pose, void* object,
+                                                         std::int32_t index, std::uint8_t* flag) = 0;
+    // 00797070 BSP_MovCam_SetLookTarget: __thiscall(ECX = camera; a, b), RET 8.
+    virtual void movcam_set_look_target_00797070(void* camera, std::uint32_t a, std::uint32_t b) = 0;
 };
 
 // ---- segment 42: the mother ship and its MOTHERSHIP_CREATE message ----
@@ -121,5 +146,9 @@ void* cc13_segmix_failure_message9b_construct_0093a2c0(void* message, std::uint3
                                                        std::uint8_t flag_28, Cc13SegmixHost& host);
 void cc13_segmix_repair_task_destruct_0093b920(void* task, Cc13SegmixHost& host);
 void cc13_segmix_unit_controller_update_pose_0092f930(void* controller, float seconds, Cc13SegmixHost& host);
+
+// ---- segment 46: the mission camera ----
+void cc13_segmix_movcam_cycle_target_007a84d0(void* camera, std::uint8_t backward, Cc13SegmixHost& host);
+void cc13_segmix_movcam_update_hand_mode_007a87b0(void* camera, Cc13SegmixHost& host);
 
 }  // namespace bsp

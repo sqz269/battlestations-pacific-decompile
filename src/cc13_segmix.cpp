@@ -5,6 +5,7 @@
 
 #include "bsp/cc13_segmix.hpp"
 
+#include <cmath>
 #include <cstring>
 
 namespace bsp {
@@ -303,6 +304,223 @@ void cc13_segmix_unit_controller_update_pose_0092f930(void* controller, float se
     for (void* child = at<void*>(unit, 0x48); child != nullptr; child = at<void*>(child, 0x44)) {
         host.scene_node_invalidate_subtree_pose_0042ed50(child);                       // 0092FAD3
     }
+}
+
+// ---------------------------------------------------------------------------
+// 007A84D0 BSP_MovCam_CycleTarget (cc13-segmixE; ledger name was
+// BSP_Recon_PublishedListCursor). __thiscall(ECX = camera; byte backward), RET 4.
+// Bytes 007A84D0..007A879F.
+//
+// The player is [game + [game+18ECh]*4 + 18CCh], and its lists object is
+// L = [player+30h]. L holds three lists: A {+DD8h count, +DDCh head}, B {+DE4h,
+// +DE8h} and C {+DF0h, +DF4h}. Each node has +4h next and +8h payload, and the
+// payload's +4h is the unit.
+//
+// - With no current target ([camera+38Ch] = 0), it takes the head unit of the
+//   first non-empty list. When that unit passes slot +5Ch(5), 007A6910 targets
+//   it and the call returns.
+// - Otherwise it finds the unit's position p across the joined lists: in A
+//   (00793610), else in B (00793670) + nA, else in C (007936D0) + nA + nB.
+// - It then steps p by +1, or by -1 when `backward` and byte camera+518h are both
+//   set, and wraps p in [0, total). It takes the unit at p, and repeats while the
+//   unit fails +5Ch(5), at most total + 1 times.
+// - At the end it calls 007A6910 with the unit when +5Ch(5) holds, asked again,
+//   or with null.
+//
+// Deviation: when p falls outside a list's walk, the image reads [0+4] and
+// faults. The model stops there (an assertion-level return).
+// ---------------------------------------------------------------------------
+void cc13_segmix_movcam_cycle_target_007a84d0(void* camera, std::uint8_t backward, Cc13SegmixHost& host) {
+    const auto lists = [&]() -> void* {
+        void* const game = host.game_global_00e188a8();
+        const std::int32_t slot = at<std::int32_t>(game, 0x18EC);
+        void* const player = at<void*>(game, 0x18CC + static_cast<std::size_t>(slot) * 4);
+        return at<void*>(player, 0x30);
+    };
+    // The node at `index` of the list {+0 count, +4 head}, or null.
+    const auto node_at = [&](void* list, std::int32_t index) -> void* {
+        if (index < 0 || index >= at<std::int32_t>(list, 0x0)) return nullptr;
+        std::int32_t i = 0;
+        for (void* node = at<void*>(list, 0x4); node != nullptr; node = at<void*>(node, 0x4), ++i) {
+            if (index == i) return node;
+        }
+        return nullptr;
+    };
+    const auto unit_of = [&](void* node) { return at<void*>(at<void*>(node, 0x8), 0x4); };
+
+    void* unit = at<void*>(camera, 0x38C);                                              // 007A84D8
+    if (unit == nullptr) {
+        void* const l = lists();
+        void* head = nullptr;
+        if (at<std::int32_t>(l, 0xDD8) > 0) head = at<void*>(l, 0xDDC);
+        else if (at<std::int32_t>(l, 0xDE4) > 0) head = at<void*>(l, 0xDE8);
+        else if (at<std::int32_t>(l, 0xDF0) > 0) head = at<void*>(l, 0xDF4);
+        if (head != nullptr) unit = unit_of(head);
+        if (unit != nullptr && host.unit_vcall_5c_is_kind(unit, 5)) {                  // 007A855F
+            host.movcam_set_target_007a6910(camera, unit);
+            return;
+        }
+    }
+    void* l = lists();
+    const std::int32_t count_a = at<std::int32_t>(l, 0xDD8);
+    const std::int32_t count_ab = count_a + at<std::int32_t>(l, 0xDE4);
+    const std::int32_t total = count_ab + at<std::int32_t>(l, 0xDF0);
+    if (total > 0) {
+        std::int32_t p = host.player_lists_index_a_00793610(l, unit);                  // 007A85CC
+        if (p == -1) p = host.player_lists_index_b_00793670(lists(), unit) + count_a;
+        if (p == count_a - 1) p = host.player_lists_index_c_007936d0(lists(), unit) + count_ab;
+        std::int32_t tries = 0;
+        for (;;) {
+            const std::int32_t step = backward != 0 && at<std::uint8_t>(camera, 0x518) != 0 ? -1 : 1;
+            p += step;
+            if (p >= total) p = 0;
+            else if (p < 0) p = total - 1;
+            l = lists();
+            void* node = nullptr;
+            if (p < count_a) node = node_at(static_cast<std::uint8_t*>(l) + 0xDD8, p);
+            else if (p < count_ab) node = node_at(static_cast<std::uint8_t*>(l) + 0xDE4, p - count_a);
+            else node = node_at(static_cast<std::uint8_t*>(l) + 0xDF0, p - count_ab);
+            if (node == nullptr) return;                                               // the image faults here
+            unit = unit_of(node);
+            if (host.unit_vcall_5c_is_kind(unit, 5)) break;                            // 007A86C0
+            if (tries++ >= total) break;
+        }
+    }
+    if (unit != nullptr && host.unit_vcall_5c_is_kind(unit, 5)) {                      // 007A86ED
+        host.movcam_set_target_007a6910(camera, unit);
+        return;
+    }
+    host.movcam_set_target_007a6910(camera, nullptr);                                  // 007A86FB
+}
+
+// ---------------------------------------------------------------------------
+// 007A87B0 BSP_MovCam_UpdateHandMode (cc13-segmixE). __thiscall(ECX = camera),
+// RET. Bytes 007A87B0..007A8C51. It moves between the target's vehicle cameras
+// with the stick.
+//
+// Inputs:
+// - The cameras are the class array V = [[[camera+38Ch]+538h]+BCh] {+0h data,
+//   +4h count}, with 5Ch-byte entries: +38h x, +40h z, byte +58h disabled. The
+//   current entry is [camera+388h], i0.
+// - The column half-width is R = class+A4h * 2^-6 ([00D04FC8]) as a float.
+// - dx = -1 / 0 / 1 from camera+504h against -0.25f / 0.25f ([00CF00A8],
+//   [00CE3868]). dy = +1 / 0 / -1 from camera+508h the same way (inverted).
+// - The current column is s = -1 when -R > x0, 1 when x0 > R, else 0, and
+//   n = s + dx.
+//
+// The search:
+// 1. It returns when V is null or has fewer than 2 entries, or when n is outside
+//    [-1, 1] and dy is 0.
+// 2. Pass 1 checks each other enabled entry j. It must be in column n (x < -R for
+//    n < 0; -R <= x <= R for 0; x > R for n > 0) and, for dy = -1 / +1, below /
+//    above z0. Among those it keeps the first with the smallest |z0 - z|
+//    (strictly smaller replaces).
+// 3. When pass 1 finds nothing, and n != 0, dx = 0 and dy != 0, pass 2 runs.
+//    It is the same over the middle column only, with entries read through
+//    005CD820.
+// 4. For a found entry: 007A6710(camera; j). When [camera+390h] is set, it calls
+//    0079F710(camera; pose, [camera+390h], j, &failed), and 00797070(camera;
+//    0, 0) when that did not fail.
+//
+// Bytes: D8 E9 at 007A8A22 is FSUBR ST(0),ST(1), and DE E2 at 007A8B7D is
+// FSUBRP ST(2),ST(0). Both give z0 - z, and only the magnitude is used. All
+// terms are float-exact under 24-bit precision. Every x87 compare that branches
+// on CF rejects an unordered pair, as the image does.
+// ---------------------------------------------------------------------------
+void cc13_segmix_movcam_update_hand_mode_007a87b0(void* camera, Cc13SegmixHost& host) {
+    const auto vec = [&]() -> void* {
+        return at<void*>(at<void*>(at<void*>(camera, 0x38C), 0x538), 0xBC);
+    };
+    const auto unordered = [](float a, float b) { return std::isnan(a) || std::isnan(b); };
+    void* v = vec();
+    if (v == nullptr || at<std::int32_t>(v, 0x4) < 2) return;                       // 007A87CC..007A87D8
+    std::int32_t dx = 0;
+    std::int32_t dy = 0;
+    const float stick_x = at<float>(camera, 0x504);
+    if (-0.25f > stick_x) dx = -1;
+    else if (stick_x > 0.25f) dx = 1;
+    const float stick_y = at<float>(camera, 0x508);
+    if (-0.25f > stick_y) dy = 1;
+    else if (stick_y > 0.25f) dy = -1;
+
+    const std::int32_t current = at<std::int32_t>(camera, 0x388);
+    if (current >= at<std::int32_t>(v, 0x4)) host.vehicle_camera_array_resize_005cd640(v, current + 1);
+    const auto entry = [&](void* array, std::int32_t j) {
+        return at<std::uint8_t*>(array, 0x0) + static_cast<std::size_t>(j) * 0x5C;
+    };
+    const float x0 = x87_float_round_trip(at<float>(entry(v, current), 0x38));
+    const float z0 = at<float>(entry(v, current), 0x40);
+    void* const ship_class = at<void*>(at<void*>(camera, 0x38C), 0x538);
+    const float r = static_cast<float>(static_cast<double>(at<float>(ship_class, 0xA4)) * 0.015625);
+    const float minus_r = -r;
+    std::int32_t column = 0;
+    if (minus_r > x0) column = -1;
+    else if (x0 > r) column = 1;
+    const std::int32_t target = column + dx;                                           // 007A88C4
+    if ((target < -1 || target > 1) && dy == 0) return;                                // 007A88D6
+
+    std::int32_t best = -1;
+    float best_z = 0.0f;                                                               // [esp+2Ch]
+    const auto consider = [&](std::int32_t j, float z) {
+        if (best != -1) {
+            const float d1 = std::fabs(z0 - z);
+            const float d2 = std::fabs(z0 - best_z);
+            if (!(d2 > d1)) return;                                                    // FCOMIP, JBE
+        }
+        best = j;
+        best_z = z;
+    };
+    const auto z_passes = [&](float z) {
+        if (dy == 0) return true;
+        if (dy == -1) return z0 > z;
+        if (dy == 1) return z > z0;
+        return false;
+    };
+    v = vec();
+    for (std::int32_t j = 0; j < at<std::int32_t>(v, 0x4); ++j, v = vec()) {           // pass 1, 007A88FD
+        if (j == current) continue;
+        if (j >= at<std::int32_t>(v, 0x4)) host.vehicle_camera_array_resize_005cd640(v, j + 1);
+        if (at<std::uint8_t>(entry(v, j), 0x58) != 0) continue;
+        v = vec();
+        if (j >= at<std::int32_t>(v, 0x4)) host.vehicle_camera_array_resize_005cd640(v, j + 1);
+        const float x = at<float>(entry(v, j), 0x38);
+        const float z = at<float>(entry(v, j), 0x40);
+        bool in_column = false;
+        if (target < 0) {
+            in_column = minus_r > x;
+        } else if (target == 0) {
+            in_column = !(unordered(x, minus_r) || x < minus_r) && !unordered(r, x) && r >= x;
+        } else {
+            in_column = x > r;
+        }
+        if (!in_column || !z_passes(z)) continue;
+        consider(j, z);
+    }
+    if (best == -1) {
+        if (target == 0 || dx != 0 || dy == 0) return;                                 // 007A8A82..007A8A9A
+        v = vec();
+        for (std::int32_t j = 0; j < at<std::int32_t>(v, 0x4); ++j, v = vec()) {       // pass 2, 007A8AD0
+            if (j == current) continue;
+            if (j >= at<std::int32_t>(v, 0x4)) host.vehicle_camera_array_resize_005cd640(v, j + 1);
+            if (at<std::uint8_t>(entry(v, j), 0x58) != 0) continue;
+            auto* const e = static_cast<std::uint8_t*>(host.vehicle_camera_array_at_005cd820(vec(), j));
+            const float x = x87_float_round_trip(at<float>(e, 0x38));
+            const float z = at<float>(e, 0x40);
+            if (unordered(x, minus_r) || x < minus_r) continue;                        // 007A8B32 JB
+            if (unordered(r, x) || r < x) continue;                                    // 007A8B40 JB
+            if (dy != -1 && dy != 1) continue;
+            if (!z_passes(z)) continue;
+            consider(j, z);
+        }
+        if (best == -1) return;
+    }
+    host.movcam_enter_vehicle_camera_007a6710(camera, best);                          // 007A8C08
+    void* const object = at<void*>(camera, 0x390);
+    if (object == nullptr) return;
+    alignas(4) std::uint8_t pose[0x40];
+    std::uint8_t failed = 0;
+    host.movcam_get_vehicle_camera_pose_0079f710(camera, pose, object, best, &failed);  // 007A8C29
+    if (failed == 0) host.movcam_set_look_target_00797070(camera, 0, 0);
 }
 
 }  // namespace bsp
