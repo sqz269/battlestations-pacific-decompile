@@ -5,6 +5,7 @@
 #include "bsp/cc13_seg59b.hpp"
 #include "bsp/gun_bot_ticks.hpp"
 
+#include <cmath>
 #include <cstring>
 
 namespace bsp::cc13_seg59b {
@@ -1771,5 +1772,282 @@ void mission_score_record_clear_00915760(Seg59bHost& host, void* record) {
     }
     assign_native_string_inline(host, add(record, 0x25C), text);
     assign_native_string_inline(host, add(record, 0x254), add(record, 0x25C));
+}
+
+namespace {
+
+void* game_global(Seg59bHost& host) { return *static_cast<void**>(host.image_pointer(0x00E188A8u)); }
+
+void* award_table(Seg59bHost& host) { return add(*static_cast<void**>(host.image_pointer(0x00E19900u)), 0x10); }
+
+// The checked "is this 16-bit id already listed" walk over vector<u16> {first +4, last +8} used
+// by 00913D80 (00914099..009140CF) and 00914100 (009141F5..00914255): a null first or an index
+// past the end ends the walk; the per-element 00BF6713 test repeats the same bounds.
+bool short_vector_checked_index(Seg59bHost& host, void* vector, std::uint32_t index) {
+    const std::uint8_t* const first = static_cast<const std::uint8_t*>(ptr(vector, 0x04));
+    if (first == nullptr) return false;
+    const auto size = static_cast<std::uint32_t>(
+        static_cast<std::int32_t>(static_cast<const std::uint8_t*>(ptr(vector, 0x08)) - first) >> 1);
+    if (index >= size) return false;
+    if (ptr(vector, 0x04) == nullptr ||
+        index >= static_cast<std::uint32_t>(static_cast<std::int32_t>(
+                     static_cast<const std::uint8_t*>(ptr(vector, 0x08)) -
+                     static_cast<const std::uint8_t*>(ptr(vector, 0x04))) >> 1)) {
+        host.checked_iterator_failure_00bf6713();
+    }
+    return true;
+}
+
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// 00913D80 BSP_MissionScoring_RecordComponentFailure. __thiscall(ECX = scoring, unit, hit,
+// owner_kind), RET 0Ch. Caller 0093BED0 (BSP_ShipSystems_RollComponentFailure) at 0093C0DC; the
+// cc9 host records the call only (game_hosts_gunnery.cpp, "Failure::statistics_00913d80").
+// Evidence: [[00E188A8]+1FE4h] == 2 -> return (00913DAB); attacker = [hit+4], null -> return;
+// 00913DD1 record = attacker->vt[108h](). Record byte +21h clear and slot = +1Ch <= 7:
+//  [record+ACh] non-null and [[record+ACh] + 00779A00([record+4])*4 + 1ACh] == slot and
+//  [unit+54h] != [[game + that*4 + 18CCh]+28h] -> ++[scoring + slot*284h + 194h] (00913E30);
+//  unit non-null, [unit+54h] != [attacker+54h], unit->vt[5Ch](6), [record+ACh] non-null with
+//  vt[5Ch](12h), owner_kind == 8: "Counter_RUA_DBU" D187C4 counter in the map at scoring +
+//  slot*284h + 70h incremented (005070C0, 00913EC4); 0050FC30("RUA_DBU" D188E0) record, its
+//  +44h vector [0] (00481750) as the target; the counter re-read == target -> 0090EDE0(slot,
+//  "RUA_DBU", 1, 0) (00913F9E); each key a 0041E870 temporary destroyed by 0041DD20; then byte
+//  [record+21h] = 1 (00913FB4). Then (also when the flag was set or slot > 7): unit->vt[5Ch](6)
+//  false -> return; a, b, c, d = 00939F70 / 00939F80 / 00939FC0 / 00939FB0 on unit+A20h; trace
+//  "%s (%d) HP:%f bekap %f %f " D188C4 (name [unit+158h] or F899A0, word +174h, [unit+370h],
+//  c*a, d*b) to 004254B0; c*a + d*b > [unit+370h] (FCOMIP, JBE also on unordered) and
+//  slot = [unit+180h] <= 7 -> the unit id (word +174h) is pushed (007265E0) on the vector at
+//  scoring + slot*284h + 140h unless already present.
+// x87: the two products and the sum are modeled at 24-bit precision (main thread); at 53 bits
+// they could differ in the last place. No shared RNG draws.
+// ---------------------------------------------------------------------------
+void scoring_record_component_failure_00913d80(Seg59bHost& host, void* scoring, void* unit, void* hit,
+                                                std::int32_t owner_kind) {
+    void* const game = game_global(host);
+    if (at<std::uint32_t>(game, 0x1FE4) == 2) return;
+    void* const attacker = ptr(hit, 0x04);
+    if (attacker == nullptr) return;
+    void* const record = host.entity_player_record_vt108(attacker);
+    bool mark = false;
+    if (at<std::uint8_t>(record, 0x21) == 0 && at<std::uint32_t>(record, 0x1C) <= 7) {
+        mark = true;
+        const std::uint32_t slot = at<std::uint32_t>(record, 0x1C);
+        if (ptr(record, 0xAC) != nullptr) {
+            const std::uint32_t category = host.ordnance_kind_to_category_00779a00(ptr(record, 0x04));
+            if (at<std::uint32_t>(ptr(record, 0xAC), 0x1AC + category * 4u) == slot &&
+                at<std::uint32_t>(unit, 0x54) != at<std::uint32_t>(ptr(game, 0x18CC + category * 4u), 0x28)) {
+                at<std::uint32_t>(scoring, slot * 0x284u + 0x194u) += 1u;
+            }
+        }
+        void* const crew_unit = ptr(record, 0xAC);
+        if (unit != nullptr && at<std::uint32_t>(unit, 0x54) != at<std::uint32_t>(attacker, 0x54) &&
+            host.entity_is_kind_of_vt5c(unit, 6) && crew_unit != nullptr &&
+            host.entity_is_kind_of_vt5c(crew_unit, 0x12) && owner_kind == 8) {
+            const char* const counter_key = static_cast<const char*>(host.image_pointer(0x00D187C4u));
+            const char* const award_key = static_cast<const char*>(host.image_pointer(0x00D188E0u));
+            alignas(4) std::uint8_t key[8] = {};
+            host.native_string_assign_0041e870(key, counter_key);
+            *host.string_int_map_index_005070c0(add(scoring, at<std::uint32_t>(record, 0x1C) * 0x284u + 0x70u), key) += 1;
+            host.native_string_destroy_storage_0041dd20(key);
+            host.native_string_assign_0041e870(key, award_key);
+            void* const award = host.award_table_find_record_0050fc30(award_table(host), key);
+            const std::int32_t target = *host.int_vector_at_00481750(add(award, 0x44), 0);
+            host.native_string_destroy_storage_0041dd20(key);
+            host.native_string_assign_0041e870(key, counter_key);
+            const bool reached =
+                *host.string_int_map_index_005070c0(add(scoring, at<std::uint32_t>(record, 0x1C) * 0x284u + 0x70u), key) == target;
+            host.native_string_destroy_storage_0041dd20(key);
+            if (reached) {
+                host.native_string_assign_0041e870(key, award_key);
+                host.scoring_grant_award_0090ede0(scoring, static_cast<std::int32_t>(at<std::uint32_t>(record, 0x1C)), key, 1, 0);
+                host.native_string_destroy_storage_0041dd20(key);
+            }
+        }
+    }
+    if (mark) at<std::uint8_t>(record, 0x21) = 1;
+    if (!host.entity_is_kind_of_vt5c(unit, 6)) return;
+    void* const block = add(unit, 0xA20);
+    const float a = host.unit_block_float_00939f70(block);
+    const float b = host.unit_block_float_00939f80(block);
+    const float c = host.unit_block_float_00939fc0(block);
+    const float d = host.unit_block_float_00939fb0(block);
+    const float health = at<float>(unit, 0x370);
+    const void* name = ptr(unit, 0x158);
+    if (name == nullptr) name = host.image_pointer(0x00F899A0u);
+    const float db = d * b;
+    const float ca = c * a;
+    std::uint32_t args[8];
+    std::uint32_t count = 0;
+    push_pointer(args, count, name);
+    push_dword(args, count, at<std::uint16_t>(unit, 0x174));
+    push_double_from_float(args, count, health);
+    push_double_from_float(args, count, ca);
+    push_double_from_float(args, count, db);
+    trace(host, 0x00D188C4u, args, count);
+    const float sum = ca + db;
+    if (!(sum > at<float>(unit, 0x370))) return;
+    std::uint32_t id = at<std::uint16_t>(unit, 0x174);
+    const std::uint32_t slot = at<std::uint32_t>(unit, 0x180);
+    if (slot > 7) return;
+    void* const vector = add(scoring, slot * 0x284u + 0x140u);
+    for (std::uint32_t index = 0; short_vector_checked_index(host, vector, index); ++index) {
+        if (static_cast<const std::uint16_t*>(ptr(vector, 0x04))[index] == static_cast<std::uint16_t>(id)) return;
+    }
+    host.short_vector_push_back_007265e0(vector, &id);
+}
+
+// ---------------------------------------------------------------------------
+// 00914100 BSP_MissionScoring_RecordRepairCompleted. __thiscall(ECX = scoring, unit), RET 4.
+// Reached by the tail-jump at 0093CAF1 (BSP_RepairTask_Update 0093CA20); the cc9 host marks it
+// unreached (game_hosts_gunnery.cpp, repair_completed_notify).
+// Evidence: slot = [unit+180h] > 7 -> return (0091412D). Key "GA_PL" D1887C (0041E870,
+// 0091413E); 0050FC30 award record (0091415E); its +48h int vector: null or empty -> 00BF6713
+// (00914176); threshold = [0]. Flag = threshold >= 00923BE0(unit) * 100.0 (double 00D7A220;
+// FCOMIP, JC also on unordered, 0091418D) and [unit+370h] > 0.0f (00D7A218; COMISS JA,
+// 0091419E). The key is released (00419CC0 / 00BD1510, 009141D4). Flag set: for each u16 in
+// the vector at scoring + slot*284h + 144h (+148h last) equal to word [unit+174h], push
+// {u16 id, float [00F876A4]} on the vector at +150h through 0090E7C0 (00914250). The 8-byte
+// element shares the key's stack slot, so its padding bytes 2..3 are the key's size bits.
+// x87: the health product is modeled at 24-bit precision (main thread); 53-bit noted.
+// ---------------------------------------------------------------------------
+void scoring_record_repair_completed_00914100(Seg59bHost& host, void* scoring, void* unit) {
+    const std::uint32_t slot = at<std::uint32_t>(unit, 0x180);
+    if (slot > 7) return;
+    alignas(4) std::uint8_t local[8] = {};
+    host.native_string_assign_0041e870(local, static_cast<const char*>(host.image_pointer(0x00D1887Cu)));
+    void* const award = host.award_table_find_record_0050fc30(award_table(host), local);
+    if (ptr(award, 0x48) == nullptr ||
+        (static_cast<std::int32_t>(static_cast<std::uint8_t*>(ptr(award, 0x4C)) -
+                                   static_cast<std::uint8_t*>(ptr(award, 0x48))) >> 2) == 0) {
+        host.checked_iterator_failure_00bf6713();
+    }
+    const std::int32_t threshold = *static_cast<const std::int32_t*>(ptr(award, 0x48));
+    const float scaled = host.unit_get_health_00923be0(unit) * 100.0f;
+    const bool flag = !(static_cast<double>(threshold) < static_cast<double>(scaled)) &&
+                      !std::isnan(scaled) && at<float>(unit, 0x370) > 0.0f;
+    release_native_string(host, local);
+    if (!flag) return;
+    void* const record = add(scoring, slot * 0x284u);
+    const std::uint16_t id = at<std::uint16_t>(unit, 0x174);
+    void* const ids = add(record, 0x140);
+    for (std::uint32_t index = 0; short_vector_checked_index(host, ids, index); ++index) {
+        if (static_cast<const std::uint16_t*>(ptr(ids, 0x04))[index] != id) continue;
+        std::memcpy(local, &id, sizeof id);
+        const float clock = *static_cast<const float*>(host.image_pointer(0x00F876A4u));
+        std::memcpy(local + 4, &clock, sizeof clock);
+        host.repair_event_vector_push_back_0090e7c0(add(record, 0x150), local);
+    }
+}
+
+// ---------------------------------------------------------------------------
+// 009150A0 BSP_MissionScoring_ForceRefresh. __thiscall(ECX = scoring, slot), RET 4. Caller
+// 008B8E60 (Lua Scoring.ForceRefreshScoringTable; src/cc13_left55_seg56b.cpp calls it as
+// scoring_force_refresh_009150a0 through its host).
+// Evidence: record = scoring + slot*284h + 4 (009150C2); 009150CC 00914390(record); 009150D3
+// 0090EA00(record); [[00E188A8]+1FE4h] == 0 -> return (009150E5). Else key "playerIndex"
+// CF9D28 (0041E870, 009150F4); 00915112 00B67980(game+1A0Ch, &globals); 00915128
+// 00B67800(globals, &table, "scoring" CF8268); 0091513A 00B67460(table, &key, slot); 00B67700
+// on the table (00915148), then on the globals (00915156); the key released (0091517D).
+// ---------------------------------------------------------------------------
+void scoring_force_refresh_009150a0(Seg59bHost& host, void* scoring, std::int32_t slot) {
+    void* const record = add(scoring, static_cast<std::uint32_t>(slot) * 0x284u + 4u);
+    host.score_record_recompute_category_totals_00914390(record);
+    host.score_record_publish_0090ea00(record);
+    void* const game = game_global(host);
+    if (at<std::uint32_t>(game, 0x1FE4) == 0) return;
+    alignas(4) std::uint8_t key[8] = {};
+    host.native_string_assign_0041e870(key, static_cast<const char*>(host.image_pointer(0x00CF9D28u)));
+    alignas(4) std::uint8_t globals[0x14] = {};
+    alignas(4) std::uint8_t table[0x14] = {};
+    void* const globals_object = host.lua_owner_get_globals_00b67980(add(game, 0x1A0C), globals);
+    void* const table_object = host.lua_object_get_by_name_00b67800(
+        globals_object, table, static_cast<const char*>(host.image_pointer(0x00CF8268u)));
+    host.lua_object_set_native_string_integer_00b67460(table_object, key, slot);
+    host.lua_object_destruct_00b67700(table);
+    host.lua_object_destruct_00b67700(globals);
+    release_native_string(host, key);
+}
+
+// ---------------------------------------------------------------------------
+// 008F3270 BSP_ScenePropertyBag_CollectKeyNames. __thiscall(ECX = bag, list, sort), RET 8. No
+// code xrefs (vtable or dead).
+// Evidence: 008F3293 0094F3E0(list); iterator {bag+4} with 008EEB10 begin (008F32A3); per node:
+// name = [node+4] or F89450 (008F32C0); 008F32C7 00BF681B(8); non-null -> header {0, 0},
+// 008F32F7 0041DD40(header, strlen(name), 1), data non-null -> 008F330B memcpy(data, name,
+// size + 1); 008F3324 0094F270(list, header or 0, 1); 008F332D 008EEB60 next while node != 0.
+// After: byte sort != 0 -> 008F3348 0094F1B0(list, 0).
+// ---------------------------------------------------------------------------
+void scene_property_bag_collect_key_names_008f3270(Seg59bHost& host, void* bag, void* list, bool sort) {
+    host.string_key_list_clear_owned_headers_0094f3e0(list);
+    Hash64Iterator iterator{add(bag, 0x04), nullptr, 0};
+    host.hash64_iterator_begin_008eeb10(&iterator);
+    while (iterator.node != nullptr) {
+        const char* name = static_cast<const char*>(ptr(iterator.node, 0x04));
+        if (name == nullptr) name = static_cast<const char*>(host.image_pointer(kEnumNameEmpty));
+        void* header = host.operator_new_00bf681b(8);
+        if (header != nullptr) {
+            at<std::uint32_t>(header, 0x00) = 0;
+            at<std::uint32_t>(header, 0x04) = 0;
+            host.native_string_resize_0041dd40(header, static_cast<std::uint32_t>(std::strlen(name)), 1);
+            if (ptr(header, 0x04) != nullptr) {
+                host.memcpy_00bf7680(ptr(header, 0x04), name, at<std::uint32_t>(header, 0x00) + 1u);
+            }
+        }
+        host.string_key_list_append_owned_header_0094f270(list, header, 1);
+        host.hash64_iterator_next_008eeb60(&iterator);
+    }
+    if (sort) host.string_key_list_sort_0094f1b0(list, 0);
+}
+
+// ---------------------------------------------------------------------------
+// 008F6E20 BSP_ScenePropertyBag_CollectRecordsSorted. __thiscall(ECX = bag, out), RET 4; EAX =
+// count. Caller 008F7550.
+// Evidence: a local std::vector<record*> {alloc, first, last, end} zeroed (008F6E3E..008F6E4C);
+// iterator {bag+4} 00480690 begin (008F6E63). Per node: value = [node+8]; first non-null and
+// size < capacity -> stored at last, last += 4 (008F6E8D); else first > last -> 00BF6713, then
+// 008F6EB4 008F5900(vector, &ret, {vector, last}, &[node+8]); count += 1; 0047E480 next
+// (008F6EC1). Then the two first <= last checks (00BF6713 at 008F6EE1 / 008F6EF2) and 008F6F08
+// 008F3C90(first, last, size, 008EFBC0). out+4 = 0 (008F6F15); for i < count: checked index
+// (00BF6713 at 008F6F35), 008F6F44 008F0010(out, &v[i]); _free(first) when non-null (008F6F59).
+// ---------------------------------------------------------------------------
+std::int32_t scene_property_bag_collect_records_sorted_008f6e20(Seg59bHost& host, void* bag, void* out) {
+    alignas(4) std::uint8_t vector[0x10] = {};
+    auto first = [&]() { return static_cast<std::uint8_t*>(ptr(vector, 0x04)); };
+    auto last = [&]() { return static_cast<std::uint8_t*>(ptr(vector, 0x08)); };
+    auto end = [&]() { return static_cast<std::uint8_t*>(ptr(vector, 0x0C)); };
+    Hash64Iterator iterator{add(bag, 0x04), nullptr, 0};
+    host.scene_property_bag_iterator_begin_00480690(&iterator);
+    std::int32_t count = 0;
+    while (iterator.node != nullptr) {
+        void* const value = add(iterator.node, 0x08);
+        if (first() != nullptr && ((last() - first()) >> 2) < ((end() - first()) >> 2)) {
+            std::memcpy(last(), value, 4);
+            at<std::uint8_t*>(vector, 0x08) = last() + 4;
+        } else {
+            if (first() > last()) host.checked_iterator_failure_00bf6713();
+            alignas(4) std::uint8_t ret[8] = {};
+            host.pointer_vector_insert_008f5900(vector, ret, vector, last(), value);
+        }
+        host.scene_property_bag_iterator_next_0047e480(&iterator);
+        ++count;
+    }
+    std::uint8_t* const sort_last = last();
+    if (first() > sort_last) {
+        host.checked_iterator_failure_00bf6713();
+        if (first() > last()) host.checked_iterator_failure_00bf6713();
+    }
+    host.sort_by_predicate_008f3c90(first(), sort_last, static_cast<std::int32_t>((sort_last - first()) >> 2),
+                                    0x008EFBC0u);
+    at<std::uint32_t>(out, 0x04) = 0;
+    for (std::int32_t index = 0; index < count; ++index) {
+        if (first() == nullptr || static_cast<std::uint32_t>(index) >= static_cast<std::uint32_t>((last() - first()) >> 2)) {
+            host.checked_iterator_failure_00bf6713();
+        }
+        pointer_array_push_back_grow_008f0010(host, out,
+                                              reinterpret_cast<const std::uint32_t*>(first() + index * 4));
+    }
+    if (first() != nullptr) host.free_00bf65ac(first());
+    return count;
 }
 }  // namespace bsp::cc13_seg59b
