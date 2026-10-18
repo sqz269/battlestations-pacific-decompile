@@ -3262,6 +3262,8 @@ void library_select_order_of_battle_side_00511bf0(Raw screen, std::uint32_t side
         else
             host.command_bar_set_help_line_0054a0c0(native_view(record, 0x10));
     }
+    // 00511E08 FLD qword [00CEBDD0] = 1/72 (true double), narrowed by FSTP dword at
+    // 00511E18 and later added as a float (00511ECE FADD dword).
     const float extra = kind == 4 ? static_cast<float>(0.013888888888888888) : 0.0f;  // 00CEBDD0
     if (side != screen.at<std::uint32_t>(0x3C0) && kind >= 0 && kind <= 8 && kind != 7) {
         static constexpr std::size_t kSources[9] = {0x3D4, 0x3E4, 0x3F4, 0x3C4, 0x404, 0x3F4, 0x3F4, 0, 0x414};

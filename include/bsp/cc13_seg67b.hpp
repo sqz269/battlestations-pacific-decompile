@@ -617,6 +617,7 @@ public:
     // index's point to out (009DB060 then zeroes out[1]).
     virtual void path_vcall_08_point(void* path, float* out, std::int32_t index) = 0;
     // path->vtable[0Ch](): __thiscall(ECX = command path), RET, EAX = the point count.
+    // The same slot as Cc13SweepB4Host::path_vcall_0c_count (cc13_sweepB4.hpp).
     virtual std::int32_t path_vcall_0c_count(void* path) = 0;
     // 0085FFF0 BSP_DebugDraw_ArrowRgbaFloatsOneColour: __fastcall(ECX = from, EDX = to;
     // rgba[4] by value), RET 10h. Body: debug_draw_arrow_rgba_floats_one_colour_0085fff0

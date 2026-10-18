@@ -18090,3 +18090,19 @@ arithmetic stands in for the main thread's 24-bit x87 precision.
 re-time): each live Junyo-group ship goes to (250 idx, 0, 250 idx) in Chikuma's frame, then joins Chikuma's
 formation. Prediction: the Junyo group starts phase 2 beside Chikuma instead of where it was, so PRCP01's later
 deaths move.
+
+## 5ip. PutRelTo pair and flip (cc9-lua68, 2026-10-18)
+
+Exports `cc9-lua52\local\l68_prt_off` / `l68_prt_on` (7d83becdd, the second with `kPutRelToBound` true); PRCP01 with
+`prcp01_p9_p01_k`; logs `cc9-lua52\local\l68r_w_p01_prt_<off|on>_<ref|j3>.log`.
+
+| Seed | OFF | ON |
+|---|---|---|
+| reference | completed 718.05 s, 134 deaths | completed 647.47 s, 99 deaths |
+| 20,3 | completed 729.50 s | completed 884.91 s |
+
+- The ON reference logs both calls: Kuroshio to (-59.6, 0, 1728.3) and Hayashio to (-246.9, 0, 1428.5), 250 and
+  500 m along each axis of Chikuma's frame (the two points are 353.6 m apart, 250 x sqrt 2), with y = 0.
+- The first hit is 120.90 s on both sides; the deaths move after the two destroyers start phase 2 beside Chikuma.
+- Every completion logs the guard.
+- **Flipped**: `kPutRelToBound = true` by mechanism. PRCP01 still completes on both seeds.
