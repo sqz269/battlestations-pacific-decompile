@@ -448,6 +448,33 @@ constexpr bool kGeneratedSquadronBrainBound = true;
 // False: 00A15970 answers false (the previous stand-in).
 constexpr bool kAiPartyReplanFlagBound = true;  // ON: pairs held, spread misses recorded (docs/SHIP_AI_OPEN_ITEMS.md section 3)
 
+// Packet cc13-fix22, docs/CC13_FIX22.md (findings R-A, R-B, R-C, R-E of
+// docs/CC13_PLANNER_VERIFY.md). Each switch OFF keeps the previous behaviour.
+// R-A. 00A22800 claims a split-off group through 00A2284D CALL 00A22750 with
+// ECX = the Sell planner, and 00A22750 sets +2Ch at 00A227A9 after the push.
+// True: the split group goes through planner_claim_group (00A22750). False:
+// the think links it to the planner itself and the byte stays clear.
+inline constexpr bool kAiSellSplitClaimBound = false;
+// R-B. The inlined claims at 00A2B1E3..00A2B22F and 00A2B2C3..00A2B30F (Capture
+// 00A29FD0, into brain+4h / +8h) and 00A28F49..00A28F95 and 00A297E2..00A29832
+// (Defend 00A28A60, into brain+0Ch) end `MOV byte [receiver+2Ch],1` whenever
+// 00A1C8B0 finds the group not yet in the receiver's list. True:
+// capture_hand_off sets the receiver's replan byte there. False: it does not.
+inline constexpr bool kAiHandOffReplanBound = false;
+// R-C. 00A1CDA2 MOV EAX,[EDX+1Ch] / 00A1CDA5 MOV EAX,[EAX+24h] / 00A1CDAB CALL
+// 00A2C450: the candidate is tested against the brain's objective set, and on
+// true 00A1CDB4..00A1CDC1 takes tuning+1CCh (FreeAttack_ObjectiveTargetMul).
+// True: candidate_has_member_in_own_set asks group_has_member_in_world_set
+// with the current party brain's set index. False: the team test, always
+// false for the enemy-team candidates.
+inline constexpr bool kAiTargetObjectiveSetBound = false;
+// R-E. 00A2CD42 MOV ECX,1 / CALL 00BD2F40 (cautious move) and 00A2CC51 MOV
+// ECX,1 / CALL 00BD2F40 (order_attack) draw on RandomThreads stream 1. True:
+// both draws come from the host's shared stream-1 generator (the gunnery
+// host's, GameGunneryHost::ship_ai_draw), coupling them to every other
+// stream-1 consumer in call order. False: the AI host's private LCG.
+inline constexpr bool kAiPlannerSharedStreamDrawBound = false;
+
 // Packet cc9_order_ring_replace, docs/ORDER_RING_REPLACE.md. True: an AI order
 // that repeats the entity's previous one (same token and target, point within
 // a metre) is issued again, as the image issues it: 0077D600 -> 00816E30 with
@@ -1639,6 +1666,30 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             / static_cast<float>(0x1000000u);
         return low + (high - low) * unit;
     }
+    // 00BD2F40 BSP_RandomThreads_DrawUnsignedFraction with ECX = 1, as the
+    // planner order helpers call it (00A2CC51 in 00A2CBD0, 00A2CD42 in
+    // 00A2CCF0): one stream-1 u32 scaled to [0, 1). With
+    // kAiPlannerSharedStreamDrawBound the draw is the host's shared stream-1
+    // generator, GameGunneryHost::ship_ai_draw(leader, 0, 1), the one every
+    // other host stream-1 consumer draws from. That generator is itself the
+    // host's LCG stand-in for the image's MT19937 (game_hosts_gunnery.hpp,
+    // reseed_shared_stream_00bd2fd0), so the coupling is the image's and the
+    // values are the stand-in's. Under BSP_GUNNERY_RNG_STREAMS=1 (measurement)
+    // the draw is keyed by the leader unit, sharing the ship-AI torpedo key.
+    // Without a gunnery host the private LCG answers and the miss is recorded.
+    float planner_stream1_fraction_00bd2f40(const Group* g) {
+        if constexpr (kAiPlannerSharedStreamDrawBound) {
+            GameGunneryHost* gunnery = units.gunnery();
+            if (gunnery != nullptr && g != nullptr && !g->members.empty()) {
+                ++planner_shared_stream_draws;
+                done("AiPlanners::stream1_fraction", 0x00bd2f40u);
+                return gunnery->ship_ai_draw(g->members.front(), 0.0f, 1.0f);
+            }
+            record("AiPlanners::stream1_fraction", 0x00bd2f40u);
+        }
+        return random_00bd2f10(0.0f, 1.0f);
+    }
+    unsigned long long planner_shared_stream_draws{0};
 
     // --- AiGroupThinkHost ---------------------------------------------------
 
@@ -3882,8 +3933,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         ++mode_think_patrols;
     }
     // 00A2CCF0(group)(point, ratio) through ai_order_cautious_move_00a2ccf0. The
-    // image's stream-1 draw (00A2CD47 MOV ECX,1 / CALL 00BD2F40) goes to the host's
-    // private LCG random_00bd2f10, as order_attack's does.
+    // image's stream-1 draw (00A2CD42 MOV ECX,1 / CALL 00BD2F40) goes to
+    // planner_stream1_fraction_00bd2f40, as order_attack's does: the private LCG
+    // unless kAiPlannerSharedStreamDrawBound.
     void order_cautious_move_00a2ccf0(Group* g, const float point[3], float ratio) {
         struct MoveHost final : bsp::gameplay_seg69_70_cc13::OrderMoveHost {
             Impl& self;
@@ -3913,7 +3965,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             }
             float uniform01_stream1() override {
                 ++self.mode_think_draws;
-                return self.random_00bd2f10(0.0f, 1.0f);
+                return self.planner_stream1_fraction_00bd2f40(g);  // 00A2CD42
             }
         } host(*this, g);
         const bsp::gameplay_seg69_70_cc13::OrderMoveChoice choice =
@@ -4641,6 +4693,13 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return true;
     }
 
+    // 00A1C8B0 BSP_AiPlanner_OwnsGroup, __thiscall(planner)(group), RET 4, body
+    // 00A1C8B0-00A1C8FC read in full: walks the std::list at planner+20h/+24h
+    // and answers 1 (00A1C8F0) when a node's +8h equals the group, 0 (00A1C8F9)
+    // at the end. The host's list is Planner::owned.
+    static bool planner_owns_group_00a1c8b0(const Planner& p, const Group* g) {
+        return std::find(p.owned.begin(), p.owned.end(), g) != p.owned.end();
+    }
     // 00A1E210 (planner vtable +24h, no Ghidra function; body 00A1E210-00A1E246):
     // when the planner owns the group, unregister the observer, erase it from
     // +20h and clear group+5654h. Then 00A2B1E3 / 00A2B2C3 claim it for the
@@ -4650,10 +4709,25 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             from.owned.erase(std::remove(from.owned.begin(), from.owned.end(), g), from.owned.end());
             if (g->claimed_by == &from) g->claimed_by = nullptr;
         }
+        // 00A2B1E3 / 00A2B2C3 / 00A28F49 / 00A297E2: 00A1C8B0 on the receiver,
+        // after the release.
+        const bool to_owned = planner_owns_group_00a1c8b0(to, g);
         if (g->claimed_by == nullptr) {
             g->claimed_by = &to;
             to.owned.push_back(g);
             ++capture_handoffs;
+        }
+        if constexpr (kAiHandOffReplanBound) {
+            // 00A2B22F / 00A2B30F / 00A28F95 / 00A29832 MOV byte [receiver+2Ch],1
+            // on every claim 00A1C8B0 lets through, as planner_claim_group
+            // models 00A227A9. The image also overwrites +5654h when another
+            // planner holds the group; this host still refuses that link.
+            if (!to_owned) {
+                ++replan_sets;
+                if (kAiPartyReplanFlagBound) to.replan_002c = true;
+            }
+        } else {
+            (void)to_owned;
         }
     }
 
@@ -4805,7 +4879,13 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             Group* g = p.owned[i];
             if (g == nullptr || g->destroyed) continue;
             Group* made = split_air_members_00a2e4c0(g);
-            if (made != nullptr &&
+            if constexpr (kAiSellSplitClaimBound) {
+                // 00A22846 TEST EAX,EAX / 00A2284D CALL 00A22750: every
+                // non-null split goes to the claim, which tests ownership
+                // (00A22762 00A1C8B0) itself. 00A2275A's 00A2C600 is a pure
+                // predicate whose answer is discarded.
+                if (made != nullptr) planner_claim_group(&p, made);
+            } else if (made != nullptr &&
                 std::find(p.owned.begin(), p.owned.end(), made) == p.owned.end()) {
                 made->claimed_by = &p;
                 p.owned.push_back(made);
@@ -5841,8 +5921,21 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return near_value + (far_value - near_value) * t;
     }
     bool candidate_has_member_in_own_set(void* group, int own_team) override {
-        Group* g = group_at(group);
-        return g != nullptr && g->team == own_team;
+        if constexpr (kAiTargetObjectiveSetBound) {
+            // 00A1CD9E MOV EDX,[ESP+2Ch] (the planner), 00A1CDA2 [EDX+1Ch] (its
+            // brain), 00A1CDA5 [brain+24h] (the brain's set index), 00A1CDAB
+            // CALL 00A2C450 with ECX = the candidate. The planner's brain is the
+            // current party's: the planner thinks run inside its brain's think.
+            // A missing brain answers false; the image always has one.
+            (void)own_team;
+            Brain* brain = (current_party >= 0 && current_party < bsp::kAiGroupPartySlotCount)
+                ? brains[static_cast<std::size_t>(current_party)].get() : nullptr;
+            if (brain == nullptr) return false;
+            return group_has_member_in_world_set(group, brain->world_set);
+        } else {
+            Group* g = group_at(group);
+            return g != nullptr && g->team == own_team;
+        }
     }
     void order_attack(void* group, void* target, float aggressive) override;
     void quick_spawn_named_group(const char* tag) override {
@@ -6176,11 +6269,11 @@ void GameAiCoordinatorHost::Impl::order_attack(void* group, void* target, float 
                 g->team, tuning.at(bsp::kAiTuningCautionMoveDist), target_point, danger);
         }
         // 00A2CC51: the draw happens only when both gates pass.
-        const float draw = (!leader_ship && gate) ? random_00bd2f10(0.0f, 1.0f) : 0.0f;
+        const float draw = (!leader_ship && gate) ? planner_stream1_fraction_00bd2f40(g) : 0.0f;
         cautious = bsp::ai_attack_arm_00a2cbd0(leader_ship, gate, draw, aggressive) ==
                    bsp::AiAttackArmChoice::CautiousAttack;
     } else {
-        cautious = random_00bd2f10(0.0f, 1.0f) > aggressive;
+        cautious = planner_stream1_fraction_00bd2f40(g) > aggressive;  // 00A2CC51
     }
     // 00A2BD00: the outgoing command is destroyed through its vtable[+0h] with
     // flag 1 and the new pointer is stored at group+564Ch.
