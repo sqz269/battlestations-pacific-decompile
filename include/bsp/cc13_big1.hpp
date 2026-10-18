@@ -158,6 +158,65 @@ public:
     // 00450540 STL_CheckedNativeStringVector_Append: __thiscall(ECX = vector; const
     // NativeString*), RET 4.
     virtual void native_string_vector_append_00450540(void* vector, const void* string) = 0;
+
+    // ---- 006697E0 ----
+    // 005A0B80 STL_List_Tidy: __thiscall(ECX = list), RET (frees the nodes and the head).
+    virtual void list_tidy_005a0b80(void* list) = 0;
+    // 0065B160 STL_Tree_Find (map keyed by a word at node+0Ch): __thiscall(ECX = tree;
+    // iterator* out, const key*), RET 8; EAX = out.
+    virtual void* support_tree_find_0065b160(void* tree, void* out, const std::uint32_t* key) = 0;
+    // 00654F20 STL_TreeIter_Inc: __thiscall(ECX = iterator), RET.
+    virtual void support_tree_iterator_increment_00654f20(void* iterator) = 0;
+    // 00659400 STL_Tree_Erase (subtree): __thiscall(ECX = tree; node), RET 4.
+    virtual void support_tree_erase_subtree_00659400(void* tree, void* node) = 0;
+    // 006641B0 STL_Tree_EraseRange: __thiscall(ECX = tree; iterator* out, first {owner, node},
+    // last {owner, node}), RET 14h.
+    virtual void support_tree_erase_range_006641b0(void* tree, void* out, void* first_owner,
+                                                   void* first_node, void* last_owner,
+                                                   void* last_node) = 0;
+    // 0065CE20 STL_Tree_CopyTree: __thiscall(ECX = destination tree; const source tree*), RET 4.
+    virtual void support_tree_copy_0065ce20(void* tree, const void* source) = 0;
+    // 00659AA0 STL_List_BuyNode (12-byte values): __thiscall(ECX = list; next, prev, const
+    // value*), RET 0Ch; EAX = node.
+    virtual void* support_list_buy_node_00659aa0(void* list, void* next, void* prev, const void* value) = 0;
+    // 00662A70 (list _Incsize): __thiscall(ECX = list; count), RET 4.
+    virtual void support_list_incsize_00662a70(void* list, std::uint32_t count) = 0;
+    // Object vtable +198h: __thiscall(ECX = object; const NativeString* name, dword, bool* out),
+    // RET 0Ch.
+    virtual void object_vtable198(void* object, const void* name, std::int32_t arg, std::uint8_t* out) = 0;
+
+    // ---- 0066A8A0 ----
+    // 004C1630 STL_List_BuyHeadNode (list<void*>): __thiscall(ECX = list), RET; EAX = head.
+    virtual void* unit_list_buy_head_node_004c1630(void* list) = 0;
+    // 004C2220 STL_List_BuyNode (list<void*>): __thiscall(ECX = list; next, prev, const value*),
+    // RET 0Ch; EAX = node.
+    virtual void* unit_list_buy_node_004c2220(void* list, void* next, void* prev, const void* value) = 0;
+    // 004CEE30 (list<void*> _Incsize): __thiscall(ECX = list; count), RET 4.
+    virtual void unit_list_incsize_004cee30(void* list, std::uint32_t count) = 0;
+    // 006681D0 (list<void*>::assign(first, last)): __thiscall(ECX = list; first {owner, node},
+    // last {owner, node}, a by-value tag dword whose stack contents are stale), RET 14h.
+    virtual void unit_list_assign_006681d0(void* list, void* first_owner, void* first_node,
+                                           void* last_owner, void* last_node, std::uint32_t tag) = 0;
+    // 00659D40 STL_List_BuyNode (14h-byte entries): __thiscall(ECX = list; next, prev, const
+    // value*), RET 0Ch; EAX = node.
+    virtual void* entry_list_buy_node_00659d40(void* list, void* next, void* prev, const void* value) = 0;
+    // 006632D0 (entry list _Incsize): __thiscall(ECX = list; count), RET 4.
+    virtual void entry_list_incsize_006632d0(void* list, std::uint32_t count) = 0;
+    // 006652C0 STL_List_PushFront (14h-byte entries): __thiscall(ECX = list; const value*), RET 4.
+    virtual void entry_list_push_front_006652c0(void* list, const void* value) = 0;
+    // 00668350 (entry list assign(first, last)): as 006681D0.
+    virtual void entry_list_assign_00668350(void* list, void* first_owner, void* first_node,
+                                            void* last_owner, void* last_node, std::uint32_t tag) = 0;
+    // 009FFD20 BSP_Unit_LossCountingSlot: __thiscall(ECX = unit), RET; EAX.
+    virtual std::int32_t unit_loss_counting_slot_009ffd20(void* unit) = 0;
+    // Object vtable +18h: __thiscall(ECX = object; dword), RET 4; AL.
+    virtual bool object_vtable18(void* object, std::int32_t arg) = 0;
+    // 008F2260 BSP_ScenePropertyBag_Find: __thiscall(ECX = bag; const char*), RET 4; EAX.
+    virtual void* scene_property_bag_find_008f2260(void* bag, const char* name) = 0;
+    // 004BCA50 BSP_Game_GetEffectiveGameMode: __thiscall(ECX = game), RET; EAX.
+    virtual std::int32_t game_effective_mode_004bca50(void* game) = 0;
+    // [00F89B3C]: the list object {proxy, head, size} of support records.
+    virtual void* global_00f89b3c() = 0;
 };
 
 // 004C7AA0's 28h-byte result.
@@ -181,6 +240,12 @@ std::uint32_t hud_map_icon_refresh_carried_unit_icons_005aac00(void* icon, void*
 
 // 0064AE20 __fastcall(ECX = ship screen), RET.
 void hud_ship_screen45_apply_unit_0064ae20(void* screen, Big1Host& host);
+
+// 006697E0 __fastcall(ECX = support manager screen), RET.
+void hud_support_manager_collect_catalog_006697e0(void* screen, Big1Host& host);
+
+// 0066A8A0 __fastcall(ECX = support manager screen), RET.
+void hud_support_manager_rebuild_lists_0066a8a0(void* screen, Big1Host& host);
 
 // 005E12A0 __thiscall(ECX = lobby screen), RET.
 void multi_game_lobby_load_weather_table_005e12a0(void* screen, Big1Host& host);

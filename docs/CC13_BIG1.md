@@ -77,6 +77,38 @@ Notes:
   - The id is stored after the checked subscript of the last element, even when that
     check calls 00BF6713.
 
+## Batch 3
+
+| Address | Name | ABI | Notes |
+| --- | --- | --- | --- |
+| 006697E0 | BSP_HudSupportManager_CollectCatalog (new name) | fastcall(screen), EBP frame | for the current team's units in the selected row's unit list: copies the row map (+40h to +50h, +4Ch), reports InferiorFailure units, and appends their 0084D560 supply classes to list +370h |
+| 0066A8A0 | BSP_HudSupportManager_RebuildLists (new name) | fastcall(screen) | rebuilds entry list +3E0h from own units (kinds 6 and 0Fh) and the [00F89B3C] records; unit lists +3ACh, +3B8h and +3C4h; the scroll reset; copies +3E0h to +3ECh |
+
+Notes:
+
+- **006697E0.**
+  - The selected row is the checked iterator at screen+350h/354h. Its value
+    {+8h, a unit list at +0Ch, +18h} is copied, and the list is copied again; the first
+    copy is freed by 005A0B80.
+  - A unit is taken when its +54h or its +344h object's +54h is the team.
+  - The map +40h is probed with 0065B160, and the node is then found again by a linear
+    scan from begin.
+  - Map +50h is replaced only when its node is a different object: 006641B0 erases
+    begin..end, then 0065CE20 copies.
+  - The InferiorFailure report goes through unit+3Ch's vtable[198h]. Its bool out skips
+    that unit's supply classes.
+  - The loop runs while its counter is below the copy's current size.
+- **0066A8A0.**
+  - ingame_gui.cpp calls this routine `rebuild_list_c_0066a8a0` and calls +3E0h "list C".
+    The doc names the lists A (+3E0h), B (+3ACh), C (+3B8h), D (+3C4h) and E (+3ECh).
+  - Entries are inserted at the front. The kind-6 insert is inlined; the kind-0Fh insert
+    calls 006652C0.
+  - The C/B scan's owner checks compare an address with itself (CMP EAX,EAX) and cannot
+    fire, so they are omitted.
+  - 006681D0 and 00668350 take a trailing by-value tag dword whose stack contents are
+    stale. It is passed as 0.
+  - The 14h-byte entry's bytes beyond those written keep whatever the stack held.
+
 Adoption notes:
 
 - **004C7AA0.** cc13_large61's hook `game_query_004c7aa0` (0094BFF0) can forward to this
@@ -92,3 +124,6 @@ Adoption notes:
   work.
 - **005E12A0.** frontend_screens_cc13's `load_weather_table_005e12a0` hook can forward to
   this body. scene_contents_hosts reads the same table for a different routine.
+- **006697E0 and 0066A8A0.** seg27_cc13's `support_collect_catalog_006697e0` and
+  ingame_gui's `rebuild_list_c_0066a8a0` hooks can forward to these bodies. cc9 does not
+  host either.

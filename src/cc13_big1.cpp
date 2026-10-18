@@ -305,6 +305,383 @@ void append_lua_string(void* vector, const char* text, Big1Host& host) {
 
 } // namespace
 
+namespace {
+
+// 00669A77..00669B6D: {0, 0} resized to 15 and filled with "InferiorFailure" (00CF0B74), then
+// object vtable[198h](&name, 0, &skip); the string's block goes back to the sized pool after
+// the call (length and data re-read there).
+void report_inferior_failure(void* object, std::uint8_t* skip, Big1Host& host) {
+    NativeStr name{0, nullptr};
+    host.native_string_resize_0041dd40(&name, 0xF, 1);
+    if (name.data != nullptr) host.crt_memcpy_00bf7680(name.data, "InferiorFailure", name.length + 1);
+    host.object_vtable198(object, &name, 0, skip);
+    if (name.data != nullptr)
+        host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), name.data, name.length + 1, 1);
+}
+
+// The inlined list teardown: unlink the head, zero the size, free every node and the head.
+void free_list_nodes(NativeContainer& list, Big1Host& host) {
+    void* node = at<void*>(list.head, 0);
+    at<void*>(list.head, 0) = list.head;
+    at<void*>(list.head, 4) = list.head;
+    list.size = 0;
+    while (node != list.head) {
+        void* const next = at<void*>(node, 0);
+        host.crt_free_00bf65ac(node);
+        node = next;
+    }
+    host.crt_free_00bf65ac(list.head);
+}
+
+} // namespace
+
+// 006697E0 __fastcall(ECX = support manager screen), RET; EBP frame aligned to 8, EH handler
+// 00C7BA78. team = [[game + 18CCh + [game+18ECh]*4] + 28h]. The checked iterator at
+// screen+350h/354h is dereferenced (00BF6713 on a null owner or the end node); its value is
+// {+8h dword, +0Ch a unit list, +18h dword}, copied (005AAAF0) and its list copied again, the
+// first copy then freed by 005A0B80. List +370h is emptied inline, +4Ch = 0 and the map +50h
+// cleared (00659400 plus the head reset). For each unit of the list copy whose +54h is the team,
+// or whose +344h object's +54h is: when the map +40h holds the unit's word +174h (0065B160), a
+// linear scan from begin finds the node with that word key, +4Ch = its +10h and, unless it is
+// the same object, map +50h = its +14h map (006641B0 erase of begin..end, then 0065CE20). Then,
+// when unit+3Ch is set, vtable[5Ch](45h) or else (46h) reports "InferiorFailure" through
+// vtable[198h], whose bool out skips the rest. Otherwise 0084D560(unit; &list, team, 1) and
+// each of its 12-byte values is appended to +370h (00659AA0, 00662A70, then the two links), and
+// the temporary list is freed inline. The loop runs while the counter is below the copy's
+// current size; the copy is freed inline at the end.
+void hud_support_manager_collect_catalog_006697e0(void* screen, Big1Host& host) {
+    std::uint8_t* const s = static_cast<std::uint8_t*>(screen);
+    void* const game = host.game_00e188a8();
+    const std::int32_t team =
+        at<std::int32_t>(at<void*>(game, 0x18CC + at<std::int32_t>(game, 0x18EC) * 4), 0x28);  // [B+1Ch]
+    if (ptr(s, 0x350) == nullptr) host.crt_invalid_parameter_noinfo_00bf6713();  // 0066982A
+    if (ptr(s, 0x354) == at<void*>(ptr(s, 0x350), 4)) host.crt_invalid_parameter_noinfo_00bf6713();  // 00669840
+    std::uint8_t* const current = static_cast<std::uint8_t*>(ptr(s, 0x354));
+    std::uint32_t value_head = at<std::uint32_t>(current, 0x8);              // [B+74h]
+    NativeContainer value_list{};                                           // [B+78h]
+    host.list_copy_005aaaf0(&value_list, current + 0xC);                    // 0066985D
+    std::uint32_t value_tail = at<std::uint32_t>(current, 0x18);             // [B+84h]
+    static_cast<void>(value_head);
+    static_cast<void>(value_tail);
+    NativeContainer units{};                                                // [B+5Ch]
+    host.list_copy_005aaaf0(&units, &value_list);                           // 00669880
+    host.list_tidy_005a0b80(&value_list);                                   // 00669891
+
+    // Inlined clear of list +370h (00669896..006698D8); the units' begin is read in between.
+    void* node = at<void*>(ptr(s, 0x374), 0);
+    void* it = at<void*>(units.head, 0);                                    // EDI, [B+40h]
+    at<void*>(ptr(s, 0x374), 0) = ptr(s, 0x374);
+    at<void*>(ptr(s, 0x374), 4) = ptr(s, 0x374);
+    at<std::uint32_t>(s, 0x378) = 0;
+    while (node != ptr(s, 0x374)) {
+        void* const next = at<void*>(node, 0);
+        host.crt_free_00bf65ac(node);                                       // 006698C8
+        node = next;
+    }
+    at<std::uint32_t>(s, 0x4C) = 0;                                         // 006698DA
+    host.support_tree_erase_subtree_00659400(s + 0x50, at<void*>(ptr(s, 0x54), 4));  // 006698ED
+    at<void*>(ptr(s, 0x54), 4) = ptr(s, 0x54);
+    at<std::uint32_t>(s, 0x58) = 0;
+    at<void*>(ptr(s, 0x54), 0) = ptr(s, 0x54);
+    at<void*>(ptr(s, 0x54), 8) = ptr(s, 0x54);
+
+    std::uint32_t count = 0;                                                // [B+18h]
+    if (units.size != 0) {                                                  // 00669910 JBE
+        for (;;) {
+            if (it == units.head) host.crt_invalid_parameter_noinfo_00bf6713();  // 0066992E
+            bool take = at<std::int32_t>(ptr(it, 8), 0x54) == team;         // 00669936
+            if (!take) {
+                if (it == units.head) host.crt_invalid_parameter_noinfo_00bf6713();  // 00669941
+                if (ptr(ptr(it, 8), 0x344) != nullptr) {                    // 00669949
+                    if (it == units.head) host.crt_invalid_parameter_noinfo_00bf6713();  // 0066995C
+                    take = at<std::int32_t>(ptr(ptr(it, 8), 0x344), 0x54) == team;  // 0066996A
+                }
+            }
+            if (take) {
+                if (it == units.head) host.crt_invalid_parameter_noinfo_00bf6713();  // 00669979
+                void* const unit = ptr(it, 8);                              // EBX
+                std::uint32_t key = at<std::uint16_t>(unit, 0x174);         // [B+20h]
+                void* const tree = s + 0x40;                                // ESI
+                void* const end = ptr(s, 0x44);                             // EBP
+                void* found[2];                                             // [B+4Ch]
+                void** const r = static_cast<void**>(host.support_tree_find_0065b160(tree, found, &key));  // 0066999E
+                if (r[0] == nullptr || r[0] != tree) host.crt_invalid_parameter_noinfo_00bf6713();  // 006699AF
+                if (r[1] != end) {                                          // 006699B4
+                    void* scan[2] = {tree, at<void*>(ptr(s, 0x44), 0)};     // [B+34h] {owner, node}
+                    bool hit = false;
+                    for (;;) {
+                        void* const head = ptr(s, 0x44);                    // [B+48h]
+                        if (scan[0] == nullptr || scan[0] != tree)
+                            host.crt_invalid_parameter_noinfo_00bf6713();   // 006699DF
+                        if (scan[1] == head) break;                         // 006699E8
+                        if (scan[0] == nullptr) host.crt_invalid_parameter_noinfo_00bf6713();  // 006699EE
+                        if (scan[1] == at<void*>(scan[0], 4)) host.crt_invalid_parameter_noinfo_00bf6713();  // 006699F8
+                        if (at<std::uint16_t>(scan[1], 0xC) == at<std::uint16_t>(unit, 0x174)) {  // 00669A04
+                            hit = true;
+                            break;
+                        }
+                        host.support_tree_iterator_increment_00654f20(scan);  // 00669A0E
+                    }
+                    if (hit) {
+                        if (scan[1] == at<void*>(scan[0], 4)) host.crt_invalid_parameter_noinfo_00bf6713();  // 00669A22
+                        at<std::uint32_t>(s, 0x4C) = at<std::uint32_t>(scan[1], 0x10);  // 00669A2E
+                        std::uint8_t* const dst = s + 0x50;
+                        std::uint8_t* const src = static_cast<std::uint8_t*>(scan[1]) + 0x14;
+                        if (dst != src) {                                   // 00669A37
+                            void* out[2];                                   // [B+54h]
+                            host.support_tree_erase_range_006641b0(dst, out, dst, at<void*>(ptr(dst, 4), 0), dst,
+                                                                   ptr(dst, 4));  // 00669A4B
+                            host.support_tree_copy_0065ce20(dst, src);      // 00669A53
+                        }
+                    }
+                }
+                bool skip_supplies = false;
+                if (ptr(unit, 0x3C) != nullptr) {                           // 00669A58
+                    std::uint8_t skip = 0;                                  // [B+13h]
+                    if (host.unit_has_flag_vtable5c(ptr(unit, 0x3C), 0x45))  // 00669A71
+                        report_inferior_failure(ptr(unit, 0x3C), &skip, host);  // [B+24h] string
+                    else if (host.unit_has_flag_vtable5c(ptr(unit, 0x3C), 0x46))  // 00669AF0
+                        report_inferior_failure(ptr(unit, 0x3C), &skip, host);  // [B+2Ch] string
+                    skip_supplies = skip != 0;                              // 00669B72
+                }
+                if (!skip_supplies) {
+                    NativeContainer supplies{};                             // [B+68h]
+                    host.support_site_build_supply_class_list_0084d560(unit, &supplies, team, 1);  // 00669B8B
+                    for (void* entry = at<void*>(supplies.head, 0); entry != supplies.head;) {
+                        void* const list = s + 0x370;
+                        void* const head = ptr(s, 0x374);
+                        void* const added = host.support_list_buy_node_00659aa0(
+                            list, head, at<void*>(head, 4), static_cast<std::uint8_t*>(entry) + 8);  // 00669BBF
+                        host.support_list_incsize_00662a70(list, 1);        // 00669BCA
+                        at<void*>(head, 4) = added;                         // 00669BCF
+                        at<void*>(at<void*>(added, 4), 0) = added;          // 00669BD5
+                        if (entry == supplies.head) host.crt_invalid_parameter_noinfo_00bf6713();  // 00669BDF
+                        entry = at<void*>(entry, 0);
+                    }
+                    free_list_nodes(supplies, host);                        // 00669BED..00669C26
+                    supplies.head = nullptr;                                // 00669C2E
+                }
+            }
+            ++count;                                                        // 00669C3A
+            if (it == units.head) host.crt_invalid_parameter_noinfo_00bf6713();  // 00669C45
+            it = at<void*>(it, 0);
+            if (!(count < units.size)) break;                               // 00669C58 JC
+        }
+    }
+    free_list_nodes(units, host);                                           // 00669C60..00669C96
+}
+
+namespace {
+
+// The inlined clear of a screen list {proxy, head, size} at s+off (head links reset, size 0,
+// every node freed; the head stays).
+void clear_screen_list(std::uint8_t* s, std::size_t off, Big1Host& host) {
+    void* node = at<void*>(ptr(s, off + 4), 0);
+    at<void*>(ptr(s, off + 4), 0) = ptr(s, off + 4);
+    at<void*>(ptr(s, off + 4), 4) = ptr(s, off + 4);
+    at<std::uint32_t>(s, off + 8) = 0;
+    while (node != ptr(s, off + 4)) {
+        void* const next = at<void*>(node, 0);
+        host.crt_free_00bf65ac(node);
+        node = next;
+    }
+}
+
+// The inlined push_back of a list<void*> {proxy, head, size}: 004C2220(head, head->prev, value),
+// 004CEE30(1), then head->prev = node and node->prev->next = node.
+void unit_list_push_back(void* list, void* const* value, Big1Host& host) {
+    void* const head = at<void*>(list, 4);
+    void* const node = host.unit_list_buy_node_004c2220(list, head, at<void*>(head, 4), value);
+    host.unit_list_incsize_004cee30(list, 1);
+    at<void*>(head, 4) = node;
+    at<void*>(at<void*>(node, 4), 0) = node;
+}
+
+} // namespace
+
+// 0066A8A0 __fastcall(ECX = support manager screen), RET; EH handler 00C7BAE0. Lists (each
+// {proxy, head, size}): A +3E0h (14h-byte entries), B +3ACh, C +3B8h, D +3C4h and E +3ECh (units
+// or entries). A and B are emptied inline. A temporary list<void*> T (004C1630) gathers, for each
+// unit of [[game+19CCh]+58h] (node +4 next, +8 unit) whose 009FFD20 slot is the current player
+// ([game+18ECh], read before the call) and that is not IsKindOf(9): an IsKindOf(6) unit with +5Dh
+// clear goes onto T and an entry {class +538h, -1, +28Ch, byte 1, unit} is pushed at A's front
+// (inlined 00659D40 / 006632D0); an IsKindOf(0Fh) unit with +5Dh clear whose leader (+9D4h) word
+// +174h differs from the last one taken puts the leader onto T and pushes {class, unit+C54h,
+// leader+28Ch, byte 1, leader} at A's front through 006652C0. B is then T reversed. Each record
+// of [00F89B3C] whose +80h is the current player puts {obj, Equipment+0Ch or -1, rec+7Ch, byte 0,
+// 0} at A's front (obj and a copy of the name string from the record's first vector element;
+// the property bag is that element's +0Ch, searched only when obj vtable[18h](0Fh)), counting
+// them. When (+2CCh clear and +3F8h < count) or A's size > +3F4h: +3D5h = 1, +154h = 0, the
+// scroll +2C8h from +2C4h/+324h (zeroed for game modes 4..7), and +324h = +2C4h = 0. When C and B
+// are non-empty and C is larger, D = the units of C whose word +174h is not in B. Then C = B
+// (006681D0), +3F8h = count, E = A (00668350), and T is freed inline. The C/B scan's owner tests
+// compare an address with itself in the image (CMP EAX,EAX) and cannot fire; they are omitted.
+// The bytes of the 14h-byte entry beyond those written are left as the stack had them.
+void hud_support_manager_rebuild_lists_0066a8a0(void* screen, Big1Host& host) {
+    std::uint8_t* const s = static_cast<std::uint8_t*>(screen);
+    void* const list_a = s + 0x3E0;
+    void* const list_b = s + 0x3AC;
+    std::int32_t count = 0;                                                  // [B+1Ch]
+    clear_screen_list(s, 0x3E0, host);                                       // 0066A8BC..0066A900
+    std::uint32_t last_leader_id = 0;                                        // [B+20h]
+    clear_screen_list(s, 0x3AC, host);                                       // 0066A902..0066A934
+    NativeContainer t{};                                                     // [B+3Ch]
+    t.head = host.unit_list_buy_head_node_004c1630(&t);                      // 0066A93A
+    t.size = 0;
+    alignas(4) std::uint8_t entry[0x14];                                     // [B+48h]
+
+    void* const game = host.game_00e188a8();
+    for (void* node = ptr(ptr(game, 0x19CC), 0x58); node != nullptr; node = ptr(node, 4)) {
+        void* unit = ptr(node, 8);                                           // [B+24h]
+        const std::int32_t player = at<std::int32_t>(host.game_00e188a8(), 0x18EC);
+        if (host.unit_loss_counting_slot_009ffd20(unit) != player) continue;  // 0066A985
+        if (host.unit_has_flag_vtable5c(unit, 9)) continue;                  // 0066A99B
+        if (host.unit_has_flag_vtable5c(unit, 6) && at<std::uint8_t>(unit, 0x5D) == 0) {  // 0066A9AE
+            unit_list_push_back(&t, &unit, host);                            // 0066A9D7..0066A9EF
+            at<void*>(entry, 0x0) = ptr(unit, 0x538);
+            at<std::int32_t>(entry, 0x4) = -1;
+            at<std::uint32_t>(entry, 0x8) = at<std::uint32_t>(unit, 0x28C);
+            at<std::uint8_t>(entry, 0xC) = 1;
+            at<void*>(entry, 0x10) = unit;
+            void* const begin = at<void*>(ptr(list_a, 4), 0);
+            void* const added =
+                host.entry_list_buy_node_00659d40(list_a, begin, at<void*>(begin, 4), entry);  // 0066AA27
+            host.entry_list_incsize_006632d0(list_a, 1);                     // 0066AA32
+            at<void*>(begin, 4) = added;
+            at<void*>(at<void*>(added, 4), 0) = added;
+        }
+        if (host.unit_has_flag_vtable5c(unit, 0xF) && at<std::uint8_t>(unit, 0x5D) == 0) {  // 0066AA4C
+            void* const leader = ptr(unit, 0x9D4);
+            const std::uint16_t id = at<std::uint16_t>(leader, 0x174);       // [B+34h]
+            if (id != static_cast<std::uint16_t>(last_leader_id)) {          // 0066AA6D
+                void* pushed = leader;                                       // [B+24h]
+                unit_list_push_back(&t, &pushed, host);                      // 0066AA91..0066AAA8
+                at<void*>(entry, 0x0) = ptr(unit, 0x538);
+                at<std::uint32_t>(entry, 0x4) = at<std::uint32_t>(unit, 0xC54);
+                at<std::uint32_t>(entry, 0x8) = at<std::uint32_t>(leader, 0x28C);
+                at<std::uint8_t>(entry, 0xC) = 1;
+                at<void*>(entry, 0x10) = leader;
+                host.entry_list_push_front_006652c0(list_a, entry);          // 0066AADA
+                last_leader_id = id;                                         // 0066AAEC
+            }
+        }
+    }
+
+    // B = T reversed (0066AAFF..0066AB55).
+    for (void* it = t.head; it != at<void*>(t.head, 0);) {
+        it = at<void*>(it, 4);
+        if (it == t.head) host.crt_invalid_parameter_noinfo_00bf6713();      // 0066AB12
+        if (it == t.head) host.crt_invalid_parameter_noinfo_00bf6713();      // 0066AB1D
+        unit_list_push_back(list_b, static_cast<void* const*>(static_cast<void*>(static_cast<std::uint8_t*>(it) + 8)),
+                            host);                                           // 0066AB3D..0066AB53
+    }
+
+    void* const records = host.global_00f89b3c();
+    if (at<std::uint32_t>(records, 8) != 0) {                                // 0066AB5D
+        void* owner = records;                                               // [B+34h]
+        void* it = at<void*>(ptr(records, 4), 0);                            // EBP
+        for (;;) {
+            void* const g = host.global_00f89b3c();
+            if (owner == nullptr || owner != g) host.crt_invalid_parameter_noinfo_00bf6713();  // 0066AB7D
+            if (it == ptr(g, 4)) break;                                      // 0066AB84
+            if (owner == nullptr) host.crt_invalid_parameter_noinfo_00bf6713();  // 0066AB8E
+            if (it == ptr(owner, 4)) host.crt_invalid_parameter_noinfo_00bf6713();  // 0066AB98
+            if (at<std::int32_t>(ptr(it, 8), 0x80) == at<std::int32_t>(host.game_00e188a8(), 0x18EC)) {  // 0066ABAC
+                if (it == ptr(owner, 4)) host.crt_invalid_parameter_noinfo_00bf6713();  // 0066ABC1
+                void* const record = ptr(it, 8);
+                std::uint8_t* const first = at<std::uint8_t*>(record, 4);
+                if (first > at<std::uint8_t*>(record, 8)) host.crt_invalid_parameter_noinfo_00bf6713();  // 0066ABD1
+                if (!(at<std::uint8_t*>(record, 4) < at<std::uint8_t*>(record, 8)))
+                    host.crt_invalid_parameter_noinfo_00bf6713();            // 0066ABDB
+                void* const obj = at<void*>(first, 0);                       // [B+24h]
+                NativeStr name{0, nullptr};                                  // [B+28h]
+                const NativeStr* const source = reinterpret_cast<const NativeStr*>(first + 4);
+                char* data = nullptr;                                        // EBX
+                if (&name != source) {                                       // 0066ABEB (never equal)
+                    host.native_string_resize_0041dd40(&name, source->length, 1);  // 0066AC02
+                    data = name.data;
+                    if (source->length != 0) host.crt_memcpy_00bf7680(data, source->data, name.length);  // 0066AC1A
+                }
+                void* const bag = at<void*>(first, 0xC);                     // [B+30h]
+                at<void*>(entry, 0x0) = obj;                                 // 0066AC39
+                if (host.object_vtable18(obj, 0xF))                          // 0066AC3D
+                    at<std::uint32_t>(entry, 0x4) =
+                        at<std::uint32_t>(host.scene_property_bag_find_008f2260(bag, "Equipment"), 0xC);  // 0066AC4A (00CF69AC)
+                else
+                    at<std::int32_t>(entry, 0x4) = -1;                       // 0066AC58
+                if (it == ptr(owner, 4)) host.crt_invalid_parameter_noinfo_00bf6713();  // 0066AC69
+                at<std::uint32_t>(entry, 0x8) = at<std::uint32_t>(ptr(it, 8), 0x7C);  // 0066AC74
+                at<std::uint8_t>(entry, 0xC) = 0;                            // 0066AC8B
+                at<void*>(entry, 0x10) = nullptr;                            // 0066AC90
+                void* const begin = at<void*>(ptr(list_a, 4), 0);
+                void* const added =
+                    host.entry_list_buy_node_00659d40(list_a, begin, at<void*>(begin, 4), entry);  // 0066AC98
+                host.entry_list_incsize_006632d0(list_a, 1);                 // 0066ACA5
+                ++count;                                                     // 0066ACAA
+                at<void*>(begin, 4) = added;
+                at<void*>(at<void*>(added, 4), 0) = added;
+                if (data != nullptr)
+                    host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), data, name.length + 1,
+                                                          1);                // 0066ACD2
+            }
+            if (it == ptr(owner, 4)) host.crt_invalid_parameter_noinfo_00bf6713();  // 0066ACE0
+            it = at<void*>(it, 0);
+        }
+    }
+
+    if ((at<std::uint8_t>(s, 0x2CC) == 0 && at<std::int32_t>(s, 0x3F8) < count) ||   // 0066AD0E JL
+        at<std::uint32_t>(s, 0x3E8) > at<std::uint32_t>(s, 0x3F4)) {              // 0066AD1C JBE
+        const std::int32_t top = at<std::int32_t>(s, 0x324);
+        const std::int32_t selection = at<std::int32_t>(s, 0x2C4);
+        at<std::uint8_t>(s, 0x3D5) = 1;
+        at<std::uint8_t>(s, 0x154) = 0;
+        if (top > selection)                                                 // 0066AD3E JLE
+            at<std::int32_t>(s, 0x2C8) = at<std::int32_t>(s, 0x3E8) - top + selection;
+        else
+            at<std::int32_t>(s, 0x2C8) = selection - top + 1;
+        const std::int32_t mode = host.game_effective_mode_004bca50(host.game_00e188a8());  // 0066AD63
+        if (at<std::int32_t>(s, 0x2C8) != 0 && (mode == 4 || mode == 5 || mode == 6 || mode == 7))
+            at<std::int32_t>(s, 0x2C8) = 0;                                  // 0066AD85
+        at<std::int32_t>(s, 0x324) = 0;
+        at<std::int32_t>(s, 0x2C4) = 0;
+    }
+
+    const std::uint32_t c_size = at<std::uint32_t>(s, 0x3C0);
+    if (c_size != 0 && at<std::uint32_t>(s, 0x3B4) != 0 && c_size > at<std::uint32_t>(s, 0x3B4)) {  // 0066ADAB..0066ADC5
+        clear_screen_list(s, 0x3C4, host);                                   // 0066ADCF..0066AE01
+        for (void* c = at<void*>(ptr(s, 0x3BC), 0); c != ptr(s, 0x3BC);) {  // 0066AE25
+            bool found = false;
+            for (void* b = at<void*>(ptr(s, 0x3B0), 0);;) {
+                if (b == ptr(s, 0x3B0)) break;                               // 0066AE54
+                if (b == ptr(s, 0x3B0)) host.crt_invalid_parameter_noinfo_00bf6713();  // 0066AE5B
+                const std::uint16_t key = at<std::uint16_t>(ptr(b, 8), 0x174);
+                if (c == ptr(s, 0x3BC)) host.crt_invalid_parameter_noinfo_00bf6713();  // 0066AE7C
+                if (key == at<std::uint16_t>(ptr(c, 8), 0x174)) {            // 0066AE89
+                    found = true;
+                    break;
+                }
+                if (b == ptr(s, 0x3B0)) host.crt_invalid_parameter_noinfo_00bf6713();  // 0066AE97
+                b = at<void*>(b, 0);
+            }
+            if (!found) {
+                if (c == ptr(s, 0x3BC)) host.crt_invalid_parameter_noinfo_00bf6713();  // 0066AEAE
+                unit_list_push_back(s + 0x3C4,
+                                    static_cast<void* const*>(static_cast<void*>(static_cast<std::uint8_t*>(c) + 8)),
+                                    host);                                   // 0066AEC1..0066AED7
+            }
+            if (c == ptr(s, 0x3BC)) host.crt_invalid_parameter_noinfo_00bf6713();  // 0066AEE7
+            c = at<void*>(c, 0);
+        }
+    }
+
+    host.unit_list_assign_006681d0(s + 0x3B8, list_b, at<void*>(ptr(list_b, 4), 0), list_b, ptr(list_b, 4),
+                                   0);                                       // 0066AF19 (tag stale)
+    at<std::int32_t>(s, 0x3F8) = count;                                      // 0066AF26
+    host.entry_list_assign_00668350(s + 0x3EC, list_a, at<void*>(ptr(list_a, 4), 0), list_a, ptr(list_a, 4),
+                                    0);                                      // 0066AF44 (tag stale)
+    free_list_nodes(t, host);                                                // 0066AF49..0066AF7E
+}
+
 // 005E12A0 __thiscall(ECX = lobby screen), RET; EBP frame aligned to 8, EH handler 00C74D80.
 // A private LuaStateOwner ([B+E8h], at most 4CCh bytes before the EH record) is opened with 4 and
 // runs "SCRIPTS\datatables\Weather.lua" (00CE59DC, a 1Eh-byte NativeString released after the
