@@ -5786,4 +5786,186 @@ void ptr_array_push_front_00999d40(Cc13Seg67bHost& host, void* a, const std::uin
     at<std::uint32_t>(a, 0x4) = count + 1;
 }
 
+// ============================================================================
+// Medium rows, batch 1 (docs/CC13_SEG67B.md 3.46)
+// ============================================================================
+
+namespace {
+
+// The shared shape of the nine Describe slots (each 38 instructions, the same bytes
+// apart from the SEH handler and the registry LEA): 009A1A90(task, &temp) for the base
+// name, 00411430(task + registry, [task+310h]) for the state name, then
+// 007B7E70(out, base, name). The temporary is released inline: capacity (temp+18h)
+// >= 10h frees the heap buffer at temp+4h through 00BF65AC.
+void* describe_with_registry(Cc13Seg67bHost& host, void* task, void* out,
+                             std::size_t registry) {
+    alignas(4) std::uint8_t temp[0x1C] = {};
+    const void* const base = host.bot_task_debug_name_009a1a90(task, temp);
+    const char* const name =
+        host.state_registry_name_or_undefined_00411430(ptr(task, registry), ptr_at(task, 0x310));
+    host.std_string_plus_cstr_007b7e70(out, base, name);
+    if (at<std::uint32_t>(temp, 0x18) >= 0x10) host.crt_free_00bf65ac(ptr_at(temp, 0x4));
+    return out;
+}
+
+}  // namespace
+
+// 009A68C0 (009A68C0-009A693F): registry task+4F4h (009A68F7).
+void* bot_task_depth_charge_describe_009a68c0(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_registry(host, task, out, 0x4F4);
+}
+
+// 009AF670 (009AF670-009AF6EF): registry task+4D4h (009AF6A7).
+void* bot_task_kamikaze_describe_009af670(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_registry(host, task, out, 0x4D4);
+}
+
+// 009AF890 (009AF890-009AF912): registry task+4BCh (009AF8C7).
+void* bot_task_drop_kamikaze_describe_009af890(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_registry(host, task, out, 0x4BC);
+}
+
+// 009B8F80 (009B8F80-009B8FFF): registry task+4D4h (009B8FB7).
+void* bot_task_level_bomb_describe_009b8f80(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_registry(host, task, out, 0x4D4);
+}
+
+// 009BDB00 (009BDB00-009BDB7F): registry task+438h (009BDB37).
+void* bot_task_move_on_path_describe_009bdb00(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_registry(host, task, out, 0x438);
+}
+
+// 009C3A60 (009C3A60-009C3ADF): registry task+468h (009C3A97).
+void* bot_task_move_to_describe_009c3a60(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_registry(host, task, out, 0x468);
+}
+
+// 009C8BC0 (009C8BC0-009C8C3F): registry task+4DCh (009C8BF7).
+void* bot_task_dive_bomb_describe_009c8bc0(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_registry(host, task, out, 0x4DC);
+}
+
+// 009CA200 (009CA200-009CA27F): registry task+464h (009CA237).
+void* bot_task_retreat_describe_009ca200(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_registry(host, task, out, 0x464);
+}
+
+// 009CD250 (009CD250-009CD2CF): registry task+4CCh (009CD287).
+void* bot_task_strafe_describe_009cd250(Cc13Seg67bHost& host, void* task, void* out) {
+    return describe_with_registry(host, task, out, 0x4CC);
+}
+
+// 009A79F0 (009A79F0-009A7A36), the enter of the dogfight avoid state at vtable
+// 00D1F8F8: +24h byte = 0; +18h = U(0.75, 1.5) (00CEE07C lo at [ESP], 00CE380C hi at
+// [ESP+4]; one draw, stream 1) x AvoidTime (row+214h, row = [[state+4]+14h]); +20h and
+// +1Ch = 0. The same timer arithmetic as the avoid enters 009A7DE0 / 009A8020, which
+// cc9 models as dogfight_avoid_timer_009a7de0 (src/dogfight_task.cpp, bsp_game only).
+// The FMUL is a 24 x 24-bit product, exact in both precisions.
+void bot_state_dogfight_avoid_enter_009a79f0(Cc13Seg67bHost& host, void* state) {
+    void* const row = ptr_at(ptr_at(state, 0x4), 0x14);
+    at<std::uint8_t>(state, 0x24) = 0;                                          // 009A7A04
+    const float draw = host.random_uniform_00bd2f10(1, 0.75f, 1.5f);            // 009A7A19
+    at<float>(state, 0x18) = draw * at<float>(row, 0x214);                       // 009A7A1E
+    at<float>(state, 0x20) = 0.0f;                                               // 009A7A2B
+    at<float>(state, 0x1C) = 0.0f;                                               // 009A7A30
+}
+
+// 009B35E0 (009B35E0-009B3660). 0099B6E0 (a RET) first; then 008608B0 with ECX =
+// the local (+430h, +434h + +458h, +438h) and the stack dwords (+440h, +460h, +464h,
+// +468h), each moved by FLD/FSTP so they are floats (the 008608B0 ledger row's
+// provisional "rgba*" for the first one does not fit this caller); RET 10h. Then
+// 006C2400(ECX = [task+42Ch]).
+void bot_task_land_debug_draw_009b35e0(Cc13Seg67bHost& host, void* task) {
+    host.bot_task_debug_draw_base_0099b6e0(task);                                // 009B35E6
+    const float centre[3] = {at<float>(task, 0x430),
+                             at<float>(task, 0x434) + at<float>(task, 0x458),    // 009B3609
+                             at<float>(task, 0x438)};
+    host.debug_draw_circle_with_heading_008608b0(centre, at<float>(task, 0x440),
+                                                 at<float>(task, 0x460), at<float>(task, 0x464),
+                                                 at<float>(task, 0x468));        // 009B364C
+    host.air_ops_debug_draw_runway_distances_006c2400(ptr_at(task, 0x42C));      // 009B3657
+}
+
+// 009B93D0 (009B93D0-009B93EB): when [task+3F8h]->vtable[0]() returns AL != 0,
+// 0099B690(task). The RET 4 argument is not read.
+void bot_task_conditioned_tick_009b93d0(Cc13Seg67bHost& host, void* task, float dt) {
+    (void)dt;
+    if (host.condition_vcall_00_test(ptr_at(task, 0x3F8))) host.bot_task_retire_0099b690(task);
+}
+
+// 009B93F0 (009B93F0-009B9410): [task+2F8h]+1ACh x pi (double 00CE3D28, the float
+// pi widened) + 1.0 (double 00D7A210), rounded to a float through [ESP]. Modelled at
+// 24-bit precision as two float operations; UNCERTAINTY: a 53-bit control word
+// would round the product once less.
+float bot_task_tight_turn_slot68_009b93f0(void* task) {
+    const float v = at<float>(ptr_at(task, 0x2F8), 0x1AC);
+    const float product = v * 3.14159274101257324f;
+    return product + 1.0f;
+}
+
+// 009B9420 (009B9420-009B947B): word +414h = 0; [[task+2F4h]+DF4h]+80h = 0.0 (the
+// unit is not null-tested for this first store); 007ED3C0([task+2FCh]) when set;
+// with a unit, 007BCBE0(unit, 0) and the +80h store again (the pointers re-read).
+void bot_task_leave_alone_update_cruise_profile_009b9420(Cc13Seg67bHost& host, void* task) {
+    at<std::uint16_t>(task, 0x414) = 0;                                          // 009B942C
+    at<float>(ptr_at(ptr_at(task, 0x2F4), 0xDF4), 0x80) = 0.0f;                  // 009B943B
+    if (void* const control = ptr_at(task, 0x2FC)) {
+        host.pilot_control_clear_release_orders_007ed3c0(control);              // 009B944D
+    }
+    if (void* const unit = ptr_at(task, 0x2F4)) {
+        host.unit_set_queued_release_orders_007bcbe0(unit, 0);                  // 009B945E
+        at<float>(ptr_at(ptr_at(task, 0x2F4), 0xDF4), 0x80) = 0.0f;              // 009B9472
+    }
+}
+
+// 009B9FD0 (009B9FD0-009BA00F). 009B9F20(task, archive) (009B9FD9); archive->vtable[0Ch]
+// ({0,"left"} 00D20368, {3, byte +408h}) (009BA00B).
+// UNCERTAINTY: as 009B9F20 for the type-3 payload's upper bytes (only CL is stored).
+void bot_task_tight_turn_save_009b9fd0(Cc13Seg67bHost& host, void* task, void* archive) {
+    bot_task_pull_up_save_009b9f20(host, task, archive);
+    host.archive_vcall_0c_write(archive, name_record(kStrLeft),
+                                record(3, at<std::uint8_t>(task, 0x408)));
+}
+
+// 009BD380 (009BD380-009BD3AF). 0099D060(task, archive) (009BD389); 009BD300(ECX =
+// task+3F8h, archive) (009BD395); 00411450(ECX = task+438h, task+30Ch, archive) (009BD3A8).
+void bot_task_move_on_path_save_009bd380(Cc13Seg67bHost& host, void* task, void* archive) {
+    bot_task_save_base_0099d060(host, task, archive);
+    bot_approach_move_on_path_save_offsets_009bd300(host, ptr(task, 0x3F8), archive);
+    host.bot_state_registry_write_current_00411450(ptr(task, 0x438), ptr(task, 0x30C), archive);
+}
+
+// 009C3510 (009C3510-009C353F). As 009BD380 with 009C33D0 and the registry task+468h.
+void bot_task_move_to_save_009c3510(Cc13Seg67bHost& host, void* task, void* archive) {
+    bot_task_save_base_0099d060(host, task, archive);
+    bot_approach_move_to_save_009c33d0(host, ptr(task, 0x3F8), archive);
+    host.bot_state_registry_write_current_00411450(ptr(task, 0x468), ptr(task, 0x30C), archive);
+}
+
+// 009CA0C0 (009CA0C0-009CA0E9): out = (+45Ch, 0.0, +460h) through MOVSS, byte out+0Ch = 1,
+// EAX = out.
+void* bot_task_retreat_target_position_009ca0c0(void* task, void* out) {
+    at<float>(out, 0x0) = at<float>(task, 0x45C);
+    at<float>(out, 0x4) = 0.0f;
+    at<float>(out, 0x8) = at<float>(task, 0x460);
+    at<std::uint8_t>(out, 0xC) = 1;
+    return out;
+}
+
+// 009CA480 (009CA480-009CA49B): null -> 0; entity->vtable[5Ch](41h) AL != 0 ->
+// entity, else 0. The kind-0Fh casts (004BEAD0 and twins) are the same shape with 0Fh.
+void* entity_as_kind41_009ca480(Cc13Seg67bHost& host, void* entity) {
+    if (entity == nullptr) return nullptr;
+    return host.object_vcall_5c(entity, 0x41) ? entity : nullptr;
+}
+
+// 009CFA10 (009CFA10-009CFA2E). 0099B6E0 (a RET) first; then, when [[task+3FCh]+BF4h]
+// is set, the tail JMP 006C2400(ECX = it).
+void bot_task_takeoff_debug_draw_009cfa10(Cc13Seg67bHost& host, void* task) {
+    host.bot_task_debug_draw_base_0099b6e0(task);                                // 009CFA13
+    if (void* const holder = ptr_at(ptr_at(task, 0x3FC), 0xBF4)) {
+        host.air_ops_debug_draw_runway_distances_006c2400(holder);              // 009CFA29 JMP
+    }
+}
+
 }  // namespace bsp

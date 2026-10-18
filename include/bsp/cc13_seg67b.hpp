@@ -478,6 +478,32 @@ public:
                                                                   const float* rgba) = 0;
     // [00E0E300]: the debug side filter (a dword; negative draws every side).
     virtual std::int32_t global_debug_side_00e0e300() = 0;
+    // 009A1A90 BSP_BotTask_DescribeAvoidFlags (the base slot +18h debug name):
+    // __thiscall(ECX = task; string* result), RET 4, EAX = the 1Ch-byte string.
+    virtual void* bot_task_debug_name_009a1a90(void* task, void* result) = 0;
+    // 00411430 BSP_BotStateRegistry_NameOrUndefined: __thiscall(ECX = registry; state),
+    // RET 4, EAX.
+    virtual const char* state_registry_name_or_undefined_00411430(void* registry,
+                                                                  void* state) = 0;
+    // 007B7E70 operator+(const string&, const char*): __cdecl(out, left, right), EAX = out.
+    virtual void* std_string_plus_cstr_007b7e70(void* out, const void* left,
+                                                const char* right) = 0;
+    // 0099B6E0 (TRIV_body_0099b6e0, a lone RET): the base debug-draw slot, __fastcall(ECX = task).
+    virtual void bot_task_debug_draw_base_0099b6e0(void* task) = 0;
+    // 008608B0 BSP_DebugDraw_CircleWithHeading: __thiscall(ECX = float* centre; four stack
+    // dwords), RET 10h. See 009B35E0 for what this caller passes.
+    virtual void debug_draw_circle_with_heading_008608b0(const float* centre, float first,
+                                                         float x, float y, float z) = 0;
+    // 006C2400 BSP_AirOpsHolder_DebugDrawRunwayDistances: __fastcall(ECX = holder), RET.
+    virtual void air_ops_debug_draw_runway_distances_006c2400(void* holder) = 0;
+    // object->vtable[0](), RET, AL: a condition object's test.
+    virtual bool condition_vcall_00_test(void* condition) = 0;
+    // 0099B690 BSP_BotTask_Retire: __fastcall(ECX = task), RET.
+    virtual void bot_task_retire_0099b690(void* task) = 0;
+    // 007ED3C0 BSP_PilotControl_ClearReleaseOrders: __fastcall(ECX = control), RET.
+    virtual void pilot_control_clear_release_orders_007ed3c0(void* control) = 0;
+    // 007BCBE0 BSP_Unit_SetQueuedReleaseOrders: __thiscall(ECX = unit; count), RET 4.
+    virtual void unit_set_queued_release_orders_007bcbe0(void* unit, std::int32_t count) = 0;
 };
 
 // ---- the bot-task factory list (00F8A314) ----
@@ -1104,5 +1130,38 @@ void* ship_ai_brain_construct_009f39c0(Cc13Seg67bHost& host, void* brain, void* 
 void* ship_ai_gun_bot_construct_009f3ba0(Cc13Seg67bHost& host, void* ai, void* ship);
 // 009F3F20: __fastcall(ECX = ship), RET, EAX = the new 2268h-byte ship AI or null.
 void* ship_ai_allocate_brain_009f3f20(Cc13Seg67bHost& host, void* ship);
+
+// ---- medium rows, batch 1 (docs/CC13_SEG67B.md 3.46) ----
+// The nine bot-task Describe slots (+18h overrides): __thiscall(ECX = task;
+// string* out), RET 4, EAX = out, SEH frame. Each differs only in its state registry.
+void* bot_task_depth_charge_describe_009a68c0(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_kamikaze_describe_009af670(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_drop_kamikaze_describe_009af890(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_level_bomb_describe_009b8f80(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_move_on_path_describe_009bdb00(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_move_to_describe_009c3a60(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_dive_bomb_describe_009c8bc0(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_retreat_describe_009ca200(Cc13Seg67bHost& host, void* task, void* out);
+void* bot_task_strafe_describe_009cd250(Cc13Seg67bHost& host, void* task, void* out);
+// 009A79F0: __fastcall(ECX = dogfight avoid state), RET. One draw on stream 1.
+void bot_state_dogfight_avoid_enter_009a79f0(Cc13Seg67bHost& host, void* state);
+// 009B35E0: __fastcall(ECX = land task), RET.
+void bot_task_land_debug_draw_009b35e0(Cc13Seg67bHost& host, void* task);
+// 009B93D0: __thiscall(ECX = task; float dt, unread), RET 4.
+void bot_task_conditioned_tick_009b93d0(Cc13Seg67bHost& host, void* task, float dt);
+// 009B93F0: __fastcall(ECX = task), RET, ST0.
+float bot_task_tight_turn_slot68_009b93f0(void* task);
+// 009B9420: __fastcall(ECX = task), RET.
+void bot_task_leave_alone_update_cruise_profile_009b9420(Cc13Seg67bHost& host, void* task);
+// 009B9FD0 / 009BD380 / 009C3510: __thiscall(ECX = task, archive), RET 4.
+void bot_task_tight_turn_save_009b9fd0(Cc13Seg67bHost& host, void* task, void* archive);
+void bot_task_move_on_path_save_009bd380(Cc13Seg67bHost& host, void* task, void* archive);
+void bot_task_move_to_save_009c3510(Cc13Seg67bHost& host, void* task, void* archive);
+// 009CA0C0: __thiscall(ECX = retreat task; out), RET 4, EAX = out (3 floats + a byte).
+void* bot_task_retreat_target_position_009ca0c0(void* task, void* out);
+// 009CA480: __fastcall(ECX = entity or null), RET, EAX = entity or 0.
+void* entity_as_kind41_009ca480(Cc13Seg67bHost& host, void* entity);
+// 009CFA10: __fastcall(ECX = takeoff task), RET.
+void bot_task_takeoff_debug_draw_009cfa10(Cc13Seg67bHost& host, void* task);
 
 }  // namespace bsp
