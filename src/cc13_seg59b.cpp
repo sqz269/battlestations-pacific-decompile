@@ -4024,6 +4024,9 @@ void* registry_entity_by_id(Seg59bHost& host, std::uint32_t id) {
 // ---------------------------------------------------------------------------
 // 00912A60 BSP_MissionScoreRecord_EvaluateAchievementCounters (provisional, cc9 name).
 // __fastcall(ECX = record = scoring + slot*284h + 4), RET. Callers 00914EF0 and 00920A20.
+// The cc9 host records the call only (game_hosts_mission_frame.cpp:762, "BotScheduler::think_b");
+// the second caller 00920A20 is cc9's debrief_bringup_00920a20 host, which does not call it;
+// vocabulary in bot_scheduler_output.hpp:85-105.
 // Evidence (listing 00912A60..00913A61, read whole):
 //  0058B520 empties the counter map at record+84h and resets its head (00912A9A..00912ABA).
 //  Thresholds from the award table (0050FC30, +44h vector, each key an inline NativeString of
