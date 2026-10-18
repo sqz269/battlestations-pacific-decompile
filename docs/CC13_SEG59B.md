@@ -168,3 +168,24 @@ preloading with string temporaries and an SEH frame) and `008FF640`
 | `008F7D20` | BSP_SingletonLifetime_DestroyGlobal01090AA0 | reconstructed | `00BD0400`, `_free`, clear [01090AA0]. |
 | `008F67B0`, `008F6FC0`, `008F7100` | CPropTreeLibrary_Load and its folder / extension walkers | ledger-only | src/scene_traffic_groups.cpp:494 and :592. |
 | `008F7DB0` | BSP_Startup_ResolveLanguage | ledger-only | src/winmain_startup.cpp (:93, :108) behind StartupHost::resolve_language. |
+
+## Scoring band: small bodies and library rows
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `00903790`, `009037B0` | BSP_OwnedBuffer_Free_* | reconstructed | `_free` and clear. |
+| `00905300` | BSP_SlotCounter_Increment | reconstructed | `score_record_increment_field170_00905300`: ++[scoring + slot*284h + 170h]. Called by the formation bindings 0077C8D0 / 0077C980 / 0077CA60. |
+| `00906430` | BSP_MissionResult_CallNamedScript | reconstructed | `mission_result_call_named_script_00906430`: a non-empty name at +147Ch goes to `00887E50` (00906453) on the mission Lua runner. Its caller 00920A20 (the debrief bring-up) is still a stub in src/game_hosts_mission_result.cpp, so the host makes no such call. |
+| `0090D2F0`, `0090E920` | BSP_LuaObjectHolder_Destruct / Construct | reconstructed | Vtable 00D18784 with a LuaObject vector at +4 (`00441210` tidy; `00442220` push_back, then `00B67700` on the by-value argument). |
+| `009221E0`, `00922210` | BSP_WatchList_Construct / Destruct | reconstructed | Vtable 00D18C24, list at +4 (`004C3020` sentinel; `004D05E0` clear and `_free`). |
+| `00922240` | BSP_WatchList_Add | reconstructed | `005FE8B0` removes equal names, then a `004CE6F0` node at the back, `004CE780`, and the by-value name is released. |
+
+The following 45 rows are bound as library instantiations (std::sort over float, the std::_Tree
+constructors, erases and finds, and the vector copy and insert helpers). Their callees are only
+STL code, allocators, `_free`, `_memmove_s` and xlen throws: `009063C0`, `009076B0`, `00907750`,
+`009077E0`, `00907DF0`, `00907E30`, `00907EB0`, `00907F40`, `00907F80`, `00908400`, `00908460`,
+`009084A0`, `00908560`, `009085D0`, `0090C090`, `0090C1E0`, `0090C210`, `0090C240`, `0090C270`,
+`0090C2E0`, `0090C310`, `0090C340`, `0090C370`, `0090C3A0`, `0090C430`, `0090D220`, `0090D9D0`,
+`0090DB00`, `0090E600`, `0090F2C0`, `0090F2F0`, `0090F320`, `0090F350`, `0090F4A0`, `0090F560`,
+`009102D0`, `00910370`, `00910ED0`, `00911470`, `00911DF0`, `0091CC40`, `0091CE30`, `00920DE0`,
+`008FE420` (the robot registry lower_bound) and `008F6BA0` (a std::set<std::string> insert).

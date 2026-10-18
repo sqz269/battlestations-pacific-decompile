@@ -1585,4 +1585,116 @@ void scene_property_write_text_008f1ca0(Seg59bHost& host, const char* name, void
     if (array_tail && at<std::uint32_t>(writer, 0x08) != 0) at<std::uint32_t>(writer, 0x08) -= 1u;
     host.scene_text_writer_manipulator_0094ffa0(host.scene_text_write_0094ff10(writer, text(0x00D16394u)), 0);
 }
+
+// ---------------------------------------------------------------------------
+// 00903790 / 009037B0 BSP_OwnedBuffer_Free_*. __thiscall(ECX = slot), RET. Evidence (each):
+// [slot] non-null -> _free 00BF65AC (00903799 / 009037B9), [slot] = 0 in that arm. No code
+// xrefs (reached from unwind or vtable slots).
+// ---------------------------------------------------------------------------
+void owned_buffer_free_00903790(Seg59bHost& host, void* slot) {
+    if (ptr(slot, 0) != nullptr) {
+        host.free_00bf65ac(ptr(slot, 0));
+        at<void*>(slot, 0) = nullptr;
+    }
+}
+
+void owned_buffer_free_009037b0(Seg59bHost& host, void* slot) {
+    if (ptr(slot, 0) != nullptr) {
+        host.free_00bf65ac(ptr(slot, 0));
+        at<void*>(slot, 0) = nullptr;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// 00905300 BSP_SlotCounter_Increment. __thiscall(ECX = scoring, slot), RET 4; EAX = &counter.
+// Evidence: 00905304 IMUL slot,284h; 0090530A ADD [rec+170h],1; 00905312 LEA EAX. Callers
+// 0077C8D0, 0077C980, 0077CA60 (formation join / release / snapshot; include/bsp/
+// lua_binding_navigator.hpp:180 keeps only the stride and offset).
+// ---------------------------------------------------------------------------
+std::uint32_t* score_record_increment_field170_00905300(void* scoring, std::int32_t slot) {
+    std::uint32_t& counter = at<std::uint32_t>(scoring, static_cast<std::uint32_t>(slot) * 0x284u + 0x170u);
+    counter += 1u;
+    return &counter;
+}
+
+// ---------------------------------------------------------------------------
+// 00906430 BSP_MissionResult_CallNamedScript. __thiscall(ECX = owner), RET. Evidence: 00906430
+// [owner+147Ch] (the name's length, unsigned) > 0 -> 00906453 00887E50(ECX = [[00E188A8]+
+// 1A08h]; 0, owner+147Ch, 0, 0, -1). Caller 00920A20 (debrief bring-up, 00920BEB, when not
+// aborted).
+// ---------------------------------------------------------------------------
+void mission_result_call_named_script_00906430(Seg59bHost& host, void* owner) {
+    if (at<std::uint32_t>(owner, 0x147C) == 0) return;
+    void* const game = *static_cast<void**>(host.image_pointer(0x00E188A8u));
+    host.lua_call_named_00887e50(ptr(game, 0x1A08), 0, add(owner, 0x147C), nullptr, 0, -1);
+}
+
+// ---------------------------------------------------------------------------
+// 0090D2F0 BSP_LuaObjectHolder_Destruct. __thiscall(ECX = holder), RET. Evidence: 0090D30E
+// vtable 00D18784; 0090D31D 00441210(holder+4); 0090D326 vtable 00CE3784. Reached from the
+// unwind funclet 00CA5738.
+// ---------------------------------------------------------------------------
+void lua_object_holder_destruct_0090d2f0(Seg59bHost& host, void* holder) {
+    at<std::uint32_t>(holder, 0x00) = 0x00D18784u;
+    host.lua_object_vector_tidy_00441210(add(holder, 0x04));
+    at<std::uint32_t>(holder, 0x00) = 0x00CE3784u;
+}
+
+// ---------------------------------------------------------------------------
+// 0090E920 BSP_LuaObjectHolder_Construct. __thiscall(ECX = holder, LuaObject by value), RET 14h;
+// EAX = holder. Evidence: vtable 00D18784 (0090E946); vector +8/+0Ch/+10h = 0 (0090E94C..
+// 0090E952); 0090E95F 00442220(holder+4, &argument); 0090E970 00B67700(&argument). Caller
+// 0090EA00.
+// ---------------------------------------------------------------------------
+void* lua_object_holder_construct_0090e920(Seg59bHost& host, void* holder, void* object) {
+    at<std::uint32_t>(holder, 0x00) = 0x00D18784u;
+    at<std::uint32_t>(holder, 0x08) = 0;
+    at<std::uint32_t>(holder, 0x0C) = 0;
+    at<std::uint32_t>(holder, 0x10) = 0;
+    host.lua_object_vector_push_back_00442220(add(holder, 0x04), object);
+    host.lua_object_destruct_00b67700(object);
+    return holder;
+}
+
+// ---------------------------------------------------------------------------
+// 009221E0 BSP_WatchList_Construct. __thiscall(ECX = owner), RET; EAX = owner. Evidence:
+// vtable 00D18C24 (009221E9); 009221F2 004C3020(owner+4); +8 = head (009221F7); +0Ch = 0.
+// Caller 004DE610 (world construction, member game+21CCh per include/bsp/world_construct.hpp).
+// ---------------------------------------------------------------------------
+void* watch_list_construct_009221e0(Seg59bHost& host, void* owner) {
+    at<std::uint32_t>(owner, 0x00) = 0x00D18C24u;
+    void* const head = host.pooled_string_list_allocate_sentinel_004c3020(add(owner, 0x04));
+    at<void*>(owner, 0x08) = head;
+    at<std::uint32_t>(owner, 0x0C) = 0;
+    return owner;
+}
+
+// ---------------------------------------------------------------------------
+// 00922210 BSP_WatchList_Destruct. __thiscall(ECX = owner), RET. Evidence: vtable 00D18C24
+// (00922214); 0092221C 004D05E0(owner+4); 00922225 _free([owner+8]); [owner+8] = 0.
+// ---------------------------------------------------------------------------
+void watch_list_destruct_00922210(Seg59bHost& host, void* owner) {
+    at<std::uint32_t>(owner, 0x00) = 0x00D18C24u;
+    host.pooled_string_list_clear_storage_004d05e0(add(owner, 0x04));
+    host.free_00bf65ac(ptr(owner, 0x08));
+    at<void*>(owner, 0x08) = nullptr;
+}
+
+// ---------------------------------------------------------------------------
+// 00922240 BSP_WatchList_Add. __thiscall(ECX = owner, NativeString by value), RET 8. Evidence:
+// 0092226A 005FE8B0(owner+4, &name) (remove equal names); head = [owner+8]; 0092227E
+// 004CE6F0(owner+4, head, head->prev, &name); 00922289 004CE780(owner+4, 1); head->prev = node,
+// node->prev->next = node (0092228E..00922294); release the argument through 00419CC0 /
+// 00BD1510 (009222B8). Callers 0088D130 (Lua AddWatch), 00922350.
+// ---------------------------------------------------------------------------
+void watch_list_add_00922240(Seg59bHost& host, void* owner, void* name) {
+    void* const list = add(owner, 0x04);
+    host.string_list_remove_005fe8b0(list, name);
+    void* const head = ptr(owner, 0x08);
+    void* const node = host.alias_node_allocate_copy_004ce6f0(list, head, ptr(head, 0x04), name);
+    host.alias_list_grow_count_004ce780(list, 1);
+    at<void*>(head, 0x04) = node;
+    at<void*>(ptr(node, 0x04), 0x00) = node;
+    release_native_string(host, name);
+}
 }  // namespace bsp::cc13_seg59b

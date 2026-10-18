@@ -277,6 +277,27 @@ struct Seg59bHost {
     virtual void scene_reference_get_type_letter_008f1960(void* record, void* string) = 0;
     // 0041DD20 BSP_NativeString_DestroyStorage, __thiscall(ECX = string).
     virtual void native_string_destroy_storage_0041dd20(void* string) = 0;
+    // 00887E50 BSP_MissionLuaHost_CallNamedThreadSafe, __thiscall(ECX = runner, a, name*, args*,
+    // b, c), RET 14h.
+    virtual void lua_call_named_00887e50(void* runner, std::uint32_t a, const void* name, void* args,
+                                         std::uint32_t b, std::int32_t c) = 0;
+    // 004C3020 BSP_PooledStringList_AllocateSentinel, __thiscall(ECX = list); EAX = head.
+    virtual void* pooled_string_list_allocate_sentinel_004c3020(void* list) = 0;
+    // 004D05E0 BSP_PooledStringList_ClearStorage, __thiscall(ECX = list).
+    virtual void pooled_string_list_clear_storage_004d05e0(void* list) = 0;
+    // 00441210 BSP_LuaObjectVector_Tidy, __thiscall(ECX = vector); 00442220 PushBack,
+    // __thiscall(ECX = vector, const LuaObject*), RET 4; 00B67700 BSP_LuaObject_Destruct,
+    // __thiscall(ECX = object).
+    virtual void lua_object_vector_tidy_00441210(void* vector) = 0;
+    virtual void lua_object_vector_push_back_00442220(void* vector, const void* object) = 0;
+    virtual void lua_object_destruct_00b67700(void* object) = 0;
+    // 005FE8B0 (std::list<NativeString>::remove), __thiscall(ECX = list, const value*), RET 4.
+    virtual void string_list_remove_005fe8b0(void* list, const void* value) = 0;
+    // 004CE6F0 BSP_NativeRenderResourceAliasNode_AllocateCopy, __thiscall(ECX = list, next,
+    // prev, const value*), RET 0Ch; EAX = node. 004CE780 BSP_NativeAliasList_GrowCount,
+    // __thiscall(ECX = list, n), RET 4.
+    virtual void* alias_node_allocate_copy_004ce6f0(void* list, void* next, void* prev, const void* value) = 0;
+    virtual void alias_list_grow_count_004ce780(void* list, std::uint32_t count) = 0;
     // 00BF79F0 _memset, __cdecl(dst, value, count).
     virtual void memset_00bf79f0(void* dst, std::int32_t value, std::uint32_t count) = 0;
     // 00950320 BSP_SceneTextChunkList_Clear, __thiscall(ECX = list).
@@ -420,6 +441,22 @@ void scene_property_write_text_008f1ca0(Seg59bHost& host, const char* name, void
                                         void* writer);
 // 008F2540, __thiscall(ECX = bag, depth), RET 4: the "PropTree {" debug dump through 004254B0.
 void scene_property_bag_write_text_008f2540(Seg59bHost& host, void* bag, std::int32_t depth);
+// 00903790 / 009037B0, __thiscall(ECX = slot), RET: _free 00BF65AC([slot]) and clear it.
+void owned_buffer_free_00903790(Seg59bHost& host, void* slot);
+void owned_buffer_free_009037b0(Seg59bHost& host, void* slot);
+// 00905300, __thiscall(ECX = scoring, slot), RET 4; EAX = &counter: ++[scoring+slot*284h+170h].
+std::uint32_t* score_record_increment_field170_00905300(void* scoring, std::int32_t slot);
+// 00906430, __thiscall(ECX = result owner), RET: call the Lua function named at +147Ch.
+void mission_result_call_named_script_00906430(Seg59bHost& host, void* owner);
+// 0090D2F0, __thiscall(ECX = holder), RET: vtable 00D18784, 00441210(+4), vtable 00CE3784.
+void lua_object_holder_destruct_0090d2f0(Seg59bHost& host, void* holder);
+// 0090E920, __thiscall(ECX = holder, LuaObject by value), RET 14h; EAX = holder.
+void* lua_object_holder_construct_0090e920(Seg59bHost& host, void* holder, void* object);
+// 009221E0 / 00922210, __thiscall(ECX = watch list owner), RET: construct / destruct.
+void* watch_list_construct_009221e0(Seg59bHost& host, void* owner);
+void watch_list_destruct_00922210(Seg59bHost& host, void* owner);
+// 00922240, __thiscall(ECX = owner, NativeString by value), RET 8: move the name to the back.
+void watch_list_add_00922240(Seg59bHost& host, void* owner, void* name);
 // 008F7CF0, __thiscall(ECX = scope), RET; EAX = scope: 00BD2FE0.
 void* random_threads_scope_construct_008f7cf0(Seg59bHost& host, void* scope);
 // 008F7D20, no arguments: destroy and free the object at [01090AA0], then clear it.
