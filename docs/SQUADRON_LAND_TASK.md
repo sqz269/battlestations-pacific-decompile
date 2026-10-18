@@ -17824,3 +17824,17 @@ SetDeadMeat matches cc13-fix11 exactly on its live call: **ON**. The hidden memb
 identical on all three rows and are the image's membership: **ON**. `kSquadronCommandBuildingMoveToBound` was never
 reached (no row logs the moveto), so it stays **OFF**; its moveto-self interaction is fixed (CC13_FIX1.md). BSM01 needs
 a re-plan with Phoenix sunk.
+
+### 5id.2 Pairs and flip: `kPutToFormationBound` **ON** (cc9-lua66, 2026-10-17)
+
+Exports of 1dd374f71 (`local\l66_m3_off`, `local\l66_pt_on`), reference env.
+
+- **USN02 `usn02_s36_u2_p7`** 16000 fr: gameplay identical; no PutTo or PutFormationTo call on this plan
+  (`station_places=0 headings=0 reshapes=0`).
+- **PRCP01 `prcp01_p9_p01_k`** 30000 fr: usn_03's two `PutFormationTo(Enterprise, pos, 3)` calls now reshape the group
+  to the diamond (FormationShipDist 250, `reshapes=2`) and the leader's 00819672 loop places the escorts on their
+  stations at the new point and turns them along the wake (`station_places=6 headings=6`); OFF the escorts stayed where
+  they were. The task force now fights together: deaths 80 -> 156, shots 25139 -> 41054, and the mission still
+  completes (636.57 -> 916.75 s). The four Kate/Val PutTo calls (no heading) are unchanged.
+
+Mechanism as predicted; flipped ON. PutTo with a heading on a ship (jm08:1600, luaJM8USFormation) was not reached.
