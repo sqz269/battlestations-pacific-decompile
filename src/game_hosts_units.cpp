@@ -39190,6 +39190,50 @@ bool GameUnitsHost::set_heading_008196b0(std::size_t index, float heading) {
     return true;
 }
 
+bool GameUnitsHost::put_rel_to_00819840(std::size_t index, std::size_t ref, const float rel[3]) {
+    Impl& host = *impl_;
+    if (index >= host.slots.size() || host.slots[index] == nullptr ||
+        ref >= host.slots.size() || host.slots[ref] == nullptr) {
+        return false;
+    }
+    if (!unit_is_kind_of(index, 6)) {
+        host.record("UnitPlace::put_rel_to_00819840 (not a ship)", 0x00819840u);
+        return false;
+    }
+    // 008AA6F5-008AA716: ref's world matrix copied (16 dwords from +0CCh), then
+    // 004142E0 on the relative point: each lane ((m0*a + m1*b) + m2*c) + t in the
+    // order 00414301..0041435B adds them.
+    const auto& rm = host.slots[ref]->motion;
+    const float x = rel[0];
+    const float y = rel[1];
+    const float z = rel[2];
+    float at[3];
+    at[0] = ((rm.pose_row1[0] * y + rm.pose_row0[0] * x) + rm.pose_row2[0] * z) + rm.position[0];
+    at[1] = ((rm.pose_row0[1] * x + rm.pose_row1[1] * y) + rm.pose_row2[1] * z) + rm.position[1];
+    at[2] = ((rm.pose_row0[2] * x + rm.pose_row1[2] * y) + rm.pose_row2[2] * z) + rm.position[2];
+    if (!unit_is_kind_of(index, 8)) at[1] = 0.0f;                              // 008AA784
+    float rows[3][3];
+    for (int lane = 0; lane < 3; ++lane) {
+        rows[0][lane] = rm.pose_row0[lane];
+        rows[1][lane] = rm.pose_row1[lane];
+        rows[2][lane] = rm.pose_row2[lane];
+    }
+    GameUnitSlot& slot = *host.slots[index];
+    for (int lane = 0; lane < 3; ++lane) {                                     // 009585B0
+        slot.motion.pose_row0[lane] = rows[0][lane];
+        slot.motion.pose_row1[lane] = rows[1][lane];
+        slot.motion.pose_row2[lane] = rows[2][lane];
+        slot.motion.position[lane] = at[lane];
+    }
+    Impl::publish_pose(slot);
+    const float heading = static_cast<float>(
+        std::atan2(static_cast<double>(slot.motion.pose_row2[0]),
+                   static_cast<double>(slot.motion.pose_row2[2])));
+    bsp::ship_ai_wake_fill_00810020(slot.wake, slot.motion.position, heading);   // 00818EA0
+    host.done("UnitPlace::put_rel_to_00819840", 0x00819840u);
+    return true;
+}
+
 std::size_t GameUnitsHost::reshape_formation_0070efd0(std::size_t index, int shape) {
     Impl& host = *impl_;
     if (index >= host.slots.size() || host.slots[index] == nullptr) return 0;
