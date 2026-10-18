@@ -175,6 +175,35 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
+    // 00411E70: __thiscall(ECX = state registry; name string, state), RET 8.
+    virtual void state_registry_add_00411e70(void* registry, std::uint32_t name_string,
+                                             void* state) = 0;
+    // 009BAFC0: __thiscall(ECX = task, bot, condition), RET 8: the pull-up task base.
+    virtual void bot_task_pull_up_construct_009bafc0(void* task, void* bot, void* condition) = 0;
+    // 00999F50: __thiscall(ECX = bot, task), RET 4.
+    virtual void pilot_bot_prepend_active_task_00999f50(void* bot, void* task) = 0;
+    // 00BD4FE0: __thiscall(ECX = archive; out ref [0Ch], name record), RET 0Ch:
+    // opens the named child section for reading into `out_ref`.
+    virtual void* archive_reader_ref_open_00bd4fe0(void* archive, void* out_ref,
+                                                   Cc13Seg67bArchiveValue name) = 0;
+    // 00BD5010: the write twin of 00BD4FE0.
+    virtual void* archive_writer_ref_open_00bd5010(void* archive, void* out_ref,
+                                                   Cc13Seg67bArchiveValue name) = 0;
+    // 009FB5E0: __thiscall(ECX = approach target ref, target), RET 4.
+    virtual void approach_ref_set_target_009fb5e0(void* ref, void* target) = 0;
+    // 009FA350: __fastcall(ECX = approach target ref), RET.
+    virtual void approach_ref_reset_aim_offset_009fa350(void* ref) = 0;
+    // 007B7870: __thiscall(ECX = opportunistic rocket, target, float[3] by value), RET 10h.
+    virtual void opportunistic_rocket_set_target_007b7870(void* rocket, void* target,
+                                                          const float point[3]) = 0;
+    // 009A94E0: __thiscall(ECX = task+3F8h, bot, arg), RET 8: the dogfight approach block.
+    virtual void dogfight_construct_approach_block_009a94e0(void* block, void* bot, void* arg) = 0;
+    // 009F9980: __thiscall(ECX = approach, task), RET 4.
+    virtual void bot_approach_bind_to_task_009f9980(void* approach, void* task) = 0;
+    // 007B8AD0: __fastcall(ECX = unit), RET, AL.
+    virtual bool unit_is_squadron_flight_leader_007b8ad0(void* unit) = 0;
+    // state->vtable[4](), RET: the state's enter slot.
+    virtual void state_vcall_04_enter(void* state) = 0;
 
     // ---- virtual slots (ECX = the object) ----
     // object->vtable[+8](archive), RET 4: an object's load slot.
@@ -331,5 +360,55 @@ void ship_ai_path_node_observer_destruct_body_009d5eb0(Cc13Seg67bHost& host, voi
 void ship_ai_observer_member_destruct_a_009db380(Cc13Seg67bHost& host, void* object);
 void ship_ai_observer_member_destruct_b_009db3d0(Cc13Seg67bHost& host, void* object);
 void ship_ai_observer_member_destruct_c_009db420(Cc13Seg67bHost& host, void* object);
+// 009A7650: __thiscall(ECX = dogfight approach, target), RET 4.
+void bot_approach_dogfight_set_target_009a7650(Cc13Seg67bHost& host, void* approach,
+                                               void* target);
+// 009B9EA0: __thiscall(ECX = task, archive), RET 4.
+void bot_task_conditioned_save_009b9ea0(Cc13Seg67bHost& host, void* task, void* archive);
+// 009B9F20: __thiscall(ECX = task, archive), RET 4.
+void bot_task_pull_up_save_009b9f20(Cc13Seg67bHost& host, void* task, void* archive);
+// 009BA1F0: __thiscall(ECX = task, archive), RET 4.
+void bot_task_barrel_roll_save_009ba1f0(Cc13Seg67bHost& host, void* task, void* archive);
+// 009BA270: __thiscall(ECX = task, archive), RET 4.
+void bot_task_flik_flak_save_009ba270(Cc13Seg67bHost& host, void* task, void* archive);
+// 009BA830: __thiscall(ECX = task, bot, archive), RET 8, EAX = task.
+void* bot_task_conditioned_construct_from_stream_009ba830(Cc13Seg67bHost& host, void* task,
+                                                          void* bot, void* archive);
+// 009A9810: __thiscall(ECX = task, bot, arg), RET 8, EAX = task.
+void* bot_task_dogfight_construct_009a9810(Cc13Seg67bHost& host, void* task, void* bot,
+                                           void* arg);
+// 009AB490: __fastcall(ECX = bot, EDX = unit), RET, EAX.
+void* bot_task_dogfight_create_for_squadron_009ab490(Cc13Seg67bHost& host, void* bot,
+                                                     void* unit);
+// 009AB500: __fastcall(ECX = bot, EDX = arg), RET, EAX.
+void* bot_task_dogfight_create_009ab500(Cc13Seg67bHost& host, void* bot, void* arg);
+// 009AB570: __fastcall(ECX = bot, EDX = target), RET, EAX.
+void* bot_task_make_dogfight_009ab570(Cc13Seg67bHost& host, void* bot, void* target);
+// 009BA1E0: __thiscall(ECX = task, archive), RET 4 (JMP 009B9EA0).
+void bot_task_leave_alone_save_009ba1e0(Cc13Seg67bHost& host, void* task, void* archive);
+// 009A3090 / 009A6A60 / 009AB740 / 009B42D0: __fastcall(ECX = approach), RET.
+void bot_task_depth_charge_register_state_names_009a3090(Cc13Seg67bHost& host, void* approach);
+void bot_task_dogfight_register_state_names_009a6a60(Cc13Seg67bHost& host, void* approach);
+void bot_task_drop_kamikaze_register_state_names_009ab740(Cc13Seg67bHost& host,
+                                                          void* approach);
+void bot_task_level_bomb_register_state_names_009b42d0(Cc13Seg67bHost& host, void* approach);
+// 009A36A0 / 009A70E0 / 009A84E0 / 009B49B0 / 009BC960: __thiscall(ECX = state,
+// approach), RET 4, EAX = state.
+void* bot_state_depth_charge_attack_run_construct_009a36a0(Cc13Seg67bHost& host, void* state,
+                                                           void* approach);
+void* bot_state_dogfight_attack_run_construct_009a70e0(Cc13Seg67bHost& host, void* state,
+                                                       void* approach);
+void* bot_state_dogfight_maneuver_construct_009a84e0(Cc13Seg67bHost& host, void* state,
+                                                     void* approach);
+void* bot_state_level_bomb_attack_run_construct_009b49b0(Cc13Seg67bHost& host, void* state,
+                                                         void* approach);
+void* bot_state_move_on_path_circle_construct_009bc960(Cc13Seg67bHost& host, void* state,
+                                                       void* approach);
+// 009B9680: __fastcall(ECX = task), RET, AL.
+bool bot_task_maneuver_roll_completed_009b9680(Cc13Seg67bHost& host, void* task);
+// 009BB380: __fastcall(ECX = unit, EDX = float point[3]; float limit, byte flag), RET 8.
+void pilot_bot_prepend_tight_turn_to_point_009bb380(Cc13Seg67bHost& host, void* unit,
+                                                    const float* point, float limit,
+                                                    std::uint8_t flag);
 
 }  // namespace bsp

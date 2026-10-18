@@ -154,3 +154,25 @@ image's call order exactly, including the null-adjusted registry cast
 Ledger-only, existing ship-AI host bodies, spot-checked: 009E97B0 (`build_tubes_009e97b0`),
 and 009E9910 / 009E9A50 (`tubes_ready`). Both match, under the host's labelled
 substitutions.
+
+### 3.5 Dogfight construction, conditioned-task archives, registrars and timed states
+
+| Address | Function | Notes |
+|---|---|---|
+| 009A7650 | `bot_approach_dogfight_set_target_009a7650` | observer swap on +A0h/+B4h, then 009FB5E0, 009FA350, 007B7870 |
+| 009A9810 | `bot_task_dogfight_construct_009a9810` | the initial state is +510h for a flight leader (007B8AD0), else +54Ch |
+| 009AB490 / 009AB500 / 009AB570 | dogfight factories | 758h-byte task; kinds 0Fh (squadron) and 18h |
+| 009B9EA0 / 009BA1E0 | conditioned save, leave-alone (JMP) | does not call the base save 0099D060 |
+| 009B9F20 / 009BA1F0 / 009BA270 | pull-up, barrel-roll, flik-flak saves | barrel-roll writes "started" twice |
+| 009BA830 | conditioned construct-from-stream | 0Fh kind, vtable 00D20388 |
+| 009A3090 / 009A6A60 / 009AB740 / 009B42D0 | state-name registrars | registry at approach+FCh / +104h / +C4h / +DCh |
+| 009A36A0 / 009A70E0 / 009A84E0 / 009B49B0 | timed state constructors | each draws one value from the shared RNG 00BD2F10, stream 1 |
+| 009BC960 | move-on-path circle state | byte +18h = (0.5 <= U(0, 1)), using the shared RNG |
+| 009B9680 | `bot_task_maneuver_roll_completed_009b9680` | the x87 order is read from the bytes DC E9 / DE E9 |
+| 009BB380 | `pilot_bot_prepend_tight_turn_to_point_009bb380` | 00999F50 runs even when the allocation failed |
+
+Ledger-only spot checks:
+- 009A5420 (`depth_charge_is_attack_state`) matches.
+- 009A56C0 (`set_state`) matches, and covers its byte-identical copies 009AE290, 009B84A0 and 009B3680. 009A9D50 is the same body with a redundant leading test.
+- The cc9 host's 009CA3B0 (glide seed) matches, with its labelled ctl+398h substitution.
+- The cc9 host's 009CAD00 (horizontal distance) matches, with one exception: the host keeps dx/dz in double, while the image rounds each to float before squaring, so the result can differ in the last bit.

@@ -927,4 +927,406 @@ bool bot_task_tick_gate_passes_0099c270(Cc13Seg67bHost& host, void* task) {
     return at<std::uint8_t>(unit, 0x9C2 + side * 8) != 0;
 }
 
+// ---------------------------------------------------------------------------
+// The dogfight approach's target setter and the conditioned task family's
+// archive bodies.
+
+namespace {
+constexpr std::uint32_t kStrCondition = 0x00D2033Cu;        // "condition"
+constexpr std::uint32_t kStrSafePitch = 0x00D2035Cu;        // "safePitch"
+constexpr std::uint32_t kStrRefPitch = 0x00D20350u;         // "refPitch"
+constexpr std::uint32_t kStrStarted = 0x00D20348u;          // "started"
+constexpr std::uint32_t kStrBarrelRollSpeed = 0x00D20374u;  // "barrelRollSpeed"
+constexpr std::uint32_t kStrLeft = 0x00D20368u;             // "left"
+constexpr std::uint32_t kStrTimer = 0x00D06BE4u;            // "timer"
+constexpr std::uint32_t kBotTaskConditionedVtable = 0x00D20388u;
+}  // namespace
+
+// 009A7650 (009A7650-009A76DD). edi = target. When approach+B4h differs from it
+// (009A7659; 009A7667 repeats the compare on the reloaded value): 006952A0(ECX =
+// old, EDX = approach+A0h) when the old one is set (009A7677), +B4h = target
+// (009A767E), 00694A60(ECX = target, EDX = approach+A0h) when the target is set
+// (009A7687). Then 009FB5E0(ECX = approach+2Ch, [approach+B4h]) (009A7698),
+// 009FA350(ECX = approach+2Ch) (009A769F), and 007B7870(ECX = [approach+20h],
+// target, the three floats of 00F87574 by value) (009A76D3).
+void bot_approach_dogfight_set_target_009a7650(Cc13Seg67bHost& host, void* approach,
+                                               void* target) {
+    void* const old = ptr_at(approach, 0xB4);
+    if (old != target) {
+        void* const member = ptr(approach, 0xA0);
+        if (old != nullptr) host.observer_unregister_pair_006952a0(old, member);
+        at<std::uintptr_t>(approach, 0xB4) = reinterpret_cast<std::uintptr_t>(target);
+        if (target != nullptr) host.observer_register_pair_00694a60(target, member);
+    }
+    host.approach_ref_set_target_009fb5e0(ptr(approach, 0x2C), ptr_at(approach, 0xB4));
+    host.approach_ref_reset_aim_offset_009fa350(ptr(approach, 0x2C));
+    const float* const g = host.global_vector_00f87574();
+    const float point[3] = {g[0], g[1], g[2]};
+    host.opportunistic_rocket_set_target_007b7870(ptr_at(approach, 0x20), target, point);
+}
+
+// 009B9EA0 (009B9EA0-009B9F1B). EH frame 00CAF0A8. 00BD5010(ECX = archive, &ref,
+// {0,"condition"}) (009B9EDA); [task+3F8h]->vtable[0Ch](&ref) (009B9EF7; no null
+// check); 004107B0(&ref) (009B9F05). The base task save 0099D060 is not called.
+void bot_task_conditioned_save_009b9ea0(Cc13Seg67bHost& host, void* task, void* archive) {
+    std::uint32_t ref[3] = {};
+    host.archive_writer_ref_open_00bd5010(archive, ref, name_record(kStrCondition));
+    host.object_vcall_0c_save(ptr_at(task, 0x3F8), ref);
+    host.archive_writer_ref_destroy_004107b0(ref);
+}
+
+// 009B9F20 (009B9F20-009B9FC7). 009B9EA0(task, archive); then archive->vtable[0Ch]
+// ({0,"safePitch"}, {2, +400h}) (009B9F5F), ({0,"refPitch"}, {2, +3FCh})
+// (009B9F92), ({0,"started"}, {3, byte +404h}) (009B9FC1).
+// UNCERTAINTY: the type-3 payload's upper three bytes are uninitialised stack in
+// the image (only the byte at 009B9F9F is stored); here they are 0.
+void bot_task_pull_up_save_009b9f20(Cc13Seg67bHost& host, void* task, void* archive) {
+    bot_task_conditioned_save_009b9ea0(host, task, archive);
+    host.archive_vcall_0c_write(archive, name_record(kStrSafePitch),
+                                record(2, at<std::uint32_t>(task, 0x400)));
+    host.archive_vcall_0c_write(archive, name_record(kStrRefPitch),
+                                record(2, at<std::uint32_t>(task, 0x3FC)));
+    host.archive_vcall_0c_write(archive, name_record(kStrStarted),
+                                record(3, at<std::uint8_t>(task, 0x404)));
+}
+
+// 009BA1F0 (009BA1F0-009BA264). 009B9F20(task, archive); archive->vtable[0Ch]
+// ({0,"barrelRollSpeed"}, {2, +408h}) (009BA22F); ({0,"started"}, {3, byte +404h})
+// (009BA25E), a second write of the key 009B9F20 already wrote.
+// UNCERTAINTY: as 009B9F20 for the type-3 payload's upper bytes.
+void bot_task_barrel_roll_save_009ba1f0(Cc13Seg67bHost& host, void* task, void* archive) {
+    bot_task_pull_up_save_009b9f20(host, task, archive);
+    host.archive_vcall_0c_write(archive, name_record(kStrBarrelRollSpeed),
+                                record(2, at<std::uint32_t>(task, 0x408)));
+    host.archive_vcall_0c_write(archive, name_record(kStrStarted),
+                                record(3, at<std::uint8_t>(task, 0x404)));
+}
+
+// 009BA270 (009BA270-009BA2E4). 009B9EA0(task, archive); archive->vtable[0Ch]
+// ({0,"left"}, {3, byte +400h}) (009BA2AB); ({0,"timer"}, {2, +3FCh}) (009BA2DE).
+// UNCERTAINTY: as 009B9F20 for the type-3 payload's upper bytes.
+void bot_task_flik_flak_save_009ba270(Cc13Seg67bHost& host, void* task, void* archive) {
+    bot_task_conditioned_save_009b9ea0(host, task, archive);
+    host.archive_vcall_0c_write(archive, name_record(kStrLeft),
+                                record(3, at<std::uint8_t>(task, 0x400)));
+    host.archive_vcall_0c_write(archive, name_record(kStrTimer),
+                                record(2, at<std::uint32_t>(task, 0x3FC)));
+}
+
+// 009BA830 (009BA830-009BA8B3). EH frame 00CAF0C8. 0099C8B0(ECX = task, bot,
+// archive, 0Fh) (009BA85A); [task] = 00D20388 (009BA871); 00BD4FE0(ECX = archive,
+// the outgoing argument block, {0,"condition"}) (009BA88F); +3F8h =
+// 00996BB0(that block by value) (009BA894, 009BA89D), which destroys the block.
+void* bot_task_conditioned_construct_from_stream_009ba830(Cc13Seg67bHost& host, void* task,
+                                                          void* bot, void* archive) {
+    bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 0x0F);
+    at<std::uint32_t>(task, 0x00) = kBotTaskConditionedVtable;
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrCondition));
+    at<std::uintptr_t>(task, 0x3F8) =
+        reinterpret_cast<std::uintptr_t>(bot_condition_load_from_reader_00996bb0(host, ref));
+    return task;
+}
+
+namespace {
+constexpr std::uint32_t kDogfightTaskVtable = 0x00D1F9B0u;
+constexpr std::uint32_t kDogfightApproachVtable = 0x00D1F9ACu;
+constexpr std::uint32_t kDogfightTask4FCVtable = 0x00D1F9A8u;
+}  // namespace
+
+// 009A9810 (009A9810-009A98B6). EH frame 00CAE476. 0099C6F0(ECX = task, bot, 2)
+// (009A9836); 009A94E0(ECX = task+3F8h, bot, arg) (009A9851); [task] = 00D1F9B0,
+// [task+3F8h] = 00D1F9AC, [task+4FCh] = 00D1F9A8 (009A985E-009A986A);
+// 009F9980(ECX = task+3F8h, task) (009A9874); s = 007B8AD0(ECX = [task+3FCh]) ?
+// task+510h : task+54Ch (009A987F-009A988E); task+310h = s; s->vtable[4]()
+// (009A989F).
+void* bot_task_dogfight_construct_009a9810(Cc13Seg67bHost& host, void* task, void* bot,
+                                           void* arg) {
+    bot_task_construct_base_0099c6f0(host, task, bot, 2);
+    host.dogfight_construct_approach_block_009a94e0(ptr(task, 0x3F8), bot, arg);
+    at<std::uint32_t>(task, 0x000) = kDogfightTaskVtable;
+    at<std::uint32_t>(task, 0x3F8) = kDogfightApproachVtable;
+    at<std::uint32_t>(task, 0x4FC) = kDogfightTask4FCVtable;
+    host.bot_approach_bind_to_task_009f9980(ptr(task, 0x3F8), task);
+    void* const state = host.unit_is_squadron_flight_leader_007b8ad0(ptr_at(task, 0x3FC))
+                            ? ptr(task, 0x510)
+                            : ptr(task, 0x54C);
+    at<std::uintptr_t>(task, 0x310) = reinterpret_cast<std::uintptr_t>(state);
+    host.state_vcall_04_enter(state);
+    return task;
+}
+
+// 009AB490 (009AB490-009AB4FF). arg = unit ? [unit+9D4h] : 0 (009AB4A7-009AB4B0);
+// t = operator new(758h) (009AB4BB); null -> 0; else 009A9810(ECX = t, bot, arg).
+void* bot_task_dogfight_create_for_squadron_009ab490(Cc13Seg67bHost& host, void* bot,
+                                                     void* unit) {
+    void* const arg = unit != nullptr ? ptr_at(unit, 0x9D4) : nullptr;
+    void* const t = host.operator_new_00bf681b(0x758);
+    if (t == nullptr) return nullptr;
+    return bot_task_dogfight_construct_009a9810(host, t, bot, arg);
+}
+
+// 009AB500 (009AB500-009AB565). t = operator new(758h); null -> 0; else
+// 009A9810(ECX = t, bot, arg = EDX).
+void* bot_task_dogfight_create_009ab500(Cc13Seg67bHost& host, void* bot, void* arg) {
+    void* const t = host.operator_new_00bf681b(0x758);
+    if (t == nullptr) return nullptr;
+    return bot_task_dogfight_construct_009a9810(host, t, bot, arg);
+}
+
+// 009AB570 (009AB570-009AB62C). With a target: target->vtable[5Ch](0Fh) ->
+// 009AB490(bot, target) (009AB599, 009AB5A3); else target->vtable[5Ch](18h) ->
+// 009AB500(bot, target) (009AB5C2, 009AB5CC). Otherwise (no target, or neither
+// kind): t = operator new(758h) (009AB5E7); null -> 0; else 009A9810(t, bot, 0).
+void* bot_task_make_dogfight_009ab570(Cc13Seg67bHost& host, void* bot, void* target) {
+    if (target != nullptr) {
+        if (host.object_vcall_5c(target, 0x0F)) {
+            return bot_task_dogfight_create_for_squadron_009ab490(host, bot, target);
+        }
+        if (host.object_vcall_5c(target, 0x18)) {
+            return bot_task_dogfight_create_009ab500(host, bot, target);
+        }
+    }
+    void* const t = host.operator_new_00bf681b(0x758);
+    if (t == nullptr) return nullptr;
+    return bot_task_dogfight_construct_009a9810(host, t, bot, nullptr);
+}
+
+// 009BA1E0: a 5-byte JMP to 009B9EA0 (the leave-alone task adds no fields).
+void bot_task_leave_alone_save_009ba1e0(Cc13Seg67bHost& host, void* task, void* archive) {
+    bot_task_conditioned_save_009b9ea0(host, task, archive);
+}
+
+// ---------------------------------------------------------------------------
+// The state-name registrars: one 00411E70(ECX = approach+registry, name, state)
+// per state, in the image's order. The names are debug text (nothing looks a
+// state up by name).
+
+namespace {
+struct StateNamePair {
+    std::uint32_t name;    // string address in the image
+    std::uint32_t offset;  // state object, approach-relative
+};
+
+void register_state_names(Cc13Seg67bHost& host, void* approach, std::uint32_t registry,
+                          const StateNamePair* pairs, std::size_t count) {
+    for (std::size_t i = 0; i < count; ++i) {
+        host.state_registry_add_00411e70(ptr(approach, registry), pairs[i].name,
+                                         ptr(approach, pairs[i].offset));
+    }
+}
+
+constexpr StateNamePair kDepthChargeStateNamePairs[] = {
+    {0x00D1F608u, 0x110},  // "moveto (DepthCharge)"   009A30A8
+    {0x00D1F5F0u, 0x14C},  // "follow (DepthCharge)"   009A30BB
+    {0x00D1F5DCu, 0x1E4},  // "DepthCharge/done"       009A30CE
+    {0x00D1F5C4u, 0x284},  // "DepthCharge/attackrun"  009A30E1
+    {0x00D1F5B0u, 0x2A8},  // "DepthCharge/goaway"     009A30F4
+    {0x00D1F5A0u, 0x2CC},  // "DepthCharge/aim"        009A3107
+    {0x00D1F58Cu, 0x2EC},  // "DepthCharge/prepare"    009A311A
+    {0x00D1F578u, 0x38C},  // "DepthCharge/leave"      009A312D
+    {0x00D1F564u, 0x3A8},  // "DepthCharge/turnto"     009A3140
+};
+constexpr StateNamePair kDogfightStateNamePairs[] = {
+    {0x00D1F828u, 0x118},  // "moveto (dogfight)"      009A6A78
+    {0x00D1F814u, 0x154},  // "follow (dogfight)"      009A6A8B
+    {0x00D1F804u, 0x284},  // "dogfight/aim"           009A6A9E
+    {0x00D1F7F0u, 0x1EC},  // "dogfight/prepare"       009A6AB1
+    {0x00D1F7DCu, 0x2AC},  // "dogfight/maneuver"      009A6AC4
+    {0x00D1F7C8u, 0x2EC},  // "dogfight/attackrun"     009A6AD7
+    {0x00D1F7B4u, 0x310},  // "dogfight/avoid_roll"    009A6AEA
+    {0x00D1F7A0u, 0x338},  // "dogfight/avoid_turn"    009A6AFD
+};
+constexpr StateNamePair kDropKamikazeStateNamePairs[] = {
+    {0x00D1FABCu, 0x0D8},  // "moveto (DropKamikaze)"  009AB758
+    {0x00D1FAA4u, 0x114},  // "follow (DropKamikaze)"  009AB76B
+    {0x00D1FA90u, 0x26C},  // "DropKamikaze/done"      009AB77E
+    {0x00D1FA7Cu, 0x334},  // "DropKamikaze/goAway"    009AB791
+    {0x00D1FA64u, 0x1AC},  // "DropKamikaze/attackrun" 009AB7A4
+    {0x00D1FA4Cu, 0x1C8},  // "DropKamikaze/prepare"   009AB7B7
+    {0x00D1FA34u, 0x310},  // "DropKamikaze/release"   009AB7CA
+};
+constexpr StateNamePair kLevelBombStateNamePairs[] = {
+    {0x00D2008Cu, 0x0F0},  // "moveto (LevelBomb)"     009B42E8
+    {0x00D20078u, 0x13C},  // "follow (LevelBomb)"     009B42FB
+    {0x00D20064u, 0x1D4},  // "LevelBomb/attackrun"    009B430E
+    {0x00D20050u, 0x2E0},  // "LevelBomb/goaway"       009B4321
+    {0x00D20040u, 0x1FC},  // "LevelBomb/aim"          009B4334
+    {0x00D2002Cu, 0x218},  // "LevelBomb/prepare"      009B4347
+    {0x00D20018u, 0x2BC},  // "LevelBomb/release"      009B435A
+};
+}  // namespace
+
+// 009A3090 (009A3090-009A3147). Registry approach+FCh; nine pairs above.
+void bot_task_depth_charge_register_state_names_009a3090(Cc13Seg67bHost& host, void* approach) {
+    register_state_names(host, approach, 0xFC, kDepthChargeStateNamePairs,
+                         sizeof(kDepthChargeStateNamePairs) / sizeof(kDepthChargeStateNamePairs[0]));
+}
+
+// 009A6A60 (009A6A60-009A6B04). Registry approach+104h; eight pairs above.
+void bot_task_dogfight_register_state_names_009a6a60(Cc13Seg67bHost& host, void* approach) {
+    register_state_names(host, approach, 0x104, kDogfightStateNamePairs,
+                         sizeof(kDogfightStateNamePairs) / sizeof(kDogfightStateNamePairs[0]));
+}
+
+// 009AB740 (009AB740-009AB7D1). Registry approach+C4h; seven pairs above.
+void bot_task_drop_kamikaze_register_state_names_009ab740(Cc13Seg67bHost& host,
+                                                          void* approach) {
+    register_state_names(
+        host, approach, 0xC4, kDropKamikazeStateNamePairs,
+        sizeof(kDropKamikazeStateNamePairs) / sizeof(kDropKamikazeStateNamePairs[0]));
+}
+
+// 009B42D0 (009B42D0-009B4361). Registry approach+DCh; seven pairs above.
+void bot_task_level_bomb_register_state_names_009b42d0(Cc13Seg67bHost& host, void* approach) {
+    register_state_names(host, approach, 0xDC, kLevelBombStateNamePairs,
+                         sizeof(kLevelBombStateNamePairs) / sizeof(kLevelBombStateNamePairs[0]));
+}
+
+// ---------------------------------------------------------------------------
+// The timed state constructors: base +4h = approach, +0Ch, +10h, +14h, +8h = 0,
+// the vtable, a period of [00D7A24C] (1.0), a countdown of -00BD2F10(1, 0, 1)
+// (shared RNG, stream 1) and a zeroed float, at offsets per state.
+
+namespace {
+constexpr std::uint32_t kDepthChargeAttackRunVtable = 0x00D1F64Cu;
+constexpr std::uint32_t kDogfightAttackRunVtable = 0x00D1F8B0u;
+constexpr std::uint32_t kDogfightManeuverVtable = 0x00D1F960u;
+constexpr std::uint32_t kLevelBombAttackRunVtable = 0x00D20100u;
+constexpr std::uint32_t kMoveOnPathCircleVtable = 0x00D208D8u;
+constexpr float kHalf_00ce3800 = 0.5f;
+
+void construct_state_base(void* state, void* approach) {
+    at<std::uintptr_t>(state, 0x04) = reinterpret_cast<std::uintptr_t>(approach);
+    at<std::uint32_t>(state, 0x0C) = 0;
+    at<std::uint32_t>(state, 0x10) = 0;
+    at<std::uint32_t>(state, 0x14) = 0;
+    at<std::uint32_t>(state, 0x08) = 0;
+}
+
+void* construct_timed_state(Cc13Seg67bHost& host, void* state, void* approach,
+                            std::uint32_t vtable, std::size_t period, std::size_t countdown,
+                            std::size_t zeroed) {
+    construct_state_base(state, approach);
+    at<std::uint32_t>(state, 0) = vtable;
+    at<float>(state, period) = kOne_00d7a24c;
+    at<float>(state, countdown) = -host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    at<float>(state, zeroed) = 0.0f;
+    return state;
+}
+}  // namespace
+
+// 009A36A0 (009A36A0-009A371F). EH frame 00CADE78. Vtable 00D1F64C (009A36E3);
+// +18h = 1.0 (009A36F5); 009A36FA 00BD2F10(1, 0, 1); +1Ch = -r (009A3704);
+// +20h = 0 (009A370B).
+void* bot_state_depth_charge_attack_run_construct_009a36a0(Cc13Seg67bHost& host, void* state,
+                                                           void* approach) {
+    return construct_timed_state(host, state, approach, kDepthChargeAttackRunVtable, 0x18, 0x1C,
+                                 0x20);
+}
+
+// 009A70E0 (009A70E0-009A715F). The 009A36A0 body with vtable 00D1F8B0 (009A7123);
+// 009A713A RNG; +18h / +1Ch / +20h.
+void* bot_state_dogfight_attack_run_construct_009a70e0(Cc13Seg67bHost& host, void* state,
+                                                       void* approach) {
+    return construct_timed_state(host, state, approach, kDogfightAttackRunVtable, 0x18, 0x1C,
+                                 0x20);
+}
+
+// 009A84E0 (009A84E0-009A855F). Vtable 00D1F960 (009A8523); +28h = 1.0 (009A8535);
+// 009A853A RNG; +2Ch = -r (009A8544); +34h = 0 (009A854B). +18h..+24h and +30h
+// are not written.
+void* bot_state_dogfight_maneuver_construct_009a84e0(Cc13Seg67bHost& host, void* state,
+                                                     void* approach) {
+    return construct_timed_state(host, state, approach, kDogfightManeuverVtable, 0x28, 0x2C,
+                                 0x34);
+}
+
+// 009B49B0 (009B49B0-009B4A2F). Vtable 00D20100 (009B49F3); 009B4A0A RNG;
+// +18h / +1Ch / +20h.
+void* bot_state_level_bomb_attack_run_construct_009b49b0(Cc13Seg67bHost& host, void* state,
+                                                         void* approach) {
+    return construct_timed_state(host, state, approach, kLevelBombAttackRunVtable, 0x18, 0x1C,
+                                 0x20);
+}
+
+// 009BC960 (009BC960-009BC9DF). Base as above; [s] = 00D208D8 (009BC9A8);
+// r = 00BD2F10(1, 0, 1) (009BC9AE); 009BC9BB FCOMIP r against [00CE3800] (0.5),
+// JB -> 0, else 1, into byte +18h (009BC9CC). NaN takes the JB arm (0).
+void* bot_state_move_on_path_circle_construct_009bc960(Cc13Seg67bHost& host, void* state,
+                                                       void* approach) {
+    construct_state_base(state, approach);
+    at<std::uint32_t>(state, 0) = kMoveOnPathCircleVtable;
+    const float r = host.random_uniform_00bd2f10(1, 0.0f, 1.0f);
+    at<std::uint8_t>(state, 0x18) = (r >= kHalf_00ce3800) ? 1 : 0;
+    return state;
+}
+
+namespace {
+constexpr float kRollDone_00ce398c = 0.3490658700466156f;   // 20 degrees
+constexpr double kRollBias_00d03dd0 = 1.0471975803375244;   // 60 degrees, float-rounded
+constexpr double kRollSpan_00d20330 = 0.8726646453142166;   // 50 degrees
+}  // namespace
+
+// 009B9680 (009B9680-009B9736). u = task+2F4h. d = float(task+400h - u+C64h)
+// (009B968D, 009B9693); 009B969B FCOMIP 0 against d, JBE (0 <= d or NaN) -> the
+// command arm; else, when [00CE398C] > |u+C68h| (009B96C1 COMISS, JBE -> the
+// command arm), 1. The command arm (009B96CB): +2C8h = 0, +2D0h = 1, byte +2A4h =
+// 1, +2A0h = 0 - (|u+C68h| - double [00D03DD0]) * 1 / double [00D20330]
+// (009B9706-009B9729, DC E9 / DE E9: ST(i) - ST(0)), +2D4h = 0; returns 0.
+// UNCERTAINTY: the +2A0h chain is modelled at 24-bit precision (main thread);
+// under 53-bit the quotient can differ in the last bit.
+bool bot_task_maneuver_roll_completed_009b9680(Cc13Seg67bHost&, void* task) {
+    void* const unit = ptr_at(task, 0x2F4);
+    const float d = at<float>(task, 0x400) - at<float>(unit, 0xC64);
+    if (0.0f > d) {
+        if (kRollDone_00ce398c > std::fabs(at<float>(unit, 0xC68))) return true;
+    }
+    at<float>(task, 0x2C8) = 0.0f;
+    at<std::int32_t>(task, 0x2D0) = 1;
+    const float a = std::fabs(at<float>(unit, 0xC68));
+    at<std::uint8_t>(task, 0x2A4) = 1;
+    const float x = static_cast<float>(static_cast<double>(a) - kRollBias_00d03dd0);
+    const float q = static_cast<float>(static_cast<double>(x * 1.0f) / kRollSpan_00d20330);
+    at<float>(task, 0x2A0) = 0.0f - q;
+    at<std::int32_t>(task, 0x2D4) = 0;
+    return false;
+}
+
+namespace {
+constexpr std::uint32_t kTightTurnTaskVtable = 0x00D205E0u;
+}  // namespace
+
+// 009BB380 (009BB380-009BB498). EH frame 00CAF276. bot = [unit+DF4h]; t = operator
+// new(40Ch) (009BB3AF). With t: c = operator new(2Ch) (009BB3CF); with c:
+// 007B5C70(ECX = c, unit) (009BB40A), [c] = 00D1EA40, c+1Ch..+24h = the point (read
+// before the call), c+28h = `limit` (009BB415-009BB43C); else c = 0. Then
+// 009BAFC0(ECX = t, bot, c) (009BB452), [t] = 00D205E0, byte t+408h = `flag`,
+// byte t+404h = 1 (009BB45B-009BB467). Without t, t = 0. Finally
+// 00999F50(ECX = bot, t) (009BB47F), with or without a task.
+// UNCERTAINTY: the EH frees of a throwing constructor are not modelled.
+void pilot_bot_prepend_tight_turn_to_point_009bb380(Cc13Seg67bHost& host, void* unit,
+                                                    const float* point, float limit,
+                                                    std::uint8_t flag) {
+    void* const bot = ptr_at(unit, 0xDF4);
+    void* t = host.operator_new_00bf681b(0x40C);
+    if (t != nullptr) {
+        void* c = host.operator_new_00bf681b(0x2C);
+        if (c != nullptr) {
+            const float p[3] = {point[0], point[1], point[2]};
+            host.bot_condition_construct_base_007b5c70(c, unit);
+            at<std::uint32_t>(c, 0x00) = kBotConditionTurnToVtable;
+            at<float>(c, 0x1C) = p[0];
+            at<float>(c, 0x20) = p[1];
+            at<float>(c, 0x24) = p[2];
+            at<float>(c, 0x28) = limit;
+        }
+        host.bot_task_pull_up_construct_009bafc0(t, bot, c);
+        at<std::uint32_t>(t, 0x000) = kTightTurnTaskVtable;
+        at<std::uint8_t>(t, 0x408) = flag;
+        at<std::uint8_t>(t, 0x404) = 1;
+    }
+    host.pilot_bot_prepend_active_task_00999f50(bot, t);
+}
+
 }  // namespace bsp
