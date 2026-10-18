@@ -196,11 +196,11 @@ std::uint32_t hud_map_icon_refresh_carried_unit_icons_005aac00(void* icon, void*
 }
 
 // 0064AE20 __fastcall(ECX = ship screen 45), RET; EH handler 00C7A978. screen+184h is the unit,
-// [unit+538h] its class record. Lua: VehicleClass[class+70h].NoRepairGUI; the damage widget
-// (+40h) is shown unless that is a boolean equal to 1. +44h = clamp((unit+980h + 0.5) / 1.5, 0,
-// 1) (24-bit: the sum and the quotient each round to float; a NaN passes both clamps; at 53-bit
-// PC the image holds (x + 0.5) / 1.5 in the register until the FSTP float, one rounding that can
-// differ from the modelled pair by one ulp), the
+// [unit+538h] its class record. Lua: VehicleClass[class+70h].NoRepairGUI; +40h (the
+// GUI_ship_damage page, 0064CD0B) is shown unless that is a boolean equal to 1. +44h =
+// clamp((unit+980h + 0.5) / 1.5, 0, 1) (24-bit: the sum and the quotient each round to float;
+// a NaN passes both clamps; at 53-bit PC the image holds (x + 0.5) / 1.5 in the register
+// until the FSTP float, one rounding that can differ from the modelled pair by one ulp), the
 // three gauges' +18h bytes are cleared, +128h = 0064AAD0(), +12Ch = 0.0f, 0064A9F0(0.0f). Flags:
 // +105h = [class+C8h] > 0 (signed), +107h = 00818300() != 0, +106h = !+105h && 0059CB90(unit,
 // null) == 16h. Widgets +54h, +68h, +6Ch shown when +105h or +106h; +54h's frame is +106h != 0.
@@ -849,7 +849,7 @@ void enter_catalog_arm(std::uint8_t* s, Big1Host& host) {
                 set_device_icon(s, unit, static_cast<std::uint8_t*>(unit), 0x134, host);  // 0067549E..00675433
             }
         } else {
-            host.list_tidy_005a0b80(&units);                                 // 0067557A (joins at 0067556E)
+            host.list_tidy_005a0b80(&units);                    // 0067557A (via 0067556E)
             return;
         }
         if (device) {
@@ -940,8 +940,9 @@ void enter_map_arm(std::uint8_t* s, Big1Host& host) {
                     ptr(s, 0x170), host.object_vtable14_name(element2), 1);      // 00675850
                 host.list_tidy_005a0b80(&copy2);                             // 00675861
             } else {
-                host.gui_text_set_localised_cstring_00abbe50(ptr(s, 0x170), "globals.unitclass_spawnpoint",
-                                                             1);  // 0067588E, 00CF6B24
+                // 0067586A pushes 00CF6B24 and jumps to the shared call at 0067588E.
+                host.gui_text_set_localised_cstring_00abbe50(
+                    ptr(s, 0x170), "globals.unitclass_spawnpoint", 1);  // 0067586A / 0067588E
             }
         } else {
             void* const unit = *host.support_unit_iterator_value_00658a60(s + 0x300);  // 00675877
@@ -1841,9 +1842,10 @@ void landing_troop_update_004a0d20(void* troop, Big1Host& host) {
                         int_times_float(at<std::int32_t>(member(i), 0x2C), at<float>(member(i), 0x14)) +
                         static_cast<double>(c)));                             // 004A0E01
                 } else if (i < 16) {
-                    // 004A0E15 stores into the 16-slot frame array by member index, so a
-                    // 17th or later member clobbers other frame slots in the image; that
-                    // write is not modelled (it would be out of bounds here).
+                    // 004A0E15 indexes the three group counts at [B+88h] by member index:
+                    // members 3..15 land in the spill dwords above, and a 17th or later
+                    // member clobbers further frame slots in the image. That write is
+                    // not modelled (it would be out of bounds here).
                     counts[i] = 0;
                 }
             } else if (at<std::int32_t>(t, 0xD4) == 0) {
