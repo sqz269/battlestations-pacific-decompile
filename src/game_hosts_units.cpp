@@ -6386,7 +6386,7 @@ struct GameUnitsHost::Impl {
     // False: the arm is refused and only +21h acts. OFF: paired with park on, its
     // yaw (heading - runway, opposite to park's sense) rests at pi/2 under the
     // host's park <-> abort loop; re-pair with park (docs/SQUADRON_LAND_TASK.md 5v.2).
-    static constexpr bool kLandAbortGroundArmBound = false;
+    static constexpr bool kLandAbortGroundArmBound = true;   // ON: OCEAN_WAVE_FIELD 78 (bytes match; USN01 identical)
     // Packet p20_land_final_park (docs/OCEAN_WAVE_FIELD.md section 78). 009B3DD9-009B3DF7:
     // land/final with mode +448h = 4 calls 009B3370 BSP_BotStateLandFinal_ParkRule (final
     // +20h touched && !(plane+72Ch)->vt[38h]) and on true switches to land/park (+620h)
