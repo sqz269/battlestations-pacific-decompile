@@ -11,6 +11,7 @@
 #include <cstdint>
 
 #include "bsp/cc13_seg41.hpp"
+#include "bsp/cc15_land_convoy.hpp"
 #include "bsp/native_bit_cursor_numeric.hpp"
 #include "bsp/native_bit_cursor_read.hpp"
 #include "bsp/native_session_message_base.hpp"
@@ -1022,5 +1023,36 @@ void mothership_controller_refresh_00758e80(std::uint8_t* ship, float dt, Mother
 // - [msg+0Ch])); else the block 006CD6C0 then the ship 00821E80.
 bool mothership_handle_message_00758eb0(std::uint8_t* ship, const std::uint8_t* message, const EntityIdTable& ids,
                                         const std::int32_t& tick_00f876b0, MothershipHost& host);
+
+// ---- LandConvoy member vector kill (packet cc13-convoy) ---------------------
+// 00742210 BSP_EntityGroup_KillMembersVector, __thiscall(ECX = convoy, char
+// hard) RET 4, no x87. The Lua Kill binding calls it for a LandConvoy
+// (008AC740 IsKindOf 1Ah; 008AC748 CMP ESI,EBP / SETNE with EBP = 0 from
+// 008AC5E3, and the cause 1 or 2, so hard is always true and the members get
+// cause 2; 008AC74E), then JMPs past 008AC756's 00926D90, so the convoy itself
+// is not killed.
+// 1. 00742213/00742219: ESI = first; the first <= last assert cannot fail.
+// 2. Each pass: EBP = last re-read (00742231); the first <= last (00742234)
+//    and same-container (0074223E, CMP EDI,EDI) asserts cannot fail on a
+//    count. Exit when ESI == last (00742247).
+// 3. 0074224B checked deref; 00742255 a null slot is skipped; 0074225A checked
+//    deref; 00742264 ECX = slot (00742266 TEST is the same word, redundant);
+//    cause = hard ? 2 : 1 (0074226A..00742271); 00742275 00926D90(member,
+//    cause); 0074227A MOV dword [slot], 0.
+// 4. 00742280 checked deref on both arms; ESI += 4.
+// Member +738h is NOT cleared, so each member's own on-killed (0074CD10, when
+// 009273A0's loop reaches it on the kill list) still calls 007422A0, which no
+// longer finds the slot:
+// no decrement, and the convoy dies only if +3BCh was already zero.
+// src/unit_damage.cpp group_kill_members_vector_00742210 is the same walk
+// behind the 72-hook UnitDamageHost, which no game host implements; this one
+// shares cc15's member-slot seam (include/bsp/cc15_land_convoy.hpp).
+struct LandConvoyKillVectorHost : cc15_land_convoy::LandConvoyMemberSlots {
+    // 00926D90 BSP_MissionEntity_Kill, __thiscall(ECX = entity, cause) RET 4.
+    virtual void mission_entity_kill_00926d90(std::uint8_t* entity, std::int32_t cause) = 0;
+    // MOV dword [slot], 0 (0074227A).
+    virtual void null_member_slot(std::uint8_t* convoy, std::size_t i) = 0;
+};
+void land_convoy_kill_member_vector_00742210(std::uint8_t* convoy, bool hard, LandConvoyKillVectorHost& host);
 
 }  // namespace bsp::cc13_seg41

@@ -223,6 +223,8 @@ LandConvoyPlacementResult land_convoy_place_members_00742400(
         if (member == 0)
         {
             // 007422A0 nulls a dead member's slot in place; 00742497 skips it.
+            // The game host nulls it under kLandConvoyBodiesBound (packet
+            // cc13-convoy: 007422A0 and 00742210 share the motion state's slots).
             continue;
         }
 
