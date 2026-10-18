@@ -260,6 +260,15 @@ public:
     virtual const float* entity_vcall_34_velocity(void* entity, float* scratch) = 0;
     // entity->vtable[+38h](), RET, ST0 (the value is discarded by 0099C527).
     virtual float entity_vcall_38_float(void* entity) = 0;
+    // 009BE3E0 BSP_BotStateFollow_WaitValue: __fastcall(ECX = follow state), ST0.
+    virtual float bot_state_follow_wait_value_009be3e0(void* state) = 0;
+    // 0099B720: the task base wait value (FLD [00D7A260] = -1.0; RET), ST0.
+    virtual float bot_task_base_wait_value_0099b720(void* task) = 0;
+    // 007EFB30 BSP_PilotControl_RaiseForceReleaseFlag: __fastcall(ECX = unit), RET.
+    virtual void pilot_control_raise_force_release_flag_007efb30(void* unit) = 0;
+    // 009BCE30 / 009BDB90: scalar deleting destructors, __thiscall(ECX, flags), RET 4, EAX.
+    virtual void* scalar_deleting_dtor_009bce30(void* object, std::uint32_t flags) = 0;
+    virtual void* scalar_deleting_dtor_009bdb90(void* object, std::uint32_t flags) = 0;
     // object->vtable[0](), no stack arguments, EAX.
     virtual void* object_vcall_00(void* object) = 0;
     // 004BEF00: __thiscall(ECX = observer, subject), RET 4: zeroes the observer and
@@ -1001,6 +1010,68 @@ void ptr_array_push_back_00999cc0(Cc13Seg67bHost& host, void* array,
                                   const std::uint32_t* value);
 void ptr_array_push_front_00999d40(Cc13Seg67bHost& host, void* array,
                                    const std::uint32_t* value);
+// ---- one-line table slots (packet cc13-seg67C, section 3.45) ----
+// Constant returns, __thiscall(ECX = task, unused), RET, EAX (009B9140: ST0).
+std::uint32_t bot_task_depth_charge_robots_row_009a54e0() noexcept;
+std::uint32_t bot_task_depth_charge_name_009a5500() noexcept;
+std::uint32_t bot_task_dogfight_robots_row_009a9950() noexcept;
+std::uint32_t bot_task_drop_kamikaze_name_009adde0() noexcept;
+std::uint32_t bot_task_kamikaze_name_009af080() noexcept;
+std::uint32_t bot_task_land_robots_row_009b33a0() noexcept;
+std::uint32_t bot_task_level_bomb_name_009b7bd0() noexcept;
+float bot_task_pull_up_slot68_009b9140() noexcept;
+std::uint32_t bot_task_immelmann_name_009ba920() noexcept;
+std::uint32_t bot_task_stop_name_009bac60() noexcept;
+std::uint32_t bot_task_moveonpath_robots_row_009bcfb0() noexcept;
+std::uint32_t bot_task_moveto_command_class_009c3150() noexcept;
+std::uint32_t bot_task_moveto_name_009c3170() noexcept;
+std::uint32_t bot_task_dive_bomb_name_009c79c0() noexcept;
+std::uint32_t bot_task_retreat_kind_009c9e60() noexcept;
+std::uint32_t bot_task_retreat_name_009c9e70() noexcept;
+// Bare RET slots: takeoff's exit 009CE290 and the torpedo go-away enter 009D0C00.
+void bot_state_takeoff_exit_009ce290(void* state) noexcept;
+void bot_state_torpedo_go_away_enter_009d0c00(void* state) noexcept;
+// Field slots, __thiscall(ECX = task or state).
+std::uint32_t bot_task_dogfight_slot48_value_009a9c80(const void* task);
+bool bot_task_dogfight_in_go_away_009a9d30(const void* task);
+void bot_task_leave_alone_flush_009b9480(Cc13Seg67bHost& host, void* task);
+// Adjustor thunks to the scalar deleting destructors, (ECX, flags), RET 4, EAX.
+void* bot_approach_moveonpath_registry_dtor_thunk_009bcd40(Cc13Seg67bHost& host, void* self,
+                                                           std::uint32_t flags);
+void* bot_task_moveonpath_approach_view_dtor_thunk_009bd090(Cc13Seg67bHost& host, void* self,
+                                                            std::uint32_t flags);
+void* bot_task_moveonpath_registry_view_dtor_thunk_009bd0a0(Cc13Seg67bHost& host, void* self,
+                                                            std::uint32_t flags);
+// Wait values (slot +4Ch), ST0: the follow state's when current, else 0099B720.
+float bot_task_depth_charge_wait_value_009a5d50(Cc13Seg67bHost& host, void* task);
+float bot_task_moveonpath_follow_wait_value_009bd2e0(Cc13Seg67bHost& host, void* task);
+float bot_task_retreat_wait_value_009ca0a0(Cc13Seg67bHost& host, void* task);
+// Attack-run enters: +20h = 0, +18h = 0.4 (dogfight 009A71C0, dive bomb 009C4200).
+void bot_state_dogfight_attack_run_enter_009a71c0(void* state);
+void bot_state_dive_bomb_attack_run_enter_009c4200(void* state);
+// 009C44C0: byte plane+844h = 0, byte state+1Ch = 0.
+void bot_state_dive_bomb_turn_down_enter_009c44c0(void* state);
+// Exits that set byte plane+844h = 1 (plane = [[state+4h]+4h]).
+void bot_state_land_final_exit_009b1e90(void* state);
+void bot_state_dive_bomb_turn_down_exit_009c44e0(void* state);
+void bot_state_dive_bomb_aim_dive_exit_009c58a0(void* state);
+void bot_state_dive_bomb_fly_above_exit_009c6210(void* state);
+// 009D1350: byte [[state+4h]+A8h] = 0.
+void bot_state_torpedo_aim_exit_009d1350(void* state);
+// Command record accessors.
+void command_record_set_float40_009d4ea0(void* record, float value);
+void command_record_set_float48_009d4ec0(void* record, float value);
+float command_record_get_float48_009d4f00(const void* record);
+// 009D4F70: EAX = ai + A98h + [ai+B40h] * 54h.
+void* ship_ai_current_order_slot_009d4f70(void* ai);
+// The unreferenced navigation-block setters.
+void ship_ai_set_torpedo_avoidance_request_009dabb0(void* block, std::uint8_t value);
+void ship_ai_set_ship_avoidance_party_filter_009dabc0(void* block, std::uint32_t value);
+void ship_ai_set_land_avoidance_request_009dabd0(void* block, std::uint8_t value);
+void ship_ai_set_drive_bypass_009dabe0(void* block, std::uint8_t value);
+void ship_ai_set_speed_commanded_flag_009dabf0(void* block);
+// 009F5260: [o] = 00D21B40, [o+4h] = arg; EAX = o.
+void* auto_target_base_construct_009f5260(void* object, std::uint32_t arg);
 // 0099AA20: __thiscall(ECX = pilot bot, archive), RET 4.
 void pilot_bot_load_tasks_0099aa20(Cc13Seg67bHost& host, void* bot, void* archive);
 // 0099C3C0: __thiscall(ECX = lead record {owner, float speed, byte, out time +0Ch, out

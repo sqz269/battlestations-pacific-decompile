@@ -575,6 +575,31 @@ These rows have no direct caller; most are vtable slots. Each is a body in src/c
 
 Ledger-only: 00999610 and 0099B710 (see the table).
 
+### 3.45 One-line table slots (packet cc13-seg67C)
+
+These are the open zero-caller rows of six instructions or fewer. Each listing was read whole, and a host that already models a row takes precedence over a new body.
+
+There are 45 bodies:
+- **Constant returns:** robots-row pointers, task names, the moveto command class 00E08F68, retreat's kind 3, and pull-up's 10.0.
+- **Bare RETs:** 009CE290 and 009D0C00.
+- **Field slots:** 009A9C80 and 009A9D30.
+- **Leave-alone flush:** 009B9480.
+- **Adjustor thunks:** three that reach the scalar deleting destructors.
+- **Follow-or-base wait values:** 009A5D50 tests two follow states (+544h and +6E4h); 009BD2E0 and 009CA0A0 test one each.
+- **Attack-run enters:** 009A71C0 and 009C4200 (+20h = 0, +18h = 0.4).
+- **The plane+844h byte:** cleared on dive-bomb turn-down enter, set by four exits. Land/final's exit 009B1E90 is one of them; the cc9 land host notes that +844h is not modelled.
+- **Command-record accessors.**
+- **The order-slot address:** 009D4F70.
+- **Navigation setters:** five unreferenced ones, 009DABB0-009DABF0.
+- **Auto-target base constructor:** 009F5260.
+
+There are 26 ledger-only rows (section 4 records only the group):
+- Command-class and name constants that a host header already carries.
+- Wait values that the dogfight, land and strafe hosts model.
+- The land standby, line and park enter and exit slots.
+- The torpedo, strafe and drop-kamikaze attack-run enters.
+- The ship-AI rows 009DAB10, 009DAE20, 009E8540 and 009E6480.
+
 ## 4. Ledger-only records (packet cc13-seg67C)
 
 | Address | Host body | Result |
@@ -621,3 +646,8 @@ Ledger-only: 00999610 and 0099B710 (see the table).
 | 009F5D30 | `auto_target_scan_009f5d30` (src/bot_fire_target.cpp) | matches; the +1D4h skip is carried by the gunnery host's candidate build |
 | 00999610 | `kBulletThrowMul` PilotBot row (src/game_hosts_gunnery.cpp) | matches the robots row +250h; the host reads the authored values |
 | 0099B710 | inline constant true (src/game_hosts_units.cpp) | matches (`MOV AL,1 / RET`) |
+| 009A54D0, 009A99E0, 009ADDC0, 009AF060, 009B7BB0, 009BCFC0, 009BCFD0, 009BCFE0, 009C9E20, 009CC3D0, 009D3280 | command-class / name / slot constants in depth_charge_task_cc13.hpp, attack_commands.cpp, kamikaze_task_cc13.hpp, moveonpath_task_cc13.hpp, plane_retreat_task.hpp | match |
+| 009A9C60, 009B3750, 009CC8D0 | the follow-or-base wait values in game_hosts_units.cpp | match |
+| 009B0230, 009B0240, 009B02E0, 009B02F0, 009B21C0 | the land state machine in game_hosts_units.cpp | match |
+| 009ACFB0, 009CAD90, 009D0790 | the attack-run enter resets (kamikaze_task_cc13.cpp, strafe_task.hpp, game_hosts_units.cpp) | match |
+| 009DAB10, 009DAE20, 009E6480, 009E8540 | game_hosts_ship_ai.cpp, ship_ai_states.hpp, ship_ai_state_steps.cpp | match |

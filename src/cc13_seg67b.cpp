@@ -5655,6 +5655,172 @@ std::uint32_t bot_task_is_command_still_valid_base_0099c2c0(Cc13Seg67bHost& host
     return kHundred_00d7a220 > static_cast<double>(len) ? 1u : 0u;
 }
 
+// ---- section 3.45: one-line table slots (disk bytes; each body is its whole listing) ----
+// 009A54E0: MOV EAX,00F8A370 (the depth-charge robots row pointer); 009A5500: "DepthCharge"
+// 00CFA700; 009A9950: 00F8A3E8; 009ADDE0: "DropKamikaze" 00D1FADC; 009AF080: "Kamikaze"
+// 00CFA714; 009B33A0: 00F8A438; 009B7BD0: "LevelBomb" 00D06EB0; 009B9140: FLD [00CE38B8]
+// 10.0; 009BA920: "immelmann" 00D20468; 009BAC60: "stop" 00CFB5B8; 009BCFB0: 00F8A534;
+// 009C3150: 00E08F68 (the moveto command class); 009C3170: "moveto" 00CFB54C; 009C79C0:
+// "DiveBomb" 00D06E1C; 009C9E60: 3; 009C9E70: "retreat" 00CFB5D4.
+std::uint32_t bot_task_depth_charge_robots_row_009a54e0() noexcept { return 0x00F8A370u; }
+std::uint32_t bot_task_depth_charge_name_009a5500() noexcept { return 0x00CFA700u; }
+std::uint32_t bot_task_dogfight_robots_row_009a9950() noexcept { return 0x00F8A3E8u; }
+std::uint32_t bot_task_drop_kamikaze_name_009adde0() noexcept { return 0x00D1FADCu; }
+std::uint32_t bot_task_kamikaze_name_009af080() noexcept { return 0x00CFA714u; }
+std::uint32_t bot_task_land_robots_row_009b33a0() noexcept { return 0x00F8A438u; }
+std::uint32_t bot_task_level_bomb_name_009b7bd0() noexcept { return 0x00D06EB0u; }
+float bot_task_pull_up_slot68_009b9140() noexcept { return kTen_00ce38b8; }
+std::uint32_t bot_task_immelmann_name_009ba920() noexcept { return 0x00D20468u; }
+std::uint32_t bot_task_stop_name_009bac60() noexcept { return kStrStop_00cfb5b8; }
+std::uint32_t bot_task_moveonpath_robots_row_009bcfb0() noexcept { return 0x00F8A534u; }
+std::uint32_t bot_task_moveto_command_class_009c3150() noexcept { return 0x00E08F68u; }
+std::uint32_t bot_task_moveto_name_009c3170() noexcept { return 0x00CFB54Cu; }
+std::uint32_t bot_task_dive_bomb_name_009c79c0() noexcept { return 0x00D06E1Cu; }
+std::uint32_t bot_task_retreat_kind_009c9e60() noexcept { return 3u; }
+std::uint32_t bot_task_retreat_name_009c9e70() noexcept { return 0x00CFB5D4u; }
+
+// 009CE290 and 009D0C00: a bare RET.
+void bot_state_takeoff_exit_009ce290(void*) noexcept {}
+void bot_state_torpedo_go_away_enter_009d0c00(void*) noexcept {}
+
+// 009A9C80: EAX = [task+4ACh].
+std::uint32_t bot_task_dogfight_slot48_value_009a9c80(const void* task) {
+    return *reinterpret_cast<const std::uint32_t*>(static_cast<const char*>(task) + 0x4AC);
+}
+
+// 009A9D30 (009A9D30-009A9D43): AL = [task+310h] == task+6A4h (the go-away state current).
+bool bot_task_dogfight_in_go_away_009a9d30(const void* task) {
+    const char* const t = static_cast<const char*>(task);
+    return *reinterpret_cast<const std::uintptr_t*>(t + 0x310) ==
+           reinterpret_cast<std::uintptr_t>(t + 0x6A4);
+}
+
+// 009B9480 (009B9480-009B9498): word task+414h = 0; unit = [task+2FCh]; non-null -> tail
+// JMP 007EFB30(unit).
+void bot_task_leave_alone_flush_009b9480(Cc13Seg67bHost& host, void* task) {
+    at<std::uint16_t>(task, 0x414) = 0;
+    void* const unit = reinterpret_cast<void*>(at<std::uintptr_t>(task, 0x2FC));
+    if (unit != nullptr) host.pilot_control_raise_force_release_flag_007efb30(unit);
+}
+
+// 009BCD40: ECX -= 40h, JMP 009BCE30. 009BD090: ECX -= 3F8h, JMP 009BDB90. 009BD0A0:
+// ECX -= 438h, JMP 009BDB90. The flags argument passes through.
+void* bot_approach_moveonpath_registry_dtor_thunk_009bcd40(Cc13Seg67bHost& host, void* self,
+                                                           std::uint32_t flags) {
+    return host.scalar_deleting_dtor_009bce30(static_cast<char*>(self) - 0x40, flags);
+}
+void* bot_task_moveonpath_approach_view_dtor_thunk_009bd090(Cc13Seg67bHost& host, void* self,
+                                                            std::uint32_t flags) {
+    return host.scalar_deleting_dtor_009bdb90(static_cast<char*>(self) - 0x3F8, flags);
+}
+void* bot_task_moveonpath_registry_view_dtor_thunk_009bd0a0(Cc13Seg67bHost& host, void* self,
+                                                            std::uint32_t flags) {
+    return host.scalar_deleting_dtor_009bdb90(static_cast<char*>(self) - 0x438, flags);
+}
+
+namespace {
+float follow_wait_value_or_base(Cc13Seg67bHost& host, void* task, std::uint32_t follow) {
+    if (at<std::uintptr_t>(task, 0x310) == reinterpret_cast<std::uintptr_t>(ptr(task, follow))) {
+        return host.bot_state_follow_wait_value_009be3e0(ptr(task, follow));
+    }
+    return host.bot_task_base_wait_value_0099b720(task);
+}
+}  // namespace
+
+// 009A5D50 (009A5D50-009A5D78): the current state [task+310h] is task+544h -> JMP
+// 009BE3E0(task+544h); task+6E4h -> 009BE3E0(task+6E4h); else JMP 0099B720(task).
+float bot_task_depth_charge_wait_value_009a5d50(Cc13Seg67bHost& host, void* task) {
+    if (at<std::uintptr_t>(task, 0x310) == reinterpret_cast<std::uintptr_t>(ptr(task, 0x544))) {
+        return host.bot_state_follow_wait_value_009be3e0(ptr(task, 0x544));
+    }
+    return follow_wait_value_or_base(host, task, 0x6E4);
+}
+// 009BD2E0: the same test on task+464h; 009CA0A0: on task+4C4h.
+float bot_task_moveonpath_follow_wait_value_009bd2e0(Cc13Seg67bHost& host, void* task) {
+    return follow_wait_value_or_base(host, task, 0x464);
+}
+float bot_task_retreat_wait_value_009ca0a0(Cc13Seg67bHost& host, void* task) {
+    return follow_wait_value_or_base(host, task, 0x4C4);
+}
+
+// 009A71C0 and 009C4200 (byte-identical): state+20h = 0.0, state+18h = 0.4 [00CE7804].
+void bot_state_dogfight_attack_run_enter_009a71c0(void* s) {
+    at<float>(s, 0x20) = 0.0f;
+    at<float>(s, 0x18) = kPointFour_00ce7804;
+}
+void bot_state_dive_bomb_attack_run_enter_009c4200(void* s) {
+    at<float>(s, 0x20) = 0.0f;
+    at<float>(s, 0x18) = kPointFour_00ce7804;
+}
+
+namespace {
+void* state_plane(void* s) {
+    void* const task = reinterpret_cast<void*>(at<std::uintptr_t>(s, 0x4));
+    return reinterpret_cast<void*>(at<std::uintptr_t>(task, 0x4));
+}
+}  // namespace
+
+// 009C44C0 (009C44C0-009C44D1): byte plane+844h = 0, byte state+1Ch = 0.
+void bot_state_dive_bomb_turn_down_enter_009c44c0(void* s) {
+    at<std::uint8_t>(state_plane(s), 0x844) = 0;
+    at<std::uint8_t>(s, 0x1C) = 0;
+}
+// 009B1E90, 009C44E0, 009C58A0, 009C6210 (byte-identical): byte plane+844h = 1.
+void bot_state_land_final_exit_009b1e90(void* s) { at<std::uint8_t>(state_plane(s), 0x844) = 1; }
+void bot_state_dive_bomb_turn_down_exit_009c44e0(void* s) {
+    at<std::uint8_t>(state_plane(s), 0x844) = 1;
+}
+void bot_state_dive_bomb_aim_dive_exit_009c58a0(void* s) {
+    at<std::uint8_t>(state_plane(s), 0x844) = 1;
+}
+void bot_state_dive_bomb_fly_above_exit_009c6210(void* s) {
+    at<std::uint8_t>(state_plane(s), 0x844) = 1;
+}
+// 009D1350: byte [[state+4h]+A8h] = 0.
+void bot_state_torpedo_aim_exit_009d1350(void* s) {
+    at<std::uint8_t>(reinterpret_cast<void*>(at<std::uintptr_t>(s, 0x4)), 0xA8) = 0;
+}
+
+// 009D4EA0 / 009D4EC0: +40h / +48h = value, byte +4Ch = 1, RET 4. 009D4F00: FLD +48h.
+void command_record_set_float40_009d4ea0(void* r, float value) {
+    at<float>(r, 0x40) = value;
+    at<std::uint8_t>(r, 0x4C) = 1;
+}
+void command_record_set_float48_009d4ec0(void* r, float value) {
+    at<float>(r, 0x48) = value;
+    at<std::uint8_t>(r, 0x4C) = 1;
+}
+float command_record_get_float48_009d4f00(const void* r) {
+    return *reinterpret_cast<const float*>(static_cast<const char*>(r) + 0x48);
+}
+
+// 009D4F70: EAX = ai + A98h + [ai+B40h] * 54h (IMUL, so the index is signed).
+void* ship_ai_current_order_slot_009d4f70(void* ai) {
+    const std::int32_t index = at<std::int32_t>(ai, 0xB40);
+    return static_cast<char*>(ai) + 0xA98 + index * 0x54;
+}
+
+// 009DABB0..009DABF0, unreferenced: byte +3F4h, dword +3F8h, byte +3FCh, byte +3FDh
+// from the argument (RET 4); byte +B38h = 1 (RET).
+void ship_ai_set_torpedo_avoidance_request_009dabb0(void* b, std::uint8_t v) {
+    at<std::uint8_t>(b, 0x3F4) = v;
+}
+void ship_ai_set_ship_avoidance_party_filter_009dabc0(void* b, std::uint32_t v) {
+    at<std::uint32_t>(b, 0x3F8) = v;
+}
+void ship_ai_set_land_avoidance_request_009dabd0(void* b, std::uint8_t v) {
+    at<std::uint8_t>(b, 0x3FC) = v;
+}
+void ship_ai_set_drive_bypass_009dabe0(void* b, std::uint8_t v) { at<std::uint8_t>(b, 0x3FD) = v; }
+void ship_ai_set_speed_commanded_flag_009dabf0(void* b) { at<std::uint8_t>(b, 0xB38) = 1; }
+
+// 009F5260: [o] = 00D21B40, [o+4h] = arg, RET 4, EAX = o.
+void* auto_target_base_construct_009f5260(void* o, std::uint32_t arg) {
+    at<std::uint32_t>(o, 0x0) = 0x00D21B40u;
+    at<std::uint32_t>(o, 0x4) = arg;
+    return o;
+}
+
 // 00999D40 (00999D40-00999DEE), ledger name BSP_PtrArray_PushBackOdd: an insert at the
 // front. Full: capacity = 2 * capacity + 1, new[] (00999D5A), new[0] = value, [0, count)
 // one up, delete[] (00999DA5), count += 1. Otherwise data[count] = data[count - 1],
