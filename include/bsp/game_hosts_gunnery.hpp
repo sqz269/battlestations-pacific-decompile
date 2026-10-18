@@ -383,7 +383,8 @@ inline constexpr bool kShipDirectorEnablesBound = true;
 // whole table under kShipDirectorEnablesBound, and the ship AI's +12B9h reads
 // the same table). SUBSTITUTION: stored at the call, not delivered through the
 // session. False: the native stays unimplemented and every director keeps 1.
-inline constexpr bool kLuaArtilleryEnableBound = false;
+// ON since cc9-ships58 (docs/SHIP_AI_OPEN_ITEMS.md section 285).
+inline constexpr bool kLuaArtilleryEnableBound = true;
 
 // Packet cc13-fix17 (docs/CC13_FIX17.md). The Lua native ForceFireDepthCharge
 // 0089B9D0: argument 0 through 00888AA0 (no null test), then the unit's child

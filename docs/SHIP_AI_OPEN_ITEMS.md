@@ -19050,3 +19050,60 @@ USNOS `s55_os_r0` 30000 frames against `local\s57_us_osr.log` and USN13 30000 fr
 +188h is set: the overrides sit on AI ships and squadrons that the scripts and planners do not re-order while
 the override lives. **Decision: ON** as a faithful binding with no reach on these rows; the counts stay in the
 summary line, so a row that does reach it shows `with_override > 0`.
+
+## 284. Submarine air supply, kLuaGetSubmarineAirSupplyBound + kLuaSetSubmarineAirSupplyBound (cc9-ships58, 2026-10-18; cc13 fix21 + fix17)
+
+**Image.** 008938E0 GetSubmarineAirSupply pushes float unit+127Ch; 00893A60 SetSubmarineAirSupply stores its
+argument there unclamped (00893BA1). The air model 00855250 adds/subtracts its step into +127Ch (008552BA..
+00855302) and only then clamps to 1.0 (0085537A, the 00D7A24C constant), so a value above 1.0 survives exactly
+one step's decrement less than a full tank.
+
+**Callers in this installation.** LOMP `08_lightning_strike.lua:392` `SetSubmarineAirSupply(Mission.SS, 10.0)` at
+load; `jm12.lua:1571/1585` (`luaJM12AddAirSupply`, 1.0) inside `luaJM12RelocateUnits`; `jm10.lua:1764` (get) and
+`:1862` (set, checkpoint restore). JM10 is NOT reachable here: its missiontree.lua entry is commented out
+(`--[[{ -- JM10 Attack on Sydney Harbor (BSPRM 1.1)`, missiontree.lua mtime 2025-06-02, this installation's mod),
+the rebuild logs `mission id JM10 is not in the tree` (`local\s58_off0_j10.log`), and jm10's only `luaCheckpoint`
+call (`:890`) is commented out, so the save that calls the getter never runs either.
+
+**Predictions (from fix17/fix21, written before the runs).** LOMP08: none (clamped). JM10: unreachable. Gameplay
+identical everywhere.
+
+**Pairs (fcb6c6fa5, `--flip kLuaGetSubmarineAirSupplyBound=true --flip kLuaSetSubmarineAirSupplyBound=true`, exe
+`local\s58_sa_on`; OFF = the tree's own build of fcb6c6fa5; manifests beside each log).**
+- LOMP08 12000 frames (`local\s58_off0_l8.log` / `local\s58_sa_on_l8.log`): exit 1, gameplay identical. The
+  mechanism: `SetSubmarineAirSupply: Submarine TypeB w Jake air=10.000 stored=1`, the depth trace shows
+  `air=10.000` at step 1, then 0.945 / 0.820 / ... / 0.320 against OFF's 0.944 / 0.819 / ... / 0.319: the
+  step-then-clamp order above, one decrement (0.001) ahead for the rest of the run. The fix17 "none"
+  prediction missed by that one step; the order is the image's.
+- JM12 20000 frames (`local\s58_off0_j12.log` / `local\s58_sa_on_j12.log`): exit 1, no reach (RelocateUnits is
+  not reached in the window).
+
+**Decision: both ON**, together, by mechanism. The jm10 nil-restore hazard cannot arise in this installation,
+and with the getter ON it would restore the real value anyway.
+## 285. ArtilleryEnable, kLuaArtilleryEnableBound (cc9-ships58, 2026-10-18; cc13 fix15)
+
+**Image.** docs/CC13_FIX15.md: 0089C590 -> 0071DFD0 (sub-kind 3) -> 0071C231 stores director+220h; 0086258B
+pushes it through 00861CD0 into bit 1 of each artillery category mask (bit 0, planes, untouched, so AA keeps
+firing); 009F1BC0 caches it as the ship AI's +12B9h.
+
+**Which rows reach it here.** The fix15 doc names COTP-USN usn_09 / usn_04, but this installation's USN09 menu
+id loads `usn_9_santa.lua` and USN04 loads `usn_19_coralus.lua`; neither calls the native. Mapping every
+missiontree id to the script of the same scene name (`local\s58_ae_ids.py`): PRCP05 (`COTP-USN/PRCPUS/
+usn_09_Leyte`, Fortress1-3 off at load `:9`-`:11`, `:666`, on `:2327`), USN10 (PRCPUS usn_05 Guadalcanal, 12
+ship calls), BSM02, USN20, PRCP01, PRCP07.
+
+**Predictions (fix15, before the runs).** The Leyte fortresses stop engaging ships with their artillery
+categories; elsewhere unchanged.
+
+**Pairs (54ed7cccf, `--flip kLuaArtilleryEnableBound=true`, exe `local\s58_ae_on`; OFF = the tree's build of
+54ed7cccf; reference env BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1; manifests beside each log).**
+- USN04 20000 frames (`local\s58_off1_u4.log` / `local\s58_ae_on_u4.log`): exit 1, gameplay identical, no call.
+- USN09 30000 frames (`s58_off1_u9` / `s58_ae_on_u9`, failed "Game Over" at 622.22 s both): exit 0, no call.
+- PRCP05 30000 frames (`s58_off1_p5` / `s58_ae_on_p5`): exit 3, the predicted mechanism. ON logs
+  `ArtilleryEnable: Fortress1/2/3 director+220h=0 changed=1` at load, and the one fortress gun row
+  (`gunrow 238 Fortress1 plat 1 cat 4`) goes from assigns 543 / shots 139 / hits 81 / dealt 4872.5 to
+  assigns 0 / shots 0. OFF fails at 1397.74 s (`usn09.obj_p1_failed_atlanta`: the Atlanta dies, largely to
+  the fortress); ON has no mission end in the window. Deaths 213 ON. The re-enable at `:2327` is not reached.
+
+**Decision: ON** by mechanism. PRCP05 moves (it is not a WINS row). The ship path (USN10's retreating
+Chokai/Hiei) is not paired here; it reads the same table entry through kShipDirectorEnablesBound.
