@@ -2,7 +2,6 @@
 #include "bsp/cc13_dyn1.hpp"
 
 #include <cstddef>
-#include <cstdlib>
 
 namespace bsp::oct18_tail_d {
 namespace {
@@ -54,12 +53,6 @@ void binoculars_observer_released_0051e780(void* observer, void* released) noexc
 
 void unit_library_collect_children_00680da0(void* screen, void* collection, CollectionPushBack push_back) {
     push_back(collection, static_cast<std::uint8_t*>(screen) + 0x6c);
-}
-
-void* simple_timed_scalar_delete_009960e0(void* condition, std::uint8_t flags) noexcept {
-    field<std::uint32_t>(condition, 0) = 0x00d05840u;
-    if (flags & 1u) std::free(condition);
-    return condition;
 }
 
 void font_destroy_00ad53a0(void* font, FontDestroyCalls& calls) {
