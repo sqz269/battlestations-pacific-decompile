@@ -203,3 +203,17 @@ Ledger-only: 009C82D0 and 009D3E40 are byte-identical copies of 009A56C0 (`set_s
 - The host is a partial model that carries its own labelled substitutions.
 - The +2Ch zeroing has the same polarity in both: `sq_lua_alt_3ad` is true exactly when byte +3ADh is 0.
 - The host does not apply the +28h leg-altitude override (009FC260). It keeps that as a record, as its comment states.
+
+### 3.8 The depth-charge task's archive, factory and load bodies
+
+| Address | Function | Notes |
+|---|---|---|
+| 009A35D0 | approach construct-from-stream | reads the "_targetLock" section into the target ref at +7Ch |
+| 009A5E60 / 009A5ED0 | approach / task saves | writes "_targetLock" and "_state_moveTo"; the state index goes through 00411450 |
+| 009A67C0 | task destructor body | |
+| 009A6820 / 009A69E0 | task construct-from-stream and load factory | the state index goes through 00411170 |
+| 009A6970 | `bot_task_make_depth_charge_009a6970` | allocates a 7BCh-byte task |
+| 009A19B0 | heading difference from the live plane | |
+| 0099B670 | vehicle avoidance dispatch | calls 007DF4F0 when unit+C50h is set |
+
+Ledger-only: 009A3FA0 (`depth_charge_in_release_window`) matches, including its NaN arm.

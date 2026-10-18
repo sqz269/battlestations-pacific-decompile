@@ -175,6 +175,28 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
+    // 007DF4F0: __thiscall(ECX = neighbour list at unit+C50h, pilot), RET 4.
+    virtual void vehicle_avoidance_007df4f0(void* neighbours, void* pilot) = 0;
+    // 009F9CE0: __thiscall(ECX = approach, arg, float reference speed), RET 8.
+    virtual void bot_approach_construct_speed_reference_009f9ce0(void* approach, void* arg,
+                                                                 float reference) = 0;
+    // 009FB3E0: __thiscall(ECX = target ref, reader block by value [0Ch]), RET 0Ch.
+    virtual void approach_ref_construct_from_stream_009fb3e0(void* ref, void* reader) = 0;
+    // 009FACC0: __thiscall(ECX = target ref, writer block by value [0Ch]), RET 0Ch.
+    virtual void approach_ref_save_009facc0(void* ref, void* writer) = 0;
+    // 009A31A0: __fastcall(ECX = depth-charge approach), RET.
+    virtual void bot_approach_depth_charge_pick_aim_offset_009a31a0(void* approach) = 0;
+    // 00411450 / 00411170: __thiscall(ECX = registry, state machine, archive), RET 8.
+    virtual void bot_state_registry_write_current_00411450(void* registry, void* machine,
+                                                           void* archive) = 0;
+    virtual void bot_state_registry_read_current_00411170(void* registry, void* machine,
+                                                          void* archive) = 0;
+    // 009A5000: __thiscall(ECX = task+3F8h, bot, archive), RET 8.
+    virtual void depth_charge_construct_approach_block_from_stream_009a5000(void* block,
+                                                                            void* bot,
+                                                                            void* archive) = 0;
+    // 009A5240: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
+    virtual void* depth_charge_task_construct_009a5240(void* task, void* bot, void* target) = 0;
     // 00F8A720: the path-leg manager singleton.
     virtual void* path_leg_manager_00f8a720() = 0;
     virtual void set_path_leg_manager_00f8a720(void* manager) = 0;
@@ -482,5 +504,24 @@ void ship_ai_brain_destruct_009e8c10(Cc13Seg67bHost& host, void* brain);
 void bot_approach_refresh_target_009beba0(Cc13Seg67bHost& host, void* a);
 // 009BD400: __cdecl(), RET, EAX. (009BEBA0 reaches it through the host hook.)
 void* bot_path_leg_manager_get_body_009bd400(Cc13Seg67bHost& host);
+// 009A35D0: __thiscall(ECX = approach, arg, archive), RET 8, EAX = approach.
+void* bot_approach_depth_charge_construct_from_stream_009a35d0(Cc13Seg67bHost& host, void* a,
+                                                               void* arg, void* archive);
+// 009A5E60 / 009A5ED0: __thiscall(ECX = approach / task, archive), RET 4.
+void bot_approach_depth_charge_save_009a5e60(Cc13Seg67bHost& host, void* a, void* archive);
+void bot_task_depth_charge_save_009a5ed0(Cc13Seg67bHost& host, void* task, void* archive);
+// 009A67C0: __fastcall(ECX = task), RET.
+void bot_task_depth_charge_destruct_body_009a67c0(Cc13Seg67bHost& host, void* task);
+// 009A6820: __thiscall(ECX = task, bot, archive), RET 8, EAX = task.
+void* bot_task_depth_charge_construct_from_stream_009a6820(Cc13Seg67bHost& host, void* task,
+                                                           void* bot, void* archive);
+// 009A6970: __fastcall(ECX = bot, EDX = target), RET, EAX.
+void* bot_task_make_depth_charge_009a6970(Cc13Seg67bHost& host, void* bot, void* target);
+// 009A69E0: __stdcall(bot, archive), RET 8, EAX.
+void* bot_task_load_depth_charge_009a69e0(Cc13Seg67bHost& host, void* bot, void* archive);
+// 009A19B0: __fastcall(ECX = plan), RET, ST0.
+float pilot_command_heading_diff_from_live_plane_009a19b0(Cc13Seg67bHost& host, void* plan);
+// 0099B670: __fastcall(ECX = pilot task), RET.
+void pilot_bot_avoid_vehicles_0099b670(Cc13Seg67bHost& host, void* p);
 
 }  // namespace bsp

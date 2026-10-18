@@ -1623,4 +1623,113 @@ void* bot_path_leg_manager_get_body_009bd400(Cc13Seg67bHost& host) {
     return host.path_leg_manager_00f8a720();
 }
 
+// ---------------------------------------------------------------------------
+// The depth-charge task's archive and factory bodies.
+
+namespace {
+constexpr std::uint32_t kStrTargetLock = 0x00D1F624u;   // "_targetLock"
+constexpr std::uint32_t kStrStateMoveTo = 0x00D1F720u;  // "_state_moveTo"
+constexpr std::uint32_t kDepthChargeApproachVtable = 0x00D1F620u;
+constexpr std::uint32_t kDepthChargeTaskVtable = 0x00D1F738u;
+constexpr std::uint32_t kDepthChargeTaskApproachVtable = 0x00D1F734u;
+constexpr std::uint32_t kDepthChargeTaskRegistryVtable = 0x00D1F730u;
+}  // namespace
+
+// 009A35D0 (009A35D0-009A3668). EH frame 00CADE5B. f = (0042E740())+4B8h
+// (009A35F2); 009F9CE0(ECX = a, arg, f) (009A3603); [a] = 00D1F620, a+2Ch = 0
+// (009A361A, 009A3620); 00BD4FE0(ECX = archive, the outgoing block,
+// {0,"_targetLock"}) (009A3639); 009FB3E0(ECX = a+7Ch, that block by value)
+// (009A3641); 009A31A0(ECX = a) (009A3650). Returns a.
+void* bot_approach_depth_charge_construct_from_stream_009a35d0(Cc13Seg67bHost& host, void* a,
+                                                               void* arg, void* archive) {
+    const float f = at<float>(host.game_tuning_singleton_0042e740(), 0x4B8);
+    host.bot_approach_construct_speed_reference_009f9ce0(a, arg, f);
+    at<std::uint32_t>(a, 0x00) = kDepthChargeApproachVtable;
+    at<std::uint32_t>(a, 0x2C) = 0;
+    std::uint32_t ref[3] = {};
+    host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrTargetLock));
+    host.approach_ref_construct_from_stream_009fb3e0(ptr(a, 0x7C), ref);
+    host.bot_approach_depth_charge_pick_aim_offset_009a31a0(a);
+    return a;
+}
+
+// 009A5E60 (009A5E60-009A5ECF). 00BD5010(ECX = archive, the outgoing block,
+// {0,"_targetLock"}) (009A5E8B), 009FACC0(ECX = a+7Ch, block by value) (009A5E93);
+// 00BD5010(archive, block, {0,"_state_moveTo"}) (009A5EBA), 009BEAA0(ECX = a+110h,
+// block by value) (009A5EC5). Each callee destroys its block.
+void bot_approach_depth_charge_save_009a5e60(Cc13Seg67bHost& host, void* a, void* archive) {
+    std::uint32_t ref[3] = {};
+    host.archive_writer_ref_open_00bd5010(archive, ref, name_record(kStrTargetLock));
+    host.approach_ref_save_009facc0(ptr(a, 0x7C), ref);
+    std::uint32_t ref2[3] = {};
+    host.archive_writer_ref_open_00bd5010(archive, ref2, name_record(kStrStateMoveTo));
+    bot_approach_save_altitude_leg_009beaa0(host, ptr(a, 0x110), ref2);
+}
+
+// 009A5ED0 (009A5ED0-009A5EFF). 0099D060(ECX = task, archive) (009A5ED9);
+// 009A5E60(ECX = task+3F8h, archive) (009A5EE5); 00411450(ECX = task+4F4h,
+// task+30Ch, archive) (009A5EF8).
+void bot_task_depth_charge_save_009a5ed0(Cc13Seg67bHost& host, void* task, void* archive) {
+    bot_task_save_base_0099d060(host, task, archive);
+    bot_approach_depth_charge_save_009a5e60(host, ptr(task, 0x3F8), archive);
+    host.bot_state_registry_write_current_00411450(ptr(task, 0x4F4), ptr(task, 0x30C), archive);
+}
+
+// 009A67C0 (009A67C0-009A6810). EH frame 00CAE108. 009A4680(task ? task+3F8h : 0)
+// (009A67ED); 007B4030(ECX = task) (009A67FC).
+void bot_task_depth_charge_destruct_body_009a67c0(Cc13Seg67bHost& host, void* task) {
+    bot_task_depth_charge_destruct_approach_block_009a4680(
+        host, task != nullptr ? ptr(task, 0x3F8) : nullptr);
+    host.bot_task_destruct_base_007b4030(task);
+}
+
+// 009A6820 (009A6820-009A68B0). EH frame 00CAE136. 0099C8B0(ECX = task, bot,
+// archive, 1) (009A684C); 009A5000(ECX = task+3F8h, bot, archive) (009A6863);
+// [task] = 00D1F738, [task+3F8h] = 00D1F734, [task+4F4h] = 00D1F730
+// (009A687B-009A6887); 00411170(ECX = task+4F4h, task+30Ch, archive) (009A688D);
+// 009F9980(ECX = task+3F8h, task) (009A6895). Returns task.
+void* bot_task_depth_charge_construct_from_stream_009a6820(Cc13Seg67bHost& host, void* task,
+                                                           void* bot, void* archive) {
+    bot_task_construct_base_from_stream_0099c8b0(host, task, bot, archive, 1);
+    host.depth_charge_construct_approach_block_from_stream_009a5000(ptr(task, 0x3F8), bot,
+                                                                    archive);
+    at<std::uint32_t>(task, 0x000) = kDepthChargeTaskVtable;
+    at<std::uint32_t>(task, 0x3F8) = kDepthChargeTaskApproachVtable;
+    at<std::uint32_t>(task, 0x4F4) = kDepthChargeTaskRegistryVtable;
+    host.bot_state_registry_read_current_00411170(ptr(task, 0x4F4), ptr(task, 0x30C), archive);
+    host.bot_approach_bind_to_task_009f9980(ptr(task, 0x3F8), task);
+    return task;
+}
+
+// 009A6970 (009A6970-009A69D5). t = operator new(7BCh) (009A6991); null -> 0;
+// else 009A5240(ECX = t, bot, target) (009A69AD).
+void* bot_task_make_depth_charge_009a6970(Cc13Seg67bHost& host, void* bot, void* target) {
+    void* const t = host.operator_new_00bf681b(0x7BC);
+    if (t == nullptr) return nullptr;
+    return host.depth_charge_task_construct_009a5240(t, bot, target);
+}
+
+// 009A69E0 (009A69E0-009A6A46). t = operator new(7BCh) (009A69FB); null -> 0;
+// else 009A6820(ECX = t, bot, archive) (009A6A1E).
+void* bot_task_load_depth_charge_009a69e0(Cc13Seg67bHost& host, void* bot, void* archive) {
+    void* const t = host.operator_new_00bf681b(0x7BC);
+    if (t == nullptr) return nullptr;
+    return bot_task_depth_charge_construct_from_stream_009a6820(host, t, bot, archive);
+}
+
+// 009A19B0 (009A19B0-009A19D7). plan+2F0h null -> 0 (FLDZ, 009A19BB); else
+// 0099D0A0(ECX = plan, [plan+2F0h]+C68h) (009A19D1).
+float pilot_command_heading_diff_from_live_plane_009a19b0(Cc13Seg67bHost& host, void* plan) {
+    void* const plane = ptr_at(plan, 0x2F0);
+    if (plane == nullptr) return 0.0f;
+    return host.pilot_heading_diff_0099d0a0(plan, at<float>(plane, 0xC68));
+}
+
+// 0099B670 (0099B670-0099B688). n = [[p+2F4h]+C50h]; when n, 007DF4F0(ECX = n, p)
+// (0099B683).
+void pilot_bot_avoid_vehicles_0099b670(Cc13Seg67bHost& host, void* p) {
+    void* const n = ptr_at(ptr_at(p, 0x2F4), 0xC50);
+    if (n != nullptr) host.vehicle_avoidance_007df4f0(n, p);
+}
+
 }  // namespace bsp
