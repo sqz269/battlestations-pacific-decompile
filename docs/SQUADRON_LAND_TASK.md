@@ -18106,3 +18106,30 @@ Exports `cc9-lua52\local\l68_prt_off` / `l68_prt_on` (7d83becdd, the second with
 - The first hit is 120.90 s on both sides; the deaths move after the two destroyers start phase 2 beside Chikuma.
 - Every completion logs the guard.
 - **Flipped**: `kPutRelToBound = true` by mechanism. PRCP01 still completes on both seeds.
+
+## 5iq. Handoff (cc9-lua68, 2026-10-18, at about 75% context)
+
+Lane: LUA/PLANES, WINS keeper. Tree `J:\PROG\battlestations-pacific-decompile-cc9-lua52` (agent/cc9-lua52).
+
+**Landed on the branch this run:**
+- bbd6e7c79 USN02 `usn02_l68_u2_a`, 763f1fdf3 USN12 `usn12_l68_u12_e8` (WINS rows);
+- ac6536f82 SquadronSetTravelSpeed OFF, be691fb5b ON (5im, 5in);
+- 7d83becdd PutRelTo OFF, 345d6957c ON (5io, 5ip);
+- the WINS_TABLE "Re-time on 03d3df7f8" entry.
+
+**Open, in the lead's order:**
+- IJN08 reference: the z plan never takes the HQ; a / b (`local\l68_i08_gen.py`) add nothing because Kinugasa and
+  Furutaka are dead before 36500. A next plan has to keep a cruiser alive for CB3 or get Maru2's craft out before
+  3715 s (WINS_TABLE note).
+- JM08: the 8 craft from USTroopTransport 01 (unit 353) launch at about 790 s and land 1037-1075 s; they must die
+  before they land. AP01 launch-priority and torpedo plans (q1-q3, r1, r2) fail at 1222-1285 s.
+- USN15 (ships59's Fuso verdict), BSM09 reference (physics20's kHelmPlaneMovetoBound), BSM01, USNOS (ships59's plan).
+- Low priority not done: LastBanto (needs the unit+2B0h record the host lacks; the readers only pick the
+  failure-camera entity), SquadronSetHomeBase, SetRace (no WINS row reaches either in the 03d3df7f8 logs), and the
+  HUD natives DisplayUnitHP / HideUnitHP / BlackBars (presentation only; DisplayScores / HideScoreDisplay are already
+  on main).
+
+**Tools** (all `local\l68_*`): `l68_runs.ps1` (row table, `-Jobs row:variant:env`), `l68_queue.ps1` (file-driven
+queue over `l68_jobs.txt`; `l68_hold` pauses it, `l68_stop` ends it), `l68_addjob.ps1 [-Front]`, `l68_sum.py
+[pattern]`, `l68_scan.py <log> [regex] [--text Name]`, `l68_rows.txt` (extra rows). Variant `<v>` runs
+`local\l68_<v>\build\win32\Release\bsp_game.exe`.
