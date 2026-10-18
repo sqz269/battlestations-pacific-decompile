@@ -13,6 +13,11 @@ Approximations (say so when quoting numbers):
 - "Wired" is source-level and file-granular: a function counts as wired when its C++ identifier is used in a
   source file reachable from the host roots (game_hosts*.cpp and the bsp_game entry files) through
   identifier references, other than as its own definition. Behind-a-switch uses count as wired.
+- A recon record without an _xxxxxxxx-suffixed name gets its identifier from its source file (the name, a
+  heading address comment, a snake-case form of a BSP_<Class>_<Method> ledger name), from the map, or from a
+  body suffixed with its address anywhere; rows' "ident_via" says which. Rows still without one (table-driven
+  shapes, bodies folded into another function, records whose source file no longer has the address) stay
+  unknown_no_identifier.
 - Callers/callees come from the Ghidra call table plus rel32 CALL/JMP to exact function starts; functions whose
   address is taken (absolute dword in .text or data) are flagged, since vtable/table dispatch has no caller edge.
 - A "ready" row is split by the parameter list of its C++ definition (regex, first match in its source file):
@@ -129,12 +134,122 @@ for a, (nm, src) in recon.items():  # identifiers named in source records that t
     if nm and re.search(r'_[0-9a-f]{8}$', nm):
         ident_by_addr[a].add(nm)
 
+# ---- identifiers for recon rows whose name has no _xxxxxxxx suffix (ledger-style or plain C++ names).
+# Tried in order: (1) the record's name, or a ' / '-separated part of it, defined in the record's source file;
+# (2) an address comment heading the comment block directly above a definition ("// 006E7DE0, ..." or
+# "Address: 0x006E7DE0"), first in the record's file, else anywhere if one definition claims it;
+# (3) the record's name among the map's symbols, defined in exactly one source file.
+# A suffixed definition with another address never counts. A plain identifier defined in more than one file
+# (or overloaded in a namespace we cannot tell apart) only counts uses inside its own file, since a mention
+# elsewhere could be any of them; uses are counted in code with comments stripped.
+KEYWORDS = {'if', 'for', 'while', 'switch', 'catch', 'return', 'sizeof', 'else', 'do', 'case', 'static_assert',
+            'decltype', 'alignof', 'defined', 'noexcept', 'operator', 'throw', 'new', 'delete'}
+DEF_RE = re.compile(r'^[ \t]*(?:template\s*<[^>{;]*>\s*)?(?:[\w:<>,\*&~ \t]+?[ \t\*&])?((?:\w+::)*(~?\w+))[ \t]*'
+                    r'\(([^;{}()]*(?:\([^;{}()]*\)[^;{}()]*)*)\)[ \t]*(?:const[ \t]*)?(?:noexcept[ \t]*)?'
+                    r'(?:override[ \t]*)?(?:->[^{;]*)?\s*\{', re.M)
+ADDR_HEAD = re.compile(r'^\s*(?://+|/?\*+)\s*(?:Address:?\s*)?(?:0x)?([0-9A-Fa-f]{8})\b|Address:\s*(?:0x)?([0-9A-Fa-f]{8})\b')
+COMMENT_LINE = re.compile(r'^\s*(//|/\*|\*)')
+strip_comments = lambda t: re.sub(r'//[^\n]*|/\*.*?\*/', ' ', t, flags=re.S)
+code_text = {p: strip_comments(t) for p, t in srcs.items()}
+code_words = {p: collections.Counter(re.findall(r'\b[A-Za-z_]\w*\b', t)) for p, t in code_text.items()}
+defs_in = collections.defaultdict(list)     # file -> [(simple, qualified)]
+def_files = collections.defaultdict(set)    # simple name -> files with a body
+def_count = collections.defaultdict(collections.Counter)  # file -> simple -> bodies
+addr_defs = collections.defaultdict(set)    # address -> {(file, simple)} from the comment block above a body
+for p, t in srcs.items():
+    lines = None
+    for m in DEF_RE.finditer(t):
+        simple = m.group(2)
+        if simple in KEYWORDS or simple.startswith('~'):
+            continue
+        defs_in[p].append((simple, m.group(1))); def_files[simple].add(p); def_count[p][simple] += 1
+        if lines is None:
+            lines = t.split('\n'); line_at = [0]
+            for ln_ in lines:
+                line_at.append(line_at[-1] + len(ln_) + 1)
+        i = bisect.bisect_right(line_at, m.start(1)) - 1
+        block = [lines[i]]
+        j = i - 1
+        while j >= 0 and i - j <= 40 and COMMENT_LINE.match(lines[j]):
+            block.append(lines[j]); j -= 1
+        for ln_ in block:
+            h = ADDR_HEAD.search(ln_)
+            if h:
+                addr_defs[int(h.group(1) or h.group(2), 16)].add((p, simple))
+map_names = set(re.findall(r'\?{1,2}([A-Za-z_]\w*)@', mp))
+SUFFIX = re.compile(r'_([0-9a-f]{8})$')
+suffixed_defs = collections.defaultdict(set)
+for s in def_files:
+    if SUFFIX.search(s):
+        suffixed_defs[int(SUFFIX.search(s).group(1), 16)].add(s)
+ident_via = {}
+plain_idents = set()
+for a, (nm, src) in recon.items():
+    if ident_by_addr.get(a):
+        continue
+    sp = ROOT / src if src else None
+    parts = [x.strip().split('::')[-1].split('(')[0].strip() for x in re.split(r'\s*/\s*|,\s*', nm or '') if x.strip()]
+    parts = [x for x in parts if re.fullmatch(r'[A-Za-z_]\w*', x)]
+    ok = lambda s: not (SUFFIX.search(s) and int(SUFFIX.search(s).group(1), 16) != a)
+    hit = [s for s in parts if sp in def_files.get(s, ()) and ok(s)]
+    via = 'name'
+    if not hit:
+        cands = {(f, s) for f, s in addr_defs.get(a, ()) if ok(s)}
+        local = [s for f, s in cands if f == sp]
+        hit = local or ([s for f, s in cands] if len(cands) == 1 else [])
+        via = 'address_comment'
+    if not hit:
+        hit = [s for s in parts if s in map_names and len(def_files.get(s, ())) == 1]
+        via = 'map'
+    if not hit and sp in defs_in:  # ledger name BSP_<Class>_<Method>: a body in the file named for it in snake case
+        ln_ = re.match(r'BSP_([A-Za-z0-9]+)_(\w+)$', nm or '')
+        if ln_:
+            snake = lambda x: re.sub(r'(?<=[a-z0-9])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])', '_', x).lower()
+            whole, meth = snake(ln_.group(1) + ln_.group(2)), snake(ln_.group(2))
+            simple = {s for s, _ in defs_in[sp] if ok(s)}
+            bare = lambda s: SUFFIX.sub('', s)
+            for want in [whole] + ([meth] if '_' in meth else []):
+                m_ = {s for s in simple if bare(s) == want or bare(s).endswith('_' + want)}
+                if len(m_) == 1:
+                    hit = sorted(m_); break
+        via = 'ledger_snake'
+    if not hit:  # a body named for this address anywhere, whatever the record calls it
+        hit = sorted(suffixed_defs.get(a, ()))
+        via = 'suffix_body'
+    if hit:
+        ident_by_addr[a].update(hit); ident_via[a] = via
+        plain_idents.update(s for s in hit if not SUFFIX.search(s))
+DECL_RE = lambda s: re.compile(r'^[ \t]*(?!return\b|else\b|case\b)[\w:<>,\*& \t]*[\w>\*&][ \t]+[\*&]?' + re.escape(s) +
+                               r'[ \t]*\([^;{]*\)[ \t]*(?:const[ \t]*)?(?:noexcept[ \t]*)?;', re.M)
+own_uses = {}  # (file, plain ident) -> code mentions that are neither its body nor a prototype
+
+
+def uses_in(f, s):
+    k = (f, s)
+    if k not in own_uses:
+        own_uses[k] = code_words[f][s] - def_count[f][s] - len(DECL_RE(s).findall(code_text[f]))
+    return own_uses[k]
+
+
+for s in plain_idents:
+    files = def_files.get(s, set())
+    if len(files) == 1:  # a use is a call, an address-of or a qualified name, not a same-named local or field
+        use = re.compile(r'(?<!\w)' + re.escape(s) + r'\s*\(|&\s*(?:\w+::)*' + re.escape(s) + r'\b|::' + re.escape(s) + r'\b')
+        defined_in[s] = {p for p, c in code_words.items() if c.get(s) and (p in files or use.search(code_text[p]))}
+    else:
+        defined_in[s] = set(files)
+
 roots = [p for p in srcs if p.suffix == '.cpp' and (p.name.startswith('game_host') or p.name in ('game_main.cpp', 'game_startup.cpp', 'game_app.cpp'))]
 file_idents = {p: {m.group(1) for m in ident_re.finditer(t)} for p, t in srcs.items()}
 owner_files = collections.defaultdict(set)  # identifier -> files that define/declare it with a body or prototype
 for p, t in srcs.items():
     for m in re.finditer(r'^[^\n;]*?\b([A-Za-z_][A-Za-z0-9_]*_[0-9a-f]{8})\s*\([^;{]*\)\s*(?:noexcept\s*)?(?:const\s*)?\{', t, re.M):
         owner_files[m.group(1)].add(p)
+for s in plain_idents:  # plain identifiers carry reachability only when one file defines them
+    owner_files[s] = set(def_files.get(s, ()))
+    if len(owner_files[s]) == 1:
+        for p in defined_in[s]:
+            file_idents[p].add(s)
 reach, todo = set(roots), list(roots)
 while todo:
     f = todo.pop()
@@ -153,7 +268,10 @@ def wired(a):
         for f in users:
             if f not in defs:
                 return True
-            if srcs[f].count(ident) > 1:  # used again inside its own file
+            if ident in plain_idents:
+                if uses_in(f, ident) > 0:
+                    return True
+            elif srcs[f].count(ident) > 1:  # used again inside its own file
                 return True
     return False
 
@@ -219,8 +337,10 @@ for a, (name, seg, tag) in funcs.items():
                state=state, callers=len(cr), wired_callers=len(wired_callers), callees=len(gc),
                missing_callees=[f'{c:08x}' for c in missing][:12], library_bound_callees=[f'{c:08x}' for c in bound][:12],
                address_taken=taken, host_has_own=host_own(a))
+    if a in ident_via:
+        row['ident'], row['ident_via'] = sorted(ident_by_addr[a]), ident_via[a]
     if state == 'ready':
-        ident = row['name'].split('::')[-1]
+        ident = sorted(ident_by_addr[a])[0] if a in ident_via else row['name'].split('::')[-1]
         row['abi'], params = abi_class(a, ident, row['source'])
         row['params'] = (params or '')[:120].replace('\n', ' ')
         row['stand_in_hosts'] = sorted(n for n, t in host_text.items() if row['address'] in t)
@@ -265,7 +385,9 @@ print('roots', len(roots), 'reachable source files', len(reach), 'of', sum(1 for
 print('recon game functions', len(rows), dict(counts))
 print('ready by ABI class', dict(abi_counts), '| with a host stand-in', sum(1 for r in ready if r['stand_in_hosts']))
 no_ident = sum(1 for r in rows if not ident_by_addr.get(int(r['address'], 16)))
-print('without an address-named identifier (cannot be judged wired):', no_ident)
+print('without any identifier (cannot be judged wired):', no_ident)
+print('identifiers resolved without an address suffix, by method:', dict(collections.Counter(ident_via[int(r['address'], 16)]
+      for r in rows if int(r['address'], 16) in ident_via)))
 for k, v in sorted(by_cat.items(), key=lambda kv: -sum(kv[1].values())):
     print(f'{label.get(k, k):32}', dict(v))
 print('wrote', out)
