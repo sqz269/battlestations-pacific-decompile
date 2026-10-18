@@ -19027,3 +19027,14 @@ manifests beside each log).** USN04 (no orders): exit 1, gameplay identical, 134
 noise counters move). No row here has a hull deeper than the 60 m the substituted band needs to separate.
 **Decision: ON** as a binding in the image's direction (bands follow the hull's world y) with no moved row; the
 band height stays the labelled substitution until a model extent exists.
+
+### 283 result: ON
+
+**Pairs (`--flip kTorpedoFromSubmarineBound=true`; 20000 frames; manifests beside each log).** USN04 (d4171938d,
+`local\s57_ts_on` vs `local\s57_off4`, 6 submerged launches): exit 1, identical. JM06 `jm06_p12_j6_c1` (4133f0a15,
+`local\s57_ts2_on` vs `local\s57_off6`, with the admit count of e9c326c73): `submerged_admits` 2972 OFF / 3098 ON,
+so the flag reaches the 009F0AD0 admit thousands of times and ON adds the 4.0 s SPNormal add-on to each; exit 3,
+deaths 13 -> 12, hit records 144 -> 134 (ships react later to the I-400s' torpedoes, the hits move). An earlier
+JM06 pair on d4171938d (`local\s57_ts_on_j6.log`) even completed the mission at 811.93 s, with the exec guard's
+`refused a mission script's process launch: sus_prog.exe`; that base is superseded by the flips since.
+**Decision: ON** by mechanism. JM06 moves (to cc9-lua66).

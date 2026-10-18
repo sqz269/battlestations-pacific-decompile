@@ -193,7 +193,7 @@ inline constexpr bool kShipAiTrafficReconListBound = true;   // ON: SHIP_AI 281 
 // launched under the surface (projectile+354h at 006E2E7F, copied to +49Ch at 008578B0)
 // is seen TorpedoObservationSubAddon later (009F0C0E; robots.lua: 4.0 s SPNormal, 0 at
 // SPVeteran / Elite). False: every torpedo counts as surface-launched.
-inline constexpr bool kTorpedoFromSubmarineBound = false;
+inline constexpr bool kTorpedoFromSubmarineBound = true;   // ON: SHIP_AI 283 (mechanism, JM06)
 // Packet cc9_autotarget_recon_candidates, docs/AUTOTARGET_RECON_CANDIDATES.md.
 // True: the automatic target scan 009F5D30 walks the owner party's recon enemy
 // triple ([008053C0(party)]+0DE8h: identified contacts only, in bucket order).
