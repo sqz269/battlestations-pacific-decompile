@@ -1624,6 +1624,11 @@ struct GameUnitSlot {
     int torpedo_done_state_drops{0};
     int torpedo_aim_enters{0};
     int torpedo_aim_enters_complete_stale{0};   // +2Ch already set at an aim enter
+    // Packet p22_los_007df360: 007DF360 calls, screened answers, terrain 1s cleared.
+    int torpedo_los_calls{0};
+    int torpedo_los_screened{0};
+    int torpedo_los_clears{0};
+    int torpedo_los_zero_length{0};   // a screening ship with class+A0h == 0
     // The values 009D3420 produces. docs/TORPEDO_APPROACH_UPDATE.md reads that
     // routine; the reconstruction in torpedo_approach_update.hpp runs here and
     // these mirror its outputs so the arm and the census read one set.
@@ -6694,6 +6699,18 @@ struct GameUnitsHost::Impl {
     // torpedo_approach.scan_enabled_a8. False: +2Ch stays set once set, the
     // enable carries over and +A8h stays 0.
     static constexpr bool kTorpedoAimEnterStoresBound = true;   // ON: OCEAN_WAVE_FIELD 85
+    // Packet p22_los_007df360 (OCEAN_WAVE_FIELD 87). The replan's second
+    // over-land writer: when unit+C50h is set (007D61C0-007D621F: built when
+    // [game+1FE4h] is 0 or 1 and unit+54h != the scene's DummyAIEnabled),
+    // 009D36EE 007DF360(ECX = unit+C50h, [approach+CCh], aim point), RET 8,
+    // AL, and 009D36F3 stores AL to +A9h outright. 007DF360 walks the +30h
+    // list and answers 1 for the first IsKindOf(6) member, not the target,
+    // ahead of the aim point toward the plane (dot > 0) whose perpendicular
+    // distance squared is below Length^2 * 0.22 ([class+A0h], double
+    // [00D06BA0]). True: modelled over nb_near_30 with the plane's own pose
+    // (unit+FCh/+104h; [[C50h+4]+28h] is taken to be the plane, labelled).
+    // False: -1, the old "leave +A9h alone" answer.
+    static constexpr bool kTorpedoLineOfSightBound = true;   // ON: OCEAN_WAVE_FIELD 87
     // Packet cc9_l61_torpedo_done_formation (SQUADRON_LAND_TASK 5ho item 2). The
     // done/prepare enter 009D2530 writes squadron+3E4h = 2 (009D254E, after
     // 009BED80's 1) and state+8Ch = 1.0 (009D2565); every wingman's follow
@@ -21444,10 +21461,55 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 return blocked;
                             }
                         }
-                        bool target_reachable_007df360(const float[3]) override {
-                            owner_.log.unimplemented(
-                                "BotApproach::target_reachable", "007df360");
-                            return false;
+                        int target_reachable_007df360(const float point[3]) override {
+                            if constexpr (!GameUnitsHost::Impl::kTorpedoLineOfSightBound) {
+                                (void)point;
+                                owner_.log.unimplemented(
+                                    "BotApproach::target_reachable", "007df360");
+                                return -1;
+                            } else {
+                                // 007D61DD-007D61EC: no C50h object for the
+                                // scene's DummyAI side ([game+1FE4h] taken as
+                                // 0/1, single player, labelled).
+                                if (slot_.row.party == bsp::kSceneDefaultDummyAi) return -1;
+                                ++slot_.torpedo_los_calls;
+                                owner_.done("BotApproach::target_reachable", 0x007df360u);
+                                const GameUnitSlot* const t = target();
+                                // 007DF38B-007DF3D0: d = (own - point) in xz,
+                                // y = 0, and its 0042B2F0 length (0 at or below
+                                // 1e-10, [00CE3820]).
+                                const float dx = slot_.world[12] - point[0];
+                                const float dz = slot_.world[14] - point[2];
+                                const float sq = dx * dx + 0.0f * 0.0f + dz * dz;
+                                const float len = static_cast<double>(sq) > 1.0e-10
+                                    ? static_cast<float>(std::sqrt(static_cast<double>(sq)))
+                                    : 0.0f;
+                                for (const std::size_t idx : slot_.nb_near_30) {
+                                    if (idx >= owner_.slots.size()) continue;
+                                    const GameUnitSlot& o = *owner_.slots[idx];
+                                    if (&o == t || &o == &slot_) continue;          // 007DF3EE
+                                    if (!bsp::unit_is_kind_of(o.class_id, 0x06)) continue;  // 007DF401
+                                    const float a = o.world[12] - point[0];         // 007DF424
+                                    const float b = o.world[14] - point[2];         // 007DF431
+                                    const float dot = (a * dx + 0.0f) + b * dz;     // 007DF453
+                                    if (!(dot > 0.0f)) continue;                    // 007DF461 JBE
+                                    const float tt = dot / len;                     // 007DF463
+                                    const float q = (0.0f + a * a) + b * b;         // 007DF48B
+                                    const float p = q - tt * tt;                    // 007DF49B
+                                    const float r = o.motion_class.hull_length;     // [+538h]+A0h
+                                    if (r == 0.0f) ++slot_.torpedo_los_zero_length;
+                                    const float lim = static_cast<float>(
+                                        static_cast<double>(r * r) * 0.2199999988079071);  // [00D06BA0]
+                                    if (p < lim) {                                  // 007DF4AF FCOMIP/JBE
+                                        ++slot_.torpedo_los_screened;
+                                        return 1;
+                                    }
+                                }
+                                if (slot_.torpedo_approach.over_land_a9 != 0) {
+                                    ++slot_.torpedo_los_clears;
+                                }
+                                return 0;
+                            }
                         }
                         float unit_speed_vtable38() override {
                             // 009D3D01, unit->vtable[38h]. The plane's speed,
@@ -43320,6 +43382,13 @@ void GameUnitsHost::report() {
                         slot->row.name.c_str(), slot->torpedo_aim_enters,
                         slot->torpedo_aim_enters_complete_stale,
                         slot->torpedo_done_state_drops, slot->torpedo_stale_timer_drops);
+                }
+                if (slot->torpedo_los_calls > 0) {
+                    host.log.notef("  torpedo %-12s los 007DF360 calls=%d screened=%d "
+                        "a9 clears=%d zero-length=%d (packet p22_los_007df360)",
+                        slot->row.name.c_str(), slot->torpedo_los_calls,
+                        slot->torpedo_los_screened, slot->torpedo_los_clears,
+                        slot->torpedo_los_zero_length);
                 }
                 if (slot->torpedo_disarmed_ticks > 0) {
                     host.log.notef("  torpedo %-12s disarmed 009D29E0: ticks=%d close=%d "
