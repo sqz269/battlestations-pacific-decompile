@@ -111,6 +111,7 @@ inline constexpr std::uint32_t kNoneText = 0x00D16350;          // "(none)"
 inline constexpr std::uint32_t kTrueTextGlobal = 0x00E0C980;    // -> "true" (00CE4378)
 inline constexpr std::uint32_t kFalseTextGlobal = 0x00E0C97C;   // -> "false" (00CE4370)
 inline constexpr std::uint32_t kSpawnRefFrameVtable = 0x00D16AA4;
+inline constexpr std::uint32_t kScenePropertyRecordVtable = 0x00CE89D4;
 
 // ---------------------------------------------------------------------------
 // Engine boundary. Each method stands for one image routine or one virtual slot, named by
@@ -196,6 +197,34 @@ struct Seg59bHost {
     virtual std::uint32_t spatial_index_query_segment_0098add0(void* index, void* from, void* to,
                                                                void* exclude, void* record,
                                                                std::uint32_t kind_filter) = 0;
+
+    // 00BF681B, __cdecl(size): operator new; EAX = block or null.
+    virtual void* operator_new_00bf681b(std::uint32_t size) = 0;
+    // 008F33F0 BSP_ScenePropertyBag_Insert, __thiscall(ECX = bag, key, record), RET 8; EAX.
+    virtual void* scene_property_bag_insert_008f33f0(void* bag, const char* key, void* record) = 0;
+    // 008F3510 BSP_ScenePropertyBag_AddFloatArrayProperty, __thiscall(ECX = bag, key, data,
+    // count, flag), RET 10h; EAX.
+    virtual void* scene_property_bag_add_float_array_008f3510(void* bag, const char* key,
+                                                              const void* data, std::uint32_t count,
+                                                              std::uint32_t flag) = 0;
+
+    // 00BF55BE operator new, __cdecl(size); 00BF65AC / 00BF6989 _free thunks, __cdecl(p);
+    // 00BF7680 memcpy, __cdecl(dst, src, count).
+    virtual void* operator_new_00bf55be(std::uint32_t size) = 0;
+    virtual void free_00bf65ac(void* block) = 0;
+    virtual void free_00bf6989(void* block) = 0;
+    virtual void memcpy_00bf7680(void* dst, const void* src, std::uint32_t count) = 0;
+    // 008D8A70 BSP_SceneTokenizer_PeekToken, __thiscall(ECX = tokenizer).
+    virtual void scene_tokenizer_peek_token_008d8a70(void* tokenizer) = 0;
+    // 0094FF10, __thiscall(ECX = writer, text), RET 4: append a C string to the scene text.
+    virtual void scene_text_write_0094ff10(void* writer, const char* text) = 0;
+    // 00950320 BSP_SceneTextChunkList_Clear, __thiscall(ECX = list).
+    virtual void scene_text_chunk_list_clear_00950320(void* list) = 0;
+    // object->vtable[0](flags), __thiscall, RET 4: the scalar deleting destructor.
+    virtual void object_scalar_delete_vt00(void* object, std::uint32_t flags) = 0;
+    // 008EF650 / 008EEA80, __fastcall(ECX = iterator): the hash iterator's begin / next copies.
+    virtual void hash64_iterator_begin_008ef650(Hash64Iterator* iterator) = 0;
+    virtual std::uint32_t hash64_iterator_next_008eea80(Hash64Iterator* iterator) = 0;
 };
 
 // --- Torpedo bot (vtable 00D182B0) ---------------------------------------------------------
@@ -266,6 +295,44 @@ const char* scene_enum_decl_find_name_008f0d80(Seg59bHost& host, void* decl, std
 const char* scene_property_string_value_008f0df0(Seg59bHost& host, void* property);
 // 008F0E20, __fastcall(ECX = property): the value as display text (the shared buffer F89458).
 const char* scene_property_value_text_008f0e20(Seg59bHost& host, void* property);
+
+// 008F37E0, __thiscall(ECX = bag, key, x, y, z), RET 10h; EAX = 008F33F0's result: a new type-7
+// (vec3) record. The coordinates are passed as their float bits.
+void* scene_property_bag_add_vec3_008f37e0(Seg59bHost& host, void* bag, const char* key,
+                                           std::uint32_t x_bits, std::uint32_t y_bits,
+                                           std::uint32_t z_bits);
+// 008F3880, __thiscall(ECX = bag, key, 64-byte matrix by value), RET 44h; EAX: the matrix as a
+// 16-float array property through 008F3510.
+void* scene_property_bag_add_matrix_008f3880(Seg59bHost& host, void* bag, const char* key,
+                                             const float (&matrix)[16]);
+
+// --- Scene text and small containers ---------------------------------------------------------
+// 008EEBD0, __thiscall(ECX = array {data, count, capacity, grow}, capacity), RET 4; EAX = array.
+void* dword_array_construct_capacity_008eebd0(Seg59bHost& host, void* array, std::uint32_t capacity);
+// 008EEC10 (00BF65AC) and 008EEC30 / 008EF630 / 008EFC30 (00BF6989), __thiscall(ECX = slot),
+// RET: free the owned block and clear the slot.
+void owned_buffer_free_008eec10(Seg59bHost& host, void* slot);
+void owned_buffer_free_008eec30(Seg59bHost& host, void* slot);
+void owned_buffer_free_008ef630(Seg59bHost& host, void* slot);
+void owned_buffer_free_008efc30(Seg59bHost& host, void* slot);
+// 008EEFD0, __thiscall(ECX = tokenizer), RET; AL = byte +4 after 008D8A70.
+std::uint8_t scene_tokenizer_peek_flag_008eefd0(Seg59bHost& host, void* tokenizer);
+// 008EEFE0, __thiscall(ECX = writer, value), RET 4: "true" / "false" through 0094FF10.
+void scene_property_write_bool_text_008eefe0(Seg59bHost& host, void* writer, bool value);
+// 008EF030, __thiscall(ECX = reader), RET: vtable 00D162CC, 00950320, base vtable 00CE4DFC.
+void scene_property_reader_destruct_008ef030(Seg59bHost& host, void* reader);
+// 008EF730, __thiscall(ECX = buffer {data, size}, data, size, copy), RET 0Ch.
+void byte_buffer_assign_008ef730(Seg59bHost& host, void* buffer, void* data, std::uint32_t size,
+                                 bool copy);
+// 008EFBC0, __cdecl(const void* a, const void* b): [*a+34h] - [*b+34h] (a sort comparator).
+std::int32_t scene_property_ptr_compare_order_008efbc0(const void* a, const void* b);
+// 008F0010, __thiscall(ECX = array, const dword* value), RET 4; EAX = the new count.
+std::uint32_t pointer_array_push_back_grow_008f0010(Seg59bHost& host, void* array,
+                                                    const std::uint32_t* value);
+// 008F0600, __thiscall(ECX = slot), RET: delete the owned object through vtable[0](1).
+void owned_polymorphic_reset_008f0600(Seg59bHost& host, void* slot);
+// 008F1010, __thiscall(ECX = hash owner), RET: walk table +4 with the iterator copies, no body.
+void property_hash64_for_each_008f1010(Seg59bHost& host, void* owner);
 
 // --- Spawn reference frame (vtable 00D16AA4: +14h observed entity, +18h 4x4 matrix) ---------
 void* spawn_ref_frame_assign_008f84a0(Seg59bHost& host, void* frame, void* other);           // RET 4

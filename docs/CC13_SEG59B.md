@@ -131,3 +131,22 @@ of +4h..+1Ch, REP MOVSD of +20h..+5Fh, +60h).
 Not done in this pass: `008FAFC0` (BSP_CommonResourceCache_Preload, 1.1 KB of title-time resource
 preloading with string temporaries and an SEH frame) and `008FF640`
 (BSP_Entity_HullDistanceToPoint_Provisional, no callers).
+
+## Scene property bag adders and small scene containers
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `008F37E0` | BSP_ScenePropertyBag_AddVec3 | reconstructed | `scene_property_bag_add_vec3_008f37e0`: `00BF681B`(38h), type-7 record (vtable 00CE89D4), then `008F33F0` even for a null record. |
+| `008F3880` | BSP_ScenePropertyBag_AddMatrix | reconstructed | `scene_property_bag_add_matrix_008f3880`: `008F3510`(bag, key, matrix, 10h, 1). |
+| `008EEBD0` | BSP_DwordArray_ConstructCapacity | reconstructed | `dword_array_construct_capacity_008eebd0`: `00BF55BE`(capacity*4, saturated). |
+| `008EEC10`, `008EEC30`, `008EF630`, `008EFC30` | BSP_OwnedBuffer_Free_* | reconstructed | `owned_buffer_free_*`: `00BF65AC` (008EEC10) or `00BF6989` (the others), then clear. |
+| `008EEFD0` | BSP_SceneTokenizer_PeekFlag | reconstructed | `scene_tokenizer_peek_flag_008eefd0`: `008D8A70`, then byte +4. |
+| `008EEFE0` | BSP_SceneProperty_WriteBoolText | reconstructed | `scene_property_write_bool_text_008eefe0`: "true"/"false" through `0094FF10`. |
+| `008EF030` | BSP_ScenePropertyReader_Destruct | reconstructed | `scene_property_reader_destruct_008ef030`: vtable 00D162CC, `00950320`, vtable 00CE4DFC. |
+| `008EF730` | BSP_ByteBuffer_Assign | reconstructed | `byte_buffer_assign_008ef730`: `00BF6989` old block, then `00BF55BE` + `00BF7680` copy or a borrowed pointer. |
+| `008EFBC0` | BSP_ScenePropertyPtr_CompareOrder | reconstructed | `scene_property_ptr_compare_order_008efbc0`: ordinal +34h difference. |
+| `008F0010` | BSP_PointerArray_PushBackGrow | reconstructed | `pointer_array_push_back_grow_008f0010`: grow by +0Ch with `00BF55BE`, `00BF7680`, `00BF6989`. |
+| `008F0600` | BSP_OwnedPolymorphic_Reset | reconstructed | `owned_polymorphic_reset_008f0600`: vtable[0](1), then clear. |
+| `008F1010` | BSP_PropertyHash64_ForEach | reconstructed | `property_hash64_for_each_008f1010`: `008EF650` / `008EEA80` walk with an empty body. |
+| `008F02B0`, `008F02E0` | BSP_ScenePropertyDecl_Is*Letter | ledger-only | src/scene_property_bag.cpp `scene_property_type_for_letter` (lines 83..103) folds the "E" / "LUA_S" tests into the letter parse. |
+| `008F1960` | BSP_SceneReference_GetTypeLetter | ledger-only | src/scene_property_bag.cpp:70 `scene_reference_kind_letter`. |

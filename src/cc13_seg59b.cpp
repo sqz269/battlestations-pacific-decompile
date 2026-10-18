@@ -849,4 +849,200 @@ float* score_record_add_field18_009052e0(void* scoring, std::int32_t slot, float
     *field = *field + delta;
     return field;
 }
+
+// ---------------------------------------------------------------------------
+// 008F37E0 BSP_ScenePropertyBag_AddVector3PropertyXYZ. __thiscall(ECX = bag, key, x, y, z),
+// RET 10h; EAX = 008F33F0's result. Evidence: 008F37E3..008F3806 MOVSS bit copies of x, y, z to
+// a local; 008F380B 00BF681B(38h); non-null: +0Ch = x, +10h = y, [+0] = 00CE89D4, +4 = 7,
+// +14h = z, +18h/+1Ch/+20h/+24h/+30h/+34h = 0, byte +2Ch = 1 (008F3819..008F3851, in that
+// order); 008F3859 008F33F0(ECX = bag, key, record). Null: 008F386F 008F33F0(bag, key, 0).
+// ---------------------------------------------------------------------------
+void* scene_property_bag_add_vec3_008f37e0(Seg59bHost& host, void* bag, const char* key,
+                                           std::uint32_t x_bits, std::uint32_t y_bits,
+                                           std::uint32_t z_bits) {
+    void* const record = host.operator_new_00bf681b(0x38);
+    if (record == nullptr) return host.scene_property_bag_insert_008f33f0(bag, key, nullptr);
+    at<std::uint32_t>(record, 0x0C) = x_bits;
+    at<std::uint32_t>(record, 0x10) = y_bits;
+    at<std::uint32_t>(record, 0x00) = kScenePropertyRecordVtable;
+    at<std::uint32_t>(record, 0x04) = 7;
+    at<std::uint32_t>(record, 0x14) = z_bits;
+    at<std::uint32_t>(record, 0x18) = 0;
+    at<std::uint32_t>(record, 0x1C) = 0;
+    at<std::uint32_t>(record, 0x20) = 0;
+    at<std::uint32_t>(record, 0x24) = 0;
+    at<std::uint32_t>(record, 0x30) = 0;
+    at<std::uint32_t>(record, 0x34) = 0;
+    at<std::uint8_t>(record, 0x2C) = 1;
+    return host.scene_property_bag_insert_008f33f0(bag, key, record);
+}
+
+// ---------------------------------------------------------------------------
+// 008F3880 BSP_ScenePropertyBag_AddMatrixAsFloatArray. __thiscall(ECX = bag, key, matrix by
+// value), RET 44h. Evidence: 008F3884/008F3886 pushes 1 and 10h; 008F3888 LEA of the by-value
+// matrix; 008F388E 008F3510(ECX = bag, key, matrix, 10h, 1); 008F3893 RET 44h with its EAX.
+// ---------------------------------------------------------------------------
+void* scene_property_bag_add_matrix_008f3880(Seg59bHost& host, void* bag, const char* key,
+                                             const float (&matrix)[16]) {
+    return host.scene_property_bag_add_float_array_008f3510(bag, key, matrix, 0x10, 1);
+}
+
+// ---------------------------------------------------------------------------
+// 008EEBD0 BSP_DwordArray_ConstructCapacity. __thiscall(ECX = array, capacity), RET 4.
+// Evidence: 008EEBD9/008EEBDC +0Ch = +8 = capacity; 008EEBE1..008EEBED capacity*4 with MUL /
+// SETO / NEG / OR (an overflow asks for FFFFFFFFh); 008EEBEE 00BF55BE; 008EEBF3 +0 = block;
+// 008EEBF8 +4 = 0.
+// ---------------------------------------------------------------------------
+void* dword_array_construct_capacity_008eebd0(Seg59bHost& host, void* array, std::uint32_t capacity) {
+    at<std::uint32_t>(array, 0x0C) = capacity;
+    at<std::uint32_t>(array, 0x08) = capacity;
+    const std::uint64_t bytes = static_cast<std::uint64_t>(capacity) * 4u;
+    const std::uint32_t request = bytes > 0xFFFFFFFFull ? 0xFFFFFFFFu : static_cast<std::uint32_t>(bytes);
+    at<void*>(array, 0x00) = host.operator_new_00bf55be(request);
+    at<std::uint32_t>(array, 0x04) = 0;
+    return array;
+}
+
+// ---------------------------------------------------------------------------
+// 008EEC10 / 008EEC30 / 008EF630 / 008EFC30 BSP_OwnedBuffer_Free_*. __thiscall(ECX = slot), RET.
+// Evidence (each): [slot] non-null -> _free([slot]) (00BF65AC at 008EEC1A; 00BF6989 at 008EEC3A,
+// 008EF63A, 008EFC3A), then [slot] = 0 inside that arm.
+// ---------------------------------------------------------------------------
+void owned_buffer_free_008eec10(Seg59bHost& host, void* slot) {
+    if (ptr(slot, 0) != nullptr) {
+        host.free_00bf65ac(ptr(slot, 0));
+        at<void*>(slot, 0) = nullptr;
+    }
+}
+
+void owned_buffer_free_008eec30(Seg59bHost& host, void* slot) {
+    if (ptr(slot, 0) != nullptr) {
+        host.free_00bf6989(ptr(slot, 0));
+        at<void*>(slot, 0) = nullptr;
+    }
+}
+
+void owned_buffer_free_008ef630(Seg59bHost& host, void* slot) {
+    if (ptr(slot, 0) != nullptr) {
+        host.free_00bf6989(ptr(slot, 0));
+        at<void*>(slot, 0) = nullptr;
+    }
+}
+
+void owned_buffer_free_008efc30(Seg59bHost& host, void* slot) {
+    if (ptr(slot, 0) != nullptr) {
+        host.free_00bf6989(ptr(slot, 0));
+        at<void*>(slot, 0) = nullptr;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// 008EEFD0 BSP_SceneTokenizer_PeekFlag. __thiscall(ECX = tokenizer), RET; AL. Evidence: 008EEFD3
+// 008D8A70(tokenizer); 008EEFD8 AL = byte +4.
+// ---------------------------------------------------------------------------
+std::uint8_t scene_tokenizer_peek_flag_008eefd0(Seg59bHost& host, void* tokenizer) {
+    host.scene_tokenizer_peek_token_008d8a70(tokenizer);
+    return at<std::uint8_t>(tokenizer, 0x04);
+}
+
+// ---------------------------------------------------------------------------
+// 008EEFE0 BSP_SceneProperty_WriteBoolText. __thiscall(ECX = writer, value), RET 4 (by the
+// tail-jump). Evidence: 008EEFE0 byte arg != 0 -> "true" 00CE4378, else "false" 00CE4370
+// (008EEFEC); 008EEFF1 the argument slot is overwritten with the text; 008EEFF5 JMP 0094FF10.
+// ---------------------------------------------------------------------------
+void scene_property_write_bool_text_008eefe0(Seg59bHost& host, void* writer, bool value) {
+    const char* const text = static_cast<const char*>(host.image_pointer(value ? 0x00CE4378u : 0x00CE4370u));
+    host.scene_text_write_0094ff10(writer, text);
+}
+
+// ---------------------------------------------------------------------------
+// 008EF030 BSP_ScenePropertyReader_Destruct. __thiscall(ECX = reader), RET. Evidence: 008EF04F
+// [reader] = 00D162CC; 008EF05B 00950320(reader) under EH state 0; 008EF063 [reader] = 00CE4DFC.
+// Reached only from the unwind funclet 00CA4700.
+// ---------------------------------------------------------------------------
+void scene_property_reader_destruct_008ef030(Seg59bHost& host, void* reader) {
+    at<std::uint32_t>(reader, 0x00) = 0x00D162CCu;
+    host.scene_text_chunk_list_clear_00950320(reader);
+    at<std::uint32_t>(reader, 0x00) = 0x00CE4DFCu;
+}
+
+// ---------------------------------------------------------------------------
+// 008EF730 BSP_ByteBuffer_Assign. __thiscall(ECX = buffer, data, size, copy), RET 0Ch.
+// Evidence: old block non-null -> 008EF73B 00BF6989 and [buffer] = 0 (008EF743); 008EF753
+// +4 = size; copy: 008EF758 00BF55BE(size), [buffer] = block (008EF765), 008EF766 00BF7680(block,
+// data, size); else 008EF777 [buffer] = data (borrowed).
+// ---------------------------------------------------------------------------
+void byte_buffer_assign_008ef730(Seg59bHost& host, void* buffer, void* data, std::uint32_t size, bool copy) {
+    if (ptr(buffer, 0) != nullptr) {
+        host.free_00bf6989(ptr(buffer, 0));
+        at<void*>(buffer, 0) = nullptr;
+    }
+    at<std::uint32_t>(buffer, 0x04) = size;
+    if (copy) {
+        void* const block = host.operator_new_00bf55be(size);
+        at<void*>(buffer, 0) = block;
+        host.memcpy_00bf7680(block, data, size);
+        return;
+    }
+    at<void*>(buffer, 0) = data;
+}
+
+// ---------------------------------------------------------------------------
+// 008EFBC0 BSP_ScenePropertyPtr_CompareOrder. __cdecl(a, b), RET; EAX. Evidence: 008EFBC0..
+// 008EFBD2 [[a]+34h] - [[b]+34h]. No code xrefs (a qsort-style comparator by address).
+// ---------------------------------------------------------------------------
+std::int32_t scene_property_ptr_compare_order_008efbc0(const void* a, const void* b) {
+    void* const left = *static_cast<void* const*>(a);
+    void* const right = *static_cast<void* const*>(b);
+    return static_cast<std::int32_t>(at<std::uint32_t>(left, 0x34) - at<std::uint32_t>(right, 0x34));
+}
+
+// ---------------------------------------------------------------------------
+// 008F0010 BSP_PointerArray_PushBackGrow. __thiscall(ECX = array {data, count, capacity, grow},
+// value*), RET 4; EAX = count. Evidence: 008F0016 count == capacity -> capacity += grow
+// (008F001E..008F0021); 008F0035 00BF55BE(capacity*4, saturated on overflow); 008F0048
+// 00BF7680(new, old, count*4); old non-null -> 008F0057 00BF6989, [array] = 0; 008F0065
+// [array] = new; 008F0070 data[count] = *value; 008F0073 count + 1.
+// ---------------------------------------------------------------------------
+std::uint32_t pointer_array_push_back_grow_008f0010(Seg59bHost& host, void* array, const std::uint32_t* value) {
+    if (at<std::uint32_t>(array, 0x04) == at<std::uint32_t>(array, 0x08)) {
+        const std::uint32_t capacity = at<std::uint32_t>(array, 0x08) + at<std::uint32_t>(array, 0x0C);
+        at<std::uint32_t>(array, 0x08) = capacity;
+        const std::uint64_t bytes = static_cast<std::uint64_t>(capacity) * 4u;
+        const std::uint32_t request = bytes > 0xFFFFFFFFull ? 0xFFFFFFFFu : static_cast<std::uint32_t>(bytes);
+        void* const block = host.operator_new_00bf55be(request);
+        host.memcpy_00bf7680(block, ptr(array, 0), at<std::uint32_t>(array, 0x04) * 4u);
+        if (ptr(array, 0) != nullptr) {
+            host.free_00bf6989(ptr(array, 0));
+            at<void*>(array, 0) = nullptr;
+        }
+        at<void*>(array, 0) = block;
+    }
+    const std::uint32_t count = at<std::uint32_t>(array, 0x04);
+    static_cast<std::uint32_t*>(ptr(array, 0))[count] = *value;
+    at<std::uint32_t>(array, 0x04) = count + 1;
+    return count + 1;
+}
+
+// ---------------------------------------------------------------------------
+// 008F0600 BSP_OwnedPolymorphic_Reset. __thiscall(ECX = slot), RET. Evidence: [slot] non-null
+// -> 008F060F [slot]->vtable[0](1); 008F0611 [slot] = 0 (that arm only).
+// ---------------------------------------------------------------------------
+void owned_polymorphic_reset_008f0600(Seg59bHost& host, void* slot) {
+    if (ptr(slot, 0) != nullptr) {
+        host.object_scalar_delete_vt00(ptr(slot, 0), 1);
+        at<void*>(slot, 0) = nullptr;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// 008F1010 BSP_PropertyHash64_ForEach. __thiscall(ECX = owner), RET. Evidence: iterator.table =
+// owner+4 (008F1013); 008F101C 008EF650(&iterator); while node != 0 (008F1021/008F1030):
+// 008F102B 008EEA80(&iterator). The per-node body is empty in the image.
+// ---------------------------------------------------------------------------
+void property_hash64_for_each_008f1010(Seg59bHost& host, void* owner) {
+    Hash64Iterator iterator{add(owner, 0x04), nullptr, 0};
+    host.hash64_iterator_begin_008ef650(&iterator);
+    while (iterator.node != nullptr) host.hash64_iterator_next_008eea80(&iterator);
+}
 }  // namespace bsp::cc13_seg59b
