@@ -688,7 +688,7 @@ inline constexpr bool kLuaGetCatapultStockBound = true;   // ON: SQUADRON_LAND_T
 // 006EC8E0 -> 00957450 is not built), so a ship's count is 0, LABELLED. False: an
 // unimplemented record that pushes nothing (jm02's luaJM2CheckReconplanes compares
 // the nil `num`).
-inline constexpr bool kLuaGetNumCatapultedBound = false;
+inline constexpr bool kLuaGetNumCatapultedBound = true;  // ON with kShipCatapultLaunchBound (OCEAN_WAVE_FIELD 69)
 inline constexpr bool kLuaFormationQueryBound = true;  // ON: mechanism matched, spread miss recorded (docs/LUA_BINDING_MISSION.md)
 
 // The process-wide 00E17BF2. It is reset from the lobby flags when a mission's settings
@@ -720,7 +720,7 @@ float lua_device_reload_time_mul_00e08178() noexcept;
 // altitude, +3ABh = 1, +3ADh = 0. 009C8920 overwrites +39Ch with 9999 once the
 // countdown and lock allow, and 009C7A80 reads it into the dive altitude. True:
 // route the row to the units host's third block. False: unimplemented.
-inline constexpr bool kLuaSquadronSetReleaseAltBound = false;
+inline constexpr bool kLuaSquadronSetReleaseAltBound = true;  // ON: BSM09 pair (OCEAN_WAVE_FIELD 69)
 // Packet cc13-fix4 (docs/CC13_VER_10.md section 4, divergence D2). 008A20E0
 // SquadronLandAndKill(squadron): 007F1B70 frees the launch slot on every carrier
 // and airfield (008A220F), then from the last plane down Kill(plane, 5 "landed")
