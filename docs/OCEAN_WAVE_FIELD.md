@@ -2886,3 +2886,19 @@ groups 7, 6, 4 and 5) during land final is the remaining question, and it is a `
   `007C171E`, 2 at `007CC7E2` and 1 at `007CC857` (both from `007CCFA0` BSP_Plane_HandleMessage). So in single
   player only a message arm (1 or 2) could clear the free-flight test during land final; which message, if any,
   the landing sends is the next step.
+
+**`kLuaSquadronSetReleaseAltBound` (67's unexercised list): exercised, flip pending the `game_hosts_lua.hpp` lease.**
+`local\p18_reach.py` finds it live in BSM09 (`bsm_09_battle_of_the_coral_sea.lua:321`, `SquadronSetReleaseAlt(squad,
+220)`) and PRCP08 (3 sites). `local\p18_a_relalt` (fcb6c6fa5) against `p18_a_off`:
+- BSM09, 24000 frames (fails at 183.06 s on both sides): 5 calls, each `alt=220.0 force=0 stored=1`. The Vals'
+  `+39Ch` ceiling now holds 220 instead of 9999, so `009C7A94` caps the dive altitude and the first release comes at
+  113.2 m (OFF 229.9 m); dive-bomb-task releases 0 of 7 -> 6 of 13. Deaths 25 both. MOVED, by the mechanism.
+- PRCP08 (fails at 378.08 s on both): 1 call (`"Corsair" alt=150`), gameplay identical.
+The other two unexercised natives still have no reachable caller: SquadronLandAndKill only in PRCP01
+(`usn_03`, failed at 465.71 s with no call), UntouchableClear in no mission script. ReloadTorpedoes is live only in
+JM03's script (`PRCPIJN/JM03.lua`), not JM08's.
+- ReloadTorpedoes on JM03 for 36000 frames (`local\p18r{off,torp}_jm03`, the 3250f9d2f exports): both fail at
+  1176.02 s, no call, identical. Still OFF, unexercised.
+
+**Tool:** `python tools/mission_script_reach.py <Native> [<Native> ...]` lists every menu id whose real script (the
+scene's `StageScript`) calls one of the natives, with call-site counts; with no arguments it prints each id's script.
