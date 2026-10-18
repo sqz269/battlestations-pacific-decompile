@@ -114,6 +114,7 @@ Notes:
 | Address | Name | ABI | Notes |
 | --- | --- | --- | --- |
 | 00674B80 | BSP_HudSupportManagerScreen_Enter | fastcall(screen), EBP frame, EH handler 00C7C5CA | the screen's Enter: panel reset, the SM1STUSE hint, the selected row, one of the unit / catalog / map arms for the name text +170h and the icons +1CCh and +158h, then the points text +1A8h and the open sound |
+| 0066EA60 | BSP_HudSupportManagerScreen_Register | fastcall(screen), EBP frame, EH handler 00C7BE50 | vtable +10h: the GUI_support_full page, widget copies, eight environment samples into +10h..+2Ch, the radar-shot texture, size and UV rect on widget +1C0h, the resets |
 
 Notes:
 
@@ -140,6 +141,48 @@ Notes:
     range).
   - The points-text strings: the not-air arm destroys them through 0041DD20. The other two
     arms free them inline to the sized pool, newest first.
+- **0066EA60.**
+  - The whole body (1280 instructions) was read from the listing. The strings and the jump
+    table 0066FAE0 were read from the PE.
+  - The floats are +2A8h = 0.628, +2A4h = 1.57, +290h = 0.0275 and +294h = 0.05.
+  - Each sample is acquired and stored with the inlined ref-pointer assignment.
+    InterlockedIncrement runs on the new object. The old object and the temporary are
+    released through InterlockedDecrement, with vtable +0h at zero.
+  - The fields are, in order of acquisition:
+
+    | Field | Sample |
+    | --- | --- |
+    | +10h | environment_unavailable |
+    | +14h | sm_sp_to_unit |
+    | +18h | sm_change_weap |
+    | +20h | sm_launch_unit |
+    | +1Ch | sm_unit_to_unit |
+    | +24h | sm_left_right |
+    | +28h | sm_open |
+    | +2Ch | sm_close |
+
+  - +2B4h = 3 at 0066EC1B. This is the write that cc9's `kSupportManagerLaunchGroup`
+    (air_operations.hpp) cites. This body has no block copy into the screen.
+  - The radar-shot name:
+    - The mission name is [[00E188A8]+5FCh]+90Ch.
+    - The part after the last '/' (or '\' when there is no '/') is kept, with
+      count = length - pos - 5, so the last four characters go.
+    - It is cut to 20 characters.
+    - Modes 0..7 append _ICS, _ICM, _ICL, _ICH, _D, _E, _S and _C through 00425E10.
+    - Modes 8 and 9 append nothing.
+    - Other modes append "_xxx" inline: a resize, then a memcpy without the terminator.
+  - The x87 tail is modelled at 24 bits; this is a main-thread GUI routine. The DC-form ops
+    (0066F83F, 0066F8E0, 0066F8E8, 0066F8F6, 0066F91C) come from tools/x87_dc_form_scan.py.
+    The DE-form ops (DE F1, DE CA, DE C9, DE E3, DE F3, DE C1) were decoded from the
+    opcode bytes.
+  - The radar shot's geometry:
+    - a = (x1 - x0) / 30000 and b = (z0 - z1) / 30000.
+    - The size is {a / m, b / m} times widget +1C0h's size, where m = max(a, b). FCOMI/JBE
+      gives a NaN to b.
+    - The UV rect at widget+118h is {(x0 + 15000) / 30000, 1 - (z0 + 15000) / 30000,
+      (x1 + 15000) / 30000, 1 - (z1 + 15000) / 30000}.
+    - The listing computes 1 - v as v * -1 + 1, and u as u * 1 + 0 (or 0 + u * 1), which
+      turns a -0 into +0. That is kept.
 
 ## Recorded, not reconstructed
 
@@ -177,3 +220,6 @@ Adoption notes:
 - **00674B80.** It is reached only through vtable 00CF6B44 slot +18h. cc9 does not host it.
   Several of its callees have bodies elsewhere: 0066A130, 0066D020, 00669170 and 0066FB00 in
   seg27_cc13. A host can bind the matching hooks to those bodies.
+- **0066EA60.** Reached through vtable 00CF6B44 slot +10h. cc9 does not host it.
+  src/hud_screens.cpp lists only its page and widget catalogue. CC13_FE_10.md's "left to
+  cc9" listing named it.

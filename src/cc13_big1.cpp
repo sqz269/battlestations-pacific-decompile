@@ -1133,6 +1133,261 @@ void hud_support_manager_screen_enter_00674b80(void* screen, Big1Host& host) {
     host.hud_counters_hide_under_manager_panel_00528f70(ptr(host.hud_00e198c4(), 0xC8));  // 00675A3D
 }
 
+namespace {
+
+// The inlined NativeString assignment dst = *src (dst != src): 0041DD40(dst; src.length, 1),
+// then, when src is non-empty, memcpy(dst.data, src.data, dst.length) (no terminator copied).
+void assign_str(NativeStr& dst, const void* src, Big1Host& host) {
+    if (static_cast<const void*>(&dst) == src) return;
+    host.native_string_resize_0041dd40(&dst, at<std::uint32_t>(src, 0), 1);
+    if (at<std::uint32_t>(src, 0) != 0) host.crt_memcpy_00bf7680(dst.data, at<char*>(src, 4), dst.length);
+}
+
+// The inlined by-value ref-pointer release: InterlockedDecrement(+4h), vtable +0h at zero.
+void ref_release(void* object, Big1Host& host) {
+    if (host.interlocked_decrement_00ce2220(&at<std::int32_t>(object, 4)) == 0)
+        host.refcounted_vtable0_release(object);
+}
+
+// 0066EC0F..0066F2EB, eight times: a {0, 0} path resized to its length and filled (memcpy of
+// length + 1), 00A83FD0([00F8BBE8]; &ref, &path), then the inlined ref-pointer assignment of
+// the result into screen+field (unchanged -> nothing; else store, InterlockedIncrement on the
+// new one, release of the old one), the temporary ref released and zeroed, the path freed.
+void acquire_sample(std::uint8_t* s, std::size_t field, const char* name, std::uint32_t length,
+                    Big1Host& host) {
+    NativeStr path{0, nullptr};                                             // [B+20h]
+    host.native_string_resize_0041dd40(&path, length, 1);
+    if (path.data != nullptr) host.crt_memcpy_00bf7680(path.data, name, path.length + 1);
+    void* sample;                                                           // [B+10h], written by 00A83FD0
+    void* const value = *host.sound_sample_cache_acquire_00a83fd0(host.global_00f8bbe8(), &sample, &path);
+    void* const old = ptr(s, field);
+    if (old != value) {
+        at<void*>(s, field) = value;
+        if (value != nullptr) host.interlocked_increment_00ce221c(&at<std::int32_t>(value, 4));
+        if (old != nullptr) ref_release(old, host);
+    }
+    if (sample != nullptr) {
+        ref_release(sample, host);
+        sample = nullptr;
+    }
+    release_str(path, host);
+}
+
+} // namespace
+
+// 0066EA60 __fastcall(ECX = support manager screen), RET; EBP frame aligned to 8, EH handler
+// 00C7BE50. Vtable +10h of HUD screen slot 4Eh. 004F71D0, the tuning floats, page
+// "GUI_support_full" (00CF4D4C) into +78h, the layout virtual (vtable +14h), the widget state
+// resets and copies, the eight environment samples into +10h..+2Ch, more resets, then the radar
+// shot: the mission name ([[00E188A8]+5FCh]+90Ch) after its last '/' or '\', without its last
+// four characters, cut to 20 characters, the mode suffix (jump table 0066FAE0: _ICS, _ICM, _ICL,
+// _ICH, _D, _E, _S, _C for modes 0..7; none for 8 and 9; "_xxx" otherwise), and
+// "interface/textures/gui/radarshots/" + name + ".dds" on widget +1C0h. Its size and UV rect
+// follow from the map bounds [00E188A8]+711Ch..+7130h (copied to +460h..+474h) over a
+// 30000-unit square centred on 0. Last: tree +408h cleared, iterator +300h = begin of list +1ECh,
+// the observer at +208h released, 0066DF30(+338h, +2D0h).
+void hud_support_manager_screen_register_0066ea60(void* screen, Big1Host& host) {
+    std::uint8_t* const s = static_cast<std::uint8_t*>(screen);
+    at<std::uint8_t>(s, 0xA) = 0;
+    host.frontend_screen_register_004f71d0(s);                               // 0066EA89
+    at<float>(s, 0x2A8) = 0.628f;                                            // [00CF6B04] = 3F20C49Ch
+    at<float>(s, 0x2A4) = 1.57f;                                             // [00CF0B40] = 3FC8F5C3h
+    at<float>(s, 0x290) = 0.0275f;                                           // [00CF6B00] = 3CE147AEh
+    at<std::uint8_t>(s, 0x70) = 0;
+    at<std::uint8_t>(s, 0x66) = 0;
+    at<float>(s, 0x294) = 0.05f;                                             // [00CE7638] = 3D4CCCCDh
+    at<std::uint8_t>(s, 0x2B0) = 0;
+
+    NativeStr page{0, nullptr};                                              // [B+20h]
+    host.native_string_resize_0041dd40(&page, 0x10, 1);                      // 0066EAEE
+    if (page.data != nullptr) host.crt_memcpy_00bf7680(page.data, "GUI_support_full", page.length + 1);
+    void* const manager = host.gui_manager_get_or_create_004c12b0();          // 0066EB14
+    at<void*>(s, 0x78) = host.gui_manager_load_page_00aa5840(manager, &page, 1, 0);  // 0066EB22
+    release_str(page, host);                                                 // 0066EB2A..0066EB4B
+
+    host.screen_vtable14_layout(s);                                          // 0066EB57
+    host.widget_vtable34(ptr(s, 0x1C4), 0);                                  // 0066EB65
+    const float full_uv[4] = {0.0f, 0.0f, 1.0f, 1.0f};                       // [B+38h], 1.0 = [00D7A24C]
+    host.gui_icon_add_state_00ab64c0(ptr(s, 0x158), nullptr, full_uv);       // 0066EB96
+    host.widget_vtable34(ptr(s, 0x170), 0);                                  // 0066EBA7
+    const float* const size_18c = host.gui_widget_get_size_00aa6740(ptr(s, 0x18C));  // 0066EBAF
+    at<float>(s, 0x194) = size_18c[0];                                       // FLD/FSTP float copies
+    at<float>(s, 0x198) = size_18c[1];
+    float position[3];                                                       // [B+38h]
+    const float* const pos_170 = host.gui_widget_get_resolved_position_00aa6750(ptr(s, 0x170), position);  // 0066EBD0
+    at<float>(s, 0x19C) = pos_170[0];
+    at<float>(s, 0x1A0) = pos_170[1];
+    at<float>(s, 0x1A4) = pos_170[2];
+    at<float>(s, 0x1AC) = host.gui_widget_get_size_00aa6740(ptr(s, 0x184))[0];  // 0066EBF5 (MOVSS)
+    at<std::uint32_t>(s, 0x45C) = 0;
+    at<std::int32_t>(s, 0x2B4) = 3;                                          // 0066EC1B (cc9: launch group)
+    at<std::uint8_t>(s, 0x1E4) = 0;
+    at<float>(s, 0x1E8) = 0.0f;
+    at<std::uint8_t>(s, 0x30) = 0;
+    at<std::int32_t>(s, 0x5C) = 1;
+    at<std::int32_t>(s, 0x60) = 1;
+    at<std::uint8_t>(s, 0x288) = 0;
+    at<float>(s, 0x28C) = 0.0f;
+    at<std::uint32_t>(s, 0x308) = 0;
+    at<std::uint32_t>(s, 0x30C) = 0;
+    at<std::uint32_t>(s, 0x310) = 0;
+    at<std::uint32_t>(s, 0x314) = 0;
+
+    acquire_sample(s, 0x10, "environment/environment_unavailable.fsb", 0x27, host);  // 00CF5E68
+    acquire_sample(s, 0x14, "environment/sm_sp_to_unit.fsb", 0x1D, host);            // 00CF6AE0
+    acquire_sample(s, 0x18, "environment/sm_change_weap.fsb", 0x1E, host);           // 00CF6AC0
+    acquire_sample(s, 0x20, "environment/sm_launch_unit.fsb", 0x1E, host);           // 00CF6AA0
+    acquire_sample(s, 0x1C, "environment/sm_unit_to_unit.fsb", 0x1F, host);          // 00CF6A80
+    acquire_sample(s, 0x24, "environment/sm_left_right.fsb", 0x1D, host);            // 00CF6A60
+    acquire_sample(s, 0x28, "environment/sm_open.fsb", 0x17, host);                  // 00CF6A48
+    acquire_sample(s, 0x2C, "environment/sm_close.fsb", 0x18, host);                 // 00CF6A2C
+
+    at<std::uint32_t>(s, 0x2C8) = 0;                                         // 0066F2F3
+    at<std::uint8_t>(s, 0x154) = 0;
+    at<std::uint8_t>(s, 0x3D5) = 0;
+    at<std::uint8_t>(s, 0x2DC) = 0;
+    at<std::uint8_t>(s, 0x2DD) = 0;
+    at<float>(s, 0x2E0) = 0.0f;
+    at<std::uint32_t>(s, 0x438) = 0;
+    at<std::uint32_t>(s, 0x448) = 0;
+    at<std::uint32_t>(s, 0x43C) = 0;
+    at<std::uint32_t>(s, 0x44C) = 0;
+    at<std::uint32_t>(s, 0x440) = 0;
+    at<std::uint32_t>(s, 0x450) = 0;
+    at<std::uint32_t>(s, 0x444) = 0;
+    at<std::uint32_t>(s, 0x454) = 0;
+    at<std::uint8_t>(s, 0x2D4) = 0;
+    at<std::uint32_t>(s, 0x2D8) = 0;
+
+    // The radar-shot name.
+    NativeStr name{0, nullptr};                                              // [B+20h]
+    assign_str(name, static_cast<std::uint8_t*>(ptr(host.game_00e188a8(), 0x5FC)) + 0x90C, host);  // 0066F355..0066F39C
+    std::int32_t slash = host.native_string_rfind_any_004bcb80(&name, "/", 0x7FFFFFFF);  // 0066F3B5, 00CE7898
+    if (slash == -1) slash = host.native_string_rfind_any_004bcb80(&name, "\\", 0x7FFFFFFF);  // 0066F3CD, 00CE7894
+    if (slash != -1) {
+        NativeStr part;                                                      // [B+38h]
+        const void* const r = host.native_string_substring_00469840(
+            &name, &part, static_cast<std::uint32_t>(slash) + 1,
+            name.length - static_cast<std::uint32_t>(slash) - 5);            // 0066F3EC
+        assign_str(name, r, host);                                           // 0066F3F3..0066F421
+        release_str(part, host);                                             // 0066F424..0066F443
+    }
+    {
+        NativeStr part;                                                      // [B+38h]
+        const void* const r = host.native_string_substring_00469840(
+            &name, &part, 0, name.length > 0x14 ? 0x14 : name.length);       // 0066F459 / 0066F498 (JBE)
+        assign_str(name, r, host);                                           // 0066F45E..0066F4CD
+        release_str(part, host);                                             // 0066F4D0..0066F4EF
+    }
+    const std::int32_t mode = host.game_effective_mode_004bca50(host.game_00e188a8());  // 0066F4FA
+    if (mode != 8 && mode != 9) {
+        if (static_cast<std::uint32_t>(mode) <= 7) {                         // 0066F514 JA, table 0066FAE0
+            static const char* const kSuffix[8] = {"_ICS", "_ICM", "_ICL", "_ICH",  // 00CF1324 .. 00CF130C
+                                                   "_D",   "_E",   "_S",   "_C"};   // 00CF1308 .. 00CF12FC
+            NativeStr suffix;                                                // [B+18h]
+            host.native_string_assign_0041e870(&suffix, kSuffix[mode]);
+            host.native_string_append_00425e10(&name, &suffix);              // 0066F53D
+            release_str(suffix, host);                                       // 0066F542..0066F67D
+        } else {
+            // 0066F61B: "_xxx" (00CF12F4), appended inline.
+            NativeStr suffix;                                                // [B+38h]
+            host.native_string_assign_0041e870(&suffix, "_xxx");
+            const std::uint32_t n = suffix.length;                           // EDI
+            char* const data = suffix.data;                                  // EBP
+            if (n != 0) {
+                const std::uint32_t old = name.length;
+                host.native_string_resize_0041dd40(&name, old + n, 1);       // 0066F64C
+                host.crt_memcpy_00bf7680(name.data + old, data, n);          // 0066F65E
+            }
+            if (data != nullptr)
+                host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), data, n + 1, 1);  // 0066F676
+        }
+    }
+
+    NativeStr path{0, nullptr};                                              // [B+28h]
+    NativeStr ext{0, nullptr};                                               // [B+18h]
+    host.native_string_resize_0041dd40(&ext, 4, 1);                          // 0066F69F
+    char* const ext_data = ext.data;                                         // EBP
+    if (ext_data != nullptr) host.crt_memcpy_00bf7680(ext_data, ".dds", ext.length + 1);  // 00CE9BC8
+    NativeStr prefixed;                                                      // [B+10h]
+    void* const p = host.native_string_prefixed_0043c130(&prefixed, "interface/textures/gui/radarshots/",
+                                                         &name);             // 0066F6D5, 00CF12D0
+    NativeStr joined;                                                        // [B+38h]
+    const void* const j = host.native_string_concat_004261a0(p, &joined, &ext);  // 0066F6EB
+    assign_str(path, j, host);                                               // 0066F6F0..0066F724
+    release_str(joined, host);                                               // 0066F727..0066F746
+    release_str(prefixed, host);                                             // 0066F74B..0066F76A
+    if (ext_data != nullptr)
+        host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), ext_data, ext.length + 1, 1);  // 0066F783
+    host.gui_set_state_texture_00ab44b0(ptr(s, 0x1C0), 0, &path, full_uv);   // 0066F7C3, uv [B+48h]
+
+    // 0066F7C8: the map bounds, then the radar shot's size and UV rect. Modelled at 24 bits (every
+    // x87 result rounded to float, in the listing's order); the DC/DE register forms were read
+    // from the bytes (tools/x87_dc_form_scan.py and the opcode bytes).
+    for (std::size_t i = 0; i < 3; ++i)
+        at<float>(s, 0x460 + 4 * i) = at<float>(host.game_00e188a8(), 0x711C + 4 * i);
+    for (std::size_t i = 0; i < 3; ++i)
+        at<float>(s, 0x46C + 4 * i) = at<float>(host.game_00e188a8(), 0x7128 + 4 * i);
+    const float kSpan = 30000.0f;                                            // [00CEF1C8] (double)
+    const float kLow = -15000.0f;                                            // [00CEF1D0] (double)
+    const float* const shot_size = host.gui_widget_get_size_00aa6740(ptr(s, 0x1C0));  // 0066F81E
+    const float a = (at<float>(s, 0x46C) - at<float>(s, 0x460)) / kSpan;     // DC F9 at 0066F83F
+    const float size_x = shot_size[0];                                       // [B+38h]
+    const float size_y = shot_size[1];                                       // [B+3Ch]
+    const float b = (at<float>(s, 0x468) - at<float>(s, 0x474)) / kSpan;     // DE F1 at 0066F85E
+    const float larger = a > b ? a : b;                                      // FCOMI/JBE: a NaN takes b
+    const float r = 1.0f / larger;                                           // DE F1 at 0066F890
+    const float scaled[2] = {(a * r) * size_x, (b * r) * size_y};            // [B+30h]
+    host.widget_vtable58_set_size(ptr(s, 0x1C0), scaled);                    // 0066F8CC
+    void* const shot = ptr(s, 0x1C0);                                        // 0066F8DA
+    const float v0 = ((at<float>(s, 0x468) - kLow) / kSpan) * -1.0f + 1.0f;  // [B+3Ch]
+    const float v1 = ((at<float>(s, 0x474) - kLow) / kSpan) * -1.0f + 1.0f;  // [B+44h]
+    const float u0 = ((at<float>(s, 0x460) - kLow) / kSpan) * 1.0f + 0.0f;   // [B+38h]
+    at<float>(shot, 0x118) = u0;                                             // 0066F94A
+    const float h = (at<float>(s, 0x46C) - kLow) / kSpan;                    // DE E3 / DE F3
+    at<float>(shot, 0x11C) = v0;                                             // 0066F952
+    const float u1 = 0.0f + h * 1.0f;                                        // FMUL, then FADDP onto the 0
+    at<float>(shot, 0x120) = u1;                                             // 0066F974
+    at<float>(shot, 0x124) = v1;                                             // 0066F97C
+    host.widget_vtable8c(shot);                                              // 0066F988
+
+    host.widget_vtable34(ptr(s, 0x1D8), 0);                                  // 0066F996
+    host.widget_vtable88(ptr(s, 0x1D8), 1, 0, 1.0f);                         // 0066F9AF
+    at<std::uint8_t>(s, 0x4) = 0;
+    at<std::uint8_t>(s, 0x8) = 0;
+    std::uint8_t* const tree = s + 0x408;
+    host.support_tree_erase_0066cc80(tree, at<void*>(ptr(tree, 4), 4));      // 0066F9C9
+    at<void*>(ptr(tree, 4), 4) = ptr(tree, 4);
+    at<std::uint32_t>(tree, 8) = 0;
+    at<void*>(ptr(tree, 4), 0) = ptr(tree, 4);
+    at<void*>(ptr(tree, 4), 8) = ptr(tree, 4);
+    at<std::uint8_t>(s, 0x9) = 0;
+    void* const first = at<void*>(ptr(s, 0x1F0), 0);
+    at<void*>(s, 0x300) = s + 0x1EC;                                         // 0066F9F9
+    at<void*>(s, 0x304) = first;
+    at<std::uint32_t>(s, 0x318) = 0;
+    at<std::uint32_t>(s, 0x320) = 0;
+    at<std::uint32_t>(s, 0x324) = 0;
+    at<std::uint32_t>(s, 0x32C) = 0;
+    at<std::uint32_t>(s, 0x330) = 0;
+    at<std::uint32_t>(s, 0x334) = 0;
+    if (ptr(s, 0x21C) != nullptr) {                                          // 0066FA2C
+        host.observer_unregister_pair_006952a0(ptr(s, 0x21C), s + 0x208);    // 0066FA32
+        at<void*>(s, 0x21C) = nullptr;
+    }
+    at<std::uint32_t>(s, 0x298) = 0;
+    at<float>(s, 0x3D0) = 0.0f;
+    at<std::uint8_t>(s, 0x3D4) = 0;
+    at<std::uint8_t>(s, 0x204) = 0;
+    at<std::uint32_t>(s, 0x3D8) = 0;
+    at<std::uint8_t>(s, 0x3DC) = 1;
+    host.support_sites_build_with_icons_0066df30(s + 0x338, &at<float>(s, 0x2D0));  // 0066FA70
+    at<std::uint8_t>(s, 0x479) = 0;
+    at<std::int32_t>(s, 0x47C) = -1;
+    release_str(path, host);                                                 // 0066FA75..0066FAA3
+    release_str(name, host);                                                 // 0066FAA8..0066FAC6
+}
+
 // 005E12A0 __thiscall(ECX = lobby screen), RET; EBP frame aligned to 8, EH handler 00C74D80.
 // A private LuaStateOwner ([B+E8h], at most 4CCh bytes before the EH record) is opened with 4 and
 // runs "SCRIPTS\datatables\Weather.lua" (00CE59DC, a 1Eh-byte NativeString released after the

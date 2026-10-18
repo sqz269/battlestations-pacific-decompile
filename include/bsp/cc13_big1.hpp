@@ -302,6 +302,60 @@ public:
     // idle slots): __thiscall(ECX = the unit's air-ops block or null), RET; EAX.
     virtual std::int32_t shipyard_count_idle_slots_008434d0(void* unit) = 0;
     virtual std::int32_t air_ops_count_idle_slots_006bdc30(void* block) = 0;
+
+    // ---- 0066EA60 ----
+    // 004F71D0 BSP_FrontEndScreen_Register: __thiscall(ECX = screen), RET.
+    virtual void frontend_screen_register_004f71d0(void* screen) = 0;
+    // 004C12B0 BSP_GuiManager_GetOrCreate: EAX = manager. 00AA5840 BSP_GuiManager_LoadPage:
+    // __thiscall(ECX = manager; const NativeString*, dword, dword), RET 0Ch; EAX = page.
+    virtual void* gui_manager_get_or_create_004c12b0() = 0;
+    virtual void* gui_manager_load_page_00aa5840(void* manager, const void* name, std::int32_t a,
+                                                 std::int32_t b) = 0;
+    // Screen vtable +14h (the layout virtual, 0065DAA0 for this screen): __thiscall(ECX = screen).
+    virtual void screen_vtable14_layout(void* screen) = 0;
+    // 00AB64C0 BSP_GuiIcon_AddState: __thiscall(ECX = icon; texture, const float uv[4]), RET 8.
+    virtual std::int32_t gui_icon_add_state_00ab64c0(void* icon, void* texture, const float* uv) = 0;
+    // 00AA6740 BSP_GuiWidget_GetSize: __thiscall(ECX = widget), RET; EAX = &size[2].
+    // 00AA6750 BSP_GuiWidget_GetResolvedPosition: __thiscall(ECX = widget; float out[3]), RET 4;
+    // EAX = the position.
+    virtual const float* gui_widget_get_size_00aa6740(void* widget) = 0;
+    virtual const float* gui_widget_get_resolved_position_00aa6750(void* widget, float* out) = 0;
+    // [00F8BBE8]: the sound sample cache. 00A83FD0 BSP_SoundSampleCache_AcquireByName:
+    // __thiscall(ECX = cache; ref* out, const NativeString*), RET 8; EAX = out.
+    virtual void* global_00f8bbe8() = 0;
+    virtual void** sound_sample_cache_acquire_00a83fd0(void* cache, void** out, const void* name) = 0;
+    // [00CE221C] InterlockedIncrement / [00CE2220] InterlockedDecrement (__stdcall, EAX), and
+    // the released object's vtable +0h: __thiscall(ECX = object), no stack argument.
+    virtual std::int32_t interlocked_increment_00ce221c(std::int32_t* value) = 0;
+    virtual std::int32_t interlocked_decrement_00ce2220(std::int32_t* value) = 0;
+    virtual void refcounted_vtable0_release(void* object) = 0;
+    // 004BCB80 BSP_NativeString_ReverseFindAnyByte: __thiscall(ECX = string; const char* set,
+    // from), RET 8; EAX = position or -1.
+    virtual std::int32_t native_string_rfind_any_004bcb80(void* string, const char* set, std::uint32_t from) = 0;
+    // 00469840 BSP_NativeString_Substring: __thiscall(ECX = string; out, start, count), RET 0Ch;
+    // EAX = out.
+    virtual void* native_string_substring_00469840(const void* string, void* out, std::uint32_t start,
+                                                   std::uint32_t count) = 0;
+    // 00425E10 BSP_NativeString_Append: __thiscall(ECX = string; const NativeString*), RET 4.
+    virtual void native_string_append_00425e10(void* string, const void* other) = 0;
+    // 0043C130 BSP_NativeString_ConstructPrefixedHeader: __fastcall(ECX = out, EDX = const char*
+    // prefix; const NativeString*), RET 4; EAX = out (= prefix + text).
+    virtual void* native_string_prefixed_0043c130(void* out, const char* prefix, const void* text) = 0;
+    // 00AB44B0 BSP_GUI_SetStateTexture: __thiscall(ECX = widget; state, const NativeString*
+    // path, const float uv[4]), RET 0Ch.
+    virtual void gui_set_state_texture_00ab44b0(void* widget, std::uint32_t state, const void* path,
+                                                const float* uv) = 0;
+    // Widget vtable +58h (set size): __thiscall(ECX = widget; const float size[2]), RET 4.
+    // Widget vtable +8Ch: __thiscall(ECX = widget), RET.
+    virtual void widget_vtable58_set_size(void* widget, const float* size) = 0;
+    virtual void widget_vtable8c(void* widget) = 0;
+    // 0066CC80 STL_Tree_Erase (subtree): __thiscall(ECX = tree; node), RET 4.
+    virtual void support_tree_erase_0066cc80(void* tree, void* node) = 0;
+    // 006952A0 BSP_Observer_UnregisterPair: __fastcall(ECX = observed, EDX = owner).
+    virtual void observer_unregister_pair_006952a0(void* observed, void* owner) = 0;
+    // 0066DF30 (seg27_cc13 support_sites_build_with_icons_0066df30): __fastcall(ECX = list,
+    // EDX = float* depth).
+    virtual void support_sites_build_with_icons_0066df30(void* list, float* depth) = 0;
 };
 
 // 004C7AA0's 28h-byte result.
@@ -331,6 +385,9 @@ void hud_support_manager_collect_catalog_006697e0(void* screen, Big1Host& host);
 
 // 0066A8A0 __fastcall(ECX = support manager screen), RET.
 void hud_support_manager_rebuild_lists_0066a8a0(void* screen, Big1Host& host);
+
+// 0066EA60 __fastcall(ECX = support manager screen), RET: the screen's register (vtable +10h).
+void hud_support_manager_screen_register_0066ea60(void* screen, Big1Host& host);
 
 // 00674B80 __fastcall(ECX = support manager screen), RET: the screen's Enter.
 void hud_support_manager_screen_enter_00674b80(void* screen, Big1Host& host);
