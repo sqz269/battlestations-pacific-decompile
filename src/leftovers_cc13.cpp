@@ -1011,3 +1011,56 @@ char* decode_scene_fragment_008ee670(const char* input, char* scratch) {
     return scratch;
 }
 } // namespace bsp::oct18_tail_b
+
+namespace bsp::oct18_tail_b {
+// 007F8890, __thiscall(profile,NativeString* id), RET 4, AL bool.
+// Length equality comes before the canonical CRT comparison; empty IDs need
+// neither a data pointer nor a comparison. Original list owns its string IDs.
+bool profile_owns_content_007f8890(const void* profile, const void* id, Host& host) {
+    for (void* node = get<void*>(get<void*>(profile, 0xd0), 0);
+         node != get<void*>(profile, 0xd0); node = get<void*>(node, 0)) {
+        const auto length = get<std::uint32_t>(id, 0);
+        if (get<std::uint32_t>(node, 8) == length &&
+            (length == 0 || host.compare_case_insensitive_00bf7fbf(
+                get<const char*>(node, 0xc), get<const char*>(id, 4)) == 0)) return true;
+        if (node == get<void*>(profile, 0xd0)) invalid(host);
+    }
+    return false;
+}
+// 007FB990, ECX=profile, RET. Actual pending (+7Ch) and saved (+70h)
+// string-set owners are retained. Insertion precedes iterator increment;
+// subtree erasure precedes the four empty-tree storage writes.
+void flush_pending_unlocks_007fb990(void* profile, Host& host) {
+    void* pending = at(profile, 0x7c);
+    Host::Iterator cursor{pending, get<void*>(get<void*>(pending, 4), 0)};
+    for (;;) {
+        if (cursor.owner == nullptr || cursor.owner != pending) invalid(host);
+        if (cursor.node == get<void*>(pending, 4)) break;
+        host.insert_string_set_004d0640(at(profile, 0x70), at(cursor.node, 0xc));
+        host.increment_string_tree_004be730(cursor);
+    }
+    host.erase_string_subtree_004cec60(pending, get<void*>(get<void*>(pending, 4), 4));
+    void* head = get<void*>(pending, 4);
+    put<void*>(head, 4, head);
+    put<std::uint32_t>(pending, 8, 0);
+    head = get<void*>(pending, 4);
+    put<void*>(head, 0, head);
+    head = get<void*>(pending, 4);
+    put<void*>(head, 8, head);
+}
+// 007FBE20, __thiscall(profile,NativeString* key,int value), RET 8.
+// Miss stores the value verbatim (including negatives). Hit indexes once to
+// compare, then indexes AGAIN only when raising it. Head is captured before find.
+void record_award_at_least_007fbe20(void* profile, const void* key, std::int32_t value, Host& host) {
+    void* map = at(profile, 0xa0);
+    void* head = get<void*>(profile, 0xa4);
+    const auto found = host.find_counter_004c8b80(map, key);
+    if (found.owner == nullptr || found.owner != map) invalid(host);
+    if (found.node == head) {
+        *host.index_counter_005070c0(map, key) = value;
+        return;
+    }
+    if (*host.index_counter_005070c0(map, key) < value)
+        *host.index_counter_005070c0(map, key) = value;
+}
+} // namespace bsp::oct18_tail_b

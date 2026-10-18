@@ -118,13 +118,28 @@ and 2/2 existing CTests passed; ignored receipt `local/tB_build3.log`.
 This last decoder is additional raw-storage coverage. It does not broaden the
 existing parser's admitted string domain, reentrancy, ownership or game evidence.
 
+## Batch 4: three profile rows after the last metadata hold cleared
+
+The 007F name/reconstruction shards became free during final publication.
+tB claimed them and completed these rows rather than retain stale held skips.
+Same actual-storage, required-provider and source-only ABI qualifications.
+MSVC Win32 Release and both existing CTests passed (2/2); ignored receipt
+`local/tB_build4.log`.
+
+| Original | Original ABI | Evidence / behavior |
+|---|---|---|
+| 007F8890 | ECX profile, stack NativeString ID, RET 4, AL bool | List head +D0h; node length +8h and data +0Ch. Length check precedes canonical stricmp. Empty IDs match without inspecting either data pointer. |
+| 007FB990 | ECX profile, RET | Listing confirms saved set +70h, pending set +7Ch, two-DWORD iterator owner/node. Insert before increment; required canonical subtree erase then rehead parent, zero count, left and right in native order. Source NativeString ownership stays with the actual library owners. |
+| 007FBE20 | ECX profile, stack NativeString key / signed value, RET 8 | Listing: capture +A4h sentinel before map find at +A0h; validate iterator owner. Miss stores supplied signed value, including negatives. Hit indexes once to compare and again only when raising the counter. No zero-floor substitution. |
+
 ## Complete worklist disposition
 
-All 77 input rows were reviewed. New source bodies: 42 (15 + 20 + 7).
+All 77 input rows were reviewed. New source bodies: 45 (15 + 20 + 7 + 3).
 Five library/generated exclusions; 15 retained existing implementations/models
-with their original qualifications; three metadata-held rows; twelve contract
-gaps left open. Existing bounded models are not promoted to native whole-body
-credit by this audit. No game-host switches, original ABI or gameplay claim.
+with their original qualifications; twelve explicit contract gaps remain.
+Both former metadata holds cleared during this turn and their ready rows were
+closed. Existing bounded models are not promoted to native whole-body credit
+by this audit. No game-host switches, original ABI or gameplay claim.
 
 | Address | Disposition | Evidence / remaining work |
 |---|---|---|
@@ -149,9 +164,9 @@ credit by this audit. No game-host switches, original ABI or gameplay claim.
 | 007B8A80 | new batch 2 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 | 007B8A90 | new batch 1 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 | 007D1360 | existing bounded source | src/pilot_command_path.cpp; existing listing-reviewed control-message fragment; no new whole-body credit |
-| 007F8890 | held metadata/address | Required 007F name/reconstruction shards held by cc15-r48; profile typed model already present |
-| 007FB990 | held metadata/address | Required 007F name/reconstruction shards held by cc15-r48; pending-unlock typed model already present |
-| 007FBE20 | held metadata/address | Required 007F name/reconstruction shards held by cc15-r48; monotonic award typed model already present |
+| 007F8890 | new batch 4 | Metadata ownership cleared during this turn; explicit raw profile/list/set/counter policy with canonical library providers, see batch 4 |
+| 007FB990 | new batch 4 | Metadata ownership cleared during this turn; explicit raw profile/list/set/counter policy with canonical library providers, see batch 4 |
+| 007FBE20 | new batch 4 | Metadata ownership cleared during this turn; explicit raw profile/list/set/counter policy with canonical library providers, see batch 4 |
 | 0081B630 | uncertain/contract gap | World transform/effect/event path read; effect ref ownership and warning argument transport not closed |
 | 0081B7C0 | uncertain/contract gap | Camo path read; resource-manager ref ownership, register arguments and diffuse-color tail not closed |
 | 0081BFE0 | new batch 2 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
@@ -206,7 +221,8 @@ credit by this audit. No game-host switches, original ABI or gameplay claim.
 | 00968470 | new batch 1 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 | 00968AF0 | new batch 3 | Address-suffixed source in src/leftovers_cc13.cpp; original ABI, evidence and qualifications in batch table |
 
-The coordinator should retain library exclusions, avoid duplicate native-property
-work, and size separate packets for the twelve explicit contract gaps. The three
-007F rows need a handoff of cc15-r48 metadata ownership before ledger/name edits;
-no approval question or runtime test is pending from this lane.
+Coordinator action: retain the five exclusions and existing native-property
+admission limits, and size separate packets for the twelve explicit ABI, x87,
+Lua/message, visitor or container-lifetime gaps. No row remains skipped solely
+because of another lane ownership hold. The worktree is retained for cleanup
+by the coordinator.
