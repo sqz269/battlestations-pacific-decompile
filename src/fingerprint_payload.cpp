@@ -43,6 +43,12 @@ constexpr FingerprintEncodedBytes kFingerprintKey = {
 
 FingerprintDecodedPrefix decode_fingerprint_payload_00be9630(
     const FingerprintEncodedBytes& source, const FingerprintEncodedBytes& key) noexcept {
+    // The original's final 512-byte copy publishes these 240 defined bytes followed
+    // by 272 stale private-stack bytes. The latter depend on prior stack contents,
+    // not source/key, and are deliberately outside this interface (coordinator
+    // decision 2026-10-18). 0053C740 passes the raw original buffer to 00ABBE50 as
+    // a C string: it can observe the tail if no NUL occurs in the defined prefix.
+    // 0073BAE0 obtains the same pointer and discards it, reading neither region.
     FingerprintDecodedPrefix result{};
     for (std::size_t i = 16; i < 256; ++i) {
         const unsigned word = (source[2 * i] ^ key[2 * i])

@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <cstddef>
 
 // Exact-address lane tC leaves. Names describe hypotheses, not recovered symbols.
 // Raw getters borrow the original 32-bit storage. Callback setters receive the
@@ -225,4 +226,202 @@ struct PlatformBindings {
 };
 std::intptr_t platform_handle_message_00bed3b0(void*, std::uintptr_t, std::uint32_t,
     std::uint32_t, std::intptr_t, const PlatformBindings&);
+} // namespace bsp::oct18_tail_c
+
+namespace bsp::oct18_tail_c {
+// Original eight-byte strings and sixteen-byte checked-vector headers. The first
+// vector word is unused by these bodies; begin/end/capacity occupy +4/+8/+C.
+struct TailNativeString { std::uint32_t length; char* data; };
+struct TailCheckedVector { std::uint32_t unused; void* begin; void* end; void* capacity; };
+struct TailStringBindings {
+    void (__thiscall* resize_0041dd40)(void*, std::uint32_t, std::uint32_t);
+    void* (__thiscall* assign_0041e870)(void*, const char*);
+    void* (__thiscall* copy_00426060)(void*, const void*);
+    void (__cdecl* release_00419cc0_00bd1510)(void*, std::uint32_t, std::uint32_t);
+};
+struct WarningDispatchBindings {
+    TailStringBindings strings;
+    void* (__cdecl* allocate_00bf681b)(std::uint32_t);
+    void (__cdecl* free_00bf65ac)(void*);
+    void (__cdecl* delete_array_00bf6989)(void*);
+    int (__cdecl* stricmp_00bf7fbf)(const char*, const char*);
+    void* integer_box_vtable_00d1af2c;
+    void* entity_box_vtable_00d1af24;
+    void* (__thiscall* string_box_0096dc00)(void*, TailNativeString);
+    void* (__thiscall* channel_00980150)(void*, const void*);
+    WarningIteratorPair* (__thiscall* insert_box_009736e0)(TailCheckedVector*,
+        WarningIteratorPair*, WarningIteratorPair, void* const*);
+    void (__thiscall* push_box_00975ea0)(TailCheckedVector*, void* const*);
+    // Assembly: three stack pointers, RET0C; incoming ECX is unused.
+    void (__stdcall* evaluate_0097b8c0)(void*, TailCheckedVector*, TailCheckedVector*);
+    void (__thiscall* append_name_00450540)(TailCheckedVector*, const void*);
+    void (__thiscall* iterator_next_00966960)(WarningIteratorPair*);
+    void* (__thiscall* ancestor_00923810)(void*, std::uint32_t);
+    void (__thiscall* variant_int_00884a00)(void*, std::int32_t);
+    void (__thiscall* variant_entity_00884a90)(void*, void*);
+    void (__thiscall* variant_string_00884fc0)(void*, const void*);
+    void (__thiscall* variant_destroy_00884af0)(void*);
+    void (__thiscall* variant_push_006edf00)(void*, const void*);
+    void (__thiscall* variant_resize_006b88e0)(void*, std::uint32_t);
+    void (__thiscall* lua_call_00887e50)(void*, std::uint32_t, const void*, void*,
+        std::uint32_t, std::int32_t);
+    CheckedIterator checked_iterator_bf6713;
+};
+void warning_dispatch_chat_00985f30(void*, const TailNativeString*, std::int32_t,
+    const TailNativeString*, void* volatile& image_e188a8, const WarningDispatchBindings&);
+void warning_dispatch_hp_00986b00(void*, void*, const TailNativeString*, float, float,
+    void* volatile& image_e188a8, const WarningDispatchBindings&);
+struct HardwareOptionsBindings {
+    std::int32_t (__thiscall* detail_0098df90)(void*);
+    std::uint8_t (__thiscall* supports_0098e0e0)(void*, std::uint32_t, std::uint32_t);
+    CheckedIterator checked_iterator_bf6713;
+};
+char* hardware_default_options_0098e910(void*, const volatile std::uint32_t& image_f8a0e0,
+    const HardwareOptionsBindings&);
+struct IconVisibilityBindings {
+    TailStringBindings strings;
+    void* (__cdecl* delayed_singleton_00ab5700)();
+    // Both callees consume (and release) the by-value NativeString.
+    void (__thiscall* request_00ab5f00)(void*, TailNativeString, void*);
+    void (__thiscall* apply_00ab3840)(void*, TailNativeString, void*);
+    void (__thiscall* placeholder_00ab3b30)(void*);
+    CheckedIterator checked_iterator_bf6713;
+};
+void icon_visibility_changed_00ab6120(void*, std::uint8_t,
+    void* volatile& image_f8d394, const IconVisibilityBindings&);
+} // namespace bsp::oct18_tail_c
+
+namespace bsp::oct18_tail_c {
+// Explicit private-frame preimages: QPC can leave its destination unchanged;
+// a short datagram likewise leaves unread header bytes from a previous receive.
+// No invented zero/clock/socket fallback is supplied by the worker bodies.
+struct NetworkWorkerScratch {
+    std::int64_t discarded_timestamp[2];
+    std::int64_t maintenance_timestamp[2];
+    std::int64_t send_timestamp[2];
+    std::uint32_t receive_address[4];
+    std::uint8_t receive_packet[0x800];
+};
+struct NetworkWorkerImage {
+    volatile std::uint8_t& quit_f8abe0;
+    volatile std::uint8_t& send_active_f8abe1;
+    volatile std::uint8_t& receive_active_f8abe2;
+    void* volatile& clock_1090ab0;
+    void* volatile& current_owner_f8abdc;
+    void* volatile& statistics_f871b4;
+    const volatile float& no_samples_d7a2f0;
+    const volatile float& unsigned_bias_ce3978;
+    const volatile double& latency_cap_cf1748;
+    const volatile float& capped_latency_cf2e4c;
+    const volatile double& round_weight_cf0ac0;
+    const volatile double& round_bias_d7a270;
+    const volatile double& ack_delay_d7a280;
+    const volatile float& zero_d7a218;
+    const volatile double& error_delay_ce6628;
+};
+struct NetworkWorkerBindings {
+    void (__stdcall* sleep_25)(std::uint32_t);
+    std::int32_t (__stdcall* sendto_00a4d55a)(std::uint32_t, const void*, std::uint32_t,
+        std::uint32_t, const void*, std::uint32_t);
+    std::int32_t (__stdcall* recvfrom_00a4d54e)(std::uint32_t, void*, std::uint32_t,
+        std::uint32_t, void*, std::uint32_t*);
+    std::int32_t (__stdcall* last_error_00a4d4e8)();
+    std::uint16_t (__stdcall* htons_00a4d542)(std::uint16_t);
+    void (__thiscall* disconnect_00a3adf0)(void*, float);
+    void (__thiscall* remove_00a3bc60)(void*, const void*);
+    std::int32_t (__thiscall* find_00a3bb30)(void*, const void*);
+    void (__thiscall* activate_00a3baa0)(void*, const void*);
+    void* (__thiscall* select_00a3a8f0)(void*, std::uint8_t*, std::uint8_t*, float, float);
+    void (__thiscall* ack_00a3aab0)(void*, void*);
+    std::uint8_t (__thiscall* enqueue_00a3c1a0)(void*, std::uint32_t, const void*,
+        std::uint32_t, const void*, std::uint32_t, std::uint8_t);
+    void* (__thiscall* classify_00a3b5f0)(void*, const void*, std::int32_t*, std::uint32_t*);
+    void (__thiscall* append_00a3ab30)(void*, void*, std::uint32_t);
+    void (__thiscall* sent_00787b00)(void*, std::int32_t, const void*, std::uint32_t);
+    void (__thiscall* received_00787aa0)(void*, std::int32_t, const void*, std::uint32_t);
+};
+std::uint32_t network_send_worker_00a3c5e0(void*, NetworkWorkerScratch&,
+    const NetworkWorkerImage&, const NetworkWorkerBindings&);
+std::uint32_t network_receive_worker_00a3caf0(void*, NetworkWorkerScratch&,
+    const NetworkWorkerImage&, const NetworkWorkerBindings&);
+} // namespace bsp::oct18_tail_c
+
+namespace bsp::oct18_tail_c {
+struct ResourceStringBindings {
+    TailStringBindings strings;
+    TailNativeString* (__thiscall* concat_004261a0)(const void*, TailNativeString*, const void*);
+};
+struct AtlasParseBindings {
+    ResourceStringBindings text;
+    void (__thiscall* rewind_00af55f0)(void*);
+    std::uint8_t (__thiscall* line_00af5740)(void*, char**);
+    char** (__thiscall* token_00aee3c0)(char**, char**, std::uint32_t);
+    TailNativeString* (__fastcall* canonicalize_00bee390)(TailNativeString*, const TailNativeString*);
+    std::uint32_t (__thiscall* reverse_find_004bcb80)(void*, const char*, std::uint32_t);
+    int (__cdecl* stricmp_00bf7fbf)(const char*, const char*);
+    void* (__cdecl* allocate_00bf681b)(std::uint32_t);
+    void* (__thiscall* item_00aee4d0)(void*, const TailNativeString*, void*, const void*);
+    void (__thiscall* item_params_00aee620)(void*, void*);
+    void (__thiscall* reserve_textures_00735ff0)(void*, std::int32_t);
+    void (__thiscall* reserve_items_00735f90)(void*, std::int32_t);
+};
+std::uint8_t atlas_parse_00aeeaf0(void*, void*, void* volatile& image_f8d394,
+    const AtlasParseBindings&);
+struct FontLoadScratch {
+    // Upper key/pair padding is not initialized by the original. Preserve a
+    // caller-supplied preimage rather than manufacture private stack bytes.
+    std::uint32_t key;
+    std::uint32_t pair[2];
+    std::uint32_t insertion_result[3];
+};
+struct FontLoadBindings {
+    ResourceStringBindings text;
+    void* (__cdecl* allocate_00bf681b)(std::uint32_t);
+    void (__cdecl* free_00bf65ac)(void*);
+    WarningIteratorPair* (__thiscall* lookup_00ad4540)(void*, WarningIteratorPair*, const void*);
+    void* (__thiscall* insert_00ad4aa0)(void*, void*, const void*);
+    CheckedIterator checked_iterator_bf6713;
+};
+void font_load_00ad4c30(void*, const TailNativeString* root, const TailNativeString* dat,
+    const TailNativeString* gfx, const TailNativeString* alpha, const TailNativeString* language,
+    void* volatile& image_f8d394, void* volatile& image_109ceec,
+    FontLoadScratch&, const FontLoadBindings&);
+} // namespace bsp::oct18_tail_c
+
+namespace bsp::oct18_tail_c {
+struct GlyphQuadImage {
+    void* text_pool_f8bdf0;
+    const volatile std::uint16_t* empty_utf16_f8be50;
+    const volatile float& white_d7a24c;
+    const volatile float& vertical_scale_e12fd4;
+    const volatile double& width_cec380;
+    const volatile double& height_cef1b8;
+    const volatile float& shadow_d5c5c0;
+    const volatile float& pivot_ce3800;
+    const volatile double& x_subtract_d7a358;
+    const volatile double& y_subtract_d5c7a8;
+    const volatile double& z_subtract_d7a220;
+    const volatile double& input_x_bias_d06880;
+};
+struct GlyphQuadBindings {
+    TailStringBindings strings;
+    void* (__thiscall* allocate_00ab78a0)(void*);
+    void* (__thiscall* construct_00ab9650)(void*);
+    void (__thiscall* push_child_005dad40)(void*, void* const*);
+    void (__thiscall* set_node_00aa6720)(void*, void*);
+    void (__thiscall* sections_00ab8530)(void*);
+    void (__thiscall* listeners_00aa6bc0)(void*, void*, std::uint32_t);
+    void (__thiscall* font_00ab8c30)(void*, const void*);
+    void (__thiscall* shadow_00ab6c30)(void*, std::uint32_t, std::uint32_t, float, const float*);
+    void (__thiscall* shader_00ab8e70)(void*, const void*);
+    void* (__thiscall* code_unit_00ab81c0)(void*, std::uint32_t);
+    void (__thiscall* content_00aba8d0)(void*, const void*);
+    void (__thiscall* attach_00aaa5a0)(void*, void*, std::uint32_t);
+    void* (__thiscall* position_00aa6750)(void*, float*);
+    void (__thiscall* set_position_00aa8240)(void*, const float*);
+};
+void glyph_quad_00ab98f0(void*, const void* glyph, const float* position,
+    void* writer, std::uint16_t* indices, const void* unused_5, const void* unused_6,
+    std::uint32_t quad_index, std::uint32_t height_word, std::uint32_t first_vertex,
+    std::uint32_t code_unit_word, const GlyphQuadImage&, const GlyphQuadBindings&);
 } // namespace bsp::oct18_tail_c
