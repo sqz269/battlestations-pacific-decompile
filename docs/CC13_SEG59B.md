@@ -195,3 +195,10 @@ STL code, allocators, `_free`, `_memmove_s` and xlen throws: `009063C0`, `009076
 | Address | Name (hypothesis) | Status | Notes |
 | --- | --- | --- | --- |
 | `00915760` | BSP_MissionScoreRecord_Clear | reconstructed | `mission_score_record_clear_00915760`: 25 scalar zeroes, 36 inline tree clears, two 16-bit vector erases (`00BF67A7`) and three string resets (`0041DD40`, 00915E9D). include/bsp/scoring_bodies.hpp:190 says the clear leaves slot+08h and slot+250h alone. In the binary it zeroes both (record+4 at 0091576F, byte record+24Ch at 00915E97); 008BC540 restores them afterwards. |
+
+## Scoring events: component failure and repair
+
+| Address | Name (hypothesis) | Status | Notes |
+| --- | --- | --- | --- |
+| `00913D80` | BSP_MissionScoring_RecordComponentFailure | reconstructed | `scoring_record_component_failure_00913d80`: the Counter_RUA_DBU counter (`005070C0`), the RUA_DBU award (`0050FC30`, `0090EDE0` at 00913F9E), the trace through `004254B0`, and the unit id push (`007265E0`, 009140DB) when the block's c*a + d*b exceeds [unit+370h]. Reached from the component-failure roll at 0093C0DC in normal missions. cc9's host only records the call. It touches only scoring state and the record's +21h flag, and draws no shared RNG. |
+| `00914100` | BSP_MissionScoring_RecordRepairCompleted | reconstructed | `scoring_record_repair_completed_00914100`: GA_PL threshold against `00923BE0` health * 100 (0091418D), then {id, clock [00F876A4]} pushed through `0090E7C0` (00914250). cc9's host marks the 0093CAF1 jump unreached. |
