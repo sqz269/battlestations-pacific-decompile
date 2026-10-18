@@ -1045,7 +1045,7 @@ constexpr std::uint32_t kDogfightTask4FCVtable = 0x00D1F9A8u;
 void* bot_task_dogfight_construct_009a9810(Cc13Seg67bHost& host, void* task, void* bot,
                                            void* arg) {
     bot_task_construct_base_0099c6f0(host, task, bot, 2);
-    host.dogfight_construct_approach_block_009a94e0(ptr(task, 0x3F8), bot, arg);
+    bot_task_dogfight_construct_approach_block_009a94e0(host, ptr(task, 0x3F8), bot, arg);
     at<std::uint32_t>(task, 0x000) = kDogfightTaskVtable;
     at<std::uint32_t>(task, 0x3F8) = kDogfightApproachVtable;
     at<std::uint32_t>(task, 0x4FC) = kDogfightTask4FCVtable;
@@ -2326,7 +2326,7 @@ void* bot_task_level_bomb_construct_009b7990(Cc13Seg67bHost& host, void* task, v
 void* bot_task_dive_bomb_construct_009c7710(Cc13Seg67bHost& host, void* task, void* bot,
                                             void* target) {
     bot_task_construct_base_0099c6f0(host, task, bot, 8);
-    host.dive_bomb_approach_construct_009c73a0(ptr(task, 0x3F8), bot, target);
+    bot_task_dive_bomb_construct_approach_block_009c73a0(host, ptr(task, 0x3F8), bot, target);
     construct_task_tail(host, task, kDiveBombTaskVtable, kDiveBombApproachVtable, 0x4DC,
                         kDiveBombRegistryVtable, 0x4F0, 0x52C);
     return task;
@@ -2966,6 +2966,20 @@ void* bot_task_depth_charge_construct_approach_block_from_stream_009a5000(Cc13Se
 namespace {
 constexpr std::uint32_t kDogfightBlockVtable_00d1f9a4 = 0x00D1F9A4u;
 constexpr std::uint32_t kDogfightRegistryVtable_00d1f9a0 = 0x00D1F9A0u;
+
+// The tail 009A94E0 and 009A9670 share (009A9560-009A9637 and 009A96F2-009A97C9):
+// follow +154h, prepare +1ECh, aim +284h, maneuver +2ACh, attackrun +2ECh,
+// avoid_roll +310h, avoid_turn +338h, then 009A6A60.
+void dogfight_block_tail(Cc13Seg67bHost& host, void* block) {
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x154), block, kHundred_00ce3d08);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x1EC), block, kHundred_00ce3d08);
+    plain_inline_state(block, 0x284, 0x00D1F8D8u);
+    bot_state_dogfight_maneuver_construct_009a84e0(host, ptr(block, 0x2AC), block);
+    bot_state_dogfight_attack_run_construct_009a70e0(host, ptr(block, 0x2EC), block);
+    plain_inline_state(block, 0x310, 0x00D1F918u);
+    plain_inline_state(block, 0x338, 0x00D1F938u);
+    bot_task_dogfight_register_state_names_009a6a60(host, block);
+}
 }  // namespace
 
 // 009A9670 (009A9670-009A97E4). EH frame 00CAE456. 009A6D40(ECX = block, bot,
@@ -2989,14 +3003,7 @@ void* bot_task_dogfight_construct_approach_block_from_stream_009a9670(Cc13Seg67b
     std::uint32_t ref[3] = {};
     host.archive_reader_ref_open_00bd4fe0(archive, ref, name_record(kStrStateMoveTo));
     bot_state_move_to_construct_from_stream_009c2d00(host, ptr(block, 0x118), block, ref);
-    bot_state_follow_construct_009c2980(host, ptr(block, 0x154), block, kHundred_00ce3d08);
-    bot_state_follow_construct_009c2980(host, ptr(block, 0x1EC), block, kHundred_00ce3d08);
-    plain_inline_state(block, 0x284, 0x00D1F8D8u);
-    bot_state_dogfight_maneuver_construct_009a84e0(host, ptr(block, 0x2AC), block);
-    bot_state_dogfight_attack_run_construct_009a70e0(host, ptr(block, 0x2EC), block);
-    plain_inline_state(block, 0x310, 0x00D1F918u);
-    plain_inline_state(block, 0x338, 0x00D1F938u);
-    bot_task_dogfight_register_state_names_009a6a60(host, block);
+    dogfight_block_tail(host, block);
     return block;
 }
 
@@ -3024,6 +3031,111 @@ void* bot_approach_level_bomb_construct_009b75e0(Cc13Seg67bHost& host, void* blo
     bot_state_level_bomb_move_to_construct_009b6c10(host, ptr(block, 0xF0), block, target, near_,
                                                     far_, third);
     level_bomb_block_tail(host, block);
+    return block;
+}
+
+namespace {
+constexpr float kFiveHundred_00ce397c = 500.0f;  // 43FA0000
+constexpr float kThousand_00ce3804 = 1000.0f;    // 447A0000
+}  // namespace
+
+// 009A94E0 (009A94E0-009A9652). EH frame 00CAE3C6. 009A6C10(ECX = block, bot, arg)
+// (009A950A); 00411E20(block+104h) (009A951D); [block] = 00D1F9A4, [block+104h] =
+// 00D1F9A0 (009A9544, 009A9550); 009C2CA0(ECX = block+118h, block, arg, [00CE397C]
+// 500.0, [00CE3D08] 100.0, [00CE3804] 1000.0) (009A9522-009A955B); then the tail
+// shared with 009A9670 (009A9560-009A9637). RET 8, EAX = block.
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_dogfight_construct_approach_block_009a94e0(Cc13Seg67bHost& host, void* block,
+                                                          void* bot, void* arg) {
+    host.bot_approach_dogfight_construct_009a6c10(block, bot, arg);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0x104));
+    at<std::uint32_t>(block, 0x000) = kDogfightBlockVtable_00d1f9a4;
+    at<std::uint32_t>(block, 0x104) = kDogfightRegistryVtable_00d1f9a0;
+    bot_state_dogfight_move_to_construct_009c2ca0(host, ptr(block, 0x118), block, arg,
+                                                  kFiveHundred_00ce397c, kHundred_00ce3d08,
+                                                  kThousand_00ce3804);
+    dogfight_block_tail(host, block);
+    return block;
+}
+
+namespace {
+constexpr std::uint32_t kDiveBombBlockVtable_00d20e08 = 0x00D20E08u;
+constexpr std::uint32_t kDiveBombRegistryVtable_00d20e04 = 0x00D20E04u;
+constexpr std::uint32_t kDiveBombDonePrepareVtable_00d20d28 = 0x00D20D28u;
+
+// 009C7612-009C76C4: the ten registrations into block+E4h, in order.
+constexpr StateNamePair kDiveBombStateNamePairs[] = {
+    {0x00D20DF0u, 0x0F8},  // "moveto (DiveBomb)"
+    {0x00D20DDCu, 0x134},  // "follow (DiveBomb)"
+    {0x00D20DCCu, 0x26C},  // "DiveBomb/done"
+    {0x00D20DBCu, 0x30C},  // "DiveBomb/goaway"
+    {0x00D20DA8u, 0x33C},  // "DiveBomb/aimdive"
+    {0x00D20D94u, 0x35C},  // "DiveBomb/aimglide"
+    {0x00D20D80u, 0x380},  // "DiveBomb/flyabove"
+    {0x00D20D6Cu, 0x1CC},  // "DiveBomb/prepare"
+    {0x00D20D58u, 0x3A4},  // "DiveBomb/turndown"
+    {0x00D20D44u, 0x3C4},  // "DiveBomb/attackrun"
+};
+}  // namespace
+
+// 009C73A0 (009C73A0-009C76DF). EH frame 00CAFC32. 009C3EA0(ECX = block, [bot+50h],
+// target) (009C73CD); 00411E20(block+E4h) (009C73E0); [block] = 00D20E08,
+// [block+E4h] = 00D20E04 (009C740B, 009C7415); 009C2AC0(ECX = block+F8h, block,
+// target, float(+A8h - double [00D7A220] 100.0), +A8h, +B4h) (009C73E5-009C7436);
+// 009C2980(ECX = block+134h, block, 100.0) (009C7451); 009C2980 at +1CCh and at
+// +26Ch, each then given vtable 00D20D28, byte +9Ch = 0 and +98h = -1.0
+// (009C746E-009C74C2). Embedded goaway +30Ch (00D20CA0): +330h = 100.0, +328h =
+// 0.0, +32Ch = float(2 x [[+310h]+B4h]) (009C74CA-009C7523). Embedded aimdive
+// +33Ch (00D20CE8): byte +354h = 0, +358h = 0.0, byte +355h = 1 (009C7529-
+// 009C755F). Embedded aimglide +35Ch (00D20CC8): +378h = 0.0, byte +374h = 0,
+// +37Ch = [00CE3850] 5.0 (009C7566-009C75A4). Embedded flyabove +380h (00D20D04):
+// bytes +398h..+39Bh = 0, +3A0h = 0 (009C75AC-009C75D4). Embedded turndown +3A4h
+// (00D20C84) (009C75D7-009C75F5). 009C4140(ECX = block+3C4h, block) (009C760D).
+// Ten 00411E70 registrations (009C7612-009C76C4). RET 8, EAX = block.
+// UNCERTAINTY: `near` is rounded once at 24 bits in the image; here a double
+// difference is rounded to float. EH unwinding not modelled.
+void* bot_task_dive_bomb_construct_approach_block_009c73a0(Cc13Seg67bHost& host, void* block,
+                                                           void* bot, void* target) {
+    host.bot_approach_dive_bomb_construct_009c3ea0(block, ptr_at(bot, 0x50), target);
+    host.bot_state_registry_construct_00411e20(ptr(block, 0xE4));
+    const float third = at<float>(block, 0xB4);
+    const float far_ = at<float>(block, 0xA8);
+    at<std::uint32_t>(block, 0x000) = kDiveBombBlockVtable_00d20e08;
+    at<std::uint32_t>(block, 0x0E4) = kDiveBombRegistryVtable_00d20e04;
+    const float near_ = static_cast<float>(static_cast<double>(far_) - kHundred_00d7a220);
+    host.bot_state_move_to_construct_009c2ac0(ptr(block, 0xF8), block, target, near_, far_, third);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x134), block, kHundred_00ce3d08);
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x1CC), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x1CC) = kDiveBombDonePrepareVtable_00d20d28;
+    at<std::uint8_t>(block, 0x268) = 0;
+    at<float>(block, 0x264) = kMinusOne_00d7a260_f;
+    bot_state_follow_construct_009c2980(host, ptr(block, 0x26C), block, kHundred_00ce3d08);
+    at<std::uint32_t>(block, 0x26C) = kDiveBombDonePrepareVtable_00d20d28;
+    at<std::uint8_t>(block, 0x308) = 0;
+    at<float>(block, 0x304) = kMinusOne_00d7a260_f;
+    plain_inline_state(block, 0x30C, 0x00D20CA0u);
+    const float b4 = at<float>(ptr_at(block, 0x310), 0xB4);
+    at<float>(block, 0x330) = kHundred_00ce3d08;
+    at<float>(block, 0x328) = kZero_s15;
+    at<float>(block, 0x32C) = b4 + b4;
+    plain_inline_state(block, 0x33C, 0x00D20CE8u);
+    at<std::uint8_t>(block, 0x354) = 0;
+    at<float>(block, 0x358) = kZero_s15;
+    at<std::uint8_t>(block, 0x355) = 1;
+    plain_inline_state(block, 0x35C, 0x00D20CC8u);
+    at<float>(block, 0x378) = kZero_s15;
+    at<std::uint8_t>(block, 0x374) = 0;
+    at<float>(block, 0x37C) = kFive_00ce3850;
+    plain_inline_state(block, 0x380, 0x00D20D04u);
+    at<std::uint8_t>(block, 0x398) = 0;
+    at<std::uint8_t>(block, 0x399) = 0;
+    at<std::uint8_t>(block, 0x39A) = 0;
+    at<std::uint8_t>(block, 0x39B) = 0;
+    at<std::uint32_t>(block, 0x3A0) = 0;
+    plain_inline_state(block, 0x3A4, 0x00D20C84u);
+    bot_state_dive_bomb_attack_run_construct_009c4140(host, ptr(block, 0x3C4), block);
+    register_state_names(host, block, 0xE4, kDiveBombStateNamePairs,
+                         sizeof(kDiveBombStateNamePairs) / sizeof(kDiveBombStateNamePairs[0]));
     return block;
 }
 

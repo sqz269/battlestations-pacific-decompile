@@ -336,3 +336,12 @@ The land and depth-charge task stream constructors now call these bodies directl
 | 009B75E0 | level-bomb approach block | the move-to state gets near = +B0h - 100.0, far = +B0h and a third float +B4h; the rest is the tail it shares with 009B77C0 |
 
 The trailing argument of 009C2AC0, 009B6C10 and 009C2CA0 is a float (009C2AC0 reads it with MOVSS at 009C2B27); the earlier `mode` typing is corrected in the header, the source and the two ledger records.
+
+### 3.21 Dogfight and dive-bomb approach blocks
+
+| Address | Function | Notes |
+|---|---|---|
+| 009A94E0 | dogfight approach block | the move-to state takes 500.0, 100.0 and 1000.0; the rest is the tail it shares with 009A9670 |
+| 009C73A0 | dive-bomb approach block | ten states; DiveBomb/done (+26Ch) and /prepare (+1CCh) share vtable 00D20D28; goaway +32Ch is twice approach+B4h |
+
+The dogfight and dive-bomb task constructors now call these bodies directly.

@@ -175,6 +175,11 @@ public:
     virtual std::uint16_t global_side_index_00f876b8() = 0;
     // 00F87574: a float[3] global (the three floats the condition factory passes).
     virtual float* global_vector_00f87574() = 0;
+    // 009C3EA0: __thiscall(ECX = dive-bomb approach, [bot+50h], target), RET 8.
+    virtual void bot_approach_dive_bomb_construct_009c3ea0(void* block, void* arg,
+                                                           void* target) = 0;
+    // 009A6C10: __thiscall(ECX = dogfight approach, bot, arg), RET 8.
+    virtual void bot_approach_dogfight_construct_009a6c10(void* block, void* bot, void* arg) = 0;
     // 009B44F0: __thiscall(ECX = level-bomb approach, [bot+50h], target), RET 8.
     virtual void bot_approach_level_bomb_construct_base_009b44f0(void* block, void* arg,
                                                                  void* target) = 0;
@@ -217,8 +222,6 @@ public:
     virtual void bot_task_land_switch_state_009b3680(void* task, void* state) = 0;
     // 009CF8E0: __thiscall(ECX = task, owner, flag byte), RET 8, EAX = task.
     virtual void* takeoff_task_construct_009cf8e0(void* task, void* owner, std::uint32_t flag) = 0;
-    // 009C73A0: __thiscall(ECX = task+3F8h, bot, target), RET 8.
-    virtual void dive_bomb_approach_construct_009c73a0(void* block, void* bot, void* target) = 0;
     // 009C7710: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
     virtual void* dive_bomb_task_construct_009c7710(void* task, void* bot, void* target) = 0;
     // 009C2EF0: __thiscall(ECX = task+3F8h, bot, archive), RET 8.
@@ -327,8 +330,6 @@ public:
     // 007B7870: __thiscall(ECX = opportunistic rocket, target, float[3] by value), RET 10h.
     virtual void opportunistic_rocket_set_target_007b7870(void* rocket, void* target,
                                                           const float point[3]) = 0;
-    // 009A94E0: __thiscall(ECX = task+3F8h, bot, arg), RET 8: the dogfight approach block.
-    virtual void dogfight_construct_approach_block_009a94e0(void* block, void* bot, void* arg) = 0;
     // 009F9980: __thiscall(ECX = approach, task), RET 4.
     virtual void bot_approach_bind_to_task_009f9980(void* approach, void* task) = 0;
     // 007B8AD0: __fastcall(ECX = unit), RET, AL.
@@ -760,5 +761,11 @@ void* bot_task_dogfight_construct_approach_block_from_stream_009a9670(Cc13Seg67b
 // 009B75E0: __thiscall(ECX = task+3F8h, bot, target), RET 8, EAX = block.
 void* bot_approach_level_bomb_construct_009b75e0(Cc13Seg67bHost& host, void* block, void* bot,
                                                  void* target);
+// 009A94E0: __thiscall(ECX = task+3F8h, bot, arg), RET 8, EAX = block.
+void* bot_task_dogfight_construct_approach_block_009a94e0(Cc13Seg67bHost& host, void* block,
+                                                          void* bot, void* arg);
+// 009C73A0: __thiscall(ECX = task+3F8h, bot, target), RET 8, EAX = block.
+void* bot_task_dive_bomb_construct_approach_block_009c73a0(Cc13Seg67bHost& host, void* block,
+                                                           void* bot, void* target);
 
 }  // namespace bsp
