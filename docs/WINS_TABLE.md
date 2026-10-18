@@ -853,3 +853,15 @@ mechanism is in the cd761bb52 section above).
   - **IJN08 reference**: z does not capture the HQ (primary 4 `AK`: Mission.HQTable[1] Japanese) in 100000 frames;
     p9_i08_w fails 1124.97 s, s49_i08_i11 1480.32 s, s48_i08_h5 does not end. 20,3 still completes with z.
   - **USN12 20,3**: e7, g44_u12_d and s38_u12_p2 do not end at 36000 frames (d fails the reference at 869.91 s).
+  - **IJN18: the row is now `config/win_orders/ijn18_l67_i18_d.txt`**: EndMission 1911.74 s (reference),
+    2011.84 s (20,3), both after `Crush` (primary 3, every USNShips unit dead), the same end form as s46_i18_a's
+    old win (EndScene not reached, so no guard line is expected). Why a moved: on this exe Zao, the selected unit,
+    drifts from 3.2 to 9.5 km of PhaseOneGoTo between 475 and 1355 s, so phase 1 ends at 1844 s instead of 353 s
+    and every JapShips unit is dead by 2035.86 s. d takes Zao's helm to PhaseOneGoTo at full throttle (phase 1 at
+    333 s) and from frame 7000 sends Zao, Kita2, Asa1 and Asa4 `moveto PhaseTwoGoTo repeat 20` (luaPh2MovieEnd
+    selects a random survivor; the same lines for Kita1, Asa2 and Asa3 are refused because 00645060 rejects
+    them). Phase 2 ends on its 540 s timer at 873 s. Without the phase-2 moves (b: takehelm only; c: moveto repeat 20) every JapShips unit dies in phase
+    2: failed 710.95 s and 884.91 s (their orders are in `cc9-lua52\local`).
+  - **JM08** still fails on HQ capture with every committed plan on this exe: e 1202.10 s, w1 1312.20 s,
+    r12 1130.03 s (plus p2 1259.15 s on fcb6c6fa5, before this lane's flips). LandingShip units reach
+    `Headquarter 01` from 984 s. Not re-planned here; it needs the landing force sunk before 980 s.
