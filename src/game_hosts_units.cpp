@@ -1038,6 +1038,7 @@ struct GameUnitSlot {
     unsigned long long land_final_entries{0};
     unsigned long long land_final_abort_refused{0};
     unsigned long long land_final_park_refused{0};
+    unsigned long long land_final_park_entered{0};
     unsigned long long land_final_ground_refused{0};
     unsigned long long land_final_ground_ticks{0};   // cc9_plane_ground_roll
     // Packet cc9_land_abort_state: land/abort +20h (to standby) and +21h (to park).
@@ -1708,6 +1709,11 @@ struct GameUnitSlot {
     int torpedo_issue_requests_c20{0};
     int torpedo_issue_stage_ticks{0};
     int torpedo_issue_stage_guard_blocked{0};
+    // The first of the five 007CE9FD guards that held: 0 = 007CEA02 app
+    // state, 1 = 007CEA0F unit+9E0h, 2 = 007CEA1C unit+C3Ah, 3 = 007CEA29
+    // unit+5Dh, 4 = 007CEA33-4B unit+900h outside 4..7. Diagnostic only.
+    int torpedo_issue_stage_guard_by[5]{};
+    int torpedo_issue_stage_last_mode_900{-1};
     int torpedo_issue_stage_waiting{0};
     int torpedo_issue_stage_issues{0};
     int torpedo_issue_stage_cleanups{0};
@@ -6381,6 +6387,12 @@ struct GameUnitsHost::Impl {
     // yaw (heading - runway, opposite to park's sense) rests at pi/2 under the
     // host's park <-> abort loop; re-pair with park (docs/SQUADRON_LAND_TASK.md 5v.2).
     static constexpr bool kLandAbortGroundArmBound = false;
+    // Packet p20_land_final_park (docs/OCEAN_WAVE_FIELD.md section 78). 009B3DD9-009B3DF7:
+    // land/final with mode +448h = 4 calls 009B3370 BSP_BotStateLandFinal_ParkRule (final
+    // +20h touched && !(plane+72Ch)->vt[38h]) and on true switches to land/park (+620h)
+    // through 009B3680. True: the edge enters park. False: it is refused, as before.
+    // LABELLED: vt[38h] is read as "airborne", the host's +900h == 7.
+    static constexpr bool kLandFinalParkEdgeBound = false;
     static constexpr bool kLandingLandedArmBound = true;  // ON: all ten LOMP10 planes land (docs/SQUADRON_LAND_TASK.md 5r)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
@@ -9011,6 +9023,30 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     }
     double follow_phase_a_time_sum{0.0};
     static constexpr bool kFollowTrailArmBound = true;  // ON: stage-only, five rows identical (PILOT_MOVETO_TASK)
+    // Packet p20_follow_release_arm (docs/OCEAN_WAVE_FIELD.md section 78). 009C1FD0's
+    // release arm: after the station 009BFD70, a pending release (unit+C25h, 009C1FFD)
+    // or a queued request (unit+C20h > 0, 009C2006) takes 009C200F-009C2063 and returns
+    // BEFORE the follow law (009C2068 009BFEE0, 009C2077 009BEE30): cmd+2D0h = 2,
+    // +2BCh = 0.0, +2C4h = 0.0, +2CCh = 1, +2B4h = [bot+8]+190h, +2B0h = 0, +2D8h = 1.
+    // True: every 009C1FD0 seam takes the arm. False: the plain follow tick runs the
+    // law anyway and the moveto follow returns without the stores, as before.
+    static constexpr bool kFollowReleaseArmBound = false;
+    unsigned long long follow_release_pending_ticks{0}, follow_release_arm_applied{0};
+    // 009C200F-009C2059. +2B4h is [[bot+4]+8]+190h, the class's second TravelSpeed
+    // slot (TravelSpeed x NewTravelSpeedMul, 007D2406; docs/PLANE_CLASS_FIELDS.md).
+    // LABELLED: bot+8 is taken to be the plane's own class descriptor.
+    void follow_release_arm_009c200f(GameUnitSlot& unit) {
+        ++follow_release_arm_applied;
+        unit.plan_state.pitch_mode_2d0 = 2;                          // 009C2015
+        unit.plan_state.pitch_target_2bc = 0.0f;                     // 009C201B
+        unit.plan_state.bank_target_2c4 = 0.0f;                      // 009C2029
+        unit.plan_heading_mode_2cc = 1;                              // 009C2036
+        unit.plan_heading_2c0_written = false;
+        unit.plane_desired_speed_2b4 = retreat_squadron_speed_3a0(unit);  // 009C204C
+        unit.plane_trg_speed_corr_off_2b0 = 0;                       // 009C2052
+        unit.plane_air_brake_mode_2d8 = 1;                           // 009C2059
+        ++unit.plane_speed_commands;
+    }
     unsigned long long trail_arm_calls{0}, trail_arm_raised{0};
     unsigned long long trail_arm_enabled{0}, trail_arm_disabled{0};
     float trail_arm_min_mul{1.0f};
@@ -9357,6 +9393,15 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         const GameUnitSlot* leader = nullptr;
         place_wing_member_on_station_007f23a0(unit, false, &station, &leader, false);
         if (!station.produced || leader == nullptr) return false;
+        // 009C1FFD-009C2063: a pending or queued release takes the level arm and
+        // returns before the law.
+        if (unit.torpedo_release_pending_c25 || unit.torpedo_issue_requests_c20 > 0) {
+            ++follow_release_pending_ticks;
+            if constexpr (kFollowReleaseArmBound) {
+                follow_release_arm_009c200f(unit);
+                return true;
+            }
+        }
         run_follow_law_009bfee0_009bee30(unit, station, *leader);
         if constexpr (kFollowTrailArmBound) {
             // 009C1FFD-009C2006: a pending or queued release returns first.
@@ -29980,6 +30025,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         ++unit_.torpedo_issue_stage_ticks;
                         if (!r.guards_passed) {
                             ++unit_.torpedo_issue_stage_guard_blocked;
+                            const int mode = in.control_mode_900;
+                            const int guard = in.app_state_1fe4 == 2 ? 0
+                                : in.blocked_9e0 ? 1
+                                : in.blocked_c3a ? 2
+                                : in.blocked_5d ? 3 : 4;
+                            ++unit_.torpedo_issue_stage_guard_by[guard];
+                            unit_.torpedo_issue_stage_last_mode_900 = mode;
                             return;
                         }
                         switch (r.arm) {
@@ -33541,8 +33593,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     land_refuse_state("land/abort (final, mode not 4)", 0x009b3dceu);
                                 }
                             } else if (unit_.land_touched_20 && unit_.plane_control_mode_900 != 7) {
-                                ++unit_.land_final_park_refused;
-                                land_refuse_state("land/park (009B3370)", 0x009b3defu);
+                                if constexpr (GameUnitsHost::Impl::kLandFinalParkEdgeBound) {
+                                    land_enter_park_009b21a0();               // 009B3DEF
+                                    ++unit_.land_final_park_entered;
+                                } else {
+                                    ++unit_.land_final_park_refused;
+                                    land_refuse_state("land/park (009B3370)", 0x009b3defu);
+                                }
                             }
                             owner_.done("BotTaskLand::state_rule", 0x009b3cf0u);
                             return;
@@ -35137,6 +35194,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (unit_.torpedo_release_pending_c25 ||
                             unit_.torpedo_issue_requests_c20 > 0) {
                             owner_.record("BotStateFollow::release_arm", 0x009c1ffdu);
+                            ++owner_.follow_release_pending_ticks;
+                            if constexpr (GameUnitsHost::Impl::kFollowReleaseArmBound) {
+                                owner_.follow_release_arm_009c200f(unit_);
+                            }
                             return;
                         }
                         // 009C2068 / 009C2077: 009BFEE0 then 009BEE30(dt).
@@ -40711,6 +40772,9 @@ void GameUnitsHost::report() {
             "min_mul=%.3f bound=%d (009C207C, packet cc9_follow_trail_arm)", host.trail_arm_calls,
             host.trail_arm_raised, host.trail_arm_enabled, host.trail_arm_disabled,
             static_cast<double>(host.trail_arm_min_mul), Impl::kFollowTrailArmBound ? 1 : 0);
+        host.log.notef("summary follow release arm pending=%llu applied=%llu bound=%d "
+            "(009C1FFD-009C2063, packet p20_follow_release_arm)", host.follow_release_pending_ticks,
+            host.follow_release_arm_applied, Impl::kFollowReleaseArmBound ? 1 : 0);
         host.log.notef("summary moveto target speed override calls=%llu target=%llu within=%llu "
             "applied=%llu max_speed=%.2f bound=%d (009C23B0, packet cc9_moveto_target_speed)",
             host.ts_override_calls, host.ts_override_target, host.ts_override_within,
@@ -41788,7 +41852,8 @@ void GameUnitsHost::report() {
                 // printed in both builds so a pair diffs line for line.
                 host.log.notef("  divebomb %-12s rack 006E56F0: single=%d multi=%d "
                     "authored=%d deferred=%d drops=%d ammo=%d dropping=%d gate_refused=%d "
-                    "| stage 007CE9FD: issues=%d guard_blocked=%d C20h=%d C25h=%d",
+                    "| stage 007CE9FD: issues=%d guard_blocked=%d C20h=%d C25h=%d "
+                    "guard_by=%d/%d/%d/%d/%d mode900=%d",
                     slot->row.name.c_str(), slot->rack_single_count,
                     slot->rack_multi_count, slot->rack_rounds_authored,
                     slot->rack_requests_deferred, slot->rack_bomb_drops, slot->rack_ammo,
@@ -41796,7 +41861,10 @@ void GameUnitsHost::report() {
                     slot->torpedo_issue_stage_issues,
                     slot->torpedo_issue_stage_guard_blocked,
                     slot->torpedo_issue_requests_c20,
-                    slot->torpedo_release_pending_c25 ? 1 : 0);
+                    slot->torpedo_release_pending_c25 ? 1 : 0,
+                    slot->torpedo_issue_stage_guard_by[0], slot->torpedo_issue_stage_guard_by[1],
+                    slot->torpedo_issue_stage_guard_by[2], slot->torpedo_issue_stage_guard_by[3],
+                    slot->torpedo_issue_stage_guard_by[4], slot->torpedo_issue_stage_last_mode_900);
                 // 009C7240 / 009C7270, packet cc8_done_state. `placed` counts
                 // the ticks on which the placement stand-in moved the aircraft,
                 // which is zero for a flight LEADER by 009BFD70's own refusal -

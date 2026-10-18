@@ -3123,3 +3123,31 @@ Landed on agent/cc9-physics1 after 4341b23c2: 888960641 / af8206868 (lead per-op
    faithful body lands, so it is not wired twice.
 Run tools as section 72 lists; `local\p19_rel32.py <hex>` scans the PE for rel32 calls/jumps and absolute dwords to
 an address. Export trees `local\p19_*` are kept (no reparse points; drive J has over 1 TB free).
+
+## 78. The stuck release request; 009C1FD0's release arm; final -> park (cc9-physics20, 2026-10-18)
+
+**The stuck release (USNOS `l65_os_c1`) is faithful.** The divebomb stage line now splits `guard_blocked` by the
+first 007CE9FD guard that holds (`guard_by=` app 007CEA02 / +9E0h 007CEA0F / +C3Ah 007CEA1C / +5Dh 007CEA29 /
++900h 007CEA33-4B) and prints the last blocked +900h. Diagnostic run `local\p20_os_diag.log` (30000 fr, reference
+env, orders `cc9-lua52\local\l65_os_c1.txt`, working-tree build of this section's first commit): the two rows left
+with C20h = 1, C25h = 1 are `Essex_sqn05|.-II` (`guard_by=0/0/97/0/43`, died 425.27 s) and `Intrepid_sqn22|.-II`
+(`0/0/109/0/43`, shot down by Cargo7 at 954.64 s, alt 117 m, right after its first bomb). The 43 are the deck ticks
+(+900h = 2, before launch); everything after is +C3Ah, which the death-message tail 007D1314 raises
+(`kPlaneDeathModesBound`). A dead plane's request is never spent in the image either; no host change.
+
+**009C1FD0's release arm, `kFollowReleaseArmBound` (OFF).** `disasm-raw 009C1FD0`: after 009BFD70 (false ->
+009C234E), `CMP byte [unit+C25h],0` (009C1FFD) / `CMP [unit+C20h],0; JLE` (009C2006) take 009C200F-009C2063:
+cmd+2D0h = 2, +2BCh = 0.0, +2C4h = 0.0, +2CCh = 1, +2B4h = `[[bot+4]+8]+190h` (the class's TravelSpeed x
+NewTravelSpeedMul slot, 007D2406), +2B0h = 0, +2D8h = 1, then `RET 4` before 009BFEE0 / 009BEE30. The host's
+plain follow tick ran the law unconditionally (it gated only the trail arm and sight search) and the moveto follow
+returned without the stores. True: both seams take the arm. LABELLED: bot+8 is read as the plane's own class.
+`summary follow release arm pending= applied=` counts it in both builds.
+Prediction: wingmen holding a queued or pending release (dive / level bombers between the request and the issue)
+fly level at travel speed instead of station-keeping; the number of such ticks is small (a release spends C20h
+within one interval), except for planes whose request is never spent.
+
+**009B3DD9's final -> park edge, `kLandFinalParkEdgeBound` (OFF).** `disasm-raw 009B3DB2`: final (+5F8h) with
+mode +448h = 4 calls 009B3370 `BSP_BotStateLandFinal_ParkRule` (`final+20h != 0 && !(plane+72Ch)->vt[38h]()`) and
+on true switches to +620h land/park through 009B3680 (009B3DE6-009B3DEF). The host refused it while park was ON.
+True: the edge calls `land_enter_park_009b21a0`. LABELLED as before: vt[38h] is the host's +900h == 7. Prediction:
+only a touched-down plane whose +900h is neither 4/5 (the earlier park arm) nor 7 reaches it, so few planes.
