@@ -426,7 +426,7 @@ inline constexpr bool kLuaSetSubmarineAirSupplyBound = true;
 // speed), 009BC909 (move-on-path), 009C97E4 (retreat moveto). True: the script
 // orders host stores the quadruple and those readers take it. False: the row
 // stays unimplemented and every reader keeps the class value.
-inline constexpr bool kLuaSquadronSetTravelSpeedBound = false;
+inline constexpr bool kLuaSquadronSetTravelSpeedBound = true;  // ON: SQUADRON_LAND_TASK 5in
 
 // Packet cc9_periscope_out (docs/GUNNERY_OPEN_ITEMS.md section 38). True: each seeded
 // submarine with a periscope node runs 00854650's mast arm once per force step.

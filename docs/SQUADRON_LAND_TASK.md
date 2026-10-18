@@ -18041,3 +18041,24 @@ rewrites it. No shipped mission passes `force`.
 - BSM09: the LexKillerGang squadrons fly their approach to Lexington at 55.6 m/s instead of TravelSpeed x 1.6
   until the second task change of a member. Their attacks on Lexington come later, so Lexington's sinking moves.
 - Rows with no caller are identical: USN01, USN02, LOMP06, LOMP10, USN12, PRCP01, IJN08 and JM08 do not call it.
+  Correction: USN01's script does call it (usn_01 1225 and 1412, the bomber and fighter refresh), but the WIN plan
+  never reaches either line. Across the 03d3df7f8 re-time logs the only WINS row that counts a call is BSM09 (5).
+
+## 5in. SquadronSetTravelSpeed pairs and flip (cc9-lua68, 2026-10-18)
+
+Exports `cc9-lua52\local\l68_ts_off` and `l68_ts_on` (both ac6536f82, the second with the switch true), reference
+env; logs `cc9-lua52\local\l68r_<b9s|w_b9|b4|l3>_ts_<off|on>_ref.log`.
+
+| Mission | OFF | ON | what moved |
+|---|---|---|---|
+| BSM09 (`l65_b9_c`) | failed 222.06 s | failed 222.06 s | 5 LexKillerGang D3A sets at 55.6 m/s; reverts 22.40-27.30 s; D3A deaths up to 3 s apart, shots 11724 -> 11624. Lexington still sinks at 154.80 s, Yorktown at 218.86 s |
+| BSM04 (no plan) | failed 84.05 s | failed 90.05 s | Wildcat and B-17 at 41.7 m/s, Donald at 50 m/s; Wildcat reverts 38.80 s, Donald 60.70 s, B-17 keeps it; first hit 74.85 -> 82.00 s, Donald killed 84.00 -> 89.80 s |
+| LOMP03 (no plan) | no end | no end | eight Kate / Val / Zero squadrons at 65.3 m/s; first hit 160.76 -> 165.01 s; 61 deaths both, all retimed |
+
+- Every moved number traces to the stored speeds: each ON log has one `SquadronSetTravelSpeed:` line per script call
+  and a `back to the class value` line per revert, and the moved deaths are of the slowed squadrons or of the units
+  they engage.
+- The BSM09 prediction was wrong in one part: the reverts come about 20 s after the call, long before the attacks,
+  so Lexington's sinking does not move.
+- **Flipped**: `kLuaSquadronSetTravelSpeedBound = true` by mechanism. No winning WINS row reaches the native, and the
+  switch changes nothing until a script stores a speed.
