@@ -3087,3 +3087,9 @@ and the releases do not, because the stage spends +C20h either way.
   PartAnims.Wings). So ON, every bay would stay shut, and a pair would be identical because nothing reads the
   channel. Next step before a flip: find channel C's enabling writer in the class setup (the bay-door part's
   PartAnims entry next to 007EABC0) and bind it; then this switch removes only the force for classes without one.
+- **Enabler bound under the same switch.** 007EABC0's arm after the wings one (decompile, `0x5f4`): with
+  class+5F4h set it writes +60h = 1 (enabled), +61h = 0 (target), +64h = 0 (value), +6Ch = 1/class+5F0h (rate),
+  +70h/+74h = class+5ECh/+5E8h. `wing_fold_class_007eabc0` now does that from `PartAnims.BayDoor` (007D3B06 reads it
+  into class+5E8h) when the switch is ON, with the wings arm's substitution (the live VehicleClass table at the
+  first block step; every plane taken as animated). So ON: a bay-door class opens its bay at the request and a class
+  without one keeps channel C shut while +C20h still rises. `bay_door_classes=` in the summary counts the enables.

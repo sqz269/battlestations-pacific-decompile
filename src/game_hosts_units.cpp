@@ -6798,8 +6798,10 @@ struct GameUnitsHost::Impl {
     // 007BBBA6-007BBBB0 skips the bay writes and still reaches 007BBC00's +C20h
     // raise; the rack stage spends +C20h either way. False: the host enables
     // channel C (rate 1.0) before the request, so the bay opens.
+    // With it, wing_fold_class_007eabc0 enables channel C from PartAnims.BayDoor
+    // as 007EABC0 does (class+5F4h), so only a class without bay doors keeps it shut.
     static constexpr bool kBayRequestNoForceEnableBound = false;
-    unsigned long long bay_channel_disabled_requests{0};
+    unsigned long long bay_channel_disabled_requests{0}, bay_door_classes{0};
     // Packet cc9_release_issue_stage_vals, docs/RELEASE_ISSUE_STAGE.md section
     // "Vals": the dive bomber's bomb leaves the same rack through the same stage.
     // 007BBBA0 raises unit+C20h once per round (the aimglide's 009C5771-009C5784
@@ -14786,6 +14788,24 @@ void GameUnitsHost::Impl::wing_fold_class_007eabc0(GameUnitSlot& u) {
     if (!bsp::unit_is_kind_of(u.class_id, 0x0f)) return;
     float first = 0.0f, second = 0.0f, third = 0.0f;
     bool has_third = false;
+    if constexpr (kBayRequestNoForceEnableBound) {
+        // 007EABC0's next arm: channel +60h (the host's channel_c) enabled from
+        // class+5F4h (PartAnims.BayDoor present, 007D3B06), target 0, value 0,
+        // rate 1/class+5F0h. Same substitution as the wings arm below.
+        if (lua.read_vehicle_class_part_anim(u.row.type_id, "BayDoor", first, second, third,
+                has_third)) {
+            const float bay = has_third ? third
+                : bsp::plane_class_part_anim_duration_007d3883(first, second);
+            bsp::PlaneActuatorChannel& b = u.actuator_block_dec.channel_c;
+            b.enabled = true;
+            b.target = false;
+            b.value = 0.0f;
+            b.rate = 1.0f / bay;
+            ++bay_door_classes;
+        }
+        first = second = third = 0.0f;
+        has_third = false;
+    }
     if (!lua.read_vehicle_class_part_anim(u.row.type_id, "Wings", first, second, third,
             has_third)) {
         return;
@@ -40650,8 +40670,9 @@ void GameUnitsHost::report() {
                 "(007D99C0, 006BCC0A, packets p19_fwd_speed / p19_lead_ops)",
                 host.forward_speed_deck_terms, Impl::kPlaneForwardSpeedDeckTermBound ? 1 : 0,
                 Impl::kCarrierLandingLeadFloatOpsBound ? 1 : 0);
-            host.log.notef("summary bay request disabled channel C=%llu no_force_bound=%d "
-                "(007BBBA6, packet p19_bay_force)", host.bay_channel_disabled_requests,
+            host.log.notef("summary bay request disabled channel C=%llu bay_door_classes=%llu "
+                "no_force_bound=%d (007BBBA6, 007EABC0, packet p19_bay_force)",
+                host.bay_channel_disabled_requests, host.bay_door_classes,
                 Impl::kBayRequestNoForceEnableBound ? 1 : 0);
             host.log.notef("summary moveto cruise by_ordnance=%llu bound=%d leg separations=%llu "
                 "bound=%d (009C3650, 009BEC85, packet p16_moveto_cruise)",
