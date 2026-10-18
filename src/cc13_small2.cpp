@@ -50,7 +50,8 @@ void* unit_director_path_object0_00778860(void* unit, Small2Host& host) {
 // (+ACh) is copied before the pose refresh; the entity's world position is +FCh..+104h.
 // At the main thread's 24-bit precision every x87 step is a float store or a float-rounded
 // product, so float arithmetic reproduces it; a fixed-step job at 53 bits would round the
-// products and the sum once, at the FSTP (00779F39), instead (uncertain which applies). Sum order from the listing: (dx*dx + dy*dy) + dz*dz.
+// products and the sum once, at the FSTP (00779F39), instead (uncertain which applies).
+// Sum order from the listing: (dx*dx + dy*dy) + dz*dz.
 float unit_distance_to_record_00779eb0(void* entity, void* const* record, Small2Host& host) {
     const float px = at<float>(*record, 0xAC);                         // 00779EB9
     const float py = at<float>(*record, 0xB0);                         // 00779ECB
@@ -205,8 +206,8 @@ LuaObject* unit_lua_this_table_entry_0077cd80(void* unit, LuaObject* out, Small2
 // game's +193Ch byte, marks the recon slot of each of the three +1F0h rows (34h apart) with a
 // positive count (row+8 selects row+0 or row-4), and when the kill cause +70h is 1 ("harm";
 // 00926C80 writes 1 at 00926CF0 or copies the parent's cause at 00926CEB; 0077A650 kills
-// with cause 3) and there is a script handle (word +2C8h) sets self.LastBanto = thisTable entry of the +2B0h record under the
-// mission-entity lock (critical section [lock+4], depth +18h). Then 00929B60.
+// with cause 3) and there is a script handle (word +2C8h) sets self.LastBanto = thisTable
+// entry of the +2B0h record under the mission-entity lock (critical section [lock+4], depth +18h). Then 00929B60.
 void unit_instance_on_killed_lua_0077d270(void* unit, Small2Host& host) {
     at<std::uint8_t>(host.global_ptr(kGame), 0x193C) = 0;                      // 0077D295
     for (std::int32_t i = 0; i < 3; ++i) {                                     // 0077D29C..0077D2C4
@@ -507,8 +508,12 @@ void* multi_score_construct_00780db0(void* object, std::uint32_t id, Small2Host&
 // / +5Eh clear). Projects the unit's world position (y forced to 0 for a kind-8 unit under
 // 00852860 while the [game+1ED4h] entity's y is > 0) through 006395E0 into a, b, c, d (a is
 // written into the unit argument's own stack slot), then emits a box marker on the 006407A0(0)
-// sink: 0063C620(&quad, 3, 0, 1, unit->vtable[10h](), 0, NativeString "" by value, 0.0f,
-// {a, b, a, d}, 0), quad = (a, b), (a, d), (c, d), (c, b). 14 stack dwords, RET 38h.
+// sink with the pkt642 contract of 0063C620: corners = (a, b), (a, d), (c, d), (c, b);
+// group 3; show 0; text_mode 1; text = unit->vtable[10h](); unit null; distance "" by value;
+// scale 0.0f; colour = {a, b, a, d} (the binary copies the projected values into the colour
+// slot); flag 0. 14 stack dwords, RET 38h. Only four corner pairs are written here (frame
+// +18h..+34h); the contract's fifth pair would be this frame's SEH record at +38h, which the
+// show-0 path is assumed not to read (unverified).
 void hud_markers_add_unit_part_markers_00641e30(void* markers, void* unit, Small2Host& host) {
     void* const parent = host.entity_ancestor_00923810(unit, 1);              // 00641E55
     if (parent != nullptr && host.entity_is_kind_5c(parent, kUnitKind06) &&
@@ -528,14 +533,15 @@ void hud_markers_add_unit_part_markers_00641e30(void* markers, void* unit, Small
     }
     float a = 0.0f, b = 0.0f, c = 0.0f, d = 0.0f;
     host.hud_markers_project_part_bounds_006395e0(markers, point, unit, &a, &b, &c, &d);  // 00641F6C
-    const float quad[8] = {a, b, a, d, c, d, c, b};                           // 00641F8C..00641FE9
-    const float box[4] = {a, b, a, d};                                         // 00641F96..00641FC5
+    const float corners[8] = {a, b, a, d, c, d, c, b};                        // 00641F8C..00641FE9
+    const float colour[4] = {a, b, a, d};                                      // 00641F96..00641FC5
     NativeString empty{0, nullptr};
     host.native_string_assign_cstr_0041e870(
         &empty, static_cast<const char*>(host.global_address(kEmptyCString)));  // 00641FEF
     const char* const name = host.entity_name_10(unit);                       // 00642005
     // The by-value string is owned by 0063C620 from here (EH state -1 at 00642015).
-    host.hud_marker_emit_box_0063c620(sink, quad, 3, 0, 1, name, 0, empty, 0.0f, box, 0);
+    host.hud_marker_emit_box_0063c620(sink, corners, 3, 0, 1, name, nullptr, empty, 0.0f, colour,
+                                      0);
 }
 
 // 00645BB0 __thiscall(listener, unit, event, candidate) RET 0Ch, slot +0Ch of the HUD-root
