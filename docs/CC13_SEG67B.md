@@ -535,6 +535,8 @@ The byte fields in these saves (inattackrange, insideAttackRange and bayDoorStat
 - **009CA2B0 and 009CD300**: the retreat and strafe factories. Each calls operator new (564h and 6FCh bytes) and then the constructor. 009CD300 calls the local 009CC230.
 - **009CA780**: re-arms the strafe target reference from the strafe row, runs the 009FA260 pick, and hands the point to the opportunistic rocket (007B7870). cc9 models it inline without the 007B7870 tail.
 - **009CC5B0**: the strafe task's state set.
+- **009D4E30**: the torpedo factory. It calls operator new (7DCh bytes) and then the local 009D3050.
+- **009DDBA0**: Ghidra matched this to the library's `~SubAllocator`, but it is game code. It runs `eh vector destructor iterator` over the ship AI's two path plans at +60h (68h bytes each, destructor 009DBDB0), and only the unwind funclets 00CB0630 and 00CB06C0 reach it.
 
 ## 4. Ledger-only records (packet cc13-seg67C)
 
@@ -562,3 +564,11 @@ The byte fields in these saves (inattackrange, insideAttackRange and bayDoorStat
 | 009CFA80 | `takeoff_altitude_floor_009cfa80` | matches, with the host's labelled layer substitution |
 | 009CFB60 | `takeoff_slow_leave_009cfb60` | matches; the host takes the first arm (+AA0h carried as 0) |
 | 009CFC70 | `takeoff_rule_009cfc70` | matches; the image returns with RET 4 |
+| 009D31B0 | `aim_hold_009d31b0` input | matches |
+| 009D57E0 | `static_zone_blocks_009d57e0` | matches |
+| 009D66B0 | the pass-side queue entry in `post_pass_side_009d8c60` | matches the message's content (observed id, side) |
+| 009D8C60 | `clear` and `post_pass_side_009d8c60` in `ship_ai_neighbour_clips.cpp` | matches |
+| 009DA0D0 / 009DDBC0 | `hold_009da0d0` / `replan_finish_009ddbc0` | matches the block copies; the station block's field mapping was not re-derived |
+| 009DA690 | the find lambda in `deliver_pass_side_messages` | matches |
+| 009DA8D0 | `tail_009da8d0` | matches; the NaN dt arms differ |
+| 009DBBC0 | `list_element_009dbbc0` | matches |

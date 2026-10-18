@@ -205,6 +205,8 @@ public:
     // 009FA260 BSP_BotApproachTargetRef_PickBodyFrameAimOffset: __thiscall(ECX = target
     // reference), RET.
     virtual void approach_ref_pick_aim_offset_009fa260(void* ref) = 0;
+    // 009DBDB0 BSP_ShipAiPathPlan_DestructBody: __thiscall(ECX = path plan), RET.
+    virtual void ship_ai_path_plan_destruct_009dbdb0(void* plan) = 0;
     // object->vtable[0](), no stack arguments, EAX.
     virtual void* object_vcall_00(void* object) = 0;
     // 004BEF00: __thiscall(ECX = observer, subject), RET 4: zeroes the observer and
@@ -922,5 +924,9 @@ void bot_approach_strafe_rearm_target_point_009ca780(Cc13Seg67bHost& host, void*
 void bot_task_strafe_set_state_009cc5b0(Cc13Seg67bHost& host, void* task, void* state);
 // 009CD300: __fastcall(ECX = bot, EDX = target), RET, EAX = the new strafe task or 0.
 void* bot_task_make_strafe_009cd300(Cc13Seg67bHost& host, void* bot, void* target);
+// 009D4E30: __fastcall(ECX = bot, EDX = target), RET, EAX = the new torpedo task or 0.
+void* bot_task_make_torpedo_009d4e30(Cc13Seg67bHost& host, void* bot, void* target);
+// 009DDBA0: __fastcall(ECX = ship AI), RET: the EH cleanup of the two path plans at +60h.
+void ship_ai_destruct_path_plans_009ddba0(Cc13Seg67bHost& host, void* ai);
 
 }  // namespace bsp

@@ -4932,4 +4932,23 @@ void* bot_task_make_strafe_009cd300(Cc13Seg67bHost& host, void* bot, void* targe
     return bot_task_strafe_construct_009cc230(host, t, bot, target);
 }
 
+// 009D4E30 (009D4E30-009D4E95). EH frame 00CB041B. t = operator new(7DCh) (009D4E51);
+// null -> 0; else 009D3050(ECX = t, bot, target) (009D4E6D).
+// UNCERTAINTY: EH unwinding not modelled.
+void* bot_task_make_torpedo_009d4e30(Cc13Seg67bHost& host, void* bot, void* target) {
+    void* const t = host.operator_new_00bf681b(0x7DC);
+    if (t == nullptr) return nullptr;
+    return bot_task_torpedo_construct_009d3050(host, t, bot, target);
+}
+
+// 009DDBA0 (009DDBA0-009DDBB2), labelled `~SubAllocator` by Ghidra's library match but
+// game code: `eh vector destructor iterator`(ai+60h, 68h, 2, 009DBDB0) (00BF7C6E at
+// 009DDBAD), which destroys the two path plans last to first. Reached only from the
+// unwind funclets 00CB0630 and 00CB06C0.
+void ship_ai_destruct_path_plans_009ddba0(Cc13Seg67bHost& host, void* ai) {
+    for (std::size_t i = 2; i-- > 0;) {
+        host.ship_ai_path_plan_destruct_009dbdb0(ptr(ai, 0x60 + 0x68 * i));
+    }
+}
+
 }  // namespace bsp
