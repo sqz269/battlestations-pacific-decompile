@@ -1646,4 +1646,26 @@ void record4c_resize_tail_0074be90(std::uint8_t* vector, std::uint32_t n, Landin
     host.record4c_resize_0074ba20(vector, n, fill);
 }
 
+// ---- LandConvoy member vector kill (packet cc13-convoy) ---------------------
+
+void land_convoy_kill_member_vector_00742210(std::uint8_t* convoy, bool hard, LandConvoyKillVectorHost& host) {
+    // 0074222D MOV BL,[ESP+14h]; 0074226C..00742271 SETNE / ADD 1.
+    const std::int32_t cause = hard ? 2 : 1;
+    const auto check = [&](std::size_t i) {
+        if (!(i < host.member_slot_count(convoy))) host.invalid_parameter_noinfo_00bf6713();
+    };
+    for (std::size_t i = 0;; ++i) {
+        if (i == host.member_slot_count(convoy)) break;             // 00742231, 00742247
+        check(i);                                                    // 0074224B
+        if (host.member_slot(convoy, i) != nullptr) {                // 00742255
+            check(i);                                                // 0074225A
+            if (std::uint8_t* member = host.member_slot(convoy, i); member != nullptr) {  // 00742264
+                host.mission_entity_kill_00926d90(member, cause);   // 00742275
+                host.null_member_slot(convoy, i);                    // 0074227A
+            }
+        }
+        check(i);                                                    // 00742280
+    }
+}
+
 }  // namespace bsp::cc13_seg41

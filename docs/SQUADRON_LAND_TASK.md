@@ -18106,3 +18106,73 @@ Exports `cc9-lua52\local\l68_prt_off` / `l68_prt_on` (7d83becdd, the second with
 - The first hit is 120.90 s on both sides; the deaths move after the two destroyers start phase 2 beside Chikuma.
 - Every completion logs the guard.
 - **Flipped**: `kPutRelToBound = true` by mechanism. PRCP01 still completes on both seeds.
+
+## 5iq. Handoff (cc9-lua68, 2026-10-18, at about 75% context)
+
+Lane: LUA/PLANES, WINS keeper. Tree `J:\PROG\battlestations-pacific-decompile-cc9-lua52` (agent/cc9-lua52).
+
+**Landed on the branch this run:**
+- bbd6e7c79 USN02 `usn02_l68_u2_a`, 763f1fdf3 USN12 `usn12_l68_u12_e8` (WINS rows);
+- ac6536f82 SquadronSetTravelSpeed OFF, be691fb5b ON (5im, 5in);
+- 7d83becdd PutRelTo OFF, 345d6957c ON (5io, 5ip);
+- the WINS_TABLE "Re-time on 03d3df7f8" entry.
+
+**Open, in the lead's order:**
+- IJN08 reference: the z plan never takes the HQ; a / b (`local\l68_i08_gen.py`) add nothing because Kinugasa and
+  Furutaka are dead before 36500. A next plan has to keep a cruiser alive for CB3 or get Maru2's craft out before
+  3715 s (WINS_TABLE note).
+- JM08: the 8 craft from USTroopTransport 01 (unit 353) launch at about 790 s and land 1037-1075 s; they must die
+  before they land. AP01 launch-priority and torpedo plans (q1-q3, r1, r2) fail at 1222-1285 s.
+- USN15 (ships59's Fuso verdict), BSM09 reference (physics20's kHelmPlaneMovetoBound), BSM01, USNOS (ships59's plan).
+- Low priority not done: LastBanto (needs the unit+2B0h record the host lacks; the readers only pick the
+  failure-camera entity), SquadronSetHomeBase, SetRace (no WINS row reaches either in the 03d3df7f8 logs), and the
+  HUD natives DisplayUnitHP / HideUnitHP / BlackBars (presentation only; DisplayScores / HideScoreDisplay are already
+  on main).
+
+**Tools** (all `local\l68_*`): `l68_runs.ps1` (row table, `-Jobs row:variant:env`), `l68_queue.ps1` (file-driven
+queue over `l68_jobs.txt`; `l68_hold` pauses it, `l68_stop` ends it), `l68_addjob.ps1 [-Front]`, `l68_sum.py
+[pattern]`, `l68_scan.py <log> [regex] [--text Name]`, `l68_rows.txt` (extra rows). Variant `<v>` runs
+`local\l68_<v>\build\win32\Release\bsp_game.exe`.
+
+**Queue for cc9-lua69** (the lead's messages that arrived after the WINS entry above; in the lead's order):
+1. USN01 win check: cc9-gunnery52 saw `usn01_p8_u1_i` not complete in 30000 frames on a8d54817d. The lua68
+   re-time completed USN01 at 405.02 / 415.02 s on 03d3df7f8 with the row's plan (`l65_u1_g`, `l68_runs.ps1` row
+   `w_u01`); check which plan file gunnery52 ran, then run the row once on current main and bisect only if it fails.
+2. BSM09: `cc9-lua52\local\l67_b9_d1.txt` completes with kHelmPlaneMovetoBound ON (physics20: EndMission 408.02 s,
+   log `cc9-physics1\local\p20b_helm_bsm09d1.log`, stopped before the guard line). Commit it as
+   `config/win_orders/bsm09_l68_b9_d1.txt`, run reference and 20,3 with a longer `--stop-after-end`, confirm the
+   guard line, update the BSM09 row.
+3. kVehicleClassPreloadCc15Bound flip: confirming pair on BSM09 with b9_d1 (OFF vs ON, same main); cc15 saw 617 rows
+   purged, EndMission 411.02 s, 0 script_nil_reads / lua_errors. Leave kVehicleClassMovieStopPurgeCc15Bound OFF.
+4. kMissionRecordMergeBound flip: USN01 OFF vs ON (ON log has the `MissionRecord::commit_009205e0` dump line); fix
+   the OFF-branch comment "the increment at 00920604" to 009205FE in the same commit.
+5. HUD ship-screen apply-unit flip (kHudShipScreenApplyUnitBound + Lua + Widgets sub-switches), USN01 all OFF vs
+   all ON; keep the class+70h = row type_id caveat in the doc.
+6. JM08: cc13 showed the HQ dies to US naval gunfire (Missouri 16" 5605 HP, 5" 2125, Helena 1503, LST 427), sent by
+   prcpjm08.lua CheckAP1..6 `NavigatorAttackMove(..., HQ)` at 771 / 926, and audited it as faithful. Re-plan so the
+   CheckAP ships stay off Headquarter 01 (two tries at most); otherwise record JM08 as a faithful loss with log
+   `cc9-lua52\local\l68r_j8r2_m1_ref.log`.
+7. USN04 Blackout re-arm loop (usn_19_coralus.lua 569-586 re-calls Blackout every 2.5 s, resetting 005B9BA0's 3 s
+   countdown): verify the whole native path for a re-arm refusal before calling it a script knife edge.
+8. IJN08 reference (above), and the power-up item (check AddPowerup reach first).
+Main moved many times after 03d3df7f8 (physics, gunnery, SETCMD quantisation pending): re-time every row on one
+current main and note the base sha per row.
+
+## 5ir. Switch flips on main 011d651dc (cc9-lua69, 2026-10-18)
+
+Pairs are same-main (011d651dc), reference env, OFF = the tree build, ON = `tools/pair_export.py` exports
+`local\l69_<v>`; logs `cc9-lua52\local\l69r_<row>_<main|v>_ref.log`.
+
+| switch(es) | row | pair_diff | ON-only evidence |
+| --- | --- | --- | --- |
+| `kVehicleClassPreloadCc15Bound` (`l69_vc`) | BSM09 `bsm09_l68_b9_d1`, EndMission 327.04 s both sides | 1, gameplay identical | 617 rows purged, script_nil_reads 0, lua_errors 0 |
+| `kHudShipScreenApplyUnitBound` + `...LuaBound` + `...WidgetsBound` (`l69_hud`) | USN01 `usn01_l65_u1_g` (no end on this main) | 1, gameplay identical | 0064AE20 concrete; 00818300 / 0059CB90 / 0064B023 recorded once each; HUD sprite quads only |
+| `kWarningMessageBankCc15Bound` (`l69_wb`) | USN01 `usn01_l65_u1_g` | 1, gameplay identical | Warnings.lua table, 445 hit and 5 kill reports queued |
+
+All three flipped ON. Caveat kept for the HUD Lua sub-switch: the VehicleClass row is keyed by class+70h taken as the
+row's type_id, inferred and not traced. `kMissionRecordMergeBound` is not paired on USN01, because USN01 does not end
+on this main and never reaches the 009205E0 commit; its pair runs on BSM09 d1 instead.
+
+**`kMissionRecordMergeBound` ON** (`l69_mr`, BSM09 `bsm09_l68_b9_d1`, EndMission 327.04 s both sides): pair_diff exit 1,
+gameplay identical (49 death rows, 90-row unit table). ON only: `MissionRecord::commit_009205e0 key=BSM09 count_284=1
+completed_00=1 ...`. The OFF-branch comment in src/mission_result.cpp now names the ADD at 009205FE (was 00920604).

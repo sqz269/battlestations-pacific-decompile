@@ -3635,3 +3635,66 @@ Bytes (`disasm-raw`, reviewer-confirmed in the brief):
 The host's two ticks only recorded the arm and returned, so the previous tick's pitch, bank and heading commands stood. Switch **kMoveToC25ArmBound**, committed OFF: when set, it makes the four stores (and drops the heading-written latch, as follow_release_arm_009c200f does). The native table shows `BotStateMoveTo::c25_arm` / `BotStateMoveToCircle::c25_arm` as concrete on ON.
 
 Predictions: unreached on USN04 and USN21 (no moveto tick with C25h set). The reach candidate is USNOS `l65_os_c1` (`Intrepid_sqn22|.-II`, C20h = C25h = 1, section 78). Where it is reached, the plane levels (pitch target 0, mode 2) and holds heading mode 1 while the request is pending. The dive bombers' drop timing moves only if a moveto tick runs with the request pending.
+
+**89, result: kMoveToC25ArmBound ON (faithful, unreached).** Exes built at 2cacdab2f (`local\p22c_off`, `local\p22c_on`). USNOS `l65_os_c1` 30000 fr (`local\p22c_{off,on}_os.log`) is identical apart from noise (pair_diff 0). It runs 2890 moveto state ticks, but no moveto or circle tick runs with C25h set; the c25_arm record never appears. USN21 `s46_u21_f` (`local\p22c_{off,on}_u21f.log`) is gameplay identical and has no moveto tick at all. The four stores are read from the bytes, so the switch is flipped ON, unreached. A reach needs a moveto-command task on a plane with a pending release.
+
+## 90. The moveto tick head, the level-bomb goaway order, the +2B0h clears (cc9-physics22, 2026-10-18)
+
+- **kMoveToTickHeadBound** (OFF). 009C2440 `MOV byte [[state+4]+18h]+26Ch, 1` comes first in the moveto state tick. The host only ever stored 2 (009C1FE2's follow-tick stamp). `plan_mode_26c` has no host reader (its image reader is 0099D300's gate A, section 6c of BOMBER_AFTER_TASK). The distance: 009C246A-009C2496 compute dx, dz and d2 = dx*dx + dz*dz, each stored or rounded to float, then 009C249A-009C24A8 compare d2 against double 1e-10 ([00CE3820]) with FCOMI/JBE, taking 0 at or below it and float(sqrt) above it. The host used a double d2 and 1e-6. Prediction: gameplay identical, since the distance feeds 009C1850's speed blend only through `dist`, and the two differ only in the last float bit or below 1e-3 m.
+- **kLevelBombGoAwayOrderBound** (OFF). 009B5680: 009B5724 FLD approach+24h / 009B572A FSTP to a local, 009B5746 the draw, then 009B574B FLD the ratio, FMUL the clamped base (FMUL [ESP+4]), FMULP the draw: +18h = draw * (ratio * base), per op at 24 bits. The host computed (draw * base) * ratio. Prediction: identical wherever the ratio is 1.0 (the floor). The level bombers here have MaxSpd below the reference speed, so they sit on the floor.
+- **The +2B0h clears, no switch.** 009C1850 stores +2B0h = 0 at 009C18A0 after its +2B4h store. Three host moveto sites called its speed but kept +2B0h: the dive moveto, the torpedo moveto and the land moveto. Each now stores 0 there, as st_speed already did for the others. Behaviour identical expected: +2B0h = 1 comes only from the land standby and final states, and those leave through states that clear it.
+- **attack_commands.cpp kRows.** The strafe test 009CC850 compares +44Ch, falling back to +468h when +44Ch is 0 (009CC898-009CC8AA). Both 0 answers valid. The row's single offset field is documentation only (no reader); a comment now says so.
+
+**90, result.** Exes built at c87cfe51e (`local\p22d_off`, and `local\p22d_on` with both kMoveToTickHeadBound and kLevelBombGoAwayOrderBound flipped). USN04, USN21 `s46_u21_f`, USNOS `l65_os_c1` and USN01 `usn01_p8_u1_i` (`local\p22d_{off,on}_{u04,u21f,os,u1i}.log`) all came out gameplay identical, with pair_diff 0 or 1. USNOS installs 24 level-bomb tasks, every one with +24h = 1.000 (the ratio floor), and none reaches goaway, so the order switch is unreached and could not move anything on these rows. Both are faithful to the bytes. **Flip pending:** src/game_hosts_units.cpp is leased to cc13-convoy until 04:59Z, and p22_flip2_units is queued behind it.
+- The unswitched +2B0h clears: c87cfe51e's OFF build against 2cacdab2f's (`local\p22c_on_{u21f,os}.log` vs `local\p22d_off_{u21f,os}.log`, and `local\p22b_on_u04.log` vs `local\p22d_off_u04.log`) is gameplay identical on all three rows, as predicted.
+
+**Item: a torpedo plane that re-enters aim (reach for kTorpedoStateEnterTimersBound / kTorpedoAimEnterStoresBound).** USN01 with gunnery52's `config\win_orders\usn01_p8_u1_i.txt` (30000 fr): `ConTBD3|.-III aim enters=3 (2Ch already set=0)`, on both builds. The aim enter and exit therefore run three times, and the +A8h set and clear and the LOS writer run in each window. The +2Ch clear is still a no-op there: the plane never completed aim (+2Ch was never set) before it re-entered. The done enter 009D2530 is reached on USN21 (`Enterprise_sqn23|.-II`, `Cabot_sqn56|.-III`, one each) with stale-timer drops 0, so the timer split runs but never decides a release. No row seen reaches prepare. gunnery52's experimental `g52_bd_on` build shows `ConTBD1|.-II aim enters=291 (2Ch already set=288)` on USN01; that is a flicker in that build, not on main.
+
+**Item: the census of host readers of a parented plane's velocity.** `local\p22_census.py` and `local\p22_census2.py` list every `plane_world_velocity` reader in game_hosts_units.cpp (about 70 sites) and flag those within reach of a `deck_parent_plus_one` test. The host's `plane_world_velocity` for a parented plane is the world-axes rotation of the same relative vector (section 84), so a reader that takes only its length (vt[38h], 007B8E60 / ctl+6Ch, 007D8020) gets the same value either way. The deck-reached readers:
+- `avoid_velocity` (vt[34h], 007DF4F0 and the terrain arms 0099F1C0 / 009A1420): already parent-local under kAvoidParentLocalVelocityBound.
+- `carrier_deck_capture` / `carrier_deck_carry_in` / `carrier_deck_reparent_007c71e0` (007D9CE0, 007C7277): these convert between frames explicitly.
+- `carrier_deck_carry_in`'s (3.0 - vt[38h]) test at 15075, `wanderer_fixed_step_007be060`, Lua's `plane_cached_speed_007b8e60` and the takeoff / land speeds: lengths only, so the frame does not matter.
+- `plane_touchdown_007cc440`'s y > -6.0 test (vt[34h] y, 007CC440): runs before the plane is parented to that owner.
+- The core law's parent term at 007DC0A2-007DC131 reads the PARENT's vt[34h] (the carrier's world velocity), not the plane's.
+No further direction-dependent reader of a parented plane's own vt[34h] was found, so no new switch. The core law's own use of ctl+18h in the body frame while parented is still section 75's whole-frame item.
+
+**90, flips.** kMoveToTickHeadBound and kLevelBombGoAwayOrderBound are ON, on the pairs above (identical, faithful).
+
+## 91. Strafe draw counts (cc9-physics22, 2026-10-18)
+
+- 009CB0F0, the strafe aim enter: +1Dh = +1Ch = 0 (009CB110 / 009CB113), then 009CB116 00BD2F10(ECX = 1, 0.2 [00CE54A0], 0.8 [00CE74F8]) FSTP +18h (009CB11B), RET at 009CB11F. No strafe tick reads +18h. The host took no draw.
+- The strafe goaway's tightturn (009BC030) and flikflak (009BC0A0) pushes each construct a bot task through 0099C6F0. Its seeds draw +308h = -U(0, 1) on stream 1 and +3E8h = U(-1, 0) on stream 0 (section 81). The host's push builds no task, so it took neither draw.
+
+Switch **kStrafeDrawCountBound**, committed OFF. It takes these draws under the keys the host already uses (`<name>#sta18`, `<name>#tb308`, `<name>#tb3e8`) and drops the values; the pushed task's own +308h / +3E8h are not hosted (LABELLED). A summary line "strafe draw-count takes=" prints when nonzero.
+
+Prediction: with BSP_GUNNERY_RNG_STREAMS=1 (the reference env) each purpose has its own keyed stream. The aim draw is in a new key and moves nothing. The push draws advance `#tb308` / `#tb3e8`, so the next task install on that plane takes a later value of its think phase and ga timer, and only strafing planes that tightturn or flikflak can move. USNOS `l65_os_c1` strafes (planes #1.x on TroopTrans); USN04 and USN21 have no strafe task installs.
+- The remaining low item: the land standby 009B0FE0 / final 009B1ED0 +2B4h blend is per-op 24-bit in the image (009B11E9-1205, 009B1FC6-1FDF) and round-once double in the host. The dive goaway 009C4A40 ceiling NaN is not reachable without a NaN altitude. Both are left open.
+
+**91, result: kStrafeDrawCountBound ON.** Exes built at 188de95ef (`local\p22e_off`, `local\p22e_on`). USNOS `l65_os_c1` (`local\p22e_{off,on}_os.log`) took 38 draws and is gameplay identical, with the death rows, death modes and unit table all identical. USN01 `usn01_p8_u1_i` (`local\p22e_{off,on}_u1i.log`) is identical. Flipped ON: these are the image's draw counts.
+
+## 92. The land blend at 24 bits (cc9-physics22, 2026-10-18)
+
+009B11C4-009B1205 (the standby 009B0FE0) and 009B1FC2-009B1FDF (the final 009B1ED0) both compute +2B4h = a + [approach+4Ch] * (b - a). The sequence is FLD b, FLD a, FLD ST0, FSUBP ST2 (b - a), FLD +4Ch, FMULP ST2, FADDP, FSTP; on the main thread every op rounds to float. In the standby, a = 007C47F0 (LevelFlight x StallSpd) and b = class+190h; in the final, a is the local at [ESP+20h] and b is the 00419010 result.
+
+The host rounded the sum once: in the standby (b - a) was taken in float, in the final in double, and the product and sum in double. Switch **kLandBlendFloatOpsBound**, committed OFF, takes each op in float (`land_blend_2b4`). OFF keeps both old expressions exactly. Prediction: the commanded speeds differ by at most one float ulp, so landings move at the last bit at most; expected gameplay identical, or a sub-tick shift on carrier recoveries (USN01).
+
+**92, result.** Exes built at 25ef73b11 (`local\p22f_off`, `local\p22f_on`). On USN01 `usn01_p8_u1_i` (`local\p22f_{off,on}_u1i.log`) the standby is reached (ScoutDauntless, spacing 1.000) and gameplay is identical. USN21 `s46_u21_f` (`local\p22f_{off,on}_u21f.log`, which completes at 2861.67 s in both) is identical apart from noise (pair_diff 0). The mechanism is faithful to the bytes, so the switch is to be flipped ON. The flip waits for src/game_hosts_units.cpp (cc13-stophead holds it; p22_flip4_units is queued).
+
+**92, flip (cc9-physics23).** kLandBlendFloatOpsBound is ON, on the `local\p22f_{off,on}_{u1i,u21f}` pairs above (identical, faithful). The same commit corrects the comment at the 007D87F6-007D8838 vy-zero arm: the rule is (dyn+A4h != 0, the 007D87FD JNE, OR dyn+94h > 0) AND |dyn+6Ch| < 1e-5 -> dyn+68h = 0, and a NaN vz keeps vy. The code already did this.
+
+## 93. HANDOFF (cc9-physics22, 2026-10-18)
+
+The lane is PHYSICS / PLANE FLIGHT, worked in tree J:\PROG\battlestations-pacific-decompile-cc9-physics1 (branch agent/cc9-physics1). The pair launcher is `local\p22_pair.ps1 <exportdir> <row>`, with rows u21f, u04, os, u1i (the orders paths are inside it).
+
+Switches this session (sections 87-92):
+- ON: kTorpedoLineOfSightBound (moves USN21: 53 screened answers, torpedo drops 12 -> 8), kTorpedoCruisePassBound, kMoveToC25ArmBound (unreached), kMoveToTickHeadBound, kLevelBombGoAwayOrderBound (unreached: ratio 1.0, no goaway), kStrafeDrawCountBound.
+- Not switched: the moveto +2B0h clears, the stale-cite fixes on 009D4A70 (`torpedo_engage_range_009d4b63`), and the kRows comment.
+- **OFF, flip ready: kLandBlendFloatOpsBound.** Its pairs are identical (section 92). Flipping it is a one-line edit in src/game_hosts_units.cpp; the lease is queued as p22_flip4_units behind cc13-stophead. Build, add a line to section 92, commit.
+
+Open:
+1. The two items the lead routed after the resume, "the ConTBD3 stow trace (Q1 only)" and "the ~20472 comment", reached this session only by name (lost in compaction). Get the brief from the lead.
+2. A reach for the moveto C25h arm: a moveto-command task on a plane with a pending release.
+3. A reach for prepare. USN01 `usn01_p8_u1_i` re-enters aim (ConTBD3|.-III, 3 enters), but the +2Ch clear is a no-op there.
+4. The dive goaway 009C4A40 ceiling and the 009D4C10 break-off differ from the host only on NaN, which no row reaches.
+5. Section 75's whole-frame item (the core law's ctl+18h while parented). Section 90's census found no other direction-dependent reader.
+6. The deck term stays OFF (section 83). The ships lane has the Enterprise turn question.

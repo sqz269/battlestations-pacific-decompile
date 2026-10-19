@@ -443,3 +443,11 @@ Probes after step 3 (cc15-vcp4). Both switches were flipped locally for these ru
   - The end movie plays through the mission-end movie player, not BSP_EngineMovie_Stop 0045F600, so it never reaches 0045F6C1.
 
 Open item for `kVehicleClassMovieStopPurgeCc15Bound` (stays OFF): a 0045F600 stop later than the first in-mission frame. No known row reaches one. In this host the only 0045F600 path is the engine-movie skip (004C6B20), on the first frame, which USN11 covers.
+## kVehicleClassPreloadCc15Bound ON (cc9-lua69, 2026-10-18)
+
+Confirming pair on main 011d651dc, BSM09 `config/win_orders/bsm09_l68_b9_d1.txt` (36000 frames, reference env):
+OFF `cc9-lua52\local\l69r_b9d1_main_ref.log`, ON `cc9-lua52\local\l69r_b9d1_vc_ref.log` (export `local\l69_vc`,
+B40BBFE8FE56). pair_diff exit 1: death rows (49), plane death modes and the 90-row unit table are identical, and both
+end at EndMission 327.04 s with every objective completed. ON only: the census at 004E0A9B (633 rows, 617 would-nil,
+16 kept) and `vehicle class purge (cc15-vcp3): purged=617 failures=0 script_nil_reads=0 lua_errors=0`. The natives
+0046BF20 / 0046BF70 become concrete. Flipped ON; `kVehicleClassMovieStopPurgeCc15Bound` stays OFF (open item above).

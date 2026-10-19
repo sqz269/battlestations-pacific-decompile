@@ -10,9 +10,9 @@ are hypotheses. Every row is referenced from the image
 |---|---|---|
 | 00737A50 | already reconstructed | `run_application_frame`, src/app_frame.cpp:16 (contract include/bsp/app_frame.hpp); hosted by GameFrameHost, src/game_hosts.cpp:1060. Referenced from application vtable word 00CFEAC0. |
 | 00737F30 | already reconstructed | `shutdown_application`, src/app_shutdown.cpp:46 over the 42-step table in include/bsp/app_shutdown.hpp. Called by WinMain at 008F843B; vtable word 00CFEAB8. |
-| 007420B0 | gameplay, cc9 partial | Not built (cc9 lane). See below. |
-| 00742180 | gameplay, cc9 partial | Not built (cc9 lane). See below. |
-| 007422A0 | gameplay, cc9 partial | Not built (cc9 lane). See below. |
+| 007420B0 | gameplay, cc9 partial | Built later as a standalone body with host seams (cc15-rD1, docs/CC15_LAND_CONVOY.md); not wired. The gap notes below still describe cc9's host. |
+| 00742180 | gameplay, cc9 partial | Built later as a standalone body with host seams (cc15-rD1, docs/CC15_LAND_CONVOY.md); not wired. The gap notes below still describe cc9's host. |
+| 007422A0 | gameplay, cc9 partial | Built later as a standalone body with host seams (cc15-rD1, docs/CC15_LAND_CONVOY.md); not wired. The gap notes below still describe cc9's host. |
 | 00748A40 | reconstructed here | `stationary_prop_construct_00748a40`, src/cc15_seg41_tail.cpp. |
 | 0074CCA0 | game thunk, reconstructed here | JMP 00765000. |
 | 0074E180 | game thunk, reconstructed here | JMP 00928860. |
