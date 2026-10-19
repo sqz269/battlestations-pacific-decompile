@@ -15816,6 +15816,14 @@ bool GameGunneryHost::director_allow_move_3d(std::size_t unit_index) const noexc
     return !row.set || row.allow_move;
 }
 
+void GameGunneryHost::copy_director_allow_bytes_00720450(std::size_t dst, std::size_t src) {
+    // 0072045D..00720468: MOVZX [src+3Ch] -> [dst+3Ch], [src+3Dh] -> [dst+3Dh].
+    const std::size_t need = std::max(dst, src) + 1;
+    if (impl_->director_stance_by_unit.size() < need) impl_->director_stance_by_unit.resize(need);
+    impl_->director_stance_by_unit[dst] = impl_->director_stance_by_unit[src];
+    impl_->done("CommandControllerBase::copy_allow_bytes", 0x0072045du);
+}
+
 void GameGunneryHost::kill_unit_00926d90(std::size_t unit_index, int cause) {
     if (unit_index >= impl_->unit_state.size()) return;
     // The funnel is the one a gunfire death takes (cause 1, 0077D1A0 -> 00926C80).
