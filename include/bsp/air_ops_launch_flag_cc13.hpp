@@ -3,7 +3,16 @@
 // cc13-tier1 (Tier 3 row A): 006C5050's flag-1 arm, the airborne air-ops launch.
 // Lua LaunchAirBaseSlot(base, slot, true) (00896750) -> 006CA8FA -> 006C7490(slot, 1)
 // -> 006C5050 with its char flag set. Only chg_6_forcez.lua:174-177 (CHG06, at
-// FirstRun) reaches it in this installation.
+// FirstRun) reaches it in this installation. The other flag-true calls,
+// scripts/missions/COTP-USN/usn_01_battle_of_eastern_solomons.lua:1172/1176 (the
+// Wildcat respawn) and usn_04_defend_guadalcanal.lua:741, are in scripts no mission
+// loads: the menu ids USN01 and USN04 run USN/usn_1_marshall.lua and
+// USN/usn_19_coralus.lua (missiontree.lua via tools/mission_script_reach.py); the
+// COTP-USN usn_01/usn_04 .scn files name StageScript "USN\\usn_01_battle_of_
+// eastern_solomons" / "USN\\usn_04_Defend_Guadalcanal", which do not exist under
+// scripts/missions/USN, and no missiontree row or other text file names those
+// scenes; the PRCPUS copies that do run (prcp_01_eastern, prcp_04_defend) have no
+// LaunchAirBaseSlot call.
 //
 // Image, flag set (006C5050):
 //  - 006C51C2-006C51DD: bag `State` = (-(flag != 0) & 6) + 1 = 7;
