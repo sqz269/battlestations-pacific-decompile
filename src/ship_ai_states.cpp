@@ -104,8 +104,10 @@ bool ship_ai_direct_control_arm_009ed6b0(ShipAiControlBlock& blk, float seconds,
         blk.timer_360 -= seconds;
     }
 
-    // 009ED7D8 also latches (mode == NavigateAstern) into a local the native
-    // routine only reads in the unprojected navigation arm; it is not modelled.
+    // 009ED7D8..009ED7F3 also latches (mode == NavigateAstern) into
+    // [ESP+4Fh], which only 009EE756 reads, in the navigation arm. That skip is
+    // modelled in game_hosts_ship_ai.cpp's path branch under
+    // kShipAiNavigateAsternSkipBound, which reads blk.mode there.
     if (blk.mode != ShipAiSteeringMode::Navigate) {
         // The ahead/astern latch. EBP = 1 (009ED7F7) and EDI = 2 (009ED7EC);
         // ECX = 0 (009ED767) is the comparison and store value for "stopped".

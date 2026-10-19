@@ -7182,8 +7182,11 @@ public:
     }
     void wrap_brain_heading_00605070() override {
         // 009F3360, 00605070 on brain+1E0h in place. The reconstruction of that
-        // wrap is bsp::wrap_angle_00605070 where it exists; the field it wraps
-        // has no reader in this process, so the call is recorded.
+        // wrap is bsp::wrap_angle_00605070 where it exists. brain+1E0h is
+        // blk+1D8h (desired_heading), and it does have a reader: 009ED947
+        // copies it to 324h in modes 1 and 3. The call is still only recorded:
+        // 00605070 leaves (-pi, pi] alone, and the cc9_heading_wrap_census
+        // summary counts the stores outside it (JM08 p20e_off: 0 of 57068).
         owner_.record("ShipAiApproach::wrap_brain_heading", 0x00605070u);
     }
     void set_brain_replan_01d4(int value) override {
@@ -12300,6 +12303,18 @@ bool register_ship_ai_unit(GameShipAiHost::Impl& host, std::size_t index,
         ctl.nav.look_ahead_max_3c8 = ctl.nav_block.turn_circle_full_3c8;
         ctl.nav.look_ahead_340 = ctl.nav_block.look_ahead_340;
         ctl.nav.turn_window_3d0 = ctl.nav_block.yaw_rate_3d0;
+        if constexpr (bsp::kShipAiCruiseDistanceSeedBound) {
+            // 009E43A4 / 009E43CC: 009DFCB0 on blk+1C4h. 009DFD49 loads
+            // 1000.0f ([00CE3804]) and 009DFEA8 stores it at blk+3E0h, the
+            // distance 009ED918 copies to 32Ch; nothing else writes it.
+            ctl.blk.cruise_distance_3e0
+                = bsp::ship_ai_nav_block_steering_defaults_009dfcb0().cruise_distance_3e0;
+            // The same body stores -1.0f ([00D7A260]) at blk+354h, which
+            // 009DE8FF tests (0 > 354h). The host keeps blk+354h in two
+            // places; both start where the image does.
+            ctl.blk.clamp_354 = -1.0f;
+            ctl.throttle_profile.hold_354 = -1.0f;
+        }
         const auto request = bsp::ship_ai_avoidance_request_constructed_009e468b();
         ctl.avoidance = request.request;
         ctl.blk.early_out_3f5 = request.early_out_3f5;

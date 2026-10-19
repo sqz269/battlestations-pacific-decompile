@@ -88,4 +88,26 @@ inline constexpr bool kShipAiNavigateAsternSkipBound = false;
 // SHIP_AI_OPEN_ITEMS 300.
 inline constexpr bool kShipAiNavGateClosedArmFinalBound = true;
 
+// cc13-mode3steer (rev4's bytes; docs/CC13_MODE3STEER.md). The nav-block
+// constructor 009E4330 calls 009DFCB0 at 009E43CC with ECX = blk+1C4h
+// (009E43A4 LEA ECX,[ESI+1C4h]). Two of its stores have readers on the mode-3
+// path and no host writer:
+//   - blk+3E0h = 1000.0f: 009DFD49 MOVSS XMM2,[00CE3804], stored at 009DFEA8.
+//     Its only reader is the prologue: 009ED918 copies it to 32Ch for any
+//     non-Stopped direction, and 330h = 32Ch + 2000. The host left
+//     ShipAiControlBlock::cruise_distance_3e0 at 0, hence d32c = 0 /
+//     d330 = 2000 on every mode-3 row.
+//   - blk+354h = -1.0f [00D7A260] (self+190h). 009DE8FF (in 009DE5B0, which
+//     mode 3 reaches at 009EF213) admits the avoidance override only while
+//     0 > 354h. The host starts both copies (blk.clamp_354 and
+//     throttle_profile.hold_354) at 0.
+// True: the nav-block build seeds them. False: they stay 0, as before.
+// NOT neutral with the skip OFF: mode 0 and 1 ships with a non-Stopped
+// direction also take 009ED918, and every ship reaches 009DE5B0.
+// Pairing plan: (1) this ON + kShipAiNavigateAsternSkipBound ON against both
+// OFF, on LOMP10 and IJN18; (2) this ON against OFF with the skip OFF. Re-flip
+// the skip only after (1) passes. cc9-lua52's local\l70_astern.py does the
+// d32c census.
+inline constexpr bool kShipAiCruiseDistanceSeedBound = false;
+
 } // namespace bsp
