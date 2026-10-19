@@ -298,9 +298,10 @@ int ship_ai_ring_scan_winner_009e76d0(
     for (int i = 1; i < kShipAiApproachSlotCount; ++i) {
         const float total = ship_ai_approach_slot_total_009e76d0(slots[i]);
         // 009E79FF FCOMIP of the candidate against the incumbent with JBE
-        // skipping the update, so the first maximum wins and a NaN never
-        // displaces the incumbent.
-        if (!(total <= best)) {
+        // skipping the update: an unordered pair sets CF and ZF, so only an
+        // ordered strict greater moves it. The first maximum wins and a NaN
+        // never displaces the incumbent (was !(total <= best), which let it).
+        if (total > best) {
             best = total;
             winner = i;
         }
@@ -352,8 +353,10 @@ void ship_ai_ring_scan_009e76d0(ShipAiApproachState& state,
                 ring[i], slots[i], seconds, state.slot_scale_11dc,
                 state.override_11d4, state.override_11d5,
                 state.turn_radius_11f0, host);
-            // 009E776C FCOMIP of the score against the maximum with JBE.
-            if (!(scores[i] <= best)) {
+            // 009E776C FCOMIP of the score against the maximum with JBE: an
+            // unordered pair skips, so a NaN score never becomes the maximum
+            // (was !(scores[i] <= best), which let it).
+            if (scores[i] > best) {
                 best = scores[i];
             }
         }
