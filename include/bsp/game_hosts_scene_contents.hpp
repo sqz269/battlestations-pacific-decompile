@@ -334,7 +334,28 @@ struct SceneSpawnPoolEntry {
     // of 3 at 007F473A. docs/PLANE_SQUADRON_HOST.md.
     bool wing_count_present{false};
     int wing_count_raw{0};
+    // Packet cc13-hiddencarry. The executable's held-back record keeps its bag
+    // in the scene database; 0046DC10 hands [record+4] to the creator at 0046DE9A
+    // (004E6B30's Command queue, 004F0913 in 004F0860) and wraps the same bag at
+    // 0046DEC1 for 00822C20's StartSpeed arm 0082356C. This host's hold-back
+    // returns before either read, so both are taken here, at hold-back time,
+    // and copied into the spawn's record when kSceneHiddenSpawnCarryCc13Bound.
+    bool carry_present{false};          // either part below was authored
+    bool carry_command_queued{false};   // 004E6B30 would call 00469610
+    std::string carry_command;
+    std::string carry_command_target;
+    bool carry_start_speed_present{false};
+    int carry_start_speed_type{1};
+    float carry_start_speed_float{0.0f};
+    std::int32_t carry_start_speed_int{0};
 };
+
+// Packet cc13-hiddencarry. OFF: a GenerateObject
+// spawn reaches create_units with no Command and no StartSpeed, so an authored
+// `Cruise` unit stands still. ON: the pool entry's carry is copied into the
+// spawn's record (create_units seeds the ring as 0082356C does at InitAll) and
+// the command is issued after the spawn's InitAll, as 0046AAB0 at 009453BB.
+inline constexpr bool kSceneHiddenSpawnCarryCc13Bound = false;
 
 class SceneSpawnPool {
 public:
@@ -343,6 +364,7 @@ public:
     SceneSpawnPoolEntry* find(const std::string& name) noexcept;
     std::size_t size() const noexcept;
     std::size_t spawned_count() const noexcept;
+    std::size_t carried_count() const noexcept;  // entries with carry_present
 
 private:
     std::vector<SceneSpawnPoolEntry> entries_;
