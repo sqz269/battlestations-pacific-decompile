@@ -168,6 +168,17 @@ The runs are USN04 (`--frames 5000 --mission-frames 4800`) and the 12 wins rows 
   in (a).
 - **Save untouched.** Every file under `Documents\Battlestations-Pacific` has the same SHA-256, size
   and mtime before and after the runs.
+- **Sea, weather, traffic and draws (cc9 addendum).** USN04, USN01 and BSM09 were re-run OFF vs ON
+  in the reference env and in the default env (no `BSP_GUNNERY_RNG_STREAMS`). I diffed, strictly in
+  order, every line matching ocean, wave, sea state, swell, visibility, fog, weather, cloud, rain,
+  wind, day time, morning, evening, sun, lighting, traffic, spawn, `units=`, `draw`, rng or random,
+  with the owner lines dropped. All six pairs have zero mismatched positions (6470 to 11714 lines;
+  for example `ocean waves: path=... authored=1 simple=0 height_scale=1.000`, the squadron spawns
+  and the plane death-mode draws). The host logs no time-of-day line apart from the owner's
+  `contents` line. The unit counts are equal: USN04 81/84, USN01 123, BSM09 84/98, ref/default. The
+  ends are equal too: ref USN01 completed 435.02 s and BSM09 285.05 s; default USN01 455.01 s and
+  BSM09 405.02 s. `pair_diff` reports gameplay identical on all six pairs, and only the owner lines
+  moved.
 
 (cc15-ob1, before the flip above:) The switch stays OFF in this tree. Turning it ON is the lead's call; the pairs
 above are the evidence. With both this switch and `kMessageManagerCc15Bound` on, the
