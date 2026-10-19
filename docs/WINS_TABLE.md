@@ -1185,3 +1185,36 @@ Pending re-times from lane flips (each needs a re-time after it lands):
   play the same with it. JM08 HQ dies 1031.93 s on l65_j8_p2 and 981.93 s on l70_j8_j.
 - ships61 05cb6f1bc (navigation set): LOMP10 1303.70 -> 1050.45 s on the seeds+sync pair build. Every row moves.
 - gunnery55 7b35dcea3 (heading wrap): JM06 j6_n 808.93 -> 811.93 s; j6_k 898.90 -> 889.91 s; IJN18 d no end either way.
+## 2026-10-19, releasegun + latch + map-up gate flip (cc9-lua71, keeper)
+
+Reach check for kHarnessReleaseGunMapBound, kCruiseLatchedPlayerArmCc13Bound and kHelmPrepareMapUpGateCc13Bound,
+same-commit exports of origin/main 86b81e2a8 (`local\l71_off`, `local\l71_on` in the cc9-lua52 tree), ref env,
+BSP_DEATH_TABLE=1, logs `local\l71r_<row>_{off,on}_ref.log`. The pre-flip compile check (off_switch_on_build.py) exits 0.
+
+On every row below pair_diff says "gameplay identical", and the ON side logs `latches=0` and `map_up=0`: no plan
+other than IJN18's opens the map, so neither the latch nor the gate is reached. The end is the same on both sides.
+
+| Row (plan) | end on 86b81e2a8, OFF = ON |
+| --- | --- |
+| USN01 `l69_u1_a` | completed 435.02 s |
+| USN12 `l68_u12_e8` | failed 819.92 s (Game Over; drift list) |
+| PRCP01 `p9_p01_k` | completed 1069.67 s |
+| LOMP10 `p3_l10_b` | completed 1050.45 s |
+| JM06 `l70_j6_n` | completed 826.92 s |
+| ESMP08 `p12_e8_rb` | completed 1329.32 s |
+| BSM09 `l68_b9_d1` | EndMission 285.05 s |
+| LOMP06 `l70_l6_c` | failed 621.12 s |
+| BSM01 `l69_b1_d` | no end |
+| USN21 `s46_u21_f` | completed 2881.69 s |
+
+These ends are observations on 86b81e2a8, not re-times (the combined re-time waits for ships61's arcplan+skip flip).
+
+IJN18 `l70_i18_r` on 86b81e2a8 (`local\l71r_i18_*`):
+- OFF ref: failed at 485.01 s. The releasegun line is refused.
+- ON ref: failed at 767.94 s. Releasegun opens the map at frame 1500. Counters: latches=1 and map_up=1, with 14661
+  prepares and 13451 issues skipped.
+- ON 20,3: failed at 759.94 s.
+
+The 1685.52 s ref win from d175c1aac does not hold on this main. That base moved without a known cause, so the
+row is listed and not re-timed. The flip still lands as a faithful fix (prepare/issue skipped while 4Ch occludes
+46h), and IJN18 needs a re-plan on the combined re-time base.
