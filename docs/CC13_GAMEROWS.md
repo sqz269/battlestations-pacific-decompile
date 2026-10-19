@@ -14,8 +14,8 @@ outside the struck ranges 007DF000-007DFFFF, 007EE000-007F2FFF, 00836000-00837FF
 | H: hosted bodies | 6 | ledger-only, citing the host (batch 1) |
 | D: scalar deleting destructor | 1 | bound, citing the out-of-line copy (batch 1) |
 | S: small reconstructs | 5 | rebuilt (batch 2) |
-| G: MSVC STL instantiations | 52 | bound (batch 3, 26 + 26); 00732560 moved here from S |
-| E: engine templates and game virtuals (split out of G) | 25 | rebuilt (batch 4) |
+| G: MSVC STL instantiations | 53 | bound (batch 3, 26 + 26, and 0084FC50 in batch 4); 00732560 moved here from S |
+| E: engine templates and game virtuals (split out of G) | 24 | rebuilt (batch 4); 0084FC50 went back to G |
 | cc15-blocked | 0 | none sits on a CC15_OBJECT doc |
 
 ## Batch 1: T, H and D (56 rows)
@@ -149,6 +149,40 @@ they are bound with them. Four are hook-declared: 0082F8E0, 0084FA30, 00931530 a
 both parts, 13 bound rows are hook-declared. 0082FD20 (cited in ship_class_fields.hpp) and
 007D1D30 (plane_class_fields.hpp) are mentioned in comments only, not as hooks.
 
-## Batch 4: E, 25 rows rebuilt
+## Batch 4: E, 24 rows rebuilt and 1 bound
 
-Pending.
+Source `src/cc13_gamerows.cpp`. The callees go through `GameRowsHost`: operator new 00BF55BE,
+`_free` 00BF65AC and its thunk 00BF6989, the checked-iterator report 00BF6713, memmove_s
+00BF67A7, the element and array virtual slots, the sized pool, and the recorded reserves 0086A220,
+0086A350, 0086A4D0 and the insert 007B26F0. Rule 1 was checked first for each row: `bsp.py
+lookup`, and git grep by address and by name stem. No row had an existing body. The related
+NativeDwordVector model in engine_seg11_35_66_cc13.cpp is a different, pool-backed instantiation
+(00707xxx) in a cc15 lane's file, and it is untouched.
+
+| Rows | What |
+|---|---|
+| 0086A280, 0086AA10, 0086B630, 00872E70, 0086A910, 0086A950, 0086AAA0, 0086AE90 | the signed dword vector {data, count, capacity}: reserve, zero-fill resize, destroy, at, and four push_back copies (each with its own reserve) |
+| 0086A990, 0086AAE0, 0086AED0 | the signed 8-byte (float pair) vector: push_back, clear, destroy |
+| 00865E90, 008661B0, 00866690 | the unsigned pointer vector: reserve, grow (2c + 2), push_back |
+| 0072A3B0, 0072B6D0 | the 14h-byte element vector (element vtable 00CFDC0C): reserve, resize |
+| 0072A6D0 | the unsigned 12-byte vector push_back |
+| 0086B290 | a NativeString's storage returned to the sized pool (+8h length, +0Ch data) |
+| 007B21A0, 007B1B40, 007B2850 | Point3PtrArray virtuals over its std::vector<Point3*> at +4h: clear, erase at, insert at |
+| 007B0E60, 007B2B90 | virtuals returning the last 12-byte point of a vector (via [+8h], or the object's own at +0Ch); renamed `BSP_PointList_LastPoint_007b0e60` and `BSP_Point3Vector_LastPoint_007b2b90` |
+| 006CA5D0 | AirOpsBlock virtual: the n-th node of the list at +40h, EAX = node+0Ch |
+
+Notes on fidelity:
+- The binary null-tests each destination before an element copy (placement new). The model keeps
+  those tests even though they cannot fail.
+- Where the binary carries on after the 00BF6713 report, the model does too and leaves the outcome
+  to the host.
+- The shrink loops that step the count down one at a time (trivial destructors) are kept.
+- The FLD/FSTP float copies are value copies; a signalling NaN would come out quiet.
+
+**Moved back to G: `0084FC50`.** The listing is the MSVC `_Tree` node constructor
+(`_Node(left, parent, right, value, color)`, RET 14h). Its value is a NativeString copied inline
+through 0041DD40 and `_memcpy`, then +14h, color +18h and isnil +19h = 0. Its one caller is
+008500F0 STL_Tree_BuyNode. It is bound with its name kept.
+
+Final counts for the 138 rows: T 49, H 6, D 1, S 5, E 24 rebuilt, and G 53 bound (52 + 0084FC50).
+Separately, 007D79F0 (part C of docs/CC13_MISTAG.md) was recorded in its own commit.
