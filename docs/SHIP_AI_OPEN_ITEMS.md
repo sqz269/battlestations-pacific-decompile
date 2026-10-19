@@ -19796,3 +19796,43 @@ change is draw-order neutral, so no default-env pair.
 - default env (`s60_bdoffd_os` / `s60_bdond_os`): exit 3. The first 257 deaths are identical, through the first 98h
   (Cargo1 at 1354.95 s); the first moved death is the next one (Airfield1_sqn39, 1357.55 -> 1357.60 s). After that
   the shared stream is offset, so later breakups differ (Convoy2 1416.66 broke in OFF only; Cargo5 and Cargo6 in ON).
+
+## 300. Navigation gate and NavigateAstern skip (cc9-gunnery53, 2026-10-19)
+
+The two cc13 switches are from docs/CC13_SEG67D.md "Switches". The pairs ran on bd61f8f4f at
+30000 frames (JM05: 12000), in the reference env unless noted. Logs are `local\g53_nv{off,gate,ast}_*`
+and the default-env ones `g53_nvd*` in the gunnery52 tree.
+
+### 1. kShipAiNavGateClosedArmFinalBound: ON
+
+The branch was read from the disk bytes: 009EE59F JZ 009EF206, then 009EF213 CALL 009DE5B0.
+
+| row | result |
+| --- | --- |
+| USN04 | gameplay, death rows and unit table identical; 009DE5B0 539876 -> 540000 |
+| JM08, reference env | the same failure (CheckHQ, the HQ's Party == 2), at 958.94 s instead of 977.93 s; deaths 18 -> 21, chaotic from about 100 s |
+| JM08, default env | the same failure, at 941.94 s instead of 963.94 s; deaths 16 -> 15 |
+
+Flipped by mechanism.
+
+### 2. kShipAiNavigateAsternSkipBound: OFF, waiting on the lead
+
+The branch was read from the disk bytes:
+- 009ED7E6 `CMP [1C4h],3` / SETE -> [ESP+4Fh];
+- 009EE756 JNE 009EF206;
+- approach_step 009F3330 `MOV EBP,3` / 009F3375 writes 1C4h.
+
+Mode 3 is every attack-moving ship's approach. In JM08 that is the US fleet: Nevada, Missouri,
+Hawaii, the LSTs and LSMs, and the rest. With the skip, the output block 009EE765..009EEAA2 stops
+steering them.
+
+| row | result |
+| --- | --- |
+| JM08, both envs | OFF fails at 977.93 / 963.94 s when the HQ is captured; ON never ends in 1500 s. 310995 to 324781 skips. The landing ships spawn about 937 s, and the HQ guns and AA trucks kill them after 1128 s |
+| JM05 | the same failure at 300.05 s and identical death rows; damage 48529 -> 48042, and the player's Mogami moves 3375 -> 3267 m |
+| USN04, USN07, USN13 | identical; no attack-move ships |
+
+**Open.** The mechanism matches the image, but it changes JM08's outcome. Before flipping, the host's
+approach-step steering in mode 3 should be checked: with the block skipped, the approach's own
+writes are all that steer the ship. A rudder or throttle write that the host leaves to the output
+block would strand the fleet, where the image would have it written by the approach.

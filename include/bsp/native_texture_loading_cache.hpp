@@ -5,6 +5,7 @@
 #include "bsp/native_texture_2d_owner.hpp"
 #include "bsp/native_named_special_textures.hpp"
 #include "bsp/native_render_resource_record.hpp"
+#include "bsp/native_renderer_cache_cleanup.hpp"
 #include <memory>
 
 namespace bsp {
@@ -144,6 +145,11 @@ public:
     // retain/release, terminal, registry repair or exception suppression.
     std::size_t retained_entry_count() const noexcept;
     void observe_retained_entries(void*, NativeTextureLoadOwnerObserver) const;
+    // Exact exit allow-list (packet cc15-rshut, see the destructor): borrow the
+    // B316C0 skipped-release record and a one-line logger. Bind once.
+    using ResidueLogger = void (*)(void*, const char* line);
+    void allow_original_cache_clear_residue(const NativeRendererCacheSkippedRelease&,
+        void* log_context, ResidueLogger);
 private:
     struct Impl;
     std::unique_ptr<Impl> impl_;

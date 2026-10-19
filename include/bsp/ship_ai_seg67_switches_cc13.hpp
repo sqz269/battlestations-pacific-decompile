@@ -68,6 +68,13 @@ inline constexpr bool kShipAiNavigateAsternSkipBound = false;
 // bookkeeping record.
 // True: the closed gate makes the same arm-final call before returning false.
 // False: it returns without it, as before.
-inline constexpr bool kShipAiNavGateClosedArmFinalBound = false;
+// ON (cc9-gunnery53) by mechanism, from pairs on bd61f8f4f at 30000 frames:
+//   - 009EE59F JZ 009EF206 and 009EF213 CALL 009DE5B0 were read from the disk bytes.
+//   - USN04, reference env: gameplay identical; 009DE5B0 539876 -> 540000 calls.
+//   - JM08, reference env: still fails at the HQ check (CheckHQ, Party == 2), now at
+//     958.94 s instead of 977.93 s.
+//   - JM08, default env: the same failure, 941.94 s instead of 963.94 s.
+// SHIP_AI_OPEN_ITEMS 300.
+inline constexpr bool kShipAiNavGateClosedArmFinalBound = true;
 
 } // namespace bsp

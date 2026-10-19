@@ -7,6 +7,7 @@
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <Windows.h>
+#include <cstring>
 #include <new>
 #include <stdexcept>
 
@@ -57,6 +58,15 @@ void current_cache_release(void* cache, void* captured_child, NativeRendererCach
     // The existing provider decrements actual+04 BEFORE resolving its canonical
     // companion, whose terminal dispatches the current actual profile at zero.
     release_native_render_actual_owner(c.owners, captured_child);
+}
+void record_skipped_release(NativeRendererCacheSkippedRelease& record,
+    const NativeRenderResourceRecord& row) noexcept {
+    record.skipped = record.skipped + 1u;
+    record.resource = row.resource_28;
+    const auto length = row.name_data_04 ? row.name_length_00 : 0u;
+    const auto copied = length < sizeof(record.name) ? length : sizeof(record.name) - 1u;
+    if (copied != 0) std::memcpy(record.name, row.name_data_04, copied);
+    record.name[copied] = '\0';
 }
 void observe_cleanup(void* cache, void* resource, std::uint32_t native_function,
     NativeRendererCacheCleanupEvent event, NativeRendererCacheCleanupContext& c) {
@@ -154,6 +164,7 @@ void clear_native_renderer_resource_cache_00b316c0(void* cache, NativeRendererCa
     observe_cleanup(cache, nullptr, 0x00b316c0,
         NativeRendererCacheCleanupEvent::clear_enter, c);
     while (field<std::uint32_t>(cache, 8) != 0) {
+        const auto count_before_release = field<std::uint32_t>(cache, 8);
         const auto size = current_child_size(current_last_child(cache), c);
         field<std::uint32_t>(cache, 0x10) = field<std::uint32_t>(cache, 0x10) - size;
         void* const child = current_last_child(cache);
@@ -166,11 +177,14 @@ void clear_native_renderer_resource_cache_00b316c0(void* cache, NativeRendererCa
         if (count != 0) {
             void* const data = field<void*>(cache, 4);
             auto* const row = static_cast<NativeRenderResourceRecord*>(plus(data, count * 0x2cu - 0x2cu));
+            if (c.skipped_release && count != count_before_release)
+                record_skipped_release(*c.skipped_release, *row);
             destroy_native_render_resource_record_00b2f990(*row, c.strings);
             field<std::uint32_t>(cache, 8) = field<std::uint32_t>(cache, 8) - 1u;
         }
     }
     resize_native_render_resource_record_array_00b30340(plus(cache, 4), 0, c.strings, c.validation);
+    if (c.skipped_release) c.skipped_release->b316c0_ran = true;
     observe_cleanup(cache, nullptr, 0x00b316c0,
         NativeRendererCacheCleanupEvent::clear_exit, c);
 }
