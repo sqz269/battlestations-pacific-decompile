@@ -78,7 +78,9 @@ struct DestructionGraph {
     owners,&game_native_graphics_pool_process().logical_vertex_pool_0108fe18(),next_vertex,profiles(0xd61cc0),profiles(0xd5f0a8),profiles(0xd61d6c),recreation,0},
    vertex_binding{vertex},index_profiles{profiles(0xd61e10),profiles(0xd61e58)},
    index{const_cast<const void* volatile&>(c.current_renderer_00f8d394),sync,physical,index_profiles,&game_native_graphics_pool_process().logical_index_pool_0108fe50()},
-   index_binding{index},
+   // B24B00 consumes the original logical-index profile when a mission draw
+   // actually binds an index owner. Preserve the former OFF metadata path.
+   index_binding{index,GameNativeRendererApplication::mission_ship_requested()?profiles(0xd61de0):nullptr},
    hardware{c.current_renderer_00f8d394,profiles(0xd5f0a8),game_native_hardware_layout_tree_process().tree_0108d530(),game_native_hardware_layout_tree_process().invalid_parameters(),
     support.actual_published_0108fedc,support,profiles(0xd61d1c),profiles(0xd61cc0),&game_native_graphics_pool_process().vertex_declaration_pool_0108fd38(),game_native_graphics_pool_process().hardware_layout_pool_0108fe9c(),&owners},
    layout{sync,hardware,profiles(0xd62af4)},
