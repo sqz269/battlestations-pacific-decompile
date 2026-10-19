@@ -3106,6 +3106,7 @@ struct GameUnitsHost::Impl {
     unsigned long long flight_state_notifies{0}, stock_return_destroy_draws{0};
     unsigned long long combat_death_destroy_draws{0};
     unsigned long long ground_state_dead_tail_skips{0};
+    unsigned long long funnel_kill_destroy_only{0};
     // planepartclasses.lua DeadEngineFireDelay, which 004A9BD0 stores at
     // [00E18718] / [00E18714] (004AA9BD / 004AAA57); read once per host.
     bool dead_engine_fire_delay_read{false};
@@ -21107,12 +21108,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     if (slot.plane_death_mode == bsp::PlaneDeathMode::None
                         && !slot.plane_death_removed && gun_host != nullptr
                         && gun_host->unit_dead(index)) {
+                        // Packet cc13-landc (kPlaneFunnelKillDestroyOnlyCc13Bound): a
+                        // 00926D90 Kill (a cause other than 1) reaches 0077D1A0 Destroy
+                        // without SetHealth, so 007CA8A0 never runs for it.
+                        const bool destroy_only = bsp::kPlaneFunnelKillDestroyOnlyCc13Bound
+                            && index < host.kill_cause_by_unit.size()
+                            && host.kill_cause_by_unit[index] != 1;
                         bsp::PlaneDeathModeInputs din;
                         din.health_370 = 0.0f;
                         // 007CA914: 00BD2F10(ECX = 1, 0.0, 1.0), the shared stream.
                         // A water "powerlost" calls 007BBFA0 directly; 007CA8A0
                         // (and its draw) runs only from SetHealth.
-                        din.draw = slot.plane_water_powerlost_raised ? -1.0f
+                        din.draw = slot.plane_water_powerlost_raised || destroy_only ? -1.0f
                             : gun_host->death_mode_draw_00bd2f10(1, index, 0.0f, 1.0f);
                         din.rammed_dfc = false;
                         din.spin_side_800 = gun_host->plane_spin_side_800(index);
@@ -21123,7 +21130,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             din.chance_spinning = g.death_mode_chances_spinning;
                             din.chance_powerloss = g.death_mode_chances_powerloss;
                         }
-                        const bsp::PlaneDeathMode mode = slot.plane_water_powerlost_raised
+                        const bsp::PlaneDeathMode mode = destroy_only
+                            ? bsp::PlaneDeathMode::None
+                            : slot.plane_water_powerlost_raised
                             ? bsp::PlaneDeathMode::PowerLost
                             : bsp::plane_death_mode_007ca8a0(din);
                         // planepartclasses.lua ExplosionExplosionDelay, which
@@ -21147,7 +21156,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         slot.plane_death_c36 = flags.spinning_c36;
                         slot.plane_spin_right_c37 = flags.spinning_c36
                             && mode == bsp::PlaneDeathMode::SpinRight;   // 007D0DD7
-                        slot.plane_death_c3a = true;
+                        slot.plane_death_c3a = !destroy_only;   // 007D12FC, not reached by a Kill
                         slot.plane_death_seconds = host.summary.simulated_seconds;
                         // Packet cc9_plane_death_flags. The C3Ah tail's destroy sets
                         // +60h at once (00926CD5); this host has no 009273A0 flush,
@@ -21172,13 +21181,30 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 ++host.combat_death_destroy_draws;
                             }
                         }
-                        host.log.notef("plane death mode: unit=%s t=%.2f draw=%.4f mode=%s "
-                            "c10=%.2f (007CA8A0 -> 007BBFA0 -> 007D0B80, packet "
-                            "cc9_plane_death_modes)", slot.row.name.c_str(),
-                            static_cast<double>(host.summary.simulated_seconds),
-                            static_cast<double>(din.draw), bsp::plane_death_mode_name(mode),
-                            static_cast<double>(slot.plane_death_timer_c10));
-                        host.done("Plane::choose_death_mode_007ca8a0", 0x007ca8a0u);
+                        if (destroy_only) {
+                            // The Kill's own flush: 007BCAA0's 007BCABB draw, and the
+                            // plane leaves (no mode, so nothing else removes it).
+                            if constexpr (!bsp::kPlaneCombatDeathRetireDrawCc13Bound) {
+                                host.plane_on_destroyed_draw_007bcabb(index);
+                            }
+                            slot.plane_death_removed = true;
+                            ++host.funnel_kill_destroy_only;
+                        }
+                        if (destroy_only) {
+                            host.log.notef("plane funnel kill destroy only: unit=%s t=%.2f "
+                                "cause=%d (00926D90 -> 0077D1A0 -> 00926C80, no 007CA8A0, "
+                                "packet cc13-landc)", slot.row.name.c_str(),
+                                static_cast<double>(host.summary.simulated_seconds),
+                                host.kill_cause_by_unit[index]);
+                        } else {
+                            host.log.notef("plane death mode: unit=%s t=%.2f draw=%.4f mode=%s "
+                                "c10=%.2f (007CA8A0 -> 007BBFA0 -> 007D0B80, packet "
+                                "cc9_plane_death_modes)", slot.row.name.c_str(),
+                                static_cast<double>(host.summary.simulated_seconds),
+                                static_cast<double>(din.draw), bsp::plane_death_mode_name(mode),
+                                static_cast<double>(slot.plane_death_timer_c10));
+                            host.done("Plane::choose_death_mode_007ca8a0", 0x007ca8a0u);
+                        }
                         // Packet cc9_pilot_surface_climbout
                         // (docs/PILOT_SURFACE_CLIMBOUT.md). The destroy flush that
                         // sets unit+5Dh dispatches vtable[7Ch], which for a plane
@@ -43390,6 +43416,9 @@ void GameUnitsHost::report() {
     host.log.notef("summary plane ground state dead tail bound=%d skips=%llu "
         "(007CA50F, packet cc13-landc)",
         bsp::kPlaneGroundStateDeadTailCc13Bound ? 1 : 0, host.ground_state_dead_tail_skips);
+    host.log.notef("summary plane funnel kill destroy only bound=%d planes=%llu (00926D90 -> "
+        "0077D1A0, no 007CA8A0, packet cc13-landc)",
+        bsp::kPlaneFunnelKillDestroyOnlyCc13Bound ? 1 : 0, host.funnel_kill_destroy_only);
     host.log.notef("summary stock return queue erase bound=%d erases=%llu misses=%llu "
         "(006C59A4 -> 006BF7F0, packet cc9_stock_return_queue_erase)",
         Impl::kStockReturnQueueEraseBound ? 1 : 0, host.stock_return_queue_erases,
