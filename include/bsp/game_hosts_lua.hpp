@@ -856,6 +856,9 @@ struct GameVehicleClassRow {
     float max_rot_angle{0.0f};               // class+4F8h
     float max_rot_angle_change_ratio{0.0f};  // class+4FCh
     float length{0.0f};                      // class+A0h, written by 00960230
+    // class+55Ch, the `DeathEfx` handle 00831BE8 stores (00870CD0 resolves the id);
+    // the id is kept, 0 when the key is absent (packet cc13-luawire, 0092A240).
+    int death_efx_id{0};
     float width{0.0f};                       // class+A4h, Width at00960368
     // class+A8h, the `Height` key 00960230 writes beside `Length`. Milestone 2r
     // reads it because 00826866 places the keel sample point at half the hull
@@ -1190,6 +1193,7 @@ struct GameMissionLuaSummary {
     unsigned long long break_ship_broken{0};
     unsigned long long break_ship_no_halves{0};
     unsigned long long break_ship_unresolved{0};
+    unsigned long long break_ship_puff_draws{0};   // 0092A240's 00BD2F10 draws
     unsigned long long sub_surface_calls{0};
     unsigned long long sub_surface_true{0};
     unsigned long long sub_surface_unseeded{0};

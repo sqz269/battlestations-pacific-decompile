@@ -1351,6 +1351,7 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
             row.max_rot_angle = number("MaxRotAngle");
             row.max_rot_angle_change_ratio = number("MaxRotAngleChangeRatio");
             row.length = number("Length");
+            row.death_efx_id = static_cast<int>(number("DeathEfx"));
             // The plane rate/accel keys, in the spellings 007D1F70's reader
             // uses (src/plane_class_fields.cpp:301-311). A ship row has none of
             // them and reads zero, which is what a caller should see.
@@ -7342,11 +7343,12 @@ static_assert(kWeaponNameTableCount00e08e58 == 0x14, "006E8250 walks twenty entr
 
 // 006E8250 (src/cc13_seg33a.cpp weapon_name_index_006e8250) over the table above,
 // whose entries are all non-null and non-empty: a null name matches nothing, any
-// other name by strcmp; no match answers 0, the same as a match at index 0.
+// other name by _stricmp (00BF7FBF, case-insensitive); no match answers 0, the same as
+// a match at index 0.
 int weapon_name_index_006e8250(const char* name) {
     if (name == nullptr) return 0;
     for (int i = 0; i < kWeaponNameTableCount00e08e58; ++i) {
-        if (std::strcmp(name, kWeaponNameTable00e08e58[i]) == 0) return i;
+        if (::_stricmp(name, kWeaponNameTable00e08e58[i]) == 0) return i;
     }
     return 0;
 }
@@ -7502,9 +7504,17 @@ int GameMissionLuaHost::run_add_water_load_00893380(lua_State* state, int argume
 // non-zero; then 00814520: 004A5AA0 on [game+21D0h] when the class has breakup pieces
 // (0080F9F0), and the tail jump to 00935D30, whose 11 stream-1 draws, cleared halves
 // and 00926D90(1) kill are modelled here. Returns no value.
-// 00935D30's draws (docs in src/cc13_segmix.cpp, the gunnery host's death 98h takes the
-// same eleven): front sx, sy, sz = U(-1, 1), a = U(0, 1.5), b = U(0, 1.5), d = U(10, 20);
-// back sy, sz, a, b, d. Only the draws are taken; the offsets they make are presentation.
+// 00935D30's draws (docs in src/cc13_segmix.cpp): front sx, sy, sz = U(-1, 1),
+// a = U(0, 1.5), b = U(0, 1.5), d = U(10, 20); back sy, sz, a, b, d. Then, before the kill,
+// 0092A240 (BSP_TickableEntityAttachFires) once per piece, front (00936905, ECX = EDI)
+// then back (0093697F, ECX = ESI), unconditionally. With w = float([[piece+348h]+A0h]
+// x 0.2) (00CE6648, double) and n = trunc(clamp(float(w / 10.0), 1, 2)) (00CE3DC0,
+// 00D7A24C, 00CE3958), it draws 00BD2F10(1, -w, w) once per puff (0092A34A), only when
+// [[piece+348h]+55Ch] (the class `DeathEfx`, 00831BE8) and [[00E188A8]+19FCh] (the game
+// view node) are non-null. piece+348h is the owner unit's class [unit+538h] (0092B185).
+// Only the draws are taken; the offsets and fires they make are presentation. The
+// gunnery host's death 98h records the same eleven and likely lacks these puff draws
+// (a pre-existing record, not changed here).
 // SUBSTITUTIONS (labelled):
 //  * the halves are the units host's front and back nodes
 //    (ship_death_message_class().front_back) less this host's cleared mark, which a
@@ -7516,6 +7526,9 @@ int GameMissionLuaHost::run_add_water_load_00893380(lua_State* state, int argume
 //    BSP_GUNNERY_RNG_STREAMS=1 measurement option, not ship_break_in_two);
 //  * 004A5AA0, the pieces, the re-parented guns, the effect and the shape masks are
 //    presentation and are recorded, not modelled;
+//  * 0092A240's class is the unit's VehicleClass row: a non-zero `DeathEfx` id stands
+//    for a resolved +55Ch handle, and the game view node is taken as present (it is
+//    set in any rendered mission);
 //  * the kill is the host's 00926D90 funnel with cause 1, as the Kill runner uses it;
 //  * an argument 0 with no units-host slot is counted and skipped.
 int GameMissionLuaHost::run_break_ship_008914f0(lua_State* state, int argument_count) {
@@ -7546,6 +7559,24 @@ int GameMissionLuaHost::run_break_ship_008914f0(lua_State* state, int argument_c
             static_cast<void>(gunnery->death_mode_draw_00bd2f10(1, index, 0.0f, 1.5f));
             static_cast<void>(gunnery->death_mode_draw_00bd2f10(1, index, 0.0f, 1.5f));
             static_cast<void>(gunnery->death_mode_draw_00bd2f10(1, index, 10.0f, 20.0f));
+        }
+        // 00936905 / 0093697F: 0092A240 on the front piece, then the back piece.
+        const GameVehicleClassRow cls = read_vehicle_class_row(row != nullptr ? row->type_id : -1);
+        if (cls.found && cls.death_efx_id != 0) {
+            const float w = static_cast<float>(static_cast<double>(cls.length) * 0.2);  // 0092A2AD
+            float puffs = static_cast<float>(static_cast<double>(w) / 10.0);           // 0092A2CB
+            if (1.0f > puffs) {
+                puffs = 1.0f;                                                       // 0092A2E7
+            } else if (puffs > 2.0f) {
+                puffs = 2.0f;                                                       // 0092A6BF
+            }
+            const int n = static_cast<int>(puffs);                                  // 0092A307 FISTP
+            for (int piece = 0; piece < 2; ++piece) {
+                for (int puff = 0; puff < n; ++puff) {
+                    static_cast<void>(gunnery->death_mode_draw_00bd2f10(1, index, -0.0f - w, w));
+                    ++summary_.break_ship_puff_draws;
+                }
+            }
         }
         log_.unimplemented("BreakShip::break_in_two_pieces_00935d30", "00935d30");
         break_ship_cleared_.insert(index);   // 00935D30 step 8: +370h / +374h = 0
@@ -11473,9 +11504,10 @@ void GameMissionLuaHost::report_mission_script_state() {
     }
     if constexpr (kLuaBreakShipBound) {
         log_.notef("summary mission script break ship calls=%llu broken=%llu no_halves=%llu "
-            "unresolved=%llu (008914F0 -> 00814520 -> 00935D30, packet cc13-luawire)",
-            summary_.break_ship_calls, summary_.break_ship_broken,
-            summary_.break_ship_no_halves, summary_.break_ship_unresolved);
+            "unresolved=%llu puff_draws=%llu (008914F0 -> 00814520 -> 00935D30 -> 0092A240, "
+            "packet cc13-luawire)", summary_.break_ship_calls, summary_.break_ship_broken,
+            summary_.break_ship_no_halves, summary_.break_ship_unresolved,
+            summary_.break_ship_puff_draws);
     }
     log_.notef("summary mission script submarine on surface bound=%d calls=%llu true=%llu "
         "unseeded=%llu unresolved=%llu (008942C0 -> 00852820, packet "

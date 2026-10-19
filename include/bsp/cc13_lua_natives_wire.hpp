@@ -12,7 +12,7 @@ namespace bsp {
 // 00888AA0 (no null test), then vtable[5Ch](2); a unit's director is
 // vtable[114h](); a null director, when the unit is kind 0Fh (a plane), falls
 // back to [unit+9D4h]'s vtable[114h]() (the squadron's command block). The name
-// is indexed in the 20-entry table 00E08E58 by 006E8250 (no match: 0). The
+// is indexed in the 20-entry table 00E08E58 by 006E8250 (_stricmp; no match: 0). The
 // answer is stamp > (double([00F876A4]) - window): the stamp is
 // [director + 1D0h + index*4], seeded -1e10 (bits D01502F9h, 00720180) and
 // written only by 009555A0 (0095561B) at each projectile spawn with the clock
@@ -40,12 +40,14 @@ inline constexpr bool kLuaAddWaterLoadBound = false;
 // controller ([unit+1018h], 0080E490) has both halves (+370h by 0092BEA0 and
 // +374h by 0092BE90), 00814520: 004A5AA0 on the breakup registry when the class
 // has breakup pieces (0080F9F0), then 00935D30 BSP_UnitController_BreakInTwo,
-// which takes 11 stream-1 draws, clears +370h/+374h and kills the unit
-// (00926D90(1)). Returns no value.
+// which takes 11 stream-1 draws, then 0092A240 per piece (front, back): n =
+// trunc(clamp(Length x 0.2 / 10, 1, 2)) draws U(-w, w) each when the class has a
+// DeathEfx (+55Ch) and the game view node is set; it clears +370h/+374h and
+// kills the unit (00926D90(1)). Returns no value.
 // True: GameMissionLuaHost::run_break_ship_008914f0 gates on the units host's
 // front/back nodes less its own cleared-halves mark, takes 00935D30's eleven
-// stream-1 draws (GameGunneryHost::death_mode_draw_00bd2f10) and kills through
-// the 00926D90 funnel with cause 1.
+// stream-1 draws and 0092A240's puff draws (GameGunneryHost::
+// death_mode_draw_00bd2f10) and kills through the 00926D90 funnel with cause 1.
 // False: the row stays unhandled (UNIMPLEMENTED, no value pushed).
 inline constexpr bool kLuaBreakShipBound = false;
 
