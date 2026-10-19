@@ -42,6 +42,11 @@ Totals: 51 frontier rows, 5 voice rows and 86 unlocks. The profiler 004C1DD0 (30
 unlock 3) also counts as an object, but it is the host's own `profiler_` and its row has no
 identifier, so it is not ranked.
 
+Handed to cc15 by cc13-frontier (2026-10-19, docs/CC13_FRONTIER_MERGE.md). The only blocker of these nine
+presentation rows is the in-mission interface manager [00E198C4] and its screens (D+E): 00673130,
+00A7B710, 00644DB0, 005BD420, 005BD590, 00646040, 0068AB80, 005251C0, 005B5D40. cc13 won't build them.
+They are parked with D+E until the user decides on the render side.
+
 Still blocked after every object above is built:
 - 00683820 GuiScroller needs the input manager (instance+4h → +36B4h/+3714h), and there is no input backend.
 - 00780670 is the network session queue.
