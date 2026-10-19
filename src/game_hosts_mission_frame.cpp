@@ -184,7 +184,7 @@ constexpr bool kWarningMessageBankCc15Bound = true;
 // the FileBlocks are seams, see the doc). 00976B00's 00705E00 then resolves the
 // clip's record from the manager (records_resolved / record_misses replace
 // records_not_evaluated). False: no manager, as before.
-constexpr bool kMessageManagerCc15Bound = false;
+constexpr bool kMessageManagerCc15Bound = true;
 
 // cc15-ob1 (docs/CC15_OBJECT_GLOBALSUBSYSTEMS.md). True: the global_subsystems
 // step builds four of 004DC6A0's owners in its order through their typed bodies:
