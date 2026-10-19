@@ -3247,18 +3247,25 @@ public:
         const bsp::CameraMatrix& world = node.state.transform.world;
         float tx = 0.0f, ty = 0.0f, tz = 0.0f;
         owner_.units->unit_position_00fc(unit, tx, ty, tz);
-        // The auto pitch's aim point. A ship (kind 6) is aimed where the image's
-        // own line of sight (00864680) sights it: the pose +0FCh raised by the
-        // class Height (+A8h) and Globals.lua's LOSTargetHeightAdd (5.0). The
-        // seat ray's hit must lie above y = 0 (00957891: COMISS hit.y, [00D7A218]
-        // 0.0f; JBE drops it), and aiming at the origin (the waterline) put
-        // every hull hit at or below it. Never below LOSTargetHeightAdd itself.
+        // The auto pitch's aim point. A ship (kind 6) is aimed at the image's
+        // line-of-sight target point, 00864D90: the pose +0FCh raised at
+        // 00864E17 by GlobalConfig+90h, LOSTargetHeightAdd (5.0 on this
+        // installation), plus the class Height (+A8h) from the IsKindOf(5) arm at
+        // 00864E25. The image applies +90h to every target and gates the Height
+        // on IsKindOf(5); restricting the point to kind 6 is this harness's
+        // choice. UNCERTAIN: when class+50h is non-empty the image's height term
+        // is max(+90h, (bbox+38h - +2Ch) * +98h) through 00415550; that mesh arm
+        // is not modelled here. The seat ray's hit must lie above y = 0
+        // (00957891: COMISS hit.y, [00D7A218] 0.0f; JBE drops it), and aiming at
+        // the origin (the waterline) put every hull hit at or below it.
         // Other units keep their origin.
         double aim_y = ty;
         if (owner_.units->unit_is_kind_of(unit, bsp::kUnitGunneryKindShipBase)) {
             float length = 0.0f, width = 0.0f, height = 0.0f;
             owner_.units->unit_class_extents(unit, length, width, height);
             aim_y = static_cast<double>(ty) + height + bsp::kInstalledLosTargetHeightAdd;
+            // HARNESS clamp, not in the image: a ship origin below 0 (heave,
+            // sinking) never pulls the aim point below y = 5.0.
             if (aim_y < bsp::kInstalledLosTargetHeightAdd) aim_y = bsp::kInstalledLosTargetHeightAdd;
         }
         const double dx = static_cast<double>(tx) - world[12];
