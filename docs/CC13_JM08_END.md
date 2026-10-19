@@ -139,3 +139,5 @@ turns on the battle, not on a refused native.
 ## Status
 
 Read-only. Evidence from logs and the installation's script. No code change.
+
+**Follow-up (cc13-bunkerboat, 2026-10-19).** The bunker's boat kills come from `kInferiorFailureArmBound` ON (`5c5d57b05`). It keeps bunker 05 alive past 36-61 s, and the image does the same. See docs/CC13_BUNKERBOAT.md.
