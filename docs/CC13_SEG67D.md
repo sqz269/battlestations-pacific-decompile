@@ -166,10 +166,54 @@ In the host, each of these first fires one pass later. The fix is to default the
 
 None of these is reachable while headings and positions are finite.
 
+## Second follow-on audit (cc13-seg67f): 009ED6B0 op by op
+
+Each of the five fragments was checked op by op against disk bytes. The records are named `cc13_seg67f_check_*`.
+
+| Span | Host | Verdict |
+|---|---|---|
+| 009ED6B0-009EDA25, direct control | ship_ai_states.cpp + host 10800-10849 | Faithful. The prologue resets run after the arm in the host; the arm reads none of them. |
+| 009EDA28-009EE57B, station keeping | ship_ai_station_keeping.cpp | Ordered arms are faithful. NaN-only deviations (note E). |
+| 009EE580-009EE670, path pick | ship_ai_goal_vector.cpp + host | **Mismatch: three station bytes are never cleared** (note C). |
+| 009EE671-009EEAA2, navigation output | ship_ai_navigation.cpp | **Mismatch: the parked byte +2FDh is never written before the tail** (note D). |
+| 009EEAAB-009EF226, arm tail | ship_ai_navigation_arm_tail.cpp | Faithful, but it consumes the +2FDh input that note D shows is missing. |
+
+### Adoption notes
+
+**(C) 009EE586-009EE594.** The image clears blk+38Ah, +388h and +389h on every pass that reaches 009EE580, which is every tick the station-keeping arm does not run. The host never clears `station_close_38a`, `station_aligned_388` or `station_reversing_389`, so the station arm resumes with stale latches.
+
+**(D) 009EE6F1-009EE750.** Before the tail, the image computes:
+
+```
+2FDh = ([[blk+2F4h]+1Ch] == 0) ? 1
+     : (blk+310h >= blk+30Ch && !blk+2FCh && record+20h)
+```
+
+The host has no counterpart: `tail.parked_2fd` is cleared per tick and set only at 009EF045, after the read. This has two consequences:
+- The tail's parked stop at 009EEF72-009EEFD1 never fires in the host. In the image it fires when `2FDh && record+20h && 340h < min(0.25 * 3CCh, 0.1 * 1F0h)`.
+- 009DA610's reader of `goal.flag_2fd` sees the byte set only from 009EF045.
+
+Separately, the mode-3 skip at 009EE756 is latent: nothing in the host writes mode 3.
+
+**(E) NaN semantics of the by-reference helpers.** The image helpers behave as follows:
+- 00415510 is `b > a ? a : b`;
+- 00415550 is `a > b ? a : b`;
+- 00415620 returns `a` on NaN.
+
+So NaN gives b, b and a. These host copies differ on NaN only:
+
+| Host copy | Host form | Host result on NaN |
+|---|---|---|
+| ship_ai_station_keeping.cpp:50 max | `b > a ? b : a` | a |
+| ship_ai_navigation.cpp:26 min | `b <= a ? b : a` | a |
+| ship_ai_navigation.cpp:31 max | `a <= b ? b : a` | a |
+| ship_ai_navigation.cpp:39 clamp | returns `high` | high |
+
+`ai_target_weights.cpp:430/435` have the right form. airfield_taxi.cpp:12's max is also NaN-wrong; it is outside this range.
+
 ## Left
 
-- **Not re-audited op by op in cc13-seg67e:**
-  - the five fragments of 009ED6B0;
+- **Not re-audited op by op (cc13-seg67e/f):**
   - the rest of 009EB660 and 009EF910;
   - 009E04E0 outside 009E0B52-009E107E;
   - 009E04E0 009E0FBD's delete body.
