@@ -343,8 +343,13 @@ jumps at 00900087 to 00900985, the exit. So no torpedo leaves a `+184h` ship thr
 **The host diverges on torpedoes.** It runs the same pass, the recon sweep and the holder gate (kPlayerGunSeatBound),
 but its torpedo-bot path has no 00900080 test.
 
-The reach is wider than releasegun: every ship a plan has taken with `takehelm` has `+184h` = 1. So the host's bot
-torpedoes on such ships fire today, where the image never fires them.
+The reach is wider than releasegun. A `takehelm` sets `+184h` only when its helm input is non-trivial: the magnitude
+tests at 0064B940..0064B97A (|helm_throttle| > 0.1) with role 0 player-held lead to role_message_4b at 0064B9A6. A
+zero-throttle `takehelm` never sets it. On a ship that one did set, the host's bot torpedoes fire today, where the image
+never fires them.
+
+After `releasegun` the byte stays set: the 1FEh mask has bit 0 clear, so 0078021C skips the clear. The torpedo gate
+therefore stays closed for that ship, as it does in the image.
 
 **Built (packet `cc13-torpgate`):** `kTorpedoBotOwnerPlayerGateCc13Bound` in `src/game_hosts_gunnery.cpp`, OFF.
 docs/GUN_BOT_TICKS.md step 2 at 008FFFCE describes the same exit.
@@ -363,7 +368,8 @@ switch either way. Apart from that line, OFF is unchanged.
 
 Data lifetime when ON:
 - **Owner lookup.** The owner is the gun's `unit_index`, which is set when the gun is created, the same owner
-  008FFFB2's arm already assumes. The image walks `+3Ch` up from the gun; a gun's parent is its ship. LABELLED: a gun
+  008FFFB2's arm already assumes. The image's walk starts at the gun's `+50h`, the parent unit (00900048), and then follows `+3Ch`; a gun's parent
+  is its ship. LABELLED: a gun
   whose unit is not kind 5 is not gated.
 - **`+184h`.** It is read through `unit_player_controlled_0184`, which is bounds-checked. With
   `kPlayerRoleBookkeepingBound` it is the 4Bh arm's byte.
