@@ -37,7 +37,7 @@ callers or vtable slots). Targets:
 | 0099B6E0 TRIV_body_0099b6e0 (open, no record) | 009ADD30 |
 | 0084B9A0 (a batch 3 library row) | 0084B9F0 |
 
-009B6660 is the level-bomb prepare state's exit slot (vtable 00D201A0). The hosts already route it
+009B6660 is the level-bomb prepare state's exit slot (vtable 00D201A0, slot +8h). The hosts already route it
 to the follow exit (game_hosts_units.cpp:27119, kamikaze_task_cc13.cpp:931), so there is no
 mismatch.
 
@@ -83,8 +83,10 @@ kept.
    TORPEDO_AIM_LEAD packet), but this is not a new finding: the substitution is already labelled.
 3. **00822770**. The host forms `(max + 1) * damage` in double before truncation. The binary does
    `FILD` / `FMUL float` at x87 PC24 and then 00BF7420 `_ftol`. A product that rounds up to an
-   integer in 24 bits can truncate one higher in the binary. LIVE: every damage-smoke tick of a
-   damaged unit (008227E0). Shared RNG: no. No fix is requested.
+   integer in 24 bits can truncate one higher in the binary. LIVE: kDamageSmokeDrawsBound is ON
+   and the tick (008227E0) is called from units.cpp:11062 for every damaged unit. Shared RNG
+   00BD2F10: indirectly, since one extra smoke slot adds 3-4 draws per respawn. Routed to cc9;
+   no fix is made here.
 
 ## Batch 2: S (5 rows)
 
@@ -108,8 +110,9 @@ begin..end, its head is freed, and the head and size are cleared.
 0082DF00 was named as an Idle record member, but its layout is the 4Ch traffic record of
 cc13_left8_seg8.cpp (0049F9B0 / 0049FA70): plain fields +0h..+30h, then maps at +34h and +40h.
 The cc13-gp80 record already called it the head of the 50h Traffic record, after which 0082ED80
-copies +4Ch. It copies floats +18h..+30h with FLD/FSTP pairs, which is a value copy (a signalling
-NaN would come out quiet). Each map is skipped when it is the source's own; otherwise it is
+copies +4Ch. It copies floats +18h..+30h with FLD/FSTP pairs, which quiet a signalling NaN; the
+body copies through a uint32 and sets the quiet bit (fld_fstp), since a float assignment compiles
+to MOVSS and would keep it signalling. Each map is skipped when it is the source's own; otherwise it is
 emptied (00492A00 / 00444B10) and refilled (0048D080 / 00499680).
 
 **Moved to G: `00732560`** BSP_GunClass_CopyMuzzleOffsets. The full listing shows checked
@@ -124,7 +127,16 @@ MSVC 2005 STL instantiations. They are std::list (NarrativeList_*, BSP_List_*,
 SupportSite_CopyClassList), the _Tree lower bound, std::string operator+, and std::vector
 insert_n / resize / erase / tidy / push_back, plus the seg51 STL_ rows. Each uses
 allocator.allocate, _Xlen or the checked-iterator report 00BF6713. They are bound
-(`library_instantiation_out_of_scope`) with their names kept.
+(`library_instantiation_out_of_scope`) with their names kept. Where the name is a game name the
+record names the STL operation: 007F3D40 is operator+(const char*, const std::string&), 00847FE0
+is std::_Move_backward over std::string ranges (it swaps each string's +4h..+18h walking back by
+1Ch) and 008482F0 is its wrapper returning dest_end - count; likewise 00732560, 007CCD30, 007CD2F0,
+007CDDB0 and 0084D480.
+
+Body shape, not callee markers alone, decided the borderline rows. 00733430's allocator.construct
+null checks around a list head-node buy, with no game field touched, read as library code; the
+E rows went to batch 4 for their shape (virtual methods reached through game vtable slots, or
+engine containers) even where they call allocator.allocate or 00BF6713.
 
 The other 25 (class E, batch 4) are not library code under the library ruling:
 - 6 virtual methods, reached only through vtable slots: 006CA5D0, 007B0E60, 007B1B40, 007B21A0,
@@ -161,14 +173,14 @@ NativeDwordVector model in engine_seg11_35_66_cc13.cpp is a different, pool-back
 
 | Rows | What |
 |---|---|
-| 0086A280, 0086AA10, 0086B630, 00872E70, 0086A910, 0086A950, 0086AAA0, 0086AE90 | the signed dword vector {data, count, capacity}: reserve, zero-fill resize, destroy, at, and four push_back copies (each with its own reserve) |
+| 0086A280, 0086AA10, 0086B630, 00872E70, 0086A910, 0086A950, 0086AAA0, 0086AE90 | the signed dword vector {data, count, capacity}: reserve, zero-fill resize, destroy, at, and four push_back copies (each with its own reserve). The cc13_mistag.hpp hooks for 0086AA10 / 0086A280 now take a signed n to match |
 | 0086A990, 0086AAE0, 0086AED0 | the signed 8-byte (float pair) vector: push_back, clear, destroy |
 | 00865E90, 008661B0, 00866690 | the unsigned pointer vector: reserve, grow (2c + 2), push_back |
 | 0072A3B0, 0072B6D0 | the 14h-byte element vector (element vtable 00CFDC0C): reserve, resize |
 | 0072A6D0 | the unsigned 12-byte vector push_back |
 | 0086B290 | a NativeString's storage returned to the sized pool (+8h length, +0Ch data) |
 | 007B21A0, 007B1B40, 007B2850 | Point3PtrArray virtuals over its std::vector<Point3*> at +4h: clear, erase at, insert at |
-| 007B0E60, 007B2B90 | virtuals returning the last 12-byte point of a vector (via [+8h], or the object's own at +0Ch); renamed `BSP_PointList_LastPoint_007b0e60` and `BSP_Point3Vector_LastPoint_007b2b90` |
+| 007B0E60, 007B2B90 | virtuals copying the last 12-byte point of a vector to out (via [+8h], or the object's own at +0Ch) and returning out in EAX (RET 4); renamed `BSP_PointList_LastPoint_007b0e60` and `BSP_Point3Vector_LastPoint_007b2b90` |
 | 006CA5D0 | AirOpsBlock virtual: the n-th node of the list at +40h, EAX = node+0Ch |
 
 Notes on fidelity:
@@ -177,7 +189,10 @@ Notes on fidelity:
 - Where the binary carries on after the 00BF6713 report, the model does too and leaves the outcome
   to the host.
 - The shrink loops that step the count down one at a time (trivial destructors) are kept.
-- The FLD/FSTP float copies are value copies; a signalling NaN would come out quiet.
+- The image's x87 FLD/FSTP float copies quiet a signalling NaN, and a host float copy (MOVSS)
+  does not. The copies here (0082DF00, 0086A990, 007B2850, 007B0E60, 007B2B90) go through
+  fld_fstp, a uint32 copy that sets the quiet bit of a signalling NaN as the x87 load does; a
+  plain float assignment compiles to MOVSS and would not.
 
 **Moved back to G: `0084FC50`.** The listing is the MSVC `_Tree` node constructor
 (`_Node(left, parent, right, value, color)`, RET 14h). Its value is a NativeString copied inline

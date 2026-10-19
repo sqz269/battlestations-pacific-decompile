@@ -2,6 +2,7 @@
 
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/gunnery_tables.hpp"
+#include "bsp/torpedo_release_spawn.hpp"
 
 #include <cstdio>
 #include <map>
@@ -81,6 +82,56 @@ std::vector<bool> bomb_rack_bay_doors(bsp::game::GameMissionLuaHost& lua, int ty
     }
     if (ok && platforms > 0) cache.emplace(cache_key, out);
     return out;
+}
+
+std::uint8_t pilot_step_flag_df0_0099b055(int mode, bool has_leader, bool leader_9c1,
+                                          bool own_9c3) noexcept {
+    // 0099B006 CMP EBP,2 / SETE DL -> [ESP+10h], the slot 0099B04D reads as
+    // [ESP+0Ch] after 0099B019 POP EBP.
+    bool flag = mode == 2;
+    // 0099B012 CMP EBP,1 / JNE: only mode 1 takes the leader's 9C1h
+    // (0099B03B-0099B049).
+    if (mode == 1 && has_leader) flag = leader_9c1;
+    // 007BB154 TEST AL,AL / JZ: +DF0h = flag ? 9C3h : 0.
+    return flag && own_9c3 ? 1 : 0;
+}
+
+bool step_byte_9c1_007cdc84(bool channel_c_enabled, float channel_c_value) noexcept {
+    // 007CDC7E CMP byte [EAX+60h],0 / JZ -> 1; 007CDC89 UCOMISS / JP 007CDC9A
+    // (0) unless ordered equal.
+    if (!channel_c_enabled) return true;
+    return channel_c_value == kReseedHigh_00d7a24c;
+}
+
+bool plane_bay_target_007c6a8d(bsp::PlaneActuatorBlock& block, bool suppress_520,
+                               bool drop_kamikaze_2f, bool df0, bool c25, bool c20,
+                               bool own_9c3) noexcept {
+    // 007C6A8D CMP byte [EBP+520h],0 / JNE 007C6C23 skips the whole arm.
+    if (suppress_520) return false;
+    bsp::PlaneActuatorChannel& c = block.channel_c;
+    bool wrote = false;
+    // 007C6AC8-007C6AD5 007B91C0(plane; 2Fh, 0).
+    if (drop_kamikaze_2f) {
+        // 007C6ADD CMP byte [ECX+61h],1 / JNE write; 007C6AE8 UCOMISS +64h,
+        // 1.0f / JNP skip (ordered equal skips).
+        if (!c.target || !(c.value == kReseedHigh_00d7a24c)) {
+            c.value = kReseedHigh_00d7a24c;  // 007C6AFD
+            c.target = true;                 // 007C6B02
+            c.moving = true;                 // 007C6B06
+            wrote = true;
+        }
+    } else {
+        // 007C6A9A-007C6AC1: BL = (+DF0h || +C25h || +C20h) ? 9C3h : 0.
+        const bool bl = (df0 || c25 || c20) && own_9c3;
+        if (c.target != bl) {                // 007C6B1C / 007C6B1F
+            c.target = bl;                   // 007C6B21
+            c.moving = true;                 // 007C6B24
+            wrote = true;
+        }
+    }
+    // 007C6B0A / 007C6B28 CMP byte [+68h],0 / JE; 007C6B10 / 007C6B2E +11h = 1.
+    if (c.moving) block.moving_any = true;
+    return wrote;
 }
 
 }  // namespace bsp::cc13_release_timer

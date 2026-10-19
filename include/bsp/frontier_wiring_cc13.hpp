@@ -25,6 +25,6 @@ inline constexpr bool kHelmReleaseGunsToRestCc13Bound = false;
 // static_asserted there). ON: the gunnery host's 98h breakup takes those draws after
 // the eleven. OFF: it does not, as before (4 draws per breakup short of the image for
 // this installation's breakup classes, which have DeathEfx 138 and Length 180).
-inline constexpr bool kShipBreakInTwoPuffDrawsCc13Bound = false;
+inline constexpr bool kShipBreakInTwoPuffDrawsCc13Bound = true;  // ON: USNOS/IJN18 pairs (docs/SHIP_AI_OPEN_ITEMS.md 306.3)
 
 }  // namespace bsp

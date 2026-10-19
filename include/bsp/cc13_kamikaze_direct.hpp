@@ -31,7 +31,7 @@
 
 namespace bsp {
 
-inline constexpr bool kKamikazeDirectHitCc13Bound = false;
+inline constexpr bool kKamikazeDirectHitCc13Bound = true;  // ON: USNOS c17 pair (docs/SHIP_AI_OPEN_ITEMS.md 306.1)
 
 // 00CE47A0, FLD qword at 00819AB5: 1000.0.
 inline constexpr double kKamikazeDirectTraceScale = 1000.0;

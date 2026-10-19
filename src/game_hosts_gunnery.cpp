@@ -96,6 +96,7 @@
 #include "bsp/plane_release_ver_cc13.hpp"
 #include "bsp/seg59_ship_lead_s54.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/cc13_damage_smoke.hpp"   // packet cc13-smokepc24 (00822770 PC24 slot count)
 
 namespace bsp::game {
 namespace {
@@ -695,6 +696,22 @@ constexpr bool kGunInterceptBound = true;
 //    device's Bullet[2]) and so through its AAFlakBot. The host had loaded only
 //    Bullet[1] and read the pair of entries as two barrels.
 constexpr bool kDualPurposeSecondAmmoBound = true;
+//  * kFlakSecondAmmoRangeCc13Bound: 00956DCB..00956DD6 offers a Function 6 gun's
+//    SECOND ammunition record's +60h ([[[rec+74h]+7Ch]+60h], Bullet[2]) to the
+//    category 6 range at unit+448h. Off, the rebuild binding passes the first
+//    shell again, so category_ranges[6] stops at 1500 where the image has
+//    2000/2400. Moves the unit gunnery pass (00863A34) and fly_to_obstacles
+//    (009FD6B1), both live: docs/CC13_FLAK2.md, packet cc13-flak2.
+constexpr bool kFlakSecondAmmoRangeCc13Bound = false;
+//  * kSecondAmmoArcDropKeyCc13Bound: build_guns writes second_ammo_by_gun at
+//    guns.size() before the arc guard can drop the gun, so a dropped gun's
+//    Bullet[2] lands on the NEXT pushed gun's index (dp_air_ammo,
+//    unit_gun_range_sq_049c and the rebuild's flak alternate read it). On, the
+//    guard erases the entry it wrote. Host bookkeeping, no image site; moves
+//    dp_air_ammo where a mission hits the guard: docs/CC13_FLAK2.md section 5.
+//    ON by cc9's order, 0 reach, no pair (no platform in this installation's
+//    data reaches the guard).
+constexpr bool kSecondAmmoArcDropKeyCc13Bound = true;
 //  * kAaGunnerErrorBound: the AAGunnerBot's commanded vertical, when negative, is
 //    halved before 0085ABA0 (00902F62..00902F76, [00D7A280] = 0.5). Only this
 //    step of 00902920's error model is bound; the swinging error pair
@@ -3091,6 +3108,13 @@ struct GameGunneryHost::Impl {
         int sub_type{-1};
     };
     std::map<std::size_t, SecondAmmo> second_ammo_by_gun;
+    // Packet cc13-flak2b, log only: guns the build_guns arc guard dropped, those
+    // that had already written a Bullet[2] key, and pushed guns that found a key
+    // they did not write (all, and category 6 where dp_air_ammo reads it).
+    unsigned long long arc_guard_drops{0};
+    unsigned long long arc_guard_second_keys{0};
+    unsigned long long arc_guard_stale_inherited{0};
+    unsigned long long arc_guard_stale_inherited_cat6{0};
     unsigned long long dp_air_rounds{0};
     unsigned long long dp_cadence_shots{0};   // kFlakSecondAmmoCadenceBound
     unsigned long long flak_vertical_adjusts{0};   // kFlakNegativeVerticalBound
@@ -5486,6 +5510,7 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
 
             // Packet cc9_aa_lead: Bullet[2], read for every gun, used only by a
             // sub-type 6 gun against a plane (dp_air_ammo).
+            bool second_written = false;   // packet cc13-flak2b: the arc guard's key
             {
                 const int b2 = flat(type_id, make("bullet2"), -1);
                 if (b2 >= 0) {
@@ -5518,6 +5543,7 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                     bullet_min_range[b2] = fin2.flak_min_range;
                     flak_fuse_time_by_class[b2] = r2.flak_fuse_time;
                     second_ammo_by_gun[guns.size()] = second;
+                    second_written = true;
                     if (bullet(b2) == nullptr) {
                         GameBulletClassRow r;
                         r.id = b2;
@@ -5666,7 +5692,16 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             // a zero-span arc, so the seed alone IS the complete answer for it.
             // Distinguishing on the authored data rather than on the category
             // keeps this a statement about what the data says.
-            if (gun.arcs.size() <= 1 && windows > 0 && traverses) continue;
+            if (gun.arcs.size() <= 1 && windows > 0 && traverses) {
+                ++arc_guard_drops;
+                if (second_written) {
+                    ++arc_guard_second_keys;
+                    if constexpr (kSecondAmmoArcDropKeyCc13Bound) {
+                        second_ammo_by_gun.erase(guns.size());
+                    }
+                }
+                continue;
+            }
             done("Gunnery::add_authored_arc_007f6b10", 0x007f6b10u);
 
             // 0085A3E0..0085A4A8: the meshless gun's point fire window.
@@ -5836,6 +5871,10 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                     state.row.name.c_str(), type_id, gun.platform_key, gun.device_class, gun.category,
                     ship_kind ? 1 : 0, plane_kind ? 1 : 0, why);
             }
+            if (!second_written && second_ammo_by_gun.count(guns.size()) != 0) {
+                ++arc_guard_stale_inherited;   // a dropped gun's Bullet[2] on this one
+                if (gun.category == 6) ++arc_guard_stale_inherited_cat6;
+            }
             guns.push_back(gun);
             gun_turning_class.push_back(flat(type_id, make("gcls"), 0));
         }
@@ -5921,6 +5960,16 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 out.weapon_function = gun.category;
                 out.max_range = gun.max_range;  // 00731020
                 out.flak_alternate_range = gun.max_range;
+                if constexpr (kFlakSecondAmmoRangeCc13Bound) {
+                    // 00956DCB: ammunition record 1's bullet +60h, the derived
+                    // range SecondAmmo::max_range carries. A gun without a
+                    // Bullet[2] keeps the first shell (the image reads past
+                    // its record array there; no mission uses such a mount).
+                    const auto second = owner.second_ammo_by_gun.find(slot);
+                    if (second != owner.second_ammo_by_gun.end()) {
+                        out.flak_alternate_range = second->second.max_range;
+                    }
+                }
                 const GameBulletClassRow* b = owner.bullet(gun.bullet_class);
                 out.has_blast = b != nullptr && b->blast_range > 0.0f;
                 out.blast_inner = b != nullptr ? b->blast_range : 0.0f;
@@ -13882,7 +13931,10 @@ void GameGunneryHost::Impl::ship_death_message_00827ab0(std::size_t victim) {
         //  * the view node is taken as set (it is set in any rendered mission);
         //  * the host's kill came before this 98h (as for the eleven above), so the
         //    puffs follow the kill here instead of preceding it;
-        //  * the puffs use the piece's ship_break_in_two key under the stream option.
+        //  * the puffs use the piece's ship_break_in_two key under the stream option;
+        //  * a VehicleClass row nil'd by 0095CA70 (kVehicleClassPreloadCc15Bound) reads as
+        //    not found, so the puffs are skipped, while the image still draws from the C++
+        //    class object's +55Ch.
         if constexpr (bsp::kShipBreakInTwoPuffDrawsCc13Bound) {
             const int type_id = unit_state[victim].row.type_id;
             const GameVehicleClassRow cls = lua.read_vehicle_class_row(type_id);
@@ -15975,9 +16027,17 @@ bool GameGunneryHost::damage_smoke_tick_008227e0(std::size_t unit_index, float d
     }
     const float damage = 1.0f - health;
     // 00822774..00822791: (+2Ch + 1) * arg through _ftol (truncation), capped at +2Ch.
-    int wanted = static_cast<int>(static_cast<double>(max_number + 1) * damage);
+    // Packet cc13-smokepc24: ON rounds the product to float first (PC24), as the image does.
+    static_assert(!bsp::cc13_damage_smoke::kDamageSmokeSlotCountPc24Cc13Bound
+                      || kDamageSmokeDrawsBound,
+                  "the PC24 slot count is a sub-switch of kDamageSmokeDrawsBound");
+    int wanted = bsp::cc13_damage_smoke::kDamageSmokeSlotCountPc24Cc13Bound
+        ? bsp::cc13_damage_smoke::damage_smoke_slot_product_pc24_00822770(max_number, damage)
+        : static_cast<int>(static_cast<double>(max_number + 1) * damage);
     if (!(wanted < max_number)) wanted = max_number;
     // 008227AD: an unsigned compare; the grow appends {null effect, 0.0}.
+    // LABELLED (host guard): wanted > 0 drops the image's NaN arm, where _ftol(NaN) gives
+    // 80000000h, the signed min keeps it and the unsigned compare makes it a huge resize.
     if (wanted > 0 && static_cast<std::size_t>(wanted) > us.smoke_timers.size()) {
         if (us.smoke_timers.empty()) ++host.smoke_units;
         host.smoke_slots_grown += static_cast<std::size_t>(wanted) - us.smoke_timers.size();
@@ -17133,6 +17193,10 @@ void GameGunneryHost::report() {
         s.torpedo_ranges_derived, s.torpedo_swims_started,
         s.torpedo_heading_snaps, s.bullet_ranges_derived,
         s.gun_pending_timers_live, s.gun_pending_timers_expired);
+    host.log.notef("summary mission gunnery arc guard drops=%llu second_keys=%llu "
+        "stale_inherited=%llu cat6=%llu erase=%d (build_guns, packet cc13-flak2b)",
+        host.arc_guard_drops, host.arc_guard_second_keys, host.arc_guard_stale_inherited,
+        host.arc_guard_stale_inherited_cat6, kSecondAmmoArcDropKeyCc13Bound ? 1 : 0);
     {
         // Packet cc8_torpedo_release_spawn: the funnel that says where a round
         // that could swim actually stops. Counted over gun rows, so a unit with

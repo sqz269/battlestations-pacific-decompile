@@ -20032,3 +20032,70 @@ What a winning plan needs on the current exe:
 - Yamato must die (FinalTrgs), and so must the Funryu Bettys, which are added to FinalTrgs.
 Hold re-plans until cc13's Kaiten depth/contact and kamikaze direct-hit switches are paired, because each flip
 reshuffles the prefix.
+
+## 306. Kamikaze direct record and deferred hit dispatch paired (cc9-gunnery54, 2026-10-19)
+
+### 306.1 kKamikazeDirectHitCc13Bound (include/bsp/cc13_kamikaze_direct.hpp, packet cc13-kzdirect)
+
+Evidence checked: 00470350 BSP_HitRecord_SetShot stores the shooter at +4h and then `CALL [vtable+54h]` /
+`FSTP [ESI+14h]` (00470360..00470365), and 0042B8D0 is `FLDZ; RET`, so the direct record's +14h damage ends 0.
+**Predictions (before the pair):** reference env only (no draws). Per traced detonation on USNOS: ship hit records +1,
+hits taken +1, damage +0; deaths, death rows and the mission end unchanged. Pair: OFF = `local\g54_b_off` (tree build
+a3a8b703e, cool9dc ON), ON = `local\g54_kz_on`; USNOS 50000 frames with usnos_s45_os_k, logs g54_boffs_os / g54_kzons_os.
+
+### 306.2 kHitDeferredDispatchCc13Bound (include/bsp/cc13_hitq_switches.hpp, packet cc13-hitq)
+
+LABELLED SUBSTITUTION (from the packet): ON drains the pushes at row 6 of the NEXT step, 0.05 s later than the
+image, and the last step's hits show in left=. **Predictions:** in-step readers see pre-hit health; kill credit
+and last_attacker go to the oldest hit of a step; a blast lands before its direct hit; fires reach damage control a
+step later; Lua hit events and death rows come in reverse order within a step; hit_effect and breakup draws move to
+row 6. Totals (hit records, damage) should hold in the reference env apart from the one-step timing; deaths may
+move by a step. Pair: OFF = `local\g54_b_off`, ON = `local\g54_hq_on`; USN04, JM08, USN21 and BSM09, 9000 frames,
+no orders, both envs (g54_boff{s,d}_* / g54_hqon{s,d}_*).
+
+**306.2 measured; NOT flipped (the lead's call: the drain point is a labelled substitution).** Every row moves in
+both envs (pair_diff exit 3), and the one-step drain delay explains the first-order effect:
+
+| row (ref env) | queued / dispatched / left ON | deaths OFF -> ON | hit records OFF -> ON | damage OFF -> ON |
+|---|---|---|---|---|
+| USN21 | 11 / 11 / 0 | 1 -> 1 (death rows identical) | identical | 3593.7 -> 3593.8 |
+| USN04 | 863 / 863 / 0 | 58 -> 57 | 882 -> 847 | 13985.7 -> 13948.9 |
+| JM08 | 4269 / 4267 / 2 | 13 -> 15 | 4315 -> 4266 | 17126.0 -> 16929.0 |
+| BSM09 | 770 / 770 / 0 | 46 -> 47 | 851 -> 766 | 12011.0 -> 13112.3 |
+
+- **Timing:** BSM09's opening D3A Val deaths all move from 42.70 to 42.75 s, exactly one step: the host drains at
+  row 6 of the NEXT step, 0.05 s later than the image. That one-step lag then moves positions and aim, so the
+  larger rows diverge (USN04 hull hits 709 -> 641, JM08 Ki-43 Oscar 01 death 128.30 -> 174.36 s).
+- **Order:** kill credit moves as predicted where hits land in one step (BSM09 `D3A Val 1|.-III` killer Jenkins ->
+  Cleveland). USN21, with 11 hits and no same-step overlap, is the clean case: unit table and death rows identical.
+- Default env: USN04, JM08, USN21 and BSM09 all exit 3 (BSM09 deaths 46 -> 48, JM08 15 -> 14).
+- **Verdict:** the mechanism matches the image apart from the labelled drain point, so it is NOT flipped. Re-pair
+  once cc13 drains at row 6 of the same step; until then, the one-step lag hides the order effect.
+
+**306.1 measured; FLIPPED ON by mechanism.** The usnos_s45_os_k pair (50000 frames) fails at 999.88 s before any
+kamikaze contact: `traced=0`, OFF and ON gameplay identical, so it says nothing. Re-paired on lua70's detonating plan,
+`local\g54_os_c17.txt` (a copy of cc9-ships44\local\s59_os_c17.txt), 60000 frames, reference env
+(`g54_boffs_c17` / `g54_kzons_c17`). The boat `unit #2.2` detonates on Gear8 at 955.99 s in both runs; ON logs
+`kamikaze direct arm traced=1 missed=0`. pair_diff: hit records 10870 -> 10871 and Gear8 hits 9 -> 10. Damage
+430496.2, the 609 death rows, the 307 plane death modes and the mission state are identical. The native table moves only
+by that one record (00926E80, 00470350, 008777D0, 00826F10 +1 each, 008270AD +1); damage smoke respawns 874 -> 879
+follow from it. That is the prediction exactly: a zero-damage hit and direction record.
+
+### 306.3 kShipBreakInTwoPuffDrawsCc13Bound (include/bsp/frontier_wiring_cc13.hpp, packet cc13-frontier)
+
+Evidence checked (disasm-raw): 0092A2A1..0092A315 computes w = Length (+A0h) x 0.2 and n = trunc of w / 10 clamped
+(1.0 at 00D7A24C when below one), and the loop 0092A333..0092A687 makes one 00BD2F10(ECX = 1, -w, w) call per pass at
+0092A34A (`sub [esp+30h], ebx` / `jne 0092A333`); no other 00BD2F10 call is in the body. **Predictions:** this
+installation's breakup classes have Length 180, so w = 36, n = 2 per piece and 4 per breakup. ON, each 98h breakup
+adds 4 stream-1 draws: `break_in_two_draws` goes from 11 to 15 per breakup (USNOS os_k OFF: 98h=2, 22 draws, so 30
+ON). Reference env: only stream-1 consumers after the first breakup move, so the deaths before it are identical.
+Default env: the shared RNG moves everything after the first breakup. Pair: OFF = `local\g54_c_off` (tree build
+97bd59009), ON = `local\g54_pf_on`; USNOS os_k (50000) and IJN18 ijn18_l67_i18_d (64000, 7 breakups on lua70's
+reference), both envs (g54_coff{s,d}_* / g54_pfon{s,d}_*).
+
+**306.3 measured; FLIPPED ON by mechanism.** Reference env: USNOS os_k and IJN18 are both pair_diff exit 1 (gameplay,
+death rows and unit table identical). `puff draws=8` on USNOS (2 breakups) and `=4` on IJN18 (1 breakup), so 4 per
+breakup as predicted. Default env: IJN18 has no breakup and is gameplay identical (`puff draws=0`). USNOS moves through
+the shared RNG from the first breakup on: deaths 96 -> 98, and the failure moves from 939.89 to 974.89 s. Note for
+lua70: IJN18 `ijn18_l67_i18_d` does not reach EndMission in 64000 frames on 97bd59009 in either env (OFF too). Its
+reference ended at 1691.52 s.
