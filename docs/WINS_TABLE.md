@@ -1089,7 +1089,17 @@ LOMP06, LOMP10, IJN18 and JM06, so the moves are not the VehicleClass flip.
 | USN15 `l70_u15_e` | 90000 | failed 1602.49 s | failed 1662.55 s | no end / - |
 | USN15 `s45_u15_l2` | 90000 | failed 1081.98 s | - | 1127.02 / - |
 | USN04 idle | 9000 | no end | no end | - |
-| IJN08 `p10_i08_z` | 100000 | (run pending) | no end | failed 1129.98 / no end |
+| IJN08 `p10_i08_z` | 100000 | Game Over 2060.89 s | no end | failed 1129.98 / no end |
 
 Every completion logged the guard. New losses on this base: LOMP06 ref, LOMP10, JM06 ref, ESMP08, IJN18, BSM01 and
 USN02 20,3. USN01 20,3 is won again.
+
+Re-plans on the same tree build (c95d107da):
+
+- JM06 `l70_j6_n` (s45 k with the first PlayerSub 01 moveto at frame 11000 instead of 13000): completed 817.92 s ref /
+  682.96 s 20,3. Variant m (torpedoes at the Narwhal) completed 2175.00 s ref / 1538.38 s 20,3. JM06 is won again.
+- LOMP10 and IJN18: every attackmove unit in mode navigate_astern keeps d32c = 0 for the whole run on this base
+  (LOMP10 Ashigara 3113 of 3113 steps, IJN18 Gear1-4 and Oma4-7), and its throttle swings between 0.5 and -0.625.
+  On the l69 base the same units logged a closing d32c (Ashigara 12207 m at frame 10, 1448 m at 18000), and CB4 sank
+  Asashimo, Sugi and Ashigara. The mode-3 skip (kShipAiNavigateAsternSkipBound, game_hosts_ship_ai.cpp ~10990) never
+  reaches the 009EE765 output, so these leaders never close. An astern-skip OFF control is running.
