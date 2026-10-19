@@ -151,8 +151,11 @@ constexpr bool kSetCommandMessageCc13Bound = true;
 constexpr bool kCommandMessageCc13Bound = true;
 
 // [00e188a8]+1fe4h. The single-player value, which is what every other host in
-// this executable already reports for the same field.
-constexpr int kSessionModeSinglePlayer = 1;
+// this executable already reports for the same field: 0 (1 is the session host,
+// 2 the client). docs/CC13_SESSION_MODE_AUDIT.md: every use here tests == 2,
+// != 2 or {0, 1}, so 0 and the earlier 1 take the same arm. The byte 00E0C978
+// (005E2F99..005E2FAB), which is SET to 1 in single player, is a different global.
+constexpr int kSessionModeSinglePlayer = 0;
 
 // The three command objects whose apply takes 00816e30's movement fall-through:
 // the test at 00816f5e..00816f7a is false for them, so 00816f7c..00817330 does
@@ -3980,6 +3983,75 @@ std::size_t GameCommandsHost::release_observed_target_0071ddb0(
     return matches;
 }
 
+bool GameCommandsHost::copy_director_state_00720450(std::size_t dst, std::size_t src) {
+    // Packet cc13-jm08. 00720450, __thiscall(dst director)(src director), RET 4,
+    // reached through 0071C150 -> successor director vtable[4Ch] = 00836680
+    // (00D09FA4) at a leader's death. Only what GameDirector carries is copied;
+    // kDeadLeaderDirectorStateCopyBound lists what is not.
+    Impl& host = *impl_;
+    if (dst >= host.directors.size() || src >= host.directors.size()
+        || dst >= host.units.size() || src >= host.units.size()) return false;
+    GameDirector& to = host.directors[dst];
+    const GameDirector& from = host.directors[src];
+    // 0072045D..00720468: +3Ch / +3Dh, the allow bytes. NOT COPIED (gunnery host).
+    // 0072046B..007204D5: +16Ch..+184h, the record 00720850 saves slot 0 into.
+    // NOT COPIED (no host field).
+    // 007204DB..007204DE: +30h, the mode, before 0071E610 so that it tests the
+    // copied mode.
+    to.mode = from.mode;
+    // 007204E3 0071E610 on dst: its override cleared, vtable[6Ch](0) when it ran.
+    clear_override_in_place(host, dst);
+    // 007204E8..0072072B: the ten records, each with its descriptor (the
+    // observer pair moved with it; this host has no registry, 0071DDB0 walks
+    // every director) and its path object (0071FD10 at 00720714 per slot; this
+    // host carries slot 0's alone). The `land` -> `attackmove` rewrite for a
+    // kind-6 owner (0072058A..00720607) is NOT modelled: it needs 0071DB90's
+    // world list, so a `land` is kept and counted.
+    for (int i = 0; i < bsp::kDirectorCommandSlotCount; ++i) {
+        to.slot_command[i] = from.slot_command[i];
+        to.slot_target[i] = from.slot_target[i];
+        if (from.slot_command[i] == bsp::gameplay_seg38_cc13::kCmdLand)
+            ++host.summary.director_copy_land_kept;
+    }
+    if (&to != &from) {
+        to.path_cursor = from.path_cursor;
+        to.path_points = from.path_points;
+        to.path_name = from.path_name;
+        to.path_follow_mode = from.path_follow_mode;
+        to.path_start_mode = from.path_start_mode;
+        to.path_built = from.path_built;
+        to.path_start_index = from.path_start_index;
+        to.path_travelled = from.path_travelled;
+        to.path_last_x = from.path_last_x;
+        to.path_last_z = from.path_last_z;
+        to.path_last_valid = from.path_last_valid;
+        to.path_visited = from.path_visited;
+        to.pending_path_points = from.pending_path_points;
+        to.pending_path_name = from.pending_path_name;
+        to.pending_path_valid = from.pending_path_valid;
+        to.user_points = from.user_points;
+        to.path_user = from.path_user;
+    }
+    // The stage reset below makes the next step begin slot 0 again.
+    to.path_begun = false;
+    // 00720731..0072078E: the override record +188h..+1A0h zeroed (the position
+    // lanes from 00F87574..7C, this host's default target), then 00720798..
+    // 007207A1 +4Ch, +44h, +50h, +48h.
+    to.override_command = 0;
+    to.override_target = bsp::SceneCommandTarget{};
+    to.override_stage = 0;                                   // +50h (+4Ch: no field)
+    to.latched = false;                                      // +44h
+    to.stage = 0;                                            // +48h
+    ++host.summary.director_state_copies;
+    host.done("CommandControllerBase::copy_state_from", 0x00720450u);
+    const bsp::EntityOrderCommandClass* head = host.class_of(to.slot_command[0]);
+    host.log.notef("director state copy: %s <- %s, slot 0 `%s`, mode %d "
+        "(0077BDDE -> 0071C150 -> 00836680 -> 00720450, packet cc13-jm08)",
+        host.units[dst].name.c_str(), host.units[src].name.c_str(),
+        head != nullptr ? head->name : "(none)", static_cast<int>(to.mode));
+    return true;
+}
+
 bool GameCommandsHost::command_accepts_target_0071d6d0(std::uint32_t command,
                                                        std::uint32_t handle) {
     Impl& host = *impl_;
@@ -4400,6 +4472,9 @@ void GameCommandsHost::report() {
         "00836D67 / 0071E610)", kAutoTargetOverrideBound ? 1 : 0,
         host.summary.override_sends, host.summary.override_installs,
         host.summary.override_arm_ends, host.summary.override_clears);
+    host.log.notef("summary mission director state copies=%llu land_kept=%llu (packet "
+        "cc13-jm08, 00720450 from 0071C150; kDeadLeaderDirectorStateCopyBound)",
+        host.summary.director_state_copies, host.summary.director_copy_land_kept);
     host.log.notef("summary mission director override push-end bound=%d weapon_pushes=%llu "
         "with_override=%llu echoes=%llu clears=%llu (packet s57_override_push, 0071E6C0 tail -> "
         "0071E2E0 -> 0071E610)", kAttackPushEndsOverrideBound ? 1 : 0,

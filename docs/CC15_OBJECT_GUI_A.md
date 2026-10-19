@@ -117,3 +117,5 @@ OFF pair and an ON pair.
 
 Neither step makes the manager the image's widget tree. Step 1 changes no row on its own. In step 2,
 only 008CA010 has behaviour a run can see.
+
+Parked by the coordinator (cc16, 2026-10-19): neither reduced step is taken. GUI A, and with it the screen base B, the front-end managers C, FrontEndFrame and the in-mission interface manager D+E, wait for the user's render-side decision.

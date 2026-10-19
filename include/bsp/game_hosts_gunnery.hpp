@@ -1306,6 +1306,10 @@ public:
     void set_hull_repair_enabled_00939fd0(std::size_t unit_index, bool enabled);
     bool director_allow_fire_3c(std::size_t unit_index) const noexcept;
     bool director_allow_move_3d(std::size_t unit_index) const noexcept;   // 009F5614's read
+    // Packet cc13-jm08: 00720450's raw copy of director+3Ch / +3Dh (0072045D..
+    // 00720468) from src to dst, no 00836210 side effect. An unset src row is
+    // copied as unset, i.e. 008363E0's 1/1.
+    void copy_director_allow_bytes_00720450(std::size_t dst, std::size_t src);
     // 007BC5B0's tail, past its flight-state and unit+AA0h tests: true when
     // [unit+150h] <= 0 (not invincible) or the unit is player-held (+1ACh not 8
     // and 00927F10 false). With kUnitInvincibilityFloorBound off it keeps the
