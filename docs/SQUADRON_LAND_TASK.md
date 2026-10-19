@@ -18157,3 +18157,22 @@ queue over `l68_jobs.txt`; `l68_hold` pauses it, `l68_stop` ends it), `l68_addjo
 8. IJN08 reference (above), and the power-up item (check AddPowerup reach first).
 Main moved many times after 03d3df7f8 (physics, gunnery, SETCMD quantisation pending): re-time every row on one
 current main and note the base sha per row.
+
+## 5ir. Switch flips on main 011d651dc (cc9-lua69, 2026-10-18)
+
+Pairs are same-main (011d651dc), reference env, OFF = the tree build, ON = `tools/pair_export.py` exports
+`local\l69_<v>`; logs `cc9-lua52\local\l69r_<row>_<main|v>_ref.log`.
+
+| switch(es) | row | pair_diff | ON-only evidence |
+| --- | --- | --- | --- |
+| `kVehicleClassPreloadCc15Bound` (`l69_vc`) | BSM09 `bsm09_l68_b9_d1`, EndMission 327.04 s both sides | 1, gameplay identical | 617 rows purged, script_nil_reads 0, lua_errors 0 |
+| `kHudShipScreenApplyUnitBound` + `...LuaBound` + `...WidgetsBound` (`l69_hud`) | USN01 `usn01_l65_u1_g` (no end on this main) | 1, gameplay identical | 0064AE20 concrete; 00818300 / 0059CB90 / 0064B023 recorded once each; HUD sprite quads only |
+| `kWarningMessageBankCc15Bound` (`l69_wb`) | USN01 `usn01_l65_u1_g` | 1, gameplay identical | Warnings.lua table, 445 hit and 5 kill reports queued |
+
+All three flipped ON. Caveat kept for the HUD Lua sub-switch: the VehicleClass row is keyed by class+70h taken as the
+row's type_id, inferred and not traced. `kMissionRecordMergeBound` is not paired on USN01, because USN01 does not end
+on this main and never reaches the 009205E0 commit; its pair runs on BSM09 d1 instead.
+
+**`kMissionRecordMergeBound` ON** (`l69_mr`, BSM09 `bsm09_l68_b9_d1`, EndMission 327.04 s both sides): pair_diff exit 1,
+gameplay identical (49 death rows, 90-row unit table). ON only: `MissionRecord::commit_009205e0 key=BSM09 count_284=1
+completed_00=1 ...`. The OFF-branch comment in src/mission_result.cpp now names the ADD at 009205FE (was 00920604).

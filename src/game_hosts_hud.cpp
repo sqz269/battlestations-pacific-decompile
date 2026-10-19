@@ -75,7 +75,9 @@ constexpr bool kHudPickSegmentQueryBound = true;
 // lookups (no NoRepairGUI key is read, so +40h shows), class+C8h = 0,
 // 00818300 / 00852350 / 0059CB90 = 0, and the widgets at +40h, +54h, +58h and
 // +68h..+74h, which 0064C0F0's host name map does not bind (no-ops).
-inline constexpr bool kHudShipScreenApplyUnitBound = false;
+// ON with both sub-switches (cc9-lua69, 2026-10-18): USN01 all-OFF vs all-ON pair,
+// gameplay identical (presentation only; SQUADRON_LAND_TASK 5ir).
+inline constexpr bool kHudShipScreenApplyUnitBound = true;
 
 // Packet cc13-wire2, granted by cc9 2026-10-18: two OFF sub-switches that close
 // stand-ins of the adapter above. Neither changes anything while
@@ -94,8 +96,10 @@ inline constexpr bool kHudShipScreenApplyUnitBound = false;
 //   ship_recon_num1_Icon (00CF60B0, 0064C3A5), +6Ch ship_recon_num2_Icon
 //   (00CF6098, 0064C415), +70h ship_torpedo_num1_Icon (00CF6080, 0064C485),
 //   +74h ship_torpedo_num2_Icon (00CF6068, 0064C4F5). OFF: they stay unbound.
-inline constexpr bool kHudShipScreenApplyUnitLuaBound = false;
-inline constexpr bool kHudShipScreenApplyUnitWidgetsBound = false;
+// LABELLED (both ON): the Lua reads key VehicleClass by class+70h taken as the row's
+// type_id, which is inferred, not traced.
+inline constexpr bool kHudShipScreenApplyUnitLuaBound = true;
+inline constexpr bool kHudShipScreenApplyUnitWidgetsBound = true;
 
 void format_address(std::uint32_t address, char (&out)[16]) {
     std::snprintf(out, sizeof(out), "%08lx", static_cast<unsigned long>(address));
