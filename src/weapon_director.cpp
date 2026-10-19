@@ -4,6 +4,17 @@
 #include "bsp/weapon_director.hpp"
 
 namespace bsp {
+
+std::uint32_t director_if_enabled_008355f0(void* director, DirectorArchiveForwardCalls& calls) {
+    if (static_cast<const std::uint8_t*>(director)[0x23d] == 0) return 0;
+    return calls.director_slot18(director);
+}
+void director_archive_enter_00835620(void* director, void* archive, DirectorArchiveForwardCalls& calls) {
+    calls.archive_slot04(archive, director);
+}
+void director_archive_leave_00835690(void* director, void* archive, DirectorArchiveForwardCalls& calls) {
+    calls.archive_slot08(archive, director);
+}
 namespace {
 
 // The class ids 008363E0 asks the session endpoint at +34h before defaulting

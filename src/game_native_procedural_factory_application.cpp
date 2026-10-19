@@ -169,8 +169,10 @@ struct GameNativeProceduralFactoryApplication::Impl {
     NativeResourceRegistryLookupContext profiles;
     NativeProceduralFactoryStorageContext factories;
     NativeProceduralFactoryTableConstructionContext construction;
-    SetupBacking setup;
-    RetirementBacking retirement;
+    std::unique_ptr<SetupBacking> copied_setup;
+    std::unique_ptr<RetirementBacking> copied_retirement;
+    const NativeProceduralFactoryTablePublicationFrame& setup_frame;
+    const NativeProceduralFactoryTableFrame& retirement_frame;
     NativeProceduralFactoryTablePublicationAcquired acquired;
     NativeProceduralFactoryTableShutdownAcquired shutdown;
     Phase state{Phase::prepared};
@@ -182,7 +184,8 @@ struct GameNativeProceduralFactoryApplication::Impl {
 
     Impl(GameVfsHost& vfs_owner, GameSingletonHost& singleton_owner,
         GameNativeReadOnlyData& read_only, void* volatile& actual_publication,
-        const GameNativeProceduralFactorySourceInputs& inputs)
+        const GameNativeProceduralFactorySourceInputs* inputs,
+        const GameNativeProceduralFactoryBorrowedFrames* borrowed)
         : vfs(vfs_owner), singletons(singleton_owner), data(read_only), publication(actual_publication),
           services(vfs.native_owners()), strings(vfs.raw_strings()),
           manager(singletons.manager_publication_01090aa0()),
@@ -202,7 +205,10 @@ struct GameNativeProceduralFactoryApplication::Impl {
               checked_text(data, 0x00ce7dc8, "ShoreWaveTextureSource0"),
               checked_text(data, 0x00ce7da4, "ShoreWaveTextureSource1"),
               checked_text(data, 0x00ce7d80, "ShoreWaveTextureSource2")}},
-          setup(inputs.setup), retirement(inputs.retirement) {
+          copied_setup(inputs ? std::make_unique<SetupBacking>(inputs->setup) : nullptr),
+          copied_retirement(inputs ? std::make_unique<RetirementBacking>(inputs->retirement) : nullptr),
+          setup_frame(copied_setup ? copied_setup->frame : borrowed->setup),
+          retirement_frame(copied_retirement ? copied_retirement->frame : borrowed->retirement) {
         validate_domain();
     }
     Impl(const Impl&) = delete;
@@ -284,7 +290,12 @@ struct GameNativeProceduralFactoryApplication::Impl {
 GameNativeProceduralFactoryApplication::GameNativeProceduralFactoryApplication(
     GameVfsHost& vfs, GameSingletonHost& singletons, GameNativeReadOnlyData& data,
     void* volatile& actual_publication, const GameNativeProceduralFactorySourceInputs& inputs)
-    : impl_(std::make_unique<Impl>(vfs, singletons, data, actual_publication, inputs)) {}
+    : impl_(std::make_unique<Impl>(vfs, singletons, data, actual_publication, &inputs, nullptr)) {}
+
+GameNativeProceduralFactoryApplication::GameNativeProceduralFactoryApplication(
+    GameVfsHost& vfs, GameSingletonHost& singletons, GameNativeReadOnlyData& data,
+    void* volatile& actual_publication, const GameNativeProceduralFactoryBorrowedFrames& frames)
+    : impl_(std::make_unique<Impl>(vfs, singletons, data, actual_publication, nullptr, &frames)) {}
 
 GameNativeProceduralFactoryApplication::~GameNativeProceduralFactoryApplication() noexcept {
     // No automatic native cleanup is safe after partial registration or table
@@ -299,7 +310,7 @@ void GameNativeProceduralFactoryApplication::setup_00bbcb40() {
         d.validate_domain();
         require(d.publication == nullptr, "procedural factory publication is already occupied");
         publish_native_procedural_factory_table_00bbcb40(
-            d.publication, d.setup.frame, d.construction, d.acquired);
+            d.publication, d.setup_frame, d.construction, d.acquired);
         d.capture_completed_setup();
         d.state = Phase::live;
     } catch (...) {
@@ -325,7 +336,7 @@ void GameNativeProceduralFactoryApplication::retire_00bbc5d0(bool all_factory_lo
         require(all_factory_lookups_quiescent, "procedural factory retirement requires lookup quiescence");
         d.validate_live();
         shutdown_native_procedural_factory_table_00bbc5d0(
-            d.publication, d.retirement.frame, d.profiles, d.shutdown);
+            d.publication, d.retirement_frame, d.profiles, d.shutdown);
         require(d.shutdown.completed && d.shutdown.table_returned && d.shutdown.table_freed &&
             d.shutdown.captured_table == d.owned_table && d.publication == d.owned_table,
             "procedural factory shutdown did not preserve the captured dangling publication");

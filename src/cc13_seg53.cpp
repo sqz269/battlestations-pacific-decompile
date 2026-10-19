@@ -2,6 +2,61 @@
 // x87 model: the image runs with 53-bit precision, so an FSTP to a float slot is a float cast.
 
 #include "bsp/cc13_seg53.hpp"
+#include <cmath>
+#include <cstdio>
+#include <cstring>
+
+namespace bsp::cc13_seg53 {
+void text_buffer_append_format_008520d0(void* buffer, const char* format, va_list arguments) {
+    char local[1024];
+    const auto size = static_cast<std::uint32_t>(vsprintf_s(local, sizeof local, format, arguments));
+    auto* p = static_cast<std::uint8_t*>(buffer);
+    auto& length = *reinterpret_cast<std::uint32_t*>(p + 0xc);
+    const auto capacity = *reinterpret_cast<std::uint32_t*>(p + 8);
+    if (length + size <= capacity) {
+        auto* data = *reinterpret_cast<char**>(p + 4);
+        std::memcpy(data + length, local, size);
+        length += size;
+        data[length] = 0;
+    }
+}
+float sphere_triangle_distance_root_0085e4b0(const float* center, const float* a,
+    const float* b, const float* c, GeometrySquaredDistanceCalls& calls) {
+    return static_cast<float>(std::sqrt(calls.sphere_triangle_distance_0085df60(center, a, b, c)));
+}
+void debug_draw_basis_arc_00860340(Seg53Host& host, const float* center, const float* sine_basis,
+    const float* cosine_basis, float start, float sweep, const float* rgba,
+    std::int32_t density, DebugArcArithmeticCalls& arithmetic) {
+    const auto converted = arithmetic.truncate_low_dword_00bf7420((static_cast<double>(sweep) / 6.2831854820251465) * density);
+    const auto segments = converted > 0 ? converted : 1;
+    const float step = static_cast<float>(static_cast<double>(sweep) / segments);
+    for (std::int32_t i = 0; i < segments; ++i) {
+        const float angle0 = static_cast<float>(static_cast<double>(i) * step + start);
+        const float angle1 = static_cast<float>(static_cast<double>(i + 1) * step + start);
+        const float sine0 = arithmetic.sine_x87(angle0);
+        const float cosine0 = arithmetic.cosine_x87(angle0);
+        float cosine_product0[3], sine_product0[3], center_sine0[3], p0[3];
+        for (unsigned j = 0; j < 3; ++j) cosine_product0[j] = static_cast<float>(static_cast<double>(cosine_basis[j]) * cosine0);
+        for (unsigned j = 0; j < 3; ++j) sine_product0[j] = static_cast<float>(static_cast<double>(sine_basis[j]) * sine0);
+        for (unsigned j = 0; j < 3; ++j) center_sine0[j] = static_cast<float>(static_cast<double>(center[j]) + sine_product0[j]);
+        for (unsigned j = 0; j < 3; ++j) p0[j] = static_cast<float>(static_cast<double>(center_sine0[j]) + cosine_product0[j]);
+        const float sine1 = arithmetic.sine_x87(angle1);
+        const float cosine1 = arithmetic.cosine_x87(angle1);
+        float cosine_product1[3], sine_product1[3], center_sine1[3], p1[3];
+        for (unsigned j = 0; j < 3; ++j) cosine_product1[j] = static_cast<float>(static_cast<double>(cosine_basis[j]) * cosine1);
+        for (unsigned j = 0; j < 3; ++j) sine_product1[j] = static_cast<float>(static_cast<double>(sine_basis[j]) * sine1);
+        for (unsigned j = 0; j < 3; ++j) center_sine1[j] = static_cast<float>(static_cast<double>(center[j]) + sine_product1[j]);
+        for (unsigned j = 0; j < 3; ++j) p1[j] = static_cast<float>(static_cast<double>(center_sine1[j]) + cosine_product1[j]);
+        const float colour1[4] = {rgba[0], rgba[1], rgba[2], rgba[3]};
+        const float colour0[4] = {rgba[0], rgba[1], rgba[2], rgba[3]};
+        debug_draw_line_rgba_floats_0085f990(host, p0, p1, colour0[0], colour0[1], colour0[2], colour0[3],
+            colour1[0], colour1[1], colour1[2], colour1[3]);
+    }
+}
+Object effect_copy_matrix_00865f50(Seg53Host& host, Object owner, Object matrix) {
+    return host.matrix_copy_4x4_004134f0(owner + 0x90, matrix);
+}
+}
 
 #include <cmath>
 #include <cstring>

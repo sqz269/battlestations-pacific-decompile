@@ -156,6 +156,7 @@
 #include "bsp/world_ocean.hpp"
 #include "bsp/world_construct.hpp"
 #include "bsp/plane_class_fields.hpp"
+#include "bsp/follow_release_seams_cc13.hpp"
 
 #include <cfloat>
 #include <cmath>
@@ -9371,6 +9372,22 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         unit.plane_air_brake_mode_2d8 = 1;                           // 009C2059
         ++unit.plane_speed_commands;
     }
+    // Packet cc13-follow (bsp::kFollowReleaseSeamsBound, OFF): the five host
+    // renditions of 009C1FD0 that run 007F23A0 and the law directly. Called
+    // after the station has been produced, as 009C1FFD/009C2006 follow
+    // 009C1FEA; true means the arm ran and the caller skips the law.
+    bool follow_release_seam_arm_009c1ffd(GameUnitSlot& unit) {
+        if constexpr (bsp::kFollowReleaseSeamsBound) {
+            if (unit.torpedo_release_pending_c25 || unit.torpedo_issue_requests_c20 > 0) {
+                ++follow_release_pending_ticks;
+                follow_release_arm_009c200f(unit);
+                return true;
+            }
+        } else {
+            (void)unit;
+        }
+        return false;
+    }
     unsigned long long trail_arm_calls{0}, trail_arm_raised{0};
     unsigned long long trail_arm_enabled{0}, trail_arm_disabled{0};
     float trail_arm_min_mul{1.0f};
@@ -12642,6 +12659,12 @@ void GameUnitsHost::Impl::role_message_4b_00780162(std::size_t index, std::uint3
         } else if (holder == player_slot) {
             set_role(i, 8);
             ++role_releases;
+        }
+        // 00780393..007803A8: a changed holder hands the message to the unit's
+        // HandleMessage (0077FE80 -> vtable[164h] -> 00821E80 -> 0095ABE0),
+        // whose 4Bh arm walks the devices. kRoleOwnerDeviceWalkBound.
+        if (kRoleOwnerDeviceWalkBound && u.current_roles_01ac[i] != holder && gunnery) {
+            gunnery->role_owner_device_walk_0095ac1d(index, mask, player_slot, take == 1);
         }
     }
     done("Session::entity_role_message_4b", 0x00780162u);
@@ -23078,7 +23101,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 const GameUnitSlot* leader = nullptr;
                                 owner_.place_wing_member_on_station_007f23a0(
                                     slot_, false, &station, &leader, false);
-                                if (station.produced && leader != nullptr) {
+                                // 009C1FFD-009C2063 (cc13-follow, OFF): the
+                                // release arm returns before the law.
+                                if (station.produced && leader != nullptr &&
+                                    !owner_.follow_release_seam_arm_009c1ffd(slot_)) {
                                     owner_.run_follow_law_009bfee0_009bee30(
                                         slot_, station, *leader);
                                 }
@@ -25132,8 +25158,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             owner_.place_wing_member_on_station_007f23a0(
                                 unit_, false, &station, &fl,
                                 !GameUnitsHost::Impl::kPlaneFollowLawBound);
+                            // 009C1FFD-009C2063 (cc13-follow, OFF): the
+                            // release arm returns before the law.
                             if (owner_.kPlaneFollowLawEnabled && station.produced &&
-                                fl != nullptr) {
+                                fl != nullptr &&
+                                !owner_.follow_release_seam_arm_009c1ffd(unit_)) {
                                 owner_.run_follow_law_009bfee0_009bee30(unit_, station, *fl);
                             }
                             unit_.df_station_valid = station.produced && fl != nullptr;
@@ -25932,7 +25961,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         owner_.place_wing_member_on_station_007f23a0(
                             unit_, false, &station, &leader,
                             !GameUnitsHost::Impl::kPlaneFollowLawBound);
-                        if (owner_.kPlaneFollowLawEnabled && station.produced && leader != nullptr) {
+                        // 009C1FFD-009C2063 (cc13-follow, OFF): the release
+                        // arm returns before the law.
+                        if (owner_.kPlaneFollowLawEnabled && station.produced && leader != nullptr &&
+                            !owner_.follow_release_seam_arm_009c1ffd(unit_)) {
                             owner_.run_follow_law_009bfee0_009bee30(unit_, station, *leader);
                         }
                     }
@@ -29161,8 +29193,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             owner_.log.implemented("BotStateFollow::station_point",
                                                    "007f23a0");
                         }
+                        // 009C1FFD-009C2063 (cc13-follow, OFF): the release
+                        // arm returns before the law.
                         if (owner_.kPlaneFollowLawEnabled && station.produced
-                            && leader != nullptr) {
+                            && leader != nullptr
+                            && !owner_.follow_release_seam_arm_009c1ffd(unit_)) {
                             owner_.run_follow_law_009bfee0_009bee30(unit_, station, *leader);
                         }
                         owner_.record("BotStateFollow::station_keeping", 0x009bfee0u);
@@ -29714,7 +29749,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             const GameUnitSlot* leader = nullptr;
                             owner_.place_wing_member_on_station_007f23a0(
                                 unit_, false, &station, &leader, false);
-                            if (station.produced && leader != nullptr) {
+                            // 009C1FFD-009C2063 (cc13-follow, OFF): the
+                            // release arm returns before the law.
+                            if (station.produced && leader != nullptr &&
+                                !owner_.follow_release_seam_arm_009c1ffd(unit_)) {
                                 ++unit_.db_done_law_ticks;
                                 owner_.run_follow_law_009bfee0_009bee30(
                                     unit_, station, *leader);

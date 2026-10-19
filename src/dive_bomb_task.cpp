@@ -6,6 +6,7 @@
 
 #include "bsp/dive_bomb_task.hpp"
 
+#include "bsp/cc13_tier2_switches.hpp"
 #include "bsp/unit_rudder.hpp"
 
 #include <cmath>
@@ -639,6 +640,8 @@ bool dive_bomb_goaway_complete_009c7f00(
     // 009C7F03-009C7F16: the distance term.
     double term = static_cast<double>(in.travel_20) *
                   dive_bomb_constant::kGoAwayDistanceScale;
+    // ON (kDiveBombGoawayFloatStoresBound): 009C7F16 FSTP float.
+    if (kDiveBombGoawayFloatStoresBound) term = static_cast<float>(term);
     // 009C7F51-009C7F7A: all three flags set scales it a second time by the same
     // 0.9 that 009C7F09 left on the x87 stack; 009C7F72 returns false outright
     // when the first two are set and the ordnance flag is not.
@@ -647,6 +650,8 @@ bool dive_bomb_goaway_complete_009c7f00(
             return false;   // 009C7F74 XOR AL,AL
         }
         term *= dive_bomb_constant::kGoAwayDistanceScale;
+        // ON: 009C7F7A FMUL [ESP], 009C7F7D FSTP float.
+        if (kDiveBombGoawayFloatStoresBound) term = static_cast<float>(term);
     }
     // 009C7F23-009C7F46: the ceiling, the smaller of the two.
     const float sum = in.begin_altitude_ac + in.aim_point_height_50;
@@ -657,6 +662,12 @@ bool dive_bomb_goaway_complete_009c7f00(
     }
     // 009C7FB2/009C7FC2 `76` JBE: and the aircraft has to have climbed back to
     // within the 100.0 at 00D7A220 of that ceiling. This half was missing.
+    if (kDiveBombGoawayFloatStoresBound) {
+        // 009C7FB2 FSUB qword 100.0, 009C7FB8 FSTP float, then 009C7FC2 compares.
+        const float floor_f = static_cast<float>(
+            static_cast<double>(ceiling) - dive_bomb_constant::kMoveToRangeBias);
+        return in.altitude > floor_f;
+    }
     return static_cast<double>(in.altitude) >
            static_cast<double>(ceiling) - dive_bomb_constant::kMoveToRangeBias;
 }

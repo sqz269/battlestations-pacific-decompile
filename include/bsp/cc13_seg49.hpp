@@ -422,6 +422,8 @@ inline constexpr const char* kEntityPathClassName = "EntityPath";  // 00D09404
 void* entity_path_construct_0080d690(Seg49Host& host, Raw entity);
 void entity_path_destruct_0080d700(Seg49Host& host, Raw entity);
 const char* entity_path_class_name_0080d770() noexcept;
+// 0080D780, EntityPath vtable D092B8 slot69: EAX=12h, RET (distinct from class-id48h).
+std::uint32_t entity_path_type_code_0080d780() noexcept;
 
 // ===========================================================================
 // Segment 60 (009222E0..0092DFE0): the entity / party / think framework. src/cc13_seg49_seg60.cpp.
