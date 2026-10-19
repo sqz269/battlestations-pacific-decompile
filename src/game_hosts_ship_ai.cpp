@@ -8709,20 +8709,18 @@ bool ship_ai_arc_centre_next_point_009e46f0(GameShipAiHost::Impl& owner,
         ctl.approach.override_11d4 = bsp::ship_ai_path_any_positive_side_ahead_009d5ae0(live);
         ctl.approach.override_11d5 = bsp::ship_ai_path_any_negative_side_ahead_009d5b90(live);
     }
-    // Log only: a cursor longer than the linked path, where 009E3C80 faults in
-    // the image and the host returns the pose. This replays the cursor walk of
+    // Log only: a cursor at or past the end of the linked path. The image
+    // faults at 009E3C80 (longer) or at 009E3D11 -> 009D5930 (equal), and the
+    // host returns the pose for both. This replays the cursor walk of
     // ship_ai_path_cursor_node_009e3c6c on copies, so no node+4h is written.
     if (live.head != nullptr) {
         const bsp::ShipAiPathNode* node = live.head;
-        for (std::int32_t step = live.node_count; step > 0; --step) {
-            if (node == nullptr) {
-                ++owner.arc_centre_cursor_past_end;
-                break;
-            }
+        for (std::int32_t step = live.node_count; step > 0 && node != nullptr; --step) {
             bsp::ShipAiPathNode copy = *node;
             copy.direction = bsp::ship_ai_path_node_direction_009d9e6c(*node);
             node = bsp::ship_ai_path_node_next_009d9ee6(copy);
         }
+        if (node == nullptr) ++owner.arc_centre_cursor_past_end;
     }
     bsp::ShipAiPathPointRecord record{};
     // 009E47F3..009E480D: the query is the unit's own world x and z, the pair
