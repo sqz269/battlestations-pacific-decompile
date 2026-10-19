@@ -4,8 +4,11 @@
 
 #include "bsp/ship_ai_wake_trail.hpp"
 
+#include <array>
 #include <cmath>
 
+#include "bsp/camera_decomposition.hpp"  // normalize_camera_basis_0042b260
+#include "bsp/cc13_jm08_switches.hpp"
 #include "bsp/unit_rudder.hpp"  // wrapped_angle_add_00438aa0 / _subtract_00438b10
 
 namespace bsp {
@@ -302,13 +305,63 @@ ShipAiWakeDecomposition ship_ai_wake_decompose_00811180(const ShipAiWakeTrail& t
         index = ring_step_back(index);
     }
 
-    // 0081167F..008116E5: the arc length back to it is the SUM OF THE STORED
-    // LEGS, each term the sample's own +10h, not a recomputed distance.
     float along = 0.0f;
-    int walk = trail.head;
-    for (int n = 0; n < steps; ++n) {
-        along += trail.samples[walk].segment;
-        walk = ring_step_back(walk);
+    if constexpr (kWakeDecomposeSegmentProjectionBound) {
+        // Packet cc13-jm08. 00811482..00811584: the segment through the nearest
+        // sample k. At k == 0 (00811488) it is the head and the slot behind it;
+        // at k == 27h (00811497) the slot ahead and k. Otherwise the squared 3D
+        // distances to the newer (k-1, 008114F4 +29h) and older (k+1, 008114AF
+        // +27h) neighbours, each stored as a float (00811555, 0081156F), and
+        // 0081157B JBE takes the newer one unless d2(newer) > d2(older); JBE is
+        // also taken on an unordered compare, so a NaN keeps the newer segment.
+        const auto slot_back = [&trail](int k) {
+            return (trail.head - k + static_cast<int>(kShipAiWakeSampleCount))
+                % static_cast<int>(kShipAiWakeSampleCount);
+        };
+        const auto d2_to = [point](const ShipAiWakeSample& s) {
+            const float dx = point[0] - s.x;
+            const float dy = point[1] - s.y;
+            const float dz = point[2] - s.z;
+            return dx * dx + dy * dy + dz * dz;
+        };
+        int b = steps;  // the forward end, EDI after the selection
+        int a = steps + 1;
+        if (steps == 0) {
+            b = 0;
+            a = 1;
+        } else if (steps == static_cast<int>(kShipAiWakeSampleCount) - 1) {
+            b = steps - 1;
+            a = steps;
+        } else {
+            const float older = d2_to(trail.samples[slot_back(steps + 1)]);
+            const float newer = d2_to(trail.samples[slot_back(steps - 1)]);
+            if (!(newer > older)) {
+                b = steps - 1;
+                a = steps;
+            }
+        }
+        const ShipAiWakeSample& sb = trail.samples[slot_back(b)];
+        const ShipAiWakeSample& sa = trail.samples[slot_back(a)];
+        // 008115AF..008115DE: u = sample[b] - sample[a], normalised in place by 0042B260.
+        std::array<float, 3> u{sb.x - sa.x, sb.y - sa.y, sb.z - sa.z};
+        normalize_camera_basis_0042b260(u);
+        // 008115E3..00811626: w = sample[b] - point.
+        const float wx = sb.x - point[0];
+        const float wy = sb.y - point[1];
+        const float wz = sb.z - point[2];
+        // 0081162A..00811658: the projection, (wy*uy + wx*ux) + wz*uz, stored as a
+        // float into [ESP+48h], which is the accumulator the leg loops add to.
+        along = (wy * u[1] + wx * u[0]) + wz * u[2];
+        // 0081166A..00811721: b+1 legs, slots head, head-1, ..., head-b.
+        for (int n = 0; n <= b; ++n) along += trail.samples[slot_back(n)].segment;
+    } else {
+        // 0081167F..008116E5: the arc length back to it is the SUM OF THE STORED
+        // LEGS, each term the sample's own +10h, not a recomputed distance.
+        int walk = trail.head;
+        for (int n = 0; n < steps; ++n) {
+            along += trail.samples[walk].segment;
+            walk = ring_step_back(walk);
+        }
     }
     out.along = along;
 

@@ -24,7 +24,7 @@
 
 namespace bsp {
 
-inline constexpr bool kShipAiCommitmentBandQuarterBound = false;
+inline constexpr bool kShipAiCommitmentBandQuarterBound = true;  // ON: JM08/USN21 moved by the ahead band (SHIP_AI 302)
 
 // [00D7A348], a double, read by FMUL qword at 009E1122.
 inline constexpr double kShipAiCommitmentBandQuarter = 0.25; // 00D7A348

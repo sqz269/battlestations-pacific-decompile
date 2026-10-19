@@ -90,8 +90,10 @@ the countdown.
 
 Note `9C0h` at `009FA3FB`, not the `9C3h` the decompiler renders.
 
-`007BB110` is the predicate form of `007BBBA0`'s own head: the device at `unit+DECh` enabled, its
-`+64h` not `1.0`, and the per-slot byte clear.
+`007BB110` is the predicate form of `007BBBA0`'s own head. CORRECTED (cc13-reltimer): it answers 1
+when the device at `unit+DECh` is disabled, or its `+64h` is exactly `1.0`, or else when the per-slot
+byte `9C3h` is clear. It refuses only when the device is enabled, `+64h` is not `1.0` and the byte
+is set. See `docs/CC13_RELEASE_TIMER.md` section 3.
 
 ## The arm at `009D2287`
 

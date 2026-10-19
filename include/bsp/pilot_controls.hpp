@@ -26,7 +26,9 @@ namespace bsp {
 
 // ---------------------------------------------------------------------------
 // The pilot command block, unit+9FCh. Six dwords and a pending byte, written whole by
-// 007B8C90 and zero-initialised by the plane unit constructor at 007CFEB8-007CFED6.
+// 007B8C90 and initialised by the plane unit constructor at 007CFEB8-007CFEDE: zero,
+// except the throttle +A08h = 1.0f (007CFED6 MOVSS [ESI+A08h],XMM1, XMM1 = [00D7A24C]
+// from 007CFDEA) and the pending byte +A14h from BL (007CFEDE).
 // ---------------------------------------------------------------------------
 namespace pilot_command_off {
 inline constexpr int kPilotCommandRoll = 0x9FC;      // 007B8C96; becomes unit+9E4h

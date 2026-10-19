@@ -1242,18 +1242,32 @@ Worker cc13-wire1, 2026-10-19, at cc9's request. The group-3 artillery leads a s
 
 - **Resolving the name.** The name is resolved once, when the line applies, through `harness_target_row`, as for the other helm lines. A name may carry spaces, and a quoted run is one name.
 - **Pitch.** The last word is a fixed pitch in degrees when it is a number and a name remains before it. Quote a name that ends in a number.
-- **What it does.** From the line's frame until the next `aim` line (either form), every ship-view input frame (`0064A400`) re-aims the look at the unit's current position (`unit+0FCh`), through the same look axes as section 18.
-  - It steers in closed loop on the pose the mover published last: the forward row and position that `00954A10` reads for message 79h.
+- **What it does.** From the line's frame until the next `aim` line (either form), every ship-view input frame (`0064A400`) re-aims the look at the unit's current position (`unit+0FCh`), through the same look axes as section 18. **Tracks persist across scenes in one process.** `clear_injected_view_aim_track` (game_hosts_menu.cpp) has no caller anywhere in `src`, so nothing clears a track at a scene load, and a track names a unit row of the scene it was applied in. After a scene change, write a new `aim` line before relying on the aim.
+  - It steers in closed loop on the camera's published view: the forward row and position that `00954A10` reads for message 79h. That is the camera's actual view ray, after the orbit position, zoom and shake, and it is the ray `009578C3` tests for a hull hit. It is not the mover's own yaw and pitch.
   - `00432ED0` builds that forward row as `rot_y(-yaw)` then `rot_x(-pitch)` on the mover's basis (`00B646E0` / `00B64640`, D3D row layout). So a heading error `e` (in the `atan2(x, z)` convention) is removed by `yaw -= e`, and a pitch error by `pitch += e`.
-  - With no pitch given, the pitch aims at the unit's origin, i.e. the hull near the waterline, clamped into `[+3ECh, +3F0h]` like any `aim`. A pitch at or above zero leaves the forward row level (section 18).
+  - With no pitch given, the pitch aims at a point on the unit, clamped into `[+3ECh, +3F0h]` like any `aim`. A pitch at or above zero leaves the forward row level (section 18).
+    - **A ship (kind 6)** is aimed at the image's line-of-sight target point, `00864D90`. At `00864E17` the pose `+0FCh` is raised by GlobalConfig `+90h`, LOSTargetHeightAdd (5.0 on this installation, `kInstalledLosTargetHeightAdd`). The class Height (`+A8h`, `unit_class_extents`) is added by the IsKindOf(5) arm at `00864E25`.
+      - The image applies `+90h` to every target and gates the Height on IsKindOf(5). Restricting the point to ships (kind 6) is this harness's choice.
+      - `00864680` is the observer's side: it raises the observer by `+94h`, LOSViewerHeightAdd.
+      - **Harness clamp**, not in the image: the point is never lower than y = 5.0, so a ship origin below 0 (heave, sinking) does not pull it down.
+      - **Uncertain:** when the class's `+50h` is non-empty, the image's height term is `max(+90h, (bbox+38h - +2Ch) * +98h)` through `00415550`. That mesh arm is not modelled, and whether ship classes populate `+50h` is unchecked.
+    - Why: the seat ray's hull hit must lie above y = 0. At `00957891`, `COMISS hit.y, [00D7A218]` (0.0f) followed by `JBE` drops a hit at or below zero, as does the host (`hit[1] > 0.0f`). Aiming at the origin, the waterline, put every hull hit at or below it.
+    - On USN15, `aim unit Fubuki-class04` gave 1768 ship leads and 78 player shots but 0 hits before this change.
+    - The class Height is zero on this installation's ships (the `unit_class_extents` note), so in practice the point is the origin plus 5.0. The 5.0 is a constant from the game's own data, not a tuned offset; the y >= 5.0 floor is the harness clamp above.
+    - **Any other unit** keeps its origin. For aircraft, see the dead-band note below.
   - The track never "completes"; it steers again on the next frame.
-- **Unknown unit.** The line is refused with a warning (`helm order refused: ... aim unit "X": no such unit; the look keeps its last yaw`) and the previous `aim` state stays.
-  - A tracked row that later dies or is hidden logs `helm aim unit: row N is gone or hidden; the look keeps its last yaw`, once per run, and steering stops while the row stays that way.
+  - **Auto pitch and targets above the camera.** `00432ED0` applies the pitch only below zero (`004331A0`), so the forward row stays level for any pitch at or above zero. That is a dead band. With auto pitch on a target above the camera (an aircraft), the pitch error never closes and the pitch winds up to `max_pitch_3f0`. Use a fixed pitch for aircraft.
+- **Unknown unit.** The line is refused with a warning, and the previous `aim` state stays:
+  - with an earlier track active: `... aim unit "X": no such unit; the earlier track (row N) keeps steering`;
+  - otherwise: `... no such unit; the look keeps its last aim`.
+- **Lost rows.** A tracked row that dies or is hidden logs `helm aim unit: row N is gone or hidden; the look keeps its last yaw`, once per loss, and steering stops while the row stays that way.
+  - If the row comes back, the log says `helm aim unit: row N is back; tracking resumes`, and a later loss is reported again.
+  - Each new `aim unit` line starts its own loss report.
 - **What it logs.**
   - The applied line, with the row.
-  - Every 200 tracked frames: `helm aim unit: row N heading error E rad, target pitch P rad, range R`.
+  - The heading error, `helm aim unit: row N heading error E rad, target pitch P rad, range R`, on each of a track's first 10 tracked frames, so a 2-frame oscillation would show, then every 200th.
 - **Default runs.** With no `aim` line nothing is tracked and no line is logged, so default logs are unchanged.
 - **How to verify (cc9).** Run USN01 with `600 aim unit Convoy1` (or the convoy ship's row name), then `610 input 0x9D` and `612 input 0x99 hold 200`, and read three things:
-  1. The heading error in the periodic lines should fall to about 0 within a few frames and stay there as the target moves. If it grows instead, the sign is wrong; report it.
+  1. Over the first 10 lines, the heading error should fall steadily to about 0 and then stay there as the target moves. It should not alternate in sign from frame to frame (an oscillation) or grow (a wrong sign); report either.
   2. The seat's ship-lead count (`009578C3`) should be above 0.
   3. Compare a run without the `aim` lines: its log should be byte-identical to main.

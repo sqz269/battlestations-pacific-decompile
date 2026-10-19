@@ -503,7 +503,13 @@ inline constexpr bool kEngineMovieStopRosterBound = true;
 // game_hosts_units.cpp:16610 with a null creator and throws. Keep it OFF until the
 // held-back deck stock is marked before 004E0A9B, or 00964790's re-create-on-miss
 // is modelled.
-inline constexpr bool kVehicleClassPreloadCc15Bound = false;
+// ON again (cc9-lua70, 2026-10-19), after cc15's 8a905274a (device/bullet classes
+// marked recursively) and vcp7 4360598e7 (LandConvoy members, SpawnPoint stocks).
+// Pairs on 853ae51b5, ref env, pair_diff "gameplay identical", exit 0, Lua errors 0:
+// USN21 s46_u21_f completes 2906.71 s both sides (590 purged, failures 0); BSM09 d1
+// ends 351.04 s (617 purged); USNOS s59_os_c17 reaches the Ohka drop (16 releases from
+// 2643.50 s on both); USNOS os_k 969.89 s both. Logs local\l70r_{vu21,vb9,vos17,vos}_*.
+inline constexpr bool kVehicleClassPreloadCc15Bound = true;
 
 // cc15-vcp3: with kVehicleClassPreloadCc15Bound, also purge at the movie stop
 // 0045F6C1. That runs mid-mission and can nil rows that were first read after
@@ -533,6 +539,23 @@ inline constexpr bool kSceneClassPreloadAliasesCc15Bound = false;
 // no session). Both give "SOLO" on a single-player load, so ON is expected to
 // move nothing but the evidence line.
 inline constexpr bool kSceneShortNameCc15Bound = false;
+
+// cc15-ob4 (docs/CC15_OBJECT_SCENE_DATABASE.md). The scene database, the 170h
+// object at [00E18680]: BSP_Game_OnInit 004E3AA0 builds it at 004E3E60 through
+// 0046F350 (operator new(170h) + 0046F160), and every mission load's
+// 004F2800 registers the 26 scene classes into its class map at +34h through
+// 004EE250. True: both run, as seg6_cc13.cpp / engine_seg11_35_66_cc13.cpp
+// bodies over a host-heap image of the object, and this file's class lookups
+// read that map (00468FB0 by name, 00468660 by id) instead of the static
+// table; 004E99B0 / 004E9AE0 / 004E9C10 build their 1E4h entity images.
+// False: the static table answers the lookups and the three rows stay records.
+inline constexpr bool kSceneDatabaseCc15Bound = false;
+
+// 0046F350 at 004E3E60 (OnInit). Idempotent: a second call keeps the first
+// object, as the image's OnInit runs once per process.
+void scene_database_create_0046f350(GameHostLog& log);
+// 004F2800 at its mission-load step. Returns false when [00E18680] is null.
+bool scene_database_register_classes_004f2800(GameHostLog& log);
 
 // docs/CC13_AUDIT_LUA51_FLIPS.md item 3. Two admits the stop does not remove:
 // a `Hidden` entity goes through 0046C550 with the last argument 1 (0046D60F) and
