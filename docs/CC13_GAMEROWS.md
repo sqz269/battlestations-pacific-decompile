@@ -14,7 +14,8 @@ outside the struck ranges 007DF000-007DFFFF, 007EE000-007F2FFF, 00836000-00837FF
 | H: hosted bodies | 6 | ledger-only, citing the host (batch 1) |
 | D: scalar deleting destructor | 1 | bound, citing the out-of-line copy (batch 1) |
 | S: small reconstructs | 5 | rebuilt (batch 2) |
-| G: library glue (STL / template instantiations) | 77 | bound (batch 3); 00732560 moved here from S |
+| G: MSVC STL instantiations | 52 | bound (batch 3, 26 + 26); 00732560 moved here from S |
+| E: engine templates and game virtuals (split out of G) | 25 | rebuilt (batch 4) |
 | cc15-blocked | 0 | none sits on a CC15_OBJECT doc |
 
 ## Batch 1: T, H and D (56 rows)
@@ -116,6 +117,38 @@ iterators: first {+8h, +0Ch}, last {+10h, +14h}, and a back_insert_iterator {+18
 returns through the hidden pointer at +4h. That is a std::copy instantiation over 12-byte points,
 so it is bound in batch 3 (G is now 77 rows).
 
-## Batch 3: G (77 rows)
+## Batch 3: G, 52 MSVC STL rows bound
+
+The 77 rows first classed G were split before binding, with the lead's approval. 52 are genuine
+MSVC 2005 STL instantiations. They are std::list (NarrativeList_*, BSP_List_*,
+SupportSite_CopyClassList), the _Tree lower bound, std::string operator+, and std::vector
+insert_n / resize / erase / tidy / push_back, plus the seg51 STL_ rows. Each uses
+allocator.allocate, _Xlen or the checked-iterator report 00BF6713. They are bound
+(`library_instantiation_out_of_scope`) with their names kept.
+
+The other 25 (class E, batch 4) are not library code under the library ruling:
+- 6 virtual methods, reached only through vtable slots: 006CA5D0, 007B0E60, 007B1B40, 007B21A0,
+  007B2850 and 007B2B90.
+- 19 engine template containers that use only operator new and _free, with no _Xlen, allocator or
+  checked iterators: the 15 seg53 BSP_Native* rows, 0072A3B0 / 0072A6D0 / 0072B6D0 and 0084FC50.
+
+Records that a cc13 host header declares as a hook (pure virtual) say so; the host supplies the
+body.
+
+**Part 1 (26 rows):** 006C6F90, 006C8750, 00731C10, 00732560, 00733430, 00733AF0, 007342B0,
+007343D0, 00748150, 007CCD30, 007CD2F0, 007CDDB0, 007CF4B0, 007D1B50, 007D1D30, 007F3D40, 007F6D30,
+007F6F80, 007F7070, 0081B2B0, 0081B300, 0081B520, 0081C380, 0081C4D0, 0081C980, 0081CA30. Nine of
+them are hook-declared: 006C8750, 00733430, 007342B0 (also in cc15_g24c.hpp, which is
+untouched), 00748150, 007CCD30, 007F3D40, 007F6D30, 007F7070 and 0081C980.
+
+**Part 2 (26 rows):** 0081CCD0, 0081D0C0, 0081D420, 0081D460, 0081D620, 0081D9B0, 0081E4A0,
+0081E600, 0081E8C0, 0082F8E0, 0082FD20, 00846A10, 00846A20, 00847FE0, 008482F0, 0084B9A0, 0084D480,
+0084FA30, 00931300, 009313C0, 00931450, 00931530, 00937B70, 00937C00, 00951060, 00951160. The two
+5-byte rows 00846A10 / 00846A20 are JMPs to the shipyard vector tidies 00846850 / 008468A0, and
+they are bound with them. Four are hook-declared: 0082F8E0, 0084FA30, 00931530 and 00951160. Across
+both parts, 13 bound rows are hook-declared. 0082FD20 (cited in ship_class_fields.hpp) and
+007D1D30 (plane_class_fields.hpp) are mentioned in comments only, not as hooks.
+
+## Batch 4: E, 25 rows rebuilt
 
 Pending.

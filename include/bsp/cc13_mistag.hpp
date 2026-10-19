@@ -47,10 +47,10 @@ extern const VtResetDestructor kVtResetDestructors[kVtResetDestructorCount];
 // Runs the row at `address` on `object` ([object] = its vtable); false when `address` is not a row.
 bool vt_reset_destruct(std::uint32_t address, void* object) noexcept;
 
-// Part C: four scalar deleting destructors of the same inlined shape whose vtable store has no
-// recorded out-of-line copy (rebuilt under the rule; the other 99 are bound). Bytes checked by
+// Part C: five scalar deleting destructors of the same inlined shape whose vtable store has no
+// recorded out-of-line copy (rebuilt under the rule; the other 99 are bound; 007D79F0 added by rev2). Bytes checked by
 // tools/cc13_mistag_partc_check.py; __thiscall(ECX = object, flags), RET 4, EAX = object.
-inline constexpr std::size_t kVtResetDeletingDestructorCount = 4;
+inline constexpr std::size_t kVtResetDeletingDestructorCount = 5;
 extern const VtResetDestructor kVtResetDeletingDestructors[kVtResetDeletingDestructorCount];
 
 class MistagHost {

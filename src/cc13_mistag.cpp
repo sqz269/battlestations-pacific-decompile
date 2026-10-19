@@ -261,10 +261,11 @@ void* landfort_create_message_field_110_00743e50(void* message) noexcept {
     return static_cast<std::uint8_t*>(message) + 0x110;
 }
 
-// Part C: F6 44 24 04 01 56 8B F1 C7 06 <vtable> 74 09 56 E8 <00BF65AC> 83 C4 04 8B C6 5E C2 04 00.
+// Part C, sorted by address: F6 44 24 04 01 56 8B F1 C7 06 <vtable> 74 09 56 E8 <00BF65AC> 83 C4 04
+// 8B C6 5E C2 04 00. 007D79F0 was added by the rev2 follow-up (a base vtable, see the doc).
 const VtResetDestructor kVtResetDeletingDestructors[kVtResetDeletingDestructorCount] = {
-    {0x00735990, 0x00CFE9F4}, {0x00861BA0, 0x00D0D314}, {0x00862750, 0x00D0D314},
-    {0x008627F0, 0x00D0D31C},
+    {0x00735990, 0x00CFE9F4}, {0x007D79F0, 0x00D06844}, {0x00861BA0, 0x00D0D314},
+    {0x00862750, 0x00D0D314}, {0x008627F0, 0x00D0D31C},
 };
 
 void* vt_reset_scalar_deleting_destruct(MistagHost& host, std::uint32_t address, void* object,
