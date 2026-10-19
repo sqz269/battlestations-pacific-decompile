@@ -19747,3 +19747,10 @@ NaN reached the rudder or a ring value, which would be a finding of its own.
 **Result, flipped ON.** Reference-env pairs on f4d92c331: USN04 20000 (`s60_naoff_u04` / `s60_naon_u04`) and JM08 24000
 (`s60_naoff_j08` / `s60_naon_j08`, mission end at 20401 frames) are identical, pair_diff exit 0, as predicted. The
 change is draw-order neutral, so no default-env pair.
+
+**Result, flipped ON.** USNOS 36000 pairs on 8ae424ab9 with the c17 orders, as predicted:
+- reference env (`s60_bdoff_os` / `s60_bdon_os`): exit 1, gameplay identical; one 98h (`break_in_two_draws 0 -> 11`)
+  and the one new native row `ShipDeath::break_in_two_draws_00935d30`.
+- default env (`s60_bdoffd_os` / `s60_bdond_os`): exit 3. The first 257 deaths are identical, through the first 98h
+  (Cargo1 at 1354.95 s); the first moved death is the next one (Airfield1_sqn39, 1357.55 -> 1357.60 s). After that
+  the shared stream is offset, so later breakups differ (Convoy2 1416.66 broke in OFF only; Cargo5 and Cargo6 in ON).

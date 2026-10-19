@@ -1604,7 +1604,7 @@ constexpr float kWreckChanceInstalled = 0.3f;
 //    message manager; same-tick delivery is the host's assumption, as for 9Ah).
 //    False: the 98h is recorded and draws nothing, so a default-env run's shared
 //    stream stays 11 behind the image per breakup.
-constexpr bool kShipBreakInTwoDrawsBound = false;
+constexpr bool kShipBreakInTwoDrawsBound = true;  // ON: USNOS 36000 pairs (SHIP_AI 298)
 //  * kPlaneBlastElementEntriesBound: a burst's distance to a PLANE is taken per
 //    GeomMesh element, as kBlastElementEntriesBound does for a ship. The image's
 //    sphere test for the plane's unit-part shape is 0070F720, which ends in
