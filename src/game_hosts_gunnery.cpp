@@ -2953,6 +2953,9 @@ struct GameGunneryHost::Impl {
     unsigned long long seat_returns{0};
     unsigned long long seat_held_ticks{0};
     unsigned long long seat_trigger_ticks{0};
+    // cc9-gunnery53, kRoleOwnerDeviceWalkBound (0095AC1D).
+    unsigned long long seat_role_takes{0};
+    unsigned long long seat_role_releases{0};
     // Packet cc9_player_gun_seat_segment_query.
     unsigned long long seat_segment_casts{0};
     unsigned long long seat_segment_hits{0};
@@ -14245,6 +14248,63 @@ void GameGunneryHost::apply_gun_aim_message_00959c20(std::size_t unit_index,
     impl_->apply_gun_aim_message(unit_index, message);
 }
 
+// cc9-gunnery53 (SHIP_AI_OPEN_ITEMS 296.8): 0095AC1D's device walks, reached
+// from 00780120's holder-change call (007803A8 0077FE80 -> 0078002F
+// vtable[164h] -> 00821EEA -> 0095ABE0). The first matching mask test wins.
+// IsKindOf(20h) is every row here; the Function is GameGunRow::category.
+void GameGunneryHost::role_owner_device_walk_0095ac1d(std::size_t unit, std::uint32_t mask,
+                                                      std::int32_t slot, bool take) {
+    if constexpr (!kRoleOwnerDeviceWalkBound) {
+        static_cast<void>(unit);
+        static_cast<void>(mask);
+        static_cast<void>(slot);
+        static_cast<void>(take);
+        return;
+    } else {
+        Impl& h = *impl_;
+        const bool walk_156 = (mask & 0x04u) != 0 || mask == 0x08u;   // 0095AC5D, 0095AC62
+        const bool walk_2346 = !walk_156 && (mask & 0x10u) != 0;      // 0095AC67
+        if (!walk_156 && !walk_2346) return;   // 20h / 80h: the group 4/5 models
+        auto in_156 = [](int k) { return k == 1 || k == 5 || k == 6; };
+        auto in_2346 = [](int k) { return k == 2 || k == 3 || k == 4 || k == 6; };
+        // 00729F70: vtable[154h](0, 8), vtable[1E8h](0), 00728000.
+        auto release = [&](GameGunRow& gun) {
+            gun.seat_1ac = 8;
+            gun.seat_trigger = false;
+            gun.target_unit = 0;
+            gun.target_name.clear();
+            ++h.seat_role_releases;
+        };
+        if (walk_156) {
+            if (take) return;                                  // 00953F64: a release only
+            // 00953F74: [unit+1BCh] (role 4) against msg+28h.
+            std::int32_t role4 = 8;
+            if (!h.units.unit_current_role_slot(unit, 4, role4)) role4 = 8;
+            const bool same_slot = role4 == slot;
+            for (GameGunRow& gun : h.guns) {
+                if (gun.unit_index != unit || !in_156(gun.category)) continue;
+                if (same_slot && in_2346(gun.category)) continue;   // 00953FAD
+                release(gun);
+            }
+            h.done("PlayerGunSeat::role_owner_walk_156", 0x00953f60u);
+            return;
+        }
+        for (GameGunRow& gun : h.guns) {                       // 00954000
+            if (gun.unit_index != unit || !in_2346(gun.category)) continue;
+            if (!take) {
+                release(gun);
+                continue;
+            }
+            gun.seat_1ac = slot;                               // 00954056 vtable[154h](0, slot)
+            ++h.seat_role_takes;
+            // 0095406D: 0072D5B0(0, 0). The host picks the ammo per shot
+            // (kFlakSecondAmmoCadenceBound), so the mode select is a record.
+            if (gun.category == 6) h.record("PlayerGunSeat::role_take_fire_mode", 0x0072d5b0u);
+        }
+        h.done("PlayerGunSeat::role_owner_walk_2346", 0x00954000u);
+    }
+}
+
 void GameGunneryHost::attach_00864bd0() {
     Impl& host = *impl_;
     host.build_rank_table();
@@ -16496,6 +16556,9 @@ void GameGunneryHost::report() {
             "packet cc9_player_gun_seat)", host.seat_messages, host.seat_handovers,
             host.seat_returns, host.seat_held_ticks, host.seat_trigger_ticks,
             kPlayerGunSeatBound ? 1 : 0);
+        host.log.notef("summary mission gunnery role owner device walk takes=%llu releases=%llu "
+            "bound=%d (0095AC1D: 00954000 / 00953F60, cc9-gunnery53)", host.seat_role_takes,
+            host.seat_role_releases, kRoleOwnerDeviceWalkBound ? 1 : 0);
         host.log.notef("summary mission gunnery player seat groups 0..5=%llu/%llu/%llu/%llu/%llu/%llu "
             "artillery guns=%llu unsolved=%llu hits=%llu turns=%llu refusals=%llu bound=%d "
             "(00959F72, packet cc9_player_gun_seat_artillery)",

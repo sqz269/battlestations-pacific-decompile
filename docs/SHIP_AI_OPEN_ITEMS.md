@@ -19670,6 +19670,45 @@ kHudRootCircleYOffset) declared float against true-double m64 qwords.
 ship_ai_attackmove_substates.cpp: the jitter_48 note now says the caller takes the 009E55A1
 draw (22e41560e).
 
+### 7. kGunAimMessageCc15Bound: ON (e9a17b4db)
+
+The pair is on USN01 (b8dcae593, reference env). Northampton's artillery was fired through the
+harness `input` line (SCRIPTED_HELM 17): `0x9D`, then `0x99` held 300 frames, at mission frames
+500, 900 and 1300.
+- Screen 2Eh is up from about mission frame 410 to 1823. At 1823 the script hands the player the
+  ScoutDauntless, and set 22h has no 2Eh. Inputs after 1823 never reach the HUD.
+- There were 1298 79h round trips, all group 3. Only the quantised angles moved (yaw on 1218,
+  pitch on all; max 1.7e-5 / 6.9e-6 rad).
+- 99h reached 00959F72: the 0095A05B record ran 2700 times on both sides.
+- Gameplay, death rows, the unit table and the native table are identical. Flipped by mechanism.
+  This was the input tool's first game validation.
+
+### 8. The player's artillery seat: kRoleOwnerDeviceWalkBound (OFF)
+
+**0095A05B is multiplayer-only.** Its flag `[ESP+12h]` needs `game+1FE4h == 1` (hosted) and
+`+218Ch == 0`. Its flag `[ESP+13h]` needs a unit held by a non-AI slot that is not the local
+player. Single player is `game+1FE4h = 0`. `[unit+1BCh]` is role 4, not role 3.
+
+**The single-player seat** comes from the role take:
+1. Screen 2Eh's group-3 role request sends 4Bh with mask 10h.
+2. In 00780120's loop, a changed holder (00780393) runs 007803A8 0077FE80.
+3. Its default 0078002F calls `vtable[164h]`, which is 00821E80; its 4Bh arm forces 0095ABE0.
+4. 0095AC1D: mask 10h runs 00954000, which hands Function 2/3/4/6 to the slot. Mask 4 or 8 runs
+   00953F60, a release.
+
+This host never ran that walk, so the artillery stayed AI-held (held_ticks 0).
+- Binding: `GameGunneryHost::role_owner_device_walk_0095ac1d`, called from
+  `role_message_4b_00780162`. Details are in docs/PLAYER_GUN_SEAT.md 7.5, which also corrects
+  7.2's "single-player 1".
+- Preview pair on USN01, same orders, working tree:
+  - takes 8 (Northampton's 3 turrets, Dunlap's 5 Function 6 mounts), held_ticks 0 to 5661;
+  - no player shells, because the HUD camera aims 10 degrees down at the sea and every 0085ABA0
+    refuses;
+  - Northampton's turret shots 335 to 280, and hits 925 to 812;
+  - deaths identical.
+- Open: a pair with player shells needs a camera aim input that the harness lacks. The flip waits
+  on the lead.
+
 ## 297. cc9-ships59 handoff (2026-10-18)
 
 **Landed this session** (agent/cc9-ships44; each flip fully built and paired in the reference env unless noted):
