@@ -178,11 +178,11 @@ struct MissionCommandGraph {
    command_lifetime{batch_lifetime,batches,owners,providers.models,strings,
     reinterpret_cast<const char*>(g.profiles(0xce9a38))},
    raw_lifetime{batches,owners,providers.models,raw},
-   frustum{application_camera_axes_crt().dispatch_bypass_0109dd78,*g.profiles(0xd7a208)},
+   frustum{*application_camera_axes_crt().dispatch_bypass_0109dd78,*g.profiles(0xd7a208)},
    camera_prepare{frustum,g.sync,*reinterpret_cast<const volatile double*>(g.profiles(0xce4b48)),
     *reinterpret_cast<const volatile U*>(0x109eea4)},
    camera_command{c.current_renderer_00f8d394,g.profiles(0xd5f0a8),camera_prepare,f.clear},
-   axes{application_camera_axes_crt().dispatch_bypass_0109dd78,*g.profiles(0xd7a24c),*g.profiles(0xce3800)},
+   axes{*application_camera_axes_crt().dispatch_bypass_0109dd78,*g.profiles(0xd7a24c),*g.profiles(0xce3800)},
    mapping{d.renderer,g.sync,d.lock,g.physical_profiles},
    collection{&frustum.length_access,reinterpret_cast<const volatile float*>(g.profiles(0xd7a24c)),
     reinterpret_cast<const volatile double*>(g.profiles(0xce4d70)),
@@ -206,16 +206,16 @@ struct MissionCommandGraph {
    constants{globals.vertex.values.data(),globals.pixel.values.data(),c.current_renderer_00f8d394,service,
     &game_native_renderer_scalar_process().shadow_target_publication_00f8bbf0(),&g.texture_binding,
     collection,providers.animator_types_010900fc,*reinterpret_cast<const volatile float*>(g.profiles(0xd7a238)),
-    c.live_one_00d7a24c,*reinterpret_cast<const volatile float*>(g.profiles(0xce3978)),
+    float_cell(c.live_one_00d7a24c),*reinterpret_cast<const volatile float*>(g.profiles(0xce3978)),
     g.profiles(0xd5f0a8),g.profiles(0xd61d6c),g.profiles(0xd5b5d8),g.profiles(0xd62eb0),
     g.profiles(0xd64478),g.profiles(0xd644b4)},
    passes{c.current_renderer_00f8d394,service,globals.cached_effect,native_shader_register_limit_cell_00e13078(),
     globals.vertex.values.data(),globals.pixel.values.data(),*reinterpret_cast<const volatile float*>(g.profiles(0xd7a208)),
-    *reinterpret_cast<const volatile float*>(g.profiles(0xd7a218)),c.live_one_00d7a24c,g.sync,
+    *reinterpret_cast<const volatile float*>(g.profiles(0xd7a218)),float_cell(c.live_one_00d7a24c),g.sync,
     g.vertex_binding,g.index_binding,g.layout,g.texture_binding,indexed,g.material,f.queue_getter,raw,
     game_native_renderer_scalar_process().increment_iat_00ce221c(),constants,g.profiles(0xd5f0a8),
     g.profiles(0xd61d6c),g.profiles(0xd62a80),g.profiles(0xd61be8)},
-   entries{c.current_renderer_00f8d394,globals.cached_effect,c.live_one_00d7a24c,
+   entries{c.current_renderer_00f8d394,globals.cached_effect,float_cell(c.live_one_00d7a24c),
     g.profiles(0xd5f0a8),g.profiles(0xd61a00),&passes,&render,nullptr,&g.types,nullptr,
     g.profiles(0xd62f58),g.profiles(0xd62fb0),g.profiles(0xd63008)},
    system{&service,&c.current_renderer_00f8d394,&providers.clock.actual_clock_01090ab0,
@@ -236,6 +236,9 @@ struct MissionCommandGraph {
  }
  static NativeRenderActualOwners& given_owners(GameNativeMissionCommandProviders& p) {
   return p.geometry.models.retained_owners;
+ }
+ static const volatile float& float_cell(const volatile U& raw) noexcept {
+  return reinterpret_cast<const volatile float&>(raw);
  }
  static void* __cdecl allocate(std::size_t n) {
   check(n<=std::numeric_limits<U>::max(),"mission native allocation size overflow");
