@@ -40,9 +40,10 @@ a game body that stores no vtable, touches no global or string, and whose game c
 named like element callbacks.
 
 **Destructor rule (the same wording as docs/CC13_CENSUS9.md).** A class's out-of-line destructor
-is rebuilt, including the form `MOV [ECX], vtable; JMP base`. A scalar or vector deleting
-destructor is bound, citing the out-of-line copy when it has a record; otherwise cite the called
-routine, or rebuild when there is none.
+is rebuilt, including the two-instruction form `MOV [ECX], vtable; JMP base`. A scalar or vector
+deleting destructor is bound, citing the out-of-line copy when it has a record; otherwise cite the
+called routine, or rebuild when there is none. A pure single-JMP with no store is a thunk record
+(`existing_recorded_thunk`).
 
 ## Batch 1 (38 rows)
 
@@ -286,8 +287,9 @@ and 00CE9A34.
 - ElementTable is then iterated (00B67080, 00B67190, 00B66420).
 
 **Each entry** becomes an `operator new(60h)` record. 00BF7CD1 constructs its two 8-byte
-NativeString headers at +48h (ctor 00415270, dtor 0041DD20); the record is used without a null
-test. Fields, in listing order:
+NativeString headers at +48h (ctor 00415270, dtor 0041DD20). The block is tested
+(0086C382 `CMP ESI,EBP` / `JE 0086C3A7` / `XOR ESI,ESI`), and a null block skips 00BF7CD1. The
+field stores after that are unguarded. Fields, in listing order:
 
 | Key | Record field | Read |
 |---|---|---|

@@ -94,9 +94,12 @@ void effect_flare_read_lua_0086c240(FlareReaderHost& host, void* component, LuaR
     host.dword_vector_resize_zero_fill_0086aa10(vector, 0);
     host.iterate_first_00b67080(elements, key, value);
     while (!host.is_unbound_00b66420(elements, value)) {
-        void* const e = host.operator_new_00bf681b(0x60);   // no null path: the stores follow
-        host.eh_vector_construct_00bf7cd1(static_cast<std::uint8_t*>(e) + 0x48, 8, 2,
-            0x00415270, 0x0041DD20);
+        // 0086C382 CMP ESI,EBP / JE 0086C3A7: a null block skips 00BF7CD1 (ESI = 0); the field
+        // stores that follow are unguarded, so the image writes through null then.
+        void* const e = host.operator_new_00bf681b(0x60);
+        if (e != nullptr)
+            host.eh_vector_construct_00bf7cd1(static_cast<std::uint8_t*>(e) + 0x48, 8, 2,
+                0x00415270, 0x0041DD20);
         {
             const LuaRef outer_y = host.get_by_name_00b67800(value, "Scale");
             const LuaRef y = host.get_by_name_00b67800(outer_y, "Y");
@@ -410,7 +413,8 @@ void game_settings_destruct_0083b120(SettingsDtorHost& host, void* settings) {
     }
     // 0083B1B7..0083B209: 30h-byte elements first +740h / last +744h.
     if (auto* const first = at<std::uint8_t*>(s, 0x740)) {
-        for (std::uint8_t* p = first; p != at<std::uint8_t*>(s, 0x744); p += 0x30)
+        auto* const last = at<std::uint8_t*>(s, 0x744);                  // EBX, cached at 0083B1C6
+        for (std::uint8_t* p = first; p != last; p += 0x30)
             host.element30_destruct_0041e7a0(p);
         host.free_00bf65ac(at<void*>(s, 0x740));
     }
@@ -538,7 +542,7 @@ void* plane_unit_instance_construct_007cfd20(PlaneCtorHost& host, void* plane, s
     at<float>(p, 0x908) = 0.0f;
     at<float>(p, 0x90C) = 0.0f;
     at<std::uint8_t>(p, 0xDFC) = 0;
-    at<float>(p, 0xBC4) = 1.0f;                                          // over 007CFFBD's 0
+    at<float>(p, 0xBC4) = 1.0f;                                          // over 007CFFB7's 0
     at<float>(p, 0xC5C) = -100.0f;
     at<float>(p, 0xC60) = 0.0f;
     // 007D00D5..007D00F2: +968h takes the counter; the counter steps and wraps to 0 at 12
