@@ -85,6 +85,10 @@
 #include "bsp/game_observer_runtime.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/squadron_free_attack.hpp"            // packet p15_free_attack_tick
+#include "bsp/squadron_stophead_cc13.hpp"          // packet cc13-stophead
+#include "bsp/squadron_leash_cc13.hpp"             // packet cc13-leash
+#include "bsp/squadron_step_tail_cc13.hpp"         // packet cc13-steptail
+#include "bsp/director_update_arms.hpp"            // packet cc13-leash: 0080DC70
 #include "bsp/director_target_gate.hpp"
 #include "bsp/plane_squadron_entity.hpp"
 #include "bsp/world_map_bounds.hpp"
@@ -2824,6 +2828,15 @@ struct GameUnitsHost::Impl {
     };
     unsigned long long moveto_self_issues{0}, moveto_self_placed{0};
     std::map<std::string, SpentOrdnanceRtb> spent_rtb;
+    // Packet cc13-steptail (kSquadronGeneralStepTailBound): the head the general
+    // tail last issued on, so it issues once per head.
+    struct StepTailGuard {
+        bool issued{false};
+        std::uint32_t head{0};
+        bsp::SceneCommandTarget head_target{};
+    };
+    std::map<std::string, StepTailGuard> step_tail_guard;
+    unsigned long long step_tail_movetos{0}, step_tail_rtbs{0};
     // Packet p15_free_attack_tick (docs/OCEAN_WAVE_FIELD.md section 57). True: each
     // squadron runs 009F8470's own part every step after 009F8160 / 009F7C90 (cc13's
     // reconstruction over src/squadron_free_attack.cpp's arena): a pick sends the
@@ -17444,7 +17457,8 @@ private:
 // LABELLED: 00927F10 for a slot other than 8 answers player-held (no participant
 // pools reach here); leader+C24h (PilotFires) has no reader and is clear; the
 // clear-then-moveto-self arm for a `stop` head (009F85EB..009F8615) is counted,
-// not issued; 0071F290 arm 5's begin (0084DDA0 -> 0071F600) is not run, the send
+// not issued, unless kSquadronStopHeadMoveToSelfBound; 009F8160's leash runs
+// here under kSquadronDogfightLeashBound; 0071F290 arm 5's begin (0084DDA0 -> 0071F600) is not run, the send
 // having just passed 0071D6D0.
 void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHostRecord& sq,
     std::size_t leader, const std::vector<std::size_t>& alive) {
@@ -17455,6 +17469,25 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
     GameCommandsHost& commands = h.commands;
     Impl::FreeAttack& fa = h.free_attack[sq.name];
     const float now = h.summary.simulated_seconds;
+    // 0071E4C0 on the leader's director: a moveonpath head's final point (007B1350),
+    // else the head descriptor's point (006F7DD0: its entity's, else its own).
+    const auto path_point_0071e4c0 = [&](std::uint32_t head_command,
+                                         const bsp::SceneCommandTarget& head, std::uint32_t r,
+                                         bool& valid, std::array<float, 3>& point) {
+        if (head_command == bsp::kCommandMoveOnPath) {
+            float last[3]{};
+            if (commands.path_final_point_007b1350(leader, last)) {
+                valid = true;
+                point = {last[0], last[1], last[2]};
+            }
+        } else if (r != 0u) {
+            valid = true;
+            unit_position_00fc(r - 1u, point[0], point[1], point[2]);
+        } else if (head.position_valid != 0 || head.kind != 0) {
+            valid = true;
+            point = {head.position[0], head.position[1], head.position[2]};
+        }
+    };
 
     // The override this host sent: its target's removal (0071DDB0's override arm,
     // 0071EDD0 then 0071D9E0(2)). LABELLED: tested here per step on the gunnery
@@ -17485,6 +17518,125 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
             h.slots[fa.override_target - 1u]->row.name.c_str(), static_cast<double>(now),
             next != kInvalidFreeAttackUnit ? h.slots[next]->row.name.c_str() : "ended (0071D9E0(2))");
         if (next != kInvalidFreeAttackUnit) fa.override_target = next + 1u;
+    }
+    if constexpr (kSquadronDogfightLeashBound) {
+        // Packet cc13-leash (include/bsp/squadron_leash_cc13.hpp): 009F8160 from
+        // 009F82DA to 009F8407, before the tick (009F848A): the dogfight
+        // out-of-map arm, then the leash. LABELLED: the leader's director stands for
+        // the squadron's block. 009F8160's earlier arms are the host's retest, so the
+        // seven ordnance classes and 00E08FA0, which return or leave for 009F8412
+        // before 009F82DA, are excluded here.
+        // 0071BE40 answers the override only in mode 2, and 0071EB60 then hands back
+        // its +18Ch descriptor, so the slot-0 test at 009F83C4 can pass only in mode 2.
+        const std::uint32_t current = commands.current_command_0071be40(leader);
+        const bsp::EntityOrderCommandClass* klass =
+            bsp::entity_order_command_class_by_address(current);
+        bool early_arm = false;
+        for (const std::uint32_t c : {0x00E08F28u, 0x00E08F30u, 0x00E08F20u, 0x00E08F18u,
+                                      0x00E08F50u, 0x00E08F48u, 0x00E08F38u, 0x00E08FA0u})
+            if (current == c) early_arm = true;
+        bsp::SceneCommandTarget over{};
+        int over_mode = 0;
+        commands.active_command_descriptor_0071eb60(leader, over, over_mode);
+        const std::uint32_t over_target = commands.resolve_command_target_00521ea0(over);
+        const bool category_12 = klass != nullptr && (klass->category == 1 || klass->category == 2);
+        // 009F82EE: a category 1/2 command with no target leaves for 009F8412;
+        // 009F830C / 009F8313: so does one 007EE8F0 refuses. SUBSTITUTION (labelled):
+        // "the target is not dead" stands for 007EE8F0.
+        const bool target_live = over_target != 0u && over_target - 1u < h.slots.size()
+            && !gun->unit_dead(over_target - 1u);
+        FreeAttackWorld leash_world(*this, h, *gun);
+        if (current == 0x00E08F58u && !early_arm && (!category_12 || target_live)
+                && over_target != 0u && over_target - 1u < h.slots.size()) {
+            // 009F8319..009F83A8: a dogfight whose target's squadron is retreating
+            // and has left the map ends (0071E430(current, 1) at 009F83A8).
+            const std::size_t t = over_target - 1u;
+            bool end = false;
+            // SUBSTITUTION, labelled: "the target is the squadron this host's own
+            // override named" (fa.override_squadron with the same target) stands for
+            // 00523560's squadron test on the resolved object. A squadron target the
+            // host did not send itself takes the plane arm below.
+            if (fa.override_squadron && over_target == fa.override_target) {
+                // 00523560: the target is a squadron. vt+174h, its command, must be
+                // retreat (009F8347); then every member at +3D0h (count +3CCh) is
+                // tested with 00427EB0 -> 0071C4F0, and the dogfight ends unless one
+                // is inside the map (009F8386 / 009F83A0). No members also ends it.
+                // LABELLED: the target squadron's command is its flight leader's;
+                // its members are the registry's live member_units; the image's
+                // index > 4 reads a null member (009F836F), which is not reproduced.
+                const bsp::PlaneSquadronHostRecord* tsq =
+                    bsp::plane_squadron_registry().find_by_member_or_departed_unit(t);
+                if (tsq != nullptr && commands.current_command_0071be40(t) == 0x00E08F90u) {
+                    bool inside = false;
+                    for (const std::size_t mm : tsq->member_units) {
+                        if (mm == bsp::kPlaneSquadronNoUnit || mm >= h.slots.size()
+                            || gun->unit_dead(mm)) continue;
+                        if (!leash_world.outside_map_0071c4f0(mm)) inside = true;
+                    }
+                    end = !inside;
+                }
+            } else if (unit_is_kind_of(t, 0x0F) && leash_world.outside_map_0071c4f0(t)) {
+                // 009F841E..009F8463: 0071EA00, a plane outside the map whose +9D4h
+                // squadron's command (vt+174h) is retreat. LABELLED: the squadron's
+                // command is its flight leader's.
+                const bsp::PlaneSquadronHostRecord* tsq =
+                    bsp::plane_squadron_registry().find_by_member_unit(t);
+                const std::size_t tl = tsq != nullptr ? tsq->flight_leader() : bsp::kPlaneSquadronNoUnit;
+                end = tl != bsp::kPlaneSquadronNoUnit && tl < h.slots.size()
+                    && commands.current_command_0071be40(tl) == 0x00E08F90u;
+            }
+            if (end) {
+                // 009F83A8: 0071E430(current, 1) on the shared block; here on each
+                // live member's director, which each hold the override.
+                for (const std::size_t m : alive) end_command_0071e430(m, current, true);
+                h.log.notef("free attack: squadron \"%s\" dogfight on %s ended at %.2f s: the "
+                    "target is retreating outside the map (009F8319..009F83A8 -> 0071E430, "
+                    "packet cc13-leash)", sq.name.c_str(), h.slots[t]->row.name.c_str(),
+                    static_cast<double>(now));
+            }
+        }
+        // After an end above, the image falls through (009F83AD) with EBP still the
+        // old current, and re-reads slot 0 (009F83C4) and the +18Ch descriptor
+        // (009F83DE) from the block. LABELLED: the host keeps current, its class and
+        // target_live as the image does, re-reads slot 0, but keeps over / over_target
+        // from before the end (stale for the rest of this tick when an end ran).
+        bool fire = false, move = false;
+        script_orders_squadron_permissions_3c3d(sq, fire, move);
+        if (current != 0u && !early_arm && category_12                         // 009F83B7..009F83BF
+                && target_live
+                && commands.director_slot_command(leader, 0) != current        // 009F83C4
+                && !bsp::director_allows_fire_and_move(fire, move)) {          // 009F83CB
+            bsp::SquadronFreeAttackInput gin;
+            bsp::SceneCommandTarget head{};
+            commands.director_slot_target(leader, 0, head);                   // director+58h
+            const std::uint32_t slot0 = commands.director_slot_command(leader, 0);
+            path_point_0071e4c0(slot0, head, commands.resolve_command_target_00521ea0(head),
+                                gin.path_point_valid, gin.path_point);
+            gin.guard_dist_594 = h.lua.plane_globals_loaded()
+                ? h.lua.plane_globals().pilot_general_guard_dist : 0.0f;
+            bsp::SquadronGuardDescriptor g;
+            g.entity = over.kind != 0;
+            g.unit = over_target - 1u;
+            // As the tick's slot0_target_squadron: a squadron target is its leader
+            // here, with the arena's squadron object standing for the entity.
+            g.squadron = fa.override_squadron && over_target == fa.override_target;
+            g.position_valid = over.position_valid != 0;
+            g.position = {over.position[0], over.position[1], over.position[2]};
+            if (!bsp::squadron_within_guard_distance_009f7fe0(gin, g, leash_world,
+                    kSquadronLeashGuardScale)) {                               // 009F83E7
+                for (const std::size_t m : alive)
+                    commands.raise_override_stage_0071d9e0(m, 2);              // 009F83F5
+                // 009F8407's 009F7810 is not run: the leash fires only in mode 2,
+                // so the same tick leaves at 009F849F for 009F8640, and the next
+                // tick clears the pick at 009F8487 before any read
+                // (squadron_leash_cc13.hpp).
+                h.log.notef("free attack: squadron \"%s\" leash at %.2f s: %08X on %s outside "
+                    "%.0f m of the head point, override ended (009F83AD..009F83F5, packet "
+                    "cc13-leash)", sq.name.c_str(), static_cast<double>(now), current,
+                    h.slots[over_target - 1u]->row.name.c_str(),
+                    static_cast<double>(gin.guard_dist_594 * kSquadronLeashGuardScale));
+            }
+        }
     }
     // The override this host sent has been cleared (0071E610 left mode 1): 0099A4C0
     // retires its task and 0099A170 builds the head command's again. LABELLED: the
@@ -17533,20 +17685,7 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
         if (commands.active_command_descriptor_0071eb60(leader, head, mode) && mode == 1) {
             const std::uint32_t r = commands.resolve_command_target_00521ea0(head);
             if (r != 0u) in.slot0_target = r - 1u;
-            // 0071E4C0: the moveonpath's final point, else the head descriptor's point.
-            if (in.slot0_command_54 == bsp::kCommandMoveOnPath) {
-                float last[3]{};
-                if (commands.path_final_point_007b1350(leader, last)) {
-                    in.path_point_valid = true;
-                    in.path_point = {last[0], last[1], last[2]};
-                }
-            } else if (r != 0u) {
-                in.path_point_valid = true;
-                unit_position_00fc(r - 1u, in.path_point[0], in.path_point[1], in.path_point[2]);
-            } else if (head.position_valid != 0 || head.kind != 0) {
-                in.path_point_valid = true;
-                in.path_point = {head.position[0], head.position[1], head.position[2]};
-            }
+            path_point_0071e4c0(in.slot0_command_54, head, r, in.path_point_valid, in.path_point);
         }
     }
     {
@@ -17631,6 +17770,67 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
     if (d.stop != bsp::FreeAttackStop::kOverrideSent || d.target >= h.slots.size()) return;
     if (d.clear_then_moveto_self) ++h.free_attack_moveto_self;
     ++h.free_attack_sends;
+    if constexpr (kSquadronStopHeadMoveToSelfBound) {
+        if (d.clear_then_moveto_self) {
+            // Packet cc13-stophead (include/bsp/squadron_stophead_cc13.hpp). The
+            // `stop` head: 009F85ED 0071D880 (every slot), 009F8615 0071ECF0(moveto
+            // 00E08F68 to the squadron's own position), then 009F8631 0071D980.
+            // SUBSTITUTION (labelled): the clear and the moveto take the entity-order
+            // hop (flags 1: 00816E30's 0081733E clear, then 0071ECF0), and the
+            // host's synchronous 0071D980 runs as that chain's after-delivery, so
+            // the image's post order clear, moveto, override holds in the drain.
+            // The position is the arena's 00427EB0 (the leader's).
+            bsp::SceneCommandTarget here{};
+            here.kind = 0;
+            here.position_valid = 1;
+            for (int k = 0; k < 3; ++k) here.position[k] = in.squadron_position[k];
+            Impl::FreeAttack* const record = &fa;
+            const std::uint32_t command = d.command;
+            const std::size_t target = d.target;
+            const bool target_squadron = d.target_squadron;
+            std::size_t deferred = 0;
+            // free_attack_installed counts one per send with any member installed,
+            // as the non-stop path does.
+            const auto counted = std::make_shared<bool>(false);
+            for (const std::size_t m : alive) {
+                issue_script_command(m, 0x00E08F68u, here, 1,
+                    "009F8615 free-attack moveto-self", "(own position)");
+                std::function<void()> send = [this, record, counted, m, command, target,
+                                              target_squadron]() {
+                    Impl& host = *impl_;
+                    if (m >= host.slots.size() || target >= host.slots.size()) return;
+                    // 009F8631: 0071D980 -> 00721B7C -> 0071E7F0 on this member's director.
+                    if (!host.commands.send_override_command_0071d980(m, command,
+                            static_cast<std::uint32_t>(target + 1u))) return;
+                    GameUnitSlot& u = *host.slots[m];
+                    // 0099A4C0: the head's moveto task answers 0 under the override and goes.
+                    u.moveto_task_installed = false;
+                    u.moveto_state = GameUnitSlot::MoveToTaskState::kNone;
+                    u.moveto_arrived_454 = false;
+                    u.command_target_plus_one = target + 1u;
+                    if (script_orders_install_command_task_0099a170(m, command, target) != 0u)
+                        ++host.free_attack_tasks;
+                    if (!*counted) {
+                        *counted = true;
+                        ++host.free_attack_installed;
+                    }
+                    record->override_command = command;
+                    record->override_target = target + 1u;
+                    record->override_squadron = target_squadron;
+                    record->head_command = 0x00E08F68u;
+                };
+                if (commands.after_last_issue_delivery(send)) ++deferred;
+                else send();
+            }
+            h.log.notef("free attack: squadron \"%s\" stop head: moveto own position, then "
+                "override %08X on %s%s for %zu member(s), %zu after the moveto's delivery at "
+                "%.2f s (009F85ED / 009F8615 / 009F8631, packet cc13-stophead)", sq.name.c_str(),
+                d.command, h.slots[d.target]->row.name.c_str(),
+                d.target_squadron ? " (squadron)" : "", alive.size(), deferred,
+                static_cast<double>(now));
+            return;
+        }
+    }
     std::size_t installed = 0;
     for (const std::size_t m : alive) {
         // 0071D980 -> 00721B7C -> 0071E7F0 on this member's director.
@@ -18004,6 +18204,118 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                 "b4=%d b5=%d placed=%zu) (0084E595, packet cc9_l57_moveto_self)", sq.name.c_str(),
                 static_cast<double>(now), st.latch_3c ? 1 : 0, st.ended ? 1 : 0,
                 st.ended_stage2_command, plan.b4 ? 1 : 0, plan.b5 ? 1 : 0, placed);
+        }
+    }
+    if constexpr (kSquadronGeneralStepTailBound) {
+        // Packet cc13-steptail (include/bsp/squadron_step_tail_cc13.hpp): 0084E010's
+        // tail for every squadron the spent_rtb path above does not hold.
+        // Runs only past this function's early return, so only while
+        // kSquadronSpentOrdnanceRtbBound is true (or the census is set).
+        const bool device_reload = kLuaDeviceReloadEnabledBound && lua_device_reload_enabled_00e17bf2();
+        for (const bsp::PlaneSquadronHostRecord& sq : bsp::plane_squadron_registry().records()) {
+            // Membership, 0071F290's gates ahead of its vt[7Ch] call (0071F39E), held
+            // the way 009F8470's host call above is: a live member and a flight leader.
+            bool any_alive = false;
+            for (const std::size_t m : sq.member_units) {
+                if (m != bsp::kPlaneSquadronNoUnit && m < h.slots.size() && !gun->unit_dead(m)) {
+                    any_alive = true;
+                    break;
+                }
+            }
+            if (!any_alive) continue;
+            const std::size_t leader = sq.flight_leader();
+            if (leader == bsp::kPlaneSquadronNoUnit || leader >= h.slots.size()) continue;
+            // 0071F29F..0071F2C1: the owner entity's +5Ch set, +5Dh / +60h / +5Eh clear.
+            // LABELLED: the host's squadron entity is the fused wing 0 (sq.squadron_unit),
+            // so a wing 0 still in the hangar (007BC550 cleared its +5Ch) holds the tail
+            // through take-off. 0071F378 ([[00E188A8]+1FE4h] != 2) always passes here:
+            // session_mode() answers 1, single player.
+            if (sq.squadron_unit >= h.slots.size()) continue;
+            {
+                const GameUnitSlot& s = *h.slots[sq.squadron_unit];
+                const bool live = s.state != nullptr && s.state->active != 0 &&
+                                  s.state->simulate == 0 && s.scene_destroyed_005e == 0 &&
+                                  s.scene_pending_destroy_0060 == 0;
+                if (!live) continue;
+            }
+            // PROXY: 0084E043 tests +3D0h for null, not for death.
+            if (gun->unit_dead(leader)) continue;
+            const auto rtb_it = h.spent_rtb.find(sq.name);
+            if (rtb_it != h.spent_rtb.end()) {
+                const Impl::SpentOrdnanceRtb& st = rtb_it->second;
+                if (st.latch_3c || st.ended || st.ended_stage2_command != 0 || st.moveto_self) continue;
+            }
+            const std::uint32_t head = h.commands.director_slot_command(leader, 0);
+            bsp::SceneCommandTarget head_target{};
+            h.commands.director_slot_target(leader, 0, head_target);
+            Impl::StepTailGuard& guard = h.step_tail_guard[sq.name];
+            if (guard.issued) {
+                const bool same_head = head == guard.head
+                    && head_target.kind == guard.head_target.kind
+                    && head_target.object_id == guard.head_target.object_id
+                    && std::memcmp(head_target.position, guard.head_target.position,
+                                   sizeof head_target.position) == 0;
+                // LABELLED: the squadron-unit issue is taken to become the leader's
+                // slot 0, the spent_rtb path's established proxy. After it completes
+                // the image re-issues (0071ECF0 re-arms the stage); the host stays at
+                // stage 2.
+                const bool own_moveto = head == 0x00E08F68u && head_target.kind == 1
+                    && head_target.object_id == static_cast<std::uint16_t>(sq.squadron_unit + 1);
+                if (same_head || own_moveto) continue;
+                guard.issued = false;
+            }
+            const int filled = h.commands.director_command_count_0071be60(leader);
+            const int stage = h.commands.director_stage_0048(leader);
+            const bsp::EntityOrderCommandClass* klass =
+                bsp::entity_order_command_class_by_address(head);
+            bsp::SquadronStepTailInputs in;
+            in.stage_48 = stage;
+            in.override_stage_50 = h.commands.director_override_stage_0050(leader);
+            in.filled_slots_71be60 = filled;
+            in.latch_3c = false;
+            in.command_54 = head;
+            in.command_category_0c = klass != nullptr ? klass->category : 0;
+            in.head_arm = head == 0u && filled == 0;                          // 0084E047-0084E05C
+            in.reload_enabled_369 = true;
+            in.device_reload_e17bf2 = device_reload;
+            in.flag_368 = false;
+            const bsp::SquadronStepTailPlan plan = bsp::squadron_step_tail_plan_0084e4b1(in);
+            std::size_t rtb = 0;
+            bool moveto = false;
+            if (plan.outcome == bsp::SquadronStepTailOutcome::kResolve) {
+                rtb = issue_return_to_base_007f16d0(leader, "0084E552 step tail resolve");
+                if (rtb == 0) moveto = bsp::squadron_step_moveto_self_0084e595(filled, stage);  // 0084E55B
+            } else if (plan.outcome == bsp::SquadronStepTailOutcome::kMoveToSelfIfRoom) {
+                moveto = bsp::squadron_step_moveto_self_0084e595(filled, stage);
+            }
+            if (rtb == 0 && !moveto) continue;
+            std::size_t placed = 0;
+            if (moveto && sq.squadron_unit < h.slots.size() && !gun->unit_dead(sq.squadron_unit)) {
+                // 0084E5A8-0084E5C6, as the spent_rtb path issues it.
+                bsp::SceneCommandTarget target;
+                target.kind = 1;
+                target.position_valid = 0;
+                target.object_id = static_cast<std::uint16_t>(sq.squadron_unit + 1);
+                target.object = const_cast<void*>(unit_identity(sq.squadron_unit));
+                target.position[0] = target.position[1] = target.position[2] = 0.0f;
+                target.trailing = 0.0f;
+                if (issue_script_command(sq.squadron_unit, 0x00E08F68u, target, 1,
+                        "0084E595 step tail moveto-self",
+                        h.slots[sq.squadron_unit]->row.name) != nullptr)
+                    ++placed;
+                ++h.step_tail_movetos;
+            }
+            if (rtb != 0) ++h.step_tail_rtbs;
+            // LABELLED: set even when placed == 0 (the issue was refused), so the
+            // host never retries this head; the image retries every step.
+            guard.issued = true;
+            guard.head = head;
+            guard.head_target = head_target;
+            h.log.notef("squadron step tail: \"%s\" at %.2f s head %08X stage %d slots %d "
+                "b4=%d b5=%d -> %s (rtb placed %zu, moveto placed %zu) (0084E4B1..0084E5C6, "
+                "packet cc13-steptail)", sq.name.c_str(), static_cast<double>(now), head, stage,
+                filled, plan.b4 ? 1 : 0, plan.b5 ? 1 : 0,
+                rtb != 0 ? "007F16D0 resolve" : "0084E595 moveto-self", rtb, placed);
         }
     }
 }
