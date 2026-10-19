@@ -7159,10 +7159,14 @@ routine:
 5. **Milestone 2q's host rows `the class turn radius | 009e3eae | 0082e850 | record` and
    `the owner radius | 009e3ec0 | field +9C8h | record` are both produced values now.** `0082E850`
    returns `class+520h`, whose writer `00828F20` packet `ship_ai_class_field_0524` read, and
-   `unit+9C8h` is the full hull `Length` that `0081106E` and `0081FA4D` copy from the descriptor
-   when the class carries no model box - correction 3 of `docs/SHIP_AI_NAV_BLOCK_CTOR.md`.
-   Evidence: the run's `len_9c8` column, 171.00 / 110.00 / 203.00, matching the installed
-   `vehicleclasses.lua` rows exactly.
+   `unit+9C8h` is produced by `00810FAF`. In the image it is the class `Length` (`class+A0h`,
+   `00811068`/`0081106E`) only on the no-model branch (`00811058`, `[class+50h] == 0`); a class with
+   a model box, which ships have, stores `2*max(-box[+30h], box[+3Ch])` (`0081100C..00811056`,
+   re-stored at `0081FA45`/`0081FA4D`). This host has no model box, so it takes the no-model
+   branch as a labelled substitution (game_hosts_units.cpp:18810); see correction 3 of
+   `docs/SHIP_AI_NAV_BLOCK_CTOR.md` and (I) in `docs/CC13_SEG67D.md`.
+   Host evidence only: the run's `len_9c8` column, 171.00 / 110.00 / 203.00, matches the installed
+   `vehicleclasses.lua` Length rows because of that substitution, not because the image copies it.
 
 6. **`src/game_hosts_units.cpp`'s milestone 2i note that only `class+A0h` has a recovered Lua key
    is superseded, and two of the three keys were already being parsed and discarded.**

@@ -1259,4 +1259,11 @@ void convex_hull_debug_draw_006fa320(Seg33bHost& host, Object hull, const float*
     if (data != nullptr) host.free_00bf6989(data);
 }
 
+// 006F0800, ECX fog-pool chunk, RET; EAX is the zero-extended equality.
+// The allocator's kFogFreeCount is32Ch, kFogSlotsPerBlock is2. New source
+// interface, build-only; this is the pool predicate also stored at00D64EAC/00D652AC.
+bool fog_chunk_all_slots_free_006f0800(Object chunk) {
+    return at<std::uint16_t>(chunk, kFogFreeCount) == kFogSlotsPerBlock;
+}
+
 }  // namespace bsp::cc13_seg33b
