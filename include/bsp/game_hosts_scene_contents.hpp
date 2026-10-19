@@ -523,6 +523,34 @@ inline constexpr bool kVehicleClassMovieStopPurgeCc15Bound = false;
 // party_required, which no host path reads. False: both stay records.
 inline constexpr bool kSceneClassPreloadAliasesCc15Bound = false;
 
+// Packet cc15-wf1 (docs/CC15_WIRE_FRONTIER.md). 004D4E80 calls 004CD7F0
+// BSP_Scene_DeriveShortName with ECX = out, EDX = game+90Ch and a pushed 1, so
+// the "2_" block name carries the 00E08240 mode suffix. True: the derive step
+// runs engine_seg4_6_9_cc13.cpp's derive_scene_short_name_004cd7f0 over this
+// host's own game+61Ch / +614h / +1FE4h (mode_forced, raw_game_mode,
+// multiplayer, which 004dfb70's caller already passes in). False: the shared
+// derive_scene_short_name with the campaign stand-in mode (raw 8, not forced,
+// no session). Both give "SOLO" on a single-player load, so ON is expected to
+// move nothing but the evidence line.
+inline constexpr bool kSceneShortNameCc15Bound = false;
+
+// cc15-ob4 (docs/CC15_OBJECT_SCENE_DATABASE.md). The scene database, the 170h
+// object at [00E18680]: BSP_Game_OnInit 004E3AA0 builds it at 004E3E60 through
+// 0046F350 (operator new(170h) + 0046F160), and every mission load's
+// 004F2800 registers the 26 scene classes into its class map at +34h through
+// 004EE250. True: both run, as seg6_cc13.cpp / engine_seg11_35_66_cc13.cpp
+// bodies over a host-heap image of the object, and this file's class lookups
+// read that map (00468FB0 by name, 00468660 by id) instead of the static
+// table; 004E99B0 / 004E9AE0 / 004E9C10 build their 1E4h entity images.
+// False: the static table answers the lookups and the three rows stay records.
+inline constexpr bool kSceneDatabaseCc15Bound = false;
+
+// 0046F350 at 004E3E60 (OnInit). Idempotent: a second call keeps the first
+// object, as the image's OnInit runs once per process.
+void scene_database_create_0046f350(GameHostLog& log);
+// 004F2800 at its mission-load step. Returns false when [00E18680] is null.
+bool scene_database_register_classes_004f2800(GameHostLog& log);
+
 // docs/CC13_AUDIT_LUA51_FLIPS.md item 3. Two admits the stop does not remove:
 // a `Hidden` entity goes through 0046C550 with the last argument 1 (0046D60F) and
 // is registered for GenerateObject, never created, so 0046B730 has nothing to

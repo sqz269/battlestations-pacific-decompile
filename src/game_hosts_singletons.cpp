@@ -30,6 +30,8 @@ GameSingletonHost::GameSingletonHost(GameHostLog& log)
     deletion_bindings_.actual_pending_registry_publication_00f878cc =
         &pending_registry_publication_00f878cc_;
     deletion_bindings_.allocation_stats = &allocation_stats_context_;
+    deletion_bindings_.actual_loading_queue_publication_00e18d4c =
+        &loading_queue_publication_00e18d4c_;
 }
 
 GameSingletonHost::~GameSingletonHost() {

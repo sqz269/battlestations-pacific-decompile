@@ -230,6 +230,7 @@ struct GameHudHost::Impl {
     // The helm `aim unit` track's diagnostics (packet cc13-aimunit).
     unsigned long long aim_track_frames{0};
     bool aim_track_warned{false};
+    unsigned aim_track_serial{0};
     bool unit_request_pending{false};
     bool unit_request_applied{false};
     int unit_interface_id{0};
@@ -1231,29 +1232,84 @@ public:
             return 0;
         }
     }
-    float gunner_distance_00548ea9(std::size_t, std::size_t) override {
-        owner_.record("HudWeaponGroupScreen::gunner_distance", 0x00548ea9u);
-        return 0.0f;
+    float gunner_distance_00548ea9(std::size_t unit, std::size_t target) override {
+        if constexpr (kPlayerGunSeatTargetInterceptBound) {
+            // 00548EA9..00548ECC: 00427EB0 on both (pose +FCh), 00427C90,
+            // then 00427E30, the squared length.
+            float r[3], u[3], f[3], up[3], tp[3];
+            if (unit == 0 || target == 0 || owner_.units == nullptr
+                || !owner_.units->unit_pose(unit - 1, r, u, f, up)
+                || !owner_.units->unit_pose(target - 1, r, u, f, tp)) {
+                return 0.0f;
+            }
+            const float d[3] = {up[0] - tp[0], up[1] - tp[1], up[2] - tp[2]};
+            owner_.done("HudWeaponGroupScreen::gunner_distance", 0x00548ea9u);
+            return d[0] * d[0] + d[1] * d[1] + d[2] * d[2];
+        } else {
+            owner_.record("HudWeaponGroupScreen::gunner_distance", 0x00548ea9u);
+            return 0.0f;
+        }
     }
-    float gunner_range_49c(std::size_t) override {
-        owner_.record("HudWeaponGroupScreen::gunner_range", 0x00548ed0u);
-        return 0.0f;
+    float gunner_range_49c(std::size_t unit) override {
+        if constexpr (kPlayerGunSeatTargetInterceptBound) {
+            // 00548ED0: [unit+49Ch], which 00953B80 writes.
+            GameGunneryHost* gunnery = owner_.units != nullptr ? owner_.units->gunnery() : nullptr;
+            if (unit == 0 || gunnery == nullptr) return 0.0f;
+            owner_.done("HudWeaponGroupScreen::gunner_range", 0x00548ed0u);
+            return gunnery->unit_gun_range_sq_049c(unit - 1);
+        } else {
+            owner_.record("HudWeaponGroupScreen::gunner_range", 0x00548ed0u);
+            return 0.0f;
+        }
     }
-    bool target_virtual_10c(std::size_t) override {
-        owner_.record("HudWeaponGroupScreen::target_virtual_10c", 0x00548923u);
-        return false;
+    bool target_virtual_10c(std::size_t target) override {
+        if constexpr (kPlayerGunSeatTargetInterceptBound) {
+            // vtable[10Ch]: 0074E1A0 on the plane classes, the
+            // cached speed [unit+B1Ch] (007B8E60) above 3.0 (00CE3854,
+            // FCOMIP/JBE); 0042BB40 (false) on every ship, submarine and the
+            // dummy kamikaze. The cache is the magnitude 007D8020 stores of the
+            // flight controller's world velocity.
+            if (target == 0 || owner_.units == nullptr
+                || !owner_.units->unit_is_kind_of(target - 1, bsp::kUnitGunneryKindPlaneBase)) {
+                return false;
+            }
+            float v[3];
+            if (!owner_.units->unit_plane_world_velocity(target - 1, v)) return false;
+            const float speed = std::sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+            owner_.done("HudWeaponGroupScreen::target_virtual_10c", 0x0074e1a0u);
+            return speed > 3.0f;
+        } else {
+            owner_.record("HudWeaponGroupScreen::target_virtual_10c", 0x00548923u);
+            return false;
+        }
     }
     int relation_00803ce0(std::size_t, std::size_t) override {
         owner_.record("HudWeaponGroupScreen::relation", 0x00803ce0u);
         return 0;
     }
-    bool same_side_54(std::size_t, std::size_t) override {
-        owner_.record("HudWeaponGroupScreen::same_side", 0x00548919u);
-        return true;
+    bool same_side_54(std::size_t target, std::size_t first) override {
+        if constexpr (kPlayerGunSeatTargetInterceptBound) {
+            // 00548913..0054891F: [target+54h] against the screen unit's +54h.
+            if (target == 0 || first == 0 || owner_.units == nullptr) return true;
+            owner_.done("HudWeaponGroupScreen::same_side", 0x00548919u);
+            return owner_.units->unit_side_0054(target - 1)
+                == owner_.units->unit_side_0054(first - 1);
+        } else {
+            owner_.record("HudWeaponGroupScreen::same_side", 0x00548919u);
+            return true;
+        }
     }
-    std::uint16_t target_id_174(std::size_t) override {
-        owner_.record("HudWeaponGroupScreen::target_id", 0x00548934u);
-        return 0;
+    std::uint16_t target_id_174(std::size_t target) override {
+        if constexpr (kPlayerGunSeatTargetInterceptBound) {
+            // 00548934 MOVZX [target+174h]. SUBSTITUTION: the host has no
+            // entity handle table, so the id is the 1-based unit index that
+            // apply_gun_aim_message resolves in place of 00521E30.
+            owner_.done("HudWeaponGroupScreen::target_id", 0x00548934u);
+            return static_cast<std::uint16_t>(target);
+        } else {
+            owner_.record("HudWeaponGroupScreen::target_id", 0x00548934u);
+            return 0;
+        }
     }
     void target_debug_00548942(std::size_t) override {
         owner_.record("HudWeaponGroupScreen::target_debug", 0x00548942u);
@@ -3146,19 +3202,27 @@ public:
         terms.pitch_axis_15b4 = static_cast<float>(dpitch / (step * 0.5 * zoom * terms.config_04));
     }
     // Packet cc13-aimunit: the `aim unit` track. The look is steered in closed
-    // loop on the pose the mover published last (the forward row and position
-    // 00954A10 reads for message 79h), so it needs no model of +384h's frame:
+    // loop on the camera's published view (the forward row and position 00954A10
+    // reads for message 79h, i.e. the view ray after the orbit position, zoom and
+    // shake, which 009578C3 tests), so it needs no model of +384h's frame:
     // 00432ED0 builds the forward row as rot_y(-yaw) then rot_x(-pitch) on the
     // mover's basis, so a heading error e (atan2(x, z) convention) is removed by
     // yaw -= e, and a pitch error by pitch += e. The auto pitch aims at the unit's
     // origin (unit+0FCh). Returns false (no steering) when there is no track or
-    // nothing to steer from; an unusable row is reported once and the mover keeps
-    // its last yaw.
+    // nothing to steer from. A row that becomes unusable is reported once per
+    // loss (the look keeps its last yaw) and its return is reported too.
     bool helm_aim_track_target(float& yaw, float& pitch) {
         std::size_t unit = 0;
         bool has_pitch = false;
         float fixed_pitch = 0.0f;
         if (!injected_view_aim_track(unit, has_pitch, fixed_pitch)) return false;
+        const unsigned serial = injected_view_aim_track_serial();
+        if (serial != owner_.aim_track_serial) {
+            // A new `aim unit` line: its own loss report and its own first frames.
+            owner_.aim_track_serial = serial;
+            owner_.aim_track_warned = false;
+            owner_.aim_track_frames = 0;
+        }
         bsp::MissionCameraPublication& node = bsp::mission_camera_publication();
         if (!owner_.camera_bound || !node.ready) return false;
         if (owner_.units == nullptr || unit >= owner_.units->count()
@@ -3169,6 +3233,10 @@ public:
                     "last yaw", unit);
             }
             return false;
+        }
+        if (owner_.aim_track_warned) {
+            owner_.aim_track_warned = false;
+            owner_.log.notef("helm aim unit: row %zu is back; tracking resumes", unit);
         }
         // As the 79h build reads it (00548839..005489DA).
         if ((node.state.transform.valid_flags & 2u) == 0) {
@@ -3194,7 +3262,10 @@ public:
             pitch = static_cast<float>(owner_.camera.pitch_388
                 + (std::atan2(dy, flat) - std::asin(fy)));
         }
-        if (owner_.aim_track_frames++ % 200 == 0) {
+        // Every one of a track's first 10 frames (a 2-frame oscillation shows),
+        // then every 200th.
+        const unsigned long long frame = owner_.aim_track_frames++;
+        if (frame < 10 || frame % 200 == 0) {
             owner_.log.notef("helm aim unit: row %zu heading error %.4f rad, target pitch %.4f "
                 "rad, range %.0f", unit, e_heading, static_cast<double>(pitch), flat);
         }

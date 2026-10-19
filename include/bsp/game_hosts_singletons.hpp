@@ -17,6 +17,11 @@ struct NativeResourceRegistryDeleteBindings;
 
 namespace bsp::game {
 class GameHostLog;
+
+// cc15-ob3: the native loading queue, the lazy 20h E18D4C singleton built by
+// 004FDE20 (ctor 004FDBA0, registered through 00BD0C30) on 00737A50's first
+// RunFrame call, then 00509190 each frame; drained as profile CEB198.
+inline constexpr bool kLoadingQueueCc15Bound = false;
 class GameObserverRuntime;
 class GameNativeVfsRuntime;
 class GameNativeReadOnlyData;
@@ -84,6 +89,10 @@ public:
     void* volatile& manager_publication_01090aa0() noexcept {
         return manager_publication_01090aa0_;
     }
+    // Same cell installed in the CEB198 deletion binding (cleared by 509FD0).
+    NativeLoadingQueueOwnerStorage* volatile& loading_queue_publication_00e18d4c() noexcept {
+        return loading_queue_publication_00e18d4c_;
+    }
     // Same retained process cell installed in this host's D0DEA0 deletion binding.
     void* volatile& pending_registry_publication_00f878cc() noexcept {
         return pending_registry_publication_00f878cc_;
@@ -148,6 +157,7 @@ private:
     // The renderer retains its SAME records/canonical-owner/IAT domain through
     // this host's normal and fallback drains; this cell remains host-owned.
     void* volatile particle_clock_publication_00f8d420_{};
+    NativeLoadingQueueOwnerStorage* volatile loading_queue_publication_00e18d4c_{};
     NativeSingletonDeletionBindings deletion_bindings_;
     std::unique_ptr<NativeWeakOwnerDomain> weak_owners_;
     GameNativeVfsRuntime* vfs_runtime_{};

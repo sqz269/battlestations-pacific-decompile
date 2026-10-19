@@ -12,6 +12,14 @@
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/cruise_speed_setting.hpp"
+#include "bsp/engine_seg4_6_9_cc13.hpp"
+#include "bsp/engine_seg11_35_66_cc13.hpp"
+#include "bsp/entity_identity.hpp"
+#include "bsp/native_scene_integer_set_insert.hpp"
+#include "bsp/native_scene_name_hash_iterator.hpp"
+#include "bsp/native_string.hpp"
+#include "bsp/seg6_cc13.hpp"
+#include "bsp/settings_seg29_cc13.hpp"
 #include "bsp/scene_traffic_groups.hpp"
 #include "bsp/mission_scene_contents.hpp"
 #include "bsp/mission_scene_load.hpp"
@@ -642,6 +650,316 @@ private:
 }  // namespace
 
 // ---------------------------------------------------------------------------
+// cc15-ob4 (kSceneDatabaseCc15Bound): the scene database at [00E18680]
+// ---------------------------------------------------------------------------
+//
+// The object is the image's own 170h layout (seg6_cc13.hpp), held in this
+// host's heap. Its lifetime follows the image: 0046F350 at OnInit 004E3E60
+// builds it once per process. OnDestroy 004DC5C0 (0046F3E0) is not hosted:
+// 00737F80's singleton teardown is a record (game_hosts.cpp), so the block
+// lives to process exit, as it would in an image whose OnDestroy never ran.
+//
+// Which side is authoritative: the native class map at +34h. 004F2800 fills it
+// from scene_entity_class_table(), which is that routine's 26 pushes read back
+// from the image, and every class lookup in this file reads the map through
+// 00468FB0 / 00468660 once it is built. The static row is then only the
+// metadata the map does not hold (instance size, creator kind, type key),
+// joined on the class id the map returned.
+
+namespace {
+
+namespace seg6 = bsp::cc13_seg6;
+namespace seg11 = bsp::engine_seg11_35_66_cc13;
+
+seg6::Object g_scene_database_00e18680 = nullptr;  // [00E18680]
+char g_scene_empty_literal_00e18560[1] = {0};      // the "" at 00E18560
+
+// The Seg6Host calls the database's construction, 004F2800's inserts and the
+// two lookups reach. Everything else stops: it is not on those paths.
+class SceneDatabaseSeg6Host final : public seg6::Seg6Host {
+public:
+    using Object = seg6::Object;
+
+    Object image_address(std::uint32_t va) override {
+        if (va == 0x00E18560u) return reinterpret_cast<Object>(g_scene_empty_literal_00e18560);
+        not_reached("image_address");
+    }
+    Object game_00e188a8() override { not_reached("game_00e188a8"); }
+    Object scene_database_00e18680() override { return g_scene_database_00e18680; }
+    void set_scene_database_00e18680(Object value) override { g_scene_database_00e18680 = value; }
+
+    // 00BF681B / 00BF55BE: operator new on this process's CRT heap; 00BF65AC /
+    // 00BF6989 release the same blocks.
+    Object operator_new_00bf681b(std::uint32_t bytes) override {
+        return static_cast<Object>(::operator new(bytes));
+    }
+    Object operator_new_00bf55be(std::uint32_t bytes) override {
+        return static_cast<Object>(::operator new(bytes));
+    }
+    void free_00bf65ac(void* memory) override { ::operator delete(memory); }
+    void free_00bf6989(void* memory) override { ::operator delete(memory); }
+    void crt_memcpy_00bf7680(void* dest, const void* src, std::uint32_t bytes) override {
+        std::memcpy(dest, src, bytes);
+    }
+    std::int32_t crt_toupper_00bf924e(std::int32_t c) override { return std::toupper(c); }
+    std::int32_t crt_stricmp_00bf7fbf(const char* a, const char* b) override { return _stricmp(a, b); }
+
+    // 00419CC0 / 00BD1510: the string blocks come from crt_string_storage(),
+    // which is where 0041DD40 below allocates them.
+    Object sized_pool_singleton_00419cc0(void*, std::uint32_t, std::int32_t) override {
+        return reinterpret_cast<Object>(&bsp::crt_string_storage());
+    }
+    void sized_pool_return_block_00bd1510(Object, void* data, std::uint32_t bytes, std::int32_t) override {
+        bsp::crt_string_storage().release(static_cast<char*>(data), bytes);
+    }
+    void native_string_resize_0041dd40(Object string, std::uint32_t size, std::int32_t flag) override {
+        bsp::resize_native_string_header_0041dd40(string, bsp::crt_string_storage(), size, flag != 0);
+    }
+    // 0041E870: zero the header, resize (preserving), copy length + 1 bytes.
+    Object native_string_construct_0041e870(Object string, const char* text) override {
+        std::memset(string, 0, 8);
+        const auto length = static_cast<std::uint32_t>(std::strlen(text));
+        bsp::resize_native_string_header_0041dd40(string, bsp::crt_string_storage(), length, true);
+        if (char* data = reinterpret_cast<char*>(seg6::native_ptr(string, 4))) {
+            std::memcpy(data, text, length + 1u);
+        }
+        return string;
+    }
+    const char* native_string_c_str_00419ca0(Object string) override {
+        const char* data = reinterpret_cast<const char*>(seg6::native_ptr(string, 4));
+        return data != nullptr ? data : g_scene_empty_literal_00e18560;
+    }
+    std::int32_t string_compare_00438e10(const char* a, const char* b) override {
+        return bsp::compare_insensitive_00438e10(a, b);
+    }
+
+    void scene_name_hash_iterator_begin_00466bb0(Object iterator) override {
+        bsp::begin_native_scene_name_hash_00466bb0(iterator);
+    }
+    bool scene_name_hash_iterator_next_00466c00(Object iterator) override {
+        return bsp::next_native_scene_name_hash_00466c00(iterator) != 0;
+    }
+
+    // 00468260 (1Ch node, color +18h, isnil +19h) and 004682B0 (14h node,
+    // color +10h, isnil +11h): new, the three links zeroed, color 1. 0046F160
+    // sets isnil and the self links itself.
+    Object hidden_record_map_buy_head_node_00468260(Object) override { return buy_head_node(0x1C, 0x18); }
+    Object int_set_buy_head_node_004682b0(Object) override { return buy_head_node(0x14, 0x10); }
+    // 0046AC50 through native_scene_integer_set_insert.cpp. Its result is
+    // 0Ch (owner, node, inserted byte); 0046F160 passes an 8-byte local, so
+    // the result lands here and its first two words are copied out.
+    void int_set_insert_0046ac50(Object set, Object out_pair, const std::int32_t* key) override {
+        std::uint32_t result[3] = {0, 0, 0};
+        void* parameters[2] = {result, const_cast<std::int32_t*>(key)};
+        std::uint32_t flag[1] = {0};
+        std::uint32_t predecessor[2] = {0, 0};
+        std::uint32_t link[4] = {0, 0, 0, 0};
+        std::uint32_t node[5] = {0, 0, 0, 0, 0};
+        const bsp::NativeSceneIntegerSetInsertFrame frame{flag, predecessor, link, node};
+        bsp::insert_native_scene_integer_set_key_0046ac50(set, parameters, frame);
+        std::memcpy(out_pair, result, 8);
+    }
+
+    void crt_memmove_s_00bf67a7(void*, std::uint32_t, const void*, std::uint32_t) override { not_reached("crt_memmove_s_00bf67a7"); }
+    void checked_iterator_report_00bf6713() override { not_reached("checked_iterator_report_00bf6713"); }
+    char* string_duplicate_00438e40(const char*) override { not_reached("string_duplicate_00438e40"); }
+    bool native_string_equals_00425850(Object, const char*) override { not_reached("native_string_equals_00425850"); }
+    void movie_timed_item_construct_00465850(Object, float) override { not_reached("movie_timed_item_construct_00465850"); }
+    void tree_iterator_increment_00467980(Object) override { not_reached("tree_iterator_increment_00467980"); }
+    Object hidden_record_map_find_00468cd0(Object, Object, Object) override { not_reached("hidden_record_map_find_00468cd0"); }
+    void hidden_record_tree_erase_0046ad10(Object, Object) override { not_reached("hidden_record_tree_erase_0046ad10"); }
+    void int_set_erase_range_0046b170(Object, Object, Object, Object, Object, Object) override { not_reached("int_set_erase_range_0046b170"); }
+    void hidden_record_map_erase_range_0046b570(Object, Object, Object, Object, Object, Object) override { not_reached("hidden_record_map_erase_range_0046b570"); }
+    void raw_list_clear_storage_004683b0(Object) override { not_reached("raw_list_clear_storage_004683b0"); }
+    void pointer_vector_push_back_00442190(Object, const void*) override { not_reached("pointer_vector_push_back_00442190"); }
+    void enum_node_pool_return_0043b0a0(Object, Object) override { not_reached("enum_node_pool_return_0043b0a0"); }
+    Object scene_command_record_construct_004690d0(Object, const char*, const char*, const char*) override { not_reached("scene_command_record_construct_004690d0"); }
+    Object property_bag_clone_008f41f0(Object) override { not_reached("property_bag_clone_008f41f0"); }
+    Object property_bag_find_008f2260(Object, const char*) override { not_reached("property_bag_find_008f2260"); }
+    std::uint32_t scene_property_array_element_count_008ef7f0(Object) override { not_reached("scene_property_array_element_count_008ef7f0"); }
+    void matrix_copy_4x4_004134f0(Object, Object) override { not_reached("matrix_copy_4x4_004134f0"); }
+    void sentity_init_all_00925f20(std::uint8_t) override { not_reached("sentity_init_all_00925f20"); }
+    void format_to_buffer32_00467310(char*, const char*, std::int32_t) override { not_reached("format_to_buffer32_00467310"); }
+    void vehicle_class_stock_queue_append_0095c4d0(std::int32_t) override { not_reached("vehicle_class_stock_queue_append_0095c4d0"); }
+    std::int32_t game_effective_game_mode_004bca50(Object) override { not_reached("game_effective_game_mode_004bca50"); }
+    void writer_vcall_0c(Object, std::int32_t, const char*, std::int32_t, const char*) override { not_reached("writer_vcall_0c"); }
+    void object_deleting_destructor_vcall_00(Object, std::int32_t) override { not_reached("object_deleting_destructor_vcall_00"); }
+    bool entity_is_kind_vcall_5c(Object, std::int32_t) override { not_reached("entity_is_kind_vcall_5c"); }
+    Object model_source_vcall_08(Object, std::int32_t, float) override { not_reached("model_source_vcall_08"); }
+    void cloud_instance_vcall_34(Object, Object) override { not_reached("cloud_instance_vcall_34"); }
+    void scene_node_vcall_38(Object, Object) override { not_reached("scene_node_vcall_38"); }
+    void sentity_init_base_0048dbd0(Object) override { not_reached("sentity_init_base_0048dbd0"); }
+    void class_entity37_destruct_base_00487380(Object) override { not_reached("class_entity37_destruct_base_00487380"); }
+    Object atmosphere_cloud_manager_00bbddf0(Object) override { not_reached("atmosphere_cloud_manager_00bbddf0"); }
+    void cloud_manager_release_instance_00bbd910(Object, Object) override { not_reached("cloud_manager_release_instance_00bbd910"); }
+    Object cloud_manager_create_instance_00bbd770(Object, Object) override { not_reached("cloud_manager_create_instance_00bbd770"); }
+    void cloud_instance_invalidate_lighting_00bbe760(Object, std::int32_t) override { not_reached("cloud_instance_invalidate_lighting_00bbe760"); }
+    Object unit_part_instance_construct_007135c0(Object, Object, Object) override { not_reached("unit_part_instance_construct_007135c0"); }
+    void node_set_parent_00b6e680(Object, Object) override { not_reached("node_set_parent_00b6e680"); }
+    void node_or_flags_recursive_00475e60(Object, std::uint32_t) override { not_reached("node_or_flags_recursive_00475e60"); }
+    void node_propagate_root_registration_00b6d890(Object, Object) override { not_reached("node_propagate_root_registration_00b6d890"); }
+    void scene_node_set_visibility_factor_00b6da70(Object, float, std::int32_t) override { not_reached("scene_node_set_visibility_factor_00b6da70"); }
+    void sentity_write_scene_properties_00924d90(Object, Object) override { not_reached("sentity_write_scene_properties_00924d90"); }
+    void game_entity_construct_00928630(Object, std::int32_t, std::int32_t) override { not_reached("game_entity_construct_00928630"); }
+    void game_entity_destruct_009287b0(Object) override { not_reached("game_entity_destruct_009287b0"); }
+    void path_component_construct_007b28c0(Object, Object) override { not_reached("path_component_construct_007b28c0"); }
+    void path_component_destruct_007b1bd0(Object) override { not_reached("path_component_destruct_007b1bd0"); }
+    Object entity_registry_find_by_name_00925a90(Object, const char*) override { not_reached("entity_registry_find_by_name_00925a90"); }
+    bool scene_entity_should_generate_0046c550(Object, const char*, Object, Object, Object, Object, std::int32_t, const float[16], std::int32_t) override { not_reached("scene_entity_should_generate_0046c550"); }
+    Object class_row_create_entity_call(Object, std::int32_t, Object, Object, Object, Object, std::int32_t) override { not_reached("class_row_create_entity_call"); }
+    Object property_bag_ref_construct_00922e20(Object, Object) override { not_reached("property_bag_ref_construct_00922e20"); }
+
+private:
+    [[noreturn]] static void not_reached(const char* method) {
+        throw std::logic_error(std::string("scene database: Seg6Host::") + method
+            + " is not on the construct / register / lookup paths");
+    }
+    static Object buy_head_node(std::uint32_t bytes, std::uint32_t color_offset) {
+        auto* node = static_cast<Object>(::operator new(bytes));
+        std::memset(node, 0, bytes);
+        node[color_offset] = 1;
+        return node;
+    }
+};
+
+SceneDatabaseSeg6Host& scene_database_seg6_host() {
+    static SceneDatabaseSeg6Host host;
+    return host;
+}
+
+// 004EE250's calls, over the same heap and string storage as the host above.
+class SceneClassMapRegisterCalls final : public seg11::SceneClassMapCalls {
+public:
+    bsp::NativeStringStorage& strings() override { return bsp::crt_string_storage(); }
+    seg11::SceneClassMapNode* find_node_00468fb0(const bsp::NativeString& key,
+        std::uint32_t& bucket) override {
+        return reinterpret_cast<seg11::SceneClassMapNode*>(seg6::scene_class_map_find_node_00468fb0(
+            scene_database_seg6_host(), g_scene_database_00e18680 + 0x34,
+            reinterpret_cast<seg6::Object>(const_cast<bsp::NativeString*>(&key)), &bucket));
+    }
+    // 004E7C00 hands out 14h slots of the node pool at 00E18514. Labelled
+    // substitution: a 14h block from this process's heap; nothing here
+    // returns one (0046B240 runs only from the unhosted destructor).
+    void* allocate_node_004e7c00() override { return ::operator new(0x14); }
+    void free_00bf65ac(void* block) override { ::operator delete(block); }
+    // 004EE26E calls 00BF681B for the descriptor; the interface's name says
+    // 00BF55BE. Both are operator new here.
+    void* new_descriptor_00bf55be() override { return ::operator new(0x0C); }
+};
+
+// The class lookups this file makes. With the switch ON and [00E18680] built,
+// the map answers, as it does in the image from OnInit on (empty until 004F2800
+// runs); the static row is joined on the id the map returned. With [00E18680]
+// null (OnInit's call not reached) the static table answers.
+const SceneEntityClassRow* scene_class_row_by_name(const std::string& name) {
+    if constexpr (kSceneDatabaseCc15Bound) {
+        if (g_scene_database_00e18680 != nullptr) {
+            bsp::NativeString key;
+            key.assign_0041e870(bsp::crt_string_storage(), name.c_str());
+            std::uint32_t bucket = 0;
+            const seg6::Object node = seg6::scene_class_map_find_node_00468fb0(
+                scene_database_seg6_host(), g_scene_database_00e18680 + 0x34,
+                reinterpret_cast<seg6::Object>(&key), &bucket);
+            key.release_to(bsp::crt_string_storage());
+            if (node == nullptr) return nullptr;
+            const auto* descriptor = reinterpret_cast<const seg11::SceneClassDescriptor*>(
+                seg6::native_ptr(node, 8));
+            if (descriptor == nullptr) return nullptr;
+            const SceneEntityClassRow* row = find_scene_entity_class_by_id(descriptor->class_id);
+            if (row == nullptr || row->create_address != descriptor->create
+                || row->register_address != descriptor->register_pass) {
+                throw std::logic_error("scene database: class map descriptor for " + name
+                    + " disagrees with the 004F2800 table");
+            }
+            return row;
+        }
+    }
+    return find_scene_entity_class_by_name(name);
+}
+
+const SceneEntityClassRow* scene_class_row_by_id(int class_id) {
+    if constexpr (kSceneDatabaseCc15Bound) {
+        if (g_scene_database_00e18680 != nullptr) {
+            const seg6::Object name = seg6::scene_database_class_id_to_name_00468660(
+                scene_database_seg6_host(), g_scene_database_00e18680, class_id);
+            if (name == nullptr) return nullptr;
+            return find_scene_entity_class_by_id(class_id);
+        }
+    }
+    return find_scene_entity_class_by_id(class_id);
+}
+
+// 004E99B0 / 004E9AE0 / 004E9C10: the three FixedEntitySpec creators.
+const seg11::FixedEntitySpec* scene_named_entity_spec(std::uint32_t create_address) {
+    switch (create_address) {
+    case 0x004e99b0u: return &seg11::kNavPointSpec;
+    case 0x004e9ae0u: return &seg11::kMovieCamPosSpec;
+    case 0x004e9c10u: return &seg11::kMovieCamLookatSpec;
+    default: return nullptr;
+    }
+}
+
+}  // namespace
+
+// The 1E4h entity image one of those creators returns. The name at +154h is a
+// NativeString from crt_string_storage(); it is released with the image.
+struct SceneNamedEntityImage {
+    std::uint32_t create_address{0};
+    std::string name;
+    std::unique_ptr<std::uint8_t[]> bytes;
+    std::uint32_t size{0};
+    ~SceneNamedEntityImage() {
+        if (bytes) {
+            bsp::destroy_native_string_header_0041dd20(bytes.get() + 0x154, bsp::crt_string_storage());
+        }
+    }
+};
+
+void scene_database_create_0046f350(GameHostLog& log) {
+    if constexpr (kSceneDatabaseCc15Bound) {
+        if (g_scene_database_00e18680 != nullptr) return;
+        seg6::scene_database_create_singleton_0046f350(scene_database_seg6_host());
+        const seg6::Object database = g_scene_database_00e18680;
+        log.implemented("Game::OnInit scene_database_create_singleton", "0046f350");
+        log.notef("scene database: [00E18680] built by 0046F350 at 004E3E60 (170h, vtable %08x, "
+            "+04h=%u, class map vtable %08x count=%u, +158h set size=%u, +164h set size=%u)",
+            static_cast<unsigned>(seg6::native_at<std::uint32_t>(database, 0)),
+            static_cast<unsigned>(seg6::native_at<std::uint8_t>(database, 4)),
+            static_cast<unsigned>(seg6::native_at<std::uint32_t>(database, 0x34)),
+            static_cast<unsigned>(seg6::native_at<std::uint32_t>(database, 0x38)),
+            static_cast<unsigned>(seg6::native_at<std::uint32_t>(database, 0x160)),
+            static_cast<unsigned>(seg6::native_at<std::uint32_t>(database, 0x16C)));
+    } else {
+        static_cast<void>(log);
+    }
+}
+
+bool scene_database_register_classes_004f2800(GameHostLog& log) {
+    if constexpr (kSceneDatabaseCc15Bound) {
+        if (g_scene_database_00e18680 == nullptr) {
+            // The image would call 004EE250 with ECX = 0 and fault at +34h.
+            log.notef("scene database: 004F2800 reached with [00E18680] null; classes not registered");
+            return false;
+        }
+        // 004F2800..: 26 x (MOV ECX,[00E18680]; PUSH register; PUSH create;
+        // PUSH id; PUSH name; CALL 004EE250), in the table's order.
+        SceneClassMapRegisterCalls calls;
+        auto& map = *reinterpret_cast<seg11::SceneClassMapLayout*>(g_scene_database_00e18680 + 0x34);
+        const SceneEntityClassRow* rows = scene_entity_class_table();
+        for (int i = 0; i < kSceneEntityClassCount; ++i) {
+            seg11::scene_class_map_register_004ee250(map, rows[i].name, rows[i].class_id,
+                rows[i].create_address, rows[i].register_address, calls);
+        }
+        log.notef("scene database: 004F2800 registered %d classes, class map count=%u",
+            kSceneEntityClassCount, static_cast<unsigned>(map.count_04));
+        return true;
+    } else {
+        static_cast<void>(log);
+        return false;
+    }
+}
+
+// ---------------------------------------------------------------------------
 // Impl
 // ---------------------------------------------------------------------------
 
@@ -686,6 +1004,9 @@ struct GameSceneContentsHost::Impl {
     // member records are therefore staged here and flushed into `entities` once
     // the pass is over; create_units reads the whole list afterwards either way.
     std::vector<GameSceneEntityRecord> pending_squadron_members;
+    // cc15-ob4 (kSceneDatabaseCc15Bound): the images 004E99B0 / 004E9AE0 /
+    // 004E9C10 returned this load. The record keeps answering for the entity.
+    std::vector<std::unique_ptr<SceneNamedEntityImage>> named_entity_images;
     ScenePropertyBlock root_properties;
     PropertyLibrary library;
     VehicleClassRegistry vehicle_registry;
@@ -707,7 +1028,7 @@ struct GameSceneContentsHost::Impl {
         }
         GameSceneClassTally row;
         row.name = class_name;
-        const SceneEntityClassRow* klass = find_scene_entity_class_by_name(class_name);
+        const SceneEntityClassRow* klass = scene_class_row_by_name(class_name);
         if (klass != nullptr) {
             row.registered = true;
             row.class_id = klass->class_id;
@@ -964,7 +1285,7 @@ const ScenePropertyBlock* scene_stock_sub_bag(const ScenePropertyBlock& bag,
 // (00468660) is "SpawnPoint" (00CE56B8, 00425850). Anything else is appended.
 bool scene_stock_register_0046be90(GameSceneContentsHost::Impl& owner, int value) {
     if (value == 0x2ac) return false;
-    const SceneEntityClassRow* klass = find_scene_entity_class_by_id(value);
+    const SceneEntityClassRow* klass = scene_class_row_by_id(value);
     if (klass != nullptr && klass->name != nullptr
         && std::strcmp(klass->name, "SpawnPoint") == 0) return false;
     owner.scene_class_vector.push_back(value);
@@ -1208,7 +1529,7 @@ public:
         if constexpr (kVehicleClassPreloadCc15Bound) {
             // 0046BF20: a `Type` property, and the class name's id
             // (00469690) is not 47h (Path).
-            const SceneEntityClassRow* klass = find_scene_entity_class_by_name(class_name);
+            const SceneEntityClassRow* klass = scene_class_row_by_name(class_name);
             if (properties.find(kSceneUnitTypeKey) != nullptr
                 && (klass == nullptr || klass->class_id != 0x47)
                 && scene_stock_register_0046be90(owner_,
@@ -1989,6 +2310,91 @@ static void create_scene_world_object(GameSceneContentsHost::Impl& owner,
     }
 }
 
+// cc15-ob4 (kSceneDatabaseCc15Bound). The calls 004E99B0 and its two twins
+// make. The image comes from this process's heap; 006AF3D0 is its
+// reconstruction. GameEntity's constructor and the vtable +98h placement have
+// no host, so they stay records and the image keeps only what the creator
+// itself writes: the four vtables, the class id at +C4h and the name at +154h.
+class SceneNamedEntityCalls final : public seg11::SceneEntityCalls {
+public:
+    explicit SceneNamedEntityCalls(GameHostLog& log) : log_(log) {}
+    bsp::NativeStringStorage& strings() override { return bsp::crt_string_storage(); }
+    std::uint8_t* new_zeroed(std::size_t bytes) override {
+        bytes_.reset(new std::uint8_t[bytes]());
+        size_ = static_cast<std::uint32_t>(bytes);
+        return bytes_.get();
+    }
+    // 004E9A03 builds the by-value string with 0041E870; 006AF3D0 releases it.
+    std::uint16_t network_id_from_name_006af3d0(const char* name) override {
+        bsp::NativeString text;
+        text.assign_0041e870(bsp::crt_string_storage(), name);
+        log_.implemented("SceneContents::network_id_from_name", "006af3d0");
+        return bsp::cc13_seg29::network_id_from_name_stub_006af3d0(text.length(), text.data(),
+            bsp::crt_string_storage());
+    }
+    void construct_game_entity_00928630(std::uint8_t*, std::uint32_t) override {
+        log_.unimplemented("SceneContents::game_entity_construct", "00928630");
+    }
+    void place_vslot98(std::uint8_t*, void*, void*) override {
+        log_.unimplemented("SceneContents::named_entity_place_vslot98", "004e9a80");
+    }
+    void construct_tick_registration_00875890(std::uint8_t*, std::uint8_t*) override { not_reached(); }
+    std::uint8_t* construct_camera_path_004e5850(std::uint8_t*, std::uint32_t) override { not_reached(); }
+    bool frame_jobs_deferring() override { not_reached(); }
+    void defer_hierarchy_004f03c0(void*, void*, void*) override { not_reached(); }
+    void register_base_00928560(std::uint8_t*) override { not_reached(); }
+    void unregister_base_00928570(std::uint8_t*) override { not_reached(); }
+    void camera_path_list_push_back_00484540(std::uint8_t*, std::uint8_t*) override { not_reached(); }
+    void camera_path_list_erase(std::uint8_t*, void*) override { not_reached(); }
+    void release_reference(void*) override { not_reached(); }
+    void destroy_tick_element_00875490(std::uint8_t*) override { not_reached(); }
+    void destroy_game_entity_009287b0(std::uint8_t*) override { not_reached(); }
+
+    std::unique_ptr<std::uint8_t[]> take_bytes() { return std::move(bytes_); }
+    std::uint32_t size() const noexcept { return size_; }
+
+private:
+    [[noreturn]] static void not_reached() {
+        throw std::logic_error("scene database: a named-entity creator call outside 004E99B0's body");
+    }
+    GameHostLog& log_;
+    std::unique_ptr<std::uint8_t[]> bytes_;
+    std::uint32_t size_{0};
+};
+
+// 0046DE82's creator call for a FixedEntitySpec class: (name, parent, frame*).
+// This process has no parent entity and passes the record's authored frame.
+static void create_named_scene_entity(GameSceneContentsHost::Impl& owner,
+    GameSceneEntityRecord& record, const seg11::FixedEntitySpec& spec,
+    std::uint32_t create_address, GameSceneClassTally& tally) {
+    SceneNamedEntityCalls calls(owner.log);
+    std::uint8_t* entity = seg11::create_named_scene_entity_004e99b0(spec, record.name.c_str(),
+        nullptr, record.world, calls);
+    char address[16];
+    format_address(create_address, address);
+    owner.log.implemented("SceneContents::class_creator", address);
+    auto image = std::make_unique<SceneNamedEntityImage>();
+    image->create_address = create_address;
+    image->name = record.name;
+    image->size = calls.size();
+    image->bytes = calls.take_bytes();
+    const std::uint32_t class_id = entity != nullptr
+        ? *reinterpret_cast<const std::uint32_t*>(entity + 0xC4) : 0u;
+    const std::uint32_t vtable = entity != nullptr
+        ? *reinterpret_cast<const std::uint32_t*>(entity) : 0u;
+    owner.log.notef("scene named entity: class=%x name=%s creator=%s size=%xh vtable=%08x "
+        "+C4h=%x network_id=0 (006AF40F); GameEntity 00928630 and placement 004E9A80 "
+        "are not hosted, the record stays the entity", spec.class_id, record.name.c_str(),
+        address, static_cast<unsigned>(image->size), static_cast<unsigned>(vtable),
+        static_cast<unsigned>(class_id));
+    owner.named_entity_images.push_back(std::move(image));
+    record.skipped_because = std::string("creator ") + address
+        + " built its image; GameEntity 00928630 is not hosted";
+    if (tally.creator_state.empty()) {
+        tally.creator_state = std::string("image ") + address;
+    }
+}
+
 void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     const float world_frame[16], SceneFilePass pass) {
     GameSceneContentsHost::Impl& owner = owner_;
@@ -2020,7 +2426,7 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     }
     merge_property_block(bag, entity.properties, true);
 
-    const SceneEntityClassRow* klass = find_scene_entity_class_by_name(entity.class_name);
+    const SceneEntityClassRow* klass = scene_class_row_by_name(entity.class_name);
     if (klass == nullptr) {
         if (pass == SceneFilePass::Instantiate) {
             ++owner.summary.unregistered_class_entities;
@@ -2342,7 +2748,7 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         // 0046F26C-0046F2E1: the +158h set; 0046B7CA tests a root, then an
         // exempt root's children.
         auto exempt = [](const std::string& class_name) {
-            const SceneEntityClassRow* row = find_scene_entity_class_by_name(class_name);
+            const SceneEntityClassRow* row = scene_class_row_by_name(class_name);
             if (row == nullptr) return false;
             const int id = static_cast<int>(row->class_id);
             return id == 0x44 || id == 0x5E || id == 0x1D || id == 0x47 || id == 0x3D;
@@ -2479,6 +2885,15 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     }
 
     const SceneUnitCreatorRow* unit = find_scene_unit_creator(klass->class_id);
+    if constexpr (kSceneDatabaseCc15Bound) {
+        if (unit == nullptr) {
+            if (const seg11::FixedEntitySpec* spec = scene_named_entity_spec(klass->create_address)) {
+                create_named_scene_entity(owner, record, *spec, klass->create_address, tally);
+                owner.entities.push_back(record);
+                return;
+            }
+        }
+    }
     if (unit == nullptr) {
         char address[16];
         format_address(klass->create_address, address);
@@ -2806,7 +3221,18 @@ public:
     }
     std::string derive_short_name(const std::string& scene_path) override {
         owner_.log.implemented("SceneContents::derive_short_name", "004cd7f0");
-        return derive_scene_short_name(scene_path);
+        if constexpr (kSceneShortNameCc15Bound) {
+            // 004D4E74 PUSH 1: the append arm, over the host's own mode fields.
+            const bsp::cc13_sys::ShortNameModeFields mode{
+                static_cast<std::uint8_t>(owner_.mode_forced ? 1 : 0),
+                owner_.raw_game_mode, owner_.multiplayer ? 1 : 0};
+            std::string name = bsp::cc13_sys::derive_scene_short_name_004cd7f0(scene_path, true, mode);
+            owner_.log.notef("scene short name 004cd7f0: %s (mode 614=%d 61c=%d 1fe4=%d)",
+                name.c_str(), mode.mode_614, mode.byte_61c, mode.field_1fe4);
+            return name;
+        } else {
+            return derive_scene_short_name(scene_path);
+        }
     }
     void open_file_block(const std::string& label) override {
         owner_.summary.block_name = label;

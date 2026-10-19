@@ -18,6 +18,7 @@
 #include "bsp/native_input_action_owner.hpp"
 #include "bsp/native_input_settings_lifetime.hpp"
 #include "bsp/native_lua_fundamentals.hpp"
+#include "bsp/native_loading_queue_owner.hpp"
 #include "bsp/native_debug_feature_owner.hpp"
 #include "bsp/native_device_registry.hpp"
 #include "bsp/native_game_resource_factory.hpp"
@@ -435,6 +436,14 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         if (bindings.physical_stream_pool != nullptr) {
             delete_native_physical_stream_pool_00bf4370(owner, flags,
                 *bindings.physical_stream_pool);
+            return;
+        }
+        break;
+    case 0x00ceb198:
+        if (bindings.actual_loading_queue_publication_00e18d4c != nullptr) {
+            delete_native_loading_queue_owner_0050ace0(
+                static_cast<NativeLoadingQueueOwnerStorage*>(owner), flags,
+                *bindings.actual_loading_queue_publication_00e18d4c);
             return;
         }
         break;

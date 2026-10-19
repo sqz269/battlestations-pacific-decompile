@@ -32,6 +32,7 @@ struct NativeRenderJobPublicationContext;
 struct NativeFixedStepJobDescriptorsActual;
 class XLiveOwnerAllocation;
 struct NativeInputBackendOwnerContext;
+struct NativeLoadingQueueOwnerStorage;
 struct NativeInputActionOwnerContext;
 struct NativeInputSettingsLifetimeContext;
 struct NativeLuaFundamentalsView;
@@ -260,6 +261,10 @@ struct NativeSingletonDeletionBindings {
     // dispatch supplies the required EDX context explicitly; original target-
     // in-EDX virtual dispatch is not thereby made ABI compatible.
     const NativeAvoidManagerLifetimeContext* avoid_manager{};
+    // CEB198 -> 0050ACE0 (509FD0 then optional free). The SAME E18D4C cell
+    // 004FDE20 published; 509FD0 clears it unconditionally. Only the empty-queue
+    // path is admitted: a non-empty queue throws before any store (cc15-ob3).
+    NativeLoadingQueueOwnerStorage* volatile* actual_loading_queue_publication_00e18d4c{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -291,7 +296,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, particle_manager) == 192
 static_assert(offsetof(NativeSingletonDeletionBindings, fixed_step_jobs) == 196);
 static_assert(offsetof(NativeSingletonDeletionBindings, platform) == 200);
 static_assert(offsetof(NativeSingletonDeletionBindings, avoid_manager) == 204);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 208);
+static_assert(offsetof(NativeSingletonDeletionBindings, actual_loading_queue_publication_00e18d4c) == 208);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 212);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

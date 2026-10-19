@@ -11,6 +11,7 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/game_hosts_ready.hpp"  // kSunkShipFlushBound, packet cc13-jm08
 #include "bsp/hull_terrain_contact.hpp"
 #include "bsp/entity_orders.hpp"  // packet cc13-fix1: the command class category
 #include "bsp/avoid_zone_draft_bodies.hpp"
@@ -60,6 +61,7 @@
 #include "bsp/cc13_seg67n_switches.hpp"   // packet cc13-seg67n3 (009FAAD0 per install)
 #include "bsp/torpedo_approach_update.hpp"
 #include "bsp/torpedo_first_release.hpp"
+#include "bsp/cc13_release_timer.hpp"            // packet cc13-reltimer (009FA3A0 stubs)
 #include "bsp/torpedo_issue_timing.hpp"
 #include "bsp/pilot_order_bindings.hpp"
 #include "bsp/plane_squadron_host.hpp"
@@ -162,6 +164,8 @@
 #include "bsp/world_ocean.hpp"
 #include "bsp/world_construct.hpp"
 #include "bsp/plane_class_fields.hpp"
+#include "bsp/cc13_jm08_switches.hpp"
+#include "bsp/cc13_torp_goaway.hpp"           // packet cc13-goaway (009D0D90 draws, 00901610)
 #include "bsp/follow_release_seams_cc13.hpp"
 
 #include <cfloat>
@@ -1942,6 +1946,9 @@ struct GameUnitSlot {
     int torpedo_aim_timer_fires{0};
     int torpedo_aim_timer_blocked_007bb110{0};
     int torpedo_aim_timer_first_fire_tick{-1};
+    // timer+0Dh, set at 009FA405 (packet cc13-reltimer, written only with
+    // kReleaseTimerNotify0DhBound). The image has no reader.
+    bool torpedo_aim_timer_notify_0d{false};
     // plan+2C0h / +2CCh. docs/PILOT_TASK_HEADING_ARM.md: the arm writes the
     // bearing and mode 2, and a bot state's tick may overwrite the pair. The
     // torpedo aim tick does at 009D1D16 / 009D1D1E.
@@ -2321,6 +2328,19 @@ struct GameUnitSlot {
     // unit+284h, the unit group pointer 0070EF38 writes before any test, as an
     // index into Impl::formation_groups. -1 is a null pointer.
     std::int32_t formation_group{-1};
+    // Packet cc13-jm08 (kDeadLeaderDirectorStateCopyBound), the 0071C150 handover
+    // of this unit's kill. `ran`: already done (BeforePump, or the posted entry
+    // delivered) for a non-ship, so 0077BD70 must not repeat it; cleared by
+    // leave_group. A ship runs the whole leave instead and never sets it.
+    // `posted`: queued (HitDrainAfterPump) and not yet run; whoever comes first
+    // runs it and clears it - normally the posted entry (a Lua leave meeting it
+    // is posted behind it, post_formation_leave_0077c980); as a backstop, a
+    // synchronous leave_group of the unit or of a member of its group. `posted`
+    // is set only by leader_death_handover_at_kill (cleared there on a failed
+    // post); `ran` is set there at a BeforePump kill and also when the posted
+    // entry is delivered. Slots are appended and never reused.
+    bool director_handover_ran{false};
+    bool director_handover_posted{false};
     bsp::UnitHullExtents hull_extents{};
     float class_width_00a4{};
     bsp::ShipClassFields fields{};
@@ -3276,10 +3296,37 @@ struct GameUnitsHost::Impl {
     unsigned long long pitch_mode_two_steps{0};   // packet cc9_torpedo_run_pitch_profile
     unsigned long long formation_death_handovers{0};
     unsigned long long formation_groups_emptied{0};
+    // Packet cc13-jm08: leader handovers 0071C150 run (in leave_group, at the
+    // kill, or by the posted entry), posted at a kill, and posted entries that
+    // found theirs already run by a leave_group.
+    unsigned long long director_handovers_run{0}, director_handovers_posted{0},
+        director_handovers_skipped{0};
+    // Lua leaves posted behind a pending handover (post_formation_leave_0077c980).
+    unsigned long long director_lua_leaves_posted{0};
+    // Whole 0077BD70 leaves run at a mapped kill or its delivered entry (ships).
+    unsigned long long director_whole_leaves_at_kill{0};
 
     bool unit_torn_down_005d(std::size_t index) const {
         return index < slots.size() && slots[index]->state != nullptr
             && slots[index]->state->simulate != 0;
+    }
+    // Packet cc13-jm08 (kDeadLeaderDirectorStateCopyBound). 0077BDDE..0077BE02:
+    // the leaving unit's director (vtable[114h]) gets vtable[5Ch](successor) =
+    // 0071C150, which runs only while the unit still leads (00778890 at
+    // 0071C156) and a successor exists (0071C163): the successor's director
+    // vtable[4Ch] = 00836680 copies it (00720450, then the fire-target tail).
+    // Three hosts hold that director. True when it copied.
+    bool director_handover_0071c150(std::size_t index, std::size_t successor) {
+        if (index >= slots.size() || successor >= slots.size()) return false;
+        const std::int32_t g = slots[index]->formation_group;
+        if (g < 0 || static_cast<std::size_t>(g) >= formation_groups.size()
+            || formation_groups[static_cast<std::size_t>(g)].leader != index) return false;
+        if (!commands.copy_director_state_00720450(successor, index)) return false;
+        if (gunnery != nullptr) gunnery->copy_director_allow_bytes_00720450(successor, index);
+        if (ship_ai != nullptr) ship_ai->copy_fire_target_00836680(successor, index);
+        ++director_handovers_run;
+        done("WeaponDirector::leader_handover_0071c150", 0x0071c150u);
+        return true;
     }
     // 0070D8D0(group, exclude), read whole. A follower's exclude answers the
     // current leader; with no exclude, no leader or the leader excluded (and a
@@ -13463,6 +13510,38 @@ void GameUnitsHost::load_gameplay_settings_0083b5e0() {
     // Idempotent: a second call re-runs the scripts and rewrites the block with
     // the same values.
     host.lua.load_plane_globals_007e2a20();
+    // Packet cc13-goaway: 00901610 load_robot_config, which the image runs once
+    // per process from 004DC6A0 (recorded, not run, by the mission frame). Here
+    // it runs through the mission host's VFS script reader on its own Lua owner,
+    // before any unit exists, and keeps the PilotBot rows ([00F8A30C]) for the
+    // goaway enter's 009D0EA3 draw. A second call answers already_loaded.
+    if constexpr (bsp::cc13_torp_goaway::kPilotBotConfigLoadBound) {
+        bsp::cc13_torp_goaway::MissionScriptFiles files(host.lua);
+        const bsp::cc13_torp_goaway::PilotBotLoadResult robots =
+            bsp::cc13_torp_goaway::load_pilot_bot_config_00901610(files);
+        if (!robots.already_loaded) {
+            if (robots.loaded) {
+                host.done("RobotConfig::load_00901610", 0x00901610u);
+            } else {
+                host.record("RobotConfig::load_00901610", 0x00901610u);
+            }
+            const auto* rows = bsp::cc13_torp_goaway::loaded_pilot_bot_rows();
+            auto pair = [rows](int i, int k) {
+                if (rows == nullptr) return 0.0;
+                const bsp::PilotBotParameters& row = (*rows)[static_cast<std::size_t>(i)];
+                return static_cast<double>(k == 1 ? row.torp_flik_flak_time_1_01c
+                                                  : row.torp_flik_flak_time_2_020);
+            };
+            host.log.notef("pilot bot config (00901610, packet cc13-goaway): loaded=%d "
+                "script reads=%zu misses=%zu error=%s; TorpFlikFlakTime by level "
+                "Stun %.3g,%.3g SPNormal %.3g,%.3g SPVeteran %.3g,%.3g MPNormal %.3g,%.3g "
+                "MPVeteran %.3g,%.3g Elite %.3g,%.3g",
+                robots.loaded ? 1 : 0, robots.script_reads, robots.script_misses,
+                robots.error.empty() ? "-" : robots.error.c_str(),
+                pair(0, 1), pair(0, 2), pair(1, 1), pair(1, 2), pair(2, 1), pair(2, 2),
+                pair(3, 1), pair(3, 2), pair(4, 1), pair(4, 2), pair(5, 1), pair(5, 2));
+        }
+    }
     if (host.rudder_curve_loaded) return;
     // 0083b5e0's head: run Scripts\datatables\ShipGlobals.lua and take the
     // `ShipGlobals` global. Then the fragment 0083ce56..0083d10d, which is what
@@ -23434,6 +23513,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // every draw, as random_between already does.
                                 gin.distance_jitter =
                                     bsp::torpedo_goaway::kDistanceJitterLo;
+                                // Packet cc13-goaway: 009D0E2C's draw, the
+                                // first of the enter's three on stream 1.
+                                if constexpr (bsp::cc13_torp_goaway::distance_jitter_draw_on()) {
+                                    if (owner_.gunnery) {
+                                        gin.distance_jitter =
+                                            owner_.gunnery->death_mode_draw_00bd2f10(1,
+                                                owner_.index_of_slot(slot_),
+                                                bsp::torpedo_goaway::kDistanceJitterLo,
+                                                bsp::torpedo_goaway::kDistanceJitterHi);
+                                    }
+                                }
                                 gin.side_bit = (slot_.torpedo_goaway_enters & 1) != 0;
                                 const bsp::TorpedoGoAwayState g =
                                     bsp::torpedo_goaway_enter_009d0d90(gin);
@@ -23500,6 +23590,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // every draw.
                                 gt.climb_jitter =
                                     bsp::torpedo_goaway_tick::kClimbJitterLo;
+                                // Packet cc13-goaway: the draw itself, on
+                                // stream 1, taken only on the ordnance leg
+                                // (009D0E4A JZ skips it for a spent bomber).
+                                if constexpr (bsp::cc13_torp_goaway::climb_jitter_draw_on()) {
+                                    if (owner_.gunnery && gt.has_ordnance_132) {
+                                        gt.climb_jitter =
+                                            owner_.gunnery->death_mode_draw_00bd2f10(1,
+                                                owner_.index_of_slot(slot_),
+                                                bsp::torpedo_goaway_tick::kClimbJitterLo,
+                                                bsp::torpedo_goaway_tick::kClimbJitterHi);
+                                    }
+                                }
                                 // UniformFloatRange(row+10h, row+14h) at
                                 // 009D0EA3. row+10h and row+14h are
                                 // TorpFlikFlakTime 1 and 2 in
@@ -23511,10 +23613,32 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // manoeuvre window therefore opens on the first
                                 // tick the aircraft is above +20h instead of
                                 // after the authored delay.
-                                owner_.log.unimplemented(
-                                    "PilotBotParameters::TorpFlikFlakTime",
-                                    "00997c68");
-                                gt.window_delay_draw = 0.0f;
+                                // Packet cc13-goaway: with the PilotBot rows
+                                // loaded (00901610, kPilotBotConfigLoadBound)
+                                // the row is levels[bot+34h], as 009F9D22
+                                // captures it, and the draw is taken on stream 1.
+                                const bsp::PilotBotParameters* flik_row = nullptr;
+                                if constexpr (bsp::cc13_torp_goaway::window_delay_draw_on()) {
+                                    if (owner_.gunnery) {
+                                        flik_row = bsp::cc13_torp_goaway::pilot_bot_row(
+                                            kSkillLevelBound ? slot_.pilot_skill_index : 1);
+                                    }
+                                }
+                                if (flik_row != nullptr) {
+                                    owner_.log.implemented(
+                                        "PilotBotParameters::TorpFlikFlakTime",
+                                        "00997c68");
+                                    gt.window_delay_draw =
+                                        owner_.gunnery->death_mode_draw_00bd2f10(1,
+                                            owner_.index_of_slot(slot_),
+                                            flik_row->torp_flik_flak_time_1_01c,
+                                            flik_row->torp_flik_flak_time_2_020);
+                                } else {
+                                    owner_.log.unimplemented(
+                                        "PilotBotParameters::TorpFlikFlakTime",
+                                        "00997c68");
+                                    gt.window_delay_draw = 0.0f;
+                                }
                                 bsp::torpedo_goaway_enter_tail_009d0e3a(
                                     gt, slot_.torpedo_goaway_runtime);
                                 slot_.torpedo_goaway_runtime
@@ -33108,21 +33232,45 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             in.enabled_0c = s_.torpedo_aim_timer_enabled_0c;
                             in.countdown_10 = s_.torpedo_aim_timer;
                             in.step_seconds = d;
-                            // 007BB110 reads the device at unit+DECh. This host
-                            // has no device model, so an aircraft that still
-                            // carries a round stands in for it. SUBSTITUTION.
-                            owner_.log.unimplemented("Unit::can_release_007bb110",
-                                                     "007bb110");
-                            const bsp::OrdnanceKindSet set{s_.ordnance_mask};
-                            in.unit_can_release_007bb110 =
-                                bsp::ordnance_has_torpedo_2bh(set) &&
-                                s_.torpedo_releases < 1;
-                            // 009FA3EA draws between timer+4h and timer+8h,
-                            // both unread on this object. contract.
-                            owner_.log.unimplemented("ReleaseTimer::reseed_bounds",
-                                                     "009fa3ea");
+                            // Packet cc13-reltimer (docs/CC13_RELEASE_TIMER.md):
+                            // the three stubs below each have a switch in
+                            // bsp/cc13_release_timer.hpp, all OFF.
+                            namespace rt = bsp::cc13_release_timer;
+                            if constexpr (rt::kReleaseTimerPredicate007BB110Bound) {
+                                // 007BB110 is consulted only on a strictly
+                                // negative countdown of an enabled timer; the bay
+                                // byte only when channel C neither decides 1.
+                                const bsp::PlaneActuatorChannel& c =
+                                    s_.actuator_block_dec.channel_c;
+                                if (in.enabled_0c && in.countdown_10 - d < 0.0f) {
+                                    const bool bay = c.enabled
+                                        && !(c.value == rt::kReseedHigh_00d7a24c)
+                                        && bay_rack_holds_round_9c3();
+                                    in.unit_can_release_007bb110 =
+                                        rt::unit_can_release_007bb110(c.enabled, c.value, bay);
+                                    owner_.done("Unit::can_release_007bb110", 0x007bb110u);
+                                }
+                            } else {
+                                // 007BB110 reads the device at unit+DECh. This host
+                                // has no device model, so an aircraft that still
+                                // carries a round stands in for it. SUBSTITUTION.
+                                owner_.log.unimplemented("Unit::can_release_007bb110",
+                                                         "007bb110");
+                                const bsp::OrdnanceKindSet set{s_.ordnance_mask};
+                                in.unit_can_release_007bb110 =
+                                    bsp::ordnance_has_torpedo_2bh(set) &&
+                                    s_.torpedo_releases < 1;
+                            }
+                            if constexpr (!rt::kReleaseTimerReseedDrawBound) {
+                                // 009FA3EA draws between timer+4h and timer+8h,
+                                // both unread on this object. contract.
+                                owner_.log.unimplemented("ReleaseTimer::reseed_bounds",
+                                                         "009fa3ea");
+                            }
                             in.reseed_draw = 0.0f;
-                            owner_.log.unimplemented("Unit::slot_byte_9c0", "009fa3fb");
+                            if constexpr (!rt::kReleaseTimerNotify0DhBound) {
+                                owner_.log.unimplemented("Unit::slot_byte_9c0", "009fa3fb");
+                            }
                             in.slot_byte_9c0_clear = false;
                             const bsp::ReleaseTimerResult r =
                                 bsp::release_timer_tick_009fa3a0(in);
@@ -33136,7 +33284,60 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 s_.torpedo_aim_timer_first_fire_tick =
                                     s_.torpedo_aim_ticks;
                             }
-                            owner_.release_ordnance_007bbba0(s_);
+                            owner_.release_ordnance_007bbba0(s_);   // 009FA3D0
+                            if constexpr (rt::kReleaseTimerReseedDrawBound) {
+                                // 009FA3D5-009FA3F1: 00BD2F10(ECX = 1, [timer+4h]
+                                // 0.5f, [timer+8h] 1.0f), FSTP float [ESI+10h],
+                                // after 007BBBA0. The shared stream 1.
+                                if (owner_.gunnery) {
+                                    s_.torpedo_aim_timer =
+                                        owner_.gunnery->death_mode_draw_00bd2f10(
+                                            rt::kReseedStream, owner_.index_of_slot(s_),
+                                            rt::kReseedLow_00ce3800, rt::kReseedHigh_00d7a24c);
+                                    owner_.done("ReleaseTimer::reseed_bounds", 0x009fa3eau);
+                                    owner_.log.notef("release timer reseed: unit=%s t=%.2f "
+                                        "countdown=%.4f (009FA3EA 00BD2F10 stream 1)",
+                                        s_.row.name.c_str(),
+                                        static_cast<double>(owner_.summary.simulated_seconds),
+                                        static_cast<double>(s_.torpedo_aim_timer));
+                                } else {
+                                    owner_.record("ReleaseTimer::reseed_bounds", 0x009fa3eau);
+                                }
+                            }
+                            if constexpr (rt::kReleaseTimerNotify0DhBound) {
+                                // 009FA3F4-009FA405: [unit + 9C0h + 8*[00F876B8]]
+                                // is 007CDC70's 007B9140(unit, 0): 1 for kind 17h
+                                // (007B914A), else some rack holds a round (the
+                                // walk of plane_holds_rack_round_007b9140). Live,
+                                // not one step late. No reader of timer+0Dh.
+                                bool holds = bsp::unit_is_kind_of(s_.class_id, 0x17);
+                                for (const PlaneOrdnanceRack& rack : owner_.ordnance_racks(s_)) {
+                                    if (holds) break;
+                                    if (rack.class_id == 0) continue;
+                                    holds = owner_.plane_rack_holds_round(s_, rack);
+                                }
+                                owner_.done("Unit::slot_byte_9c0", 0x009fa3fbu);
+                                if (!holds) {
+                                    s_.torpedo_aim_timer_notify_0d = true;   // 009FA405
+                                    owner_.log.notef("release timer notify: unit=%s "
+                                        "(009FA405, no reader)", s_.row.name.c_str());
+                                }
+                            }
+                        }
+                        // 007CD9A0 as 007CDC70 publishes it at unit+9C3h: the
+                        // first rack whose platform authors UseBayDoor answers
+                        // vtable[210h](2Ah, 0); none answers 0. Live, not one
+                        // step late; host rack order. docs/CC13_RELEASE_TIMER.md.
+                        bool bay_rack_holds_round_9c3() {
+                            const std::vector<PlaneOrdnanceRack>& racks =
+                                owner_.ordnance_racks(s_);
+                            const std::vector<bool> bay =
+                                bsp::cc13_release_timer::bomb_rack_bay_doors(
+                                    owner_.lua, s_.row.type_id);
+                            for (std::size_t i = 0; i < racks.size() && i < bay.size(); ++i) {
+                                if (bay[i]) return owner_.plane_rack_holds_round(s_, racks[i]);
+                            }
+                            return false;
                         }
                         void arm_release_timer_009d2287() override {
                             // 009D2279-009D2287: refuses to re-arm, and leaves
@@ -41186,14 +41387,47 @@ void GameUnitsHost::leave_group_on_destroy_0077bd70(std::size_t index) {
     GameUnitSlot& slot = *host.slots[index];
     const std::int32_t g = slot.formation_group;
     if (g < 0 || static_cast<std::size_t>(g) >= host.formation_groups.size()) return;
+    if constexpr (kDeadLeaderDirectorStateCopyBound) {
+        // Packet cc13-jm08. A dead leader's destroy 77h (0077D1A0) is ahead of
+        // any later leave in the image's FIFO (0076E520 / 0076C600; a Lua
+        // 00899EB0 / 0089A020 leave posts through 0077C980 too), so its whole
+        // 0077BD70 runs first, while it still leads. Here that leave is still
+        // pending, and run first, only while `posted` (HitDrainAfterPump, its
+        // entry not yet delivered). A Lua leave that meets it is posted behind it
+        // (post_formation_leave_0077c980), so this is a backstop for the
+        // synchronous leaves that remain: the ship_ai follower release and a Lua
+        // leave whose post failed. The copy then runs before the successor's 5Dh,
+        // unlike the image. A BeforePump ship has left at its kill; an Unmapped
+        // kill's leave waits for the flush and is not pulled forward (see
+        // DeadLeaderDeathPhase).
+        const std::size_t lead = host.formation_groups[static_cast<std::size_t>(g)].leader;
+        if (lead != index && lead < host.slots.size()
+            && host.slots[lead]->formation_group == g
+            && host.slots[lead]->director_handover_posted) {
+            leave_group_on_destroy_0077bd70(lead);
+        }
+    }
     Impl::FormationGroup& fg = host.formation_groups[static_cast<std::size_t>(g)];
     const std::size_t none = static_cast<std::size_t>(-1);
     const std::size_t leader_before = fg.leader < host.slots.size() ? fg.leader : none;
     // 0077BDA5..: the successor, asked twice when it answers the unit itself.
     std::size_t successor = host.group_successor_0070d8d0(fg, index);
     if (successor == index) successor = host.group_successor_0070d8d0(fg, index);
-    // vtable[114h]->vtable[5Ch](successor): the unit's director is told. Unread.
+    // vtable[114h]->vtable[5Ch](successor): the unit's director is told.
     host.record("UnitGroup::leave_director_notice_vtable114", 0x0077bde4u);
+    if constexpr (kDeadLeaderDirectorStateCopyBound) {
+        // 0071C150, before the SetLeader below. A kill that already ran it
+        // (leader_death_handover_at_kill) is not repeated; one that only posted
+        // it is run here, and the posted entry then finds nothing to do.
+        if (slot.director_handover_ran) {
+            slot.director_handover_ran = false;
+        } else {
+            slot.director_handover_posted = false;
+            if (successor != none && fg.leader == index) {
+                host.director_handover_0071c150(index, successor);
+            }
+        }
+    }
     // 0077BE0x: 0070D0C0 SetLeader(ship(successor), ship(unit)) when it differs.
     if (successor != none && fg.leader != successor) {
         const std::size_t new_leader = host.ship_unit(successor) ? successor : none;
@@ -41238,6 +41472,18 @@ void GameUnitsHost::leave_group_on_destroy_0077bd70(std::size_t index) {
         fg.leader = none;
         ++host.formation_groups_emptied;
     }
+    if constexpr (kDeadLeaderRepublishesFollowerPairBound) {
+        // Packet cc13-jm08. 007788B0 / 007788D0 read unit+284h and group+14h live
+        // in the image; the commands host holds a pushed copy, refreshed here.
+        // The leaving unit: 0070E54x cleared its +284h.
+        host.commands.set_unit_formation(index, false, none);
+        // Each remaining member: 007788B0 = (group+14h != unit), 007788D0 = group+14h.
+        for (const bsp::ShipAiUnitGroupMember& m : fg.members) {
+            if (m.entity == 0) continue;
+            const std::size_t member = static_cast<std::size_t>(m.entity) - 1u;
+            host.commands.set_unit_formation(member, fg.leader != member, fg.leader);
+        }
+    }
     ++host.formation_death_leaves;
     host.done("UnitGroup::leave_on_destroy_0077bd70", 0x0077bd70u);
     host.log.notef("formation leave: unit=%s group=%d t=%.2f leader %s -> %s members=%zu "
@@ -41246,6 +41492,123 @@ void GameUnitsHost::leave_group_on_destroy_0077bd70(std::size_t index) {
         leader_before < host.slots.size() ? host.slots[leader_before]->row.name.c_str() : "-",
         fg.leader < host.slots.size() ? host.slots[fg.leader]->row.name.c_str() : "-",
         fg.members.size(), fg.column);
+}
+
+void GameUnitsHost::leader_death_handover_at_kill(std::size_t index,
+                                                  bsp::DeadLeaderDeathPhase phase) {
+    // Packet cc13-jm08. The image delivers 0077D1A0's 77h (the whole 0077BD70)
+    // at the first pump after the kill, through the FIFO 0076E520 / 0076C600;
+    // this host's leave otherwise runs at the flush. Called by the gunnery kill BEFORE
+    // its 0071DDB0 delivery, so the successor's 5Dh lands where the image's does
+    // (kDeadLeaderDirectorStateCopyBound has the phase table).
+    if constexpr (!kDeadLeaderDirectorStateCopyBound) {
+        static_cast<void>(index);
+        static_cast<void>(phase);
+    } else {
+        Impl& host = *impl_;
+        if (index >= host.slots.size() || phase == bsp::DeadLeaderDeathPhase::Unmapped) return;
+        GameUnitSlot& slot = *host.slots[index];
+        if (slot.formation_group < 0 || slot.director_handover_ran
+            || slot.director_handover_posted) return;
+        const auto run = [&host, index]() {
+            const std::int32_t g = host.slots[index]->formation_group;
+            if (g < 0 || static_cast<std::size_t>(g) >= host.formation_groups.size()) return;
+            Impl::FormationGroup& fg = host.formation_groups[static_cast<std::size_t>(g)];
+            // 0077BDA5..0077BDDC: the successor, asked twice when it answers the unit.
+            std::size_t successor = host.group_successor_0070d8d0(fg, index);
+            if (successor == index) successor = host.group_successor_0070d8d0(fg, index);
+            const bool copied = successor != static_cast<std::size_t>(-1)
+                && host.director_handover_0071c150(index, successor);
+            host.log.notef("leader handover: %s -> %s t=%.2f copied=%d (0071C150 at the "
+                "image's pump, packet cc13-jm08)", host.slots[index]->row.name.c_str(),
+                successor < host.slots.size() ? host.slots[successor]->row.name.c_str() : "-",
+                static_cast<double>(host.summary.simulated_seconds), copied ? 1 : 0);
+        };
+        // The image's 77h delivery is the whole 0077BD70: 0071C150, SetLeader
+        // 0070D0C0 and DetachMember 0070E4C0. For a ship this host's row-15 flush
+        // would deliver the destroy leave (kDeadMemberLeavesGroupBound); it runs
+        // here instead, where the image's pump has it, and the flush's call then
+        // finds +284h clear. Other units keep the copy alone, as before.
+        const bool whole = kDeadMemberLeavesGroupBound && kSunkShipFlushBound
+            && unit_is_kind_of(index, 6);
+        if (phase == bsp::DeadLeaderDeathPhase::BeforePump) {
+            // The pump copies before the flush's 0071DDB0: no 5Dh for the successor.
+            if (whole) {
+                ++host.director_whole_leaves_at_kill;
+                leave_group_on_destroy_0077bd70(index);
+                return;
+            }
+            slot.director_handover_ran = true;
+            run();
+            return;
+        }
+        // HitDrainAfterPump: the 77h waits for the next pump, queued ahead of the
+        // successor's 5Dh that 0071DDB0 posts at this kill. A leave_group that
+        // comes first runs it and clears `posted` (see there).
+        slot.director_handover_posted = true;
+        ++host.director_handovers_posted;
+        const auto deliver = [this, &host, index, run, whole]() {
+            GameUnitSlot& s = *host.slots[index];
+            if (!s.director_handover_posted) {
+                ++host.director_handovers_skipped;
+                return;
+            }
+            s.director_handover_posted = false;
+            if (whole) {
+                ++host.director_whole_leaves_at_kill;
+                leave_group_on_destroy_0077bd70(index);
+                return;
+            }
+            s.director_handover_ran = true;
+            run();
+        };
+        if (!host.commands.post_loopback_callback(index, deliver)) {
+            slot.director_handover_posted = false;
+            --host.director_handovers_posted;
+        }
+    }
+}
+
+bool GameUnitsHost::formation_leave_waits_for_handover(std::size_t index) const {
+    if constexpr (!kDeadLeaderDirectorStateCopyBound || !kSetCommandQueueDelayBound) {
+        // The loopback delivers posted callbacks only with the queue delay bound.
+        static_cast<void>(index);
+        return false;
+    } else {
+        const Impl& host = *impl_;
+        if (index >= host.slots.size()) return false;
+        const GameUnitSlot& slot = *host.slots[index];
+        if (slot.director_handover_posted) return true;
+        const std::int32_t g = slot.formation_group;
+        if (g < 0 || static_cast<std::size_t>(g) >= host.formation_groups.size()) return false;
+        const std::size_t lead = host.formation_groups[static_cast<std::size_t>(g)].leader;
+        return lead != index && lead < host.slots.size()
+            && host.slots[lead]->director_handover_posted
+            && host.slots[lead]->formation_group == g;
+    }
+}
+
+bool GameUnitsHost::post_formation_leave_0077c980(std::size_t index) {
+    // Packet cc13-jm08. The image's Lua leaves (00899EB0, 0089A020) post a 77h
+    // through 0077C980 -> 0077C2A0 -> 0076E520 and 0077BD70 runs at the next
+    // pump (0076C600, row 9). After a HitDrainAfterPump kill that FIFO already
+    // holds the kill's 77h, then the 5Dh 0071DDB0 posted for the successor; the
+    // Lua entry comes third, so the successor's inherited head is popped before
+    // it leaves. This host posts only while formation_leave_waits_for_handover;
+    // every other Lua leave stays synchronous (before the pump, not at it).
+    if constexpr (!kDeadLeaderDirectorStateCopyBound || !kSetCommandQueueDelayBound) {
+        static_cast<void>(index);
+        return false;
+    } else {
+        Impl& host = *impl_;
+        if (index >= host.slots.size()) return false;
+        if (!host.commands.post_loopback_callback(index,
+                [this, index]() { leave_group_on_destroy_0077bd70(index); })) {
+            return false;
+        }
+        ++host.director_lua_leaves_posted;
+        return true;
+    }
 }
 
 bool GameUnitsHost::unit_is_formation_follower_007788b0(std::size_t index) const noexcept {
@@ -43695,6 +44058,13 @@ void GameUnitsHost::report() {
         "(0077BD70 / 0070D8D0 / 0070D0C0 / 0070E4C0, packet cc9_dead_member_group_removal)",
         host.formation_death_leaves, host.formation_death_handovers,
         host.formation_groups_emptied, kDeadMemberLeavesGroupBound ? 1 : 0);
+    host.log.notef("summary unit formation leader handover run=%llu posted=%llu skipped=%llu "
+        "lua_leaves_posted=%llu whole_leaves=%llu bound=%d (0071C150 -> 00836680 -> 00720450, "
+        "packet cc13-jm08)",
+        host.director_handovers_run, host.director_handovers_posted,
+        host.director_handovers_skipped, host.director_lua_leaves_posted,
+        host.director_whole_leaves_at_kill,
+        kDeadLeaderDirectorStateCopyBound ? 1 : 0);
     host.log.notef("summary unit formation join follow calls=%llu pushed=%llu bound=%d "
         "(0077FA8D -> 00720CD0, packet cc9_formation_join_follow)",
         host.formation_join_follows, host.formation_join_follows_pushed,

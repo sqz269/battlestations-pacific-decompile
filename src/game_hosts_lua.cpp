@@ -4276,9 +4276,14 @@ std::uint32_t GameMissionLuaHost::create_squadron(const bsp::AirOpsSquadronReque
     std::string name;
     std::int32_t wing = 0;
     const std::size_t units_before = script_orders_->units().count();
+    // cc13-tier1: the bag's `State` (7 on 006C5050's flag arm) and Dynamics/Ceiling
+    // (tuning+210h, read at 006C52BF) go to the creator, which reads them only
+    // under kAirOpsLaunchFlagAirborneBound. plane_globals_ is filled once by the
+    // settings load (007E2A20) before any mission script and never cleared; with
+    // no table it keeps its zero, the +210h default in game_tuning_singleton.cpp.
     const std::uint32_t entity = script_orders_->create_air_ops_squadron_006c5050(
         request.type, request.wing_count, request.equipment, request.home_base, name,
-        wing);
+        wing, request.state, plane_globals_.dynamics_ceiling);
     if (entity == 0u) return 0u;
     if constexpr (bsp::kAirOpsPlayerLaunchBound) {
         // Packet cc9_player_air_ops_launch: the bag's `AutoAttackTarget`
@@ -7534,7 +7539,8 @@ int GameMissionLuaHost::run_get_squadron_plane_0089cfe0(lua_State* state, int ar
 // for +1ACh < 8 (00905300) and 77h with a null target through 0077C2A0 (class 7),
 // whose receiver is 0077BD70's leave, the one LeaveFormation's 0077C980 sends.
 // SUBSTITUTIONS (labelled), as in run_leave_formation_00899eb0: each leave runs at the
-// call instead of through the session queue, in the snapshot's order; the member
+// call instead of through the session queue (unless cc13-jm08's switch posts them,
+// below), in the snapshot's order; the member
 // order is the units host's index order (the +4F8h array order is not carried); the
 // slot counter is not modelled.
 int GameMissionLuaHost::run_disband_formation_0089a020(lua_State* state, int argument_count) {
@@ -7546,6 +7552,7 @@ int GameMissionLuaHost::run_disband_formation_0089a020(lua_State* state, int arg
     const std::int32_t group = valid
         ? units->unit_formation_group_0284(static_cast<std::size_t>(id - 1)) : -1;
     std::size_t left = 0;
+    std::size_t posted = 0;
     if (group >= 0) {
         const std::size_t leader = units->formation_leader_0014(group);
         std::vector<std::size_t> snapshot;
@@ -7553,9 +7560,22 @@ int GameMissionLuaHost::run_disband_formation_0089a020(lua_State* state, int arg
             if (u != leader && units->unit_formation_group_0284(u) == group) snapshot.push_back(u);
         }
         if (leader < units->count()) snapshot.push_back(leader);
+        // Packet cc13-jm08 (kDeadLeaderDirectorStateCopyBound): when any member
+        // meets a posted 0071C150 (its own, or the group leader's), every leave is
+        // posted, in snapshot order, behind the kill's 77h and the successor's 5Dh,
+        // as 0077C2A0 queues them in the image; they run at the next pump. The
+        // +284h test is the image's, at the post. Otherwise unchanged.
+        bool defer = false;
+        for (const std::size_t u : snapshot) {
+            if (units->formation_leave_waits_for_handover(u)) defer = true;
+        }
         for (const std::size_t u : snapshot) {
             if (units->unit_formation_group_0284(u) < 0) continue;
-            units->leave_group_on_destroy_0077bd70(u);
+            if (!defer || !units->post_formation_leave_0077c980(u)) {
+                units->leave_group_on_destroy_0077bd70(u);
+            } else {
+                ++posted;
+            }
             ++left;
         }
     }
@@ -7563,6 +7583,10 @@ int GameMissionLuaHost::run_disband_formation_0089a020(lua_State* state, int arg
     log_.notef("  DisbandFormation 0089a020: \"%s\" group=%d left=%zu (0077CA60 -> 77h -> "
         "0077BD70, packet cc13-fix5)", row != nullptr ? row->name.c_str() : "?",
         static_cast<int>(group), left);
+    if (posted != 0) {
+        log_.notef("  DisbandFormation 0089a020: %zu leave(s) posted behind a leader handover "
+            "(packet cc13-jm08)", posted);
+    }
     log_.implemented("MissionLuaNative::DisbandFormation", "0089a020");
     return 0;
 }
@@ -8448,14 +8472,26 @@ int GameMissionLuaHost::run_leave_formation_00899eb0(lua_State* state, int argum
         && static_cast<std::size_t>(id) <= units->count();
     const std::int32_t group = valid
         ? units->unit_formation_group_0284(static_cast<std::size_t>(id - 1)) : -1;
+    bool posted = false;
     if (group >= 0) {
-        units->leave_group_on_destroy_0077bd70(static_cast<std::size_t>(id - 1));
+        // Packet cc13-jm08 (kDeadLeaderDirectorStateCopyBound): a unit whose own
+        // 0071C150, or its group leader's, is still posted has its leave posted
+        // behind it and the successor's 5Dh, as 0077C980 does in the image; it runs
+        // at the next pump. Otherwise the leave stays synchronous.
+        const std::size_t u = static_cast<std::size_t>(id - 1);
+        posted = units->formation_leave_waits_for_handover(u)
+            && units->post_formation_leave_0077c980(u);
+        if (!posted) units->leave_group_on_destroy_0077bd70(u);
         ++summary_.leave_formation_left;
     }
     const GameUnitRow* row = valid ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
     log_.notef("  LeaveFormation 00899eb0: \"%s\" group=%d left=%d (0077C980 -> 77h -> "
         "0077BD70, packet cc9_lua_formation_query)", row != nullptr ? row->name.c_str() : "?",
         static_cast<int>(group), group >= 0 ? 1 : 0);
+    if (posted) {
+        log_.notef("  LeaveFormation 00899eb0: leave posted behind a leader handover "
+            "(packet cc13-jm08)");
+    }
     log_.implemented("MissionLuaNative::LeaveFormation", "00899eb0");
     return 0;
 }

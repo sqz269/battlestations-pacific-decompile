@@ -62,6 +62,7 @@ namespace bsp { struct HullContactEvent; }
 namespace bsp { struct PlaneSquadronHostRecord; }
 
 #include "bsp/pilot_command_path.hpp"
+#include "bsp/cc13_jm08_switches.hpp"   // packet cc13-jm08
 #include "bsp/game_hosts_commands.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/hit_narrowphase.hpp"
@@ -1163,6 +1164,22 @@ public:
     // Packet cc9_dead_member_group_removal: 0077BD70(unit, null) on a destroyed
     // unit, once. No effect for a unit in no group.
     void leave_group_on_destroy_0077bd70(std::size_t index);
+    // Packet cc13-jm08 (kDeadLeaderDirectorStateCopyBound): the destroy 77h's
+    // 0077BD70 for a dying unit, run from the kill in the image's order:
+    // BeforePump in place, HitDrainAfterPump posted to the loopback ahead of the
+    // kill's 5Dh. A ship runs the whole leave (the flush's leave then finds no
+    // group); any other unit only the 0071C150 copy, which leave_group then
+    // skips. Unmapped does nothing (the flush's leave_group does it all).
+    void leader_death_handover_at_kill(std::size_t index, bsp::DeadLeaderDeathPhase phase);
+    // Packet cc13-jm08 (kDeadLeaderDirectorStateCopyBound): true while the unit's
+    // own posted 0071C150, or its group leader's, is still in the loopback. A Lua
+    // leave that meets one is posted (post_formation_leave_0077c980), not run.
+    // Always false when the switch is off.
+    bool formation_leave_waits_for_handover(std::size_t index) const;
+    // 0077C980 for a Lua leave: posts the unit's 0077BD70 to the loopback, behind
+    // whatever is already queued. False (nothing posted) when the switch is off or
+    // the post fails; the caller then leaves synchronously.
+    bool post_formation_leave_0077c980(std::size_t index);
     // Packet cc9_live_hull_leak (docs/UNIT_MESSAGE_ARMS.md, "90h, bound"): the
     // 90h message's receiver 008221A7 -> 0074F440 -> 0074F090 on the unit's
     // leak manager. `count` is msg+1Ch, the sender's trunc(clamp(damage / 10,
