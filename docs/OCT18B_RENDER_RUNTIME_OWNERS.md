@@ -111,7 +111,7 @@ to the primary run.
 
 ON16 (`local/oct18b_render_cache_trace_usn04.log`, primary) proves a
 callback-sensitive cache transition. B316C0 enters with two rows, releases
-white texture1ACFC6E4 from1 to0, and the callback leaves one row. The loop
+noise texture1ACFC6E4 from1 to0, and the callback leaves one row. The loop
 then exits with zero rows without releasing error texture16AA50E0. B32370
 subsequently releases that fallback from2 to1. The sole retained companion
 is therefore explained by the skipped error-row credit; it is not evidence
@@ -128,3 +128,14 @@ from Original. The outer737F30 listing calls current renderer virtual+0C at
 composition boundary to verify; the existing caller-array retirement alone
 does not establish that protocol. No cache decrement, callback suppression,
 guard relaxation or residual-owner sweep was added.
+
+The exact ON16 before-retirement identity map identifies1ACFC6E4 as
+`effects/noise.dds` with three references, not white. This is the resource
+constructed from literalD5E468 atB14E95 and stored at service+67C. The two
+post658/post65C material consumers acquire it atB12142/B1253C. The native
+resource lifetime does not explicitly release+67C; after those two material
+credits retire, B316C0 consumes its last creator credit and its name callback
+removes the row. The distinct white texture is16AA5188. This correction rules
+out a white+668-specific lifetime explanation while identifying the actual
+resource that causes the observed row transition. It does not justify adding
+a new+67C release or changing the original cache loop.
