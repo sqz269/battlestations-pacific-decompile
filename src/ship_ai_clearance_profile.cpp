@@ -108,6 +108,7 @@ void ship_ai_refresh_turn_clearance_009ef910(ShipAiClearanceBlock& blk,
                                              ShipAiClearanceHost& host) {
     // 009EF91D..009EF93D. The countdown is stored before the test, so a frame
     // that returns early still consumed its delta.
+    blk.diag = {}; // log only, packet cc13-blk370
     blk.refresh_timer_374 -= seconds;
     if (blk.refresh_timer_374 > 0.0f) {
         return;
@@ -116,6 +117,7 @@ void ship_ai_refresh_turn_clearance_009ef910(ShipAiClearanceBlock& blk,
     // 009EF943..009EF96F. The sentinel goes in before anything can lower it.
     blk.refresh_timer_374 = settings.refresh_period_1d4;
     blk.outcome_370 = ShipAiClearanceOutcome::Clear;
+    blk.diag.refreshed = true;
     blk.clearance_37c = kShipAiClearanceRefreshSentinelBound
         ? kShipAiClearanceRefreshSentinel   // [00CE3D64], 009EF94E/009EF96F
         : kShipAiClearanceSentinel;
@@ -131,6 +133,7 @@ void ship_ai_refresh_turn_clearance_009ef910(ShipAiClearanceBlock& blk,
     // 009EF9C0..009EF9EB.
     const float heading_error =
         wrapped_angle_subtract_00438b10(blk.heading_target_324, hull_heading);
+    blk.diag.heading_error = heading_error;
     if (kShipAiClearanceDeadband > std::fabs(heading_error)) {
         return;
     }
@@ -259,12 +262,16 @@ void ship_ai_refresh_turn_clearance_009ef910(ShipAiClearanceBlock& blk,
             if (hit_index >= 0) {
                 reached_static_label = false; // 009EFF6D falls through
                 const float speed = std::fabs(host.neighbour_speed_0092d730(hit_index));
+                blk.diag.hit_index = hit_index;
+                blk.diag.hit_speed = speed;
                 blk.outcome_370 = (speed > kShipAiStallNeighbourSpeed)
                                       ? ShipAiClearanceOutcome::BlockedMoving  // 009EFFA5
                                       : ShipAiClearanceOutcome::BlockedStopped; // 009EFFB8
             }
         }
     }
+
+    blk.diag.static_hit = static_hit;
 
     // 009EFFB1..009EFFB8.
     if (reached_static_label && static_hit) {

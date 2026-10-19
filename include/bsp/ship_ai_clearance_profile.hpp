@@ -119,6 +119,15 @@ struct ShipAiClearanceBlock {
     // tree. The constructor 009E4330 clears it at 009E4401, so a session with no
     // zones loaded has both static tests switched off.
     bool static_zone_present_a3c{false};
+    // Log only (packet cc13-blk370): what the last refresh past 009EF93D decided
+    // +370h on. 009EF910 writes these and nothing reads them back.
+    struct Diagnostics {
+        bool refreshed{false};      // this call passed the 009EF93D countdown
+        int hit_index{-1};          // 009EFD5B..009EFDD6, the last neighbour hit
+        float hit_speed{0.0f};      // |0092D730| compared with 2.0f at 009EFF9C
+        bool static_hit{false};     // [ESP+13h], 009EFD00 009D57E0
+        float heading_error{0.0f};  // 009EF9C0, before the 009F006E fade
+    } diag;
 };
 
 // 00424C40's tuning block, the three fields this routine reads.
