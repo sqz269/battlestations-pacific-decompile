@@ -333,8 +333,13 @@ check can be re-run now that the records exist. For each vt-reset candidate the 
 - re-reads the disk bytes and requires `C7 01 <imm32> C3`, with imm32 equal to the scanned
   vtable;
 - refuses the struck ranges and 006C5000-006C5FFF;
-- classes the vtable from its other slots: game when any slot is a `BSP_` name or a recorded
-  non-library name, library when only library names appear, unknown otherwise;
+- classes the vtable from its own slots: game when any slot is a `BSP_` name or a recorded
+  non-library name, library when only library names appear, unknown otherwise. The walk stops
+  at the next address that code stores as a vtable (any `MOV r/m32, imm32` store, plus the
+  index's vtable table);
+- classes a vtable that its own slots leave non-game as **base** when a game-named function
+  (other than the `BSP_Vt*_Destruct` rows) stores it, that is, a base vtable stamped by game
+  constructors and destructors;
 - applies one hand override (`MANUAL`, below);
 - lists the row's callers from the index.
 
@@ -371,8 +376,11 @@ which the slot-name rule had called library. The vtable has no RTTI locator (`[0
 
 **Row 120 was added after rev4.** `006FBC10` (`C7 01 F8 88 CF 00 C3`) is in segment 34, outside
 the 16 scanned segments, which is why the scan missed it. The check script now appends it as an
-extra candidate. It stores 00CF88F8, a game vtable with three game slots, and it is the recorded
-out-of-line copy that part C's 006CDD40 inlines. Its one caller is the unwind funclet 00C83990 of
+extra candidate. It stores 00CF88F8, a base vtable with two slots (006CDD40, its scalar deleting
+destructor, and `__purecall`), and it is the recorded out-of-line copy that part C's 006CDD40
+inlines. 00CF8900 is a separate vtable, stamped by the FollowObserverMember constructor and
+destructor at 006CDD8F, 006CE8D1, 006CE9FF and 006CEA44. Game code stores 00CF88F8 in 006CDC70
+BSP_AirOps_Update, 006CE260, 006CE290 and 006FC2E0 BSP_ElevatorPlatform_Destruct. Its one caller is the unwind funclet 00C83990 of
 006FC2E0 BSP_ElevatorPlatform_Destruct. It is named `BSP_Vt00CF88F8_Destruct_006fbc10`. The Ghidra
 log `local/ghidra-annotations-20261019T092616Z.json` has this rename and 006CDD40's.
 
@@ -387,6 +395,19 @@ log `local/ghidra-annotations-20261019T092616Z.json` has this rename and 006CDD4
 | `0094CAF0` | 00D24FEC |
 
 Unknown (no named slot either way): `00842990`, vtable 00D0B6A0.
+
+**Vtable boundaries (rev2 nit).** The first script walked past the end of each vtable into the
+next one, so a vtable could take its class from a neighbour's slots. With the walk stopped at
+the next stored vtable, part B classes 115 rows game, 9 base and 2 library, and part C 95 game,
+9 base and 2 library. The rows that move:
+- Recorded rows whose vtable has no game slot of its own but is stamped by game code, so the
+  records stand as base-class destructors: part B 006FBC10 (00CF88F8), 00743D80 (00CFF354),
+  009C8CE0 (00D20E84), 009CD390 (00D21148), 009F5280 (00D21B40). Part C 006CDD40, 00730B60,
+  00730C90, 00743D90, 007B3BB0, 009C8D00, 009CD3A0, 009F5290.
+- Open rows the base rule now flags, which stay open: 007512A0, 007512E0, 0094CEB0 (00D24F84 is
+  stored only by 00751870 / 00751960 BSP_MetricStringData, telemetry string code), 00842990
+  (00D0B6A0, stored by 0083B5E0 BSP_GameSettings_LoadFromLuaGlobals among STL allocator code)
+  and part C's 007D79F0 (00D06844).
 
 ## Part C: scalar deleting wrappers (103 rows)
 
