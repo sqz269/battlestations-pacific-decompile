@@ -443,6 +443,13 @@ Probes after step 3 (cc15-vcp4). Both switches were flipped locally for these ru
   - The end movie plays through the mission-end movie player, not BSP_EngineMovie_Stop 0045F600, so it never reaches 0045F6C1.
 
 Open item for `kVehicleClassMovieStopPurgeCc15Bound` (stays OFF): a 0045F600 stop later than the first in-mission frame. No known row reaches one. In this host the only 0045F600 path is the engine-movie skip (004C6B20), on the first frame, which USN11 covers.
+
+Required evidence before flipping `kVehicleClassMovieStopPurgeCc15Bound` (cc9 lead, 2026-10-19): a JM05-family
+ON/OFF pair that reaches the Event3Convoy GenerateObject spawn (jm05.lua ~3645). JM05 takes 004E0A50's
+mode-9 arm, so its only purge is this movie-stop site. The spawn must show no `creator=00000000` (the members
+464/466 are marked at 00743891 by the visible convoys, cc15-vcp7). The default stream picks event 2 first, so
+the run needs orders that capture or finish event 2.
+
 ## kVehicleClassPreloadCc15Bound ON (cc9-lua69, 2026-10-18)
 
 Confirming pair on main 011d651dc, BSM09 `config/win_orders/bsm09_l68_b9_d1.txt` (36000 frames, reference env):
