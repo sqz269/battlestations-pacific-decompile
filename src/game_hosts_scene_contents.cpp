@@ -58,7 +58,11 @@ namespace {
 // The native stores nothing (004694F0 discards each entry); the entries are
 // counted and the lexer leaves the block at its closing brace, where the
 // stand-in left the loop to step over the block's tokens as unknown keywords.
-constexpr bool kSceneBrowserGroupsBound = false;
+// ON by cc9-ships59's pairs in the reference env at 7d6b27b65 (local\s59_bg_off_* /
+// s59_bg_on_* .log.manifest.json): USN01 3200 (0 entries, ok=1) and JM05 600
+// (PRCPIJN ijn_05, 33 entries, ok=1), both exit 1, gameplay identical; only
+// 00469E40 UNIMPLEMENTED -> concrete and the one count line moved.
+constexpr bool kSceneBrowserGroupsBound = true;
 
 // Packet cc9_s59_traffic (docs/SHIP_AI_OPEN_ITEMS.md 292): the `traffic` block
 // (009514B0, called at 0046EB5B) is read by scene_traffic_groups.cpp's body over
