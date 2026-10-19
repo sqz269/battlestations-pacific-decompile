@@ -155,6 +155,7 @@
 #include "bsp/world_ocean.hpp"
 #include "bsp/world_construct.hpp"
 #include "bsp/plane_class_fields.hpp"
+#include "bsp/cc13_jm08_switches.hpp"
 
 #include <cfloat>
 #include <cmath>
@@ -40197,6 +40198,18 @@ void GameUnitsHost::leave_group_on_destroy_0077bd70(std::size_t index) {
     if (fg.members.empty()) {                                    // vtable[0](1)
         fg.leader = none;
         ++host.formation_groups_emptied;
+    }
+    if constexpr (kDeadLeaderRepublishesFollowerPairBound) {
+        // Packet cc13-jm08. 007788B0 / 007788D0 read unit+284h and group+14h live
+        // in the image; the commands host holds a pushed copy, refreshed here.
+        // The leaving unit: 0070E54x cleared its +284h.
+        host.commands.set_unit_formation(index, false, none);
+        // Each remaining member: 007788B0 = (group+14h != unit), 007788D0 = group+14h.
+        for (const bsp::ShipAiUnitGroupMember& m : fg.members) {
+            if (m.entity == 0) continue;
+            const std::size_t member = static_cast<std::size_t>(m.entity) - 1u;
+            host.commands.set_unit_formation(member, fg.leader != member, fg.leader);
+        }
     }
     ++host.formation_death_leaves;
     host.done("UnitGroup::leave_on_destroy_0077bd70", 0x0077bd70u);
