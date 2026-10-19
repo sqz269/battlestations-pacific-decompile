@@ -867,6 +867,10 @@ public:
                 const void* record = host_.messages->resolve_record_00705e00(name);
                 ++(record != nullptr ? host_.warning_activate.records_resolved
                                      : host_.warning_activate.record_misses);
+                if (record == nullptr && host_.warning_activate.record_misses <= 8) {
+                    host_.log.notef("message manager record miss: \"%s\" (00705E00)",
+                        name.c_str());
+                }
                 return record;
             }
         }
@@ -1001,6 +1005,13 @@ bool resolve_entity_sound_keys_cc15(GameMissionFrameHost::Impl& host, std::strin
         }
     }
     ++(hit ? host.warning_activate.sound_keys_resolved : host.warning_activate.sound_keys_unmatched);
+    if (!hit && host.warning_activate.sound_keys_unmatched <= 8) {
+        std::string tried;
+        for (const std::string& key : keys) tried += (tried.empty() ? "" : ",") + key;
+        host.log.notef("message manager sound keys unmatched: picked=\"%s\" text=\"%s\" "
+            "class=%02X keys=%s (0097B5E0)", picked.c_str(), text.c_str(), class_id,
+            tried.c_str());
+    }
     return true;
 }
 
@@ -3573,8 +3584,7 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                     host.messages = std::make_unique<GameMessageManagerHost>(host.log, host.vfs,
                         host.language);
                 }
-                host.messages->construct_00707480();
-                host.done("MessageManager::construct", 0x00707480u);
+                host.messages->construct_00707480();  // logs its own native row
             }
         }
         if (method == "load_warning_bank" && kMessageManagerCc15Bound
