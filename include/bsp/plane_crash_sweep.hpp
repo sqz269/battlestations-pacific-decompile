@@ -7,8 +7,12 @@
 // called once per plane fixed step from 007CE040 at 007CEF67):
 //   - 007C091C..007C0937: return 0 while the cooldown unit+9DCh is positive
 //     (decremented by the step, 007C0C43) or the byte unit+61h is set. The
-//     cooldown is 3.0 (00CE3854) or 2.0 (00CE3850) after 007C5F60 places the
-//     plane on a launch spot, and 0 from the constructor (007CFE78).
+//     cooldown is 3.0 (00CE3854) or, for a kind-45h base, 5.0 (00CE3850)
+//     after 007C5F60 places the plane on a launch spot (007C605D / 007C60EA),
+//     and 1.0f from the constructor (007CFE78 MOVSS [ESI+9DCh],XMM1, XMM1 =
+//     [00D7A24C] from 007CFDEA). The decrement runs only on the steps the
+//     caller sweeps: unit+5Ch set, 007BC5B0 true (+900h 7, 6 or 4, among
+//     others), a positive step and unit+520h clear (007CEEC1..007CEEFA).
 //   - 007CEF00..007CEF21 (the caller): skipped for a live plane that is the
 //     player's controlled unit ([00E188A8]+5FCh -> +908h == unit+54h).
 //   - per collision point (class+5BCh, stride 0Ch: the model's "collipos"
@@ -56,9 +60,22 @@ namespace bsp {
 
 inline constexpr bool kPlaneCrashSweepBound = true;  // ON: USN19/USN18/USNOS pairs (docs/SQUADRON_LAND_TASK.md 5gc)
 
-// 00CE3854 (float 3.0): 007C5F60's unit+9DCh for a launch spot (2.0, 00CE3850,
-// for a kind-45h base). The host arms it on a plane's first free-flight step.
+// 00CE3854 (float 3.0): 007C5F60's unit+9DCh for a launch spot (5.0, 00CE3850,
+// for a kind-45h base; LABELLED: the host arms 3.0 for both). The host arms it
+// on a plane's first free-flight step.
 inline constexpr float kPlaneCrashLaunchCooldown = 3.0f;
+
+// 00D7A24C (float 1.0): 007CFD20's unit+9DCh (007CFE78). A plane that is never
+// placed on a launch spot keeps it, so an air-spawned plane's first 1.0 s of
+// swept steps is skipped, not 3.0 s. Packet cc13-cool9dc.
+inline constexpr float kPlaneCrashConstructCooldown = 1.0f;
+
+// True: the gunnery host's first arm of a plane that has been in free flight
+// on every step the sweep has seen (never grounded, so never through 007C5F60)
+// takes kPlaneCrashConstructCooldown; every later arm, and the first arm of a
+// plane seen off free flight before it, takes kPlaneCrashLaunchCooldown.
+// False: every arm takes kPlaneCrashLaunchCooldown, as before.
+inline constexpr bool kPlaneCrashConstructCooldownCc13Bound = false;
 
 // 00CEC9D8 (double 0.75), 00CF5E58 (double 0.49), 00D04310 (double 0.96).
 inline constexpr float kPlaneCrashFoldedWingScale = 0.75f;
