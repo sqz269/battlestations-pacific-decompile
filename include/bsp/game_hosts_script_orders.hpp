@@ -309,7 +309,10 @@ inline constexpr bool kPilotMoveOnPathBound = true;
 // (008A7200) fires the unit's torpedo guns through 00730160, all of them or
 // only the first when argument 1 is true (GameGunneryHost::
 // force_torpedo_fire_008a7200). False: the native stays an unimplemented record.
-inline constexpr bool kNavigatorForceTorpedoBound = false;
+// ON by mechanism (cc9-gunnery53, docs/UNIT_WEAPON_DEVICES.md): JM06's two
+// luaJM6SubShot calls fire in the reference env and JM06 still completes
+// (772.93 -> 790.93 s); the default env does not reach them and is identical.
+inline constexpr bool kNavigatorForceTorpedoBound = true;
 
 // Packet cc9_frame_delta_jitter, docs/GAME_EXECUTABLE.md. True: the script think
 // walk 00929460 runs once per 0.05f fixed step, as the image's fan-out row 8 does
