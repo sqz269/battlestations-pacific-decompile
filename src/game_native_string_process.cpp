@@ -20,6 +20,16 @@ bool GameNativeStringProcess::claim_particle_manager_domain() noexcept {
     return true;
 }
 
+void* volatile& GameNativeStringProcess::application_00e1ae90() noexcept {
+    return application_00e1ae90_;
+}
+
+bool GameNativeStringProcess::claim_application_domain() noexcept {
+    if (application_domain_claimed_) return false;
+    application_domain_claimed_ = true;
+    return true;
+}
+
 const char* GameNativeStringProcess::property_empty_00e177e4() const noexcept {
     return &property_empty_00e177e4_;
 }
