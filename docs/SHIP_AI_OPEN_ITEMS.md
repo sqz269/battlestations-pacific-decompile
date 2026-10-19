@@ -20005,3 +20005,30 @@ config/win_orders/jm08_l65_j8_p2.txt.
 
 Both moves start at the switch's mechanism, so both are flipped ON. jm08_l65_j8_p2 ends without a result in all three
 JM08 runs, so no WINS row moves here.
+
+## 305. USNOS c17-c21 (cc9-ships60, 2026-10-19)
+
+Orders: `local\s60_osmk.py <variant>` (on top of s59_osmk.py / s56_osmk.py) -> `local\s60_os_<variant>.txt`; summaries
+with `local\s59_sum.py`. All reference env unless marked jitter (20,3).
+
+| run | exe | result |
+|---|---|---|
+| `s60_b_c17` | 1846a2573 | failed 2871.68 s. Wave-2 planes sank TT5 (597.88 s) and TT4 (716 s). s55_os_r0.txt sends every transport north at frame 34000, the blockade (sighted 1722 s) sank TT6/TT3, and Haku2/Haku3 squadrons sank TT1/TT2 |
+| `s60_b_c18a/b` | 1846a2573 | TT6 held at DEST (a), plus Shimotsuke struck early (b): both failed 2426-2917 s, with Haku3/Haku4 squadrons sinking the last transports after luaReinTime |
+| `s60_b_c18c` | 1846a2573 | TT6 held at (16000, -9000) beside Enterprise's ENT_AWAY point: alive at 3750 s, Haku1-4 dead by 3711 s, HQ1/CB2/HQ2 neutral from 2025/2178/2517 s |
+| `s60_b_c19` | 913bac450 (pre-flip) | c18c, then TT6 sails c17's legs from frame 75000. It allied HQ2 at 6080 s, HQ1 at 6620 s and CB2 at 8320 s, but HQ2 was re-neutralized about every 20 s (party 2 -> 0, then "neutralized"), so the display peaked at "Bases captured: 2.00". Musashi died at 4299 s; Yamato never died, so ReinDead stayed false. No end in 210000 frames |
+| `s60_bj_c19` | 913bac450, jitter | TT6 sunk at its hideout at 2388.80 s by Airfield1_sqn72 |
+| `s60_p_c19` | 2835f8720 (seg67 ON) | TT6 sunk at 3456.45 s by Airfield1_sqn132 |
+| `s60_p(j)_c20` | 2835f8720 | c19 plus Enterprise/Midway 810 cover over TT6: worse. Midway's own gun sank TT6 at 2856.96 s (ref), Airfield3_sqn61 at 2201 s (jitter) |
+| `s60_p(j)_c21` | 2835f8720 | c20 plus 339 strikes on "Hangar, Large, 08 01" (Airfield1's only land-master section, 5500 health; airfield at (-3621.8, 3321.1)): every launch was refused with "no such slot" (decks busy). TT6 sunk 2192-2349 s by Airfield2/Airfield3 squadrons |
+
+What a winning plan needs on the current exe:
+- A transport that survives the airfields. us_osumi.lua runs luaAirfieldManager per JapAirfields member while
+  `not unit.Dead` and aims at live Mission.Troops, so Airfield1-3 hunt the reserve wherever it hides. Free deck slots
+  are needed for the hangar strikes: take squadrons off the early air_mass lists, rather than adding launches that
+  queue behind busy slots.
+- HQ2 must stay allied until all three are allied at one 5 s check. Find who re-neutralizes it after 6080 s in
+  `s60_b_c19` (the log is deleted; rerun c19 with the pre-flip exe local\s60_sb_off_bin to inspect).
+- Yamato must die (FinalTrgs), and so must the Funryu Bettys, which are added to FinalTrgs.
+Hold re-plans until cc13's Kaiten depth/contact and kamikaze direct-hit switches are paired, because each flip
+reshuffles the prefix.
