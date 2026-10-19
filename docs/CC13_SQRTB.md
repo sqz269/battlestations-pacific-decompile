@@ -24,7 +24,7 @@ pointer (`[ESP+38h]` after the prologue) or through `007F1000` / `007EF8B0`, whi
   quarter-sum of the zone's corners (`00D7A348`).
 - `007F18EB`-`007F192D`: the null arm, with `out+0` = 0 and the position `[00F87574..7C]`.
 
-No squadron or unit field is written, so whatever the answer drives, it drives through the callers.
+No squadron or unit field is written, except the `00414DB0` pose-cache refresh at `007F17EF` (`ECX` = the squadron, when `+C8h` is clear) ahead of the zone search. So whatever the answer drives, it drives through the callers.
 
 ## 2. The callers and what each does with the answer
 
@@ -34,7 +34,7 @@ The callers were found by rel32 + absolute scans and agree with `bsp.py lookup 0
 |---|---|---|
 | `007F1940` BSP_PlaneSquadron_ApplyEntityCommand | `007F1AFB` (the `returntobase` arm, `007F1AED CMP EAX,00E08F98`) | `EDI` = `out+0`. Null: `007F1B2D JZ 007F1B5D`, nothing is queued. Otherwise the record is copied (`0071DB50`). Unless the force flag `BL` is set, the director's `vtable[+34h]` must accept it. It is then queued on the squadron's director at `+348h` (`0071D880` first when `BL`; `0071ECF0`). The guard at `007F1AE4` needs `+3D0h`, a head plane. |
 | `0084E010` BSP_PlaneSquadronCommandBlock_Step | `0084E552` (`B5` and the step tail) | Null: `0084E55B JZ 0084E595`, the moveto-self test. Otherwise `0071D880` clears the block, `0071ECF0(out+0, &out+4)` issues the command, and `+228h` = 1. |
-| `009FFEB0` BSP_AiCommand_SendEmptySquadronHome | `009FFF09` | A non-null descriptor is issued through `0077D600(desc, &record, 1)`; null answers 0. |
+| `009FFEB0` BSP_AiCommand_SendEmptySquadronHome | `009FFEF2` | A non-null descriptor is issued through `0077D600(desc, &record, 1)` at `009FFF09`; null answers 0. |
 | `0099A170` BSP_Bot_InstallCommandTask | `0099A201` | Only `out+0` is read: null goes to `009C3C40`, and `00E08F68` / `00E08F80` / `land` / `retreat` go to their factories. The target comes from the original command (`0071EB60`), not from the record. |
 | `005F9CF0` BSP_HudOrder_ResolveReturnToBase | `005F9D15` | A pass-through: the record is returned to the HUD caller. |
 
@@ -56,7 +56,7 @@ site, `retreat` (`00E08F90`), or nothing. The member planes read it from there:
 The host's path:
 - `record_return_to_base_007f16d0` (`src/game_hosts_units.cpp`) resolves at the flight leader, once
   per delivered order. Its callers are the fan-out, `issue_return_to_base_007f16d0` (`0084E010 B5`,
-  `0084E552 step tail resolve`), and `009FFF09`'s exclusion arm.
+  `0084E552 step tail resolve`), and `009FFEB0`'s exclusion arm (`009FFEF2`).
 - The answer is cached per squadron in `rtb_census` (`last_arm`, `last_site`).
 - `install_land_task_0099a3dd` reads that cache for each member. Arm 3 installs `retreat`
   (`install_retreat_task_009c9d00`, `kPlaneRetreatTaskBound`). Arm 2, and arm 1 with
