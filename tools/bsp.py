@@ -16,6 +16,7 @@ from the snapshot, sharded ledgers, tags, call graph, partition, PE strings and 
   python tools/bsp.py ledger add-name|add-function|add-fragment|migrate ...
 """
 import argparse
+import collections
 import contextlib
 import hashlib
 import io
@@ -103,6 +104,13 @@ CREATE INDEX recon_address ON recon(address);
 CREATE TABLE calls(caller INTEGER, callee INTEGER);
 CREATE INDEX calls_caller ON calls(caller);
 CREATE INDEX calls_callee ON calls(callee);
+CREATE TABLE edges(caller INTEGER, callee INTEGER, site INTEGER, kind TEXT, detail TEXT);
+CREATE INDEX edges_caller ON edges(caller);
+CREATE INDEX edges_callee ON edges(callee);
+CREATE TABLE funclet_parent(funclet INTEGER PRIMARY KEY, parent INTEGER);
+CREATE TABLE ranges(func INTEGER PRIMARY KEY, stop INTEGER);
+CREATE TABLE undefined(address INTEGER PRIMARY KEY, stop INTEGER);
+CREATE TABLE vtables(address INTEGER PRIMARY KEY, class TEXT, slots INTEGER);
 CREATE TABLE datarefs(func INTEGER, ref INTEGER, text TEXT);
 CREATE INDEX datarefs_func ON datarefs(func);
 CREATE TABLE segments(id INTEGER PRIMARY KEY, start INTEGER, end INTEGER, candidates INTEGER, purity REAL,
@@ -166,6 +174,7 @@ def inputs_digest():
     """Digest of everything the index is built from, to detect staleness cheaply."""
     digest = hashlib.sha256()
     for path in [EXPORTS / 'functions.json', EXPORTS / 'callgraph.json', EXPORTS / 'datarefs.json',
+                 EXPORTS / 'callgraph_edges.json', EXPORTS / 'callgraph_indirect.json',
                  ROOT / 'reports/library_inventory/candidate_partition.json']:
         if path.exists():
             digest.update(path.name.encode())
@@ -250,7 +259,9 @@ def build_index(args):
                     rows[a][5] = s['segment']
     db.executemany('INSERT INTO functions VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', rows.values())
     callgraph = EXPORTS / 'callgraph.json'
-    if not callgraph.exists() or callgraph.stat().st_mtime < functions_path.stat().st_mtime:
+    edges_path = EXPORTS / 'callgraph_edges.json'
+    if (not callgraph.exists() or callgraph.stat().st_mtime < functions_path.stat().st_mtime
+            or not edges_path.exists() or edges_path.stat().st_mtime < functions_path.stat().st_mtime):
         # Without the sweep, lookup/callers/callees are silently empty; it takes about two seconds.
         print('call graph missing or older than the snapshot: running tools/callgraph_sweep.py')
         subprocess.run([sys.executable, str(ROOT / 'tools/callgraph_sweep.py'), '--output', str(EXPORTS)],
@@ -258,6 +269,23 @@ def build_index(args):
     if callgraph.exists():
         edges = [(int(k, 16), int(v, 16)) for k, vs in json.loads(callgraph.read_text()).items() for v in vs]
         db.executemany('INSERT INTO calls VALUES (?,?)', edges)
+    # Per-site edges with kinds (tools/callgraph_sweep.py), plus vtable/Lua edges when
+    # tools/callgraph_indirect.py has run. `calls` above stays the unique direct-edge table older readers expect.
+    if edges_path.exists():
+        swept = json.loads(edges_path.read_text())
+        db.executemany('INSERT INTO edges VALUES (?,?,?,?,NULL)', swept['edges'])
+        db.executemany('INSERT INTO funclet_parent VALUES (?,?)', [(int(k), v) for k, v in swept['funclet_parent'].items()])
+        db.executemany('INSERT INTO ranges VALUES (?,?)', [(int(k), v) for k, v in swept.get('ranges', {}).items()])
+        db.executemany('INSERT INTO undefined VALUES (?,?)', [(int(k), v) for k, v in swept.get('undefined', {}).items()])
+    indirect_path = EXPORTS / 'callgraph_indirect.json'
+    if indirect_path.exists():
+        extra = json.loads(indirect_path.read_text())
+        num = lambda v: int(v, 16) if isinstance(v, str) else v
+        db.executemany('INSERT INTO edges VALUES (?,?,?,?,?)',
+                       [(num(e.get('caller')), num(e['callee']), num(e.get('site')), e['kind'], e.get('detail'))
+                        for e in extra.get('edges', [])])
+        db.executemany('INSERT OR REPLACE INTO vtables VALUES (?,?,?)',
+                       [(num(v['address']), v.get('class'), len(v.get('slots', []))) for v in extra.get('vtables', [])])
     datarefs = EXPORTS / 'datarefs.json'
     if datarefs.exists():
         config = json.loads((ROOT / 'config/target.json').read_text(encoding='utf-8'))
@@ -277,7 +305,7 @@ def build_index(args):
     db.execute('INSERT INTO meta VALUES (?,?)', ('inputs_sha256', inputs_digest()))
     db.commit()
     counts = {t: db.execute(f'SELECT COUNT(*) FROM {t}').fetchone()[0]
-              for t in ('functions', 'calls', 'datarefs', 'segments', 'docs', 'doc_addresses')}
+              for t in ('functions', 'calls', 'edges', 'datarefs', 'segments', 'docs', 'doc_addresses')}
     db.close()
     # publish atomically; a reader holding the old file open (WinError 32) only delays the swap
     for attempt in range(20):
@@ -327,6 +355,9 @@ def connect(required=True):
 
 def fn_label(db, address):
     row = db.execute('SELECT name FROM functions WHERE address=?', (address,)).fetchone() if db else None
+    if row is None and db and db.execute("SELECT 1 FROM sqlite_master WHERE name='undefined'").fetchone() and \
+            db.execute('SELECT 1 FROM undefined WHERE address=?', (address,)).fetchone():
+        return f'{h(address)} (undefined code)'
     return f"{h(address)} {row['name'] if row else '?'}"
 
 
@@ -369,13 +400,33 @@ def lookup(args):
     db = connect()
     a = int(args.address, 16)
     f, lines = header_lines(db, a, args.width)
+    if f is None and (inside := containing(db, a)) is not None:
+        chunk = db.execute('SELECT stop FROM undefined WHERE address=?', (inside,)).fetchone()
+        if chunk:
+            print(f'{h(a)} is in undefined code {h(inside)}-{h(chunk[0])} ({chunk[0] - inside} bytes): '
+                  f'not a Ghidra function; the call sweep found it between snapshot functions ({lines[0].split("; ")[-1]})')
+            for direction in ('callers', 'callees'):
+                rows = group_edges(neighbours(db, inside, direction, EDGE_KINDS, fold=False), False)
+                print(f'{direction} ({len(rows)}): ' + ', '.join(
+                    (fn_label(db, o) if o is not None else 'data') + f' {k}' for o, k, s, d in rows[:args.limit]))
+            return
+        print(f'{h(a)} is inside {fn_label(db, inside)} (+{a - inside:#x})')
+        a = inside
+        f, lines = header_lines(db, a, args.width)
     print('\n'.join(lines))
     if f is None:
         return
-    callers = [r[0] for r in db.execute('SELECT caller FROM calls WHERE callee=? ORDER BY caller', (a,))]
-    callees = [r[0] for r in db.execute('SELECT callee FROM calls WHERE caller=? ORDER BY callee', (a,))]
+    callers = sorted({r[0] for r in neighbours(db, a, 'callers', ('call', 'tailjmp')) if r[0] is not None})
+    callees = sorted({r[0] for r in neighbours(db, a, 'callees', ('call', 'tailjmp'))})
     print(f"callers ({len(callers)}): " + ', '.join(fn_label(db, c) for c in callers[:args.limit]) + (' ...' if len(callers) > args.limit else ''))
     print(f"callees ({len(callees)}): " + ', '.join(fn_label(db, c) for c in callees[:args.limit]) + (' ...' if len(callees) > args.limit else ''))
+    if has_edges(db):
+        other = collections.Counter(r[1] for r in neighbours(db, a, 'callers', EDGE_KINDS[2:]))
+        if other:
+            print('also referenced: ' + ', '.join(f'{k} {n}' for k, n in other.items()) + f' (bsp.py callers {h(a)} lists them)')
+        p = db.execute('SELECT parent FROM funclet_parent WHERE funclet=?', (a,)).fetchone()
+        if p:
+            print(f'EH funclet of {fn_label(db, p[0])}')
     strings = [r['text'] for r in db.execute('SELECT text FROM datarefs WHERE func=? AND text IS NOT NULL ORDER BY ref', (a,))]
     if strings:
         print(f"string refs ({len(strings)}, immediates in the body, not necessarily call arguments): "
@@ -492,17 +543,220 @@ def range_query(args):
         print(f'... {total - args.limit} more (raise --limit)')
 
 
+EDGE_KINDS = ('call', 'tailjmp', 'addr_taken', 'data_ptr', 'eh', 'vslot', 'vcall?', 'lua')
+
+
+def has_edges(db):
+    return db.execute("SELECT 1 FROM sqlite_master WHERE name='edges'").fetchone() is not None and \
+        db.execute('SELECT 1 FROM edges LIMIT 1').fetchone() is not None
+
+
+def containing(db, a):
+    """The function whose swept body holds `a` (its start when `a` is one), else None."""
+    if db.execute('SELECT 1 FROM functions WHERE address=?', (a,)).fetchone():
+        return a
+    near = db.execute('SELECT address FROM functions WHERE address<=? ORDER BY address DESC LIMIT 1', (a,)).fetchone()
+    if not near:
+        return None
+    if not db.execute("SELECT 1 FROM sqlite_master WHERE name='undefined'").fetchone():
+        return near[0]  # an index built before the per-site sweep
+    stop = db.execute("SELECT stop FROM ranges WHERE func=?", (near[0],)).fetchone()
+    if stop is None or a < stop[0]:
+        return near[0]
+    # code between snapshot functions that Ghidra never defined (tools/callgraph_sweep.py lists the chunks)
+    chunk = db.execute('SELECT address, stop FROM undefined WHERE address<=? ORDER BY address DESC LIMIT 1', (a,)).fetchone()
+    return chunk[0] if chunk and a < chunk[1] else None
+
+
+def resolve_address(db, text):
+    """Hex address -> function start, saying so when a mid-function address was moved to its container."""
+    a = int(text, 16)
+    f = containing(db, a)
+    if f is None:
+        sys.exit(f'{h(a)} is not inside any swept function body (padding, data, or past the int3 pad); try lookup')
+    if f != a:
+        label = fn_label(db, f) if db.execute('SELECT 1 FROM functions WHERE address=?', (f,)).fetchone() else \
+            f'{h(f)} (undefined code, not a Ghidra function)'
+        print(f'{h(a)} is inside {label} (+{a - f:#x}); using that')
+    return f
+
+
+def undefined_query(args):
+    """Code between snapshot functions that Ghidra never defined, which something references."""
+    db = connect()
+    rows = db.execute("""SELECT u.address, u.stop, COUNT(e.callee) AS refs,
+                                SUM(e.kind IN ('call','tailjmp')) AS direct, SUM(e.kind='data_ptr') AS data
+                         FROM undefined u JOIN edges e ON e.callee=u.address
+                         GROUP BY u.address ORDER BY u.address""").fetchall()
+    total = db.execute('SELECT COUNT(*) FROM undefined').fetchone()[0]
+    rows = [r for r in rows if not args.direct or r['direct']]
+    print(f'{len(rows)} referenced undefined-code chunks ({total} chunks in all; the rest nothing references):')
+    for r in rows[:args.limit]:
+        near = db.execute('SELECT address, name, segment FROM functions WHERE address<? ORDER BY address DESC LIMIT 1', (r['address'],)).fetchone()
+        callers = [fn_label(db, c[0]) for c in db.execute("SELECT DISTINCT caller FROM edges WHERE callee=? AND kind IN ('call','tailjmp') AND caller IS NOT NULL LIMIT 2", (r['address'],))]
+        print(f"  {h(r['address'])} {r['stop'] - r['address']:>5} bytes seg={near['segment'] if near and near['segment'] is not None else '-'} "
+              f"refs={r['refs']} (direct {r['direct']}, data {r['data']}) after {near['name'] if near else '?'}"
+              + (f"; called by {', '.join(callers)}" if callers else ''))
+    if len(rows) > args.limit:
+        print(f'  ... {len(rows) - args.limit} more (raise --limit)')
+
+
+def wired_set():
+    """Function starts tools/wire_readiness.py last classified as wired (empty when it has not run here)."""
+    path = ROOT / 'local/output/wire_readiness.json'
+    if not path.exists():
+        return None
+    return {int(r['address'], 16) for r in json.loads(path.read_text(encoding='utf-8')).get('rows', [])
+            if r.get('state') == 'wired'}
+
+
+def neighbours(db, a, direction, kinds, fold=True):
+    """[(other, kind, site, detail)] edges of one function. With fold, EH funclets count as their parent:
+    a funclet caller is reported as the parent function, and a function's callees include its funclets'."""
+    if not has_edges(db):
+        col, other = ('callee', 'caller') if direction == 'callers' else ('caller', 'callee')
+        return [(r[0], 'call', None, None) for r in db.execute(f'SELECT {other} FROM calls WHERE {col}=?', (a,))]
+    marks = ','.join('?' * len(kinds))
+    out = []
+    if direction == 'callers':
+        for c, k, s, d in db.execute(f'SELECT caller, kind, site, detail FROM edges WHERE callee=? AND kind IN ({marks})', (a, *kinds)):
+            if fold and c is not None:
+                p = db.execute('SELECT parent FROM funclet_parent WHERE funclet=?', (c,)).fetchone()
+                if p and k != 'eh':
+                    d, c = f'via funclet {h(c)}', p[0]
+            out.append((c, k, s, d))
+    else:
+        sources = [a]
+        if fold:
+            sources += [r[0] for r in db.execute('SELECT funclet FROM funclet_parent WHERE parent=?', (a,))]
+        for src in sources:
+            for e, k, s, d in db.execute(f'SELECT callee, kind, site, detail FROM edges WHERE caller=? AND kind IN ({marks})', (src, *kinds)):
+                if src != a:
+                    d = f'via funclet {h(src)}'
+                if fold and k == 'eh':
+                    continue  # the funclets themselves are folded in, not listed
+                out.append((e, k, s, d))
+    return out
+
+
+def group_edges(rows, by_site):
+    """Collapse per-site rows to one per (other, kind): [(other, kind, [sites], [details])]. Data pointers are
+    one row in total, since each is an unattributed table slot (vslot/lua rows name the tables they know)."""
+    groups = {}
+    for other, kind, site, detail in rows:
+        key = (other, kind, site) if by_site else ((None, kind) if other is None else (other, kind))
+        g = groups.setdefault(key, (other, kind, [], []))
+        if site is not None:
+            g[2].append(site)
+        if detail and detail not in g[3]:
+            g[3].append(detail)
+    return list(groups.values())
+
+
+def edge_row(db, other, kind, sites, details, wired):
+    where = (' @' + ','.join(h(s) for s in sorted(sites)[:4]) + (f' +{len(sites) - 4}' if len(sites) > 4 else '')) if sites else ''
+    extra = f" [{'; '.join(details[:3])}{' ...' if len(details) > 3 else ''}]" if details else ''
+    if other is None:
+        return f"  {len(sites)} data slot(s){'':<30} {kind}{where}"
+    f = db.execute('SELECT * FROM functions WHERE address=?', (other,)).fetchone()
+    if f is None:
+        v = db.execute('SELECT class FROM vtables WHERE address=?', (other,)).fetchone()
+        u = db.execute('SELECT stop FROM undefined WHERE address=?', (other,)).fetchone()
+        label = (f"vtable {v[0] or '(no RTTI)'}" if v else
+                 f'undefined code, not a Ghidra function ({u[0] - other} bytes)' if u else '?')
+        return f"  {h(other)} {label:<44} seg=- {kind}{where}{extra}"
+    status = reconstruction_summary(f)
+    if wired is not None:
+        status += ' wired' if other in wired else ''
+    count = f' x{len(sites)}' if len(sites) > 1 else ''
+    return (f"  {h(other)} {f['name']:<44} seg={f['segment'] if f['segment'] is not None else '-'} "
+            f"{kind}{count}{where}{extra} {status}")
+
+
 def calls_query(args, direction):
     db = connect()
-    a = int(args.address, 16)
-    col, other = ('callee', 'caller') if direction == 'callers' else ('caller', 'callee')
-    rows = [r[0] for r in db.execute(f'SELECT {other} FROM calls WHERE {col}=? ORDER BY {other}', (a,))]
-    print(f'{direction} of {fn_label(db, a)} ({len(rows)}):')
-    for r in rows[:args.limit]:
-        f = db.execute('SELECT * FROM functions WHERE address=?', (r,)).fetchone()
-        print(f"  {h(r)} {f['name'] if f else '?':<44} seg={f['segment'] if f and f['segment'] is not None else '-'} {reconstruction_summary(f) if f else ''}")
-    if len(rows) > args.limit:
-        print(f'  ... {len(rows) - args.limit} more')
+    a = resolve_address(db, args.address)
+    kinds = tuple(args.kind.split(',')) if args.kind else EDGE_KINDS
+    bad = [k for k in kinds if k not in EDGE_KINDS]
+    if bad:
+        sys.exit(f'unknown --kind {bad}; kinds: {", ".join(EDGE_KINDS)}')
+    wired = wired_set() if (args.unwired or args.status) else None
+    if args.unwired and wired is None:
+        sys.exit('--unwired needs local/output/wire_readiness.json: run python tools/wire_readiness.py first')
+
+    def keep(other):
+        if other is None:
+            return not (args.unbuilt or args.unwired)
+        f = db.execute('SELECT recon_kind FROM functions WHERE address=?', (other,)).fetchone()
+        if args.unbuilt and f and f[0]:
+            return False
+        return not (args.unwired and other in wired)
+
+    if args.path_from_host:
+        return host_path(db, a, kinds, args.limit)
+    printed, seen, frontier = 0, {a}, [a]
+    for depth in range(1, max(1, args.depth) + 1):
+        level = []
+        for node in frontier:
+            rows = neighbours(db, node, direction, kinds)
+            shown = sorted(group_edges([r for r in rows if keep(r[0])], args.sites),
+                           key=lambda g: (EDGE_KINDS.index(g[1]), g[0] or 0, min(g[2]) if g[2] else 0))
+            head = f'{direction} of {fn_label(db, node)}'
+            if depth == 1:
+                counts = collections.Counter(r[1] for r in rows)
+                print(f"{head} ({len(rows)} sites: {', '.join(f'{k} {n}' for k, n in sorted(counts.items(), key=lambda kv: EDGE_KINDS.index(kv[0])))};"
+                      f" {len(shown)} rows{' after filters' if args.unbuilt or args.unwired else ''}):")
+            else:
+                print(f'{"  " * (depth - 1)}{head} (depth {depth}, {len(shown)}):')
+            for r in shown:
+                if printed >= args.limit:
+                    print(f'  ... more (raise --limit)')
+                    return
+                print('  ' * (depth - 1) + edge_row(db, *r, wired))
+                printed += 1
+                if r[0] is not None and r[0] not in seen and r[1] in ('call', 'tailjmp', 'vcall?', 'lua', 'addr_taken'):
+                    seen.add(r[0]); level.append(r[0])
+        frontier = level
+        if not frontier:
+            break
+
+
+def host_path(db, target, kinds, limit):
+    """Shortest caller chains from a wired function (tools/wire_readiness.py) to `target`, walking callers."""
+    wired = wired_set()
+    if wired is None:
+        sys.exit('--path-from-host needs local/output/wire_readiness.json: run python tools/wire_readiness.py first')
+    if target in wired:
+        print(f'{fn_label(db, target)} is itself wired')
+        return
+    walk = tuple(k for k in kinds if k in ('call', 'tailjmp', 'vcall?', 'lua', 'addr_taken'))
+    parent, frontier, found = {target: None}, [target], []
+    for _ in range(12):
+        nxt = []
+        for node in frontier:
+            for c, k, s, d in neighbours(db, node, 'callers', walk):
+                if c is None or c in parent:
+                    continue
+                parent[c] = (node, k)
+                if c in wired:
+                    found.append(c)
+                else:
+                    nxt.append(c)
+        if found or not nxt:
+            break
+        frontier = nxt
+    if not found:
+        print(f'no caller chain within 12 levels reaches a wired function from {fn_label(db, target)} '
+              f'(kinds {",".join(walk)}; vtable/Lua edges need tools/callgraph_indirect.py)')
+        return
+    print(f'{len(found)} shortest chain(s) from wired code to {fn_label(db, target)}:')
+    for start in found[:limit]:
+        chain, node = [], start
+        while parent[node] is not None:
+            nxt_node, k = parent[node]
+            chain.append(f'{fn_label(db, node)} -{k}->')
+            node = nxt_node
+        print('  ' + ' '.join(chain) + f' {fn_label(db, target)}')
 
 
 def docs_for(args):
@@ -1249,7 +1503,11 @@ local/output/ and prints the path. --full or BSP_OUTPUT_BUDGET=0 lifts the cap.
   lookup <addr>                  everything known about one address (name, recon, callers, docs)
   show <addr> [--asm] [--lines N] [--start N]   capped export excerpt; --start pages, --asm for listing
   range <lo> <hi> [--only FUN_]  functions in an address range
-  callers|callees|docs-for <addr>
+  callers|callees <addr>         any address inside a function resolves; one row per function and edge kind
+      --kind call,tailjmp,addr_taken,data_ptr,eh,vslot,vcall?,lua   --sites (one row per site)
+      --depth N   --unbuilt   --unwired   --status   --path-from-host (chains from wired code; reads wire_readiness.json)
+  undefined [--direct]           referenced code Ghidra never made a function (from the call sweep)
+  docs-for <addr>
   segment <id|addr>              partition band and its keywords
   find <text>                    name search        strings <text>   functions referencing a string
   disasm-raw <addr> [--length N] Capstone over disk bytes, works where Ghidra has no function
@@ -1366,8 +1624,20 @@ def main():
     p = sub.add_parser('show'); p.add_argument('address'); p.add_argument('--asm', action='store_true'); p.add_argument('--live', action='store_true')
     p.add_argument('--lines', '--limit', dest='lines', type=int, default=80); p.add_argument('--start', default='0', help='lines to skip, or with --asm a hex instruction address (8 digits or 0x...) to start at'); p.set_defaults(func=show)
     p = sub.add_parser('range'); p.add_argument('start'); p.add_argument('end'); p.add_argument('--only', help='name prefix filter, e.g. FUN_'); p.add_argument('--limit', type=int, default=40); p.set_defaults(func=range_query)
-    p = sub.add_parser('callers'); p.add_argument('address'); p.add_argument('--limit', type=int, default=25); p.set_defaults(func=lambda a: calls_query(a, 'callers'))
-    p = sub.add_parser('callees'); p.add_argument('address'); p.add_argument('--limit', type=int, default=25); p.set_defaults(func=lambda a: calls_query(a, 'callees'))
+    p = sub.add_parser('undefined', help='referenced code that Ghidra never made a function (from the call sweep)')
+    p.add_argument('--direct', action='store_true', help='only chunks something calls or jumps to')
+    p.add_argument('--limit', type=int, default=25); p.set_defaults(func=undefined_query)
+    for name in ('callers', 'callees'):
+        p = sub.add_parser(name, help=f'{name} of the function containing ADDRESS (mid-function addresses resolve), one row per site and edge kind')
+        p.add_argument('address'); p.add_argument('--limit', type=int, default=25)
+        p.add_argument('--kind', help=f'comma list of edge kinds ({",".join(EDGE_KINDS)}); default all')
+        p.add_argument('--depth', type=int, default=1, help='walk this many levels (call/tailjmp/vcall?/lua/addr_taken edges)')
+        p.add_argument('--unbuilt', action='store_true', help='only functions with no reconstruction record')
+        p.add_argument('--unwired', action='store_true', help='hide functions wire_readiness.py classified as wired')
+        p.add_argument('--status', action='store_true', help='mark wired rows (reads local/output/wire_readiness.json)')
+        p.add_argument('--path-from-host', action='store_true', help='shortest caller chains from wired code to ADDRESS')
+        p.add_argument('--sites', action='store_true', help='one row per call site instead of one per function and kind')
+        p.set_defaults(func=lambda a, d=name: calls_query(a, d))
     p = sub.add_parser('docs-for'); p.add_argument('address'); p.add_argument('--limit', type=int, default=20); p.set_defaults(func=docs_for)
     p = sub.add_parser('segment', help='partition segment by id, or the one containing an address'); p.add_argument('id', metavar='ID|ADDRESS'); p.add_argument('--limit', type=int, default=20); p.set_defaults(func=segment)
     p = sub.add_parser('find'); p.add_argument('text'); p.add_argument('--limit', type=int, default=25); p.set_defaults(func=find)

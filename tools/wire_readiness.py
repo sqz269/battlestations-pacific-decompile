@@ -45,6 +45,8 @@ ap.add_argument('--standins', action='store_true', help='print ready rows that a
 ap.add_argument('--frontier', metavar='LOG', help='rank unwired host stand-ins reached in this run log (native '
                 'table calls>0) by the callees-done rows their wiring would unlock')
 ap.add_argument('--limit', type=int, default=60)
+ap.add_argument('--byte-scan', action='store_true', help='use the old unaligned E8/E9 and dword byte scans instead of the '
+                'index edges table (for comparison)')
 args = ap.parse_args()
 
 db = sqlite3.connect(f'file:{(ROOT / "local/bsp_index.sqlite").as_posix()}?mode=ro', uri=True)
@@ -101,7 +103,26 @@ def containing(va):
 
 scan_edges = taken_text = 0
 address_taken = collections.defaultdict(set)  # func -> taker functions (None = data)
-for name, va0, data, is_code in sections:
+use_index_edges = not args.byte_scan and db.execute("select 1 from sqlite_master where name='edges'").fetchone() \
+    and db.execute('select 1 from edges limit 1').fetchone()
+if use_index_edges:
+    # Per-site edges from tools/callgraph_sweep.py (and callgraph_indirect.py when it has run): instruction-decoded
+    # calls/jumps, address-taken immediates, data pointers and code Ghidra never made a function, in place of the
+    # unaligned byte scans below (an E8/E9 or dword at any byte offset over-counts). vcall? candidates are not edges.
+    for c, e, k in db.execute("select caller, callee, kind from edges where kind in "
+                              "('call','tailjmp','addr_taken','data_ptr','vslot','lua')"):
+        if e not in fset:
+            continue
+        if k in ('call', 'tailjmp'):
+            if c in fset and c != e and e not in callees[c]:
+                callees[c].add(e); callers[e].add(c); scan_edges += 1
+            elif c not in fset:
+                address_taken[e].add(None)  # reached from undefined code: referenced, no known caller
+        else:
+            taker = c if k == 'addr_taken' and c in fset else None
+            address_taken[e].add(taker)
+            taken_text += taker is not None
+for name, va0, data, is_code in ([] if use_index_edges else sections):
     n = len(data)
     if is_code:
         for m in re.finditer(rb'[\xe8\xe9]', data):
