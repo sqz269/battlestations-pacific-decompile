@@ -178,7 +178,12 @@ struct GameMenuHost::Impl {
     // per action, and the frames of hold left (0: released, or let go).
     std::map<int, InputActionRecord> injected_actions;
     std::map<int, unsigned> injected_frames_left;
-    std::map<int, unsigned> injected_frames_without_2eh;   // this hold's frames with 2Eh down
+    std::map<int, unsigned> injected_frames_without_2eh;   // this hold's frames 005484F0 skipped
+    std::map<int, unsigned long long> injected_edge_frame;  // the frame of the last rising edge
+    std::map<int, bool> injected_held_last_frame;
+    // Set by the HUD when screen 2Eh's 005484F0 runs (note_screen_2eh_ran), and
+    // cleared at the next frame's input prologue.
+    bool screen_2eh_ran{false};
 
     // --- the state-request ring, game+5D8h ---------------------------------
     GameStateRequestQueue requests{};
@@ -1885,6 +1890,8 @@ bool GameMenuHost::in_game_screen_registered(int slot) {
     return impl_->screen_at(slot) != nullptr;
 }
 
+void GameMenuHost::note_screen_2eh_ran() { impl_->screen_2eh_ran = true; }
+
 GuiLayoutPage* GameMenuHost::in_game_page(int slot, const std::string& page_name) {
     Impl& host = *impl_;
     Impl::MenuScreen* screen = host.screen_at(slot);
@@ -2087,33 +2094,42 @@ void GameMenuHost::frame(float raw_delta, unsigned long long frame_index) {
             static_cast<unsigned>(request.first), request.second, frame_index);
     }
     pending_input_holds().clear();
-    // Screen 2Eh (005484F0, the HUD's weapon-group reader) is registered only while
-    // the mission's HUD runs (on USN01, frames ~410-1823, until the script's
-    // SetSelectedUnit). An edge or held frame outside that window reaches no
-    // 2Eh reader, so the run log says so instead of dropping it silently.
-    const bool screen_2eh_up = host.screen_at(0x2e) != nullptr;
+    // Screen 2Eh's 005484F0 (the HUD's weapon-group reader) runs only while screen
+    // 46h's update passes its gate (0064D62B wanted_04 / has_unit_1c): on USN01,
+    // frames ~410-1823, until the script's SetSelectedUnit. The HUD reports each
+    // frame it ran (note_screen_2eh_ran), after this prologue, so the previous
+    // frame's held actions are judged here, one frame late. An edge or held frame
+    // that no 005484F0 read is logged instead of being dropped silently.
+    const bool screen_2eh_ran_last_frame = host.screen_2eh_ran;
+    host.screen_2eh_ran = false;
     for (auto& entry : host.injected_actions) {
-        unsigned& left = host.injected_frames_left[entry.first];
+        const int action = entry.first;
+        if (host.injected_held_last_frame[action] && !screen_2eh_ran_last_frame) {
+            ++host.injected_frames_without_2eh[action];
+            if (host.injected_edge_frame[action] + 1 == frame_index) {
+                host.log.notef("helm input action 0x%02X edge on frame %llu lost: "
+                    "screen 2Eh's 005484F0 did not run", static_cast<unsigned>(action),
+                    frame_index - 1);
+            }
+        }
+        unsigned& left = host.injected_frames_left[action];
+        if (left == 0 && host.injected_held_last_frame[action]
+            && host.injected_frames_without_2eh[action] > 0) {
+            host.log.notef("helm input action 0x%02X hold ended on frame %llu: %u held "
+                "frame(s) without screen 2Eh's 005484F0", static_cast<unsigned>(action),
+                frame_index - 1, host.injected_frames_without_2eh[action]);
+        }
+        host.injected_held_last_frame[action] = left > 0;
         if (left > 0) {
             if (action_down_current(entry.second)) {
                 continue_action_00a919f0(entry.second, 1.0f);
             } else {
                 const InputEffectParam no_param{};
                 start_action_00a92aa0(entry.second, 1.0f, no_param, nullptr);
-                host.injected_frames_without_2eh[entry.first] = 0;
-                if (!screen_2eh_up) {
-                    host.log.notef("helm input action 0x%02X edge on frame %llu lost: "
-                        "screen 2Eh is not registered", static_cast<unsigned>(entry.first),
-                        frame_index);
-                }
+                host.injected_edge_frame[action] = frame_index;
+                host.injected_frames_without_2eh[action] = 0;
             }
-            if (!screen_2eh_up) ++host.injected_frames_without_2eh[entry.first];
             --left;
-            if (left == 0 && host.injected_frames_without_2eh[entry.first] > 0) {
-                host.log.notef("helm input action 0x%02X hold ended on frame %llu: %u held "
-                    "frame(s) without screen 2Eh", static_cast<unsigned>(entry.first),
-                    frame_index, host.injected_frames_without_2eh[entry.first]);
-            }
         } else {
             begin_action_frame_00a92370(entry.second);
         }

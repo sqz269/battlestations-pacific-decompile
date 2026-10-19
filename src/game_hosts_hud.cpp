@@ -2977,6 +2977,7 @@ public:
         return owner_.menu.in_game_screen_registered(0x2e);
     }
     void screen_2eh_005484f0() override {
+        owner_.menu.note_screen_2eh_ran();   // the helm `input` line's lost-edge report
         if constexpr (kHudWeaponGroupScreenBound) {
             WeaponGroupScreenBinding group_host(owner_);
             bsp::weapon_group_screen_update_005484f0(owner_.weapon_group, group_host);
