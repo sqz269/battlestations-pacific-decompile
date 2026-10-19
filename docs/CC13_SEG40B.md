@@ -67,6 +67,28 @@ exception-unwind funclets (rel32 scan):
 `0072BC90`'s absolute hit at `004CA918` is a false positive: it falls inside the rel32 of
 `CALL 00BF65AC` at `004CA917`.
 
+## Functions cc16 found undefined
+
+cc16 (main 2b63fdf04, `local\cc16_undef_candidates.json` in its progress tree) listed eight
+undefined-code candidates inside this lease. Each was defined with
+`tools/ghidra_define_function.py <start> <end>` (write lock; record in
+`reports/defined_functions.json`). Ghidra's bytes match the disk image over every body. A rel32 plus
+absolute-dword scan found each one's references.
+
+| Address | Range | Reference | C++ | Body |
+|---|---|---|---|---|
+| `00728DE0` | ..`00728E0C` | `00CFDE40` (GUN_SET_FIRE_MODE vtable `00CFDE3C` +4h) | `gun_set_fire_mode_write_00728de0` | `0075B480` header; `004290B0` bool +1Ch; `00429070` dword +20h, 2 bits. |
+| `00728E10` | ..`00728E3E` | `00CFDE44` (+8h) | `gun_set_fire_mode_read_00728e10` | `0075B4C0` header; on stream+4h: `00428D70` bool +1Ch, `00428D10` dword +20h, 2 bits. |
+| `00728EC0` | ..`00728EEB` | `00CFDE54` (R_T_GUN_SET_CONTFIRING vtable `00CFDE50` +4h) | `r_t_gun_set_contfiring_write_00728ec0` | header; bool +1Ch; bool +20h. |
+| `00728EF0` | ..`00728F1C` | `00CFDE58` (+8h) | `r_t_gun_set_contfiring_read_00728ef0` | header; on stream+4h: bool +1Ch, bool +20h. |
+| `0072A090` | ..`0072A0CD` | nine vtables (`00CF9840`, `00CF9AB0`, `00CFAC50`, `00CFBEB8`, `00CFC0F0`, `00CFC328`, `00CFE240`, `00CFE4A0`, `00CFE6E0`) | `destroyed_property_get_0072a090` | `__thiscall(key, arg, out)`, RET 0Ch: key+4h non-null and `_stricmp(name, "destroyed")` == 0 gives `*out = object+3B8h`, true; else false. |
+| `007312E0` | ..`0073137A` | `00CFE748` (`00CFE740` +8h) | `torpedo_shot_command_write_007312e0` | The writer half of BSP_TorpedoShotCommand: `type` = "torpedo", `heading` = float +4h, `swimdepth` = float +8h, through writer slot +0Ch. Mirrors the reader `00731270` (slot +4h, src/cc13_seg40.cpp). |
+| `007358C0` | ..`007358E9` | `00CFEA08` (slot 0) | `singleton_01090298_scalar_deleting_destructor_007358c0` | `[01090298] = 0`; vtable `00CE3818` (SingletonBase); free on flags bit 0; returns the object. |
+| `00735B40` | ..`00735B4B` | `00CFEAC4` | `game_member_1a0c_00735b40` | `MOV EAX,[00E188A8] / ADD EAX,1A0Ch / RET`. |
+
+The torpedo writer is serialization only (the property publisher). The gameplay torpedo launch path
+does not read it, so there is no URGENT note.
+
 ## Uncertainty
 
 - The slot roles of +14h..+2Ch and +3Ch are not named. Nothing found calls them through the base,

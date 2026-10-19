@@ -14,7 +14,11 @@
 
 #include <cstdint>
 
+#include "bsp/cc13_seg40.hpp"
+
 namespace bsp::cc13_seg40b {
+
+using bsp::Cc13Seg40Host;
 
 // The empty C string literal the name getter returns (00CE3A0C, four zero bytes).
 inline constexpr std::uint32_t kEmptyStringLiteral = 0x00CE3A0Cu;
@@ -51,6 +55,43 @@ void session_message_root_store_vtable_007293b0(void* object) noexcept;
 // 00730B50 stores 00CFE2B8; reached only by JMP from 00C85890, 00C858B0 and 00C858D0
 // (ECX = [ebp-10h], a heap shot command under construction).
 void shot_command_base_store_vtable_00730b50(void* object) noexcept;
+
+// --- functions cc16 found undefined (defined in Ghidra by this packet) ---
+// Session-message serializers, __thiscall(ECX = message, cursor), RET 4. Each writes or reads
+// the extended header (0075B480 / 0075B4C0), then the message's +1Ch byte as a boolean.
+// 00728DE0 / 00728E10: GUN_SET_FIRE_MODE (vtable 00CFDE3C slots +4h / +8h); the second field is
+// the dword at +20h, 2 bits.
+void gun_set_fire_mode_write_00728de0(Cc13Seg40Host& host, void* message, void* cursor);
+void gun_set_fire_mode_read_00728e10(Cc13Seg40Host& host, void* message, void* stream);
+// 00728EC0 / 00728EF0: R_T_GUN_SET_CONTFIRING (vtable 00CFDE50 slots +4h / +8h); the second
+// field is the byte at +20h as a boolean.
+void r_t_gun_set_contfiring_write_00728ec0(Cc13Seg40Host& host, void* message, void* cursor);
+void r_t_gun_set_contfiring_read_00728ef0(Cc13Seg40Host& host, void* message, void* stream);
+
+// 0072A090, __thiscall(ECX = object, const PropertyKey* key, arg, uint8_t* out), RET 0Ch. The
+// "destroyed" property reader shared by nine vtables (00CF9840, 00CF9AB0, 00CFAC50, 00CFBEB8,
+// 00CFC0F0, 00CFC328, 00CFE240, 00CFE4A0, 00CFE6E0 hold it). When key+4h is a non-null name
+// and _stricmp(name, "destroyed" @ 00CE44D0) == 0, *out = object+3B8h and it returns true;
+// otherwise false. The middle argument is not read.
+bool destroyed_property_get_0072a090(Cc13Seg40Host& host, const void* object, const void* key,
+                                     std::uint8_t* out);
+
+// 007312E0, __thiscall(ECX = command, writer), RET 4: BSP_TorpedoShotCommand_Write, slot +8h of
+// 00CFE740 (the reader 00731270 is slot +4h). Writer slot +0Ch three times:
+// ("type", string "torpedo" @ 00CFB414), ("heading", float +4h), ("swimdepth", float +8h).
+void torpedo_shot_command_write_007312e0(Cc13Seg40Host& host, const void* command, void* writer);
+
+// 007358C0, __thiscall(ECX = object, flags), RET 4: the scalar deleting destructor in vtable
+// 00CFEA08 slot 0. Clears the singleton cell 01090298, restores the SingletonBase vtable
+// 00CE3818, frees with 00BF65AC when flags bit 0 is set, returns the object.
+void* singleton_01090298_scalar_deleting_destructor_007358c0(Cc13Seg40Host& host, void* object,
+                                                             std::uint32_t flags,
+                                                             void** singleton_cell_01090298);
+
+// 00735B40, __thiscall, RET: returns [00E188A8] + 1A0Ch (the game object's member at
+// +1A0Ch). Referenced only by the vtable entry at 00CFEAC4, next to 00735B30
+// BSP_Application_IgnoreVfsCallback.
+void* game_member_1a0c_00735b40(void* game_00e188a8) noexcept;
 
 }  // namespace bsp::cc13_seg40b
 
