@@ -236,3 +236,42 @@ Object scene_database_create_hidden_entity_at_0046dc10(Seg6Host& host, Object da
 void path_entity_destruct_0047b700(Seg6Host& host, Object entity);
 
 }  // namespace bsp::cc13_seg6
+
+// oct18b-nA1: newly defined, assembly-reviewed leaves; build-only interfaces.
+
+namespace bsp::cc13_seg6 {
+struct AnimAdvanceHost {
+    virtual ~AnimAdvanceHost() = default;
+    virtual Object game_00e188a8() = 0;
+    // _CIfmod: ST1 dividend, ST0 divisor. Returns ST0; caller rounds to float.
+    virtual double cifmod_00bf857a(double dividend, double divisor) = 0;
+    virtual void animation_set_time_24(Object animation, std::uint32_t mode, float time,
+                                       std::uint32_t flag) = 0;
+    virtual void scene_refresh_visibility_00484940(Object entity) = 0;
+};
+// ECX AnimClass entity, RET; vtable 00CE5A20 slot 54.
+void anim_entity_advance_time_004710d0(Object entity, AnimAdvanceHost& host);
+// ECX CloudClass entity, RET; vtable 00CE5E68 slots 7 and 6 respectively.
+void cloud_mark_dirty_00475a20(Object entity) noexcept;
+Object cloud_animation_00476bb0(Object entity) noexcept;
+struct VehicleHitHost {
+    virtual ~VehicleHitHost() = default;
+    virtual Object game_00e188a8() = 0;
+    virtual double hull_damage_00470510(Object hit, float armour) = 0;
+    virtual double worst_part_004706d0(Object hit, std::uint32_t* index, float armour) = 0;
+    virtual void refresh_pose_00414db0(Object entity) = 0;
+    virtual void add_reference_ce221c(Object definition) = 0;
+    // 008685E0 ECX out-handle, EDX manager, stack consumed definition/xyz/0/0.
+    virtual Object* create_point_effect_008685e0(Object* out, Object manager, Object consumed_definition,
+                                                 const float* xyz, std::uint32_t a, std::uint32_t b) = 0;
+    virtual std::int32_t release_reference_ce2220(Object object) = 0;
+    virtual void destroy_vcall_00(Object object) = 0;
+    virtual void vehicle_effect_0047bb70(Object manager, Object definition, Object entity) = 0;
+    virtual void mission_kill_00926d90(Object entity, std::uint32_t reason) = 0;
+};
+// ECX VehicleClass entity, stack hit, RET 4; AL=1. Threshold: double 100 at
+// 00D7A220. Names inferred from class table; host dependencies remain bindings.
+bool vehicle_accumulate_hit_0047a660(Object entity, Object hit, VehicleHitHost& host);
+// RET, EAX=12h; Path class kind table (recon_slot_lists.cpp).
+std::uint32_t path_class_kind_0047b790() noexcept;
+}

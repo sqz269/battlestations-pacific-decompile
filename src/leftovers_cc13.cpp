@@ -420,6 +420,12 @@ void reset_terrain_state_00881a70(LandscapeTerrainState& state) {
 
 // October 18 tB bounded storage tail; see docs/OCT18_TAIL_B.md.
 #include "bsp/oct18_tail_b.hpp"
+
+namespace bsp::oct18_tail_b {
+void* instantiate_ship_message_thunk_00759090(void* message, Host& host) {
+    return instantiate_ship_message_0081bfe0(message, host);
+}
+}
 #include <cstddef>
 #include <cstring>
 #include <stdexcept>

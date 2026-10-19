@@ -103,6 +103,7 @@
 #include "bsp/command_building_capture.hpp"
 #include "bsp/vehicle_class.hpp"
 #include "bsp/weapon_director.hpp"
+#include "bsp/ship_ai_seg67_switches_cc13.hpp"
 
 namespace bsp::game {
 
@@ -10762,7 +10763,14 @@ public:
         in.own_speed = owner_.units.unit_forward_speed_0092d730(index_);
         in.acceleration = owner_.units.unit_class_max_accel_0504(index_);
         in.hull_half_width = owner_.units.unit_half_width_09cc(index_);
-        in.hull_beam = owner_.units.unit_hull_length_09c8(index_);
+        if (bsp::kShipAiTorpedoMarginClassLengthBound) {
+            // 009E089A..009E08EF: [[blk+3FCh]+538h]+A0h, the own class Length.
+            float class_length = 0.0f, right = 0.0f, up = 0.0f;
+            owner_.units.unit_class_extents(index_, class_length, right, up);
+            in.hull_beam = class_length;
+        } else {
+            in.hull_beam = owner_.units.unit_hull_length_09c8(index_);
+        }
         const auto& hull = ctl_.hull_geometry;
         in.position_x = hull.position_184[0];
         in.position_z = hull.position_184[1];
@@ -10916,6 +10924,12 @@ public:
         }
         // 009EE580..009EE670, projected by packet cc_ai_goal_vector: the path
         // plan refresh, the path point pick and the lateral-offset publish.
+        if (bsp::kShipAiStationLatchClearBound) {
+            // 009EE586..009EE594, before the 009EE59B / 009EE59F gate.
+            ctl_.station_close_38a = false;
+            ctl_.station_aligned_388 = false;
+            ctl_.station_reversing_389 = false;
+        }
         bsp::ShipAiPathPickState pick{};
         pick.steering_mode_1c4 = static_cast<int>(ctl_.blk.mode);
         pick.astern = ctl_.blk.mode == bsp::ShipAiSteeringMode::NavigateAstern;
@@ -10945,7 +10959,53 @@ public:
             } else {
                 owner_.record("ShipAi::navigation_arm_tail", 0x009eeaabu);
             }
+            if (bsp::kShipAiNavGateClosedArmFinalBound) {
+                // 009EE59F JZ 009EF206: 009DE5B0(dt) before AL = [ESP+37h] = 0.
+                if (kShipAiArmFinalWholeBound)
+                    owner_.arm_final_step_009de5b0(index_, ctl_, row_);
+                else if (kShipTorpedoResponseBound || kShipAvoidZoneEscapeBound)
+                    owner_.torpedo_override_009de8f1(index_, ctl_, row_);
+            }
             return false;
+        }
+        if (bsp::kShipAiParkedByteBeforeTailBound) {
+            // 009EE6F1..009EE750. [blk+2F4h] is the live plan; record+20h is
+            // CL from 009EE6DA.
+            const bsp::ShipAiPathPlanBlock& live
+                = (ctl_.plan_front == 0) ? ctl_.plan_a : ctl_.plan_b;
+            bool parked = true;                                          // 009EE718
+            if (live.search_state != 0) {                                // 009EE6FE
+                parked = static_cast<std::int32_t>(ctl_.goal_layer_310)
+                             >= static_cast<std::int32_t>(ctl_.travel_layer_30c) // SETGE
+                         && !ctl_.plan_computing_2fc                     // 009EE73A
+                         && ctl_.path_point.more_path_20;                // 009EE743
+            }
+            ctl_.tail.parked_2fd = parked;
+            ctl_.goal.flag_2fd = parked;
+        }
+        if (bsp::kShipAiNavigateAsternSkipBound
+            && ctl_.blk.mode == bsp::ShipAiSteeringMode::NavigateAstern) {
+            // 009EE671..009EE6CB still run in mode 3: the A90h..A9Ch goal publish
+            // and the running max of 1F0h over 009D9E50 (FCOMPI/JBE). Duplicated
+            // here so ship_ai_navigation_arm_009ee671's OFF path is untouched.
+            ctl_.nav.goal_valid_0a90 = true;
+            ctl_.nav.goal_x_0a94 = ctl_.path_point.point_x_08;
+            ctl_.nav.goal_y_0a98 = 0.0f;
+            ctl_.nav.goal_z_0a9c = ctl_.path_point.point_z_0c;
+            NavArmBinding prelude_host(owner_, ctl_, index_);
+            const float path_length = prelude_host.remaining_path_length_009d9e50();
+            if (path_length > ctl_.nav.longest_path_1f0) {
+                ctl_.nav.longest_path_1f0 = path_length;
+            }
+            // 009EE756 JNE 009EF206: no 009EE765..009EEAA2 output, no tail.
+            // 009EF206..009EF213 is 009DE5B0(dt), which the path branch otherwise
+            // reaches through the tail's after_arm_009de5b0.
+            if (kShipAiArmFinalWholeBound)
+                owner_.arm_final_step_009de5b0(index_, ctl_, row_);
+            else if (kShipTorpedoResponseBound || kShipAvoidZoneEscapeBound)
+                owner_.torpedo_override_009de8f1(index_, ctl_, row_);
+            owner_.done("ShipAi::navigate_astern_skip_009ee756", 0x009ee756u);
+            return false;   // AL = [ESP+37h] = 0, 009EDA2F
         }
         bsp::ShipAiNavWaypoint waypoint{};
         waypoint.x = ctl_.path_point.point_x_08;            // 009EE671

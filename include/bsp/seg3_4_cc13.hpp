@@ -261,3 +261,34 @@ void owned_ptr_delete_reset_00449310(void* slot, SmallOwnerHost& host);
 void weather_config_destruct_00445940(void* config, SmallOwnerHost& host);
 
 }  // namespace bsp::seg3_4_cc13
+
+// oct18b-nA1: newly defined, assembly-reviewed leaves; build-only interfaces.
+
+namespace bsp::seg3_4_cc13 {
+struct DeviceHitRelayHost {
+    virtual ~DeviceHitRelayHost() = default;
+    virtual bool is_kind_5c(void* object, std::uint32_t kind) = 0;
+    virtual void apply_hit_ec(void* object, void* hit) = 0;
+    virtual void unit_apply_hit_008777d0(void* device, void* hit) = 0;
+};
+// ECX device, stack hit, RET 4. Names are inferred from the 0043F7xx family.
+void device_relay_hit_0043f7f0(void* device, void* hit, DeviceHitRelayHost& host);
+// ECX unused, stack kind, RET 4, EAX = 0/1; vtable 00CE4480 slot 6.
+bool device_class_is_kind_004407b0(std::uint32_t kind) noexcept;
+// RET, EAX = 28h; MCatapult class table at 00CE46C0.
+std::uint32_t catapult_class_kind_00443040() noexcept;
+struct PooledStringAt0cHost {
+    virtual ~PooledStringAt0cHost() = default;
+    virtual void* pool_00419cc0() = 0;
+    virtual void return_block_00bd1510(void* pool, void* data, std::uint32_t bytes,
+                                       std::uint32_t unit) = 0;
+};
+// ECX owner, RET; pooled string is length +Ch, text +10h.
+void pooled_string_at_0c_release_00444000(void* owner, PooledStringAt0cHost& host);
+struct RefSlotAssignHost : DeviceEntityHost {
+    virtual void interlocked_increment_ce221c(void* counter) = 0;
+};
+// 00440000: ECX destination slot, EDX source slot, RET, EAX destination.
+// Engine-owned counted-reference helper; no stock-library provenance established.
+void* ref_slot_assign_00440000(void* destination, const void* source, RefSlotAssignHost& host);
+}

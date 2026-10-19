@@ -212,3 +212,78 @@ the reconstructed C++ API supplies the provider context explicitly. No
 Original body changed in this diagnosis. The fault is independent of the
 scene-lighting provider under separate review; no completed native primitive
 draw or visual proof is inferred from this interrupted command.
+
+## ON12 texture proof and procedural-factory startup
+
+Parent ON12 reached the visual milestone in the three captures
+`local/oct18b_render_on_final_N001.png`, `_N060.png` and `_N180.png`.
+Its before-B24010 observation at log3547..3569 matched the installed Fletcher
+Hull_Camo/Blank/Spec/Bump native owners and COMs to actual device slots0..4.
+Thus this run supplies actual authored-texture binding and visible ship proof,
+in addition to returned B24010 draws. The installed Blank light map is grey
+RGB129,128,129, giving about0.2235 AO through the shader's pow2.2 decode; it
+is not an inferred white/default light map. Cached normal ship CTAB binds
+ShipMap0, Camo1, LightMap2, SpecularMap3, NormalMap4 and ShadowTexture5.
+
+ON12 then crashed during shutdown. Frozen executable
+`local/oct18b_render_on_attempt12.exe` SHA256
+`73f01956a2c9d9fc0c3a116a9b5aae453d30b97f0328801b87c642f556e3a8ee`
+matches its manifest and map timestamp6AD5AA59. The dump writes address4 in
+KERNEL32 InterlockedDecrement: sink0 at 004DDB40, called by B1B680+BC,
+004DE340 and native singleton drain. The frozen caller loads the final cache
+record's+28, then forwards that null sink with the correct fastcall binding.
+Original004DDA40/004DDB40 assembly has no null guard. A1 separately verified
+that Original B1A4F0 unconditionally inserts B1B810's factory result, including
+null, and B19E90 returns null for an absent factory key. No null-sink skip was
+added to the destructor or producer.
+
+The missing startup is genuine BBCB40/BBC900 registration of
+CausticsTextureSource and ShoreWaveTextureSource0/1/2. Existing production
+startup never called `GameNativeProceduralFactoryApplication::setup_00bbcb40`.
+Installed shore/underwater descriptors request these names during the complete
+179-effect preload. Original Application initialization calls BBCB40 at73D8CC
+before preload73DD12. Original shutdown calls BBC5D0 at738314 before particle
+clock retirement. Factory resources continue to use existing canonical
+BBC6F0/BBC810 lookup/creation providers; no substitute sink is supplied.
+
+`GameNativeMissionFactories` composes those existing bodies before preload and
+retires them only after all factory consumers quiesce, before singleton drain.
+Its Source-owned publication is the designated caller cell required by the
+existing wrapper; no fixed-address Original mutable-global mapping is claimed.
+The graph remains alive through `after_native_drain`, including the native
+dangling publication and borrowed registry values. Interrupted operations retain
+the full owner/frame graph. Healthy live factories do not request process
+retention merely because normal retirement is still due.
+
+The existing initialized-value-copy API is preserved. A new explicit borrowed
+frame overload avoids eager reads of dormant scratch cells and borrows A1's
+typed `GameNativeMissionFactoryFrames` until parent drain. Required admission is
+absent/empty canonical registry, stable nil sentinel and serialized insertion
+of exactly the four checked native names in increasing order. This establishes
+direct end-hint insertion throughout; B1AF90's unresolved high24 direction bits
+remain outside the admitted domain. No unknown preimage is zero-filled or read.
+Nested first-write evidence is in `docs/OCT18B_RENDER_FACTORY_FRAMES.md`.
+
+Outer first-write proof: BBCB55 saves incoming ECX while EH state is-1;
+BBCB60 replaces that word with the allocator result before state0 atBBCB65.
+The supplied incoming value is explicitly this new Source graph's identity,
+not a recovered Original ECX. Those bits are never consumed by native cleanup,
+including allocator failure. BBC900 writes its mask/self, table null slots,
+current allocation and raw-name construction before any corresponding reads.
+BBC5F0/BBC740 overwrite cleanup-self before state0 and push name/factory inputs
+before nested registration. BBC520 writes cleanup-self; reached slot terminals
+receive full flags1 before their read. Untouched SBO/iterator/padding fields
+remain untouched until genuine stores; no general fallback path is admitted.
+
+Native ABI remains separate: BBCB40/BBC5D0 have no native arguments;
+BBC900 takes ECX table; BBC5F0/BBC740 take ECX factory plus stack name, RET4.
+The new C++ graph makes provider/cell/frame lifetimes explicit and does not
+claim Original register/private-stack/FH3 equivalence. No Original body was
+newly reconstructed. Primary integrated `ce1a7c505` as `708640549`, wired the
+graph in `743d7bc3f`, and reported its strict Win32 build plus both existing
+CTest checks passed. Primary ON13 then reported genuine four-key setup,
+139 returned native draws per mission frame and complete native singleton/
+particle-clock drain. The mission graph closed before a separate late second
+drain hit its Stage::closed admission guard; whole-process normal exit is not
+claimed by this packet. OFF13 matched fresh current-main control completely:
+1348 rows, 665 summaries, 21 units, exit0. This worker ran no build or game test.

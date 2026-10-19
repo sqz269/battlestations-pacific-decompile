@@ -15,8 +15,34 @@
 #include <cstdint>
 
 #include "bsp/air_operations.hpp"
+#include "bsp/native_session_message_base.hpp"
+#include "bsp/object_handle_resolvers.hpp"
 
 namespace bsp::band_006b_cc13 {
+// Oct18b-nA2: complete AIRBASE vtable codecs. ECX=actual message; one stream
+// argument/RET4. Writers receive NativeBitCursor directly; readers receive the
+// wrapper and advance its +4 cursor, after the existing extended header body.
+// Common byte +1Ch is one bit. No constructor, profile wiring, bounds checks or
+// new type identity is inferred. Names remain descriptive hypotheses.
+void airbase_do_launch_slot_write_006bc440(const void*,NativeBitCursor*);
+void airbase_do_launch_slot_read_006bc470(void*,NativeSessionReadStream*);
+void airbase_set_slot_write_006bd8c0(const void*,NativeBitCursor*);
+void airbase_set_slot_read_006bd920(void*,NativeSessionReadStream*);
+void airbase_stock_item_write_006bd9a0(const void*,NativeBitCursor*);
+void airbase_stock_item_read_006bda80(void*,NativeSessionReadStream*);
+// 006BDB00: ECX unused, stack full type/RET4; EAX=0/1 for 86h,49h,46h.
+bool airbase_type86_is_type_006bdb00(std::uint32_t) noexcept;
+void airbase_type86_write_006bdb30(const void*,NativeBitCursor*);
+void airbase_type86_read_006bdb60(void*,NativeSessionReadStream*);
+// 006BDB90: ECX=message, RET. Signed split of WORD +20h, unchecked slot+C.
+// Returns native EAX bits (payload high24 bits retained, AL=payload!=null).
+std::uint32_t airbase_type86_has_entity_bits_006bdb90(const void*,const ObjectHandleTables&) noexcept;
+void airbase_set_orders_write_006bdce0(const void*,NativeBitCursor*);
+void airbase_set_orders_read_006bdd30(void*,NativeSessionReadStream*);
+// 006BDD80 / 006BEDB0: byte-identical scalar deletes; ECX=message, flags/RET4,
+// EAX=identity, stamp root profile then free only for bit0. Reuse the existing
+// actual Source root profile/free boundary; this is not a binary entry bridge.
+NativeSessionMessageStorage* airbase_message_delete_006bdd80(NativeSessionMessageStorage*,std::uint32_t);
 
 // ---------------------------------------------------------------------------------------------
 // Type predicates

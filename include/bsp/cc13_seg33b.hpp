@@ -441,6 +441,21 @@ public:
     virtual float* matrix_multiply_00413920(const float* a, float* out, const float* b) = 0;
     virtual void node_set_position_2c(Object node, const float* position) = 0;
     virtual void plane_set_pose_88(Object plane, const float* matrix) = 0;
+    // oct18b-nA3 message codecs: ECX raw cursor, value/output and width (RET8),
+    // boolean value/output (RET4), numeric float value/output,0,1,scale,width (RET14h).
+    virtual void bit_write_unsigned_00429070(Object cursor, std::uint32_t value, std::int32_t bits) = 0;
+    virtual void bit_read_unsigned_00428d10(Object cursor, std::uint32_t* value, std::int32_t bits) = 0;
+    virtual void bit_write_signed_00429090(Object cursor, std::int32_t value, std::int32_t bits) = 0;
+    virtual void bit_read_signed_00428d30(Object cursor, std::int32_t* value, std::int32_t bits) = 0;
+    virtual void bit_write_boolean_004290b0(Object cursor, std::uint32_t value) = 0;
+    virtual void bit_read_boolean_00428d70(Object cursor, std::uint8_t* value) = 0;
+    virtual void bit_write_float_004295c0(Object cursor, float value, std::int32_t zero,
+                                         std::int32_t is_signed, float scale, std::int32_t bits) = 0;
+    virtual void bit_read_float_004293f0(Object cursor, float* value, std::int32_t zero,
+                                        std::int32_t is_signed, float scale, std::int32_t bits) = 0;
+    // Subordinate slot160h(order), RET4; 00744A90 ECX building, order, RET4.
+    virtual void subordinate_apply_order_vt160(Object subordinate, Object order) = 0;
+    virtual void entity_apply_fire_target_order_alt_00744a90(Object building, Object order) = 0;
 };
 
 // ---------------------------------------------------------------------------
@@ -703,6 +718,18 @@ inline constexpr std::uint32_t kZeroVector = 0x00F87574;       // float[3]
 inline constexpr std::uint32_t kConvexArraysVtable = 0x00CFB69C;
 inline constexpr std::uint32_t kConvexArrays2Vtable = 0x00CFB6A0;
 inline constexpr std::uint32_t kConvexObjectVtable = 0x00CFB6A4;
+
+// oct18b-nA3 additions; names remain hypotheses, new source interfaces, build-only.
+bool fog_chunk_all_slots_free_006f0800(Object chunk);
+void command_building_set_owner_message_write_006f2520(Seg33bHost&, Object message, Object cursor);
+void command_building_set_owner_message_read_006f2550(Seg33bHost&, Object message, Object stream);
+void command_building_set_level_message_write_006f25e0(Seg33bHost&, Object message, Object cursor);
+void command_building_set_level_message_read_006f2610(Seg33bHost&, Object message, Object stream);
+void command_building_capture_message_write_006f26b0(Seg33bHost&, Object message, Object cursor);
+void command_building_capture_message_read_006f2700(Seg33bHost&, Object message, Object stream);
+void command_building_apply_fire_target_order_006f2bd0(Seg33bHost&, Object building, Object order);
+Object command_building_powerup_binding_006f5840(Object building);
+float land_fort_constant_million_006f58d0() noexcept;
 
 }  // namespace bsp::cc13_seg33b
 

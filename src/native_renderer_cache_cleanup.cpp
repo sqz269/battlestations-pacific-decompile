@@ -6,6 +6,7 @@
 #include "bsp/native_render_resource_record_construction.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include <Windows.h>
 #include <new>
 #include <stdexcept>
 
@@ -56,6 +57,35 @@ void current_cache_release(void* cache, void* captured_child, NativeRendererCach
     // The existing provider decrements actual+04 BEFORE resolving its canonical
     // companion, whose terminal dispatches the current actual profile at zero.
     release_native_render_actual_owner(c.owners, captured_child);
+}
+void observe_cleanup(void* cache, void* resource, std::uint32_t native_function,
+    NativeRendererCacheCleanupEvent event, NativeRendererCacheCleanupContext& c) {
+    if (!c.observe_cleanup) return;
+    NativeRendererCacheCleanupObservation observation;
+    observation.native_function = native_function;
+    observation.event = event;
+    observation.cache = cache;
+    observation.resource = resource;
+    observation.cache_count = field<std::uint32_t>(cache, 8);
+    // Generic base registries need not contain a +20 cell. The ON host uses
+    // this hook for its texture registry; keep even that optional read safe.
+    void* fallback{};
+    SIZE_T fallback_copied{};
+    observation.fallback_read = ReadProcessMemory(GetCurrentProcess(),
+        plus(cache, 0x20), &fallback, sizeof fallback, &fallback_copied) &&
+        fallback_copied == sizeof fallback;
+    if (observation.fallback_read) observation.fallback = fallback;
+    if (resource) {
+        std::uint32_t prefix[2]{};
+        SIZE_T copied{};
+        observation.resource_prefix_read = ReadProcessMemory(GetCurrentProcess(),
+            resource, prefix, sizeof prefix, &copied) && copied == sizeof prefix;
+        if (observation.resource_prefix_read) {
+            observation.snapshot_profile = prefix[0];
+            observation.snapshot_reference_bits = prefix[1];
+        }
+    }
+    c.observe_cleanup(c.observation_context, observation);
 }
 struct BaseUnwind {
     void* cache;
@@ -121,11 +151,17 @@ void resize_native_effect_records_00b30410(void* header, std::uint32_t requested
 }
 
 void clear_native_renderer_resource_cache_00b316c0(void* cache, NativeRendererCacheCleanupContext& c) {
+    observe_cleanup(cache, nullptr, 0x00b316c0,
+        NativeRendererCacheCleanupEvent::clear_enter, c);
     while (field<std::uint32_t>(cache, 8) != 0) {
         const auto size = current_child_size(current_last_child(cache), c);
         field<std::uint32_t>(cache, 0x10) = field<std::uint32_t>(cache, 0x10) - size;
         void* const child = current_last_child(cache);
+        observe_cleanup(cache, child, 0x00b316c0,
+            NativeRendererCacheCleanupEvent::child_release_before, c);
         current_cache_release(cache, child, c);
+        observe_cleanup(cache, child, 0x00b316c0,
+            NativeRendererCacheCleanupEvent::child_release_after, c);
         const auto count = field<std::uint32_t>(cache, 8);
         if (count != 0) {
             void* const data = field<void*>(cache, 4);
@@ -135,6 +171,8 @@ void clear_native_renderer_resource_cache_00b316c0(void* cache, NativeRendererCa
         }
     }
     resize_native_render_resource_record_array_00b30340(plus(cache, 4), 0, c.strings, c.validation);
+    observe_cleanup(cache, nullptr, 0x00b316c0,
+        NativeRendererCacheCleanupEvent::clear_exit, c);
 }
 
 void destroy_native_renderer_resource_array_00b31730(void* header, NativeRendererCacheCleanupContext& c) {
@@ -154,10 +192,14 @@ void destroy_native_texture_resource_cache_00b32370(void* cache, NativeRendererC
     field<std::uint32_t>(cache, 0) = 0x00d5f088u;
     void* const child = field<void*>(cache, 0x20);
     TextureUnwind cleanup{cache, c};
+    observe_cleanup(cache, child, 0x00b32370,
+        NativeRendererCacheCleanupEvent::fallback_release_before, c);
     if (child != nullptr) {
         release_native_render_actual_owner(c.owners, child);
         field<void*>(cache, 0x20) = nullptr;
     }
+    observe_cleanup(cache, child, 0x00b32370,
+        NativeRendererCacheCleanupEvent::fallback_release_after, c);
     char* const data = field<char*>(cache, 0x18);
     cleanup.state = 0;
     if (data != nullptr) c.strings.release(data, field<std::uint32_t>(cache, 0x14) + 1u);

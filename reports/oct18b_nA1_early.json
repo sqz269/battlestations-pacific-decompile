@@ -1,0 +1,550 @@
+{
+  "packet": "oct18b-nA1",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-oct18b-nA1",
+  "assigned_rows": 40,
+  "scope": "Defined bodies <=004D3A20 from codex_new_nA.txt; build-only; no game runs or host wiring.",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "outcome_counts": {
+    "reconstructed_build_tested": 30,
+    "library_instantiation_out_of_scope": 10
+  },
+  "rows": [
+    {
+      "address": "00415660",
+      "name": "clamp_int_in_place_00415660",
+      "ghidra_name": "BSP_clamp_int_in_place_00415660",
+      "source": "src/oct18b_nA1_early.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=value*, EDX=minimum*, stack maximum*, RET 4; no defined result",
+      "evidence": "Signed CMP/JGE then CMP/JG; maximum is not read on the below-minimum branch. Class owner unknown; one data pointer at 011C824C.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "00435340",
+      "name": "Compiler_BombViewSecondaryDeleteAdjustor_00435340",
+      "ghidra_name": "Compiler_BombViewSecondaryDeleteAdjustor_00435340",
+      "source": "reports/oct18b_nA1_early.json",
+      "status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX=secondary, stack flags; SUB ECX,170h, JMP004353F0",
+      "evidence": "Compiler multiple-inheritance adjustor only; forwards to existing BombViewCamera scalar deleting destructor. No new game business body.",
+      "uncertainty": "Library/compiler support classification; no reconstructed game-business credit."
+    },
+    {
+      "address": "0043a8b0",
+      "name": "key_table_find_bracket_0043a8b0",
+      "ghidra_name": "BSP_key_table_find_bracket_0043a8b0",
+      "source": "src/oct18b_nA1_early.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=table, stack float/lower*/upper*, RET 0Ch",
+      "evidence": "8-byte rows at +4 begin/+8 end. Clamps endpoints then bisects; CF branches treat unordered comparisons as the less-than branch. Checked-range report 00BF6713 remains a host binding. Caller 0043A9B0 has no defined body; class owner unknown.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "0043b2c0",
+      "name": "scoped_byte_override_scalar_delete_0043b2c0",
+      "ghidra_name": "BSP_scoped_byte_override_scalar_delete_0043b2c0",
+      "source": "src/profile_seg2_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=scope, stack flags, RET 4; EAX=scope",
+      "evidence": "Vtable 00CE42C0; restores saved byte +4 into [[00F8D394]+10h], then conditional free 00BF65AC. Reuses existing 0043AB80 body; precise CRT alias added to specialized host.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "0043f7f0",
+      "name": "device_relay_hit_0043f7f0",
+      "ghidra_name": "BSP_device_relay_hit_0043f7f0",
+      "source": "src/seg3_4_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=device, stack hit, RET 4",
+      "evidence": "0043F7xx device family; gates source kind 2Ch against parent kind 8, relays indexed hit to parent kind 6 slot ECh, then 008777D0. Actual virtual receivers/ordering recovered from assembly.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "00440000",
+      "name": "ref_slot_assign_00440000",
+      "ghidra_name": "BSP_ref_slot_assign_00440000",
+      "source": "src/seg3_4_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=destination slot, EDX=source slot, RET; EAX=destination",
+      "evidence": "Engine-owned counted-reference assignment; stock-library provenance not established. Loads source before destination, early equal-pointer return, publishes new pointer before incrementing new+4 and decrementing old+4; old vcall0 only on decrement reaching zero. Explicit existing DeviceEntityHost release contract plus specialized increment binding.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "004407b0",
+      "name": "device_class_is_kind_004407b0",
+      "ghidra_name": "BSP_device_class_is_kind_004407b0",
+      "source": "src/seg3_4_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX unused, stack kind, RET 4; EAX=bool",
+      "evidence": "00CE4480 slot 6 DeviceClass; returns true for ids 1Eh and 4 only.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "00443040",
+      "name": "catapult_class_kind_00443040",
+      "ghidra_name": "BSP_catapult_class_kind_00443040",
+      "source": "src/seg3_4_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "RET; EAX=28h",
+      "evidence": "00CE46C0 slot 7; existing local_player_unit_lists.cpp identifies MCatapult id 28h.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "00444000",
+      "name": "pooled_string_at_0c_release_00444000",
+      "ghidra_name": "BSP_pooled_string_at_0c_release_00444000",
+      "source": "src/seg3_4_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=owner, RET",
+      "evidence": "If text +10h nonzero, pushes 1,length(+Ch)+1,text; 00419CC0 returns pool in EAX and 00BD1510 consumes RET 0Ch. Does not clear the string fields.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "00453580",
+      "name": "movie_action_clear_camera_node_00453580",
+      "ghidra_name": "BSP_movie_action_clear_camera_node_00453580",
+      "source": "src/actions_seg5_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=action, RET",
+      "evidence": "Clears nonzero +1D4h only. Paired caller 0045DD70 uses this and 004542B0; camera-node interpretation provisional.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "004542b0",
+      "name": "movie_action_capture_camera_node_004542b0",
+      "ghidra_name": "BSP_movie_action_capture_camera_node_004542b0",
+      "source": "src/actions_seg5_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=action, RET",
+      "evidence": "Copies [[[00E188A8]+1ED4h]+1BCh] into action+1D4h without null guard. Camera-node interpretation provisional.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "00455a80",
+      "name": "entity_track_find_time_00455a80",
+      "ghidra_name": "BSP_entity_track_find_time_00455a80",
+      "source": "src/actions_seg5_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=track, stack result*/time, RET 8; EAX=result*",
+      "evidence": "Existing movie-track list +108h; walks all actions and keeps LAST activation-time-greater entry. Fallback is head.prev. Preserves scratch iterator +114h/+118h and every debug iterator report.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "00464810",
+      "name": "vehicle_launch_message_read_00464810",
+      "ghidra_name": "BSP_vehicle_launch_message_read_00464810",
+      "source": "src/actions_seg5_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=message, stack stream, RET 4",
+      "evidence": "Vtable 00CE53AC slot 2, existing type 7Bh vehicle-launch message family. Reads extended header, bool +1Ch and numeric float +20h from stream+4, mode 0/1, FLT_MAX (7F7FFFFF), 32 bits.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "00466960",
+      "name": "Compiler_ZeroDwordDefaultConstruct_00466960",
+      "ghidra_name": "Compiler_ZeroDwordDefaultConstruct_00466960",
+      "source": "reports/oct18b_nA1_early.json",
+      "status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX=destination, RET; EAX=destination",
+      "evidence": "Generic primitive default-construction callback: MOV EAX,ECX; MOV[EAX],0; RET. Data pointer00D2AC98, no class-specific state.",
+      "uncertainty": "Library/compiler support classification; no reconstructed game-business credit."
+    },
+    {
+      "address": "00466e70",
+      "name": "Compiler_DwordCopyConstructIfNonNull_00466e70",
+      "ghidra_name": "Compiler_DwordCopyConstructIfNonNull_00466e70",
+      "source": "reports/oct18b_nA1_early.json",
+      "status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX=destination, EDX=source, RET",
+      "evidence": "Generic primitive copy-construction callback: if destination nonnull copies one dword. Two data pointers00D33F80/00D37780, no class-specific state.",
+      "uncertainty": "Library/compiler support classification; no reconstructed game-business credit."
+    },
+    {
+      "address": "004710d0",
+      "name": "anim_entity_advance_time_004710d0",
+      "ghidra_name": "BSP_anim_entity_advance_time_004710d0",
+      "source": "src/seg6_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=Anim entity, RET",
+      "evidence": "00CE5A20 slot 54 AnimClass. Adds global game+21F0h to +190h and FSTP float before _CIfmod with divisor +18Ch; rounds result, applies animation slot24(0,time,1), tails 00484940. x87 model uses double and explicit float round points; native precision-control parity untested.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "00475a20",
+      "name": "cloud_mark_dirty_00475a20",
+      "ghidra_name": "BSP_cloud_mark_dirty_00475a20",
+      "source": "src/seg6_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=Cloud entity, RET",
+      "evidence": "00CE5E68 CloudClass slot 7: stores byte 1 at +1A8h. Dirty meaning provisional.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "00476bb0",
+      "name": "cloud_animation_00476bb0",
+      "ghidra_name": "BSP_cloud_animation_00476bb0",
+      "source": "src/seg6_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=Cloud entity, RET; EAX=pointer or zero",
+      "evidence": "00CE5E68 CloudClass slot 6: if visual +178h exists return [[visual+160h]+Ch]; no further null checks.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "0047a660",
+      "name": "vehicle_accumulate_hit_0047a660",
+      "ghidra_name": "BSP_vehicle_accumulate_hit_0047a660",
+      "source": "src/seg6_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=Vehicle entity, stack hit, RET 4; AL=1",
+      "evidence": "00CE6130 VehicleClass slot59. Applies hit damage only when +150h is not ordered positive; accumulates float +18Ch and triggers at double100 (00D7A220). Recovered hidden hit-record args, consumed effect-definition ref, temporary effect-handle release, effect byte+9 and kill(reason1). Explicit callback boundaries; no host wiring. x87/native precision-control parity untested.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "0047b790",
+      "name": "path_class_kind_0047b790",
+      "ghidra_name": "BSP_path_class_kind_0047b790",
+      "source": "src/seg6_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "RET; EAX=12h",
+      "evidence": "Data pointer 00CE6268; existing recon_slot_lists.cpp maps Path class kind 12h to this address.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "0047b960",
+      "name": "opaque_word_at_08_0047b960",
+      "ghidra_name": "BSP_opaque_word_at_08_0047b960",
+      "source": "src/oct18b_nA1_early.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=opaque object, RET; EAX=[ECX+8]",
+      "evidence": "One MOV plus RET; data slots 00D2A474/00D2AC74. Owner type unknown; no game-class identity inferred.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "0047f470",
+      "name": "Library_DwordRangeCopy_0047f470",
+      "ghidra_name": "Library_DwordRangeCopy_0047f470",
+      "source": "reports/oct18b_nA1_early.json",
+      "status": "library_instantiation_out_of_scope",
+      "original_abi": "cdecl stack first/last/destination, RET; EAX=destination+bytes",
+      "evidence": "Contiguous dword range copy using memmove_s(dest,bytes,first,bytes) when signed count>0. Generic library algorithm instantiation.",
+      "uncertainty": "Library/compiler support classification; no reconstructed game-business credit."
+    },
+    {
+      "address": "004802c0",
+      "name": "Compiler_PathSecondarySaveAdjustor_004802c0",
+      "ghidra_name": "Compiler_PathSecondarySaveAdjustor_004802c0",
+      "source": "reports/oct18b_nA1_early.json",
+      "status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX=secondary, stack archive; SUB ECX,1E4h, JMP007B0B40",
+      "evidence": "Compiler multiple-inheritance adjustor only; forwards to existing BSP_Path_SaveEntityAndPoints. No new game business body.",
+      "uncertainty": "Library/compiler support classification; no reconstructed game-business credit."
+    },
+    {
+      "address": "00480b70",
+      "name": "scene_runtime_detach_00480b70",
+      "ghidra_name": "BSP_scene_runtime_detach_00480b70",
+      "source": "src/classes_seg7_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=runtime, stack entity, RET 4 via tail vcall",
+      "evidence": "Shared scene runtime slot2 across six vtables. For nonnull entity writes time[00F876A4] to runtime+18h, replaces stack argument with zero and tail-jumps entity slot114h. Preserves receiver and owner-null argument.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "00480be0",
+      "name": "scene_disable_if_byte5c_clear_00480be0",
+      "ghidra_name": "BSP_scene_disable_if_byte5c_clear_00480be0",
+      "source": "src/classes_seg7_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=entity, RET",
+      "evidence": "Shared scene slot71; when byte+5Ch is zero calls 00922F30(entity,0). Exact enable API remains a named host binding.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "00480c60",
+      "name": "unit_path_in_view_00480c60",
+      "ghidra_name": "BSP_unit_path_in_view_00480c60",
+      "source": "src/classes_seg7_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=unit-path runtime, RET; AL=bool",
+      "evidence": "00CE6A08 slot3. Full 297-instruction listing inspected. Recovers four Vec3 points from +150h..17Fh, expanded to Vec4(w=1) for transform00B62D10; unit+14Ch, fade+1Ch and AABB extent mapping A4/AC/A0. Image constants 300.0 at00CE3CA8 and0.5 at00D7A280 verified. Preserves float stores, unordered near/fade behavior and strict final radius test. Uses double to model x87 intermediates; no ABI or native precision-control parity claim.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "00482220",
+      "name": "Library_CheckedVectorIteratorConstruct_00482220",
+      "ghidra_name": "Library_CheckedVectorIteratorConstruct_00482220",
+      "source": "reports/oct18b_nA1_early.json",
+      "status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX=iterator, stack position/container, RET 8; EAX=iterator",
+      "evidence": "Generic checked vector iterator {container,position}; reports null container or position outside begin/end via00BF6713, then stores the pair.",
+      "uncertainty": "Library/compiler support classification; no reconstructed game-business credit."
+    },
+    {
+      "address": "00482800",
+      "name": "opaque_empty_callback_00482800",
+      "ghidra_name": "BSP_opaque_empty_callback_00482800",
+      "source": "src/oct18b_nA1_early.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "RET 4; ECX and one stack word ignored; no defined return value",
+      "evidence": "Exact empty callback; two data slots 00D319E0/00D351E0. Owner and semantic role unknown.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "00484770",
+      "name": "soldier_globals_scalar_delete_00484770",
+      "ghidra_name": "BSP_soldier_globals_scalar_delete_00484770",
+      "source": "src/classes_seg7_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=object, stack flags, RET 4; EAX=object",
+      "evidence": "Existing SoldierGlobals singleton00F87544, vtable slot00CE6458. Clears global before storing singleton base vtable00CE3818, frees only flags&1.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "004871e0",
+      "name": "path_reference_name_004871e0",
+      "ghidra_name": "BSP_path_reference_name_004871e0",
+      "source": "src/classes_seg7_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=reference, RET; EAX=const char*",
+      "evidence": "Shared observer/path-reference slot9. +14h null gives <null entity>; target+154h zero gives <null name>; target+158h null gives empty literal00E186ED. C++ string contents preserved, original image literal addresses not claimed.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "00499200",
+      "name": "Library_PointerVectorResizeZeroFill_00499200",
+      "ghidra_name": "Library_PointerVectorResizeZeroFill_00499200",
+      "source": "reports/oct18b_nA1_early.json",
+      "status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX=vector, stack count, RET 4",
+      "evidence": "Wrapper pushes0 as fill and forwards stack count to already-named STL_Vector_Resize_004958C0. Generic vector resize instantiation; this is not necessarily a clear.",
+      "uncertainty": "Library/compiler support classification; no reconstructed game-business credit."
+    },
+    {
+      "address": "004b4920",
+      "name": "game_camera_set_fov_004b4920",
+      "ghidra_name": "BSP_game_camera_set_fov_004b4920",
+      "source": "src/engine_seg4_6_9_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=game, stack float fov, RET 4",
+      "evidence": "Camera at game+19FCh; if set forwards same float via00B6FBB0. Null camera skips.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "004b5070",
+      "name": "world_view_job_empty_callback_004b5070",
+      "ghidra_name": "BSP_world_view_job_empty_callback_004b5070",
+      "source": "src/engine_seg4_6_9_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "RET 4; one stack word ignored; no defined return value",
+      "evidence": "Exact empty callback at data slot00CE7484, adjacent to existing world-view-job vtable00CE7488. Semantic ownership remains provisional.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "004b6580",
+      "name": "opaque_word_at_04_004b6580",
+      "ghidra_name": "BSP_opaque_word_at_04_004b6580",
+      "source": "src/oct18b_nA1_early.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=opaque object, RET; EAX=[ECX+4]",
+      "evidence": "One MOV plus RET; data slot00D2E060. Owner type unknown; no game-class identity inferred.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "004b8a40",
+      "name": "world_view_job_scalar_delete_004b8a40",
+      "ghidra_name": "BSP_world_view_job_scalar_delete_004b8a40",
+      "source": "src/engine_seg4_6_9_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=object, stack flags, RET 4; EAX=object",
+      "evidence": "World-view-job vtable00CE7488, singleton00E18AD8 in existing engine family. Clears global, stores singleton-base vtable00CE3818, frees flags&1.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "004bb970",
+      "name": "game_nearest_view_distance_squared_004bb970",
+      "ghidra_name": "BSP_game_nearest_view_distance_squared_004bb970",
+      "source": "src/engine_seg4_6_9_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=game, stack float xyz*, RET 4; ST0=float-rounded result",
+      "evidence": "Initial camera from globalgame+19FCh refreshes transform if flag+5Ch&2 clear. Seeds squared distance from camera+120h; scans eight pointers game+18CCh..18E8h at object+ACh. Differences and sum round to float; candidate replaces best unless ordered greater, accepting unordered. Double models x87 intermediate precision; ABI/control-word parity untested.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "004c5820",
+      "name": "Library_CaseInsensitiveStringIntMapLowerBound_004c5820",
+      "ghidra_name": "Library_CaseInsensitiveStringIntMapLowerBound_004c5820",
+      "source": "reports/oct18b_nA1_early.json",
+      "status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX=map, stack result/key, RET 8; EAX=result",
+      "evidence": "Generic std::map lower_bound iterator wrapper over STL_CaseInsensitiveStringIntMap_LowerBound; checked owner plus {container,node} result.",
+      "uncertainty": "Library/compiler support classification; no reconstructed game-business credit."
+    },
+    {
+      "address": "004c8620",
+      "name": "opaque_empty_callback_004c8620",
+      "ghidra_name": "BSP_opaque_empty_callback_004c8620",
+      "source": "src/oct18b_nA1_early.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "RET 8; ECX and two stack words ignored; no defined return value",
+      "evidence": "Exact empty callback; data slots00D32738/00D36F38. Owner and semantic role unknown.",
+      "uncertainty": "Descriptive names are hypotheses; explicit C++ interfaces are not drop-in binary replacements."
+    },
+    {
+      "address": "004d0950",
+      "name": "Library_RenderAliasListInsertBefore_004d0950",
+      "ghidra_name": "Library_RenderAliasListInsertBefore_004d0950",
+      "source": "reports/oct18b_nA1_early.json",
+      "status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX=list, stack ignored/before/value, RET 0Ch",
+      "evidence": "Generic std::list insert-before specialization: allocate node004CE6F0(before,before.prev,value), increment size004CE780(1), link predecessor/position. Render-resource alias payload does not add game business logic.",
+      "uncertainty": "Library/compiler support classification; no reconstructed game-business credit."
+    },
+    {
+      "address": "004d3a20",
+      "name": "Compiler_EmptyVectorDefaultConstruct_004d3a20",
+      "ghidra_name": "Compiler_EmptyVectorDefaultConstruct_004d3a20",
+      "source": "reports/oct18b_nA1_early.json",
+      "status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX=container, RET; EAX=container",
+      "evidence": "Generic container default-construction callback zeros fields+4/+8/+Ch and preserves+0. Data pointers00D33F20/00D37720; no class-specific behavior.",
+      "uncertainty": "Library/compiler support classification; no reconstructed game-business credit."
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "0043f854",
+      "native": "008777d0",
+      "function": "0043f7f0"
+    },
+    {
+      "address": "00444011",
+      "native": "00419cc0",
+      "function": "00444000"
+    },
+    {
+      "address": "00444018",
+      "native": "00bd1510",
+      "function": "00444000"
+    },
+    {
+      "address": "00464819",
+      "native": "0075b4c0",
+      "function": "00464810"
+    },
+    {
+      "address": "00464827",
+      "native": "00428d70",
+      "function": "00464810"
+    },
+    {
+      "address": "00464842",
+      "native": "004293f0",
+      "function": "00464810"
+    },
+    {
+      "address": "004710f3",
+      "native": "00bf857a",
+      "function": "004710d0"
+    },
+    {
+      "address": "0047a69d",
+      "native": "00470510",
+      "function": "0047a660"
+    },
+    {
+      "address": "0047a6a9",
+      "native": "004706d0",
+      "function": "0047a660"
+    },
+    {
+      "address": "0047a6f9",
+      "native": "00414db0",
+      "function": "0047a660"
+    },
+    {
+      "address": "0047a744",
+      "native": "008685e0",
+      "function": "0047a660"
+    },
+    {
+      "address": "0047a78f",
+      "native": "0047bb70",
+      "function": "0047a660"
+    },
+    {
+      "address": "0047a798",
+      "native": "00926d90",
+      "function": "0047a660"
+    },
+    {
+      "address": "00480be8",
+      "native": "00922f30",
+      "function": "00480be0"
+    },
+    {
+      "address": "00480c93",
+      "native": "00414db0",
+      "function": "00480c60"
+    },
+    {
+      "address": "00480c9f",
+      "native": "0080e3d0",
+      "function": "00480c60"
+    },
+    {
+      "address": "00480cbc",
+      "native": "00414db0",
+      "function": "00480c60"
+    },
+    {
+      "address": "00480ddc",
+      "native": "00414db0",
+      "function": "00480c60"
+    },
+    {
+      "address": "00480ec6",
+      "native": "004b48e0",
+      "function": "00480c60"
+    },
+    {
+      "address": "00480f31",
+      "native": "00b62d10",
+      "function": "00480c60"
+    },
+    {
+      "address": "004b4932",
+      "native": "00b6fbb0",
+      "function": "004b4920"
+    },
+    {
+      "address": "004bb98a",
+      "native": "00b6db70",
+      "function": "004bb970"
+    },
+    {
+      "address": "0047112a",
+      "native": "00484940",
+      "function": "004710d0",
+      "kind": "tail_jump"
+    }
+  ],
+  "validation": {
+    "build": "passed scripts/build.ps1 (MSVC Release Win32), exit 0",
+    "call_sites": "23 direct/tail call-site rows checked, zero failures",
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "ctest": "2/2 passed: reconstructed_math, tool_tests",
+    "exported": true,
+    "ghidra_names_comments": "40 addresses annotated; original comments preserved; program saved",
+    "ghidra_annotation_backups": [
+      "local/ghidra-annotations-20261019T053944Z.json",
+      "local/ghidra-annotations-20261019T054105Z.json",
+      "local/ghidra-annotations-20261019T054442Z.json"
+    ],
+    "build_log": "local/oct18b_nA1_build_final.log"
+  },
+  "source_registration": "src/oct18b_nA1_early.cpp registered in cmake/startup.cmake by parent commit555d0a932 (local cherry-pickfcfe8492f); existing family sources already registered.",
+  "classification_correction": "00440000 has no established stock-library provenance and is reconstructed. Historical Library_IntrusivePointerAssign_00440000 ledger key is replaced by a build-tested alias pointing to canonical ref_slot_assign_00440000, so no out-of-scope row remains at that address."
+}

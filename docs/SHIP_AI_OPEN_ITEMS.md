@@ -19698,16 +19698,19 @@ player. Single player is `game+1FE4h = 0`. `[unit+1BCh]` is role 4, not role 3.
 
 This host never ran that walk, so the artillery stayed AI-held (held_ticks 0).
 - Binding: `GameGunneryHost::role_owner_device_walk_0095ac1d`, called from
-  `role_message_4b_00780162`. Details are in docs/PLAYER_GUN_SEAT.md 7.5, which also corrects
-  7.2's "single-player 1".
+  `role_message_4b_00780162` at the holder change. The HUD-site substitution (a69d739a1) missed the
+  1823 release and is gone; see docs/PLAYER_GUN_SEAT.md 7.5, which also corrects 7.2's
+  "single-player 1".
 - Preview pair on USN01, same orders, working tree:
   - takes 8 (Northampton's 3 turrets, Dunlap's 5 Function 6 mounts), held_ticks 0 to 5661;
   - no player shells, because the HUD camera aims 10 degrees down at the sea and every 0085ABA0
     refuses;
   - Northampton's turret shots 335 to 280, and hits 925 to 812;
   - deaths identical.
-- Open: a pair with player shells needs a camera aim input that the harness lacks. The flip waits
-  on the lead.
+- Committed pair on d91c9e54c: same numbers on USN01. On USN04 idle there is no walk and gameplay
+  is identical. Flipped ON by mechanism, per the lead.
+- Open: a pair with player shells needs a camera aim input that the harness lacks. The lead has
+  asked cc13 for one.
 
 ## 297. cc9-ships59 handoff (2026-10-18)
 
