@@ -340,6 +340,10 @@ check can be re-run now that the records exist. For each vt-reset candidate the 
 - classes a vtable that its own slots leave non-game as **base** when a game-named function
   (other than the `BSP_Vt*_Destruct` rows) stores it, that is, a base vtable stamped by game
   constructors and destructors;
+- credits a store in either form: `MOV r/m32, imm32` (C7 /0), and `MOV r32, imm32` (B8+r)
+  directly followed by `MOV r/m32, r32` (89 /r) with the same register (rev4 B1: 0084A0B5
+  `MOV EDI,00D0B6A0; MOV [ESP+3Ch],EDI`). A register written further from its store is still
+  missed;
 - applies one hand override (`MANUAL`, below);
 - lists the row's callers from the index.
 
@@ -379,8 +383,10 @@ the 16 scanned segments, which is why the scan missed it. The check script now a
 extra candidate. It stores 00CF88F8, a base vtable with two slots (006CDD40, its scalar deleting
 destructor, and `__purecall`), and it is the recorded out-of-line copy that part C's 006CDD40
 inlines. 00CF8900 is a separate vtable, stamped by the FollowObserverMember constructor and
-destructor at 006CDD8F, 006CE8D1, 006CE9FF and 006CEA44. Game code stores 00CF88F8 in 006CE290
-and 006FC2E0 BSP_ElevatorPlatform_Destruct. The stores first credited to 006CDC70 and 006CE260 are
+destructor at 006CDD8F, 006CE8D1, 006CE9FF and 006CEA44. Game code stores 00CF88F8 in 006FC2E0
+BSP_ElevatorPlatform_Destruct, the real game basis. 006CE290 also stores it, but its bytes are
+those of the scalar deleting destructor 006CDD40 (and 006FBCC0) except for the _free rel32, so it
+is a duplicate, not a separate game storer (rev4). The stores first credited to 006CDC70 and 006CE260 are
 the undefined `C7 01 F8 88 CF 00 C3` chunks 006CDD30 and 006CE280 (rev2). Its one caller is the
 unwind funclet 00C83990 of
 006FC2E0 BSP_ElevatorPlatform_Destruct. It is named `BSP_Vt00CF88F8_Destruct_006fbc10`. The Ghidra
@@ -396,26 +402,33 @@ log `local/ghidra-annotations-20261019T092616Z.json` has this rename and 006CDD4
 | `0094CAE0` | 00D24FCC |
 | `0094CAF0` | 00D24FEC |
 
-Unknown (no named slot either way): `00842990`, vtable 00D0B6A0.
 
 **Vtable boundaries (rev2 nit).** The first script walked past the end of each vtable into the
 next one, so a vtable could take its class from a neighbour's slots. With the walk stopped at
 the next stored vtable, and each store credited to a function only when it lies inside that
-function's body (a store in an undefined chunk is credited to none; rev2), part B classes 115 rows
-game, 8 base, 1 unknown and 2 library, and part C 96 game, 8 base and 2 library. Part C's extra
+function's body (a store in an undefined chunk is credited to none; rev2), and the register
+form also credited (rev4 B1), part B classes 115 rows game, 9 base and 2 library, and part C 96
+game, 8 base and 2 library. Part C's extra
 game row is 007D79F0, whose own slot 0 now carries its BSP_ name. The rows that move:
 - Recorded rows whose vtable has no game slot of its own but is stamped by game code, so the
   records stand as base-class destructors: part B 006FBC10 (00CF88F8), 00743D80 (00CFF354),
   009C8CE0 (00D20E84), 009CD390 (00D21148), 009F5280 (00D21B40). Part C 006CDD40, 00730B60,
   00730C90, 00743D90, 007B3BB0, 009C8D00, 009CD3A0, 009F5290.
 - Open rows the base rule now flags, which stay open: 007512A0, 007512E0, 0094CEB0 (00D24F84 is
-  stored only by 00751870 / 00751960 BSP_MetricStringData, telemetry string code). 00842990
-  (00D0B6A0) is unknown again: its stores are in library code and undefined chunks, and the one
-  first credited to 0083B5E0 BSP_GameSettings_LoadFromLuaGlobals lies outside that body.
+  stored only by 00751870 / 00751960 BSP_MetricStringData, telemetry string code), and 00842990
+  (00D0B6A0). Game code stores 00D0B6A0 through a register in 00849F70
+  BSP_Shipyard_LoadFromProperties: 0084A0B5 `MOV EDI,00D0B6A0; MOV [ESP+3Ch],EDI` and 0084A783
+  `MOV EBP,00D0B6A0; MOV [ESP+6Ch],EBP`, both objects then going to 00848150 on +780h (rev4 B1).
+  The C7 stores are in library code (the STL rows 00844040, 008444E0, 00847720 and the
+  destructors 00842990 / 008429A0); the one first credited to 0083B5E0
+  BSP_GameSettings_LoadFromLuaGlobals lies outside that body. So 00842990 is base, with 00849F70
+  as its basis.
 - Part C's 007D79F0 (00D06844) is now recorded (rev2 follow-up). Its vtable is stored by two game
   functions: 007D7EA0 BSP_PlaneFlightController_Construct (at 007D7ED9) and 007D9360
   BSP_PlaneClass_TrialIntegrateAtClimbAngle (at 007D94A2). The store first credited to 007D7930
-  BSP_MPlaneBomber_UnregisterFromWorldLists is the undefined chunk 007D79D0 (rev2). That is the evidence shape of the recorded 007B3BB0. Unlike 007B3BB0, it has no recorded
+  BSP_MPlaneBomber_UnregisterFromWorldLists is the undefined chunk 007D79D0 (rev2). One more store is in an undefined chunk: 007D7B95
+  `C7 00 44 68 D0 00` (`MOV dword [EAX], 00D06844`, EAX = ECX, in 007D7B90-007D7BF1), credited to
+  no function (rev4). That is the evidence shape of the recorded 007B3BB0. Unlike 007B3BB0, it has no recorded
   out-of-line copy: the only `C7 01 44 68 D0 00 C3` in the image is the undefined chunk 007D79D0. Its
   only callee is `_free`, so it is rebuilt as the fifth `kVtResetDeletingDestructors` row (below).
 
