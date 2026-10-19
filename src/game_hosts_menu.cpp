@@ -178,6 +178,12 @@ struct GameMenuHost::Impl {
     // per action, and the frames of hold left (0: released, or let go).
     std::map<int, InputActionRecord> injected_actions;
     std::map<int, unsigned> injected_frames_left;
+    std::map<int, unsigned> injected_frames_without_2eh;   // this hold's frames 005484F0 skipped
+    std::map<int, unsigned long long> injected_edge_frame;  // the frame of the last rising edge
+    std::map<int, bool> injected_held_last_frame;
+    // Set by the HUD when screen 2Eh's 005484F0 runs (note_screen_2eh_ran), and
+    // cleared at the next frame's input prologue.
+    bool screen_2eh_ran{false};
 
     // --- the state-request ring, game+5D8h ---------------------------------
     GameStateRequestQueue requests{};
@@ -1884,6 +1890,8 @@ bool GameMenuHost::in_game_screen_registered(int slot) {
     return impl_->screen_at(slot) != nullptr;
 }
 
+void GameMenuHost::note_screen_2eh_ran() { impl_->screen_2eh_ran = true; }
+
 GuiLayoutPage* GameMenuHost::in_game_page(int slot, const std::string& page_name) {
     Impl& host = *impl_;
     Impl::MenuScreen* screen = host.screen_at(slot);
@@ -2006,6 +2014,61 @@ bool inject_input_action_hold(int action, unsigned frames) {
     return true;
 }
 
+namespace {
+struct InjectedViewAim {
+    bool active{false};
+    float yaw{0.0f};
+    float pitch{0.0f};
+    // `aim unit`: the tracked row and its optional fixed pitch.
+    bool tracking{false};
+    std::size_t track_unit{0};
+    bool track_has_pitch{false};
+    float track_pitch{0.0f};
+};
+InjectedViewAim& injected_view_aim_state() {
+    static InjectedViewAim aim;
+    return aim;
+}
+}  // namespace
+
+void inject_view_aim(float yaw, float pitch) {
+    InjectedViewAim& aim = injected_view_aim_state();
+    aim.active = true;
+    aim.yaw = yaw;
+    aim.pitch = pitch;
+    aim.tracking = false;   // the next `aim` line ends an `aim unit` track
+}
+
+void inject_view_aim_track(std::size_t unit, bool has_pitch, float pitch) {
+    InjectedViewAim& aim = injected_view_aim_state();
+    aim.active = false;
+    aim.tracking = true;
+    aim.track_unit = unit;
+    aim.track_has_pitch = has_pitch;
+    aim.track_pitch = pitch;
+}
+
+bool injected_view_aim_track(std::size_t& unit, bool& has_pitch, float& pitch) {
+    const InjectedViewAim& aim = injected_view_aim_state();
+    if (!aim.tracking) return false;
+    unit = aim.track_unit;
+    has_pitch = aim.track_has_pitch;
+    pitch = aim.track_pitch;
+    return true;
+}
+
+void clear_injected_view_aim_track() { injected_view_aim_state().tracking = false; }
+
+bool injected_view_aim(float& yaw, float& pitch) {
+    const InjectedViewAim& aim = injected_view_aim_state();
+    if (!aim.active) return false;
+    yaw = aim.yaw;
+    pitch = aim.pitch;
+    return true;
+}
+
+void clear_injected_view_aim() { injected_view_aim_state().active = false; }
+
 // The executable's action table holds one record, press-start 4Eh. Every other
 // index is a record nothing starts, so both rules answer false for it, unless a
 // helm `input` line holds it (inject_input_action_hold).
@@ -2052,18 +2115,45 @@ void GameMenuHost::frame(float raw_delta, unsigned long long frame_index) {
     for (const auto& request : pending_input_holds()) {
         host.injected_actions[request.first];
         host.injected_frames_left[request.first] = request.second;
+        host.injected_frames_without_2eh[request.first] = 0;
         host.log.notef("helm input action 0x%02X held for %u frame(s) from frame %llu",
             static_cast<unsigned>(request.first), request.second, frame_index);
     }
     pending_input_holds().clear();
+    // Screen 2Eh's 005484F0 (the HUD's weapon-group reader) runs only while screen
+    // 46h's update passes its gate (0064D62B wanted_04 / has_unit_1c): on USN01,
+    // frames ~410-1823, until the script's SetSelectedUnit. The HUD reports each
+    // frame it ran (note_screen_2eh_ran), after this prologue, so the previous
+    // frame's held actions are judged here, one frame late. An edge or held frame
+    // that no 005484F0 read is logged instead of being dropped silently.
+    const bool screen_2eh_ran_last_frame = host.screen_2eh_ran;
+    host.screen_2eh_ran = false;
     for (auto& entry : host.injected_actions) {
-        unsigned& left = host.injected_frames_left[entry.first];
+        const int action = entry.first;
+        if (host.injected_held_last_frame[action] && !screen_2eh_ran_last_frame) {
+            ++host.injected_frames_without_2eh[action];
+            if (host.injected_edge_frame[action] + 1 == frame_index) {
+                host.log.notef("helm input action 0x%02X edge on frame %llu lost: "
+                    "screen 2Eh's 005484F0 did not run", static_cast<unsigned>(action),
+                    frame_index - 1);
+            }
+        }
+        unsigned& left = host.injected_frames_left[action];
+        if (left == 0 && host.injected_held_last_frame[action]
+            && host.injected_frames_without_2eh[action] > 0) {
+            host.log.notef("helm input action 0x%02X hold ended on frame %llu: %u held "
+                "frame(s) without screen 2Eh's 005484F0", static_cast<unsigned>(action),
+                frame_index - 1, host.injected_frames_without_2eh[action]);
+        }
+        host.injected_held_last_frame[action] = left > 0;
         if (left > 0) {
             if (action_down_current(entry.second)) {
                 continue_action_00a919f0(entry.second, 1.0f);
             } else {
                 const InputEffectParam no_param{};
                 start_action_00a92aa0(entry.second, 1.0f, no_param, nullptr);
+                host.injected_edge_frame[action] = frame_index;
+                host.injected_frames_without_2eh[action] = 0;
             }
             --left;
         } else {

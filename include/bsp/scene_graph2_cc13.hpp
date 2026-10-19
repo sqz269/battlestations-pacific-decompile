@@ -1312,4 +1312,65 @@ void* bone_model_clone_00b912e0(const void* source, const std::string& name, con
 // Catch_All funclets 00B7F682 / 00B7F712: free the buffer at [EBP-14h] and rethrow.
 void catch_all_free_and_rethrow(void* buffer, const std::function<void(void*)>& free_block);
 
+// oct18b-nC additions. New C++ interfaces; original register/stack ABIs and
+// evidence are in reports/oct18b_nc_high.json. Names remain hypotheses.
+// 00B6D440/630/6D0: ECX=left, stack output/right-or-scalar, EAX=output, RET 8.
+float* matrix_scale_00b6d440(const float* left, float* output, float scale);
+float* matrix_add_00b6d630(const float* left, float* output, const float* right);
+float* matrix_subtract_00b6d6d0(const float* left, float* output, const float* right);
+// 00B50020: same ABI as matrix_add, four components only.
+float* vector4_add_00b50020(const float* left, float* output, const float* right);
+// 00B6DE40: ECX=output, EDX=base; stack target, pointer-to-weight; RET 8.
+float* matrix_blend_00b6de40(float* output, const float* base,
+    const float* target, const float* weight);
+// Native Win32 object layout. ECX=node, RET. Conditional recursive invalidation.
+void invalidate_world_subtree_00b6da00(void* node);
+struct NodeBlendCalls {
+    virtual bool sample_slot18(void* animator, float* output, std::uint32_t animation, float time) = 0;
+    virtual void set_matrix_slot38(void* node, const float* matrix) = 0;
+protected:
+    ~NodeBlendCalls() = default;
+};
+// 00B6E240: ECX=node; stack animation,time,weight,recurse; RET 10h.
+// The image overwrites sample storage with identity when sampling returns
+// AL!=0. For AL==0 it retains callback writes; without an animator it does not
+// write the region. The semantic meaning of that byte is unproven. The caller
+// supplies the entry contents of that native scratch region; no fallback is
+// invented for the indeterminate native failure path. Each recursion obtains
+// its own scratch through the required callback.
+using BlendScratch = float* (*)(void* node);
+void blend_animation_subtree_00b6e240(void* node, std::uint32_t animation,
+    float time, float weight, std::uint32_t recurse, NodeBlendCalls& calls,
+    BlendScratch scratch);
+struct CameraAimCalls {
+    virtual void set_position_slot2c(void* camera, const float* position) = 0;
+    virtual const float* build_look_at_00b63f10(float* output, const float* target,
+        const float* position, const float* up) = 0;
+    virtual const float* invert_00b63b30(float* output, const float* matrix) = 0;
+    virtual void set_matrix_slot34(void* camera, const float* matrix) = 0;
+protected:
+    ~CameraAimCalls() = default;
+};
+// 00B70320: ECX=camera; stack position,direction; RET 8 (Ghidra missed arg 2).
+void camera_set_position_direction_00b70320(void* camera, const float* position,
+    const float* direction, CameraAimCalls& calls);
+struct CollectNodeCalls {
+    virtual bool is_type_slot0c(void* node, std::uint32_t type) = 0;
+    virtual void reserve_0059e5e0(void* array, std::int32_t capacity) = 0;
+protected:
+    ~CollectNodeCalls() = default;
+};
+// 00B85430: ECX=raw pointer-array, EDX=node; stack type, RET 4.
+void collect_typed_subtree_00b85430(void* array, void* node, std::uint32_t type,
+    CollectNodeCalls& calls);
+// Descriptor-owner getters: MOV EAX,imm; RET. Values are image addresses,
+// not dereferenceable pointers in this reconstruction's process.
+std::uint32_t mesh_resource_owner_00b930a0() noexcept;
+std::uint32_t skin_mesh_resource_owner_00b931a0() noexcept;
+std::uint32_t bone_mesh_resource_owner_00b932a0() noexcept;
+using BoneResourceFactory = void* (*)(std::uint32_t owner_image_address);
+void* bone_mesh_resource_create_00b93250(BoneResourceFactory create_00b931f0);
+// 00BA70B0: ECX=object, LEA EAX,[ECX+8Ch], RET; class is provisional.
+void* object_field8c_00ba70b0(void* object) noexcept;
+
 }  // namespace bsp::cc13_scene2

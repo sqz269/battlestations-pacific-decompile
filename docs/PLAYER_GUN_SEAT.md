@@ -464,7 +464,13 @@ The image's path is the role take:
     also gets 0072D5B0(0, 0). On a release, 00729F70.
   - `& 20h` / `& 80h` (009540D0 / 00954170) stay with the group 4/5 models.
 - **Binding.** `GameUnitsHost::Impl::role_message_4b_00780162` calls
-  `GameGunneryHost::role_owner_device_walk_0095ac1d` when a holder changed. 00729F70 is
+  `GameGunneryHost::role_owner_device_walk_0095ac1d` once per role in the mask whose holder
+  changed. That covers every 4Bh sender the host routes there.
+- **A HUD-site substitution was tried and dropped** (a69d739a1): it compared holders around the
+  HUD's `role_request_0077c470`. It missed the release when the script moved the player to the
+  ScoutDauntless (SetSelectedUnit at 1823 releases the roles through the units host, not the HUD).
+  Northampton's turrets stayed player-held for the rest of the run: shots 113 to 6, held_ticks
+  48798. The hook must sit at the role take itself. 00729F70 is
   modelled as in step 3 of section 2. 0072D5B0 is a record, because the host picks the ammo per
   shot. A new summary line, `gunnery role owner device walk takes= releases=`, is printed on both
   sides.
@@ -483,3 +489,29 @@ The image's path is the role take:
   - Deaths and death rows identical (32). Hit records 4407 to 4294.
   - A pair that shows player shells needs a camera aim input, which the harness `input` line does
     not give.
+- **The committed pair** (d91c9e54c, `local\g53_rw3_{off,on}`) reproduced the preview exactly. On
+  USN04 idle the walk never runs (takes 0, releases 0), and gameplay, death rows and the unit table
+  are identical.
+- **Verdict: flipped ON by mechanism.** The walk is the image's, and an AI that does not fire a
+  player-held mount is the game's behaviour.
+- **Gap, now closed for shells:** cc13's `aim` line (SCRIPTED_HELM 18, main 4890e900a) steers
+  the camera.
+  - Check runs on aa5aaab54 (walk ON), USN01, orders `local\g53_aim2_u1.txt`. Each window has an
+    aim, then 0x9D and 0x99 held 300 frames:
+    - 450: `aim -77.3 -0.2`, the bearing from Northampton (6300, -3200) to Convoy1's spawn
+      (-3500, -1000); the ray meets the sea about 10.8 km out;
+    - 850: `aim 77.3 -0.2`;
+    - 1250: `aim -77.3 -0.2` again.
+  - "helm aim reached" logged yaw +/-1.3491 and pitch -0.0035 rad.
+  - trigger_ticks went 0 -> 2234, and the artillery segment query found a point above the sea
+    1197 times.
+  - **Player shells.** The 1800-frame runs `g53_aim3_{noaim,aim}` end inside the hold window, so
+    the turrets fire only for the player. Turret shots went 9/9/8 -> 26/26/24, which is 50 player
+    salvos.
+  - **Hits: none.** The turret hits are 8/7/9 on both sides. Convoy1's first damage is at 134 s,
+    from aircraft.
+  - The full 16000-frame run (`g53_aim2_u1`) has turret shots 111/111/106, against 95/95/90
+    without aim.
+  - Still open: a hit needs an aim held on a moving ship at 10 km, which a fixed yaw does not
+    give. The 79h target id (`target_id_174`) is still a record, so the intercept path does not
+    run either.

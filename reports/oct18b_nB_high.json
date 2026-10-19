@@ -1,0 +1,2284 @@
+{
+  "packet": "oct18b-nB-high",
+  "input": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\local\\codex_new_nB.txt",
+  "assigned_rows": 76,
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "validation": {
+    "build": "./scripts/build.ps1 passed for all 16 existing translation units (51 game rows). Four opaque leaves in new src/oct18b_nB_high.cpp await integrator merged build.",
+    "existing_checks": "reconstructed_math and tool_tests passed 2/2",
+    "call_report": "50 call rows checked, 0 failed by tools/verify_report_calls.py",
+    "runtime": "not run; no host wiring requested",
+    "merged_integrator_build": "Combined MSVC Win32 scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2). Build/source evidence only; no original binary ABI, runtime or game validation."
+  },
+  "functions": [
+    {
+      "address": "00800810",
+      "segment": 49,
+      "body_bytes": 3,
+      "old_name": "FUN_00800810",
+      "name": "identity_00800810",
+      "source": "src/oct18b_nB_high.cpp",
+      "header": "include/bsp/oct18b_nB_high.hpp",
+      "status": "reconstructed_source_build_pending",
+      "family_evidence": "src/oct18b_nB_high.cpp",
+      "evidence": "Opaque identity callback; exact MOV EAX,ECX and cleanup checked. No positive template/compiler provenance or owning class, so remains source with unknown class. Cached unreferenced DWORD sequences are not class evidence.",
+      "prototype_export": "undefined4 __fastcall FUN_00800810(undefined4 param_1)",
+      "assembly_first": [
+        "00800810: MOV EAX,ECX",
+        "00800812: RET"
+      ],
+      "assembly_terminators": [
+        "00800812: RET"
+      ],
+      "export": "exports/bsp/functions/00800810",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00800820",
+      "segment": 49,
+      "body_bytes": 5,
+      "old_name": "FUN_00800820",
+      "name": "identity_00800820",
+      "source": "src/oct18b_nB_high.cpp",
+      "header": "include/bsp/oct18b_nB_high.hpp",
+      "status": "reconstructed_source_build_pending",
+      "family_evidence": "src/oct18b_nB_high.cpp",
+      "evidence": "Opaque identity callback; exact MOV EAX,ECX and cleanup checked. No positive template/compiler provenance or owning class, so remains source with unknown class. Cached unreferenced DWORD sequences are not class evidence.",
+      "prototype_export": "undefined4 __fastcall FUN_00800820(undefined4 param_1)",
+      "assembly_first": [
+        "00800820: MOV EAX,ECX",
+        "00800822: RET 0x4"
+      ],
+      "assembly_terminators": [
+        "00800822: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/00800820",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "008010f0",
+      "segment": 49,
+      "body_bytes": 53,
+      "old_name": "FUN_008010f0",
+      "name": "fill_five_floats_008010f0",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "normalized generic template/allocator/container helper family",
+      "evidence": "Generic native-array five-float fill instantiation: five ordered FLD/FSTP copies per 14h element; only discovered caller is the five-byte forwarding thunk 00801310. Normalized range fill, with no game-specific decisions; exact vendor symbol unknown.",
+      "prototype_export": "void FUN_008010f0(undefined4 *param_1,undefined4 *param_2,undefined4 *param_3)",
+      "assembly_first": [
+        "008010f0: MOV EAX,dword ptr [ESP + 0x4]",
+        "008010f4: MOV EDX,dword ptr [ESP + 0x8]",
+        "008010f8: CMP EAX,EDX"
+      ],
+      "assembly_terminators": [
+        "00801124: RET"
+      ],
+      "export": "exports/bsp/functions/008010f0",
+      "uncertainties": [
+        "Exact template spelling/vendor symbol not recovered. No library implementation is added or counted as game reconstruction."
+      ],
+      "call_sites": [],
+      "ghidra_name": "LIBINST_fill_five_floats_008010f0"
+    },
+    {
+      "address": "008036f0",
+      "segment": 49,
+      "body_bytes": 68,
+      "old_name": "FUN_008036f0",
+      "name": "recon_default_style_008036f0",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "header": "include/bsp/engine_seg49_64_78_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/engine_seg49_64_78_cc13.cpp",
+      "evidence": "Shared recon style fallback: bit0 F874DC; F874CC..D8 four floats 0,0,0,1.",
+      "prototype_export": "undefined * FUN_008036f0(void)",
+      "assembly_first": [
+        "008036f0: MOV EAX,0x1",
+        "008036f5: TEST byte ptr [0x00f874dc],AL",
+        "008036fb: JNZ 0x0080372e"
+      ],
+      "assembly_terminators": [
+        "00803733: RET"
+      ],
+      "export": "exports/bsp/functions/008036f0",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00803c20",
+      "segment": 49,
+      "body_bytes": 124,
+      "old_name": "FUN_00803c20",
+      "name": "recon_relation_style_00803c20",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "header": "include/bsp/engine_seg49_64_78_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/engine_seg49_64_78_cc13.cpp",
+      "evidence": "Recon-family neighbors 803CE0/803DC0 in cc13_seg49; four 10h-stride tables and fallback. ECX own, EDX other, stack index; RET4.",
+      "prototype_export": "undefined * __fastcall FUN_00803c20(int param_1,int param_2,int param_3)",
+      "assembly_first": [
+        "00803c20: CMP EDX,0x3",
+        "00803c23: JNZ 0x00803c34",
+        "00803c25: MOV EAX,dword ptr [ESP + 0x4]"
+      ],
+      "assembly_terminators": [
+        "00803c31: RET 0x4",
+        "00803c52: RET 0x4",
+        "00803c66: RET 0x4",
+        "00803c6e: RET 0x4",
+        "00803c8a: RET 0x4",
+        "00803c99: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/00803c20",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": [
+        {
+          "function": "00803c20",
+          "address": "00803c69",
+          "native": "008036f0"
+        }
+      ]
+    },
+    {
+      "address": "0080ac70",
+      "segment": 49,
+      "body_bytes": 11,
+      "old_name": "FUN_0080ac70",
+      "name": "CG_scalar_delete_adjustor_0080ac70",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "compiler-generated scalar deleting destructor or adjustor",
+      "evidence": "SUB ECX,310h; tail JMP 0080ADC0, an established scalar deleting destructor.",
+      "prototype_export": "void FUN_0080ac70(void)",
+      "assembly_first": [
+        "0080ac70: SUB ECX,0x310",
+        "0080ac76: JMP 0x0080adc0"
+      ],
+      "assembly_terminators": [
+        "0080ac76: JMP 0x0080adc0"
+      ],
+      "export": "exports/bsp/functions/0080ac70",
+      "uncertainties": [],
+      "call_sites": [
+        {
+          "function": "0080ac70",
+          "address": "0080ac76",
+          "native": "0080adc0",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0080d780",
+      "segment": 49,
+      "body_bytes": 6,
+      "old_name": "FUN_0080d780",
+      "name": "entity_path_type_code_0080d780",
+      "source": "src/cc13_seg49.cpp",
+      "header": "include/bsp/cc13_seg49.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/cc13_seg49.cpp",
+      "evidence": "EntityPath vtable D092B8 slot69; neighboring construct 80D690, destroy 80D700, class name 80D770 in cc13_seg49. This 12h code differs from class-id48h.",
+      "prototype_export": "undefined4 FUN_0080d780(void)",
+      "assembly_first": [
+        "0080d780: MOV EAX,0x12",
+        "0080d785: RET"
+      ],
+      "assembly_terminators": [
+        "0080d785: RET"
+      ],
+      "export": "exports/bsp/functions/0080d780",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00810010",
+      "segment": 50,
+      "body_bytes": 7,
+      "old_name": "FUN_00810010",
+      "name": "ship_motion_word_4f8_00810010",
+      "source": "src/ship_motion_ver_cc13.cpp",
+      "header": "include/bsp/ship_motion_ver_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/ship_motion_ver_cc13.cpp",
+      "evidence": "Full exported body and assembly checked. Source names describe only observed fields or type-operation behavior; owning class remains provisional.",
+      "prototype_export": "undefined4 __fastcall FUN_00810010(int param_1)",
+      "assembly_first": [
+        "00810010: MOV EAX,dword ptr [ECX + 0x4f8]",
+        "00810016: RET"
+      ],
+      "assembly_terminators": [
+        "00810016: RET"
+      ],
+      "export": "exports/bsp/functions/00810010",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00814960",
+      "segment": 50,
+      "body_bytes": 83,
+      "old_name": "FUN_00814960",
+      "name": "find_float_equal_00814960",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "normalized generic template/allocator/container helper family",
+      "evidence": "Generic native float-array find instantiation. Actual caller 00817610 calls at 00817618, swaps the last element into the result and decrements count: paired generic find/remove-unordered algorithm. Not asserted to be std::vector.",
+      "prototype_export": "int __thiscall FUN_00814960(undefined4 *param_1,float *param_2)",
+      "assembly_first": [
+        "00814960: MOV EAX,dword ptr [ECX + 0x4]",
+        "00814963: PUSH ESI",
+        "00814964: MOV ESI,dword ptr [ECX]"
+      ],
+      "assembly_terminators": [
+        "008149a2: RET 0x4",
+        "008149b0: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/00814960",
+      "uncertainties": [
+        "Exact template spelling/vendor symbol not recovered. No library implementation is added or counted as game reconstruction."
+      ],
+      "call_sites": [],
+      "ghidra_name": "LIBINST_find_float_equal_00814960"
+    },
+    {
+      "address": "00815590",
+      "segment": 50,
+      "body_bytes": 108,
+      "old_name": "FUN_00815590",
+      "name": "ship_motion_write_controls_00815590",
+      "source": "src/ship_motion_ver_cc13.cpp",
+      "header": "include/bsp/ship_motion_ver_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/ship_motion_ver_cc13.cpp",
+      "evidence": "Ship-motion family documentation CC13_GPR_50 and CC13_VER_3. Slot0C archive writes tagged float2 thrust then toTurn.",
+      "prototype_export": "void __thiscall FUN_00815590(undefined4 *param_1,int *param_2)",
+      "assembly_first": [
+        "00815590: PUSH ESI",
+        "00815591: MOV ESI,dword ptr [ESP + 0x8]",
+        "00815595: PUSH EDI"
+      ],
+      "assembly_terminators": [
+        "008155f9: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/00815590",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "0081ac40",
+      "segment": 51,
+      "body_bytes": 81,
+      "old_name": "FUN_0081ac40",
+      "name": "retained_float_pair_copy_0081ac40",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "normalized generic template/allocator/container helper family",
+      "evidence": "Generic record placement-copy constructor with native compiler EH. Actual adapter 0081B5A0 loads stack args into EDX/ECX, calls at 0081B5A8, RET8. Normalized null-placement/copy/refcount family matches reviewed 007C4330/007C4390 with only payload width differing; no game-specific decision.",
+      "prototype_export": "void __fastcall FUN_0081ac40(int *param_1,int *param_2)",
+      "assembly_first": [
+        "0081ac40: MOV EAX,FS:[0x0]",
+        "0081ac46: PUSH -0x1",
+        "0081ac48: PUSH 0xc90e71"
+      ],
+      "assembly_terminators": [
+        "0081ac90: RET"
+      ],
+      "export": "exports/bsp/functions/0081ac40",
+      "uncertainties": [
+        "Exact template spelling/vendor symbol not recovered. No library implementation is added or counted as game reconstruction."
+      ],
+      "call_sites": [],
+      "ghidra_name": "LIBINST_retained_float_pair_copy_0081ac40"
+    },
+    {
+      "address": "008355f0",
+      "segment": 52,
+      "body_bytes": 19,
+      "old_name": "FUN_008355f0",
+      "name": "director_if_enabled_008355f0",
+      "source": "src/weapon_director.cpp",
+      "header": "include/bsp/weapon_director.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/weapon_director.cpp",
+      "evidence": "WeaponDirector +23Dh gate already documented in weapon_director.hpp; when nonzero tail dispatch vslot18.",
+      "prototype_export": "undefined4 __fastcall FUN_008355f0(int *param_1)",
+      "assembly_first": [
+        "008355f0: CMP byte ptr [ECX + 0x23d],0x0",
+        "008355f7: JNZ 0x008355fc",
+        "008355f9: XOR EAX,EAX"
+      ],
+      "assembly_terminators": [
+        "008355fb: RET",
+        "00835601: JMP EDX"
+      ],
+      "export": "exports/bsp/functions/008355f0",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00835620",
+      "segment": 52,
+      "body_bytes": 17,
+      "old_name": "FUN_00835620",
+      "name": "director_archive_enter_00835620",
+      "source": "src/weapon_director.cpp",
+      "header": "include/bsp/weapon_director.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/weapon_director.cpp",
+      "evidence": "WeaponDirector archive adapter: receiver swap ECX director -> stack argument, archive -> ECX; tail vslot04.",
+      "prototype_export": "void FUN_00835620(int *param_1)",
+      "assembly_first": [
+        "00835620: MOV EAX,ECX",
+        "00835622: MOV ECX,dword ptr [ESP + 0x4]",
+        "00835626: MOV EDX,dword ptr [ECX]"
+      ],
+      "assembly_terminators": [
+        "0083562f: JMP EAX"
+      ],
+      "export": "exports/bsp/functions/00835620",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00835690",
+      "segment": 52,
+      "body_bytes": 17,
+      "old_name": "FUN_00835690",
+      "name": "director_archive_leave_00835690",
+      "source": "src/weapon_director.cpp",
+      "header": "include/bsp/weapon_director.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/weapon_director.cpp",
+      "evidence": "WeaponDirector archive adapter: receiver swap ECX director -> stack argument, archive -> ECX; tail vslot08.",
+      "prototype_export": "void FUN_00835690(int *param_1)",
+      "assembly_first": [
+        "00835690: MOV EAX,ECX",
+        "00835692: MOV ECX,dword ptr [ESP + 0x4]",
+        "00835696: MOV EDX,dword ptr [ECX]"
+      ],
+      "assembly_terminators": [
+        "0083569f: JMP EAX"
+      ],
+      "export": "exports/bsp/functions/00835690",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "008429a0",
+      "segment": 52,
+      "body_bytes": 31,
+      "old_name": "FUN_008429a0",
+      "name": "CG_scalar_deleting_dtor_008429a0",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "compiler-generated scalar deleting destructor or adjustor",
+      "evidence": "Store vtable D0B6A0; flag bit0 optionally calls BF65AC free; return self; RET4.",
+      "prototype_export": "undefined4 * __thiscall FUN_008429a0(undefined4 *param_1,byte param_2)",
+      "assembly_first": [
+        "008429a0: TEST byte ptr [ESP + 0x4],0x1",
+        "008429a5: PUSH ESI",
+        "008429a6: MOV ESI,ECX"
+      ],
+      "assembly_terminators": [
+        "008429bc: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/008429a0",
+      "uncertainties": [],
+      "call_sites": [
+        {
+          "function": "008429a0",
+          "address": "008429b1",
+          "native": "00bf65ac"
+        }
+      ]
+    },
+    {
+      "address": "00846b70",
+      "segment": 52,
+      "body_bytes": 3,
+      "old_name": "FUN_00846b70",
+      "name": "shipyard_empty_slot95_00846b70",
+      "source": "src/cc13_front5.cpp",
+      "header": "include/bsp/cc13_front5.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/cc13_front5.cpp",
+      "evidence": "MShipyard vtable D0B770 slot95, exact RET4 no-op.",
+      "prototype_export": "void FUN_00846b70(void)",
+      "assembly_first": [
+        "00846b70: RET 0x4"
+      ],
+      "assembly_terminators": [
+        "00846b70: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/00846b70",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00846b80",
+      "segment": 52,
+      "body_bytes": 3,
+      "old_name": "FUN_00846b80",
+      "name": "shipyard_empty_slot96_00846b80",
+      "source": "src/cc13_front5.cpp",
+      "header": "include/bsp/cc13_front5.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/cc13_front5.cpp",
+      "evidence": "MShipyard vtable D0B770 slot96, exact RET4 no-op.",
+      "prototype_export": "void FUN_00846b80(void)",
+      "assembly_first": [
+        "00846b80: RET 0x4"
+      ],
+      "assembly_terminators": [
+        "00846b80: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/00846b80",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00846bd0",
+      "segment": 52,
+      "body_bytes": 11,
+      "old_name": "FUN_00846bd0",
+      "name": "CG_scalar_delete_adjustor_00846bd0",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "compiler-generated scalar deleting destructor or adjustor",
+      "evidence": "SUB ECX,310h; tail JMP 00847610, an established scalar deleting destructor.",
+      "prototype_export": "void FUN_00846bd0(void)",
+      "assembly_first": [
+        "00846bd0: SUB ECX,0x310",
+        "00846bd6: JMP 0x00847610"
+      ],
+      "assembly_terminators": [
+        "00846bd6: JMP 0x00847610"
+      ],
+      "export": "exports/bsp/functions/00846bd0",
+      "uncertainties": [],
+      "call_sites": [
+        {
+          "function": "00846bd0",
+          "address": "00846bd6",
+          "native": "00847610",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "00846cc0",
+      "segment": 52,
+      "body_bytes": 35,
+      "old_name": "FUN_00846cc0",
+      "name": "shipyard_display_text_00846cc0",
+      "source": "src/cc13_front5.cpp",
+      "header": "include/bsp/cc13_front5.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/cc13_front5.cpp",
+      "evidence": "MShipyard neighboring IsKindOf 846C00; custom+15C/+160 fallback or class+538 -> +54; no null-result repair.",
+      "prototype_export": "undefined1 * __fastcall FUN_00846cc0(int param_1)",
+      "assembly_first": [
+        "00846cc0: CMP dword ptr [ECX + 0x15c],0x0",
+        "00846cc7: JZ 0x00846cd9",
+        "00846cc9: MOV EAX,dword ptr [ECX + 0x160]"
+      ],
+      "assembly_terminators": [
+        "00846cd8: RET",
+        "00846ce2: RET"
+      ],
+      "export": "exports/bsp/functions/00846cc0",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "0084c550",
+      "segment": 52,
+      "body_bytes": 4,
+      "old_name": "FUN_0084c550",
+      "name": "owner_byte_2c_0084c550",
+      "source": "src/cc13_front5.cpp",
+      "header": "include/bsp/cc13_front5.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/cc13_front5.cpp",
+      "evidence": "Full exported body and assembly checked. Source names describe only observed fields or type-operation behavior; owning class remains provisional.",
+      "prototype_export": "undefined1 __fastcall FUN_0084c550(int param_1)",
+      "assembly_first": [
+        "0084c550: MOV AL,byte ptr [ECX + 0x2c]",
+        "0084c553: RET"
+      ],
+      "assembly_terminators": [
+        "0084c553: RET"
+      ],
+      "export": "exports/bsp/functions/0084c550",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "0084ce80",
+      "segment": 52,
+      "body_bytes": 44,
+      "old_name": "FUN_0084ce80",
+      "name": "supply_state_message_write_0084ce80",
+      "source": "src/mp_seg43_cc13.cpp",
+      "header": "include/bsp/mp_seg43_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/mp_seg43_cc13.cpp",
+      "evidence": "BFh supply-state message writer: base extended header, signed32 at+1C, bool+20. Exact call ABI from assembly.",
+      "prototype_export": "void __thiscall FUN_0084ce80(int param_1,undefined4 param_2)",
+      "assembly_first": [
+        "0084ce80: PUSH ESI",
+        "0084ce81: PUSH EDI",
+        "0084ce82: MOV EDI,dword ptr [ESP + 0xc]"
+      ],
+      "assembly_terminators": [
+        "0084cea9: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/0084ce80",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": [
+        {
+          "function": "0084ce80",
+          "address": "0084ce89",
+          "native": "0075b480"
+        },
+        {
+          "function": "0084ce80",
+          "address": "0084ce96",
+          "native": "00429090"
+        },
+        {
+          "function": "0084ce80",
+          "address": "0084cea2",
+          "native": "004290b0"
+        }
+      ]
+    },
+    {
+      "address": "0084ceb0",
+      "segment": 52,
+      "body_bytes": 46,
+      "old_name": "FUN_0084ceb0",
+      "name": "supply_state_message_read_0084ceb0",
+      "source": "src/mp_seg43_cc13.cpp",
+      "header": "include/bsp/mp_seg43_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/mp_seg43_cc13.cpp",
+      "evidence": "BFh supply-state message reader: base extended header first; subsequent cursor is stream+4.",
+      "prototype_export": "void __thiscall FUN_0084ceb0(int param_1,undefined4 param_2)",
+      "assembly_first": [
+        "0084ceb0: PUSH ESI",
+        "0084ceb1: PUSH EDI",
+        "0084ceb2: MOV EDI,dword ptr [ESP + 0xc]"
+      ],
+      "assembly_terminators": [
+        "0084cedb: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/0084ceb0",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": [
+        {
+          "function": "0084ceb0",
+          "address": "0084ceb9",
+          "native": "0075b4c0"
+        },
+        {
+          "function": "0084ceb0",
+          "address": "0084cec9",
+          "native": "00428d30"
+        },
+        {
+          "function": "0084ceb0",
+          "address": "0084ced4",
+          "native": "00428d70"
+        }
+      ]
+    },
+    {
+      "address": "0084d520",
+      "segment": 52,
+      "body_bytes": 50,
+      "old_name": "FUN_0084d520",
+      "name": "supply_state_message_apply_0084d520",
+      "source": "src/mp_seg43_cc13.cpp",
+      "header": "include/bsp/mp_seg43_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/mp_seg43_cc13.cpp",
+      "evidence": "Receiver+310 map subscript for BFh message only; signed key+1C, byte+20; RET4 AL result.",
+      "prototype_export": "undefined4 FUN_0084d520(int param_1)",
+      "assembly_first": [
+        "0084d520: MOV EAX,dword ptr [ESP + 0x4]",
+        "0084d524: CMP byte ptr [EAX + 0x10],0xbf",
+        "0084d528: JZ 0x0084d52f"
+      ],
+      "assembly_terminators": [
+        "0084d52c: RET 0x4",
+        "0084d54f: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/0084d520",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": [
+        {
+          "function": "0084d520",
+          "address": "0084d545",
+          "native": "005c49c0"
+        }
+      ]
+    },
+    {
+      "address": "0084f000",
+      "segment": 52,
+      "body_bytes": 31,
+      "old_name": "FUN_0084f000",
+      "name": "owner_restore_visibility_0084f000",
+      "source": "src/cc13_front5.cpp",
+      "header": "include/bsp/cc13_front5.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/cc13_front5.cpp",
+      "evidence": "Owner+19C -> +160 -> +C scene node receives visibility1.0 and mode0; ignored stack word RET4.",
+      "prototype_export": "void FUN_0084f000(void)",
+      "assembly_first": [
+        "0084f000: MOV EAX,dword ptr [ECX + 0x19c]",
+        "0084f006: FLD1",
+        "0084f008: PUSH 0x0"
+      ],
+      "assembly_terminators": [
+        "0084f01c: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/0084f000",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": [
+        {
+          "function": "0084f000",
+          "address": "0084f017",
+          "native": "00b6da70"
+        }
+      ]
+    },
+    {
+      "address": "008520d0",
+      "segment": 53,
+      "body_bytes": 98,
+      "old_name": "FUN_008520d0",
+      "name": "text_buffer_append_format_008520d0",
+      "source": "src/cc13_seg53.cpp",
+      "header": "include/bsp/cc13_seg53.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/cc13_seg53.cpp",
+      "evidence": "Text buffer +4 pointer,+8 capacity,+C length; 400h stack format buffer; unsigned wrapped length arithmetic; trailing NUL.",
+      "prototype_export": "void __thiscall FUN_008520d0(int param_1,char *param_2,va_list param_3)",
+      "assembly_first": [
+        "008520d0: MOV EAX,dword ptr [ESP + 0x8]",
+        "008520d4: SUB ESP,0x400",
+        "008520da: PUSH ESI"
+      ],
+      "assembly_terminators": [
+        "0085212f: RET 0x8"
+      ],
+      "export": "exports/bsp/functions/008520d0",
+      "uncertainties": [
+        "Formatting uses the linked current CRT vsprintf_s; old-CRT locale/error/invalid-parameter equivalence is unproven. Native capacity and valid-format preconditions apply.",
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": [
+        {
+          "function": "008520d0",
+          "address": "008520f1",
+          "native": "00bf7289"
+        },
+        {
+          "function": "008520d0",
+          "address": "00852112",
+          "native": "00bf7680"
+        }
+      ]
+    },
+    {
+      "address": "00853230",
+      "segment": 53,
+      "body_bytes": 303,
+      "old_name": "FUN_00853230",
+      "name": "ship_select_launch_00853230",
+      "source": "src/gameplay_seg53_cc13.cpp",
+      "header": "include/bsp/gameplay_seg53_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/gameplay_seg53_cc13.cpp",
+      "evidence": "Ship launch family: exact world-refresh order, x87 mean /3.0, rounded float threshold +2.0, ten observer slots, kind25 child select, launch/gate callbacks.",
+      "prototype_export": "void __thiscall FUN_00853230(int param_1,undefined4 param_2,undefined4 param_3)",
+      "assembly_first": [
+        "00853230: PUSH EDI",
+        "00853231: MOV EDI,ECX",
+        "00853233: CMP byte ptr [EDI + 0xc8],0x0"
+      ],
+      "assembly_terminators": [
+        "0085327f: RET 0x8",
+        "008532cb: JMP 0x008532d0",
+        "008532e8: RET 0x8",
+        "0085333e: RET 0x8",
+        "0085335c: RET 0x8"
+      ],
+      "export": "exports/bsp/functions/00853230",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": [
+        {
+          "function": "00853230",
+          "address": "0085323c",
+          "native": "00414db0"
+        },
+        {
+          "function": "00853230",
+          "address": "00853279",
+          "native": "008141e0"
+        },
+        {
+          "function": "00853230",
+          "address": "0085328d",
+          "native": "00414db0"
+        },
+        {
+          "function": "00853230",
+          "address": "008532ff",
+          "native": "006952a0"
+        }
+      ]
+    },
+    {
+      "address": "008561c0",
+      "segment": 53,
+      "body_bytes": 7,
+      "old_name": "FUN_008561c0",
+      "name": "unit_byte_458_008561c0",
+      "source": "src/gameplay_seg53_cc13.cpp",
+      "header": "include/bsp/gameplay_seg53_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/gameplay_seg53_cc13.cpp",
+      "evidence": "Full exported body and assembly checked. Source names describe only observed fields or type-operation behavior; owning class remains provisional.",
+      "prototype_export": "undefined1 __fastcall FUN_008561c0(int param_1)",
+      "assembly_first": [
+        "008561c0: MOV AL,byte ptr [ECX + 0x458]",
+        "008561c6: RET"
+      ],
+      "assembly_terminators": [
+        "008561c6: RET"
+      ],
+      "export": "exports/bsp/functions/008561c0",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00858190",
+      "segment": 53,
+      "body_bytes": 3,
+      "old_name": "FUN_00858190",
+      "name": "unit_empty_one_a_00858190",
+      "source": "src/gameplay_seg53_cc13.cpp",
+      "header": "include/bsp/gameplay_seg53_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/gameplay_seg53_cc13.cpp",
+      "evidence": "Full exported body and assembly checked. Source names describe only observed fields or type-operation behavior; owning class remains provisional.",
+      "prototype_export": "void FUN_00858190(void)",
+      "assembly_first": [
+        "00858190: RET 0x4"
+      ],
+      "assembly_terminators": [
+        "00858190: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/00858190",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "008581a0",
+      "segment": 53,
+      "body_bytes": 3,
+      "old_name": "FUN_008581a0",
+      "name": "unit_empty_one_b_008581a0",
+      "source": "src/gameplay_seg53_cc13.cpp",
+      "header": "include/bsp/gameplay_seg53_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/gameplay_seg53_cc13.cpp",
+      "evidence": "Full exported body and assembly checked. Source names describe only observed fields or type-operation behavior; owning class remains provisional.",
+      "prototype_export": "void FUN_008581a0(void)",
+      "assembly_first": [
+        "008581a0: RET 0x4"
+      ],
+      "assembly_terminators": [
+        "008581a0: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/008581a0",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "008581c0",
+      "segment": 53,
+      "body_bytes": 3,
+      "old_name": "FUN_008581c0",
+      "name": "unit_empty_two_a_008581c0",
+      "source": "src/gameplay_seg53_cc13.cpp",
+      "header": "include/bsp/gameplay_seg53_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/gameplay_seg53_cc13.cpp",
+      "evidence": "Full exported body and assembly checked. Source names describe only observed fields or type-operation behavior; owning class remains provisional.",
+      "prototype_export": "void FUN_008581c0(void)",
+      "assembly_first": [
+        "008581c0: RET 0x8"
+      ],
+      "assembly_terminators": [
+        "008581c0: RET 0x8"
+      ],
+      "export": "exports/bsp/functions/008581c0",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "008581d0",
+      "segment": 53,
+      "body_bytes": 3,
+      "old_name": "FUN_008581d0",
+      "name": "unit_empty_one_c_008581d0",
+      "source": "src/gameplay_seg53_cc13.cpp",
+      "header": "include/bsp/gameplay_seg53_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/gameplay_seg53_cc13.cpp",
+      "evidence": "Full exported body and assembly checked. Source names describe only observed fields or type-operation behavior; owning class remains provisional.",
+      "prototype_export": "void FUN_008581d0(void)",
+      "assembly_first": [
+        "008581d0: RET 0x4"
+      ],
+      "assembly_terminators": [
+        "008581d0: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/008581d0",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "008581f0",
+      "segment": 53,
+      "body_bytes": 3,
+      "old_name": "FUN_008581f0",
+      "name": "unit_empty_two_b_008581f0",
+      "source": "src/gameplay_seg53_cc13.cpp",
+      "header": "include/bsp/gameplay_seg53_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/gameplay_seg53_cc13.cpp",
+      "evidence": "Full exported body and assembly checked. Source names describe only observed fields or type-operation behavior; owning class remains provisional.",
+      "prototype_export": "void FUN_008581f0(void)",
+      "assembly_first": [
+        "008581f0: RET 0x8"
+      ],
+      "assembly_terminators": [
+        "008581f0: RET 0x8"
+      ],
+      "export": "exports/bsp/functions/008581f0",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00858210",
+      "segment": 53,
+      "body_bytes": 1,
+      "old_name": "FUN_00858210",
+      "name": "unit_empty_zero_00858210",
+      "source": "src/gameplay_seg53_cc13.cpp",
+      "header": "include/bsp/gameplay_seg53_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/gameplay_seg53_cc13.cpp",
+      "evidence": "Full exported body and assembly checked. Source names describe only observed fields or type-operation behavior; owning class remains provisional.",
+      "prototype_export": "void FUN_00858210(void)",
+      "assembly_first": [
+        "00858210: RET"
+      ],
+      "assembly_terminators": [
+        "00858210: RET"
+      ],
+      "export": "exports/bsp/functions/00858210",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "0085e4b0",
+      "segment": 53,
+      "body_bytes": 31,
+      "old_name": "FUN_0085e4b0",
+      "name": "sphere_triangle_distance_root_0085e4b0",
+      "source": "src/cc13_seg53.cpp",
+      "header": "include/bsp/cc13_seg53.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/cc13_seg53.cpp",
+      "evidence": "ECX center, EDX triangle a; stack b,c forwarded to 85DF60; CRT sqrt result spilled float then returned ST0.",
+      "prototype_export": "float10 FUN_0085e4b0(undefined4 param_1,undefined4 param_2)",
+      "assembly_first": [
+        "0085e4b0: MOV EAX,dword ptr [ESP + 0x8]",
+        "0085e4b4: PUSH EAX",
+        "0085e4b5: MOV EAX,dword ptr [ESP + 0x8]"
+      ],
+      "assembly_terminators": [
+        "0085e4cc: RET 0x8"
+      ],
+      "export": "exports/bsp/functions/0085e4b0",
+      "uncertainties": [
+        "85DF60 is an explicit target contract; source composes current CRT sqrt and does not claim original CRT/x87 ABI compatibility.",
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": [
+        {
+          "function": "0085e4b0",
+          "address": "0085e4ba",
+          "native": "0085df60"
+        },
+        {
+          "function": "0085e4b0",
+          "address": "0085e4bf",
+          "native": "00bf7030"
+        }
+      ]
+    },
+    {
+      "address": "0085ea20",
+      "segment": 53,
+      "body_bytes": 7,
+      "old_name": "FUN_0085ea20",
+      "name": "unit_byte_46c_0085ea20",
+      "source": "src/gameplay_seg53_cc13.cpp",
+      "header": "include/bsp/gameplay_seg53_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/gameplay_seg53_cc13.cpp",
+      "evidence": "Full exported body and assembly checked. Source names describe only observed fields or type-operation behavior; owning class remains provisional.",
+      "prototype_export": "undefined1 __fastcall FUN_0085ea20(int param_1)",
+      "assembly_first": [
+        "0085ea20: MOV AL,byte ptr [ECX + 0x46c]",
+        "0085ea26: RET"
+      ],
+      "assembly_terminators": [
+        "0085ea26: RET"
+      ],
+      "export": "exports/bsp/functions/0085ea20",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "0085eaf0",
+      "segment": 53,
+      "body_bytes": 11,
+      "old_name": "FUN_0085eaf0",
+      "name": "CG_scalar_delete_adjustor_0085eaf0",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "compiler-generated scalar deleting destructor or adjustor",
+      "evidence": "SUB ECX,3E4h; tail JMP 0085EB60, an established scalar deleting destructor.",
+      "prototype_export": "void FUN_0085eaf0(void)",
+      "assembly_first": [
+        "0085eaf0: SUB ECX,0x3e4",
+        "0085eaf6: JMP 0x0085eb60"
+      ],
+      "assembly_terminators": [
+        "0085eaf6: JMP 0x0085eb60"
+      ],
+      "export": "exports/bsp/functions/0085eaf0",
+      "uncertainties": [],
+      "call_sites": [
+        {
+          "function": "0085eaf0",
+          "address": "0085eaf6",
+          "native": "0085eb60",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0085eb10",
+      "segment": 53,
+      "body_bytes": 11,
+      "old_name": "FUN_0085eb10",
+      "name": "CG_scalar_delete_adjustor_0085eb10",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "compiler-generated scalar deleting destructor or adjustor",
+      "evidence": "SUB ECX,310h; tail JMP 0085EB60, an established scalar deleting destructor.",
+      "prototype_export": "void FUN_0085eb10(void)",
+      "assembly_first": [
+        "0085eb10: SUB ECX,0x310",
+        "0085eb16: JMP 0x0085eb60"
+      ],
+      "assembly_terminators": [
+        "0085eb16: JMP 0x0085eb60"
+      ],
+      "export": "exports/bsp/functions/0085eb10",
+      "uncertainties": [],
+      "call_sites": [
+        {
+          "function": "0085eb10",
+          "address": "0085eb16",
+          "native": "0085eb60",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "00860340",
+      "segment": 53,
+      "body_bytes": 585,
+      "old_name": "FUN_00860340",
+      "name": "debug_draw_basis_arc_00860340",
+      "source": "src/cc13_seg53.cpp",
+      "header": "include/bsp/cc13_seg53.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/cc13_seg53.cpp",
+      "evidence": "Debug arc siblings 860140/860AD0 in cc13_seg53. ECX center, EDX sine basis; stack cosine basis,start,sweep,rgba,density RET14. Original BF7420 and x87 sin/cos kept explicit provider boundaries; float spills/order retained.",
+      "prototype_export": "void FUN_00860340(undefined4 param_1,float param_2,undefined4 param_3,undefined4 *param_4)",
+      "assembly_first": [
+        "00860340: SUB ESP,0x84",
+        "00860346: FLD float ptr [ESP + 0x90]",
+        "0086034d: PUSH EBX"
+      ],
+      "assembly_terminators": [
+        "00860586: RET 0x14"
+      ],
+      "export": "exports/bsp/functions/00860340",
+      "uncertainties": [
+        "Requires exact BF7420 low-EAX and FSIN/FCOS float-result providers; not bitwise x87 fixture-tested.",
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": [
+        {
+          "function": "00860340",
+          "address": "00860364",
+          "native": "00bf7420"
+        },
+        {
+          "function": "00860340",
+          "address": "00860565",
+          "native": "0085f990"
+        }
+      ]
+    },
+    {
+      "address": "00861b90",
+      "segment": 53,
+      "body_bytes": 3,
+      "old_name": "FUN_00861b90",
+      "name": "aa_pick_no_target_00861b90",
+      "source": "src/aa_pick_ver_cc13.cpp",
+      "header": "include/bsp/aa_pick_ver_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/aa_pick_ver_cc13.cpp",
+      "evidence": "AA provider table D0D314 slot1: XOR EAX,EAX RET.",
+      "prototype_export": "undefined4 FUN_00861b90(void)",
+      "assembly_first": [
+        "00861b90: XOR EAX,EAX",
+        "00861b92: RET"
+      ],
+      "assembly_terminators": [
+        "00861b92: RET"
+      ],
+      "export": "exports/bsp/functions/00861b90",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00861be0",
+      "segment": 53,
+      "body_bytes": 5,
+      "old_name": "FUN_00861be0",
+      "name": "aa_pick_accept_category_00861be0",
+      "source": "src/aa_pick_ver_cc13.cpp",
+      "header": "include/bsp/aa_pick_ver_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/aa_pick_ver_cc13.cpp",
+      "evidence": "AA category table D0D31C slot1: MOV AL,1 RET4.",
+      "prototype_export": "undefined1 FUN_00861be0(void)",
+      "assembly_first": [
+        "00861be0: MOV AL,0x1",
+        "00861be2: RET 0x4"
+      ],
+      "assembly_terminators": [
+        "00861be2: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/00861be0",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00861bf0",
+      "segment": 53,
+      "body_bytes": 31,
+      "old_name": "FUN_00861bf0",
+      "name": "CG_scalar_deleting_dtor_00861bf0",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "compiler-generated scalar deleting destructor or adjustor",
+      "evidence": "Store vtable D0D31C; flag bit0 optionally calls BF65AC free; return self; RET4.",
+      "prototype_export": "undefined4 * __thiscall FUN_00861bf0(undefined4 *param_1,byte param_2)",
+      "assembly_first": [
+        "00861bf0: TEST byte ptr [ESP + 0x4],0x1",
+        "00861bf5: PUSH ESI",
+        "00861bf6: MOV ESI,ECX"
+      ],
+      "assembly_terminators": [
+        "00861c0c: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/00861bf0",
+      "uncertainties": [],
+      "call_sites": [
+        {
+          "function": "00861bf0",
+          "address": "00861c01",
+          "native": "00bf65ac"
+        }
+      ]
+    },
+    {
+      "address": "00864520",
+      "segment": 53,
+      "body_bytes": 3,
+      "old_name": "FUN_00864520",
+      "name": "gunnery_empty_one_00864520",
+      "source": "src/aa_pick_ver_cc13.cpp",
+      "header": "include/bsp/aa_pick_ver_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/aa_pick_ver_cc13.cpp",
+      "evidence": "Full exported body and assembly checked. Source names describe only observed fields or type-operation behavior; owning class remains provisional.",
+      "prototype_export": "void FUN_00864520(void)",
+      "assembly_first": [
+        "00864520: RET 0x4"
+      ],
+      "assembly_terminators": [
+        "00864520: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/00864520",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00864530",
+      "segment": 53,
+      "body_bytes": 3,
+      "old_name": "FUN_00864530",
+      "name": "gunnery_empty_three_00864530",
+      "source": "src/aa_pick_ver_cc13.cpp",
+      "header": "include/bsp/aa_pick_ver_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/aa_pick_ver_cc13.cpp",
+      "evidence": "Full exported body and assembly checked. Source names describe only observed fields or type-operation behavior; owning class remains provisional.",
+      "prototype_export": "void FUN_00864530(void)",
+      "assembly_first": [
+        "00864530: RET 0xc"
+      ],
+      "assembly_terminators": [
+        "00864530: RET 0xc"
+      ],
+      "export": "exports/bsp/functions/00864530",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00864540",
+      "segment": 53,
+      "body_bytes": 1,
+      "old_name": "FUN_00864540",
+      "name": "gunnery_empty_zero_00864540",
+      "source": "src/aa_pick_ver_cc13.cpp",
+      "header": "include/bsp/aa_pick_ver_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/aa_pick_ver_cc13.cpp",
+      "evidence": "Full exported body and assembly checked. Source names describe only observed fields or type-operation behavior; owning class remains provisional.",
+      "prototype_export": "void FUN_00864540(void)",
+      "assembly_first": [
+        "00864540: RET"
+      ],
+      "assembly_terminators": [
+        "00864540: RET"
+      ],
+      "export": "exports/bsp/functions/00864540",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00865e00",
+      "segment": 53,
+      "body_bytes": 3,
+      "old_name": "FUN_00865e00",
+      "name": "word_array_begin_00865e00",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "normalized generic template/allocator/container helper family",
+      "evidence": "Generic native pointer-array begin. Contiguous 865E00/865E10/865E50/865E90/866030 container family contains the established tmpl_shape NativePointerVector_Reserve at 865E90; no authored game-specific behavior. Not asserted to be std::vector.",
+      "prototype_export": "undefined4 __fastcall FUN_00865e00(undefined4 *param_1)",
+      "assembly_first": [
+        "00865e00: MOV EAX,dword ptr [ECX]",
+        "00865e02: RET"
+      ],
+      "assembly_terminators": [
+        "00865e02: RET"
+      ],
+      "export": "exports/bsp/functions/00865e00",
+      "uncertainties": [
+        "Exact template spelling/vendor symbol not recovered. No library implementation is added or counted as game reconstruction."
+      ],
+      "call_sites": [],
+      "ghidra_name": "LIBINST_word_array_begin_00865e00"
+    },
+    {
+      "address": "00865e10",
+      "segment": 53,
+      "body_bytes": 9,
+      "old_name": "FUN_00865e10",
+      "name": "word_array_end_00865e10",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "normalized generic template/allocator/container helper family",
+      "evidence": "Generic pointer-array end in the same established container family around tmpl_shape reserve 865E90; data+4*count only.",
+      "prototype_export": "int __fastcall FUN_00865e10(int *param_1)",
+      "assembly_first": [
+        "00865e10: MOV EAX,dword ptr [ECX + 0x4]",
+        "00865e13: MOV ECX,dword ptr [ECX]",
+        "00865e15: LEA EAX,[ECX + EAX*0x4]"
+      ],
+      "assembly_terminators": [
+        "00865e18: RET"
+      ],
+      "export": "exports/bsp/functions/00865e10",
+      "uncertainties": [
+        "Exact template spelling/vendor symbol not recovered. No library implementation is added or counted as game reconstruction."
+      ],
+      "call_sites": [],
+      "ghidra_name": "LIBINST_word_array_end_00865e10"
+    },
+    {
+      "address": "00865e50",
+      "segment": 53,
+      "body_bytes": 18,
+      "old_name": "FUN_00865e50",
+      "name": "iterator_compare_low_byte_00865e50",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "normalized generic template/allocator/container helper family",
+      "evidence": "Generic pointer-iterator comparison in that container family. CMP/SETZ replaces AL only; upper24 of first word remain. ABI observation retained without a game reconstruction body.",
+      "prototype_export": "undefined4 __thiscall FUN_00865e50(int *param_1,int *param_2)",
+      "assembly_first": [
+        "00865e50: MOV EAX,dword ptr [ECX]",
+        "00865e52: MOV EDX,dword ptr [ESP + 0x4]",
+        "00865e56: XOR ECX,ECX"
+      ],
+      "assembly_terminators": [
+        "00865e5f: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/00865e50",
+      "uncertainties": [
+        "Exact template spelling/vendor symbol not recovered. No library implementation is added or counted as game reconstruction."
+      ],
+      "call_sites": [],
+      "ghidra_name": "LIBINST_iterator_compare_low_byte_00865e50"
+    },
+    {
+      "address": "00865f50",
+      "segment": 53,
+      "body_bytes": 11,
+      "old_name": "FUN_00865f50",
+      "name": "effect_copy_matrix_00865f50",
+      "source": "src/cc13_seg53.cpp",
+      "header": "include/bsp/cc13_seg53.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/cc13_seg53.cpp",
+      "evidence": "Effect matrix wrapper ADD ECX,90h; tail 4134F0. Reuses existing Seg53Host matrix-copy contract.",
+      "prototype_export": "void FUN_00865f50(void)",
+      "assembly_first": [
+        "00865f50: ADD ECX,0x90",
+        "00865f56: JMP 0x004134f0"
+      ],
+      "assembly_terminators": [
+        "00865f56: JMP 0x004134f0"
+      ],
+      "export": "exports/bsp/functions/00865f50",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": [
+        {
+          "function": "00865f50",
+          "address": "00865f56",
+          "native": "004134f0",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "00866030",
+      "segment": 53,
+      "body_bytes": 12,
+      "old_name": "FUN_00866030",
+      "name": "word_array_at_00866030",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "normalized generic template/allocator/container helper family",
+      "evidence": "Generic native pointer-array indexing beside tmpl_shape reserve 865E90, byte-identical to 00889600: data+4*stack index, RET4.",
+      "prototype_export": "int __thiscall FUN_00866030(int *param_1,int param_2)",
+      "assembly_first": [
+        "00866030: MOV EAX,dword ptr [ECX]",
+        "00866032: MOV ECX,dword ptr [ESP + 0x4]",
+        "00866036: LEA EAX,[EAX + ECX*0x4]"
+      ],
+      "assembly_terminators": [
+        "00866039: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/00866030",
+      "uncertainties": [
+        "Exact template spelling/vendor symbol not recovered. No library implementation is added or counted as game reconstruction."
+      ],
+      "call_sites": [],
+      "ghidra_name": "LIBINST_word_array_at_00866030"
+    },
+    {
+      "address": "008713e0",
+      "segment": 53,
+      "body_bytes": 23,
+      "old_name": "FUN_008713e0",
+      "name": "construct_native_particle_resource_cache_008713e0",
+      "source": "src/native_particle_resource_records.cpp",
+      "header": "include/bsp/native_particle_resource_records.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/native_particle_resource_records.cpp",
+      "evidence": "NativeParticleResourceCache family neighbors 871310/871370/871400; D0DAF0 and four zero DWORDs; EAX=self RET.",
+      "prototype_export": "void __fastcall FUN_008713e0(undefined4 *param_1)",
+      "assembly_first": [
+        "008713e0: MOV EAX,ECX",
+        "008713e2: XOR ECX,ECX",
+        "008713e4: MOV dword ptr [EAX],0xd0daf0"
+      ],
+      "assembly_terminators": [
+        "008713f6: RET"
+      ],
+      "export": "exports/bsp/functions/008713e0",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "008721f0",
+      "segment": 53,
+      "body_bytes": 4,
+      "old_name": "FUN_008721f0",
+      "name": "owner_word4_008721f0",
+      "source": "src/oct18b_nB_high.cpp",
+      "header": "include/bsp/oct18b_nB_high.hpp",
+      "status": "reconstructed_source_build_pending",
+      "family_evidence": "src/oct18b_nB_high.cpp",
+      "evidence": "ECX owner -> EAX=[owner+4], RET. Class remains unknown. Nearby NodeRef methods are context only; unreferenced D7E37C DWORD sequence is not class evidence.",
+      "prototype_export": "undefined4 __fastcall FUN_008721f0(int param_1)",
+      "assembly_first": [
+        "008721f0: MOV EAX,dword ptr [ECX + 0x4]",
+        "008721f3: RET"
+      ],
+      "assembly_terminators": [
+        "008721f3: RET"
+      ],
+      "export": "exports/bsp/functions/008721f0",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00875220",
+      "segment": 54,
+      "body_bytes": 26,
+      "old_name": "FUN_00875220",
+      "name": "damage_singleton_reset_00875220",
+      "source": "src/sim_damage_seg54_argon.cpp",
+      "header": "include/bsp/sim_damage_seg54_argon.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/sim_damage_seg54_argon.cpp",
+      "evidence": "Damage singleton F878DC cleared then singleton-base vtable CE3818 at owner+4; native null path stores address0, remains invalid.",
+      "prototype_export": "void __fastcall FUN_00875220(int param_1)",
+      "assembly_first": [
+        "00875220: XOR EAX,EAX",
+        "00875222: CMP ECX,EAX",
+        "00875224: MOV [0x00f878dc],EAX"
+      ],
+      "assembly_terminators": [
+        "00875232: RET",
+        "00875239: RET"
+      ],
+      "export": "exports/bsp/functions/00875220",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00876ba0",
+      "segment": 54,
+      "body_bytes": 7,
+      "old_name": "FUN_00876ba0",
+      "name": "packed_word_high_byte_00876ba0",
+      "source": "src/sim_damage_seg54_argon.cpp",
+      "header": "include/bsp/sim_damage_seg54_argon.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/sim_damage_seg54_argon.cpp",
+      "evidence": "Full exported body and assembly checked. Source names describe only observed fields or type-operation behavior; owning class remains provisional.",
+      "prototype_export": "undefined1 __fastcall FUN_00876ba0(undefined4 param_1)",
+      "assembly_first": [
+        "00876ba0: PUSH ECX",
+        "00876ba1: MOV AL,byte ptr [ESP + 0x3]",
+        "00876ba5: POP ECX"
+      ],
+      "assembly_terminators": [
+        "00876ba6: RET"
+      ],
+      "export": "exports/bsp/functions/00876ba0",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00876cc0",
+      "segment": 54,
+      "body_bytes": 34,
+      "old_name": "FUN_00876cc0",
+      "name": "copy_words_backward_00876cc0",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "normalized generic template/allocator/container helper family",
+      "evidence": "Generic four-byte copy_backward range instantiation. Contiguous allocator/range helper family includes established STL_UnitPartPointerVector_CopyConstructRange at 008776B0 and generic copy-backward 00877670. No game-specific decision.",
+      "prototype_export": "void FUN_00876cc0(int param_1,int param_2,undefined4 *param_3)",
+      "assembly_first": [
+        "00876cc0: MOV EDX,dword ptr [ESP + 0x4]",
+        "00876cc4: MOV ECX,dword ptr [ESP + 0x8]",
+        "00876cc8: CMP EDX,ECX"
+      ],
+      "assembly_terminators": [
+        "00876ce1: RET"
+      ],
+      "export": "exports/bsp/functions/00876cc0",
+      "uncertainties": [
+        "Exact template spelling/vendor symbol not recovered. No library implementation is added or counted as game reconstruction."
+      ],
+      "call_sites": [],
+      "ghidra_name": "LIBINST_copy_words_backward_00876cc0"
+    },
+    {
+      "address": "00877620",
+      "segment": 54,
+      "body_bytes": 18,
+      "old_name": "FUN_00877620",
+      "name": "opaque_type_destroy_00877620",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "normalized generic template/allocator/container helper family",
+      "evidence": "Generic allocator destruction adapter in that established range-helper family: stack object to ECX, replace stack argument by flags0, tail vslot00. Cached D7E82C vtable claim rejected.",
+      "prototype_export": "void FUN_00877620(undefined4 *param_1)",
+      "assembly_first": [
+        "00877620: MOV ECX,dword ptr [ESP + 0x4]",
+        "00877624: MOV EAX,dword ptr [ECX]",
+        "00877626: MOV EDX,dword ptr [EAX]"
+      ],
+      "assembly_terminators": [
+        "00877630: JMP EDX"
+      ],
+      "export": "exports/bsp/functions/00877620",
+      "uncertainties": [
+        "Exact template spelling/vendor symbol not recovered. No library implementation is added or counted as game reconstruction."
+      ],
+      "call_sites": [],
+      "ghidra_name": "LIBINST_opaque_type_destroy_00877620"
+    },
+    {
+      "address": "00877640",
+      "segment": 54,
+      "body_bytes": 19,
+      "old_name": "FUN_00877640",
+      "name": "opaque_type_copy_word_00877640",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "normalized generic template/allocator/container helper family",
+      "evidence": "Generic scalar placement-copy in that allocator/range-helper family: null placement guard, one-word copy, RET8. No game-specific decision. Cached D7E82C descriptor claim rejected.",
+      "prototype_export": "void FUN_00877640(undefined4 *param_1,undefined4 *param_2)",
+      "assembly_first": [
+        "00877640: MOV EAX,dword ptr [ESP + 0x4]",
+        "00877644: TEST EAX,EAX",
+        "00877646: JZ 0x00877650"
+      ],
+      "assembly_terminators": [
+        "00877650: RET 0x8"
+      ],
+      "export": "exports/bsp/functions/00877640",
+      "uncertainties": [
+        "Exact template spelling/vendor symbol not recovered. No library implementation is added or counted as game reconstruction."
+      ],
+      "call_sites": [],
+      "ghidra_name": "LIBINST_opaque_type_copy_word_00877640"
+    },
+    {
+      "address": "00877660",
+      "segment": 54,
+      "body_bytes": 3,
+      "old_name": "FUN_00877660",
+      "name": "opaque_type_noop_00877660",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "normalized generic template/allocator/container helper family",
+      "evidence": "Generic trivial element-destruction in that established allocator/range-helper family, exact RET4. Classification uses the surrounding construct/destroy/copy family, not empty shape alone. Cached D7E82C descriptor claim rejected.",
+      "prototype_export": "void FUN_00877660(void)",
+      "assembly_first": [
+        "00877660: RET 0x4"
+      ],
+      "assembly_terminators": [
+        "00877660: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/00877660",
+      "uncertainties": [
+        "Exact template spelling/vendor symbol not recovered. No library implementation is added or counted as game reconstruction."
+      ],
+      "call_sites": [],
+      "ghidra_name": "LIBINST_opaque_type_noop_00877660"
+    },
+    {
+      "address": "00877a50",
+      "segment": 54,
+      "body_bytes": 174,
+      "old_name": "FUN_00877a50",
+      "name": "damage_select_last_variant_00877a50",
+      "source": "src/sim_damage_seg54_argon.cpp",
+      "header": "include/bsp/sim_damage_seg54_argon.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/sim_damage_seg54_argon.cpp",
+      "evidence": "Damage variant selector owner+358/+360, class16C..170 10h rows, zero or last index forwarded through vslot1B4 only if changed.",
+      "prototype_export": "void __fastcall FUN_00877a50(int *param_1)",
+      "assembly_first": [
+        "00877a50: PUSH ECX",
+        "00877a51: MOV EAX,dword ptr [ECX + 0x360]",
+        "00877a57: TEST EAX,EAX"
+      ],
+      "assembly_terminators": [
+        "00877a83: JMP 0x00877a97",
+        "00877a93: JMP 0x00877a97",
+        "00877acf: RET",
+        "00877aec: RET",
+        "00877afd: RET"
+      ],
+      "export": "exports/bsp/functions/00877a50",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00878db0",
+      "segment": 55,
+      "body_bytes": 86,
+      "old_name": "FUN_00878db0",
+      "name": "retained_tail_record_copy_00878db0",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "normalized generic template/allocator/container helper family",
+      "evidence": "Generic record placement-copy with native compiler EH. Actual adapter 00879460 loads stack args into EDX/ECX, calls at 00879468, RET8. Normalized null-placement/field-copy/InterlockedIncrement constructor family matches 0081AC40 and reviewed 007C4330/007C4390.",
+      "prototype_export": "void __fastcall FUN_00878db0(undefined4 *param_1,undefined4 *param_2)",
+      "assembly_first": [
+        "00878db0: MOV EAX,FS:[0x0]",
+        "00878db6: PUSH -0x1",
+        "00878db8: PUSH 0xc96551"
+      ],
+      "assembly_terminators": [
+        "00878e05: RET"
+      ],
+      "export": "exports/bsp/functions/00878db0",
+      "uncertainties": [
+        "Exact template spelling/vendor symbol not recovered. No library implementation is added or counted as game reconstruction."
+      ],
+      "call_sites": [],
+      "ghidra_name": "LIBINST_retained_tail_record_copy_00878db0"
+    },
+    {
+      "address": "00888fb0",
+      "segment": 55,
+      "body_bytes": 8,
+      "old_name": "FUN_00888fb0",
+      "name": "owner_clear_byte_290_00888fb0",
+      "source": "src/cc13_left55_seg55.cpp",
+      "header": "include/bsp/cc13_left55.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/cc13_left55_seg55.cpp",
+      "evidence": "Full exported body and assembly checked. Source names describe only observed fields or type-operation behavior; owning class remains provisional.",
+      "prototype_export": "void __fastcall FUN_00888fb0(int param_1)",
+      "assembly_first": [
+        "00888fb0: MOV byte ptr [ECX + 0x290],0x0",
+        "00888fb7: RET"
+      ],
+      "assembly_terminators": [
+        "00888fb7: RET"
+      ],
+      "export": "exports/bsp/functions/00888fb0",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "00889600",
+      "segment": 55,
+      "body_bytes": 12,
+      "old_name": "FUN_00889600",
+      "name": "word_array_at_00889600",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "normalized generic template/allocator/container helper family",
+      "evidence": "Generic pointer-array index, byte-identical to established container family member 00866030. No authored game-specific behavior; not asserted to be std::vector. D7FA90 false vtable claim rejected.",
+      "prototype_export": "int __thiscall FUN_00889600(int *param_1,int param_2)",
+      "assembly_first": [
+        "00889600: MOV EAX,dword ptr [ECX]",
+        "00889602: MOV ECX,dword ptr [ESP + 0x4]",
+        "00889606: LEA EAX,[EAX + ECX*0x4]"
+      ],
+      "assembly_terminators": [
+        "00889609: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/00889600",
+      "uncertainties": [
+        "Exact template spelling/vendor symbol not recovered. No library implementation is added or counted as game reconstruction."
+      ],
+      "call_sites": [],
+      "ghidra_name": "LIBINST_word_array_at_00889600"
+    },
+    {
+      "address": "008897f0",
+      "segment": 55,
+      "body_bytes": 15,
+      "old_name": "FUN_008897f0",
+      "name": "copy_two_words_008897f0",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "normalized generic template/allocator/container helper family",
+      "evidence": "Generic two-word placement-copy instantiation. Same null-placement constructor pattern as scalar allocator-copy 00877640 and record-copy 0081AC40/00878DB0, with payload width differing. No game-specific decision. D7FACC sequence is not class evidence.",
+      "prototype_export": "void __fastcall FUN_008897f0(undefined4 *param_1,undefined4 *param_2)",
+      "assembly_first": [
+        "008897f0: TEST ECX,ECX",
+        "008897f2: JZ 0x008897fe",
+        "008897f4: MOV EAX,dword ptr [EDX]"
+      ],
+      "assembly_terminators": [
+        "008897fe: RET"
+      ],
+      "export": "exports/bsp/functions/008897f0",
+      "uncertainties": [
+        "Exact template spelling/vendor symbol not recovered. No library implementation is added or counted as game reconstruction."
+      ],
+      "call_sites": [],
+      "ghidra_name": "LIBINST_copy_two_words_008897f0"
+    },
+    {
+      "address": "00889940",
+      "segment": 55,
+      "body_bytes": 107,
+      "old_name": "FUN_00889940",
+      "name": "byte_message_9f_construct_00889940",
+      "source": "src/cc13_left55_seg55.cpp",
+      "header": "include/bsp/cc13_left55.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/cc13_left55_seg55.cpp",
+      "evidence": "Session9F constructor beside existing session97 in cc13_left55: base type9F, word18=0,byte1A=0,byte1C=input,word4=1,vtableD03360.",
+      "prototype_export": "undefined4 * __thiscall FUN_00889940(undefined4 *param_1,undefined1 param_2)",
+      "assembly_first": [
+        "00889940: PUSH ESI",
+        "00889941: PUSH 0x9f",
+        "00889946: MOV ESI,ECX"
+      ],
+      "assembly_terminators": [
+        "0088996d: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/00889940",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": [
+        {
+          "function": "00889940",
+          "address": "00889948",
+          "native": "0075b430"
+        }
+      ]
+    },
+    {
+      "address": "0088ab20",
+      "segment": 55,
+      "body_bytes": 5,
+      "old_name": "FUN_0088ab20",
+      "name": "identity_0088ab20",
+      "source": "src/oct18b_nB_high.cpp",
+      "header": "include/bsp/oct18b_nB_high.hpp",
+      "status": "reconstructed_source_build_pending",
+      "family_evidence": "src/oct18b_nB_high.cpp",
+      "evidence": "Opaque identity callback; exact MOV EAX,ECX and cleanup checked. No positive template/compiler provenance or owning class, so remains source with unknown class. Cached unreferenced DWORD sequences are not class evidence.",
+      "prototype_export": "undefined4 __fastcall FUN_0088ab20(undefined4 param_1)",
+      "assembly_first": [
+        "0088ab20: MOV EAX,ECX",
+        "0088ab22: RET 0x8"
+      ],
+      "assembly_terminators": [
+        "0088ab22: RET 0x8"
+      ],
+      "export": "exports/bsp/functions/0088ab20",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "008da170",
+      "segment": 56,
+      "body_bytes": 7,
+      "old_name": "FUN_008da170",
+      "name": "objective_forward_slot04_008da170",
+      "source": "src/cc13_front6.cpp",
+      "header": "include/bsp/cc13_front6.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/cc13_front6.cpp",
+      "evidence": "Objective neighbor family 8DA130/140/180, exact tail vslot04 with unmodified ECX and stack.",
+      "prototype_export": "void __fastcall FUN_008da170(int *param_1)",
+      "assembly_first": [
+        "008da170: MOV EAX,dword ptr [ECX]",
+        "008da172: MOV EAX,dword ptr [EAX + 0x4]",
+        "008da175: JMP EAX"
+      ],
+      "assembly_terminators": [
+        "008da175: JMP EAX"
+      ],
+      "export": "exports/bsp/functions/008da170",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "008dade0",
+      "segment": 56,
+      "body_bytes": 19,
+      "old_name": "FUN_008dade0",
+      "name": "root_message_write_type_008dade0",
+      "source": "src/mp_seg43_cc13.cpp",
+      "header": "include/bsp/mp_seg43_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/mp_seg43_cc13.cpp",
+      "evidence": "Full exported body and assembly checked. Source names describe only observed fields or type-operation behavior; owning class remains provisional.",
+      "prototype_export": "void __fastcall FUN_008dade0(int param_1)",
+      "assembly_first": [
+        "008dade0: MOVZX EAX,byte ptr [ECX + 0x10]",
+        "008dade4: MOV ECX,dword ptr [ESP + 0x4]",
+        "008dade8: PUSH 0x8"
+      ],
+      "assembly_terminators": [
+        "008dadf0: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/008dade0",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": [
+        {
+          "function": "008dade0",
+          "address": "008dadeb",
+          "native": "00428ff0"
+        }
+      ]
+    },
+    {
+      "address": "008dae00",
+      "segment": 56,
+      "body_bytes": 21,
+      "old_name": "FUN_008dae00",
+      "name": "root_message_read_type_008dae00",
+      "source": "src/mp_seg43_cc13.cpp",
+      "header": "include/bsp/mp_seg43_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/mp_seg43_cc13.cpp",
+      "evidence": "Full exported body and assembly checked. Source names describe only observed fields or type-operation behavior; owning class remains provisional.",
+      "prototype_export": "void __fastcall FUN_008dae00(int param_1)",
+      "assembly_first": [
+        "008dae00: ADD ECX,0x10",
+        "008dae03: PUSH 0x8",
+        "008dae05: PUSH ECX"
+      ],
+      "assembly_terminators": [
+        "008dae12: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/008dae00",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": [
+        {
+          "function": "008dae00",
+          "address": "008dae0d",
+          "native": "00428c70"
+        }
+      ]
+    },
+    {
+      "address": "008dae40",
+      "segment": 56,
+      "body_bytes": 31,
+      "old_name": "FUN_008dae40",
+      "name": "CG_scalar_deleting_dtor_008dae40",
+      "source": "docs/OCT18B_NB_HIGH.md",
+      "header": null,
+      "status": "library_instantiation_out_of_scope",
+      "family_evidence": "compiler-generated scalar deleting destructor or adjustor",
+      "evidence": "Store root vtable CE4974; flag bit0 optionally calls BF65AC free; return self; RET4.",
+      "prototype_export": "undefined4 * __thiscall FUN_008dae40(undefined4 *param_1,byte param_2)",
+      "assembly_first": [
+        "008dae40: TEST byte ptr [ESP + 0x4],0x1",
+        "008dae45: PUSH ESI",
+        "008dae46: MOV ESI,ECX"
+      ],
+      "assembly_terminators": [
+        "008dae5c: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/008dae40",
+      "uncertainties": [],
+      "call_sites": [
+        {
+          "function": "008dae40",
+          "address": "008dae51",
+          "native": "00bf65ac"
+        }
+      ]
+    },
+    {
+      "address": "008dba30",
+      "segment": 56,
+      "body_bytes": 100,
+      "old_name": "FUN_008dba30",
+      "name": "entity_reference_write_archive_008dba30",
+      "source": "src/cc13_front6.cpp",
+      "header": "include/bsp/cc13_front6.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/cc13_front6.cpp",
+      "evidence": "Archive typed reference: nonnull owner.word0 -> key entity/type4/pointer; null -> CF8FA4 key/type5/owner+4.",
+      "prototype_export": "void __thiscall FUN_008dba30(int *param_1,int *param_2)",
+      "assembly_first": [
+        "008dba30: PUSH ECX",
+        "008dba31: PUSH ESI",
+        "008dba32: PUSH EDI"
+      ],
+      "assembly_terminators": [
+        "008dba62: RET 0x4",
+        "008dba91: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/008dba30",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "008f0800",
+      "segment": 59,
+      "body_bytes": 224,
+      "old_name": "FUN_008f0800",
+      "name": "skip_native_scene_group_008f0800",
+      "source": "src/native_scene_tokenizer.cpp",
+      "header": "include/bsp/native_scene_token_text.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/native_scene_tokenizer.cpp",
+      "evidence": "NativeSceneTokenizer family source composes 8D9930/8D9980/8D8A70/8D8960. Confirmed bytes CE55BC equals sign, CE5698 semicolon. Original outer-loop EOF behavior retained.",
+      "prototype_export": "void FUN_008f0800(int param_1)",
+      "assembly_first": [
+        "008f0800: PUSH ESI",
+        "008f0801: MOV ESI,dword ptr [ESP + 0x8]",
+        "008f0805: PUSH EDI"
+      ],
+      "assembly_terminators": [
+        "008f0817: JMP 0x008f0820",
+        "008f085b: JMP 0x008f0860",
+        "008f08a6: JMP 0x008f0860",
+        "008f08ad: JMP 0x008f08d3",
+        "008f08ce: JMP 0x008f08d3",
+        "008f08dd: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/008f0800",
+      "uncertainties": [
+        "Case-insensitive comparisons use linked current CRT; valid complete group input is required just as in the original infinite outer loop.",
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": [
+        {
+          "function": "008f0800",
+          "address": "008f0812",
+          "native": "008d9930"
+        },
+        {
+          "function": "008f0800",
+          "address": "008f0827",
+          "native": "008d9980"
+        },
+        {
+          "function": "008f0800",
+          "address": "008f082d",
+          "native": "00bf7fbf"
+        },
+        {
+          "function": "008f0800",
+          "address": "008f083f",
+          "native": "008d8a70"
+        },
+        {
+          "function": "008f0800",
+          "address": "008f084b",
+          "native": "00438e10"
+        },
+        {
+          "function": "008f0800",
+          "address": "008f0856",
+          "native": "008d8960"
+        },
+        {
+          "function": "008f0800",
+          "address": "008f0862",
+          "native": "008d8a70"
+        },
+        {
+          "function": "008f0800",
+          "address": "008f088a",
+          "native": "008d8a70"
+        },
+        {
+          "function": "008f0800",
+          "address": "008f0896",
+          "native": "00438e10"
+        },
+        {
+          "function": "008f0800",
+          "address": "008f08a1",
+          "native": "008d9980"
+        },
+        {
+          "function": "008f0800",
+          "address": "008f08a8",
+          "native": "008d8960"
+        },
+        {
+          "function": "008f0800",
+          "address": "008f08af",
+          "native": "008d8a70"
+        },
+        {
+          "function": "008f0800",
+          "address": "008f08bb",
+          "native": "00438e10"
+        },
+        {
+          "function": "008f0800",
+          "address": "008f08c6",
+          "native": "008d8960"
+        }
+      ]
+    },
+    {
+      "address": "008fb780",
+      "segment": 59,
+      "body_bytes": 3,
+      "old_name": "FUN_008fb780",
+      "name": "entity_predicate_true_008fb780",
+      "source": "src/entity_mission_seg60_argon.cpp",
+      "header": "include/bsp/entity_mission_seg60_argon.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/entity_mission_seg60_argon.cpp",
+      "evidence": "Full exported body and assembly checked. Source names describe only observed fields or type-operation behavior; owning class remains provisional.",
+      "prototype_export": "undefined1 FUN_008fb780(void)",
+      "assembly_first": [
+        "008fb780: MOV AL,0x1",
+        "008fb782: RET"
+      ],
+      "assembly_terminators": [
+        "008fb782: RET"
+      ],
+      "export": "exports/bsp/functions/008fb780",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": []
+    },
+    {
+      "address": "009040d0",
+      "segment": 59,
+      "body_bytes": 109,
+      "old_name": "FUN_009040d0",
+      "name": "entity_visit_tree_009040d0",
+      "source": "src/entity_mission_seg60_argon.cpp",
+      "header": "include/bsp/entity_mission_seg60_argon.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/entity_mission_seg60_argon.cpp",
+      "evidence": "Entity tree walker: ECX opaque visitor, four stack args node,a,b,excluded; RET10. Same excluded pointer recurses, AL OR combines all children; no short circuit.",
+      "prototype_export": "byte FUN_009040d0(int *param_1,undefined4 param_2,undefined4 param_3,int *param_4)",
+      "assembly_first": [
+        "009040d0: PUSH ECX",
+        "009040d1: PUSH EBX",
+        "009040d2: PUSH ESI"
+      ],
+      "assembly_terminators": [
+        "00904132: RET 0x10",
+        "0090413a: RET 0x10"
+      ],
+      "export": "exports/bsp/functions/009040d0",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": [
+        {
+          "function": "009040d0",
+          "address": "0090411d",
+          "native": "009040d0"
+        }
+      ]
+    },
+    {
+      "address": "0090c480",
+      "segment": 59,
+      "body_bytes": 95,
+      "old_name": "FUN_0090c480",
+      "name": "write_extended_mission_score_0090c480",
+      "source": "src/mission_progress.cpp",
+      "header": "include/bsp/mission_progress.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/mission_progress.cpp",
+      "evidence": "Existing MissionScoreRecord/ProfileArchiveWriter family: enter sum, base908A30, leave, integer count+284.",
+      "prototype_export": "void __thiscall FUN_0090c480(int param_1,int *param_2)",
+      "assembly_first": [
+        "0090c480: PUSH ESI",
+        "0090c481: MOV ESI,dword ptr [ESP + 0x8]",
+        "0090c485: MOV EDX,dword ptr [ESI]"
+      ],
+      "assembly_terminators": [
+        "0090c4dc: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/0090c480",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": [
+        {
+          "function": "0090c480",
+          "address": "0090c49d",
+          "native": "00908a30"
+        }
+      ]
+    },
+    {
+      "address": "0091cc70",
+      "segment": 59,
+      "body_bytes": 95,
+      "old_name": "FUN_0091cc70",
+      "name": "read_extended_mission_score_0091cc70",
+      "source": "src/mission_progress.cpp",
+      "header": "include/bsp/mission_progress.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/mission_progress.cpp",
+      "evidence": "Existing MissionScoreRecord/ProfileArchiveReader family: enter sum, base916A00, leave, integer count+284.",
+      "prototype_export": "void __thiscall FUN_0091cc70(int param_1,int *param_2)",
+      "assembly_first": [
+        "0091cc70: PUSH ESI",
+        "0091cc71: MOV ESI,dword ptr [ESP + 0x8]",
+        "0091cc75: MOV EDX,dword ptr [ESI]"
+      ],
+      "assembly_terminators": [
+        "0091cccc: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/0091cc70",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": [
+        {
+          "function": "0091cc70",
+          "address": "0091cc8d",
+          "native": "00916a00"
+        }
+      ]
+    },
+    {
+      "address": "00922ee0",
+      "segment": 60,
+      "body_bytes": 58,
+      "old_name": "FUN_00922ee0",
+      "name": "entity_set_float_recursive_00922ee0",
+      "source": "src/entity_mission_seg60_argon.cpp",
+      "header": "include/bsp/entity_mission_seg60_argon.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/entity_mission_seg60_argon.cpp",
+      "evidence": "Entity parent vslotDC(float), then child+48/sibling+44 recursive same float; RET4. Decompiler unaff_retaddr was incorrect.",
+      "prototype_export": "void __thiscall FUN_00922ee0(int *param_1,undefined4 param_2)",
+      "assembly_first": [
+        "00922ee0: FLD float ptr [ESP + 0x4]",
+        "00922ee4: PUSH ESI",
+        "00922ee5: MOV ESI,ECX"
+      ],
+      "assembly_terminators": [
+        "00922f17: RET 0x4"
+      ],
+      "export": "exports/bsp/functions/00922ee0",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": [
+        {
+          "function": "00922ee0",
+          "address": "00922f0a",
+          "native": "00922ee0"
+        }
+      ]
+    },
+    {
+      "address": "00923af0",
+      "segment": 60,
+      "body_bytes": 141,
+      "old_name": "FUN_00923af0",
+      "name": "entity_format_tree_00923af0",
+      "source": "src/entity_mission_seg60_argon.cpp",
+      "header": "include/bsp/entity_mission_seg60_argon.hpp",
+      "status": "reconstructed_build_tested",
+      "family_evidence": "src/entity_mission_seg60_argon.cpp",
+      "evidence": "Entity kind1 check; uint16 id+174, type+ C4, childcount+50 formatted only to local400h; scan for one kind1 child before recursively visiting all siblings.",
+      "prototype_export": "void __fastcall FUN_00923af0(int *param_1)",
+      "assembly_first": [
+        "00923af0: SUB ESP,0x400",
+        "00923af6: PUSH EDI",
+        "00923af7: MOV EDI,ECX"
+      ],
+      "assembly_terminators": [
+        "00923b5e: RET",
+        "00923b7c: RET"
+      ],
+      "export": "exports/bsp/functions/00923af0",
+      "uncertainties": [
+        "New source interface only; Original ABI, live game behavior and visual/runtime validation are not claimed."
+      ],
+      "call_sites": [
+        {
+          "function": "00923af0",
+          "address": "00923b2b",
+          "native": "0040cfc0"
+        },
+        {
+          "function": "00923af0",
+          "address": "00923b68",
+          "native": "00923af0"
+        }
+      ]
+    }
+  ],
+  "scope_review": {
+    "source_game_rows": 55,
+    "source_existing_tus_build_tested": 51,
+    "source_extension_build_pending": 4,
+    "library_instantiation_out_of_scope": 21,
+    "removed_new_library_bodies": [
+      "008010f0",
+      "00814960",
+      "0081ac40",
+      "00865e00",
+      "00865e10",
+      "00865e50",
+      "00866030",
+      "00876cc0",
+      "00877620",
+      "00877640",
+      "00877660",
+      "00878db0",
+      "00889600",
+      "008897f0"
+    ],
+    "rejected_evidence": "Cached unreferenced D7* DWORD sequences include instruction interiors and INT3 padding; not accepted as class vtables."
+  },
+  "final_acceptance_report": "reports/oct18b_nB_delivery.json"
+}

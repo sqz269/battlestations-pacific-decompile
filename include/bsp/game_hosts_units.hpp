@@ -1021,6 +1021,11 @@ public:
     // (009554C1, the unit+724h bag clone 006F5CC0 tests at 006F5DCF).
     std::int32_t command_building_inferior_range_07c8(std::size_t unit_index) const;
     bool unit_inferior_bag_0724(std::size_t unit_index) const;
+    // Packet cc13-para2: the building's paratrooper (capturer) list +7DCh in
+    // 006F39B0 order, as (member+54h side, [[member+314h]+D8h] CapturePower).
+    // Empty unless bsp::kParatrooperRoundBound.
+    void paratrooper_capturers_07dc(std::size_t building_unit,
+                                    std::vector<std::pair<int, float>>& out) const;
     // Packet s57_garrison_min_level: that clone's MinLevel value (006F5E4D, prop+0Ch),
     // 0 when the scene and props leave it unauthored.
     std::int32_t unit_inferior_min_level_0724(std::size_t unit_index) const;

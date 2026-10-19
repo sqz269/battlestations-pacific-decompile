@@ -900,4 +900,76 @@ void write_paratrooper_create_00767c30(const ParatrooperCreateMessage* m, C* c, 
     w_vec3(c, m->position_120, n);
 }
 
+void read_plane_create_007681f0(PlaneCreateMessage* m, R* s, const Numeric& n, CreateReadHooks& hooks) {
+    hooks.net_entity_create_read_00767e30(m, s);
+    C* c = &s->cursor_04;
+    r_word(c, &m->id_110, 12);
+    r_float(c, &m->value_114, n); r_float(c, &m->value_118, n); r_float(c, &m->value_11c, n);
+    r_i32(c, &m->value_120, 4); r_i32(c, &m->value_124, 4);
+    read_native_u8_bits_00428c70(c, &m->byte_128, 4);
+    read_native_u8_bits_00428c70(c, &m->byte_129, 3);
+    r_bool(c, &m->flag_12a);
+    B present; r_bool(c, &present);
+    if (present) { U value; r_u32(c, &value, 8); m->optional_12c = static_cast<std::int32_t>(value); }
+    else m->optional_12c = -1;
+}
+void read_torpedo_create_00768300(BombDerivedCreateMessage* m, R* s, const Numeric& n, CreateReadHooks& hooks) {
+    hooks.bomb_create_read_006e06f0(m, s);
+    C* c = &s->cursor_04;
+    r_float(c, &m->value_120, n);
+    read_native_numeric_float_004293f0(c, fbits(&m->value_124), 0, 1, kScale_00ce3d08, 12, n);
+    r_word(c, &m->id_128, 12);
+}
+void read_paratrooper_create_00768370(ParatrooperCreateMessage* m, R* s, const Numeric& n, CreateReadHooks& hooks) {
+    hooks.bomb_create_read_006e06f0(m, s);
+    r_vec3(&s->cursor_04, m->position_120, n);
+}
+void read_net_entity_create_thunk_007683b0(void* m, R* s, CreateReadHooks& hooks) {
+    hooks.net_entity_create_read_00767e30(m, s);
+}
+void read_path_create_points_007b0c90(PathCreatePrefix* m, R* s, const Numeric& n, CreateReadHooks& hooks) {
+    hooks.net_entity_create_read_00767e30(m, s);
+    // The native checked-vector guard repeats a just-established bound.
+    // Caller supplies a valid 12-byte-stride [first,last) range.
+    for (std::uint32_t i = 0; m->first_114 && i < static_cast<std::uint32_t>(
+        (reinterpret_cast<std::intptr_t>(m->last_118) - reinterpret_cast<std::intptr_t>(m->first_114)) / 12); ++i) {
+        auto* point = reinterpret_cast<float*>(static_cast<std::uint8_t*>(m->first_114) + i * 12);
+        r_vec3(&s->cursor_04, point, n);
+    }
+}
+void broadcast_activate_if_clear_0077d500(void* owner, bool flag, const Context& c,
+    void (*broadcast)(void*, const ActivateMessage*, int, void*), void* context) {
+    if (flag) return;
+    ActivateMessage m;
+    NativeSessionMessageContext base_context{c.current_game_00e188a8};
+    construct_native_session_message_0075b430(&m.u.h.base, 0x52, base_context);
+    m.u.h.base.delivery_04 = 1;
+    m.u.h.id_18 = 0; m.u.h.relay_1a = 0; m.u.flag_1c = 0;
+    m.u.h.base.profile_00 = vt(c, 0x00d02d58);
+    m.active_20 = 1;
+    broadcast(owner, &m, 0, context);
+}
+bool is_type_cc_49_46_0075ac90(U type) noexcept { return type == 0xcc || type == 0x49 || type == 0x46; }
+bool is_type_aa_49_46_00763e40(U type) noexcept { return type == 0xaa || type == 0x49 || type == 0x46; }
+void write_path_set_007ad820(const PathIndexedVectorMessage* m, C* c, const Numeric& n) {
+    w_unit(m->u, c); w_u32(c, m->index_20, 32); w_vec3(c, m->point_24, n);
+}
+void read_path_set_007ad870(PathIndexedVectorMessage* m, R* s, const Numeric& n) {
+    C* c = &s->cursor_04; r_unit(m->u, c); r_u32(c, &m->index_20, 32); r_vec3(c, m->point_24, n);
+}
+void write_path_add_007ad8c0(const PathVectorMessage* m, C* c, const Numeric& n) {
+    w_unit(m->u, c); w_vec3(c, m->point_20, n);
+}
+void read_path_add_007ad900(PathVectorMessage* m, R* s, const Numeric& n) {
+    C* c = &s->cursor_04; r_unit(m->u, c); r_vec3(c, m->point_20, n);
+}
+void write_path_insert_007ad940(const PathIndexedVectorMessage* m, C* c, const Numeric& n) {
+    w_unit(m->u, c); w_u32(c, m->index_20, 32); w_vec3(c, m->point_24, n);
+}
+void read_path_insert_007ad990(PathIndexedVectorMessage* m, R* s, const Numeric& n) {
+    C* c = &s->cursor_04; r_unit(m->u, c); r_u32(c, &m->index_20, 32); r_vec3(c, m->point_24, n);
+}
+void write_path_delete_007ad9e0(const PathIndexMessage* m, C* c) { w_unit(m->u, c); w_u32(c, m->index_20, 32); }
+void read_path_delete_007ada10(PathIndexMessage* m, R* s) { C* c = &s->cursor_04; r_unit(m->u, c); r_u32(c, &m->index_20, 32); }
+
 }  // namespace bsp::seg42

@@ -1,4 +1,13 @@
 #include "bsp/native_particle_resource_records.hpp"
+
+namespace bsp {
+void* construct_native_particle_resource_cache_008713e0(void* cache) noexcept {
+    auto* words = static_cast<std::uint32_t*>(cache);
+    words[0] = 0x00d0daf0;
+    words[1] = words[2] = words[3] = words[4] = 0;
+    return cache;
+}
+}
 #include "bsp/native_particle_resource_cache.hpp"
 #include "bsp/native_render_resource_record_construction.hpp"
 #include "bsp/native_string.hpp"

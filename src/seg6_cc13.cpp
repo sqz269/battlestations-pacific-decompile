@@ -133,7 +133,7 @@ Object movie_timed_box_construct_00465950(Seg6Host& host, Object item, float x, 
 }
 
 // 00465A40, __thiscall(item, a0, a1, a2, float time, b0..b5, int v34, float
-// v18, NativeString text by value), RET 3Ch. The self-assignment test at
+// v18, NativeString text by value), 14 stack dwords, RET 38h. The self-assignment test at
 // 00465AE6 compares item+4 with the address of the by-value argument, which
 // can never match; it is kept as the image has it.
 Object movie_timed_record_construct_00465a40(Seg6Host& host, Object item, float a0, float a1, float a2,
@@ -1180,3 +1180,57 @@ void path_entity_destruct_0047b700(Seg6Host& host, Object entity) {
 }
 
 }  // namespace bsp::cc13_seg6
+
+// oct18b-nA1: newly defined, assembly-reviewed leaves; build-only interfaces.
+
+namespace bsp::cc13_seg6 {
+void anim_entity_advance_time_004710d0(Object entity, AnimAdvanceHost& host) {
+    Object game = host.game_00e188a8();
+    const float sum = static_cast<float>(static_cast<double>(native_at<float>(game, 0x21f0)) +
+                                         native_at<float>(entity, 0x190));
+    const float time = static_cast<float>(host.cifmod_00bf857a(sum, native_at<float>(entity, 0x18c)));
+    native_at<float>(entity, 0x190) = time;
+    Object visual = native_ptr(entity, 0x178);
+    Object resource = native_ptr(visual, 0x160);
+    host.animation_set_time_24(native_ptr(resource, 0xc), 0, time, 1);
+    host.scene_refresh_visibility_00484940(entity);
+}
+void cloud_mark_dirty_00475a20(Object entity) noexcept { native_at<std::uint8_t>(entity, 0x1a8) = 1; }
+Object cloud_animation_00476bb0(Object entity) noexcept {
+    Object visual = native_ptr(entity, 0x178);
+    return visual ? native_ptr(native_ptr(visual, 0x160), 0xc) : nullptr;
+}
+bool vehicle_accumulate_hit_0047a660(Object entity, Object hit, VehicleHitHost& host) {
+    // COMISS/JA accepts unordered values at +150h, unlike a C++ <= test.
+    if (native_at<float>(entity, 0x150) > 0.0f) return true;
+    Object definition = native_ptr(native_ptr(entity, 0x188), 0x28);
+    const float armour = native_at<float>(definition, 0x4c);
+    std::uint32_t part;
+    const float damage = static_cast<float>(native_at<std::int32_t>(hit, 0x34) == -1
+        ? host.worst_part_004706d0(hit, &part, armour) : host.hull_damage_00470510(hit, armour));
+    // COMISS zero,damage / JNC: NaN continues too.
+    if (damage <= 0.0f) return true;
+    const float total = static_cast<float>(static_cast<double>(damage) + native_at<float>(entity, 0x18c));
+    native_at<float>(entity, 0x18c) = total;
+    // FCOMIP total,100 / JC: unordered exits here.
+    if (!(static_cast<double>(total) >= 100.0)) return true;
+    if (!native_at<std::uint8_t>(entity, 0xc8)) host.refresh_pose_00414db0(entity);
+    Object game = host.game_00e188a8();
+    definition = native_ptr(native_ptr(entity, 0x188), 0x28);
+    Object effect_definition = native_ptr(definition, 0x138);
+    if (effect_definition) host.add_reference_ce221c(effect_definition);
+    Object effect_handle = nullptr;
+    Object* returned = host.create_point_effect_008685e0(&effect_handle, native_ptr(game, 0x19ec),
+        effect_definition, reinterpret_cast<const float*>(entity + 0xfc), 0, 0);
+    Object effect = *returned;
+    if (effect_handle && host.release_reference_ce2220(effect_handle) == 0)
+        host.destroy_vcall_00(effect_handle);
+    native_at<std::uint8_t>(effect, 9) = 1;
+    definition = native_ptr(native_ptr(entity, 0x188), 0x28);
+    Object secondary = native_ptr(definition, 0x13c);
+    if (secondary) host.vehicle_effect_0047bb70(native_ptr(host.game_00e188a8(), 0x21d0), secondary, entity);
+    host.mission_kill_00926d90(entity, 1);
+    return true;
+}
+std::uint32_t path_class_kind_0047b790() noexcept { return 0x12; }
+}

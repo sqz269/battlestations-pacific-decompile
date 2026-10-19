@@ -227,6 +227,9 @@ struct GameHudHost::Impl {
     std::unique_ptr<GameHudMinimapHost> minimap;
     std::unique_ptr<GameHudMarkersHost> markers;
     GameUnitsHost* units{nullptr};
+    // The helm `aim unit` track's diagnostics (packet cc13-aimunit).
+    unsigned long long aim_track_frames{0};
+    bool aim_track_warned{false};
     bool unit_request_pending{false};
     bool unit_request_applied{false};
     int unit_interface_id{0};
@@ -2977,6 +2980,7 @@ public:
         return owner_.menu.in_game_screen_registered(0x2e);
     }
     void screen_2eh_005484f0() override {
+        owner_.menu.note_screen_2eh_ran();   // the helm `input` line's lost-edge report
         if constexpr (kHudWeaponGroupScreenBound) {
             WeaponGroupScreenBinding group_host(owner_);
             bsp::weapon_group_screen_update_005484f0(owner_.weapon_group, group_host);
@@ -3088,7 +3092,7 @@ private:
 // mover.
 class ShipViewInputBinding final : public bsp::ShipViewInputHost {
 public:
-    explicit ShipViewInputBinding(GameHudHost::Impl& owner) : owner_(owner) {}
+    ShipViewInputBinding(GameHudHost::Impl& owner, float dt) : owner_(owner), dt_(dt) {}
     bsp::BinocularsViewTerms view_terms() override {
         // SUBSTITUTION: the input manager's axes +1584h/+15B4h/+15E4h are not
         // modelled and read zero (no in-mission input is driven);
@@ -3096,7 +3100,105 @@ public:
         owner_.record("HudShipView::view_input_terms", 0x0051f061u);
         bsp::BinocularsViewTerms terms{};
         terms.config_04 = 1.0f;
+        helm_aim_axes(terms);
         return terms;
+    }
+    // Packet cc13-helmaim: the helm `aim` line drives the look axes the way a
+    // mouse move does. Each axis is the one that makes 0051F050's step land the
+    // mover on the target: yaw += step * -1.0 * zoom * axis * config (0051F159)
+    // and pitch += step * 0.5 * zoom * axis * config, wrapped, then clamped into
+    // [+3ECh, +3F0h] (0051E650). 0051F050 clamps each axis into [-50, 50], so a
+    // long turn takes more than one frame. The target clears once both angles are
+    // there, and the mover keeps them: no reader decays +384h / +388h.
+    void helm_aim_axes(bsp::BinocularsViewTerms& terms) {
+        float yaw = 0.0f;
+        float pitch = 0.0f;
+        const bool tracking = helm_aim_track_target(yaw, pitch);
+        if (!tracking && !injected_view_aim(yaw, pitch)) return;
+        if (!owner_.camera_bound) return;
+        const float low = owner_.camera.min_pitch_3ec;
+        const float high = owner_.camera.max_pitch_3f0;
+        if (low > pitch) pitch = low;
+        else if (pitch > high) pitch = high;
+        const auto wrap = [](double a) {
+            constexpr double kPi = 3.141592653589793;
+            while (a > kPi) a -= 2.0 * kPi;
+            while (a <= -kPi) a += 2.0 * kPi;
+            return a;
+        };
+        const double dyaw = wrap(static_cast<double>(yaw) - owner_.camera.yaw_384);
+        const double dpitch = wrap(static_cast<double>(pitch) - owner_.camera.pitch_388);
+        constexpr double kReached = 1.0e-4;
+        if (tracking) {
+            // `aim unit` never completes; it steers again next frame.
+            if (std::fabs(dyaw) < kReached && std::fabs(dpitch) < kReached) return;
+        } else if (std::fabs(dyaw) < kReached && std::fabs(dpitch) < kReached) {
+            clear_injected_view_aim();
+            owner_.log.notef("helm aim reached: mover yaw %.4f pitch %.4f rad (+384h / +388h)",
+                static_cast<double>(owner_.camera.yaw_384),
+                static_cast<double>(owner_.camera.pitch_388));
+            return;
+        }
+        const double step = static_cast<double>(dt_) > 0.5 ? 0.5 : static_cast<double>(dt_);
+        const double zoom = owner_.binoculars.zoom_38;
+        if (!(step > 0.0) || !(zoom > 0.0)) return;
+        terms.yaw_axis_1584 = static_cast<float>(dyaw / (step * -1.0 * zoom * terms.config_04));
+        terms.pitch_axis_15b4 = static_cast<float>(dpitch / (step * 0.5 * zoom * terms.config_04));
+    }
+    // Packet cc13-aimunit: the `aim unit` track. The look is steered in closed
+    // loop on the pose the mover published last (the forward row and position
+    // 00954A10 reads for message 79h), so it needs no model of +384h's frame:
+    // 00432ED0 builds the forward row as rot_y(-yaw) then rot_x(-pitch) on the
+    // mover's basis, so a heading error e (atan2(x, z) convention) is removed by
+    // yaw -= e, and a pitch error by pitch += e. The auto pitch aims at the unit's
+    // origin (unit+0FCh). Returns false (no steering) when there is no track or
+    // nothing to steer from; an unusable row is reported once and the mover keeps
+    // its last yaw.
+    bool helm_aim_track_target(float& yaw, float& pitch) {
+        std::size_t unit = 0;
+        bool has_pitch = false;
+        float fixed_pitch = 0.0f;
+        if (!injected_view_aim_track(unit, has_pitch, fixed_pitch)) return false;
+        bsp::MissionCameraPublication& node = bsp::mission_camera_publication();
+        if (!owner_.camera_bound || !node.ready) return false;
+        if (owner_.units == nullptr || unit >= owner_.units->count()
+            || !owner_.units->unit_alive_and_visible(unit)) {
+            if (!owner_.aim_track_warned) {
+                owner_.aim_track_warned = true;
+                owner_.log.notef("helm aim unit: row %zu is gone or hidden; the look keeps its "
+                    "last yaw", unit);
+            }
+            return false;
+        }
+        // As the 79h build reads it (00548839..005489DA).
+        if ((node.state.transform.valid_flags & 2u) == 0) {
+            bsp::refresh_camera_world_00b6db70(node.state.transform);
+        }
+        const bsp::CameraMatrix& world = node.state.transform.world;
+        float tx = 0.0f, ty = 0.0f, tz = 0.0f;
+        owner_.units->unit_position_00fc(unit, tx, ty, tz);
+        const double dx = static_cast<double>(tx) - world[12];
+        const double dy = static_cast<double>(ty) - world[13];
+        const double dz = static_cast<double>(tz) - world[14];
+        const double flat = std::sqrt(dx * dx + dz * dz);
+        if (!(flat > 1.0e-3)) return false;
+        constexpr double kPi = 3.141592653589793;
+        double e_heading = std::atan2(dx, dz) - std::atan2(world[8], world[10]);
+        while (e_heading > kPi) e_heading -= 2.0 * kPi;
+        while (e_heading <= -kPi) e_heading += 2.0 * kPi;
+        yaw = static_cast<float>(owner_.camera.yaw_384 - e_heading);
+        if (has_pitch) {
+            pitch = fixed_pitch;
+        } else {
+            const double fy = std::max(-1.0, std::min(1.0, static_cast<double>(world[9])));
+            pitch = static_cast<float>(owner_.camera.pitch_388
+                + (std::atan2(dy, flat) - std::asin(fy)));
+        }
+        if (owner_.aim_track_frames++ % 200 == 0) {
+            owner_.log.notef("helm aim unit: row %zu heading error %.4f rad, target pitch %.4f "
+                "rad, range %.0f", unit, e_heading, static_cast<double>(pitch), flat);
+        }
+        return true;
     }
     bool input_pressed(int action) override { return owner_.menu.input_action_pressed(action); }
     void raise_toggle_0051e7e0(bsp::BinocularsState& screen) override {
@@ -3143,6 +3245,7 @@ public:
 
 private:
     GameHudHost::Impl& owner_;
+    float dt_;
 };
 
 void ShipViewScreen46Binding::view_input_0064a400(float dt) {
@@ -3151,7 +3254,7 @@ void ShipViewScreen46Binding::view_input_0064a400(float dt) {
         owner_.record("HudShipView::view_input", 0x0064a400u);
         return;
     }
-    ShipViewInputBinding binding(owner_);
+    ShipViewInputBinding binding(owner_, dt);
     bsp::ship_view_input_0064a400(owner_.binoculars, binding, dt);
     owner_.done("HudShipView::view_input_0064a400", 0x0064a400u);
 }

@@ -321,7 +321,12 @@ inline constexpr bool kPlayerGunSeatArtilleryBound = true;
 // player's artillery in the seat in single player: 0095A05B, the hand-over in
 // 00959C20, needs a hosted session (game+1FE4h == 1) and a remote holder.
 // True: the walk runs. False: role takes leave every gun AI-held.
-inline constexpr bool kRoleOwnerDeviceWalkBound = false;
+// ON (cc9-gunnery53) by mechanism: pairs on d91c9e54c, reference env. USN01, with
+// 0x9D / 0x99 input at 500/900/1300: takes 8, releases 66, held 410-1823.
+// Northampton's turret shots 113/113/109 -> 95/95/90, because the AI does not fire
+// a player-held mount. 0 player shells: the HUD camera aims at the sea and
+// 0085ABA0 refuses. Deaths identical. USN04 idle: no walk, gameplay identical.
+inline constexpr bool kRoleOwnerDeviceWalkBound = true;
 
 // Packet s53_wreck_debris (docs/SHIP_AI_OPEN_ITEMS.md 263). 00825A59 step 8 of
 // the unit update calls 00935540 once per dead unit (ShipSystems+88h one-shot)
@@ -949,6 +954,7 @@ struct GameGunnerySummary {
     // Packet cc8_dive_glide, the kind 2Ah drop.
     unsigned long long bomb_drops{0};
     unsigned long long bomb_drop_refusals{0};      // no kind 2Ah gun on the unit
+    unsigned long long paratrooper_releases{0};    // packet cc13-para2: 31h rounds released
     // Packet cc8_torpedo_breakoff: drops that cleared the owner's torpedo kind
     // 2Bh bit, so approach+132h goes false on the next approach update.
     unsigned long long torpedo_loadout_cleared{0};
@@ -1165,9 +1171,22 @@ public:
     // release value). Pass a negative when the caller has none.
     // `skill_row` is the dropping plane's PilotBot level (0..5) for 006E4D50's
     // ThrowMul (packet cc9_bomb_drop_scatter, GUNNERY 130); -1 asks the units host.
+    // Packet cc13-para2: with `paratrooper` non-null the release is 006E4D50's
+    // for the unit's first 31h (MParatrooper) gun instead of its 2Ah one: the
+    // same 006E0A70 velocity and 006E1F00 cone and drift (the four stream-1
+    // draws only under bsp::kParatrooperReleaseScatterDrawBound), written to
+    // *paratrooper instead of a bomb shot; the units host owns the round.
+    struct ParatrooperRelease {
+        float position[3]{};
+        float velocity[3]{};
+        float drift[3]{};          // block+38h -> round+348h; y = 0
+        int bullet_class{-1};
+        int owner_side{0};
+    };
     bool release_bomb_drop(std::size_t unit_index,
                            const float predicted_impact[3],
-                           float release_fall_time, int skill_row = -1);
+                           float release_fall_time, int skill_row = -1,
+                           ParatrooperRelease* paratrooper = nullptr);
     // True when 006E4D50's scatter draws are taken (kBombDropScatterBound).
     static bool bomb_drop_scatter_bound() noexcept;
     // Packet cc13-homing1: spawn one rocket from the unit's Rocket-type gun row

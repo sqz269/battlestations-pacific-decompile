@@ -15,6 +15,8 @@
 #include "bsp/geom_mesh_resource.hpp"
 #include "bsp/gun_mount_positions.hpp"
 #include "bsp/camera_multiply.hpp"
+#include "bsp/cc13_tier2_switches.hpp"
+#include "bsp/cc13_seg67b_switches.hpp"   // packet cc13-para2 (the 31h release)
 #include "bsp/structured_hierarchy.hpp"
 
 #include <array>
@@ -3263,7 +3265,10 @@ struct GameGunneryHost::Impl {
             // jumps to 0072CEE5, MOV AL,1: blocked by a Landscape.
             float land_point[3];
             int land_object = -1;
-            const bool land = landscape_segment_hit(from, to, land_point, land_object);
+            // ON (bsp::kLineOfFireLandFromMuzzleBound): 0072CE8E PUSH EBX, the
+            // unraised muzzle, is the land segment's start.
+            const bool land = landscape_segment_hit(
+                bsp::kLineOfFireLandFromMuzzleBound ? muzzle : from, to, land_point, land_object);
             note_land_hit_query(LandHitConsumer::LineOfFire, land);
             if (land) return true;
         }
@@ -16125,19 +16130,27 @@ bool GameGunneryHost::bomb_drop_scatter_bound() noexcept { return kBombDropScatt
 
 bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
                                         const float predicted_impact[3],
-                                        float release_fall_time, int skill_row) {
+                                        float release_fall_time, int skill_row,
+                                        ParatrooperRelease* paratrooper) {
     Impl& h = *impl_;
     const GameGunRow* chosen = nullptr;
     for (const GameGunRow& gun : h.guns) {
         if (gun.unit_index != unit_index) continue;
-        if (!bsp::ordnance_has_general_bomb_2ah(gun.ordnance)) continue;
+        // Packet cc13-para2: the 31h rack's own gun (006E4D50 runs per rack).
+        if (paratrooper != nullptr ? !bsp::ordnance_has_paratrooper_31h(gun.ordnance)
+                                   : !bsp::ordnance_has_general_bomb_2ah(gun.ordnance)) continue;
         chosen = &gun;
         break;
     }
     if (chosen == nullptr) {
-        ++h.summary.bomb_drop_refusals;
+        if (paratrooper == nullptr) ++h.summary.bomb_drop_refusals;
         return false;
     }
+    // Packet cc13-para2: a 31h round takes the cone and drift draws only under
+    // its own sub-switch (bsp::kParatrooperReleaseScatterDrawBound).
+    const bool scatter = paratrooper != nullptr
+        ? (kBombDropScatterBound && bsp::kParatrooperReleaseScatterDrawBound)
+        : kBombDropScatterBound;
 
     float right[3], up[3], forward[3], origin[3];
     h.unit_pose(unit_index, right, up, forward, origin);
@@ -16168,7 +16181,7 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
         }
     }
     float drift[3] = {0.0f, 0.0f, 0.0f};
-    if (kBombDropScatterBound) {
+    if (scatter) {
         // 006E4F7A..006E4F8A: s = Throw, times ThrowMul for an AI-held plane with a bot.
         // 00999B70 reads the bot's PilotBot row at its level (bot+34h, 007B8AE0).
         const int level = skill_row >= 0 ? skill_row : h.units.skill_level(unit_index);
@@ -16263,6 +16276,23 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
         const double ang = std::atan(static_cast<double>(t));
         if (ang > h.scatter_max_angle) h.scatter_max_angle = ang;
         h.done("Rack::drop_dispersion_006e4f91", 0x006e4f91u);
+    }
+
+    if (paratrooper != nullptr) {
+        // Packet cc13-para2: the round is the units host's (bsp::cc13_paratrooper);
+        // 006E1F00 copies the drift to block+38h (round+348h) with y zeroed.
+        for (int i = 0; i < 3; ++i) {
+            paratrooper->position[i] = origin[i];
+            paratrooper->velocity[i] = velocity[i];
+        }
+        paratrooper->drift[0] = drift[0];
+        paratrooper->drift[1] = 0.0f;
+        paratrooper->drift[2] = drift[2];
+        paratrooper->bullet_class = chosen->bullet_class;
+        paratrooper->owner_side = h.units.unit_side_0054(unit_index);
+        ++h.summary.paratrooper_releases;
+        h.done("Rack::paratrooper_release_006e4d50", 0x006e4d50u);
+        return true;
     }
 
     GameProjectileRow shot;

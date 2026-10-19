@@ -1057,3 +1057,69 @@ struct LandConvoyKillVectorHost : cc15_land_convoy::LandConvoyMemberSlots {
 void land_convoy_kill_member_vector_00742210(std::uint8_t* convoy, bool hard, LandConvoyKillVectorHost& host);
 
 }  // namespace bsp::cc13_seg41
+
+namespace bsp::cc13_seg41 {
+struct FrameClothHost {
+    virtual ~FrameClothHost() = default;
+    virtual void flag_cloth_process_frame_008e2560(float dt) = 0;
+};
+// 00737870: frame-hook slot +0Ch; ECX ignored, float dt on stack, RET 4.
+// The FLD/FSTP argument copy precedes the cdecl 008E2560 call.
+void frame_hook_process_cloth_00737870(float dt, FrameClothHost& host);
+// Oct18b-nB additions, same raw Win32 object contracts as the family above.
+// Names remain hypotheses; explicit hosts/context make these new source APIs.
+// Original ECX=convoy, one ignored stack word, XOR AL,AL; RET 4.
+std::uint8_t land_convoy_slot164_false_00741110(void*, std::uint32_t) noexcept;
+struct LandingShipReadHost {
+    virtual ~LandingShipReadHost() = default;
+    virtual void ship_create_read_00813bd0(std::uint8_t*, NativeSessionReadStream&) = 0;
+};
+// Each serializer is thiscall(ECX=message, cursor/stream), RET 4. The read
+// wrapper passes stream+4 to the bit readers, after the complete base read.
+void landing_ship_create_read_00749d20(std::uint8_t*, NativeSessionReadStream&, LandingShipReadHost&);
+void land_at_pad_write_00749e10(const std::uint8_t*, NativeBitCursor*);
+void land_at_pad_read_00749e40(std::uint8_t*, NativeSessionReadStream&);
+void land_vehicle_create_read_0074ccb0(net_cc13::EntityCreateMessage&, NativeSessionReadStream&, const NativeBitNumericContext&);
+struct LandVehicleMessageHost {
+    virtual ~LandVehicleMessageHost() = default;
+    virtual std::uint8_t unit_handle_message_0095abe0(void*, void*) = 0;
+};
+std::uint8_t land_vehicle_handle_message_0074cd90(void*, void*, LandVehicleMessageHost&);
+void land_vehicle_message_write_0074cef0(const void*, NativeBitCursor*);
+void land_vehicle_message_read_0074cf00(void*, NativeSessionReadStream&);
+void land_vehicle_message_write_0074d000(const void*, NativeBitCursor*);
+void land_vehicle_message_read_0074d010(void*, NativeSessionReadStream&);
+// ECX=vehicle, RET; selected AI manager from game+21A4h+[game+18ECh]*4.
+void land_vehicle_register_ai_0074ddf0(std::uint8_t*, void* const& game_00e188a8, LandVehicleHost&);
+// ECX=plane, RET, null maps to null; returns the interior observer +72Ch.
+std::uint8_t* plane_observer_0074e170(std::uint8_t*) noexcept;
+// ECX=plane, stack destination, RET 4, EAX=destination. Exactly sixteen
+// forward DWORD copies (REP MOVSD), including the original overlap order.
+void* plane_copy_matrix_e00_0074e270(const std::uint8_t*, void*);
+void* plane_copy_matrix_e40_0074e290(const std::uint8_t*, void*);
+// ECX=observer subobject; SUB ECX,72Ch, tailcalls 007B8E60 / 007BBB70.
+float plane_observer_speed_0074e3c0(const std::uint8_t*);
+float* plane_observer_vector_0074e3f0(const std::uint8_t*, float*);
+// SHIP_SINK, ECX=message, RET 4. Six-bit count; no image capacity clamp.
+// Borrow the live scale at 00D7A248; original FLD/FSTP steps are preserved.
+void ship_sink_write_0074eb20(const std::uint8_t*, NativeBitCursor*, const volatile float& scale_00d7a248, const NativeBitNumericContext&);
+void ship_sink_read_0074eb80(std::uint8_t*, NativeSessionReadStream&, const volatile float& scale_00d7a248, const NativeBitNumericContext&);
+// FLD [00CE89CCh] (immutable binary32 25.0), RET, ST0 result.
+float mothership_air_ops_speed_00758200() noexcept;
+// ECX=air-ops subobject, RET; [ECX-C50h]+830h, with no null test.
+std::uint8_t* mothership_air_ops_class_00758230(const std::uint8_t*);
+struct MothershipFailureSourceHost : SessionMessageHost {
+    virtual int stricmp_00bf7fbf(const char*, const char*) = 0;
+    virtual bool native_string_equals_00425850(const std::uint8_t*, const char*) = 0;
+    virtual std::uint8_t ship_get_failure_008135c0(std::uint8_t*, const std::uint8_t*, std::uint32_t, std::uint8_t*) = 0;
+    virtual std::uint8_t ship_failure_expired_00813660(std::uint8_t*, const std::uint8_t*, std::uint32_t) = 0;
+    virtual void route_message_0077c2a0(std::uint8_t*, std::uint8_t*, std::uint32_t, std::uint32_t) = 0;
+};
+// ECX=ship; (native name, frame, out) RET 0Ch, AL result; runway/hangar
+// bytes +11A4h/+11A5h, else the complete base query with original arguments.
+std::uint8_t mothership_get_failure_007589d0(std::uint8_t*, const std::uint8_t*, std::uint32_t, std::uint8_t*, MothershipFailureSourceHost&);
+// ECX=ship; (native name, frame) RET 8, AL result. Builds stack message
+// 73h/75h and routes (7,0), or delegates 00813660. Scope cleanup is compiler
+// generated; no allocator/host side effects are introduced for that cleanup.
+std::uint8_t mothership_failure_expired_00758a50(std::uint8_t*, const std::uint8_t*, std::uint32_t, const NativeSessionMessageContext&, std::uint32_t clear_value_00cf8b3c, MothershipFailureSourceHost&);
+}

@@ -17,6 +17,21 @@
 
 namespace bsp::cc13_front5 {
 
+// oct18b-nB-high: MShipyard vtable D0B770 slots95/96 are exact RET4 bodies.
+void shipyard_empty_slot95_00846b70(void* self, std::uint32_t argument) noexcept;
+void shipyard_empty_slot96_00846b80(void* self, std::uint32_t argument) noexcept;
+// ECX owner -> EAX, RET. A nonzero +15C selects +160 or F87541's empty text;
+// otherwise [[owner+538h]+54h], including a null result, is returned.
+const char* shipyard_display_text_00846cc0(const void* owner, const char* empty_f87541) noexcept;
+// ECX owner -> AL [+2Ch], RET. Exact owner subclass remains provisional.
+std::uint8_t owner_byte_2c_0084c550(const void* owner) noexcept;
+struct SceneVisibilityResetCalls {
+    virtual ~SceneVisibilityResetCalls() = default;
+    virtual void set_visibility_factor_00b6da70(void* node, float value, std::uint32_t mode) = 0;
+};
+// ECX owner, ignored stack word, RET4. [[[owner+19Ch]+160h]+0Ch],1.0,0.
+void owner_restore_visibility_0084f000(void* owner, std::uint32_t ignored, SceneVisibilityResetCalls&);
+
 using cc13_seg95::ArchiveWriterGlobals;
 using cc13_seg95::NativeStr;
 using cc13_seg95::TaggedValue;

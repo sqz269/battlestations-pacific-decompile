@@ -12,6 +12,7 @@
 #include "bsp/native_dyn_narrow_phase.hpp"
 
 #include <cmath>
+#include <cstring>
 
 namespace bsp::cc13_dyn1 {
 
@@ -936,3 +937,109 @@ bool world_ray_cast_00c445b0(const float start[3], const float end[3], void* wor
 }
 
 }  // namespace bsp::cc13_dyn1
+
+namespace bsp::cc13_dyn1 {
+namespace {
+bool nc_inside(float axis, float plane_value, bool upper) {
+    std::uint8_t result;
+    if (upper) {
+        __asm {
+            fld axis
+            fld plane_value
+            fcomip st(0), st(1)
+            setbe result
+            fstp st(0)
+        }
+    } else {
+        __asm {
+            fld plane_value
+            fld axis
+            fcomip st(0), st(1)
+            setbe result
+            fstp st(0)
+        }
+    }
+    return result != 0;
+}
+float nc_clip_intersection(float old_axis, float new_axis, float old_other,
+    float new_other, float plane_value) {
+    float fraction, result;
+    // Native code rounds the fraction to float, then evaluates the multiply
+    // and add in x87 precision before the final float spill.
+    __asm {
+        fld plane_value
+        fsub old_axis
+        fld new_axis
+        fsub old_axis
+        fdivp st(1), st(0)
+        fstp fraction
+        fld new_other
+        fsub old_other
+        fmul fraction
+        fadd old_other
+        fstp result
+    }
+    return result;
+}
+void nc_clip(std::int32_t& output_count, float* output, const float* input,
+    std::int32_t count, float bound, int axis, bool upper) {
+    const float* previous = input + (count - 1) * 2;
+    output_count = 0;
+    bool previous_inside = nc_inside(previous[axis], bound, upper);
+    for (std::int32_t i = 0; i < count; ++i) {
+        const float* current = input + i * 2;
+        const bool inside = nc_inside(current[axis], bound, upper);
+        if (inside != previous_inside) {
+            float* destination = output + output_count * 2;
+            destination[axis] = bound;
+            destination[axis ^ 1] = nc_clip_intersection(previous[axis], current[axis],
+                previous[axis ^ 1], current[axis ^ 1], bound);
+            ++output_count;
+        }
+        if (inside) {
+            // Native accepted vertices use integer MOVs, preserving NaN bits.
+            std::memcpy(output + output_count * 2, current, sizeof(float) * 2);
+            ++output_count;
+        }
+        previous = current;
+        previous_inside = inside;
+    }
+}
+float nc_copy_float(float value) {
+    float result;
+    __asm {
+        fld value
+        fstp result
+    }
+    return result;
+}
+} // namespace
+void clip_y_at_most_00c309d0(std::int32_t& n, float* output,
+    const float* input, std::int32_t count, float bound) {
+    nc_clip(n, output, input, count, bound, 1, false);
+}
+void clip_y_at_least_00c30d10(std::int32_t& n, float* output,
+    const float* input, std::int32_t count, float bound) {
+    nc_clip(n, output, input, count, bound, 1, true);
+}
+void clip_x_at_most_00c31060(std::int32_t& n, float* output,
+    const float* input, std::int32_t count, float bound) {
+    nc_clip(n, output, input, count, bound, 0, false);
+}
+void clip_x_at_least_00c313a0(std::int32_t& n, float* output,
+    const float* input, std::int32_t count, float bound) {
+    nc_clip(n, output, input, count, bound, 0, true);
+}
+void expand_node_matrices_00c34cf0(float* output, const void* const* nodes, std::int32_t count) {
+    for (std::int32_t i = 0; i < count; ++i) {
+        const auto* source = reinterpret_cast<const float*>(
+            static_cast<const std::uint8_t*>(nodes[i]) + 8);
+        for (int row = 0; row != 4; ++row) {
+            for (int col = 0; col != 3; ++col)
+                output[i * 16 + row * 4 + col] = nc_copy_float(source[row * 3 + col]);
+            output[i * 16 + row * 4 + 3] = row == 3 ? 1.0f : 0.0f;
+        }
+    }
+}
+void zero_word_00c30900(std::uint32_t* word) noexcept { *word = 0; }
+} // namespace bsp::cc13_dyn1

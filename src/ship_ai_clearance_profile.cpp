@@ -10,6 +10,9 @@
 
 #include <cmath>
 
+#include "bsp/cc13_ship_ai_commit_band.hpp" // kShipAiCommitmentBandQuarterBound
+#include "bsp/ship_ai_seg67_switches_cc13.hpp" // kShipAiClearanceRefreshSentinelBound
+
 #include "bsp/unit_rudder.hpp" // clamped_interpolate_00419010,
                                // wrapped_angle_add_00438aa0,
                                // wrapped_angle_subtract_00438b10
@@ -113,7 +116,9 @@ void ship_ai_refresh_turn_clearance_009ef910(ShipAiClearanceBlock& blk,
     // 009EF943..009EF96F. The sentinel goes in before anything can lower it.
     blk.refresh_timer_374 = settings.refresh_period_1d4;
     blk.outcome_370 = ShipAiClearanceOutcome::Clear;
-    blk.clearance_37c = kShipAiClearanceSentinel;
+    blk.clearance_37c = kShipAiClearanceRefreshSentinelBound
+        ? kShipAiClearanceRefreshSentinel   // [00CE3D64], 009EF94E/009EF96F
+        : kShipAiClearanceSentinel;
 
     // 009EF977..009EF9A8. Astern, the hull heading is turned through half a
     // circle so the rest of the routine can treat it as a forward heading.
@@ -518,7 +523,7 @@ ShipAiAvoidanceStep ship_ai_contact_avoidance_step_009e0c7c(float heading_error,
     // 009E0E42 runs. Both have the same shape, with opposite signs on the
     // course step (00D7A308 is +2.0, 00D19660 is -2.0).
     const bool wide = !(magnitude <= kShipAiClearanceHalfPiWide);
-    if (wide && magnitude > kShipAiContactBearingMax) {
+    if (wide && magnitude > kShipAiContactBearingMaxActive) {
         // 009E0CA2. Nearly reciprocal: the side alone decides.
         return (lateral_side < 0.0f) ? normal
                                      : ShipAiAvoidanceStep{-normal.x, -normal.z};
@@ -552,6 +557,14 @@ ShipAiThrottleWindow ship_ai_commitment_band_009e10a9(const ShipAiContactCounts&
         // 009E110F..009E112E. Without a band the counters pick the side: each
         // give-way track that could not be banded pushes the threshold up by
         // four and each stand-on track pulls it down by four.
+        if (kShipAiCommitmentBandQuarterBound) {
+            // 009E1113..009E112E: SUB EAX,ECX; FILD; FMUL qword [00D7A348];
+            // JB takes the astern band on ratio < diff*0.25 or unordered.
+            const double threshold =
+                static_cast<double>(counts.give_way_80 - counts.stand_on_74)
+                * kShipAiCommitmentBandQuarter;
+            return !(static_cast<double>(throttle_ratio) >= threshold) ? astern : ahead;
+        }
         const float threshold =
             static_cast<float>(counts.give_way_80 - counts.stand_on_74) * 4.0f;
         return (threshold <= throttle_ratio) ? ahead : astern;
@@ -638,7 +651,7 @@ void ship_ai_build_throttle_profile_009e04e0(ShipAiThrottleProfileBlock& blk,
         bool stand_on = false;
         bool run_avoidance = false;
 
-        if (magnitude <= kShipAiContactBearingMin || magnitude >= kShipAiContactBearingMax) {
+        if (magnitude <= kShipAiContactBearingMin || magnitude >= kShipAiContactBearingMaxActive) {
             // 009E0C52..009E0C76. A contact on nearly the same or the exactly
             // opposite course cannot be banded; it only steers.
             run_avoidance = (std::fabs(lateral_side) < width + kShipAiContactWidthPad);

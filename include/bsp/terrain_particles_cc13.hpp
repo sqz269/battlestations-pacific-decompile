@@ -1304,6 +1304,28 @@ void terrain_visibility_group_build_flat_00ade0e0(void* group, const void* name,
 // (x87 checked: DC C9, DE E6 / E1 / E2); +18h = 00AE0F10(new 38h, stream, &centre, &half, owner node +124h)
 // (null when the allocation fails). The temporaries are released, normal b then normal a, then a, b.
 } // namespace bsp::cc13_terrain
+
+namespace bsp::cc13_terrain {
+// oct18b-nC additions; native Win32 layouts. 00AFD860 / 00B05210:
+// ECX=container, stack named-list-array destination, RET 4. Copy each native
+// name, attach float(age/lifetime*100) as its raw dword, and transfer the name
+// to 00AFF290 (which consumes it). Reload live counts/pointers each iteration.
+void emitter_set_collect_percentages_00afd860(void* set, void* destination, TerrainHost& host);
+void particle_group_collect_percentages_00b05210(void* group, void* destination, TerrainHost& host);
+// ECX=array; no stack args, RET. 00AFF210(0), retaining allocation.
+void named_list_array_clear_00aff410(void* array, TerrainHost& host);
+// ECX=emitter; stack destination; RET 4. Tail-dispatch to group at +10h if set.
+void emitter_collect_percentages_00aff580(void* emitter, void* destination, TerrainHost& host);
+// ECX=renderer; RET; sum each +28h resource's virtual +0Ch result over the
+// captured 2Ch-stride range at renderer+1A78h/+1A7Ch. Interpretation provisional.
+using ResourceWord = std::uint32_t (*)(void* resource);
+std::uint32_t renderer_sum_resource_words_00b23d40(void* renderer, ResourceWord slot0c);
+// Native tail thunks: ECX=texture, original stack unchanged; JMP vtable+3Ch/+40h.
+// Stack arguments/return type belong to the destination and remain unresolved.
+// These naked entry points must be called only with that original register ABI.
+void texture_tail_slot3c_00b33ea0();
+void texture_tail_slot40_00b33eb0();
+} // namespace bsp::cc13_terrain
 namespace bsp {
 class NativeStringStorage;
 }

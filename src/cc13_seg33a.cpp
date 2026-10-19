@@ -2571,4 +2571,283 @@ void* const* bullet_class_get_or_create_006ea910(Seg33aHost& host, void** holder
     return holder;
 }
 
+// ---------------------------------------------------------------------------
+// oct18b-nA3: newly defined game bodies, 006E0BE0..006F58D0.
+// Evidence: saved Ghidra exports; 006E7551 JE 006E765A agrees with the disk
+// bytes (Ghidra's 006E7250 body repaired in main 5764ca914).
+// New C++ interfaces, not installed vtable entries. The host calls are real
+// engine/virtual contracts; no game run or native ABI equivalence is claimed.
+// ---------------------------------------------------------------------------
+namespace {
+constexpr float late_full_float_scale = 3.40282346638528859812e38f; // 00D7A248 / 00CFA9D8 = 7F7FFFFF
+
+// 006E2490 stores the x87 sum to float before the double 1e-10 comparison.
+// Keep its instruction order rather than rounding each square independently.
+float late_shot_speed(const float* velocity) {
+    float squared;
+#if defined(_MSC_VER) && defined(_M_IX86)
+    __asm {
+        mov eax, velocity
+        fld dword ptr [eax + 4]
+        fld dword ptr [eax]
+        fld dword ptr [eax + 8]
+        fld st(1)
+        fmulp st(2), st(0)
+        fld st(2)
+        fmulp st(3), st(0)
+        fxch st(1)
+        faddp st(2), st(0)
+        fmul st(0), st(0)
+        faddp st(1), st(0)
+        fstp squared
+    }
+#else
+    const long double x = velocity[0], y = velocity[1], z = velocity[2];
+    squared = static_cast<float>((y * y + x * x) + z * z);
+#endif
+    if (!(static_cast<double>(squared) > 1e-10)) return 0.0f; // 00CE3820
+    float result;
+#if defined(_MSC_VER) && defined(_M_IX86)
+    __asm {
+        fld squared
+        fsqrt
+        fstp result
+    }
+#else
+    result = static_cast<float>(std::sqrt(static_cast<double>(squared)));
+#endif
+    return result;
+}
+
+// The branch in 006E7394 compares the unspilled x87 x*x+z*z against the
+// exact double at 00CF4868 (3F40624DE0000000), including unordered -> false.
+bool late_horizontal_velocity_above_threshold(const float* velocity) {
+    static const double threshold = 0.0005000000237487257;
+#if defined(_MSC_VER) && defined(_M_IX86)
+    std::uint8_t above;
+    __asm {
+        mov ecx, velocity
+        fld dword ptr [ecx + 8]
+        fld dword ptr [ecx]
+        fmul st(0), st(0)
+        fld st(1)
+        fmulp st(2), st(0)
+        faddp st(1), st(0)
+        fld threshold
+        fxch st(1)
+        fcompp
+        fnstsw ax
+        sahf
+        seta above
+    }
+    return above != 0;
+#else
+    const long double x = velocity[0], z = velocity[2];
+    return x * x + z * z > threshold;
+#endif
+}
+
+void late_write_bool_word(Seg33aHost& host, void* message, void* cursor) {
+    host.session_message_write_header_0075b480(message, cursor);
+    host.bit_cursor_write_boolean_004290b0(cursor, at<std::uint8_t>(message, 0x1C));
+    host.bit_cursor_write_word_bits_00429120(cursor, at<std::uint16_t>(message, 0x20), 12);
+}
+void late_read_bool_word(Seg33aHost& host, void* message, void* stream) {
+    host.session_message_read_header_0075b4c0(message, stream);
+    void* const cursor = add(stream, 4); // every reader advances from wrapper to raw cursor
+    host.bit_cursor_read_boolean_00428d70(cursor, static_cast<std::uint8_t*>(add(message, 0x1C)));
+    host.bit_cursor_read_word_bits_00428e30(cursor, static_cast<std::uint16_t*>(add(message, 0x20)), 12);
+}
+} // namespace
+
+// 006E0BE0/006E0C50: ECX message, cursor/stream, RET 4. Header; 3,2 bits;
+// vec3+24h signed 16 bits with scale 22000 (00CF9360), vec3+30h 10 bits/2.
+void kill_bullet_message_write_006e0be0(Seg33aHost& host, void* message, void* cursor) {
+    host.session_message_write_header_0075b480(message, cursor);
+    host.bit_cursor_write_unsigned_00429070(cursor, at<std::uint32_t>(message, 0x1C), 3);
+    host.bit_cursor_write_unsigned_00429070(cursor, at<std::uint32_t>(message, 0x20), 2);
+    host.bit_cursor_write_float_array_00429790(cursor, static_cast<float*>(add(message, 0x24)), 3, 0, 1, 22000.0f, 16);
+    host.bit_cursor_write_float_array_00429790(cursor, static_cast<float*>(add(message, 0x30)), 3, 0, 1, 2.0f, 10);
+}
+void kill_bullet_message_read_006e0c50(Seg33aHost& host, void* message, void* stream) {
+    host.session_message_read_header_0075b4c0(message, stream);
+    void* const cursor = add(stream, 4);
+    host.bit_cursor_read_unsigned_00428d10(cursor, static_cast<std::uint32_t*>(add(message, 0x1C)), 3);
+    host.bit_cursor_read_unsigned_00428d10(cursor, static_cast<std::uint32_t*>(add(message, 0x20)), 2);
+    host.bit_cursor_read_float_array_004294f0(cursor, static_cast<float*>(add(message, 0x24)), 3, 0, 1, 22000.0f, 16);
+    host.bit_cursor_read_float_array_004294f0(cursor, static_cast<float*>(add(message, 0x30)), 3, 0, 1, 2.0f, 10);
+}
+
+// 006E2490..006E2540: ECX shot, RET, ST0. Class floats' semantic names
+// are unknown; exact BC/C0/C4 offsets are retained. D0 is the scale set by 006E2550.
+float projectile_shot_speed_006e2490(void* shot) { return late_shot_speed(static_cast<const float*>(add(shot, 8))); }
+float projectile_shot_class_bc_006e2510(void* shot) { return at<float>(ptr(shot, 4), 0xBC); }
+float projectile_shot_class_c0_006e2520(void* shot) { return at<float>(ptr(shot, 4), 0xC0); }
+float projectile_shot_class_c4_006e2530(void* shot) { return at<float>(ptr(shot, 4), 0xC4); }
+float projectile_shot_weapon_scale_006e2540(void* shot) { return at<float>(shot, 0xD0); }
+
+// 006E39B0/E0, 006E3AD0/3B00, 006E3BA0: ECX message, cursor/stream, RET 4.
+// bool byte+1C; then word+20 unsigned12 or DWORD+20 signed6. 3BA0 is signed8+1C only.
+void gun_fire_message_write_006e39b0(Seg33aHost& h, void* m, void* c) { late_write_bool_word(h, m, c); }
+void gun_fire_message_read_006e39e0(Seg33aHost& h, void* m, void* s) { late_read_bool_word(h, m, s); }
+void bomb_platform_reload_message_write_006e3ad0(Seg33aHost& h, void* m, void* c) {
+    h.session_message_write_header_0075b480(m, c);
+    h.bit_cursor_write_boolean_004290b0(c, at<std::uint8_t>(m, 0x1C));
+    h.bit_cursor_write_signed_00429090(c, at<std::int32_t>(m, 0x20), 6);
+}
+void bomb_platform_reload_message_read_006e3b00(Seg33aHost& h, void* m, void* s) {
+    h.session_message_read_header_0075b4c0(m, s);
+    void* const c = add(s, 4);
+    h.bit_cursor_read_boolean_00428d70(c, static_cast<std::uint8_t*>(add(m, 0x1C)));
+    h.bit_cursor_read_signed_00428d30(c, static_cast<std::int32_t*>(add(m, 0x20)), 6);
+}
+void multi_bomb_generate_message_write_006e3ba0(Seg33aHost& h, void* m, void* c) {
+    h.session_message_write_header_0075b480(m, c);
+    h.bit_cursor_write_signed_00429090(c, at<std::int32_t>(m, 0x1C), 8);
+}
+// 006E3D90: ECX rack, skill on stack, tail JMP vslot1C4h. 006E3DB0: RET, EAX owner+3BCh.
+void rack_set_bot_skill_forward_006e3d90(Seg33aHost& h, void* rack, std::int32_t skill) { h.gun_set_bot_skill_vt1c4(rack, skill); }
+void* rack_owner_006e3db0(void* rack) { return ptr(rack, 0x3BC); }
+
+// 006E48A0/006E4950: ECX message, cursor/stream, RET 4. bool+word12,
+// followed by four vec3 arrays at24/30/3C/48, signed numeric32 with FLT_MAX scale.
+void bomb_platform_fire_message_write_006e48a0(Seg33aHost& h, void* m, void* c) {
+    late_write_bool_word(h, m, c);
+    for (std::size_t off = 0x24; off <= 0x48; off += 12)
+        h.bit_cursor_write_float_array_00429790(c, static_cast<float*>(add(m, off)), 3, 0, 1, late_full_float_scale, 32);
+}
+void bomb_platform_fire_message_read_006e4950(Seg33aHost& h, void* m, void* s) {
+    late_read_bool_word(h, m, s);
+    for (std::size_t off = 0x24; off <= 0x48; off += 12)
+        h.bit_cursor_read_float_array_004294f0(add(s, 4), static_cast<float*>(add(m, off)), 3, 0, 1, late_full_float_scale, 32);
+}
+
+// 006E7250: ECX bullet, one unused DWORD on stack, RET4. Ghidra's int* return
+// is incidental EAX; callers use the update as void. The matrix-copy and x87
+// branch follow the listing. Ghidra's body is 006E7250-006E766E (RET 4 at
+// 006E766C) since main 5764ca914; 006E7551 JE 006E765A decodes there as on
+// disk, and the tail calls are in its callees.
+// Intrusive references and the consumed by-value definition use the existing
+// family contracts. Host exceptions after creation release the result temporary.
+void bullet_update_effects_006e7250(Seg33aHost& h, void* bullet, std::uint32_t) {
+    if (h.tick_element_in_water_vt2c(add(bullet, 0x170)) != 0) {
+        if (ptr(bullet, 0x194) == nullptr) return;
+        void* const node = ptr(bullet, 0x23C);
+        refresh_pose_if_stale(h, node);
+        float point[3];
+        const float* const transformed = h.vector3_transform_affine_point_004142e0(
+            static_cast<const float*>(add(bullet, 0x19C)), point, static_cast<const float*>(add(node, 0xCC)));
+        h.point_effect_set_world_point_004842c0(ptr(bullet, 0x194), transformed);
+        void* const effect = ptr(bullet, 0x194); // EDI is captured before the virtual scale call
+        at<float>(effect, 0x54) = h.entity_pose_scale_vt38(node);
+        refresh_pose_if_stale(h, node);
+        void* const effect_after_refresh = ptr(bullet, 0x194);
+        std::memcpy(add(effect_after_refresh, 0x68), add(node, 0xEC), 3 * sizeof(float));
+        at<std::uint32_t>(effect_after_refresh, 0x2C) = 0;
+        return;
+    }
+    if (ptr(bullet, 0x198) != nullptr) {
+        const float velocity[3] = {at<float>(bullet, 0x178), at<float>(bullet, 0x17C), at<float>(bullet, 0x180)};
+        const bool oriented = late_horizontal_velocity_above_threshold(velocity);
+        float matrix[16];
+        if (oriented) {
+            void* const node = ptr(bullet, 0x23C);
+            refresh_pose_if_stale(h, node);
+            std::memcpy(matrix, add(node, 0xCC), sizeof matrix);
+            std::memcpy(matrix + 8, velocity, sizeof velocity);
+            h.matrix_orthonormalize_basis_rows_0085dc80(matrix);
+        }
+        // Re-read velocity after orthonormalization just as the image does.
+        const float factor = at<float>(bullet, 0x27C);
+        const float offset[3] = {factor * at<float>(bullet, 0x178), factor * at<float>(bullet, 0x17C), factor * at<float>(bullet, 0x180)};
+        void* const node = ptr(bullet, 0x23C);
+        refresh_pose_if_stale(h, node);
+        const float point[3] = {at<float>(node, 0xFC) + offset[0], at<float>(node, 0x100) + offset[1], at<float>(node, 0x104) + offset[2]};
+        if (oriented) {
+            std::memcpy(matrix + 12, point, sizeof point);
+            h.point_effect_set_world_matrix_0053d9c0(ptr(bullet, 0x198), matrix);
+        } else {
+            h.point_effect_set_world_point_004842c0(ptr(bullet, 0x198), point);
+        }
+        return;
+    }
+    if (at<std::uint8_t>(bullet, 0x278) == 0) return;
+    void* const cls = ptr(bullet, 0x174);
+    void* const descriptor = ptr(cls, at<std::uint8_t>(bullet, 0x1CC) != 0 ? 0x44 : 0x40);
+    if (descriptor == nullptr) return;
+    void* const manager = h.effect_manager_00e188a8_19ec();
+    const std::uint32_t flag = at<std::uint8_t>(bullet, 0x1B4);
+    const void* const local_matrix = add(ptr(bullet, 0x23C), 0x74);
+    ref_add(h, descriptor); // 00440490 copies the by-value definition reference
+    void* created = nullptr;
+    void* const* const result = h.point_effect_create_from_matrix_00868420(&created, manager, descriptor, local_matrix, flag, 0);
+    {
+        struct Temporary {
+            Seg33aHost& host; void*& value;
+            ~Temporary() { if (value != nullptr) ref_release(host, value); }
+        } temporary{h, created};
+        h.retained_reference_assign_004845d0(add(bullet, 0x198), result);
+    }
+    if (ptr(bullet, 0x198) != nullptr)
+        h.effect_update_children_00867790(ptr(bullet, 0x198), 0.0f, h.effect_reference_node_00e188a8_19fc());
+}
+
+// 006E7C50: AL=1, RET. 006E7C90: ECX bullet, ST0=[+240h], RET.
+bool bullet_always_true_006e7c50() noexcept { return true; }
+float bullet_weapon_scale_006e7c90(void* bullet) { return at<float>(bullet, 0x240); }
+// 006E7CA0: ECX bullet, float* out, RET4; EAX retains out. Each lane is x87-copied.
+float* bullet_velocity_006e7ca0(void* bullet, float* output) {
+#if defined(_MSC_VER) && defined(_M_IX86)
+    __asm {
+        mov ecx, bullet
+        mov eax, output
+        fld dword ptr [ecx + 178h]
+        fstp dword ptr [eax]
+        fld dword ptr [ecx + 17ch]
+        fstp dword ptr [eax + 4]
+        fld dword ptr [ecx + 180h]
+        fstp dword ptr [eax + 8]
+    }
+#else
+    for (std::size_t i = 0; i != 3; ++i) output[i] = at<float>(bullet, 0x178 + 4 * i);
+#endif
+    return output;
+}
+// 006EA230/40: ECX unread, EAX zero. Actual RET1Ch / RET4 establish ignored stack sizes.
+// Unknown argument meanings are deliberately retained as uninterpreted words.
+void* bullet_class_unavailable_create_006ea230(void*, std::uint32_t, std::uint32_t, std::uint32_t,
+                                             std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t) noexcept { return nullptr; }
+void* bullet_class_unavailable_aux_006ea240(void*, std::uint32_t) noexcept { return nullptr; }
+
+// 006EBA50..006EBC60: ECX message, cursor/stream, RET4. Header precedes all fields.
+void vehicle_launched_message_read_006eba50(Seg33aHost& h, void* m, void* s) { late_read_bool_word(h, m, s); }
+void plane_takeoff_message_write_006ebb10(Seg33aHost& h, void* m, void* c) {
+    h.session_message_write_header_0075b480(m, c);
+    h.bit_cursor_write_boolean_004290b0(c, at<std::uint8_t>(m, 0x1C));
+    h.bit_cursor_write_boolean_004290b0(c, at<std::uint8_t>(m, 0x20));
+}
+void plane_takeoff_message_read_006ebb40(Seg33aHost& h, void* m, void* s) {
+    h.session_message_read_header_0075b4c0(m, s);
+    h.bit_cursor_read_boolean_00428d70(add(s, 4), static_cast<std::uint8_t*>(add(m, 0x1C)));
+    h.bit_cursor_read_boolean_00428d70(add(s, 4), static_cast<std::uint8_t*>(add(m, 0x20)));
+}
+void catapult_fire_message_write_006ebc10(Seg33aHost& h, void* m, void* c) {
+    late_write_bool_word(h, m, c);
+    h.bit_cursor_write_float_004295c0(c, at<float>(m, 0x24), 0, 1, late_full_float_scale, 32);
+}
+void catapult_fire_message_read_006ebc60(Seg33aHost& h, void* m, void* s) {
+    late_read_bool_word(h, m, s);
+    h.bit_cursor_read_float_004293f0(add(s, 4), static_cast<float*>(add(m, 0x24)), 0, 1, late_full_float_scale, 32);
+}
+// 006EC0D0: ECX catapult, message, RET4; AL result, not the stale upper EAX.
+bool catapult_handle_message_006ec0d0(Seg33aHost& h, void* catapult, void* message) {
+    if (at<std::uint8_t>(message, 0x10) != 0xB4) return h.gun_handle_network_message_0072d830(catapult, message);
+    h.catapult_apply_fire_message_vt1f0(catapult, message);
+    return true;
+}
+// 006EC620: ECX catapult, float timestep, RET4. Recoil first, then plane pose.
+void catapult_update_pose_006ec620(Seg33aHost& h, void* catapult, float timestep) {
+    h.gun_update_barrel_recoil_0072b2d0(catapult, timestep);
+    h.catapult_pose_launching_plane_006ec240(catapult);
+}
 }  // namespace bsp::cc13_seg33a

@@ -7,6 +7,13 @@
 #include <xmmintrin.h>
 
 namespace bsp::cc13_front6 {
+
+void objective_forward_slot04_008da170(void* objective, ObjectiveSlot04Calls& calls) { calls.slot04(objective); }
+void entity_reference_write_archive_008dba30(void* owner, void* archive, const char* empty_key, EntityReferenceArchiveCalls& calls) {
+    void* entity = *static_cast<void**>(owner);
+    if (entity) calls.write_field_slot0c(archive, "entity", 4, entity);
+    else calls.write_field_slot0c(archive, empty_key, 5, static_cast<std::uint8_t*>(owner) + 4);
+}
 namespace {
 
 std::uint32_t addr32(const void* p) noexcept {

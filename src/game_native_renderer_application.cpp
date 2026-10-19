@@ -40,6 +40,7 @@
 #include "bsp/game_native_mission_model.hpp"
 #include "bsp/game_native_mission_command.hpp"
 #include "bsp/game_native_mission_lighting.hpp"
+#include "bsp/game_native_mission_factories.hpp"
 #include "bsp/native_gui_scene_storage.hpp"
 #include "bsp/native_node_root_propagation.hpp"
 #include "bsp/native_node_scene_attachment.hpp"
@@ -188,6 +189,38 @@ NativeVertexDeclarationLoadingContext application_declaration_loading(
 #include "game_native_mission_preload.inc"
 #include "game_native_mission_lighting.inc"
 #include "game_native_mission_ship.inc"
+
+// Read-only Source diagnostics for the opt-in graph. Raw memory snapshots do
+// not assert that a retained companion's native allocation is still alive.
+void observe_mission_texture_owners(GameHostLog& log, NativeTextureLoadOwners& owners,
+    const char* phase) {
+    struct Context { GameHostLog& log; const char* phase; } context{log, phase};
+    log.notef("native mission texture owners: phase=%s retained=%u", phase,
+        static_cast<unsigned>(owners.retained_entry_count()));
+    owners.observe_retained_entries(&context,
+        [](void* opaque, const NativeTextureLoadOwnerObservation& value) {
+            auto& output = *static_cast<Context*>(opaque);
+            output.log.notef("native mission texture owner: phase=%s identity=%p admitted=%08x "
+                "runtime=%u registered=%u canonical_match=%u prefix_read=%u name_read=%u "
+                "raw_snapshot_profile=%08x raw_snapshot_reference_bits=%08x name=%.*s",
+                output.phase, value.identity, value.admitted_profile,
+                static_cast<unsigned>(value.runtime_creator), static_cast<unsigned>(value.registered),
+                static_cast<unsigned>(value.canonical_match), static_cast<unsigned>(value.prefix_read),
+                static_cast<unsigned>(value.name_read), value.snapshot_profile,
+                value.snapshot_reference_bits, static_cast<int>(value.copied_name_bytes),
+                value.snapshot_name);
+        });
+}
+
+void observe_mission_cache_cleanup(void* context,
+    const NativeRendererCacheCleanupObservation& value) {
+    auto& log = *static_cast<GameHostLog*>(context);
+    log.notef("native mission cache cleanup: function=%08x event=%u cache=%p resource=%p "
+        "count=%u fallback=%p prefix_read=%u raw_snapshot_profile=%08x raw_snapshot_reference_bits=%08x",
+        value.native_function, static_cast<unsigned>(value.event), value.cache, value.resource,
+        value.cache_count, value.fallback, static_cast<unsigned>(value.resource_prefix_read),
+        value.snapshot_profile, value.snapshot_reference_bits);
+}
 
 // ---- Harness only (packet cc9_tooling_renderer_init). 00B2AEB0 ignores CreateDevice's HRESULT,
 // as the image does, and then reads the device (00B24460, 00B26170). When CreateDevice fails
@@ -384,6 +417,8 @@ struct GameNativeRendererApplication::Impl {
     NativeEffectRecordStorageContext records;
     NativeEffectRegistryDestructionContext effects;
     NativeRenderResourceAccountingTables accounting;
+    // Declared before texture_loading so it outlives the owners' exit check.
+    NativeRendererCacheSkippedRelease cache_skipped_release;
     NativeRendererCacheCleanupContext textures;
     ResourceLoadEventHost* volatile platform_events{};
     NativeVertexDeclarationLoadingContext declaration_loading;
@@ -793,6 +828,13 @@ void GameNativeRendererApplication::configure_mission_ship(GameInputRuntime& inp
         p.declaration_cache, p.section_layouts, p.raw, p.vfs, p.mesh_field_vfs,
         p.singletons, p.owners, p.lua_services.binding(), p.shaders.cache, p.renderer,
         p.entry_cache_publication, input, clock, args);
+    p.textures.observation_context = &p.log;
+    p.textures.observe_cleanup = &observe_mission_cache_cleanup;
+    // Exact exit allow-list for the error.dds residue the Original leaves
+    // (cc15-rshut; NativeTextureLoadOwners destructor, OCT18B_RENDER_MILESTONE).
+    p.textures.skipped_release = &p.cache_skipped_release;
+    p.texture_loading.owners.allow_original_cache_clear_residue(p.cache_skipped_release, &p.log,
+        [](void* log, const char* line) { static_cast<GameHostLog*>(log)->note(line); });
     p.log.note("native mission ship configured: BSP_NATIVE_MISSION_SHIP=1 (OFF by default)");
 }
 bool GameNativeRendererApplication::mission_ship_enabled() const noexcept {
@@ -959,6 +1001,8 @@ bool GameNativeRendererApplication::requires_process_retention() const noexcept 
 void GameNativeRendererApplication::drain_singletons() {
     check(!requires_process_retention(),"incomplete native renderer cannot be drained");
     NativeLuaServiceBindings::Activation activation(impl_->lua_services.binding());
+    if (impl_->mission_ship && impl_->phase != Impl::Phase::drained)
+        observe_mission_texture_owners(impl_->log, impl_->texture_loading.owners, "before_retire");
     if (impl_->mission_ship) impl_->mission_ship->retire_before_native_drain();
     if(impl_->phase==Impl::Phase::ready)impl_->phase=Impl::Phase::draining;
     try { impl_->singletons.shutdown();after_native_drain(); }
@@ -981,7 +1025,10 @@ void GameNativeRendererApplication::after_native_drain() {
     // Effect metadata rechecks this method. Publish completed native drain
     // before entering its closure so that reentry observes that same fact.
     if (p.mission_ship) p.mission_ship->after_native_drain();
+    if (p.mission_ship)
+        observe_mission_texture_owners(p.log, p.texture_loading.owners, "after_drain");
     p.log.note("native renderer after raw drain: owner=null lua=null definitions=null system=null entry_cache=null queue=null worker=joined");
 }
 } // namespace bsp::game
 #include "game_native_mission_model.inc"
+#include "game_native_mission_factories.inc"

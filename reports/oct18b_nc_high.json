@@ -1,0 +1,604 @@
+{
+  "packet": "oct18b-nC-high",
+  "rows": [
+    {
+      "address": "00afd860",
+      "name": "emitter_set_collect_percentages_00afd860",
+      "source": "src/terrain_particles_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "thiscall ECX=set; stack destination; RET 4",
+      "evidence": "Listing 00AFD860..00AFD923: active byte indices stride 108h, definition+A0h byte7Ch gate, x87 record34h/38h*double[00D7A220]=100; by-value NativeString and raw float word to 00AFF290; count reloaded.",
+      "uncertainty": "Names and class interpretation are hypotheses; new C++ interface is not an ABI replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00aff410",
+      "name": "named_list_array_clear_00aff410",
+      "source": "src/terrain_particles_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=array; RET",
+      "evidence": "PUSH 0; CALL 00AFF210; RET. Existing named-list-array resize implementation reused.",
+      "uncertainty": "Names and class interpretation are hypotheses; new C++ interface is not an ABI replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00aff580",
+      "name": "emitter_collect_percentages_00aff580",
+      "source": "src/terrain_particles_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=emitter; stack destination; RET 4",
+      "evidence": "MOV ECX,[ECX+10h]; null -> RET 4, otherwise tail JMP 00B05210 with destination still on stack.",
+      "uncertainty": "Names and class interpretation are hypotheses; new C++ interface is not an ABI replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b05210",
+      "name": "particle_group_collect_percentages_00b05210",
+      "source": "src/terrain_particles_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "thiscall ECX=group; stack destination; RET 4",
+      "evidence": "Listing: ushort indices at group+0Ch, stride8; records stride6Ch at +14h, ratio40h/44h*double100; name at definition64h+8; copy/00AFF290 consumes name.",
+      "uncertainty": "Names and class interpretation are hypotheses; new C++ interface is not an ABI replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b23d40",
+      "name": "renderer_sum_resource_words_00b23d40",
+      "source": "src/terrain_particles_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=renderer; EAX=sum; RET",
+      "evidence": "Vtable 00D5F0A8 slot29; capture [ECX+1A78h] and count+1A7Ch; stride2Ch entries, call entry28h object virtual0Ch; ADD EBX,EAX wrapping dword sum.",
+      "uncertainty": "Meaning of virtual0Ch result is provisional; callback is required, no host wiring.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b33ea0",
+      "name": "texture_tail_slot3c_00b33ea0",
+      "source": "src/terrain_particles_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=texture; stack unchanged; tail JMP [vtable+3Ch]",
+      "evidence": "Vtable 00D5F228 slot18; listing MOV EAX,[ECX]; MOV EDX,[EAX+3Ch]; JMP EDX. Naked native-register entry preserves destination ABI.",
+      "uncertainty": "Forwarded stack argument and return types unresolved; no invented C++ signature or host call.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b33eb0",
+      "name": "texture_tail_slot40_00b33eb0",
+      "source": "src/terrain_particles_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=texture; stack unchanged; tail JMP [vtable+40h]",
+      "evidence": "Vtable 00D5F228 slot19; listing MOV EAX,[ECX]; MOV EDX,[EAX+40h]; JMP EDX. Naked native-register entry preserves destination ABI.",
+      "uncertainty": "Forwarded stack argument and return types unresolved; no invented C++ signature or host call.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b50020",
+      "name": "vector4_add_00b50020",
+      "source": "src/scene_graph2_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "thiscall ECX=left; stack output,right; EAX=output; RET 8",
+      "evidence": "Four FLD right/FADD left/FSTP output component operations; data reference 00E127D4. Scalar x87 float stores retained.",
+      "uncertainty": "Names and class interpretation are hypotheses; new C++ interface is not an ABI replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b699b0",
+      "name": "STL_NativeStringSort_PopHeapWrapper_00b699b0",
+      "source": "reports/oct18b_nc_high.json",
+      "status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX=first, EDX=last; one stack dword; RET 4",
+      "evidence": "Listing copies native string at last-8 into by-value temporary then invokes already identified STL_NativeStringSort_PopHeap_00B695E0(first,last-8,last-8,value,0); MSVC STL heap wrapper, not game logic.",
+      "uncertainty": "Template spelling provisional; recognized heap operation and copy lifetime are established. No library body reconstructed."
+    },
+    {
+      "address": "00b6d440",
+      "name": "matrix_scale_00b6d440",
+      "source": "src/scene_graph2_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "thiscall ECX=left; stack output,scalar; EAX=output; RET 8",
+      "evidence": "16 scalar x87 FMUL/FSTP operations; caller 00B6DE40. No SSE arithmetic substitution.",
+      "uncertainty": "Names and class interpretation are hypotheses; new C++ interface is not an ABI replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b6d630",
+      "name": "matrix_add_00b6d630",
+      "source": "src/scene_graph2_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "thiscall ECX=left; stack output,right; EAX=output; RET 8",
+      "evidence": "16 FLD right/FADD left/FSTP output operations; caller 00B6DE40; per-component float rounding retained.",
+      "uncertainty": "Names and class interpretation are hypotheses; new C++ interface is not an ABI replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b6d6d0",
+      "name": "matrix_subtract_00b6d6d0",
+      "source": "src/scene_graph2_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "thiscall ECX=left; stack output,right; EAX=output; RET 8",
+      "evidence": "16 FLD left/FSUB right/FSTP output operations; caller 00B6DE40; per-component float rounding retained.",
+      "uncertainty": "Names and class interpretation are hypotheses; new C++ interface is not an ABI replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b6da00",
+      "name": "invalidate_world_subtree_00b6da00",
+      "source": "src/scene_graph2_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=node; RET",
+      "evidence": "If flags5Ch bit2 set: clear138h bits30h, flags5Ch bits0Ah, recursively traverse children34h/sibling3Ch; unlike neighboring 00B6DA30 this clears the receiver too.",
+      "uncertainty": "Names and class interpretation are hypotheses; new C++ interface is not an ABI replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b6de40",
+      "name": "matrix_blend_00b6de40",
+      "source": "src/scene_graph2_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=output, EDX=base; stack target,weight-pointer; EAX=output; RET 8",
+      "evidence": "Listing 00B6DE40..9B: read weight first, subtract(target,base), scale, add(base,scaled), REP MOVSD 16 words. Three rounded intermediate matrices retained.",
+      "uncertainty": "Names and class interpretation are hypotheses; new C++ interface is not an ABI replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b6e240",
+      "name": "blend_animation_subtree_00b6e240",
+      "source": "src/scene_graph2_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "thiscall ECX=node; stack animation,time,weight,recurse; RET 10h",
+      "evidence": "Listing recovers missed fourth stack argument: sample via animator130h virtual18h, AL!=0 copies identity into sample; matrix blend from node+B0h then virtual38h; recurse34h/3Ch iff byte134h and low recurse byte.",
+      "uncertainty": "No animator leaves native sample storage uninitialized. AL==0 retains sampler writes, with no post-call overwrite; result-byte semantics are unproven. Required scratch callback supplies entry bytes; no fallback or failure skip invented. No native failure-path runtime proof.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b70320",
+      "name": "camera_set_position_direction_00b70320",
+      "source": "src/scene_graph2_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "thiscall ECX=camera; stack position,direction; RET 8",
+      "evidence": "Listing fixes missing direction argument: mask2F0h&=FFFFFE4B, virtual2Ch(position), direction->1ACh, position+direction->1A0h through x87 float stores; 00B63F10(up 0,1,0), 00B63B30, virtual34h. Copy calls retained as copies.",
+      "uncertainty": "Look-at/inverse virtual effects supplied by required callbacks; native stack scratch and exception identity unverified.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b85430",
+      "name": "collect_typed_subtree_00b85430",
+      "source": "src/scene_graph2_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=raw pointer-array, EDX=node; stack type; RET 4",
+      "evidence": "Virtual0Ch(type) gates pre-order append; count==capacity -> reserve max(signed(capacity*2),1) via0059E5E0, null destination guard, count++; recurse children34h/sibling3Ch. Exact register inputs recovered from listing.",
+      "uncertainty": "Names and class interpretation are hypotheses; new C++ interface is not an ABI replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b930a0",
+      "name": "mesh_resource_owner_00b930a0",
+      "source": "src/scene_graph2_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "EAX=image address; RET",
+      "evidence": "MOV EAX,00E130A8; RET. Vtable descriptor-owner getter next to established mesh resource CreateModel/type/name slots. Return image address as uint32, not a fabricated local pointer.",
+      "uncertainty": "Names and class interpretation are hypotheses; new C++ interface is not an ABI replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b931a0",
+      "name": "skin_mesh_resource_owner_00b931a0",
+      "source": "src/scene_graph2_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "EAX=image address; RET",
+      "evidence": "MOV EAX,00E130AC; RET. Vtable descriptor-owner getter next to established mesh resource CreateModel/type/name slots. Return image address as uint32, not a fabricated local pointer.",
+      "uncertainty": "Names and class interpretation are hypotheses; new C++ interface is not an ABI replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b932a0",
+      "name": "bone_mesh_resource_owner_00b932a0",
+      "source": "src/scene_graph2_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "EAX=image address; RET",
+      "evidence": "MOV EAX,00E130B0; RET. Vtable descriptor-owner getter next to established mesh resource CreateModel/type/name slots. Return image address as uint32, not a fabricated local pointer.",
+      "uncertainty": "Names and class interpretation are hypotheses; new C++ interface is not an ABI replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b93250",
+      "name": "bone_mesh_resource_create_00b93250",
+      "source": "src/scene_graph2_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX replaced by00E130B0; tail JMP00B931F0; stack unchanged",
+      "evidence": "Vtable00D63780 slot8; MOV ECX,00E130B0; JMP00B931F0. Required existing bone-resource factory binding gets exact owner identity.",
+      "uncertainty": "New C++ callback interface; forwarded native stack arguments remain a property of existing factory, not a binary replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b96e60",
+      "name": "ocean_default_slot4_00b96e60",
+      "source": "src/ocean_spectrum.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX unused; no stack args; RET; return unspecified",
+      "evidence": "Bare RET; cOceanSpectrum vtable00D638F8 slots4..7. Existing ocean_spectrum family; naked RET preserves EAX/flags without inventing a return value.",
+      "uncertainty": "Names and class interpretation are hypotheses; new C++ interface is not an ABI replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b96e70",
+      "name": "ocean_default_slot5_00b96e70",
+      "source": "src/ocean_spectrum.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX unused; no stack args; RET; return unspecified",
+      "evidence": "Bare RET; cOceanSpectrum vtable00D638F8 slots4..7. Existing ocean_spectrum family; naked RET preserves EAX/flags without inventing a return value.",
+      "uncertainty": "Names and class interpretation are hypotheses; new C++ interface is not an ABI replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b96e80",
+      "name": "ocean_default_slot6_00b96e80",
+      "source": "src/ocean_spectrum.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX unused; no stack args; RET; return unspecified",
+      "evidence": "Bare RET; cOceanSpectrum vtable00D638F8 slots4..7. Existing ocean_spectrum family; naked RET preserves EAX/flags without inventing a return value.",
+      "uncertainty": "Names and class interpretation are hypotheses; new C++ interface is not an ABI replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b96e90",
+      "name": "ocean_default_slot7_00b96e90",
+      "source": "src/ocean_spectrum.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX unused; no stack args; RET; return unspecified",
+      "evidence": "Bare RET; cOceanSpectrum vtable00D638F8 slots4..7. Existing ocean_spectrum family; naked RET preserves EAX/flags without inventing a return value.",
+      "uncertainty": "Names and class interpretation are hypotheses; new C++ interface is not an ABI replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00ba70b0",
+      "name": "object_field8c_00ba70b0",
+      "source": "src/scene_graph2_cc13.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=object; EAX=object+8Ch; RET",
+      "evidence": "LEA EAX,[ECX+8Ch]; RET. No dereference, null test or adjusted identity invented.",
+      "uncertainty": "Class identity unresolved; field-offset accessor name provisional. Wrap follows Win32 address arithmetic.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bbd7f0",
+      "name": "pointer_array_remove_unordered_00bbd7f0",
+      "source": "src/oct18b_nc_high.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "thiscall ECX=array; stack pointer-to-key; AL=found; RET 4",
+      "evidence": "Listing00BBD7F0..854: capture pointer/count, scan first match, replace with final dword unless already last, decrement count. Empty case does not dereference key. Raw native container layout preserved.",
+      "uncertainty": "In-house unordered pointer-array operation; exact owning class remains provisional. Valid allocated Win32 range assumed as in image.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bd1800",
+      "name": "owner_default_slot1_00bd1800",
+      "source": "src/oct18b_nc_high.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX unused; no stack args; RET; return unspecified",
+      "evidence": "Bare RET at vtable00D68208 slot1. Same table has deleting dtor00BD1840 and other established event-era methods; no return value or state mutation introduced.",
+      "uncertainty": "Vtable class identity unresolved; retained as explicitly provisional native-owner default slot.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bd1810",
+      "name": "owner_default_slot2_00bd1810",
+      "source": "src/oct18b_nc_high.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX unused; no stack args; RET; return unspecified",
+      "evidence": "Bare RET at vtable00D68208 slot2. Same table has deleting dtor00BD1840 and other established event-era methods; no return value or state mutation introduced.",
+      "uncertainty": "Vtable class identity unresolved; retained as explicitly provisional native-owner default slot.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bd1820",
+      "name": "owner_default_slot3_00bd1820",
+      "source": "src/oct18b_nc_high.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX unused; no stack args; RET; return unspecified",
+      "evidence": "Bare RET at vtable00D68208 slot3. Same table has deleting dtor00BD1840 and other established event-era methods; no return value or state mutation introduced.",
+      "uncertainty": "Vtable class identity unresolved; retained as explicitly provisional native-owner default slot.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00c30900",
+      "name": "zero_word_00c30900",
+      "source": "src/cc13_dyn1.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "EAX=uint32 pointer; EAX retained; RET",
+      "evidence": "MOV dword ptr[EAX],0; RET. Explicit pointer replaces decompiler in_EAX; no ECX assumption.",
+      "uncertainty": "Names and class interpretation are hypotheses; new C++ interface is not an ABI replacement.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00c309d0",
+      "name": "clip_y_at_most_00c309d0",
+      "source": "src/cc13_dyn1.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=&output_count, ESI=output XY buffer; stack input XY,count,bound; RET 0Ch",
+      "evidence": "Listing recovers ESI output buffer; closed polygon half-plane clip y<=bound, previous=last; unordered FCOMI/JBE is inside. Crossings spill fraction to float before x87 delta*ratio+old; accepted vertices copied as integer bits; 4-way unroll collapsed.",
+      "uncertainty": "Disjoint valid buffers with >=2*n pair capacity and n>=1 required. Arithmetic order/float fraction spill preserved; no original-ABI or unmasked-FPU exception equivalence claimed.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00c30d10",
+      "name": "clip_y_at_least_00c30d10",
+      "source": "src/cc13_dyn1.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=&output_count, ESI=output XY buffer; stack input XY,count,bound; RET 0Ch",
+      "evidence": "Listing recovers ESI output buffer; closed polygon half-plane clip y>=bound, previous=last; unordered FCOMI/JBE is inside. Crossings spill fraction to float before x87 delta*ratio+old; accepted vertices copied as integer bits; 4-way unroll collapsed.",
+      "uncertainty": "Disjoint valid buffers with >=2*n pair capacity and n>=1 required. Arithmetic order/float fraction spill preserved; no original-ABI or unmasked-FPU exception equivalence claimed.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00c31060",
+      "name": "clip_x_at_most_00c31060",
+      "source": "src/cc13_dyn1.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=&output_count, ESI=output XY buffer; stack input XY,count,bound; RET 0Ch",
+      "evidence": "Listing recovers ESI output buffer; closed polygon half-plane clip x<=bound, previous=last; unordered FCOMI/JBE is inside. Crossings spill fraction to float before x87 delta*ratio+old; accepted vertices copied as integer bits; 4-way unroll collapsed.",
+      "uncertainty": "Disjoint valid buffers with >=2*n pair capacity and n>=1 required. Arithmetic order/float fraction spill preserved; no original-ABI or unmasked-FPU exception equivalence claimed.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00c313a0",
+      "name": "clip_x_at_least_00c313a0",
+      "source": "src/cc13_dyn1.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=&output_count, ESI=output XY buffer; stack input XY,count,bound; RET 0Ch",
+      "evidence": "Listing recovers ESI output buffer; closed polygon half-plane clip x>=bound, previous=last; unordered FCOMI/JBE is inside. Crossings spill fraction to float before x87 delta*ratio+old; accepted vertices copied as integer bits; 4-way unroll collapsed.",
+      "uncertainty": "Disjoint valid buffers with >=2*n pair capacity and n>=1 required. Arithmetic order/float fraction spill preserved; no original-ABI or unmasked-FPU exception equivalence claimed.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00c34cf0",
+      "name": "expand_node_matrices_00c34cf0",
+      "source": "src/cc13_dyn1.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "EBX=count; stack output-matrices,node-pointer-array; RET 8",
+      "evidence": "Four-way unrolled then tail copy expands each node+8 twelve floats into 4x4 rows XYZ,0/0/0/1; scalar FLD/FSTP copies preserved. Caller undefined code00C37530 not modified.",
+      "uncertainty": "New explicit count parameter replaces EBX input; valid disjoint storage assumed. Native ABI adapter not wired.",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "call_sites": [
+    {
+      "function": "00afd860",
+      "address": "00afd8ec",
+      "native": "0041dd40",
+      "kind": "call"
+    },
+    {
+      "function": "00afd860",
+      "address": "00afd901",
+      "native": "00bf7680",
+      "kind": "call"
+    },
+    {
+      "function": "00afd860",
+      "address": "00afd90d",
+      "native": "00aff290",
+      "kind": "call"
+    },
+    {
+      "function": "00aff410",
+      "address": "00aff412",
+      "native": "00aff210",
+      "kind": "call"
+    },
+    {
+      "function": "00aff580",
+      "address": "00aff587",
+      "native": "00b05210",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00b05210",
+      "address": "00b05282",
+      "native": "0041dd40",
+      "kind": "call"
+    },
+    {
+      "function": "00b05210",
+      "address": "00b05297",
+      "native": "00bf7680",
+      "kind": "call"
+    },
+    {
+      "function": "00b05210",
+      "address": "00b052a3",
+      "native": "00aff290",
+      "kind": "call"
+    },
+    {
+      "function": "00b699b0",
+      "address": "00b699dc",
+      "native": "0041dd40",
+      "kind": "call"
+    },
+    {
+      "function": "00b699b0",
+      "address": "00b699f1",
+      "native": "00bf7680",
+      "kind": "call"
+    },
+    {
+      "function": "00b699b0",
+      "address": "00b699fe",
+      "native": "00b695e0",
+      "kind": "call"
+    },
+    {
+      "function": "00b6da00",
+      "address": "00b6da22",
+      "native": "00b6da00",
+      "kind": "call"
+    },
+    {
+      "function": "00b6de40",
+      "address": "00b6de69",
+      "native": "00b6d6d0",
+      "kind": "call"
+    },
+    {
+      "function": "00b6de40",
+      "address": "00b6de70",
+      "native": "00b6d440",
+      "kind": "call"
+    },
+    {
+      "function": "00b6de40",
+      "address": "00b6de80",
+      "native": "00b6d630",
+      "kind": "call"
+    },
+    {
+      "function": "00b6e240",
+      "address": "00b6e2f5",
+      "native": "004134f0",
+      "kind": "call"
+    },
+    {
+      "function": "00b6e240",
+      "address": "00b6e313",
+      "native": "00b6de40",
+      "kind": "call"
+    },
+    {
+      "function": "00b6e240",
+      "address": "00b6e35c",
+      "native": "00b6e240",
+      "kind": "call"
+    },
+    {
+      "function": "00b70320",
+      "address": "00b703cc",
+      "native": "00b63f10",
+      "kind": "call"
+    },
+    {
+      "function": "00b70320",
+      "address": "00b703d6",
+      "native": "004134f0",
+      "kind": "call"
+    },
+    {
+      "function": "00b70320",
+      "address": "00b703e6",
+      "native": "00b63b30",
+      "kind": "call"
+    },
+    {
+      "function": "00b70320",
+      "address": "00b703f0",
+      "native": "004134f0",
+      "kind": "call"
+    },
+    {
+      "function": "00b85430",
+      "address": "00b85460",
+      "native": "0059e5e0",
+      "kind": "call"
+    },
+    {
+      "function": "00b85430",
+      "address": "00b85485",
+      "native": "00b85430",
+      "kind": "call"
+    },
+    {
+      "function": "00b93250",
+      "address": "00b93255",
+      "native": "00b931f0",
+      "kind": "tail_jump"
+    }
+  ],
+  "counts": {
+    "reconstructed": 35,
+    "library_compiler": 1,
+    "open": 0,
+    "build_tested": 35,
+    "combined_build_pending": 0
+  },
+  "validation": {
+    "build": "MSVC Win32 Release scripts/build.ps1 passed; existing CTest suite passed",
+    "runtime": "not requested; no game runs",
+    "abi": "new interfaces; no binary replacement claim",
+    "annotation_log": "local/ghidra-annotations-20261019T053731Z.json",
+    "exports": "all 36 refreshed after locked annotations",
+    "build_log": "local/nc_combined_build2.log",
+    "game_runs": "none"
+  },
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe"
+}

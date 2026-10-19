@@ -1080,7 +1080,7 @@ first frame, from its own, whose bomb released now is predicted by `009C7D71`
 velocity) to fall within `<m>` (default 25) of the target's position advanced by the target's
 velocity (its last frame's displacement) over the fall time; `until` ends the watch with a
 refusal that reports the nearest miss. The units host's `player_bomb_release_006082d0` applies the
-gates of 1 and 2 and calls the host's `007BBBA0` (`release_ordnance_007bbba0`).
+gates of 1 and 2, then reaches the host's `release_ordnance_007bbba0` directly. The image reaches `007BBBA0` through the message route of steps 3 and 4.
 
 **Refusals, each with its reason:** not the controlled unit; not a plane; dead; a torpedo
 bomber; no bomb in a rack; not in free flight; a level bomber (`007C7750`/`007C4D90` unread);
@@ -1183,6 +1183,10 @@ Worker cc13-wire1, 2026-10-19. This is a harness line with no image switch of it
   - The action is held at amount 1.0 through no binding or device.
   - Screen 2Eh must be up with the player's ship (`[00E188D8]`) for `005484F0` to build anything. That is the case when the mission's HUD runs.
   - The hold counts down whether or not screen 2Eh is up. An edge that falls on a frame without 2Eh (the map screen, a cutscene, pause, a load) is lost. Time the line for a frame on which the HUD runs.
+  - **The 2Eh window.** Screen 2Eh's `005484F0` runs only while screen 46h's update passes its gate (`0064D62B`, wanted `+4h` and a unit at `+1Ch`). On USN01 that is frames ~410-1823; after the script's SetSelectedUnit the gate fails. Screen 2Eh itself stays registered, because the registry never erases a screen, so registration is not the test. Any `input` line outside the window reaches no 2Eh reader.
+  - **Lost-input lines.** The run log reports the loss rather than dropping it silently. The HUD tells the menu host on each frame `005484F0` actually runs, and the next frame's input prologue judges the frame before. The lines therefore appear one frame late and name the frame they are about.
+    - When `005484F0` did not run on the frame of the rising edge: `helm input action 0x99 edge on frame F lost: screen 2Eh's 005484F0 did not run`.
+    - When a hold ends after any held frames on which it did not run: `helm input action 0x99 hold ended on frame F: N held frame(s) without screen 2Eh's 005484F0`.
   - The injected record is outside the image's input-suppression set (`game+5B0h`, `004e4ec2` / `004e4eee`). An injected key therefore stays held through states that would clear a real one.
 
 **Example.** Select the artillery group, then hold fire for 10 seconds at 0.05 s per frame:
@@ -1191,3 +1195,65 @@ Worker cc13-wire1, 2026-10-19. This is a harness line with no image switch of it
 6000 input 0x9D
 6002 input 0x99 hold 200
 ```
+
+## 18. `aim`: the ship camera's look through the mouse axes (packet `cc13-helmaim`)
+
+Worker cc13-wire1, 2026-10-19. This is a harness line with no image switch of its own. It moves the player's ship camera to a chosen yaw and pitch, so that the HUD fire path (section 17) aims where the camera looks. On USN01, gunnery53's player artillery seat holds 8 mounts. `0085ABA0` refuses every shot because the bound camera starts 10 degrees down (`kInitialPitch`, `[00CECA08]` = -0.1745 rad), at the sea.
+
+```
+<frame> aim <yaw> <pitch>
+```
+
+- **Units.** Both angles are in degrees and may be signed decimals. They are converted to radians.
+- **What it sets.** The targets are the ShipCaptain mover's `+384h` yaw and `+388h` pitch. The message-79h aim comes from those two fields. `005484F0` → `00954A10` takes the mover's world forward row (`0042D7E0`, `00521370`), and `00432ED0` builds that row from them:
+  - `rot_y(-yaw)`, relative to the ship's heading in mode 0, or absolute in mode 1;
+  - then `rot_x(-pitch)` only while the pitch is below zero (`004331A0`). A pitch of 0 or above leaves the forward row level.
+- **The path.** The line does not poke the fields. It drives the input manager's look axes `[input+4]+1584h` (yaw) and `+15B4h` (pitch), which `0051F050` reads on every ship-view input frame (`0064A400`, from screen 46h's update), as a mouse move does:
+  - `0051F159` adds `step * -1.0 * zoom * axis` to the yaw;
+  - `0051E650` adds `step * 0.5 * zoom * axis` to the pitch, wraps it, and clamps it into `[+3ECh, +3F0h]`, the ShipCamera angle limits.
+  - The harness chooses each axis so that the step lands on the target. The target pitch is first clamped into the same limits.
+  - `0051F050` clamps each axis into [-50, 50], so a long turn on a short frame takes more than one frame.
+- **Persistence.** The aim persists, so it does not need to be held like `hold N`. The target clears once both angles are within 1e-4 rad. Nothing then decays `+384h` / `+388h`: the axes read zero again, and the fields keep their values.
+  - A rebind of the camera (`0064DA40`, which resets yaw and pitch for a new target) undoes the aim.
+  - So does the one-time mode-0-to-1 switch at `00432FC8`, which adds the ship's heading to the yaw.
+  - Write a new `aim` line after either.
+- **When it applies.** Only while screen 46h's ship-view input runs, i.e. the mission HUD with a bound ShipCaptain camera. Outside that, the target stays pending until the view comes back.
+- **What it logs.**
+  - `helm order applied: ... aim yaw Y pitch P rad through the look axes` when the line applies.
+  - `helm aim reached: mover yaw Y pitch P rad (+384h / +388h)` when the camera is there. The pitch reported is the clamped one.
+- **LABELLED.** GlobalConfig+4 still reads 1.0 (as before), and the raise axis `+15E4h` stays zero. The target is process-wide and is not cleared at mission end.
+- **With the zoom toggle.** An `aim` combined with `input 0xE0` (zoom toggle) overshoots by one frame. The axes are computed from the zoom `+38h` before `0051EF00` changes it in the same frame. The next frame steers back, and the "reached" line comes one frame later.
+
+**Example.** Level the camera on the bow, then fire the artillery group for 10 s:
+
+```
+600 aim 0 0
+610 input 0x9D
+612 input 0x99 hold 200
+```
+
+### 18.1 `aim unit`: track a unit every frame (packet `cc13-aimunit`)
+
+Worker cc13-wire1, 2026-10-19, at cc9's request. The group-3 artillery leads a ship only when the camera ray hits its hull (`009578C3`, kSeatArtilleryLeadBound ON). A fixed `aim` yaw never crosses a moving convoy hull, so gunnery53's player-turret checks saw 0 ship leads and 0 hits.
+
+```
+<frame> aim unit <name> [pitch]
+```
+
+- **Resolving the name.** The name is resolved once, when the line applies, through `harness_target_row`, as for the other helm lines. A name may carry spaces, and a quoted run is one name.
+- **Pitch.** The last word is a fixed pitch in degrees when it is a number and a name remains before it. Quote a name that ends in a number.
+- **What it does.** From the line's frame until the next `aim` line (either form), every ship-view input frame (`0064A400`) re-aims the look at the unit's current position (`unit+0FCh`), through the same look axes as section 18.
+  - It steers in closed loop on the pose the mover published last: the forward row and position that `00954A10` reads for message 79h.
+  - `00432ED0` builds that forward row as `rot_y(-yaw)` then `rot_x(-pitch)` on the mover's basis (`00B646E0` / `00B64640`, D3D row layout). So a heading error `e` (in the `atan2(x, z)` convention) is removed by `yaw -= e`, and a pitch error by `pitch += e`.
+  - With no pitch given, the pitch aims at the unit's origin, i.e. the hull near the waterline, clamped into `[+3ECh, +3F0h]` like any `aim`. A pitch at or above zero leaves the forward row level (section 18).
+  - The track never "completes"; it steers again on the next frame.
+- **Unknown unit.** The line is refused with a warning (`helm order refused: ... aim unit "X": no such unit; the look keeps its last yaw`) and the previous `aim` state stays.
+  - A tracked row that later dies or is hidden logs `helm aim unit: row N is gone or hidden; the look keeps its last yaw`, once per run, and steering stops while the row stays that way.
+- **What it logs.**
+  - The applied line, with the row.
+  - Every 200 tracked frames: `helm aim unit: row N heading error E rad, target pitch P rad, range R`.
+- **Default runs.** With no `aim` line nothing is tracked and no line is logged, so default logs are unchanged.
+- **How to verify (cc9).** Run USN01 with `600 aim unit Convoy1` (or the convoy ship's row name), then `610 input 0x9D` and `612 input 0x99 hold 200`, and read three things:
+  1. The heading error in the periodic lines should fall to about 0 within a few frames and stay there as the target moves. If it grows instead, the sign is wrong; report it.
+  2. The seat's ship-lead count (`009578C3`) should be above 0.
+  3. Compare a run without the `aim` lines: its log should be byte-identical to main.

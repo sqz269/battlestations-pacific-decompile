@@ -5,6 +5,28 @@
 
 namespace bsp::entity_mission_seg60_argon {
 
+// nB-high hierarchy leaves. Actual Win32 links are child+48h / sibling+44h.
+struct EntityTreeWalkCalls {
+  virtual ~EntityTreeWalkCalls() = default;
+  virtual bool visit_slote4(void* entity, std::uint32_t a, std::uint32_t b) = 0;
+  virtual void set_slotdc(void* entity, float value) = 0;
+  virtual bool is_kind_slot5c(void* entity, int kind) = 0;
+  virtual const char* type_name_00e0cd80(std::uint32_t index) = 0;
+  virtual void format_0040cfc0(char* out1024, const char* format, unsigned id,
+                              const char* type_name, std::uint32_t child_count) = 0;
+};
+// 009040D0 ECX opaque visitor, four stack words node,a,b,excluded; RET10h.
+// The same exclusion pointer is forwarded recursively (pseudocode got this wrong).
+bool entity_visit_tree_009040d0(void* visitor, void* entity, std::uint32_t a, std::uint32_t b,
+                              void* excluded, EntityTreeWalkCalls&);
+// 00922EE0 ECX entity, stack float; RET4. Parent callback before reading child link.
+void entity_set_float_recursive_00922ee0(void*, float value, EntityTreeWalkCalls&);
+// 00923AF0 ECX entity, RET. Format into a discarded local 400h buffer only
+// for kind1 nodes. Descend all siblings iff at least one child is kind1.
+void entity_format_tree_00923af0(void*, EntityTreeWalkCalls&);
+// 008FB780 MOV AL,1 / RET. Unknown predicate semantics are intentionally unnamed.
+bool entity_predicate_true_008fb780() noexcept;
+
 struct Raw {
   std::uint8_t* p;
 

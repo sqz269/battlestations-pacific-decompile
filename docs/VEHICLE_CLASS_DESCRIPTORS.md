@@ -443,6 +443,13 @@ Probes after step 3 (cc15-vcp4). Both switches were flipped locally for these ru
   - The end movie plays through the mission-end movie player, not BSP_EngineMovie_Stop 0045F600, so it never reaches 0045F6C1.
 
 Open item for `kVehicleClassMovieStopPurgeCc15Bound` (stays OFF): a 0045F600 stop later than the first in-mission frame. No known row reaches one. In this host the only 0045F600 path is the engine-movie skip (004C6B20), on the first frame, which USN11 covers.
+
+Required evidence before flipping `kVehicleClassMovieStopPurgeCc15Bound` (cc9 lead, 2026-10-19): a JM05-family
+ON/OFF pair that reaches the Event3Convoy GenerateObject spawn (jm05.lua ~3645). JM05 takes 004E0A50's
+mode-9 arm, so its only purge is this movie-stop site. The spawn must show no `creator=00000000` (the members
+464/466 are marked at 00743891 by the visible convoys, cc15-vcp7). The default stream picks event 2 first, so
+the run needs orders that capture or finish event 2.
+
 ## kVehicleClassPreloadCc15Bound ON (cc9-lua69, 2026-10-18)
 
 Confirming pair on main 011d651dc, BSM09 `config/win_orders/bsm09_l68_b9_d1.txt` (36000 frames, reference env):
@@ -474,3 +481,79 @@ Pairs on 059231375, same tree, the switch flipped only in the ON export (`local\
 | USN04 | 12000 | 4 | 102 + 21 / 0 | 599 / 34 | 12 -> 34 | exit 0. 5 squadrons (101x5), as OFF |
 
 On every ON run, `script_nil_reads`, `lua_errors` and `later_host_reads` are 0. The switch stays committed false, and re-flipping it is cc9's call.
+
+## Classes a class's devices name, and the purge (cc15-vcp6)
+
+USNOS (`us_osumi`) was run at 4b74dd6b4 with the switch on. That commit predates the 8d203f017 deck fix, which does not cover this case anyway. At 2834.5 s, Betty4's drop-kamikaze release (class 156, the Ohka) found no creator in 006FEC00, because 004E0A9B had purged row 156.
+
+**What marks 156 in the image.** It is resolved inside the Betty class's own 00964790 load, so it is marked whenever class 32 is:
+- 00964790 step 13 calls vtable[8h]. For the plane family that is 007D1F70, which chains to the base reader 00960230.
+- 00960230 resolves every `Platforms[i].Gun[j]` device through 00443090 (009614F9), then `DefaultGun`, or the first gun, at 00961591.
+- 00443090 calls the device's reader at 0044334D ([vt+8h]). That is 007327B0, which 006E01E1 (BombPlatform) and 006EB6D1 (Catapult) also chain to. Its bullet table reader 007313E0 passes each `Bullet[k].Bullet` to 006EA910 at 00731955.
+- 006EA910 builds the bullet by `Type` and runs its reader at 006EACFD ([vt+18h]). Three bullet readers resolve a vehicle class with DL = 1, and they store the descriptor pointer:
+
+| bullet kind | reader | key | site | field |
+|---|---|---|---|---|
+| DummyKamikazePlane | 006FF170 | `KamikazePlaneClass` | 006FF1E5 | +DCh, which 006FEC00 spawns from the cached pointer with no new lookup |
+| DummySubmarine | 00700050 | `SubmarineClass` | 007000C5 | |
+| DummyTarget | 00701060 | `DummyTargetVehicleClass` | 00701115 | |
+
+- The plane reader also resolves `KamikazeBulletClass` (+20Ch) at 007D2BFF.
+
+For the Betty: `VehicleClass[32].Platforms[*].Gun` holds 143. `DeviceClass[143]` is a BombPlatform with `Bullet[1].Bullet = 143`, and `Bullets[143]` is a DummyKamikazePlane with `KamikazePlaneClass = 156`. Its `KamikazeBulletClass = 99` is a Type `Kamikaze` bullet, which resolves no class.
+
+**Census of class-from-a-class-field resolves** (this installation's tables: autoload vehicleclasses.lua, classtables/{realistic,arcade}):
+
+| site | source field | marked pre-purge in the image | host before | host now |
+|---|---|---|---|---|
+| 009648E3 (00964790 step 5), 00833BA0 (ship reader) | `LandingShip` | yes, with the parent | yes (`mark_vehicle_class_row_00964790`) | yes. No row authors it |
+| 00965182 (step 14) | ship `Catapult.LaunchedClass`. Its run-time users are 006EC8E0 MCatapult_Fire and 008141E0 LaunchFromCatapult, both through 007B8A80 | yes | yes (cc15-vcp2) | yes |
+| 006FF1E5 | bullet 143 -> 156 (Ohka). Arcade bullet 170 -> 370 (Funryu) | yes | **no** | yes |
+| 007000C5 | bullet 144 -> 4. The devices are `unitclass_kaiten` 144, and in arcade also 500 (a watermine test launcher) | yes | **no** | yes |
+| 00701115 | bullet 142 -> 790. The device is gunnery target 83 | yes | **no** | yes |
+| 0083326A (ship reader `templates`, LandVehicleclasses) | crew template names | yes | no | no. Every template is a `*_shiptraffic` soldier name, read as a SoldierTypes symbol (contract), so nothing resolves |
+| 0074C9ED (LandingShip reader, `Vehicle` entries' `ClassId`) | cargo | yes | no | no. No row authors `ClassId` |
+| 006C5050 and the other air-ops 007B8A80 users | deck stock and slots | 0046BF70 / 006CADD0 | yes (cc15-vcp5) | yes |
+
+The host now follows the chain in `GameMissionLuaHost::mark_vehicle_class_device_bullets_00960230`, run from every row mark under the switch. It is recursive, so the linked class's own devices are followed too. UNCERTAIN: it reads `KamikazeBulletClass` on any row, while the image reads it only for the plane family. In this installation that key names only `Kamikaze` bullets, so the result is the same.
+
+Pairs on 99785234b, same tree, the switch flipped only in the ON export (`local\vcp6_on`). Env `BSP_DEATH_TABLE=1 BSP_GUNNERY_RNG_STREAMS=1`. Both pair_diffs exit 1 with gameplay, death rows, plane death modes and the unit table identical. In both, the only rows that moved are the vehicle-class lines: the purge and census lines, the +08h vector line, the `marked` summary, and the 0046BF20/0046BF70 status rows. Lua errors and script nil reads are 0.
+
+| mission | orders / frames | purged / kept | marked OFF -> ON | new-chain marks | result ON |
+|---|---|---|---|---|---|
+| USNOS | cc9-ships59 `s59_os_c17`, 60000 | 528 / 105 | 99 -> 105 | `156@006FF1E5` | exit 0. 10 drop-kamikaze releases from 2841.8 s; `Betty5_kz01` spawns with creator 00956240, as OFF; 0 "creator projection is unavailable". Mission fails at 2871.68 s ("Game Over") on both sides |
+| USN21 | `s46_u21_f`, 12000 | 590 / 43 | 36 -> 43 | none | exit 0, as in the cc15-vcp5 pair. 24 squadrons, all with `class_row=found` |
+
+On USNOS, the remaining OTHER-line differences are renderer lost-device frames and presents (`lost_polls` 8 -> 18), which is window noise, not gameplay.
+
+Not censused, and still open: the load-time resolves in 00743450 LandConvoy roster, 006F3660 CommandBuilding garrison, 0084D170 / 0084D560 support sites, plus the three open items listed under step 3 (traffic, PowerupClass, shipyards).
+
+
+## Convoys, garrisons and support sites, and the purge (cc15-vcp7)
+
+Census of the three load-time resolves left open by cc15-vcp6 (read-only, on main 8a905274a), then the fixes, behind `kVehicleClassPreloadCc15Bound`.
+
+| site | what it resolves | marked pre-purge in the image | host before | verdict / host now |
+|---|---|---|---|---|
+| 00743891 (00743450 LandConvoy InitAll pass A, vt+9Ch) | each roster slot's member type, when type > 0 (0074379C), with 00964790(type, DL=1) | yes, for convoys created at load. A held-back (Hidden) convoy has no instance at load; its members are first resolved when GenerateObject spawns it | **no**. The roster read never marked the member types, so a spawned convoy hit the `creator=00000000` throw in `create_units` | fixed: `game_hosts_mission_frame.cpp`, the `kLandConvoyMembersBound` load walk marks each slot type > 0 of every generated convoy before `build_land_convoy_roster_00743450`. Hidden convoys are skipped, as in the image |
+| 006F3660 CommandBuilding garrison (006F5E3A, 008F41F0 on entity+724h) | the adopted entity's own class, from a bag clone | yes, through the adopted entity's own load | yes (the adopted entity's own row) | covered. The host revives in place; no fix |
+| 0084D304 / 0084D41E (0084D170 SpawnPoint InitAll pass B, vtable 00CEA218 +A0h; 0084D560 is the same walk's other list) | each `Stock %d` Type with Count != 0, when the effective game mode (004BCA50) is not 4 | yes | **no**. The host only queued the classes (0095C4D0), and nothing consumes the queue, so there was no crash, only row parity | fixed: `game_hosts_scene_contents.cpp`, `scene_stock_queue_list` marks each counted Type on the 0046BF70 SpawnPoint walk. The index carries from JapanList into AlliedList, as in 0084D170. The host's mode is never 4 |
+
+Data. The JM05 family (`COTP-IJN/jm05.lua:3645`, `PRCPIJN/jm05.lua:3830`, `ijn/JM/jm05.lua:3631`) spawns `Event3Convoy 01/02/03` (jeep 466, truck 464) with GenerateObject. The visible `SecondaryLandConvoy 01` and `RadarStationLandConvoy 01` carry the same two types, so on JM05 the convoy marks are already made at load by the visible convoys. SpawnPoint stock is authored in single player only by `ijn_02_force_z` (Betty 167, Nell 166) and `ijn_11_operation_to` (14 plane classes).
+
+CONTRACT: the support-site mark is made on the registration walk, not on an instantiated SpawnPoint. No SpawnPoint in this installation is Hidden, so the two agree.
+
+A second fault blocked the support-site marks. `scene_stock_int` asked `scene_enum_property` first, and that reports every property as present, so an `I` value (`Count = I -1`, `NumSlots`) went to the symbol lookup and read 0. Every SpawnPoint stock was skipped as uncounted (IJN11: 0 queue appends). An `I` property is now scanned as an integer first (491f66b90). It is reached only under the switch.
+
+Pairs on 491f66b90, same tree, the switch flipped only in the ON export (`local\vcp7_on2`). Env `BSP_DEATH_TABLE=1 BSP_GUNNERY_RNG_STREAMS=1`. All three pair_diffs exit 1 with gameplay, death rows, plane death modes and the unit table identical. The only rows that moved are the vehicle-class lines (the purge and census lines, the +08h vector line, the `marked` summary) and the 0046BF20/0046BF70 status rows. Neither side has a `creator=00000000` or "creator projection is unavailable" line. Lua errors and script nil reads are 0.
+
+| mission | orders / frames | purged | marked OFF -> ON | new marks | notes |
+|---|---|---|---|---|---|
+| IJN11 (`ijn_11_operation_to`) | none, 12000 | 542 (553 before 491f66b90) | 68 -> 91 | 14 classes at 0084D304: 101 108 113 116 121 125 136 150 158 162 167 172 174 186; stock queue appends 0 -> 38 | the census's 14 plane classes |
+| JM05 | none, 24000 (the mission fails at 300.05 s on both sides) | 0 (see below) | 111 -> 131 | 464, 465, 466, 471 at 00743891 (truck, ambulance, jeep, apc of the two visible convoys); 467 (tank, only in the hidden `Event5Convoy`) stays unmarked, as in the image | Event 3 not reached |
+| USN21 | `s46_u21_f`, 12000 | 590 | 36 -> 43 | none | as in the cc15-vcp6 pair |
+
+JM05 notes:
+- JM05 is an engine-movie mission. Its load takes 004E0A50's mode-9 arm, so the host purges nothing at 004E0A9B. The census runs at 0045F6C1, which stays log only until `kVehicleClassMovieStopPurgeCc15Bound`. The JM05 rows above therefore show the marks, not a purge. The 00743891 marks were read from a diagnostic build that logged every kept row, because the census line stops at 900 characters.
+- The Event 3 `GenerateObject("Event3Convoy 0n")` spawn (PRCPIJN/jm05.lua:3830) was not reached. Events start only while `MainCommandBuilding 01` is Allied (jm05.lua:1301). The deterministic stream picks event 2 (Reconnaissance) first, which spawns nothing. With no orders the mission fails at 300 s. cc9-physics1's 36000-frame `p18off_jm05l` run also shows no event spawn other than `Event2Pt`. The Event3 members (jeep, truck) are marked at load by the visible convoys, so that spawn finds its rows.
+- Event 5 (`Event5Convoy`, Us_tank 467 and Us_apc 471) is hidden. 467 has no visible user, so neither the image nor the host marks it before 0045F6C1. That only matters for a purge at that site.

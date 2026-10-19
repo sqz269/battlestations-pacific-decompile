@@ -1145,3 +1145,104 @@ Object soldier_type_construct_0048dc40(Seg7Host& host, Object type, Object klass
 }
 
 } // namespace bsp::cc13_seg7
+
+// oct18b-nA1: newly defined, assembly-reviewed leaves; build-only interfaces.
+
+namespace bsp::cc13_seg7 {
+void scene_runtime_detach_00480b70(Object runtime, Object entity, SceneDetachHost& host) {
+    if (entity) {
+        native_at<float>(runtime, 0x18) = host.time_00f876a4();
+        host.attach_114(entity, nullptr);
+    }
+}
+void scene_disable_if_byte5c_clear_00480be0(Object entity, SceneDisableHost& host) {
+    if (!native_at<std::uint8_t>(entity, 0x5c)) host.enable_00922f30(entity, 0);
+}
+const char* path_reference_name_004871e0(Object reference) noexcept {
+    Object entity = native_at<Object>(reference, 0x14);
+    if (!entity) return "<null entity>";
+    if (!native_at<std::uint32_t>(entity, 0x154)) return "<null name>";
+    const char* text = native_at<const char*>(entity, 0x158);
+    return text ? text : "";
+}
+Object soldier_globals_scalar_delete_00484770(Object object, std::uint32_t flags,
+                                               SoldierGlobalsDeleteHost& host) {
+    host.set_global_00f87544(nullptr);
+    native_at<std::uint32_t>(object, 0) = 0x00ce3818;
+    if (flags & 1u) host.free_00bf65ac(object);
+    return object;
+}
+namespace {
+// All three differences and the final sum are rounded at FSTP float. The
+// intermediate products/addition retain the x87 precision (modelled in double).
+float view_distance_squared(const float a[3], const float b[3]) {
+    const float x = static_cast<float>(static_cast<double>(a[0]) - b[0]);
+    const float y = static_cast<float>(static_cast<double>(a[1]) - b[1]);
+    const float z = static_cast<float>(static_cast<double>(a[2]) - b[2]);
+    return static_cast<float>((static_cast<double>(x) * x + static_cast<double>(y) * y) +
+                              static_cast<double>(z) * z);
+}
+}
+bool unit_path_in_view_00480c60(Object runtime, UnitPathViewHost& host) {
+    Object actor = native_at<Object>(host.game_00e188a8(), 0x1ed4);
+    if (!actor) return false;
+    if (!native_at<std::uint8_t>(actor, 0xc8)) host.refresh_pose_00414db0(actor);
+    Object unit = native_at<Object>(runtime, 0x14c);
+    bool near = false;
+    Object game;
+    if (!host.unit_predicate_0080e3d0(unit)) {
+        unit = native_at<Object>(runtime, 0x14c);
+        if (!native_at<std::uint8_t>(unit, 0xc8)) host.refresh_pose_00414db0(unit);
+        game = host.game_00e188a8();
+        Object camera = native_at<Object>(game, 0x19fc);
+        const float radius = static_cast<float>(300.0 / native_at<float>(camera, 0x1c4));
+        const float square = static_cast<float>(static_cast<double>(radius) * radius);
+        const float distance = view_distance_squared(reinterpret_cast<float*>(unit + 0xfc),
+                                                      reinterpret_cast<float*>(actor + 0xfc));
+        // JA takes only ordered distance > square; unordered is near.
+        near = !(distance > square);
+    } else {
+        game = host.game_00e188a8();
+    }
+    if (near) {
+        const float fade = static_cast<float>(static_cast<double>(native_at<float>(game, 0x21ec)) * 0.5 +
+                                               native_at<float>(runtime, 0x1c));
+        native_at<float>(runtime, 0x1c) = fade > 1.0f ? 1.0f : fade;
+    } else {
+        float fade = static_cast<float>(static_cast<double>(native_at<float>(runtime, 0x1c)) -
+                                         static_cast<double>(native_at<float>(game, 0x21ec)) * 0.5);
+        if (fade < 0.0f) fade = 0.0f;
+        native_at<float>(runtime, 0x1c) = fade;
+        if (fade <= 0.0f) return false;
+    }
+    unit = native_at<Object>(runtime, 0x14c);
+    if (!native_at<std::uint8_t>(unit, 0xc8)) host.refresh_pose_00414db0(unit);
+    Object extent = native_at<Object>(native_at<Object>(runtime, 0x14c), 0x538);
+    const float size[3] = {native_at<float>(extent, 0xa4), native_at<float>(extent, 0xac),
+                           native_at<float>(extent, 0xa0)};
+    float bounds[6];
+    for (unsigned i = 0; i != 3; ++i) {
+        const float p = native_at<float>(unit, 0xfc + i * 4);
+        bounds[i] = static_cast<float>(static_cast<double>(p) - size[i]);
+        bounds[i + 3] = static_cast<float>(static_cast<double>(p) + size[i]);
+    }
+    if (!host.aabb_in_view_004b48e0(host.game_00e188a8(), bounds)) return false;
+    float points[4][3];
+    for (unsigned i = 0; i != 4; ++i) {
+        float input[4] = {native_at<float>(runtime, 0x150 + i * 12),
+                           native_at<float>(runtime, 0x154 + i * 12),
+                           native_at<float>(runtime, 0x158 + i * 12), 1.0f};
+        float out[4];
+        float* p = host.transform_00b62d10(input, out,
+            reinterpret_cast<const float*>(native_at<Object>(runtime, 0x14c) + 0x74));
+        const float inv = static_cast<float>(1.0 / p[3]);
+        for (unsigned j = 0; j != 3; ++j) points[i][j] = static_cast<float>(static_cast<double>(p[j]) * inv);
+    }
+    Object camera = native_at<Object>(host.game_00e188a8(), 0x19fc);
+    const float radius = static_cast<float>(300.0 / native_at<float>(camera, 0x1c4));
+    const float square = static_cast<float>(static_cast<double>(radius) * radius);
+    for (const auto& point : points)
+        if (square > view_distance_squared(point, reinterpret_cast<float*>(actor + 0xfc))) return true;
+    return false;
+}
+}

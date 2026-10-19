@@ -5,6 +5,19 @@
 
 namespace bsp::sim_damage_seg54_argon {
 
+// 00875220 ECX singleton owner, RET. Clear F878DC then store CE3818 at
+// owner+4; null owner is the original invalid address-zero store path.
+void damage_singleton_reset_00875220(void*, std::uint32_t& singleton_f878dc) noexcept;
+// 00876BA0 ECX packed DWORD -> AL=bits24..31, RET.
+std::uint8_t packed_word_high_byte_00876ba0(std::uint32_t) noexcept;
+struct DamageLastVariantCalls {
+  virtual ~DamageLastVariantCalls() = default;
+  virtual void set_variant_slot1b4(void* owner, std::int32_t index) = 0;
+};
+// 00877A50 ECX damageable, RET. current+358h, class+360h, 10h rows at
+// class+16Ch..170h. Empty/null row arrays select zero; nonempty select last.
+void damage_select_last_variant_00877a50(void*, DamageLastVariantCalls&);
+
 struct Raw {
   std::uint8_t* p;
 
