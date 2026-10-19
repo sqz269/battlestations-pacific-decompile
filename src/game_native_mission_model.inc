@@ -96,6 +96,7 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
         bool registered{};
         NativeString caller_name;
         bool caller_name_live{};
+        std::size_t drawable_index{static_cast<std::size_t>(-1)};
     };
     struct StreamRecord {
         Impl* domain;
@@ -132,7 +133,11 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
         std::uint32_t resource_ordinal{};
         bool creator_consumed{};
     };
-    struct Drawable { void* actual; bool creator_consumed{}; };
+    struct Drawable {
+        void* actual;
+        NativeModelReference* companion;
+        bool creator_consumed{}, retired{};
+    };
     std::vector<std::unique_ptr<MeshCall>> meshes;
     std::vector<Drawable> drawables;
     std::vector<void*> attempted_models; // Opaque allocated identities, including failed preparation.
@@ -214,6 +219,11 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
     static void retire_model(void* context, NativeModelReference& reference) noexcept {
         auto& record=*static_cast<ModelRecord*>(context);
         auto& self=*record.domain;
+        if(record.drawable_index<self.drawables.size()) {
+            auto& drawable=self.drawables[record.drawable_index];
+            if(drawable.companion!=&reference || drawable.actual!=record.actual) std::terminate();
+            drawable.creator_consumed=true;drawable.retired=true;
+        }
         if (record.registered) self.owners.unbind(record.actual,reference);
         for (auto it=self.models.begin(); it!=self.models.end(); ++it)
             if (&*it==&record) { self.models.erase(it); return; }
@@ -295,8 +305,9 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
                     static_cast<Word>(item.name.size()),true);
                 if(!item.name.empty()) std::memmove(record.caller_name.data(),item.name.data(),item.name.size());
                 construct_native_model_00b75030(*owner,&record.caller_name,renderer.node_constants());
-                bind_model(this,*owner);
-                drawables.push_back({actual,false});
+                auto& reference=bind_model(this,*owner);
+                drawables.push_back({actual,&reference,false,false});
+                record.drawable_index=drawables.size()-1;
                 record.caller_name_live=false;
                 destroy_native_string_header_0041dd20(&record.caller_name,files.raw_strings());
                 const float sentinel=mission_model_detail::float_word(raw_models.constants.unchanged_00d7a260);
@@ -429,9 +440,17 @@ void GameNativeMissionModel::load_installed_ship(const char* logical_name) {
     }
 }
 std::size_t GameNativeMissionModel::drawable_count() const noexcept {return impl_->drawables.size();}
-void* GameNativeMissionModel::drawable(std::size_t index) const {return impl_->drawables.at(index).actual;}
+void* GameNativeMissionModel::drawable(std::size_t index) const {
+    const auto& drawable=impl_->drawables.at(index);
+    mission_model_detail::require(!drawable.retired,"mission drawable has already retired");
+    return drawable.actual;
+}
 NativeModelReference& GameNativeMissionModel::drawable_reference(std::size_t index) const {
-    return impl_->resolve_actual_model(impl_->drawables.at(index).actual);
+    const auto& drawable=impl_->drawables.at(index);
+    mission_model_detail::require(!drawable.retired,"mission drawable companion has already retired");
+    auto& reference=impl_->resolve_actual_model(drawable.actual);
+    mission_model_detail::require(&reference==drawable.companion,"mission drawable identity was reused");
+    return reference;
 }
 std::size_t GameNativeMissionModel::section_count() const noexcept {return impl_->sections;}
 const char* GameNativeMissionModel::installed_name() const noexcept {return impl_->name.c_str();}
@@ -452,13 +471,12 @@ void GameNativeMissionModel::retire_drawables() {
     mission_model_detail::require(p.phase==Impl::Phase::loaded,"mission ship retirement requires completed loading");
     p.phase=Impl::Phase::retiring;
     for(auto& drawable:p.drawables) {
+        if(drawable.retired) continue;
         drawable.creator_consumed=true;
         auto* registered=p.owners.find(drawable.actual);
-        if(registered) {
-            auto* model=dynamic_cast<NativeModelReference*>(registered);
-            mission_model_detail::require(model!=nullptr,"mission drawable changed canonical owner family");
-            model->release_model_virtual18_00b6f310();
-        }
+        mission_model_detail::require(registered==drawable.companion,
+            "mission drawable changed canonical owner identity before retirement");
+        drawable.companion->release_model_virtual18_00b6f310();
     }
     p.phase=Impl::Phase::retired;
 }
