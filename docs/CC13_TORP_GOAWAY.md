@@ -158,15 +158,16 @@ Counted from the units host's per-slot summary `torpedo <name> goaway 009D0D90/0
 | USN04 | `cc9-physics1\local\p24_off_u04.log` | 0 |
 | USN21 | `cc9-physics1\local\p24_off_u21f_def.log` | 0 |
 | BSM09 | `cc9-physics1\local\p24_off_b9_def.log` | 0 |
-| BSM01 | `cc9-physics1\local\p24_off_b1_def.log` | 0 |
+| BSM01 | `cc9-physics1\local\p24_off_b1_def.log` | **56** (Jap #3.1 ... Jap #80.1 squadrons; `Jap #13.1|.-III` alone 44). Corrected 2026-10-19: the first count's `\S+` name pattern skipped names with spaces |
 | JM06 | `cc9-physics1\local\p24_off_j6_def.log` | 0 |
 | IJN08 | `cc9-lua52\local\l70r_w_i08_main_ref.log` | 0 |
 | USN15 | `cc9-lua52\local\l70r_u15j_main_ref.log` | 0 |
 | USNOS | `cc9-physics1\local\p23h_off_os.log` | 0 |
 | LOMP06 | `cc9-lua52\local\l70r_w_l6_main_ref.log` | 0 |
 
-So ON moves JM08 (9 enters, 18-27 draws) and USN01 (3 enters, 6-9 draws) directly, and every run
-with a torpedo goaway indirectly through the shared stream.
+So ON moves JM08 (9 enters, 18-27 draws), USN01 (3 enters, 6-9 draws) and BSM01 (56 enters,
+112-168 draws) directly, and every run with a torpedo goaway indirectly through the shared stream.
+The same eleven logs are the one current-main set used for every count in this document (A.8, C.4).
 
 ### A.8 The tick's two draws (scope addition)
 
@@ -211,10 +212,11 @@ to back.
 Reach and movers. The host does not log re-seeds; its per-slot goaway tick summary
 (`goaway 009D0F10: ticks=N arms[win_low win_high ...]`) gives the exposure. In the current-main OFF
 logs, JM08 (`p24_off_j8_def`) has 380 goaway ticks, of which 204 are in an open window. USN01
-(`p24_off_u1i`) has 348 ticks, 295 of them in a window (KatTBD alone: 151 of 167). The other nine
-WINS rows have no torpedo goaway (A.7). ON, the open share should fall to about 3-6 s in every 15-28
+(`p24_off_u1i`) has 348 ticks, 295 of them in a window (KatTBD alone: 151 of 167). BSM01
+(`p24_off_b1_def`) has 871 ticks, 531 in a window (missed in the first count, see A.7). The other
+eight WINS rows have no torpedo goaway (A.7). ON, the open share should fall to about 3-6 s in every 15-28
 s of countdown inside the ring. That moves the goaway arm mix (`win_*` towards `post_*`), the
-commanded altitude and roll, and therefore escape paths and AA exposure in JM08 and USN01. Every
+commanded altitude and roll, and therefore escape paths and AA exposure in JM08, USN01 and BSM01. Every
 re-seed also takes two stream-1 draws.
 
 ON-only lifetime: the binding object lives on the stack for one tick call. It reads the same
@@ -329,8 +331,12 @@ unchanged by this packet.
   `unit+430h + cat*4` longest gun ranges for category 6 LIGHTARTILLERYFLAK, 5 FLAK and 1
   AAMACHINEGUN. This is the same triple `009FD66F`-`009FD6F9` uses for the fly-to obstacle radius
   (docs/TORPEDO_AIM_LEAD.md). So the standoff grows to clear the target's longest AA reach. The
-  Ghidra name "GetLargestExtent" and earlier "half-extent" readings (docs/CC13_VERIFY8.md L4) are
-  wrong about what it measures.
+  old Ghidra name `BSP_UnitInstance_GetLargestExtent` and earlier "half-extent" readings
+  (docs/CC13_VERIFY8.md L4, now corrected) were wrong about what it measures. It was renamed
+  `BSP_Unit_LargestAaGunRange` in Ghidra and the ledger on 2026-10-19. The old name and evidence
+  are kept in the ledger record, and the prior annotation is in `local/ghidra-annotations-20261019T122232Z.json`.
+  The reconstruction keeps its function name `unit_largest_extent_007b5be0` (src/cc13_seg47.cpp,
+  another lane's file).
 - **Host binding.** For the dive and the torpedo, the target is `command_target_plus_one`, the same
   substitution the dive heading (`goaway_turn_heading_009c47d0`) and the torpedo run-in latch
   already use. For the level, it is `lb_target_plus_one`. Every host slot is a unit, so the kind test
@@ -355,58 +361,119 @@ fresh copy on every call; the enter reads it once, by value, at the enter. The i
 its build-time ranges. The target slot comes from `owner_.slots`, which owns every unit for the
 mission. No lookup crosses a mission boundary.
 
-### C.4 Reach and movers
+### C.4 Reach (one current-main log set)
 
-The table below covers the census's eleven WINS logs (docs/CC13_STUB_CENSUS.md section 1, read
-with `local/goaway_aa_survey.py`). The enter counts are summed per-slot summaries:
-- dive: `divebomb ... goaway turn 009C4DAD: enters=`;
-- torpedo: `torpedo ... goaway 009D0D90/009D3150: enters=`;
-- level: the `-> LevelBomb/goaway` transitions.
+All counts use A.7's eleven current-main OFF logs: JM08 `p24_off_j8_def`, USN04 `p24_off_u04`, USN21
+`p24_off_u21f_def`, USN01 `p24_off_u1i`, BSM09 `p24_off_b9_def`, BSM01 `p24_off_b1_def` and JM06
+`p24_off_j6_def` (all `cc9-physics1\local`); IJN08 `l70r_w_i08_main_ref`, USN15 `l70r_u15j_main_ref`
+and LOMP06 `l70r_w_l6_main_ref` (`cc9-lua52\local`); USNOS `p23h_off_os` (`cc9-physics1\local`).
 
-"AA max" is the largest category 1 / 5 / 6 ammunition range any unit in the mission carries. It
-is an upper bound on the term, because a target's value is that maximum over its own guns only.
+They were summed with `local/goaway_aa_survey.py` from these lines:
+- dive: `divebomb <name> goaway turn 009C4DAD: enters= ... rerolls=`;
+- torpedo: `torpedo <name> goaway 009D0D90/009D3150: enters=` and `goaway 009D0F10: ticks= arms[win_low= win_high=`;
+- level: the `levelbomb <name> ... -> LevelBomb/goaway` transitions.
 
-| log | dive enters | dive re-rolls | torpedo enters | level enters | AA max cat 1 / 5 / 6 | term upper bound | vs dive `2*B4` | vs torpedo 700 | vs level 1000 (cap 3500) |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| JM08 | 0 | 0 | 0 | 0 | 1600 / - / 2400 | 2400 | - | - | - |
-| USN04 | 0 | 0 | 0 | 0 | 1600 / - / 2000 | 2000 | - | - | - |
-| USN21 | 4 | 0 | 2 | 0 | 1600 / 2000 / 3300 | 3300 | can move | can move | - |
-| USN01 | 0 | 0 | 5 | 0 | 1600 / 2000 / 2400 | 2400 | - | can move | - |
-| BSM09 | 0 | 0 | 0 | 0 | 1600 / 2000 / 2000 | 2000 | - | - | - |
-| BSM01 | 0 | 0 | 0 | 0 | 1600 / 2000 / 2000 | 2000 | - | - | - |
-| IJN08 | 0 | 0 | 0 | 144 | 1600 / 2000 / 2400 | 2400 | - | - | can move (targets Maru1, Maru2) |
-| USN15 | 0 | 0 | 0 | 0 | 1600 / 2000 / 2000 | 2000 | - | - | - |
-| USNOS | 9 | 3 | 0 | 82 | 1600 / 2000 / 3150 | 3150 | can move | - | can move |
-| LOMP06 | 0 | 0 | 0 | 0 | 1600 / 2000 / 2000 | 2000 | - | - | - |
-| JM06 | 0 | 0 | 0 | 0 | 1600 / - / 3300 | 3300 | - | - | - |
+Squadron names contain spaces ("MainAirFieldEntity 01_sqn05", "Jap #13.1"). The first counts used a
+`\S+` name pattern and dropped those planes. That is how JM08's dive and level enters and BSM01's
+torpedo enters were missed (rev4 B1).
 
-Notes on the table:
-- **Bases.** The dive base is `2 * approach+B4h` before the jitter and the 1.5. The logged final
-  standoffs are 1749-2080 in USN21 and 1634-2045 in USNOS, so the base is at most about 2080. Every
-  WINS mission carries category 1 ammunition at 1600 and flak at 2000 or more, above all three bases
-  wherever the target mounts it.
-- **What "can move" means.** The term would move the standoff when the target carries such guns.
-  Whether it does is per target. The new `goaway target term` line (C.3) gives `moved` and `aa_max`
-  per slot. physics24's pairs will measure it there.
-- **Counts differ from other logs.** These census logs are older builds than the ones A.7 (torpedo:
-  JM08 9, USN01 3) and cc13-frontier 6.5 (dive: USN21 4, USN01 3, USNOS 9) used, so the counts
-  differ by mission.
+| mission | dive enters | dive re-rolls | torpedo enters | torpedo ticks / in window | level enters |
+| --- | --- | --- | --- | --- | --- |
+| JM08 | 9 | 0 | 9 | 380 / 204 | 85 |
+| USN04 | 1 | 0 | 0 | 0 | 0 |
+| USN21 | 1 | 0 | 0 | 0 | 0 |
+| USN01 | 2 | 0 | 3 | 348 / 295 | 0 |
+| BSM01 | 0 | 0 | 56 | 871 / 531 | 0 |
+| IJN08 | 0 | 0 | 0 | 0 | 144 |
+| USNOS | 9 | 3 | 0 | 0 | 82 |
+| BSM09, USN15, LOMP06, JM06 | 0 | 0 | 0 | 0 | 0 |
 
-Movers with the draws ON:
-- the dive standoff `+20h` (up to x1.25), which is `009C7F00`'s completion distance, so how long
-  goaway lasts;
-- in USNOS, the bank window `+2Ch` and the re-roll countdown `+24h` (both up to +3 s before the
-  altitude scale), so when the evasive bank comes.
+The dive planes:
+- JM08: `MainAirFieldEntity 01` sqn01, 05, 06, 09 and 24, with their wingmen.
+- USN04: `D3A Val #1.1|.-IV`.
+- USN21: `Enterprise_sqn137`.
+- USN01: `KatSBD|.-II` and `|.-IV`.
+- USNOS: Intrepid sqn09, 20, 22 and 27, and `Essex_sqn14|.-II`.
 
-Every draw also advances the shared stream 1, so other stream-1 consumers in those three missions
-shift, AA kill counts among them.
+Movers with the dive draws ON: the dive standoff `+20h` (up to x1.25), which is `009C7F00`'s
+completion distance and so how long goaway lasts. This affects JM08, USN04, USN21, USN01 and USNOS.
+In USNOS, the only mission with re-rolls, the bank window `+2Ch` and the re-roll countdown `+24h`
+also move (both up to +3 s before the altitude scale). Every draw also advances the shared stream 1,
+so other stream-1 consumers in those missions shift, AA kill counts among them.
 
-Movers with a target-term switch ON: the goaway standoff of that enter type. For the dive it is
-`+20h`, `009C7F00`'s completion distance. For the torpedo it is `+24h`. For the level it is `+18h`,
-capped at 3500. The standoff rises up to the target's AA reach, at most 3300 in these missions,
-against bases of 700 to about 2080. This is the larger potential mover: goaway lasts longer and ends
-further out, which changes the AA exposure and the time before the next attack. The rocket enter
-cannot move, because no rocket task is hosted.
+Pairs by mechanism:
+- dive draws: JM08, USN04, USN21, USN01, USNOS;
+- torpedo draws: JM08, USN01, BSM01;
+- dive target term: JM08, USN04, USN21, USN01;
+- torpedo target term: JM08, USN01, BSM01;
+- level target term: JM08, IJN08, USNOS.
+
+### C.5 The target's AA reach against each enter's standoff (computed from data)
+
+**Method** (`local/goaway_aa_targets.py`):
+- **Targets.** The target of each goaway plane comes from the same logs:
+  - dive and torpedo: `command target 0071EBF0: unit=<plane or its leader> ... -> <target>`;
+  - level: `level-bomb task 009B9030 kind 4 installed <plane> -> <target>`.
+- **Classes.** A target's class comes from `GenerateObject ... (type=N`, `hull shapes <name> (type N`
+  or `unit hull input unit=<name> type_id=N`.
+- **Guns.** For each class, `VehicleClass[id].Platforms[k].Gun[1]` (scripts/datatables/autoload/
+  vehicleclasses.lua) leads to `DeviceClass` (classtables/arcade/deviceclasses.lua; this
+  installation's gamemode.lua sets `GameMode = 0`, arcade). From that come the gun's `Function` (the
+  category) and its first and second `Bullet` classes. This is the walk the gunnery host's flatten
+  chunk makes.
+- **Ranges.** A bullet class's range is the derived engagement range the gunnery host logs on its
+  `bullet class N ... range=R` line, which is the value `00956D63` compares.
+- **AA reach.** It is `max(max(c6, c5), c1)` with the seed 10, computed two ways:
+  - **host**: first ammunition only, which is what `category_ranges` holds today;
+  - **image**: a category 6 flak gun's second ammunition is also offered, as `00956DB1`-`00956DD0`
+    does through `[[[gun+3F4h]+74h]+7Ch]+60h`.
+- **Bases.**
+  - Dive: `2 * approach+B4h`. The logged final `+20h` equals the base when `[00E17BF2]` is clear.
+    It is the base times 1.5 when the flag is set, which happens in JM08 and USN04 (`device reload ...
+    now=1`); there the base is standoff / 1.5.
+  - Torpedo: SafeDist 700.
+  - Level: SafeDist 1000, with the 3500 cap never reached.
+
+| mission | enter | enters | target (class) | AA reach host / image | base | term moves the standoff? |
+| --- | --- | --- | --- | --- | --- | --- |
+| JM08 | dive | 7 | Missouri (15), USTroopTransport 06 (234) | 1600 / 2000 | 1275-1554 | yes |
+| JM08 | dive | 2 | USTroopTransport 06 (234); LST 01 (41) and USTroopTransport 01 (234) | 1600 / 2000; LST 1600 / 1600 | 1340-1393 | yes |
+| JM08 | torpedo | 9 | Nevada (314) | 1500 / 2000 | 700 | yes |
+| JM08 | level | 77 + 8 | Missouri (15); USTroopTransport 04/05/06 (234) | 1600 / 2000 | 1000 | yes |
+| USN04 | dive | 1 | Lexington-class01 (1) | 2000 / 2000 | 1848 | yes |
+| USN21 | dive | 1 | Suzuya (67) | 2000 / 2000 | 1654 | yes |
+| USN01 | dive | 2 | Katori (71) | 2000 / 2000 | 1607-1758 | yes |
+| USN01 | torpedo | 3 | Katori (71) | 2000 / 2000 | 700 | yes |
+| BSM01 | torpedo | 47 / 5 / 1 / 2 / 1 | Utah (13) / Nevada (314) / Oklahoma (314) / Maryland (259) / California (260) | 2000 / 1500-2000 / 1500-2000 / 2000 / 2000 | 700 | yes |
+| IJN08 | level | 136 + 8 | Maru2, Maru1 (224) | 1600 / 2000 | 1000 | yes |
+| USNOS | dive | 9 | "Hangar, Small, 02 02" (550), Multi Hangar 1 (594) | 10 / 10 (no guns) | 1634-2045 | no |
+| USNOS | level | 82 | TroopTrans2-6 (234) | 1600 / 2000 | 1000 | yes |
+| any | rocket | 0 | - | - | 1440 | not hosted |
+
+**Reading the table.**
+- **Where the term moves.** It moves every live enter whose target is a ship, which is all of them
+  except USNOS's dive bombers, whose targets are hangars. Where it moves, the standoff rises:
+  - dive: from 1100-1850 to 1600-2000;
+  - torpedo: from 700 to 1500-2000;
+  - level: from 1000 to 1600-2000.
+- **What changes.** Goaway lasts longer and the plane breaks off further out, so AA exposure and
+  re-attack timing change.
+- **Residual: host and image disagree.** For the classes whose AA reach comes from a category 6
+  flak gun (Missouri, the transports, Nevada and Oklahoma, the Marus), the host's
+  `category_ranges[6]` holds only the first ammunition. That gives 1500-1600 where the image's
+  rebuild takes the flak shell's 2000. With a target-term switch ON, the host's standoff is
+  therefore up to 400 m short of the image's for those targets. The fix belongs to the gunnery
+  rebuild binding (`flak_alternate_range = gun.max_range` in `GameGunneryHost::Impl`), not to this
+  packet. The same stand-in shrinks `fly_to_obstacles_009fd63c`'s radius.
+- **Uncertain:**
+  - A plane with two targets over the run is listed against both; the enter used whichever was
+    current.
+  - In JM08 and USN04, the 1.5 assumes `[00E17BF2]` was set before the enters (the log reports it
+    at exit, with one set call).
+  - The image column reads `+74h`/`+7Ch` as the device's second bullet entry.
+
+The new per-slot exit line `goaway target term ...` (C.3) measures the host value and the moved
+count directly in physics24's pairs.
 
 ## Uncertainties
 
