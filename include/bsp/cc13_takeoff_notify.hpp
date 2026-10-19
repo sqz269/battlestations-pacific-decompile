@@ -23,7 +23,7 @@ namespace bsp {
 // ON: game_hosts_units.cpp runs this at both enters and delivers the message
 // after the plane's own step (LABELLED: the image delivers at row 9).
 // OFF: the host only records "Plane::takeoff_enter_007c17d0".
-inline constexpr bool kPlaneTakeoffStartNotifyCc13Bound = false;
+inline constexpr bool kPlaneTakeoffStartNotifyCc13Bound = true;
 
 // unit+AA0h, the ShipYardLaunch delay. 007D5D20 stores 0.0 (007D614B), then for a
 // kind-1 holder with a `ShipYardLaunch` bag key 5.0 when the key's byte is set,
@@ -35,12 +35,12 @@ inline constexpr bool kPlaneTakeoffStartNotifyCc13Bound = false;
 // ON: the units host carries +AA0h per plane (5.0 for a plane created from a
 // record with `ShipYardLaunch` set, else 0.0; -1.0 after 009CFB60's 60 m arm) and
 // the four readers use it. OFF: the readers take 0.0.
-inline constexpr bool kPlaneShipyardLaunchAa0Cc13Bound = false;
+inline constexpr bool kPlaneShipyardLaunchAa0Cc13Bound = true;
 
 // Sub-switch of the above (shared RNG). 009CF8E0 with DL = 0 (the ground retakeoff
 // push) starts in takeoff/SlowTakeoff when +AA0h > 0.0, and SlowTakeoff's enter
 // 009CE1D0 draws U(-0.3, 0.3) from 00BD2F10. ON (with the parent ON): the push
 // takes that arm. OFF: the push keeps takeoff/Takeoff and draws nothing.
-inline constexpr bool kPlaneShipyardLaunchSlowPushCc13Bound = false;
+inline constexpr bool kPlaneShipyardLaunchSlowPushCc13Bound = true;
 
 }  // namespace bsp

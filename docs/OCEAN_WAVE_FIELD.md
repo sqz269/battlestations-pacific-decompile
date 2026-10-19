@@ -3865,3 +3865,10 @@ Exports of 3ca24854e: `local\p25d_off`, `local\p25d_flak` (kFlakSecondAmmoRangeC
 - BSM09 d1 ends later (EndMission 285.05 -> 405.02 s).
 - USN21 completes slightly earlier (2886.69 -> 2876.68 s).
 Flipped ON by mechanism. BSM01 is left out: from 39ac16569 on, the row spawns only 284 of its 663 units and has no hits (an origin/main regression in 5481a7ca5..39ac16569, reported to the lead).
+## 110. Takeoff notify, the ShipYardLaunch +AA0h and the slow push; USNOS carrier landings (cc9-physics25, 2026-10-19)
+
+Exports of 3ca24854e: `local\p25d_off`, `local\p25d_tk1` (kPlaneTakeoffStartNotifyCc13Bound), `local\p25d_tk2` (that plus kPlaneShipyardLaunchAa0Cc13Bound), `local\p25d_tk3` (that plus kPlaneShipyardLaunchSlowPushCc13Bound). Rows USNOS l65_os_c1 (1500 s) and USN21 s46_u21_f. tk1 and tk2 ran in the reference env, tk2 and tk3 in both envs.
+- **Notify, flipped ON.** 007C17D0 goes from unimplemented to concrete with 480 calls on USN21, and USN21 gameplay is identical (completes 2886.69 s). USNOS moves (deaths 282 -> 289, units 617 -> 632) and has no end on either side.
+- **+AA0h, flipped ON (unexercised).** It is identical to the notify alone on both rows.
+- **Slow push, flipped ON (unreached).** It is identical over +AA0h on both rows in both envs: USNOS has no end; USN21 default completes at 2881.69 s.
+- **USNOS carriers still never land (queue item 7).** With the land chain ON, the 3ca24854e OFF run has Essex landed=0 slot_tail_unapplied=15 and Intrepid landed=0 slot_tail_unapplied=16. Enterprise has landed=0 slot_tail_unapplied=9 with queue=3 records=6 inserts=2: sqn01, sqn02 and sqn36 queue at 1400-1401 s but never touch down. The airfields do land (Airfield1 74, Airfield3 508). Open; it is not caused by the takeoff switches.
