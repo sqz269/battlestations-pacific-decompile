@@ -1065,3 +1065,31 @@ airfield launches in a frame window), `l70_stockuse.py` (planes launched per bas
     errors 0.
   - IJN08 (cc13 audit): the Marus are lost to the enemy airfields' bombers, not to the cruisers. The re-plan needs
     fighter or AA cover over the Marus, after a re-run on the post-batch main.
+
+## 2026-10-19, re-time on the seg67 ship batch (main 241db740b; tree build c95d107da, cc9-lua70)
+
+Logs `cc9-lua52\local\l70r_n_<row>_main_{ref,j3}.log`. The base includes kVehicleClassPreloadCc15Bound and
+kPowerupGrantBound ON. Exports with VehicleClass OFF (`l70r_n_<row>_vcoff_ref.log`) give the same result for
+LOMP06, LOMP10, IJN18 and JM06, so the moves are not the VehicleClass flip.
+
+| Row (plan) | frames | reference | 20,3 | was (ref / 20,3) |
+|---|---|---|---|---|
+| USN01 `l69_u1_a` | 26000 | completed 400.03 s | **completed 440.02 s** | 420.02 / failed 1160.01 |
+| USN02 `l68_u2_a` | 16000 | completed 495.00 s | **failed 425.02 s** (Game Over) | 475.01 / 475.01 |
+| USN12 `l68_u12_e8` | 36000 | completed 1465.30 s | completed 1335.18 s | 1435.27 / 1525.36 |
+| USN21 `s46_u21_f` | 80000 | completed 2906.71 s | completed 2911.72 s | 2906.71 / - |
+| PRCP01 `p9_p01_k` | 30000 | completed 787.38 s | completed 1061.21 s | 649.86 / 797.38 |
+| LOMP06 `l70_l6_c` | 16000 | **failed 613.12 s** (Narwhal sunk by Asagiri; Sado lives) | completed 330.84 s | 364.83 / 367.83 |
+| LOMP10 `p3_l10_b` | 36000 | **no end** | **no end** | 981.43 / 1343.74 |
+| JM06 `s45_j6_k` | 120000 | **no end** | completed 682.96 s | 790.93 / 691.95 |
+| ESMP08 `p12_e8_rb` | 140000 | **failed 2525.49 s** (Chiyoda) | **failed 3231.18 s** | 1379.37 / 1367.41 |
+| IJN18 `l67_i18_d` | 64000 | **no end** | **no end** | 1691.52 / 1651.49 |
+| BSM09 `l68_b9_d1` | 36000 | EndMission 351.04 s | EndMission 285.05 s | 348.04 / - |
+| BSM01 `l69_b1_d` | 40000 | **no end** | **no end** | 809.93 / 929.90 |
+| USN15 `l70_u15_e` | 90000 | failed 1602.49 s | failed 1662.55 s | no end / - |
+| USN15 `s45_u15_l2` | 90000 | failed 1081.98 s | - | 1127.02 / - |
+| USN04 idle | 9000 | no end | no end | - |
+| IJN08 `p10_i08_z` | 100000 | (run pending) | no end | failed 1129.98 / no end |
+
+Every completion logged the guard. New losses on this base: LOMP06 ref, LOMP10, JM06 ref, ESMP08, IJN18, BSM01 and
+USN02 20,3. USN01 20,3 is won again.
