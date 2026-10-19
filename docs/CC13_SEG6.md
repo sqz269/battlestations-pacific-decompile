@@ -31,7 +31,7 @@ found only call-site mentions, host hooks or projections, no second implementati
 | 00465610 | `movie_action_destruct_base_00465610` | fastcall(ECX action). Restores vtable 00CE5498, then releases the NativeStrings at +2Ch, +18h, +08h (00419CC0 + 00BD1510 each, size+1, 1). |
 | 004658D0 | `movie_timed_flag_construct_004658d0` | thiscall(item, float time), RET 4. 00465850(time) at 004658F6, +34h = 1, the +4 string assigned from the empty literal 00CE3A0C (0041DD40 with flag 0, 00BF7680 when data is set), +18h = 0.0. |
 | 00465950 | `movie_timed_box_construct_00465950` | thiscall(item, x, y, z, time), RET 10h. +0Ch..+14h = (x, y, z); +1Ch..+24h and +28h..+30h = (x-50, y, z-50) with the double 50.0 at 00CE3938 (bytes DC E9 at 00465993: ST1 = ST1 - ST0), +34h = 1, +18h = 0. |
-| 00465A40 | `movie_timed_record_construct_00465a40` | thiscall, 15 stack dwords, RET 3Ch: three floats to +0Ch..+14h, time to 00465850, six floats to +1Ch..+30h, a dword to +34h, a float to +18h, then a NativeString by value assigned to +4 (0041DD40 flag 1, 00BF7680) and its block released. |
+| 00465A40 | `movie_timed_record_construct_00465a40` | thiscall, 14 stack dwords, RET 38h (00465B53; corrected by cc15-lfix from "15 stack dwords, RET 3Ch"): three floats to +0Ch..+14h, time to 00465850, six floats to +1Ch..+30h, a dword to +34h, a float to +18h, then a NativeString by value assigned to +4 (0041DD40 flag 1, 00BF7680) and its block released. |
 
 ## Matrix and small value helpers
 
