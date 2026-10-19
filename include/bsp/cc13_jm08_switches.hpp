@@ -76,7 +76,13 @@ inline constexpr bool kDeadLeaderRepublishesFollowerPairBound = false;
 // ship (whose destroy leave this host otherwise runs at the row-15 flush,
 // kDeadMemberLeavesGroupBound) the whole leave runs where the image's pump has
 // it: in place at a BeforePump kill, from the posted entry at a HitDrainAfterPump
-// one; the flush then finds +284h clear. Non-ships keep the copy alone. At a
+// one; the flush then finds +284h clear. Non-ships keep the copy alone. The
+// flush's leave (flush_pending_entity_queues_009273a0) also needs the ship's
+// unit_identity and scene-node flags and skips a ship without them; the whole
+// leave here does not test them, so such a ship (a host artefact) now leaves at
+// its kill where under OFF the flush never removed it from its group. Believed
+// closer to the image, where the destroy 0077D1A0 itself posts the leave (0077D223
+// -> 0077C980); those host-only fields have no image counterpart on that path. At a
 // HitDrainAfterPump kill the host loopback (FIFO with kSetCommandQueueDelayBound)
 // gets the 77h entry first (leader_death_handover_at_kill), then the 5Dh
 // (0071DDB0, after it in kill_unit). Lua runs before the next pump, so a LeaveFormation / DisbandFormation
