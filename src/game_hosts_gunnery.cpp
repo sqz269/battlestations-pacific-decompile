@@ -860,7 +860,11 @@ inline constexpr bool kSubmergedTorpedoLaunchSwimBound = true;
 //    labelled: the host draws U(0, 1), because the value is discarded and the
 //    bounds do not change how far the generator moves. False: no draw, so every shell step
 //    left the shared stream one draw behind the image.
-inline constexpr bool kTraceSceneDamageDrawBound = false;
+//    ON by mechanism, USN04 20000 pairs at c995c8975 (local\s59_td_* and
+//    s59_tdd_* .log.manifest.json): reference env exit 1, gameplay identical,
+//    1133300 draws; default env (one shared generator) exit 3, every stream-1
+//    consumer re-drawn (shots 10149 -> 10910, deaths 54 -> 53), as predicted.
+inline constexpr bool kTraceSceneDamageDrawBound = true;
 //  * kSubmarineSensorCategoryBound (packet cc9_submarine_sensor_category,
 //    docs/GUNNERY_OPEN_ITEMS.md section 32): a submarine's sensor category
 //    is 00852B90's state from the hull's world Y (+100h) against the four
