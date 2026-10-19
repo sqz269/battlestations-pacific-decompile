@@ -145,7 +145,10 @@ constexpr bool kSetCommandMessageCc13Bound = true;
 // the flags byte (one bit), a trailing value below 1.0 (dropped to 0) and the
 // object (13-bit handle, none when the target bit is clear). False: the posted
 // record is delivered. The pair is cc15's; cc9 flips.
-constexpr bool kCommandMessageCc13Bound = false;
+// ON by cc9-ships59's USN01 3200 pair in the reference env (local\s59_sm_off_u01 /
+// s59_sm2_on_u01 .log.manifest.json, 662d8bc7d): exit 1, gameplay identical;
+// 51 round trips and no line other than the summary count moved.
+constexpr bool kCommandMessageCc13Bound = true;
 
 // [00e188a8]+1fe4h. The single-player value, which is what every other host in
 // this executable already reports for the same field.
