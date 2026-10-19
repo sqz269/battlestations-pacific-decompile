@@ -9,24 +9,33 @@ Core integration commits include `501149fdc`, `9c00d9262`, `d09b30db3`,
 [resources](OCT18B_RENDER_A1.md), [command](OCT18B_RENDER_A2.md),
 [scene](OCT18B_RENDER_SCENE.md), [model](OCT18B_RENDER_MODEL.md),
 [preload](OCT18B_RENDER_PRELOAD.md), [lighting](OCT18B_RENDER_LIGHTING.md) and
-[runtime texture ownership](OCT18B_RENDER_RUNTIME_OWNERS.md).
+[runtime texture ownership](OCT18B_RENDER_RUNTIME_OWNERS.md). Later integration
+adds `708640549`/`743d7bc3f` genuine procedural-factory setup and `380482b47`
+idempotent completed retirement. [Factory frames](OCT18B_RENDER_FACTORY_FRAMES.md)
+document their bounded Source contract and zero new Original body credit.
 
 ## OFF proof
 
-A clean control was built from main `8d81131049eef754908c335410f7a14c2a87e633`
+A clean final control was built from main `fa5bbe68c28da0edda76b31079c608c4e3bda643`
 in the isolated `oct18b-render-off-ref` worktree. Its executable SHA-256 is
-`90d8342d01d0b2277dcc1d91e66f945301ef928a43bdd0c869dcc3cfbe2ab4f2`.
+`8d2ef8c34e56c85451205cc289c90e7beba8ba29b7442a0156300eb33e83eb25`.
 Both control and candidate use USN04, 600 application frames, press-start 30,
 181 mission frames at 0.05 seconds, 1280x720 and vsync. Both manifests have an
 empty BSP environment.
 
-`tools/pair_diff.py local/oct18b_render_current_main_reference_usn04.log
-local/oct18b_render_final_off_8d_usn04.log --json
-local/oct18b_render_final_off_8d_pair_diff.json --limit 1` exits **0**.
-Gameplay and all 21 unit rows match; there are no native status/count changes,
-all 664 summaries match, and other unmasked lines match. The sole native-row
-presence difference is the tool's recognized OS pretranslation noise.
-The earlier `checkpoint_off` comparison also exits0 with 1349 identical rows.
+Final control: `local/oct18b_render_fa5_reference_usn04.log`; final candidate:
+`local/oct18b_render_final_main_off_usn04.log`. The final comparison is recorded
+in `local/oct18b_render_final_main_off_pair_diff.json`: **pair_diff exit 0**.
+Both processes exit 0. All 1349 native rows, all 665 summaries and all 21 unit
+rows match, with no added/removed/status/count differences and no other unmasked
+differences. The manifests confirm OFF environments `{}` and ON environment
+`{"BSP_NATIVE_MISSION_SHIP":"1"}`.
+
+Earlier full OFF comparisons against main `8d8113104` and `ab2062aec` both
+exit **0**. The latter retains all 665 identical summaries and all 21 unit rows,
+with no native status/count changes or other unmasked differences; the only
+native-row presence difference is recognized OS pretranslation noise.
+See `local/oct18b_render_final_off_trace_pair_diff.json`.
 
 The first integration independently passed against frozen main `e3d55e84c`
 (`local/oct18b_render_final_off_pair_diff.json`), with 1349 identical native
@@ -34,8 +43,8 @@ rows and 665 identical summaries. Its paired PNG bytes also matched.
 
 ## ON proof
 
-`local/oct18b_render_on_attempt12.log`, its manifest and frozen
-`local/oct18b_render_on_attempt12.exe` retain the live evidence. The run
+`local/oct18b_render_final_main_on_usn04.log`, its manifest and frozen
+`local/oct18b_render_final_main_on.exe` retain the final live evidence. The run
 completes 600 application frames and 599 successful presents. It preloads
 179 materials through genuine 73BF80, initializes B14A10/B107F0 resources,
 and loads 26 native Fletcher models with 445 mesh sections. B1F4D0 submits
@@ -45,12 +54,13 @@ retired and the native queue empty.
 
 The same run retains these unmodified back-buffer captures:
 
-- `local/oct18b_render_on_final_N001.png` at mission1 / 0.05 seconds.
-- `local/oct18b_render_on_final_N060.png` at mission60 / 2.999998 seconds.
-- `local/oct18b_render_on_final_N180.png` at mission180 / 9.000016 seconds.
+- `local/oct18b_render_final_main_N001.png` at mission1 / 0.05 seconds.
+- `local/oct18b_render_final_main_N060.png` at mission60 / 2.999998 seconds.
+- `local/oct18b_render_final_main_N180.png` at mission180 / 9.000016 seconds.
 
 Visual inspection of frame180 shows a recognizable camouflaged Fletcher with
-hull, deck and turret texture detail. Immediately before its first B24010,
+hull, deck and turret texture detail. Earlier landmarks retain opaque native UI
+panels that obscure parts of the ship. Immediately before its first B24010,
 actual device GetTexture pointers match the native material owners: slot0 is
 `models/textures/fletcher_1943_hull_camo.dds` (2048x2048 DXT1); slots1/2 are
 `blank.dds` (4x4 DXT1); slots3/4 are `spec.dds` and `bump.dds` (64x64 DXT5).
@@ -67,13 +77,29 @@ this direct linear view's absence of the later exposure/tone-mapping pass.
 Camera, fog and light values are diagnostic choices, with no original
 mission-lighting or postprocess-parity claim.
 
-ON12 reaches native drain after retiring preload Application credits,
-scene/model ownership, lighting, camera and foliage. Generated textures now
-join the existing canonical texture-owner service, which closes the former
-luminance-quad companion failure. A later particle-clock cleanup still faults
-in B1B680 -> 004DDB40 on a null sink's reference count (KERNEL32 write4).
-`local/oct18b_render_on_attempt12.dmp` retains this boundary. Normal shutdown
-is being completed separately from the established draw/screenshot proof.
+Genuine BBCB40/BBC900 factory setup now precedes 73BF80, matching Original
+73D8CC before 73DD12. The four factories supply real procedural texture sources;
+BBC5D0 retires them after consumer quiescence. The earlier null clock sink and
+generated-texture companion failures are resolved. The final run completes the
+native singleton/clock drain and closes the mission graph.
+
+**Remaining blocker:** late C++ destruction reaches the unchanged nonempty-list
+guard in `NativeTextureLoadOwners::~NativeTextureLoadOwners`. The exact ON16
+trace shows B316C0 entering with two texture rows, releasing the noise owner
+`effects/noise.dds` from 1 to 0, and its B32250/B31DC0 callback shrinking the
+row count to one. B316C0 then rereads the current count and destroys the remaining
+error row storage without releasing its texture credit. B32370 releases its
+fallback slot from 2 to 1, leaving one canonical `models/textures/error.dds`
+record. Original assembly matches the inspected loop, callback, vtable,
+publication and registration order; an Original-game leak or missing wider caller
+contract remains unproved. No guessed release or guard relaxation was added.
+The actual ON process exits `C0000409` through the harness terminate handler,
+despite the earlier normal-loop summary. The final dump is
+`local/oct18b_render_final_main_on_usn04.dmp`.
+
+Both required checks pass in the final MSVC Win32 build (11.48 seconds).
+`local/oct18b_render_final_main_on_evidence.json` summarizes the 561 completed
+ordinary command frames, all with 139 returned B24010 calls and empty queues.
 
 ## Contracts and next milestone
 
