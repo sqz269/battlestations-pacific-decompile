@@ -154,6 +154,16 @@ streams ON` line. The ON runs read the real save.
   no end).
 - The one other moved line is USN12's ring-scan `clear_37c` for Montpelier (FLT_MAX -> 10000.0).
   This is the heap-dependent value of SHIP_AI_OPEN_ITEMS 140.
+- **Difficulty is unchanged.** The save's `SelectedDifficulty` (0) stays in the profile; no host
+  code reads profile+60h. `chosen_difficulty()` (game_hosts_mission.cpp, game+6B0h at 0058BF52)
+  returns the `--difficulty` override or 1. In BSM09 OFF and ON alike, the record difficulty is 3,
+  and the log reads `MissionStart::set_effective_difficulty game+6ACh=1`.
+- **Seen hints have no consumer.** The 38 `AllSeenHints` names (profile+08h) are read only by
+  `GameHintTracker::profile_shown_names_65c` (00690CD0, gui_screens_3.cpp). The tracker is built only
+  under `kHintTrackerCc15Bound`, and no ON log has a HintTracker row. In BSM09 the hint, tutorial
+  and seen lines differ only by the three load lines. The summary lines (904) and all other lines
+  outside the `profile load:` notes and the getters count are identical, so the Lua timing is
+  unchanged.
 - **Save untouched.** Every file under `Documents\Battlestations-Pacific` was recorded before the
   first run and after the last: `options.txt` (226 bytes, FF5CF395...), `save\0\player` (2182,
   58E93D77...), `save\0\quick` (1806, 54E3F992...) and `save\0\valid` (0, E3B0C442...). The SHA-256
