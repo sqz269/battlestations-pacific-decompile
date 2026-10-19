@@ -451,3 +451,16 @@ B40BBFE8FE56). pair_diff exit 1: death rows (49), plane death modes and the 90-r
 end at EndMission 327.04 s with every objective completed. ON only: the census at 004E0A9B (633 rows, 617 would-nil,
 16 kept) and `vehicle class purge (cc15-vcp3): purged=617 failures=0 script_nil_reads=0 lua_errors=0`. The natives
 0046BF20 / 0046BF70 become concrete. Flipped ON; `kVehicleClassMovieStopPurgeCc15Bound` stays OFF (open item above).
+
+## Held-back carrier decks and the purge (cc15-vcp5)
+
+USN21 (`usn_sibuyan.scn`) crashed with the switch on: a logic_error at mission frame 6018. Intrepid's slot-0 launch of class 113 found a null descriptor. The image's answer, from the listing:
+
+- **(a) Order.** 004DFB70 calls 004D4DF0 at 004E03E5, which runs both scene reads and resolves the +08h vector at 0046EC77. The purge (0095CA70) is called later, at 004E0A9B. A hidden entity is skipped at 0046D3C5, before the gate and the creator, so neither InitAll (0046EB4B..0046ED0F) nor 007593D0 nor 006CADD0 mode 1 runs for it at load. Its deck is built only when the script spawns it, after the purge.
+- **(b) What marks the stock first.** The registration pass still runs 0046BF70 for the hidden entity (0046D531). For `MotherShipGen` and `AirField`, each `PlaneStock 1..12` and `Slot 1..NumSlots` sub-bag with a non-zero `Count` is routed by the outer bag's `Hidden` byte (00CE5708, +0Ch). With `Hidden` set, the class goes to 0046BE90 and the +08h vector, not to the 0095C4D0 queue. 0046EC77 then resolves every id in the vector with 00964790(id, 1), which writes the row's `ID` and `Got`. The deck's stock classes therefore survive 004E0A9B, and the descriptors stay in the cache.
+- **(c) 00964790 on a miss** does not re-create the row and does not load it lazily. It indexes `VehicleClass[classIndex]` (00B67720) and reads `Type` through 00B67800. On a purged row that indexes nil, a Lua error with no protected call around it. If `Type` does not match the 22-way chain, the function returns 0 and caches nothing (00964EA6).
+- **(d) The launch path.** 006C5050 calls 007B8A80 at 006C50A4 and reads `[EAX+13Ch]` at 006C50AB with no null test. The image never handles a purged class there, because (b) already guarantees a cached descriptor.
+
+**Host defect.** `scene_stock_lists_0046bf70` read `Hidden` through `scene_stock_int`, which ignores the owning B data of `Hidden = B true`. Every held-back deck's stock was queued as if visible. USN21's log before the fix showed `stock lists 0046BF70 0, stock queue appends 18` (six decks with three counted stock rows each), so 113 and 38 were purged. The route now reads `Hidden` with `hidden_property_bool`, the same read 0046D3C5's host test uses (`scene_stock_hidden`). The code runs only with the switch on, so OFF is unchanged.
+
+Class 101 is authored only on `Count 0` rows (`PlaneStock 4`, empty slots). The image does not route it either, so it is still purged unless something else marks it.
