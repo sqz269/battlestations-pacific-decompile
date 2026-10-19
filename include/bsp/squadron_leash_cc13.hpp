@@ -13,21 +13,34 @@
 //                       horizontally (no point answers true);
 // then 009F83F5 0071D9E0(2) ends the override, and 009F8407 runs 009F7810.
 //
-// True: GameUnitsHost::run_squadron_free_attack_009f8470 runs those gates on the
-// squadron leader's director before its tick and, when they all hold, raises
-// stage 2 on every live member (the host's members each hold the override).
-// 009F7FE0 is cc13_seg68's body over the free-attack arena
+// Before that, the dogfight arm 009F8319..009F83A8 (current == 00E08F58): with
+// a squadron target (00523560) whose command (vt+174h) is retreat 00E08F90 and
+// no member at +3D0h (count +3CCh) inside the map (00427EB0 -> 0071C4F0), or,
+// with no squadron, a plane target (0071EA00) outside the map whose +9D4h
+// squadron is retreating (009F841E..009F8463), 009F83A8 runs 0071E430(current, 1)
+// EndCommand. Either way it then falls into 009F83AD.
+//
+// True: GameUnitsHost::run_squadron_free_attack_009f8470 runs the dogfight arm
+// and then the leash gates on the squadron leader's director, before its tick.
+// The arm's end is GameUnitsHost::end_command_0071e430(member, current, true) on
+// every live member. The out-of-map test is FreeAttackWorld::outside_map_0071c4f0
+// (point_outside_world_map_0071c4f0). The leash raises stage 2 on every live
+// member, since the host's members each hold the override. 009F7FE0 is
+// cc13_seg68's body over the free-attack arena
 // (squadron_within_guard_distance_009f7fe0); 0080DC70 is director_allows_fire_and_move.
-// 009F8407's 009F7810 is not run: its only output is the selector target at
-// +34h, which 009F8487 clears on the next tick before any read (the tick's
-// 009F8520 read comes after that clear), and its interval store at +38h has no
-// reader. LABELLED.
-// False: no leash, as before.
+// 009F8407's 009F7810 is not run. Its only output is the selector target at +34h.
+// The leash fires only in mode 2 (0071BE40 answers the override there, so
+// 009F83C4 can differ), and the same tick's 009F849F then jumps to 009F8640 on
+// mode != 1, so that tick never reads +34h. 009F8487 clears it on the next tick
+// before the 009F8520 read, and its interval store at +38h has no reader.
+// LABELLED.
+// False: neither arm, as before.
 //
 // Independent of kSquadronStopHeadMoveToSelfBound. With that switch on, the
-// head under the override is the moveto to the pick position, so the circle is
-// centred there; with it off the head is `stop`, whose descriptor gives the
-// point, or no point (then the leash never fires).
+// head under the override is the moveto to the squadron's own position at the
+// pick (00427EB0([ESI+8]) at 009F85FE), so the circle is centred there. With it
+// off the head is `stop`, whose descriptor gives the point, or no point (then
+// the leash never fires).
 
 namespace bsp::game {
 
