@@ -13,8 +13,8 @@ outside the struck ranges 007DF000-007DFFFF, 007EE000-007F2FFF, 00836000-00837FF
 | T: pure 5-byte JMP thunks | 49 | `existing_recorded_thunk` (batch 1) |
 | H: hosted bodies | 6 | ledger-only, citing the host (batch 1) |
 | D: scalar deleting destructor | 1 | bound, citing the out-of-line copy (batch 1) |
-| S: small reconstructs | 6 | rebuilt (batch 2) |
-| G: library glue (STL / template instantiations) | 76 | bound (batch 3) |
+| S: small reconstructs | 5 | rebuilt (batch 2) |
+| G: library glue (STL / template instantiations) | 77 | bound (batch 3); 00732560 moved here from S |
 | cc15-blocked | 0 | none sits on a CC15_OBJECT doc |
 
 ## Batch 1: T, H and D (56 rows)
@@ -85,10 +85,37 @@ kept.
    integer in 24 bits can truncate one higher in the binary. LIVE: every damage-smoke tick of a
    damaged unit (008227E0). Shared RNG: no. No fix is requested.
 
-## Batch 2: S (6 rows)
+## Batch 2: S (5 rows)
 
-Pending.
+Source `src/cc13_gamerows.cpp`, header `include/bsp/cc13_gamerows.hpp`. Each function takes a
+`GameRowsHost` for the tree callees (the same ones cc13_left8_seg8 hooks for the traffic record
+constructor 0049F9B0), and each was checked against the listing.
 
-## Batch 3: G (76 rows)
+| Address | Name | C++ | Shape |
+|---|---|---|---|
+| `0082E1F0` | BSP_ShipIdleRecord_Construct | `idle_record_construct_0082e1f0` | Idle record (1Ch) default constructor |
+| `0082E280` | BSP_ShipIdleRecord_Destruct | `idle_record_destruct_0082e280` | its out-of-line destructor (rebuilt under the rule) |
+| `0082E5A0` | BSP_ShipIdleRecord_CopyConstruct | `idle_record_copy_construct_0082e5a0` | its copy constructor |
+| `0082DF00` | BSP_TrafficRecord_Assign (was BSP_ShipIdleRecord_Assign) | `traffic_record_assign_0082df00` | 4Ch traffic record operator= |
+| `009A7A40` | BSP_VirtualReturnZeroFloat_009a7a40 (was FUN_009a7a40) | `virtual_return_zero_float_009a7a40` | `FLDZ; RET`, slot 00D1F910 |
+
+The Idle record is a map at +0h (head +4h, size +8h), a map at +0Ch (head +10h, size +14h) and
+posID - 1 at +18h (ship_class_fields.hpp). The constructor leaves +18h unwritten. The destructor
+empties the +0Ch map first, then the +0h map. Each is emptied with its range eraser over
+begin..end, its head is freed, and the head and size are cleared.
+
+0082DF00 was named as an Idle record member, but its layout is the 4Ch traffic record of
+cc13_left8_seg8.cpp (0049F9B0 / 0049FA70): plain fields +0h..+30h, then maps at +34h and +40h.
+The cc13-gp80 record already called it the head of the 50h Traffic record, after which 0082ED80
+copies +4Ch. It copies floats +18h..+30h with FLD/FSTP pairs, which is a value copy (a signalling
+NaN would come out quiet). Each map is skipped when it is the source's own; otherwise it is
+emptied (00492A00 / 00444B10) and refilled (0048D080 / 00499680).
+
+**Moved to G: `00732560`** BSP_GunClass_CopyMuzzleOffsets. The full listing shows checked
+iterators: first {+8h, +0Ch}, last {+10h, +14h}, and a back_insert_iterator {+18h, +1Ch} that it
+returns through the hidden pointer at +4h. That is a std::copy instantiation over 12-byte points,
+so it is bound in batch 3 (G is now 77 rows).
+
+## Batch 3: G (77 rows)
 
 Pending.
