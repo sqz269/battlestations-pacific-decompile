@@ -12314,6 +12314,15 @@ bool register_ship_ai_unit(GameShipAiHost::Impl& host, std::size_t index,
             ctl.blk.cruise_distance_3e0
                 = bsp::ship_ai_nav_block_steering_defaults_009dfcb0().cruise_distance_3e0;
         }
+        if constexpr (bsp::kShipAiNavBlockCtorSeedsCc13Bound) {
+            // Packet cc13-navseeds2: the rest of 009DFCB0's seeds that have
+            // live readers (see the switch for the evidence).
+            ctl.blk.yaw_rate_subtracts_364 = true;      // 009DFDB7
+            ctl.obstacle.stall_time_384 = -1.0f;        // 009DFD79
+            ctl.blk.direction_counter_384 = 1;          // no direction-change zero yet
+            ctl.blk.clamp_354 = -1.0f;                  // 009DFD71
+            ctl.throttle_profile.hold_354 = -1.0f;      // the same blk+354h
+        }
         const auto request = bsp::ship_ai_avoidance_request_constructed_009e468b();
         ctl.avoidance = request.request;
         ctl.blk.early_out_3f5 = request.early_out_3f5;
