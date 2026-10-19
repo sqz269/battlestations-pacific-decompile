@@ -75,7 +75,8 @@ namespace bsp {
 // active / row.active and re-attach the hit node.
 // False: the sites record 007C11E0 and the poll sets the wing target one fixed
 // step later, as before.
-inline constexpr bool kPlaneFlightStateNotifyCc13Bound = false;
+// cc9-physics24 2026-10-19: ON by mechanism (OCEAN_WAVE_FIELD 104).
+inline constexpr bool kPlaneFlightStateNotifyCc13Bound = true;
 
 // 007CC8B0's Kill(plane, 5) (007F1D57 -> 00926D90 -> 00926C80 Destroy), whose
 // destroy flush dispatches vtable[7Ch] = 007BCAA0 BSP_Plane_OnDestroyed for a
@@ -87,7 +88,8 @@ inline constexpr bool kPlaneFlightStateNotifyCc13Bound = false;
 // draw (death_mode_draw_00bd2f10(0, ...)). +C14h itself has no host field and
 // no reader on a retired plane, so only the draw is carried.
 // False: the retired plane draws nothing, as before.
-inline constexpr bool kPlaneRetireOnDestroyedDrawCc13Bound = false;
+// cc9-physics24 2026-10-19: ON by mechanism (OCEAN_WAVE_FIELD 104).
+inline constexpr bool kPlaneRetireOnDestroyedDrawCc13Bound = true;
 
 // The same 007BCABB draw for a plane that dies through the death message
 // chain (00877B90 SetHealth -> 007CA8A0 -> 007BBFA0 -> 007D0B80, whose tail
@@ -103,7 +105,8 @@ inline constexpr bool kPlaneRetireOnDestroyedDrawCc13Bound = false;
 // BSP_GUNNERY_RNG_STREAMS=1 each plane has its own stream-0 key and the per-
 // plane order is the image's.
 // False: no draw, as before.
-inline constexpr bool kPlaneCombatDeathRetireDrawCc13Bound = false;
+// cc9-physics24 2026-10-19: ON by mechanism (OCEAN_WAVE_FIELD 104).
+inline constexpr bool kPlaneCombatDeathRetireDrawCc13Bound = true;
 
 // 007CA3F0 BSP_Plane_EnterGroundStateFromLocked: after 007C1430(4 + flag) and
 // the stores +9F0h = 0, +9F4h = 1.0, +9ECh / +9E4h / +9E8h = 0 (007CA4D3-
@@ -114,7 +117,8 @@ inline constexpr bool kPlaneCombatDeathRetireDrawCc13Bound = false;
 // (kPlaneDeathFlagsBound) and the stock-return destroy (kStockReturnDestroyBytesBound).
 // True: ground_state_from_locked_007ca3f0 returns there for such a plane.
 // False: the tail runs for it, as before.
-inline constexpr bool kPlaneGroundStateDeadTailCc13Bound = false;
+// cc9-physics24 2026-10-19: ON by mechanism (OCEAN_WAVE_FIELD 104).
+inline constexpr bool kPlaneGroundStateDeadTailCc13Bound = true;
 
 // A plane killed through 00926D90 BSP_MissionEntity_Kill: the retreat leave-map
 // Kill(4) (007F3418 PUSH 4 / CALL 00926D90, and 007F31A0's other members) and
@@ -140,7 +144,8 @@ inline constexpr bool kPlaneGroundStateDeadTailCc13Bound = false;
 // block's step), not at that step's 009273A0 flush. A cause-1 funnel kill (Lua
 // Kill(x), 007CE3A7) cannot be told from a gunfire death and keeps the mode.
 // False: the mode is drawn, as before.
-inline constexpr bool kPlaneFunnelKillDestroyOnlyCc13Bound = false;
+// cc9-physics24 2026-10-19: ON by mechanism (OCEAN_WAVE_FIELD 104).
+inline constexpr bool kPlaneFunnelKillDestroyOnlyCc13Bound = true;
 
 // Packet cc13-killx. The cause cannot separate a cause-1 funnel kill from a
 // gunfire death, in the image either: 008AC5C0 Lua Kill(x) passes 1 (008AC71B:
