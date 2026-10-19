@@ -57,11 +57,7 @@ static_assert(kShipAiClearanceRefreshSentinel == 0x1.388p+13f);    // 0x461C4000
 // AL = [ESP+37h] = 0 (set at 009EDA2F).
 // True: the host does the same for NavigateAstern. False: the host runs the
 // output block and the tail for mode 3 as for mode 2.
-// ON (cc9-gunnery53, SHIP_AI_OPEN_ITEMS 300 ### 2): flipped by mechanism after an
-// audit found the host's approach step makes every 009F3240 steering store. JM08
-// changes from an HQ-capture failure at 977.93 s to a no-end; JM05 and USN04/07/13
-// keep their outcomes.
-inline constexpr bool kShipAiNavigateAsternSkipBound = true;
+inline constexpr bool kShipAiNavigateAsternSkipBound = false;
 
 // 009EE59B/009EE59F. When blk+1C4h is neither 2 nor 3 (Rudder or Heading),
 // the path gate JZ 009EF206 still reaches 009EF206: 009DE5B0(dt), then
