@@ -79,8 +79,8 @@ Recon1 at 72 s and keep Zao alive.
   and 0085ABA0 refuses").
 - So the loss is faithful for an idle player who holds the gunner role. The plan or harness is what needs to change:
   - fire Zao's group 3 through the seat; or
-  - leave the role unheld, if the image's bind can be shown not to take it without input. I did not establish when
-    the image's 2Eh bind runs its take.
+  - have the harness release the role after select. That is a labelled harness input: section 6 shows the image
+    takes the role without input.
 
 ## 3. Other switches in 4b74dd6b4..241db740b on this path
 
@@ -116,3 +116,61 @@ not touch the trigger above, which is a gun-seat effect at 45-72 s.
   gunnery player seat`.
 - Good log: 136832 `countdown callback luaPh2FadeOut ran at 873.16 s`; 314203 `EndMission at 1691.52 s`.
 - First divergent death row: index 25 of the `death row:` sequence (good `Recon1 t=72.00 ... killer=Zao`).
+
+## 6. 2Eh auto-take (packet `cc13-2ebind`)
+
+**The image takes the gunner role on a plain select, with no player input. The host matches it, so there is no
+sub-switch.**
+
+Screen 2Eh is in the single-player INTF_SCENE3D level-1 set for the controlled unit. The bad log lists
+`screens 29h 49h 44h 27h 4Dh 45h 46h 26h 2Eh ...`.
+
+The screen's per-frame body is 005484F0:
+
+1. **Gates (00548512-0054854E).** The screen's mover `+40h` must be non-zero, and the entries must be present
+   (`[ESI+24h]`, `[ESI+20h]`, `[[ESI+20h]+14h]`). The controlled unit `[00E188D8]` must be set. Last,
+   `00927F30(first entry, role 0)` must be true: the local player holds role 0, the select role.
+2. **Auto-cycle (0054867A-00548692).** `MOV EDX,[ESI+44h]; CALL 00545B30` tests whether the current group is
+   available. If it is not, or if the group is 0 (`CMP [ESI+44h],EBP`), 005484F0 calls 00548410 at 00548692, the forward cycle.
+3. **The take.** 00548410 steps to the next available group. It then calls 00545BD0 with take=1, which goes through
+   00545410 -> 0077C470 with that group's mask.
+
+What this means for a select:
+- A fresh screen starts at group 0, so the first update after the player receives role 0 takes the roles of the first
+  available group.
+- Group 1 is never available: it falls to 009542B0's switch default. For Zao the first available group is 3
+  (mask 10h, role 4).
+- Input only changes the group afterwards. Keys 9Ch-9Fh go through 005484B0, and the 9Bh axis through 00548410.
+
+`src/hud_weapon_group_screen.cpp` `weapon_group_screen_update_005484f0` has the same gates and the same cycle step.
+`kHudGunnerRoleTakeBound` routes 0077C470 to `role_request_0077c470`.
+
+In both IJN18 runs the take follows `select Zao` (role 0 through 00645600 -> 20h). `takehelm` sends only
+`0077C470(unit, 2, 1)`, which is mask 2. The `HudWeaponGroupScreen::role_request` call counts are 15 (bad) and 19
+(good).
+
+Only kRoleOwnerDeviceWalkBound (0095AC1D -> 00954000) turns that role into player-held guns, and the image does the
+same. The IJN18 loss is therefore a plan/harness gap.
+
+**Reach.** In cc9-lua52's `config\win_orders`, 43 of 55 order files `select` or `takehelm` a ship, and none issues
+a fire order. In each one, the selected ship's first available weapon group is player-held and silent while the walk
+is ON. cc9's USN01 note shows the same effect: Northampton's turret shots drop from 113 to 95.
+
+| mission | files that select a ship and never fire |
+|---|---|
+| bsm01 | 3 |
+| ijn08 | 4 |
+| ijn18 | 2 |
+| jm06 | 7 |
+| jm08 | 6 |
+| usn01 | 11 |
+| usn02 | 2 |
+| usn12 | 4 |
+| usn15 | 3 |
+| usnos | 1 |
+| **total** | **43 of 55** |
+
+There are two options for cc9:
+- add group fire orders to these plans. Player-seat shells must aim correctly first, because cc9 notes "0085ABA0
+  refuses";
+- have the harness release the gunner role after the select. That is a labelled harness input, not image behaviour.
