@@ -65,6 +65,7 @@
 #include "bsp/gui_lua_runtime.hpp"
 #include "bsp/warning_messages.hpp"
 #include "bsp/warning_reports_cc13.hpp"
+#include "bsp/cc13_powerup.hpp"  // packet cc13-powerup
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/memory_stream.hpp"
 #include "bsp/resource_lookup.hpp"
@@ -264,6 +265,18 @@ struct GameMissionFrameHost::Impl {
         // Not in release_units: the scene load calls that before the scripts run,
         // and the result object lives for the whole mission.
         lua.attach_mission_result(nullptr);
+        // Packet cc13-powerup: 004D2BB0 deletes the manager at 004D2D84..004D2D96,
+        // and the next load builds a new one. The runtime's keys go with the
+        // frame's world, which holds the active slot's record values.
+        if constexpr (bsp::cc13_powerup::kPowerupGrantBound) {
+            if (powerup_binding != nullptr) {
+                bsp::cc13_powerup::PowerupRuntime& powerups =
+                    bsp::cc13_powerup::powerup_runtime();
+                if (powerups.host == powerup_binding.get()) {
+                    bsp::cc13_powerup::destroy_powerup_manager_004d2d84(powerups);
+                }
+            }
+        }
     }
 
     void release_units() noexcept {
@@ -385,6 +398,8 @@ struct GameMissionFrameHost::Impl {
             sound_keys_untouched{0}, sound_keys_not_evaluated{0}, relation_blocked{0},
             clips{0}, records_not_evaluated{0};
     } warning_activate{};
+    // Packet cc13-powerup: the binding published with the power-up registry.
+    std::unique_ptr<bsp::cc13_powerup::PowerupManagerHost> powerup_binding{};
     bool device_edge_injected{false};         // the executable's own injection
     // Packet cc_mission_tick's reconstruction of the four-call opener of every
     // simulated frame, and the dynamics list behind its fourth call.
@@ -1085,6 +1100,169 @@ void game_warning_torpedo_report_0097777b(GameMissionFrameHost::Impl& host, std:
     host.done("WarningManager::report_torpedo_warning", 0x009763e0u);
 }
 
+// Packet cc13-powerup: 009789A0 (report_powerup_009789a0) as the power-up
+// manager calls it. 009758E0 builds the 6Ch power-up warning (vtable 00D1B4B0,
+// id "powerup" + name) and 009763E0 queues it; its activate 0097FF90 has the
+// shape of the torpedo's 0097F490 (head, 008EC460, 00979B50, 00976B00), so it
+// takes the plain arm. Record fields from 00D1B4B0: +10h 009758A0 returns 8,
+// +18h/+1Ch/+20h are 0096F220/0096F230/0096F240 (0.0, 5.0, 15.0). Nothing else
+// of the manager interface is reached from 009789A0.
+class PowerupWarningReportBinding final : public bsp::cc13_seg49_64_78::WarningReportHost {
+    using WarningObject = bsp::cc13_seg49_64_78::WarningObject;
+
+public:
+    explicit PowerupWarningReportBinding(GameMissionFrameHost::Impl& host) : host_(host) {}
+    void lock_24() override {}    // the +24h critical section: one thread here
+    void unlock_24() override {}
+    bool suppressed_d0() override { return host_.warning.suppressed; }
+    std::int32_t local_player_slot_18ec() override { return 0; }  // single player
+    float clock_00f876a4() override { return host_.world_clock; }
+    WarningObject* new_powerup_warning_009758e0(const std::string* name) override {
+        WarningObjectHostBinding warning_host(host_);
+        // [game+1FE4h] is 0 on a mission-tree launch (kAiCoordinatorCreatedAtLoad).
+        bsp::construct_named_powerup_warning_009758e0(warning_, warning_host, *name, false);
+        return &warning_;
+    }
+    void report_009763e0(WarningObject* warning) override {
+        bsp::WarningRecord record;
+        record.message_id = warning->id;
+        record.applied_at = warning->validity_ref_time;  // +10h
+        record.clip_count = warning->messages.size();    // filled by vtable[3], 0097FF90
+        record.positional_speaker = static_cast<std::uint32_t>(
+            reinterpret_cast<std::uintptr_t>(warning->ambient));
+        record.flat_speaker = static_cast<std::uint32_t>(
+            reinterpret_cast<std::uintptr_t>(warning->reporter));
+        record.target_id = 0;
+        record.kind = 8;                 // 009758A0
+        record.priority = 0.0f;          // 0096F220
+        record.pending_lifetime = 5.0f;  // 0096F230: 00CE3850
+        record.applied_lifetime = 15.0f; // 0096F240: 00CE5380
+        WarningManagerBinding binding(host_, *warning, WarningActivate::plain);
+        const bsp::WarningReportResult result =
+            bsp::report_warning_009763e0(host_.warning, binding, record, host_.world_clock);
+        count_warning_report(host_, record.message_id, result);
+        host_.done("WarningManager::report_powerup", 0x009789a0u);
+    }
+    std::int32_t local_side_28() override { return unreached<std::int32_t>(); }
+    bool entity_disabled_0077edf0(void*) override { return unreached<bool>(); }
+    bool entity_byte(void*, std::uint32_t) override { return unreached<bool>(); }
+    std::int32_t entity_side_54(void*) override { return unreached<std::int32_t>(); }
+    WarningObject* new_confirm_warning_00975540(void*, std::uint32_t) override {
+        return unreached<WarningObject*>();
+    }
+    WarningObject* new_new_unit_warning_009756a0() override { return unreached<WarningObject*>(); }
+    WarningObject* new_string_list_warning_009795b0(const std::vector<std::string>&, void*,
+        void*) override { return unreached<WarningObject*>(); }
+    void set_byte_104() override { unreached<int>(); }
+    void remove_from_list_0096c280(std::size_t, WarningObject*) override { unreached<int>(); }
+    void delete_warning(WarningObject*) override { unreached<int>(); }
+    std::vector<void*> waiting_payloads_e4() override { return unreached<std::vector<void*>>(); }
+    void delete_waiting_payload(void*) override { unreached<int>(); }
+    void clear_waiting_list_e4() override { unreached<int>(); }
+    void* ingame_gui_00e198c4() override { return unreached<void*>(); }
+    void voice_stop_005b83e0(void*) override { unreached<int>(); }
+
+private:
+    template <typename T> static T unreached() {
+        throw std::logic_error("009789A0 does not reach this WarningReportHost call");
+    }
+    GameMissionFrameHost::Impl& host_;
+    WarningObject warning_{};
+};
+
+// Packet cc13-powerup: what the power-up manager (src/cc13_powerup.cpp) reaches
+// in this process. Published with the class registry at the global_subsystems
+// step, as 004DC6A0 publishes 00F88C30.
+class PowerupManagerBinding final : public bsp::cc13_powerup::PowerupManagerHost {
+    using PowerupClassConfig = bsp::PowerupClassConfig;
+
+public:
+    explicit PowerupManagerBinding(GameMissionFrameHost::Impl& host) : host_(host) {}
+    float clock_00f876a4() override { return host_.world_clock; }
+    std::int32_t local_player_slot_18ec() override { return 0; }  // single player
+    // A mission-tree launch has no session (kAiCoordinatorCreatedAtLoad).
+    std::int32_t session_word_1fe4() override { return 0; }
+    // 005E2F00 forces EnablePowerups to 1 in single player (005E2FAB).
+    bool powerups_enabled_00e0c978() override { return true; }
+    void report_powerup_009789a0(std::int32_t slot, const bsp::cc13_powerup::PowerupItem&,
+        const std::string& name) override {
+        // 009789A0 passes only the name on to 009758E0; the item is unused.
+        PowerupWarningReportBinding report(host_);
+        bsp::cc13_seg49_64_78::report_powerup_009789a0(report, slot, &name);
+    }
+    // The host builds no in-game power-up manager screen ([00E198C4]+C0h), so
+    // its shown byte is never set and 0061B0F0 is not reached.
+    bool powerup_screen_shown_00e198c4() override { return false; }
+    void powerup_screen_rebuild_lists_0061b0f0() override {
+        throw std::logic_error("0061B0F0 without a power-up screen");
+    }
+    // The award tracker 004E1CA0 is not hosted. SUBSTITUTION (labelled): the
+    // hint counts as not yet shown, and its trigger is a record.
+    bool hint_has_been_shown_0068e600(const std::string&) override {
+        host_.record("PowerUps::hint_has_been_shown", 0x0068e600u);
+        return false;
+    }
+    void trigger_hint_00690fd0(const std::string&, std::int32_t) override {
+        host_.record("PowerUps::trigger_hint", 0x00690fd0u);
+    }
+    // 008E34F0 acts only on a group-1 (air support) class; its vehicle-class
+    // calls are not hosted and are a record.
+    void resolve_air_support_classes_008e34f0(PowerupClassConfig& cls) override {
+        if (cls.group_08 == 1) {
+            host_.record("PowerUps::resolve_air_support_classes", 0x008e34f0u);
+        }
+    }
+    void send_powerup_message67(std::int32_t, const bsp::cc13_powerup::PowerupItem&,
+        std::int32_t) override {
+        throw std::logic_error("power-up message 67 without a session");
+    }
+    std::vector<bsp::PowerUpSlot>& active_slot_records() override {
+        return host_.world.power_ups.player_slots;
+    }
+    void set_active_slot_notify_gate(bool inventory_nonempty) override {
+        host_.world.power_ups.player_notify_enabled = inventory_nonempty;
+    }
+
+private:
+    GameMissionFrameHost::Impl& host_;
+};
+
+// Packet cc13-powerup: 004DC6A0's 008EDC60 + 008ECEC0, the registry part, with
+// Scripts/datatables/PowerupClasses.lua read out of the VFS as the warning table
+// is. Runs at every load, as 004DC6A0 does from 004DFB70; the previous frame's
+// ~Impl has already destroyed the previous manager.
+void load_powerup_classes_cc13(GameMissionFrameHost::Impl& host) {
+    bsp::cc13_powerup::PowerupRuntime& runtime = bsp::cc13_powerup::powerup_runtime();
+    std::string text;
+    std::string error;
+    std::string resolved = "Scripts/datatables/PowerupClasses.lua";
+    if (!host.vfs.ready() || !bsp::resolve_existing_resource_00bdf4c0_fragment(
+            host.vfs.context(), host.vfs.search_registrations(), resolved)) {
+        error = "cannot resolve PowerupClasses.lua";
+    } else {
+        bsp::VfsMemoryOpen opened = bsp::open_resource_memory_00bdf310_fragment(
+            host.vfs.context(), resolved, 2);
+        if (!opened.provider_opened || !opened.stream || !opened.stream->fully_initialized()) {
+            error = opened.error.empty() ? "cannot open PowerupClasses.lua" : opened.error;
+        } else {
+            text.assign(reinterpret_cast<const char*>(opened.stream->data_00bef610()),
+                static_cast<std::size_t>(opened.stream->size_00bef600()));
+        }
+    }
+    host.powerup_binding = std::make_unique<PowerupManagerBinding>(host);
+    if (error.empty() && bsp::cc13_powerup::load_powerup_classes_004dc6a0(runtime,
+            *host.powerup_binding, text, local_player_party())) {
+        host.done("PowerUps::load_classes", 0x008ecec0u);
+        host.log.notef("power-up classes loaded: records=%llu texture_requests=%llu "
+            "(008ECEC0, packet cc13-powerup)", runtime.counts.class_records,
+            runtime.counts.texture_requests);
+    } else {
+        if (error.empty()) error = runtime.load_error;
+        host.record("PowerUps::load_classes", 0x008ecec0u);
+        host.log.notef("power-up classes not loaded: %s (packet cc13-powerup)", error.c_str());
+    }
+}
+
 // Packet cc15-wB4: the table-loading fragment of 009870A0 (see
 // kWarningMessageBankCc15Bound). 009870EB runs the 31-byte path through the
 // script runner, which reads it out of the VFS like decals.lua.
@@ -1366,7 +1544,19 @@ public:
     void power_up_expire_008e8c30(void*) override {
         owner_.record("PowerUps::expire", 0x008e8c30u);
     }
-    void power_up_notify_ready_009789a0(std::size_t, std::size_t) override {
+    void power_up_notify_ready_009789a0(std::size_t slot, std::size_t) override {
+        // Packet cc13-powerup: past the 008EB260 size gate, 008EB27A..008EB28F
+        // builds "pup_ready" (00D16228) and 008EB2ED calls 009789A0(slot, the
+        // slot's last inventory item, name). Only grants fill
+        // the records and the gate, so the switch off never reaches this arm.
+        bsp::cc13_powerup::PowerupRuntime& runtime = bsp::cc13_powerup::powerup_runtime();
+        if (bsp::cc13_powerup::kPowerupGrantBound && runtime.host != nullptr) {
+            const auto& inventory = runtime.inventories.at(slot);
+            runtime.host->report_powerup_009789a0(static_cast<std::int32_t>(slot),
+                inventory.back(), "pup_ready");
+            owner_.done("PowerUps::notify_ready", 0x009789a0u);
+            return;
+        }
         owner_.record("PowerUps::notify_ready", 0x009789a0u);
     }
     void power_ups_post_pass_00613760() override {
@@ -3196,6 +3386,7 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             host.record(label, step.address);
             ++host.load.records;
             if constexpr (kWarningMessageBankCc15Bound) load_warning_message_bank_009870a0(host);
+            if constexpr (bsp::cc13_powerup::kPowerupGrantBound) load_powerup_classes_cc13(host);
             if (!host.lua.started()) host.lua.start_machine_00884be0();
             host.lua.run_global_script_folders_00886900();
             continue;

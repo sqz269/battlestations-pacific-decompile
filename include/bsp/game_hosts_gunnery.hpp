@@ -350,6 +350,27 @@ inline constexpr bool kSinkingWreckDebrisDrawsBound = true;
 // terrain in it). ON: the USN02 and E2 pairs held (docs/PLAYER_GUN_SEAT.md 6.4).
 inline constexpr bool kPlayerGunSeatSegmentQueryBound = true;
 
+// Packet g53_seat_target_intercept (cc9-gunnery53, docs/PLAYER_GUN_SEAT.md 7.6).
+// The 79h target, both ends:
+// - The HUD gate at 005488FE..00548975 sets has_target (+36h) and the target's
+//   +174h id (+38h) for a picked unit that is not on the player's side (+54h)
+//   and whose vtable[10Ch] answers true. That slot is 0074E1A0 on the plane
+//   classes ([unit+B1Ch] speed > 3.0, 00CE3854) and 0042BB40
+//   (false) on MBattleship, LandingShip, MSubmarine and the dummy kamikaze. So
+//   only a flying plane is ever sent.
+// - 00959C91..00959CA8 resolves the id with 00521E30. 00957BD0 then aims every
+//   group 1/2 gun at the 00901C20 intercept (00957C29..00957CAB): shooter at
+//   gun+FCh, speed [[gun+3F8h]+34h]+50h, and shooter velocity = the unit's
+//   vtable[34h] when [unit+4A0h] (00953B80: the OR of AddsSpeed over the unit's
+//   Function 0/1/5/6 guns) is set, else zero.
+// The group 3 arm (00957740) never reads the target.
+// The marks' gunner range (00548EA9 / 00548ED0, [unit+49Ch]) is bound with it;
+// without it 0054900D clears the pick before the gate.
+// False: the gate answers false and the intercept is recorded only.
+// ON by mechanism (PLAYER_GUN_SEAT 7.6): with a tracked Kate, USN04's player AA
+// leads it and the Lexington kills it 2.9 s earlier; idle USN04/USN21 identical.
+inline constexpr bool kPlayerGunSeatTargetInterceptBound = true;
+
 // Packet cc9_unit_death_route, docs/UNIT_DEATH_ROUTE.md. True: a sunk or
 // wrecked unit goes through 00959450 BSP_Unit_OnDestroyed's model
 // (bsp::unit_death_00959450) after the sink: the report gate (clock > 1.0,
@@ -1122,6 +1143,9 @@ public:
     // commands an authored rest pair through 0085ABA0. Packet cc13-frontier; the
     // callers run it only under kHelmReleaseGunsToRestCc13Bound.
     void aim_unit_turning_guns_to_rest_0080e290(std::size_t unit_index);
+    // 00953B80's [unit+49Ch]: the square of the largest bullet range over the
+    // unit's Function 0/1/5/6 guns (Function 6 takes its Bullet[2]).
+    float unit_gun_range_sq_049c(std::size_t unit_index) const;
 
     // One fixed simulation step: the gunnery pass 00864FE0, the aim ticks and
     // the trigger latch, 0072D130's 0ADh send with BSP_Gun_Fire behind it, and

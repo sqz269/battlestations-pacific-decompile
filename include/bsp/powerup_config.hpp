@@ -157,6 +157,12 @@ void load_powerup_class_008e7350(PowerupClassConfig&, GuiLua51Host&,
 // and overrides. Does not clear prior configuration or random-name lists.
 void load_powerup_config_008ecec0(PowerupConfigOwner&, LuaStateOwnerEnvironment,
     LuaScriptRuntime&, PowerupConfigContext&);
+// The part of008ECEC0 between its script call and its Lua close: the walk of the
+// global PowerupClasses over a state that already holds it. Split out (packet
+// cc13-powerup) so a host that executes the same text in a state of its own can
+// fill the registry; the order of operations inside is unchanged.
+void load_powerup_config_tables_008ecec0(PowerupConfigOwner&, lua_State&,
+    PowerupConfigContext&);
 
 // Host cleanup of this configuration projection and constructor allocations.
 // Requires ALL runtime vectors/lists/maps still empty. Not008EDDA0 or the
