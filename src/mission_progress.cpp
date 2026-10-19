@@ -376,6 +376,18 @@ void read_mission_progress_00920000(
     if (wrapped) reader.leave_00bd7a20();
 }
 
+void write_extended_mission_score_0090c480(MissionScoreRecord& record, ProfileArchiveWriter& writer) {
+    writer.begin_section("sum");
+    write_mission_score_record_00908a30(record, writer);
+    writer.end_section();
+    write(writer, "count", record.count_284);
+}
+void read_extended_mission_score_0091cc70(MissionScoreRecord& record, ProfileArchiveReader& reader, std::uint32_t version) {
+    enter(reader, "sum");
+    read_mission_score_record_00916a00(record, reader, version);
+    reader.leave_00bd7a20();
+    read(reader, "count", record.count_284);
+}
 void write_mission_progress_0090cb40(MissionProgress& progress, ProfileArchiveWriter& writer) {
     write_named_counters(writer, "singleBestScores", progress.single_best_scores_0c, false, false);
     write_named_counters(writer, "MultiScores", progress.multi_scores_18, false, false);

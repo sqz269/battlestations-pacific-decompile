@@ -5,6 +5,40 @@
 
 namespace bsp::entity_mission_seg60_argon {
 
+namespace {
+template<class T> T& nb_high_tree_field(void* owner, std::size_t offset) {
+  return *reinterpret_cast<T*>(static_cast<std::uint8_t*>(owner) + offset);
+}
+}
+bool entity_visit_tree_009040d0(void* visitor, void* entity, std::uint32_t a, std::uint32_t b,
+                              void* excluded, EntityTreeWalkCalls& calls) {
+  if (entity == excluded || nb_high_tree_field<std::uint32_t>(entity, 0xb8) == 0) return false;
+  bool result = calls.visit_slote4(entity, a, b);
+  for (void* child = nb_high_tree_field<void*>(entity, 0x48); child; child = nb_high_tree_field<void*>(child, 0x44)) {
+    const bool child_result = entity_visit_tree_009040d0(visitor, child, a, b, excluded, calls);
+    result = result | child_result;
+  }
+  return result;
+}
+void entity_set_float_recursive_00922ee0(void* entity, float value, EntityTreeWalkCalls& calls) {
+  calls.set_slotdc(entity, value);
+  for (void* child = nb_high_tree_field<void*>(entity, 0x48); child; child = nb_high_tree_field<void*>(child, 0x44))
+    entity_set_float_recursive_00922ee0(child, value, calls);
+}
+void entity_format_tree_00923af0(void* entity, EntityTreeWalkCalls& calls) {
+  if (!calls.is_kind_slot5c(entity, 1)) return;
+  char buffer[1024];
+  calls.format_0040cfc0(buffer, "id=%d type=%s childnum=%d", nb_high_tree_field<std::uint16_t>(entity, 0x174),
+    calls.type_name_00e0cd80(nb_high_tree_field<std::uint32_t>(entity, 0xc4)),
+    nb_high_tree_field<std::uint32_t>(entity, 0x50));
+  void* selected = nb_high_tree_field<void*>(entity, 0x48);
+  while (selected && !calls.is_kind_slot5c(selected, 1)) selected = nb_high_tree_field<void*>(selected, 0x44);
+  if (!selected) return;
+  for (void* child = nb_high_tree_field<void*>(entity, 0x48); child; child = nb_high_tree_field<void*>(child, 0x44))
+    entity_format_tree_00923af0(child, calls);
+}
+bool entity_predicate_true_008fb780() noexcept { return true; }
+
 // 0x00922b10: BSP_Entity_IsAirborneTarget
 // Original ABI: int __fastcall(ECX = entity), RET 0.
 std::int32_t entity_is_airborne_target_00922b10(Seg60Host& host, void* entity) {

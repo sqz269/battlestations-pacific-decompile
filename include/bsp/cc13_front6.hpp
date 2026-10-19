@@ -16,6 +16,22 @@
 
 namespace bsp::cc13_front6 {
 
+struct ObjectiveSlot04Calls {
+    virtual ~ObjectiveSlot04Calls() = default;
+    virtual void slot04(void* objective) = 0;
+};
+// 008DA170, ECX objective, tail JMP [vtable+4], no stack adaptation.
+void objective_forward_slot04_008da170(void*, ObjectiveSlot04Calls&);
+struct EntityReferenceArchiveCalls {
+    virtual ~EntityReferenceArchiveCalls() = default;
+    // key is {0,text}; payload is typed {4,entity} or {5,owner+4}.
+    virtual void write_field_slot0c(void* archive, const char* key, std::uint32_t type, const void* value) = 0;
+};
+// 008DBA30 ECX reference owner, stack archive, RET4. The empty-key bytes
+// at CF8FA4 remain an explicit borrowed argument until independently confirmed.
+void entity_reference_write_archive_008dba30(void* owner, void* archive,
+    const char* empty_key_cf8fa4, EntityReferenceArchiveCalls&);
+
 using cc13_seg95::NativeStr;
 using cc13_seg95::TaggedValue;
 using cc13_sweepA::Raw;

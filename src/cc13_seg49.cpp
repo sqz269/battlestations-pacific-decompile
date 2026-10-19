@@ -4,6 +4,10 @@
 
 #include "bsp/cc13_seg49.hpp"
 
+namespace bsp::cc13_seg49 {
+std::uint32_t entity_path_type_code_0080d780() noexcept { return 0x12u; }
+}
+
 #include "bsp/band_0080_cc13.hpp"  // turn_path_wrap_angle_0080b190
 
 #include <cmath>

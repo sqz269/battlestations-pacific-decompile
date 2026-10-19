@@ -3,6 +3,12 @@
 
 namespace bsp {
 
+std::uint32_t aa_pick_no_target_00861b90() noexcept { return 0; }
+bool aa_pick_accept_category_00861be0(void*, std::uint32_t) noexcept { return true; }
+void gunnery_empty_one_00864520(void*, std::uint32_t) noexcept {}
+void gunnery_empty_three_00864530(void*, std::uint32_t, std::uint32_t, std::uint32_t) noexcept {}
+void gunnery_empty_zero_00864540(void*) noexcept {}
+
 AaPickPolicies aa_pick_install_policies_008636a0(const AaPickPolicyInputs& in) noexcept {
     AaPickPolicies out;
     // 008636AD..008636F4: the director-backed provider needs all three answers;

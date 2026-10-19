@@ -5,6 +5,14 @@
 #include "bsp/ship_motion_ver_cc13.hpp"
 
 namespace bsp {
+
+std::uint32_t ship_motion_word_4f8_00810010(const void* owner) noexcept {
+    return *reinterpret_cast<const std::uint32_t*>(static_cast<const char*>(owner) + 0x4f8);
+}
+void ship_motion_write_controls_00815590(const float* controls, void* writer, ShipMotionFloatArchiveCalls& calls) {
+    calls.write_float_slot0c(writer, "thrust", controls[0]);
+    calls.write_float_slot0c(writer, "toTurn", controls[1]);
+}
 namespace {
 
 // The listing's absolute value: a compare against 0, then -0.0f (00D7A208) minus the

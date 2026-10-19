@@ -22,6 +22,7 @@ cmake_minimum_required(VERSION 3.19)
 # Complete vehicle-class base constructor over the genuine damageable access.
 # CC12 complete raw post-effect getters and ordinary property insertion.
 # Reviewed whole raw GUI cursor and FrameBox vector-copy parent (137/138).
+# oct18b-nB: source-family extensions; explicit build-only implementations.
 cmake_language(DEFER CALL target_link_libraries bsp_core PUBLIC PowrProf)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_crt_canonical_locale_reference.cpp")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_crt_cookie_initialization.cpp")
@@ -717,6 +718,7 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/entity_lifecycle_tails.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/entity_local_matrix.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/entity_orders.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/entity_orders_oct18b_nB_low.cpp src/fish_school_model_oct18b_nB_low.cpp src/oct18b_nB_mid.cpp src/oct18b_nB_high.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/entity_think_dispatch.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/file_store_cc13.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/fingerprint_payload.cpp)

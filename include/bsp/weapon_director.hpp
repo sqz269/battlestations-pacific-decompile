@@ -13,6 +13,19 @@
 
 namespace bsp {
 
+// oct18b-nB-high director methods. Native 8355F0 ECX director -> EAX, RET;
+// 835620/835690 ECX director, stack archive -> archive slot04/08(director).
+// The tail calls replace stack arg with old ECX; these are not archive destructors.
+struct DirectorArchiveForwardCalls {
+    virtual ~DirectorArchiveForwardCalls() = default;
+    virtual std::uint32_t director_slot18(void* director) = 0;
+    virtual void archive_slot04(void* archive, void* director) = 0;
+    virtual void archive_slot08(void* archive, void* director) = 0;
+};
+std::uint32_t director_if_enabled_008355f0(void* director, DirectorArchiveForwardCalls&);
+void director_archive_enter_00835620(void* director, void* archive, DirectorArchiveForwardCalls&);
+void director_archive_leave_00835690(void* director, void* archive, DirectorArchiveForwardCalls&);
+
 // ---------------------------------------------------------------------------
 // Layout
 // ---------------------------------------------------------------------------
