@@ -15,7 +15,7 @@ namespace bsp {
 //    SelectControlledUnitBinding::release_unit_nodes.
 // ON: both sites run GameGunneryHost::aim_unit_turning_guns_to_rest_0080e290 on that
 // unit's guns. OFF: both sites only record the call, as before.
-inline constexpr bool kHelmReleaseGunsToRestCc13Bound = false;
+inline constexpr bool kHelmReleaseGunsToRestCc13Bound = true;  // ON: IJN08/USNOS pairs move from the gun rests (SHIP_AI 307)
 
 // 0092A240 BSP_TickableEntityAttachFires, called by 00935D30 BreakInTwo on the front
 // piece (00936905) and then the back piece (0093697F), after its eleven stream-1 draws.

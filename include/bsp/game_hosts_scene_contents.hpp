@@ -549,7 +549,7 @@ inline constexpr bool kSceneShortNameCc15Bound = false;
 // read that map (00468FB0 by name, 00468660 by id) instead of the static
 // table; 004E99B0 / 004E9AE0 / 004E9C10 build their 1E4h entity images.
 // False: the static table answers the lookups and the three rows stay records.
-inline constexpr bool kSceneDatabaseCc15Bound = false;
+inline constexpr bool kSceneDatabaseCc15Bound = true;
 
 // 0046F350 at 004E3E60 (OnInit). Idempotent: a second call keeps the first
 // object, as the image's OnInit runs once per process.

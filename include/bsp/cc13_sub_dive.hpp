@@ -25,7 +25,7 @@ namespace bsp::cc13_sub_dive {
 // both keys from VehicleClass[type_id] once at the seed and keeps the result on
 // the slot. False: the test reads false at both sites (the labelled substitution
 // before this packet).
-inline constexpr bool kCc13SubDiveKamikazeBound = false;
+inline constexpr bool kCc13SubDiveKamikazeBound = true;  // ON: USNOS pair, all 12 Kaitens drown with no killer (SHIP_AI 307)
 
 // The nearest-band seed stage (rev-convoy N1). 00853630 reaches 00853BE8 when
 // neither `Dive` nor `TargetDive` is found (00853BE2/00853BE6), or for a holder
@@ -35,6 +35,6 @@ inline constexpr bool kCc13SubDiveKamikazeBound = false;
 // subtraction, and +1268h keeps the stage-1 (kamikaze) value unless a band beats
 // |Y|. Independent of kCc13SubDiveKamikazeBound; the image runs both. False: the
 // seed keeps the stage-1 value (the labelled substitution before this packet).
-inline constexpr bool kSubSeedNearestBandCc13Bound = false;
+inline constexpr bool kSubSeedNearestBandCc13Bound = true;  // ON: USNOS/BSM01/JM06 pairs, seeds as predicted (SHIP_AI 307)
 
 }  // namespace bsp::cc13_sub_dive

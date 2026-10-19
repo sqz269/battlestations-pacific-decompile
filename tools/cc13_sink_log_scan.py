@@ -1,9 +1,11 @@
 """Wreck-sink reach over a frozen bsp_game log list (packets cc13-leak92, cc13-sinkrng).
 
   freeze: python tools/cc13_sink_log_scan.py freeze --until 2026-10-19T12:30 --out LIST DIR...
-          (logs over 100 KB written in the 36 hours before --until, UTC)
+          (logs over 100 KB written in the 36 hours before --until, UTC; each line is
+          "path<TAB>size<TAB>mtime", mtime in UTC ISO seconds)
   scan:   python tools/cc13_sink_log_scan.py scan LIST
-          (one row per log, then per-mission summaries)
+          (one row per log, then per-mission summaries; warns when a log's size or
+          mtime no longer matches the frozen line)
 """
 import argparse, collections, datetime, os, re
 
@@ -27,8 +29,17 @@ def freeze(args):
                     and until - 36 * 3600 <= os.path.getmtime(p) <= until:
                 paths.append(p)
     with open(args.out, "w") as fh:
-        fh.write("\n".join(paths) + "\n")
+        fh.write("".join(stamp(p) + "\n" for p in paths))
     print(len(paths), "logs ->", args.out)
+
+
+def mtime_iso(path):
+    t = datetime.datetime.fromtimestamp(int(os.path.getmtime(path)), datetime.timezone.utc)
+    return t.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def stamp(path):
+    return f"{path}\t{os.path.getsize(path)}\t{mtime_iso(path)}"
 
 
 def scan_one(path):
@@ -60,9 +71,16 @@ def scan_one(path):
 
 
 def scan(args):
-    paths = [p for p in open(args.list).read().split("\n") if p]
+    rows = [line.split("\t") for line in open(args.list).read().split("\n") if line]
+    paths = [r[0] for r in rows]
     by = collections.defaultdict(list)
-    for p in paths:
+    mismatches = 0
+    for row in rows:
+        p = row[0]
+        if len(row) >= 3 and os.path.exists(p) and stamp(p) != "\t".join(row[:3]):
+            mismatches += 1
+            print("WARNING changed since freeze:", p, "frozen", row[1], row[2],
+                  "now", os.path.getsize(p), mtime_iso(p))
         try:
             r = scan_one(p)
         except OSError:
@@ -85,7 +103,7 @@ def scan(args):
               f"max_wreck_hits={max(r['wreck_hits'] for _, r in rows)}",
               f"shared_live={sum(1 for r in shared if r['first_sink'] is not None and r['plane_after'])}",
               f"sinkTime={min(st):.1f}-{max(st):.1f}" if st else "sinkTime=-")
-    print("logs", len(paths))
+    print("logs", len(paths), "changed_since_freeze", mismatches)
 
 
 ap = argparse.ArgumentParser()
