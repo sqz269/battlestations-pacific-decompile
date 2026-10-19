@@ -14235,7 +14235,12 @@ void GameGunneryHost::Impl::land_section_destroyed_00747170(std::size_t section)
 
 GameGunneryHost::GameGunneryHost(GameHostLog& log, GameUnitsHost& units,
     GameMissionLuaHost& lua)
-    : impl_(std::make_unique<Impl>(log, units, lua)) {}
+    : impl_(std::make_unique<Impl>(log, units, lua)) {
+    // Log only: the first evaluation of the (process-constant) stream switch, so a
+    // log proves which env it ran in. No seed variable exists to report.
+    log.notef("rng streams: %s (BSP_GUNNERY_RNG_STREAMS)",
+        Impl::rng_streams_enabled() ? "on" : "off");
+}
 
 GameGunneryHost::~GameGunneryHost() = default;
 
