@@ -4102,6 +4102,15 @@ std::uint32_t GameCommandsHost::director_slot_command(std::size_t unit_index,
     return host.directors[unit_index].slot_command[slot_index];
 }
 
+bool GameCommandsHost::director_slot_target(std::size_t unit_index, int slot_index,
+    bsp::SceneCommandTarget& out) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return false;
+    if (slot_index < 0 || slot_index >= bsp::kDirectorCommandSlotCount) return false;
+    out = host.directors[unit_index].slot_target[slot_index];
+    return true;
+}
+
 std::uint64_t GameCommandsHost::director_head_key(std::size_t unit_index) const {
     const Impl& host = *impl_;
     if (unit_index >= host.directors.size()) return 0u;

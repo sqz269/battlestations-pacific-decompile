@@ -121,4 +121,20 @@ struct SquadronFreeAttackDecision {
 SquadronFreeAttackDecision squadron_free_attack_tick_009f8470(
     const SquadronFreeAttackInput& in, SquadronFreeAttackWorld& world);
 
+// Packet cc13-leash. The descriptor 009F7FE0 measures (009F83DE: director+18Ch,
+// the override's): byte +0 an entity, byte +1 a point at +8h, else 00F87574.
+struct SquadronGuardDescriptor {
+    bool entity{false};
+    std::size_t unit{kFreeAttackNoUnit};   // the entity's host unit (a squadron: its leader)
+    bool squadron{false};
+    bool position_valid{false};
+    std::array<float, 3> position{};
+};
+
+// 009F7FE0 (cc13_seg68::bot_within_guard_distance_009f7fe0, run unchanged over
+// the arena): reads in.path_point_valid / in.path_point (0071E4C0) and
+// in.guard_dist_594 (GameTuning+594h) only.
+bool squadron_within_guard_distance_009f7fe0(const SquadronFreeAttackInput& in,
+    const SquadronGuardDescriptor& descriptor, SquadronFreeAttackWorld& world, float scale);
+
 }  // namespace bsp

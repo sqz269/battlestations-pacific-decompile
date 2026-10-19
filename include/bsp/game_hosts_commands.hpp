@@ -643,6 +643,10 @@ public:
         int max_out) const;
     // The command object one slot carries, for the report's "what slot 0 holds".
     std::uint32_t director_slot_command(std::size_t unit_index, int slot_index) const;
+    // Packet cc13-leash: the descriptor one slot carries (slot 0 is director+58h,
+    // what 0071E4C0 reads whatever the mode). False on an index out of range.
+    bool director_slot_target(std::size_t unit_index, int slot_index,
+        bsp::SceneCommandTarget& out) const;
     // Packet cc9_ship_natives_3: slot 0's command object and its target's object
     // id, the pair the ship-AI controller update keys director+44h (the queue
     // head's accepted byte, written by 00835C70) on. 0 when there is no head.

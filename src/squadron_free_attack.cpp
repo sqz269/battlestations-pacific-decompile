@@ -219,6 +219,11 @@ public:
     Handle game_tuning_0042e740() override { return tuning_; }
     Handle command_target_resolve_00521ea0(Handle descriptor) override {
         ++head_resolves_;
+        if (guard_descriptor_ != 0u && descriptor == guard_descriptor_) {
+            // Packet cc13-leash: 009F8021 on the override descriptor.
+            if (guard_.unit == kFreeAttackNoUnit) return 0u;
+            return guard_.squadron ? squadron_object(guard_.unit) : unit_object(guard_.unit);
+        }
         if (descriptor != director_ + 0x58u || in_.slot0_target == kFreeAttackNoUnit) return 0u;
         return in_.slot0_target_squadron ? squadron_object(in_.slot0_target)
                                          : unit_object(in_.slot0_target);
@@ -250,6 +255,17 @@ public:
     }
     void raise_override_stage_0071d9e0(Handle, int stage) override {
         if (stage == 2) out_.raise_override_stage_2 = true;
+    }
+
+    // Packet cc13-leash: the override descriptor (director+18Ch in the image; its
+    // own 18h block here, since the arena's director is 80h).
+    Handle guard_descriptor(const SquadronGuardDescriptor& d) {
+        guard_ = d;
+        guard_descriptor_ = arena_.alloc(0x18);
+        arena_.put8(guard_descriptor_, 0x0, d.entity ? 1u : 0u);
+        arena_.put8(guard_descriptor_, 0x1, d.position_valid ? 1u : 0u);
+        for (int k = 0; k < 3; ++k) arena_.putf(guard_descriptor_, 0x8 + 4u * k, d.position[k]);
+        return guard_descriptor_;
     }
 
     std::size_t unit_for(Handle object) const { return entity_unit(object); }
@@ -302,6 +318,8 @@ private:
     Handle director_{0}, squadron_{0}, leader_{0}, recon_{0}, block_{0}, tuning_{0}, zero_{0}, ggame_{0};
     std::map<std::size_t, Handle> unit_object_, squadron_object_, vt140_;
     std::map<Handle, std::size_t> object_unit_, squadron_unit_;
+    SquadronGuardDescriptor guard_{};
+    Handle guard_descriptor_{0};
 };
 
 }  // namespace
@@ -344,6 +362,18 @@ SquadronFreeAttackDecision squadron_free_attack_tick_009f8470(
         out.stop = FreeAttackStop::kOrdnanceToOrdnance;
     }
     return out;
+}
+
+bool squadron_within_guard_distance_009f7fe0(const SquadronFreeAttackInput& in,
+    const SquadronGuardDescriptor& descriptor, SquadronFreeAttackWorld& world, float scale) {
+    SquadronFreeAttackDecision unused;
+    ArenaHost host(in, world, unused);
+    cc13_seg68::SquadronAutoTarget self{};
+    self.director_04 = host.director();
+    self.squadron_08 = host.squadron();
+    self.selector_2c.owner_00 = &self;
+    const Handle d = host.guard_descriptor(descriptor);
+    return cc13_seg68::bot_within_guard_distance_009f7fe0(host, self, d, scale);
 }
 
 }  // namespace bsp
