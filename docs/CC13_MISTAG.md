@@ -40,9 +40,10 @@ a game body that stores no vtable, touches no global or string, and whose game c
 named like element callbacks.
 
 **Destructor rule (the same wording as docs/CC13_CENSUS9.md).** A class's out-of-line destructor
-is rebuilt, including the form `MOV [ECX], vtable; JMP base`. A scalar or vector deleting
-destructor is bound, citing the out-of-line copy when it has a record; otherwise cite the called
-routine, or rebuild when there is none.
+is rebuilt, including the two-instruction form `MOV [ECX], vtable; JMP base`. A scalar or vector
+deleting destructor is bound, citing the out-of-line copy when it has a record; otherwise cite the
+called routine, or rebuild when there is none. A pure single-JMP with no store is a thunk record
+(`existing_recorded_thunk`).
 
 ## Batch 1 (38 rows)
 
@@ -93,7 +94,7 @@ no file (docs/UNIT_STATE_MESSAGE.md covers the apply side). Three are rebuilt he
 ## Batch 2, part A: rows the filter dropped (21 rows)
 
 rev-convoy's scan of the 548 filter-dropped rows (`local/mistag_dropped_vt.py`, a copy of its
-mt_dropped_vt.py) and the widened scan `local/mistag_vtscan2.py` (every open library-tagged row
+mt_dropped_vt.py) and the widened scan `tools/cc13_mistag_vtscan.py` (every open library-tagged row
 of the 16 segments; also the `C7 41 d8` and `8D 49` forms) agree on the six VT+JMP destructors.
 
 Rebuilt (out-of-line destructors):
@@ -286,8 +287,9 @@ and 00CE9A34.
 - ElementTable is then iterated (00B67080, 00B67190, 00B66420).
 
 **Each entry** becomes an `operator new(60h)` record. 00BF7CD1 constructs its two 8-byte
-NativeString headers at +48h (ctor 00415270, dtor 0041DD20); the record is used without a null
-test. Fields, in listing order:
+NativeString headers at +48h (ctor 00415270, dtor 0041DD20). The block is tested
+(0086C382 `CMP ESI,EBP` / `JE 0086C3A7` / `XOR ESI,ESI`), and a null block skips 00BF7CD1. The
+field stores after that are unguarded. Fields, in listing order:
 
 | Key | Record field | Read |
 |---|---|---|
@@ -321,6 +323,201 @@ compare). It tests the slot address for null and raises the count either way.
 ## Left open
 
 None of the four remains.
+
+## Part B: vt-reset destructors (119 rows)
+
+Script: `tools/cc13_mistag_partb_check.py` (output `local/mistag_partB.json`). Its input is
+`tools/cc13_mistag_candidates.json`, the frozen output of `tools/cc13_mistag_vtscan.py` then
+`tools/cc13_mistag_vtclass.py`, taken before any row was recorded. Recorded rows are kept, so the
+check can be re-run now that the records exist. For each vt-reset candidate the script:
+- re-reads the disk bytes and requires `C7 01 <imm32> C3`, with imm32 equal to the scanned
+  vtable;
+- refuses the struck ranges and 006C5000-006C5FFF;
+- classes the vtable from its other slots: game when any slot is a `BSP_` name or a recorded
+  non-library name, library when only library names appear, unknown otherwise;
+- applies one hand override (`MANUAL`, below);
+- lists the row's callers from the index.
+
+**120 game rows** are rebuilt as the table `kVtResetDestructors` with `vt_reset_destruct()`,
+each `__thiscall(ECX = object)`, RET, doing `[object] = vtable`. Under the destructor rule above
+each is a class's out-of-line destructor. Every row has at least one caller. 242 of the 243
+indexed call sites are EH unwind funclets; the one direct call is 0077D7F0
+BSP_Replication_StepLocalPlayerRecord calling `0075B420`, which destroys its stack message. No
+row is reached from its vtable's slot 0.
+
+A scan of the image for each row's address as an absolute dword (`tools/cc13_mistag_absrefs.py`)
+finds only `0075A5B0`. Four `PUSH` immediates pass it as the eh_vector element destructor (size
+44h, count 64h): at 00760C46 (beside the 0075FE90 constructor), 00760CCD, 0080FD54 and 00816C2E.
+
+The rows by vtable:
+- **98 rows** store the session message root vtable 00CE4974. They are named
+  `BSP_SessionMessageRoot_StoreVtable_<address>`, following the three cc13-seg40b records of the
+  same shape (00729090, 007290A0, 007293B0).
+- **14 rows** store 00D056D0, the bot-state root (docs/LANDING_MOVETO_CONSTRUCTOR_CC11.md).
+- **8 rows** store a vtable each: 00D1FDB8, 00D20838, 00D20E84, 00D21148, 00D21B40, 00CFF354, and
+  rows 119 and 120 below.
+- These 22 rows (the 14 and the 8) are named mechanically `BSP_Vt<vtable>_Destruct_<address>`.
+
+All 120 names are provisional, and each ledger record lists the row's callers. The Ghidra renames
+for the first 118 were made in three batches under the lock. The old names are kept in
+`local/ghidra-annotations-20261019T085020Z.json`, `...T085054Z.json` and `...T085128Z.json`.
+
+**Row 119 is a hand override (rev4).** `007B5910` (`C7 01 40 58 D0 00 C3`) stores 00D05840,
+which the slot-name rule had called library. The vtable has no RTTI locator (`[00D0583C]` =
+007B45E0 is code), and its slots are `__purecall`, 007B5920, `__purecall`, `__purecall`.
+007B5920 is a game deleting destructor in segment 47 that stores 00D05840 itself. The name is
+`BSP_Vt00D05840_Destruct_007b5910`, and the Ghidra rename log is
+`local/ghidra-annotations-20261019T091219Z.json`.
+
+**Row 120 was added after rev4.** `006FBC10` (`C7 01 F8 88 CF 00 C3`) is in segment 34, outside
+the 16 scanned segments, which is why the scan missed it. The check script now appends it as an
+extra candidate. It stores 00CF88F8, a game vtable with three game slots, and it is the recorded
+out-of-line copy that part C's 006CDD40 inlines. Its one caller is the unwind funclet 00C83990 of
+006FC2E0 BSP_ElevatorPlatform_Destruct. It is named `BSP_Vt00CF88F8_Destruct_006fbc10`. The Ghidra
+log `local/ghidra-annotations-20261019T092616Z.json` has this rename and 006CDD40's.
+
+**Left unbound** (library vtables, no game slot):
+
+| Address | Vtable |
+|---|---|
+| `007512A0` | 00D24F84 |
+| `007512E0` | 00D24F84 |
+| `0094CEB0` | 00D24F84 |
+| `0094CAE0` | 00D24FCC |
+| `0094CAF0` | 00D24FEC |
+
+Unknown (no named slot either way): `00842990`, vtable 00D0B6A0.
+
+## Part C: scalar deleting wrappers (103 rows)
+
+Script: `tools/cc13_mistag_partc_check.py` (output `local/mistag_partC.json`; same input and
+`MANUAL` override as part B). For every wrapper
+candidate it requires the whole 31-byte shape:
+
+```
+F6 44 24 04 01  56  8B F1  C7 06 <vt>  74 09  56  E8 <00BF65AC>  83 C4 04  8B C6  5E  C2 04 00
+```
+
+That is a test of flags & 1, the vt-reset destructor inlined as `MOV [ESI], vt`, `_free(this)`
+when the bit is set, and `EAX = this`, RET 4. The script requires vt to equal the scanned vtable,
+classes the vtable as part B does, and finds every recorded `C7 01 <vt> C3` copy of the store.
+
+**99 game rows are bound** (`library_instantiation_out_of_scope`, names unchanged). Each cites a
+recorded out-of-line copy of its vtable store:
+
+| Rows | Vtable |
+|---|---|
+| 74 | 00CE4974 |
+| 14 | 00D056D0 |
+| 2 | 00CFE2B8 |
+| 1 each | 00D056E8, 00D1FDB8, 00D20838, 00D20E84, 00D21148, 00D21B40, 00CFF354, 00D05840, 00CF88F8 |
+
+Two rows moved here after rev4:
+- `007B5920` (00D05840) moved from the library list after rev4's reclassification. It cites part
+  B's row 119, 007B5910.
+- `006CDD40` (00CF88F8) was rebuilt until part B's row 120, 006FBC10, recorded its copy. It now
+  cites that copy, and its Ghidra name is back to `CG_scalar_deleting_dtor_006cdd40`.
+
+**4 game rows are rebuilt** as `kVtResetDeletingDestructors` with
+`vt_reset_scalar_deleting_destruct()`. Their vtable store has no recorded copy, and their only
+callee is `_free`, so under the rule there is no routine to cite. This follows batch 1's
+singleton rows, and the lead accepted them as rebuilt. They take provisional names
+`BSP_Vt<vtable>_ScalarDeletingDestruct_<address>`:
+
+| Address | Vtable |
+|---|---|
+| `00735990` | 00CFE9F4 |
+| `00861BA0` | 00D0D314 |
+| `00862750` | 00D0D314 |
+| `008627F0` | 00D0D31C |
+
+The Ghidra rename log for these is `local/ghidra-annotations-20261019T085852Z.json`.
+
+**Left open (rev4):** each of these four does have an out-of-line `C7 01 <vt> C3` copy in the
+image, but every copy is an undefined chunk, not a recorded function, so there is nothing to
+cite yet:
+
+| Vtable | Undefined copies | Rebuilt row |
+|---|---|---|
+| 00D0D314 | 00861B80, 00862740 | 00861BA0, 00862750 |
+| 00D0D31C | 00861BD0, 00862790 | 008627F0 |
+| 00CFE9F4 | 00735980 | 00735990 |
+
+00CF88F8's other copies, 006CDD30 and 006CE280, are undefined chunks too. If those chunks are
+ever defined and recorded, the four rows can be rebound to cite them.
+
+**Left unbound.**
+
+Library:
+
+| Address | Vtable | Note |
+|---|---|---|
+| `0094CB00` | 00D24FCC | |
+| `0094CB20` | 00D24FEC | |
+| `0094D030` | 00D24F84 | fails the byte check: its call goes to 00A51E70, not `_free` |
+
+Unknown: `007D79F0`, vtable 00D06844.
+
+## Irregular rows (21, read by hand)
+
+These are the rows the shape classifier put in neither the vt-reset nor the wrapper shape. Each
+was read from the disk bytes (`tools/cc13_mistag_irr_probe.py` finds the vtable slots and every
+recorded store of each vtable; `tools/cc13_mistag_oneline.py` prints the listings side by side).
+
+**Bound: 14 scalar deleting destructors.** Each inlined body was compared instruction by
+instruction with the recorded out-of-line destructor it cites.
+
+| Address | Vtable slot | Inlines |
+|---|---|---|
+| `0072AC70` | 00CFDC0C | 0072ABE0 BSP_GunBarrelTable_Destruct |
+| `007D7FF0` | 00D06848 | 007D7A10 BSP_OwnedPtrHolder_Destruct_00D06848 |
+| `00851F20` | 00D0BEAC | 00851EC0 BSP_FixedStringBuilder_Destruct |
+| `009D91D0` | 00D214F4 | 009D58A0 BSP_ShipAiPathNode_DestructBody |
+| `009DBEF0` | 00D2152C | 009DBDB0 BSP_ShipAiPathPlan_DestructBody |
+| `0074EC00` | 00D00514 | 0074E7F0 BSP_UnitSubObject10D4_Destruct |
+| `007669F0` | 00D03720 | 007668E0 BSP_NetEntityCreateMessage_Destruct |
+| `00767970` | 00D0379C | the same as 007669F0 |
+| `00767B90` | 00D037BC | the same as 007669F0 |
+| `00767CC0` | 00D037E0 | the same as 007669F0 |
+| `00767DD0` | 00D03804 | the same as 007669F0 |
+| `00767500` | 00D03754 | 007674C0 BSP_SessionMessage_VOICEDATA_Destruct |
+| `00950380` | 00D19B74 | 00950350 BSP_SceneTextChunk_Destruct |
+| `009E8420` | 00D21994 | its own inlined body, cited by its callee |
+
+- The four 007669F0 copies are byte-identical to it once rel32 is masked.
+- 009E8420 calls 009E48A0 (ECX = this+8h; an unrecorded game routine that clears the list at
+  +14A0h and ends in a JMP to 009DF910). It then stores 00D056D0, whose out-of-line copy is the
+  part B row 007B3DA0. The record cites 009E48A0.
+
+**Bound: 2 more.**
+- `00729500` is a compiler adjustor thunk, `SUB ECX,10h; JMP 0072AB60`, at slot 00CFDC40. Its
+  status is `existing_recorded_thunk`. 0072AB60 is the deleting destructor that calls 0087A410
+  BSP_UnitTickableEntity_Destruct.
+- `008444E0` STL_UninitializedFillNShipyardHangars is an STL `uninitialized_fill_n`
+  instantiation (10h-byte elements, vtable 00D0B6A0). It is a library body.
+
+**Rebuilt: 5 one-instruction game virtuals.** Each is reached only from vtable slots, and each
+has a provisional name.
+
+| Address | Bytes | Name | Function | Slots |
+|---|---|---|---|---|
+| `009BE0E0` | `33 C0 C3` | BSP_VirtualReturnZero_009be0e0 | `virtual_return_zero_009be0e0` | 00D209C0, 00D209C8 |
+| `009DAAA0` | `32 C0 C2 04 00` | BSP_VirtualReturnFalse_009daaa0 | `virtual_return_false_009daaa0` | eight ship-AI slots, 00D21564..00D219FC |
+| `009DAC30` | `D9 05 58 39 CE 00 C3` | BSP_VirtualReturnTwo_009dac30 | `virtual_return_two_009dac30` | 00D215C0 |
+| `009DB000` | `C3` | BSP_VirtualNoOp_009db000 | `virtual_no_op_009db000` | 00D21660 |
+| `00743E50` | `8D 81 10 01 00 00 C3` | BSP_SessionMessage_LANDFORT_CREATE_Field110 | `landfort_create_message_field_110_00743e50` | slot 6 (00CFF370) of 00CFF358 |
+
+- 009BE0E0 is `XOR EAX,EAX; RET`. Ghidra had named it `Unwind@009be0e0`, but it is no funclet.
+- 009DAAA0 is `XOR AL,AL; RET 4`, and only AL is written.
+- 009DAC30 returns ST0 = 2.0f, read from 00CE3958.
+- 00743E50 returns `this + 110h`.
+
+The Ghidra rename log for these five is `local/ghidra-annotations-20261019T090846Z.json`.
+
+### Part B rows that fail the byte check
+
+Three scan candidates fail the byte check and are not part B: `009DB550` (`B0 01 C3`, MOV AL,1),
+`006D1420` (`C7 81 F8000000 ...`, a store at +F8h) and `007B0DB0` (`8B 41 08 C3`, a +8h getter).
 
 ## Uncertainty
 

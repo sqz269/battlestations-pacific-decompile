@@ -2921,6 +2921,16 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
         // Milestone 2m. The three rows packet cc2_mission_load_hosts
         // reconstructed and renamed. Both spellings are accepted because the
         // interface's own names are being corrected on main at the same time.
+        // cc15-ob4 (kSceneDatabaseCc15Bound): 004F2800's 26 class registrations
+        // into [00E18680]+34h (docs/CC15_OBJECT_SCENE_DATABASE.md).
+        if constexpr (kSceneDatabaseCc15Bound) {
+            if (method == "resolve_named_scene_objects"
+                && scene_database_register_classes_004f2800(host.log)) {
+                host.done(label, step.address);
+                ++host.load.concrete;
+                continue;
+            }
+        }
         if (method == "reset_network_slots" || method == "erase_native_string_set") {
             bool single_player_reset = false;
             run_load_session_slot_reset_004dfc13(host.log,

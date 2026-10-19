@@ -5,7 +5,10 @@
 
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_mission_frame.hpp"
+#include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
+#include "bsp/game_profile_owner.hpp"
+#include "bsp/mission_map_flag_policy.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_frontend.hpp"
@@ -541,6 +544,9 @@ struct GameMissionHost::Impl {
     GameObserverRuntime* observer_runtime{nullptr};
     std::unique_ptr<GameMissionFrameHost> frame_host;
     GameHudHost* hud{nullptr};  // milestone 2h, owned by GameMenuHost
+    // cc15 lane L2, owned by GameMenuHost: game+650h and [00E198D0].
+    GameProfileOwner* profile{nullptr};
+    GameHintTrackerSlot* hint_tracker{nullptr};
 
     Impl(GameHostLog& log_in, GameVfsHost& vfs_in, GameScriptHost& scripts_in,
         GameFrontendHost& frontend_in, LocaleTables& locale_in, std::string requested,
@@ -738,8 +744,18 @@ public:
         return group->missions[mission].extra.side_mission;
     }
     bool map_flag_visible(std::size_t mission) override {
-        // 005C2F70 on the record. Its body is not reconstructed, so the flag is
-        // shown for every mission of the group and the decision is recorded.
+        if constexpr (kProfileOwnerCc15Bound) {
+            // 005C2F70 on the record: 0090C560(ECX = [game+6B4h], &record+0).
+            const MissionGroupData* group = group_record();
+            MissionProgress* progress =
+                owner_.profile != nullptr ? owner_.profile->mission_progress() : nullptr;
+            if (group != nullptr && mission < group->missions.size() && progress != nullptr) {
+                owner_.log.implemented("MissionDetail::map_flag_visible", "005c2f70");
+                return mission_map_flag_visible_005c2f70(group->missions[mission], *progress);
+            }
+        }
+        // Without the profile owner the flag is shown for every mission of the
+        // group and the decision is recorded.
         static_cast<void>(mission);
         owner_.log.unimplemented("MissionDetail::map_flag_visible", "005c2f70");
         return true;
@@ -1081,6 +1097,13 @@ public:
         owner_.read_scene_file(record, scene_path);
     }
     void notify_award_tracker() override {
+        if constexpr (kHintTrackerCc15Bound) {
+            if (owner_.hint_tracker != nullptr) {
+                owner_.hint_tracker->get_004e1ca0().clear_hint_queue_0068ea00();
+                owner_.log.implemented("SetPendingScene::notify_award_tracker", "0068ea00");
+                return;
+            }
+        }
         owner_.log.unimplemented("SetPendingScene::notify_award_tracker", "0068ea00");
     }
 
@@ -1198,6 +1221,14 @@ public:
         : owner_(owner), start_(start), record_(record) {}
 
     void flush_award_tracker() override {
+        if constexpr (kHintTrackerCc15Bound) {
+            if (owner_.hint_tracker != nullptr) {
+                // 0059230D 004E1CA0, then 00592314 00690CD0 on it.
+                owner_.hint_tracker->get_004e1ca0().rebuild_history_00690cd0();
+                owner_.log.implemented("MissionPlay::flush_award_tracker", "00690cd0");
+                return;
+            }
+        }
         owner_.log.unimplemented("MissionPlay::flush_award_tracker", "00690cd0");
     }
     void suspend_page_for_movie() override {
@@ -1620,6 +1651,11 @@ void GameMissionHost::bind_observer_runtime(GameObserverRuntime& runtime) {
     impl_->observer_runtime = &runtime;
 }
 
+void GameMissionHost::bind_profile(GameProfileOwner& profile, GameHintTrackerSlot& hint_tracker) {
+    impl_->profile = &profile;
+    impl_->hint_tracker = &hint_tracker;
+}
+
 void GameMissionHost::set_order_unit(std::string unit) {
     impl_->order_unit = std::move(unit);
 }
@@ -1952,6 +1988,8 @@ void GameMissionHost::Impl::finish_scene_load() {
     frame_host = std::make_unique<GameMissionFrameHost>(log, vfs, *lua, participants,
         profiler, language, hud);
     if (observer_runtime != nullptr) frame_host->bind_observer_runtime(*observer_runtime);
+    // cc15 lane L2: the record commit 009205E0 writes [game+6B4h].
+    if (GameMissionResultHost* result = lua->mission_result()) result->bind_profile(profile);
     // 00884be0 at 004dd627 runs from BSP_Game_OnInitOnce, well before the load;
     // this process reaches its first mission here, so the machine is built now
     // and kept for the rest of the run.

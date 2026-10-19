@@ -30,6 +30,7 @@
 #include "bsp/game_hosts_world.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/frontier_wiring_cc13.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/cc13_front6.hpp"
@@ -1790,7 +1791,16 @@ public:
         owner_.record("SetControlledUnit::release_unit_parts", 0x00817380u);
     }
     void release_unit_nodes() override {
-        owner_.record("SetControlledUnit::release_unit_nodes", 0x0080e290u);
+        // 0064562D 0080E290(current). The caller (00645603..0064562D) reaches here only
+        // with a bound kind-6 controlled unit, which is still the outgoing one: the
+        // setter (004C0890) runs after. kHelmReleaseGunsToRestCc13Bound.
+        GameGunneryHost* gunnery = owner_.units != nullptr ? owner_.units->gunnery() : nullptr;
+        if (bsp::kHelmReleaseGunsToRestCc13Bound && gunnery != nullptr) {
+            gunnery->aim_unit_turning_guns_to_rest_0080e290(owner_.units->controlled_index());
+            owner_.done("SetControlledUnit::release_unit_nodes", 0x0080e290u);
+        } else {
+            owner_.record("SetControlledUnit::release_unit_nodes", 0x0080e290u);
+        }
     }
     void clear_hud_slot() override {
         owner_.record("SetControlledUnit::clear_hud_root_1c", 0x00645637u);

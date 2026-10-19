@@ -94,9 +94,12 @@ void effect_flare_read_lua_0086c240(FlareReaderHost& host, void* component, LuaR
     host.dword_vector_resize_zero_fill_0086aa10(vector, 0);
     host.iterate_first_00b67080(elements, key, value);
     while (!host.is_unbound_00b66420(elements, value)) {
-        void* const e = host.operator_new_00bf681b(0x60);   // no null path: the stores follow
-        host.eh_vector_construct_00bf7cd1(static_cast<std::uint8_t*>(e) + 0x48, 8, 2,
-            0x00415270, 0x0041DD20);
+        // 0086C382 CMP ESI,EBP / JE 0086C3A7: a null block skips 00BF7CD1 (ESI = 0); the field
+        // stores that follow are unguarded, so the image writes through null then.
+        void* const e = host.operator_new_00bf681b(0x60);
+        if (e != nullptr)
+            host.eh_vector_construct_00bf7cd1(static_cast<std::uint8_t*>(e) + 0x48, 8, 2,
+                0x00415270, 0x0041DD20);
         {
             const LuaRef outer_y = host.get_by_name_00b67800(value, "Scale");
             const LuaRef y = host.get_by_name_00b67800(outer_y, "Y");
@@ -189,6 +192,89 @@ void effect_flare_read_lua_0086c240(FlareReaderHost& host, void* component, LuaR
     host.release_00b67700(value);
     host.release_00b67700(key);
     host.release_00b67700(elements);
+}
+
+// Part B, sorted by address; each row's bytes are C7 01 <vtable> C3 (tools/cc13_mistag_partb_check.py).
+const VtResetDestructor kVtResetDestructors[kVtResetDestructorCount] = {
+    {0x006CFE70, 0x00CE4974}, {0x006D16E0, 0x00CE4974}, {0x006D1760, 0x00CE4974},
+    {0x006FBC10, 0x00CF88F8},                             // row 120 (rev4), see the doc
+    {0x006D17E0, 0x00CE4974}, {0x006D1860, 0x00CE4974}, {0x00743D80, 0x00CFF354},
+    {0x007448F0, 0x00CE4974}, {0x00749AF0, 0x00CE4974}, {0x00749B00, 0x00CE4974},
+    {0x0074CEC0, 0x00CE4974}, {0x0074D020, 0x00CE4974}, {0x0074EBF0, 0x00CE4974},
+    {0x00759D00, 0x00CE4974}, {0x0075A410, 0x00CE4974}, {0x0075A420, 0x00CE4974},
+    {0x0075A430, 0x00CE4974}, {0x0075A460, 0x00CE4974}, {0x0075A500, 0x00CE4974},
+    {0x0075A5B0, 0x00CE4974}, {0x0075A800, 0x00CE4974}, {0x0075A810, 0x00CE4974},
+    {0x0075A870, 0x00CE4974}, {0x0075A8E0, 0x00CE4974}, {0x0075A950, 0x00CE4974},
+    {0x0075A9C0, 0x00CE4974}, {0x0075ABA0, 0x00CE4974}, {0x0075AC10, 0x00CE4974},
+    {0x0075AC80, 0x00CE4974}, {0x0075AD20, 0x00CE4974}, {0x0075AD90, 0x00CE4974},
+    {0x0075AE40, 0x00CE4974}, {0x0075B250, 0x00CE4974}, {0x0075B420, 0x00CE4974},
+    {0x0075BBC0, 0x00CE4974}, {0x0075CBB0, 0x00CE4974}, {0x0075CE30, 0x00CE4974},
+    {0x0075D0C0, 0x00CE4974}, {0x0075D340, 0x00CE4974}, {0x0075D460, 0x00CE4974},
+    {0x0075D520, 0x00CE4974}, {0x0075D640, 0x00CE4974}, {0x0075DA00, 0x00CE4974},
+    {0x0075DBE0, 0x00CE4974}, {0x0075DC90, 0x00CE4974}, {0x0075DD40, 0x00CE4974},
+    {0x0075DDF0, 0x00CE4974}, {0x0075DF40, 0x00CE4974}, {0x0075E080, 0x00CE4974},
+    {0x0075E1B0, 0x00CE4974}, {0x0075E2E0, 0x00CE4974}, {0x0075E410, 0x00CE4974},
+    {0x0075E5B0, 0x00CE4974}, {0x0075E6A0, 0x00CE4974}, {0x0075E7B0, 0x00CE4974},
+    {0x0075E8A0, 0x00CE4974}, {0x0075E9B0, 0x00CE4974}, {0x0075EAA0, 0x00CE4974},
+    {0x0075EBB0, 0x00CE4974}, {0x0075ED20, 0x00CE4974}, {0x0075EE60, 0x00CE4974},
+    {0x0075F070, 0x00CE4974}, {0x0075F210, 0x00CE4974}, {0x0075F3C0, 0x00CE4974},
+    {0x0075F5B0, 0x00CE4974}, {0x0075F6E0, 0x00CE4974}, {0x0075F7F0, 0x00CE4974},
+    {0x0075F900, 0x00CE4974}, {0x0075FA40, 0x00CE4974}, {0x0075FD00, 0x00CE4974},
+    {0x007602E0, 0x00CE4974}, {0x00760410, 0x00CE4974}, {0x00760540, 0x00CE4974},
+    {0x007606E0, 0x00CE4974}, {0x00760820, 0x00CE4974}, {0x00760960, 0x00CE4974},
+    {0x00760AD0, 0x00CE4974}, {0x00760F10, 0x00CE4974}, {0x00761260, 0x00CE4974},
+    {0x007613A0, 0x00CE4974}, {0x00761440, 0x00CE4974}, {0x007614E0, 0x00CE4974},
+    {0x00761620, 0x00CE4974}, {0x00761FE0, 0x00CE4974}, {0x00762210, 0x00CE4974},
+    {0x007622A0, 0x00CE4974}, {0x00762450, 0x00CE4974}, {0x00762740, 0x00CE4974},
+    {0x007628E0, 0x00CE4974}, {0x00762AC0, 0x00CE4974}, {0x00762B80, 0x00CE4974},
+    {0x00762CE0, 0x00CE4974}, {0x00763200, 0x00CE4974}, {0x00763BC0, 0x00CE4974},
+    {0x00763E30, 0x00CE4974}, {0x007643B0, 0x00CE4974}, {0x00764460, 0x00CE4974},
+    {0x00764500, 0x00CE4974}, {0x00764790, 0x00CE4974}, {0x00764910, 0x00CE4974},
+    {0x007B3DA0, 0x00D056D0}, {0x007B5910, 0x00D05840},   // row 119 (rev4), see the doc
+    {0x009AF970, 0x00D1FDB8}, {0x009BC680, 0x00D20838},
+    {0x009C8CE0, 0x00D20E84}, {0x009CD390, 0x00D21148}, {0x009DAAB0, 0x00D056D0},
+    {0x009DAC40, 0x00D056D0}, {0x009DAC90, 0x00D056D0}, {0x009DADD0, 0x00D056D0},
+    {0x009DAE60, 0x00D056D0}, {0x009DB010, 0x00D056D0}, {0x009DB2B0, 0x00D056D0},
+    {0x009DB360, 0x00D056D0}, {0x009DB560, 0x00D056D0}, {0x009DB5B0, 0x00D056D0},
+    {0x009DB620, 0x00D056D0}, {0x009DB790, 0x00D056D0}, {0x009DB8D0, 0x00D056D0},
+    {0x009F5280, 0x00D21B40},
+};
+
+bool vt_reset_destruct(std::uint32_t address, void* object) noexcept {
+    for (const auto& row : kVtResetDestructors) {
+        if (row.address != address) continue;
+        at<std::uint32_t>(object, 0) = row.vtable;
+        return true;
+    }
+    return false;
+}
+
+// The irregular rows' five one-instruction virtuals, read from the disk bytes:
+// 009BE0E0 33 C0 C3; 009DAAA0 32 C0 C2 04 00; 009DAC30 D9 05 58 39 CE 00 C3; 009DB000 C3;
+// 00743E50 8D 81 10 01 00 00 C3.
+std::uint32_t virtual_return_zero_009be0e0(void*) noexcept { return 0; }
+std::uint8_t virtual_return_false_009daaa0(void*, std::uint32_t) noexcept { return 0; }
+float virtual_return_two_009dac30(void*) noexcept { return 2.0f; }
+void virtual_no_op_009db000(void*) noexcept {}
+void* landfort_create_message_field_110_00743e50(void* message) noexcept {
+    return static_cast<std::uint8_t*>(message) + 0x110;
+}
+
+// Part C: F6 44 24 04 01 56 8B F1 C7 06 <vtable> 74 09 56 E8 <00BF65AC> 83 C4 04 8B C6 5E C2 04 00.
+const VtResetDestructor kVtResetDeletingDestructors[kVtResetDeletingDestructorCount] = {
+    {0x00735990, 0x00CFE9F4}, {0x00861BA0, 0x00D0D314}, {0x00862750, 0x00D0D314},
+    {0x008627F0, 0x00D0D31C},
+};
+
+void* vt_reset_scalar_deleting_destruct(MistagHost& host, std::uint32_t address, void* object,
+    std::uint32_t flags) {
+    for (const auto& row : kVtResetDeletingDestructors) {
+        if (row.address != address) continue;
+        at<std::uint32_t>(object, 0) = row.vtable;
+        if ((flags & 1) != 0) host.free_00bf65ac(object);
+        return object;
+    }
+    return nullptr;
 }
 
 // Each row read from the disk bytes: B8 imm32 C3. The slot is the only .rdata dword equal to
@@ -340,7 +426,8 @@ void game_settings_destruct_0083b120(SettingsDtorHost& host, void* settings) {
     }
     // 0083B1B7..0083B209: 30h-byte elements first +740h / last +744h.
     if (auto* const first = at<std::uint8_t*>(s, 0x740)) {
-        for (std::uint8_t* p = first; p != at<std::uint8_t*>(s, 0x744); p += 0x30)
+        auto* const last = at<std::uint8_t*>(s, 0x744);                  // EBX, cached at 0083B1C6
+        for (std::uint8_t* p = first; p != last; p += 0x30)
             host.element30_destruct_0041e7a0(p);
         host.free_00bf65ac(at<void*>(s, 0x740));
     }
@@ -468,7 +555,7 @@ void* plane_unit_instance_construct_007cfd20(PlaneCtorHost& host, void* plane, s
     at<float>(p, 0x908) = 0.0f;
     at<float>(p, 0x90C) = 0.0f;
     at<std::uint8_t>(p, 0xDFC) = 0;
-    at<float>(p, 0xBC4) = 1.0f;                                          // over 007CFFBD's 0
+    at<float>(p, 0xBC4) = 1.0f;                                          // over 007CFFB7's 0
     at<float>(p, 0xC5C) = -100.0f;
     at<float>(p, 0xC60) = 0.0f;
     // 007D00D5..007D00F2: +968h takes the counter; the counter steps and wraps to 0 at 12
