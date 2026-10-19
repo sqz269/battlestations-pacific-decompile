@@ -57,7 +57,10 @@ inline constexpr bool kReleaseTimerReseedDrawBound = true;
 // the opener nothing in the host but 007BBBA0 (behind this very test) moves
 // it. physics24's pairs showed it: BSM09 timer_blocked=378, fires 0, the
 // mission lost; USN21 torpedo drops 5 -> 0.
-inline constexpr bool kReleaseTimerPredicate007BB110Bound = false;
+// cc9-physics24 2026-10-19: ON by mechanism over kReleaseBayOpenCc13Bound
+// (OCEAN_WAVE_FIELD 103): with the bay opener, 2 blocks on USN21 default,
+// none elsewhere; every win holds.
+inline constexpr bool kReleaseTimerPredicate007BB110Bound = true;
 
 // The image's bay opener (docs/CC13_RELEASE_TIMER.md section 10), two pieces:
 //  - 0099AFCC-0099B055 in BSP_PilotBot_Tick 0099ACD0: mode = the first task's
@@ -80,7 +83,9 @@ inline constexpr bool kReleaseTimerPredicate007BB110Bound = false;
 // installed torpedo or dive-bomb task, and clears approach+130h at the task
 // install (009D05AB, 009D0380 run from 009D2DA0). False: channel C moves only
 // through 007BBBA0, as before.
-inline constexpr bool kReleaseBayOpenCc13Bound = false;
+// cc9-physics24 2026-10-19: ON by mechanism (OCEAN_WAVE_FIELD 103); gameplay
+// identical alone on BSM09, USN01 u1i and USN21 in both envs.
+inline constexpr bool kReleaseBayOpenCc13Bound = true;
 static_assert(!kReleaseTimerPredicate007BB110Bound || kReleaseTimerReseedDrawBound,
               "the real 007BB110 needs the 009FA3EA reseed, or the timer fires every tick");
 static_assert(!kReleaseTimerPredicate007BB110Bound || kReleaseBayOpenCc13Bound,

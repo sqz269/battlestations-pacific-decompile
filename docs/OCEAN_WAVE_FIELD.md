@@ -3812,3 +3812,9 @@ Exports of main 677ee345f: `local\p24b_off`, `local\p24g1` (kFollowSightSearchBo
 - kFollowSightSearchBound (009C211D-009C232A): reached on BSM09 only (98 searches, 96 found, 283 held ticks); BSM09 ends earlier (ref 348.04 -> 327.04 s, def 462.01 -> 408.02 s). USN01, USN21 and BSM01 have 0 searches and are identical.
 - kDiveHitClockBound (009C4AA4 reads the carried approach+C4h): USN01 dive releases 7 -> 5, USN21 ref 11 -> 15 (same completion), BSM09 and USN21 default identical.
 - kDiveBombMoveToOriginBound (009C18C0 origin separation, 009F9E40 heading): USN01 7 -> 5, BSM09 ref ends 348.04 -> 327.04 s (dive releases 3 -> 6), default still ends 462.01 s; USN21 completes in both envs (default 2891.70 -> 2856.66 s).
+## 103. cc13's bay opener and the real 007BB110 (cc9-physics24, 2026-10-19)
+
+Exports of 3df710613 (reseed ON, main d4258a897): `local\p24q0`, `local\p24q1` (kReleaseBayOpenCc13Bound), `local\p24q2` (that plus kReleaseTimerPredicate007BB110Bound). Rows BSM09 d1, USN01 u1i, USN21 s46_u21_f, both envs. At this base BSM09 ends at 282.05 s (ref) / 405.02 s (default) and USN01 u1i completes at 1150.00 s / 1004.88 s.
+- Bay opener alone: gameplay identical on every row in both envs.
+- Predicate over it: identical on BSM09 and USN01 (timer_blocked_007BB110 = 0); USN21 ref identical, USN21 default moves (2 blocks, drops 6 -> 3, completes 2911.72 -> 2921.72 s). The section-101 deadlock is gone.
+Both flipped ON by mechanism. kReleaseTimerNotify0DhBound (log only) is left OFF.
