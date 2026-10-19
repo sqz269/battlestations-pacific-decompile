@@ -23,17 +23,23 @@
 // publish_land_convoy_dead_00929800). False: a convoy's `Dead` stays the false
 // its attach seeded (00928BC7), as before.
 //
-// OMITTED (labelled): of that chain the host models only the two Lua writes.
-// Not modelled, with either switch:
-//   - the 0077C7B0 / 0077C980 broadcast from 0077D1A0;
-//   - 00986480 FireEntityKilled at 0077D253. GAMEPLAY-VISIBLE: it raises the
-//     Lua entityKilled event. cc9's note: only jm01.lua (three times) and seven
-//     training-grounds scripts mention entityKilled, and none of them is a
-//     convoy or a WINS row;
-//   - 00926C80's loop over the +48h child chain (destroying each child);
-//   - 00925C90;
-//   - 0077D270's store to +193Ch and its 00803BA0 loop;
-//   - 00927F60 and 00928100, which 00929B60 runs before 00929800.
+// OMITTED (labelled): of that chain the host models only 00929800's two Lua
+// writes. Not modelled, with either switch (the code points here from
+// units.cpp kill_convoy and land_convoy_flush_009273a0):
+//   - 0077D1A0: the session broadcast 0077C7B0 / 0077C980 (message 4Eh, gated
+//     on [00E0AF20] and [[00E188A8]+1FE4h] in {0, 1});
+//   - 0077D1A0: 00986480 BSP_WarningManager_FireEntityKilled at 0077D253, the
+//     "entityKilled" mission event, gated on [00F8A0C4]. GAMEPLAY-VISIBLE.
+//     cc9's note: only 10 scripts in this installation mention entityKilled:
+//     jm01.lua (COTP-IJN, PRCPIJN, ijn/JM) and seven training-grounds scripts.
+//     None is a convoy row (JM05/PRCP08) or a WINS row;
+//   - 00926C80: the +48h child loop, vt+78h / vt+70h on each child
+//     (00926CFF..00926D31);
+//   - 00926390: the 00925C90 observer notify;
+//   - 0077D270: [[00E188A8]+193Ch] = 0 and the 00803BA0 recon-dirty loop over
+//     the three +1F0h records (0077D295..0077D2C4);
+//   - 00929B60: the 00927F60 scoring stamp and the 00928100 table mirror, which
+//     run before 00929800 (named in the chain above, not modelled).
 
 #include "bsp/land_convoy_wiring_cc13.hpp"
 

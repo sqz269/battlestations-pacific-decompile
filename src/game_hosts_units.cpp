@@ -2735,7 +2735,7 @@ struct LandConvoyLifeState {
     std::vector<std::size_t> slots;  // +394h vector (+398h..+39Ch); npos = a null slot
     std::int32_t live_3bc{0};        // +3BCh
     bool killed_5f{false};           // +5Fh, set by 00926D90 on the convoy
-    bool pending_destroy_60{false};  // +60h; never set: the host does not model 00926C80 (0077D243)
+    bool pending_destroy_60{false};  // +60h; stays false under either switch: kLandConvoyDeadWired models only 00929800's write, not 00926C80's +60h store
     std::int32_t cause_70{0};        // +70h
     bool kill_queued{false};         // on 00F899B4; its +080h (00742180) not yet run
     struct Member {
@@ -13399,10 +13399,13 @@ public:
         if (!life.pending_destroy_60) {                              // 00926DEF
             life.cause_70 = stored;                                  // 00926E02
             // 00926E05 vtable+70h(1) is 0077D1A0 for a convoy, whose 00926C80
-            // Destroy (0077D243) queues it on the destroy list 00F899A8. That
-            // chain is modelled only as its Lua `Dead` / `KillReason` write,
-            // under kLandConvoyDeadWired, in land_convoy_flush_009273a0; the
-            // rest of it is OMITTED (labelled), see land_convoy_dead_cc13.hpp.
+            // Destroy (0077D243) queues it on the destroy list 00F899A8. With
+            // kLandConvoyDeadWired, that chain's end, 00929800's Lua `Dead` /
+            // `KillReason` write, is modelled in land_convoy_flush_009273a0.
+            // With it off, nothing of the call is modelled. Either way the rest
+            // (broadcast, FireEntityKilled, child loop, 00925C90, 0077D270's
+            // stores, 00927F60 / 00928100) is OMITTED (labelled): the list is
+            // in land_convoy_dead_cc13.hpp.
         }
         if (cause == 7) life.cause_70 = stored;                      // 00926E07..00926E0C
         // OMITTED (labelled): 00926E0F..00926E23, 00926D90(cause) on each child of
@@ -13748,7 +13751,8 @@ void GameUnitsHost::land_convoy_flush_009273a0() {
                 // (0092747F) runs before any of the kill list's +080h (0092751F); each
                 // convoy's 00926D90 queued its destroy at 00926E05 (0077D1A0 ->
                 // 00926C80), whose +7Ch chain ends in 00929800. So every queued
-                // convoy's Dead is written before the first 00742180.
+                // convoy's Dead is written before the first 00742180. The rest of
+                // the destroy chain is OMITTED: see land_convoy_dead_cc13.hpp.
                 for (LandConvoyLifeState* life : convoys)
                     host.lua.publish_land_convoy_dead_00929800(life->name, life->cause_70);
             }
