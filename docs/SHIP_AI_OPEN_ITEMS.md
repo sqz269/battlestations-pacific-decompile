@@ -20283,3 +20283,19 @@ The one other IJN18 line, Oma6's end-of-run `clear_37c` (2025.4 vs FLT_MAX), als
 same binary (`g55_tgoff_i18` / `g55_tgoff2_i18`): it is static-zone clearance noise. No launch was suppressed: neither
 Zao nor HenryPT launches a bot torpedo OFF after its takehelm (no `shooter=Zao|HenryPT` launch), so these rows
 exercise the exit but not a lost torpedo. A row whose taken ship's bot would launch OFF is still unpaired.
+
+## 311. Ship AI heading store wrap paired (cc9-gunnery55, 2026-10-19)
+
+### 311.1 kShipAiHeadingStoreWrapCc13Bound (include/bsp/cc13_heading_wrap.hpp, packet cc13-wrap605, main ab7bb54ec)
+
+Image: 00605070 wraps blk+1D8h (desired_heading) in place after the stores at 009DFF81, 009E00FA, 009E0083 and
+009F3360 (docs/CC13_WRAP605.md). OFF the host stores the value unwrapped and counts the out-of-range stores.
+**Predictions (before the pair):** every reader goes through 00438AA0 / 00438B10, sin/cos or a log, so ON changes
+float rounding of the heading error and the logged headings only. Rows with no out-of-range store stay identical.
+On rows with stores (census: JM06 j6k 14134, j6n 1221, IJN18 w_i18 614), the first moved value is a rudder or heading
+term on a ship that turned through +/-pi; after it, positions, aim, draws and deaths can cascade, so per-entity
+moves (not totals) decide. A mechanism failure would show as a heading reader that sees a different angle class
+(e.g. a turn the long way round); a cascade of small differences is expected and flips.
+Pair: OFF = tree build dc2c8c9e9, ON = `local\g55_hw_on` (pair_export, same commit); JM06 jm06_s45_j6_k and
+jm06_l70_j6_n (120000 frames, stop 40 s after the end), IJN18 ijn18_l67_i18_d (64000 frames); reference env
+(`g55_hwoff_*` / `g55_hwon_*`).
