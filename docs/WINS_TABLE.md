@@ -1033,3 +1033,35 @@ airfield launches in a frame window), `l70_stockuse.py` (planes launched per bas
     sink most battleships, and Yamashiro or Fuso survives (i: 1602.49 s ref / 1427.32 s 20,3; j: 1422.31 s ref / no
     end on 20,3). Under 20,3 g fails 1912.79 s. USN15 stays open; the next lever is the torpedo screens
     (Fubuki-class09..12 with Ashigara, 06..08 with Yamashiro).
+- **JM08 is deferred (lead).** i / j above are the current state. Three pending changes rewrite phase 2 and the
+  post-Missouri landing, so any plan tuned now would be invalidated: cc13's formation group
+  (kDeadLeaderDirectorStateCopyBound plus kWakeDecomposeSegmentProjectionBound; in the image Helena keeps the cruise
+  after Missouri dies, so the host's idle force is a host defect), the C-47 paratrooper drop (class 136, today the
+  host lets them go home without dropping), and ships60's astern-skip flip. Plans must shoot the C-47s before
+  they reach the HQ; a win that relies on them going home breaks when the drop lands. StartInvasion is a
+  knife-edge: Stephen Potter passes 0.1-0.7 m outside the 300 m LandPoint circle (x 301.1 ref / 300.3 under 20,3).
+  Re-time after the flips.
+- Re-times reported to the keeper (not re-run here):
+  - gunnery53, f886af750 kRoleOwnerDeviceWalkBound ON: USN01 (16000 frames, input-tool orders `g53_ga_u1b.txt`).
+    Northampton's turret shots go 113/113/109 -> 95/95/90 while the player holds the seat. Deaths and death rows are
+    unchanged; no end on either side.
+  - gunnery53, d69a8829c kShipAiNavGateClosedArmFinalBound ON: JM08 idle still fails (HQ), 977.93 -> 958.94 s ref.
+    The astern-skip flip (via ships60's batch) gives JM08 idle no end in 1500 s. e96489cd3
+    kLineOfFireLandFromMuzzleBound ON: USN13 idle Game Over 834.92 -> 659.96 s; JM08 and USN07 identical.
+  - physics23, 917c0b57c kFollowReleaseSeamsBound ON: BSM09 d1 EndMission 327.04 -> 351.04 s (still a win); USN21
+    s46_u21_f unchanged at 2916.72 s. b473e5fcf kPlaneDeviceWalkSharedDrawBound ON: BSM09 d1 ref unchanged at
+    351.04 s, default env 330.04 -> 516.00 s; USN21 2911.72 -> 2921.72 s ref, completes in both envs.
+  - physics24, fb31ab760 (kDogfightFireEnvelopeBound + HoldArm, kTaskGunBlockReconstruct + BurstTimerReset): BSM09
+    d1 still wins, ref 351.04 -> 348.04 s, default env 516.00 -> 462.01 s; USN21 s46_u21_f unchanged (2906.71 s ref
+    / 2891.70 s default). BSM01 l50_b1_a has no end within 1200 s at 19dcd5aba OFF, independent of these flips.
+  - gunnery53, 843efc336 kNavigatorForceTorpedoBound ON: JM06 `s45_j6_k` ref completes 772.93 -> 790.93 s
+    (luaJM6SubShot's torpedoes fire; Lexington-class 01 sinks 706.85 s instead of 759.04 s; the Narwhal survives).
+    Default env: no end on either side, identical.
+  - VehicleClass re-flip pairs (cc9-lua70, base 853ae51b5, after cc15's vcp7 4360598e7, ref env, BSP_DEATH_TABLE=1,
+    `local\l70r_<row>_{main,vcon}_ref.log`): pair_diff "gameplay identical" on all four. USN21 s46_u21_f completes
+    2906.71 s on both sides (590 classes purged, failures 0). BSM09 d1 ends 351.04 s on both (617 purged). USNOS
+    `usnos_s45_os_k` Game Over 969.89 s on both (no Ohka reached), and ships60's `s59_os_c17` (60000 frames) reaches
+    the Ohka drop: 16 `drop kamikaze ... -> release` transitions from 2643.50 s on both sides, no end, exit 0, Lua
+    errors 0.
+  - IJN08 (cc13 audit): the Marus are lost to the enemy airfields' bombers, not to the cruisers. The re-plan needs
+    fighter or AA cover over the Marus, after a re-run on the post-batch main.

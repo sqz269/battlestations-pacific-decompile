@@ -1821,7 +1821,8 @@ void pointer_vector_reserve_006e8150(Seg33aHost& host, void* vector, std::int32_
 
 // 006E8250, (NativeStr name by value, consumed), RET 8; ECX is not read. The index of the name in
 // the twenty-entry table of C strings at 00E08E58: a null name matches a null or empty entry; a
-// non-null name matches a null entry only when its size is 0, otherwise by strcmp (00BF7FBF).
+// non-null name matches a null entry only when its size is 0, otherwise by _stricmp (00BF7FBF,
+// case-insensitive).
 // The string buffer is returned to the pool (00BD1510(00419CC0(), data, size + 1, 1)) on both
 // exits. No match answers 0, the same as a match at index 0.
 std::int32_t weapon_name_index_006e8250(Seg33aHost& host, NativeStr name) {

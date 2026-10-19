@@ -212,7 +212,7 @@ struct Seg33aHost {
     virtual void game_entity_detach_from_parent_list_00928570(void* entity) = 0;
     // 00779BB0, __thiscall(entity, lua, key), RET 8: the base Lua property getter.
     virtual void unit_get_property_recon_level_00779bb0(void* entity, void* lua, void* key) = 0;
-    // 00BF7FBF, __cdecl: strcmp.
+    // 00BF7FBF, __cdecl: _stricmp, a case-insensitive compare (the hook name is historical).
     virtual int strcmp_00bf7fbf(const char* a, const char* b) = 0;
     // 004260B0, __thiscall(NativeStr* out, int value), RET 4 -> out.
     virtual NativeStr* native_string_from_int_004260b0(NativeStr* out, std::int32_t value) = 0;

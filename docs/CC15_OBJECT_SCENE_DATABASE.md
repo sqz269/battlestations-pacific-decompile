@@ -53,9 +53,11 @@ the map answers null, as the image would.
 - 00419CC0 + 00BD1510 and 0041DD40 / 0041E870: `crt_string_storage()`.
 - 00438E10: `compare_insensitive_00438e10`. 00466BB0 / 00466C00: the raw iterator bodies.
 - 0046AC50: `insert_native_scene_integer_set_key_0046ac50`. Its result is 0Ch (owner, node,
-  inserted byte). seg6's 0046F160 body passes an 8-byte local (`inserted[2]`), so the adapter writes
-  into its own 12-byte buffer and copies 8 bytes out. Worth a fix in seg6_cc13.cpp: the image's local
-  at 0046F160 is the full 0Ch.
+  inserted byte). It writes 9 bytes: a dword at +0, a dword at +4 and a byte at +8. 0046F160's result
+  slot is the full 0Ch ([ESP+18h..23h], ending at the SEH link). seg6_cc13.cpp declares
+  `inserted[3]` (cc13 fa5c61133, main d7bed7752), and the adapter passes out_pair straight through.
+  It originally wrote into a 12-byte temp and copied 8 bytes out, a workaround for the old 8-byte
+  `inserted[2]`; both are gone.
 - 00468260 / 004682B0 head nodes: new(1Ch / 14h), links zeroed, colour byte 1. 0046F160 sets the
   nil byte and the self links itself.
 - 004E7C00 (14h slots of the node pool 00E18514): new(14h).
@@ -115,4 +117,6 @@ All USN04, `--frames 5000 --press-start-frame 30 --menu-select USN04 --mission-f
 
 - OnDestroy 004DC5C0 / 0046F3E0 is not hosted (with 00737F80).
 - GameEntity 00928630 and placement 004E9A80 are records, so the NavPoint image is not yet an entity.
-- The 0046F160 `inserted[2]` local in seg6_cc13.cpp is 8 bytes for a 0Ch result.
+- Fixed: the 0046F160 result local was 8 bytes for a 0Ch result (cc13 fa5c61133, main d7bed7752).
+- Pending at cc13: rename 004EE250's allocator seam new_descriptor_00bf55be to 00bf681b (CALL 00BF681B
+  at 004EE26E), including the override at game_hosts_scene_contents.cpp:847.

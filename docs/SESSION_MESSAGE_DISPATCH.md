@@ -31,7 +31,14 @@ is-a tests followed by two byte-indexed switches on `msg+10h`.
 
 `0076FAD0 BSP_Session_SetMode`, `__thiscall(session, mode)`, `RET 4`. `0076FB1A` returns when the
 mode is unchanged, `0076FB30` saves the old one at `+F8h`, and `0076FE85` stores the new one at
-`+F4h`. It is the **only writer** of `[00E0AF1C]` (three `WRITE` xrefs, all inside it).
+`+F4h`. It is the only **live** writer of `[00E0AF1C]` (three `WRITE` xrefs, all inside it).
+
+There is a fourth, dead writer: `0076B590` (undefined code, `0076B590-0076B596`) is
+`MOV [00E0AF1C],ECX; RET`.
+- Ghidra never made it a function, so it carries no xref.
+- The call sweep finds no caller, and an absolute scan for `90 B5 76 00` finds no pointer to
+  it (cc13-takeoff, 2026-10-19).
+- It does not change the modes below.
 
 | Mode | Written at | `[00E0AF1C]` | Meaning from the router |
 | --- | --- | --- | --- |
