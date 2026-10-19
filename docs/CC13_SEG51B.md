@@ -12,6 +12,19 @@ names are hypotheses, not recovered symbols.
   leftover passes covered it. Nothing was left to build.
   - The index in the main checkout was stale. It listed 19 rows such as 00847FE0, 008482F0 and
     0084FC50 as open. A fresh index in this tree clears all of them.
+  - Besides STL, template, Catch_All and Unwind, the census also counts tagged rows as closed.
+    These include CG_ scalar deleting destructors and adjustor thunks, and TRIV_ bodies such as
+    the 008356D0 getter (`FLD [ECX+244h]; RET`).
+  - Three `stl_probable` bookmark rows with EH frames had never been reviewed (packet
+    cc13-seg51c). Each was read whole. All three are library code and stay bound; their tag rows
+    are now `stl_instantiation` renames under evidence `cc13_seg51c_eh_template`:
+    - `00839B40` `STL_Construct30_00839B40`: if the pointer is non-null, a placement copy
+      construct of a 30h settings record (00839800). This is the std `_Construct` shape.
+    - `0083B350` `STL_Vector_ResizeByValue14_0083B350`: vector resize(n, value) for a 14h-byte
+      element. It grows through 0083AB40 (InsertN) or erases through 0083A980, then releases
+      the by-value argument's native string. Its caller is 0083B5E0, the game-settings loader.
+    - `008484A0` `STL_Vector_CopyConstruct1C_008484A0`: vector copy construct for a 1Ch-byte
+      element, through 00664120 (_Buy) plus the uninitialized copy 00847340.
 - **Segment 51 (0081AA60-00828870):** 158 rows. All but three had a status. Those three are
   below. None of them is hosted: git grep by address, name and behaviour ("guncamos", deck
   visuals) finds no host body.
@@ -43,10 +56,14 @@ site, with the image's arguments.
     element with an increment, releases the old slot, frees the old block (00BF6989), then
     appends with an increment and increments count.
 - **0081C550** `unit_instance_toggle_deck_visuals_0081c550`, `__fastcall(ECX = unit)`, plain RET.
-  It is virtual (no direct caller) and uses no RNG. The steps are:
+  It is unreferenced (no direct call, no absolute dword and no vtable slot) and uses no RNG.
+  **Uncertain purpose:** on airfields +749h is HangarFailure (cc13_seg30.hpp), so this may be
+  the hangar-failure visual rather than "deck visuals". The steps are:
   1. It flips +749h.
   2. Each 44h-byte record of the +660h vector that has a node gets 00B6DA70(1.0 when the flag
-     is now set, else 0.0; 0). The four 00BF6713 checked-iterator tests are kept.
+     is now set, else 0.0; 0). The four 00BF6713 checked-iterator tests are kept. The
+     container-identity tests at 0081C5A6 (`TEST EDI,EDI` / `CMP EDI,EDI`) and 0081C5BB
+     (`TEST EDI,EDI`, with EDI = unit+660h) can never fail, so they are not modelled.
   3. **Flag clear:** each live effect in +A14h/+A18h is stopped (00867B10), its byte +9 is set
      to 1 and it is released; then 004C9550(0).
   4. **Flag set:** when the class definition [unit+538h]+674h is non-null, it creates one
@@ -57,3 +74,30 @@ site, with the image's arguments.
 
 Build: the full `./scripts/build.ps1` (MSVC Win32), with 2/2 existing CTests passing. The bodies
 are build-tested only. They are not ABI-compatible and not game-validated.
+
+## 3. Thunk mop-up (packet cc13-seg51c)
+
+The census of segments 47, 30 and 41 found 17 open rows. Each one is a bare `E9 rel32` JMP
+followed by INT3 (Capstone over the disk bytes). Each now has an `existing_recorded_thunk` row
+(`cc13_seg51c_jmp_thunk_<addr>`). They have the target's ABI and no code of their own.
+
+| Thunk | Target |
+|---|---|
+| 007B3C90 | 00695870 BSP_CallbackOwner_Destroy |
+| 007B4650, 007B4D80, 007B5250, 007B5770, 007B65D0 | 007B45F0 BSP_LandSharedState_Destroy |
+| 007CD2E0 | 007CCD30 BSP_PlaneEngineEffectVector_DestroyRecords |
+| 006BF050 | 006BCD20 BSP_AirOps_GetBlock |
+| 006C4780 | 006C0F00 BSP_AirOps_FillSlot |
+| 006C4B20 | 006C1430 STL_List_Clear (library) |
+| 006C6B40 | 006C4B30 BSP_AirOpsSquadronKillObserver_OnNotify |
+| 006C9310 | 006C88D0 BSP_AirOpsCallbackList8888_OnNotify |
+| 006CDF30 | 006CDD70 BSP_FollowObserverMember_Destroy |
+| 006CFAE0 | 006CEFF0 BSP_AirOpsSiteOccupants_OnNotify |
+| 0073C330 | 0073C240 BSP_StringMap_Clear |
+| 00743F40 | 0095D400 BSP_Unit_ReleaseEffects_0095D400 |
+| 007455E0 | 00745200 BSP_IntrusiveList_ClearNodes_00745200 |
+
+`0095D400` had no name record. It is now named after its reconstruction,
+`unit_release_effects_0095d400` (src/cc13_seg62.cpp), and its thunk 00743F40 is renamed to
+match. The Ghidra labels of 0081C1F0, 0095D400 and 00743F40 were synced from the names ledger
+with `ghidra_annotate.py --apply`.
