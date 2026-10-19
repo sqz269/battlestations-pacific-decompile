@@ -43,7 +43,7 @@ inline constexpr bool kPlaneDeviceWalkPerRackBound = true;   // ON: OCEAN_WAVE_F
 // only 00BD2F10 calls on the path (007CEA8D 007C0D90 through 007EEF30 and 006E3550, direct
 // calls to depth 6; descriptor vtable calls are not followed). False: the units host's own
 // release sequence (`#lbrk` and `#issue` keys), as before.
-inline constexpr bool kPlaneDeviceWalkSharedDrawBound = false;
+inline constexpr bool kPlaneDeviceWalkSharedDrawBound = true;   // ON: OCEAN_WAVE_FIELD 99 (cc9-physics23)
 
 // 007C0E67 [00CE3860] and [00CE6448], the U(lo, hi) bounds of the next-rack delay draw.
 inline constexpr float kRackDelayDrawLow = 0.9f;
