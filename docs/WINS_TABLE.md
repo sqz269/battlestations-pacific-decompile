@@ -1103,3 +1103,55 @@ Re-plans on the same tree build (c95d107da):
   On the l69 base the same units logged a closing d32c (Ashigara 12207 m at frame 10, 1448 m at 18000), and CB4 sank
   Asashimo, Sugi and Ashigara. The mode-3 skip (kShipAiNavigateAsternSkipBound, game_hosts_ship_ai.cpp ~10990) never
   reaches the 009EE765 output, so these leaders never close. An astern-skip OFF control is running.
+
+## 2026-10-19, later bases (cc9-lua70, keeper)
+
+The astern-skip stall in the section above was an interim: kShipAiNavigateAsternSkipBound went OFF on main 1258eafc3.
+cc13 rev4 found the skip byte-faithful; the defect is the host's mode-3 approach steering.
+
+cc15's run on main 88b7eb3d1, ref env, astern skip OFF:
+
+| Row | 88b7eb3d1 ref |
+| --- | --- |
+| USN01 | completed 1200.05 s |
+| USN12 | completed 1395.24 s |
+| PRCP01 | completed 915.10 s |
+| USN21 | completed 2906.71 s |
+| ESMP08 | completed 1314.31 s (won again) |
+| LOMP10 | completed 991.43 s (won again) |
+| JM06 | completed 1658.49 s |
+| BSM09 d1 | EndMission 285.05 s (log J:\PROG\battlestations-pacific-decompile-cc15-flip\local\fl3_b9_inbuild.log) |
+| USN02 | failed 170.06 s |
+| LOMP06 | failed 653.11 s |
+| IJN18 | failed 525.00 s |
+| BSM01 | no end |
+
+- BSM09 d1 ref depends on the base: 351.04 s at c95d107da, 408.02 s at f10dce645, 285.05 s at 2e21536b2 and 88b7eb3d1.
+  The ref and 20,3 columns of the re-time above are not swapped.
+- BSM09 d1, default env: lost at 141.05 s after the land chain went ON (physics24 282567f82). Donald collides mid-air
+  with a D3A Val; this is an RNG-coupled shift. The ref env stays at 285.05 s.
+- USN01 u1i, default env: loses its 490.00 s completion under the release-timer reseed (3df710613, RNG-coupled).
+- USN21 with NO orders completes ("Center force is retreating!") at 3006.81 s (gunnery54).
+- USN02 l68_u2_a fails at 330.04 s, Game Over on Witte, on dc6d0d1a3 ref (gunnery55).
+- BSM01 is REGRESSED-pending.
+  - Cause (cc13): luaMiniSubHit fires only on a HenryPT hit on MiniSub. MiniSub grounds at the surface in the shallows
+    (faithful), out of reach of HenryPT's d park point, and depth charges never reach the depth detonation there.
+  - Ref-env re-plans that take HenryPT onto the sub with depth charges pressed:
+    - local\l70_b1_j.txt (onto (-212,-2388)) completes at 752.94 s. A Depthcharge hit fires the listener; the sub dies
+      at 596.68 s.
+    - local\l70_b1_k.txt and l70_b1_l.txt complete at 926.90 s.
+    - None of the three ends at 20,3, where the sub sits at (-222,-2402).
+  - gunnery55 reports that b1d itself ends at 812.93 s on dc6d0d1a3.
+Re-plans on merged main d175c1aac (cc9-lua70):
+
+- USN02 `l70_u2_b` (config/win_orders/usn02_l70_u2_b.txt): l68 a, plus Houston's artillery fired through the HUD path
+  (input 0x9D, aim unit Haguro then Nachi, input 0x99 held 3000 frames twice).
+  - The script-selected Houston's player-owned guns are otherwise silent: 0 shots and about 5,900 refusals on dc6d0d1a3.
+  - With the plan: ref completes at 500.00 s, guard logged; Houston fires 214 main-battery shots (52 hits).
+  - 20,3: Game Over at 145.05 s; Yukikaze torpedoes Houston at 142.70 s, before the first aim line has much effect.
+- IJN18 releasegun trial (local\l70_i18_r.txt; export with kHarnessReleaseGunMapBound, kCruiseLatchedPlayerArmCc13Bound
+  and kHelmPrepareMapUpGateCc13Bound ON; releasegun Zao at frame 1500):
+  - ref: EndMission 1685.52 s with MissionStatus=true, guard logged. Zao fires 163 main-battery shots (111 hits),
+    against 0 in the baseline, and lives to 507.85 s instead of 333.89 s.
+  - 20,3: Game Over at 839.92 s. The early Zao kills are the same; Asa1 dies at 772.38 s and Asa4 at 838.82 s.
+  - With the switches OFF the releasegun line is refused, and IJN18 d has no end.

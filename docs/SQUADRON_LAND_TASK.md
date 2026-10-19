@@ -18221,3 +18221,40 @@ re-time; USN01 `usn01_l69_u1_a`; BSM01 `bsm01_l69_b1_d`, which wins both seeds),
 6. kVehicleClassPreloadCc15Bound re-flip: HOLD until cc15 answers on runtime-spawned Ohka class 156 (USNOS c17
    crash). The re-flip pairs need a full USN21 s46_u21_f run, a carrier row with launches, and USNOS with Ohka releases.
 7. Low priority: AddPowerup binding needs a non-argon body (5is); SetRace / SquadronSetHomeBase reach no WINS row.
+
+## cc9-lua70 handoff (2026-10-19)
+
+Tree: J:\PROG\battlestations-pacific-decompile-cc9-lua52, branch agent/cc9-lua52, merged to origin/main at d175c1aac.
+Last commit: 2ee5c00ce. Run queue: `local\l70_runs.ps1` (rows in `local\l70_rows.txt`).
+The launcher starts each run detached and returns at once. Wait on `local\l70r_<tag>_<variant>_<env>.done`.
+
+Done this lane:
+- Flips:
+  - VehicleClass ON (c95d107da).
+  - Powerup ON (357ca6914).
+  - Untouchable ON (lead/cc13, 247e1f89f).
+- JM06 `l70_j6_n` (80ac866e3).
+- The astern-skip stall census (`local\l70_astern.py`), which led to the interim OFF on 1258eafc3.
+- USN02 `l70_u2_b` (HUD fire): ref win at 500.00 s.
+- IJN18 releasegun trial: ref win at 1685.52 s (WINS_TABLE, last section).
+
+Open, in the lead's order:
+1. IJN18: the lead decides whether to flip releasegun + latch + gate ON on main. If so, commit `local\l70_i18_r.txt` as a
+   win_orders row. 20,3 fails at 839.92 s; try a later or second release, or keep Asa1 alive.
+2. USN02 20,3: Houston is torpedoed at 142.70 s. Start the HUD fire earlier (the plan's first aim is at frame 562) or
+   steer Houston away from Yukikaze.
+3. BSM01 (physics owns the bisect; gunnery55 reports b1d ends at 812.93 s on dc6d0d1a3). Ref-only wins:
+   `local\l70_b1_j.txt` (752.94 s), `_k`, `_l`. Each takes HenryPT onto the grounded MiniSub at (-212,-2388) with
+   depth charges pressed. 20,3 has the sub at (-222,-2402) and does not end. The depth-trace x/z (88b7eb3d1) gives the
+   sub position.
+4. LOMP06: Narwhal's sub_attack astern at -0.5 (not mode 3). Variants e-k in `local\l70_l6_*.txt` all fail on ref.
+5. USN15 torpedo screen, then the Lua native pairs:
+   - 369acee1f on BSM01 and JM06: HasFired, AddWaterLoad, BreakShip (both envs), UnitSetPlayerCommandsEnabled.
+   - f10dce645 on BSM09 ref, all four together: SetVisibility, SquadronEnableVehicleAvoidance,
+     SquadronSetBaseUnsupported, SetCheatTurbo.
+   - One `--difficulty 0` run on USN15 or IJN08.
+6. LOMP10, ESMP08: won again on 88b7eb3d1 (cc15); re-time after ships61's navigation set flips.
+7. JM08 phase 2 stays deferred until the formation, C-47 and astern flips land.
+
+Watch for: a takehelm/select on a ship whose guns matter silences its first gun group (kRoleOwnerDeviceWalkBound).
+Fire that group with `input` + `aim unit`, or use releasegun once it is ON.
