@@ -4646,6 +4646,35 @@ struct GameUnitsHost::Impl {
                 profile_runs = slot.db_profile_activation_pending;
                 slot.db_profile_activation_pending = false;
             }
+            if constexpr (kDiveCruiseProfileGateBound) {
+                // Packet p23_dive_profile_gate. 009C894F-009C8971, block 1 on the
+                // squadron's [task+404h]+37Ch, inside the 009C8938 leader branch:
+                // unless +38Dh, when +380h < 0 and +3A9h is clear, +394h =
+                // tuning+4C0h and +3ADh = 1; then +3A9h = 0 either way. As at the
+                // moveto (009C3650) gate, clearing sq_alt_set stands for the
+                // tuning write: strike_ctl_cruising_alt_394 then answers the
+                // dive tuning+4C0h for this leader's task.
+                if (leader && profile_runs && !block.sq_freeze_38d) {
+                    if (summary.simulated_seconds >= block.sq_timer_expiry_380
+                        && !block.sq_lock_3a9) {
+                        if (block.sq_alt_set) ++dive_profile_travel_alt_resets;
+                        block.sq_alt_set = false;
+                        block.sq_lua_alt_3ad = false;           // 009C896A +3ADh = 1
+                    }
+                    block.sq_lock_3a9 = false;                  // 009C8971
+                }
+                // 009C8A66-009C8A74: task+4BCh (approach+C4h) = 3600.0 [00CFDEB0]
+                // on every profile call, for every member (past the 009C8A1B
+                // join), then 009C8A7C runs 009C7A80 with dt 0.0. LABELLED: the
+                // advance at the top of this function stands for the tick's own
+                // 009C7A80, which follows the head-change profile call, so the
+                // clock leaves this tick at 3600 + dt.
+                if (profile_runs) {
+                    if (slot.db_approach_clock_c4 < 3600.0f) ++dive_profile_clock_reseeds;
+                    slot.db_approach_clock_c4 = static_cast<float>(
+                        static_cast<double>(dt) + 3600.0);
+                }
+            }
             if (leader && profile_runs) {
                 const float value = static_cast<float>(
                     static_cast<double>(release_altitude_draw_00bd2f10(
@@ -6794,6 +6823,15 @@ struct GameUnitsHost::Impl {
     // FSUBP, FMULP by approach+4Ch and FADDP each round to float. True: float per
     // op. False: (b - a) in float, then a double product and sum rounded once.
     static constexpr bool kLandBlendFloatOpsBound = true;   // ON: OCEAN_WAVE_FIELD 92 (identical)
+    // Packet p23_dive_profile_gate (OCEAN_WAVE_FIELD 96). The dive cruise profile
+    // 009C8920's block 1 (009C894F-009C8971: the squadron travel-altitude gate on
+    // +38Dh / +380h / +3A9h, the tuning+4C0h write and the +3A9h clear) and its
+    // 009C8A74 re-seed of task+4BCh = 3600.0. True: both, on the profile call.
+    // False: the dive host never resets an expired script altitude, never clears
+    // +3A9h, and carries only the 009C3FD2 seed.
+    static constexpr bool kDiveCruiseProfileGateBound = false;
+    unsigned long long dive_profile_travel_alt_resets{0};
+    unsigned long long dive_profile_clock_reseeds{0};
     static float land_blend_2b4(float a, float w, float b) {
         if constexpr (kLandBlendFloatOpsBound) {
             const float diff = b - a;      // FSUBP
@@ -28399,7 +28437,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.db_begin_alt_ac = GameUnitsHost::Impl::kPilotDiveBombBeginAltRange1;
                             // 009C3FD2: approach+C4h = 3600.0 (00CFDEB0). LABELLED:
                             // 009C8A74's re-seed in the cruise profile (task slot
-                            // +54h) is not carried; its call cadence is unread.
+                            // +54h, run at the head change) is carried under
+                            // kDiveCruiseProfileGateBound in update_dive_bomb_approach.
                             unit_.db_approach_clock_c4 = 3600.0f;
                             unit_.db_alt_span_b0 =
                                 GameUnitsHost::Impl::kPilotDiveBombBeginAltRange2 - GameUnitsHost::Impl::kPilotDiveBombBeginAltRange1;
@@ -42962,6 +43001,12 @@ void GameUnitsHost::report() {
     host.log.notef("summary mission squadron travel alt bound=%d gated_refreshes=%llu "
         "(0089F550 -> 009C3650 gate, packet cc9_squadron_travel_alt)",
         kSquadronTravelAltBound ? 1 : 0, host.summary.squadron_travel_alt_refreshes);
+    if (host.dive_profile_travel_alt_resets != 0 || host.dive_profile_clock_reseeds != 0) {
+        host.log.notef("summary mission dive cruise profile gate bound=%d travel_alt_resets=%llu "
+            "clock_reseeds=%llu (009C894F-009C8971, 009C8A74, packet p23_dive_profile_gate)",
+            GameUnitsHost::Impl::kDiveCruiseProfileGateBound ? 1 : 0,
+            host.dive_profile_travel_alt_resets, host.dive_profile_clock_reseeds);
+    }
     for (const std::unique_ptr<GameUnitSlot>& s : host.slots) {
         if (!s->sq_ever_set) continue;
         host.log.notef("  squadron travel alt %s: alt=%.1f force=%d active=%d last_cruise=%.1f "
