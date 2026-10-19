@@ -8,12 +8,10 @@ struct MissionLightingGlobals {
  SystemLightingWords4 diffuse_color{};
  U specular_guard{};
  SystemLightingWords4 specular_color{};
- SystemLightingWords3 direction{};
- std::uint8_t scale_ambient{};
  static MissionLightingGlobals& process() {
-  // Installed PE loader-zero .data: E18AE0..E18B1B, F8758C..F87597,
-  // F88A0C. Nonnull configuration reaches only scale_ambient and RO one;
-  // the other canonical source cells remain available for the genuine body.
+  // Installed PE loader-zero .data: E18AE0..E18B1B. These fallback guard/color
+  // cells have no other application owner and are not read by our admitted
+  // nonnull configuration branch. Settings and world-up have separate owners.
   static auto* const value=new MissionLightingGlobals;
   return *value;
  }
@@ -33,6 +31,8 @@ struct MissionShipLightingGraph {
  NativeRenderActualOwnerRegistry& owners;
  NativeStringRawPoolContext& strings;
  MissionLightingGlobals& globals;
+ const std::uint8_t captured_scale_ambient;
+ const SystemLightingWords3 fallback_direction;
  NativeSceneRegistryAllocator const allocation{&raw_allocate};
  NativeSceneRegistryFree const deallocation{&raw_free};
  NativeSceneRegistryLengthFailure const length_failure{&qualified_length_failure};
@@ -65,8 +65,18 @@ struct MissionShipLightingGraph {
  Phase phase{Phase::prepared};
 
  MissionShipLightingGraph(GameHostLog& output,DestructionGraph& g,CameraGraph& c,
-     NativeRenderActualOwnerRegistry& actual,NativeStringRawPoolContext& raw)
+     NativeRenderActualOwnerRegistry& actual,NativeStringRawPoolContext& raw,
+     std::uint8_t startup_scale_ambient)
   :log(output),graph(g),cameras(c),owners(actual),strings(raw),globals(MissionLightingGlobals::process()),
+   // Source settings+8C aliases F88A0C and has already been loaded by startup.
+   // Parent captures this exact byte in init arguments.word00; device/settings
+   // reset is excluded while this graph is live. This is a stable read snapshot,
+   // not a second writable global or a loader-zero default.
+   captured_scale_ambient(startup_scale_ambient),
+   // Native CD2280 initialized F8758C; preserve the existing source constant.
+   // Nonnull 004BACD0 does not read this fallback direction.
+   fallback_direction{float_bits(kWorldUp00f8758c[0]),float_bits(kWorldUp00f8758c[1]),
+       float_bits(kWorldUp00f8758c[2])},
    registry_storage{allocation,deallocation,length_failure},mutation{registry_storage,invalid_parameter},
    registration{mutation,reinterpret_cast<const char*>(g.profiles(0xce38f8))},
    gate{registration,g.types,&c.types,g.profiles(0xd62c88),g.profiles(0xd62cf0),
@@ -124,7 +134,7 @@ struct MissionShipLightingGraph {
       diffuse,diffuse,specular,one,one,yaw,elevation};
   LightingConfigurationGlobals global_fields{globals.half_guard,globals.half_color,
       globals.diffuse_guard,globals.diffuse_color,globals.specular_guard,globals.specular_color,
-      globals.direction,globals.scale_ambient,*graph.profiles(0xce3800),*graph.profiles(0xd7a24c)};
+      fallback_direction,captured_scale_ambient,*graph.profiles(0xce3800),*graph.profiles(0xd7a24c)};
   auto& light=sun_owner->light;
   LightingDirectionalFields directional{light.diffuse_184,light.specular_194,
       light.base_diffuse_1a4,light.diffuse_mode3_1b4,light.base_specular_1c4,
@@ -181,8 +191,8 @@ struct MissionShipLightingGraph {
    resource_name_live=false;destroy_native_string_header_0041dd20(&resource_name,strings);
    phase=Phase::ready;
    log.notef("native mission lighting ready: outer=%p resource=%p ambient=%p sun=%p first_light=1 "
-       "configuration=004BACD0 ambient_cube=0.25,0.28,0.32 diffuse=0.70,0.68,0.60 specular=0.12,0.12,0.12 shadow=null",
-       outer,resource,get<void*>(resource,0x10),sun);
+       "configuration=004BACD0 captured_scale_ambient=%u ambient_cube=0.25,0.28,0.32 diffuse=0.70,0.68,0.60 specular=0.12,0.12,0.12 shadow=null",
+       outer,resource,get<void*>(resource,0x10),sun,unsigned(captured_scale_ambient));
   } catch(...) {phase=Phase::failed;throw;}
  }
  bool requires_process_retention() const noexcept {

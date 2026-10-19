@@ -67,11 +67,19 @@ scratch base is ESP+14, so original listing stack offsets are 14h bytes larger.
 
 ## Source global and runtime bindings
 
-The supported installed PE's mapped image was checked: E18AE0..E18B1B,
-F8758C..F87597 and F88A0C are all loader-zero .data. One intentionally retained
-source process owner supplies these relocated configuration fallback/guard/direction
-cells. The nonnull configuration branch reaches only scale_ambient F88A0C and the
-borrowed real read-only D7A24C one; no unknown fallback value is synthesized.
+The supported installed PE's mapped image was checked: E18AE0..E18B1B are
+loader-zero .data. One intentionally retained source process owner supplies these
+unused configuration fallback guard/color cells; no other application owner was
+found. They are not read by the admitted nonnull branch. Direction F8758C has an
+existing source owner, `kWorldUp00f8758c`, reflecting native CD2280 initialization;
+the graph uses an immutable bit copy of that constant for the unread fallback.
+
+Scale-ambient F88A0C aliases the loaded settings owner's +8C, so its loader image
+does not describe its live value. The parent supplies the exact startup capture
+`arguments.word00` as a uint8_t constructor input. The graph retains an immutable
+read snapshot of that configured byte, with settings/device reset excluded while
+the graph is live, and logs it. This is not a second writable settings owner. The
+nonnull branch reads this captured byte and the borrowed real read-only D7A24C one.
 
 Registry storage uses the application's existing raw_allocate/raw_free CRT source
 bindings and existing invoke_native_invalid_parameter_00BF6713. The vendor STL
@@ -86,7 +94,8 @@ scratch; they do not claim original private stack identity.
 
 Include `bsp/game_native_mission_lighting.hpp` at TU top level and the `.inc` after
 the renderer/scene graph types, before mission_ship.inc. Construct metadata with
-`MissionShipLightingGraph(log, graph, cameras, owners, raw_strings)`. Call
+`MissionShipLightingGraph(log, graph, cameras, owners, raw_strings,
+static_cast<uint8_t>(arguments.word00))`. Call
 `create_and_bind(scene->raw())` AFTER attaching every model to the native-null outer
 scene. This invokes genuine B723F0 to retain the new resource in outer+1C. B723F0
 does not propagate roots; static models keep their genuinely null+170 and B45360's
