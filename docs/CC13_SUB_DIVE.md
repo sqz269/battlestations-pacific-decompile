@@ -189,6 +189,72 @@ Two gaps:
   packet's switch (above). The other labelled inputs are unchanged: 008522C0 (read false) and
   the ring writes (step 1).
 
+## The post-air-out Kaiten sink is the image's behaviour (no build)
+
+The lead asked why all twelve USNOS Kaitens sink without limit after their air runs out
+(OFF, `p23h_off_os.log`). They sink because they are dead. Each Kaiten dies first and then
+sinks as a wreck. The host reproduces each step of the image's chain, so nothing is built.
+
+**The deaths (OFF log).**
+- Five were shot: #3.1 at 143.75 s, #3.3 at 162.16 s and #3.5 at 185.31 s by Portland1
+  (cat 3); #3.2 at 178.71 s by NH (cat 6); #6.2 at 810.28 s by TroopTrans3 (cat 6).
+- Seven drowned: #3.4, #3.6, #6.1, #6.3, #6.4, #6.5 and #6.6. Each has a
+  `submarine air: ... drowned (vtable[70h](1))` line and a death row with no killer.
+- For #3.1, trace step 2201 reads `level=0` with `dir=-1` and a positive rate. The effective
+  band is therefore 3, not 0, so the boat is dead. It sinks at vy = -1.000 (the class
+  DownSpeed). Crush pulses start at -71 m, and
+  `sunk ship kill depth: ... KillDepth=-200.0` removes it at 246.56 s.
+
+**The image chain.**
+1. **Air, 00855250.** The breathing line comes first:
+   - 00855256..0085525C: `FLD [unit+1204h]` (bands[1]), `FADD double 00D7A2B0` (3.0),
+     stored as a float.
+   - 0085526A / 00855270: it is compared with the double at 00CEE4E0, re-read for this note
+     as bytes `00 00 00 00 00 00 10 C0` = **-4.0**. `JBE` keeps the sum when -4.0 <= sum;
+     otherwise the line is the float at 00CF1430 (bytes `00 00 80 C0` = -4.0). So the line
+     is max(sum, -4.0). For a Kaiten (bands[1] = -3.0) it is exactly 0.0.
+   - 008552A4: `FCOMIP` hull Y against the line, `JBE 008552CB`. At or below the line the
+     air drains by dt / RunOutTime (120 s for the Kaiten); above it, it refills
+     (008552AA, `FDIV [class+83Ch]`).
+   - 0085537A..008553B8: air above 1.0 is clamped. Air below 0 is stored as 0 and the
+     drown kill `vtable[70h](1)` follows.
+   - 00855250 reads no class+510h / +514h, so a kamikaze boat drains and drowns like any
+     submarine.
+2. **The dive law, 00936DC0.** 00936E84 `CMP byte [ESI+5Dh],0` and 00936E8A `MOV EBX,3`
+   force the effective band to 3 (-80 m) for a dead boat, after the kamikaze test. The
+   dead write wins, so the law drives the wreck down.
+3. **Removal, 00826628.** The wreck is removed at KillDepth -200 (packet
+   cc9_sunk_ship_kill_depth, hosted).
+
+**Why the OFF Kaitens live 110..180 s.** At level 0 (the host's false kamikaze test) the
+law targets the surface and leaves the rate at 0 once the boat is more than a metre under.
+The boats bob between +0.1 and -2.1 m, across the 0.0 breathing line, so they drain and
+refill in turn. At the `surface` sensor category, Portland1's guns hit them.
+
+**Predicted with kCc13SubDiveKamikazeBound ON (USNOS, pairs to cc9-ships60).**
+- The Kaitens are held near -3, always below the 0.0 breathing line. The kamikaze
+  exemption keeps them from surfacing to refill, which is the image's design.
+- All twelve should drown about 120 s after spawn. Group #3 dies around 120 s instead of
+  143..188 s.
+- Gunfire kills on Kaitens should mostly vanish: they read `periscope_in`, and ship
+  torpedo bots drop them (00852820). The death rows should go from five shot plus seven
+  drowned to about twelve drowned.
+- Kamikaze contacts stay at 0. The boats start 4.5..6.5 km from TroopTrans3 (d32c
+  4548..6496 m), and even at the reference speed of 15.43 m/s they cover at most 1.85 km in
+  120 s. Group #6 died 681..2791 m from the transports OFF, after a much longer life.
+- The wreck lines (crush pulses, the KillDepth -200 removal) remain, at earlier times.
+- Not measured: the spawn times of group #6, so "spawn + 120 s" is a prediction for them.
+
+**A latent host constant mismatch (no reach).** `submarine_air_breathing_line_00855250`
+(src/submarine_model.cpp) tests `sum < 0.0f`, but the image compares the sum with -4.0
+(00CEE4E0). The two differ only for a sum strictly between -4.0 and 0.0, that is a
+PeriscopeDepth strictly between 3 and 7. The shipped classes use 3, 7, 10.2, 12.8, 13.0
+and 14.0 (`vehicleclasses.lua`). At 3 and 7 both forms give the same line (0.0 and -4.0),
+and the rest fall below -4.0 in both, so no shipped class is affected. The header comment
+near `kSubAirBreathingLineFallback` ("discarded whenever it falls below zero") describes
+the host test, not the image. Fixing it belongs to the owner of src/submarine_model.cpp; it
+is not changed here.
+
 ## Uncertainties
 
 - The kamikaze class test reads Lua keys, as the host's other readers of class+510h / +514h
