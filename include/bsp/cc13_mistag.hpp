@@ -35,6 +35,18 @@ std::uint32_t trivial_getter_result(std::uint32_t address) noexcept;
 
 inline constexpr std::uint32_t kSingletonBaseVtable = 0x00CE3818;
 
+// Part B: 118 out-of-line destructors of the one-instruction shape `MOV [ECX], vtable; RET`
+// (C7 01 imm32 C3), __thiscall(ECX = object), RET. Checked by local/mistag_partB_check.py.
+// 98 store the session message root vtable 00CE4974, 14 store 00D056D0.
+struct VtResetDestructor {
+    std::uint32_t address;
+    std::uint32_t vtable;
+};
+inline constexpr std::size_t kVtResetDestructorCount = 118;
+extern const VtResetDestructor kVtResetDestructors[kVtResetDestructorCount];
+// Runs the row at `address` on `object` ([object] = its vtable); false when `address` is not a row.
+bool vt_reset_destruct(std::uint32_t address, void* object) noexcept;
+
 class MistagHost {
 public:
     virtual ~MistagHost() = default;

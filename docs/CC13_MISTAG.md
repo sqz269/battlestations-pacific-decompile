@@ -322,6 +322,52 @@ compare). It tests the slot address for null and raises the count either way.
 
 None of the four remains.
 
+## Part B: vt-reset destructors (118 rows)
+
+Script: `local/mistag_partB_check.py` (output `local/mistag_partB.json`). It is committed with
+its two inputs' generators, `local/mistag_vtscan2.py` and `local/mistag_vtclass.py` (run in that
+order). It starts from the widened scan's vt-reset candidates (`local/mistag_vtclass.json`) and,
+for each one:
+- re-reads the disk bytes and requires `C7 01 <imm32> C3`, with imm32 equal to the scanned
+  vtable;
+- refuses the struck ranges, 006C5000-006C5FFF and any row that already has a record;
+- classes the vtable from its other slots: game when any slot is a `BSP_` name or a recorded
+  non-library name, library when only library names appear, unknown otherwise;
+- lists the row's callers from the index.
+
+**118 game rows** are rebuilt as the table `kVtResetDestructors` with `vt_reset_destruct()`,
+each `__thiscall(ECX = object)`, RET, doing `[object] = vtable`. Under the destructor rule above
+each is a class's out-of-line destructor. Every row has at least one caller. 229 of the 230
+call sites are EH unwind funclets; the one direct call is 0077D7F0
+BSP_Replication_StepLocalPlayerRecord calling `0075B420`, which destroys its stack message. No
+row is reached from its vtable's slot 0.
+- **98 rows** store the session message root vtable 00CE4974. They are named
+  `BSP_SessionMessageRoot_StoreVtable_<address>`, following the three cc13-seg40b records of the
+  same shape (00729090, 007290A0, 007293B0).
+- **14 rows** store 00D056D0, the bot-state root (docs/LANDING_MOVETO_CONSTRUCTOR_CC11.md).
+- **6 rows** store a vtable each: 00D1FDB8, 00D20838, 00D20E84, 00D21148, 00D21B40, 00CFF354.
+- These 20 rows (the 14 and the 6) are named mechanically `BSP_Vt<vtable>_Destruct_<address>`.
+
+All 118 names are provisional, and each ledger record lists the row's callers. The Ghidra
+renames were made in three batches under the lock. The old names are kept in
+`local/ghidra-annotations-20261019T085020Z.json`, `...T085054Z.json` and `...T085128Z.json`.
+
+**Left unbound** (library vtables, no game slot):
+
+| Address | Vtable |
+|---|---|
+| `007B5910` | 00D05840 |
+| `007512A0` | 00D24F84 |
+| `007512E0` | 00D24F84 |
+| `0094CEB0` | 00D24F84 |
+| `0094CAE0` | 00D24FCC |
+| `0094CAF0` | 00D24FEC |
+
+Unknown (no named slot either way): `00842990`, vtable 00D0B6A0.
+
+Three scan candidates fail the byte check and are not part B: `009DB550` (`B0 01 C3`, MOV AL,1),
+`006D1420` (`C7 81 F8000000 ...`, a store at +F8h) and `007B0DB0` (`8B 41 08 C3`, a +8h getter).
+
 ## Uncertainty
 
 - The getters' owning classes and slot positions are not established; names follow the string.
