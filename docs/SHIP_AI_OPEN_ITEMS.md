@@ -19707,8 +19707,10 @@ This host never ran that walk, so the artillery stayed AI-held (held_ticks 0).
     refuses;
   - Northampton's turret shots 335 to 280, and hits 925 to 812;
   - deaths identical.
-- Open: a pair with player shells needs a camera aim input that the harness lacks. The flip waits
-  on the lead.
+- Committed pair on d91c9e54c: same numbers on USN01. On USN04 idle there is no walk and gameplay
+  is identical. Flipped ON by mechanism, per the lead.
+- Open: a pair with player shells needs a camera aim input that the harness lacks. The lead has
+  asked cc13 for one.
 
 ## 297. cc9-ships59 handoff (2026-10-18)
 

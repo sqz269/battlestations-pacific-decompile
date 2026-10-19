@@ -489,3 +489,11 @@ The image's path is the role take:
   - Deaths and death rows identical (32). Hit records 4407 to 4294.
   - A pair that shows player shells needs a camera aim input, which the harness `input` line does
     not give.
+- **The committed pair** (d91c9e54c, `local\g53_rw3_{off,on}`) reproduced the preview exactly. On
+  USN04 idle the walk never runs (takes 0, releases 0), and gameplay, death rows and the unit table
+  are identical.
+- **Verdict: flipped ON by mechanism.** The walk is the image's, and an AI that does not fire a
+  player-held mount is the game's behaviour.
+- **Gap:** no pair yet shows a player-fired shell. The lead asked cc13 for a camera aim (pitch)
+  input in the scripted-helm tool. A later pair should raise the camera above the turrets'
+  vertical window and hold 0x99.
