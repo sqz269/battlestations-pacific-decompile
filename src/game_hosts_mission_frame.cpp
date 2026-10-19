@@ -575,6 +575,10 @@ struct GameMissionFrameHost::Impl {
     std::vector<HelmMarker> helm_markers;   // the scene's markers, by name
     unsigned long long helm_orders_applied{0};
     unsigned long long helm_orders_refused{0};
+    // Packet cc13-mvsel (log only): moveto lines issued to a unit that was not
+    // the controlled unit ([00E188D8]) at issue time, which a player cannot do
+    // without the select first (SCRIPTED_HELM 8.2 difference 2).
+    unsigned long long helm_moveto_unselected{0};
     // Packet cc9_player_order_capture_row: the pending `stop R` of the last
     // applied takehelm, checked every step until it fires once.
     bool helm_stop_armed{false};
@@ -4955,9 +4959,11 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
             // therefore never take the player's moveto; the harness refuses it.
             // LABELLED: a selectable unit that is not the controlled one is still
             // ordered without the select (SCRIPTED_HELM 8.2 difference 2).
-            if (unit_index < host.units->count()
-                && !(host.units->controlled_bound()
-                     && host.units->controlled_index() == unit_index)) {
+            // Packet cc13-mvsel: such an order is counted and its line tagged
+            // `unselected=1`; the read is const and selects nothing.
+            const bool unselected = !(host.units->controlled_bound()
+                && host.units->controlled_index() == unit_index);
+            if (unit_index < host.units->count() && unselected) {
                 bool hud_reached = false;
                 const bool selectable =
                     bsp::game::hud_unit_selectable_00645060(unit_index, hud_reached);
@@ -4986,12 +4992,14 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                         order.applied = false;
                     }
                     if (issued) ++host.helm_orders_applied; else ++host.helm_orders_refused;
+                    if (issued && unselected) ++host.helm_moveto_unselected;
                     host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) "
                         "moveto %s %s(%.1f, %.1f) to %d squadron plane(s) (005F9B20 00E08F68 -> "
-                        "0099A170, packet p20_squadron_helm)", issued ? "applied" : "refused",
+                        "0099A170, packet p20_squadron_helm)%s", issued ? "applied" : "refused",
                         order.line, due, now, order.unit.c_str(),
                         order.point_name.empty() ? "" : (order.point_name + " ").c_str(),
-                        static_cast<double>(x), static_cast<double>(z), planes);
+                        static_cast<double>(x), static_cast<double>(z), planes,
+                        issued && unselected ? " unselected=1" : "");
                     continue;
                 }
             }
@@ -5010,12 +5018,14 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 order.applied = false;
             }
             if (issued) ++host.helm_orders_applied; else ++host.helm_orders_refused;
+            if (issued && unselected) ++host.helm_moveto_unselected;
             host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) "
                 "moveto %s %s(%.1f, %.1f) through the player's moveto form (00E08F68, point "
-                "descriptor, flags 1, 0077D600)", issued ? "applied" : "refused", order.line,
+                "descriptor, flags 1, 0077D600)%s", issued ? "applied" : "refused", order.line,
                 due, now, order.unit.c_str(),
                 order.point_name.empty() ? "" : (order.point_name + " ").c_str(),
-                static_cast<double>(x), static_cast<double>(z));
+                static_cast<double>(x), static_cast<double>(z),
+                issued && unselected ? " unselected=1" : "");
         }
         // Packet cc9_player_order_capture_row: `stop R`, the player pulling the
         // throttle lever back once the helm unit is within R metres (x/z) of its
@@ -5185,6 +5195,13 @@ void GameMissionFrameHost::report(long requested_frames) {
         host.log.notef("summary mission trajectory csv=%s rows=%llu",
             host.trajectory_csv_path.c_str(), host.trajectory_csv.rows());
         host.trajectory_csv.close();
+    }
+    if (!host.helm_orders.empty()) {
+        // Packet cc13-mvsel. No helm summary line existed; this one is printed
+        // only when --helm-orders read a line, so a run without one is unchanged.
+        host.log.notef("summary mission helm orders applied=%llu refused=%llu "
+            "helm_moveto_unselected=%llu", host.helm_orders_applied, host.helm_orders_refused,
+            host.helm_moveto_unselected);
     }
     if (host.scene_contents) {
         // Milestone 2h. The scene contents pass created unit records. The world
