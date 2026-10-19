@@ -66,6 +66,7 @@
 #include "bsp/command_execution.hpp"           // packet cc9_ship_exit_zone (command classes)
 #include "bsp/plane_level_bomb_task.hpp"      // packet cc9_plane_level_bomb_task
 #include "bsp/cc13_devwalk.hpp"               // packet cc13-devwalk (007C0D90 per rack)
+#include "bsp/cc13_seg67b_switches.hpp"       // packet cc13-seg67b (009A7932)
 #include "bsp/squadron_spent_ordnance.hpp"    // packet cc9_squadron_spent_ordnance_rtb
 #include "bsp/scene_record_side_blocks.hpp"
 #include "bsp/plane_follow_law.hpp"
@@ -25196,6 +25197,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (c.speed_from_target) {
                                 unit_.plane_desired_speed_2b4 = c.desired_speed;
                                 unit_.plane_air_brake_mode_2d8 = 1;
+                                if constexpr (bsp::kSeg67bDogfightAimSpeedCorrOffBound) {
+                                    // 009A7932: plan+2B0h = 1 (byte), so 0099D924 does not
+                                    // raise the speed correction while aiming.
+                                    unit_.plane_trg_speed_corr_off_2b0 = 1;
+                                }
                             } else if constexpr (GameUnitsHost::Impl::kDogfightThrottleBound) {
                                 // 007B4ED0: direct throttle, speed mode +2D8h = 0.
                                 const bsp::DogfightThrottle th =
