@@ -48,7 +48,48 @@ public:
     virtual float object_vcall_50_angle(void* object) = 0;
     // 00438B10(left, right), two stack floats, RET 8, ST0 (bsp::wrapped_angle_subtract_00438b10).
     virtual float wrapped_angle_subtract_00438b10(float left, float right) = 0;
+
+    // --- 0099A880 / 0099BE30 ---
+    // [00F8A30C]: the pilot robots table pointer (a runtime .data dword).
+    virtual std::uint32_t pilot_robots_table_00f8a30c() = 0;
+    // 0072BBD0, __thiscall(ECX = bot, robots), RET 4: BSP_GunBot_ConstructBase.
+    virtual void gun_bot_construct_base_0072bbd0(void* bot, std::uint32_t robots) = 0;
+    // 00BF7CD1 eh_vector_constructor_iterator(first, size, count, ctor, dtor).
+    virtual void eh_vector_construct_00bf7cd1(void* first, std::uint32_t size, std::uint32_t count,
+        std::uint32_t ctor, std::uint32_t dtor) = 0;
+    // 0099B450, __thiscall(ECX = plan): BSP_PilotBot_SeedPlanSlots.
+    virtual void pilot_bot_seed_plan_slots_0099b450(void* plan) = 0;
+
+    // --- 00816B00 ---
+    // 0080E240(holder), RET 4: BSP_ShipSyncState_GetOrCreate.
+    virtual void* ship_sync_state_get_or_create_0080e240(void* holder) = 0;
+    // 00813CA0, __thiscall(ECX = buffer; unit, state, phase, flag), returns the message.
+    virtual void* unit_state_message_build_00813ca0(void* buffer, void* unit, void* state,
+        std::int32_t phase, bool flag) = 0;
+    // 00779FC0, __thiscall(ECX = unit; peer, message): BSP_Entity_SendMessageToPeer.
+    virtual void entity_send_message_to_peer_00779fc0(void* unit, std::uint32_t peer, void* message) = 0;
+    // 00779F80, __thiscall(ECX = unit; holder): BSP_NetEntityHolder_StampSyncTick.
+    virtual void net_entity_holder_stamp_sync_tick_00779f80(void* unit, void* holder) = 0;
+    // object->vtable[5Ch](id): IsKindOf.
+    virtual bool is_kind_of_5c(void* object, std::uint32_t id) = 0;
+    // 00859C60, __thiscall(ECX = unit): BSP_Unit_IsDamaged.
+    virtual bool unit_is_damaged_00859c60(void* unit) = 0;
+    // 0080FCF0 (bsp::cc13_census9::ship_guns_sync_construct_0080fcf0), returns the message.
+    virtual void* ship_guns_sync_construct_0080fcf0(void* buffer, void* unit, std::int32_t phase,
+        bool force) = 0;
+    // 00BF7C6E eh_vector_destructor_iterator(first, size, count, dtor).
+    virtual void eh_vector_destruct_00bf7c6e(void* first, std::uint32_t size, std::uint32_t count,
+        std::uint32_t dtor) = 0;
 };
+
+// 0099A880, __thiscall(ECX = memory), RET, EAX = bot: BSP_PilotBot_Construct.
+void* pilot_bot_construct_0099a880(MistagHost& host, void* bot);
+// 0099BE30, __thiscall(ECX = plan, base), RET 4, EAX = plan: the pilot plan block embedded at
+// task+4h (three C8h slots, then the controls; ends with 0099B450).
+void* pilot_plan_construct_0099be30(MistagHost& host, void* plan, void* base);
+// 00816B00, __thiscall(ECX = unit, holder, phase), RET 8: BSP_UnitInstance_SendShipSyncMessage.
+// Unit primary vtable slot 188h.
+void unit_send_ship_sync_message_00816b00(MistagHost& host, void* unit, void* holder, std::int32_t phase);
 
 // 00996200, __thiscall(ECX = condition), RET, EAX = 0/1. Slot 0 of the vtable at 00D1EA30
 // (Ghidra named it Unwind@00996200; it is no funclet: no parent, reached only from the slot).

@@ -66,17 +66,33 @@ has an out-of-line copy with a record; otherwise rebuilt.
   a checked index, then the buffer. The `<PathBase>` string the filter saw is in the next
   routine, 007B1B00 (the dump ran past the end).
 
-## Left open (7 rows)
+## Named bodies (3 rows)
+
+Rule-1 check for each of the four named bodies: `bsp.py lookup`, `docs-for`, `git grep` by
+address, by name and by behaviour across `src/` and `include/`. None has a host body: `src/`
+holds only hooks (`cc13_seg47.hpp`, `cc13_seg48.hpp`, `cc13_seg41_land.hpp` for 007CFD20;
+`cc13_big47b.hpp` for 0099A880; `cc13_seg67b.hpp` for 0099BE30) and field-default comments
+in game_hosts_units.cpp that cite single 007CFDxx/007D01xx stores. 00816B00's send side is in
+no file (docs/UNIT_STATE_MESSAGE.md covers the apply side). Three are rebuilt here:
+
+- **0099A880 BSP_PilotBot_Construct**: 0072BBD0 with the robots table [00F8A30C]; vtables
+  00D1F348 / +1Ch 00D1F32C; +58h..+6Ch zero; two 1Ch slots at +84h; +70h 0.0f, +74h -1.0f,
+  +78h 0.24f (00E0E2EC), +7Ch 0, +80h 256.0f.
+- **0099BE30 BSP_PilotPlan_Construct**: three C8h slots, +2F0h = base with its +538h/+9D4h,
+  +2E0h = 7, the control constants (1.0f, 0.12f, 0.24f), then 0099B450.
+- **00816B00 BSP_UnitInstance_SendShipSyncMessage**: MT_SHIP_SYNC every call (full when the
+  per-holder counter reaches 3*phase+1 or the state's +0Fh is set), then MT_SHIP_GUNS_SYNC for
+  phase 1..4, or for phase <= 0 when the state's +18h or +19h is set (phase 0 scans the gun
+  parts for damage first). The state's +19h takes the damage result and +18h takes phase > 0.
+
+## Left open (4 rows)
 
 | Address | Size | What |
 |---|---|---|
+| `007CFD20` | 1573 | BSP_PlaneUnitInstance_Construct (no host body; see above) |
 | `007D03A0` | 532 | plane unit-instance destructor, vtable 00D05F20 (tagged CG_vector_deleting_dtor) |
 | `0083B120` | 560 | gameplay tuning settings destructor, vtable 00CE3994 (include/bsp/gameplay_settings.hpp has no destructor), caller 00424C20 |
 | `0086C240` | 2763 | the Flare effect component's Lua reader (docs/GAMEPLAY_EFFECT_COMPONENTS.md row Flare) |
-| `007CFD20` | 1573 | BSP_PlaneUnitInstance_Construct |
-| `00816B00` | 377 | BSP_UnitInstance_SendShipSyncMessage |
-| `0099A880` | 181 | BSP_PilotBot_Construct |
-| `0099BE30` | 164 | bot-task embedded constructor |
 
 ## Uncertainty
 

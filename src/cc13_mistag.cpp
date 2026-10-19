@@ -110,4 +110,89 @@ void point3_ptr_array_destruct_007b1a80(MistagHost& host, void* array) {
     at<std::uint32_t>(array, 0x10) = 0;
 }
 
+// 0099A880..0099A934. Float constants read from the image: 00E0E2EC = 0.24f (3E75C28Fh, a .data
+// dword with no writer in the index), 00CF8B3C = 256.0f, 00D7A260 = -1.0f.
+void* pilot_bot_construct_0099a880(MistagHost& host, void* bot) {
+    host.gun_bot_construct_base_0072bbd0(bot, host.pilot_robots_table_00f8a30c());
+    at<std::uint32_t>(bot, 0x00) = 0x00D1F348;
+    at<std::uint32_t>(bot, 0x1C) = 0x00D1F32C;
+    for (std::size_t off = 0x58; off <= 0x6C; off += 4) at<std::uint32_t>(bot, off) = 0;
+    host.eh_vector_construct_00bf7cd1(static_cast<std::uint8_t*>(bot) + 0x84, 0x1C, 2,
+        0x0099A630, 0x0099A010);
+    at<float>(bot, 0x70) = 0.0f;
+    at<float>(bot, 0x78) = 0.24f;
+    at<float>(bot, 0x80) = 256.0f;
+    at<std::uint8_t>(bot, 0x7C) = 0;
+    at<float>(bot, 0x74) = -1.0f;
+    return bot;
+}
+
+// 0099BE30..0099BED1. base is dereferenced without a null test (+538h, +9D4h). Constants:
+// 00D7A24C = 1.0f, 00CE81A8 = 0.12f (3DF5C28Fh), 00E0E2EC = 0.24f.
+void* pilot_plan_construct_0099be30(MistagHost& host, void* plan, void* base) {
+    host.eh_vector_construct_00bf7cd1(plan, 0xC8, 3, 0x0099BDB0, 0x007B3BA0);
+    at<float>(plan, 0x258) = 1.0f;
+    at<std::uint32_t>(plan, 0x25C) = 0;
+    at<void*>(plan, 0x2F0) = base;
+    at<std::uint32_t>(plan, 0x2F4) = at<std::uint32_t>(base, 0x538);
+    at<std::uint32_t>(plan, 0x268) = 0;
+    at<std::uint32_t>(plan, 0x2F8) = at<std::uint32_t>(base, 0x9D4);
+    at<std::uint32_t>(plan, 0x2E0) = 7;
+    at<float>(plan, 0x2B8) = 1.0f;
+    at<float>(plan, 0x260) = 0.12f;
+    at<float>(plan, 0x2EC) = 0.24f;
+    at<float>(plan, 0x264) = 0.0f;
+    host.pilot_bot_seed_plan_slots_0099b450(plan);
+    return plan;
+}
+
+// 00816B00..00816C76. The two messages live in the routine's 1B08h-byte stack frame: the
+// MT_SHIP_SYNC buffer (4Ch bytes at frame-1B0Ch) and the MT_SHIP_GUNS_SYNC buffer (1AB4h).
+// The sync message has no destructor call; the guns message's 64h records are destroyed.
+void unit_send_ship_sync_message_00816b00(MistagHost& host, void* unit, void* holder, std::int32_t phase) {
+    alignas(4) std::uint8_t sync_buffer[0x4C];
+    alignas(4) std::uint8_t guns_buffer[0x1AB4];
+    bool full = false;                                                    // [esp+14h] byte
+    void* const state = host.ship_sync_state_get_or_create_0080e240(holder);
+    at<std::int32_t>(state, 0x14) += 1;
+    if (at<std::int32_t>(state, 0x14) >= phase * 3 + 1 || at<std::uint8_t>(state, 0x0F) != 0) {
+        full = true;
+        at<std::int32_t>(state, 0x14) = 0;
+    }
+    void* const sync = host.unit_state_message_build_00813ca0(sync_buffer, unit, state, phase, full);
+    const std::uint32_t peer = at<std::uint32_t>(holder, 0);
+    host.entity_send_message_to_peer_00779fc0(unit, peer, sync);
+    host.net_entity_holder_stamp_sync_tick_00779f80(unit, holder);
+
+    std::uint8_t damaged = 0;                                             // [esp+13h]
+    bool send_guns;
+    if (phase >= 5) {
+        send_guns = false;                                                // 00816BE3 -> 00816C4F
+    } else if (phase > 0) {
+        send_guns = true;                                                 // 00816BE7 -> 00816C09
+    } else {
+        if (phase == 0 && at<std::uint8_t>(state, 0x18) == 0) {
+            // 00816BAA..00816BDE: the first gun part (+48h list, +44h links) answering
+            // IsKindOf(22h) that is damaged sets both flags.
+            for (void* part = at<void*>(unit, 0x48); part != nullptr; part = at<void*>(part, 0x44)) {
+                if (host.is_kind_of_5c(part, 0x22) && host.unit_is_damaged_00859c60(part)) {
+                    damaged = 1;
+                    at<std::uint8_t>(state, 0x19) = 1;
+                    break;
+                }
+            }
+        }
+        // 00816BE9 (00816BA8 jumps straight to 00816BF5 when +18h is set).
+        send_guns = at<std::uint8_t>(state, 0x18) != 0 || at<std::uint8_t>(state, 0x19) != 0;
+    }
+    if (send_guns) {
+        const bool force = phase == 0 && at<std::uint8_t>(state, 0x18) != 0;   // 00816BF5..00816C09
+        void* const guns = host.ship_guns_sync_construct_0080fcf0(guns_buffer, unit, phase, force);
+        host.entity_send_message_to_peer_00779fc0(unit, at<std::uint32_t>(holder, 0), guns);
+        host.eh_vector_destruct_00bf7c6e(guns_buffer + 0x24, 0x44, 0x64, 0x0075A5B0);
+    }
+    at<std::uint8_t>(state, 0x19) = damaged;                             // 00816C59
+    at<std::uint8_t>(state, 0x18) = phase > 0 ? 1 : 0;                   // SETG at 00816C56
+}
+
 }  // namespace bsp::cc13_mistag
