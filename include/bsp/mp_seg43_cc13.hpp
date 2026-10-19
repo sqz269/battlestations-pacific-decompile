@@ -19,6 +19,27 @@ namespace bsp::cc13_seg43 {
 
 using Raw = void*;
 
+// nB-high protocol leaves. Explicit call boundaries preserve the native
+// writer owner versus reader owner+4 cursor distinction. Every entry RET4.
+struct NbHighMessageCalls {
+    virtual ~NbHighMessageCalls() = default;
+    virtual void write_extended_header_0075b480(Raw message, Raw stream) = 0;
+    virtual void read_extended_header_0075b4c0(Raw message, Raw stream) = 0;
+    virtual void write_signed_00429090(Raw stream, std::int32_t value, unsigned bits) = 0;
+    virtual void read_signed_00428d30(Raw cursor, std::int32_t* out, unsigned bits) = 0;
+    virtual void write_bool_004290b0(Raw stream, std::uint8_t value) = 0;
+    virtual void read_bool_00428d70(Raw cursor, std::uint8_t* out) = 0;
+    virtual void write_byte_00428ff0(Raw stream, std::uint8_t value, unsigned bits) = 0;
+    virtual void read_byte_00428c70(Raw cursor, std::uint8_t* out, unsigned bits) = 0;
+    virtual std::uint8_t& map_subscript_005c49c0(Raw map, const std::int32_t* key) = 0;
+};
+void supply_state_message_write_0084ce80(Raw message, Raw stream, NbHighMessageCalls&);
+void supply_state_message_read_0084ceb0(Raw message, Raw stream, NbHighMessageCalls&);
+// ECX receiver, stack message, AL bool: accept type BFh only, map at receiver+310h.
+bool supply_state_message_apply_0084d520(Raw receiver, const void* message, NbHighMessageCalls&);
+void root_message_write_type_008dade0(Raw message, Raw stream, NbHighMessageCalls&);
+void root_message_read_type_008dae00(Raw message, Raw stream, NbHighMessageCalls&);
+
 // The two net-id handle tables: id < split ? low table : high table; entry = table base +
 // (id - first) * 10h, object pointer at +0Ch.
 struct EntityRegistryGlobals {

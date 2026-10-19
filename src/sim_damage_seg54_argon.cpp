@@ -2,6 +2,26 @@
 
 namespace bsp::sim_damage_seg54_argon {
 
+void damage_singleton_reset_00875220(void* owner, std::uint32_t& singleton) noexcept {
+  singleton = 0;
+  auto* slot = owner ? reinterpret_cast<std::uint32_t*>(static_cast<std::uint8_t*>(owner) + 4) : nullptr;
+  *slot = 0x00ce3818;
+}
+std::uint8_t packed_word_high_byte_00876ba0(std::uint32_t word) noexcept { return static_cast<std::uint8_t>(word >> 24); }
+void damage_select_last_variant_00877a50(void* owner, DamageLastVariantCalls& calls) {
+  auto* p = static_cast<std::uint8_t*>(owner);
+  auto* kind = *reinterpret_cast<std::uint8_t**>(p + 0x360);
+  const auto last = [kind]() -> std::int32_t {
+    if (!kind) return 0;
+    const auto begin = *reinterpret_cast<std::uint32_t*>(kind + 0x16c);
+    if (begin == 0) return 0;
+    const auto end = *reinterpret_cast<std::uint32_t*>(kind + 0x170);
+    const auto count = static_cast<std::int32_t>(end - begin) >> 4;
+    return count == 0 ? 0 : count - 1;
+  };
+  if (*reinterpret_cast<std::int32_t*>(p + 0x358) != last()) calls.set_variant_slot1b4(owner, last());
+}
+
 // 0x008746a0 — BSP_SimObject_RunFixedSteps_Provisional
 void sim_object_run_fixed_steps_provisional_008746a0(Seg54Host& host, void* this_ptr, std::int32_t count) {
   for (; count != 0; --count) {
