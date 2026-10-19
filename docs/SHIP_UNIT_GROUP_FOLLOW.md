@@ -455,7 +455,7 @@ them**, and the loop is unrolled, which is most of why the body is 523 instructi
 Its last 68 instructions were read too, which pins the ABI and the two answers:
 
 ```
-00811731..00811760  sign = (v > 0) ? -1 : (v > w ? +1 : 0)      ; an integer in [ESP+4]
+00811726..00811760  c = uz*wx - wz*ux ; sign = (c < 0) ? -1 : (c > 0 ? +1 : 0)  ; [ESP+4]
 00811768..008117C2  a cross product, then its squared length     ; [ESP+18h]
 008117C6..008117EB  dist = (sq > 1e-10) ? sqrt(sq) : 0        ; 00CE3820, a DOUBLE; as a float
                                                               ; it reads -7.59e15, a fifth of these
@@ -476,13 +476,16 @@ And the middle is now read in outline, which is what a reconstruction needs:
   compare against the running best and `LEA EDI,[EBX - k]` on a win. `ECX` starts at
   `head + 27h` and `EBX` at 2, so `EDI` ends up holding **how many slots back from the head the
   nearest sample lies**.
-* **The arc length is a sum of the stored legs, not a recomputed distance.** Two accumulators, at
-  `[ESP+48h]` and `[ESP+44h]`, are filled by two loops - `0081167F-008116E5`, unrolled four deep
-  with its back-edge at `008116E5`, and `00811700-00811721` - and each term is
-  `FADD float ptr [ESI + ((i mod 40) + 7Fh)*18h]`, which is `entity + 0BD8h + 18h*(i mod 40) + 10h`:
-  the sample's own `+10h` arc length. The `CMP EAX,EDI / JG` at `008116F1` picks which of the two
-  runs, against a second index held at `[ESP+28h]`.
-* `[ESP+48h]` is what the tail returns as `*out_along`: after the four `POP`s at `008116F3`,
+* **The arc length is the projection plus a sum of the stored legs** (corrected by packet
+  `cc13-jm08`, commit `32cb338f7`). There is ONE accumulator. Call `S` the frame right after
+  `SUB ESP,34h`; the accumulator is `S+38h`, which reads as `[ESP+48h]` with all four pushes live,
+  `[ESP+44h]` after the `POP EBP` at `008116F3`, and `[ESP+38h]` in the tail. It starts as the
+  projection `P` stored at `00811658` (below), and two loops - `0081167F-008116E5`, unrolled four
+  deep, then the remainder at `00811700-00811721` - add the legs `n = 0..b`, **`b+1` of them**, of
+  slots `head, head-1, ..., head-b`. Each term is `FADD float ptr [ESI + ((i mod 40) + 7Fh)*18h]`,
+  which is `entity + 0BD8h + 18h*(i mod 40) + 10h`: the sample's own `+10h` leg. The
+  `CMP EAX,EDI / JG` at `008116F1` skips the remainder loop when the unrolled one covered them all.
+* `S+38h` is what the tail returns as `*out_along`: after the four `POP`s at `008116F3`,
   `0081172A`, `0081172D` and `00811730` the stack has moved 16 bytes, so the tail's
   `MOVSS XMM0,[ESP+38h]` at `008117FD` reads that same accumulator.
 
@@ -493,29 +496,34 @@ the prologue's stores: `SUB ESP,34h` then `PUSH EBX/ESI/EDI/EBP` leaves the body
 through the whole routine, and the prologue also keeps them in `ST2`, `ST1`, `ST0`.
 
 ```
-008115C2..008115DA  [ESP+38h..40h] = sample[a] - sample[b]        ; the segment
+008115C2..008115DA  [ESP+38h..40h] = sample[b] - sample[a]        ; the segment, b the newer end
 008115DE            0042B260 normalize_in_place on it             ; u, a unit vector
-008115F6..00811626  [ESP+2Ch..34h] = sample[i] - point            ; w
-0081162A..00811658  [ESP+48h] = dot(w, u)                         ; the projection
-00811660            ... stored over [ESP+20h], point.z's own slot
-00811768..008117C2  |w x u|^2                                     ; a 3D cross product
-008117C6..008117EB  dist = (|w x u|^2 > 1e-10) ? sqrt(...) : 0
+008115F6..00811626  [ESP+2Ch..34h] = sample[b] - point            ; w
+0081162A..00811658  S+38h = P = (wy*uy + wx*ux) + wz*uz           ; the projection, along's seed
+00811660            P copied to S+10h ([ESP+20h], point.z's slot) ; the across foot's scale
+00811726..00811760  c = uz*wx - wz*ux, its sign                   ; x87: wz,uz,wx,ux,wy live
+00811768..008117C2  |w - P*u|^2                                   ; S+10h read back: foot P*u
+008117C6..008117EB  dist = (|w - P*u|^2 > 1e-10) ? sqrt(...) : 0
 00811803            *out_across = sign * dist
 ```
 
-So the across component is the distance from the point to the **line through the winning sample and
-its neighbour**, with `u` normalised so that `|w x u|` is that distance directly. `[ESP+20h]` being
-overwritten with the projection is safe because `point.z` is still live in `ST0`, and it is the kind
-of slot reuse that makes a naive `[ESP+n]` reading wrong.
+So the across component is the distance from the point to the **line through `sample[b]` and
+`sample[a]`**: `P` is copied at `00811660` to `S+10h` (`[ESP+20h]`, point.z's slot, safe because
+`point.z` is still live in `ST0`), read back at `00811768` as `[ESP+10h]` after the pops, and scales
+`u` into the foot `P*u`; `00811768..008117C2` then square-sums `w - P*u`. That slot reuse is the
+kind that makes a naive `[ESP+n]` reading wrong.
 
-**Still unread: the sign alone.** `00811726-00811760` forms `a*b - c*d` from four x87 registers
-(`FLD ST1 / FMUL ST3`, `FLD ST1 / FMUL ST5`, `FSUBP`) and takes `-1`, `+1` or `0` from its sign at
-`00811743`, `00811756` and `00811760`. Naming those four operands needs the x87 stack tracked
-through a 40-times-unrolled search, and this packet stopped short of that. `record+10h`'s sign - and
-therefore which side of the wake column 0 puts a follower on - is the one quantity still open, which
-is the same thing `include/bsp/ship_ai_path_corridor.hpp` line 62 already says: "which sign is port
-is still open". It will be settled by a run instead: a follower that joined off the port quarter
-must hold the port quarter, and the answer will be labelled measured rather than read.
+**The sign, read (packet `cc13-jm08`).** Tracking the x87 stack from `0081162A` leaves
+`wz, uz, wx, ux, wy` in `ST0..ST4` once `P` is stored and through the leg loops (each leg is
+`FLD / FADD / FSTP`, balanced). At `00811726` `FLD ST1 / FMUL ST3` is `uz*wx`, `FLD ST1 / FMUL ST5`
+is `wz*ux`, and `FSUBP` leaves **`c = uz*wx - wz*ux`**. Then `FLDZ / FCOMIP` with `JBE` at
+`00811741` gives `-1` when `c < 0` (`00811743`), `COMISS / JA` gives `+1` when `c > 0`
+(`00811756`), and `0` otherwise, NaN included (`00811760`). Since the point is `sample[b] - w`, its
+offset from the line projected on `(-uz, +ux)` is `wx*uz - wz*ux = c`: **positive across is the
+`(-dir.z, +dir.x)` side**, the same left normal `0070D290` adds back, provided `0070D290`'s `dir` is
+the direction of travel as `u` is (`u` runs from the older sample `a` to the newer `b`). Which
+side that is in world terms (port or starboard) still depends on the axis handedness, which
+`include/bsp/ship_ai_path_corridor.hpp` line 62 leaves open.
 
 **But for column 0 the sign cancels, and that is what unblocks the station.** `00811180` is the
 only producer of column 0 and `0070D290` is its only consumer, and they are inverse operations:
@@ -877,6 +885,55 @@ logs are `local\l10_off_<row>.log` and `local\l10_ffon_<row>.log`.
   its first director step. No log line prints slot 0 per step. The rising stepper counts are
   indirect evidence only.
 - **Verdict: ON.** The mechanism matched on every row.
+
+### 5h. A dead leader's queue and the leaves around it (packet `cc13-jm08`, switch OFF)
+
+`kDeadLeaderDirectorStateCopyBound` (`include/bsp/cc13_jm08_switches.hpp`, which has the kill-site
+phase table) is OFF. Static reading only; nothing here has been run.
+
+Names: `D` is the dead leader, `S` is its successor (`0070D8D0`), `S2` is the successor after `S`,
+and `M` is any other member.
+
+**What the image does.**
+- `D`'s destroy posts a 77h (`0077D1A0` -> `0077C2A0` -> `0076E520`). The FIFO delivers it at the
+  next pump (`0076C600`, row 9) as the whole `0077BD70`: first `0071C150`, which copies `D`'s
+  director state onto `S`; then SetLeader `0070D0C0` makes `S` the leader; then `0070E4C0` detaches
+  `D`.
+- The flush's `0071DDB0` (row 15) posts a 5Dh to `S` only if `S` still observes `D` at that point.
+  When it does, the 5Dh ends `S`'s inherited head.
+- A Lua `LeaveFormation` / `DisbandFormation` (`0077C980` / `0077CA60`) runs after the kill, so its
+  77h is always queued behind `D`'s. `DisbandFormation` takes its member snapshot at the call, while
+  `D` still leads, and puts `D` last.
+
+**What the host does (switch ON).**
+- For a ship, `leader_death_handover_at_kill` runs the whole leave where the image's pump has it:
+  - at a BeforePump kill, in place;
+  - at a HitDrainAfterPump kill, from the posted loopback entry.
+
+  The row-15 flush's leave (`game_hosts_ready.cpp`, `0092639B` site) then finds `+284h` clear.
+- A Lua leave that meets a posted entry, `D`'s own or its leader's, is posted behind it
+  (`post_formation_leave_0077c980`). Every other Lua leave runs synchronously.
+
+| phase | image FIFO at the next pump | `Leave(D)` | `Leave(S)` | `Leave(M)` | `Disband` |
+|---|---|---|---|---|---|
+| BeforePump (image) | `D`'s 77h runs at this step's pump. No 5Dh at the flush. Lua 77h entries go to the next pump. | `D` is gone: nothing happens. | `S` leads with the inherited head intact and copies it to `S2`. | Leaves as a member. | Snapshot of `S`'s group with `S` last: members leave, then `S`. |
+| BeforePump (host) | Whole leave at the kill. The kill's `0071DDB0` finds `S` copied, as in the image. Lua runs synchronously. | Same as the image. | Same as the image. | Same as the image. | Same as the image. |
+| HitDrainAfterPump (image) | `D`'s 77h, then the 5Dh to `S`, then the Lua 77h entries. | Nothing. | `S` leads, the 5Dh has popped the inherited head, and `S` copies the popped queue to `S2`. | Leaves as a member. | Snapshot with `D` last. At the pump, `D`'s 77h makes `S` the leader. When `S`'s turn comes it copies to the next member still in the group. `D`'s entry then finds no group. |
+| HitDrainAfterPump (host) | The posted whole-leave entry, then the 5Dh (`route_clear_command` -> `post_loopback`), then the posted Lua entries. | Same as the image. | Same as the image. | Same as the image. | Same as the image, with members in index order rather than `+4F8h` order (an existing substitution). |
+| Unmapped (host only) | `D`'s 5Dh was posted at the kill. The leave and its copy wait for the next step's flush, which comes after the pump. | A synchronous `leave_group(D)` copies before the 5Dh, so the 5Dh then ends `S`'s inherited head. | **Gap.** `S` leaves as a member with its own queue. The flush hands the group to `S2`, which keeps its own queue. | Leaves as a member. | **Gap.** Members leave in index order and `D` leaves last, so nobody inherits. |
+
+**Backstop.** `leave_group` still runs a posted leader's leave first. With the Lua leaves posted,
+only two synchronous callers can reach it: the ship_ai follower release and a Lua leave whose post
+failed. In those cases the copy precedes the 5Dh, unlike the image.
+
+**Non-ship units.** They keep the copy alone, through the `ran` flag, because this host gives them
+no destroy leave at the flush.
+
+**The extra fixed step.** Its flush (`00874D00` -> `009273A0` at `00874DBE`) finds `+284h` clear
+in the same way as the ordinary flush.
+
+**The unmapped gap.** It is labelled, not fixed. Pulling `D`'s leave forward would choose a 5Dh
+order, and that order depends on an image phase this host has not traced.
 
 ## 6. The cut this packet proposes
 
