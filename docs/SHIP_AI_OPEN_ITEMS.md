@@ -19897,3 +19897,27 @@ prefix `g53_`. The head is merged with origin/main; the full build passes.
    (00521E30).
 4. **Lost stash.** A cc13 powerup tree's stash was popped into this tree by mistake (refs/stash
    is shared). Its content is saved in `local\g53_foreign_stash\` and was never committed.
+   Never use git stash.
+
+**The lead's gunnery queue, still open**, in order (copied from the lead's queue file; the
+newest lead message wins):
+1. **kPlaneCrashConstructCooldownCc13Bound** (OFF, main 21437da5e; include/bsp/plane_crash_sweep.hpp
+   plus the gunnery.cpp crash sweep).
+   - An air-spawned plane's first crash-sweep cooldown is 1.0 s (ctor 007CFE78), not 3.0, so its
+     sweep starts about 2 s earlier. Deck launches are unchanged.
+   - No new draws, but more swept segments mean more kTraceSceneDamageDrawBound draws, so pair in
+     both envs on USN21, USNOS and USN04.
+   - cc13-bisect follow-ups are coming: the 5.0 AirField arm, and no re-arm on state-7 re-entry.
+2. **kKamikazeDirectHitCc13Bound** (coming, HIGH, cc13-hitq).
+   - The host never delivers kamikaze direct-hit damage (classDesc+510h). 00819A20 queues it
+     through 00926E80.
+   - Pair on USNOS plus any kamikaze row, in both envs, and judge target damage and deaths.
+     ships60 cross-checks USNOS.
+3. **kHitDeferredDispatchCc13Bound** (coming; ab8aec6aa, in review).
+   - The image queues each hit in the LIFO 00926E80 queue, drained at fixed-step rows 6/14 and
+     00874DB9, newest first; the host dispatches each hit immediately.
+   - Expected movers: kill credit and last_attacker, the blast-before-direct order, the fire
+     timing, the Lua event order, and the hit_effect and breakup draws.
+   - Pair USN04, JM08, USN21 and BSM09 in both envs.
+4. **The turret-hit retry**, once cc13 adjusts the `aim unit` pitch for ships (item 2 of the open
+   list above).
