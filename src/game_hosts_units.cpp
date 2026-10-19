@@ -18,6 +18,7 @@
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/submarine_model.hpp"  // packet cc9_set_submarine_depth_level
 #include "bsp/cc13_sub_dive.hpp"    // packet cc13-subdive
+#include "bsp/cc13_leak92.hpp"      // packet cc13-leak92
 #include "bsp/unit_motion.hpp"      // unit_step_towards_0042ac60, packet cc9_periscope_out
 #include "bsp/game_hosts_scene_contents.hpp"  // packet cc9_submarine_seabed
 #include "bsp/airfield_taxi.hpp"                 // packet cc9_land_park_taxi
@@ -3767,6 +3768,27 @@ struct GameUnitsHost::Impl {
         done("LeakManager::init_0074f490", 0x0074f490u);
     }
 
+    // Packet cc13-leak92: the 92h messages 0074EC50 routed and the pump has not
+    // delivered yet, in post order. Filled only with the switch ON.
+    struct PendingShipSink92h {
+        GameUnitSlot* slot{nullptr};
+        std::array<float, 6> rates{};
+    };
+    std::vector<PendingShipSink92h> pending_ship_sink_92h;
+    // 0076C600 -> 0082220D -> 0074E860 for each: the message's rates overwrite
+    // the manager's (+18h), so a leak 0074F440 added since the post is lost.
+    std::size_t deliver_ship_sink_92h_0082220d() {
+        if (pending_ship_sink_92h.empty()) return 0;
+        std::vector<PendingShipSink92h> batch;
+        batch.swap(pending_ship_sink_92h);
+        for (const PendingShipSink92h& m : batch) {
+            for (std::size_t i = 0; i < m.slot->leaks.size(); ++i)
+                m.slot->leaks[i].rate = m.rates[i];
+            done("ShipMessage::sink_92h_0082220d", 0x0082220du);
+        }
+        return batch.size();
+    }
+
     // 00824FE5..00825086, the wreck handler's sink block, for one ship.
     void ship_wreck_sink_block_00824fe5(GameUnitSlot& s) {
         if (!s.leak_ready || s.leak_redistributed) return;
@@ -3784,14 +3806,28 @@ struct GameUnitsHost::Impl {
         // 0074ECD6..0074ED18: rate' = draw * (cap + cap) / (total_water + sum) + rate.
         float total_water = 0.0f;
         for (const bsp::UnitLeakEntry& leak : s.leaks) total_water += leak.water;
-        for (std::size_t i = 0; i < s.leaks.size(); ++i) {
-            const float twice = s.leak_rate_cap_08 + s.leak_rate_cap_08;
-            s.leaks[i].rate = (draws[i] * twice) / (total_water + sum_draws) + s.leaks[i].rate;
+        if constexpr (bsp::kLeakMessageRouterDeliveryCc13Bound) {
+            // Packet cc13-leak92: the rates go into the 92h message (0074ED21
+            // 0075B430(92h)), not the manager, and 0074ED7B routes it. The pump
+            // delivers it (units_deliver_ship_sink_92h_0082220d).
+            PendingShipSink92h message{&s, {}};
+            for (std::size_t i = 0; i < s.leaks.size(); ++i) {
+                const float twice = s.leak_rate_cap_08 + s.leak_rate_cap_08;
+                message.rates[i] = (draws[i] * twice) / (total_water + sum_draws)
+                    + s.leaks[i].rate;
+            }
+            pending_ship_sink_92h.push_back(message);
+            done("LeakManager::route_ship_sink_92h", 0x0077c2a0u);
+        } else {
+            for (std::size_t i = 0; i < s.leaks.size(); ++i) {
+                const float twice = s.leak_rate_cap_08 + s.leak_rate_cap_08;
+                s.leaks[i].rate = (draws[i] * twice) / (total_water + sum_draws) + s.leaks[i].rate;
+            }
+            // The rates travel in message 92h through 0077C2A0 (route 7, 0074ED7B);
+            // its arm 0082220D -> 0074E860 loads them. SUBSTITUTION, labelled: applied
+            // at once, not through the session router (kLeakMessageRouterDeliveryCc13Bound).
+            record("LeakManager::route_ship_sink_92h", 0x0077c2a0u);
         }
-        // The rates travel in message 92h through 0077C2A0 (route 7, 0074ED76);
-        // its arm 0082220D -> 0074E860 loads them. SUBSTITUTION, labelled: applied
-        // at once, not through the session router.
-        record("LeakManager::route_ship_sink_92h", 0x0077c2a0u);
         done("LeakManager::redistribute_0074ec50", 0x0074ec50u);
         // 00824FF0..00825074 on the hull body: inertia x2 (00D7A308), angular
         // damping 2.5f (00CF87C8), linear damping 0.5f (00CE3800).
@@ -13823,10 +13859,29 @@ private:
 // GameUnitsHost
 // ---------------------------------------------------------------------------
 
+namespace {
+// Packet cc13-leak92: the units host the session pump delivers 92h to, as
+// script_orders_drain_loopback_0076c600 finds its host. Set only with the switch ON.
+GameUnitsHost::Impl* g_leak92_units = nullptr;
+}  // namespace
+
+std::size_t units_deliver_ship_sink_92h_0082220d() {
+    if constexpr (bsp::kLeakMessageRouterDeliveryCc13Bound) {
+        return g_leak92_units != nullptr ? g_leak92_units->deliver_ship_sink_92h_0082220d() : 0;
+    } else {
+        return 0;
+    }
+}
+
 GameUnitsHost::GameUnitsHost(GameHostLog& log, GameMissionLuaHost& lua)
-    : impl_(std::make_unique<Impl>(log, lua)) {}
+    : impl_(std::make_unique<Impl>(log, lua)) {
+    if constexpr (bsp::kLeakMessageRouterDeliveryCc13Bound) g_leak92_units = impl_.get();
+}
 
 GameUnitsHost::~GameUnitsHost() {
+    if constexpr (bsp::kLeakMessageRouterDeliveryCc13Bound) {
+        if (g_leak92_units == impl_.get()) g_leak92_units = nullptr;
+    }
     Impl& host = *impl_;
     // Directors borrow units. Frame-level borrowers have already been released.
     host.gunnery.reset();
