@@ -44,6 +44,23 @@ inline constexpr bool kTorpGoawayWindowDelayDrawBound = false;     // 009D0EA3
 // delay draw needs it; without a loaded row the draw stays the OFF hole.
 inline constexpr bool kPilotBotConfigLoadBound = false;
 
+// 009D0F10 BSP_BotStateTorpedoGoAway_Tick, RET 4: the re-seed branch
+// (009D0FB2-009D1025, delay +28h < 0 and the aircraft above +20h) draws twice
+// more on stream 1, in this order:
+//   009D0FD7  UniformFloatRange(3.0 [00CE3854], 6.0 [00CE6630]) -> +34h
+//   009D1000  UniformFloatRange([row+10h], [row+14h]) + (+34h)  -> +28h
+// (ECX = 1 at 009D0FC9 / 009D0FF1; row = [[state+4]+14h], the same PilotBot row).
+// Same parent as the enter's three (kTorpGoawayEnterDrawsBound).
+inline constexpr bool kTorpGoawayTickJitterDrawBound = false;     // 009D0FD7
+inline constexpr bool kTorpGoawayTickDelayDrawBound = false;      // 009D1000
+
+inline constexpr bool tick_jitter_draw_on() noexcept {
+    return kTorpGoawayEnterDrawsBound && kTorpGoawayTickJitterDrawBound;
+}
+inline constexpr bool tick_delay_draw_on() noexcept {
+    return kTorpGoawayEnterDrawsBound && kTorpGoawayTickDelayDrawBound && kPilotBotConfigLoadBound;
+}
+
 inline constexpr bool distance_jitter_draw_on() noexcept {
     return kTorpGoawayEnterDrawsBound && kTorpGoawayDistanceJitterDrawBound;
 }
