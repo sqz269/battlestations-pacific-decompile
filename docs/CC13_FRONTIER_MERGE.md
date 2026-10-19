@@ -224,3 +224,54 @@ publish is still not buildable in this host, for two reasons:
 The record at game_hosts_gunnery.cpp:7731 stays. Two prerequisites come first: a squadron
 entity separate from its leader, and the director's detection filter wired.
 `kReconGroupLevelPublishCc13Bound` is not built.
+
+### 6.5 The dive-bomb goaway (009C4A40 / 009C4950): LIVE; a build candidate (not built)
+
+**Reach.** Per-plane summary `goaway turn 009C4DAD`, summed per log. The pattern occurs, so a
+zero means no dive bomber reached goaway.
+
+| log | dive bombers | enters | goaway ticks (flag0) | heading ticks | bank ticks | re-rolls |
+|---|---|---|---|---|---|---|
+| USN21 | 4 | 4 | 132 | 132 | 0 | 0 |
+| USN01 | 3 | 3 | 1629 | 1629 | 0 | 0 |
+| USNOS | 8 | 9 | 916 | 778 | 138 | 3 |
+| USN04, JM08, BSM09, BSM01, IJN08, USN15, LOMP06, JM06 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+**What the host does today.** The goaway is hosted (game_hosts_units.cpp:30380-30487, the enter at
+30572-30596):
+- the throttle and air brake (`kGoawayThrottleBound`);
+- the re-roll 009C4CF1;
+- the turn split 009C4DAD, the bank arm or the heading arm 009C47D0, and the heading with mode 2;
+- the gun cone `Angle_GoAway` (`kTaskGunConeBound`);
+- the enter's standoff and completion +20h (009C7F00).
+
+**What the host does not do.**
+
+1. **Three stream-1 draws are pinned to their low ends.** The tick sets EBX = 1 once at
+   009C4A5C, and that is the ECX of both re-roll calls.
+   - Enter, 009C49FC: `+20h *= U(1.0, 1.25)` with ECX = 1 (009C49F2). The host uses 1.0
+     (`kStandoffJitterLo`).
+   - Re-roll, 009C4D13: `+2Ch = U(3, 6)` (the bank window). The host uses 3.
+   - Re-roll, 009C4D33: `+24h = +2Ch + U(12, 15)` (the countdown). The host uses 12.
+
+   This changes the standoff distance, which 009C7F00 completes against (so goaway's
+   duration), and the timing of the evasive bank. Missing draws: 16 enters, and 3 x 2 re-roll
+   draws, per the table.
+2. **The target-extent standoff (009C49A5-009C49E0).** For a target answering IsKindOf(5),
+   `+20h = max(+20h, 007B5BE0(target))`, the target's largest extent. The host sets
+   `has_extent_target = false`, because 007B5BE0 needs target +444h/+448h. The torpedo enter
+   009D0D90 has the same hole.
+3. **The +68h desired direction (009C4E27-009C4E58).** This is F1. It belongs to cc13-steergate,
+   which owns 009FABE0. It is not part of this candidate.
+
+**Candidate: `kDiveGoawayDrawsCc13Bound` (OFF).**
+- Take the three draws from the host's stream-1 generator in image order (enter, then the re-roll
+  pair), in place of the low ends.
+- It is the same shape as the census row 2 torpedo goaway draws, so the same lane (cc13-goaway)
+  should take both, so the stream-1 ordering stays consistent.
+- Size: about 30-40 lines in game_hosts_units.cpp, plus one switch line. No new state.
+- The extent arm (item 2) is a separate candidate, `kDiveGoawayTargetExtentCc13Bound`. It needs a
+  host source for target +444h/+448h, which 007B5BE0 reads. Size depends on that field and is
+  not estimated here.
+- Pairs: USNOS (re-rolls and 9 enters), USN01, USN21.
+- None of cc15's bring-up objects is involved.
