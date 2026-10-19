@@ -30,6 +30,16 @@
 
 namespace bsp::cc13_seg49_64_78 {
 
+// oct18b-nB-high: 8036F0 RET; 803C20 ECX/EDX + stack index, RET4.
+// Four float words at F874CC, guarded by bit0 at F874DC. Relation tables
+// E0B090/E0B0F0/E0B150/E0B1B0 have 10h stride; index bounds are native preconditions.
+struct ReconStyleRecord { float value[4]; };
+struct ReconStyleFallback { std::uint32_t flags; ReconStyleRecord record; };
+ReconStyleRecord* recon_default_style_008036f0(ReconStyleFallback&) noexcept;
+const ReconStyleRecord* recon_relation_style_00803c20(int own, int other, std::uint32_t index,
+    const ReconStyleRecord* same, const ReconStyleRecord* enemy,
+    const ReconStyleRecord* neutral, const ReconStyleRecord* unknown, ReconStyleFallback&) noexcept;
+
 // ===================================================================================================
 // Segment 64: Lua mission event subscriptions (the "LuaListener" objects 0097E360 builds).
 // ===================================================================================================

@@ -18,6 +18,14 @@
 
 namespace bsp {
 
+// D0D314 slot1: XOR EAX,EAX / RET. D0D31C slot1: MOV AL,1 / RET4.
+std::uint32_t aa_pick_no_target_00861b90() noexcept;
+bool aa_pick_accept_category_00861be0(void* self, std::uint32_t category) noexcept;
+// Exact gunnery empty methods; stack cleanups 4, C, 0. These are complete native no-ops.
+void gunnery_empty_one_00864520(void*, std::uint32_t) noexcept;
+void gunnery_empty_three_00864530(void*, std::uint32_t, std::uint32_t, std::uint32_t) noexcept;
+void gunnery_empty_zero_00864540(void*) noexcept;
+
 inline constexpr std::uint32_t kAaPickInstallPoliciesAddr = 0x008636A0;
 inline constexpr std::uint32_t kAaPickDirectorFireTargetAddr = 0x00863640;
 inline constexpr std::uint32_t kAaPickSubmarineGateAddr = 0x008627A0;

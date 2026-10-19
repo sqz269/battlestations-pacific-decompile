@@ -2,6 +2,37 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 #include "bsp/native_scene_tokenizer.hpp"
+#include "bsp/native_scene_token_text.hpp"
+#include <cstring>
+
+namespace bsp {
+// Complete native token schedule, including its lack of an outer EOF escape.
+// Original 8F0800 consumes "{" and skips balanced groups; '=' values end at ';'.
+void skip_native_scene_group_008f0800(void* owner, NativeSceneTokenValueContext& context) {
+    auto* bytes = static_cast<std::uint8_t*>(owner);
+    int depth = 1;
+    expect_native_scene_token_008d9930(owner, "{", context);
+    do {
+        if (_stricmp(read_native_scene_token_008d9980(owner, context), "}") == 0) {
+            --depth;
+        } else if (_stricmp(peek_native_scene_token_008d8a70(owner, context.tokenizer), "=") == 0) {
+            consume_native_scene_token_008d8960(owner);
+            for (;;) {
+                peek_native_scene_token_008d8a70(owner, context.tokenizer);
+                if (bytes[0x80a] || (bytes[5] == 0 && bytes[4] == 0)) break;
+                if (_stricmp(peek_native_scene_token_008d8a70(owner, context.tokenizer), ";") == 0) {
+                    consume_native_scene_token_008d8960(owner);
+                    break;
+                }
+                read_native_scene_token_008d9980(owner, context);
+            }
+        } else if (_stricmp(peek_native_scene_token_008d8a70(owner, context.tokenizer), "{") == 0) {
+            consume_native_scene_token_008d8960(owner);
+            ++depth;
+        }
+    } while (depth != 0);
+}
+}
 #include "bsp/singleton_lifetime.hpp"
 #include <cstring>
 #include <exception>

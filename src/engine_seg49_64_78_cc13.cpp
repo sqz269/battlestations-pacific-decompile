@@ -2,6 +2,30 @@
 // addresses, ABI and evidence. Comments cite the instruction each statement stands for.
 #include "bsp/engine_seg49_64_78_cc13.hpp"
 
+namespace bsp::cc13_seg49_64_78 {
+ReconStyleRecord* recon_default_style_008036f0(ReconStyleFallback& state) noexcept {
+    if ((state.flags & 1u) == 0) {
+        state.flags |= 1u;
+        state.record = {{0.0f, 0.0f, 0.0f, 1.0f}};
+    }
+    return &state.record;
+}
+const ReconStyleRecord* recon_relation_style_00803c20(int own, int other, std::uint32_t index,
+    const ReconStyleRecord* same, const ReconStyleRecord* enemy,
+    const ReconStyleRecord* neutral, const ReconStyleRecord* unknown, ReconStyleFallback& state) noexcept {
+    if (other == 3) return unknown + index;
+    if (other == 2 || own == 2) return neutral + index;
+    if (own == 0) {
+        if (other == 0) return same + index;
+        if (other == 1) return enemy + index;
+    } else if (own == 1) {
+        if (other == 0) return enemy + index;
+        if (other == 1) return same + index;
+    }
+    return recon_default_style_008036f0(state);
+}
+}
+
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>

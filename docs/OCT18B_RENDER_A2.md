@@ -124,8 +124,35 @@ a draw or that D3D returned success. Screenshots/game validation remain separate
 
 ## Validation state
 
-Static export/assembly and PE-loader-zero evidence inspected. No new test cases were
-added. Primary integration must compile the included graph and run the existing
-build/checks, OFF comparison, nonempty queue teardown, native terminal observations
-and fixed-frame screenshot checks. This source composition does not establish the
-original private-stack/FH3/register ABI or a binary-compatible game replacement.
+Static export/assembly and PE-loader-zero evidence were inspected. No new test
+cases were added. Primary Win32 integration built and ran ON12; its retained log is
+`local/oct18b_render_on_attempt12.log`. Every one of the 561 completed ordinary
+mission-command frames submitted B1F4D0 with queue count1 and entries134,5, then
+executed B1EBE0/B1D950 with 139 B24010 invocations/returns, zero B21B40 invocations,
+and queue/context/batch owners retired. The application reached600 frames and599
+presents. Existing native Begin/End/Present remains the sole frame-control path.
+
+The first selected material has five actual D61948 owners: installed Fletcher hull
+diffuse, Blank at both Camo/LightMap slots, Spec and Bump. The observer records
+selectors0..4, pixel enabled mask3F, and real device GetTexture results matching
+their COM objects: hull2048x2048 DXT1, Blank4x4 DXT1, Spec/Bump64x64 DXT5, plus the
+service shadow target1280x720 at stage5. Readbacks succeeded, with hardware
+SRGBTEXTURE0 at all six stages. The hook is source-only, absent by default, assigned
+only on ON first-frame records, and balances every GetTexture credit.
+
+The actual final `local/oct18b_render_on_final_N180.png` shows an unobstructed,
+bright, recognizable camouflaged Fletcher with textured hull/deck details. N001
+and N060 also show the ship but retain opaque dark UI overlays; N060 partially
+occludes its center. The clear N180 image establishes the installed textured-ship
+visual milestone, separately from leaf invocation counts and device readbacks.
+
+The final OFF comparison against the primary's current-main reference reports
+`identical:true` in `local/oct18b_render_final_off_8d_pair_diff.json`; both launchers
+exit0. This is evidence for unchanged OFF simulation in that paired USN04 run.
+ON12 still faults during later singleton shutdown after the camera/foliage/lighting
+retirements; clean whole-process teardown is not established by this run.
+
+The camera, clear-air fog and high illumination are explicit diagnostic inputs
+(see OCT18B_RENDER_LIGHTING.md), not recovered mission weather/exposure. This
+source composition and live visual result do not establish original private-stack,
+FH3/register ABI, full mission rendering parity or a binary-compatible replacement.

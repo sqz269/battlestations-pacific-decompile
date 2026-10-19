@@ -524,6 +524,7 @@ void locale_node_return_slot_thunk_007373f0(void* slot, void* locale_pool_00e176
     return_native_locale_node_slot_00736090(locale_pool_00e1768c, slot);
 }
 void frame_hook_slot04_noop_00737850() {}
+void frame_hook_slot08_noop_00737860(void*, std::uint32_t) {}
 void frame_hook_slot14_noop_00737890() {}
 
 void decal_list_add_decal_007407c0(std::uint8_t& guard_00e1aea8, std::uint32_t& scope_00e1aea4,

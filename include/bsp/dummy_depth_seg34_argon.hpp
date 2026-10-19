@@ -58,6 +58,8 @@ void DepthCharge_VSlot198_ForwardTo194_006fc9d0(void* self, float arg0);
 void SessionMessage_DEPTHCHARGE_CREATE_ApplyFields_006fc9f0(const void* self, void* entity);
 double Random_UniformBetweenB4andB8_006fca50(const void* self);
 void SessionMessage_DEPTHCHARGE_CREATE_Write_006fcb60(void* self, void* bit_stream);
+void __fastcall SessionMessage_DEPTHCHARGE_CREATE_Read_006fcbc0(
+    void* self, void* unused_edx, void* bit_stream);
 void DepthCharge_SendCreateMessage_006fd0d0(void* self, std::uint32_t peer_arg);
 void DepthCharge_RegisterInWorldLists_006fd190(void* self);
 void DepthCharge_DetachFromWorldLists_006fd1d0(void* self);
@@ -87,6 +89,7 @@ void Dummy2D_Activate_006ff570(void* self);
 
 // --- DummySubmarine (0x006ff6a0..0x006fffe0) ---
 void DummySubmarineClass_VSlot28_Finalise_006ff6a0(void* self, std::uint32_t arg0);
+void __fastcall DummySubmarine_PlaceStepPose_006ff6d0(void* self, void* unused_edx, float dt);
 void DummySubmarine_VSlot198_ForwardTo194_006ff700(void* self, float arg0);
 void DummySubmarine_InitAll_006ff730(void* self);
 void* ObserverMember_SetTarget_006ff7c0(void* self, void* target);
@@ -100,6 +103,13 @@ void* DummySubmarineClass_CreateEntity_006fffe0(void* self, void* arg0);
 // --- DummyTarget & DummyTargetVehicle (0x00700150..0x007016c0) ---
 void DummyTargetBulletClass_ResolveLinkedClass_00700150(void* self);
 std::uint32_t DummyTargetVehicleClass_ReconCategory13_00700200(const void* self);
+std::uint32_t __fastcall DummyTargetVehicleClass_VSlot04_Zero_00700210(const void* self);
+void __fastcall DummyTargetVehicle_VSlot17C_NoOp_00700220(
+    void* self, void* unused_edx, std::uint32_t arg);
+void __fastcall DummyTargetVehicle_VSlot180_NoOp_00700230(
+    void* self, void* unused_edx, std::uint32_t arg);
+float* __fastcall DummyTarget_CopyVector734_007004f0(
+    const void* self, void* unused_edx, float* out);
 void DummyTargetVehicleClass_ReconMarkDirty_00700250(
     void* self,
     void* recon_slot,

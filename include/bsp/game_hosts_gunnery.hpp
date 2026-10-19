@@ -321,7 +321,12 @@ inline constexpr bool kPlayerGunSeatArtilleryBound = true;
 // player's artillery in the seat in single player: 0095A05B, the hand-over in
 // 00959C20, needs a hosted session (game+1FE4h == 1) and a remote holder.
 // True: the walk runs. False: role takes leave every gun AI-held.
-inline constexpr bool kRoleOwnerDeviceWalkBound = false;
+// ON (cc9-gunnery53) by mechanism: pairs on d91c9e54c, reference env. USN01, with
+// 0x9D / 0x99 input at 500/900/1300: takes 8, releases 66, held 410-1823.
+// Northampton's turret shots 113/113/109 -> 95/95/90, because the AI does not fire
+// a player-held mount. 0 player shells: the HUD camera aims at the sea and
+// 0085ABA0 refuses. Deaths identical. USN04 idle: no walk, gameplay identical.
+inline constexpr bool kRoleOwnerDeviceWalkBound = true;
 
 // Packet s53_wreck_debris (docs/SHIP_AI_OPEN_ITEMS.md 263). 00825A59 step 8 of
 // the unit update calls 00935540 once per dead unit (ShipSystems+88h one-shot)

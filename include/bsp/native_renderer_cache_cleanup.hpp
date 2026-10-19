@@ -14,6 +14,29 @@ struct NativeRenderResourceAccountingTables;
 struct NativeMaterialEffectCacheContext;
 struct NativeEffectRecordStorageContext;
 
+// Optional Source-only diagnostics. A resource may have reached its terminal
+// before an after-release observation; prefix values are OS memory snapshots,
+// not an assertion of allocation liveness. Observers must not mutate or unwind
+// the native cleanup and must not retain a reference to the callback frame.
+enum class NativeRendererCacheCleanupEvent {
+    clear_enter, child_release_before, child_release_after, clear_exit,
+    fallback_release_before, fallback_release_after
+};
+struct NativeRendererCacheCleanupObservation {
+    std::uint32_t native_function{};
+    NativeRendererCacheCleanupEvent event{};
+    void* cache{};
+    void* resource{};
+    std::uint32_t cache_count{};
+    void* fallback{};
+    bool fallback_read{};
+    bool resource_prefix_read{};
+    std::uint32_t snapshot_profile{};
+    std::uint32_t snapshot_reference_bits{};
+};
+using NativeRendererCacheCleanupObserver = void (*)(void*,
+    const NativeRendererCacheCleanupObservation&);
+
 // Borrow the application's SAME pool, canonical actual-reference owners and
 // current numeric profile tables. No cache/owner/count copy is made. Selected
 // cache tables require slot+10=B31DA0; child tables require their known +0C
@@ -25,6 +48,8 @@ struct NativeRendererCacheCleanupContext {
     const NativeRenderResourceAccountingTables& accounting_tables;
     const volatile std::uint32_t* cache_base_vtable_00d5f038;
     const volatile std::uint32_t* texture_cache_vtable_00d5f088;
+    void* observation_context{};
+    NativeRendererCacheCleanupObserver observe_cleanup{};
 };
 
 // B30410[204], ECX raw0Ch record-array header, stack count, RET4. Full growth

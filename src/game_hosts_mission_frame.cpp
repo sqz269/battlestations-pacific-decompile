@@ -467,6 +467,11 @@ struct GameMissionFrameHost::Impl {
         bool input_hold{false};
         int input_action{0};
         unsigned input_frames{1};
+        // Packet cc13-helmaim: `aim <yaw> <pitch>`, degrees, the ship camera
+        // mover's +384h / +388h reached through the look axes (inject_view_aim).
+        bool view_aim{false};
+        float aim_yaw{0.0f};
+        float aim_pitch{0.0f};
         // Packet cc9_player_bomb_release: `release <unit> [on <target...>
         // [within <m>] [until <frame>]]`, the plane screen's bomb fire 006082D0.
         bool bomb_release{false};
@@ -3423,10 +3428,12 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
                 || words[1] == "attack" || words[1] == "target" || words[1] == "launch"
                 || words[1] == "release" || words[1] == "build"
                 || words[1] == "depthcharge" || words[1] == "fire" || words[1] == "order"
-            || words[1] == "torpedo" || words[1] == "input");
+            || words[1] == "torpedo" || words[1] == "input" || words[1] == "aim");
         // `<frame> input <action> [hold <frames>]`.
         const bool input_ok = verb_ok && words[1] == "input"
             && (words.size() == 3 || (words.size() == 5 && words[3] == "hold"));
+        // `<frame> aim <yaw> <pitch>`.
+        const bool aim_ok = verb_ok && words[1] == "aim" && words.size() == 4;
         // `<frame> order <base> <slot> <order> [target...]`.
         const bool air_order_ok = verb_ok && words[1] == "order" && words.size() >= 5;
         // `<frame> depthcharge <ship...>`.
@@ -3468,6 +3475,7 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
                 : words[1] == "fire" ? !fire_ok
                 : words[1] == "torpedo" ? !torpedo_ok
                 : words[1] == "input" ? !input_ok
+                : words[1] == "aim" ? !aim_ok
                 : words[1] == "order" ? !air_order_ok : words.size() < 4)) {
             host.log.notef("helm order refused: line %d of \"%s\" is not `<frame> moveto "
                 "<unit> <x> <z>|<navpoint> [repeat <s>]`, `<frame> takehelm <unit> "
@@ -3477,10 +3485,28 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
                 "<m>] [until <frame>]]` or `<frame> build <shipyard> class <id>` or `<frame> "
                 "fire <ship> group <g> [release]` or `<frame> torpedo <ship> at <target>|release` "
                 "or `<frame> order <base> <slot> <1|2|3> [target]` or `<frame> input "
-                "<action> [hold <frames>]`", line, path.c_str());
+                "<action> [hold <frames>]` or `<frame> aim <yaw> <pitch>`", line, path.c_str());
             continue;
         }
         order.unit = words[2];
+        if (aim_ok) {
+            char* ye = nullptr;
+            char* pe = nullptr;
+            const double y = std::strtod(words[2].c_str(), &ye);
+            const double p = std::strtod(words[3].c_str(), &pe);
+            if (ye == nullptr || *ye != '\0' || pe == nullptr || *pe != '\0'
+                || !std::isfinite(y) || !std::isfinite(p)) {
+                host.log.notef("helm order refused: line %d of \"%s\": aim needs a yaw and a "
+                    "pitch in degrees", line, path.c_str());
+                continue;
+            }
+            constexpr double kDegToRad = 3.141592653589793 / 180.0;
+            order.view_aim = true;
+            order.aim_yaw = static_cast<float>(y * kDegToRad);
+            order.aim_pitch = static_cast<float>(p * kDegToRad);
+            host.helm_orders.push_back(order);
+            continue;
+        }
         if (input_ok) {
             char* ae = nullptr;
             char* fe = nullptr;
@@ -3992,6 +4018,17 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                     "0x%02X hold %u frame(s) through the action record (00a92aa0 / 00a919f0 / "
                     "00a92370 -> 004c43c0)", accepted ? "applied" : "refused", order.line, due,
                     now, static_cast<unsigned>(order.input_action), order.input_frames);
+                continue;
+            }
+            if (order.view_aim) {
+                // Packet cc13-helmaim: the target is reached through the look
+                // axes 0051F050 reads, from the next ship-view input (0064A400).
+                inject_view_aim(order.aim_yaw, order.aim_pitch);
+                ++host.helm_orders_applied;
+                host.log.notef("helm order applied: line %d frame %ld (at mission frame %llu) aim "
+                    "yaw %.4f pitch %.4f rad through the look axes (0051F050 -> mover +384h / "
+                    "+388h)", order.line, due, now, static_cast<double>(order.aim_yaw),
+                    static_cast<double>(order.aim_pitch));
                 continue;
             }
             if (order.select) {

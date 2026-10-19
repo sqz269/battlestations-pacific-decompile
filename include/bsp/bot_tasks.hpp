@@ -1,5 +1,19 @@
 #pragma once
 #include <cstdint>
+#include <array>
+
+namespace bsp {
+// Shared bot-task leaves: 00D05708/other task vtables slots 4, 3, 22.
+std::uint32_t bot_task_zero_007b40d0() noexcept;
+bool bot_task_false_007b4110(std::uint32_t unused) noexcept;
+struct BotTaskPointResult { std::array<float, 3> point; bool valid; };
+void bot_task_clear_point_valid_007b4170(BotTaskPointResult&) noexcept;
+void bot_task_notify_current_state_007b4180(void* state_310, void (*slot08)(void*));
+// 00D05918 slot3: ECX=task, out pointer on stack, EAX=out, RET4.
+// Native obtains a temporary Vec3 from the interface at task+3F8h.
+BotTaskPointResult& bot_task_point_result_007b7830(BotTaskPointResult& out, void* interface_3f8,
+    std::array<float, 3> (*slot00)(void*));
+}
 
 // Projection of the thirteen bot task classes the factory dispatch 0099A170 builds.
 // docs/BOT_TASKS.md carries the evidence; docs/ATTACK_COMMANDS.md owns the dispatch,
