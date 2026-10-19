@@ -17,6 +17,7 @@
 #include "bsp/avoid_zone_draft_bodies.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/submarine_model.hpp"  // packet cc9_set_submarine_depth_level
+#include "bsp/cc13_sub_dive.hpp"    // packet cc13-subdive
 #include "bsp/unit_motion.hpp"      // unit_step_towards_0042ac60, packet cc9_periscope_out
 #include "bsp/game_hosts_scene_contents.hpp"  // packet cc9_submarine_seabed
 #include "bsp/airfield_taxi.hpp"                 // packet cc9_land_park_taxi
@@ -484,6 +485,10 @@ struct GameUnitSlot {
     // Packet cc9_submarine_dive: the submarine's depth state (00853630 seeds
     // it; 00936DC0 steps it). bands are +1200h..+120Ch.
     bool sub_dive_ready{false};
+    // Packet cc13-subdive: the class test of 00853630 stage 1 and 008528B0
+    // (class+510h KamikazeDamage or +514h KamikazeBlastDamage above 0), read
+    // once at the seed under kCc13SubDiveKamikazeBound; false otherwise.
+    bool sub_kamikaze_class{false};
     float sub_bands[4]{0.0f, -20.0f, -40.0f, -80.0f};
     float sub_up_speed{1.2f};
     float sub_down_speed{1.2f};
@@ -11604,6 +11609,10 @@ public:
         band.commanded = static_cast<bsp::SubmarineDepthBand>(level < 0 ? 0 : (level > 3 ? 3 : level));
         band.dead = dead;
         band.need_air = kSubmarineAirBound && slot_.sub_air.need_air;  // +1281h
+        // 00936E5C..00936E80: the same class test exempts a kamikaze boat from
+        // the surfacing override (packet cc13-subdive; OFF false, LABELLED).
+        band.kamikaze_class = bsp::cc13_sub_dive::kCc13SubDiveKamikazeBound
+            && slot_.sub_kamikaze_class;
         in.effective = bsp::submarine_effective_depth_band_00936dc0(band);
         // 00936EA3..00936F06: the clamp needs the bot's owner helm slot (role 1,
         // [[unit+740h]+50h]+1B0h) to be 8 or AI-held (00927F10). SUBSTITUTION,
@@ -19512,11 +19521,12 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
 
         // Packet cc9_submarine_depth_level: 00853630, the submarine's slot
         // 0A0h override, picks unit+1268h after 00822C20. Stage 1: 1 for a
-        // kamikaze class, else 0 (LABELLED false here, see GameUnitRow).
+        // kamikaze class, else 0 (the class read is packet cc13-subdive's
+        // kCc13SubDiveKamikazeBound; OFF it reads false, LABELLED).
         // Stage 2, a kind-1 holder (every host unit is scene-sourced): `Dive`
         // then `TargetDive`, each only when found. The hull move to
-        // bands[level] that `Dive` also makes (00853B44..00853B84) is not
-        // applied: the host hull keeps its authored Y.
+        // bands[level] that `Dive` also makes (00853B44..00853B84) is
+        // kSubmarineDiveTeleportBound below.
         if (bsp::unit_is_kind_of(slot->class_id, 0x08)) {
             row.submarine_depth_seeded = true;
             // Packet cc9_submarine_dive: the band table (00853A90..00853AC5), the
@@ -19556,7 +19566,16 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                     static_cast<double>(slot->sub_air_rates.reload_time),
                     kSubmarineDiveBound ? 1 : 0);
             }
-            row.submarine_depth_level = 0;
+            // Stage 1 (00853A31..00853A81): +1268h = 1 for a kamikaze class, else 0;
+            // two JA tests after COMISS with 0.0, so NaN reads false. Packet
+            // cc13-subdive: the class read runs under kCc13SubDiveKamikazeBound;
+            // OFF the test reads false (LABELLED).
+            if constexpr (bsp::cc13_sub_dive::kCc13SubDiveKamikazeBound) {
+                slot->sub_kamikaze_class =
+                    host.lua.read_vehicle_class_number(row.type_id, "KamikazeDamage", 0.0f) > 0.0f
+                    || host.lua.read_vehicle_class_number(row.type_id, "KamikazeBlastDamage", 0.0f) > 0.0f;
+            }
+            row.submarine_depth_level = slot->sub_kamikaze_class ? 1 : 0;
             if (entity.dive_present) row.submarine_depth_level = entity.dive_level;
             // Packet cc9_submarine_dive_teleport. 00853B3E stores the level, 00853B44
             // loads bands[level] and 00853B55 writes it to the local Y at +A8h (X and
@@ -20156,16 +20175,23 @@ bool GameUnitsHost::set_plane_forward_speed_007d9e80(std::size_t unit_index, flo
 // 1 when class+510h or +514h is above 0 (008528E5..00852908), then, only when
 // +1268h differs (0085290D JE), store it (0085291E) and post session message A2h
 // with the level through 0077C7B0 (00852915..00852956).
-// SUBSTITUTIONS (labelled): the kamikaze test reads false, as in the seed; the A2h
-// message is not posted, and the dive it leads to (the hull move to bands[level])
-// is not modelled, so only the level the getter 00894100 reads changes.
+// The hull move to bands[level] is not this function's: the dive controller
+// 00936DC0 reads +1268h every tick (run_submarine_dive_00936dc0,
+// kSubmarineDiveBound). Packet cc13-subdive (include/bsp/cc13_sub_dive.hpp,
+// docs/CC13_SUB_DIVE.md): kCc13SubDiveKamikazeBound takes the class test from
+// the slot (read at the seed), OFF it reads false (LABELLED). The A2h post stays
+// a record: its 0077C7B0 gate (game+1FE4h == 1, 0077C7B6..0077C7C0) delivers
+// nothing in single player, and the handler 00852C60 only re-calls 008528B0 on a
+// remote peer.
 bool GameUnitsHost::set_submarine_depth_level_008528b0(std::size_t unit_index, int requested) {
     Impl& host = *impl_;
     if (unit_index >= host.slots.size()) return false;
+    const GameUnitSlot& slot = *host.slots[unit_index];
     GameUnitRow& row = host.slots[unit_index]->row;
     if (!row.submarine_depth_seeded) return false;
+    const bool kamikaze = bsp::cc13_sub_dive::kCc13SubDiveKamikazeBound && slot.sub_kamikaze_class;
     const int level = static_cast<int>(
-        bsp::submarine_clamp_depth_command_008528b0(requested, false));
+        bsp::submarine_clamp_depth_command_008528b0(requested, kamikaze));
     host.done("SubmarineUnit::set_depth_level", 0x008528b0u);
     if (row.submarine_depth_level == level) return false;
     row.submarine_depth_level = level;
