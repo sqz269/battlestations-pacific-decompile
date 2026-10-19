@@ -1,0 +1,695 @@
+{
+  "packet": "oct18b-nC-ai",
+  "assigned_segment": 66,
+  "assigned_count": 21,
+  "counts": {
+    "reconstructed": 4,
+    "library_instantiation_out_of_scope": 17,
+    "open": 0,
+    "build_tested": 4,
+    "combined_build_pending": 0
+  },
+  "project": "bsp",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "language": "x86:LE:32:default",
+  "image_base": "00400000",
+  "source_list": "codex_new_nC.txt segment 66 only",
+  "non_goals": [
+    "segment 67",
+    "game runs",
+    "host wiring",
+    "binary ABI replacement",
+    "library-body reconstruction"
+  ],
+  "source": "src/engine_seg11_35_66_cc13.cpp",
+  "header": "include/bsp/engine_seg11_35_66_cc13.hpp",
+  "doc": "docs/OCT18B_NC_AI.md",
+  "rows": [
+    {
+      "address": "0098dbe0",
+      "segment": 66,
+      "body_bytes": 3,
+      "original_name": "FUN_0098dbe0",
+      "name": "StdCodecvt_AlwaysNoConv_0098dbe0",
+      "source": "",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX member context unused; AL=1; RET",
+      "library": "MSVC C++ standard library",
+      "vtables": [
+        "00d1d1f4",
+        "00d1d510"
+      ],
+      "vtable_slot": 1,
+      "behavior": "Returns true in AL; shared codecvt virtual; no memory accesses.",
+      "compiled": false,
+      "cpp_symbol": null,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Standard-library family is established by vtable/neighbor evidence; descriptive method names and native type details are hypotheses. No replacement is supplied."
+    },
+    {
+      "address": "0098dbf0",
+      "segment": 66,
+      "body_bytes": 6,
+      "original_name": "FUN_0098dbf0",
+      "name": "StdCodecvt_Slot2ReturnOne_0098dbf0",
+      "source": "",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX member context unused; EAX=1; RET",
+      "library": "MSVC C++ standard library",
+      "vtables": [
+        "00d1d1f4",
+        "00d1d510"
+      ],
+      "vtable_slot": 2,
+      "behavior": "MOV EAX,1; RET. Constant-one codecvt virtual; exact standard method identity remains provisional.",
+      "compiled": false,
+      "cpp_symbol": null,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Standard-library family is established by vtable/neighbor evidence; descriptive method names and native type details are hypotheses. No replacement is supplied."
+    },
+    {
+      "address": "0098dc00",
+      "segment": 66,
+      "body_bytes": 6,
+      "original_name": "FUN_0098dc00",
+      "name": "StdCodecvt_Slot3ReturnOne_0098dc00",
+      "source": "",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX member context unused; EAX=1; RET",
+      "library": "MSVC C++ standard library",
+      "vtables": [
+        "00d1d1f4",
+        "00d1d510"
+      ],
+      "vtable_slot": 3,
+      "behavior": "MOV EAX,1; RET. Constant-one codecvt virtual; exact standard method identity remains provisional.",
+      "compiled": false,
+      "cpp_symbol": null,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Standard-library family is established by vtable/neighbor evidence; descriptive method names and native type details are hypotheses. No replacement is supplied."
+    },
+    {
+      "address": "0098e570",
+      "segment": 66,
+      "body_bytes": 6,
+      "original_name": "FUN_0098e570",
+      "name": "StdBasicStreambuf_Pbackfail_0098e570",
+      "source": "",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "__thiscall member context unused, one ignored stack word; EAX=-1; RET 4",
+      "library": "MSVC C++ standard library",
+      "vtables": [
+        "00d1d214"
+      ],
+      "vtable_slot": 2,
+      "behavior": "OR EAX,-1; RET 4 implements the base streambuf EOF result.",
+      "compiled": false,
+      "cpp_symbol": null,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Standard-library family is established by vtable/neighbor evidence; descriptive method names and native type details are hypotheses. No replacement is supplied."
+    },
+    {
+      "address": "0098e5c0",
+      "segment": 66,
+      "body_bytes": 5,
+      "original_name": "FUN_0098e5c0",
+      "name": "StdBasicStreambuf_Setbuf_0098e5c0",
+      "source": "",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "__thiscall ECX=self; two ignored stack words; EAX=ECX; RET 8",
+      "library": "MSVC C++ standard library",
+      "vtables": [
+        "00d1d214"
+      ],
+      "vtable_slot": 11,
+      "behavior": "MOV EAX,ECX; RET 8 returns the unchanged streambuf without changing its buffer.",
+      "compiled": false,
+      "cpp_symbol": null,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Standard-library family is established by vtable/neighbor evidence; descriptive method names and native type details are hypotheses. No replacement is supplied."
+    },
+    {
+      "address": "0098e5d0",
+      "segment": 66,
+      "body_bytes": 3,
+      "original_name": "FUN_0098e5d0",
+      "name": "StdBasicStreambuf_Sync_0098e5d0",
+      "source": "",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX member context unused; EAX=0; RET",
+      "library": "MSVC C++ standard library",
+      "vtables": [
+        "00d1d214"
+      ],
+      "vtable_slot": 12,
+      "behavior": "XOR EAX,EAX; RET is the base streambuf successful no-op sync.",
+      "compiled": false,
+      "cpp_symbol": null,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Standard-library family is established by vtable/neighbor evidence; descriptive method names and native type details are hypotheses. No replacement is supplied."
+    },
+    {
+      "address": "0098e5e0",
+      "segment": 66,
+      "body_bytes": 3,
+      "original_name": "FUN_0098e5e0",
+      "name": "StdBasicStreambuf_Imbue_0098e5e0",
+      "source": "",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX member context unused; one ignored stack word; EAX preserved; RET 4",
+      "library": "MSVC C++ standard library",
+      "vtables": [
+        "00d1d214"
+      ],
+      "vtable_slot": 13,
+      "behavior": "RET 4 is the base streambuf inert locale hook; no result is established.",
+      "compiled": false,
+      "cpp_symbol": null,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Standard-library family is established by vtable/neighbor evidence; descriptive method names and native type details are hypotheses. No replacement is supplied."
+    },
+    {
+      "address": "0098e6d0",
+      "segment": 66,
+      "body_bytes": 147,
+      "original_name": "FUN_0098e6d0",
+      "name": "StdBasicStreambuf_XsgetnS_0098e6d0",
+      "source": "",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "__thiscall ECX=streambuf; stack destination, destination_size, count; EAX=bytes read; RET 12",
+      "library": "MSVC C++ standard library",
+      "vtables": [
+        "00d1d214",
+        "00d1d434"
+      ],
+      "vtable_slot": 7,
+      "behavior": "Queries get-area availability via 0098df50, copies the available minimum with _memcpy_s 00bf672c, advances get pointer/decrements available count; otherwise uflow at vtable+14h, stopping at EOF. Nonpositive signed count returns zero.",
+      "compiled": false,
+      "cpp_symbol": null,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Standard-library family is established by vtable/neighbor evidence; descriptive method names and native type details are hypotheses. No replacement is supplied."
+    },
+    {
+      "address": "0098e810",
+      "segment": 66,
+      "body_bytes": 26,
+      "original_name": "FUN_0098e810",
+      "name": "StdBasicStreambuf_SeekoffFailure_0098e810",
+      "source": "",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX member context unused; hidden result pointer at stack+4; EAX=result; RET 16",
+      "library": "MSVC C++ standard library",
+      "vtables": [
+        "00d1d214"
+      ],
+      "vtable_slot": 9,
+      "behavior": "Loads invalid fpos word from 00d692c4 into result+0 and zeros result+8/+12/+16, leaving result+4 untouched. Native seek argument layout is not retyped here.",
+      "compiled": false,
+      "cpp_symbol": null,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Standard-library family is established by vtable/neighbor evidence; descriptive method names and native type details are hypotheses. No replacement is supplied."
+    },
+    {
+      "address": "0098e830",
+      "segment": 66,
+      "body_bytes": 26,
+      "original_name": "FUN_0098e830",
+      "name": "StdBasicStreambuf_SeekposFailure_0098e830",
+      "source": "",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX member context unused; hidden result pointer at stack+4; EAX=result; RET 32",
+      "library": "MSVC C++ standard library",
+      "vtables": [
+        "00d1d214"
+      ],
+      "vtable_slot": 10,
+      "behavior": "Same invalid-fpos stores as 0098e810, with RET 32 rather than RET 16. Native fpos layout beyond observed writes remains provisional.",
+      "compiled": false,
+      "cpp_symbol": null,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Standard-library family is established by vtable/neighbor evidence; descriptive method names and native type details are hypotheses. No replacement is supplied."
+    },
+    {
+      "address": "00990e10",
+      "segment": 66,
+      "body_bytes": 34,
+      "original_name": "FUN_00990e10",
+      "name": "StdCtypeChar_RangeDispatch_00990e10",
+      "source": "",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "__thiscall ECX=ctype; stack first,last,destination; forwards virtual result; RET 12",
+      "library": "MSVC C++ standard library",
+      "vtables": [
+        "00d1d48c"
+      ],
+      "vtable_slot": 5,
+      "behavior": "Computes last-first and invokes vtable+1Ch with first,last,destination,length. Existing ctype<char> constructor 00990c90 installs this table. Exact widen/narrow label remains provisional.",
+      "compiled": false,
+      "cpp_symbol": null,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Standard-library family is established by vtable/neighbor evidence; descriptive method names and native type details are hypotheses. No replacement is supplied."
+    },
+    {
+      "address": "00991730",
+      "segment": 66,
+      "body_bytes": 28,
+      "original_name": "FUN_00991730",
+      "name": "StdCodecvt_DoOutNoConv_00991730",
+      "source": "",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX member context unused; seven stack words; EAX=3; RET 28",
+      "library": "MSVC C++ standard library",
+      "vtables": [
+        "00d1d510"
+      ],
+      "vtable_slot": 4,
+      "behavior": "Sets *stack_arg4=stack_arg2 and *stack_arg7=stack_arg5; returns codecvt noconv (3) without consuming input or output.",
+      "compiled": false,
+      "cpp_symbol": null,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Standard-library family is established by vtable/neighbor evidence; descriptive method names and native type details are hypotheses. No replacement is supplied."
+    },
+    {
+      "address": "00991750",
+      "segment": 66,
+      "body_bytes": 28,
+      "original_name": "FUN_00991750",
+      "name": "StdCodecvt_DoInNoConv_00991750",
+      "source": "",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX member context unused; seven stack words; EAX=3; RET 28",
+      "library": "MSVC C++ standard library",
+      "vtables": [
+        "00d1d510"
+      ],
+      "vtable_slot": 5,
+      "behavior": "Identical body to 00991730: unchanged input/output next pointers and codecvt noconv result (3).",
+      "compiled": false,
+      "cpp_symbol": null,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Standard-library family is established by vtable/neighbor evidence; descriptive method names and native type details are hypotheses. No replacement is supplied."
+    },
+    {
+      "address": "00991770",
+      "segment": 66,
+      "body_bytes": 18,
+      "original_name": "FUN_00991770",
+      "name": "StdCodecvt_DoUnshiftNoConv_00991770",
+      "source": "",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX member context unused; four stack words; EAX=3; RET 16",
+      "library": "MSVC C++ standard library",
+      "vtables": [
+        "00d1d510"
+      ],
+      "vtable_slot": 6,
+      "behavior": "Sets *stack_arg4=stack_arg2 and returns codecvt noconv (3); emits no shift sequence.",
+      "compiled": false,
+      "cpp_symbol": null,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Standard-library family is established by vtable/neighbor evidence; descriptive method names and native type details are hypotheses. No replacement is supplied."
+    },
+    {
+      "address": "00991790",
+      "segment": 66,
+      "body_bytes": 21,
+      "original_name": "FUN_00991790",
+      "name": "StdCodecvt_DoLength_00991790",
+      "source": "",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX member context unused; four stack words; EAX=unsigned min(arg3-arg2,arg4); RET 16",
+      "library": "MSVC C++ standard library",
+      "vtables": [
+        "00d1d510"
+      ],
+      "vtable_slot": 7,
+      "behavior": "Unsigned difference/limit comparison gives the identity codecvt bounded length. State at stack_arg1 is ignored.",
+      "compiled": false,
+      "cpp_symbol": null,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Standard-library family is established by vtable/neighbor evidence; descriptive method names and native type details are hypotheses. No replacement is supplied."
+    },
+    {
+      "address": "009917c0",
+      "segment": 66,
+      "body_bytes": 31,
+      "original_name": "FUN_009917c0",
+      "name": "StdCodecvt_ScalarDeletingDtor_009917c0",
+      "source": "",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "__thiscall ECX=facet; stack flags; EAX=original self; RET 4",
+      "library": "MSVC C++ standard library",
+      "vtables": [
+        "00d1d510"
+      ],
+      "vtable_slot": 0,
+      "behavior": "Writes locale::facet vtable 00d692b8; frees self through 00bf65ac only when flags bit0 is set; returns self. Compiler-generated standard-library destructor.",
+      "compiled": false,
+      "cpp_symbol": null,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Standard-library family is established by vtable/neighbor evidence; descriptive method names and native type details are hypotheses. No replacement is supplied."
+    },
+    {
+      "address": "00992330",
+      "segment": 66,
+      "body_bytes": 59,
+      "original_name": "FUN_00992330",
+      "name": "StdBasicFilebuf_Imbue_00992330",
+      "source": "",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "__thiscall ECX=filebuf; stack locale; no defined result contract; RET 4",
+      "library": "MSVC C++ standard library",
+      "vtables": [
+        "00d1d434"
+      ],
+      "vtable_slot": 13,
+      "behavior": "Obtains codecvt facet with 00991d60 and calls its vtable+4 always_noconv. True clears filebuf+3Ch; false stores facet then calls streambuf initializer 0098e250.",
+      "compiled": false,
+      "cpp_symbol": null,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Standard-library family is established by vtable/neighbor evidence; descriptive method names and native type details are hypotheses. No replacement is supplied."
+    },
+    {
+      "address": "00994eb0",
+      "segment": 66,
+      "body_bytes": 1,
+      "original_name": "FUN_00994eb0",
+      "name": "BSP_ContentPackageList_Slot7Noop_00994eb0",
+      "source": "src/engine_seg11_35_66_cc13.cpp",
+      "header": "include/bsp/engine_seg11_35_66_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "Member context ECX=list (unused); EAX preserved, no established result; RET",
+      "vtables": [
+        "00d1d75c"
+      ],
+      "vtable_slot": 7,
+      "vtable_pointer_address": "00d1d778",
+      "behavior": "RET only; no memory or register writes; no side effects.",
+      "cpp_symbol": "bsp::engine_seg11_35_66_cc13::content_list_slot7_noop_00994eb0",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Slot purpose is unknown; void C++ interface does not reproduce incoming EAX preservation or native stack cleanup."
+    },
+    {
+      "address": "00994ec0",
+      "segment": 66,
+      "body_bytes": 1,
+      "original_name": "FUN_00994ec0",
+      "name": "BSP_ContentPackageList_Slot8Noop_00994ec0",
+      "source": "src/engine_seg11_35_66_cc13.cpp",
+      "header": "include/bsp/engine_seg11_35_66_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "Member context ECX=list (unused); EAX preserved, no established result; RET",
+      "vtables": [
+        "00d1d75c"
+      ],
+      "vtable_slot": 8,
+      "vtable_pointer_address": "00d1d77c",
+      "behavior": "RET only; no memory or register writes; no side effects.",
+      "cpp_symbol": "bsp::engine_seg11_35_66_cc13::content_list_slot8_noop_00994ec0",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Slot purpose is unknown; void C++ interface does not reproduce incoming EAX preservation or native stack cleanup."
+    },
+    {
+      "address": "00994ed0",
+      "segment": 66,
+      "body_bytes": 1,
+      "original_name": "FUN_00994ed0",
+      "name": "BSP_ContentPackageList_Slot9Noop_00994ed0",
+      "source": "src/engine_seg11_35_66_cc13.cpp",
+      "header": "include/bsp/engine_seg11_35_66_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "Member context ECX=list (unused); EAX preserved, no established result; RET",
+      "vtables": [
+        "00d1d75c"
+      ],
+      "vtable_slot": 9,
+      "vtable_pointer_address": "00d1d780",
+      "behavior": "RET only; no memory or register writes; no side effects.",
+      "cpp_symbol": "bsp::engine_seg11_35_66_cc13::content_list_slot9_noop_00994ed0",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Slot purpose is unknown; void C++ interface does not reproduce incoming EAX preservation or native stack cleanup."
+    },
+    {
+      "address": "00994ee0",
+      "segment": 66,
+      "body_bytes": 3,
+      "original_name": "FUN_00994ee0",
+      "name": "BSP_ContentPackageList_Slot10Noop_00994ee0",
+      "source": "src/engine_seg11_35_66_cc13.cpp",
+      "header": "include/bsp/engine_seg11_35_66_cc13.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "Member context ECX=list (unused); one ignored stack word; EAX preserved, no established result; RET 4",
+      "vtables": [
+        "00d1d75c"
+      ],
+      "vtable_slot": 10,
+      "vtable_pointer_address": "00d1d784",
+      "behavior": "RET 4 only; no memory or register writes; no side effects.",
+      "cpp_symbol": "bsp::engine_seg11_35_66_cc13::content_list_slot10_noop_00994ee0",
+      "compiled": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Slot purpose is unknown; argument semantic type is unknown; void C++ interface does not reproduce incoming EAX preservation or native stack cleanup."
+    }
+  ],
+  "validation": {
+    "native_bodies": "exported; decompilation and RET/ECX assembly inspected",
+    "class_identity": "bsp.py callers --kind vslot plus existing ContentPackageList constructor/destructor family",
+    "build": "MSVC Win32 Release scripts/build.ps1 passed; existing CTest suite passed",
+    "tests": "none added; trivial no-op bodies",
+    "annotation": "21/21 applied; previous values captured; existing comments preserved; project saved",
+    "exports": "21/21 force-refreshed after annotation and save",
+    "assignment": "21 unique rows, exact equality with assigned segment 66 address list",
+    "annotation_log": "local/ghidra-annotations-20261019T053216Z.json",
+    "report_calls": "verify_report_calls.py: 5 call rows checked, 0 failed",
+    "ledger_scope": "Only 21 assigned address records added to each of naming and reconstruction ledgers; no records replaced",
+    "build_log": "local/nc_combined_build2.log",
+    "game_runs": "none"
+  },
+  "call_sites": [
+    {
+      "address": "0098e6f2",
+      "native": "0098df50",
+      "function": "0098e6d0",
+      "purpose": "streambuf get-area availability"
+    },
+    {
+      "address": "0098e70f",
+      "native": "00bf672c",
+      "function": "0098e6d0",
+      "purpose": "secure buffered copy"
+    },
+    {
+      "address": "009917d1",
+      "native": "00bf65ac",
+      "function": "009917c0",
+      "purpose": "conditional scalar delete"
+    },
+    {
+      "address": "00992339",
+      "native": "00991d60",
+      "function": "00992330",
+      "purpose": "codecvt facet lookup"
+    },
+    {
+      "address": "00992361",
+      "native": "0098e250",
+      "function": "00992330",
+      "purpose": "streambuf reset for converting facet"
+    }
+  ],
+  "annotation_prior_values": [
+    {
+      "address": "0098dbe0",
+      "before": {
+        "address": "0098dbe0",
+        "function_name": "FUN_0098dbe0"
+      }
+    },
+    {
+      "address": "0098dbf0",
+      "before": {
+        "address": "0098dbf0",
+        "function_name": "FUN_0098dbf0"
+      }
+    },
+    {
+      "address": "0098dc00",
+      "before": {
+        "address": "0098dc00",
+        "function_name": "FUN_0098dc00"
+      }
+    },
+    {
+      "address": "0098e570",
+      "before": {
+        "address": "0098e570",
+        "function_name": "FUN_0098e570"
+      }
+    },
+    {
+      "address": "0098e5c0",
+      "before": {
+        "address": "0098e5c0",
+        "function_name": "FUN_0098e5c0"
+      }
+    },
+    {
+      "address": "0098e5d0",
+      "before": {
+        "address": "0098e5d0",
+        "function_name": "FUN_0098e5d0"
+      }
+    },
+    {
+      "address": "0098e5e0",
+      "before": {
+        "address": "0098e5e0",
+        "function_name": "FUN_0098e5e0"
+      }
+    },
+    {
+      "address": "0098e6d0",
+      "before": {
+        "address": "0098e6d0",
+        "function_name": "FUN_0098e6d0"
+      }
+    },
+    {
+      "address": "0098e810",
+      "before": {
+        "address": "0098e810",
+        "function_name": "FUN_0098e810"
+      }
+    },
+    {
+      "address": "0098e830",
+      "before": {
+        "address": "0098e830",
+        "function_name": "FUN_0098e830"
+      }
+    },
+    {
+      "address": "00990e10",
+      "before": {
+        "address": "00990e10",
+        "function_name": "FUN_00990e10"
+      }
+    },
+    {
+      "address": "00991730",
+      "before": {
+        "address": "00991730",
+        "function_name": "FUN_00991730"
+      }
+    },
+    {
+      "address": "00991750",
+      "before": {
+        "address": "00991750",
+        "function_name": "FUN_00991750"
+      }
+    },
+    {
+      "address": "00991770",
+      "before": {
+        "address": "00991770",
+        "function_name": "FUN_00991770"
+      }
+    },
+    {
+      "address": "00991790",
+      "before": {
+        "address": "00991790",
+        "function_name": "FUN_00991790"
+      }
+    },
+    {
+      "address": "009917c0",
+      "before": {
+        "address": "009917c0",
+        "function_name": "FUN_009917c0"
+      }
+    },
+    {
+      "address": "00992330",
+      "before": {
+        "address": "00992330",
+        "function_name": "FUN_00992330"
+      }
+    },
+    {
+      "address": "00994eb0",
+      "before": {
+        "address": "00994eb0",
+        "function_name": "FUN_00994eb0"
+      }
+    },
+    {
+      "address": "00994ec0",
+      "before": {
+        "address": "00994ec0",
+        "function_name": "FUN_00994ec0"
+      }
+    },
+    {
+      "address": "00994ed0",
+      "before": {
+        "address": "00994ed0",
+        "function_name": "FUN_00994ed0"
+      }
+    },
+    {
+      "address": "00994ee0",
+      "before": {
+        "address": "00994ee0",
+        "function_name": "FUN_00994ee0"
+      }
+    }
+  ]
+}
