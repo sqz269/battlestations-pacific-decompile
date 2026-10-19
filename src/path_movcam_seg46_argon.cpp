@@ -1538,7 +1538,7 @@ __declspec(naked) float __fastcall point3_ptr_array_distance_to_line_007ae930(
         FXCH st(1) // 007ae97d
         FSTP dword ptr [ESP + 0x14] // 007ae97f
         FLD dword ptr [EDI + 0x4] // 007ae983
-        FMUL st(1) // 007ae986
+        FMUL st(0), st(1) // 007ae986
         FSTP dword ptr [ESP + 0xc] // 007ae988
         FMUL dword ptr [EDI + 0x8] // 007ae98c
         FSTP dword ptr [ESP + 0x10] // 007ae98f
@@ -1716,7 +1716,7 @@ __declspec(naked) float __fastcall point3_ptr_array_distance_to_line_007ae930(
         FXCH st(1) // 007aebc3
         FSTP dword ptr [ESP + 0x5c] // 007aebc5
         FLD dword ptr [ESP + 0x3c] // 007aebc9
-        FMUL st(1) // 007aebcd
+        FMUL st(0), st(1) // 007aebcd
         FSTP dword ptr [ESP + 0x60] // 007aebcf
         FMUL dword ptr [ESP + 0x40] // 007aebd3
         FSTP dword ptr [ESP + 0x64] // 007aebd7

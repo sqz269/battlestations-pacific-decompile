@@ -1698,10 +1698,10 @@ void __fastcall DummyTargetVehicle_VSlot180_NoOp_00700230(void*, void*, std::uin
 
 // 007004F0: ECX=self, stack float[3] out, EAX=out, RET 4. Keep the original
 // sequential FLD/FSTP copies (including their x87 behavior and alias ordering).
-float* __fastcall DummyTarget_CopyVector734_007004f0(const void* self, void*, float* out) {
+float* __fastcall DummyTarget_CopyVector734_007004f0(const void* self, void*, float* destination) {
     __asm {
         mov ecx, self
-        mov eax, out
+        mov eax, destination
         fld dword ptr [ecx + 734h]
         fstp dword ptr [eax]
         fld dword ptr [ecx + 738h]
@@ -1709,7 +1709,7 @@ float* __fastcall DummyTarget_CopyVector734_007004f0(const void* self, void*, fl
         fld dword ptr [ecx + 73ch]
         fstp dword ptr [eax + 8]
     }
-    return out;
+    return destination;
 }
 
 }  // namespace bsp::dummy_depth_seg34_argon

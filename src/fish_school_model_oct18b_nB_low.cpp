@@ -37,10 +37,10 @@ void copy_position_00708120(void* stream, std::uint32_t index, const float* xyz)
     const auto address = at_00708120<std::uint32_t>(stream, 8) +
         at_00708120<std::uint32_t>(stream, 0xc) * index +
         at_00708120<std::uint32_t>(stream, 0x10);
-    auto* out = reinterpret_cast<float*>(address);
+    auto* destination = reinterpret_cast<float*>(address);
     __asm {
         mov eax, xyz
-        mov edx, out
+        mov edx, destination
         fld dword ptr [eax]
         fstp dword ptr [edx]
         fld dword ptr [eax + 4]
