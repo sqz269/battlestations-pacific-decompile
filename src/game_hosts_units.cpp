@@ -75,6 +75,7 @@
 #include "bsp/cc13_seg67b_switches.hpp"       // packet cc13-seg67b (009A7932)
 #include "bsp/gameplay_seg46_cc13.hpp"        // packet cc13-para (006E3F90, 006E541F)
 #include "bsp/cc13_paratrooper_round.hpp"     // packet cc13-para2 (the MParatrooper round)
+#include "bsp/cc13_takeoff_notify.hpp"        // packet cc13-takeoff (007C17D0, +AA0h)
 #include "bsp/squadron_spent_ordnance.hpp"    // packet cc9_squadron_spent_ordnance_rtb
 #include "bsp/scene_record_side_blocks.hpp"
 #include "bsp/plane_follow_law.hpp"
@@ -933,6 +934,15 @@ struct GameUnitSlot {
     // takeoff/Takeoff (approach+78h): +18h and +1Ch as 009CE270 sets them.
     float takeoff_run_18{0.0f};
     float takeoff_run_1c{0.0f};
+    // Packet cc13-takeoff (kPlaneTakeoffStartNotifyCc13Bound): 007C17D0's C3h
+    // {+20h = the current +900h, +21h = 4}, posted at the Takeoff enter and
+    // delivered after the plane's own step (the image: row 9).
+    bool takeoff_notify_c3h_pending{false};
+    std::int32_t takeoff_notify_c3h_current{0};
+    // Packet cc13-takeoff (kPlaneShipyardLaunchAa0Cc13Bound): unit+AA0h. 007D5D20
+    // stores 0.0, then 5.0 / -1.0 by the ShipYardLaunch key; 007B83F0 stores 5.0
+    // or -1.0. Read only with the switch on.
+    float plane_shipyard_launch_aa0{0.0f};
     unsigned long long takeoff_installs{0}, takeoff_ticks{0}, takeoff_prep_ticks{0};
     unsigned long long takeoff_slow_ticks{0}, takeoff_run_refused{0};
     // Packet cc9_takeoff_step_bind: takeoff/Takeoff's step 009CE2C0.
@@ -3155,6 +3165,15 @@ struct GameUnitsHost::Impl {
     // Packet cc9_takeoff_task_bind (kBaseLaunchChainBound), piece 4 part 2a.
     void install_takeoff_task_0099a4a0(GameUnitSlot& p);
     void push_ground_retakeoff_0099b107(GameUnitSlot& p, const char* head);
+    // Packet cc13-takeoff (kPlaneTakeoffStartNotifyCc13Bound).
+    void plane_notify_takeoff_start_007c17d0(GameUnitSlot& p);
+    void deliver_takeoff_notify_c3h_007cd02c(GameUnitSlot& p);
+    unsigned long long takeoff_notify_calls{0}, takeoff_notify_posts{0};
+    unsigned long long takeoff_notify_arm_7cb5f0{0}, takeoff_notify_arm_7c7430{0};
+    unsigned long long takeoff_notify_arm_7ca3f0{0}, takeoff_notify_5_to_4{0};
+    // Packet cc13-takeoff (kPlaneShipyardLaunchAa0Cc13Bound).
+    unsigned long long shipyard_launch_aa0_planes{0}, shipyard_launch_aa0_slow_pushes{0};
+    unsigned long long shipyard_launch_aa0_leaves{0};
     // Packet cc9_base_launch_liftoff (kBaseLaunchChainBound), piece 5.
     void plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char* why);
     unsigned long long base_launch_liftoffs{0}, base_launch_liftoff_unparented{0};
@@ -16847,6 +16866,13 @@ void GameUnitsHost::Impl::install_takeoff_task_0099a4a0(GameUnitSlot& p) {
 // bound: the task is recorded in it and holds the plane (the land task below it
 // is not ticked). takeoff/Takeoff's enter 009CE270 (009CE270-009CE290): +18h =
 // -1.0 (00D7A260), +1Ch = 0, then 007C17D0(plane), recorded.
+// Packet cc13-takeoff: with kPlaneShipyardLaunchAa0Cc13Bound the test reads the
+// carried +AA0h (009CF96D MOVSS / 009CF975 COMISS [00D7A218] / 009CF982 JA:
+// SlowTakeoff only for an ordered > 0.0); its enter 009CE1D0 draws 00BD2F10, so
+// that arm also needs kPlaneShipyardLaunchSlowPushCc13Bound. With
+// kPlaneTakeoffStartNotifyCc13Bound, 007C17D0 runs at the Takeoff enter and its
+// C3h is delivered at the end of the push (LABELLED: the image delivers at row 9
+// of the same fixed step; the plane's own Takeoff step runs on its next think).
 void GameUnitsHost::Impl::push_ground_retakeoff_0099b107(GameUnitSlot& p, const char* head) {
     using TS = GameUnitSlot::TakeoffTaskState;
     p.takeoff_base_34 = p.plane_contact_deck_bf4 != 0 ? p.motion.position[1] : 0.0f;
@@ -16861,15 +16887,28 @@ void GameUnitsHost::Impl::push_ground_retakeoff_0099b107(GameUnitSlot& p, const 
     ++retakeoff_pushes;
     if (p.plane_control_mode_900 == 6) ++retakeoff_state6;
     const bool parking = p.plane_landed_904 && p.plane_control_mode_900 == 5;
+    bool slow = false;
+    if constexpr (bsp::kPlaneShipyardLaunchAa0Cc13Bound
+                  && bsp::kPlaneShipyardLaunchSlowPushCc13Bound) {
+        slow = !parking && p.plane_shipyard_launch_aa0 > 0.0f;          // 009CF982 JA
+    }
     if (parking) {
         p.takeoff_state = TS::kParking;
         ++takeoff_parking_refused;
         ++retakeoff_parking;
+    } else if (slow) {
+        p.takeoff_state = TS::kSlowTakeoff;
+        takeoff_slow_enter_009ce1d0(p);                                  // 009CE1D0
+        ++shipyard_launch_aa0_slow_pushes;
     } else {
         p.takeoff_state = TS::kTakeoff;
         p.takeoff_run_18 = -1.0f;
         p.takeoff_run_1c = 0.0f;
-        record("Plane::takeoff_enter_007c17d0", 0x007c17d0u);
+        if constexpr (bsp::kPlaneTakeoffStartNotifyCc13Bound) {
+            plane_notify_takeoff_start_007c17d0(p);                      // 009CE28B JMP
+        } else {
+            record("Plane::takeoff_enter_007c17d0", 0x007c17d0u);
+        }
         ++retakeoff_takeoff;
     }
     if (p.retakeoff_pushes <= 5) {
@@ -16882,9 +16921,94 @@ void GameUnitsHost::Impl::push_ground_retakeoff_0099b107(GameUnitSlot& p, const 
             std::sqrt(static_cast<double>(p.plane_world_velocity[0]) * p.plane_world_velocity[0]
                 + static_cast<double>(p.plane_world_velocity[1]) * p.plane_world_velocity[1]
                 + static_cast<double>(p.plane_world_velocity[2]) * p.plane_world_velocity[2]),
-            parking ? "takeoff/parking" : "takeoff/Takeoff", parking ? ", NOT BOUND" : "");
+            parking ? "takeoff/parking" : slow ? "takeoff/SlowTakeoff" : "takeoff/Takeoff",
+            parking ? ", NOT BOUND" : "");
+    }
+    if constexpr (bsp::kPlaneTakeoffStartNotifyCc13Bound) {
+        if (p.takeoff_notify_c3h_pending) deliver_takeoff_notify_c3h_007cd02c(p);
     }
     done("PilotBot::push_ground_retakeoff_0099b107", 0x0099b107u);
+}
+
+// Packet cc13-takeoff (kPlaneTakeoffStartNotifyCc13Bound). 007C17D0
+// BSP_Plane_NotifyTakeoffStart (007C17D0-007C18A9, __thiscall(ECX = plane), RET,
+// SEH frame), reached only by the JMP at 009CE28B (takeoff/Takeoff's enter).
+//   007C17EB..007C17F3: byte +904h clear -> return.
+//   007C17F9..007C1820: [[00E188A8]+1FE4h] is the session mode. Single player
+//     runs mode 0, so neither the (cur == 2, mode 2) return nor the client arm
+//     (007C187F: 007C1430(4) for 7/6/4/5) is taken here.
+//   007C1822..007C1869: 0075B430(&m, C3h), +18h word 0, +1Ah 0, +4h 1, +1Ch 0,
+//     vtable 00D03504, +20h = the +900h byte, +21h = 4; 0077C2A0(plane; &m, 7,
+//     0). Mode 0 sets EBX = 1 at 0077C333, so 0077C44D posts it to the loopback
+//     queue (0076E520) and no peer send runs; 0076C600 delivers it at row 9.
+// The standalone reconstruction is plane_notify_takeoff_start_007c17d0
+// (src/cc13_seg47b.cpp), verified against these bytes; this is its single-player
+// path over the host's slot.
+void GameUnitsHost::Impl::plane_notify_takeoff_start_007c17d0(GameUnitSlot& p) {
+    ++takeoff_notify_calls;
+    if (!p.plane_landed_904) {
+        done("Plane::takeoff_enter_007c17d0", 0x007c17d0u);
+        return;
+    }
+    p.takeoff_notify_c3h_pending = true;
+    p.takeoff_notify_c3h_current = p.plane_control_mode_900;          // +20h, the byte
+    ++takeoff_notify_posts;
+    if (takeoff_notify_posts <= 10) {
+        log.notef("  takeoff start notify %s: +904h set, state=%d airborne=%.2f taxi910=%d "
+            "bf8=%d at %.2f s: C3h (%d, 4) posted (007C17D0 -> 0077C2A0 -> 0076E520; packet "
+            "cc13-takeoff)", p.row.name.c_str(), p.plane_control_mode_900,
+            static_cast<double>(p.plane_airborne_908), p.plane_taxi_queue_910 ? 1 : 0,
+            p.plane_ground_contact_bf8 ? 1 : 0, static_cast<double>(summary.simulated_seconds),
+            p.plane_control_mode_900);
+    }
+    done("Plane::takeoff_enter_007c17d0", 0x007c17d0u);
+}
+
+// The delivery: 0076C600 -> 00780670 -> 007CCFA0 (kind C3h: byte table
+// 007CD1D8, dword table 007CD1AC -> 007CCFEF; requested 4 -> 007CD22C ->
+// 007CD02C). ECX there is the message's +20h (the state at the post).
+//   007CD02C: +20h == 7 -> 007CB5F0, the touchdown authority arm. Not reached
+//     here: every image writer of +900h = 7 clears +904h (007C7183, 007C6481,
+//     007D6600, 007C70F2: the setter's state-7 arm) and so do the host's (the
+//     creation seed leaves it false), so a posted C3h never carries 7. LABELLED:
+//     counted and logged if it ever does, not run.
+//   007CD042: 0042A7E0, the LIVE +900h is 4 or 5 -> 007C7430. Single player
+//     (mode 0) skips 007C7444's 007C71E0; then +904h = 0 when set (007C7460),
+//     +910h = 0 (007C746F), +908h = 0.0 (007C7475), and +900h = 4 when +BF8h is
+//     clear and +900h is 5 (007C7488, a plain store: no 007C11E0).
+//   007CD05C: otherwise 007CA3F0(0), the host's ground_state_from_locked_007ca3f0
+//     (with no holder it stops after the probe, as that function does).
+void GameUnitsHost::Impl::deliver_takeoff_notify_c3h_007cd02c(GameUnitSlot& p) {
+    p.takeoff_notify_c3h_pending = false;
+    const std::int32_t sent = p.takeoff_notify_c3h_current;
+    if (sent == 7) {
+        ++takeoff_notify_arm_7cb5f0;
+        log.notef("  takeoff start notify %s: C3h (7, 4) reached 007CB5F0, NOT RUN "
+            "(007CD02C; packet cc13-takeoff)", p.row.name.c_str());
+        record("Plane::touchdown_007cb5f0", 0x007cd033u);
+        return;
+    }
+    if (p.plane_control_mode_900 == 4 || p.plane_control_mode_900 == 5) {   // 0042A7E0
+        ++takeoff_notify_arm_7c7430;
+        if (p.plane_landed_904) p.plane_landed_904 = false;              // 007C7460
+        p.plane_taxi_queue_910 = false;                                  // 007C746F
+        p.plane_airborne_908 = 0.0f;                                     // 007C7475
+        if (!p.plane_ground_contact_bf8 && p.plane_control_mode_900 == 5) {
+            p.plane_control_mode_900 = 4;                                // 007C7488
+            ++takeoff_notify_5_to_4;
+        }
+        done("Plane::remote_touchdown_to_state4_007c7430", 0x007c7430u);
+        return;
+    }
+    ++takeoff_notify_arm_7ca3f0;
+    log.notef("  takeoff start notify %s: C3h (%d, 4) with state %d -> 007CA3F0(0) "
+        "(007CD05C; packet cc13-takeoff)", p.row.name.c_str(), sent, p.plane_control_mode_900);
+    if (p.plane_contact_deck_bf4 != 0 && p.plane_contact_deck_bf4 <= landing_decks.size()) {
+        ground_state_from_locked_007ca3f0(p, landing_decks[p.plane_contact_deck_bf4 - 1u], false);
+    } else {
+        plane_site_probe_007c5ac0(p, -1.0f);
+        done("Plane::ground_state_from_locked_007ca3f0", 0x007ca3f0u);
+    }
 }
 
 // The ground roll's lift-off send (007CC212 / 007CC26E): 00762A00 builds message
@@ -19269,6 +19393,18 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             // docs/PLANE_FLIGHT_CORE_LAW.md.
             slot->plane_control_mode_900 = 7;
             slot->plane_airborne_908 = 3600.0f;
+            if constexpr (bsp::kPlaneShipyardLaunchAa0Cc13Bound) {
+                // Packet cc13-takeoff. 007D5D20: +AA0h = 0.0 (007D614B); a kind-1
+                // holder whose bag has `ShipYardLaunch` (00D0659C, 008F2260 at
+                // 007D644B) stores 5.0 (00CE3850) when its +0Ch byte is set, else
+                // -1.0 (00D7A260) (007D6454..007D646C). LABELLED: the record keeps
+                // only the set bit, so a present-but-clear key stays 0.0; every
+                // reader tests > 0.0 or <= 0.0, where 0.0 and -1.0 agree.
+                if (entity.shipyard_launch) {
+                    slot->plane_shipyard_launch_aa0 = 5.0f;
+                    ++host.shipyard_launch_aa0_planes;
+                }
+            }
             // 007D1F70's rate and acceleration keys for this row. They are what
             // the control targets and the rate law are built from, and they are
             // per-class rather than global, so a Zero and a Dauntless turn at
@@ -22408,6 +22544,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 dead = gun_host != nullptr
                                     && self_index < owner_.slots.size()
                                     && gun_host->water_gate_007bc5b0(self_index, false);
+                                if constexpr (bsp::kPlaneShipyardLaunchAa0Cc13Bound) {
+                                    // Packet cc13-takeoff: 007BC5D5 COMISS 0.0,
+                                    // [+AA0h] / 007BC5DC JB returns 0 before the
+                                    // +150h test when +AA0h > 0.0 or NaN.
+                                    if (!(0.0f >= unit_.plane_shipyard_launch_aa0)) dead = false;
+                                }
                             }
                             if (kPlaneWaterContactGateBound
                                 && unit_.motion.position[1] < line) {
@@ -36726,6 +36868,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             owner_.record("TakeoffStateParking::step_009cd540", 0x009cd540u);
                             break;
                         }
+                        if constexpr (bsp::kPlaneTakeoffStartNotifyCc13Bound) {
+                            // Packet cc13-takeoff: the C3h 007C17D0 posted in the
+                            // rule above. LABELLED: the image delivers it at row 9
+                            // (00778542 -> 0076C600), after every unit's think;
+                            // here after this plane's own step (which has already
+                            // cleared +904h at 009CE2E0, as in the image).
+                            if (unit_.takeoff_notify_c3h_pending) {
+                                owner_.deliver_takeoff_notify_c3h_007cd02c(unit_);
+                            }
+                        }
                         if (done) {
                             // 0099B690 -> 0099A660 queues the task on the bot's
                             // retire list; the bot drops it before its next think.
@@ -36824,7 +36976,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.takeoff_slow_left_at = owner_.summary.simulated_seconds;
                                 unit_.takeoff_run_18 = -1.0f;
                                 unit_.takeoff_run_1c = 0.0f;
-                                owner_.record("Plane::takeoff_enter_007c17d0", 0x007c17d0u);
+                                if constexpr (bsp::kPlaneTakeoffStartNotifyCc13Bound) {
+                                    // 009CE28B JMP 007C17D0; the C3h it posts is
+                                    // delivered after the step below (row 9).
+                                    owner_.plane_notify_takeoff_start_007c17d0(unit_);
+                                } else {
+                                    owner_.record("Plane::takeoff_enter_007c17d0", 0x007c17d0u);
+                                }
                                 ++owner_.takeoff_to_run;
                                 owner_.log.notef("  takeoff task %s: SlowTakeoff -> Takeoff at "
                                     "%.2f s (009CFB60; packet cc9_takeoff_task_bind)",
@@ -36844,15 +37002,43 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // carries +AA0h as 0.0 (SUBSTITUTION, labelled; the image's
                     // launched plane has 0.0 or -1.0 unless its descriptor asks for a
                     // ShipYardLaunch, 007D6355 / 007D645A), so the first arm answers.
+                    // Packet cc13-takeoff (kPlaneShipyardLaunchAa0Cc13Bound): the
+                    // carried +AA0h replaces the 0.0 (009CFB81 MOVSS, 009CFB89
+                    // COMISS [00D7A218], 009CFB90 JA: NaN returns true). The 60 m
+                    // arm at 24-bit precision control (main thread): dx, dz stored
+                    // to float (009CFBC0, 009CFBCD); dx*dx, 0*0, dz*dz each rounded
+                    // to float by the x87 and summed in that order, then stored
+                    // (009CFBE7) and compared with the double 3600.0 (009CFBF5
+                    // FCOMIP, JBE: NaN stays). At 53 bits the sum is rounded once.
+                    // Its 7Ah (byte +20h = 0) goes through 0077C2A0(plane, msg, 0,
+                    // 0) to 007CD171 -> 007B83F0(0): +AA0h = -1.0 (00D7A260).
+                    // LABELLED: delivered at once (the image: row 9). The pose
+                    // refresh 00414DB0 (009CFBB2) is the host's current position.
                     bool takeoff_slow_leave_009cfb60() {
-                        constexpr float kPlaneAa0 = 0.0f;
-                        if (!(kPlaneAa0 > 0.0f)) return true;
+                        float aa0 = 0.0f;
+                        if constexpr (bsp::kPlaneShipyardLaunchAa0Cc13Bound) {
+                            aa0 = unit_.plane_shipyard_launch_aa0;
+                        }
+                        if (!(aa0 > 0.0f)) return true;
                         const float dx = unit_.motion.position[0] - unit_.takeoff_slow_start_18[0];
                         const float dz = unit_.motion.position[2] - unit_.takeoff_slow_start_18[2];
-                        const float d2 = static_cast<float>(static_cast<double>(dx) * dx +
-                            static_cast<double>(dz) * dz);
+                        float d2 = 0.0f;
+                        if constexpr (bsp::kPlaneShipyardLaunchAa0Cc13Bound) {
+                            const float xx = static_cast<float>(static_cast<double>(dx) * dx);
+                            const float zz = static_cast<float>(static_cast<double>(dz) * dz);
+                            d2 = static_cast<float>(static_cast<double>(xx) + zz);
+                        } else {
+                            d2 = static_cast<float>(static_cast<double>(dx) * dx +
+                                static_cast<double>(dz) * dz);
+                        }
                         if (!(static_cast<double>(d2) > 3600.0)) return false;
-                        owner_.record("Plane::message_7a_007b83f0", 0x009cfc38u);
+                        if constexpr (bsp::kPlaneShipyardLaunchAa0Cc13Bound) {
+                            unit_.plane_shipyard_launch_aa0 = -1.0f;            // 007B8412
+                            ++owner_.shipyard_launch_aa0_leaves;
+                            owner_.done("Plane::message_7a_007b83f0", 0x007b83f0u);
+                        } else {
+                            owner_.record("Plane::message_7a_007b83f0", 0x009cfc38u);
+                        }
                         return true;
                     }
 
@@ -43247,6 +43433,9 @@ bool GameUnitsHost::plane_local_input_gate_007bb9a0(std::size_t index,
     const bool active = mode == 7 || mode == 6 || mode == 3 || (mode == 4 && !kLanding904);
     gate.enable_byte_c0c = active;
     gate.gate_float_aa0 = 0.0f;
+    if constexpr (bsp::kPlaneShipyardLaunchAa0Cc13Bound) {
+        gate.gate_float_aa0 = u.plane_shipyard_launch_aa0;   // packet cc13-takeoff (007BB9B4)
+    }
     gate.gate_block_present = u.actuator_block_dec.channel_a.enabled;
     gate.gate_block_value = u.actuator_block_dec.channel_a.value;
     gate.controller_present = false;
@@ -44167,6 +44356,20 @@ void GameUnitsHost::report() {
             host.log.notef("summary throttle dead band: applied=%llu skipped=%llu "
                 "(0099DB1F-0099DB56, packet cc9_throttle_dead_band)",
                 host.throttle_band_applied, host.throttle_band_skipped);
+        }
+        if constexpr (bsp::kPlaneTakeoffStartNotifyCc13Bound) {
+            host.log.notef("summary takeoff start notify: calls=%llu posts=%llu arm_7cb5f0=%llu "
+                "arm_7c7430=%llu five_to_four=%llu arm_7ca3f0=%llu (007C17D0 -> C3h -> "
+                "007CD02C, packet cc13-takeoff)", host.takeoff_notify_calls,
+                host.takeoff_notify_posts, host.takeoff_notify_arm_7cb5f0,
+                host.takeoff_notify_arm_7c7430, host.takeoff_notify_5_to_4,
+                host.takeoff_notify_arm_7ca3f0);
+        }
+        if constexpr (bsp::kPlaneShipyardLaunchAa0Cc13Bound) {
+            host.log.notef("summary shipyard launch aa0: planes=%llu slow_pushes=%llu "
+                "leaves_60m=%llu (007D5D20 / 009CF8E0 / 009CFB60, packet cc13-takeoff)",
+                host.shipyard_launch_aa0_planes, host.shipyard_launch_aa0_slow_pushes,
+                host.shipyard_launch_aa0_leaves);
         }
         if constexpr (kGroundRetakeoffBound) {
             host.log.notef("summary ground retakeoff: pushes=%llu parking=%llu takeoff=%llu "
