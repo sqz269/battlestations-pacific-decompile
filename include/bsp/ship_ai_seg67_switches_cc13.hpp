@@ -10,13 +10,13 @@ namespace bsp {
 // class+A0h only for a class without a model box (00811058).
 // True: the margin reads the class Length (GameUnitsHost::unit_class_extents,
 // the slot's class+A0h). False: unit+9C8h, as before.
-inline constexpr bool kShipAiTorpedoMarginClassLengthBound = false;
+inline constexpr bool kShipAiTorpedoMarginClassLengthBound = true;  // ON: USN04/JM08/USN21 pairs identical (SHIP_AI 300)
 
 // (C) 009EE586..009EE594. Every 009ED6B0 pass that reaches 009EE580 (every
 // tick the station-keeping arm does not run) clears blk+38Ah, +388h and +389h
 // before the path-pick gate. The host kept the latches across skipped ticks.
 // True: the three station latches clear there. False: they persist.
-inline constexpr bool kShipAiStationLatchClearBound = false;
+inline constexpr bool kShipAiStationLatchClearBound = true;  // ON: JM08 moved from LSM 01 at 725.95 s, USN04/USN21 identical (SHIP_AI 300)
 
 // (D) 009EE6F1..009EE750. After the path-pick gate opens and before the output
 // block and the tail, the parked byte blk+2FDh is computed:
@@ -27,7 +27,7 @@ inline constexpr bool kShipAiStationLatchClearBound = false;
 // different fields, different consumers, different addresses.
 // True: the byte is computed there into both host copies (tail.parked_2fd and
 // goal.flag_2fd). False: the host's previous single write at 009EF045.
-inline constexpr bool kShipAiParkedByteBeforeTailBound = false;
+inline constexpr bool kShipAiParkedByteBeforeTailBound = true;  // ON: gameplay identical on USN04/JM08/USN21 (SHIP_AI 300)
 
 // (F) 009EF94E/009EF96F. Every turn-clearance refresh resets blk+37Ch to
 // [00CE3D64] = 10000.0f (0x461C4000) before its lowerings. The host's
@@ -42,7 +42,7 @@ inline constexpr bool kShipAiParkedByteBeforeTailBound = false;
 // 009F50E0 reaches 009F4DA0 -> 009F3F80's reader at 009F416E (009F5227,
 // then 009F5248, straight-line). So the default is left as it is.
 // True: the refresh stores 10000.0f. False: 9999.0f, as before.
-inline constexpr bool kShipAiClearanceRefreshSentinelBound = false;
+inline constexpr bool kShipAiClearanceRefreshSentinelBound = true;  // ON: gameplay identical on USN04/JM08/USN21 (SHIP_AI 300)
 inline constexpr float kShipAiClearanceRefreshSentinel = 10000.0f; // 00CE3D64
 static_assert(kShipAiClearanceRefreshSentinel == 0x1.388p+13f);    // 0x461C4000
 
@@ -57,7 +57,7 @@ static_assert(kShipAiClearanceRefreshSentinel == 0x1.388p+13f);    // 0x461C4000
 // AL = [ESP+37h] = 0 (set at 009EDA2F).
 // True: the host does the same for NavigateAstern. False: the host runs the
 // output block and the tail for mode 3 as for mode 2.
-inline constexpr bool kShipAiNavigateAsternSkipBound = false;
+inline constexpr bool kShipAiNavigateAsternSkipBound = true;  // ON: JM08 moved from the mode-3 Gyoraitei at 18.05 s (SHIP_AI 300)
 
 // 009EE59B/009EE59F. When blk+1C4h is neither 2 nor 3 (Rudder or Heading),
 // the path gate JZ 009EF206 still reaches 009EF206: 009DE5B0(dt), then
@@ -68,6 +68,6 @@ inline constexpr bool kShipAiNavigateAsternSkipBound = false;
 // bookkeeping record.
 // True: the closed gate makes the same arm-final call before returning false.
 // False: it returns without it, as before.
-inline constexpr bool kShipAiNavGateClosedArmFinalBound = false;
+inline constexpr bool kShipAiNavGateClosedArmFinalBound = true;  // ON: USN21/JM08 moved from heading-mode units (SHIP_AI 300)
 
 } // namespace bsp

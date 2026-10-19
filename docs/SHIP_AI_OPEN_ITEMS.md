@@ -19794,3 +19794,27 @@ change is draw-order neutral, so no default-env pair.
 - default env (`s60_bdoffd_os` / `s60_bdond_os`): exit 3. The first 257 deaths are identical, through the first 98h
   (Cargo1 at 1354.95 s); the first moved death is the next one (Airfield1_sqn39, 1357.55 -> 1357.60 s). After that
   the shared stream is offset, so later breakups differ (Convoy2 1416.66 broke in OFF only; Cargo5 and Cargo6 in ON).
+
+## 300. cc13's seg67 ship batch paired and flipped (cc9-ships60, 2026-10-19)
+
+The seven OFF switches of cc13-seg67g..l (origin/main 0e29a3d91; include/bsp/ship_ai_seg67_switches_cc13.hpp and
+cc13_ship_ai_commit_band.hpp, docs/CC13_SEG67D.md) were paired in the reference env on 913bac450 (one pair_export ON
+tree per switch, local\s60_sb_<k>; OFF = the tree build): USN04 20000 frames without orders, JM08 72000 frames with
+config/win_orders/jm08_l65_j8_p2.txt (the cg pair 36000 frames, below), USN21 40000 frames with
+cc9-ships44\local\s46_u21_f.txt. pair_diff exit codes, then the mechanism check on the first moved ship AI sample
+(local\s60_firstdiv.py, per unit):
+
+| switch | item | USN04 | JM08 | USN21 | first moved unit, and why |
+|---|---|---|---|---|---|
+| kShipAiCommitmentBandQuarterBound | G + H | 0 | 3 | 3 | JM08 Helena 375.03 s and USN21 Atago 147.05 s: throttle -0.56 (astern) -> +1.17 / +1.00 (ahead). The host's threshold was 16 times the image's, so it always took the astern band. |
+| kShipAiTorpedoMarginClassLengthBound | I | 0 | 0 | 0 | none |
+| kShipAiStationLatchClearBound | C | 0 | 3 | 0 | JM08 LSM 01 (follow) at 725.95 s: target heading -2.1462 -> 0.6463 after the latches clear on a skipped station tick |
+| kShipAiParkedByteBeforeTailBound | D | 1 | 0 | 0 | none in gameplay; on USN04 rudder-curve and neighbour-list counts move |
+| kShipAiClearanceRefreshSentinelBound | F | 1 | 1 | 1 | none; the 37Ch columns print 10000 for 9999 |
+| kShipAiNavigateAsternSkipBound | D' | 0 | 3 | 0 | JM08 Gyoraitei #Y1 (attackmove, navigate_astern) at 18.05 s: the tail is skipped, d32c 10411 -> 0 and the target heading is the desired one. JM08 then fails at 1276.17 s ("The HQ has been destroyed!"); OFF ends without a result. |
+| kShipAiNavGateClosedArmFinalBound | closed gate | 1 | 3 | 3 | USN21 Dace (sub_attack, heading mode) at 132.05 s and JM08 Helena from 15 s: the closed gate now runs 009DE5B0, so heading-mode units take the arm-final step |
+
+Every move starts at the switch's own mechanism, so all seven are flipped ON (faithful fixes, byte-reviewed by
+cc13). The first JM08 cg run was killed at frame 54208 with a 3.5 GB log (FreeAttack lines); it was rerun with its
+OFF partner at 36000 frames (`s60_sboff_j08s` / `s60_sbcg_j08s`, exit 3, 132 -> 192 death rows). None of the paired
+rows is a current WINS win: jm08_l65_j8_p2 does not end in 72000 frames with every switch OFF.
