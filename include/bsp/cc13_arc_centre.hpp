@@ -38,6 +38,6 @@ namespace bsp {
 // 009E5639), in the ring construct.
 // The extra 009E3C00 calls also move the plan's follower fields and can
 // advance its cursor (009E421F), as the image's do.
-inline constexpr bool kShipAiArcCentrePlanTestCc13Bound = false;
+inline constexpr bool kShipAiArcCentrePlanTestCc13Bound = true;  // ON with the astern skip: LOMP10 path_arm 3952, command_arm 7, completes 736.49 s (SHIP_AI 314)
 
 }  // namespace bsp

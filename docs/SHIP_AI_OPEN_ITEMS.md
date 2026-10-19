@@ -20399,3 +20399,47 @@ Pair: OFF = tree build 172589750, ON = `local\g55_hc_on` (pair_export, same comm
 - **BSM04 (no orders, 30000 frames): unreached.** The idle run fails at 108.05 s, before the phase that calls
   GenerateObject("Lexington") (bsm_04_vengance_at_luzon.lua:914); carried=11, applied=0. A BSM04 plan through
   phase 1 is needed to see Lexington's Stop + StartSpeed 3.
+
+## 314. Arc-centre plan test + astern skip paired and flipped; USNOS parked (cc9-ships61, 2026-10-19)
+
+**Flip.** `kShipAiArcCentrePlanTestCc13Bound` (docs/CC13_ORBIT.md) and `kShipAiNavigateAsternSkipBound` ON together.
+Reference-env pairs on origin/main f906d5934 ("rng streams: on" in all ten logs): OFF = tree build
+`local\s61_off3_bin` (logs `s61_o3_*`), ON = pair_export `local\s61_ap` (logs `s61_ap_*`).
+`off_switch_on_build.py --names` for the two switches: build.ps1 exit 0 (only a pre-existing LNK4006).
+
+| row | OFF end | ON end | arc-centre summary ON (OFF) | pair_diff |
+|---|---|---|---|---|
+| LOMP10 p3_l10_b | completed 1050.45 s | completed 736.49 s | calls 3959, plan_live_cursor0 3952, command_arm 7, path_arm 3952 (OFF command_arm 5487, path_arm 0) | moved |
+| USN21 u21f | no end | no end | calls 0 both | identical |
+| IJN18 l67_i18_d | failed 485.01 s | failed 530.99 s | calls 16407, path_arm 16329, command_arm 78 (OFF command_arm 18019) | moved |
+| USN04 | no end | no end | calls 0 both | identical |
+| BSM01 l69_b1_d | no end | no end | calls 0 both | identical |
+
+- Ashigara (BSP_SHIP_ESCAPE_TRACE): the heading target tracks the path to CB4. It passes (1643,-943) at run 8000 and
+  (-857,-3660) at 12000, then turns at the goal (-2861,-4039). There is no orbit near the origin, and the row ends
+  314 s earlier.
+- **Oscillation census** (`local\s61_osc.py`; full-rudder sign flips between consecutive step samples):
+  - LOMP10: 9 -> 26 over about 12k samples.
+  - IJN18: 38 -> 131. By state, attackmove/navigate_astern goes 15 -> 54 and follow 13 -> 68, the most for one ship
+    being Oma3 13 in 732 samples and Fletch6 13 in 393.
+  - IJN18 throttle sign flips: 131 -> 28.
+  - These flips are attackmove ships now steering by the path arm and followers behind them. Separation and
+    ring-scan terms (the 11D4h/11D5h readers) now reach those ships; this is not a limit cycle.
+- **BSM01 HenryPT:** its `moveto 2580 -1650` oscillation (92 full-rudder flips in 323 escape-trace rows,
+  d330 2449 -> 2512) is identical OFF and ON. It predates this pair; bisect1 owns it.
+- **Iowa (USN21):** the stop came from the host's Hidden pool dropping Intrepid's Cruise and StartSpeed
+  (usn_sibuyan.scn). Fixed by hiddencarry (`kSceneHiddenSpawnCarryCc13Bound`, gunnery55's pair, section 313).
+
+**USNOS parked** (queue item 3). On 05cb6f1bc, with the plans in `local\s61_osmk.py` / `s61_os_*.txt`, every
+attempt failed:
+- c19 failed at 3156.95 s. TroopTrans6 sank at 241.96 s to wave-1 plane #1.4 (first damage 118.45 s, before its
+  first move at frame 2460). TT5, TT4 and TT2 sank at 516-629 s to wave 2 (#4.4-4.6), and TT3 and TT1 to Haku
+  squadrons.
+- The airfields die without our strikes: Airfield3 at 1870.75 s, the Airfield1 hangar to NH gunfire at 1894.52 s,
+  Airfield2 at 2687.50 s.
+- c22 struck all three airfields 30 frames before each air_mass block. Every airfield strike before frame 39970 was
+  refused "no such slot": each deck has 4 launch slots (0-3) shared by every class, and the frame-2000 Shima
+  strikes hold them until about frame 40000. It failed at 2921.72 s.
+- c23 added class-810 fighters from all five decks on waves 1 and 2. The fighters launch, but TT6 still sinks at
+  exactly 241.96 s and the strikes lose their slots. It failed at 1805.64 s.
+- Next plan: move TT6 out of wave 1's reach before 118 s, then budget the 4 slots per deck.
