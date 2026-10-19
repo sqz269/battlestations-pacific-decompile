@@ -172,7 +172,28 @@ The live analysis batch reported `/battlestationspacific.exe` in the configured
 `C:/Users/sqz269/bsp.gpr` project. Existing B83C50/B7C290/B7C6B0 exports, B46A70 raw
 listing schedule and complete 004BACD0 source/export were reviewed. This packet adds
 application composition; no existing Ghidra names/comments need replacement.
-`git diff --check` is the local static check. Primary integration owns Win32 build,
-existing checks, live terminal observations, screenshots and teardown verification.
-Original binary caller/register/FH3 ABI and full mission weather/shadow parity remain
-separate from this explicit source diagnostic.
+`git diff --check` is the local static check. Primary Win32 ON12 integration now
+provides actual device and visual evidence in `local/oct18b_render_on_attempt12.log`
+and `local/oct18b_render_on_final_N180.png`. Both VS/PS GetConstant calls returned
+HRESULT0 and report ambient/cube (8,8.96,10.24), diffuse (11.2,10.88,9.6), direction
+(0.57735,0.57735,0.57735), distance fog (200,7000,0) and height fog (200,0,-120).
+SRGBWRITEENABLE0 matches the directly presented linear output. The first native
+pass readback confirms actual installed hull/Blank/Spec/Bump textures bound to the
+authored slots and SRGBTEXTURE0, so no second hardware sRGB decode is active.
+
+The N180 capture shows a bright recognizable camouflaged Fletcher, with visible
+authored hull/deck texture detail. N001/N060 also contain the textured ship but
+have opaque dark UI overlays, including center occlusion at N060. These captures
+establish the ordinary installed-texture visual milestone with the documented
+source HDR illumination diagnostic and clear-air camera choices. They do not claim
+original world lighting, weather, shadow rendering, exposure or postprocessing.
+
+ON12 records561 completed ordinary command frames, each with entries134,5 and139
+B24010 calls/returns, within600 application frames/599 presents. Native lighting
+retirement reports outer_lighting=null, resource/ambient/sun retired and empty sun
+registry. A later singleton shutdown fault remains outside that successful lighting
+retirement; ON12 does not prove clean whole-process teardown. The separate final
+OFF/current-main paired USN04 run reports identical simulation and exit0 on both
+sides (`local/oct18b_render_final_off_8d_pair_diff.json`). Original binary caller,
+private-stack/register/FH3 ABI and full mission parity remain separate from this
+source application composition and its live visual validation.

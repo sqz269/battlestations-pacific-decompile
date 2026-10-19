@@ -5,6 +5,14 @@
 
 #include "bsp/rocket_task_cc13.hpp"
 
+namespace bsp {
+bool rocket_on_hit_007b6d00(RocketTask& t, std::uint32_t) noexcept { t.ap.elapsed_44 = 0.0f; return true; }
+int rocket_slot_return9_007b6ce0() noexcept { return 9; }
+double rocket_follow_wait_007b7270(const RocketTask& t, double (*follow_wait)(void*), void* follow) {
+    return t.state == RocketState::kFollow ? follow_wait(follow) : -1.0;
+}
+}
+
 #include <cmath>
 
 #include "bsp/plane_flight.hpp"

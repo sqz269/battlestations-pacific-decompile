@@ -133,7 +133,7 @@ Object movie_timed_box_construct_00465950(Seg6Host& host, Object item, float x, 
 }
 
 // 00465A40, __thiscall(item, a0, a1, a2, float time, b0..b5, int v34, float
-// v18, NativeString text by value), RET 3Ch. The self-assignment test at
+// v18, NativeString text by value), 14 stack dwords, RET 38h. The self-assignment test at
 // 00465AE6 compares item+4 with the address of the by-value argument, which
 // can never match; it is kept as the image has it.
 Object movie_timed_record_construct_00465a40(Seg6Host& host, Object item, float a0, float a1, float a2,

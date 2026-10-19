@@ -2,6 +2,9 @@
 #include <cstdint>
 
 namespace bsp {
+// 008713E0: ECX actual cache, EAX same, RET. D0DAF0 then four zero DWORDs;
+// no allocation and no blanket initialization outside the 14h owner header.
+void* construct_native_particle_resource_cache_008713e0(void*) noexcept;
 struct NativeStringRawPoolContext;
 struct NativeParticleResourceCacheContext;
 

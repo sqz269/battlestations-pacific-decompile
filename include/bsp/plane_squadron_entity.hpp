@@ -1,4 +1,7 @@
 #pragma once
+#include <utility>
+
+// Added below are source interfaces for the newly defined 00D087C0 slots.
 // The plane squadron as the object the AI commands: the member array at
 // +3D0h, the flight leader, the groupable-combatant answer 009FE080 takes for
 // class 18h, and the member fan-out the squadron's own vtable performs.
@@ -59,6 +62,80 @@ struct PlaneSquadronEntity {
     bool dirty{false};                     // +3ECh
     void* ai_command_block{nullptr};       // +348h, vtable[+114h] returns it
 };
+
+// Tail thunks preserve the original argument/return category. The callback
+// names the actual leader slot; +3D0h is read even when live_count is zero.
+template<class F, class... A> decltype(auto) plane_squadron_leader_slot12c_007ecf70(
+    const PlaneSquadronEntity& s, F&& f, A&&... a) {
+    return std::forward<F>(f)(s.members[0], std::forward<A>(a)...);
+}
+template<class F, class... A> decltype(auto) plane_squadron_leader_slot38_007ed470(
+    const PlaneSquadronEntity& s, F&& f, A&&... a) {
+    return std::forward<F>(f)(s.members[0], std::forward<A>(a)...);
+}
+template<class F, class... A> decltype(auto) plane_squadron_leader_slotbc_007ed4a0(
+    const PlaneSquadronEntity& s, F&& f, A&&... a) {
+    return std::forward<F>(f)(s.members[0], std::forward<A>(a)...);
+}
+void* plane_squadron_leader_position_007ed450(const PlaneSquadronEntity&, void* out,
+                                            void (*slot34)(void*, void*));
+const char* plane_squadron_description_007ed480(const PlaneSquadronEntity&, const char* (*slot28)(void*));
+float plane_squadron_leader_float_007ed4d0(const PlaneSquadronEntity&, double (*slot50)(void*));
+double plane_squadron_heading_007ee290(const PlaneSquadronEntity&, double (*slotc8)(void*),
+                                      void (*refresh)(void*), void* squadron,
+                                      const float& world_ec, const float& world_f4);
+bool plane_squadron_true_007efaa0() noexcept;
+void plane_squadron_noop_007efab0(std::uint32_t unused) noexcept;
+void plane_squadron_noop_007ed000(std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t,
+    std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t) noexcept;
+// ECX=squadron, float seconds on stack, RET4. Base first, then members in
+// order; the loop re-reads live_count after every virtual call.
+void plane_squadron_set_invincible_007f2290(PlaneSquadronEntity&, float seconds,
+    void (*base)(void*, float), void* native_squadron, void (*member_slotf4)(void*, float));
+struct PlaneSquadronPoseHost {
+    virtual ~PlaneSquadronPoseHost() = default;
+    virtual bool world_valid_c8(void* member) = 0;
+    virtual void refresh_world_00414db0(void* member) = 0;
+    virtual void copy_leader_world_to_local_004134f0(void* leader) = 0;
+    virtual void invalidate_squadron_c8_10c() = 0;
+    virtual void* first_child_48() = 0;
+    virtual void invalidate_child_0042ed50(void*) = 0;
+    virtual void* next_sibling_44(void*) = 0;
+    virtual float invincible_until_308() = 0;
+    virtual void clear_member_2f4(void*) = 0;
+};
+// Original ignores one stack word, RET4; comparison uses the x87 sum of a
+// float game clock and a double tolerance. This model uses double for it.
+void plane_squadron_follow_leader_pose_007f22e0(PlaneSquadronEntity&, const volatile float& game_time_f876a4,
+                                              const volatile double& tolerance_d7a308, PlaneSquadronPoseHost&);
+
+class Cc13Seg48Host;
+// Raw-storage boundary for 00D087C0 slot+16Ch (007EFBA0). It reads genuine
+// Win32 squadron/target fields; do not pass the projected PlaneSquadronEntity
+// value above. All callbacks are required original operations, in image order.
+struct PlaneSquadronCommandGateHost {
+    virtual ~PlaneSquadronCommandGateHost() = default;
+    // 00779D50: ECX=squadron, (command,target) stack, AL; RET8.
+    virtual bool entity_may_follow_target_00779d50(void*, const char*, void*) = 0;
+    // ECX=squadron, command stack, AL; RET4.
+    virtual bool supports_command_vslot168(void*, const char*) = 0;
+    // 00438E10: ECX=command, EDX=literal, EAX strcmp-like result.
+    virtual int compare_insensitive_00438e10(const char*, const char*) = 0;
+    virtual bool is_kind_vslot5c(void*, int kind) = 0;
+    // 006BF050: ECX=target, DL=1; EAX block pointer.
+    virtual void* air_ops_get_block_006bf050(void*, std::uint8_t flag) = 0;
+    // 00803510: ECX=squadron party, EDX=target party, EAX relation.
+    virtual int party_relative_00803510(std::uint32_t, std::uint32_t) = 0;
+    virtual bool is_surface_00922dd0(void*) = 0;
+    virtual bool is_airborne_00922b10(void*) = 0;
+    virtual bool uses_small_turn_roll_limit_0047b880(void* leader) = 0;
+    // ECX=squadron; target,1,1 on stack; EAX token, RET0Ch.
+    virtual std::uint32_t choose_attack_command_007eec50(void*, void*, int, int) = 0;
+};
+// ECX=squadron, command/nullable target on stack; AL bool, RET8. Reuses the
+// existing class-field predicate and squadron ordnance loops, without wiring.
+bool plane_squadron_command_allowed_007efba0(void* native_squadron, const char* command,
+    void* target, PlaneSquadronCommandGateHost&, Cc13Seg48Host& ordnance);
 
 // 007F4735 / 007F4754 / 007F4778. `present` is whether the property bag
 // carried `WingCount` (00CF8840); `authored` is the value at prop+0Ch.

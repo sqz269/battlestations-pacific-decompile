@@ -3732,3 +3732,26 @@ From cc13's seg67d review. 009C8920 (task slot +54h; with kTaskProfileActivation
 Reach: BSM09 (bsm09_l68_b9_d1) gives D3A Val 1-5 SquadronSetTravelAlt 1200 / 1500, unforced, and they fly dive-bomb tasks. Prediction: a reset needs a profile call after the 0.5 s timer and after an earlier call has cleared +3A9h, so it comes only at a dive leader's second head change. Expect few or no resets, and a re-seed on every head change after the first. Moves are possible on any dive row where a hit notice precedes a head change.
 
 **96, result: kDiveCruiseProfileGateBound ON, unexercised.** Exes built at 749351fae (`local\p23e_off`, `local\p23e_on`). BSM09 d1, BSM09 with no orders, USN04 and USNOS `l65_os_c1` (`local\p23e_{off,on}_{b9,b9n,u04,os}.log`) are all gameplay identical. No summary line printed on any of them, so no row reset a set travel altitude or re-seeded a clock below 3600. BSM09's D3A Val travel altitudes stay set: no dive leader reaches the second head change, as predicted. Flipped by mechanism; it is faithful to the bytes and unexercised on these rows.
+
+## 97. cc13's device walk, per rack (cc9-physics23, 2026-10-19)
+
+kPlaneDeviceWalkPerRackBound (include/bsp/cc13_devwalk.hpp, docs/CC13_DEVWALK.md; 007C0D90 per rack in list order). The exes are pair_export builds of 7f9207dc6, which contains 9df6eecb9: `local\p23h_off` and `local\p23h_on` (PerRack only; kPlaneDeviceWalkSharedDrawBound stays OFF until cc13's follow-up). Logs are `local\p23h_{off,on}_<row>.log`.
+- BSM09 d1, USN04, USN01 `usn01_p8_u1_i` and USNOS `l65_os_c1`: gameplay identical (BSM09 still EndMission 327.04 s). On these rows every rack on a plane is one class, as cc13 predicted. 007C0D90 is reached: Plane::droppable_device_walk goes from unimplemented to concrete.
+- USN21 `s46_u21_f`: MOVED, deaths 576 -> 574, dive-bomb releases 13 -> 18, torpedo drops 8 -> 6. The first divergence is JakeTmpl, a kind-10h floatplane on a depth-charge task with 4 single racks. Its squadron spends its ordnance and goes RTB at 116.60 s instead of 117.50 s (`spent ordnance ... latched`). The walk now fires each plain rack in list order with the level delay in one pass, where the plane-wide arm fired one per issue. That is cc13's "kind-10h planes with mixed racks" case, and everything after it is RNG-coupled. The mission completes at 2916.72 s in both, guard logged.
+- No rocket (33h) carrier appears on any of these rows (no opportunistic-rocket decision with rocket_platforms > 0), so the rocket arm is unexercised.
+
+Verdict: faithful by mechanism, to be flipped ON. include/bsp/cc13_devwalk.hpp is held by cc13-devwalk2 (the shared-draw follow-up); p23_devwalk_flip is queued behind it.
+
+**97, flip.** kPlaneDeviceWalkPerRackBound is ON (cc13-devwalk2's lease freed and p23_devwalk_flip took the header). kPlaneDeviceWalkSharedDrawBound stays OFF until its pair.
+
+## 98. cc13's follow-release seams and the goaway float stores (cc9-physics23, 2026-10-19)
+
+The exes are pair_export builds of 2c395b950, which contains 7f9207dc6 and 4943076ca: `local\p23i_off`, `local\p23i_seam` (kFollowReleaseSeamsBound) and `local\p23i_gfs` (kDiveBombGoawayFloatStoresBound). Logs are `local\p23i_<build>_<row>.log`.
+- **kFollowReleaseSeamsBound** (include/bsp/follow_release_seams_cc13.hpp; the 009C1FFD/009C2006 C25h||C20h arm in the other host copies of 009C1FD0). Reached on every row: the "follow release arm" applied count goes 29 -> 199 on USN01 `usn01_p8_u1_i`, 63 -> 157 on BSM09 d1 and 27 -> 203 on USN21 `s46_u21_f`. Gameplay MOVED on all three, RNG-coupled.
+  - USN01: torpedo-task releases 4/9 -> 3/8, dive-bomb releases 5 -> 7, no end in both.
+  - BSM09 d1: deaths 49 -> 50, dive releases 9 -> 6, torpedo drops 2 -> 3. It still wins, EndMission 327.04 -> 351.04 s.
+  - USN21: deaths 576 -> 574, dive releases 13 -> 15. It completes at 2916.72 s in both.
+  - No draw (the arm takes no 00BD2F10). Faithful by mechanism: **ON**. cc13's drop-kamikaze gating follow-up is still to come; the header states the host's 009AD1F0 path already calls the base only on the image's arm.
+- **kDiveBombGoawayFloatStoresBound** (include/bsp/cc13_tier2_switches.hpp; 009C7F00's travel*0.9f, the reload product and ceiling-100 stored as float). Identical on USN01 u1_i, BSM09 d1 and USN21 (pair_diff exit 0), as expected away from the float boundary. Faithful by mechanism: **ON**.
+- The 006082D0 comment fix routed with these (007BC7A0's rocket pass: COMISS 0,[desc+E0h] / JAE 007BC86C skips the attitude gate when E0h <= 0) waits for the next units.cpp commit. Other lanes are queued on that file.
+- WINS: BSM09 d1 re-times 327.04 -> 351.04 s under the seams (sent to cc9-lua70).

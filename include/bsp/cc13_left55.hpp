@@ -21,6 +21,13 @@
 
 namespace bsp::cc13_left55 {
 
+struct Left55Host;
+// 00888FB0 ECX object, RET: clear exactly byte+290h.
+void owner_clear_byte_290_00888fb0(void*) noexcept;
+// 00889940 ECX message, stack byte, EAX same, RET4. Base kind9Fh,
+// vtable D03360. Preserve untouched padding and other base-written bytes.
+void* byte_message_9f_construct_00889940(Left55Host& host, void* message, std::uint8_t value);
+
 // ---------------------------------------------------------------------------
 // Image layouts
 // ---------------------------------------------------------------------------
