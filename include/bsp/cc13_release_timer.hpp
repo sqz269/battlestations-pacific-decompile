@@ -57,9 +57,9 @@ static_assert(!kReleaseTimerPredicate007BB110Bound || kReleaseTimerReseedDrawBou
 inline constexpr bool kReleaseTimerNotify0DhBound = false;
 
 // 009D2F09 MOVSS XMM1,[00CE3800] (00 00 00 3F), stored at timer+4h.
-inline constexpr float kReseedLow_00ce3800 = 0.5f;
+inline constexpr float kReseedLow_00ce3800 = 0.5f;  // 00CE3800
 // 009D2F39 MOVSS XMM1,[00D7A24C] (00 00 80 3F), stored at timer+8h.
-inline constexpr float kReseedHigh_00d7a24c = 1.0f;
+inline constexpr float kReseedHigh_00d7a24c = 1.0f;  // 00D7A24C
 // 009FA3DF MOV ECX,1.
 inline constexpr int kReseedStream = 1;
 

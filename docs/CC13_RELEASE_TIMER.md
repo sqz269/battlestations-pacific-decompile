@@ -102,7 +102,7 @@ it from the live `VehicleClass` table (section 6).
 ## 5. Host callers and switches
 
 `AimTickBinding::accumulate_timer_009fa3a0` is the only binding. `torpedo_aim_tick_full_009d15f0`
-calls it at `009D2027` (`src/torpedo_aim_tick.cpp:305`), from `run_torpedo_aim_tick_009d15f0`, which
+reaches it through the call site `009D2027` (`src/torpedo_aim_tick.cpp:305`), from `run_torpedo_aim_tick_009d15f0`, which
 the torpedo task runs whenever its current state is `kAim`. No switch routes around it. The arm
 `009D2287` (`arm_release_timer_009d2287`) enables it with a zero countdown. A fire reaches
 `Impl::release_ordnance_007bbba0`; with `kReleaseIssueStageBound` ON the drop then waits for the
@@ -132,10 +132,11 @@ the reseed: with the real test and a zero countdown the timer would fire on ever
 per store: `release timer notify: unit=... (009FA405, no reader)`.
 
 OFF, each of the three keeps the old code path verbatim: the same `log.unimplemented` records, the
-same inputs to `release_timer_tick_009fa3a0`, the same countdown. The one structural change is that
-the gate result is now applied before the release in all builds, which is the old order: the old
-code also stored `r.next_countdown_10` before calling `release_ordnance_007bbba0`. The new slot field
-`torpedo_aim_timer_notify_0d` is written only ON.
+same inputs to `release_timer_tick_009fa3a0`, the same countdown, stored before
+`release_ordnance_007bbba0` as before. The new slot field `torpedo_aim_timer_notify_0d` is written
+only ON. ON, the predicate (and its implemented `Unit::can_release_007bb110` record) runs only on a
+tick where the image consults it, a strictly negative countdown of an enabled timer; the reseed and
+the notify run only in the fire arm.
 
 ## 7. ON-only lookups: container, filler, clearing
 
