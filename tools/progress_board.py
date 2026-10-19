@@ -63,6 +63,14 @@ def referenced_functions(db, starts):
     Unreferenced game bodies (the Dyn/Mit header instantiations that fill seg 0, cc15 survey 2026-10-18)
     can never run, so they stay out of the target unless someone reconstructed them anyway."""
     names = dict(db.execute('select address, name from functions'))
+    if db.execute("select 1 from sqlite_master where name='edges'").fetchone() and \
+            db.execute('select 1 from edges limit 1').fetchone():
+        # The index's per-site edges (tools/callgraph_sweep.py) already hold the address-taken and data-pointer
+        # references, plus code Ghidra never made a function; vslot/lua rows come from callgraph_indirect.py.
+        # vcall? candidates are guesses and do not make a body live.
+        return {e for c, e, k in db.execute("select caller, callee, kind from edges where kind in "
+                                            "('call','tailjmp','addr_taken','data_ptr','vslot','lua')")
+                if e in starts and not (k in ('call', 'tailjmp') and (names.get(c) or '').startswith(FUNCLET))}
     live = {e for c, e in db.execute('select caller, callee from calls')
             if e in starts and not (names.get(c) or '').startswith(FUNCLET)}
     cfg = json.loads((ROOT / 'config/target.json').read_text())

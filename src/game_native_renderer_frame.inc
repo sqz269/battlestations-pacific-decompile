@@ -42,4 +42,15 @@ struct FrameGraph {
   end_native_renderer_frame_default_00b2f4a0(renderer,
       static_cast<NativeRendererEndFrameContext*>(context));
  }
+ // ON-only ordinary-command attachment. All four consumers borrow the same
+ // retained queue execution/lifetime and continuation-frame identities.
+ void bind_ordinary_execution(NativeRenderQueueExecutionContext* execution,
+     NativeRenderQueueExecutionFrame* frame) noexcept {
+  end.actual_queue_execution=execution;
+  worker_end.actual_queue_execution=execution;
+  queue_destruction.actual_execution=execution;
+  end.actual_queue_frame=frame;
+  worker_end.actual_queue_frame=frame;
+  queue_destruction.actual_execution_frame=frame;
+ }
 };

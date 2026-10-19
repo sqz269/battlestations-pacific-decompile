@@ -1669,3 +1669,47 @@ void scene_property_value_construct_vector3_00467c80(ScenePropertyVector3Value& 
 
 
 } // namespace bsp::cc13_sys
+
+// oct18b-nA1: newly defined, assembly-reviewed leaves; build-only interfaces.
+
+namespace bsp::cc13_sys {
+namespace {
+template<class T> T& late_view_field(void* p, std::uint32_t offset) {
+    return *reinterpret_cast<T*>(static_cast<std::uint8_t*>(p) + offset);
+}
+}
+void game_camera_set_fov_004b4920(void* game, float fov,
+    const std::function<void(void*, float)>& camera_set_fov_00b6fbb0) {
+    void* camera = late_view_field<void*>(game, 0x19fc);
+    if (camera) camera_set_fov_00b6fbb0(camera, fov);
+}
+void world_view_job_empty_callback_004b5070(void*) noexcept {}
+void* world_view_job_scalar_delete_004b8a40(void* object, std::uint32_t flags, void*& global,
+    const std::function<void(void*)>& free_00bf65ac) {
+    global = nullptr;
+    late_view_field<std::uint32_t>(object, 0) = 0x00ce3818;
+    if (flags & 1u) free_00bf65ac(object);
+    return object;
+}
+float game_nearest_view_distance_squared_004bb970(void* game, const float point[3], NearestViewHost& host) {
+    void* camera = late_view_field<void*>(host.game_00e188a8(), 0x19fc);
+    if (!(late_view_field<std::uint8_t>(camera, 0x5c) & 2)) host.refresh_transform_00b6db70(camera);
+    auto distance = [point](void* object, std::uint32_t offset) {
+        float d[3];
+        for (unsigned i = 0; i != 3; ++i)
+            d[i] = static_cast<float>(static_cast<double>(late_view_field<float>(object, offset + 4 * i)) - point[i]);
+        return static_cast<float>((static_cast<double>(d[0]) * d[0] + static_cast<double>(d[1]) * d[1]) +
+                                  static_cast<double>(d[2]) * d[2]);
+    };
+    float best = distance(camera, 0x120);
+    for (unsigned i = 0; i != 8; ++i) {
+        void* object = late_view_field<void*>(game, 0x18cc + i * 4);
+        if (object) {
+            const float candidate = distance(object, 0xac);
+            // FCOMIP candidate,best / JA skips: unordered replaces best.
+            if (!(candidate > best)) best = candidate;
+        }
+    }
+    return best;
+}
+}

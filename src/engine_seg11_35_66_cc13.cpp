@@ -2018,6 +2018,14 @@ void destruct_content_list_00994e10(ContentPackageListLayout& list, void*& publi
     destruct_download_manager_base_009945e0(list.vtable_00, published_f8a304, lifetime);
 }
 
+// 00994EB0 / 00994EC0 / 00994ED0: ContentPackageList slots 7/8/9 are a
+// single RET each. 00994EE0 (slot 10) is RET 4. All preserve EAX and have no
+// observable body side effects; method purposes are provisional.
+void content_list_slot7_noop_00994eb0(ContentPackageListLayout&) noexcept {}
+void content_list_slot8_noop_00994ec0(ContentPackageListLayout&) noexcept {}
+void content_list_slot9_noop_00994ed0(ContentPackageListLayout&) noexcept {}
+void content_list_slot10_noop_00994ee0(ContentPackageListLayout&, std::uint32_t) noexcept {}
+
 void reset_content_enumeration_00994450(DownloadEnumerationState& state, XContentApi& api) {
     state.word_840 = 0;
     state.count_838 = 0;

@@ -162,6 +162,10 @@ struct ArchiveSectionReader {
 // read through 00951820 into ECX+54h.
 void read_entity_id_registries_006ad470(ArchiveSectionReader& reader,
                                         const std::function<void(int table_index)>& load_table);
+// 006AD4D0: ECX=registry pair, stack archive/RET4. Same section protocol as
+// reader, but 00951940 saves used entries of this and this+54h, in that order.
+void write_entity_id_registries_006ad4d0(ArchiveSectionReader& writer,
+    const std::function<void(int table_index)>& save_table);
 
 // Native steps of the 006B5960 load tail that are not Lua-state work.
 struct MissionLoadFinishHooks {

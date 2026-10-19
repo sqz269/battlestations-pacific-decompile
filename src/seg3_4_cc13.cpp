@@ -364,3 +364,41 @@ void weather_config_destruct_00445940(void* config, SmallOwnerHost& host) {
 }
 
 }  // namespace bsp::seg3_4_cc13
+
+// oct18b-nA1: newly defined, assembly-reviewed leaves; build-only interfaces.
+
+namespace bsp::seg3_4_cc13 {
+void device_relay_hit_0043f7f0(void* device, void* hit, DeviceHitRelayHost& host) {
+    void* source = read_field<void*>(hit, 4);
+    if (source && host.is_kind_5c(source, 0x2c)) {
+        void* parent = read_field<void*>(device, 0x3c);
+        if (parent && !host.is_kind_5c(parent, 8)) return;
+    }
+    void* parent = read_field<void*>(device, 0x3c);
+    if (parent && host.is_kind_5c(parent, 6) && read_field<std::int32_t>(hit, 0x34) != -1)
+        host.apply_hit_ec(read_field<void*>(device, 0x3c), hit);
+    host.unit_apply_hit_008777d0(device, hit);
+}
+bool device_class_is_kind_004407b0(std::uint32_t kind) noexcept { return kind == 0x1e || kind == 4; }
+std::uint32_t catapult_class_kind_00443040() noexcept { return 0x28; }
+void pooled_string_at_0c_release_00444000(void* owner, PooledStringAt0cHost& host) {
+    void* data = read_field<void*>(owner, 0x10);
+    if (data) {
+        const std::uint32_t bytes = read_field<std::uint32_t>(owner, 0xc) + 1u;
+        void* pool = host.pool_00419cc0();
+        host.return_block_00bd1510(pool, data, bytes, 1);
+    }
+}
+void* ref_slot_assign_00440000(void* destination, const void* source, RefSlotAssignHost& host) {
+    void* incoming = read_field<void*>(source, 0);
+    void* previous = read_field<void*>(destination, 0);
+    if (previous != incoming) {
+        std::memcpy(destination, &incoming, sizeof incoming);
+        if (incoming)
+            host.interlocked_increment_ce221c(static_cast<std::uint8_t*>(incoming) + 4);
+        if (previous && host.interlocked_decrement_ce2220(static_cast<std::uint8_t*>(previous) + 4) == 0)
+            host.object_destroy_00(previous);
+    }
+    return destination;
+}
+}

@@ -90,7 +90,7 @@ public:
             return;
         case Terminal::texture_2d:
             if (target != 0x00b3f590) break;
-            (void)delete_native_texture_2d_00b3f590(owner, flags, context_.texture_2d);
+            (void)delete_native_texture_2d_after_zero(owner, flags, context_.texture_2d);
             return;
         case Terminal::frame_target:
             if (target != 0x00b1fcf0) break;

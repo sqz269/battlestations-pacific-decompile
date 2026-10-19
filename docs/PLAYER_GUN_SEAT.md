@@ -299,7 +299,12 @@ The kind is `[msg+1Ch]` itself: 00959C69 `ADD EAX,-1`, `CMP EAX,4`, table 0095A5
    - Filter: `vtable[5Ch](20h)`, then `00954210(3, dev)`, which is operational and 005459B0.
    - 005459B0 (body 005459B0..005459D9) accepts a Function `[[dev+3F4h]+80h]` of 2, 3, 4 or 6.
 4. **The hand-over** (0095A026..0095A05B): with all three flags and an AI-held seat
-   (00521E70(dev, 0)), `vtable[154h](0, [unit+1BCh])`, the role-3 holder.
+   (00521E70(dev, 0)), `vtable[154h](0, [unit+1BCh])`, the role-4 holder (`+1ACh + 4*4`; group 3's
+   role mask is 10h). Flag `[ESP+12h]` needs a hosted session (`game+1FE4h == 1`), and `[ESP+13h]`
+   a unit held by a non-AI slot that is not the local player, so this is a host handing a remote
+   client's artillery over. It never runs in single player, where `game+1FE4h` is 0
+   (cc9-gunnery53, SHIP_AI_OPEN_ITEMS 296.8). The single-player seat comes from the role take
+   (7.5).
 5. **The aim point** 0095A06E: `00957740(ECX unit, EDX &camera, &dir, &out, dev)`. Body
    00957740..00957BCC, `RET 0Ch`, now read whole:
    - A camera below y 0 returns the camera.
@@ -344,7 +349,8 @@ when its solution happens to match.
   - The solve is the world-frame (mount NULL) path, turned hull-relative as the bot's 006DFAD4 is.
   - The hit lead (009578C3) is a record.
   - The hand-over (0095A05B) is a record.
-  - The world `+1FE4h` flags are taken as a single-player 1.
+  - The world `+1FE4h` flags were taken as a single-player 1. That was wrong: single player is
+    `game+1FE4h = 0`, so the image never takes the 0095A05B hand-over there (step 4 above).
 - **Summary line:** `player seat groups 0..5=... artillery guns= unsolved= hits= turns=
   refusals=`, printed on both sides.
 
@@ -440,3 +446,46 @@ a mechanism failure, apart from RNG coupling through changed shot counts
 **Verdict: mechanism matches, spread missed; flipped ON** (`kPlayerGunSeatArtilleryBound = true`).
 Ranking #7 is closed for group 3. Groups 4 and 5 (0095A1CC, 0095A441) carry no message on any
 reference row, and stay records.
+
+### 7.5 The single-player seat: the role-owner device walk (`kRoleOwnerDeviceWalkBound`)
+
+cc9-gunnery53, 2026-10-19. With 7.2 the player's artillery stayed AI-held: no code path wrote a
+Function 2/3/4/6 gun's seat, so the trigger at 0095A10C (skipped for an AI-held seat) never ran.
+The image's path is the role take:
+
+- Screen 2Eh's 00545410 sends 4Bh (0077C470) with group 3's mask 10h, take 1.
+- 00780120's loop sets the role through `vtable[154h]` (0078037C). When the holder changed
+  (00780393), 007803A8 calls 0077FE80(msg). For a kind below 53h its default 0078002F calls
+  `entity->vtable[164h](msg)`, which is 00821E80. Its 4Bh arm 00821EEA forces the base 0095ABE0.
+- 0095AC1D tests the mask, and the first match wins:
+  - `& 4` or `== 8`: 00953F60, release only. It releases Function 1/5/6 through 00729F70, but keeps
+    a Function 6 when `[unit+1BCh]` is the message's slot.
+  - `& 10h`: 00954000. On a take, Function 2/3/4/6 get `vtable[154h](0, slot)`, and Function 6
+    also gets 0072D5B0(0, 0). On a release, 00729F70.
+  - `& 20h` / `& 80h` (009540D0 / 00954170) stay with the group 4/5 models.
+- **Binding.** `GameUnitsHost::Impl::role_message_4b_00780162` calls
+  `GameGunneryHost::role_owner_device_walk_0095ac1d` once per role in the mask whose holder
+  changed. That covers every 4Bh sender the host routes there.
+- **A HUD-site substitution was tried and dropped** (a69d739a1): it compared holders around the
+  HUD's `role_request_0077c470`. It missed the release when the script moved the player to the
+  ScoutDauntless (SetSelectedUnit at 1823 releases the roles through the units host, not the HUD).
+  Northampton's turrets stayed player-held for the rest of the run: shots 113 to 6, held_ticks
+  48798. The hook must sit at the role take itself. 00729F70 is
+  modelled as in step 3 of section 2. 0072D5B0 is a record, because the host picks the ammo per
+  shot. A new summary line, `gunnery role owner device walk takes= releases=`, is printed on both
+  sides.
+- **Preview pair** (working tree, USN01 16000 frames, reference env, `local\g53_ga_u1b.txt`: 0x9D
+  then 0x99 held 300 frames at mission frames 500/900/1300).
+  - ON: takes 8, releases 66, held_ticks 0 to 5661. The 8 takes are Northampton's three turrets
+    and Dunlap's five Function 6 mounts, because Dunlap is a group entry on the screen. Its 5
+    0072D5B0 records are those mounts. Dunlap's shots stay at 3 each, and four of its mounts now
+    log 402 angle refusals.
+  - The guns are held from about mission frame 410 to the 1823 ScoutDauntless hand-over.
+  - trigger_ticks 0: the HUD camera looks 10 degrees down (dir y -0.174). It aims at the sea about
+    214 m ahead, below the turrets' window. Every tick's 0085ABA0 refuses (1217 per turret), the
+    guns hold, and the 2-degree trigger never passes.
+  - Northampton's turret shots 113/113/109 to 95/95/90, because the AI no longer fires a
+    player-held mount. Their hits 925 to 812.
+  - Deaths and death rows identical (32). Hit records 4407 to 4294.
+  - A pair that shows player shells needs a camera aim input, which the harness `input` line does
+    not give.

@@ -313,6 +313,8 @@ void apply_native_material_pass_00b43410(void* pass, void* entry, void* override
         pass, section, vertex_count, pixel_count);
     f.stage = 0x00b435b3;
     void* renderer = c.actual_renderer_00f8d394;
+    if (f.observe_before_draw)
+        f.observe_before_draw(f.observation_context, pass, entry, renderer);
     Word primitives, vertices;
     if (static_cast<std::uint8_t>(indexed)) {
         const Word count = word(section, 0x18); // B435C0 precedes profile capture.
@@ -321,8 +323,10 @@ void apply_native_material_pass_00b43410(void* pass, void* entry, void* override
         const Word vertex_total = word(section, 0x10);
         const Word minimum = word(section, 0x0c);
         const Word primitive = word(section, 8);
+        f.draw_terminal = 0x00b24010;
         draw_native_renderer_indexed_00b24010(renderer, primitive, minimum,
             vertex_total, first_index, count, c.indexed_draw);
+        f.draw_returned = true;
         vertices = word(section, 0x10);
         primitives = word(section, 0x18);
     } else {
@@ -330,8 +334,10 @@ void apply_native_material_pass_00b43410(void* pass, void* entry, void* override
         renderer_slot(renderer, 0x140, 0x00b21b40, c);
         const Word start_vertex = word(section, 0x0c) + vertex_base;
         const Word primitive = word(section, 8);
+        f.draw_terminal = 0x00b21b40;
         draw_native_renderer_primitive_00b21b40(renderer, primitive,
             start_vertex, count, c.synchronization);
+        f.draw_returned = true;
         primitives = word(section, 0x18);
         switch (word(section, 8)) {
         case 1: vertices = primitives; break;

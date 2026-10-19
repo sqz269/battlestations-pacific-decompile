@@ -373,7 +373,7 @@ public:
 
     bool create(const RendererInitRequest& request);
     // Native begin/clear/end; counts successful Present and native skips separately.
-    bool clear_and_present();
+    bool clear_and_present(unsigned long long mission_frame = 0, float simulated_seconds = 0.0f);
     // Diagnostic frontend capture before native EndFrame. Later debug/XLive/clear
     // work can change the presented pixels. Executable plumbing, not native capture.
     void request_capture(std::function<void(IDirect3DDevice9&)> capture);
@@ -442,6 +442,7 @@ public:
     // Milestone 2h, --screenshot-mission-frame N: how many in-mission frames of
     // 004e4a40 have run. Zero while the run is still in the front end.
     unsigned long long mission_frames_run() const noexcept;
+    float mission_simulated_seconds() const noexcept;
 
 private:
     GameHostLog& log_;
@@ -503,6 +504,7 @@ private:
     bool capture_requested_{};
     unsigned long long frames_{};
     bool stop_after_end_exit_{false};   // harness only: --stop-after-end
+    unsigned char mission_ship_capture_mask_{}; // ON-only mission landmarks
 };
 
 // What one run produced, for the report.

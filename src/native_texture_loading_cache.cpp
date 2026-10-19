@@ -14,6 +14,7 @@
 #include "bsp/native_physical_stream_open.hpp"
 #include "bsp/native_adopted_substream.hpp"
 #include "bsp/native_cube_texture_pool_allocate.hpp"
+#include "bsp/native_runtime_texture_creation.hpp"
 #include "bsp/resource_load_events.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <d3dx9tex.h>
@@ -331,6 +332,33 @@ void NativeTextureLoadOwners::register_completed_creator(NativeTextureLoadAcquir
     r.bind(r.context, a.creator, e); // Transactional metadata only, no retain.
     e.registered = true;
     a.registered = true;
+}
+
+void NativeTextureLoadOwners::register_completed_runtime_creator(
+    NativeRuntimeTextureCreationAcquired& a,
+    const NativeRuntimeTextureConstructionContext& construction) {
+    auto& s = *impl_;
+    const auto& r = s.geometry.registration();
+    if (a.phase != NativeRuntimeTextureCreationAcquired::Phase::complete ||
+        a.construction.phase != NativeRuntimeTextureConstructionAcquired::Phase::complete ||
+        !a.owner || a.owner != a.raw_slot || a.owner != a.construction.owner ||
+        a.raw_slot_returned || &construction.owners != &s.context ||
+        s.context.canonical_actual_owners != &r.owners ||
+        a.canonical_registration_started || a.owner_record || a.companion || a.canonical_registered ||
+        r.find(r.context, a.owner))
+        throw std::invalid_argument("runtime texture creator requires its completed same-domain canonical admission");
+    if (field<std::uint32_t>(a.owner, 0) != 0x00d61948u)
+        throw std::invalid_argument("runtime texture admission requires actual D61948");
+    s.require_current_profile(a.owner);
+    a.canonical_registration_started = true;
+    auto entry = std::make_unique<Impl::Entry>(s, a.owner);
+    s.entries.push_back(std::move(entry));
+    auto& e = *s.entries.back();
+    a.owner_record = &e;
+    a.companion = &e;
+    r.bind(r.context, a.owner, e); // Same actual04; metadata only, no retain.
+    e.registered = true;
+    a.canonical_registered = true;
 }
 
 void append_native_texture_record_00b30130(void* header,

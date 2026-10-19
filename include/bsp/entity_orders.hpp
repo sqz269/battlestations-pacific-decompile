@@ -65,6 +65,30 @@ struct EntityOrderCommandClass {
 // because 006F7D40 appends at the tail.
 extern const EntityOrderCommandClass kEntityOrderCommandClasses[kEntityOrderCommandCount];
 
+// Whole-body twins among the command descriptor virtuals. Each representative
+// retains its address suffix; reports/oct18b_nA_descriptors.json maps every
+// original entry to one of these six bodies and identifies its command/slot.
+// Native ABI: ECX is ignored, no stack arguments, RET; EAX for dword results,
+// AL only for predicates. These C++ interfaces are not binary entry shims.
+std::uint32_t entity_order_command_dword_one_006f8020() noexcept;
+std::uint32_t entity_order_command_dword_zero_006f80c0() noexcept;
+std::uint32_t entity_order_command_dword_two_006f82a0() noexcept;
+std::uint32_t entity_order_command_dword_three_006f8840() noexcept;
+bool entity_order_command_predicate_true_006f8040() noexcept;
+bool entity_order_command_predicate_false_006f80e0() noexcept;
+
+// 006F8960: MoveTo descriptor slot +14h. The caller supplies the original
+// shared storage (00E19A7C..00E19A8C); its rectangle interpretation is provisional.
+// Keeping this storage explicit preserves writes made by other original users.
+struct EntityOrderMoveToDefaultState {
+    std::uint32_t words[4]{};
+    std::uint32_t initialization_flags{};
+};
+// Native ABI: ignored ECX, [ESP+4] destination, RET 4; EAX retains destination.
+// Initializes only when flags bit 0 is clear, then copies the current four words.
+std::uint32_t* entity_order_moveto_defaults_006f8960(
+    EntityOrderMoveToDefaultState& state, std::uint32_t* destination) noexcept;
+
 // Lookups over that table. `by_name` is case-insensitive, which is what
 // 00438E10 does for the scene corpus; it returns nullptr when nothing matches.
 const EntityOrderCommandClass* entity_order_command_class_by_name(const std::string& name) noexcept;

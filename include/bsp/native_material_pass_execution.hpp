@@ -56,6 +56,14 @@ struct NativeMaterialPassExecutionFrame {
     NativeMaterialConstantBuildFrame& constants;
     Phase phase = Phase::fresh;
     std::uint32_t stage = 0;
+    // Source observation only. Written around the genuine terminal calls;
+    // returned does not imply D3D admission or a successful device HRESULT.
+    std::uint32_t draw_terminal = 0;
+    bool draw_returned = false;
+    // Optional source-only readback observation. Default is absent; the ON
+    // application sets this on its own frames. No native input is replaced.
+    void* observation_context = nullptr;
+    void (*observe_before_draw)(void*, void* pass, void* entry, void* renderer) = nullptr;
     explicit NativeMaterialPassExecutionFrame(NativeMaterialConstantBuildFrame& c)
         : constants(c) {}
     NativeMaterialPassExecutionFrame(const NativeMaterialPassExecutionFrame&) = delete;

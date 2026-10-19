@@ -43,7 +43,7 @@ void release_zero(void* p,NativeRenderEffectLifetimeContext& c) {
     const Word terminal=member_table(p,c)[1]; // BD30E0 reloads current table.
     switch(terminal) {
     case 0xb4e410:delete_native_render_texture_surface_owner_00b4e410(p,1,c.texture_holders);return;
-    case 0xb3f590:delete_native_texture_2d_00b3f590(p,1,textures(c));return;
+    case 0xb3f590:delete_native_texture_2d_after_zero(p,1,textures(c));return;
     case 0xb3f5b0:delete_native_surface_00b3f5b0(*static_cast<NativeSurfaceOwnerStorage*>(p),1,textures(c).surfaces);return;
     case 0xb4e430: {
         auto& reference=c.actual_post_effects.resolve_actual(p);

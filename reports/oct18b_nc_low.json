@@ -1,0 +1,912 @@
+{
+  "packet": "oct18b-nC-low",
+  "program": "/battlestationspacific.exe",
+  "project": "bsp",
+  "assignment": "ONLY segments 60..64 of cc16-progress/local/codex_new_nC.txt; 30 exact rows",
+  "counts": {
+    "assigned": 30,
+    "reconstructed": 21,
+    "classified_out_of_scope": 9,
+    "open": 0,
+    "built": 21
+  },
+  "validation": {
+    "build": "PASS: MSVC Win32 Release scripts/build.ps1; new source explicitly included in bsp_core",
+    "tests": "PASS: existing CTest suite; no new tests or native/game executions",
+    "call_sites": "PASS: verify_report_calls.py; 48 checked, 0 failed",
+    "native_abi": "not established",
+    "runtime": "not run",
+    "game": "not run",
+    "ghidra_annotations": "PASS: 30 applied, comments preserved, original names/comments archived below, project saved",
+    "annotation_log": "local/ghidra-annotations-20261019T054529Z.json",
+    "exports": "PASS: all 30 affected exports refreshed after annotation",
+    "source_sha256": "1c2f6216bbf2c6cd54a4163d51726b18e6ce818663208269ae250b3bcdfa6bc5",
+    "header_sha256": "f466866bff32488ddb56f38b03d3dbcaa55985292d9228da351ec38d8ba92760",
+    "build_log_sha256": "0320987a50fbd379372b8a73a8819713cbc3cee83daedc33bfc0a938f1e122b6"
+  },
+  "functions": [
+    {
+      "address": "00924150",
+      "name": "bsp::support_seg61_cc13::pending_init_lock_scalar_delete_00924150",
+      "ghidra_name": "BSP_PendingInitLock_ScalarDelete_00924150",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=self, byte flags in stack dword); RET 4; EAX=self",
+      "evidence": "Full listing: clear singleton 00F899E4, store base vptr 00CE3818, optionally CALL 00BF65AC for flags bit 0, return self. Neighbour family: 00924100 pending-init lock. Stateful owner identity is retained; this is not a delete-only wrapper.",
+      "uncertainty": "Descriptive name is provisional; source API is not a native binary replacement.",
+      "classification": "game_body"
+    },
+    {
+      "address": "009241d0",
+      "name": "bsp::support_seg61_cc13::pending_entity_lock_scalar_delete_009241d0",
+      "ghidra_name": "BSP_PendingEntityLock_ScalarDelete_009241d0",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=self, byte flags in stack dword); RET 4; EAX=self",
+      "evidence": "Full listing: clear singleton 00F899E8, store base vptr 00CE3818, optionally CALL 00BF65AC for flags bit 0, return self. Neighbour family: 00924180 pending-entity lock. Stateful owner identity is retained; this is not a delete-only wrapper.",
+      "uncertainty": "Descriptive name is provisional; source API is not a native binary replacement.",
+      "classification": "game_body"
+    },
+    {
+      "address": "00924250",
+      "name": "bsp::support_seg61_cc13::deferred_event_lock_scalar_delete_00924250",
+      "ghidra_name": "BSP_DeferredEventLock_ScalarDelete_00924250",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=self, byte flags in stack dword); RET 4; EAX=self",
+      "evidence": "Full listing: clear singleton 00F899EC, store base vptr 00CE3818, optionally CALL 00BF65AC for flags bit 0, return self. Neighbour family: 00924200 deferred-event lock. Stateful owner identity is retained; this is not a delete-only wrapper.",
+      "uncertainty": "Descriptive name is provisional; source API is not a native binary replacement.",
+      "classification": "game_body"
+    },
+    {
+      "address": "0092a010",
+      "name": "CG_DeletingDtorAdjustor_0092a010",
+      "ghidra_name": "CG_DeletingDtorAdjustor_0092a010",
+      "source": "reports/oct18b_nc_low.json",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX=subobject; SUB ECX,10h; tail JMP 0092a220; inherits target cleanup/result",
+      "evidence": "Entire eight-byte listing is SUB ECX,0x10; JMP 0x0092a220. Target is an existing CG_scalar_deleting_dtor. No independent game behavior.",
+      "uncertainty": "No game reconstruction credit; no C++ body added.",
+      "classification": "library_or_compiler"
+    },
+    {
+      "address": "0092b920",
+      "name": "bsp::cc13_seg49::sinking_wreck_update_0092b920",
+      "ghidra_name": "BSP_SinkingWreck_Update_0092b920",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=entity, float delta); RET 4; no defined return",
+      "evidence": "Full 216-instruction listing and pseudocode: vtable 00D19500 slot 55; effect slots +330/count+334, body+354, timer+38C, countdown+388, debris-owner+390, one-shot+394. Constants verified from live bytes: -0.5(double)@00CEC9E0, 40.0f@00CE685C, 0.5(double)@00D7A280, -5.0f@00CFBC84. x87 transform_y accumulation retained with MSVC inline assembly, including float stores before half-height additions.",
+      "uncertainty": "Normal-flow reconstruction using existing Seg60Host/Raw, hull sprays and detach/kill. External physics/debris operations remain explicit address-qualified contracts. Numeric/visual/gameplay equivalence has not been exercised.",
+      "classification": "game_body"
+    },
+    {
+      "address": "00940da0",
+      "name": "bsp::support_seg61_cc13::sound_request_queue_scalar_delete_00940da0",
+      "ghidra_name": "BSP_SoundRequestQueue_ScalarDelete_00940da0",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=self, byte flags in stack dword); RET 4; EAX=self",
+      "evidence": "Full listing: clear singleton 00F89B34, store base vptr 00CE3818, optionally CALL 00BF65AC for flags bit 0, return self. Neighbour family: 00940D80 sound-request singleton. Stateful owner identity is retained; this is not a delete-only wrapper.",
+      "uncertainty": "Descriptive name is provisional; source API is not a native binary replacement.",
+      "classification": "game_body"
+    },
+    {
+      "address": "0094f700",
+      "name": "bsp::support_seg61_cc13::block_buffer_append_text_0094f700",
+      "ghidra_name": "BSP_BlockBuffer_AppendText_0094f700",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=buffer, const char* text); RET 4; EAX=buffer",
+      "evidence": "Full listing 0094F700..0094F762: strlen excludes NUL; at +14h==+4h call 0094F680; copy min(bytes_left,block_size-used) into blocks[+0C]+used, update +14h. Uses existing support_seg61 block-buffer family and next-block implementation.",
+      "uncertainty": "Descriptive name is provisional; source API is not a native binary replacement.",
+      "classification": "game_body"
+    },
+    {
+      "address": "0094f9e0",
+      "name": "bsp::cc13_left61::single_effect_entity_update_0094f9e0",
+      "ghidra_name": "BSP_SingleEffectEntity_Update_0094f9e0",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=entity, unused update argument); RET 4; no defined return",
+      "evidence": "Full listing 0094F9E0..0094FB43, vtable 00CE8BD0 slot 55. With definition+1E4 and no live effect+1E8: refresh pose, retain definition, create with game+19EC and matrix+CC, assign live handle, release temp. With live effect refresh/set matrix; when finished set effect+9=1 and adopt null. Without effect kill(reason=2).",
+      "uncertainty": "Uses existing Left61Host/Raw effect-entity family. Native SEH unwind metadata is not reproduced; ordinary counted ownership is. No runtime or exception-path proof.",
+      "classification": "game_body"
+    },
+    {
+      "address": "00950900",
+      "name": "STL_CheckedVectorIteratorAdd_00950900",
+      "ghidra_name": "STL_CheckedVectorIteratorAdd_00950900",
+      "source": "reports/oct18b_nc_low.json",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "__thiscall(ECX=checked iterator, result*, signed offset); RET 8; EAX=result",
+      "evidence": "Full listing: owner=*ECX, current=ECX[1], candidate=current+4*offset, check owner and inclusive owner[+4,+8] bounds, CALL invalid-parameter 00BF6713 on failure, return {owner,candidate}. MSVC checked random-access vector iterator instantiation; no game fields.",
+      "uncertainty": "No game reconstruction credit; no C++ body added.",
+      "classification": "library_or_compiler"
+    },
+    {
+      "address": "00963be0",
+      "name": "bsp::cruiser_class_name_00963be0",
+      "ghidra_name": "BSP_CruiserClass_GetName_00963be0",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "virtual no stack args; RET; EAX=00D1AD68",
+      "evidence": "MOV EAX,00D1AD68; RET; literal MCruiser. Vtable 00D1AD38 slot 3, constructor 00963BA0 and IsKindOf neighbour 00963BF0 confirm cruiser descriptor family. Returned text is reproduced; image pointer identity is not.",
+      "uncertainty": "Descriptive name is provisional; source API is not a native binary replacement.",
+      "classification": "game_body"
+    },
+    {
+      "address": "00963e10",
+      "name": "bsp::submarine_class_is_kind_of_00963e10",
+      "ghidra_name": "BSP_SubmarineClass_IsKindOf_00963e10",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=unused descriptor, uint32 kind); RET 4; EAX=0/1",
+      "evidence": "Full listing compares stack kind with 8,6,5,4; returns one on any equality. Vtable 00D1AE38 slot 6; neighbours 00963DB0 constructor and 00963E00 MSubmarine name establish class.",
+      "uncertainty": "Descriptive name is provisional; source API is not a native binary replacement.",
+      "classification": "game_body"
+    },
+    {
+      "address": "00968090",
+      "name": "bsp::cc13_seg49_64_78::event_param_kind_00968090",
+      "ghidra_name": "BSP_EventParam_GetKind_00968090",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "virtual ECX ignored; no stack args; RET; EAX=kind",
+      "evidence": "Two-instruction constant return, value 0. Event-parameter descriptor family near 00968060 (vtable 00D1AF24 entity-key constructor); class-specific semantic labels beyond the numeric discriminator remain provisional.",
+      "uncertainty": "Descriptive name is provisional; source API is not a native binary replacement.",
+      "classification": "game_body"
+    },
+    {
+      "address": "009680f0",
+      "name": "bsp::cc13_seg49_64_78::event_param_kind_009680f0",
+      "ghidra_name": "BSP_EventParam_GetKind_009680f0",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "virtual ECX ignored; no stack args; RET; EAX=kind",
+      "evidence": "Two-instruction constant return, value 1. Event-parameter descriptor family near 00968060 (vtable 00D1AF24 entity-key constructor); class-specific semantic labels beyond the numeric discriminator remain provisional.",
+      "uncertainty": "Descriptive name is provisional; source API is not a native binary replacement.",
+      "classification": "game_body"
+    },
+    {
+      "address": "00968130",
+      "name": "bsp::cc13_seg49_64_78::event_param_kind_00968130",
+      "ghidra_name": "BSP_EventParam_GetKind_00968130",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "virtual ECX ignored; no stack args; RET; EAX=kind",
+      "evidence": "Two-instruction constant return, value 2. Event-parameter descriptor family near 00968060 (vtable 00D1AF24 entity-key constructor); class-specific semantic labels beyond the numeric discriminator remain provisional.",
+      "uncertainty": "Descriptive name is provisional; source API is not a native binary replacement.",
+      "classification": "game_body"
+    },
+    {
+      "address": "00968170",
+      "name": "bsp::cc13_seg49_64_78::event_param_kind_00968170",
+      "ghidra_name": "BSP_EventParam_GetKind_00968170",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "virtual ECX ignored; no stack args; RET; EAX=kind",
+      "evidence": "Two-instruction constant return, value 4. Event-parameter descriptor family near 00968060 (vtable 00D1AF24 entity-key constructor); class-specific semantic labels beyond the numeric discriminator remain provisional.",
+      "uncertainty": "Descriptive name is provisional; source API is not a native binary replacement.",
+      "classification": "game_body"
+    },
+    {
+      "address": "009682b0",
+      "name": "bsp::cc13_seg49_64_78::event_param_scalar_delete_009682b0",
+      "ghidra_name": "BSP_EventParam_ScalarDelete_009682b0",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=parameter, byte flags in stack dword); RET 4; EAX=parameter",
+      "evidence": "Entire listing stores base vptr 00D1AF18 before optional 00BF65AC when flags bit 0 is set. Three identical bodies share implementation. Vtables 00D1AF2C,00D1AF34,00D1AF3C identify the sibling EventParam family; base-identity write retained, not a delete-only wrapper.",
+      "uncertainty": "Descriptive name is provisional; source API is not a native binary replacement.",
+      "classification": "game_body"
+    },
+    {
+      "address": "009682d0",
+      "name": "bsp::cc13_seg49_64_78::event_param_scalar_delete_009682d0",
+      "ghidra_name": "BSP_EventParam_ScalarDelete_009682d0",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=parameter, byte flags in stack dword); RET 4; EAX=parameter",
+      "evidence": "Entire listing stores base vptr 00D1AF18 before optional 00BF65AC when flags bit 0 is set. Three identical bodies share implementation. Vtables 00D1AF2C,00D1AF34,00D1AF3C identify the sibling EventParam family; base-identity write retained, not a delete-only wrapper.",
+      "uncertainty": "Descriptive name is provisional; source API is not a native binary replacement.",
+      "classification": "game_body"
+    },
+    {
+      "address": "009682f0",
+      "name": "bsp::cc13_seg49_64_78::event_param_scalar_delete_009682f0",
+      "ghidra_name": "BSP_EventParam_ScalarDelete_009682f0",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=parameter, byte flags in stack dword); RET 4; EAX=parameter",
+      "evidence": "Entire listing stores base vptr 00D1AF18 before optional 00BF65AC when flags bit 0 is set. Three identical bodies share implementation. Vtables 00D1AF2C,00D1AF34,00D1AF3C identify the sibling EventParam family; base-identity write retained, not a delete-only wrapper.",
+      "uncertainty": "Descriptive name is provisional; source API is not a native binary replacement.",
+      "classification": "game_body"
+    },
+    {
+      "address": "00968440",
+      "name": "bsp::cc13_seg49_64_78::range_filter_matches_00968440",
+      "ghidra_name": "BSP_EventRangeFilter_Matches_00968440",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=range {vptr,min+4,max+8}, EventParam*); RET 4; EAX=0/1",
+      "evidence": "Full x87 listing: value=param+4; FCOMI/JC tests value>=min then max>=value, inclusive endpoints and false on NaN. Reuses existing RangeFilter/EventParam types; existing RangeFilter::matches had the same body without an address-suffixed entry.",
+      "uncertainty": "Descriptive name is provisional; source API is not a native binary replacement.",
+      "classification": "game_body"
+    },
+    {
+      "address": "0096ac60",
+      "name": "bsp::cc13_seg49_64_78::kill_warning_is_duplicate_0096ac60",
+      "ghidra_name": "BSP_KillWarning_IsDuplicateOf_0096ac60",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=self, other warning*); RET 4; AL=bool, high EAX unspecified on false",
+      "evidence": "Full listing: other virtual+10 must be 3; entity=other+6C (type-3 size70, not entity-warning observer+80). Accept kind24 or kind15 or (kind6 and 00827F70(entity+538 class)); then 0096AA40(self,other). Vtable 00D1B2CC slot5, constructor 00973D30, GetType 00973D50.",
+      "uncertainty": "Uses existing WarningObject.word_6c projection and WarningHost; added class predicate contract receives class pointer read from entity+538. No native pointer layout or gameplay proof.",
+      "classification": "game_body"
+    },
+    {
+      "address": "0096b280",
+      "name": "STL_ListDestroy_0096b280",
+      "ghidra_name": "STL_ListDestroy_0096b280",
+      "source": "reports/oct18b_nc_low.json",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "__thiscall(ECX=list); RET; return unspecified",
+      "evidence": "Full 72-byte listing relinks head+0/head+4 to self, zeroes size+8, walks old next chain freeing plain nodes with 00BF65AC, frees sentinel, zeroes head+4. Sole caller 0096C1D0 is tagged STL_inst tail thunk. MSVC std::list destruction instantiation; no game payload destruction.",
+      "uncertainty": "No game reconstruction credit; no C++ body added.",
+      "classification": "library_or_compiler"
+    },
+    {
+      "address": "0096f230",
+      "name": "bsp::cc13_seg49_64_78::warning_default_lifetime_0096f230",
+      "ghidra_name": "BSP_Warning_DefaultLifetime_0096f230",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "virtual ECX ignored; no stack args; RET; ST0=float5",
+      "evidence": "Entire listing FLD dword[00CE3850]; RET. Live bytes 00 00 A0 40 = 5.0f. Existing warning family documents pending lifetime of five seconds.",
+      "uncertainty": "Descriptive name is provisional; source API is not a native binary replacement.",
+      "classification": "game_body"
+    },
+    {
+      "address": "00973b50",
+      "name": "CG_DeletingDtorAdjustor_00973b50",
+      "ghidra_name": "CG_DeletingDtorAdjustor_00973b50",
+      "source": "reports/oct18b_nc_low.json",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX=subobject; SUB ECX,6ch; tail JMP 00973b80; inherits target cleanup/result",
+      "evidence": "Entire eight-byte listing is SUB ECX,0x6c; JMP 0x00973b80. Target is an existing CG_scalar_deleting_dtor. No independent game behavior.",
+      "uncertainty": "No game reconstruction credit; no C++ body added.",
+      "classification": "library_or_compiler"
+    },
+    {
+      "address": "00973c60",
+      "name": "CG_DeletingDtorAdjustor_00973c60",
+      "ghidra_name": "CG_DeletingDtorAdjustor_00973c60",
+      "source": "reports/oct18b_nc_low.json",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX=subobject; SUB ECX,6ch; tail JMP 00973c80; inherits target cleanup/result",
+      "evidence": "Entire eight-byte listing is SUB ECX,0x6c; JMP 0x00973c80. Target is an existing CG_scalar_deleting_dtor. No independent game behavior.",
+      "uncertainty": "No game reconstruction credit; no C++ body added.",
+      "classification": "library_or_compiler"
+    },
+    {
+      "address": "00973cf0",
+      "name": "CG_DeletingDtorAdjustor_00973cf0",
+      "ghidra_name": "CG_DeletingDtorAdjustor_00973cf0",
+      "source": "reports/oct18b_nc_low.json",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX=subobject; SUB ECX,6ch; tail JMP 00973d10; inherits target cleanup/result",
+      "evidence": "Entire eight-byte listing is SUB ECX,0x6c; JMP 0x00973d10. Target is an existing CG_scalar_deleting_dtor. No independent game behavior.",
+      "uncertainty": "No game reconstruction credit; no C++ body added.",
+      "classification": "library_or_compiler"
+    },
+    {
+      "address": "00973dd0",
+      "name": "CG_DeletingDtorAdjustor_00973dd0",
+      "ghidra_name": "CG_DeletingDtorAdjustor_00973dd0",
+      "source": "reports/oct18b_nc_low.json",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX=subobject; SUB ECX,6ch; tail JMP 00973df0; inherits target cleanup/result",
+      "evidence": "Entire eight-byte listing is SUB ECX,0x6c; JMP 0x00973df0. Target is an existing CG_scalar_deleting_dtor. No independent game behavior.",
+      "uncertainty": "No game reconstruction credit; no C++ body added.",
+      "classification": "library_or_compiler"
+    },
+    {
+      "address": "00973e50",
+      "name": "CG_DeletingDtorAdjustor_00973e50",
+      "ghidra_name": "CG_DeletingDtorAdjustor_00973e50",
+      "source": "reports/oct18b_nc_low.json",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX=subobject; SUB ECX,6ch; tail JMP 00973e70; inherits target cleanup/result",
+      "evidence": "Entire eight-byte listing is SUB ECX,0x6c; JMP 0x00973e70. Target is an existing CG_scalar_deleting_dtor. No independent game behavior.",
+      "uncertainty": "No game reconstruction credit; no C++ body added.",
+      "classification": "library_or_compiler"
+    },
+    {
+      "address": "00973ed0",
+      "name": "bsp::cc13_seg49_64_78::confirm_warning_is_duplicate_00973ed0",
+      "ghidra_name": "BSP_ConfirmWarning_IsDuplicateOf_00973ed0",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=self, ignored other*); RET 4; AL=0, upper EAX unspecified",
+      "evidence": "Entire five-byte listing XOR AL,AL; RET 4. Vtable 00D1B380 slot5 and existing warning constructor table establish class. Explicit unused stack argument retained despite no arguments in pseudocode.",
+      "uncertainty": "Descriptive name is provisional; source API is not a native binary replacement.",
+      "classification": "game_body"
+    },
+    {
+      "address": "00973ee0",
+      "name": "CG_DeletingDtorAdjustor_00973ee0",
+      "ghidra_name": "CG_DeletingDtorAdjustor_00973ee0",
+      "source": "reports/oct18b_nc_low.json",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX=subobject; SUB ECX,6ch; tail JMP 00973f00; inherits target cleanup/result",
+      "evidence": "Entire eight-byte listing is SUB ECX,0x6c; JMP 0x00973f00. Target is an existing CG_scalar_deleting_dtor. No independent game behavior.",
+      "uncertainty": "No game reconstruction credit; no C++ body added.",
+      "classification": "library_or_compiler"
+    },
+    {
+      "address": "00976290",
+      "name": "bsp::cc13_seg49_64_78::string_list_warning_is_duplicate_00976290",
+      "ghidra_name": "BSP_StringListWarning_IsDuplicateOf_00976290",
+      "source": "src/oct18b_nc_low.cpp",
+      "header": "include/bsp/oct18b_nc_low.hpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=self, ignored other*); RET 4; AL=0, upper EAX unspecified",
+      "evidence": "Entire five-byte listing XOR AL,AL; RET 4. Vtable 00D1B4F8 slot5 and existing warning constructor table establish class. Explicit unused stack argument retained despite no arguments in pseudocode.",
+      "uncertainty": "Descriptive name is provisional; source API is not a native binary replacement.",
+      "classification": "game_body"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "0092a013",
+      "native": "0092a220",
+      "function": "0092a010",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00973b53",
+      "native": "00973b80",
+      "function": "00973b50",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00973c63",
+      "native": "00973c80",
+      "function": "00973c60",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00973cf3",
+      "native": "00973d10",
+      "function": "00973cf0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00973dd3",
+      "native": "00973df0",
+      "function": "00973dd0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00973e53",
+      "native": "00973e70",
+      "function": "00973e50",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00973ee3",
+      "native": "00973f00",
+      "function": "00973ee0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "0092b99a",
+      "native": "00b6db70",
+      "function": "0092b920",
+      "kind": "call"
+    },
+    {
+      "address": "0092b9ca",
+      "native": "00867b10",
+      "function": "0092b920",
+      "kind": "call"
+    },
+    {
+      "address": "0092ba41",
+      "native": "0092a6d0",
+      "function": "0092b920",
+      "kind": "call"
+    },
+    {
+      "address": "0092ba48",
+      "native": "0092a8c0",
+      "function": "0092b920",
+      "kind": "call"
+    },
+    {
+      "address": "0092ba70",
+      "native": "00c31f90",
+      "function": "0092b920",
+      "kind": "call"
+    },
+    {
+      "address": "0092baa2",
+      "native": "00c32000",
+      "function": "0092b920",
+      "kind": "call"
+    },
+    {
+      "address": "0092bad9",
+      "native": "00c32000",
+      "function": "0092b920",
+      "kind": "call"
+    },
+    {
+      "address": "0092bb0a",
+      "native": "00424c40",
+      "function": "0092b920",
+      "kind": "call"
+    },
+    {
+      "address": "0092bb59",
+      "native": "00c32000",
+      "function": "0092b920",
+      "kind": "call"
+    },
+    {
+      "address": "0092bb60",
+      "native": "00c33650",
+      "function": "0092b920",
+      "kind": "call"
+    },
+    {
+      "address": "0092bb75",
+      "native": "00c31f90",
+      "function": "0092b920",
+      "kind": "call"
+    },
+    {
+      "address": "0092bbbd",
+      "native": "00c31fc0",
+      "function": "0092b920",
+      "kind": "call"
+    },
+    {
+      "address": "0092bbd0",
+      "native": "00935540",
+      "function": "0092b920",
+      "kind": "call"
+    },
+    {
+      "address": "0092bbd5",
+      "native": "00424c40",
+      "function": "0092b920",
+      "kind": "call"
+    },
+    {
+      "address": "0092bbea",
+      "native": "00424c40",
+      "function": "0092b920",
+      "kind": "call"
+    },
+    {
+      "address": "0092bc1b",
+      "native": "00c31dc0",
+      "function": "0092b920",
+      "kind": "call"
+    },
+    {
+      "address": "0092bc38",
+      "native": "00c47f60",
+      "function": "0092b920",
+      "kind": "call"
+    },
+    {
+      "address": "0092bc50",
+      "native": "00929d70",
+      "function": "0092b920",
+      "kind": "call"
+    },
+    {
+      "address": "0094fa3d",
+      "native": "00414db0",
+      "function": "0094f9e0",
+      "kind": "call"
+    },
+    {
+      "address": "0094fa7e",
+      "native": "00868420",
+      "function": "0094f9e0",
+      "kind": "call"
+    },
+    {
+      "address": "0094fa8e",
+      "native": "004845d0",
+      "function": "0094f9e0",
+      "kind": "call"
+    },
+    {
+      "address": "0094fae5",
+      "native": "00414db0",
+      "function": "0094f9e0",
+      "kind": "call"
+    },
+    {
+      "address": "0094faf3",
+      "native": "0053d9c0",
+      "function": "0094f9e0",
+      "kind": "call"
+    },
+    {
+      "address": "0094fafa",
+      "native": "00865fe0",
+      "function": "0094f9e0",
+      "kind": "call"
+    },
+    {
+      "address": "0094fb0d",
+      "native": "00484620",
+      "function": "0094f9e0",
+      "kind": "call"
+    },
+    {
+      "address": "0094fb2a",
+      "native": "00926d90",
+      "function": "0094f9e0",
+      "kind": "call"
+    },
+    {
+      "address": "0096acb4",
+      "native": "00827f70",
+      "function": "0096ac60",
+      "kind": "call"
+    },
+    {
+      "address": "0096acc8",
+      "native": "0096aa40",
+      "function": "0096ac60",
+      "kind": "call"
+    },
+    {
+      "address": "0094f72a",
+      "native": "0094f680",
+      "function": "0094f700",
+      "kind": "call"
+    },
+    {
+      "address": "0094f74b",
+      "native": "00bf7680",
+      "function": "0094f700",
+      "kind": "call"
+    },
+    {
+      "address": "0095090b",
+      "native": "00bf6713",
+      "function": "00950900",
+      "kind": "call"
+    },
+    {
+      "address": "00950921",
+      "native": "00bf6713",
+      "function": "00950900",
+      "kind": "call"
+    },
+    {
+      "address": "0092416b",
+      "native": "00bf65ac",
+      "function": "00924150",
+      "kind": "call"
+    },
+    {
+      "address": "009241eb",
+      "native": "00bf65ac",
+      "function": "009241d0",
+      "kind": "call"
+    },
+    {
+      "address": "0092426b",
+      "native": "00bf65ac",
+      "function": "00924250",
+      "kind": "call"
+    },
+    {
+      "address": "00940dbb",
+      "native": "00bf65ac",
+      "function": "00940da0",
+      "kind": "call"
+    },
+    {
+      "address": "009682c1",
+      "native": "00bf65ac",
+      "function": "009682b0",
+      "kind": "call"
+    },
+    {
+      "address": "009682e1",
+      "native": "00bf65ac",
+      "function": "009682d0",
+      "kind": "call"
+    },
+    {
+      "address": "00968301",
+      "native": "00bf65ac",
+      "function": "009682f0",
+      "kind": "call"
+    },
+    {
+      "address": "0096b2a3",
+      "native": "00bf65ac",
+      "function": "0096b280",
+      "kind": "call"
+    },
+    {
+      "address": "0096b2b7",
+      "native": "00bf65ac",
+      "function": "0096b280",
+      "kind": "call"
+    }
+  ],
+  "previous_ghidra_annotations": [
+    {
+      "address": "00924150",
+      "before": {
+        "address": "00924150",
+        "function_name": "FUN_00924150"
+      }
+    },
+    {
+      "address": "009241d0",
+      "before": {
+        "address": "009241d0",
+        "function_name": "FUN_009241d0"
+      }
+    },
+    {
+      "address": "00924250",
+      "before": {
+        "address": "00924250",
+        "function_name": "FUN_00924250"
+      }
+    },
+    {
+      "address": "0092a010",
+      "before": {
+        "address": "0092a010",
+        "function_name": "FUN_0092a010"
+      }
+    },
+    {
+      "address": "0092b920",
+      "before": {
+        "address": "0092b920",
+        "function_name": "FUN_0092b920"
+      }
+    },
+    {
+      "address": "00940da0",
+      "before": {
+        "address": "00940da0",
+        "function_name": "FUN_00940da0"
+      }
+    },
+    {
+      "address": "0094f700",
+      "before": {
+        "address": "0094f700",
+        "function_name": "FUN_0094f700"
+      }
+    },
+    {
+      "address": "0094f9e0",
+      "before": {
+        "address": "0094f9e0",
+        "function_name": "FUN_0094f9e0"
+      }
+    },
+    {
+      "address": "00950900",
+      "before": {
+        "address": "00950900",
+        "function_name": "FUN_00950900"
+      }
+    },
+    {
+      "address": "00963be0",
+      "before": {
+        "address": "00963be0",
+        "function_name": "FUN_00963be0"
+      }
+    },
+    {
+      "address": "00963e10",
+      "before": {
+        "address": "00963e10",
+        "function_name": "FUN_00963e10"
+      }
+    },
+    {
+      "address": "00968090",
+      "before": {
+        "address": "00968090",
+        "function_name": "FUN_00968090"
+      }
+    },
+    {
+      "address": "009680f0",
+      "before": {
+        "address": "009680f0",
+        "function_name": "FUN_009680f0"
+      }
+    },
+    {
+      "address": "00968130",
+      "before": {
+        "address": "00968130",
+        "function_name": "FUN_00968130"
+      }
+    },
+    {
+      "address": "00968170",
+      "before": {
+        "address": "00968170",
+        "function_name": "FUN_00968170"
+      }
+    },
+    {
+      "address": "009682b0",
+      "before": {
+        "address": "009682b0",
+        "function_name": "FUN_009682b0"
+      }
+    },
+    {
+      "address": "009682d0",
+      "before": {
+        "address": "009682d0",
+        "function_name": "FUN_009682d0"
+      }
+    },
+    {
+      "address": "009682f0",
+      "before": {
+        "address": "009682f0",
+        "function_name": "FUN_009682f0"
+      }
+    },
+    {
+      "address": "00968440",
+      "before": {
+        "address": "00968440",
+        "function_name": "FUN_00968440"
+      }
+    },
+    {
+      "address": "0096ac60",
+      "before": {
+        "address": "0096ac60",
+        "function_name": "FUN_0096ac60"
+      }
+    },
+    {
+      "address": "0096b280",
+      "before": {
+        "address": "0096b280",
+        "function_name": "FUN_0096b280"
+      }
+    },
+    {
+      "address": "0096f230",
+      "before": {
+        "address": "0096f230",
+        "function_name": "FUN_0096f230"
+      }
+    },
+    {
+      "address": "00973b50",
+      "before": {
+        "address": "00973b50",
+        "function_name": "FUN_00973b50"
+      }
+    },
+    {
+      "address": "00973c60",
+      "before": {
+        "address": "00973c60",
+        "function_name": "FUN_00973c60"
+      }
+    },
+    {
+      "address": "00973cf0",
+      "before": {
+        "address": "00973cf0",
+        "function_name": "FUN_00973cf0"
+      }
+    },
+    {
+      "address": "00973dd0",
+      "before": {
+        "address": "00973dd0",
+        "function_name": "FUN_00973dd0"
+      }
+    },
+    {
+      "address": "00973e50",
+      "before": {
+        "address": "00973e50",
+        "function_name": "FUN_00973e50"
+      }
+    },
+    {
+      "address": "00973ed0",
+      "before": {
+        "address": "00973ed0",
+        "function_name": "FUN_00973ed0"
+      }
+    },
+    {
+      "address": "00973ee0",
+      "before": {
+        "address": "00973ee0",
+        "function_name": "FUN_00973ee0"
+      }
+    },
+    {
+      "address": "00976290",
+      "before": {
+        "address": "00976290",
+        "function_name": "FUN_00976290"
+      }
+    }
+  ]
+}

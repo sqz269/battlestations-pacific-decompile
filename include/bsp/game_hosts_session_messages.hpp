@@ -42,7 +42,14 @@ namespace bsp {
 // drain); 00521370's atan2 is the double one (x87 may differ in the last
 // bit). False: the posted value, angles recomputed from `forward` at
 // delivery. The pair is cc15's; cc9 flips.
-inline constexpr bool kGunAimMessageCc15Bound = false;
+// ON (cc9-gunnery53): USN01 pair on b8dcae593, reference env, Northampton's
+// artillery fired through the harness `input` line (0x9D, then 0x99 held 300
+// frames at mission frames 502/902/1302, inside screen 2Eh's window before the
+// 1823 ScoutDauntless hand-over). 1298 round trips, all group 3; the copy moves
+// yaw on 1218 and pitch on all (max 1.68e-5 / 6.91e-6 rad), the bools, group and
+// target never; 99h reached 00959F72 (0095A05B record 2700 calls both sides).
+// Gameplay, death rows and the unit table identical. Flipped by mechanism.
+inline constexpr bool kGunAimMessageCc15Bound = true;
 
 class HostSessionMessages {
 public:

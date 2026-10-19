@@ -18176,3 +18176,48 @@ on this main and never reaches the 009205E0 commit; its pair runs on BSM09 d1 in
 **`kMissionRecordMergeBound` ON** (`l69_mr`, BSM09 `bsm09_l68_b9_d1`, EndMission 327.04 s both sides): pair_diff exit 1,
 gameplay identical (49 death rows, 90-row unit table). ON only: `MissionRecord::commit_009205e0 key=BSM09 count_284=1
 completed_00=1 ...`. The OFF-branch comment in src/mission_result.cpp now names the ADD at 009205FE (was 00920604).
+
+## 5is. JM06 power-ups: what the grant reaches (cc9-lua69, 2026-10-18, read-only)
+
+JM06.lua (this installation, 2024-07-13) calls `luaJM6AddPowerup("automatic_reloader")` and
+`("improved_ship_manoeuvreability")` at :864-865, after primary 1. Each wraps `AddPowerup({classID=..., useLimit=1})`.
+- In the host, `MissionLuaNative::AddPowerup [008ee410]` is UNIMPLEMENTED with calls=2 (`local\l68r_w_j6_m1_ref.log`).
+  The reconstruction `lua_binding_add_powerup_008ee410` lives in src/powerup_seg58_argon.cpp, which the harness must not
+  call, so a binding needs a non-argon body first.
+- The image's one-argument form grants to the local player (`008EDDC0([game+18ECh], table)`, docs/GAMEPLAY_MODIFIERS.md).
+  The only AI consumer is the party brain's engagement pass 00A179E0, which lists ready items for brain+20h (its party
+  slot) through 008EA0C0. The host records it (`AiParties::party_brain_plan_tail`, src/game_hosts_ai.cpp) and the JM06 log
+  never reaches it. Whether the human's slot has an enabled AI brain in single player is still unread, so the use of a
+  granted item is UNDETERMINED. No WINS row moves either way: the host grants nothing.
+
+Reach of the low-priority natives (`tools/mission_script_reach.py`, this installation): SquadronSetHomeBase only in
+ESMP02 (02_MI.lua, 8 calls); SetRace in USN20, PRCP03, PRCP07 and LOMP08; LastBanto in no menu mission. None is a WINS
+row, so none is bound here.
+
+## 5it. Handoff (cc9-lua69, 2026-10-18, at about 72% context)
+
+Lane: LUA/PLANES, WINS keeper. Tree `J:\PROG\battlestations-pacific-decompile-cc9-lua52` (agent/cc9-lua52), base
+ec0df436c. Tools: `local\l69_runs.ps1` (jobs `<row>:<variant>:<env>`; rows in `local\l69_rows.txt`; variant `main`
+is the tree build, any other is `local\l69_<v>`), `local\l69_sum.py <glob>` (end line, guard, exit), `local\l69_j8.py`
+(JM08 timeline), `local\l69_planstat.py` (plan verb census), `local\l69_j8_boat.py` / `l69_j8_add.py` (JM08 boat and
+launch priority), `local\l69_bsfix2.ps1 <first-parent index>` (bisect export of 03d3df7f8..011d651dc with d6c0c5ccd
+applied; -1 = 03d3df7f8). Never rebuild the tree while its exe runs: verify a commit by `pair_export.py` instead.
+
+**Landed this run:** aafe191a6 (VehicleClass ON, later turned OFF by the lead in f403f1bf4 for the carrier-deck purge),
+94b7989a0 (HUD apply-unit and warning bank ON), cd1f6f975 (MissionRecordMerge ON), 88f522d79 / 082821413 (WINS
+re-time; USN01 `usn01_l69_u1_a`; BSM01 `bsm01_l69_b1_d`, which wins both seeds), fc15cfb11 (reach notes), 5ir / 5is.
+
+**Open, in priority order:**
+1. JM08: extend h3. Ref reaches phase 2 and loses the HQ to the bomber waves at 1674 s. Add fighter cover for the HQ
+   from about frame 26000: Ki-43 / Gekko `target` lines on the wave names (the B-17 / SBD / C47 names in the log after
+   `luaBomberWaveSpawned*`), and airfield launches at them. 20,3 still leaves five landships alive.
+2. USN15: Yamashiro no longer dies on this main. Re-plan Yamashiro-first and keep the BBs out of the Fubuki-class
+   torpedo band (cat 7, 2.5-4 km). a / b in `local\l69_u15_<v>.txt`.
+3. USN01 under 20,3 (`usn01_l69_u1_a` fails Trans: Convoy3 survives). Cause of the move: kFollowReleaseArmBound ON
+   (faithful, 9f2d1cea3).
+4. IJN08 reference (z fails 1129.98 s; Marus sunk by airfield squadrons). cc13: keep Kinugasa / Furutaka off the Maru
+   lane (CruzaLeft/Right) or behind Kongo / Hiei.
+5. LOMP06 20,3 fails at 443.17 s on 4b74dd6b4 (new loss).
+6. kVehicleClassPreloadCc15Bound re-flip: HOLD until cc15 answers on runtime-spawned Ohka class 156 (USNOS c17
+   crash). The re-flip pairs need a full USN21 s46_u21_f run, a carrier row with launches, and USNOS with Ohka releases.
+7. Low priority: AddPowerup binding needs a non-argon body (5is); SetRace / SquadronSetHomeBase reach no WINS row.

@@ -93,11 +93,20 @@ void attach_parent_console() {
 // These explicit spans are the union of the original read-only 64-KB bands
 // consumed by the raw VFS entry path and the composed particle graph. The mapper
 // verifies the entire original PE before it admits any table/literal read.
-constexpr std::array<bsp::game::GameNativeDataSpan, 7> native_data_spans{{
+constexpr std::array<bsp::game::GameNativeDataSpan, 8> native_data_spans{{
     {0x00ce2000u, 1}, {0x00cf0000u, 1}, {0x00d00000u, 1},
     {0x00d10000u, 1}, {0x00d50000u, 1}, {0x00d60000u, 1},
-    {0x00d70000u, 1}
+    {0x00d70000u, 1}, {0x00d21d00u, 320}
 }};
+std::size_t selected_native_data_span_count() noexcept {
+    // B1DFF0's installed-model ordinary command consumes D21D00. Preserve
+    // the original seven-band reservation/child capability when the new
+    // diagnostic is OFF, and map genuine verified original bytes only ON.
+    char value[2]{};
+    const bool mission_ship = GetEnvironmentVariableA("BSP_NATIVE_MISSION_SHIP", value,
+        sizeof value) == 1 && value[0] == '1';
+    return mission_ship ? native_data_spans.size() : native_data_spans.size() - 1;
+}
 constexpr char handoff_prefix[] = "--bsp-native-data-handoff=";
 
 // ---- Harness crash record (packet cc9_tooling_1). Harness only: nothing here is read by the
@@ -169,6 +178,33 @@ LONG WINAPI harness_crash_record(EXCEPTION_POINTERS* info) {
         if (g_crash_log != nullptr) g_crash_log->note(line);
     }
     return EXCEPTION_EXECUTE_HANDLER;  // no WER dialog; the process exits with `code`
+}
+
+// ON-only diagnostic: C++ terminate normally fast-fails before the unhandled
+// filter can record a dump. Capture its live caller stack without unwinding or
+// repairing native owners. Native /GS and invalid-parameter fastfail remain
+// untouched. The normal successful scope restores the prior handler.
+__declspec(noreturn) void mission_ship_terminate_record() noexcept {
+    static volatile LONG entered = 0;
+    if (InterlockedExchange(&entered, 1) == 0) {
+        CONTEXT context{};
+        RtlCaptureContext(&context);
+        if (const auto active = std::current_exception()) {
+            try { std::rethrow_exception(active); }
+            catch (const std::exception& error) {
+                if (g_crash_log) g_crash_log->notef("native mission terminate active exception: %s", error.what());
+            } catch (...) {
+                if (g_crash_log) g_crash_log->note("native mission terminate active exception: non-std exception");
+            }
+        }
+        EXCEPTION_RECORD record{};
+        record.ExceptionCode = 0xe0425350u; // harness BSP terminate diagnostic
+        record.ExceptionFlags = EXCEPTION_NONCONTINUABLE;
+        record.ExceptionAddress = reinterpret_cast<void*>(context.Eip);
+        EXCEPTION_POINTERS pointers{&record, &context};
+        harness_crash_record(&pointers);
+    }
+    std::_Exit(static_cast<int>(0xc0000409u));
 }
 
 // Remove `--crash-test [N]` (hidden, harness only) before the public parser sees argv. The
@@ -343,7 +379,7 @@ int run_bootstrap_parent(const bsp::game::GameExecutableOptions& options) {
     check_original_identity(original_executable(options));
     const auto child_path = own_executable();
     bsp::game::GameNativeDataBootstrapChild child(child_path, child_arguments(),
-        native_data_spans.data(), native_data_spans.size(),
+        native_data_spans.data(), selected_native_data_span_count(),
         bsp::game::GameNativeDataPlan::CanonicalCrtV2);
     child.reserve_and_resume();
     child.wait_for_mapping(30000);
@@ -1021,7 +1057,11 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     // Harness crash record: installed once the log exists, removed before the log closes.
     // The dump path is made absolute now, before --game-root changes the current directory.
     struct CrashLogScope {
-        ~CrashLogScope() { g_crash_log = nullptr; }
+        std::terminate_handler previous_terminate{};
+        ~CrashLogScope() {
+            if (previous_terminate) std::set_terminate(previous_terminate);
+            g_crash_log = nullptr;
+        }
     } crash_log_scope;
     g_crash_log = &log;
     if (!options.log_path.empty()) {
@@ -1034,6 +1074,9 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             g_crash_dump_path[0] = '\0';
     }
     SetUnhandledExceptionFilter(harness_crash_record);
+    // The eight-band plan is selected only by BSP_NATIVE_MISSION_SHIP=1.
+    if (selected_native_data_span_count() == native_data_spans.size())
+        crash_log_scope.previous_terminate = std::set_terminate(mission_ship_terminate_record);
     // Harness only (packet cc9_display_required), not the original executable's behaviour.
     // An idle display timeout turns the display off during unattended runs, and then
     // CreateDevice and Present fail with D3DERR_DEVICELOST (0x88760868). The run asks the
@@ -1067,10 +1110,10 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     volatile std::uint32_t* native_crt_feature = nullptr;
     try {
         auto reservation = bsp::game::accept_native_data_handoff(
-            native_data_spans.data(), native_data_spans.size(),
+            native_data_spans.data(), selected_native_data_span_count(),
             bsp::game::GameNativeDataPlan::CanonicalCrtV2);
         const auto& owner = bsp::game::GameNativeCanonicalDataOwner::initialize(original_image,
-            native_data_spans.data(), native_data_spans.size(), std::move(reservation));
+            native_data_spans.data(), selected_native_data_span_count(), std::move(reservation));
         native_data = &owner.read_only_data();
         native_crt_feature = &owner.mutable_crt_data().feature_word();
         log.notef("native-data handoff mapped verified original image %s",

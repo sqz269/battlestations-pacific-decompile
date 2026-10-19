@@ -65,6 +65,7 @@
 #include "bsp/ship_nav_ver_cc13.hpp"           // packet cc9_ship_exit_zone (00826D70)
 #include "bsp/command_execution.hpp"           // packet cc9_ship_exit_zone (command classes)
 #include "bsp/plane_level_bomb_task.hpp"      // packet cc9_plane_level_bomb_task
+#include "bsp/cc13_devwalk.hpp"               // packet cc13-devwalk (007C0D90 per rack)
 #include "bsp/squadron_spent_ordnance.hpp"    // packet cc9_squadron_spent_ordnance_rtb
 #include "bsp/scene_record_side_blocks.hpp"
 #include "bsp/plane_follow_law.hpp"
@@ -4646,6 +4647,35 @@ struct GameUnitsHost::Impl {
                 profile_runs = slot.db_profile_activation_pending;
                 slot.db_profile_activation_pending = false;
             }
+            if constexpr (kDiveCruiseProfileGateBound) {
+                // Packet p23_dive_profile_gate. 009C894F-009C8971, block 1 on the
+                // squadron's [task+404h]+37Ch, inside the 009C8938 leader branch:
+                // unless +38Dh, when +380h < 0 and +3A9h is clear, +394h =
+                // tuning+4C0h and +3ADh = 1; then +3A9h = 0 either way. As at the
+                // moveto (009C3650) gate, clearing sq_alt_set stands for the
+                // tuning write: strike_ctl_cruising_alt_394 then answers the
+                // dive tuning+4C0h for this leader's task.
+                if (leader && profile_runs && !block.sq_freeze_38d) {
+                    if (summary.simulated_seconds >= block.sq_timer_expiry_380
+                        && !block.sq_lock_3a9) {
+                        if (block.sq_alt_set) ++dive_profile_travel_alt_resets;
+                        block.sq_alt_set = false;
+                        block.sq_lua_alt_3ad = false;           // 009C896A +3ADh = 1
+                    }
+                    block.sq_lock_3a9 = false;                  // 009C8971
+                }
+                // 009C8A66-009C8A74: task+4BCh (approach+C4h) = 3600.0 [00CFDEB0]
+                // on every profile call, for every member (past the 009C8A1B
+                // join), then 009C8A7C runs 009C7A80 with dt 0.0. LABELLED: the
+                // advance at the top of this function stands for the tick's own
+                // 009C7A80, which follows the head-change profile call, so the
+                // clock leaves this tick at 3600 + dt.
+                if (profile_runs) {
+                    if (slot.db_approach_clock_c4 < 3600.0f) ++dive_profile_clock_reseeds;
+                    slot.db_approach_clock_c4 = static_cast<float>(
+                        static_cast<double>(dt) + 3600.0);
+                }
+            }
             if (leader && profile_runs) {
                 const float value = static_cast<float>(
                     static_cast<double>(release_altitude_draw_00bd2f10(
@@ -6794,6 +6824,15 @@ struct GameUnitsHost::Impl {
     // FSUBP, FMULP by approach+4Ch and FADDP each round to float. True: float per
     // op. False: (b - a) in float, then a double product and sum rounded once.
     static constexpr bool kLandBlendFloatOpsBound = true;   // ON: OCEAN_WAVE_FIELD 92 (identical)
+    // Packet p23_dive_profile_gate (OCEAN_WAVE_FIELD 96). The dive cruise profile
+    // 009C8920's block 1 (009C894F-009C8971: the squadron travel-altitude gate on
+    // +38Dh / +380h / +3A9h, the tuning+4C0h write and the +3A9h clear) and its
+    // 009C8A74 re-seed of task+4BCh = 3600.0. True: both, on the profile call.
+    // False: the dive host never resets an expired script altitude, never clears
+    // +3A9h, and carries only the 009C3FD2 seed.
+    static constexpr bool kDiveCruiseProfileGateBound = true;   // ON: OCEAN_WAVE_FIELD 96 (unexercised)
+    unsigned long long dive_profile_travel_alt_resets{0};
+    unsigned long long dive_profile_clock_reseeds{0};
     static float land_blend_2b4(float a, float w, float b) {
         if constexpr (kLandBlendFloatOpsBound) {
             const float diff = b - a;      // FSUBP
@@ -12603,6 +12642,12 @@ void GameUnitsHost::Impl::role_message_4b_00780162(std::size_t index, std::uint3
         } else if (holder == player_slot) {
             set_role(i, 8);
             ++role_releases;
+        }
+        // 00780393..007803A8: a changed holder hands the message to the unit's
+        // HandleMessage (0077FE80 -> vtable[164h] -> 00821E80 -> 0095ABE0),
+        // whose 4Bh arm walks the devices. kRoleOwnerDeviceWalkBound.
+        if (kRoleOwnerDeviceWalkBound && u.current_roles_01ac[i] != holder && gunnery) {
+            gunnery->role_owner_device_walk_0095ac1d(index, mask, player_slot, take == 1);
         }
     }
     done("Session::entity_role_message_4b", 0x00780162u);
@@ -27125,6 +27170,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.lb_rack_dropping.assign(n, 0);
                         }
                     }
+                    // cc13-devwalk: the next-rack delay draw at 007C0E67-007C0E88,
+                    // 00BD2F10(ECX = 1, [00CE3860] 0.9f, [00CE6448] 1.1f). With
+                    // bsp::cc13_devwalk::kPlaneDeviceWalkSharedDrawBound it comes from the
+                    // shared stream 1 in call order; otherwise from the host's own release
+                    // sequence, as before.
+                    float rack_delay_draw_007c0e88() {
+                        if constexpr (bsp::cc13_devwalk::kPlaneDeviceWalkSharedDrawBound) {
+                            if (owner_.gunnery) {
+                                return owner_.gunnery->death_mode_draw_00bd2f10(1,
+                                    owner_.index_of_slot(unit_),
+                                    bsp::cc13_devwalk::kRackDelayDrawLow,
+                                    bsp::cc13_devwalk::kRackDelayDrawHigh);
+                            }
+                        }
+                        return lb_draw("rk", bsp::level_bomb::kRackDelayLow,
+                                       bsp::level_bomb::kRackDelayHigh);
+                    }
                     void run_level_bomber_issue_007c0e67() {
                         lb_rack_state_seed();
                         float delay = 0.0f;
@@ -27136,9 +27198,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.lb_rack_dropping[i] = 1;
                             ++fired;
                             // 007C0E88-007C0EA0.
-                            delay += lb_draw("rk", bsp::level_bomb::kRackDelayLow,
-                                             bsp::level_bomb::kRackDelayHigh) *
-                                     unit_.plane_bomb_delay_1f4;
+                            delay += rack_delay_draw_007c0e88() * unit_.plane_bomb_delay_1f4;
                         }
                         ++unit_.lb_rack_issues;
                         unit_.lb_rack_fired += fired;
@@ -28399,7 +28459,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.db_begin_alt_ac = GameUnitsHost::Impl::kPilotDiveBombBeginAltRange1;
                             // 009C3FD2: approach+C4h = 3600.0 (00CFDEB0). LABELLED:
                             // 009C8A74's re-seed in the cruise profile (task slot
-                            // +54h) is not carried; its call cadence is unread.
+                            // +54h, run at the head change) is carried under
+                            // kDiveCruiseProfileGateBound in update_dive_bomb_approach.
                             unit_.db_approach_clock_c4 = 3600.0f;
                             unit_.db_alt_span_b0 =
                                 GameUnitsHost::Impl::kPilotDiveBombBeginAltRange2 - GameUnitsHost::Impl::kPilotDiveBombBeginAltRange1;
@@ -31734,7 +31795,97 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         owner_.done("PlaneStep::height_rate_9b8_007ce92a", 0x007ce92au);
                     }
 
+                    // cc13-devwalk: 007C0D90 per rack, in the image's order
+                    // (bsp::cc13_devwalk::kPlaneDeviceWalkPerRackBound,
+                    // docs/CC13_DEVWALK.md). The racks are the census's BombPlatform
+                    // racks in platform order; MultiBombPlatform racks are not in the
+                    // list (LABELLED, as in the census). The first eligible rack decides
+                    // the single arm; a level bomber's plain racks each fire with the
+                    // delay so far. A fire lands on the rack tick that will run it: the
+                    // per-rack level-bomber tick when lb_level_bomber_racks() holds,
+                    // else the single-rack tick (one active rack; a second fire there is
+                    // recorded only). A rocket (33h) rack's fire is recorded only: its
+                    // rounds belong to the opportunistic-rocket path (LABELLED). The
+                    // paratrooper target point 006E3F90 is recorded, not modelled.
+                    void run_device_walk_per_rack_007c0d90() {
+                        namespace dw = bsp::cc13_devwalk;
+                        plane_rack_census();
+                        lb_rack_state_seed();
+                        const bool level = bsp::unit_is_kind_of(unit_.class_id, 0x10);
+                        const bool lb_tick = bsp::kPlaneLevelBombTaskBound && lb_level_bomber_racks();
+                        const std::size_t n = std::min({unit_.rack_bullet_class_per_rack.size(),
+                                                        unit_.rack_ammo_per_rack.size(),
+                                                        unit_.lb_rack_dropping.size()});
+                        std::vector<dw::DeviceWalkRack> racks(n);
+                        for (std::size_t i = 0; i < n; ++i) {
+                            racks[i].bullet_class = unit_.rack_bullet_class_per_rack[i];
+                            racks[i].holds_round = unit_.rack_ammo_per_rack[i] > 0;
+                            // vt+1FCh, the rack's dropBombs: whichever tick runs it.
+                            racks[i].busy = lb_tick
+                                ? unit_.lb_rack_dropping[i] != 0
+                                : (unit_.rack_dropping &&
+                                   (unit_.rack_active < 0 || unit_.rack_active == static_cast<int>(i)));
+                        }
+                        owner_.done("Plane::droppable_device_walk", 0x007c0d90u);
+                        const dw::DeviceWalkResult w = dw::device_walk_007c0d90(
+                            racks, level, unit_.plane_bomb_delay_1f4,
+                            [this] { return rack_delay_draw_007c0e88(); });
+                        if (!w.found) {                                   // 007C0EDE
+                            if (!lb_tick) unit_.torpedo_issue_gate_open = false;
+                            return;
+                        }
+                        bool single_set = false;
+                        int lb_fired = 0;
+                        for (const dw::DeviceWalkFire& f : w.fired) {
+                            // 007C0E17 vt+1F0h = 006E3550: toRepeatTime += delay, dropBombs = 1.
+                            if (racks[f.rack].bullet_class == dw::kOrdnanceRocket) {
+                                owner_.record("Plane::device_walk_rocket_rack_fire", 0x007c0e17u);
+                                continue;
+                            }
+                            if (f.target_point)
+                                owner_.record("Plane::paratrooper_target_point_006e3f90", 0x006e3f90u);
+                            if (lb_tick) {
+                                unit_.lb_rack_to_repeat[f.rack] += f.delay;
+                                unit_.lb_rack_dropping[f.rack] = 1;
+                                ++lb_fired;
+                            } else if (!single_set) {
+                                single_set = true;
+                                if (unit_.rack_single_fired < unit_.rack_single_count)
+                                    ++unit_.rack_single_fired;
+                                unit_.rack_dropping = true;
+                                unit_.rack_episode_drops = 0;   // GUNNERY 137 diagnostic
+                                unit_.rack_active = static_cast<int>(f.rack);
+                            } else {
+                                owner_.record("Plane::device_walk_second_single_fire", 0x007c0e17u);
+                            }
+                        }
+                        if (lb_tick) {
+                            ++unit_.lb_rack_issues;
+                            unit_.lb_rack_fired += lb_fired;
+                        }
+                        ++unit_.torpedo_orders_issue_ticks;
+                        unit_.torpedo_release_pending_c25 = true;         // 007C0EE2
+                        if (!w.issue_orders) return;                      // 007C0EEB, a rocket last
+                        TorpedoReleaseOrderBinding binding(owner_, unit_);
+                        binding.force_walk_result(true);
+                        const bsp::ReleaseOrderIssueResult r =
+                            bsp::torpedo_issue_release_orders_007c0d90(binding);
+                        if (lb_tick) {
+                            ++unit_.lb_issue_tail_calls;
+                            unit_.lb_issue_tail_raised += r.units_raised;
+                            if (!r.gate_passed) ++unit_.lb_issue_tail_gate_refused;
+                        } else {
+                            unit_.torpedo_issue_gate_open = r.gate_passed;
+                            unit_.torpedo_orders_issued += r.units_raised;
+                            unit_.torpedo_leader_block_raised += r.leader_block_raised;
+                        }
+                    }
+
                     void run_release_order_issue_007c0d90() {
+                        if constexpr (bsp::cc13_devwalk::kPlaneDeviceWalkPerRackBound) {
+                            run_device_walk_per_rack_007c0d90();
+                            return;
+                        }
                         if constexpr (bsp::kPlaneLevelBombTaskBound) {
                             if (lb_level_bomber_racks()) {
                                 const int fired_before = unit_.lb_rack_fired;
@@ -42962,6 +43113,12 @@ void GameUnitsHost::report() {
     host.log.notef("summary mission squadron travel alt bound=%d gated_refreshes=%llu "
         "(0089F550 -> 009C3650 gate, packet cc9_squadron_travel_alt)",
         kSquadronTravelAltBound ? 1 : 0, host.summary.squadron_travel_alt_refreshes);
+    if (host.dive_profile_travel_alt_resets != 0 || host.dive_profile_clock_reseeds != 0) {
+        host.log.notef("summary mission dive cruise profile gate bound=%d travel_alt_resets=%llu "
+            "clock_reseeds=%llu (009C894F-009C8971, 009C8A74, packet p23_dive_profile_gate)",
+            GameUnitsHost::Impl::kDiveCruiseProfileGateBound ? 1 : 0,
+            host.dive_profile_travel_alt_resets, host.dive_profile_clock_reseeds);
+    }
     for (const std::unique_ptr<GameUnitSlot>& s : host.slots) {
         if (!s->sq_ever_set) continue;
         host.log.notef("  squadron travel alt %s: alt=%.1f force=%d active=%d last_cruise=%.1f "
