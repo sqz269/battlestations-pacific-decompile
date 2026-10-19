@@ -395,17 +395,38 @@ The dive planes:
 - USN01: `KatSBD|.-II` and `|.-IV`.
 - USNOS: Intrepid sqn09, 20, 22 and 27, and `Essex_sqn14|.-II`.
 
+**Cross-check: the census set.** The census's eleven logs (docs/CC13_STUB_CENSUS.md section 1;
+`local/goaway_aa_survey.py census`) are older builds. Where they differ from the set above:
+
+| mission (census log) | dive enters | dive re-rolls | torpedo enters (ticks / in window) | level enters |
+| --- | --- | --- | --- | --- |
+| JM08 (`g53_lfoff_j8`) | 0 | 0 | 0 | 0 |
+| USN04 (`p23h_off_u04`) | 1 | 0 | 0 | 0 |
+| USN21 (`p23j_off_u21f_def`) | 4 | 0 | 2 (21 / 21) | 0 |
+| USN01 (`p23j_off_u1i_def`) | 3 | 0 | 5 (562 / 460) | 0 |
+| BSM01 (`l69r_b1c_main_ref`) | 35 (Jap #140.1 and `|.-III`) | 2 | 121 (2266 / 1384) | 0 |
+
+IJN08, USNOS, BSM09, USN15, LOMP06 and JM06 are the same logs or have the same counts as above.
+
+cc13-frontier 6.5's dive counts (USN21 4, USN01 3, USNOS 9) are these census counts. This document's
+first C.4 table mixed the two sets and used a `\S+` name pattern, which is why it disagreed with both
+(rev4 B1). The p24 table above is the current-main reference. The census table shows that the
+reach depends on the build and the run: BSM01 has 35 dive goaways in one log and none in the other.
+So both sets go into the pair lists.
+
 Movers with the dive draws ON: the dive standoff `+20h` (up to x1.25), which is `009C7F00`'s
-completion distance and so how long goaway lasts. This affects JM08, USN04, USN21, USN01 and USNOS.
+completion distance and so how long goaway lasts. This affects JM08, USN04, USN21, USN01, USNOS and
+(census) BSM01.
 In USNOS, the only mission with re-rolls, the bank window `+2Ch` and the re-roll countdown `+24h`
 also move (both up to +3 s before the altitude scale). Every draw also advances the shared stream 1,
 so other stream-1 consumers in those missions shift, AA kill counts among them.
 
 Pairs by mechanism:
-- dive draws: JM08, USN04, USN21, USN01, USNOS;
-- torpedo draws: JM08, USN01, BSM01;
-- dive target term: JM08, USN04, USN21, USN01;
-- torpedo target term: JM08, USN01, BSM01;
+- dive draws: JM08, USN04, USN21, USN01, USNOS, BSM01 (census);
+- torpedo draws: JM08, USN01, BSM01, USN21 (census);
+- dive target term: JM08, USN04, USN21, USN01, and BSM01 (census; the image moves there but the host
+  does not, see C.5);
+- torpedo target term: JM08, USN01, BSM01, USN21 (census);
 - level target term: JM08, IJN08, USNOS.
 
 ### C.5 The target's AA reach against each enter's standoff (computed from data)
@@ -449,6 +470,13 @@ Pairs by mechanism:
 | USNOS | dive | 9 | "Hangar, Small, 02 02" (550), Multi Hangar 1 (594) | 10 / 10 (no guns) | 1634-2045 | no |
 | USNOS | level | 82 | TroopTrans2-6 (234) | 1600 / 2000 | 1000 | yes |
 | any | rocket | 0 | - | - | 1440 | not hosted |
+| census USN21 | dive | 4 | Haruna (60); Suzuya, Kumano (67) | 1600 / 2000; 2000 / 2000 | 1749-2080 (flag clear) | yes (host: Haruna 1600 < 1832, no; image yes) |
+| census USN21 | torpedo | 2 | Kongo (60), Suzuya (67) | 1600 / 2000; 2000 | 700 | yes |
+| census USN01 | dive | 3 | Katori (71) | 2000 / 2000 | 1667-1790 | yes |
+| census USN01 | torpedo | 5 | Convoy3 (85), Katori (71) | 1600 / 1600; 2000 | 700 | yes |
+| census BSM01 | dive | 35 | Oklahoma (314) | **1500 / 2000** | 1666-1694 (flag clear) | **host no, image yes** |
+| census BSM01 | torpedo | 121 | Utah 81, Nevada 19, Oklahoma 7, California 6, Tennessee 5, Arizona 2, Maryland 1 | 1500-2000 | 700 | yes |
+| census USN04 | dive | 1 | Lexington-class01 (1) | 2000 / 2000 | 1848 | yes |
 
 **Reading the table.**
 - **Where the term moves.** It moves every live enter whose target is a ship, which is all of them
@@ -464,7 +492,17 @@ Pairs by mechanism:
   rebuild takes the flak shell's 2000. With a target-term switch ON, the host's standoff is
   therefore up to 400 m short of the image's for those targets. The fix belongs to the gunnery
   rebuild binding (`flak_alternate_range = gun.max_range` in `GameGunneryHost::Impl`), not to this
-  packet. The same stand-in shrinks `fly_to_obstacles_009fd63c`'s radius.
+  packet. The same stand-in shrinks `fly_to_obstacles_009fd63c`'s radius. It changes a verdict in
+  two census cases: BSM01's 35 dives on Oklahoma (host 1500 against bases of 1666-1694, image 2000)
+  and USN21's dive on Haruna (host 1600 against 1832). With the switch ON, the host leaves those
+  standoffs alone where the image raises them to 2000.
+- **Per-enter cost (rev4 N1).** `goaway_target_extent_007b5be0` calls
+  `GameGunneryHost::unit_rows()`. That call rebuilds a function-static vector and returns a
+  reference to it. The helper walks the reference once, inside the call, before any other
+  `unit_rows()` call can run, so the reference does not dangle. The copy runs once per goaway enter,
+  at most a few hundred times per run (C.4 maximum: 144). That is cheaper than
+  `fly_to_obstacles_009fd63c`'s call every 21st tick per flyer. Left as is. A by-value or single-row
+  accessor belongs to game_hosts_gunnery.cpp's owner.
 - **Uncertain:**
   - A plane with two targets over the run is listed against both; the enter used whichever was
     current.
