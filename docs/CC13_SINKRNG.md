@@ -20,19 +20,21 @@ gap that docs/CC13_LEAK92.md section 5 flagged, and it was revised after rev4's 
     on the main thread.
   - The host splits image stream 1 into a gunnery generator (H-G) and a plane-AI generator (H-U).
     So the six draws can perturb only one of the two.
-- **Neither placement is the faithful one.** rev4 called the shared plane-AI generator "most
-  likely faithful". My first report called the gunnery generator right. Both are partial. What
-  decides between them:
-  - *For H-G:* the sink's deterministic co-tenants on slot 0 are all on H-G in the host. Those
-    are the row 6/14 hit-effect draws, the break-up draw `00827B4D` and the movie reseeds.
-  - *For H-U:* the host already uses H-U as the units host's general `00BD2F10` stand-in, so OFF
-    is the existing convention.
-  - The switch flips which partner sees the draws. It is a modelling choice for cc9, not a fidelity
-    fix. **Recommendation:** leave it OFF unless cc9 wants the sink draws next to the hit and
-    break-up draws.
-- **rev4's gunnery point is refuted.** The image's gunnery draws are stream 1 and H-G models
-  stream 1 (section 1). Only the projectile-construction draw `006E7B97` is stream 0, and the
-  host does not take it.
+- **H-G is the better approximation (settled with rev4).** Neither generator is exact, because
+  the host splits one image stream in two. The difference is in which draws are guaranteed to
+  share slot 0 with the sink draws:
+  - *Always on slot 0:* the sink draws, the row 6/14 hit-effect draws, the break-up draw
+    `00827B4D` and the movie reseeds. All of them run in the main-thread fan-out or on the main
+    thread. Every one of them is on H-G in the host.
+  - *On slot 0 only when the main thread wins the job race:* the pilot-bot draws (H-U) and the
+    gunnery-pass draws (H-G). They are pool jobs (`00875BB0`, `00E0B6CE = 1`), so each lands on
+    the stream of whichever thread claims it.
+  - So H-G holds every guaranteed partner, while H-U holds only race-dependent ones. ON
+    (`kSinkLeakDrawStreamCc13Bound`) moves the six draws to H-G. The H-G/H-U split itself
+    remains a labelled substitution.
+- **The gunnery stream.** The image's gunnery draws are stream 1 and H-G models stream 1
+  (section 1). Only the projectile-construction draw `006E7B97` is stream 0, and the host does not
+  take it. rev4 has withdrawn its "gunnery is stream 0" note.
 - **LIVE?** Only with `BSP_GUNNERY_RNG_STREAMS` unset. In that mode every sink moves one
   host generator by six that the image would not move in the same way. Section 3 has the
   per-mission reach.
@@ -75,10 +77,12 @@ and models stream 1. H-S0 is the host's stream-0 model.
   draws advanced. One that a worker runs does not.
 - The gunnery pass is also a fixed-step element (a wave-2 sub-node), so the same holds for it.
 - Which consumers sit inside wave virtuals was not traced per site (census open item 2).
-- So yes: in the image the sink draws do advance the plane-AI sequence, for main-thread jobs.
-  The faithful fix would merge H-G and H-U into one stream-1 generator. That would move every
-  pair at once, and the race would still make it inexact. Neither the switch nor the OFF state
-  claims to be that fix.
+- So yes: in the image the sink draws do advance the plane-AI sequence, but only for the jobs
+  the main thread claims. The draws the sink always shares slot 0 with are the fan-out and
+  main-thread draws, and those are on H-G. That is why H-G is the better approximation.
+- A faithful model would merge H-G and H-U into one stream-1 generator. That would move every
+  pair at once, and the job race would still make it inexact. Neither the switch nor the OFF
+  state claims to be that model.
 
 ## 2. The binding
 
@@ -87,9 +91,19 @@ and models stream 1. H-S0 is the host's stream-0 model.
 - **ON:** the six draws are `gunnery->death_mode_draw_00bd2f10(1, s.process_index, 0, 1)`.
   - On the default path that is H-G in call order. It is the same entry the units host uses for
     its other draws routed to H-G.
-  - Under `BSP_GUNNERY_RNG_STREAMS=1` the key is `(Draw::death_mode, ship)`. No other consumer
-    uses a ship's index with that purpose, so each ship stays isolated. The key is labelled
-    `death_mode`: a naming SUBSTITUTION.
+  - Under `BSP_GUNNERY_RNG_STREAMS=1` the key is `(Draw::death_mode, ship)`. **That key is
+    shared with other draws on the same ship:**
+    - Lua `BreakShip` draws on it at `game_hosts_lua.cpp:7591`-`7594` and `:7609`;
+    - Lua `SetDeadMeat` (`008AC94B`) draws on it at `game_hosts_lua.cpp:9897` (described at
+      `:9866`).
+
+    So in streams mode with the switch ON, a ship that gets one of those calls and also sinks
+    shares one keyed stream between the two, and the order decides the values. The six draws
+    are not isolated per ship in that case. With the switch OFF they use their own
+    "`<name>#leak`" key on H-U and are isolated. A separate `Draw` purpose for the leak would
+    restore isolation. It needs a new `GameGunneryHost` entry, which means `game_hosts_gunnery.cpp`,
+    its header and `game_hosts_units.cpp`. It is left as an option for when the gunnery host's
+    lease queue clears (packet cc13-sinkrng2).
   - With no gunnery host the draws fall back to H-U, as OFF. In a mission a gunnery host is
     always present.
 - **Lifetime.** ON adds no state. The gunnery host lives until `~GameUnitsHost` resets it, and
@@ -133,7 +147,13 @@ Columns:
 | USNRM01 | 2 | 0 | 0 | 10 / 11 / 11 |
 
 - Missions that post no 92h are not listed. There the switch changes nothing.
-- First sinks fall at 117 s (BSM01), about 155 s (BSM09), 0.05 s (JM06, ships wrecked at load),
+- **Most of the table runs in streams mode:** 77 of the 364 listed logs are shared. In the rest,
+  ON moves only the six values (and, through the shared key, any `BreakShip` or `SetDeadMeat`
+  draw on the same ship; section 2).
+- JM06's first sink at 0.05 s is a death on the first step with no damage (`first_damage=-1.00`),
+  for example `Gato-class Submarine 01` in `p17htd_jm06w.log`. It is a wreck that is instant at
+  load, not one that sank in combat.
+- First sinks fall at 117 s (BSM01), about 155 s (BSM09), 0.05 s (JM06),
   71-450 s (JM08), about 162 s (USN01), 149-165 s (USN21) and 22-30 s (USNOS). Nothing before
   the first sink moves.
 - In streams mode (every log not counted as shared), both generators are keyed, and the switch
@@ -164,7 +184,8 @@ Columns:
   - The leak draw values change, so the rates, the sink trajectory and the kill-depth time move
     slightly.
   - Divergence starts at the first sink, with the per-mission counts in section 3.
-- **Streams mode:** only the six values change. Through the rates, the sink physics changes, and
+- **Streams mode:** only the six values change, plus any `BreakShip` or `SetDeadMeat` draw on
+  the same ship that shares the `(death_mode, ship)` key (section 2). Through the rates, the sink physics changes, and
   through the wreck pose so does any shell-on-wreck hit (docs/CC13_LEAK92.md section 4).
 - **Draw totals:** unchanged at six per sink. They move from H-U to H-G.
 - **Log:** no new line.

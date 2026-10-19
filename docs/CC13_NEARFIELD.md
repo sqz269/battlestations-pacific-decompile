@@ -11,8 +11,12 @@ of `/battlestationspacific.exe`. The probe body and its accumulator are already 
   candidate order.
 - **Membership matches.** The host's membership equals the image's except for the image list's 3 s
   refresh lag. That lag can change an answer only when a candidate closes from beyond 1080 m to inside
-  the box (at most 140 m) within 3 s. That needs a closing speed above about 313 m/s, which no plane
-  class in the census missions reaches in level flight.
+  the box (at most 140 m) within 3 s. For a candidate already in the world, that needs a closing
+  speed above about 313 m/s, which no plane class in the census missions reaches in level flight.
+  Closing speed is not the only route, though. An entity that enters the world list, or becomes
+  active, within 1080 m after the last refresh is missed by the image for up to 3 s at any speed,
+  and the reverse holds for one that lands or is hangared (section 4, deck traffic row). That case
+  reaches only deck traffic at the land/line probe `009B0632`.
 - **The label stays.** The census label "substitution" remains accurate; the row becomes
   `substitution, no live effect`.
 - **Speed bound.** No plane class in the seven probe missions closes faster than about 200 m/s
@@ -44,6 +48,10 @@ section 3):
 - Members at or beyond R are dropped at each refresh.
 - The update `007E2010` runs it every `+88h` = 3.0 s. Its clock starts at `U(0, 3) + 3 >= 3`, so the
   first refresh comes on the first update.
+- The refresh phase is per plane and random. The constructor `007E1E20` seeds the clock `+7Ch`
+  with `U(0, 3)` from `00BD2F10` at `007E1F94`. `007E2010` counts the clock up and subtracts 3 on
+  each refresh (`007E2058`-`007E2061`), so each later refresh lands `3 - U` s after a whole
+  3 s step.
 
 The object at `+C50h` is built by `007D61C0`-`007D621F` when `[game+1FE4h]` is 0 or 1 and
 `unit+54h` differs from the scene's `DummyAIEnabled`. That key is 3 when absent, and no
@@ -89,6 +97,7 @@ component, which `!(p > min)` stores; no NaN position reaches the probe in the h
 | Self. | 1 and 0 | The image list excludes the owner (`007E11D0` "other than the owner"; `007F049A` in mode 0). The host skips `process_index`. |
 | Party. | 1 | Neither filters by party. |
 | Inactive (`+5Ch` clear) entities, such as hangared planes. | 1 | The host excludes them. Whether the image's world list `+58h` holds an inactive entity is not read, so this is an uncertainty. Hangared planes are not flying near a probing plane, except perhaps during the land/line probe at `009B0632` near a deck. |
+| Deck traffic: entities that appear or disappear between refreshes. | 1 | Some entities enter the world list, or become active, within 1080 m after the last refresh: a carrier launch, a GenerateObject or squadron placement, or a plane leaving the hangar. The image's snapshot misses these for up to 3 s at any speed (the refresh phase is random per plane, section 1), while the host includes them as soon as `+5Ch` is set. The reverse holds for a plane that lands or is hangared: the image's snapshot keeps it until the next refresh, unless the observer slot is nulled, while the host drops it when `+5Ch` clears. The reach is deck traffic at the land/line probe `009B0632`. It is not counted: the host logs no per-call candidate list, and in cc13-decklaunch's USNOS census log (`p23h_off_os.log`) the only land/line entries are two Enterprise_sqn02 wingmen at 1498.89 s and 1499.19 s (`009B02E0`, mode 2). That log has no line that ties a probe answer to a launch or a landing at the deck. |
 | A dead member's seat. | 0 | Under `kSquadronRemovesDeadBound`, the host clears a dead leader's seat to `kPlaneSquadronNoUnit` before `remove_member_unit_007f3970` erases it. In that window the host skips the member, while the image still lists the pointer until `007F3970` compacts `+3D0h`. The window is inside one death step, so its reach is that step's probes only. |
 
 ## 5. Reach in the logs
