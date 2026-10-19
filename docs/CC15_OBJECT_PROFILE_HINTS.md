@@ -143,3 +143,68 @@ BSP_GUNNERY_RNG_STREAMS=1`. USN04: `--frames 4700 --press-start-frame 30 --menu-
   the whole session); its lifetime still covers every borrower.
 - History-map key comparison (005FD120) is taken as the case-insensitive native-string rule, like the
   definition map's 005FFB20; it is not exercised by an empty profile.
+
+## 5. The definitions load 006921B0 (packet cc15-hint, 2026-10-19)
+
+Under `kHintTrackerCc15Bound`, OnInit (004E3EFB) now runs `GameHintTracker::reload_hint_tables_006921b0`
+on the tracker 004E1CA0 builds, instead of logging 006921B0 as unimplemented. It reuses the
+existing typed bodies in `src/gui_screens_3.cpp`: `hint_tracker_reload_006921b0` (the sequence) and
+`hint_tracker_load_definitions_0068f030` (one sub-table into the map +30h); the new code is only
+their two host interfaces over a private Lua state (`HintTablesReload`, `src/game_profile_owner.cpp`).
+
+### Evidence and original ABI
+
+- 006921B0 `__fastcall(ECX = tracker)`, RET. 004DCDB0 empties +7Ch; 00B66BD0 constructs a private
+  LuaStateOwner and 00692214 opens it with mask 1 (base library only); 00B69D40(path, 0) runs
+  `Scripts/datatables/HintSystemMessages.lua` (literal 00CF7CB8, 29h bytes) and each VFS override of
+  it. 004D7370 empties +30h. The globals table gives `HintSystemMessages`; `SYSTEM.Weapon`,
+  `SYSTEM.Unit`, `SYSTEM.Gameplay` go to 0068F030 with `other_category` 0 and `OTHER.Single`,
+  `OTHER.Multi` with 1 (call sites 0069233A, 0069238A, 006923DA, 00692460, 006924B1). Then 00690CD0
+  rebuilds +94h, +60h and +1Ch are emptied, +18h = 13h, +24h = 0, +04h = 0, and 00B65E80 closes.
+- 0068F030 `__thiscall(tracker, LuaObject table by value, char)`, RET 18h: per entry of the
+  sub-table (00B67080 / 00B67190, Lua `next` order) a 128h-byte definition (layout in
+  `include/bsp/gui_screens_3.hpp` `HintDefinition`) is filled and assigned to `map[id]`
+  (005FFB20 + 005FDD90).
+- Host mapping: the native LuaObject accessors are the stock Lua 5.1.1 calls (`lua_getfield`,
+  `lua_tolstring`, `lua_toboolean`, `lua_tointeger`, `lua_next`); the file bytes come from
+  `VfsLuaScriptFiles` over the host VFS (no content suffixes, x360comp 0, empty region, as
+  `GameGlobalSubsystemsHost`). A non-table entry answers nil for every key (the native would read
+  through its LuaObject wrapper); this installation has none.
+
+### What it loads
+
+This installation's `scripts/datatables/hintsystemmessages.lua` (343679 bytes) has 406 `["id"]`
+lines after the header comment; one (the second `OHKA`, line 622) is inside the `--[[ ... ]]` block
+at lines 619-639, so 405 entries are live. The ON run loads exactly those: `entries=405
+definitions=405 replaced=0 other=340 hidden=18 critical=83 missionspecific=251`, i.e. 65 SYSTEM
+definitions and 340 OTHER ones. `history94=0`: the profile is the empty (new) one, so 00690CD0 has
+no shown names to file.
+
+### Pairs (2026-10-19, tree base 328ee346b)
+
+Builds: base (328ee346b), OFF (this change), ON (`kHintTrackerCc15Bound = true`;
+`kProfileOwnerCc15Bound` stays false). Env and USN04 arguments as in section 3.
+
+- **USN04 base vs OFF:** `pair_diff` exit 0 (native table 1555 rows unchanged, 786 summary lines
+  unchanged).
+- **USN04 OFF vs ON:** exit 1, gameplay identical (58 death rows, 58 plane death modes, 84-row unit
+  table, all 786 summary lines unchanged). Every moved row:
+  - `+ HintTracker::construct 004e18e0` concrete, 1 call: the OnInit build.
+  - `+ HintTracker::reload_hint_tables 006921b0` concrete, 1 call: this packet. (The OFF build does
+    not reach the `if constexpr` arm, so the old `OnInit::reload_hint_tables` unimplemented row is
+    absent from both.)
+  - `~ SetPendingScene::notify_award_tracker 0068ea00` and `~ MissionPlay::flush_award_tracker
+    00690cd0` unimplemented -> concrete, 1 call each, as in section 3. 00690CD0 now walks 405
+    definitions but the empty profile gives it no names.
+  - One new other line, the `hint tracker: 006921b0 ...` counts above.
+  - Host methods 1082/470 -> 1086/468.
+
+### Open items
+
+- Lua iteration order decides only which of two equal ids wins (`replaced` counts it); this file has
+  no live duplicate, so the order is not exercised.
+- `duration` and `cooldowntime` go through `lua_tointeger`; 00B66290's conversion path (with the
+  SSE2 flag) is not reproduced, which matters only for non-integer values (the file has none).
+- The per-frame trigger passes (TriggerHint and the queue, `hint_cooldowns` in
+  `game_hosts_mission_frame.cpp`) still do not run on this object, so the loaded definitions are not
+  yet consumed during a mission; with an empty profile nothing reads them in this run.

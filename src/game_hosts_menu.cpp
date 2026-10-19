@@ -1482,10 +1482,9 @@ public:
         if constexpr (kSceneDatabaseCc15Bound) scene_database_create_0046f350(owner_.log);
         if constexpr (kHintTrackerCc15Bound) {
             // 004E3EFB: the first 004E1CA0 builds the tracker, then 006921B0
-            // reloads the hint tables on it. The reload is not hosted, so the
-            // definition map +30h stays empty.
-            owner_.hint_tracker.get_004e1ca0();
-            owner_.log.unimplemented("OnInit::reload_hint_tables", "006921b0");
+            // reloads the hint tables on it (HintSystemMessages.lua into the
+            // definition map +30h).
+            owner_.hint_tracker.get_004e1ca0().reload_hint_tables_006921b0(owner_.vfs);
         }
     }
     void poll_platform_session_events() override {
