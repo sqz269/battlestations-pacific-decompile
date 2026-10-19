@@ -20352,3 +20352,23 @@ jm06_l70_j6_n (120000 frames, stop 40 s after the end), IJN18 ijn18_l67_i18_d (6
   `ShipAiApproach::wrap_brain_heading_00605070` (src/game_hosts_ship_ai.cpp). The flip commit turns it into if/else,
   and the ON export was built with that same edit.
 - Wins: the JM06 j6n row still completes (+3.00 s). IJN18 does not end either way.
+
+## 313. Hidden spawn carry paired (cc9-gunnery55, 2026-10-19)
+
+### 313.1 kSceneHiddenSpawnCarryCc13Bound (include/bsp/game_hosts_scene_contents.hpp, packet cc13-hiddencarry)
+
+Image: GenerateObject 00944FD0 creates a Hidden-pooled entity through 0046DC10 / 0046D930 with the authored bag, so
+the creator queues `Command` (004E6B30) and pass B seeds `StartSpeed` (0082356C); 0046AAB0 at 009453BB resolves the
+command (docs/CC13_HIDDENCARRY.md). OFF the host spawns with neither.
+**Predictions (before the pair):** only rows whose summary shows `hidden carry ... carried>0` and that spawn a carried
+entity can move.
+- USN21 (s46_u21_f): Intrepid (MotherShipGen, Cruise, StartSpeed 10) leaves state=stop and cruises from its spawn,
+  and its group (Iowa among the followers) moves with it, where OFF they hold station at throttle 0. Positions,
+  kamikaze/plane attacks on the group, deaths and the end time move from the spawn.
+- BSM09 (l68_b9_d1): the spawned D3A Val II squadron gets SetTarget -> Yorktown at spawn instead of a free attack, so
+  its first target and the hits on Yorktown may move.
+- BSM04: Lexington (Stop, StartSpeed 3.0) latches thrust 3 on its spawn heading instead of 0.
+- A mechanism failure would be a command issued to the wrong slot, a carried unit that still has no command or speed,
+  or a follower whose follow is replaced by the leader's Cruise.
+Pair: OFF = tree build 172589750, ON = `local\g55_hc_on` (pair_export, same commit); USN21 64000, BSM09 36000, BSM04
+30000 frames, reference env (`g55_hcoff_*` / `g55_hcon_*`).
