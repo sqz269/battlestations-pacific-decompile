@@ -26,7 +26,7 @@ namespace bsp::cc13_devwalk {
 // eligible rack decides (a plane with bombs and rockets is decided by its first rack, not by
 // the plane-wide ordnance mask); a rocket (33h) rack is fired and raises unit+C25h but issues no
 // release orders (007C0EEB). False: the plane-wide mask decides, as before.
-inline constexpr bool kPlaneDeviceWalkPerRackBound = false;
+inline constexpr bool kPlaneDeviceWalkPerRackBound = true;   // ON: OCEAN_WAVE_FIELD 97 (cc9-physics23)
 
 // The draw sub-switch. True: the level bomber's next-rack delay draw (007C0E67-007C0E88) is
 // taken from the shared stream-1 generator (GameGunneryHost::death_mode_draw_00bd2f10(1, ...)),
