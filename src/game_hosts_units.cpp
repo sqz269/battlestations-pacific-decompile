@@ -18,6 +18,7 @@
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/submarine_model.hpp"  // packet cc9_set_submarine_depth_level
 #include "bsp/cc13_sub_dive.hpp"    // packet cc13-subdive
+#include "bsp/cc13_sinkrng.hpp"     // packet cc13-sinkrng
 #include "bsp/cc13_leak92.hpp"      // packet cc13-leak92
 #include "bsp/unit_motion.hpp"      // unit_step_towards_0042ac60, packet cc9_periscope_out
 #include "bsp/game_hosts_scene_contents.hpp"  // packet cc9_submarine_seabed
@@ -3797,10 +3798,19 @@ struct GameUnitsHost::Impl {
         // 0074EC50: with lobby mode [00E188A8]+1FE4h != 2 (single player), each
         // leak draws U(0, 1) from 00BD2F10 (ECX = 1). SUBSTITUTION, labelled: the
         // draws come from this host's keyed release stream, one key per ship.
+        // Packet cc13-sinkrng: with kSinkLeakDrawStreamCc13Bound they come from the
+        // gunnery generator, the host's main-thread stream 1 (0074ECA5, row 15).
         float draws[6]{};
         float sum_draws = 0.0f;
         for (std::size_t i = 0; i < s.leaks.size(); ++i) {
-            const float r = release_altitude_draw_00bd2f10(s.row.name + "#leak", 0.0f, 1.0f);
+            float r = 0.0f;
+            if constexpr (bsp::kSinkLeakDrawStreamCc13Bound) {
+                r = gunnery != nullptr
+                    ? gunnery->death_mode_draw_00bd2f10(1, s.process_index, 0.0f, 1.0f)
+                    : release_altitude_draw_00bd2f10(s.row.name + "#leak", 0.0f, 1.0f);
+            } else {
+                r = release_altitude_draw_00bd2f10(s.row.name + "#leak", 0.0f, 1.0f);
+            }
             sum_draws = r + sum_draws;                    // 0074ECBD
             draws[i] = r + s.leaks[i].water;              // 0074ECC5
         }
