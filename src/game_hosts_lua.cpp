@@ -4409,7 +4409,119 @@ void GameMissionLuaHost::mark_vehicle_class_row_00964790(int class_index, const 
                 "LaunchedClass", -1);
             if (launched != -1) mark_vehicle_class_row_00964790(launched, "00965182");
         }
+        mark_vehicle_class_device_bullets_00960230(class_index);
     }
+}
+
+// cc15-vcp6. The Lua load in 00964790 step 13 (vtable[8h]) reaches the base
+// reader 00960230. For each Platforms[i] it resolves every Gun[j] device
+// through 00443090 (009614F9), then DefaultGun (or the first gun) at 00961591.
+// The device reader at 0044334D ([vt+8h]: 007327B0, or the same body through
+// BombPlatform 006E01E1 or Catapult 006EB6D1) passes each Bullet[k].Bullet to
+// 006EA910 at 00731955. The plane reader 007D1F70 adds KamikazeBulletClass at
+// 007D2BFF. A new bullet's reader (006EACFD, [vt+18h]) resolves a vehicle class
+// with DL = 1 for three kinds: DummyKamikazePlane KamikazePlaneClass (006FF1E5),
+// DummySubmarine SubmarineClass (007000C5) and DummyTarget
+// DummyTargetVehicleClass (00701115). All of this runs inside the parent's
+// resolve, so those classes are marked before 004E0A9B whenever the parent is.
+// UNCERTAIN: KamikazeBulletClass is read here for any row, while the image
+// reads it only for the plane family. Every row that has it in this
+// installation names a Type "Kamikaze" bullet, which resolves no class.
+void GameMissionLuaHost::mark_vehicle_class_device_bullets_00960230(int class_index) {
+    if (state_ == nullptr) return;
+    const int base = ::lua_gettop(state_);
+    std::vector<int> devices;
+    std::vector<int> bullets;
+    const auto integers = [this](int table, std::vector<int>& out) {
+        ::lua_pushnil(state_);
+        while (::lua_next(state_, table) != 0) {
+            if (::lua_isnumber(state_, -1)) out.push_back(static_cast<int>(::lua_tointeger(state_, -1)));
+            ::lua_settop(state_, ::lua_gettop(state_) - 1);
+        }
+    };
+    lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+    if (lua_istable(state_, -1)) {
+        lua_rawgeti(state_, -1, class_index);
+        if (lua_istable(state_, -1)) {
+            const int row = ::lua_gettop(state_);
+            lua_getfield(state_, row, "KamikazeBulletClass");
+            if (::lua_isnumber(state_, -1)) bullets.push_back(static_cast<int>(::lua_tointeger(state_, -1)));
+            ::lua_settop(state_, row);
+            lua_getfield(state_, row, "Platforms");
+            if (lua_istable(state_, -1)) {
+                const int platforms = ::lua_gettop(state_);
+                ::lua_pushnil(state_);
+                while (::lua_next(state_, platforms) != 0) {
+                    const int platform = ::lua_gettop(state_);
+                    if (lua_istable(state_, platform)) {
+                        lua_getfield(state_, platform, "Gun");
+                        if (lua_istable(state_, -1)) integers(::lua_gettop(state_), devices);
+                        ::lua_settop(state_, platform);
+                        lua_getfield(state_, platform, "DefaultGun");
+                        if (::lua_isnumber(state_, -1) && ::lua_tointeger(state_, -1) > -1) {
+                            devices.push_back(static_cast<int>(::lua_tointeger(state_, -1)));
+                        }
+                    }
+                    ::lua_settop(state_, platform - 1);
+                }
+            }
+        }
+    }
+    ::lua_settop(state_, base);
+    lua_getfield(state_, LUA_GLOBALSINDEX, "DeviceClass");
+    if (lua_istable(state_, -1)) {
+        const int table = ::lua_gettop(state_);
+        for (const int device : devices) {
+            lua_rawgeti(state_, table, device);
+            if (lua_istable(state_, -1)) {
+                lua_getfield(state_, -1, "Bullet");
+                if (lua_istable(state_, -1)) {
+                    const int list = ::lua_gettop(state_);
+                    ::lua_pushnil(state_);
+                    while (::lua_next(state_, list) != 0) {
+                        if (lua_istable(state_, -1)) {
+                            lua_getfield(state_, -1, "Bullet");
+                            if (::lua_isnumber(state_, -1)) {
+                                bullets.push_back(static_cast<int>(::lua_tointeger(state_, -1)));
+                            }
+                        }
+                        ::lua_settop(state_, list + 1);
+                    }
+                }
+            }
+            ::lua_settop(state_, table);
+        }
+    }
+    ::lua_settop(state_, base);
+    struct DummyKind { const char* type; const char* key; const char* site; };
+    static constexpr DummyKind kKinds[] = {
+        {"DummyKamikazePlane", "KamikazePlaneClass", "006FF1E5"},
+        {"DummySubmarine", "SubmarineClass", "007000C5"},
+        {"DummyTarget", "DummyTargetVehicleClass", "00701115"},
+    };
+    std::vector<std::pair<int, const char*>> linked;
+    lua_getfield(state_, LUA_GLOBALSINDEX, "Bullets");
+    if (lua_istable(state_, -1)) {
+        const int table = ::lua_gettop(state_);
+        for (const int bullet : bullets) {
+            lua_rawgeti(state_, table, bullet);
+            if (lua_istable(state_, -1)) {
+                const int row = ::lua_gettop(state_);
+                lua_getfield(state_, row, "Type");
+                const char* type = ::lua_isstring(state_, -1) ? ::lua_tostring(state_, -1) : nullptr;
+                for (const DummyKind& kind : kKinds) {
+                    if (type == nullptr || _stricmp(type, kind.type) != 0) continue;
+                    lua_getfield(state_, row, kind.key);
+                    if (::lua_isnumber(state_, -1)) {
+                        linked.emplace_back(static_cast<int>(::lua_tointeger(state_, -1)), kind.site);
+                    }
+                }
+            }
+            ::lua_settop(state_, table);
+        }
+    }
+    ::lua_settop(state_, base);
+    for (const auto& [linked_class, site] : linked) mark_vehicle_class_row_00964790(linked_class, site);
 }
 
 int GameMissionLuaHost::vehicle_class_nil_index_hook(lua_State* state) {
