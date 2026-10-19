@@ -977,3 +977,10 @@ mechanism is in the cd761bb52 section above).
   torpedoes (cat 7, 2.5-4 km) take Maryland / California first. USN15 needs a Yamashiro-first re-plan with torpedo
   avoidance; it stays open.
 - JM06 completes at 1457.30 s with the squadron step-tail flips (physics23, main ac7bc90b6); BSM09 d1 unchanged.
+- **JM08 h3** (`cc9-lua52\local\l69_j8_h3.txt`: h plus `l69_j8_add.py` lines putting LST 02, LST 01 and LSM 02 at
+  the top of every launch group from frame 20000; main ec0df436c): on the reference seed **all 11 landships die by
+  1290 s, with Missouri at 592 s and Nevada at 603 s**. primary 1 and 2 complete, "Run" plays, and all three bomber
+  waves spawn. The HQ then falls to the phase-2 waves at 1674.10 s (failed 1674.56 s; 15 phase-2 planes shot down).
+  Under 20,3 there is no end: Missouri dies at 569 s, but LSM 01-02 and LST 01-03 survive. JM08 is now a phase-2
+  air-defence problem. It is not a forced loss: the cc13 naval-gunfire audit no longer applies once Missouri dies
+  before StartInvasion.
