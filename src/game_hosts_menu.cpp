@@ -17,6 +17,7 @@
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/game_hosts_hud_world.hpp"
 #include "bsp/game_hosts_mission.hpp"
+#include "bsp/game_profile_load.hpp"
 #include "bsp/game_profile_owner.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/input_tick.hpp"
@@ -232,6 +233,9 @@ struct GameMenuHost::Impl {
     std::unique_ptr<GameMissionHost> mission;
     bool mission_running{false};
     GameVfsHost& vfs; // Append the existing borrow without moving older fields.
+    // cc15-prof: the storage Lua for the read-only profile load (00B6A020).
+    GameScriptHost* profile_scripts{nullptr};
+    void load_signed_in_profile_0067cc60();
 
     Impl(GameHostLog& log_in, GameFrontendHost& frontend_in, GameStateSlot& state_in,
         GameSingletonHost& singletons, long press_start_frame_in, GameVfsHost& vfs_in);
@@ -1802,6 +1806,12 @@ void GameMenuHost::Impl::advance_path(float raw_delta) {
         const MainMenuPathStep next = advance_main_menu_path(path_step, path, path_host,
             raw_delta);
         if (next == path_step) break;
+        if constexpr (kProfileOwnerCc15Bound && kProfileLoadCc15Bound) {
+            if (path_step == MainMenuPathStep::PressStartPoll
+                && next == MainMenuPathStep::TitleSkip) {
+                load_signed_in_profile_0067cc60();
+            }
+        }
         log.notef("main-menu path %s -> %s", path_step_text(path_step).c_str(),
             path_step_text(next).c_str());
         path_step = next;
@@ -1810,6 +1820,23 @@ void GameMenuHost::Impl::advance_path(float raw_delta) {
         if (path_step == MainMenuPathStep::EnterScreen && pumped_this_frame) break;
     }
     press_start_handoff_requested = false;
+}
+
+// The press the host takes to the title skip stands in for the completed
+// sign-in, so the profile half of 0067CC60 runs here, ahead of the skip, as
+// natively the read's continuation 0067CA40 precedes it. The save id is the
+// "%llx" of 00A3E5D0, the online XUID, which is 0 for a local profile: "0".
+// Read-only throughout; see docs/CC15_PROFILE_LOAD.md.
+void GameMenuHost::Impl::load_signed_in_profile_0067cc60() {
+    if (profile_scripts == nullptr) return;
+    try {
+        static_cast<void>(load_signed_in_profile_read_only(profile, log, read_only_save_root(), "0",
+            profile_scripts->files().owner_environment(profile_scripts->runtime(),
+                profile_scripts->globals())));
+        log.implemented("PressStartScreen::apply_sign_in profile load", "0067cc60");
+    } catch (const std::exception& error) {
+        log.notef("profile load failed: %s", error.what());
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -1827,6 +1854,7 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
     // Milestone 2h: the in-mission HUD registers into the same registry this
     // object owns, so the HUD host is built here and handed to the mission.
     impl_->hud = std::make_unique<GameHudHost>(log, *this);
+    impl_->profile_scripts = &scripts;
     if constexpr (kProfileOwnerCc15Bound) {
         // The profile constructor 007FEE20 runs 007FDB20 at 007FEF9F while
         // 004DDB90 builds the game, so +64h exists before any title reset.
