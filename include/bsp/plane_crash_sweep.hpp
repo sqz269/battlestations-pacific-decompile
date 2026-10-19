@@ -60,10 +60,15 @@ namespace bsp {
 
 inline constexpr bool kPlaneCrashSweepBound = true;  // ON: USN19/USN18/USNOS pairs (docs/SQUADRON_LAND_TASK.md 5gc)
 
-// 00CE3854 (float 3.0): 007C5F60's unit+9DCh for a launch spot (5.0, 00CE3850,
-// for a kind-45h base; LABELLED: the host arms 3.0 for both). The host arms it
-// on a plane's first free-flight step.
+// 00CE3854 (float 3.0): 007C5F60's unit+9DCh for a launch spot (007C605D). With
+// kPlaneCrashLaunchArmCc13Bound off, LABELLED: the host arms 3.0 for every base,
+// and on every entry to free flight (state 7), e.g. again after the state-6
+// water skim; the image arms only in 007C5F60. On either setting the host spends
+// the cooldown on state-7 steps only, where 007BC5B0 also passes states 6 and 4
+// (LABELLED).
 inline constexpr float kPlaneCrashLaunchCooldown = 3.0f;
+// 00CE3850 (float 5.0): the same store for a kind-45h (AirField) base, 007C60EA.
+inline constexpr float kPlaneCrashAirfieldLaunchCooldown = 5.0f;
 
 // 00D7A24C (float 1.0): 007CFD20's unit+9DCh (007CFE78). A plane that is never
 // placed on a launch spot keeps it, so an air-spawned plane's first 1.0 s of
@@ -72,10 +77,23 @@ inline constexpr float kPlaneCrashConstructCooldown = 1.0f;
 
 // True: the gunnery host's first arm of a plane that has been in free flight
 // on every step the sweep has seen (never grounded, so never through 007C5F60)
-// takes kPlaneCrashConstructCooldown; every later arm, and the first arm of a
-// plane seen off free flight before it, takes kPlaneCrashLaunchCooldown.
+// takes kPlaneCrashConstructCooldown; every later arm (each re-entry to state 7,
+// LABELLED above), and the first arm of a plane seen off free flight before it,
+// takes kPlaneCrashLaunchCooldown.
 // False: every arm takes kPlaneCrashLaunchCooldown, as before.
-inline constexpr bool kPlaneCrashConstructCooldownCc13Bound = false;
+inline constexpr bool kPlaneCrashConstructCooldownCc13Bound = true;  // ON: USN21/USN04/USNOS pairs (docs/SHIP_AI_OPEN_ITEMS.md 303)
+
+// True (packet cc13-cool9dc-b): the cooldown is written only where the image
+// writes it. kPlaneCrashConstructCooldown at the sweep's first sight of a live
+// plane (007CFE78), then the units host's 007C5F60 store (3.0, or 5.0 when the
+// deck owner IsKindOf(45h), AirField) each time that host places the plane on
+// a launch spot (GameUnitsHost::plane_launch_spot_arm_9dc); a return to state 7
+// does not re-arm. It replaces the arming of kPlaneCrashConstructCooldownCc13Bound,
+// whose 1.0f and per-plane state it shares, so it needs that switch.
+// False: the arming above.
+inline constexpr bool kPlaneCrashLaunchArmCc13Bound = false;
+static_assert(!kPlaneCrashLaunchArmCc13Bound || kPlaneCrashConstructCooldownCc13Bound,
+              "kPlaneCrashLaunchArmCc13Bound needs kPlaneCrashConstructCooldownCc13Bound");
 
 // 00CEC9D8 (double 0.75), 00CF5E58 (double 0.49), 00D04310 (double 0.96).
 inline constexpr float kPlaneCrashFoldedWingScale = 0.75f;

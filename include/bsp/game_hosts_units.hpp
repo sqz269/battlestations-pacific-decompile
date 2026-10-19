@@ -292,11 +292,13 @@ struct GameUnitRow {
     // Packet cc9_submarine_depth_level (docs/SUBMARINE_MODEL.md section 11):
     // unit+1268h `depthLevel` as 00853630 seeds it on a submarine. Stage 1
     // (00853A31..00853A81) is the kamikaze test, stage 2 (00853B05..00853BAA)
-    // the scene's `Dive` then `TargetDive`. LABELLED: nothing in this host
-    // writes the level after the seed (008528B0's callers are not modelled),
-    // stage 3 (the nearest band, non-scene units) is not modelled, and the
-    // kamikaze test reads false: class+510h/+514h are not on the host's class
-    // row. `submarine_depth_seeded` is false on every other class.
+    // the scene's `Dive` then `TargetDive`, stage 3 (00853BE8..00853C70) the
+    // nearest band for a boat with neither key. After the seed, 008528B0
+    // (GameUnitsHost::set_submarine_depth_level_008528b0) writes it. Packet
+    // cc13-subdive: the kamikaze test (class+510h/+514h) is under
+    // kCc13SubDiveKamikazeBound and stage 3 under kSubSeedNearestBandCc13Bound
+    // (include/bsp/cc13_sub_dive.hpp); each reads false / is skipped while its
+    // switch is OFF (LABELLED). `submarine_depth_seeded` is false on every other class.
     bool submarine_depth_seeded{false};
     std::int32_t submarine_depth_level{0};
     // Milestone 2s: what 009329C0 staged on this unit's last substep, read back
@@ -651,6 +653,19 @@ public:
     // Packet l68_travel_speed: 008A0630's four stores on the squadron's slot
     // (+388h countdown, +38Fh freeze, +3A0h speed, +3ACh lock).
     bool set_squadron_travel_speed_008a0630(std::size_t unit_index, float speed, bool force);
+    // Packet cc13-luawire 7b (include/bsp/cc13_lua_natives_wire.hpp). The units-host
+    // state four Lua natives write; the runners that call these come later.
+    // 00951F40(visible) on one plane: plane_hit_node_detached = !visible. False
+    // when the index has no slot.
+    bool set_plane_visible_00951f40(std::size_t unit_index, bool visible);
+    // 008A0000's store on the entity's own slot: +3A4h = on ? v | 2 : v & 0xFD.
+    bool set_squadron_vehicle_avoidance_008a0000(std::size_t unit_index, bool on);
+    // 006CA730 via 0089FAF0: the squadron (by its registry record) joins the
+    // base's block list at +B4h, which 006C4790 reads. False when the squadron
+    // unit has no registry record or the base has no air-ops deck.
+    bool add_base_unsupported_006ca730(std::size_t squadron_unit, std::size_t base_unit);
+    // 008A62A0's store on one unit: float +340h.
+    bool set_cheat_turbo_340(std::size_t unit_index, float value);
 
     // Packet cc9_difficulty. SetSkillLevel's leaf, unit->vtable[128h]: 009565A0
     // stores unit+390h and 007B8AE0 sets the pilot bot's index (bot+34h). The
@@ -824,6 +839,10 @@ public:
     // host stored. False for an index out of range.
     bool plane_order_view(std::size_t index, int& state_900, bool& landed_904,
                           bool& enabled_5c, unsigned int& command_class) const noexcept;
+    // Packet cc13-cool9dc: 007C5F60's plane+9DCh store (3.0, or 5.0 on an AirField)
+    // and how many times it has run for this plane.
+    bool plane_launch_spot_arm_9dc(std::size_t index, std::uint32_t& arms,
+                                   float& cooldown) const noexcept;
     // Packet cc9_pilot_moveto_task: the moveto order's range, descriptor +14h
     // (008A4708), which the kind-7 task's approach reads.
     void store_unit_moveto_range(std::size_t index, float range) noexcept;

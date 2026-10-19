@@ -30,6 +30,7 @@
 #include "bsp/game_hosts_commands.hpp"
 #include "bsp/game_hosts_ready.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
+#include "bsp/cc13_leak92.hpp"  // packet cc13-leak92
 #include "bsp/in_mission_subsystem_tick.hpp"
 
 #include <cstdio>
@@ -399,6 +400,13 @@ void GameFixedStepHost::pump_session_00778450(float step) {
             script_orders_drain_loopback_0076c600();
         } else {
             log_.unimplemented("Session::drain_loopback_queue_0076c600", "00778542");
+        }
+        if constexpr (bsp::kLeakMessageRouterDeliveryCc13Bound) {
+            // Packet cc13-leak92: the 92h messages the previous step's row 15
+            // wreck handlers routed (0074ED7B) reach 0082220D here. SUBSTITUTION
+            // (labelled): delivered together after the script orders, not at their
+            // FIFO places; no other message writes the leak rates.
+            units_deliver_ship_sink_92h_0082220d();
         }
         commands_finish_loopback_drain_0076c600();
         done("FixedStepFanout::pump_session", 0x00875e91u);

@@ -19956,3 +19956,79 @@ destroyed!". Different plans and lengths; both start at the mode-3 tail skip.
 Reach note (cc13, through the lead): G and I are also live in IJN08, where Kinugasa makes 319 evasion overrides in the
 Elco torpedo field from 747 s until it sinks at 816 s. Those overrides had max_turn = 0, so they are not a proven
 course change, and no IJN08 pair was run.
+
+## 303. Plane crash-sweep construct cooldown paired (cc9-gunnery54, 2026-10-19)
+
+**Switch:** kPlaneCrashConstructCooldownCc13Bound (include/bsp/plane_crash_sweep.hpp, packet cc13-cool9dc).
+**Evidence:** 007CFD20 (plane ctor) stores unit+9DCh = 1.0f at 007CFE78 (`MOVSS [ESI+9DCh], XMM1`, XMM1 loaded
+from 00D7A24C at 007CFDEA; checked with disasm-raw). Only 007C5F60's launch-spot path re-arms it with 3.0
+(00CE3854). A plane spawned in the air never reaches 007C5F60, so its first sweep cooldown is 1.0 s. The host armed
+3.0 for every plane.
+
+**Predictions (written before the pair).** ON, for each air-spawned plane: `construct cooldown arms` counts it,
+`cooldown_steps` falls by about 40 (2.0 s at 0.05 s), and `plane_steps` and `segments` rise by the same amount.
+Deck launches keep 3.0. unit_hits / impacts move only if an air-spawned plane overlaps a unit or the surface in its
+first 3 s (not expected). Draw consumers: more swept segments can add kTraceSceneDamageDrawBound draws, so
+stream-1 noise in the reference env and broader drift in the default env are expected, not a mechanism failure.
+
+Pair: OFF = `local\g54_cc_off` (tree build at 658c5c282), ON = `local\g54_cc_on` (pair_export, same commit).
+Rows USN21 and USN04 (9000 frames, no orders), USNOS (50000 frames, config/win_orders/usnos_s45_os_k.txt), in the
+reference env (prefixes g54_ccoffs / g54_ccons) and the default env (g54_ccoffd / g54_ccond).
+
+**Measured; verdict FLIP by mechanism.** Reference env, all three rows pair_diff exit 1 (gameplay identical; death
+rows, plane death modes and unit table identical):
+
+| row | arms ON | cooldown_steps OFF -> ON | plane_steps OFF -> ON | other summary moves |
+|---|---|---|---|---|
+| USN21 | 6 | 366 -> 120 | 21717 -> 21963 | none |
+| USN04 | 51 | 4026 -> 1935 | 144663 -> 146754 | none |
+| USNOS | 39 | (sweep) | 332910 -> 334509 | trace scene-damage stream-1 draws 1703145 -> 1707942 |
+
+Each arm moves exactly 41 steps from cooldown into the sweep (61 steps at 3.0 s, 20 at 1.0 s), as predicted. No
+unit_hits, impacts or blast records move. Default env: all three rows MOVED through the shared RNG (00BD2F10 is
+process-wide): USN21 one extra Jake death, USN04 deaths 62 -> 56, USNOS deaths 104 -> 114 and the failure 989.88 ->
+1004.88 s. USNOS fails at 969.89 s in the reference env both ways (HQ1, "Game Over"), so no WINS row changes.
+
+Flipped ON in include/bsp/plane_crash_sweep.hpp (cc13-cool9dc-c's queued follow-ups, the 5.0 AirField arm and the state-7 re-arm, are still open there).
+
+## 304. Formation pair: kDeadLeaderDirectorStateCopyBound and kWakeDecomposeSegmentProjectionBound (cc9-ships60, 2026-10-19)
+
+cc13's two formation switches (include/bsp/cc13_jm08_switches.hpp; main 7cc8b4df1 and earlier), each paired alone in
+the reference env on 633532638 (OFF = the tree build, ON = pair_export trees local\s60_dl_on / s60_wk_on): USN04 20000
+frames without orders, USN21 40000 with cc9-ships44\local\s46_u21_f.txt, JM08 72000 with
+config/win_orders/jm08_l65_j8_p2.txt.
+
+| switch | USN04 | USN21 | JM08 | first moved unit |
+|---|---|---|---|---|
+| kDeadLeaderDirectorStateCopyBound | 1 | 1 | 3 | JM08: Nevada (group leader) dies at 527.49 s; on that step San Francisco is in attackmove / navigate_astern on Headquarter 01 (ON) instead of follow / stopped (OFF). USN04 and USN21 have no leader death (`whole_leaves` only moves in the summary). |
+| kWakeDecomposeSegmentProjectionBound | 3 | 3 (18 summary lines, deaths identical) | 3 | from step 10: JM08 Helena throttle 0 -> 0.596 and USN04 Northampton-class01 0 -> 0.891, the stations ahead of the head and on samples no longer collapsing onto the leader, as the switch comment predicts. |
+
+Both moves start at the switch's mechanism, so both are flipped ON. jm08_l65_j8_p2 ends without a result in all three
+JM08 runs, so no WINS row moves here.
+
+## 305. USNOS c17-c21 (cc9-ships60, 2026-10-19)
+
+Orders: `local\s60_osmk.py <variant>` (on top of s59_osmk.py / s56_osmk.py) -> `local\s60_os_<variant>.txt`; summaries
+with `local\s59_sum.py`. All reference env unless marked jitter (20,3).
+
+| run | exe | result |
+|---|---|---|
+| `s60_b_c17` | 1846a2573 | failed 2871.68 s. Wave-2 planes sank TT5 (597.88 s) and TT4 (716 s). s55_os_r0.txt sends every transport north at frame 34000, the blockade (sighted 1722 s) sank TT6/TT3, and Haku2/Haku3 squadrons sank TT1/TT2 |
+| `s60_b_c18a/b` | 1846a2573 | TT6 held at DEST (a), plus Shimotsuke struck early (b): both failed 2426-2917 s, with Haku3/Haku4 squadrons sinking the last transports after luaReinTime |
+| `s60_b_c18c` | 1846a2573 | TT6 held at (16000, -9000) beside Enterprise's ENT_AWAY point: alive at 3750 s, Haku1-4 dead by 3711 s, HQ1/CB2/HQ2 neutral from 2025/2178/2517 s |
+| `s60_b_c19` | 913bac450 (pre-flip) | c18c, then TT6 sails c17's legs from frame 75000. It allied HQ2 at 6080 s, HQ1 at 6620 s and CB2 at 8320 s, but HQ2 was re-neutralized about every 20 s (party 2 -> 0, then "neutralized"), so the display peaked at "Bases captured: 2.00". Musashi died at 4299 s; Yamato never died, so ReinDead stayed false. No end in 210000 frames |
+| `s60_bj_c19` | 913bac450, jitter | TT6 sunk at its hideout at 2388.80 s by Airfield1_sqn72 |
+| `s60_p_c19` | 2835f8720 (seg67 ON) | TT6 sunk at 3456.45 s by Airfield1_sqn132 |
+| `s60_p(j)_c20` | 2835f8720 | c19 plus Enterprise/Midway 810 cover over TT6: worse. Midway's own gun sank TT6 at 2856.96 s (ref), Airfield3_sqn61 at 2201 s (jitter) |
+| `s60_p(j)_c21` | 2835f8720 | c20 plus 339 strikes on "Hangar, Large, 08 01" (Airfield1's only land-master section, 5500 health; airfield at (-3621.8, 3321.1)): every launch was refused with "no such slot" (decks busy). TT6 sunk 2192-2349 s by Airfield2/Airfield3 squadrons |
+
+What a winning plan needs on the current exe:
+- A transport that survives the airfields. us_osumi.lua runs luaAirfieldManager per JapAirfields member while
+  `not unit.Dead` and aims at live Mission.Troops, so Airfield1-3 hunt the reserve wherever it hides. Free deck slots
+  are needed for the hangar strikes: take squadrons off the early air_mass lists, rather than adding launches that
+  queue behind busy slots.
+- HQ2 must stay allied until all three are allied at one 5 s check. Find who re-neutralizes it after 6080 s in
+  `s60_b_c19` (the log is deleted; rerun c19 with the pre-flip exe local\s60_sb_off_bin to inspect).
+- Yamato must die (FinalTrgs), and so must the Funryu Bettys, which are added to FinalTrgs.
+Hold re-plans until cc13's Kaiten depth/contact and kamikaze direct-hit switches are paired, because each flip
+reshuffles the prefix.

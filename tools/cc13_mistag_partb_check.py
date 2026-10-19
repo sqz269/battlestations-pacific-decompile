@@ -35,14 +35,83 @@ MANUAL = {0x00D05840: "game"}
 
 def vt_class(vt):
     klass, game, lib = vt_class_slots(vt)
+    if klass != "game" and vt not in MANUAL and game_storers(vt):
+        klass = "base"                             # a base vtable that game classes stamp
     return MANUAL.get(vt, klass), game, lib
+
+
+def game_storers(vt):
+    """Game-named functions (BSP_, other than the BSP_Vt*_Destruct rows themselves) whose code
+    stores vt: a base vtable whose slots are only its deleting destructor and __purecall (rev2
+    nit: 00CF88F8 = 006CDD40, __purecall) takes its class from the classes that stamp it."""
+    out = []
+    for f in STORERS.get(vt, ()):
+        nm = (info.get(f, (None,) * 4)[2] or info.get(f, (None,) * 4)[0] or "")
+        if nm.startswith("BSP_") and not nm.startswith("BSP_Vt"):
+            out.append(f)
+    return out
+
+
+STARTS = sorted(info)
+STOPS = dict(c.execute("select func, stop from ranges"))
+STORERS = {}
+
+
+def stored_vtables():
+    """Every imm32 that code stores with `MOV r/m32, imm32` (C7 /0) and that points into the
+    vtable region, plus the index's vtables table: the walk stops at the next one (rev2 nit:
+    00CF88F8 has two slots; 00CF8900 is a separate vtable stored at 006CDD8F). Also fills
+    STORERS: vtable -> the functions whose code holds the store."""
+    import bisect
+    text = next(s for s in pe.sections if s.Name.rstrip(b"\0") == b".text")
+    lo, hi = text.VirtualAddress, text.VirtualAddress + text.Misc_VirtualSize
+    code, found = img[lo:hi], {a for (a,) in c.execute("select address from vtables")}
+    for i in range(len(code) - 6):
+        if code[i] != 0xC7 or (code[i + 1] >> 3) & 7:
+            continue
+        mod, rm, n = code[i + 1] >> 6, code[i + 1] & 7, 2
+        if mod == 3:
+            continue
+        if rm == 4:
+            n += 1
+            if mod == 0 and code[i + 2] & 7 == 5:
+                n += 4
+        n += {0: 4 if rm == 5 else 0, 1: 1, 2: 4}[mod]
+        if i + n + 4 <= len(code):
+            v = struct.unpack_from("<I", code, i + n)[0]
+            if 0xCE2000 <= v < 0xE00000:
+                found.add(v)
+                va = base + lo + i
+                f = STARTS[bisect.bisect_right(STARTS, va) - 1]
+                if va < STOPS.get(f, f):                   # inside the body, not an undefined chunk after it
+                    STORERS.setdefault(v, set()).add(f)
+    # rev4 B1: the register form, `MOV r32, imm32` (B8+r) then at once `MOV r/m32, r32` (89 /r)
+    # with the same register and a memory operand (0084A0B5 MOV EDI,00D0B6A0; MOV [ESP+3Ch],EDI).
+    # A store whose register is written further away is still missed.
+    for i in range(len(code) - 7):
+        r = code[i] - 0xB8
+        if not 0 <= r < 8 or code[i + 5] != 0x89:
+            continue
+        modrm = code[i + 6]
+        if modrm >> 6 == 3 or (modrm >> 3) & 7 != r:
+            continue
+        v = struct.unpack_from("<I", code, i + 1)[0]
+        if 0xCE2000 <= v < 0xE00000 and v in found:     # only vtables the C7 form or the index know
+            va = base + lo + i
+            f = STARTS[bisect.bisect_right(STARTS, va) - 1]
+            if va < STOPS.get(f, f):
+                STORERS.setdefault(v, set()).add(f)
+    return found
+
+
+STORED = stored_vtables()
 
 
 def vt_class_slots(vt):
     game = lib = 0
     for k in range(40):
         s = u32(vt + 4 * k)
-        if not (0x401000 <= s < 0xCE2000):
+        if not (0x401000 <= s < 0xCE2000) or (k and vt + 4 * k in STORED):
             break
         rec = info.get(s, (None,) * 4)
         nm = rec[2] or rec[0] or ""

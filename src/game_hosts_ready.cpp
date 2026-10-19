@@ -7,6 +7,7 @@
 #include "bsp/game_hosts_ready.hpp"
 #include "bsp/game_hosts_ai.hpp"
 
+#include "bsp/cc13_hitq_switches.hpp"   // packet cc13-hitq
 #include "bsp/entity_event_queues.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_lua.hpp"
@@ -96,23 +97,66 @@ private:
 // ---------------------------------------------------------------------------
 // Rows 6 and 14, 00926700: the deferred entity event drain
 // ---------------------------------------------------------------------------
+//
+// Packet cc13-hitq: with kHitDeferredDispatchCc13Bound the queue is the gunnery
+// host's (its three hit funnels push there, as 00926E80 does), and the units
+// host answers the subject: the victim's slot identity and its +5Eh/+5Fh. A
+// slot whose scene flags are not modelled reads them clear, so 0092673F cannot
+// refuse it and 009239A0's own gate in the gunnery host decides. OFF, both
+// pointers are null and the queue is empty, as before.
 class DeferredEventBinding final : public bsp::DeferredEntityEventHost {
 public:
-    explicit DeferredEventBinding(GameHostLog& log) : log_(log) {}
+    DeferredEventBinding(GameHostLog& log, GameUnitsHost* units, GameGunneryHost* gunnery)
+        : log_(log), units_(units), gunnery_(gunnery) {}
 
-    std::size_t deferred_queue_size() override { return 0; }
+    std::size_t deferred_queue_size() override {
+        if constexpr (bsp::kHitDeferredDispatchCc13Bound) {
+            if (gunnery_ != nullptr) return gunnery_->deferred_hit_count();   // [00F899C8]
+        }
+        return 0;
+    }
     bsp::DeferredEventBack deferred_queue_back() override {
+        if constexpr (bsp::kHitDeferredDispatchCc13Bound) {
+            if (gunnery_ != nullptr) {
+                // 00926714 / 0092675B: head[+4h], the node the producer linked last.
+                std::size_t victim = 0;
+                bsp::DeferredEventBack back;
+                back.node = const_cast<void*>(gunnery_->deferred_hit_back(victim));
+                back.record = back.node;     // node+8h: the host node is the record
+                back.direction = back.node;  // node+5Ch: and carries the direction
+                // 00926735: subject = record+0h, the hit entity.
+                if (back.node != nullptr && units_ != nullptr) {
+                    back.subject = const_cast<void*>(units_->unit_identity(victim));
+                    static_cast<void>(units_->unit_scene_node_flags(victim, back.subject_flags));
+                }
+                return back;
+            }
+        }
         log_.unimplemented("EntityEvents::deferred_queue_back", "00926717");
         return bsp::DeferredEventBack{};
     }
     void dispatch_hit_009239a0(void* subject, void* record, void* direction) override {
         static_cast<void>(subject);
-        static_cast<void>(record);
         static_cast<void>(direction);
+        if constexpr (bsp::kHitDeferredDispatchCc13Bound) {
+            if (gunnery_ != nullptr) {
+                gunnery_->dispatch_deferred_hit_009239a0(record);
+                log_.implemented("EntityEvents::dispatch_hit", "009239a0");
+                return;
+            }
+        }
+        static_cast<void>(record);
         log_.unimplemented("EntityEvents::dispatch_hit", "009239a0");
     }
     void deferred_queue_pop_back_and_destroy(const bsp::DeferredEventBack& back) override {
         static_cast<void>(back);
+        if constexpr (bsp::kHitDeferredDispatchCc13Bound) {
+            if (gunnery_ != nullptr) {
+                // 0092675B..009267A6: unlink head[+4h] as it is now, destroy, free.
+                gunnery_->pop_deferred_hit_back();
+                return;
+            }
+        }
         log_.unimplemented("EntityEvents::pop_deferred_event", "00926783");
     }
     void set_deferred_pending_flag_00e18684(bool pending) override {
@@ -122,6 +166,8 @@ public:
 
 private:
     GameHostLog& log_;
+    GameUnitsHost* units_;
+    GameGunneryHost* gunnery_;
 };
 
 // ---------------------------------------------------------------------------
@@ -529,7 +575,13 @@ void GameStepSubsystemsHost::run_fixed_step_callbacks_00874de0(float step) {
 }
 
 void GameStepSubsystemsHost::drain_deferred_entity_events_00926700() {
-    DeferredEventBinding binding(log_);
+    GameUnitsHost* units = nullptr;
+    GameGunneryHost* gunnery = nullptr;
+    if constexpr (bsp::kHitDeferredDispatchCc13Bound) {
+        units = units_;
+        gunnery = units_ != nullptr ? units_->gunnery() : nullptr;
+    }
+    DeferredEventBinding binding(log_, units, gunnery);
     bsp::drain_deferred_entity_events_00926700(binding);
     ++summary_.deferred_event_passes;
 }

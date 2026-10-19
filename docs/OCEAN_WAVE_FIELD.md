@@ -3797,3 +3797,18 @@ Faithful by mechanism (the listing's envelope and gates); flipped. No WINS row i
 Faithful by mechanism; flipped.
 
 The two flips were paired separately against the same OFF; the combined state is checked by the post-flip confirmation runs below.
+## 101. cc13's torpedo release timer (cc9-physics24, 2026-10-19)
+
+Exports of main c01bcb8fb: `local\p24n_off`, `local\p24h1` (kReleaseTimerReseedDrawBound), `local\p24h2` (that plus kReleaseTimerPredicate007BB110Bound). Rows BSM01 bsm01_l69_b1_d, USN01 u1i, USN21 s46_u21_f, BSM09 d1, both envs.
+
+**kReleaseTimerReseedDrawBound ON.** One stream-1 draw per timed fire, so every row moves. BSM09 still ends (ref 351.04 s both sides; default 444.02 -> 441.02 s); USN21 still completes (default 2911.72 -> 2926.73 s); BSM01 default drops 35 -> 49 (no end on either side, see below); USN01 u1i default LOSES its completion (OFF completed 490.00 s, ON no end, deaths 53 -> 30), RNG-coupled: the ref env has no end on either side. Faithful by mechanism; flipped.
+
+**kReleaseTimerPredicate007BB110Bound stays OFF (mechanism failure as built at c01bcb8fb).** The predicate refuses while the bay channel C is enabled and below 1.0 with a round in the bay, and in that build only 007BBBA0 itself opened the bay, so a bay-door torpedo plane never released: BSM09 ref timer_blocked_007BB110 = 378, timer_fires = 0, torpedo drops 3 -> 0 and the mission is LOST (Game Over at 1188.68 s); USN21 default blocked 169, drops 5 -> 0. BSM01 and USN01 are identical (no bay-door rounds). cc13 has since bound the image's bay opener (kReleaseBayOpenCc13Bound, main 14deb8770, OFF, static_asserted by the predicate); the predicate is to be re-paired over it.
+
+**BSM01.** bsm01_l69_b1_d has no end within 1200 s at 19dcd5aba and c01bcb8fb OFF, in both envs (MiniSub never dies); the WINS row won at ec0df436c. Sent to cc9-lua70.
+## 102. Three older OFF switches found live by cc13's stub census (cc9-physics24, 2026-10-19)
+
+Exports of main 677ee345f: `local\p24b_off`, `local\p24g1` (kFollowSightSearchBound), `local\p24g2` (kDiveHitClockBound), `local\p24g3` (kDiveBombMoveToOriginBound), each alone. Rows USN01 u1i (ref), BSM09 d1 and USN21 s46_u21_f (both envs). All three are in src/game_hosts_units.cpp and are flipped ON by mechanism; every win holds.
+- kFollowSightSearchBound (009C211D-009C232A): reached on BSM09 only (98 searches, 96 found, 283 held ticks); BSM09 ends earlier (ref 348.04 -> 327.04 s, def 462.01 -> 408.02 s). USN01, USN21 and BSM01 have 0 searches and are identical.
+- kDiveHitClockBound (009C4AA4 reads the carried approach+C4h): USN01 dive releases 7 -> 5, USN21 ref 11 -> 15 (same completion), BSM09 and USN21 default identical.
+- kDiveBombMoveToOriginBound (009C18C0 origin separation, 009F9E40 heading): USN01 7 -> 5, BSM09 ref ends 348.04 -> 327.04 s (dive releases 3 -> 6), default still ends 462.01 s; USN21 completes in both envs (default 2891.70 -> 2856.66 s).

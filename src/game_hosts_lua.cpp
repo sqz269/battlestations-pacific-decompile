@@ -73,6 +73,8 @@
 #include "bsp/vfs_locale_runtime.hpp"
 #include "bsp/vfs_provider_manager.hpp"
 #include "bsp/unit_kind_query.hpp"   // packet p16_torpedo_stock_property
+#include "bsp/cc13_lua_natives_wire.hpp"   // packet cc13-luawire
+#include "bsp/unit_weapons.hpp"            // packet cc13-luawire, 008BE7E0's class tests
 
 extern "C" {
 #include "lauxlib.h"
@@ -572,6 +574,18 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_set_submarine_depth_level.
     const bool sub_depth_row = kLuaSetSubmarineDepthLevelBound
         && dispatch_row.address == 0x00893f40u;
+    // Packet cc13-luawire (bsp/cc13_lua_natives_wire.hpp).
+    const bool has_fired_row = kLuaHasFiredBound && dispatch_row.address == 0x008be7e0u;
+    const bool water_load_row = kLuaAddWaterLoadBound && dispatch_row.address == 0x00893380u;
+    const bool break_ship_row = kLuaBreakShipBound && dispatch_row.address == 0x008914f0u;
+    const bool player_commands_row = kLuaUnitSetPlayerCommandsEnabledBound
+        && dispatch_row.address == 0x008a6c30u;
+    const bool visibility_row = kLuaSetVisibilityBound && dispatch_row.address == 0x008a13d0u;
+    const bool avoidance_row = kLuaSquadronEnableVehicleAvoidanceBound
+        && dispatch_row.address == 0x008a0000u;
+    const bool base_unsupported_row = kLuaSquadronSetBaseUnsupportedBound
+        && dispatch_row.address == 0x0089faf0u;
+    const bool cheat_turbo_row = kLuaSetCheatTurboBound && dispatch_row.address == 0x008a62a0u;
     // Packet cc9_lua_submarine_on_surface.
     const bool sub_surface_row = kLuaGetSubmarineOnSurfaceBound
         && dispatch_row.address == 0x008942c0u;
@@ -711,6 +725,7 @@ int binding_trampoline(lua_State* state) {
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || override_hp_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
+        || has_fired_row || water_load_row || break_ship_row || player_commands_row
         || sub_surface_row
         || force_gunner_row
         || slot_count_row || add_stock_row || shipyard_stock_row || device_reload_row
@@ -959,6 +974,37 @@ int binding_trampoline(lua_State* state) {
     }
     if (sub_depth_row) {
         if (!host->error_replay()) host->run_set_submarine_depth_level_00893f40(state, argc);
+        return 0;
+    }
+    if (has_fired_row && !host->error_replay()) {
+        return host->run_has_fired_008be7e0(state, argc);
+    }
+    if (water_load_row) {
+        if (!host->error_replay()) host->run_add_water_load_00893380(state, argc);
+        return 0;
+    }
+    if (break_ship_row) {
+        if (!host->error_replay()) host->run_break_ship_008914f0(state, argc);
+        return 0;
+    }
+    if (player_commands_row) {
+        if (!host->error_replay()) host->run_unit_set_player_commands_enabled_008a6c30(state, argc);
+        return 0;
+    }
+    if (visibility_row) {
+        if (!host->error_replay()) host->run_set_visibility_008a13d0(state, argc);
+        return 0;
+    }
+    if (avoidance_row) {
+        if (!host->error_replay()) host->run_squadron_enable_vehicle_avoidance_008a0000(state, argc);
+        return 0;
+    }
+    if (base_unsupported_row) {
+        if (!host->error_replay()) host->run_squadron_set_base_unsupported_0089faf0(state, argc);
+        return 0;
+    }
+    if (cheat_turbo_row) {
+        if (!host->error_replay()) host->run_set_cheat_turbo_008a62a0(state, argc);
         return 0;
     }
     if (class_changed_row && !host->error_replay()) {
@@ -1333,6 +1379,7 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
             row.max_rot_angle = number("MaxRotAngle");
             row.max_rot_angle_change_ratio = number("MaxRotAngleChangeRatio");
             row.length = number("Length");
+            row.death_efx_id = static_cast<int>(number("DeathEfx"));
             // The plane rate/accel keys, in the spellings 007D1F70's reader
             // uses (src/plane_class_fields.cpp:301-311). A ship row has none of
             // them and reads zero, which is what a caller should see.
@@ -7314,6 +7361,519 @@ int GameMissionLuaHost::run_set_submarine_depth_level_00893f40(lua_State* state,
     return 0;
 }
 
+namespace {
+
+// The twenty C strings at 00E08E58 (read from the PE), indexed by a projectile
+// class's sub-type [[shot+4]+8]: the hit listener's attackType and 006E8250's table.
+constexpr const char* kWeaponNameTable00e08e58[] = {
+    "NONE", "BULLET", "MACHINEGUN", "AAMACHINEGUN", "ARTILLERY",
+    "LIGHTARTILLERY", "MEDIUMARTILLERY", "HEAVYARTILLERY", "EXTRAPOLATED",
+    "BOMB", "TORPEDO", "DEPTHCHARGE", "DUMMYTARGET", "DUMMYKAMIKAZEPLANE",
+    "DUMMYSUBMARINE", "PARATROOPER", "FLAK", "KAMIKAZE", "ROCKET", "WATERMINE"};
+constexpr int kWeaponNameTableCount00e08e58 =
+    static_cast<int>(sizeof(kWeaponNameTable00e08e58) / sizeof(kWeaponNameTable00e08e58[0]));
+static_assert(kWeaponNameTableCount00e08e58 == 0x14, "006E8250 walks twenty entries");
+
+// 006E8250 (src/cc13_seg33a.cpp weapon_name_index_006e8250) over the table above,
+// whose entries are all non-null and non-empty: a null name matches nothing, any
+// other name by _stricmp (00BF7FBF, case-insensitive); no match answers 0, the same as
+// a match at index 0.
+int weapon_name_index_006e8250(const char* name) {
+    if (name == nullptr) return 0;
+    for (int i = 0; i < kWeaponNameTableCount00e08e58; ++i) {
+        if (::_stricmp(name, kWeaponNameTable00e08e58[i]) == 0) return i;
+    }
+    return 0;
+}
+
+}  // namespace
+
+// Packet cc13-luawire, under kLuaHasFiredBound. 008BE7E0 HasFired(unit, weaponName,
+// window), the sequence of bsp::lua_has_fired_008be7e0 (src/unit_weapons.cpp, checked
+// against the listing) over this process: vtable[5Ch](2) on argument 0; its director,
+// or for a plane (kind 0Fh) with none, the director of [unit+9D4h]; the stamp
+// [director+1D0h+index*4] for the name's 006E8250 index; true when the stamp is above
+// float(double([00F876A4]) - window) (FSUBR at 24-bit precision, FCOMIP/JA: a NaN
+// answers false). One boolean is pushed on every path (008BE9FA).
+// SUBSTITUTIONS (labelled):
+//  * the director is a units-host slot: the unit's own for a unit that is not kind 0Fh
+//    (00720180's two callers construct a ship's director and a squadron's command
+//    block), and for a plane its squadron's slot in the plane-squadron registry
+//    (+9D4h); a plane in no squadron answers false;
+//  * the stamp [director+1D0h+index*4] is the latest gun+474h (GameGunRow
+//    last_fire_seconds, written at each gun shot, 0072F830) over the guns of the
+//    director's units whose class sub-type (bullet_sub_type, classDesc+8h) is the
+//    index; with none, the 00720180 seed -1e10f. Not covered: a dual-purpose gun's
+//    second ammunition, whose shot carries its own class (it stamps the gun's
+//    sub-type here), and the rack drops 006E4D50 -> 006E55D2, which stamp too;
+//  * [00F876A4] is this host's world clock (spawn_world_clock_), summed from the same
+//    steps as the gunnery clock the gun+474h values are written with;
+//  * an argument 0 with no units-host slot answers false and is counted, where the
+//    image dereferences 00888AA0's answer without a test.
+int GameMissionLuaHost::run_has_fired_008be7e0(lua_State* state, int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.has_fired_calls;
+    GameUnitsHost* units = units_hooks_;
+    GameGunneryHost* gunnery = units != nullptr ? units->gunnery() : nullptr;
+    const int id = air_ops_entity_id(state);
+    bool fired = false;
+    constexpr std::size_t kNoDirector = static_cast<std::size_t>(-1);
+    // vtable[114h], or for a plane [unit+9D4h]'s.
+    const auto director_of = [&](std::size_t unit) -> std::size_t {
+        if (!units->unit_is_kind_of(unit, bsp::kClassTestPlane)) return unit;
+        const bsp::PlaneSquadronHostRecord* record =
+            bsp::plane_squadron_registry().find_by_member_unit(unit);
+        return record != nullptr && record->squadron_unit != bsp::kPlaneSquadronNoUnit
+            ? record->squadron_unit : kNoDirector;
+    };
+    if (gunnery == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.has_fired_unresolved;
+    } else {
+        const std::size_t index = static_cast<std::size_t>(id - 1);
+        const std::size_t director = units->unit_is_kind_of(index, bsp::kClassTestHasFiredEntity)
+            ? director_of(index) : kNoDirector;
+        if (director == kNoDirector) {
+            ++summary_.has_fired_no_director;
+        } else {
+            const int name_index = weapon_name_index_006e8250(::lua_tostring(state, 2));
+            float stamp = bsp::kDirectorFireStampUnset;
+            for (const GameGunRow& gun : gunnery->guns()) {
+                if (gun.last_fire_seconds < 0.0f || gun.bullet_sub_type != name_index) continue;
+                if (director_of(gun.unit_index) != director) continue;
+                if (gun.last_fire_seconds > stamp) stamp = gun.last_fire_seconds;
+            }
+            const float difference = static_cast<float>(
+                static_cast<double>(spawn_world_clock_)
+                - static_cast<double>(::lua_tonumber(state, 3)));
+            fired = stamp > difference;
+        }
+    }
+    if (fired) ++summary_.has_fired_true;
+    ::lua_pushboolean(state, fired ? 1 : 0);
+    log_.implemented("MissionLuaNative::HasFired", "008be7e0");
+    return 1;
+}
+
+// Packet cc13-luawire, under kLuaAddWaterLoadBound. 00893380 AddWaterLoad(unit, side,
+// amount), checked against the listing (src/cc13_left55_seg56a.cpp lua_add_water_load):
+// argument 1 an integer (00B66290); the hull-local point x = Width ([class+A4h]) *
+// (odd side: 1, even: -1) * 0.5, y = 0, z = Length ([class+A0h]) * (side < 2: 1,
+// side < 4: 0, else -1) * 0.5 (00893510..00893557); argument 2 stored as a float;
+// unless amount > 0 (FCOMIP/JBE, a NaN skips) and the unit is not kind 8, nothing.
+// count = trunc(clamp(float(amount / 10.0), 0, 63)) (008935A6..00893603); a non-zero
+// count builds message 90h (0080FF80) and routes it with flags 7 (0077C2A0). The
+// receiver 008221A7 -> 0074F440 takes the point through the pose at unit+CCh
+// (004142E0: ((x*m0 + y*m4) + z*m8) + m12 per lane) before 0074F090. Returns no value.
+// SUBSTITUTIONS (labelled):
+//  * the 90h receiver is GameUnitsHost::add_leak_0074f440 on the routing call itself
+//    (the host's same-tick message delivery), with the point already in the world by
+//    the units host's own pose, which add_leak_0074f440 expects;
+//  * Width and Length are the VehicleClass keys for the unit's type
+//    (vehicle_class_launch_keys, the keys 008206F0 reads off [unit+538h]);
+//  * an argument 0 with no units-host slot is counted and skipped.
+int GameMissionLuaHost::run_add_water_load_00893380(lua_State* state, int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.water_load_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.water_load_unresolved;
+        log_.notef("  AddWaterLoad 00893380: entity id %d has no units-host slot (packet "
+            "cc13-luawire)", id);
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    const GameUnitRow* row = units->unit_row(index);
+    const int side = static_cast<int>(::lua_tonumber(state, 2));
+    // 008934D2..008934E6 and 008934E9..00893506.
+    const int x_sign = (side % 2 != 0) ? 1 : -1;
+    const int z_sign = side < 2 ? 1 : (side < 4 ? 0 : -1);
+    const GameUnitsHost::VehicleClassLaunchKeys keys =
+        units->vehicle_class_launch_keys(row != nullptr ? row->type_id : -1);
+    const float local_x = static_cast<float>(
+        static_cast<double>(keys.width_00a4) * x_sign * 0.5);   // [00D7A280]
+    const float local_z = static_cast<float>(
+        static_cast<double>(keys.length_00a0) * z_sign * 0.5);
+    const float amount = static_cast<float>(::lua_tonumber(state, 3));   // 0089356F
+    if (!(amount > 0.0f) || units->unit_is_kind_of(index, 8)) {           // 0089358D, 008935A0
+        ++summary_.water_load_skipped;
+        log_.implemented("MissionLuaNative::AddWaterLoad", "00893380");
+        return 0;
+    }
+    float scaled = static_cast<float>(static_cast<double>(amount) / 10.0);   // [00CE3DC0]
+    if (0.0f > scaled) {
+        scaled = 0.0f;
+    } else if (static_cast<double>(scaled) > 63.0) {   // [00D099A0]
+        scaled = 63.0f;                                // [00D099A8]
+    }
+    const auto count = static_cast<std::int32_t>(static_cast<std::int64_t>(scaled));
+    bool applied = false;
+    if (count != 0) {
+        ++summary_.water_load_routed;
+        float right[3], up[3], forward[3], origin[3];
+        if (units->unit_pose(index, right, up, forward, origin)) {
+            float world[3];
+            for (int lane = 0; lane < 3; ++lane) {
+                const float across = local_x * right[lane];
+                const float along = local_z * forward[lane];
+                const float lift = 0.0f * up[lane];
+                world[lane] = ((across + lift) + along) + origin[lane];
+            }
+            applied = units->add_leak_0074f440(index, static_cast<std::uint32_t>(count), world);
+            if (applied) ++summary_.water_load_applied;
+        }
+    }
+    log_.notef("  AddWaterLoad 00893380: \"%s\" side=%d amount=%.1f count=%d local=(%.2f, 0, "
+        "%.2f) applied=%d (packet cc13-luawire)", row != nullptr ? row->name.c_str() : "?",
+        side, static_cast<double>(amount), count, static_cast<double>(local_x),
+        static_cast<double>(local_z), applied ? 1 : 0);
+    log_.implemented("MissionLuaNative::AddWaterLoad", "00893380");
+    return 0;
+}
+
+// Packet cc13-luawire, under kLuaBreakShipBound. 008914F0 BreakShip(unit), checked
+// against the listing (src/options_seg56_cc13.cpp lua_break_ship): argument 0 through
+// 00888AA0; [unit+1018h] (0080E490) must answer +370h (0092BEA0) and +374h (0092BE90)
+// non-zero; then 00814520: 004A5AA0 on [game+21D0h] when the class has breakup pieces
+// (0080F9F0), and the tail jump to 00935D30, whose 11 stream-1 draws, cleared halves
+// and 00926D90(1) kill are modelled here. Returns no value.
+// 00935D30's draws (docs in src/cc13_segmix.cpp): front sx, sy, sz = U(-1, 1),
+// a = U(0, 1.5), b = U(0, 1.5), d = U(10, 20); back sy, sz, a, b, d. Then, before the kill,
+// 0092A240 (BSP_TickableEntityAttachFires) once per piece, front (00936905, ECX = EDI)
+// then back (0093697F, ECX = ESI), unconditionally. With w = float([[piece+348h]+A0h]
+// x 0.2) (00CE6648, double) and n = trunc(clamp(float(w / 10.0), 1, 2)) (00CE3DC0,
+// 00D7A24C, 00CE3958), it draws 00BD2F10(1, -w, w) once per puff (0092A34A), only when
+// [[piece+348h]+55Ch] (the class `DeathEfx`, 00831BE8) and [[00E188A8]+19FCh] (the game
+// view node) are non-null. piece+348h is the owner unit's class [unit+538h] (0092B185).
+// Only the draws are taken; the offsets and fires they make are presentation. The
+// gunnery host's death 98h records the same eleven and likely lacks these puff draws
+// (a pre-existing record, not changed here).
+// SUBSTITUTIONS (labelled):
+//  * the halves are the units host's front and back nodes
+//    (ship_death_message_class().front_back) less this host's cleared mark, which a
+//    BreakShip here sets; a breakup the gunnery host's death 98h made is not seen, so a
+//    BreakShip on that wreck takes the draws again (its kill is a no-op on the dead
+//    unit); a non-ship answers no halves;
+//  * the draws are GameGunneryHost::death_mode_draw_00bd2f10(1, ...), the shared
+//    stream-1 generator in call order as in the image (keyed death_mode under the
+//    BSP_GUNNERY_RNG_STREAMS=1 measurement option, not ship_break_in_two);
+//  * 004A5AA0, the pieces, the re-parented guns, the effect and the shape masks are
+//    presentation and are recorded, not modelled;
+//  * 0092A240's class is the unit's VehicleClass row: a non-zero `DeathEfx` id stands
+//    for a resolved +55Ch handle, and the game view node is taken as present (it is
+//    set in any rendered mission);
+//  * the kill is the host's 00926D90 funnel with cause 1, as the Kill runner uses it;
+//  * an argument 0 with no units-host slot is counted and skipped.
+int GameMissionLuaHost::run_break_ship_008914f0(lua_State* state, int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.break_ship_calls;
+    GameUnitsHost* units = units_hooks_;
+    GameGunneryHost* gunnery = units != nullptr ? units->gunnery() : nullptr;
+    const int id = air_ops_entity_id(state);
+    if (gunnery == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.break_ship_unresolved;
+        log_.notef("  BreakShip 008914f0: entity id %d has no units-host slot (packet "
+            "cc13-luawire)", id);
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    const GameUnitRow* row = units->unit_row(index);
+    const bool halves = units->ship_death_message_class(index).front_back
+        && break_ship_cleared_.count(index) == 0;
+    if (!halves) {
+        ++summary_.break_ship_no_halves;
+    } else {
+        // 00814529..00814547: 004A5AA0 when 0080F9F0 answers (the class has breakup
+        // pieces); the registry is presentation and the test is not modelled.
+        log_.unimplemented("BreakShip::breakup_registry_004a5aa0", "004a5aa0");
+        for (int piece = 0; piece < 2; ++piece) {
+            for (int axis = piece == 0 ? 0 : 1; axis < 3; ++axis)
+                static_cast<void>(gunnery->death_mode_draw_00bd2f10(1, index, -1.0f, 1.0f));
+            static_cast<void>(gunnery->death_mode_draw_00bd2f10(1, index, 0.0f, 1.5f));
+            static_cast<void>(gunnery->death_mode_draw_00bd2f10(1, index, 0.0f, 1.5f));
+            static_cast<void>(gunnery->death_mode_draw_00bd2f10(1, index, 10.0f, 20.0f));
+        }
+        // 00936905 / 0093697F: 0092A240 on the front piece, then the back piece.
+        const GameVehicleClassRow cls = read_vehicle_class_row(row != nullptr ? row->type_id : -1);
+        if (cls.found && cls.death_efx_id != 0) {
+            const float w = static_cast<float>(static_cast<double>(cls.length) * 0.2);  // 0092A2AD
+            float puffs = static_cast<float>(static_cast<double>(w) / 10.0);           // 0092A2CB
+            if (1.0f > puffs) {
+                puffs = 1.0f;                                                       // 0092A2E7
+            } else if (puffs > 2.0f) {
+                puffs = 2.0f;                                                       // 0092A6BF
+            }
+            const int n = static_cast<int>(puffs);                                  // 0092A307 FISTP
+            for (int piece = 0; piece < 2; ++piece) {
+                for (int puff = 0; puff < n; ++puff) {
+                    static_cast<void>(gunnery->death_mode_draw_00bd2f10(1, index, -0.0f - w, w));
+                    ++summary_.break_ship_puff_draws;
+                }
+            }
+        }
+        log_.unimplemented("BreakShip::break_in_two_pieces_00935d30", "00935d30");
+        break_ship_cleared_.insert(index);   // 00935D30 step 8: +370h / +374h = 0
+        ++summary_.break_ship_broken;
+        // 00935D30 step 8: 00926D90(1), which returns when +5Fh is already set.
+        if (!gunnery->unit_dead(index)) {
+            if constexpr (kKillListenerHarmOnlyBound) lua_kill_cause_[index] = 1;
+            gunnery->kill_unit_00926d90(index, 1);
+            if constexpr (kLuaProximityTriggersBound) target_gone_00925c40(index);
+        }
+    }
+    log_.notef("  BreakShip 008914f0: \"%s\" halves=%d (packet cc13-luawire)",
+        row != nullptr ? row->name.c_str() : "?", halves ? 1 : 0);
+    log_.implemented("MissionLuaNative::BreakShip", "008914f0");
+    return 0;
+}
+
+// Packet cc13-luawire, under kLuaUnitSetPlayerCommandsEnabledBound. 008A6C30
+// UnitSetPlayerCommandsEnabled(unit, mask), checked against the listing
+// (src/cc13_left55_seg56a.cpp lua_unit_set_player_commands_enabled): argument 0 through
+// 00888AA0, its director vtable[114h] (fetched before the integer), argument 1 as an
+// integer, then 0071DD30(director, mask), which builds message 5Ah sub-kind 2 and routes
+// it with flags 7 (0077C2A0) to [director+34h]; 0071C1E0's arm 2 stores the mask at
+// director+1CCh. Returns no value. No RNG.
+// Readers in the image: 0071C060 (BSP_Unit_DirectorFlagsAllow; its 16 callers are the
+// HUD unit pick screen 00527260 / 00526720 and the order screen 005F9840 / 005FB080)
+// and the network snapshot 00721280; 0071BD30 and the getter 00720E10 have no
+// references. No host code reads the store, so ON changes nothing but the record line
+// and this host's map.
+// SUBSTITUTIONS (labelled):
+//  * the director is a units-host slot: the unit itself, or for a plane (kind 0Fh) its
+//    registry squadron slot. Unlike HasFired's runner there is no kind-02h gate first,
+//    because 008A6C30 has no class test: the entity goes straight to vtable[114h];
+//  * the message is applied at the call, not on its routed delivery;
+//  * a unit with no slot or no director is counted and skipped, where the image would
+//    send through a null director.
+int GameMissionLuaHost::run_unit_set_player_commands_enabled_008a6c30(lua_State* state,
+    int argument_count) {
+    ++summary_.player_commands_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const std::int32_t mask = argument_count >= 2
+        ? static_cast<std::int32_t>(::lua_tointeger(state, 2)) : 0;
+    std::size_t director = static_cast<std::size_t>(-1);
+    if (units != nullptr && id > 0 && static_cast<std::size_t>(id) <= units->count()) {
+        const std::size_t index = static_cast<std::size_t>(id - 1);
+        director = index;
+        if (units->unit_is_kind_of(index, bsp::kClassTestPlane)) {
+            const bsp::PlaneSquadronHostRecord* record =
+                bsp::plane_squadron_registry().find_by_member_unit(index);
+            director = record != nullptr && record->squadron_unit != bsp::kPlaneSquadronNoUnit
+                ? record->squadron_unit : static_cast<std::size_t>(-1);
+        }
+    }
+    if (director == static_cast<std::size_t>(-1)) {
+        ++summary_.player_commands_unresolved;
+        log_.notef("  UnitSetPlayerCommandsEnabled 008a6c30: entity id %d has no director "
+            "slot (packet cc13-luawire)", id);
+        return 0;
+    }
+    director_player_commands_1cc_[director] = mask;   // 0071C1E0 arm 2: director+1CCh
+    ++summary_.player_commands_stored;
+    const GameUnitRow* row = units->unit_row(director);
+    log_.notef("  UnitSetPlayerCommandsEnabled 008a6c30: director \"%s\" +1CCh = 0x%X "
+        "(packet cc13-luawire)", row != nullptr ? row->name.c_str() : "?",
+        static_cast<unsigned>(mask));
+    log_.implemented("MissionLuaNative::UnitSetPlayerCommandsEnabled", "008a6c30");
+    return 0;
+}
+
+namespace {
+
+// Part 7b. The registry record whose fused slot is `index`: the host's stand-in
+// for the image's IsKindOf(18h) (PlaneSquadronGen) test on the entity.
+const bsp::PlaneSquadronHostRecord* luawire_squadron_record(std::size_t index) {
+    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+        if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == index) return &r;
+    }
+    return nullptr;
+}
+
+}  // namespace
+
+// Packet cc13-luawire 7b, under kLuaSetVisibilityBound. 008A13D0 SetVisibility(entity,
+// visible), checked against the listing (src/engine_seg56_cc13.cpp lua_set_visibility):
+// argument 1 as a boolean, argument 0 through 00888D20. A squadron (vtable[5Ch](18h)):
+// for i below [+3CCh], member = i <= 4 ? [+3D0h+4i] : null, then 00951F40(visible) on
+// it (008A154D). Otherwise a kind-5 entity (any unit): 00951F40 on itself (008A1578).
+// 00951F40 attaches (1) or detaches (0) part +4A4h's spatial node, which is the units
+// host's plane_hit_node_detached. Returns no value. No RNG.
+// SUBSTITUTIONS (labelled):
+//  * the squadron test is a registry record whose fused slot is the entity, and its
+//    members are the record's member_units that are still active, standing in for the
+//    compacted +3D0h array (as SquadronSetSpeed's runner);
+//  * GUARDED, not in the image: a sixth or later member is null there and 00951F40 is
+//    called on it with no null test, which crashes. Here it is counted and logged and
+//    nothing is called;
+//  * an entity with no slot, or neither a squadron nor a unit, is counted unresolved.
+int GameMissionLuaHost::run_set_visibility_008a13d0(lua_State* state, int argument_count) {
+    ++summary_.visibility_calls;
+    const bool visible = argument_count >= 2 && ::lua_toboolean(state, 2) != 0;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.visibility_unresolved;
+        log_.notef("  SetVisibility 008a13d0: entity id %d has no units-host slot (packet "
+            "cc13-luawire 7b)", id);
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    const GameUnitRow* row = units->unit_row(index);
+    const char* name = row != nullptr ? row->name.c_str() : "?";
+    std::size_t planes = 0;
+    if (const bsp::PlaneSquadronHostRecord* record = luawire_squadron_record(index)) {
+        std::size_t live = 0;
+        for (std::size_t member : record->member_units) {
+            if (member == bsp::kPlaneSquadronNoUnit || !units->unit_active(member)) continue;
+            if (live++ >= 5) {
+                // 008A1530: i > 4 gives a null member and 00951F40 dereferences it.
+                ++summary_.visibility_null_members;
+                log_.notef("  SetVisibility 008a13d0: \"%s\" member %zu is past +3D0h's five "
+                    "slots; the image calls 00951F40 on null here (crash), GUARDED and "
+                    "skipped (packet cc13-luawire 7b)", name, live - 1);
+                continue;
+            }
+            if (units->set_plane_visible_00951f40(member, visible)) ++planes;
+        }
+    } else if (units->unit_is_kind_of(index, 0x05)) {
+        if (units->set_plane_visible_00951f40(index, visible)) ++planes;
+    } else {
+        ++summary_.visibility_unresolved;
+        log_.notef("  SetVisibility 008a13d0: \"%s\" is neither a squadron nor a unit "
+            "(packet cc13-luawire 7b)", name);
+        return 0;
+    }
+    summary_.visibility_planes += planes;
+    log_.notef("  SetVisibility 008a13d0: \"%s\" visible=%d planes=%zu (packet cc13-luawire "
+        "7b)", name, visible ? 1 : 0, planes);
+    log_.implemented("MissionLuaNative::SetVisibility", "008a13d0");
+    return 0;
+}
+
+// Packet cc13-luawire 7b, under kLuaSquadronEnableVehicleAvoidanceBound. 008A0000
+// SquadronEnableVehicleAvoidance(entity, on), checked against the listing
+// (src/options_seg56_cc13.cpp lua_squadron_enable_vehicle_avoidance): argument 0 through
+// 00888AA0, argument 1 as a boolean, then [+3A4h] = on ? v | 2 : v & 0x000000FD. No class
+// test, no result, no RNG. The reader is the pilot gate 009A1959-009A1969 (the units
+// host's kLuaSquadronEnableVehicleAvoidanceBound arm). The second gate 009A1974-009A1987
+// (CL = 1) also tests the squadron +2FCh and +3A4h bit 0, which the host does not read
+// yet; a sibling native that writes bit 0 would need it.
+// SUBSTITUTIONS (labelled): the mask is kept per units-host slot (the image writes the
+// entity whatever its class; only a squadron's is ever read); an entity with no slot is
+// counted unresolved. The reader takes squadron_slot_of(plane), which falls back to the
+// plane's own slot where the image's null +2FCh passes the test; a plane with no
+// squadron is unreachable in the census (every BSM09 caller passes a squadron).
+int GameMissionLuaHost::run_squadron_enable_vehicle_avoidance_008a0000(lua_State* state,
+    int argument_count) {
+    ++summary_.avoidance_calls;
+    const bool on = argument_count >= 2 && ::lua_toboolean(state, 2) != 0;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const bool stored = units != nullptr && id > 0
+        && static_cast<std::size_t>(id) <= units->count()
+        && units->set_squadron_vehicle_avoidance_008a0000(static_cast<std::size_t>(id - 1), on);
+    if (!stored) {
+        ++summary_.avoidance_unresolved;
+        log_.notef("  SquadronEnableVehicleAvoidance 008a0000: entity id %d has no units-host "
+            "slot (packet cc13-luawire 7b)", id);
+        return 0;
+    }
+    const GameUnitRow* row = units->unit_row(static_cast<std::size_t>(id - 1));
+    log_.notef("  SquadronEnableVehicleAvoidance 008a0000: \"%s\" on=%d (packet cc13-luawire "
+        "7b)", row != nullptr ? row->name.c_str() : "?", on ? 1 : 0);
+    log_.implemented("MissionLuaNative::SquadronEnableVehicleAvoidance", "008a0000");
+    return 0;
+}
+
+// Packet cc13-luawire 7b, under kLuaSquadronSetBaseUnsupportedBound. 0089FAF0
+// SquadronSetBaseUnsupported(squadron, base), checked against the listing
+// (src/cc13_left55_seg56a.cpp lua_squadron_set_base_unsupported): both arguments through
+// 00888AA0, the block is base+72Ch for class 45h, else base+1188h (the inlined 006BCD20
+// without its null case), then 006CA730 pushes the squadron onto the block's std::list
+// at +B4h. No result, no RNG. The readers are the units host's 006C4790 sites (007F1748,
+// 0099A404, 009B3537).
+// SUBSTITUTIONS (labelled): the list is a set of (deck name, squadron record name) pairs
+// in the units host, so a repeated push is one entry (006C4790 answers any match either
+// way); a squadron with no registry record or a base with no slot is counted unresolved,
+// where the image would push whatever 00888AA0 returned.
+int GameMissionLuaHost::run_squadron_set_base_unsupported_0089faf0(lua_State* state,
+    int argument_count) {
+    ++summary_.base_unsupported_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int squadron_id = air_ops_entity_id(state);
+    const int base_id = argument_count >= 2 ? listener_entity_id_at(state, 2) : 0;
+    const bool valid = units != nullptr && squadron_id > 0 && base_id > 0
+        && static_cast<std::size_t>(squadron_id) <= units->count()
+        && static_cast<std::size_t>(base_id) <= units->count();
+    if (!valid || !units->add_base_unsupported_006ca730(static_cast<std::size_t>(squadron_id - 1),
+            static_cast<std::size_t>(base_id - 1))) {
+        ++summary_.base_unsupported_unresolved;
+        log_.notef("  SquadronSetBaseUnsupported 0089faf0: squadron id %d base id %d has no "
+            "squadron record or base slot (packet cc13-luawire 7b)", squadron_id, base_id);
+        return 0;
+    }
+    ++summary_.base_unsupported_added;
+    const GameUnitRow* sq = units->unit_row(static_cast<std::size_t>(squadron_id - 1));
+    const GameUnitRow* base = units->unit_row(static_cast<std::size_t>(base_id - 1));
+    log_.notef("  SquadronSetBaseUnsupported 0089faf0: \"%s\" on \"%s\"'s +B4h list (packet "
+        "cc13-luawire 7b)", sq != nullptr ? sq->name.c_str() : "?",
+        base != nullptr ? base->name.c_str() : "?");
+    log_.implemented("MissionLuaNative::SquadronSetBaseUnsupported", "0089faf0");
+    return 0;
+}
+
+// Packet cc13-luawire 7b, under kLuaSetCheatTurboBound. 008A62A0 SetCheatTurbo(entity,
+// value), checked against the listing (src/cc13_left55_seg56a.cpp lua_set_cheat_turbo):
+// argument 0, then argument 1 as a number stored as float (FSTP 008A63D5). A squadron
+// (18h) writes +340h on members 0..4 and stops at the first null slot, without reading
+// the member count (008A6406-008A641F); otherwise a kind-5 entity gets +340h itself.
+// No result, no RNG. The readers are the units host's kLuaSetCheatTurboBound sites
+// (0099D479's dtScale, 1/dtScale and dt/dtScale; 009FBB20). The dt slot [ESP+6Ch] is
+// also read at 0099DAC4 and 0099DBBF; those are taken as covered by tin.pending, not
+// traced. ASSUMPTION, labelled: no constructor writes +340h, so the host's 0 takes the
+// plane allocation as zeroed.
+// SUBSTITUTIONS (labelled): the squadron test and members as SetVisibility's runner
+// (active member_units, at most five); an entity with no slot, or neither a squadron nor
+// a unit, is counted unresolved.
+int GameMissionLuaHost::run_set_cheat_turbo_008a62a0(lua_State* state, int argument_count) {
+    ++summary_.cheat_turbo_calls;
+    const float value = argument_count >= 2 ? static_cast<float>(::lua_tonumber(state, 2)) : 0.0f;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.cheat_turbo_unresolved;
+        log_.notef("  SetCheatTurbo 008a62a0: entity id %d has no units-host slot (packet "
+            "cc13-luawire 7b)", id);
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    const GameUnitRow* row = units->unit_row(index);
+    const char* name = row != nullptr ? row->name.c_str() : "?";
+    std::size_t planes = 0;
+    if (const bsp::PlaneSquadronHostRecord* record = luawire_squadron_record(index)) {
+        std::size_t live = 0;
+        for (std::size_t member : record->member_units) {
+            if (member == bsp::kPlaneSquadronNoUnit || !units->unit_active(member)) continue;
+            if (live++ >= 5) break;  // 008A641F: slots 0..4 only
+            if (units->set_cheat_turbo_340(member, value)) ++planes;
+        }
+    } else if (units->unit_is_kind_of(index, 0x05)) {
+        if (units->set_cheat_turbo_340(index, value)) ++planes;
+    } else {
+        ++summary_.cheat_turbo_unresolved;
+        log_.notef("  SetCheatTurbo 008a62a0: \"%s\" is neither a squadron nor a unit (packet "
+            "cc13-luawire 7b)", name);
+        return 0;
+    }
+    summary_.cheat_turbo_planes += planes;
+    log_.notef("  SetCheatTurbo 008a62a0: \"%s\" +340h=%g planes=%zu (packet cc13-luawire "
+        "7b)", name, static_cast<double>(value), planes);
+    log_.implemented("MissionLuaNative::SetCheatTurbo", "008a62a0");
+    return 0;
+}
+
 // Packet cc9_set_air_base_slot_count. 008963E0 SetAirBaseSlotCount(entity, n): argument 0
 // through 00888AA0, BSP_AirOps_GetBlock, argument 1 as an integer, then 006C7E20(n) on the
 // block. 006C7E20 appends default records while [block+50h] < n (006C7E73 JAE, loop back
@@ -8718,15 +9278,9 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
                 if (!push_resolved_entity_by_id(state_, boxed_attacker)) lua_pushnil(state_);
                 // The attack-type name table 00E08E58 (char*[], read from the PE),
                 // indexed by the ordnance kind [[src+4]+8], the event's ordnance_kind.
-                static constexpr const char* kAttackTypeNames[] = {
-                    "NONE", "BULLET", "MACHINEGUN", "AAMACHINEGUN", "ARTILLERY",
-                    "LIGHTARTILLERY", "MEDIUMARTILLERY", "HEAVYARTILLERY", "EXTRAPOLATED",
-                    "BOMB", "TORPEDO", "DEPTHCHARGE", "DUMMYTARGET", "DUMMYKAMIKAZEPLANE",
-                    "DUMMYSUBMARINE", "PARATROOPER", "FLAK", "KAMIKAZE", "ROCKET", "WATERMINE"};
                 const int kind = hit.ordnance_kind;
-                ::lua_pushstring(state_, kind >= 0 && kind < static_cast<int>(
-                    sizeof(kAttackTypeNames) / sizeof(kAttackTypeNames[0]))
-                    ? kAttackTypeNames[kind] : "");
+                ::lua_pushstring(state_, kind >= 0 && kind < kWeaponNameTableCount00e08e58
+                    ? kWeaponNameTable00e08e58[kind] : "");
                 ::lua_pushnumber(state_, static_cast<lua_Number>(hit.attacker_player_index));
                 ::lua_pushnumber(state_, static_cast<lua_Number>(hit.damage));
                 ::lua_pushnumber(state_, static_cast<lua_Number>(hit.fire_caused));
@@ -11246,6 +11800,55 @@ void GameMissionLuaHost::report_mission_script_state() {
         "unresolved=%llu (00893F40 -> 008528B0, packet cc9_set_submarine_depth_level)",
         kLuaSetSubmarineDepthLevelBound ? 1 : 0, summary_.sub_depth_calls,
         summary_.sub_depth_stored, summary_.sub_depth_unresolved);
+    // Packet cc13-luawire: printed only when bound, so an OFF log is unchanged.
+    if constexpr (kLuaHasFiredBound) {
+        log_.notef("summary mission script has fired calls=%llu true=%llu unresolved=%llu "
+            "no_director=%llu (008BE7E0, packet cc13-luawire)", summary_.has_fired_calls,
+            summary_.has_fired_true, summary_.has_fired_unresolved,
+            summary_.has_fired_no_director);
+    }
+    if constexpr (kLuaAddWaterLoadBound) {
+        log_.notef("summary mission script add water load calls=%llu routed=%llu applied=%llu "
+            "skipped=%llu unresolved=%llu (00893380 -> 0074F440, packet cc13-luawire)",
+            summary_.water_load_calls, summary_.water_load_routed, summary_.water_load_applied,
+            summary_.water_load_skipped, summary_.water_load_unresolved);
+    }
+    if constexpr (kLuaBreakShipBound) {
+        log_.notef("summary mission script break ship calls=%llu broken=%llu no_halves=%llu "
+            "unresolved=%llu puff_draws=%llu (008914F0 -> 00814520 -> 00935D30 -> 0092A240, "
+            "packet cc13-luawire)", summary_.break_ship_calls, summary_.break_ship_broken,
+            summary_.break_ship_no_halves, summary_.break_ship_unresolved,
+            summary_.break_ship_puff_draws);
+    }
+    if constexpr (kLuaUnitSetPlayerCommandsEnabledBound) {
+        log_.notef("summary mission script player commands calls=%llu stored=%llu "
+            "unresolved=%llu (008A6C30 -> 0071DD30 -> director+1CCh, no host reader, packet "
+            "cc13-luawire)", summary_.player_commands_calls, summary_.player_commands_stored,
+            summary_.player_commands_unresolved);
+    }
+    if constexpr (kLuaSetVisibilityBound) {
+        log_.notef("summary mission script set visibility calls=%llu planes=%llu "
+            "null_members_guarded=%llu unresolved=%llu (008A13D0 -> 00951F40, packet "
+            "cc13-luawire 7b)", summary_.visibility_calls, summary_.visibility_planes,
+            summary_.visibility_null_members, summary_.visibility_unresolved);
+    }
+    if constexpr (kLuaSquadronEnableVehicleAvoidanceBound) {
+        log_.notef("summary mission script vehicle avoidance calls=%llu unresolved=%llu "
+            "(008A0000 -> +3A4h bit 2 -> 009A1959, packet cc13-luawire 7b)",
+            summary_.avoidance_calls, summary_.avoidance_unresolved);
+    }
+    if constexpr (kLuaSquadronSetBaseUnsupportedBound) {
+        log_.notef("summary mission script base unsupported calls=%llu added=%llu "
+            "unresolved=%llu (0089FAF0 -> 006CA730 -> 006C4790, packet cc13-luawire 7b)",
+            summary_.base_unsupported_calls, summary_.base_unsupported_added,
+            summary_.base_unsupported_unresolved);
+    }
+    if constexpr (kLuaSetCheatTurboBound) {
+        log_.notef("summary mission script cheat turbo calls=%llu planes=%llu unresolved=%llu "
+            "(008A62A0 -> +340h -> 0099D479 / 009FBB20, packet cc13-luawire 7b)",
+            summary_.cheat_turbo_calls, summary_.cheat_turbo_planes,
+            summary_.cheat_turbo_unresolved);
+    }
     log_.notef("summary mission script submarine on surface bound=%d calls=%llu true=%llu "
         "unseeded=%llu unresolved=%llu (008942C0 -> 00852820, packet "
         "cc9_lua_submarine_on_surface)", kLuaGetSubmarineOnSurfaceBound ? 1 : 0,

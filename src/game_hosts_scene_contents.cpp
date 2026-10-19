@@ -745,19 +745,17 @@ public:
     // sets isnil and the self links itself.
     Object hidden_record_map_buy_head_node_00468260(Object) override { return buy_head_node(0x1C, 0x18); }
     Object int_set_buy_head_node_004682b0(Object) override { return buy_head_node(0x14, 0x10); }
-    // 0046AC50 through native_scene_integer_set_insert.cpp. Its result is
-    // 0Ch (owner, node, inserted byte); 0046F160 passes an 8-byte local, so
-    // the result lands here and its first two words are copied out.
+    // 0046AC50 through native_scene_integer_set_insert.cpp. Its 0Ch result
+    // (owner, node, inserted byte) is written straight to out_pair, which
+    // 0046F160 now sizes as the image does (cc13-seg6fix).
     void int_set_insert_0046ac50(Object set, Object out_pair, const std::int32_t* key) override {
-        std::uint32_t result[3] = {0, 0, 0};
-        void* parameters[2] = {result, const_cast<std::int32_t*>(key)};
+        void* parameters[2] = {out_pair, const_cast<std::int32_t*>(key)};
         std::uint32_t flag[1] = {0};
         std::uint32_t predecessor[2] = {0, 0};
         std::uint32_t link[4] = {0, 0, 0, 0};
         std::uint32_t node[5] = {0, 0, 0, 0, 0};
         const bsp::NativeSceneIntegerSetInsertFrame frame{flag, predecessor, link, node};
         bsp::insert_native_scene_integer_set_key_0046ac50(set, parameters, frame);
-        std::memcpy(out_pair, result, 8);
     }
 
     void crt_memmove_s_00bf67a7(void*, std::uint32_t, const void*, std::uint32_t) override { not_reached("crt_memmove_s_00bf67a7"); }

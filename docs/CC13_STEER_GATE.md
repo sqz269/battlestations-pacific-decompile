@@ -144,7 +144,9 @@ decides the fire request and whether 007B96D0 asks for a re-aim; the re-aim (`00
 `df_fine_aim_009f9fc0`, which returns before the re-aim when the gate fails, and the gate's
 cone is the one this packet changes. So with both ON the re-aim follows the commanded-direction
 gate, as the image does; with the envelope OFF the re-aim is not modelled and only the steer
-changes. Neither switch reads the other's state; all four combinations build.
+changes. Neither switch reads the other's state. Built with the full `./scripts/build.ps1`, all
+with `kDogfightFireEnvelopeBound` ON (its value on main): store/gate OFF/OFF, ON/OFF
+(prediction mode) and ON/ON. No build was made with the envelope switch OFF.
 
 ## 5. Expected ON effect (no runs made)
 

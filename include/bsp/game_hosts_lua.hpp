@@ -803,7 +803,7 @@ inline constexpr bool kLuaAddUntouchableUnitBound = true;   // ON on identity (L
 // boolean. LABELLED: an entity with no units-host slot is skipped (Remove) or answers
 // false (Is), as AddUntouchableUnit already does. False: both rows stay unimplemented
 // records, so a removal never happens and IsUnitUntouchable reads nil.
-inline constexpr bool kLuaUntouchableClearBound = false;
+inline constexpr bool kLuaUntouchableClearBound = true;  // ON: lua70 pair, verdict FLIP (cc9, 2026-10-19)
 // The +1D4h byte of units-host index `index`'s AI object, as AddUntouchableUnit
 // left it. False for every unit while kLuaAddUntouchableUnitBound is false.
 // Inert: nothing in this process reads it until the gunnery lane binds 00862440.
@@ -856,6 +856,9 @@ struct GameVehicleClassRow {
     float max_rot_angle{0.0f};               // class+4F8h
     float max_rot_angle_change_ratio{0.0f};  // class+4FCh
     float length{0.0f};                      // class+A0h, written by 00960230
+    // class+55Ch, the `DeathEfx` handle 00831BE8 stores (00870CD0 resolves the id);
+    // the id is kept, 0 when the key is absent (packet cc13-luawire, 0092A240).
+    int death_efx_id{0};
     float width{0.0f};                       // class+A4h, Width at00960368
     // class+A8h, the `Height` key 00960230 writes beside `Length`. Milestone 2r
     // reads it because 00826866 places the keel sample point at half the hull
@@ -1176,6 +1179,36 @@ struct GameMissionLuaSummary {
     unsigned long long sub_depth_calls{0};
     unsigned long long sub_depth_stored{0};
     unsigned long long sub_depth_unresolved{0};
+    // Packet cc13-luawire (bsp/cc13_lua_natives_wire.hpp).
+    unsigned long long has_fired_calls{0};
+    unsigned long long has_fired_true{0};
+    unsigned long long has_fired_unresolved{0};
+    unsigned long long has_fired_no_director{0};
+    unsigned long long water_load_calls{0};
+    unsigned long long water_load_routed{0};
+    unsigned long long water_load_applied{0};
+    unsigned long long water_load_skipped{0};
+    unsigned long long water_load_unresolved{0};
+    unsigned long long break_ship_calls{0};
+    unsigned long long break_ship_broken{0};
+    unsigned long long break_ship_no_halves{0};
+    unsigned long long break_ship_unresolved{0};
+    unsigned long long break_ship_puff_draws{0};   // 0092A240's 00BD2F10 draws
+    unsigned long long player_commands_calls{0};      // 008A6C30, packet cc13-luawire
+    unsigned long long player_commands_stored{0};
+    unsigned long long player_commands_unresolved{0};
+    unsigned long long visibility_calls{0};           // 008A13D0, packet cc13-luawire 7b
+    unsigned long long visibility_planes{0};
+    unsigned long long visibility_null_members{0};    // guarded: the image crashes
+    unsigned long long visibility_unresolved{0};
+    unsigned long long avoidance_calls{0};            // 008A0000
+    unsigned long long avoidance_unresolved{0};
+    unsigned long long base_unsupported_calls{0};     // 0089FAF0
+    unsigned long long base_unsupported_added{0};
+    unsigned long long base_unsupported_unresolved{0};
+    unsigned long long cheat_turbo_calls{0};          // 008A62A0
+    unsigned long long cheat_turbo_planes{0};
+    unsigned long long cheat_turbo_unresolved{0};
     unsigned long long sub_surface_calls{0};
     unsigned long long sub_surface_true{0};
     unsigned long long sub_surface_unseeded{0};
@@ -1850,6 +1883,18 @@ public:
     int run_is_class_changed_008cc4b0(lua_State* state, int argument_count);
     // Packet cc9_set_submarine_depth_level, under kLuaSetSubmarineDepthLevelBound.
     int run_set_submarine_depth_level_00893f40(lua_State* state, int argument_count);
+    // Packet cc13-luawire, under kLuaHasFiredBound / kLuaAddWaterLoadBound /
+    // kLuaBreakShipBound (bsp/cc13_lua_natives_wire.hpp).
+    int run_has_fired_008be7e0(lua_State* state, int argument_count);
+    int run_add_water_load_00893380(lua_State* state, int argument_count);
+    int run_break_ship_008914f0(lua_State* state, int argument_count);
+    int run_unit_set_player_commands_enabled_008a6c30(lua_State* state, int argument_count);
+    // Part 7b, under kLuaSetVisibilityBound / kLuaSquadronEnableVehicleAvoidanceBound /
+    // kLuaSquadronSetBaseUnsupportedBound / kLuaSetCheatTurboBound.
+    int run_set_visibility_008a13d0(lua_State* state, int argument_count);
+    int run_squadron_enable_vehicle_avoidance_008a0000(lua_State* state, int argument_count);
+    int run_squadron_set_base_unsupported_0089faf0(lua_State* state, int argument_count);
+    int run_set_cheat_turbo_008a62a0(lua_State* state, int argument_count);
     // Packet cc9_lua_submarine_on_surface, under kLuaGetSubmarineOnSurfaceBound.
     int run_get_submarine_on_surface_008942c0(lua_State* state, int argument_count);
     // Packet cc13_natives1, under kLuaTrulyDeadBound.
@@ -2280,6 +2325,14 @@ private:
     // compares against manager+0Ch, accumulated from the mission frame's step
     // because this process has no world clock object of its own.
     float spawn_world_clock_{0.0f};
+    // Packet cc13-luawire (kLuaBreakShipBound): units whose controller halves
+    // +370h / +374h a BreakShip's 00935D30 cleared.
+    std::set<std::size_t> break_ship_cleared_;
+    // Packet cc13-luawire: director+1CCh, the player-command mask 0071C1E0 stores from
+    // UnitSetPlayerCommandsEnabled's message 5Ah, keyed by the director's units-host
+    // slot. No host code reads it: the image's readers are the HUD (0071C060's callers)
+    // and the network snapshot 00721280.
+    std::map<std::size_t, std::int32_t> director_player_commands_1cc_;
     float spawn_attempt_delay_{0.0f};
     bool spawn_attempt_delay_read_{false};
     unsigned spawn_requeue_logged_{0};

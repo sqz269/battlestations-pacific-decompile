@@ -47,10 +47,10 @@ extern const VtResetDestructor kVtResetDestructors[kVtResetDestructorCount];
 // Runs the row at `address` on `object` ([object] = its vtable); false when `address` is not a row.
 bool vt_reset_destruct(std::uint32_t address, void* object) noexcept;
 
-// Part C: four scalar deleting destructors of the same inlined shape whose vtable store has no
-// recorded out-of-line copy (rebuilt under the rule; the other 99 are bound). Bytes checked by
+// Part C: five scalar deleting destructors of the same inlined shape whose vtable store has no
+// recorded out-of-line copy (rebuilt under the rule; the other 99 are bound; 007D79F0 added by rev2). Bytes checked by
 // tools/cc13_mistag_partc_check.py; __thiscall(ECX = object, flags), RET 4, EAX = object.
-inline constexpr std::size_t kVtResetDeletingDestructorCount = 4;
+inline constexpr std::size_t kVtResetDeletingDestructorCount = 5;
 extern const VtResetDestructor kVtResetDeletingDestructors[kVtResetDeletingDestructorCount];
 
 class MistagHost {
@@ -236,9 +236,10 @@ public:
     // 0041DD40, __thiscall(ECX = string header {length, data}; length, 1), RET 8.
     virtual void native_string_resize_0041dd40(void* header, std::uint32_t length) = 0;
     // 0086AA10 / 0086A280, __thiscall(ECX = component+28h; n), RET 4: the {data, count, capacity}
-    // vector of element pointers.
-    virtual void dword_vector_resize_zero_fill_0086aa10(void* vector, std::uint32_t size) = 0;
-    virtual void dword_vector_reserve_0086a280(void* vector, std::uint32_t capacity) = 0;
+    // vector of element pointers. n is signed: the image compares it with JL/JGE against the
+    // signed count and capacity (cc13_gamerows.hpp bodies).
+    virtual void dword_vector_resize_zero_fill_0086aa10(void* vector, std::int32_t size) = 0;
+    virtual void dword_vector_reserve_0086a280(void* vector, std::int32_t capacity) = 0;
 };
 // 0086C240, __thiscall(ECX = component; row), RET 4: BSP_EffectFlare_ReadLua. Slot 14h of the
 // Flare component vtable 00D0D614 (docs/GAMEPLAY_EFFECT_COMPONENTS.md). Each ElementTable entry

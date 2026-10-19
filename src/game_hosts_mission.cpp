@@ -521,6 +521,7 @@ struct GameMissionHost::Impl {
     std::string order_command_target;
     std::string order_unit;   // milestone 2n, --order-unit <name>
     std::string helm_orders_path;   // packet cc9_scripted_helm_orders
+    std::int32_t chosen_difficulty_override{-1};   // packet cc13-torpranges, --difficulty
     // Milestone 2o, --ai-drive <name>=<throttle>,<rudder>.
     std::string ai_drive_unit;
     float ai_drive_throttle{0.0f};
@@ -1159,7 +1160,12 @@ public:
     // profile would put its own SelectedDifficulty (profile+60h) here instead,
     // and the briefing's play action 0051B7B0 would overwrite it with the
     // player's pick. Switch off: the old 0.
-    std::int32_t chosen_difficulty() override { return kSkillLevelBound ? 1 : 0; }
+    // Packet cc13-torpranges: --difficulty N stands in for a loaded profile's
+    // SelectedDifficulty (this installation's saved profile holds 0).
+    std::int32_t chosen_difficulty() override {
+        if (owner_.chosen_difficulty_override >= 0) return owner_.chosen_difficulty_override;
+        return kSkillLevelBound ? 1 : 0;
+    }
     // game+6ACh, stored at 0058BF37 (the record's own value) or 0058BF58 (the
     // player's). GetDifficulty's reader in the script host reads it back.
     void set_effective_difficulty(std::int32_t value) override {
@@ -1662,6 +1668,10 @@ void GameMissionHost::set_order_unit(std::string unit) {
 
 void GameMissionHost::set_helm_orders(std::string path) {
     impl_->helm_orders_path = std::move(path);
+}
+
+void GameMissionHost::set_chosen_difficulty(std::int32_t value) {
+    impl_->chosen_difficulty_override = value;
 }
 
 void GameMissionHost::set_ai_drive(std::string unit, float throttle, float rudder) {
