@@ -23,15 +23,25 @@ The bytes, at 009A790B-009A794B: `ECX = [approach+18h]` (the pilot plan). The ar
 - `FSTP [ECX+2B4h]` at `009A7947`, which stores `(approach+D4h - [approach+14h]+20Ch) + target vtable[38h]()`.
 
 The host wrapper writes `plane_desired_speed_2b4` and `plane_air_brake_mode_2d8 = 1`. It never writes
-`plane_trg_speed_corr_off_2b0`, so the field keeps the dogfight follow's 0 (`009C1C0D`).
+`plane_trg_speed_corr_off_2b0`, so the field keeps the 0 from the per-think reseed:
+`BSP_PilotBot_SeedPlanSlots` (`0099B450`) stores `DL` at `0099B53C`, with `EDX` zeroed at `0099B46E` and not
+written again before the store. `BSP_PilotBot_Update` calls it at `009998D2`, before the task arm, on every think.
 `plane_trg_speed_corr_off_2b0` is the gate on the speed-correction raise in the pilot think,
 `0099D924` (the host reader is under `kPilotSpeedCorrDivisorBound`, which is ON). With +2B0h = 0 and
-+2D8h = 1, the host raises `plane_speed_corr_2b8` on every aim tick. The image's aim does not.
++2D8h = 1, the host raises `plane_speed_corr_2b8` on every not-head-on aim think. The image's aim does not.
 
-A byte scan of `C6 /0 [reg+2B0h], imm8` over `00996000-009FF000` found 35 stores, and `009A7932` is among them.
-Within the dogfight states (`009A7000-009AB000`), only `009A7932` writes the byte. It writes 1, and no dogfight
-state writes 0. So the 1 persists through maneuver and avoid until the follow (`009C1C0D`) or
-another task's state writes 0. The host's dogfight states do not write the field either, which matches.
+The scan (corrected; an earlier version matched only `C6 /0 imm8` and missed register-sourced stores) covers
+every `MOV byte [reg+2B0h], imm8|reg8` in `.text`. It finds 56 stores, 44 of them in `00996000-009FF000`:
+35 immediate and 9 register-sourced, with `0099B53C` among the latter. Within the dogfight states
+(`009A7000-009AB000`), only `009A7932` writes the byte, and it writes 1. The reseed at `0099B53C` clears it
+at the top of the next think, so the 1 lasts only for the think in which the not-head-on aim arm ran. It
+does not persist through maneuver or avoid. The host reseeds in the same order: `kPilotPlanReseedBound` (ON)
+runs at `src/game_hosts_units.cpp` :37351, then the dogfight arm runs (store at :25298), then the reader at
+:38309. These line numbers are as of 597dd029b. So with the
+switch ON the host matches.
+
+Predicted effect with ON: on not-head-on aim thinks only, the speed-correction raise is skipped and
+`plane_speed_corr_2b8` keeps decaying. Every other think is unchanged.
 
 Switch `bsp::kSeg67bDogfightAimSpeedCorrOffBound` (OFF). When it is true, the not-head-on aim arm also stores
 `unit_.plane_trg_speed_corr_off_2b0 = 1`. It does no lookup, so there is no container lifetime to trace,
