@@ -176,3 +176,29 @@ it. The remaining choices belong to the lead: keep ON's `C0000409`, or decide
 whether `NativeTextureLoadOwners`' empty-at-exit invariant should allow
 residues the Original itself leaves. No suppression, forced release or early
 purge was added.
+
+**Guard relaxed (approved option b).** `~NativeTextureLoadOwners` now accepts
+one exact exception and nothing else. Every condition must hold:
+
+- the single retained entry is the row that `B316C0` recorded as skipped;
+- that row is `models/textures/error.dds`;
+- it is profile `D61948` at refcount 1;
+- `B316C0` has run during this shutdown.
+
+The fact that `B316C0` ran is a flag set on the reconstructed `B316C0` path
+(`NativeRendererCacheSkippedRelease`), not a name-only match. When the
+exception applies, the destructor logs one line ending
+`original leaks this (B31BD0 acquire_new=1, B316C0 skips release)`. It then
+unbinds that Source companion from the canonical owner registry, whose
+destructor requires the registry to be empty. The native texture keeps its
+refcount 1, as in the Original. Any other residue still calls
+`std::terminate`. The exception is bound only on the ON
+(`BSP_NATIVE_MISSION_SHIP=1`) branch.
+
+Results:
+
+- ON USN04 run: exit 0, with the line logged once.
+- Separate ON run with `--screenshot-mission-frame 180`: exit 0. Its frame 180
+  shows the textured, camouflaged Fletcher.
+- OFF same-tree pair against an OFF baseline built from `1d9a55a21`:
+  `pair_diff` exit 0 (1349 native rows and 668 summaries identical).
