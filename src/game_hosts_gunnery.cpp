@@ -2976,6 +2976,15 @@ struct GameGunneryHost::Impl {
     void seat_artillery_lead_009578c3(const GameGunRow& gun, const UnitState& state,
         std::size_t unit, std::size_t target, const float right[3], const float up[3],
         const float forward[3], const float origin[3], float aim[3]);
+    // kPlayerGunSeatTargetInterceptBound: 79h messages with a resolved target,
+    // the group 1/2 guns aimed at its 00901C20 intercept, and how many of those
+    // took the unit's velocity ([unit+4A0h]).
+    unsigned long long seat_target_messages{0}, seat_target_unresolved{0},
+        seat_target_aims{0}, seat_target_adds_speed{0};
+    bool unit_adds_speed_04a0(std::size_t unit);
+    void seat_target_intercept_00957c29(const GameGunRow& gun, const UnitState& state,
+        std::size_t unit, std::size_t target, const float right[3], const float up[3],
+        const float forward[3], const float origin[3], float aim[3]);
     unsigned long long seat_artillery_turns{0};     // pending pairs a gun tick applied
     unsigned long long seat_artillery_refusals{0};  // of those, 0085ABA0 refused
     // Packet cc9_unit_death_route.
@@ -13820,7 +13829,23 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
             }
         }
     }
-    if (m.has_target_36) record("PlayerGunSeat::target_intercept", 0x00957ca6u);
+    // 00959C91..00959CA8: [ESP+24h] = has_target ? 00521E30(+38h) : 0.
+    // SUBSTITUTION: the HUD side sends unit index + 1 as the +174h id
+    // (game_hosts_hud.cpp target_id_174), so the resolve is its inverse.
+    std::size_t seat_target = 0;                // 1-based; 0 = none
+    if (m.has_target_36) {
+        if constexpr (kPlayerGunSeatTargetInterceptBound) {
+            ++seat_target_messages;
+            const std::size_t id = m.target_38;
+            if (id != 0 && id - 1 < units.count() && id - 1 != unit) {
+                seat_target = id;
+            } else {
+                ++seat_target_unresolved;
+            }
+        } else {
+            record("PlayerGunSeat::target_intercept", 0x00957ca6u);
+        }
+    }
     std::int32_t role2_holder = 8;              // [unit+1B4h]
     if (!units.unit_current_role_slot(unit, 2, role2_holder)) role2_holder = 8;
     float right[3], up[3], forward[3], origin[3];
@@ -13847,7 +13872,10 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
         if (s2 < floor2) s2 = floor2;
         const float s = std::sqrt(s2);
         float aim[3] = {c[0] + s * dir[0], c[1] + s * dir[1], c[2] + s * dir[2]};
-        if (seat_has_hit) {                                       // 00957DB8..00957DD2
+        if (seat_target != 0) {                                   // 00957C29..00957CAB
+            seat_target_intercept_00957c29(gun, state, unit, seat_target - 1, right, up,
+                                           forward, origin, aim);
+        } else if (seat_has_hit) {                                // 00957DB8..00957DD2
             aim[0] = seat_hit[0];
             aim[1] = seat_hit[1];
             aim[2] = seat_hit[2];
@@ -14111,6 +14139,66 @@ void GameGunneryHost::Impl::seat_artillery_lead_009578c3(const GameGunRow& gun,
     for (int i = 0; i < 3; ++i) aim[i] = delta[i] + aim[i];
     ++seat_lead_other;
     done("PlayerGunSeat::artillery_hit_lead_other", 0x00957a00u);
+}
+
+// 00953B80: [unit+4A0h] = 0, then OR [[dev+3F4h]+95h] ("AddsSpeed") over the
+// unit's kind-20h guns of Function 0, 1, 5 and 6.
+bool GameGunneryHost::Impl::unit_adds_speed_04a0(std::size_t unit) {
+    for (const GameGunRow& gun : guns) {
+        if (gun.unit_index != unit) continue;
+        if (!(gun.category == 0 || gun.category == 1 || gun.category == 5
+              || gun.category == 6)) {
+            continue;
+        }
+        auto found = adds_speed_by_device.find(gun.device_class);
+        if (found == adds_speed_by_device.end()) {
+            found = adds_speed_by_device.emplace(gun.device_class,
+                lua.read_device_class_bool(gun.device_class, "AddsSpeed", false)).first;
+        }
+        if (found->second) return true;
+    }
+    return false;
+}
+
+// Packet g53_seat_target_intercept: 00957BD0's target branch, 00957C29..
+// 00957CAB, for the resolved `target`. `aim` receives the intercept point;
+// 00957CAB JMPs to the epilogue 009580C2, past the range sphere and the sea cut.
+void GameGunneryHost::Impl::seat_target_intercept_00957c29(const GameGunRow& gun,
+    const UnitState& state, std::size_t unit, std::size_t target, const float right[3],
+    const float up[3], const float forward[3], const float origin[3], float aim[3]) {
+    // 00957C38..00957C8C: the shooter at gun+FCh, the speed [[gun+3F8h]+34h]+50h.
+    float muzzle[3];
+    gun_muzzle_point(gun, state, right, up, forward, origin, muzzle);
+    const float speed = gun.muzzle_speed;
+    // 00957C2F: [unit+4A0h] set takes the unit's vtable[34h], else 00F87574.
+    float shooter_vel[3] = {0.0f, 0.0f, 0.0f};
+    if (unit_adds_speed_04a0(unit)) {
+        unit_velocity(unit, shooter_vel);
+        ++seat_target_adds_speed;
+    }
+    float tr[3], tu[3], tf[3], target_pos[3];
+    unit_pose(target, tr, tu, tf, target_pos);
+    // 00901C20 as seat_artillery_lead_009578c3 builds it. LABELLED: below the
+    // 2.0 speed floor (00CE3958) the target position.
+    for (int i = 0; i < 3; ++i) aim[i] = target_pos[i];
+    ++seat_target_aims;
+    if (!(speed >= 2.0f)) return;
+    float v[3];
+    if (!(kAaTargetWorldVelocityBound && units.unit_linear_velocity(target, v))) {
+        const float s = units.unit_forward_speed_0092d730(target);
+        for (int i = 0; i < 3; ++i) v[i] = tf[i] * s;
+    }
+    aa_turn_average_00901c20(target, v);
+    float rel_v[3];
+    for (int i = 0; i < 3; ++i) rel_v[i] = v[i] - shooter_vel[i];
+    if (units.unit_is_kind_of(target, bsp::kUnitGunneryKindShipBase)) rel_v[1] = 0.0f;
+    const float span[3] = {target_pos[0] - muzzle[0], target_pos[1] - muzzle[1],
+                           target_pos[2] - muzzle[2]};
+    const float dist = length3(span);
+    float t = intercept_time_00901c20(span, rel_v, speed, dist);
+    t = aa_time_add_fix + t + (dist / 1000.0f) * aa_time_add_mul;
+    for (int i = 0; i < 3; ++i) aim[i] = target_pos[i] + rel_v[i] * t;
+    done("PlayerGunSeat::target_intercept", 0x00957ca6u);
 }
 
 // Packet cc9_player_gun_seat_artillery: the group 3 arm of 00959C20
@@ -16603,6 +16691,11 @@ void GameGunneryHost::report() {
                 host.seat_lead_ship, host.seat_lead_turned, host.seat_lead_other,
                 host.seat_lead_adds_speed);
         }
+        host.log.notef("summary mission gunnery seat target intercept messages=%llu "
+            "unresolved=%llu aims=%llu adds_speed=%llu bound=%d (00957C29 / 00901C20, "
+            "packet g53_seat_target_intercept)",
+            host.seat_target_messages, host.seat_target_unresolved, host.seat_target_aims,
+            host.seat_target_adds_speed, kPlayerGunSeatTargetInterceptBound ? 1 : 0);
         host.log.notef("summary mission gunnery death route calls=%llu reported=%llu "
             "child_triggers=%llu loss_report_calls=%llu loss_reports side0=%llu side1=%llu "
             "limbo_pages=%llu bound=%d (00959450, packet cc9_unit_death_route)",

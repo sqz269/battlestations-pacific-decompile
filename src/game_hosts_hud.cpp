@@ -1239,21 +1239,54 @@ public:
         owner_.record("HudWeaponGroupScreen::gunner_range", 0x00548ed0u);
         return 0.0f;
     }
-    bool target_virtual_10c(std::size_t) override {
-        owner_.record("HudWeaponGroupScreen::target_virtual_10c", 0x00548923u);
-        return false;
+    bool target_virtual_10c(std::size_t target) override {
+        if constexpr (kPlayerGunSeatTargetInterceptBound) {
+            // vtable[10Ch]: 0074E1A0 on the plane classes, the
+            // cached speed [unit+B1Ch] (007B8E60) above 3.0 (00CE3854,
+            // FCOMIP/JBE); 0042BB40 (false) on every ship, submarine and the
+            // dummy kamikaze. The cache is the magnitude 007D8020 stores of the
+            // flight controller's world velocity.
+            if (target == 0 || owner_.units == nullptr
+                || !owner_.units->unit_is_kind_of(target - 1, bsp::kUnitGunneryKindPlaneBase)) {
+                return false;
+            }
+            float v[3];
+            if (!owner_.units->unit_plane_world_velocity(target - 1, v)) return false;
+            const float speed = std::sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+            owner_.done("HudWeaponGroupScreen::target_virtual_10c", 0x0074e1a0u);
+            return speed > 3.0f;
+        } else {
+            owner_.record("HudWeaponGroupScreen::target_virtual_10c", 0x00548923u);
+            return false;
+        }
     }
     int relation_00803ce0(std::size_t, std::size_t) override {
         owner_.record("HudWeaponGroupScreen::relation", 0x00803ce0u);
         return 0;
     }
-    bool same_side_54(std::size_t, std::size_t) override {
-        owner_.record("HudWeaponGroupScreen::same_side", 0x00548919u);
-        return true;
+    bool same_side_54(std::size_t target, std::size_t first) override {
+        if constexpr (kPlayerGunSeatTargetInterceptBound) {
+            // 00548913..0054891F: [target+54h] against the screen unit's +54h.
+            if (target == 0 || first == 0 || owner_.units == nullptr) return true;
+            owner_.done("HudWeaponGroupScreen::same_side", 0x00548919u);
+            return owner_.units->unit_side_0054(target - 1)
+                == owner_.units->unit_side_0054(first - 1);
+        } else {
+            owner_.record("HudWeaponGroupScreen::same_side", 0x00548919u);
+            return true;
+        }
     }
-    std::uint16_t target_id_174(std::size_t) override {
-        owner_.record("HudWeaponGroupScreen::target_id", 0x00548934u);
-        return 0;
+    std::uint16_t target_id_174(std::size_t target) override {
+        if constexpr (kPlayerGunSeatTargetInterceptBound) {
+            // 00548934 MOVZX [target+174h]. SUBSTITUTION: the host has no
+            // entity handle table, so the id is the 1-based unit index that
+            // apply_gun_aim_message resolves in place of 00521E30.
+            owner_.done("HudWeaponGroupScreen::target_id", 0x00548934u);
+            return static_cast<std::uint16_t>(target);
+        } else {
+            owner_.record("HudWeaponGroupScreen::target_id", 0x00548934u);
+            return 0;
+        }
     }
     void target_debug_00548942(std::size_t) override {
         owner_.record("HudWeaponGroupScreen::target_debug", 0x00548942u);
