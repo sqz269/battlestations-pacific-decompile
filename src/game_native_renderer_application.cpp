@@ -23,6 +23,22 @@
 #include "bsp/native_render_resource_container_removal.hpp"
 #include "bsp/native_render_context.hpp"
 #include "bsp/camera_plane_initialization.hpp"
+#include "bsp/native_camera_reference.hpp"
+#include "bsp/native_camera_cache_getters.hpp"
+#include "bsp/system_fog_owner.hpp"
+#include "bsp/terrain_particles_cc13.hpp"
+#include "bsp/native_diagnostic_sink_lifetime.hpp"
+#include "bsp/native_render_resource_initializer.hpp"
+#include "bsp/native_weak_owner.hpp"
+#include "bsp/native_renderer_format_check.hpp"
+#include "bsp/native_system_constant_gather.hpp"
+#include "bsp/native_particle_preparation.hpp"
+#include "bsp/game_native_mission_model.hpp"
+#include "bsp/game_native_mission_command.hpp"
+#include "bsp/native_gui_scene_storage.hpp"
+#include "bsp/native_node_root_propagation.hpp"
+#include "bsp/native_node_scene_attachment.hpp"
+#include <cmath>
 #include "bsp/game_hosts.hpp"
 #include <tlhelp32.h>
 #include "bsp/game_hosts_singletons.hpp"
@@ -125,7 +141,15 @@ void* __cdecl raw_allocate(U size) { return singleton_lifetime_allocate({Singlet
 void __cdecl raw_free(void* p) noexcept { singleton_lifetime_free(p); }
 struct CanonicalProfiles {
     GameNativeReadOnlyData& data;
-    const U* operator()(U address) const { return static_cast<const U*>(data.data_at(address,80*4)); }
+    const U* operator()(U address) const {
+        try { return static_cast<const U*>(data.data_at(address,80*4)); }
+        catch (const std::exception& error) {
+            char message[256];
+            std::snprintf(message, sizeof message, "native profile/data %08x +%u: %s",
+                address, 80u*4u, error.what());
+            throw std::runtime_error(message);
+        }
+    }
 };
 NativeVertexDeclarationLoadingContext application_declaration_loading(
     GameNativeReadOnlyData& data,NativeStringStorage& strings) {
@@ -144,6 +168,8 @@ NativeVertexDeclarationLoadingContext application_declaration_loading(
 #include "game_native_renderer_textures.inc"
 #include "game_native_renderer_grid.inc"
 #include "game_native_renderer_camera.inc"
+#include "game_native_mission_camera.inc"
+#include "game_native_mission_foliage.inc"
 #include "game_native_renderer_shaders.inc"
 #include "game_native_renderer_descriptors.inc"
 #include "game_native_renderer_compiler_owners.inc"
@@ -151,6 +177,9 @@ NativeVertexDeclarationLoadingContext application_declaration_loading(
 #include "game_native_renderer_resources.inc"
 #include "game_native_renderer_shadow.inc"
 #include "game_native_renderer_frame.inc"
+#include "game_native_mission_command.inc"
+#include "game_native_mission_scene.inc"
+#include "game_native_mission_ship.inc"
 
 // ---- Harness only (packet cc9_tooling_renderer_init). 00B2AEB0 ignores CreateDevice's HRESULT,
 // as the image does, and then reads the device (00B24460, 00B26170). When CreateDevice fails
@@ -392,6 +421,7 @@ struct GameNativeRendererApplication::Impl {
     // Plain metadata drops before its borrowed providers; no Native owner lives
     // here. Appending preserves every earlier Impl member offset.
     std::unique_ptr<NativeInstanceGeneratorContext> instance_generator_context;
+    std::unique_ptr<MissionShipGraph> mission_ship;
 
     Impl(GameHostLog& log_,GameSingletonHost& host,GameVfsHost& files,
         GameNativeLuaServices& services,GameNativeReadOnlyData& data,
@@ -734,6 +764,47 @@ const NativeInstanceGeneratorContext& GameNativeRendererApplication::borrow_inst
         "instance generator metadata cannot be rebound to another domain");
     return context;
 }
+NativeInstanceGeneratorContext& GameNativeRendererApplication::mission_instance_generator_context() {
+    // The validator borrows, checks and retains the one application context;
+    // this separately named entry admits the explicit mission model caller.
+    (void)borrow_instance_generator_context();
+    return *impl_->instance_generator_context;
+}
+bool GameNativeRendererApplication::mission_ship_requested() noexcept {
+    char text[2]{};
+    return GetEnvironmentVariableA("BSP_NATIVE_MISSION_SHIP", text, sizeof text) == 1 && text[0] == '1';
+}
+void GameNativeRendererApplication::configure_mission_ship(GameInputRuntime& input,
+    const NativeFrameClockPublicationContext& clock, NativeRenderResourceInitArguments args) {
+    if (!mission_ship_requested()) return;
+    auto& p = *impl_;
+    check(p.phase == Impl::Phase::ready && p.borrowed_platform_publication && p.frames && !p.mission_ship,
+        "mission ship requires the ready borrowed-platform renderer and one configuration");
+    p.mission_ship = std::make_unique<MissionShipGraph>(p.log, p.graph, p.devices,
+        p.cameras, *p.frames, p.constructor, p.resources, p.texture_loading,
+        p.declaration_cache, p.section_layouts, p.raw, p.vfs, p.mesh_field_vfs,
+        p.singletons, p.owners, p.lua_services.binding(), p.shaders.cache, p.renderer,
+        p.entry_cache_publication, input, clock, args);
+    p.log.note("native mission ship configured: BSP_NATIVE_MISSION_SHIP=1 (OFF by default)");
+}
+bool GameNativeRendererApplication::mission_ship_enabled() const noexcept {
+    return impl_->mission_ship != nullptr;
+}
+void GameNativeRendererApplication::prepare_mission_ship() {
+    auto& p = *impl_;
+    check(p.phase == Impl::Phase::ready && p.mission_ship,
+        "mission ship preparation requires the configured ready renderer");
+    if (p.mission_ship->stage == MissionShipGraph::Stage::ready) return;
+    try { p.mission_ship->prepare(*this, p.device_generation); }
+    catch (...) { p.phase = Impl::Phase::failed; throw; }
+}
+void GameNativeRendererApplication::draw_mission_ship(std::uint64_t mission_frame, float simulated_seconds) {
+    auto& p = *impl_;
+    check(p.phase == Impl::Phase::rendering && p.mission_ship && mission_frame,
+        "mission ship requires the existing native BeginScene and a mission frame");
+    try { p.mission_ship->draw(mission_frame, simulated_seconds, p.device_generation); }
+    catch (...) { p.phase = Impl::Phase::failed; throw; }
+}
 void GameNativeRendererApplication::construct() {
     auto& p=*impl_;check(p.phase==Impl::Phase::prepared,"renderer constructor is once-only");
     p.phase=Impl::Phase::constructing;
@@ -844,6 +915,7 @@ NativeRendererPresentObservation GameNativeRendererApplication::end_frame() {
         NativeLuaServiceBindings::Activation activation(p.lua_services.binding());
         p.frames->present={};
         end_native_renderer_frame_default_00b2f4a0(p.renderer,&p.frames->end);
+        if (p.mission_ship) p.mission_ship->complete_frame();
         p.phase=Impl::Phase::ready;
         p.log.notef("native frame complete: frame=%lu queue=%p commands=%ld entry_used=%lu present=%d hr=%08lx clear_request=%u inhibit=%lu unavailable=%u",
             static_cast<unsigned long>(get<U>(p.renderer,0x14)),p.frames->queue,
@@ -852,7 +924,10 @@ NativeRendererPresentObservation GameNativeRendererApplication::end_frame() {
             static_cast<unsigned long>(p.frames->present.result),p.frames->clear_request,
             static_cast<unsigned long>(get<U>(p.renderer,0x1d90)),get<std::uint8_t>(p.renderer,0x1d8a));
         return p.frames->present;
-    } catch(...) {p.phase=Impl::Phase::failed;throw;}
+    } catch(...) {
+        if (p.mission_ship) p.mission_ship->observe_failed_frame();
+        p.phase=Impl::Phase::failed;throw;
+    }
 }
 IDirect3D9& GameNativeRendererApplication::api() const {check(impl_->retained_api!=nullptr,"native renderer API unavailable");return *impl_->retained_api;}
 IDirect3DDevice9* GameNativeRendererApplication::device() const noexcept {return impl_->retained_device;}
@@ -869,11 +944,14 @@ bool GameNativeRendererApplication::requires_process_retention() const noexcept 
     return (phase!=Impl::Phase::prepared && phase!=Impl::Phase::ready && phase!=Impl::Phase::drained)
         || !impl_->shaders.quiescent() || !impl_->shadow.quiescent()
         || impl_->section_layout_acquisition_pending()
-        || impl_->section_layouts.has_live_companions();
+        || (impl_->mission_ship && impl_->mission_ship->requires_process_retention())
+        || (impl_->section_layouts.has_live_companions() &&
+            !(impl_->mission_ship && impl_->mission_ship->owns_live_layouts()));
 }
 void GameNativeRendererApplication::drain_singletons() {
     check(!requires_process_retention(),"incomplete native renderer cannot be drained");
     NativeLuaServiceBindings::Activation activation(impl_->lua_services.binding());
+    if (impl_->mission_ship) impl_->mission_ship->retire_before_native_drain();
     if(impl_->phase==Impl::Phase::ready)impl_->phase=Impl::Phase::draining;
     try { impl_->singletons.shutdown();after_native_drain(); }
     catch(...) {impl_->phase=Impl::Phase::failed;throw;}
@@ -892,6 +970,10 @@ void GameNativeRendererApplication::after_native_drain() {
     check(p.compiler_owners.quiescent(),"material compiler owners survived native drain");
     check(WaitForSingleObject(p.observed_worker,0)==WAIT_OBJECT_0,"native renderer worker did not join");
     p.phase=Impl::Phase::drained;
+    // Effect metadata rechecks this method. Publish completed native drain
+    // before entering its closure so that reentry observes that same fact.
+    if (p.mission_ship) p.mission_ship->after_native_drain();
     p.log.note("native renderer after raw drain: owner=null lua=null definitions=null system=null entry_cache=null queue=null worker=joined");
 }
 } // namespace bsp::game
+#include "game_native_mission_model.inc"

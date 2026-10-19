@@ -124,6 +124,13 @@ public:
         const GameNativeGuiEffectLoadOperation*& published_operation);
     std::size_t operation_count() const noexcept;
     const GameNativeGuiEffectLoadOperation& operation(std::size_t) const;
+    // Ready-only borrow of this SAME canonical renderer/cache/compiler domain.
+    // The caller retains its native acquisition frames and activates the
+    // renderer's lua_service_binding() around synchronous cache entry. Serialize
+    // borrowed uses with this facade, frames, device recreation and native drain;
+    // retain this graph through children, interrupted work and final retirement.
+    // No load, extra cache, owner/reference or shader-cache bracket is created.
+    NativeMaterialEffectCacheContext& native_effect_cache();
     // Whole numeric535320 plus metadata-only canonical material admission.
     // No Text activation, caller name cleanup, extra retain or rollback. Exact
     // geometry, process material/parameter pools, strings and mapped profile

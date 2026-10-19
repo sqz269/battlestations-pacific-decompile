@@ -1640,6 +1640,9 @@ const GameMissionSummary& GameMissionHost::summary() const noexcept {
     impl_->summary.step = impl_->step;
     return impl_->summary;
 }
+float GameMissionHost::simulated_seconds() const noexcept {
+    return impl_->frame_host ? impl_->frame_host->frame_summary().simulated_seconds : 0.0f;
+}
 
 void GameMissionHost::bind_mission_picture_services(const MissionPictureTextureServices& services) {
     if (impl_->tree_load_started || impl_->picture_services)

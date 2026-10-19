@@ -8,6 +8,7 @@
 #include "bsp/game_native_lua_globals.hpp"
 #include "bsp/game_native_lua_services.hpp"
 #include "bsp/game_native_renderer_application.hpp"
+#include "bsp/native_render_resource_init.hpp"
 #include "bsp/game_native_font_probe.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
 #include "bsp/game_native_gui_text_state.hpp"
@@ -996,12 +997,14 @@ bool GameDeviceHost::create(const RendererInitRequest& request) {
 }
 IDirect3D9& GameDeviceHost::renderer_api() { return renderer_.api(); }
 
-bool GameDeviceHost::clear_and_present() {
+bool GameDeviceHost::clear_and_present(unsigned long long mission_frame, float simulated_seconds) {
     if (device_ == nullptr) {
         log_.unimplemented("RendererHost::present_frame", "00b32410+vtable20");
         return false;
     }
     log_.implemented("RendererHost::clear_and_present", "00b2b200/00b21430/00b2f4a0");
+    const bool mission_ship = mission_frame != 0 && renderer_.mission_ship_enabled();
+    if (mission_ship) renderer_.prepare_mission_ship();
     renderer_.begin_frame(kMilestoneClearColor);
     // Packet cc9_d3d_recreate_holders. The renderer's 00B29670 fallback can
     // replace the device inside begin_frame; this bridge follows it. The sprite
@@ -1017,6 +1020,7 @@ bool GameDeviceHost::clear_and_present() {
         }
         if (device_ == nullptr) return false;
     }
+    if (mission_ship) renderer_.draw_mission_ship(mission_frame, simulated_seconds);
     if (overlay_) overlay_(*device_);
     // Diagnostic frontend capture before native EndFrame. Later native debug,
     // XLive and clear-request work can change the finally presented pixels.
@@ -1087,6 +1091,11 @@ unsigned long long GameFrameHost::mission_frames_run() const noexcept {
     if (menu_ == nullptr) return 0ull;
     const GameMissionHost* mission = menu_->mission();
     return mission != nullptr ? mission->summary().mission_frames_run : 0ull;
+}
+float GameFrameHost::mission_simulated_seconds() const noexcept {
+    if (menu_ == nullptr) return 0.0f;
+    const GameMissionHost* mission = menu_->mission();
+    return mission ? mission->simulated_seconds() : 0.0f;
 }
 
 int GameFrameHost::game_state() {
@@ -1237,7 +1246,9 @@ void GameLoopCallbacks::frame() {
         capture_requested_ = true;
         device_.request_capture(capture_);
     }
-    device_.clear_and_present();
+    device_.clear_and_present(frame_host_.mission_frames_run(),
+        GameNativeRendererApplication::mission_ship_requested()
+            ? frame_host_.mission_simulated_seconds() : 0.0f);
     ++frames_;
     if (frame_limit_ >= 0 && frames_ >= static_cast<unsigned long long>(frame_limit_)) {
         log_.notef("frame limit %ld reached, requesting loop exit", frame_limit_);
@@ -2691,6 +2702,14 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
             exit_if_native_gui_probe_incomplete();
             throw;
         }
+    }
+    if (GameNativeRendererApplication::mission_ship_requested()) {
+        const auto* settings = reinterpret_cast<const volatile std::uint8_t*>(
+            settings_process_->settings().data());
+        std::uint32_t word58;
+        std::memcpy(&word58, const_cast<const std::uint8_t*>(settings + 0x58), sizeof word58);
+        native_renderer_->configure_mission_ship(*input_runtime_, require_frame_clock_context(),
+            NativeRenderResourceInitArguments{settings[0x8c], settings[0x8d], word58});
     }
     summary_.fonts_loaded = fonts_->registry().fonts().size();
     summary_.font_resource_opens = fonts_->resource_opens();

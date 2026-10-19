@@ -16,7 +16,9 @@ struct NativeMaterialConstantBuildContext {
     void* const volatile* actual_shadow_target_00f8bbf0;
     NativeRendererTextureBindingContext* texture_binding; // Required only when binding is reached.
     const NativeInstanceCollectionAccess& threshold;
-    const volatile std::uint32_t* actual_types_010900fc; // Three live DWORDs.
+    // Three SAME live DWORDs, required only at a reached nonnull-animator
+    // skin branch. Null admits static paths and rejects at that native site.
+    const volatile std::uint32_t* actual_types_010900fc;
     const volatile float& actual_fraction_00d7a238;
     const volatile float& actual_one_00d7a24c;
     const volatile float& actual_unsigned_bias_00ce3978;
