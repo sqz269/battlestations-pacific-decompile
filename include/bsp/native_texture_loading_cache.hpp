@@ -5,6 +5,7 @@
 #include "bsp/native_texture_2d_owner.hpp"
 #include "bsp/native_named_special_textures.hpp"
 #include "bsp/native_render_resource_record.hpp"
+#include "bsp/native_renderer_cache_cleanup.hpp"
 #include <memory>
 
 namespace bsp {
@@ -99,6 +100,22 @@ struct NativeTextureSpecialOwnerContexts {
     const volatile std::uint32_t* profile_00d618b0;
 };
 
+// Source diagnostics only. Native values are OS ReadProcessMemory snapshots,
+// NOT a claim that the raw pooled slot is still live. Metadata/canonical-match
+// checks do not prove native liveness after a bypassed terminal. Snapshot before
+// and after drain and correlate opaque identities; retain registry/providers.
+struct NativeTextureLoadOwnerObservation {
+    void* identity{};
+    std::uint32_t admitted_profile{};
+    bool runtime_creator{}, registered{}, canonical_match{};
+    bool prefix_read{}, name_read{};
+    std::uint32_t snapshot_profile{}, snapshot_reference_bits{}, snapshot_name_length{};
+    void* snapshot_name_data{};
+    std::uint32_t copied_name_bytes{};
+    char snapshot_name[96]{};
+};
+using NativeTextureLoadOwnerObserver = void (*)(void*, const NativeTextureLoadOwnerObservation&);
+
 // Stable companions use the application's SAME canonical registration and
 // actual +04 counter. A creator is published before companion registration;
 // bind failure does not release it. Current-profile destruction runs actual
@@ -122,6 +139,17 @@ public:
         const NativeRuntimeTextureConstructionContext&);
     NativeTexture2DOwnerContext& texture_context() noexcept;
     NativeTextureSpecialOwnerContexts& special_contexts();
+    // Serialized read-only metadata enumeration. OS copies may fail or observe
+    // stale/reused native bytes; no direct C++ read of Entry.raw occurs here.
+    // Observation/name backing is valid only during the callback. No native
+    // retain/release, terminal, registry repair or exception suppression.
+    std::size_t retained_entry_count() const noexcept;
+    void observe_retained_entries(void*, NativeTextureLoadOwnerObserver) const;
+    // Exact exit allow-list (packet cc15-rshut, see the destructor): borrow the
+    // B316C0 skipped-release record and a one-line logger. Bind once.
+    using ResidueLogger = void (*)(void*, const char* line);
+    void allow_original_cache_clear_residue(const NativeRendererCacheSkippedRelease&,
+        void* log_context, ResidueLogger);
 private:
     struct Impl;
     std::unique_ptr<Impl> impl_;

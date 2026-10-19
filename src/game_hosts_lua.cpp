@@ -4276,9 +4276,14 @@ std::uint32_t GameMissionLuaHost::create_squadron(const bsp::AirOpsSquadronReque
     std::string name;
     std::int32_t wing = 0;
     const std::size_t units_before = script_orders_->units().count();
+    // cc13-tier1: the bag's `State` (7 on 006C5050's flag arm) and Dynamics/Ceiling
+    // (tuning+210h, read at 006C52BF) go to the creator, which reads them only
+    // under kAirOpsLaunchFlagAirborneBound. plane_globals_ is filled once by the
+    // settings load (007E2A20) before any mission script and never cleared; with
+    // no table it keeps its zero, the +210h default in game_tuning_singleton.cpp.
     const std::uint32_t entity = script_orders_->create_air_ops_squadron_006c5050(
         request.type, request.wing_count, request.equipment, request.home_base, name,
-        wing);
+        wing, request.state, plane_globals_.dynamics_ceiling);
     if (entity == 0u) return 0u;
     if constexpr (bsp::kAirOpsPlayerLaunchBound) {
         // Packet cc9_player_air_ops_launch: the bag's `AutoAttackTarget`
@@ -4409,7 +4414,119 @@ void GameMissionLuaHost::mark_vehicle_class_row_00964790(int class_index, const 
                 "LaunchedClass", -1);
             if (launched != -1) mark_vehicle_class_row_00964790(launched, "00965182");
         }
+        mark_vehicle_class_device_bullets_00960230(class_index);
     }
+}
+
+// cc15-vcp6. The Lua load in 00964790 step 13 (vtable[8h]) reaches the base
+// reader 00960230. For each Platforms[i] it resolves every Gun[j] device
+// through 00443090 (009614F9), then DefaultGun (or the first gun) at 00961591.
+// The device reader at 0044334D ([vt+8h]: 007327B0, or the same body through
+// BombPlatform 006E01E1 or Catapult 006EB6D1) passes each Bullet[k].Bullet to
+// 006EA910 at 00731955. The plane reader 007D1F70 adds KamikazeBulletClass at
+// 007D2BFF. A new bullet's reader (006EACFD, [vt+18h]) resolves a vehicle class
+// with DL = 1 for three kinds: DummyKamikazePlane KamikazePlaneClass (006FF1E5),
+// DummySubmarine SubmarineClass (007000C5) and DummyTarget
+// DummyTargetVehicleClass (00701115). All of this runs inside the parent's
+// resolve, so those classes are marked before 004E0A9B whenever the parent is.
+// UNCERTAIN: KamikazeBulletClass is read here for any row, while the image
+// reads it only for the plane family. Every row that has it in this
+// installation names a Type "Kamikaze" bullet, which resolves no class.
+void GameMissionLuaHost::mark_vehicle_class_device_bullets_00960230(int class_index) {
+    if (state_ == nullptr) return;
+    const int base = ::lua_gettop(state_);
+    std::vector<int> devices;
+    std::vector<int> bullets;
+    const auto integers = [this](int table, std::vector<int>& out) {
+        ::lua_pushnil(state_);
+        while (::lua_next(state_, table) != 0) {
+            if (::lua_isnumber(state_, -1)) out.push_back(static_cast<int>(::lua_tointeger(state_, -1)));
+            ::lua_settop(state_, ::lua_gettop(state_) - 1);
+        }
+    };
+    lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+    if (lua_istable(state_, -1)) {
+        lua_rawgeti(state_, -1, class_index);
+        if (lua_istable(state_, -1)) {
+            const int row = ::lua_gettop(state_);
+            lua_getfield(state_, row, "KamikazeBulletClass");
+            if (::lua_isnumber(state_, -1)) bullets.push_back(static_cast<int>(::lua_tointeger(state_, -1)));
+            ::lua_settop(state_, row);
+            lua_getfield(state_, row, "Platforms");
+            if (lua_istable(state_, -1)) {
+                const int platforms = ::lua_gettop(state_);
+                ::lua_pushnil(state_);
+                while (::lua_next(state_, platforms) != 0) {
+                    const int platform = ::lua_gettop(state_);
+                    if (lua_istable(state_, platform)) {
+                        lua_getfield(state_, platform, "Gun");
+                        if (lua_istable(state_, -1)) integers(::lua_gettop(state_), devices);
+                        ::lua_settop(state_, platform);
+                        lua_getfield(state_, platform, "DefaultGun");
+                        if (::lua_isnumber(state_, -1) && ::lua_tointeger(state_, -1) > -1) {
+                            devices.push_back(static_cast<int>(::lua_tointeger(state_, -1)));
+                        }
+                    }
+                    ::lua_settop(state_, platform - 1);
+                }
+            }
+        }
+    }
+    ::lua_settop(state_, base);
+    lua_getfield(state_, LUA_GLOBALSINDEX, "DeviceClass");
+    if (lua_istable(state_, -1)) {
+        const int table = ::lua_gettop(state_);
+        for (const int device : devices) {
+            lua_rawgeti(state_, table, device);
+            if (lua_istable(state_, -1)) {
+                lua_getfield(state_, -1, "Bullet");
+                if (lua_istable(state_, -1)) {
+                    const int list = ::lua_gettop(state_);
+                    ::lua_pushnil(state_);
+                    while (::lua_next(state_, list) != 0) {
+                        if (lua_istable(state_, -1)) {
+                            lua_getfield(state_, -1, "Bullet");
+                            if (::lua_isnumber(state_, -1)) {
+                                bullets.push_back(static_cast<int>(::lua_tointeger(state_, -1)));
+                            }
+                        }
+                        ::lua_settop(state_, list + 1);
+                    }
+                }
+            }
+            ::lua_settop(state_, table);
+        }
+    }
+    ::lua_settop(state_, base);
+    struct DummyKind { const char* type; const char* key; const char* site; };
+    static constexpr DummyKind kKinds[] = {
+        {"DummyKamikazePlane", "KamikazePlaneClass", "006FF1E5"},
+        {"DummySubmarine", "SubmarineClass", "007000C5"},
+        {"DummyTarget", "DummyTargetVehicleClass", "00701115"},
+    };
+    std::vector<std::pair<int, const char*>> linked;
+    lua_getfield(state_, LUA_GLOBALSINDEX, "Bullets");
+    if (lua_istable(state_, -1)) {
+        const int table = ::lua_gettop(state_);
+        for (const int bullet : bullets) {
+            lua_rawgeti(state_, table, bullet);
+            if (lua_istable(state_, -1)) {
+                const int row = ::lua_gettop(state_);
+                lua_getfield(state_, row, "Type");
+                const char* type = ::lua_isstring(state_, -1) ? ::lua_tostring(state_, -1) : nullptr;
+                for (const DummyKind& kind : kKinds) {
+                    if (type == nullptr || _stricmp(type, kind.type) != 0) continue;
+                    lua_getfield(state_, row, kind.key);
+                    if (::lua_isnumber(state_, -1)) {
+                        linked.emplace_back(static_cast<int>(::lua_tointeger(state_, -1)), kind.site);
+                    }
+                }
+            }
+            ::lua_settop(state_, table);
+        }
+    }
+    ::lua_settop(state_, base);
+    for (const auto& [linked_class, site] : linked) mark_vehicle_class_row_00964790(linked_class, site);
 }
 
 int GameMissionLuaHost::vehicle_class_nil_index_hook(lua_State* state) {
@@ -7422,7 +7539,8 @@ int GameMissionLuaHost::run_get_squadron_plane_0089cfe0(lua_State* state, int ar
 // for +1ACh < 8 (00905300) and 77h with a null target through 0077C2A0 (class 7),
 // whose receiver is 0077BD70's leave, the one LeaveFormation's 0077C980 sends.
 // SUBSTITUTIONS (labelled), as in run_leave_formation_00899eb0: each leave runs at the
-// call instead of through the session queue, in the snapshot's order; the member
+// call instead of through the session queue (unless cc13-jm08's switch posts them,
+// below), in the snapshot's order; the member
 // order is the units host's index order (the +4F8h array order is not carried); the
 // slot counter is not modelled.
 int GameMissionLuaHost::run_disband_formation_0089a020(lua_State* state, int argument_count) {
@@ -7434,6 +7552,7 @@ int GameMissionLuaHost::run_disband_formation_0089a020(lua_State* state, int arg
     const std::int32_t group = valid
         ? units->unit_formation_group_0284(static_cast<std::size_t>(id - 1)) : -1;
     std::size_t left = 0;
+    std::size_t posted = 0;
     if (group >= 0) {
         const std::size_t leader = units->formation_leader_0014(group);
         std::vector<std::size_t> snapshot;
@@ -7441,9 +7560,22 @@ int GameMissionLuaHost::run_disband_formation_0089a020(lua_State* state, int arg
             if (u != leader && units->unit_formation_group_0284(u) == group) snapshot.push_back(u);
         }
         if (leader < units->count()) snapshot.push_back(leader);
+        // Packet cc13-jm08 (kDeadLeaderDirectorStateCopyBound): when any member
+        // meets a posted 0071C150 (its own, or the group leader's), every leave is
+        // posted, in snapshot order, behind the kill's 77h and the successor's 5Dh,
+        // as 0077C2A0 queues them in the image; they run at the next pump. The
+        // +284h test is the image's, at the post. Otherwise unchanged.
+        bool defer = false;
+        for (const std::size_t u : snapshot) {
+            if (units->formation_leave_waits_for_handover(u)) defer = true;
+        }
         for (const std::size_t u : snapshot) {
             if (units->unit_formation_group_0284(u) < 0) continue;
-            units->leave_group_on_destroy_0077bd70(u);
+            if (!defer || !units->post_formation_leave_0077c980(u)) {
+                units->leave_group_on_destroy_0077bd70(u);
+            } else {
+                ++posted;
+            }
             ++left;
         }
     }
@@ -7451,6 +7583,10 @@ int GameMissionLuaHost::run_disband_formation_0089a020(lua_State* state, int arg
     log_.notef("  DisbandFormation 0089a020: \"%s\" group=%d left=%zu (0077CA60 -> 77h -> "
         "0077BD70, packet cc13-fix5)", row != nullptr ? row->name.c_str() : "?",
         static_cast<int>(group), left);
+    if (posted != 0) {
+        log_.notef("  DisbandFormation 0089a020: %zu leave(s) posted behind a leader handover "
+            "(packet cc13-jm08)", posted);
+    }
     log_.implemented("MissionLuaNative::DisbandFormation", "0089a020");
     return 0;
 }
@@ -8336,14 +8472,26 @@ int GameMissionLuaHost::run_leave_formation_00899eb0(lua_State* state, int argum
         && static_cast<std::size_t>(id) <= units->count();
     const std::int32_t group = valid
         ? units->unit_formation_group_0284(static_cast<std::size_t>(id - 1)) : -1;
+    bool posted = false;
     if (group >= 0) {
-        units->leave_group_on_destroy_0077bd70(static_cast<std::size_t>(id - 1));
+        // Packet cc13-jm08 (kDeadLeaderDirectorStateCopyBound): a unit whose own
+        // 0071C150, or its group leader's, is still posted has its leave posted
+        // behind it and the successor's 5Dh, as 0077C980 does in the image; it runs
+        // at the next pump. Otherwise the leave stays synchronous.
+        const std::size_t u = static_cast<std::size_t>(id - 1);
+        posted = units->formation_leave_waits_for_handover(u)
+            && units->post_formation_leave_0077c980(u);
+        if (!posted) units->leave_group_on_destroy_0077bd70(u);
         ++summary_.leave_formation_left;
     }
     const GameUnitRow* row = valid ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
     log_.notef("  LeaveFormation 00899eb0: \"%s\" group=%d left=%d (0077C980 -> 77h -> "
         "0077BD70, packet cc9_lua_formation_query)", row != nullptr ? row->name.c_str() : "?",
         static_cast<int>(group), group >= 0 ? 1 : 0);
+    if (posted) {
+        log_.notef("  LeaveFormation 00899eb0: leave posted behind a leader handover "
+            "(packet cc13-jm08)");
+    }
     log_.implemented("MissionLuaNative::LeaveFormation", "00899eb0");
     return 0;
 }

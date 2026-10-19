@@ -19707,8 +19707,10 @@ This host never ran that walk, so the artillery stayed AI-held (held_ticks 0).
     refuses;
   - Northampton's turret shots 335 to 280, and hits 925 to 812;
   - deaths identical.
-- Open: a pair with player shells needs a camera aim input that the harness lacks. The flip waits
-  on the lead.
+- Committed pair on d91c9e54c: same numbers on USN01. On USN04 idle there is no walk and gameplay
+  is identical. Flipped ON by mechanism, per the lead.
+- Open: a pair with player shells needs a camera aim input that the harness lacks. The lead has
+  asked cc13 for one.
 
 ## 297. cc9-ships59 handoff (2026-10-18)
 
@@ -19795,7 +19797,132 @@ change is draw-order neutral, so no default-env pair.
   (Cargo1 at 1354.95 s); the first moved death is the next one (Airfield1_sqn39, 1357.55 -> 1357.60 s). After that
   the shared stream is offset, so later breakups differ (Convoy2 1416.66 broke in OFF only; Cargo5 and Cargo6 in ON).
 
-## 300. cc13's seg67 ship batch paired and flipped (cc9-ships60, 2026-10-19)
+## 300. Navigation gate and NavigateAstern skip (cc9-gunnery53, 2026-10-19)
+
+The two cc13 switches are from docs/CC13_SEG67D.md "Switches". The pairs ran on bd61f8f4f at
+30000 frames (JM05: 12000), in the reference env unless noted. Logs are `local\g53_nv{off,gate,ast}_*`
+and the default-env ones `g53_nvd*` in the gunnery52 tree.
+
+### 1. kShipAiNavGateClosedArmFinalBound: ON
+
+The branch was read from the disk bytes: 009EE59F JZ 009EF206, then 009EF213 CALL 009DE5B0.
+
+| row | result |
+| --- | --- |
+| USN04 | gameplay, death rows and unit table identical; 009DE5B0 539876 -> 540000 |
+| JM08, reference env | the same failure (CheckHQ, the HQ's Party == 2), at 958.94 s instead of 977.93 s; deaths 18 -> 21, chaotic from about 100 s |
+| JM08, default env | the same failure, at 941.94 s instead of 963.94 s; deaths 16 -> 15 |
+
+Flipped by mechanism.
+
+### 2. kShipAiNavigateAsternSkipBound: ON
+
+The branch was read from the disk bytes:
+- 009ED7E6 `CMP [1C4h],3` / SETE -> [ESP+4Fh];
+- 009EE756 JNE 009EF206;
+- approach_step 009F3330 `MOV EBP,3` / 009F3375 writes 1C4h.
+
+Mode 3 is every attack-moving ship's approach. In JM08 that is the US fleet: Nevada, Missouri,
+Hawaii, the LSTs and LSMs, and the rest. With the skip, the output block 009EE765..009EEAA2 stops
+steering them.
+
+| row | result |
+| --- | --- |
+| JM08, both envs | OFF fails at 977.93 / 963.94 s when the HQ is captured; ON never ends in 1500 s. 310995 to 324781 skips. The landing ships spawn about 937 s, and the HQ guns and AA trucks kill them after 1128 s |
+| JM05 | the same failure at 300.05 s and identical death rows; damage 48529 -> 48042, and the player's Mogami moves 3375 -> 3267 m |
+| USN04, USN07, USN13 | identical; no attack-move ships |
+
+**Audit (done).** The host's approach step was compared with 009F3240 store by store:
+- 009F3330..009F3346: 368h and 360h are cleared when 1C4h != 3. The host does this with clear_brain_turn_accumulators_0368.
+- 009F335C: 1D8h = heading. The host writes blk.desired_heading.
+- 009F3360: 00605070 wraps 1D8h in place. The host records this but does not apply it. The census (packet cc9_heading_wrap_census) on the ON JM08 run counted 87873 stores, 0 out of range, and max |h| 3.1416, so the wrap is the identity on every store.
+- 1CCh = 0: requested_direction.
+- 009F3375: 1C4h = 3: blk.mode.
+- 009F337B / 009F3383: 250h and 2B8h = throttle.
+
+On the skip path, the host still runs the 009EE671..009EE6CB prelude (A90h..A9Ch, 1F0h) and then
+009DE5B0(dt), as the image does. No steering store is left to the output block that the image
+makes in the approach.
+- Nevada on ON JM08: rudder -0.358, throttle 1.000, desired 1D8h 0.9425. The ship steers on the approach's heading.
+
+**ON** by mechanism; the flip landed on main in e73b7450f. JM08 loses its HQ-capture failure and becomes a no-end: the landing ships
+spawn at about 937 s and die to the HQ guns and AA trucks after 1128 s, so CheckHQ never sees
+CommandBuilding.Party == 2. The JM08 row change went to cc9-lua70.
+
+### 3. kLineOfFireLandFromMuzzleBound: ON
+
+This is a gunnery switch, recorded here with the other pairs. 0072CDD0's landscape query 0098ADD0
+starts at the caller's unraised muzzle (0072CDF1 MOV EBX,[ESP+28h]; 0072CE8E PUSH EBX). Only the
+unit walk 0098B130 uses the copy raised by 5.0.
+
+Pairs on aa5aaab54, reference env, 30000 frames:
+
+| row | AA line-of-fire blocks | result |
+| --- | --- | --- |
+| JM08 | 34 / 34 | gameplay identical |
+| USN07 | no queries | identical |
+| USN13 | 420 -> 426 (refusals 1598 -> 1625) | first moved death is plane `bruh #2.5` at 415 s (killer Maru6 -> Maru17). The last player plane `bruh #4.1` dies at 655.76 s instead of 832.57 s (Heavy AA 01 instead of 02), so "Game Over" comes at 659.96 s instead of 834.92 s; the 8 OFF-only deaths are planes that died after 660 s |
+
+Flipped by mechanism.
+
+## 301. Handoff from cc9-gunnery53 (2026-10-19)
+
+Branch `agent/cc9-gunnery52`, tree `J:\PROG\battlestations-pacific-decompile-cc9-gunnery52`, run
+prefix `g53_`. The head is merged with origin/main; the full build passes.
+
+**Done in this run** (all flipped by mechanism):
+- kRoleOwnerDeviceWalkBound (296.8, PLAYER_GUN_SEAT 7.5) and kGunAimMessageCc15Bound (296.7).
+- kShipAiNavGateClosedArmFinalBound (300 ### 1) and kLineOfFireLandFromMuzzleBound (300 ### 3).
+- kShipAiNavigateAsternSkipBound (300 ### 2; the approach-step audit found no missing store; the
+  flip is e73b7450f). 4c6dcd3ac turned it off by mistake and 3da01d64c reverts that: do not
+  land 4c6dcd3ac without 3da01d64c.
+- kPlayerGunSeatTargetInterceptBound (PLAYER_GUN_SEAT 7.6): 5288f4100, 2910d76cf and the flip
+  5eecdcfd6. The 79h target is AA only: vtable[10Ch] is true only for a flying plane. The marks'
+  gunner range (00548EA9 / [unit+49Ch]) had to be bound too, or 0054900D clears the pick.
+- kNavigatorForceTorpedoBound (UNIT_WEAPON_DEVICES.md): 843efc336. JM06's two sub shots fire in
+  the reference env; JM06 still completes, at 790.93 s instead of 772.93 s. The row went to cc9-lua70.
+
+**Open:**
+1. **A player turret hit on a ship** (PLAYER_GUN_SEAT 7.5).
+   - The group 3 seat ray is the 2300 bullet range, and only a hull hit above y = 0 leads.
+   - USN15 `aim unit Fubuki-class04 -1.0` gives 1768 ship leads and 78 player shots from
+     Mississippi, but 0 hits. Mississippi takes 7330 turn refusals per turret and sinks at 528 s.
+   - Next: a row where a player battleship has a slower target inside 2300 m. Also check why
+     Mississippi's turrets refuse (0085ABA0 arcs, or the camera on Fletcher-class10 versus the
+     muzzles on Mississippi).
+2. **`aim unit` auto pitch** aims at the target's origin, so the hull hit lies at y <= 0 and
+   00957883 drops it. Tell cc13: for ships the auto pitch could aim a few metres up the hull.
+3. **The handle-table substitution.** The 79h target id is the 1-based unit index
+   (game_hosts_hud.cpp `target_id_174`). A real +174h handle needs the entity handle table
+   (00521E30).
+4. **Lost stash.** A cc13 powerup tree's stash was popped into this tree by mistake (refs/stash
+   is shared). Its content is saved in `local\g53_foreign_stash\` and was never committed.
+   Never use git stash.
+
+**The lead's gunnery queue, still open**, in order (copied from the lead's queue file; the
+newest lead message wins):
+1. **kPlaneCrashConstructCooldownCc13Bound** (OFF, main 21437da5e; include/bsp/plane_crash_sweep.hpp
+   plus the gunnery.cpp crash sweep).
+   - An air-spawned plane's first crash-sweep cooldown is 1.0 s (ctor 007CFE78), not 3.0, so its
+     sweep starts about 2 s earlier. Deck launches are unchanged.
+   - No new draws, but more swept segments mean more kTraceSceneDamageDrawBound draws, so pair in
+     both envs on USN21, USNOS and USN04.
+   - cc13-bisect follow-ups are coming: the 5.0 AirField arm, and no re-arm on state-7 re-entry.
+2. **kKamikazeDirectHitCc13Bound** (coming, HIGH, cc13-hitq).
+   - The host never delivers kamikaze direct-hit damage (classDesc+510h). 00819A20 queues it
+     through 00926E80.
+   - Pair on USNOS plus any kamikaze row, in both envs, and judge target damage and deaths.
+     ships60 cross-checks USNOS.
+3. **kHitDeferredDispatchCc13Bound** (coming; ab8aec6aa, in review).
+   - The image queues each hit in the LIFO 00926E80 queue, drained at fixed-step rows 6/14 and
+     00874DB9, newest first; the host dispatches each hit immediately.
+   - Expected movers: kill credit and last_attacker, the blast-before-direct order, the fire
+     timing, the Lua event order, and the hit_effect and breakup draws.
+   - Pair USN04, JM08, USN21 and BSM09 in both envs.
+4. **The turret-hit retry**, once cc13 adjusts the `aim unit` pitch for ships (item 2 of the open
+   list above).
+
+## 302. cc13's seg67 ship batch paired and flipped (cc9-ships60, 2026-10-19)
 
 The seven OFF switches of cc13-seg67g..l (origin/main 0e29a3d91; include/bsp/ship_ai_seg67_switches_cc13.hpp and
 cc13_ship_ai_commit_band.hpp, docs/CC13_SEG67D.md) were paired in the reference env on 913bac450 (one pair_export ON
@@ -19818,3 +19945,14 @@ Every move starts at the switch's own mechanism, so all seven are flipped ON (fa
 cc13). The first JM08 cg run was killed at frame 54208 with a 3.5 GB log (FreeAttack lines); it was rerun with its
 OFF partner at 36000 frames (`s60_sboff_j08s` / `s60_sbcg_j08s`, exit 3, 132 -> 192 death rows). None of the paired
 rows is a current WINS win: jm08_l65_j8_p2 does not end in 72000 frames with every switch OFF.
+
+**Merge with main (cross-reference 300).** cc9-gunnery53 landed the two navigation switches independently (section 300:
+kShipAiNavGateClosedArmFinalBound and, after its approach_step audit, kShipAiNavigateAsternSkipBound), so the merged
+header keeps main's lines for those two and this section's flips for the other five. The two JM08 astern results
+differ because the runs differ: gunnery53's pair ends without a result in 1500 s, while `s60_sbdp_j08` (72000 frames
+with config/win_orders/jm08_l65_j8_p2.txt, reference env on 913bac450) fails at 1276.17 s with "The HQ has been
+destroyed!". Different plans and lengths; both start at the mode-3 tail skip.
+
+Reach note (cc13, through the lead): G and I are also live in IJN08, where Kinugasa makes 319 evasion overrides in the
+Elco torpedo field from 747 s until it sinks at 816 s. Those overrides had max_turn = 0, so they are not a proven
+course change, and no IJN08 pair was run.

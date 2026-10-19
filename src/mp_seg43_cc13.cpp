@@ -1,5 +1,35 @@
 #include "bsp/mp_seg43_cc13.hpp"
 
+namespace bsp::cc13_seg43 {
+void supply_state_message_write_0084ce80(Raw message, Raw stream, NbHighMessageCalls& calls) {
+    auto* p = static_cast<std::uint8_t*>(message);
+    calls.write_extended_header_0075b480(message, stream);
+    calls.write_signed_00429090(stream, *reinterpret_cast<std::int32_t*>(p + 0x1c), 32);
+    calls.write_bool_004290b0(stream, p[0x20]);
+}
+void supply_state_message_read_0084ceb0(Raw message, Raw stream, NbHighMessageCalls& calls) {
+    auto* p = static_cast<std::uint8_t*>(message);
+    calls.read_extended_header_0075b4c0(message, stream);
+    auto* cursor = static_cast<std::uint8_t*>(stream) + 4;
+    calls.read_signed_00428d30(cursor, reinterpret_cast<std::int32_t*>(p + 0x1c), 32);
+    calls.read_bool_00428d70(cursor, p + 0x20);
+}
+bool supply_state_message_apply_0084d520(Raw receiver, const void* message, NbHighMessageCalls& calls) {
+    const auto* p = static_cast<const std::uint8_t*>(message);
+    if (p[0x10] != 0xbf) return false;
+    const auto value = p[0x20];
+    const auto key = *reinterpret_cast<const std::int32_t*>(p + 0x1c);
+    calls.map_subscript_005c49c0(static_cast<std::uint8_t*>(receiver) + 0x310, &key) = value;
+    return true;
+}
+void root_message_write_type_008dade0(Raw message, Raw stream, NbHighMessageCalls& calls) {
+    calls.write_byte_00428ff0(stream, static_cast<std::uint8_t*>(message)[0x10], 8);
+}
+void root_message_read_type_008dae00(Raw message, Raw stream, NbHighMessageCalls& calls) {
+    calls.read_byte_00428c70(static_cast<std::uint8_t*>(stream) + 4, static_cast<std::uint8_t*>(message) + 0x10, 8);
+}
+}
+
 #include "bsp/native_string.hpp"
 
 #include <cstring>

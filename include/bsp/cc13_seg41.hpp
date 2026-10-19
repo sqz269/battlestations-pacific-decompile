@@ -422,6 +422,8 @@ void mount_content_packages_0073bc40(void* const volatile& vfs_0109ceec, Content
 void locale_node_return_slot_thunk_007373f0(void* slot, void* locale_pool_00e1768c);
 // 00737850 / 00737890: frame-hook vtable slots +4h and +14h, a bare RET.
 void frame_hook_slot04_noop_00737850();
+// 00737860: ECX frame hook, one ignored stack word, RET 4.
+void frame_hook_slot08_noop_00737860(void*, std::uint32_t);
 void frame_hook_slot14_noop_00737890();
 
 }  // namespace bsp::cc13_seg41

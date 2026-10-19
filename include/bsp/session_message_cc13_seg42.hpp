@@ -640,4 +640,43 @@ void write_paratrooper_create_00767c30(const ParatrooperCreateMessage*, NativeBi
 inline constexpr std::uint32_t kScale_00ce3d08 = 0x42C80000u;  // 100.0f
 void apply_server_info_0076a7b0(std::uint8_t* session, const bsp::NativeSessionMessage05* message);
 
+// Newly defined reader slots, paired with the writers above. Original ABI:
+// ECX=message, stack stream, RET 4; readers use stream+4 as the cursor.
+struct CreateReadHooks {
+    virtual ~CreateReadHooks() = default;
+    virtual void net_entity_create_read_00767e30(void*, NativeSessionReadStream*) = 0;
+    virtual void bomb_create_read_006e06f0(void*, NativeSessionReadStream*) = 0;
+};
+void read_plane_create_007681f0(PlaneCreateMessage*, NativeSessionReadStream*, const Numeric&, CreateReadHooks&);
+void read_torpedo_create_00768300(BombDerivedCreateMessage*, NativeSessionReadStream*, const Numeric&, CreateReadHooks&);
+void read_paratrooper_create_00768370(ParatrooperCreateMessage*, NativeSessionReadStream*, const Numeric&, CreateReadHooks&);
+void read_net_entity_create_thunk_007683b0(void*, NativeSessionReadStream*, CreateReadHooks&);
+// Existing PathCreatePrefix supplies the already-sized Vec3 array; the read
+// does not transmit a count or resize it. Original ECX=message, RET4.
+void read_path_create_points_007b0c90(PathCreatePrefix*, NativeSessionReadStream*, const Numeric&, CreateReadHooks&);
+struct ActivateMessage { UnitMessage u; std::uint8_t active_20; std::uint8_t reserved_21[3]; };
+// Session-owner method 0077D500, flag stack word, RET4. A clear flag creates
+// a stack MT_ACTIVATE (52h), sets active+20h=1, then broadcasts with filter 0.
+// Callback must consume the borrowed message during this call.
+void broadcast_activate_if_clear_0077d500(void* owner, bool flag, const Context&,
+    void (*broadcast_0077c7b0)(void*, const ActivateMessage*, int, void*), void* context);
+// These predicates are vtable slot 3 (RET 4), not recovered class symbols.
+bool is_type_cc_49_46_0075ac90(std::uint32_t type) noexcept;
+bool is_type_aa_49_46_00763e40(std::uint32_t type) noexcept;
+
+// PATH_SET/ADD/INSERT/DELETE codecs: 00D02DBC/00D02DD0/00D02DE4/
+// 00D02DF8 slots 1 and 2. UnitMessage supplies the +1Ch flag.
+struct PathIndexedVectorMessage { UnitMessage u; std::uint32_t index_20; float point_24[3]; };
+struct PathVectorMessage { UnitMessage u; float point_20[3]; };
+struct PathIndexMessage { UnitMessage u; std::uint32_t index_20; };
+static_assert(offsetof(PathIndexedVectorMessage, point_24) == 0x24);
+void write_path_set_007ad820(const PathIndexedVectorMessage*, NativeBitCursor*, const Numeric&);
+void read_path_set_007ad870(PathIndexedVectorMessage*, NativeSessionReadStream*, const Numeric&);
+void write_path_add_007ad8c0(const PathVectorMessage*, NativeBitCursor*, const Numeric&);
+void read_path_add_007ad900(PathVectorMessage*, NativeSessionReadStream*, const Numeric&);
+void write_path_insert_007ad940(const PathIndexedVectorMessage*, NativeBitCursor*, const Numeric&);
+void read_path_insert_007ad990(PathIndexedVectorMessage*, NativeSessionReadStream*, const Numeric&);
+void write_path_delete_007ad9e0(const PathIndexMessage*, NativeBitCursor*);
+void read_path_delete_007ada10(PathIndexMessage*, NativeSessionReadStream*);
+
 }  // namespace bsp::seg42

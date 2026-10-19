@@ -321,7 +321,12 @@ inline constexpr bool kPlayerGunSeatArtilleryBound = true;
 // player's artillery in the seat in single player: 0095A05B, the hand-over in
 // 00959C20, needs a hosted session (game+1FE4h == 1) and a remote holder.
 // True: the walk runs. False: role takes leave every gun AI-held.
-inline constexpr bool kRoleOwnerDeviceWalkBound = false;
+// ON (cc9-gunnery53) by mechanism: pairs on d91c9e54c, reference env. USN01, with
+// 0x9D / 0x99 input at 500/900/1300: takes 8, releases 66, held 410-1823.
+// Northampton's turret shots 113/113/109 -> 95/95/90, because the AI does not fire
+// a player-held mount. 0 player shells: the HUD camera aims at the sea and
+// 0085ABA0 refuses. Deaths identical. USN04 idle: no walk, gameplay identical.
+inline constexpr bool kRoleOwnerDeviceWalkBound = true;
 
 // Packet s53_wreck_debris (docs/SHIP_AI_OPEN_ITEMS.md 263). 00825A59 step 8 of
 // the unit update calls 00935540 once per dead unit (ShipSystems+88h one-shot)
@@ -344,6 +349,27 @@ inline constexpr bool kSinkingWreckDebrisDrawsBound = true;
 // answers the query over its own units (query_segment_units; no islands or
 // terrain in it). ON: the USN02 and E2 pairs held (docs/PLAYER_GUN_SEAT.md 6.4).
 inline constexpr bool kPlayerGunSeatSegmentQueryBound = true;
+
+// Packet g53_seat_target_intercept (cc9-gunnery53, docs/PLAYER_GUN_SEAT.md 7.6).
+// The 79h target, both ends:
+// - The HUD gate at 005488FE..00548975 sets has_target (+36h) and the target's
+//   +174h id (+38h) for a picked unit that is not on the player's side (+54h)
+//   and whose vtable[10Ch] answers true. That slot is 0074E1A0 on the plane
+//   classes ([unit+B1Ch] speed > 3.0, 00CE3854) and 0042BB40
+//   (false) on MBattleship, LandingShip, MSubmarine and the dummy kamikaze. So
+//   only a flying plane is ever sent.
+// - 00959C91..00959CA8 resolves the id with 00521E30. 00957BD0 then aims every
+//   group 1/2 gun at the 00901C20 intercept (00957C29..00957CAB): shooter at
+//   gun+FCh, speed [[gun+3F8h]+34h]+50h, and shooter velocity = the unit's
+//   vtable[34h] when [unit+4A0h] (00953B80: the OR of AddsSpeed over the unit's
+//   Function 0/1/5/6 guns) is set, else zero.
+// The group 3 arm (00957740) never reads the target.
+// The marks' gunner range (00548EA9 / 00548ED0, [unit+49Ch]) is bound with it;
+// without it 0054900D clears the pick before the gate.
+// False: the gate answers false and the intercept is recorded only.
+// ON by mechanism (PLAYER_GUN_SEAT 7.6): with a tracked Kate, USN04's player AA
+// leads it and the Lexington kills it 2.9 s earlier; idle USN04/USN21 identical.
+inline constexpr bool kPlayerGunSeatTargetInterceptBound = true;
 
 // Packet cc9_unit_death_route, docs/UNIT_DEATH_ROUTE.md. True: a sunk or
 // wrecked unit goes through 00959450 BSP_Unit_OnDestroyed's model
@@ -949,6 +975,7 @@ struct GameGunnerySummary {
     // Packet cc8_dive_glide, the kind 2Ah drop.
     unsigned long long bomb_drops{0};
     unsigned long long bomb_drop_refusals{0};      // no kind 2Ah gun on the unit
+    unsigned long long paratrooper_releases{0};    // packet cc13-para2: 31h rounds released
     // Packet cc8_torpedo_breakoff: drops that cleared the owner's torpedo kind
     // 2Bh bit, so approach+132h goes false on the next approach update.
     unsigned long long torpedo_loadout_cleared{0};
@@ -1112,6 +1139,9 @@ public:
     // message whose holder changed; kRoleOwnerDeviceWalkBound.
     void role_owner_device_walk_0095ac1d(std::size_t unit_index, std::uint32_t mask,
                                          std::int32_t slot, bool take);
+    // 00953B80's [unit+49Ch]: the square of the largest bullet range over the
+    // unit's Function 0/1/5/6 guns (Function 6 takes its Bullet[2]).
+    float unit_gun_range_sq_049c(std::size_t unit_index) const;
 
     // One fixed simulation step: the gunnery pass 00864FE0, the aim ticks and
     // the trigger latch, 0072D130's 0ADh send with BSP_Gun_Fire behind it, and
@@ -1165,9 +1195,22 @@ public:
     // release value). Pass a negative when the caller has none.
     // `skill_row` is the dropping plane's PilotBot level (0..5) for 006E4D50's
     // ThrowMul (packet cc9_bomb_drop_scatter, GUNNERY 130); -1 asks the units host.
+    // Packet cc13-para2: with `paratrooper` non-null the release is 006E4D50's
+    // for the unit's first 31h (MParatrooper) gun instead of its 2Ah one: the
+    // same 006E0A70 velocity and 006E1F00 cone and drift (the four stream-1
+    // draws only under bsp::kParatrooperReleaseScatterDrawBound), written to
+    // *paratrooper instead of a bomb shot; the units host owns the round.
+    struct ParatrooperRelease {
+        float position[3]{};
+        float velocity[3]{};
+        float drift[3]{};          // block+38h -> round+348h; y = 0
+        int bullet_class{-1};
+        int owner_side{0};
+    };
     bool release_bomb_drop(std::size_t unit_index,
                            const float predicted_impact[3],
-                           float release_fall_time, int skill_row = -1);
+                           float release_fall_time, int skill_row = -1,
+                           ParatrooperRelease* paratrooper = nullptr);
     // True when 006E4D50's scatter draws are taken (kBombDropScatterBound).
     static bool bomb_drop_scatter_bound() noexcept;
     // Packet cc13-homing1: spawn one rocket from the unit's Rocket-type gun row
@@ -1263,6 +1306,10 @@ public:
     void set_hull_repair_enabled_00939fd0(std::size_t unit_index, bool enabled);
     bool director_allow_fire_3c(std::size_t unit_index) const noexcept;
     bool director_allow_move_3d(std::size_t unit_index) const noexcept;   // 009F5614's read
+    // Packet cc13-jm08: 00720450's raw copy of director+3Ch / +3Dh (0072045D..
+    // 00720468) from src to dst, no 00836210 side effect. An unset src row is
+    // copied as unset, i.e. 008363E0's 1/1.
+    void copy_director_allow_bytes_00720450(std::size_t dst, std::size_t src);
     // 007BC5B0's tail, past its flight-state and unit+AA0h tests: true when
     // [unit+150h] <= 0 (not invincible) or the unit is player-held (+1ACh not 8
     // and 00927F10 false). With kUnitInvincibilityFloorBound off it keeps the

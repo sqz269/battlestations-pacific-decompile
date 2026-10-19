@@ -2,6 +2,7 @@
 
 #include "bsp/native_diagnostic_sink_lifetime.hpp"
 #include "bsp/native_event_owner.hpp"
+#include "bsp/native_loading_queue_work_items.hpp"
 #include "bsp/native_singleton_publication.hpp"
 #include "bsp/native_singleton_vector_registration_wrappers.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -11,6 +12,7 @@
 #include <Windows.h>
 
 #include <cstddef>
+#include <stdexcept>
 
 namespace bsp {
 namespace {
@@ -118,6 +120,33 @@ void native_loading_queue_on_filestore_ready_00504850(
     auto* const jobs = loader->jobs_10;
     void* const current_front = jobs[0];
     *static_cast<volatile std::uint32_t*>(current_front) = 2;
+}
+
+void update_native_loading_queue_00509190(NativeLoadingQueueOwnerStorage* actual_owner) {
+    if (actual_owner->count_14 == 0) return;
+    throw std::logic_error("00509190: a non-empty native loading queue needs the FileStore, "
+        "00506BF0 and 00501620 bindings");
+}
+
+NativeLoadingQueueOwnerStorage* delete_native_loading_queue_owner_0050ace0(
+    NativeLoadingQueueOwnerStorage* actual_owner, std::uint32_t flags,
+    NativeLoadingQueueOwnerStorage* volatile& actual_publication_00e18d4c) {
+    actual_owner->table_00 = native_loading_queue_table_00ceb198;
+    // 5092E0: 004254B0(CEB958) is a trivial diagnostic; count zero returns.
+    if (actual_owner->count_14 != 0)
+        throw std::logic_error("005092E0: draining a non-empty native loading queue needs "
+            "the VFS pump and the 00509190 job states");
+    resize_native_loading_job_pointers_004fb4b0(
+        reinterpret_cast<std::byte*>(actual_owner) + 0x10, 0);
+    singleton_lifetime_free(const_cast<void**>(actual_owner->jobs_10)); // 00BF6989
+    if (NativeEventOwnerStorage* const event = actual_owner->event_0c) {
+        delete_native_event_owner_00bd19b0(event, 1);
+        actual_owner->event_0c = nullptr;
+    }
+    actual_publication_00e18d4c = nullptr;
+    actual_owner->table_00 = 0x00ce3818;
+    if (flags & 1u) singleton_lifetime_free(actual_owner); // 00BF65AC
+    return actual_owner;
 }
 
 std::uint8_t poll_native_event_owner_00bd1920(const NativeEventOwnerStorage* owner) noexcept {

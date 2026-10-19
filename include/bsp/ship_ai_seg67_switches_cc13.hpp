@@ -10,13 +10,13 @@ namespace bsp {
 // class+A0h only for a class without a model box (00811058).
 // True: the margin reads the class Length (GameUnitsHost::unit_class_extents,
 // the slot's class+A0h). False: unit+9C8h, as before.
-inline constexpr bool kShipAiTorpedoMarginClassLengthBound = true;  // ON: USN04/JM08/USN21 pairs identical (SHIP_AI 300)
+inline constexpr bool kShipAiTorpedoMarginClassLengthBound = true;  // ON: USN04/JM08/USN21 pairs identical (SHIP_AI 302)
 
 // (C) 009EE586..009EE594. Every 009ED6B0 pass that reaches 009EE580 (every
 // tick the station-keeping arm does not run) clears blk+38Ah, +388h and +389h
 // before the path-pick gate. The host kept the latches across skipped ticks.
 // True: the three station latches clear there. False: they persist.
-inline constexpr bool kShipAiStationLatchClearBound = true;  // ON: JM08 moved from LSM 01 at 725.95 s, USN04/USN21 identical (SHIP_AI 300)
+inline constexpr bool kShipAiStationLatchClearBound = true;  // ON: JM08 moved from LSM 01 at 725.95 s, USN04/USN21 identical (SHIP_AI 302)
 
 // (D) 009EE6F1..009EE750. After the path-pick gate opens and before the output
 // block and the tail, the parked byte blk+2FDh is computed:
@@ -27,7 +27,7 @@ inline constexpr bool kShipAiStationLatchClearBound = true;  // ON: JM08 moved f
 // different fields, different consumers, different addresses.
 // True: the byte is computed there into both host copies (tail.parked_2fd and
 // goal.flag_2fd). False: the host's previous single write at 009EF045.
-inline constexpr bool kShipAiParkedByteBeforeTailBound = true;  // ON: gameplay identical on USN04/JM08/USN21 (SHIP_AI 300)
+inline constexpr bool kShipAiParkedByteBeforeTailBound = true;  // ON: gameplay identical on USN04/JM08/USN21 (SHIP_AI 302)
 
 // (F) 009EF94E/009EF96F. Every turn-clearance refresh resets blk+37Ch to
 // [00CE3D64] = 10000.0f (0x461C4000) before its lowerings. The host's
@@ -42,7 +42,7 @@ inline constexpr bool kShipAiParkedByteBeforeTailBound = true;  // ON: gameplay 
 // 009F50E0 reaches 009F4DA0 -> 009F3F80's reader at 009F416E (009F5227,
 // then 009F5248, straight-line). So the default is left as it is.
 // True: the refresh stores 10000.0f. False: 9999.0f, as before.
-inline constexpr bool kShipAiClearanceRefreshSentinelBound = true;  // ON: gameplay identical on USN04/JM08/USN21 (SHIP_AI 300)
+inline constexpr bool kShipAiClearanceRefreshSentinelBound = true;  // ON: gameplay identical on USN04/JM08/USN21 (SHIP_AI 302)
 inline constexpr float kShipAiClearanceRefreshSentinel = 10000.0f; // 00CE3D64
 static_assert(kShipAiClearanceRefreshSentinel == 0x1.388p+13f);    // 0x461C4000
 
@@ -57,7 +57,11 @@ static_assert(kShipAiClearanceRefreshSentinel == 0x1.388p+13f);    // 0x461C4000
 // AL = [ESP+37h] = 0 (set at 009EDA2F).
 // True: the host does the same for NavigateAstern. False: the host runs the
 // output block and the tail for mode 3 as for mode 2.
-inline constexpr bool kShipAiNavigateAsternSkipBound = true;  // ON: JM08 moved from the mode-3 Gyoraitei at 18.05 s (SHIP_AI 300)
+// ON (cc9-gunnery53, SHIP_AI_OPEN_ITEMS 300 ### 2): flipped by mechanism after an
+// audit found the host's approach step makes every 009F3240 steering store. JM08
+// changes from an HQ-capture failure at 977.93 s to a no-end; JM05 and USN04/07/13
+// keep their outcomes.
+inline constexpr bool kShipAiNavigateAsternSkipBound = true;
 
 // 009EE59B/009EE59F. When blk+1C4h is neither 2 nor 3 (Rudder or Heading),
 // the path gate JZ 009EF206 still reaches 009EF206: 009DE5B0(dt), then
@@ -68,6 +72,13 @@ inline constexpr bool kShipAiNavigateAsternSkipBound = true;  // ON: JM08 moved 
 // bookkeeping record.
 // True: the closed gate makes the same arm-final call before returning false.
 // False: it returns without it, as before.
-inline constexpr bool kShipAiNavGateClosedArmFinalBound = true;  // ON: USN21/JM08 moved from heading-mode units (SHIP_AI 300)
+// ON (cc9-gunnery53) by mechanism, from pairs on bd61f8f4f at 30000 frames:
+//   - 009EE59F JZ 009EF206 and 009EF213 CALL 009DE5B0 were read from the disk bytes.
+//   - USN04, reference env: gameplay identical; 009DE5B0 539876 -> 540000 calls.
+//   - JM08, reference env: still fails at the HQ check (CheckHQ, Party == 2), now at
+//     958.94 s instead of 977.93 s.
+//   - JM08, default env: the same failure, 941.94 s instead of 963.94 s.
+// SHIP_AI_OPEN_ITEMS 300.
+inline constexpr bool kShipAiNavGateClosedArmFinalBound = true;
 
 } // namespace bsp

@@ -899,6 +899,14 @@ public:
     // SHIP_AI 162) and true, after which the caller applies AddDamage 0095DA00.
     // True for a unit that is not a capture building.
     bool command_building_hit_gate_006f1f20(std::size_t unit_index, float amount);
+    // Packet cc13-para2: the capture building's instance armour +368h as this
+    // host keeps it (the scene value, then 006F38E0's level writes); read by
+    // 007AB509's paratrooper bleed. False (out untouched) for a unit that is not
+    // one of the capture buildings.
+    bool command_building_armour_0368(std::size_t unit_index, float& out);
+    // Packet cc13-para2: the avoid-zone manager for 007ABB30's 0041B840 call,
+    // which is a non-const query; null before load_avoid_zone_geometry.
+    GameAvoidZoneRuntime* avoid_zone_runtime_mutable() noexcept;
 
     // Packet cc9_big_landing_ship: class+808h for the unit's class, from its
     // VehicleClass row at load (the depth reader's tuning-pair choice). False
@@ -936,6 +944,10 @@ public:
     // target_plus_one 0 for a null target.
     void store_fire_target_00836240(std::size_t unit, std::size_t target_plus_one,
                                     bool force);
+    // Packet cc13-jm08: 00836680's tail after 00720450 (0083668E..008366BC): when
+    // src vtable[48h](2) (00836790, 1 for 0/2/3) and src+23Ch, dst 00836240(src
+    // +238h via vtable[2Ch] 008364E0, force = src+23Ch). True when it stored.
+    bool copy_fire_target_00836680(std::size_t dst, std::size_t src);
     // Packet g44_scan_row_write: 00836210's fire-target drop when allowFire is 0
     // (kDirectorFirePermissionClearBound). Returns true when a target was dropped.
     bool store_fire_permission_00836210(std::size_t unit, bool allow_fire);

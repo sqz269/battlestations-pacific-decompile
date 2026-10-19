@@ -15,6 +15,8 @@
 #include "bsp/geom_mesh_resource.hpp"
 #include "bsp/gun_mount_positions.hpp"
 #include "bsp/camera_multiply.hpp"
+#include "bsp/cc13_tier2_switches.hpp"
+#include "bsp/cc13_seg67b_switches.hpp"   // packet cc13-para2 (the 31h release)
 #include "bsp/structured_hierarchy.hpp"
 
 #include <array>
@@ -2974,6 +2976,15 @@ struct GameGunneryHost::Impl {
     void seat_artillery_lead_009578c3(const GameGunRow& gun, const UnitState& state,
         std::size_t unit, std::size_t target, const float right[3], const float up[3],
         const float forward[3], const float origin[3], float aim[3]);
+    // kPlayerGunSeatTargetInterceptBound: 79h messages with a resolved target,
+    // the group 1/2 guns aimed at its 00901C20 intercept, and how many of those
+    // took the unit's velocity ([unit+4A0h]).
+    unsigned long long seat_target_messages{0}, seat_target_unresolved{0},
+        seat_target_aims{0}, seat_target_adds_speed{0};
+    bool unit_adds_speed_04a0(std::size_t unit);
+    void seat_target_intercept_00957c29(const GameGunRow& gun, const UnitState& state,
+        std::size_t unit, std::size_t target, const float right[3], const float up[3],
+        const float forward[3], const float origin[3], float aim[3]);
     unsigned long long seat_artillery_turns{0};     // pending pairs a gun tick applied
     unsigned long long seat_artillery_refusals{0};  // of those, 0085ABA0 refused
     // Packet cc9_unit_death_route.
@@ -3094,6 +3105,10 @@ struct GameGunneryHost::Impl {
     bool land_masters_built{false};
     // 0 on the health-zero paths; the stored +70h cause during an explicit kill.
     int explicit_kill_cause{0};
+    // Packet cc13-jm08: the image phase of the kill in progress (the table at
+    // kDeadLeaderDirectorStateCopyBound). A plain store around the mapped callers;
+    // read only by kill_unit, and only with that switch on.
+    bsp::DeadLeaderDeathPhase death_phase{bsp::DeadLeaderDeathPhase::Unmapped};
     struct LandMasterCounts {
         unsigned long long sections{0}, masters{0}, party_adoptions{0}, forwards{0};
         unsigned long long section_deaths{0}, hand_offs_skipped_cause{0}, die_calls{0};
@@ -3263,7 +3278,10 @@ struct GameGunneryHost::Impl {
             // jumps to 0072CEE5, MOV AL,1: blocked by a Landscape.
             float land_point[3];
             int land_object = -1;
-            const bool land = landscape_segment_hit(from, to, land_point, land_object);
+            // ON (bsp::kLineOfFireLandFromMuzzleBound): 0072CE8E PUSH EBX, the
+            // unraised muzzle, is the land segment's start.
+            const bool land = landscape_segment_hit(
+                bsp::kLineOfFireLandFromMuzzleBound ? muzzle : from, to, land_point, land_object);
             note_land_hit_query(LandHitConsumer::LineOfFire, land);
             if (land) return true;
         }
@@ -4114,6 +4132,8 @@ struct GameGunneryHost::Impl {
         bool valid{false};
         float points[3][3]{};
         float cooldown_9dc{0.0f};   // unit+9DCh stand-in
+        bool armed_9dc{false};      // kPlaneCrashConstructCooldownCc13Bound
+        bool grounded_9dc{false};   // seen off free flight before the first arm
     };
     std::vector<PlaneCrashPrev> crash_prev;
     std::vector<GameBulletClassRow> crash_bullets;   // read on first use, by id
@@ -4122,6 +4142,7 @@ struct GameGunneryHost::Impl {
     unsigned long long pc_surface_cuts{0}, pc_impacts{0}, pc_blast_records{0};
     unsigned long long pc_hits_21{0}, pc_hits_98{0}, pc_hits_99{0}, pc_hits_other{0};
     unsigned long long pc_logged{0}, pc_cooldown_steps{0};
+    unsigned long long pc_construct_cooldown_arms{0};
     double pc_blast_damage{0.0};
     // DIAGNOSTIC: the closest any live kamikaze bow came to a hostile hull box.
     float kz_min_gap{-1.0f};
@@ -12057,6 +12078,15 @@ void GameGunneryHost::Impl::run_kamikaze_box_contacts() {
 
 void GameGunneryHost::Impl::kamikaze_detonate_00819a20(std::size_t unit, std::size_t target,
     const float contact[3]) {
+    // Packet cc13-jm08: 00819A20 is 00821E80's message-70h arm (0082218D), the
+    // message built by 0080FF30 and routed 0077C2A0 -> 0076E520, so it runs in
+    // the pump's drain and its hit records (00819BA7, 0084BBF9) drain at row 14.
+    struct PhaseScope {
+        bsp::DeadLeaderDeathPhase& slot;
+        bsp::DeadLeaderDeathPhase saved;
+        ~PhaseScope() { slot = saved; }
+    } phase_scope{death_phase, death_phase};
+    death_phase = bsp::DeadLeaderDeathPhase::HitDrainAfterPump;
     const KamikazeRow& kr = kamikaze_rows[unit];
     ++kz_detonations;
     float right[3], up[3], forward[3], centre[3];
@@ -12402,7 +12432,22 @@ void GameGunneryHost::Impl::run_plane_crash_sweeps_007c0910(float step) {
         // the step. LABELLED stand-in for 007C5F60's launch-spot stores (3.0 s,
         // 00CE3854): armed on the first free-flight step, because a host plane is
         // in state 7 while still on its deck.
-        if (airborne && !had_prev) prev.cooldown_9dc = bsp::kPlaneCrashLaunchCooldown;
+        if constexpr (bsp::kPlaneCrashConstructCooldownCc13Bound) {
+            // Packet cc13-cool9dc: a plane in free flight on every step seen so far
+            // never went through 007C5F60, so it still holds 007CFE78's 1.0f.
+            if (!airborne) prev.grounded_9dc = true;
+            if (airborne && !had_prev) {
+                if (!prev.armed_9dc && !prev.grounded_9dc) {
+                    prev.cooldown_9dc = bsp::kPlaneCrashConstructCooldown;
+                    ++pc_construct_cooldown_arms;
+                } else {
+                    prev.cooldown_9dc = bsp::kPlaneCrashLaunchCooldown;
+                }
+                prev.armed_9dc = true;
+            }
+        } else {
+            if (airborne && !had_prev) prev.cooldown_9dc = bsp::kPlaneCrashLaunchCooldown;
+        }
         if (!airborne || !had_prev) continue;
         if (prev.cooldown_9dc > 0.0f) {
             prev.cooldown_9dc -= step;
@@ -13225,7 +13270,10 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
                 "fire_total=%.0f repaired=%.0f", state.row.name.c_str(),
                 static_cast<double>(clock_seconds), dc.water_damage, dc.fire_damage,
                 dc.repaired);
+            // Packet cc13-jm08: 0093C120 / 0093C210 under 00825F20, a wave tick.
+            death_phase = bsp::DeadLeaderDeathPhase::BeforePump;
             kill_unit(i);
+            death_phase = bsp::DeadLeaderDeathPhase::Unmapped;
         }
     }
 }
@@ -13272,6 +13320,11 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
     target.enabled = false;
     target.row.pass_enabled = false;
     ++summary.deaths;
+    if constexpr (kDeadLeaderDirectorStateCopyBound) {
+        // Packet cc13-jm08: 0071C150's handover where the image's 77h delivery
+        // falls relative to this kill's 0071DDB0 below.
+        units.leader_death_handover_at_kill(victim, death_phase);
+    }
     {
         // Packet cc9_director_target_checks: 0071DDB0, every director observer's
         // delivery for this entity (the destroy's 00926390 / 009263C0, which the
@@ -13815,7 +13868,23 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
             }
         }
     }
-    if (m.has_target_36) record("PlayerGunSeat::target_intercept", 0x00957ca6u);
+    // 00959C91..00959CA8: [ESP+24h] = has_target ? 00521E30(+38h) : 0.
+    // SUBSTITUTION: the HUD side sends unit index + 1 as the +174h id
+    // (game_hosts_hud.cpp target_id_174), so the resolve is its inverse.
+    std::size_t seat_target = 0;                // 1-based; 0 = none
+    if (m.has_target_36) {
+        if constexpr (kPlayerGunSeatTargetInterceptBound) {
+            ++seat_target_messages;
+            const std::size_t id = m.target_38;
+            if (id != 0 && id - 1 < units.count() && id - 1 != unit) {
+                seat_target = id;
+            } else {
+                ++seat_target_unresolved;
+            }
+        } else {
+            record("PlayerGunSeat::target_intercept", 0x00957ca6u);
+        }
+    }
     std::int32_t role2_holder = 8;              // [unit+1B4h]
     if (!units.unit_current_role_slot(unit, 2, role2_holder)) role2_holder = 8;
     float right[3], up[3], forward[3], origin[3];
@@ -13842,7 +13911,10 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
         if (s2 < floor2) s2 = floor2;
         const float s = std::sqrt(s2);
         float aim[3] = {c[0] + s * dir[0], c[1] + s * dir[1], c[2] + s * dir[2]};
-        if (seat_has_hit) {                                       // 00957DB8..00957DD2
+        if (seat_target != 0) {                                   // 00957C29..00957CAB
+            seat_target_intercept_00957c29(gun, state, unit, seat_target - 1, right, up,
+                                           forward, origin, aim);
+        } else if (seat_has_hit) {                                // 00957DB8..00957DD2
             aim[0] = seat_hit[0];
             aim[1] = seat_hit[1];
             aim[2] = seat_hit[2];
@@ -14108,6 +14180,66 @@ void GameGunneryHost::Impl::seat_artillery_lead_009578c3(const GameGunRow& gun,
     done("PlayerGunSeat::artillery_hit_lead_other", 0x00957a00u);
 }
 
+// 00953B80: [unit+4A0h] = 0, then OR [[dev+3F4h]+95h] ("AddsSpeed") over the
+// unit's kind-20h guns of Function 0, 1, 5 and 6.
+bool GameGunneryHost::Impl::unit_adds_speed_04a0(std::size_t unit) {
+    for (const GameGunRow& gun : guns) {
+        if (gun.unit_index != unit) continue;
+        if (!(gun.category == 0 || gun.category == 1 || gun.category == 5
+              || gun.category == 6)) {
+            continue;
+        }
+        auto found = adds_speed_by_device.find(gun.device_class);
+        if (found == adds_speed_by_device.end()) {
+            found = adds_speed_by_device.emplace(gun.device_class,
+                lua.read_device_class_bool(gun.device_class, "AddsSpeed", false)).first;
+        }
+        if (found->second) return true;
+    }
+    return false;
+}
+
+// Packet g53_seat_target_intercept: 00957BD0's target branch, 00957C29..
+// 00957CAB, for the resolved `target`. `aim` receives the intercept point;
+// 00957CAB JMPs to the epilogue 009580C2, past the range sphere and the sea cut.
+void GameGunneryHost::Impl::seat_target_intercept_00957c29(const GameGunRow& gun,
+    const UnitState& state, std::size_t unit, std::size_t target, const float right[3],
+    const float up[3], const float forward[3], const float origin[3], float aim[3]) {
+    // 00957C38..00957C8C: the shooter at gun+FCh, the speed [[gun+3F8h]+34h]+50h.
+    float muzzle[3];
+    gun_muzzle_point(gun, state, right, up, forward, origin, muzzle);
+    const float speed = gun.muzzle_speed;
+    // 00957C2F: [unit+4A0h] set takes the unit's vtable[34h], else 00F87574.
+    float shooter_vel[3] = {0.0f, 0.0f, 0.0f};
+    if (unit_adds_speed_04a0(unit)) {
+        unit_velocity(unit, shooter_vel);
+        ++seat_target_adds_speed;
+    }
+    float tr[3], tu[3], tf[3], target_pos[3];
+    unit_pose(target, tr, tu, tf, target_pos);
+    // 00901C20 as seat_artillery_lead_009578c3 builds it. LABELLED: below the
+    // 2.0 speed floor (00CE3958) the target position.
+    for (int i = 0; i < 3; ++i) aim[i] = target_pos[i];
+    ++seat_target_aims;
+    if (!(speed >= 2.0f)) return;
+    float v[3];
+    if (!(kAaTargetWorldVelocityBound && units.unit_linear_velocity(target, v))) {
+        const float s = units.unit_forward_speed_0092d730(target);
+        for (int i = 0; i < 3; ++i) v[i] = tf[i] * s;
+    }
+    aa_turn_average_00901c20(target, v);
+    float rel_v[3];
+    for (int i = 0; i < 3; ++i) rel_v[i] = v[i] - shooter_vel[i];
+    if (units.unit_is_kind_of(target, bsp::kUnitGunneryKindShipBase)) rel_v[1] = 0.0f;
+    const float span[3] = {target_pos[0] - muzzle[0], target_pos[1] - muzzle[1],
+                           target_pos[2] - muzzle[2]};
+    const float dist = length3(span);
+    float t = intercept_time_00901c20(span, rel_v, speed, dist);
+    t = aa_time_add_fix + t + (dist / 1000.0f) * aa_time_add_mul;
+    for (int i = 0; i < 3; ++i) aim[i] = target_pos[i] + rel_v[i] * t;
+    done("PlayerGunSeat::target_intercept", 0x00957ca6u);
+}
+
 // Packet cc9_player_gun_seat_artillery: the group 3 arm of 00959C20
 // (00959F72..0095A1C7) for one unit. docs/PLAYER_GUN_SEAT.md section 7.
 void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
@@ -14246,6 +14378,30 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
 void GameGunneryHost::apply_gun_aim_message_00959c20(std::size_t unit_index,
                                                      const GunAimMessage79& message) {
     impl_->apply_gun_aim_message(unit_index, message);
+}
+
+// 00953B80 (cc9-gunnery53, PLAYER_GUN_SEAT 7.6): for each kind-20h gun of
+// Function 0/1/5 the range is [[[dev+3F4h]+74h]+34h]+60h; Function 6 uses +7Ch,
+// its Bullet[2]. [unit+49Ch] is the largest, squared. This host's range is
+// gun.max_range (the +60h the seat ray reads) and SecondAmmo::max_range.
+float GameGunneryHost::unit_gun_range_sq_049c(std::size_t unit) const {
+    float best = 0.0f;
+    for (std::size_t g = 0; g < impl_->guns.size(); ++g) {
+        const GameGunRow& gun = impl_->guns[g];
+        if (gun.unit_index != unit) continue;
+        float range = 0.0f;
+        if (gun.category == 0 || gun.category == 1 || gun.category == 5) {
+            range = gun.max_range;
+        } else if (gun.category == 6) {
+            const auto second = impl_->second_ammo_by_gun.find(g);
+            range = second != impl_->second_ammo_by_gun.end() ? second->second.max_range
+                                                              : gun.max_range;
+        } else {
+            continue;
+        }
+        if (best < range) best = range;
+    }
+    return best * best;
 }
 
 // cc9-gunnery53 (SHIP_AI_OPEN_ITEMS 296.8): 0095AC1D's device walks, reached
@@ -15120,9 +15276,13 @@ void GameGunneryHost::fixed_step(float step_seconds) {
         }
     }
     host.run_gun_aim_and_fire(step_seconds);
+    // Packet cc13-jm08: projectile and plane-crash hits are pushed by the wave
+    // ticks (006E6490 / 0070C370 / 006E1300, 007CE040) and drained at row 6.
+    host.death_phase = bsp::DeadLeaderDeathPhase::BeforePump;
     host.run_projectiles(step_seconds);
     // Packet cc9_lua53_kamikaze_impact: 007C0910 (a census while OFF).
     host.run_plane_crash_sweeps_007c0910(step_seconds);
+    host.death_phase = bsp::DeadLeaderDeathPhase::Unmapped;
     if constexpr (kKamikazeContactDetonationBound) {
         host.run_kamikaze_contacts(step_seconds);
     }
@@ -15812,6 +15972,14 @@ bool GameGunneryHost::director_allow_move_3d(std::size_t unit_index) const noexc
     return !row.set || row.allow_move;
 }
 
+void GameGunneryHost::copy_director_allow_bytes_00720450(std::size_t dst, std::size_t src) {
+    // 0072045D..00720468: MOVZX [src+3Ch] -> [dst+3Ch], [src+3Dh] -> [dst+3Dh].
+    const std::size_t need = std::max(dst, src) + 1;
+    if (impl_->director_stance_by_unit.size() < need) impl_->director_stance_by_unit.resize(need);
+    impl_->director_stance_by_unit[dst] = impl_->director_stance_by_unit[src];
+    impl_->done("CommandControllerBase::copy_allow_bytes", 0x0072045du);
+}
+
 void GameGunneryHost::kill_unit_00926d90(std::size_t unit_index, int cause) {
     if (unit_index >= impl_->unit_state.size()) return;
     // The funnel is the one a gunfire death takes (cause 1, 0077D1A0 -> 00926C80).
@@ -16125,19 +16293,27 @@ bool GameGunneryHost::bomb_drop_scatter_bound() noexcept { return kBombDropScatt
 
 bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
                                         const float predicted_impact[3],
-                                        float release_fall_time, int skill_row) {
+                                        float release_fall_time, int skill_row,
+                                        ParatrooperRelease* paratrooper) {
     Impl& h = *impl_;
     const GameGunRow* chosen = nullptr;
     for (const GameGunRow& gun : h.guns) {
         if (gun.unit_index != unit_index) continue;
-        if (!bsp::ordnance_has_general_bomb_2ah(gun.ordnance)) continue;
+        // Packet cc13-para2: the 31h rack's own gun (006E4D50 runs per rack).
+        if (paratrooper != nullptr ? !bsp::ordnance_has_paratrooper_31h(gun.ordnance)
+                                   : !bsp::ordnance_has_general_bomb_2ah(gun.ordnance)) continue;
         chosen = &gun;
         break;
     }
     if (chosen == nullptr) {
-        ++h.summary.bomb_drop_refusals;
+        if (paratrooper == nullptr) ++h.summary.bomb_drop_refusals;
         return false;
     }
+    // Packet cc13-para2: a 31h round takes the cone and drift draws only under
+    // its own sub-switch (bsp::kParatrooperReleaseScatterDrawBound).
+    const bool scatter = paratrooper != nullptr
+        ? (kBombDropScatterBound && bsp::kParatrooperReleaseScatterDrawBound)
+        : kBombDropScatterBound;
 
     float right[3], up[3], forward[3], origin[3];
     h.unit_pose(unit_index, right, up, forward, origin);
@@ -16168,7 +16344,7 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
         }
     }
     float drift[3] = {0.0f, 0.0f, 0.0f};
-    if (kBombDropScatterBound) {
+    if (scatter) {
         // 006E4F7A..006E4F8A: s = Throw, times ThrowMul for an AI-held plane with a bot.
         // 00999B70 reads the bot's PilotBot row at its level (bot+34h, 007B8AE0).
         const int level = skill_row >= 0 ? skill_row : h.units.skill_level(unit_index);
@@ -16263,6 +16439,23 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
         const double ang = std::atan(static_cast<double>(t));
         if (ang > h.scatter_max_angle) h.scatter_max_angle = ang;
         h.done("Rack::drop_dispersion_006e4f91", 0x006e4f91u);
+    }
+
+    if (paratrooper != nullptr) {
+        // Packet cc13-para2: the round is the units host's (bsp::cc13_paratrooper);
+        // 006E1F00 copies the drift to block+38h (round+348h) with y zeroed.
+        for (int i = 0; i < 3; ++i) {
+            paratrooper->position[i] = origin[i];
+            paratrooper->velocity[i] = velocity[i];
+        }
+        paratrooper->drift[0] = drift[0];
+        paratrooper->drift[1] = 0.0f;
+        paratrooper->drift[2] = drift[2];
+        paratrooper->bullet_class = chosen->bullet_class;
+        paratrooper->owner_side = h.units.unit_side_0054(unit_index);
+        ++h.summary.paratrooper_releases;
+        h.done("Rack::paratrooper_release_006e4d50", 0x006e4d50u);
+        return true;
     }
 
     GameProjectileRow shot;
@@ -16573,6 +16766,11 @@ void GameGunneryHost::report() {
                 host.seat_lead_ship, host.seat_lead_turned, host.seat_lead_other,
                 host.seat_lead_adds_speed);
         }
+        host.log.notef("summary mission gunnery seat target intercept messages=%llu "
+            "unresolved=%llu aims=%llu adds_speed=%llu bound=%d (00957C29 / 00901C20, "
+            "packet g53_seat_target_intercept)",
+            host.seat_target_messages, host.seat_target_unresolved, host.seat_target_aims,
+            host.seat_target_adds_speed, kPlayerGunSeatTargetInterceptBound ? 1 : 0);
         host.log.notef("summary mission gunnery death route calls=%llu reported=%llu "
             "child_triggers=%llu loss_report_calls=%llu loss_reports side0=%llu side1=%llu "
             "limbo_pages=%llu bound=%d (00959450, packet cc9_unit_death_route)",
@@ -17407,6 +17605,10 @@ void GameGunneryHost::report() {
         host.pc_hits_98, host.pc_hits_99, host.pc_hits_other, host.pc_same_squadron,
         host.pc_land_hits, host.pc_submerged, host.pc_surface_cuts, host.pc_cooldown_steps, host.pc_impacts,
         host.pc_blast_records, host.pc_blast_damage, bsp::kPlaneCrashSweepBound ? 1 : 0);
+    if constexpr (bsp::kPlaneCrashConstructCooldownCc13Bound) {
+        host.log.notef("summary mission gunnery plane crash construct cooldown arms=%llu "
+            "(007CFE78 1.0f, packet cc13-cool9dc)", host.pc_construct_cooldown_arms);
+    }
     host.log.notef("summary mission gunnery ground target origin aims=%llu bound=%d "
         "(006DF520 with 0042D810, packet cc9_ground_target_aim_point)",
         host.ground_origin_aims, kArtilleryGroundOriginAimBound ? 1 : 0);

@@ -54,6 +54,11 @@
 #include "bsp/game_hosts_init_tail.hpp"
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_singletons.hpp"
+#include "bsp/native_loading_queue_owner.hpp"
+#include "bsp/native_render_service_base.hpp"
+#include "bsp/native_shader_preload.hpp"
+#include "bsp/game_native_string_process.hpp"
+#include "bsp/singleton_lifetime.hpp"
 #include "bsp/game_observer_runtime.hpp"
 #include "bsp/game_pending_entity_runtime.hpp"
 #include "bsp/game_hosts_mission.hpp"
@@ -80,6 +85,12 @@ namespace bsp::game {
 // Harness only (src/game_hosts_mission.cpp): --stop-after-end has stopped the mission.
 bool harness_stopped_after_end() noexcept;
 namespace {
+
+// 00BF55BE/00BF6989 array services for the stack Application's +08 vector.
+void* native_application_allocate(std::uint32_t size) {
+    return singleton_lifetime_allocate({SingletonAllocationKind::object, size, size});
+}
+void native_application_free(void* p) { singleton_lifetime_free(p); }
 
 // Verified loader-zero CRT publication. Process lifetime is required because
 // other recovered arithmetic can run after the sound aggregate is destroyed.
@@ -1183,6 +1194,15 @@ void GameFrameHost::tick_vfs_providers() {
 }
 
 void GameFrameHost::update_loading_queue() {
+    if constexpr (kLoadingQueueCc15Bound) {
+        if (loading_queue_manager_ != nullptr && loading_queue_publication_ != nullptr) {
+            // 00737A50: ECX = 004FDE20(), then 00509190.
+            update_native_loading_queue_00509190(get_native_loading_queue_owner_004fde20(
+                *loading_queue_manager_, *loading_queue_publication_));
+            log_.implemented("ApplicationFrameHost::update_loading_queue", "004fde20");
+            return;
+        }
+    }
     log_.unimplemented("ApplicationFrameHost::update_loading_queue", "004fde20");
 }
 
@@ -2152,6 +2172,17 @@ void GameStartupHost::publish_game_resource_factory() {
 }
 
 void GameStartupHost::application_construct() {
+    if constexpr (kApplicationCc15Bound) {
+        auto& process = game_native_string_process();
+        if (!process.claim_application_domain())
+            throw std::logic_error("00737970: the native Application domain was already claimed");
+        NativeApplicationSingletonBaseContext context{singletons_->manager_publication_01090aa0(),
+            process.application_00e1ae90()};
+        construct_native_application_00737970(native_application_, context);
+        native_application_live_ = true;
+        log_.notef("native application constructed: storage=%p e1ae90=%p", native_application_,
+            process.application_00e1ae90());
+    }
     // 00737970 stores 1 at +18h and 0 at +19h/+1Ah, which is ApplicationFrameState's
     // default. The remaining subsystem pointers at +4h..+14h are not reconstructed.
     log_.implemented("StartupHost::application_construct", "00737970");
@@ -2812,6 +2843,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
 
     frame_host_ = new GameFrameHost(log_, require_frame_clock_context(), *platform_, *loop_, game_state_, profiler_,
         menu_, *vfs_, settings_process_->online_00f8abe8());
+    frame_host_->bind_loading_queue(singletons_->manager_publication_01090aa0(),
+        singletons_->loading_queue_publication_00e18d4c());
     std::function<void(IDirect3DDevice9&)> capture;
     if (!options_.screenshot_path.empty()) {
         GameFrontendHost* frontend_host = frontend_;
@@ -2978,6 +3011,21 @@ void GameStartupHost::application_shutdown() {
 }
 
 void GameStartupHost::application_destruct() {
+    if constexpr (kApplicationCc15Bound) {
+        if (native_application_live_) {
+            auto& process = game_native_string_process();
+            NativeApplicationSingletonBaseContext context{singletons_->manager_publication_01090aa0(),
+                process.application_00e1ae90()};
+            const NativeApplicationPointerVectorAllocation allocation{
+                &native_application_allocate, &native_application_free};
+            // 008F8444: ECX = the stack Application, 007379A0.
+            retire_native_application_007379a0(native_application_,
+                *reinterpret_cast<NativeApplicationPointerVectorStorage*>(native_application_ + 2),
+                allocation, context);
+            native_application_live_ = false;
+            log_.notef("native application retired: e1ae90=%p", process.application_00e1ae90());
+        }
+    }
     log_.implemented("StartupHost::application_destruct", "008f8444");
     constructed_ = false;
 }

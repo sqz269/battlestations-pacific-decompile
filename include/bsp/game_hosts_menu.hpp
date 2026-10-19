@@ -203,6 +203,9 @@ public:
     bool in_game_screen_applied(int slot);
     // Packet cc9_screen_46h: the slot holds a registered HUD screen.
     bool in_game_screen_registered(int slot);
+    // The HUD calls this on each frame screen 2Eh's 005484F0 runs, so the helm
+    // `input` line can report edges and held frames that no 005484F0 read.
+    void note_screen_2eh_ran();
     // The sprite bridge and page owner. The HUD's two world screens draw through
     // it, and it is this object's for the whole run.
     GameFrontendHost& frontend() const noexcept;
@@ -237,5 +240,26 @@ private:
 // unless a helm line asks, so default runs are unchanged. Returns false when
 // refused.
 bool inject_input_action_hold(int action, unsigned frames);
+
+// Packet cc13-helmaim: the helm `aim <yaw> <pitch>` line. It sets a target for
+// the ship camera mover's yaw (+384h) and pitch (+388h), in radians. The HUD's
+// 0051F050 reaches the target through the input manager's look axes
+// ([input+4]+1584h / +15B4h), the path a mouse move takes, and clears it once
+// both angles are there. Nothing sets a target unless a helm line asks, so
+// default runs read zero axes, as before.
+void inject_view_aim(float yaw, float pitch);
+// The pending target, if any.
+bool injected_view_aim(float& yaw, float& pitch);
+void clear_injected_view_aim();
+// Packet cc13-aimunit: `aim unit <name> [pitch]`. From the line's frame until
+// the next `aim` line, the HUD re-aims the look every frame at unit row `unit`'s
+// current position. The pitch is fixed when `has_pitch`, or else aimed at the
+// unit's origin. A plain inject_view_aim ends the track.
+void inject_view_aim_track(std::size_t unit, bool has_pitch, float pitch);
+// The active track, if any.
+bool injected_view_aim_track(std::size_t& unit, bool& has_pitch, float& pitch);
+void clear_injected_view_aim_track();
+// Bumped by every inject_view_aim_track, so the HUD can tell a new track apart.
+unsigned injected_view_aim_track_serial();
 
 }  // namespace bsp::game

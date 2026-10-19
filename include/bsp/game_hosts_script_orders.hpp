@@ -309,7 +309,10 @@ inline constexpr bool kPilotMoveOnPathBound = true;
 // (008A7200) fires the unit's torpedo guns through 00730160, all of them or
 // only the first when argument 1 is true (GameGunneryHost::
 // force_torpedo_fire_008a7200). False: the native stays an unimplemented record.
-inline constexpr bool kNavigatorForceTorpedoBound = false;
+// ON by mechanism (cc9-gunnery53, docs/UNIT_WEAPON_DEVICES.md): JM06's two
+// luaJM6SubShot calls fire in the reference env and JM06 still completes
+// (772.93 -> 790.93 s); the default env does not reach them and is identical.
+inline constexpr bool kNavigatorForceTorpedoBound = true;
 
 // Packet cc9_frame_delta_jitter, docs/GAME_EXECUTABLE.md. True: the script think
 // walk 00929460 runs once per 0.05f fixed step, as the image's fan-out row 8 does
@@ -835,9 +838,13 @@ public:
     // units host, so the creation lands here. `wing_count_out` carries the count
     // the deck's plane-count reader then reports for the new squadron.
     // Returns the entity id (unit index plus one), or 0 when nothing was made.
+    // `bag_state` is the request's `State` (7 on 006C5050's flag arm) and
+    // `ceiling_210` the tuning block's Dynamics/Ceiling; both are read only under
+    // kAirOpsLaunchFlagAirborneBound (include/bsp/air_ops_launch_flag_cc13.hpp).
     std::uint32_t create_air_ops_squadron_006c5050(std::uint32_t vehicle_class,
         std::int32_t wing_count, std::int32_t equipment, const std::string& home_base,
-        std::string& created_name, std::int32_t& wing_count_out);
+        std::string& created_name, std::int32_t& wing_count_out,
+        std::int32_t bag_state = 1, float ceiling_210 = 0.0f);
     // Packet cc9_lua52_kamikaze_wiring: 006FEC00's spawn (006FED18-006FEED3), the
     // released Ohka/Funryu. The bag goes to the same 004F0AD0 creator as above,
     // with WingCount 1 and State 7 at the round's matrix; the caller queues the

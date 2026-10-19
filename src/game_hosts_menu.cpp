@@ -2,6 +2,7 @@
 // pump and the main menu. See include/bsp/game_hosts_menu.hpp for the address
 // list and the evidence.
 #include "bsp/game_hosts_menu.hpp"
+#include "bsp/game_hosts_scene_contents.hpp"
 
 #include "bsp/frontend_entry.hpp"
 #include "bsp/frontend_managers.hpp"
@@ -16,6 +17,7 @@
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/game_hosts_hud_world.hpp"
 #include "bsp/game_hosts_mission.hpp"
+#include "bsp/game_profile_owner.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/input_tick.hpp"
 #include "bsp/main_menu_screens.hpp"
@@ -178,6 +180,12 @@ struct GameMenuHost::Impl {
     // per action, and the frames of hold left (0: released, or let go).
     std::map<int, InputActionRecord> injected_actions;
     std::map<int, unsigned> injected_frames_left;
+    std::map<int, unsigned> injected_frames_without_2eh;   // this hold's frames 005484F0 skipped
+    std::map<int, unsigned long long> injected_edge_frame;  // the frame of the last rising edge
+    std::map<int, bool> injected_held_last_frame;
+    // Set by the HUD when screen 2Eh's 005484F0 runs (note_screen_2eh_ran), and
+    // cleared at the next frame's input prologue.
+    bool screen_2eh_ran{false};
 
     // --- the state-request ring, game+5D8h ---------------------------------
     GameStateRequestQueue requests{};
@@ -211,6 +219,11 @@ struct GameMenuHost::Impl {
     MainMenuPathState path{};
     MainMenuPathStep path_step{MainMenuPathStep::PressStartPoll};
     bool pumped_this_frame{false};
+
+    // --- cc15 lane L2: the profile block game+650h and the hint tracker
+    // [00E198D0]. Declared before the HUD and mission hosts that borrow them.
+    GameProfileOwner profile{log};
+    GameHintTrackerSlot hint_tracker{log, profile};
 
     // --- milestone 2h, the in-mission HUD screens ---------------------------
     std::unique_ptr<GameHudHost> hud;
@@ -501,7 +514,12 @@ public:
 
     // --- the profile block at game+650h -------------------------------------
     void reset_profile_007fdb20() override {
-        owner_.log.unimplemented("PressStartScreen::reset_profile", "007fdb20");
+        if constexpr (kProfileOwnerCc15Bound) {
+            owner_.profile.reset_to_defaults_007fdb20();
+            owner_.log.implemented("PressStartScreen::reset_profile", "007fdb20");
+        } else {
+            owner_.log.unimplemented("PressStartScreen::reset_profile", "007fdb20");
+        }
     }
     void reset_award_tracker_004374f0() override {
         owner_.log.unimplemented("PressStartScreen::reset_award_tracker", "004374f0");
@@ -733,7 +751,13 @@ public:
         owner_.vfs.close_title_fileblock();
     }
     void reset_player_profile() override {
-        owner_.log.unimplemented("TitleInit::reset_player_profile", "007fdb20");
+        if constexpr (kProfileOwnerCc15Bound) {
+            // 004C9AFA: ECX = game+650h. Destroys and re-allocates +64h empty.
+            owner_.profile.reset_to_defaults_007fdb20();
+            owner_.log.implemented("TitleInit::reset_player_profile", "007fdb20");
+        } else {
+            owner_.log.unimplemented("TitleInit::reset_player_profile", "007fdb20");
+        }
     }
     void load_texture_atlas(const char* path) override {
         // 00af0060 on the atlas manager 00f8c26c. The sprite bridge parses the
@@ -1452,6 +1476,17 @@ public:
         // 004e3aa0's first store is game+5D4h = 3.
         owner_.state.value = kGameStateFrontEndInit;
         owner_.log.implemented("FrontEndShell::game_on_init", "004e3ac2");
+        // cc15-ob4 (kSceneDatabaseCc15Bound): 0046F350 at 004E3E60, the scene
+        // database at [00E18680] (docs/CC15_OBJECT_SCENE_DATABASE.md).
+        // Image order: 004E3E60 runs before the tracker's 004E3EFB.
+        if constexpr (kSceneDatabaseCc15Bound) scene_database_create_0046f350(owner_.log);
+        if constexpr (kHintTrackerCc15Bound) {
+            // 004E3EFB: the first 004E1CA0 builds the tracker, then 006921B0
+            // reloads the hint tables on it. The reload is not hosted, so the
+            // definition map +30h stays empty.
+            owner_.hint_tracker.get_004e1ca0();
+            owner_.log.unimplemented("OnInit::reload_hint_tables", "006921b0");
+        }
     }
     void poll_platform_session_events() override {
         owner_.log.unimplemented("FrontEndShell::poll_platform_session_events", "004db290");
@@ -1792,6 +1827,12 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
     // Milestone 2h: the in-mission HUD registers into the same registry this
     // object owns, so the HUD host is built here and handed to the mission.
     impl_->hud = std::make_unique<GameHudHost>(log, *this);
+    if constexpr (kProfileOwnerCc15Bound) {
+        // The profile constructor 007FEE20 runs 007FDB20 at 007FEF9F while
+        // 004DDB90 builds the game, so +64h exists before any title reset.
+        impl_->profile.reset_to_defaults_007fdb20();
+        log.implemented("Game::construct_profile_reset", "007fef9f");
+    }
     if (!menu_select.empty()) {
         impl_->mission = std::make_unique<GameMissionHost>(log, vfs, scripts, frontend,
             locale, std::move(menu_select), mission_frames, profiler, std::move(language),
@@ -1800,6 +1841,7 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
             std::move(order_command), std::move(order_command_target), order_speed,
             order_speed_set);
         impl_->mission->bind_observer_runtime(singletons.observers());
+        impl_->mission->bind_profile(impl_->profile, impl_->hint_tracker);
     }
 }
 
@@ -1883,6 +1925,8 @@ bool GameMenuHost::in_game_screen_applied(int slot) {
 bool GameMenuHost::in_game_screen_registered(int slot) {
     return impl_->screen_at(slot) != nullptr;
 }
+
+void GameMenuHost::note_screen_2eh_ran() { impl_->screen_2eh_ran = true; }
 
 GuiLayoutPage* GameMenuHost::in_game_page(int slot, const std::string& page_name) {
     Impl& host = *impl_;
@@ -2006,6 +2050,65 @@ bool inject_input_action_hold(int action, unsigned frames) {
     return true;
 }
 
+namespace {
+struct InjectedViewAim {
+    bool active{false};
+    float yaw{0.0f};
+    float pitch{0.0f};
+    // `aim unit`: the tracked row and its optional fixed pitch.
+    bool tracking{false};
+    std::size_t track_unit{0};
+    bool track_has_pitch{false};
+    float track_pitch{0.0f};
+    unsigned track_serial{0};   // bumped by every `aim unit` line
+};
+InjectedViewAim& injected_view_aim_state() {
+    static InjectedViewAim aim;
+    return aim;
+}
+}  // namespace
+
+void inject_view_aim(float yaw, float pitch) {
+    InjectedViewAim& aim = injected_view_aim_state();
+    aim.active = true;
+    aim.yaw = yaw;
+    aim.pitch = pitch;
+    aim.tracking = false;   // the next `aim` line ends an `aim unit` track
+}
+
+void inject_view_aim_track(std::size_t unit, bool has_pitch, float pitch) {
+    InjectedViewAim& aim = injected_view_aim_state();
+    aim.active = false;
+    aim.tracking = true;
+    aim.track_unit = unit;
+    aim.track_has_pitch = has_pitch;
+    aim.track_pitch = pitch;
+    ++aim.track_serial;
+}
+
+unsigned injected_view_aim_track_serial() { return injected_view_aim_state().track_serial; }
+
+bool injected_view_aim_track(std::size_t& unit, bool& has_pitch, float& pitch) {
+    const InjectedViewAim& aim = injected_view_aim_state();
+    if (!aim.tracking) return false;
+    unit = aim.track_unit;
+    has_pitch = aim.track_has_pitch;
+    pitch = aim.track_pitch;
+    return true;
+}
+
+void clear_injected_view_aim_track() { injected_view_aim_state().tracking = false; }
+
+bool injected_view_aim(float& yaw, float& pitch) {
+    const InjectedViewAim& aim = injected_view_aim_state();
+    if (!aim.active) return false;
+    yaw = aim.yaw;
+    pitch = aim.pitch;
+    return true;
+}
+
+void clear_injected_view_aim() { injected_view_aim_state().active = false; }
+
 // The executable's action table holds one record, press-start 4Eh. Every other
 // index is a record nothing starts, so both rules answer false for it, unless a
 // helm `input` line holds it (inject_input_action_hold).
@@ -2052,18 +2155,45 @@ void GameMenuHost::frame(float raw_delta, unsigned long long frame_index) {
     for (const auto& request : pending_input_holds()) {
         host.injected_actions[request.first];
         host.injected_frames_left[request.first] = request.second;
+        host.injected_frames_without_2eh[request.first] = 0;
         host.log.notef("helm input action 0x%02X held for %u frame(s) from frame %llu",
             static_cast<unsigned>(request.first), request.second, frame_index);
     }
     pending_input_holds().clear();
+    // Screen 2Eh's 005484F0 (the HUD's weapon-group reader) runs only while screen
+    // 46h's update passes its gate (0064D62B wanted_04 / has_unit_1c): on USN01,
+    // frames ~410-1823, until the script's SetSelectedUnit. The HUD reports each
+    // frame it ran (note_screen_2eh_ran), after this prologue, so the previous
+    // frame's held actions are judged here, one frame late. An edge or held frame
+    // that no 005484F0 read is logged instead of being dropped silently.
+    const bool screen_2eh_ran_last_frame = host.screen_2eh_ran;
+    host.screen_2eh_ran = false;
     for (auto& entry : host.injected_actions) {
-        unsigned& left = host.injected_frames_left[entry.first];
+        const int action = entry.first;
+        if (host.injected_held_last_frame[action] && !screen_2eh_ran_last_frame) {
+            ++host.injected_frames_without_2eh[action];
+            if (host.injected_edge_frame[action] + 1 == frame_index) {
+                host.log.notef("helm input action 0x%02X edge on frame %llu lost: "
+                    "screen 2Eh's 005484F0 did not run", static_cast<unsigned>(action),
+                    frame_index - 1);
+            }
+        }
+        unsigned& left = host.injected_frames_left[action];
+        if (left == 0 && host.injected_held_last_frame[action]
+            && host.injected_frames_without_2eh[action] > 0) {
+            host.log.notef("helm input action 0x%02X hold ended on frame %llu: %u held "
+                "frame(s) without screen 2Eh's 005484F0", static_cast<unsigned>(action),
+                frame_index - 1, host.injected_frames_without_2eh[action]);
+        }
+        host.injected_held_last_frame[action] = left > 0;
         if (left > 0) {
             if (action_down_current(entry.second)) {
                 continue_action_00a919f0(entry.second, 1.0f);
             } else {
                 const InputEffectParam no_param{};
                 start_action_00a92aa0(entry.second, 1.0f, no_param, nullptr);
+                host.injected_edge_frame[action] = frame_index;
+                host.injected_frames_without_2eh[action] = 0;
             }
             --left;
         } else {
