@@ -12642,6 +12642,12 @@ void GameUnitsHost::Impl::role_message_4b_00780162(std::size_t index, std::uint3
             set_role(i, 8);
             ++role_releases;
         }
+        // 00780393..007803A8: a changed holder hands the message to the unit's
+        // HandleMessage (0077FE80 -> vtable[164h] -> 00821E80 -> 0095ABE0),
+        // whose 4Bh arm walks the devices. kRoleOwnerDeviceWalkBound.
+        if (kRoleOwnerDeviceWalkBound && u.current_roles_01ac[i] != holder && gunnery) {
+            gunnery->role_owner_device_walk_0095ac1d(index, mask, player_slot, take == 1);
+        }
     }
     done("Session::entity_role_message_4b", 0x00780162u);
 }
