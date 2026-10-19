@@ -1,0 +1,50 @@
+#pragma once
+// Packet cc13-landc: adoption batch C, the land / park / re-takeoff chain. Each
+// switch below is OFF; the host sites are in src/game_hosts_units.cpp.
+// The names are hypotheses, not recovered symbols.
+
+namespace bsp {
+
+// 007C11E0 BSP_Plane_NotifyFlightState(0) at the batch's transition sites:
+// 007C1680 (5 -> 4), 007CC7A0 (state 2), 007CC820 (state 1, and its copy in
+// 007CC8B0's stock return), 007CB5F0 (the touchdown's authority arm, 7 -> 4),
+// 007C5F60 (state 2 on the launch spot) and 007CA3F0 (through 007C1430,
+// 4 or 5). Every one of them PUSHes 0 (007C16E8, 007CC7DE, 007CC853,
+// 007CB72F, 007C6278, and 007C14B4 with EBX = 0).
+// Body 007C11E0-007C1429, immediate == 0, with s = +900h after the store:
+//   a = !(s == 6 || (s == 7 && !(5.0f >= +908h)))  (007C11E9-007C1208; JC, so a
+//       NaN +908h gives a = 0)
+//   b = s in {7, 6, 4, 5}                          (007C120A-007C1223)
+//   [+DECh]+29h (the gear channel, host channel_b) = a and [+DECh]+45h (the
+//   wing channel, host channel_a) = b, each setting its moving byte when it
+//   changes, and either moving byte sets +11h (007C12E0-007C1314). The values
+//   are not touched.
+//   s none of 7/6/4/5/3 (007C1318-007C1345): +9F0h = 0.0f, the flight
+//   controller's +3Ch..+44h and +48h..+50h = the vector at 00F87574, then
+//   007D9C80, 007DDEA0 and 007EB380(0.0f) (007C134B-007C13C5).
+//   Tail: s in {7, 6, 3} -> +C0Ch = 1 (007C13CB-007C140C; the 4 arm is not
+//   reachable there); s == 1, s == 0 or +5Ch == 0 -> 007BC550 (007C1412-
+//   007C1423), which for s 0/1 disables the member (00922F80(0), 00951F40(0))
+//   and otherwise, with +5Ch clear, enables it (00922F30(0), 00951F40(1),
+//   00779C60(1.0f)), both only with the Lua self +4A4h set.
+// True: the host runs that body at those sites (GameUnitsHost::Impl::
+// flight_state_notify_007c11e0). The per-step poll wing_fold_notify_007c11e0
+// still covers the other call sites; a notify here records the state it saw,
+// so the poll does not repeat it.
+// False: the sites record 007C11E0 and the poll sets the wing target one fixed
+// step later, as before.
+inline constexpr bool kPlaneFlightStateNotifyCc13Bound = false;
+
+// 007CC8B0's Kill(plane, 5) (007F1D57 -> 00926D90 -> 00926C80 Destroy), whose
+// destroy flush dispatches vtable[7Ch] = 007BCAA0 BSP_Plane_OnDestroyed for a
+// plane (00D19D28+7Ch). 007BCAA0 begins with 00BD2F10(ECX = 0, [00E18718],
+// [00E18714]) at 007BCABB, stream 0, stored at +C14h (007BCAC0): the
+// planepartclasses.lua DeadEngineFireDelay pair, which 004A9BD0 reads
+// (004AA9BD / 004AAA57).
+// True: the stock return takes that draw through the gunnery host's stream-0
+// draw (death_mode_draw_00bd2f10(0, ...)). +C14h itself has no host field and
+// no reader on a retired plane, so only the draw is carried.
+// False: the retired plane draws nothing, as before.
+inline constexpr bool kPlaneRetireOnDestroyedDrawCc13Bound = false;
+
+}  // namespace bsp
