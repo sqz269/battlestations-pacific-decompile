@@ -20492,3 +20492,48 @@ Row `config/win_orders/usn12_l68_u12_e8.txt`, 36000 frames, reference env, fresh
     death on). That is the order effect 306.2 predicted, and it moves no state.
 - **Verdict.** This is the hitq flip, already judged faithful (306.2 / 306.6 and cc13 rev2). A one-hit timing change
   at 375 s cascades through a knife-edge surface battle. Nothing to fix, and main currently wins the row (1560.40 s).
+
+## 316. cc9-ships61 handoff (2026-10-19)
+
+**Landed** (all on main): SHIP_AI 311 (leak92 ON; 3E0h seed, ctor seeds + 364 sync, sinkleak ON) and 314 (arc-centre
+plan test + astern skip ON). LOMP10 p3_l10_b wins at 736.49 s on the arcplan build.
+
+**Answered for cc13 (w324, main 7f4f75b85, `local\s61_w_i18.log`, script `local\s61_w324.py`):**
+- Oma3 (IJN18): every step row with 324h at least 0.9 rad off 1D8h has w324=009EF8EE, the traffic clip. There are
+  29 such rows, about +1.07 rad off.
+- The separation turn 009DEE01 moves 324h by 0.22 rad at most.
+- Fletch6 never spawned within 20000 frames on that main (`local\s61_w_i18f.log`). IJN18 no longer fails near
+  500 s.
+- `s61_osc.py` counts the rudder DEMAND (blk+1D4h), not physical chatter. Any future census should count the
+  ring slot or smoothed_rudder instead.
+
+**JM08 (queue item 4), open.** The bunker premise is stale. On main 2c04701fd (`local\s61_b_j08.log`) bunker 05
+kills only #Y7 and Patrolboat 01. Helena, San Francisco and Stephen Potter kill the other 11 boats by 540 s, and
+the row fails at 1053.95 s ("HQ has been destroyed").
+- Variants come from `local\s61_j8mk.py` (orders in `local\s61_j8_<v>.txt`). All ran on main 7f4f75b85
+  (`local\s61_cur3_bin`), ref env, logs `local\s61_c_<row>.log`.
+- **d:** every boat order is held for 16000 frames. At frame 400 the boats instead move to y = -2000, about 1350 m
+  north of the bunker.
+  - The boats kill San Francisco and Helena.
+  - Every landing ship and transport dies by 1929 s.
+  - The Missouri survives and the row fails at 2523.39 s ("HQ has been destroyed").
+- **e:** d, plus the airfield's launches on the Missouri before frame 12000 retargeted to Helena.
+  - The Missouri dies at 475 s, to airfield sqn06.
+  - San Francisco, Stephen Potter, LSM 01/02 and LST 01/03 die.
+  - TT01, TT03, TT04 and LST 02 live to 3600 s: no end.
+- **f:** e, plus airfield class-154 strikes cycling those four from frame 14000.
+  - TT04 dies at 1446 s and LST 02 at 1672 s.
+  - Only USTroopTransport 01 and 03 are left: no end.
+  - All but one of the class-154 strikes are refused: 806 "no stock of the class" and 573 "slot not in state 1
+    or 5".
+  - **Next:** strike TT01 and TT03 with class 152 or other stocked classes (the frame-300 TT strikes use slot 1,
+    class 152), or with Fubuki/Isokaze before they die at about 680 s. Once primary 1 and 2 complete, phase 2
+    (the B-17 and C-47 waves) decides the result.
+
+**USNOS (queue item 3), parked.** gunnery55's attribution is in SHIP_AI 315: TT6's loss to the wave-1 level bomber
+#1.4 is faithful. The next plan moves TT6 out of that run before about 110 s and budgets the 4 slots per deck (314).
+Scripts: `local\s61_osmk.py` (c22/c23 on top of s60_osmk.py) and `local\s61_rows.ps1`.
+
+**Other open items:**
+- BSM01 HenryPT's moveto oscillation predates the arcplan pair; bisect1 owns it.
+- Oma3's 009EF8EE traffic-clip excursions are with cc13.
