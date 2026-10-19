@@ -53,6 +53,7 @@ def game_storers(vt):
 
 
 STARTS = sorted(info)
+STOPS = dict(c.execute("select func, stop from ranges"))
 STORERS = {}
 
 
@@ -81,7 +82,9 @@ def stored_vtables():
             if 0xCE2000 <= v < 0xE00000:
                 found.add(v)
                 va = base + lo + i
-                STORERS.setdefault(v, set()).add(STARTS[bisect.bisect_right(STARTS, va) - 1])
+                f = STARTS[bisect.bisect_right(STARTS, va) - 1]
+                if va < STOPS.get(f, f):                   # inside the body, not an undefined chunk after it
+                    STORERS.setdefault(v, set()).add(f)
     return found
 
 
