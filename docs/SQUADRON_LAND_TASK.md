@@ -18133,3 +18133,27 @@ Lane: LUA/PLANES, WINS keeper. Tree `J:\PROG\battlestations-pacific-decompile-cc
 queue over `l68_jobs.txt`; `l68_hold` pauses it, `l68_stop` ends it), `l68_addjob.ps1 [-Front]`, `l68_sum.py
 [pattern]`, `l68_scan.py <log> [regex] [--text Name]`, `l68_rows.txt` (extra rows). Variant `<v>` runs
 `local\l68_<v>\build\win32\Release\bsp_game.exe`.
+
+**Queue for cc9-lua69** (the lead's messages that arrived after the WINS entry above; in the lead's order):
+1. USN01 win check: cc9-gunnery52 saw `usn01_p8_u1_i` not complete in 30000 frames on a8d54817d. The lua68
+   re-time completed USN01 at 405.02 / 415.02 s on 03d3df7f8 with the row's plan (`l65_u1_g`, `l68_runs.ps1` row
+   `w_u01`); check which plan file gunnery52 ran, then run the row once on current main and bisect only if it fails.
+2. BSM09: `cc9-lua52\local\l67_b9_d1.txt` completes with kHelmPlaneMovetoBound ON (physics20: EndMission 408.02 s,
+   log `cc9-physics1\local\p20b_helm_bsm09d1.log`, stopped before the guard line). Commit it as
+   `config/win_orders/bsm09_l68_b9_d1.txt`, run reference and 20,3 with a longer `--stop-after-end`, confirm the
+   guard line, update the BSM09 row.
+3. kVehicleClassPreloadCc15Bound flip: confirming pair on BSM09 with b9_d1 (OFF vs ON, same main); cc15 saw 617 rows
+   purged, EndMission 411.02 s, 0 script_nil_reads / lua_errors. Leave kVehicleClassMovieStopPurgeCc15Bound OFF.
+4. kMissionRecordMergeBound flip: USN01 OFF vs ON (ON log has the `MissionRecord::commit_009205e0` dump line); fix
+   the OFF-branch comment "the increment at 00920604" to 009205FE in the same commit.
+5. HUD ship-screen apply-unit flip (kHudShipScreenApplyUnitBound + Lua + Widgets sub-switches), USN01 all OFF vs
+   all ON; keep the class+70h = row type_id caveat in the doc.
+6. JM08: cc13 showed the HQ dies to US naval gunfire (Missouri 16" 5605 HP, 5" 2125, Helena 1503, LST 427), sent by
+   prcpjm08.lua CheckAP1..6 `NavigatorAttackMove(..., HQ)` at 771 / 926, and audited it as faithful. Re-plan so the
+   CheckAP ships stay off Headquarter 01 (two tries at most); otherwise record JM08 as a faithful loss with log
+   `cc9-lua52\local\l68r_j8r2_m1_ref.log`.
+7. USN04 Blackout re-arm loop (usn_19_coralus.lua 569-586 re-calls Blackout every 2.5 s, resetting 005B9BA0's 3 s
+   countdown): verify the whole native path for a re-arm refusal before calling it a script knife edge.
+8. IJN08 reference (above), and the power-up item (check AddPowerup reach first).
+Main moved many times after 03d3df7f8 (physics, gunnery, SETCMD quantisation pending): re-time every row on one
+current main and note the base sha per row.

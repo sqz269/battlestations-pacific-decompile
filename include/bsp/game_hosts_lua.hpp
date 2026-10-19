@@ -1836,6 +1836,12 @@ public:
     // Row 15 (009273A0) of the fixed-step fan-out: each queued unit's notice runs
     // 0074FFE0 on every trigger whose entity target it is.
     void target_gone_drain_009273a0();
+    // Packet cc13-dead, under kLandConvoyDeadWired (include/bsp/land_convoy_dead_cc13.hpp):
+    // 00929800 on the LandConvoy marker named `convoy`, reached through 0077D270 ->
+    // 00929B60 when the convoy's destroy is flushed: `Dead` = true and `KillReason` =
+    // 00E0CF04[cause] on its self table. False when no convoy marker of that name
+    // has an own self table (00929800 returns when +178h is clear).
+    bool publish_land_convoy_dead_00929800(const std::string& convoy, int cause);
     // Packet cc9_unit_get_attack_target, under kLuaUnitGetAttackTargetBound.
     int run_unit_get_attack_target_008a6de0(lua_State* state, int argument_count);
     // Packet cc9_squadron_set_speed, under kLuaSquadronSetSpeedBound.

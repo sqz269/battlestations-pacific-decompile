@@ -3669,3 +3669,11 @@ Switch **kStrafeDrawCountBound**, committed OFF. It takes these draws under the 
 
 Prediction: with BSP_GUNNERY_RNG_STREAMS=1 (the reference env) each purpose has its own keyed stream. The aim draw is in a new key and moves nothing. The push draws advance `#tb308` / `#tb3e8`, so the next task install on that plane takes a later value of its think phase and ga timer, and only strafing planes that tightturn or flikflak can move. USNOS `l65_os_c1` strafes (planes #1.x on TroopTrans); USN04 and USN21 have no strafe task installs.
 - The remaining low item: the land standby 009B0FE0 / final 009B1ED0 +2B4h blend is per-op 24-bit in the image (009B11E9-1205, 009B1FC6-1FDF) and round-once double in the host. The dive goaway 009C4A40 ceiling NaN is not reachable without a NaN altitude. Both are left open.
+
+**91, result: kStrafeDrawCountBound ON.** Exes built at 188de95ef (`local\p22e_off`, `local\p22e_on`). USNOS `l65_os_c1` (`local\p22e_{off,on}_os.log`) took 38 draws and is gameplay identical, with the death rows, death modes and unit table all identical. USN01 `usn01_p8_u1_i` (`local\p22e_{off,on}_u1i.log`) is identical. Flipped ON: these are the image's draw counts.
+
+## 92. The land blend at 24 bits (cc9-physics22, 2026-10-18)
+
+009B11C4-009B1205 (the standby 009B0FE0) and 009B1FC2-009B1FDF (the final 009B1ED0) both compute +2B4h = a + [approach+4Ch] * (b - a). The sequence is FLD b, FLD a, FLD ST0, FSUBP ST2 (b - a), FLD +4Ch, FMULP ST2, FADDP, FSTP; on the main thread every op rounds to float. In the standby, a = 007C47F0 (LevelFlight x StallSpd) and b = class+190h; in the final, a is the local at [ESP+20h] and b is the 00419010 result.
+
+The host rounded the sum once: in the standby (b - a) was taken in float, in the final in double, and the product and sum in double. Switch **kLandBlendFloatOpsBound**, committed OFF, takes each op in float (`land_blend_2b4`). OFF keeps both old expressions exactly. Prediction: the commanded speeds differ by at most one float ulp, so landings move at the last bit at most; expected gameplay identical, or a sub-tick shift on carrier recoveries (USN01).

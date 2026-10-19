@@ -33,6 +33,7 @@
 #include "bsp/return_to_base.hpp"           // packet cc9_squadron_land_task
 #include "bsp/land_and_structures.hpp"      // packet cc9_land_convoy_movement
 #include "bsp/cc15_land_convoy.hpp"         // packet cc13-convoy
+#include "bsp/land_convoy_dead_cc13.hpp"    // packet cc13-dead
 #include "bsp/cc13_seg41_land_null_host.hpp"  // packet cc13-convoy (0074CD10, 00742210)
 #include "bsp/mission_camera.hpp"           // kWorldUp00f8758c
 #include "bsp/native_camera_plane_transform.hpp"
@@ -2734,7 +2735,7 @@ struct LandConvoyLifeState {
     std::vector<std::size_t> slots;  // +394h vector (+398h..+39Ch); npos = a null slot
     std::int32_t live_3bc{0};        // +3BCh
     bool killed_5f{false};           // +5Fh, set by 00926D90 on the convoy
-    bool pending_destroy_60{false};  // +60h; nothing destroys a convoy marker here
+    bool pending_destroy_60{false};  // +60h; stays false under either switch: kLandConvoyDeadWired models only 00929800's write, not 00926C80's +60h store
     std::int32_t cause_70{0};        // +70h
     bool kill_queued{false};         // on 00F899B4; its +080h (00742180) not yet run
     struct Member {
@@ -6773,7 +6774,23 @@ struct GameUnitsHost::Impl {
     // keys the host already uses (`#sta18`, `#tb308`, `#tb3e8`) and their
     // values are dropped (the pushed task's own +308h / +3E8h are not hosted).
     // False: no draw.
-    static constexpr bool kStrafeDrawCountBound = false;
+    static constexpr bool kStrafeDrawCountBound = true;   // ON: OCEAN_WAVE_FIELD 91 (identical)
+    // Packet p22_land_blend_ops (OCEAN_WAVE_FIELD 92). The land standby 009B0FE0
+    // (009B11E9-009B1205) and final 009B1ED0 (009B1FC6-009B1FDF) blend
+    // +2B4h = a + w * (b - a) on the x87 at the main thread's 24-bit precision:
+    // FSUBP, FMULP by approach+4Ch and FADDP each round to float. True: float per
+    // op. False: (b - a) in float, then a double product and sum rounded once.
+    static constexpr bool kLandBlendFloatOpsBound = false;
+    static float land_blend_2b4(float a, float w, float b) {
+        if constexpr (kLandBlendFloatOpsBound) {
+            const float diff = b - a;      // FSUBP
+            const float prod = w * diff;   // FMULP by +4Ch
+            return a + prod;               // FADDP, FSTP +2B4h
+        } else {
+            return static_cast<float>(static_cast<double>(a) +
+                                      static_cast<double>(w) * (b - a));
+        }
+    }
     unsigned long long strafe_draw_count_takes{0};
     unsigned long long moveto_c25_arm_applied{0};
     void moveto_c25_arm(GameUnitSlot& unit) {
@@ -13381,8 +13398,14 @@ public:
         life.killed_5f = true;                                       // 00926DF3
         if (!life.pending_destroy_60) {                              // 00926DEF
             life.cause_70 = stored;                                  // 00926E02
-            // OMITTED (labelled): 00926E05 vtable+70h(1), the entity's own
-            // notification; not modelled for a convoy marker.
+            // 00926E05 vtable+70h(1) is 0077D1A0 for a convoy, whose 00926C80
+            // Destroy (0077D243) queues it on the destroy list 00F899A8. With
+            // kLandConvoyDeadWired, that chain's end, 00929800's Lua `Dead` /
+            // `KillReason` write, is modelled in land_convoy_flush_009273a0.
+            // With it off, nothing of the call is modelled. Either way the rest
+            // (broadcast, FireEntityKilled, child loop, 00925C90, 0077D270's
+            // stores, 00927F60 / 00928100) is OMITTED (labelled): the list is
+            // in land_convoy_dead_cc13.hpp.
         }
         if (cause == 7) life.cause_70 = stored;                      // 00926E07..00926E0C
         // OMITTED (labelled): 00926E0F..00926E23, 00926D90(cause) on each child of
@@ -13723,6 +13746,16 @@ void GameUnitsHost::land_convoy_flush_009273a0() {
                 }
             }
             if (convoys.empty() && members.empty()) break;  // 009273D0 JE 009275BF
+            if constexpr (kLandConvoyDeadWired) {
+                // Packet cc13-dead: in the same 009273A0 pass, the whole destroy list
+                // (0092747F) runs before any of the kill list's +080h (0092751F); each
+                // convoy's 00926D90 queued its destroy at 00926E05 (0077D1A0 ->
+                // 00926C80), whose +7Ch chain ends in 00929800. So every queued
+                // convoy's Dead is written before the first 00742180. The rest of
+                // the destroy chain is OMITTED: see land_convoy_dead_cc13.hpp.
+                for (LandConvoyLifeState* life : convoys)
+                    host.lua.publish_land_convoy_dead_00929800(life->name, life->cause_70);
+            }
             for (LandConvoyLifeState* life : convoys) {
                 life->kill_queued = false;
                 LandConvoyKillBinding kill(host);
@@ -32905,9 +32938,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009B11C4-009B1205: +2B4h = lvl + a+4Ch x (class+190h - lvl).
                         const float lvl = owner_.bot_desired_speed_007c47f0(unit_);
                         const float c190 = unit_.plane_travel_speed * travel_mul;
-                        unit_.plane_desired_speed_2b4 = static_cast<float>(
-                            static_cast<double>(lvl) +
-                            static_cast<double>(unit_.land_spacing_4c) * (c190 - lvl));
+                        unit_.plane_desired_speed_2b4 = GameUnitsHost::Impl::land_blend_2b4(
+                            lvl, unit_.land_spacing_4c, c190);
                         unit_.plane_trg_speed_corr_off_2b0 = 0;
                         unit_.plane_air_brake_mode_2d8 = 1;
                         ++unit_.plane_speed_commands;
@@ -33711,9 +33743,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 g->pilot_landing_approach_dist);
                             const float sp = bsp::clamped_interpolate_00419010(x0, r, x, mid,
                                 unit_.land_dist_a8);
-                            unit_.plane_desired_speed_2b4 = static_cast<float>(
-                                static_cast<double>(r) + static_cast<double>(unit_.land_spacing_4c) *
-                                (static_cast<double>(sp) - r));
+                            // 009B1FC2-009B1FDF.
+                            if constexpr (GameUnitsHost::Impl::kLandBlendFloatOpsBound) {
+                                unit_.plane_desired_speed_2b4 = GameUnitsHost::Impl::land_blend_2b4(
+                                    r, unit_.land_spacing_4c, sp);
+                            } else {
+                                unit_.plane_desired_speed_2b4 = static_cast<float>(
+                                    static_cast<double>(r) + static_cast<double>(unit_.land_spacing_4c) *
+                                    (static_cast<double>(sp) - r));
+                            }
                             unit_.plane_trg_speed_corr_off_2b0 = 1;
                             unit_.plane_air_brake_mode_2d8 = 1;
                             ++unit_.plane_speed_commands;
