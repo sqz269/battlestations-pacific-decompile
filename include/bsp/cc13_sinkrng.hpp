@@ -16,16 +16,20 @@
 // AI's draws (dive bombing, torpedo, goaway, take-off, dogfight). With the shared
 // default, each sinking ship moves every later plane-AI draw and none of the
 // gunnery draws. ON: they come from H-G through
-// GameGunneryHost::death_mode_draw_00bd2f10(1, ship, 0, 1), in call order, as
-// every other units-host stream-1 draw routed to gunnery is.
+// GameGunneryHost::sink_leak_draw_0074eca5(ship, 0, 1). On the shared default
+// that is the same random_range_00bd2f10 call in call order, as every other
+// units-host stream-1 draw routed to gunnery is; under BSP_GUNNERY_RNG_STREAMS=1
+// it has its own key (Draw::sink_leak, ship), so each ship's six draws are
+// isolated (packet cc13-sinkfix).
 //
-// H-G is the better approximation, not an exact one: the sink draws always share
-// slot 0 with the row 6/14 hit effects, the break-up and the reseeds (all H-G),
-// but with the plane-AI and gunnery-pass jobs only when the main thread wins the
-// job race (00E0B6CE = 1). The H-G/H-U split stays a labelled substitution.
-// Under BSP_GUNNERY_RNG_STREAMS=1 the ON key (death_mode, ship) is shared with
-// Lua BreakShip / SetDeadMeat draws on the same ship. The count is exact:
-// 0074F4DD fixes [manager+14h] at 6.
+// ON is the closer model (call order: the sink's deterministic slot-0
+// co-tenants are on H-G). The flip is chaos-only and low priority. cc9: flip it
+// in a batch that already resets shared-mode baselines; do not spend a
+// dedicated pair on it. The draws share slot 0 with the plane-AI and
+// gunnery-pass jobs only when the main thread wins the job race
+// (00E0B6CE = 1); the H-G/H-U split stays a labelled substitution. The count
+// is exact: 0074F4DD fixes [manager+14h] at 6 (read from 0074F490, 0074E7B0
+// and 0074EDC0 only, not a program-wide scan).
 //
 // OFF is identical: the ON-only call is behind `if constexpr`. Not yet
 // game-validated.
