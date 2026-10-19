@@ -19660,3 +19660,43 @@ kHudRootCircleYOffset) declared float against true-double m64 qwords.
 
 ship_ai_attackmove_substates.cpp: the jitter_48 note now says the caller takes the 009E55A1
 draw (22e41560e).
+
+## 297. cc9-ships59 handoff (2026-10-18)
+
+**Landed this session** (agent/cc9-ships44; each flip fully built and paired in the reference env unless noted):
+- 290: USNOS friendly fire between Loui1 and Loui2 is faithful (no side filter in the image's shell path; no line-of-fire gate on kinds 2-4).
+- 291 `kDirectorQueueCc13BodiesBound` ON. 292 `kSceneTrafficBlockBound` ON. 293 `kShipFormationSpeedCeilingRowBound` ON.
+- 294 `kReconRecordsSurviveSpawnBound` ON (docs/RECON_SENSOR_PASS.md "Records survive a spawn").
+- 662d8bc7d: the ship ai sample's `heading=` column (blk+1D8h, written only by 009E0040) is renamed `desired_1d8=`, and
+  `hull=` prints `unit_heading_radians`. hull is kept out of the change test. Log only.
+- bbea13229 `kSetCommandMessageCc13Bound` (sm1) ON and 7d6b27b65 `kCommandMessageCc13Bound` (sm2) ON. USN01 3200: exit 1,
+  gameplay identical; 103 / 51 round trips, 10 sub-mm moveto quantisations, 3 cut ids restored (s59_sm_off_u01,
+  s59_sm1_on_u01, s59_sm2_on_u01 manifests).
+- f157685d6 `kSceneBrowserGroupsBound` ON. USN01 3200 has an empty block. JM05 600 (PRCPIJN ijn_05) has 33 entries,
+  ok=1. Both exit 1.
+- c995c8975 OFF, then 1fe919dc4 ON: `kTraceSceneDamageDrawBound`, the 0084C19F stream-1 draw on every sweepable
+  0084BF00 segment, which the host skipped. USN04 20000: reference env exit 1, gameplay identical, 1133300 draws.
+  Default env exit 3, as predicted. Reference-env WINS rows do not move.
+
+**USNOS re-plan, open (section 294).** The best run is `s59_b_c15` / `s59_b_c16` (reference env). The blockade, both
+battleships and Haku1/3/4 sank, and TT5 allied CB2 at 4400 s. HQ1 and HQ2 were left neutral, and Haku2 was never hit
+(the decks were spent). c17 (`local\s59_os_c17.txt`, made by `local\s59_osmk.py c17`) routes TT5 back along its own
+inbound track to HQ2 and then HQ1, and turns Loui1/NH/Portland4/Gear9/Gear15 on Haku2 once both battleships are
+dead. The three attempts:
+- the first was killed from outside at frame about 110000 (the route legs worked);
+- the second was killed at 45 MB;
+- the third (on main 4b74dd6b4) died at 2834.5 s. The first BettyOhka release threw "unit observer creator projection
+  is unavailable: unit=Betty4_kz01 creator=00000000" (game_hosts_units.cpp:18434). On 310ac5a0b the same release
+  resolved creator 00956240. This blocker was sent to the lead. It kills every run that reaches an Ohka release.
+The next step, once the Ohka creator is fixed: re-run c17 for 175000 frames in the reference env. Its prefix is no
+longer a c15 replay on the new main, so check that TT5 is alive and has allied CB2 before frame 89000. If it has not,
+re-time the TT5 route from the frame where CB2 turns. Jitter (20,3) loses all six transports to the blockade before
+2800 s, so a jitter-robust plan needs the transports held away from the blockade until it is dead. Scripts:
+`local\s59_sum.py` (outcome summary), `local\s59_capt.py <log> <HQ>` (capture runs), `local\s59_grep.py`.
+
+**Not taken (still open from the lead's messages):**
+- the Fuso USN15 close-range gunnery question;
+- the 00935D30 break-in-two draws (`host.breakup_parts` unimplemented; citations to fix: the reserve push is at 00748444
+  with the call at 00748455, and the body call is at 00748932);
+- NaN-only lows: the rudder clamp 009DA28C..2AB passes NaN where the host sends -1, and the ring slew 009F4C4E never
+  writes NaN.
