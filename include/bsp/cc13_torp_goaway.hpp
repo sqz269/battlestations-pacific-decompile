@@ -34,15 +34,15 @@ namespace bsp::cc13_torp_goaway {
 // that is ON while an earlier one is OFF still leaves the later draws in the
 // image's relative order but one draw short; turn the three on together.
 // ---------------------------------------------------------------------------
-inline constexpr bool kTorpGoawayEnterDrawsBound = false;      // parent
-inline constexpr bool kTorpGoawayDistanceJitterDrawBound = false;  // 009D0E2C
-inline constexpr bool kTorpGoawayClimbJitterDrawBound = false;     // 009D0E71
-inline constexpr bool kTorpGoawayWindowDelayDrawBound = false;     // 009D0EA3
+inline constexpr bool kTorpGoawayEnterDrawsBound = true;      // parent
+inline constexpr bool kTorpGoawayDistanceJitterDrawBound = true;  // 009D0E2C
+inline constexpr bool kTorpGoawayClimbJitterDrawBound = true;     // 009D0E71
+inline constexpr bool kTorpGoawayWindowDelayDrawBound = true;     // 009D0EA3
 // 00901610 run once through the mission host's script reader, so row+10h/+14h
 // come from this installation's loaded Robots.lua rather than a copy. OFF: no
 // load, no script reads, no log lines (the OFF run is unchanged). The window
 // delay draw needs it; without a loaded row the draw stays the OFF hole.
-inline constexpr bool kPilotBotConfigLoadBound = false;
+inline constexpr bool kPilotBotConfigLoadBound = true;
 
 // 009D0F10 BSP_BotStateTorpedoGoAway_Tick, RET 4: the re-seed branch
 // (009D0FB2-009D1025, delay +28h < 0 and the aircraft above +20h) draws twice
@@ -51,8 +51,8 @@ inline constexpr bool kPilotBotConfigLoadBound = false;
 //   009D1000  UniformFloatRange([row+10h], [row+14h]) + (+34h)  -> +28h
 // (ECX = 1 at 009D0FC9 / 009D0FF1; row = [[state+4]+14h], the same PilotBot row).
 // Same parent as the enter's three (kTorpGoawayEnterDrawsBound).
-inline constexpr bool kTorpGoawayTickJitterDrawBound = false;     // 009D0FD7
-inline constexpr bool kTorpGoawayTickDelayDrawBound = false;      // 009D1000
+inline constexpr bool kTorpGoawayTickJitterDrawBound = true;     // 009D0FD7
+inline constexpr bool kTorpGoawayTickDelayDrawBound = true;      // 009D1000
 
 inline constexpr bool tick_jitter_draw_on() noexcept {
     return kTorpGoawayEnterDrawsBound && kTorpGoawayTickJitterDrawBound;
