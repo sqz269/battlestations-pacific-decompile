@@ -20302,3 +20302,16 @@ one-pump delay. Larger deltas only on wrecks whose sink time moved. Script `loca
   (0,0). The skip is byte-correct; the fix is cc13's plan-test switch, to be paired with 3E0h + skip.
 - **Iowa (USN21) open item:** Iowa never moves in any variant (state=follow mode=navigate, thr=0, speed <= 0.002 over
   1749 escape-trace rows, OFF included). Not caused by this set.
+
+**Nav set re-pair on origin/main ab7bb54ec and flip** (OFF = tree build `local\s61_off2_bin`, logs `s61_o2_*`;
+ref env, "rng streams: on" in every log; LOMP10 completions log the exec guard's sus_prog.exe refusal):
+- `kShipAiCruiseDistanceSeedBound` alone, skip OFF (`s61_c3`): LOMP10 gameplay identical (Ashigara's mode-3 output
+  overrides), completed 1303.70 s both. USN21: d32c 0 -> 1000 on 38072 step rows, -0.625 step lines 71 -> 46
+  (Yamato 36, Takao 10 left), no end in either run (row length). **ON.**
+- `kShipAiNavBlockCtorSeedsCc13Bound` + `kShipAiClearance364SyncCc13Bound` (`s61_ss2`): LOMP10 Ashigara never reverses
+  (escape trace dirneg 20 -> 0, -0.625 3 -> 0; all step-line -0.625 94 -> 0) and the row completes at 1050.45 s
+  (OFF 1303.70 s; cc13 predicted near 1072 s). USN04: -0.625 28 -> 28; they are Northampton-class02 and
+  Fletcher-class07 station-keeping astern, image behaviour (STATION_KEEPING.md). USN21 passed in the first pair.
+  **ON.**
+- `kSinkLeakDrawStreamCc13Bound` rides with this flip (rev4 calls ON the closer model).
+- `kShipAiNavigateAsternSkipBound` stays OFF until cc13's plan-test switch (CC13_ORBIT.md) is paired with it.

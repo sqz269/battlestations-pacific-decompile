@@ -36,6 +36,6 @@
 
 namespace bsp {
 
-inline constexpr bool kSinkLeakDrawStreamCc13Bound = false;
+inline constexpr bool kSinkLeakDrawStreamCc13Bound = true;  // ON: rides with the nav seed flip, rev4 closer model (SHIP_AI 311)
 
 }  // namespace bsp
