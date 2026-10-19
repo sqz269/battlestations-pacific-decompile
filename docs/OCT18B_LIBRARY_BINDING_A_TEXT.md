@@ -2,7 +2,7 @@
 
 Audit date: 2026-10-18. Scope is the original CRT/library window `00BF0000-00C30000`; game code near the beginning of that window is not automatically CRT. This is a binding audit, with no vendor-body reconstruction, source rewiring, host changes or game runs. Descriptive names already in the ledgers remain hypotheses unless they are recognized library names. Math/x87, heap/new/div and Lua API surface differences are owned by the companion audits.
 
-The high-risk boundaries are numeric text, locale/ctype objects and CRT-owned streams. The random arithmetic matches the local UCRT implementation; the clock source does not. No selected family is proved unreachable. Public byte operations are qualified binding candidates on their defined input domains, not a proof that every original call has that domain.
+The high-risk boundaries are numeric text and retained locale/ctype objects; coherent stock stream bindings have ordinary I/O behavior and error qualifications. The random arithmetic matches the local UCRT implementation; the clock source does not. No selected family is proved unreachable. Public byte operations are qualified binding candidates on their defined input domains, not a proof that every original call has that domain.
 
 ## Evidence and limits
 
@@ -32,10 +32,10 @@ The high-risk boundaries are numeric text, locale/ctype objects and CRT-owned st
 | Calendar/local time/strftime | behaviour-sensitive | Lua OS wrappers reach difftime64/gmtime64/localtime64/mktime64/strftime. These remain tied to the selected CRT time-zone, locale, buffer and invalid-time behavior. No complete date range, TZ/DST history or concurrent returned-buffer contract was audited. |
 | Locale and C++ ctype vectors/facets | layout-bound | `00BF5879` returns an original 16-byte vector with table allocation/ownership; linked STL callers copy it into retained facet fields. `00C027AC` and `00C03806` also expose mutable locale state and lconv pointers to Lua. Rebuild the complete stock consumer/runtime together, or adapt the original layout and owner contract. |
 | Public ctype/case mapping | behaviour-sensitive | toupper/tolower/isspace have original C-locale fast paths plus locale-dependent slow paths. Caller strings can contain bytes outside ASCII and some callers pass sign-extended char. Do not replace them with fixed ASCII transforms or assume every int is in the public ctype domain. |
-| FILE and descriptor I/O | layout-bound | Original fopen/fread/fwrite/fseek/ftell/fclose/fflush and inline consumers share one CRT's buffers, locks, text translation, descriptors and errors. A coherent stock fopen/read/write/close family with opaque handles is a qualified adapter; original FILE pointers/standard-stream globals cannot be mixed with UCRT FILEs. |
+| FILE and descriptor I/O | bind-safe, qualified | Current settings code stores only an opaque pointer returned by stock fopen and passes it to stock fread/fwrite/fseek/ftell/fclose from the same runtime. No retained original FILE offset consumer was found in these inspected game paths. Preserve the coherent family, Win32 widths, text/binary mode, return/error and cleanup behavior. Mixing original FILE pointers/standard-stream globals with UCRT is a historical ABI caveat, not evidence that the current opaque stock binding is layout-bound. |
 | mkdir/remove/rename paths | behaviour-sensitive | Original wrappers use CreateDirectoryA/DeleteFileA/MoveFileA with original DOS-error mapping. Local UCRT converts narrow names to UTF-16 using its compatibility code page; `_wrename` uses MoveFileExW(COPY_ALLOWED). Same-directory ASCII success may agree, but full error/encoding/move equivalence is not established by inspection. |
 
-Family-row totals: **3 bind-safe (all qualified), 2 layout-bound, 11 behaviour-sensitive, 0 unreached; 16 total**. None of these counts conveys new reconstruction or gameplay credit.
+Family-row totals: **4 bind-safe (all qualified), 1 layout-bound, 11 behaviour-sensitive, 0 unreached; 16 total**. None of these counts conveys new reconstruction or gameplay credit.
 
 ## Exact caller evidence
 
@@ -72,7 +72,7 @@ UCRT `convert/cvt.cpp` lines 786-847 exposes three relevant options: legacy MSVC
 
 Original secure copy `00BF672C` returns zero immediately for count zero; on invalid nonzero requests it can zero the destination, set EINVAL/ERANGE in original errno and call original invalid-parameter dispatch `00BF66EF`. `00BF93A4` similarly empties a bad destination before dispatch. Replacing only the byte operation drops visible error/state behavior.
 
-Original `__Getctype` assembly, unlike its misleading propagated field names, writes four words at offsets +0,+4,+8,+C. It allocates 256*2 bytes, copies the ctype table, sets ownership=1, or uses the original table and ownership=0 on allocation failure. The linked facet copies and eventual frees make this an observed layout/lifetime boundary. For streams, original `00BF7A6A` directly builds old FILE fields; UCRT `inc/corecrt_internal_stdio.h` instead defines a pointer-sized public FILE over a larger private stream with `_ptr`, `_base`, `_cnt`, flags, descriptor and CRITICAL_SECTION. Whole-stock rebuilt Lua inline stdio consumers use their own headers coherently; they do not prove an original FILE object is layout compatible.
+Original `__Getctype` assembly, unlike its misleading propagated field names, writes four words at offsets +0,+4,+8,+C. It allocates 256*2 bytes, copies the ctype table, sets ownership=1, or uses the original table and ownership=0 on allocation failure. The linked facet copies and eventual frees make this an observed layout/lifetime boundary. Current `src/native_settings_text.cpp:34-37` returns `std::fopen` as void* and converts that same pointer back only for `std::fwrite`/`std::fclose`; `src/native_settings_loader.cpp:124-126` similarly uses `std::fseek`/`std::ftell`/`std::fread`. Operation state retains `op.file` opaquely, with no FILE member-offset accesses in the inspected implementation. This is the concrete current binding being classified bind-safe. For historical ABI context, original `00BF7A6A` directly builds old FILE fields; UCRT `inc/corecrt_internal_stdio.h` instead defines a pointer-sized public FILE over a larger private stream with `_ptr`, `_base`, `_cnt`, flags, descriptor and CRITICAL_SECTION. Whole-stock rebuilt Lua inline stdio consumers use their own headers coherently; they do not prove an original FILE object is layout compatible.
 
 ## Broad inventory check
 
@@ -101,7 +101,7 @@ The additional unmatched leaves were routed by body: `00BF9940`, `00BFA4EC`, `00
 ## Risk order and completion
 
 1. Preserve or qualify numeric text/parse behavior first: direct data-loader calls and registered Lua conversions have open input ranges and affect values, token acceptance, interned strings and emitted text.
-2. Preserve coherent locale/facet and FILE ownership. Direct original private vectors are established; coherent opaque stock stream usage can be adapted without asserting old layout identity.
+2. Preserve the retained locale/facet owner layout. The inspected current FILE calls already form a coherent opaque stock-runtime family and are qualified bind-safe; the prohibition on cross-runtime FILE mixing does not change that current classification.
 3. Decide clock semantics explicitly for script and telemetry paths. The implementation difference is established; gameplay impact has not been measured.
 4. Preserve rand's state/thread/seed schedule. Its arithmetic already matches this UCRT and original Lua math.random is absent.
 5. Qualify ordinary byte/string success and ASCII same-directory filesystem operations only as far as caller constraints support. Retain error, overlap, encoding and bounds qualifications.
