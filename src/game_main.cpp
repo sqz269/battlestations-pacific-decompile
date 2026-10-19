@@ -180,6 +180,33 @@ LONG WINAPI harness_crash_record(EXCEPTION_POINTERS* info) {
     return EXCEPTION_EXECUTE_HANDLER;  // no WER dialog; the process exits with `code`
 }
 
+// ON-only diagnostic: C++ terminate normally fast-fails before the unhandled
+// filter can record a dump. Capture its live caller stack without unwinding or
+// repairing native owners. Native /GS and invalid-parameter fastfail remain
+// untouched. The normal successful scope restores the prior handler.
+__declspec(noreturn) void mission_ship_terminate_record() noexcept {
+    static volatile LONG entered = 0;
+    if (InterlockedExchange(&entered, 1) == 0) {
+        CONTEXT context{};
+        RtlCaptureContext(&context);
+        if (const auto active = std::current_exception()) {
+            try { std::rethrow_exception(active); }
+            catch (const std::exception& error) {
+                if (g_crash_log) g_crash_log->notef("native mission terminate active exception: %s", error.what());
+            } catch (...) {
+                if (g_crash_log) g_crash_log->note("native mission terminate active exception: non-std exception");
+            }
+        }
+        EXCEPTION_RECORD record{};
+        record.ExceptionCode = 0xe0425350u; // harness BSP terminate diagnostic
+        record.ExceptionFlags = EXCEPTION_NONCONTINUABLE;
+        record.ExceptionAddress = reinterpret_cast<void*>(context.Eip);
+        EXCEPTION_POINTERS pointers{&record, &context};
+        harness_crash_record(&pointers);
+    }
+    std::_Exit(static_cast<int>(0xc0000409u));
+}
+
 // Remove `--crash-test [N]` (hidden, harness only) before the public parser sees argv. The
 // bootstrap child receives the same command line and strips it the same way. Returns the
 // mission frame to fault before, or -1.
@@ -1030,7 +1057,11 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     // Harness crash record: installed once the log exists, removed before the log closes.
     // The dump path is made absolute now, before --game-root changes the current directory.
     struct CrashLogScope {
-        ~CrashLogScope() { g_crash_log = nullptr; }
+        std::terminate_handler previous_terminate{};
+        ~CrashLogScope() {
+            if (previous_terminate) std::set_terminate(previous_terminate);
+            g_crash_log = nullptr;
+        }
     } crash_log_scope;
     g_crash_log = &log;
     if (!options.log_path.empty()) {
@@ -1043,6 +1074,9 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             g_crash_dump_path[0] = '\0';
     }
     SetUnhandledExceptionFilter(harness_crash_record);
+    // The eight-band plan is selected only by BSP_NATIVE_MISSION_SHIP=1.
+    if (selected_native_data_span_count() == native_data_spans.size())
+        crash_log_scope.previous_terminate = std::set_terminate(mission_ship_terminate_record);
     // Harness only (packet cc9_display_required), not the original executable's behaviour.
     // An idle display timeout turns the display off during unattended runs, and then
     // CreateDevice and Present fail with D3DERR_DEVICELOST (0x88760868). The run asks the

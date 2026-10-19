@@ -1242,8 +1242,16 @@ void GameLoopCallbacks::frame() {
         : (screenshot_frame_ >= 0
             ? frames_ == static_cast<unsigned long long>(screenshot_frame_)
             : (last_frame || frame_host_.global_exit()));
-    if (capture_ && !capture_requested_ && wanted_frame) {
-        capture_requested_ = true;
+    unsigned char mission_capture_bit = 0;
+    if (capture_ && GameNativeRendererApplication::mission_ship_requested()) {
+        const auto mission_frame = frame_host_.mission_frames_run();
+        mission_capture_bit = mission_frame == 1 ? 1 : mission_frame == 60 ? 2
+            : mission_frame == 180 ? 4 : 0;
+        mission_capture_bit &= static_cast<unsigned char>(~mission_ship_capture_mask_);
+    }
+    if (capture_ && ((!capture_requested_ && wanted_frame) || mission_capture_bit)) {
+        if (wanted_frame) capture_requested_ = true;
+        mission_ship_capture_mask_ |= mission_capture_bit;
         device_.request_capture(capture_);
     }
     device_.clear_and_present(frame_host_.mission_frames_run(),
@@ -2809,8 +2817,24 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         GameFrontendHost* frontend_host = frontend_;
         std::string path = options_.screenshot_path;
         GameRunSummary* summary = &summary_;
-        capture = [frontend_host, path, summary](IDirect3DDevice9& device) {
-            summary->screenshot_written = frontend_host->save_back_buffer(device, path);
+        GameFrameHost* frames = frame_host_;
+        GameHostLog* log = &log_;
+        const bool mission_landmarks = GameNativeRendererApplication::mission_ship_requested();
+        capture = [frontend_host, path, summary, frames, log, mission_landmarks](IDirect3DDevice9& device) {
+            std::string destination = path;
+            if (mission_landmarks) {
+                const auto frame = frames->mission_frames_run();
+                if (frame == 1 || frame == 60 || frame == 180) {
+                    const std::filesystem::path requested(path);
+                    char suffix[24];
+                    std::snprintf(suffix, sizeof suffix, "_N%03llu", frame);
+                    destination = (requested.parent_path() /
+                        (requested.stem().string() + suffix + requested.extension().string())).string();
+                    log->notef("native mission ship screenshot: mission_frame=%llu path=%s",
+                        frame, destination.c_str());
+                }
+            }
+            summary->screenshot_written = frontend_host->save_back_buffer(device, destination);
         };
     }
     loop_callbacks_ = new GameLoopCallbacks(log_, frame_state_, frame_color_, *frame_host_,

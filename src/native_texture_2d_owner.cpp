@@ -3,6 +3,7 @@
 #include "bsp/native_physical_buffer_owner.hpp"
 #include "bsp/native_render_buffer_unregistration.hpp"
 #include "bsp/native_texture_surface_cache_storage.hpp"
+#include "bsp/native_render_context.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -10,6 +11,7 @@
 
 #include <cstring>
 #include <exception>
+#include <stdexcept>
 
 namespace bsp {
 namespace {
@@ -259,5 +261,15 @@ void* delete_native_texture_2d_00b3f590(void* owner,
     destroy_native_texture_2d_00b3f2e0(owner, context);
     if ((flags & 1u) != 0) context.actual_texture_pool_0108db38.return_raw_slot_00b3d8d0(owner);
     return owner;
+}
+
+void* delete_native_texture_2d_after_zero(void* owner,
+    std::uint32_t flags, NativeTexture2DOwnerContext& context) {
+    if (!context.canonical_actual_owners)
+        return delete_native_texture_2d_00b3f590(owner, flags, context);
+    if ((flags & 1u) == 0)
+        throw std::invalid_argument("canonical texture zero terminal requires native storage retirement");
+    dispatch_native_render_actual_owner_zero(*context.canonical_actual_owners, owner);
+    return owner; // Opaque original identity only; the native slot is retired.
 }
 } // namespace bsp
