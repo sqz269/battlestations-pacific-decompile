@@ -984,6 +984,11 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
                 draw = gunnery->death_mode_draw_00bd2f10(1, owner,
                     kAirOpsLaunchAltitudeDrawLow, kAirOpsLaunchAltitudeDrawHigh);  // 006C52BA
                 drew = true;
+            } else {
+                log_.notef("air ops squadron: WARNING kAirOpsLaunchFlagAltitudeDrawBound is ON "
+                    "but there is no gunnery host, so the 006C52BA 00BD2F10 draw for \"%s\" "
+                    "is NOT taken and y falls back to the Ceiling alone (packet cc13-tier1)",
+                    home_base.c_str());
             }
         }
         // 006C52BF FADD dword [tuning+210h] under 24-bit precision, 006C52C5 FSTP
