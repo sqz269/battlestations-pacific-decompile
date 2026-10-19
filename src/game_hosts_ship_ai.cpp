@@ -105,6 +105,7 @@
 #include "bsp/vehicle_class.hpp"
 #include "bsp/weapon_director.hpp"
 #include "bsp/ship_ai_seg67_switches_cc13.hpp"
+#include "bsp/cc13_heading_wrap.hpp"
 
 namespace bsp::game {
 
@@ -3105,6 +3106,14 @@ public:
     }
     void after_heading_stored_00605070(float heading) override {
         owner_.count_heading_wrap_store(heading);
+        if constexpr (bsp::kShipAiHeadingStoreWrapCc13Bound) {
+            // Packet cc13-wrap605: 00605070 with ECX = &blk+1D8h, in place. The
+            // callers pass this ctl_'s blk, and heading is the value just stored.
+            ctl_.blk.desired_heading =
+                bsp::ship_ai_firepower_wrap_angle_00605070(ctl_.blk.desired_heading);
+            owner_.done("ShipAiControls::after_heading_stored", 0x00605070u);
+            return;
+        }
         owner_.record("ShipAiControls::after_heading_stored", 0x00605070u);
     }
 
@@ -3186,6 +3195,14 @@ public:
     }
     void after_heading_stored_00605070(float heading) override {
         owner_.count_heading_wrap_store(heading);
+        if constexpr (bsp::kShipAiHeadingStoreWrapCc13Bound) {
+            // Packet cc13-wrap605: 00605070 with ECX = &blk+1D8h, in place. The
+            // callers pass this ctl_'s blk, and heading is the value just stored.
+            ctl_.blk.desired_heading =
+                bsp::ship_ai_firepower_wrap_angle_00605070(ctl_.blk.desired_heading);
+            owner_.done("ShipAiControls::after_heading_stored", 0x00605070u);
+            return;
+        }
         owner_.record("ShipAiControls::after_heading_stored", 0x00605070u);
     }
 
@@ -7190,13 +7207,18 @@ public:
     }
     void wrap_brain_heading_00605070() override {
         // 009F3360, 00605070 on brain+1E0h in place. The reconstruction of that
-        // wrap is bsp::wrap_angle_00605070 where it exists. brain+1E0h is
+        // wrap is bsp::ship_ai_firepower_wrap_angle_00605070. brain+1E0h is
         // blk+1D8h (desired_heading), and it does have a reader: 009ED947
-        // copies it to 324h in modes 1 and 3. The wrap is NOT applied here, only
-        // recorded. 00605070 leaves (-pi, pi] alone, and the
-        // cc9_heading_wrap_census summary counts the stores outside it (JM08
-        // p20e_off: 0 of 57068). Applying it would change behaviour wherever
-        // that count is non-zero, so it would need its own switch; not done.
+        // copies it to 324h in modes 1 and 3. 00605070 leaves (-pi, pi] alone,
+        // and the cc9_heading_wrap_census summary counts the stores outside it
+        // (JM08 p20e_off: 0 of 57068). Packet cc13-wrap605: applied only under
+        // kShipAiHeadingStoreWrapCc13Bound; OFF it is recorded, not applied.
+        if constexpr (bsp::kShipAiHeadingStoreWrapCc13Bound) {
+            ctl_.blk.desired_heading =
+                bsp::ship_ai_firepower_wrap_angle_00605070(ctl_.blk.desired_heading);
+            owner_.done("ShipAiApproach::wrap_brain_heading", 0x00605070u);
+            return;
+        }
         owner_.record("ShipAiApproach::wrap_brain_heading", 0x00605070u);
     }
     void set_brain_replan_01d4(int value) override {
