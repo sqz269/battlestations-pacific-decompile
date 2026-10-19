@@ -31,7 +31,10 @@ namespace bsp::cc13_powerup {
 // player's HUD use 008EB6E0 needs input. So no category list fills and every
 // 008E6430 / 00470440 product stays 1.0f either way. False: the three natives
 // stay unimplemented records returning nothing, and no registry is loaded.
-inline constexpr bool kPowerupGrantBound = false;
+// ON (cc9-lua70, 2026-10-19): JM06 s45_j6_k pair (ref env, local\l70r_j6k_{main,pwg}_ref.log),
+// gameplay identical, both complete 790.93 s; AddPowerup runs twice (JM06.lua:864-865) and
+// queues pup_ready; the class registry loads 32 records.
+inline constexpr bool kPowerupGrantBound = true;
 
 inline constexpr std::size_t kPowerupPlayerSlots = 8;  // manager+20h and +14Ch, stride 0Ch
 
