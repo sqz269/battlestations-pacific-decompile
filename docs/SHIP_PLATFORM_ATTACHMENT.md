@@ -78,6 +78,8 @@ is corrected (section 3).
        bunkers, AA, coastal guns, HQs, CB2 / CB4, Fortress). Those lines print one gun per
        class, so this does not prove there are none. No sub-switch is proposed until a mission
        with a shipyard gun is found.
+     - Closed 2026-10-19: VehicleClass[205] and [648] are the only classes with Type "Shipyard",
+       and both have empty Platforms, so the 0072DD6C arm cannot run in this installation.
    - **Not scanned:** later writers of gun+74h. Turning guns rotate their model nodes (00859550,
      item 4), not the entity.
 
