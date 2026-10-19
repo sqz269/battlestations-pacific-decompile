@@ -18172,3 +18172,7 @@ Pairs are same-main (011d651dc), reference env, OFF = the tree build, ON = `tool
 All three flipped ON. Caveat kept for the HUD Lua sub-switch: the VehicleClass row is keyed by class+70h taken as the
 row's type_id, inferred and not traced. `kMissionRecordMergeBound` is not paired on USN01, because USN01 does not end
 on this main and never reaches the 009205E0 commit; its pair runs on BSM09 d1 instead.
+
+**`kMissionRecordMergeBound` ON** (`l69_mr`, BSM09 `bsm09_l68_b9_d1`, EndMission 327.04 s both sides): pair_diff exit 1,
+gameplay identical (49 death rows, 90-row unit table). ON only: `MissionRecord::commit_009205e0 key=BSM09 count_284=1
+completed_00=1 ...`. The OFF-branch comment in src/mission_result.cpp now names the ADD at 009205FE (was 00920604).
