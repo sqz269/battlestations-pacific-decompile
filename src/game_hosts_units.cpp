@@ -27409,6 +27409,32 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         owner_.done("Rack::paratrooper_drop_target_006e541f", 0x006e541fu);
                     }
+                    // cc13-devwalk2: run_level_bomber_issue_007c0e67's log line and
+                    // census record, for the per-rack walk's level-bomber issues.
+                    void note_level_bomber_issue(int fired, float delay) {
+                        owner_.log.notef("level bomber issue: %s t=%.2f racks=%d last_delay=%.3f "
+                            "rounds=%d (007C0E67, packet cc9_plane_level_bomb_task)",
+                            unit_.row.name.c_str(),
+                            static_cast<double>(owner_.summary.simulated_seconds), fired,
+                            static_cast<double>(delay), unit_.rack_ammo);
+                        owner_.done("Plane::release_issue_level_bomber_007c0e67", 0x007c0e67u);
+                    }
+                    // cc13-devwalk2: the issue path's other stream-1 draw, the next-issue
+                    // interval at 007CEA9A-007CEABE. With
+                    // bsp::cc13_devwalk::kPlaneDeviceWalkSharedDrawBound it comes from the
+                    // shared stream 1 in call order, after the walk's 007C0E88 draws;
+                    // otherwise the host's own release sequence under `#issue`, as before.
+                    float issue_interval_draw_007ceab3() {
+                        if constexpr (bsp::cc13_devwalk::kPlaneDeviceWalkSharedDrawBound) {
+                            if (owner_.gunnery) {
+                                return owner_.gunnery->death_mode_draw_00bd2f10(1,
+                                    owner_.index_of_slot(unit_),
+                                    bsp::kIssueIntervalLow_00ce3860, 1.1f);
+                            }
+                        }
+                        return owner_.release_altitude_draw_00bd2f10(
+                            unit_.row.name + "#issue", bsp::kIssueIntervalLow_00ce3860, 1.1f);
+                    }
                     void run_level_bomber_issue_007c0e67() {
                         lb_rack_state_seed();
                         float delay = 0.0f;
@@ -31599,8 +31625,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 0.9f 00CE3860, 1.1f 00CE6448), FMUL [class+1F4h], FSTP
                             // unit+C28h. Keyed per unit like the host's other stream-1
                             // draws (cc13-verify1 A.1).
-                            const float draw = owner_.release_altitude_draw_00bd2f10(
-                                unit_.row.name + "#issue", bsp::kIssueIntervalLow_00ce3860, 1.1f);
+                            const float draw = issue_interval_draw_007ceab3();
                             unit_.torpedo_issue_interval_c28 = draw * in.class_interval_scale_1f4;
                             ++owner_.release_issue_interval_draws;
                         }
@@ -32081,7 +32106,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             racks, level, unit_.plane_bomb_delay_1f4,
                             [this] { return rack_delay_draw_007c0e88(); });
                         if (!w.found) {                                   // 007C0EDE
-                            if (!lb_tick) unit_.torpedo_issue_gate_open = false;
+                            if (lb_tick) {
+                                // The OFF level path's diagnostics, so ON pairs compare.
+                                ++unit_.lb_rack_issues;
+                                ++unit_.torpedo_orders_issue_ticks;
+                                note_level_bomber_issue(0, w.delay_after);
+                            } else {
+                                unit_.torpedo_issue_gate_open = false;
+                            }
                             return;
                         }
                         bool single_set = false;
@@ -32115,11 +32147,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 owner_.record("Plane::device_walk_second_single_fire", 0x007c0e17u);
                             }
                         }
+                        ++unit_.torpedo_orders_issue_ticks;
                         if (lb_tick) {
                             ++unit_.lb_rack_issues;
                             unit_.lb_rack_fired += lb_fired;
+                            note_level_bomber_issue(lb_fired, w.delay_after);
                         }
-                        ++unit_.torpedo_orders_issue_ticks;
                         unit_.torpedo_release_pending_c25 = true;         // 007C0EE2
                         if (!w.issue_orders) return;                      // 007C0EEB, a rocket last
                         TorpedoReleaseOrderBinding binding(owner_, unit_);
