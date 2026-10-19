@@ -1197,6 +1197,18 @@ struct GameMissionLuaSummary {
     unsigned long long player_commands_calls{0};      // 008A6C30, packet cc13-luawire
     unsigned long long player_commands_stored{0};
     unsigned long long player_commands_unresolved{0};
+    unsigned long long visibility_calls{0};           // 008A13D0, packet cc13-luawire 7b
+    unsigned long long visibility_planes{0};
+    unsigned long long visibility_null_members{0};    // guarded: the image crashes
+    unsigned long long visibility_unresolved{0};
+    unsigned long long avoidance_calls{0};            // 008A0000
+    unsigned long long avoidance_unresolved{0};
+    unsigned long long base_unsupported_calls{0};     // 0089FAF0
+    unsigned long long base_unsupported_added{0};
+    unsigned long long base_unsupported_unresolved{0};
+    unsigned long long cheat_turbo_calls{0};          // 008A62A0
+    unsigned long long cheat_turbo_planes{0};
+    unsigned long long cheat_turbo_unresolved{0};
     unsigned long long sub_surface_calls{0};
     unsigned long long sub_surface_true{0};
     unsigned long long sub_surface_unseeded{0};
@@ -1877,6 +1889,12 @@ public:
     int run_add_water_load_00893380(lua_State* state, int argument_count);
     int run_break_ship_008914f0(lua_State* state, int argument_count);
     int run_unit_set_player_commands_enabled_008a6c30(lua_State* state, int argument_count);
+    // Part 7b, under kLuaSetVisibilityBound / kLuaSquadronEnableVehicleAvoidanceBound /
+    // kLuaSquadronSetBaseUnsupportedBound / kLuaSetCheatTurboBound.
+    int run_set_visibility_008a13d0(lua_State* state, int argument_count);
+    int run_squadron_enable_vehicle_avoidance_008a0000(lua_State* state, int argument_count);
+    int run_squadron_set_base_unsupported_0089faf0(lua_State* state, int argument_count);
+    int run_set_cheat_turbo_008a62a0(lua_State* state, int argument_count);
     // Packet cc9_lua_submarine_on_surface, under kLuaGetSubmarineOnSurfaceBound.
     int run_get_submarine_on_surface_008942c0(lua_State* state, int argument_count);
     // Packet cc13_natives1, under kLuaTrulyDeadBound.

@@ -12,6 +12,13 @@ switch is ON. Status: reconstructed and build-tested; not game-validated. The pa
 | `kLuaAddWaterLoadBound` | `00893380` AddWaterLoad | `run_add_water_load_00893380` | `src/cc13_left55_seg56a.cpp` `lua_add_water_load` (unchanged, matches) |
 | `kLuaBreakShipBound` | `008914F0` BreakShip | `run_break_ship_008914f0` | `src/options_seg56_cc13.cpp` `lua_break_ship` (unchanged, matches) |
 | `kLuaUnitSetPlayerCommandsEnabledBound` | `008A6C30` UnitSetPlayerCommandsEnabled | `run_unit_set_player_commands_enabled_008a6c30` | `src/cc13_left55_seg56a.cpp` `lua_unit_set_player_commands_enabled` (unchanged, matches) |
+| `kLuaSetVisibilityBound` | `008A13D0` SetVisibility | `run_set_visibility_008a13d0` | `src/engine_seg56_cc13.cpp` `lua_set_visibility` (unchanged, matches) |
+| `kLuaSquadronEnableVehicleAvoidanceBound` | `008A0000` SquadronEnableVehicleAvoidance | `run_squadron_enable_vehicle_avoidance_008a0000` | `src/options_seg56_cc13.cpp` `lua_squadron_enable_vehicle_avoidance` (unchanged, matches) |
+| `kLuaSquadronSetBaseUnsupportedBound` | `0089FAF0` SquadronSetBaseUnsupported | `run_squadron_set_base_unsupported_0089faf0` | `src/cc13_left55_seg56a.cpp` `lua_squadron_set_base_unsupported` (unchanged, matches) |
+| `kLuaSetCheatTurboBound` | `008A62A0` SetCheatTurbo | `run_set_cheat_turbo_008a62a0` | `src/cc13_left55_seg56a.cpp` `lua_set_cheat_turbo` (unchanged, matches) |
+
+The four part-7b switches each gate both the runner and the units-host readers of the state
+it writes (`src/game_hosts_units.cpp`, landed in cd0df483a).
 
 ## HasFired, 008BE7E0
 
@@ -142,6 +149,72 @@ SUBSTITUTIONS:
 - A unit with no director is counted and skipped. The image would send through a null
   director.
 
+## Part 7b: four natives with units-host readers
+
+The units side (state, setters, gated readers) landed in cd0df483a; the runners are in
+`src/game_hosts_lua.cpp`. In every runner the squadron test (the image's
+`vtable[5Ch](18h)`, PlaneSquadronGen) is a registry record whose fused slot is the entity,
+and the members are that record's active `member_units`, standing in for the compacted
+`+3D0h` array, as in SquadronSetSpeed's runner. An entity with no slot is counted
+unresolved. None of the four takes an RNG draw.
+
+### SetVisibility, 008A13D0
+
+- Argument 1 as a boolean, then argument 0 through `00888D20`.
+- A squadron: for i below `[+3CCh]`, member = i <= 4 ? `[+3D0h+4i]` : null, then
+  `00951F40(visible)` on it (`008A154D`). Otherwise a kind-5 entity (any unit): `00951F40`
+  on itself (`008A1578`).
+- `00951F40` attaches (1) or detaches (0) the spatial node of part `+4A4h`. In the host this
+  is `plane_hit_node_detached = !visible`.
+- GUARDED, not in the image: a squadron with more than five members passes a null sixth
+  member to `00951F40`, which has no null test, so the image crashes. The runner counts it
+  (`null_members_guarded`), logs it and calls nothing.
+
+### SquadronEnableVehicleAvoidance, 008A0000
+
+- Argument 0 through `00888AA0`, argument 1 as a boolean, then
+  `[+3A4h] = on ? v | 2 : v & 0x000000FD` (`25 FD 00 00 00`, so bits 8-31 clear too). No
+  class test. The squadron constructor stores `0FFh` (`007F2C13`).
+- The reader is the pilot gate `009A1959-009A1969`: `0099B670` runs when pilot `+2E4h`
+  bit 2 is set and (squadron `+2FCh` is null, or its `+3A4h` bit 2 is set).
+- The host takes the squadron through `squadron_slot_of`, which falls back to the plane's
+  own slot where the image's null `+2FCh` passes the test. A plane with no squadron does not
+  occur in the census: BSM09 passes only squadrons.
+- Not read yet: the second gate `009A1974-009A1987` (CL = 1) also tests `+2FCh` and
+  `+3A4h` bit 0. A sibling native that writes bit 0 will need it.
+
+### SquadronSetBaseUnsupported, 0089FAF0
+
+- Both arguments through `00888AA0`. The block is `base+72Ch` for class 45h, else
+  `base+1188h`, and `006CA730` pushes the squadron onto its std::list at `+B4h`.
+- `006C4790` (false for a null squadron or a listed one) reads the list at `007F1748` (the
+  RTB home arm), `0099A404` (the land command arm) and `009B3537` (the land validity
+  test). It is also read at `006C564D`, reached only from `007C5D21` in the gear region,
+  which the host does not carry.
+- SUBSTITUTION: the list is a set of (deck name, squadron record name) pairs in the units
+  host, so a repeated push is one entry. `006C4790` answers any match, so it is the same.
+- Note: OFF, `land_command_still_valid_009b34d0` still calls `air_ops_decks().name_at()`
+  before the constexpr-false helper. It is harmless (a read, no state change).
+
+### SetCheatTurbo, 008A62A0
+
+- Argument 1 is stored as float (`FSTP 008A63D5`). A squadron writes `+340h` on members
+  0..4 and stops at the first null slot, without reading the count
+  (`008A6406-008A641F`). Otherwise a kind-5 entity gets `+340h` itself.
+- ASSUMPTION: no constructor writes `+340h`, so the host's 0 takes the plane allocation as
+  zeroed.
+- Readers:
+  - `0099D479`: dtScale = max(float(v x 0.4), 1). 1/dtScale goes to `[ESP+28h]`, which
+    feeds `0099DEBD` (the heading term), `0099E2D3` (the roll servo) and `0099E604` (the
+    pitch demand).
+  - dt/dtScale overwrites the dt argument slot, read by `0099D781` (the `+2B8h` decay) and
+    the pending term. The slot `[ESP+6Ch]` is also read at `0099DAC4` and `0099DBBF`;
+    those are taken as covered by `tin.pending`, not traced.
+  - `009FBB20`: lead = max(v x 2, 10), followed scale = max(v x 0.4, 1).
+- SUBSTITUTION (rounding): the image multiplies by the reciprocal at `0099E2D3` and
+  `0099E604`, but the host library divides by its `dt_scale`. With dtScale != 1 the result
+  can differ in the last bit.
+
 ## Predicted ON effect on the WINS missions
 
 Only BSM01, BSM09 and JM06 call HasFired, AddWaterLoad or BreakShip. JM08, USN04, USN21,
@@ -242,3 +315,20 @@ no host code reads the mask.
   - With OFF, Lexington already floods, becomes a wreck at 155.00 and is killed at 255.91.
   - ON should flood it sooner. Lexington is held at its 0.01 invincibility floor until
     `luaLexSink`.
+
+**Part 7b reach.** BSM09 is the only WIN row whose script calls any of the four. Its calls
+(`bsm_09_battle_of_the_coral_sea.lua`), with the predictions against the OFF log
+`p23j_off_b9_def.log`:
+
+- **SquadronSetBaseUnsupported** (`:263-264`): Donald on Yorktown's and Lexington's lists.
+  Donald never runs RTB in the OFF log, so no `006C4790` site asks, and ON is identical.
+- **SetVisibility** (`:310` false, `:811` true): Val squadron `LexKillerGang[5]` is hidden
+  from setup until t=9.80 (`luaIntroMovie2`). It is also untouchable over that span, so
+  hiding it changes only the hit node of planes nothing can target.
+- **SquadronEnableVehicleAvoidance** (`:314`, false): every one of the five Val squadrons
+  has avoidance off for the whole mission. With `kPilotVehicleAvoidanceBound` ON, their
+  planes skip `0099B670`. The OFF summary shows `plane_ticks=308` for avoidance, with no
+  split by unit, so how much changes is not known until the pair runs.
+- **SetCheatTurbo** (`:908`, 8; `:1334` via `luaDelay(luaResetTurbo, 1.0)` at `:917`, 1):
+  Vals 1-4 get 8 at t≈16.45 (dtScale 3.2, lead 16) and 1 about a second later. A value of 1
+  gives dtScale 1 and lead 10, the same as 0. The Vals die at 42.85.
