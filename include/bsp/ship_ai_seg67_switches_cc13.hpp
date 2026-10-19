@@ -12,4 +12,21 @@ namespace bsp {
 // the slot's class+A0h). False: unit+9C8h, as before.
 inline constexpr bool kShipAiTorpedoMarginClassLengthBound = false;
 
+// (C) 009EE586..009EE594. Every 009ED6B0 pass that reaches 009EE580 (every
+// tick the station-keeping arm does not run) clears blk+38Ah, +388h and +389h
+// before the path-pick gate. The host kept the latches across skipped ticks.
+// True: the three station latches clear there. False: they persist.
+inline constexpr bool kShipAiStationLatchClearBound = false;
+
+// (D) 009EE6F1..009EE750. After the path-pick gate opens and before the output
+// block and the tail, the parked byte blk+2FDh is computed:
+//   2FDh = ([[blk+2F4h]+1Ch] == 0) ? 1
+//        : ([blk+310h] >= [blk+30Ch] (signed SETGE) && !blk+2FCh && record+20h)
+// The tail's parked stop 009EEF72 reads it, and 009DA610 reads the same byte.
+// The host set it only at 009EF045. A sibling of (C), not the same switch:
+// different fields, different consumers, different addresses.
+// True: the byte is computed there into both host copies (tail.parked_2fd and
+// goal.flag_2fd). False: the host's previous single write at 009EF045.
+inline constexpr bool kShipAiParkedByteBeforeTailBound = false;
+
 } // namespace bsp

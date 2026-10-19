@@ -10924,6 +10924,12 @@ public:
         }
         // 009EE580..009EE670, projected by packet cc_ai_goal_vector: the path
         // plan refresh, the path point pick and the lateral-offset publish.
+        if (bsp::kShipAiStationLatchClearBound) {
+            // 009EE586..009EE594, before the 009EE59B / 009EE59F gate.
+            ctl_.station_close_38a = false;
+            ctl_.station_aligned_388 = false;
+            ctl_.station_reversing_389 = false;
+        }
         bsp::ShipAiPathPickState pick{};
         pick.steering_mode_1c4 = static_cast<int>(ctl_.blk.mode);
         pick.astern = ctl_.blk.mode == bsp::ShipAiSteeringMode::NavigateAstern;
@@ -10954,6 +10960,21 @@ public:
                 owner_.record("ShipAi::navigation_arm_tail", 0x009eeaabu);
             }
             return false;
+        }
+        if (bsp::kShipAiParkedByteBeforeTailBound) {
+            // 009EE6F1..009EE750. [blk+2F4h] is the live plan; record+20h is
+            // CL from 009EE6DA.
+            const bsp::ShipAiPathPlanBlock& live
+                = (ctl_.plan_front == 0) ? ctl_.plan_a : ctl_.plan_b;
+            bool parked = true;                                          // 009EE718
+            if (live.search_state != 0) {                                // 009EE6FE
+                parked = static_cast<std::int32_t>(ctl_.goal_layer_310)
+                             >= static_cast<std::int32_t>(ctl_.travel_layer_30c) // SETGE
+                         && !ctl_.plan_computing_2fc                     // 009EE73A
+                         && ctl_.path_point.more_path_20;                // 009EE743
+            }
+            ctl_.tail.parked_2fd = parked;
+            ctl_.goal.flag_2fd = parked;
         }
         bsp::ShipAiNavWaypoint waypoint{};
         waypoint.x = ctl_.path_point.point_x_08;            // 009EE671
