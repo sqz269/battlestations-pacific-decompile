@@ -163,12 +163,12 @@ void point3_ptr_array_erase_at_007b1b40(GameRowsHost& host, void* array, std::ui
 void point3_ptr_array_insert_at_007b2850(GameRowsHost& host, void* array, std::uint32_t index,
                                          const float* point);
 // The last of a std::vector of 12-byte points ({first, last} pair at `first_offset`), copied
-// to out with FLD/FSTP. The index is size - 1 (size from (last - first) / 12, 0 when first is
+// to out with FLD/FSTP (which quiets an SNaN; see fld_fstp). The index is size - 1 (size from (last - first) / 12, 0 when first is
 // null) and is checked by an unsigned compare, so an empty vector reports 00BF6713 first.
 // 007B0E60 __thiscall(ECX = object; float* out), RET 4: the vector object at [object+8h]
-// (first +4h). 007B2B90: the object's own vector, first at +0Ch.
-void point_list_last_point_007b0e60(GameRowsHost& host, const void* object, float* out);
-void point3_vector_last_point_007b2b90(GameRowsHost& host, const void* object, float* out);
+// (first +4h). 007B2B90: the object's own vector, first at +0Ch. Both return out in EAX.
+float* point_list_last_point_007b0e60(GameRowsHost& host, const void* object, float* out);
+float* point3_vector_last_point_007b2b90(GameRowsHost& host, const void* object, float* out);
 // 006CA5D0 __thiscall(ECX = block; n), RET 4: walk the std::list at block+40h (head [+44h])
 // from begin, at most n steps and not past end; EAX = the reached node's +0Ch. Slot +8h of
 // 00CF88A0, 00CF8BA0 and 00D015C4.

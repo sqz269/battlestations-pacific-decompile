@@ -179,8 +179,8 @@ void effect_flare_read_lua_0086c240(FlareReaderHost& host, void* component, LuaR
         }
         // 0086CC19..0086CC47: push_back, growing to max(2 * capacity, 1) when full.
         if (at<std::uint32_t>(vector, 4) == at<std::uint32_t>(vector, 8)) {
-            const std::uint32_t doubled = at<std::uint32_t>(vector, 8) * 2;
-            host.dword_vector_reserve_0086a280(vector, static_cast<std::int32_t>(doubled) > 1 ? doubled : 1);
+            const auto doubled = static_cast<std::int32_t>(at<std::uint32_t>(vector, 8) * 2);
+            host.dword_vector_reserve_0086a280(vector, doubled > 1 ? doubled : 1);
         }
         // The slot address is tested for null before the store (0086CC41); the count rises anyway.
         if (void** const slot = at<void**>(vector, 0) + at<std::uint32_t>(vector, 4)) *slot = e;

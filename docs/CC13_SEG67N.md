@@ -18,7 +18,7 @@ into the 26-slot task interface.
 
 ## Skipped
 
-- `009A7A40`: inside cc13-undef's leased range 009A76E0-009A7E7F.
+- `009A7A40` was skipped here at first. It is now reconstructed as `BSP_VirtualReturnZeroFloat_009a7a40` (docs/CC13_GAMEROWS.md, batch 2).
 
 The four 009E rows first skipped here (`009E49F0`, `009E4CA0`, `009E50D0`, `009E6060`) were not
 leased by cc13-prop (`lease list`, 2026-10-18) and are reconstructed in the follow-up below.

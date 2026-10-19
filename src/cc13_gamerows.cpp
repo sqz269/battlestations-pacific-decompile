@@ -1,6 +1,8 @@
 // Open game-named rows, packet cc13-gamerows (marker cc13_gamerows). docs/CC13_GAMEROWS.md.
 #include "bsp/cc13_gamerows.hpp"
 
+#include <cstring>
+
 namespace bsp::cc13_gamerows {
 namespace {
 
@@ -12,6 +14,15 @@ T& at(void* base, std::uint32_t off) noexcept {
 template <class T>
 const T& at(const void* base, std::uint32_t off) noexcept {
     return *reinterpret_cast<const T*>(static_cast<const std::uint8_t*>(base) + off);
+}
+
+// An FLD/FSTP float copy: the bits pass through the x87 stack, which quiets a signalling NaN
+// (sets mantissa bit 22). A plain float assignment compiles to MOVSS and would keep it signalling.
+void fld_fstp(void* dst, const void* src) noexcept {
+    std::uint32_t bits;
+    std::memcpy(&bits, src, 4);
+    if ((bits & 0x7F800000u) == 0x7F800000u && (bits & 0x007FFFFFu) != 0) bits |= 0x00400000u;
+    std::memcpy(dst, &bits, 4);
 }
 
 // A fresh head node: the isnil byte at `isnil` set, its three links (+0h, +4h, +8h) to itself,
@@ -79,8 +90,10 @@ void* traffic_record_assign_0082df00(GameRowsHost& host, void* record, const voi
     at<std::uint8_t>(record, 0xC) = at<std::uint8_t>(source, 0xC);
     at<std::uint32_t>(record, 0x10) = at<std::uint32_t>(source, 0x10);
     at<std::uint32_t>(record, 0x14) = at<std::uint32_t>(source, 0x14);
-    // 0082DF2F-0082DF5E: seven FLD/FSTP float pairs (a value copy; an SNaN would come out quiet).
-    for (std::uint32_t off = 0x18; off <= 0x30; off += 4) at<float>(record, off) = at<float>(source, off);
+    // 0082DF2F-0082DF5E: seven FLD/FSTP float pairs (an SNaN comes out quiet, as in the image).
+    for (std::uint32_t off = 0x18; off <= 0x30; off += 4) {
+        fld_fstp(static_cast<std::uint8_t*>(record) + off, static_cast<const std::uint8_t*>(source) + off);
+    }
     // 0082DF35-0082DF7B: the map at +34h, unless it is the source's.
     void* const map_a = static_cast<std::uint8_t*>(record) + 0x34;
     const void* const src_a = static_cast<const std::uint8_t*>(source) + 0x34;
@@ -162,9 +175,9 @@ void last_point(GameRowsHost& host, const void* pair, float* out) {
     const std::int32_t index = size_of() - 1;
     if (!(static_cast<std::uint32_t>(index) < static_cast<std::uint32_t>(size_of()))) host.invalid_parameter_00bf6713();
     const float* const point = reinterpret_cast<const float*>(first + 12u * static_cast<std::uint32_t>(index));
-    out[0] = point[0];
-    out[1] = point[1];
-    out[2] = point[2];
+    fld_fstp(out + 0, point + 0);                                      // FLD/FSTP x3
+    fld_fstp(out + 1, point + 1);
+    fld_fstp(out + 2, point + 2);
 }
 
 }  // namespace
@@ -227,8 +240,8 @@ void qword_vector_push_back_0086a990(GameRowsHost& host, void* vector, const flo
     }
     auto* const slot = reinterpret_cast<float*>(data_of(vector) + 8u * static_cast<std::uint32_t>(count_of(vector)));
     if (slot != nullptr) {
-        slot[0] = pair[0];                                             // FLD/FSTP pairs
-        slot[1] = pair[1];
+        fld_fstp(slot + 0, pair + 0);                                  // FLD/FSTP pairs
+        fld_fstp(slot + 1, pair + 1);
     }
     count_of(vector) += 1;
 }
@@ -372,9 +385,9 @@ void point3_ptr_array_erase_at_007b1b40(GameRowsHost& host, void* array, std::ui
 void point3_ptr_array_insert_at_007b2850(GameRowsHost& host, void* array, std::uint32_t index,
                                          const float* point) {
     float* const p = host.point3_ptr_array_new_point_slot20(array);   // 007B285C, vtable+20h
-    p[0] = point[0];                                                   // FLD/FSTP x3
-    p[1] = point[1];
-    p[2] = point[2];
+    fld_fstp(p + 0, point + 0);                                        // FLD/FSTP x3
+    fld_fstp(p + 1, point + 1);
+    fld_fstp(p + 2, point + 2);
     std::uint8_t* const v = bytes(array) + 0x4;
     std::uint8_t* const begin = at<std::uint8_t*>(v, 0x4);
     if (begin > at<std::uint8_t*>(v, 0x8)) host.invalid_parameter_00bf6713();   // 007B287F
@@ -385,13 +398,15 @@ void point3_ptr_array_insert_at_007b2850(GameRowsHost& host, void* array, std::u
     host.vector_insert_one_007b26f0(v, result, v, where, &value);      // 007B28AE
 }
 
-void point_list_last_point_007b0e60(GameRowsHost& host, const void* object, float* out) {
+float* point_list_last_point_007b0e60(GameRowsHost& host, const void* object, float* out) {
     const void* const vector = at<const void*>(object, 0x8);          // 007B0E61
     last_point(host, static_cast<const std::uint8_t*>(vector) + 0x4, out);
+    return out;                                                        // EAX = out, RET 4
 }
 
-void point3_vector_last_point_007b2b90(GameRowsHost& host, const void* object, float* out) {
+float* point3_vector_last_point_007b2b90(GameRowsHost& host, const void* object, float* out) {
     last_point(host, static_cast<const std::uint8_t*>(object) + 0xC, out);
+    return out;                                                        // EAX = out, RET 4
 }
 
 std::uint32_t air_ops_block_stock_node_for_class_006ca5d0(GameRowsHost& host, const void* block,
