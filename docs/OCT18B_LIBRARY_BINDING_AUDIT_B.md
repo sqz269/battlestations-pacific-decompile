@@ -158,11 +158,18 @@ to replace them with a stock RTTI or global-destruction helper.
 - `./scripts/build.ps1`: Win32 Release build passed; both enabled existing tests
   passed (`reconstructed_math`, `tool_tests`). No C++ host file changed.
 - Read-only original byte scans and project/program-verified Ghidra queries;
-  seven raw-layout classification notes appended through `bsp.py ledger add-name
-  --append-evidence`, preserving names and previous evidence.
+  18 classification notes appended through `bsp.py ledger add-name
+  --append-evidence` across the four work streams, preserving names and previous
+  evidence. Existing inventory tags were retained; classification is recorded in
+  the name-ledger evidence and live plate comments.
 - `ghidra_annotate.py --apply` used the shared write lock, saved prior comments
-  in `local/ghidra-annotations-20261019T043244Z.json`, and saved the project.
-  All seven affected exports were refreshed through `bsp.py ghidra export`.
+  in `local/ghidra-annotations-20261019T043244Z.json` and
+  `local/ghidra-annotations-20261019T044053Z.json`, and saved the project.
+  All 18 affected exports were refreshed through `bsp.py ghidra export`.
+- The combined audit branch merged `origin/main` (`8d203f017`) and repeated the
+  Release build and two enabled tests before publication. Worker commits are
+  `86e205fc2` (sort), `70b11404e` (generated/templates) and `d3fa55d1d`
+  (telemetry/xlive); primary layout/classification commit is `6c3284dc3`.
 - No game runs, network service calls or deployment. Historical differential
   records were inspected rather than rerun; this audit adds no original ABI,
   native exception-runtime, full-host-adoption or gameplay proof.
