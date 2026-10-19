@@ -1388,3 +1388,25 @@ struct ScenePropertyVector3Value {
 void scene_property_value_construct_vector3_00467c80(ScenePropertyVector3Value& value, const float* xyz, float w);
 
 } // namespace bsp::cc13_sys
+
+// oct18b-nA1: newly defined, assembly-reviewed leaves; build-only interfaces.
+
+namespace bsp::cc13_sys {
+// ECX game, stack float fov, RET 4; only calls 00B6FBB0 when +19FCh is set.
+void game_camera_set_fov_004b4920(void* game, float fov,
+    const std::function<void(void*, float)>& camera_set_fov_00b6fbb0);
+// RET 4 with no body effects. Data slot
+// 00CE7484; relation to the adjacent world-view-job vtable remains provisional.
+void world_view_job_empty_callback_004b5070(void* argument) noexcept;
+// ECX object, flags stack, RET 4, EAX original object. Clears [00E18AD8].
+void* world_view_job_scalar_delete_004b8a40(void* object, std::uint32_t flags, void*& global_00e18ad8,
+    const std::function<void(void*)>& free_00bf65ac);
+struct NearestViewHost {
+    virtual ~NearestViewHost() = default;
+    virtual void* game_00e188a8() = 0;
+    virtual void refresh_transform_00b6db70(void* camera) = 0;
+};
+// ECX game, stack xyz, RET 4, ST0 = float-rounded nearest squared distance.
+// Scans camera +120h and 8 optional objects at game+18CCh..18E8h, point +ACh.
+float game_nearest_view_distance_squared_004bb970(void* game, const float point[3], NearestViewHost& host);
+}

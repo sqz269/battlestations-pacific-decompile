@@ -580,3 +580,15 @@ void native_string_at_8_destroy_storage_0043d090(Raw owner, Seg2Host& host) {
 }
 
 }  // namespace bsp::profile_seg2_cc13
+
+// oct18b-nA1: newly defined, assembly-reviewed leaves; build-only interfaces.
+
+namespace bsp::profile_seg2_cc13 {
+// 0043B2C0: byte restore precedes optional free; no singleton-null guard.
+Raw scoped_byte_override_scalar_delete_0043b2c0(Raw scope, std::uint32_t flags,
+                                                ScopedByteOverrideDeleteHost& host) {
+    scoped_byte_override_f8d394_destruct_0043ab80(scope, host);
+    if (flags & 1u) host.free_00bf65ac(scope.p);
+    return scope;
+}
+}

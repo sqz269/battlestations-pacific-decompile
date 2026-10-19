@@ -1853,3 +1853,56 @@ float camera_track_fov_at_0045a5a0(Seg5Host& host, Object track, float time) {
 }
 
 } // namespace bsp::cc13_seg5
+
+// oct18b-nA1: newly defined, assembly-reviewed leaves; build-only interfaces.
+
+namespace bsp::cc13_seg5 {
+void movie_action_clear_camera_node_00453580(Object action) noexcept {
+    if (native_at<Object>(action, 0x1d4)) native_at<Object>(action, 0x1d4) = nullptr;
+}
+void movie_action_capture_camera_node_004542b0(Seg5Host& host, Object action) {
+    Object game = host.game_00e188a8();
+    Object actor = native_at<Object>(game, 0x1ed4);
+    native_at<Object>(action, 0x1d4) = native_at<Object>(actor, 0x1bc);
+}
+TrackTimeIterator* entity_track_find_time_00455a80(Object track, TrackTimeIterator* out, float time,
+                                                  TrackTimeSearchHost& host) {
+    Object list = track + 0x108;
+    auto& container = native_at<Object>(track, 0x114);
+    auto& node = native_at<Object>(track, 0x118);
+    *out = {nullptr, nullptr};
+    container = list;
+    node = native_at<Object>(native_at<Object>(track, 0x10c), 0);
+    bool found = false;
+    for (;;) {
+        Object head = native_at<Object>(track, 0x10c);
+        if (!container || container != list) host.invalid_parameter_00bf6713();
+        if (node == head) break;
+        if (!container) host.invalid_parameter_00bf6713();
+        if (node == native_at<Object>(container, 4)) host.invalid_parameter_00bf6713();
+        if (time < native_at<float>(native_at<Object>(node, 8), 4)) {
+            *out = {container, node};
+            found = true;
+        }
+        if (!container) host.invalid_parameter_00bf6713();
+        if (node == native_at<Object>(container, 4)) host.invalid_parameter_00bf6713();
+        node = native_at<Object>(node, 0);
+    }
+    if (!found) {
+        container = list;
+        node = native_at<Object>(list, 4);
+        if (!container) host.invalid_parameter_00bf6713();
+        node = native_at<Object>(node, 4);
+        if (node == native_at<Object>(container, 4)) host.invalid_parameter_00bf6713();
+        *out = {container, node};
+    }
+    return out;
+}
+void vehicle_launch_message_read_00464810(Object message, Object stream, VehicleLaunchReadHost& host) {
+    host.read_extended_header_0075b4c0(message, stream);
+    Object cursor = stream + 4;
+    host.read_boolean_00428d70(cursor, message + 0x1c);
+    // 00D7A248 = 7F7FFFFF (FLT_MAX), verified in the image.
+    host.read_numeric_float_004293f0(cursor, message + 0x20, 0, 1, 0x1.fffffep+127f, 32);
+}
+}
