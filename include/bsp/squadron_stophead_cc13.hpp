@@ -35,6 +35,6 @@
 
 namespace bsp::game {
 
-inline constexpr bool kSquadronStopHeadMoveToSelfBound = false;
+inline constexpr bool kSquadronStopHeadMoveToSelfBound = true;   // ON: OCEAN_WAVE_FIELD 95 (cc9-physics23)
 
 }  // namespace bsp::game
