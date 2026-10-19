@@ -34,6 +34,7 @@
 namespace bsp::game {
 
 class GameHostLog;
+class GameProfileOwner;
 
 // Packet cc13-fix20. Scoring_SetMissionCompleted, the Lua row 008B8AD0
 // (registered at 00E0C380). OFF keeps the row UNIMPLEMENTED. ON runs the
@@ -154,6 +155,9 @@ public:
 
     void report();
     const GameMissionExitSummary& summary() const noexcept { return exit_; }
+    // cc15 lane L2 (kProfileOwnerCc15Bound): read [game+6B4h] through the
+    // profile owner at each use instead of progress_. The owner outlives this.
+    void bind_profile(GameProfileOwner* profile) noexcept { profile_ = profile; }
 
 private:
     // --- bsp::MissionResultHost -------------------------------------------
@@ -206,7 +210,8 @@ private:
     std::unique_ptr<CompletionBridge> completion_bridge_;
 
     bsp::MissionScoringManagerState scoring_{};            // [game+21A0h]
-    bsp::MissionProgress progress_{};                      // game+6B4h
+    bsp::MissionProgress progress_{};                      // game+6B4h stand-in
+    GameProfileOwner* profile_{nullptr};                   // game+650h when bound
     bsp::MissionObjectiveSet objectives_[bsp::kObjectiveSetCount]{};  // game+21A4h
     std::optional<bsp::MissionEndMovieRequest> end_movie_{};  // game+7188h
     bsp::MoviePlayer movie_player_{};                      // 00e18d48
