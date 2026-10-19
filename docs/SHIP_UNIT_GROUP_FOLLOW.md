@@ -455,7 +455,7 @@ them**, and the loop is unrolled, which is most of why the body is 523 instructi
 Its last 68 instructions were read too, which pins the ABI and the two answers:
 
 ```
-00811731..00811760  sign = (v > 0) ? -1 : (v > w ? +1 : 0)      ; an integer in [ESP+4]
+00811726..00811760  c = uz*wx - wz*ux ; sign = (c < 0) ? -1 : (c > 0 ? +1 : 0)  ; [ESP+4]
 00811768..008117C2  a cross product, then its squared length     ; [ESP+18h]
 008117C6..008117EB  dist = (sq > 1e-10) ? sqrt(sq) : 0        ; 00CE3820, a DOUBLE; as a float
                                                               ; it reads -7.59e15, a fifth of these
@@ -476,13 +476,16 @@ And the middle is now read in outline, which is what a reconstruction needs:
   compare against the running best and `LEA EDI,[EBX - k]` on a win. `ECX` starts at
   `head + 27h` and `EBX` at 2, so `EDI` ends up holding **how many slots back from the head the
   nearest sample lies**.
-* **The arc length is a sum of the stored legs, not a recomputed distance.** Two accumulators, at
-  `[ESP+48h]` and `[ESP+44h]`, are filled by two loops - `0081167F-008116E5`, unrolled four deep
-  with its back-edge at `008116E5`, and `00811700-00811721` - and each term is
-  `FADD float ptr [ESI + ((i mod 40) + 7Fh)*18h]`, which is `entity + 0BD8h + 18h*(i mod 40) + 10h`:
-  the sample's own `+10h` arc length. The `CMP EAX,EDI / JG` at `008116F1` picks which of the two
-  runs, against a second index held at `[ESP+28h]`.
-* `[ESP+48h]` is what the tail returns as `*out_along`: after the four `POP`s at `008116F3`,
+* **The arc length is the projection plus a sum of the stored legs** (corrected by packet
+  `cc13-jm08`, commit `32cb338f7`). There is ONE accumulator. Call `S` the frame right after
+  `SUB ESP,34h`; the accumulator is `S+38h`, which reads as `[ESP+48h]` with all four pushes live,
+  `[ESP+44h]` after the `POP EBP` at `008116F3`, and `[ESP+38h]` in the tail. It starts as the
+  projection `P` stored at `00811658` (below), and two loops - `0081167F-008116E5`, unrolled four
+  deep, then the remainder at `00811700-00811721` - add the legs `n = 0..b`, **`b+1` of them**, of
+  slots `head, head-1, ..., head-b`. Each term is `FADD float ptr [ESI + ((i mod 40) + 7Fh)*18h]`,
+  which is `entity + 0BD8h + 18h*(i mod 40) + 10h`: the sample's own `+10h` leg. The
+  `CMP EAX,EDI / JG` at `008116F1` skips the remainder loop when the unrolled one covered them all.
+* `S+38h` is what the tail returns as `*out_along`: after the four `POP`s at `008116F3`,
   `0081172A`, `0081172D` and `00811730` the stack has moved 16 bytes, so the tail's
   `MOVSS XMM0,[ESP+38h]` at `008117FD` reads that same accumulator.
 
@@ -493,29 +496,34 @@ the prologue's stores: `SUB ESP,34h` then `PUSH EBX/ESI/EDI/EBP` leaves the body
 through the whole routine, and the prologue also keeps them in `ST2`, `ST1`, `ST0`.
 
 ```
-008115C2..008115DA  [ESP+38h..40h] = sample[a] - sample[b]        ; the segment
+008115C2..008115DA  [ESP+38h..40h] = sample[b] - sample[a]        ; the segment, b the newer end
 008115DE            0042B260 normalize_in_place on it             ; u, a unit vector
-008115F6..00811626  [ESP+2Ch..34h] = sample[i] - point            ; w
-0081162A..00811658  [ESP+48h] = dot(w, u)                         ; the projection
-00811660            ... stored over [ESP+20h], point.z's own slot
-00811768..008117C2  |w x u|^2                                     ; a 3D cross product
-008117C6..008117EB  dist = (|w x u|^2 > 1e-10) ? sqrt(...) : 0
+008115F6..00811626  [ESP+2Ch..34h] = sample[b] - point            ; w
+0081162A..00811658  S+38h = P = (wy*uy + wx*ux) + wz*uz           ; the projection, along's seed
+00811660            P copied to S+10h ([ESP+20h], point.z's slot) ; the across foot's scale
+00811726..00811760  c = uz*wx - wz*ux, its sign                   ; x87: wz,uz,wx,ux,wy live
+00811768..008117C2  |w - P*u|^2                                   ; S+10h read back: foot P*u
+008117C6..008117EB  dist = (|w - P*u|^2 > 1e-10) ? sqrt(...) : 0
 00811803            *out_across = sign * dist
 ```
 
-So the across component is the distance from the point to the **line through the winning sample and
-its neighbour**, with `u` normalised so that `|w x u|` is that distance directly. `[ESP+20h]` being
-overwritten with the projection is safe because `point.z` is still live in `ST0`, and it is the kind
-of slot reuse that makes a naive `[ESP+n]` reading wrong.
+So the across component is the distance from the point to the **line through `sample[b]` and
+`sample[a]`**: `P` is copied at `00811660` to `S+10h` (`[ESP+20h]`, point.z's slot, safe because
+`point.z` is still live in `ST0`), read back at `00811768` as `[ESP+10h]` after the pops, and scales
+`u` into the foot `P*u`; `00811768..008117C2` then square-sums `w - P*u`. That slot reuse is the
+kind that makes a naive `[ESP+n]` reading wrong.
 
-**Still unread: the sign alone.** `00811726-00811760` forms `a*b - c*d` from four x87 registers
-(`FLD ST1 / FMUL ST3`, `FLD ST1 / FMUL ST5`, `FSUBP`) and takes `-1`, `+1` or `0` from its sign at
-`00811743`, `00811756` and `00811760`. Naming those four operands needs the x87 stack tracked
-through a 40-times-unrolled search, and this packet stopped short of that. `record+10h`'s sign - and
-therefore which side of the wake column 0 puts a follower on - is the one quantity still open, which
-is the same thing `include/bsp/ship_ai_path_corridor.hpp` line 62 already says: "which sign is port
-is still open". It will be settled by a run instead: a follower that joined off the port quarter
-must hold the port quarter, and the answer will be labelled measured rather than read.
+**The sign, read (packet `cc13-jm08`).** Tracking the x87 stack from `0081162A` leaves
+`wz, uz, wx, ux, wy` in `ST0..ST4` once `P` is stored and through the leg loops (each leg is
+`FLD / FADD / FSTP`, balanced). At `00811726` `FLD ST1 / FMUL ST3` is `uz*wx`, `FLD ST1 / FMUL ST5`
+is `wz*ux`, and `FSUBP` leaves **`c = uz*wx - wz*ux`**. Then `FLDZ / FCOMIP` with `JBE` at
+`00811741` gives `-1` when `c < 0` (`00811743`), `COMISS / JA` gives `+1` when `c > 0`
+(`00811756`), and `0` otherwise, NaN included (`00811760`). Since the point is `sample[b] - w`, its
+offset from the line projected on `(-uz, +ux)` is `wx*uz - wz*ux = c`: **positive across is the
+`(-dir.z, +dir.x)` side**, the same left normal `0070D290` adds back, provided `0070D290`'s `dir` is
+the direction of travel as `u` is (`u` runs from the older sample `a` to the newer `b`). Which
+side that is in world terms (port or starboard) still depends on the axis handedness, which
+`include/bsp/ship_ai_path_corridor.hpp` line 62 leaves open.
 
 **But for column 0 the sign cancels, and that is what unblocks the station.** `00811180` is the
 only producer of column 0 and `0070D290` is its only consumer, and they are inverse operations:

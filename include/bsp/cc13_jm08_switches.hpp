@@ -40,7 +40,8 @@ inline constexpr bool kDeadLeaderRepublishesFollowerPairBound = false;
 // True: ship_ai_wake_decompose_00811180 (src/ship_ai_wake_trail.cpp) returns the
 // image's along-track distance. 00811180 picks the segment through the nearest
 // sample k (00811482..00811584: k == 0 takes head/k1, k == 27h takes k-1/k, else
-// the newer neighbour when its float squared 3D distance is <= the older one's),
+// the newer neighbour unless its float squared 3D distance is > the older one's;
+// 0081157B JBE also keeps the newer one on an unordered compare),
 // stores the projection dot(sample[b] - point, normalize(sample[b] - sample[a]))
 // at 00811658 into [ESP+48h], and the leg loops 0081166A..00811721 add the b+1
 // legs of slots head..head-b onto that same slot. So a member on a trail sample

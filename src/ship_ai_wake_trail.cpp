@@ -312,7 +312,8 @@ ShipAiWakeDecomposition ship_ai_wake_decompose_00811180(const ShipAiWakeTrail& t
         // at k == 27h (00811497) the slot ahead and k. Otherwise the squared 3D
         // distances to the newer (k-1, 008114F4 +29h) and older (k+1, 008114AF
         // +27h) neighbours, each stored as a float (00811555, 0081156F), and
-        // 0081157B JBE takes the newer one when d2(newer) <= d2(older).
+        // 0081157B JBE takes the newer one unless d2(newer) > d2(older); JBE is
+        // also taken on an unordered compare, so a NaN keeps the newer segment.
         const auto slot_back = [&trail](int k) {
             return (trail.head - k + static_cast<int>(kShipAiWakeSampleCount))
                 % static_cast<int>(kShipAiWakeSampleCount);
@@ -334,7 +335,7 @@ ShipAiWakeDecomposition ship_ai_wake_decompose_00811180(const ShipAiWakeTrail& t
         } else {
             const float older = d2_to(trail.samples[slot_back(steps + 1)]);
             const float newer = d2_to(trail.samples[slot_back(steps - 1)]);
-            if (newer <= older) {
+            if (!(newer > older)) {
                 b = steps - 1;
                 a = steps;
             }
