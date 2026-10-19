@@ -3604,6 +3604,9 @@ struct GameGunneryHost::Impl {
         int impact_shape_kind{0x0A};
         int impact_hull_segment{-1};
         float hull_damage_draw{0.0f};           // record+14h, drawn at the push
+        // Host-only (packet cc13-tooklog): queued by blast_radial_damage with
+        // element entries, so its dispatch adds to be_damage_element.
+        bool blast_element{false};
     };
     std::unique_ptr<std::deque<DeferredHit>> deferred_hits;
     const DeferredHit* deferred_replay{nullptr};   // the node 009239A0 is running
@@ -11865,6 +11868,8 @@ void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
     record.part_hit_count = static_cast<int>(node.parts.size());
     ++deferred_hits_dispatched;
     deferred_replay = &node;
+    const bool victim_known = node.victim < unit_state.size();
+    const float before = victim_known ? unit_state[node.victim].health : 0.0f;
     if (node.gunless) {
         apply_gunless_blast_hit(node.shooter, node.victim, node.point, record);
     } else {
@@ -11872,6 +11877,15 @@ void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
             node.has_blast ? &record : nullptr, node.team_id);
     }
     deferred_replay = nullptr;
+    if (victim_known) {
+        // Packet cc13-tooklog: the damage the queued hit did, which the push site
+        // logs as took=queued.
+        const float after = unit_state[node.victim].health;
+        if (node.blast_element) be_damage_element += before - after;
+        log.notef("  deferred hit dispatch on %s took=%.1f health=%.1f",
+            unit_name_or_index(node.victim + 1).c_str(),
+            static_cast<double>(before - after), static_cast<double>(after));
+    }
     round_bullet_class = saved_class;
     impact_shape_kind = saved_kind;
     impact_hull_segment = saved_segment;
@@ -13169,22 +13183,46 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         }
 
         const float before = state.health;
+        const unsigned long long queued_before = deferred_hits_queued;
         apply_hit(shooter, gun_row, i, point, direction, &blast, team_id);
-        if (!element_entries.empty()) be_damage_element += before - unit_state[i].health;
+        if constexpr (kHitDeferredDispatchCc13Bound) {
+            // Packet cc13-tooklog: a queued hit has not moved health yet; its
+            // dispatch adds the element damage instead.
+            if (deferred_hits_queued != queued_before) {
+                deferred_hits->back().blast_element = !element_entries.empty();
+            } else if (!element_entries.empty()) {
+                be_damage_element += before - unit_state[i].health;
+            }
+        } else {
+            if (!element_entries.empty()) be_damage_element += before - unit_state[i].health;
+        }
         float nearest = distance;
         for (const bsp::HitPartEntry& e : element_entries) {
             if (&e == &element_entries.front() || e.distance < nearest) nearest = e.distance;
         }
-        log.notef("  impact blast bullet=%d on %s dist=%.1f entries=%zu nearest=%.1f base=%.1f "
-            "range=%.1f armour=%.1f took=%.1f health=%.1f",
-            gun.bullet_class,
-            unit_name_or_index(i + 1).c_str(), static_cast<double>(distance),
-            element_entries.size(), static_cast<double>(nearest),
-            static_cast<double>(damage),
-            static_cast<double>(weapon->blast_range),
-            static_cast<double>(state.armour),
-            static_cast<double>(before - unit_state[i].health),
-            static_cast<double>(unit_state[i].health));
+        if constexpr (kHitDeferredDispatchCc13Bound) {
+            // Packet cc13-tooklog: ON, apply_hit only queued the hit, so health has
+            // not moved yet; dispatch_deferred_hit logs what it took.
+            log.notef("  impact blast bullet=%d on %s dist=%.1f entries=%zu nearest=%.1f "
+                "base=%.1f range=%.1f armour=%.1f took=queued",
+                gun.bullet_class,
+                unit_name_or_index(i + 1).c_str(), static_cast<double>(distance),
+                element_entries.size(), static_cast<double>(nearest),
+                static_cast<double>(damage),
+                static_cast<double>(weapon->blast_range),
+                static_cast<double>(state.armour));
+        } else {
+            log.notef("  impact blast bullet=%d on %s dist=%.1f entries=%zu nearest=%.1f base=%.1f "
+                "range=%.1f armour=%.1f took=%.1f health=%.1f",
+                gun.bullet_class,
+                unit_name_or_index(i + 1).c_str(), static_cast<double>(distance),
+                element_entries.size(), static_cast<double>(nearest),
+                static_cast<double>(damage),
+                static_cast<double>(weapon->blast_range),
+                static_cast<double>(state.armour),
+                static_cast<double>(before - unit_state[i].health),
+                static_cast<double>(unit_state[i].health));
+        }
     }
     done("Projectile::blast_radial_damage_0084bad0", 0x0084bad0u);
 }
