@@ -94,10 +94,13 @@ Destructor `0091CCD0`, in order:
 
 ## Ghidra names replaced
 
-`local/ghidra-annotations-20261019T072917Z.json` (the annotate log of the apply run) keeps the
-old names: 00904C40 CG_vector_deleting_dtor_00904c40, 008F4160 CG_adjustor_thunk_008f4160,
-008F4D50 CG_adjustor_thunk_008f4d50, 008F4D60 CG_adjustor_thunk_008f4d60, 0091D640
-CG_array_ctor_helper_0091d640, 0091CCD0 CG_vector_deleting_dtor_0091ccd0.
+Each annotate run logs the names it replaced:
+- `local/ghidra-annotations-20261019T072917Z.json`: 00904C40 CG_vector_deleting_dtor_00904c40,
+  008F4160 CG_adjustor_thunk_008f4160, 008F4D50 CG_adjustor_thunk_008f4d50, 008F4D60
+  CG_adjustor_thunk_008f4d60, 0091D640 CG_array_ctor_helper_0091d640, 0091CCD0
+  CG_vector_deleting_dtor_0091ccd0.
+- `local/ghidra-annotations-20261019T075320Z.json`: the 008F7D00 and 008FB4B0 thunk renames.
+- `local/ghidra-annotations-20261019T075059Z.json`: the 00749780 thunk rename (census9).
 
 ## Torpedo-bot audit notes (008FFF20 against game_hosts_gunnery.cpp)
 
@@ -106,7 +109,8 @@ places where the image does something the host does not model, or where a gate i
 
 - **008FFF4B, same-side target drop.** `00521EA0(ECX = bot+38h)` resolves the target. The target
   is kept only when it exists, its +5Dh byte is clear, the gun (bot+50h) has a parent (+3Ch)
-  whose +5Dh is clear, and `00803510(ECX = parent+54h, EDX = target+54h)` returns non-zero;
+  whose +5Dh is clear, and `00803510(ECX = gun+54h, EDX = target+54h)` returns non-zero (at
+  008FFF71 ECX is still the gun; [gun+3Ch] serves only the parent +5Dh test);
   otherwise `bot->vtable[38h](0)` clears it (008FFF8A). The host has no 00803510 check, so a
   target that test rejects stays targeted in the host. Not tied to a live mission path by the
   audit; no RNG.
@@ -118,13 +122,16 @@ places where the image does something the host does not model, or where a gate i
   BSP_GunBot_AttachTorpedoClass: bot+58h = bot+50h (the payload), bot+5Ch = 0.0f, then bot+64h =
   payload when `payload->vtable[5Ch](8)` (IsKindOf 8) is true (008FF33F), else 0 (008FF34A).
   The gun-class IsKindOf ids are 24h/22h/20h/1Eh/4/2/1 plus [this+C4h], never 8, so bot+64h
-  stays 0 for every gun payload and the gate never runs. Scope: writers outside the class's own
-  vtable and constructor were not scanned (a whole-image [reg+64h] census is unbounded).
+  stays 0 for every gun payload and the gate never runs. The only immediate store of 8 to
+  [reg+C4h] in the image is 00852F96 in BSP_SubmarineUnit_Construct, so the gate is for a
+  submarine payload; the 85 register stores to +C4h are untraced. Scope: writers of bot+64h
+  outside the class's own vtable and constructor were not scanned.
 - **00900080, the unit+184h gate.** gun = bot+50h; when gun+1ACh (the seat) is not 8,
   `00927F10(seat)` must return true. Then the walk from the gun up the +3Ch parents stops at the
   first object answering IsKindOf(5), the unit (none: return at 00900069), and the tick bails
-  (00900985) when the unit's +184h byte is set. unit+184h is set only by an accepted player
-  role-1 take (00780214; packet cc9_player_role_bookkeeping, `kPlayerRoleBookkeepingBound` in
+  (00900985) when the unit's +184h byte is set. Among units that carry guns, unit+184h is
+  set only by an accepted player role-1 take (00780214; other byte-1 stores at +184h, 0048BCD7 /
+  0048BE9B on LandingTroop members and 00710B73 on UnitPartInstance, are other classes; packet cc9_player_role_bookkeeping, `kPlayerRoleBookkeepingBound` in
   game_hosts_units.cpp). The audit's reading is that for seats other than 8 the 00927F10 role
   check already covers the player-held case, so the +184h byte adds a case only for a seat-8
   gun on a unit whose role 1 the player has taken. That reading of 00927F10 was not re-proved

@@ -12,6 +12,7 @@
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/cruise_speed_setting.hpp"
+#include "bsp/engine_seg4_6_9_cc13.hpp"
 #include "bsp/scene_traffic_groups.hpp"
 #include "bsp/mission_scene_contents.hpp"
 #include "bsp/mission_scene_load.hpp"
@@ -2806,7 +2807,18 @@ public:
     }
     std::string derive_short_name(const std::string& scene_path) override {
         owner_.log.implemented("SceneContents::derive_short_name", "004cd7f0");
-        return derive_scene_short_name(scene_path);
+        if constexpr (kSceneShortNameCc15Bound) {
+            // 004D4E74 PUSH 1: the append arm, over the host's own mode fields.
+            const bsp::cc13_sys::ShortNameModeFields mode{
+                static_cast<std::uint8_t>(owner_.mode_forced ? 1 : 0),
+                owner_.raw_game_mode, owner_.multiplayer ? 1 : 0};
+            std::string name = bsp::cc13_sys::derive_scene_short_name_004cd7f0(scene_path, true, mode);
+            owner_.log.notef("scene short name 004cd7f0: %s (mode 614=%d 61c=%d 1fe4=%d)",
+                name.c_str(), mode.mode_614, mode.byte_61c, mode.field_1fe4);
+            return name;
+        } else {
+            return derive_scene_short_name(scene_path);
+        }
     }
     void open_file_block(const std::string& label) override {
         owner_.summary.block_name = label;

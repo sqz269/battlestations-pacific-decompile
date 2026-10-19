@@ -70,7 +70,20 @@ public:
     virtual void clear_sound_queue_publication_00f89b34() = 0;
     // 006BF880, __thiscall(ECX = 00E19948 holder list, holder): BSP_AirOpsHolderList_Unlink.
     virtual void air_ops_holder_list_unlink_006bf880(void* holder) = 0;
+    // The tail-JMP targets of the out-of-line destructors below, each __thiscall(ECX = object).
+    virtual void net_entity_create_message_destruct_007668e0(void* message) = 0;
+    virtual void simple3d_scene_release_0093cc20(void* scene) = 0;
+    virtual void ref_counted_destroy_base_00bd30f0(void* object) = 0;
+    virtual void ordered_map_destruct_0094ca40(void* map) = 0;
 };
+
+// Out-of-line destructors of the form MOV [ECX], vtable (plus a second subobject vtable for
+// 00743E30); JMP base. __thiscall(ECX = object), the JMP target's RET.
+void landfort_create_message_destruct_00743e30(Census9Host& host, void* message);   // 00CFF358
+void land_vehicle_create_message_destruct_0074cc90(Census9Host& host, void* message); // 00CFFD18
+void simple3d_scene_destruct_0093cc80(Census9Host& host, void* scene);               // 00D19724
+void path_source_destruct_007ac950(Census9Host& host, void* source);                 // 00D052DC
+void ordered_map_destruct_0094cad0(Census9Host& host, void* map);                   // 00D25170
 
 // 0080FCF0, __thiscall(ECX = message, unit, phase, force), RET 0Ch, returns message.
 void* ship_guns_sync_construct_0080fcf0(Census9Host& host, void* message, void* unit,

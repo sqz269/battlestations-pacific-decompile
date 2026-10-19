@@ -23,7 +23,11 @@ namespace bsp {
 // reset: +0h, the aim wander +4h..+Ch and its 009FA620 reseed (stream-1 draws),
 // +2Ch..+3Ch (per-tick inputs in this host), +44h = 999999.0, +49h.
 // OFF: the block persists across tasks, as before.
-inline constexpr bool kTaskGunBlockReconstructBound = false;
+// cc9-physics24 2026-10-19: ON by mechanism (OCEAN_WAVE_FIELD 100). Pairs
+// local\p24_off vs local\p24e_on: BSM09 moves in both envs (ref 50 -> 49 deaths,
+// still ends 351.04 s; default still ends, 516.00 -> 459.01 s); USN01 u1i and
+// USN21 are gameplay identical.
+inline constexpr bool kTaskGunBlockReconstructBound = true;
 
 // 009FAB50, +50h = 0.0, the burst clock, split out because it moves draws. In the
 // image the burst draw is 009FCED1 00BD2F10 on ECX = 1, the shared stream 1, taken
@@ -38,7 +42,9 @@ inline constexpr bool kTaskGunBlockReconstructBound = false;
 // for the new task (one draw at its first firing tick, then one per edge), on the
 // ticks where the host runs the gun tick; the generator differs. ON: also +50h = 0.0 at each install. OFF: the old task's
 // clock carries over.
-inline constexpr bool kTaskGunBlockBurstTimerResetBound = false;
+// cc9-physics24 2026-10-19: ON by mechanism; local\p24e_on vs local\p24f_on is
+// gameplay identical on USN01 u1i, BSM09 and USN21 in both envs.
+inline constexpr bool kTaskGunBlockBurstTimerResetBound = true;
 static_assert(!kTaskGunBlockBurstTimerResetBound || kTaskGunBlockReconstructBound,
               "kTaskGunBlockBurstTimerResetBound requires kTaskGunBlockReconstructBound");
 

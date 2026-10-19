@@ -63,8 +63,9 @@ struct BuildingView {
 
 struct RoundServices {
     virtual ~RoundServices() = default;
-    // 00BD2F10(ECX = stream, lo, hi).
-    virtual float uniform(int stream, float lo, float hi) = 0;
+    // 00BD2F10(ECX = stream, lo, hi). `key` names the drawing round (or the hang)
+    // for a host that keys its draws; it never moves the shared stream.
+    virtual float uniform(int stream, std::uint32_t key, float lo, float hi) = 0;
     // 00903860: -1000.0 where no terrain answers.
     virtual float ground_height_00903860(const Vec3& point) = 0;
     // 009038F0: false where no terrain answers.

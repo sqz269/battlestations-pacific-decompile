@@ -27,7 +27,7 @@ then the rack drop) without the task.
 | `COTP-IJN/PRCPIJN/prcpjm08.lua` (`PRCPIJN/prcpijn_08_defend_guadalcanal.scn`, menu JM08) | `luaBomberWaveSpawned3` (:1264-1272): class 136 `PilotSetTarget(unit, Mission.CommandBuilding)` = Headquarter 01 (Japanese) | **reached** (log evidence below) |
 | `COTP-IJN/PRCPIJN/jm08.lua` | the same code as prcpjm08.lua (:1176-1178, 1272) | not reached: no scene runs it (`PRCPIJN/ijn_08_defend_guadalcanal.scn` runs `IJN\JM08`) |
 | `ijn/JM/jm08.lua`, `COTP-IJN/jm08.lua` | no class 136/186 | not reached |
-| `ijn/JM/jm13.lua` = `COTP-IJN/jm13.lua` (same MD5; `ijn/JM/ijn_13.scn`, `COTP-IJN/ijn_13.scn`) | `luaJM13DakotaSpawned` (:1953-1963) and `luaJM13Dakota2Spawned` (:2058-2059): the LevelBomber gets `PilotMoveTo(unit, Mission.CB)` then `PilotSetTarget(unit, Mission.CB)` = HQ 01. `luaJM13CheckPara` (:2652-2678, called at :784 and :805) also `PlaneForceRelease`s each Dakota plane within 300 m of the CB | **probable** (task and forced release) |
+| `ijn/JM/jm13.lua` (`ijn/JM/ijn_13.scn`, StageScript `Ijn\JM\JM13`); `COTP-IJN/jm13.lua` has the same MD5 (see the note on `COTP-IJN/ijn_13.scn` below the table) | `luaJM13DakotaSpawned` (:1953-1963) and `luaJM13Dakota2Spawned` (:2058-2059): the LevelBomber gets `PilotMoveTo(unit, Mission.CB)` then `PilotSetTarget(unit, Mission.CB)` = HQ 01. `luaJM13CheckPara` (:2652-2678, called at :784 and :805) also `PlaneForceRelease`s each Dakota plane within 300 m of the CB | **probable** (task and forced release) |
 | `COTP-IJN/PRCPIJN/prcpjm13.lua` (`PRCPIJN/ijn_13.scn`, `PRCPIJN/prcpijn_13.scn`) | `DakotaSpawned` (:1399-1412): `PilotSetTarget(Mission.Dakota, Mission.CB)`, Dakota2 `PilotSetTarget(unit, Mission.CB)`; `SpawnDakotas` repeats every 150 s while HQ 01 is neutral and not captured (:1419) | **probable** |
 | `COTP-IJN/PRCPIJN/jm13.lua` | `DakotaSpawned` (:1394, :1401), the same orders | not reached: no scene runs it |
 | `COTP-IJN/PRCPIJN/jm11.lua` (`PRCPIJN/ijn_11_invasion_of_fiji.scn`, menu JM12) | `luaDakotaPlanesSpawned` (:1614-1619): class 136 `PilotSetTarget(unit, Mission.CommandBuildings[3])` = Headquarter 02. Spawned by `luaPlanes` 15 s after the damaged BB (hidden objective) dies (:1714-1720) | **probable** (needs the BB kill) |
@@ -36,6 +36,14 @@ then the rack drop) without the task.
 | `COTP-USN/def_aleutians.lua` (`COTP-USN/def_aleutians.scn`) | `luaSpawnLevelBomba` (:1107, from `luaPh1FadeOut` :934): five class 186 L2Ds, party Japanese; `luaTabbySpawned` (:1228-1250) `PilotSetTarget(unit, trg)` + `NavigatorAttackMove`, trg = `Mission.JapHQs[3]` (CB6) for "left", else `JapHQs[2]` (CB3) | **probable** |
 | `multi/escort04.lua` | scene Dakotas 1-4: `PilotMoveOnPath` only | not reached |
 | all other mission scripts | no class 136/186 spawn and no order on a scene transport | not reached |
+
+UNVERIFIED script resolution: `COTP-IJN/ijn_13.scn`, `COTP-IJN/ijn_05_invasion_of_port_moresby.scn` and
+`COTP-IJN/ijn_11_invasion_of_fiji.scn` name StageScript `Ijn\JM13`, `Ijn\JM05` and `Ijn\JM11`. This installation
+has no loose `scripts/missions/Ijn/JM13.lua` (or `JM05.lua`, `JM11.lua`): the loose files are under
+`ijn/JM/` and `COTP-IJN/`, and the install root has no script archive. How the game resolves those three names
+(packed data elsewhere or another search path) was not traced, so which file those COTP-IJN scenes run, and
+whether it equals the MD5-identical `ijn/JM/jm13.lua` / `COTP-IJN/jm13.lua` pair, is unverified. The JM13 verdict
+stands on `ijn/JM/ijn_13.scn` and the PRCP scenes, whose StageScripts name loose files.
 
 Not covered by this census: transports a scene places without any script order (none found among the scripts'
 `FindEntity` names), and the native high-level AI (`highlvlaiglobals.lua` `Paratroopers` = 0.30/0.40, the
@@ -72,9 +80,10 @@ Labels on that table:
   keeps no separate stale world pose for 00414DB0 to refresh.
 - 006E541F is wired only into the level-bomber rack tick `run_level_bomber_rack_tick_006e56f0`
   (`kPlaneLevelBombTaskBound` with `lb_level_bomber_racks()`). A flagged 31h rack that the devwalk single-rack
-  path fires (`level && !lb_tick` in `run_device_walk_per_rack_007c0d90`) gets its 006E3F90 point, but its drop
-  goes through the generic rack tick, which never calls 006E541F: no landing draw, no target, and (option 2) no
-  round, because that tick's `release_bomb_drop` call passes no `ParatrooperRelease`.
+  path fires (`level && !lb_tick` in `run_device_walk_per_rack_007c0d90`) still has its target point set at the
+  issue. Its drop, however, runs in the host's generic rack tick, and that host tick has no 006E541F block: no
+  landing draw, no target, and (option 2) no round, because that tick's `release_bomb_drop` call passes no
+  `ParatrooperRelease`.
 
 ## The round (option 1 alone: a recorded gap; option 2 below)
 
@@ -137,6 +146,10 @@ LABELLED substitutions:
 - SoldierGlobals.lua is read as text (`SoldierGlobals["Key"] = n`), not run in a private Lua state; this
   installation's file is exactly those six assignments (MaxParatrooperGradient 20, ParachuteOpenAltitudeMin 300,
   Max 400).
+- Draw keys under `BSP_GUNNERY_RNG_STREAMS=1`: a round's draws key as (00F00000h + round id, 0) and a hang's
+  construct draw as (00E00000h + construct serial, 0), bands no unit index reaches, so they share no key with a
+  unit's own death-mode or death-delay draws. In the default mode the key is not read: stream 1 is the one shared
+  generator in call order and stream 0 the separate one, so the order and values are unchanged.
 - The capture tick's per-side strength is the host's two-side array; a capturer whose side is outside 0..1 is
   counted (`bad_side`) and skipped.
 - Not modelled: 006F6760's scoring slot (vtable +108h / +4B8h), the chute and soldier animations, the
@@ -152,8 +165,13 @@ LABELLED substitutions:
   until their own timers or the same-side rule end them, as in the image. Traced: +7DCh is emptied only by
   006F34B0, whose one reference is 007AAE3E in the round's own 007AAE10 OnKilled, and is freed only by the
   destructor 006F5AE0 (006F5B6E-006F5B85: 006F33A0(0) on +7DCh, then the free 00BF6989), whose one reference is
-  the scalar-deleting destructor at 006F5CA3. That runs when the entity is deleted, not on death or a party
-  change, and it does not notify the rounds (their +48Ch keeps the building). No death or party-change path
+  the scalar-deleting destructor at 006F5CA3, and by two EH unwind funclets that do the same 006F33A0(0) through
+  BSP_GarrisonVector_Destruct 006F3FC0: Unwind@00C83570 (`MOV ECX,[EBP-10h]; ADD ECX,7DCh; JMP 006F3FC0`), in the
+  constructor 006F5610's unwind map (its handler 00C8357E is installed at 006F5613), which runs only when the
+  constructor throws, and Unwind@00C835EB (the same three instructions, its JMP at 00C835F4), in the destructor
+  006F5AE0's unwind map (handler 00C835F9 installed at 006F5AE3; map entry at 00DB1724), which runs only when
+  the destructor throws. Those are the only two references to 006F3FC0 (rel32 scan). None of these runs on death
+  or a party change, and none notifies the rounds (their +48Ch keeps the building). No death or party-change path
   touches +7DCh. Evidence: a rel32 and absolute-dword scan of the PE for 006F34B0, 006F39B0 and 006F5AE0 (one
   hit each), and every `+7DCh` access in the exported functions of 006E0000-007FFFFF (006F34B0, 006F39B0, the
   constructor 006F5610, 006F5AE0, 006F6760; 007E2A20's hits are stack offsets). The clear helper 006F35B0
