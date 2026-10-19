@@ -184,7 +184,7 @@ constexpr bool kWarningMessageBankCc15Bound = true;
 // the FileBlocks are seams, see the doc). 00976B00's 00705E00 then resolves the
 // clip's record from the manager (records_resolved / record_misses replace
 // records_not_evaluated). False: no manager, as before.
-constexpr bool kMessageManagerCc15Bound = false;
+constexpr bool kMessageManagerCc15Bound = true;
 
 // cc15-ob1 (docs/CC15_OBJECT_GLOBALSUBSYSTEMS.md). True: the global_subsystems
 // step builds four of 004DC6A0's owners in its order through their typed bodies:
@@ -197,7 +197,7 @@ constexpr bool kMessageManagerCc15Bound = false;
 // tables, once per owner, and its scalar resets run; its roster, effects and
 // hooks do not. A later load first tears the set down in 004D2BB0's order. False:
 // no owners; the manager is the host's own two fields, as before.
-constexpr bool kGlobalSubsystemsCc15Bound = false;
+constexpr bool kGlobalSubsystemsCc15Bound = true;
 
 // Packet cc9_construct_world part 2 (docs/CONSTRUCT_WORLD.md section 9). True:
 // the load step construct_world 004DE610 sets the world-active byte

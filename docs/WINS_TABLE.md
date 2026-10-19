@@ -1103,3 +1103,118 @@ Re-plans on the same tree build (c95d107da):
   On the l69 base the same units logged a closing d32c (Ashigara 12207 m at frame 10, 1448 m at 18000), and CB4 sank
   Asashimo, Sugi and Ashigara. The mode-3 skip (kShipAiNavigateAsternSkipBound, game_hosts_ship_ai.cpp ~10990) never
   reaches the 009EE765 output, so these leaders never close. An astern-skip OFF control is running.
+
+## 2026-10-19, later bases (cc9-lua70, keeper)
+
+The astern-skip stall in the section above was an interim: kShipAiNavigateAsternSkipBound went OFF on main 1258eafc3.
+cc13 rev4 found the skip byte-faithful; the defect is the host's mode-3 approach steering.
+
+cc15's run on main 88b7eb3d1, ref env, astern skip OFF:
+
+| Row | 88b7eb3d1 ref |
+| --- | --- |
+| USN01 | completed 1200.05 s |
+| USN12 | completed 1395.24 s |
+| PRCP01 | completed 915.10 s |
+| USN21 | completed 2906.71 s |
+| ESMP08 | completed 1314.31 s (won again) |
+| LOMP10 | completed 991.43 s (won again) |
+| JM06 | completed 1658.49 s |
+| BSM09 d1 | EndMission 285.05 s (log J:\PROG\battlestations-pacific-decompile-cc15-flip\local\fl3_b9_inbuild.log) |
+| USN02 | failed 170.06 s |
+| LOMP06 | failed 653.11 s |
+| IJN18 | failed 525.00 s |
+| BSM01 | no end |
+
+- BSM09 d1 ref depends on the base: 351.04 s at c95d107da, 408.02 s at f10dce645, 285.05 s at 2e21536b2 and 88b7eb3d1.
+  The ref and 20,3 columns of the re-time above are not swapped.
+- BSM09 d1, default env: lost at 141.05 s after the land chain went ON (physics24 282567f82). Donald collides mid-air
+  with a D3A Val; this is an RNG-coupled shift. The ref env stays at 285.05 s.
+- USN01 u1i, default env: loses its 490.00 s completion under the release-timer reseed (3df710613, RNG-coupled).
+- USN21 with NO orders completes ("Center force is retreating!") at 3006.81 s (gunnery54).
+- USN02 l68_u2_a fails at 330.04 s, Game Over on Witte, on dc6d0d1a3 ref (gunnery55).
+- BSM01 is REGRESSED-pending.
+  - Cause (cc13): luaMiniSubHit fires only on a HenryPT hit on MiniSub. MiniSub grounds at the surface in the shallows
+    (faithful), out of reach of HenryPT's d park point, and depth charges never reach the depth detonation there.
+  - Ref-env re-plans that take HenryPT onto the sub with depth charges pressed:
+    - local\l70_b1_j.txt (onto (-212,-2388)) completes at 752.94 s. A Depthcharge hit fires the listener; the sub dies
+      at 596.68 s.
+    - local\l70_b1_k.txt and l70_b1_l.txt complete at 926.90 s.
+    - None of the three ends at 20,3, where the sub sits at (-222,-2402).
+  - gunnery55 reports that b1d itself ends at 812.93 s on dc6d0d1a3.
+Re-plans on merged main d175c1aac (cc9-lua70):
+
+- USN02 `l70_u2_b` (config/win_orders/usn02_l70_u2_b.txt), a CANDIDATE only: the USN02 hold stands until cc9-bisect1 reports,
+  and this is not a re-time. The plan is l68 a, plus Houston's artillery fired through the HUD path
+  (input 0x9D, aim unit Haguro then Nachi, input 0x99 held 3000 frames twice).
+  - The script-selected Houston's player-owned guns are otherwise silent: 0 shots and about 5,900 refusals on dc6d0d1a3.
+  - With the plan: ref completes at 500.00 s, guard logged; Houston fires 214 main-battery shots (52 hits).
+  - 20,3: Game Over at 145.05 s; Yukikaze torpedoes Houston at 142.70 s, before the first aim line has much effect.
+- IJN18 row moved to `l70_i18_r` (config/win_orders/ijn18_l70_i18_r.txt) with the three switches flipped ON on
+  agent/cc9-lua52; the lead lands it after a reach check. Trial (local\l70_i18_r.txt; export with kHarnessReleaseGunMapBound, kCruiseLatchedPlayerArmCc13Bound
+  and kHelmPrepareMapUpGateCc13Bound ON; releasegun Zao at frame 1500):
+  - ref: EndMission 1685.52 s with MissionStatus=true, guard logged. Zao fires 163 main-battery shots (111 hits),
+    against 0 in the baseline, and lives to 507.85 s instead of 333.89 s.
+  - 20,3: Game Over at 839.92 s. The early Zao kills are the same; Asa1 dies at 772.38 s and Asa4 at 838.82 s.
+  - With the switches OFF the releasegun line is refused, and IJN18 d has no end.
+  - Runs: rg0 (d plan, main build) no end, Zao dies 333.89 s; rg1 (trial export) above; rg2 (trial plan, switches OFF)
+    identical to rg0. Logs local\l70r_rg{0,1,2}_*_ref.log and l70r_rg1_rg_j3.log in the cc9-lua52 tree.
+
+Drift list, observed with cause pending (cc15, ref env on 46bdfac0a, OFF = ON). These are not re-times:
+
+| Row | Observed on 46bdfac0a |
+| --- | --- |
+| USN01 | completed 1079.93 s |
+| USN02 | failed 330.04 s (held; cc9-bisect1, good 241db740b 495.00 s) |
+| USN12 | FAILED 859.91 s, Game Over (was completed 1465.30 s) |
+| PRCP01 | completed 814.92 s |
+| USN21 | completed 2941.74 s |
+| ESMP08 | completed 1274.27 s |
+| LOMP10 | completed 1303.70 s |
+| JM06 | completed 898.90 s |
+| BSM09 | EndMission 282.05 s |
+| BSM01 | EndMission 812.93 s |
+| LOMP06 | failed 668.11 s |
+| IJN18 | no end |
+
+Known cause so far: the astern-skip OFF interim step (070630984) explains USN02 and the JM08 HQ drift
+(cc13, pending cc9-bisect1's confirmation).
+
+Pending re-times from lane flips (each needs a re-time after it lands):
+- physics25 5481a7ca5: USN01 u1i 1195.04 -> 1069.92 s; IJN08 Game Over 2611.42 -> 2511.32 s. USN21, BSM01 and JM08
+  play the same with it. JM08 HQ dies 1031.93 s on l65_j8_p2 and 981.93 s on l70_j8_j.
+- ships61 05cb6f1bc (navigation set): LOMP10 1303.70 -> 1050.45 s on the seeds+sync pair build. Every row moves.
+- gunnery55 7b35dcea3 (heading wrap): JM06 j6_n 808.93 -> 811.93 s; j6_k 898.90 -> 889.91 s; IJN18 d no end either way.
+## 2026-10-19, releasegun + latch + map-up gate flip (cc9-lua71, keeper)
+
+Reach check for kHarnessReleaseGunMapBound, kCruiseLatchedPlayerArmCc13Bound and kHelmPrepareMapUpGateCc13Bound,
+same-commit exports of origin/main 86b81e2a8 (`local\l71_off`, `local\l71_on` in the cc9-lua52 tree), ref env,
+BSP_DEATH_TABLE=1, logs `local\l71r_<row>_{off,on}_ref.log`. The pre-flip compile check (off_switch_on_build.py) exits 0.
+
+On every row below pair_diff says "gameplay identical", and the ON side logs `latches=0` and `map_up=0`: no plan
+other than IJN18's opens the map, so neither the latch nor the gate is reached. The end is the same on both sides.
+
+| Row (plan) | end on 86b81e2a8, OFF = ON |
+| --- | --- |
+| USN01 `l69_u1_a` | completed 435.02 s |
+| USN12 `l68_u12_e8` | failed 819.92 s (Game Over; drift list) |
+| PRCP01 `p9_p01_k` | completed 1069.67 s |
+| LOMP10 `p3_l10_b` | completed 1050.45 s |
+| JM06 `l70_j6_n` | completed 826.92 s |
+| ESMP08 `p12_e8_rb` | completed 1329.32 s |
+| BSM09 `l68_b9_d1` | EndMission 285.05 s |
+| LOMP06 `l70_l6_c` | failed 621.12 s |
+| BSM01 `l69_b1_d` | no end |
+| USN21 `s46_u21_f` | completed 2881.69 s |
+
+These ends are observations on 86b81e2a8, not re-times (the combined re-time waits for ships61's arcplan+skip flip).
+
+IJN18 `l70_i18_r` on 86b81e2a8 (`local\l71r_i18_*`):
+- OFF ref: failed at 485.01 s. The releasegun line is refused.
+- ON ref: failed at 767.94 s. Releasegun opens the map at frame 1500. Counters: latches=1 and map_up=1, with 14661
+  prepares and 13451 issues skipped.
+- ON 20,3: failed at 759.94 s.
+
+The 1685.52 s ref win from d175c1aac does not hold on this main. That base moved without a known cause, so the
+row is listed and not re-timed. The flip still lands as a faithful fix (prepare/issue skipped while 4Ch occludes
+46h), and IJN18 needs a re-plan on the combined re-time base.
