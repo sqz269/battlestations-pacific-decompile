@@ -29,6 +29,10 @@
 #include "bsp/terrain_particles_cc13.hpp"
 #include "bsp/native_diagnostic_sink_lifetime.hpp"
 #include "bsp/native_render_resource_initializer.hpp"
+#include "bsp/native_shader_preload.hpp"
+#include "bsp/native_render_service_base.hpp"
+#include "bsp/native_material_effect_owner.hpp"
+#include "bsp/game_native_string_process.hpp"
 #include "bsp/native_weak_owner.hpp"
 #include "bsp/native_renderer_format_check.hpp"
 #include "bsp/native_system_constant_gather.hpp"
@@ -39,6 +43,7 @@
 #include "bsp/native_node_root_propagation.hpp"
 #include "bsp/native_node_scene_attachment.hpp"
 #include <cmath>
+#include <vector>
 #include "bsp/game_hosts.hpp"
 #include <tlhelp32.h>
 #include "bsp/game_hosts_singletons.hpp"
@@ -179,6 +184,7 @@ NativeVertexDeclarationLoadingContext application_declaration_loading(
 #include "game_native_renderer_frame.inc"
 #include "game_native_mission_command.inc"
 #include "game_native_mission_scene.inc"
+#include "game_native_mission_preload.inc"
 #include "game_native_mission_ship.inc"
 
 // ---- Harness only (packet cc9_tooling_renderer_init). 00B2AEB0 ignores CreateDevice's HRESULT,
