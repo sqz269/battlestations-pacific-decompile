@@ -201,7 +201,11 @@ is discovery evidence, not an all-binary absence claim. A merge-like candidate
 comparator and has three byte-census callsites (`0049F789`, `0049F7CB`,
 `0049F82E`). It has no current reconstructed body in its lookup. Its tag alone
 does not prove an original `std::stable_sort` instantiation; element/comparator
-and enclosing-caller ownership remain deferred. The resource-dump function
+and enclosing-caller ownership were deferred in this worker packet. Primary
+follow-up traced the driver to landing-troop disembark `004A0D20` at `004A2BFC`,
+using `0047B9F0` on value+8h; the current host method is explicitly unreached.
+See S7 in [the combined audit](OCT18B_LIBRARY_BINDING_AUDIT_B.md) for that
+additional decision, outside this worker's six-row count. The resource-dump function
 `00B811C0` is an adjacent **qsort** to current `stable_sort` substitution, not an
 STL stable-sort example; its tie behavior belongs with the qsort audit.
 

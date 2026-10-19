@@ -96,6 +96,7 @@ comparisons:
 | S4 defend-record sort `00A28300` | `00A28A60`, CALL `00A290F5`; threat/weight relation is not unrestricted strict weak ordering. First equal-distance anchor wins, then resources/commands change. Current implementation returns `nullopt` above32; concrete host retains construction order. | behaviour-sensitive | Preserve <=32 sequence. Before widening, recover partition/heap behavior or prove a <=32 invariant. 0.5–1 day for bounded recovery; actual >32 gameplay occurrence was not established. |
 | S5 render statistics `00B148E0` | Overlay `00B151E0`, CALL `00B1527A`; case-fold-equal names retain distinct record identity, sorted in place. Current modern sort matches bounded probe; debug sink is a bare RET. | behaviour-sensitive | Low-priority output/array-order pin using existing sorter if needed; 15–30 minutes. No proven visible/gameplay divergence. |
 | S6 Lua distance pairs `008C9E10` | Original producer `008CCEB0`, CALL `008CD2D7`; equal-distance objects would expose permutation in Lua array. Producer has zero indexed/rel32/absolute refs and was absent from queried Lua bindings. | unreached | Park until a concrete rebuilt registration exists; retain explicit host binding. No reconstruction now. |
+| S7 checked-list merge/sort `00499E70`, driver `0049F6A0` | Helper CALLs `0049F789`/`0049F7CB`/`0049F82E`; landing-troop disembark `004A0D20` calls driver at `004A2BFC`, predicate `0047B9F0` compares value+8h. `cc13_big1.cpp:2265` passes raw troop+B4h+0Ch*group lists; `cc13_big1_null_host.hpp:475` explicitly reports this method unreached, with no concrete override found. | unreached | Original head/count+4/+8 and node payload require compatible storage if adopted; no exact common raw helper body found. No new reconstruction for the present host. Future list-sort/splice adapter: half to one day after caller ownership is adopted. |
 | C1 raw generated ownership/cleanup, e.g. `00411F00`, `00B18D50`, `00C5FA4C` | Lock-guard/material vtables and original unwind references; bodies depend on owner fields, counts, vtable writes or original EBP. Existing guard/material source covers named cases; original EBP glue is not reusable native C++ glue. | layout-bound | Keep object-specific bodies; let current compiler emit cleanup for new source owners. A generic `delete` or CRT bind cannot dispose of borrowed bytes. Raw SAP base cleanup `004042C0` remains a coverage gap (medium effort), without an established current adopted caller requiring new work. |
 | C2 intrusive ownership `004404F0`, vector resize `00504960` | Unit message CALL `0082232D`; preview CALL `0050A9F6`. Release decrements object+4, vslot0 destroys at zero, then clears slot. Resize uses raw `[data,size,capacity]`; source exists for resize, no exact shared release body located. | layout-bound | Retain/qualify actual ownership service. `shared_ptr` is not a raw substitute. A common release adapter is a small bounded task only if its current raw caller needs it; allow roughly half a day including ownership/throw validation. |
 | C3 non-EH array iterators `00403560`, `00453ED0`, true no-op `00404540` | Vehicle/gunnery ctor sites `0081EF7D`/`0086514D`, action copy `004558C2`; ordinary callback loops. No-op is genuinely `RET 0Ch` through vtable. | bind-safe | Fresh native construction/copy and compiler-generated glue supply these value-level operations. A raw callback bind must retain ECX/stack contracts; no-op must pop three words. Small adapter work only. |
@@ -107,8 +108,8 @@ comparisons:
 | X3 notification/sign-in/profile/storage/achievement paths | Original game callers and native adapters exist, but current `game_hosts.cpp` leaves online-manager initialization unimplemented and publication null. Stub has 31 exports versus 106 original imports; 5331 is missing on a lazy signed-in profile path. | unreached | No wholesale thunk reconstruction. Before enabling this host, review immediate-failure buffers, queue/event handles and async retirement; add 5331 only with a concrete output/size/failure contract. Small export task; medium state-machine review. |
 | X4 installed game-directory xlive override | Current hash matches historical fixed-RVA patch contract; loading it as though it were stock can patch wrong rebuilt addresses. Existing run script instead requests a verified extracted redist runtime; the main-worktree private runtime was absent at inspection. | behaviour-sensitive | Preserve explicit runtime identity/selection. No binary was changed or executed. Verify the selected runtime before any later online run; no vendor body reconstruction follows. |
 
-**Grouped counts:** 25 decision rows across the two tables: **bind-safe 4,
-layout-bound 11, behaviour-sensitive 6, unreached 4**. Companion tables use finer
+**Grouped counts:** 26 decision rows across the two tables: **bind-safe 4,
+layout-bound 11, behaviour-sensitive 6, unreached 5**. Companion tables use finer
 groupings and overlapping ABI/layout qualifiers; do not add their row totals to
 these counts. In particular, T1 and X3 use current rebuilt reachability as the
 primary class, while their dormant contracts still have documented risks.
@@ -142,11 +143,12 @@ concrete <=8 rewards caller. This is a source-family probe, not execution of the
 original sort bytes or proof for every input/comparator/exception path.
 
 No independently established original `partial_sort` or `stable_sort`
-instantiation was found in the bounded sample. The three-caller merge-like
-`00499E70` remains unresolved; its `STL_List_Sort` discovery tag is insufficient
-to identify its exact element/comparator contract. It is outside the 25 decision
-rows and is not silently certified bind-safe. No current `std::partial_sort`
-call was found. Original qsort-to-stable-sort use belongs to audit A.
+instantiation was found in the bounded sample. Primary follow-up classified the
+three-caller merge-like `00499E70` as S7 after tracing its landing-troop driver
+and explicit unreached host method. The retained `STL_List_Sort` name is a
+discovery interpretation, not proof of a recovered symbol or a `stable_sort`
+contract. No current `std::partial_sort` call was found. Original
+qsort-to-stable-sort use belongs to audit A.
 
 The `rtti_vslot` solver `00403720` and stale `cg_static_dtor_stub` GUI pool
 allocator `00AAC260` are concrete semantic bodies, not generic compiler runtime.
@@ -158,14 +160,15 @@ to replace them with a stock RTTI or global-destruction helper.
 - `./scripts/build.ps1`: Win32 Release build passed; both enabled existing tests
   passed (`reconstructed_math`, `tool_tests`). No C++ host file changed.
 - Read-only original byte scans and project/program-verified Ghidra queries;
-  18 classification notes appended through `bsp.py ledger add-name
+  19 classification notes appended through `bsp.py ledger add-name
   --append-evidence` across the four work streams, preserving names and previous
   evidence. Existing inventory tags were retained; classification is recorded in
   the name-ledger evidence and live plate comments.
 - `ghidra_annotate.py --apply` used the shared write lock, saved prior comments
   in `local/ghidra-annotations-20261019T043244Z.json` and
-  `local/ghidra-annotations-20261019T044053Z.json`, and saved the project.
-  All 18 affected exports were refreshed through `bsp.py ghidra export`.
+  `local/ghidra-annotations-20261019T044053Z.json` and
+  `local/ghidra-annotations-20261019T044446Z.json`, and saved the project.
+  All 19 affected exports were refreshed through `bsp.py ghidra export`.
 - The combined audit branch merged `origin/main` (`8d203f017`) and repeated the
   Release build and two enabled tests before publication. Worker commits are
   `86e205fc2` (sort), `70b11404e` (generated/templates) and `d3fa55d1d`
