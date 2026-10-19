@@ -26,11 +26,11 @@ namespace bsp {
 
 inline constexpr bool kShipAiCommitmentBandQuarterBound = false;
 
-// [00D7A348], a double.
-inline constexpr double kShipAiCommitmentBandQuarter = 0.25;
+// [00D7A348], a double, read by FMUL qword at 009E1122.
+inline constexpr double kShipAiCommitmentBandQuarter = 0.25; // 00D7A348
 
-inline constexpr float kShipAiContactBearingMaxImage = 0x1.80407p+1f; // 0x40402038
-static_assert(kShipAiContactBearingMaxImage == 3.0019664764404296875f);
+inline constexpr float kShipAiContactBearingMaxImage = 3.0019664764404296875f; // 00D2185C
+static_assert(kShipAiContactBearingMaxImage == 0x1.80407p+1f);                 // 0x40402038
 
 inline constexpr float kShipAiContactBearingMaxActive =
     kShipAiCommitmentBandQuarterBound ? kShipAiContactBearingMaxImage : kShipAiContactBearingMax;

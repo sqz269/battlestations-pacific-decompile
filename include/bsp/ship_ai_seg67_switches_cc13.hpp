@@ -32,13 +32,19 @@ inline constexpr bool kShipAiParkedByteBeforeTailBound = false;
 // (F) 009EF94E/009EF96F. Every turn-clearance refresh resets blk+37Ch to
 // [00CE3D64] = 10000.0f (0x461C4000) before its lowerings. The host's
 // kShipAiClearanceSentinel is 9999.0f. Of its readers only this store stands
-// for 00CE3D64; the ShipAiClearanceBlock member default
-// (ship_ai_clearance_profile.hpp:108) is the construction value, which no
-// seg67 code writes, so it stays as it is.
+// for 00CE3D64. The ShipAiClearanceBlock member default
+// (ship_ai_clearance_profile.hpp:108) is the construction value: in the image
+// 009DFCB0 (ECX = blk+1C4h) stores self+1B8h = blk+37Ch = 0.0f at 009DFDA9.
+// That value is unobservable: 009DFCB0 also leaves +374h = 0.0f (self+1B0h),
+// every other +374h writer stores -1.0f, so the first 009EF910 call always
+// falls through its timer (009EF93D JA, not taken for 0 - dt or -1 - dt) and
+// stores 37Ch at 009EF96F; 009F4D10 makes that call (009F4D87) before
+// 009F50E0 reaches 009F4DA0 -> 009F3F80's reader at 009F416E (009F5227,
+// then 009F5248, straight-line). So the default is left as it is.
 // True: the refresh stores 10000.0f. False: 9999.0f, as before.
 inline constexpr bool kShipAiClearanceRefreshSentinelBound = false;
-inline constexpr float kShipAiClearanceRefreshSentinel = 0x1.388p+13f; // 10000.0f, 0x461C4000
-static_assert(kShipAiClearanceRefreshSentinel == 10000.0f);
+inline constexpr float kShipAiClearanceRefreshSentinel = 10000.0f; // 00CE3D64
+static_assert(kShipAiClearanceRefreshSentinel == 0x1.388p+13f);    // 0x461C4000
 
 // (D') 009ED7E6..009ED7F3 sets [ESP+4Fh] = (blk+1C4h == 3); 009EE756
 // CMP [ESP+4Fh],0 / JNE 009EF206. In mode 3 (written by the attack-move
