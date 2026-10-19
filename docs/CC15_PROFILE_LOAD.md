@@ -187,3 +187,154 @@ streams ON` line. The ON runs read the real save.
   the 38 saved names will start suppressing hints, and that will need its own pair.
 - **Lane L2 doc.** `docs/CC15_OBJECT_PROFILE_HINTS.md` still says "Not modelled: the real profile
   load"; it is held by lane cc15-hint and is left for that lane or the integrator to point here.
+
+## 6. Applying the quick settings (cc15-prof2, `kQuickSettingsApplyCc15Bound`, OFF)
+
+Packet cc15-prof2, 2026-10-19. The switch is in `include/bsp/game_profile_load.hpp`; the code is in
+`src/game_profile_load.cpp` (`LiveSettings`, `QuickSettingsReadHost`, `QuickSettingsApplyHost`). The
+startup host binds the live state in `src/game_hosts.cpp` through
+`GameMenuHost::bind_profile_settings_sinks`. With the switch OFF, nothing is bound and the load runs
+exactly as in section 1. Descriptive names are hypotheses.
+
+**What the image runs.** At the sign-in, 0067CC60 runs 007FDB20 on the live settings 00F88980, so its
+settings half applies there: 008D4820 (the control defaults +40h..+44h), the Xenon query for
+008D45D0, then 008D41C0 (the game defaults). 007FEFE0 then calls 008D7A50, which reads
+`<name>\quick` (storage kind 0) and deserializes it with 008D6DC0, and then 008D5B50. The 008D7A50
+read is synchronous: 006ADB50's first update runs the queued read and calls 008D79A0 before 008D7A50
+returns, so 008D5B50 sees the loaded values.
+
+**What the host runs (ON).**
+- **007FDB20's settings half** runs on a typed view of the raw BCh owner, in the native order. The
+  construction and title calls to 007FDB20 still use the owner's throwaway block. Natively they write
+  the same constants that the 00CD2D80 constructor stores, and options.txt touches none of those
+  fields, so the live values are the same.
+- **008D7A50** uses the existing `restore_profile_settings_008d7a50`. Its host answers
+  `[0109CECC]+21h` = 1 and game present, then queries `0\quick` with GENERIC_READ. The queued 00BD3D70
+  read is replaced by the immediate 00BD4380 read, as for the player read, because its completion would
+  stamp `0\valid`. 008D6DC0 then runs `read_settings_archive_008d6dc0`. Its shader-model tail reads the
+  renderer's PixelShaderVersion (renderer+1B40h, the value 008D7671 reads as virtual +104h -> +28h).
+- **The write-back.** After 007FDB20's half, after 008D7A50, and at the end of the load, every scalar
+  the bodies store is written back into 00F88980 at its native offset, and each change is logged. The
+  +B4h ClanText and +98h DownloadedContent fields own native allocations, so a change to either is
+  reported, not stored. This save holds `""` and `{}` for them, so nothing is reported.
+- **008D5B50** runs `apply_all_settings_008d5b50` in its title-time state: the game is present; the
+  scene, ocean, foliage and clouds (game+19E8h..19FCh), the download manager 00F8A304 and the
+  in-mission interface 00E198C4 are absent. Its sinks:
+
+| Sink (native) | Host state | Status |
+|---|---|---|
+| 008D5483 / 008D5490, 00F8BBCC +218h / +21Ch | the sound alternate publication, as the startup copy does | applied (0.5, 0.5: unchanged) |
+| 00A94C50 rumble, `!game+634h && !rumbleOff` | `GameInputRuntime::set_rumble_enabled_00a94c50` (00E12F2C and every device's motors) | applied: enabled 1 -> 0 |
+| 008D6132, the 00439100 region into 0108FF24 | the canonical Lua globals | applied: `USA` on this machine |
+| 008D44C0 inside 008D6DC0: +B0h, the 0108FF20 mirror | the canonical Lua globals | applied (false: unchanged) |
+| 008D44C0's console command 006B8AD0, 00F8BBD8 +70h, 00A7A440, 00A864F0, 00A7ABF0, 00A7ACF0, 004C1710 +10h/+14h, 00B1FFB0, renderer +F0h (gamma), 00699B80 (stick modifiers), 004DCDF0, 007371D0, 00AA09D0, 00B0D580, renderer +80h, 00B29E60, 0109CF04 +0Ch, XLiveOnResetDevice, 00B107F0, 004C12B0, 00B0D080 | none in the host | one unimplemented row each |
+
+**Keyboard bindings are not applied.** 008D6DC0 hands the `keyboardSetup` table to 006ABA50 on the input
+settings that 00698A10 builds from `Scripts\datatables\Inputs.lua`. The host builds no such
+configuration: its press-start screen logs 00698A10 as unimplemented, and the host drives actions by
+id, not by key. The table is therefore entered with empty settings. 006ABA50 reads only the device and
+input names those settings hold, so it reads nothing, and 006AA640 stops at its 00A92260 check. The
+save's bindings (four devices, `DevInputs`, `FE_pc.cs_air`, `FE_pc.cs_command`, `FE_pc.cs_sealandaa`)
+and sensitivities stay unread. They can move a run only once the input configuration is hosted, and
+then that needs its own pair.
+
+**What this save changes** (read in place, logged by the ON run):
+
+| Field | Before (constructor + options.txt) | After | Host reader |
+|---|---|---|---|
+| +40h `rumbleOff` | 0 | 1 | 00A94C50 (applied; no device in a harness run) |
+| +80h `markerAlpha` | 0 | 0.2 | none. 00643C9C's objective-sweep gate (00F88A00 > 0.03) is `HudMarkers::objective_detail_level` in `src/game_hosts_hud_world.cpp`, which answers a constant 0.0 |
+| +95h `HardwareReported` | 0 | 1 | none (the hardware probe needs `BSM_HWD`, which is absent here) |
+| all others | | unchanged | the volumes 0.5, swapSticks 1, invertCameraY 0, invertPlaneY 0, swapMapSticks 1, gamma 0, CockpitMode 1, XboxCompatibilityMode 0, and the absent keys at their 008D6DC0 defaults, which equal the reset values |
+
+`CockpitMode` = true equals the constructor and 008D41C0 value, so it cannot move a run.
+
+**Pairs (2026-10-19).** Builds: `local\bin_base` (tree base 7f4f75b85), `local\bin_off` (da68a2635,
+both switches OFF), `local\bin_quick` (the same source with `kQuickSettingsApplyCc15Bound` true).
+Reference env (`BSP_DEATH_TABLE=1 BSP_GUNNERY_RNG_STREAMS=1`, no `BSP_FRAME_JITTER`); every log has
+`rng streams: on`. The launcher is `local\prof2_run.ps1`, with the cc15-app row arguments. ON runs read
+the real save. Before them, a 400-frame run on a copy (`BSP_PROFILE_LOAD_ROOT=local\prof2_copy\save`)
+printed the same lines.
+- **USN04, base vs OFF:** `pair_diff` exit 0, with only the `pretranslate` noise. 1589 native rows, 793
+  summary lines, 53 deaths, 762 hits.
+- **USN04 and all 12 wins rows, OFF vs ON:** `pair_diff` exit 1 on every row, gameplay identical. The
+  death rows, plane-death modes and unit table are identical on every row, and so are the summary
+  lines except USN21's one (below). The strict
+  index-by-index sequence of dialog, message and Lua lines (`local\prof2_seqdiff2.py`, dropping only
+  the switch's own `QuickSettings*` and `quick settings:` lines) is identical on every row. The
+  moved rows are the same on every row:
+  - 36 added native rows: `ProfileLoad::reset_settings_half`, `ProfileLoad::restore_settings` and
+    `ProfileLoad::apply_settings` (concrete), eight `QuickSettings::*` rows (the read and 008D6DC0's
+    host calls, three of them unimplemented), and 25 `QuickSettingsApply::*` rows, one per 008D5B50
+    sink call in the table above (five concrete). The foliage, ocean, clouds, shadow and
+    download-content sinks are not called in the title-time state.
+  - 2 removed: the two `(withheld)` rows.
+  - `ProfileReset::xenon_state_is_two` 3 -> 4 (the settings half's own query).
+  - 13 `quick settings:` notes.
+  - **IJN18, JM06 and LOMP10:** one ring-scan `clear_37c` cell each (Kita2 10000.0 -> FLT_MAX,
+    Lexington-class 01 10000.0 -> FLT_MAX, Asashimo 3259.5 -> 10000.0). These are the known
+    heap-dependent cells (SHIP_AI_OPEN_ITEMS 140).
+  - **USN21 only:** the summary line `mission ship ai free` moves corner_fwd 18099 -> 18087 and
+    corner_back 9413 -> 9425, and 21 `ship ai step` lines for Intrepid (steps 39450..39750, mode
+    heading) move only their `target` column, for example 2.6651 -> 2.6630. Throttle, rudder,
+    desired_1d8 and hull are the same in those lines, and the deaths (514), units (595) and summary
+    lines are identical. The free-bearing scan reads the avoid-zone searcher cache that 009D7050
+    refills. That cache's bounds are never initialised, in the image too (SHIP_AI_OPEN_ITEMS section
+    140, docs/AVOIDANCE_REFILL_DETERMINISM.md), so its first refill depends on the heap. The ON
+    load opens and closes one more storage Lua state and allocates the views before the mission, which
+    shifts the heap. The `clear_37c` cells in the three rows above come from the same cache and
+    move the same way. This is attributed to that known heap noise, not to a setting: no setting
+    this switch changes has a ship-AI reader. No run has yet separated the two causes.
+- **The region.** Every Lua owner opened after the sign-in now runs `REGION="USA"`. Among this
+  installation's scripts only `datatables\credits.lua` reads `REGION`, and the Lua sequences are
+  identical.
+
+**Save untouched.** See section 8.
+
+## 7. Profile difficulty (cc15-prof2, `kProfileDifficultyCc15Bound`, OFF; scheduled by the user and cc9)
+
+**Image.** game+6B0h *is* the profile's +60h: the profile block lives at game+650h, so +60h is
+game+6B0h. No other cell is involved. 0058BF26 copies the record's +B4h into game+6ACh when it is not
+3 (0058BF37). Otherwise, when the main-menu byte `[[00E198AC]+58h]+5Ch` is clear, 0058BF4D..0058BF58
+load `[00E188A8]+6B0h` and store it into +6ACh. The image has no command-line override:
+docs/CC13_DIFFICULTY_VALUES.md lists every writer of +6B0h (007FDB20 stores 1, the profile reader
+stores the archived value, and the unreferenced 0051B7B0).
+
+**Host (ON).** `chosen_difficulty()` (`src/game_hosts_mission.cpp`) returns `--difficulty` when it
+is given, a harness rule kept on purpose. Otherwise it returns the bound profile owner's
+`selected_difficulty_60` and logs `MissionStart::chosen_difficulty game+6B0h=profile+60h=N`. With the
+profile load OFF that is 007FDB20's 1, the value the host uses today.
+
+**Pairs.** `local\bin_diff` is da68a2635 with `kProfileDifficultyCc15Bound` true, run in the reference
+env on USN04.
+- OFF vs base: section 6, exit 0.
+- OFF vs ON (`pair_diff` exit 3, gameplay moved, as expected): the ON log reads
+  `chosen_difficulty game+6B0h=profile+60h=0` and `set_effective_difficulty game+6ACh=0` (OFF: 1).
+  The save's `SelectedDifficulty` is 0. GetDifficulty (008AE030) returns 0. All 18 `SetSkillLevel`
+  calls move from level 2 to level 5.
+  `Scripts\missions\USN\usn_19_coralus.lua` maps difficulty 0 to `SkillLevel = SKILL_STUN` and
+  `SkillLevelOwn = SKILL_ELITE` (lines 70-82), `RepairEnable(unit, true)` (159, 198), a four-wave
+  bomber phase instead of five (569-586), and different plane-launch branches (638, 1382). So deaths
+  fall from 53 to 27, hits from 762 to 324, shots from 12535 to 4520 and units from 81 to 57, and the
+  first hit moves from 87.40 s to 90.70 s. Every moved row follows from the script's difficulty-0
+  branch.
+
+## 8. cc15-prof2 save safety
+
+Every file under `Documents\Battlestations-Pacific` was recorded before the first run and after the
+last (`local\prof2_save_before.txt`, `local\prof2_save_after.txt`). `options.txt` (226 bytes,
+FF5CF395...), `save\0\player` (2182, 58E93D77...), `save\0\quick` (1806, 54E3F992...) and `save\0\valid`
+(0, E3B0C442...) are identical, and so are the mtimes (UTC 2026-09-19 06:11:06 / 06:27:02) and the
+directory mtimes (`save` 2026-05-04 14:59:43, `save\0` 2026-09-19 06:27:02). The quick read added
+the storage calls `storage_query_1c` and `immediate_read_00bd4380` only; no writer is reachable (section 3).
+The copy under `local\prof2_copy` is also unchanged after its run, including `valid`.
+
+## 9. cc15-prof2 open items
+
+- **Keyboard bindings** need the input configuration (00698A10, `Inputs.lua`) hosted first (section 6).
+- **markerAlpha** (0.2) reaches no host reader. `HudMarkers::objective_detail_level` (00F88A00,
+  `src/game_hosts_hud_world.cpp`, cc9's HUD) answers a constant 0.0. With the live value, 00643C9C's
+  objective sweep (> 0.03) would run, which is a HUD change for cc9.
+- **008D5B50's audio, renderer, input and GUI sinks** have no host implementation (the table in
+  section 6). Natively GGame::OnInit runs 008D5B50 at boot too; the host runs neither call.
+- **USN21's target column** is attributed to heap noise without a discriminating run (section 6).
