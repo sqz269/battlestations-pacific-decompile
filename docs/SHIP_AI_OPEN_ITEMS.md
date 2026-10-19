@@ -20119,3 +20119,33 @@ with jm06_p12_j6_c1; IJN08 20000 with ijn08_p10_i08_z. Kaiten rows come from `lo
   Haruna -> Kongo), with no unit-state change before then. Flipped ON.
 None of these rows' WINS orders end in the paired window, so no WINS result is claimed here. The USNOS prefix moves
 with each switch, so the c19-c21 notes in 305 need a rerun on the new exe.
+
+## 308. cc9-ships60 handoff (2026-10-19)
+
+**Landed on agent/cc9-ships44** (each flip fully built and paired in the reference env):
+- 298 `kShipBreakInTwoDrawsBound` ON (the 11 00935D30 piece draws). 299 `kShipAiRingNanArmsBound` ON.
+- 302 cc13's seg67 ship batch, all seven switches ON. gunnery53 did two of them (300).
+- 304 `kDeadLeaderDirectorStateCopyBound` and `kWakeDecomposeSegmentProjectionBound` ON.
+- 307 `kCc13SubDiveKamikazeBound`, `kSubSeedNearestBandCc13Bound` and `kHelmReleaseGunsToRestCc13Bound` ON.
+- Comment fixes: the fort citations in hull_terrain_contact.hpp, and the station-keeping "never entered" note in
+  game_hosts_ship_ai.cpp.
+
+**USNOS, open (305).** On 77d8a4a9d (every switch above ON), c19 (`s60_q_c19`, reference) failed at 2741.55 s:
+- wave-2 planes sank TT5 (519.90 s) and TT4 (547.24 s);
+- Airfield1 squadrons sank TT1 (1930 s) and the reserve TT6 (2737.95 s);
+- the blockade sank TT3;
+- Enterprise's own gun sank TT2 (2665.83 s).
+The jitter twin was stopped. Every plan since c17 fails on the airfield squadrons: us_osumi.lua runs
+luaAirfieldManager per JapAirfields member while `not unit.Dead`, aimed at live Mission.Troops, so no hideout is
+safe while the airfields live. The next plan should therefore:
+1. Kill the airfields early. Find all JapAirfields members (us_osumi.lua near line 678) and their land-master
+   sections. Airfield1 = "Hangar, Large, 08 01" at (-3621.8, 3321.1). Strike them with free decks: remove squadrons
+   from the early air_mass lists so a 339 strike is accepted (c21's were all "no such slot"). Loui1/Loui2 gunfire
+   is the other route, since the airfield is near HQ1.
+2. Keep the transports away from our own carriers' flak. Midway (c20) and Enterprise (q_c19) each sank one.
+3. Then reuse c19's TT6 legs (local\s60_osmk.py TT6_ROUTE), find what re-neutralizes HQ2 after its capture (s60_b_c19
+   on 913bac450), and kill Yamato and the Funryu Bettys for ReinDead.
+Scripts: local\s60_osmk.py (variants c18a-c21), local\s60_rows.ps1 (launcher, -Jitter, -ExtraEnv),
+local\s59_sum.py, local\s60_firstdiv.py (first diverging line per regex), local\s60_kaiten.py.
+
+**Still open from earlier handoffs:** the Fuso USN15 close-range gunnery question (297).
