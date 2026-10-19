@@ -635,7 +635,7 @@ void load_actors_and_messages_00706160(MessageManagerCalls& calls, bool load, co
 }
 
 std::array<std::uint8_t, 4> load_messages_007065e0(MessageManagerLayout& manager, const MessageLoadOptions& options,
-                                                    std::int32_t side, MessageManagerCalls& calls) {
+                                                    bool load, MessageManagerCalls& calls) {
     std::array<std::uint8_t, 4> flags{};
     const std::int32_t kind = options.local_side_kind;
     const std::size_t slot = kind == 0 ? 1u : (kind != 1 ? 3u : 2u);
@@ -645,7 +645,8 @@ std::array<std::uint8_t, 4> load_messages_007065e0(MessageManagerLayout& manager
     init_message_filter_007021c0(manager.filter_20, manager.flags_59, first_ids, options.filters_enabled);
     init_message_filter_007021c0(manager.filter_33, manager.flags_5c, second_ids, options.filters_enabled);
     init_message_filter_007021c0(manager.filter_46, manager.flags_5f, options.ids_1080, options.filters_enabled);
-    load_actors_and_messages_00706160(calls, true, "Scripts/datatables/Messages.lua", flags, side);
+    // 007066C4..007066DB: the argument is 00706160's load flag; its side is the -1 at 007066C8.
+    load_actors_and_messages_00706160(calls, load, "Scripts/datatables/Messages.lua", flags, -1);
     return flags;
 }
 

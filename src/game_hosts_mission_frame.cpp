@@ -28,6 +28,7 @@
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_menu.hpp"
+#include "bsp/game_hosts_message_manager.hpp"
 #include "bsp/game_hosts_ready.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_mission_result.hpp"
@@ -169,6 +170,17 @@ constexpr bool kWarningManagerTickBound = true;
 // (CC15_WARNING_APPLY_GAP.md closing note).
 constexpr bool kWarningMessageBankCc15Bound = true;
 
+// cc15-ob1 (docs/CC15_OBJECT_MESSAGEMANAGER.md). True: the MessageManager
+// [game+21DCh] exists as the image builds it. The construct_world step runs
+// 00707480 on a fresh 70h block (004DFA1A..004DFA4B; a later load destroys the
+// previous one through 007071F0 first, as 004D2BB0 does at 004D2D04), and the
+// load_warning_bank step runs 004DFB70's main arm 004E1374..004E17E9: 007065E0(1)
+// over Scripts/datatables/Messages.lua (the spoken-language sweep's mode 2 and
+// the FileBlocks are seams, see the doc). 00976B00's 00705E00 then resolves the
+// clip's record from the manager (records_resolved / record_misses replace
+// records_not_evaluated). False: no manager, as before.
+constexpr bool kMessageManagerCc15Bound = false;
+
 // Packet cc9_construct_world part 2 (docs/CONSTRUCT_WORLD.md section 9). True:
 // the load step construct_world 004DE610 sets the world-active byte
 // [game+19CCh]+4ACh as 004CB030 does at 004CB098, held here as
@@ -287,6 +299,8 @@ struct GameMissionFrameHost::Impl {
     bsp::SessionParticipantPools& participants; // persistent GameMissionHost owner
     GameFrameProfiler* profiler{};
     std::string language;
+    // cc15-ob1: [game+21DCh], built by the construct_world step (kMessageManagerCc15Bound).
+    std::unique_ptr<GameMessageManagerHost> messages;
 
     GameMissionLoadRunSummary load{};
     GameMissionEntrySummary entry{};
@@ -383,7 +397,8 @@ struct GameMissionFrameHost::Impl {
     struct WarningActivateCounts {
         unsigned long long activations{0}, single_variant{0}, draws{0},
             sound_keys_untouched{0}, sound_keys_not_evaluated{0}, relation_blocked{0},
-            clips{0}, records_not_evaluated{0};
+            clips{0}, records_not_evaluated{0}, records_resolved{0}, record_misses{0},
+            sound_keys_resolved{0}, sound_keys_unmatched{0};
     } warning_activate{};
     bool device_edge_injected{false};         // the executable's own injection
     // Packet cc_mission_tick's reconstruction of the four-call opener of every
@@ -827,9 +842,19 @@ public:
     bool is_kind_of_5c(void*, std::int32_t) override { return unreached<bool>(); }
     void* plane_squadron_9d4(void*) override { return unreached<void*>(); }
     void* local_player_unit_00e188d8() override { return unreached<void*>(); }
-    // 00976B00's 00705E00 reads the MessageManager [game+21DCh], which the
-    // host does not keep: the clip's record is left null and counted.
-    const void* resolve_message_00705e00(const std::string&) override {
+    // 00976B00's 00705E00 reads the MessageManager [game+21DCh]. With
+    // kMessageManagerCc15Bound it is the hosted manager's record map; a miss
+    // (the image's "<name>" record, which needs the voice manager) stays null.
+    // Without it the clip's record is left null and counted.
+    const void* resolve_message_00705e00(const std::string& name) override {
+        if constexpr (kMessageManagerCc15Bound) {
+            if (host_.messages != nullptr && host_.messages->constructed()) {
+                const void* record = host_.messages->resolve_record_00705e00(name);
+                ++(record != nullptr ? host_.warning_activate.records_resolved
+                                     : host_.warning_activate.record_misses);
+                return record;
+            }
+        }
         ++host_.warning_activate.records_not_evaluated;
         return nullptr;
     }
@@ -874,6 +899,96 @@ private:
     GameMissionFrameHost::Impl& host_;
 };
 
+// cc15-ob1 (kMessageManagerCc15Bound): 0097D650's key step for the entity
+// `unit` on `text`, whose first byte of the separator set sits at pos.
+//   tail   = text[pos, pos+1) (00469840(text, pos, 1))
+//   prefix = tail + 00E0B080[00803CE0(local party, entity)] (OWN/ENEMY/NEUTRAL/UNKNOWN)
+//   keys   = prefix + vtable[10h] name, prefix + vtable[28h] name and prefix +
+//            00E0B590[(entity+170h)->vtable[0]()], each only when the local party's
+//            recon level of the entity is >= 2 (00803CE0 answers 3 exactly when it is
+//            below 2), then prefix + default_ship / default_plane /
+//            default_planesquadron / default_landobject by vtable[5Ch] (6, 0Fh, 18h)
+//            and 00922A90 (class ids 19h, 1Ah, 1Bh, 1Ch, 36h, 45h, 46h).
+// 0097B5E0 then takes the keys in order; for each that the entity escape map
+// (manager+11Ch) holds, it rebuilds the text from the picked copy with the
+// separator replaced by the mapped value (0096EDD0) and stops at the first text
+// the MessageManager's record map holds. Without a hit the text keeps the last
+// rebuild, or stays as picked when no key was in the map.
+// The two vtable names are not bound: the installed Warnings.lua's entity map
+// has no unit-name keys (they are commented out), so neither can match there.
+// The category is the +170h interface's slot 0, a constant per class (listed
+// below from the constructors' vtable stores, docs/CC15_OBJECT_MESSAGEMANAGER.md);
+// the base plane (unit+AACh) and squadron (unit+354h) read a field instead, and
+// a class not listed answers false here (counted as not evaluated).
+int warning_entity_category_cc15(int class_id) {
+    switch (class_id) {
+    case 0x07: return 1;   // MDestroyer, 006FE4D0
+    case 0x08: return 13;  // MSubmarine, 00852FB0
+    case 0x09: return 0;   // MMothership, 007581F0
+    case 0x0A: return 4;   // MCruiser, 006FB370
+    case 0x0B: return 5;   // MCargo, 006EB1D0
+    case 0x0C: return 6;   // MLandingShip, 0074BBC0
+    case 0x0D: return 3;   // MBattleship, 006DFDC0
+    case 0x0E: return 2;   // MTorpedoBoat, 00857D60
+    case 0x10: return 7;   // MPlaneBomber, 007D7790
+    case 0x11: return 9;   // MPlaneTorpedoBomber, 00951CB0
+    case 0x12: return 8;   // MPlaneDiveBomber, 00951BD0
+    case 0x13: return 10;  // MPlaneFighter, 007DDA20
+    case 0x14: return 11;  // MReconPlane, 0074E2B0
+    case 0x19: return 14;  // MLandVehicle, 0074DD40
+    case 0x1A: return 14;  // LandConvoy, 004F24E0
+    case 0x1B: return 15;  // MLandFort, 00745A40
+    case 0x1C: return 15;  // MCommandBuilding, 006F5830
+    case 0x45: return 16;  // MAirfield, 006D1D20
+    case 0x46: return 17;  // MShipyard, 00846B40
+    default: return -1;
+    }
+}
+
+bool resolve_entity_sound_keys_cc15(GameMissionFrameHost::Impl& host, std::string& text,
+    std::size_t unit) {
+    static constexpr const char* kRelationWords[] = {"OWN", "ENEMY", "NEUTRAL", "UNKNOWN"};
+    static constexpr const char* kCategoryNames[] = {"mothership", "destroyer", "torpedoboat",
+        "battleship", "cruiser", "cargo", "landingship", "levelbomber", "divebomber",
+        "torpedobomber", "fighter", "reconplane", "kamikaze", "submarine", "landvehicle",
+        "landfort", "airfield", "shipyard", "path", "other"};  // 00E0B590
+    if (host.messages == nullptr || !host.messages->constructed() || host.units == nullptr) {
+        return false;
+    }
+    const int class_id = host.units->unit_class_id(unit);
+    const int relation = warning_relation_00803ce0(host, local_player_party(), unit);
+    const int category = warning_entity_category_cc15(class_id);
+    if (class_id < 0 || (relation != 3 && category < 0)) return false;
+    const std::size_t pos = std::strcspn(text.c_str(), host.warning_tables.entity.prefixes.c_str());
+    const std::string tail = text.substr(pos, 1);
+    const std::string prefix = tail + kRelationWords[relation];
+    std::vector<std::string> keys;
+    if (relation != 3) keys.push_back(prefix + kCategoryNames[category]);
+    if (host.units->unit_is_kind_of(unit, 6)) {
+        keys.push_back(prefix + "default_ship");
+    } else if (host.units->unit_is_kind_of(unit, 0x0f)) {
+        keys.push_back(prefix + "default_plane");
+    } else if (host.units->unit_is_kind_of(unit, 0x18)) {
+        keys.push_back(prefix + "default_planesquadron");
+    } else if (class_id == 0x19 || class_id == 0x1a || class_id == 0x1b || class_id == 0x36
+               || class_id == 0x45 || class_id == 0x46 || class_id == 0x1c) {
+        keys.push_back(prefix + "default_landobject");
+    }
+    const std::string picked = text;
+    bool hit = false;
+    for (const std::string& key : keys) {
+        const auto mapped = host.warning_tables.entity.replacements.find(key);
+        if (mapped == host.warning_tables.entity.replacements.end()) continue;
+        text = picked.substr(0, pos) + mapped->second + picked.substr(pos + tail.size());
+        if (host.messages->record_map_contains_00702300(text)) {
+            hit = true;
+            break;
+        }
+    }
+    ++(hit ? host.warning_activate.sound_keys_resolved : host.warning_activate.sound_keys_unmatched);
+    return true;
+}
+
 // Packet cc15-wB4 step 3a: the vtable[3] activates of the warnings the host
 // reports (src/cc13_seg62_seg65.cpp gives their Raw forms), all
 // __fastcall(ECX = warning), RET. Common head: +0Ch = 1, +10h = [00F876A4].
@@ -901,7 +1016,7 @@ void warning_activate_cc15(GameMissionFrameHost::Impl& host,
     WarningVariantBinding variant_host(host);
     const std::size_t picked = bsp::cc13_seg49_64_78::pick_message_variant_00979b50(
         host.warning_variants, variants, variant_host);
-    const std::string text = variants[picked];
+    std::string text = variants[picked];
     if (kind != WarningActivate::plain) {
         const std::uintptr_t entity = kind == WarningActivate::kill_6c
             ? static_cast<std::uintptr_t>(warning.word_6c)
@@ -910,7 +1025,8 @@ void warning_activate_cc15(GameMissionFrameHost::Impl& host,
         if (text.empty() || set.empty()
             || std::strcspn(text.c_str(), set.c_str()) == text.size()) {
             ++counts.sound_keys_untouched;
-        } else {
+        } else if (!(kMessageManagerCc15Bound && entity != 0
+                       && resolve_entity_sound_keys_cc15(host, text, entity - 1u))) {
             ++counts.sound_keys_not_evaluated;
         }
         if (entity != 0 && warning_relation_00803ce0(host, local_player_party(),
@@ -3249,6 +3365,43 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                 host.world.world_gate.enabled = true;
                 host.done("World::active_byte_004cb098", 0x004cb098u);
             }
+            if constexpr (kMessageManagerCc15Bound) {
+                // 004DFA1A operator new(70h), 004DFA39 00707480, 004DFA4B the store
+                // to game+21DCh. 008D57A0's voice language: see the doc (seam).
+                if (host.messages == nullptr) {
+                    host.messages = std::make_unique<GameMessageManagerHost>(host.log, host.vfs,
+                        host.language);
+                }
+                host.messages->construct_00707480();
+                host.done("MessageManager::construct", 0x00707480u);
+            }
+        }
+        if (method == "load_warning_bank" && kMessageManagerCc15Bound
+            && host.messages != nullptr && host.messages->constructed()) {
+            // 004DFB70's spoken warnings. 004E0FAD's sweep needs [004C1E90()]+8h == 2,
+            // and the host keeps no profile-hints singleton, so only the arm every
+            // load reaches runs: 004E1374 picks the bank FileBlock
+            // ("Warnings_<language>_<Ally|Jp>", or "Warnings_englishauthentic_..."
+            // when 007F8890 owns DL_Content_0000062; neither is built here),
+            // 004E17E9 calls 007065E0(1), 004E17FB deletes the block.
+            MessageManagerLoadInputs inputs;
+            inputs.local_side_kind = local_player_party();
+            // [game+5FCh]+1064h..+1088h come from the scene tree's "unittypes"
+            // (00468B70); the host's scene read does not parse it (seam).
+            inputs.filters_enabled = false;
+            host.messages->load_messages_007065e0(true, inputs);
+            const auto& messages = host.messages->summary();
+            host.log.notef("message manager loaded Messages.lua: records=%zu scripts_opened=%llu "
+                "scripts_failed=%llu voice_probe_hits=%llu voice_probe_misses=%llu "
+                "sound_banks_not_loaded=%llu streamed_probes_not_evaluated=%llu language=%s%s%s",
+                host.messages->record_count(), messages.scripts_opened, messages.scripts_failed,
+                messages.voice_probe_hits, messages.voice_probe_misses,
+                messages.sound_banks_not_loaded, messages.streamed_probes_not_evaluated,
+                host.language.c_str(), messages.script_error.empty() ? "" : " error=",
+                messages.script_error.c_str());
+            host.done(label, step.address);
+            ++host.load.concrete;
+            continue;
         }
         if (method == "publish_mission_id") {
             host.published_mission_id = mission_id;
@@ -4799,6 +4952,19 @@ void GameMissionFrameHost::report(long requested_frames) {
             activate.activations, activate.single_variant, activate.draws,
             activate.sound_keys_untouched, activate.sound_keys_not_evaluated,
             activate.relation_blocked, activate.clips, activate.records_not_evaluated);
+        if constexpr (kMessageManagerCc15Bound) {
+            if (host.messages != nullptr) {
+                const auto& messages = host.messages->summary();
+                host.log.notef("summary mission message manager records=%zu constructed=%llu "
+                    "loads=%llu clip_records_resolved=%llu clip_record_misses=%llu "
+                    "sound_keys_resolved=%llu sound_keys_unmatched=%llu key_tests=%llu "
+                    "key_hits=%llu (00707480, 007065E0, 00705E00, 0097D650/0097B5E0)",
+                    host.messages->record_count(), messages.constructed, messages.loads,
+                    activate.records_resolved, activate.record_misses,
+                    activate.sound_keys_resolved, activate.sound_keys_unmatched,
+                    messages.key_tests, messages.key_hits);
+            }
+        }
     }
     host.log.notef("summary mission fixed steps=%llu at %.3f s each (00875bb0's own clock "
         "at 00f876a4/00f876ac)", host.fixed_steps,
