@@ -78,7 +78,11 @@ the same values.
    +7Ch. The host takes +80h. The host's +134h is an accumulator that starts at 0, so it is
    never NaN.
 
-### Verdict: FAITHFUL in effect
+### Verdict: FAITHFUL in effect (superseded)
+
+Superseded by docs/CC13_TORPRANGES.md: current-main logs put torpedo targets' origins above 0
+(USN21 up to +1.3 m), so difference 1 is live. The switch `kTorpedoMoveToRangesBound` (OFF)
+models the stores and the lift.
 
 The skipped stores have one reader, and the host feeds that reader the same values from the
 same tick. This is a torpedo class row, but it is not a mismatch, so there is nothing urgent.
