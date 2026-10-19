@@ -113,8 +113,14 @@ TorpedoGoAwayTickResult torpedo_goaway_tick_009d0f10(
     // 009D0FB2-009D1025.
     if (state.window_delay_28 < 0.0f && high) {
         out.reseeded = true;
-        state.window_length_34 = in.window_jitter_draw;
-        state.window_delay_28 = in.window_delay_draw + state.window_length_34;
+        float jitter = in.window_jitter_draw;
+        float delay = in.window_delay_draw;
+        if (in.reseed_draws != nullptr) {
+            jitter = in.reseed_draws->window_jitter_009d0fd7();  // 009D0FD7 -> +34h
+            delay = in.reseed_draws->window_delay_009d1000();    // 009D1000
+        }
+        state.window_length_34 = jitter;
+        state.window_delay_28 = delay + state.window_length_34;
         state.window_elapsed_30 = static_cast<float>(
             -(static_cast<double>(state.window_length_34) *
               static_cast<double>(torpedo_goaway_tick::kHalf)));
