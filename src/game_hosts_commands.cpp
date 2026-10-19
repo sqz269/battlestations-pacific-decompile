@@ -4004,9 +4004,13 @@ bool GameCommandsHost::copy_director_state_00720450(std::size_t dst, std::size_t
     // 007204E8..0072072B: the ten records, each with its descriptor (the
     // observer pair moved with it; this host has no registry, 0071DDB0 walks
     // every director) and its path object (0071FD10 at 00720714 per slot; this
-    // host carries slot 0's alone). The `land` -> `attackmove` rewrite for a
-    // kind-6 owner (0072058A..00720607) is NOT modelled: it needs 0071DB90's
-    // world list, so a `land` is kept and counted.
+    // host carries slot 0's alone). NOT MODELLED: for a kind-6 owner (vt+5Ch(6)
+    // at 007205F1) a `land` (00E08FA0) becomes `attackmove` (00E08F78, 00720607)
+    // with its position zeroed, and 0071DB90 (00720617) picks the new target.
+    // Found: the record object byte is set and the target id taken (00720656..
+    // 00720660). None found: still attackmove, with a null target, the object
+    // byte cleared and the id zeroed (0072064C..00720650). Both arms need
+    // 0071DB90's world list, so a `land` is kept and counted.
     for (int i = 0; i < bsp::kDirectorCommandSlotCount; ++i) {
         to.slot_command[i] = from.slot_command[i];
         to.slot_target[i] = from.slot_target[i];
