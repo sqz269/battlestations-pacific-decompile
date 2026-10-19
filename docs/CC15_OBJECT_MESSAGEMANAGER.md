@@ -122,4 +122,53 @@ Other classes answer `false`, which keeps the count `sound_keys_not_evaluated`:
 
 ## Pairs
 
-(filled in below as the runs are judged)
+The runs are 2026-10-19, 4800 mission frames at 0.05 s. The baseline is origin/main ee7ced46d (merged into this
+branch). ON is 1b1426acd with `kMessageManagerCc15Bound=true`.
+
+| Pair | pair_diff | Gameplay |
+| --- | --- | --- |
+| USN04 baseline vs this tree OFF | exit 0, identical apart from noise | identical |
+| USN04 OFF vs ON | exit 1 | identical: deaths, 62 plane death modes, 90-row unit table |
+| USN01 OFF vs ON | exit 1 | identical: 36 deaths, 2251 hits, 30 plane death modes, 104-row unit table |
+
+Rows that move from OFF to ON, all in both missions:
+- Native rows `MessageManager::construct 00707480`, `load_messages 007065e0` and
+  `destruct 007071f0` are added, each with calls=1.
+- `MissionLoad::load_warning_bank` goes from UNIMPLEMENTED to concrete, so the load
+  line reads 17 to 18 concrete and 26 to 25 records.
+- A `message manager loaded Messages.lua` line is added. It shows:
+  - records=247. The file has 250 entries, and three keys appear twice
+    (`nmy_ship_ident_dispatcher3`, `nmy_ship_ident_dispatcher4`,
+    `sub_periscope_lost`). The Lua table keeps one of each.
+  - voice_probe_hits=0 and misses=494, which is two templates per record.
+    `language=englishauthentic` is the lockit name the host was built with. 008D57A0
+    would answer the row's voice_dir `authentic`, whose folders exist on disk. This is
+    the voice-language seam: the probes only set the records' streamed and alternate
+    flags, which nothing reads while the sound banks are a seam.
+- The `summary mission warning activate` line changes:
+  - USN04: `records_not_evaluated` goes from 9 to 0.
+  - USN01: `records_not_evaluated` goes from 23 to 0, and `sound_keys_not_evaluated`
+    from 2 to 0.
+- A new `summary mission message manager` line appears:
+  - USN04: clip_records_resolved=9, misses=0, sound keys 0/0. No kill or hit warning
+    activated there.
+  - USN01: clip_records_resolved=21, clip_record_misses=2, sound_keys_resolved=0,
+    sound_keys_unmatched=2, key_tests=2, key_hits=0.
+
+USN01's two unmatched keys and two misses are the same two activations. Both are
+`@_ship_dest_<n>_randomplane` for a cargo ship, class 0Bh:
+- The keys tried are `@ENEMYcargo` and then `@ENEMYdefault_ship`.
+- Warnings.lua maps `cargo` to `nmy_ship`, and `default_ship` is commented out.
+- The rebuilt text is `nmy_ship_ship_dest_<n>_randomplane`.
+- Messages.lua has no such record. Its enemy ship-dest records are bb, ca, dd, cv and
+  submarine only.
+
+The image takes the same path. Its 00705E00 then creates the `<name>` record, which is
+the record-miss seam. The miss is a property of the installed data, not of the host.
+
+Fix from the first ON pair: the native row read `construct calls=2` for one
+construction. The step also called `done()` while `construct_00707480` logs its own
+row. 1b1426acd drops the extra call.
+
+The switch stays OFF in this commit. Turning it ON is the lead's call; the pairs
+above are the evidence.
