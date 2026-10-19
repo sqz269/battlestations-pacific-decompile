@@ -247,6 +247,22 @@ struct MissionCommandGraph {
  }
  NativeTracelineRenderAccess& render_access() noexcept {return render;}
  bool requires_process_retention() const noexcept {return failed || pending!=nullptr;}
+ void observe_failed_frame() {
+  failed=true;
+  if(!pending) {log.note("native_mission_command frame_failed retained=1 pending=0");return;}
+  pending->failed=true;
+  U indexed_calls=0,primitive_calls=0,returned=0,last_stage=0,last_constant=0;
+  for(auto& batch:pending->batch_frames) for(const auto& record:batch.records) {
+   if(record->pass.draw_terminal==0xb24010) ++indexed_calls;
+   if(record->pass.draw_terminal==0xb21b40) ++primitive_calls;
+   if(record->pass.draw_returned) ++returned;
+   if(record->pass.stage) last_stage=record->pass.stage;
+   if(record->constants.reached_callsite) last_constant=record->constants.reached_callsite;
+  }
+  log.notef("native_mission_command frame_failed retained=1 command_invocations=%u entries=%u,%u B24010=%u B21B40=%u returned=%u last_pass=%08x last_constant=%08x sampler_phase=%u",
+   queue_frame.used,pending->entry_counts[0],pending->entry_counts[1],indexed_calls,primitive_calls,returned,
+   last_stage,last_constant,static_cast<U>(pending->system.sampler.phase));
+ }
  void before_device_generation(unsigned long current) {
   check(!failed && !pending,"mission command must drain before a device generation change");
   if(generation!=current) {

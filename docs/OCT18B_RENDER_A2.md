@@ -102,7 +102,9 @@ constructing this metadata does not submit or execute a native command.
 After a drained device transition call `before_device_generation(generation)`.
 Between the existing Begin and End call `submit_drawable(scene,camera,targets,model)`.
 After successful native End call `complete_frame()`. Do not reset/replay a failed
-pending frame. Call the retention predicate from the application's failure policy.
+pending frame. On an escaping End failure call `observe_failed_frame()` for retained
+terminal/stage/sampler observations, then propagate the failure. Call the retention
+predicate from the application's failure policy.
 
 All new observations use `GameHostLog`, with no console or per-leaf printing.
 Submission records queue count, both entry counts and group counts. B43410 source
