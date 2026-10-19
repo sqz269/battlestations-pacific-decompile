@@ -2,7 +2,7 @@
 
 Packet cc13-devwalk. Code: `include/bsp/cc13_devwalk.hpp` (the walk) and
 `src/game_hosts_units.cpp` (`run_device_walk_per_rack_007c0d90`, `rack_delay_draw_007c0e88`).
-Status: reconstructed, build-tested with both switches OFF and ON. Not game-validated.
+Status: reconstructed and build-tested. kPlaneDeviceWalkPerRackBound is ON (main cff560b45, OCEAN_WAVE_FIELD 97: physics23's pairs judged it faithful); kPlaneDeviceWalkSharedDrawBound is OFF until physics23 pairs it. Not game-validated beyond those pairs.
 Names are hypotheses, not recovered symbols.
 
 ## The image (disk bytes 007C0D90-007C0F0D)
@@ -49,7 +49,7 @@ Four gaps remained:
 | c | The level bomber's next-rack draw comes from the host's private release sequence (`lb_draw("rk")`), not from the shared stream 1. | kPlaneDeviceWalkSharedDrawBound |
 | d | The ctl+3ECh store at 007EE802. | none (see below) |
 
-## The two switches (both OFF)
+## The two switches (PerRack ON since cff560b45, OCEAN_WAVE_FIELD 97; SharedDraw OFF)
 
 **`bsp::cc13_devwalk::kPlaneDeviceWalkPerRackBound`** is the behaviour switch. It
 replaces the whole body of `run_release_order_issue_007c0d90`:
