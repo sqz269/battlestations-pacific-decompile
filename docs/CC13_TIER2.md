@@ -77,14 +77,13 @@ ranges are also excluded.
   - The image walks i < +3CCh over +3D0h with no null test.
   - The added guards only matter on an error path.
 - **007C9540, set_unit_world_basis.**
-  - The image copies the whole matrix to +74h and +674h through 004134F0, so the translation
-    row is applied.
-  - Both arms of 008A0A10, the host's only call sites, pass the unit's own position as the translation (the image holds 007C9540 in nine vtable slots):
-    - In the squadron arm, 008A0D9B..008A0DB7 load each member's +FCh..+104h into
-      [ESP+64h]..[ESP+6Ch] before the vtable[88h] call.
-    - In the single-entity arm, the host's caller sets m[12..14] to the unit's position
-      (game_hosts_script_orders.cpp, EntityTurnToEntity).
-  - Not applying the translation is therefore unobservable.
+  - The image copies the whole matrix to +74h and +674h through 004134F0 (007C954D, 007C957C), so the translation row is applied.
+  - Both arms of 008A0A10 (EntityTurnToEntity) pass the unit's own position as the translation, after refreshing the pose through 00414DB0 when byte +C8h is 0:
+    - the squadron arm, 008A0D9B..008A0DBF: each member's +FCh..+104h into [ESP+64h]..[ESP+6Ch], the matrix's +30h row, before the vtable[88h] call at 008A0DD4;
+    - the single-entity arm, from 008A0E08: the same copy from the entity.
+  - These two arms are the host's only call sites (game_hosts_script_orders.cpp, EntityTurnToEntity, set_unit_world_basis_007c9540).
+  - In the image, 007C9540 also sits in 9 vtables at slot +88h. The census of vtable[88h] calls through them is not exhaustive.
+  - Not applying the translation is therefore unobservable at the host's call sites.
 - **0045F520 / 0045F440, call_entry_point_if_defined.**
   - The image tests IsFunction (00B66200). The host's `global_is_defined` tests !nil.
   - They differ only for a global with an entry-point name that is bound to a non-function.
@@ -108,7 +107,8 @@ ranges are also excluded.
     throttle, and the leg manager drops it. Its unit+390h is not expected to be read again. That
     last point is a hypothesis; no reader census was run.
 - **00827B90, the failure effects.** Stale. `failure_name_is` (game_hosts_gunnery.cpp) already
-  compares case-insensitively (cc13 backfill G3, 771b6a3a0; 7a0386564 only added callers).
+  compares case-insensitively (cc13 backfill G3): case-insensitive since 771b6a3a0
+  (failure_name_is from 7a0386564).
 - **009C7F00, goaway complete.** This is an URGENT category, reported to the lead.
   - The logic matches.
   - The image stores the term (009C7F16, 009C7F7D) and ceiling - 100 (009C7FB8) as floats. The
