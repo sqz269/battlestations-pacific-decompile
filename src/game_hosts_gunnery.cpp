@@ -15819,7 +15819,10 @@ bool GameGunneryHost::director_allow_move_3d(std::size_t unit_index) const noexc
 
 void GameGunneryHost::kill_unit_00926d90(std::size_t unit_index, int cause) {
     if (unit_index >= impl_->unit_state.size()) return;
-    // The funnel is the one a gunfire death takes (cause 1, 0077D1A0 -> 00926C80).
+    // The host's kill funnel, which ends in the same destroy as a gunfire death
+    // (0077D1A0 -> 00926C80). The image's gunfire death does not pass through
+    // 00926D90: SetHealth's chain reaches 0077D1A0 via 007D12FC's vtable[70h](1),
+    // so it leaves +70h unwritten. This entry stands for the 00926D90 callers.
     // kKillFunnelCauseBound: 00926D90 returns on +5Fh, else stores the cause at
     // +70h (00926E02, 7 stored as 2), which the `Dead`/entityKilled publishers
     // read as 00E0CF04[cause]: Lua Kill(x, true) passes 2, "soft".
