@@ -313,6 +313,8 @@ void apply_native_material_pass_00b43410(void* pass, void* entry, void* override
         pass, section, vertex_count, pixel_count);
     f.stage = 0x00b435b3;
     void* renderer = c.actual_renderer_00f8d394;
+    if (f.observe_before_draw)
+        f.observe_before_draw(f.observation_context, pass, entry, renderer);
     Word primitives, vertices;
     if (static_cast<std::uint8_t>(indexed)) {
         const Word count = word(section, 0x18); // B435C0 precedes profile capture.

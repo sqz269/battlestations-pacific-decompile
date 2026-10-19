@@ -309,6 +309,20 @@ inline constexpr bool kPlayerGunSeatBound = true;
 // section 7. ON by the pair in section 7.4.
 inline constexpr bool kPlayerGunSeatArtilleryBound = true;
 
+// cc9-gunnery53 (SHIP_AI_OPEN_ITEMS 296.8). A 4Bh MT_ROLEOWNER that changes a
+// role holder (00780120's loop, 00780393) is handed to the unit's HandleMessage:
+// 007803A8 0077FE80, whose default 0078002F calls vtable[164h] = 00821E80, whose
+// 4Bh arm forces the base 0095ABE0. Its device walks at 0095AC1D run on this
+// host's gun rows: mask & 4 or mask == 8, 00953F60 (a release only: Function
+// 1/5/6 through 00729F70, keeping a Function 6 when [unit+1BCh] is the slot);
+// mask & 10h, 00954000 (Function 2/3/4/6: take vtable[154h](0, slot), plus
+// 0072D5B0(0, 0) on Function 6, a record; release 00729F70). Masks 20h and 80h
+// (009540D0 / 00954170) stay with the group 4/5 models. This is what puts the
+// player's artillery in the seat in single player: 0095A05B, the hand-over in
+// 00959C20, needs a hosted session (game+1FE4h == 1) and a remote holder.
+// True: the walk runs. False: role takes leave every gun AI-held.
+inline constexpr bool kRoleOwnerDeviceWalkBound = false;
+
 // Packet s53_wreck_debris (docs/SHIP_AI_OPEN_ITEMS.md 263). 00825A59 step 8 of
 // the unit update calls 00935540 once per dead unit (ShipSystems+88h one-shot)
 // when ShipGlobals.DebrisStruct.DebrisEnabled (settings+680h) is set and both
@@ -1094,6 +1108,10 @@ public:
     // the group 1/2 arm of BSP_Unit_ApplyGunAimMessage 00959C20. Other
     // groups are a record. docs/PLAYER_GUN_SEAT.md.
     void apply_gun_aim_message_00959c20(std::size_t unit_index, const GunAimMessage79& message);
+    // 0095AC1D's two device walks (00953F60 / 00954000) for a role-owner
+    // message whose holder changed; kRoleOwnerDeviceWalkBound.
+    void role_owner_device_walk_0095ac1d(std::size_t unit_index, std::uint32_t mask,
+                                         std::int32_t slot, bool take);
 
     // One fixed simulation step: the gunnery pass 00864FE0, the aim ticks and
     // the trigger latch, 0072D130's 0ADh send with BSP_Gun_Fire behind it, and

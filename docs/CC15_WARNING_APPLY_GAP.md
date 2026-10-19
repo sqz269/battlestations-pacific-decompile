@@ -77,7 +77,10 @@ model is cc9's.
 
 ## Closing note: packet cc15-wB4
 
-All steps are behind `kWarningMessageBankCc15Bound` (OFF), and every pair has identical gameplay.
+All steps are behind `kWarningMessageBankCc15Bound`, and every pair has identical gameplay. cc9-lua69
+flipped the switch ON in 94b7989a0. Its confirming pairs on ec0df436c (reference env) were JM08 p2 at
+30000 frames (160 activations / draws / clips) and USN01 usn01_l69_u1_a (46 / 46 / 46). Both had
+identical gameplay (pair_diff exit 1) and no Lua callbacks.
 
 | step | commit | what it reaches |
 | --- | --- | --- |

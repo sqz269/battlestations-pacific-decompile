@@ -125,3 +125,90 @@ Virtual18 consumes the original logical creator only once, guarded by byte+44.
 
 No native body was newly reconstructed or renamed by this packet. Existing
 reconstructed source bodies and their ledger evidence are reused unchanged.
+
+## Attempt04 cached-row failure follow-up
+
+The primary's real USN04 ON attempt04 crashed before MMOD loading, after a
+resource post-effect compiler sampler-scope log. The matching executable hash
+was `de3c1a12bc17fe49be449e389edaca84dfe571f53c46568e9bc217427da01e68`.
+Minidump exception EIP10354D54 was a read of address8 with ESI=0. Matching
+executable disassembly identifies the failed instruction as `MOV EDX,[ESI+8]`
+inside the cached shader path, where ESI is the null B34890 returned record.
+Nearby native-site stores select B3B85F/B3BDCA. The earlier sampler-scope log
+therefore does not identify the fault as an entry-word producer failure.
+
+The existing B34890 implementation and header establish a forward-only cache
+cursor; a miss never wraps or resets. An isolated cold B107F0 acquisition can
+therefore violate the original shader preload request order, even if a needed
+name exists earlier in the installed cache. This remains a hypothesis until the
+exact missing query and cache cursor are observed; the native names/order must
+be repaired, rather than replacing B34890 with a random lookup or cursor reset.
+
+`cached_shader` now rejects a null cache record before releasing its exact query
+or dereferencing row+08. The retained exception reports vertex/pixel stage,
+counted key, actual record count/cursor, examined rows and the live source-mode
+flags. It supplies no row, shader, fallback or compiler-null result. The existing
+outer compiler marks its one-shot frame failed and preserves every prior native
+effect and live name. This is an explicit Source provider-domain rejection,
+distinct from the Original invalid-row access violation. Primary's subsequent
+combined build and ON05 supplied the query evidence below.
+
+## Attempt05 installed preload-order proof
+
+The primary's ON05 diagnostic reported vertex key `blendparticles0T3.vso`,
+1628 records, final cursor1628 and 564 examined rows, with load-variants0 and
+source-mode0. The installed `shaderfx/shaders.bin` parses exactly to EOF:
+1628 counted-name/blob records occupy 2250700 bytes. Its zero-based rows are
+`blendparticles0T3.vso/pso`1026/1027 and
+`downscale_depth0T3.vso/pso`1062/1063. Thus the failed scan began at1064,
+immediately after downscale-depth, with the required blend-particle row behind
+the cursor. The missing-row hypothesis is resolved as an acquisition-order
+violation; the installed binary contains the requested variant.
+
+The installed `shaderfx/shaderpreload.lua` has 179 FileNames entries, including
+blendparticles at zero-based ordinal116/line130, downscale_depth125/139 and
+ship150/166. Ordinary ship variants occupy rows1256..1279: modes0,1,3,4,6 and
+the shadow variant, first F3 then T3, each vertex before pixel. Both policies
+also exist for blendparticles and downscale_depth. The genuine Application
+owner and 73BF80 preload added by A1 make subsequent resource acquisitions hot
+in this same material-effect cache. Parent ON06 logged a completed 179-material
+preload, then successful B107F0 and installed Fletcher26 models/445 sections.
+
+The original caller at004DF3BB pushes DWORD F889D8, byte F88A0D and byte
+F88A0C, establishing argument order `{settings+8C, settings+8D, settings+58}`.
+Current primary `game_hosts.cpp` reads those actual cells; ON06 logged1,1,8.
+Names such as shader-flag for+8C remain descriptive hypotheses; the anonymous
+argument cells and their Original ordering are preserved. No policy override,
+cursor reset or alternate shader lookup was introduced.
+
+## Attempt06 index-profile provider fault
+
+Primary artifacts `local/oct18b_render_on_attempt06.log`, its manifest and
+minidump establish the first ordinary command submission after model loading:
+queue_count1 and entry counts119,12, then a mission-frame1 read of address28.
+The current executable SHA256 exactly matches the manifest:
+`9434efb45598050ed28042b4f03dd2f9860b9721f1265d31948d4d883b07ddc9`.
+Its matching map resolves EIP104161FB to
+`bind_native_renderer_index_stream_00b24b00+14B`. Disassembly reads the
+context's profile pointer at+04, obtains zero, then faults on
+`MOV EAX,[EAX+28]`. Dump locals retain incoming logical1F29EAB8 with captured
+profile token D61DE0; context7D7F40 is the fourth explicit C++ argument.
+
+The captured stack returns through B44750 geometry binding, B45360 material
+entry dispatch, B55550 batch execution, B1D950 command execution and B1EBE0
+queue execution. The missing provider is exactly
+`NativeRendererIndexBindingContext::actual_logical_profile_00d61de0`:
+`game_native_renderer_lifetime.inc` initialized `index_binding{index}`,
+leaving its required second aggregate member null. Primary's leased fix adds
+the canonical `profiles(0xd61de0)` view for the enabled mission graph.
+
+Existing B24B00 requires at least eleven immutable DWORDs from D61DE0:
+slot0 BD30E0, slot+04 B4C1F0 and slot+28 B48DC0. It uses the latter getter
+after publishing/retaining a changed nonnull index stream. Its physical views
+D61E10/D61E58 each require eight DWORDs, with slot+1C B4B840. These are
+Original numeric tokens used for verified dispatch selection, not callable
+host tables. Original ABI is ECX renderer, stack logical/base-vertex, RET8;
+the reconstructed C++ API supplies the provider context explicitly. No
+Original body changed in this diagnosis. The fault is independent of the
+scene-lighting provider under separate review; no completed native primitive
+draw or visual proof is inferred from this interrupted command.
