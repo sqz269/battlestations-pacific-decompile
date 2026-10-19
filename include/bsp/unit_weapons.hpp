@@ -38,11 +38,20 @@ inline constexpr std::size_t kUnitOffTorpedoStockSpare = 0x104c; // 0081F8B0 wri
 inline constexpr std::size_t kNodeOffFirstChild = 0x48;
 inline constexpr std::size_t kNodeOffNextSibling = 0x44;
 
-// Arguments seen at the class-test virtual +5Ch. Only these three are read by
-// this packet; the predicate body itself is a contract.
+// Arguments seen at the class-test virtual +5Ch. Only these are read by this
+// packet; the predicate body itself is a contract.
 inline constexpr int kClassTestUnit = 0x18; // 008CF350 gate before seeding the walk
 inline constexpr int kClassTestGun = 0x20;  // 008CF350 and 0081F8B0 select guns
 inline constexpr int kClassTestGunMuzzleQuery = 0x24; // 00730259 inside Fire
+inline constexpr int kClassTestHasFiredEntity = 0x02; // 008BE901 PUSH 2
+inline constexpr int kClassTestPlane = 0x0F;          // 008BE926 PUSH 0Fh, the +9D4h fallback
+
+// 008BE99C: the director's twenty fire stamps, [director + 1D0h + index*4],
+// indexed by the 00E08E58 name table (006E8250). Seeded by 00720180 with the
+// bits D01502F9h (-1e10f) and written by 009555A0 at each projectile spawn.
+inline constexpr std::size_t kDirectorFireStampBlock = 0x1D0;
+inline constexpr int kDirectorFireStampCount = 20;
+inline constexpr float kDirectorFireStampUnset = -1.0e10f; // bits D01502F9h
 
 // ---------------------------------------------------------------------------
 // The gun device record
@@ -246,11 +255,18 @@ struct UnitWeaponHost {
                                                  NativeHandle target) = 0;
     virtual void director_set_fire_target_position(NativeHandle director,
                                                    const float position[3]) = 0;
-    // HasFired's fallback owner at unit +9D4h, whose director is asked instead.
+    // HasFired's fallback owner at unit +9D4h (a plane's squadron), whose
+    // director is asked instead. The image reads it without a null test.
     virtual NativeHandle unit_secondary_owner(NativeHandle unit) = 0;
-    // 006E8250(director, weapon_name, window): HasFired's predicate.
-    virtual bool director_has_fired(NativeHandle director, const char* weapon_name,
-                                    float window) = 0;
+    // 006E8250(name), ECX unread: the name's index in the twenty-entry table
+    // 00E08E58, 0 when nothing matches.
+    virtual int weapon_name_index_006e8250(const char* weapon_name) = 0;
+    // [director + 1D0h + index*4], a float.
+    virtual float director_fire_stamp(NativeHandle director, int index) = 0;
+    // The float clock [00F876A4].
+    virtual float world_clock_00f876a4() = 0;
+    // 00B66270 left in ST0: the Lua number as a double, before any FSTP.
+    virtual double lua_argument_number_f64(int index) = 0;
 
     // -- torpedo stock -------------------------------------------------------
     // 00810E90: the loaded torpedo barrels, the barrels of the category-7 list

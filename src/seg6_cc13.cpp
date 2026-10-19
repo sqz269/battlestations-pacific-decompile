@@ -989,7 +989,11 @@ Object scene_database_construct_0046f160(Seg6Host& host, Object database) {
         set_u32(set, 8, 0);
     }
     native_at<std::uint8_t>(database, 4) = 1;  // 0046F268
-    std::uint32_t inserted[2] = {0, 0};
+    // 0Ch result (owner, node, inserted byte + 3 untouched): the image's locals
+    // after SUB ESP,14h are the key at [ESP+10h] (0046F26C) and the result at
+    // [ESP+18h] (0046F275 LEA ECX,[ESP+1Ch] after one push), 18h..23h, up to the
+    // pushed SEH link at [ESP+24h]. ([ESP+14h] holds the database, 0046F186.)
+    std::uint32_t inserted[3] = {0, 0, 0};
     for (std::int32_t key : {0x44, 0x5E, 0x1D, 0x47, 0x3D})
         host.int_set_insert_0046ac50(database + 0x158, reinterpret_cast<Object>(inserted), &key);
     for (std::int32_t key : {0x47, 0x3D})

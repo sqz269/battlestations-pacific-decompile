@@ -27,4 +27,14 @@ namespace bsp::cc13_sub_dive {
 // before this packet).
 inline constexpr bool kCc13SubDiveKamikazeBound = false;
 
+// The nearest-band seed stage (rev-convoy N1). 00853630 reaches 00853BE8 when
+// neither `Dive` nor `TargetDive` is found (00853BE2/00853BE6), or for a holder
+// that is not kind 1 (00853B0F). 00853BEB..00853C70: best = |hull world Y|; for
+// i = 1..3, d = |float(Y - bands[i])|, and best > d (FCOMIP, JBE: equal or
+// unordered keeps) takes best = d and +1268h = i. Band 0 is never compared by
+// subtraction, and +1268h keeps the stage-1 (kamikaze) value unless a band beats
+// |Y|. Independent of kCc13SubDiveKamikazeBound; the image runs both. False: the
+// seed keeps the stage-1 value (the labelled substitution before this packet).
+inline constexpr bool kSubSeedNearestBandCc13Bound = false;
+
 }  // namespace bsp::cc13_sub_dive

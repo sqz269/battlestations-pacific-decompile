@@ -292,11 +292,13 @@ struct GameUnitRow {
     // Packet cc9_submarine_depth_level (docs/SUBMARINE_MODEL.md section 11):
     // unit+1268h `depthLevel` as 00853630 seeds it on a submarine. Stage 1
     // (00853A31..00853A81) is the kamikaze test, stage 2 (00853B05..00853BAA)
-    // the scene's `Dive` then `TargetDive`. LABELLED: nothing in this host
-    // writes the level after the seed (008528B0's callers are not modelled),
-    // stage 3 (the nearest band, non-scene units) is not modelled, and the
-    // kamikaze test reads false: class+510h/+514h are not on the host's class
-    // row. `submarine_depth_seeded` is false on every other class.
+    // the scene's `Dive` then `TargetDive`, stage 3 (00853BE8..00853C70) the
+    // nearest band for a boat with neither key. After the seed, 008528B0
+    // (GameUnitsHost::set_submarine_depth_level_008528b0) writes it. Packet
+    // cc13-subdive: the kamikaze test (class+510h/+514h) is under
+    // kCc13SubDiveKamikazeBound and stage 3 under kSubSeedNearestBandCc13Bound
+    // (include/bsp/cc13_sub_dive.hpp); each reads false / is skipped while its
+    // switch is OFF (LABELLED). `submarine_depth_seeded` is false on every other class.
     bool submarine_depth_seeded{false};
     std::int32_t submarine_depth_level{0};
     // Milestone 2s: what 009329C0 staged on this unit's last substep, read back

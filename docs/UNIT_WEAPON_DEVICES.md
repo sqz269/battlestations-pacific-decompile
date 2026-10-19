@@ -210,8 +210,11 @@ at the site.
 | `008BE56B` | `0072CF00` | `gun_set_reload_timer` | ECX = gun; (barrel, 0.0f, 0) | `barrel < barrelNum` |
 | `008BE5AD` | gun `vtable[1D8h]` = `00730160` | `gun_fire` | ECX = gun; (1, throwA, throwB); RET 0Ch | — |
 | `008BE76F` | gun `vtable[1D8h]` | `gun_fire` | ECX = gun; (1, arg1, arg2) | — |
-| `008BE7xx` | unit `vtable[114h]` = `0080E150` | `weapon_director` | ECX = unit; ret director | `vtable[5Ch]` true |
-| `008BE7xx` | `006E8250` | `director_has_fired` | ECX = director; (name, window); ret bool | director non-null |
+| `008BE905` | unit `vtable[5Ch]` | `class_test` with 2 | ECX = unit (00888AA0, no null test); (2) | — |
+| `008BE919` | unit `vtable[114h]` = `0080E150` | `weapon_director` | ECX = unit; ret director | `vtable[5Ch](2)` true |
+| `008BE92A` / `008BE942` | unit `vtable[5Ch]`, then `[unit+9D4h]` `vtable[114h]` | `class_test` with 0Fh, `unit_secondary_owner`, `weapon_director` | (0Fh); +9D4h read without a null test | director null |
+| `008BE997` | `006E8250` | `weapon_name_index_006e8250` | (name string by value), ECX unread; ret index, 0 on no match | director non-null |
+| `008BE99C` | — | `director_fire_stamp`, `world_clock_00f876a4`, `lua_argument_number_f64` | `[director+1D0h+index*4]` > float(double([00F876A4]) - arg 2), FCOMIP/JA | director non-null |
 | `008A6950` | `0071BF20` | `director_set_stance_0071be80` with 1 | ECX = director | — |
 | `008A6AC0` | `0071BED0` | `director_set_stance_0071be80` with 0 | ECX = director | — |
 | `008A6490` | `0071BE80` | `director_set_stance_0071be80` | ECX = director; (stance); RET 4 | — |
@@ -243,7 +246,7 @@ at the site.
 | `0072D520`, `0072E6D0` (writes only), `0071BE80`, `0071BED0`, `0071BF20` | complete |
 | `0071DFD0`, `0071E0D0` | complete as message builders; the receiving handler is unread |
 | `0081F8B0`, `008BED80`, `0089C360`, `0080E150`, `007298D0` | complete |
-| `008BE7E0` | partial: the `+9D4h` fallback gate was read from pseudocode, not assembly; `006E8250` is unread |
+| `008BE7E0` | checked against the listing (packet cc13-luawire): the `+9D4h` fallback runs only for kind 0Fh; `006E8250` indexes the 00E08E58 name table; the stamp comparison is `stamp > float(clock - window)` |
 | `0089A8B0` | partial: three branches identified, all three setter bodies unread |
 | `0088DC10` | entry only: the firepower computation after the entity fetch is unread |
 

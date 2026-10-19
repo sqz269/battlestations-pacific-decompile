@@ -116,6 +116,16 @@ struct TorpedoGoAwayTickInputs {
     // re-seed.
     float window_jitter_draw = torpedo_goaway_tick::kWindowJitterLo;
     float window_delay_draw = 0.0f;
+    // Packet cc13-goaway: when set, the re-seed takes the two draws from here,
+    // at the image's point and in its order (009D0FD7 first, then 009D1000),
+    // instead of the two values above. Null keeps the values above.
+    struct ReseedDraws {
+        virtual float window_jitter_009d0fd7() = 0;
+        virtual float window_delay_009d1000() = 0;
+    protected:
+        ~ReseedDraws() = default;
+    };
+    ReseedDraws* reseed_draws = nullptr;
 };
 
 struct TorpedoGoAwayTickResult {

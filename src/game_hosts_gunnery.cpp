@@ -17,9 +17,12 @@
 #include "bsp/camera_multiply.hpp"
 #include "bsp/cc13_tier2_switches.hpp"
 #include "bsp/cc13_seg67b_switches.hpp"   // packet cc13-para2 (the 31h release)
+#include "bsp/cc13_kamikaze_direct.hpp"   // packet cc13-kzdirect
 #include "bsp/structured_hierarchy.hpp"
+#include "bsp/cc13_hitq_switches.hpp"   // packet cc13-hitq (the deferred hit queue)
 
 #include <array>
+#include <deque>
 #include <limits>
 #include <functional>
 #include <map>
@@ -3550,6 +3553,37 @@ struct GameGunneryHost::Impl {
     // segment query returned, set by run_projectiles around apply_hit only.
     int impact_shape_kind{0x0A};
     int impact_hull_segment{-1};
+    // Packet cc13-hitq (kHitDeferredDispatchCc13Bound): the deferred hit queue,
+    // the std::list at 00F899C0. One node per 00926E80 push: the record as the
+    // funnel built it, with the damage draw already made (00470350 runs before
+    // the push) and the part array copied, as 00925050 copies it, and the
+    // direction 00926F48 writes to node+5Ch. back() is head[+4h], the node the
+    // producer linked last (00926F12, 00926714). The deque is created on the
+    // first push, so OFF never allocates; a deque keeps the node a dispatch is
+    // reading in place if that dispatch pushes another.
+    struct DeferredHit {
+        bool gunless{false};       // apply_gunless_blast_hit (a shot-0 record)
+        std::size_t shooter{0};
+        std::size_t gun_row{0};
+        std::size_t victim{0};     // record+0h, the drain's subject
+        float point[3]{};
+        float direction[3]{};      // node+5Ch..+64h
+        bool has_blast{false};
+        bsp::HitRecord record{};
+        std::vector<bsp::HitPartEntry> parts;   // record+3Ch / +40h, copied
+        int team_id{-1};
+        int round_bullet_class{-1};
+        int impact_shape_kind{0x0A};
+        int impact_hull_segment{-1};
+        float hull_damage_draw{0.0f};           // record+14h, drawn at the push
+    };
+    std::unique_ptr<std::deque<DeferredHit>> deferred_hits;
+    const DeferredHit* deferred_replay{nullptr};   // the node 009239A0 is running
+    unsigned long long deferred_hits_queued{0};
+    unsigned long long deferred_hits_dispatched{0};
+    unsigned long long deferred_hits_refused_at_queue{0};
+    void queue_deferred_hit(DeferredHit&& node);
+    void dispatch_deferred_hit(const DeferredHit& node);
     // kPlaneSpinSideBound: the element kind the last plane mesh trace of a unit
     // found (-1 for none), and unit+800h per unit (-1 from 007CFDB4).
     std::vector<int> plane_trace_element_kind;
@@ -4086,8 +4120,17 @@ struct GameGunneryHost::Impl {
     void run_kamikaze_box_contacts();
     void kamikaze_detonate_00819a20(std::size_t unit, std::size_t target,
         const float contact[3]);
+    // Packet cc13-kzdirect: what a record whose shot is the kamikaze unit itself
+    // (00470350 SetShot(unit) at 00819B9C) changes in the funnel: the shot is
+    // present, the direction is the one 00926E80 copies (EDX at 00819BA1), and
+    // +30h is the traced element's kind. Null for the shot-0 blast records.
+    struct KamikazeDirectShot {
+        float direction[3]{};
+        int segment_kind{0x0A};
+    };
     void apply_gunless_blast_hit(std::size_t source, std::size_t victim,
-        const float point[3], const bsp::HitRecord& record);
+        const float point[3], const bsp::HitRecord& record,
+        const KamikazeDirectShot* unit_shot = nullptr);
     struct KamikazeRow {
         bool read{false};
         float damage_510{0.0f};
@@ -4096,6 +4139,11 @@ struct GameGunneryHost::Impl {
     };
     std::vector<KamikazeRow> kamikaze_rows;
     KamikazeRow& kamikaze_row(std::size_t k);
+    // Packet cc13-kzdirect (bsp::kKamikazeDirectHitCc13Bound): 00819A51..00819BCF.
+    void kamikaze_direct_hit_00819a20(std::size_t unit, std::size_t target,
+        const float contact[3], const float centre[3], const KamikazeRow& kr);
+    unsigned long long kz_direct_traced{0};   // 0098AC20 reported a hit
+    unsigned long long kz_direct_missed{0};   // 00819B2B to 00819BC3
     unsigned long long kz_contacts{0};
     unsigned long long ground_origin_aims{0};   // packet cc9_ground_target_aim_point
     // Packet cc9_artillery_structure_aim: non-ship artillery aims (each tick), those at an
@@ -10914,6 +10962,11 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
             if constexpr (kPlaneSpinSideBound) {
                 // 007BBCF0: hit+34h != -1 -> unit+800h = [[hit+38h]+4h], before
                 // 008777D0 applies the damage.
+                // Packet cc13-hitq: with kHitDeferredDispatchCc13Bound ON this write
+                // stays here, at the hit, while the image makes it inside OnHit at the
+                // drain (LIFO): with several hits on one plane between drains the image
+                // keeps the oldest hit's kind and this host the newest. RESIDUAL, not
+                // moved (docs/CC13_HIT_DEFERRED_DISPATCH.md).
                 const std::size_t victim = query.hit_unit - 1;
                 if (victim < plane_trace_element_kind.size()
                     && plane_trace_element_kind[victim] >= 0
@@ -11728,11 +11781,101 @@ private:
 
 }  // namespace
 
+// Packet cc13-hitq, kHitDeferredDispatchCc13Bound only (nothing reaches these
+// two OFF). 00926E80: append at head[+4h] under the 00924990 lock (one thread
+// here, so no lock), copy the record and the direction. The write-only byte
+// 00E18684 and the discarded shot->vtable[5Ch](29h) at 00926F65 have no effect
+// to carry.
+void GameGunneryHost::Impl::queue_deferred_hit(DeferredHit&& node) {
+    if (deferred_hits == nullptr) deferred_hits = std::make_unique<std::deque<DeferredHit>>();
+    deferred_hits->push_back(std::move(node));
+    ++deferred_hits_queued;
+    ++summary.queued_hits;
+    done("Projectile::queue_hit_00926e80", 0x00926e80u);
+}
+
+// 00926750 -> 009239A0 for one node: the funnel runs again with the state it
+// had at the push (the round's class and the impact element), on the node's
+// own copy of the record and its part array.
+void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
+    const int saved_class = round_bullet_class;
+    const int saved_kind = impact_shape_kind;
+    const int saved_segment = impact_hull_segment;
+    round_bullet_class = node.round_bullet_class;
+    impact_shape_kind = node.impact_shape_kind;
+    impact_hull_segment = node.impact_hull_segment;
+    bsp::HitRecord record = node.record;
+    record.part_hits = node.parts.empty() ? nullptr : node.parts.data();
+    record.part_hit_count = static_cast<int>(node.parts.size());
+    ++deferred_hits_dispatched;
+    deferred_replay = &node;
+    if (node.gunless) {
+        apply_gunless_blast_hit(node.shooter, node.victim, node.point, record);
+    } else {
+        apply_hit(node.shooter, node.gun_row, node.victim, node.point, node.direction,
+            node.has_blast ? &record : nullptr, node.team_id);
+    }
+    deferred_replay = nullptr;
+    round_bullet_class = saved_class;
+    impact_shape_kind = saved_kind;
+    impact_hull_segment = saved_segment;
+}
+
 void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     std::size_t victim, const float point[3], const float direction[3],
     const bsp::HitRecord* blast_record, int team_id) {
     if (victim >= unit_state.size() || shooter >= unit_state.size()) return;
     UnitState& target = unit_state[victim];
+    // Packet cc13-hitq. ON, a call from a funnel is 00926E80 (0084BE20 for the
+    // direct hit, 0084BBF9 for each blast record): draw the record's damage and
+    // queue it. The drain calls back in with deferred_replay set, and the rest
+    // of this body is 009239A0 for that node. Taking the pointer here means a
+    // hit raised from inside the dispatch queues again, as a push from a
+    // vtable[ECh] handler would.
+    const DeferredHit* replay = nullptr;
+    if constexpr (kHitDeferredDispatchCc13Bound) {
+        replay = deferred_replay;
+        deferred_replay = nullptr;
+        if (replay == nullptr) {
+            // The narrowphase finds only what is in the hit index: a wreck past
+            // its window (below) is neither drawn nor queued.
+            if (target.dead && (!kWreckHitDeliveryBound || !wreck_in_hit_window(victim))) {
+                ++deferred_hits_refused_at_queue;
+                return;
+            }
+            DeferredHit node;
+            node.shooter = shooter;
+            node.gun_row = gun_row;
+            node.victim = victim;
+            for (int i = 0; i < 3; ++i) {
+                node.point[i] = point[i];
+                node.direction[i] = direction[i];
+            }
+            node.has_blast = blast_record != nullptr;
+            if (blast_record != nullptr) {
+                node.record = *blast_record;
+                if (blast_record->part_hits != nullptr && blast_record->part_hit_count > 0) {
+                    node.parts.assign(blast_record->part_hits,
+                        blast_record->part_hits + blast_record->part_hit_count);
+                }
+            }
+            node.team_id = team_id;
+            node.round_bullet_class = round_bullet_class;
+            node.impact_shape_kind = impact_shape_kind;
+            node.impact_hull_segment = impact_hull_segment;
+            // 00470350 SetShot before the push: the same draw, at the same
+            // point in the shared stream, as the OFF body makes below.
+            const int queued_class
+                = round_bullet_class >= 0 ? round_bullet_class : guns[gun_row].bullet_class;
+            const GameBulletClassRow* queued_weapon = bullet(queued_class);
+            node.hull_damage_draw = draw(Draw::hull_damage, gun_row, victim,
+                queued_weapon != nullptr ? queued_weapon->damage_min : 0.0f,
+                queued_weapon != nullptr ? queued_weapon->damage_max : 0.0f);
+            queue_deferred_hit(std::move(node));
+            return;
+        }
+    }
+    static_cast<void>(replay);
     if (target.dead) {
         ++wreck_hits_reaching;
         if constexpr (!kWreckHitDeliveryBound) {
@@ -11772,9 +11915,12 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     const GameBulletClassRow* weapon = bullet(priced_class);
 
     // 00926E80 queues the record, 009239A0 dispatches it: the entity gates, the
-    // OnHit delivery and the attribution listener.
-    ++summary.queued_hits;
-    done("Projectile::queue_hit_00926e80", 0x00926e80u);
+    // OnHit delivery and the attribution listener. ON, the push was counted in
+    // queue_deferred_hit.
+    if constexpr (!kHitDeferredDispatchCc13Bound) {
+        ++summary.queued_hits;
+        done("Projectile::queue_hit_00926e80", 0x00926e80u);
+    }
 
     // 00470350 HitRecord::SetShot: record+14h = shot->vtable[54h](), which is
     // 006E7C60, a uniform draw between the weapon class's DamageMin (+ACh) and
@@ -11783,7 +11929,11 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     bsp::HitRecord hit;
     const float low = weapon != nullptr ? weapon->damage_min : 0.0f;
     const float high = weapon != nullptr ? weapon->damage_max : 0.0f;
-    hit.hull_damage_base = draw(Draw::hull_damage, gun_row, victim, low, high);
+    if constexpr (kHitDeferredDispatchCc13Bound) {
+        hit.hull_damage_base = replay->hull_damage_draw;   // drawn at the push
+    } else {
+        hit.hull_damage_base = draw(Draw::hull_damage, gun_row, victim, low, high);
+    }
     hit.part_damage_base = 0.0f;
     hit.falloff_range = 0.0f;
     hit.ignore_falloff = false;
@@ -12092,9 +12242,13 @@ void GameGunneryHost::Impl::kamikaze_detonate_00819a20(std::size_t unit, std::si
     float right[3], up[3], forward[3], centre[3];
     unit_pose(unit, right, up, forward, centre);
     // 00819A51..00819A8E: the direct arm's gates.
-    if (!unit_state[target].dead && kr.damage_510 > 0.0f) {
-        ++kz_direct_arms;
-        record("KamikazeDetonate::direct_hit_00915f20", 0x00915f20u);
+    if constexpr (bsp::kKamikazeDirectHitCc13Bound) {
+        kamikaze_direct_hit_00819a20(unit, target, contact, centre, kr);
+    } else {
+        if (!unit_state[target].dead && kr.damage_510 > 0.0f) {
+            ++kz_direct_arms;
+            record("KamikazeDetonate::direct_hit_00915f20", 0x00915f20u);
+        }
     }
     // 00819BDA..00819C14: the blast arm.
     std::vector<std::size_t> reached;
@@ -12144,29 +12298,155 @@ void GameGunneryHost::Impl::kamikaze_detonate_00819a20(std::size_t unit, std::si
         static_cast<double>(unit_state[target].health));
 }
 
+// Packet cc13-kzdirect, kKamikazeDirectHitCc13Bound only: 00819A51..00819BCF,
+// the direct arm. `contact` is the host's contact point and `centre` the
+// unit's +FCh. Single precision throughout: every x87 value is stored to a
+// float before the next use, and offset * 1000.0 is one rounding either way.
+//
+// SUBSTITUTIONS, labelled:
+//  * 0098AC20 runs through this host's SegmentBinding: the target's hull mesh
+//    or box stands for the shapes at node+D0h, and the node has no children.
+//  * +5Ch / +5Dh / +5Eh / +60h are the unit host's scene bytes; a unit whose
+//    bytes are not modelled is gated by `dead`, as the OFF arm is.
+//  * The record's +18h..+20h (unit+FCh) has no reader in this host: the funnel's
+//    consumer projection bsp::HitRecord does not carry it.
+void GameGunneryHost::Impl::kamikaze_direct_hit_00819a20(std::size_t unit, std::size_t target,
+    const float contact[3], const float centre[3], const KamikazeRow& kr) {
+    if (target >= unit_state.size()) return;   // 00819A3E: a null target
+    bsp::SceneNodeFlags flags;
+    bool pending_060 = false;
+    bool live = false;
+    if (units.unit_scene_node_flags(target, flags)
+        && units.unit_pending_destroy_0060(target, pending_060)) {
+        // 00819A51 +5Ch, 00819A5B +5Dh, 00819A65 +60h, 00819A6F +5Eh.
+        live = flags.active && !flags.torn_down && !pending_060 && !flags.destroyed;
+    } else {
+        live = !unit_state[target].dead;
+    }
+    if (!live) return;
+    if (!(kr.damage_510 > 0.0f)) return;   // 00819A87 COMISS / JBE: unordered skips
+    ++kz_direct_arms;
+
+    // The message vector 008146A0 built (00427C90: contact - 00427EB0(unit)),
+    // and s = it * 1000.0 at 00819AAB..00819AF3.
+    float offset[3];
+    float s[3];
+    for (int i = 0; i < 3; ++i) {
+        offset[i] = contact[i] - centre[i];
+        s[i] = static_cast<float>(static_cast<double>(offset[i]) * bsp::kKamikazeDirectTraceScale);
+    }
+
+    // 00819B00..00819B24: target->vtable[B0h] is 006D1DF0 ([target+360h]) and
+    // pops nothing, so 0098AC20 takes the five pushes: from = unit+FCh, to = s
+    // (a point, not unit+FCh + s), exclude 0, &record, kind 0.
+    const unsigned long long mesh_hits = shell_mesh_hits;
+    const unsigned long long box_hits = narrowphase_box_0085cdb0;
+    SegmentBinding query(*this, static_cast<std::size_t>(-1));
+    bsp::SegmentQueryArgs args;
+    args.from = bsp::HitQueryPoint{centre[0], centre[1], centre[2]};
+    args.to = bsp::HitQueryPoint{s[0], s[1], s[2]};
+    args.exclude_entity = nullptr;
+    args.kind_filter = 0;
+    bsp::HitRecordFill fill;
+    bsp::hit_record_reset_00470470(fill);   // 00819A98
+    bsp::HitQueryPoint to = args.to;
+    const bool traced = bsp::test_entity_0098ac20(query,
+        reinterpret_cast<const void*>(target + 1), args, to, fill);
+    shell_mesh_hits = mesh_hits;              // the summary counts shots only
+    narrowphase_box_0085cdb0 = box_hits;
+    if (!traced) {                            // 00819B2B -> 00819BC3
+        ++kz_direct_missed;
+        return;
+    }
+    ++kz_direct_traced;
+
+    // 00819B31..00819B96, then 00470350 SetShot(unit) at 00819B9C: +4h = unit,
+    // +14h = unit->vtable[54h]() = 0042B8D0 FLDZ for every class whose message
+    // handler reaches 00819A20 (00CF90B0, 00CFA778, 00CFB738, 00CFC3D0,
+    // 00CFFA30, 00D01630, 00D0BF80), which overwrites the +510h store at
+    // 00819B46. weapon_scale is unit->vtable[58h]() = 0042B8E0 FLD1.
+    bsp::HitRecord hit;
+    hit.hull_damage_base = 0.0f;
+    hit.part_damage_base = kr.blast_514;   // +28h, 00819B96
+    hit.falloff_range = kr.range_518;      // +24h, 00819B83
+    hit.ignore_falloff = false;            // +2Ch, 00470470
+    hit.armour_selector = fill.position.y; // +0Ch, the traced point's y
+    hit.hull_segment = kHullElementSegmentBound ? fill.hull_segment : kDirectHitHullSegment;
+    hit.weapon_scale = 1.0f;
+    hit.owner_modifier = 1.0f;             // 008E6430 over an empty modifier list
+    hit.part_hits = nullptr;               // the trace writes no part array
+    hit.part_hit_count = 0;
+    done("Projectile::hit_record_set_shot_00470350", 0x00470350u);
+
+    KamikazeDirectShot shot;
+    for (int i = 0; i < 3; ++i) shot.direction[i] = offset[i];   // EDX = offset, 00819BA1
+    shot.segment_kind = kHullElementSegmentBound ? fill.shape_kind : 0x0A;
+    const float point[3] = {fill.position.x, fill.position.y, fill.position.z};
+    // 00819BA7: 00926E80, delivered here through the immediate funnel.
+    // TODO(cc13-hitq): with kHitDeferredDispatchCc13Bound ON, push it instead.
+    apply_gunless_blast_hit(unit, target, point, hit, &shot);
+    // 00819BBE: 00915F20(target, &record), the scoring record, on a trace hit only.
+    record("KamikazeDetonate::direct_hit_00915f20", 0x00915f20u);
+}
+
 // The tail of apply_hit for a record with no gun and no shot (0084BAD0 with
 // shot 0): the queue, the dispatch 00826F10, the health write and the death.
 // No attribution: with shot 0 the record's +4h is null and 0077CE60's source
 // record does not resolve. The kamikaze stands in as the ShipHitBinding's
 // shooter only for the shooter position.
+//
+// Packet cc13-kzdirect: with `unit_shot` the record's +4h is the kamikaze unit
+// (00819A20's direct record). 00826F10 then sees a shot that is neither a
+// depth charge nor a torpedo (unit classes are not 2Ch / 2Bh descendants,
+// docs/ENTITY_CLASS_IDS.md) and has no weapon (shot->vtable[108h] = 0042BB30,
+// XOR EAX,EAX, for every class that reaches 00819A20), and 0077CE60's damage
+// test reads 0 for it (+14h is 0 and there is no part array), so there is still
+// no attribution.
 void GameGunneryHost::Impl::apply_gunless_blast_hit(std::size_t source, std::size_t victim,
-    const float point[3], const bsp::HitRecord& record) {
+    const float point[3], const bsp::HitRecord& record, const KamikazeDirectShot* unit_shot) {
     if (victim >= unit_state.size() || source >= unit_state.size()) return;
     UnitState& target = unit_state[victim];
     if (target.dead) return;
-    ++summary.queued_hits;
-    done("Projectile::queue_hit_00926e80", 0x00926e80u);
+    // Packet cc13-hitq. ON, a call from a funnel is 0084BBF9's 00926E80 push
+    // (shot 0, so no damage draw); the drain calls back in with deferred_replay
+    // set and the rest is 009239A0 for that node. The dead test above runs
+    // again at the dispatch.
+    if constexpr (kHitDeferredDispatchCc13Bound) {
+        const DeferredHit* replay = deferred_replay;
+        deferred_replay = nullptr;
+        if (replay == nullptr) {
+            DeferredHit node;
+            node.gunless = true;
+            node.shooter = source;
+            node.victim = victim;
+            for (int i = 0; i < 3; ++i) node.point[i] = point[i];
+            node.direction[0] = 0.0f;   // the direction the dispatch below passes
+            node.direction[1] = 1.0f;
+            node.direction[2] = 0.0f;
+            node.has_blast = true;
+            node.record = record;
+            if (record.part_hits != nullptr && record.part_hit_count > 0) {
+                node.parts.assign(record.part_hits, record.part_hits + record.part_hit_count);
+            }
+            queue_deferred_hit(std::move(node));
+            return;
+        }
+    } else {
+        ++summary.queued_hits;
+        done("Projectile::queue_hit_00926e80", 0x00926e80u);
+    }
     bsp::HitRecord hit = record;
     bsp::ShipHitRecordView view;
-    view.segment_kind = 0x0A;
+    view.segment_kind = unit_shot != nullptr ? unit_shot->segment_kind : 0x0A;
     for (int i = 0; i < 3; ++i) view.impact_point[i] = point[i];
-    view.shot_present = false;
+    view.shot_present = unit_shot != nullptr;
     view.shot_is_depth_charge = false;
     view.shot_is_torpedo = false;
     view.weapon_present = false;
     hit_event_fire = 0.0f;
     hit_event_leak = 0.0f;
-    const float direction[3] = {0.0f, 1.0f, 0.0f};
+    const float no_shot_direction[3] = {0.0f, 1.0f, 0.0f};
+    const float* direction = unit_shot != nullptr ? unit_shot->direction : no_shot_direction;
     ShipHitBinding binding(*this, victim, source, nullptr, direction);
     binding.set_hit(hit);
     const float before = target.health;
@@ -15482,6 +15762,28 @@ const std::vector<GameGunRow>& GameGunneryHost::guns() const noexcept {
     return impl_->guns;
 }
 
+// Packet cc13-hitq: the queue's four operations for the drain 00926700.
+std::size_t GameGunneryHost::deferred_hit_count() const noexcept {
+    return impl_->deferred_hits != nullptr ? impl_->deferred_hits->size() : 0;
+}
+
+const void* GameGunneryHost::deferred_hit_back(std::size_t& victim) const noexcept {
+    if (impl_->deferred_hits == nullptr || impl_->deferred_hits->empty()) return nullptr;
+    const Impl::DeferredHit& node = impl_->deferred_hits->back();
+    victim = node.victim;
+    return &node;
+}
+
+void GameGunneryHost::dispatch_deferred_hit_009239a0(const void* node) {
+    if (node == nullptr) return;
+    impl_->dispatch_deferred_hit(*static_cast<const Impl::DeferredHit*>(node));
+}
+
+void GameGunneryHost::pop_deferred_hit_back() {
+    if (impl_->deferred_hits == nullptr || impl_->deferred_hits->empty()) return;
+    impl_->deferred_hits->pop_back();
+}
+
 bool GameGunneryHost::unit_dead(std::size_t unit_index) const noexcept {
     if (unit_index >= impl_->unit_state.size()) return false;
     const Impl::UnitState& state = impl_->unit_state[unit_index];
@@ -17203,6 +17505,13 @@ void GameGunneryHost::report() {
         "seed=%d bearing=%d (CC13_VER_21 D2/D1)", host.ranging_velocity_seeds,
         host.ranging_bearing_turns_dropped, kRangingSeedVelocityBound ? 1 : 0,
         kRangingBearingFixedBound ? 1 : 0);
+        if constexpr (kHitDeferredDispatchCc13Bound) {
+            host.log.notef("summary mission gunnery deferred hits queued=%llu dispatched=%llu "
+                "refused_at_queue=%llu left=%zu (00926E80 / 00926700, packet cc13-hitq)",
+                host.deferred_hits_queued, host.deferred_hits_dispatched,
+                host.deferred_hits_refused_at_queue,
+                host.deferred_hits != nullptr ? host.deferred_hits->size() : std::size_t{0});
+        }
         host.log.notef("summary mission gunnery wreck hits bound=%d reaching=%llu delivered=%llu "
             "past_window=%llu shapes_offered=%llu (009239A0 / 00826F10, packet "
             "cc9_wreck_hit_delivery)", kWreckHitDeliveryBound ? 1 : 0,
@@ -17629,6 +17938,11 @@ void GameGunneryHost::report() {
         host.kz_detonations, host.kz_direct_arms, host.kz_blast_records, host.kz_self_records,
         host.kz_blast_damage, static_cast<double>(host.kz_min_gap), host.kz_min_gap_t,
         kKamikazeContactDetonationBound ? 1 : 0);
+    if constexpr (bsp::kKamikazeDirectHitCc13Bound) {
+        host.log.notef("summary mission gunnery kamikaze direct arm traced=%llu missed=%llu "
+            "(0098AC20 at 00819B24, 00926E80 at 00819BA7, packet cc13-kzdirect)",
+            host.kz_direct_traced, host.kz_direct_missed);
+    }
     host.log.notef("summary mission gunnery plane crash sweep plane_steps=%llu segments=%llu "
         "unit_hits=%llu (c21=%llu c98=%llu c99=%llu other=%llu) same_squadron=%llu "
         "land_hits=%llu submerged=%llu surface_cuts=%llu cooldown_steps=%llu impacts=%llu blast_records=%llu "

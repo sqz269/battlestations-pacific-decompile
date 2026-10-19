@@ -125,6 +125,10 @@ twelve, and no sub-attack summary or 008528B0 call names one of them.
   hull's depth. Details below; GetSubmarineDepthLevel
   (00894100) keeps its own labelled kamikaze substitution (game_hosts_script_orders.cpp, not
   this packet). The other ten missions are unchanged (no kamikaze class seeded).
+  The seed half of this switch matches the image only for a Kaiten whose seed Y is
+  nearest band 1. The image's last seed stage (the nearest band, section below) can
+  overwrite the kamikaze value, and every USNOS Kaiten seeds at -3.66..-4.37, where the
+  nearest band is 1. The 008528B0 pin and the dive-law exemption do not depend on it.
 
 ### What a Kaiten at periscope depth changes downstream (USNOS)
 
@@ -255,11 +259,71 @@ near `kSubAirBreathingLineFallback` ("discarded whenever it falls below zero") d
 the host test, not the image. Fixing it belongs to the owner of src/submarine_model.cpp; it
 is not changed here.
 
+## The nearest-band seed stage, kSubSeedNearestBandCc13Bound (packet cc13-subdive, rev-convoy N1)
+
+00853630's last depth stage (bytes read for this packet):
+- **When it runs.** 00853B0F `JNZ 00853BEB` skips the property stage for a holder that is not
+  kind 1. Otherwise `Dive` sets the flag `[ESP+13h]`, and a found `TargetDive` goes straight
+  to 00853BB0. At 00853BE2 / 00853BE6, a found `Dive` also goes to 00853BB0. Only a boat with
+  neither key (or a non-kind-1 holder) falls into 00853BE8.
+- **What it computes.** `y` = the hull world Y +100h (after 00414DB0 when +C8h is clear,
+  00853BEB..00853BFD). `best = |y|` (00853C0F `AND 7FFFFFFFh`). For i = 1..3
+  (00853C23..00853C6C): `d = |float(y - bands[i])|` (`FSUB float [EDX]`, `FSTP float`,
+  `AND`). If `best > d` (00853C4B `FCOMIP`, `JBE` skips on equal or unordered), then
+  `best = d` and `+1268h = i`.
+- **What it does not do.** Band 0 is not compared by subtraction (`|y|` stands in for it), and
+  `+1268h` is not written unless some band beats `|y|`. Then 00853C70 jumps to 00853BB3, the
+  kamikaze periscope-node test.
+
+**Order against the kamikaze test.** Stage 1 (00853A81) writes `kamikaze ? 1 : 0` first. The
+nearest stage runs later and wins whenever a band beats `|y|`. For a Kaiten the kamikaze
+value survives only when `|y|` is at most every `|y - bands[i]|`, i.e. a seed at or above
+-1.5. So the two switches are independent and the image needs both: nearest-band ON alone
+seeds the USNOS Kaitens at 1 but still lets them surface at air-out, and kamikaze ON alone
+seeds 1 only by coincidence of their seed Y.
+
+**Host.** Under `kSubSeedNearestBandCc13Bound` (in `include/bsp/cc13_sub_dive.hpp`), the
+seed runs the stage when neither `Dive` nor `TargetDive` was found. Every host submarine is
+a kind-1, scene-sourced holder. The stage reads `slot->motion.position[1]` (local is world
+for a host submarine, as in the teleport) and the seeded `sub_bands`. Each step is one
+rounded float op, so 24-bit and 53-bit agree. OFF leaves the earlier value.
+
+**Reach (the eleven census logs, local/subdive_nearest.py).** Y is the first
+`submarine depth trace` sample (step 1, vy 0). The host stage itself reads the seed-time hull
+Y (`slot->motion.position[1]`, from the placement `entity.world[13]`), not the trace. In these
+logs the two are equal to the logged precision, because nothing moves the hull before step 1
+except the `Dive` teleport, and these boats have no `Dive`.
+
+| Mission | Sub | Dive / TargetDive | Seed Y | Bands | Host | Image |
+| --- | --- | --- | --- | --- | --- | --- |
+| BSM01 | MiniSub | none | -30.0 | 0, -7, -40, -80 | 0 | **2** |
+| USNOS | Gato | none | -15.0 | 0, -12.8, -40, -80 | 0 | **1** |
+| USNOS | twelve Kaitens (#3.1-#3.6, #6.1-#6.6) | none | -3.66..-4.37 | 0, -3, -40, -80 | 0 (1 under the kamikaze switch) | **1** |
+| JM06 | I-400 #2.1 | none | -49.53 | 0, -20, -40, -80 | 0 | **2** |
+| the twelve `Dive` holders: USN21 Darter, Dace; BSM01 Tautog; IJN08 JapSub1-3; LOMP06 Narwhal; JM06 Narwhal-class Submarine 01, Gato-class Submarine 01, PlayerSub 01-03 | each has `Dive` | - | - | - | stage skipped | stage skipped |
+
+Fifteen boats in three missions differ. JM08, USN04, USN01, BSM09 and USN15 have no
+submarine.
+
+**Expected ON effect (pairs to cc9-ships60).**
+- `submarine depth seed` lines read the new level for these fifteen boats, and the dive law
+  targets the new band from the first step.
+- BSM01 MiniSub holds at -40 instead of rising toward the surface, until its Lua
+  SetSubmarineDepthLevel(1) (stored).
+- JM06 I-400 #2.1 holds at -40 until its Lua level 1.
+- USNOS Gato starts at periscope depth -12.8, until the sub-attack AI's own requests
+  (depth=0/21/66/0).
+- The USNOS Kaitens seed 1. Without the kamikaze switch they still surface at air-out.
+- Sensor categories, air drain and early hits on these boats move with their depth. The
+  GetSubmarineDepthLevel answers follow +1268h.
+
 ## Uncertainties
 
-- The kamikaze class test reads Lua keys, as the host's other readers of class+510h / +514h
-  do (`ship_death_message_class`, the gunnery Kaiten records); that class+510h holds the Lua
-  `KamikazeDamage` number unscaled is taken from those readers, not re-derived here.
+- (Closed.) The class loader stores the Lua numbers unscaled. 008319F6 pushes the key
+  `KamikazeDamage` and 00831A3B pushes `KamikazeBlastDamage`. Each goes through 00B67800 and
+  then 00B66330 with a 0.0 default (`FLDZ` at 00831A0A / 00831A4F). The result is FSTP'd
+  straight to +510h (00831A22) and +514h (00831A67), with no arithmetic in between. The
+  host's `read_vehicle_class_number(type_id, key, 0.0f)` is that value.
 - 00894100's own kamikaze test (a third site of the same class fields) stays labelled false in
   `src/game_hosts_script_orders.cpp`; it matters only for a dead / out-of-air kamikaze boat.
 - 00853630 also skips the periscope node lookup (00853C90) for a kamikaze class; the host's

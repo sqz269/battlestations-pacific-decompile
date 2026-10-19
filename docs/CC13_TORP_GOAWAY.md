@@ -125,8 +125,13 @@ bounds reuse `kDistanceJitterLo/Hi` and `kClimbJitterLo/Hi`).
 - Window delay: the first weave waits [12, 22) s on SPNormal ([20, 30) Stun, [5, 8) the rest)
   of countdown inside the break-off ring instead of opening on the first tick above `+20h`.
 - Every enter now consumes two draws (three with ordnance) from stream 1, so every later stream-1
-  consumer in the run shifts. That is the image's behaviour, and the expected source of unrelated
-  movement in an ON pair.
+  consumer in the run shifts. Expect unrelated movement in an ON pair from this.
+
+What the switches restore is the VALUE RANGES, not a sequence. The image's stream 1 is per-thread
+and seeded from the clock (docs/CC13_RNG_STREAM_CENSUS.md), so no run of the image reproduces a
+particular sequence. The gap closed here is that the host pinned each draw to its low end (or 0)
+where the image draws over a range. The draws still sit on their own sub-switches in the image's
+order, so the host's stream-1 consumption per event matches the image's count and order.
 
 ### A.6 ON-only lookups and their data lifetime
 
@@ -163,17 +168,57 @@ Counted from the units host's per-slot summary `torpedo <name> goaway 009D0D90/0
 So ON moves JM08 (9 enters, 18-27 draws) and USN01 (3 enters, 6-9 draws) directly, and every run
 with a torpedo goaway indirectly through the shared stream.
 
-### A.8 Not in this packet
+### A.8 The tick's two draws (scope addition)
 
-The tick has the same two kinds of hole: `009D0FD7` `UniformFloatRange(3, 6)` and `009D1000`
-`UniformFloatRange(row+10h, row+14h)`, taken only when the window re-seeds. The host hands the tick
-precomputed low ends every tick (`in.window_jitter_draw`, `in.window_delay_draw`), so drawing them
-needs the draw moved inside the re-seed branch of `torpedo_goaway_tick_009d0f10` (a callback), not
-a value at the call. With the rows now loadable it is a small follow-up.
+`009D0F10` `BSP_BotStateTorpedoGoAway_Tick`, `RET 4`. The re-seed branch `009D0FB2`-`009D1025`
+(entered when `+28h` < 0, the `JBE` at `009D0FB6`, and the aircraft is above `+20h`, `BL` at
+`009D0FB8`) draws twice on stream 1:
+
+| site | low, high | result |
+| --- | --- | --- |
+| `009D0FD7` (`ECX = 1` at `009D0FC9`) | `[00CE3854]` 3.0f, `[00CE6630]` 6.0f | `FSTP [EDI+34h]` at `009D0FDE`, the window length |
+| `009D1000` (`ECX = 1` at `009D0FF1`) | `[row+10h]`, `[row+14h]`, row = `[[ESI]+14h]` (`009D0FDC`-`009D0FFA`) | plus `+34h` (`009D1016` `FADDP`), `FSTP [EDI+28h]` at `009D101A` |
+
+Before this packet the host handed the tick fixed values every tick (`kWindowJitterLo` = 3 and 0),
+so it took no draw. A value at the call cannot fix that, because the image draws only on a re-seed.
+So `TorpedoGoAwayTickInputs` gains `reseed_draws`: when set, `torpedo_goaway_tick_009d0f10` asks
+the hook for `window_jitter_009d0fd7()` and then `window_delay_009d1000()` inside the re-seed branch, in the
+image's order; null keeps the old inputs. The host passes a binding only when a tick sub-switch is
+on. Each method draws when its own sub-switch is on and otherwise returns the OFF value.
+
+Switches (all false), under the enter's parent `kTorpGoawayEnterDrawsBound`: `kTorpGoawayTickJitterDrawBound`
+(`009D0FD7`), `kTorpGoawayTickDelayDrawBound` (`009D1000`, which also needs
+`kPilotBotConfigLoadBound`). The delay reads the same row as the enter's `009D0EA3`.
+
+x87: `009D1014`-`009D101A` adds the float delay draw to the float `+34h` and stores a float. That is
+one float add, the same at 24 and 53 bits, and `delay + state.window_length_34` matches it.
+`009D101D`-`009D1025` (`+30h` = -(`+34h` x 0.5)) is unchanged code.
+
+ON effect: each weave lasts [3, 6) s instead of 3 s. The gap to the next weave is TorpFlikFlakTime
+on top of that ([12, 22) s SPNormal) instead of 0, so weaves come every 15 to 28 s instead of back
+to back.
+
+Reach and movers. The host does not log re-seeds; its per-slot goaway tick summary
+(`goaway 009D0F10: ticks=N arms[win_low win_high ...]`) gives the exposure. In the current-main OFF
+logs, JM08 (`p24_off_j8_def`) has 380 goaway ticks, of which 204 are in an open window. USN01
+(`p24_off_u1i`) has 348 ticks, 295 of them in a window (KatTBD alone: 151 of 167). The other nine
+WINS rows have no torpedo goaway (A.7). ON, the open share should fall to about 3-6 s in every 15-28
+s of countdown inside the ring. That moves the goaway arm mix (`win_*` towards `post_*`), the
+commanded altitude and roll, and therefore escape paths and AA exposure in JM08 and USN01. Every
+re-seed also takes two stream-1 draws.
+
+ON-only lifetime: the binding object lives on the stack for one tick call. It reads the same
+process-wide rows as the enter (A.6), `owner_.gunnery`, and the slot's `pilot_skill_index`.
+
+Load timing: `009013D0` (register) has one caller, `00901610`, which calls it nine times (once per
+descriptor). `00901610`'s one caller is `004DC6A0`, once per process. The host runs the same loader
+once per process, at the first mission's settings load, before any unit exists. It is therefore
+loaded before the first goaway enter or tick, as in the image.
 
 ## B. The level-bomber rack's CanFire (006E5816): FAITHFUL in effect, ledger only
 
-`006E5816` calls the rack's `vtable[1D0h]`. For both rack vtables (`00CF9878`, `00CF9AE8`) that slot
+`006E5816` calls the rack's `vtable[1D0h]`. For both rack vtables (`00CF96A8` and `00CF9918`; their `+1D0h` slot entries are at `00CF9878` and
+`00CF9AE8`) that slot
 is `006E3460` `BSP_MBombPlatform_CanFire` = `00729A80(checkReload = 1)` and then
 `vtable[210h](2Ah, 0)` (docs/CC13_SEG33A.md), not `00729A80` directly. The host's level-bomber rack
 tick (`run_level_bomber_rack_tick_006e56f0`) records `Rack::can_fire_00729a80` and fires while the
@@ -186,7 +231,7 @@ gate could only delay a drop. Gate by gate:
 | `[[gun+3F8h]+34h] != 0` | passes | `+3F8h` is the fire-mode record (`0072D5B0`), `+34h` its bullet class; a rack without one never drops in the image either |
 | `gun+3B8h == 0` | passes unless a failure request sets it | writers: `0072B5BC` (`0072B5A0` vtable slot `1C8h`, the destroyed-failure request), `007280C0` (clear), `0072A1BF` (network create). No plane-rack failure producer is modelled in the host |
 | `gun+358h <= 0` | passes unless a damage write outside the gun segment raises it (not scanned) | the only write in `00720000`-`0073FFFF` is the constructor `0072E61A` |
-| `gun+450h <= 0` (checkReload) | inert | writers: `0072E8DB` (setup, `XORPS` zero), `00730A08` (`BSP_Gun_Fire`), `00728B59` (an undefined 3-instruction setter with no reference: no rel32, no absolute dword). `00730160` sits only in non-rack vtables (`00CFBEF8`...`00CFE720`); the rack's `vtable[1D8h]` is `006E4D50`, the drop |
+| `gun+450h <= 0` (checkReload) | inert | writers: `0072E8DB` (setup, `XORPS` zero), `00730A08` (`BSP_Gun_Fire`), `00728B59` (an undefined 3-instruction setter with no reference: no rel32, no absolute dword). `00730160` sits only in slot entries of non-rack vtables (the entries at `00CFBEF8`...`00CFE720`); the rack's `vtable[1D8h]` is `006E4D50`, the drop |
 | `gun+478h <= 0` (checkReload) | inert | written by the constructor (0) and `0072D2C0` `BSP_Gun_SetTriggerHeld` (`U(0, 0.12)` at `0072D3B8`), which the rack overrides: its `vtable[1E8h]` is `006E3CB0`, `RET 4` |
 | artillery / kind-7 unit cooldowns | pass | the rack's weapon type is `0Ah` BOMBPLATFORM (docs/WEAPON_CLASS_DESCRIPTOR.md), outside {2, 3, 4, 6} and 7 |
 | muzzle y >= 1 or not AA/artillery kind | passes | `0Ah` is neither |
