@@ -1669,3 +1669,127 @@ void land_convoy_kill_member_vector_00742210(std::uint8_t* convoy, bool hard, La
 }
 
 }  // namespace bsp::cc13_seg41
+
+#include "bsp/native_plane_float_readers.hpp"
+
+namespace bsp::cc13_seg41 {
+namespace {
+std::uint32_t oct18b_x87_float_copy(const volatile void* input) {
+    std::uint32_t bits;
+    __asm {
+        mov eax, input
+        fld dword ptr [eax]
+        fstp dword ptr [bits]
+    }
+    return bits;
+}
+void* oct18b_copy_16_dwords(const std::uint8_t* source, void* out) {
+    auto* destination = static_cast<std::uint8_t*>(out);
+    for (std::uint32_t i = 0; i < 16; ++i) {
+        std::uint32_t word;
+        std::memcpy(&word, source + i * 4, 4);
+        std::memcpy(destination + i * 4, &word, 4);
+    }
+    return out;
+}
+bool oct18b_runway_name(const std::uint8_t* name, MothershipFailureSourceHost& host) {
+    const char* text = at<const char*>(name, 4);
+    return text != nullptr && host.stricmp_00bf7fbf(text, "RunwayFailure") == 0;
+}
+}
+void frame_hook_process_cloth_00737870(float dt, FrameClothHost& host) {
+    const std::uint32_t bits = oct18b_x87_float_copy(&dt);
+    std::memcpy(&dt, &bits, 4);
+    host.flag_cloth_process_frame_008e2560(dt);
+}
+std::uint8_t land_convoy_slot164_false_00741110(void*, std::uint32_t) noexcept { return 0; }
+void landing_ship_create_read_00749d20(std::uint8_t* message, NativeSessionReadStream& stream, LandingShipReadHost& host) {
+    host.ship_create_read_00813bd0(message, stream);
+    read_native_word_bits_00428e30(&stream.cursor_04, &at<std::uint16_t>(message, 0x12c), 13);
+    read_native_word_bits_00428e30(&stream.cursor_04, &at<std::uint16_t>(message, 0x12e), 12);
+    read_native_i32_bits_00428d30(&stream.cursor_04, &at<std::int32_t>(message, 0x130), 4);
+}
+void land_at_pad_write_00749e10(const std::uint8_t* message, NativeBitCursor* cursor) {
+    write_native_session_message_header_0075b480(message, cursor);
+    write_native_word_bits_00429120(cursor, at<std::uint16_t>(message, 0x1c), 13);
+    write_native_word_bits_00429120(cursor, at<std::uint16_t>(message, 0x1e), 12);
+}
+void land_at_pad_read_00749e40(std::uint8_t* message, NativeSessionReadStream& stream) {
+    read_native_session_message_header_0075b4c0(message, &stream);
+    read_native_word_bits_00428e30(&stream.cursor_04, &at<std::uint16_t>(message, 0x1c), 13);
+    read_native_word_bits_00428e30(&stream.cursor_04, &at<std::uint16_t>(message, 0x1e), 12);
+}
+void land_vehicle_create_read_0074ccb0(net_cc13::EntityCreateMessage& message, NativeSessionReadStream& stream, const NativeBitNumericContext& numeric) {
+    net_cc13::read_entity_create_00767e30(message, stream, numeric);
+}
+std::uint8_t land_vehicle_handle_message_0074cd90(void* vehicle, void* message, LandVehicleMessageHost& host) {
+    return host.unit_handle_message_0095abe0(vehicle, message);
+}
+void land_vehicle_message_write_0074cef0(const void* message, NativeBitCursor* cursor) { write_native_session_message_header_0075b480(message, cursor); }
+void land_vehicle_message_read_0074cf00(void* message, NativeSessionReadStream& stream) { read_native_session_message_header_0075b4c0(message, &stream); }
+void land_vehicle_message_write_0074d000(const void* message, NativeBitCursor* cursor) { write_native_session_message_header_0075b480(message, cursor); }
+void land_vehicle_message_read_0074d010(void* message, NativeSessionReadStream& stream) { read_native_session_message_header_0075b4c0(message, &stream); }
+void land_vehicle_register_ai_0074ddf0(std::uint8_t* vehicle, void* const& game, LandVehicleHost& host) {
+    land_vehicle_vslot_b4_0074ddd0(vehicle, game, host);
+}
+std::uint8_t* plane_observer_0074e170(std::uint8_t* plane) noexcept { return plane ? plane + 0x72c : nullptr; }
+void* plane_copy_matrix_e00_0074e270(const std::uint8_t* plane, void* out) { return oct18b_copy_16_dwords(plane + 0xe00, out); }
+void* plane_copy_matrix_e40_0074e290(const std::uint8_t* plane, void* out) { return oct18b_copy_16_dwords(plane + 0xe40, out); }
+float plane_observer_speed_0074e3c0(const std::uint8_t* observer) { return native_plane_cached_speed_007b8e60(observer - 0x72c, nullptr); }
+float* plane_observer_vector_0074e3f0(const std::uint8_t* observer, float* out) {
+    const auto* plane = observer - 0x72c;
+    for (std::uint32_t i = 0; i < 3; ++i) {
+        const std::uint32_t bits = oct18b_x87_float_copy(plane + 0xac8 + 4 * i);
+        std::memcpy(out + i, &bits, 4);
+    }
+    return out;
+}
+void ship_sink_write_0074eb20(const std::uint8_t* message, NativeBitCursor* cursor, const volatile float& scale, const NativeBitNumericContext& numeric) {
+    write_native_session_message_header_0075b480(message, cursor);
+    write_native_unsigned_dword_bits_00429070(cursor, at<std::uint32_t>(message, 0x1c), 6);
+    for (std::uint32_t i = 0; i < at<std::uint32_t>(message, 0x1c); ++i) {
+        const auto scale_bits = oct18b_x87_float_copy(&scale);
+        const auto value_bits = oct18b_x87_float_copy(message + 0x20 + 4 * i);
+        write_native_numeric_float_004295c0(cursor, value_bits, 0, 1, scale_bits, 32, numeric);
+    }
+}
+void ship_sink_read_0074eb80(std::uint8_t* message, NativeSessionReadStream& stream, const volatile float& scale, const NativeBitNumericContext& numeric) {
+    read_native_session_message_header_0075b4c0(message, &stream);
+    read_native_u32_bits_00428d10(&stream.cursor_04, &at<std::uint32_t>(message, 0x1c), 6);
+    for (std::uint32_t i = 0; i < at<std::uint32_t>(message, 0x1c); ++i) {
+        const auto scale_bits = oct18b_x87_float_copy(&scale);
+        std::uint32_t value_bits;
+        read_native_numeric_float_004293f0(&stream.cursor_04, &value_bits, 0, 1, scale_bits, 32, numeric);
+        // Original MOVSS publishes the raw bits, with no second x87 load.
+        std::memcpy(message + 0x20 + 4 * i, &value_bits, 4);
+    }
+}
+float mothership_air_ops_speed_00758200() noexcept { return 25.0f; }
+std::uint8_t* mothership_air_ops_class_00758230(const std::uint8_t* block) {
+    std::uint8_t* owner_class;
+    std::memcpy(&owner_class, block - 0xc50, sizeof owner_class);
+    return owner_class + 0x830;
+}
+std::uint8_t mothership_get_failure_007589d0(std::uint8_t* ship, const std::uint8_t* name, std::uint32_t frame, std::uint8_t* out, MothershipFailureSourceHost& host) {
+    if (oct18b_runway_name(name, host)) { *out = ship[0x11a4]; return 1; }
+    if (host.native_string_equals_00425850(name, "HangarFailure")) { *out = ship[0x11a5]; return 1; }
+    return host.ship_get_failure_008135c0(ship, name, frame, out);
+}
+std::uint8_t mothership_failure_expired_00758a50(std::uint8_t* ship, const std::uint8_t* name, std::uint32_t frame, const NativeSessionMessageContext& ctx, std::uint32_t clear_value, MothershipFailureSourceHost& host) {
+    const bool runway = oct18b_runway_name(name, host);
+    if (!runway && !host.native_string_equals_00425850(name, "HangarFailure"))
+        return host.ship_failure_expired_00813660(ship, name, frame);
+    // The image leaves reserved message bytes uninitialised. Only the same
+    // fields are written here; route_message must consume the message at call.
+    alignas(4) std::uint8_t message[0x24];
+    construct_native_session_message_0075b430(reinterpret_cast<NativeSessionMessageStorage*>(message), runway ? 0x73 : 0x75, ctx);
+    at<std::uint32_t>(message, 4) = 1;
+    at<std::uint16_t>(message, 0x18) = 0;
+    message[0x1a] = 0;
+    message[0x1c] = 0;
+    at<std::uint32_t>(message, 0x20) = clear_value;
+    at<const std::uint32_t*>(message, 0) = host.vtable(runway ? 0x00cf8b54 : 0x00cf8b7c);
+    host.route_message_0077c2a0(ship, message, 7, 0);
+    return 1;
+}
+}

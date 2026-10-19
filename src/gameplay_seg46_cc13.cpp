@@ -6,6 +6,18 @@
 // float slot is an explicit f32().
 
 #include "bsp/gameplay_seg46_cc13.hpp"
+#include <cstring>
+
+namespace bsp::gameplay_seg46_cc13 {
+bool handle_message_007ab330(ParatrooperState& s, const void* message, ParatrooperHost& h,
+                            bool (*bomb_base)(const void*, void*), void* context) {
+    const auto* p = static_cast<const std::uint8_t*>(message);
+    if (p[0x10] != 0x71) return bomb_base(message, context);
+    Vec3 point; std::memcpy(&point, p + 0x20, sizeof(point));
+    set_landing_pos_007ab230(s, point, h); return true;
+}
+void path_entity_noop_007b0b90(std::uint32_t) noexcept {}
+}
 
 #include "bsp/engine_seg4_6_9_cc13.hpp"  // point_segment_distance_0046ff70
 #include "bsp/unit_rudder.hpp"           // clamped_interpolate_00419010

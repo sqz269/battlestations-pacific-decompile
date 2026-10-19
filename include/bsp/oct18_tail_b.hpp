@@ -109,6 +109,8 @@ void stationary_apply_state_0084ec10(void* message, void* const* first_global,
 void landscape_release_terrain_008826f0(void* landscape, const void* game, Host& host);
 void add_gun_to_target_00864ca0(void* ai, void* target, void* gun, Host& host);
 void* instantiate_ship_message_0081bfe0(void* message, Host& host);
+// 00759090 is an unconditional JMP to 0081BFE0, same ECX/RET ABI.
+void* instantiate_ship_message_thunk_00759090(void* message, Host& host);
 void* construct_score_record_tail_0091d620(void* receiver, Host& host);
 void select_listed_server_007701f0(void* session, std::uint32_t index,
                                   std::uint32_t& scene_flag, const void* empty_bytes, Host& host);

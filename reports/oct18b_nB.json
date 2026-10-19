@@ -1,0 +1,628 @@
+{
+  "lane": "oct18b-nB primary",
+  "validation": "Win32 scripts/build.ps1 passed; 2/2 existing CTests passed; live call-site verification 41 checked, 0 failed. Source/assembly review only; no original binary ABI, fixture, runtime or gameplay claim.",
+  "functions": [
+    {
+      "address": "00728080",
+      "name": "gun_apply_damage_if_enabled_00728080",
+      "source": "src/director_geommesh_seg38_39_argon.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX gun; float stack argument; RET 4",
+      "evidence": "CMP byte +3B8h; if zero FLD/FSTP argument and call 00442AE0",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "00728091",
+          "native": "00442ae0",
+          "function": "00728080",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "007289b0",
+      "name": "gun_failure_slot101_007289b0",
+      "source": "src/director_geommesh_seg38_39_argon.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX ignored; two stack words; RET 8; AL result",
+      "evidence": "XOR AL,AL; RET 8; GunBase vtables 00CFDC58 and 00D0DF70 slot 101",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": []
+    },
+    {
+      "address": "007289c0",
+      "name": "gun_failure_slot102_007289c0",
+      "source": "src/director_geommesh_seg38_39_argon.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX ignored; three stack words; RET 0Ch; AL result",
+      "evidence": "XOR AL,AL; RET 0Ch; same GunBase tables slot 102",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": []
+    },
+    {
+      "address": "007289d0",
+      "name": "gun_failure_slot103_007289d0",
+      "source": "src/director_geommesh_seg38_39_argon.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX ignored; two stack words; RET 8; AL result",
+      "evidence": "XOR AL,AL; RET 8; same GunBase tables slot 103",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": []
+    },
+    {
+      "address": "00737860",
+      "name": "frame_hook_slot08_noop_00737860",
+      "source": "src/cc13_seg41_misc.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX ignored; one ignored stack word; RET 4",
+      "evidence": "Bare RET 4; frame-hook table 00CFEA98 slot 2",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": []
+    },
+    {
+      "address": "00737870",
+      "name": "frame_hook_process_cloth_00737870",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX ignored; float dt on stack; RET 4",
+      "evidence": "FLD/FSTP dt; call 008E2560; frame-hook table 00CFEA98 slot 3",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "00737878",
+          "native": "008e2560",
+          "function": "00737870",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00741110",
+      "name": "land_convoy_slot164_false_00741110",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX ignored; one ignored stack word; RET 4; AL result",
+      "evidence": "XOR AL,AL; RET 4; MLandConvoy table 00CEA570 slot 89",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": []
+    },
+    {
+      "address": "00744a00",
+      "name": "CG_LandFortEffect_ScalarDeletingDestructor_00744a00",
+      "source": "docs/OCT18B_NB.md",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX message; stack deletion flags; RET 4; EAX self",
+      "evidence": "Only reset vptr to 00CE4974 and conditional _free at 00744A11",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "00744a11",
+          "native": "00bf65ac",
+          "function": "00744a00",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00749d20",
+      "name": "landing_ship_create_read_00749d20",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX message; read-stream stack argument; RET 4",
+      "evidence": "00813BD0 base read; stream+4 cursor reads WORD +12Ch/13, WORD +12Eh/12, signed DWORD +130h/4",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "00749d29",
+          "native": "00813bd0",
+          "function": "00749d20",
+          "kind": "call"
+        },
+        {
+          "address": "00749d3c",
+          "native": "00428e30",
+          "function": "00749d20",
+          "kind": "call"
+        },
+        {
+          "address": "00749d4c",
+          "native": "00428e30",
+          "function": "00749d20",
+          "kind": "call"
+        },
+        {
+          "address": "00749d5c",
+          "native": "00428d30",
+          "function": "00749d20",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00749e10",
+      "name": "land_at_pad_write_00749e10",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX message; cursor stack argument; RET 4",
+      "evidence": "0075B480 header; zero-extended WORD +1Ch/13 and +1Eh/12",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "00749e19",
+          "native": "0075b480",
+          "function": "00749e10",
+          "kind": "call"
+        },
+        {
+          "address": "00749e27",
+          "native": "00429120",
+          "function": "00749e10",
+          "kind": "call"
+        },
+        {
+          "address": "00749e35",
+          "native": "00429120",
+          "function": "00749e10",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00749e40",
+      "name": "land_at_pad_read_00749e40",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX message; read-stream stack argument; RET 4",
+      "evidence": "0075B4C0 header; stream+4 reads WORD +1Ch/13 and +1Eh/12",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "00749e49",
+          "native": "0075b4c0",
+          "function": "00749e40",
+          "kind": "call"
+        },
+        {
+          "address": "00749e59",
+          "native": "00428e30",
+          "function": "00749e40",
+          "kind": "call"
+        },
+        {
+          "address": "00749e66",
+          "native": "00428e30",
+          "function": "00749e40",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "0074ccb0",
+      "name": "land_vehicle_create_read_0074ccb0",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "Tail JMP preserves ECX message and stack stream; target RET 4",
+      "evidence": "JMP 00767E30 with no object adjustment",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "0074ccb0",
+          "native": "00767e30",
+          "function": "0074ccb0",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0074cd90",
+      "name": "land_vehicle_handle_message_0074cd90",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "Tail JMP preserves ECX vehicle and stack message; target RET 4; AL result",
+      "evidence": "JMP 0095ABE0 with no object adjustment",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "0074cd90",
+          "native": "0095abe0",
+          "function": "0074cd90",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0074cef0",
+      "name": "land_vehicle_message_write_0074cef0",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "Tail JMP preserves ECX message and stack cursor; target RET 4",
+      "evidence": "JMP 0075B480 with no object adjustment",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "0074cef0",
+          "native": "0075b480",
+          "function": "0074cef0",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0074cf00",
+      "name": "land_vehicle_message_read_0074cf00",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "Tail JMP preserves ECX message and stack stream; target RET 4",
+      "evidence": "JMP 0075B4C0 with no object adjustment",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "0074cf00",
+          "native": "0075b4c0",
+          "function": "0074cf00",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0074d000",
+      "name": "land_vehicle_message_write_0074d000",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "Tail JMP preserves ECX message and stack cursor; target RET 4",
+      "evidence": "JMP 0075B480 with no object adjustment",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "0074d000",
+          "native": "0075b480",
+          "function": "0074d000",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0074d010",
+      "name": "land_vehicle_message_read_0074d010",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "Tail JMP preserves ECX message and stack stream; target RET 4",
+      "evidence": "JMP 0075B4C0 with no object adjustment",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "0074d010",
+          "native": "0075b4c0",
+          "function": "0074d010",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0074ddf0",
+      "name": "land_vehicle_register_ai_0074ddf0",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX vehicle; no stack arguments; RET",
+      "evidence": "Reads game 00E188A8, selected bank index +18ECh and manager +21A4h+index*4; pushes vehicle to 008DDF00",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "0074de06",
+          "native": "008ddf00",
+          "function": "0074ddf0",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "0074e170",
+      "name": "plane_observer_0074e170",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX plane; no stack arguments; RET; EAX interior pointer",
+      "evidence": "Null returns zero; otherwise LEA EAX,[ECX+72Ch]",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": []
+    },
+    {
+      "address": "0074e270",
+      "name": "plane_copy_matrix_e00_0074e270",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX plane; stack destination; RET 4; EAX destination",
+      "evidence": "Sixteen forward DWORD REP MOVSD copies from +E00h",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": []
+    },
+    {
+      "address": "0074e290",
+      "name": "plane_copy_matrix_e40_0074e290",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX plane; stack destination; RET 4; EAX destination",
+      "evidence": "Sixteen forward DWORD REP MOVSD copies from +E40h",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": []
+    },
+    {
+      "address": "0074e3c0",
+      "name": "plane_observer_speed_0074e3c0",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX observer subobject; no stack arguments; RET; ST0 result",
+      "evidence": "SUB ECX,72Ch; JMP 007B8E60 native cached-speed leaf",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "0074e3c6",
+          "native": "007b8e60",
+          "function": "0074e3c0",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0074e3d0",
+      "name": "CG_LargeReconPlane_DeletingDestructorAdjustor_0074e3d0",
+      "source": "docs/OCT18B_NB.md",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX subobject; forwards stack deletion flags and cleanup",
+      "evidence": "SUB ECX,10h; JMP scalar deleting destructor 0074E4C0",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "0074e3d3",
+          "native": "0074e4c0",
+          "function": "0074e3d0",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0074e3f0",
+      "name": "plane_observer_vector_0074e3f0",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX observer subobject; stack destination; RET 4; EAX destination",
+      "evidence": "SUB ECX,72Ch; JMP 007BBB70; target three ordered FLD/FSTP copies from +AC8h",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "0074e3f6",
+          "native": "007bbb70",
+          "function": "0074e3f0",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0074eb20",
+      "name": "ship_sink_write_0074eb20",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX message; cursor stack argument; RET 4",
+      "evidence": "SHIP_SINK vtable 00D00518 slot 1; header, unsigned six-bit count +1Ch; each float +20h uses FLD/FSTP and numeric flags 0,1,live scale 00D7A248,32",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "0074eb2a",
+          "native": "0075b480",
+          "function": "0074eb20",
+          "kind": "call"
+        },
+        {
+          "address": "0074eb37",
+          "native": "00429070",
+          "function": "0074eb20",
+          "kind": "call"
+        },
+        {
+          "address": "0074eb5f",
+          "native": "004295c0",
+          "function": "0074eb20",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "0074eb80",
+      "name": "ship_sink_read_0074eb80",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX message; read-stream stack argument; RET 4",
+      "evidence": "SHIP_SINK table slot 2; header, stream+4 cursor, six-bit count; numeric results copied with MOVSS and count reloaded each iteration",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "0074eb8b",
+          "native": "0075b4c0",
+          "function": "0074eb80",
+          "kind": "call"
+        },
+        {
+          "address": "0074eb9b",
+          "native": "00428d10",
+          "function": "0074eb80",
+          "kind": "call"
+        },
+        {
+          "address": "0074ebc7",
+          "native": "004293f0",
+          "function": "0074eb80",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00752000",
+      "name": "STL_TreeIterator_PostIncrement_00752000",
+      "source": "docs/OCT18B_NB.md",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX iterator; two stack words including postfix dummy; RET 8; EAX old-copy output",
+      "evidence": "Copies iterator two DWORDs to output then calls STL_TreeIter_Inc_00750F00; no game behavior",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "0075200f",
+          "native": "00750f00",
+          "function": "00752000",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00758200",
+      "name": "mothership_air_ops_speed_00758200",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX ignored; no stack arguments; RET; ST0 result",
+      "evidence": "FLD immutable binary32 [00CE89CC]; verified bytes 00 00 C8 41 = 25.0",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": []
+    },
+    {
+      "address": "00758230",
+      "name": "mothership_air_ops_class_00758230",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX air-ops subobject; no stack arguments; RET; EAX pointer",
+      "evidence": "MOV EAX,[ECX-C50h]; ADD EAX,830h; no null check; vtable 00D015C4 slot 6",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": []
+    },
+    {
+      "address": "007584a0",
+      "name": "CG_Mothership_DeletingDestructorAdjustor_007584a0",
+      "source": "docs/OCT18B_NB.md",
+      "status": "library_instantiation_out_of_scope",
+      "recon_status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX embedded block; forwards stack deletion flags and cleanup",
+      "evidence": "SUB ECX,1188h; JMP scalar deleting destructor 00758610",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "007584a6",
+          "native": "00758610",
+          "function": "007584a0",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "007589d0",
+      "name": "mothership_get_failure_007589d0",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX ship; native name, frame, byte output stack args; RET 0Ch; AL result",
+      "evidence": "MMothership table 00D01630 slot 102; runway _stricmp first, hangar 00425850 second; bytes +11A4h/+11A5h; fallback 008135C0 forwards all args",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "007589e5",
+          "native": "00bf7fbf",
+          "function": "007589d0",
+          "kind": "call"
+        },
+        {
+          "address": "00758a10",
+          "native": "00425850",
+          "function": "007589d0",
+          "kind": "call"
+        },
+        {
+          "address": "00758a39",
+          "native": "008135c0",
+          "function": "007589d0",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00758a50",
+      "name": "mothership_failure_expired_00758a50",
+      "source": "src/cc13_seg41_land.cpp",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
+      "original_abi": "ECX ship; native name and frame stack args; RET 8; AL result",
+      "evidence": "Runway/hangar construct message 73h/75h with profiles 00CF8B54/00CF8B7C; route 0077C2A0(this,msg,7,0); otherwise 00813660; compiler EH scope has no game cleanup effects",
+      "uncertainty": "Descriptive name is provisional. Source API adds explicit dependencies; no original ABI, runtime, fixture or game validation claimed.",
+      "call_sites": [
+        {
+          "address": "00758a80",
+          "native": "00bf7fbf",
+          "function": "00758a50",
+          "kind": "call"
+        },
+        {
+          "address": "00758a97",
+          "native": "0075b430",
+          "function": "00758a50",
+          "kind": "call"
+        },
+        {
+          "address": "00758ad5",
+          "native": "0077c2a0",
+          "function": "00758a50",
+          "kind": "call"
+        },
+        {
+          "address": "00758af7",
+          "native": "00425850",
+          "function": "00758a50",
+          "kind": "call"
+        },
+        {
+          "address": "00758b06",
+          "native": "0075b430",
+          "function": "00758a50",
+          "kind": "call"
+        },
+        {
+          "address": "00758b45",
+          "native": "0077c2a0",
+          "function": "00758a50",
+          "kind": "call"
+        },
+        {
+          "address": "00758b68",
+          "native": "00813660",
+          "function": "00758a50",
+          "kind": "call"
+        }
+      ]
+    }
+  ],
+  "merged_integrator_build": "Combined MSVC Win32 scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2). Build/source evidence only; no original binary ABI, runtime or game validation.",
+  "final_acceptance_report": "reports/oct18b_nB_delivery.json"
+}

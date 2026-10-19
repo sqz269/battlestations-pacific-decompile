@@ -1,5 +1,11 @@
 #include "bsp/cc13_camera_controllers.hpp"
 
+namespace bsp::cc13cam {
+void modifier_write_noop_0078e730(void*) noexcept {}
+void modifier_read_noop_0078e740(void*) noexcept {}
+int modifier_type_zero_0078e760() noexcept { return 0; }
+}
+
 #include <cctype>
 #include <cmath>
 #include <cstring>

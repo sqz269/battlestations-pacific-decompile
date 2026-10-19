@@ -1,5 +1,19 @@
 #include "bsp/bot_tasks.hpp"
 
+namespace bsp {
+std::uint32_t bot_task_zero_007b40d0() noexcept { return 0; }
+bool bot_task_false_007b4110(std::uint32_t) noexcept { return false; }
+void bot_task_clear_point_valid_007b4170(BotTaskPointResult& out) noexcept { out.valid = false; }
+void bot_task_notify_current_state_007b4180(void* state, void (*slot08)(void*)) { if (state) slot08(state); }
+BotTaskPointResult& bot_task_point_result_007b7830(BotTaskPointResult& out, void* interface,
+    std::array<float, 3> (*slot00)(void*)) {
+    const auto point = slot00(interface);
+    out.point[0] = point[0]; out.valid = true;
+    out.point[1] = point[1]; out.point[2] = point[2];
+    return out;
+}
+}
+
 // Reconstruction of the thirteen bot task bodies of docs/BOT_TASKS.md.
 // Addresses in comments are the native sites each line comes from.
 
