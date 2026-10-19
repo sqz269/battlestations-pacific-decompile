@@ -90,22 +90,35 @@ when the wingmen value is below k (a lagging wing).
 - |range_90 - sep| is at most the planar hull offset |aim - origin|. The hull_aim lines
   (local/mv_hull.py) give mean 40.0 m and max 68.7 m in USN21 (533 samples, l70r_n_vu21_main_ref),
   and mean 39.2 m and max 76.1 m in USN01 (97, l70r_n_u1s_main_ref).
-- So Δk ≤ 0.5 × 76/2000 ≈ 0.019. With a - b ≈ 63 m/s (the land summary's a=97.78, b=34.77),
-  Δspeed ≤ about 1.2 m/s, and only inside that band with a waiting wing.
-- The torpedo moveto runs from range ≥ 3540 m (USN21) and ≥ 2828 m (USN01), the census lines'
-  minima, so the band is the end of every run.
+- So Δk ≤ 0.5 × 76/2000 ≈ 0.019. a - b is not logged for the torpedo planes. The land summary's
+  a=97.78 and b=34.77 give a - b ≈ 63 m/s, so the effect is of the order of 1 m/s at most. It
+  applies only inside that band, with a waiting wing.
+- The torpedo moveto ends no nearer than the attackrun entry: the first `descent census` line
+  of each run (n=1), which comes from the attackrun tick. That range is at least 3571 m in USN21
+  (97 entries) and 3351 m in USN01 (8 entries). So the band can be the end of a run. The sampled
+  moveto lines themselves (`glide census`, below) never go under 7765 m.
 - The logs carry no per-tick wingmen value, so the per-call size is bounded, not measured. The ON
   switch prints `summary torpedo moveto sep` to measure it (below).
 
 **The glide.** In the same tick the host's glide used range_90 for the 009C1A71 denominator and the
-009C1B01 rangeHigh. The `torpedo ... descent census` lines (local/mv_census.py) show
-commanded = 500.00 on every line:
-- USN21: 1062 lines, minimum range 3540.7.
-- USN01: 23 lines, minimum range 2827.8.
-- JM08: none.
-Every line has scale 0.5 and gain 0.7265. base + (range - low) × 0.36 stays above the 500 m cap
-at every logged range, so the glide output does not move in these missions. The same holds for
-row 15's target lift (docs/CC13_TORPRANGES.md).
+009C1B01 rangeHigh.
+- **Correction (packet cc13-c25h).** An earlier version cited the `torpedo ... descent census`
+  lines here. Those come from the attackrun tick (009D0951, game_hosts_units.cpp `descent
+  census`), not from moveto.
+- **Direct evidence.** The moveto tick's own line is `torpedo ... glide census`, logged every 50
+  speed commands. In USN21 there are 1407 lines, all with commanded = 500.0, at a minimum range
+  of 7765.3. USN01 logs none.
+- **The end of moveto, by inference.** The glide leaves the 500 m cap only when (range - low) is
+  under about 1375, which is (500 - base) / 0.36:
+  - base is 5 to 6 m on every glide census line;
+  - 0.36 is the attackrun lines' scale 0.5 × gain 0.7265;
+  - the glide census prints the same gain, 0.727, but not the scale. So 0.36 is an assumption
+    for moveto.
+  At attackrun entry (descent n=1), range - low is at least 2353 in USN21 and
+  2715 in USN01. The range only shrinks on the way in, so the glide stays capped through the
+  whole moveto.
+- **Result.** The glide output does not move in these missions. The same holds for row 15's
+  target lift (docs/CC13_TORPRANGES.md).
 
 **The other sites** differ in the last bit of sep. Through k that is at most an ulp of speed.
 
@@ -147,7 +160,8 @@ switch OFF.
 
 Both settings were built (the ON build with the switch flipped locally, then reverted). The
 committed state is OFF. The flip is cc9's call. With the speed only and a lagging wing, the
-expected effect is under about 1.2 m/s of commanded speed near the end of a torpedo moveto.
+expected effect is of the order of 1 m/s of commanded speed at most, near the end of a torpedo
+moveto.
 
 ## Status
 
