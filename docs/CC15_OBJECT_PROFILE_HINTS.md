@@ -349,8 +349,8 @@ These inputs are recorded calls with neutral answers.
   3Eh is approximated by their registry "applied" byte.
 - **0068C526 (`screen_34_query`, cc9's `kHudHintsSecondsLeftBound`)** reads the HUD host's own
   34h bytes, not this screen. Both switches need to agree before either flips.
-- **Whether game+620h stops the simulation natively has not been traced.** OnMove 004E4A40 itself
-  does not read it. The host leaves the simulation running and only logs the pause.
+- **game+620h does not stop the simulation; see "The hint pause game+620h" below.** The host leaves
+  the simulation running and logs the pause.
 
 ### Evidence (2026-10-19, tree base 7f4f75b85, commits 1f40f2b90 + 1cf2447d7)
 
@@ -407,6 +407,49 @@ without a show.
 
 Save safety: the four files under Documents\Battlestations-Pacific (options.txt, save\0\player,
 quick, valid) have identical SHA-256, size and mtime before the first run and after the last.
+
+### The hint pause game+620h (static trace, 2026-10-19)
+
+Method: a byte scan of every executable section for the displacement 620h. Each hit was decoded
+with Capstone and its memory operand checked. This found 13 byte-sized accesses; the dword-sized
+hits belong to other objects. A rel32 and absolute-dword scan for each reader followed, and the
+scan was validated on 004D94F0, which shows its 10 known call sites.
+
+**Writers.**
+- 004DDCEF: the game constructor clears it.
+- 004D952B: 004D94F0 stores it.
+
+**Readers.**
+
+| Site | Function | Use |
+| --- | --- | --- |
+| 004D9510 | 004D94F0 SetHintPause | change test |
+| 004D9628 | 004D95F0 SetSystemPause | state test |
+| 004DB2ED | 004DB290 PollPlatformSessionEvents | if set, 004D94F0(0): clears it |
+| 004E4593 | 004E4430 DrainStateRequestQueue (request 10h) | if set, 004D94F0(0): clears it |
+| 00649884 | 00649860 HUD root screen 44h update | with +61Fh, skips the whole update |
+| 00643605 | 006435D0 HUD markers screen 4Dh update | early return |
+| 00519BDF | 00519BB0 HUD pilot screen update | early return |
+| 005ADDEC | 005ADDA0 HUD map icon update | early return |
+| 00675D12 | 00675C40 Support Manager screen 4Eh update | after its timer, jumps to the epilogue 0067AF15, so the player's launch (0067A565) does not run while paused |
+| 0065BCF6 | 0065BBC0 Support Manager name label | layout gate |
+
+- 004B6AC0 (`mov al,[ecx+620h]; ret`) is a getter with no rel32 or absolute reference: dead.
+
+**No reader is in the frame step, the fixed step or the physics tick.** OnMove 004E4A40 does not
+read 620h, and 004D94F0's only effect besides the store is 004D6480, which parks GUI widgets. The
+critical show's game_set_cinematic(true, true, true) passes allow_simulation = 1. **So a critical
+hint pauses the GUI, not the simulation, and BASICSUB in LOMP06/USN21 does not re-time those
+rows.**
+
+What would differ natively while BASICSUB stays up:
+- The HUD root 44h, markers 4Dh, pilot and map-icon updates stop. In the host,
+  HudRootScreen::update and HudMarkers::update run every frame (12803 and 12802 calls on LOMP06
+  ON), because cc9's `game_hud_suppressed` substitution reads both pause bytes as clear.
+- The Support Manager 4Eh would not launch for the player; the host does not run 4Eh.
+
+Wiring 620h into those cc9 gates is an open item for the flip. It affects only HUD-side work
+unless one of those updates is found to issue orders.
 
 ### Before a flip
 
