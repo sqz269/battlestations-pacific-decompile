@@ -19670,6 +19670,45 @@ kHudRootCircleYOffset) declared float against true-double m64 qwords.
 ship_ai_attackmove_substates.cpp: the jitter_48 note now says the caller takes the 009E55A1
 draw (22e41560e).
 
+### 7. kGunAimMessageCc15Bound: ON (e9a17b4db)
+
+The pair is on USN01 (b8dcae593, reference env). Northampton's artillery was fired through the
+harness `input` line (SCRIPTED_HELM 17): `0x9D`, then `0x99` held 300 frames, at mission frames
+500, 900 and 1300.
+- Screen 2Eh is up from about mission frame 410 to 1823. At 1823 the script hands the player the
+  ScoutDauntless, and set 22h has no 2Eh. Inputs after 1823 never reach the HUD.
+- There were 1298 79h round trips, all group 3. Only the quantised angles moved (yaw on 1218,
+  pitch on all; max 1.7e-5 / 6.9e-6 rad).
+- 99h reached 00959F72: the 0095A05B record ran 2700 times on both sides.
+- Gameplay, death rows, the unit table and the native table are identical. Flipped by mechanism.
+  This was the input tool's first game validation.
+
+### 8. The player's artillery seat: kRoleOwnerDeviceWalkBound (OFF)
+
+**0095A05B is multiplayer-only.** Its flag `[ESP+12h]` needs `game+1FE4h == 1` (hosted) and
+`+218Ch == 0`. Its flag `[ESP+13h]` needs a unit held by a non-AI slot that is not the local
+player. Single player is `game+1FE4h = 0`. `[unit+1BCh]` is role 4, not role 3.
+
+**The single-player seat** comes from the role take:
+1. Screen 2Eh's group-3 role request sends 4Bh with mask 10h.
+2. In 00780120's loop, a changed holder (00780393) runs 007803A8 0077FE80.
+3. Its default 0078002F calls `vtable[164h]`, which is 00821E80; its 4Bh arm forces 0095ABE0.
+4. 0095AC1D: mask 10h runs 00954000, which hands Function 2/3/4/6 to the slot. Mask 4 or 8 runs
+   00953F60, a release.
+
+This host never ran that walk, so the artillery stayed AI-held (held_ticks 0).
+- Binding: `GameGunneryHost::role_owner_device_walk_0095ac1d`, called from
+  `role_message_4b_00780162`. Details are in docs/PLAYER_GUN_SEAT.md 7.5, which also corrects
+  7.2's "single-player 1".
+- Preview pair on USN01, same orders, working tree:
+  - takes 8 (Northampton's 3 turrets, Dunlap's 5 Function 6 mounts), held_ticks 0 to 5661;
+  - no player shells, because the HUD camera aims 10 degrees down at the sea and every 0085ABA0
+    refuses;
+  - Northampton's turret shots 335 to 280, and hits 925 to 812;
+  - deaths identical.
+- Open: a pair with player shells needs a camera aim input that the harness lacks. The flip waits
+  on the lead.
+
 ## 297. cc9-ships59 handoff (2026-10-18)
 
 **Landed this session** (agent/cc9-ships44; each flip fully built and paired in the reference env unless noted):
@@ -19709,3 +19748,48 @@ re-time the TT5 route from the frame where CB2 turns. Jitter (20,3) loses all si
   with the call at 00748455, and the body call is at 00748932);
 - NaN-only lows: the rudder clamp 009DA28C..2AB passes NaN where the host sends -1, and the ring slew 009F4C4E never
   writes NaN.
+
+## 298. The break-in-two draws, kShipBreakInTwoDrawsBound (cc9-ships60, 2026-10-18)
+
+The 98h receiver 00814520 tail-jumps to 00935D30 BSP_UnitController_BreakInTwo (docs/CC13_SEGMIX.md). The host
+records the 98h send in `ship_death_message_00827ab0` and stops there (`host.breakup_parts` has no implementer), so
+it skips the 11 stream-1 draws the two pieces take. The listing has exactly 11 `CALL 00BD2F10` in the body, all with
+ECX = 1: the front at 00936328, 00936388, 009363A5 (sx, sy, sz = U(-1, 1), [00D7A260] = -1.0 and FLD1), 009363ED
+and 00936460 (U(0, 1.5), [00CE380C] = 1.5) and 009364AE (U(10, 20), [00CE38B8] = 10.0, [00CE3930] = 20.0); the back
+at 009366B2..009367E8, the same without sx. The piece offsets only pose the wreck halves (presentation) and are not
+modelled.
+
+Bound OFF as `kShipBreakInTwoDrawsBound` (game_hosts_gunnery.cpp, beside `kShipDeathMessageBound`): at the host's
+98h send it takes the 11 draws in image order on `Draw::ship_break_in_two` (key unit, 0 front / 1 back), and the
+ship death summary gains `break_in_two_draws=`. Uncertainty: the image delivers 98h through the message manager,
+and the host assumes same-tick delivery, as it already does for 9Ah.
+
+Predictions: in the reference env (`BSP_GUNNERY_RNG_STREAMS=1`) the draws are on their own key, so a pair is
+gameplay identical, with `break_in_two_draws = 11 * 98h`. In the default env every draw on the shared stream after
+the first 98h moves, so the pair moves (exit 3) from the first breakup on, when the row has one.
+
+## 299. The NaN arms of the rudder clamp and the ring slews, kShipAiRingNanArmsBound (cc9-ships60, 2026-10-18)
+
+Two NaN-only lows from 297, both in ship_ai_throttle_ring.cpp, bound OFF together as `kShipAiRingNanArmsBound`
+(ship_ai_throttle_ring.hpp):
+- 009DA250's clamp. 009DA28C loads -1.0 ([00D7A260]), 009DA292 FCOMIP ST0(-1), ST1(raw) and JBE 009DA2A2: an
+  unordered compare sets CF and ZF, so a NaN raw takes the keep arm; 009DA2A8 COMISS raw, [00D7A24C] JBE also keeps
+  it. The image passes NaN; the host's `kShipAiRudderLow <= raw` sent -1.
+- The slews 009F4C0E/009F4C86. After 009F4C4E FCOMI ST0(step), ST1(|previous - desired|) the JBE at 009F4C52 takes
+  the stepping arm on an unordered compare, and 009F4C6A FCOMPI ST0(desired), ST2(previous) JBE 009F4C72 takes FSUBP,
+  so a NaN desired gives previous - step. The host's `step <= |d|` returned the NaN desired value.
+Read with `disasm-raw 009F4C10 --length 120` and `ghidra disasm 009DA250`.
+
+Predictions: no row is known to feed a NaN here, so pairs are gameplay identical (exit 0 or 1). A moved pair means a
+NaN reached the rudder or a ring value, which would be a finding of its own.
+
+**Result, flipped ON.** Reference-env pairs on f4d92c331: USN04 20000 (`s60_naoff_u04` / `s60_naon_u04`) and JM08 24000
+(`s60_naoff_j08` / `s60_naon_j08`, mission end at 20401 frames) are identical, pair_diff exit 0, as predicted. The
+change is draw-order neutral, so no default-env pair.
+
+**Result, flipped ON.** USNOS 36000 pairs on 8ae424ab9 with the c17 orders, as predicted:
+- reference env (`s60_bdoff_os` / `s60_bdon_os`): exit 1, gameplay identical; one 98h (`break_in_two_draws 0 -> 11`)
+  and the one new native row `ShipDeath::break_in_two_draws_00935d30`.
+- default env (`s60_bdoffd_os` / `s60_bdond_os`): exit 3. The first 257 deaths are identical, through the first 98h
+  (Cargo1 at 1354.95 s); the first moved death is the next one (Airfield1_sqn39, 1357.55 -> 1357.60 s). After that
+  the shared stream is offset, so later breakups differ (Convoy2 1416.66 broke in OFF only; Cargo5 and Cargo6 in ON).
