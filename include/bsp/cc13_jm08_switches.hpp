@@ -37,6 +37,38 @@ namespace bsp {
 // No 00BD2F10 draw on any of these paths.
 inline constexpr bool kDeadLeaderRepublishesFollowerPairBound = false;
 
+// True: when the dying unit still leads its group (00778890 at 0071C156) and a
+// successor exists (0071C163), leave_group_on_destroy_0077bd70 runs
+// GameCommandsHost::copy_director_state_00720450(successor, unit) BEFORE the
+// SetLeader (0077BDDE..0077BE02 -> 0071C150 -> 00836680 -> 00720450), so the new
+// leader inherits the dead leader's queue. PARTIAL: copied are the mode (+30h),
+// the ten slots and descriptors (+54h..+16Bh), the override cleared (0071E610
+// through clear_override_in_place, then +188h..+1A0h zeroed), the stage pairs
+// reset (+44h/+48h, +50h; +4Ch has no host field) and the slot-0 path object
+// (the host carries no other). NOT copied:
+// - +16Ch..+184h, the record 00720850 saves the cleared slot 0 into (0072093A..
+//   00720986). No host field. Census (packet cc13-jm08, every [reg+disp32] for
+//   disp 16Ch..187h and, for the +1Ch subobject, 150h..16Bh, undefined chunks
+//   included, checked against every slot of vtables 00CFDA40 / 00D09F58 /
+//   00D0BD98): its only readers are 00720450 itself and 0084DB50 (vtable
+//   00D0BD98 slot 6Ch, the PLANE squadron block: +16Ch == `land` 00E08FA0 ->
+//   007EFB60). No ship-director reader, so leaving it out changes no ship.
+// - +3Ch/+3Dh, allowFire/allowMove: the gunnery host's director_allow_fire_3c /
+//   _move_3d, settable only through the fire stance. Identity in JM08, where
+//   every ship in the scene is FreeFire.
+// - 00836240 StoreFireTarget (00836680, when src vtable[48h](2) and src+23Ch):
+//   ship-AI host. The host logged fire=- for Missouri.
+// - The `land` -> `attackmove` 00E08F78 rewrite for a kind-6 owner (0072058A..
+//   00720607): needs 0071DB90's world list; a `land` is copied as is and counted
+//   (director_copy_land_kept).
+// Ordering, LABELLED: in the image the 77h leave is posted by 0077D1A0 at the
+// kill and the successor's 5Dh slot-0 clear by 0071DDB0 at the destroy flush, both
+// through 0077C2A0, so the copy is delivered first and the clear then ends the
+// inherited head. This host runs the copy at its flush and posts the 5Dh from the
+// gunnery kill; whether that 5Dh drains before the flush decides which head it ends.
+// False: the successor keeps its own queue, as before. No 00BD2F10 draw.
+inline constexpr bool kDeadLeaderDirectorStateCopyBound = false;
+
 // True: ship_ai_wake_decompose_00811180 (src/ship_ai_wake_trail.cpp) returns the
 // image's along-track distance. 00811180 picks the segment through the nearest
 // sample k (00811482..00811584: k == 0 takes head/k1, k == 27h takes k-1/k, else
