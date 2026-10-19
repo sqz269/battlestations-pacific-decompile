@@ -59,6 +59,10 @@
 namespace bsp {
 
 inline constexpr bool kPlaneCrashSweepBound = true;  // ON: USN19/USN18/USNOS pairs (docs/SQUADRON_LAND_TASK.md 5gc)
+// UNMODELLED image gates (cc13 reltimer; none changes a healthy AI plane): the 007BC5B0
+// invincibility arm (+150h > 0 skips the sweep), the plane+520h check and the +5Ch check.
+// USN04's killer="-" death of Yorktown-class01_sqn05 at 230.71 s is a faithful mid-air
+// collision with Zero #7.2 through this sweep (007C0910).
 
 // 00CE3854 (float 3.0): 007C5F60's unit+9DCh for a launch spot (007C605D). With
 // kPlaneCrashLaunchArmCc13Bound off, LABELLED: the host arms 3.0 for every base,
