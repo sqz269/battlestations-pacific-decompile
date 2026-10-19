@@ -18189,3 +18189,7 @@ JM06.lua (this installation, 2024-07-13) calls `luaJM6AddPowerup("automatic_relo
   slot) through 008EA0C0. The host records it (`AiParties::party_brain_plan_tail`, src/game_hosts_ai.cpp) and the JM06 log
   never reaches it. Whether the human's slot has an enabled AI brain in single player is still unread, so the use of a
   granted item is UNDETERMINED. No WINS row moves either way: the host grants nothing.
+
+Reach of the low-priority natives (`tools/mission_script_reach.py`, this installation): SquadronSetHomeBase only in
+ESMP02 (02_MI.lua, 8 calls); SetRace in USN20, PRCP03, PRCP07 and LOMP08; LastBanto in no menu mission. None is a WINS
+row, so none is bound here.
