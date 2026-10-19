@@ -6417,7 +6417,9 @@ struct GameUnitsHost::Impl {
     // steers at the sighted point (009BF0FD-009BF295) and a held timer makes
     // 009FC7C0 fire on any target in range. False: the sight stays inactive
     // and the hold timer is left alone.
-    static constexpr bool kFollowSightSearchBound = false;
+    // cc9-physics24 2026-10-19: ON by mechanism (OCEAN_WAVE_FIELD 102); reached on
+    // BSM09 only (98 searches), which still wins earlier; other rows identical.
+    static constexpr bool kFollowSightSearchBound = true;
     unsigned long long follow_turbo_steps{0};
     // Packet cc13-fix89 U2 (docs/CC13_FIX89.md, CC13_VERIFY15 U2): the boost
     // request plan+2E4h (the kamikaze states 009AC74C / 009ACD66) reaches cmd+14h
@@ -6534,7 +6536,9 @@ struct GameUnitsHost::Impl {
     // and steers at that origin (009C1B1C). True: the dive-bomb moveto tick feeds
     // that separation to 009C1850 and the glide, and heads with 009F9E40's law.
     // False: db_planar_bc and db_bearing_c0 stand in.
-    static constexpr bool kDiveBombMoveToOriginBound = false;
+    // cc9-physics24 2026-10-19: ON by mechanism (OCEAN_WAVE_FIELD 102); moves
+    // USN01/BSM09/USN21 dive releases, every win holds in both envs.
+    static constexpr bool kDiveBombMoveToOriginBound = true;
     // Packet cc9_landing_descent_2 (docs/SQUADRON_LAND_TASK.md section 5o): the
     // timed direction hold dyn+B4h/+C0h. The land steer's arm 009B1B1C-009B1C79
     // and land/abort's clear 009B0A3B through 007C07A0; the core law's commit
@@ -6780,7 +6784,9 @@ struct GameUnitsHost::Impl {
     // Packet cc9_dive_hit_clock: 009C4AA4 reads the carried approach+C4h instead
     // of the 3600.0 floor, so a hit (009C7900) arms the forced goaway re-roll for
     // one second. OFF until paired with the hit notice's caller.
-    static constexpr bool kDiveHitClockBound = false;
+    // cc9-physics24 2026-10-19: ON by mechanism (OCEAN_WAVE_FIELD 102); moves
+    // USN01/USN21 dive releases, BSM09 identical, every win holds.
+    static constexpr bool kDiveHitClockBound = true;
     // ON: paired in 5ar.1, every death table identical. The airfield park <->
     // abort loop is NOT the image's (SQUADRON_LAND_TASK 5bp): the image pushes a
     // takeoff task at the first ground abort (0099B0BE), and the host's loopers
