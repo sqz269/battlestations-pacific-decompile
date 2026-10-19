@@ -1165,6 +1165,15 @@ public:
     // kill's 5Dh. leave_group_on_destroy_0077bd70 then skips its own. Unmapped
     // does nothing (leave_group keeps it).
     void leader_death_handover_at_kill(std::size_t index, bsp::DeadLeaderDeathPhase phase);
+    // Packet cc13-jm08 (kDeadLeaderDirectorStateCopyBound): true while the unit's
+    // own posted 0071C150, or its group leader's, is still in the loopback. A Lua
+    // leave that meets one is posted (post_formation_leave_0077c980), not run.
+    // Always false when the switch is off.
+    bool formation_leave_waits_for_handover(std::size_t index) const;
+    // 0077C980 for a Lua leave: posts the unit's 0077BD70 to the loopback, behind
+    // whatever is already queued. False (nothing posted) when the switch is off or
+    // the post fails; the caller then leaves synchronously.
+    bool post_formation_leave_0077c980(std::size_t index);
     // Packet cc9_live_hull_leak (docs/UNIT_MESSAGE_ARMS.md, "90h, bound"): the
     // 90h message's receiver 008221A7 -> 0074F440 -> 0074F090 on the unit's
     // leak manager. `count` is msg+1Ch, the sender's trunc(clamp(damage / 10,

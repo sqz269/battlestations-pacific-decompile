@@ -2312,10 +2312,12 @@ struct GameUnitSlot {
     // of this unit's kill. `ran`: already done (BeforePump, or the posted entry
     // delivered), so 0077BD70 must not repeat it; cleared by leave_group.
     // `posted`: queued (HitDrainAfterPump) and not yet run; whoever comes first
-    // runs it and clears it - the posted entry, or a leave_group of the unit or
-    // of a member of its group (the kill's 77h is ahead of any Lua 77h in the
-    // FIFO). Set only by leader_death_handover_at_kill (or cleared there on a
-    // failed post); slots are appended and never reused.
+    // runs it and clears it - normally the posted entry (a Lua leave meeting it
+    // is posted behind it, post_formation_leave_0077c980); as a backstop, a
+    // synchronous leave_group of the unit or of a member of its group. `posted`
+    // is set only by leader_death_handover_at_kill (cleared there on a failed
+    // post); `ran` is set there at a BeforePump kill and also when the posted
+    // entry is delivered. Slots are appended and never reused.
     bool director_handover_ran{false};
     bool director_handover_posted{false};
     bsp::UnitHullExtents hull_extents{};
@@ -3277,6 +3279,8 @@ struct GameUnitsHost::Impl {
     // found theirs already run by a leave_group.
     unsigned long long director_handovers_run{0}, director_handovers_posted{0},
         director_handovers_skipped{0};
+    // Lua leaves posted behind a pending handover (post_formation_leave_0077c980).
+    unsigned long long director_lua_leaves_posted{0};
 
     bool unit_torn_down_005d(std::size_t index) const {
         return index < slots.size() && slots[index]->state != nullptr
@@ -40659,8 +40663,11 @@ void GameUnitsHost::leave_group_on_destroy_0077bd70(std::size_t index) {
         // Packet cc13-jm08. A leader whose kill posted its 77h (HitDrainAfterPump)
         // has that entry ahead of this one in the image's FIFO (0076E520 /
         // 0076C600; a Lua 00899EB0 / 0089A020 leave posts through 0077C980 too),
-        // so its 0077BD70 runs first, while it still leads. This host's Lua
-        // leave is synchronous, so run it here.
+        // so its 0077BD70 runs first, while it still leads. A Lua leave that
+        // meets it is posted behind it (post_formation_leave_0077c980), so this
+        // is a backstop for the synchronous leaves that remain: the ship_ai
+        // follower release, a Lua leave whose post failed, and the destroy
+        // leave if it ever ran before that pump. Run the leader's first.
         const std::size_t lead = host.formation_groups[static_cast<std::size_t>(g)].leader;
         if (lead != index && lead < host.slots.size()
             && host.slots[lead]->director_handover_posted
@@ -40810,6 +40817,48 @@ void GameUnitsHost::leader_death_handover_at_kill(std::size_t index,
             slot.director_handover_posted = false;
             --host.director_handovers_posted;
         }
+    }
+}
+
+bool GameUnitsHost::formation_leave_waits_for_handover(std::size_t index) const {
+    if constexpr (!kDeadLeaderDirectorStateCopyBound || !kSetCommandQueueDelayBound) {
+        // The loopback delivers posted callbacks only with the queue delay bound.
+        static_cast<void>(index);
+        return false;
+    } else {
+        const Impl& host = *impl_;
+        if (index >= host.slots.size()) return false;
+        const GameUnitSlot& slot = *host.slots[index];
+        if (slot.director_handover_posted) return true;
+        const std::int32_t g = slot.formation_group;
+        if (g < 0 || static_cast<std::size_t>(g) >= host.formation_groups.size()) return false;
+        const std::size_t lead = host.formation_groups[static_cast<std::size_t>(g)].leader;
+        return lead != index && lead < host.slots.size()
+            && host.slots[lead]->director_handover_posted
+            && host.slots[lead]->formation_group == g;
+    }
+}
+
+bool GameUnitsHost::post_formation_leave_0077c980(std::size_t index) {
+    // Packet cc13-jm08. The image's Lua leaves (00899EB0, 0089A020) post a 77h
+    // through 0077C980 -> 0077C2A0 -> 0076E520 and 0077BD70 runs at the next
+    // pump (0076C600, row 9). After a HitDrainAfterPump kill that FIFO already
+    // holds the kill's 77h, then the 5Dh 0071DDB0 posted for the successor; the
+    // Lua entry comes third, so the successor's inherited head is popped before
+    // it leaves. This host posts only while formation_leave_waits_for_handover;
+    // every other Lua leave stays synchronous (before the pump, not at it).
+    if constexpr (!kDeadLeaderDirectorStateCopyBound || !kSetCommandQueueDelayBound) {
+        static_cast<void>(index);
+        return false;
+    } else {
+        Impl& host = *impl_;
+        if (index >= host.slots.size()) return false;
+        if (!host.commands.post_loopback_callback(index,
+                [this, index]() { leave_group_on_destroy_0077bd70(index); })) {
+            return false;
+        }
+        ++host.director_lua_leaves_posted;
+        return true;
     }
 }
 
@@ -43231,9 +43280,10 @@ void GameUnitsHost::report() {
         host.formation_death_leaves, host.formation_death_handovers,
         host.formation_groups_emptied, kDeadMemberLeavesGroupBound ? 1 : 0);
     host.log.notef("summary unit formation leader handover run=%llu posted=%llu skipped=%llu "
-        "bound=%d (0071C150 -> 00836680 -> 00720450, packet cc13-jm08)",
+        "lua_leaves_posted=%llu bound=%d (0071C150 -> 00836680 -> 00720450, packet cc13-jm08)",
         host.director_handovers_run, host.director_handovers_posted,
-        host.director_handovers_skipped, kDeadLeaderDirectorStateCopyBound ? 1 : 0);
+        host.director_handovers_skipped, host.director_lua_leaves_posted,
+        kDeadLeaderDirectorStateCopyBound ? 1 : 0);
     host.log.notef("summary unit formation join follow calls=%llu pushed=%llu bound=%d "
         "(0077FA8D -> 00720CD0, packet cc9_formation_join_follow)",
         host.formation_join_follows, host.formation_join_follows_pushed,

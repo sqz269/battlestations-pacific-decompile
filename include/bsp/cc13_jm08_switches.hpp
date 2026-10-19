@@ -71,7 +71,14 @@ inline constexpr bool kDeadLeaderRepublishesFollowerPairBound = false;
 // copy at the next flush, so the head always survives (one step late; the extra
 // 00720850(0) on the successor's old head runs 00835BF0(1) first). Right for a
 // think-phase death such as JM08's Missouri, wrong for a post-pump hit death.
-// False: the successor keeps its own queue, as before. No 00BD2F10 draw.
+// True: the kill site's phase (table below) decides. At a HitDrainAfterPump kill
+// the host loopback (FIFO with kSetCommandQueueDelayBound) gets the 77h's 0071C150
+// first (leader_death_handover_at_kill), then the 5Dh (0071DDB0, after it in
+// kill_unit). Lua runs before the next pump, so a LeaveFormation / DisbandFormation
+// that meets that posted copy (the unit's own or its leader's) is posted third, as
+// 0077C980 / 0077CA60 queue it, and runs at the pump like the image's; every other
+// Lua leave stays synchronous.
+// False:the successor keeps its own queue, as before. No 00BD2F10 draw.
 inline constexpr bool kDeadLeaderDirectorStateCopyBound = false;
 
 // The image phase a host kill site stands for, as far as the 77h / 5Dh order
