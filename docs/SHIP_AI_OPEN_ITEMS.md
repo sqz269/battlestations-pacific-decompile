@@ -19956,3 +19956,37 @@ destroyed!". Different plans and lengths; both start at the mode-3 tail skip.
 Reach note (cc13, through the lead): G and I are also live in IJN08, where Kinugasa makes 319 evasion overrides in the
 Elco torpedo field from 747 s until it sinks at 816 s. Those overrides had max_turn = 0, so they are not a proven
 course change, and no IJN08 pair was run.
+
+## 303. Plane crash-sweep construct cooldown paired (cc9-gunnery54, 2026-10-19)
+
+**Switch:** kPlaneCrashConstructCooldownCc13Bound (include/bsp/plane_crash_sweep.hpp, packet cc13-cool9dc).
+**Evidence:** 007CFD20 (plane ctor) stores unit+9DCh = 1.0f at 007CFE78 (`MOVSS [ESI+9DCh], XMM1`, XMM1 loaded
+from 00D7A24C at 007CFDEA; checked with disasm-raw). Only 007C5F60's launch-spot path re-arms it with 3.0
+(00CE3854). A plane spawned in the air never reaches 007C5F60, so its first sweep cooldown is 1.0 s. The host armed
+3.0 for every plane.
+
+**Predictions (written before the pair).** ON, for each air-spawned plane: `construct cooldown arms` counts it,
+`cooldown_steps` falls by about 40 (2.0 s at 0.05 s), and `plane_steps` and `segments` rise by the same amount.
+Deck launches keep 3.0. unit_hits / impacts move only if an air-spawned plane overlaps a unit or the surface in its
+first 3 s (not expected). Draw consumers: more swept segments can add kTraceSceneDamageDrawBound draws, so
+stream-1 noise in the reference env and broader drift in the default env are expected, not a mechanism failure.
+
+Pair: OFF = `local\g54_cc_off` (tree build at 658c5c282), ON = `local\g54_cc_on` (pair_export, same commit).
+Rows USN21 and USN04 (9000 frames, no orders), USNOS (50000 frames, config/win_orders/usnos_s45_os_k.txt), in the
+reference env (prefixes g54_ccoffs / g54_ccons) and the default env (g54_ccoffd / g54_ccond).
+
+**Measured; verdict FLIP by mechanism.** Reference env, all three rows pair_diff exit 1 (gameplay identical; death
+rows, plane death modes and unit table identical):
+
+| row | arms ON | cooldown_steps OFF -> ON | plane_steps OFF -> ON | other summary moves |
+|---|---|---|---|---|
+| USN21 | 6 | 366 -> 120 | 21717 -> 21963 | none |
+| USN04 | 51 | 4026 -> 1935 | 144663 -> 146754 | none |
+| USNOS | 39 | (sweep) | 332910 -> 334509 | trace scene-damage stream-1 draws 1703145 -> 1707942 |
+
+Each arm moves exactly 41 steps from cooldown into the sweep (61 steps at 3.0 s, 20 at 1.0 s), as predicted. No
+unit_hits, impacts or blast records move. Default env: all three rows MOVED through the shared RNG (00BD2F10 is
+process-wide): USN21 one extra Jake death, USN04 deaths 62 -> 56, USNOS deaths 104 -> 114 and the failure 989.88 ->
+1004.88 s. USNOS fails at 969.89 s in the reference env both ways (HQ1, "Game Over"), so no WINS row changes.
+
+Flipped ON in include/bsp/plane_crash_sweep.hpp (cc13-cool9dc-c's queued follow-ups, the 5.0 AirField arm and the state-7 re-arm, are still open there).

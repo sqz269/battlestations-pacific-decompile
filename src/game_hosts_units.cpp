@@ -91,6 +91,7 @@
 #include "bsp/kamikaze_task_host.hpp"
 #include "bsp/plane_land_chain_cc13.hpp"  // packet cc13-landc
 #include "bsp/frontier_wiring_cc13.hpp"  // packet cc13-frontier
+#include "bsp/cc13_lua_natives_wire.hpp"  // packet cc13-luawire 7b
 #include "bsp/depth_charge_task_cc13.hpp"
 #include "bsp/ordnance_kinds.hpp"
 
@@ -181,6 +182,7 @@
 #include <cctype>
 #include <map>
 #include <memory>
+#include <set>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -325,6 +327,27 @@ bool parse_order_position(const std::string& text, float& x, float& z) {
 // have; eight is the probe's own --hydro-elements default, so the two sides of
 // the comparison use the same number.
 constexpr int kBuoyancyElementCount = 8;
+
+// Packet cc13-luawire 7b, under kLuaSetCheatTurboBound: 0099D479-0099D4F2 on the
+// plane's CheatTurbo float +340h (0 when the switch is off, which makes every
+// result below the identity). dtScale = float(+340h x 0.4) (00CE65D0, a double),
+// raised to 1.0 when 1.0 is greater (FCOMI/JBE, so a NaN is kept);
+// [ESP+28h] = float(1 / dtScale) (FDIV at 24-bit precision); the dt argument slot
+// becomes float([ESP+28h] x dt) (0099D4EE).
+inline float cheat_turbo_value_340(float stored) {
+    return bsp::kLuaSetCheatTurboBound ? stored : 0.0f;
+}
+inline float cheat_turbo_dt_scale_0099d479(float stored) {
+    const float t = static_cast<float>(
+        static_cast<double>(cheat_turbo_value_340(stored)) * 0.4000000059604645);
+    return 1.0f > t ? 1.0f : t;
+}
+inline float cheat_turbo_inverse_0099d4b3(float stored) {
+    return 1.0f / cheat_turbo_dt_scale_0099d479(stored);
+}
+inline float cheat_turbo_scaled_dt_0099d4ee(float stored, float dt) {
+    return cheat_turbo_inverse_0099d4b3(stored) * dt;
+}
 
 struct GameUnitSlot;
 
@@ -1098,6 +1121,13 @@ struct GameUnitSlot {
     // out of the spatial index (007B96C0, 006FC250); 00951F40(1) (006FC0D0)
     // puts it back. Packet cc9_hit_index_detach, SQUADRON_LAND_TASK 5as.
     bool plane_hit_node_detached{false};
+    // Packet cc13-luawire 7b. unit+340h, the CheatTurbo float only 008A62A0
+    // writes (no constructor store, so 0); read under kLuaSetCheatTurboBound.
+    float cheat_turbo_340{0.0f};
+    // squadron+3A4h, the avoidance mask: 0FFh from the squadron constructor
+    // (007F2C13), changed only by the SquadronEnable*Avoidance natives. Bit 2 is
+    // read at 009A1963 under kLuaSquadronEnableVehicleAvoidanceBound.
+    std::uint32_t sq_avoid_3a4{0xFFu};
     std::uint8_t plane_c01{0};            // plane+C01h, 007B9000 stores 2
     unsigned long long land_park_entries{0}, land_park_ticks{0}, land_park_done{0};
     unsigned long long land_park_joins{0}, land_park_leaves{0}, land_park_spot_refused{0};
@@ -2846,6 +2876,22 @@ struct GameUnitsHost::Impl {
     };
     std::vector<ReturnToBaseCensus> rtb_census;
     unsigned long long rtb_arm_counts[4]{};
+    // Packet cc13-luawire 7b. The air-ops block lists at +B4h that 006CA730 fills
+    // (SquadronSetBaseUnsupported), as (deck name, squadron record name) pairs.
+    // 006C4790 answers false for a listed squadron; read under
+    // kLuaSquadronSetBaseUnsupportedBound.
+    std::set<std::pair<std::string, std::string>> base_unsupported_b4;
+    bool squadron_excluded_006c4790(const std::string& deck,
+                                    const bsp::PlaneSquadronHostRecord& sq) const {
+        if constexpr (bsp::kLuaSquadronSetBaseUnsupportedBound) {
+            return base_unsupported_b4.count({deck, sq.name}) != 0;
+        } else {
+            static_cast<void>(deck);
+            static_cast<void>(sq);
+            return false;
+        }
+    }
+    unsigned long long base_unsupported_refusals{0};
     void record_return_to_base_007f16d0(std::size_t unit_index);
     // Packet cc9_land_task_reach, under kSquadronLandTaskBound: one row per
     // squadron whose members received a `returntobase` placement.
@@ -4978,10 +5024,10 @@ struct GameUnitsHost::Impl {
         // 009C8B14-009C8B3B, the break-off's own range. The image subtracts all
         // THREE components of `aimPoint - unitPosition` and takes 0042B2F0's
         // length; approach+BCh is planar and measured to the target entity, so
-        // feeding it made the break-off fire late and low. The aim point this
-        // host carries is the commanded target's position (the same labelled
-        // substitution +BCh and +C0h already run on), so the x and z are the
-        // same two differences and only the vertical term is new.
+        // feeding it made the break-off fire late and low. The aim point is
+        // tp_hull, 009FADA0's hull point above (the same point +BCh and +C0h
+        // are measured to), so the x and z are the same two differences and
+        // only the vertical term is new.
         {
             const double dy = static_cast<double>(tp[1]) -
                               static_cast<double>(slot.motion.position[1]);
@@ -5049,8 +5095,8 @@ struct GameUnitsHost::Impl {
         // dive_bomb_impact_point_009c7d71. Before the aircraft is diving and
         // before the range latch it is the raw unit position (009C7D27); from
         // then on it is the predicted bomb impact point (009C7D71). The aim
-        // point this host has is the commanded target's position, the same
-        // substitution +BCh/+C0h above already carry.
+        // point is tp_hull, 009FADA0's hull point, the same point +BCh/+C0h
+        // above are measured to.
         if (!diving && !slot.db_in_range_d0) {
             slot.db_run_in_origin[0] = slot.motion.position[0];
             slot.db_run_in_origin[1] = tp[1];
@@ -8939,7 +8985,9 @@ struct GameUnitsHost::Impl {
         // ECX = squadron+37Ch to 007F2BD0, whose 007F2C13 stores [ECX+28h] =
         // 0FFh. Only the SquadronEnable*Avoidance bindings (0089FE50 and
         // siblings) change it, and no USN04 script calls them. Confirmed, not
-        // a substitution (docs/PLANE_SUBSTITUTION_SWEEP.md).
+        // a substitution (docs/PLANE_SUBSTITUTION_SWEEP.md). BSM09 calls
+        // SquadronEnableVehicleAvoidance(false) on its five D3A Val squadrons;
+        // the vehicle bit is read below under kLuaSquadronEnableVehicleAvoidanceBound.
         if constexpr (kPilotGunfireAvoidanceBound) {
             if (!free_flight) {
                 u.ga_timer_3e8 = -1.0f;                            // 009A193F [00D7A260]
@@ -8956,9 +9004,18 @@ struct GameUnitsHost::Impl {
             }
         }
         // Packet cc9_lua52_kamikaze_wiring: 009A1951 / 009A1974 TEST +2E4h, 2 / 1
-        // (the squadron's +3A4h stays 0FFh, as above).
+        // (the squadron's +3A4h stays 0FFh, as above, until 008A0000 changes it).
         if constexpr (kPilotVehicleAvoidanceBound) {
-            if ((u.task_mask_2e4 & 2) != 0) {
+            // Packet cc13-luawire 7b: 009A1959-009A1969, pilot+2FCh (the squadron)
+            // null, or its +3A4h bit 2 set. The squadron is this host's squadron
+            // slot (the plane's own slot when it has no record, whose mask is the
+            // constructor's 0FFh, as a null squadron passes).
+            bool squadron_allows = true;
+            if constexpr (bsp::kLuaSquadronEnableVehicleAvoidanceBound) {
+                const GameUnitSlot* sq = squadron_slot_of(u.process_index);
+                squadron_allows = sq == nullptr || (sq->sq_avoid_3a4 & 2u) != 0;
+            }
+            if ((u.task_mask_2e4 & 2) != 0 && squadron_allows) {
                 vehicle_avoidance_007df4f0(u, dt);                 // 009A196D -> 0099B670
             }
         }
@@ -14535,8 +14592,10 @@ void GameUnitsHost::Impl::record_return_to_base_007f16d0(std::size_t unit_index)
     // HomeBase; 006BCD20(+404h, 1) answers its block (kind 9 +1188h, kind 45h
     // +72Ch) unless the owner is remote (+5Dh, never here); 006C4790 tests the
     // block+B4h list; 006BED30 answers true for block+1Ch, +1Dh, no owner or a
-    // remote owner. LABELLED: the +B4h exclusion list is not carried (empty); a
-    // sunk home owner is taken as gone from +404h (the image keeps the pointer).
+    // remote owner. LABELLED: a sunk home owner is taken as gone from +404h (the
+    // image keeps the pointer). The +B4h exclusion list is the host's
+    // base_unsupported_b4 under kLuaSquadronSetBaseUnsupportedBound, and empty
+    // otherwise (packet cc13-luawire 7b).
     std::string home_name;
     std::size_t home_owner = slots.size();
     std::size_t home_deck = 0;
@@ -14552,7 +14611,10 @@ void GameUnitsHost::Impl::record_return_to_base_007f16d0(std::size_t unit_index)
             const bsp::AirOpsDeck* hd = hdecks.mutable_at(i);
             const bool sunk = home_owner < slots.size() && gunnery != nullptr
                 && gunnery->unit_dead(home_owner);
-            if (home_owner < slots.size() && !sunk && hd->owner_present
+            // 007F1748: 006C4790(block, squadron) before 006BED30.
+            const bool excluded = squadron_excluded_006c4790(home_name, *sq);
+            if (excluded) ++base_unsupported_refusals;
+            if (home_owner < slots.size() && !sunk && hd->owner_present && !excluded
                 && !hd->runway_failure && !hd->hangar_failure) {
                 home_deck = i;
                 in.home_arm_issues = true;
@@ -14703,8 +14765,9 @@ GameUnitsHost::Impl::LandTaskCensus& GameUnitsHost::Impl::land_census_for(
 // (docs/SENTITY_INIT_ATTACH_ORDER.md 22.7, the standing substitution).
 //  - 0099A3DD-0099A415, the land arm: 006BCD20(target, 1) is the site's deck,
 //    then 006C4790(deck, squadron) (006C4790-006C47EC): false for a null
-//    squadron or when the squadron is on the deck's list at +B4h. LABELLED:
-//    that list's producer is unread and it is taken as empty, so the gate is true.
+//    squadron or when the squadron is on the deck's list at +B4h. The list is
+//    base_unsupported_b4 under kLuaSquadronSetBaseUnsupportedBound (its producer
+//    0089FAF0 -> 006CA730); otherwise it is taken as empty and the gate is true.
 //  - A squadron that already flies `land` at the same site keeps its task:
 //    009B3560 answers 1 for `land` with the same target, so 0099A4C0 never
 //    retires it and a repeated SELLING placement installs nothing.
@@ -14801,6 +14864,14 @@ bool GameUnitsHost::Impl::install_land_task_core_009b41c0(std::size_t unit_index
                 why.c_str(), static_cast<double>(summary.simulated_seconds));
         }
     };
+    // 0099A404 006C4790(deck, squadron), right after 006BCD20's deck: a squadron
+    // on the deck's +B4h list gets no task (0099A40B). Packet cc13-luawire 7b.
+    if (squadron_excluded_006c4790(site_name, *sq)) {
+        ++base_unsupported_refusals;
+        refuse(c.refused_arm, "006C4790: the squadron is on the deck's +B4h list "
+            "(SquadronSetBaseUnsupported)");
+        return false;
+    }
     if (unit.plane_death_c3a) {
         refuse(c.refused_dead, "the plane is dead");
         return false;
@@ -14889,12 +14960,19 @@ bool GameUnitsHost::Impl::install_land_task_core_009b41c0(std::size_t unit_index
 // 006C4790(block, squadron) passes; otherwise +2Ch/+30h/+34h are cleared. The
 // squadron's current command is the host's last 007F16D0 answer for it.
 // LABELLED: +5Dh is the owner's network-remote byte, clear in a single-player
-// mission, and 006C4790's list is taken as empty (above).
+// mission. 006C4790's list is base_unsupported_b4 under
+// kLuaSquadronSetBaseUnsupportedBound, else empty (above). 009B3533 tests it
+// last; the test has no side effect, so it is taken first here.
 bool GameUnitsHost::Impl::land_command_still_valid_009b34d0(const GameUnitSlot& unit) const {
     if (unit.land_deck_plus_one == 0 || unit.land_site_plus_one == 0) return false;
     const bsp::PlaneSquadronHostRecord* sq =
         bsp::plane_squadron_registry().find_by_member_unit(unit.process_index);
     if (sq == nullptr) return false;   // 006C4790: false for a null squadron
+    if (unit.land_deck_plus_one - 1u < bsp::air_ops_decks().size()
+        && squadron_excluded_006c4790(
+               bsp::air_ops_decks().name_at(unit.land_deck_plus_one - 1u), *sq)) {
+        return false;                  // 009B3537 006C4790: listed at +B4h
+    }
     if (unit.land_explicit_site) {
         // The plane's current command is still `land` with this site as its
         // target (vtable[174h] / vtable[178h] -> 00521EA0).
@@ -16273,7 +16351,9 @@ void GameUnitsHost::Impl::wing_fold_notify_007c11e0(GameUnitSlot& u) {
 // zeroed (00F87574 taken as the zero vector); 007DDEA0 and 007EB380(0.0f) (the
 // +C98h sub-block's timer and effects) are recorded; +C0Ch has no host field
 // (007BB9A0's gate derives it from +900h); 007BC550 takes the Lua self +4A4h as
-// set, as the state-one copy does, and 00779C60(1.0f) is recorded.
+// set, as the state-one copy does, and 00779C60(1.0f) is recorded; 007EB270
+// (007C12D6, the +C98h FX component's OnFlightState, given the vtable[38h] value of
+// +72Ch) is presentation only, draws no RNG, and is not carried.
 void GameUnitsHost::Impl::flight_state_notify_007c11e0(GameUnitSlot& p) {
     if (!p.wing_fold_read) wing_fold_class_007eabc0(p);
     ++flight_state_notifies;
@@ -17069,7 +17149,9 @@ void GameUnitsHost::Impl::plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char
     p.plane_taxi_queue_910 = false;
     p.plane_landed_904 = false;
     p.plane_airborne_908 = (prev == 4 || prev == 3) ? 0.0f : 3600.0f;
-    // 007C71C3: 007C11E0(0) after the +900h..+908h stores (007C7183..007C71BB).
+    // 007C11E0(0) after the +900h..+908h stores: 007C71C3 when the previous state is
+    // neither 3 nor 4 (+908h = [00CFDEB0], 007C71BB), 007C71D9 when it is (+908h = 0,
+    // 007C71D1). Both arms make the same call, so the host has one site.
     // Packet cc13-frontier: covered by the same switch as the other notify sites.
     if constexpr (bsp::kPlaneFlightStateNotifyCc13Bound) {
         flight_state_notify_007c11e0(p);
@@ -20550,6 +20632,61 @@ bool GameUnitsHost::set_squadron_travel_speed_008a0630(std::size_t unit_index, f
     sq->sq_lock_3ac = true;                                           // +3ACh = 1
     sq->sq_speed_set = true;
     host.done("PlaneSquadron::set_travel_speed_008a0630", 0x008a0630u);
+    return true;
+}
+
+// Packet cc13-luawire 7b. 00951F40(visible) on one entity: attach (1) or detach
+// (0) part +4A4h's spatial node, which is this host's plane_hit_node_detached.
+// The squadron fan-out and its null-member case belong to the 008A13D0 runner.
+bool GameUnitsHost::set_plane_visible_00951f40(std::size_t unit_index, bool visible) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size() || !host.slots[unit_index]) return false;
+    host.slots[unit_index]->plane_hit_node_detached = !visible;
+    host.done("PlaneUnit::set_visible_00951f40", 0x00951f40u);
+    return true;
+}
+
+// Packet cc13-luawire 7b. 008A0000 on the entity itself, with no class test:
+// +3A4h = on ? v | 2 : v & 0x000000FD. The reader (009A1959) takes the plane's
+// squadron slot, so only a write on the squadron's fused slot is ever read.
+bool GameUnitsHost::set_squadron_vehicle_avoidance_008a0000(std::size_t unit_index, bool on) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size() || !host.slots[unit_index]) return false;
+    std::uint32_t& v = host.slots[unit_index]->sq_avoid_3a4;
+    v = on ? (v | 2u) : (v & 0x000000FDu);
+    host.done("PlaneSquadron::enable_vehicle_avoidance_008a0000", 0x008a0000u);
+    return true;
+}
+
+// Packet cc13-luawire 7b. 006CA730 appends the squadron to the base's block
+// +B4h list (std::list push, so a repeat adds a second node; the set keeps one,
+// which 006C4790's any-match answer cannot tell apart). The block is the base's
+// air-ops deck, named by the base's row name; a base that has no deck is still
+// recorded, and no reader ever asks for it. False: no squadron record for
+// squadron_unit (its fused slot or a member) or no base slot.
+bool GameUnitsHost::add_base_unsupported_006ca730(std::size_t squadron_unit,
+                                                  std::size_t base_unit) {
+    Impl& host = *impl_;
+    if (base_unit >= host.slots.size() || !host.slots[base_unit]) return false;
+    const bsp::PlaneSquadronHostRecord* rec = nullptr;
+    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+        if (r.squadron_unit == squadron_unit) { rec = &r; break; }
+    }
+    if (rec == nullptr) rec = bsp::plane_squadron_registry().find_by_member_unit(squadron_unit);
+    if (rec == nullptr) return false;
+    host.base_unsupported_b4.insert({host.slots[base_unit]->row.name, rec->name});
+    host.done("AirBase::add_unsupported_squadron_006ca730", 0x006ca730u);
+    return true;
+}
+
+// Packet cc13-luawire 7b. 008A62A0's store of float +340h on one entity; the
+// squadron fan-out (members 0..4, stopping at the first null) belongs to the
+// runner. Read only under kLuaSetCheatTurboBound.
+bool GameUnitsHost::set_cheat_turbo_340(std::size_t unit_index, float value) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size() || !host.slots[unit_index]) return false;
+    host.slots[unit_index]->cheat_turbo_340 = value;
+    host.done("PlaneUnit::set_cheat_turbo_008a62a0", 0x008a62a0u);
     return true;
 }
 
@@ -34942,11 +35079,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             travel_mul = g->dynamics_spd_multipliers_new_travel_speed_mul;
                         }
                         // 009B1019: 009FBB20(&(a+38h, a+40h), a+48h, a+44h, 0).
-                        // SUBSTITUTION, labelled: unit+340h (CheatTurbo) is 0.
+                        // unit+340h (CheatTurbo): the plane's value under
+                        // kLuaSetCheatTurboBound, else 0 (packet cc13-luawire 7b).
                         const float pos[2] = {unit_.motion.position[0], unit_.motion.position[2]};
                         const float point_xz[2] = {unit_.land_circle_38[0], unit_.land_circle_38[2]};
                         const CircleSteer009fbb20 st = circle_steer_009fbb20(pos, point_xz,
-                            unit_.land_radius_48, unit_.land_side_44, 0.0f, min_angle, max_angle,
+                            unit_.land_radius_48, unit_.land_side_44,
+                            cheat_turbo_value_340(unit_.cheat_turbo_340), min_angle, max_angle,
                             followed);
                         if (st.heading_written) {
                             unit_.plan_heading_2c0 = st.heading_2c0;
@@ -38499,9 +38638,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             max_angle = g.pilot_general_move_circle_max_angle;
                             followed = g.pilot_general_move_circle_followed_dist;
                         }
-                        // SUBSTITUTION, labelled: unit+340h (CheatTurbo) is 0 in this
-                        // host, as at the 0099D4EE dtScale site.
-                        const float cheat_turbo_340 = 0.0f;
+                        // unit+340h (CheatTurbo): the plane's value under
+                        // kLuaSetCheatTurboBound, else 0 (packet cc13-luawire 7b).
+                        const float cheat_turbo_340 = cheat_turbo_value_340(unit_.cheat_turbo_340);
                         const float pos[2] = {unit_.motion.position[0], unit_.motion.position[2]};
                         const float point_xz[2] = {pt[0], pt[2]};
                         // 009C280E: 009FBB20(&point_xz, r, side +18h, &local18h). The out
@@ -39280,9 +39419,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         bsp::PilotBotHeadingTerm term;
                         term.heading_error = bsp::wrapped_angle_subtract_00438b10(
                             desired_heading, unit_.plane_heading_c6c);
-                        // 1 / max(unit+340h * 0.4, 1.0). The time scale is 0 in
-                        // this host, so the divisor is 1.
-                        term.speed_scale = 1.0f;
+                        // [ESP+28h] = 1 / max(unit+340h * 0.4, 1.0) (0099D4B3-0099D4E6),
+                        // 1 unless kLuaSetCheatTurboBound and CheatTurbo > 2.5.
+                        term.speed_scale = cheat_turbo_inverse_0099d4b3(unit_.cheat_turbo_340);
                         bsp::PilotBotTuning tuning;
                         if (owner_.lua.plane_globals_loaded()) {
                             const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
@@ -39377,7 +39516,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             rin.heading_error = scratch.base_num;
                         }
                         rin.bank = unit_.plane_bank_angle_c68;
-                        rin.dt_scale = 1.0f;
+                        // SUBSTITUTION, labelled (packet cc13-luawire 7b): 0099E2D3's
+                        // arm multiplies by [ESP+28h] = 1 / dtScale; the library divides
+                        // by dt_scale, so passing dtScale can differ in the last bit when
+                        // dtScale != 1 (only with kLuaSetCheatTurboBound and CheatTurbo > 2.5).
+                        rin.dt_scale = cheat_turbo_dt_scale_0099d479(unit_.cheat_turbo_340);
                         rin.turn_scale_2e8 = unit_.plan_state.turn_scale_2e8;
                         rin.bank_limit_2c8 = unit_.plan_state.bank_limit_2c8;
                         // 0047B880 is read (docs/PILOT_BANK_COMMAND_INPUTS.md):
@@ -39480,8 +39623,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::PilotBotRollDemandInputs sin;
                             sin.bank_target_2c4 = unit_.plan_state.bank_target_2c4;
                             sin.bank = unit_.plane_bank_angle_c68;
-                            // [ESP+28h] is 1 / dtScale = 1 here (0099D4B3-0099D4E6).
-                            sin.error_scale = 1.0f;
+                            // [ESP+28h] is 1 / dtScale (0099D4B3-0099D4E6).
+                            sin.error_scale = cheat_turbo_inverse_0099d4b3(unit_.cheat_turbo_340);
                             sin.band_40 = 0.0f;
                             sin.gain_44 = 1.0f;
                             sin.rate_48 = 0.0f;
@@ -39600,7 +39743,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plane_world_velocity[0] * unit_.motion.pose_row2[0] +
                             unit_.plane_world_velocity[1] * unit_.motion.pose_row2[1] +
                             unit_.plane_world_velocity[2] * unit_.motion.pose_row2[2]);
-                        pin.dt_scale = 1.0f;
+                        // SUBSTITUTION, labelled (packet cc13-luawire 7b): 0099E604
+                        // multiplies by [ESP+28h] = 1 / dtScale; the library divides by
+                        // dt_scale, so passing dtScale can differ in the last bit when
+                        // dtScale != 1 (only with kLuaSetCheatTurboBound and CheatTurbo > 2.5).
+                        pin.dt_scale = cheat_turbo_dt_scale_0099d479(unit_.cheat_turbo_340);
                         pin.turn_roll = unit_.plane_class_turn_roll;
                         pin.pitch_spd = unit_.plane_class.pitch_spd;
                         pin.yaw_spd = unit_.plane_class.yaw_spd;
@@ -39686,11 +39833,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // With +2D8h != 0, 0099D79F jumps to 0099D8C1 and
                                 // that slot still holds 0099D4EE's dt / dtScale,
                                 // dtScale = max(unit+340h (CheatTurbo) * 0.4, 1.0)
-                                // (00CE65D0), which is 1.0 here. Only mode 0
+                                // (00CE65D0), 1.0 unless kLuaSetCheatTurboBound. Only mode 0
                                 // reaches 0099D7CB-0099D87E, where the slot becomes
                                 // max(|throttle pending|, |air-brake pending|).
                                 if (unit_.plane_air_brake_mode_2d8 != 0) {
-                                    tin.pending = unit_.plane_think_dt;
+                                    tin.pending = cheat_turbo_scaled_dt_0099d4ee(
+                                        unit_.cheat_turbo_340, unit_.plane_think_dt);
                                 } else {
                                     const bsp::PilotPlanSlot& ab =
                                         unit_.plan_slots[bsp::kPilotSlotAirBrake];
@@ -39739,9 +39887,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         min_pitch = g.pilot_general_trg_speed_corr_min_pitch;
                                         speed_mul = g.pilot_general_trg_speed_corr_speed_mul;
                                     }
-                                    // [ESP+6Ch] = dt / dtScale, dtScale 1 here.
-                                    corr = bsp::pilot_speed_corr_decay_0099d756(
-                                        corr, decay, unit_.plane_think_dt);
+                                    // [ESP+6Ch] = dt / dtScale (0099D4EE).
+                                    corr = bsp::pilot_speed_corr_decay_0099d756(corr, decay,
+                                        cheat_turbo_scaled_dt_0099d4ee(unit_.cheat_turbo_340,
+                                            unit_.plane_think_dt));
                                     // 0099D8CD's taken side is the only way into 0099D924.
                                     const bool demand = tin.air_brake_mode == 1
                                         && !(0.001f > tin.one_shot_threshold);
