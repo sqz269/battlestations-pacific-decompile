@@ -263,7 +263,7 @@ struct GameExecutableOptions {
     // goes to the named unit through the player's moveto command form (005F9B20
     // -> 0077D600), with no HUD, selection or camera. Empty means no change.
     std::string helm_orders_path;
-    // Packet cc13-torpranges, --difficulty <0..3>. A HARNESS OPTION: the
+    // Packet cc13-torpranges, --difficulty <0..2>. A HARNESS OPTION: the
     // player's chosen difficulty, game+6B0h (the profile's SelectedDifficulty),
     // which 0058BF58 copies into game+6ACh when the mission record's
     // forcedDifficultyLevel is 3. -1 (absent) keeps the profile-reset 1.

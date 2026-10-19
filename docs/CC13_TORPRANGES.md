@@ -163,18 +163,23 @@ That is log text only; no behaviour changes.
 
 ## The --difficulty flag (harness option)
 
-`bsp_game --difficulty N` (N from 0 to 3) sets the player's chosen difficulty, game+6B0h.
+`bsp_game --difficulty N` (N from 0 to 2) sets the player's chosen difficulty, game+6B0h.
 - **The path.** `GameMissionHost::set_chosen_difficulty` makes `chosen_difficulty()` return N.
   On the briefing start path, 0058BF26 in src/mission_briefing_start.cpp copies that into
   game+6ACh when the record's forcedDifficultyLevel is 3, as 0058BF58 does in the image. A
   record that forces 0, 1 or 2 keeps its own value. GetDifficulty then returns game+6ACh.
-- **Bad values.** A value outside 0..3, a non-number or a missing value exits 2 with
-  `--difficulty needs a level from 0 to 3`.
+- **Bad values.** A value outside 0..2, a non-number or a missing value exits 2 with
+  `--difficulty needs a level from 0 to 2`.
 - **The log.** When the flag is set, startup logs one line:
   `--difficulty N: chosen difficulty game+6B0h = N (default 1)`.
 - **Without the flag,** `chosen_difficulty()` still returns 1 and nothing else changes.
-- **N = 3.** The image never stores 3 in game+6ACh: 3 is only the record's "ask the player"
-  value. 3 is accepted as the brief asked, but it is outside the image's single-player range.
+- **N = 3 is rejected.** The image never stores 3 in game+6ACh: 3 is only the record's "ask
+  the player" value. The image cannot run at 3. The three-entry HPMultipliers,
+  PlayerCheatMultipliers and LockRadiusMultipliers tables are indexed by game+6ACh (loaded at
+  00442B23, 0095DA4B and 00910417) with a bounds check: 00442B32 calls the checked operator[]
+  0043F880, and 0095DA6E and 0091043A inline the check and call 00BF6713 (terminate). The host
+  would instead silently drop the multipliers: gunnery.cpp skips the 1.8 HP scale, and
+  lock_radius_multiplier(3) is 0. Every Lua `Difficulty == 0/1/2` arm would also miss.
 - **Use 0** to play the rows the way this installation's saved profile does.
 
 ## Status
