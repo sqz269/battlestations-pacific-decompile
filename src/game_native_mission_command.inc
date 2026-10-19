@@ -77,6 +77,7 @@ struct MissionCommandGraph {
   bool batch_retired[2]{};
   U acquired_batches{};
   NativeRenderSceneSubmissionOperation submission;
+  U scene_label[2]; // B41E870 initializes; B1F4D0 consumes exactly once.
   // Explicit initialized source preimage: copy the SAME current vertex bank,
   // never manufacture the original function's uninitialized stack bytes.
   // Native gather overwrites its established words and preserves the rest.
@@ -273,7 +274,7 @@ struct MissionCommandGraph {
    log.notef("native_mission_command device_generation=%lu queue=empty",generation);
   }
  }
- void submit_drawable(void* scene,void* camera,void* targets,void* drawable) {
+ NativeRenderCommandQueueStorage& begin_submission() {
   check(!failed && !pending,"mission permits one retained ordinary command per frame");
   check(execution.actual_service_00f8d39c && providers.clock.actual_clock_01090ab0 &&
     providers.foliage_manager_00f8c274 && providers.foliage_00f8c210,
@@ -285,17 +286,41 @@ struct MissionCommandGraph {
   pending=std::make_unique<Record>(*this);
   queue_frame={&pending->frame_pointer,1,0};
   acquiring=pending.get();
+  return *queue;
+ }
+ void finish_submission(NativeRenderCommandQueueStorage& queue,const char* native_entry) {
+  acquiring=nullptr;
+  pending->prepare();
+  ++submitted;
+  log.notef("native_mission_command submit=%s queue_count=%d entries=%u,%u indexed_groups=%d ordered_groups=%d",
+   native_entry,queue.commands_14.count_04,pending->entry_counts[0],pending->entry_counts[1],
+   pending->submission.command->indexed_groups_2c.count_04,pending->submission.command->ordered_groups_38.count_04);
+ }
+ void fail_submission() {
+  acquiring=nullptr;failed=true;pending->failed=true;
+  log.note("native_mission_command submission_failed retained=1");
+ }
+ void submit_drawable(void* scene,void* camera,void* targets,void* drawable) {
+  auto& queue=begin_submission();
   try {
-   submit_native_drawable_00b1f5e0(*queue,scene,camera,targets,drawable,submission,pending->submission);
-   acquiring=nullptr;
-   pending->prepare();
-   ++submitted;
-   log.notef("native_mission_command submit=B1F5E0 queue_count=%d entries=%u,%u indexed_groups=%d ordered_groups=%d",
-    queue->commands_14.count_04,pending->entry_counts[0],pending->entry_counts[1],
-    pending->submission.command->indexed_groups_2c.count_04,pending->submission.command->ordered_groups_38.count_04);
+   submit_native_drawable_00b1f5e0(queue,scene,camera,targets,drawable,submission,pending->submission);
+   finish_submission(queue,"B1F5E0");
   } catch(...) {
-   acquiring=nullptr;failed=true;pending->failed=true;
-   log.note("native_mission_command submission_failed retained=1");throw;
+   fail_submission();throw;
+  }
+ }
+ void submit_scene(void* scene,void* camera,void* targets) {
+  check(scene!=nullptr,"mission scene submission requires an actual native scene");
+  auto& queue=begin_submission();
+  try {
+   construct_native_string_header_0041e870(pending->scene_label,submission.strings,"Mission ship");
+   // B1F4D0 owns this eight-byte argument on both normal and exceptional
+   // paths. The consumed header stays unchanged and must not be destroyed.
+   submit_native_scene_00b1f4d0(queue,scene,camera,targets,pending->scene_label,
+     submission,pending->submission);
+   finish_submission(queue,"B1F4D0");
+  } catch(...) {
+   fail_submission();throw;
   }
  }
  void execute_before_overlay() {

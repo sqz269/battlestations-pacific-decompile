@@ -13,6 +13,9 @@ collection/upload, target/camera preparation, system gather, material constants,
 pass/entry dispatch and queue execution over the renderer's existing providers.
 `FrameGraph::bind_ordinary_execution` attaches the same execution/frame identities
 to main End, worker End and native queue destruction. There is no second queue.
+Full-ship scene submission uses genuine B1F4D0 with a genuine B41E870-owned label;
+that argument is consumed once by the native submission contract on success and
+failure. B1F5E0 remains available for one isolated drawable diagnostic.
 
 One pending command has one in-place canonical context companion and two in-place
 canonical batch companions. Binding callbacks neither allocate nor retain. Context
@@ -100,7 +103,9 @@ branches. A1 can borrow `commands->render_access()` before resource initializati
 constructing this metadata does not submit or execute a native command.
 
 After a drained device transition call `before_device_generation(generation)`.
-Between the existing Begin and End call `submit_drawable(scene,camera,targets,model)`.
+Between the existing Begin and End call `submit_scene(scene,camera,targets)` for
+the real scene containing all authored mesh-model nodes. An isolated drawable can
+instead use `submit_drawable(scene,camera,targets,model)`.
 Then call `execute_before_overlay()` while that same native BeginScene is active,
 before overlay drawing and screenshot capture. It invokes genuine B1EBE0/B1D950
 and retires the native command. Existing native End sees the now-empty queue.
