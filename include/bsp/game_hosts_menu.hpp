@@ -203,6 +203,9 @@ public:
     bool in_game_screen_applied(int slot);
     // Packet cc9_screen_46h: the slot holds a registered HUD screen.
     bool in_game_screen_registered(int slot);
+    // The HUD calls this on each frame screen 2Eh's 005484F0 runs, so the helm
+    // `input` line can report edges and held frames that no 005484F0 read.
+    void note_screen_2eh_ran();
     // The sprite bridge and page owner. The HUD's two world screens draw through
     // it, and it is this object's for the whole run.
     GameFrontendHost& frontend() const noexcept;
