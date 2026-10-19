@@ -193,7 +193,7 @@ The host has no counterpart: `tail.parked_2fd` is cleared per tick and set only 
 - The tail's parked stop at 009EEF72-009EEFD1 never fires in the host. In the image it fires when `2FDh && record+20h && 340h < min(0.25 * 3CCh, 0.1 * 1F0h)`.
 - 009DA610's reader of `goal.flag_2fd` sees the byte set only from 009EF045.
 
-Separately, the mode-3 skip at 009EE756 is **not** latent (corrected in cc13-seg67h). 009ED7E6..009ED7F3 sets `[ESP+4Fh] = (blk+1C4h == 3)`. 009EE756 then jumps to 009EF206 after the 2FDh writes, which skips the output block and the tail. The host writes mode 3 at 009F3375 (`ship_ai_attackmove_approach_step_009f3240`, src/ship_ai_attackmove_substates.cpp:207), reached from `substate_step_vtable_000c` offset 8 (game_hosts_ship_ai.cpp:7505). The host's pick gate lets mode 3 through (`state.astern`, ship_ai_goal_vector.cpp:208), and the host then runs `ship_ai_navigation_arm_009ee671` and the tail for it. An attack-move ship in the approach substate gets the path output and the tail in the host but not in the image. No switch covers this yet.
+Separately, the mode-3 skip at 009EE756 is **not** latent (corrected in cc13-seg67h). 009ED7E6..009ED7F3 sets `[ESP+4Fh] = (blk+1C4h == 3)`. 009EE756 then jumps to 009EF206 after the 2FDh writes, which skips the output block and the tail. The host writes mode 3 at 009F3375 (`ship_ai_attackmove_approach_step_009f3240`, src/ship_ai_attackmove_substates.cpp:207), reached from `substate_step_vtable_000c` offset 8 (game_hosts_ship_ai.cpp:7505). The host's pick gate lets mode 3 through (`state.astern`, ship_ai_goal_vector.cpp:208), and the host then runs `ship_ai_navigation_arm_009ee671` and the tail for it. An attack-move ship in the approach substate gets the path output and the tail in the host but not in the image. The switch `kShipAiNavigateAsternSkipBound` covers this (see Switches).
 
 **(E) NaN semantics of the by-reference helpers.** The image helpers behave as follows:
 - 00415510 is `b > a ? a : b`;
@@ -291,7 +291,27 @@ All of these default to OFF, and none is flipped. OFF keeps the previous host be
 | I | `kShipAiTorpedoMarginClassLengthBound` (ship_ai_seg67_switches_cc13.hpp) | 009E08EF `[[unit+538h]+A0h]` * 0.6 | game_hosts_ship_ai.cpp:10766 | the same torpedo tracks as G | None today: the host's +9C8h is the no-model substitution, which already holds the Lua Length. |
 | C | `kShipAiStationLatchClearBound` | 009EE586..009EE594 | game_hosts_ship_ai.cpp:10927 | USN04: 7 of 18 station rows toggle (arm_runs < limit_steps). JM08: none toggle. | A re-entering station-keeper starts with the 38Ah/388h/389h latches false. |
 | D | `kShipAiParkedByteBeforeTailBound` | 009EE6F1..009EE750 | game_hosts_ship_ai.cpp:10964 | every arm-tail body: JM08 258152 (1526 stops), USN04 43469 (5 stops) | Visible: the parked stop at 009EEF72 can fire, so expect arm_tail_stops to rise. 009DA610 sees 2FDh before the tail. |
+| D' | `kShipAiNavigateAsternSkipBound` | 009ED7E6 `[ESP+4Fh] = (1C4h == 3)`; 009EE756 JNE 009EF206 | game_hosts_ship_ai.cpp, after the (D) block in the path branch | JM08: `ShipAiAttack::approach_step` (009F3240, which writes mode 3 at 009F3375) calls=37856. USN04: 0 calls (substate_concrete=0). USN21: unverified. | Visible. In mode 3 the ship keeps 324h = 1D8h, the approach's commanded heading from the 009ED6B0 prologue, and the prologue's 344h = 1.0. It gets no path bearing, no 1F0h/304h/32Ch/338h writes, and no tail ceiling, stop/start latch, astern choice or arrival. Expect JM08 attack-move ships (Helena, Missouri, Auilick, Gleaves, Grayson, Bristol, Macomb) to steer straight on the approach heading during the approach substate, instead of following the planned path. |
 | F | `kShipAiClearanceRefreshSentinelBound` | 009EF94E/009EF96F `[00CE3D64]` 10000.0 | ship_ai_clearance_profile.cpp:119 | every turn-clearance refresh. In JM08 the table's clear_37c column shows 9999.0 for most hulls. | The untouched clearance reads 10000.0, as in the image. This is the JM08 "clear_37c 9999.0" value for any hull whose refresh ran; a hull whose refresh never ran still shows the member default 9999.0 under ON. Danger level is unchanged, because both ratios are past 4.0 for any half-width under 2500. |
+
+What the image still runs in mode 3, before 009EE756 skips the rest:
+- the 009ED6B0 prologue (the resets, the latch, the look-ahead, and 324h = 1D8h because the mode is not 0);
+- the 3A5h station test;
+- the 009EE586 clears and the 009EE59B gate, which admits modes 2 and 3;
+- the path pick 009EE5BA..009EE66C (39Ch = 1.25, 009ED3E0, 009E3C00, the 00815F30 publish);
+- the 2FDh writes 009EE6F1..009EE750;
+- then 009EF206, which is 009DE5B0(dt) and returns AL = [ESP+37h] = 0.
+
+In the host, ON reproduces this by calling the same arm-final step the tail's `after_arm_009de5b0` would call, and returning false.
+
+The host's other mode-3 consumers are unchanged:
+- `pick.astern` (game_hosts_ship_ai.cpp, path-pick state);
+- the ring-live branch at game_hosts_ship_ai.cpp:12492;
+- ship_ai_state_steps.cpp:23 (009DE07D).
+
+`arm_tail_ran` stays false on a skipped tick, so 009F4DA0's ceiling falls back to 1.0, the same 344h the image prologue left.
+
+ON-lookup trace: the skip reads only `ctl_.blk.mode`. The arm-final calls are the ones the station arm already makes on the same controller and row, so no new container is looked up.
 
 Readers of `kShipAiClearanceSentinel`:
 - ship_ai_clearance_profile.cpp:119 is the 009EF96F store, which stands for [00CE3D64]. It is the only site switched.

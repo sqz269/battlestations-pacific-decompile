@@ -40,4 +40,15 @@ inline constexpr bool kShipAiClearanceRefreshSentinelBound = false;
 inline constexpr float kShipAiClearanceRefreshSentinel = 0x1.388p+13f; // 10000.0f, 0x461C4000
 static_assert(kShipAiClearanceRefreshSentinel == 10000.0f);
 
+// (D') 009ED7E6..009ED7F3 sets [ESP+4Fh] = (blk+1C4h == 3); 009EE756
+// CMP [ESP+4Fh],0 / JNE 009EF206. In mode 3 (written by the attack-move
+// approach step at 009F3375) the image still runs the 009ED6B0 prologue, the
+// 009EE586 clears, the 009EE59B gate, the path pick 009EE5BA..009EE66C and the
+// 2FDh writes 009EE6F1..009EE750, then skips the output block 009EE765..009EEAA2
+// and the tail 009EEAAB..009EF1FE and goes straight to 009EF206: 009DE5B0(dt),
+// AL = [ESP+37h] = 0 (set at 009EDA2F).
+// True: the host does the same for NavigateAstern. False: the host runs the
+// output block and the tail for mode 3 as for mode 2.
+inline constexpr bool kShipAiNavigateAsternSkipBound = false;
+
 } // namespace bsp

@@ -10976,6 +10976,18 @@ public:
             ctl_.tail.parked_2fd = parked;
             ctl_.goal.flag_2fd = parked;
         }
+        if (bsp::kShipAiNavigateAsternSkipBound
+            && ctl_.blk.mode == bsp::ShipAiSteeringMode::NavigateAstern) {
+            // 009EE756 JNE 009EF206: no output block, no tail. 009EF206..009EF213
+            // is 009DE5B0(dt), which the path branch otherwise reaches through
+            // the tail's after_arm_009de5b0.
+            if (kShipAiArmFinalWholeBound)
+                owner_.arm_final_step_009de5b0(index_, ctl_, row_);
+            else if (kShipTorpedoResponseBound || kShipAvoidZoneEscapeBound)
+                owner_.torpedo_override_009de8f1(index_, ctl_, row_);
+            owner_.done("ShipAi::navigate_astern_skip_009ee756", 0x009ee756u);
+            return false;   // AL = [ESP+37h] = 0, 009EDA2F
+        }
         bsp::ShipAiNavWaypoint waypoint{};
         waypoint.x = ctl_.path_point.point_x_08;            // 009EE671
         waypoint.z = ctl_.path_point.point_z_0c;            // 009EE694
