@@ -352,6 +352,9 @@ struct GameCommandsSummary {
     unsigned long long override_installs{0};  // 0071E7F0 installed director+188h
     unsigned long long override_arm_ends{0};  // 00836DC4, the override arm's 0071D9E0(2)
     unsigned long long override_clears{0};    // 0071E610
+    // Packet cc13-jm08: 00720450 runs from a leader's death, and how many of
+    // them copied a `land` the image would have rewritten to `attackmove`.
+    unsigned long long director_state_copies{0}, director_copy_land_kept{0};
     unsigned long long override_push_tests{0};      // stored category 1/2 pushes (0071E7B4 reads)
     unsigned long long override_push_tests_set{0};  // ... with director+188h set
     unsigned long long override_push_echoes{0};   // 0071E2E0 from 0071E6C0's tail (s57)
@@ -616,6 +619,13 @@ public:
     // is every director whose push resolved the entity, 0071E781). Records the
     // entity as released (+5Dh) for 0071D6D0's refusal. Returns the slots matched.
     std::size_t release_observed_target_0071ddb0(const GameReleasedTarget& released);
+    // Packet cc13-jm08. 00720450 BSP_CommandControllerBase_CopyStateFrom(dst, src),
+    // as 00836680 runs it from 0071C150 when a formation leader dies (0077BDDE):
+    // the parts this host's GameDirector carries (mode, the ten slots, the override
+    // cleared, the stages reset, the slot-0 path object). What it leaves out is
+    // listed at kDeadLeaderDirectorStateCopyBound. False when either index has no
+    // director.
+    bool copy_director_state_00720450(std::size_t dst, std::size_t src);
     // 0071D6D0 for a caller outside the director chain (009F5E59): the
     // descriptor 00465080 builds for the one-based unit handle (kind 1, the
     // unit's +174h id, the zero vector, +1h clear), then the same tests as

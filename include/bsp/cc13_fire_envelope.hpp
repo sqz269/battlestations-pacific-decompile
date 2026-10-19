@@ -37,9 +37,14 @@
 namespace bsp {
 
 // Main switch: A, B and C. OFF keeps the host's tick byte-identical.
-inline constexpr bool kDogfightFireEnvelopeBound = false;
+// cc9-physics24 2026-10-19: both ON by mechanism (OCEAN_WAVE_FIELD 100). Pairs
+// local\p24_off vs local\p24d_on (main) and p24d_on vs p24h_on (hold arm), ref
+// and default env: BSM09, BSM01, JM08 and USN21 move, JM06 is identical (no
+// bursts); the hold arm is identical over the main switch on every row
+// (hold_ahead = 0).
+inline constexpr bool kDogfightFireEnvelopeBound = true;
 // Sub-switch, read only with the main switch ON: D and E, the hold timer arm.
-inline constexpr bool kDogfightFireHoldArmBound = false;
+inline constexpr bool kDogfightFireHoldArmBound = true;
 
 inline constexpr double kGunReaimVerticalStep_00d7a348 = 0.25;  // 00D7A348 double 0.25 (FADD double)
 inline constexpr float kGunHoldSearchArm_00d7a2f0 = 0.1f;       // 00D7A2F0 float 0.1
