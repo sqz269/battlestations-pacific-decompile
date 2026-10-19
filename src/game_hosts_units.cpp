@@ -20547,25 +20547,45 @@ void GameUnitsHost::issue_authored_commands() {
             "already running at full throttle and is wrong for a ship at rest");
     }
     for (std::size_t index = 0; index < host.slots.size(); ++index) {
-        GameUnitSlot& slot = *host.slots[index];
-        // The token every DestroyerGen of this scene authors. An entity that
-        // authored none is skipped, exactly as 004f0520's last step skips the
-        // queue call when the property is absent.
-        if (slot.row.command.empty()) continue;
-        const float heading = host.pose_heading_radians(slot);
-        const GameCommandRow* row = host.commands.issue(index, slot.row.command,
-            slot.row.command_target, slot.ring, heading);
-        if (row == nullptr) continue;
-        slot.row.command_current = row->current;
-        slot.row.command_latched = row->latched;
-        slot.row.latch_is_heading = row->fields.is_heading;
-        slot.row.latch_steer = row->fields.steer_or_heading;
-        slot.row.latch_thrust = row->fields.thrust;
-        // Nothing on this path writes an order ring, so no standing order is
-        // armed: the ring stays at whatever 00812d40 constructed it with.
-        slot.standing_order = false;
-        ++host.summary.cruise_orders;
+        issue_authored_command_at(index);
     }
+}
+
+bool GameUnitsHost::issue_authored_command_at(std::size_t index) {
+    Impl& host = *impl_;
+    if (index >= host.slots.size()) return false;
+    GameUnitSlot& slot = *host.slots[index];
+    // The token every DestroyerGen of this scene authors. An entity that
+    // authored none is skipped, exactly as 004f0520's last step skips the
+    // queue call when the property is absent.
+    if (slot.row.command.empty()) return false;
+    const float heading = host.pose_heading_radians(slot);
+    const GameCommandRow* row = host.commands.issue(index, slot.row.command,
+        slot.row.command_target, slot.ring, heading);
+    if (row == nullptr) return false;
+    slot.row.command_current = row->current;
+    slot.row.command_latched = row->latched;
+    slot.row.latch_is_heading = row->fields.is_heading;
+    slot.row.latch_steer = row->fields.steer_or_heading;
+    slot.row.latch_thrust = row->fields.thrust;
+    // Nothing on this path writes an order ring, so no standing order is
+    // armed: the ring stays at whatever 00812d40 constructed it with.
+    slot.standing_order = false;
+    ++host.summary.cruise_orders;
+    return true;
+}
+
+bool GameUnitsHost::issue_generated_authored_command(std::size_t first_index,
+    const std::string& name) {
+    Impl& host = *impl_;
+    // The slot create_units just made for a GenerateObject spawn: the first one
+    // at or past the count before the call that carries the spawned name. A
+    // respawn (kGenerateObjectEveryCallBound) makes a new slot under the same
+    // name, so the search starts at the new slots rather than at index 0.
+    for (std::size_t index = first_index; index < host.slots.size(); ++index) {
+        if (host.slots[index]->row.name == name) return issue_authored_command_at(index);
+    }
+    return false;
 }
 
 bool GameUnitsHost::issue_player_command(const std::string& token,

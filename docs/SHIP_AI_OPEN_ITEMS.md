@@ -20257,7 +20257,34 @@ local\s59_sum.py, local\s60_firstdiv.py (first diverging line per regex), local\
 
 **Still open from earlier handoffs:** the Fuso USN15 close-range gunnery question (297).
 
-## 310. Leak router delivery paired and flipped; nav set pair (cc9-ships61, 2026-10-19)
+## 310. Torpedo owner player gate paired (cc9-gunnery55, 2026-10-19)
+
+### 310.1 kTorpedoBotOwnerPlayerGateCc13Bound (src/game_hosts_gunnery.cpp, packet cc13-torpgate)
+
+Image: 008FFF20 walks the gun to its first IsKindOf(5) owner (vtable[5Ch] at 0090005C) and, when that owner's +184h
+is set (00900080), jumps at 00900087 to the exit 00900985 (docs/CC13_IJN18LOSS.md section 7). +184h is set by a
+`takehelm` whose |helm_throttle| > 0.1 while role 0 is player-held (0064B940..0064B9A6) and survives a releasegun.
+
+**Predictions (before the pair):** only rows whose OFF summary shows `torpedo owner player gate ... ticks>0` can move.
+On those, the taken ship launches no bot torpedo after its first non-trivial takehelm: its torpedo fire records drop to
+0 from that frame, the torpedo hits it scored vanish, and later draws, deaths and the mission end may move from the
+first suppressed launch on. Before the first takehelm OFF and ON are identical. Rows with ticks=0 stay identical.
+No WINS row takehelms a torpedo ship other than IJN18 `l67_i18_d` (Zao), BSM01 `l69_b1_d` (HenryPT) and USN02
+`l68_u2_a` (Houston); JM06 `l70_j6_n` takehelms PlayerSub only from frame 52000, after its 817.92 s completion.
+Pair: OFF = the tree build at dc6d0d1a3, ON = `local\g55_tg_on` (pair_export, same commit); IJN18 24000, BSM01 20000,
+USN02 16000 frames, reference env (`g55_tgoff_*` / `g55_tgon_*`).
+
+**310.1 measured; FLIPPED ON by mechanism.** OFF summaries (`torpedo owner player gate ... ticks=`): IJN18 23116,
+BSM01 33180, USN02 0 (USN02 `l68_u2_a` now fails at 330.04 s, Game Over, before Houston's takehelm at frame 5300;
+sent to lua70). ON exits on every counted tick (exits = ticks). pair_diff exit 1 on all three: deaths, hit records,
+damage, shots, death rows, plane death modes, unit tables and the native table identical; IJN18 ends with no
+EndMission in 24000 frames both ways, BSM01 ends EndMission 812.93 s both ways with the sus_prog.exe refusal logged.
+The one other IJN18 line, Oma6's end-of-run `clear_37c` (2025.4 vs FLT_MAX), also differs between two OFF runs of the
+same binary (`g55_tgoff_i18` / `g55_tgoff2_i18`): it is static-zone clearance noise. No launch was suppressed: neither
+Zao nor HenryPT launches a bot torpedo OFF after its takehelm (no `shooter=Zao|HenryPT` launch), so these rows
+exercise the exit but not a lost torpedo. A row whose taken ship's bot would launch OFF is still unpaired.
+
+## 311. Leak router delivery paired and flipped; nav set pair (cc9-ships61, 2026-10-19)
 
 **kLeakMessageRouterDeliveryCc13Bound ON** (include/bsp/cc13_leak92.hpp, docs/CC13_LEAK92.md). Reference-env JM08 pair
 (`jm08_l65_j8_p2`, 72000 frames, "rng streams: on") on origin/main 9b5457ae7: OFF = tree build (`local\s61_off_j08`),
