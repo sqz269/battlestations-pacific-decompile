@@ -8,6 +8,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <cstdarg>
 
 namespace bsp::cc13_seg53 {
 
@@ -338,6 +339,33 @@ Object matrix_set_from_euler_yxz_copy_0085c220(Seg53Host& host, Object matrix,
                                                const float* angles);
 
 // --- debug draw ---
+// 008520D0 ECX text buffer ({vtable,data+4,capacity+8,length+C}), stack
+// format/va_list, RET8. Current linked CRT is an explicit vendor boundary.
+// Buffer allocation must include the trailing NUL beyond native capacity.
+void text_buffer_append_format_008520d0(void* buffer, const char* format, va_list arguments);
+struct GeometrySquaredDistanceCalls {
+    virtual ~GeometrySquaredDistanceCalls() = default;
+    virtual double sphere_triangle_distance_0085df60(const float* center, const float* a,
+        const float* b, const float* c) = 0;
+};
+// 0085E4B0 ECX center, EDX a, stack b/c, RET8 -> ST0 after FSTP float.
+float sphere_triangle_distance_root_0085e4b0(const float* center, const float* a,
+    const float* b, const float* c, GeometrySquaredDistanceCalls&);
+struct DebugArcArithmeticCalls {
+    virtual ~DebugArcArithmeticCalls() = default;
+    // Exact original BF7420 low-EAX conversion and FSIN/FCOS + FSTP float
+    // are provider contracts. No substitute numeric library is given ABI credit.
+    virtual std::int32_t truncate_low_dword_00bf7420(double value) = 0;
+    virtual float sine_x87(float value) = 0;
+    virtual float cosine_x87(float value) = 0;
+};
+// 00860340 ECX center, EDX sine basis; stack cosine basis,start,sweep,rgba,
+// signed density; RET14h. Every original float spill is retained in source.
+void debug_draw_basis_arc_00860340(Seg53Host&, const float* center, const float* sine_basis,
+    const float* cosine_basis, float start, float sweep, const float* rgba,
+    std::int32_t density, DebugArcArithmeticCalls&);
+// 00865F50 ECX owner+90h -> 004134F0, stack matrix, RET4 -> EAX.
+Object effect_copy_matrix_00865f50(Seg53Host&, Object owner, Object matrix);
 void debug_draw_line_rgba_floats_0085f990(Seg53Host& host, const float* p0, const float* p1,
                                           float r0, float g0, float b0, float a0, float r1,
                                           float g1, float b1, float a1);

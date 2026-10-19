@@ -2,6 +2,9 @@
 #include "bsp/native_scene_token_values.hpp"
 
 namespace bsp {
+// 008F0800, stack tokenizer, RET4. Balanced group skip with '=' / ';' value
+// skipping. Valid input must terminate the group; original has no outer EOF exit.
+void skip_native_scene_group_008f0800(void*, NativeSceneTokenValueContext&);
 // Complete ordinary wrappers over borrowed, already-live 838h tokenizer storage.
 // Contexts and C++ calling conventions are new Source interfaces, not Original
 // register/stack ABIs. The accepted providers retain their current-CRT boundary.
