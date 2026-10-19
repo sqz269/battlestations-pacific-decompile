@@ -171,6 +171,11 @@ Gameplay identical (no use, no category list, no shared draw). Log changes:
 - The image's slot-record order is by the class pointer value; the host's class pointers differ,
   so two records may be walked in the other order. Both reports carry the same arguments.
 - Resolved: the image does not carry inventories across missions. `004DFB70` calls `004DC6A0`
-  once per load (`004DFEBB`), which allocates and constructs a new manager; the only other writer
-  of `[00F88C30]` is `004D2BB0`, whose instructions `004D2D84..004D2D96` delete it through vtable slot 0
-  (`008EDAD0`) and stores 0. The host mirrors that pair per frame host.
+  once per load (`004DFEBB`), which allocates and constructs a new manager. `[00F88C30]` has
+  four writers: `004DC8A9` in `004DC6A0` (the new manager); `008EDD8A` in `008EDC60` (the
+  constructor's self-publish); `004D2D96` in `004D2BB0`, whose instructions `004D2D84..004D2D96`
+  delete the manager through vtable slot 0 and then store 0; and `008EDAFF` in `008EDAD0` (the
+  destructor's clear, `XOR EBX,EBX` at `008EDAFD`). The last writer is reached only through the
+  scalar deleting destructor `008EDDA0` (its call at `008EDDA3`), which is that same vtable slot 0
+  called at `004D2D94`. So every writer belongs to the construct/delete pair, and the host
+  mirrors that pair per frame host.

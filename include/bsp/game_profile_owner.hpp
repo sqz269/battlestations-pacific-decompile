@@ -1,0 +1,139 @@
+#pragma once
+
+#include "bsp/award_trackers.hpp"
+#include "bsp/game_settings.hpp"
+#include "bsp/gui_screens_3.hpp"
+#include "bsp/mission_progress.hpp"
+#include "bsp/profile_persistence.hpp"
+#include "bsp/profile_reset.hpp"
+
+#include <cstdint>
+#include <deque>
+#include <map>
+#include <memory>
+#include <string>
+#include <vector>
+
+// cc15 object bring-up, lane L2: the GGame profile block (game+650h) with its
+// MissionProgress owner (+64h, game+6B4h), and the hint ("award") tracker
+// singleton [00E198D0]. Evidence, lifetime and the rows each switch wires:
+// docs/CC15_OBJECT_PROFILE_HINTS.md. These are host projections over the
+// existing typed bodies, not native layouts.
+namespace bsp::game {
+
+class GameHostLog;
+
+// Off: the host keeps the earlier stand-ins (TitleInit/PressStart reset
+// unimplemented, map_flag_visible = true, mission_result's own progress_).
+// On: the profile owner is reset where the image resets it and the map-flag
+// and mission-record rows read and write its MissionProgress.
+inline constexpr bool kProfileOwnerCc15Bound = false;
+// Off: 0068EA00 and 00690CD0 stay unimplemented. On: the tracker is built by
+// the first 004E1CA0 call and both rows run on it.
+inline constexpr bool kHintTrackerCc15Bound = false;
+
+// The profile block GGame holds inline at game+650h. Natively the profile
+// constructor 007FEE20 already calls 007FDB20, so +64h is allocated from game
+// construction on; OnInitTitle (004C9AFA) and the press-start sign-in reset it
+// again. Only an EMPTY (new) profile is modelled: the storage read
+// 007FF100 -> 007FEFE0 -> 007FDF00 is not run.
+class GameProfileOwner final : public ProfileResetHost {
+public:
+    explicit GameProfileOwner(GameHostLog& log);
+
+    // 007FDB20, ECX = game+650h. The settings half (008D4820 control and
+    // 008D41C0 gameplay defaults) is applied to a private copy and discarded:
+    // the host's live settings stay those phase 5 loaded. See the doc.
+    void reset_to_defaults_007fdb20();
+
+    ProfileResetState& profile() noexcept { return profile_; }
+    const ProfileResetState& profile() const noexcept { return profile_; }
+    // game+6B4h. Null only before the first reset or after a failed new(24h).
+    MissionProgress* mission_progress() noexcept;
+    std::uint32_t reset_count() const noexcept { return resets_; }
+
+    // ProfileResetHost.
+    void destroy_mission_progress_007fd780() override;
+    bool construct_mission_progress_00920e10() override;
+    bool xenon_state_is_two() override;
+    bool xenon_user_selected() override;
+    void restore_selected_user_controls_008d45d0() override;
+
+private:
+    GameHostLog& log_;
+    ProfileResetState profile_;
+    MissionProgressOwner progress_;
+    GameSettingsBlock discarded_settings_{};
+    std::uint32_t resets_{0};
+};
+
+// The A0h tracker 004E18E0 builds. Each member carries the native offset it
+// stands for (include/bsp/award_trackers.hpp); the containers are C++.
+class GameHintTracker final : public HintStoreHost {
+public:
+    // 004E18E0: every container empty; +4h and +18h are left alone natively
+    // (+18h reads as kAwardTrackerNoUnitClass here, as award_trackers.hpp does).
+    GameHintTracker(GameHostLog& log, GameProfileOwner& profile);
+
+    // 0068EA00 __thiscall(tracker), RET: 004D05E0 empties the list +48h, then
+    // 0068E780 pops the deque +68h until its size +78h is 0. The raw body is
+    // award_tracker_clear_hint_queue_0068ea00 (frontend_seg16_24_28_cc13.cpp).
+    void clear_hint_queue_0068ea00();
+    // 00690CD0 __fastcall(tracker), RET, through hint_tracker_rebuild_history_00690cd0.
+    void rebuild_history_00690cd0();
+
+    std::size_t definition_count() const noexcept { return definitions_30_.size(); }
+    std::size_t history94_count() const noexcept { return history_94_.size(); }
+
+    // HintStoreHost.
+    const HintDefinition* find_definition_0068e450(const std::string& name) override;
+    bool has_been_shown_0068e600(const std::string& name) override;
+    bool profile_has_seen_007f8e00(const std::string& name) override;
+    void profile_mark_seen_007fae20(const std::string& name) override;
+    void profile_unmark_007fae60(const std::string& name) override;
+    void mission_seen_push_back_48(const std::string& name) override;
+    std::vector<std::string>& mission_seen_48() override { return mission_seen_48_; }
+    bool player_unit_present_e188d8() override;
+    std::int32_t player_unit_class_170() override;
+    void history7c_clear_00690ca0() override { history_7c_.clear(); }
+    void history94_clear() override { history_94_.clear(); }
+    bool history94_has_key(const std::string& key) override;
+    void history94_push_back(const std::string& key, const std::string& name) override;
+    void history94_assign_single(const std::string& key, const std::string& name) override;
+    std::vector<std::string> profile_shown_names_65c() override;
+
+private:
+    using HintHistory =
+        std::map<std::string, std::vector<std::string>, NativeStringCaseInsensitiveLess>;
+
+    GameHostLog& log_;
+    GameProfileOwner& profile_;
+    HintTrackerState state_{};                                  // +04h, +1Ch, +24h, +28h, +60h
+    std::int32_t last_unit_class_18_{kAwardTrackerNoUnitClass}; // +18h
+    std::map<std::string, HintDefinition, NativeStringCaseInsensitiveLess> definitions_30_;
+    std::map<std::string, float, NativeStringCaseInsensitiveLess> cooldowns_3c_;
+    std::vector<std::string> mission_seen_48_;                  // +48h list
+    std::vector<std::string> recent_54_;                        // +54h list
+    std::deque<std::string> queue_68_;                          // +68h deque, size +78h
+    HintHistory history_7c_;
+    HintHistory history_88_;
+    HintHistory history_94_;
+};
+
+// [00E198D0] and its getter 004E1CA0: new(A0h) + 004E18E0 on the first call,
+// registered with the singleton-lifetime manager (00BD0C30) and destroyed by
+// its drain (004E1C80 -> 004E1A50). Here the slot owner destroys it.
+class GameHintTrackerSlot final {
+public:
+    GameHintTrackerSlot(GameHostLog& log, GameProfileOwner& profile)
+        : log_(log), profile_(profile) {}
+    GameHintTracker& get_004e1ca0();
+    GameHintTracker* built() noexcept { return tracker_.get(); }
+
+private:
+    GameHostLog& log_;
+    GameProfileOwner& profile_;
+    std::unique_ptr<GameHintTracker> tracker_;
+};
+
+} // namespace bsp::game
