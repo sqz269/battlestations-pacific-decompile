@@ -97,6 +97,10 @@ bool player_record_scene_check_clear_007f7480(const mp_cc13::PlayerRecord& recor
 // with the flag, +8Ch = game+64Ch (passed in here).
 void player_record_stamp_voice_time_007f7490(mp_cc13::PlayerRecord& record, bool stamp,
                                              std::uint32_t game_time_64c);
+// 0076C420: reads signed game+18C8h, and when >=0 tail-calls 007F7490
+// on game+748h + index*118h. Both branches consume one stack word (RET4).
+void stamp_local_voice_time_0076c420(mp_cc13::PlayerRecord* records, std::int32_t local_index,
+                                   bool stamp, std::uint32_t game_time_64c);
 
 // The MT_CAMERA (55h) state 007F7C60 stores in the record (+0A8h..+0C8h).
 struct PlayerCameraState {

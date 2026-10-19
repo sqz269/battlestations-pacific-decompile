@@ -1664,4 +1664,52 @@ void DummyTargetVehicle_InitAll_007016c0(void* self) {
     }
 }
 
+// oct18b-nB-low additions; exact listings and family evidence are in
+// docs/OCT18B_NB_LOW.md. These entries retain ECX and original stack cleanup.
+
+// 006FCBC0..006FCC11: ECX=message, stack stream, RET 4. The base reader
+// receives the stream object; only the two numeric reads use its cursor at +4.
+void __fastcall SessionMessage_DEPTHCHARGE_CREATE_Read_006fcbc0(
+    void* self, void*, void* bit_stream) {
+    fn_at<void(__thiscall*)(void*, void*)>(0x006e06f0)(self, bit_stream);
+    auto* cursor = static_cast<std::uint8_t*>(bit_stream) + 4;
+    using ReadFloat = void(__thiscall*)(void*, float*, std::uint32_t,
+                                       std::uint32_t, float, std::uint32_t);
+    auto read = fn_at<ReadFloat>(0x004293f0);
+    read(cursor, &field_at<float>(self, 0x120), 0, 1,
+         *reinterpret_cast<const volatile float*>(0x00d7a248), 0x20);
+    read(cursor, &field_at<float>(self, 0x124), 0, 1,
+         *reinterpret_cast<const volatile float*>(0x00d7a248), 0x20);
+}
+
+// 006FF6D0: ECX=self, stack float dt; FLD/FSTP forwards dt to 006E1060;
+// CALL's callee pops its float, then RET 4 pops this wrapper's original float.
+void __fastcall DummySubmarine_PlaceStepPose_006ff6d0(void* self, void*, float dt) {
+    __asm { fld dt }
+    __asm { fstp dt }
+    fn_at<void(__thiscall*)(void*, float)>(0x006e1060)(self, dt);
+}
+
+// Receiver is unused. 00700210 returns EAX=0 / RET; the following two entries
+// are literal RET 4 no-ops, with no meaningful return register.
+std::uint32_t __fastcall DummyTargetVehicleClass_VSlot04_Zero_00700210(const void*) { return 0; }
+void __fastcall DummyTargetVehicle_VSlot17C_NoOp_00700220(void*, void*, std::uint32_t) {}
+void __fastcall DummyTargetVehicle_VSlot180_NoOp_00700230(void*, void*, std::uint32_t) {}
+
+// 007004F0: ECX=self, stack float[3] out, EAX=out, RET 4. Keep the original
+// sequential FLD/FSTP copies (including their x87 behavior and alias ordering).
+float* __fastcall DummyTarget_CopyVector734_007004f0(const void* self, void*, float* destination) {
+    __asm {
+        mov ecx, self
+        mov eax, destination
+        fld dword ptr [ecx + 734h]
+        fstp dword ptr [eax]
+        fld dword ptr [ecx + 738h]
+        fstp dword ptr [eax + 4]
+        fld dword ptr [ecx + 73ch]
+        fstp dword ptr [eax + 8]
+    }
+    return destination;
+}
+
 }  // namespace bsp::dummy_depth_seg34_argon

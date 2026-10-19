@@ -86,6 +86,10 @@ void player_record_stamp_voice_time_007f7490(mp_cc13::PlayerRecord& record, bool
                                              std::uint32_t game_time_64c) {
     if (stamp) record.last_voice_time_8c = game_time_64c;
 }
+void stamp_local_voice_time_0076c420(mp_cc13::PlayerRecord* records, std::int32_t local_index,
+                                   bool stamp, std::uint32_t game_time_64c) {
+    if (local_index >= 0) player_record_stamp_voice_time_007f7490(records[local_index], stamp, game_time_64c);
+}
 
 void player_record_set_camera_state_007f7c60(PlayerCameraState& state, std::int32_t tick,
                                              const std::uint32_t a[3], const std::uint32_t b[3],

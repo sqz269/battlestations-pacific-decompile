@@ -67,7 +67,8 @@ float zero_float_008fb520(const void* self) noexcept;
 // MMultiPlayer::ServerSendSceneScoring.
 void scoring_noop_00905370(void* self) noexcept;
 // 00920EC0, __thiscall RET: no-op. Called at 004DF9D9 from BSP_Game_ConstructWorld with
-// ECX = 0 (XOR EAX,EAX / MOV ECX,EAX at 004DF9C8).
+// ECX = the object 004DF9C1 just built with 009221E0 (MOV ECX,EAX at 004DF9CA; 004DF9D3 stores
+// it at game+21CCh). ECX is 0 only when the allocation failed (004DF9BD JE 004DF9C8 XOR EAX,EAX).
 void construct_world_noop_00920ec0(void* self) noexcept;
 
 // 008FACC0, __fastcall(ECX = object) RET. No code or data reference in the image (rel32

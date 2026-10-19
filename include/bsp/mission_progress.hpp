@@ -91,6 +91,10 @@ MissionScoreRecord& mission_record_00594a70(MissionProgress&, std::string_view k
 void read_mission_score_record_00916a00(
     MissionScoreRecord&, ProfileArchiveReader&, std::uint32_t profile_version);
 void write_mission_score_record_00908a30(MissionScoreRecord&, ProfileArchiveWriter&);
+// 0090C480 / 0091CC70, ECX extended record, stack archive, RET4:
+// enter "sum", base record, leave, then tagged integer "count" at native+284h.
+void write_extended_mission_score_0090c480(MissionScoreRecord&, ProfileArchiveWriter&);
+void read_extended_mission_score_0091cc70(MissionScoreRecord&, ProfileArchiveReader&, std::uint32_t version);
 
 // Native __thiscall(ECX=24h object, archive*), RET 4. Reads current wrappers or
 // legacy direct mission entries; writes current wrappers. See the documented

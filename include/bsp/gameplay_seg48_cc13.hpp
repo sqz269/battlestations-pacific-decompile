@@ -1,5 +1,12 @@
 #pragma once
 
+namespace bsp::gameplay_seg48_cc13 {
+// Base engine slots +10h/+14h/+18h, exact empty bodies; RET8/RET4/RET.
+void engine_step_rpm_noop_007e23b0(float target, float dt) noexcept;
+void engine_apply_spin_noop_007e23c0(float dt) noexcept;
+void engine_blur_blend_noop_007e23d0() noexcept;
+}
+
 // Segment 48 (007D1E50-007F8390) reference models: the plane parts. Packet
 // cc13-gpr48; docs/CC13_GPR_48.md, docs/CC13_GP_007A_007F.md.
 //
@@ -249,7 +256,7 @@ std::vector<NodeVisibility> rotor_blur_blend_007ec3b0(const PlaneRotor& rotor,
 // 00D0865C rotor, 40h bytes), as the list loops below call it. Slot 0 (Init)
 // is called once by 007ECC85 and is not part of this interface. The base's
 // +10h/+14h/+18h are the empty bodies 007E23B0 (RET 8), 007E23C0 (RET 4) and
-// 007E23D0 (RET), which have no Ghidra function.
+// 007E23D0 (RET), defined by the Oct18b live-function dispatch and now exposed above.
 class PlaneEngineSlots {
 public:
     bool burning_8{false};  // set once by 007E24F7 (OnDestroyed); 0 from 007ECBD6
