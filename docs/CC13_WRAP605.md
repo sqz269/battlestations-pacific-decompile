@@ -20,6 +20,17 @@ The census named the setter as `009DFFB0`. That body (the rudder setter) has no 
 `00605070`; the wrap in the setter family is `009E0083` in `009E0040`. Ghidra's xrefs to
 `00605070` list none of the four sites; they were read with `bsp.py disasm-raw`.
 
+**The other `00605070` sites on ship AI headings** (status from rev4's review), all outside this
+switch:
+
+| site | status |
+| --- | --- |
+| `009DE268` | dead code |
+| `009DE2BD` | in `009DE280`, reached only from the dead `009E7FA0`; already wrapped in `cc13_seg67b.cpp` (`ship_ai_set_navigation_goal_with_penalty_009de280`) |
+| `009E1DB4` | the land path; already wrapped unconditionally by `wrap_blk_desired_heading_00605070` (`game_hosts_ship_ai.cpp`) |
+| `009E237A` | `009DFF40`'s body inlined with the kamikaze heading; covered through `009DFF40` / `HeadingHoldBinding` |
+| `009E76F4` | the ring scan; it wraps nested+1214h (the wobble phase), not `blk+1D8h` |
+
 `00605070` (`00605074..006050B9`): `fmod(*angle, 2pi)` through the CRT `00BF857A` with the
 double `00CE3828`, stored as a float; then `+2pi` when the double `-pi` at `00CE3D18` is not
 below the result (`FCOMPI` / `JB`), else `-2pi` when the result is above the double `pi` at
@@ -29,9 +40,16 @@ path's `wrap_blk_desired_heading_00605070` already applies it unconditionally.
 
 ## The host, OFF
 
-The hooks `after_heading_stored_00605070` (`SetterBinding` and `HeadingHoldBinding`) and
-`wrap_brain_heading_00605070` (`ApproachStepBinding`) only count the stored value
-(`count_heading_wrap_store`) and record the call. The field keeps whatever was stored.
+Three hooks cover the four sites:
+- `after_heading_stored_00605070` in `SetterBinding` covers `009E0083`;
+- `after_heading_stored_00605070` in `HeadingHoldBinding` covers `009DFF81` and `009E00FA`;
+- `wrap_brain_heading_00605070` in `ApproachStepBinding` covers `009F3360`.
+
+They only count the stored value (`count_heading_wrap_store`) and record the call. The field keeps
+whatever was stored.
+
+The land path (`009E1DB4`, `wrap_blk_desired_heading_00605070`) counts after its own wrap, so its
+stores are never out of range. The census therefore measures only the four sites above.
 
 ## ON
 
@@ -52,14 +70,43 @@ Every reader of `blk+324h` reached from that copy goes through `wrapped_angle_ad
 `heading_to_direction_006bc0c0`), or into a log. The torpedo-override turn in
 `game_hosts_ship_ai.cpp` is wrapped before use and is a log column.
 
-**Expected movers.** Only rows that store a heading outside (-pi, pi]: the census found one,
-JM06 (79 of 2595 stores, largest 6.2785). There ON changes the logged `desired_1d8` / heading
-values and can move results by float rounding. Every other census row stored 0 out-of-range
-values, so ON is identical there. It is not worth a dedicated pair; flip it in a batch.
+**Expected movers.** These are the rows that store a heading outside (-pi, pi]. On those rows ON
+changes the logged `desired_1d8` / heading values and can move results by float rounding. The
+current census is the `summary mission ship ai heading wrap` line in cc9-lua52's
+`local\l70r_n_<row>_main_ref.log`, all written on 2026-10-19 between 04:33 and 06:25 local time:
+
+| row | stores | out of range | max abs |
+| --- | --- | --- | --- |
+| j6k | 84994 | 14134 | 6.2828 |
+| j6m | 48475 | 4895 | 6.2824 |
+| j6n | 14596 | 1221 | 6.2824 |
+| w_i18 | 112256 | 614 | 4.5341 |
+| l6i | 2340 | 428 | 5.8770 |
+| l6h | 2132 | 427 | 5.8763 |
+| l6g | 2357 | 237 | 4.7140 |
+| vu21 | 831955 | 222 | 5.4856 |
+| l6e | 3013 | 99 | 5.0174 |
+| l6j | 799 | 99 | 5.0174 |
+| l6k | 559 | 99 | 5.0174 |
+| l6w | 3013 | 99 | 5.0174 |
+| b1d | 168345 | 12 | 3.1416 |
+| w_i08 | 159242 | 3 | 3.1416 |
+
+- **b1d and w_i08:** their max is pi, so their out-of-range stores sit exactly at -pi. The census
+  counts -pi as outside (-pi, pi], and `00605070` maps it to +pi, so ON changes only the sign of
+  those values.
+- **Zero out of range:** u02a, u04, u12e8, u15e, u1s, vb9, w_e8, w_l10, w_p01 and w_u15. ON is
+  identical there.
+
+The superseded 2026-09-28 census (cc9-ships9) had found only JM06, with 79 of 2595 stores.
+
+**Recommendation.** Thousands of stores move on j6k and hundreds on w_i18. Run a dedicated pair
+on j6k and w_i18 (ON against OFF) instead of folding the flip into a batch.
 
 ## Uncertainty
 
 - The host's fmod and fixups are computed in double and then rounded to float. The image's
   `FADD` / `FSUB` run at the thread's x87 precision control and store once; on the main thread
   (24-bit precision) a result can differ in the last place from the host's double-then-float.
-- The census row counts are from 2026-09-28 builds; current main may store differently.
+- The census table is from cc9-lua52's 2026-10-19 main_ref builds; later main may store
+  differently. The counts are of pre-wrap values at the four sites only.
