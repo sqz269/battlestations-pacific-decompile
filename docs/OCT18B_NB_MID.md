@@ -1,0 +1,64 @@
+# Oct18b nB middle rows
+
+The exact 64 dispatch rows from `00759090` through `007F22E0` are enumerated in
+`reports/oct18b_nB_mid.json`. The batch supplies 59 source interfaces in the
+existing message, MovCam, movie-camera, path, bot-task, engine, paratrooper,
+player-record and plane-squadron families. Three compiler/reference-counted
+copies are classified `library_instantiation_out_of_scope`. Two larger game
+bodies remain in bounded contract recovery, with no placeholder implementation.
+
+The evidence is the saved Ghidra pseudocode and x86 listing from the existing
+`C:/Users/sqz269/bsp.gpr`, program `/battlestationspacific.exe`, plus per-row
+caller/vslot references and direct call sites in the report. C++ and descriptive
+Ghidra names are hypotheses. Prior live names/comments are retained by the
+annotation tool's before/after log; the report retains each dispatch name.
+
+The original receiver is ECX for member entries; the report records each RET
+cleanup. Important decompiler omissions are the ignored stack word of
+`007B6D00` (RET4), the third word of `007A66D0` (RET0Ch), the ten words of
+`007ED000` (RET28h), and the hidden output pointer of `007B7830` (RET4).
+`00780800` is identity with RET4; `0078EAA0` is identity with RET. AL-only
+predicates make no promise about the native upper EAX bits.
+
+The eight path codecs preserve the extended header, +1Ch boolean, optional
+32-bit index and raw float[3] order. Plane-create optional +12Ch is -1 when
+absent and an unsigned 8-bit value when present. The path-create reader reads
+the existing 12-byte-stride array without reading a count or resizing it.
+`007B2780` resizes to i+1 only after an archive entry exists: an empty archive
+does not clear an existing vector. The squadron proxies read member zero even
+when the live count is zero unless the original function explicitly tests it.
+Fan-outs re-read the count after callbacks. The pose refresh reads the borrowed
+game clock after child invalidation, as the listing does.
+
+`src/oct18b_nB_mid.cpp` is limited to six exceptions. `007593B0` cannot be added
+to `cc13_seg30.hpp` while `agent/oct18b-nA2:oct18b-nA2-families` owns it;
+`007B9070` cannot be added to `cc13_seg33a.hpp/.cpp` while
+`agent/oct18b-nA3:oct18b-nA3-family` owns them. Both retain explicit existing
+dependency boundaries. The two descriptor identities and session byte/false
+leaves have exact data/vtable references but no stronger recovered class name.
+
+`0078CFB0` constructs a reference-counted holder from owner+0Ch;
+`007C4330` and `007C4390` copy a reference-counted pointer and three floats under
+compiler EH registration. Each increments through IAT `00CE221C`. They are
+recorded as library instantiations without a reconstructed game body or credit.
+
+`007AE930` belongs to the pointer-array path geometry family near the existing
+`point3_ptr_array_nearest_point_to_line_007aeec0`. ECX is the array, origin and
+direction are stack pointers, result is ST0. Its remaining work is the full
+x87 spill/NaN order and the hidden register/stack arguments at geometry calls
+`0046F440`, `0046F940`, `00470150`; the pseudocode omits them.
+
+`007EFBA0` is a PlaneSquadronGen command-permission predicate: ECX squadron,
+command string and nullable target on stack, AL result, RET8. Remaining work is
+command constant identification and receiver/order contracts for `0060C5B0`
+(class+35Ch), `006BF050` (target in ECX, DL=1), `007EEC50`, `007ED7E0/007ED8D0`,
+party tests and virtual slot +168h. The original early-outs are not replaced by
+a broad permission approximation.
+
+Validation uses `scripts/build.ps1`, the existing direct-call report checker,
+and diff inspection. No new tests or game runs are requested for this batch.
+These are source interfaces, not binary ABI replacements. Required callbacks
+remain explicit; no host routing is added. Float source models round at the
+observed float spills, but std::atan2 and double expressions are not proof of
+x87 last-bit, floating-control-word or signaling-NaN equivalence. Build, static
+and call-site evidence do not establish fixture, ABI or gameplay validation.

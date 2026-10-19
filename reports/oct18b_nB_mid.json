@@ -1,0 +1,1641 @@
+{
+  "packet": "oct18b-nB-mid",
+  "assigned_count": 64,
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "validation": {
+    "build": "Win32 scripts/build.ps1 passed and existing CTest 2/2 passed; dedicated src/oct18b_nB_mid.cpp awaits parent registration and merged build; final signature refinements require incremental build.",
+    "call_sites": "pending",
+    "game_run": "not requested or run",
+    "abi": "source interfaces, not drop-in binary replacements"
+  },
+  "family_exceptions": [
+    {
+      "source": "src/oct18b_nB_mid.cpp",
+      "family": "include/bsp/cc13_seg30.hpp / src/cc13_seg30_seg50.cpp",
+      "lease": "agent/oct18b-nA2:oct18b-nA2-families",
+      "addresses": [
+        "007593b0"
+      ]
+    },
+    {
+      "source": "src/oct18b_nB_mid.cpp",
+      "family": "include/bsp/cc13_seg33a.hpp / src/cc13_seg33a.cpp",
+      "lease": "agent/oct18b-nA3:oct18b-nA3-family",
+      "addresses": [
+        "007b9070"
+      ]
+    },
+    {
+      "source": "src/oct18b_nB_mid.cpp",
+      "family": "descriptor callback data tables / shared session vtables; no stronger class recovered",
+      "addresses": [
+        "0076a710",
+        "00780800",
+        "00781080",
+        "0078eaa0"
+      ]
+    }
+  ],
+  "functions": [
+    {
+      "address": "00759090",
+      "segment": 42,
+      "previous_ghidra_name": "BSP_SessionMessage_SHIP_CREATE_Instantiate",
+      "listing_returns": [],
+      "family_evidence": "callers of 00759090 BSP_SessionMessage_SHIP_CREATE_Instantiate (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d018b8\n  00d0189c vtable (no RTTI)                             seg=- vslot @00d018b8 [<unknown>::slot 7]",
+      "native_steps": [
+        {
+          "address": "00759090",
+          "native": "0081bfe0",
+          "function": "00759090",
+          "kind": "tail_jump"
+        }
+      ],
+      "name": "instantiate_ship_message_thunk_00759090",
+      "source": "src/leftovers_cc13.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup tail forwarding; native target ABI retained. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_instantiate_ship_message_thunk_00759090",
+      "dispatch_body_bytes": 5
+    },
+    {
+      "address": "007593b0",
+      "segment": 42,
+      "previous_ghidra_name": "FUN_007593b0",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007593b0 FUN_007593b0 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d018a4\n  00d0189c vtable (no RTTI)                             seg=- vslot @00d018a4 [<unknown>::slot 2]",
+      "native_steps": [
+        {
+          "address": "007593b9",
+          "native": "00813bd0",
+          "function": "007593b0"
+        },
+        {
+          "address": "007593c5",
+          "native": "006d4eb0",
+          "function": "007593b0"
+        }
+      ],
+      "name": "read_mothership_create_007593b0",
+      "source": "src/oct18b_nB_mid.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_read_mothership_create_007593b0",
+      "dispatch_body_bytes": 31
+    },
+    {
+      "address": "0075ac90",
+      "segment": 42,
+      "previous_ghidra_name": "FUN_0075ac90",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 0075ac90 FUN_0075ac90 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d02e54\n  00d02e48 vtable (no RTTI)                             seg=- vslot @00d02e54 [<unknown>::slot 3]",
+      "native_steps": [],
+      "name": "is_type_cc_49_46_0075ac90",
+      "source": "src/session_message_cc13_seg42.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_is_type_cc_49_46_0075ac90",
+      "dispatch_body_bytes": 34
+    },
+    {
+      "address": "00763e40",
+      "segment": 42,
+      "previous_ghidra_name": "FUN_00763e40",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 00763e40 FUN_00763e40 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d035b0\n  00d035a4 vtable (no RTTI)                             seg=- vslot @00d035b0 [<unknown>::slot 3]",
+      "native_steps": [],
+      "name": "is_type_aa_49_46_00763e40",
+      "source": "src/session_message_cc13_seg42.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_is_type_aa_49_46_00763e40",
+      "dispatch_body_bytes": 34
+    },
+    {
+      "address": "007681f0",
+      "segment": 42,
+      "previous_ghidra_name": "FUN_007681f0",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007681f0 FUN_007681f0 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d037a4\n  00d0379c vtable (no RTTI)                             seg=- vslot @00d037a4 [<unknown>::slot 2]",
+      "native_steps": [
+        {
+          "address": "007681fa",
+          "native": "00767e30",
+          "function": "007681f0"
+        },
+        {
+          "address": "0076820d",
+          "native": "00428e30",
+          "function": "007681f0"
+        },
+        {
+          "address": "0076822b",
+          "native": "004293f0",
+          "function": "007681f0"
+        },
+        {
+          "address": "00768249",
+          "native": "004293f0",
+          "function": "007681f0"
+        },
+        {
+          "address": "00768267",
+          "native": "004293f0",
+          "function": "007681f0"
+        },
+        {
+          "address": "00768277",
+          "native": "00428d30",
+          "function": "007681f0"
+        },
+        {
+          "address": "00768287",
+          "native": "00428d30",
+          "function": "007681f0"
+        },
+        {
+          "address": "00768297",
+          "native": "00428c70",
+          "function": "007681f0"
+        },
+        {
+          "address": "007682a7",
+          "native": "00428c70",
+          "function": "007681f0"
+        },
+        {
+          "address": "007682b5",
+          "native": "00428d70",
+          "function": "007681f0"
+        },
+        {
+          "address": "007682c1",
+          "native": "00428d70",
+          "function": "007681f0"
+        },
+        {
+          "address": "007682d6",
+          "native": "00428d10",
+          "function": "007681f0"
+        }
+      ],
+      "name": "read_plane_create_007681f0",
+      "source": "src/session_message_cc13_seg42.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_read_plane_create_007681f0",
+      "dispatch_body_bytes": 267
+    },
+    {
+      "address": "00768300",
+      "segment": 42,
+      "previous_ghidra_name": "FUN_00768300",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 00768300 FUN_00768300 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d037c4\n  00d037bc vtable (no RTTI)                             seg=- vslot @00d037c4 [<unknown>::slot 2]",
+      "native_steps": [
+        {
+          "address": "00768309",
+          "native": "006e06f0",
+          "function": "00768300"
+        },
+        {
+          "address": "0076832a",
+          "native": "004293f0",
+          "function": "00768300"
+        },
+        {
+          "address": "00768348",
+          "native": "004293f0",
+          "function": "00768300"
+        },
+        {
+          "address": "00768358",
+          "native": "00428e30",
+          "function": "00768300"
+        }
+      ],
+      "name": "read_torpedo_create_00768300",
+      "source": "src/session_message_cc13_seg42.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_read_torpedo_create_00768300",
+      "dispatch_body_bytes": 98
+    },
+    {
+      "address": "00768370",
+      "segment": 42,
+      "previous_ghidra_name": "FUN_00768370",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 00768370 FUN_00768370 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d037e8\n  00d037e0 vtable (no RTTI)                             seg=- vslot @00d037e8 [<unknown>::slot 2]",
+      "native_steps": [
+        {
+          "address": "00768379",
+          "native": "006e06f0",
+          "function": "00768370"
+        },
+        {
+          "address": "0076839a",
+          "native": "004294f0",
+          "function": "00768370"
+        }
+      ],
+      "name": "read_paratrooper_create_00768370",
+      "source": "src/session_message_cc13_seg42.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_read_paratrooper_create_00768370",
+      "dispatch_body_bytes": 52
+    },
+    {
+      "address": "007683b0",
+      "segment": 42,
+      "previous_ghidra_name": "BSP_NetEntityCreateMessage_Read",
+      "listing_returns": [],
+      "family_evidence": "callers of 007683b0 BSP_NetEntityCreateMessage_Read (3 sites: data_ptr 2, vslot 1; 2 rows):\n  2 data slot(s)                               data_ptr @00d0380c,00d339b0\n  00d03804 vtable (no RTTI)                             seg=- vslot @00d0380c [<unknown>::slot 2]",
+      "native_steps": [
+        {
+          "address": "007683b0",
+          "native": "00767e30",
+          "function": "007683b0",
+          "kind": "tail_jump"
+        }
+      ],
+      "name": "read_net_entity_create_thunk_007683b0",
+      "source": "src/session_message_cc13_seg42.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup tail forwarding; native target ABI retained. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_read_net_entity_create_thunk_007683b0",
+      "dispatch_body_bytes": 5
+    },
+    {
+      "address": "0076a710",
+      "segment": 42,
+      "previous_ghidra_name": "FUN_0076a710",
+      "listing_returns": [
+        "RET"
+      ],
+      "family_evidence": "callers of 0076a710 FUN_0076a710 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d039e4\n  00d039cc vtable (no RTTI)                             seg=- vslot @00d039e4 [<unknown>::slot 6]",
+      "native_steps": [],
+      "name": "decrement_session_byte12b_0076a710",
+      "source": "src/oct18b_nB_mid.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_decrement_session_byte12b_0076a710",
+      "dispatch_body_bytes": 8
+    },
+    {
+      "address": "0076c420",
+      "segment": 43,
+      "previous_ghidra_name": "FUN_0076c420",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 0076c420 FUN_0076c420 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d039e8\n  00d039cc vtable (no RTTI)                             seg=- vslot @00d039e8 [<unknown>::slot 7]",
+      "native_steps": [
+        {
+          "address": "0076c43d",
+          "native": "007f7490",
+          "function": "0076c420",
+          "kind": "tail_jump"
+        }
+      ],
+      "name": "stamp_local_voice_time_0076c420",
+      "source": "src/band_0079_cc13.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_stamp_local_voice_time_0076c420",
+      "dispatch_body_bytes": 37
+    },
+    {
+      "address": "0077d500",
+      "segment": 43,
+      "previous_ghidra_name": "FUN_0077d500",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 0077d500 FUN_0077d500 (84 sites: data_ptr 42, vslot 42; 43 rows):\n  42 data slot(s)                               data_ptr @00cea280,00cea5d8,00cf8c70,00cf9118 +38\n  00cea218 vtable (no RTTI)                             seg=- vslot @00cea280 [<unknown>::slot 26]\n  00cea570 vtable (no RTTI)                             seg=- vslot @00cea5d8 [<unknown>::slot 26]\n  00cf8c08 vtable (no RTTI)                             seg=- vslot @00cf8c70 [<unknown>::slot 26]\n  ... more (raise --limit)",
+      "native_steps": [
+        {
+          "address": "0077d52a",
+          "native": "0075b430",
+          "function": "0077d500"
+        },
+        {
+          "address": "0077d55d",
+          "native": "0077c7b0",
+          "function": "0077d500"
+        }
+      ],
+      "name": "broadcast_activate_if_clear_0077d500",
+      "source": "src/session_message_cc13_seg42.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_broadcast_activate_if_clear_0077d500",
+      "dispatch_body_bytes": 117
+    },
+    {
+      "address": "00780800",
+      "segment": 43,
+      "previous_ghidra_name": "FUN_00780800",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 00780800 FUN_00780800 (2 sites: data_ptr 2; 1 rows):\n  2 data slot(s)                               data_ptr @00d64b1c,00d64f1c",
+      "native_steps": [],
+      "name": "descriptor_identity_00780800",
+      "source": "src/oct18b_nB_mid.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_descriptor_identity_00780800",
+      "dispatch_body_bytes": 5
+    },
+    {
+      "address": "00781080",
+      "segment": 43,
+      "previous_ghidra_name": "FUN_00781080",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 00781080 FUN_00781080 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d0421c\n  00d040b8 vtable (no RTTI)                             seg=- vslot @00d0421c [<unknown>::slot 89]",
+      "native_steps": [],
+      "name": "session_false_slot_00781080",
+      "source": "src/oct18b_nB_mid.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_session_false_slot_00781080",
+      "dispatch_body_bytes": 5
+    },
+    {
+      "address": "0078cfb0",
+      "segment": 44,
+      "previous_ghidra_name": "FUN_0078cfb0",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 0078cfb0 FUN_0078cfb0 (1 sites: data_ptr 1; 1 rows):\n  1 data slot(s)                               data_ptr @00d2ce88",
+      "native_steps": [],
+      "name": "LIBCOMP_reference_counted_holder_from_owner_0078cfb0",
+      "status": "library_instantiation_out_of_scope",
+      "source": "docs/OCT18B_NB_MID.md",
+      "evidence": "Compiler/reference-counted helper instantiation. InterlockedIncrement through IAT 00CE221C; holder copy, with EH registration and three scalar float copies in 007C4330/007C4390. No game-code body or credit added.",
+      "dispatch_body_bytes": 44
+    },
+    {
+      "address": "0078e450",
+      "segment": 45,
+      "previous_ghidra_name": "FUN_0078e450",
+      "listing_returns": [
+        "RET"
+      ],
+      "family_evidence": "callers of 0078e450 FUN_0078e450 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d04c84\n  00d04b58 vtable (no RTTI)                             seg=- vslot @00d04c84 [<unknown>::slot 75]",
+      "native_steps": [],
+      "name": "movcam_description_0078e450",
+      "source": "src/path_movcam_seg46_argon.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_movcam_description_0078e450",
+      "dispatch_body_bytes": 20
+    },
+    {
+      "address": "0078e730",
+      "segment": 45,
+      "previous_ghidra_name": "FUN_0078e730",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 0078e730 FUN_0078e730 (4 sites: data_ptr 2, vslot 2; 3 rows):\n  2 data slot(s)                               data_ptr @00d04438,00d0446c\n  00d04414 vtable (no RTTI)                             seg=- vslot @00d04438 [<unknown>::slot 9]\n  00d04448 vtable (no RTTI)                             seg=- vslot @00d0446c [<unknown>::slot 9]",
+      "native_steps": [],
+      "name": "modifier_write_noop_0078e730",
+      "source": "src/cc13_camera_controllers.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_modifier_write_noop_0078e730",
+      "dispatch_body_bytes": 3
+    },
+    {
+      "address": "0078e740",
+      "segment": 45,
+      "previous_ghidra_name": "FUN_0078e740",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 0078e740 FUN_0078e740 (4 sites: data_ptr 2, vslot 2; 3 rows):\n  2 data slot(s)                               data_ptr @00d0443c,00d04470\n  00d04414 vtable (no RTTI)                             seg=- vslot @00d0443c [<unknown>::slot 10]\n  00d04448 vtable (no RTTI)                             seg=- vslot @00d04470 [<unknown>::slot 10]",
+      "native_steps": [],
+      "name": "modifier_read_noop_0078e740",
+      "source": "src/cc13_camera_controllers.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_modifier_read_noop_0078e740",
+      "dispatch_body_bytes": 3
+    },
+    {
+      "address": "0078e760",
+      "segment": 45,
+      "previous_ghidra_name": "FUN_0078e760",
+      "listing_returns": [
+        "RET"
+      ],
+      "family_evidence": "callers of 0078e760 FUN_0078e760 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d04444\n  00d04414 vtable (no RTTI)                             seg=- vslot @00d04444 [<unknown>::slot 12]",
+      "native_steps": [],
+      "name": "modifier_type_zero_0078e760",
+      "source": "src/cc13_camera_controllers.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_modifier_type_zero_0078e760",
+      "dispatch_body_bytes": 3
+    },
+    {
+      "address": "0078eaa0",
+      "segment": 45,
+      "previous_ghidra_name": "FUN_0078eaa0",
+      "listing_returns": [
+        "RET"
+      ],
+      "family_evidence": "callers of 0078eaa0 FUN_0078eaa0 (2 sites: data_ptr 2; 1 rows):\n  2 data slot(s)                               data_ptr @00d28c20,00d2c420",
+      "native_steps": [],
+      "name": "descriptor_identity_0078eaa0",
+      "source": "src/oct18b_nB_mid.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_descriptor_identity_0078eaa0",
+      "dispatch_body_bytes": 3
+    },
+    {
+      "address": "00790390",
+      "segment": 45,
+      "previous_ghidra_name": "FUN_00790390",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 00790390 FUN_00790390 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d04c34\n  00d04b58 vtable (no RTTI)                             seg=- vslot @00d04c34 [<unknown>::slot 55]",
+      "native_steps": [],
+      "name": "movie_camera_fixed_driver_00790390",
+      "source": "src/hud_movie_camera.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_movie_camera_fixed_driver_00790390",
+      "dispatch_body_bytes": 193
+    },
+    {
+      "address": "007a66d0",
+      "segment": 46,
+      "previous_ghidra_name": "FUN_007a66d0",
+      "listing_returns": [
+        "RET 0xc"
+      ],
+      "family_evidence": "callers of 007a66d0 FUN_007a66d0 (0 sites: ; 0 rows):",
+      "native_steps": [
+        {
+          "address": "007a66e6",
+          "native": "007a5110",
+          "function": "007a66d0"
+        },
+        {
+          "address": "007a6706",
+          "native": "007a5110",
+          "function": "007a66d0"
+        }
+      ],
+      "name": "movcam_set_cinematic_007a66d0",
+      "source": "src/path_movcam_seg46_argon.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0xc. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_movcam_set_cinematic_007a66d0",
+      "dispatch_body_bytes": 62
+    },
+    {
+      "address": "007ab330",
+      "segment": 46,
+      "previous_ghidra_name": "BSP_MParatrooper_HandleMessage71",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007ab330 BSP_MParatrooper_HandleMessage71 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d051c4\n  00d05060 vtable (no RTTI)                             seg=- vslot @00d051c4 [<unknown>::slot 89]",
+      "native_steps": [
+        {
+          "address": "007ab33e",
+          "native": "007ab230",
+          "function": "007ab330"
+        },
+        {
+          "address": "007ab34c",
+          "native": "006e09f0",
+          "function": "007ab330",
+          "kind": "tail_jump"
+        }
+      ],
+      "name": "handle_message_007ab330",
+      "source": "src/gameplay_seg46_cc13.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_handle_message_007ab330",
+      "dispatch_body_bytes": 33
+    },
+    {
+      "address": "007ac970",
+      "segment": 46,
+      "previous_ghidra_name": "FUN_007ac970",
+      "listing_returns": [
+        "RET"
+      ],
+      "family_evidence": "callers of 007ac970 FUN_007ac970 (6 sites: data_ptr 3, vslot 3; 4 rows):\n  3 data slot(s)                               data_ptr @00d05304,00d05340,00d05468\n  00d052dc vtable (no RTTI)                             seg=- vslot @00d05304 [<unknown>::slot 10]\n  00d05318 vtable (no RTTI)                             seg=- vslot @00d05340 [<unknown>::slot 10]\n  00d05440 vtable (no RTTI)                             seg=- vslot @00d05468 [<unknown>::slot 10]",
+      "native_steps": [],
+      "name": "path_source_zero_007ac970",
+      "source": "src/path_movcam_seg46_argon.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_path_source_zero_007ac970",
+      "dispatch_body_bytes": 3
+    },
+    {
+      "address": "007ad820",
+      "segment": 46,
+      "previous_ghidra_name": "FUN_007ad820",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007ad820 FUN_007ad820 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d02dc0\n  00d02dbc vtable (no RTTI)                             seg=- vslot @00d02dc0 [<unknown>::slot 1]",
+      "native_steps": [
+        {
+          "address": "007ad829",
+          "native": "0075b480",
+          "function": "007ad820"
+        },
+        {
+          "address": "007ad835",
+          "native": "004290b0",
+          "function": "007ad820"
+        },
+        {
+          "address": "007ad842",
+          "native": "00429070",
+          "function": "007ad820"
+        },
+        {
+          "address": "007ad85f",
+          "native": "00429790",
+          "function": "007ad820"
+        }
+      ],
+      "name": "write_path_set_007ad820",
+      "source": "src/session_message_cc13_seg42.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_write_path_set_007ad820",
+      "dispatch_body_bytes": 73
+    },
+    {
+      "address": "007ad870",
+      "segment": 46,
+      "previous_ghidra_name": "FUN_007ad870",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007ad870 FUN_007ad870 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d02dc4\n  00d02dbc vtable (no RTTI)                             seg=- vslot @00d02dc4 [<unknown>::slot 2]",
+      "native_steps": [
+        {
+          "address": "007ad879",
+          "native": "0075b4c0",
+          "function": "007ad870"
+        },
+        {
+          "address": "007ad887",
+          "native": "00428d70",
+          "function": "007ad870"
+        },
+        {
+          "address": "007ad894",
+          "native": "00428d10",
+          "function": "007ad870"
+        },
+        {
+          "address": "007ad8b1",
+          "native": "004294f0",
+          "function": "007ad870"
+        }
+      ],
+      "name": "read_path_set_007ad870",
+      "source": "src/session_message_cc13_seg42.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_read_path_set_007ad870",
+      "dispatch_body_bytes": 75
+    },
+    {
+      "address": "007ad8c0",
+      "segment": 46,
+      "previous_ghidra_name": "FUN_007ad8c0",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007ad8c0 FUN_007ad8c0 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d02dd4\n  00d02dd0 vtable (no RTTI)                             seg=- vslot @00d02dd4 [<unknown>::slot 1]",
+      "native_steps": [
+        {
+          "address": "007ad8c9",
+          "native": "0075b480",
+          "function": "007ad8c0"
+        },
+        {
+          "address": "007ad8d5",
+          "native": "004290b0",
+          "function": "007ad8c0"
+        },
+        {
+          "address": "007ad8f2",
+          "native": "00429790",
+          "function": "007ad8c0"
+        }
+      ],
+      "name": "write_path_add_007ad8c0",
+      "source": "src/session_message_cc13_seg42.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_write_path_add_007ad8c0",
+      "dispatch_body_bytes": 60
+    },
+    {
+      "address": "007ad900",
+      "segment": 46,
+      "previous_ghidra_name": "FUN_007ad900",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007ad900 FUN_007ad900 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d02dd8\n  00d02dd0 vtable (no RTTI)                             seg=- vslot @00d02dd8 [<unknown>::slot 2]",
+      "native_steps": [
+        {
+          "address": "007ad909",
+          "native": "0075b4c0",
+          "function": "007ad900"
+        },
+        {
+          "address": "007ad917",
+          "native": "00428d70",
+          "function": "007ad900"
+        },
+        {
+          "address": "007ad934",
+          "native": "004294f0",
+          "function": "007ad900"
+        }
+      ],
+      "name": "read_path_add_007ad900",
+      "source": "src/session_message_cc13_seg42.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_read_path_add_007ad900",
+      "dispatch_body_bytes": 62
+    },
+    {
+      "address": "007ad940",
+      "segment": 46,
+      "previous_ghidra_name": "FUN_007ad940",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007ad940 FUN_007ad940 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d02de8\n  00d02de4 vtable (no RTTI)                             seg=- vslot @00d02de8 [<unknown>::slot 1]",
+      "native_steps": [
+        {
+          "address": "007ad949",
+          "native": "0075b480",
+          "function": "007ad940"
+        },
+        {
+          "address": "007ad955",
+          "native": "004290b0",
+          "function": "007ad940"
+        },
+        {
+          "address": "007ad962",
+          "native": "00429070",
+          "function": "007ad940"
+        },
+        {
+          "address": "007ad97f",
+          "native": "00429790",
+          "function": "007ad940"
+        }
+      ],
+      "name": "write_path_insert_007ad940",
+      "source": "src/session_message_cc13_seg42.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_write_path_insert_007ad940",
+      "dispatch_body_bytes": 73
+    },
+    {
+      "address": "007ad990",
+      "segment": 46,
+      "previous_ghidra_name": "FUN_007ad990",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007ad990 FUN_007ad990 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d02dec\n  00d02de4 vtable (no RTTI)                             seg=- vslot @00d02dec [<unknown>::slot 2]",
+      "native_steps": [
+        {
+          "address": "007ad999",
+          "native": "0075b4c0",
+          "function": "007ad990"
+        },
+        {
+          "address": "007ad9a7",
+          "native": "00428d70",
+          "function": "007ad990"
+        },
+        {
+          "address": "007ad9b4",
+          "native": "00428d10",
+          "function": "007ad990"
+        },
+        {
+          "address": "007ad9d1",
+          "native": "004294f0",
+          "function": "007ad990"
+        }
+      ],
+      "name": "read_path_insert_007ad990",
+      "source": "src/session_message_cc13_seg42.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_read_path_insert_007ad990",
+      "dispatch_body_bytes": 75
+    },
+    {
+      "address": "007ad9e0",
+      "segment": 46,
+      "previous_ghidra_name": "FUN_007ad9e0",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007ad9e0 FUN_007ad9e0 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d02dfc\n  00d02df8 vtable (no RTTI)                             seg=- vslot @00d02dfc [<unknown>::slot 1]",
+      "native_steps": [
+        {
+          "address": "007ad9e9",
+          "native": "0075b480",
+          "function": "007ad9e0"
+        },
+        {
+          "address": "007ad9f5",
+          "native": "004290b0",
+          "function": "007ad9e0"
+        },
+        {
+          "address": "007ada02",
+          "native": "00429070",
+          "function": "007ad9e0"
+        }
+      ],
+      "name": "write_path_delete_007ad9e0",
+      "source": "src/session_message_cc13_seg42.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_write_path_delete_007ad9e0",
+      "dispatch_body_bytes": 44
+    },
+    {
+      "address": "007ada10",
+      "segment": 46,
+      "previous_ghidra_name": "FUN_007ada10",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007ada10 FUN_007ada10 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d02e00\n  00d02df8 vtable (no RTTI)                             seg=- vslot @00d02e00 [<unknown>::slot 2]",
+      "native_steps": [
+        {
+          "address": "007ada19",
+          "native": "0075b4c0",
+          "function": "007ada10"
+        },
+        {
+          "address": "007ada27",
+          "native": "00428d70",
+          "function": "007ada10"
+        },
+        {
+          "address": "007ada34",
+          "native": "00428d10",
+          "function": "007ada10"
+        }
+      ],
+      "name": "read_path_delete_007ada10",
+      "source": "src/session_message_cc13_seg42.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_read_path_delete_007ada10",
+      "dispatch_body_bytes": 46
+    },
+    {
+      "address": "007ae930",
+      "segment": 46,
+      "previous_ghidra_name": "FUN_007ae930",
+      "listing_returns": [
+        "RET 0x8"
+      ],
+      "family_evidence": "callers of 007ae930 FUN_007ae930 (0 sites: ; 0 rows):",
+      "native_steps": [
+        {
+          "address": "007ae944",
+          "native": "00419440",
+          "function": "007ae930"
+        },
+        {
+          "address": "007ae9b7",
+          "native": "00bf6713",
+          "function": "007ae930"
+        },
+        {
+          "address": "007ae9f3",
+          "native": "0046f440",
+          "function": "007ae930"
+        },
+        {
+          "address": "007aea03",
+          "native": "00415870",
+          "function": "007ae930"
+        },
+        {
+          "address": "007aea23",
+          "native": "00bf6713",
+          "function": "007ae930"
+        },
+        {
+          "address": "007aea59",
+          "native": "0046f440",
+          "function": "007ae930"
+        },
+        {
+          "address": "007aeac1",
+          "native": "00bf6713",
+          "function": "007ae930"
+        },
+        {
+          "address": "007aeaff",
+          "native": "00bf6713",
+          "function": "007ae930"
+        },
+        {
+          "address": "007aeb80",
+          "native": "00bf7030",
+          "function": "007ae930"
+        },
+        {
+          "address": "007aebe9",
+          "native": "00bf6713",
+          "function": "007ae930"
+        },
+        {
+          "address": "007aec29",
+          "native": "0046f940",
+          "function": "007ae930"
+        },
+        {
+          "address": "007aec57",
+          "native": "00bf6713",
+          "function": "007ae930"
+        }
+      ],
+      "name": "BSP_Deferred_007ae930",
+      "status": "deferred_contract_recovery",
+      "source": "docs/OCT18B_NB_MID.md",
+      "evidence": "Pointer-array polyline/line minimum distance. ECX=array, origin at [entry ESP+4], direction at [entry ESP+8], ST0 return, RET8. Requires full x87 spill/NaN ordering recovery and the EDX/ECX plus stack contracts at calls 0046F440, 0046F940 and 00470150; decompiler hides those receivers. Same family: path_movcam_seg46_argon.hpp PointLineDistanceHost / point3_ptr_array_nearest_point_to_line_007aeec0. No stub added; continuing bounded recovery.",
+      "dispatch_body_bytes": 986
+    },
+    {
+      "address": "007b0b90",
+      "segment": 46,
+      "previous_ghidra_name": "FUN_007b0b90",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007b0b90 FUN_007b0b90 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00ce636c\n  00ce6290 vtable (no RTTI)                             seg=- vslot @00ce636c [<unknown>::slot 55]",
+      "native_steps": [],
+      "name": "path_entity_noop_007b0b90",
+      "source": "src/gameplay_seg46_cc13.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_path_entity_noop_007b0b90",
+      "dispatch_body_bytes": 3
+    },
+    {
+      "address": "007b0c90",
+      "segment": 46,
+      "previous_ghidra_name": "FUN_007b0c90",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007b0c90 FUN_007b0c90 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d03784\n  00d0377c vtable (no RTTI)                             seg=- vslot @00d03784 [<unknown>::slot 2]",
+      "native_steps": [
+        {
+          "address": "007b0c9b",
+          "native": "00767e30",
+          "function": "007b0c90"
+        },
+        {
+          "address": "007b0cf0",
+          "native": "00bf6713",
+          "function": "007b0c90"
+        },
+        {
+          "address": "007b0d13",
+          "native": "004294f0",
+          "function": "007b0c90"
+        }
+      ],
+      "name": "read_path_create_points_007b0c90",
+      "source": "src/session_message_cc13_seg42.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_read_path_create_points_007b0c90",
+      "dispatch_body_bytes": 151
+    },
+    {
+      "address": "007b1010",
+      "segment": 46,
+      "previous_ghidra_name": "FUN_007b1010",
+      "listing_returns": [
+        "RET"
+      ],
+      "family_evidence": "callers of 007b1010 FUN_007b1010 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d05374\n  00d0534c vtable (no RTTI)                             seg=- vslot @00d05374 [<unknown>::slot 10]",
+      "native_steps": [],
+      "name": "path_cursor_index_007b1010",
+      "source": "src/path_movcam_seg46_argon.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_path_cursor_index_007b1010",
+      "dispatch_body_bytes": 4
+    },
+    {
+      "address": "007b1800",
+      "segment": 46,
+      "previous_ghidra_name": "FUN_007b1800",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007b1800 FUN_007b1800 (0 sites: ; 0 rows):",
+      "native_steps": [],
+      "name": "path_cursor_save_007b1800",
+      "source": "src/path_movcam_seg46_argon.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_path_cursor_save_007b1800",
+      "dispatch_body_bytes": 191
+    },
+    {
+      "address": "007b2780",
+      "segment": 46,
+      "previous_ghidra_name": "FUN_007b2780",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007b2780 FUN_007b2780 (0 sites: ; 0 rows):",
+      "native_steps": [
+        {
+          "address": "007b27b9",
+          "native": "004d1510",
+          "function": "007b2780"
+        },
+        {
+          "address": "007b27de",
+          "native": "00bf6713",
+          "function": "007b2780"
+        }
+      ],
+      "name": "point3_vector_load_from_archive_007b2780",
+      "source": "src/path_movcam_seg46_argon.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_point3_vector_load_from_archive_007b2780",
+      "dispatch_body_bytes": 163
+    },
+    {
+      "address": "007b40d0",
+      "segment": 47,
+      "previous_ghidra_name": "FUN_007b40d0",
+      "listing_returns": [
+        "RET"
+      ],
+      "family_evidence": "callers of 007b40d0 FUN_007b40d0 (4 sites: data_ptr 2, vslot 2; 3 rows):\n  2 data slot(s)                               data_ptr @00d05718,00d20398\n  00d05708 vtable (no RTTI)                             seg=- vslot @00d05718 [<unknown>::slot 4]\n  00d20388 vtable (no RTTI)                             seg=- vslot @00d20398 [<unknown>::slot 4]",
+      "native_steps": [],
+      "name": "bot_task_zero_007b40d0",
+      "source": "src/bot_tasks.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_bot_task_zero_007b40d0",
+      "dispatch_body_bytes": 3
+    },
+    {
+      "address": "007b4110",
+      "segment": 47,
+      "previous_ghidra_name": "FUN_007b4110",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007b4110 FUN_007b4110 (42 sites: data_ptr 21, vslot 21; 22 rows):\n  21 data slot(s)                               data_ptr @00d05734,00d1f514,00d1fc9c,00d1fd6c +17\n  00d05708 vtable (no RTTI)                             seg=- vslot @00d05734 [<unknown>::slot 11]\n  00d1f4e8 vtable (no RTTI)                             seg=- vslot @00d1f514 [<unknown>::slot 11]\n  00d1fc70 vtable (no RTTI)                             seg=- vslot @00d1fc9c [<unknown>::slot 11]\n  ... more (raise --limit)",
+      "native_steps": [],
+      "name": "bot_task_false_007b4110",
+      "source": "src/bot_tasks.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_bot_task_false_007b4110",
+      "dispatch_body_bytes": 5
+    },
+    {
+      "address": "007b4170",
+      "segment": 47,
+      "previous_ghidra_name": "FUN_007b4170",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007b4170 FUN_007b4170 (24 sites: data_ptr 12, vslot 12; 13 rows):\n  12 data slot(s)                               data_ptr @00d05714,00d20394,00d2040c,00d2048c +8\n  00d05708 vtable (no RTTI)                             seg=- vslot @00d05714 [<unknown>::slot 3]\n  00d20388 vtable (no RTTI)                             seg=- vslot @00d20394 [<unknown>::slot 3]\n  00d20400 vtable (no RTTI)                             seg=- vslot @00d2040c [<unknown>::slot 3]\n  ... more (raise --limit)",
+      "native_steps": [],
+      "name": "bot_task_clear_point_valid_007b4170",
+      "source": "src/bot_tasks.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_bot_task_clear_point_valid_007b4170",
+      "dispatch_body_bytes": 11
+    },
+    {
+      "address": "007b4180",
+      "segment": 47,
+      "previous_ghidra_name": "FUN_007b4180",
+      "listing_returns": [
+        "RET"
+      ],
+      "family_evidence": "callers of 007b4180 FUN_007b4180 (28 sites: data_ptr 14, vslot 14; 15 rows):\n  14 data slot(s)                               data_ptr @00d05760,00d1f540,00d1fd98,00d203e0 +10\n  00d05708 vtable (no RTTI)                             seg=- vslot @00d05760 [<unknown>::slot 22]\n  00d1f4e8 vtable (no RTTI)                             seg=- vslot @00d1f540 [<unknown>::slot 22]\n  00d1fd40 vtable (no RTTI)                             seg=- vslot @00d1fd98 [<unknown>::slot 22]\n  ... more (raise --limit)",
+      "native_steps": [],
+      "name": "bot_task_notify_current_state_007b4180",
+      "source": "src/bot_tasks.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_bot_task_notify_current_state_007b4180",
+      "dispatch_body_bytes": 18
+    },
+    {
+      "address": "007b6ce0",
+      "segment": 47,
+      "previous_ghidra_name": "FUN_007b6ce0",
+      "listing_returns": [
+        "RET"
+      ],
+      "family_evidence": "callers of 007b6ce0 FUN_007b6ce0 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d05928\n  00d05918 vtable (no RTTI)                             seg=- vslot @00d05928 [<unknown>::slot 4]",
+      "native_steps": [],
+      "name": "rocket_slot_return9_007b6ce0",
+      "source": "src/rocket_task_cc13.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_rocket_slot_return9_007b6ce0",
+      "dispatch_body_bytes": 6
+    },
+    {
+      "address": "007b6d00",
+      "segment": 47,
+      "previous_ghidra_name": "BSP_BotTaskRocket_OnHit",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007b6d00 BSP_BotTaskRocket_OnHit (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d05944\n  00d05918 vtable (no RTTI)                             seg=- vslot @00d05944 [<unknown>::slot 11]",
+      "native_steps": [],
+      "name": "rocket_on_hit_007b6d00",
+      "source": "src/rocket_task_cc13.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_rocket_on_hit_007b6d00",
+      "dispatch_body_bytes": 81
+    },
+    {
+      "address": "007b7270",
+      "segment": 47,
+      "previous_ghidra_name": "BSP_BotTaskRocket_FollowWaitValue",
+      "listing_returns": [],
+      "family_evidence": "callers of 007b7270 BSP_BotTaskRocket_FollowWaitValue (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d05964\n  00d05918 vtable (no RTTI)                             seg=- vslot @00d05964 [<unknown>::slot 19]",
+      "native_steps": [
+        {
+          "address": "007b7280",
+          "native": "009be3e0",
+          "function": "007b7270",
+          "kind": "tail_jump"
+        },
+        {
+          "address": "007b7285",
+          "native": "0099b720",
+          "function": "007b7270",
+          "kind": "tail_jump"
+        }
+      ],
+      "name": "rocket_follow_wait_007b7270",
+      "source": "src/rocket_task_cc13.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup tail forwarding; native target ABI retained. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_rocket_follow_wait_007b7270",
+      "dispatch_body_bytes": 26
+    },
+    {
+      "address": "007b7830",
+      "segment": 47,
+      "previous_ghidra_name": "FUN_007b7830",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007b7830 FUN_007b7830 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d05924\n  00d05918 vtable (no RTTI)                             seg=- vslot @00d05924 [<unknown>::slot 3]",
+      "native_steps": [],
+      "name": "bot_task_point_result_007b7830",
+      "source": "src/bot_tasks.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_bot_task_point_result_007b7830",
+      "dispatch_body_bytes": 55
+    },
+    {
+      "address": "007b9070",
+      "segment": 47,
+      "previous_ghidra_name": "BSP_ProjectileShot_SetAirMode",
+      "listing_returns": [],
+      "family_evidence": "callers of 007b9070 BSP_ProjectileShot_SetAirMode (18 sites: data_ptr 9, vslot 9; 10 rows):\n  9 data slot(s)                               data_ptr @00d0000c,00d002a4,00d06154,00d065d4 +5\n  00cfffe8 vtable (no RTTI)                             seg=- vslot @00d0000c [<unknown>::slot 9]\n  00d00280 vtable (no RTTI)                             seg=- vslot @00d002a4 [<unknown>::slot 9]\n  00d06130 vtable (no RTTI)                             seg=- vslot @00d06154 [<unknown>::slot 9]\n  ... more (raise --limit)",
+      "native_steps": [
+        {
+          "address": "007b9070",
+          "native": "006e6410",
+          "function": "007b9070",
+          "kind": "tail_jump"
+        }
+      ],
+      "name": "projectile_set_air_mode_thunk_007b9070",
+      "source": "src/oct18b_nB_mid.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup tail forwarding; native target ABI retained. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_projectile_set_air_mode_thunk_007b9070",
+      "dispatch_body_bytes": 5
+    },
+    {
+      "address": "007c4330",
+      "segment": 47,
+      "previous_ghidra_name": "FUN_007c4330",
+      "listing_returns": [
+        "RET"
+      ],
+      "family_evidence": "callers of 007c4330 FUN_007c4330 (0 sites: ; 0 rows):",
+      "native_steps": [],
+      "name": "LIBCOMP_reference_counted_vector_copy_a_007c4330",
+      "status": "library_instantiation_out_of_scope",
+      "source": "docs/OCT18B_NB_MID.md",
+      "evidence": "Compiler/reference-counted helper instantiation. InterlockedIncrement through IAT 00CE221C; holder copy, with EH registration and three scalar float copies in 007C4330/007C4390. No game-code body or credit added.",
+      "dispatch_body_bytes": 93
+    },
+    {
+      "address": "007c4390",
+      "segment": 47,
+      "previous_ghidra_name": "FUN_007c4390",
+      "listing_returns": [
+        "RET"
+      ],
+      "family_evidence": "callers of 007c4390 FUN_007c4390 (0 sites: ; 0 rows):",
+      "native_steps": [],
+      "name": "LIBCOMP_reference_counted_vector_copy_b_007c4390",
+      "status": "library_instantiation_out_of_scope",
+      "source": "docs/OCT18B_NB_MID.md",
+      "evidence": "Compiler/reference-counted helper instantiation. InterlockedIncrement through IAT 00CE221C; holder copy, with EH registration and three scalar float copies in 007C4330/007C4390. No game-code body or credit added.",
+      "dispatch_body_bytes": 93
+    },
+    {
+      "address": "007e23b0",
+      "segment": 48,
+      "previous_ghidra_name": "FUN_007e23b0",
+      "listing_returns": [
+        "RET 0x8"
+      ],
+      "family_evidence": "callers of 007e23b0 FUN_007e23b0 (4 sites: data_ptr 2, vslot 2; 3 rows):\n  2 data slot(s)                               data_ptr @00d06c98,00d08650\n  00d06c88 vtable (no RTTI)                             seg=- vslot @00d06c98 [<unknown>::slot 4]\n  00d08640 vtable (no RTTI)                             seg=- vslot @00d08650 [<unknown>::slot 4]",
+      "native_steps": [],
+      "name": "engine_step_rpm_noop_007e23b0",
+      "source": "src/gameplay_seg48_cc13.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x8. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_engine_step_rpm_noop_007e23b0",
+      "dispatch_body_bytes": 3
+    },
+    {
+      "address": "007e23c0",
+      "segment": 48,
+      "previous_ghidra_name": "FUN_007e23c0",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007e23c0 FUN_007e23c0 (4 sites: data_ptr 2, vslot 2; 3 rows):\n  2 data slot(s)                               data_ptr @00d06c9c,00d08654\n  00d06c88 vtable (no RTTI)                             seg=- vslot @00d06c9c [<unknown>::slot 5]\n  00d08640 vtable (no RTTI)                             seg=- vslot @00d08654 [<unknown>::slot 5]",
+      "native_steps": [],
+      "name": "engine_apply_spin_noop_007e23c0",
+      "source": "src/gameplay_seg48_cc13.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_engine_apply_spin_noop_007e23c0",
+      "dispatch_body_bytes": 3
+    },
+    {
+      "address": "007e23d0",
+      "segment": 48,
+      "previous_ghidra_name": "FUN_007e23d0",
+      "listing_returns": [
+        "RET"
+      ],
+      "family_evidence": "callers of 007e23d0 FUN_007e23d0 (4 sites: data_ptr 2, vslot 2; 3 rows):\n  2 data slot(s)                               data_ptr @00d06ca0,00d08658\n  00d06c88 vtable (no RTTI)                             seg=- vslot @00d06ca0 [<unknown>::slot 6]\n  00d08640 vtable (no RTTI)                             seg=- vslot @00d08658 [<unknown>::slot 6]",
+      "native_steps": [],
+      "name": "engine_blur_blend_noop_007e23d0",
+      "source": "src/gameplay_seg48_cc13.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_engine_blur_blend_noop_007e23d0",
+      "dispatch_body_bytes": 1
+    },
+    {
+      "address": "007ecf70",
+      "segment": 48,
+      "previous_ghidra_name": "FUN_007ecf70",
+      "listing_returns": [],
+      "family_evidence": "callers of 007ecf70 FUN_007ecf70 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d088ec\n  00d087c0 vtable (no RTTI)                             seg=- vslot @00d088ec [<unknown>::slot 75]",
+      "native_steps": [],
+      "name": "plane_squadron_leader_slot12c_007ecf70",
+      "source": "include/bsp/plane_squadron_entity.hpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup tail forwarding; native target ABI retained. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_plane_squadron_leader_slot12c_007ecf70",
+      "dispatch_body_bytes": 16
+    },
+    {
+      "address": "007ed000",
+      "segment": 48,
+      "previous_ghidra_name": "FUN_007ed000",
+      "listing_returns": [
+        "RET 0x28"
+      ],
+      "family_evidence": "callers of 007ed000 FUN_007ed000 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d0880c\n  00d087c0 vtable (no RTTI)                             seg=- vslot @00d0880c [<unknown>::slot 19]",
+      "native_steps": [],
+      "name": "plane_squadron_noop_007ed000",
+      "source": "src/plane_squadron_entity.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x28. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_plane_squadron_noop_007ed000",
+      "dispatch_body_bytes": 3
+    },
+    {
+      "address": "007ed450",
+      "segment": 48,
+      "previous_ghidra_name": "FUN_007ed450",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007ed450 FUN_007ed450 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d087f4\n  00d087c0 vtable (no RTTI)                             seg=- vslot @00d087f4 [<unknown>::slot 13]",
+      "native_steps": [],
+      "name": "plane_squadron_leader_position_007ed450",
+      "source": "src/plane_squadron_entity.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_plane_squadron_leader_position_007ed450",
+      "dispatch_body_bytes": 25
+    },
+    {
+      "address": "007ed470",
+      "segment": 48,
+      "previous_ghidra_name": "FUN_007ed470",
+      "listing_returns": [],
+      "family_evidence": "callers of 007ed470 FUN_007ed470 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d087f8\n  00d087c0 vtable (no RTTI)                             seg=- vslot @00d087f8 [<unknown>::slot 14]",
+      "native_steps": [],
+      "name": "plane_squadron_leader_slot38_007ed470",
+      "source": "include/bsp/plane_squadron_entity.hpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup tail forwarding; native target ABI retained. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_plane_squadron_leader_slot38_007ed470",
+      "dispatch_body_bytes": 13
+    },
+    {
+      "address": "007ed480",
+      "segment": 48,
+      "previous_ghidra_name": "FUN_007ed480",
+      "listing_returns": [
+        "RET"
+      ],
+      "family_evidence": "callers of 007ed480 FUN_007ed480 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d087e8\n  00d087c0 vtable (no RTTI)                             seg=- vslot @00d087e8 [<unknown>::slot 10]",
+      "native_steps": [],
+      "name": "plane_squadron_description_007ed480",
+      "source": "src/plane_squadron_entity.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_plane_squadron_description_007ed480",
+      "dispatch_body_bytes": 23
+    },
+    {
+      "address": "007ed4a0",
+      "segment": 48,
+      "previous_ghidra_name": "FUN_007ed4a0",
+      "listing_returns": [],
+      "family_evidence": "callers of 007ed4a0 FUN_007ed4a0 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d0887c\n  00d087c0 vtable (no RTTI)                             seg=- vslot @00d0887c [<unknown>::slot 47]",
+      "native_steps": [],
+      "name": "plane_squadron_leader_slotbc_007ed4a0",
+      "source": "include/bsp/plane_squadron_entity.hpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup tail forwarding; native target ABI retained. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_plane_squadron_leader_slotbc_007ed4a0",
+      "dispatch_body_bytes": 39
+    },
+    {
+      "address": "007ed4d0",
+      "segment": 48,
+      "previous_ghidra_name": "FUN_007ed4d0",
+      "listing_returns": [
+        "RET"
+      ],
+      "family_evidence": "callers of 007ed4d0 FUN_007ed4d0 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d08810\n  00d087c0 vtable (no RTTI)                             seg=- vslot @00d08810 [<unknown>::slot 20]",
+      "native_steps": [],
+      "name": "plane_squadron_leader_float_007ed4d0",
+      "source": "src/plane_squadron_entity.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_plane_squadron_leader_float_007ed4d0",
+      "dispatch_body_bytes": 44
+    },
+    {
+      "address": "007ee290",
+      "segment": 48,
+      "previous_ghidra_name": "FUN_007ee290",
+      "listing_returns": [
+        "RET"
+      ],
+      "family_evidence": "callers of 007ee290 FUN_007ee290 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d08888\n  00d087c0 vtable (no RTTI)                             seg=- vslot @00d08888 [<unknown>::slot 50]",
+      "native_steps": [
+        {
+          "address": "007ee2ae",
+          "native": "00414db0",
+          "function": "007ee290"
+        },
+        {
+          "address": "007ee2bf",
+          "native": "00bf701a",
+          "function": "007ee290"
+        }
+      ],
+      "name": "plane_squadron_heading_007ee290",
+      "source": "src/plane_squadron_entity.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_plane_squadron_heading_007ee290",
+      "dispatch_body_bytes": 65
+    },
+    {
+      "address": "007efaa0",
+      "segment": 48,
+      "previous_ghidra_name": "FUN_007efaa0",
+      "listing_returns": [
+        "RET"
+      ],
+      "family_evidence": "callers of 007efaa0 FUN_007efaa0 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d08874\n  00d087c0 vtable (no RTTI)                             seg=- vslot @00d08874 [<unknown>::slot 45]",
+      "native_steps": [],
+      "name": "plane_squadron_true_007efaa0",
+      "source": "src/plane_squadron_entity.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_plane_squadron_true_007efaa0",
+      "dispatch_body_bytes": 3
+    },
+    {
+      "address": "007efab0",
+      "segment": 48,
+      "previous_ghidra_name": "FUN_007efab0",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007efab0 FUN_007efab0 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d08940\n  00d087c0 vtable (no RTTI)                             seg=- vslot @00d08940 [<unknown>::slot 96]",
+      "native_steps": [],
+      "name": "plane_squadron_noop_007efab0",
+      "source": "src/plane_squadron_entity.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_plane_squadron_noop_007efab0",
+      "dispatch_body_bytes": 3
+    },
+    {
+      "address": "007efba0",
+      "segment": 48,
+      "previous_ghidra_name": "FUN_007efba0",
+      "listing_returns": [
+        "RET 0x8"
+      ],
+      "family_evidence": "callers of 007efba0 FUN_007efba0 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d0892c\n  00d087c0 vtable (no RTTI)                             seg=- vslot @00d0892c [<unknown>::slot 91]",
+      "native_steps": [
+        {
+          "address": "007efbbe",
+          "native": "00779d50",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efbeb",
+          "native": "00438e10",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efc07",
+          "native": "00438e10",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efc1a",
+          "native": "0060c5b0",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efc3c",
+          "native": "00803510",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efc53",
+          "native": "006bf050",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efc66",
+          "native": "00803510",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efcab",
+          "native": "00438e10",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efcb6",
+          "native": "00922dd0",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efcc5",
+          "native": "00803510",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efcd0",
+          "native": "00922b10",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efced",
+          "native": "0047b880",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efd09",
+          "native": "00438e10",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efd19",
+          "native": "007eec50",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efd2c",
+          "native": "00922dd0",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efd3f",
+          "native": "00803510",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efd4f",
+          "native": "00438e10",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efd69",
+          "native": "00438e10",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efd79",
+          "native": "00438e10",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efd85",
+          "native": "007ed7e0",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efd99",
+          "native": "00438e10",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efda9",
+          "native": "007ed8d0",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efdde",
+          "native": "00438e10",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efdf2",
+          "native": "00438e10",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efe02",
+          "native": "007ed7e0",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efe4b",
+          "native": "00438e10",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efe78",
+          "native": "00438e10",
+          "function": "007efba0"
+        },
+        {
+          "address": "007efe8c",
+          "native": "00438e10",
+          "function": "007efba0"
+        }
+      ],
+      "name": "BSP_Deferred_007efba0",
+      "status": "deferred_contract_recovery",
+      "source": "docs/OCT18B_NB_MID.md",
+      "evidence": "PlaneSquadronGen command permission predicate, ECX=squadron, command string and nullable target on stack, AL boolean, RET8. Requires command constants and call/receiver contracts for 0060C5B0(class+35Ch), 006BF050(target ECX, DL=1), 007EEC50, 007ED7E0/007ED8D0, plus exact party and vslot168 order. Same family: plane_squadron_entity.hpp. No stub added; continuing bounded recovery.",
+      "dispatch_body_bytes": 769
+    },
+    {
+      "address": "007f2290",
+      "segment": 48,
+      "previous_ghidra_name": "FUN_007f2290",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007f2290 FUN_007f2290 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d088b4\n  00d087c0 vtable (no RTTI)                             seg=- vslot @00d088b4 [<unknown>::slot 61]",
+      "native_steps": [
+        {
+          "address": "007f229c",
+          "native": "0042ed80",
+          "function": "007f2290"
+        }
+      ],
+      "name": "plane_squadron_set_invincible_007f2290",
+      "source": "src/plane_squadron_entity.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_plane_squadron_set_invincible_007f2290",
+      "dispatch_body_bytes": 74
+    },
+    {
+      "address": "007f22e0",
+      "segment": 48,
+      "previous_ghidra_name": "FUN_007f22e0",
+      "listing_returns": [
+        "RET 0x4"
+      ],
+      "family_evidence": "callers of 007f22e0 FUN_007f22e0 (2 sites: data_ptr 1, vslot 1; 2 rows):\n  1 data slot(s)                               data_ptr @00d0889c\n  00d087c0 vtable (no RTTI)                             seg=- vslot @00d0889c [<unknown>::slot 55]",
+      "native_steps": [
+        {
+          "address": "007f2307",
+          "native": "00414db0",
+          "function": "007f22e0"
+        },
+        {
+          "address": "007f2316",
+          "native": "004134f0",
+          "function": "007f22e0"
+        },
+        {
+          "address": "007f2332",
+          "native": "0042ed50",
+          "function": "007f22e0"
+        }
+      ],
+      "name": "plane_squadron_follow_leader_pose_007f22e0",
+      "source": "src/plane_squadron_entity.cpp",
+      "status": "reconstructed_source_interfaces",
+      "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
+      "ghidra_name": "BSP_plane_squadron_follow_leader_pose_007f22e0",
+      "dispatch_body_bytes": 191
+    }
+  ],
+  "counts": {
+    "deferred_contract_recovery": 2,
+    "library_instantiation_out_of_scope": 3,
+    "reconstructed_source_interfaces": 59
+  }
+}

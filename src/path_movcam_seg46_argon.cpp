@@ -1,5 +1,38 @@
 #include "bsp/path_movcam_seg46_argon.hpp"
 
+namespace bsp::path_movcam_seg46_argon {
+const char* movcam_description_0078e450(const MovCamState& c) noexcept {
+    return c.mode_384 == 2 ? "MovieCameraDeck" : "MovieCameraOuter";
+}
+void movcam_set_cinematic_007a66d0(MovCamState& c, bool enabled, int transition, std::uint32_t, MovCamHost& h) {
+    if (enabled) c.mode_384 = 3;
+    else if (c.mode_384 == 3) c.mode_384 = 1;
+    h.enter_mode_007a5110(c, transition);
+}
+int path_cursor_index_007b1010(const PathCursorState& c) noexcept { return c.index_08; }
+std::uint32_t path_source_zero_007ac970() noexcept { return 0; }
+void point3_vector_load_from_archive_007b2780(std::vector<Vec3>& points, PathArchiveHost& h) {
+    std::uint32_t i = 0;
+    while (h.has_indexed_entry(1, i)) {
+        // Native resize(i+1) shrinks an existing vector on the first entry;
+        // an archive with no entries leaves the original vector untouched.
+        points.resize(static_cast<std::size_t>(i) + 1);
+        h.read_indexed_vec3(1, i, 5, points[i]);
+        ++i;
+    }
+}
+void path_cursor_save_007b1800(const PathCursorState& c, PathCursorSaveHost& h) {
+    if (c.source_04) {
+        h.begin_section(0, "pathIntf");
+        h.save_source_vslot20(*c.source_04);
+        h.end_section();
+    }
+    h.write_int(0, "index", 1, c.index_08);
+    h.write_int(0, "mode", 1, c.follow_mode_0c);
+    h.write_bool(0, "forward", 3, c.forward_10);
+}
+}
+
 #include <cmath>
 #include <limits>
 #include <new>

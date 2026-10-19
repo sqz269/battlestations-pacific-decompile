@@ -1,4 +1,12 @@
 #pragma once
+
+namespace bsp::cc13cam {
+// Modifier base/type-1 vtable slots +24h/+28h: RET4 with no effects.
+void modifier_write_noop_0078e730(void* cursor) noexcept;
+void modifier_read_noop_0078e740(void* stream) noexcept;
+// Base modifier +30h, XOR EAX,EAX; RET.
+int modifier_type_zero_0078e760() noexcept;
+}
 // Movie-camera keyframe modifiers: the `modifier` key of a MovCamNew keyframe
 // (`goaround`, `gamecamera`, `fpscamera`), their Lua parse, their per-frame
 // evaluation and the blend curves behind `theta`, `rho`, `radius`, `zoom`,

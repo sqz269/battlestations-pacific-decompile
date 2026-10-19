@@ -2,6 +2,50 @@
 // carries the listing for every address named here.
 
 #include "bsp/plane_squadron_entity.hpp"
+#include <cmath>
+
+namespace bsp {
+void* plane_squadron_leader_position_007ed450(const PlaneSquadronEntity& s, void* out,
+                                            void (*slot34)(void*, void*)) {
+    slot34(s.members[0], out); return out;
+}
+const char* plane_squadron_description_007ed480(const PlaneSquadronEntity& s, const char* (*slot28)(void*)) {
+    return s.members[0] ? slot28(s.members[0]) : "empty squadron desc";
+}
+float plane_squadron_leader_float_007ed4d0(const PlaneSquadronEntity& s, double (*slot50)(void*)) {
+    return s.members[0] ? static_cast<float>(slot50(s.members[0])) : 0.0f;
+}
+double plane_squadron_heading_007ee290(const PlaneSquadronEntity& s, double (*slotc8)(void*),
+                                      void (*refresh)(void*), void* squadron,
+                                      const float& world_ec, const float& world_f4) {
+    if (s.members[0]) return slotc8(s.members[0]);
+    refresh(squadron);
+    // Native atan2 register ABI has ST1=y=EC, ST0=x=F4; spills to float.
+    return -static_cast<float>(std::atan2(static_cast<double>(world_ec), static_cast<double>(world_f4)));
+}
+bool plane_squadron_true_007efaa0() noexcept { return true; }
+void plane_squadron_noop_007efab0(std::uint32_t) noexcept {}
+void plane_squadron_noop_007ed000(std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t,
+    std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t) noexcept {}
+void plane_squadron_set_invincible_007f2290(PlaneSquadronEntity& s, float seconds,
+    void (*base)(void*, float), void* native_squadron, void (*member_slotf4)(void*, float)) {
+    base(native_squadron, seconds);
+    for (int i = 0; i < s.live_count; ++i) member_slotf4(s.members[i], seconds);
+}
+void plane_squadron_follow_leader_pose_007f22e0(PlaneSquadronEntity& s, const volatile float& now,
+                                              const volatile double& tolerance, PlaneSquadronPoseHost& h) {
+    if (s.live_count == 0) return;
+    void* leader = s.members[0];
+    if (!h.world_valid_c8(leader)) h.refresh_world_00414db0(leader);
+    h.copy_leader_world_to_local_004134f0(leader);
+    h.invalidate_squadron_c8_10c();
+    for (void* child = h.first_child_48(); child; child = h.next_sibling_44(child))
+        h.invalidate_child_0042ed50(child);
+    const float until = h.invincible_until_308();
+    if (until != 0.0f && static_cast<double>(until) < static_cast<double>(now) + tolerance)
+        for (int i = 0; i < s.live_count; ++i) h.clear_member_2f4(s.members[i]);
+}
+}
 
 namespace bsp {
 
