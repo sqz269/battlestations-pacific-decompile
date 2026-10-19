@@ -1142,3 +1142,16 @@ cc15's run on main 88b7eb3d1, ref env, astern skip OFF:
     - local\l70_b1_k.txt and l70_b1_l.txt complete at 926.90 s.
     - None of the three ends at 20,3, where the sub sits at (-222,-2402).
   - gunnery55 reports that b1d itself ends at 812.93 s on dc6d0d1a3.
+Re-plans on merged main d175c1aac (cc9-lua70):
+
+- USN02 `l70_u2_b` (config/win_orders/usn02_l70_u2_b.txt): l68 a, plus Houston's artillery fired through the HUD path
+  (input 0x9D, aim unit Haguro then Nachi, input 0x99 held 3000 frames twice).
+  - The script-selected Houston's player-owned guns are otherwise silent: 0 shots and about 5,900 refusals on dc6d0d1a3.
+  - With the plan: ref completes at 500.00 s, guard logged; Houston fires 214 main-battery shots (52 hits).
+  - 20,3: Game Over at 145.05 s; Yukikaze torpedoes Houston at 142.70 s, before the first aim line has much effect.
+- IJN18 releasegun trial (local\l70_i18_r.txt; export with kHarnessReleaseGunMapBound, kCruiseLatchedPlayerArmCc13Bound
+  and kHelmPrepareMapUpGateCc13Bound ON; releasegun Zao at frame 1500):
+  - ref: EndMission 1685.52 s with MissionStatus=true, guard logged. Zao fires 163 main-battery shots (111 hits),
+    against 0 in the baseline, and lives to 507.85 s instead of 333.89 s.
+  - 20,3: Game Over at 839.92 s. The early Zao kills are the same; Asa1 dies at 772.38 s and Asa4 at 838.82 s.
+  - With the switches OFF the releasegun line is refused, and IJN18 d has no end.
