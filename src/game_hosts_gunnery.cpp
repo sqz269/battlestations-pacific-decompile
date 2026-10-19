@@ -88,6 +88,7 @@
 #include "bsp/shipyard_production.hpp"
 #include "bsp/vehicle_class.hpp"
 #include "bsp/flak_ver_cc13.hpp"
+#include "bsp/frontier_wiring_cc13.hpp"   // packet cc13-frontier
 #include "bsp/aa_pick_ver_cc13.hpp"
 #include "bsp/gameplay_seg53_cc13.hpp"
 #include "bsp/ship_torpedo_ver_cc13.hpp"
@@ -1610,6 +1611,8 @@ constexpr float kWreckChanceInstalled = 0.3f;
 //    False: the 98h is recorded and draws nothing, so a default-env run's shared
 //    stream stays 11 behind the image per breakup.
 constexpr bool kShipBreakInTwoDrawsBound = true;  // ON: USNOS 36000 pairs (SHIP_AI 298)
+static_assert(!bsp::kShipBreakInTwoPuffDrawsCc13Bound || kShipBreakInTwoDrawsBound,
+              "0092A240's puff draws follow 00935D30's eleven; the sub-switch needs them");
 //  * kPlaneBlastElementEntriesBound: a burst's distance to a PLANE is taken per
 //    GeomMesh element, as kBlastElementEntriesBound does for a ship. The image's
 //    sphere test for the plane's unit-part shape is 0070F720, which ends in
@@ -4235,6 +4238,7 @@ struct GameGunneryHost::Impl {
     struct ShipDeathCounts {
         unsigned long long messages_9a{0}, kamikaze_removals{0}, no_breakup_nodes{0};
         unsigned long long breakup_draws{0}, breakups_98{0}, break_in_two_draws{0};
+        unsigned long long break_in_two_puff_draws{0};   // kShipBreakInTwoPuffDrawsCc13Bound
     } ship_death;
     unsigned long long override_hp_kills{0};
     // Packet cc9_gunnery_line_of_sight: 00864680 for (observer, target).
@@ -13839,6 +13843,44 @@ void GameGunneryHost::Impl::ship_death_message_00827ab0(std::size_t victim) {
             ship_death.break_in_two_draws += piece == 0 ? 6u : 5u;
         }
         done("ShipDeath::break_in_two_draws_00935d30", 0x00935d30u);
+        // Packet cc13-frontier (bsp/frontier_wiring_cc13.hpp). 00935D30 then calls 0092A240
+        // on the front piece (00936905) and the back piece (0093697F), before its kill
+        // (00926D90 at 00936C45). 0092A240: when the piece class's DeathEfx handle
+        // [[piece+348h]+55Ch] (0092A273) and the game view node [[00E188A8]+19FCh]
+        // (0092A294) are non-null, w = float(Length +A0h x 0.2 [00CE6648]) (0092A2AD),
+        // p = float(w / 10.0 [00CE3DC0]) (0092A2CB), clamped to 1 ([00D7A24C]) and 2
+        // ([00CE3958], 0092A6A8); n = the low dword of FISTP qword p (0092A307), and
+        // 0092A315 JBE skips the loop when it is 0, which a NaN's 80000000_00000000 gives.
+        // Each puff draws 00BD2F10(1, [00D7A208] -0.0f - w, w) (0092A34A).
+        // SUBSTITUTIONS (LABELLED, as in GameMissionLuaHost::run_break_ship_008914f0):
+        //  * both pieces' class is the victim's VehicleClass row; a non-zero `DeathEfx`
+        //    id stands for a resolved +55Ch handle (00831B62 also requires an integer);
+        //  * the view node is taken as set (it is set in any rendered mission);
+        //  * the host's kill came before this 98h (as for the eleven above), so the
+        //    puffs follow the kill here instead of preceding it;
+        //  * the puffs use the piece's ship_break_in_two key under the stream option.
+        if constexpr (bsp::kShipBreakInTwoPuffDrawsCc13Bound) {
+            const int type_id = unit_state[victim].row.type_id;
+            const GameVehicleClassRow cls = lua.read_vehicle_class_row(type_id);
+            const int death_efx = lua.read_vehicle_class_integer(type_id, "DeathEfx", nullptr, 0);
+            if (cls.found && death_efx != 0) {
+                const float w = static_cast<float>(static_cast<double>(cls.length) * 0.2);
+                float puffs = static_cast<float>(static_cast<double>(w) / 10.0);
+                if (1.0f > puffs) {
+                    puffs = 1.0f;
+                } else if (puffs > 2.0f) {
+                    puffs = 2.0f;
+                }
+                const int n = puffs == puffs ? static_cast<int>(puffs) : 0;
+                for (std::size_t piece = 0; piece < 2; ++piece) {
+                    for (int puff = 0; puff < n; ++puff) {
+                        (void)draw(Draw::ship_break_in_two, victim, piece, -0.0f - w, w);
+                        ++ship_death.break_in_two_puff_draws;
+                    }
+                }
+                done("ShipDeath::attach_fires_puff_draws_0092a240", 0x0092a240u);
+            }
+        }
     }
 }
 
@@ -14749,7 +14791,11 @@ void GameGunneryHost::role_owner_device_walk_0095ac1d(std::size_t unit, std::uin
 
 // Packet cc13-frontier (bsp/frontier_wiring_cc13.hpp, kHelmReleaseGunsToRestCc13Bound).
 // 0080E290, __fastcall(ECX = unit): over the unit's device chain (+48h, next +44h),
-// 0085AD00 on each device answering IsKindOf(22h). 0085AD00 (0085AD00-0085AD7A): when
+// 0085AD00 on each device answering IsKindOf(22h). 0085AD00 (0085AD00-0085AD7A) first
+// has a grow arm (0085AD1E..0085AD29): when the gun's row index +38Ch is >= the count of
+// the class's platform rows ([[gun+3F0h]+538h]+94h, count at +4), 005471B0 resizes that
+// vector to index + 1. The host's rows are complete from the class read, so the arm has
+// no host effect and is not modelled (LABELLED). Then, when
 // the platform row's horizontal rest (+94h) equals FLT_MAX (FUCOMIP against double
 // 00D7A278, `test ah,44h; jnp`), it returns. Otherwise it calls 0085ABA0(+94h, +90h).
 // The host's guns of the unit stand in for the device chain (in gun order; each call
@@ -17405,6 +17451,10 @@ void GameGunneryHost::report() {
                 d.break_in_two_draws,
                 kShipDeathMessageBound ? 1 : 0, host.override_hp_kills,
                 kOverrideHpHealthZeroBound ? 1 : 0);
+            if constexpr (bsp::kShipBreakInTwoPuffDrawsCc13Bound) {
+                host.log.notef("summary mission gunnery ship break in two puff draws=%llu "
+                    "(00935D30 -> 0092A240, packet cc13-frontier)", d.break_in_two_puff_draws);
+            }
         }
         {
             const Impl::LandMasterCounts& c = host.land_master;
