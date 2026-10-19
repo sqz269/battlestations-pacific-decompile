@@ -19815,7 +19815,7 @@ The branch was read from the disk bytes: 009EE59F JZ 009EF206, then 009EF213 CAL
 
 Flipped by mechanism.
 
-### 2. kShipAiNavigateAsternSkipBound: approach-step audit complete (ships60 flips it)
+### 2. kShipAiNavigateAsternSkipBound: ON
 
 The branch was read from the disk bytes:
 - 009ED7E6 `CMP [1C4h],3` / SETE -> [ESP+4Fh];
@@ -19845,10 +19845,9 @@ On the skip path, the host still runs the 009EE671..009EE6CB prelude (A90h..A9Ch
 makes in the approach.
 - Nevada on ON JM08: rudder -0.358, throttle 1.000, desired 1D8h 0.9425. The ship steers on the approach's heading.
 
-The approach step is complete, so no extra switch is needed and the skip can flip by mechanism.
-cc9-ships60 flips it with the seg67 batch. JM08 then loses its HQ-capture failure and becomes a
-no-end: the landing ships spawn at about 937 s and die to the HQ guns and AA trucks after 1128 s,
-so CheckHQ never sees CommandBuilding.Party == 2. The JM08 row change went to cc9-lua70.
+**ON** by mechanism. JM08 loses its HQ-capture failure and becomes a no-end: the landing ships
+spawn at about 937 s and die to the HQ guns and AA trucks after 1128 s, so CheckHQ never sees
+CommandBuilding.Party == 2. The JM08 row change went to cc9-lua70.
 
 ### 3. kLineOfFireLandFromMuzzleBound: ON
 
