@@ -4276,9 +4276,14 @@ std::uint32_t GameMissionLuaHost::create_squadron(const bsp::AirOpsSquadronReque
     std::string name;
     std::int32_t wing = 0;
     const std::size_t units_before = script_orders_->units().count();
+    // cc13-tier1: the bag's `State` (7 on 006C5050's flag arm) and Dynamics/Ceiling
+    // (tuning+210h, read at 006C52BF) go to the creator, which reads them only
+    // under kAirOpsLaunchFlagAirborneBound. plane_globals_ is filled once by the
+    // settings load (007E2A20) before any mission script and never cleared; with
+    // no table it keeps its zero, the +210h default in game_tuning_singleton.cpp.
     const std::uint32_t entity = script_orders_->create_air_ops_squadron_006c5050(
         request.type, request.wing_count, request.equipment, request.home_base, name,
-        wing);
+        wing, request.state, plane_globals_.dynamics_ceiling);
     if (entity == 0u) return 0u;
     if constexpr (bsp::kAirOpsPlayerLaunchBound) {
         // Packet cc9_player_air_ops_launch: the bag's `AutoAttackTarget`

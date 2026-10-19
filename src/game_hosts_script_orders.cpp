@@ -11,6 +11,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/game_hosts_commands.hpp"
 
 #include "bsp/air_operations.hpp"
+#include "bsp/air_ops_launch_flag_cc13.hpp"  // cc13-tier1, 006C5050 flag arm
 #include "bsp/dive_bomb_task.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
@@ -866,7 +867,7 @@ bsp::BuildingPadModel* GameScriptOrdersHost::building_pads() {
 std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
     std::uint32_t vehicle_class, std::int32_t wing_count, std::int32_t equipment,
     const std::string& home_base, std::string& created_name,
-    std::int32_t& wing_count_out) {
+    std::int32_t& wing_count_out, std::int32_t bag_state, float ceiling_210) {
     created_name.clear();
     wing_count_out = 0;
     if (vehicle_class == 0u) return 0u;
@@ -960,7 +961,41 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
         // launch path, 006CC733, pushes as 0. So the squadron is made at the
         // base's own origin, with `State` 1; the axes stay the identity
         // (SUBSTITUTION, labelled: the owner's rotation rows are not copied).
+        // CORRECTED (cc13-tier1): the flag arm REPLACES y (Ceiling + the draw;
+        // nothing is added to the owner's height), and 006CC733 is not the only
+        // path: LaunchAirBaseSlot(base, slot, true) reaches 006C7490(slot, 1)
+        // through 006CA8FA. That arm is the block below.
         record.world[13] = owner_row->position[1];
+    }
+    // cc13-tier1, kAirOpsLaunchFlagAirborneBound (include/bsp/
+    // air_ops_launch_flag_cc13.hpp): 006C5050's flag arm, reached from
+    // LaunchAirBaseSlot(base, slot, true) through 006CA8FA. 006C5298-006C52C5
+    // REPLACE the copied y with Dynamics/Ceiling (tuning+210h) + 00BD2F10(1,
+    // 100.0, 300.0); x and z stay the owner's. The draw is taken here, after the
+    // bag and the owner copy and before 004F0AD0 (create_units below), as in the
+    // image. `VelocitySI` (class+18Ch TravelSpeed, 006C51EC) is the seed
+    // create_units already gives every plane, so it has no field here.
+    const bool airborne_launch = kAirOpsLaunchFlagAirborneBound && bag_state == 7;
+    if (airborne_launch) {
+        float draw = 0.0f;
+        bool drew = false;
+        if constexpr (kAirOpsLaunchFlagAltitudeDrawBound) {
+            if (GameGunneryHost* gunnery = units_.gunnery()) {
+                draw = gunnery->death_mode_draw_00bd2f10(1, owner,
+                    kAirOpsLaunchAltitudeDrawLow, kAirOpsLaunchAltitudeDrawHigh);  // 006C52BA
+                drew = true;
+            }
+        }
+        // 006C52BF FADD dword [tuning+210h] under 24-bit precision, 006C52C5 FSTP
+        // dword: one float rounding, the float sum. With the draw switch off (or
+        // no gunnery host) y is the Ceiling alone, with NO random offset
+        // (SUBSTITUTION, labelled; the image has no constant to stand in).
+        record.world[13] = drew ? draw + ceiling_210 : ceiling_210;
+        log_.notef("air ops squadron: airborne launch for \"%s\" (006C5050 flag arm, State 7): "
+            "y = %s = %.2f, x/z the owner's (006C5298-006C52C5, packet cc13-tier1)",
+            home_base.c_str(),
+            drew ? "Ceiling + 00BD2F10(1, 100, 300)" : "Ceiling, 00BD2F10 draw NOT taken",
+            static_cast<double>(record.world[13]));
     }
 
     // 006C5050 fills `WingCount` from slot+8h and hands the bag to 004F0AD0,
@@ -1026,8 +1061,12 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
     // The bag's `HomeBase` (006C5050, the owner at block+7Ch) and `State`: 1,
     // since 006CC733 pushes the airborne flag as 0 (006C5050: State =
     // flag ? 7 : 1). Read by the squadron's pass C behind kBaseLaunchChainBound.
+    // (The flag-1 arm, from 006CA8FA, is the 7 below.)
     squadron.bag_home_base = home_base;
-    squadron.bag_state = 1;
+    // kAirOpsLaunchFlagAirborneBound: 7 on the flag arm, so 007F4C36 SETLE gives
+    // flag 0, 007F1C74 leaves +408h clear and 007F4DB0 runs 007F2920 (the
+    // host's pass C place_squadron_members_007f2920) instead of the inside start.
+    squadron.bag_state = airborne_launch ? 7 : 1;
     squadron.squadron_unit = before;
     squadron.member_names.clear();
     squadron.member_units.clear();
