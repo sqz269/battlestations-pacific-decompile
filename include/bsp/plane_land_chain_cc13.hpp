@@ -31,6 +31,32 @@ namespace bsp {
 // flight_state_notify_007c11e0). The per-step poll wing_fold_notify_007c11e0
 // still covers the other call sites; a notify here records the state it saw,
 // so the poll does not repeat it.
+// ON effects beyond the actuator targets, from the 007BC550 tail:
+//   007CC7A0 (the elevator take into state 2): the parked plane was disabled in
+//   state 1, so the enable arm runs: state->active = 1, row.active = true, the
+//   hit node re-attached (plane_hit_node_detached = false), 00779C60 recorded.
+//   A plane coming down the elevator becomes active and hittable; OFF does
+//   nothing there.
+//   007CC8B0's copy of 007CC820 (the stock return, s = 1), before the Kill: the
+//   disable arm (state->active = 0, row.active = false, hit node detached) and
+//   +9F0h, the world and angular velocities zeroed. The stow (007B96C0 at the
+//   elevator, 006D0738) only detaches the node, so under OFF the plane is still
+//   active here. Readers of active / row.active after the Kill:
+//   kill_unit_00926d90 -> the gunnery kill_unit, note_kill_cause_00926e02 and
+//   target_gone_00925c40 read neither; the squadron counts (script orders
+//   +3CCh, 007F4E19's member scan) do not see the plane, which the stock return
+//   took out of member_units first; the liveness tests that also check +5Dh
+//   are already false (kStockReturnDestroyBytesBound sets it). What changes:
+//   the units host's per-step slot walk and the 00836920 director walk skip
+//   the slot from that step on, and ship AI auto-targeting (its row->active
+//   filter) drops it, and a ship whose locked fire target it is releases it at
+//   once instead of keeping a dead row.
+// UNCERTAIN: the retire draw timing (kPlaneRetireOnDestroyedDrawCc13Bound): the
+// image draws at the later destroy flush (00926C80 queues onto the F899A8
+// list), not right after the Kill. The gear channel_b is never initialised, so
+// ON can leave moving_any set for good (no reader found). If the notify comes
+// before the first per-step poll, the wing target snaps from the notify's state
+// rather than the poll's, one step earlier.
 // False: the sites record 007C11E0 and the poll sets the wing target one fixed
 // step later, as before.
 inline constexpr bool kPlaneFlightStateNotifyCc13Bound = false;
