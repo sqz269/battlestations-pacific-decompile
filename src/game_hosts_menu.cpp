@@ -2007,6 +2007,35 @@ bool inject_input_action_hold(int action, unsigned frames) {
     return true;
 }
 
+namespace {
+struct InjectedViewAim {
+    bool active{false};
+    float yaw{0.0f};
+    float pitch{0.0f};
+};
+InjectedViewAim& injected_view_aim_state() {
+    static InjectedViewAim aim;
+    return aim;
+}
+}  // namespace
+
+void inject_view_aim(float yaw, float pitch) {
+    InjectedViewAim& aim = injected_view_aim_state();
+    aim.active = true;
+    aim.yaw = yaw;
+    aim.pitch = pitch;
+}
+
+bool injected_view_aim(float& yaw, float& pitch) {
+    const InjectedViewAim& aim = injected_view_aim_state();
+    if (!aim.active) return false;
+    yaw = aim.yaw;
+    pitch = aim.pitch;
+    return true;
+}
+
+void clear_injected_view_aim() { injected_view_aim_state().active = false; }
+
 // The executable's action table holds one record, press-start 4Eh. Every other
 // index is a record nothing starts, so both rules answer false for it, unless a
 // helm `input` line holds it (inject_input_action_hold).
