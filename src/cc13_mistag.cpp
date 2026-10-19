@@ -247,6 +247,17 @@ bool vt_reset_destruct(std::uint32_t address, void* object) noexcept {
     return false;
 }
 
+// The irregular rows' five one-instruction virtuals, read from the disk bytes:
+// 009BE0E0 33 C0 C3; 009DAAA0 32 C0 C2 04 00; 009DAC30 D9 05 58 39 CE 00 C3; 009DB000 C3;
+// 00743E50 8D 81 10 01 00 00 C3.
+std::uint32_t virtual_return_zero_009be0e0(void*) noexcept { return 0; }
+std::uint8_t virtual_return_false_009daaa0(void*, std::uint32_t) noexcept { return 0; }
+float virtual_return_two_009dac30(void*) noexcept { return 2.0f; }
+void virtual_no_op_009db000(void*) noexcept {}
+void* landfort_create_message_field_110_00743e50(void* message) noexcept {
+    return static_cast<std::uint8_t*>(message) + 0x110;
+}
+
 // Part C: F6 44 24 04 01 56 8B F1 C7 06 <vtable> 74 09 56 E8 <00BF65AC> 83 C4 04 8B C6 5E C2 04 00.
 const VtResetDestructor kVtResetDeletingDestructors[kVtResetDeletingDestructorCount] = {
     {0x006CDD40, 0x00CF88F8}, {0x00735990, 0x00CFE9F4}, {0x00861BA0, 0x00D0D314},

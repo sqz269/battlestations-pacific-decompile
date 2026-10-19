@@ -418,6 +418,62 @@ Library:
 
 Unknown: `007D79F0`, vtable 00D06844.
 
+## Irregular rows (21, read by hand)
+
+These are the rows the shape classifier put in neither the vt-reset nor the wrapper shape. Each
+was read from the disk bytes (`local/mistag_irr_probe.py` finds the vtable slots and every
+recorded store of each vtable; `local/mistag_irr_oneline.py` prints the listings side by side).
+
+**Bound: 14 scalar deleting destructors.** Each inlined body was compared instruction by
+instruction with the recorded out-of-line destructor it cites.
+
+| Address | Vtable slot | Inlines |
+|---|---|---|
+| `0072AC70` | 00CFDC0C | 0072ABE0 BSP_GunBarrelTable_Destruct |
+| `007D7FF0` | 00D06848 | 007D7A10 BSP_OwnedPtrHolder_Destruct_00D06848 |
+| `00851F20` | 00D0BEAC | 00851EC0 BSP_FixedStringBuilder_Destruct |
+| `009D91D0` | 00D214F4 | 009D58A0 BSP_ShipAiPathNode_DestructBody |
+| `009DBEF0` | 00D2152C | 009DBDB0 BSP_ShipAiPathPlan_DestructBody |
+| `0074EC00` | 00D00514 | 0074E7F0 BSP_UnitSubObject10D4_Destruct |
+| `007669F0` | 00D03720 | 007668E0 BSP_NetEntityCreateMessage_Destruct |
+| `00767970` | 00D0379C | the same as 007669F0 |
+| `00767B90` | 00D037BC | the same as 007669F0 |
+| `00767CC0` | 00D037E0 | the same as 007669F0 |
+| `00767DD0` | 00D03804 | the same as 007669F0 |
+| `00767500` | 00D03754 | 007674C0 BSP_SessionMessage_VOICEDATA_Destruct |
+| `00950380` | 00D19B74 | 00950350 BSP_SceneTextChunk_Destruct |
+| `009E8420` | 00D21994 | its own inlined body, cited by its callee |
+
+- The four 007669F0 copies are byte-identical to it once rel32 is masked.
+- 009E8420 calls 009E48A0 (ECX = this+8h; an unrecorded game routine that clears the list at
+  +14A0h and ends in a JMP to 009DF910). It then stores 00D056D0, whose out-of-line copy is the
+  part B row 007B3DA0. The record cites 009E48A0.
+
+**Bound: 2 more.**
+- `00729500` is a compiler adjustor thunk, `SUB ECX,10h; JMP 0072AB60`, at slot 00CFDC40. Its
+  status is `existing_recorded_thunk`. 0072AB60 is the deleting destructor that calls 0087A410
+  BSP_UnitTickableEntity_Destruct.
+- `008444E0` STL_UninitializedFillNShipyardHangars is an STL `uninitialized_fill_n`
+  instantiation (10h-byte elements, vtable 00D0B6A0). It is a library body.
+
+**Rebuilt: 5 one-instruction game virtuals.** Each is reached only from vtable slots, and each
+has a provisional name.
+
+| Address | Bytes | Name | Function | Slots |
+|---|---|---|---|---|
+| `009BE0E0` | `33 C0 C3` | BSP_VirtualReturnZero_009be0e0 | `virtual_return_zero_009be0e0` | 00D209C0, 00D209C8 |
+| `009DAAA0` | `32 C0 C2 04 00` | BSP_VirtualReturnFalse_009daaa0 | `virtual_return_false_009daaa0` | eight ship-AI slots, 00D21564..00D219FC |
+| `009DAC30` | `D9 05 58 39 CE 00 C3` | BSP_VirtualReturnTwo_009dac30 | `virtual_return_two_009dac30` | 00D215C0 |
+| `009DB000` | `C3` | BSP_VirtualNoOp_009db000 | `virtual_no_op_009db000` | 00D21660 |
+| `00743E50` | `8D 81 10 01 00 00 C3` | BSP_SessionMessage_LANDFORT_CREATE_Field110 | `landfort_create_message_field_110_00743e50` | slot 6 (00CFF370) of 00CFF358 |
+
+- 009BE0E0 is `XOR EAX,EAX; RET`. Ghidra had named it `Unwind@009be0e0`, but it is no funclet.
+- 009DAAA0 is `XOR AL,AL; RET 4`, and only AL is written.
+- 009DAC30 returns ST0 = 2.0f, read from 00CE3958.
+- 00743E50 returns `this + 110h`.
+
+The Ghidra rename log for these five is `local/ghidra-annotations-20261019T090846Z.json`.
+
 ### Part B rows that fail the byte check
 
 Three scan candidates fail the byte check and are not part B: `009DB550` (`B0 01 C3`, MOV AL,1),

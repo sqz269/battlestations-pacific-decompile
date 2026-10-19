@@ -271,6 +271,20 @@ void point3_ptr_array_destruct_007b1a80(MistagHost& host, void* array);
 void* singleton_scalar_deleting_destruct_00735880(MistagHost& host, void* object, std::uint32_t flags);
 void* singleton_scalar_deleting_destruct_00735900(MistagHost& host, void* object, std::uint32_t flags);
 void* singleton_scalar_deleting_destruct_00866090(MistagHost& host, void* object, std::uint32_t flags);
+// --- Irregular rows: five one-instruction game virtuals (each reached only from vtable slots) ---
+// 009BE0E0, __thiscall(ECX = object), RET: XOR EAX,EAX (slots 00D209C0, 00D209C8).
+std::uint32_t virtual_return_zero_009be0e0(void* object) noexcept;
+// 009DAAA0, __thiscall(ECX = object; one stack argument), RET 4: XOR AL,AL (eight slots:
+// 00D21564, 00D215C4, 00D215F4, 00D218EC, 00D2191C, 00D2194C, 00D21988, 00D219FC). Only AL is written.
+std::uint8_t virtual_return_false_009daaa0(void* object, std::uint32_t argument) noexcept;
+// 009DAC30, __thiscall(ECX = object), RET, ST0 = [00CE3958] = 2.0f (slot 00D215C0).
+float virtual_return_two_009dac30(void* object) noexcept;
+// 009DB000, __thiscall(ECX = object), RET: an empty body (slot 00D21660).
+void virtual_no_op_009db000(void* object) noexcept;
+// 00743E50, __thiscall(ECX = message), RET, EAX = message + 110h: slot 6 (00CFF370) of the
+// LANDFORT_CREATE session message vtable 00CFF358.
+void* landfort_create_message_field_110_00743e50(void* message) noexcept;
+
 // A kVtResetDeletingDestructors row: [object] = vtable, then _free(object) when flags & 1;
 // nullptr when `address` is not a row.
 void* vt_reset_scalar_deleting_destruct(MistagHost& host, std::uint32_t address, void* object,
