@@ -19990,3 +19990,18 @@ process-wide): USN21 one extra Jake death, USN04 deaths 62 -> 56, USNOS deaths 1
 1004.88 s. USNOS fails at 969.89 s in the reference env both ways (HQ1, "Game Over"), so no WINS row changes.
 
 Flipped ON in include/bsp/plane_crash_sweep.hpp (cc13-cool9dc-c's queued follow-ups, the 5.0 AirField arm and the state-7 re-arm, are still open there).
+
+## 303. Formation pair: kDeadLeaderDirectorStateCopyBound and kWakeDecomposeSegmentProjectionBound (cc9-ships60, 2026-10-19)
+
+cc13's two formation switches (include/bsp/cc13_jm08_switches.hpp; main 7cc8b4df1 and earlier), each paired alone in
+the reference env on 633532638 (OFF = the tree build, ON = pair_export trees local\s60_dl_on / s60_wk_on): USN04 20000
+frames without orders, USN21 40000 with cc9-ships44\local\s46_u21_f.txt, JM08 72000 with
+config/win_orders/jm08_l65_j8_p2.txt.
+
+| switch | USN04 | USN21 | JM08 | first moved unit |
+|---|---|---|---|---|
+| kDeadLeaderDirectorStateCopyBound | 1 | 1 | 3 | JM08: Nevada (group leader) dies at 527.49 s; on that step San Francisco is in attackmove / navigate_astern on Headquarter 01 (ON) instead of follow / stopped (OFF). USN04 and USN21 have no leader death (`whole_leaves` only moves in the summary). |
+| kWakeDecomposeSegmentProjectionBound | 3 | 3 (18 summary lines, deaths identical) | 3 | from step 10: JM08 Helena throttle 0 -> 0.596 and USN04 Northampton-class01 0 -> 0.891, the stations ahead of the head and on samples no longer collapsing onto the leader, as the switch comment predicts. |
+
+Both moves start at the switch's mechanism, so both are flipped ON. jm08_l65_j8_p2 ends without a result in all three
+JM08 runs, so no WINS row moves here.
