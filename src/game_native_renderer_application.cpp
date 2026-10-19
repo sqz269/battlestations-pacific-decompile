@@ -855,6 +855,13 @@ void GameNativeRendererApplication::draw_mission_ship(std::uint64_t mission_fram
     try { p.mission_ship->draw(mission_frame, simulated_seconds, p.device_generation); }
     catch (...) { p.phase = Impl::Phase::failed; throw; }
 }
+void GameNativeRendererApplication::release_application_preload_rows() {
+    auto& p = *impl_;
+    if (!p.mission_ship || !p.mission_ship->preload) return;
+    NativeLuaServiceBindings::Activation activation(p.lua_services.binding());
+    try { p.mission_ship->preload->release_borrowed_rows(); }
+    catch (...) { p.phase = Impl::Phase::failed; throw; }
+}
 void GameNativeRendererApplication::construct() {
     auto& p=*impl_;check(p.phase==Impl::Phase::prepared,"renderer constructor is once-only");
     p.phase=Impl::Phase::constructing;

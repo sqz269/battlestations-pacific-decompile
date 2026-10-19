@@ -2,6 +2,10 @@
 // shader preload and 737F80..737FB0 caller-reference retirement. Include after
 // the native preload/application/effect-owner and string-process declarations.
 // The complete preload owns its own shader-cache bracket BEFORE B107F0.
+// With kApplicationCc15Bound ON the preload borrows the startup host's
+// Application (0073D410 passes its own ECX to 73BF80 at 0073DD12; the startup
+// host's 00737970 published it at E1AE90). The host then releases the rows in
+// 00737F30 (737F80..737FB0) and retires the object through 007379A0 itself.
 struct MissionShipShaderPreloadGraph final {
     // Establish the actual typed field lifetimes without initializing any
     // preimage. WinMain also owns an enclosing 1Ch object (on its stack).
@@ -28,6 +32,9 @@ struct MissionShipShaderPreloadGraph final {
     NativeApplicationSingletonBaseContext singleton;
     NativeApplicationPointerVectorAllocation allocation;
     ApplicationStorage application;
+    // The Application 73BF80 fills: the owned storage above, or the borrowed one.
+    ApplicationStorage* target{&application};
+    bool borrowed{};
     NativeShaderPreloadOperation operation;
     std::vector<NativeRenderActualOwnerReleaseObservation> releases;
     Phase phase{Phase::prepared};
@@ -59,34 +66,51 @@ struct MissionShipShaderPreloadGraph final {
     void create() {
         check(phase == Phase::prepared, "mission shader preload cannot replay");
         auto& process = game_native_string_process();
-        check(&singleton.actual_manager_01090aa0 == &process.manager_01090aa0() &&
-            singleton.actual_manager_01090aa0 && !singleton.actual_application_e1ae90 &&
-            !context.cache.actual_cache_0108d6ec,
-            "mission preload requires the sole canonical manager/application and a closed shader cache");
-        check(process.claim_application_domain(), "mission Application domain was already claimed");
+        const auto fresh = [](const ApplicationStorage& a) noexcept {
+            return a.profile_00 == 0x00cfeab0 && a.game_14 == nullptr &&
+                a.preloaded_08.data_00 == nullptr && a.preloaded_08.count_04 == 0 &&
+                a.preloaded_08.capacity_08 == 0;
+        };
+        if constexpr (kApplicationCc15Bound) {
+            // 0073DD12: ECX is 0073D410's own receiver, WinMain's stack Application.
+            check(&singleton.actual_manager_01090aa0 == &process.manager_01090aa0() &&
+                singleton.actual_manager_01090aa0 && singleton.actual_application_e1ae90 &&
+                !context.cache.actual_cache_0108d6ec,
+                "mission preload requires the startup Application at E1AE90 and a closed shader cache");
+            target = static_cast<ApplicationStorage*>(singleton.actual_application_e1ae90);
+            check(fresh(*target), "borrowed startup Application does not hold an empty preload vector");
+            borrowed = true;
+            log.notef("native mission preload borrows the startup Application: storage=%p",
+                static_cast<void*>(target));
+        } else {
+            check(&singleton.actual_manager_01090aa0 == &process.manager_01090aa0() &&
+                singleton.actual_manager_01090aa0 && !singleton.actual_application_e1ae90 &&
+                !context.cache.actual_cache_0108d6ec,
+                "mission preload requires the sole canonical manager/application and a closed shader cache");
+            check(process.claim_application_domain(), "mission Application domain was already claimed");
+        }
         phase = Phase::constructing;
         try {
-            construct_native_application_00737970(&application, singleton);
-            check(singleton.actual_application_e1ae90 == &application &&
-                application.profile_00 == 0x00cfeab0 && application.game_14 == nullptr &&
-                application.preloaded_08.data_00 == nullptr && application.preloaded_08.count_04 == 0 &&
-                application.preloaded_08.capacity_08 == 0,
-                "native Application constructor did not establish its actual preload vector");
+            if (!borrowed) {
+                construct_native_application_00737970(&application, singleton);
+                check(singleton.actual_application_e1ae90 == &application && fresh(application),
+                    "native Application constructor did not establish its actual preload vector");
+            }
             phase = Phase::preloading;
             NativeLuaServiceBindings::Activation activation(lua);
-            preload_native_application_shaders_0073bf80(&application, context, operation);
+            preload_native_application_shaders_0073bf80(target, context, operation);
             check(operation.phase() == NativeShaderPreloadPhase::complete &&
                 !operation.retains_native_state() && !context.cache.actual_cache_0108d6ec &&
-                application.preloaded_08.count_04 >= 0 &&
-                static_cast<std::uint32_t>(application.preloaded_08.count_04) == operation.appended_entries(),
+                target->preloaded_08.count_04 >= 0 &&
+                static_cast<std::uint32_t>(target->preloaded_08.count_04) == operation.appended_entries(),
                 "native shader preload did not finish its independent cache bracket");
-            for (std::int32_t index = 0; index < application.preloaded_08.count_04; ++index) {
-                void* const effect = application.preloaded_08.data_00[index];
+            for (std::int32_t index = 0; index < target->preloaded_08.count_04; ++index) {
+                void* const effect = target->preloaded_08.data_00[index];
                 if (effect) validate_effect(effect);
             }
             phase = Phase::ready;
             log.notef("native mission preload complete: application=%p entries=%u site=%08x cache=closed",
-                &application, operation.appended_entries(), operation.active_call_site());
+                static_cast<void*>(target), operation.appended_entries(), operation.active_call_site());
         } catch (...) {
             phase = Phase::failed;
             log.notef("native mission preload retained: phase=%u site=%08x appended=%u",
@@ -97,34 +121,48 @@ struct MissionShipShaderPreloadGraph final {
     void retire_before_native_drain() {
         if (phase == Phase::retired || phase == Phase::closed) return;
         check(phase == Phase::ready && !context.cache.actual_cache_0108d6ec &&
-            singleton.actual_application_e1ae90 == &application,
+            singleton.actual_application_e1ae90 == target,
             "mission preload retirement requires the completed quiescent native Application");
         phase = Phase::retiring;
         try {
-            const auto count = static_cast<std::uint32_t>(application.preloaded_08.count_04);
-            releases.resize(count); // Retained before any native reference release.
-            // Original737F80..737FB0 reloads data/count for each ascending row,
-            // decrements the actual+04 once, current-profile0 on zero, then
-            // clears the captured nonnull row. The canonical helper preserves
-            // that release/terminal order without a callable numeric vtable.
-            while (next_release < static_cast<std::uint32_t>(field<std::int32_t>(&application, 0x0c))) {
-                void** const data = field<void**>(&application, 8);
-                void** const row = data + next_release;
-                void* const effect = field<void*>(row);
-                if (effect) {
-                    validate_effect(effect);
-                    release_native_render_actual_owner_observed(owners, effect, releases.at(next_release));
-                    *static_cast<void* volatile*>(row) = nullptr;
-                }
-                ++next_release;
+            release_rows();
+            // A borrowed Application is retired by its owner at 008F8444.
+            if (!borrowed) {
+                //7379A0 resizes to0, frees CURRENT vector allocation, then genuine
+                //BEA990/BEA8B0 unregisters and clears the canonical publication.
+                retire_native_application_007379a0(&application, application.preloaded_08, allocation, singleton);
+                check(!singleton.actual_application_e1ae90,
+                    "native Application retirement left its canonical publication live");
             }
-            //7379A0 resizes to0, frees CURRENT vector allocation, then genuine
-            //BEA990/BEA8B0 unregisters and clears the canonical publication.
-            retire_native_application_007379a0(&application, application.preloaded_08, allocation, singleton);
-            check(!singleton.actual_application_e1ae90,
-                "native Application retirement left its canonical publication live");
             phase = Phase::retired;
         } catch (...) { phase = Phase::failed; throw; }
+    }
+    // 00737F30's row loop over the borrowed startup Application, before the
+    // startup host retires it through 007379A0.
+    void release_borrowed_rows() {
+        if (!borrowed || phase == Phase::retired) return;
+        retire_before_native_drain();
+        log.notef("native mission preload rows released: application=%p rows=%u",
+            static_cast<void*>(target), next_release);
+    }
+    void release_rows() {
+        const auto count = static_cast<std::uint32_t>(target->preloaded_08.count_04);
+        releases.resize(count); // Retained before any native reference release.
+        // Original737F80..737FB0 reloads data/count for each ascending row,
+        // decrements the actual+04 once, current-profile0 on zero, then
+        // clears the captured nonnull row. The canonical helper preserves
+        // that release/terminal order without a callable numeric vtable.
+        while (next_release < static_cast<std::uint32_t>(field<std::int32_t>(target, 0x0c))) {
+            void** const data = field<void**>(target, 8);
+            void** const row = data + next_release;
+            void* const effect = field<void*>(row);
+            if (effect) {
+                validate_effect(effect);
+                release_native_render_actual_owner_observed(owners, effect, releases.at(next_release));
+                *static_cast<void* volatile*>(row) = nullptr;
+            }
+            ++next_release;
+        }
     }
     bool requires_process_retention() const noexcept {
         return phase == Phase::constructing || phase == Phase::preloading ||
