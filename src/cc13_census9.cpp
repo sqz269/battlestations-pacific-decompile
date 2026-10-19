@@ -169,4 +169,38 @@ void* air_ops_holder_scalar_deleting_destruct_006c23d0(Census9Host& host, void* 
     return holder;
 }
 
+// 00743E30..00743E44: the LANDFORT_CREATE message (constructor 00743DB0) destructor; the
+// +110h subobject gets 00CFF354 back, then the net-entity create-message base 007668E0.
+void landfort_create_message_destruct_00743e30(Census9Host& host, void* message) {
+    at<std::uint32_t>(message, 0x000) = 0x00CFF358;
+    at<std::uint32_t>(message, 0x110) = 0x00CFF354;
+    host.net_entity_create_message_destruct_007668e0(message);
+}
+
+// 0074CC90..0074CC9A: the land-vehicle create message (sender 0074CDB0) destructor.
+void land_vehicle_create_message_destruct_0074cc90(Census9Host& host, void* message) {
+    at<std::uint32_t>(message, 0x000) = 0x00CFFD18;
+    host.net_entity_create_message_destruct_007668e0(message);
+}
+
+// 0093CC80..0093CC8A: the Simple3dScene (constructor 0093CB10) destructor.
+void simple3d_scene_destruct_0093cc80(Census9Host& host, void* scene) {
+    at<std::uint32_t>(scene, 0x000) = 0x00D19724;
+    host.simple3d_scene_release_0093cc20(scene);
+}
+
+// 007AC950..007AC95A: the path-source base destructor (vtable 00D052DC; 007B2CF0 is the
+// owned-points subclass's, which frees its points first).
+void path_source_destruct_007ac950(Census9Host& host, void* source) {
+    at<std::uint32_t>(source, 0x000) = 0x00D052DC;
+    host.ref_counted_destroy_base_00bd30f0(source);
+}
+
+// 0094CAD0..0094CADA: the iostdnet TOrderedMap destructor; the tree is torn down by 0094CA40
+// (ordered_map_destruct_0094ca40, src/cc13_left61_seg61.cpp).
+void ordered_map_destruct_0094cad0(Census9Host& host, void* map) {
+    at<std::uint32_t>(map, 0x000) = 0x00D25170;
+    host.ordered_map_destruct_0094ca40(map);
+}
+
 }  // namespace bsp::cc13_census9
