@@ -726,6 +726,7 @@ int binding_trampoline(lua_State* state) {
         || override_hp_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
         || has_fired_row || water_load_row || break_ship_row || player_commands_row
+        || visibility_row || avoidance_row || base_unsupported_row || cheat_turbo_row
         || sub_surface_row
         || force_gunner_row
         || slot_count_row || add_stock_row || shipyard_stock_row || device_reload_row

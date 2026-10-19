@@ -1239,3 +1239,37 @@ Results (logs `local\l71r_b1a_main_{ref,j3}.log`):
 - ref: EndMission at 698.95 s. HenryPT kills MiniSub at 596.68 s.
 - 20,3: EndMission at 1359.20 s. MiniSub dies at 1029.13 s.
 - The guard logged its refusal on both runs.
+
+### Lua native flips (cc13-luawire, cc9-lua71): eight switches ON
+
+Same-commit pairs on agent/cc9-lua52 342fc37a5 (origin/main 872adeff3 + ea5795c31). OFF is the tree build; ON is
+export `local\l71_xa` (HasFired, AddWaterLoad, BreakShip, UnitSetPlayerCommandsEnabled) or `local\l71_xb`
+(SetVisibility, SquadronEnableVehicleAvoidance, SquadronSetBaseUnsupported, SetCheatTurbo). Logs are
+`local\l71r_<row>x_{main,xa,xb}_{ref,j3}.log`.
+
+| Pair | verdict | end OFF -> ON |
+| --- | --- | --- |
+| BSM01 `l71_b1_a`, set A, ref / 20,3 | identical / identical | no end / no end |
+| JM06 `l70_j6_n`, set A, ref | moved | completed 823.92 -> 1883.71 s |
+| JM06 `l70_j6_n`, set A, 20,3 | moved | completed 850.92 -> 790.93 s |
+| BSM09 `l68_b9_d1`, set A, ref | identical | EndMission 405.02 s |
+| BSM09 `l68_b9_d1`, set B, ref / 20,3 | moved / moved | EndMission 405.02 / 408.02 s, unchanged |
+| USN01 `l69_u1_a`, set B, ref | identical | completed 410.02 s |
+
+- JM06 moves through BreakShip only. jm06.lua `luaJM6BreakShips` breaks the ambush target 9 s after the ambush
+  movie. In the ON run US Tanker 02 dies at 331.09 s by BreakShip, where OFF had it torpedoed by PlayerSub 01 at
+  359.59 s. The rest cascades from there (PlayerSub 01 is later lost). The mechanism is the script's own call, so
+  the flip goes in.
+- In BSM09, set B carries out what the script wrote: Val squadrons have avoidance off, Val 5 is hidden, cheat turbo
+  calls are made, and Donald is listed on both carriers. Plane death times shift by about 0.05 s and the end is
+  unchanged.
+- In USN01 none of the four natives is called (every summary shows calls=0), and the run is identical.
+- The census in game_hosts_lua.cpp now lists the four 7b rows as handled. Before, it printed UNIMPLEMENTED for them
+  even with the switches ON, although their runners ran.
+- An earlier set of ref pairs used OFF logs from 86b81e2a8 against ON exports of an older base. Its USN01 "moved"
+  verdict came from that base mismatch and is void.
+
+BSM01 `l71_b1_a` does not hold on 872adeff3 (no end in either env). MiniSub comes to rest at (-254.7,-2489.9) on the
+reference seed; on d175c1aac it rested at (-212,-2388). Under 20,3 it is still moving submerged near (2053,-1864) at
+the end. Henry's depth charges never hit it, and the hits that do land (bullet 43, from other ships) do not satisfy
+the listener, which requires attacker = Henry. The row needs a re-plan on the combined re-time base.
