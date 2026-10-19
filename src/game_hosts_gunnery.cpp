@@ -3105,6 +3105,10 @@ struct GameGunneryHost::Impl {
     bool land_masters_built{false};
     // 0 on the health-zero paths; the stored +70h cause during an explicit kill.
     int explicit_kill_cause{0};
+    // Packet cc13-jm08: the image phase of the kill in progress (the table at
+    // kDeadLeaderDirectorStateCopyBound). A plain store around the mapped callers;
+    // read only by kill_unit, and only with that switch on.
+    bsp::DeadLeaderDeathPhase death_phase{bsp::DeadLeaderDeathPhase::Unmapped};
     struct LandMasterCounts {
         unsigned long long sections{0}, masters{0}, party_adoptions{0}, forwards{0};
         unsigned long long section_deaths{0}, hand_offs_skipped_cause{0}, die_calls{0};
@@ -4128,6 +4132,8 @@ struct GameGunneryHost::Impl {
         bool valid{false};
         float points[3][3]{};
         float cooldown_9dc{0.0f};   // unit+9DCh stand-in
+        bool armed_9dc{false};      // kPlaneCrashConstructCooldownCc13Bound
+        bool grounded_9dc{false};   // seen off free flight before the first arm
     };
     std::vector<PlaneCrashPrev> crash_prev;
     std::vector<GameBulletClassRow> crash_bullets;   // read on first use, by id
@@ -4136,6 +4142,7 @@ struct GameGunneryHost::Impl {
     unsigned long long pc_surface_cuts{0}, pc_impacts{0}, pc_blast_records{0};
     unsigned long long pc_hits_21{0}, pc_hits_98{0}, pc_hits_99{0}, pc_hits_other{0};
     unsigned long long pc_logged{0}, pc_cooldown_steps{0};
+    unsigned long long pc_construct_cooldown_arms{0};
     double pc_blast_damage{0.0};
     // DIAGNOSTIC: the closest any live kamikaze bow came to a hostile hull box.
     float kz_min_gap{-1.0f};
@@ -12071,6 +12078,15 @@ void GameGunneryHost::Impl::run_kamikaze_box_contacts() {
 
 void GameGunneryHost::Impl::kamikaze_detonate_00819a20(std::size_t unit, std::size_t target,
     const float contact[3]) {
+    // Packet cc13-jm08: 00819A20 is 00821E80's message-70h arm (0082218D), the
+    // message built by 0080FF30 and routed 0077C2A0 -> 0076E520, so it runs in
+    // the pump's drain and its hit records (00819BA7, 0084BBF9) drain at row 14.
+    struct PhaseScope {
+        bsp::DeadLeaderDeathPhase& slot;
+        bsp::DeadLeaderDeathPhase saved;
+        ~PhaseScope() { slot = saved; }
+    } phase_scope{death_phase, death_phase};
+    death_phase = bsp::DeadLeaderDeathPhase::HitDrainAfterPump;
     const KamikazeRow& kr = kamikaze_rows[unit];
     ++kz_detonations;
     float right[3], up[3], forward[3], centre[3];
@@ -12416,7 +12432,22 @@ void GameGunneryHost::Impl::run_plane_crash_sweeps_007c0910(float step) {
         // the step. LABELLED stand-in for 007C5F60's launch-spot stores (3.0 s,
         // 00CE3854): armed on the first free-flight step, because a host plane is
         // in state 7 while still on its deck.
-        if (airborne && !had_prev) prev.cooldown_9dc = bsp::kPlaneCrashLaunchCooldown;
+        if constexpr (bsp::kPlaneCrashConstructCooldownCc13Bound) {
+            // Packet cc13-cool9dc: a plane in free flight on every step seen so far
+            // never went through 007C5F60, so it still holds 007CFE78's 1.0f.
+            if (!airborne) prev.grounded_9dc = true;
+            if (airborne && !had_prev) {
+                if (!prev.armed_9dc && !prev.grounded_9dc) {
+                    prev.cooldown_9dc = bsp::kPlaneCrashConstructCooldown;
+                    ++pc_construct_cooldown_arms;
+                } else {
+                    prev.cooldown_9dc = bsp::kPlaneCrashLaunchCooldown;
+                }
+                prev.armed_9dc = true;
+            }
+        } else {
+            if (airborne && !had_prev) prev.cooldown_9dc = bsp::kPlaneCrashLaunchCooldown;
+        }
         if (!airborne || !had_prev) continue;
         if (prev.cooldown_9dc > 0.0f) {
             prev.cooldown_9dc -= step;
@@ -13239,7 +13270,10 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
                 "fire_total=%.0f repaired=%.0f", state.row.name.c_str(),
                 static_cast<double>(clock_seconds), dc.water_damage, dc.fire_damage,
                 dc.repaired);
+            // Packet cc13-jm08: 0093C120 / 0093C210 under 00825F20, a wave tick.
+            death_phase = bsp::DeadLeaderDeathPhase::BeforePump;
             kill_unit(i);
+            death_phase = bsp::DeadLeaderDeathPhase::Unmapped;
         }
     }
 }
@@ -13286,6 +13320,11 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
     target.enabled = false;
     target.row.pass_enabled = false;
     ++summary.deaths;
+    if constexpr (kDeadLeaderDirectorStateCopyBound) {
+        // Packet cc13-jm08: 0071C150's handover where the image's 77h delivery
+        // falls relative to this kill's 0071DDB0 below.
+        units.leader_death_handover_at_kill(victim, death_phase);
+    }
     {
         // Packet cc9_director_target_checks: 0071DDB0, every director observer's
         // delivery for this entity (the destroy's 00926390 / 009263C0, which the
@@ -15237,9 +15276,13 @@ void GameGunneryHost::fixed_step(float step_seconds) {
         }
     }
     host.run_gun_aim_and_fire(step_seconds);
+    // Packet cc13-jm08: projectile and plane-crash hits are pushed by the wave
+    // ticks (006E6490 / 0070C370 / 006E1300, 007CE040) and drained at row 6.
+    host.death_phase = bsp::DeadLeaderDeathPhase::BeforePump;
     host.run_projectiles(step_seconds);
     // Packet cc9_lua53_kamikaze_impact: 007C0910 (a census while OFF).
     host.run_plane_crash_sweeps_007c0910(step_seconds);
+    host.death_phase = bsp::DeadLeaderDeathPhase::Unmapped;
     if constexpr (kKamikazeContactDetonationBound) {
         host.run_kamikaze_contacts(step_seconds);
     }
@@ -15927,6 +15970,14 @@ bool GameGunneryHost::director_allow_move_3d(std::size_t unit_index) const noexc
     const auto& row = impl_->director_stance_by_unit[unit_index];
     if (row.set && !row.allow_move) ++impl_->stance_move_forbidden_reads;
     return !row.set || row.allow_move;
+}
+
+void GameGunneryHost::copy_director_allow_bytes_00720450(std::size_t dst, std::size_t src) {
+    // 0072045D..00720468: MOVZX [src+3Ch] -> [dst+3Ch], [src+3Dh] -> [dst+3Dh].
+    const std::size_t need = std::max(dst, src) + 1;
+    if (impl_->director_stance_by_unit.size() < need) impl_->director_stance_by_unit.resize(need);
+    impl_->director_stance_by_unit[dst] = impl_->director_stance_by_unit[src];
+    impl_->done("CommandControllerBase::copy_allow_bytes", 0x0072045du);
 }
 
 void GameGunneryHost::kill_unit_00926d90(std::size_t unit_index, int cause) {
@@ -17554,6 +17605,10 @@ void GameGunneryHost::report() {
         host.pc_hits_98, host.pc_hits_99, host.pc_hits_other, host.pc_same_squadron,
         host.pc_land_hits, host.pc_submerged, host.pc_surface_cuts, host.pc_cooldown_steps, host.pc_impacts,
         host.pc_blast_records, host.pc_blast_damage, bsp::kPlaneCrashSweepBound ? 1 : 0);
+    if constexpr (bsp::kPlaneCrashConstructCooldownCc13Bound) {
+        host.log.notef("summary mission gunnery plane crash construct cooldown arms=%llu "
+            "(007CFE78 1.0f, packet cc13-cool9dc)", host.pc_construct_cooldown_arms);
+    }
     host.log.notef("summary mission gunnery ground target origin aims=%llu bound=%d "
         "(006DF520 with 0042D810, packet cc9_ground_target_aim_point)",
         host.ground_origin_aims, kArtilleryGroundOriginAimBound ? 1 : 0);

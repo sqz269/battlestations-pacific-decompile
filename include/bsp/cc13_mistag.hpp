@@ -35,6 +35,24 @@ std::uint32_t trivial_getter_result(std::uint32_t address) noexcept;
 
 inline constexpr std::uint32_t kSingletonBaseVtable = 0x00CE3818;
 
+// Part B: 119 out-of-line destructors of the one-instruction shape `MOV [ECX], vtable; RET`
+// (C7 01 imm32 C3), __thiscall(ECX = object), RET. Checked by tools/cc13_mistag_partb_check.py.
+// 98 store the session message root vtable 00CE4974, 14 store 00D056D0.
+struct VtResetDestructor {
+    std::uint32_t address;
+    std::uint32_t vtable;
+};
+inline constexpr std::size_t kVtResetDestructorCount = 119;
+extern const VtResetDestructor kVtResetDestructors[kVtResetDestructorCount];
+// Runs the row at `address` on `object` ([object] = its vtable); false when `address` is not a row.
+bool vt_reset_destruct(std::uint32_t address, void* object) noexcept;
+
+// Part C: five scalar deleting destructors of the same inlined shape whose vtable store has no
+// recorded out-of-line copy (rebuilt under the rule; the other 97 are bound). Bytes checked by
+// tools/cc13_mistag_partc_check.py; __thiscall(ECX = object, flags), RET 4, EAX = object.
+inline constexpr std::size_t kVtResetDeletingDestructorCount = 5;
+extern const VtResetDestructor kVtResetDeletingDestructors[kVtResetDeletingDestructorCount];
+
 class MistagHost {
 public:
     virtual ~MistagHost() = default;
@@ -253,6 +271,24 @@ void point3_ptr_array_destruct_007b1a80(MistagHost& host, void* array);
 void* singleton_scalar_deleting_destruct_00735880(MistagHost& host, void* object, std::uint32_t flags);
 void* singleton_scalar_deleting_destruct_00735900(MistagHost& host, void* object, std::uint32_t flags);
 void* singleton_scalar_deleting_destruct_00866090(MistagHost& host, void* object, std::uint32_t flags);
+// --- Irregular rows: five one-instruction game virtuals (each reached only from vtable slots) ---
+// 009BE0E0, __thiscall(ECX = object), RET: XOR EAX,EAX (slots 00D209C0, 00D209C8).
+std::uint32_t virtual_return_zero_009be0e0(void* object) noexcept;
+// 009DAAA0, __thiscall(ECX = object; one stack argument), RET 4: XOR AL,AL (eight slots:
+// 00D21564, 00D215C4, 00D215F4, 00D218EC, 00D2191C, 00D2194C, 00D21988, 00D219FC). Only AL is written.
+std::uint8_t virtual_return_false_009daaa0(void* object, std::uint32_t argument) noexcept;
+// 009DAC30, __thiscall(ECX = object), RET, ST0 = [00CE3958] = 2.0f (slot 00D215C0).
+float virtual_return_two_009dac30(void* object) noexcept;
+// 009DB000, __thiscall(ECX = object), RET: an empty body (slot 00D21660).
+void virtual_no_op_009db000(void* object) noexcept;
+// 00743E50, __thiscall(ECX = message), RET, EAX = message + 110h: slot 6 (00CFF370) of the
+// LANDFORT_CREATE session message vtable 00CFF358.
+void* landfort_create_message_field_110_00743e50(void* message) noexcept;
+
+// A kVtResetDeletingDestructors row: [object] = vtable, then _free(object) when flags & 1;
+// nullptr when `address` is not a row.
+void* vt_reset_scalar_deleting_destruct(MistagHost& host, std::uint32_t address, void* object,
+    std::uint32_t flags);
 // 00737110: the same with the singleton base at +4h and vtable 00CFE9F4 at +0h (global 010904F8).
 void* msar_provider_scalar_deleting_destruct_00737110(MistagHost& host, void* object, std::uint32_t flags);
 
