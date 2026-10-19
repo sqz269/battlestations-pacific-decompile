@@ -3603,6 +3603,9 @@ struct GameGunneryHost::Impl {
         int impact_shape_kind{0x0A};
         int impact_hull_segment{-1};
         float hull_damage_draw{0.0f};           // record+14h, drawn at the push
+        // Host-only (packet cc13-tooklog): queued by blast_radial_damage with
+        // element entries, so its dispatch adds to be_damage_element.
+        bool blast_element{false};
     };
     std::unique_ptr<std::deque<DeferredHit>> deferred_hits;
     const DeferredHit* deferred_replay{nullptr};   // the node 009239A0 is running
@@ -11877,6 +11880,7 @@ void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
         // Packet cc13-tooklog: the damage the queued hit did, which the push site
         // logs as took=queued.
         const float after = unit_state[node.victim].health;
+        if (node.blast_element) be_damage_element += before - after;
         log.notef("  deferred hit dispatch on %s took=%.1f health=%.1f",
             unit_name_or_index(node.victim + 1).c_str(),
             static_cast<double>(before - after), static_cast<double>(after));
@@ -13178,8 +13182,19 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         }
 
         const float before = state.health;
+        const unsigned long long queued_before = deferred_hits_queued;
         apply_hit(shooter, gun_row, i, point, direction, &blast, team_id);
-        if (!element_entries.empty()) be_damage_element += before - unit_state[i].health;
+        if constexpr (kHitDeferredDispatchCc13Bound) {
+            // Packet cc13-tooklog: a queued hit has not moved health yet; its
+            // dispatch adds the element damage instead.
+            if (deferred_hits_queued != queued_before) {
+                deferred_hits->back().blast_element = !element_entries.empty();
+            } else if (!element_entries.empty()) {
+                be_damage_element += before - unit_state[i].health;
+            }
+        } else {
+            if (!element_entries.empty()) be_damage_element += before - unit_state[i].health;
+        }
         float nearest = distance;
         for (const bsp::HitPartEntry& e : element_entries) {
             if (&e == &element_entries.front() || e.distance < nearest) nearest = e.distance;
