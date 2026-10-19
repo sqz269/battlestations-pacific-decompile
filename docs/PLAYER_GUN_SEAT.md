@@ -514,4 +514,80 @@ The image's path is the role take:
     without aim.
   - Still open: a hit needs an aim held on a moving ship at 10 km, which a fixed yaw does not
     give. The 79h target id (`target_id_174`) is still a record, so the intercept path does not
-    run either.
+    run either. Section 7.6 shows that the target id cannot help the turrets.
+  - The 1197 artillery "hits" are not the ship lead: `seat artillery lead ship=0 other=0`. The
+    camera ray crossed land and never a unit, so 009578C3 never ran.
+
+### 7.6 The 79h target: AA only (`kPlayerGunSeatTargetInterceptBound`, cc9-gunnery53)
+
+**What the image does.**
+- **The HUD gate** (005488FE..00548975) sets has_target (+36h) and the id (+38h, `MOVZX [target+174h]`)
+  only for a unit that:
+  - is picked (screen +54h);
+  - is not on the player's side: `[target+54h] != [[screen+20h]+14h]+54h`;
+  - answers true to `vtable[10Ch]`.
+- **Slot 10Ch**, read from the vtables:
+  - 0074E1A0 on the seven plane classes whose slot I read (recon, large and small recon, fighter,
+    bomber, dive bomber, torpedo bomber), and on 00D05F20 per the ledger: `[unit+B1Ch] > 3.0`
+    (00CE3854; FCOMIP/JBE).
+    [unit+B1Ch] is the cached speed that slot 38h (007B8E60) returns.
+  - 0042BB40 (`XOR AL,AL; RET`) on MBattleship (vtable 00CF90B0), LandingShip, MSubmarine and the
+    dummy kamikaze.
+  - **So a ship is never sent as a target.**
+- **Only the group 1/2 arm reads the id** (00959C91..00959CA8, 00521E30). With a target, 00957BD0
+  skips the camera ray: 00957C29..00957CAB call 00901C20 with:
+  - the shooter at gun+FCh;
+  - the speed [[gun+3F8h]+34h]+50h;
+  - the shooter velocity: the unit's vtable[34h] when [unit+4A0h] is set, else the zero vector.
+    00953B80 writes [unit+4A0h] as the OR of `[[dev+3F4h]+95h]` (AddsSpeed) over the unit's
+    Function 0/1/5/6 guns.
+  - The aim is the intercept point; 00957CAB then jumps to the epilogue at 009580C2, past the range
+    sphere and the sea cut.
+- **The group 3 arm** (00959F72..0095A1CC, 00957740) never reads +36h or +38h. A turret leads a ship
+  only through 009578C3, when the camera ray hits the hull (`kSeatArtilleryLeadBound`, ON).
+
+**The binding** (OFF):
+- `target_virtual_10c`: a plane-kind unit whose flight-controller world speed is above 3.0.
+- `same_side_54`: `unit_side_0054`.
+- `target_id_174`: the 1-based unit index. This is a SUBSTITUTION for the handle table, inverted
+  in place of 00521E30.
+- `seat_target_intercept_00957c29`: the AA bots' 00901C20 build.
+- Counters: `seat target intercept messages/unresolved/aims/adds_speed`.
+- The gate also feeds the HUD's target marks (`hud_weapon_group_screen.cpp`, the `target_virtual_10c`
+  test at the marks), which move with it.
+
+**The pair** (working-tree exes `local\g53_ti_{off,on}`, reference env, 9000 frames; logs
+`local\g53_{tioff,tion}_{u4,u21}.log`):
+- USN04, idle Lexington: 8497 seat messages on both sides. `target_virtual_10c` turned concrete
+  at 7 calls, and all 7 answered false (the pick held a ship or a slow plane). The intercept saw
+  0 messages. Gameplay, death rows, the unit table and the native table are identical apart from
+  that one record.
+- USN21: no seat messages; identical.
+- **Reach was the open item.** With an idle or fixed camera, the pick never holds a fast enemy
+  plane while group 1/2 is up. Exercising 00957C29 needs a camera that tracks a plane, e.g.
+  cc13's aim-at-unit helm line, with group 2 selected (0x9C).
+
+**The second blocker: the target marks cleared the pick.** With `aim unit "B5N Kate #2.1"`
+(SCRIPTED_HELM 18.1), `target_virtual_10c` answered true (70 to 94 m/s), but no target reached
+the gunnery side.
+- The marks (00548E59..0054900D, `target_marks`) look for the nearest entry unit where the player
+  holds role 2 or 3 and `[unit+49Ch] > |unit - target|^2`. With none found, 0054900D zeroes
+  screen +54h, before the 005488FE gate reads it.
+- Both sides were unimplemented stubs answering 0, so `0 > 0` failed every time.
+- Now bound under the same switch:
+  - 00548EA9..00548ECC: 00427EB0 on both units, then 00427C90 and 00427E30 (the squared length).
+  - 00548ED0 `[unit+49Ch]`: the square of 00953B80's largest bullet range over the Function
+    0/1/5/6 guns, read as `[[[dev+3F4h]+74h]+34h]+60h` (Function 6 reads +7Ch, its Bullet[2]).
+    In the host that is `GameGunneryHost::unit_gun_range_sq_049c`: `gun.max_range`, and
+    `SecondAmmo::max_range` for Function 6.
+
+**The pairs, ON exe `local\g53_ti_on3` against OFF `local\g53_au`** (`local\g53_ti3{off,on}_*`):
+
+| row | result |
+| --- | --- |
+| USN04, `local\g53_ti_kate.txt` (1600 `aim unit "B5N Kate #2.1"`, 1610 0x9C, 1612 0x99 hold 800), reference env | 235 targeted messages, 5170 gun aims. Kate #2.1 dies at 113.80 s to the Lexington's player-fired gun 14 (cat 1), against 116.65 s to Northampton-class02's flak. Its wingmen IV and III also fall to the Lexington. The Lexington's damage dealt goes 934 -> 1059. The same 29 deaths, and hit records 386 -> 384 |
+| the same, default env | 200 messages, 4400 aims. The leader dies at 111.85 s (Lexington gun 14), against 116.05 s. The run's one torpedo drop (1 -> 0) does not happen. Deaths 30 -> 31 through the shared stream |
+| USN04 idle, 9000 frames | gameplay identical; same_side concrete at 6 calls |
+| USN21, 9000 frames | identical |
+
+**Verdict: ON by mechanism.** The player's AA leads the plane it looks at, as 00957C29 does.

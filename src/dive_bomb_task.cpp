@@ -635,8 +635,9 @@ DiveBombTurnDownResult dive_bomb_turndown_tick_009c44f0(
 }
 
 // 009C7F00-009C7FD6, the goaway completion rule, read whole.
-// Precision (kDiveBombGoawayFloatStoresBound): every double product below is
-// exact. Its factors are a float (travel +20h, or the stored term) and the qword
+// Precision (kDiveBombGoawayFloatStoresBound): with the switch ON, every double
+// product below is exact (OFF, the reload arm multiplies an unrounded double
+// term). Its factors are a float (travel +20h, or the stored term) and the qword
 // 00D7A390, whose value is float(0.9) (24 significant bits); 24 x 24 bits fits
 // in a double's 53. So the static_cast<float> is the only rounding, the same
 // one the image's FSTP float makes (under 24-bit precision control the FMUL

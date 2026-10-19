@@ -29,7 +29,7 @@ binding contract is written.**
 
 | step | address | what |
 | --- | --- | --- |
-| grant | `008EE410` `AddPowerup` | one argument: `008EDDC0([game+18ECh], table)`, the local player. Two arguments: `008EDDC0(int arg1, arg0)` |
+| grant | `008EE410` `AddPowerup` | one argument: `008EDDC0([game+18ECh], table)`, the local player. Two arguments: `008EDDC0(int arg0, arg1)`, the slot from argument 0 and the table from argument 1 (`008EE4FB..008EE53C`) |
 | grant body | `008EDDC0` | gated on `00E0C978`. Appends the item to the player's inventory list at `manager+20h + player x 0Ch`, plays `pup_gain`, and shows the `PUM1STGET` hint once. When `game+1FE4h` = 1 (host) it sends session message 67. **It does not touch the category lists** |
 | use | `008EADA0` (item, player, target) | gated on `00E0C978`. On a multiplayer client (`game+1FE4h` = 2) it only sends the request. Otherwise it checks the item's cooldown (`manager+14Ch + player x 0Ch`). An air-support item (class+8h = 1) launches a flight (`0094BFF0`). Any other item walks the class's 16 multipliers at class+8Ch and calls **`008EA250(category, value, ...)` for each value that is not 1.0f**, the only list insert. Then `008E4B00` stamps the expiry (class+7Ch duration + now) and the cooldown (class+80h + now), and the use count drops |
 | expire | `008EB110` `BSP_PowerUpManager_Update` | every `Game_OnMove`: for each of the 16 lists (`+84h`, stride 0Ch), a node whose end time (node+20h) is past goes to `008E8C30` |

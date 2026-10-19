@@ -28,6 +28,7 @@
 
 struct IGameExplorer;
 
+#include <cstddef>
 #include <cstdio>
 #include <functional>
 #include <memory>
@@ -60,6 +61,7 @@ struct NativeFrameClockPublicationContext;
 class NativeOnlineSigninCalls;
 class XLiveLibrary;
 struct NativeOnlineManagerStorage;
+struct NativeLoadingQueueOwnerStorage;
 struct WindowClosePromptCalls;
 }
 
@@ -434,6 +436,13 @@ public:
     // Bind only the actual retained confirmation-screen owner. Its callback
     // dispatcher must route 004BBC50 here while this frame host remains alive.
     void bind_window_close_prompt(WindowClosePromptCalls* prompt) noexcept { close_prompt_ = prompt; }
+    // The application manager and E18D4C cells 004FDE20 reads; used only
+    // with kLoadingQueueCc15Bound.
+    void bind_loading_queue(void* volatile& manager_01090aa0,
+        NativeLoadingQueueOwnerStorage* volatile& queue_00e18d4c) noexcept {
+        loading_queue_manager_ = &manager_01090aa0;
+        loading_queue_publication_ = &queue_00e18d4c;
+    }
     bool dispatch_window_close_callback(std::uint32_t callback, std::int32_t response) noexcept;
 
     // Global exit byte 00e1ae75, set by the close policy at 004ca2f0.
@@ -456,6 +465,8 @@ private:
     GameVfsHost& vfs_;
     NativeOnlineManagerStorage* volatile& online_;
     WindowClosePromptCalls* close_prompt_{};
+    void* volatile* loading_queue_manager_{};
+    NativeLoadingQueueOwnerStorage* volatile* loading_queue_publication_{};
     unsigned long long frame_index_{};
     bool global_exit_{};
 };
@@ -630,6 +641,11 @@ struct GameRunSummary {
 
 // StartupHost for 008f81f0 plus everything the milestone runs inside
 // application_initialize (0073d410) and application_shutdown (00737f30).
+// cc15-ob3: WinMain's 1Ch stack Application. 008F8496 constructs it through
+// 00737970 (BEA970/BEA810 register it and publish E1AE90); 008F8444 retires it
+// through 007379A0 before the 008F8449 manager drain.
+inline constexpr bool kApplicationCc15Bound = false;
+
 class GameStartupHost final : public StartupHost {
 public:
     GameStartupHost(GameHostLog& log, HINSTANCE instance, const GameExecutableOptions& options,
@@ -790,6 +806,10 @@ private:
     std::string window_class_name_;
     GameRunSummary summary_;
     bool constructed_{};
+    // The native 1Ch Application storage (kApplicationCc15Bound). Its +18..+1A
+    // bytes are not the frame loop's: frame_state_ stays the host projection.
+    std::uint32_t native_application_[7]{}; // 1Ch, DWORD aligned
+    bool native_application_live_{};
     // Source caller ownership state; this is not the native FH3 state number.
     enum class AllocationStatsPhase : std::uint8_t {
         unattempted, allocating, allocation_failed, skipped,
