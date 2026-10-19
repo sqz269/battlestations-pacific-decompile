@@ -206,6 +206,13 @@ tools/run_game.ps1 with `BSP_DEATH_TABLE=1 BSP_GUNNERY_RNG_STREAMS=1`, and every
   and mtime before and after the runs (player 58E93D77..., quick 54E3F992..., valid E3B0C442...,
   options.txt FF5CF395...).
 
+- **Strict order re-check (base f906d5934).** The dialog/message check above used Compare-Object, which does not
+  prove order. I re-ran it as a strict index-by-index diff, comparing `kHintTrackerCc15Bound=false` against main,
+  ref env, USN04 plus the 12 wins rows. The diff covers activation, draw, power-up, weather, voice, warning, clip,
+  message, dialog, hint, objective and Lua lines, with hex masked and the tracker's own lines dropped (`hint
+  tracker:`, `HintTracker::*`, the two `award_tracker` rows). It finds 0 mismatched positions on all 13 rows, and
+  gameplay is identical.
+
 ## 4. Uncertainties and open items
 
 - The real profile load (and so the saved `AllSeenHints` and mission scores) is out of scope.
