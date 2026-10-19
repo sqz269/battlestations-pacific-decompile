@@ -1,5 +1,12 @@
 #pragma once
 
+namespace bsp::gameplay_seg48_cc13 {
+// Base engine slots +10h/+14h/+18h, exact empty bodies; RET8/RET4/RET.
+void engine_step_rpm_noop_007e23b0(float target, float dt) noexcept;
+void engine_apply_spin_noop_007e23c0(float dt) noexcept;
+void engine_blur_blend_noop_007e23d0() noexcept;
+}
+
 // Segment 48 (007D1E50-007F8390) reference models: the plane parts. Packet
 // cc13-gpr48; docs/CC13_GPR_48.md, docs/CC13_GP_007A_007F.md.
 //

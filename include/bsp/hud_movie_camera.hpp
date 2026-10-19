@@ -1,4 +1,17 @@
 #pragma once
+
+namespace bsp {
+// The +170h update element of MovCamNew. 00790390: ECX=camera, one ignored
+// stack word, RET4. The float accumulator is camera+53Ch.
+struct MovieCameraFixedStepHost {
+    virtual ~MovieCameraFixedStepHost() = default;
+    virtual void evaluate_slot04(float) = 0;
+    virtual void commit_slot0c() = 0;
+    virtual void advance_slot08(float) = 0;
+};
+void movie_camera_fixed_driver_00790390(float& accumulator_53c, bool enabled_634,
+                                       float dt_21ec, float step_d0de84, MovieCameraFixedStepHost&);
+}
 // The new movie camera (MovCamNew): the 570h-byte mover 005CC170 builds, its
 // keyframe tracks and its per-frame update. Packet cc9_movie_camera_mover_bind,
 // docs/HUD_PICK_SEGMENT_QUERY.md sections 8.2, 8.6 and 8.7. Read from the

@@ -833,6 +833,25 @@ void movie_cam_lookat_activate_007aadb0(MovieCamEntityState& entity);
 // 007AADD0 BSP_MovieCamPos_Activate (slot +A0h of 00CE86D8, RET 0)
 void movie_cam_pos_activate_007aadd0(MovieCamEntityState& entity);
 
+// New entry points in the same PathCursor / MovCam families. Original
+// names are provisional. 007A66D0 ignores a third stack word (RET 0Ch).
+const char* movcam_description_0078e450(const MovCamState&) noexcept;
+void movcam_set_cinematic_007a66d0(MovCamState&, bool enabled, int transition, std::uint32_t unused, MovCamHost&);
+int path_cursor_index_007b1010(const PathCursorState&) noexcept;
+std::uint32_t path_source_zero_007ac970() noexcept;
+void point3_vector_load_from_archive_007b2780(std::vector<Vec3>&, PathArchiveHost&);
+struct PathCursorSaveHost {
+    virtual ~PathCursorSaveHost() = default;
+    virtual void begin_section(int kind, const char*) = 0;
+    virtual void save_source_vslot20(PathSourceBase&) = 0;
+    virtual void end_section() = 0;
+    virtual void write_int(int key_kind, const char*, int tag, std::int32_t) = 0;
+    virtual void write_bool(int key_kind, const char*, int tag, bool) = 0;
+};
+// Native ECX=cursor, archive on stack, RET4. Optional source section first,
+// followed by the index/mode/forward tagged properties in that order.
+void path_cursor_save_007b1800(const PathCursorState&, PathCursorSaveHost&);
+
 // ============================================================================
 // 6. MParatrooper Residue & Lua Float Field Readers
 // ============================================================================

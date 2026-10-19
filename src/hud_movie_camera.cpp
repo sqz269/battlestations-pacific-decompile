@@ -1,5 +1,18 @@
 #include "bsp/hud_movie_camera.hpp"
 
+namespace bsp {
+void movie_camera_fixed_driver_00790390(float& accumulator, bool enabled, float dt,
+                                       float step, MovieCameraFixedStepHost& h) {
+    if (!enabled) { accumulator = 0.0f; return; }
+    accumulator = static_cast<float>(static_cast<double>(dt) + accumulator);
+    while (accumulator > step) {
+        h.evaluate_slot04(step); h.commit_slot0c(); h.advance_slot08(step);
+        accumulator = static_cast<float>(static_cast<double>(accumulator) - step);
+    }
+    h.evaluate_slot04(accumulator);
+}
+}
+
 #include "bsp/mission_camera.hpp"
 #include "bsp/plane_advance_pose.hpp"
 #include "bsp/plane_pose_commit.hpp"
