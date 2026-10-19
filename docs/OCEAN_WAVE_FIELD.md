@@ -3827,3 +3827,14 @@ Both flipped ON by mechanism. kReleaseTimerNotify0DhBound (log only) is left OFF
 All five are flipped ON by mechanism (cc13's listing reconstruction; the lead's rule that a faithful fix flips even if a win is lost).
 
 **4f paratroopers stay OFF (unreached).** Exports of 677ee345f, `local\p24s1` (kLevelBombParatrooperDropBound), `p24s2` (plus its draw), `p24s3` (plus kParatrooperRoundBound). The C47 squadrons spawn only at about 1318 s, and every JM08 plan we have loses the HQ before any C47 releases: l65_j8_p2 OFF fails at 1676.56 s in a 3000 s run, and option (1) ON brings the failure to 1476.36 s (the C47s now fly the attack and draw AA off the B-25/B-17). drops = 0 on l65_j8_p2, s45_j8_m10, p6_j8_f, l64_j8_e and stock JM08 (stock spawns no C47). S2 and S3 are identical over S1. JM13 has no paratrooper units. 4f needs a JM08 plan that holds the HQ past about 1500 s.
+## 105. HANDOFF (cc9-physics24, 2026-10-19)
+
+Lane PHYSICS / PLANE FLIGHT, tree J:\PROG\battlestations-pacific-decompile-cc9-physics1 (branch agent/cc9-physics1). Launcher `local\p24_pair.ps1 -Tag <export dir> -Row <b9|b9n|u04|u21f|os|u1g|u1i|j6|b1|j8|j8L|j8n|j8m|j8f|j8e|j13> [-EnvMode def]`; `b1` is now bsm01_l69_b1_d. Commits this session: fbdcdc7fc (006082D0 comment), fb31ab760 (4d envelope + hold arm, 4e gun block + burst reset; section 100), 3df710613 (release timer reseed; 101), 96ed1be14 (4g FollowSightSearch, DiveHitClock, DiveBombMoveToOrigin; 102), e0e95ccdd (bay opener + 007BB110 predicate; 103), 282567f82 (land chain 4a/4b/4c + funnel kill; 104).
+
+Open (from the lead's queue file, cc9lead_physics_queue.txt):
+1. 4f paratroopers: unreached; needs a JM08 plan that holds the HQ past ~1500 s (C47s spawn at ~1318 s). Pair option (1) first, then the round and its three draw sub-switches, both envs; send capture evidence to the ships lane.
+2. kReleaseTimerNotify0DhBound (log only) left OFF; kPlaneFunnelKillPathTagCc13Bound (new, OFF) not paired.
+3. Coming per the queue: the +68h commanded-direction steer gate (009FCCA4; USNOS/BSM09/BSM01), the torpedo-goaway entry and tick (4 stream-1 draws, both envs), 007C17D0 NotifyTakeoffStart and SlowTakeoff +AA0h, the level-bomb CanFire 00729A80 (only if live), kAirOpsLaunchFlagAirborneBound (CHG06 only, low), the 006D2510 airfield gate.
+4. WINS: BSM01 bsm01_l69_b1_d has no end within 1200 s from 19dcd5aba on (sent to cc9-lua70). BSM09 default env is lost at 141.05 s after 282567f82 (RNG-coupled collision); USN01 u1i default lost its completion after 3df710613.
+5. Low, unchanged: the 009C8A42 +4B0h NaN max, the 009C4A40 ceiling NaN arm, and section 75's whole-frame item.
+Disk: the 3000 s JM08 logs (*_j8L.log, over 1 GB each) were deleted after reading; do not keep long JM08 logs.
