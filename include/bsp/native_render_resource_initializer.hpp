@@ -38,6 +38,17 @@ public:
     // Entry address of the last entered stage, not the precise failed CALL.
     // Individual retained frames carry their own current native-site evidence.
     std::uint32_t active_stage() const noexcept { return active_stage_; }
+    // Borrow the SAME scene companion publication that the retained distortion
+    // producer fills. Its lifetime context must be bound before initialization;
+    // this view neither constructs a scene nor supplies a default cleanup field.
+    NativeGuiSceneOwner* const volatile& distortion_scene_owner_3c() const noexcept {
+        return distortion_.distortion.scene_owner_3c();
+    }
+    // Metadata closure only, after genuine native service/child retirement and
+    // all external parameter/viewport/scene borrows have ended. Each existing
+    // child block enforces its own terminal facts. No release, free, retry or
+    // reset of this one-shot operation is performed. Failed attempts are retained.
+    void close_children_after_host_quiescence() noexcept;
 
 private:
     friend void initialize_native_render_resources_00b107f0(void*,
@@ -45,6 +56,7 @@ private:
         NativeRenderResourceInitializerContext&, NativeRenderResourceInitialization&);
     Phase phase_{Phase::fresh};
     std::uint32_t active_stage_{};
+    bool children_closed_{};
     NativeRenderResourceInitEntryState entry_;
     NativeRenderResourceInitContinuationState continuation_;
     NativeRenderResourceInitPostState post_;

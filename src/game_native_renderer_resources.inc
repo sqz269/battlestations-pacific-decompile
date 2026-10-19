@@ -82,3 +82,4 @@ struct RenderResourcesGraph {
   acquired.cockpit.reset_after_host_quiescence();
  }
 };
+#include "game_native_mission_resources.inc"
