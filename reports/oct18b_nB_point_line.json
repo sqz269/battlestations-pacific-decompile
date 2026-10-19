@@ -1,0 +1,139 @@
+{
+  "packet": "oct18b-nB-point-line",
+  "address": "007ae930",
+  "name": "BSP_Point3PtrArray_DistanceToLine_007ae930",
+  "symbol": "point3_ptr_array_distance_to_line_007ae930",
+  "source": "src/path_movcam_seg46_argon.cpp",
+  "header": "include/bsp/path_movcam_seg46_argon.hpp",
+  "documentation": "docs/OCT18B_NB_POINT_LINE.md",
+  "status": "reconstructed_native_win32_build_tested",
+  "coverage": "complete_body",
+  "original_abi": "__thiscall(ECX actual pointer-array, stack origin*,dir*), ST0=float, RET8",
+  "source_abi": "same ECX/stack/ST0/RET8; EDX adds immutable borrowed target table; EBP saved/restored in16 added frame-tail bytes preserving call alignment modulo16",
+  "body": {
+    "start": "007ae930",
+    "end": "007aed09",
+    "bytes": 986,
+    "instructions": 280
+  },
+  "target_slots": {
+    "00419440": 0,
+    "0046f440": 4,
+    "00415870": 8,
+    "00bf6713": 12,
+    "00bf7030": 16,
+    "0046f940": 20,
+    "00470150": 24
+  },
+  "evidence": "Complete native listing retained, including all checked raw-vector reloads, FCOMI/JBE normalization branches, original x87 spill schedule and FCOMIP/JBE strict minimum updates; explicit original ABI function-pointer bindings replace calls only. No geometry/CRT/STL body reconstructed or stubbed.",
+  "call_sites": [
+    {
+      "function": "007ae930",
+      "address": "007ae944",
+      "native": "00419440",
+      "kind": "call"
+    },
+    {
+      "function": "007ae930",
+      "address": "007ae9b7",
+      "native": "00bf6713",
+      "kind": "call"
+    },
+    {
+      "function": "007ae930",
+      "address": "007ae9f3",
+      "native": "0046f440",
+      "kind": "call"
+    },
+    {
+      "function": "007ae930",
+      "address": "007aea03",
+      "native": "00415870",
+      "kind": "call"
+    },
+    {
+      "function": "007ae930",
+      "address": "007aea23",
+      "native": "00bf6713",
+      "kind": "call"
+    },
+    {
+      "function": "007ae930",
+      "address": "007aea59",
+      "native": "0046f440",
+      "kind": "call"
+    },
+    {
+      "function": "007ae930",
+      "address": "007aeac1",
+      "native": "00bf6713",
+      "kind": "call"
+    },
+    {
+      "function": "007ae930",
+      "address": "007aeaff",
+      "native": "00bf6713",
+      "kind": "call"
+    },
+    {
+      "function": "007ae930",
+      "address": "007aeb80",
+      "native": "00bf7030",
+      "kind": "call"
+    },
+    {
+      "function": "007ae930",
+      "address": "007aebe9",
+      "native": "00bf6713",
+      "kind": "call"
+    },
+    {
+      "function": "007ae930",
+      "address": "007aec29",
+      "native": "0046f940",
+      "kind": "call"
+    },
+    {
+      "function": "007ae930",
+      "address": "007aec57",
+      "native": "00bf6713",
+      "kind": "call"
+    },
+    {
+      "function": "007ae930",
+      "address": "007aec97",
+      "native": "00bf6713",
+      "kind": "call"
+    },
+    {
+      "function": "007ae930",
+      "address": "007aecd3",
+      "native": "00470150",
+      "kind": "call"
+    },
+    {
+      "function": "007ae930",
+      "address": "007aeced",
+      "native": "00415870",
+      "kind": "call"
+    }
+  ],
+  "validation": {
+    "source_schedule": "Actual source parsed and checked: all280 original instructions/order/target offsets;3 added binding-save instructions; frame/alignment/RET8 reviewed",
+    "build": "scripts/build.ps1 rerun passed: MSVC Win32 Release bsp_game linked;2/2 existing CTest checks passed (reconstructed_math,tool_tests),13.93s; no runtime geometry fixture/game claim",
+    "runtime_abi": false,
+    "game_validated": false,
+    "direct_call_sites": "15 checked, 0 failed by tools/verify_report_calls.py",
+    "ghidra_annotations": "write-locked annotation applied and project saved; prior values local/ghidra-annotations-20261019T060138Z.json",
+    "exports": "affected export refreshed after annotation",
+    "build_first_attempt": "scripts/build.ps1 found2 MASM FMUL operand spellings and reserved OUT identifier in prior-low dummy helper; fixed in33319be3e; rerun in progress",
+    "index": "rebuilt after ledger edits",
+    "build_log": "local/oct18b_nB_low/distance-build-rerun.log",
+    "compiled_coff": "dumpbin confirms naked283-instruction body (280 original+3 binding saves),15 target calls,94h frame,A4h/A8h incoming args,saved/restoredEBP,RET8;972 compiled bytes; static evidence only",
+    "compiled_coff_artifact": "local/oct18b_nB_low/distance-coff.txt"
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "uncertainty": "Name/class interpretation is provisional. All target bindings and valid-memory contracts are required. Source schedule/compilation are not runtime ABI or game proof.",
+  "supersedes": "BSP_Deferred_007ae930 (deferred_contract_recovery), middle packet"
+}
