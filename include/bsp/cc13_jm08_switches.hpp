@@ -18,3 +18,22 @@
 // a `follow` aimed at the dead leader, as before.
 // No 00BD2F10 draw on any of these paths.
 inline constexpr bool kDeadLeaderRepublishesFollowerPairBound = false;
+
+// True: ship_ai_wake_decompose_00811180 (src/ship_ai_wake_trail.cpp) returns the
+// image's along-track distance. 00811180 picks the segment through the nearest
+// sample k (00811482..00811584: k == 0 takes head/k1, k == 27h takes k-1/k, else
+// the newer neighbour when its float squared 3D distance is <= the older one's),
+// stores the projection dot(sample[b] - point, normalize(sample[b] - sample[a]))
+// at 00811658 into [ESP+48h], and the leg loops 0081166A..00811721 add the b+1
+// legs of slots head..head-b onto that same slot. So a member on a trail sample
+// gets the full arc length (LST 01 in JM08: 1000, not 950), and a member ahead of
+// the leader's head gets a NEGATIVE along (Helena: -500), which 00810630's
+// head branch (along <= 0) extrapolates ahead of the leader.
+// False: along is the sum of the first `k` legs from the head with no projection
+// term, as before: on-sample stations sit one leg (50 m) short and every station
+// ahead of the head collapses onto the leader's own point (JM08 Helena's station
+// becomes Missouri, which stalls the column at about 120-180 s).
+// The across convention (0070D290's left normal from the base at `along`) is
+// unchanged. Main-thread x87 (24-bit PC) is modelled as float ops in the image's
+// order. No 00BD2F10 draw.
+inline constexpr bool kWakeDecomposeSegmentProjectionBound = false;
