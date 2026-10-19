@@ -213,5 +213,10 @@ std::uint32_t ship_ai_attack_substate_command_009db5a0() noexcept;
 std::uint32_t ship_ai_attack_substate_command_009db610() noexcept;
 std::uint32_t ship_ai_attack_substate_command_009db690() noexcept;
 std::uint32_t ship_ai_attack_substate_command_009db7e0() noexcept;
+// 00E08F78 too: the state vtables 00D218F0, 00D21920, 00D2195C, 00D21994 (slot +24h).
+std::uint32_t ship_ai_state_command_009e49f0() noexcept;
+std::uint32_t ship_ai_state_command_009e4ca0() noexcept;
+std::uint32_t ship_ai_state_command_009e50d0() noexcept;
+std::uint32_t ship_ai_state_command_009e6060() noexcept;
 
 }  // namespace bsp

@@ -19796,3 +19796,71 @@ change is draw-order neutral, so no default-env pair.
 - default env (`s60_bdoffd_os` / `s60_bdond_os`): exit 3. The first 257 deaths are identical, through the first 98h
   (Cargo1 at 1354.95 s); the first moved death is the next one (Airfield1_sqn39, 1357.55 -> 1357.60 s). After that
   the shared stream is offset, so later breakups differ (Convoy2 1416.66 broke in OFF only; Cargo5 and Cargo6 in ON).
+
+## 300. Navigation gate and NavigateAstern skip (cc9-gunnery53, 2026-10-19)
+
+The two cc13 switches are from docs/CC13_SEG67D.md "Switches". The pairs ran on bd61f8f4f at
+30000 frames (JM05: 12000), in the reference env unless noted. Logs are `local\g53_nv{off,gate,ast}_*`
+and the default-env ones `g53_nvd*` in the gunnery52 tree.
+
+### 1. kShipAiNavGateClosedArmFinalBound: ON
+
+The branch was read from the disk bytes: 009EE59F JZ 009EF206, then 009EF213 CALL 009DE5B0.
+
+| row | result |
+| --- | --- |
+| USN04 | gameplay, death rows and unit table identical; 009DE5B0 539876 -> 540000 |
+| JM08, reference env | the same failure (CheckHQ, the HQ's Party == 2), at 958.94 s instead of 977.93 s; deaths 18 -> 21, chaotic from about 100 s |
+| JM08, default env | the same failure, at 941.94 s instead of 963.94 s; deaths 16 -> 15 |
+
+Flipped by mechanism.
+
+### 2. kShipAiNavigateAsternSkipBound: ON
+
+The branch was read from the disk bytes:
+- 009ED7E6 `CMP [1C4h],3` / SETE -> [ESP+4Fh];
+- 009EE756 JNE 009EF206;
+- approach_step 009F3330 `MOV EBP,3` / 009F3375 writes 1C4h.
+
+Mode 3 is every attack-moving ship's approach. In JM08 that is the US fleet: Nevada, Missouri,
+Hawaii, the LSTs and LSMs, and the rest. With the skip, the output block 009EE765..009EEAA2 stops
+steering them.
+
+| row | result |
+| --- | --- |
+| JM08, both envs | OFF fails at 977.93 / 963.94 s when the HQ is captured; ON never ends in 1500 s. 310995 to 324781 skips. The landing ships spawn about 937 s, and the HQ guns and AA trucks kill them after 1128 s |
+| JM05 | the same failure at 300.05 s and identical death rows; damage 48529 -> 48042, and the player's Mogami moves 3375 -> 3267 m |
+| USN04, USN07, USN13 | identical; no attack-move ships |
+
+**Audit (done).** The host's approach step was compared with 009F3240 store by store:
+- 009F3330..009F3346: 368h and 360h are cleared when 1C4h != 3. The host does this with clear_brain_turn_accumulators_0368.
+- 009F335C: 1D8h = heading. The host writes blk.desired_heading.
+- 009F3360: 00605070 wraps 1D8h in place. The host records this but does not apply it. The census (packet cc9_heading_wrap_census) on the ON JM08 run counted 87873 stores, 0 out of range, and max |h| 3.1416, so the wrap is the identity on every store.
+- 1CCh = 0: requested_direction.
+- 009F3375: 1C4h = 3: blk.mode.
+- 009F337B / 009F3383: 250h and 2B8h = throttle.
+
+On the skip path, the host still runs the 009EE671..009EE6CB prelude (A90h..A9Ch, 1F0h) and then
+009DE5B0(dt), as the image does. No steering store is left to the output block that the image
+makes in the approach.
+- Nevada on ON JM08: rudder -0.358, throttle 1.000, desired 1D8h 0.9425. The ship steers on the approach's heading.
+
+**ON** by mechanism. JM08 loses its HQ-capture failure and becomes a no-end: the landing ships
+spawn at about 937 s and die to the HQ guns and AA trucks after 1128 s, so CheckHQ never sees
+CommandBuilding.Party == 2. The JM08 row change went to cc9-lua70.
+
+### 3. kLineOfFireLandFromMuzzleBound: ON
+
+This is a gunnery switch, recorded here with the other pairs. 0072CDD0's landscape query 0098ADD0
+starts at the caller's unraised muzzle (0072CDF1 MOV EBX,[ESP+28h]; 0072CE8E PUSH EBX). Only the
+unit walk 0098B130 uses the copy raised by 5.0.
+
+Pairs on aa5aaab54, reference env, 30000 frames:
+
+| row | AA line-of-fire blocks | result |
+| --- | --- | --- |
+| JM08 | 34 / 34 | gameplay identical |
+| USN07 | no queries | identical |
+| USN13 | 420 -> 426 (refusals 1598 -> 1625) | first moved death is plane `bruh #2.5` at 415 s (killer Maru6 -> Maru17). The last player plane `bruh #4.1` dies at 655.76 s instead of 832.57 s (Heavy AA 01 instead of 02), so "Game Over" comes at 659.96 s instead of 834.92 s; the 8 OFF-only deaths are planes that died after 660 s |
+
+Flipped by mechanism.

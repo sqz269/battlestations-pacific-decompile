@@ -992,3 +992,29 @@ mechanism is in the cd761bb52 section above).
 - Open rows at the lua69 handoff: JM08 (open no-end; h3 reaches phase 2 on ref; the lead routed the idle-LST question
   to cc13), IJN08 reference, USN15 (Yamashiro-first re-plan), USNOS (ships60), USN01 / LOMP06 under 20,3. The
   kVehicleClassPreloadCc15Bound re-flip is on HOLD (cc15: Ohka class 156; pairs listed in SQUADRON_LAND_TASK 5it).
+
+## 2026-10-19, main ab2062aec (cc9-lua70, keeper)
+
+Tools in `J:\PROG\battlestations-pacific-decompile-cc9-lua52\local`: runner `l70_runs.ps1` (rows `l70_rows.txt`, logs
+`l70r_<row>_<variant>_<env>.log`), `l70_j8_cover.py` (JM08 phase-2 wave launches), `l70_j8_keep.py` (drop a class's
+airfield launches in a frame window), `l70_stockuse.py` (planes launched per base and class, first no-stock frame),
+`l70_grepc.py` (line-shape counts in a line window).
+
+- **LOMP06 won on both seeds: `config/win_orders/lomp06_l70_l6_c.txt`** (l67 b with the Kinjosan Maru lines at
+  3800-5800 aimed at Sado Maru). Completed 364.83 s reference / 367.83 s under 20,3, guard logged on both. The crucial
+  cargos (`luaPickRnd` at 06_crucial_cargo.lua:151-153) are Kongosan Maru and Sado Maru on both seeds; b spent
+  190-290 s on Kinjosan, and under 20,3 a stray torpedo took Kuryu Maru instead, Sado survived, and Yugiri's depth
+  charges sank Narwhal at 443.17 s. Variant d (Kongosan held to 3800) wins the reference (379.83 s) but fails 20,3 at
+  650.11 s.
+- **JM08 phase 2: the HQ now holds on the reference seed; no end.** The h3 loss was a fighter-stock problem, not
+  targeting: the airfield starts with 152 (Gekko) x30, 154 (Ki-43) x30, 166 x9, 167 x9; Hosho (150 Zero x20, 162,
+  158) is sunk at 465.86 s by Hawaii, so its Zeros never launch. On h3 / i the airfield had launched all 60 fighters
+  at Missouri and the landships by 23500, so the B-17 wave (spawned 1310 s, first bombs on the HQ at 1514 s) met
+  three planes. i (h3 plus `l70_j8_cover.py`: slot-0 launches at every wave squadron from 26215) moved the HQ loss only
+  to 1692.95 s. **j** (`local\l70_j8_j.txt`: i with every class-154 airfield launch in 16000-26215 dropped) keeps 15
+  Ki-43s for phase 2: all 11 landships still die (LST 03 last at 1336.03 s, to a Ki-43 squadron), the HQ survives all
+  three waves, and 15 of the 20 C47 planes die by 2190.71 s. The C47 #4.2, #4.3 and #4.4 leaders (and two wingmen)
+  are never shot down, so CheckPrim3 (jm08.lua, `Mission.Dakota` empty) never fires: no end in 110000 frames. Both
+  fighter classes are out of stock from frame 31894. Under 20,3 i and j still lose no landship after LSM 02 (no end).
+- **USN01 20,3** on ab2062aec: `l69_u1_a` fails 1160.01 s (Game Over); Convoy2/3/5 survive, ConTBD2 dies to Convoy2's
+  AA at 190.96 s before its release. **IJN08** reference `p10_i08_z` still fails 1129.98 s.

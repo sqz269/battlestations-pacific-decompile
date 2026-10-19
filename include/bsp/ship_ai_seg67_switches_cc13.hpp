@@ -57,7 +57,11 @@ static_assert(kShipAiClearanceRefreshSentinel == 0x1.388p+13f);    // 0x461C4000
 // AL = [ESP+37h] = 0 (set at 009EDA2F).
 // True: the host does the same for NavigateAstern. False: the host runs the
 // output block and the tail for mode 3 as for mode 2.
-inline constexpr bool kShipAiNavigateAsternSkipBound = false;
+// ON (cc9-gunnery53, SHIP_AI_OPEN_ITEMS 300 ### 2): flipped by mechanism after an
+// audit found the host's approach step makes every 009F3240 steering store. JM08
+// changes from an HQ-capture failure at 977.93 s to a no-end; JM05 and USN04/07/13
+// keep their outcomes.
+inline constexpr bool kShipAiNavigateAsternSkipBound = true;
 
 // 009EE59B/009EE59F. When blk+1C4h is neither 2 nor 3 (Rudder or Heading),
 // the path gate JZ 009EF206 still reaches 009EF206: 009DE5B0(dt), then
@@ -68,6 +72,13 @@ inline constexpr bool kShipAiNavigateAsternSkipBound = false;
 // bookkeeping record.
 // True: the closed gate makes the same arm-final call before returning false.
 // False: it returns without it, as before.
-inline constexpr bool kShipAiNavGateClosedArmFinalBound = false;
+// ON (cc9-gunnery53) by mechanism, from pairs on bd61f8f4f at 30000 frames:
+//   - 009EE59F JZ 009EF206 and 009EF213 CALL 009DE5B0 were read from the disk bytes.
+//   - USN04, reference env: gameplay identical; 009DE5B0 539876 -> 540000 calls.
+//   - JM08, reference env: still fails at the HQ check (CheckHQ, Party == 2), now at
+//     958.94 s instead of 977.93 s.
+//   - JM08, default env: the same failure, 941.94 s instead of 963.94 s.
+// SHIP_AI_OPEN_ITEMS 300.
+inline constexpr bool kShipAiNavGateClosedArmFinalBound = true;
 
 } // namespace bsp
