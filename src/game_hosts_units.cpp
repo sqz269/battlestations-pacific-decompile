@@ -15267,7 +15267,8 @@ bool GameUnitsHost::Impl::landing_spot_clear_006cf5b0(const LandingDeck& d,
 
 // 007C16F0 / 007C1680: 4 -> 5 and 5 -> 4, +C04h = -1.0, and with classDesc+198h
 // non-zero +904h = +908h > 5.0 and +C18h = 3. 007C11E0(0) (the actuator targets)
-// and 007C16F0's 0090F6C0 scoring arm are not carried.
+// is carried at 007C1680 under kPlaneFlightStateNotifyCc13Bound; 007C16F0's
+// 0090F6C0 scoring arm is not carried.
 void GameUnitsHost::Impl::plane_four_to_five_007c16f0(GameUnitSlot& p) {
     if (p.plane_control_mode_900 != 4) return;
     p.plane_control_mode_900 = 5;
@@ -15826,8 +15827,9 @@ void GameUnitsHost::Impl::carrier_elevator_release_006fc250(LandingDeck& d) {
 
 // 007CC7A0 BSP_Plane_EnterFlightStateTwo, reached from 007C2090's C3h message
 // (single player: game+1FE4h is not 2, so no 007C78A0): +9F0h = 0; when +900h
-// is not 2, +900h = 2, +C04h = -1.0 and 007C11E0(0) (not carried, as at the
-// 4 <-> 5 transitions); game+193Ch is not modelled.
+// is not 2, +900h = 2, +C04h = -1.0 and 007C11E0(0) (carried under
+// kPlaneFlightStateNotifyCc13Bound, which enables the parked plane);
+// game+193Ch is not modelled.
 void GameUnitsHost::Impl::plane_enter_state_two_007cc7a0(GameUnitSlot& p) {
     p.plane_live_throttle = 0.0f;
     if (p.plane_control_mode_900 == 2) return;
@@ -16434,8 +16436,8 @@ void GameUnitsHost::Impl::plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char
 // registry record holding the plane and its entity id squadron_unit + 1; the
 // destroy flush is taken at once, so the plane leaves the site vector +34h (the
 // observer pair 006CE910 / 006CEF80) and its squadron (007BCAA0 -> 007F3970) in
-// this step. OnDestroyed's +C14h draw on 00BD2F10 is not taken: this host draws
-// nothing for a retired plane.
+// this step. OnDestroyed's +C14h draw on 00BD2F10 (007BCABB) is taken only under
+// kPlaneRetireOnDestroyedDrawCc13Bound, right after the Kill.
 void GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0(GameUnitSlot& p) {
     if (!p.plane_in_hangar_c00 || p.plane_death_removed) return;
     if (p.plane_airborne_frozen_9e0 || p.generic_suppress_520) return;   // 007CE6CA / 007CE6D7
