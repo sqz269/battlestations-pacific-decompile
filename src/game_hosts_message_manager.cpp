@@ -3,11 +3,13 @@
 
 #include "bsp/game_hosts_message_manager.hpp"
 
+#include "bsp/band_0085_cc13.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/gui_lua_reader.hpp"
 #include "bsp/gui_lua_runtime.hpp"
+#include "bsp/locale_tables.hpp"
 #include "bsp/memory_stream.hpp"
 #include "bsp/message_record_resolver.hpp"
 #include "bsp/native_string.hpp"
@@ -148,6 +150,31 @@ private:
     }
 };
 
+// cc15-msg2: 008D57A0's globals, bound by the application (bind_voice_language_settings).
+const std::vector<LanguageEntry>* g_voice_catalog = nullptr;  // [00F88974], count [00F88978]
+const int* g_voice_language_index = nullptr;                  // [00F88980]+4h
+
+// 008D57A0 on [00F88980], read afresh at every call as 00704590 calls it:
+// - "english" when [00F88978] < index (JL) or the row's voice_dir +10h is empty;
+// - "authentic" when 007F8890 says the profile owns DL_Content_0000062;
+// - else the row's voice_dir +14h ("" at 00F88A3C when null).
+// The profile's content list (game+720h, written by the marketplace enumeration) is
+// not hosted, so ownership is false here. With the installation's single row
+// (lockit/englishauthentic.lng: voice_dir authentic) both arms answer "authentic".
+// An index the image would read outside the table throws instead.
+std::string voice_language_name_from_settings() {
+    const std::vector<LanguageEntry>& catalog = *g_voice_catalog;
+    std::vector<cc13_band0085::VoiceLanguageRow> rows(catalog.size());
+    for (std::size_t i = 0; i != catalog.size(); ++i) {
+        rows[i].has_voice_10 = static_cast<std::uint32_t>(catalog[i].voice_dir.size());
+        rows[i].voice_folder_14 = catalog[i].voice_dir.empty() ? nullptr : catalog[i].voice_dir.c_str();
+    }
+    const auto name = cc13_band0085::voice_language_name_008d57a0(rows.data(),
+        static_cast<std::int32_t>(rows.size()), *g_voice_language_index, false);
+    if (!name) throw std::logic_error("008D57A0: language index outside [00F88974]");
+    return std::string(*name);
+}
+
 // One open script: 00B66BD0 owner, 00B6A020 open(1), the run, 00B67980 globals and the
 // 004425C0 reader; 00B669A0 closes it.
 struct ScriptFrame {
@@ -171,6 +198,7 @@ struct GameMessageManagerHost::Impl final : seg::MessageManagerCalls {
     GameHostLog& log;
     GameVfsHost& vfs;
     std::string voice_language;
+    bool voice_language_logged{false};
     bool sse2;  // 0109EEA4, the CRT's double-to-int selector, queried as decals.lua does
     std::unique_ptr<seg::MessageManagerLayout> layout;  // the 70h block, null when not built
     MessageRecordStore records;                         // tree +4h
@@ -398,7 +426,22 @@ struct GameMessageManagerHost::Impl final : seg::MessageManagerCalls {
         ++summary.sound_banks_not_loaded;
         return nullptr;
     }
-    std::string language_name_008d57a0() override { return voice_language; }
+    std::string language_name_008d57a0() override {
+        if constexpr (kMessageVoiceLanguageCc15Bound) {
+            if (g_voice_catalog != nullptr) {
+                std::string name = voice_language_name_from_settings();
+                if (!voice_language_logged) {
+                    // The load line's language= is still the lockit name the frame host holds.
+                    voice_language_logged = true;
+                    log.notef("message manager: 008D57A0 voice language \"%s\" (settings+4h index %d of "
+                        "%zu catalog rows; lockit name \"%s\")", name.c_str(), *g_voice_language_index,
+                        g_voice_catalog->size(), voice_language.c_str());
+                }
+                return name;
+            }
+        }
+        return voice_language;
+    }
     const char* voice_directory_template_00e08fcc(std::size_t slot) override {
         return slot < kVoiceDirectoryTemplates.size() ? kVoiceDirectoryTemplates[slot] : nullptr;
     }
@@ -420,6 +463,12 @@ struct GameMessageManagerHost::Impl final : seg::MessageManagerCalls {
 GameMessageManagerHost::GameMessageManagerHost(GameHostLog& log, GameVfsHost& vfs,
     std::string voice_language)
     : impl_(std::make_unique<Impl>(log, vfs, std::move(voice_language))) {}
+
+void GameMessageManagerHost::bind_voice_language_settings(
+    const std::vector<LanguageEntry>& catalog, const int& language_index_04) {
+    g_voice_catalog = &catalog;
+    g_voice_language_index = &language_index_04;
+}
 
 GameMessageManagerHost::~GameMessageManagerHost() {
     if (impl_->layout) destruct_007071f0();

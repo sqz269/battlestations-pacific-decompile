@@ -21,7 +21,10 @@
 #include <string>
 #include <vector>
 
-namespace bsp { struct VoiceClipRecord; }
+namespace bsp {
+struct LanguageEntry;
+struct VoiceClipRecord;
+}
 
 namespace bsp::game {
 
@@ -32,9 +35,9 @@ class GameVfsHost;
 // "<name>" timed by the narrative screen's TempCharWait / TempWaitBase, as the image
 // builds it. OFF: the miss is counted and answers null.
 inline constexpr bool kMessageRecordMissCc15Bound = false;
-// cc15-msg2: the manager's voice language is 008D57A0 on the settings block (the
-// catalog row's voice_dir), not the lockit name. OFF: the lockit name, as before.
-// Read by the mission frame host where it builds the manager.
+// cc15-msg2: 00704590's language is 008D57A0 on the settings block [00F88980] (the
+// catalog row's voice_dir), not the lockit name the host was built with. OFF: the
+// lockit name, as before.
 inline constexpr bool kMessageVoiceLanguageCc15Bound = false;
 
 // What 007065E0 reads besides its argument: the local party's side kind
@@ -73,8 +76,14 @@ struct MessageManagerSummary {
 
 class GameMessageManagerHost {
 public:
-    // `voice_language` stands in for 008D57A0 on [00F88980] (see the doc).
+    // `voice_language` stands in for 008D57A0 on [00F88980] unless
+    // kMessageVoiceLanguageCc15Bound and the settings are bound (see the doc).
     GameMessageManagerHost(GameHostLog& log, GameVfsHost& vfs, std::string voice_language);
+    // The process-wide inputs 008D57A0 reads: the language table [00F88974] (count
+    // [00F88978]) and the settings block's index [00F88980]+4h. Both are borrowed and
+    // must outlive every manager; the application binds them once after settings load.
+    static void bind_voice_language_settings(const std::vector<LanguageEntry>& catalog,
+        const int& language_index_04);
     ~GameMessageManagerHost();
     GameMessageManagerHost(const GameMessageManagerHost&) = delete;
     GameMessageManagerHost& operator=(const GameMessageManagerHost&) = delete;

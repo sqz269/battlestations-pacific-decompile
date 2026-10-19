@@ -294,3 +294,63 @@ keys have 23 characters, so their end is 1.92.
 warning, clip, message, voice, subtitle, hint, objective, Lua and script line. It moves only the
 lines above, in place, plus the renderer worker thread id. Every other line keeps its index
 order, on USN04 (6030 lines) and on USN01 (9681 lines).
+
+### Voice-language folder, 008D57A0 (`kMessageVoiceLanguageCc15Bound`)
+
+00704590 replaces `LANGUAGE` in the four 00E08FCC templates with 008D57A0's answer. That
+function reads globals, not the lockit name:
+
+- `[00F88980]+4h` is the settings block's language index (`GameSettingsBlock::language_index_04`).
+- `[00F88974]` / `[00F88978]` is the language table and its count. 008D7BC0 builds it from the
+  lockit/*.lng descriptors, one 20h row each. Row +10h/+14h is the `voice_dir` string.
+- The answer is "english" when count < index (JL) or the row's voice_dir is empty. It is
+  "authentic" when 007F8890 says the profile owns `DL_Content_0000062`. Otherwise it is the
+  row's voice_dir.
+
+The installation has one descriptor, `lockit/englishauthentic.lng`
+(`lanfile englishauthentic`, `lockit_id FE.opt_englishauthentic`, `voice_dir authentic`).
+options.txt selects it, so the index is 0. Both arms therefore answer `authentic`, the folder name
+under `sound/messages`. The host's `englishauthentic` was the lanfile, the name 008D4870
+answers.
+
+The application binds the live catalog and settings index once, before the menu host is built
+(`GameMessageManagerHost::bind_voice_language_settings`, game_hosts.cpp). With the switch, each
+008D57A0 call runs `cc13_band0085::voice_language_name_008d57a0` on them. Seam: the profile
+content list at game+720h is not hosted (no marketplace enumeration), so ownership is false. With
+this installation's row that does not change the answer. An index the image would read outside
+the table throws. The mission frame host's load line still prints the lockit name
+(`language=englishauthentic`); that file belonged to another lane, so a separate line logs the
+008D57A0 answer.
+
+**Pairs.** The builds are local\msg2_exe\{base2,off2,on2,on12}. base2 is origin/main 080e23452;
+off2 is this commit with both switches OFF; on2 has the voice switch ON; on12 has both ON. All
+runs used the reference env.
+
+| Pair | pair_diff | Gameplay |
+| --- | --- | --- |
+| USN04 base2 vs off2 | exit 0, identical apart from noise | identical |
+| USN04 off2 vs on2 | exit 1 | identical: 53 deaths, 81-row unit table |
+| USN01 off2 vs on2 | exit 1 | identical: completed 380.03 s, 57 deaths, 106-row unit table |
+| USN01 off2 vs on12 | exit 1 | identical; the moved rows are the union of the two switches |
+
+Rows that move (USN04 and USN01 alike):
+- A new line: `008D57A0 voice language "authentic" (settings+4h index 0 of 1 catalog rows; lockit
+  name "englishauthentic")`.
+- The `loaded Messages.lua` line (d):
+  - voice_probe_hits goes 0 -> 230 and voice_probe_misses 494 -> 34. 230 records find their .fsb
+    on the first probe; 17 records miss both the actor path and the plain path.
+  - sound_banks_not_loaded goes 0 -> 230. Each hit now reaches 00A83FD0, which is still a seam
+    and answers null, so every record's four references stay null.
+  - streamed_probes_not_evaluated goes 247 -> 17. Only records with no hit keep the alternate
+    flag +14h = 1 and reach the 007050C0 streamed fallback.
+
+The strict index-order diff moves only those lines, plus the renderer worker thread id.
+
+**What reads the change (d).** A hit only clears the record's alternate flag +14h; the bank
+pointer stays null. The readers of +14h and of the references are `construct_voice_slot_00702cc0`
+and `start_voice_clip_005b9050` (callers 005B91E0, 005B9300, 005BABB0, 005B8810). No `src/game_*`
+file calls any of them, and no log has a 005B9050, 00702CC0, 005B71D0 or 00974070 row. Nothing
+that sets timing reads the flag yet.
+
+**Save untouched.** The four files under Documents\Battlestations-Pacific had the same SHA-256,
+size and mtime before the first run and after the last.

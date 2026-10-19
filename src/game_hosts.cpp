@@ -53,6 +53,7 @@
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/game_hosts_init_tail.hpp"
 #include "bsp/game_hosts_menu.hpp"
+#include "bsp/game_hosts_message_manager.hpp"
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/native_loading_queue_owner.hpp"
 #include "bsp/native_render_service_base.hpp"
@@ -2786,6 +2787,10 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // override 0067ca80 is what loads FE_initial, so all three title pages are now owned
     // rather than loaded directly as milestone 2b did.
     profiler_ = new GameFrameProfiler(log_, 8);
+    // cc15-msg2: 008D57A0's inputs for the MessageManager, the language table [00F88974]
+    // and the settings index [00F88980]+4h (read only under kMessageVoiceLanguageCc15Bound).
+    GameMessageManagerHost::bind_voice_language_settings(settings_host_->language_catalog(),
+        settings_view_.gameplay.language_index_04);
     menu_ = new GameMenuHost(log_, *frontend_, game_state_, *singletons_, options_.press_start_frame,
         *vfs_, *scripts_, locale_->tables(), options_.menu_select, options_.mission_frames,
         profiler_, summary_.language, options_.mission_complete_frame, options_.order_frame,
