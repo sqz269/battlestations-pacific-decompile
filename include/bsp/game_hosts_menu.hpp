@@ -238,4 +238,15 @@ private:
 // refused.
 bool inject_input_action_hold(int action, unsigned frames);
 
+// Packet cc13-helmaim: the helm `aim <yaw> <pitch>` line. It sets a target for
+// the ship camera mover's yaw (+384h) and pitch (+388h), in radians. The HUD's
+// 0051F050 reaches the target through the input manager's look axes
+// ([input+4]+1584h / +15B4h), the path a mouse move takes, and clears it once
+// both angles are there. Nothing sets a target unless a helm line asks, so
+// default runs read zero axes, as before.
+void inject_view_aim(float yaw, float pitch);
+// The pending target, if any.
+bool injected_view_aim(float& yaw, float& pitch);
+void clear_injected_view_aim();
+
 }  // namespace bsp::game
