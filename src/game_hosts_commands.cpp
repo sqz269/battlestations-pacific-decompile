@@ -132,7 +132,11 @@ constexpr bool kEntityCommandSelfKindBound = true;
 // 13 bits (this host's synthesised 50000+ ids) are kept as posted. CORRECTION:
 // the exit 3 first reported for f0d2c7b7b (shots 2032 -> 1938) was those 3
 // cut ids, a host artefact, not the quantisation.
-constexpr bool kSetCommandMessageCc13Bound = false;
+// ON by cc9-ships59's USN01 3200 pair in the reference env (local\s59_sm_off_u01 /
+// s59_sm1_on_u01 .log.manifest.json, 662d8bc7d): exit 1, gameplay identical;
+// 103 round trips, the same 10 sub-mm moveto quantisations, 3 cut ids restored,
+// command and object never changed; 0071C830 UNIMPLEMENTED -> concrete (103).
+constexpr bool kSetCommandMessageCc13Bound = true;
 
 // cc15-sm2. True: the MT_COMMAND (58h) that 0077D600 posts is delivered as the
 // copy 0076E520 rebuilds from its bits (00764D40 write, 00768530 case 88 at
