@@ -5887,9 +5887,10 @@ struct GameUnitsHost::Impl {
             return r;
         }
         // 0060876C 007BC7A0: above -50 deg of pitch ([00D05A30]) the bank must
-        // be within max(0, 80 deg ([00D05A28]) - |pitch|). Its rocket pass
-        // (ordnance 33h with descriptor+E0h > 0, 007BC7BA-007BC7D4) does not
-        // apply to a bomb.
+        // be within max(0, 80 deg ([00D05A28]) - |pitch|). Its rocket arm
+        // (007BC7BA-007BC7D4: ordnance 33h, then 007BC7CD COMISS 0,[desc+E0h] /
+        // 007BC7D4 JAE 007BC86C) SKIPS the gate and returns 1 when +E0h <= 0; a
+        // NaN +E0h falls through to the gate. It does not apply to a bomb.
         if (pitch > -0.87266463f) {
             float limit = 1.3962635f - std::fabs(pitch);
             if (limit < 0.0f) limit = 0.0f;
