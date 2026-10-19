@@ -117,6 +117,7 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
     struct Drawable { void* actual; bool creator_consumed{}; };
     std::vector<std::unique_ptr<MeshCall>> meshes;
     std::vector<Drawable> drawables;
+    std::vector<void*> attempted_models; // Opaque allocated identities, including failed preparation.
     std::vector<HierarchyItem> hierarchy;
     std::vector<CameraMatrix> world_matrices;
     std::vector<unsigned char> matrix_states;
@@ -260,7 +261,9 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
             const auto& item=hierarchy[index];
             for(auto& call:meshes) {
                 if(std::find(item.resources.begin(),item.resources.end(),call->resource_ordinal)==item.resources.end()) continue;
+                attempted_models.push_back(nullptr); // Publish bookkeeping before acquiring a slot.
                 auto* actual=raw_models.pool_01090054.allocate_raw_slot_00b74d00();
+                attempted_models.back()=actual;
                 if(!actual) throw std::bad_alloc();
                 NativeModelOwner* owner=&prepare_model(this,actual,raw_models);
                 auto& record=models.back();
@@ -268,7 +271,11 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
                 // A failed name/model/registration call preserves this same
                 // record and raw slot for process retention, without replay.
                 record.caller_name_live=true;
-                construct_native_string_header_0041e870(&record.caller_name,files.raw_strings(),item.name.c_str());
+                mission_model_detail::require(item.name.size()<=0xffffffffu,
+                    "installed hierarchy name exceeds the native string domain");
+                resize_native_string_header_0041dd40(&record.caller_name,files.raw_strings(),
+                    static_cast<Word>(item.name.size()),true);
+                if(!item.name.empty()) std::memmove(record.caller_name.data(),item.name.data(),item.name.size());
                 construct_native_model_00b75030(*owner,&record.caller_name,renderer.node_constants());
                 bind_model(this,*owner);
                 drawables.push_back({actual,false});
