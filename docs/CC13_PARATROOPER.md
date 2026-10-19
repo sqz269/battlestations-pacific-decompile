@@ -12,12 +12,34 @@ This is a static read of the bytes and the exports; no game was run. Both switch
 
 ## Reach
 
-| Mission | Script | C-47 order | 009B7C90 31h arm |
-| --- | --- | --- | --- |
-| JM08 (menu JM08 = `COTP-IJN/PRCPIJN/PRCPJM08.lua`) | `luaBomberWaveSpawned3`: class 136 gets `PilotSetTarget(unit, Mission.CommandBuilding)` | level-bomb task (kind 4) on Headquarter 01 | **reached** |
-| JM05 | `luaJM5ParatroopersSpawned` (jm05.lua:3338): `PilotMoveTo` (the `PilotSetTarget` at :3351 is commented out); the drop is `PlaneForceRelease` (:3388) | moveto | not reached |
-| JM11 | jm11.lua:2725 `PilotMoveToRange`; the role goes to PLAYER_1 | moveto | not reached by AI |
-| JM13 | jm13.lua:3250 `PilotMoveTo`, then `PlaneForceRelease` (:2661, :2674, :3270) | moveto | not reached |
+Census (corrected after rev4's review of 597dd029b; the first table said JM13 was not reached, which was wrong).
+Only two vehicle classes carry a paratrooper gun: class 136 (C47 Dakota, gun 160 "US Paratrooper platform") and
+class 186 (L2D Tabby, gun 161 "JP Paratrooper platform"), in both the arcade and realistic device tables
+(vehicleclasses.lua `Platforms[50].Gun`). The census below covers every script under `scripts/missions` (stock,
+COTP and PRCP) that spawns `Type = 136` or `186`, plus the scene-placed transports those scripts order
+(`FindEntity`), and maps each script to the scenes whose `StageScript` runs it (`universe/scenes/**/*.scn`).
+"Reached" needs `PilotSetTarget` on a building, which installs the level-bomb task (kind 4) and with it the
+009B7C90 31h arm. A `PlaneForceRelease` reaches the release path (the per-rack issue 007C0D90 with 006E3F90,
+then the rack drop) without the task.
+
+| Script (scene) | Transport and order | Verdict |
+| --- | --- | --- |
+| `COTP-IJN/PRCPIJN/prcpjm08.lua` (`PRCPIJN/prcpijn_08_defend_guadalcanal.scn`, menu JM08) | `luaBomberWaveSpawned3` (:1264-1272): class 136 `PilotSetTarget(unit, Mission.CommandBuilding)` = Headquarter 01 (Japanese) | **reached** (log evidence below) |
+| `COTP-IJN/PRCPIJN/jm08.lua` | the same code as prcpjm08.lua (:1176-1178, 1272) | not reached: no scene runs it (`PRCPIJN/ijn_08_defend_guadalcanal.scn` runs `IJN\JM08`) |
+| `ijn/JM/jm08.lua`, `COTP-IJN/jm08.lua` | no class 136/186 | not reached |
+| `ijn/JM/jm13.lua` = `COTP-IJN/jm13.lua` (same MD5; `ijn/JM/ijn_13.scn`, `COTP-IJN/ijn_13.scn`) | `luaJM13DakotaSpawned` (:1953-1963) and `luaJM13Dakota2Spawned` (:2058-2059): the LevelBomber gets `PilotMoveTo(unit, Mission.CB)` then `PilotSetTarget(unit, Mission.CB)` = HQ 01. `luaJM13CheckPara` (:2652-2678, called at :784 and :805) also `PlaneForceRelease`s each Dakota plane within 300 m of the CB | **probable** (task and forced release) |
+| `COTP-IJN/PRCPIJN/prcpjm13.lua` (`PRCPIJN/ijn_13.scn`, `PRCPIJN/prcpijn_13.scn`) | `DakotaSpawned` (:1399-1412): `PilotSetTarget(Mission.Dakota, Mission.CB)`, Dakota2 `PilotSetTarget(unit, Mission.CB)`; `SpawnDakotas` repeats every 150 s while HQ 01 is neutral and not captured (:1419) | **probable** |
+| `COTP-IJN/PRCPIJN/jm13.lua` | `DakotaSpawned` (:1394, :1401), the same orders | not reached: no scene runs it |
+| `COTP-IJN/PRCPIJN/jm11.lua` (`PRCPIJN/ijn_11_invasion_of_fiji.scn`, menu JM12) | `luaDakotaPlanesSpawned` (:1614-1619): class 136 `PilotSetTarget(unit, Mission.CommandBuildings[3])` = Headquarter 02. Spawned by `luaPlanes` 15 s after the damaged BB (hidden objective) dies (:1714-1720) | **probable** (needs the BB kill) |
+| `ijn/JM/jm11.lua`, `COTP-IJN/jm11.lua` (`ijn/JM/` and `COTP-IJN/ijn_11_invasion_of_fiji.scn`) | scene transport `Mission.Paratrooper`: `PilotMoveToRange` (:2725 / :2743); the role goes to PLAYER_1 | not reached by AI |
+| `ijn/JM/jm05.lua`, `COTP-IJN/jm05.lua`, `COTP-IJN/PRCPIJN/jm05.lua` (the three `ijn_05_invasion_of_port_moresby.scn`) | `luaJM5ParatroopersSpawned`: `PilotMoveTo(v, Mission.Airfields[1])` (the `PilotSetTarget` is commented out); the `PlaneForceRelease` in `luaJM5CheckParatroopers` is never called (its only call, :1206 / :1220 / :1325, is commented out) | not reached |
+| `COTP-USN/def_aleutians.lua` (`COTP-USN/def_aleutians.scn`) | `luaSpawnLevelBomba` (:1107, from `luaPh1FadeOut` :934): five class 186 L2Ds, party Japanese; `luaTabbySpawned` (:1228-1250) `PilotSetTarget(unit, trg)` + `NavigatorAttackMove`, trg = `Mission.JapHQs[3]` (CB6) for "left", else `JapHQs[2]` (CB3) | **probable** |
+| `multi/escort04.lua` | scene Dakotas 1-4: `PilotMoveOnPath` only | not reached |
+| all other mission scripts | no class 136/186 spawn and no order on a scene transport | not reached |
+
+Not covered by this census: transports a scene places without any script order (none found among the scripts'
+`FindEntity` names), and the native high-level AI (`highlvlaiglobals.lua` `Paratroopers` = 0.30/0.40, the
+skirmish/campaign AI), which issues its own orders outside mission Lua.
 
 Log evidence, from cc9-lua52 `local\l64_j8_e_on_j5.log` (menu JM08, 2026-10-17, before this packet):
 
@@ -38,6 +60,21 @@ The run ended about 484 ticks after the spawn. No plane reached the target, and 
 | 007C0E98-007C0EC9: 007C0D90 calls 006E3F90 for a fired 31h rack, passing the point that 007BCCF0 returns and the velocity from vtable[34h] | `run_level_bomber_issue_007c0e67` and the devwalk path `run_device_walk_per_rack_007c0d90` call `lb_para_set_target_point_006e3f90` -> `gameplay_seg46_cc13::set_target_point_006e3f90` |
 | 006E541F-006E5515 landing = (U(-50,50) + px, py, U(-50,50) + pz), x first, stream 0; point += f(v x toRepeatTime) | `lb_para_drop_target_006e541f` -> `gameplay_seg46_cc13::paratrooper_drop_target_006e541f`, with `ParatrooperRackBinding::uniform` as 00BD2F10 |
 | 006E55E7 flag cleared when ammo <= 0 | `gameplay_seg46_cc13::paratrooper_drop_clear_006e55e7` after the host's decrement |
+
+Labels on that table:
+
+- 007BCCF0: the reference model is `plane_ordnance_release_point_world_007bccf0` (src/cc13_seg47.cpp:1826, with
+  its own `kReleaseHeightDivisor_00d05a38`). It reads raw plane memory through `Seg47Host`, so the units host's
+  slot-field binding `paratrooper_release_point_007bccf0` cannot call it and keeps the same arithmetic (the
+  x, y, z sums in the same order) with its own copy of the divisor
+  (`bsp::level_bomb_paratrooper::kReleaseHeightDivisor`). NOT MODELLED: 007BCCF0's first step, the pose refresh
+  00414DB0 when +C8h == 0. LABELLED: the host reads `motion.position` (+FCh) as its own motion step left it; it
+  keeps no separate stale world pose for 00414DB0 to refresh.
+- 006E541F is wired only into the level-bomber rack tick `run_level_bomber_rack_tick_006e56f0`
+  (`kPlaneLevelBombTaskBound` with `lb_level_bomber_racks()`). A flagged 31h rack that the devwalk single-rack
+  path fires (`level && !lb_tick` in `run_device_walk_per_rack_007c0d90`) gets its 006E3F90 point, but its drop
+  goes through the generic rack tick, which never calls 006E541F: no landing draw, no target, and (option 2) no
+  round, because that tick's `release_bomb_drop` call passes no `ParatrooperRelease`.
 
 ## The round (option 1 alone: a recorded gap; option 2 below)
 
@@ -112,8 +149,16 @@ LABELLED substitutions:
 - `Impl::para_world` (rounds and capturer list): lives for the units host. A round is erased at the end of the step
   it is killed in; its capturer entries go in 007AAE10's 006F34B0 call before that. Building handles are slot
   index + 1, and slots are never erased, so a handle never dangles. A building that dies keeps its capturers
-  until their own timers or the same-side rule end them. UNCHECKED: whether the image clears +7DCh when the
-  building entity dies; the host does not.
+  until their own timers or the same-side rule end them, as in the image. Traced: +7DCh is emptied only by
+  006F34B0, whose one reference is 007AAE3E in the round's own 007AAE10 OnKilled, and is freed only by the
+  destructor 006F5AE0 (006F5B6E-006F5B85: 006F33A0(0) on +7DCh, then the free 00BF6989), whose one reference is
+  the scalar-deleting destructor at 006F5CA3. That runs when the entity is deleted, not on death or a party
+  change, and it does not notify the rounds (their +48Ch keeps the building). No death or party-change path
+  touches +7DCh. Evidence: a rel32 and absolute-dword scan of the PE for 006F34B0, 006F39B0 and 006F5AE0 (one
+  hit each), and every `+7DCh` access in the exported functions of 006E0000-007FFFFF (006F34B0, 006F39B0, the
+  constructor 006F5610, 006F5AE0, 006F6760; 007E2A20's hits are stack offsets). The clear helper 006F35B0
+  (undefined code, `PUSH 0; CALL 006F33A0; RET`) has no reference. Undefined code outside 006F35B0 was not
+  scanned for `+7DCh`. The host never deletes a building slot, so it has no destructor case.
 - World list 28 (the building search) and `slots[i]->row.party / motion.position / inferior_range_7c8`: rebuilt
   once per `ParaServices` (one per step or per drop), from the scene-loaded list.
 - The capture target the ship AI tick reads: `paratrooper_capturers_07dc(b.unit)` copies the list per tick, so no
@@ -170,6 +215,43 @@ LABELLED substitutions:
   == 2`) fails the mission. JM08's victory is all Dakotas dead, so the paratroopers work against the defending player.
 - A round whose building is or becomes the same side, a round in water, and a round landing on a slope beyond
   MaxParatrooperGradient (20 degrees) are killed (Kill(2)). After CaptureDuration (30 s) the round is killed too.
+
+### The other reached or probable missions (ON)
+
+Party values: 0 Allied, 1 Japanese, 2 neutral (JM08's CheckHQ fails on `Party == 2`). 006F2C30 takes the nearest
+building of another side within that building's InferiorRange, neutral ones included.
+
+- JM13 stock (`ijn/JM/jm13.lua`): HQ 01 is the player's (Japanese) capture objective (:1112). The Dakotas take the
+  level-bomb task on it, and `luaJM13CheckPara` force-releases them within 300 m. They spawn in phase 2
+  (`luaJM13InitDakota` from :1141), after the player has captured HQ 01 (:1112), so HQ 01 is Japanese. Paratroopers that land bleed and
+  capture HQ 01 toward the Allies. **Mission can end the same way**: `luaJM13CheckRecapt` (:2134, called at :785,
+  :806, :811) fails the mission ("ijn13.obj_missionfailed_recap") once `Mission.CB.Party == PARTY_ALLIED`. Separately,
+  once a Dakota has dropped and reloads, `GetPlaneIsReloading` fails it ("ijn13.obj_missionfailed_para", :1155-1160)
+  whether or not anything captures, so in the image a completed drop alone ends the mission. In the host that
+  rule depends on whether a drop happens at all (OFF: no 31h ordnance, so no task drop; a forced drop needs
+  `kLuaPlaneForceReleaseBound`) and on the host's `GetPlaneIsReloading` (packet cc13-fix16), not traced here.
+- JM13 PRCP (`prcpjm13.lua`): the Dakotas fly only while HQ 01 is neutral (`Party == 2 and not Mission.Captured`,
+  :1419). Paratroopers capture it toward the Allies (0). Primary 3 completes only on `Party == 1` (:1456), and an
+  Allied HQ switches the respawn to bombers (`Party == 0`, :1421). No fail rule reads the HQ (`CheckForces`'
+  `not Mission.CB.Party == 1` is always false in Lua), so the effect is a blocked primary 3, not a fail.
+- JM11 PRCP (`PRCPIJN/jm11.lua`): the Dakotas target Headquarter 02. Primary 2 counts the Japanese-held bases
+  (:1134-1140); paratroopers on a Japanese HQ 02 neutralize it, so the count drops. No fail rule reads a base's
+  party, so no fail.
+- def_aleutians (`COTP-USN`): Japanese L2Ds target CB3 / CB6. A round only bleeds or captures a non-Japanese
+  building within range; if CB3 or CB6 is still Japanese, a round that finds no other building there is killed
+  (Kill(2)). Neither base is read by a fail rule. The fail rules read CB1 (`Mission.HQ.Party == PARTY_NEUTRAL`,
+  :746, only while primary 1 is active and `not Mission.DMSpawned`) and CB9 (`MainHQ.Party ~= PARTY_JAPANESE`, :880, primary 5). CB9
+  could change only if a round lands within its InferiorRange; not predicted.
+- Achievement: `GA_AI` "Airborne Invasion" ("islands captured by paratroopers", achievements.lua:823-829) is a
+  native counter. It is presumably bumped from the capture's scoring slot (006F6760 vtable +108h / +4B8h), which is
+  not modelled. UNVERIFIED.
+
+None of these scripts registers a Lua `capture` listener; the scripts see a capture only through the building's
+`Party`.
+
+Pair grep rows for these missions are the same as JM08's (below). In addition: JM13's `luaMissionFailedNew` text
+"ijn13.obj_missionfailed_recap" or "..._para", and `PlaneForceRelease 0089EBA0 calls=` in the script-orders
+summary (forced drops, only under `kLuaPlaneForceReleaseBound`).
 
 USNOS check (ships60's note "a TroopTrans within 1500 m flips a NEUTRAL building"): that rule is mission Lua,
 us_osumi.lua:1100-1106, a SetParty for Mission.Troops ships within 1500 m. It does not involve paratroopers and is

@@ -14,9 +14,14 @@ namespace bsp {
 // DL = 0 (XOR EDX,EDX at 0099B46E) at 0099B53C, called by BSP_PilotBot_Update at
 // 009998D2 before the task arm. +2B0h gates the pilot's target-speed-correction raise
 // (0099D8CD -> 0099D924; host reader kPilotSpeedCorrDivisorBound). The reseed clears
-// the byte at the top of every think, so the binary's 1 holds only for a think in
-// which the not-head-on aim arm ran; it does not persist into maneuver or avoid. The
-// host reseeds in the same order (kPilotPlanReseedBound).
+// the byte at the top of every think that reaches the task arm. The one think path
+// that skips it is the early-out at 009998A4-009998C6 (state 2 with [unit+9C2h] set
+// to 009999B0, POP/POP/RET 4: the whole update returns). That think skips the
+// reseed, the task arm and the reader BSP_PilotBot_PlanControls 0099D300 (whose one
+// caller is the update) together, so a 1 left from the previous think is neither
+// read nor changed there, and the next full think reseeds it before the reader runs.
+// Hence, wherever +2B0h is read, the binary's 1 holds only for a think in which the
+// not-head-on aim arm ran; it does not persist into maneuver or avoid. The host reseeds in the same order (kPilotPlanReseedBound).
 // True: the not-head-on aim tick stores plan+2B0h = 1.
 // False: unchanged host (+2B0h keeps its previous value, usually 0).
 inline constexpr bool kSeg67bDogfightAimSpeedCorrOffBound = false;
@@ -84,9 +89,13 @@ static_assert(!kParatrooperSoldierAnimDrawBound ||
               "the paratrooper soldier draw needs the round");
 
 namespace level_bomb_paratrooper {
+// 007BCCF0's divisor. The raw-memory reference model is
+// plane_ordnance_release_point_world_007bccf0 (src/cc13_seg47.cpp, its own
+// kReleaseHeightDivisor_00d05a38 there); the units host's
+// paratrooper_release_point_007bccf0 works on slot fields, so it cannot take that
+// Seg47Host signature and keeps this copy. The drop's U(-50, 50) bounds are
+// seg46's kDropJitterLo_00ceca0c / kDropJitterHi_00ceb4d4.
 inline constexpr double kReleaseHeightDivisor = 2.799999952316284;   // double [00D05A38]
-inline constexpr float kDropScatterLow = -50.0f;                     // [00CECA0C]
-inline constexpr float kDropScatterHigh = 50.0f;                     // [00CEB4D4]
 inline constexpr int kParatrooperKind = 0x31;
 // The class step scale +5Ch: the BombClass constructor's default (no Lua key).
 inline constexpr float kParatrooperStepScale = 1.0f;                  // [00D7A24C]

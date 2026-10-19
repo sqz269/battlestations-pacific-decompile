@@ -25,7 +25,12 @@ The bytes, at 009A790B-009A794B: `ECX = [approach+18h]` (the pilot plan). The ar
 The host wrapper writes `plane_desired_speed_2b4` and `plane_air_brake_mode_2d8 = 1`. It never writes
 `plane_trg_speed_corr_off_2b0`, so the field keeps the 0 from the per-think reseed:
 `BSP_PilotBot_SeedPlanSlots` (`0099B450`) stores `DL` at `0099B53C`, with `EDX` zeroed at `0099B46E` and not
-written again before the store. `BSP_PilotBot_Update` calls it at `009998D2`, before the task arm, on every think.
+written again before the store. `BSP_PilotBot_Update` calls it at `009998D2`, before the task arm, on every think
+that gets past the update's early-out. That early-out (`009998A4-009998C6`: state 2 with `[unit+9C2h]` set jumps to
+`009999B0`, `POP ESI / POP ECX / RET 4`) returns from the whole update, so it skips the reseed, the task arm and the
+`+2B0h` reader `BSP_PilotBot_PlanControls` (`0099D300`, whose one caller is the update) together. A 1 left over is
+neither read nor changed on such a think, and the next full think reseeds it before the reader runs, so the claim
+below holds wherever `+2B0h` can be read.
 `plane_trg_speed_corr_off_2b0` is the gate on the speed-correction raise in the pilot think,
 `0099D924` (the host reader is under `kPilotSpeedCorrDivisorBound`, which is ON). With +2B0h = 0 and
 +2D8h = 1, the host raises `plane_speed_corr_2b8` on every not-head-on aim think. The image's aim does not.
