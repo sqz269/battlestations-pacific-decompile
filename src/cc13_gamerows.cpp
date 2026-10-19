@@ -398,13 +398,15 @@ void point3_ptr_array_insert_at_007b2850(GameRowsHost& host, void* array, std::u
     host.vector_insert_one_007b26f0(v, result, v, where, &value);      // 007B28AE
 }
 
-void point_list_last_point_007b0e60(GameRowsHost& host, const void* object, float* out) {
+float* point_list_last_point_007b0e60(GameRowsHost& host, const void* object, float* out) {
     const void* const vector = at<const void*>(object, 0x8);          // 007B0E61
     last_point(host, static_cast<const std::uint8_t*>(vector) + 0x4, out);
+    return out;                                                        // EAX = out, RET 4
 }
 
-void point3_vector_last_point_007b2b90(GameRowsHost& host, const void* object, float* out) {
+float* point3_vector_last_point_007b2b90(GameRowsHost& host, const void* object, float* out) {
     last_point(host, static_cast<const std::uint8_t*>(object) + 0xC, out);
+    return out;                                                        // EAX = out, RET 4
 }
 
 std::uint32_t air_ops_block_stock_node_for_class_006ca5d0(GameRowsHost& host, const void* block,

@@ -173,14 +173,14 @@ NativeDwordVector model in engine_seg11_35_66_cc13.cpp is a different, pool-back
 
 | Rows | What |
 |---|---|
-| 0086A280, 0086AA10, 0086B630, 00872E70, 0086A910, 0086A950, 0086AAA0, 0086AE90 | the signed dword vector {data, count, capacity}: reserve, zero-fill resize, destroy, at, and four push_back copies (each with its own reserve) |
+| 0086A280, 0086AA10, 0086B630, 00872E70, 0086A910, 0086A950, 0086AAA0, 0086AE90 | the signed dword vector {data, count, capacity}: reserve, zero-fill resize, destroy, at, and four push_back copies (each with its own reserve). The cc13_mistag.hpp hooks for 0086AA10 / 0086A280 now take a signed n to match |
 | 0086A990, 0086AAE0, 0086AED0 | the signed 8-byte (float pair) vector: push_back, clear, destroy |
 | 00865E90, 008661B0, 00866690 | the unsigned pointer vector: reserve, grow (2c + 2), push_back |
 | 0072A3B0, 0072B6D0 | the 14h-byte element vector (element vtable 00CFDC0C): reserve, resize |
 | 0072A6D0 | the unsigned 12-byte vector push_back |
 | 0086B290 | a NativeString's storage returned to the sized pool (+8h length, +0Ch data) |
 | 007B21A0, 007B1B40, 007B2850 | Point3PtrArray virtuals over its std::vector<Point3*> at +4h: clear, erase at, insert at |
-| 007B0E60, 007B2B90 | virtuals returning the last 12-byte point of a vector (via [+8h], or the object's own at +0Ch); renamed `BSP_PointList_LastPoint_007b0e60` and `BSP_Point3Vector_LastPoint_007b2b90` |
+| 007B0E60, 007B2B90 | virtuals copying the last 12-byte point of a vector to out (via [+8h], or the object's own at +0Ch) and returning out in EAX (RET 4); renamed `BSP_PointList_LastPoint_007b0e60` and `BSP_Point3Vector_LastPoint_007b2b90` |
 | 006CA5D0 | AirOpsBlock virtual: the n-th node of the list at +40h, EAX = node+0Ch |
 
 Notes on fidelity:
@@ -189,7 +189,8 @@ Notes on fidelity:
 - Where the binary carries on after the 00BF6713 report, the model does too and leaves the outcome
   to the host.
 - The shrink loops that step the count down one at a time (trivial destructors) are kept.
-- The FLD/FSTP float copies (0082DF00, 0086A990, 007B2850, 007B0E60, 007B2B90) go through
+- The image's x87 FLD/FSTP float copies quiet a signalling NaN, and a host float copy (MOVSS)
+  does not. The copies here (0082DF00, 0086A990, 007B2850, 007B0E60, 007B2B90) go through
   fld_fstp, a uint32 copy that sets the quiet bit of a signalling NaN as the x87 load does; a
   plain float assignment compiles to MOVSS and would not.
 
