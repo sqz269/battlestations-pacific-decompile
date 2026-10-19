@@ -16,7 +16,15 @@ namespace bsp {
 // the same point as the unit walk. A land hit refuses the target, and the answer
 // is cached per (gun, target) for the gun's life (0072F6E0), so an ON land
 // refusal persists.
-inline constexpr bool kLineOfFireLandFromMuzzleBound = false;
+// ON (cc9-gunnery53) by mechanism. 0072CDF1 MOV EBX,[ESP+28h] and 0072CE8E PUSH EBX
+// were read from the bytes. Pairs on aa5aaab54, reference env, 30000 frames
+// (SHIP_AI_OPEN_ITEMS 300.3):
+//   - JM08: 34 blocks either way, gameplay identical.
+//   - USN07: no queries.
+//   - USN13: blocks 420 -> 426. The first moved death is a plane at 415 s; the last
+//     player plane dies at 655.76 s instead of 832.57 s, so "Game Over" comes at
+//     659.96 s instead of 834.92 s.
+inline constexpr bool kLineOfFireLandFromMuzzleBound = true;
 
 // 009C7F00, the dive-bomb goaway completion test. The image stores three values
 // to float: the term (+20h * 0.9 qword [00D7A390]) at 009C7F16, the reload arm's
