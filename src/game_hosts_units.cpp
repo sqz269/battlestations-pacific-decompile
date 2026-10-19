@@ -56,6 +56,7 @@
 #include "bsp/torpedo_goaway_tick.hpp"
 #include "bsp/plane_fly_to_solver.hpp"
 #include "bsp/cc13_seg68.hpp"
+#include "bsp/cc13_seg67n_switches.hpp"   // packet cc13-seg67n3 (009FAAD0 per install)
 #include "bsp/torpedo_approach_update.hpp"
 #include "bsp/torpedo_first_release.hpp"
 #include "bsp/torpedo_issue_timing.hpp"
@@ -6557,7 +6558,29 @@ struct GameUnitsHost::Impl {
     // attackrun 009A70E0 +1Ch (no host countdown field; the latter is unreachable).
     static constexpr bool kBotTaskCtorSeedsBound = true;
     unsigned long long bot_task_ctor_seeds{0};
+    // Packet cc13-seg67n3 (docs/CC13_SEG67N.md, include/bsp/cc13_seg67n_switches.hpp).
+    // 0099C790 / 0099C950: every task constructor builds a fresh gun block at task+314h
+    // with 009FAAD0; this host keeps one per unit (df_gun and its sibling fields).
+    // ON: the modelled fields take 009FAAD0's stores, in its order. The reset draws
+    // nothing, so its place between the +308h and +3E8h draws does not matter here.
+    unsigned long long task_gun_block_resets{0};
+    void task_gun_block_construct_009faad0(GameUnitSlot& unit) {
+        if constexpr (bsp::kTaskGunBlockReconstructBound) {
+            ++task_gun_block_resets;
+            unit.st_gun_point_armed_28 = false;     // 009FAB14: +28h = -1.0 (00D7A260)
+            unit.df_gun.fire_48 = false;            // 009FAB1C: byte +48h = 0
+            unit.df_gun.burst_4b = false;           // 009FAB22: byte +4Bh = 0
+            unit.gun_target_74_plus_one = 0;        // 009FAB25: +74h = 0
+            unit.gun_cone_40 = 0.0f;                // 009FAB41: +40h = 0.0
+            unit.df_gun.hold_4c = 0.0f;             // 009FAB4B: +4Ch = 0.0
+            if constexpr (bsp::kTaskGunBlockBurstTimerResetBound)
+                unit.df_gun.burst_timer_50 = 0.0f;  // 009FAB50: +50h = 0.0
+        } else {
+            (void)unit;
+        }
+    }
     void bot_task_ctor_seeds_0099c6f0(GameUnitSlot& unit, bool follow_state) {
+        task_gun_block_construct_009faad0(unit);    // 0099C790
         if constexpr (kBotTaskCtorSeedsBound) {
             ++bot_task_ctor_seeds;
             const std::string& n = unit.row.name;

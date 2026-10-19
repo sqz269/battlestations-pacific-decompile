@@ -188,6 +188,86 @@ LIVE? yes, after a release in a follow state. For moveto/attackmove this means a
 or end (17869, 17904, 14957). The other follow-state tasks (depthcharge, dropkamikaze, kamikaze,
 land, levelbomb, all of which build `009C2980`) behave the same way. RNG? not directly.
 
+#### The switches (kTaskGunBlockReconstructBound, kTaskGunBlockBurstTimerResetBound)
+
+Both live in include/bsp/cc13_seg67n_switches.hpp and both are OFF.
+
+Census of the image:
+
+- Every bot task is built through 0099C6F0, or 0099C8B0 from a stream. Both call `009FAAD0` on
+  task+314h (`0099C790`, `0099C950`).
+- A rel32 byte scan finds 22 call sites to `0099C6F0` and 13 to `0099C8B0`. They cover
+  closetoship, depthcharge, divebomb, dogfight, dropkamikaze, flikflak, gainaltitude, immelmann,
+  kamikaze, land, leavealone, levelbomb, moveonpath, moveto (and attackmove via `009C3000`),
+  pullup, retreat, rocket, splitS, stop, strafe, torpedo, takeoff and conditioned.
+- No task kind keeps the old block.
+
+In the host, every install calls `bot_task_ctor_seeds_0099c6f0`, cc9's `0099C6F0` hook. The
+install sites are:
+
+| task | install line |
+| --- | --- |
+| retreat | 9686 |
+| land | 14275 |
+| takeoff | 16162, 16203 |
+| dogfight | 25017 |
+| strafe | 25509 |
+| levelbomb | 26298 |
+| kamikaze | 27709 |
+| dropkamikaze | 28038 |
+| depthcharge | 28420 |
+| divebomb | 28467 |
+| torpedo | 30606 |
+| moveto | 32995 |
+| moveonpath | 36594 |
+
+Line numbers are from before this packet. Each site sits behind its `!installed` guard or inside
+an install function.
+
+`task_gun_block_construct_009faad0`, called first in that hook, re-runs `009FAAD0`'s stores on the
+modelled fields in the image's order:
+
+| image store | host field | value |
+| --- | --- | --- |
+| +28h = -1.0 | `st_gun_point_armed_28` | false |
+| +48h | `fire_48` | 0 |
+| +4Bh | `burst_4b` | 0 |
+| +74h | `gun_target_74_plus_one` | 0 |
+| +40h | `gun_cone_40` | 0.0 |
+| +4Ch | `hold_4c` | 0.0 |
+| +50h | `burst_timer_50` | 0.0, under the sub-switch only |
+
+Not modelled, so not reset:
+
+- +0h.
+- The aim wander +4h..+Ch, with the `009FA620` reseed (stream-1 draws) and 0099C6F0's later
+  `009FAB60`.
+- +2Ch..+3Ch, which this host passes per tick as inputs.
+- +44h = 999999.0 and +49h.
+
+Lifetime: `df_gun` is a per-slot member (1155). It is used through `unit_` and passed by
+reference only into the call at the gun tick, so nothing holds a pointer across an install.
+
+Burst sub-switch:
+
+- In the image, the burst draw is `009FCED1` `00BD2F10` on ECX = 1 (shared stream 1), taken on
+  each +4Bh edge.
+- After `009FAAD0`, the new task's first draw comes on its first gun tick with +48h set
+  (`009FCEA8`): U(row+234h, row+238h).
+- The host's draw ("#dfgb", `kDogfightGunBurstDrawBound`) is the host's shared LCG by default, or
+  a private per-unit stream with `BSP_GUNNERY_RNG_STREAMS=1`. Neither is the image's stream 1.
+- With both switches ON, the count and order of burst draws match the image's rule on the ticks
+  where the host runs the gun tick.
+
+Turbo: dropped, LABELLED. In the image, the new task's start and first think (`0099AE7E`, then
+`0099AF1C`) come before the exit's clear at the next drain. A host clear at the release would come
+before the new task's first commit, which rewrites it (37514), so it does not reproduce the
+image's order. Both differences are bounded by one think.
+
+LIVE? yes (forced fire after a follow-state release). RNG? only through the burst sub-switch.
+OFF builds are identical. The ON arm was compile-checked with both switches ON (full build.ps1,
+then reverted).
+
 ## Batch C: maneuver ticks, the follow debug draw, the ship AI states
 
 | address | slot / vtable | C++ | notes |
