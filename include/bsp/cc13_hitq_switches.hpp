@@ -30,4 +30,17 @@ namespace bsp {
 
 inline constexpr bool kHitDeferredDispatchCc13Bound = false;
 
+// Packet cc13-hitq2 (cc9 request 2026-10-19). The host runs the fan-out (rows
+// 1..16, with the drains at 00875E44 and 00875EC4) BEFORE its motion step,
+// where the gunnery pass pushes, so with the switch above alone every push
+// waits for the next step's row 6. The image runs the job waves (00875CC0,
+// the gunnery pass a wave-2 sub-node) and then the fan-out (00875E0C), so its
+// row 6 drains the same step's pushes. ON, the mission frame runs one more
+// 00926700 drain right after the host's motion step and its trigger walk:
+// the point that follows the pushes as the image's row 6 does. ON-only; it
+// needs kHitDeferredDispatchCc13Bound. docs/CC13_HIT_DEFERRED_DISPATCH.md.
+inline constexpr bool kHitDeferredSameStepDrainCc13Bound = false;
+static_assert(!kHitDeferredSameStepDrainCc13Bound || kHitDeferredDispatchCc13Bound,
+    "kHitDeferredSameStepDrainCc13Bound drains the queue kHitDeferredDispatchCc13Bound fills");
+
 }  // namespace bsp
