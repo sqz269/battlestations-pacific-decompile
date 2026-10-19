@@ -37,8 +37,9 @@ wire1's correction. The switch is `kShipAiCruiseDistanceSeedBound` in
 **32Ch = 0 keeps the flip going through four readers.** These feed the escape its
 blocked/escape inputs:
 - **`009F0100`'s neighbour clear.** At `009F06D4..009F06EC` it compares a neighbour's distance
-  with 32Ch plus the neighbour record's `+48h`, and clears the ones beyond it. So no pass side is
-  ever posted. (`009F06D4 FLD [ESI+32Ch]` / `009F06DA FADD [EDI+48h]` were rechecked.)
+  with 32Ch + 100 and clears the ones beyond it, so no pass side is ever posted. The 100 is not a
+  constant in the code: it is the neighbour record's `[EDI+48h]` (`009F06D4 FLD [ESI+32Ch]`,
+  `009F06DA FADD [EDI+48h]`, rechecked). The record's writer was not read here.
 - **The arm-final query range.** It starts at `009DE61D` (`FLD [ESI+32Ch]`, rechecked); wire1
   traces it on to `009DE633` and the `009DC313` exit.
 - **The leader corridor cap** at `009DEEBF` (`FADD [ESI+32Ch]`, rechecked).
