@@ -355,7 +355,7 @@ struct SceneSpawnPoolEntry {
 // `Cruise` unit stands still. ON: the pool entry's carry is copied into the
 // spawn's record (create_units seeds the ring as 0082356C does at InitAll) and
 // the command is issued after the spawn's InitAll, as 0046AAB0 at 009453BB.
-inline constexpr bool kSceneHiddenSpawnCarryCc13Bound = false;
+inline constexpr bool kSceneHiddenSpawnCarryCc13Bound = true;  // ON: docs/SHIP_AI_OPEN_ITEMS.md 313 (USN21, BSM09 pairs)
 
 class SceneSpawnPool {
 public:

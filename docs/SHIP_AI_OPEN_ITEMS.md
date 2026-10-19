@@ -20372,3 +20372,30 @@ entity can move.
   or a follower whose follow is replaced by the leader's Cruise.
 Pair: OFF = tree build 172589750, ON = `local\g55_hc_on` (pair_export, same commit); USN21 64000, BSM09 36000, BSM04
 30000 frames, reference env (`g55_hcoff_*` / `g55_hcon_*`).
+
+**313.1 measured; FLIPPED ON by mechanism.** Reference env, plus USN21 in the default env.
+- **USN21 (s46_u21_f, 64000 frames).** OFF completes at 2881.69 s; ON has no end. carried=49, applied=commands=51 ON
+  (repeated GenerateObject calls re-apply, as the doc expects; default env 55). pair_diff exit 3.
+  - **As predicted:** at ship-AI step 5030, Intrepid goes from state=stop, throttle 0 to cruise (mode heading,
+    dir ahead, throttle 0.594, heading 1.597). Iowa, Franklin, NewOrleans and DD_10 go from follow at throttle 0 to
+    follow at 0.585 / 0.591 / 0.591 / 0.516. Enterprise, a second Cruise leader, goes to 0.598 on the same heading.
+  - **Consequence:** the unsteered groups cruise east into the Center Force. DD_10 dies at 1716.10 s, Enterprise at
+    1718.90 s (Kishinami torpedo), Franklin at 1847.53 s, NewOrleans at 1901.28 s, DD_11..15 by 1934.91 s.
+  - Intrepid and Iowa leave the map: `ship exit zone ... command=cruise ... Kill(4)`, KillReason=exitzone, at
+    2200.87 / 2220.94 s.
+  - The plan's controlled squadrons differ (Enterprise_sqn125 and others exist only OFF), so the plan's later lines
+    hit other units.
+  - Default env (`g55_hcoffd_u21` / `g55_hcond_u21`): the same pattern. OFF completes at 2831.64 s; ON has no end.
+    Enterprise dies at 1998.27 s (Musashi), Franklin at 2015.84 s, and Intrepid / Iowa exit the map at 2336.80 /
+    2356.87 s.
+  - **Mechanism holds:** each carried command reaches its own unit as authored, the followers keep their follow,
+    and the speeds come from StartSpeed. **The USN21 win is lost** and the row needs a re-plan that steers or stops the
+    carrier groups (sent to the lead).
+- **BSM09 (l68_b9_d1, 36000 frames).** carried=6, applied=commands=5. Gameplay identical (exit 1).
+  - The end table shows D3A Val 1-4 (all three members each) with command `Moveto` ON and none OFF, which is the
+    scene's authored `Moveto -> Lexington` for D3A Val 1..4. D3A Val II (SetTarget Yorktown) is not spawned in this run.
+  - Commands issued +5 (884 -> 889) and 0046AAB0 calls +5.
+  - The squadrons' positions and the death rows are identical, so the authored Moveto does not change their flight here.
+- **BSM04 (no orders, 30000 frames): unreached.** The idle run fails at 108.05 s, before the phase that calls
+  GenerateObject("Lexington") (bsm_04_vengance_at_luzon.lua:914); carried=11, applied=0. A BSM04 plan through
+  phase 1 is needed to see Lexington's Stop + StartSpeed 3.
