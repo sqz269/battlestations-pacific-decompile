@@ -89,6 +89,7 @@
 #include "bsp/kamikaze_task_cc13.hpp"   // packet cc9_lua52_kamikaze_wiring
 #include "bsp/kamikaze_task_host.hpp"
 #include "bsp/plane_land_chain_cc13.hpp"  // packet cc13-landc
+#include "bsp/frontier_wiring_cc13.hpp"  // packet cc13-frontier
 #include "bsp/depth_charge_task_cc13.hpp"
 #include "bsp/ordnance_kinds.hpp"
 
@@ -13136,8 +13137,17 @@ void GameUnitsHost::Impl::role_message_4b_00780162(std::size_t index, std::uint3
         }
     } else if ((mask & 1u) != 0 && u.current_roles_01ac[0] == player_slot) {
         u.role_player_0184 = false;                             // 00780235
-        // 0080E290 for a kind-6 unit follows (0078023B): not read, recorded.
-        record("RoleMessage::kind6_release_0080e290", 0x0080e290u);
+        // 0078023C vtable[5Ch](6), then 0080E290(unit) at 00780244 for a kind-6 unit.
+        // kHelmReleaseGunsToRestCc13Bound (packet cc13-frontier): the gunnery host's
+        // 0080E290 over this unit's guns. OFF: recorded, before the kind test as before.
+        if constexpr (bsp::kHelmReleaseGunsToRestCc13Bound) {
+            if (bsp::unit_is_kind_of(u.class_id, 6) && gunnery) {
+                gunnery->aim_unit_turning_guns_to_rest_0080e290(index);
+                done("RoleMessage::kind6_release_0080e290", 0x0080e290u);
+            }
+        } else {
+            record("RoleMessage::kind6_release_0080e290", 0x0080e290u);
+        }
     }
     std::uint32_t bit = 1;
     for (int i = 0; i < bsp::kUnitRoleTableEntries; ++i, bit <<= 1) {
