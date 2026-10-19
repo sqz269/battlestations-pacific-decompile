@@ -19,9 +19,17 @@ into the 26-slot task interface.
 ## Skipped
 
 - `009A7A40`: inside cc13-undef's leased range 009A76E0-009A7E7F.
-- `009E49F0`, `009E4CA0`, `009E50D0`, `009E6060`: the 009E ship-AI range under cc13-prop review
-  (packet brief). Each is a one-line `MOV EAX,00E08F78; RET` slot +24h of the ship-AI state
-  vtables 00D218F0, 00D21920, 00D2195C, 00D21994.
+
+The four 009E rows first skipped here (`009E49F0`, `009E4CA0`, `009E50D0`, `009E6060`) were not
+leased by cc13-prop (`lease list`, 2026-10-18) and are reconstructed in the follow-up below.
+
+## Follow-up: the 009E ship-AI command slots (reconstructed)
+
+`ship_ai_state_command_009e49f0` / `_009e4ca0` / `_009e50d0` / `_009e6060`
+(`BSP_ShipAiState218F0_Command` .. `BSP_ShipAiState21994_Command`): each is slot +24h of the
+ship-AI state vtables 00D218F0, 00D21920, 00D2195C, 00D21994, body `MOV EAX,00E08F78; RET`
+(the attackmove command object; same body as 009DB350/009DB5A0). Original ABI `__thiscall`,
+ECX unused, result in EAX. Uncertainty: which state each vtable is was not traced.
 
 ## Batch A: plane bot-task slots (reconstructed)
 
@@ -90,7 +98,7 @@ meaning is unread.
 ## Batch B: twins, hosted rows and compiler bodies (ledger-only)
 
 Twins of `009A2B90` (`close_to_ship_target_record_009a2b90`, src/cc13_seg67a.cpp), slot +0Ch,
-`__thiscall(ECX = task, out)`, RET 4, EAX = out. Each body is the same 53-byte sequence
+`__thiscall(ECX = task, out)`, RET 4, EAX = out. Each body is the same 55-byte sequence (`RET 4` at +34h; 009A2B90-009A2BC6)
 `MOV EAX,[ECX+3F8h]; MOV EAX,[EAX]; ADD ECX,3F8h; SUB ESP,0Ch; LEA EDX,[ESP]; PUSH EDX; CALL EAX`,
 then FLD/FSTP copies of the returned point into out+0/+4/+8 with byte out+0Ch = 1:
 `009A5F10` (depthcharge), `009AE990` (dropkamikaze), `009AF5D0` (kamikaze), `009B36F0` (land),
@@ -123,6 +131,142 @@ Slot +58h of moveto (00D20B68) and attackmove (00D20BE0): `009C32B8` calls
 `moveto_task_installed` clears, so the `009FD050(-1)` half is covered (LABELLED timing). The
 current state's exit at release is not modelled there. Not wired; LIVE in a normal mission
 whenever a plane's moveto or attackmove task is released. Shared RNG: not involved.
+
+The caller is `00999EE0` (drains the bot+64h retired list filled by `0099A660`;
+`00999EF7: mov eax,[edx+58h]; call eax`). Attackmove's constructor `009C3B10` calls the moveto
+constructor `009C3000`, so both tasks own the same three states, and only these can be current at
+release:
+
+| state (task offset) | vtable | exit (`+8h`) | what the exit does |
+| --- | --- | --- | --- |
+| moveto (+47Ch) | 00D20A80 | `007B3DC0` | bare `RET` |
+| circle (+52Ch) | 00D20A9C | `007B3DC0` | bare `RET` |
+| follow (+494h) | 00D20AB8 | `009BDE40` | `007B8A90(unit)` clears the turbo byte unit+9F9h; stores 0.0 to `[[state+4]+1Ch]+4Ch`, the gun hold timer |
+
+No exit issues an order or draws from `00BD2F10`. Only the follow exit has an effect.
+
+Where the exit's gun store lands. The follow state's +4 is the moveto approach: task+3F8h, with the
+follow state at approach+9Ch (`009C2E73`). Approach +4h is the unit (`009F9CEA`). Approach +1Ch is
+the retiring task's own gun block, task+314h: `009F9980`, called from `009C30CF`, stores it at
+`009F999D`. Right after slot +58h, `00999EE0` deletes the task (`00999F0B`, vtable+0 with flag 1).
+The exit's +4Ch = 0.0 therefore lands on a block that is freed a moment later.
+
+Every replacement task builds its own gun block: both base constructors call `009FAAD0` on
+task+314h (`0099C790`, `0099C950`), and +4Ch = 0.0 (`009FAB19` XORPS, `009FAB4B`).
+
+Order in the image:
+
+1. `0099A4C0` (bot tick, `0099AE7E`) moves the head to the retired list +64h.
+2. In the same tick, the new head's +54h start runs, then its update `009998A0` (gun tick
+   `00999979`) runs on the new block.
+3. At the next tick's drain (`0099ADA3`/`0099ADC2`), `00999EE0` runs `009C32A0`, which:
+   1. drops the leg via `009FD050(-1.0)`;
+   2. JMPs to the state exit;
+   3. returns to `00999EFC`, which deletes the task.
+
+Nothing frees or resets the state or approach+1Ch before the exit.
+
+Host (game_hosts_units.cpp): one `df_gun` per unit lives for the slot's life (1155), and no install
+re-runs `009FAAD0`. `follow_exit_009bde40` (6596) is reached only from the in-task state switch and
+the exit_follow override. The moveto/attackmove release sites (9655, 14247, 14957, 17720, 17869,
+17904) clear the state without it. All six are `0099A4C0` retires, so in the image each reaches
+`00999EE0` -> `009C32A0`.
+
+Visible difference after any task change:
+
+- `df_gun.hold_4c` keeps the follow sight's 2.0 (9487, `009C232A`). The image's new task starts
+  at 0.0.
+- In the gun tick, a hold above 0 forces the envelope: `009FCC33` JA -> `009FCC9E` BL = 1, which
+  skips the range and cone tests. `009FCCB4` (units.cpp:24330) skips only the fine-aim
+  correction, and the path then fires at `009FCDB4` (host dogfight_task.cpp:286-296).
+- So a stale hold makes the next task's guns FIRE without aim correction whenever a target is in
+  the gun range. This lasts up to 2.0 s, decayed by dt (`009FC7D0`; dogfight_task.cpp:272).
+- `plane_turbo_9f9` is transient: the next pilot commit rewrites it from `plan_turbo_2e5`
+  (37514), and `0099B572` resets that value every think (37113).
+
+LIVE? yes, after a release in a follow state. For moveto/attackmove this means a wingman's override
+or end (17869, 17904, 14957). The other follow-state tasks (depthcharge, dropkamikaze, kamikaze,
+land, levelbomb, all of which build `009C2980`) behave the same way. RNG? not directly.
+
+#### The switches (kTaskGunBlockReconstructBound, kTaskGunBlockBurstTimerResetBound)
+
+Both live in include/bsp/cc13_seg67n_switches.hpp and both are OFF.
+
+Census of the image:
+
+- Every bot task is built through 0099C6F0, or 0099C8B0 from a stream. Both call `009FAAD0` on
+  task+314h (`0099C790`, `0099C950`).
+- A rel32 byte scan finds 22 call sites to `0099C6F0` and 13 to `0099C8B0`. They cover
+  closetoship, depthcharge, divebomb, dogfight, dropkamikaze, flikflak, gainaltitude, immelmann,
+  kamikaze, land, leavealone, levelbomb, moveonpath, moveto (and attackmove via `009C3000`),
+  pullup, retreat, rocket, splitS, stop, strafe, torpedo, takeoff and conditioned.
+- No task kind keeps the old block.
+
+In the host, every install calls `bot_task_ctor_seeds_0099c6f0`, cc9's `0099C6F0` hook. The
+install sites are:
+
+| task | install line |
+| --- | --- |
+| retreat | 9686 |
+| land | 14275 |
+| takeoff | 16162, 16203 |
+| dogfight | 25017 |
+| strafe | 25509 |
+| levelbomb | 26298 |
+| kamikaze | 27709 |
+| dropkamikaze | 28038 |
+| depthcharge | 28420 |
+| divebomb | 28467 |
+| torpedo | 30606 |
+| moveto | 32995 |
+| moveonpath | 36594 |
+
+Line numbers are from before this packet. Each site sits behind its `!installed` guard or inside
+an install function.
+
+`task_gun_block_construct_009faad0`, called first in that hook, re-runs `009FAAD0`'s stores on the
+modelled fields in the image's order:
+
+| image store | host field | value |
+| --- | --- | --- |
+| +28h = -1.0 | `st_gun_point_armed_28` | false |
+| +48h | `fire_48` | 0 |
+| +4Bh | `burst_4b` | 0 |
+| +74h | `gun_target_74_plus_one` | 0 |
+| +40h | `gun_cone_40` | 0.0 |
+| +4Ch | `hold_4c` | 0.0 |
+| +50h | `burst_timer_50` | 0.0, under the sub-switch only |
+
+Not modelled, so not reset:
+
+- +0h.
+- The aim wander +4h..+Ch, with the `009FA620` reseed (stream-1 draws) and 0099C6F0's later
+  `009FAB60`.
+- +2Ch..+3Ch, which this host passes per tick as inputs.
+- +44h = 999999.0 and +49h.
+
+Lifetime: `df_gun` is a per-slot member (1155). It is used through `unit_` and passed by
+reference only into the call at the gun tick, so nothing holds a pointer across an install.
+
+Burst sub-switch:
+
+- In the image, the burst draw is `009FCED1` `00BD2F10` on ECX = 1 (shared stream 1), taken on
+  each +4Bh edge.
+- After `009FAAD0`, the new task's first draw comes on its first gun tick with +48h set
+  (`009FCEA8`): U(row+234h, row+238h).
+- The host's draw ("#dfgb", `kDogfightGunBurstDrawBound`) is the host's shared LCG by default, or
+  a private per-unit stream with `BSP_GUNNERY_RNG_STREAMS=1`. Neither is the image's stream 1.
+- With both switches ON, the count and order of burst draws match the image's rule on the ticks
+  where the host runs the gun tick.
+
+Turbo: dropped, LABELLED. In the image, the new task's start and first think (`0099AE7E`, then
+`0099AF1C`) come before the exit's clear at the next drain. A host clear at the release would come
+before the new task's first commit, which rewrites it (37514), so it does not reproduce the
+image's order. Both differences are bounded by one think.
+
+LIVE? yes (forced fire after a follow-state release). RNG? only through the burst sub-switch.
+OFF builds are identical. The ON arm was compile-checked with both switches ON (full build.ps1,
+then reverted).
 
 ## Batch C: maneuver ticks, the follow debug draw, the ship AI states
 
@@ -160,9 +304,35 @@ The immelmann tick (009B9AF0), the split s tick (009B9CA0), and the batch-A swee
 
 `bot_task_barrel_roll_tick_009b9740` and `bot_task_gain_altitude_tick_009ba2f0`
 (src/cc13_seg67b.cpp) write `task+2E4h &= 0xFFFFFFFBu`. The image's bytes at `009B9752` and
-`009BA300` are also `81 A6 E4 02 00 00 FB 00 00 00`, so they must be `&= 0xFBu`. That is a REAL
-defect if any upper bit of avoidFlags is ever set. It is reported to the lead and not changed here,
-because seg67b belongs to another packet.
+`009BA300` are also `81 A6 E4 02 00 00 FB 00 00 00`, so they must be `&= 0xFBu`.
+
+FIXED in the follow-up commit (both ticks now `&= 0xFBu`; ledger evidence carries the
+correction). Every image clear of +2E4h uses that imm32 form: 009B9752, 009B9C86, 009B9D2D,
+009B9D69, 009B9E29, 009BA1CB, 009BA300. No host file applies a mask to +2E4h; the only mention is
+the comment at game_hosts_units.cpp:25720 ("009BA1C8's +2E4h &= ~4 is not modelled").
+
+Does it matter? No: it is fidelity-only, with no gameplay effect.
+
+The proof is the per-tick reset. Every think, `009998A0` stores the whole dword just before the
+task arm `CALL [vt+64h]`:
+
+- `009998F1`: `MOV dword [ESI+2E4h], 0`, then `009998FB` CALL.
+- `00999950`: `MOV dword [ESI+2E4h], 0FFh`, then `0099995A` CALL.
+
+So bits 8-31 are zero whenever an arm runs, whatever a load or an earlier tick left there.
+
+Census (task classes only, instruction-level `+ 0x2e4]` operands):
+
+- Other dword stores of 0/0FFh: 009A1A08, 009CD1D8, 007B7CA8.
+- Byte stores: 0099B3F4, 0099B56C, 009A4F14, 009A513D.
+- Copies of approach fields holding 0FFh/1/3: 009A6750, 009AB20A, 009AE92D, 009AF550, 009B3F41,
+  009B8BDD, 009C885B, 009CFDBA, 009D4905.
+- Readers are byte reads (0099BF18, 009A18BA, 009A1951, 009A1974). The only dword reader is the
+  save at 0099D060; the load passes the address at 0099C9B1.
+- A different layout, excluded: 009B774C, 009B7764, 009B7906 and 009B791E access +2E4h of the
+  level-bomb approach subobject's owner pointer inside 009B75E0, not a task's avoidFlags.
+
+Not censused: REP MOVSD whole-task copies, which xref only a base.
 
 ### Uncertainties (batch C)
 

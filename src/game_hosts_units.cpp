@@ -42,6 +42,7 @@
 #include "bsp/plane_control_rate.hpp"
 #include "bsp/pilot_plan_slots.hpp"
 #include "bsp/dogfight_task.hpp"
+#include "bsp/cc13_fire_envelope.hpp"           // packet cc13-fire (009FC7C0's envelope)
 #include "bsp/dogfight_ver_cc13.hpp"
 #include "bsp/near_field_probe.hpp"
 #include "bsp/camera_position_modes.hpp"
@@ -56,6 +57,7 @@
 #include "bsp/torpedo_goaway_tick.hpp"
 #include "bsp/plane_fly_to_solver.hpp"
 #include "bsp/cc13_seg68.hpp"
+#include "bsp/cc13_seg67n_switches.hpp"   // packet cc13-seg67n3 (009FAAD0 per install)
 #include "bsp/torpedo_approach_update.hpp"
 #include "bsp/torpedo_first_release.hpp"
 #include "bsp/torpedo_issue_timing.hpp"
@@ -79,6 +81,7 @@
 #include "bsp/strike_approach_ver_cc13.hpp"  // packet cc9_l57_ctl_cruise_cap
 #include "bsp/kamikaze_task_cc13.hpp"   // packet cc9_lua52_kamikaze_wiring
 #include "bsp/kamikaze_task_host.hpp"
+#include "bsp/plane_land_chain_cc13.hpp"  // packet cc13-landc
 #include "bsp/depth_charge_task_cc13.hpp"
 #include "bsp/ordnance_kinds.hpp"
 
@@ -1183,6 +1186,10 @@ struct GameUnitSlot {
     float nb_clock_80{1.5f};
     bool nb_busy_c8{false};
     int ff_busy_ticks{0}, ff_checks{0};
+    // Packet cc13-fire (docs/CC13_FIRE_ENVELOPE.md), census under
+    // kDogfightFireEnvelopeBound: 007BA760 blocks on an envelope tick, re-aims
+    // (009FCDFC), hold-ahead points (E) and PC24/53-bit envelope disagreements.
+    int fe_blocked_ticks{0}, fe_reaims{0}, fe_hold_ahead_ticks{0}, fe_pc53_disagree_ticks{0};
     // 009FA248: plan+2D4h = 0 from the fine aim 009F9FC0. 0099E756 then skips
     // the planner's yaw arm 0099E81A. Reset by the planner, as 0099B450 seeds 1.
     bool gl_yaw_mode_2d4_zero{false};
@@ -3087,6 +3094,29 @@ struct GameUnitsHost::Impl {
     unsigned long long stock_return_sends{0}, stock_return_adds{0}, stock_return_no_deck{0};
     unsigned long long stock_return_no_squadron{0}, stock_return_slot_returns{0};
     unsigned long long stock_return_site_leaves{0}, stock_return_destroys{0};
+    // Packet cc13-landc.
+    unsigned long long flight_state_notifies{0}, stock_return_destroy_draws{0};
+    unsigned long long combat_death_destroy_draws{0};
+    unsigned long long ground_state_dead_tail_skips{0};
+    // planepartclasses.lua DeadEngineFireDelay, which 004A9BD0 stores at
+    // [00E18718] / [00E18714] (004AA9BD / 004AAA57); read once per host.
+    bool dead_engine_fire_delay_read{false};
+    float dead_engine_fire_delay[2]{3.0f, 5.0f};
+    // The destroy flush's vtable[7Ch] for a plane is 007BCAA0 (00D19D28+7Ch);
+    // its first act is 00BD2F10(ECX = 0, [00E18718], [00E18714]) at 007BCABB,
+    // stored at +C14h (no host field: nothing the host runs reads it). Takes
+    // that stream-0 draw through the gunnery host; false without one.
+    bool plane_on_destroyed_draw_007bcabb(std::size_t index) {
+        if (gunnery == nullptr) return false;
+        if (!dead_engine_fire_delay_read) {
+            dead_engine_fire_delay_read = true;
+            lua.read_global_number_pair("DeadEngineFireDelay", dead_engine_fire_delay[0],
+                dead_engine_fire_delay[1]);
+        }
+        gunnery->death_mode_draw_00bd2f10(0, index, dead_engine_fire_delay[0],
+            dead_engine_fire_delay[1]);
+        return true;
+    }
     unsigned long long stock_return_queue_erases{0}, stock_return_queue_misses{0};
     unsigned long long squadron_kill_queue_kills{0}, squadron_kill_queue_erases{0};
     unsigned long long land_retire_leader_calls{0}, land_retire_queue_erases{0};
@@ -6369,6 +6399,9 @@ struct GameUnitsHost::Impl {
     }
     void wing_fold_class_007eabc0(GameUnitSlot& u);
     void wing_fold_notify_007c11e0(GameUnitSlot& u);
+    // Packet cc13-landc (kPlaneFlightStateNotifyCc13Bound): 007C11E0(0) itself,
+    // at the transition sites that call it, on the state already stored.
+    void flight_state_notify_007c11e0(GameUnitSlot& p);
     bool wing_fold_site_holds_006cffc0(const GameUnitSlot& u) const;
     // Packet cc9_plane_touchdown (docs/SQUADRON_LAND_TASK.md section 5k): the
     // free-flight arm's site probe 007C5AC0 (006C0840 with its key, 007B8E80,
@@ -6580,7 +6613,29 @@ struct GameUnitsHost::Impl {
     // attackrun 009A70E0 +1Ch (no host countdown field; the latter is unreachable).
     static constexpr bool kBotTaskCtorSeedsBound = true;
     unsigned long long bot_task_ctor_seeds{0};
+    // Packet cc13-seg67n3 (docs/CC13_SEG67N.md, include/bsp/cc13_seg67n_switches.hpp).
+    // 0099C790 / 0099C950: every task constructor builds a fresh gun block at task+314h
+    // with 009FAAD0; this host keeps one per unit (df_gun and its sibling fields).
+    // ON: the modelled fields take 009FAAD0's stores, in its order. The reset draws
+    // nothing, so its place between the +308h and +3E8h draws does not matter here.
+    unsigned long long task_gun_block_resets{0};
+    void task_gun_block_construct_009faad0(GameUnitSlot& unit) {
+        if constexpr (bsp::kTaskGunBlockReconstructBound) {
+            ++task_gun_block_resets;
+            unit.st_gun_point_armed_28 = false;     // 009FAB14: +28h = -1.0 (00D7A260)
+            unit.df_gun.fire_48 = false;            // 009FAB1C: byte +48h = 0
+            unit.df_gun.burst_4b = false;           // 009FAB22: byte +4Bh = 0
+            unit.gun_target_74_plus_one = 0;        // 009FAB25: +74h = 0
+            unit.gun_cone_40 = 0.0f;                // 009FAB41: +40h = 0.0
+            unit.df_gun.hold_4c = 0.0f;             // 009FAB4B: +4Ch = 0.0
+            if constexpr (bsp::kTaskGunBlockBurstTimerResetBound)
+                unit.df_gun.burst_timer_50 = 0.0f;  // 009FAB50: +50h = 0.0
+        } else {
+            (void)unit;
+        }
+    }
     void bot_task_ctor_seeds_0099c6f0(GameUnitSlot& unit, bool follow_state) {
+        task_gun_block_construct_009faad0(unit);    // 0099C790
         if constexpr (kBotTaskCtorSeedsBound) {
             ++bot_task_ctor_seeds;
             const std::string& n = unit.row.name;
@@ -8659,6 +8714,8 @@ struct GameUnitsHost::Impl {
     }
     void vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt);
     bool friendly_in_line_007b96d0(GameUnitSlot& u, float dt);
+    void friendly_in_line_clock_007e2010(GameUnitSlot& u, float dt);
+    bool friendly_in_line_eval_007dedb0(GameUnitSlot& u);
     void terrain_avoidance_0099f1c0(GameUnitSlot& u, float dt);
     void terrain_avoidance_water_009a1420(GameUnitSlot& u);
     float avoid_surface_height(float x, float z);
@@ -12893,7 +12950,15 @@ void GameUnitsHost::Impl::player_helm_issue_0064b870(GameUnitSlot& slot) {
 // sets +C8h. The +80h clock advances by dt in 007E2010. Its start
 // U(0, 1) + 1.0 is taken at its midpoint 1.5, and the +70h list refresh runs
 // on its own copy of the 3 s +7Ch clock at the think interval. Labelled.
+// Packet cc13-fire: 009FC7C0 calls 007B96D0 only on envelope ticks, while
+// 007E2010 runs every update, so the two halves are split; this keeps the
+// old order for the callers that take both at once.
 bool GameUnitsHost::Impl::friendly_in_line_007b96d0(GameUnitSlot& u, float dt) {
+    friendly_in_line_clock_007e2010(u, dt);
+    return friendly_in_line_eval_007dedb0(u);
+}
+
+void GameUnitsHost::Impl::friendly_in_line_clock_007e2010(GameUnitSlot& u, float dt) {
     const bsp::PlaneNeighbourRadii radii = bsp::plane_neighbour_radii_007e11d0(3.0f);
     const float* p0 = u.world.data() + 12;
     auto dist2 = [&](const GameUnitSlot& o) {
@@ -12934,6 +12999,9 @@ bool GameUnitsHost::Impl::friendly_in_line_007b96d0(GameUnitSlot& u, float dt) {
         u.nb_clock_70 -= 3.0f;
     }
     u.nb_clock_80 += dt;                                             // 007E2010
+}
+
+bool GameUnitsHost::Impl::friendly_in_line_eval_007dedb0(GameUnitSlot& u) {
     if (u.nb_clock_80 <= 1.0f) return u.nb_busy_c8;                  // 007DEDC4
     u.nb_busy_c8 = false;
     u.nb_clock_80 -= 1.0f;
@@ -15263,7 +15331,8 @@ bool GameUnitsHost::Impl::landing_spot_clear_006cf5b0(const LandingDeck& d,
 
 // 007C16F0 / 007C1680: 4 -> 5 and 5 -> 4, +C04h = -1.0, and with classDesc+198h
 // non-zero +904h = +908h > 5.0 and +C18h = 3. 007C11E0(0) (the actuator targets)
-// and 007C16F0's 0090F6C0 scoring arm are not carried.
+// is carried at 007C1680 under kPlaneFlightStateNotifyCc13Bound; 007C16F0's
+// 0090F6C0 scoring arm is not carried.
 void GameUnitsHost::Impl::plane_four_to_five_007c16f0(GameUnitSlot& p) {
     if (p.plane_control_mode_900 != 4) return;
     p.plane_control_mode_900 = 5;
@@ -15283,7 +15352,12 @@ void GameUnitsHost::Impl::plane_five_to_four_007c1680(GameUnitSlot& p) {
         p.plane_landed_904 = p.plane_airborne_908 > 5.0f;
         p.plane_c18 = 3;
     }
-    record("Plane::five_to_four_007c1680", 0x007c1680u);
+    if constexpr (bsp::kPlaneFlightStateNotifyCc13Bound) {
+        flight_state_notify_007c11e0(p);                                // 007C16EA
+        done("Plane::five_to_four_007c1680", 0x007c1680u);
+    } else {
+        record("Plane::five_to_four_007c1680", 0x007c1680u);
+    }
 }
 
 // Diagnostic only (packet cc9_landing_follower_spacing): the first free-flight
@@ -15416,6 +15490,9 @@ bool GameUnitsHost::Impl::plane_touchdown_007cc440(GameUnitSlot& p) {
     p.plane_site_timer_c04 = -1.0f;
     p.plane_landed_904 = airborne > 5.0f;                            // 00CE3850
     p.plane_c18 = 3;
+    if constexpr (bsp::kPlaneFlightStateNotifyCc13Bound) {
+        flight_state_notify_007c11e0(p);                             // 007CB733
+    }
     if (std::find(d.site_occupants_34.begin(), d.site_occupants_34.end(), p.process_index)
         == d.site_occupants_34.end()) {
         d.site_occupants_34.push_back(p.process_index);              // 006CED90
@@ -15697,6 +15774,59 @@ void GameUnitsHost::Impl::wing_fold_notify_007c11e0(GameUnitSlot& u) {
     wing_target_007b8dc0(u.actuator_block_dec, spread);
 }
 
+// Packet cc13-landc (kPlaneFlightStateNotifyCc13Bound, bsp/plane_land_chain_cc13.hpp):
+// 007C11E0(0) on the state the caller has just stored. 007EABC0 runs at the
+// plane's construction in the image, so the class read the poll makes lazily is
+// made first here, or it would later reset the targets this writes.
+// SUBSTITUTIONS, labelled (the same as the state-one copy this replaces): the
+// controller's +3Ch..+50h and 007D9C80 are the host's three velocity fields
+// zeroed (00F87574 taken as the zero vector); 007DDEA0 and 007EB380(0.0f) (the
+// +C98h sub-block's timer and effects) are recorded; +C0Ch has no host field
+// (007BB9A0's gate derives it from +900h); 007BC550 takes the Lua self +4A4h as
+// set, as the state-one copy does, and 00779C60(1.0f) is recorded.
+void GameUnitsHost::Impl::flight_state_notify_007c11e0(GameUnitSlot& p) {
+    if (!p.wing_fold_read) wing_fold_class_007eabc0(p);
+    ++flight_state_notifies;
+    const std::int32_t s = p.plane_control_mode_900;
+    // 007C11E9-007C1208 (COMISS / JC: a NaN +908h takes a = 0).
+    const bool a = !(s == 6 || (s == 7 && !(5.0f >= p.plane_airborne_908)));
+    const bool b = s == 7 || s == 6 || s == 4 || s == 5;               // 007C120A-007C1223
+    bsp::PlaneActuatorBlock& block = p.actuator_block_dec;
+    if (block.channel_b.target != a) {                                 // 007C12E6, +29h
+        block.channel_b.target = a;
+        block.channel_b.moving = true;
+    }
+    if (block.channel_b.moving) block.moving_any = true;               // 007C12F8, +11h
+    if (block.channel_a.target != b) {                                 // 007C1302, +45h
+        block.channel_a.target = b;
+        block.channel_a.moving = true;
+    }
+    if (block.channel_a.moving) block.moving_any = true;               // 007C1314
+    if (p.wing_notified_state_900 >= 0) p.wing_notified_state_900 = s;
+    if (s != 7 && s != 6 && s != 4 && s != 5 && s != 3) {              // 007C1318-007C1345
+        p.plane_live_throttle = 0.0f;                                  // 007C134E, +9F0h
+        for (int i = 0; i < 3; ++i) {                                  // 007C1356-007C13AB
+            p.plane_world_velocity[i] = 0.0f;
+            p.plane_body_angular[i] = 0.0f;
+        }
+        p.motion.linear_velocity = bsp::OceanVec3{0.0f, 0.0f, 0.0f};
+        record("PlaneFx::reset_timer40_007ddea0", 0x007ddea0u);
+        record("PlaneFx::step_007eb380", 0x007eb380u);
+    }
+    const bool active = p.state != nullptr ? p.state->active != 0 : p.row.active;
+    if (s == 1 || s == 0) {                                            // 007C1412 -> 007BC550
+        if (p.state != nullptr) p.state->active = 0;                   // 00922F80(0)
+        p.row.active = false;
+        p.plane_hit_node_detached = true;                              // 00951F40(0)
+    } else if (!active) {                                              // 007C141B, +5Ch clear
+        if (p.state != nullptr) p.state->active = 1;                   // 00922F30(0)
+        p.row.active = true;
+        p.plane_hit_node_detached = false;                             // 00951F40(1)
+        record("Unit::fade_00779c60", 0x00779c60u);
+    }
+    done("Plane::flight_state_notify_007c11e0", 0x007c11e0u);
+}
+
 // 007CC16C-007CC186: (+BF4h)->+4h->+3Ch vtable[38h](unit). A carrier's site is
 // the elevator site (vtable 00CF8A58, slot 006CFFC0: 20.0f (00CE3930) >
 // 006CFE90, the nose's distance to the lift, FCOMI so a NaN answers false);
@@ -15761,15 +15891,21 @@ void GameUnitsHost::Impl::carrier_elevator_release_006fc250(LandingDeck& d) {
 
 // 007CC7A0 BSP_Plane_EnterFlightStateTwo, reached from 007C2090's C3h message
 // (single player: game+1FE4h is not 2, so no 007C78A0): +9F0h = 0; when +900h
-// is not 2, +900h = 2, +C04h = -1.0 and 007C11E0(0) (not carried, as at the
-// 4 <-> 5 transitions); game+193Ch is not modelled.
+// is not 2, +900h = 2, +C04h = -1.0 and 007C11E0(0) (carried under
+// kPlaneFlightStateNotifyCc13Bound, which enables the parked plane);
+// game+193Ch is not modelled.
 void GameUnitsHost::Impl::plane_enter_state_two_007cc7a0(GameUnitSlot& p) {
     p.plane_live_throttle = 0.0f;
     if (p.plane_control_mode_900 == 2) return;
     p.plane_control_mode_900 = 2;
     p.plane_site_timer_c04 = -1.0f;
     ++carrier_elevator_state_two;
-    record("Plane::enter_state_two_007cc7a0", 0x007cc7a0u);
+    if constexpr (bsp::kPlaneFlightStateNotifyCc13Bound) {
+        flight_state_notify_007c11e0(p);                                // 007CC7F4
+        done("Plane::enter_state_two_007cc7a0", 0x007cc7a0u);
+    } else {
+        record("Plane::enter_state_two_007cc7a0", 0x007cc7a0u);
+    }
 }
 
 // 007C2130 BSP_Plane_RequestFlightStateOne (007C2130-007C21C3, __thiscall(plane),
@@ -15803,17 +15939,21 @@ void GameUnitsHost::Impl::plane_enter_state_one_007cc820(GameUnitSlot& p,
     p.plane_control_mode_900 = 1;                                     // 007CC857
     p.plane_site_timer_c04 = -1.0f;                                   // 007CC861
     p.plane_airborne_908 = 0.0f;
-    // 007C11E0(0), state 1: +9F0h = 0 and the velocities zeroed.
-    p.plane_live_throttle = 0.0f;
-    for (int i = 0; i < 3; ++i) {
-        p.plane_world_velocity[i] = 0.0f;
-        p.plane_body_angular[i] = 0.0f;
+    if constexpr (bsp::kPlaneFlightStateNotifyCc13Bound) {
+        flight_state_notify_007c11e0(p);                                // 007CC869
+    } else {
+        // 007C11E0(0), state 1: +9F0h = 0 and the velocities zeroed.
+        p.plane_live_throttle = 0.0f;
+        for (int i = 0; i < 3; ++i) {
+            p.plane_world_velocity[i] = 0.0f;
+            p.plane_body_angular[i] = 0.0f;
+        }
+        p.motion.linear_velocity = bsp::OceanVec3{0.0f, 0.0f, 0.0f};
+        // 007BC550: 00922F80 (+5Ch = 0) and 00951F40(0).
+        if (p.state != nullptr) p.state->active = 0;
+        p.row.active = false;
+        p.plane_hit_node_detached = true;
     }
-    p.motion.linear_velocity = bsp::OceanVec3{0.0f, 0.0f, 0.0f};
-    // 007BC550: 00922F80 (+5Ch = 0) and 00951F40(0).
-    if (p.state != nullptr) p.state->active = 0;
-    p.row.active = false;
-    p.plane_hit_node_detached = true;
     if (base_index < slots.size() && slots[base_index]) {
         p.deck_parent_plus_one = base_index + 1u;                     // vtable[ACh]
         p.deck_stop_logged = false;
@@ -16042,6 +16182,9 @@ bool GameUnitsHost::Impl::place_on_launch_spot_007c5f60(GameUnitSlot& p,
     if (p.plane_control_mode_900 != 2) {
         p.plane_control_mode_900 = 2;
         p.plane_site_timer_c04 = -1.0f;
+        if constexpr (bsp::kPlaneFlightStateNotifyCc13Bound) {
+            flight_state_notify_007c11e0(p);                            // 007C628A
+        }
     }
     for (int i = 0; i < 3; ++i) {
         p.plane_world_velocity[i] = 0.0f;
@@ -16145,15 +16288,31 @@ void GameUnitsHost::Impl::ground_state_from_locked_007ca3f0(GameUnitSlot& p, Lan
                                                             bool five) {
     plane_site_probe_007c5ac0(p, -1.0f);
     if (p.plane_contact_deck_bf4 == 0) return;   // 007CA4xx: the explosion arm, not reached
+    const bool state_changed = p.plane_control_mode_900 != (five ? 5 : 4);  // 007C144C
     p.plane_control_mode_900 = five ? 5 : 4;                            // 007C1430
     p.plane_site_timer_c04 = -1.0f;
     if (p.plane_min_water_spd_198 != 0.0f) {
         p.plane_landed_904 = p.plane_airborne_908 > 5.0f;
         p.plane_c18 = 3;
     }
+    if constexpr (bsp::kPlaneFlightStateNotifyCc13Bound) {
+        if (state_changed) flight_state_notify_007c11e0(p);             // 007C14C5
+    } else {
+        static_cast<void>(state_changed);
+    }
     p.plane_live_throttle = 0.0f;                                        // 007CA4E7
     p.plane_live_air_brake = 1.0f;                                       // 007CA4EF
     for (float& c : p.plane_live_controls) c = 0.0f;
+    if constexpr (bsp::kPlaneGroundStateDeadTailCc13Bound) {
+        // 007CA4D8 CMP [ESI+5Dh],0 / 007CA50F JNZ 007CA5D5: a flushed plane
+        // (+5Dh, the host's state->simulate) skips the rest, the game+193Ch
+        // clear included.
+        if (unit_torn_down_005d(p.process_index)) {
+            ++ground_state_dead_tail_skips;
+            done("Plane::ground_state_from_locked_007ca3f0", 0x007ca3f0u);
+            return;
+        }
+    }
     if (std::find(d.site_occupants_34.begin(), d.site_occupants_34.end(), p.process_index)
         == d.site_occupants_34.end()) {
         d.site_occupants_34.push_back(p.process_index);                  // 006CED90
@@ -16341,8 +16500,8 @@ void GameUnitsHost::Impl::plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char
 // registry record holding the plane and its entity id squadron_unit + 1; the
 // destroy flush is taken at once, so the plane leaves the site vector +34h (the
 // observer pair 006CE910 / 006CEF80) and its squadron (007BCAA0 -> 007F3970) in
-// this step. OnDestroyed's +C14h draw on 00BD2F10 is not taken: this host draws
-// nothing for a retired plane.
+// this step. OnDestroyed's +C14h draw on 00BD2F10 (007BCABB) is taken only under
+// kPlaneRetireOnDestroyedDrawCc13Bound, right after the Kill.
 void GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0(GameUnitSlot& p) {
     if (!p.plane_in_hangar_c00 || p.plane_death_removed) return;
     if (p.plane_airborne_frozen_9e0 || p.generic_suppress_520) return;   // 007CE6CA / 007CE6D7
@@ -16351,7 +16510,11 @@ void GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0(GameUnitSlot& p) {
     ++stock_return_sends;
     p.plane_control_mode_900 = 1;                                         // 007CC857
     p.plane_site_timer_c04 = -1.0f;
-    record("Plane::flight_state_notify_007c11e0", 0x007c11e0u);
+    if constexpr (bsp::kPlaneFlightStateNotifyCc13Bound) {
+        flight_state_notify_007c11e0(p);                                  // 007CC869
+    } else {
+        record("Plane::flight_state_notify_007c11e0", 0x007c11e0u);
+    }
     const std::size_t di = p.plane_contact_deck_bf4 != 0 ? p.plane_contact_deck_bf4 - 1u
                                                          : static_cast<std::size_t>(-1);
     bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
@@ -16430,6 +16593,9 @@ void GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0(GameUnitSlot& p) {
     note_kill_cause(p.process_index, 5);   // 007F1D53 PUSH 5: KillReason "landed" (00E0CF04)
     p.plane_death_removed = true;
     if (gunnery != nullptr) gunnery->kill_unit_00926d90(p.process_index, 5);
+    if constexpr (bsp::kPlaneRetireOnDestroyedDrawCc13Bound) {
+        if (plane_on_destroyed_draw_007bcabb(p.process_index)) ++stock_return_destroy_draws;
+    }
     if constexpr (kStockReturnDestroyBytesBound) {
         // 00926D90 Kill: +5Fh = 1 (00926DF3); +60h clear, so vtable[70h] 0077D1A0
         // tail-calls 00926C80 Destroy, +60h = 1 (00926CD5). The flush's +5Dh
@@ -20725,6 +20891,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 host.done("MissionEntity::on_destroyed_00926390", 0x00926390u);
                             }
                         }
+                        // Packet cc13-landc (kPlaneCombatDeathRetireDrawCc13Bound): the
+                        // flush that sets +5Dh dispatches vtable[7Ch] 007BCAA0, whose
+                        // 007BCABB stream-0 draw follows 007CA914 (stream 1) and
+                        // 007BC3C7 (stream 0, delayed explosions only) above. The image
+                        // flushes at 009273A0, after the step's motion; this host's
+                        // flush is taken here (as the +5Dh store above), so across two
+                        // planes dying in one step the stream-0 order interleaves.
+                        if constexpr (bsp::kPlaneCombatDeathRetireDrawCc13Bound) {
+                            if (host.plane_on_destroyed_draw_007bcabb(index)) {
+                                ++host.combat_death_destroy_draws;
+                            }
+                        }
                         host.log.notef("plane death mode: unit=%s t=%.2f draw=%.4f mode=%s "
                             "c10=%.2f (007CA8A0 -> 007BBFA0 -> 007D0B80, packet "
                             "cc9_plane_death_modes)", slot.row.name.c_str(),
@@ -24329,7 +24507,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         static std::map<const void*, AimTermsState> states;
                         return states[&unit_];
                     }
-                    bool df_fine_aim_009f9fc0(const bsp::DogfightGunInputs& gi) {
+                    // reaim (packet cc13-fire, C): 007B96D0 was true on this
+                    // tick's fire arm, so 009FCDD3-009FCE01 run 009F9FC0 again.
+                    bool df_fine_aim_009f9fc0(const bsp::DogfightGunInputs& gi,
+                                              bool reaim = false) {
                         if (!gi.has_target) return false;
                         const float x = gi.lead_local[0], y = gi.lead_local[1], z = gi.lead_local[2];
                         const float d = static_cast<float>(std::sqrt(static_cast<double>(x) * x +
@@ -24371,10 +24552,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009FA0E0-009FA197: with +4Ah set, each axis is also
                         // capped at 0.35 * t / (Spd / Accel), t the time the error
                         // closes in at its current rate (bsp::gun_aim_damped_cap).
-                        const bool damp = GameUnitsHost::Impl::kFighterAimTermsBound
+                        const bool damp_first = GameUnitsHost::Impl::kFighterAimTermsBound
                             && terms.ran_4a;
+                        bool damp = damp_first;
                         const float dt_now = gi.dt;
-                        auto stick = [damp, dt_now](float e, float prev, float spd, float accel) {
+                        auto stick = [&damp, dt_now](float e, float prev, float spd, float accel) {
                             const float ratio = accel != 0.0f ? spd / accel : 0.0f;
                             const float den = ratio * spd;
                             float m = den != 0.0f ? std::fabs(8.0f * e) / den : 1.0f;
@@ -24399,6 +24581,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                   unit_.plane_class.yaw_accel);
                         unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
                         unit_.gl_yaw_mode_2d4_zero = true;
+                        if (reaim) {
+                            // 009FCDD3-009FCE01: +4Ah = 0 (009FCDE5), so the second
+                            // 009F9FC0 is undamped, on the vertical + 0.25
+                            // (00D7A348); the tail then skips the +54h/+58h store
+                            // and leaves +4Ah clear.
+                            damp = false;
+                            ++unit_.fe_reaims;
+                            const float e_v2 = static_cast<float>(e_v + bsp::kGunReaimVerticalStep_00d7a348);
+                            unit_.plan_slots[bsp::kPilotSlotPitch].desired =
+                                stick(e_v2, terms.prev[1], unit_.plane_class.pitch_spd,
+                                      unit_.plane_class.pitch_accel);
+                            unit_.plan_slots[bsp::kPilotSlotYaw].desired =
+                                stick(e_h, terms.prev[0], unit_.plane_class.yaw_spd,
+                                      unit_.plane_class.yaw_accel);
+                            return false;
+                        }
                         // 009FCE39 / 009FCE44: the angles 009F9FC0 was given.
                         terms.prev[0] = e_h;
                         terms.prev[1] = e_v;
@@ -24582,6 +24780,92 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         owner_.done("PilotBot::opportunistic_rocket_tick", 0x009fd0e0u);
                     }
 
+                    // Packet cc13-fire (docs/CC13_FIRE_ENVELOPE.md), under
+                    // kDogfightFireEnvelopeBound: 009FC7C0 from the clocks to the
+                    // burst clock with the image's envelope and gates, in place of
+                    // bsp::dogfight_gun_tick_009fc7c0. Returns true when 007B96D0
+                    // was true on the fire arm (the re-aim, C).
+                    bool df_fire_envelope_009fc7c0(bsp::DogfightGunInputs& gi, bool auto_target) {
+                        bsp::DogfightGunState& st = unit_.df_gun;
+                        bsp::gun_tick_clocks_009fc7c9(st, gi.dt);
+                        if constexpr (bsp::kDogfightFireHoldArmBound) {
+                            if (auto_target || unit_.st_gun_point_armed_28) {
+                                st.hold_4c = -1.0f;                        // D, 009FCAC2
+                            } else if (st.hold_4c > 0.0f) {
+                                // E, 009FCA3A-009FCAC0: 009FCA47-009FCA53 load ECX =
+                                // [[unit+9D4h]+3D0h], the squadron's first member, or
+                                // the unit with no squadron; ECX is untouched up to the
+                                // __thiscall 00427EB0 at 009FCA86, so the point is the
+                                // LEADER's position plus +34h times its +94h..+9Ch.
+                                // +94h is local row 2 (block +74h); the host reads
+                                // world[8..10], equal for an unparented plane. Labelled.
+                                // The leader is the first listed member, dying or not:
+                                // a leader killed earlier this step stays first until
+                                // remove_member_unit_007f3970 compacts the list, as in
+                                // the image. Slots are never freed in this host, so a
+                                // listed index always names a live object.
+                                const std::size_t self = unit_.process_index;
+                                std::size_t leader = self;
+                                if (const bsp::PlaneSquadronHostRecord* r =
+                                        bsp::plane_squadron_registry().find_by_member_unit(self)) {
+                                    leader = r->flight_leader();   // +3D0h[0], NoUnit skipped
+                                }
+                                // HOST-ONLY guard, no image equivalent: a null or
+                                // out-of-range slot falls back to the unit itself.
+                                const GameUnitSlot* lp = leader < owner_.slots.size()
+                                    ? owner_.slots[leader].get() : nullptr;
+                                const GameUnitSlot& l = lp != nullptr ? *lp : unit_;
+                                const float s = gi.shoot_distance;
+                                const float p[3] = {l.world[12] + s * l.world[8],
+                                                    l.world[13] + s * l.world[9],
+                                                    l.world[14] + s * l.world[10]};
+                                // LABELLED: the image also stores the point to the
+                                // gun's +5Ch..+64h (009FCAAB..009FCABD); the host feeds
+                                // it only to this tick's lead_local. That differs only
+                                // when a strafe-point arm sets +28h without rewriting
+                                // +5Ch, since +28h is reset at 009FCE55.
+                                df_local(p, gi.lead_local);
+                                gi.has_target = true;
+                                ++unit_.fe_hold_ahead_ticks;
+                            }
+                        }
+                        bsp::GunFireEnvelope env;
+                        if (gi.has_target) {
+                            bsp::GunFireEnvelopeInputs ei;
+                            for (int k = 0; k < 3; ++k) ei.lead_local[k] = gi.lead_local[k];
+                            ei.hold_4c = st.hold_4c;
+                            ei.search_range_30 = gi.search_range_30;
+                            ei.shoot_distance_34 = gi.shoot_distance;
+                            ei.lateral_cap_38 = gi.lateral_cap_38;
+                            ei.dont_shoot_3c = gi.dont_shoot_3c;
+                            ei.auto_target_74 = auto_target;
+                            // k08/k0c stay 0: +0Ch is 0 from the constructor
+                            // (009FAB3C), so 2 * +0Ch * +08h * d is 0 whatever +08h is.
+                            env = bsp::gun_fire_envelope_009fcb25<false>(ei);   // PC24
+                            if (bsp::gun_fire_envelope_009fcb25<true>(ei).envelope != env.envelope) {
+                                ++unit_.fe_pc53_disagree_ticks;
+                            }
+                        }
+                        // A, 009FCDBC: 007BA760 on the own unit.
+                        const bool blocked = bsp::unit_gun_fire_blocked_007ba760(
+                            unit_.plane_death_c3a, unit_.state != nullptr && unit_.state->simulate != 0);
+                        gi.unit_disabled = blocked;
+                        bool busy = false;
+                        if (env.envelope) {
+                            if (blocked) {
+                                ++unit_.fe_blocked_ticks;
+                            } else if constexpr (GameUnitsHost::Impl::kFighterFriendlyInLineBound) {
+                                // B, 009FCDC7: 007B96D0 only here.
+                                busy = owner_.friendly_in_line_eval_007dedb0(unit_);
+                                if (busy) ++unit_.ff_busy_ticks;
+                            }
+                        }
+                        gi.finder_busy = busy;
+                        bsp::gun_fire_arm_009fcdb6(st, env.envelope, blocked, busy);
+                        bsp::gun_burst_clock_009fce4f(st, gi.burst_draw, gi.delay_draw);
+                        return busy;
+                    }
+
                     void df_gun_tick_009fc7c0(float dt) {
                         bsp::DogfightGunInputs gi;
                         gi.dt = dt;
@@ -24612,9 +24896,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             tgt = df_finder_007e2090(dt, gi);
                         }
                         const bool was_burst = unit_.df_gun.burst_4b;
+                        // +74h for the envelope's /1.8 and D: the finder's (or the
+                        // task's stand-in) target, before the strafe point below.
+                        const bool auto_target = gi.has_target;
                         if constexpr (GameUnitsHost::Impl::kFighterFriendlyInLineBound) {
-                            gi.finder_busy = owner_.friendly_in_line_007b96d0(unit_, dt);
-                            if (gi.finder_busy) ++unit_.ff_busy_ticks;
+                            if constexpr (bsp::kDogfightFireEnvelopeBound) {
+                                // 007E2010 every tick; 007DEDB0 in the envelope.
+                                owner_.friendly_in_line_clock_007e2010(unit_, dt);
+                            } else {
+                                gi.finder_busy = owner_.friendly_in_line_007b96d0(unit_, dt);
+                                if (gi.finder_busy) ++unit_.ff_busy_ticks;
+                            }
                         }
                         // Packet cc9_strafe_arm, 009FCA2E-009FCAC9: with no auto target
                         // (+74h == 0) and +28h > 0 the tick keeps the lead point +5Ch
@@ -24629,7 +24921,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             strafe_point = true;
                             ++unit_.st_gun_point_ticks;
                         }
-                        bsp::dogfight_gun_tick_009fc7c0(unit_.df_gun, gi);
+                        bool reaim = false;
+                        if constexpr (bsp::kDogfightFireEnvelopeBound) {
+                            reaim = df_fire_envelope_009fc7c0(gi, auto_target);
+                        } else {
+                            bsp::dogfight_gun_tick_009fc7c0(unit_.df_gun, gi);
+                        }
                         if constexpr (GameUnitsHost::Impl::kDogfightGunBurstDrawBound) {
                             // 009FCE70-009FCED6: each +4Bh edge stores one
                             // 00BD2F10(low, high) on ECX = 1 in +50h, the tick's last
@@ -24646,12 +24943,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         if (strafe_point && unit_.df_gun.fire_48) ++unit_.st_gun_point_fires;
                         if constexpr (GameUnitsHost::Impl::kFighterGunLeadBound) {
-                            const bool ran = df_fine_aim_009f9fc0(gi);
+                            const bool ran = df_fine_aim_009f9fc0(gi, reaim);
                             // 009FCE2D: +4Ah = "the fine aim ran this tick".
-                            // SUBSTITUTION, labelled: the fire branch's re-aim
-                            // (009FCDB6-009FCE01, which clears it at 009FCDE9 and
-                            // adds 0.25 before a second 009F9FC0) is not modelled,
-                            // so the flag is never cleared by it.
+                            // SUBSTITUTION, labelled, with kDogfightFireEnvelopeBound
+                            // OFF: the fire branch's re-aim (009FCDB6-009FCE01,
+                            // which clears it at 009FCDE5 and adds 0.25 before a
+                            // second 009F9FC0) is not modelled, so the flag is
+                            // never cleared by it. ON, reaim carries it.
                             if constexpr (GameUnitsHost::Impl::kFighterAimTermsBound) {
                                 aim_terms_state().ran_4a = ran;
                             }
@@ -42602,6 +42900,17 @@ void GameUnitsHost::report() {
     host.log.notef("summary stock return destroy bytes bound=%d destroys=%llu (00926D90 -> "
         "0077D1A0 -> 00926C80, packet cc9_p14_stock_return_destroy)",
         Impl::kStockReturnDestroyBytesBound ? 1 : 0, host.stock_return_destroys);
+    host.log.notef("summary plane land chain notify bound=%d notifies=%llu draw bound=%d "
+        "destroy_draws=%llu (007C11E0 at 007C1680 / 007CC7A0 / 007CC820 / 007CB5F0 / "
+        "007C5F60 / 007C1430; 007BCABB, packet cc13-landc)",
+        bsp::kPlaneFlightStateNotifyCc13Bound ? 1 : 0, host.flight_state_notifies,
+        bsp::kPlaneRetireOnDestroyedDrawCc13Bound ? 1 : 0, host.stock_return_destroy_draws);
+    host.log.notef("summary plane combat death draw bound=%d draws=%llu (007BCABB after "
+        "the death flush, packet cc13-landc)",
+        bsp::kPlaneCombatDeathRetireDrawCc13Bound ? 1 : 0, host.combat_death_destroy_draws);
+    host.log.notef("summary plane ground state dead tail bound=%d skips=%llu "
+        "(007CA50F, packet cc13-landc)",
+        bsp::kPlaneGroundStateDeadTailCc13Bound ? 1 : 0, host.ground_state_dead_tail_skips);
     host.log.notef("summary stock return queue erase bound=%d erases=%llu misses=%llu "
         "(006C59A4 -> 006BF7F0, packet cc9_stock_return_queue_erase)",
         Impl::kStockReturnQueueEraseBound ? 1 : 0, host.stock_return_queue_erases,
@@ -44187,6 +44496,12 @@ void GameUnitsHost::report() {
                             host.log.notef("  fighter friendly-in-line %-12s checks=%d busy_ticks=%d "
                                 "friends=%zu (007B96D0 -> 007DEDB0)", slot->row.name.c_str(),
                                 slot->ff_checks, slot->ff_busy_ticks, slot->nb_friend_70.size());
+                        }
+                        if constexpr (bsp::kDogfightFireEnvelopeBound) {
+                            host.log.notef("  fighter fire envelope %-12s blocked=%d reaims=%d "
+                                "hold_ahead=%d pc53_disagree=%d (009FC7C0, cc13-fire)",
+                                slot->row.name.c_str(), slot->fe_blocked_ticks, slot->fe_reaims,
+                                slot->fe_hold_ahead_ticks, slot->fe_pc53_disagree_ticks);
                         }
                         if constexpr (Impl::kFighterAccelTraceEvery > 0) {
                             const int n = slot->ga_acc_n > 0 ? slot->ga_acc_n : 1;

@@ -36,5 +36,5 @@
 // the dogfight follow do not write cmd+26Ch = 2 (009C1FE2); the strafe-shared,
 // dive-bomb done and dive-bomb follow seams do.
 namespace bsp {
-inline constexpr bool kFollowReleaseSeamsBound = false;
+inline constexpr bool kFollowReleaseSeamsBound = true;   // ON: OCEAN_WAVE_FIELD 98 (cc9-physics23)
 }  // namespace bsp
