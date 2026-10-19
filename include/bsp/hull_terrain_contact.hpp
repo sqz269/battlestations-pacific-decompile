@@ -107,7 +107,7 @@ inline constexpr bool kHullHullContactBound = true;
 
 // Packet cc9_hull_fort_contact (docs/GUNNERY_OPEN_ITEMS.md section 96; the read is 89.1).
 // MLandFort's vtable[0A0h] 007482B0 (and MCommandBuilding's 006F2780, which calls it first)
-// creates one static Dyn body per fort (0074889B 00C5D580, handle at unit+754h, destroyed
+// creates one static Dyn body per fort (00748932 00C5D580, handle at unit+754h, destroyed
 // only by the destructor 00745AA0 at 00745B41): the body frame is the unit's world matrix at
 // creation (00C336C0 on unit+CCh), flags |= 1, and one shape per {ConvexObject, node} pair of
 // the model instance's +4Ch list with no node filter (0074856B..007488A2). Each shape
@@ -270,7 +270,7 @@ public:
         int max_group_bodies{0};
         // Packet cc9_hull_fort_contact: forts seen, their shapes, (fort, hull) pairs whose
         // world boxes met, shape pairs tested, hits, pairs with a hit, the deepest hit, and
-        // forts with more than 30 shapes (007482B0 reserves 1Eh at 00748447; a longer list
+        // forts with more than 30 shapes (007482B0 reserves 1Eh, PUSH 00748444 and CALL 00748455; a longer list
         // reallocates the vector whose element addresses the body descriptor holds).
         unsigned long long forts{0}, fort_shapes{0}, fort_pairs_near{0}, fort_shape_tests{0};
         unsigned long long fort_hits{0}, fort_hit_steps{0}, forts_over_reserve{0};

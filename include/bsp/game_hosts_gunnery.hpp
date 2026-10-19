@@ -1139,6 +1139,10 @@ public:
     // message whose holder changed; kRoleOwnerDeviceWalkBound.
     void role_owner_device_walk_0095ac1d(std::size_t unit_index, std::uint32_t mask,
                                          std::int32_t slot, bool take);
+    // 0080E290: 0085AD00 on each of the unit's turning guns (IsKindOf 22h), which
+    // commands an authored rest pair through 0085ABA0. Packet cc13-frontier; the
+    // callers run it only under kHelmReleaseGunsToRestCc13Bound.
+    void aim_unit_turning_guns_to_rest_0080e290(std::size_t unit_index);
     // 00953B80's [unit+49Ch]: the square of the largest bullet range over the
     // unit's Function 0/1/5/6 guns (Function 6 takes its Bullet[2]).
     float unit_gun_range_sq_049c(std::size_t unit_index) const;
@@ -1147,6 +1151,17 @@ public:
     // the trigger latch, 0072D130's 0ADh send with BSP_Gun_Fire behind it, and
     // the projectile flight with its sweep, impact, hit record and kill credit.
     void fixed_step(float step_seconds);
+
+    // Packet cc13-hitq (bsp/cc13_hitq_switches.hpp): the deferred hit queue
+    // 00F899C0 the drain 00926700 walks. Empty unless
+    // kHitDeferredDispatchCc13Bound. The count is [00F899C8]; back() is
+    // head[+4h] (00926714 / 0092675B), an opaque node with the victim index the
+    // drain's subject is (record+0h), or null when empty; the dispatch is
+    // 00926750's 009239A0 call; the pop removes whatever head[+4h] is now.
+    std::size_t deferred_hit_count() const noexcept;
+    const void* deferred_hit_back(std::size_t& victim) const noexcept;
+    void dispatch_deferred_hit_009239a0(const void* node);
+    void pop_deferred_hit_back();
 
     const std::vector<GameGunRow>& guns() const noexcept;
     // Packet cc8_ship_ai_firepower_inputs: the gun indices 00956C20 put in one
