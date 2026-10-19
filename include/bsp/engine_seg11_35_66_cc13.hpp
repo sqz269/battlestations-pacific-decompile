@@ -1211,6 +1211,17 @@ void destruct_content_list_00994e10(ContentPackageListLayout& list, void*& publi
                                     SingletonLifetimeCalls& lifetime, ContentArrayMemory& memory,
                                     NativeStringStorage& strings);
 
+// ContentPackageList vtable 00D1D75C slots 7/8/9/10. The first three bodies are
+// RET; the fourth is RET 4. ECX is the ignored list; slot 10 also ignores one
+// stack word. None writes EAX, so no return value is established. These void C++
+// interfaces reproduce only the absence of side effects, not a binary ABI.
+// Slot purposes and slot 10's argument type remain unknown. OCT18B_NC_AI.md.
+void content_list_slot7_noop_00994eb0(ContentPackageListLayout& list) noexcept;
+void content_list_slot8_noop_00994ec0(ContentPackageListLayout& list) noexcept;
+void content_list_slot9_noop_00994ed0(ContentPackageListLayout& list) noexcept;
+void content_list_slot10_noop_00994ee0(ContentPackageListLayout& list,
+                                     std::uint32_t ignored_word) noexcept;
+
 // 00994450, manager vtable slot 7, __fastcall(ECX = manager), RET: clear the enumeration words
 // (+838h count, +83Ch cursor, +840h), then XLiveContentCreateEnumerator(40h, {1, 2, 0...}) and one
 // XEnumerate of up to 800h bytes into +38h; ERROR_NO_MORE_FILES as an HRESULT (80070012h) counts
