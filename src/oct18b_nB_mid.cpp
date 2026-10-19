@@ -1,4 +1,5 @@
 #include "bsp/oct18b_nB_mid.hpp"
+#include <cstring>
 
 namespace bsp::oct18b_nB_mid {
 void read_mothership_create_007593b0(void* m, void* s, MotherShipCreateReadHooks& h) {
@@ -15,4 +16,14 @@ void decrement_session_byte12b_0076a710(void* owner) noexcept {
 void* descriptor_identity_00780800(void* receiver, std::uint32_t) noexcept { return receiver; }
 void* descriptor_identity_0078eaa0(void* receiver) noexcept { return receiver; }
 bool session_false_slot_00781080(std::uint32_t) noexcept { return false; }
+void** copy_ref_holder_from_owner_0078cfb0(void** destination, const void* owner,
+    std::int32_t (*interlocked_increment)(volatile std::int32_t*)) {
+    if (owner) {
+        void* held;
+        std::memcpy(&held, static_cast<const std::uint8_t*>(owner) + 0xc, sizeof(held));
+        *destination = held;
+        interlocked_increment(reinterpret_cast<volatile std::int32_t*>(static_cast<std::uint8_t*>(held) + 4));
+    } else *destination = nullptr;
+    return destination;
+}
 }

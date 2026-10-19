@@ -4,13 +4,15 @@
   "program": "/battlestationspacific.exe",
   "project": "C:/Users/sqz269/bsp.gpr",
   "validation": {
-    "build": "First existing-family Win32 build/CTest2/2 passed. Parent merged build required for dedicated6 and completed007EFBA0; registration004004606 references all4 worker extensions, so not cherry-picked locally.",
+    "build": "Parent merged build required for dedicated7 and completed007EFBA0. First existing-family Win32 build/CTest2/2 passed; registration004004606 requires all4 worker extensions, not cherry-picked locally.",
     "call_sites": "tools/verify_report_calls.py: 111 call rows checked, 0 failed",
     "game_run": "not requested or run",
     "abi": "source interfaces, not drop-in binary replacements",
-    "ghidra": "62 reviewed names/comments applied and project saved; affected exports force-refreshed; prior annotations local/ghidra-annotations-20261019T055221Z.json",
+    "ghidra": "First62 names/comments saved and force-refreshed; policy007EFBA0 applied/saved/refreshed separately in local/ghidra-annotations-20261019T060025Z.json; holder/provenance correction follows.",
     "pending_annotation": [
-      "007efba0"
+      "0078cfb0",
+      "007c4330",
+      "007c4390"
     ]
   },
   "family_exceptions": [
@@ -307,7 +309,8 @@
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_decrement_session_byte12b_0076a710",
       "dispatch_body_bytes": 8,
-      "original_abi": "ECX=owner; byte owner+12Bh decremented modulo256; no value result; RET."
+      "original_abi": "ECX=owner; byte owner+12Bh decremented modulo256; no value result; RET.",
+      "family_evidence_interpretation": "Table/data scan matches do not establish class, descriptor, callback or template ownership; names remain provisional. Machine body alone establishes the operation."
     },
     {
       "address": "0076c420",
@@ -376,7 +379,8 @@
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_descriptor_identity_00780800",
       "dispatch_body_bytes": 5,
-      "original_abi": "ECX=input receiver, ignored stack dword; EAX=ECX; RET4."
+      "original_abi": "ECX=input receiver, ignored stack dword; EAX=ECX; RET4.",
+      "family_evidence_interpretation": "Table/data scan matches do not establish class, descriptor, callback or template ownership; names remain provisional. Machine body alone establishes the operation."
     },
     {
       "address": "00781080",
@@ -393,7 +397,8 @@
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_session_false_slot_00781080",
       "dispatch_body_bytes": 5,
-      "original_abi": "ECX unused, ignored stack dword; AL=0, upper EAX unspecified; RET4."
+      "original_abi": "ECX unused, ignored stack dword; AL=0, upper EAX unspecified; RET4.",
+      "family_evidence_interpretation": "Table/data scan matches do not establish class, descriptor, callback or template ownership; names remain provisional. Machine body alone establishes the operation."
     },
     {
       "address": "0078cfb0",
@@ -404,12 +409,14 @@
       ],
       "family_evidence": "callers of 0078cfb0 FUN_0078cfb0 (1 sites: data_ptr 1; 1 rows):\n  1 data slot(s)                               data_ptr @00d2ce88",
       "native_steps": [],
-      "name": "LIBCOMP_reference_counted_holder_from_owner_0078cfb0",
-      "status": "library_instantiation_out_of_scope",
-      "source": "docs/OCT18B_NB_MID.md",
-      "evidence": "Compiler/reference-counted helper instantiation. InterlockedIncrement through IAT 00CE221C; holder copy, with EH registration and three scalar float copies in 007C4330/007C4390. No game-code body or credit added.",
+      "name": "copy_ref_holder_from_owner_0078cfb0",
+      "status": "reconstructed_source_interfaces",
+      "source": "src/oct18b_nB_mid.cpp",
+      "evidence": "Exact raw-storage holder copy: ECX=destination, stack owner, EAX=destination, RET4. Null owner stores null; otherwise copies owner+0Ch and increments held+4 through required InterlockedIncrement boundary at IAT00CE221C. No null-held fallback invented. Class and authored-vs-template provenance are unknown; chance data match D2CE88 has non-code neighboring DWORDs, no live/direct callers, and is not class/template evidence.",
       "dispatch_body_bytes": 44,
-      "original_abi": "ECX=destination; stack owner pointer; EAX=destination; RET4."
+      "original_abi": "ECX=destination; stack owner pointer; EAX=destination; RET4.",
+      "ghidra_name": "BSP_copy_ref_holder_from_owner_0078cfb0",
+      "provenance": "Unknown class and authored-vs-template origin; reconstructed exact body without asserting game-specific meaning or library exclusion."
     },
     {
       "address": "0078e450",
@@ -494,7 +501,8 @@
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_descriptor_identity_0078eaa0",
       "dispatch_body_bytes": 3,
-      "original_abi": "ECX=input receiver; EAX=ECX; RET."
+      "original_abi": "ECX=input receiver; EAX=ECX; RET.",
+      "family_evidence_interpretation": "Table/data scan matches do not establish class, descriptor, callback or template ownership; names remain provisional. Machine body alone establishes the operation."
     },
     {
       "address": "00790390",
@@ -1242,9 +1250,14 @@
       "name": "LIBCOMP_reference_counted_vector_copy_a_007c4330",
       "status": "library_instantiation_out_of_scope",
       "source": "docs/OCT18B_NB_MID.md",
-      "evidence": "Compiler/reference-counted helper instantiation. InterlockedIncrement through IAT 00CE221C; holder copy, with EH registration and three scalar float copies in 007C4330/007C4390. No game-code body or credit added.",
+      "evidence": "Compiler memberwise reference-counted record copy; explicit placement-copy adapter 007C94C0 loads destination/source stack arguments into ECX/EDX, calls this body, RET8. Positively reviewed adjacent STL_UninitCopy_007C4220 has the identical normalized 16-byte pointer-plus-three-float record assignment/refcount shape. This compiler/template provenance, not EH or a candidate vtable alone, supports library_instantiation_out_of_scope; exact authored class is unknown. No game-code body or credit added.",
       "dispatch_body_bytes": 93,
-      "original_abi": "ECX=destination, EDX=source; no stack arguments; void/unspecified EAX; RET."
+      "original_abi": "ECX=destination, EDX=source; no stack arguments; void/unspecified EAX; RET.",
+      "positive_compiler_provenance": {
+        "placement_copy_adapter": "007C94C0",
+        "normalized_record_shape": "pointer@0 plus float@4,@8,@C; matching reviewed STL_UninitCopy007C4220",
+        "class": "unknown"
+      }
     },
     {
       "address": "007c4390",
@@ -1258,9 +1271,14 @@
       "name": "LIBCOMP_reference_counted_vector_copy_b_007c4390",
       "status": "library_instantiation_out_of_scope",
       "source": "docs/OCT18B_NB_MID.md",
-      "evidence": "Compiler/reference-counted helper instantiation. InterlockedIncrement through IAT 00CE221C; holder copy, with EH registration and three scalar float copies in 007C4330/007C4390. No game-code body or credit added.",
+      "evidence": "Compiler memberwise reference-counted record copy; explicit placement-copy adapter 007C94D0 loads destination/source stack arguments into ECX/EDX, calls this body, RET8. Positively reviewed adjacent STL_UninitCopy_007C4220 has the identical normalized 16-byte pointer-plus-three-float record assignment/refcount shape. This compiler/template provenance, not EH or a candidate vtable alone, supports library_instantiation_out_of_scope; exact authored class is unknown. No game-code body or credit added.",
       "dispatch_body_bytes": 93,
-      "original_abi": "ECX=destination, EDX=source; no stack arguments; void/unspecified EAX; RET."
+      "original_abi": "ECX=destination, EDX=source; no stack arguments; void/unspecified EAX; RET.",
+      "positive_compiler_provenance": {
+        "placement_copy_adapter": "007C94D0",
+        "normalized_record_shape": "pointer@0 plus float@4,@8,@C; matching reviewed STL_UninitCopy007C4220",
+        "class": "unknown"
+      }
     },
     {
       "address": "007e23b0",
@@ -1715,7 +1733,7 @@
   ],
   "counts": {
     "deferred_contract_recovery": 1,
-    "library_instantiation_out_of_scope": 3,
-    "reconstructed_source_interfaces": 60
+    "library_instantiation_out_of_scope": 2,
+    "reconstructed_source_interfaces": 61
   }
 }

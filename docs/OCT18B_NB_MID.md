@@ -1,9 +1,9 @@
 # Oct18b nB middle rows
 
 The exact 64 dispatch rows from `00759090` through `007F22E0` are enumerated in
-`reports/oct18b_nB_mid.json`. The batch supplies 60 source interfaces in the
+`reports/oct18b_nB_mid.json`. The batch supplies 61 source interfaces in the
 existing message, MovCam, movie-camera, path, bot-task, engine, paratrooper,
-player-record and plane-squadron families. Three compiler/reference-counted
+player-record and plane-squadron families. Two compiler/reference-counted
 copies are classified `library_instantiation_out_of_scope`. Dispatch byte sizes
 are retained as `dispatch_body_bytes`; the current live listing/prototype is
 the body authority where analysis has since shortened a dispatched extent.
@@ -33,7 +33,7 @@ when the live count is zero unless the original function explicitly tests it.
 Fan-outs re-read the count after callbacks. The pose refresh reads the borrowed
 game clock after child invalidation, as the listing does.
 
-`src/oct18b_nB_mid.cpp` is limited to six exceptions. `007593B0` cannot be added
+`src/oct18b_nB_mid.cpp` is limited to seven exceptions. `007593B0` cannot be added
 to `cc13_seg30.hpp` while `agent/oct18b-nA2:oct18b-nA2-families` owns it;
 `007B9070` cannot be added to `cc13_seg33a.hpp/.cpp` while
 `agent/oct18b-nA3:oct18b-nA3-family` owns them. Both retain explicit existing
@@ -42,12 +42,21 @@ leaves have exact data references but no stronger recovered class name. A data
 reference or a candidate table alone establishes neither callback/descriptor
 provenance nor class ownership; those names remain provisional.
 
-`0078CFB0` constructs a reference-counted holder from owner+0Ch;
+`0078CFB0` is recovered as an exact raw-storage holder constructor, with
+ECX=destination, stack owner, EAX=destination and RET4. Null owner clears the
+holder; a non-null owner supplies a valid non-null reference at +0Ch, copied and
+incremented at held+4 through the required InterlockedIncrement boundary. Its
+class and authored-vs-template provenance remain unknown. Its only D2CE88 scan
+match sits among non-code DWORDs, so it supports neither class nor library proof.
+
 `007C4330` and `007C4390` copy a reference-counted pointer and three floats under
-compiler EH registration. `0078CFB0` takes ECX=destination and a stack owner,
-returns destination in EAX and uses RET4. Both latter copies take ECX=destination,
-EDX=source, and RET without a defined value result. Each increments through IAT `00CE221C`. They are
-recorded as library instantiations without a reconstructed game body or credit.
+compiler EH registration. Actual placement-copy adapters `007C94C0/007C94D0`
+move stack destination/source into ECX/EDX and call these bodies. Positively
+reviewed adjacent `STL_UninitCopy_007C4220` assigns the same normalized 16-byte
+pointer-plus-three-float record. Those compiler/template connections support
+the two library exclusions; EH and candidate tables alone do not. Both copies
+take ECX=destination, EDX=source and RET without a defined value result. They
+increment through IAT `00CE221C`; no reconstructed game body or credit is added.
 
 `007AE930` belongs to the pointer-array path geometry family near the existing
 `point3_ptr_array_nearest_point_to_line_007aeec0`. ECX is the array, origin and
