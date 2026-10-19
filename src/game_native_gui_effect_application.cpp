@@ -474,6 +474,13 @@ std::size_t GameNativeGuiEffectApplication::operation_count() const noexcept {
 const GameNativeGuiEffectLoadOperation& GameNativeGuiEffectApplication::operation(std::size_t index) const {
     return *impl_->operations.at(index);
 }
+NativeMaterialEffectCacheContext& GameNativeGuiEffectApplication::native_effect_cache() {
+    auto& p = *impl_;
+    require(p.phase == Impl::Phase::ready && !p.caller_active(),
+        "native effect cache borrow requires an idle ready effect application");
+    p.validate_domain();
+    return p.cache;
+}
 NativeMaterialStorage* GameNativeGuiEffectApplication::create_material_00535320(const void* name,
     GuiNativeGeometryOwners& geometry, NativeMaterialDestructionAccess& materials,
     const GameNativeGuiMaterialFactoryOperation*& published_operation) {
