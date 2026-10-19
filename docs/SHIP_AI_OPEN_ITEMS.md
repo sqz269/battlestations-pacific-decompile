@@ -20226,3 +20226,20 @@ gates), 7b5cd920a (the gunnery host logs `rng streams: on|off (BSP_GUNNERY_RNG_S
 - Never use git stash. src/game_hosts_gunnery.cpp is often leased by cc13: queue, never jump.
 
 **308 update: hitq FLIPPED ON.** Both kHitDeferredDispatchCc13Bound and kHitDeferredSameStepDrainCc13Bound, on the lead's GO. The basis is 306.2 / 306.6, the 0/0/0 nested-push check, cc13 rev2's verdict that the 00926700 pop order is faithful (it re-reads head->prev after the dispatch), and cc13's finding that the smoke residual is faithful (water acts at N+1). Open item 1 of 308 is closed.
+
+## 309. Torpedo owner player gate paired (cc9-gunnery55, 2026-10-19)
+
+### 309.1 kTorpedoBotOwnerPlayerGateCc13Bound (src/game_hosts_gunnery.cpp, packet cc13-torpgate)
+
+Image: 008FFF20 walks the gun to its first IsKindOf(5) owner (vtable[5Ch] at 0090005C) and, when that owner's +184h
+is set (00900080), jumps at 00900087 to the exit 00900985 (docs/CC13_IJN18LOSS.md section 7). +184h is set by a
+`takehelm` whose |helm_throttle| > 0.1 while role 0 is player-held (0064B940..0064B9A6) and survives a releasegun.
+
+**Predictions (before the pair):** only rows whose OFF summary shows `torpedo owner player gate ... ticks>0` can move.
+On those, the taken ship launches no bot torpedo after its first non-trivial takehelm: its torpedo fire records drop to
+0 from that frame, the torpedo hits it scored vanish, and later draws, deaths and the mission end may move from the
+first suppressed launch on. Before the first takehelm OFF and ON are identical. Rows with ticks=0 stay identical.
+No WINS row takehelms a torpedo ship other than IJN18 `l67_i18_d` (Zao), BSM01 `l69_b1_d` (HenryPT) and USN02
+`l68_u2_a` (Houston); JM06 `l70_j6_n` takehelms PlayerSub only from frame 52000, after its 817.92 s completion.
+Pair: OFF = the tree build at dc6d0d1a3, ON = `local\g55_tg_on` (pair_export, same commit); IJN18 24000, BSM01 20000,
+USN02 16000 frames, reference env (`g55_tgoff_*` / `g55_tgon_*`).
