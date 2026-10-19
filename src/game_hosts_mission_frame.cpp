@@ -29,6 +29,8 @@
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_message_manager.hpp"
+#include "bsp/game_hosts_global_subsystems.hpp"
+#include "bsp/warning_owner.hpp"
 #include "bsp/game_hosts_ready.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_mission_result.hpp"
@@ -181,6 +183,19 @@ constexpr bool kWarningMessageBankCc15Bound = true;
 // clip's record from the manager (records_resolved / record_misses replace
 // records_not_evaluated). False: no manager, as before.
 constexpr bool kMessageManagerCc15Bound = false;
+
+// cc15-ob1 (docs/CC15_OBJECT_GLOBALSUBSYSTEMS.md). True: the global_subsystems
+// step builds four of 004DC6A0's owners in its order through their typed bodies:
+// traffic 004A43C0 + 0049D690 [game+21D0h], panel 00452660 + 0044FA30
+// [game+21E4h], the warning owner 0098A020 [game+21E0h], then weather 00445B10 +
+// 00444D20 [game+21C4h]. The power-up manager 008EDC60 between panel and warnings
+// is cc13-powerup's (kPowerupGrantBound) and keeps its own path. The warning
+// owner becomes the warning manager this file runs (Impl::warning() and
+// warning_tables()): 009870A0's Warnings.lua fragment loads into its +108h
+// tables, once per owner, and its scalar resets run; its roster, effects and
+// hooks do not. A later load first tears the set down in 004D2BB0's order. False:
+// no owners; the manager is the host's own two fields, as before.
+constexpr bool kGlobalSubsystemsCc15Bound = false;
 
 // Packet cc9_construct_world part 2 (docs/CONSTRUCT_WORLD.md section 9). True:
 // the load step construct_world 004DE610 sets the world-active byte
@@ -344,7 +359,7 @@ struct GameMissionFrameHost::Impl {
     std::int32_t published_mission_id{0};     // [00f8a2fc]+48h
     float world_clock{0.0f};                  // 00f876a4
     // Packet cc9_warning_manager_tick: the manager's fields this process holds.
-    bsp::WarningManagerState warning{};
+    bsp::WarningManagerState warning_host_state{};
     std::map<std::size_t, float> warning_effect_deadline;  // 00975D00 record +0h, per unit
     // The same 00975D00 record's +4h deadline and +8h effect, which 00977990
     // uses; held apart from +0h because the torpedo path keeps its own map.
@@ -381,7 +396,22 @@ struct GameMissionFrameHost::Impl {
     unsigned long long warning_loss_proximity_erased{0};
     std::map<std::size_t, float> warning_loss_stamp_15c{};
     // Packet cc15-wB4: manager+108h..+144h and the 0096DBB0 answers per id.
-    bsp::WarningMessageTables warning_tables{};
+    bsp::WarningMessageTables warning_host_tables{};
+    // cc15-ob1, kGlobalSubsystemsCc15Bound: 004DC6A0's owners. Once the warning
+    // owner [game+21E0h] exists, it is the manager: warning() is its +D0h..+19Ch
+    // state and warning_tables() its +108h tables. Without it, the two fields above.
+    std::unique_ptr<GameGlobalSubsystemsHost> global_subsystems;
+    bsp::WarningOwner* warning_owner_21e0() const {
+        return global_subsystems ? global_subsystems->warnings() : nullptr;
+    }
+    bsp::WarningManagerState& warning() {
+        bsp::WarningOwner* owner = warning_owner_21e0();
+        return owner != nullptr ? owner->state : warning_host_state;
+    }
+    bsp::WarningMessageTables& warning_tables() {
+        bsp::WarningOwner* owner = warning_owner_21e0();
+        return owner != nullptr ? *owner->tables_108 : warning_host_tables;
+    }
     bool warning_tables_loaded{false};
     std::string warning_tables_error{};
     std::map<std::string, std::pair<unsigned long long, unsigned long long>> warning_id_queries{};
@@ -694,7 +724,7 @@ public:
     void stop_collision_sound() override {}
     bool message_id_known(const std::string& id) override {
         if constexpr (kWarningMessageBankCc15Bound) {
-            const bool known = bsp::warning_message_id_known_0096dbb0(owner_.warning_tables, id);
+            const bool known = bsp::warning_message_id_known_0096dbb0(owner_.warning_tables(), id);
             auto& counts = owner_.warning_id_queries[id];
             ++(known ? counts.first : counts.second);
             owner_.done("WarningManager::message_id_known", 0x0096dbb0u);
@@ -709,7 +739,7 @@ public:
         if constexpr (kWarningMessageBankCc15Bound) {
             if (accepted_ == nullptr) return;
             warning_activate_cc15(owner_, *accepted_, kind_);
-            bsp::WarningRecord& record = owner_.warning.pending[index];
+            bsp::WarningRecord& record = owner_.warning().pending[index];
             record.state = accepted_->state;                    // +0Ch
             record.applied_at = accepted_->validity_ref_time;   // +10h
             record.clip_count = accepted_->messages.size();     // +14h
@@ -978,7 +1008,7 @@ bool resolve_entity_sound_keys_cc15(GameMissionFrameHost::Impl& host, std::strin
     const int relation = warning_relation_00803ce0(host, local_player_party(), unit);
     const int category = warning_entity_category_cc15(class_id);
     if (class_id < 0 || (relation != 3 && category < 0)) return false;
-    const std::size_t pos = std::strcspn(text.c_str(), host.warning_tables.entity.prefixes.c_str());
+    const std::size_t pos = std::strcspn(text.c_str(), host.warning_tables().entity.prefixes.c_str());
     const std::string tail = text.substr(pos, 1);
     const std::string prefix = tail + kRelationWords[relation];
     std::vector<std::string> keys;
@@ -996,8 +1026,8 @@ bool resolve_entity_sound_keys_cc15(GameMissionFrameHost::Impl& host, std::strin
     const std::string picked = text;
     bool hit = false;
     for (const std::string& key : keys) {
-        const auto mapped = host.warning_tables.entity.replacements.find(key);
-        if (mapped == host.warning_tables.entity.replacements.end()) continue;
+        const auto mapped = host.warning_tables().entity.replacements.find(key);
+        if (mapped == host.warning_tables().entity.replacements.end()) continue;
         text = picked.substr(0, pos) + mapped->second + picked.substr(pos + tail.size());
         if (host.messages->record_map_contains_00702300(text)) {
             hit = true;
@@ -1033,8 +1063,8 @@ void warning_activate_cc15(GameMissionFrameHost::Impl& host,
     ++counts.activations;
     warning.state = 1;
     warning.validity_ref_time = host.world_clock;
-    const auto entry = host.warning_tables.messages.find(warning.id);
-    if (entry == host.warning_tables.messages.end()) {
+    const auto entry = host.warning_tables().messages.find(warning.id);
+    if (entry == host.warning_tables().messages.end()) {
         throw std::logic_error("an accepted warning id is missing from the +108h map");
     }
     const std::vector<std::string>& variants = entry->second;
@@ -1047,7 +1077,7 @@ void warning_activate_cc15(GameMissionFrameHost::Impl& host,
         const std::uintptr_t entity = kind == WarningActivate::kill_6c
             ? static_cast<std::uintptr_t>(warning.word_6c)
             : reinterpret_cast<std::uintptr_t>(warning.entity);
-        const std::string& set = host.warning_tables.entity.prefixes;
+        const std::string& set = host.warning_tables().entity.prefixes;
         if (text.empty() || set.empty()
             || std::strcspn(text.c_str(), set.c_str()) == text.size()) {
             ++counts.sound_keys_untouched;
@@ -1090,7 +1120,7 @@ void game_warning_kill_block_00981e07(GameMissionFrameHost::Impl& host, std::siz
     // from a listener the dispatcher ran inline; the dispatcher cleared it on
     // entry and the host runs no `kill` listener, so it is clear here.
     // 00981E3E..00981E45: +D0h.
-    if (host.warning.suppressed) {
+    if (host.warning().suppressed) {
         ++counts.suppressed_d0;
         return;
     }
@@ -1192,7 +1222,7 @@ void game_warning_kill_block_00981e07(GameMissionFrameHost::Impl& host, std::siz
     record.applied_lifetime = 15.0f; // +20h, 0096F240: 00CE5380
     WarningManagerBinding binding(host, warning, WarningActivate::kill_6c);
     const bsp::WarningReportResult result =
-        bsp::report_warning_009763e0(host.warning, binding, record, host.world_clock);
+        bsp::report_warning_009763e0(host.warning(), binding, record, host.world_clock);
     ++counts.reports;
     count_warning_report(host, record.message_id, result);
     host.done("WarningManager::report_kill_warning", 0x00982096u);
@@ -1222,7 +1252,7 @@ void game_warning_torpedo_report_0097777b(GameMissionFrameHost::Impl& host, std:
     record.applied_lifetime = 15.0f; // +20h, 0096F240: 00CE5380
     WarningManagerBinding binding(host, warning, WarningActivate::plain);
     const bsp::WarningReportResult result =
-        bsp::report_warning_009763e0(host.warning, binding, record, host.world_clock);
+        bsp::report_warning_009763e0(host.warning(), binding, record, host.world_clock);
     count_warning_report(host, record.message_id, result);
     host.done("WarningManager::report_torpedo_warning", 0x009763e0u);
 }
@@ -1241,7 +1271,7 @@ public:
     explicit PowerupWarningReportBinding(GameMissionFrameHost::Impl& host) : host_(host) {}
     void lock_24() override {}    // the +24h critical section: one thread here
     void unlock_24() override {}
-    bool suppressed_d0() override { return host_.warning.suppressed; }
+    bool suppressed_d0() override { return host_.warning().suppressed; }
     std::int32_t local_player_slot_18ec() override { return 0; }  // single player
     float clock_00f876a4() override { return host_.world_clock; }
     WarningObject* new_powerup_warning_009758e0(const std::string* name) override {
@@ -1266,7 +1296,7 @@ public:
         record.applied_lifetime = 15.0f; // 0096F240: 00CE5380
         WarningManagerBinding binding(host_, *warning, WarningActivate::plain);
         const bsp::WarningReportResult result =
-            bsp::report_warning_009763e0(host_.warning, binding, record, host_.world_clock);
+            bsp::report_warning_009763e0(host_.warning(), binding, record, host_.world_clock);
         count_warning_report(host_, record.message_id, result);
         host_.done("WarningManager::report_powerup", 0x009789a0u);
     }
@@ -1423,7 +1453,7 @@ void load_warning_message_bank_009870a0(GameMissionFrameHost::Impl& host) {
             const bsp::GuiLuaRef warnings = lua.get_by_name(globals, "Warnings");
             lua.release(globals);  // 009871AF
             try {
-                bsp::load_warning_tables_009870a0(host.warning_tables, lua, warnings);
+                bsp::load_warning_tables_009870a0(host.warning_tables(), lua, warnings);
                 host.warning_tables_loaded = true;
             } catch (const std::exception& failure) {
                 host.warning_tables_error = failure.what();
@@ -1434,9 +1464,9 @@ void load_warning_message_bank_009870a0(GameMissionFrameHost::Impl& host) {
     if (host.warning_tables_loaded) {
         host.done("WarningManager::load_message_tables", 0x009870a0u);
         host.log.notef("warning table %s: messages=%zu entity=%zu playerunit_section=%zu",
-            bsp::kWarningDataScript, host.warning_tables.messages.size(),
-            host.warning_tables.entity.replacements.size(),
-            host.warning_tables.playerunit_section.replacements.size());
+            bsp::kWarningDataScript, host.warning_tables().messages.size(),
+            host.warning_tables().entity.replacements.size(),
+            host.warning_tables().playerunit_section.replacements.size());
     } else {
         host.record("WarningManager::load_message_tables", 0x009870a0u);
         host.log.notef("warning table %s not loaded: %s", bsp::kWarningDataScript,
@@ -1596,7 +1626,7 @@ public:
             // 0096D540: +19Ch, the pending prompt callback, has no writer in this
             // process, so the poll returns before the input test.
             WarningManagerBinding binding(owner_);
-            bsp::poll_warning_prompt_0096d540(owner_.warning, binding);
+            bsp::poll_warning_prompt_0096d540(owner_.warning(), binding);
             owner_.done("WarningManager::poll_prompt", 0x0096d540u);
         } else {
             owner_.record("MissionEvents::poll_zones", 0x0096d540u);
@@ -1605,7 +1635,7 @@ public:
     void mission_events_poll_00968550() override {
         if constexpr (kWarningManagerTickBound) {
             const bsp::WarningDeadlineResult r
-                = bsp::update_warning_deadlines(owner_.warning, owner_.world_clock);
+                = bsp::update_warning_deadlines(owner_.warning(), owner_.world_clock);
             owner_.done("WarningManager::update_deadlines", 0x00968550u);
             if (r.air_raid_expired || r.collision_expired) ++owner_.warning_deadline_expiries;
             if (r.collision_expired) {
@@ -2679,7 +2709,7 @@ void game_warning_report_torpedo_00977690(std::size_t unit) {
     const GameUnitsHost& units = *host->units;
     bsp::SceneNodeFlags flags;
     bool pending = false;
-    if (host->warning.suppressed || !bsp::warning_report_clock_allows(host->world_clock)) return;
+    if (host->warning().suppressed || !bsp::warning_report_clock_allows(host->world_clock)) return;
     if (!units.unit_scene_node_flags(unit, flags) || !units.unit_pending_destroy_0060(unit, pending)
         || !flags.active || flags.torn_down || pending || flags.destroyed) return;
     const bool controlled = units.controlled_bound() && units.controlled_index() == unit;
@@ -2732,7 +2762,7 @@ void game_warning_report_loss_009813a0(std::size_t unit) {
     // whose kind (vt[10h]) is 4 and whose +80h is the unit; 00976FBE..00976FE8
     // then store now + 2.0 (00F876A4 + double 00D7A308) under the unit in the
     // map at +15Ch, whose readers are unread.
-    auto& pending = host->warning.pending;
+    auto& pending = host->warning().pending;
     const std::uint32_t target = static_cast<std::uint32_t>(unit);
     for (auto it = pending.begin(); it != pending.end();) {
         if (it->kind == 4 && it->target_id == target) {
@@ -2799,7 +2829,7 @@ void game_warning_report_hit_00989604(std::size_t victim, std::size_t shooter,
         // 009895D8..009895E3: +104h is set only by 00979670 OverrideMessage,
         // which this process does not bind, so a listener cannot set it.
         // 00989604..0098964B / 009896CA..00989702: +D0h, slot 0, clock > 4.0.
-        if (host->warning.suppressed) {
+        if (host->warning().suppressed) {
             ++counts.suppressed_d0;
             return;
         }
@@ -2913,7 +2943,7 @@ void game_warning_report_hit_00989604(std::size_t victim, std::size_t shooter,
         record.applied_lifetime = 15.0f; // +20h, 0096F240: 00CE5380
         WarningManagerBinding binding(*host, warning, WarningActivate::hit_80);
         const bsp::WarningReportResult result =
-            bsp::report_warning_009763e0(host->warning, binding, record, host->world_clock);
+            bsp::report_warning_009763e0(host->warning(), binding, record, host->world_clock);
         ++counts.reports;
         count_warning_report(*host, record.message_id, result);
         host->done("WarningManager::report_hit_warning", 0x00989992u);
@@ -3522,8 +3552,37 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // leave behind (docs/MISSION_LUA_MACHINE.md, gap 1).
             host.record(label, step.address);
             ++host.load.records;
-            if constexpr (kWarningMessageBankCc15Bound) load_warning_message_bank_009870a0(host);
-            if constexpr (bsp::cc13_powerup::kPowerupGrantBound) load_powerup_classes_cc13(host);
+            if constexpr (kGlobalSubsystemsCc15Bound) {
+                // 004DC6A0's owners in its order; the power-up manager keeps its
+                // place between panel and warnings. A new warning owner has empty
+                // +108h tables, so the fragment loads them again into it.
+                if (!host.global_subsystems) {
+                    host.global_subsystems = std::make_unique<GameGlobalSubsystemsHost>(
+                        host.log, host.vfs);
+                }
+                host.global_subsystems->build_traffic_and_panel();
+                if constexpr (bsp::cc13_powerup::kPowerupGrantBound) {
+                    load_powerup_classes_cc13(host);
+                }
+                host.global_subsystems->build_warnings();
+                host.warning_tables_loaded = false;
+                host.warning_tables_error.clear();
+                if constexpr (kWarningMessageBankCc15Bound) load_warning_message_bank_009870a0(host);
+                host.global_subsystems->build_weather();
+                const auto& owners = host.global_subsystems->summary();
+                host.log.notef("global subsystems built: traffic=%d panel=%d warnings=%d "
+                    "weather=%d loads traffic=%llu dialog=%llu weather=%llu failures=%llu%s%s "
+                    "(004DC6A0 without 008EDC60)",
+                    host.global_subsystems->traffic() ? 1 : 0,
+                    host.global_subsystems->panel() ? 1 : 0,
+                    host.global_subsystems->warnings() ? 1 : 0,
+                    host.global_subsystems->weather() ? 1 : 0, owners.traffic_loaded,
+                    owners.panel_loaded, owners.weather_loaded, owners.load_failures,
+                    owners.last_error.empty() ? "" : " last_error=", owners.last_error.c_str());
+            } else {
+                if constexpr (kWarningMessageBankCc15Bound) load_warning_message_bank_009870a0(host);
+                if constexpr (bsp::cc13_powerup::kPowerupGrantBound) load_powerup_classes_cc13(host);
+            }
             if (!host.lua.started()) host.lua.start_machine_00884be0();
             host.lua.run_global_script_folders_00886900();
             continue;
@@ -5120,7 +5179,7 @@ void GameMissionFrameHost::report(long requested_frames) {
         }
         host.log.notef("summary mission warning table bound=1 loaded=%d messages=%zu ids=%zu "
             "known=%llu unknown=%llu (packet cc15-wB4; 009870a0, 0096dbb0)",
-            host.warning_tables_loaded ? 1 : 0, host.warning_tables.messages.size(),
+            host.warning_tables_loaded ? 1 : 0, host.warning_tables().messages.size(),
             host.warning_id_queries.size(), known, unknown);
         for (const auto& [id, counts] : host.warning_id_queries) {
             host.log.notef("summary mission warning id %s known=%llu unknown=%llu",
