@@ -2,17 +2,35 @@
 
 // Packet cc13-jm08 (read-only audit of JM08's leaderless landing ships, cc9 request).
 //
+namespace bsp {
+
 // True: after a destroyed ship leaves its formation group (0077BD70, behind
 // kDeadMemberLeavesGroupBound), the units host republishes the 007788B0 / 007788D0
 // pair to the commands host for the leaving unit and every remaining member. In the
 // image both predicates read unit+284h and group+14h live, so a leader hand-over is
-// seen at once by 00836920:
-// - the follow arm 00836ADC..00836B3B ends the new leader's `follow` (00836B03,
-//   007788D0(unit) == unit) and every member's `follow` on the dead leader
-//   (00836B1A, leader != stored target);
-// - the idle tail 00836DC9 then issues `stop` 00E08F88 to the new leader (00836E3F,
-//   not a follower; +184h clear; *(unit+73Ch)+28h < 0.0f after 00835BF0's reset)
-//   and `follow` 00E08F60 on the new leader to each member (00836E13..00836E38).
+// seen at once by 00836920.
+//
+// What the image does at a LEADER's death (corrected after review of 8fb2ae456):
+// - 0077BDDE..0077BE02, before 0070D0C0 at 0077BE40: the dying unit's director
+//   (vt114h = 0080E150, [unit+738h]) gets vt5Ch(successor) = 0071C150. While the
+//   dying unit is still group+14h (00778890), 0071C150 calls the successor's
+//   director vt4Ch(dying director) = 00836680, which runs 00720450: allowFire /
+//   allowMove (+3Ch/+3Dh), the previous-command record (+16Ch..+184h), the mode
+//   (+30h), the override cleared (0071E610), the ten command records copied (for a
+//   kind-6 owner a `land` 00E08FA0 becomes `attackmove` 00E08F78, 0072058A..
+//   00720607), stages reset; then 00836240 when src vt48h(2) and src+23Ch.
+//   So the NEW LEADER INHERITS THE DEAD LEADER'S QUEUE in place of its own
+//   `follow`. In JM08 that queue is Missouri's scene `cruise`, so the successor
+//   begins a cruise (its own heading and ordered throttle, 00835E17) rather than
+//   stopping. That copy is NOT modelled by this switch (see the report: the host's
+//   director state lacks part of the copied record).
+// - Members: the follow arm 00836ADC..00836B3B ends each member's `follow` on the
+//   dead leader (00836B1A, leader != stored target), and the idle tail 00836DC9
+//   re-issues `follow` 00E08F60 on the new leader (00836E13..00836E38).
+// - The idle tail's cruise/stop pair (00836E3F) applies only to a leader whose
+//   queue empties. Its +28h test follows 00835BF0(1): +28h is reset to -1.0f only
+//   when it is >= 0 and int(clock) - +28h > 1; then >= 0.0f issues `cruise`
+//   00E08F70, else `stop` 00E08F88.
 // False: the commands host keeps the pair pushed at the join (set_unit_formation
 // from 0077FA8D), so after a hand-over every member, the new leader included, keeps
 // a `follow` aimed at the dead leader, as before.
@@ -37,3 +55,5 @@ inline constexpr bool kDeadLeaderRepublishesFollowerPairBound = false;
 // unchanged. Main-thread x87 (24-bit PC) is modelled as float ops in the image's
 // order. No 00BD2F10 draw.
 inline constexpr bool kWakeDecomposeSegmentProjectionBound = false;
+
+}  // namespace bsp
