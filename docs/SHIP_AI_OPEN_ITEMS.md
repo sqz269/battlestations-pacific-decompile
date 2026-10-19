@@ -19743,3 +19743,7 @@ Read with `disasm-raw 009F4C10 --length 120` and `ghidra disasm 009DA250`.
 
 Predictions: no row is known to feed a NaN here, so pairs are gameplay identical (exit 0 or 1). A moved pair means a
 NaN reached the rudder or a ring value, which would be a finding of its own.
+
+**Result, flipped ON.** Reference-env pairs on f4d92c331: USN04 20000 (`s60_naoff_u04` / `s60_naon_u04`) and JM08 24000
+(`s60_naoff_j08` / `s60_naon_j08`, mission end at 20401 frames) are identical, pair_diff exit 0, as predicted. The
+change is draw-order neutral, so no default-env pair.

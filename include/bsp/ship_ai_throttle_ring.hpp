@@ -108,7 +108,8 @@ inline constexpr float kShipAiRudderHigh = 1.0f;  // 00D7A24C
 // host sent -1). 009F4C4E FCOMI(step, |d|) JBE and 009F4C6A FCOMPI(desired,
 // previous) JBE take the step-and-subtract arm on NaN, so a NaN desired value
 // gives previous - step (the host passed the NaN through). False: the old arms.
-inline constexpr bool kShipAiRingNanArmsBound = false;
+// ON: USN04 20000 and JM08 24000 reference-env pairs identical (exit 0).
+inline constexpr bool kShipAiRingNanArmsBound = true;
 
 float ship_ai_rudder_from_heading_error_009da250(ShipAiThrottleDirection latched_direction,
                                                  float heading_error,
