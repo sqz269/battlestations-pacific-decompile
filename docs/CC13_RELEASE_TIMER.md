@@ -118,6 +118,13 @@ rack, and `kBayRequestNoForceEnableBound` (ON) leaves a disabled channel C disab
 gunnery host it leaves the `0.0f` and records `ReleaseTimer::reseed_bounds`. One line per draw:
 `release timer reseed: unit=... t=... countdown=... (009FA3EA 00BD2F10 stream 1)`.
 
+What this switch fixes is the countdown VALUE: U([timer+4h], [timer+8h]) = U(0.5f, 1.0f) instead of
+0.0f. It does not reproduce the image's draw sequence. In the image, stream 1 is per-thread and
+reseeded from the clock, so its exact sequence is not reproducible
+(`docs/CC13_RNG_STREAM_CENSUS.md`), and no host draw order can match it bit for bit. The draw still
+has its own sub-switch, because in the host it consumes the shared stream and so shifts every later
+host stream-1 draw.
+
 `kReleaseTimerPredicate007BB110Bound`. `bsp::cc13_release_timer::unit_can_release_007bb110(
 channel_c.enabled, channel_c.value, bay)` replaces the substitution. `bay` is computed only when the
 first two arms do not decide (the image's short-circuit): the first rack, in host rack order, whose
@@ -188,8 +195,9 @@ gets a second chance in these runs.
 
 Expected ON effect:
 - Reseed: one more stream-1 draw per fire (1 / 5 / 1 / 45 in USN21 / USN01 / BSM09 / BSM01), so
-  every later stream-1 draw in those missions shifts (RNG-coupled divergence: AA, death modes, rack
-  delays). The `timer_009FA3A0=` column of the summary moves from 0.00 to the drawn value less the
+  every later host stream-1 draw in those missions shifts (RNG-coupled divergence: AA, death modes,
+  rack delays). That shift belongs to the host's shared stream and is not a fidelity target, since the
+  image's stream 1 is clock-seeded (section 6). The `timer_009FA3A0=` column of the summary moves from 0.00 to the drawn value less the
   ticks spent after it. New `release timer reseed` lines.
 - Predicate: USN01 and BSM01 have no enabled channel C, so `007BB110` answers 1 and the first fires
   are unchanged. In USN21 and BSM09 a bay-door plane is refused until its bay is at 1.0f:

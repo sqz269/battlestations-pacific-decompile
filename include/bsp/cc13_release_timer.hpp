@@ -34,7 +34,10 @@ namespace bsp::cc13_release_timer {
 // True: the host's countdown after a fire is that draw (through
 // GameGunneryHost::death_mode_draw_00bd2f10(1, ...)), so the next fire waits
 // 0.5-1.0 s. False: the countdown is 0.0f after a fire and nothing is drawn,
-// as before.
+// as before. The fidelity gain is the countdown VALUE: the image's stream 1
+// is per-thread and clock-seeded (docs/CC13_RNG_STREAM_CENSUS.md), so its
+// sequence is not reproducible. The switch is separate because the host draw
+// shifts the host's shared stream.
 inline constexpr bool kReleaseTimerReseedDrawBound = false;
 
 // 009FA3C3-009FA3CC: 007BB110 BSP_Unit_CanReleaseOrdnance(ECX = unit). True:
