@@ -34,6 +34,7 @@
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/camera_path_sampler.hpp"      // packet cc9_land_convoy_movement
 #include "bsp/return_to_base.hpp"           // packet cc9_squadron_land_task
+#include "bsp/cc13_kz_latch.hpp"            // packet cc13-kzlatch
 #include "bsp/land_and_structures.hpp"      // packet cc9_land_convoy_movement
 #include "bsp/cc15_land_convoy.hpp"         // packet cc13-convoy
 #include "bsp/land_convoy_dead_cc13.hpp"    // packet cc13-dead
@@ -14794,7 +14795,8 @@ void GameUnitsHost::Impl::record_return_to_base_007f16d0(std::size_t unit_index)
     in.min_water_spd_198 = cls.min_water_spd;
     in.head_present = true;
     in.head_is_kamikaze_17 = bsp::unit_is_kind_of(slots[head]->class_id, 0x17);
-    in.head_c24 = false;
+    in.head_c24 = bsp::cc13_kz_latch::kRtbHeadC24PilotFiresCc13Bound
+        && slots[head]->plane_pilot_fires_c24;   // 007F171A, packet cc13-kzlatch
     // sq+369h ReloadEnabled: 007F1FE0 from the scene bag over the constructor's 1
     // (007F2D09); no scene in this installation authors it, so the substitution
     // shared with the other +369h readers (cc13-gpr38b).
@@ -14906,6 +14908,10 @@ void GameUnitsHost::Impl::record_return_to_base_007f16d0(std::size_t unit_index)
         }
     } else {
         note += " no-zones";
+    }
+    // Packet cc13-kzlatch, ON only: the retreat arm's 004C7730 result.
+    if constexpr (bsp::cc13_kz_latch::kRtbHeadC24PilotFiresCc13Bound) {
+        if (zones != nullptr) note += in.zone_found ? " zone-hit" : " zone-miss";
     }
     const bsp::ReturnToBaseResult r = bsp::resolve_return_to_base_007f16d0(in);
     const int arm = static_cast<int>(r.arm);
@@ -19127,7 +19133,10 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
         if (!st.latch_3c && bsp::spent_ordnance_command_class_009f8160(command)) {
             bool any = false;
             for (const std::size_t m : alive) {
-                if (plane_holds_rack_round_007b9140(m)) { any = true; break; }
+                // 007B914A: an IsKindOf(17h) member answers 007B9140 before its racks
+                // (packet cc13-kzlatch, docs/CC13_KZ_LATCH.md).
+                if ((bsp::cc13_kz_latch::kKamikazeRackRoundLatchCc13Bound && unit_is_kind_of(m, 0x17))
+                        || plane_holds_rack_round_007b9140(m)) { any = true; break; }
             }
             if (reload_open && !any && !unit_is_kind_of(leader, 0x13)) {
                 st.latch_3c = true;
@@ -19158,7 +19167,10 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                     && unit_is_kind_of(leader, 0x13)) {
                 bool any = false;
                 for (const std::size_t m : alive) {
-                    if (plane_holds_rack_round_007b9140(m)) { any = true; break; }
+                    // 007B914A: an IsKindOf(17h) member answers 007B9140 before its racks
+                    // (packet cc13-kzlatch, docs/CC13_KZ_LATCH.md).
+                    if ((bsp::cc13_kz_latch::kKamikazeRackRoundLatchCc13Bound && unit_is_kind_of(m, 0x17))
+                            || plane_holds_rack_round_007b9140(m)) { any = true; break; }
                 }
                 if (!any) {
                     st.fighter_ended_command = command;
@@ -19189,7 +19201,10 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
         if (census && !st.latch_3c && command != st.census_unlatched_class) {
             bool any = false;
             for (const std::size_t m : alive) {
-                if (plane_holds_rack_round_007b9140(m)) { any = true; break; }
+                // 007B914A: an IsKindOf(17h) member answers 007B9140 before its racks
+                // (packet cc13-kzlatch, docs/CC13_KZ_LATCH.md).
+                if ((bsp::cc13_kz_latch::kKamikazeRackRoundLatchCc13Bound && unit_is_kind_of(m, 0x17))
+                        || plane_holds_rack_round_007b9140(m)) { any = true; break; }
             }
             if (!any) {
                 st.census_unlatched_class = command;
@@ -19216,7 +19231,10 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
             const std::size_t t = h.slots[leader]->command_target_plus_one;
             bool any = false;
             for (const std::size_t m : alive) {
-                if (plane_holds_rack_round_007b9140(m)) { any = true; break; }
+                // 007B914A: an IsKindOf(17h) member answers 007B9140 before its racks
+                // (packet cc13-kzlatch, docs/CC13_KZ_LATCH.md).
+                if ((bsp::cc13_kz_latch::kKamikazeDeadTargetRetestCc13Bound && unit_is_kind_of(m, 0x17))
+                        || plane_holds_rack_round_007b9140(m)) { any = true; break; }
             }
             if (any && t != 0 && t != st.retest_target && gun->unit_dead(t - 1)) {
                 st.retest_target = t;
