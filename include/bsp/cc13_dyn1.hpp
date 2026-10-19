@@ -20,6 +20,25 @@ struct NativeDynNarrowPhaseCalls;
 
 namespace bsp::cc13_dyn1 {
 
+// oct18b-nC: polygon clipping helpers in the in-house code band. Original
+// ECX=&output_count, ESI=output_xy; stack input_xy,count,bound, RET 0Ch.
+// Input is a closed polygon represented by n>=1 XY pairs; output must have
+// capacity for 2*n pairs and be disjoint from input. No capacity check exists.
+// x87 comparisons include unordered values on the inside branch (JBE).
+void clip_y_at_most_00c309d0(std::int32_t& output_count, float* output_xy,
+    const float* input_xy, std::int32_t count, float bound);
+void clip_y_at_least_00c30d10(std::int32_t& output_count, float* output_xy,
+    const float* input_xy, std::int32_t count, float bound);
+void clip_x_at_most_00c31060(std::int32_t& output_count, float* output_xy,
+    const float* input_xy, std::int32_t count, float bound);
+void clip_x_at_least_00c313a0(std::int32_t& output_count, float* output_xy,
+    const float* input_xy, std::int32_t count, float bound);
+// 00C34CF0: EBX=count, stack output-matrices,node-pointer-array, RET 8.
+// Each node's +08h twelve floats become four rows of XYZ,0/0/0/1.
+void expand_node_matrices_00c34cf0(float* output, const void* const* nodes, std::int32_t count);
+// 00C30900: EAX=word pointer, MOV [EAX],0; RET; EAX retained by native body.
+void zero_word_00c30900(std::uint32_t* word) noexcept;
+
 struct Raw {
     std::uint8_t* p;
     template <class T>

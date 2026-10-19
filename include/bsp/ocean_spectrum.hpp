@@ -188,3 +188,12 @@ float ocean_live_field_coverage_mask(float x, float z);
 float ocean_live_field_water_height_0078cf20(float x, float z);
 
 }  // namespace bsp
+
+namespace bsp {
+// cOceanSpectrum vtable 00D638F8 slots 4..7: four distinct bare RET bodies.
+// ECX is unused; no stack arguments, no defined return value, no state changes.
+void ocean_default_slot4_00b96e60();
+void ocean_default_slot5_00b96e70();
+void ocean_default_slot6_00b96e80();
+void ocean_default_slot7_00b96e90();
+} // namespace bsp

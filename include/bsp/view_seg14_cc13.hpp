@@ -77,6 +77,22 @@ void binoculars_screen_destruct_0051ea20(Raw screen, ViewSeg14Hooks& hooks);
 void binoculars_screen_register_0051ed60(Raw screen, ViewSeg14Hooks& hooks, NativeStringStorage& strings);
 void binoculars_screen_enter_0051ee50(Raw screen, ViewSeg14Hooks& hooks, NativeStringStorage& strings);
 void binoculars_screen_collect_children_0051f040(Raw screen, Raw out, ViewSeg14Hooks& hooks);
+// Newly defined vtable leaves (oct18b-nA2). 0051E9A0 adjusts ECX by -8 and
+// tail-jumps to scalar delete 0051ED40, flags on stack/RET4, EAX=base identity.
+Raw binoculars_observer_delete_0051e9a0(Raw observer,std::uint32_t flags,ViewSeg14Hooks&);
+// 0051F380: RET. 0051F390: RET4. Callback base C E C A 2 8 slots7/8.
+void callback_noop_0051f380() noexcept;
+void callback_noop_0051f390(std::uint32_t) noexcept;
+// 00521160: ECX=owner, stack destination vector/RET4; pushes &owner[1Ch].
+void callback_collect_member_00521160(Raw owner,Raw vector,ViewSeg14Hooks&);
+// Separate extension keeps existing concrete host implementers unchanged.
+struct HudExitHooks : ViewSeg14Hooks {
+    virtual void weapon_group_release_005470c0(Raw screen) = 0;
+    virtual void send_role_transfer_0077c470(Raw unit,std::uint32_t mask,std::uint32_t take) = 0;
+};
+// 005212E0: ECX=screen, RET. Global HUD root +50h release first, then if
+// screen+1Ch nonnull send role-transfer(mask=1FEh,take=0) using that receiver.
+void hud_screen_2f_exit_005212e0(Raw screen,const ViewGlobals&,HudExitHooks&);
 void binoculars_update_view_0051f330(Raw screen, float dt, ViewSeg14Hooks& hooks);
 
 // ---- lazy singletons (the shared getter body of engine_seg4_6_9_cc13.cpp) ----------------------
