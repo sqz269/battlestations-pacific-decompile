@@ -510,5 +510,14 @@ For the Betty: `VehicleClass[32].Platforms[*].Gun` holds 143. `DeviceClass[143]`
 
 The host now follows the chain in `GameMissionLuaHost::mark_vehicle_class_device_bullets_00960230`, run from every row mark under the switch. It is recursive, so the linked class's own devices are followed too. UNCERTAIN: it reads `KamikazeBulletClass` on any row, while the image reads it only for the plane family. In this installation that key names only `Kamikaze` bullets, so the result is the same.
 
+Pairs on 99785234b, same tree, the switch flipped only in the ON export (`local\vcp6_on`). Env `BSP_DEATH_TABLE=1 BSP_GUNNERY_RNG_STREAMS=1`. Both pair_diffs exit 1 with gameplay, death rows, plane death modes and the unit table identical. In both, the only rows that moved are the vehicle-class lines: the purge and census lines, the +08h vector line, the `marked` summary, and the 0046BF20/0046BF70 status rows. Lua errors and script nil reads are 0.
+
+| mission | orders / frames | purged / kept | marked OFF -> ON | new-chain marks | result ON |
+|---|---|---|---|---|---|
+| USNOS | cc9-ships59 `s59_os_c17`, 60000 | 528 / 105 | 99 -> 105 | `156@006FF1E5` | exit 0. 10 drop-kamikaze releases from 2841.8 s; `Betty5_kz01` spawns with creator 00956240, as OFF; 0 "creator projection is unavailable". Mission fails at 2871.68 s ("Game Over") on both sides |
+| USN21 | `s46_u21_f`, 12000 | 590 / 43 | 36 -> 43 | none | exit 0, as in the cc15-vcp5 pair. 24 squadrons, all with `class_row=found` |
+
+On USNOS, the remaining OTHER-line differences are renderer lost-device frames and presents (`lost_polls` 8 -> 18), which is window noise, not gameplay.
+
 Not censused, and still open: the load-time resolves in 00743450 LandConvoy roster, 006F3660 CommandBuilding garrison, 0084D170 / 0084D560 support sites, plus the three open items listed under step 3 (traffic, PowerupClass, shipyards).
 
