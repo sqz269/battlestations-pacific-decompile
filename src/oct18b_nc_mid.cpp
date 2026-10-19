@@ -25,13 +25,13 @@ std::int32_t cell_index(std::int32_t width, std::int32_t i, std::int32_t j) {
 }
 // 00ADC5AA..00ADC5DA and 00ADFAB8..00ADFAE7: keep the subtraction and
 // multiplication on the x87 stack; change only rounding-control bits for FISTP.
-std::int32_t encode_height(float height, float offset, float multiplier) {
+std::int32_t encode_height(float height, float height_offset, float multiplier) {
 #if defined(_MSC_VER) && defined(_M_IX86)
     std::uint16_t previous_control, truncation_control;
     std::int32_t encoded;
     __asm {
         fld height
-        fsub offset
+        fsub height_offset
         fnstcw previous_control
         mov ax, previous_control
         fmul multiplier
@@ -43,7 +43,7 @@ std::int32_t encode_height(float height, float offset, float multiplier) {
     }
     return encoded;
 #else
-    const long double value = (static_cast<long double>(height) - offset) * multiplier;
+    const long double value = (static_cast<long double>(height) - height_offset) * multiplier;
     if (!std::isfinite(value) || value < -2147483648.0L || value >= 2147483648.0L)
         return (std::numeric_limits<std::int32_t>::min)();
     return static_cast<std::int32_t>(value);
@@ -79,11 +79,11 @@ float tile_translation(float spacing, std::int32_t coordinate) {
 #endif
     return result;
 }
-void copy_float3_x87(float* out, const float* in) {
+void copy_float3_x87(float* destination_values, const float* source_values) {
 #if defined(_MSC_VER) && defined(_M_IX86)
     __asm {
-        mov eax, in
-        mov edx, out
+        mov eax, source_values
+        mov edx, destination_values
         fld dword ptr [eax]
         fstp dword ptr [edx]
         fld dword ptr [eax + 4]
@@ -92,7 +92,9 @@ void copy_float3_x87(float* out, const float* in) {
         fstp dword ptr [edx + 8]
     }
 #else
-    out[0] = in[0]; out[1] = in[1]; out[2] = in[2];
+    destination_values[0] = source_values[0];
+    destination_values[1] = source_values[1];
+    destination_values[2] = source_values[2];
 #endif
 }
 }
