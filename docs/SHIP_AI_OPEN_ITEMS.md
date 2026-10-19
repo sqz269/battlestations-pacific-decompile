@@ -19921,3 +19921,38 @@ newest lead message wins):
    - Pair USN04, JM08, USN21 and BSM09 in both envs.
 4. **The turret-hit retry**, once cc13 adjusts the `aim unit` pitch for ships (item 2 of the open
    list above).
+
+## 302. cc13's seg67 ship batch paired and flipped (cc9-ships60, 2026-10-19)
+
+The seven OFF switches of cc13-seg67g..l (origin/main 0e29a3d91; include/bsp/ship_ai_seg67_switches_cc13.hpp and
+cc13_ship_ai_commit_band.hpp, docs/CC13_SEG67D.md) were paired in the reference env on 913bac450 (one pair_export ON
+tree per switch, local\s60_sb_<k>; OFF = the tree build): USN04 20000 frames without orders, JM08 72000 frames with
+config/win_orders/jm08_l65_j8_p2.txt (the cg pair 36000 frames, below), USN21 40000 frames with
+cc9-ships44\local\s46_u21_f.txt. pair_diff exit codes, then the mechanism check on the first moved ship AI sample
+(local\s60_firstdiv.py, per unit):
+
+| switch | item | USN04 | JM08 | USN21 | first moved unit, and why |
+|---|---|---|---|---|---|
+| kShipAiCommitmentBandQuarterBound | G + H | 0 | 3 | 3 | JM08 Helena 375.03 s and USN21 Atago 147.05 s: throttle -0.56 (astern) -> +1.17 / +1.00 (ahead). The host's threshold was 16 times the image's, so it always took the astern band. |
+| kShipAiTorpedoMarginClassLengthBound | I | 0 | 0 | 0 | none |
+| kShipAiStationLatchClearBound | C | 0 | 3 | 0 | JM08 LSM 01 (follow) at 725.95 s: target heading -2.1462 -> 0.6463 after the latches clear on a skipped station tick |
+| kShipAiParkedByteBeforeTailBound | D | 1 | 0 | 0 | none in gameplay; on USN04 rudder-curve and neighbour-list counts move |
+| kShipAiClearanceRefreshSentinelBound | F | 1 | 1 | 1 | none; the 37Ch columns print 10000 for 9999 |
+| kShipAiNavigateAsternSkipBound | D' | 0 | 3 | 0 | JM08 Gyoraitei #Y1 (attackmove, navigate_astern) at 18.05 s: the tail is skipped, d32c 10411 -> 0 and the target heading is the desired one. JM08 then fails at 1276.17 s ("The HQ has been destroyed!"); OFF ends without a result. |
+| kShipAiNavGateClosedArmFinalBound | closed gate | 1 | 3 | 3 | USN21 Dace (sub_attack, heading mode) at 132.05 s and JM08 Helena from 15 s: the closed gate now runs 009DE5B0, so heading-mode units take the arm-final step |
+
+Every move starts at the switch's own mechanism, so all seven are flipped ON (faithful fixes, byte-reviewed by
+cc13). The first JM08 cg run was killed at frame 54208 with a 3.5 GB log (FreeAttack lines); it was rerun with its
+OFF partner at 36000 frames (`s60_sboff_j08s` / `s60_sbcg_j08s`, exit 3, 132 -> 192 death rows). None of the paired
+rows is a current WINS win: jm08_l65_j8_p2 does not end in 72000 frames with every switch OFF.
+
+**Merge with main (cross-reference 300).** cc9-gunnery53 landed the two navigation switches independently (section 300:
+kShipAiNavGateClosedArmFinalBound and, after its approach_step audit, kShipAiNavigateAsternSkipBound), so the merged
+header keeps main's lines for those two and this section's flips for the other five. The two JM08 astern results
+differ because the runs differ: gunnery53's pair ends without a result in 1500 s, while `s60_sbdp_j08` (72000 frames
+with config/win_orders/jm08_l65_j8_p2.txt, reference env on 913bac450) fails at 1276.17 s with "The HQ has been
+destroyed!". Different plans and lengths; both start at the mode-3 tail skip.
+
+Reach note (cc13, through the lead): G and I are also live in IJN08, where Kinugasa makes 319 evasion overrides in the
+Elco torpedo field from 747 s until it sinks at 816 s. Those overrides had max_turn = 0, so they are not a proven
+course change, and no IJN08 pair was run.
