@@ -37,7 +37,7 @@ matches these bytes. It works on the raw plane layout. The units host keeps plan
 
 `[[00E188A8]+1FE4h]` is the session mode: 0 in single player, 1 on a host, 2 on a client.
 - In mode 0 the router `0077C2A0` sets `EBX = 1` at `0077C333`. Then `0077C43A TEST BL,1` /
-  `0077C44D` posts the message to the loopback queue with `0076E520` (ECX = the session).
+  `0077C44D` posts the message to the loopback queue with `0076E520` (ECX = `[00E188A8]+1EF0h`, not the session object itself).
 - The peer loop (`0077C3CB..`) runs only in mode 1.
 - So this is **not** a peer-only send like `0077C7B0`. The C3h comes back to the same plane.
 - The pump drains the queue at row 9 of the same fixed step: `00778542` calls `0076C600`, which
@@ -104,8 +104,9 @@ ECX = the message's `+20h`:
 - **Delivery time.** The image delivers at row 9, after every unit's think.
   - The host delivers after the plane's own takeoff step (SlowTakeoff path) or at the end of the
     push (retakeoff path).
-  - In between, only other planes can tell the difference, through this plane's `+904h`/`+910h`
-    in `006CE4A0` / `006CF5B0`. At most one think differs.
+  - From the host's delivery until row 9, everything that runs sees this plane's `+904h`,
+    `+908h` and `+910h` early. That includes the rest of this plane's own think after the tick
+    or the push, and other planes through `006CE4A0` / `006CF5B0`. At most one think differs.
   - On the SlowTakeoff path the step has already cleared `+904h` (`009CE2E0`) before either
     delivery, as in the image.
 - **The 007CB5F0 arm** is not run. `+904h` and state 7 never coexist: every image writer of
@@ -217,6 +218,10 @@ control.
   - The shipyard builds plane squadrons with `WingCount` 1, so only the fused leader exists.
 - 007BC5B0's `+61h`/state-7/6/4 tests are still not modelled at the water site. Only the `+AA0h`
   term is added.
+  - The image tests `+61h` first (`007BC5B0`). When it is set, the image returns `+9E2h`
+    (`007BC5B6`) before the `+AA0h` term is reached.
+  - The host's ON override ignores `+61h`, so it applies the `+AA0h` term in that case too.
+    Nothing writes `+61h` in this host.
 - 007C2680 (the network create message) is not modelled.
 
 ### ON-only lookups
@@ -273,8 +278,9 @@ Only one row reaches a post: USNOS at 75000 frames (cc9-ships44 `s60_b_c18c`).
 ## 4. Uncertainties
 
 - `00780670`'s delivery was not re-read beyond the docs (GUNNERY_OPEN_ITEMS 26,
-  ENTITY_ORDER_MESSAGE). That covers whether a dead plane (`+5Dh`) still gets its C3h, and
-  007CCFA0's first test `vtable[0Ch](62h)` on the message.
+  ENTITY_ORDER_MESSAGE). That leaves open whether a dead plane (`+5Dh`) still gets its C3h.
+- Closed by rev4: 007CCFA0's first test, the message's `vtable[0Ch](62h)`, is `007628F0`. It
+  answers false for C3h, so the kind dispatch always proceeds.
 - 007CA3F0's arm for states outside 1..5 is the host function's existing approximation, which
   stops after the probe without a holder. No log reaches it.
 - Whether any untested mission builds a plane squadron from a shipyard. The shipyard

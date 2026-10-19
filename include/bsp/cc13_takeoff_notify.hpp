@@ -1,8 +1,9 @@
 #pragma once
 
-// cc13-takeoff adoption switches (docs/CC13_TAKEOFF_NOTIFY.md). Both are OFF: the
-// units host keeps its current behaviour until a pair run judges the ON arm.
-// Neither arm draws from the shared RNG 00BD2F10.
+// cc13-takeoff adoption switches (docs/CC13_TAKEOFF_NOTIFY.md). All three are OFF:
+// the units host keeps its current behaviour until a pair run judges the ON arm.
+// The first two draw nothing from the shared RNG 00BD2F10; the third
+// (kPlaneShipyardLaunchSlowPushCc13Bound) does, through SlowTakeoff's enter 009CE1D0.
 
 namespace bsp {
 
