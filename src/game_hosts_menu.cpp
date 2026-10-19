@@ -235,6 +235,8 @@ struct GameMenuHost::Impl {
     GameVfsHost& vfs; // Append the existing borrow without moving older fields.
     // cc15-prof: the storage Lua for the read-only profile load (00B6A020).
     GameScriptHost* profile_scripts{nullptr};
+    // cc15-prof2: bound by the startup host; empty unless kQuickSettingsApplyCc15Bound.
+    GameProfileSettingsSinks profile_settings_sinks{};
     void load_signed_in_profile_0067cc60();
 
     Impl(GameHostLog& log_in, GameFrontendHost& frontend_in, GameStateSlot& state_in,
@@ -1841,7 +1843,7 @@ void GameMenuHost::Impl::load_signed_in_profile_0067cc60() {
     try {
         static_cast<void>(load_signed_in_profile_read_only(profile, log, read_only_save_root(), "0",
             profile_scripts->files().owner_environment(profile_scripts->runtime(),
-                profile_scripts->globals())));
+                profile_scripts->globals()), &profile_settings_sinks));
         log.implemented("PressStartScreen::apply_sign_in profile load", "0067cc60");
     } catch (const std::exception& error) {
         log.notef("profile load failed: %s", error.what());
@@ -1885,6 +1887,9 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
 GameMenuHost::~GameMenuHost() = default;
 
 GameMissionHost* GameMenuHost::mission() const noexcept { return impl_->mission.get(); }
+void GameMenuHost::bind_profile_settings_sinks(const GameProfileSettingsSinks& sinks) {
+    impl_->profile_settings_sinks = sinks;
+}
 
 GameHudHost* GameMenuHost::hud() const noexcept { return impl_->hud.get(); }
 

@@ -54,6 +54,7 @@
 #include "bsp/game_hosts_init_tail.hpp"
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_message_manager.hpp"
+#include "bsp/game_profile_load.hpp"
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/native_loading_queue_owner.hpp"
 #include "bsp/native_render_service_base.hpp"
@@ -2812,6 +2813,22 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         menu_->mission()->set_chosen_difficulty(options_.difficulty);
         log_.notef("--difficulty %d: chosen difficulty game+6B0h = %d (default 1)",
             options_.difficulty, options_.difficulty);
+    }
+    // cc15-prof2: the live settings and the host state 008D5B50 reaches at the
+    // sign-in (docs/CC15_PROFILE_LOAD.md section 6).
+    if constexpr (kQuickSettingsApplyCc15Bound) {
+        GameProfileSettingsSinks sinks;
+        sinks.settings_00f88980 = &settings_process_->settings();
+        sinks.languages = &settings_host_->language_catalog();
+        sinks.pixel_shader_version_28 = renderer_capabilities_.pixel_shader_version_28;
+        sinks.sound_alternate_00f8bbcc = sound_ ? &sound_->alternate_00f8bbcc : nullptr;
+        if (input_) {
+            GameInputRuntime* input = &input_->core;
+            sinks.set_rumble_enabled_00a94c50 = [input](bool enabled) {
+                input->set_rumble_enabled_00a94c50(enabled);
+            };
+        }
+        menu_->bind_profile_settings_sinks(sinks);
     }
     // Milestone 2o, --ai-drive <name>=<throttle>,<rudder>, the same way.
     if (!options_.ai_drive_unit.empty() && menu_->mission() != nullptr) {
