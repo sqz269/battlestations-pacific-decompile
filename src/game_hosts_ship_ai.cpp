@@ -14057,7 +14057,7 @@ void GameShipAiHost::log_sample(unsigned long long step_index, unsigned long lon
         char line[320];
         std::snprintf(line, sizeof(line),
             "%-20s state=%-10s mode=%-7s dir=%-7s throttle=%7.3f rudder=%7.3f "
-            "heading=%8.4f target=%8.4f d32c=%9.2f d330=%9.2f slot=%d fire=%s",
+            "desired_1d8=%8.4f target=%8.4f d32c=%9.2f d330=%9.2f slot=%d fire=%s",
             row.unit.c_str(), row.state.c_str(), steering_mode_name(row.steering_mode),
             direction_name(row.latched_direction),
             static_cast<double>(row.desired_throttle),
@@ -14071,7 +14071,11 @@ void GameShipAiHost::log_sample(unsigned long long step_index, unsigned long lon
         // moved, because 32 ships every ten steps is 1248 lines of the same row.
         if (host.controllers[index].sample == line) continue;
         host.controllers[index].sample = line;
-        host.log.notef("  ship ai step %llu  %s", step_index, line);
+        // desired_1d8 is blk+1D8h, which only 009E0040 set_desired_heading writes (movetopos
+        // never does), so it is not the hull's heading; hull= is. The hull heading moves every
+        // step, so it is kept out of the change test above.
+        host.log.notef("  ship ai step %llu  %s hull=%8.4f", step_index, line,
+                       static_cast<double>(host.units.unit_heading_radians(index)));
     }
 }
 
