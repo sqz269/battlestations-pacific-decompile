@@ -7056,7 +7056,7 @@ struct GameUnitsHost::Impl {
     // origin sep for the speed and the glide and writes the speed first. The
     // dive site keeps its own switch, kDiveBombMoveToOriginBound, for the
     // choice of point. False: the double-precision sep and the old torpedo tick.
-    static constexpr bool kMovetoSpeedShapingCc13Bound = false;   // OFF: new
+    static constexpr bool kMovetoSpeedShapingCc13Bound = true;    // ON (p25: USN21 unexercised)
     static_assert(!kMovetoSpeedShapingCc13Bound || kMovetoSpeedBlendBound,
                   "the 009C1850 sep fix shapes the bound 009BECD0 blend");
     // 009C18EC-009C1984, the moveto tick's planar separation (see above).
@@ -7224,7 +7224,7 @@ struct GameUnitsHost::Impl {
     // stores the three and the tick reads them, with the target lift. False: the
     // tick reads the approach fields directly and the base is A, which is low by
     // targetY whenever the target's origin sits above 0 (USN21: up to +1.3 m).
-    static constexpr bool kTorpedoMoveToRangesBound = false;   // OFF: new
+    static constexpr bool kTorpedoMoveToRangesBound = true;    // ON (p25: identity, USN21 census)
     // Packet p22_moveto_c25 (OCEAN_WAVE_FIELD 89). With [unit+C25h] set (a
     // pending release), the moveto state tick 009C2430 (009C2519-009C2559) and
     // the circle tick 009C26D0 (009C275A-009C2794) store cmd+2BCh = 0.0,
