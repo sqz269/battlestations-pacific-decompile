@@ -217,3 +217,19 @@ The runs are USN04 (`--frames 5000 --mission-frames 4800`) and the 12 wins rows 
   and mtime before and after the runs.
 - **Other lines.** The ring-scan `clear_37c` lines (SHIP_AI_OPEN_ITEMS 140), as in the earlier
   flips.
+
+### Strict order re-check (cc15-flip, base f906d5934, 2026-10-19)
+
+The (a) check above used Compare-Object, which compares multisets and does not prove order. I re-ran it as a
+strict index-by-index diff, comparing `kMessageManagerCc15Bound=false` against main, ref env, on USN04 plus the
+12 wins rows. The diff covers activation, draw, power-up, weather, voice, warning, clip, message, dialog, hint,
+objective and Lua lines, with hex masked.
+
+- I dropped the manager's own lines: `message manager *`, `MessageManager::*`, `load_warning_bank` and `mission
+  load`.
+- I masked `records_not_evaluated` and `sound_keys_not_evaluated` in the per-activation warning lines.
+
+Result: on every row both sequences have the same length. The only mismatched position is the end-of-run `summary
+mission warning activate` line, and in it only those two counters differ. No line from another object moves or
+changes its order. Gameplay is identical on all 13 rows. The only other `pair_diff` lines are the heap-dependent
+`clear_37c` table cells (IJN18 Kita2, LOMP10 Kiyoshimo).
