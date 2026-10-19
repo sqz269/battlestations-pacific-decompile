@@ -51,9 +51,15 @@ void air_field_party_race_006d2070(AirFieldLeafHost& host,void* self,
     *kind=0xf;
     host.unit_party_race_00951f30(self,a,b,kind);
     auto* item=static_cast<std::uint8_t*>(ptr(self,0x830));
-    auto end=[&] { return static_cast<std::uint8_t*>(ptr(self,0x830))+
-        static_cast<std::uint32_t>(at<std::uint32_t>(self,0x834)*12u); };
-    while (item!=end()) { host.child_party_race_2c(ptr(item,0),a,b,kind); item+=12; }
+    auto* end=reinterpret_cast<std::uint8_t*>(reinterpret_cast<std::uintptr_t>(item)+
+        static_cast<std::uint32_t>(at<std::uint32_t>(self,0x834)*12u));
+    while (item!=end) {
+        host.child_party_race_2c(ptr(item,0),a,b,kind);
+        const auto count=at<std::uint32_t>(self,0x834);
+        void* const base=ptr(self,0x830);
+        item=reinterpret_cast<std::uint8_t*>(reinterpret_cast<std::uintptr_t>(item)+12u);
+        end=reinterpret_cast<std::uint8_t*>(reinterpret_cast<std::uintptr_t>(base)+count*12u);
+    }
 }
 namespace {
 bool runway_failure_name(void* name) {
@@ -106,9 +112,15 @@ void air_field_target_order_006d2850(AirFieldLeafHost& host,void* self,void* mes
 void air_field_forward_float_006d3eb0(AirFieldLeafHost& host,void* self,float value) {
     host.entity_float_0042ed80(self,value);
     auto* item=static_cast<std::uint8_t*>(ptr(self,0x830));
-    auto end=[&] { return static_cast<std::uint8_t*>(ptr(self,0x830))+
-        static_cast<std::uint32_t>(at<std::uint32_t>(self,0x834)*12u); };
-    while (item!=end()) { host.child_float_f4(ptr(item,0),value); item+=12; }
+    auto* end=reinterpret_cast<std::uint8_t*>(reinterpret_cast<std::uintptr_t>(item)+
+        static_cast<std::uint32_t>(at<std::uint32_t>(self,0x834)*12u));
+    while (item!=end) {
+        host.child_float_f4(ptr(item,0),value);
+        const auto count=at<std::uint32_t>(self,0x834);
+        void* const base=ptr(self,0x830);
+        item=reinterpret_cast<std::uint8_t*>(reinterpret_cast<std::uintptr_t>(item)+12u);
+        end=reinterpret_cast<std::uint8_t*>(reinterpret_cast<std::uintptr_t>(base)+count*12u);
+    }
 }
 void air_field_send_create_006d60b0(Seg30Host& host,
     airfield_marker_seg31_32_argon::Seg31_32Host& message_host,void* self,std::uint32_t peer) {
