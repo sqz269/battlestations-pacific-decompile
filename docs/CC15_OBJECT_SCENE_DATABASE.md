@@ -89,7 +89,27 @@ markers pass see what they saw before. Only USN04's NavPoint reaches this path.
 
 ## Pairs
 
-(filled in below)
+All USN04, `--frames 5000 --press-start-frame 30 --menu-select USN04 --mission-frames 4800
+--mission-frame-seconds 0.05`, through tools/run_game.ps1, 2026-10-19.
+
+- **OFF.** This tree (switch OFF, all three call sites in) against a build of the base a84b1ddac:
+  `pair_diff` exit 0. The native table, summary lines and other lines are identical apart from noise.
+- **ON against OFF.** `pair_diff` exit 1, gameplay identical: deaths 62, hits 882, damage 14522.4, the
+  unit table (90 rows) and the plane death modes (62) are identical. Every moved row:
+  - `+ Game::OnInit scene_database_create_singleton 0046f350` concrete, plus the note line: vtable
+    00CE59FC, +04h=1, class map count 0, +158h set size 5, +164h set size 2. These are the five and
+    two keys 0046F160 inserts, so the 0046AC50 path built both trees.
+  - `~ MissionLoad::resolve_named_scene_objects 004f2800` UNIMPLEMENTED -> concrete, plus the note
+    "registered 26 classes, class map count=26". The summary line `mission load: concrete 17 -> 18,
+    records 26 -> 25` and the `mission load finished` line move with it.
+  - `~ SceneContents::class_creator 004e99b0` UNIMPLEMENTED -> concrete (NavPoint `IJNRetreat`). New
+    rows: `006af3d0` concrete, `00928630` and `004e9a80` UNIMPLEMENTED (one call each). Also the
+    `scene named entity` note (+C4h = 41h, size 1E4h). The NavPoint class line's creator state reads
+    `image 004e99b0` instead of `record 004e99b0`, with `created=0` unchanged.
+  - Every lookup now goes through the native map. No class line, stock line or vehicle-class
+    census/purge line moved. kVehicleClassPreloadCc15Bound is OFF on origin/main (f403f1bf4, the
+    USN21 crash), so its purge lines are absent from both runs. Its census reads
+    `scene_class_row_by_name` like the other sites.
 
 ## Open items
 
