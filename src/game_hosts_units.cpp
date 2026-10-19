@@ -90,6 +90,7 @@
 #include "bsp/kamikaze_task_cc13.hpp"   // packet cc9_lua52_kamikaze_wiring
 #include "bsp/kamikaze_task_host.hpp"
 #include "bsp/plane_land_chain_cc13.hpp"  // packet cc13-landc
+#include "bsp/plane_crash_sweep.hpp"      // packet cc13-cool9dc
 #include "bsp/frontier_wiring_cc13.hpp"  // packet cc13-frontier
 #include "bsp/cc13_lua_natives_wire.hpp"  // packet cc13-luawire 7b
 #include "bsp/depth_charge_task_cc13.hpp"
@@ -1117,6 +1118,10 @@ struct GameUnitSlot {
     unsigned long long land_park_carrier_ticks{0};   // packet cc9_carrier_elevator
     bool plane_taxi_queue_910{false};     // plane+910h: inside the hangar queue band
     bool plane_in_hangar_c00{false};      // plane+C00h, 007B96C0
+    // 007C5F60's plane+9DCh store (007C605D 3.0 / 007C60EA 5.0) and how many times
+    // it ran; read by the gunnery crash sweep (packet cc13-cool9dc).
+    std::uint32_t launch_spot_arms_9dc{0};
+    float launch_spot_cooldown_9dc{0.0f};
     // [unit+360h]+184h cleared: 00951F40(0) -> 00710B80 took the collision part
     // out of the spatial index (007B96C0, 006FC250); 00951F40(1) (006FC0D0)
     // puts it back. Packet cc9_hit_index_detach, SQUADRON_LAND_TASK 5as.
@@ -16693,8 +16698,9 @@ void GameUnitsHost::Impl::airfield_site_tick_006cf980(std::size_t deck_index, La
 // takes y from the airfield's [+7ACh]+9Ch (or the ground height without one) and
 // returns the frame in the airfield's axes (x +110h). 007C5F60 then tilts the
 // forward row to GroundPitch (classDesc+200h: x, z scaled by cos / |(x, z)|, y =
-// sin) and orthonormalises; on an airfield (block+7Ch IsKindOf(45h)) +9DCh = 3.0
-// (00CE3854) and the local y gains WheelHeight (classDesc+1FCh); the +DECh gear
+// sin) and orthonormalises; +9DCh = 5.0 (00CE3850, 007C60EA) when block+7Ch
+// IsKindOf(45h) (AirField), else 3.0 (00CE3854, 007C605D); on both arms the local y
+// gains WheelHeight (classDesc+1FCh, 007C6065 / 007C6135); the +DECh gear
 // and flap writes are not carried (no +DECh block). vtable[ACh](block+7Ch)
 // re-parents the plane to the base; 007EB270(0), 007C18B0(0) and vtable[D8h] are
 // recorded; 007B8E80 attaches the holder block+80h and 007C5AC0(-1.0) probes the
@@ -16705,7 +16711,8 @@ void GameUnitsHost::Impl::airfield_site_tick_006cf980(std::size_t deck_index, La
 // SUBSTITUTIONS, labelled: planeDesc+158h is 0.0 (kPlaneDesc158); the height is
 // point 0's world y (the airfield's +7ACh object is not read); the airfield's
 // axes are taken as the world's, so the local offsets are applied in world;
-// +9DCh has no host field.
+// +9DCh is kept as launch_spot_cooldown_9dc with the count launch_spot_arms_9dc,
+// for the gunnery crash sweep (block+7Ch is the deck owner).
 bool GameUnitsHost::Impl::place_on_launch_spot_007c5f60(GameUnitSlot& p,
     std::size_t deck_index, LandingDeck& d, bool airfield) {
     float pos[3] = {0.0f, 0.0f, 0.0f};
@@ -16825,6 +16832,9 @@ bool GameUnitsHost::Impl::place_on_launch_spot_007c5f60(GameUnitSlot& p,
         static_cast<double>(slide), static_cast<double>(p.plane_ground_pitch_200),
         static_cast<double>(summary.simulated_seconds),
         airfield ? "006CF9F0 / 006CF730" : "006D0050 / 006D0930");
+    p.launch_spot_cooldown_9dc = bsp::unit_is_kind_of(slots[d.owner]->class_id, 0x45)
+        ? bsp::kPlaneCrashAirfieldLaunchCooldown : bsp::kPlaneCrashLaunchCooldown;
+    ++p.launch_spot_arms_9dc;
     done("Plane::place_on_launch_spot_locked_007c5f60", 0x007c5f60u);
     return true;
 }
@@ -41844,6 +41854,15 @@ bool GameUnitsHost::plane_order_view(std::size_t index, int& state_900, bool& la
     landed_904 = s.plane_landed_904;
     enabled_5c = s.row.active;
     command_class = s.attack_command_class;
+    return true;
+}
+
+bool GameUnitsHost::plane_launch_spot_arm_9dc(std::size_t index, std::uint32_t& arms,
+                                              float& cooldown) const noexcept {
+    if (index >= impl_->slots.size() || !impl_->slots[index]) return false;
+    const GameUnitSlot& s = *impl_->slots[index];
+    arms = s.launch_spot_arms_9dc;
+    cooldown = s.launch_spot_cooldown_9dc;
     return true;
 }
 
