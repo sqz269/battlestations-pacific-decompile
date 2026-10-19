@@ -16351,7 +16351,9 @@ void GameUnitsHost::Impl::wing_fold_notify_007c11e0(GameUnitSlot& u) {
 // zeroed (00F87574 taken as the zero vector); 007DDEA0 and 007EB380(0.0f) (the
 // +C98h sub-block's timer and effects) are recorded; +C0Ch has no host field
 // (007BB9A0's gate derives it from +900h); 007BC550 takes the Lua self +4A4h as
-// set, as the state-one copy does, and 00779C60(1.0f) is recorded.
+// set, as the state-one copy does, and 00779C60(1.0f) is recorded; 007EB270
+// (007C12D6, the +C98h FX component's OnFlightState, given the vtable[38h] value of
+// +72Ch) is presentation only, draws no RNG, and is not carried.
 void GameUnitsHost::Impl::flight_state_notify_007c11e0(GameUnitSlot& p) {
     if (!p.wing_fold_read) wing_fold_class_007eabc0(p);
     ++flight_state_notifies;
@@ -17147,7 +17149,9 @@ void GameUnitsHost::Impl::plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char
     p.plane_taxi_queue_910 = false;
     p.plane_landed_904 = false;
     p.plane_airborne_908 = (prev == 4 || prev == 3) ? 0.0f : 3600.0f;
-    // 007C71C3: 007C11E0(0) after the +900h..+908h stores (007C7183..007C71BB).
+    // 007C11E0(0) after the +900h..+908h stores: 007C71C3 when the previous state is
+    // neither 3 nor 4 (+908h = [00CFDEB0], 007C71BB), 007C71D9 when it is (+908h = 0,
+    // 007C71D1). Both arms make the same call, so the host has one site.
     // Packet cc13-frontier: covered by the same switch as the other notify sites.
     if constexpr (bsp::kPlaneFlightStateNotifyCc13Bound) {
         flight_state_notify_007c11e0(p);
