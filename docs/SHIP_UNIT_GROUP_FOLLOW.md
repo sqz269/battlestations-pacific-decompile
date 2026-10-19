@@ -886,6 +886,55 @@ logs are `local\l10_off_<row>.log` and `local\l10_ffon_<row>.log`.
   indirect evidence only.
 - **Verdict: ON.** The mechanism matched on every row.
 
+### 5h. A dead leader's queue and the leaves around it (packet `cc13-jm08`, switch OFF)
+
+`kDeadLeaderDirectorStateCopyBound` (`include/bsp/cc13_jm08_switches.hpp`, which has the kill-site
+phase table) is OFF. Static reading only; nothing here has been run.
+
+Names: `D` is the dead leader, `S` is its successor (`0070D8D0`), `S2` is the successor after `S`,
+and `M` is any other member.
+
+**What the image does.**
+- `D`'s destroy posts a 77h (`0077D1A0` -> `0077C2A0` -> `0076E520`). The FIFO delivers it at the
+  next pump (`0076C600`, row 9) as the whole `0077BD70`: first `0071C150`, which copies `D`'s
+  director state onto `S`; then SetLeader `0070D0C0` makes `S` the leader; then `0070E4C0` detaches
+  `D`.
+- The flush's `0071DDB0` (row 15) posts a 5Dh to `S` only if `S` still observes `D` at that point.
+  When it does, the 5Dh ends `S`'s inherited head.
+- A Lua `LeaveFormation` / `DisbandFormation` (`0077C980` / `0077CA60`) runs after the kill, so its
+  77h is always queued behind `D`'s. `DisbandFormation` takes its member snapshot at the call, while
+  `D` still leads, and puts `D` last.
+
+**What the host does (switch ON).**
+- For a ship, `leader_death_handover_at_kill` runs the whole leave where the image's pump has it:
+  - at a BeforePump kill, in place;
+  - at a HitDrainAfterPump kill, from the posted loopback entry.
+
+  The row-15 flush's leave (`game_hosts_ready.cpp`, `0092639B` site) then finds `+284h` clear.
+- A Lua leave that meets a posted entry, `D`'s own or its leader's, is posted behind it
+  (`post_formation_leave_0077c980`). Every other Lua leave runs synchronously.
+
+| phase | image FIFO at the next pump | `Leave(D)` | `Leave(S)` | `Leave(M)` | `Disband` |
+|---|---|---|---|---|---|
+| BeforePump (image) | `D`'s 77h runs at this step's pump. No 5Dh at the flush. Lua 77h entries go to the next pump. | `D` is gone: nothing happens. | `S` leads with the inherited head intact and copies it to `S2`. | Leaves as a member. | Snapshot of `S`'s group with `S` last: members leave, then `S`. |
+| BeforePump (host) | Whole leave at the kill. The kill's `0071DDB0` finds `S` copied, as in the image. Lua runs synchronously. | Same as the image. | Same as the image. | Same as the image. | Same as the image. |
+| HitDrainAfterPump (image) | `D`'s 77h, then the 5Dh to `S`, then the Lua 77h entries. | Nothing. | `S` leads, the 5Dh has popped the inherited head, and `S` copies the popped queue to `S2`. | Leaves as a member. | Snapshot with `D` last. At the pump, `D`'s 77h makes `S` the leader. When `S`'s turn comes it copies to the next member still in the group. `D`'s entry then finds no group. |
+| HitDrainAfterPump (host) | The posted whole-leave entry, then the 5Dh (`route_clear_command` -> `post_loopback`), then the posted Lua entries. | Same as the image. | Same as the image. | Same as the image. | Same as the image, with members in index order rather than `+4F8h` order (an existing substitution). |
+| Unmapped (host only) | `D`'s 5Dh was posted at the kill. The leave and its copy wait for the next step's flush, which comes after the pump. | A synchronous `leave_group(D)` copies before the 5Dh, so the 5Dh then ends `S`'s inherited head. | **Gap.** `S` leaves as a member with its own queue. The flush hands the group to `S2`, which keeps its own queue. | Leaves as a member. | **Gap.** Members leave in index order and `D` leaves last, so nobody inherits. |
+
+**Backstop.** `leave_group` still runs a posted leader's leave first. With the Lua leaves posted,
+only two synchronous callers can reach it: the ship_ai follower release and a Lua leave whose post
+failed. In those cases the copy precedes the 5Dh, unlike the image.
+
+**Non-ship units.** They keep the copy alone, through the `ran` flag, because this host gives them
+no destroy leave at the flush.
+
+**The extra fixed step.** Its flush (`00874D00` -> `009273A0` at `00874DBE`) finds `+284h` clear
+in the same way as the ordinary flush.
+
+**The unmapped gap.** It is labelled, not fixed. Pulling `D`'s leave forward would choose a 5Dh
+order, and that order depends on an image phase this host has not traced.
+
 ## 6. The cut this packet proposes
 
 The chain does not fit one context at this project's reading fidelity: ~1000 instructions of unread

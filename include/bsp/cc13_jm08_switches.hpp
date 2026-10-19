@@ -71,10 +71,15 @@ inline constexpr bool kDeadLeaderRepublishesFollowerPairBound = false;
 // copy at the next flush, so the head always survives (one step late; the extra
 // 00720850(0) on the successor's old head runs 00835BF0(1) first). Right for a
 // think-phase death such as JM08's Missouri, wrong for a post-pump hit death.
-// True: the kill site's phase (table below) decides. At a HitDrainAfterPump kill
-// the host loopback (FIFO with kSetCommandQueueDelayBound) gets the 77h's 0071C150
-// first (leader_death_handover_at_kill), then the 5Dh (0071DDB0, after it in
-// kill_unit). Lua runs before the next pump, so a LeaveFormation / DisbandFormation
+// True: the kill site's phase (table below) decides. The image's 77h delivery is
+// the whole 0077BD70 (0071C150, SetLeader 0070D0C0, DetachMember 0070E4C0); for a
+// ship (whose destroy leave this host otherwise runs at the row-15 flush,
+// kDeadMemberLeavesGroupBound) the whole leave runs where the image's pump has
+// it: in place at a BeforePump kill, from the posted entry at a HitDrainAfterPump
+// one; the flush then finds +284h clear. Non-ships keep the copy alone. At a
+// HitDrainAfterPump kill the host loopback (FIFO with kSetCommandQueueDelayBound)
+// gets the 77h entry first (leader_death_handover_at_kill), then the 5Dh
+// (0071DDB0, after it in kill_unit). Lua runs before the next pump, so a LeaveFormation / DisbandFormation
 // that meets that posted copy (the unit's own or its leader's) is posted third, as
 // 0077C980 / 0077CA60 queue it, and runs at the pump like the image's; every other
 // Lua leave stays synchronous.
@@ -107,7 +112,14 @@ inline constexpr bool kDeadLeaderDirectorStateCopyBound = false;
 // |                                        |                   | by 0076C600 in the pump; 00821E80 case 70h at   |
 // |                                        |                   | 0082218D -> 00819A20 pushes 00819BA7 / 0084BBF9,|
 // |                                        |                   | drained at row 14                               |
-// Unmapped (the flush-time copy; same end state as BeforePump, a step later):
+// Unmapped (LABELLED gap: the copy and the leave wait for the next step's flush,
+// leave_group_on_destroy_0077bd70 at game_hosts_ready.cpp's 0092639B site; any
+// leave of the successor S before then, Lua or ship_ai, runs while the dead
+// leader still leads, so S leaves as a member with its own queue and the flush
+// hands the group to S2 with S2's own queue, where the image's S, already the
+// leader, would pass its inherited queue on to S2; the dead leader's leave is not
+// pulled forward because the image phase, and so whether the 5Dh precedes the
+// copy, is unknown):
 // the explosion death in run_damage_control (0081B630, its ticker unread);
 // land_master_add_damage_0095da00 and the airfield yard kill (00747170, the vt+7Ch
 // wreck handler, a flush-phase kill, which keeps the head anyway); script damage

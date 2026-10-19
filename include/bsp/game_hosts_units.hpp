@@ -1164,11 +1164,12 @@ public:
     // Packet cc9_dead_member_group_removal: 0077BD70(unit, null) on a destroyed
     // unit, once. No effect for a unit in no group.
     void leave_group_on_destroy_0077bd70(std::size_t index);
-    // Packet cc13-jm08 (kDeadLeaderDirectorStateCopyBound): the 0071C150 part of
-    // 0077BD70 for a dying leader, run from the kill in the image's order:
+    // Packet cc13-jm08 (kDeadLeaderDirectorStateCopyBound): the destroy 77h's
+    // 0077BD70 for a dying unit, run from the kill in the image's order:
     // BeforePump in place, HitDrainAfterPump posted to the loopback ahead of the
-    // kill's 5Dh. leave_group_on_destroy_0077bd70 then skips its own. Unmapped
-    // does nothing (leave_group keeps it).
+    // kill's 5Dh. A ship runs the whole leave (the flush's leave then finds no
+    // group); any other unit only the 0071C150 copy, which leave_group then
+    // skips. Unmapped does nothing (the flush's leave_group does it all).
     void leader_death_handover_at_kill(std::size_t index, bsp::DeadLeaderDeathPhase phase);
     // Packet cc13-jm08 (kDeadLeaderDirectorStateCopyBound): true while the unit's
     // own posted 0071C150, or its group leader's, is still in the loopback. A Lua
