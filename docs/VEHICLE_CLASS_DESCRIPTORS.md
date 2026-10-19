@@ -463,4 +463,14 @@ USN21 (`usn_sibuyan.scn`) crashed with the switch on: a logic_error at mission f
 
 **Host defect.** `scene_stock_lists_0046bf70` read `Hidden` through `scene_stock_int`, which ignores the owning B data of `Hidden = B true`. Every held-back deck's stock was queued as if visible. USN21's log before the fix showed `stock lists 0046BF70 0, stock queue appends 18` (six decks with three counted stock rows each), so 113 and 38 were purged. The route now reads `Hidden` with `hidden_property_bool`, the same read 0046D3C5's host test uses (`scene_stock_hidden`). The code runs only with the switch on, so OFF is unchanged.
 
-Class 101 is authored only on `Count 0` rows (`PlaneStock 4`, empty slots). The image does not route it either, so it is still purged unless something else marks it.
+Class 101 is authored only on `Count 0` rows (`PlaneStock 4`, empty slots). The image does not route it either, so it is still purged unless something else marks it. One point is UNCERTAIN: what 006CB24E passes to 007B8A80 for a `Slot` with no `Type` when the script spawns the deck. That was not read.
+
+Pairs on 059231375, same tree, the switch flipped only in the ON export (`local\vcp5_on`). Env `BSP_DEATH_TABLE=1 BSP_GUNNERY_RNG_STREAMS=1`. Every pair_diff exits 1 with gameplay, death rows, plane death modes and the unit table identical. In every pair only the vehicle-class lines moved: the purge and census lines, the +08h vector line, the `marked` summary, and the 0046BF20/0046BF70 status rows.
+
+| mission | frames | held-back decks | vector (gate + stock lists) / queue | purged / kept | marked OFF -> ON | result ON |
+|---|---|---|---|---|---|---|
+| USN21 `s46_u21_f` | 12000 | 6 | 294 + 18 / 0 (before the fix: 294 + 0 / 18) | 590 / 43 (113, 38 and 26 kept @0046EC77) | 36 -> 43 | exit 0. Passes frame 6018. 24 squadrons (113x12, 38x12) built with `class_row=found`, as OFF |
+| BSM09 `bsm09_l68_b9_d1` | 36000 | 0 | 42 + 0 / 28 | 617 / 16 | 14 -> 16 | exit 0, EndMission 327.04 s, as OFF |
+| USN04 | 12000 | 4 | 102 + 21 / 0 | 599 / 34 | 12 -> 34 | exit 0. 5 squadrons (101x5), as OFF |
+
+On every ON run, `script_nil_reads`, `lua_errors` and `later_host_reads` are 0. The switch stays committed false, and re-flipping it is cc9's call.
