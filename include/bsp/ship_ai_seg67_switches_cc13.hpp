@@ -61,7 +61,14 @@ static_assert(kShipAiClearanceRefreshSentinel == 0x1.388p+13f);    // 0x461C4000
 // audit found the host's approach step makes every 009F3240 steering store. JM08
 // changes from an HQ-capture failure at 977.93 s to a no-end; JM05 and USN04/07/13
 // keep their outcomes.
-inline constexpr bool kShipAiNavigateAsternSkipBound = true;
+// OFF again (cc9 lead, 2026-10-19, labelled INTERIM): cc9-lua70 found the ON
+// path stalls every attackmove unit in mode 3. It publishes the goal and
+// returns before the 009EE765 output, so d32c stays 0.00 on every step and the
+// throttle swings 0.5/-0.625. Examples: LOMP10 Ashigara 3113/3113 steps;
+// ESMP08 Iowa 1848/1848; USN02, USN15 and IJN18 attack forces. The l69 base has
+// none. With only this switch OFF, LOMP10 completes at 1072.47 s. Whatever
+// steers mode-3 units in the image is unhosted; re-flip once cc13 binds it.
+inline constexpr bool kShipAiNavigateAsternSkipBound = false;
 
 // 009EE59B/009EE59F. When blk+1C4h is neither 2 nor 3 (Rudder or Heading),
 // the path gate JZ 009EF206 still reaches 009EF206: 009DE5B0(dt), then
