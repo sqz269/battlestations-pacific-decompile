@@ -169,6 +169,12 @@ NOISE = [
         "kind": "native-calls",
         "name": "PlatformLoopCallbacks::pretranslate",
     },
+    {
+        "id": "arc-guard-census-zero",
+        "why": "`summary mission gunnery arc guard` is always printed from main adc8bf991 on (packet cc13-flak2b); with no drops, keys, inherits or cat6 it says nothing, so the zero form is dropped and a base older than adc8bf991 does not flag it",
+        "kind": "drop",
+        "pattern": re.compile(r"^summary mission gunnery arc guard drops=0 second_keys=0 stale_inherited=0 cat6=0 "),
+    },
 ]
 
 HEX_RE = re.compile(r"\b(0x)?([0-9A-Fa-f]{8})\b")
