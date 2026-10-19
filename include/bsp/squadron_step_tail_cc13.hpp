@@ -80,6 +80,6 @@
 
 namespace bsp::game {
 
-inline constexpr bool kSquadronGeneralStepTailBound = false;
+inline constexpr bool kSquadronGeneralStepTailBound = true;   // ON: OCEAN_WAVE_FIELD 95 (cc9-physics23)
 
 }  // namespace bsp::game

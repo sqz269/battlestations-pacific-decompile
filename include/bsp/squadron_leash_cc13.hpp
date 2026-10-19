@@ -44,7 +44,7 @@
 
 namespace bsp::game {
 
-inline constexpr bool kSquadronDogfightLeashBound = false;
+inline constexpr bool kSquadronDogfightLeashBound = true;   // ON: OCEAN_WAVE_FIELD 95 (cc9-physics23)
 
 // [00CF29A8] = 1.25f, the FLD dword at 009F83D4 pushed as 009F7FE0's scale.
 inline constexpr float kSquadronLeashGuardScale = 1.25f;
