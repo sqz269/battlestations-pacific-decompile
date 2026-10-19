@@ -36,6 +36,7 @@
 #include "bsp/game_hosts_mission_result.hpp"
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_profile_owner.hpp"
 #include "bsp/native_string.hpp"
 
 #include <cstdio>
@@ -326,8 +327,9 @@ void GameMissionResultHost::run_end_scene_004d7970(bool aborted) {
     // the stored record's +24h/+30h/+3Ch/+48h maps (size/sum), +26Ch/+278h and
     // +284h. find, not 00594A70, so the dump never inserts a record.
     if constexpr (bsp::kMissionRecordMergeBound) {
-        const auto it = progress_.mission_scores_00.find(mission_key_);
-        if (decision.commits_record && it != progress_.mission_scores_00.end()) {
+        const bsp::MissionProgress& progress = mission_progress();
+        const auto it = progress.mission_scores_00.find(mission_key_);
+        if (decision.commits_record && it != progress.mission_scores_00.end()) {
             const bsp::MissionScoreRecord& r = it->second;
             unsigned sizes[4]{};
             int sums[4]{};
@@ -496,7 +498,14 @@ void GameMissionResultHost::debrief_bringup_00920a20(bool aborted) {
     record("MissionEndScene::debrief_bringup", 0x004d79b7u);
 }
 
-bsp::MissionProgress& GameMissionResultHost::mission_progress() { return progress_; }
+bsp::MissionProgress& GameMissionResultHost::mission_progress() {
+    if constexpr (kProfileOwnerCc15Bound) {
+        if (profile_ != nullptr) {
+            if (bsp::MissionProgress* progress = profile_->mission_progress()) return *progress;
+        }
+    }
+    return progress_;
+}
 
 const std::string& GameMissionResultHost::current_mission_key() { return mission_key_; }
 
