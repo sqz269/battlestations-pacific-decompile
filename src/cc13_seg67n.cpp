@@ -420,5 +420,11 @@ std::uint32_t ship_ai_attack_substate_command_009db5a0() noexcept { return 0x00E
 std::uint32_t ship_ai_attack_substate_command_009db610() noexcept { return 0x00E08F78u; }
 std::uint32_t ship_ai_attack_substate_command_009db690() noexcept { return 0x00E08F78u; }
 std::uint32_t ship_ai_attack_substate_command_009db7e0() noexcept { return 0x00E08F78u; }
+// 009E49F0 / 009E4CA0 / 009E50D0 / 009E6060: MOV EAX,00E08F78; RET (vtables 00D218F0,
+// 00D21920, 00D2195C, 00D21994, slot +24h).
+std::uint32_t ship_ai_state_command_009e49f0() noexcept { return 0x00E08F78u; }
+std::uint32_t ship_ai_state_command_009e4ca0() noexcept { return 0x00E08F78u; }
+std::uint32_t ship_ai_state_command_009e50d0() noexcept { return 0x00E08F78u; }
+std::uint32_t ship_ai_state_command_009e6060() noexcept { return 0x00E08F78u; }
 
 }  // namespace bsp
