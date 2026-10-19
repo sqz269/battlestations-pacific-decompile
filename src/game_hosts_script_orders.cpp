@@ -3327,7 +3327,20 @@ bool GameScriptOrdersHost::issue_shipyard_moveonpath_008454b4(std::size_t unit_i
     target.kind = 1;
     target.position_valid = 0;
     target.object = path_entity;
-    target.object_id = static_cast<std::uint16_t>(marker->id);   // +174h, entity_object_id's stand-in
+    // +174h, entity_object_id's stand-in. The image's +174h is a 16-bit handle;
+    // this host's marker ids are not: load-time markers (50000 + n) fit, but a
+    // GenerateObject marker (90000 + n) would wrap modulo 65536 and could name
+    // another marker in scene_marker_position. Such an id is posted as 0 (no
+    // object id) instead of wrapped. Only the generated LandConvoy markers are
+    // above 0xFFFF, so no authored Path takes that arm (SHIP_AI_OPEN_ITEMS 295.4).
+    if (marker->id > 0 && marker->id <= 0xFFFF) {
+        target.object_id = static_cast<std::uint16_t>(marker->id);
+    } else {
+        target.object_id = 0;
+        log_.notef("shipyard moveonpath 008454b4: marker \"%s\" id %d does not fit the "
+            "16-bit +174h, posted as object id 0 rather than wrapped", marker->name.c_str(),
+            marker->id);
+    }
     entity_issue_command(entity, bsp::kCommandMoveOnPath, target, 1);   // 008454B4 PUSH 1
     const std::string name = marker->name;
     after_order_delivery([this, unit_index, name]() {
