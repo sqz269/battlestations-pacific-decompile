@@ -141,7 +141,13 @@ body.
 them are hook-declared: 006C8750, 00733430, 007342B0 (also in cc15_g24c.hpp, which is
 untouched), 00748150, 007CCD30, 007F3D40, 007F6D30, 007F7070 and 0081C980.
 
-**Part 2 (26 rows):** pending.
+**Part 2 (26 rows):** 0081CCD0, 0081D0C0, 0081D420, 0081D460, 0081D620, 0081D9B0, 0081E4A0,
+0081E600, 0081E8C0, 0082F8E0, 0082FD20, 00846A10, 00846A20, 00847FE0, 008482F0, 0084B9A0, 0084D480,
+0084FA30, 00931300, 009313C0, 00931450, 00931530, 00937B70, 00937C00, 00951060, 00951160. The two
+5-byte rows 00846A10 / 00846A20 are JMPs to the shipyard vector tidies 00846850 / 008468A0, and
+they are bound with them. Four are hook-declared: 0082F8E0, 0084FA30, 00931530 and 00951160. Across
+both parts, 13 bound rows are hook-declared. 0082FD20 (cited in ship_class_fields.hpp) and
+007D1D30 (plane_class_fields.hpp) are mentioned in comments only, not as hooks.
 
 ## Batch 4: E, 25 rows rebuilt
 
