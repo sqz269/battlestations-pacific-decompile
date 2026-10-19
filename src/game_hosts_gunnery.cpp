@@ -11878,12 +11878,13 @@ void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
     }
     deferred_replay = nullptr;
     if (victim_known) {
-        // Packet cc13-tooklog: the damage the queued hit did, which the push site
-        // logs as took=queued.
+        // Packet cc13-tooklog: the damage the queued hit did. This fires for every
+        // deferred node (direct, blast and gunless), not only the blast pushes
+        // that log took=queued.
         const float after = unit_state[node.victim].health;
         if (node.blast_element) be_damage_element += before - after;
-        log.notef("  deferred hit dispatch on %s took=%.1f health=%.1f",
-            unit_name_or_index(node.victim + 1).c_str(),
+        log.notef("  deferred hit dispatch bullet=%d on %s took=%.1f health=%.1f",
+            node.round_bullet_class, unit_name_or_index(node.victim + 1).c_str(),
             static_cast<double>(before - after), static_cast<double>(after));
     }
     round_bullet_class = saved_class;
@@ -13202,15 +13203,17 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         }
         if constexpr (kHitDeferredDispatchCc13Bound) {
             // Packet cc13-tooklog: ON, apply_hit only queued the hit, so health has
-            // not moved yet; dispatch_deferred_hit logs what it took.
+            // not moved yet; dispatch_deferred_hit logs what it took. A hit the
+            // queue refused (no push) took nothing.
             log.notef("  impact blast bullet=%d on %s dist=%.1f entries=%zu nearest=%.1f "
-                "base=%.1f range=%.1f armour=%.1f took=queued",
+                "base=%.1f range=%.1f armour=%.1f took=%s",
                 gun.bullet_class,
                 unit_name_or_index(i + 1).c_str(), static_cast<double>(distance),
                 element_entries.size(), static_cast<double>(nearest),
                 static_cast<double>(damage),
                 static_cast<double>(weapon->blast_range),
-                static_cast<double>(state.armour));
+                static_cast<double>(state.armour),
+                deferred_hits_queued != queued_before ? "queued" : "refused");
         } else {
             log.notef("  impact blast bullet=%d on %s dist=%.1f entries=%zu nearest=%.1f base=%.1f "
                 "range=%.1f armour=%.1f took=%.1f health=%.1f",
