@@ -91,7 +91,7 @@ inline constexpr bool kPlaneCrashConstructCooldownCc13Bound = true;  // ON: USN2
 // does not re-arm. It replaces the arming of kPlaneCrashConstructCooldownCc13Bound,
 // whose 1.0f and per-plane state it shares, so it needs that switch.
 // False: the arming above.
-inline constexpr bool kPlaneCrashLaunchArmCc13Bound = false;
+inline constexpr bool kPlaneCrashLaunchArmCc13Bound = true;  // ON: USN21/USN04/USNOS pairs (docs/SHIP_AI_OPEN_ITEMS.md 306.5)
 static_assert(!kPlaneCrashLaunchArmCc13Bound || kPlaneCrashConstructCooldownCc13Bound,
               "kPlaneCrashLaunchArmCc13Bound needs kPlaneCrashConstructCooldownCc13Bound");
 

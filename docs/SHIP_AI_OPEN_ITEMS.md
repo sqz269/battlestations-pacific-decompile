@@ -20099,3 +20099,48 @@ breakup as predicted. Default env: IJN18 has no breakup and is gameplay identica
 the shared RNG from the first breakup on: deaths 96 -> 98, and the failure moves from 939.89 to 974.89 s. Note for
 lua70: IJN18 `ijn18_l67_i18_d` does not reach EndMission in 64000 frames on 97bd59009 in either env (OFF too). Its
 reference ended at 1691.52 s.
+
+### 306.4 cc13-kzlatch: kKamikazeRackRoundLatchCc13Bound, kKamikazeDeadTargetRetestCc13Bound, kRtbHeadC24PilotFiresCc13Bound
+
+include/bsp/cc13_kz_latch.hpp, docs/CC13_KZ_LATCH.md. 007B914A answers 1 for any IsKindOf(17h) member before a rack is
+read, so 009F81E9 skips the spent latch for a squadron with a live kamikaze. **Predictions (the lead's queue, before
+the pair), USN21, reference env:** (1) alone: `spent ordnance rtb latches=31 ends=30 issues=30` -> 16/15/15,
+`returntobase null=16` -> 1, `land task REFUSED` 75 -> 0, no task change. (1)+(2): a kamikaze squadron whose target
+dies gets its command ended and re-issued; the kamikazes should keep attacking Intrepid. (1)+(2)+(3): the RTB
+resolve reads the head's +C24h; a moveto-self is possible if Intrepid is released while a kamikaze squadron lives.
+OFF = `local\g54_d_off` (tree build 26bbb19a3), ON = `local\g54_kl1`, `g54_kl12`, `g54_kl123` (pair_export).
+
+### 306.5 kPlaneCrashLaunchArmCc13Bound (plane_crash_sweep.hpp, cc13 follow-up to 303)
+
+**Predictions:** +9DCh = 1.0 at first sight, then 3.0 at each launch-spot placement (5.0 for an AirField owner), and
+no re-arm on a return to state 7. Kamikaze-class planes only, no RNG: reference-env pairs on USN21, USN04 and USNOS
+move only the sweep's cooldown and plane_steps counts unless a re-arm changes an impact. ON = `local\g54_la_on`.
+
+### 306.6 kHitDeferredSameStepDrainCc13Bound with kHitDeferredDispatchCc13Bound (cc13-hitq2)
+
+ON runs one more 00926700 drain right after the host's motion step, so pushes drain in the same step as the image's
+row 6. **Predictions:** the 306.2 one-step lag goes away. BSM09's opening Val deaths stay at 42.70 s, and the
+remaining moves are the order effects only (oldest-hit kill credit, blast before direct, reverse Lua and death-row
+order within a step). USN21 first (expected identical or near), then USN04, JM08 and BSM09, both envs.
+ON = `local\g54_hq2_on` (both switches), OFF = `local\g54_d_off`.
+
+**306.4 measured; all three FLIPPED ON.** The kamikazes spawn at 2767.57 s, so 9000 frames is vacuous (latches=1 both
+ways). Re-run at 64000 frames, no orders, reference env (`g54_doffs_L21` vs `g54_kl1s_L21`, `g54_kl12s_L21`,
+`g54_kl123s_L21`). USN21 completes at 3006.81 s in every run ("Center force is retreating! - Mission Complete!").
+- (1) alone: pair_diff exit 1. Death rows (139) and unit table (198) identical. `spent ordnance rtb` latches/ends/
+  issues 16 -> 1, `returntobase null` 16 -> 1, site keys computed 90 -> 0, `land task refused` 76 -> 1 (the 15
+  Kamikaze1-15 rows of 5 placements each are gone). `squadron free attack` ticks 14631 -> 62074 (stops.refused
+  0 -> 38875): the 15 kamikaze squadrons stay on their attack instead of latching. That is the predicted 15 fewer
+  latches and 75 fewer refusals. The absolute numbers differ from the census (31/30/30) because this head's OFF
+  already has 16.
+- (1)+(2) and (1)+(2)+(3): identical to (1) alone in every compared line. `squadron retest dead_targets=0`: no
+  kamikaze target dies before the mission completes 239 s after the spawn, and the only RTB resolve left is
+  JakeTmpl (not a kamikaze head). So (2) and (3) are UNEXERCISED here. The kamikazes do not go home. Flipped with
+  (1) because the pairing order needs them together and nothing regresses; a row where Intrepid sinks while a
+  kamikaze squadron lives is still needed to see (2) and (3) act.
+
+**306.5 measured; FLIPPED ON.** Reference env, all three rows pair_diff exit 1 with the sweep line unchanged:
+USN21 construct arms 6 -> 6 with launch spot arms 0 (also 134 and 0 on the 64000-frame run); USN04 construct arms
+51 -> 66 with launch spot arms 15; USNOS os_k 63 -> 75 with launch spot arms 12; airfield=0 everywhere. Deck-launched
+planes now take 1.0 at first sight and then 3.0 at placement, so their first swept step is unchanged, as predicted.
+The 5.0 AirField arm is not reached on these rows.
