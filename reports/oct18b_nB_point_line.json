@@ -130,10 +130,12 @@
     "index": "rebuilt after ledger edits",
     "build_log": "local/oct18b_nB_low/distance-build-rerun.log",
     "compiled_coff": "dumpbin confirms naked283-instruction body (280 original+3 binding saves),15 target calls,94h frame,A4h/A8h incoming args,saved/restoredEBP,RET8;972 compiled bytes; static evidence only",
-    "compiled_coff_artifact": "local/oct18b_nB_low/distance-coff.txt"
+    "compiled_coff_artifact": "local/oct18b_nB_low/distance-coff.txt",
+    "merged_integrator_build": "Combined MSVC Win32 scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2). Build/source evidence only; no original binary ABI, runtime or game validation."
   },
   "abi_compatible": false,
   "game_validated": false,
   "uncertainty": "Name/class interpretation is provisional. All target bindings and valid-memory contracts are required. Source schedule/compilation are not runtime ABI or game proof.",
-  "supersedes": "BSP_Deferred_007ae930 (deferred_contract_recovery), middle packet"
+  "supersedes": "BSP_Deferred_007ae930 (deferred_contract_recovery), middle packet",
+  "final_acceptance_report": "reports/oct18b_nB_delivery.json"
 }

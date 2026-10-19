@@ -8,7 +8,8 @@
     "build": "./scripts/build.ps1 passed for all 16 existing translation units (51 game rows). Four opaque leaves in new src/oct18b_nB_high.cpp await integrator merged build.",
     "existing_checks": "reconstructed_math and tool_tests passed 2/2",
     "call_report": "50 call rows checked, 0 failed by tools/verify_report_calls.py",
-    "runtime": "not run; no host wiring requested"
+    "runtime": "not run; no host wiring requested",
+    "merged_integrator_build": "Combined MSVC Win32 scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2). Build/source evidence only; no original binary ABI, runtime or game validation."
   },
   "functions": [
     {
@@ -2278,5 +2279,6 @@
       "008897f0"
     ],
     "rejected_evidence": "Cached unreferenced D7* DWORD sequences include instruction interiors and INT3 padding; not accepted as class vtables."
-  }
+  },
+  "final_acceptance_report": "reports/oct18b_nB_delivery.json"
 }

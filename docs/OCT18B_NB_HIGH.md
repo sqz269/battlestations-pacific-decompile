@@ -92,3 +92,5 @@ Cached index data_ptr/vslot labels at D7E82C, D7E37C, D7FA90, D7FACC and D7FC34 
 | 0091cc70 | reconstructed_build_tested | `read_extended_mission_score_0091cc70` in `src/mission_progress.cpp` | Existing MissionScoreRecord/ProfileArchiveReader family: enter sum, base916A00, leave, integer count+284. 0091cccc: RET 0x4 |
 | 00922ee0 | reconstructed_build_tested | `entity_set_float_recursive_00922ee0` in `src/entity_mission_seg60_argon.cpp` | Entity parent vslotDC(float), then child+48/sibling+44 recursive same float; RET4. Decompiler unaff_retaddr was incorrect. 00922f17: RET 0x4 |
 | 00923af0 | reconstructed_build_tested | `entity_format_tree_00923af0` in `src/entity_mission_seg60_argon.cpp` | Entity kind1 check; uint16 id+174, type+ C4, childcount+50 formatted only to local400h; scan for one kind1 child before recursively visiting all siblings. 00923b5e: RET; 00923b7c: RET |
+
+Integrator acceptance: all pending build/recovery notes are closed by [OCT18B_NB_DELIVERY.md](OCT18B_NB_DELIVERY.md). The combined Win32 build and both existing CTests passed; no runtime ABI or game validation is claimed.

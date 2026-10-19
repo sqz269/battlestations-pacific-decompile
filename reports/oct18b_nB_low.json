@@ -16,7 +16,8 @@
     "ghidra_annotations": "41 applied under write lock; program saved",
     "ghidra_prior_values": "local/ghidra-annotations-20261019T054336Z.json",
     "exports": "all 41 affected exports refreshed after annotations (bsp.py ghidra export --force exit 0)",
-    "index": "rebuilt after ledger edits"
+    "index": "rebuilt after ledger edits",
+    "merged_integrator_build": "Combined MSVC Win32 scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2). Build/source evidence only; no original binary ABI, runtime or game validation."
   },
   "family_lease_exceptions": [
     {
@@ -788,5 +789,6 @@
       "native": "00721890",
       "kind": "tail_jump"
     }
-  ]
+  ],
+  "final_acceptance_report": "reports/oct18b_nB_delivery.json"
 }

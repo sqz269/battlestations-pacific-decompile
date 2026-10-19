@@ -55,3 +55,5 @@ The 1,438-byte fish-school renderer `00708120` required full listing review: its
 | `0071ea90` | `PathFollowParams_Read_0071ea90` | native source; build pending | __thiscall(ECX params, stack archive), RET 4, void |
 | `00720f40` | `CommandController_VSlot_NoOp_00720f40` | native source; build pending | __thiscall(ECX unused, stack unused word), RET 4, no result |
 | `00721970` | `CommandControllerStateMessage_Apply_00721970` | native source; build pending | __thiscall(ECX message, stack controller), tail JMP 00721890; target RET 4 |
+
+Integrator acceptance: all pending build/recovery notes are closed by [OCT18B_NB_DELIVERY.md](OCT18B_NB_DELIVERY.md). The combined Win32 build and both existing CTests passed; no runtime ABI or game validation is claimed.

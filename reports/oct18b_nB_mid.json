@@ -8,7 +8,8 @@
     "call_sites": "tools/verify_report_calls.py: 111 call rows checked, 0 failed",
     "game_run": "not requested or run",
     "abi": "source interfaces, not drop-in binary replacements",
-    "ghidra": "63 unique assigned addresses now have reviewed names/comments saved and exports force-refreshed. Prior values: local/ghidra-annotations-20261019T055221Z.json, local/ghidra-annotations-20261019T060025Z.json, local/ghidra-annotations-20261019T060313Z.json. Geometry007AE930 belongs to low worker."
+    "ghidra": "63 unique assigned addresses now have reviewed names/comments saved and exports force-refreshed. Prior values: local/ghidra-annotations-20261019T055221Z.json, local/ghidra-annotations-20261019T060025Z.json, local/ghidra-annotations-20261019T060313Z.json. Geometry007AE930 belongs to low worker.",
+    "merged_integrator_build": "Combined MSVC Win32 scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2). Build/source evidence only; no original binary ABI, runtime or game validation."
   },
   "family_exceptions": [
     {
@@ -1730,5 +1731,6 @@
     "deferred_contract_recovery": 1,
     "library_instantiation_out_of_scope": 2,
     "reconstructed_source_interfaces": 61
-  }
+  },
+  "final_acceptance_report": "reports/oct18b_nB_delivery.json"
 }

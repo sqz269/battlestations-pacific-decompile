@@ -43,3 +43,5 @@ The original assembly in shared exports/bsp/functions/<address>/assembly.txt was
 
 Validation: Win32 scripts/build.ps1 passed; both existing CTests passed. Live call-site verifier checked 41 rows with zero failures. No fixture, original binary ABI, runtime or gameplay claim.
 
+
+Integrator acceptance: all pending build/recovery notes are closed by [OCT18B_NB_DELIVERY.md](OCT18B_NB_DELIVERY.md). The combined Win32 build and both existing CTests passed; no runtime ABI or game validation is claimed.

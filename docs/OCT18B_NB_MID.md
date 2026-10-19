@@ -82,3 +82,5 @@ remain explicit; no host routing is added. Float source models round at the
 observed float spills, but std::atan2 and double expressions are not proof of
 x87 last-bit, floating-control-word or signaling-NaN equivalence. Build, static
 and call-site evidence do not establish fixture, ABI or gameplay validation.
+
+Integrator acceptance: all pending build/recovery notes are closed by [OCT18B_NB_DELIVERY.md](OCT18B_NB_DELIVERY.md). The combined Win32 build and both existing CTests passed; no runtime ABI or game validation is claimed.
