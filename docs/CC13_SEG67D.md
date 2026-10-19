@@ -145,7 +145,7 @@ This audit is verify-only. Every check was made against disk bytes. Fragment rec
 
 **(A) 009E5530.** The constructor seeds nested+121Ch, +1220h and +1224h to -1.0f [00D7A260] (009E5625, 009E5659, 009E5661).
 
-`ShipAiApproachState` defaults all three to 0.0f (`ship_ai_approach_update.hpp:122-124`). On the first approach enter, 009F1BC0 runs with 0 s (009F31BD):
+`ShipAiApproachState` defaults all three to 0.0f (`ship_ai_approach_update.hpp:122-124`). The difference is live on the first 009F1BC0 pass, which is the enter's zero-second pass (009F31BD):
 
 | Field | Image (seed -1.0f) | Host (seed 0.0f) |
 |---|---|---|
@@ -153,7 +153,7 @@ This audit is verify-only. Every check was made against disk bytes. Fragment rec
 | +1220h | own curve refill runs | false, with `kShipAiOwnCurveRefillGateBound` ON |
 | +1224h | target curve refill runs | false |
 
-In the host, each of these first fires one pass later. The fix is to default the three fields to -1.0f.
+In the host, each of these first fires one pass later. The +1224h lag needs a target: with none, both sides set +1224h = -1 (009F2FC6, host game_hosts_ship_ai.cpp:6834). The fix is to default the three fields to -1.0f.
 
 **(B) 009E0C7C step, NaN arms only.**
 
