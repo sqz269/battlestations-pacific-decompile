@@ -30,7 +30,7 @@ shared bootstrap; CD80A0/CD80F0 run only if their canonical guards require it. T
 actual owner registry and shared node/lifetime runtime hold their normal companions.
 
 The nonnull configuration branch of complete 004BACD0 supplies explicit diagnostic
-ambient/cube RGB (1.00,1.12,1.28), diffuse (1.40,1.36,1.20), specular (0.24 each),
+ambient/cube RGB (8.00,8.96,10.24), diffuse (11.20,10.88,9.60), specular (1.92 each),
 alpha/scales1, elevation0.6154797087 and yaw0.7853981634. It invokes genuine B7AF20,
 B7AF40, six B7AF60 calls, 004B62E0, 004B4D80, B7AF90 and B7B010. All shader-consumed
 ambient/mode3/cube and directional diffuse/specular/direction fields are produced by
@@ -42,9 +42,14 @@ configuration route writes the relevant fields.
 ON09's primary capture with the original lower diagnostic intensities remained
 very dark. The installed `tex2D_sRGB` helper raises sampled RGB to power2.2, and
 the normal ship combiner writes linear lit RGB without a final display conversion.
-This ordinary diagnostic presents that result directly, so the source inputs now
-use 4x ambient and 2x sun/specular intensity. This gain is an explicit diagnostic
-choice, not original postprocessing/exposure or mission-lighting parity.
+This ordinary diagnostic presents that result directly. ON10 used 4x ambient and
+2x sun/specular intensity relative to the initial low diagnostic inputs. Primary
+ON11's actual clear-air capture still showed very dark but visibly textured hull
+and deck details. The current source HDR illumination diagnostic therefore uses
+another8x across ambient/sun/specular, as explicitly requested by the primary,
+with alpha/scales unchanged. This gain is a named diagnostic source choice, not
+original world values, postprocessing/exposure or mission-lighting parity. Actual
+shader, texture, fog, render-target and device-state paths receive no replacement.
 
 B45360's null model+170 branch still selects normal effect+C8 (or native fade+100)
 for camera mode0. Its nonnull collection uses the same selection and passes the

@@ -123,15 +123,18 @@ struct MissionShipLightingGraph {
   void* const actual_ambient=get<void*>(resource,0x10);
   check(actual_ambient && resource_acquired.ambient_reference && sun_owner,
       "mission lighting requires completed native ambient and sun owners");
-  // Explicit diagnostic gain for this direct linear backbuffer view. The
+  // Explicit source HDR illumination diagnostic for this linear backbuffer
+  // view: ON11 clear-air authored diffuse/AO remains very dark, so these
+  // genuine configuration inputs apply 8x the preceding ON10 illumination.
+  // These values are not original mission/world lighting. The
   // installed ship shader decodes sRGB textures; the normal post20 exposure/
   // display conversion has not been composed in this bounded ordinary path.
   // These are real configuration inputs, not substitute constant-bank writes.
-  const auto ambient_color=color(1.00f,1.12f,1.28f);
+  const auto ambient_color=color(8.00f,8.96f,10.24f);
   std::array<SystemLightingWords4,6> cube;
   for(auto& face:cube)face=ambient_color;
-  const auto diffuse=color(1.40f,1.36f,1.20f);
-  const auto specular=color(0.24f,0.24f,0.24f);
+  const auto diffuse=color(11.20f,10.88f,9.60f);
+  const auto specular=color(1.92f,1.92f,1.92f);
   const U one=*graph.profiles(0xd7a24c);
   const U yaw=float_bits(0.7853981634f),elevation=float_bits(0.6154797087f);
   const LightingConfigurationFields configuration{ambient_color,ambient_color,cube,
@@ -195,7 +198,7 @@ struct MissionShipLightingGraph {
    resource_name_live=false;destroy_native_string_header_0041dd20(&resource_name,strings);
    phase=Phase::ready;
    log.notef("native mission lighting ready: outer=%p resource=%p ambient=%p sun=%p first_light=1 "
-       "configuration=004BACD0 captured_scale_ambient=%u ambient_cube=1.00,1.12,1.28 diffuse=1.40,1.36,1.20 specular=0.24,0.24,0.24 shadow=null",
+       "configuration=004BACD0 illumination=source_HDR_diagnostic captured_scale_ambient=%u ambient_cube=8.00,8.96,10.24 diffuse=11.20,10.88,9.60 specular=1.92,1.92,1.92 shadow=null",
        outer,resource,get<void*>(resource,0x10),sun,unsigned(captured_scale_ambient));
   } catch(...) {phase=Phase::failed;throw;}
  }
