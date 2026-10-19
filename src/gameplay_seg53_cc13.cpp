@@ -5,6 +5,53 @@
 // x87 intermediate rounds like a float. Build-tested only.
 
 #include "bsp/gameplay_seg53_cc13.hpp"
+
+namespace bsp::gameplay_seg53_cc13 {
+namespace {
+template<class T> T& nb_high_launch_field(void* object, std::size_t offset) {
+    return *reinterpret_cast<T*>(static_cast<std::uint8_t*>(object) + offset);
+}
+}
+std::uint8_t unit_byte_458_008561c0(const void* owner) noexcept { return static_cast<const std::uint8_t*>(owner)[0x458]; }
+std::uint8_t unit_byte_46c_0085ea20(const void* owner) noexcept { return static_cast<const std::uint8_t*>(owner)[0x46c]; }
+void unit_empty_one_a_00858190(void*, std::uint32_t) noexcept {}
+void unit_empty_one_b_008581a0(void*, std::uint32_t) noexcept {}
+void unit_empty_two_a_008581c0(void*, std::uint32_t, std::uint32_t) noexcept {}
+void unit_empty_one_c_008581d0(void*, std::uint32_t) noexcept {}
+void unit_empty_two_b_008581f0(void*, std::uint32_t, std::uint32_t) noexcept {}
+void unit_empty_zero_00858210(void*) noexcept {}
+void ship_select_launch_00853230(void* ship, float value, std::uint32_t mode, ShipLaunchSelectionCalls& calls) {
+    if (nb_high_launch_field<std::uint8_t>(ship, 0xc8) == 0) calls.refresh_world_00414db0(ship);
+    const double mean = (static_cast<double>(nb_high_launch_field<float>(ship, 0x1200)) +
+        nb_high_launch_field<float>(ship, 0x1204)) / 3.0;
+    if (static_cast<double>(nb_high_launch_field<float>(ship, 0x100)) > mean &&
+        nb_high_launch_field<std::uint8_t>(ship, 0x1279) != 0) {
+        calls.catapult_launch_008141e0(ship, value, mode);
+        return;
+    }
+    if (nb_high_launch_field<std::uint8_t>(ship, 0xc8) == 0) calls.refresh_world_00414db0(ship);
+    const float threshold = static_cast<float>(static_cast<double>(nb_high_launch_field<float>(ship, 0x1204)) + 2.0);
+    if (!(threshold > nb_high_launch_field<float>(ship, 0x100)) || nb_high_launch_field<std::uint8_t>(ship, 0x62c) != 0) return;
+    unsigned index = 0;
+    for (; index < 10; ++index) {
+        void* observer = nb_high_launch_field<void*>(ship, 0x550 + index * 0x18);
+        if (!observer || nb_high_launch_field<std::uint8_t>(observer, 0x5d) != 0) break;
+    }
+    if (index == 10) return;
+    void* entry = static_cast<std::uint8_t*>(ship) + 0x53c + index * 0x18;
+    if (void* observer = nb_high_launch_field<void*>(entry, 0x14)) {
+        calls.unregister_pair_006952a0(observer, entry);
+        nb_high_launch_field<void*>(entry, 0x14) = nullptr;
+    }
+    for (void* child = nb_high_launch_field<void*>(ship, 0x48); child; child = nb_high_launch_field<void*>(child, 0x44)) {
+        if (calls.child_is_kind_slot5c(child, 0x25) && calls.child_accepts_slot210(child, 0x2d, 0)) {
+            nb_high_launch_field<std::uint8_t>(ship, 0x62c) = 1;
+            calls.child_set_slot1f0(child, 0.0f);
+            return;
+        }
+    }
+}
+}
 #include "bsp/plane_pose_commit.hpp"
 
 #include <cmath>
