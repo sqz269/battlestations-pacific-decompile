@@ -6780,7 +6780,7 @@ struct GameUnitsHost::Impl {
     // +2B4h = a + w * (b - a) on the x87 at the main thread's 24-bit precision:
     // FSUBP, FMULP by approach+4Ch and FADDP each round to float. True: float per
     // op. False: (b - a) in float, then a double product and sum rounded once.
-    static constexpr bool kLandBlendFloatOpsBound = false;
+    static constexpr bool kLandBlendFloatOpsBound = true;   // ON: OCEAN_WAVE_FIELD 92 (identical)
     static float land_blend_2b4(float a, float w, float b) {
         if constexpr (kLandBlendFloatOpsBound) {
             const float diff = b - a;      // FSUBP
@@ -20895,8 +20895,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 contact_a4 = ground && unit_.plane_contact_a4;
                             }
                             if (ground && (pen > 0.0f || contact_a4)) {
-                                // 007D87F6-007D8838: dyn+A4h clear, dyn+94h > 0: body vy
-                                // is zeroed while |vz| < 1e-5 (00CE3C70).
+                                // 007D87F6-007D8838: with dyn+A4h set (007D87FD JNE) or dyn+94h > 0,
+                                // body vy (dyn+68h) is zeroed while |vz| (dyn+6Ch) < 1e-5 (00CE3C70);
+                                // a NaN vz keeps vy.
                                 const float avz = vs.velocity[2] > 0.0f
                                     ? vs.velocity[2] : (-0.0f - vs.velocity[2]);
                                 if (1.0e-5 > static_cast<double>(avz)) vs.velocity[1] = 0.0f;

@@ -77,7 +77,13 @@ namespace {
 
 // A WIN32-subsystem process has no console of its own. When it was started from a shell,
 // borrow that console so the run log is visible where the command was typed.
+// Only when stdout is not already redirected: reopening CONOUT$ over a pipe or file sent every
+// frame line of harness runs (tools/run_game.ps1 pipes stdout) into the hidden parent console,
+// and each console write raises a WinEvent under the desktop-wide USER lock. Concurrent runs
+// stalled the taskbar and Task Manager (local/output/ui-lag-diagnostics, 2026-10-18).
 void attach_parent_console() {
+    const HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (out != nullptr && out != INVALID_HANDLE_VALUE && GetFileType(out) != FILE_TYPE_UNKNOWN) return;
     if (!AttachConsole(ATTACH_PARENT_PROCESS)) return;
     FILE* stream = nullptr;
     freopen_s(&stream, "CONOUT$", "w", stdout);

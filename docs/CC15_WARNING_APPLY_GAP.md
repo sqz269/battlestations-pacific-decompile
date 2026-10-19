@@ -89,3 +89,9 @@ All steps are behind `kWarningMessageBankCc15Bound` (OFF), and every pair has id
 
 Step 3b (`005B71D0`, `00974070`, `005A2650`, `005B7790`) is deferred to `cc15_host_voice_manager`.
 
+
+The step table above is flipped ON as one switch by cc9-lua69 (2026-10-18): USN01 `usn01_l65_u1_g` (26000 frames,
+reference env) on main 011d651dc, OFF `cc9-lua52\local\l69r_w_u01_main_ref.log`, ON `l69r_w_u01_wb_ref.log` (export
+`local\l69_wb`). pair_diff exit 1, gameplay identical (37 death rows, 87-row unit table, plane death modes identical).
+ON only: the Warnings.lua table (122 messages), 445 hit reports and 5 kill reports through 009763E0. Step 3b stays with
+`cc15_host_voice_manager`.

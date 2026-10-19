@@ -200,7 +200,9 @@ MissionCompletionPollDecision mission_completion_poll_004d7ea0(
 // historical `stored = record` with the play count kept. The host's
 // MissionProgress (GameMissionResultHost::progress_, game+6B4h) is memory only:
 // no profile writer reads it.
-inline constexpr bool kMissionRecordMergeBound = false;
+// ON (cc9-lua69, 2026-10-18): BSM09 bsm09_l68_b9_d1 pair, gameplay identical; the ON
+// log has the commit_009205e0 dump (key=BSM09 count_284=1). SQUADRON_LAND_TASK 5ir.
+inline constexpr bool kMissionRecordMergeBound = true;
 
 // 0091A080 over the host struct, __thiscall(ECX = destination, source) RET 4 in
 // the image. See mission_result.cpp for the per-field evidence and the image

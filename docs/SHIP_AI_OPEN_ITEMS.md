@@ -19409,6 +19409,26 @@ rest, at 331 every 6000 frames with recalls. Predictions: HQ1 allied at about 56
 TT5 alive (Primary 1). There is no jitter row: `s59_bj_c15` lost every transport before frame 89000, so a c16 jitter
 run would repeat it. A jitter-robust plan needs the transports kept away from the blockade until it is dead (see the
 handoff).
+
+**c16 result (`s59_b_c16`, 170000 frames).** It replayed c15 to 4450 s, as planned (the same deaths and CB2 at
+4400.10 s), but did not win, ending with "Bases captured: 1.00". TT5's straight leg from (-8596, -7595) toward
+(-2100, 3300) grounded at (-6007, -3326). The distance to the point stayed near 7570 m from frame 100000, and the
+122000 leg toward HQ2 stayed near 10990 m. The decks were spent: only six launches were accepted after 4450 s, and
+Haku2 took no hit. Yamato and Musashi died at 6353 s and 6575 s. Loui1 and NH survived. (The ship AI `heading=`
+column prints the desired heading, so its constant -2.4746 is not the hull's heading.)
+
+**c17 (`s59_b_c17`, 175000 frames, reference).** c16 with two changes:
+- TT5 sails back along its own inbound track: (-6440, -4917), (-2036, -2417), east along z about -2000 to
+  (6382, -1795), north to (7000, 2500), then to (2000, 4200) (HQ2, 1250 m) and along TT1's track to (-2100, 3300)
+  (HQ1, 1384 m). The legs start at frames 89000, 97100, 109000, 128800, 139000 and 151400.
+- Loui1, NH, Portland4, Gear9 and Gear15 sweep ['Haku2', 'Musashi', 'Yamato']. The last live target holds, so they
+  turn on Haku2 once both battleships are dead.
+
+A first attempt was killed from outside at frame about 110000 (`local\s59_b_c17_killed.log`). Its first three legs
+had completed early (d32c 542 m at 95000 and 154 m at 105000), so the route clears the grounding. A relaunch was
+also killed, at 45 MB. Predictions: HQ2 allied at about 7000 s, HQ1 at about 7600 s, Haku2 dead after about 6600 s
+if the cruisers reach it. A win needs `Mission.ReinDead` and `Mission.BaseCapped` before frame 175000.
+
 ## 295. Gunnery / ship-AI draws queue (cc9-gunnery52, 2026-10-18)
 
 Branch agent/cc9-gunnery52 on origin/main a8d54817d. Commits: fba7c0e90, d3bc814e1 (switches OFF),

@@ -494,7 +494,9 @@ inline constexpr bool kEngineMovieStopRosterBound = true;
 // kVehicleClassMovieStopPurgeCc15Bound.
 //
 // False: 0046BF20 and 0046BF70 stay records, as before.
-inline constexpr bool kVehicleClassPreloadCc15Bound = false;
+// ON (cc9-lua69, 2026-10-18): BSM09 bsm09_l68_b9_d1 pair, gameplay identical,
+// 617 rows purged, script_nil_reads 0, lua_errors 0 (VEHICLE_CLASS_DESCRIPTORS.md).
+inline constexpr bool kVehicleClassPreloadCc15Bound = true;
 
 // cc15-vcp3: with kVehicleClassPreloadCc15Bound, also purge at the movie stop
 // 0045F6C1. That runs mid-mission and can nil rows that were first read after
