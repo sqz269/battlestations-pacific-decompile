@@ -19608,3 +19608,55 @@ the +174h stand-in. It now posts 0 (with a log line) for an id above 0xFFFF inst
 Only GenerateObject LandConvoy markers (90000 + n) exceed 0xFFFF, and the path lookup there is by
 an authored Path name, so no current row takes the new arm: build-only, no pair. The id-space
 proposal of 295.4 is still open.
+
+### 3. BSM01 "HenryPT DCs enter water but never detonate": not a host DC defect
+
+Diagnostic export of d1de4a0da (local\g53_dcdiag, a log line at each in-water DC's water entry
+and landscape impact with the submarines' positions; not committed). Plans local\g53_b1_c1..c6.txt,
+logs local\g53_dcd_*.log.
+- Every in-water DC ends as a landscape impact (fate 1) at the seabed (-21 to -55 m) before its
+  fuse depth: the near-vertical step's LINE meets the cell's quad through the unclipped 00ADEB80
+  test (SCENE_CONTENTS_HOSTS 30, GUNNERY 2026-10-06). That exit still runs the class blast
+  (0084BE32, range 50 m); the summary's contact/depth detonation counters just do not count it.
+- In the reference run (p6_b1_a) all six DCs came from the generated AI "PT" boats, not HenryPT.
+  One blast reached MiniSub (dist 36.4 m, took 0: invincible), but the script's hit listener
+  (bsm_01_stationed_at_pearl.lua 2008) filters attacker = {Mission.Henry}, so luaMiniSubHit never
+  fires. Faithful.
+- HenryPT's own charges (`depthcharge HenryPT` presses, c1/c3/c5) drop, but never near MiniSub.
+  On current main MiniSub spawns at 267 s at (800, -30, -3200) and runs west to (-430, -3000) by
+  432 s, then north ((-330, -2390) at 492 s). Every westward Henry leg past x 1300-1620 at z
+  -3160..-3190 grounds: `hull draft contact census: draft=0 hull=HenryPT first_step=7414
+  steps=8587`, speed 0 at throttle 1 (the stall cc9-physics6 saw at (1624, -3170)). `attack
+  HenryPT MiniSub` (c2/c4/c6) gives four DC launches and no hit.
+- Open: a BSM01 route plan (a channel west of x 1300 that avoids the draft-0 contact, timed to
+  meet MiniSub on its west or north leg). Routed to the lead.
+
+### 4. 00864880's two draws: the host already matches
+
+docs/OCT18_GUNNERY_TARGET_RECOVERY.md: radius at 00864A12 (U(cap * row+14h, cap)), then bearing at
+00864A31 (U(0, [00CE3D9C] = 2*pi as a float)), both stream 1, and a zero-width radius still
+draws. The host's engagement_00864880 (game_hosts_gunnery.cpp) takes exactly these two draws in
+this order, with cap = min(row max error, row range_mul * distance) and no early-out before the
+first draw; `draw` never skips a zero-width range. No change.
+
+### 5. Widened-literal sweep (gunnery / ship-AI share): kShipAiWidenedLiteralsBound ON
+
+`python tools/const_width_sweep.py --all --load-sites`: A-WRONG 0, B 0. The gunnery A-harmless
+rows (bot_fire_target, gun_aiming, gun_bot_remainder, gun_bot_ticks) are float declarations of
+m64 qwords that are themselves widened floats (low 29 bits zero): bit-equal, nothing to fix.
+The tool reads only `inline constexpr` header lines, so the same comparison was run over the
+.cpp declarations (local\g53_cpp_width.py): five ship-AI constants whose qword is a widened
+float while the host wrote a different double, every load m64 (36e595a1a, header
+include/bsp/widened_literals_g53.hpp has the table): 00CE3828/00CE3D18/00CE3D28 in
+ship_ai_bearing_rating.cpp (00605070), 00D049A8 (FDIV 009D9044; the host had the next float
+up, 1.8000000476837158 for 1.7999999523162842) and 00D7A358 (009EF7EF / 009EF7FF) in
+ship_ai_neighbour_clips.cpp. Pairs on 36e595a1a, reference env, USN01 and USN04 idle at 30000
+frames: gameplay and summary lines identical (local\g53_wl_{off,on}_u{1,4}.log;
+predict_track_crossing_009d8ce0 ran 9429 times on USN01). Flipped by mechanism (c19194d0d).
+Outside this lane the sweep also shows two HUD constants (hud_updates.hpp kHudRootRowGap,
+kHudRootCircleYOffset) declared float against true-double m64 qwords.
+
+### 6. Comment fix
+
+ship_ai_attackmove_substates.cpp: the jitter_48 note now says the caller takes the 009E55A1
+draw (22e41560e).
