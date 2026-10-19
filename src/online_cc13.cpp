@@ -1,5 +1,7 @@
 // XLive online system reconstructions, packet cc13-gui2 (docs/CC13_GUI_2.md, Part B).
 #include "bsp/online_cc13.hpp"
+#include "bsp/engine_seg11_35_66_cc13.hpp"
+#include "bsp/online_seg71_cc13.hpp"
 
 #include <algorithm>
 #include <cstddef>
@@ -120,6 +122,132 @@ void* host_qos_construct_00a4a380(void* q) noexcept {
     write_field<std::uint32_t>(q, 0x90, 1);
     write_field<std::uint32_t>(q, 0x88, 0);
     return q;
+}
+
+// 00A47EE0: normal constructor order and stores from 00A47F02..00A48310.
+// Compiler-only SEH is represented by an explicit completed-member state;
+// the host implements its native cleanup graph, never this code's ABI.
+void* system_construct_00a47ee0(void* system, XLiveSystemConstructCalls& host,
+    online_seg71_cc13::XLiveVoiceCalls& voice_calls,
+    online_seg71_cc13::XenonCalls& xenon_calls) {
+    auto* const base = static_cast<std::byte*>(system);
+    std::int32_t state = -1;
+    try {
+        engine_seg11_35_66_cc13::construct_xlive_stats_block_00994080(
+            *static_cast<engine_seg11_35_66_cc13::XLiveStatsBlockLayout*>(system));
+        state = 0;
+        write_field<std::uint32_t>(system, 0, 0x00D24878u);
+        write_field<std::uint8_t>(system, 0x85, 0);
+        // Original image data: D7A260 = BF800000 (-1.0f).
+        write_field<std::uint32_t>(system, 0x88, 0xBF800000u);
+        write_field<std::uint32_t>(system, 0x8C, 0);
+        write_field<std::uint32_t>(system, 0x90, 0);
+        write_field(system, 0xE0, host.participant_head_004c3180(base + 0xDC));
+        write_field<std::uint32_t>(system, 0xE4, 0);
+        state = 1;
+        for (std::size_t offset : {0xECu, 0xEDu, 0xEEu, 0xEFu, 0xF0u})
+            write_field<std::uint8_t>(system, offset, 0);
+        for (std::size_t offset : {0xF4u, 0x100u, 0x10Cu, 0x118u}) {
+            player_list_construct_00a47b50(base + offset, host);
+            ++state;
+        }
+        write_field<std::uint8_t>(system, 0x124, 0);
+        write_field<std::uint32_t>(system, 0x140, 0xF);
+        write_field<std::uint32_t>(system, 0x13C, 0);
+        write_field<std::uint8_t>(system, 0x12C, 0);
+        write_field<std::uint32_t>(system, 0x154, 0);
+        for (std::size_t offset : {0x158u, 0x160u, 0x161u, 0x163u})
+            write_field<std::uint8_t>(system, offset, 0);
+        write_field<std::uint8_t>(system, 0x162, 1);
+        state = 6;
+        host.construct_mask_list_00a46b80(base + 0x168, 0);
+        for (std::size_t offset : {0x178u, 0x17Cu, 0x180u})
+            write_field<std::uint32_t>(system, offset, 0);
+        state = 8;
+        matchmaking_construct_00a49cf0(base + 0x184);
+        state = 9;
+        host_qos_construct_00a4a380(base + 0x1AE8);
+        online_seg71_cc13::task_stub_pair_construct_00a43070(base + 0x1B9C);
+        state = 0xC;
+        for (std::size_t group : {0x1BA4u, 0x1BB4u, 0x1BC4u}) {
+            for (std::size_t i = 0; i != 4; ++i)
+                online_seg71_cc13::task_stub_construct_00a42510(base + group + 4 * i);
+            ++state;
+        }
+        write_field<std::uint8_t>(system, 0x1BD5, 0);
+        write_field<std::uint32_t>(system, 0x1BD8, 0);
+        write_field<std::uint8_t>(system, 0x1BDC, 0);
+        for (std::size_t offset : {0x1BECu, 0x1BF0u, 0x1BF4u})
+            write_field<std::uint32_t>(system, offset, 0);
+        state = 0x10;
+        voice_construct_00a48f10(base + 0x1C24);
+        // CE74F8 = 3F4CCCCD (0.8f); preserve the original bit pattern.
+        write_field<std::uint32_t>(system, 0x1D40, 0x3F4CCCCDu);
+        write_field<std::uint32_t>(system, 0x1D44, 0);
+        write_field<std::uint32_t>(system, 0x1D48, 0);
+        state = 0x11;
+        host.construct_array_00bf7cd1(base + 0x1D5C, 0x1C, 16, 0x004C53C0, 0x004072D0);
+        for (std::size_t offset : {0x1F20u, 0x1F24u, 0x1F28u, 0x1F34u})
+            write_field<std::uint32_t>(system, offset, 0);
+        // CE3800 / CE4E0C / CE3958 = 0.5f / 0.99f / 2.0f.
+        write_field<std::uint32_t>(system, 0x1F2C, 0x3F000000u);
+        write_field<std::uint32_t>(system, 0x1F30, 0x3F7D70A4u);
+        write_field<std::uint32_t>(system, 0x1F38, 0x40000000u);
+        state = 0x13;
+        host.construct_array_00bf7cd1(base + 0x1F3C, 0xC, 16, 0x00A446A0, 0x004C8BF0);
+        state = 0x14;
+        // Four 18h-stride records: only the first two vptr words change.
+        for (std::size_t i = 0; i != 4; ++i)
+            online_seg71_cc13::task_stub_pair_construct_00a43070(base + 0x1FFC + 0x18 * i);
+        state = 0x15;
+        host.construct_array_00bf7cd1(base + 0x2064, 0xC, 4, 0x00A446E0, 0x00A44340);
+        state = 0x16;
+        session_construct_00a499d0(base + 0x2098);
+        state = 0x17;
+        write_field(system, 0x2204, host.stats_head_004c1f50(base + 0x2200));
+        write_field<std::uint32_t>(system, 0x2208, 0);
+        state = 0x18;
+        write_field<std::uint8_t>(system, 0x220C, 0);
+        write_field<std::uint8_t>(system, 0x220E, 0);
+        write_field<std::uint32_t>(system, 0x2210, 0);
+        online_seg71_cc13::clear_friends_list_00a43fa0(system, voice_calls);
+        online_seg71_cc13::communication_privilege_00a3eb30(
+            host.xenon_system_manager_00f8abe8(), reinterpret_cast<std::uint8_t*>(base + 0x84), xenon_calls);
+        // These deliberately unaligned dword stores cover exactly 20h bytes.
+        std::memset(base + 0x1C02, 0, 0x20);
+        for (std::size_t offset : {0x1D4Cu, 0x1D50u, 0x1D54u, 0x1D58u})
+            write_field<std::uint32_t>(system, offset, 0);
+        // Image pointer table D24734..D24760, in the original order.
+        static constexpr const char* masks[] = {
+            "voice_mask_none", "voice_mask_anonymous", "player_sun", "player_jed",
+            "player_jenna", "player_sarama", "player_angul", "player_machiko",
+            "player_jinx", "player_amran", "player_roosta", "player_vorsh"
+        };
+        for (const char* name : masks) {
+            NativeLegacySboStringStorage temporary;
+            temporary.capacity_18 = 0xF;
+            temporary.length_14 = 0;
+            temporary.buffer_04.inline_bytes[0] = '\0';
+            native_legacy_sbo_string_assign_counted_00408720(temporary, name,
+                static_cast<std::uint32_t>(std::strlen(name)));
+            try {
+                host.push_mask_name_00849170(base + 0x1F1C, temporary);
+            } catch (...) {
+                native_legacy_sbo_string_destroy_004072d0(temporary);
+                throw;
+            }
+            native_legacy_sbo_string_destroy_004072d0(temporary);
+        }
+        for (std::size_t i = 0; i != 4; ++i)
+            native_legacy_sbo_string_assign_counted_00408720(
+                *reinterpret_cast<NativeLegacySboStringStorage*>(base + 0x1D5C + 0x1C * i),
+                "voice_mask_none", 0xF);
+        std::memset(base + 0x9C, 0, 0x40);
+        return system;
+    } catch (...) {
+        host.unwind_failed_construction_00cb49f6(system, state);
+        throw;
+    }
 }
 
 void host_qos_release_lookup_00a4a3a0(void* q, XLiveQosHost& host) {
