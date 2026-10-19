@@ -6,6 +6,7 @@
 #include "bsp/native_surface_owner.hpp"
 
 namespace bsp {
+class NativeRenderActualOwners;
 
 inline constexpr std::size_t native_texture_2d_owner_bytes = 0x50;
 
@@ -23,6 +24,11 @@ struct NativeTexture2DOwnerContext {
     volatile std::uint32_t& actual_tracking_counter_0108daf8;
     const volatile std::uint32_t* actual_renderer_profile_00d5f0a8;
     const volatile std::uint32_t* actual_surface_profile_00d619a0;
+    // Optional Source capability for an application that admits ALL of this
+    // context's native texture creators to its same canonical registry. Direct
+    // already-zero paths must retire that companion as well as the real owner.
+    // Null preserves the established raw-owner interface. No owner/count made.
+    NativeRenderActualOwners* canonical_actual_owners{};
 };
 
 // Full B3F930: native ECX actual raw owner; stack name/COM/saved width/saved
@@ -47,6 +53,15 @@ void destroy_native_texture_2d_00b3f2e0(
 // Flags bit0 returns the canonical pool slot only after complete destruction.
 // The returned address may be reusable. All entries preserve pool ID at +50h.
 void* delete_native_texture_2d_00b3f590(void* actual_owner,
+    std::uint32_t flags, NativeTexture2DOwnerContext&);
+
+// Source terminal composition for a texture whose actual04 is ALREADY zero.
+// A configured canonical domain requires flags&1 and its exact live companion;
+// dispatches that companion without a second decrement. Its existing terminal
+// calls raw B3F590 and unbinds after normal deletion/pool return. Missing identity
+// remains an error. A null capability uses the established raw B3F590 body.
+// Never use this inside the canonical companion itself (would recurse).
+void* delete_native_texture_2d_after_zero(void* actual_owner,
     std::uint32_t flags, NativeTexture2DOwnerContext&);
 
 // Supported current native tables: renderer D5F0A8/+6C=B32250; cached surface
