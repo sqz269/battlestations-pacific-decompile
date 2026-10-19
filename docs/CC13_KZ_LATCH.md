@@ -71,10 +71,25 @@ only. Other kamikaze users are known but unverified, since they are not in the c
 - At 2767.57 s, 15 fewer `spent ordnance ... latched` lines and 15 fewer B5 lines.
 - 15 fewer `returntobase 007F16D0:` resolutions, so the summary moves from `null=16` to `null=1`
   (JakeTmpl stays).
-- 75 fewer `land task REFUSED` lines, and `spent_rtb_latches`/`spent_rtb_issues` both drop by 15.
-- No task changes. The kamikaze tasks (`kamikaze task 009AF720 kind 0Ch installed ...`) run as they do
-  now, because the null answer never installed anything.
-- The dead-target retest is NOT part of this switch, so cc9's latch-alone pair shows no task change.
+- 15 fewer `land task REFUSED` lines (the line is logged once per squadron), and the squadrons'
+  `refused arm` counts drop from 75 to 0. `spent_rtb_latches` and `spent_rtb_issues` both drop by 15.
+- No task changes, unless a kamikaze squadron's target is released while the squadron lives. The
+  kamikaze tasks (`kamikaze task 009AF720 kind 0Ch installed ...`) run as they do now, because the
+  null answer never installed anything.
+- The general step tail (`kSquadronGeneralStepTailBound`) no longer skips these squadrons. This
+  switch is what keeps `latch_3c` clear, and the tail skips a squadron whose `latch_3c` is set
+  (`game_hosts_units.cpp`, the spent_rtb check ahead of `director_slot_command`).
+  - While the kamikaze command `00E08F50` heads the queue below stage 2, `squadron_step_tail_plan_0084e4b1`
+    answers nothing. With `+369h` = 1 the idle arm does not resolve, and `b5` needs stage 2 with a
+    returning command or the latch.
+  - When the kamikaze target is released while the squadron lives, `stage_48` goes to 2
+    (`commands.cpp` 3963/3763). The squadron then takes `b4`, and with `+369h` set that gives
+    `kMoveToSelfIfRoom`: the tail issues a `0084E595` moveto-self, logged as a `squadron step tail:`
+    line. That is the image's tail and the one task change this switch can make. I did not observe it,
+    because no run was made.
+- When ON, a kind-17h member answers before the rack walk, so the rack-walk counters stop counting
+  for it.
+- The dead-target retest is NOT part of this switch.
 
 **`kKamikazeDeadTargetRetestCc13Bound` (with the latch switch).** The retest now applies to kamikaze
 squadrons, as it does at the image's `009F820E`-`009F8412`. If the kamikaze target dies while the
@@ -82,15 +97,6 @@ command is live, the command ends (`0071E430`), `squadron retest:` lines appear,
 is re-issued. Whether Intrepid sinks in a run decides whether anything moves. The census USN21 log
 has no line naming Intrepid as sunk, killed or destroyed, but I did not confirm the pattern against
 a known sink line, so treat that as weak evidence.
-- One new path: the general step tail (`kSquadronGeneralStepTailBound`) no longer skips these
-  squadrons, because they are no longer held by the spent path.
-  - While the kamikaze command `00E08F50` heads the queue below stage 2, `squadron_step_tail_plan_0084e4b1`
-    answers nothing. With `+369h` = 1 the idle arm does not resolve, and `b5` needs stage 2 with a
-    returning command or the latch.
-  - A squadron whose command ends (stage 2, not returning) takes `b4`. With `+369h` set that gives
-    `kMoveToSelfIfRoom`, so `squadron step tail:` moveto-self lines can appear for kamikaze squadrons
-    that outlive their target. That is the image's tail; I did not observe it here because no run was
-    made.
 
 **Both switches.**
 - No further movers are expected in the census logs. With the latch fixed, no path resolves
