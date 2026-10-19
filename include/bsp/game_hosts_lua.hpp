@@ -1176,6 +1176,20 @@ struct GameMissionLuaSummary {
     unsigned long long sub_depth_calls{0};
     unsigned long long sub_depth_stored{0};
     unsigned long long sub_depth_unresolved{0};
+    // Packet cc13-luawire (bsp/cc13_lua_natives_wire.hpp).
+    unsigned long long has_fired_calls{0};
+    unsigned long long has_fired_true{0};
+    unsigned long long has_fired_unresolved{0};
+    unsigned long long has_fired_no_director{0};
+    unsigned long long water_load_calls{0};
+    unsigned long long water_load_routed{0};
+    unsigned long long water_load_applied{0};
+    unsigned long long water_load_skipped{0};
+    unsigned long long water_load_unresolved{0};
+    unsigned long long break_ship_calls{0};
+    unsigned long long break_ship_broken{0};
+    unsigned long long break_ship_no_halves{0};
+    unsigned long long break_ship_unresolved{0};
     unsigned long long sub_surface_calls{0};
     unsigned long long sub_surface_true{0};
     unsigned long long sub_surface_unseeded{0};
@@ -1850,6 +1864,11 @@ public:
     int run_is_class_changed_008cc4b0(lua_State* state, int argument_count);
     // Packet cc9_set_submarine_depth_level, under kLuaSetSubmarineDepthLevelBound.
     int run_set_submarine_depth_level_00893f40(lua_State* state, int argument_count);
+    // Packet cc13-luawire, under kLuaHasFiredBound / kLuaAddWaterLoadBound /
+    // kLuaBreakShipBound (bsp/cc13_lua_natives_wire.hpp).
+    int run_has_fired_008be7e0(lua_State* state, int argument_count);
+    int run_add_water_load_00893380(lua_State* state, int argument_count);
+    int run_break_ship_008914f0(lua_State* state, int argument_count);
     // Packet cc9_lua_submarine_on_surface, under kLuaGetSubmarineOnSurfaceBound.
     int run_get_submarine_on_surface_008942c0(lua_State* state, int argument_count);
     // Packet cc13_natives1, under kLuaTrulyDeadBound.
@@ -2280,6 +2299,9 @@ private:
     // compares against manager+0Ch, accumulated from the mission frame's step
     // because this process has no world clock object of its own.
     float spawn_world_clock_{0.0f};
+    // Packet cc13-luawire (kLuaBreakShipBound): units whose controller halves
+    // +370h / +374h a BreakShip's 00935D30 cleared.
+    std::set<std::size_t> break_ship_cleared_;
     float spawn_attempt_delay_{0.0f};
     bool spawn_attempt_delay_read_{false};
     unsigned spawn_requeue_logged_{0};

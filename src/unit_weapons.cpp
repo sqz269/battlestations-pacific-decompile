@@ -232,29 +232,35 @@ int lua_gun_force_fire_with_angle_008be600(UnitWeaponHost& host) {
     return host.lua_result_count();
 }
 
+// 008BE7E0, checked against the listing (packet cc13-luawire). The result byte
+// is cleared at 008BE8D0, so every early exit pushes false (008BE9F1).
+// 00888AA0's entity is used without a null test (008BE8FC), as in the image.
 int lua_has_fired_008be7e0(UnitWeaponHost& host) {
     const NativeHandle unit = host.entity_from_lua_argument(0);
     bool fired = false;
-    NativeHandle director = 0;
-    if (unit != 0 && host.class_test(unit, kClassTestUnit)) {
-        director = host.weapon_director(unit);
+    if (host.class_test(unit, kClassTestHasFiredEntity)) {         // 008BE901..008BE909
+        NativeHandle director = host.weapon_director(unit);         // vtable[114h]
         if (director == 0) {
-            // Fallback owner at +9D4h: a carried or attached unit answers for
-            // its parent. The condition guarding it is read from the
-            // pseudocode only; the branch layout was not checked in assembly.
-            const NativeHandle owner = host.unit_secondary_owner(unit);
-            if (owner != 0) {
-                director = host.weapon_director(owner);
+            // 008BE921..008BE948: only a plane falls back, to [unit+9D4h]
+            // (no null test on it); a null director there exits too.
+            if (host.class_test(unit, kClassTestPlane)) {
+                director = host.weapon_director(host.unit_secondary_owner(unit));
             }
         }
+        if (director != 0) {
+            // 008BE983 / 008BE997: the name's index, then the stamp (FSTP float).
+            const int index = host.weapon_name_index_006e8250(host.lua_argument_string(1));
+            const float stamp = host.director_fire_stamp(director, index);
+            // 008BE9A9..008BE9B8: double(clock) FSUBR the Lua number, rounded to
+            // the main thread's 24-bit precision; 008BE9C5 FCOMIP, JA: stamp >
+            // that difference, false when unordered.
+            const float difference = static_cast<float>(
+                static_cast<double>(host.world_clock_00f876a4()) - host.lua_argument_number_f64(2));
+            fired = stamp > difference;
+        }
     }
-    if (director != 0) {
-        const char* weapon_name = host.lua_argument_string(1);
-        const float window = host.lua_argument_number(2);
-        fired = host.director_has_fired(director, weapon_name, window);
-    }
-    host.lua_push_boolean(fired);
-    return host.lua_result_count();
+    host.lua_push_boolean(fired);                                   // 008BE9FA
+    return host.lua_result_count();                                 // 008BEA03
 }
 
 int lua_unit_free_fire_008a6950(UnitWeaponHost& host) {
