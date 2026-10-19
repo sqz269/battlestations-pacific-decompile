@@ -977,3 +977,18 @@ mechanism is in the cd761bb52 section above).
   torpedoes (cat 7, 2.5-4 km) take Maryland / California first. USN15 needs a Yamashiro-first re-plan with torpedo
   avoidance; it stays open.
 - JM06 completes at 1457.30 s with the squadron step-tail flips (physics23, main ac7bc90b6); BSM09 d1 unchanged.
+- **JM08 h3** (`cc9-lua52\local\l69_j8_h3.txt`: h plus `l69_j8_add.py` lines putting LST 02, LST 01 and LSM 02 at
+  the top of every launch group from frame 20000; main ec0df436c): on the reference seed **all 11 landships die by
+  1290 s, with Missouri at 592 s and Nevada at 603 s**. primary 1 and 2 complete, "Run" plays, and all three bomber
+  waves spawn. The HQ then falls to the phase-2 waves at 1674.10 s (failed 1674.56 s; 15 phase-2 planes shot down).
+  Under 20,3 there is no end: Missouri dies at 569 s, but LSM 01-02 and LST 01-03 survive. JM08 is now a phase-2
+  air-defence problem. It is not a forced loss: the cc13 naval-gunfire audit no longer applies once Missouri dies
+  before StartInvasion.
+- **USN01 cause, refined by cc9-physics23** (`cc9-physics1\local\p23g_old_u1g.log`, 03d3df7f8): the old 198.71 s
+  Convoy2 kill was a STRAY torpedo. ConTBD2|.-III was ordered at Convoy4, missed it by 180.7 m, and ran 58.8 m past
+  Convoy2. Its release came from the aim lead gate, which was true for 2 ticks only. On current main the same plane gets
+  lead=0, never releases, and dies at 181.3 s to Convoy3 AA. The bisect names the kFollowReleaseArmBound merge, but the
+  mechanism is a knife-edge in the aim geometry, not a broken switch, so the row stays re-planned (`usn01_l69_u1_a`).
+- Open rows at the lua69 handoff: JM08 (open no-end; h3 reaches phase 2 on ref; the lead routed the idle-LST question
+  to cc13), IJN08 reference, USN15 (Yamashiro-first re-plan), USNOS (ships60), USN01 / LOMP06 under 20,3. The
+  kVehicleClassPreloadCc15Bound re-flip is on HOLD (cc15: Ohka class 156; pairs listed in SQUADRON_LAND_TASK 5it).
