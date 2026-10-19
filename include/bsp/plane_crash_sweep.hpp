@@ -75,7 +75,7 @@ inline constexpr float kPlaneCrashConstructCooldown = 1.0f;
 // takes kPlaneCrashConstructCooldown; every later arm, and the first arm of a
 // plane seen off free flight before it, takes kPlaneCrashLaunchCooldown.
 // False: every arm takes kPlaneCrashLaunchCooldown, as before.
-inline constexpr bool kPlaneCrashConstructCooldownCc13Bound = false;
+inline constexpr bool kPlaneCrashConstructCooldownCc13Bound = true;  // ON: USN21/USN04/USNOS pairs (docs/SHIP_AI_OPEN_ITEMS.md 303)
 
 // 00CEC9D8 (double 0.75), 00CF5E58 (double 0.49), 00D04310 (double 0.96).
 inline constexpr float kPlaneCrashFoldedWingScale = 0.75f;
