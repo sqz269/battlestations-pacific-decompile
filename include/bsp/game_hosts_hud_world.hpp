@@ -255,6 +255,45 @@ static_assert(!kHelmPrepareMapUpGateCc13Bound || bsp::kCruiseLatchedPlayerArmCc1
     "kHelmPrepareMapUpGateCc13Bound needs kCruiseLatchedPlayerArmCc13Bound: without the latch "
     "009F3F80 drives the ring from a stale control block");
 
+// Packet cc13-relgaps, gap 2 (docs/CC13_IJN18LOSS.md section 7). Screen 4Ch's
+// update 005B45C0, while the map is up, releases the helm on every call:
+// 005B4673..005B46B3 loads [00E188D8], takes its vtable[13Ch]() unit (the ship
+// itself), and when that unit's role-1 holder +1B0h is not 8 (005B468D) and
+// 00927F10 does not call the holder AI-held (005B4695), sends
+// 0077C470(unit, 2, 0). ON: the menu pump's slot-4Ch update runs that release on
+// the controlled unit read live each call. The rest of 005B45C0 stays unhosted.
+// OFF: the slot-4Ch update falls through to the pump's default record.
+// The only plan that opens the map (ijn18_l70_i18_r) never closes it, so ON
+// releases the helm on every update for the rest of that run.
+inline constexpr bool kMapScreenHelmReleaseCc13Bound = false;
+static_assert(!kMapScreenHelmReleaseCc13Bound || kHarnessReleaseGunMapBound,
+    "kMapScreenHelmReleaseCc13Bound needs kHarnessReleaseGunMapBound: only that path opens the map");
+static_assert(!kMapScreenHelmReleaseCc13Bound || kHelmPrepareMapUpGateCc13Bound,
+    "kMapScreenHelmReleaseCc13Bound needs kHelmPrepareMapUpGateCc13Bound: without the gate the map "
+    "release and player_helm_prepare_0064b870's per-step re-take fight every frame, which the "
+    "image never does because screen 46h is occluded while the map is up");
+
+// Packet cc13-relgaps, gap 3. 0064DA40, the ship view's unit bind on the 25h
+// arm, releases the previous unit's roles 1..8 before it stores the new one:
+// 0064DA64 005470C0, then with +1Ch set 0064DA70..0064DA77
+// 0077C470(+1Ch, 1FEh, 0), then the +1Ch observer is unregistered and +1Ch takes
+// the new unit (0064DAA3). The image does this even when the new unit is the
+// same one. ON: the host's bind sends that release to the previously stored
+// ship-view unit, after the 005470C0 group release and before the 00549260
+// re-take. OFF: no release, as before.
+inline constexpr bool kShipViewPreviousUnitReleaseCc13Bound = false;
+static_assert(!kShipViewPreviousUnitReleaseCc13Bound || kMissionCameraBound,
+    "kShipViewPreviousUnitReleaseCc13Bound needs kMissionCameraBound: the release sits in the "
+    "host's 0064DA40 bind");
+
+// Packet cc13-relgaps, gap 1 (docs/INTERFACE_RUNTIME_TAIL.md section 2). 005CD1A0,
+// the movie interface's once-per-instance engage, ends 005CD202..005CD224: with
+// [00E188D8] set and 00927F30(unit, 0) true, 0077C470([00E188D8], 1FFh, 0)
+// releases roles 0..8. Role 0 clears +184h and, for a ship, runs 0080E290
+// (0078021C..00780244). ON: the movie binding sends that release through the
+// units host's 4Bh message. OFF: recorded only, as before.
+inline constexpr bool kMovieEngageRoleReleaseCc13Bound = false;
+
 // Packet cc9_hud_camera_team_lists (docs/HUD_CAMERA_TEAM_LISTS.md). ON answers
 // 004B4B00 exactly for the minimap (005C154E) and the markers screen: the
 // controlled unit [00E188D8] when it is kind 5, its +3D0h when kind 18h (a
