@@ -70,6 +70,7 @@
 #include "bsp/cc13_devwalk.hpp"               // packet cc13-devwalk (007C0D90 per rack)
 #include "bsp/cc13_seg67b_switches.hpp"       // packet cc13-seg67b (009A7932)
 #include "bsp/gameplay_seg46_cc13.hpp"        // packet cc13-para (006E3F90, 006E541F)
+#include "bsp/cc13_paratrooper_round.hpp"     // packet cc13-para2 (the MParatrooper round)
 #include "bsp/squadron_spent_ordnance.hpp"    // packet cc9_squadron_spent_ordnance_rtb
 #include "bsp/scene_record_side_blocks.hpp"
 #include "bsp/plane_follow_law.hpp"
@@ -1722,6 +1723,11 @@ struct GameUnitSlot {
     std::vector<bsp::gameplay_seg46_cc13::RackParatrooperTarget> lb_para_rack;
     unsigned long long lb_para_points_set{0};      // 006E3F90 calls
     unsigned long long lb_para_drop_targets{0};    // 006E541F blocks run
+    // Packet cc13-para2 (bsp::kParatrooperRoundBound): each 31h rack's hung round
+    // (006E3E70 -> 007AB8C0), census order; `lb_para_hung_set` is 1 while one hangs.
+    std::vector<bsp::gameplay_seg46_cc13::ParatrooperState> lb_para_hung;
+    std::vector<unsigned char> lb_para_hung_set;
+    bool lb_para_hung_seeded{false};
     std::vector<float> rack_repeat_per_rack;
     // Packet cc9_rack_device_reload: each single rack's ReloadTime +48Ch (the
     // equipment entry's, 006E3A20) and its countdown +490h, census order.
@@ -3676,6 +3682,17 @@ struct GameUnitsHost::Impl {
     // Milestone 2n: the ship AI controller that publishes into each unit's own
     // 84-byte AI order slot, which the motion head at 00825f2c promotes.
     GameShipAiHost* ship_ai{nullptr};
+
+    // Packet cc13-para2 (bsp::kParatrooperRoundBound): the dropped MParatrooper
+    // rounds, SoldierGlobals (0084CB70) and the Paratrooper class rows by bullet id.
+    bsp::cc13_paratrooper::RoundWorld para_world;
+    bsp::soldier_traffic_cc13::SoldierGlobals para_globals;
+    bool para_globals_tried{false};
+    std::vector<std::pair<int, bsp::gameplay_seg46_cc13::ParatrooperClassFields>> para_class_rows;
+    bool para_soldier_globals_0084cb70();
+    const bsp::gameplay_seg46_cc13::ParatrooperClassFields& para_class_fields(int bullet_id);
+    bsp::cc13_paratrooper::ChuteLengths para_chute_lengths(int bullet_id);
+    void para_round_step(float step_seconds);
 
     // Milestone 2t: the gun chain, one object per run. It owns the gunnery pass
     // at unit+6DCh of every created unit, the guns the authored `Platforms`
@@ -10774,6 +10791,104 @@ private:
     std::size_t unit_index_;
 };
 
+// Packet cc13-para2: bsp::cc13_paratrooper::RoundServices over this host. The
+// draw is 00BD2F10 by stream (the callers gate it on their sub-switches); the
+// ground is 00903860 / 009038F0; the avoid zones are the ship AI host's runtime
+// (layer 0, 004120D0(0)); the building list is world list 28 (the class 1Ch
+// list [[game+19CCh]+16Ch], 006F2C30); armour and the +1ACh hit are the ship AI
+// host's capture buildings, then 0095DA00 through the gunnery host, as the
+// landed remainder bleed does. A handle is the unit index + 1.
+class ParaServices final : public bsp::cc13_paratrooper::RoundServices {
+public:
+    using Vec3 = bsp::gameplay_seg46_cc13::Vec3;
+    explicit ParaServices(GameUnitsHost::Impl& owner) : owner_(owner) {}
+    float uniform(int stream, float lo, float hi) override {
+        if (!owner_.gunnery) return lo;
+        return owner_.gunnery->death_mode_draw_00bd2f10(stream, 0, lo, hi);
+    }
+    float ground_height_00903860(const Vec3& p) override {
+        const float point[3] = {p.x, p.y, p.z};
+        float out = -1000.0f;
+        if (!world_ground_height_00903860(point, out)) return -1000.0f;
+        return out;
+    }
+    bool ground_normal_009038f0(const Vec3& p, Vec3& normal) override {
+        const float point[3] = {p.x, p.y, p.z};
+        float n[3] = {0.0f, 1.0f, 0.0f};
+        if (!world_ground_normal_009038f0(point, n)) return false;
+        normal = Vec3{n[0], n[1], n[2]};
+        return true;
+    }
+    bool avoid_zone_nearest_0041b840(float xz[2], float slack, float push) override {
+        GameAvoidZoneRuntime* zones =
+            owner_.ship_ai ? owner_.ship_ai->avoid_zone_runtime_mutable() : nullptr;
+        if (zones == nullptr || !zones->ready()) return false;
+        const std::uint32_t group = zones->group_for_layer(0);
+        if (group == 0) return false;
+        const std::array<float, 2> out = zones->nearest(group, {xz[0], xz[1]}, slack, push);
+        xz[0] = out[0];
+        xz[1] = out[1];
+        return true;
+    }
+    std::size_t building_count() override {
+        refresh();
+        return list_.size();
+    }
+    bsp::cc13_paratrooper::BuildingView building(std::size_t index) override {
+        refresh();
+        bsp::cc13_paratrooper::BuildingView v;
+        if (index >= list_.size()) return v;
+        const GameUnitSlot& u = *owner_.slots[list_[index]];
+        v.handle = static_cast<std::uint32_t>(list_[index] + 1);
+        v.side_54 = u.row.party;
+        v.position_fc = Vec3{u.motion.position[0], u.motion.position[1], u.motion.position[2]};
+        v.inferior_range_7c8 = u.inferior_range_7c8;
+        return v;
+    }
+    int building_side_54(std::uint32_t handle) override {
+        const GameUnitSlot* u = slot(handle);
+        return u ? u->row.party : 0;
+    }
+    float building_armour_368(std::uint32_t handle) override {
+        float armour = 0.0f;
+        if (owner_.ship_ai && slot(handle) != nullptr)
+            owner_.ship_ai->command_building_armour_0368(handle - 1, armour);
+        return armour;
+    }
+    void building_damage_1ac(std::uint32_t handle, float amount) override {
+        if (slot(handle) == nullptr) return;
+        const std::size_t index = handle - 1;
+        if (owner_.ship_ai && !owner_.ship_ai->command_building_hit_gate_006f1f20(index, amount))
+            return;
+        if (owner_.gunnery) owner_.gunnery->apply_script_damage_0095da00(index, amount);
+    }
+    Vec3 building_position_fc(std::uint32_t handle) override {
+        const GameUnitSlot* u = slot(handle);
+        if (u == nullptr) return Vec3{};
+        return Vec3{u->motion.position[0], u->motion.position[1], u->motion.position[2]};
+    }
+    void record(const char* name, std::uint32_t address) override { owner_.record(name, address); }
+    void note(const std::string& line) override { owner_.log.notef("%s", line.c_str()); }
+
+private:
+    const GameUnitSlot* slot(std::uint32_t handle) const {
+        if (handle == 0 || handle > owner_.slots.size()) return nullptr;
+        return owner_.slots[handle - 1].get();
+    }
+    // World list 28 in list order, taken once per services object (one step).
+    void refresh() {
+        if (listed_) return;
+        listed_ = true;
+        for (const GameUnitWorldNode* node = owner_.world_lists.entries[28].head; node != nullptr;
+             node = node->next) {
+            if (node->unit != nullptr) list_.push_back(node->unit->process_index);
+        }
+    }
+    GameUnitsHost::Impl& owner_;
+    std::vector<std::size_t> list_;
+    bool listed_{false};
+};
+
 // bsp::GameplayModifierHost. 008e6430 walks the list at manager+80h+category*0Ch
 // and this process registers no modifier record, so the walk visits nothing and
 // the filter is never reached; the product is the routine's own 1.0f at
@@ -11875,7 +11990,107 @@ private:
     GameUnitsHost::Impl& owner_;
 };
 
+// Packet cc13-para2: the Lua side of 0084CB70. LABELLED SUBSTITUTION: the image
+// runs Scripts\global\luaMW_init.lua and Scripts\datatables\SoldierGlobals.lua
+// in a private state; this host has one Lua state, so it reads the datatable's
+// text and takes each `SoldierGlobals["Key"] = number` assignment (the file is
+// exactly those six lines in this installation). An absent key reads 0.0, as
+// 00B66270 does for nil.
+class SoldierGlobalsTextHost final : public bsp::soldier_traffic_cc13::SoldierGlobalsLuaHost {
+public:
+    explicit SoldierGlobalsTextHost(GameMissionLuaHost& lua) : lua_(lua) {}
+    void open_state_00b6a020(std::uint32_t) override {}
+    void run_script_00b69d40(const char* path) override {
+        if (std::strstr(path, "SoldierGlobals") == nullptr) return;
+        std::vector<std::uint8_t> bytes;
+        if (!lua_.read_resource_file(path, bytes)) return;
+        read_ = true;
+        text_.assign(bytes.begin(), bytes.end());
+    }
+    double soldier_globals_number_00b66270(const char* key) override {
+        const std::string needle = std::string("SoldierGlobals[\"") + key + "\"]";
+        const std::size_t at = text_.find(needle);
+        if (at == std::string::npos) return 0.0;
+        const std::size_t eq = text_.find('=', at + needle.size());
+        if (eq == std::string::npos) return 0.0;
+        return std::strtod(text_.c_str() + eq + 1, nullptr);
+    }
+    void close_state_00b669a0() override {}
+    bool read() const noexcept { return read_; }
+
+private:
+    GameMissionLuaHost& lua_;
+    std::string text_;
+    bool read_{false};
+};
+
 }  // namespace
+
+// Packet cc13-para2: 0084CB70 once per run. False when the datatable did not read.
+bool GameUnitsHost::Impl::para_soldier_globals_0084cb70() {
+    if (para_globals_tried) return para_globals.loaded;
+    para_globals_tried = true;
+    SoldierGlobalsTextHost text(lua);
+    bsp::soldier_traffic_cc13::load_soldier_globals_0084cb70(para_globals, text);
+    if (!text.read()) para_globals.loaded = false;
+    log.notef("paratrooper soldier globals: read=%d gradient=%.6f open_altitude=%.1f..%.1f "
+        "(0084CB70, packet cc13-para2)", text.read() ? 1 : 0,
+        static_cast<double>(para_globals.max_paratrooper_gradient),
+        static_cast<double>(para_globals.parachute_open_altitude_min),
+        static_cast<double>(para_globals.parachute_open_altitude_max));
+    return para_globals.loaded;
+}
+
+// Packet cc13-para2: the BombClass fields 007AC780 reads for a Paratrooper bullet
+// row (bulletclasses.lua keys), cached by bullet id. step_scale +5Ch is the
+// constructor default (bsp::level_bomb_paratrooper::kParatrooperStepScale). The
+// SoldierClass / SoldierAnim handles stay 0: the soldier is not a host entity.
+const bsp::gameplay_seg46_cc13::ParatrooperClassFields&
+GameUnitsHost::Impl::para_class_fields(int bullet_id) {
+    for (const auto& row : para_class_rows)
+        if (row.first == bullet_id) return row.second;
+    bsp::gameplay_seg46_cc13::ParatrooperClassFields f;
+    f.step_scale_5c = bsp::level_bomb_paratrooper::kParatrooperStepScale;
+    if (bullet_id >= 0) {
+        f.capture_power_d8 = lua.read_bullet_class_number(bullet_id, "CapturePower", 0.0f);
+        f.slow_factor_closed_dc = lua.read_bullet_class_number(bullet_id, "SlowFactorClosed", 0.0f);
+        f.slow_factor_opened_e0 = lua.read_bullet_class_number(bullet_id, "SlowFactorOpened", 0.0f);
+        f.open_duration_e4 = lua.read_bullet_class_number(bullet_id, "OpenDuration", 0.0f);
+        f.close_duration_e8 = lua.read_bullet_class_number(bullet_id, "CloseDuration", 0.0f);
+        f.capture_duration_f8 = lua.read_bullet_class_number(bullet_id, "CaptureDuration", 0.0f);
+        f.damage_fc = lua.read_bullet_class_number(bullet_id, "Damage", 0.0f);
+    }
+    para_class_rows.emplace_back(bullet_id, f);
+    log.notef("paratrooper class: bullet=%d power=%.2f slow=%.2f/%.2f open=%.2f close=%.2f "
+        "capture=%.2f damage=%.2f (007AC780 keys, packet cc13-para2)", bullet_id,
+        static_cast<double>(f.capture_power_d8), static_cast<double>(f.slow_factor_closed_dc),
+        static_cast<double>(f.slow_factor_opened_e0), static_cast<double>(f.open_duration_e4),
+        static_cast<double>(f.close_duration_e8), static_cast<double>(f.capture_duration_f8),
+        static_cast<double>(f.damage_fc));
+    return para_class_rows.back().second;
+}
+
+// LABELLED (bsp/cc13_paratrooper_round.hpp): the chute animation lengths are the
+// class OpenDuration / CloseDuration, and 1.0 for the fall.
+bsp::cc13_paratrooper::ChuteLengths GameUnitsHost::Impl::para_chute_lengths(int bullet_id) {
+    const auto& f = para_class_fields(bullet_id);
+    bsp::cc13_paratrooper::ChuteLengths lengths;
+    lengths.open = f.open_duration_e4;
+    lengths.close = f.close_duration_e8;
+    return lengths;
+}
+
+// One fixed step of the dropped rounds (callback list, waves 1 and 3, +DCh).
+void GameUnitsHost::Impl::para_round_step(float step_seconds) {
+    if constexpr (bsp::kParatrooperRoundBound) {
+        if (para_world.live() == 0) return;
+        ParaServices svc(*this);
+        para_world.step(step_seconds, static_cast<float>(summary.simulated_seconds), para_globals,
+                        bsp::kParatrooperSoldierAnimDrawBound, svc);
+    } else {
+        (void)step_seconds;
+    }
+}
 
 // ---------------------------------------------------------------------------
 // Packet cc9_pilot_vehicle_terrain_avoidance (docs/ATTACKER_EVASION.md 6):
@@ -20699,6 +20914,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     }
     ++host.summary.motion_steps;
     host.summary.simulated_seconds += step_seconds;
+    // Packet cc13-para2: the dropped MParatrooper rounds. LABELLED order: all of
+    // a round's slots run here, ahead of the units' ticks (the callback list
+    // 00874DE0 does precede the job waves; the rounds' wave positions relative
+    // to the planes' are not modelled), so a round dropped in this step's rack
+    // tick first runs in the next step.
+    host.para_round_step(step_seconds);
     if constexpr (Impl::kPlayerRoleBookkeepingBound) {
         if constexpr (Impl::kRoleScreenFixedStepCall) {
             host.role_screen_update_0067bb50();
@@ -26628,17 +26849,49 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     bool lb_holds_paratroopers_007b9500() {
                         plane_rack_census();
                         const std::size_t n = unit_.rack_bullet_class_per_rack.size();
-                        for (std::size_t i = 0; i < n; ++i) {
-                            if (unit_.rack_bullet_class_per_rack[i] !=
-                                bsp::level_bomb_paratrooper::kParatrooperKind) continue;
-                            if (i < unit_.rack_ammo_per_rack.size()) {
-                                if (unit_.rack_ammo_per_rack[i] > 0) return true;
-                            } else if (i >= unit_.rack_authored_per_rack.size() ||
-                                       unit_.rack_authored_per_rack[i] != 0) {
-                                return true;
+                        if constexpr (bsp::kParatrooperRoundBound) {
+                            // Packet cc13-para2: hang each holding 31h rack's first
+                            // round once (LABELLED: at this first census, census
+                            // order, not at the spawn's 006E3350).
+                            if (!unit_.lb_para_hung_seeded) {
+                                unit_.lb_para_hung_seeded = true;
+                                for (std::size_t i = 0; i < n; ++i)
+                                    if (lb_rack_holds_31h(i)) lb_para_hang_006e3e70(i);
                             }
                         }
+                        for (std::size_t i = 0; i < n; ++i) {
+                            if (lb_rack_holds_31h(i)) return true;
+                        }
                         return false;
+                    }
+                    bool lb_rack_holds_31h(std::size_t i) const {
+                        if (i >= unit_.rack_bullet_class_per_rack.size() ||
+                            unit_.rack_bullet_class_per_rack[i] !=
+                                bsp::level_bomb_paratrooper::kParatrooperKind) return false;
+                        if (i < unit_.rack_ammo_per_rack.size()) return unit_.rack_ammo_per_rack[i] > 0;
+                        return i >= unit_.rack_authored_per_rack.size() ||
+                               unit_.rack_authored_per_rack[i] != 0;
+                    }
+                    int lb_rack_bullet_id(std::size_t i) const {
+                        return i < unit_.rack_bullet_id_per_rack.size()
+                            ? unit_.rack_bullet_id_per_rack[i] : -1;
+                    }
+                    // Packet cc13-para2. 006E3E70 (rack vslot +224h) for a 31h rack:
+                    // 007AB8C0 constructs the round (its stream-1 open-altitude draw
+                    // under bsp::kParatrooperConstructDrawBound) and it hangs on the
+                    // rack until the next drop.
+                    void lb_para_hang_006e3e70(std::size_t i) {
+                        if (unit_.lb_para_hung.size() <= i) {
+                            unit_.lb_para_hung.resize(i + 1);
+                            unit_.lb_para_hung_set.resize(i + 1, 0);
+                        }
+                        owner_.para_soldier_globals_0084cb70();
+                        ParaServices svc(owner_);
+                        unit_.lb_para_hung[i] = owner_.para_world.construct(owner_.para_globals,
+                            unit_.row.party, owner_.para_chute_lengths(lb_rack_bullet_id(i)),
+                            bsp::kParatrooperConstructDrawBound, svc);
+                        unit_.lb_para_hung_set[i] = 1;
+                        owner_.done("Rack::attach_next_round_006e3e70", 0x006e3e70u);
                     }
                     // Packet cc13-para. 007BCCF0 (__thiscall(ECX = plane; float* out),
                     // RET 4): t = (float)(y / 2.8) with y = +100h; out = position +
@@ -27681,31 +27934,78 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // (f(U(-50, 50) + px), py, f(U(-50, 50) + pz)), x drawn first
                     // (006E5479, then 006E549E), both on stream 0; then the rack point
                     // moves by f(velocity x toRepeatTime) per axis (rack+494h, read
-                    // before 006E58AA resets it). NOT MODELLED: the round that takes
-                    // the target (007AB230 sets its +47Ch with y from 00903860) - the
-                    // host spawns no MParatrooper, so the target is logged only.
-                    void lb_para_drop_target_006e541f(std::size_t rack, float to_repeat_494) {
-                        if (rack >= unit_.lb_para_rack.size()) return;
+                    // before 006E58AA resets it). The round that takes the target
+                    // (007AB230 sets its +47Ch with y from 00903860) is
+                    // lb_para_release_006e4d50's, under bsp::kParatrooperRoundBound;
+                    // otherwise the host spawns no MParatrooper and the target is
+                    // logged only. True when the flagged branch ran (`target` set).
+                    bool lb_para_drop_target_006e541f(std::size_t rack, float to_repeat_494,
+                                                      bsp::gameplay_seg46_cc13::Vec3& target,
+                                                      bool spawned) {
+                        if (rack >= unit_.lb_para_rack.size()) return false;
                         const bool round_is_31h = rack < unit_.rack_bullet_class_per_rack.size() &&
                             unit_.rack_bullet_class_per_rack[rack] ==
                                 bsp::level_bomb_paratrooper::kParatrooperKind;
                         ParatrooperRackBinding host(owner_, owner_.index_of_slot(unit_));
-                        bsp::gameplay_seg46_cc13::Vec3 target{};
                         if (!bsp::gameplay_seg46_cc13::paratrooper_drop_target_006e541f(
                                 unit_.lb_para_rack[rack], round_is_31h, to_repeat_494, host, target))
-                            return;
+                            return false;
                         const float landing[3] = {target.x, target.y, target.z};
                         ++unit_.lb_para_drop_targets;
                         if (unit_.lb_para_drop_targets <= 6) {
                             owner_.log.notef("paratrooper drop target: %s rack=%zu t=%.2f "
-                                "landing=(%.1f %.1f %.1f) spawned=0 (006E541F, packet cc13-para; "
-                                "the MParatrooper round is not modelled)",
+                                "landing=(%.1f %.1f %.1f) spawned=%d (006E541F, packets cc13-para "
+                                "and cc13-para2)",
                                 unit_.row.name.c_str(), rack,
                                 static_cast<double>(owner_.summary.simulated_seconds),
                                 static_cast<double>(landing[0]), static_cast<double>(landing[1]),
-                                static_cast<double>(landing[2]));
+                                static_cast<double>(landing[2]), spawned ? 1 : 0);
                         }
                         owner_.done("Rack::paratrooper_drop_target_006e541f", 0x006e541fu);
+                        return true;
+                    }
+                    // Packet cc13-para2. 006E4D50 for a rack whose hung round answers
+                    // 31h: the bomb arm's release (006E0A70, the four stream-1 cone and
+                    // drift draws under bsp::kParatrooperReleaseScatterDrawBound,
+                    // 006E1F00) through the gunnery host, then the para branch
+                    // (006E541F's target, 007AB230 at 006E54B2) and the round enters the
+                    // world. False when the gunnery host has no 31h gun for the plane
+                    // (nothing dropped; the caller then takes the target alone).
+                    bool lb_para_release_006e4d50(std::size_t rack, float to_repeat_494) {
+                        if (owner_.gunnery == nullptr) return false;
+                        const std::size_t index = owner_.index_of_slot(unit_);
+                        if (index >= owner_.slots.size()) return false;
+                        if (rack >= unit_.lb_para_hung_set.size() || !unit_.lb_para_hung_set[rack])
+                            lb_para_hang_006e3e70(rack);   // LABELLED: a rack the census missed
+                        bsp::DiveBombImpactPointInputs ip;
+                        for (int i = 0; i < 3; ++i) ip.unit_position[i] = unit_.motion.position[i];
+                        ip.unit_velocity[0] = unit_.motion.linear_velocity.x;
+                        ip.unit_velocity[1] = unit_.motion.linear_velocity.y;
+                        ip.unit_velocity[2] = unit_.motion.linear_velocity.z;
+                        ip.aim_point_y = unit_.lb_aim[1];
+                        const bsp::DiveBombImpactPoint r = bsp::dive_bomb_impact_point_009c7d71(ip);
+                        GameGunneryHost::ParatrooperRelease rel;
+                        if (!owner_.gunnery->release_bomb_drop(index, r.point, r.fall_time, -1, &rel))
+                            return false;
+                        bsp::gameplay_seg46_cc13::Vec3 landing{};
+                        const bool has_landing =
+                            lb_para_drop_target_006e541f(rack, to_repeat_494, landing, true);
+                        bsp::cc13_paratrooper::ReleaseState release;
+                        release.position = {rel.position[0], rel.position[1], rel.position[2]};
+                        release.velocity_318 = {rel.velocity[0], rel.velocity[1], rel.velocity[2]};
+                        release.accel_348 = {rel.drift[0], rel.drift[1], rel.drift[2]};
+                        release.side_54 = rel.owner_side;
+                        release.dropper_unit = index;
+                        const int bullet = rel.bullet_class >= 0 ? rel.bullet_class : lb_rack_bullet_id(rack);
+                        release.bullet_class = bullet;
+                        ParaServices svc(owner_);
+                        owner_.para_world.drop(unit_.lb_para_hung[rack], owner_.para_class_fields(bullet),
+                            release, has_landing, landing,
+                            static_cast<float>(owner_.summary.simulated_seconds), svc);
+                        unit_.lb_para_hung_set[rack] = 0;
+                        if (unit_.lb_first_drop_at < 0.0f)
+                            unit_.lb_first_drop_at = owner_.summary.simulated_seconds;
+                        return true;
                     }
                     // cc13-devwalk2: run_level_bomber_issue_007c0e67's log line and
                     // census record, for the per-rack walk's level-bomber issues.
@@ -27790,9 +28090,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 ++unit_.rack_gate_refused;
                                 continue;
                             }
-                            lb_rack_drop_006e4d50();
-                            if constexpr (bsp::kLevelBombParatrooperDropBound) {
-                                lb_para_drop_target_006e541f(i, rt);
+                            bool para_dropped = false;
+                            if constexpr (bsp::kParatrooperRoundBound) {
+                                if (lb_rack_holds_31h(i)) para_dropped = lb_para_release_006e4d50(i, rt);
+                            }
+                            if (!para_dropped) {
+                                lb_rack_drop_006e4d50();
+                                if constexpr (bsp::kLevelBombParatrooperDropBound) {
+                                    bsp::gameplay_seg46_cc13::Vec3 target{};
+                                    lb_para_drop_target_006e541f(i, rt, target, false);
+                                }
                             }
                             --unit_.rack_ammo_per_rack[i];
                             --unit_.rack_ammo;
@@ -27805,6 +28112,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     bsp::gameplay_seg46_cc13::paratrooper_drop_clear_006e55e7(
                                         unit_.lb_para_rack[i], unit_.rack_ammo_per_rack[i]);
                                 }
+                            }
+                            if constexpr (bsp::kParatrooperRoundBound) {
+                                // 006E55E7: ammo > 0 -> vslot +224h (006E3E70) hangs the next.
+                                if (para_dropped && unit_.rack_ammo_per_rack[i] > 0)
+                                    lb_para_hang_006e3e70(i);
                             }
                             rt = unit_.lb_rack_repeat_e0;                     // 006E58AA
                             if (unit_.rack_ammo_per_rack[i] <= 0) unit_.lb_rack_dropping[i] = 0;
@@ -42458,6 +42770,15 @@ bool GameUnitsHost::unit_inferior_bag_0724(std::size_t unit_index) const {
     return unit_index < impl_->slots.size() && impl_->slots[unit_index]->bag_min_level_724;
 }
 
+void GameUnitsHost::paratrooper_capturers_07dc(std::size_t building_unit,
+                                               std::vector<std::pair<int, float>>& out) const {
+    // Packet cc13-para2: building+7DCh in 006F39B0 order, (round +54h, class +D8h).
+    out.clear();
+    std::vector<bsp::cc13_paratrooper::Capturer> list;
+    impl_->para_world.capturers(static_cast<std::uint32_t>(building_unit + 1), list);
+    for (const auto& c : list) out.emplace_back(c.side_54, c.capture_power_d8);
+}
+
 std::int32_t GameUnitsHost::unit_inferior_min_level_0724(std::size_t unit_index) const {
     return unit_index < impl_->slots.size() ? impl_->slots[unit_index]->min_level_724 : 0;
 }
@@ -42678,6 +42999,20 @@ void GameUnitsHost::log_controlled_trajectory(unsigned long long mission_frame) 
 void GameUnitsHost::report() {
     Impl& host = *impl_;
     if (host.slots.empty()) return;
+    if (bsp::kParatrooperRoundBound || host.para_world.counters().constructs != 0) {
+        const bsp::cc13_paratrooper::RoundCounters& c = host.para_world.counters();
+        host.log.notef("summary paratrooper rounds bound=%d constructs=%llu construct_draws=%llu "
+            "drops=%llu landed=%llu in_water=%llu bad_landings=%llu building_found=%llu "
+            "soldiers=%llu soldier_draws=%llu capturer_adds=%llu capturer_removes=%llu "
+            "damage_calls=%llu damage_total=%.2f kills=%llu (friendly_building=%llu "
+            "no_building=%llu capture_done=%llu bad_landing=%llu water=%llu) live=%zu "
+            "steps=%llu (007AB8C0 / 007AB230 / 007AC000 / 007AB360 / 007AB590, packet cc13-para2)",
+            bsp::kParatrooperRoundBound ? 1 : 0, c.constructs, c.construct_draws, c.drops,
+            c.landed, c.in_water, c.bad_landings, c.building_found, c.soldiers, c.soldier_draws,
+            c.capturer_adds, c.capturer_removes, c.damage_calls, c.damage_total, c.kills,
+            c.kills_friendly_building, c.kills_no_building, c.kills_capture_done,
+            c.kills_bad_landing, c.kills_water, host.para_world.live(), c.steps);
+    }
     {
         // Packet cc9_plane_level_bomb_task: one line per aircraft that flew the task.
         int flown = 0;

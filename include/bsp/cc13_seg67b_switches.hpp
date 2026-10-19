@@ -47,11 +47,49 @@ inline constexpr bool kLevelBombParatrooperDropDrawBound = false;
 static_assert(!kLevelBombParatrooperDropDrawBound || kLevelBombParatrooperDropBound,
               "the paratrooper drop draws need the drop path");
 
+// Packet cc13-para2 (option 2): the MParatrooper round itself
+// (bsp/cc13_paratrooper_round.hpp). A level bomber's drop from a 31h rack
+// releases the rack's hung round through the gunnery host's bomb release
+// (006E0A70, 006E1F00: velocity, drift +348h, flying), 007AB230 takes the
+// 006E541F landing point, and the round then runs every fixed step:
+// 007AB590 (from the callback list), 007AC000 (descent, landing, slope and
+// water checks, the 006F2C30 building search), 007AB360 (chute opening at
+// +468h above ground, the drag/steer 007ABB30, the Damage - armour bleed into
+// an enemy building's 006F1F20 -> 0095DA00, the same-side kill) and 007AB0B0
+// (chute close, the CaptureDuration timer). A landed round sits in the
+// building's capturer list +7DCh, which the ship AI host's capture tick reads
+// as 006F6760 arm 3 (CapturePower per capturer to its side).
+// False: the 31h drop spawns nothing (option 1 only).
+inline constexpr bool kParatrooperRoundBound = false;
+static_assert(!kParatrooperRoundBound || kLevelBombParatrooperDropBound,
+              "the paratrooper round needs the drop path");
+// 007AB94A in 007AB8C0: U(ParachuteOpenAltitudeMin, Max) on stream 1, once per
+// round 006E3E70 hangs on a 31h rack. False: no draw; +468h is the midpoint.
+inline constexpr bool kParatrooperConstructDrawBound = false;
+static_assert(!kParatrooperConstructDrawBound ||
+                  (kLevelBombParatrooperDropBound && kParatrooperRoundBound),
+              "the paratrooper construct draw needs the round");
+// 006E4F91, 006E4FB1, 006E513C, 006E51AC in 006E4D50: the four stream-1 cone and
+// drift draws the bomb release takes, for a 31h round. False: no draw, no cone,
+// no drift (the release velocity is 006E0A70's alone).
+inline constexpr bool kParatrooperReleaseScatterDrawBound = false;
+static_assert(!kParatrooperReleaseScatterDrawBound ||
+                  (kLevelBombParatrooperDropBound && kParatrooperRoundBound),
+              "the paratrooper release draws need the round");
+// 004B102F in 004B0F80 (from 007AB6AC): the soldier animation's start phase,
+// U(0, duration) on stream 0, once per soldier. False: no draw.
+inline constexpr bool kParatrooperSoldierAnimDrawBound = false;
+static_assert(!kParatrooperSoldierAnimDrawBound ||
+                  (kLevelBombParatrooperDropBound && kParatrooperRoundBound),
+              "the paratrooper soldier draw needs the round");
+
 namespace level_bomb_paratrooper {
 inline constexpr double kReleaseHeightDivisor = 2.799999952316284;   // double [00D05A38]
 inline constexpr float kDropScatterLow = -50.0f;                     // [00CECA0C]
 inline constexpr float kDropScatterHigh = 50.0f;                     // [00CEB4D4]
 inline constexpr int kParatrooperKind = 0x31;
+// The class step scale +5Ch: the BombClass constructor's default (no Lua key).
+inline constexpr float kParatrooperStepScale = 1.0f;                  // [00D7A24C]
 }  // namespace level_bomb_paratrooper
 
 }  // namespace bsp
