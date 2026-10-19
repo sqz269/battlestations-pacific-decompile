@@ -80,3 +80,31 @@ is Source metadata composition, not an Original register ABI replacement.
 FH3/SEH, exceptional cleanup parity, concurrent entry and game parity remain
 unproved. `git diff --check` passed. Primary owns the combined Win32 build,
 OFF checks, ON drain and visual validation; this worker performs no run/build.
+
+The later ON15 observer narrowed the final `NativeTextureLoadOwners` guard to
+one named VFS entry, not a runtime render target or cube/volume. Before
+retirement, identity16C83ED8 was admitted asD61948 with actual reference bitsB5
+and the name `models/textures/error.dds`. After raw drain, all other95 entries
+were gone; that identity still matched its canonical metadata and an OS read
+returned profileD61948/reference bits1. Its name buffer was unreadable. These
+are memory snapshots after pool drain, not proof that the allocation remains
+live or that a destructor already ran.
+
+Source audit found no production construction of the separate
+`GameNativeTextureOwnerServices`; the production texture context is the
+DestructionGraph context. The named-base destructor ends with profileCEB130;
+the raw texture-pool return only updates the slab free stack and does not
+rewrite the texture's profile/name/reference cells. No alternate context or
+raw-pool terminal bypass has been established. Cube/volume cleanup is unchanged.
+
+`NativeRendererCacheCleanupContext` now has an optional Source observer,
+defaulting to null. It reports entry/exit ofB316C0, its child release, and
+B32370's fallback+20 release before/after the existing operations. Resource
+prefixes and optional fallback cells are copied with `ReadProcessMemory`;
+even successful reads do not assert liveness. The primary ON host supplies
+the callback. The hook changes no reference operations, row removal, native
+cleanup or guard, and adds zero Native-body credit. Its purpose is to locate
+which of the expected cache-row/fallback credits remains. B316C0 is ECX cache,
+RET; B32370 is ECX texture registry, RET; the callback is a new C++ diagnostic
+interface. Static diff validation passed; combined build/live evidence belongs
+to the primary run.
