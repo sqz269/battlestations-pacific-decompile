@@ -18228,8 +18228,12 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
             // 0071F29F..0071F2C1: the owner entity's +5Ch set, +5Dh / +60h / +5Eh clear.
             // LABELLED: the host's squadron entity is the fused wing 0 (sq.squadron_unit),
             // so a wing 0 still in the hangar (007BC550 cleared its +5Ch) holds the tail
-            // through take-off. 0071F378 ([[00E188A8]+1FE4h] != 2) always passes here:
-            // session_mode() answers 1, single player.
+            // through take-off. The live gate tests wing 0's state and scene flags, not
+            // gunnery death: a gunnery-dead but active wing 0 passes, and the moveto-self
+            // below is then skipped; a destroyed wing 0 ends the tail for the whole
+            // squadron, where the image's separate squadron entity would continue.
+            // 0071F378 ([[00E188A8]+1FE4h] != 2) always passes here: the mode is != 2 in
+            // every host (0 or 1; single player).
             if (sq.squadron_unit >= h.slots.size()) continue;
             {
                 const GameUnitSlot& s = *h.slots[sq.squadron_unit];

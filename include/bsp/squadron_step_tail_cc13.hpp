@@ -24,8 +24,13 @@
 // top of that, the squadron's own unit (the host fuses the squadron entity with wing
 // 0, script_orders 007EDA91 note) must pass the live-entity test used at 0043F080 /
 // 009AACD1 and 0074F09A: state->active (+5Ch), state->simulate (+5Dh),
-// scene_pending_destroy_0060 (+60h), scene_destroyed_005e (+5Eh). The session mode
-// is single player (session_mode() answers 1), so 0071F378 always passes.
+// scene_pending_destroy_0060 (+60h), scene_destroyed_005e (+5Eh). LABELLED: that
+// gate tests wing 0's state and scene flags, not gunnery death. A gunnery-dead but
+// active wing 0 passes, and the moveto-self is then skipped (its issue requires a
+// unit the gunnery host does not count dead). A destroyed wing 0 ends the tail for
+// the whole squadron, whereas the image's separate squadron entity would continue.
+// The session mode is != 2 in every host (0 or 1; single player), so 0071F378
+// always passes.
 //
 // Take-off: 0084E010 has no take-off test of its own. The head arm needs only an
 // empty head and queue and a non-null +3D0h; with +369h = 1, b4 goes to 0084E595
