@@ -47,9 +47,40 @@ inline constexpr bool kReleaseTimerReseedDrawBound = false;
 // The substitution caps the timer at one fire per aircraft; the real test
 // does not, so without the reseed a second fire would come on the very next
 // tick (countdown 0.0f - dt < 0). Hence the dependency.
+//
+// The predicate also needs the bay opener (kReleaseBayOpenCc13Bound): 007BB110
+// refuses while a loaded bay-door rack's channel C is below 1.0f, and without
+// the opener nothing in the host but 007BBBA0 (behind this very test) moves
+// it. physics24's pairs showed it: BSM09 timer_blocked=378, fires 0, the
+// mission lost; USN21 torpedo drops 5 -> 0.
 inline constexpr bool kReleaseTimerPredicate007BB110Bound = false;
+
+// The image's bay opener (docs/CC13_RELEASE_TIMER.md section 10), two pieces:
+//  - 0099AFCC-0099B055 in BSP_PilotBot_Tick 0099ACD0: mode = the first task's
+//    vtable[+50h] that is not 1 (default 1); flag = (mode == 2), and in mode 1
+//    a wingman (squadron [unit+9D4h]+3D0h, the leader, set and not this unit)
+//    takes the leader's step byte 9C1h (channel C idle or at 1.0f) instead;
+//    007BB150 stores unit+DF0h = flag ? 9C3h : 0. Torpedo task +50h is
+//    009D49E0 (2 in aim/done/goaway/attackrun/prepare with approach+130h, the
+//    aim-solution byte 009D2021, set; 0 there without it; 1 elsewhere), dive
+//    bomb +50h is 009C8290 (2 in aimdive, 0 in its other attack states, 1
+//    elsewhere).
+//  - 007C6A8D-007C6B2E in the plane tick 007C6820 (plane vtable slot): unless
+//    unit+520h, channel C's target +61h = 1 with the value forced to 1.0f when
+//    the plane carries drop-kamikaze ordnance (007B91C0(2Fh, 0)), else target =
+//    (+DF0h || +C25h || +C20h) ? 9C3h : 0, each change marking +68h and +11h.
+// So an AI torpedo bomber's bay starts opening once the aim tick's
+// aim-solution byte is set (release distance + 200 m), and the timer's
+// 007BB110 passes once the channel reaches 1.0f. True: the host runs both
+// pieces once per fixed step before the block step, for planes with an
+// installed torpedo or dive-bomb task, and clears approach+130h at the task
+// install (009D05AB, 009D0380 run from 009D2DA0). False: channel C moves only
+// through 007BBBA0, as before.
+inline constexpr bool kReleaseBayOpenCc13Bound = false;
 static_assert(!kReleaseTimerPredicate007BB110Bound || kReleaseTimerReseedDrawBound,
               "the real 007BB110 needs the 009FA3EA reseed, or the timer fires every tick");
+static_assert(!kReleaseTimerPredicate007BB110Bound || kReleaseBayOpenCc13Bound,
+              "the real 007BB110 needs the bay opener, or a bay-door plane never releases");
 
 // 009FA3F4-009FA405: after a fire, timer+0Dh = 1 when the unit's step-record
 // byte [unit + 9C0h + 8*word[00F876B8]] (007CDC70's 007B9140(unit, 0)) is 0.
@@ -90,6 +121,36 @@ bool unit_can_release_007bb110(bool channel_c_enabled, float channel_c_value,
 // Cached per (Lua host, class) once BSPGun exists and the chunk succeeded, so
 // the chunk runs once per class.
 std::vector<bool> bomb_rack_bay_doors(bsp::game::GameMissionLuaHost& lua, int type_id);
+
+// 0099B003-0099B055 with 007BB150: the byte BSP_PilotBot_Tick stores at
+// unit+DF0h. `mode` is the task's vtable[+50h] answer (1 when no task answers
+// otherwise). `has_leader` is true when [unit+9D4h] and its +3D0h are set and
+// +3D0h is not this unit (0099B01C-0099B039); `leader_9c1` is then that
+// leader's step byte 9C1h. `own_9c3` is this unit's 9C3h (007BB158).
+std::uint8_t pilot_step_flag_df0_0099b055(int mode, bool has_leader, bool leader_9c1,
+                                          bool own_9c3) noexcept;
+
+// 007CDC70's 9C1h for a unit with a block: channel C disabled, or its value
+// exactly 1.0f (UCOMISS ordered equal, 007CDC89-007CDC94).
+bool step_byte_9c1_007cdc84(bool channel_c_enabled, float channel_c_value) noexcept;
+
+}  // namespace bsp::cc13_release_timer
+
+namespace bsp {
+struct PlaneActuatorBlock;
+}
+
+namespace bsp::cc13_release_timer {
+
+// 007C6A8D-007C6B2E, the channel C arm of 007C6820: nothing when unit+520h is
+// set; with drop-kamikaze ordnance (007B91C0(2Fh, 0)) the channel is forced
+// open (+64h = 1.0f, +61h = 1, +68h = 1) unless it already is (target 1 and
+// value exactly 1.0f); otherwise target = (DF0h || C25h || C20h) ? 9C3h : 0.
+// A changed target marks the channel moving (+68h); a moving channel raises
+// the block's +11h. Returns true when the target or value was written.
+bool plane_bay_target_007c6a8d(bsp::PlaneActuatorBlock& block, bool suppress_520,
+                               bool drop_kamikaze_2f, bool df0, bool c25, bool c20,
+                               bool own_9c3) noexcept;
 
 }  // namespace bsp::cc13_release_timer
 

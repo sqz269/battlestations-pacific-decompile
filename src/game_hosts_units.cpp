@@ -18,6 +18,7 @@
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/submarine_model.hpp"  // packet cc9_set_submarine_depth_level
 #include "bsp/cc13_sub_dive.hpp"    // packet cc13-subdive
+#include "bsp/cc13_leak92.hpp"      // packet cc13-leak92
 #include "bsp/unit_motion.hpp"      // unit_step_towards_0042ac60, packet cc9_periscope_out
 #include "bsp/game_hosts_scene_contents.hpp"  // packet cc9_submarine_seabed
 #include "bsp/airfield_taxi.hpp"                 // packet cc9_land_park_taxi
@@ -64,6 +65,7 @@
 #include "bsp/torpedo_approach_update.hpp"
 #include "bsp/torpedo_first_release.hpp"
 #include "bsp/cc13_release_timer.hpp"            // packet cc13-reltimer (009FA3A0 stubs)
+#include "bsp/band_0099_cc13.hpp"                // 009D49E0 / 009C8290 (cc13-reltimer2)
 #include "bsp/torpedo_issue_timing.hpp"
 #include "bsp/pilot_order_bindings.hpp"
 #include "bsp/plane_squadron_host.hpp"
@@ -1499,6 +1501,16 @@ struct GameUnitSlot {
     // +18h/+20h/+24h only). docs/DIVE_BOMB_GOAWAY_TURN.md.
     bsp::DiveBombGoAwayTurnState db_goaway_turn{};
     int db_goaway_enters{0};
+    // Packet cc13-goaway: 007B5BE0's goaway target term (the target's longest
+    // category 6/5/1 range) at the dive / torpedo / level goaway enters,
+    // measured whether or not a target-term switch is on. Log only.
+    const char* ga_term_kind{nullptr};
+    int ga_term_enters{0};
+    int ga_term_targets{0};      // a target with a gunnery row
+    int ga_term_moved{0};        // term > base: the switch would move +20h/+18h
+    float ga_term_aa_max{0.0f};
+    float ga_term_base_min{0.0f};
+    float ga_term_base_max{0.0f};
     int db_goaway_flag0_ticks{0};       // ticks that reached 009C4CBA
     int db_goaway_countdown_ticks{0};   // 009C4A86 ran
     int db_goaway_rerolls{0};           // 009C4CF1 arm ran
@@ -2013,6 +2025,9 @@ struct GameUnitSlot {
     int torpedo_aim_timer_fires{0};
     int torpedo_aim_timer_blocked_007bb110{0};
     int torpedo_aim_timer_first_fire_tick{-1};
+    // unit+DF0h, 007BB150 from the pilot think 0099B055 (packet cc13-reltimer2,
+    // written only with kReleaseBayOpenCc13Bound).
+    std::uint8_t pilot_step_flag_df0{0};
     // timer+0Dh, set at 009FA405 (packet cc13-reltimer, written only with
     // kReleaseTimerNotify0DhBound). The image has no reader.
     bool torpedo_aim_timer_notify_0d{false};
@@ -3753,6 +3768,27 @@ struct GameUnitsHost::Impl {
         done("LeakManager::init_0074f490", 0x0074f490u);
     }
 
+    // Packet cc13-leak92: the 92h messages 0074EC50 routed and the pump has not
+    // delivered yet, in post order. Filled only with the switch ON.
+    struct PendingShipSink92h {
+        GameUnitSlot* slot{nullptr};
+        std::array<float, 6> rates{};
+    };
+    std::vector<PendingShipSink92h> pending_ship_sink_92h;
+    // 0076C600 -> 0082220D -> 0074E860 for each: the message's rates overwrite
+    // the manager's (+18h), so a leak 0074F440 added since the post is lost.
+    std::size_t deliver_ship_sink_92h_0082220d() {
+        if (pending_ship_sink_92h.empty()) return 0;
+        std::vector<PendingShipSink92h> batch;
+        batch.swap(pending_ship_sink_92h);
+        for (const PendingShipSink92h& m : batch) {
+            for (std::size_t i = 0; i < m.slot->leaks.size(); ++i)
+                m.slot->leaks[i].rate = m.rates[i];
+            done("ShipMessage::sink_92h_0082220d", 0x0082220du);
+        }
+        return batch.size();
+    }
+
     // 00824FE5..00825086, the wreck handler's sink block, for one ship.
     void ship_wreck_sink_block_00824fe5(GameUnitSlot& s) {
         if (!s.leak_ready || s.leak_redistributed) return;
@@ -3770,14 +3806,28 @@ struct GameUnitsHost::Impl {
         // 0074ECD6..0074ED18: rate' = draw * (cap + cap) / (total_water + sum) + rate.
         float total_water = 0.0f;
         for (const bsp::UnitLeakEntry& leak : s.leaks) total_water += leak.water;
-        for (std::size_t i = 0; i < s.leaks.size(); ++i) {
-            const float twice = s.leak_rate_cap_08 + s.leak_rate_cap_08;
-            s.leaks[i].rate = (draws[i] * twice) / (total_water + sum_draws) + s.leaks[i].rate;
+        if constexpr (bsp::kLeakMessageRouterDeliveryCc13Bound) {
+            // Packet cc13-leak92: the rates go into the 92h message (0074ED21
+            // 0075B430(92h)), not the manager, and 0074ED7B routes it. The pump
+            // delivers it (units_deliver_ship_sink_92h_0082220d).
+            PendingShipSink92h message{&s, {}};
+            for (std::size_t i = 0; i < s.leaks.size(); ++i) {
+                const float twice = s.leak_rate_cap_08 + s.leak_rate_cap_08;
+                message.rates[i] = (draws[i] * twice) / (total_water + sum_draws)
+                    + s.leaks[i].rate;
+            }
+            pending_ship_sink_92h.push_back(message);
+            done("LeakManager::route_ship_sink_92h", 0x0077c2a0u);
+        } else {
+            for (std::size_t i = 0; i < s.leaks.size(); ++i) {
+                const float twice = s.leak_rate_cap_08 + s.leak_rate_cap_08;
+                s.leaks[i].rate = (draws[i] * twice) / (total_water + sum_draws) + s.leaks[i].rate;
+            }
+            // The rates travel in message 92h through 0077C2A0 (route 7, 0074ED7B);
+            // its arm 0082220D -> 0074E860 loads them. SUBSTITUTION, labelled: applied
+            // at once, not through the session router (kLeakMessageRouterDeliveryCc13Bound).
+            record("LeakManager::route_ship_sink_92h", 0x0077c2a0u);
         }
-        // The rates travel in message 92h through 0077C2A0 (route 7, 0074ED76);
-        // its arm 0082220D -> 0074E860 loads them. SUBSTITUTION, labelled: applied
-        // at once, not through the session router.
-        record("LeakManager::route_ship_sink_92h", 0x0077c2a0u);
         done("LeakManager::redistribute_0074ec50", 0x0074ec50u);
         // 00824FF0..00825074 on the hull body: inertia x2 (00D7A308), angular
         // damping 2.5f (00CF87C8), linear damping 0.5f (00CE3800).
@@ -3885,6 +3935,93 @@ struct GameUnitsHost::Impl {
         char text[16];
         std::snprintf(text, sizeof(text), "%08lx", static_cast<unsigned long>(address));
         log.implemented(method, text);
+    }
+    // Packet cc13-reltimer. 007CD9A0 as 007CDC70 publishes it at unit+9C3h: the
+    // first rack whose platform authors UseBayDoor answers vtable[210h](2Ah, 0);
+    // none answers 0. Live, not one step late; host rack order.
+    // docs/CC13_RELEASE_TIMER.md.
+    bool bay_rack_holds_round_9c3(GameUnitSlot& s) {
+        const std::vector<PlaneOrdnanceRack>& racks = ordnance_racks(s);
+        const std::vector<bool> bay =
+            bsp::cc13_release_timer::bomb_rack_bay_doors(lua, s.row.type_id);
+        for (std::size_t i = 0; i < racks.size() && i < bay.size(); ++i) {
+            if (bay[i]) return plane_rack_holds_round(s, racks[i]);
+        }
+        return false;
+    }
+    // Packet cc13-reltimer2, kReleaseBayOpenCc13Bound (docs/CC13_RELEASE_TIMER.md
+    // section 10): the image's bay opener, run once per fixed step before the
+    // block step. 0099AFCC-0099B055 (the pilot think's unit+DF0h) then
+    // 007C6A8D-007C6B2E (the plane tick's channel C target). SUBSTITUTIONS,
+    // labelled: DF0h is refreshed every fixed step, not on the pilot think's
+    // own timer; 9C1h/9C3h are read live, not one step late; the task's
+    // vtable[+50h] is modelled for the torpedo (009D49E0) and dive-bomb
+    // (009C8290) tasks only, and a plane with neither task is left alone.
+    unsigned long long bay_open_target_writes{0}, bay_open_steps{0};
+    void bay_open_step_cc13(GameUnitSlot& s, std::size_t index) {
+        namespace rt = bsp::cc13_release_timer;
+        if (!bsp::unit_is_kind_of(s.class_id, 0x0F)) return;
+        int mode = 1;
+        if (s.torpedo_task_installed && s.torpedo_state != bsp::TorpedoState::kNone) {
+            const bsp::TorpedoState t = s.torpedo_state;
+            const bool listed = t == bsp::TorpedoState::kAim || t == bsp::TorpedoState::kDone
+                || t == bsp::TorpedoState::kGoAway || t == bsp::TorpedoState::kAttackRun
+                || t == bsp::TorpedoState::kPrepare;
+            mode = bsp::band0099::torpedo_step_result_009d49e0(
+                listed, s.torpedo_approach.aim_solution_130);
+        } else if (s.dive_bomb_task_installed
+                   && s.dive_bomb_state != bsp::DiveBombState::kNone) {
+            const bsp::DiveBombState d = s.dive_bomb_state;
+            const bool attacking = d == bsp::DiveBombState::kAimDive
+                || d == bsp::DiveBombState::kAimGlide || d == bsp::DiveBombState::kDone
+                || d == bsp::DiveBombState::kFlyAbove || d == bsp::DiveBombState::kGoAway
+                || d == bsp::DiveBombState::kPrepare || d == bsp::DiveBombState::kAttackRun
+                || d == bsp::DiveBombState::kTurnDown;               // 009C7910
+            mode = bsp::band0099::dive_bomb_step_result_009c8290(
+                attacking, d == bsp::DiveBombState::kAimDive);
+        } else {
+            return;
+        }
+        ++bay_open_steps;
+        const bool own_9c3 = bay_rack_holds_round_9c3(s);
+        // 0099B01C-0099B039: [unit+9D4h]+3D0h, the squadron's first member.
+        // With kSquadronRemovesDeadBound the death path clears a dead leader's
+        // seat to kPlaneSquadronNoUnit before 007F3970's erase moves the next
+        // wingman up; the image keeps the old pointer in that window, so the
+        // first occupied seat (flight_leader()) stands for +3D0h there.
+        bool has_leader = false, leader_9c1 = false;
+        if (mode == 1) {
+            if (const bsp::PlaneSquadronHostRecord* r =
+                    bsp::plane_squadron_registry().find_by_member_unit(index)) {
+                const std::size_t m = kSquadronRemovesDeadBound ? r->flight_leader()
+                    : r->member_units.empty() ? bsp::kPlaneSquadronNoUnit
+                                              : r->member_units[0];
+                if (m != bsp::kPlaneSquadronNoUnit && m < slots.size() && slots[m]
+                    && m != index) {
+                    const bsp::PlaneActuatorChannel& lc =
+                        slots[m]->actuator_block_dec.channel_c;
+                    has_leader = true;
+                    leader_9c1 = rt::step_byte_9c1_007cdc84(lc.enabled, lc.value);
+                }
+            }
+        }
+        s.pilot_step_flag_df0 = rt::pilot_step_flag_df0_0099b055(mode, has_leader,
+                                                                  leader_9c1, own_9c3);
+        const bool before = s.actuator_block_dec.channel_c.target;
+        const bsp::OrdnanceKindSet set{s.ordnance_mask};
+        if (rt::plane_bay_target_007c6a8d(s.actuator_block_dec, s.generic_suppress_520,
+                bsp::ordnance_has_drop_kamikaze_2fh(set), s.pilot_step_flag_df0 != 0,
+                s.torpedo_release_pending_c25, s.torpedo_issue_requests_c20 != 0,
+                own_9c3)) {
+            ++bay_open_target_writes;
+            log.notef("bay target: unit=%s t=%.2f target=%d->%d mode=%d df0=%d c25=%d "
+                "c20=%d (0099B055, 007C6A8D)", s.row.name.c_str(),
+                static_cast<double>(summary.simulated_seconds), before ? 1 : 0,
+                s.actuator_block_dec.channel_c.target ? 1 : 0, mode,
+                s.pilot_step_flag_df0, s.torpedo_release_pending_c25 ? 1 : 0,
+                s.torpedo_issue_requests_c20);
+        }
+        done("Plane::bay_target_007c6a8d", 0x007c6a8du);
     }
     // An indirect dispatch has no call-site address of its own; the slot is the
     // evidence, so the report carries `<vtable>+vtableNN` for it.
@@ -10704,6 +10841,45 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     unsigned long long torpedo_reset_draws_{0};
     unsigned long long torpedo_reset_seeds_{0};
     double torpedo_reset_seed_sum_{0.0};
+    // Packet cc13-goaway: 007B5BE0 on a goaway target, as the dive (009C49B4),
+    // torpedo (009D0DF2) and level (009B56DF) enters call it. Every host slot
+    // answers kind 5; the fields are the gunnery row's category 6 / 5 / 1
+    // ranges (unit+448h, +444h, +434h). False when there is no target or no
+    // gunnery row.
+    bool goaway_target_extent_007b5be0(std::size_t target_plus_one, float& extent) {
+        if (gunnery == nullptr || target_plus_one == 0) return false;
+        const std::size_t ti = target_plus_one - 1;
+        if (ti >= slots.size() || !slots[ti]) return false;
+        const std::size_t idx = slots[ti]->process_index;
+        for (const GameGunneryUnitRow& r : gunnery->unit_rows()) {
+            if (r.unit_index != idx) continue;
+            const float a = r.category_ranges[5];  // +444h
+            const float b = r.category_ranges[6];  // +448h
+            const float m = (b > a) ? b : a;       // 007B5BF9 FCOMPI / JA
+            const float c = r.category_ranges[1];  // +434h
+            extent = (m > c) ? m : c;              // 007B5C0A FCOMPI / JBE
+            return true;
+        }
+        return false;
+    }
+    // The same, at a goaway enter: measures the term against the enter's base
+    // (dive 2 * approach+B4h, torpedo SafeDist +438h, level SafeDist +450h)
+    // into the slot's ga_term_* counters, and returns what the enter feeds its
+    // has_extent_target / target_extent when its switch is on.
+    bool goaway_target_term(GameUnitSlot& flyer, const char* kind,
+                            std::size_t target_plus_one, float base, float& extent) {
+        const bool has = goaway_target_extent_007b5be0(target_plus_one, extent);
+        if (flyer.ga_term_enters == 0 || base < flyer.ga_term_base_min) flyer.ga_term_base_min = base;
+        if (flyer.ga_term_enters == 0 || base > flyer.ga_term_base_max) flyer.ga_term_base_max = base;
+        flyer.ga_term_kind = kind;
+        ++flyer.ga_term_enters;
+        if (has) {
+            ++flyer.ga_term_targets;
+            if (extent > flyer.ga_term_aa_max) flyer.ga_term_aa_max = extent;
+            if (extent > base) ++flyer.ga_term_moved;
+        }
+        return has;
+    }
     // 009FD5FF-009FD743 for the cache `k` of `flyer`, with `lead` the solver's
     // lead point (unit+FCh + 3.0 * vtable[34h]).
     const std::vector<bsp::FlyToObstacle>& fly_to_obstacles_009fd63c(
@@ -13683,10 +13859,29 @@ private:
 // GameUnitsHost
 // ---------------------------------------------------------------------------
 
+namespace {
+// Packet cc13-leak92: the units host the session pump delivers 92h to, as
+// script_orders_drain_loopback_0076c600 finds its host. Set only with the switch ON.
+GameUnitsHost::Impl* g_leak92_units = nullptr;
+}  // namespace
+
+std::size_t units_deliver_ship_sink_92h_0082220d() {
+    if constexpr (bsp::kLeakMessageRouterDeliveryCc13Bound) {
+        return g_leak92_units != nullptr ? g_leak92_units->deliver_ship_sink_92h_0082220d() : 0;
+    } else {
+        return 0;
+    }
+}
+
 GameUnitsHost::GameUnitsHost(GameHostLog& log, GameMissionLuaHost& lua)
-    : impl_(std::make_unique<Impl>(log, lua)) {}
+    : impl_(std::make_unique<Impl>(log, lua)) {
+    if constexpr (bsp::kLeakMessageRouterDeliveryCc13Bound) g_leak92_units = impl_.get();
+}
 
 GameUnitsHost::~GameUnitsHost() {
+    if constexpr (bsp::kLeakMessageRouterDeliveryCc13Bound) {
+        if (g_leak92_units == impl_.get()) g_leak92_units = nullptr;
+    }
     Impl& host = *impl_;
     // Directors borrow units. Frame-level borrowers have already been released.
     host.gunnery.reset();
@@ -21570,6 +21765,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
             if constexpr (GameUnitsHost::Impl::kPlaneWingFoldElevatorBound) {
                 host.wing_fold_notify_007c11e0(*unit_slot);
             }
+            if constexpr (bsp::cc13_release_timer::kReleaseBayOpenCc13Bound) {
+                // 0099B055 / 007C6A8D, the bay opener (packet cc13-reltimer2).
+                host.bay_open_step_cc13(*unit_slot,
+                    static_cast<std::size_t>(&unit_slot - host.slots.data()));
+            }
             bsp::plane_actuator_block_step_007de3a0(unit_slot->actuator_block_dec,
                 step_seconds, static_cast<unsigned>(host.summary.motion_steps));
         }
@@ -24006,6 +24206,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // entity bounds, which this host does not model.
                                 gin.has_extent_target = false;
                                 gin.target_extent = 0.0f;
+                                // Packet cc13-goaway: 009D0DC9-009D0E0F on the
+                                // command target (007B5BE0 = its longest AA
+                                // range, not its bounds; docs/CC13_TORP_GOAWAY.md C.3).
+                                {
+                                    float term = 0.0f;
+                                    const bool has_term = owner_.goaway_target_term(slot_, "torpedo",
+                                        slot_.command_target_plus_one, gin.safe_distance_438, term);
+                                    if constexpr (bsp::cc13_torp_goaway::kTorpGoawayTargetExtentCc13Bound) {
+                                        gin.has_extent_target = has_term;
+                                        gin.target_extent = has_term ? term : 0.0f;
+                                    }
+                                }
                                 // 00BD2F10 UniformFloatRange(1.0, 1.15). This
                                 // host's torpedo binding takes the low end of
                                 // every draw, as random_between already does.
@@ -27799,11 +28011,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // none, so the arm's own tick parity stands in (as the
                                 // dive-bomb goaway enter does). STAND-IN.
                                 unit_.lb_ga_side_1c = (unit_.lb_arm_ticks & 1) ? -1.0f : 1.0f;
-                                // 007B5BE0's target extent needs the target's
-                                // +444h/+448h, which this host does not model.
+                                // 009B56B6-009B5702: 007B5BE0 on approach+48h, the
+                                // latched target (lb_target_plus_one), against
+                                // SafeDist +450h; then the 3500 cap. Packet
+                                // cc13-goaway: the term is the target's longest AA
+                                // range (docs/CC13_TORP_GOAWAY.md C.3), OFF.
+                                const float safe_450 =
+                                    lb_tuning(&bsp::GameTuningBlock::pilot_level_bomb_safe_dist, 1000.0f);
+                                float term = 0.0f;
+                                bool has_term = owner_.goaway_target_term(unit_, "level",
+                                    unit_.lb_target_plus_one, safe_450, term);
+                                if constexpr (!bsp::cc13_torp_goaway::kLevelGoawayTargetExtentCc13Bound) {
+                                    has_term = false;
+                                    term = 0.0f;
+                                }
                                 const float base = bsp::level_bomb_goaway_standoff_base(
-                                    lb_tuning(&bsp::GameTuningBlock::pilot_level_bomb_safe_dist, 1000.0f),
-                                    false, 0.0f);
+                                    safe_450, has_term, term);
                                 const float ga_draw = lb_draw("ga18", kGoAwayJitterLow, kGoAwayJitterHigh);
                                 if constexpr (GameUnitsHost::Impl::kLevelBombGoAwayOrderBound) {
                                     // 009B574B-009B5755: draw * (ratio * base).
@@ -31096,6 +31319,26 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // every draw (random_between).
                             rin.window_draw = bsp::dive_bomb_goaway_turn::kBankWindowLo;
                             rin.countdown_draw = bsp::dive_bomb_goaway_turn::kCountdownLo;
+                            // Packet cc13-goaway: both draws sit inside 009C4CF1's
+                            // 0 > +24h guard (ECX = EBX = 1 from 009C4A5C), so they
+                            // are taken only on a tick that re-rolls, in this order.
+                            if constexpr (bsp::cc13_torp_goaway::dive_window_draw_on()
+                                          || bsp::cc13_torp_goaway::dive_countdown_draw_on()) {
+                                if (0.0f > gt.countdown_24 && owner_.gunnery) {
+                                    if (bsp::cc13_torp_goaway::dive_window_draw_on()) {
+                                        rin.window_draw = owner_.gunnery->death_mode_draw_00bd2f10(
+                                            1, owner_.index_of_slot(unit_),
+                                            bsp::dive_bomb_goaway_turn::kBankWindowLo,
+                                            bsp::dive_bomb_goaway_turn::kBankWindowHi);    // 009C4D13
+                                    }
+                                    if (bsp::cc13_torp_goaway::dive_countdown_draw_on()) {
+                                        rin.countdown_draw = owner_.gunnery->death_mode_draw_00bd2f10(
+                                            1, owner_.index_of_slot(unit_),
+                                            bsp::dive_bomb_goaway_turn::kCountdownLo,
+                                            bsp::dive_bomb_goaway_turn::kCountdownHi);     // 009C4D33
+                                    }
+                                }
+                            }
                             if (bsp::dive_bomb_goaway_reroll_009c4cf1(rin, gt)) {
                                 ++unit_.db_goaway_rerolls;
                                 if (unit_.db_goaway_first_reroll_tick < 0) {
@@ -31248,12 +31491,32 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void run_dive_bomb_goaway_enter_009c4950() {
                         bsp::DiveBombGoAwayEnterInputs in;
                         in.attack_distance_b4 = unit_.db_attack_dist_b4;  // 009C4990
-                        // 007B5BE0's target extent needs the target's +444h/+448h,
-                        // which this host does not model; the torpedo enter
-                        // 009D0D90 reports the same hole.
                         in.has_extent_target = false;
+                        // Packet cc13-goaway: 009C499C-009C49E0, 007B5BE0 (the
+                        // target's longest AA range, docs/CC13_TORP_GOAWAY.md C.3)
+                        // on the command target against 2 * approach+B4h (009C4996).
+                        {
+                            float term = 0.0f;
+                            const bool has_term = owner_.goaway_target_term(unit_, "dive",
+                                unit_.command_target_plus_one,
+                                in.attack_distance_b4 + in.attack_distance_b4, term);
+                            if constexpr (bsp::cc13_torp_goaway::kDiveGoawayTargetExtentCc13Bound) {
+                                in.has_extent_target = has_term;
+                                in.target_extent = has_term ? term : 0.0f;
+                            }
+                        }
                         // 00BD2F10 UniformFloatRange(1.0, 1.25): the low end.
                         in.standoff_jitter = bsp::dive_bomb_goaway_turn::kStandoffJitterLo;
+                        // Packet cc13-goaway: 009C49FC (ECX = 1 at 009C49F2), taken on
+                        // every enter after the target term.
+                        if constexpr (bsp::cc13_torp_goaway::dive_standoff_draw_on()) {
+                            if (owner_.gunnery) {
+                                in.standoff_jitter = owner_.gunnery->death_mode_draw_00bd2f10(
+                                    1, owner_.index_of_slot(unit_),
+                                    bsp::dive_bomb_goaway_turn::kStandoffJitterLo,
+                                    bsp::dive_bomb_goaway_turn::kStandoffJitterHi);
+                            }
+                        }
                         // [00F876B0] is the mission step counter, +1 per step. This
                         // host has none; the aircraft's own arm tick count also
                         // advances once per step, so its parity is the step's
@@ -32218,6 +32481,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     : bsp::TorpedoState::kFollow;
                             unit_.torpedo_drop_timer = -1.0f;
                             unit_.torpedo_done_timer_98 = -1.0f;
+                            if constexpr (bsp::cc13_release_timer::kReleaseBayOpenCc13Bound) {
+                                // 009D05AB: 009D0380, run from 009D2DA0 at the
+                                // task's construction, clears approach+130h,
+                                // which the bay opener's 009D49E0 reads.
+                                unit_.torpedo_approach.aim_solution_130 = false;
+                            }
                             // 009D4A70, the task's +54h cruise profile, is the
                             // one producer of the engage distance the engaged
                             // predicate 009D3210 compares the range against:
@@ -33924,20 +34193,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 }
                             }
                         }
-                        // 007CD9A0 as 007CDC70 publishes it at unit+9C3h: the
-                        // first rack whose platform authors UseBayDoor answers
-                        // vtable[210h](2Ah, 0); none answers 0. Live, not one
-                        // step late; host rack order. docs/CC13_RELEASE_TIMER.md.
                         bool bay_rack_holds_round_9c3() {
-                            const std::vector<PlaneOrdnanceRack>& racks =
-                                owner_.ordnance_racks(s_);
-                            const std::vector<bool> bay =
-                                bsp::cc13_release_timer::bomb_rack_bay_doors(
-                                    owner_.lua, s_.row.type_id);
-                            for (std::size_t i = 0; i < racks.size() && i < bay.size(); ++i) {
-                                if (bay[i]) return owner_.plane_rack_holds_round(s_, racks[i]);
-                            }
-                            return false;
+                            return owner_.bay_rack_holds_round_9c3(s_);
                         }
                         void arm_release_timer_009d2287() override {
                             // 009D2279-009D2287: refuses to re-arm, and leaves
@@ -44376,6 +44633,11 @@ void GameUnitsHost::report() {
                 "no_force_bound=%d (007BBBA6, 007EABC0, packet p19_bay_force)",
                 host.bay_channel_disabled_requests, host.bay_door_classes,
                 Impl::kBayRequestNoForceEnableBound ? 1 : 0);
+            if constexpr (bsp::cc13_release_timer::kReleaseBayOpenCc13Bound) {
+                host.log.notef("summary bay opener steps=%llu target_writes=%llu "
+                    "(0099B055, 007C6A8D, packet cc13-reltimer2)",
+                    host.bay_open_steps, host.bay_open_target_writes);
+            }
             host.log.notef("summary moveto cruise by_ordnance=%llu bound=%d leg separations=%llu "
                 "bound=%d (009C3650, 009BEC85, packet p16_moveto_cruise)",
                 host.moveto_cruise_by_ordnance, Impl::kMoveToCruiseByOrdnanceBound ? 1 : 0,
@@ -45510,6 +45772,18 @@ void GameUnitsHost::report() {
                 static_cast<int>(slot->rack_ret_census), static_cast<int>(slot->rack_ret_idle),
                 slot->torpedo_issue_stage_issues, slot->torpedo_issue_stage_guard_blocked,
                 slot->torpedo_issue_requests_c20);
+        }
+        // Packet cc13-goaway: 007B5BE0's goaway target term per slot (log only;
+        // moved = enters whose target's AA range exceeded the enter's base).
+        for (const auto& slot : host.slots) {
+            if (!slot || slot->ga_term_enters == 0) continue;
+            host.log.notef("  goaway target term %-7s %-12s: enters=%d targets=%d moved=%d "
+                "aa_max=%.0f base=%.0f..%.0f (007B5BE0, packet cc13-goaway)",
+                slot->ga_term_kind != nullptr ? slot->ga_term_kind : "-",
+                slot->row.name.c_str(), slot->ga_term_enters, slot->ga_term_targets,
+                slot->ga_term_moved, static_cast<double>(slot->ga_term_aa_max),
+                static_cast<double>(slot->ga_term_base_min),
+                static_cast<double>(slot->ga_term_base_max));
         }
         {
             static const char* const kDiveBombStateNames[10] = {
